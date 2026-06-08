@@ -4,116 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEBAECD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:21:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D2ECD6E79
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 16:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 535816B0088; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
+	id 425D46B0088; Mon,  8 Jun 2026 12:23:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50CF66B008A; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
+	id 3D68F6B008A; Mon,  8 Jun 2026 12:23:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 422AD6B008C; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
+	id 2C52A6B008C; Mon,  8 Jun 2026 12:23:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 33D226B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:21:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B4721A0136
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:21:40 +0000 (UTC)
-X-FDA: 84857261160.19.2519EBA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4331016000B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:21:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AHnbUd+b;
-	spf=pass (imf08.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780935698;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B2316B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:23:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B148F1C0E37
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:23:27 +0000 (UTC)
+X-FDA: 84857265654.26.7B1615D
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A8E7DC0007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 16:23:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AXZLtk3L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780935805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
-	b=kzbyYadTx/+VBQ16EeWEvUam1jaQy/MMOTvcJ+UERXBAhDFPIMRWXDtQZN22Yj9goIawI8
-	p6GzZiwTInO0VtRIT/wXEA4bTU8h97VUJEV2jvGJbleUED9WB5dU7X+RzdcDdLu2ONQHVy
-	iryDXUDOZd23RKw3MRxBhwlwSMYmre0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AHnbUd+b;
-	spf=pass (imf08.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780935698;
-	b=PG/vfGrKTSU5z39jtl0geRxZspCspuF2R68OM7H+yOkDSNrH6T6LVnJ7uoKtqs9KS2bjFl
-	5wKGc5Fj8FVrDUYAuDNa/yuzGqnbicV0OqdWIt8Q5C7CMoY9IsX9xQyN41158ngDpZ43WD
-	/t+xEWecKJVSy3H0Y3DroGSscW25ook=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780935697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
-	b=AHnbUd+bdUSezQGfWQPiLYvsMczUvUPunwYIKuoysIWkgJr3sFgWmxl+rBqDTcaKZ89KQO
-	vH1oU6N/TRwG1sIyXQmbGgMPkFD4uuFv0ETaCtArwE8IoYIE8hQiDwzaTaSacryvPYZtN3
-	D5fUOLoM/Jfl7eCUUmCvuVh6Ml56CyM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-7xgGlJFEN0uzEv3JnJQalw-1; Mon, 08 Jun 2026 12:21:36 -0400
-X-MC-Unique: 7xgGlJFEN0uzEv3JnJQalw-1
-X-Mimecast-MFC-AGG-ID: 7xgGlJFEN0uzEv3JnJQalw_1780935695
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-691ac5b31cbso1432914a12.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 09:21:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780935695; x=1781540495;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	bh=jPv+U/wIjO6pXhd0p8FcM6eyTjtkG314lWJDeM8Dul8=;
+	b=GBtl5BT0TUxQ9Vsc+qopFl2FLrrssex56YgbKrk4pYFIS8zjba2h9G5/YUhxXiG0zbRLZ1
+	zHFyH6dpsb2dEg1WcBAzkATrOkHqKKKmePVJj8UEbumzeLB/DrN6PRk+I9i4ZjktSbkFxM
+	ty7ZAySsDo3Y/cLEUXZEaIUS1/6lKVE=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AXZLtk3L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780935805;
+	b=JSEhGAsFd7pnaLSkJOOJ8uEQaHg9muBPPYApHt3k9rKthW6axEfcKTMBAubD6JxUVVxO60
+	gYqIOstakl3hfptmoH0PlQu8XqA2p+gZGuBjycsWmPbd4Tn6WuEyW44VzDk/gHop8oAWKD
+	FjIscoNUwCTLmK56lttf5kZzoIcGK+M=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490b4a8e28bso37693055e9.1
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 09:23:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780935804; cv=none;
+        d=google.com; s=arc-20240605;
+        b=L4hO/KZiA68PQBJoBx66jwEZs4BCoIMXKERr0NA8gF4qc5FfKf+uX1pfzZNtBD1FkB
+         Mx8fcpUaxq0cWh0qLNKykFRwbHn4E/6g6xDgJ18R2ZDE6XoOH/Cc6ZbhK32FdUBozE0V
+         EBEhVr1BxfgRn+19t2VAyAA8n2w1RX6EwbOmedI9V1yJSyS9wW3H/TvQRMaIlGYfkGmD
+         +X25t+8A43Uvz6P43Ln7pYAYAIrMe+0xHy4YGXCTAtp7wtS9JwgXIhSRGJkeSHhJ7utL
+         OpNvKG32sM72n3hrr7ucdE1rdRxYkF+B1ZB5mruhluzuLmhqw4HOKq2iQW+4PFq1FBOG
+         gg1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jPv+U/wIjO6pXhd0p8FcM6eyTjtkG314lWJDeM8Dul8=;
+        fh=xvJxAuLmzRN1C+GhKOeN64DlRKw5evvHP1Vh3ozXQYE=;
+        b=SVCCLtOagf3wH5LIiGQmGSOM7swrpnLwmTn6y3M53hsL/Cxe6VYCwFtfdhJkKl2eiw
+         txuO+PQ+wulkkXGsG3F9bzF/Y05H+WEkG15ZNvNNtrm8aswnb7SNMymWw/mMnnLOcrHK
+         WQy1vPs5bno/hrRivlcf8W3NThzyuX9+oUI9B7FnYpeaOpithiRwLL0A+cUdYOZbS6JE
+         QZ5jkZzNFEHyGeQnPHZDrvjy+aWw+5cd8nRNyPIuTanPPoQe5IxUC8sP+U2XTtniz63d
+         GxeKPwn5hsmX63m660S+9+QIwrYxNhzmOu+IFBGFJLgLEwStUlsSybOcLuoPr3nfRWjv
+         dC/w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780935804; x=1781540604; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ct84BW5EnJo4ga+XD9TIj1NXZ7cJKFv0iZy7WsJtVao=;
-        b=IVaNzpt17w5yV2jGMy3vNjePcZO/CqujxiHOoHaDyaphu4sqOWyCdyjjmwfz4aSZNW
-         NvO3mDVcHLPZ+tMouWxNApujxYIWL09C+fCXq9ydnHGaj0bFRAlTUKPwTmWcU5WAR62p
-         Is/+dln3+rzMu+3qBTMU/CmCazc6mB4FxjWlzlz5edqywiIVGAV/Lr2+teesxjP1E3Si
-         65pfdiYxP1QzEmHtDjQpeTFe1sEOUDrtDr4MRfj+kso7NQJ8yJfsmojOiwe+xkmz/XaB
-         xQIcqjvgZhE5AE/+Q5vXWS1XzXjhiR+Jt+bTXKG4MLn4ddmg0D/JZuzthWEkVfAKSe6x
-         M+vQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+42h8lROefyXka2+mOyNokL8516IzhCbUfr9uGQoCj2Vy48NuIDd4pipFegfs2qkbbIGVb31E7vg==@kvack.org
-X-Gm-Message-State: AOJu0Ywf2Ilohn40Xj+VDShcwpJKjdmgg65U3DI1M07CcGJlIqWktHWf
-	5sRVL0mlsfczEkZPGmex3b89o2TB3whjwzCU4j8iTTG16jQr2anllwWKpX2nLb9y9YuEbxJn7HV
-	dFe+/t1TZTvfav13IokM7L8gvc9BHiwPHCrPSRX+dfaMPoSlzQhSEn1Yo3MbBWuBf/aCUvlE+fw
-	zxffZdFfG6VnO1Gx6X7e7qEFJgNISn7jxaZreTMA==
-X-Gm-Gg: Acq92OGxR3TonrRRTQUwM+s4krb+6PbCatymWXFuEKHsa13vcB56B24DAJbxvMNxzv4
-	MeNpTTuv06Vgy6jlA/iUPENITBHkHApFfFbzhMJFVxkUemkylvxbzT1UmNBC9qTVojAHumfvu3b
-	ve4vhV79bbBYhlXweoO7oUPtLe0XXKCtLAyLTsg5+MPYgTHgDViXlVrsHxNax/iom9cUd5bi4mN
-	w7Ov3dmzvvbuDoSvw==
-X-Received: by 2002:a05:6402:3988:b0:691:6fc9:da93 with SMTP id 4fb4d7f45d1cf-6916fc9ded9mr3292155a12.19.1780935694777;
-        Mon, 08 Jun 2026 09:21:34 -0700 (PDT)
-X-Received: by 2002:a05:6402:3988:b0:691:6fc9:da93 with SMTP id
- 4fb4d7f45d1cf-6916fc9ded9mr3292142a12.19.1780935694321; Mon, 08 Jun 2026
- 09:21:34 -0700 (PDT)
+        bh=jPv+U/wIjO6pXhd0p8FcM6eyTjtkG314lWJDeM8Dul8=;
+        b=AXZLtk3L/olJeKc5X2lPZPme0/W3wNluKkq3Y9wmS7nhSM1AI5tz0uhfdZh5cWPad6
+         LC+Gh4ZI7jzWYvfyoSHCaIvlrnkxEsTKGrtX8Te+KfRvvLVLx3ZF51964fkpg9XEyIg5
+         xd17TFewKBHcVgFYjJuhbei3z5/nZ7vSxeGcwvs4Um+0sJpbrPSjmLwvv43s8V7E6+2D
+         AuvaqC1x14jWrwZ5zQKDOizysfltQYadnfucHV7WTROa8jyK9C6WFjPaEii3Awu5y3NB
+         ufo485QSldWybPjYTJkKqzvqE0tzS/oNoWC3DoUec7CgU+GeZIwrxVSECePcSsY9hAz3
+         DMKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780935804; x=1781540604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jPv+U/wIjO6pXhd0p8FcM6eyTjtkG314lWJDeM8Dul8=;
+        b=HUsrIYQAl+3GcibMAW981JJY2mY7Dgfjtwt6Xh1uNd+Y5BirkZpmK0VCDq1aiSMyUm
+         pu4waMaC2p8vgs/FyhKnDq14KgVQ2zQ44cHtP5nYpbI4iWfy1LmHplDuMfNYj3odz/Xz
+         v192mnl3nkict5TnqO4sEvkPl3LZ9lkSUcQ0/sniIwC7GJG3381OEG/++9+K4naynKsS
+         njWlqaCS1q5rKUae+6Klg1KcwCLadSC4rlGra7DMQXHS0n03Ds48uuncPZZeKVWKvYVU
+         pdCud9sM4L1pwKK1UcmF2huxMYVamVykg5gmdaf6lYFjE55ORc+CaKjKWm4T8rsY4luz
+         BzSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+pZFuKwDpqcK8VKy6CPcH+HVSSbx/n2NUGABKurpDaMnJ/Ta6EKV3kFbPY9pxWrWfezeTgNZq6gw==@kvack.org
+X-Gm-Message-State: AOJu0Yw4rjed2Ur7NjXf8GWNRVwZ5gLuYeErgmbt7FD90Yne7lglSeW/
+	ZdCR5VUoH0mXsks0sF2jUMy0ZbFHEYFNpUKWg3L4XNp5toEbXKqjMRofB7w5ypfCP+3CbQWttR4
+	P0NICY9jW4CXtr1Lh5xnst5yvZ7K/4ZQ=
+X-Gm-Gg: Acq92OHVBMIxhZX7RUkf7icfkl05LGdPidJ5Iu1PD98/SLLuBdiH7WAbp1iR4kwR/0b
+	jm9j7w3aX5kAjCbe/XvZyhyldVFJVjnLVZbZbPF2TLtLqFW2Pjd9yhX+vz/X92D0ReXXOtop/yZ
+	nUAecGp+giianaTqWHLPuptbucx5aqiCpFwHPpXlI7B/gktm54dl37ktTV20bD/K9RwS/ySxwBe
+	Ehlzrt36h7DLLHGALc28uDXlqxYuL3SBRucL0teE56RA4LwJlgNeTiMr91LbInBW+t+GVBzwmJK
+	I+KVwW2neJOa8UtcUckLIeDI277mo9H4GNqwHS32ZabNL1i3hs8hT2Yliqej
+X-Received: by 2002:a05:600c:3f1b:b0:490:bcf6:46bf with SMTP id
+ 5b1f17b1804b1-490c2599fecmr275598275e9.9.1780935803894; Mon, 08 Jun 2026
+ 09:23:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260527224848.1753560-1-chaithco@redhat.com> <20260602152022.2673803-1-joshua.hahnjy@gmail.com>
-In-Reply-To: <20260602152022.2673803-1-joshua.hahnjy@gmail.com>
-From: Charles Haithcock <chaithco@redhat.com>
-Date: Mon, 8 Jun 2026 10:21:22 -0600
-X-Gm-Features: AVVi8CeWJOu2Z1PIj-rgNdLnSdFg2ZdcZoZ0TmLnq61Q95XtGvSJdqgISczthmM
-Message-ID: <CAMcbwu5=TK_EjZ=wN5fqLC-DVUendE+CBWX0pN7KBF+1ZwD7Vw@mail.gmail.com>
-Subject: Re: [PATCH] Respect mempolicy when calculating surplus huge pages.
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PY64SH7jzyqy9AkJV0GAmt8MTsXtFbUexoA5-XrtWrQ_1780935695
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/alternative; boundary="0000000000006dad4a0653c0672b"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4331016000B
-X-Stat-Signature: jh5j8pk47kj4rn857nna68o8ithec11j
+References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
+ <20260526114601.67041-2-jiahao.kernel@gmail.com> <aho7nepN5jZtKmef@google.com>
+ <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com> <ah4ZZGl7GYJf54Wz@google.com>
+ <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com> <ah9i3uhh3PFiS0Uk@google.com>
+ <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com> <aiBpibRNi0BcM1Zu@google.com>
+ <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com> <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
+ <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com> <CAKEwX=MQ3xXBAY-2H8vA+XSX5GHNBubJ2GCYAXGD+Hra++ZM7A@mail.gmail.com>
+ <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com>
+In-Reply-To: <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 8 Jun 2026 09:23:11 -0700
+X-Gm-Features: AVVi8CcQa0JXhG_fDPPqHmrr3OFhGwIKj95CSTSdP9Q_mQuoQWpHKZOKlZLp87U
+Message-ID: <CAKEwX=PF9hfERC_QMq+rjkSc-BsJyawMgTe+EhwR_86HiQKm=Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor per-memcg
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, tj@kernel.org, 
+	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A8E7DC0007
 X-Rspam-User: 
-X-HE-Tag: 1780935698-665846
-X-HE-Meta: U2FsdGVkX181ziymcDpdAPWQKIVKr4mOiiV3w9sYDNAW+tvYlfU8UAQvqGZMAmUyYeM/p/F3CoslF6Mdu7kKkMZqYxZl/GaIVYU16S1N9/oc6LeMgB5BUYJY6m9BJalj/Or8hY7gJZZowgZA2IJ+i0LibFt5xlHEJauVy2mPSLEBSe2oNqqlsylDwiGRqOnhce1qM3vC92IioUaSzO/XpXdCYOmfJexKc4crV7E/j55zcVi9AoKe3REIH94+ZdymtZ1Cw69vZzrcd2Yc1t2FxHbopzX9sAE5/LrWWa63QP4riVjBA9/v/d84PBgrqmfDt8PvzfywDR6E1aiaYcRPl4cnRk6gQgZVuJ01V4/oIsKWVxUt/yAzYnv5eND+OkdXE38nm0Xo8u9hjuSgmFKtQklsjEd1p5tUR0oOtVLGM3EUOwOc9F3OFUNUvgpsOJoViX0nGAmGeQIyJUr+86ju6HQngKzu2bQ+ipVPc2zCFO3jP1+kuHIzds+o/HmEF562MY9PcSF6wX5AzjUAEvJvXLLtMFsWMIIrWhfdDK3qhCCwEk5hpoNN0wGWSuyiSVzAiZjVcv/Qg1ceSysPe1utRO82tI1ARfahPC0gdPebDc7+cCMivkgxSqTVEZJoKzxnKbFry0/7/y1M2QqelNlcRFiB5XWCEhxCQm65mkysYhitXckcX6bXkDSorS8koQy0uGSJAFKlG/6bJ4qR7KWy7hjDWmSIMcK2/bcnh7iGTnuBr6eWDfM/U8ndsogOc0Ris1tL2Q8qvYY+DBhEoEeqqe6VFUd145r/7kUA+7OkGeBX+ZfgmEUcnJBSTfaeoWPcw1yW4haX059XliK34L9n7lw3rezKpFAAUXd5WL/gDdPJ+zm/H7MCQuxw10+/zPZ/mI+qxs9xgegQxyrxlJJv3h7C1+w+YhUt2M0eRIKFpADMCgCV3bbs8EHK59kjiiXJE3YBcyyiw6NXKl5y3jw
- WXELbjaj
- MMTxXy/wpKwf55c4t/1+lHP/a94deQ4PB5kUMW1GSehfx/3OKyu4V6lHCZY9IOhELxBpQoqH0jaVhdnHRB/VzdNsCg6vRyKNxqJ9qZ4C7bBYYxurBNMcQ2eNwmcQy9yISd9PmfQAX4ozoNPG2TEWYQ3vvZ576S89F16qt6sI1BmPskVV8IWBdE27QalAU1vGhcH96D/TjNduu/UkdkcYaSslK1Z3n3x/lOUDbvjl18r43f4JJSNet6vViypJVcVuQrjb40B1Me/T3BFPdfs7R8FARrcuBIAK7OKLhcyR+Kt+q0ZqO1xmmS5knU/NpKH6Pa1Vm4f5tPWF58pgwCNPe2ROlYRmiqaji7iD27WwVDpa76911DKSdQ5GUHTeJDQQrSGNpkM9TU0HT5m+Zy5yIpzo86w==
+X-Stat-Signature: toxnz6rhjggamjemf87c5ca5di9kwkm4
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780935805-433922
+X-HE-Meta: U2FsdGVkX1/nr/d0sqzCPAcd8cmsTxshpHQqiuDSEsBFfnti+An2Uo8/yXBTC/PdguUwDKwtlnHO0msPnd+Fht6mspSuSpXTMMGZJE+EdFDyXSJxI1UIi8mCbB3HzYZTngYIS7CASCVt9boF9DavwxpRewamxgjrXgEG4Q5sG9PIKitrAANE37QIN5D3E/1HMgr7YrJMX7qvvU63mSoEvbnsqcFmY0LXx7E4fGVzhTebRUp+nIsQIWnA0HSGAWKNnkI80x8F0foTdbxvImMKPNXqAzmUOcLc9kHT008pwxwXHxQZghkMP6RHoJlG38tYRz7EAmtflFmFofnVE3rDCaWm6myjnNBr62nx9Et6V1VcaUlfndHjUTIjjs5M4fSmbYKXZUbqOziAlEJtu2CZwNWjU4L4utIqL3xfi/TkFrLrDcW6HY5yMD8m8MVnooySO+ae8MsGnpw4Tp0YOUC/uL+VH0UEhb87BfNdmzI2AaUd5+O31I9SprdJKr6uFqKE5qFGqxIqj/DT+sRdaSBFPgAX4qXtZ4y7yJ9RxzZ0Wa9Rjl4tOtF+XfnK1LrDxlHip3x6zUk84/6/bgmR5c2vJjgq55FGi5G/a3NkIvu9glsZfbyiKyN05/Au18fkWQbcoUfLYF6YjWZCp0a4gPRTjEW/0Xik91zxGmfKdNO3VQCJFi7OnVHg45Ood1tDp7PbOFXXXq3Hu0tbuhhqBkxKkFRiEEdi+uopB+fdfnI+5GELsTPsQNrW/yjJBN6dhNkoG9yBIUCvwUESM6UKYe0Qc3jcHbKy1iKib9TGNRTU5Fwp2eG6Gi465lUjfvyrmGuQeqQ4k7WbwTe0iAi69WLZHI6Ee8OctanmrZQG3NomlVUkHOydbkeLjpd6vVy8sQ6y0N6ZKMlaXNbxbqhnmqm/qLpql3yHzz94gBSFc7SQ0Y+p2+WUvT31Ew+V+HuPo567TkWx0c6rc8qqpVWqUod
+ ssuj/m9a
+ eeJPHMg+cm5zccfRjikhri++oFKJUDfXnhLJ/95/Fd72pfRgy3gqAI2fRpT0WEijFg8KlAY2uJG7P1OL57PiSGSMkRCUBP0cfNzRMhiK+MeXOXNYTVlLUKgEUvhFNI42dqTRQ86XBwyI0OX3r9Y+L9zn1q8SBvdXRX94ztgfXxcrLSmcuiXhBAOmV01hzIe8wEKJW92rqM92JMibymksLDhBGB8tAijSAcgtp1grHWx1yE89Gs5NQl1qjrUPHodtgyLZF9R9Swh7ZWw+jHx5EYFPkW1BnTrmHJg2YaNl4QPwo/V8jKKZalpKR3CJGU1oxTtaWkYIFCS/UQ2na/Hrc41TgIjuCw0BrwJFw5ivV9/fACz9C4g4kpH10gv4iphCwVTHTzAVAPVztbx5nT/Sc+pvz1bRYHQCJHw8CXpi5IUVWJoNYcZGCbd+9CpGxU/K9Ncd8CSzUC1VXqzQtO2bF5DoKk5XE0zNizSdgzkFSh5GHC7cMaAgzpP/+OUqk/zB96Ylx1ZmkE9soN/dtXcrqKP+nB6FQcvtqJhrxXtKShHfkPDU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,121 +149,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000006dad4a0653c0672b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jun 8, 2026 at 5:50=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> wr=
+ote:
+> On 2026/6/5 01:23, Nhat Pham wrote:
+> >
+>
+> Thanks for the suggestion!
+>
+> I ran some tests and found that neither the per-memcg cursor nor
+> different batch sizes have a significant impact on proactive writeback
+> performance. However, exactly as we suspected, without the per-memcg
+> cursor, the writeback distribution among child memcgs is highly unfair.
+>
+> Test Setup:
+>
+>    zswap config: 18G capacity, LZ4 compression.
+>    cgroup hierarchy: 1 parent test memcg with 10 child memcgs.
+>    Allocation: Allocated 1600MB of anonymous pages in each child memcg.
+> To ensure compressibility, the first half of each page was filled with
+> random data and the second half with zeros.
+>    Force to zswap: Ran echo "1600M" > memory.reclaim on each child memcg
+> to squeeze all their memory into zswap.
+>    Trigger writeback: Ran echo "<size> zswap_writeback_only" >
+> memory.reclaim on the parent cgroup 200 times, with a 2-second interval
+> between each run.
+>    Metric: Monitored the zswpwb_proactive metric in memory.stat to
+> observe the writeback volume.
+>    **Note**: The size here refers to the uncompressed memory size. Also,
+> since the second-chance algorithm would cause many writebacks to fall
+> short of the target size, I **bypassed** it during these tests to avoid
+> interference.
+>
+> Without cursor (size: 1M, batch: 32)
+>    child        wb_pages        wb_MB     share%
+>    child0           6368        24.88      12.50
+>    child1           6368        24.88      12.50
+>    child2           6368        24.88      12.50
+>    child3           6368        24.88      12.50
+>    child4           6368        24.88      12.50
+>    child5           6368        24.88      12.50
+>    child6           6368        24.88      12.50
+>    child7           6368        24.88      12.50
+>    child8              0         0.00       0.00
+>    child9              0         0.00       0.00
+> Without cursor (size: 1M, batch: 128)
+>    child        wb_pages        wb_MB     share%
+>    child0          25472        99.50      50.00
+>    child1          25472        99.50      50.00
+>    child2              0         0.00       0.00
+>    child3              0         0.00       0.00
+>    child4              0         0.00       0.00
+>    child5              0         0.00       0.00
+>    child6              0         0.00       0.00
+>    child7              0         0.00       0.00
+>    child8              0         0.00       0.00
+>    child9              0         0.00       0.00
+> Without cursor (size: 6M, batch: 128)
+>    child        wb_pages        wb_MB     share%
+>    child0          51200       200.00      16.67
+>    child1          51200       200.00      16.67
+>    child2          25600       100.00       8.33
+>    child3          25600       100.00       8.33
+>    child4          25600       100.00       8.33
+>    child5          25600       100.00       8.33
+>    child6          25600       100.00       8.33
+>    child7          25600       100.00       8.33
+>    child8          25600       100.00       8.33
+>    child9          25600       100.00       8.33
+>
+>
+> With cursor (size: 1M, batch: 32)
+>    child        wb_pages        wb_MB     share%
+>    child0           5120        20.00      10.00
+>    child1           5120        20.00      10.00
+>    child2           5120        20.00      10.00
+>    child3           5120        20.00      10.00
+>    child4           5120        20.00      10.00
+>    child5           5120        20.00      10.00
+>    child6           5120        20.00      10.00
+>    child7           5120        20.00      10.00
+>    child8           5120        20.00      10.00
+>    child9           5120        20.00      10.00
+> With cursor (size: 1M, batch: 128)
+>    child        wb_pages        wb_MB     share%
+>    child0           5120        20.00      10.00
+>    child1           5120        20.00      10.00
+>    child2           5120        20.00      10.00
+>    child3           5120        20.00      10.00
+>    child4           5120        20.00      10.00
+>    child5           5120        20.00      10.00
+>    child6           5120        20.00      10.00
+>    child7           5120        20.00      10.00
+>    child8           5120        20.00      10.00
+>    child9           5120        20.00      10.00
+>
 
-On Tue, Jun 2, 2026, 9:20=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gmail.com> =
-wrote:
+Yeah OTOH, we don't really make fairness an API contract here. When
+you set up a proactive reclaim scheme, if you decide to target a
+cgroup (and not its children separately), everything underneath it is
+fair game to the kernel in any split that we fancy. If you want true
+fairness or a desired split, you have to treat them as independent
+memory domains and set up proactive reclaim to hit each child cgroup
+separately (i.e one "echo > memory.reclaim" for each of them). This is
+necessary for example if each child represents a separate, isolated
+service/container/tenant. And maybe this is actually what you really
+want - hit the ancestor cgroup very lightly for the stuff it owns, but
+then dedidcate most of the reclaim effort at the leaf cgroups
+independently?
 
-> Hello Charles, thank you for the patch!
+But OTOH, this does seem like a recipe for inefficient reclaim. We
+might exhaust hotter memory of a cgroup while sparing colder memory of
+another cgroup... But maybe if they're all cold anyway, then who
+cares, and eventually you'll get to the cold stuff of other child?
 
-You are so welcome, and thank you! I'm newer to contributing to upstream so
-I welcome any and all feedback!
-
-> I just wanted to add that it seems like this is a known issue. From the
-> comment in hugetlb_acct_memory (the only caller of gather_surplus_pages)
-> we have the following comment block:
-> [...]
-> So it would appear that getting an exact number of pages to allocate,
-> and ensure that there are no changes with the reservation or which nodes
-> those reservations actually go to is a lot more difficult. But I think
-> we can do a bit better.
-
-Agreed; actually, after submitting the initial version, I went back and
-have been working on adding per-node reserve hugepage counts to the hstates
-and adding some selftests for them.  It's going well so far, but I'm
-hitting an issue in accounting where, after reserving a static hugetlb page
-on node0, reserving and then freeing a surplus hugetlb page on node1, and
-then freeing the static hugetlb page on node0, followup reservations on
-node0 additionally count towards surplus pages even when there are free
-static hugetlb pages on that node. Trace-cmd revealed allowed_mems_nr_free
-is returning more than what was requested resulting in the over-allocated
-surplus pages to stick around rather than be freed back. I plan to dig into
-what's causing that, however, if doing so leads down a nasty path of adding
-per-node accounting, I may need to fall back to the first version of this
-patch (but with selftests) and be ok with simply doing "a bit better" like
-you mention.
-
-> FWIW, I think over-allocating is actually not fatal (although
-overallocating
-> by a lot is obviously not desirable) since we free all the unused hugetlb
-> pages at the end of gather_surplus_pages.
-
-Agreed on this point as well; afaik, surplus hugetlb pages are viewed quite
-differently from static hugetlb pages where surplus hugetlb pages are "best
-effort." Obviously we should try to reserve the requested amount, true
-users of large quantities of hugetlb pages should tend towards setting them
-on boot rather than dynamically.
-
-> [...] I wonder if an approach like this
-> could work:
-> [...]
-> So we compare the mempolicy-perspective "needed" and compare it to the
-> global "needed" and take whatever. Since we are taking a max it should
-> only ever make it more likely to actually succeed with the mempolicy-boun=
-d
-> hugetlb page usage, even though we still can't make guarantees since
-> a free page on our node may be taken by a different reservation later.
-
-This is considerably simpler than a per-node reserved hugetlb page count!
-If I end up falling back to my initial patch, I will absolutely be adding
-this and attributing you. Thank you!
-
---0000000000006dad4a0653c0672b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"auto"><div><div><br></div><br><div class=3D"gm=
-ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 2, 2026, 9:20=
-=E2=80=AFAM Joshua Hahn &lt;<a href=3D"mailto:joshua.hahnjy@gmail.com" targ=
-et=3D"_blank">joshua.hahnjy@gmail.com</a>&gt; wrote:</div><div dir=3D"ltr" =
-class=3D"gmail_attr"><br></div><div dir=3D"ltr" class=3D"gmail_attr">&gt; H=
-ello Charles, thank you for the patch!</div><div>=C2=A0</div><div>You are s=
-o welcome, and thank you! I&#39;m newer to contributing to upstream so I we=
-lcome any and all feedback!</div><div><br></div><div>&gt; I just wanted to =
-add that it seems like this is a known issue. From the</div><div>&gt; comme=
-nt in hugetlb_acct_memory (the only caller of gather_surplus_pages)</div><d=
-iv>&gt; we have the following comment block:</div><div>&gt; [...]</div><div=
->&gt; So it would appear that getting an exact number of pages to allocate,=
-</div><div>&gt; and ensure that there are no changes with the reservation o=
-r which nodes</div><div>&gt; those reservations actually go to is a lot mor=
-e difficult. But I think</div><div>&gt; we can do a bit better.</div><div><=
-br></div><div>Agreed; actually, after submitting the initial version, I wen=
-t back and have been working=C2=A0on adding per-node reserve hugepage count=
-s to the hstates and adding some selftests for them.=C2=A0 It&#39;s going w=
-ell so far, but I&#39;m hitting an issue in accounting where, after reservi=
-ng a static hugetlb page on node0, reserving and then freeing a surplus hug=
-etlb page on node1, and then freeing the static hugetlb page on node0, foll=
-owup reservations on node0 additionally count towards surplus pages even wh=
-en there are free static hugetlb pages on that node. Trace-cmd revealed all=
-owed_mems_nr_free is returning more than what was requested resulting in th=
-e over-allocated surplus pages to stick around rather than be freed back.=
-=C2=A0I plan to dig into what&#39;s causing that, however, if doing so lead=
-s down a nasty path of adding per-node accounting, I may need to fall back =
-to the first version of this patch (but with selftests) and be ok with simp=
-ly doing &quot;a bit better&quot; like you mention.</div><div><br></div><di=
-v>&gt; FWIW, I think over-allocating is actually not fatal (although overal=
-locating</div><div>&gt; by a lot is obviously not desirable) since we free =
-all the unused hugetlb</div><div>&gt; pages at the end of gather_surplus_pa=
-ges.=C2=A0</div><div><br></div><div>Agreed on this point as well; afaik, su=
-rplus hugetlb pages are viewed quite differently from static hugetlb pages =
-where surplus hugetlb pages are &quot;best effort.&quot; Obviously we shoul=
-d try to reserve the requested amount, true users of large quantities of hu=
-getlb pages should tend towards setting them on boot rather than dynamicall=
-y.=C2=A0</div><div><br></div><div>&gt; [...] I wonder if an approach like t=
-his</div><div>&gt; could work:</div><div>&gt; [...]</div><div>&gt; So we co=
-mpare the mempolicy-perspective &quot;needed&quot; and compare it to the</d=
-iv><div>&gt; global &quot;needed&quot; and take whatever. Since we are taki=
-ng a max it should</div><div>&gt; only ever make it more likely to actually=
- succeed with the mempolicy-bound</div><div>&gt; hugetlb page usage, even t=
-hough we still can&#39;t make guarantees since</div><div>&gt; a free page o=
-n our node may be taken by a different reservation later.</div><div><br></d=
-iv><div>This is considerably simpler than a per-node reserved hugetlb page =
-count! If I end up falling back to my initial patch, I will absolutely be a=
-dding this and attributing you. Thank you!</div></div></div></div>
-</div>
-
---0000000000006dad4a0653c0672b--
-
+Yosry, what's the concern here? Is it space overhead, or overall code
+complexity?
 
