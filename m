@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16AE0CD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 14:26:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FC9CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 14:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48C786B0088; Mon,  8 Jun 2026 10:26:34 -0400 (EDT)
+	id D69D56B0005; Mon,  8 Jun 2026 10:29:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 415D16B008A; Mon,  8 Jun 2026 10:26:34 -0400 (EDT)
+	id CF3926B0088; Mon,  8 Jun 2026 10:29:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B6546B0092; Mon,  8 Jun 2026 10:26:34 -0400 (EDT)
+	id B93CE6B008A; Mon,  8 Jun 2026 10:29:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 16B806B0088
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:26:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2295A0165
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:26:33 +0000 (UTC)
-X-FDA: 84856971066.20.A0ED797
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A58836B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:29:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5286E8ABB6
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:29:03 +0000 (UTC)
+X-FDA: 84856977366.08.6BC7898
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BF248180006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:26:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/aPMn/0";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 608E61C0007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 14:29:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iVSUAUIc;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780928791;
+	s=arc-20220608; t=1780928941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2UgzbqLVSPQ1GsLg3LFXj2rh6qXfiCRcbALPchsZH4U=;
-	b=RxPFoFCSGsdTKcopYK0agkxnsCf8uFSMEHIMXQ3O0AnU+g0ej7wm9hyyIpZaKMaE60wW1d
-	E9HPalghgBco3rrn+13/m3mdrk9IFXSoF8s4fMoTB/bIet/6aMrP+G6Ea4O4GTm4IlF91M
-	80+oK4Jsc3tyiN1iDVNvDtCZxJtzw78=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/aPMn/0";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=8vD/e5GbGzpUTKj3cfuSRPl67o8yyW37wXtN+83Ecbk=;
+	b=ghvpmP3GDWshk3dkhbRjLpjTTjuTKsQ7ZlDx0/sztIke5NyxWstYuJuvJ0BU/rCYA919TW
+	33fMtrHeV1eTeXqoFDg990509OhtR5IlbcB4jcpIKaLclOjn1e+H78iIIZyyy/vdKh3vQG
+	7LcT4a7oGmnPYpVXv1xTzo9FfBiO3Ow=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780928791;
-	b=mkzsUvYGEzHBCwD/GZMJu76p17Wf7gW/65MqjXLsktuModlDwjPITiUcrCSpyZA3S3RXFP
-	6V61YnU7y5rUbpUlMIs4P56wCJ4L9aBr7Op1sqsxoht2NwrUhTnrBYA4VdieN64od/kA4X
-	DFgOl9jY25AolDraRQPRjXm5NAgYAFc=
+	t=1780928941;
+	b=6oQNtomWznDoCbAPqRw9Hz4+i37OibnpYnBz/mu2PUkFLyRB3DtESju6lTNokPru9ut1Uu
+	a4KcHxcYh88dunj/ZklvxQQyAxp+dJ73Lr5BH+gyDCvw2cl9ZwNG8httsxc+aVWsZ6Es5F
+	1GpguB1sWfntGxANS95BmOZTzJBa3yM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iVSUAUIc;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFBDB417E3;
-	Mon,  8 Jun 2026 14:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7DA1F00898;
-	Mon,  8 Jun 2026 14:26:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9060543462;
+	Mon,  8 Jun 2026 14:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D101F00893;
+	Mon,  8 Jun 2026 14:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780928790;
-	bh=2UgzbqLVSPQ1GsLg3LFXj2rh6qXfiCRcbALPchsZH4U=;
+	s=k20260515; t=1780928940;
+	bh=8vD/e5GbGzpUTKj3cfuSRPl67o8yyW37wXtN+83Ecbk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O/aPMn/0szpDnRUZ6htKUmFqMuwyz+qJOFRAgBJeatVt98DFhMfTFX9NzYi5Z3iUJ
-	 6uYYNXnEsnABrmiS4mKXnaRRskoR+vD6FkbElAaiGT8tk33MLqFWokbHD8c6jwSgg5
-	 TJJGC3UiCr9qVekDuB0O7FDp549p2Eiu/yxgeQJVDTHPHQ3ANuqatJLOIgWuYeHY6K
-	 ykz3on2WUOgo8/WRMHfl64rBALwtmzdWKsTO1Qdgacexh6M3XE8gIvDDhQKQcfyObj
-	 68Hx7hPcashCaT6tVPYXOhdyh1FccWgG2rU5xor9uhGmctl48BRIM59EMOpe6SAoPf
-	 T3JG86u7OVLNA==
-Message-ID: <d0ff6269-8b8a-4983-8569-d9a8495829f3@kernel.org>
-Date: Mon, 8 Jun 2026 16:26:18 +0200
+	b=iVSUAUIcC/kDGl0YkM/2lS+l2CzzJ5Qk2alnVwUR/PtsQifRku1nj/Ss+SoH/Ss18
+	 b37DpAyjbM+pCwUNSWcVgNwg5fGucfa+y2b5KH+6sElmprdsRkihqZPzCRYUOhwav/
+	 oAuR9h6EnCZkSWCUdeoqVDOKNpxIrQfyxn2s4HL8otb8YUIEEDSeydmHNg5H07SmHV
+	 deIVt3lBfH3LSW4aGmcqJAf2qSPKVHJwQlQNpa+FVLcuZw4wR96paEStvn7Q6ufuAd
+	 gH/ScFBwbSbkyKro0Cxrks0pS4hYZY/P+Z/Ao4MFKz7TODBxRKKNecerrs5Cryy7ji
+	 26GZadvARpClw==
+Message-ID: <497dff41-e831-43a1-a56b-a6ab98bc11a3@kernel.org>
+Date: Mon, 8 Jun 2026 16:28:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 07/37] mm: thread user_addr through page allocator for
- cache-friendly zeroing
-To: Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
+Subject: Re: [PATCH v10 24/37] mm: add put_page_zeroed and folio_put_zeroed
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
  Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
  =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -97,9 +96,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
  virtualization@lists.linux.dev, linux-mm@kvack.org,
  Andrea Arcangeli <aarcange@redhat.com>
 References: <cover.1780906288.git.mst@redhat.com>
- <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
- <aiaUDTeHDA45ZXFS@lucifer> <aiagMc9Ng_AE_adh@lucifer>
- <aia93IzhTgi1vGi6@casper.infradead.org> <aia-q026facbptoT@lucifer>
+ <fef7ca7bbf591865defef658b0792b58494aaed5.1780906288.git.mst@redhat.com>
+ <aiazXE8pUDeCmP7c@lucifer> <8ec82477-b497-466c-902b-82e108ae2b7b@kernel.org>
+ <20260608100602-mutt-send-email-mst@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,17 +145,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aia-q026facbptoT@lucifer>
+In-Reply-To: <20260608100602-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BF248180006
-X-Stat-Signature: jqwa5kjwzj93qe5qcy3gof5rkwpd1ji7
 X-Rspam-User: 
-X-HE-Tag: 1780928791-359196
-X-HE-Meta: U2FsdGVkX1+uqiN2FAEEkjOR6L6o13NyavBEplJsJCD2x6cuBEuo3Jj1jHLROx7nHMq13KxgwOVeyKmJcGtxjOe236FZ75+bkDSfZD0wCH7heh8TNH8NZmgeVgDN4kFFbeGBPqGP0ZoO+qIJzyOjMpWCOeEFnV8e1fX25Z8/vhr+Uq1I8ledeFT9QmjdRR7xQi5wLENLaOEE7i7GONQ/K7Jfcq8R/XP2mVuHCw33qC0IVLNGv1yUw+r+vkjYE9GHE2kYq1SwKeD0xNYBwLpyD1/Dc+Sap9c2gVdnegy8B/8zenRhA9/Z2m+eB+/HnzM26sU8mv8uQz374ZD3rhbmhBPQjL+/MhfzBSDCGJxgZ/SGv3g58B8/DHjTgah7kFjvB9Nu5v9tbn84n5jMpcMS3r8Rrc9ZkvWRgXXFFYiaTiwqsSriFtsSb5qLcF8XyN2Wr980KcO73RmBW6cPs+92JN5onWCq6WXkLjHKo7K1NcMI3NAZ6kXu4wwchfrfIl40OO8a9FwWraKv2KAPD0H8ayccsHNhqnOY5QBEVG2Sqxu3uDixBS63tEchZksWB5Hw8yKSCg2D1975SJpW4CfFUk0hMzTrDUHnIOSpq/G0jkylbONpPjVAS5OIjQew7l1XRmA4vyeqzSQQp7YUtSiY+8iUlxLdD3+pvKz910xGxuor9IA0xen4DhSTspyQFczSDwlcS8cjs3K8TieNZphIBJ4FRSI10dlXUsVXYHzK2b1Dm2JybbrMlw16CRLpO7BrT+CXnk3RfjrSjb7mBDFRzQlqD164xMrrdtrgUREKqvoU0HaWeRwDnibMV44MFySe1JCk/w4HyIdZpTZlUDQsKuRS+b+7SD+fK8XoAB0A/0C/jHPG71y2ck2ip7T+qNXRkDYDKaYy4an58mI00dsc+aCsnpb0TiKqdiQMHY8kcvP4kPNf1EIF2+pUArh8KL/UIGPC6rGE4l/Ycd+57/C
- UfB1w1wv
- Iv2CyFNl0SZLYKp2tnnARfEdkH0cMY5hyemj7YP6pOqmq8O7alY3IUJqVMH6cgL0eLRuGtVDG2oHHlghVUM0CNc4cj1IakoyV2i+lefB3Qk5a3i3gaNa0atU/63InpkPuZgPTMOi5NQ9Kisszf9ONRTrVZUZ9DAcv07jdWzeBkpMxjbBWkPTP+0GmX+TZLqsIf31XLMQPilB28hirvVwo3ipxiGJ5HJmL3YYUrqZuiiDS1y6D/hZYzAc1tHkzmSFZ9C4OuHEZjR4gLByqj+INFEx8HXEED0vdiMRHk+1v4u6LIZYK+Oc32irFvcB/xppVB/2RwVE9Alunre/AOb54aprlZpUQb7NgWrqxXrkdaJxmbxenBOgeUw/PElOeC8mUErKQ
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 608E61C0007
+X-Stat-Signature: biyjngt467mtts98xrb3xyb6x9gomkks
+X-HE-Tag: 1780928941-909512
+X-HE-Meta: U2FsdGVkX19auPE1/NrK9siHOiczUwcdIbsczmEmnFu2MQNo8/rKGMoyI20TjyXT3UAtkHQfJKhhJWHw+e3wBLj0Y8MYsGAYKsDPCzieLnnQ6mgGQGNqh9hoUMyoS6oUXQ50f6CURPvNbKMX482xVDUZj4aoU1tYufLNHV+B1o1KUXVp5h+M0VCFFZsE0Uem9XmzIRHuu/GAVIgxDMoSi1EdWIV88x5bNsp5OpDDI3SabbVlj6wWssUG9c3ewITYjOKSzgOLjTAnaomExEUPp/8DXh6CuVaq2N6OpK0UQos8D/mxMP6qSqU2PcZ4JHS+fCir1Z6DJxUgpLN0xo9soe2dFIDVrsbwAOmVD9rxM64OA2bjISr/Qg0i5KEseC8LL60TKzNq8SVOB76mwY5IDaldRi3yS03EajAWBkptbirsLIHXd2GxVBPpt3nVDjLlJ3YnehEE//3tfjwF/Wb8uzqlYz17W4n1SGjQ7a0Qap0cc3Px03fmSIjJfQqlDdEggAH8O51yQeaNSpgvFqcQNilSK4bFfKn8WgDjbfBqNYQA5H9cQXln1chGA+GoqeVC9u5p6Vt0kExsvrVmLkbF8E7M8jfVkmNmrGUxCibGdqt171ETitRk/hWZjQxAFqVTM1Us0rFZJVQZbrYaq73IS/HhgRGvnRPAWoY+U56Ge5r/S70USjZlU2X2v18Mb+p/X8HVlRoUkQVDQocQMkM+w1ak/jqcFjjj+bDtl5gFW3AMD6nM7xiQ9Ai8o2m34qonWB/6inxdfQd6rYIOYftdDVBbUbdzlt0BkcrzPqiPMPBR8qZ+BeZxnrAyoVBpx+nqCNtv/zOCNyTzxlUUNkhrQcYzfjlTgdASGllXeD6x9CLMpdpNvLmD3oImj6d5Es7eCKMViNjk7Uq2bDLS/2NX2Z8WlsAa3mCOeLD50KFXe63f+LAZQE5CL/dbgVTBrNzw6OTwd9DdlRmW0B2me3s
+ jazUeIDa
+ ZLwM0QVSzw7iKz8hHSBObUT7yLhBYMGVmS9JZ1T0KAkx6b/vghgRGPN2Rm32cOIsdM1ENYWCBGM3+9nObWv9tNLpdokBbvd/XhlubaVQBEkOTXnSEPsKMzG5GXaDocRhcef4ahST0/vDVLklMYDWLi+IwwFIugRp/vpUF+Cn+mOOKHfBpSov54dZZlr6v6ujVAqxk3iL3kwb6sABQGqXPGc0/YssPf/q97EYYkqXvvXPnpLhTe82wNnOdlKEApDDuUQqUHPgAHE0SzD8JcvVTtaeMJbON7vH0GIwv7NsFP/qD2TY/v1IMutRSwrg5UrPNYT85cOZf10f3IfbBPE4KCAEoIVeWm0h0W5L24dPdhJi3tAEraNg6d+4XkEB+ksX3E7pV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,41 +163,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 15:09, Lorenzo Stoakes wrote:
-> On Mon, Jun 08, 2026 at 02:04:28PM +0100, Matthew Wilcox wrote:
->> On Mon, Jun 08, 2026 at 12:06:35PM +0100, Lorenzo Stoakes wrote:
->>> But instead of overloading user_addr to indicate all kinds of things, instead
->>> make life easier by actually breaking things out.
+On 6/8/26 16:08, Michael S. Tsirkin wrote:
+> On Mon, Jun 08, 2026 at 02:46:34PM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/8/26 14:25, Lorenzo Stoakes wrote:
 >>>
->>> Like:
+>>> Do not put comments about specific expected races like this in the commit
+>>> message but not in the code. Subtleties need to be called out.
 >>>
->>> enum alloc_context_type {
->>> 	KERNEL_ALLOCATION,
->>> 	USER_MAPPED_ALLOCATION,
->>> 	USER_UNMAPPED_ALLOCATION, // Maybe? Do we ever?
->>> 	/* Perhaps some other states we want to encode? */
->>> };
+>>> The commit message also doesn't at all explain why PG_zeroed doesn't
+>>> suffice here.
 >>>
->>> struct alloc_context {
->>> 	...
 >>>
->>> 	enum alloc_context_type type;
->>> 	unsigned long user_addr; // Only set if type == USER_ALLOCATION
+>>> I really don't understand why you have a 'zeroed' folio flag but need to
+>>> also have new API calls to detect that?
 >>>
->>> 	// Maybe something suggesting context or whether we init before in some
->>> 	// cases?
->>> };
+>>> They're also HORRIBLY named. Zeroed as in what? Zero page? Huge zero page?
+>>> Memory zeroed by kernel? Pages that userland happen to have zeroed? Or host
+>>> VM zeroed?
+>>>
+>>> Each are cases we address individually and relate to folios.
+>>>
+>>> You absolutely fail to clarify _which one_ you mean, and provide absolutely
+>>> no documentation and add an exported mm API with no description.
+>>>
+>>> This is just I think not something we want to add? Especially on something
+>>> so fundamental?
 >>
->> Ugh, please, no.  As I suggested last time I commented on this
->> trainwreck of a series, lift the zeroing functionality from
->> alloc_frozen_pages() into its callers.
+>> I raised previously that providing a folio helper is odd, and that I suggested
+>> that we defer this change.
 > 
-> I've not looked at the callers closely enough to see the delta on that, but if
-> it avoids this mess then also worth looking at yes...
+> Sadly it's a dependency actually - without it memcg failures would cause
+> repeated re-zeroing where previously it failed without zeroing.
 
-If that means that we would handle __GFP_ZERO consistently in the callers of
-alloc_frozen_pages(), that would also do I guess. We'd still have to pass the
-user address down to some degree, through folio interfaces only at least.
+Oh, you mean that we succeeded allocating (+zeroing) but failed to charge?
+
+I don't immediately see that to be a real problem?
 
 -- 
 Cheers,
