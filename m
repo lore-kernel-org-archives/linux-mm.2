@@ -4,87 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B2ADCD8CA4
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 19:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DB3FCD8CA4
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 19:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FB296B008A; Mon,  8 Jun 2026 15:57:01 -0400 (EDT)
+	id 14C5B6B008A; Mon,  8 Jun 2026 15:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D2C16B008C; Mon,  8 Jun 2026 15:57:01 -0400 (EDT)
+	id 123676B008C; Mon,  8 Jun 2026 15:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9105F6B0092; Mon,  8 Jun 2026 15:57:01 -0400 (EDT)
+	id 0394E6B0092; Mon,  8 Jun 2026 15:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 848026B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:57:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 290361402BE
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 19:57:01 +0000 (UTC)
-X-FDA: 84857803842.16.6B78E98
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E99C4100009
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 19:56:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ISANHzh2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA50B6B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:59:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98C85162F25
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 19:59:08 +0000 (UTC)
+X-FDA: 84857809176.12.9CF13F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 492CA20007
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 19:59:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VnDwRTB7;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780948619;
+	s=arc-20220608; t=1780948746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVZLJPHs13SSR5fmi8AOTKgZXJVh2W22uKCUkrkg5k0=;
-	b=bDD/c1n2V6/D2TqXrBbidaZvkUFjK2bNIPS4Xw7pfhSGQEby/rNG1ZfgJkq3Bo7WIlimw9
-	nq17mUSk1zBOQ/cQCe3JFbI4VbTB3KiljrC4Obr2mRwjfGfZ9nv2l9Z0KOmWR7GnTstzuO
-	jz2Yo3YwY1o5qM9Be2rY49oIUyJAI88=
+	bh=eqSTEGK8xl8EZeqE74tv6zlFs8hlnJlJcde7w58YuZs=;
+	b=aEpRYRuE0Gv7iLIdxjy300ozRBvU20PUV9yCZk9KufpETSo8d4vr1NGJ2BdU4FlBCzK7Ad
+	j80XmAn/W4XnFDiM+CZ4pA84ym0f9wh1BK1fFZtFXc6pgsy0iqcxEm/NiyfEGXH1cdIlYP
+	n/FxEyjF/ifeBGbLip3/vps7UCQ6naM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ISANHzh2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VnDwRTB7;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780948619;
-	b=Vng0KI1GMDEFX/kOegQ3tcWQPCtVnU3h+nnaPDgJNv4NiFqCGQXL8iqiAZ/DpimnfOJ7Kt
-	m3yVJzSwk6iJmyKuBvXRvcneVgcXAXSlbnBlM0G4JpG5n61CY5QcH9G/u+TfeI7SK/wulj
-	Nz4vOUd+phzf34CJfznvBoTaeUtoGS0=
-Date: Mon, 8 Jun 2026 12:56:37 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780948616;
+	t=1780948746;
+	b=luLqQATlI0+EK6PwCj0KdS7sjrfZpC6WiLyExyEvvIIvXbJRSxAPdfv7BlYsotx+yVJT9P
+	vpavJWa3KYV9CYFIGAIDvbJdaxqeWu72dhRbYIU4ASXYLLRxCFZDzkEw5UXsc5uI8orkKH
+	ctKN6Wl0VCX6ejrjFLnz+VOPK+VJPe8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780948745;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rVZLJPHs13SSR5fmi8AOTKgZXJVh2W22uKCUkrkg5k0=;
-	b=ISANHzh2i2w9IKO2C1ZMXVcF/bhPbrT+jKQtlWO/Pm3e3bxxite4bnt4/OMfCdvGMdgZHp
-	+J0oHE2t12l8jxcoe38BWB2fAhdaYOZ17UcZjlEKzbVFHycPFiC/tJdN6DFR+aEKpSgJ3p
-	xYv3bQwgqMcbllYTeGCrfR7irhmA36s=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, mkoutny@suse.com, 
-	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/2] mm/vmpressure: reduce CPU, memory and code overhead
- on cgroup v2
-Message-ID: <aicdqucZVqAUfh7N@linux.dev>
-References: <20260606114158.3126210-1-usama.arif@linux.dev>
- <aib11jSWosT6635u@linux.dev>
- <750406a5-1819-4ca6-81d8-5a1d82e0644b@linux.dev>
+	bh=eqSTEGK8xl8EZeqE74tv6zlFs8hlnJlJcde7w58YuZs=;
+	b=VnDwRTB7lHxKeKihP8k7grhzkUwWV+Jn5bq7TChVe4pFv7NWXTrRfvVK76P5xC6G0Wsi/W
+	fB0590GorTB3Tu33kcOPgT+UZUR6OlE0gwqxJkRkzB0V3A+7iTlHc4yKCqfGm4v5MxUKgc
+	JbEUCy5pLcSeM35uF7eCBggTcNKPJVo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-kac16pD4M7Scby9sl19STQ-1; Mon, 08 Jun 2026 15:59:02 -0400
+X-MC-Unique: kac16pD4M7Scby9sl19STQ-1
+X-Mimecast-MFC-AGG-ID: kac16pD4M7Scby9sl19STQ_1780948741
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-460153ce644so3372677f8f.0
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 12:59:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780948741; x=1781553541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eqSTEGK8xl8EZeqE74tv6zlFs8hlnJlJcde7w58YuZs=;
+        b=kktlrnH+G1nP5fgGVtlyK8JtmAgDUvKzWjYQ8UX/xIVvLGF/bW0m8FVCBiNt4KJmCf
+         x3QwUY181ym0am5fzl8b3HRDaoJbuxocswRM848N3e66u+yjksdYoFqlUzQ/adrsOJQx
+         n+p9+h9eDR5z/8hClWJhUubsBmR+jSqm+4jxzntn0s4K8YJXXDoTxzGfiIlWRj78xrsb
+         /2kT19hplT8W9V/6pfC+sV8ZfcHJ6kJ14Yf8NxBvcWGnop9kOcbazzvk1YLxy018u3mK
+         amwjfRu02jU52lOQiAme9KC7+TwSIlTKI7tp3TsZkiePRMu4aoxLw6MO74AHVXYNA58h
+         nsxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/cOhjFVAXs64ws4Dcy9rl65pUBY/r2bCnJIcxad3gwpJQ+/3RijXKHmMbyX6HTYX9xIkFLbRMWWA==@kvack.org
+X-Gm-Message-State: AOJu0Yy2Ikev93GWVi9VwNbq2qirLPww2m7e45Say86UlAY3qNPbQz+6
+	JdMwExYgSdPtp0h344/bGWXgthT0maM97wbuSsj6U2I/BYx3kEaSbvtNnyVjjDotgQU2DHFNz0F
+	ygYcjZFaXHz6kiUu/eqT0fGoxmusEB1YKGJ2VIV//3/HDjD3tC+Pd
+X-Gm-Gg: Acq92OFe437GaRjIjKzc1b6KXm166R2X80EEUrJn9ueOe59b5ehNMNaj2+Z9rGa1Xpx
+	pTEQnXZKtoPllry2Y64m21hG4GDTUdkfocJlLqZu53FyGyxftBvZYEPhOhghAifEbKtdu5hGu+2
+	UMPfBam/MvktiFfNnJ2vQyV8FmOGY1WaBIXuYOZH9RDYbC9VcVzESgjlIEqMgGeA/ErqFd/L20r
+	NEkU6oEJXl95JgUjR8R/jcTlQ2+EsqrJtcqDWYEyVSVJtTEOWhb+UqaGtSw/duNxwH9yv7ud2Fs
+	Pcmavrlpo5ghDEpHU6VnTObxTBcZX0uOYz6ysDD7fV9N/Rjg0a3Jf8t/4om4GPkIxA8cEnN6wUG
+	C/c8jXNEG/58jVplQSZgd0wuJKANKr2MQm4OWidnlq+r/l1mEOQ6VOg==
+X-Received: by 2002:a5d:4d0b:0:b0:44b:5398:4e85 with SMTP id ffacd0b85a97d-46030502519mr19992710f8f.22.1780948741123;
+        Mon, 08 Jun 2026 12:59:01 -0700 (PDT)
+X-Received: by 2002:a5d:4d0b:0:b0:44b:5398:4e85 with SMTP id ffacd0b85a97d-46030502519mr19992648f8f.22.1780948740596;
+        Mon, 08 Jun 2026 12:59:00 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d40sm54186487f8f.26.2026.06.08.12.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 12:59:00 -0700 (PDT)
+Date: Mon, 8 Jun 2026 15:58:54 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 24/37] mm: add put_page_zeroed and folio_put_zeroed
+Message-ID: <20260608155520-mutt-send-email-mst@kernel.org>
+References: <cover.1780906288.git.mst@redhat.com>
+ <fef7ca7bbf591865defef658b0792b58494aaed5.1780906288.git.mst@redhat.com>
+ <aiazXE8pUDeCmP7c@lucifer>
+ <8ec82477-b497-466c-902b-82e108ae2b7b@kernel.org>
+ <20260608100602-mutt-send-email-mst@kernel.org>
+ <497dff41-e831-43a1-a56b-a6ab98bc11a3@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <497dff41-e831-43a1-a56b-a6ab98bc11a3@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9l-TB0upA_23buGucbPIY0ojM-gVbkGSc8j17VkaCnc_1780948741
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <750406a5-1819-4ca6-81d8-5a1d82e0644b@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 492CA20007
+X-Stat-Signature: 79jmmgh75aqj9tsnmon4aijeks18n89n
 X-Rspam-User: 
-X-Stat-Signature: ig99d8e6zihfedwarcjzfmnicsn1bghw
-X-Rspamd-Queue-Id: E99C4100009
-X-HE-Tag: 1780948618-400601
-X-HE-Meta: U2FsdGVkX19/iaNd/nI/DEJ80wnRVpNqkQy7sFtZJIEnenrEfLgWDrio93Nb2+Au6jO1S6j1RztMU8VNVcd3FmqZBGv+i89OAANaxchq2YLL0bJHIwm5o48qy8yeEyH04ZAifuIsUTDhX4SUMXBWtKVQio9KMIyO7j+F/ZIhYUaPK4E5DIWHmOULRjSzJX80xQ/ZeyDEeU8yQeHrqSgnefH64D/gwKWMnmH+0DrULj+4aWkZ3aYkdTS5EZlWcxdm9mblUFRLVrFyPlWk8ahjxZ7CpxQk2BuUqzQZc0XYaHqwtND00+HiZJx1v03z3/OJvUMD3YjY3VFUve5R4/k/FOLeHutQcyDEQfsSL/mGeKtZGTEJwcNXE+wpGkVAnAb5Cx5HIOSYB9he5/+MBUfJGMhX/9pPJSXQh24KZavaayhKBrJrIM5FanMKg2To4Y6Rj50Z5kifvdjRcbKAHs8zPjV7FP6C0tDmScCm2+/fWpSM1RH0269fl9fP83V216nSw42JxMwFLpdY8ETweCgU1eY3qsTyk5D3htUDwCgh0blmrMtoylOgvcGPr3fPvLvYlKZS7QKRgljULHflcfyKwWB1EphyP4paNP0KFQyVCPfmbYxv/hVxByNRCtCfDJX1uoBKhPQDBYky+pAic9TlV0fMNguyGBLqkNsX7ItLLNxgE2bTIIiN92Pi0/FIQkXqhQ7QRjum02XDmPvd8L7DEkVPzavKkzs09yeX2yxKn+hY3L0BV6wyZtpVUN+9pU5PWK2F/6p/Md7z+RsgoR8pLrIMyf4lfXFpHWXDhPzIi2z63GSOqJb5JA/J9+yP2szIfxVNITIQjWinAqaqJR3972e+mLQOge9jHfvwj2KvkQUjLB+vjs6BQ8wD5GvcLnQlGd1PrAm5kPw5vRy+dw+iZWDRdXhaEW1tX1W+TV/52xWKrjxH8lO5ZHNBtTFif+uL4xse+rYutmxoKLyAzyI
- g53poQXR
- iklK1/KPcck7ngJwD4xADVOXUfGIPCnSXDwkZkUclDEZb4RNRDrACV4lUNfZBAZ+vi6E/YOXiIEeMGfcWqdMGFXHoadJlh4As9RQa9iZvbmNkMYrXc8fm8U7b/Oc/een3Tvgco2P/nB9u6KlGm9G4K1nfGdTe2YiF3fdaAgv2w4yIGP7K5/OUMRcE5rhhYt9TUJ+b89jrPe2fO4Ihca8fcogEIA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780948746-40174
+X-HE-Meta: U2FsdGVkX1+xqf394rJWqbMyFWYm2Kq4hYJjnRU7k5wKVVLiEbzRbXIJHSHoiAw6MbTTbuGKDjKe26czLH8Fdcx6zcbw0P9bTXWqdxRIU7cGyyRTmBrzHCcT5gKVqPEZf/nxil++lO7RQnUe4IEGhbjSF8JMpneJVW78FrYPx1IQdkZwq16qg4+NS/CW6ehY6Qx22P8xxak7l+O2zTYx0JZSbS36fB3ZRCh2WDYLeUHDVb9NUvtRfEUhvlWSRlFn1778ZudPn1r8O2sEQugyqCqCI7pEnQXW6XzoeiMXAW2JN9X1cSoVXdo3BSCzE0qmcL9+rhvZGHSX9celFkEXpDYHRUn10oMQauRGL8h3VeGFWN+p2f/LvKLUoyS/8N+6MZhbHkjgjFOc355GouE0dikhQYUO9cKvWvi0Et71mHtZ35JBtBXEnwCJUa7r1DFFdBCPmalNUWF2NaxufH2fwJYoDYU72o1h7ltB5g8eotMKAZQdcOBBW/zJtTzQfLUunPC2L7XQ8ihl7czudOc5tP2B7Nrx+XrRLM39lMcJ7VNiOg/tDMPcr8JiM/dfGVTYcZIMkGR2AfPedCd7g6D3xJqLovrPO17LhOyC9h6aqfTn0URbZgMXUHZdMAdYDoDaeFYMoilGci8ywyFXp8q+vgH9dHj1ADmlDnBIJ1TVY1Uq6cAoXoGvDEHpHPcvnfukobtizA3/fhI9Dy5oRYuJhyD1Wcrfl5t1Y5UjAwSkpHVA0q5ZDhn0gW3nRdRxEFB277JGSxdow80r/ZdRyBN9JoF0aiTNrlKtg8jj8H7QcyCvasY/oB11yEMQJ2+dLPTWgoisQwCSSaDkc64mEU2h+jdyzPre9wX3x89DLHTjY+HRrugwUWWDJGy0WHyu8omI+Lm9uyD3Rypfz3r2qxiqz/qSrVj1DzsdZEoGvxXRN8YfY0neG6sF6mnStMMVLyHEYelUgmsWIrfgvRL7JM5
+ GQxUmQlk
+ IMtBjA6Uv4dN8m5Uh+opp/FJhUlp8Eco/Qhf3Sdrwf57V3zyRTxz9v6gb5wIuv7saedqOmy4C6XsHhuzKCNbLX5PRgOsB3fbKhqUzt4RkKyY15J+gE5gmbWP7JuOeyMQGRoADd3F93pHnfyz52ZvHTpYZOYfiQa0KCpUEplQce6A30iRs4tM2CecLWzvw2xxj/eb1oc8hZZVBeYB0DZy5F9zXifChjtij3xMvystS1VI9qGFZdX0KfD9qTdPr429eaXZUdRNtG+SbTggLik+1FspKgGWzdRCekVfraD2d6k6XzN+ba34y+1UVCjqzg8kP617r4XS9/N+0KJY88fNVQtCRIDGxbiRFJEKp2bL6mMBlury5ta/NLDwemAyQB9Rs/SkVnWQ+DbvAcRwPoH5R9ogBGY91lk4YadekuYLBan9DLM0A+Ui3uUCpfth7dTxlsgVUYBOIHHDN/Nc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,28 +163,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 07:49:45PM +0100, Usama Arif wrote:
-> 
-> 
+On Mon, Jun 08, 2026 at 04:28:48PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/8/26 16:08, Michael S. Tsirkin wrote:
+> > On Mon, Jun 08, 2026 at 02:46:34PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 6/8/26 14:25, Lorenzo Stoakes wrote:
+> >>>
+> >>> Do not put comments about specific expected races like this in the commit
+> >>> message but not in the code. Subtleties need to be called out.
+> >>>
+> >>> The commit message also doesn't at all explain why PG_zeroed doesn't
+> >>> suffice here.
+> >>>
+> >>>
+> >>> I really don't understand why you have a 'zeroed' folio flag but need to
+> >>> also have new API calls to detect that?
+> >>>
+> >>> They're also HORRIBLY named. Zeroed as in what? Zero page? Huge zero page?
+> >>> Memory zeroed by kernel? Pages that userland happen to have zeroed? Or host
+> >>> VM zeroed?
+> >>>
+> >>> Each are cases we address individually and relate to folios.
+> >>>
+> >>> You absolutely fail to clarify _which one_ you mean, and provide absolutely
+> >>> no documentation and add an exported mm API with no description.
+> >>>
+> >>> This is just I think not something we want to add? Especially on something
+> >>> so fundamental?
+> >>
+> >> I raised previously that providing a folio helper is odd, and that I suggested
+> >> that we defer this change.
 > > 
-> > For this, I am wondering if we should just go ahead and work towards making
-> > vmpressure memcg-v1 only unless we foresee a lot of or complex work is needed
-> > for that and only then patch 2 makes sense.
-> > 
+> > Sadly it's a dependency actually - without it memcg failures would cause
+> > repeated re-zeroing where previously it failed without zeroing.
 > 
-> I think there might be a transition needed? Because vmpressure and PSI
-> do not work out to be the same and people might notice a regression with
-> increased memory usage or a hit in networking performance and might want to
-> opt out? A solution might be to switch socket pressure to PSI while
-> keeping vmpressure around gated by a defconfig. And then in a few releases
-> remove it completely for cgroup v2 if no one complaints. If we go down that
-> path, we would need patch 2 for the medium term.
+> Oh, you mean that we succeeded allocating (+zeroing) but failed to charge?
+> 
+> I don't immediately see that to be a real problem?
 
-Yeah the reasoning that PSI is not an exact replacement for vmpressure makes
-sense and it will take couple of iterations to transition v2 (networking) away
-from vmpressure. Can you please update your commit message with this and about
-the midterm or transition plan.
+Yes exactly.
+I don't really know if any real applications live close enough to memcg edge
+that repeatedly wasting cycles zeroing pages then discarding that
+information will be noticeable.
 
-I assume eventually we will just have vmpressure-v1.c file which will be behind
-MEMCG_V1 flag, correct?
+I should be able to write a test to show the difference, if that's the
+question.
+
+So just writing code in a way that we are not regressing them seemed cleaner to me.
+But I'm not a maintainer so hey. Just so we are clear.
+
+-- 
+MST
+
 
