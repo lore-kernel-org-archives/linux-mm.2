@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391A0CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA280CD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A09726B00A4; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
+	id 3A5F26B008C; Mon,  8 Jun 2026 06:37:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E0856B00A6; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
+	id 37EB36B0092; Mon,  8 Jun 2026 06:37:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91DCB6B00A7; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
+	id 2BA666B0093; Mon,  8 Jun 2026 06:37:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 812426B00A4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:34:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 418341C2B6D
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:34:08 +0000 (UTC)
-X-FDA: 84856385376.03.03F4E71
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F26D6B008C
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:37:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC43F1C2BF3
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:37:34 +0000 (UTC)
+X-FDA: 84856394028.10.E419520
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 96E4A180003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:34:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHnYKrz9;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780914846;
-	b=DgYLkA6tn/QOeb4psC1zwNe7ziUnohDkHWWudv2EwpdRiMmguhsSYkcMGTmC86AGW7GxB6
-	7iopBOIRXB7LT0kmr4VTHOXPMnH3se8/ijKMPy4czRd39G2TLt6q8dXBa98nVZZJZaWFjY
-	vZw1V5R7aMDd3A8X/w/Wk2XceIPeZnk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZHnYKrz9;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1E25F4000D
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:37:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ejm8OtTw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780914846;
+	s=arc-20220608; t=1780915053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MSISkVncYbol5NQ8VxRTT0axoLQuPhRhAriBgGYAZXg=;
-	b=jRcjqgZ6RuVVHHlwILetTdAgfG+EYRwvggGDxocSTdJL+/Q1/J7bvofJerQWkLt89YcWph
-	YuznUHoFk4qkW18OlfSqhtqsMlcERtChGCgvQGZcKVo1Iwf4iDhrNGAJLKodCzc9KtSKMS
-	Z5LBqz3TGW+cGbawEXAcsYDMrE6KZoM=
+	bh=bi6ela1PzKjx+8mELW2MCPCgwE8HURVXok4aZqsq08w=;
+	b=LSPFopW5+2oBcO4yyHaupqPTt0Re3Y4ArQOEEXmjiLGdAfHzufNgMghYmUbCfjN3MAmWhD
+	dsRYFP1nlNEqBB/lQwF5r5adjcYrTHATlUk5wjWf4fVS8WfNwfU3nb5BeemvgLvkv/uspo
+	XdLavV9UPzoVv5fd7OKAMfSQU7RuIfc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ejm8OtTw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780915053;
+	b=oR+BmmJYGwHZRi+GIQTTNR+ddFDez4geJ2vo4k6Ushmw+79Xaolp9zBFvYNf9hU1/BQizv
+	1LfB2yvsCUv4v1ewKQMh7yX2Pw0r4qAUvjJlgcy+6J/ZfttzM4yMbXsDOOullxic+F79BW
+	2wHQvJ8UsAzy966X+8ndqKGCJSkgYPw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB5C043CB2;
-	Mon,  8 Jun 2026 10:34:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74F91F00893;
-	Mon,  8 Jun 2026 10:33:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5172843639;
+	Mon,  8 Jun 2026 10:37:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F8A1F00893;
+	Mon,  8 Jun 2026 10:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780914845;
-	bh=MSISkVncYbol5NQ8VxRTT0axoLQuPhRhAriBgGYAZXg=;
+	s=k20260515; t=1780915052;
+	bh=bi6ela1PzKjx+8mELW2MCPCgwE8HURVXok4aZqsq08w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZHnYKrz9Qs8aK4+fkFURCjmiiXG1BeMHMEMJ/ZAHTREqJhvUqZrAr7YOLGmfvQ+Ox
-	 jVWnmIEpAcv8t5QzkYv5pJGNnGbgq0+Z8YL+zegc7IcwlcZJf4g7FfDplW6wfnYkuf
-	 tzr2pEdthhZpjZ2czMDoYlsDicBUOFkXZKeQ6NiMyq9vFkx/kV373PeDHerO0CTTbO
-	 sC+n3O7gGJ5Htn2skdyf60ZDotpFXXgU6+nWynLOxt1NNbTw4BY9xzZlxW0Flsih1p
-	 jcqXhksxWYI+4Bni/EgC2t9htE27d6iGTlsjvkkC14cy7bBI17c7sTxFUWixl4GOhC
-	 0bDP77Dp2wBpw==
-Date: Mon, 8 Jun 2026 11:33:52 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 11/37] mm: page_alloc: move prep_compound_page before
- post_alloc_hook
-Message-ID: <aiaZ4vhWq6vl-Yts@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <de0433334a7763b81ce8ca8f8a332c800cfe64ed.1780906288.git.mst@redhat.com>
+	b=Ejm8OtTwRK1IxMRRB2gaW8FKerJb/HjUQOjE+YqwbnZ7GZWKS4mR+EcctpvKDEepV
+	 ZRuMVzDnpZHrnnzIzGMHYICj8tNavzox34ngAIGylYMDBRBYT9LO1lMxVNues4WUm6
+	 KyFwrSf0Es2fA+Mq20Rs/0u7SJZsskczIbQYnoB7EG4SbTV4QiCwYX/vNlaS1O2O9Q
+	 BuT/dJay7Ts4xuszmsFv1jTFzOfWr1eCsyb+MiVsHBUag64oqS8XGs9aAgrZ2Qi7O1
+	 Th/RubEtnIRs/tS1BoKtip0bFK/VB16gyJ/rHbsW9nPzlqVBQHwVPgV/9ONOfFfYlR
+	 HO4K8GEgRKW7w==
+Date: Mon, 8 Jun 2026 11:37:27 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: fix ksft_process_madv.sh test category
+Message-ID: <23069ced-21e3-43ea-a338-182f6f861583@sirena.org.uk>
+References: <20260608103224.344101-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cq+yAeCdDhOAl0L7"
 Content-Disposition: inline
-In-Reply-To: <de0433334a7763b81ce8ca8f8a332c800cfe64ed.1780906288.git.mst@redhat.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 96E4A180003
+In-Reply-To: <20260608103224.344101-1-sarthak.sharma@arm.com>
+X-Cookie: We've upped our standards, so up yours!
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1E25F4000D
+X-Stat-Signature: jyxms1hubpm39c61soua9qgndkaphi6m
 X-Rspam-User: 
-X-Stat-Signature: dbcj45hznu67wgoswwmcyaaq6yr6z545
-X-HE-Tag: 1780914846-407674
-X-HE-Meta: U2FsdGVkX1+htskea3Mg6eC8klK0kqS0w63HbFFMgHF4jY45fj02inm1KA70rADrIEPQW6iFgIv29HCmrCKbnmfKy9Zm92eGT1bVHcz7AWBiGX6a1k6SUixrkqMSwss5kFEyMdTuE90c1CzhNtUHb8FoVsLQSxHS1pJKsUNnco/lfUUG9R2ucuxA4emvyOEb/6B3cTD70C4b7m1jTl+Fdyat//jE7ojVg7aFTv1m9xhyg49fNHvfVl854IC/ziODqlRCneMoxHJqqpFNSt7z+2RcEZgik2sJg1UoTRCBJbLphxo71T2gYRI1qzwdko2mUO6/ZFD5Y3XDuHfEwYz4kPGKuAbRh5CxlaAAwNkBKU8v1Kt6YuWw0V8mxQhEBHWncss4wvCRq1Yy/s7NAjXc0QW14wsox2SJGSOaonXIaFWwVBZTb4TL2lhWTN2r7zAnAlDfvHJ/y8MXRgnagZhPj8iuBRFewtm7PLwc3tl7MgN6eK36vekMH/4zeCiXnXwqTCp9A4L4Go1fdIXY9vRti/UYuWE3rtgm/pbl3VhNojSCdK2brvYxWSWMhoyrOEI9Ixm7TZMpJGxVjD4Q6PRziD2q03WSK77IghQJRAV92+rND8UqklZzEZF6xXiR8Zs/nNJuTBkp8+kkASfhpDhfNlFVpQuW9h7CO3dZGCVZYRgOPAl3qe6lZzdphTDyhi3ZPF2bH7hQTfmNM++b9LWfoGhcoxrmQrHzL/Yh4NjOBmRJfL6ceAubel3BXsbYHfqKprx6pv+m8JSLru8d0ey2dsO11BDnzMoEuTxFY5oohA3e1tkbEoNSVIa8S5PSXOXXd3CKtQqO8OzlqCNacb/ugVZEfviZwP7k/X4ho71cqbgB++bzqVkr7Kd2qcpXRzG3ypyyxENE8uLe1UfSX2h3r0WeSh139smzL7+CvNiAnr05+pI/cRrWxtEJ/ZRm6vXEsAv50s1wsrh2tE0D9jJ
- p6sfF47Z
- wyLv6eJIIGWRfszf8f44G9wSNdnQe1Wa8xvQR6EZ5n1dg15CaqzkMkKchv34CBKYiMxAN6Nspxw9d6agAwJLskkXuJWlxzT8wwu0k2t+OTMgEbc0p5x25qaHgn76+bxx9EfeLVdT9d5BPRyfj4s097QIM3ozAfcIpPelXKXoX4Eav8PQsXIaYSMwq4L7/Yp+4r3en9T9fU5xQdnohtz1umUUWIHJJ4xazbCKKP4rAYZgj24o0azs44wsyYyNg6rbPctG6qNTCF5KzYeGMHs619iYFK9ZCQaYfvFzMLL+RrIOcypPj/L97fGwPJb8Yn7WKDKq21Klm0ZSccijnN+qLXhnFeXSb1adKPI4O9OcZw0lQRr71ySognBAIlWfmbMi/GAagqctnNvCfJcWL9Gts4h9T+X3yoBiccjT1bCFFJh0kwV8vnpYIxD+RhqLK862faoYM9wFYf6a6IlA=
+X-HE-Tag: 1780915052-446236
+X-HE-Meta: U2FsdGVkX18LDYfmCIsVx5U0YvVrjGKtZDOqI/nN1vhl2UPSkcdjonMj22fLxRLSnLhr8EoiJDOfn0+ZlisCZPXGZsoSrn8wJJrq3g32/mEhQTkhS4+KTerfOM2rB9WP7r4bbyC2aXB3ZZP79sGMC1MP38IM7rTTf+Ux6xqjgzLk2ZRjkTdSnpwqiassMMCcTLskjoKn/9utrEbpVc8hJrWL2kjSCpa5RJIC9fV0QzY7mur+0EyAmSGrGZi2g0i7U1Uv/Z4rABlwPIUVbcn31LVQIwKD0SwD9cbxw4wWAnkKux1VBKgC6NbCMfWs0EHIOaQygJZJuRklz1thMM0FSng2VizluI4QJe7D7p28hFqCFTo0LhKvDrqIekuUC6AUz+0+Hb1a/1UklqIS5gM7Ee0f0WM6apWVbl65LZBliFOCEDgNiwIPLYADOPZjS0TcXk/KoppYngfC5Vbf9enURcxVE+Swwrh5aAJQMpBuKxTOUFCc19jPmRTe2D13P6qo1WPq0jRClid54qNT4xdk8KregLnhW1g1r4N6dk8LJqiOBt2vq7afEd3Xa5QR7VVg5kONg8kLMb+ZuwEDo6SeMTuW1UHsZWuVTyPo6vBXY+zToQ8OEkPap9sQVNIO0NRlf/2ejApo+i+1z0ZrfQFvnAqUFFR6k+Npd9P1uOcIeysK8XhrVh2HkY1257uFcXf8Cf8N54KcCRTd7MeR0647QzuSqH8mPBRvyawcqi9v453PTQiCg1/syFkwoUjy8GgXpbWA7gpsA5PNR5bya9szZ6sPe2dlDVbehDOHq1HP7O3CQKhx4rh/S0m7zfLXndHZ0mbiQeOoYFKU43R6UD5GraOZ4kvHeQpIQAhgMa+1Yx6plGpPLEEoqaIW1fbnfJz/AHCIGNSgD0X2hfBImymw7gbJcr/rJDj5rdTphSFZXckq2bSVG/9chHWh/8wEHgZrADNsOtOy2VdJeUsAvuZ
+ JhV9jEO+
+ bTphJvRFi14NazQCqeOqFu+PHJvhuJrBWP2+XkkpREf/ibB1mvSS/p7NIlot6s3bHRJLZAIXKz97GXYRhEVFds+769Gq9I40QO1mF8oVhN9aPgON/lsQnhuVfMHATLK92EvixSmBz0ndtBknn+GBfqAY1P+uIyp5jolEbc/qPsBaltCb+t1EiaqRwAQRN7RRkukRt6WogabjuPpoAffUajhC9D6u+7Fplm7RvL8/pjhG1k8Vr8p7wCUX61/aI8axzV0Z1B0j1nCR03NP0zGdk7ph5VnsN7n9EpOOrYH2l5+LTbI634gprD/PAtevIw2khzQ7m4C4p2lds+uU4ysywrn0n2p9uAH0pm8S67l/YWYqhNOccypLAm97hbgDaIuROtAsK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,79 +99,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:36:20AM -0400, Michael S. Tsirkin wrote:
-> Move prep_compound_page() before post_alloc_hook() in prep_new_page().
->
-> The next patch adds a folio_zero_user() call to post_alloc_hook(),
-> which uses folio_nr_pages() to determine how many pages to zero.
-> Without compound metadata set up first, folio_nr_pages() returns 1
-> for higher-order allocations, so only the first page would be zeroed.
->
-> All other operations in post_alloc_hook() (arch_alloc_page, KASAN,
-> debug, page owner, etc.) use raw page pointers with explicit order
-> counts and are unaffected by this reordering.
 
-I'd put this justification for why this is safe above the 'next patch' stuff.
+--cq+yAeCdDhOAl0L7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->
-> Also reorder compaction_alloc_noprof() for consistency. Compaction
-> currently passes USER_ADDR_NONE so folio_zero_user() is not called
+On Mon, Jun 08, 2026 at 04:02:24PM +0530, Sarthak Sharma wrote:
+> ksft_process_madv.sh currently runs run_vmtests.sh with the
+> mmap category. Update it to run the process_madv category,
+> since ksft_mmap.sh already runs the mmap category tests.
 
-Yeah again, this 'just so' stuff of when or when not an address is passed is
-concerning.
+> -./run_vmtests.sh -t mmap
+> +./run_vmtests.sh -t process_madv
 
-> there, but keeping the same ordering avoids a future tripping hazard.
+Sorry about that, obviously a cut'n'paste error.
 
-No functional changes or functional changes? If none then say so.
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
->
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: cursor-agent:GPT-5.4-xhigh
-> ---
->  mm/compaction.c | 4 ++--
->  mm/page_alloc.c | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 72684fe81e83..4336e433c99b 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -1849,10 +1849,10 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
->  		set_page_private(&freepage[size], start_order);
->  	}
->  	dst = (struct folio *)freepage;
-> -	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
-> -	set_page_refcounted(&dst->page);
->  	if (order)
->  		prep_compound_page(&dst->page, order);
-> +	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
-> +	set_page_refcounted(&dst->page);
->  	cc->nr_freepages -= 1 << order;
->  	cc->nr_migratepages -= 1 << order;
->  	return page_rmappable_folio(&dst->page);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 0943ab724032..4676fd49819e 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1874,11 +1874,11 @@ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags
->  							unsigned int alloc_flags,
->  							unsigned long user_addr)
->  {
-> -	post_alloc_hook(page, order, gfp_flags, user_addr);
-> -
->  	if (order && (gfp_flags & __GFP_COMP))
->  		prep_compound_page(page, order);
->
-> +	post_alloc_hook(page, order, gfp_flags, user_addr);
-> +
->  	/*
->  	 * page is set pfmemalloc when ALLOC_NO_WATERMARKS was necessary to
->  	 * allocate the page. The expectation is that the caller is taking
-> --
-> MST
->
+--cq+yAeCdDhOAl0L7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks, Lorenzo
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmomm2YACgkQJNaLcl1U
+h9DLXgf9EsUNsYMgg1YbwFjooXAaQP3U0UTcEACKdnwX/Li0OSW+969rU2vjx3NX
+hbgrpkCnSf4bl4K5uMgXmiJvA1yBnWRKMZWttgZVhN9GT1u1vZoo3VyohJbqaFEJ
+st4GkGvGw1+u/+s736Pa2UvmlU9b0jO6XNq52csGFQAoxL53+2knpND8iGzxQz/E
+e7heBbbFkXY73tjeKPgagFlLDDt6bi5ZyIQCwwumLribvsCucmIxnduva2rJt8TA
+uBjiuVVGxIAVqRLlpN0biP5wMbu8nY6Uei5cbC3qWOXX7Jx6b2xelBZ2h/fTQqjc
+71l1kn0Ud9DICYy2nfzzDnhuvEJ0Hg==
+=1EMQ
+-----END PGP SIGNATURE-----
+
+--cq+yAeCdDhOAl0L7--
 
