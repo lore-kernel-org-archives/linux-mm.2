@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63CEACD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05FFCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 08:55:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9CAB6B00B2; Mon,  8 Jun 2026 04:45:58 -0400 (EDT)
+	id 1397B6B00D6; Mon,  8 Jun 2026 04:55:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4DBC6B00BD; Mon,  8 Jun 2026 04:45:58 -0400 (EDT)
+	id 0C3B16B00D9; Mon,  8 Jun 2026 04:55:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3C4D6B00DC; Mon,  8 Jun 2026 04:45:58 -0400 (EDT)
+	id EA5B76B00DB; Mon,  8 Jun 2026 04:55:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3DFA6B00B2
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:45:58 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46FE11209E4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:45:58 +0000 (UTC)
-X-FDA: 84856112796.25.42AE64F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F166B00D6
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 04:55:44 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A45A1C2468
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:55:44 +0000 (UTC)
+X-FDA: 84856137408.07.510A244
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6D2161C0006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:45:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rg+0H1P6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id A20A92000A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:55:42 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LCkFO8Pv;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780908942;
+	b=Bv+RLK7h72s6FooJ3WbLLd7UpLJzP/UVO7qsRjz2gr+xxnTZZHRryGbA2AHTTaWQLAJUAO
+	ItaaqyNwSuMNU+5y8N4HrIaH3rMuR0XFPraUz9bLwGTG8Y8bVeLPpE9qArspb3Nl98rFVQ
+	wBxVipjIW0fKDTPTwjDCfGeUWA+L26A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LCkFO8Pv;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780908356;
+	s=arc-20220608; t=1780908942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuarSeLN78HVSV2cIgbzTlP+3ajrwTiQFsYhkjJgQjU=;
-	b=Q+Atids55jna7cAgLo5SIF7he6H0WfE27bG6DA/nsR0LsvwYoPx2Zlbgexq+Zm97LN5IDc
-	joPUw/p/Am4iho+bFvF3z6FAndE5LeVarB34Q7qOWocL4GNXd8J3zcspxbEVba78irjAC+
-	AIzLP5+0+z7mG9pY0IIzQlx59In36GM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rg+0H1P6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780908356;
-	b=hMzTuKOuGBfUjoVJNuB7cMv2cRJFRNFAXdXrAsaaNNY7Fc6pSXO4ZbaRpKWFIbNJ/B5zBG
-	cKeyRmmRa4/H4oa5htzBvsUnkW9xxpcG1OdtxHGOnDzR1//8voJcL1Qrmq3HSunXKQ59ve
-	+RGe/znv0TPN46dUxQ8o5yITLepzCC4=
+	bh=andKjaputZdj2JK89k0CuUeF5jJoG1iFA1/oxm6MK6g=;
+	b=dfHw5dpreOVM98e60tTWM9RQ4lxI5jKPrcOmc0eCeTEdGGeK17HPBaBj/CIH8HVfZNLe93
+	2xBj6pilbfQfPbZeh3rL9LqSMNDVsvO83r+7Kif2kF7+KJhGtiCxAasdKaSBb4szmWllKd
+	SVTXuF/XLa5jDQkLVVcIGdVo7O+sXWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81CB542A5E;
-	Mon,  8 Jun 2026 08:45:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E7C1F00893;
-	Mon,  8 Jun 2026 08:45:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B862140C46;
+	Mon,  8 Jun 2026 08:55:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117A91F00898;
+	Mon,  8 Jun 2026 08:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908355;
-	bh=XuarSeLN78HVSV2cIgbzTlP+3ajrwTiQFsYhkjJgQjU=;
+	s=k20260515; t=1780908941;
+	bh=andKjaputZdj2JK89k0CuUeF5jJoG1iFA1/oxm6MK6g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Rg+0H1P6GbsUsqwBUMQLth91KISm3oK8bATyCyasCZ/lmHFNBI0q13Ke0sOQFDI35
-	 uCyrOY5QpDByDZ7XOw/08kVwZyMLV2/n7kD7vOn7Dd+jl8hIUY2bRSXup0b0XQa1x2
-	 0qzfuUd1axp3VTbjdNYpCqbl8rCndYHH8DGFMdQ5eFYLv8x00yBet47bXPorw32JCR
-	 U05aqtV92bpp9yMrU7MI6TW2BYmGPrXRlfwBAJyw4ksSUGbJfG9c+CYLGXowfelT5+
-	 LZ1/eGbk7Iu0NtPpClo0paZxEAH8x8uFX39on25mRqArScVJLus674PVsQnqA1RALC
-	 zxypmzn5TlWwg==
-Message-ID: <79a8abe4-ea1c-456b-b438-44213b042287@kernel.org>
-Date: Mon, 8 Jun 2026 10:45:41 +0200
+	b=LCkFO8PvYSl8Urpj1ZwGCTb0JbUIruFNU8NPeRbexBg3c7UY2kvFToy1FTWXfh5Lj
+	 WeDCzn3IDSlJPtiUORlmJ+cRn71gfM9RDXfTKT0KY/Z6zBLid4w3b357zEY71o3wDc
+	 C/blPBYKpCuwB9inhb9qEruw4GomE0sl/zPk5RsV+LbFcW+NyCrB2x/2txoYQPfQQA
+	 j7UjPugNjlHbDFNHM5TYMxf7j+ciL6RP5yeGqf/+G2ZghhBe0onF//HgmJTwlVg6Xv
+	 dZIpWCdsF70Rxp33LFaWIbaanFGRwE+OwHrvy0GjAEl2sNVKtGcVy/oP1Vjskyn78i
+	 O5zIEEP3sY8Cw==
+Message-ID: <509f9a66-5ae9-4c05-bef1-ced89fd29bf0@kernel.org>
+Date: Mon, 8 Jun 2026 10:55:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 14/42] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
+Subject: Re: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
 Content-Language: en-US
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
@@ -102,7 +102,7 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <20260522-gmem-inplace-conversion-v7-14-2f0fae496530@google.com>
+ <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -143,17 +143,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-14-2f0fae496530@google.com>
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A20A92000A
+X-Stat-Signature: 4q549k9air6nj8nt8ir1r87gjpsdqfrt
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 8udeg5h9ptyehp5dzyiyuq4ifsx1n9uu
-X-Rspamd-Queue-Id: 6D2161C0006
-X-HE-Tag: 1780908356-769597
-X-HE-Meta: U2FsdGVkX19752M0tv3aumc2N8kQAqOFZ7KhC0tMtruy3JT6j4FrRiRF1zzNQNvcdU7wUXoDrMYc3oAt6axzGCYVl7h+ev1miCrJOKWy5kh0qu2ee6Pk4EKXHbHILx5JlsMCYZ9Apfu/Z8LNHM/2VtJhXKKyJBSy1ihVIZe4KJ4Xi0M+/eBSHIr1mgg+cHeUuP5YOkSJ+CpT3sHzY9C1pNXLQ5zQgRXLo7jar7ruo/txSUMY51A1p6Kv8a9ByHPgPVAKnFm1W6DP+vQzd/SGeXmixMrZA53wMpjAlFMj4ybqJqKLBLAw/6L8WVgpQRfkbnESq1llV/vorEyxjqdmf5MbnTSVO3BobdXNV4+2CcQJCpnY0lETQ1MwfwgR8hYsEOXyz4UwE3IWDB2d+WzrxY7qE3NFMF7T87gqfkW/fBbORR86RSdwXBimEfJzIP4uh2t9dqTGh5wZfpDGLFP04B5A5rI0T8TXTFjNEfNerwfxzPvED1dlZqAplslc5mJr0ABN6UdVal2iP2/M4CIXo+m4d3ORlgMFLPJ4k8f2dmiyqh2ufGyubmeP0PSBQR1GKcMJSqveiFEZKXCbF9RUSpIYDzuEcOIGJBehGBXZUjJbNbT/IUiUFdWUXaix4YSxQcTSO+JEUTnnyCgcyz5JECgpNfxv9Jn3sgc5YXyUPKZQzwFUbwNRe147Z3kD8Z/qcEt4LcgRu6rO6QqCPjfoXq3ZXrH9JlQZZPQxqB8AW3oslJRTCQYkmg5lDZ7YNIc6EUMGTi+gBE+YLDxqxyqMGiycU077/vCx15MDiw4ywGAZ7Y6AEUXPnzzJ8e5f2FXFhep5wCZpruBQ0VxDE0e3XUc3jVEp/d9xQkaj2QITTGmqIHuA48xyd1BRLa7uYETgAnnwKCTr3CVspeaigTkL9uNZjXeVavz4uJ9KnSr7Albgue4+gF29aFNsdjEDqy8hY+e4rooH56Yz99mlxAj
- hauOgmLp
- 6r03Z4g43deXylaxBcGWqp5+IRQSoX5Q/GO3MVUI/OmV4b21B5r7qMoDW4S5UFg91sbOmCmS1FW7nnJgWwkAUITiJ8YYiqVCRwy5xAfgK6UInt0liAGomaYwh25JeawF5t0GTgNJQmDSGdnODsFwCUrFfn1+wlb3LuppsnH9nFSUoBJM58HVq7NgE/ed7HZTs+Rx5gU/Wck7sYd91Kvim7vtH3t7Z4C5K7FdwhyHCM663pUsLqgWugViAidJsfxmlI4FXB/ZPEIe1zPBnRhjQqsWgXGz5sQTDoE1Wxsv1PZMgGeFkoZzOMcoKzP3XRNLN9lB59zc/0iPFK1bZyfe/Y4WxuWXrgmAj8/Ot
+X-HE-Tag: 1780908942-750163
+X-HE-Meta: U2FsdGVkX19U5RYhjcYXvCyuEXnrCTJ9IC7+bkauSEOQq7q3Tsp69Vhmt549U6NUQoTdMouP45oz7nkbWZCxM2tvp/Y8DcgB6h6wYQDxUnZ3wUs6QJ7p1YVQR34ptyr3AjeBhOEFNKTJpla91y8WhItBcbooiOFJQ6EM/tC8tawsEGShTlneXYtT78DvB6iXNSFLWRTIFlmFKCNY+702ILV8PiD0B48vpzOk8yF/lpKxOfuofnKgB9xDiNrVGQbJzPmnrF38HDu03TOKCY35xHVRSqj6YRUXptZrsH2fBl4ymsO+mD6338bv0XnJgH/JQ3yL48K+AV1vnRWd2wuT+XQSFnJIkdZb1vRBLq9YGLOMOHzmRlC5z4LAYgyRXZXJv8wmb+Xuk0mP6k170dUBfBG/jDi56eblPR7qOTm/hYKRyG7P0xhk2wfZF6esgtyLVRwn3hz2apOd7qwuKuUP/ZXFVNaWbruvM4rcAjxVSTZwS7SfeAHPKWq99YYzHV4oybBHoE/NqKq27bzkyHBxFExMxFQ2JMyEXT6T/qkrKvm00pBvf0pUUnN/E+fYf8G4Np4Bc6zRndYHOL5/ASuSSTX/brJC8r5PH73aNDfc10v1suaUHwARwFlKvEnxPbF3K19ZxcgyBGyJRjvL3cask34Qe7u7aPqiznaWbigvAIP3DXDwKDyYomZV0QK11Ucnd0QPJWw78Fb70iDRxLnb7J267FkQy+1dZGZxQYVBNIfWV6JKEgoKD7Qt0CpvNYVD5zf9DJb/3Exc3n+A04JAQn4El90TILr+1H5UR4mNa2ngVYUGcF8VjgfLwHpJUxcM1/uJFabgn3oxg0AVUIskuSHQ7vGAOr51pZZLW3GFfpYMMiWXUOC2kmMNT0vJik2vQayQc05yykosj2HIw9mVKR6IqginBwiU0S6w1ogNtk66Hzp++XRo/tCVhtWFV6P8bkro+tTuQt0h9u/v/S6
+ 8savloOW
+ zsnoYwjCVB7kALlB0fU3cfyW+ndxRmjweDphSxFpSISiJW+4TFItVihv923aCAKLoGB6jNpbwBjXHQsWAjjO3+XfdYrc+yokkyL0APZcTJWGo0Stt4X/V4G14gUirJBKQlaquw/79p6Npf0H/TcQxtVfSK1UNFvnLga24WyT0Y4MfeJjLfvMGNeovTzCPlfx77F4WiwL+G84B5Tb59ndDF7RjLCjIW7gw3GLoqNXCW/8G47md+VeeVwaPjEIVSrINEsmzMH9Ip+nMwqCQwmZ46/89/hSs80rAtKhRDbsLexWE1vdkFGBHCjbsi096YcvQvbYMDWT5YbfSAxXt5oIQ/PQbEVYT/HldUpZ0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,26 +164,163 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 5/23/26 02:17, Ackerley Tng via B4 Relay wrote:
 > From: Ackerley Tng <ackerleytng@google.com>
 > 
-> When checking if a guest_memfd folio is safe for conversion, its refcount
-> is examined. A folio may be present in a per-CPU lru_add fbatch, which
-> temporarily increases its refcount. This can lead to a false positive,
-> incorrectly indicating that the folio is in use and preventing the
-> conversion, even if it is otherwise safe. The conversion process might not
-> be on the same CPU that holds the folio in its fbatch, making a simple
-> per-CPU check insufficient.
+> When converting memory to private in guest_memfd, it is necessary to ensure
+> that the pages are not currently being accessed by any other part of the
+> kernel or userspace to avoid any current user writing to guest private
+> memory.
 > 
-> To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
-> refcount is encountered during the safety check. This is performed at most
-> once per conversion request. Draining only if the folio in question may be
-> lru cached.
+> guest_memfd checks for unexpected refcounts to determine whether a page is
+> still in use. The only expected refcounts after unmapping the range
+> requested for conversion are those that are held by guest_memfd itself.
+
+Is it sufficient to only check, and not also freeze the refcount? (i.e.
+using folio_ref_freeze()), because without freezing, anything (e.g.
+compaction's pfn-based scanner) could do a speculative folio_try_get() and
+the checked refcount becomes stale.
+
+Might be ok if we know that no such speculative increment can result in
+actually touching the page contents, and the extra refcount and something
+inspecting the struct folio won't interfere with anything else. Then it
+could be just a comment mentioning why it's safe.
+
+IIRC the compaction's scanning can result in a migration here so it's
+probably ok?
+
+> Update the kvm_memory_attributes2 structure to include an error_offset
+> field. This allows KVM to report the exact offset where a conversion
+> failed to userspace. If the safety check fails, return -EAGAIN and copy
+> the error_offset back to userspace so that it can potentially retry the
+> operation or handle the failure gracefully.
 > 
-> guest_memfd folios are unevictable, so they can only reside in the lru_add
-> fbatch. If the folio's refcount is still unsafe after draining, then the
-> conversion is truly deemed unsafe.
-> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
 > Reviewed-by: Fuad Tabba <tabba@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  include/uapi/linux/kvm.h |  3 ++-
+>  virt/kvm/guest_memfd.c   | 68 ++++++++++++++++++++++++++++++++++++++++++++----
+>  2 files changed, 65 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index e6bbf68a83813..0b55258573d3d 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1658,7 +1658,8 @@ struct kvm_memory_attributes2 {
+>  	__u64 size;
+>  	__u64 attributes;
+>  	__u64 flags;
+> -	__u64 reserved[12];
+> +	__u64 error_offset;
+> +	__u64 reserved[11];
+>  };
+>  
+>  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 426917d22a2b6..2767992955752 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -572,9 +572,45 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+>  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>  }
+>  
+> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+> +					    size_t nr_pages, pgoff_t *err_index)
+> +{
+> +	struct address_space *mapping = inode->i_mapping;
+> +	const int filemap_get_folios_refcount = 1;
+> +	pgoff_t last = start + nr_pages - 1;
+> +	struct folio_batch fbatch;
+> +	bool safe = true;
+> +	pgoff_t next;
+> +	int i;
+> +
+> +	folio_batch_init(&fbatch);
+> +
+> +	next = start;
+> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> +
+> +		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> +			struct folio *folio = fbatch.folios[i];
+> +
+> +			if (folio_ref_count(folio) !=
+> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+> +				safe = false;
+> +				*err_index = max(start, folio->index);
+> +				break;
+> +			}
+> +		}
+> +
+> +		folio_batch_release(&fbatch);
+> +		cond_resched();
+> +	}
+> +
+> +	return safe;
+> +}
+> +
+>  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> -				     size_t nr_pages, uint64_t attrs)
+> +				     size_t nr_pages, uint64_t attrs,
+> +				     pgoff_t *err_index)
+>  {
+> +	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  	struct address_space *mapping = inode->i_mapping;
+>  	struct gmem_inode *gi = GMEM_I(inode);
+>  	pgoff_t end = start + nr_pages;
+> @@ -588,8 +624,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  
+>  	mas_init(&mas, mt, start);
+>  	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+> -	if (r)
+> +	if (r) {
+> +		*err_index = start;
+>  		goto out;
+> +	}
+> +
+> +	if (to_private) {
+> +		unmap_mapping_pages(mapping, start, nr_pages, false);
+> +
+> +		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
+> +						     err_index)) {
+> +			mas_destroy(&mas);
+> +			r = -EAGAIN;
+> +			goto out;
+> +		}
+> +	}
+>  
+>  	/*
+>  	 * From this point on guest_memfd has performed necessary
+> @@ -609,9 +658,10 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
+>  	struct gmem_file *f = file->private_data;
+>  	struct inode *inode = file_inode(file);
+>  	struct kvm_memory_attributes2 attrs;
+> +	pgoff_t err_index;
+>  	size_t nr_pages;
+>  	pgoff_t index;
+> -	int i;
+> +	int i, r;
+>  
+>  	if (copy_from_user(&attrs, argp, sizeof(attrs)))
+>  		return -EFAULT;
+> @@ -635,8 +685,16 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
+>  
+>  	nr_pages = attrs.size >> PAGE_SHIFT;
+>  	index = attrs.offset >> PAGE_SHIFT;
+> -	return __kvm_gmem_set_attributes(inode, index, nr_pages,
+> -					 attrs.attributes);
+> +	r = __kvm_gmem_set_attributes(inode, index, nr_pages, attrs.attributes,
+> +				      &err_index);
+> +	if (r) {
+> +		attrs.error_offset = ((uint64_t)err_index) << PAGE_SHIFT;
+> +
+> +		if (copy_to_user(argp, &attrs, sizeof(attrs)))
+> +			return -EFAULT;
+> +	}
+> +
+> +	return r;
+>  }
+>  
+>  static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
+> 
 
 
