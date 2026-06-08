@@ -4,105 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A5FCD8C92
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:05:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD397CD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 10:14:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6350D6B00A4; Mon,  8 Jun 2026 06:05:25 -0400 (EDT)
+	id E31286B00A1; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E5766B00A5; Mon,  8 Jun 2026 06:05:25 -0400 (EDT)
+	id DE2576B00A2; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ADB96B00A6; Mon,  8 Jun 2026 06:05:25 -0400 (EDT)
+	id CD0C16B00A3; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD366B00A4
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:05:25 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E49AEC3346
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:05:24 +0000 (UTC)
-X-FDA: 84856312968.24.731D4FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 394A51C0006
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:05:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GzwngoDz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD1F6B00A1
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 06:14:22 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 756F1A0A8B
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:21 +0000 (UTC)
+X-FDA: 84856335522.23.09D1F02
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 35CF2100011
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 10:14:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=F32X9w6b;
+	spf=pass (imf05.hostedemail.com: domain of jgross@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780913659;
+	b=K/5MRs/LaNURIfV2DHJet2lalwJjg+hxyBYMiiauv28sodCHLpBRMdA5Ls350nEqgN6ZB6
+	qm+h8Q7UPD/r9+kP3vd3tJBXIduQiYyRvV9h09oVVO4CrW6/EBJbBJHiBmztGxx9LTZp0v
+	skkj+tZuHJ2fx3aHZskcrqrE07/OhJA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=F32X9w6b;
+	spf=pass (imf05.hostedemail.com: domain of jgross@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780913123;
+	s=arc-20220608; t=1780913659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zILBs+QcGl99GpFCA+Q3N4MJb7Ci5s+J8iap/Qlkgek=;
-	b=iJKw5QNI3MNG0Bi+5C3CapQGtW8vSDclcFvYby+9clOoQSKfttgQka8ZGkU4fpO/VSJBrZ
-	iSP1CZQqW7ArxiRK3fDnE44gzAJx5OTeTgdSb67QzADq4N/cCG3JuSrAxpoc0/aQkFfV9m
-	hklcEAZkJIjwKtjJnP98gUpX0bSis3s=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GzwngoDz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780913123;
-	b=QVkSQT8n5fBzREQXqCfFiz4i/APFuuoUD3TV9uMRrRPiazCnlaFpPNNz1xlzV9ye1O0fJB
-	XQsSV3M7OyQuQZcyQkUudltWeSMDZsr4s3M8idQ/vlhMB0O/y7lxdYaNXed9mJTDHn9Z72
-	8oZeHyLnPScT5oiYDpqKGlp1P9/oWSc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66DB442A67;
-	Mon,  8 Jun 2026 10:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714B11F00893;
-	Mon,  8 Jun 2026 10:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780913122;
-	bh=zILBs+QcGl99GpFCA+Q3N4MJb7Ci5s+J8iap/Qlkgek=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GzwngoDzoOflt5V+bdMt2drTLWGY96sMaxEc6unA4K2N5wWYaSNgJTuePgDbI5xdV
-	 P2VT9Kt1Wj2sFRqC9962RaltOjMrkdGYSSrfv9EWRSgP4smTiefhAhC7HMEQmeAXFR
-	 aSoXxYmsV3mkxE54BU1oz7Q3iF3AMpZ760IyWiBCdXynZZMvkqkMIU5VARtnzT9gMh
-	 XWLh5t6qubKnOoGWGJlGpWSda8T5TqnmhphmBK2/7TT9AXHgJvDYMC4GGawkudru7k
-	 8hipsb3T8nQOBVldOpUur4CdLsrkcbjelK1MdeImzuM6LzNJMfdcFmLmIMXhTu9qni
-	 rrOcY7EbUk9xQ==
-Date: Mon, 8 Jun 2026 11:05:09 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
-	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 06/37] mm: move vma_alloc_folio_noprof to page_alloc.c
-Message-ID: <aiaSI4SlVDIa4Y73@lucifer>
-References: <cover.1780906288.git.mst@redhat.com>
- <5a3034dc7b3d5ea1edcc8b9baff63c980b7ae434.1780906288.git.mst@redhat.com>
+	bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
+	b=1oDBAQkUnE+neuIUru9Y0UVR0jLEyucFRG8upo2Nz51GXqJez08Z1MIFK4xxNW+bdF6SYy
+	cNFnNJxZkNWtAbp2e3GZl6IrDlahzEinJUQTdbwE9CHV9ufwszXYvvCry8o7hbnfLHl6LA
+	JhpnYvCn0FS+/onLucLWZF4Z16skCAg=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bec43ee8ff0so584415066b.1
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 03:14:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1780913657; x=1781518457; darn=kvack.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
+        b=F32X9w6bb+t+zcGSaxmdrql766EqNAyMa7oGssR8jO2CyRCv6RcnlA6dnRqOBjWhXk
+         2zAnmwykleAjfw2CTY8NsSNnOZQf3E1Traxzmi5d4tcVEfq/JC2154MJdjV+No14o8/q
+         IptIFCsSk7FvuSa341lXxR9xjfxqC+Z+OA2QPSv/09aG5XTzKwLM2VDnOKRJrskNnaC9
+         pLGgzpp98yZt0n0ces2FEHl6AupbWgK1LyxpGBymbR/7szKi1J9vdrrinLS0DuaGBcUo
+         zXxQHXcuODs1dMTM+pkEusRpwIGVoB/a7mxAF05g1c/UbZz4+7YaC5V/pyPaHR8OWswI
+         RcOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780913657; x=1781518457;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ICUYmzYvi3Npp7Z3gMsJhlNCaTZ1S0P4tdLevTu8olY=;
+        b=mY+MSKwtPv3Q/hKdFkNqvtYC88RSAMIerC659CM4NJmJsUnyNcLxPgHvB5tKMOfK1O
+         L9S4Ezks6F6VjGF/zGCwKzhjqC8/NGcFZas7XHC6lrB8kBRk4DNC+UDTVVlH9Zm+r7tC
+         +0P/o4qt0RsTmIuaxRCutMsZmorMU61sd2Xx3zA6aWLxKjutmYd6bGq6eW7Xb9k7FAPJ
+         ZLnBSOPBm3WK1jM4Ynghy0wjcUjdP+VNc9VwemtSnoOpg5aVCa361Lll6g088wiDakqY
+         M8GPD3la3+3TviPtxXZ+VOC2S2hulbqYtEGqXBdLU847WQyRwhAet9R0Qb5o7sENGVZR
+         +8xQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/+1hexMW0xACjtg7a/uiQdFE5fIWIhJ0JBWAbvzOlc5ZhgkL9hIAYv6exdSyYsUKMr0yWeV0dGQg==@kvack.org
+X-Gm-Message-State: AOJu0YzUcAMLBjt4TnirTfTYQnrTgW+NFhlZVst7koGMyDUqZFhEgR/i
+	vVpcWl//cTG2BSpOyOYI2xewiR4mO7TrkVIEfNo77o1LgcQSxEtD6n7B/XhELcXsVV4=
+X-Gm-Gg: Acq92OF+9cBfq/dAbsX1kYHfIdIpLcF+tkIPBDJhBxOPynCu/QUuOJbLTp3JS2qhcRX
+	1/hSYYHAz/KwIQQPdSd5UQT9qOU/JRsmS4CG5Vseq2aMAEcC7JZO0ZA1y0YS1/4I6k7f4MkaFNI
+	mGuITRUi/uT+kFnfFo2rXYUkEVgb3qK3WgnlqoVPsxn7l3yCujjVHqKHpaQxNUSsDY+QV23MYtt
+	Tdf1ukyAIeFDhwRuy/GQLcsNJJvOLDcfF5KJM/KD5/21N2G3nIL0ThdbQLx6EFmHsgMaXHovF3D
+	Df738ndy2L2W46QtE1fX+d6Bjc3zkAXNgqq5Cgln+LlcUzM3wF68Ncafo6LO5Q9N5dtcYMWn4xL
+	iWZSHVq9Em/eTMuYPGq++XUmW0HBlSv5Ccx/e6y0J/zl4JLlxWY5xJ2j7PSVFSL6pURa0KdBWVh
+	MDvstRWbgfSdQzcBGdEEg6Z7/RUQFJC1MSUeoy8CuX0shnfm7xYcKSSqlq8iW9lVCz/Bcxe/AX7
+	nVebWVMbZJr/I2cbFxhMB5/crYbLnUuwOT5NkydT4byKHqeOk/7aBivrcpAUfu2
+X-Received: by 2002:a17:907:60d1:b0:bd8:fc89:cda0 with SMTP id a640c23a62f3a-bf3a8a0cdbamr553511066b.24.1780913657464;
+        Mon, 08 Jun 2026 03:14:17 -0700 (PDT)
+Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0559f1f62sm862110466b.57.2026.06.08.03.14.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jun 2026 03:14:16 -0700 (PDT)
+Message-ID: <af7a7a96-c1f9-47bb-9c4c-c83fe6a9f70b@suse.com>
+Date: Mon, 8 Jun 2026 12:14:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a3034dc7b3d5ea1edcc8b9baff63c980b7ae434.1780906288.git.mst@redhat.com>
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/9] x86/xen: Convert xen_mm_pin_all() to ptdescs
+To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
+ <dave.hansen@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ x86@kernel.org
+Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>
+References: <20260527140316.294621-1-vishal.moola@gmail.com>
+ <20260527140316.294621-9-vishal.moola@gmail.com>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20260527140316.294621-9-vishal.moola@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------mqeEDAX0jgEctDcOkQ0EDxdK"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35CF2100011
 X-Rspam-User: 
-X-Stat-Signature: k66y1gwzktcrqb539zr7q3gcaaesdwji
-X-Rspamd-Queue-Id: 394A51C0006
-X-HE-Tag: 1780913123-338966
-X-HE-Meta: U2FsdGVkX18oG+RS9wAPXKNN+g2Trnm3+DVL7ubZSvMYc2cNnhBUtsxR9ywJv4K48j5QUrlwWIsHdfOyfp5Rsq0Insx6l11A6hdABDt0qbWRFS64xlgPXPKNasrFk9W0LSXvrVCpiJDRQjSz831om+d3FfeaacXB5SvIHZ/DjUcVeG/3Abf19VvohScBbhlw2Dm6ust9UO7NFOk0y8wXTjqw6W8QF47kqxg2mxn/mwlMx5V6UyuJzOP/FMi6vvyLqZlESiVna9Ch5eI103F3Y6jwDxfY5HyWZZCVF2uNXudavnECNzWYS5tsurhsev+CqC5ZK/fanu7mAOwO02PMXKTjewBqS5AiQwrqjZFiC8ahL21fDui3OqJG+tnlV4Eh0HrewaT24HL8nXgpv8ZU7o+e6V7XpSvgw1tL/EDDzoiU9OlCVK4b6PUsI3w0LZCDdCdmvL45/RkHvi53f1fOwP+dN6spHn46c7re8M2dqMCP+eADNToeYC+l/dUtO1p41d5o0qNWbRwclDjDW5O5DpFGS2ZXnIO2F1dL76HH4VYY2rEwVH30OEX8MX4/XQr94podlo14SCKsLim8CkPFYlFCTLmxjqnapeKOLKgU0DCKqVeT6A7UK4smRJQ3xFfJvY+5Vz/I2nn3I338CWJ8davKfl77ExhV8K3+1OSxU8MgIQeVO7+oIomldR9f1L9gxZjMzEoJVO6OHlxPZ1e0HPA7htsTWwU4nb+IClw0LM3DF7QPLG9thGMn8Dp0dDX3O8U7+rWPm0GXrDvfBi0QAAHT+9YnUIbatXk0yaNqQQeF2bp7wxKFuF61NMw0gunqRCdUQ8eU5tyrUF9BQX41UUfzvBSH65y2k8tRUqxlh3JRYOot4WqxKxVGcS843PEggUw3TTOjoQ07eoAJDd+nVRgoWrbRR7X62pzbu9CZXLwPOWaOJBkhWfkWJF9D6fEF5FVRUDAOuJt/TkWNR1B
- 3NF76Gg2
- Bp3905v7ODHiI0Qt6mH5baXZE9SDdqgPhEuwByabwb9yUK8/dV6t6/RtapoDLHMFWqnWBCZnFZUYsZ/8UvEUk0IQ7L8ycHVE/bawSa68k53plEg3AhfiZwEkGPgUjyYeQ9DpbblLXI+s6iqv7kot2W3CCVmf0EB4kdnCTp3eaj88vgsyf8Kxhaib8dxpaAzpg5YAMGsYftz6c9l6plAFd25JcKmw7AjaSX4raBicd07npjDKjW2YDODCsEIRElccYc3uSuOp0EUFo8Hdim57dqWCK8hBMmlvh+AIJdMLykFiBtoMEpyX4ydT8kJLJSIftSTe09PriIA6WIl2pDGfiusjfzV3WagbZcOgpA6iv35BK9PAf34fgO9HAF1gZVVJJLEzZtdjH1ZEaG4RUewJD9qiUjw==
+X-Stat-Signature: oetjpeprwxnd3fmkmc61hpx66en51yx3
+X-HE-Tag: 1780913658-268688
+X-HE-Meta: U2FsdGVkX1960fyqt+h5o8Lnx4bnPH+8/f3iNDgKkIE8cegK+DSBgTzMSVn9/SZ1ndgqII3FHpUiUkfBc8w3PXVl8SI+dXbgJzgY2ry8Xye8r6f9rxb5KezNw2W4oT/1f4A4ROJU3gHE8Bg3t7hrq+AAve5X8ngzL1YcteN0RRr56WNdQZAim9GMyfIqoGYCvah2o923GHPVpGfMJsYcyjFJNrfPfi65X5GY5CanMQ4NkgXZ3aOlgTLa4l8NKc1PpUb/zOeW3VqQPrOK+uYTkVE3fZ0a6OKEXAbsj+gmw7iFlGrpLjM9qGdXATipcND/BQWKfp1b+QMsdLEzt0vfWU5DcuPN8uC9JgvgCiIcfw1E3zlmDXpTZD1Vqpf9aMroZlggwTilJH8K4BxTR4dedlGAGyVmCNlFkeg31kGEcq6nz7jFV/EoCYF42yqm+jjvq5RdlTD/wXKhL9d50fO2XAbUjBQkAUfrN8wzYhouQQ7lt3UD8Yna0mCAtcAI8MH2X8FAd/q0M3jOY/6sPKZmvo3JwHh+/3RaUzrHwUgEzZvhUeVdXwG5FKdUJqhQ3FDhI1PLN+bkoxAdP3BH4ywhso0lrn8F8HHsiKTyAXRQ9I7mlSoVt95CsTRKkw5HYjTGQQVzk/nkVd8xJqSf1okg1fPtkUsJ5Ixkq00IlMEp0kq5Ptd9OSX9XE//QzXrA2GI63UWjZ7CvwHFcNRl7wzni4eS8l0FdXBrOgADbDDaC+MtTGdtnBqIEmRi2xVAZxSb1ocOiPwWz+moz/+dSoAQegDw85DL3WSWyqeGclLjzN6zQOnigZFnP1O7BHWdqc6DKZlulQYOxXgiYqJs7anYgILHJDHrCACMj+apiHCxEvFqCjk0RTQ1o0QqyIIHm1lexNRTbjNeWxMbexnpl3El4pc0TRM28SG3+VkVwyi5zoEYEdwCzuQmZ5iz0MvysnjiPVvoJVL8h/fiS3SMY7i
+ D83uAW+J
+ iQUeCH6RRknDoQdLgPk3+b1lx0kJh/zKAAbbIIGkta4U8Xj6p/sOen3mROIvYs/fVoddzuLXkYkY8bKtrXCCjcZiOgznMeNB0t7StHS0V+iNroeaPEDb1feGyjz+yaFidhg2+IwAMOaTRL+HMyeHRFSGgBVDpHxL5SNxpFCkELLf5GSDYai/Ss5rRl381W1oqO3yP6gpCzMqNV40AccfmpzOxY8tO+NL5/zg80uEIDRWZgEwItNAp068w8lT0hqSi2J6c27hQlmzUUnXNGk+8S1NZqc8iHptAasYc7usi2xFJC+rFw+mV0LFKld8toTOwRAnIrQyEhI4tUZDxAwCbSAg/O/M7Ik0IHYc9RWG7NUElURXQIuQqK5JeNrsJxgm87wuVTZqNwkbtu3JYzmTDl2s/ODUum91ggcfzBbVb6X3jU1/Leh16qU7hLBCuZyq03YDlOVUZTshU96DQQUSH3b4mHJmR/4aFYtWV/eCcP2jvId9F2E1GjgCcS/rRgC/Nf+obUJHcOcN1etMwuMgOMp9z/hB5w3Cim3NEut7OMKHV/QQ9RH1gdDUCRUGXeJvBh7yD6bOrpWsW1i6t9xLx4EJBXczIVOV7LGaYaVN/9mngT5ghBUWE97vpxzfxs6w57v1aPEEILlEWiqboPa/jk8mjlOpjoTna5hoLGQJpjDWf8Flqo/QwZwAbJ4tcqeCazkNER4CGcsMousnd6JO+MeIYFbSQNfq4o+MyGyaRE1nAS0ambWwuSxsZyQ1xKNMczJswvPVhNsuO7VUbydxpu47LRP+ypS1PvkgasGsvTVO1oMrQQA0ASLKskE8rT7FncOCsxgxoKvYpVZTTKa7eo4qHQvCP77L94DOPAUbWqQbBJYXModZRPHIZeTVMDBdk1kmQe+mB4o93LuVpYrNGWKsKpfT6qiM2HFKSUPWPUImw3NBN/IRKpT85xg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,183 +151,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:35:05AM -0400, Michael S. Tsirkin wrote:
-> Move vma_alloc_folio_noprof() from an inline in gfp.h (for !NUMA)
-> and mempolicy.c (for NUMA) to page_alloc.c.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------mqeEDAX0jgEctDcOkQ0EDxdK
+Content-Type: multipart/mixed; boundary="------------uCZRBKwpO9lYtVcfTExo30um";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Vishal Moola <vishal.moola@gmail.com>, Dave Hansen
+ <dave.hansen@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ x86@kernel.org
+Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Message-ID: <af7a7a96-c1f9-47bb-9c4c-c83fe6a9f70b@suse.com>
+Subject: Re: [PATCH 8/9] x86/xen: Convert xen_mm_pin_all() to ptdescs
+References: <20260527140316.294621-1-vishal.moola@gmail.com>
+ <20260527140316.294621-9-vishal.moola@gmail.com>
+In-Reply-To: <20260527140316.294621-9-vishal.moola@gmail.com>
 
-This is an incorrectly described patch. You're not moving the function,
-you're also altering its behaviour.
+--------------uCZRBKwpO9lYtVcfTExo30um
+Content-Type: multipart/mixed; boundary="------------moBdeYGjNrSgg2fuugMy79vf"
 
-Do the two changes separately, and justify why you are changing this
-behaviour.
+--------------moBdeYGjNrSgg2fuugMy79vf
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
->
-> This prepares for a subsequent patch that will thread user_addr
-> through the allocator: having vma_alloc_folio_noprof in page_alloc.c
-> means user_addr can be passed to the internal allocation path
-> without changing public API signatures or duplicating plumbing
-> in both gfp.h and mempolicy.c.
+T24gMjcuMDUuMjYgMTY6MDMsIFZpc2hhbCBNb29sYSB3cm90ZToNCj4gQ29udmVydCB4ZW5f
+bW1fcGluX2FsbCgpIHRvIHB0ZGVzY3MgaW4gcHJlcGFyYXRpb24gZm9yIHRoZSBldmVudHVh
+bA0KPiBzcGxpdHRpbmcgb2YgcHRkZXNjcyBmcm9tIHN0cnVjdCBwYWdlLiBDb250aW51ZSBj
+aGVja2luZyBQYWdlUGlubmVkDQo+IHRocm91Z2ggdGhlIHVuZGVybHlpbmcgcGFnZSBhcyB3
+ZSBkbyBub3QgaGF2ZSBhIHBlci1tZW1kZXNjIGFwaSBmb3INCj4gcGFnZSBmbGFncyB5ZXQu
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBWaXNoYWwgTW9vbGEgPHZpc2hhbC5tb29sYUBnbWFp
+bC5jb20+DQoNClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+
+DQoNCg0KSnVlcmdlbg0K
+--------------moBdeYGjNrSgg2fuugMy79vf
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-We seem to have a fun mess with some NUMA stuff living in mempolicy.c and
-some living in page_alloc.c with #ifdef CONFIG_NUMA's around it.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-But I guess that was a pre-existing problem...
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
->
-> The !NUMA path gains the VM_DROPPABLE -> __GFP_NOWARN check
-> that the NUMA path already had.
+--------------moBdeYGjNrSgg2fuugMy79vf--
 
-What is your justification for doing this? Commit messages that put the
-code changes in English are not helpful, tell me _why_ you are doing this.
+--------------uCZRBKwpO9lYtVcfTExo30um--
 
-It seems that you're suggesting not doing this was a pre-existing bug?
-Therefore it would need a fixes/cc: stable no? Unless you feel this isn't
-significant enough to require that?
+--------------mqeEDAX0jgEctDcOkQ0EDxdK
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-If not, then why are you changing this behaviour?
+-----BEGIN PGP SIGNATURE-----
 
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> Assisted-by: cursor-agent:GPT-5.4-xhigh
-> ---
->  include/linux/gfp.h |  9 ++-------
->  mm/mempolicy.c      | 32 --------------------------------
->  mm/page_alloc.c     | 43 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 45 insertions(+), 39 deletions(-)
->
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 51ef13ed756e..7ccbda35b9ad 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -318,13 +318,13 @@ static inline struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask,
->
->  #define  alloc_pages_node(...)			alloc_hooks(alloc_pages_node_noprof(__VA_ARGS__))
->
-> +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> +		struct vm_area_struct *vma, unsigned long addr);
->  #ifdef CONFIG_NUMA
->  struct page *alloc_pages_noprof(gfp_t gfp, unsigned int order);
->  struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order);
->  struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
->  		struct mempolicy *mpol, pgoff_t ilx, int nid);
-> -struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
-> -		unsigned long addr);
->  #else
->  static inline struct page *alloc_pages_noprof(gfp_t gfp_mask, unsigned int order)
->  {
-> @@ -339,11 +339,6 @@ static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int orde
->  {
->  	return folio_alloc_noprof(gfp, order);
->  }
-> -static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> -		struct vm_area_struct *vma, unsigned long addr)
-> -{
-> -	return folio_alloc_noprof(gfp, order);
-> -}
->  #endif
->
->  #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index d139b074a599..a1707ad498a8 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2516,38 +2516,6 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
->  	return page_rmappable_folio(page);
->  }
->
-> -/**
-> - * vma_alloc_folio - Allocate a folio for a VMA.
-> - * @gfp: GFP flags.
-> - * @order: Order of the folio.
-> - * @vma: Pointer to VMA.
-> - * @addr: Virtual address of the allocation.  Must be inside @vma.
-> - *
-> - * Allocate a folio for a specific address in @vma, using the appropriate
-> - * NUMA policy.  The caller must hold the mmap_lock of the mm_struct of the
-> - * VMA to prevent it from going away.  Should be used for all allocations
-> - * for folios that will be mapped into user space, excepting hugetlbfs, and
-> - * excepting where direct use of folio_alloc_mpol() is more appropriate.
-> - *
-> - * Return: The folio on success or NULL if allocation fails.
-> - */
-> -struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
-> -		unsigned long addr)
-> -{
-> -	struct mempolicy *pol;
-> -	pgoff_t ilx;
-> -	struct folio *folio;
-> -
-> -	if (vma->vm_flags & VM_DROPPABLE)
-> -		gfp |= __GFP_NOWARN;
-> -
-> -	pol = get_vma_policy(vma, addr, order, &ilx);
-> -	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
-> -	mpol_cond_put(pol);
-> -	return folio;
-> -}
-> -EXPORT_SYMBOL(vma_alloc_folio_noprof);
-> -
->  struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
->  {
->  	struct mempolicy *pol = &default_policy;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 8dae5b3f5876..6a605d05e8cd 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5286,6 +5286,49 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
->  }
->  EXPORT_SYMBOL(__folio_alloc_noprof);
->
-> +#ifdef CONFIG_NUMA
-> +/**
-> + * vma_alloc_folio - Allocate a folio for a VMA.
-> + * @gfp: GFP flags.
-> + * @order: Order of the folio.
-> + * @vma: Pointer to VMA.
-> + * @addr: Virtual address of the allocation.  Must be inside @vma.
-> + *
-> + * Allocate a folio for a specific address in @vma, using the appropriate
-> + * NUMA policy.  The caller must hold the mmap_lock of the mm_struct of the
-> + * VMA to prevent it from going away.  Should be used for all allocations
-> + * for folios that will be mapped into user space, excepting hugetlbfs, and
-> + * excepting where direct use of folio_alloc_mpol() is more appropriate.
-> + *
-> + * Return: The folio on success or NULL if allocation fails.
-> + */
-> +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> +		struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	struct mempolicy *pol;
-> +	pgoff_t ilx;
-> +	struct folio *folio;
-> +
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		gfp |= __GFP_NOWARN;
-> +
-> +	pol = get_vma_policy(vma, addr, order, &ilx);
-> +	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
-> +	mpol_cond_put(pol);
-> +	return folio;
-> +}
-> +#else
-> +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> +		struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		gfp |= __GFP_NOWARN;
-> +
-> +	return folio_alloc_noprof(gfp, order);
-> +}
-> +#endif
-> +EXPORT_SYMBOL(vma_alloc_folio_noprof);
-> +
->  /*
->   * Common helper functions. Never use with __GFP_HIGHMEM because the returned
->   * address cannot represent highmem pages. Use alloc_pages and then kmap if
-> --
-> MST
->
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmomlfgFAwAAAAAACgkQsN6d1ii/Ey/+
+BQf+MrwoMszO2YF1wyc7UFe2jjUkzG3MxLz8ZDDIfPq5GevYLm96pwvTy1Crl6gEPPPB22CGlJiY
+D641+JUpZt9XtdJ23t+p885R7nOtDj6mj6F2vt1kgutnvAf5ez+b/WbzuZh7X9zoN4aSPwJdkVsJ
+6b0VXBizvpnOvxGs5U6AfEpRP99o3JpTc37aT6ksuzLtrYLH/xb78OHiI28Pxffau7lZsZDNIAWn
+1/SlT86cYVBxgiG4WusRDrjBpFwGKzEsJblea4zdOtmCJEWLF6Xt9+5ZdYdD2HIO6j8ZdxLVlhTO
+At8V2crdTjvp9nKmf59yq5rAC7QoRfcgMUgqwT1FwQ==
+=Q4h9
+-----END PGP SIGNATURE-----
 
-Thanks, Lorenzo
+--------------mqeEDAX0jgEctDcOkQ0EDxdK--
 
