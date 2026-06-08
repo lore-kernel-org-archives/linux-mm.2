@@ -4,131 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17513CD8C9F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 11:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 460CECD8C9F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 12:00:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 160D76B0005; Mon,  8 Jun 2026 07:58:34 -0400 (EDT)
+	id B00636B0088; Mon,  8 Jun 2026 08:00:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139306B008A; Mon,  8 Jun 2026 07:58:34 -0400 (EDT)
+	id AD7596B008A; Mon,  8 Jun 2026 08:00:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0277E6B008C; Mon,  8 Jun 2026 07:58:33 -0400 (EDT)
+	id A14446B008C; Mon,  8 Jun 2026 08:00:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E643E6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 07:58:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96E721A0A87
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:58:33 +0000 (UTC)
-X-FDA: 84856598106.06.B15F840
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B86E7C0003
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:58:31 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ifyb1RFZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=praan@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93E5C6B0088
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 08:00:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45BE1164D9A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:00:15 +0000 (UTC)
+X-FDA: 84856602390.15.C29E66F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 79C24100009
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 12:00:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VbshWzMb;
+	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780920013;
+	b=JO05N88rjoBN/qFHgImUKXfdtLPJ0gWlmwONQlHygsdter9UJN0EFIZaERSsbT+0RP4TR9
+	uRBBxYC9l/AWlyOiaL5WFM7k07CPrQhdT+uLdRfyWGokoYw+p19L1EKLDmK2RWHlbAi+RA
+	4fhUEqgU40gtd1mdj+kHygqkOhGaSR4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VbshWzMb;
+	spf=pass (imf05.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780919911;
+	s=arc-20220608; t=1780920013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8CB2k4eqEZ/J9Iam1QvalqCdyib5VuBIoGU6FvxH5X0=;
-	b=rgxpWd2FklJCbMSYt2+KGwD6+P7szs8au/oiZXie9FtRzIhwtGCHj6pSn7xuE16mMZAdte
-	ckkz1qu22CGwQitnqvUhD8KK7qxyIYVuL6O6sztRShv4O/Hr8vhp4FNGxmVqxgb/NJG+GK
-	nDYWy90eKlFzOsZLfx9PUqt5nmP3d/0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ifyb1RFZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=praan@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780919911;
-	b=FHoJ8W5oUq/9tUHu9C6hWo2lP7RGUsM+6tp2IB8VVAutsyqaawWUNJzDTCI/W1NXFpTta2
-	lva9vG15spcmCRqFtfTnXKcUkC77zyzXjKjnYWhI8ypueKF+zVOPmsqOYQGMftQlE7L4UB
-	wsxXBIxYwr17do9KABhui5w8ofLnR1U=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf22c18ad3so373805ad.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 04:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780919910; x=1781524710; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8CB2k4eqEZ/J9Iam1QvalqCdyib5VuBIoGU6FvxH5X0=;
-        b=Ifyb1RFZATFIDVtQbyF38VmdP4laUjBC5DybvXd1mmM5mvRnvsS2ZvH6sYp5GwCoze
-         UUppSqvppQh8FCP/Lvda2zl2Y7x8iYYKlHano4ocfLeZ2B6QufDJWjklIlgIeJKBEpoM
-         jEjstBk8Zi3S8jgRTtgSIaq1krpcq5f6yUUwmtel/fvLZ34WsnhovfzCdpcOgjmUeNdU
-         5HWljyNQEzCFRuU/AIr+ADm7i01ohAZJj50OqVw6as/LaXJfJCIKMZ3EPn+vZzMHVrRp
-         OnEvibcbZBi1Y8mTvmpV5j4VOTdgm6PcDIwK1xAyohKUelnIky6nWttX8dVyrRU6ZGGm
-         idfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780919910; x=1781524710;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8CB2k4eqEZ/J9Iam1QvalqCdyib5VuBIoGU6FvxH5X0=;
-        b=UF79StcrOjRfTcBf8Jz82OIXSLyB78/T4G9LuFmfF2cxW297ilL4cJj5V/jeKskm7s
-         Xro0TqP4gwuVjt2/9oFLQz311TTKb3kVc7JiWv55zpJpz6H+az499t11A9GWOXpvgltY
-         lb7jesV26AsWprrDXVJFXJGtCI17EyO8I4KfEy4hcGVhlWpLwQfQW+DmJjPEvKv7ckbZ
-         kAXpbC+nWAFKZnGujWYZpjn1OGQyzdtcM1I1YvdW8Upsd6v9mYOzlSthoy9McMLco9i3
-         9BZuYTwXA1L2JkFqLLwXSrTWqli6nCOFsEiBdraX4UblUKEKHVUntur/qu6eOz6uBY1M
-         15eg==
-X-Forwarded-Encrypted: i=1; AFNElJ/uyRQViANcZyxY1k5yLjHnX0yQ/raRGh6qVZ1pCou0C3qWfNBtfzM6MjNXSGXBNgtJOyOX+h0TFA==@kvack.org
-X-Gm-Message-State: AOJu0YzXzBrt+Hxj3fEcgQwOYtwDa5QGDE2PU5/E/6FuV6klRjpRCdxn
-	wv68uMwEsv8+sOxbvPNCnoPJhwnws7DmrgzmQ/MvSH3smuhGmo2fHjj9KjENCvuEdA==
-X-Gm-Gg: Acq92OHIiXPAc+7ALWdPMthRnBg4ndVPgCRH90tK8Ffwwbjzc0krjfIcuuBSvpcyjt7
-	qiRt8P9ZnXIen1bnO9J2jv6sFE+OLfgs0kaD7zC5v+XS4O3rKNxbMCyHsBtMlM17T5lkAJ0tlKf
-	HycKX/qFTKqhtCSMFbmL8B7tEcMaEISNDnsgumgTPdtcYMkNYcn0zpqDQsOaj9pYiR0Zx93prAD
-	PmRZe+nsC0fseB8/P3TJaXvEx2oM/Spjbwu5262Z7NRpF12lQjZpwWB/YbV8UsyGrJx3P7IDIy7
-	uBfNtgWRed5YMqaea/wJplmt4hMYbMiIJ2adJhVHdXtiatzS7plMV3qW8yKiks3q7kU7hxiT0xo
-	PvdpzzogzCWchUsGphtbzMPFoAoBHK8uRqvDXZl51wOKCTvVicJzImFCXr6c6OUBRVqJLRhP4TE
-	RtDtGKg/lmOs3S0DSpYIM/4UtUI4OGfZ4eNctBa7xlkuDIpfkmv9mJlgFyWkbu3Au66X+oXrA=
-X-Received: by 2002:a17:902:f787:b0:2b2:70ba:305c with SMTP id d9443c01a7336-2c1eafbd48cmr5222305ad.8.1780919910000;
-        Mon, 08 Jun 2026 04:58:30 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b56c5sm15740485a12.27.2026.06.08.04.58.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 04:58:29 -0700 (PDT)
-Date: Mon, 8 Jun 2026 11:58:20 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 11/12] PCI: liveupdate: Do not disable bus mastering
- on preserved devices during kexec
-Message-ID: <aiauXATym3w2QX9N@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-12-dmatlack@google.com>
+	bh=AQAir/XhNgzln0FRrf8cgFa/spk0WCi7bswkv8ztqtM=;
+	b=qwqTjsQJcieQLl37gH2boAUFc3ENYKf584srVBnQx0+Uq4wN0xYg0okWMV4UnrOLlXn7zY
+	I9FwPPByirLmUeSji+y9pL8N3KwxkLvx2HFF4i/4fzuNX/cJNMzdqwSg8ERw6/hR7wTenT
+	oepbJajX/AHs/wVeBrBFsM4Z+Aw3h70=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BB5BA600AE;
+	Mon,  8 Jun 2026 12:00:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5A11F00893;
+	Mon,  8 Jun 2026 12:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780920012;
+	bh=AQAir/XhNgzln0FRrf8cgFa/spk0WCi7bswkv8ztqtM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=VbshWzMbj8MuZE3fQBjIspMvk6Z4L2Uwp7JKBQDi7zG7PNGbjZK3FOiOyMtngTPId
+	 CkklEcZg91CINj0HiWVC9Gfc80+yDZibAE9nBvMPSJTfxTDEKqHrb0lb9w8/An9BC3
+	 9Xl+UnrxOrfGTQCSmcitJ3pVQ+6LKwQMJfY9ZcsX0XNPtKpQEkuSgjGS1npPm8Yabj
+	 zZCHUyW7t0Cx/M5eZPzlXgSExpuE5ueuuJ4zMNjja8Xlq35MjDAuiHyJtDoilmbwy8
+	 gC7j2SZOAcubRcT42zNoLs8sKFkCNY8v/D8sxnqGqf1kS1gPjGB+j6ydvtKLiE/0tK
+	 p8dcPzmqCGdgA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938DC3930D69;
+	Mon,  8 Jun 2026 12:00:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522202410.3104264-12-dmatlack@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B86E7C0003
-X-Stat-Signature: piiq5feazsjb3rjrj1nzzupkikghkhes
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 bpf-next] arm64: mm: Complete the PTE store in
+ ptep_try_set()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178092001114.1007295.14338085080112012433.git-patchwork-notify@kernel.org>
+Date: Mon, 08 Jun 2026 12:00:11 +0000
+References: <7f5f7c94601312c1a401fb18998291cc@kernel.org>
+In-Reply-To: <7f5f7c94601312c1a401fb18998291cc@kernel.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, ast@kernel.org,
+ david@kernel.org, arighi@nvidia.com, memxor@gmail.com,
+ akpm@linux-foundation.org, rppt@kernel.org, andrii@kernel.org,
+ daniel@iogearbox.net, martin.lau@linux.dev, eddyz87@gmail.com,
+ yonghong.song@linux.dev, emil@etsalapatis.com, void@manifault.com,
+ changwoo@igalia.com, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 79C24100009
 X-Rspam-User: 
-X-HE-Tag: 1780919911-938659
-X-HE-Meta: U2FsdGVkX19HdsbLSUr46KbHjhD+Nl8yS2WtuzK1R9R5ULGUQv3DRjQac2Cncioif86qLcVgp8c+i3YLSsImO+QOx/pJd+NfqIgScONjb/fpOo/1/ZpexbADfMwN+cS1j42gkj3CKXoMhUi/I+AVbYV9w0fBFjsIaJRS/Ti/q9WHn5zMT1/SL/tPY/tUATMkBRYK428PpwEqJG7O9Afx142jBxHCbIP1H7SQ7r4tWJ6IgUxSsWZ6w6f8J3wXXDg+Nnohnp6qVxtWmcXZKxeKNTNLEEn2M3Oe59rkAgM8gjLmIYfrO8xwrh+jAqKDZl3WVZF2hDewgwsNPjuPpxAjAqRAe2gmylJHG+ZNpn2CJn2eFS9/j4slkYujTp6IjEbif421Jiyx186y/FDpQ/K1sM4K7YTUYl/1gKdRWKMiJQ/Lm/Eg0fReSM4URoioJbroHv+3N1juQ5tIPA0QUvjShBp3fIzXVxdfsg4UmTcsDYkXa1QLMtu8wS7mADwdhrvCVZGxmYTMH97A+HeIrZIt/wYW49vL3N+fP6U7IZR2TWYhPlK2w1E0ePCUnVhHCf56kReX9ngokaZ0cuYtWvdvO7RyJt44hVqOPJ5GKg2XCZpVmZsYxw2KIb38XMXBJMLZkU0kO0M4RQvPwDiFnOqxtBK15VQ4qKh46Yt5aP80iGjks9cblg/+p2KEsgs7iH3M3hNikEN+61Ccow12vlGPL1henEVqpmlePUTwI0+SYx+15kRyA7Q4v4LWU2dL7h7dBF0Dx0lvF28pUBz8xKh4L8Ua9En3k2nk+FiJ6XDDvm+3rpS34IWH/hdMapEc2XrmunLRdYnPo4833W5x9YXNrUIN3IcSyrLEfHTsgFwMrMNqCATx+JD0Lq5IDjMH7PgoMFlTWZxhg+Wq0PzY3I81NuoIyA6sJxTjgqboiCdTHJAiHPGbdSNQ9KIA47enWQpa7cBayyTYKzJ0ZrvOR9t
- DBMlcK+H
- DHi7V3bOeqA7uc7ojSvvZJbWhPX7ZMB83n5jnbGbU0DnHkfLM7GuDJ7t0kHM4O8sdya6jLN2ANJ6FYA2R6vE4yP67ByY/kundg/DT+Om3y+s3evF7KaT8v5dsYrJoO9vSy59PzTgfwjyBNZ2KW3XBkuHFthozdxhfdP8viAy6i8+Bo2m0Sc2AwFrDdUTNiGpabwcff7svsKOYs22+liKwyqa+V2+N17qujWygjDqL9Ltuyam4/eYoniDxw+HgZBAeASoiKhZI1r99YI3AxXp9in+zqADbQcFDRPDFww33KoVHRCBm88SMLq3IYsYAWq8vmu3QWyXeVA4GKKqQocRiGqpO2jGusEvkgoyM
+X-Stat-Signature: kt1tyyj98718uu7dgea6tkqhn3axqotk
+X-HE-Tag: 1780920013-886516
+X-HE-Meta: U2FsdGVkX1++xDvlM4GQ+TlYEQze6zOpOZh1Q0+DQzAzt5PCLPOhap5LiLWp7kNc8vxeLSbxb8X2tHG7FNZhMyjZsUk1VIEwyz6r1Jx4XF1eFFA5XyZbLBLeo8K8PBDFfrCFSFSil+YGcZmVe/3TwUCWJeRU1Zm3VhJKUA3Yrii8xWj9djBT7jSOdJ5sIH15jMLUecM2LSKzYeytnRGZYgMzucJxZ51Bbku2pIZHzysd6fBOJ5Y5ev9blJtmN9ELbagU2cXho214+Os3yZKXnBkkEDHYLYO9F3GZJ9VghcEsL/DjFPbqD+rYIaepNh+xfXe00h3yG7UEo+EIo27NUKKatpmVtbDx1FHRxaE8Vq7v5XCqcB7TfKhacrEw8DhkqVx3hvAETMaiQLhXhKzWhmxwICW7TfKWMB6wky5dLL8HIiF5ZrHxww8EFEHqwTsmqzP7zlk4ColGzr96V3wfN7R11j9u7ClZkxHaVeAMeREMdadYcQ1OBaxCslxxnL+WDmwgx7kZq1KrVOc9L+epBSMqDoQn33LK+DZwf6YSqbIN1z/wb2zlzPEVsA7qLyIjBlAbLg0xz6yWRD2dcPuTsy7+hPrlYWkJUuqtD0x5JgSbYZAlDn+rGrv6WXIJGiQCbJIDfluM24ut0H35n3pYwmDFFdsc5toK9kdKcdmy0NDLLrixEJo/fCLVmt21kU1SQR5ojAiKBHY1Fa4hswTFfCf+lIkzBKNNTSG737vMk1yuWDYcN7NZudIrZGWSng8LQonBMG/tgVBtwpGe1iGsJ4bxi5GSBX6eamx4FtLT3F8JqJH7JKj041sFeXjKLR3wD2H9jMsBYORvoXFRJFfuyhkeeU1S6XYI+s6Fh5ydWEaAXoMfh90c2vbLo6sNCmKzBwJctCpE+Q07Ewgqe7dItXKmw70bdvvPvvSm//rTlGJSBWfJofqDOksj8KbcIv37BL1Ka5BgI95vGyT+6gP
+ qHrw+hgm
+ JoWFqJ1169k6hBPYLLk/cR9Nn71aG14A+aNeRIBSkB6Il4+d/+qLEKeQpYiC/ikhsP26vVFXHJUBm0oJO3b83fK6arCNJgeB5qOsV0NqbZmpZHhjDTf54Pq2O9gKmdxCYwf0EZ0ydCCXgC1FWB/2UnT9nzlK2LdWkuC2hoBiRlmxHfVS1ldHby3V64CTWx+tO9h6dr+t/KT0+voqBOJgOXvfKBYUQsEWWU613yDIK/H6e16d5eYZ0Qlg/VbGI5Wtpqv4K5/gfVvY40El5L/SbNQ6GSTfTSi0Rx+LHgfGiKaJQODIWGrg5oiY/l9yujPfHE12jJlfWkw9axSt0S8mVB/mQyWIN5U+Jb72kEUTQCSYwnl/bou8IF3+mtMdxeTC2l2iMdqLkzHDGolgeJt8x+szprPw1JQoM/2aFYx/YUrnFds50adW758OgrubZDI4L4U7GNttrPluP/Y8IXxkjJ1DTj2mTDB5sTFAY7ZFeix38UVFNWJctWF28qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,83 +101,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 08:24:09PM +0000, David Matlack wrote:
-> Do not disable bus mastering on outgoing preserved devices during
-> pci_device_shutdown() for kexec.
+Hello:
+
+This patch was applied to bpf/bpf-next.git (master)
+by Kumar Kartikeya Dwivedi <memxor@gmail.com>:
+
+On Sun, 07 Jun 2026 21:25:47 -1000 you wrote:
+> ptep_try_set() installs a kernel PTE with try_cmpxchg() but, unlike
+> __set_pte(), skips the barriers that arm64 requires after writing a valid
+> kernel PTE. Without them a subsequent access can fault instead of seeing
+> the new mapping.
 > 
-> Preserved devices must be allowed to perform memory transactions during
-> a Live Update to ensure continuous operation.  Clearing the bus
-> mastering bit would prevent these devices from issuing any memory
-> requests while the new kernel boots.
+> Issue them with emit_pte_barriers() rather than __set_pte_complete().
+> ptep_try_set() must finish the store before it returns, but
+> __set_pte_complete() would defer the barriers when the calling context is in
+> lazy MMU mode.
 > 
-> Because bridges upstream of preserved endpoint devices are also
-> automatically preserved, this change also avoids clearing bus mastering
-> on them. This is critical because clearing bus mastering on an upstream
-> bridge prevents the bridge from forwarding memory requests upstream (i.e.
-> it would prevent the endpoint device from accessing system RAM and doing
-> peer-to-peer transactions with devices not downstream of the bridge).
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/pci/liveupdate.c | 11 +++++++++++
->  drivers/pci/liveupdate.h |  6 ++++++
->  drivers/pci/pci-driver.c |  7 +++++--
->  3 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index d404e64a4e55..a6f2790bc1bf 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -132,6 +132,10 @@
->   *  * The PCI core inherits ARI Forwarding Enable on all bridges with downstream
->   *    preserved devices to ensure that all preserved devices on the bridge's
->   *    secondary bus are addressable after the Live Update.
-> + *
-> + *  * The PCI core does not disable bus mastering on outgoing preserved devices
-> + *    during kexec. This allows preserved devices to issue memory transactions
-> + *    throughout the Live Update.
->   */
->  
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-> @@ -790,6 +794,13 @@ int pci_liveupdate_configure_ari(struct pci_dev *dev)
->  	return 0;
->  }
->  
-> +bool pci_liveupdate_is_outgoing(struct pci_dev *dev)
-> +{
-> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
-> +	pci_WARN_ONCE(dev, !dev->liveupdate.frozen, "Preservation status is unstable!\n");
-> +	return dev->liveupdate.outgoing;
-> +}
-> +
+> [...]
 
-[...]
+Here is the summary with links:
+  - [v2,bpf-next] arm64: mm: Complete the PTE store in ptep_try_set()
+    https://git.kernel.org/bpf/bpf-next/c/71385b78dbc2
 
-> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index f7a5e65a7c75..0b1f8d01d7a5 100644
-> --- a/drivers/pci/pci-driver.c
-> +++ b/drivers/pci/pci-driver.c
-> @@ -546,11 +546,14 @@ static void pci_device_shutdown(struct device *dev)
->  	/*
->  	 * If this is a kexec reboot, turn off Bus Master bit on the
->  	 * device to tell it to not continue to do DMA. Don't touch
-> -	 * devices in D3cold or unknown states.
-> +	 * devices being preserved for Live Update or in D3cold or
-> +	 * unknown states.
-> +	 *
->  	 * If it is not a kexec reboot, firmware will hit the PCI
->  	 * devices with big hammer and stop their DMA any way.
->  	 */
-> -	if (kexec_in_progress && (pci_dev->current_state <= PCI_D3hot))
-> +	if (kexec_in_progress && !pci_liveupdate_is_outgoing(pci_dev) &&
-> +	    pci_dev->current_state <= PCI_D3hot)
->  		pci_clear_master(pci_dev);
->  }
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Looks good. 
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks,
-Praan
 
