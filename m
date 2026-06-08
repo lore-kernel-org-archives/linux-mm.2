@@ -4,139 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31076CD6E79
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 17:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84CDCD8C9D
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 17:19:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 449266B0005; Mon,  8 Jun 2026 13:13:07 -0400 (EDT)
+	id 256A86B0005; Mon,  8 Jun 2026 13:19:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9AD6B0088; Mon,  8 Jun 2026 13:13:07 -0400 (EDT)
+	id 2076C6B0088; Mon,  8 Jun 2026 13:19:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E86D6B008A; Mon,  8 Jun 2026 13:13:07 -0400 (EDT)
+	id 0F67E6B008A; Mon,  8 Jun 2026 13:19:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E4626B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:13:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0071C0A9A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:13:06 +0000 (UTC)
-X-FDA: 84857390772.02.EDF3B96
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C3462100009
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:13:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0247C6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 13:19:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AD892A01E0
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:19:33 +0000 (UTC)
+X-FDA: 84857407026.29.5E28410
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2FC2C100014
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 17:19:30 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QxhEiiPv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UvkMWN8K;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780938784;
+	s=arc-20220608; t=1780939171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUpt/EToVTToJvd7YASG+3OoKZxNxbXoqptfVbb/HeE=;
-	b=b2kwidb5ONaP5oz+XWaWsKHWVe03bIRWj3rxFQAzp84HH07iynsf27Nb4VpDh89QAyR3ey
-	leNp9OGMTFvjlIUhIP1AN678qNyKKl3k5bW/12YQfk3Axhguo8pN5LIiENKKum5rAgeWkw
-	feh+8Guybu7X9S2E9a5iUdNi+ezQ9rM=
+	bh=DBoyFy+ciaxzSZRoZcPAmZj6N0IP7+wC188AvkIvM0c=;
+	b=vp9ds0FuKf3wqHpiPe3TYjdYF4N4oqLrxhVtgjnJ6UK+//hzzFC+lIcmsRyI82qahn1Jzo
+	yDGA6+wKEMvZLbs3FcNGWMd46N68s46CrsPfXgNbE4fbKKz00h6kUIX6Ja1nDnj/49/AIL
+	m5zaFRXHG4VxN3U6mVQXlI5o5oYfsDQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780939171;
+	b=FUUNHMHw4Lj7kwKnv9w3Ktv/ttpGNmRNaw3ynhEAKTLFeno+Pw4fPc+8YgORqOO0AuuiHQ
+	gjeLs+1Pu8JYFqa64rD8mpo22CLyAjrQ0Yf0+4EVEqdywt8cBMZd9BGbCdO9H2f9fiAstL
+	NIrpbpLs245fkwaKrTR/VEOi28xahRk=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QxhEiiPv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780938784;
-	b=V6WXNuDSfe56YZmuH4lFImTLzeaqH1OdghMEQybwJxH5ExXDfPJrYLoC1+GlS0/KpEFbuO
-	TUxfRziG/IG86ecWktkCSqDmXdHCnZDxtd6MpZYzojqSwlH5B6GeYIGTLjQkKzxWNkE8VL
-	xA/qCoK6NIEQxQ/+jA1RMi1kNdCdBeM=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490cdae130cso8236125e9.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 10:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780938783; x=1781543583; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AUpt/EToVTToJvd7YASG+3OoKZxNxbXoqptfVbb/HeE=;
-        b=QxhEiiPvl12cX3i7Fbn2iorhGVWn2lLLbO67DAAzV4uwyNJQzrzCif64pKgmACQR0t
-         bBeyp7DQYTAo2W2+6FgE0KeSd4mlgtAYTZ/XiTcYsplIrhJ6rqdM1PJ84ijl+BEk7FMD
-         hB87WhA5by3cY7ZaYxomXffons8Zz6oiHyu51mNy0U/uVLwt73I2Ws4WB5Z/MOqG2TGC
-         ITTd4GxxO+hEH+3fqoZcuvSHvAHEcSHHTKwCjbrmMLCwxj6tDEj763E8mJyma81pgJvk
-         bDO3ci3HLSjELK0ja5PZauUZ74NKkQ8XaDMrK+/Fsi/k+i4MnrQrV8+GUxZT0E4nzM1l
-         AEuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780938783; x=1781543583;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AUpt/EToVTToJvd7YASG+3OoKZxNxbXoqptfVbb/HeE=;
-        b=gkLStbs2Pw9HV7PIijzE7B/175mR8S6ZMKiCeI6ac06tovsbMJt99ag8/B2YM9DMQF
-         0l093VQ/yboARXgG4RUCJ830N1KX1QBa6n8y8zbKxJm2/a+ALzZIMkz1jqwT6L4TFS1y
-         ZtBJJaVSGpMeTdKpiC+WjsC8hJVxg/J20vmMAzH+OCmthNfw73pwm/tieqjCWd2Hn8Iu
-         zI144WYwuTkItELxXD1N6vv0qVCIdnE89zoDbdYvKKukyNdzajkiflCpRo6ZmkcP1Rq9
-         7AN55KkqYP+HO/nz5Ty8Fo81vnVT4BZOpWwZLjaitY+pXAE4SXU5bvIADfLRDxmbLrOc
-         2vNw==
-X-Forwarded-Encrypted: i=1; AFNElJ8bhIdM6Y7U8tZ8UYe/Ii7/wCAj0CI0BHlerrtckd3CqUerPCTe1mIMOYVFuPOumu0/ySBjE1UIXQ==@kvack.org
-X-Gm-Message-State: AOJu0YxlxYubZJ0Y+l7CqCR3GRAEREZS0e28Yl0i0CXh2Wa2gdICJQcJ
-	zmMwuRPmf7woizToErtZD4+Gi3Z5JP0aYwK00f9d7GaEXuVKy4wWTBPD
-X-Gm-Gg: Acq92OEZ989RuCj1lJzUsIpKJsczLn0tjRSNQRdShhTFvEzIpGeyqaGlegtASp4CYox
-	e0ysLJVlKUxyEI6ceB93XS/hqmwLX9JzrmNKWtSwhLDW9Gtqhx+zouq1WUB/+cspCBAKMs8zsmf
-	y3n1cNdf0gOCAymcRWBboAi0YjRRueMJ7dOdMqLOIoTpn1dCTokLzjcaH2qkdLUb+jj1EjS6n4t
-	KgdWwDAcFSpEbs/PmHPKwYzQ7QSE0yOyUG6zefgDzcSsGtx43WA9a/lEzN52DKl+bU/iaNAMN1a
-	wITB0gLqZ3+6Z2lnjif4E2DbMEePfhsaCdhxXpdp9y6uV7fpTbDUiExE8S+NFFlPL3nyae3WJ0e
-	qkI9q0ZSahmMBnXtOjt9grvofZ5OIrGjqKZTiZTZ3IR+YJmZYmmYLFFxYe76hIbytCPGAlJ4c3T
-	DnbvvBHSmBv7zk4bK4EnQW9MyoQFifrCtOaEw4MNQ7
-X-Received: by 2002:a05:600c:458a:b0:490:389:7644 with SMTP id 5b1f17b1804b1-490c25fbd78mr244360025e9.17.1780938782731;
-        Mon, 08 Jun 2026 10:13:02 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4601f351ac0sm97432933f8f.27.2026.06.08.10.12.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 10:13:02 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: andrea.cervesato@suse.com
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	collin.funk1@gmail.com,
-	david.laight.linux@gmail.com,
-	david@kernel.org,
-	dhowells@redhat.com,
-	fuse-devel@lists.linux.dev,
-	hch@infradead.org,
-	jack@suse.cz,
-	joannelkoong@gmail.com,
-	kernel@infinite-source.de,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ltp@lists.linux.it,
-	luto@amacapital.net,
-	metze@samba.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	rostedt@goodmis.org,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	viro@zeniv.linux.org.uk,
-	w@1wt.eu,
-	willy@infradead.org
-Subject: Re: [LTP] [PATCH 0/5] vmsplice: fix some problems in my previous vmsplice patchset
-Date: Mon,  8 Jun 2026 20:12:31 +0300
-Message-ID: <20260608171231.1480447-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <6a26aa28.283787d8.1f1282.ba36@mx.google.com>
-References: <6a26aa28.283787d8.1f1282.ba36@mx.google.com>
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UvkMWN8K;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65898RFG2767293;
+	Mon, 8 Jun 2026 17:19:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=DBoyFy+ciaxzSZRoZcPAmZj6N0IP7+
+	wC188AvkIvM0c=; b=UvkMWN8KLfEzxmLpZ1sY2LmMpEnsERZql/SZu79GcacmVG
+	nJ8RDAA/EWJu0QTBT9I8rhEVGVjsvw491qHDLjkWbtTj+G1ErEbNucmYNgefck3n
+	sXb71UYeyoOJ3iHb9uGTlQa1c7zijbhSwJ3CbUZLqUDhfodU85OeYwZ9H99mdnC3
+	r3SaOq0YfnLKUBrzEI/NDGMC4tmmsMbWreWWLpwy6XtaZOHoNm/OFg4ZwV0/I59G
+	4KkrTmCjUm399k2RFD4LQ1FZWu4IhVjrWGpXHlQ1bMOozcExaJDEQwFU+NbG0yrW
+	VBNpihqdOr0erSNa3EBLl3w2maw+J6eaZD+zOt1Q==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb23rg7k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 17:19:21 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658H4d0F008374;
+	Mon, 8 Jun 2026 17:19:20 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvpxgua-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 17:19:20 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658HJIV950528622
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 17:19:18 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A157720040;
+	Mon,  8 Jun 2026 17:19:18 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52D852004B;
+	Mon,  8 Jun 2026 17:19:18 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  8 Jun 2026 17:19:18 +0000 (GMT)
+Date: Mon, 8 Jun 2026 19:19:17 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-api@vger.kernel.org, netdev@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
+        linux-s390@vger.kernel.org, linux-next@vger.kernel.org
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260608171917.3195488Afc-agordeev@linux.ibm.com>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260531010107.1953702-3-safinaskar@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260531010107.1953702-3-safinaskar@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=b4uCJNGx c=1 sm=1 tr=0 ts=6a26f99a cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=pGLkceISAAAA:8
+ a=hJLVOhpQ1X8ZOlOX64cA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: 3tuSXdak2Lf5xEGsGyO-r87wQWc8i8Fn
+X-Proofpoint-GUID: j7w4f90-NzR3nJF25rOJJ_HWDzfwaa30
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDE2MiBTYWx0ZWRfXwxgojXL3enTK
+ T61FdACtj+lsvXJkGTaZ1LMntG/SQAyNxsqx7qEQDYTGBkhW1iVkn9xU8IIeIAi6Kga5+V+7UtL
+ iYIpMyO4DXfaAYbvQTNintFAu1aBmf88vRo5JGUI7xPtSdf7U27HnjHgKO1xllzes1rUkqEpRCY
+ 0RK4JOOXoKptl9erTAE1uuredrMJXx2/J3b8CwV3QH88pSOZjm1JTRh7dN4oJ5fYs3VruCq4RYL
+ 2GY1JMaYgK0/dUlN9NXbxIFqt4YJsSuPxljFE7Bpm3cRD/BP6J0hZfbb/hvkJTaEqdRiJhiqUNt
+ cKbtnKDwPQnTxeaZT9RKCKFsZf8G3p1shpV729SHu0m/RmJ3eMXqf/h22pjUEdP+tdOuVgJjWP6
+ hcZnF3TOL6+y6UNOYsSgIsXQ8pphcaCfchOhsJ0XFT6pCWKtZ5yLbG8ytOVO04FBxbyXDcZm48B
+ UQ2ogQT/HXxlK2bArQA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_04,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080162
 X-Rspam-User: 
-X-Stat-Signature: nqmpztpboewsrnxnczj6ad6ajfms7mpd
-X-Rspamd-Queue-Id: C3462100009
-X-HE-Tag: 1780938784-981718
-X-HE-Meta: U2FsdGVkX1/fbJxxrQyLqNorcSoxxtsmOs1YILsYbDuoz278kxrbe4xYw0s+aW9Sb3iySLOs8ZeQh9Qk6i5qT/1D7Etlf0YkJFQEbFHu5wz3DuVMg35IIf3yy/lkppKgDK60ullen9Z/ocV8+3bK0TWKvyk3KwJeyHfyj21ow2G+AfzVdmr1S0Cp2KBlPr5iLTG9OuBsek0G5aWrRUjzK0+YZmiJWOxCJr0AnXoee1mV6QSx9gnpX8djtfZ6R0P0qXKLZH2Gx2zV0iGRgv38UHoG9RAhR3pdMMt98CalHfwRRNceKM1inmgHgb7s37BBD66iqYEtDiT2UgegHS7xqkilhFAkVRuuQht+W6pEoVeTA3itm6tBVSYcQnfFO+U3j1xNzCaEg49laeqZleg+CvrZgRX3/tRXlN/3C70sMXFrVCh/10AL7XQclRQgsFrCQd7tvdIre8Ln+4kAzBztZrILJ01h2EzpjNwGnShLy+gETugbctwTIZGZ1anc+ZPXMSUAtcm+z8OncKsklyuqpsa/RwILRqRiR1qwgMzvs2p79zAGX5EROz2+9NKpOPGtmLK2rf62qqwqmmZlatA+rO1lhnJxr+ftgfpfLKq442H4lKsEgXZ+gbqngFE7pxLZcwTDErQy2nWyMwcIjqw+Qah6DgI9hOKJRNw587Vx596xP58QI5+CfFQq5pSRIy1yLT1T10nHwiH1IpRt0b9bl+Z8dW+GmUf45BRFvrR5UnkhqGnKTbm8NjxhQU6QatH9clHTr8TcjWDyOQJatl3Q7jMOUxQXdmZDyXy37u/S1n5svzMJfXjI4wIJG+WxJEDxJTD8BEMTpkJmRsw9JWafHYwbcCIl2xq66yoAyPO9pVAwT35jFrzBizE6AFjWACuISXWZwQ1i7qopnuwyzxpQYOnzUy7WTzi900Ef5FPZ5Lor9Zjsm1/+dtA6l/w7n/u8QZQAIJ+9k5B+2hnO4rt
- 22rEtEyf
- uWBrMrBQTCL05g9Wp8J3VR7HY6uDby3qYWmxZJIi1Y8+jc+v4pSEb5qT3KqzN8SmVnu4jaMyobD45rPr8jPFTE3zF6f5W5NY9oSaTk7/UZ5Thbn8D/D9bJpi/04wSeYRYgMLUeAJj/X5yo+hyv3TTfTVKg63jSawOWLlp2YL3mYL4pGrHEipmyIiCAjRsmqjXQfwu8MsyOJoI2g2oDSCfnXaJlF4dVK3PNFyFAg4PWelS5A2Z6rD9UXflgTHx5LEwGOxYE60Bk6VQXcUzFhzYJnNfbbo2Romcj9EbEpcMJBy1RxxSjyWS92zD+5TCxY2n7RRfYNOp7lCymgOEb0hgOlm06800m1PExE87WHwUEqI1vABzs3D51LK7IwBQMui5Ses7bKhhwGo+fEQE2JvcLB5Kx7vCWYMYSdFgzHtregli2lxhLYSwubvtxeWYPgskGzWxGj9ntErluIGUtDqSQw6oNX6vNdA5Gyljwxv7OvQd9yRwMoayqR5CIESC9KTsTTKrAUWqnoONQCSNUcw3PFczdBEBTReygZEAQwBXgTC1sds=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2FC2C100014
+X-Stat-Signature: hfg1xtgsp89pk6cj8upp7h1c8dg9m9f6
+X-HE-Tag: 1780939170-346779
+X-HE-Meta: U2FsdGVkX1+EvsH5q2/a/2NrzJ3/v2M+bjbovszax7qOBj/vVCCOXVk7FkRTnYn33V/fekFNaWGHPPZ4MssjZkygkp5QLudbQ97vH/2rTspu33oa2aWbievD1MaqD85Tx1RZpNaGLykE25TuYjmXWM358s4AtYqhopVhgQKuztxKh+Ab8QdPHYOfRhpk6AamUNXsi+BhNuaWgy/cSW48bo7wqEvJulu/STZnX/y2mNY2/6/FvqF/7H3fvRGiBc7tFLpnjdCSlRM+bHjSGMntX2AXvhWpqn4AP0xSJaaryjJ6htljSdWNVyGWnm8+lumdPQUtUV8vK0W3EsEXAhLZ+AyUpOPsmw0a1SxaYliRdxX39AzyNFqdERTJ2jJOq7VXcxnrnq0wpAdM2nDpQ6/EyU3UQmG+mjkdigiCHOzzWNYo4A8UjJImASN/sV80j1+JaAOB0viHjYxi7v4vzCvVhd8UwPrehle4nffY+/VfaXK2G0iiXuaMQ6x8jCizPp4iF9UnGSidWh51ksnJBeiMZGr1YpxeV9NNP7yekQDsamkJ10IEeFzM3XAwr8/cssEpx1nImTU4bwnHBOz6ME1YJYVLCO1k3RZYbnOfcGk4DDl5dr+UwX4dTgoI/NfYzyvSvGmZCmjS/S5FHRm64ZPR2u18FjRMILDBgRjLihxw4S/P6w714yt9mykWnXNc+GB0RDznugyALXNAY0cEE8HajqF3pjaMIbyRPYHnpH+qY9VGY/9rrN1KGCyKg/VuKT/Esdp8L03XKJV5QySdkGwXh1hOBypQVvU7ZIK/sC++UMcEyUOrWiNazjBlvizYsdDDMIuyTQltvaTHUzBpqhvitYDsdUAmWuUSs+85sKcH5MUfMUJoOZ9AjrZSFGMzRZ7SvX1M28B4HduDkL9X4fnMdJeCzJ7Fw/wUgWCx2S96yX+1WR8RT5cR+ddYfZBqd40B3QmF/nFvmjJ5R8kWME3
+ bNEDoCx3
+ D1QifUmr7BR+KqKO3tnoH6folyd4hCqoNca7T4RFMcEOzp3hEg2540djT8HM/MPo8r8m34i4Kf1E0NgYkh5cDRPx772aYbSpKtSq8m5mTVNl1Tls2BpirrF5SueQV86Le1t9xNwoOgOBZalvwlmImxP3dbUx1eMmTkQd2U4A9nXgBsEaWx7Z07zsztHdsVveQWA0sOPAHQ3Zpc8DuTr66xi4pGDs2aUKoze/+gXDPl/Xq8S1MmWb08GuXh/zTM2au+aMh0nHAB1QqVwyUXF45SAE8FVDlSXZsPx8gg+fzM544IE1T0KiKwy6mfxr491MjCWlYaNukghlCv45ummm3HaWAhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,14 +148,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Andrea Cervesato" <andrea.cervesato@suse.com>:
-> Hi Askar,
+On Sun, May 31, 2026 at 01:01:06AM +0000, Askar Safin wrote:
+> vmsplice behavior on writable pipe became equivalent to pwritev2.
+> vmsplice behavior on readable pipe already was nearly
+> equivalent to preadv2, but I made this explicit. I. e. I made it
+> obvious from code that vmsplice now is equivalent to preadv2/pwritev2.
 > 
-> the patch-set doesn't apply:
+> Also I moved vmsplice to fs/read_write.c, because now it arguably
+> belongs there.
+> 
+> Note that SPLICE_F_NONBLOCK behavior slightly changed: previously
+> vmsplice ignored whether the pipe was opened with O_NONBLOCK, and mode
+> of operation depended on whether SPLICE_F_NONBLOCK was passed only.
+> Now the operation will be non-blocking if O_NONBLOCK was passed when
+> opening *or* SPLICE_F_NONBLOCK was passed to vmsplice. Previous
+> behavior was arguably buggy, and new behavior is arguably better.
+> 
+> Now SPLICE_F_GIFT is always ignored by all 3 syscalls: splice, tee
+> and vmsplice.
+> 
+> Signed-off-by: Askar Safin <safinaskar@gmail.com>
+> ---
+>  fs/read_write.c          |  23 +++++
+>  fs/splice.c              | 192 +--------------------------------------
+>  include/linux/skbuff.h   |   4 +-
+>  include/linux/splice.h   |   2 +-
+>  include/linux/syscalls.h |   4 +-
+>  5 files changed, 29 insertions(+), 196 deletions(-)
 
-This is patchset for Linux kernel.
-(It is expected it will fix some failing LTP tests, among other things.)
+Hi All,
 
--- 
-Askar Safin
+This patch as commit e2c0b2368081b ("vmsplice: make vmsplice a trivial
+wrapper for preadv2/pwritev2") in linux-next on s390 causes the selftest
+tools/testing/selftests/mm/cow.c to hang:
+
+# [RUN] vmsplice() + unmap in child ... with PTE-mapped THP (128 kB)
+
+Recently there has been changes in THP area, so the problem is not
+necessary linked to this patch per se.
+
+Please, let me know if you need any additional information.
+
+Thanks!
 
