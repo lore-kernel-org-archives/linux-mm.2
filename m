@@ -4,123 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C7BCD8C9D
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C17DCD8C92
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Jun 2026 15:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 673006B0005; Mon,  8 Jun 2026 11:58:37 -0400 (EDT)
+	id C8FAD6B008A; Mon,  8 Jun 2026 11:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A846B008A; Mon,  8 Jun 2026 11:58:37 -0400 (EDT)
+	id C66BB6B008C; Mon,  8 Jun 2026 11:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539C96B008C; Mon,  8 Jun 2026 11:58:37 -0400 (EDT)
+	id B55546B0092; Mon,  8 Jun 2026 11:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43C946B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:58:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8BB14018B
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:58:36 +0000 (UTC)
-X-FDA: 84857203032.22.37F2A0F
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E726B140015
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:58:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=siderolabs.com header.s=google header.b=IkdDFeNj;
-	spf=pass (imf09.hostedemail.com: domain of andrey.smirnov@siderolabs.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=andrey.smirnov@siderolabs.com;
-	dmarc=pass (policy=none) header.from=siderolabs.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780934315;
-	b=oJ/AYQtrxiYeuX4g/bi2GRLaXFO3rhEXp+Zp2uSCydWtyXOiBbF/twUTWdjULM9YGPYAU0
-	edNTCfNj3s7/xVsEVqVR4hf5K1GercyMgZ/NXjXQrpcjOGAYXsPSdv31c7NjIMjyKz5FgB
-	FtWedbca2TcE7DC235aJvYUjcbe0fGM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=siderolabs.com header.s=google header.b=IkdDFeNj;
-	spf=pass (imf09.hostedemail.com: domain of andrey.smirnov@siderolabs.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=andrey.smirnov@siderolabs.com;
-	dmarc=pass (policy=none) header.from=siderolabs.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A5FE66B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 11:59:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 561AA162FE9
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:59:38 +0000 (UTC)
+X-FDA: 84857205636.05.7E177D8
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 71CDC20011
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 15:59:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=s1pKHQBb;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780934315;
+	s=arc-20220608; t=1780934376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=hiaq02sgTN+eg9Ui+NZIWW5xOwd5YS8q5QwBFbVzNCM=;
-	b=q7HLh9lo1Du1NxmmGJn+fbMhogYgkkNcur2ec0DJy8o7rO/bid+PohdYrfP4kR/FwO8ZXF
-	xQ9xRURW6/AO9ytbG5tE7qhz+kaaSohD6qOXeNbni2ZAWJFEixHIymrBIHgtSqVUmBjLO2
-	OJZyWCsbe3rh1ulmUdp0AiJ1dT9di04=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490b12270b3so27197685e9.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 08:58:34 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iMleNw0mNiEoxYUiy61FpITmPtoPBIE8+C8594s7Zxw=;
+	b=uw+5X/P1HbB+IyZuePU+WKOmLJpv4ImctsV1/8m3upfrbOjql9rW+Whzv0Bh7Vf+1Bp7zP
+	Ti5fY5S957vcE84YRCj+5SNaLFJffKSu6i2oWBB9EZ8QSTI26Us9xQDNkcGxaMdL4Pf5lh
+	IpmGPm7jnS2J65tnubvc5F50gGbB7Hs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=s1pKHQBb;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780934376;
+	b=QMrkc4htq335CwO2zNv1h94cvdA2gfE84jKgcNgEamEYUnq2AuDawhihKEP8AHPTDefU5E
+	RJZ6ac8NwlXJJZ5HpaiJk42TRCgJguGp7NyRs3BWd1yspEXUN1sZljc+MMUuNpz4ZbbaqP
+	InDnP/XiFz8TGYOOeAp5dNRR2fN6YzI=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-91591f19c30so700936485a.1
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 08:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=siderolabs.com; s=google; t=1780934313; x=1781539113; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hiaq02sgTN+eg9Ui+NZIWW5xOwd5YS8q5QwBFbVzNCM=;
-        b=IkdDFeNjO+TvkOA5vhGX48xnztHDJ0ipCge5RWu3IcqMPEoV8SZPInuSlWX0/XhpFW
-         V/4XuYcvZVAUY3SGAvez4Flxc0LFVVF+AkCI//V0TbkxIzGn1lPMj2oFaboVGG2ebxUq
-         KGWSeOc2MoXkw0Z+g+0j7TP3sa5KsjduU7YZSpDvSxhORzgctOzVWrfrL/yGncAkkt2E
-         p8P2Ojak+i+usfQN5KCR6wAgHDk0hoQFeFDErDXE+i509WSPZm0o/aBhIBG7uxjIyW8d
-         DffzprGeXzcej8oksbExxZztVCB/ZPlYNcpyCBLlg7P07HFOgUFnJ+Vjt9Hl8K/WKZdT
-         W+OA==
+        d=gourry.net; s=google; t=1780934375; x=1781539175; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMleNw0mNiEoxYUiy61FpITmPtoPBIE8+C8594s7Zxw=;
+        b=s1pKHQBb/t3MyMpiHbCGz5xJ9LMi4wtMjGJGILohNiDjMgIO7/3o+JhGMKp9M7+BaD
+         Eki8UmUy8k9UHAsWS8FfapV3yMgzJEMgh3yfy/2NmAR5xsfhOfuLds1i7rqajwavkb+j
+         RxqeonPT7ukgJceUnv0eO3bDX2dD4Ixia5O5Vno/xGBaLWorFl/1edGaD2znAttB6mm1
+         XAZEHm56HlOuwsQyiLmZdEu2mzcbuQicSWG5xhTbkpH98bAAY03Ig2RuUGqfT30MyuTR
+         fO8O+jd6rjM7u/Ryh+AqlwodhyrIr+2yMMvuhvUQk9ubib2ZpHlTr2eUemQmv9FYX/jG
+         feKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780934313; x=1781539113;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hiaq02sgTN+eg9Ui+NZIWW5xOwd5YS8q5QwBFbVzNCM=;
-        b=eW59CHKO9tbTd/CCHigsaccziwBp/Nvu40MYJUYEe/6Rk4rS52Rvwlqeb9RThcesIc
-         E8rj/QcIuHITcGWuvbRCMfWskPkrgKK3szuhu/AwyCNmXi2aAttG7ylDPvbDOQmmgu0G
-         Rk0u1u3I/Jx3Bwx6pM5OGi3u46Mega8g3CE76bbb72ThwZsotwn5eRy8Bl/jPUNjYKYk
-         HRyundmB5fEIqPfTDN0m2XDG8udB87V7gFBPQoLrbVmPBTRuT1PtqlZxc47JG9jn2nAQ
-         NHVARfsVwc/Io75ptkf2nVOPd8bQDZDpuW5OOjn/gOkP6D9lxqQfH/8bRY5Tup6zGOk5
-         E1hA==
-X-Gm-Message-State: AOJu0YzWJRK06TUUMcjgUZsklzkEhOZRDHovYzlHLvIm5xThe8O0oK4/
-	CKXHIKcmoMIsqQ4UZfDzTJLfTbA7c1DYPvwckMeZjCMlgLzE3q1m0vWvSBgGzSfxHO0=
-X-Gm-Gg: Acq92OGiR8iP6H/lSKORLABaG4bG64HH1/R4J3ppfUiP6HZY3e64EqMyPXD3/yTN2nq
-	gpl7V+J1FHuivfrkbbPdwSeRFnQVZ8syiDNLkuCJHneAhVtM9vEVofJ053P7iai/HtISg/3O6CB
-	5p9WCbusydvGzvZOSXbUqD1Z6xVlyTUp4c5heuI7odI8hhf3paOmZ1XpKSLU02xQeIIPgV6tCQY
-	j2RN0WchWry03mw6MEQ8e/w9v+acraHD4cOh7EYiFCj2vafAbjb9RNZAJxVMj1BXDfgZACXPuqP
-	1Hk3rzOEGFyAxJDs6rzmuVY1/hKs+d+a5PhKnb8Myi5Wtp31QNGbxZv45Odw7ZWR55Sa27yKLBs
-	mer9yXZgp7Jv8vHwgWWGbglxGTTaMWaeKFmFiXBEsQXL7fiLSkgs3S2V5JDKHnFwxJO3X4KIeAl
-	/iEjwhUcKzHsNmnXIfeX5m5OoX0zUm0iisidUDCkCia7rThAE=
-X-Received: by 2002:a05:600c:3153:b0:490:b8c0:d46a with SMTP id 5b1f17b1804b1-490c2604790mr273388415e9.22.1780934312914;
-        Mon, 08 Jun 2026 08:58:32 -0700 (PDT)
-Received: from smirabuild ([2a0b:6204:2bf7:46ff:214:5616:96d9:612])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cc140sm484355775e9.9.2026.06.08.08.58.30
+        d=1e100.net; s=20251104; t=1780934375; x=1781539175;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iMleNw0mNiEoxYUiy61FpITmPtoPBIE8+C8594s7Zxw=;
+        b=nrbKIqx2mUkDK8eHZv7Vs8M7upiWqYdply5oqXRiiqYKejeFm+hQfTqxERbwjafQpu
+         nDaL2I/c38IX1i7vfDL6SDdgwJ0EdEf3Jn6NKPnFySZjjKlG2ddTQmB7GLTAdiDqu30g
+         ihIP5lwgHeCjyb/KC5qAMlop8UrLc/jlJ06ldD6pLvvTF/HJgbieYxS+ElgPRypmMt9T
+         bmk1Q7VBV5rOBs2bV4CCZgIsZkbRvb5KSvcJUTvoygBasz0aAAau5syrHcEWcAU+bMwm
+         WwV6SmpmPvS41N5c+TZs+DApDp3A/EbxH4CidpGyh0wQtEEG5qNh+Qjr1E7ZroGSkYQu
+         yOcA==
+X-Forwarded-Encrypted: i=1; AFNElJ9MVgac6j3xo+jjCW6uz8VtKVswefFG6w/jSbpKeztbv+amMAvssPn1wFbfeaaPBce4829ghQbzzg==@kvack.org
+X-Gm-Message-State: AOJu0Yw7Dp9jyB8oDj60ySKRIEI9bOZDZgCTDD84cKKwYlsv+3RuJE0H
+	7LpDnVA57fdeM4KCNHE8+RasJCf41PwwztTEoClOvKEDxG91/TiiwuBn2TfYpoKOUzs=
+X-Gm-Gg: Acq92OFr+wkY/Bmo2bewYtn2aa44a6F/aY8/kSOW5bG/lbUmy0qCIsDM251FTRd2wH7
+	mX6wxUBZ8j9T4f84/L5xhMYDWmcTlN8QhNPcqk5EfnqBDMgpYNk2CMRrMGYcUGa4EQ6eBSCQQVk
+	TMfhaa4UGeco/Vbbw9resB4ZJ83HFYumYB3c1MuR6gmDTfLAyGPSwu1ahD+Peesc0qByUNBBv3x
+	Wv0NESBhmB4XVC2YB/3OOR1o4EHSeF4clYcnycPptASnWpeN588BXP7pP1Qdh0G9++JDoL0DUOd
+	OEDaVBImEEHiptoyCa/2pxCBvB/rdHPL/A9J32eE6dPKgjpMWhpi4Fy0+Gxopa5evGyZaFVLGmR
+	zab9Fom943LJRTh2RV7hdzJDygdareRjG5fZ7/TkCLkRWqKqcEZCn7m/1bPnZVHkhbpo49bt0TD
+	pGbJWzyz5pFxMMHQZxJV/bvFns+BguggyoXBXD/wkK5d9fH0SgMMd+V5gdNBQLHczG0+XIaBnKP
+	on3z9K6vNeEDiZ/OA==
+X-Received: by 2002:a05:620a:a189:20b0:915:a4c1:8c45 with SMTP id af79cd13be357-915a9d7656fmr1848442185a.34.1780934375430;
+        Mon, 08 Jun 2026 08:59:35 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccdc6755sm168719846d6.18.2026.06.08.08.59.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 08:58:32 -0700 (PDT)
-From: Andrey Smirnov <andrey.smirnov@siderolabs.com>
-To: pasha.tatashin@soleen.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com,
-	Andrey Smirnov <andrey.smirnov@siderolabs.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Andrei Vagin <avagin@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/page_table_check: do not track special (PFN-mapped) PTEs
-Date: Mon,  8 Jun 2026 19:57:58 +0400
-Message-ID: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
-X-Mailer: git-send-email 2.53.0
+        Mon, 08 Jun 2026 08:59:34 -0700 (PDT)
+Date: Mon, 8 Jun 2026 11:59:32 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v10 16/37] mm: alloc_swap_folio: pass raw fault address
+ to vma_alloc_folio
+Message-ID: <aibm5OFmiFK6lCqH@gourry-fedora-PF4VCD3F>
+References: <cover.1780906288.git.mst@redhat.com>
+ <d2be78654e9dcc7cf5b8a542c2c8f331187c80c9.1780906288.git.mst@redhat.com>
+ <aiapFvxPXuPd4-OP@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E726B140015
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiapFvxPXuPd4-OP@lucifer>
 X-Rspam-User: 
-X-Stat-Signature: mtxhsrywd5nukundwsj8e1piuojmcisa
-X-HE-Tag: 1780934314-994489
-X-HE-Meta: U2FsdGVkX1/xZPUGyxgEpIyEPaSmfqaHcy7IzdzHkgklKBP/6hZsCkvgjis0cuHXdyoYft5L+NmgOWysp0zoLsfAK5r7Oa/eyTL8ZXQ1tBp//QOEbhk2dl33Mp2hvtXCSChhX9NVCrmzcw+nF8okXwhR5gmd0JZRTQ8QIFaPBa1r+kqyDZzQfoMHIL3WAN+OijnoO0tvA1m9xVnuAPUO//GGPKDmmIYFvqNZuBYQ664hDXu/hD2DHgmvgFowvF32N/0Bu6CqdnkmeIYZECgVLUdyl9HCGfsrot5TvA+V0E7SnbzMmYR0JOL+7nI96dSunCXM1AuZRXt4jSxBHMugGwce1ovnJc2Uww6FBCiaxi42JfgAGoM7JfWWxD9w9nhu5YTKmdRVXivYx1szvhyBWaxAsoanp790OH1zJHPM5mjszcN8XLfcOa0PTkfOxlDu6ClT1st8DbnZio9SoBz4hBUtD3wemJ87Wi2P+ALMcTq9RDaYUXCzIedC1btLB50FP2Bw1jkUM5TJJSMxon1dCU1wcnkWK/ahX4KA1V2XrDx6oaGvfuNr7LQwPq+VRLquR4bdAy5yBx18iV7mYAzAhbYx6fAnkHhkLNIlXvk6j9FhnRZ14PyYtKGyZjNd6QOo1t5OS2+JetUyZzCnng2A4hORGpI1lRg6I9X75SBkyA6op02BliRUcdFzuDcODKwKIVLfbddYQVtiI8YEr47GnNA+VKQWQZrWMU4gZ8BSlSwVOXCf8rqsmEbiuVGIsVqwgssxritiwHuSFX2noDjkFbtjDbeWe3U6dsB87Q1mrxCCNRZFeYUSEdLkg5zCCk6ckt/ToUYCsyKMqsSjfZtjHsURL+nkGAcVgkLR0tVOzvIV/DGzE7E0KbaMeXp/Oih9XnP+gMTRYMmGrOpVvi2UnOul/5Y4Ggg9lytrbQeOLioRVKR6bMZv9GRA0az15UHu0YwfZ/WFreTBokZibrg
- j1u+VOpC
- a3nuzACZwa1GocKbU57Gp0vb4h875NfDue5WPG8g/WyYRl60YD2dodQzLL/8uQwIJ+aqOaQz6IbIvshEH3u1bj3NZmCiiCu25rAzNSajyEAS/pEjXWb8BROfe3tmXpSwb5DF14KaZ471CAXAHapbmShDwwP7Mzg9kd+2Yxqs0rlTia1GSKlfD7gdH5191pjdEiIG3SFNas3kvNHaiISdFp5BKS5FG9vQLNjc7nmaEe10Q6iW/gdn//tKy8Ns9zyXLRmxajzXPvVM0IbIf4zwfkQGA/Ph9EDbYXxq/xQooVDX9V5eWIzYQIcipXKJN9Vrq//nOvgpMZ/BfHyGRi2+V/gSm5HaAjmDWWo3XBwEROvFnJ5ffV1x+oxtLexnz9wBYpGVRTLlcq9LA8CE9cNe9f12lAe8M4legjNYNDgmCtyMif8CA9dX4JB7muCUGPOuj4WlDNS2j8oQYc7FAuol5wjNsi4gvlYVZGjZzRtGs5PPHKd8OpMFQYXanN4bA11P/sq6c960aJemT81wqoO/qFiJG/+oTEzbtr9Tth+CMWgYp8XT4wnxVcHNJ+NlCQ/dyT41FTnJidetS1dPkWwKo+zdzlpyzEAxYR/ZcSTLu/iqo2Mxt3QKf64QyHBkuR/XR35W/jhOuwAoMKfySE62Zj3WfQibVNouTGkmD8TNqQsoJS/8xTZmquf5/LLchBnnikNh5o1olA0b5WhEROTAeSCObgksSN4ZVdV+yipIBRbP4AbPfOulwOr5cTA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 71CDC20011
+X-Stat-Signature: 6xzeyzzc88yw4sjmt9ad5nq184rjnb1o
+X-HE-Tag: 1780934376-224427
+X-HE-Meta: U2FsdGVkX18Yd3mcvuJOn/QW8amBhW5ZwOoeLl8F85aoHaX9mmWicCcW04Crsx+I/F2DTKdhyNJHRMPNOaQ9HNoLooV6lpXTYiaiKRFqFleyYaqbTG/fGuoFOUlPb5MqUWZqPoDxdWGGSvkEBp/OhlN7VU1kaSmvlGHQ+nTf9cbVA/Zo5GK476rSYDZ/2A/U30lEUvRDB2tkqAZgW7+6HTuSSZ5T3lN/ZJ9360VP2diknmofIwZF0uNHB0npp5wcRelhf5kJtxKpsv/x43H9S3up6/Dm9DqXluX5Hm47uHBM/P2sk5q0fxUH65AgBzbaVqIY6NdzXpZjduKq9qj0VmyUBfB9/tQbpoevUDYwxDhPCLL8OXjDNqDBzUkpVohC8H7EB1uoJd3bN2rFR8Gv7rbakBW/PFcSHcoJBn+MhyfsYumMG8aZg1UZKQaozkzvD8tbq2GDLFYEIzLvjr8gTXbZD7EbZzwLuiCEhT7Q6wgbeESgyOoW2DC9jOi54YRZbytl9Is9C0nQdj+jnnCGtG4OoMo5m4PqWmu35EtwwkIeAgsEt1tmoqbwpK+a9x42l7Hf0NJgsVp/CLAo+01aDoHS1bdaMSzZDlvG89ME7x9Jz6wm8LzEU5fpC7JtgEhp0fcQ8pysE0Fdwh/yVfwQOKD3iq6vSPDh+dl9bocza/fA3sO3kH+kRDb2CEzhMoooNyDMul9YCvIYe2mc1TsxqAH4v71dM/JC77gGWOaKfQ9oioYyq3XyCPfBWzTLcr+wZfUDsLTssRH0hK+NaArp+AeySKypuP0jLgWqlbAdbjfnBDK6j7Gi/khzY8OErRstjI6xgWUg+8l2BHfvgo56uDKSg1jpcNCTf295pFpS0Bz7fo03zdoekVSBfaqr6kRdQMdw9HYk2JA2ybRY7bHNwJq6CkPUFtWt6A8oB+PTZB4uayHptjIhjy+3wOpOtndH6bcXGOCug4jxl1P3iWT
+ HKy7SpJw
+ 3hCJAcT1zuRmmlgi2R2tYvVNSU+qqk2Vqsh5/BjL2n8u/h288M8C/Cw6yuC5Rxycutz0pgFV/DqdElfblI0gOqi5OHQ9q5fpsyVAsUe875emw0ghmOyLL9+9aUwucLKatU0uT/em942jlcRUc4s8cxJxuPSUfVReLTiLGjlhP5L5Joyurxrb+XzNQ7dqNnsUHbown5zJ3PtbL6VbNueYLV2ztU6qvhN2GJoSJpYd5+Bc4g0+MpP7w+5+5jkWMqoa03Wfs64l+5ssubnpAixSf0z4byPuv7o+yrHY78t9YYacaQMphnbJG3nQjD5cxoj0aCb8OZO3dxS1Dbm+j6Zr72x287SxyucBpmHiD1kSJ0NXwLaAdFiObFMDLyl4fROt5wcpGbZlBFAEkWVc7veEpRKRbsL6cib5k3k17WGhMRwXRboridPJ2x2zJzEEOoiZMQOeQ/zeyNENHC/nooiJRBuP3iL1dugMbSm4h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,96 +153,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The vDSO data store ("[vvar]") special mapping is created as a VM_PFNMAP
-mapping and its pages are installed into userspace with vmf_insert_pfn(),
-which produces special PTEs (pte_special()). On x86 and arm64 (and riscv)
-pte_user_accessible_page() only tests the PRESENT/USER bits and does not
-exclude special PTEs, so page_table_check accounts these PFN mappings in
-the per-page anon/file map counters even though they are not rmap-managed
-pages (vm_normal_page() returns NULL for them).
+On Mon, Jun 08, 2026 at 12:37:20PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Jun 08, 2026 at 04:37:41AM -0400, Michael S. Tsirkin wrote:
+> > Same change as the previous patch but for alloc_swap_folio:
+> 
+> Please don't say 'same change as the previous patch' :) explain what you're
+> doing here. It's a pain to have to go check otherwise.
+> 
 
-Most of these data pages live in the kernel image and are never freed, so
-the stray accounting is invisible. The time-namespace VVAR page is the
-exception: it is a real alloc_page() page that is released with
-__free_page() in free_time_ns() when the last task of a time namespace
-exits. Across the map / unmap / vdso_join_timens() zap transitions the
-special-PTE accounting is not balanced for this page, so a non-zero
-file_map_count survives to the free path and trips:
+MST you need to slow down a bit.
 
-  kernel BUG at mm/page_table_check.c:143!
-  __page_table_check_zero+0xfb/0x130
-  __free_frozen_pages+0x52f/0x650
-  free_time_ns+0x85/0xc0
-  free_nsproxy+0x7f/0x130
-  do_exit+0x313/0xa60
-  do_group_exit+0x77/0x90
+I gave you this same feedback 3 versions ago:
 
-This is reliably reproducible on x86_64 and arm64 under heavy container/CI
-churn that rapidly creates and destroys time namespaces (CLONE_NEWTIME via
-runc / docker-init / tini), and was independently reported by syzbot on
-riscv. It only manifests when CONFIG_PAGE_TABLE_CHECK is active.
+https://lore.kernel.org/linux-mm/agXUHItfxSwtriRF@gourry-fedora-PF4VCD3F/
 
-Special PTEs have no struct-page rmap semantics and must never have been
-tracked by page table check. Skip them in both the set and clear paths so
-the counters stay balanced (always zero) for PFN-mapped pages, regardless
-of how the architecture defines pte_user_accessible_page(). pte_special()
-is available generically (it is a no-op returning false on architectures
-without ARCH_HAS_PTE_SPECIAL), so this is a single, arch-independent fix.
-
-Note that the v7.0 generic vDSO datastore rework in commit 05988dba1179
-("vdso/datastore: Allocate data pages dynamically") incidentally avoids
-the problem by switching the mapping to VM_MIXEDMAP + vmf_insert_page()
-with balanced struct-page accounting. This patch fixes the still-affected
-VM_PFNMAP path used by 6.18.y and earlier, and additionally makes
-page_table_check robust against any future PFN-mapped user pages.
-
-Fixes: df4e817b7108 ("mm: page table check")
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Reported-by: syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com
-Closes: https://github.com/siderolabs/talos/issues/13496
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Smirnov <andrey.smirnov@siderolabs.com>
----
- mm/page_table_check.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 4eeca782b888..ee492d5389b9 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -150,9 +150,16 @@ void __page_table_check_pte_clear(struct mm_struct *mm, pte_t pte)
- 	if (&init_mm == mm)
- 		return;
- 
--	if (pte_user_accessible_page(pte)) {
-+	/*
-+	 * PFN-mapped (special) PTEs - e.g. the vDSO/time-namespace "[vvar]"
-+	 * mapping installed via vmf_insert_pfn() - are not rmap-managed and
-+	 * must not be tracked here. Tracking them can leave a non-zero map
-+	 * count on a struct page that is later freed (the time namespace VVAR
-+	 * page in free_time_ns()), tripping the BUG_ON() in
-+	 * __page_table_check_zero().
-+	 */
-+	if (pte_user_accessible_page(pte) && !pte_special(pte))
- 		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
--	}
- }
- EXPORT_SYMBOL(__page_table_check_pte_clear);
- 
-@@ -205,7 +212,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm, pte_t *ptep, pte_t pte,
- 
- 	for (i = 0; i < nr; i++)
- 		__page_table_check_pte_clear(mm, ptep_get(ptep + i));
--	if (pte_user_accessible_page(pte))
-+	if (pte_user_accessible_page(pte) && !pte_special(pte))
- 		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
- }
- EXPORT_SYMBOL(__page_table_check_ptes_set);
--- 
-2.53.0
-
+~Gregory
 
