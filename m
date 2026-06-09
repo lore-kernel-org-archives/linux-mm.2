@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB7BCD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C58C0CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 927356B00AA; Tue,  9 Jun 2026 15:11:39 -0400 (EDT)
+	id 138856B00AC; Tue,  9 Jun 2026 15:11:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D7CE6B00AC; Tue,  9 Jun 2026 15:11:39 -0400 (EDT)
+	id 0E8E36B00AE; Tue,  9 Jun 2026 15:11:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ED626B00AD; Tue,  9 Jun 2026 15:11:39 -0400 (EDT)
+	id F40F66B00AF; Tue,  9 Jun 2026 15:11:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B5836B00AA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2A12090B7C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:39 +0000 (UTC)
-X-FDA: 84861318318.14.A6F4268
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 505F4100015
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1cG7zd1;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E0A7B6B00AC
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8BD01A0753
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:44 +0000 (UTC)
+X-FDA: 84861318528.20.5BD1104
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C939D140005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWscA1Ru;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032297;
+	s=arc-20220608; t=1781032302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BNgt6NEUNStjnj6HIxW0BxY2rf9f+JxrNGSNIXiRUfI=;
-	b=4qgrOCAn5aG/CnQCMK5YEsA3n+vNRVC0OyBdb6Zm/6BCXXt9LR/gtbWEBeJ/jM4KwVX1O1
-	+uQX0gxaFWLfjaBCU+ZwRBllxqfk6wNUWywY3JBWOGqJm8lxZjr3cO6p8L22L+XLZzqlDZ
-	hp0EeqQOcPrk86vKVevaefplbCmLyZ8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c1cG7zd1;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=cTMq75LVYGONeqD6aceZFLDHKDcK1Q7SK0j/d7sqNo0=;
+	b=dMgybXOllZ9uzFpqL9M+3V35vMHFTJcRQ2pR8PPUL23t50ENPMJ+puVznCOg4cXXhJXAkE
+	MuLYTJiKu2aUZin5wppjlfFiPRUh91NEUX+ViV7MZx4nGpEvp+K1Hln6++UTxmkYGlQr1o
+	eXfRzR99aM4pAc3wa5DMDsW21KOFpP8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032297;
-	b=E5YOd6v0N4DqxmwHQKQ/H5kS9EZKoDGZOKiPsXzR9Q0zuych7XCPXjyYrBdBKDwfICO/6c
-	eyR8QTD7msU98cB8ioSDqcmrl7b2+fxfGwUaFiIyVYmAnFJ9ocQkrhjqJmRYu0uUfFZCd9
-	8p83KNUlmMJQalepOo5uSNpS6aKS+rQ=
+	t=1781032302;
+	b=gfOf4JrepBNF14Gvbs1jICmisZpdap1agFe211EahZ0kdNgGXlghqMTG8YojzYNp6Wch89
+	mYwVDj2Zv2W6NdT/mqN6tsDPPq6SIYItpRdAKyoOA2pCR/fvKb+l+RaJmIe5/2SO+smthp
+	hOXHepoTn5n3RNh1gOzhyKngelAEq8g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWscA1Ru;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DAD83602D0;
-	Tue,  9 Jun 2026 19:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FF81F00898;
-	Tue,  9 Jun 2026 19:11:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 24CBA43406;
+	Tue,  9 Jun 2026 19:11:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CBD1F00893;
+	Tue,  9 Jun 2026 19:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032296;
-	bh=BNgt6NEUNStjnj6HIxW0BxY2rf9f+JxrNGSNIXiRUfI=;
+	s=k20260515; t=1781032302;
+	bh=cTMq75LVYGONeqD6aceZFLDHKDcK1Q7SK0j/d7sqNo0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=c1cG7zd10jQTjOFbyKBTS2Xr3GepDjhaSf9h61vP7FI4V27AfuIdSci/J2vDfc43d
-	 LlMbXoI+wLxIyLsvITXIf+mrwQ/jNL7Bis+MyUnkchyKZN9s0ROJ2UvDDUz9aM6VI2
-	 jtCkgsT0uoPPQLQKux0+VR6hSWH0feyU4mhX1FAuuqTQK4KHANY+LNkj2bn1EHfw2K
-	 jjtpjuncCJG3tGpCzvURJp5b3bhujvNbnPe5nVsUv8yQKuFebRPVRfa4e3nbDt45bn
-	 8ZH/C8lu1W1wXyKs95rG4JXc5Qu3hE6IX81Mx0YVB4lZ59sP+dMhKzHblGbDTV+T29
-	 TpprcYZGMcQIg==
+	b=iWscA1RuPcNWUzsAri0x7rO9uKR2nATOTwgMdkliYE9DcAtE72IIAJLsDeIhftwio
+	 JnhJp/MlW7V+wTCacbdY57b98GVq2ddUnxCrnWEi4KctzJ8ENaaUVrc/37X8NP11m9
+	 HNQkWQQKwF0mPjOexVkyNhIoAe7rDLeWi1OtUuyQl8WJjJK8Kxr2sherQ1/SYBfFyP
+	 bJXYW0Gjq74pBTnh2Abmk2nUXM/RdeLEB4O7pjXNqFOaUeT7Aw2QX2QxDyVtS8PpnO
+	 pK3O4Y6jwzL068fD3Foi0NDofU3aGNR9iFoLtxVX6WyvshYjH20iefhjvY914dZYyF
+	 QhquVR/aCZuDg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:34 +0200
-Subject: [PATCH v2 55/83] block: rust: add an abstraction for `struct
- blk_mq_queue_map`
+Date: Tue, 09 Jun 2026 21:08:16 +0200
+Subject: [PATCH v2 37/83] block: rust: add a back reference feature to
+ `GenDisk`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-55-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-37-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,30 +92,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6865; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ektQL/aHChpH2COAEoc+T67ae92mSUZiOEMhrybycnM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTmL3Mfx97RHoZzsqxrmDoBER68EUD3nOm+m
- V2jwyRIXWuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk5gAKCRD6UCkIqsW9
- 0EZUD/9krINdRjcBpOaNIsActzD16iPZ7v0RNTmF0EsM7APNv3HU7Y34DmFAgNgTNTi7pfqHtH5
- jZrv7s9P49bzKoloCxFs3RAa8r5ThTj1q7gwGhUpn9gGLhTaC87KeIG6WOsu2UfBlBahhNW+GeP
- 6FPTO6sN1gqjVHRruzT9TSUmdc47nJX2B73Wr0CVMoaBngH/9YdAd7dWKvRP7eOaPIq2DeTxPkC
- DXfg7LUSpCfIFYR3rBrOHFuegLl1ge6gqqFmMcqrwzclI1Th9LOnYMmaXVI16UPawAfcs7114de
- 2XHhzORXqAq1eN0ADdsx3RRM6IYZUONy9I6bTPgyIStvg5Ole1myIqQ0wPmHDnxH2Ps5RJ9IMze
- ejuJ8QplYt7AI433kAmjy3AW4VcNjK4aPsk8QuLK37XXyn+QfhvGSjlfuZrrR5FrkAkh8MgNdLr
- lfjm79kMoynNJmT/y+5W1rtiawpty4qYkWTgPg7lRJIma3Eejn0K7khxTtOp49Gj7/4fhDUqeZ7
- btwxisYW+0u87V9ULrCbRoLLNPu/2D1TvvtN4EXv3CrNOltcV/RnY2zxepVyNNfpMe6KA9QYZ+2
- koiWqsTAp9qZtFA6GNn+1lexur+ODHeGeF3dmIA43bq/hRNdQDK9BfL1IaPrPWPs2cPJrB3QUYJ
- WDh/LwnMojBKxCg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5601; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=Pgrl0umFQHfxEgGBhL3ORYr61hxvp3mCX9/WUL8WuTA=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTWPDkbTCiF4AD045KZczuURzT6Ht4dFueuB
+ WWPpi9oI4yJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk1gAKCRD6UCkIqsW9
+ 0NUHEACfPdxlqQtedQBoWcauh+uupMtyzebSZu/9dyy/KhNqkuWRHfrh7tskkROLw4OetVFM+85
+ FIRjRx5EzlxXdiS8XjDCiRqCHDO5mXxwUDG6mUJjAKEvbT/xPdM/ZFr3EHO+1VWOUkdt8tb2tWE
+ 1CCV2dTvwd2RqPLZxVJOMSn869PyQJGNBXNUAcTwUwFqGNccu/faYuwjpvNWzUQXT7rHdtL4ugI
+ RplKUy3PWkgIEukdwtUd1YvfsQAEYpRRKLyvJqKYtM5PPwJNzRXRbXyEsd+65znGhMnYJgf66S8
+ 6QxRdnbSQOHoRXKA/XsvwXD5nNsJEbpceZurQyjKafth8w3D2ejKhohwfD4cRmLWnd6taUNgxRX
+ /95y3Fy4RJ8pwbnRxq5pAX6DRHbIbzn6gxydhJJM97TsiYAEx7BTgx1v10ktqkdmrlo5xXyLsOH
+ LMpvBp7w0Bdk3/Y+jqn1Vlq/CP01y5SkFejkmA7C9D6ejGbcZbYvABTEh8b/0lATzLaE/L7A3JJ
+ WEw4YURvDp5LZ6M505NRA9l0DiYOxKu0OJm+HNwZxqjQ8dwpFjODFVMR/waJG+Wc1fQQzQ473NP
+ nQgH0XyDErWgWKxHViVDUbu7i7XIRAyke4TIAbBl997x5fB8ErWdzZ0G5ozTPgleIcgnrdO7ZYF
+ YDjGmpDibn2T6Sw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 505F4100015
-X-Stat-Signature: rhfd35xbi3rgeach3hy73biuzeyikqjw
 X-Rspam-User: 
-X-HE-Tag: 1781032297-830318
-X-HE-Meta: U2FsdGVkX19q2E5KNr/9IxU2Rel+kLvp4kQzXnOg7LI9CfmG72crLnLbtm968IghEsg8KpgZgaCNA45w+rEzZPY+B2d+hzwuRp1VZy52U8qjkOOrQrTefzPDe3yhcmLcy3YiWvUdZ6hRGPXO257eCdXc5evfK22UlCXi+CrROJK3WUBqLj96G58G5DyXbq/3QvG8b87dG8/5k6pgw6zL2k63OeURk/BdDPYNnaucm3htjVO3NQz4A4VI5bNo90RQNujizk/I3YC7/bm8akuj0+dr+v83Ahv14QfJIueZIcKOXJJ+nQ1zTaOaQnqNAh6OPpIX4V7XqBKeKzS7wzfIblAsb4S2K/zWEdyI3EqpLYp00++uyG3FHWvRCg33VXCPA0cS7qHwSJi1n+M3rz8/5JV0ZhK5DdT+caKjUaWW7F1Mro3/2j9YJDvHedk9dyOLMx3qK05lsufnNN5GDooMKW/8DT93dSSf3uUq3XjxzdQZul7Q3ralpk6bhY0j3GDI74AL/7YpayAHnoxJBT509sR7F+gy6oaqzezZipsj4qvQCzqhZA5H8muhTAAJFGJKpNgZuFCFkwnaErwH1YryxDR6tfJ7mjx9MG8ljbYOm+Ybgm2T9YWu7Ihb6rS6vlIt8yzuZpkP1bzpDa3E5HRlO8Pz2zq4BQh1W/KLeitn0uScLsBUbeLOeK6BKoeKlCUMXYJNKDUuMxIrrRPY9PmssK6ZKUYwKhibJDWST7V6qEGwJSJU7KK5C52OPGd4ZaA/SLs8R464JGnjrvhS0ef1Rr8VM7Qb/nYdB09VplgbDNe+8BFVlYHpfuGOJurNfhWLfYneeMkgUwJnBQ9XuOiFVk0/ygeDlwKBxzQYuqtsdMJcFsOLfJ3RYcqzf8zleZvf9sh4CDzsZoVz/xdArb3+j05fX6tZK2DgUt73qtTdqN2Ad6HR09NtMPlMkYS50YEYTfZLKg6uVbO4wTQt/gT
- Rq7hv6lI
- HDKWUw3ztK36+42cY69+y71tlpjxUU7DyUmMpNQ44KeyTAj2Rr7qwIjN4LS0HhUapE7pYq7VWVW/2vOwozi2F0bcjueabtsubO/TIkkYYt3wmQPA39TrggMbMbUZR6V1lxQ8UHXyQOj7XSWESJ9N++o7Y3jOenmX4gH/VZ3Pvd5orSZQyneUZjhPbW5OUt8yRWEM7WxijzjhiTzUympydRzhR7U6O53+Jvybe07VgbUj7r7seqhbUfARUAymtJBXcezc6OGV1du5B2NmphNubcnU4oXc7aP1q1W2hyucP9ozpnoW2bsz5Isrsk4OIaQGke5djSv1Npk5dAYC8ZuTbw7PafJfg8XKgIdfISbfP8g/4jLs=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C939D140005
+X-Stat-Signature: kk43fo6atmsao3gx3oswhjsci5dj83o4
+X-HE-Tag: 1781032302-551217
+X-HE-Meta: U2FsdGVkX1+96078JU/wEscApP1uZJg4I4VoeICIUHbcPe8YWxPQC/bjNeKiCkq0Z7PlNf1zM7U5cRoMxJ6DgELX6h7Cas1et/XciOi7SZrDsF3ueFO6PKTBjr5mYi+GgRLcY8vW2Gs+1TpEwy0bBIXZx8lQk5XI57xeUClaojHlZ+CZaxloJJB9WghmrQP+lAPzSPIuxIYQNqQezwdGkuMhV40Bq3mVTk+ctI5ujBZ4jPVlo8GYs/q//eSdhk8dOxJuF3oWKwXYJdf+Luv8+a2rAN7tQ44lYA6lSBukNl54loA3jPZkJnIFBCiGT4jfUfKYDgdYxKSnlV3QeR0K2MCxvSZkuLjKFMbT4zmG9UL0yuCgw57PmpmZWcqRKc773ttdOCwDcSA00g7GHDaEeQwWti0DATZaKn3laPGcmMdDOWhSwoZJufkm3JUhFlue1teOdz6Jph238GnkbZKVh4Pb1t1AQeNbUadBa/AMKwCPAsbWkQZehBNZLZSV9R3NPUd0Add6BmwHIGCGLVGCZDHe8dgGBOcFEA5ZvCd42m9zZjme5/iL5dGyrQ3IcJy6joDdPnjjlUc1KUn61VHuCdAe16hG9InU+JyrsmNsCH9y9N4ZC+b9xjGS9i7MmTqShgwUu0+riTU4ySUJNto2W6ije3wc+Aq0NlpTqBECXHQcr1+fO8uEFrO5HCgNBBiGksZ6xuYSLoOL4y7/kZEVwAEY4C/ghoyj2cE1OsANE0o6XuDUElK/99jSRaggamMxK+d0d7ZkTxTAM7i4RimWpTxSoANPOHJ1+C7Fp0jpHu8rFSki6SqhDGIC6oJrorHZumGz6Zc3zfEvwfrXqrVtb1wP4g/h8+AhCGRAc3Lct/lUtfttufPHWCnBZwVuiibDUeqDEhPL0SMab7Di+Myu8/Pj6w1Q6Ok/rLuRBgeMtNFcnuISNXpk6wPAgfetjJx6KOaObnjatpcQPXO2zsl
+ HxzeyVpq
+ /evx0NBXzl8sGUaGulc6APfxxC4zyWFfUhzl2io3uOZ++q51vk1Na6hHNjepZu6P8ERq9JVu169T+fPEGCfC6tdwbiECFjPDbxEq2H/im7J3seG1jQsVeCCOpYfB2Cpnw+XcNdNSpK4YO3apYNryJY/zOCrFCeeYXultFoNtnbvO4PR8Sgm6ln5xmGZFo9ilic/wWD+N/jEx3fMVzwaUOqWvbtYNaX0cIjxEwWyQyTvdSBcJBI4xIm4DZ9UkL9QVGrRmOSgefXUoGydqyJvIDhlJ7ljnKYTtPKFcmRKKT+SqepPMJOLogzCs7lOYanK4vs59Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,176 +123,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the `QueueMap` and `QueueType` types as Rust abstractions for CPU
-to hardware queue mappings. The `QueueMap` type wraps `struct
-blk_mq_queue_map` and provides methods to set up the mapping between
-CPUs and hardware queues.
-
-`QueueType` represents the different queue types: default, read, and
-poll queues.
+During certain block layer callbacks, drivers may need access to the Rust
+`GenDisk` representing a disk the driver is managing. In some situations it
+is only possible to obtain a pointer to the C `struct gendisk`. With the
+current setup, it is not possible to obtain the `GenDisk` for this C
+`gendisk`. To circumvent this, we add a back reference feature to the
+`GenDisk` so that we can store a reference counted reference to the
+`GenDisk` somewhere easily accessible.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq.rs            |  5 +-
- rust/kernel/block/mq/operations.rs | 10 ++--
- rust/kernel/block/mq/tag_set.rs    | 96 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 105 insertions(+), 6 deletions(-)
+ drivers/block/rnull/configfs.rs  |  2 +-
+ drivers/block/rnull/rnull.rs     |  4 +--
+ rust/kernel/block/mq/gen_disk.rs | 65 ++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 62 insertions(+), 9 deletions(-)
 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 5bf2cf2736a5..e9bea19d684b 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -138,4 +138,7 @@
-     RequestTimerHandle, //
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 504bb477c2d0..4df0b748596a 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -198,7 +198,7 @@ struct DeviceConfigInner {
+     capacity_mib: u64,
+     irq_mode: IRQMode,
+     completion_time: time::Delta,
+-    disk: Option<GenDisk<NullBlkDevice>>,
++    disk: Option<Arc<GenDisk<NullBlkDevice>>>,
+     memory_backed: bool,
+     submit_queues: u32,
+     home_node: i32,
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 877683dba0ac..fd9b770965a6 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -134,7 +134,7 @@ struct NullBlkModule {
+     #[pin]
+     configfs_subsystem: kernel::configfs::Subsystem<configfs::Config>,
+     #[pin]
+-    param_disks: Mutex<KVec<GenDisk<NullBlkDevice>>>,
++    param_disks: Mutex<KVec<Arc<GenDisk<NullBlkDevice>>>>,
+ }
+ 
+ impl kernel::InPlaceModule for NullBlkModule {
+@@ -216,7 +216,7 @@ struct NullBlkDevice {
+ }
+ 
+ impl NullBlkDevice {
+-    fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
++    fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+         let NullBlkOptions {
+             name,
+             block_size,
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 94af85fe1716..f51bccb0d2ef 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -21,14 +21,19 @@
+         Write, //
+     },
+     prelude::*,
++    revocable::Revocable,
+     static_lock_class,
+     str::NullTerminatedFormatter,
+-    sync::Arc,
++    sync::{
++        Arc,
++        UniqueArc, //
++    },
+     types::{
+         ForeignOwnable,
+         ScopeGuard, //
+     },
  };
- pub use request_queue::RequestQueue;
--pub use tag_set::TagSet;
-+pub use tag_set::{
-+    QueueType,
-+    TagSet, //
-+};
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index 8a418bf0f3ba..06faf5647aaa 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -128,8 +128,8 @@ fn report_zones(
-         Err(ENOTSUPP)
-     }
++use core::ptr::NonNull;
  
--    /// Called by the kernel to map submission queues to CPU cores.
--    fn map_queues(_tag_set: &TagSet<Self>) {
-+    /// Called by the kernel to map hardware queues to CPU cores.
-+    fn map_queues(_tag_set: Pin<&mut TagSet<Self>>) {
-         build_error!(crate::error::VTABLE_DEFAULT_ERROR)
+ /// A builder for [`GenDisk`].
+ ///
+@@ -125,7 +130,7 @@ pub fn build<T: Operations>(
+         name: fmt::Arguments<'_>,
+         tagset: Arc<TagSet<T>>,
+         queue_data: T::QueueData,
+-    ) -> Result<GenDisk<T>> {
++    ) -> Result<Arc<GenDisk<T>>> {
+         let data = queue_data.into_foreign();
+         let recover_data = ScopeGuard::new(|| {
+             // SAFETY: T::QueueData was created by the call to `into_foreign()` above
+@@ -204,10 +209,28 @@ pub fn build<T: Operations>(
+         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
+         // INVARIANT: `gendisk.queue.queue_data` is set to `data` in the call to
+         // `__blk_mq_alloc_disk` above.
+-        Ok(GenDisk {
+-            _tagset: tagset,
+-            gendisk,
+-        })
++        let mut disk = UniqueArc::new(
++            GenDisk {
++                _tagset: tagset,
++                gendisk,
++                backref: Arc::pin_init(
++                    // INVARIANT: We break `GenDiskRef` invariant here, but we restore it below.
++                    Revocable::new(GenDiskRef(NonNull::dangling())),
++                    GFP_KERNEL,
++                )?,
++            },
++            GFP_KERNEL,
++        )?;
++
++        disk.backref = Arc::pin_init(
++            // INVARIANT: The `GenDisk` in `disk` is a valid for use as a reference.
++            Revocable::new(GenDiskRef(
++                NonNull::new(UniqueArc::as_ptr(&disk).cast_mut()).expect("Should not be null"),
++            )),
++            GFP_KERNEL,
++        )?;
++
++        Ok(disk.into())
      }
  }
-@@ -433,9 +433,9 @@ impl<T: Operations> OperationsVTable<T> {
-     /// must be a pointer to a valid and initialized `TagSet<T>`. The pointee
-     /// must be valid for use as a reference at least the duration of this call.
-     unsafe extern "C" fn map_queues_callback(tag_set: *mut bindings::blk_mq_tag_set) {
--        // SAFETY: The safety requirements of this function satiesfies the
--        // requirements of `TagSet::from_ptr`.
--        let tag_set = unsafe { TagSet::from_ptr(tag_set) };
-+        // SAFETY: By C API contract `tag_set` is the tag set registered with the `GenDisk` created
-+        // by `GenDiskBuilder`.
-+        let tag_set = unsafe { TagSet::from_ptr_mut(tag_set) };
-         T::map_queues(tag_set);
-     }
  
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index d3e93ad98b6e..e62dfd267fd9 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -124,11 +124,46 @@ pub fn flags(&self) -> Flags {
-     /// `ptr` must be a pointer to a valid and initialized `TagSet<T>`. There
-     /// may be no other mutable references to the tag set. The pointee must be
-     /// live and valid at least for the duration of the returned lifetime `'a`.
-+    #[expect(dead_code)]
-     pub(crate) unsafe fn from_ptr<'a>(ptr: *mut bindings::blk_mq_tag_set) -> &'a Self {
-         // SAFETY: By the safety requirements of this function, `ptr` is valid
-         // for use as a reference for the duration of `'a`.
-         unsafe { &*(ptr.cast::<Self>()) }
-     }
+@@ -222,6 +245,14 @@ pub fn build<T: Operations>(
+ pub struct GenDisk<T: Operations> {
+     _tagset: Arc<TagSet<T>>,
+     gendisk: *mut bindings::gendisk,
++    backref: Arc<Revocable<GenDiskRef<T>>>,
++}
 +
-+    /// Create a `TagSet<T>` from a raw pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be a pointer to a valid and initialized `TagSet<T>`. There
-+    /// may be no other mutable references to the tag set. The pointee must be
-+    /// live and valid at least for the duration of the returned lifetime `'a`.
-+    pub(crate) unsafe fn from_ptr_mut<'a>(ptr: *mut bindings::blk_mq_tag_set) -> Pin<&'a mut Self> {
-+        // SAFETY: By function safety requirements, `ptr` is valid for use as a mutable reference.
-+        let mref = unsafe { &mut *(ptr.cast::<Self>()) };
-+
-+        // SAFETY: We never move out of `mref`.
-+        unsafe { Pin::new_unchecked(mref) }
-+    }
-+
-+    /// Helper function to invoke a closure each hardware queue type supported.
-+    ///
-+    /// This function invokes `cb` for each variant of [`QueueType`] that this [`TagSet`] supports.
-+    /// This is helpful for setting up CPU to hardware queue maps in the [`Operations::map_queues`]
-+    /// callback.
-+    pub fn update_maps(self: Pin<&mut Self>, mut cb: impl FnMut(QueueMap)) -> Result {
-+        // SAFETY: By type invariant, `self.inner` is valid.
-+        let nr_maps = unsafe { (*self.inner.get()).nr_maps };
-+        for i in 0..nr_maps {
-+            cb(QueueMap {
-+                // SAFETY: By type invariant, `self.inner` is valid.
-+                map: unsafe { &raw mut (*self.inner.get()).map[i as usize] },
-+                kind: i.try_into()?,
-+            });
-+        }
-+
-+        Ok(())
++impl<T: Operations> GenDisk<T> {
++    /// Get a `GenDiskRef` referencing this `GenDisk`.
++    pub fn get_ref(&self) -> Arc<Revocable<GenDiskRef<T>>> {
++        self.backref.clone()
 +    }
  }
  
- #[pinned_drop]
-@@ -164,3 +199,64 @@ unsafe impl<T> Send for TagSet<T>
-     T::TagSetData: Send,
- {
+ // SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a
+@@ -264,3 +295,25 @@ fn drop(&mut self) {
+         drop(unsafe { T::QueueData::from_foreign(queue_data) });
+     }
  }
 +
-+/// A [`TagSet`] CPU to hardware queue mapping.
++/// A reference to a `GenDisk`.
 +///
 +/// # Invariants
 +///
-+/// - `self.map` points to a valid `blk_mq_queue_map`
-+pub struct QueueMap {
-+    map: *mut bindings::blk_mq_queue_map,
-+    kind: QueueType,
-+}
++/// `self.0` is valid for use as a reference.
++pub struct GenDiskRef<T: Operations>(NonNull<GenDisk<T>>);
 +
-+impl QueueMap {
-+    /// Set the number of queues for this mapping kind.
-+    pub fn set_queue_count(&mut self, nr_queues: u32) {
-+        // SAFETY: By type invariant, `self.map` is valid.
-+        unsafe { (*self.map).nr_queues = nr_queues }
-+    }
++// SAFETY: It is safe to transfer ownership of `GenDiskRef` across thread boundaries.
++unsafe impl<T: Operations> Send for GenDiskRef<T> {}
 +
-+    /// First hardware queue to map this queue kind onto. Used by the PCIe NVMe driver to map each
-+    /// hardware queue type ([`QueueType`]) onto a distinct set of hardware queues.
-+    pub fn set_offset(&mut self, offset: u32) {
-+        // SAFETY: By type invariant, `self.map` is valid.
-+        unsafe { (*self.map).queue_offset = offset }
-+    }
++// SAFETY: It is safe to share references to `GenDiskRef` across thread boundaries.
++unsafe impl<T: Operations> Sync for GenDiskRef<T> {}
 +
-+    /// Effectuate the mapping described by [`Self`].
-+    pub fn map_queues(&self) {
-+        // SAFETY: By type invariant, `self.map` is valid.
-+        unsafe { bindings::blk_mq_map_queues(self.map) }
-+    }
++impl<T: Operations> core::ops::Deref for GenDiskRef<T> {
++    type Target = GenDisk<T>;
 +
-+    /// Return the kind of this queue mapping.
-+    pub fn kind(&self) -> QueueType {
-+        self.kind
-+    }
-+}
-+
-+/// Type of hardware queue.
-+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+#[repr(u32)]
-+pub enum QueueType {
-+    /// All I/O not otherwise accounted for.
-+    Default = bindings::hctx_type_HCTX_TYPE_DEFAULT,
-+    /// Just for READ I/O.
-+    Read = bindings::hctx_type_HCTX_TYPE_READ,
-+    ///  Polled I/O of any kind.
-+    Poll = bindings::hctx_type_HCTX_TYPE_POLL,
-+}
-+
-+impl TryFrom<u32> for QueueType {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-+        match value {
-+            bindings::hctx_type_HCTX_TYPE_DEFAULT => Ok(QueueType::Default),
-+            bindings::hctx_type_HCTX_TYPE_READ => Ok(QueueType::Read),
-+            bindings::hctx_type_HCTX_TYPE_POLL => Ok(QueueType::Poll),
-+            _ => Err(kernel::error::code::EINVAL),
-+        }
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: By type invariant, `self.0` is valid for use as a reference.
++        unsafe { self.0.as_ref() }
 +    }
 +}
 
