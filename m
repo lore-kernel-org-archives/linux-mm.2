@@ -4,126 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 986DCCD8C92
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE61CCD8CBF
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 178A16B0099; Tue,  9 Jun 2026 09:20:12 -0400 (EDT)
+	id 5E58F6B009B; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150086B009B; Tue,  9 Jun 2026 09:20:12 -0400 (EDT)
+	id 5BD606B009D; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 065E76B009D; Tue,  9 Jun 2026 09:20:11 -0400 (EDT)
+	id 45DCC6B009E; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D9D6B0099
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:20:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5A0A164B2D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:11 +0000 (UTC)
-X-FDA: 84860432622.08.60E7FB4
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C5263100016
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q5ewh0cA;
-	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 36E116B009B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03CFD1C12BB
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:15 +0000 (UTC)
+X-FDA: 84860432832.15.ACB33C1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4AD8F4001B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qn/TwL6p";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781011214;
+	b=QG9mT1F041naF9sppQF9gWVpd1I/+7F8FiwGZY46vod7tblpokb1682ZrIvBsfpu8MBC/1
+	xF9MAnIUaeX9/nYcpYzzk2tbEBQOk/5i53w4fSwuIZ9JI4379FG5i7WTLLK6ll1NukrQRy
+	87+PN0b3gWcrHrtIORZpDcUFrNueha0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qn/TwL6p";
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781011209;
+	s=arc-20220608; t=1781011214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzZH85xAJ3bnOHXxZ2IlyON4zc70knGPmBexsKaQByk=;
-	b=G1/LSKOcL66WBpwmjZt9hT0ryRKwAqjy+3rp+rLQKIJ/vmz4u2mLoAnaWqxNRNrTzAPspO
-	hPdZp7xpB0LjjWCPP0aRI47eij01H7IgdNl43uC10U3FUurSWghoZAcM1V2mMaRt5EXilI
-	k6uffMAFMPmjpFg1crVsvbtE5sqmCQ0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q5ewh0cA;
-	spf=pass (imf14.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781011209;
-	b=o3z6DobUWlMuYuQoqJoLyctO3cpOM/bYibc41o9ehch1QxnOkj4UKNKl7M3peCkcnCJTPB
-	jR+eAa5wHUIsAkpKJ0uYZ7Ho5/tw30pvQRMYaKB+/3492Zs6AQPey3y6I2kII+4QtAAO+b
-	n928XAtYkrQOS5SHj8uabwX9ek/gfYg=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-13721dfd471so7199698c88.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 06:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781011208; x=1781616008; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rzZH85xAJ3bnOHXxZ2IlyON4zc70knGPmBexsKaQByk=;
-        b=q5ewh0cAcfV0KqeMTQdoMmzrB/z5GFMdRzGDzyFkspjKK3Ba/38e6nuLB60SXnlhzP
-         HL2onxOOSzDcfV0c4RxqxoquqGGU73+0r0xKWl6L4F4r+tWOfW4wRY5dheIxE5z/hiVe
-         SAkISO91rNrgHHWyHtr0mHq0ZBMn7qkh9tsEsqsGNtI9J0+T0W7gcLCC8m+pNRJOfAqR
-         8srRpbxxQEjcqlSQQ/pux6Un/8muTQl1BkTt1YDFsPTfDehncV68CXgOsFR3NPZNgRXW
-         4sIkFOrR+88Mr73leSfJln7jIpUCXVfHEX8hIw1i4EDx7oDDlMbvhtYM0RSWQdHpUe9w
-         mKoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781011208; x=1781616008;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rzZH85xAJ3bnOHXxZ2IlyON4zc70knGPmBexsKaQByk=;
-        b=Gy7v81EzUsc53Tv3eq9ekL57ORwonwAkkPvNAGbIfrfp/24Xt2pYQyfSAAockcYJo5
-         Il0/TOmcKAaEA1Axlya6pVkbYNnBFMxuQzBB66UNfm+nfUGVdnqwoPnH8hfLIj+N6lhU
-         C0LSHnLQQdkX5WjEAevuGFC69I0dWdzHl1s1iY2pmxLdIlPw766VJLfyjZ+XwXU6VaTS
-         P4R9SuyeQO7ku5a6/h5C8yU45j59QEmMKk/cnSFidYut3QQQYM6D30XaPUTr55eGNY7P
-         ileDi0edfdoNBEJFaqkd6aNEbwtSXuumqy/XGX99tXcAzBD8c17BFxGAS4LjsCH3fvWP
-         TGyw==
-X-Gm-Message-State: AOJu0Yzub5ojjIZAc+8P9fodo4wEEW70OV/92XvvA8RDCTLyieMmznM9
-	r4eGeKiQ17YQFQpdjb3jQHxcE/HorUYKQC+8KkNuirRsWx7UtNrdjaq+aSH5Nw==
-X-Gm-Gg: Acq92OG54AUaTOeHKeF5p23zX53+AOFVJBCT914u7Y2TnohGYHJuYcElEss/uOXfycu
-	5dQZBUaShQMyGfHrssw2NRb0cp8ihAGWxJ/UHENS+WjonZs2UvFHJGaAtqlfiozJewi+bTFEYpP
-	5H35gy9DdNFnzPpYE25fQgX6ni+6BhRNWOvrsnrs0xPwUaN1Od5wMH7qbLl/gjVFsrJrxG070ZY
-	NEIlBssUoGBlaMjXKsGDaDMj8fKFvwrUj++Nl5n3jCKOGNDjSDmVe39Mu478dWbaNfSCD8IcG6v
-	NuiREHdN3986omluMJ70powBT2HsA51xWW6cq/CIThzrRKp8M7PRCuE1xj3yEIW946oIDrRfSi2
-	WiA3/0ueYVDSoo/vYvHg9TxLppcp4nZXjhXa+iKU7iLwWkRibm+ataSB/61oxMCN5xV+WoF6T/t
-	ofav/ay8Qg3UI6BKUrawV0fH1vBt3z7ZGD8VrFd8XaiGGqpSch/DfmUwiIOJwk
-X-Received: by 2002:a05:693c:3945:b0:2ea:c085:44b1 with SMTP id 5a478bee46e88-3077b22a000mr11912732eec.19.1781011208262;
-        Tue, 09 Jun 2026 06:20:08 -0700 (PDT)
-Received: from localhost.localdomain ([129.41.58.2])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db55f60sm27162467eec.6.2026.06.09.06.20.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 09 Jun 2026 06:20:07 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-mm@kvack.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC 2/4] mm, swap: make SWAPFILE_CLUSTER runtime
-Date: Tue,  9 Jun 2026 18:49:32 +0530
-Message-ID: <eda5b7a6c82abbebf590ef788b4ab6810c73675b.1781000840.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1781000840.git.ritesh.list@gmail.com>
-References: <cover.1781000840.git.ritesh.list@gmail.com>
+	bh=hVaej1augRXIFWuAG42FMnav00Af7NNV6S/ONanWmPo=;
+	b=txXj4Au7cTDB7mUXh2q/ViwgLZqmwbJCXSc9FSqLSma3BXknFoBvQVQ5X5FhNVWKl48h3T
+	+oaHQeJJl68pIBLde3jUD8rvdGCFY/bbDyz7dUOjF/kj+0J6Wq5mY8ZF1j4z48agdv30FO
+	el8hl3tJxLN62ZduaLMgaWuC/K34pRc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B9486020F;
+	Tue,  9 Jun 2026 13:20:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3D1F00899;
+	Tue,  9 Jun 2026 13:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781011213;
+	bh=hVaej1augRXIFWuAG42FMnav00Af7NNV6S/ONanWmPo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qn/TwL6pgtT8QYIE9U2tP7uwoTgnLZz5sBSxMK2focx9/jk2s/mZGV6jNIp6+u3yq
+	 8wZgDhqklVGdn2RBWWSd4Kyr07glvsviq1pvtYGuGqkUUo4Iv2IXUHGiCXvXjNaGWk
+	 HJHR8oUDepujeZnV1PtcHCahmpScFH24ynMezpMPC702Q+vHoXKRwDi6W5MJkEoVbx
+	 c3FYIdYM1rMWUD4LkBqXFhBz8pLo+zvc89WIAk18ilxCNBTv0ywoHSoEqqsN/Or0sC
+	 EQ92l4d61A//VQFI9bTm+k5Yf12jzwdQbVXmZWlVYAoRNayPsgNkhQdIR3ur/C2Zvo
+	 SbrMwa6K0XmBg==
+Message-ID: <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
+Date: Tue, 9 Jun 2026 15:20:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C5263100016
-X-Stat-Signature: 1naidy8c6rrd7wtjts1dqx6pf99bssae
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
+ accounting
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260609120443.71864-1-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260609120443.71864-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4AD8F4001B
+X-Stat-Signature: ky1i63h8dnbw6ud5qzrk8stpe38b8h4y
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781011209-844106
-X-HE-Meta: U2FsdGVkX19HYAWkXjk0kmGnC6rY9OMyOrnaS6nsCNj7E6T7oqhPy+tvuDhkdwn4huca2KSUA4LS/9tRYIZUbIC37UuXeYXThziEWHWPDo3Cr41ngl+OuDRt7xhkW6trdshhcUOPpGwm1nPwiwVrG+QgerShMBdGyQZuCVkHw2MZXugD3AWszPzZRQa7JEzwxdNvnWtLpmnzbkGUmM5d8wobAGSg4OjlW5NM/aKtNmEVhD4bzDn6GkYFvDyzeYVqtbgC4yAyY5iMgpk7wjgnwmLG8+yTIMSCSKLa69dfrzu43swau6U/fHkzGftB8wCzjY1yDY78fbJ27oFM6YpT8DKD21fSGwAqfbIFll0HL+VOaIcaaZ70BdDYUSdtZXf9Z1E2z/jlYkoN478cZ5xGSpCXZ9bUoOG0+dLpbSgN3xUNswUvDy9+SWgUEbt3A73AMDmVyV9nUaeWH4t7yLrobXNsUkuYYB76juqB1E3dVBUAhv3n/8JHcnmQZ2FYU4luSXKuOjLXhRSzMlvQBcFbFCJwBjjIEvX0WBszBrsQB4bY18UkvxN8O94iPuV4y3tnxFWN/liRieFfTGVPBogf2CArn9j54sssmIYwYDR5noJPALQCnmszOhe419e7gdx5gQWbGAJBWmjsiWfOFbR7F2zOrvfWKetUpYD3BtxvkVpPBXE+8XCR0L4/JGXbnwDIYZByt/H8JgUng9gXsZwExhmhhmnTaF6cdm0s+kshVRYbVBmCnCR+eI/fM1bRniDVzdsHpZXxlOMRvfcduJCltsODU5TmhZxDoN25SEB7pPyOEElcRP1JIIe+PIPgUcO2cdpHjJ95eoA5xnKXn1hCWDDOIyoAuBLFfcINBxFJZRmB4jHD+UPgosdi2bwA3I58ECOID47QWV+GsBo3ug+lCCwOalcC68UvTGjCe+wrUVb6yA1yuraQSPUYK/G8phsG7cQXSH2tTRCrTkXbNed
- Hvoin3D+
- Of754xBMX5Ibehy4zO4SA08/e5yRTsM68O8KCy4vFyt7gMRqgR85sJbC9nqGH0P9L4R9fVgYOBWPR1RBS9WBFeE053u16OTHTxZ3kiGtofTw2e1kqeGUlPkLq2zLkjzSWSR6GodSkffW2Wygu1qCaHCBq+7S7pKmg7R2rwvv+2cUaoOdi+dVUBGgp2u59E+0MHOgy4D5UGLZ3UgEDkeAp050RsxQukYQ1cOmnS+MkZs9sOPOG9phTN5DjoJpM7kpG5whdJPDBcNEcqJlEG2w23QXkJHT49jyrLej79iABJJRUxuPGCtfp1rmGfvdm1gepu98EQ7oXUaGCfORHNuuMT9jyyphZTidjfR88TDWxWDjQp0ArJlXb7H++6mcU2i1ehs5f5gIqDxWZizlbwTmBfPCP12fmb5N0I4wbf8SUghTmXLNTsMBU5Eh77cBk+dty9dQK2qltYZQ+c7obpP1sVJHunFGm16H3Nirbun4FV1fsxG3LuFaPTTPCinIwAiTwlPp5r2aFa6Wmh9TwVz/ZW5r7ceaC5q0fgEpkcdJkjxJ22epO7NBOxuEsKj864QSfMx3/X64GRRS+D8B0nQiz+d/tlsxi0kJQwywP6B2RRfBr5uQRidB/Zf1wjw==
+X-HE-Tag: 1781011214-545878
+X-HE-Meta: U2FsdGVkX186Trf4gW7JIOYIUz63CsR9bxwQlZ941curbU551iiZNVF/3gBy1R/a0Yi9DngSnapMTz1WlEvaIZBQMgjFx592g2NB6xE8MGBW+8gqzsyQPSj/fnF7E/EmbysCIDAyGtx0BX6Y9zm2XqVmeQ6ry/SrHMPHg62QiX2L1uWlSb9e6OnqQdgtxy/fdly+DZol7Ke38G2Vu1YOAR6uLsuop+wDiEQsArFv7pklev42FP8/Sc9fB8LNx4/X+5XD/uV7clUvvv84niNyJUjQ4aQMTNd1UdlqoVSczUw9Nnyw5jT4mUlVmunApOxG9Q/pg2O8MWJXRhj9Z81PcANL7hpFl2IsE1+iDaBsaeLLMhTEOovtthP5KiHhIup38VaC7iXFr/iMi5dvx9TtE1PJ2x3rl0k/A+U6Uwr7t5W2/PjXXYBsOLEJ4viSgzMfD1HHJ50tExz15D5h4lONiwHdfgZlv8mr9uqg7AORmofEjfLaLM+pSXdFhQ8w8vSoc0uQuLHxoe3JmzX33vF8LOr2lMevkXrTF8vdRR2TWGH1hiiNOJwgPL1R75EUFelQwtOpVIG62g0OZx8mOj0++ArUd0HMGeqRcceRk6Z+a9oWkAr5ox06Q8SwkqEBmcMswHCwYmBrbSEO6oCyjajxPGOzVmxVzHdAiHvBzpeQIGA6HYXJ2vnXwxfto1BwcZKV2g8JIl6PQKeVVqRX+hcqDt/DvqlpeVa6FwaU5p7WciE5F5k07f5nW5Hmoob+3uNxXQOI1t/SDPb7mHA3Q4YE2kzRTEa42Bd6fkViR7dnoRsCC8qFdsSBlVShEyFQhpb2NyNySni8wKS8Mbh0C6eFJB6+Z9vz3exQus/ey6VxBWX7hl9aAQvDzPge+naKIXVeRboGZCncrZjOP3YH/hN1uyS+J6tf0vqAkchlcW2LVNx3XtwnK+CBQbCPK7PKt3DVnm3ayjCUCebRfgs3lRm
+ dL9hzTXg
+ B5ij5CWUJcmkAHyS/UOO7LWjzlWjaOxcJ0nCr+S7Wx4PI1geFHrAVuDUrk8KtPpu7vbEwsL1YycUypZTubAIeGUm1+xqi76FzySYJnln3H3t8NsFKwKa2lqxlXUIrF+5be2MPpcgANZWzH0lBqhH7JtkAcBAkePRpDBfOE00/owE6R7JedyXHw8nfPGjMdgTsy1OtNIXRS0p+4ZtXodJ4xCWMF7qx+kPqAPDvyXzKY6NPHcNdFJxas+djKXn2nBo9jWcJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,135 +140,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This makes SWAPFILE_CLUSTER as a runtime value. Architectures like powerpc
-book3s64 has HPAGE_PMD_NR, which is derived at runtime depending upon which
-chosen mmu.
-Hence this patch initializes SWAPFILE_CLUSTER at runtime and also
-modifies swap_table and swap_memcg_table which were earlier using this
-macro for defining the number of table entries.
+On 6/9/26 14:04, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> mthp_collapse() uses mthp_present_ptes to decide whether a range has
+> enough occupied PTEs to try collapse. Swap PTEs accepted by
+> collapse_scan_pmd() are counted in unmapped, but are not represented in
+> mthp_present_ptes.
+> 
+> When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
+> so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
+> then checks the PMD-order candidate using the bitmap.
+> 
+> With max_ptes_none set to 0, a range with 511 present PTEs and one swap
+> PTE no longer reaches collapse_huge_page(), even though PMD collapse can
+> handle swap PTEs up to max_ptes_swap.
+> 
+> Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
+> through max_ptes_swap, while lower-order mTHP collapse does not currently
+> support non-present PTEs. Keep non-present PTEs out of the lower-order
+> eligibility check.
+> 
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+> Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
+> case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- mm/swap.h       |  5 +++--
- mm/swap_table.h |  6 ++----
- mm/swapfile.c   | 27 ++++++++++++++++++++++-----
- 3 files changed, 27 insertions(+), 11 deletions(-)
+Right, probably we just want to add the Fixes: tag once Andrew moves the series
+to mm-stable?
 
-diff --git a/mm/swap.h b/mm/swap.h
-index 77d2d14eda42..956879a69ddd 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -26,11 +26,12 @@ extern int page_cluster;
- #define SWAP_TABLE_HAS_ZEROFLAG		((BITS_PER_LONG - SWAP_CACHE_PFN_MARK_BITS - \
- 					  SWAP_CACHE_PFN_BITS) > SWAP_COUNT_MIN_BITS)
+-- 
+Cheers,
 
-+extern unsigned int swap_slots_in_cluster __read_mostly;
-+#define SWAPFILE_CLUSTER	swap_slots_in_cluster
-+
- #ifdef CONFIG_THP_SWAP
--#define SWAPFILE_CLUSTER	HPAGE_PMD_NR
- #define swap_entry_order(order)	(order)
- #else
--#define SWAPFILE_CLUSTER	256
- #define swap_entry_order(order)	0
- #endif
-
-diff --git a/mm/swap_table.h b/mm/swap_table.h
-index e6613e62f8d0..90e2a7852300 100644
---- a/mm/swap_table.h
-+++ b/mm/swap_table.h
-@@ -8,16 +8,14 @@
-
- /* A typical flat array in each cluster as swap table */
- struct swap_table {
--	atomic_long_t entries[SWAPFILE_CLUSTER];
-+	DECLARE_FLEX_ARRAY(atomic_long_t, entries);
- };
-
- /* For storing memcg private id */
- struct swap_memcg_table {
--	unsigned short id[SWAPFILE_CLUSTER];
-+	DECLARE_FLEX_ARRAY(unsigned short, id);
- };
-
--#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
--
- /*
-  * A swap table entry represents the status of a swap slot on a swap
-  * (physical or virtual) device. The swap table in each cluster is a
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 78b49b0658ad..016a5aa0cb93 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -129,6 +129,17 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
- 	.lock = INIT_LOCAL_LOCK(),
- };
-
-+unsigned int swap_slots_in_cluster __read_mostly;
-+bool swap_table_use_page __read_mostly;
-+
-+static unsigned int generic_swap_slots_in_clusters(void)
-+{
-+	if (IS_ENABLED(CONFIG_THP_SWAP))
-+		return HPAGE_PMD_NR;
-+	else
-+		return 256;
-+}
-+
- /* May return NULL on invalid type, caller must check for NULL return */
- static struct swap_info_struct *swap_type_to_info(int type)
- {
-@@ -437,7 +448,7 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
- 		return;
-
- 	rcu_assign_pointer(ci->table, NULL);
--	if (!SWP_TABLE_USE_PAGE) {
-+	if (!swap_table_use_page) {
- 		kmem_cache_free(swap_table_cachep, table);
- 		return;
- 	}
-@@ -456,7 +467,7 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- 	if (rcu_access_pointer(ci->table))
- 		return 0;
-
--	if (SWP_TABLE_USE_PAGE) {
-+	if (swap_table_use_page) {
- 		folio = folio_alloc(gfp | __GFP_ZERO, 0);
- 		if (folio)
- 			table = folio_address(folio);
-@@ -471,7 +482,8 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- #ifdef CONFIG_MEMCG
- 	if (!mem_cgroup_disabled()) {
- 		VM_WARN_ON_ONCE(ci->memcg_table);
--		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
-+		ci->memcg_table = kzalloc_flex(*ci->memcg_table, id,
-+					       SWAPFILE_CLUSTER, gfp);
- 		if (!ci->memcg_table) {
- 			swap_cluster_free_table(ci);
- 			return -ENOMEM;
-@@ -3912,14 +3924,19 @@ static int __init swapfile_init(void)
- {
- 	swapfile_maximum_size = arch_max_swapfile_size();
-
-+	swap_slots_in_cluster = generic_swap_slots_in_clusters();
-+	swap_table_use_page =
-+		(swap_slots_in_cluster * sizeof(atomic_long_t) == PAGE_SIZE);
-+
- 	/*
- 	 * Once a cluster is freed, it's swap table content is read
- 	 * only, and all swap cache readers (swap_cache_*) verifies
- 	 * the content before use. So it's safe to use RCU slab here.
- 	 */
--	if (!SWP_TABLE_USE_PAGE)
-+	if (!swap_table_use_page)
- 		swap_table_cachep = kmem_cache_create("swap_table",
--				    sizeof(struct swap_table),
-+				    struct_size_t(struct swap_table, entries,
-+					    SWAPFILE_CLUSTER),
- 				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
-
- #ifdef CONFIG_MIGRATION
---
-2.39.5
-
+David
 
