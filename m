@@ -4,163 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35983CD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 21:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 779B3CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 21:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53AE66B00E1; Tue,  9 Jun 2026 17:01:13 -0400 (EDT)
+	id E15376B00E2; Tue,  9 Jun 2026 17:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511C26B00E2; Tue,  9 Jun 2026 17:01:13 -0400 (EDT)
+	id DC5896B00E7; Tue,  9 Jun 2026 17:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 400026B00E4; Tue,  9 Jun 2026 17:01:13 -0400 (EDT)
+	id CDBB26B00E8; Tue,  9 Jun 2026 17:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C5E26B00E1
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:01:13 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B18CA407B0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:01:12 +0000 (UTC)
-X-FDA: 84861594384.14.B9B532F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 54F2A140008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:01:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pc6iAmv1;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BC8396B00E2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:02:14 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53723165078
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:02:14 +0000 (UTC)
+X-FDA: 84861596988.30.2F94335
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 46E2F40004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:02:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWfqD5Y2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CjqYj7EN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWfqD5Y2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CjqYj7EN;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781038870;
+	s=arc-20220608; t=1781038932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Om/173xa6nAXXlawHrWQ0qeVuAob6cSlyHSyIFpCw4=;
-	b=2powd8kn3z9J2ZjLjC7VnT+fMF6PUi4y74bMOFyWGhutsbhilXygN/X1bjJChD8b/pYHfg
-	SGoDFTp/8k8Ne/3rQ8tSa5GEAUF/3te7nBs4nrOHDX6R6kaCyq6WaetZw9gjy5NgEhehzm
-	jJOLykEH0oNETeDonD7/5SltxmYOPIk=
+	bh=0HeC28O7+Ug8YaDsg8d903XowQc1OEPHBViv9mHTYSA=;
+	b=1tufrCJfBelio2m3Uw8WUuEIiROboZ3qE5I8tFXlBQc4jxMv41HnGyLtslcep5GxSlDzV5
+	539giDzG4b+3TE9Fc9ZntPxWIoPbiuk+1VUl0nh1g+NdfuYEXccszK/BV+UIlD7RQoqiBB
+	ZeJe+RuK//fgKxC1KW8RyYqxGdHpb8A=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pc6iAmv1;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWfqD5Y2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CjqYj7EN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xWfqD5Y2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CjqYj7EN;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781038870;
-	b=8q/27wVJppY9NSd0B1udNl7qLkHXTBz2oXoMasODXaMWXMdfaQyTFxGchjYCIY/PjPL0N3
-	138BkVXpzsspUbHWof25BpcvA+PAwokke5iaXUiS2P8wynWKSpBC8q3TI8LnAEyrDblKqF
-	EuLhNTAl8VXDDpONavlDGKkfcT7ee+Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781038869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	t=1781038932;
+	b=0uE5ILE4FbXAN67wrxOn8ipGOQR2WEjTheTB+VztB/87lCiq64jf6FdM7BwUb6uG1lV/WL
+	3ZWMB2XwrL1M8JpR7BtMvJLY1jrxMuZeSN4eo5YcQrwX0+lQnYKc9acp+EiXMs2qAj8ijh
+	PrIdaHZFW8ESmmySwuVrrv3dIT0jnGs=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B815B75A41;
+	Tue,  9 Jun 2026 21:02:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781038930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0Om/173xa6nAXXlawHrWQ0qeVuAob6cSlyHSyIFpCw4=;
-	b=Pc6iAmv1fLWH74AGTT9KqnYaFqx8lrYNNSFU9h2W7I9+aNDRQE6i/+5660EFOJGBbGlpMY
-	RrryO7j1Bq7uB9+Q9bIbWeLu+rnepjhkk0gX+668C8nXdS62U7QlTM7XG8fdcyYZ7qBDxV
-	OhES06+5FSTdiwsQoIyjflum9pGvLiw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-_jIPBi9DPkqfFHU6oAuGoA-1; Tue, 09 Jun 2026 17:01:06 -0400
-X-MC-Unique: _jIPBi9DPkqfFHU6oAuGoA-1
-X-Mimecast-MFC-AGG-ID: _jIPBi9DPkqfFHU6oAuGoA_1781038865
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490b3ec3f7fso38791215e9.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 14:01:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781038865; x=1781643665;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Om/173xa6nAXXlawHrWQ0qeVuAob6cSlyHSyIFpCw4=;
-        b=ZsZdE54n0zivIFFBeNSiHPsbXWIJjVL9EwcsTqlLeRwxa3Fafr73t7nb/kIbJtCIns
-         RR3uVtvY1XsQFqSuW2rRBu5yH/LK+tLASoIQ2WtZ22psqj++sA982TjSaAgb1BarbTjT
-         frm7MJwD68RNB4vOgn+6QlFYlFvNmJaxSHIm5SSrDy1lql4ff9VmKgBlkGgn3YGni1xQ
-         JSvzeWnIdjCJR7wmG0rSYXnCpZaFMW621LLD6BrX3iGJyQ5QTAgsb95BBC2opTdBLYYA
-         1SKkZje5JWEdMNPpPFeYA9N2r2FWcgQpFvyuSqUX2xRuUFKCxSMvsaTvx9/DDVOkrCqA
-         TDiA==
-X-Forwarded-Encrypted: i=1; AFNElJ/uW8aPqkN/THkJ+t7nrwVf2ohWkzG3tsKrJ6apylXm6WDeaeB15ak/+KIPO+SfQ4WzA092EqWmeA==@kvack.org
-X-Gm-Message-State: AOJu0YxcywjfuebumGnUGBIwPRKOt5qdOnBPgNnL5oRTM64ZAz2BNfa/
-	VFCFGvULCvWjqwLSmNIEzW6ZdaQsjgrbpoMb1Dli6gN+nvJUxOklT0EtzG8epUlXOHGx0x75ZK6
-	hwCWDkhQ/nA4F0oNa/kkzk124A7i6ZvHNZlOIUhsjpIEIzHL90Pk2
-X-Gm-Gg: Acq92OHwIKqORImc1cZrmDHysMPB7n5Hf903/LQb4tMmlea3jubtzbGVsfpwtozR9i7
-	uPNK0FdhPRqQzO9X/FFSJiQokcnUaX7xf+jM7aGvdQCd/F65TGOA/7lrMRjgYn7niR/W7Mk8X62
-	BA63DooEJqt2k8KWuw2AzNYbGayUDTeBJeJEcb6jGU/AVlPoi4Ry3WFGp3bcxwZvmdOkKwfbDwV
-	Sjb++kj7bxdhi/6A3o5QozJk7VAgkJ+84BfREJqvWC+mjV6+Cs+4qZTQue7spjIbuZixvdbU4sI
-	dTnLxSipJzOyCExB8fGOxIIwNkB1bFEDAX6LeQpAomHo+VHbxfSv+yWklUPHGImNHououedJlI2
-	R4cNEfzpIPzFalk6cVhviIwFFO9OEXk18cT0FVTzW8ZEhvhnMdwEHDw==
-X-Received: by 2002:a05:600c:1907:b0:490:b99c:9337 with SMTP id 5b1f17b1804b1-490c25a0800mr343765475e9.10.1781038865124;
-        Tue, 09 Jun 2026 14:01:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:1907:b0:490:b99c:9337 with SMTP id 5b1f17b1804b1-490c25a0800mr343765005e9.10.1781038864641;
-        Tue, 09 Jun 2026 14:01:04 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dc577sm66817831f8f.3.2026.06.09.14.00.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 14:01:01 -0700 (PDT)
-Date: Tue, 9 Jun 2026 17:00:55 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <20260609165829-mutt-send-email-mst@kernel.org>
-References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
- <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
- <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
- <20260609162437-mutt-send-email-mst@kernel.org>
- <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
+	bh=0HeC28O7+Ug8YaDsg8d903XowQc1OEPHBViv9mHTYSA=;
+	b=xWfqD5Y266ujaa3u/ujnjPxtdQngw8TF+jSluYS3sfjWo2dW9zcbWrjSG2uxjp/a7BdpEW
+	WeWRdE8wIeWimma1pk4eONequ4X33eOmdH59jmhLk4nNlbfdgGaJ17l3HTna/Cz8tHzq9s
+	NaDAGKIUuo2UemWQbIFs9L+/6VBKAbU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781038930;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0HeC28O7+Ug8YaDsg8d903XowQc1OEPHBViv9mHTYSA=;
+	b=CjqYj7ENp3Nqv4vEYEVkbESMCEFIsZszAVaO+0bhtg8FP7gDXOd0bDXlY0o6pHDSFIy6+H
+	brHXyEudAXDLzbCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781038930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0HeC28O7+Ug8YaDsg8d903XowQc1OEPHBViv9mHTYSA=;
+	b=xWfqD5Y266ujaa3u/ujnjPxtdQngw8TF+jSluYS3sfjWo2dW9zcbWrjSG2uxjp/a7BdpEW
+	WeWRdE8wIeWimma1pk4eONequ4X33eOmdH59jmhLk4nNlbfdgGaJ17l3HTna/Cz8tHzq9s
+	NaDAGKIUuo2UemWQbIFs9L+/6VBKAbU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781038930;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0HeC28O7+Ug8YaDsg8d903XowQc1OEPHBViv9mHTYSA=;
+	b=CjqYj7ENp3Nqv4vEYEVkbESMCEFIsZszAVaO+0bhtg8FP7gDXOd0bDXlY0o6pHDSFIy6+H
+	brHXyEudAXDLzbCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5DFBB779A7;
+	Tue,  9 Jun 2026 21:02:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sWbHE1F/KGp7TwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 09 Jun 2026 21:02:09 +0000
+Date: Tue, 9 Jun 2026 22:02:07 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Gladyshev Ilya <ilya.gladyshev@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, ivgorbunov@me.com, 
+	Liam.Howlett@oracle.com, apopple@nvidia.com, artem.kuzin@huawei.com, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, foxido@foxido.dev, harry.yoo@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
+	muchun.song@linux.dev, rppt@kernel.org, surenb@google.com, torvalds@linuxfoundation.org, 
+	vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com, 
+	kirill@shutemov.name
+Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
+Message-ID: <aih_EK2l8aiZQjjM@pedro-suse.lan>
+References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+ <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+ <1b6509a832dba9a7e24ddcdc23fb75247b267c78@linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: RJlGs7FzbEABU4Far5rRpjFZ4XmCp1beRWeseH7Y3Ik_1781038865
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 54F2A140008
+In-Reply-To: <1b6509a832dba9a7e24ddcdc23fb75247b267c78@linux.dev>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: zoat1q8369au7jzaamed3emm8z9qd5ih
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781038870-77047
-X-HE-Meta: U2FsdGVkX18ge9X2DNKlbuejLWu/kRVTQfec8AT5nDTrNZzI0wuwxUdVa95QyRWuhmg1vF6I4QwPXS6EWCuz9+tmBZYp25lL5vB7xO0kchDZrubCR2Kxrz0DLmDX0Eq8WehIeDXOKX9w+K9/uclXbdpYur4KK7WemU5Us3SEEvx6Z5awmsdN1HIR83HwNgcuz8AC/e1yGtiXf4GeZBDZdFZMgGZIYij5u/X45dHjcFmgpHTxzcC9MvzsY+AGPFZz1R8oKMljp2pZc+F5AnT0wNHs2SqMSqwD8L2k10QMH3PmdLrn5gmNrDMliTXck9N+4PRSOTw3zrejDrLlVodZHnvoDUlOUq76W5BBy1gjtxTuvR8ZbeiraQC1UN7ISpoN2ZICd3cpIIebzzkjCdmllYIvvQclOVL+9SLgKJxQlFE5bk7ZF/ZfhfMY/OVdvah+fPhqcgqEwuvJlETdhB+I1TqJYS9T992KA/yq0d+SsaJJEVpK046hroyJiMZ62+q4HD7WeMG0CF00RSCu24fZAtb/I4lSvTTqCvv3OwfdS4gWIndVXXiYTNPAAL2/yU+HvwJZNbLdxmTdps9Yc20kIR1p091s2PxT8pf+P9pAxSQOk2KsNMYl2BDnGP4g13KThQfAyl30l5FngNgIJeoohfLiYpKe6VrVUgfWP3xKS1LPt9MM1HOBU7JsAmxG62EKXRmNPcEr94vzpMoEu8lQSDiv1KuZjK0HKDZmdNFa1MPA8pCtucGf9oOMj/DwHyDTMf2lJWDO2rLlU9eQ2sQ0daN5sbb+NYRKn5M7tM5axbyF685GpePR3Z9FAOSn1qsPa4d3MMPTs6xd4/9179IKGmznMNfizxxfXHb8hrX3TEcU3NbCb8TqLimbhr7Le466ydz4tLc0NA/gaCS/Scy8ATGYncnOpcw5E1p8l75kl/3V2Vayvjhwo2ehFx7yZTrUTgRGZOCES2m+XG9MVIt
- AVDkQs/n
- 6Y884ZPhsxljzMFM+MjAleD6KhTqON1Le3dTyoNRO4wn8qgSaFcX1M40sAsboq88dGsIYwmI6b2N0ODPo0aUyemOGL5OUAOG/+cKAOa8MzLPyKQN9OVL1UedFcgy2Ye7id4eGnZ5ISxuGjR2n4Cx0vENyJ07Me9EtlnLLoK/YW3i/G8pdztSfNA6yvcRAOvl3khVRBOwgaUH2/mMWJeHZkh+9mmPzIAdtiMTFwXn8gjyS91W5cvZkDwW4Ap7VwU/tAXwTRxeUycLCK7e2mLAv9yXPvV+quaTCrps4RCgiwJSO//1ihCo7GXs1a41bc74YJnKxxHFDn0i2FzGHs+N4EaeiYUSxgClADeG6EWmRnwZM+4WGUh2xQm9/ao6SbEN7jrQFBBWVslP7Qi5o1V5ThsZuOhofXWY/97Ly+cB/akmStAOIAEmqqFtcwdVT26kdE6ACZWOaaaYMkaJLSD0KaR8fOq14GNXiWa5//jVmYwPUrRvvUwo2KtDALzbE1fBvOXrkbdfoT93mxlnJD3/+M7E+sZlPx1Go8ILr
+X-Stat-Signature: t44rqckyxb6d1siez5cojy63twguaawn
+X-Rspamd-Queue-Id: 46E2F40004
+X-HE-Tag: 1781038932-574816
+X-HE-Meta: U2FsdGVkX18yFw1EBknosrNddMHb/+7k1UaU/8JYsmKO+BE9Z+hIpt0NKnJ2uqUJsQhrTGVwVR2fesarIhLj824erZZ7rr8/wiLz+tkGZ7SyZtg7wQqYM8YPEawD+eiQJsWvVMCR1XHIOcDCkHLj66kt+SGXGaAlO7ghy8jcJESiE+hpGsmTN+J9IAdqfvCpRTNUCv+SPmrH1AAP9fQ8r+5HAYQBS+/425CJt9ry9R96tM9qevjWKb/M1D4wFTzqB+b7gSKa/GVe3NxyUK6dWBUxd9kXILHqXtsTQjrgGEV4fil9Jq4kx5yghJklThgi8Z8MPDGnsF8xKDNfPAAM7yPOAVxG8ijc72t0j2cb9TKULg37n+1Nk0FGrnk8maQVPd/dN/3QFq2+IQm47MG+26T1aFfrl2uH2tQtMor0Fd+L9dFq8dZckUS39VipQzetLc6liMrqgjDNY5xdT/sl3TuhtQbkyaEwCtuLfEY1vfdP0PUx+fwb6yT+BYJ8e4/M4dra9Vrzcn5AGrvA3lSVxPIaxkiMjH/VQ67k05I96K2/8sc66mE0XKBemaxcBYY5cLuNRNRibEJIgeLhAjJjrdbQVfDLZxGjtDlcgMIvlsJfC//I+SQUZVSDSuChTPIls2JQgKEIgnFx0qPuxuUPEpHINgndSftk9NdPHDRPGx154iIQiOKvAduWb/xx4w++69p66R+R6Aze74MK/BoxRoNT/toBDCaVbjx1SpYgRmBdL80TUWYG8ed5iqJclIpbM+elCdzMz4sHmiCrx3CLliNT9/wKPnHUg59QIoZtyZ4+ByhSTVNgzVrIt6RT0Lh9tiXAMAilLEkBRo4+crfsvIsnQ/c8IGOyzN5RpJi27+Zlqu3EnCYnPw+ZEK6FzoNM7jKVA3eCJCM6hKUHiLGbJh56qbs5w9hga/Zg8OOXFBQUR957a/z6Qo/QBErUnKZddy8BnBwEVvEN7U/6NPH
+ nLldf+53
+ IL7zNeGFbUuHDkbfWfrWcbTTSlAzXaNHc21OxUHDWLrdzi87L06Yz7cAoUJ/nyayel4DhdMYlP6SFMk9sjSROY+wvTDLhcxDspBKmyNLqNo8QGt1KBSUWDlI7VFp1jSQDyf2mItTS9flABAbnetCiYbhiv7KM7MyBEFb6AD4yKFyH3Jqp2oSFmbus1dNeQWGOXVGxeJLtZwkKdfehcbZNkITp2TvVUBhaG3Ktz5qDDF11+ceG8n/0Jjm5WtVf7zLf2lbHwbCzul2ELjUVEP/TkV+Csp9wFqXSFVvrT0txg+5Hx1Bdpimw4+J0atmUTb5XuLprrj4cxIC30no=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,98 +136,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 04:54:01PM -0400, Zi Yan wrote:
-> On 9 Jun 2026, at 16:34, Michael S. Tsirkin wrote:
+On Tue, Jun 09, 2026 at 07:02:25PM +0000, Gladyshev Ilya wrote:
+> > 
+> > On Mon, 08 Jun 2026 21:53:01 +0000 "Gladyshev Ilya" <ilya.gladyshev@linux.dev> wrote:
+> > 
+> > > 
+> > > This patch optimizes small file read performance and overall folio refcount
+> > >  scalability by refactoring page_ref_add_unless [core of folio_try_get].
+> > >  This is alternative approach to previous attempts to fix small read
+> > >  performance by avoiding refcount bumps [1][2].
+> > > 
+> > Thanks. Nice numbers.
+> > 
+> > AI review had some things to say:
+> >  https://sashiko.dev/#/patchset/df26082871b4c65b2bd38d409026237c08572836@linux.dev
 > 
-> > On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
-> >> On 9 Jun 2026, at 14:39, Zi Yan wrote:
-> >>
-> >>> On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
-> >>>
-> >>>> On 6/9/26 20:10, Andrew Morton wrote:
-> >>>>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >>>>>
-> >>>>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
-> >>>>>> update to page->flags can race with non-atomic flag operations
-> >>>>>> that run under zone->lock in the buddy allocator.
-> >>>>>>
-> >>>>>> In particular, __free_pages_prepare() does:
-> >>>>>>
-> >>>>>>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> >>>>>>
-> >>>>>> This non-atomic read-modify-write, while correctly excluding
-> >>>>>> __PG_HWPOISON from the mask, can still lose a concurrent
-> >>>>>> TestSetPageHWPoison if the read happens before the poison bit
-> >>>>>> is set and the write happens after.  Will only get worse if/when
-> >>>>>> we add more non-atomic flag operations.
-> >>>>>>
-> >>>>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
-> >>>>>> around ClearPageHWPoison in the retry path.  This
-> >>>>>> serializes with all buddy flag manipulation.  The cost is
-> >>>>>> negligible: one lock/unlock in an extremely rare path
-> >>>>>> (hardware memory errors).
-> >>>>>>
-> >>>>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> >>>>>> in this file operate on pages already removed from the buddy
-> >>>>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> >>>>>> need zone->lock protection.
-> >>>>>
-> >>>>> Sashiko is saying this doesn't do anything "Because
-> >>>>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
-> >>>>>
-> >>>>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
-> >>>>
-> >>>> Battle of the bots: it's right.
-> >>>
-> >>> Yep, __free_pages_prepare() changes the page flag without holding
-> >>> zone->lock.
-> >>
-> >> __free_pages_prepare() works on frozen pages and assumes no one else
-> >> touches the input page. To avoid this race, memory_failure() might
-> >> want to try_get_page() before TestClearPageHWPoison(), but I am not
-> >> sure if that works along with memory failure flow.
-> >>
-> >> Best Regards,
-> >> Yan, Zi
-> >
-> >
-> >
-> > Actually memory failure already plays with this down the road no?
-> >
-> > So maybe it's enough to just SetPageHWPoison afterwards again?
-> >
-> >
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index ee42d4361309..4758fea94a96 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
-> >  	if (!res) {
-> >  		if (is_free_buddy_page(p)) {
-> >  			if (take_page_off_buddy(p)) {
-> > +				SetPageHWPoison(p);
-> >  				page_ref_inc(p);
-> >  				res = MF_RECOVERED;
-> >  			} else {
-> >
-> >
-> > and maybe in a bunch of other places in there?
+> Will look into it, thanks
 > 
-> You mean for fear of losing HWPoison flag in the earlier TestSetPageHWPoison(),
-> just set it again here?
-
-Yea.
-
-> Why not do it after get_hwpoison_page(), since that
-> is the expected page flag?
-
-It's still in the buddy at that point right? I'm worried buddy might
-poke at flags.
-
-> Miaohe probably can give a better answer here.
+> > I'm not sure we want all those new VM_BUG_ON_PAGE() calls in the long
+> > term. They look like development-time assistance. Perhaps you could
+> > make those a standalone patch at tail-of-series so we can keep it in
+> > linux-next for a couple of months then throw it away before any
+> > upstreaming?
 > 
-> 
-> Best Regards,
-> Yan, Zi
+> They are cheap and can catch bugs that are very difficult to debug. So
+> I'd like to keep them, if possible. Maybe change to WARN_ONCE, as David
+> suggested.
 
+Fully agree. I think it makes sense to keep these assertions for DEBUG_VM=y
+(which no one should be running in prod anyway..)
+
+-- 
+Pedro
 
