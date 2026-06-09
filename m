@@ -4,90 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 166FFCD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:39:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F5EBCD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 650E96B0088; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
+	id A9A5B6B0005; Tue,  9 Jun 2026 09:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628786B008A; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
+	id A71DE6B008A; Tue,  9 Jun 2026 09:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565376B008C; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
+	id 987A56B008C; Tue,  9 Jun 2026 09:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47A276B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAB7014055F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:39:07 +0000 (UTC)
-X-FDA: 84860480334.19.2EBD438
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CE75C2000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:39:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DHA5pvdG;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 871976B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:41:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 416E81A0599
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:41:30 +0000 (UTC)
+X-FDA: 84860486340.14.BF699E8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DB2A1100011
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:41:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="h6/ZKLHh";
+	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781012488;
+	b=epQSSQ20OBWo9KGCeDsfezVDfJuPdt2wcZqEp6TvHhw5FTKfgvKv95Tq4hBGG35wrTFUAH
+	+lySQStw+7/0a8yo7wsNAQgVdMxJ90LdTOYoSBPHIh0hP7GIEer+WnOI+7C0pKrUY1upN/
+	t9i9LafAocm1Go29NU7WhSng2/4NhLA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="h6/ZKLHh";
+	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781012346;
+	s=arc-20220608; t=1781012488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJV2I1pYWH8I5eTLLlBTFWiw8BNl9+kPEFYXmmxRFA0=;
-	b=ve5NdaF49Hr6GAqWX4MPrgM7ObplblQRJH6l0hekLV7aBHBQzbTURkhCITgunJ/vb5HG6+
-	KzRdE4U7rrIS5OS6jBmN4o2dMRl9vC4c4ZvRZfe6sb6DOeoOZOgabaEs1eKiKxji8Im0QN
-	n4y7WXtP/gDX5+YQWHr+gHQ2oI8TFrw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781012346;
-	b=TbhdqKmd65Uw+cR6JVNUKjr1joY2V1K7/zMslpLefYNswLAr+nL6J/dj+hRW/shXaYt6q9
-	qJguUXdRC0xFekqnVU2l3wcT3xqZkJ/IQlRnhsrCL5TxNrCWnzZtR+EkwRGPLQOl2RXVqk
-	K38J/hW3f6/NcSYRQG3mhwDA7v2mA94=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DHA5pvdG;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <86575450-1d56-43be-a4fd-6f451e5be4e3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781012343;
+	bh=pkyMoO5X/yuBqQLC/PT+Y+c9YoPy4Sw4UTNKeJM6heM=;
+	b=5D4nQh8lBi0IP4/4OJMpMlB+o4Dm8pomErY6h8A0mSKiFPioftx5+HAB2x7CAgWuopkpw8
+	mbQ2rGvbdOuIdajcItAC3h3yVsBe/oeX3HMPJCpuAtdTuJktSA6Ag00Cfac5yjKnWCMXg5
+	WryvInM+P+wiANE8CraE7anyi4UVOpI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781012487;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YJV2I1pYWH8I5eTLLlBTFWiw8BNl9+kPEFYXmmxRFA0=;
-	b=DHA5pvdG52Z8Irgr/MLUCeE3l55DgnRt1kYMY2LtcWTgvjyHXVXQzZmJRQoBDdVBAzJEN4
-	Rqo+Pc3l9/iqRCZMu3i2P2MnJItVE+ySpQCrTGcA4wmxKkIqwdSPoVVHf8MV1e7lKqzy7O
-	z3+XUebaAMcRd6oZZlVWxxJQ1nu+Jgw=
-Date: Tue, 9 Jun 2026 14:38:58 +0100
+	bh=pkyMoO5X/yuBqQLC/PT+Y+c9YoPy4Sw4UTNKeJM6heM=;
+	b=h6/ZKLHh36XOMmFs0LhIii0GqP0r5Nw4PWu7ToXrLLkTblt81oJhhlGNdmBDT0rDkiN5cw
+	C10GgH1Y90x2kNrGmEzLbosSa46ZOArSlleaPAxBeh5AzbSJNgiZ3AlDtxGbOHJ2kirEq6
+	DaptLZ5ikiiat1P0WGa9HwBZ/SiSRjc=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-458-fU3o0QsTMdiR8cTcKPq2eQ-1; Tue, 09 Jun 2026 09:41:26 -0400
+X-MC-Unique: fU3o0QsTMdiR8cTcKPq2eQ-1
+X-Mimecast-MFC-AGG-ID: fU3o0QsTMdiR8cTcKPq2eQ_1781012485
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7d9222ae3adso104290017b3.3
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 06:41:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781012485; x=1781617285;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pkyMoO5X/yuBqQLC/PT+Y+c9YoPy4Sw4UTNKeJM6heM=;
+        b=U9VXXAtGretzNF67vwHdLLM7zlXkt2p1mgQsasI+NzKwrGI8FBGWuaE2nxb66561BN
+         nEl7eo82icXYF8ARSLY9S8YBBmySoggg7yR89W7dgHDX9xvK7bIdu4SeP6L6Tlcbtovb
+         49+iKXS+9/oOSCBy7OGECWpdmMxSjt2D4P8nRc++UJjWx2J+3f6pmWikrXCsUO/Wxff2
+         KLzjVy7ChufNLJA45tMRrsPozGg/xVZNLWfsjT5Qz6Io1AHaiAvkZ9Ul0w2looKmSit6
+         aLMVsFjzBpet3jKkOrq4ozFSOpj213unhN9zPMP3BlKXsf9fPi79EH9hzAYWBXv2MgMT
+         FRdQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Z3T+M7EppJQFCbTdgJps53Y5WpK62rYHpwbPk7wB2GqKuNwuK2aYyhfDKZTZkHyGoHJSac5bx+Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw9g0HbWKVpfUOs98vX4O8MOXwvruZmivCiSmFthLhZ9Hv1elo+
+	BU60srvEPZpkNN6doNKjItXyCNeg7bcEyVkO1wR4czjKgUwzNE9GUKILRSSpb91B9uQslZKX5cY
+	cY1NVIC887on91cDJfsMAJeVrW5L6HlZc0aLq0RwBAfD9KZ9+PCZZ56u/0izcY535yxOVJfY4If
+	V9XcwmlW3ce9Yke5bSRDlmRP2+ulM=
+X-Gm-Gg: Acq92OFZ/YFvW2zkgyZpZoXF3P+nTftZqNFVwENYsvubFjNB3zTa6NyWcTNt3imd/oL
+	KtKtP8p4xJJpbiqHHUoGLrq82rjePWUTw4rFQZ1+pEtZspYbxnUJdJbu1o02CNTSyDvACaIb8NA
+	5Ue2Z/Bf17O1E4hNIWZJ7yUuMLTcR7m++0E3xLMf0UvMDNmHKJWIumMsgVibsCY/GffoEefkMiF
+	kvNRfS8WLpWbqJ/
+X-Received: by 2002:a05:690e:439b:b0:65e:5aa3:9632 with SMTP id 956f58d0204a3-66106e1cecdmr12241352d50.22.1781012485225;
+        Tue, 09 Jun 2026 06:41:25 -0700 (PDT)
+X-Received: by 2002:a05:690e:439b:b0:65e:5aa3:9632 with SMTP id
+ 956f58d0204a3-66106e1cecdmr12241315d50.22.1781012484754; Tue, 09 Jun 2026
+ 06:41:24 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg
- slab shrink
-To: Jan Kara <jack@suse.cz>
-Cc: brauner@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
- linux-mm@kvack.org, hughd@google.com, boris@bur.io, clm@fb.com,
- dsterba@suse.com, linux-btrfs@vger.kernel.org, cem@kernel.org,
- linux-xfs@vger.kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org,
- riel@surriel.com, kernel-team@meta.com
-References: <20260609123047.1948242-1-usama.arif@linux.dev>
- <5exadtggg276xp5tayiqbbomnms4hjyaopmgu3chfpl2ug56dq@vyhswy2afzmo>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <5exadtggg276xp5tayiqbbomnms4hjyaopmgu3chfpl2ug56dq@vyhswy2afzmo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CE75C2000A
+References: <20260609201202615oT6yd_LtIoKkGLksFaCha@zte.com.cn> <20260609130611.88058-1-lance.yang@linux.dev>
+In-Reply-To: <20260609130611.88058-1-lance.yang@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 9 Jun 2026 07:42:11 -0600
+X-Gm-Features: AVVi8CdB79u0PqMI8oGDddZY7I-3tKVmXrR9uH6_FWAdq9gH1zfbXJcrdBYqqLE
+Message-ID: <CAA1CXcAsx3cU6HNea1MgLocGReoGoFQaq3NBFd-NUeOW8nJjmQ@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
+ from interacting with KSM
+To: Lance Yang <lance.yang@linux.dev>
+Cc: xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	usamaarif642@gmail.com, yuzhao@google.com, aarcange@redhat.com, 
+	akpm@linux-foundation.org, david@kernel.org, chengming.zhou@linux.dev, 
+	ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VTdZyofdm46eF4Qt1MdaG30jNG_pfIFmWk6TDGrah08_1781012485
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: DB2A1100011
+X-Stat-Signature: 9i1tf7b9grmye5hbf9f6e87fj4mjku5j
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: oz17khbq4p7h8h8px4cegpw5rif3nccb
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781012345-228107
-X-HE-Meta: U2FsdGVkX188SmNBNIGetEa/JezCQLHOhLpgp5xISzCbXOktsTft+Z/+XSeqDHplvGD61iDIahT3G8qufjj3GPNKgkiWH7Z1qqbWBKP3NE2EWwr0ZCWqx/gbDkREy1R/aNBSCFZTMAD1qVPJT5Xr7KnPnZeqL++8m39pAYRIt2MXkKTUjoua57yZ5NFbom5Y6PY1PjY9/ZbaDcMEM+vondf1DtFc+qh0cUQbtLesp/CibFwPcT9ueC8PebGgRUKJi4kaMmyALqLH4RTqlWwgVi/5XNacz/OqJmj7/l3u3yjBtW/VjU/3rxjTNTK/4hm5EvPvd4/56vuP5oXnvjEtn015Ptr1Pqluc7Ow2ciB+PNvIashQncKIjqvPsg/FKsH7Hvahr1R6cc9VpuoaZ/8Kv2lQx4foJFNQi6tShwLJwExBv4TF0Vq40ZObX5VzDjagTRlnHib5rGbibWDjbLTU922HHv3uR4sRSMVhatjtz12kdB+wuRdYFFeWAO5h5gOCt8o03zsKaUdFqynPxjRn55ItOfKHRYcI/VAOVAdAghpBd1mJ5JH4f5l0nrzIGcetsrlp7Ww62RPQaWTGuyZXcXqQ+duoGjLl3pZXnKKxoSUQb/xj1sI6ZVmhkS2PyMLZgJSKn01LrMmCfZuiOZ0TkviL5fLze6WFbkL0B0X4+L32dqqhwzwifk6xTQGSESLYfDz8R5nEYlinn3KcAl9xC1xQgNCiVm5P5JucnyF5IrVAuDoZojKcFKx5UB82RwMB7BpkWy5BVpPzH+OWyYdqBa5KtNa88PqnZ5MtrcZ6HqpjSVtFhTgJrgrpXHnYMwYxGOOddEc1r59Oo3snDRbIE3gOJTjZn12pEqo+C1zC4RPWPekEfMua/drv44GWZzD1GOK6r9owd/6G58d15sn7SXIAOtasOo1bh1Pg5oxWKPSjFoT7NBddPibSsDVFtKMVz/UnExN7ZO1Ix+c5Cu
- 4Yx8EDOp
- xUOGkhlevSC8aGKAnyWxsveX3mY9zEO5BbKyarTUWWjbXhnUYN2yt/jO97I+d3Y5PHOqvtgj5o2JVj0LxGSkuYYl2htiqU7oDcqS6ag2yEDLApMbWw+pufSuww87jll9h6VpV8xbWmqKFJ6I2a3D3F44+J3GHkbi1p+QoTGKn1KwB+DJFhmamZA6FjZb/o5jQZA7qqaclZ2vq7f46JLITw2YxATn+fOWxGawBnP0FGuUXSGV3kzJVZ7xCRz/a4ZH6LIyC
+X-HE-Tag: 1781012487-310381
+X-HE-Meta: U2FsdGVkX1/sehs+725uwpVEaWW6RdI4qO6VfNE0q9mZTaRLSaSNymxFl/9ZtRIS65qPkVDL7WJO+1/m5VmIyIss/p9Be74FP1UUTM2lUf/IqcaAlPn2/If7gzUZalIgWYoOPwTikqa2sZ+UEV+cXuO7spyfooz/UFdMKT9cD9TZvTFEaXF66gFNXhjfjsiulhATZlFcNtpe/Dyc3Moj9yREsd1BA2ZdmjP0CFca2V58EV9HKgvNBM1nNu2Cn+IP8zyKd0MooZGIOU9MMexnA5+IFWxpkwNn12rAPIEhHJJY/W+2GSfD+MbqKBhIhKmFKLkt42hRZmzTG0H+7hael5EBq7nOOVbdcK235xMqlFwmbbkY4NamAygTnFs2wEozXqm15qMYelG5PV9l6GSk9vvFv14N0k2AMsuVP5Go/x7D4OLJkt8Z23W0mSGUB9HetMbFLlR6ZTGiSon6TXra/05Ft2/ehuDgqKbu30wKChcS8XrlJMcW9G6Pp1M6r5uPreWt6zKrvml4Hf/1J8ks1mBduFgiBLrBvU1UuLsOCuqi8NjK7Z4giHwmvWv7D5wD35hoq/InxmAlgBN+7v4M1Su7lVe4Jn+Sgb6MRhfbvARD3/ePPA2tCbYvX2luDr+B+e0rwCSZMMSR8PcONO6W4C39gEsOuOk4WatQRk1KX3StMSsq4rYkc25BKZlD5yDbasgvzGZCd6+L+55MKCCcqet5vPKjS+7zahrZXDixJkFDZ9uEbd0RRjYgOxiR+CKIRl08xIXT3rZlvC6gHDbUU4FQEeF62/wP1iP61PrJ7cvozCTVL6mvgIdbsDHUn5DPyONR8Zxmi76dAuAS2cq33t8ZSn9XjUKK1pg/QCkqfGHHu4EI259c3mYvbssRLLRNZ+tCE3DiWpCxkMFcGLww1ZMaT7B2bAciIPeKSFqat/FD1DV6iYCga3zgryrYm0nVpwwOgxAnuDbjorf/CVJ
+ HyN1xxIu
+ ng1YRAH+BvyuQ7zGxfA5SH3M5eN5P5l9n/38NwKqFMMQnYTiKK/uk37Ce/ZmfoEgseLk+xxWfvRu2YxUg0YUJ0ZqdZn9OXhsmV4XG61M0kZuwWIREF8VKKTWMRPcVa3W72o9xtFcB20Stt57vTVYPcrigSV43bBSulfFouQ30aebyMshwXqO/woFBtWLsEMpT+VzSlmhdqUHZoZ4XO5bhSpO0lwDlRKqrR7M5UIIuW7XG9YGG1xiSTApr0J7c4+zs8MmE4a/31psxOWHPSWu1kglJ6xMk7zisLRR4MQJUFHtrVcZdGSgeFy/2WOxVq1grIPAjqNg5FUB9lA5XgT7wv844DlxTmNErX6VbDHViTuZSTCOczuCSWQuDwuJba3pBMk6LNw+m5Tc00CVNZtNwTZnPhcvu+hBFhbg5ytXQ12maDXs2UBPFuqAkRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,113 +131,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 9, 2026 at 7:06=E2=80=AFAM Lance Yang <lance.yang@linux.dev> wr=
+ote:
+>
+>
+> On Tue, Jun 09, 2026 at 08:12:02PM +0800, xu.xin16@zte.com.cn wrote:
+> >>Since commit b1f202060afe ("mm: remap unused subpages to shared zeropag=
+e
+> >>when splitting isolated thp"), splitting an anonymous THP remaps all
+> >>zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE=
+.
+> >>This flag is set unconditionally for every anonymous folio split,
+> >>including splits triggered by KSM.
+> >>
+> >>When KSM is enabled with THP=3Dalways, this causes two regressions:
+> >>
+> >>1. use_zero_pages=3D1: KSM calls try_to_merge_one_page() which triggers
+> >>   split_huge_page(). The split remaps all 512 zero-filled subpages to
+> >>   the shared zeropage at once, freeing the entire 2MB THP when KSM onl=
+y
+> >>   intended to process a single 4KB page. This bypasses KSM's
+> >>   pages_to_scan rate limiting, causing ~1GB to be freed almost
+> >>   instantly.
+> >>
+> >
+> >Why do you see it as regressions?
+> >
+> >AFAIU, KSM and THP do often conflict with each other. THP tries hard to =
+collapse
+> >a huge page (which may contain many zero pages). If KSM is enabled and p=
+art of
+> >that huge page is mergeable, it can easily be split by KSM, rendering TH=
+P's
+> >efforts futile.
+> >
+> >Therefore, in our actual production environment, we typically avoid maki=
+ng the
+> >same region both KSM mergeable and THP always.
+>
+> Right, some setups may choose to avoid using KSM and THP always on the
+> same region. But that is not something the kernel can assume :)
+>
+> David noted in the RFC that QEMU may use both MADV_HUGEPAGE and
+> MADV_MERGEABLE, while KSM can be enabled later system-wide.
+>
+> And I think Nico means something different from KSM spliting THPs in
+> general.
+>
+> KSM has been able to split THP before. the new part from b1f202060afe is
+> that a KSM-triggered split can also remap zero-filled subpages to the
+> shared zeropage, outside KSM's own use_zero_pages/pages_to_scan controls.
+>
+> Maybe the changelog could spell that out :)
 
+Yeah maybe I didnt properly explain that :p
 
-On 09/06/2026 13:52, Jan Kara wrote:
-> On Tue 09-06-26 05:30:47, Usama Arif wrote:
->> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
->> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
->> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
->> btrfs extent maps and xfs inode reclaim operate on filesystem-global
->> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
->> None of them filter by sc->memcg.
->>
->> The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
->> calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
->> whose bit is set in the per-superblock shrinker bitmap, which on a busy
->> host means hundreds of calls per reclaim pass. Each scan queues the same
->> global shrinker work item that's already kicked from the root path.
->>
->> Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
->> the returned total stays positive even if a memcg's own dentry/inode LRUs
->> are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
->> in the memcg bitmap, so subsequent reclaim passes from the same memcg
->> re-enter super_cache_count() and pay for the global counter walk again.
->>
->> Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
->> or root). The memcg-aware dentry/inode LRUs keep being counted and
->> scanned per memcg as before; only the global fs-specific hooks are skipped.
->> The root/global shrink path still drives those hooks; only their
->> invocation from non-root memcg slab reclaim is removed.
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> To me this makes sense. However I'm bit surprised that XFS inode shrinker
-> (which is what gets counted in nr_cached_objects for XFS) isn't memcg
-> aware. I guess since these inodes are on their way to a relatively quick
-> destruction, nobody really bothered. So I'm fine with the change, just
-> I'd like to make sure XFS folks are aware and don't plan anything in this
-> area.
-> 
+After some thought I still think the alternative approach i mentioned
+in the RFC may be better.
 
-Thanks for the review!
+ie) prevent the zero-page merging that results from KSM splitting a
+folio. The check we add here is more general and will skip this
+zero-page merging with all MERGEABLE mappings, not just those causing
+the issue (the KSM splitting). The result is that even migrations, etc
+that are also MERGEABLE will be skipped needlessly.
 
-Yes I am hoping that if there are any objections from xfs or btrfs, it gets
-raised. Have cc'ed the btrfs and xfs maintainers and reviewers.
+If we use this approach we also don't need the first patch of the series.
 
-Thanks!
-Usama
+Cheers,
+-- Nico
 
-
-> 								Honza
-> 
->> ---
->>  fs/super.c | 19 +++++++++++++++++--
->>  1 file changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/fs/super.c b/fs/super.c
->> index 378e81efe643..5216c5dbd4c4 100644
->> --- a/fs/super.c
->> +++ b/fs/super.c
->> @@ -24,6 +24,7 @@
->>  #include <linux/export.h>
->>  #include <linux/slab.h>
->>  #include <linux/blkdev.h>
->> +#include <linux/memcontrol.h>
->>  #include <linux/mount.h>
->>  #include <linux/security.h>
->>  #include <linux/writeback.h>		/* for the emergency remount stuff */
->> @@ -169,6 +170,19 @@ static void super_wake(struct super_block *sb, unsigned int flag)
->>  	wake_up_var(&sb->s_flags);
->>  }
->>  
->> +/*
->> + * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
->> + * operate on filesystem-global state and ignore sc->memcg. Driving them
->> + * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
->> + * per-cpu counters and queueing duplicate work: the actual reclaim happens on
->> + * the global path (kswapd or root direct reclaim) regardless. Restrict them
->> + * to that path.
->> + */
->> +static inline bool super_fs_objects_eligible(struct shrink_control *sc)
->> +{
->> +	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
->> +}
->> +
->>  /*
->>   * One thing we have to be careful of with a per-sb shrinker is that we don't
->>   * drop the last active reference to the superblock from within the shrinker.
->> @@ -198,7 +212,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
->>  	if (!super_trylock_shared(sb))
->>  		return SHRINK_STOP;
->>  
->> -	if (sb->s_op->nr_cached_objects)
->> +	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
->>  		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
->>  
->>  	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
->> @@ -259,7 +273,8 @@ static unsigned long super_cache_count(struct shrinker *shrink,
->>  		return 0;
->>  	smp_rmb();
->>  
->> -	if (sb->s_op && sb->s_op->nr_cached_objects)
->> +	if (sb->s_op && sb->s_op->nr_cached_objects &&
->> +	    super_fs_objects_eligible(sc))
->>  		total_objects = sb->s_op->nr_cached_objects(sb, sc);
->>  
->>  	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
->> -- 
->> 2.52.0
->>
+>
+> >
+> >>2. use_zero_pages=3D0: The same split side-effect occurs through the
+> >>   stable/unstable tree merge paths. Each pages_to_scan iteration
+> >>   triggers an expensive split_huge_page() that silently frees 2MB,
+> >>   while the scanner wastes cycles on tree searches for zero-filled
+> >>   pages that were already freed as a side-effect.
+> >>
+> >>Fix this by restricting TTU_USE_SHARED_ZEROPAGE being set in the case t=
+hat
+> >>KSM is running and the VMA has VM_MERGEABLE.
+> >
+>
 
 
