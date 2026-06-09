@@ -4,163 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F7E6CD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B60CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9CD96B009B; Tue,  9 Jun 2026 05:54:26 -0400 (EDT)
+	id E6F1F6B009D; Tue,  9 Jun 2026 05:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73F96B009D; Tue,  9 Jun 2026 05:54:26 -0400 (EDT)
+	id E46556B00A0; Tue,  9 Jun 2026 05:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 989F36B009E; Tue,  9 Jun 2026 05:54:26 -0400 (EDT)
+	id D5CC46B00A2; Tue,  9 Jun 2026 05:55:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88A4D6B009B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:54:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 511F11C281F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:54:26 +0000 (UTC)
-X-FDA: 84859914132.21.A94CD83
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E7041180002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:54:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fJZxcPi2;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C44116B009D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:55:33 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7ED90164814
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:33 +0000 (UTC)
+X-FDA: 84859916946.30.7B6372F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BDC881C0007
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FBly/emr";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780998931;
+	b=FGGrMeb+UXmmbgoyK3pBh1hCVOfpoUe0EADfiQXzBDAmIFpKrzDsAM16EiCfaOPy9vojlS
+	x3UOuAIqp+6o13lMfUYHPkH+MXv8RX3qKNCZsp2n0UjLg6vwlb+RAd2WeT795QVaRvqvHk
+	kw6onQOe5ekywxbrvqE+xdSUtSUINks=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FBly/emr";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780998864;
+	s=arc-20220608; t=1780998931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W5AGHJKl709rDF75fggz2CPtkzpWxiGnDcPVzzKSTGA=;
-	b=Q86PzixOugIUF4g70FpiOb9/oDGv3742b8vUyrcYmN3qCb4nxjt4h6ZT7/RyJSGTFsmznA
-	kvJ838H6yByM9S7/2wjuTHJopL1l2FlPrl6JkTduAawa9I4pPvw+u3fTuwrfM4A9lY5bCn
-	JrbOutOW4XTEOiA5s8i6TsHk3Voa1Z0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fJZxcPi2;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780998864;
-	b=10uZ7R1QDTa24MPu6nltTICEdNSzDeISWFClCJbOc9C1AL+24omjT3S9hbtOwj09z8gey9
-	Zh38MzyZHKIHRWyPqjgPT+SmGB6Agdq01hV1ZhjhV2FdjLCSuj3Zw8bvNgusEUfHojdJr6
-	YMr3C/P6TKbUMiFt+90Vv2zs35M5teo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780998863;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W5AGHJKl709rDF75fggz2CPtkzpWxiGnDcPVzzKSTGA=;
-	b=fJZxcPi2dDnj6kVMKcASWJDsYC8zewraoDMaJHxLCy1cZFHmPsCsHzSfz94Zj28k9J4zD2
-	LIL04CkeEgNisoXjUmwA+P75WM0VthWq9DuNYvSSQYbWK43HTsrD22SC3/c0QkldDkuMRo
-	nIvICMGDPLSE0kOa7c3wbwGo+lMsDUk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-TSbrk1r8NtmTnLQv4hJQCA-1; Tue, 09 Jun 2026 05:54:20 -0400
-X-MC-Unique: TSbrk1r8NtmTnLQv4hJQCA-1
-X-Mimecast-MFC-AGG-ID: TSbrk1r8NtmTnLQv4hJQCA_1780998859
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-beb5131c31cso305912866b.3
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 02:54:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780998859; x=1781603659;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W5AGHJKl709rDF75fggz2CPtkzpWxiGnDcPVzzKSTGA=;
-        b=pp4I8w3UFSx40ZY+Rr5JKKPJZMS+hn7iSLtqvmcXCDeJY/0Jynw1IWsEkNQU5FqeD7
-         x/mnf0hvwfsnV7OdZzT18PNHPjC6pxkRHpiLqXdd7rpKTFu2QuiDZZmsHoOm0M+y7Whl
-         Y4KFs6AX0yQw8vYV+ZtNbFS8I6/eB0MY/woCsw2CG8I4YTbx1pU+LX3VhIbIdGJ2kuoU
-         58Hqh5ixsbSJuafI1lucbLOz6wtiOkgAr9m5AzSMt90KXIXFAsS6OIApuJOKTLht/oTK
-         g3dBGw9R25xst/6FNzO6g8daluXAAhHGdSLMvh4G0OUfFu/LS02Hp+Q7UNUjEVPaogIi
-         xZOw==
-X-Forwarded-Encrypted: i=1; AFNElJ+S1dIsXKLiCJyAkKfNZ9XtNlclQoXd5Jmvvh57bcTXmkkblW+glYLR9cEznlQHj228RZ/kcHiSpw==@kvack.org
-X-Gm-Message-State: AOJu0YxFiHs8fxsuDjnZgd365SsCjb4DufVgjMb5UDmBUTv4vUPTTmkQ
-	z8WizFuCkri/k+s18waeK8K9uQnm/JvoYy3Pl1e6VJ/E/oRBX6Yzm1AhMLD4r5xCOOwRl4LCiyB
-	FzCFhpHo5LCoRmCcSoxXb5jugwh12+53N/a8C6D0JkHVQZZg90URy
-X-Gm-Gg: Acq92OEfjeEbSHbIt+SCRg0V6TSaye2qY50TZlpUoZ+5q89r97vkcOcP+aI0GyouOza
-	IvFhrFJFtTIghMPiByVNloTtkWd3WqN3vP/XVx+w71vbDWi4dM6/n7eldJ8AD/phrz8qq4koFYV
-	hQl7epNv24DHGig3hduTWlnsiJoro7RoTb4sAoE1aBhrtSaDaGVq6HRUngZOOppm2pF8r4qB/z0
-	2rGcC/RwYZNmNitjXfM2rPdWzmdWV+NydimgYovOu5L3dacLuoejpsdWST/ymzJGQLi+JD8/F6r
-	mz0XY/rITdk2m75WcmtnQQLUOcEXxHHv3B/DYgx74IaBrMVK7N6dg50EAyVnzVpiWSZj0eMmVBd
-	5fQpFrbryVzT7zIk6Hbx3E8atojmi3AaG0l2KzJThmb+bTppCHA+WVw==
-X-Received: by 2002:a17:907:ca84:b0:bee:f72a:28d6 with SMTP id a640c23a62f3a-bf37096c195mr956581466b.14.1780998858691;
-        Tue, 09 Jun 2026 02:54:18 -0700 (PDT)
-X-Received: by 2002:a17:907:ca84:b0:bee:f72a:28d6 with SMTP id a640c23a62f3a-bf37096c195mr956576466b.14.1780998858161;
-        Tue, 09 Jun 2026 02:54:18 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf051e9aa33sm1010527766b.24.2026.06.09.02.54.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 02:54:17 -0700 (PDT)
-Date: Tue, 9 Jun 2026 05:54:11 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v10 07/37] mm: thread user_addr through page allocator
- for cache-friendly zeroing
-Message-ID: <20260609055317-mutt-send-email-mst@kernel.org>
-References: <50d410b47fe3f45327783e05bd306d5eaab75e65.1780906288.git.mst@redhat.com>
- <aiaUDTeHDA45ZXFS@lucifer>
- <aiagMc9Ng_AE_adh@lucifer>
- <aia93IzhTgi1vGi6@casper.infradead.org>
- <aia-q026facbptoT@lucifer>
- <d0ff6269-8b8a-4983-8569-d9a8495829f3@kernel.org>
- <aibSPsc33YQiYSMI@casper.infradead.org>
- <ef14cfdf-5f1f-4e3b-846d-fe1462042883@kernel.org>
- <aibVTe5HTk-fF_kj@casper.infradead.org>
- <68ac0163-865a-452e-b643-351e094cb2ba@kernel.org>
+	bh=fb64ERX8IQ5RCHgdgmlatnPmlzWSU7KCQUnwmM/R8Rs=;
+	b=YvIH+I0be9yuJI4tC3YlALORQ1UfMg8gzqjnBkpGxXUT61LcFkRSCkNHneuhWgN5AtXb8Y
+	bU9UDrPo17hRWfdPKmqU7yK5vpH71FQRjYIZyWnI//vjpiT3wrszIxj96oP/pyA0elSaNA
+	ZtMsSWYlJdk6dSKufw/L1lRhYvzWv3U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 548E8601E1;
+	Tue,  9 Jun 2026 09:55:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132451F00893;
+	Tue,  9 Jun 2026 09:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780998931;
+	bh=fb64ERX8IQ5RCHgdgmlatnPmlzWSU7KCQUnwmM/R8Rs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FBly/emrcxyfCk+GXZrRzoiHJ0QgVUIjuPDwX+0uOFY0Y3qZPGr5C69oLvso6kSPr
+	 jmMSB4TXSQO/sx25g+1CCuROqXzjgepmaDDwcciTevuHDg3OIoytUNPTXdwyyDjoSK
+	 2ele79KVgfWuUPIfcTGAyKK2E+XdOgXmWmKPc8VgN40ApZliUoegw6PAYMwMAiw8sX
+	 pI4vJiFAq8lwe3wOL/WaplbPe9IVlz4W25R6S/CX+G5Jwq+c0GryXS4CtmeToeak6h
+	 FDp0SMwRRfZKOLxjiCoxOBdh9acmLItKBRm3O8c+/ChOL5+KluWOu2Ym4mK1SwcQT6
+	 U77WkaQ9d80iQ==
+Message-ID: <9361f783-5af4-4380-a901-8d330370491a@kernel.org>
+Date: Tue, 9 Jun 2026 11:55:24 +0200
 MIME-Version: 1.0
-In-Reply-To: <68ac0163-865a-452e-b643-351e094cb2ba@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9fd_2OjN95NMdWXtaUUAH6fLQUU4H1cPIQtmpnvcYBU_1780998859
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E7041180002
-X-Stat-Signature: nr3f8ims5i9ymwi41s66uzii8eq5cisd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/9] mm/memory_hotplug: add
+ __add_memory_driver_managed() with online_type arg
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ nvdimm@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ linux-cxl@vger.kernel.org, linux-kselftest@vger.kernel.org, djbw@kernel.org,
+ vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, osalvador@suse.de, shuah@kernel.org,
+ alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ ira.weiny@intel.com, apopple@nvidia.com
+References: <20260605211911.2160954-1-gourry@gourry.net>
+ <20260605211911.2160954-5-gourry@gourry.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260605211911.2160954-5-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BDC881C0007
+X-Stat-Signature: n1jn7w9go9y9kysotfjyom933jsju5is
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1780998863-206924
-X-HE-Meta: U2FsdGVkX1+2CYNjGIDkZ1SP1iL6v7cx0Ov9ePpGXPdWgk60cG5cu+8U1lj9ZBGRS61vVUsdGpLa+wF0LoxgYSGJbWx6j8FK5BOTdAcQW/sK64U/FgnbEsrlwThEOCvBjhPqZ3a9P6/HC9PcdRFD9ldXYxcn21kMXA6ovBdAMcNQCsxs3+X8j3kucuqd0pf+eumH6J9m0GZ0YIQJe4Yld06YUPBmBrQWyvb874hpxsFO2MPCQYmDsPDFN+2KdBXz4l0GToRCjQgxSsKFhYJaUnOoDKFqTgTbGBS3jqWb5pWd+ZvIAAcxqpAwcgLfTlKEVMK+pWs4O5M8Gr845akB+2I20yA0Lsvw+1aqr+b+hYH0uYqGtnqRIeHjrcWuQ4rC+TGF3/tUCkDDZfR97rxL6TJ7PcjZT6YRZXcVrm9NOlXO+Q71FaE6bRzcD2YyGupeCUqiNEeNYT2zYBgUYiRnBB3zl1i6jex7YTsbfJTS+H6wGZa6rUfbeh0QkGYfGrCi4uOOt9axG0vOfgkiNAjhIF1fYid8H/zRucK/PpumzMpxeuJDk2PqlTi/wIMFBvMSkaK7EXDmgFvg4jXk6p3hLOmhzCgwWfs4JlhLQ1Mx95UKjRf2xf633kh54w9gwzQg28PsEBuH0BMm+VmCUFpKtn/gMolb1bTVBSdPkJYdZk9PIH1zH+Buj1MqWP3bigVOV+85Lfja49iJ3AzEwMyTVIdFCgcqkk0AwEvgC6UXsDXVFu3WNkLE77brug2vPoKyz7fxjaAmb5K+M+tXtFDO/z4OV018DYYY241RQoT9B8/LQXyCCxlvs4yl2UBu8FSqEPCPFyInbBxQ/lanl2c2MpOLEvj7Qbdou0jWIrCjWVMLiTeFN2O10FQnLIdp36ksRgbB2VWPnFIyLn67VtQf+umtmMvBYDl0MwQavxgJlnq8ePheyqBggxft4I4gVCSH59In9Fu7x+qOOPlL8Pz
- 1/b3Km3k
- 7SKCWPoCSK0kATg35Ly/LX/bbhQO6k1et6Jcf/2xxo+wstg0s+rKF2MlrcNehzA0gO+udZOGX3KZucE+pdTHScGa0WTygfUKi50RWO1EpMIFdDBbug7CK/Oc8Q0dFGUREI78uDlUWw21fhyDuGvt9b2QNvQ4K7uPdsgslq4d1WNW3cW65XTKMLxmQfV9qawQtTNwZ6ku1H+CQ944HCyqaD317gBBjQGWk96j+3kcVE5jvTpSPHVIQbPl0aJufn8/amVnyC0OF6NPwpk4KJm99833RiWbtAceK96eoKrgZ4IqmOUJDchXC4y8L1Dfz45EqIE5qWGqRM93omt2TaqgMV+kjUtsps9ZCa5sAkcbhAqKIF2jtk4cN7/RF6hyncDmilorgIC/XSRZmsNNjpGayLY0xV+5itGvLGDh/WnDdPKGDUhUEcLihUChBIBrzTgDd66nHQMPUIuEYIKU=
+X-HE-Tag: 1780998931-306402
+X-HE-Meta: U2FsdGVkX1+OfEk1rzBViNyN6wBnaHL4xq/5/KPUwZK6OmulZErbb/30u3Vuyz2I44Yxa8snpkopzk2REJIGKcP5Jlx8Fp2+9izQHMtekYbtePA1m+UymRcyuXmnhe9SLJQhXRpGh1HC4nZCCRzoskQgd/NQdqboCztufwdDhhfepu5sBtvKsPFOv7JSSRUHbMRiTF4fb2ow0FhmU5Hgf1HmHdii5RF5SKBeKoGz5V/LnZc5QvqJB+xzoRT0Y22vEk5ar6vEpJItatNTqCSgUJaqS66V6Z5c7gur2az/KCihLZzWNWaK63sA0pIW0e2N2GbEZc3zUlwWWiaZeVKnkfuuvpGEyQN/gENwLI3B7b18aulCGbs59hwI31N6uKB+pC28IAOAs+LDJggyA24gA990z/mAVJqZXzzFzgEj/ca09ymfWXyko7JhGIUzsCNRKYnfsS8EtWW5CJ9bRpQw3dTg08r1QAnNCkiZ7breJPC0pbUrIMPH+xgXBoUvtecng4LRCw9dhhlxv9Ppt/z+WOmVPWMdq1uDJU+PAGadi56lZC88vKBuM6OGW1A/DEywnNIc8oHujn7W3QiD1Av6ICGMt0y9PrgjfzAcyMs/2x+k0YLRvma2qDNP1EalOhxRmgM+OPRVx8pozwSuEl7IEY3V16Wj9fyAC1fTQAaVGQJH742DojVJ4zBKen4MthA1ujI/8C++sIpi9l0NEPo1b3drB5fognaZIlkKa9zVxfpv8E2MNEJ2ftoUc9PLsxjueEawPuL7e2ybCdhwErikhoRDR55Ag7NdyGZUUAGgvbRXI6X3CKn6siUr6rzjswgiZfWk4TLgZOKRQCQiIvXSED899x7liybbzHca+fx4vEYaCag8GtXLIjVxEUgo8NbG9Twar1G023k/u1rv7jTdp1au3oZ+UTgS8i76gMIMDQQ21mN1a/Oj6rDHqFxoUZY2nRmgU8V1SGktPSul3f2
+ dXplo0pr
+ wCfgmXBOaO06ac0pxW+ATmyAD7TaZL6NUC18l6MSsU6XxVa8cGrdVrErptkfkJRqwe/Dmrt5U5nUW1mtHToTvMnc31GM391lyDQ0zIIIeXauBqLaXrWyGc9EsVbWwNUFF12/v8Pvb+QkfyFzdMkSArgQGd9zgAQyEKc2gCSW2rODYTTWcD5YdWKOJk5D7wtht6HqpiaQr50JO6NXn5y8pzjaUmmfvAsq61dW13eELpMJQdZ8PgodVjLVGG5uDT8yDShRjpGZdThms/VQzSqs2AUSBZ/7p7Qj1mzID3jdva8Us8Hin4GpaB1ter43CULwnPOEhNtGiTviihlA4MzS+uswyLoRBXjcYxCkssYTIUQlW1M9CHV4ehFyH2XXuykck2guAKE3RGO9EDT6UK98lV4xIorn7uDENAA9wxuh8wv8xhpDSFxiLJ6gRtkmm33g9wS7j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,51 +145,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 04:55:19PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/8/26 16:44, Matthew Wilcox wrote:
-> > On Mon, Jun 08, 2026 at 04:37:03PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 6/8/26 16:31, Matthew Wilcox wrote:
-> >>>
-> >>> What I don't understand is how the kernel page allocator needs to know
-> >>> the user address in order to effectively zero it, but the hypervisor is
-> >>> able to zero the page without knowing the user address.  It feels like
-> >>> somebody has x86-centric thinking where cache colouring doesn't matter.
-> >>
-> >> (not commenting on the icache dache mess we have to drag along)
-> > 
-> > Well, that was kind of the point of this email ... I did ask the
-> > question you're answering in a different email so let me respond
-> > to that too.
+On 6/5/26 23:19, Gregory Price wrote:
+> Existing callers of add_memory_driver_managed cannot select the
+> preferred online type (ZONE_NORMAL vs ZONE_MOVABLE), requiring it to
+> hot-add memory as offline blocks, and then follow up by onlining each
+> memory block individually.
 > 
-> Now I'm confused :)
+> Most drivers prefer the system default, but the CXL driver wants to
+> plumb a preferred policy through the dax kmem driver.
 > 
-> > 
-> >> The thing is that with free-page-reporting the memory is already zeroed by the
-> >> hypervisor as part of discarding that memory previously (e.g., MADV_DONTNEED)
-> >> and allocating fresh pages on re-access.
-> >>
-> >> So it's not a question of "why is the hypervisor zeroing less efficiently", as
-> >> zeroing is just a side-product of reclaiming that memory in the first place.
-> > 
-> > We definitely have users who don't want the guest to trust the
-> > hypervisor.  So how do they disable this optimisation?
+> Refactor APIs to add a new interface which allows the dax kmem module
+> to select a preferred policy.
 > 
-> Right, I don't think we currently have a toggle to disable free page reporting.
-> So IIUC, this optimization would similarly automatically get enabled if the
-> hypervisor advertises it.
+> Overriding the configured auto-online policy is only safe for known
+> in-tree modules, where we know the override reflects a different,
+> user-requested policy.  We do not want arbitrary out-of-tree drivers
+> silently overriding the system-wide onlining policy, so restrict the
+> new interface to the kmem module using EXPORT_SYMBOL_FOR_MODULES()
+> rather than a plain EXPORT_SYMBOL_GPL().  Other in-tree modules (e.g.
+> cxl_core) can be added to the allowed list as the need arises.
 > 
-> -- 
-> Cheers,
+> Refactor add_memory_driver_managed, extract __add_memory_driver_managed
+> - Add proper kernel-doc for add_memory_driver_managed while refactoring
+> - New helper accepts an explicit online_type.
+> - New helper validates online_type is between OFFLINE and ONLINE_MOVABLE
 > 
-> David
+> Refactor: add_memory_resource, extract __add_memory_resource
+> - new helper accepts an explicit online_type
+> 
+> Original APIs now explicitly pass the system-default to new helpers.
+> 
+> No functional change for existing users.
+> 
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  include/linux/memory_hotplug.h |  3 ++
+>  mm/memory_hotplug.c            | 61 +++++++++++++++++++++++++++++-----
+>  2 files changed, 56 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f059025f8f8b..d3edeb80aadb 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -294,6 +294,9 @@ extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+>  extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+>  extern int add_memory_resource(int nid, struct resource *resource,
+>  			       mhp_t mhp_flags);
+> +int __add_memory_driver_managed(int nid, u64 start, u64 size,
+> +				const char *resource_name, mhp_t mhp_flags,
+> +				enum mmop online_type);
 
-Not as the patchset stands:
+We prefer two-tab indent on second parameter line while touching code / adding
+new code.
 
-[PATCH v10 35/37] virtio_balloon: disable reporting zeroed optimization for confidential guests
+Same applies to the other instances below.
 
-disables it.
+
+Apart from that (still) LGTM.
 
 -- 
-MST
+Cheers,
 
+David
 
