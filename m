@@ -4,121 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84331CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 11:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 298DECD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 11:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9FC66B0005; Tue,  9 Jun 2026 07:43:58 -0400 (EDT)
+	id 612D56B008C; Tue,  9 Jun 2026 07:45:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C505A6B0088; Tue,  9 Jun 2026 07:43:58 -0400 (EDT)
+	id 5C3806B0093; Tue,  9 Jun 2026 07:45:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65F86B0098; Tue,  9 Jun 2026 07:43:58 -0400 (EDT)
+	id 4D94F6B0095; Tue,  9 Jun 2026 07:45:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A88A36B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:43:58 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 005C08F213
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:43:57 +0000 (UTC)
-X-FDA: 84860190114.09.2C1499A
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5D66518000E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:43:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=resnulli-us.20251104.gappssmtp.com header.s=20251104 header.b=Gl0dPuIO
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 40F946B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:45:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF7AFA051B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:45:50 +0000 (UTC)
+X-FDA: 84860194860.12.9D57118
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3AC4314000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:45:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf09.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781005436;
+	s=arc-20220608; t=1781005548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h2j6CzARsoMyv7N0DLitThZjZq+4w2DpaYqL8Xb2hr4=;
-	b=bHxdbvtWDywOemndw+7Ng6IgzLgII2Kdda3ae7SPBy8T5wLib+bFojfNdp7RMYLbWjk7lf
-	yeTW6i3Lw8f3NqVmdIrzytW4m5IFjLTRFLtpNcXkuS+VXnwwyUOfLyJ8o1YFSdTqjtvLOz
-	Uj7/78AWbYyD91mqgFwTTA8ZN8h/0D0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=wy/O/CmD6ITOl+dRSnC9ZTVcfd+SeJmYk+gaXEE7Pig=;
+	b=3e5mXrNYIs+JNvJ+8fRAFmlQy7BH5sipAAIApSbHsxpaqAAUrfRh1ynyrt3JZt2rtN6KUR
+	T7CHQ+uO+zsdnT0gPNliEi6QWHxQGeaOgmoaM6C5KdoB+gkvzTRPxSfmkD6iw43bU+lGFJ
+	qSOanXvj3FJ6/kVv9qd7FfqnB3jJMEk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=resnulli-us.20251104.gappssmtp.com header.s=20251104 header.b=Gl0dPuIO;
-	dmarc=none;
-	spf=none (imf16.hostedemail.com: domain of jiri@resnulli.us has no SPF policy when checking 209.85.128.43) smtp.mailfrom=jiri@resnulli.us
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf09.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781005436;
-	b=rl0zYhGd8uWKxyEcAxFMNJFd1WnGfj/CcAe7gG5d0zs+imFukyeBC1jcudoROsjI5V5SZI
-	egdbAIFATYqRyuVG4RChyUITXBmw28IhjYiqxF19z1YT2dABYKdkogmQYA8q8hphTYVwIy
-	o+kE5SqMJ70JK7BXdZdgRt/06ZxZuW8=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490b3e03939so45272205e9.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 04:43:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1781005434; x=1781610234; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h2j6CzARsoMyv7N0DLitThZjZq+4w2DpaYqL8Xb2hr4=;
-        b=Gl0dPuIOczB90uZ924GPXdn1eaHGLK5TrJvU/3i4yAcG3JdcYVhdpLL7fAA6zGczpB
-         9prL3RuO76fNlpL8wipEq8KVWzUP9R1kP7V9Ldi5+DmL5oC6AuIWcuV1AiUIcXQNrTVG
-         rQkZ871fU+ytYsuB090spfGHg1weQkJtZ7OwVrtqvqVBF2cHXB7ofsuAcnaMctKRdsG5
-         N7c0xrXceYxPKwwlUjtlIu3CP8FgXXOCrEAF4rWshAT6QmsgLFifKULmW/I1gg+MUNmV
-         oTbLwCLzhszphYwUuPp46o+3qQqbtUtMFfpJJs2I/wkNAhZC7w0O+iEsvDmP92eKVn9I
-         udAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781005434; x=1781610234;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h2j6CzARsoMyv7N0DLitThZjZq+4w2DpaYqL8Xb2hr4=;
-        b=I+aBqupp0FWKOnVvkwarEOJBl5CGLIw1HQmFsyeydNDC//kQJLpcsuH24OYmNy5N0q
-         swA9n2FDTJVKlfumCS7uR9mCQHjHLojDcg2TZJBPWRypn8+ppydoAg+LjMmfv9OBGUqi
-         WDMucx/A4Cg7ANjDR6mGhV0UdAFw3AC0ikjUKMnHqtvz1P4WPuuk0RhJ02pDp+/3yyz1
-         gHoUU20Mum4GmnGChl4fUfJRL2t5004bvRqZuzswFShye7KaXJTtba0jxFElOYkaoWYF
-         V6DK+dRAP7wtqsH68sr6VoZ+FOuoAVRbOBiXbE02A8cin/yqKRMNakKYrhhifE+Yy56p
-         373A==
-X-Forwarded-Encrypted: i=1; AFNElJ/R5Lxj6cT7BE4M3m6r9wUKnp4zJQRidFFlRMHLeAizqdWX4Seex3+LgFJy1fN0aQCoBdeMuZMvMQ==@kvack.org
-X-Gm-Message-State: AOJu0YyOWTEoIUBo/fKivGPw1eN3Ugij3IZZUcwFdcBsn2Z3Ppy/tVUQ
-	zoSlcPItOdcf5thvH9VCMd7eO0ZJAaJ6+Xq0SwZpe91SemRsqlqtC1kHBf/18+D8NwU=
-X-Gm-Gg: Acq92OEjg5XpGvkG6fGwYUrn2xw1gxTZdK6s9BBUY1Axd6VI61kqpDI4hU0SBPlZYKQ
-	B+mOTI5iIRlRczaihdE1MtBhZ2qScWh4ZaC1fiHt1N2DEZJyUpm9SG2nS7/DwJX/eyLiZHqcNVG
-	nDbIA3YPOJroH2o1J2Ym1Bq+sKikw/4Hj25KUuHX6Vj9GYakqK1iQJ6gKm6smcSaeox9anJcNUh
-	bkLbabEW2KIi53x+knwFs8GdrDCEE7gPyEGDMgI8TTv+6NIY8PFEt0SINUBaiAzg3gVGvxS95wt
-	Dj9LaOq7oJYUUXFZ3CCJy9UgYz2aSduRMCMOlb2czdUOC/tO2Gdgk2PyR9Dl008QikuKlIXZ0Kq
-	nk/OdHyM83LNT1hjX52XxTnXFcuZlUW+xlDkS2WModqhhr7aJMezanzjAarFxxrpyxwWypHfsww
-	EgjYZ48jsibFhDXYy3ST6GdWHRFDjdbIG+eF+Y74R/xjijpghv3lwvMQ==
-X-Received: by 2002:a05:600c:4750:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490c2cb81fbmr232851615e9.2.1781005433488;
-        Tue, 09 Jun 2026 04:43:53 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3b5b06sm432012895e9.3.2026.06.09.04.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 04:43:53 -0700 (PDT)
-Date: Tue, 9 Jun 2026 13:43:33 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Maxime Ripard <mripard@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, "T.J. Mercier" <tjmercier@google.com>, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, lkp@intel.com, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-mm@kvack.org, agordeev@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, linux-s390@vger.kernel.org, Dan Williams <djbw@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org, Arnd Bergmann <arnd@linaro.org>
-Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and
- set_memory_decrypted
-Message-ID: <aif8V0kHzv5CYIox@FV6GYCPJ69>
-References: <20260522225853.878411-1-tjmercier@google.com>
- <ahPqbfH54R3JJyaV@infradead.org>
- <20260527160716.GN2487554@ziepe.ca>
- <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
- <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
- <20260604135712.GV2487554@ziepe.ca>
- <CAO_48GH3NP09U6TdB5drbKY0TpwvtBXwrf=Jajsr5ttNbC_u9g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO_48GH3NP09U6TdB5drbKY0TpwvtBXwrf=Jajsr5ttNbC_u9g@mail.gmail.com>
-X-Rspamd-Queue-Id: 5D66518000E
+	t=1781005548;
+	b=cR0JHHBNbq54u/uzKcDBlnMFFGdAZ1UWUrJoK6ItQ0hVvsipq0H6MQMiVkSfMZdsh8+bO2
+	VBKvAk4Xfsag+Af8Czdct9+A8YJCyiSK2FkIk4ukpsDHO5a/o/0aJ5rFNbiqJOazY1dKWs
+	/pRhLtcR6K1HJmuD0aHKyBUWdDoawXA=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gZRtb5vbrz5BNS0;
+	Tue, 09 Jun 2026 19:45:43 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 659BjZf5073737;
+	Tue, 9 Jun 2026 19:45:35 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 9 Jun 2026 19:45:38 +0800 (CST)
+X-Zmail-TransId: 2afb6a27fce220e-80deb
+X-Mailer: Zmail v1.0
+Message-ID: <20260609194538282g8AslmvWYEhkh-XMw80x_@zte.com.cn>
+In-Reply-To: <84886648-8cbb-49db-a816-de3e0d359ed0@kernel.org>
+References: 20260609124031750t-yHeQFCJs4gAeOmsvEJx@zte.com.cn,84886648-8cbb-49db-a816-de3e0d359ed0@kernel.org
+Date: Tue, 9 Jun 2026 19:45:38 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <david@kernel.org>
+Cc: <akpm@linux-foundation.org>, <chengming.zhou@linux.dev>,
+        <hughd@google.com>, <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2OCAxLzNdIGtzbTogYWRkIGxpbmVhcl9wYWdlX2luZGV4IGludG8ga3NtX3JtYXBfaXRlbQ==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 659BjZf5073737
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 09 Jun 2026 19:45:43 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A27FCE7.000/4gZRtb5vbrz5BNS0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3AC4314000A
+X-Stat-Signature: dsz1817534oug68o8mumcgdngt8affjr
 X-Rspam-User: 
-X-Stat-Signature: dw5khbch6aqkk1uuazyc9qjyqhrzunnb
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781005435-920929
-X-HE-Meta: U2FsdGVkX1/mEedV25fsZSBv26zyQNfrPchsV26qrL2WZyfQV1y95S9aSujFqtd1T8BK+UuGWoDtuEKQNdaoeICwVYrzBT0+sYLvi3q9QQQYpmc61DBWpRjZTqmobYhpyOf1ilrr9frM79qhC5bMvlglSYrNUpynnpga6asfzbn0ByhiqcnRzM7LP52vO+d8HnmcOKJreVtI9iJ+2yHYWrUX9RWRsmy0NraNN/ECJNVl344DOFaqiZ6eWucHigoD1Tg6T/UsVAVqbXXFESJ98cp3IeVUeHokDnv+2ClJ8M3ucGDMWC0Tl6zPXDnnFHZNBDjXLDUOiJ4lxPhIxn1D/xZi/mlByDcf5RHv7z3l83kRjC9zqZRBkDk1JTcf1q+IqtHH4jo6y1uqicFEkoJLxojx+udGzIcaf3X5trvDg3+TmAfinGTPZaxsKhGRUG3NfHrajCJTb/Ug+Ux/ECT9y6Edn3IWuo9p5p+Bvrlecjub+dc38cP6sHOe3Tr71xv77lO6PN15vkATMkplbjU8CC73TkiGE+n5o9uj2nPTz+E5X87PZIebJkPt3GF59CjSQ8f8//XMrzN+JOwcFGScQUj0DwoUPAmf6ANyC/SZLF3dAISgO4gIEzJjg1QxBif3/FWuENKfVQCiMYoU5RzHGzHB9HYLzyvbZ3sVpo9fzLltsL1r3kgqCHhppvFnqFMs1LGmzLHeh7+oxcJSBTYFhQnRz66ehiFySwdpfJvSDp8KfIkZp//N+5ZqIS7NYZfPPCC0wtFSvnAJieC2gTZ0YZuxaW+zwF363foJqptYDlcR3GxmeYJxkG49IjGYlds/8M3FET7u5atN+WCpTQaz8Za5uupWW809xQL7Fi2PKXESsF9zD+1GAEkzdnKZiQyZiE9doHWg9sDwo+38Rx0C+YYk+60VQiM66NmcuCOMOIsz/z62k4k7l5+UPFusx9FWzZQO0RwqHuNDpJqwEpM
- 1YBjyz4j
- ceE4vjEPz7pU4REiYX3mYdKK1kCJhJTHHdCg4PjoNwvRrejoyqoteIbbyPnLAv5MI4LaLQ4HvP1ZZgu0Sh6W1kl7TYtEBZ6BrLbo9USNUzpn2RUBbx1BQ/dT4vNFhMffD3XGtKzsQp67OOy0WO29pn8rwFCptL8Y9KSSUjs3gGQj29oqcUdNyFUjHnril4bDoj0dHkNV5v8NoJ7VmShFR0oFh/GmakccFeFjctiUkeniT7ZU7xQJiDJVFAvk+cXnk+qkgB+Ba1/PWSHhQEALMWtSzRlwGQhafuBoMhGVHp/EEOF21vVsEay9X8zQWo8Lo/vthO9Fg2tSSoRxOOXsNZjYKH+862j90mtZQFsvdxCSXNg52sown0irOMnqISvUr8rXyCl2+yoy+57S1L4Iu8AHxypsdhaQkD3gwRGlG4GtU319FEN+g84HTyXuCaOxBRFDsB88mhKFtcZ1FE8sRuaty3FWw8NOMQs1c5GlT9FwU/xA+c1LbztoDFZaJiJBBme8cncEy07LsNJ202+hUuLjSCpR8wMFWQYf27/WII8DEJytidPveuSPFfDDC2QBWzo6rv7xt5YiZr9Zo2O2Wk1Cdzzr7r86Q7htYkUv/cwin77aKJvAd5NMBMMb8D6nwA3gf
+X-HE-Tag: 1781005547-419605
+X-HE-Meta: U2FsdGVkX1/2wPWh6ZHwdnc0nIkCHYjf1VXJE5SvZKh89JVWTIve5VaPeFoMteO7QXVxtIlt+3Uk0kcw/pvBLGRmwelkbwQs82Hm6UYt4xxnC6IdUeMgidAjIgriTjY9xBh4hACRG06IBi+I2FFaVfzrc6mdBxo9USwAWNs3Km5yznb4i3+RzCuyWyP/M6l2fq5TU0iiXT7oedf9xfGuNkN8k/GB1J9CX0Xj+9Onmb8Ya47YBpAtmYBAMOPVph4H5v0TP1YL3EZfIH68UqLe/eJPweWp/K5IdcXVr49qN+ie/7UNFkH3oS8Ywwke/inc3ZQAFmi7ROLKDtq25Q/GJprhZyy7KAP+lfp86quTGAEuWBnw03spymYnxcfMG9OAWQGXxfouAAgK9l7f9Lpq9Rhkxwj4q7gEZmC8j56/Od6Yi1CIIduXxDgfXQHQl5qJKgKGNVVeI6pa/TYEUZe3UXxx/oQ7YIgldI5V00fRRRTby590Thum3N+rXA6AoCxtxPAj8dh0nu0SRAhLbEBIDBAHnglUVcC/DFFg+sjtm2Sq47zOkRLV+IUhS/EciaJylGf066c7xm8G0yDBJ1TCFY9SXT0/uTkrzuWa06vyhiICqkbwn/EnpeuVnsp0M50822wgV8bVsO17zzNVE0QrBQipkq6oUHYpCxK1FGnnRjNe7tw9YRL4/7PHgWOEkJKQGWLyW7cPzibJpEZTz4j9IPRFz1hyucoGq7TmP3TvMlaL8zuIjF9EG0QuYkaz+OTDEnRbcDk5lfQ92j6Klq5A5ORPv0HAMGJ6irWkIJK2XXutV+AN6lW3wfj5vz+LYm2fGQeAp9UsvBL9qXGMffDUBF7/ggFGrCRVc+IUeBMKl2lFmWaks4HehZNE/HlpiPjFAH2/DZQed2TeS6F4W6bnNPeDDG4BxNIypWcCK4gtKuwhzw5whW1VQDkgHucNm6hHNkTHojujZOK7u5mR4iE
+ /+zP73o+
+ dd25UE4UsdW0ZYloLXQFXztXXCla/j9MwsWaoU1CQt2j3ND/vKDbVgzU41ArZ/VRUpcfTunxsDcfvbzXL4FWidK2EQqiy5mTcQDZI5dvqc5MnEtze+GlqIa1wzZ1eb0jhmewoG8UUznVtjh4wX5eowPTyovz8FQfgGCuF8Z0GWy2HTIvJ7JyNYAIdz31qkylUAGsCEfv/gEfhOK4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,40 +98,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mon, Jun 08, 2026 at 05:17:15PM +0200, sumit.semwal@linaro.org wrote:
->Hi Jason,
+>> +/*
+>> + * break_cow: actively break COW, replacing the KSM page by a fresh anonymous
+>> + * page. This is called when rmap_item has not yet become stable, but page
+>> + * has been merged.
+>> + */
+>>  static void break_cow(struct ksm_rmap_item *rmap_item)
+>>  {
+>>  	struct mm_struct *mm = rmap_item->mm;
+>> @@ -787,6 +798,11 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
+>>  	 * to undo, we also need to drop a reference to the anon_vma.
+>>  	 */
+>>  	put_anon_vma(rmap_item->anon_vma);
+>> +	/*
+>> +	 * Reset linear_page_index that might overlay age-related
+>> +	 * information. (it's still unstable node)
+>> +	 */
+>> +	rmap_item->linear_page_index = 0;
 >
->On Thu, 4 Jun 2026 at 19:27, Jason Gunthorpe <jgg@ziepe.ca> wrote:
->>
->> On Thu, Jun 04, 2026 at 12:51:49PM +0530, Sumit Semwal wrote:
->>
->> > Given that Christoph's objection is not really about the modules part,
->> > but that the set_memory_{encrypted,decrypted} should not be used here,
->> > one option is to revert 78b30c50a7ac until that issue is sorted out?
->>
->> Please no, we have stuff already using this so it would be a
->> functional regression. Revert making heaps into a module since that
->> doesn't have a functional regression.
+>Sashiko comments that, on 32bit, it is not overlaying age-related information.
+>So setting it to 0 won't clear the age.
 >
->Thanks for your comments.
+>Which is what we document with the "might".
 >
->To me, it looks like while system and system_cc_shared heaps share a
->lot of code, their user bases have different needs. It's apparent that
->system_cc_heap users don't care about it being a module while system
->heap users would very much like so.
+>On 32bit, it simply behaves the way it was before (no reset of age-related
+>information here).
 >
->I also discussed this with Arnd, and he suggested we could rearrange
->the code so that system_heap_cc_shared_priv depends on a new Kconfig
->symbol like
->
->config DMABUF_HEAPS_CC_SYSTEM
->        bool "DMA-BUF System Heap for memory encryption"
->        depends on ARCH_HAS_MEM_ENCRYPT && DMABUF_HEAPS_SYSTEM=y
->
->This allows building both into the kernel or leave encryption choice
->up to the consumers of the system heap.
->
->If this is agreeable to everyone, I can post Arnd's patch.
+>We could move oldchecksum below remaining_skips to clear age-related information
+>consistently. Not sure whether that is really worth it.
 
-Sounds good to me. Thanks!
+Yes, On 32-bit systems, although we do not clean the age, we also did not overwrite it.
+So the behavior is the same as it used to be.
+
+>> @@ -1598,8 +1618,16 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+>>  	/* Unstable nid is in union with stable anon_vma: remove first */
+>>  	remove_rmap_item_from_tree(rmap_item);
+>> 
+>> -	/* Must get reference to anon_vma while still holding mmap_lock */
+>> +	/*
+>> +	 * Must get reference to anon_vma while still holding mmap_lock.
+>
+>I think this sentence should go, and instead ...
+>
+>> +	 * Must can only reference the VMA while still holding the mmap
+>
+>This one should become:
+>
+>"We can consider the VMA only while still holding the mmap lock, so ...
+
+Oh, my bad. I'll correct it right away.
+
+> +	 * lock, so reference the anon_vma and calculate the linear page
+> +	 * index early, before stable_tree_append(). If anything goes
+> +	 * wrong that prevents the rmap_item from being added to the
+> +	 * stable_tree, break_cow() will clean it up.
+> +	 */
+>  	rmap_item->anon_vma = vma->anon_vma;
+> +	rmap_item->linear_page_index = linear_page_index(vma, rmap_item->address);
+>  	get_anon_vma(vma->anon_vma);
+>  out:
+>  	mmap_read_unlock(mm);
+> @@ -2458,6 +2486,13 @@ static bool should_skip_rmap_item(struct folio *folio,
+>  	if (folio_test_ksm(folio))
+>  		return false;
+
+> Thinking about the overlay once more, I'm trying to assess what it means when we
+> clear rmap_item->checksum. We'd do that now in:
+> 
+> (a) remove_node_from_stable_tree(): We had a stable node -> KSM page, but
+> something changed.
+> 
+> (b) remove_rmap_item_from_tree(): Same as (a)
+> 
+> (c) break_cow(): we have to unshare, either because insertion into the stable
+>     tree failed, or because we would have only a single PTE mapping the KSM
+>     folio after a failed merge.
+> 
+> For (c), I guess if we'd have to, we could remember the checksum while
+> processing the rmap_item.
+> 
+> Clearing rmap_item->checksum implies that cmp_and_merge_page() would refuse to
+> merge one round.
+> 
+> Having rmap_item->checksum cleared is just like allocating a fresh rmap_item. So
+> it will fix itself up during the next scan.
+> 
+> So my best guess is that this is alright.
+
+You've thought this through carefully. For case c, clearing rmap_item->checksum will
+indeed cause cmp_and_merge_page to reject the first merge. The original intent of
+rejecting the merge is because the page changes too frequently (somewhat similar to
+LRU), and this rationale still hold. Making this page scanned in your case (c) one
+more time is acceptable.
 
