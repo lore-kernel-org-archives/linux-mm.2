@@ -4,153 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08154CD8CAE
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9278FCD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:21:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8F46B0005; Tue,  9 Jun 2026 03:09:38 -0400 (EDT)
+	id B8A8A6B0005; Tue,  9 Jun 2026 03:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07A646B0088; Tue,  9 Jun 2026 03:09:38 -0400 (EDT)
+	id B62096B0088; Tue,  9 Jun 2026 03:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAAD56B008A; Tue,  9 Jun 2026 03:09:37 -0400 (EDT)
+	id A9F236B008A; Tue,  9 Jun 2026 03:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D678C6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:09:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65A3DA0471
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:09:37 +0000 (UTC)
-X-FDA: 84859498794.16.F35FC59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 95F284000E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:09:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NY1mGYm4;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0406B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:21:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F57C1A0464
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:21:27 +0000 (UTC)
+X-FDA: 84859528614.09.6D49D1F
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 00464A0006
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:21:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mhb3fKWO;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf25.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780988975;
+	s=arc-20220608; t=1780989684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=139iQQq4xBncPJiuXIb4sR0v5L2oZgj0QjKCDvmp8NE=;
-	b=0Cbg4LhlWawHPzw7VZ8FS16XPvUy8nSQb15ZdC4NX5/Kot9dch30EK2aLb8quDsT0xeapH
-	hqWuNCONFkAW+cDVH16kSAbbIAPMs5hBLe1VaIWt1CxmuDg2FVQ8cOCHtGFCjWh2GPYe16
-	3iS1cFXOdweqdvXM0h/XRWm9C2g3afg=
+	bh=8+Be/msfBZtJukRPzLQLXA2fKfRd2kL8+CeLPELdzpE=;
+	b=QahE2wDsf2kyHeSLcWg1DBCR4s5K7u9Z811HIrYHkE9wr2eg85UxG6q+Gp0UtbWdNhfb/M
+	Eou97p75dYpmsfglUP9paDUxN3ENXSb4iykbLAQ+bhevNPFjn64N0aveinYcmmx3HvhTWO
+	ZmIlBJmGrotE/5uUzOfha0vF58rzT6I=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NY1mGYm4;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mhb3fKWO;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf25.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780988975;
-	b=pMHZgVah79ll7y5+nlMODM1XkpmcDHe7ee+TvkmVOukG72NhZikNv5qxWeFVlWsF5zwc7t
-	iEkQBQfH9hWgHZzQqh8HLwuiDoGn9nqY7gGt3faKb12DDLx0oc1g6cm+KxI+tMpywhc58d
-	1FSpmeTPJHWBy7/p7iKS+vghbh+ZhjM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C936343FD4;
-	Tue,  9 Jun 2026 07:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1661F00893;
-	Tue,  9 Jun 2026 07:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780988974;
-	bh=139iQQq4xBncPJiuXIb4sR0v5L2oZgj0QjKCDvmp8NE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NY1mGYm4C+vT98RYZN6oqOfXouBddRRCeQIlOLsXTuf42zmsBzIb3wlrK311N6tyc
-	 eKLm4M1smhZ7tnWnZtiOWuOiTCN5Vy66LVwjXRsJhqycdSndJLiH3nXX9enxFgUxyF
-	 1n1SMz4An3LfJ1YEv7E0w/Hhw82ofcIKwFa69CoLA/nj/cPw2Zp9PqGnb6B6oL4On0
-	 tyQ8TcflwrX4Xa2W+sj84SA89JQLACXHdV+SQRzCCiWHaEVesd7K6Wpe+ROh0qrU6m
-	 Hm5a/1pQulWI3CPK+UDJgAUHiOPYdfdfNQXYcLn5vIin4Ci9WzO6xVsNCzhaCng2NM
-	 WNcxmhrv36J6A==
-Message-ID: <f2a4d5c8-3d7d-4fc3-8769-66e0c24866fb@kernel.org>
-Date: Tue, 9 Jun 2026 09:09:27 +0200
+	t=1780989684;
+	b=dM94sM6PWZn5gTbAmJWowF3xBaoJinJSMYpZlutMKz40ethsRuH+7azAC0Hkvna6y+yuhX
+	F8RLWy7gGWwGnHCJUgHLyGgdUoNBHGxLczOFIrwguQbS04TvNl1b8FX77/ZIkOSPeAmtU7
+	Hk+cnQcDG7b7vnVOdbYR+gS2L7KiKDI=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8+Be/msfBZtJukRPzLQLXA2fKfRd2kL8+CeLPELdzpE=;
+	b=mhb3fKWO/56GBarof3VIzwDq4Ng27oqkB3jO36ZmpJe19CzqDmNrUTVjxaw0EUxSU+AfyI/6K
+	SkalN3jk6NvMbMsSYGJTE2jc+jTD1oykmTVPbDyfqxUMTNaUI+CLZSw6IONzRGImI8YgYNqxWX5
+	bkP/2K1c/ynwf4MQI8hZc4w=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gZKrK5clbz12LHT;
+	Tue,  9 Jun 2026 15:13:21 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1E4BE40569;
+	Tue,  9 Jun 2026 15:21:14 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:21:13 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:21:12 +0800
+Subject: Re: [PATCH v5 3/4] mm/memory-failure: skip take_page_off_buddy after
+ dissolving HWPoison HugeTLB page
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: <osalvador@suse.de>, <lorenzo.stoakes@oracle.com>, <jackmanb@google.com>,
+	<hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>, <david@kernel.org>,
+	<william.roche@oracle.com>, <tony.luck@intel.com>,
+	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
+	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
+	<osalvador@kernel.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
+	<willy@infradead.org>
+References: <20260531055829.3636554-1-jiaqiyan@google.com>
+ <20260531055829.3636554-4-jiaqiyan@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <d9621684-6300-457b-d0ad-9bbbdd576b9a@huawei.com>
+Date: Tue, 9 Jun 2026 15:21:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-To: Miaohe Lin <linmiaohe@huawei.com>, Breno Leitao <leitao@debian.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
- Lance Yang <lance.yang@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Liam R. Howlett" <liam@infradead.org>
-References: <20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org>
- <20260527-ecc_panic-v8-2-9ea0cfa16bb0@debian.org>
- <19f968f5-1289-f573-4406-e5c91dcd8923@huawei.com>
- <e3d023f1-ab6e-4424-b304-55f1294480c3@kernel.org>
- <33ef8821-c809-b7d1-ea77-6e8a07a6e784@huawei.com>
- <21732071-14a1-486a-951c-34de97b7c757@kernel.org>
- <4b27467e-935f-5587-2f48-5a794c30a592@huawei.com>
- <aiKXrovzrNN-gExm@gmail.com>
- <f1a742be-80cb-4256-b1f9-e50a0f83cb15@kernel.org>
- <aibN4osY_QF1Rejh@gmail.com>
- <4953bcee-5a0f-2bc5-7295-63e5e7513e8b@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+In-Reply-To: <20260531055829.3636554-4-jiaqiyan@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <4953bcee-5a0f-2bc5-7295-63e5e7513e8b@huawei.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 95F284000E
-X-Stat-Signature: 16ix63g9c3pnta8usz1j538id3ae4qdt
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-HE-Tag: 1780988975-198890
-X-HE-Meta: U2FsdGVkX1+UxtRrVHDhJ0nQfAFd8VkRs/WYmNA0ZRKTe1+zWhsyDdruYLCQK2abulQzjWr/+Gf3QiAc6MjiG7IDz3FNN6shhQGFBbXW02F7L17m2wzeG3I6to5RNnK0vKQ+kmPw0d4cdZ1QPI3F/tkTC5HZRkdjQHYl9zbJKc75446Yu5XkbMwZaoCh4MXdSnObPCUf5sLQ3R5UG51wDHa0FRN2mIZn+KMkWdMDDrUqAPQ52hn9NP7Uda6ScR2mlwyPJYHgbpHI4GFMiDAh76QG2GhccyhW/Z5i3l2HJB+W2A1y7h6Suz2+Mv2oQqVJYm48dlateMtipa/wU/qT7nJVj9QF+cKXMxV7LHLRpIO9jjmtTnuPqv/vMIFWWVqVWsmm4D6DwMxmmXHQIS3+sCbmrvFAq5hDbxJA+93857ZnWEpvB+AWWesWiQOA9+FxrH3QnJjhjWs51dQH107N+evfGadu1QkoDvWjD5+D9v7yGS1FibZfb1wMj6xdhfPHX3yfjq4zOd103ZOLxY7ZfZPiWjTISfCq5m64lddQ6VavwVI+mtvefEF5WOFh5mOb1G7t7IErMnDRYsaW1Q7QwQcDe1tTiCidm5PV6lHUjyI4yAINmSD9q5KwcaqCpZBawQxJ3t3HpFI9eyukxYGVZev/2tdOns0Hmf98seLrJmEzkuHzFPW9gZU56Gt6XomNS+5arvlB/Jzr0xtEDEZSuGTQBqkUFWw6k1pHWRfV//DKLpkvZE1ALnPlDvpU6EPDzVQxUsntFVDWaKQ86sSWmBg7emN5q+5i20pdnzb0JsZTfx9nXbo8p/z7nRXHdexRfq+HtoWs72a+KUWD/jqrWiA+Ejld4W8WlkFaiiugAHw54rUDNeDfsO29WqUvaiQmdvyMUVloE3memamu553hxONMqQjTrrZNgmclJH5nyZ6qgC6+P6Yvjo6bNBbh7hJqtm/q31h9Sq3qoR5jkOH
- LpyB6Zf/
- +7R8Gf2WqoHf0QbA14vvzdQoSiflOzihs0wwK10X/KTXmmWbJfgaDgpDoSjLYfKlGiwYenyjlO1hlGseLJM5eGogGWzmtjuKF+n/3zsUdBAMiYr7aOyE8FBrQdFc+97fI0mcx1fcvFC8D2mvL8yr8QqkRFo85Z9MeydCerNWAO1D3E8rg4ACt1uq5FPFb/dsso9NL102LCTFhbpJqEFf9r0PxrdlzEO8IjCW6egEowRffhssxVvuKHD4tQEHzWvZwjmuz6JZprIr16c7xFQA0aXr0eZYscWIMfO7Y6i7MaidsUq9WStTvVB/BeQN0MFB/EwgkJEjbccsA/mQzRjwk+P695Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 00464A0006
+X-Stat-Signature: a1ytdehm8473cmeyfbu8x1qmiubj5xdc
+X-HE-Tag: 1780989682-355153
+X-HE-Meta: U2FsdGVkX1/NZE2ZbjiLrQvi+lCfJJw20QkCTouFKUSLvZQSIau5cKEfaO8zYHDvPuFeHLU5z76vtp96xMYK02xa7GdbT4JNqAg+XoNqVtf9hfJFY4tDZNQ5p0QObaseDEdcOIxzpIH/IqPWpwe5b172XD1PhtwOaOwUHxlG6MH6eryw4N26ObMHG3YKfEWlLzzItxbJb/PcSuJ+nLK4fcFo5v486LYdfFaLIWUTb1GgOZlmXCUVTg9z1cyra+uHU1gnJSACt+AAZxJKkDRBq0qnRLQGrByLNVJalJ1c0WTHAcUxc98BN1hG+eZL/06ER2mTkSolSRAmDRuEpkHCQhr4tMltckCjTN07wS2Rf5/41HDyAjBKpYEpU99ujUdXAfI71TY3hqa0urpGD8rQt8Ugenq3x0Viw+xifym5aZYhXdBfxIuubm6oAh3C40toQW7fSU4WAUCklhzYWgQt1eRchPGl2RhQGRJQqie1kw+0sRMz016rS8Dn1h421qx+i2DnwNGC+Rb5JmW9ZCIhSkeuJu7QkoQwianN7UWeaGdRfOEUQY+T60OqdZcXKEXmovK6b9BJdwBvX1B4PDyGZg+W0wcTf+vAlST7T+RFBDi/FfyGTSL3aiOzgaqttMc3CVYtGxnmZQn+5UkHUEkh8u6y81JlNGkJuH3/7ZkvgxZR/JwkG0V6DBZnAG6sWaPB6C5/4cEPD9XPqeV5GzW+v3Y4n0dDOYzqQUNkVCARP/RdjMtN9KnJnBVbYQRw7DFGk0gPMRQYH7qUjsZKA6rcYGEUBEzQI7VvNBDlPmthbwN2IdrdTlpw6SxKAUmzINUJZF9QTuFWC22n4NIXG20Kr8mUIXixq4LSDtMQmg7aAaFD/lL60MAJ93zvG1O/aikwFZNsRNM2pOG5iOYwMDnHXcdLEY3F9sONWHCV9Wei6G0zehsDST5XogOS3CUSshlfQ232hGkYEt5ZKm/jpgC
+ EX1PAOJ0
+ Boxf4n9nQldWNn+FcIEYa8UJDkmMinnQl1QUL0SNHdrpmqi/eq3uKHkhqeAJ93KpZSHYLqLvFoJPkJe1EtC4tOKtcywAqhl42EPwkAoUD8U9pzTqcLjOIrql4ZB8CTgXhWm8E2q2XFS88d/nzZ1MtW1gIxqckhtfWvd9GfoVL5uI8Jgki+24D3oeP9+b/rtwVuqkraLFMkJNQr+XOCbLl4+K+Wkx27594MTYB+KO4J9cX7XaxYOo8RSaeaChNLd/ati3/uAB0kl7VJCVl8xZvZPqYHd+vCXlceNRg3hpGqM4lz60JXQTlF06YU7+eANF4BOmIV4LxYx+apQbvf7rh5QsJbmt1NjRp71t87g9OTowqj2XseDeFQw3xLHGHVSFRY76vsgfRtUx6E8eBDcyD2k6bKkqSxwrRg5lpkVYGb7H+NQo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,51 +114,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 04:39, Miaohe Lin wrote:
-> On 2026/6/8 22:15, Breno Leitao wrote:
->> On Fri, Jun 05, 2026 at 11:42:53AM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> I mean, any such races can currently already happen one way or the other?
->>>
->>> Really, the only way to not get races is to tryget the (compound)page,
->>> revalidate that the page is still part of the compound page.
->>>
->>> I'm not sure if that's really a good idea.
->>>
->>> But my memory is a bit vague in which scenarios we already hold a page reference
->>> here to prevent any concurrent freeing?
->>
->> No, we don't hold one here in the case that matters.
->>
->> HWPoisonKernelOwned() runs at the very top of get_any_page(), before
->> try_again: and before __get_hwpoison_page(). The first refcount taken in
->> the whole path is the folio_try_get() inside __get_hwpoison_page(), which
->> runs *after* the short-circuit.
->>
->> So get_any_page() itself never holds a reference at the check -- the only way
->> one exists is if the caller passed MF_COUNT_INCREASED (count_increased ==
->> true).
->>
->> So on the MCE/GHES path -- the one this panic option exists for -- no
->> reference is held when HWPoisonKernelOwned() does its compound_head() +
->> PageSlab()/PageTable()/PageLargeKmalloc() checks.
->>
->> Given that, I'd rather keep it racy and take no refcount than add a
->> tryget + revalidate purely for this check. As I've said earleir, an operator
+On 2026/5/31 13:58, Jiaqi Yan wrote:
+> Now that HWPoison subpage(s) within HugeTLB page will be rejected by
+> buddy allocator during dissolve_free_hugetlb_folio(), there is no
+> need to drain_all_pages() and take_page_off_buddy() anymore. In fact,
+> calling take_page_off_buddy() after dissolve_free_hugetlb_folio()
+> succeeded returns false, making caller think __page_handle_poison()
+> failed.
 > 
-> Would it be acceptable to add a simple recheck? Something like below:
+> Add __hugepage_handle_poison() and replace __page_handle_poison() at
+> HugeTLB specific call sites. The being handled HugeTLB page either
+> is free at the moment of try_memory_failure_hugetlb(), or becomes
+> free at the moment of me_huge_page().
 > 
-> retry:
-> head = compound_head(page);
-> PageSlab()/PageTable()/PageLargeKmalloc() checks
-> if (head != compound_head(page))
-> 	goto retry
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> ---
+>  mm/memory-failure.c | 36 ++++++++++++++++++++++++++++++------
+>  1 file changed, 30 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 95979b7995c1..098c4407e818 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -163,6 +163,30 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
+>  static DEFINE_MUTEX(pfn_space_lock);
+>  
+>  /*
+> + * Only for a HugeTLB page being handled by memory_failure(). The key
+> + * difference to soft_offline() is that, no HWPoison subpage will make
+> + * into buddy allocator after a successful dissolve_free_hugetlb_folio(),
+> + * so take_page_off_buddy() is unnecessary.
+> + */
+> +static int __hugepage_handle_poison(struct page *page)
+> +{
+> +	struct folio *folio = page_folio(page);
+> +
+> +	VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
+> +
+> +	/*
+> +	 * Can't use dissolve_free_hugetlb_folio() without a reliable
+> +	 * raw_hwp_list telling which subpage is HWPoison.
 
-Sure. I guess it could still be racy in some weird scenarios where we
-free+allocate+free in-between.
+This reminds me that hugetlb_raw_hwp_unreliable folios can be freed into buddy yet?
+Should we handle them too?
 
--- 
-Cheers,
+> +	 */
+> +	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+> +		/* raw_hwp_list becomes unreliable when kmalloc() fails. */
+> +		return -ENOMEM;
 
-David
+If folios have hugetlb_raw_hwp_unreliable set, hugetlb_update_hwpoison will return
+MF_HUGETLB_FOLIO_PRE_POISONED thus these folios cannot reach here, e.g. me_huge_page.
+The only way these folios can reach here is that they are hwpoisoned first time so
+hugetlb_update_hwpoison returns 0 even if hugetlb_raw_hwp_unreliable is set at the same
+time. In that case, we can simply dissolve the hugetlb folios and then take the sole hwpoisoned
+@page off buddy? But this might not be a good idea as it is really fragile...
+
+Thanks.
+.
 
