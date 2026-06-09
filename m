@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBF4CD8CA7
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04BFACD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9FAF6B00AC; Tue,  9 Jun 2026 05:18:44 -0400 (EDT)
+	id 6971F6B00AE; Tue,  9 Jun 2026 05:18:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B50286B00AE; Tue,  9 Jun 2026 05:18:44 -0400 (EDT)
+	id 66E986B00B0; Tue,  9 Jun 2026 05:18:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A17F36B00AF; Tue,  9 Jun 2026 05:18:44 -0400 (EDT)
+	id 5AB786B00B1; Tue,  9 Jun 2026 05:18:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E216B00AC
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:18:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56A83A048E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:44 +0000 (UTC)
-X-FDA: 84859824168.28.411A6E6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A0BA9180003
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+lAReT+;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4764D6B00AE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:18:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CBC51404A5
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:48 +0000 (UTC)
+X-FDA: 84859824336.24.F351985
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6D6B5100004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:46 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/rUgR+Q";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780996722;
+	s=arc-20220608; t=1780996726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EpyqwcPlF0qyNQnaXmyS4YqGBf1HLcYFrD5EYMZEjBc=;
-	b=H+gFdt2SxEDqmxtnMSPW4iD5MddqdgJSx/FQ+UOKoJOxK+MZclCT9D7cd7mfOO4BxJzsA4
-	zZRRJR/EIYiyKe4zp6ZEbxVqKacukBTXY536iD5U9E8J3J151yrFE1fyjUgIvuyPQdq79R
-	c8pghq0RYbn00Qvyd5hlqO0PggGtyms=
+	bh=ESO41yfx+PcQZlyLJsuYTYJG4PqjSzhrfbdejY9wjVM=;
+	b=MriBg4BuONlGnnoy3t3pSMAnpN7omleQCoQqEHxn6lh1Q8vboAaEGIW+6WkO57GFP3tvgl
+	jKNHZJHACoH3q3Gv99CUwIe+hP73oDXvaiLsbZBeLQxdzAoLtKOAkOoFrntPvvC9ses/sV
+	ITFCKQ5VsVj3v/+DTWGxRf+MElox+LY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+lAReT+;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D/rUgR+Q";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780996722;
-	b=VRU8wjnBS6Aqq4dRCEMrzpdcHNkhEi7MBGPTZ7eaGrqxD34TLQV7JTqCzMARVcnT/7qLao
-	5+r4MrgXrU1vvvtRfCRPBaFhCQasEntvUV5i+Y5+vBshsjFoqQrYgUAnLgnNejSaFL26rA
-	Mgp9aZGXjGGp6pyi7Gceht0ydDfBFjM=
+	t=1780996726;
+	b=3sr6/04//E2TFgaYfI3x9K1Vdd8QRSCwOXbG2cyBmvKDwq+ursHVSA4cfrzpsJMD2juL97
+	FX3nMMYuc3bI8Bgy5cbtjnV2Y83sITeh6JnCtruyPL5TYBDSOfkToGY/D6kHxSOXCQ07n/
+	J5dOmP1MjLBGlFCsb1aAnmRRmrg5Mi4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8A54402E9;
-	Tue,  9 Jun 2026 09:18:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F781F00898;
-	Tue,  9 Jun 2026 09:18:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C45560154;
+	Tue,  9 Jun 2026 09:18:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B331F00893;
+	Tue,  9 Jun 2026 09:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780996721;
-	bh=EpyqwcPlF0qyNQnaXmyS4YqGBf1HLcYFrD5EYMZEjBc=;
+	s=k20260515; t=1780996725;
+	bh=ESO41yfx+PcQZlyLJsuYTYJG4PqjSzhrfbdejY9wjVM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O+lAReT+de6tcsvpGObqmLv84nKfJpswHPzAsYVqWrSc1Rm5kscoCNYsBp3VqEiCj
-	 Cr5rpl5kMEms+MH3xFCJL1bGnE1fKZjYD19QtwgDsBl8c6K0xoAG6k8MT3VGaI5jEP
-	 bVfpGaWs6N3RVr+MvZKISWQ/KaPIhRJDvad4or6/t40uemY6/LuU3W2UWvFf5EHyn0
-	 wYBOC0rZ1Qik7J+SbjLCAmY6lZdbqjUQlyVleLXVNV0ucwQj2vhsT5sUz22NYVWn3V
-	 q+IJR5eeFHB61kJK67afYWzLr/XEzT9a8L2+h63lGCac32xze8X63Gn9HxsmoMlTWV
-	 nRf6aXvzeJpeQ==
+	b=D/rUgR+Qfo2Hp9IBWwVLfW6pbvEMQr5eKPyun8iieLmRUWw5YzvSDwFIioOlE0kJk
+	 4Lf7aYcvfU3DbpO1FnLGiWMYRyrLJ/MK66S8PLV7Zm8N7gxJMKto9kwHo5vdQVX44g
+	 ryoYZkZDjKteFeAxAHeWclPYntpwGa8iaaIxtp5bAG7y5AsSgJGXvTOgv680C06v0Z
+	 MMnne6t30X5rSajz4OdH/W9B10wcOQn2HCBXhfIla/wQMTobskOBi/0CaJ9XTwVoOL
+	 fVWlBNnYs76OgUCOf1RE9xd51TtfTEGa1+ZWG6FpqbmaG/v9bxbw27NKYWQEXOsQSQ
+	 gzJKDmve8vaqg==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Tue, 09 Jun 2026 11:17:57 +0200
-Subject: [PATCH RFC 12/15] mm/slab: introduce kmalloc_flags()
+Date: Tue, 09 Jun 2026 11:17:58 +0200
+Subject: [PATCH RFC 13/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from
+ alloc_slab_obj_exts()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-slab_alloc_flags-v1-12-2bf4a4b9b526@kernel.org>
+Message-Id: <20260609-slab_alloc_flags-v1-13-2bf4a4b9b526@kernel.org>
 References: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
 In-Reply-To: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -86,14 +87,14 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A0BA9180003
-X-Stat-Signature: ya6sgnp9n6phn3txws7b3e6trg7aptbu
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1780996722-507999
-X-HE-Meta: U2FsdGVkX1/OXkuprjKss2WqMllHXH+ko9ewNeEBmwbgW7nnCzPsci4iVRNbi70aOzivdlubVH/NDM7dftS9oXCjOxEJpq4+6YW3wm2Qf2kI669Rr+KEJpBJ347SrNvOKTPSWs36RPZ/O9zuLL1ULQ4sGmfzSRluS3UqcSXRBfTnynDkwWBu1XA0p4Z243Ir3wgLmJ9cfj74QIkUtSogJ2dFxDLrOZAoE5feZstfDVOf2lSHf/h0bOQbx85Y5B2f69l7+l4cE0X0O5Nzq6JKYhKiWfs5VHK5rvfa15CWjAXanxJPefiEBDKBuXvViPjea7SUAAZJUpUJMXF8rtC6xlVAmicmcmBTr90Qxt6gH8TSbUllUOZRENlR9kyItP5A4NP7hZkKkDEbL3sfyg0RpOxzOeWUPQtPyddlA5HOwTBfUdDUZwr1ywd6wDm9gmm4sFOQwZyw/HAChSiaEucKyMJ8ffkjRhXDflIg3+q0fdwbE9tMqEvzxOChvwNRgGGN1EYr11peCri6JQOLj9uxoboMU/sLRyllyGYoNvUZ0oCtYBS8Ag5xDg93QlKbZjxZGDo9BiJEDW5ac1Ae67biqvZyFAqzp/Uls9yoX5gs8GPIuN9QsgVXHXOgfRJMjI9967vMrewh7DatbrF4YseB/0XOwR/6902SJQiU0VxyZt3dXigFLg2DgeDJ8HqnvILMEcrDjcL9IjHwNT92FzeOX2qQIp4jVfd7qBgU83i1tZK274UOJeVk0rqOBYeCTaKiz+yjiLJLrm50IOGhY2B7SIFcw9WDn6DFYugXqq4xi1zCaKe5tjqkTZJwVMVNWcGcJ2+ecU00Sh5Lp4PohS5XdFe01Swo2VHXIB1hWLWNKxvOObmEfPdJZNJsQqCUDJZXHjNW7DYMA+OXw3O7U3hsOUtmjeJhtEEw1Aisx8IxBz3feQPZKvSww5ufxeka7RgpyIUgxNakUNrbJSobDUi
- zxR8afKt
- Jst0/TpYjeMpggd4KeXyvlQgCoZ1nYymTwbBRthimxco65xfMMFlWokHugP2bLgMldxeL6C6i83LNNX+zQh5PDU+96WDTPCj5S3GJssIGYe7UUimXy4r/T16SKjDBJ3vDSK1QraONLp8Zw29LjcALobB3dqFqzp3TpzUKshJnGHikf0YSe5e/nCOsNdS/x9+Toz1GDJHiyoI0mnh0S4btHXVrR57cFitniQm5LRdOjByxnxjEdpJCuXkj6k93I1OfjlFEYe69dCaweBTbQgq1fH+VqxamajbE5kDy
+X-Stat-Signature: 8eawbhd8i3stf6i5r1ne6rdtr4ai685e
+X-Rspamd-Queue-Id: 6D6B5100004
+X-HE-Tag: 1780996726-326066
+X-HE-Meta: U2FsdGVkX1/gWpj/Y8vkSP8YHfn3i0HWXVFdaC2zppEIdci+FlQzB9fBNS5zfzaNasr+e9xQr/xVoR+Uxnf+ulaMRwen7bqDolh4MTkc4pLnkMHZRS3DQOrqOuK1vQMtaiNnuHYwx/72uxB4f83/Ih4Lb0RaXYXBsND9GLWNkqg2qSc18LX3PWae0WGBpWY4vd25itX08oopve1FzzFm13zNHyoXyEl6abU6PLW2CH7knEgPt1NVaOSgvg+l9tJAINA5sLqYn2cLbMRRH+cZJ7G7K4AFubOKk6gM9nHTuZ85vqmlCTbcTRAK3PL256MMW+49QEJ+gPeuSWfJf6od21HJVYQnzDHx+DB3DT0GeBa+hWmUCWAnqWJg7E5mcfjKMX+16zy++JYepKfNyUv+LXfr+zEgl3ig//nhCj1+C2jumDR2msbfcZn7xb4BnU6zMyQufVr7QJfjl7NTw7SvwOZK8JGGBgkWAUNzDAuAOeLKqPFeKjdYWvOOjH6+XyJ2i1eqhVR4wG1UX8ID5V/k/KmDVL5jK7CifNMEnHgR1Od4cf5d8wVCYWdL1DkLh2qwtUI32RidkL2K0AXuexhA/voxt0JbDZs9B/4OfiiozWrlp5k8BeDV835gI9lDjon4r21VVmCCIB8T2sYZmx3jcUoSF/fCtbKYkAoOPl2ytA0pTCMQ0v6Lf+iiTT5V07RYNOVWMld8IUnST0eEOIiIHZxDyoYGbrkg+pDXS6kdoxT/2hjxzOlXxBOXhUXDI3y/TL6IybEqcm5u0Or68l5uTZyDVypHr5ScDLmOdxpJ4xY5y+MMunr/mtq+PPGZaDgeva7OtcvhRe8B9yf/ab7tcxC5tdtpW4DPFiy2k6RocbUlQhWz/e8ZUCWKaRne/SM2TwFvXZ47l+dfuXH/bQnFirwHGdwuuh+r7pXRiUQaL1k+vMC0cx6b3ko/ZluEA60zdpZ1cKb7DIYbhyGEY9+
+ g6j4/m7y
+ S3f0Syxo1Z/PwwRg8VUEnbwGhlkfo7R+8rP1bwiM7hSdooqB4SsTbq93Gyyil21FokVp7a3MbPrMMMr8csi1TvVjGxjA8RxLy6OWqi/vfg400u2TvuApwQTWFHIh5VlvK6uE+57ZACVudx2M99lqZBP2+faY8gUWW5ahuZa9yDsBKAu2+4gBgL+jIEuLSYyjmw0MvA2eKuDNEXu+vjnuX9xUGsC9LPQ5pYVH1UMZC0QpgtXx+xyvgjNxheJYH+d7MZ8Sd3kfwulx9RyV0a4NHxG5TjPvNvlCLHHKt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,169 +102,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With alloc_flags usage in slab, we can replace __GFP_NO_OBJ_EXT with an
-alloc flag that prevents kmalloc recursion. For that we need a version
-of kmalloc() that takes alloc_flags and use it in places that perform
-these potentially recursive kmalloc allocations (of sheaves or obj_ext
-arrays).
+__GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and
+gfp flags are a scarce resource, unlike slab's alloc_flags.
 
-Add this function, named kmalloc_flags(). Right now it's only useful for
-these nested allocations, so it doesn't need to optimize build-time
-constant sizes like kmalloc() or kmalloc_buckets.
+Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
+__GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
+family function should not recurse into another kmalloc*() for the
+purposes of allocating auxiliary structures (obj_ext arrays or sheaves).
 
-Since we need it to support both normal and non-spinning
-kmalloc_nolock() context through the SLAB_ALLOC_TRYLOCK flag, split out
-most of the special _kmalloc_nolock_noprof() implementation to
-__kmalloc_nolock_noprof() that takes a slab_alloc_context, and make
-_kmalloc_nolock_noprof() a simple tail calling wrapper with the proper
-context.
+First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
+alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
+function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
+added. This will also pass through SLAB_ALLOC_TRYLOCK so we don't need
+to special case kmalloc_nolock() anymore.
 
-kmalloc_flags() can thus determine whether to call
-__kmalloc_nolock_noprof() or __do_kmalloc_node(), based on the
-given alloc_flags.
+Note that until now the kmalloc_nolock() ignored the incoming gfp flags
+and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass on
+the incoming gfp flags (only augmented with __GFP_ZERO), because if
+alloc_flags contain SLAB_ALLOC_TRYLOCK, the incoming gfp flags have to
+be also compatible with it.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- include/linux/slab.h | 12 +++++++++++
- mm/slub.c            | 56 ++++++++++++++++++++++++++++++++++++++++------------
- 2 files changed, 55 insertions(+), 13 deletions(-)
+ mm/slab.h |  1 +
+ mm/slub.c | 13 +++++--------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index ce1c867dc0ba..11e82fdbe8d3 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -944,6 +944,10 @@ void *__kmalloc_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags)
- void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node)
- 				__assume_kmalloc_alignment __alloc_size(1);
+diff --git a/mm/slab.h b/mm/slab.h
+index 13517abcad21..e5bd800d831e 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -20,6 +20,7 @@
+ #define SLAB_ALLOC_DEFAULT	0x00
+ #define SLAB_ALLOC_TRYLOCK	0x01
+ #define SLAB_ALLOC_NEW_SLAB	0x02 /* a flag for alloc_slab_obj_exts() */
++#define SLAB_ALLOC_NO_RECURSE	0x04 /* prevent kmalloc() recursion */
  
-+void *__kmalloc_flags_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags,
-+				  unsigned int alloc_flags, int node)
-+				  __assume_kmalloc_alignment __alloc_size(1);
-+
- void *__kmalloc_cache_noprof(struct kmem_cache *s, gfp_t flags, size_t size)
- 				__assume_kmalloc_alignment __alloc_size(3);
- 
-@@ -1176,6 +1180,14 @@ static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, g
- #define kmalloc_node_noprof(...)		_kmalloc_node_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
- #define kmalloc_node(...)			alloc_hooks(kmalloc_node_noprof(__VA_ARGS__))
- 
-+static __always_inline __alloc_size(1) void *_kmalloc_flags_noprof(size_t size,
-+		gfp_t flags, unsigned int alloc_flags, int node, kmalloc_token_t token)
-+{
-+	return __kmalloc_flags_noprof(PASS_TOKEN_PARAMS(size, token), flags, alloc_flags, node);
-+}
-+#define kmalloc_flags_noprof(...)		_kmalloc_flags_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-+#define kmalloc_flags(...)			alloc_hooks(kmalloc_flags_noprof(__VA_ARGS__))
-+
- static inline __alloc_size(1, 2) void *_kmalloc_array_noprof(size_t n, size_t size, gfp_t flags, kmalloc_token_t token)
+ static inline bool alloc_flags_allow_spinning(const unsigned int alloc_flags)
  {
- 	size_t bytes;
 diff --git a/mm/slub.c b/mm/slub.c
-index c11edd58b52d..86691eb14002 100644
+index 86691eb14002..8a655636dee6 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -5370,15 +5370,15 @@ void *__kmalloc_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags)
- }
- EXPORT_SYMBOL(__kmalloc_noprof);
+@@ -2167,15 +2167,12 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
  
--void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
-+static void *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags,
-+				     int node, struct slab_alloc_context *ac)
- {
- 	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
--	size_t orig_size = size;
--	unsigned int alloc_flags = SLAB_ALLOC_TRYLOCK;
- 	struct kmem_cache *s;
- 	bool can_retry = true;
- 	void *ret;
+ 	gfp &= ~OBJCGS_CLEAR_MASK;
+ 	/* Prevent recursive extension vector allocation */
+-	gfp |= __GFP_NO_OBJ_EXT;
++	alloc_flags |= SLAB_ALLOC_NO_RECURSE;
  
-+	VM_WARN_ON_ONCE(alloc_flags_allow_spinning(ac->alloc_flags));
- 	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO |
- 				      __GFP_NO_OBJ_EXT));
+ 	sz = obj_exts_alloc_size(s, slab, gfp);
  
-@@ -5413,23 +5413,17 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
- 		 */
- 		return NULL;
+-	if (unlikely(!allow_spin))
+-		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+-				     slab_nid(slab));
+-	else
+-		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
++	/* This will use kmalloc_nolock() if alloc_flags say so */
++	vec = kmalloc_flags(sz, gfp | __GFP_ZERO, alloc_flags, slab_nid(slab));
  
--	ret = alloc_from_pcs(s, alloc_gfp, alloc_flags, node);
-+	ret = alloc_from_pcs(s, alloc_gfp, ac->alloc_flags, node);
- 	if (ret)
- 		goto success;
- 
--	struct slab_alloc_context ac = {
--		.caller_addr = _RET_IP_,
--		.orig_size = orig_size,
--		.alloc_flags = alloc_flags,
--	};
--
- 	/*
- 	 * Do not call slab_alloc_node(), since trylock mode isn't
- 	 * compatible with slab_pre_alloc_hook/should_failslab and
- 	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
- 	 * and slab_post_alloc_hook() directly.
- 	 */
--	ret = __slab_alloc_node(s, alloc_gfp, node, &ac);
-+	ret = __slab_alloc_node(s, alloc_gfp, node, ac);
+ 	if (!vec) {
+ 		/*
+@@ -2251,7 +2248,7 @@ static inline void free_slab_obj_exts(struct slab *slab, bool allow_spin)
+ 	}
  
  	/*
- 	 * It's possible we failed due to trylock as we preempted someone with
-@@ -5452,11 +5446,23 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+-	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
++	 * obj_exts was created with SLAB_ALLOC_NO_RECURSE flag, therefore its
+ 	 * corresponding extension will be NULL. alloc_tag_sub() will throw a
+ 	 * warning if slab has extensions but the extension of an object is
+ 	 * NULL, therefore replace NULL with CODETAG_EMPTY to indicate that
+@@ -2374,7 +2371,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
+ 	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
+ 		return;
  
- success:
- 	maybe_wipe_obj_freeptr(s, ret);
--	slab_post_alloc_hook(s, alloc_gfp, 1, &ret, &ac);
-+	slab_post_alloc_hook(s, alloc_gfp, 1, &ret, ac);
+-	if (flags & __GFP_NO_OBJ_EXT)
++	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
+ 		return;
  
--	ret = kasan_kmalloc(s, ret, orig_size, alloc_gfp);
-+	ret = kasan_kmalloc(s, ret, ac->orig_size, alloc_gfp);
- 	return ret;
- }
-+
-+void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
-+{
-+	struct slab_alloc_context ac = {
-+		.caller_addr = _RET_IP_,
-+		.orig_size = size,
-+		.alloc_flags = SLAB_ALLOC_TRYLOCK,
-+	};
-+
-+	return __kmalloc_nolock_noprof(PASS_TOKEN_PARAMS(size, token),
-+				       gfp_flags, node, &ac);
-+}
- EXPORT_SYMBOL_GPL(_kmalloc_nolock_noprof);
- 
- void *__kmalloc_node_track_caller_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags,
-@@ -5510,6 +5516,30 @@ void *__kmalloc_cache_node_noprof(struct kmem_cache *s, gfp_t gfpflags,
- }
- EXPORT_SYMBOL(__kmalloc_cache_node_noprof);
- 
-+/*
-+ * The only version of kmalloc_node() that takes alloc_flags and thus can
-+ * determine on its own whether to handle the allocation via kmalloc_nolock() or
-+ * normally
-+ */
-+void *__kmalloc_flags_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags,
-+			     unsigned int alloc_flags, int node)
-+{
-+	struct slab_alloc_context ac = {
-+		.caller_addr = _RET_IP_,
-+		.orig_size = size,
-+		.alloc_flags = alloc_flags,
-+	};
-+
-+	if (alloc_flags_allow_spinning(alloc_flags)) {
-+		return __do_kmalloc_node(size, NULL, flags, node,
-+				PASS_TOKEN_PARAM(token), &ac);
-+	} else {
-+		return __kmalloc_nolock_noprof(PASS_TOKEN_PARAMS(size, token),
-+					       flags, node, &ac);
-+	}
-+}
-+
-+
- static noinline void free_to_partial_list(
- 	struct kmem_cache *s, struct slab *slab,
- 	void *head, void *tail, int bulk_cnt,
+ 	slab = virt_to_slab(object);
 
 -- 
 2.54.0
