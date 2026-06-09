@@ -4,143 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 307F7CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:41:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2815CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:41:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BCBC6B00A8; Tue,  9 Jun 2026 10:41:12 -0400 (EDT)
+	id 06DA66B00AB; Tue,  9 Jun 2026 10:41:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 993D36B00AA; Tue,  9 Jun 2026 10:41:12 -0400 (EDT)
+	id 045EB6B00AC; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AA8F6B00AB; Tue,  9 Jun 2026 10:41:12 -0400 (EDT)
+	id E9D776B00AD; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 79FB16B00A8
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:41:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 266D7C231D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:12 +0000 (UTC)
-X-FDA: 84860636784.22.87DF9FA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 61E46140005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:10 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MooxQ3yX;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781016070;
-	b=z61zhDH18TOf+cVB/cFiUScEn7ruiNNUP+F8YqFEN0pxZnM7rVI4tjfSlydSWCs+OQHvw8
-	dTqaBAEn8Y+D24I99x60LC/8JRsDG+TzP4zkhOxod4jM6fn3nV0Y0LCU8qeUaCGfS3vGAy
-	CtnCe37YJUd6Q8X7s20KHn3Df4f3vtE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MooxQ3yX;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781016070;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC4E46B00AB
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C01D1405C7
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:17 +0000 (UTC)
+X-FDA: 84860636994.25.257A544
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AE07D1C000E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4DzZPZh;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781016075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njEURiQmXFZM6WEGnC38JEeiBkoFTQqy3aaC8k9YWik=;
-	b=RtamIqQ2qjExTaewvEFCDItTPqjohesL+HzqcI1lnuNVT2tjSS+xBuYHgjFisdaEbXM+nB
-	QNGUzTO2nN6CEVn0QtBYqRqwv2qeuzCVU9ai4+ZGH/Wg2piQ8QebDZihPu02xbj+Ii+y8E
-	c5p5IB1RSaJP4GLmE7qfYaIc64ioaxo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD34D600C3;
-	Tue,  9 Jun 2026 14:41:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7892E1F00893;
-	Tue,  9 Jun 2026 14:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781016069;
-	bh=njEURiQmXFZM6WEGnC38JEeiBkoFTQqy3aaC8k9YWik=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MooxQ3yXGNmCMYmAPyS4YaT8WUSTSGiIaRoRUrQlfEEfZaPRJGr8nQsjCwZjSEYvW
-	 +VA8sZQvyoU3Gf9pqv7RAk0VGxiNzXbLySE+VosNUgKSApgJo0GMEy6xxKdAeaCzfY
-	 MgXL+725kEpcMEFLegVCB/FbW/IjOL3awFxiXIwi4g5kkaj/smuNvNe0nMg35Vi/Gn
-	 uvlnuUidgLUMTg5zoyiegeYecMwZr/wKe/+PsawghTVFtmMV5hWirungglBGyBa6Zy
-	 9C1ym/GFh0SPxD68AHX6upnJiFfuOlXDd9nhoIG87kQ90npFnHjPWSD3O9MvVIEBH0
-	 0Gg6RJVuddH1A==
-Message-ID: <174b8d76-5514-4942-af5d-c975ff95ee03@kernel.org>
-Date: Tue, 9 Jun 2026 16:41:01 +0200
+	bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
+	b=XrtPEEYhJHqYTp8K6zhIH5m9jiBGlZswGltQeSTN077HojZj4Ak6iSZbot9BaHrUI9XdZl
+	TVzbrNzBhUgJdkjj988O3+hVqWWY5T1Z8z765MCfBQ+lYK/xXYv8iqqcQiEGiMufRTSm2P
+	bRhsutb+XylbBMkp14iC3y6sImN6PUE=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a4DzZPZh;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781016075;
+	b=1+nAbP1P4v0NN6Qg1rnziJFZMPHAS9m2DxUtM5Owt9fgNJSX2xuWRYIHqLVdpwqrbIlEG5
+	4L6AUOML7vMk9/7Tr0HtCz7Ddxg0LZifHdikYXz1konR15vjQrhR/5m+YxxCSEPczz2OOf
+	QGB93p2Y6RV3GqMATfIlcuzaR9i20Xs=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5177d1ff061so2300861cf.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 07:41:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781016075; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JRTMrWkbd9MQYu+09Luxwp/AqlWdojp6dUniuYMA7YyjL+jjBb+zo8gAMxm0DM7IxL
+         oHcJuQzj7IxlpM66hz+JxvMt0Z6sQKo8V0Rp9x/qIrSMNZNH6/z4wEyhZM7hhBh0O9+u
+         MAi7IYsQpU86xR02EXlGqwbpWpxK9O6ougAq5azESkMDEFZOlcNuvIniFQ5zpSC0bh+C
+         2M2eHtCvfIi/VI58axhCNFu7GXr7hPMtAlFd3SHE6DZqSrlYWVUaSvZi/ourrgY5DV9/
+         KM/IdzydSY5xFjatdULeLa5DKxv6bqls28PRPJzZTiZcSWPrsZV+9iy9ux7hlPteD1nt
+         dvKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
+        fh=pHZi/rsk/GIsBujV5RlZiuFG5tmQz2rm+CUN0sV9mCU=;
+        b=fpaTHYWIg1exgSGjc/Q1W1xQG0+fADOkwhHqy33m8CBk+NYQFrdgxPaAjICVh9n7q8
+         eTLrmUJUhGq+fUkOfIBmf7+IjYMuW7GUZyDMDikMg2f2J0LetT8xqla1L+pkPmc6YNhq
+         0lXQwi5D6Wk1m4wUo0eMqFFxjZPTiowgZYY4Tfj0hScmPEVKl9Dt00nlVqjfZ53XSMxO
+         dKiVM0XwBu9teGwAwyApErjIbFEMBATRNIql8tjE4nkvWs4c+NR4YbT8dVpWdHEC/W5f
+         ml9pMvWv09QLUeOOYGoAgMQrF6sXcNd1AWebLuqG8QTsB8MpBWN5VAaF7ByAWxBm3gjV
+         NJ6A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781016075; x=1781620875; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
+        b=a4DzZPZhYJKqLuyy4JKlnKCMtu70I/M9ScHXENca2TIdK5EjsCk9+UZp/WFOKVQp1s
+         8NHPJRxWn36StJp6uKICZ+Q9C126mL1koERWPYEh3TqxWmwDfQ7WRUiGIJ+FCf0AkK0H
+         pSlXLpScXMhnW3VeMNAUzC2wnZvn8Tye7LyDQC2eOJrzF46fSuuwSVgO6RhTkjDrClbR
+         fP+1F0MUFJkDGUc6rLfZsEiXoUBkX6EUeI3MR5flP6ZswLdV2EjRpE7e3kgmX7+6vLi6
+         X4jJMRsiyl5NUlELOeuVMBYgRtqymMJ0FxK4hbZbKRyC03UQhti3RXm449tpDIQ+Rv62
+         IY4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781016075; x=1781620875;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
+        b=YvzvcZXPNjMjEkWCa2YjYmEQypVS/bNVaxMrT1Gq/Ih17x5LVIjdhQHrzTWTgnRNb6
+         JI7R5PGOPMM7/5UNGxe1S7OpT7+sSD66LRQQI5e6458mjlemxOU3U4M044QNGP1LuObr
+         0PoIHYPA/Y29RpnT0w65vLmfccah2PBrmIMoR//EYmpM+phkXZOusOCrSWZOU5oAqHAx
+         y8fM/IkPrkyxAj15iTp3NPmVqob3ztMGJKmcta+ILoObAbnRkGn4YaY5YurFNvrKgSqp
+         81f7cM1iffD9ne+XxDXxwIBlciwbyQm+smEh/4OybnXekaD0TANjmlBl2kNzKUTJon4a
+         cnIg==
+X-Forwarded-Encrypted: i=1; AFNElJ/2u/4w+5N+tUXdnGyU8DX80uBaAEa0JT+lZLDGSc8hBV9mJbIOuLfYZTfTCxs8i1ee2Lrn07hPog==@kvack.org
+X-Gm-Message-State: AOJu0YzzGov5SWW5Md7LXeV1isJxYg9VjFtfbXuUTh7+tBDhNolknx9D
+	RnU0ABs+h0acGnaGn15toNQb7ykQWszSogRxnT7cgcEfnwuuUMGIoSRskU3IpBn03tDHEs/E38n
+	UMa5iZGTn7m92SkpP9NgpEBdHJywfHKnHaGEVqkrc
+X-Gm-Gg: Acq92OHpFChIzn5kbM3IYmMPOlnn4k29+FEaNLdkH3wow5ZNmJwiBhPYOYXswuB6n38
+	t+3LZhIEJT1XVMayzkuQh8YWCV2Mii+GL6vN84K3ZRQINZHb9XFEn/uo/nyajIiOhpOIBydxD4C
+	paCkdoh5X8VEQ/my1AOkX2ij/Co9/+O2UOk2W6N3CZBGZUhmR8dMMTYr9lX6ezird4yfYe0Pkox
+	i3mAjkM9sY0h/MqYGtZl94ejXedWRNQ7hgPZjUxAtEn8ffaUHCnRynlNZe6JHIP5MkEWQ3c84cI
+	xefQuvCPTpzJMVsZ+s7alJeRsbgkghaYGPgenX1dMQaRwwxE
+X-Received: by 2002:a05:622a:aa4a:20b0:517:5ec3:b59c with SMTP id
+ d75a77b69052e-51798027065mr33863531cf.2.1781016074112; Tue, 09 Jun 2026
+ 07:41:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
- <20260609-ecc_panic-v9-2-432a74002e74@debian.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260609-ecc_panic-v9-2-432a74002e74@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 61E46140005
-X-Stat-Signature: hfuwewo9yjt6txkqhsf3exnfe5f8i97o
-X-Rspamd-Server: rspam03
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <b608a6f7d71e3b728f766dbc6dfa1d1753ddcff5.1780701922.git.abhishekbapat@google.com>
+ <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev> <a58e659e-5f54-4511-9a29-dc921002d102@linux.dev>
+ <CAJuCfpHtdd=9D68cfRp4HDHHHCZdzTNP_RH9i2D-f9tJXht56A@mail.gmail.com> <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev>
+In-Reply-To: <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 9 Jun 2026 07:41:01 -0700
+X-Gm-Features: AVVi8Cd8Mw9UFnLHYjZB_VFyvF_jL4KOSZdNa8eQSyaG7dF5Q3xsZiPC-kanxu4
+Message-ID: <CAJuCfpGbxO0zu_UAWCYNNv8RHgT=E4AF0tgG-kWoLXECOL3byA@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] alloc_tag: add accuracy based filtering to ioctl
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Abhishek Bapat <abhishekbapat@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AE07D1C000E
 X-Rspam-User: 
-X-HE-Tag: 1781016070-599008
-X-HE-Meta: U2FsdGVkX1/yc/uTUoy5xff9WMcvDRur+PgJqBK/WPq5pUP3+Gnr4aN4DRv3+x9Vcte49sc2/CQ7KYzVMkxZj4udTWeJnoMXuhQAmXwoF8fGmyqrXq9r1y6gWx2xLE/EJVUJCeoB3fr3PFkinR4fGH3eB4f7wuYXdZpjrUZFznjzXBoXdmz2BrK9GH3Mr6ds5j6sGe5umJWp6BBJUIlkxmIjWsCbnLSsYm6c07oRGFtrbUKX5NYEVa+2igkWHagB7bo+gze+MN6esrmfJtC+Z9wCrQbGW/cdunNSjrrQ26OYGIhGAaxxbbXt6VlZzf/ymtITjGVDCgZPNcTiZgust4eXUJgLzb1fXwDBH6wzfhnM4SK4JD+nannA5+ZWgmxOefjSXfqbmrqsL7sWKFeB18SgvVCSaoEQK64BcuqFWXvgiMZBqU2X8c5RoCZPErgBg0xITzfjNeKYEfmCzEkWq/qZHs4OYUrDZSZW6cGp320CVlq5so2yd1AceRcxGK9wsOrdqldkFjI9vrQYbi42LGa5y0ZT8b8rekHcxynqsylJaHIMvidwCOqKsuMhdhz9A96QTLAWNuggN904CZZmmkWDvVolC9Ru+UsV2NHdJHhWi9bZM6AgffOK5zPdLB4VNcZEWIIs1EP0GLwz/ZEaHAFp5x+uZCux2odi8/rjwkPzpGtiW1WOUAEaA/of1Do9lLBEhOZN+73QlXTEdxowGxCfmCPWct6Aluz76nP92b55OFjugVYnnkcAPSpN/AxYmx88fQkQQH1Gkxm/zeGzgbdUOlhjXQCeLPimE65IjdaUqWnDzBTMO0JboVw7xTxydF/948Yt4tYyEslRPJYEizebr6FnWX4evNTOg6JwoUVjOFuHVQdvZNgKTnb/Rixy12ArUt6uIHbNY3ZZxORcepdtmaGaXhgmqjhrqK/uoB4znIFaLIn2ChtltLBPYINV9lNAyJwHqT6YNGds12e
- LuNUpfFI
- O2OhblE4fyYOf0G34ZVm8ptnLEaK5dhbOkJjamPr550p3ZJtrkFVAuYTOqiKmu9kt2lUX6uDMn7PiLjyXIxzHrlAvj4ouBl/3u2YfkzyUDPHJ3BTYSdK1OEF8yzuzB6lKOlh/Wtf0KpaYkWK27dXLx0c/9G/FSCzQ1YEtWVl8O8nDJgTtrI2kLREbaOwV2iJ1GrFQbgv9FxINUDS+y86IcjxXtSxdOlFOAGu2jYmECC4HxS3BP2YfQa7+xcsG1/7uUipk84T4zB7rVoXGtCQj2WqNQsqhjwVJ5Smzo/rDMuByx3X1m1EQjMPe0rmj4zI8FvdPfVYWmDlhhiOrlrPQ2sH+kCvVtFRHrBUoGVUtlTGf57F1GC0olGFLyrHKA/nuCBxo
+X-Stat-Signature: 8ku6i6tb8afn6uc7dncqnni4musde3y5
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781016075-387979
+X-HE-Meta: U2FsdGVkX19ILnXIT6lx+Gzvs6XbCVLnbuHQ63YgFq/cDVfdDgyyGA1dtYHTy/F4vc4vZgY8O9fe//TPjK1D8QWhhKAyvFSEE4HzVFADi7jcWLfFEKym/BvVEKZ62eXqEPTtUUHJzaVEolQF15V4wn5Bpj5SvaeBYk3WXnUmJPG96gswHXTxXLzvH2N1UgASS5jq1slmfoREDpFLWuDr14tkGsrgtKgGDXVXyM+HNe0Z3IZoPD8dYRRl52HagpvuQW6zCzMMnlBbrTTiAwd7c4SxGk5725j5O+g8EX2ZF/7P+H4LCPY/lXa/l4IxQYkJk/HWG8sDEOv+2EW+jIz9XrBPvJSlzMAYXW2iINg3GByJfLMJNQjOVo6uodsdR/qStwl2nAmqTmlnc9MHdoYJaAytzFKK4yEGJiCGCbDtv3qgUgyY25FLtUlB5TpWtfGqky5SOCh0iWI9fniffr/PbkmWcNFBfYIOq7r5tfRM+AJpNz3OXKUPuK9HBpkka+jhKVGXjJlZjrf7wMyclfzQSVKcw/1mLLDNjREl6+WhWSYVkbNVrzYz1qYAqLqfeLFk/NG+nHNHr5bw0LlvwIq3sFu07GauHnh/6eOorwjkURiBIBhRHPKdsl09YUjzJeZgQ+kd7xw3o0Sf0tyhLWmJ3osKD5RRBAjNtiudLgpSjr9yjcVlcMsSn2LP5AsUY76weZvKxQQ9j1Ikb5HmtQ7R5t8LgA07o1fKSM8QF1v/9ZDBlMiOLX1VhWgLLuvy47U8uchgq3j7kVyDXjlsUxEWy1tlj38eXnKMLTD/Aux7jcmgP5YH8CKCwpgZXSSunXc1URjGUHnYleEDAxPKLd3FpDh0ZhLLHdMGnLj0AXuW4egAlVk1fr9e5IjTrtbmI31kBFqHKYIPbq94B3c8xT9cstmRZr1/0sLmRvhIOYp3ncIZ8MQ9xBylkPKLV1YEi0PHzn2el6SPNV2p3WOvWkq
+ qvJF0Fp2
+ eu1dgvvgN05eRCd4ZhcrR+OiDTPGiFulV+nO3FR2yzw4jKGYYDLm4vHNlogvetc9AEfcPpFZ1eUNDV67VpJge0sji8kBnelhnxjm29oORMBfGu14nRfNduLpyN6SfVs/TyWttJUOTR/WlY/i8mB7M3F78OSrhdpxrB5fxXHjBTP6miok7mtnFmzxzb8WVx9f9Wa+2xD4GCMpXglXW/A/6QwslsMf2iXnnynj0seaZCRA0cOrCrmUnF0Bz/JwlPYyJnRJEgtH6q0bE51Z2H8Au/iuA9vP6viRdFfEs9us5canoqiSm0THBEDw9zIVMHvjY71wEW9xLIa8JJo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,117 +143,301 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 12:56, Breno Leitao wrote:
-> get_any_page() collapses every HWPoisonHandlable() rejection into a
-> single -EIO via the __get_hwpoison_page() -> -EBUSY -> shake_page()
-> -> retry path.  That is correct for the transient case (a userspace
-> folio briefly off LRU during migration or compaction, which a later
-> shake can drag back), but wrong for stable kernel-owned pages: slab,
-> page-table, large-kmalloc and PG_reserved pages will never become
-> HWPoisonHandlable(), so the retry loop is wasted work and the final
-> -EIO loses the "this is structurally unrecoverable" information.
-> memory_failure() then maps -EIO into MF_MSG_GET_HWPOISON, which the
-> panic-on-unrecoverable sysctl deliberately does not act on.
-> 
-> Introduce HWPoisonKernelOwned(), a small predicate that positively
-> identifies pages the hwpoison handler cannot recover from:
-> 
->   HWPoisonKernelOwned(p, flags) :=
->       !(MF_SOFT_OFFLINE && page_has_movable_ops(p)) &&
->       (PageReserved(p) ||
->        PageSlab(head) || PageTable(head) || PageLargeKmalloc(head))
-> 
->   where head = compound_head(p).
-> 
-> PG_reserved is a per-page flag (PF_NO_COMPOUND) and is tested on the
-> page directly.  The slab, page-table and large-kmalloc page-type bits
-> are only stored on the head page, so those tests resolve the compound
-> head first, then re-read compound_head(page) afterwards: a concurrent
-> split or compound free that moves head invalidates the just-read flags
-> and the loop retries.  The lookup still takes no refcount, mirroring
-> the rest of get_any_page(); the recheck closes the common split race,
-> and a residual free->alloc->free in the same window can only mis-tag
-> a genuinely poisoned page, never reclassify a handlable one.
-> 
-> The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors the
-> same exception in HWPoisonHandlable(): soft-offline is allowed to
-> migrate movable_ops pages even though they are not on the LRU, and
-> we must not pre-empt that with an unrecoverable verdict.
-> 
-> The list is intentionally not exhaustive.  vmalloc and kernel-stack
-> pages, for example, do not carry a page_type bit and would need a
-> different oracle; they keep going through the existing retry path
-> unchanged.  This is the smallest set we can identify with certainty
-> by page type.
-> 
-> Wire the helper into the top of get_any_page() to short-circuit
-> those pages before the retry loop runs.  On a hit, drop the caller's
-> MF_COUNT_INCREASED reference (if any) and return -ENOTRECOVERABLE
-> straight away.  Pages outside the helper's positive list still take
-> the existing retry path and return -EIO, leaving operator-visible
-> behaviour for those cases unchanged.
-> 
-> Extend the unhandlable-page pr_err() to fire for either errno and
-> update the get_hwpoison_page() kerneldoc to document the new return.
-> 
-> memory_failure() still folds every negative return into
-> MF_MSG_GET_HWPOISON via its existing "else if (res < 0)" branch, so
-> this patch on its own only changes the errno that soft_offline_page()
-> can propagate to its callers.  A follow-up wires -ENOTRECOVERABLE
-> through memory_failure() and reports MF_MSG_KERNEL for the
-> unrecoverable cases, which is what the
-> panic_on_unrecoverable_memory_failure sysctl observes.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Suggested-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  mm/memory-failure.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 58 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index f4d3e6e20e13..eed9de387694 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1325,6 +1325,46 @@ static inline bool HWPoisonHandlable(struct page *page, unsigned long flags)
->  	return PageLRU(page) || is_free_buddy_page(page);
->  }
->  
-> +/*
-> + * Positive identification of pages the hwpoison handler cannot recover.
-> + * These page types are owned by kernel internals (no userspace mapping
-> + * to unmap, no file mapping to invalidate, no migration target), so the
-> + * shake_page() / retry loop in get_any_page() can never turn them into
-> + * something HWPoisonHandlable() will accept.  Short-circuit them to
-> + * -ENOTRECOVERABLE so callers can panic on operator request instead of
-> + * spinning through retries that exit as a transient-looking -EIO.
-> + *
-> + * The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors
-> + * HWPoisonHandlable(): soft-offline is allowed to migrate movable_ops
-> + * pages even though they are not on the LRU.
-> + */
-> +static inline bool HWPoisonKernelOwned(struct page *page, unsigned long flags)
-> +{
-> +	struct page *head;
-> +
-> +	if ((flags & MF_SOFT_OFFLINE) && page_has_movable_ops(page))
-> +		return false;
-> +
+On Mon, Jun 8, 2026 at 6:26=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Hi Suren
+>
+>
+> On 2026/6/9 04:55, Suren Baghdasaryan wrote:
+> > On Mon, Jun 8, 2026 at 1:25=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+> >>
+> >> On 2026/6/8 14:22, Hao Ge wrote:
+> >>> Hi Abhishek
+> >>>
+> >>>
+> >>> On 2026/6/6 07:36, Abhishek Bapat wrote:
+> >>>> Extend the allocinfo filtering mechanism to allow users to filter ta=
+gs
+> >>>> based on their accuracy.
+> >>>>
+> >>>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> >>>> ---
+> >>>>    include/uapi/linux/alloc_tag.h | 3 +++
+> >>>>    lib/alloc_tag.c                | 8 ++++++++
+> >>>>    2 files changed, 11 insertions(+)
+> >>>>
+> >>>> diff --git a/include/uapi/linux/alloc_tag.h
+> >>>> b/include/uapi/linux/alloc_tag.h
+> >>>> index 0e648192df4d..42445bdb11c5 100644
+> >>>> --- a/include/uapi/linux/alloc_tag.h
+> >>>> +++ b/include/uapi/linux/alloc_tag.h
+> >>>> @@ -20,6 +20,7 @@ struct allocinfo_tag {
+> >>>>        char function[ALLOCINFO_STR_SIZE];
+> >>>>        char filename[ALLOCINFO_STR_SIZE];
+> >>>>        __u64 lineno;
+> >>>> +    __u64 inaccurate;
+> >>>
+> >>> I was wondering if it would make sense to define inaccurate as a flag=
+s
+> >>> field
+> >>>
+> >>> (e.g. __u64 flags with ALLOCINFO_TAG_F_INACCURATE (1 <<0)),
+> >>>
+> >>> so that only bit 0 is used today and the upper bits are reserved for
+> >>> future use,
+> >>>
+> >>> aligning with current kernel codebase.
+> >>>
+> >>> This design also allows for better extensibility if we need to
+> >>>
+> >>> add new flags for any reason in the future.
+> >>>
+> >>> We also need to add flag validity checks if we go this route.
+> >>>
+> >> And I've reviewed the issue reported by Sashiko, and I think it's vali=
+d.
+> >>
+> >> When we expand the allocinfo_tag_data structure
+> >>
+> >> struct allocinfo_tag_data{
+> >>
+> >>       char modname[64];
+> >>
+> >>       char function[64];
+> >>
+> >>       char filename[64];
+> >>
+> >>       __u64 lineno;
+> >>
+> >>       __u64 inaccurate;
+> >>
+> >>       __u64 bytes;
+> >>
+> >>       __u64 calls;
+> >>
+> >>       __u8 accurate;
+> >>     /* padding */
+> >>
+> >> }
+> >>
+> >> I think user space may see two fields related to inaccuracy.
+> > Yes but one field (inside allocinfo_tag) is the input parameter which
+> > user provides to specify the filtering criteria and the other is the
+> > returned tag information. It's similar to any other tag attribute
+> > which you can be included in the filters.
+> >
+> >> How do you like these modifications?
+> >>
+> >>
+> >> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc=
+_tag.h
+> >> --- a/include/uapi/linux/alloc_tag.h
+> >> +++ b/include/uapi/linux/alloc_tag.h
+> >> @@ -20,7 +20,6 @@ struct allocinfo_tag {
+> >>        char function[ALLOCINFO_STR_SIZE];
+> >>        char filename[ALLOCINFO_STR_SIZE];
+> >>        __u64 lineno;
+> >> -    __u64 inaccurate;
+> >>    };
+> >>
+> >>    /* The alignment ensures 32-bit compatible interfaces are not broke=
+n */
+> >> @@ -40,7 +39,7 @@ enum {
+> >>        ALLOCINFO_FILTER_FUNCTION,
+> >>        ALLOCINFO_FILTER_FILENAME,
+> >>        ALLOCINFO_FILTER_LINENO,
+> >> -    ALLOCINFO_FILTER_INACCURATE,
+> >> +    ALLOCINFO_FILTER_FLAGS,
+> >>        ALLOCINFO_FILTER_MIN_SIZE,
+> >>        ALLOCINFO_FILTER_MAX_SIZE,
+> >>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> >> @@ -50,16 +49,20 @@ enum {
+> >>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
+> >> ALLOCINFO_FILTER_FUNCTION)
+> >>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
+> >> ALLOCINFO_FILTER_FILENAME)
+> >>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 << ALLOCINFO_FILTER_=
+LINENO)
+> >> -#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
+> >> ALLOCINFO_FILTER_INACCURATE)
+> >> +#define ALLOCINFO_FILTER_MASK_FLAGS        (1 << ALLOCINFO_FILTER_FLA=
+GS)
+> >>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
+> >> ALLOCINFO_FILTER_MIN_SIZE)
+> >>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
+> >> ALLOCINFO_FILTER_MAX_SIZE)
+> >>
+> >>    #define ALLOCINFO_FILTER_MASKS \
+> >>        ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> >>
+> >> +#define ALLOCINFO_FILTER_F_INACCURATE    (1ULL << 0)
+> >> +#define ALLOCINFO_FILTER_FLAGS_ALL ALLOCINFO_FILTER_F_INACCURATE
+> >> +
+> >>    struct allocinfo_filter {
+> >>        __u64 mask; /* bitmask of the filter fields used */
+> >>        struct allocinfo_tag fields;
+> >> +    __u64 flags; /* bitmask of ALLOCINFO_FILTER_F_* */
+> >>        __u64 min_size;
+> >>        __u64 max_size;
+> >>    };
+> >> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> >> --- a/lib/alloc_tag.c
+> >> +++ b/lib/alloc_tag.c
+> >> @@ -249,8 +249,6 @@ static bool matches_filter(struct codetag *ct,
+> >> struct allocinfo_filter *filter,
+> >>                   struct alloc_tag_counters *counters,
+> >>                   bool *fetched_counters)
+> >>    {
+> >> -    bool inaccurate;
+> >> -
+> >>        if (!filter || !filter->mask)
+> >>            return true;
+> >>
+> >> @@ -277,10 +275,11 @@ static bool matches_filter(struct codetag *ct,
+> >> struct allocinfo_filter *filter,
+> >>            ct->lineno !=3D filter->fields.lineno)
+> >>            return false;
+> >>
+> >> -    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+> >> -        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
+> >> -        if (inaccurate !=3D !!(filter->fields.inaccurate))
+> >> -            return false;
+> >> +    if (filter->mask & ALLOCINFO_FILTER_MASK_FLAGS) {
+> >> +        if (filter->flags & ALLOCINFO_FILTER_F_INACCURATE) {
+> >> +            if (!(ct->flags & CODETAG_FLAG_INACCURATE))
+> > How would you filter records which have only accurate data?
+>
+>
+> Sorry, I overlooked this case.
+>
+> Since allocinfo_tag_data exposes both inaccurate (from allocinfo_tag) and
+>
+> accurate (from allocinfo_counter), userspace developers might mistakenly
+> read
+>
+> inaccurate instead of accurate when checking accuracy.
+>
+> How about we add a comment to clarify?
+>
+> struct allocinfo_tag {
+>
+>      /* ... */
+>
+>      __u64 lineno;
+>
+>      /* filter criteria only; see allocinfo_counter.accurate for actual
+> accuracy */
+>
+>      __u64 inaccurate;
 
-On a second look: Do we really need that? The page types below never support
-migration. So I guess that check is not required?
+I think we had comments showing which block of parameters are inputs
+and which ones are outputs but I'm not opposed to an additional
+reminder here.
 
-Apart from that, looks good with two comments:
-
-a) HWPoisonKernelOwned: this is not the common style for us to name functions.
-
-is_kernel_owned_page() or sth like that would do.
-
-b) The function doc can likely be simplified a bit. No need to mention the
-short-circuit stuff, for example, IMHO.
-
--- 
-Cheers,
-
-David
+>
+> };
+>
+>
+> LGTM for the rest.
+>
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+> > Overall I would prefer ALLOCINFO_FILTER_MASK_INACCURATE rather than
+> > ALLOCINFO_FILTER_MASK_FLAGS. The fact that this attribute is a
+> > single-bit flag is a technical detail. It's still a tag attribuite
+> > like file and module names and IMO deserves its own filter.
+> >
+> >
+> >
+> >> +                return false;
+> >> +        }
+> >>        }
+> >>
+> >>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
+> >> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+> >> @@ -318,6 +317,10 @@ static int allocinfo_ioctl_get_at(struct seq_file
+> >> *m, void __user *arg)
+> >>        if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+> >>            return -EINVAL;
+> >>
+> >> +    if ((params.filter.mask & ALLOCINFO_FILTER_MASK_FLAGS) &&
+> >> +        (params.filter.flags & ~ALLOCINFO_FILTER_FLAGS_ALL))
+> >> +        return -EINVAL;
+> >> +
+> >>        if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+> >>            (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+> >>            params.filter.min_size > params.filter.max_size)
+> >>
+> >>
+> >> Thanks
+> >>
+> >> Best Regards
+> >>
+> >> Hao
+> >>
+> >>
+> >>> Thanks
+> >>>
+> >>> Best Regards
+> >>>
+> >>> Hao
+> >>>
+> >>>
+> >>>>    };
+> >>>>      /* The alignment ensures 32-bit compatible interfaces are not
+> >>>> broken */
+> >>>> @@ -39,6 +40,7 @@ enum {
+> >>>>        ALLOCINFO_FILTER_FUNCTION,
+> >>>>        ALLOCINFO_FILTER_FILENAME,
+> >>>>        ALLOCINFO_FILTER_LINENO,
+> >>>> +    ALLOCINFO_FILTER_INACCURATE,
+> >>>>        ALLOCINFO_FILTER_MIN_SIZE,
+> >>>>        ALLOCINFO_FILTER_MAX_SIZE,
+> >>>>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> >>>> @@ -48,6 +50,7 @@ enum {
+> >>>>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
+> >>>> ALLOCINFO_FILTER_FUNCTION)
+> >>>>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
+> >>>> ALLOCINFO_FILTER_FILENAME)
+> >>>>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 <<
+> >>>> ALLOCINFO_FILTER_LINENO)
+> >>>> +#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
+> >>>> ALLOCINFO_FILTER_INACCURATE)
+> >>>>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
+> >>>> ALLOCINFO_FILTER_MIN_SIZE)
+> >>>>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
+> >>>> ALLOCINFO_FILTER_MAX_SIZE)
+> >>>>    diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> >>>> index ddc6946f56ab..cbcd12c4ef9c 100644
+> >>>> --- a/lib/alloc_tag.c
+> >>>> +++ b/lib/alloc_tag.c
+> >>>> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct,
+> >>>> struct allocinfo_filter *filter,
+> >>>>                   struct alloc_tag_counters *counters,
+> >>>>                   bool *fetched_counters)
+> >>>>    {
+> >>>> +    bool inaccurate;
+> >>>> +
+> >>>>        if (!filter || !filter->mask)
+> >>>>            return true;
+> >>>>    @@ -275,6 +277,12 @@ static bool matches_filter(struct codetag *c=
+t,
+> >>>> struct allocinfo_filter *filter,
+> >>>>            ct->lineno !=3D filter->fields.lineno)
+> >>>>            return false;
+> >>>>    +    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+> >>>> +        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
+> >>>> +        if (inaccurate !=3D !!(filter->fields.inaccurate))
+> >>>> +            return false;
+> >>>> +    }
+> >>>> +
+> >>>>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
+> >>>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+> >>>>            if (!*fetched_counters) {
+> >>>>                *counters =3D allocinfo_prefetch_counters(ct);
 
