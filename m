@@ -4,136 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7647CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D305FCD8CB9
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:20:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C3616B008A; Tue,  9 Jun 2026 13:13:19 -0400 (EDT)
+	id 417566B0005; Tue,  9 Jun 2026 13:20:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19A456B008C; Tue,  9 Jun 2026 13:13:19 -0400 (EDT)
+	id 3A1016B0088; Tue,  9 Jun 2026 13:20:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B07B6B0092; Tue,  9 Jun 2026 13:13:19 -0400 (EDT)
+	id 2953A6B008A; Tue,  9 Jun 2026 13:20:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF68A6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:13:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A6EDA06C2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:13:18 +0000 (UTC)
-X-FDA: 84861020076.17.847309E
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7A9FC40014
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:13:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TPjvJ1B3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781025196;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C2E6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B40FD90E1F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:20:27 +0000 (UTC)
+X-FDA: 84861038094.01.6236FEC
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C92D24001A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:20:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vubt9fix;
+	spf=pass (imf04.hostedemail.com: domain of praan@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781025625;
+	b=pT+ytEexh7B1vlQ5b1xqCz8ogMfciMoQsgm41cHf4/JaVVnFFCvQk8CE7aJzs5LKXEI1I7
+	RRQJe7zFHzqUw2IOZodPp+VmN41DPREopgrinybWjyV+tVuiVTOd1W90UQDo5CQkjYDGtA
+	+8CRwfNA61Qgd5N5fqWsVkF/2Wd5nu4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vubt9fix;
+	spf=pass (imf04.hostedemail.com: domain of praan@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781025625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NodRxI3YJX6R0sNnZQ3DKxsEFXXpQE4gpXdGBbhjZc=;
-	b=heWEz8kFc+Jd1DPYA/aRh/psso+JXm9mGWpFwTaRzugQvLNk/mrP37Y48EqpiM2CVK/AAU
-	Tgdm0yEdDyXG8PHRKaRKgMsSHa8lFKUPYY1njPSc0bVq+PnzJSOAir/xPD9xCWi9z38Pha
-	0q2WxeaD59jhzJ/AIPR7/7onckI1uDg=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TPjvJ1B3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781025196;
-	b=VsN9IUJWrEyQwXOteSqCPTbRLJCP/7piJ79MwLGjIPwsm6uc8uBdP9ZUu4J/Yd3gylh/J6
-	Fmlq/6UeEzpskn2jKLtZ1+Pfe+iqL3QuiC/Z/5pmXZQossVMsyD+UzwfdwTedo9AtRokrB
-	gat/ex2kNdDu1kExmb/JpM182g75N0s=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5177d1ff061so2429101cf.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 10:13:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781025195; cv=none;
-        d=google.com; s=arc-20240605;
-        b=C7cKDM9mOFZEJHAIHIJlJQHIPsfTzO9tp4+8rGhRqY3BwR3nQEPVPir4Ps0PxEh1dJ
-         WdN8aP5bYNvWoyG3UkjbRy/sZQWFnqLIPrT2suQKI4iL/hopjtBAc8nh68HiO2A8QTVq
-         1JqiqX45g4Y+KcZV3qQR0EPFzlxMZnUlyYJbA/pMGfc9nfnSM4sAueJQrMYjEruq2MYA
-         7a7uK3EF9MsZuRLSlY3p3SVPTZdj1he0yXJ2wC9KmfnP1FZ9+JPN6cK3MTKbTm9JDmWK
-         1ADoLdZQ6I/IoJcwmO8Typ+inU45yHUyPs6TOgllrfezi/bSgEiAC9uaBXGMbSj0hTUb
-         aNDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+NodRxI3YJX6R0sNnZQ3DKxsEFXXpQE4gpXdGBbhjZc=;
-        fh=0axuiK9SWiRSwUXGaWJsa5RQrlum5Zw4osmhcdHGzxc=;
-        b=Z3BhCshKvCCmQW8kkEyGnUKEc6gcGKKmuOCkPJxxvhZbrT7HW1TsKUeUu0arZ4YYO3
-         xNt1O/qcd+eexlSyjEMjJmFgcOS6BupYuZHz5XADX+Pf4ubpfDnE4EAcv8+3CZV420XT
-         zZFsEMg1MzY4iX9ghgu8mmtAtjY/6kcLOj3LQIGWv3444PM2wLuj/pP4EJVxBdX201Xi
-         N+zgRB+0xNOxOZzQoJC6JW1hFP3GKwQzvk12NEcWPBoCAtE+nGdXb3wuqgRIEmeCP6jC
-         0F0VR7t/pn7SCnCchs37QvGHY0EThqyjTwx5LEqqxZqTYIDte7O+D/SlmWfvqwJBxZ7w
-         mtBA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=01u/8EAi6NGn4gFgEAFXoW9+VQRDowjxcP1j39dvRbk=;
+	b=gXmy1AteoroO3Gv0ziBlOINDEbDjL5e8ImuzFTUMcElZ+8B8IV2RMIVXK2TMVIsLoiMjax
+	EgAyWDxOlsWGnf4t89hhkRTHyRFE+JDvntzi/MXVBedB4aFNzId85FiMBKkNC9XS/uhBc2
+	AU9DeKMZwaf7Alsfl2lOg9wyu3jdESI=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf2911f93cso461965ad.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 10:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781025195; x=1781629995; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+NodRxI3YJX6R0sNnZQ3DKxsEFXXpQE4gpXdGBbhjZc=;
-        b=TPjvJ1B3rudiDuvBL6kEFY2lYC++Y3fy8WUJZfqaRm5MdFbOAfo58pPR6pjqNu04Sx
-         Hb9XbO7DsiNXUIlt91w9NiPHKskG6to9xpL32zP3vUvVLsjDa0iWHehI7gtdmaDWqr1z
-         cDznXQ9OLpMVSL3n089xLim7oipUHLaa9R+VLDGkv3+k6h1MaDPHfCtdoMT2aUcdVolM
-         2xntqLMN0HfXXHwCdb8Ngi81LGUYIWbfAcvDdKQPpxS26rjqWbULXoOPYZp0HIxGl5rN
-         S5UA52ueUx2g6MlWPd6gGYk2R7MZ113+DJEQDxMu4JgpZntLWIbUDK1ydwjR0HqeLcyp
-         J/2g==
+        d=google.com; s=20251104; t=1781025625; x=1781630425; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=01u/8EAi6NGn4gFgEAFXoW9+VQRDowjxcP1j39dvRbk=;
+        b=vubt9fixcAapXHtGAH3nNFZwnG6DE5y9rJsTcZcAYutANGf7N4zaJVYcEi6LbTheYt
+         S6pyi4XGAu/1WVXlXfF/O1kg3zKkyYWMfCkEy3LD3q39EqWq121dBPSMKN+joN3ghFDm
+         Vm9xNwT3qQbN4BLNfvIN/YwD4jOBpqCpgWX5EpBMjn6gdMMl4/zkLYC/KcoFRduylxBb
+         p7V/j3ZjkcRuNjJ0Csdqj0HUnM3+gYArDdN+wd0EWSAO4urhORSWHLh0juPIL9MTTP9i
+         3vfhGkzfo615ZtvjZ0RVyVkcYTNZt6r2WzPAFOqlmgRJfUifnCItF5GADxfRTGm0mXbH
+         nBbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781025195; x=1781629995;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+NodRxI3YJX6R0sNnZQ3DKxsEFXXpQE4gpXdGBbhjZc=;
-        b=BdKU5LQd0JGbJs1yMORDqSPn3dXtpu560AiGOebShso4LkV6hpvmU0H/tK0zvlp2ZK
-         kpI8ERy/Pfl/leRcNyddiUvk3qLs9LSLsNeinBULGL47GaRCb4ayaFNEAZLT7OKHzQT+
-         M482WJaQlOCvC6UIzvA71NHULoQZ05xSytWyaNw4u+DRIA4oKFxSvv7XC55efNa7TRLq
-         W3pdLxRkhLNDShcBn2mBck57xkwoGgl7klmInkDgSIDwBZYYltrZHlmLUXbbvhgxSsLr
-         ognSSm+lovZZn2W13dVlVe0BpG9FPGKyuVYXBRFIKUPPNV74PVYyNQUw/GBpgB+/+HHE
-         jBDw==
-X-Forwarded-Encrypted: i=1; AFNElJ898w94A5l+8dpBiA2ZlSX8sEMVECN34xKAukRhh06ibRwEzl+Y+ndijzQxdt6YG0WvxkqM3nU1lA==@kvack.org
-X-Gm-Message-State: AOJu0YzzKy+qXaW7ixJVyHlyzpvc9KrUm254izn/UFQ/z3lKh8Xg3lFL
-	7ucA1je0l8jRwZEzbnK8QITOgAMfp/bUDAwSaJdLm99PUDV6C9YFW/msrKFrU6Ys5qerNREcE4j
-	lncSgKvzkWcH/W3q1nkj3OXyZLp+jT3qcMX0uEb+e
-X-Gm-Gg: Acq92OFruDp2gPAbwp0+7LDnYs0wgFS5iypSv1YjFfrlrGkglEygN3oZ1YTNe6rySpK
-	pG4gK9C+eNg2yFwfmUmPSq+lsyoRRDu5cLB4Af37BtS3Ohkw4Xq3bvD/NGQBgZi5ta8zz/l8ias
-	LSqUngQHaRQuMlTn9LD4/N/B0Yig05IpF4kMyG0gxp/9x3IhQ4BN7KHk7crBIWW/5TKT82BPWFF
-	iGCb4hP5rzOQ/9ic65dWdwoyYMeDhB7Tq8je+uaSJsVK/LJ5mm9z/1t6WMXu9w1O/hDOElaLyTz
-	WS4hQqFnCq6uCpsrH17cdpGPOodqaBzb5ALZsLbVRPOEzHBAF1anZEUE5hU=
-X-Received: by 2002:a05:622a:eda:b0:517:6dc0:698d with SMTP id
- d75a77b69052e-51797f67f73mr37747371cf.0.1781025194743; Tue, 09 Jun 2026
- 10:13:14 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781025625; x=1781630425;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=01u/8EAi6NGn4gFgEAFXoW9+VQRDowjxcP1j39dvRbk=;
+        b=F8fFXmV4vn9RKGlbyCmqeer1X4bfsmas+nDIDl1eNBofH+odbm4iLmvPHKJVYYG51+
+         XSPFkPzz7jFwTpgUBAzTTb2GK/6Wk49Emv4caDOWovN8k0ixzgAvAv9vYIpgFLAzMEbX
+         8wk49kMYxb33gnt9v14byynKkq2sNXMw2Ol30xogMBGNCBT0XtC3n4a50PNIMDB9F1LV
+         pUk8zhTPJKKoifVnu2sTWX4XxoZMNMkyp0iOSdSPGUq9YomYYoHgEJrR1KtM2sr3ETWv
+         jTSQu5oEQWH2A5EmtGgh0+5Jq4SRoNBwt6cDkCi/p5wFybTkWHhOHEdp/6QiMSejLXHv
+         cuQg==
+X-Forwarded-Encrypted: i=1; AFNElJ9EuZ7tuPln4bH8LJrmka3yIT7rU67WLTdXwMrgf5FUEkQZ1fvwPav5pInVJIurZ9fV0ZzYQSp/9w==@kvack.org
+X-Gm-Message-State: AOJu0YzEi52Os7EWE31EHHeAZJUJvJnYMXGNK+MFtrHw3mgNSqwoPqqq
+	EKhZ7cKS4+Dmfr6Wdgz5SK7IxmBAxW+6ErycM+0gniDexbDPwLb2OZQRNjdGHBajaw==
+X-Gm-Gg: Acq92OF1YKMmCVFuIdeA1eqmRk2H5AQtxDkD5RV/zXRbeBG6hibjbJ5zW+mudp6+csU
+	ei0xJIBDDS3TH5Ha5vR2SbJ/UUlzGoFgYY6xDqqbmeYEcd1XCA6eqw5ZW/iKRS/8tf9P0fxkUxY
+	h28tiAYiyFC8PaKpZdxth5Zggs0/SiVhfm/VQvJPhf2d7frVfR3PsrmKMWR7NTkMNhAu9e+gK0+
+	+KuTeSnisPLEvKQ51UxQWa6GsTiXHK+q3kiHpvFDwQwVW4i9hqtxEppXt+VY8Zf8VD0UMt1uofn
+	9Fk3R37wkNhOnRxa9qutRO/R50y5DMy9aqKZqKs4RvoClDdsJTJuRQdvKyO5mjh3xZn1T3vGMWO
+	FFBAPhXEnh1pgqW5Grpd8NmVuE7DcPqD/b8GemGHxYaYXYgLED6jGd7GoWDZ5ItzxhykXOuyDuO
+	s9nYZbmVVF9Sb+NEYcD2PrFREPOhTA5rx/YsnbpD7H/0qj1EGnIgVgeF/GXofLD7GTwE61SrMv5
+	RUgTlQTng==
+X-Received: by 2002:a17:902:e744:b0:2bd:907:2ce5 with SMTP id d9443c01a7336-2c1eafbcbdamr9084545ad.7.1781025624007;
+        Tue, 09 Jun 2026 10:20:24 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf827e6sm25059778a91.1.2026.06.09.10.20.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 10:20:23 -0700 (PDT)
+Date: Tue, 9 Jun 2026 17:20:14 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 08/12] PCI: liveupdate: Inherit ACS flags in incoming
+ preserved devices
+Message-ID: <aihLTgs1Y49OXQaV@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-9-dmatlack@google.com>
+ <aiXWmR-ettxin4LC@google.com>
+ <aic6mdiZ0qUJpFca@google.com>
 MIME-Version: 1.0
-References: <20260606015729.1837935-1-surenb@google.com> <aifEZEisSFABmYiW@lucifer>
-In-Reply-To: <aifEZEisSFABmYiW@lucifer>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Jun 2026 10:13:03 -0700
-X-Gm-Features: AVVi8Cc11jTgQ-bPSJkt8toevaR0OaWZcsAO6_AhL8y9iGLJOxbwkljrmIEXYfU
-Message-ID: <CAJuCfpEvAPPm1RSOpXvtsYUi9hr3j0ST098k2RF8pUp7J7RY5Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] fs/proc/task_mmu: change lock_vma_range() to return
- error code
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
-	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
-	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aic6mdiZ0qUJpFca@google.com>
+X-Rspamd-Queue-Id: C92D24001A
+X-Stat-Signature: hhumwojahybrkbgm59ph73t1pqeegmw6
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: hwxh3jyz6yzwdsn6qcc88sugn5grb3id
-X-Rspamd-Queue-Id: 7A9FC40014
-X-HE-Tag: 1781025196-830298
-X-HE-Meta: U2FsdGVkX1/RCIfqzTRs+QLP+JqNjg6AT6MhG/zCS5HXQa0B2NPy3oFORXRxjhp/8IIZD8EY5IZ356cgPg1LbdMub8f7Tol22pwswFT3jM1ViPG/v0MWhyrlhOnNXQ1Y2JTRnJcREo1L2h0X9YCl4gVFAI99edtovmUlKwdPupDQo2tvSCMQlhk6W5iXb1CIiBnqpQzasG0kFVQtjw8LZ0aa13jIcy6TMztWWOo7TyR4kuVa+pOiXyxaeDwLYTH8eWfuDFKqJI308pZ83IUTNMnup5Qv4neGtaPMi8wtXLpDukiwoma1m+tXMg7CqXUwEatf2O4ocX9LgYpAHGvBoc82S/tIweVyyy0Gdo7ryoFi+G/9gHTgPw96l9zOGW1iCjXyolXbSdPIOmjQHNUi3FQj4Pa0KfgHT0nyNlvLoAsqAnhOqkqou51XTgHy5T3g4bD8qt8JmghxHrtviBMeclBoq8Wbej0s8xa5MJ7wqIaK2dTRZOfTWUx+7pVlCiuqThT8y/oiqFJO7Jx98Zp8jr8UPYA6rw5CbpI07FX3HSuVmg3PMsZ9Rx2HsMW0Elbf2qd+sXYcLZ9CXXpLv16T89Sup4yCrekSWOhtn8D2k/T2jnna0h9ZrvyYylMkIDNlI+MVY9RjWsqqtOoFm/f5A8KneWR7jsd7k9YBCd+HzbELnP9ff+LRt5Ibno3KBP7Rf8AFY4RWCLt0hmprNDVTq33qAOicCtyGgIKM0K6i4Rk0AIPt2EZQF2l2mKw+R4wzQw7DKT1TQDhYEtEYawC5y7xN7eDjTZxbmKs297ZZsPTa7I/35Cyr/EQX1FvBykZTwLQyYcWj0hu5lbs5jWJnIFqcGNp9MyZuORPho9ema3g/ULDE0pH6ilz/canLh2l9CmIzFTHyWepXgK4+qRpMGMG2He11KM//JpAS7OlEz7IpBFfSJfDH+OGW2IMsjeH4lUFf+v8/Fw0VDuiGIwq
- qsapeuCo
- GZR/EnFKta3fWb9WQFa7Ryh42ojkE77mwkpg2n1DQQFtFQ2JOHhZwtBtDqwoW5W/Wsjms8hCjeSs7IVV2+IsPb1q0ZGvad7wTJBk5bsh8l+mWoE6xo1bBLQzJraZp/0PfVCK/D3Z7twJQgfM0fKIajDcTJOlO2xqnAbmpg1Tj0xxLiiEl8xONDrQ8X+zlSWqHuvMPdgSNqLDPGcxVwKFXW86Y3hISrVAxpjxDYPYl00wO2kWBTRC8HchZjdImK5oBcJV7loLjLtOOsdyKo2f08PTvnv23Qji9NsET25S5pZ0IVJmXKU+8cu5nUl6b2YBpuALE3epSHzezXMnrjf3b2Hqg5w==
+X-HE-Tag: 1781025625-444938
+X-HE-Meta: U2FsdGVkX1/j37+ep/0kmJUDh5px1q4gic0fkKaU9t6ypCxeBV2XeBXZdAj5J3cZVh7svzaHUOaKQ+rKC3+Oc9YU87Mwa4FVSh5Pb7LnON/oSCsJmyfNaJFsR+KY6ALZK5/NvDrmLl0DQbKv6Dfb34++4EzGs0qElgozEvZ9SIpg3qz8tD2zeWOP98ZZNZp+4JKSFgVXVvIt1EuW6VITwPhRgwtvaQXBfi1DXaL2jg2Qt32ydtIkw1jDYq4QeRXxW1rxLFZx5iFFtVztnwtRRy6dIwQmM1n0le0k8GbSt6yzwQTSmuNDPJBWBy3Cu1sRv6NgudE2nQBGJZ338W5g42ozBRACYIpgMIZ3LRW6FG189uoO4QILSdF2VHiQCd0NVT8zpZOUzcnVgtlsXntJiI2YVrI4u6U6Lj51xgJJolmklOd18JoBhaI8aLc77bRBqLggKqr4vHlYUIp6GBdv6f+GDaFHwWt3d+In0NJIUcq3oqAaaeEz8qN6umObbHwHf3DUOGOOPIUF3LwsAi2V9xsDIXxqk0eTkaEu0VMq10F2HcVSwhWN1E5X8pqXmkz2EJ35tvFZ7LkTu5FI7GHg8DMgfkPk11cdkDvKdGVEqGvkFyyAwKaPFXaZKOdZiCouawkmUhipLrCfVSo5JhtN70q9jxODO0frfN0x9P47yOajBslZEdVGhg3qRbNd0P+EhCiiZ0mvA+cS/H5SDC9OXvrTN+YtlSljtyUwiObW1ODRy2bPeI1eRkZ8fH32vNe3lzPbd/j8oqMMbmDK0/p/9UQ0x8UJP6HZOf/lmHVpDhgwfVFZWWeBJLq3K3Igsuf2JkzVgmx+irXQO8W/d5R8DvRBkgy1tBDJXSGHC+c00pZb9zT1PSjU4Td4zDcybiZQI01GvmiBlQS4ZGYQvFVKoCCv75Cn2+xmoTuMZorh+LTlTEi1JnKNrRe6n2obLq1k1qvm3xCksNuxWi/3hQ7
+ /sF53rs6
+ ApkDIceEyCA0QXXEMClqYuTRuT8mx+cDxR0ryHmv13kkC9L01z9WNddRC8xJBZ3jfePthhKL0dNJ4DYpRhPT8HDOV5RDc1MFtWF+AjQ+sS/HGZlIg+W4/VhfkD9n8hh6GgJ4KRog8NTaeiS6hubgqYWPoxUjFuCwjCvC1Mdoloo7zscWbZjvrhgc3igYXnJHopAiSuKdGhicd3lx7z4jsfLODjUSlTdEnhya8qxai+lwU7rYelH3v4eZ+ZPt306fi9F8d7Iwd4zkF0JdPVmxDqig+uGqt221z7Fjvwx2AQ6rHm6MMNnp566JE3wFj3GIuN1q/8dm+QFT9Ldrq8O2QlTT+WOy2TFKO5CA5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,102 +139,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 1:28=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wro=
-te:
->
-> On Fri, Jun 05, 2026 at 06:57:28PM -0700, Suren Baghdasaryan wrote:
-> > To correctly propagate error code from lock_vma_range(), change it to
-> > return the error code instead of the boolean. This simplifies error
-> > propagation code.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
-> Logic LGTM, couple nits below, but:
->
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+On Mon, Jun 08, 2026 at 09:56:41PM +0000, David Matlack wrote:
+> On 2026-06-07 08:37 PM, Pranjal Shrivastava wrote:
+> > On Fri, May 22, 2026 at 08:24:06PM +0000, David Matlack wrote:
+> > > Inherit Access Control Services (ACS) flags on all incoming preserved
+> > > devices (endpoints and upstream bridges) during a Live Update.
+> > > 
+> > > Inheriting ACS flags avoids changing routing rules while memory
+> > > transactions are in flight from preserved devices. This is also strictly
+> > > necessary to ensure that IOMMU group assignments do not change across
+> > > a Live Update for preserved devices, as changing ACS configurations can
+> > > split or merge IOMMU groups.
+> > > 
+> > > Cache the inherited ACS controls established by the previous kernel in
+> > > struct pci_dev so that ACS controls do not change after a reset
+> > > (pci_restore_state() calls pci_enable_acs()).
+> > > 
+> > > To simplify ACS inheritance, reject preserving any devices that require
+> > > quirks to enable ACS as those quirks would also have to take Live Update
+> > > into account.
+> > > 
+> > > Signed-off-by: David Matlack <dmatlack@google.com>
+> > > ---
+> > >  drivers/pci/liveupdate.c       | 68 ++++++++++++++++++++++++++++++++++
+> > >  drivers/pci/liveupdate.h       | 11 ++++++
+> > >  drivers/pci/pci.c              |  5 +++
+> > >  drivers/pci/pci.h              |  5 +++
+> > >  drivers/pci/quirks.c           |  7 ++++
+> > >  include/linux/pci_liveupdate.h |  6 +++
+> > >  6 files changed, 102 insertions(+)
+> > > 
+> > 
+> > [...]
+> > 
+> > >  
+> > > +void pci_liveupdate_init_acs(struct pci_dev *dev)
+> > > +{
+> > > +	guard(rwsem_read)(&pci_liveupdate.rwsem);
+> > > +
+> > > +	if (!dev->acs_cap || !dev->liveupdate.incoming)
+> > > +		return;
+> > > +
+> > > +	pci_read_config_word(dev, dev->acs_cap + PCI_ACS_CTRL, &dev->liveupdate.acs_ctrl);
+> > 
+> > I might be thinking out loud here, but as an attacker, this motivates me
+> > to somehow hack the EP FW to mis-report the PCI_ACS_CTRL register across
+> > a liveupdate to fool the incoming kernel. If the FW feeds a 0, it silently
+> > strips ACS protections.
+> > 
+> > Should we also serialize ACS state in ser somehow to ensure we aren't 
+> > fooled by something like this?
+> 
+> What does "EP FW" mean?
 
-Thanks!
+I was referring to the Endpoint Firmware (basically any SW running on
+a downstream device)
 
->
-> > ---
-> >  fs/proc/task_mmu.c | 16 +++++++++-------
-> >  1 file changed, 9 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > index d32408f7cd5e..023422fcee12 100644
-> > --- a/fs/proc/task_mmu.c
-> > +++ b/fs/proc/task_mmu.c
-> > @@ -162,13 +162,13 @@ static void unlock_ctx_vma(struct proc_maps_locki=
-ng_ctx *lock_ctx)
-> >       }
-> >  }
-> >
-> > -static inline bool lock_vma_range(struct seq_file *m,
-> > -                               struct proc_maps_locking_ctx *lock_ctx)
-> > +static inline int lock_vma_range(struct seq_file *m,
->
-> Could drop the unnecessary inline here while we're here.
+> 
+> Does such an attacker even need Live Update to attack the system? It
+> seems like such an attacker could route TLPs in whatever malicious way
+> they want regardless of Live Update.
+> 
 
-Will do.
+I agree that compromised PCIe devices are a menace anyway. But I was
+talking about the potential window opened up by Live Update here,
+suppose we have Device A & B assigned to 2 different VMs (implying they
+are in separate IOMMU groups because the switch set ACS_RR = 1).
 
->
-> > +                              struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> >       rcu_read_lock();
-> >       reset_lock_ctx(lock_ctx);
-> >
-> > -     return true;
-> > +     return 0;
-> >  }
-> >
-> >  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock=
-_ctx)
-> > @@ -245,10 +245,10 @@ static inline void unlock_ctx_mm(struct proc_maps=
-_locking_ctx *lock_ctx)
-> >       mmap_read_unlock(lock_ctx->mm);
-> >  }
-> >
-> > -static inline bool lock_vma_range(struct seq_file *m,
-> > +static inline int lock_vma_range(struct seq_file *m,
->
-> Same comment as above.
->
-> >                                 struct proc_maps_locking_ctx *lock_ctx)
-> >  {
-> > -     return lock_ctx_mm(lock_ctx) =3D=3D 0;
-> > +     return lock_ctx_mm(lock_ctx);
-> >  }
-> >
-> >  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock=
-_ctx)
-> > @@ -311,6 +311,7 @@ static void *m_start(struct seq_file *m, loff_t *pp=
-os)
-> >       struct proc_maps_locking_ctx *lock_ctx;
-> >       loff_t last_addr =3D *ppos;
-> >       struct mm_struct *mm;
-> > +     int err;
-> >
-> >       /* See m_next(). Zero at the start or after lseek. */
-> >       if (last_addr =3D=3D SENTINEL_VMA_END)
-> > @@ -328,11 +329,12 @@ static void *m_start(struct seq_file *m, loff_t *=
-ppos)
-> >               return NULL;
-> >       }
-> >
-> > -     if (!lock_vma_range(m, lock_ctx)) {
-> > +     err =3D lock_vma_range(m, lock_ctx);
-> > +     if (err) {
-> >               mmput(mm);
-> >               put_task_struct(priv->task);
-> >               priv->task =3D NULL;
-> > -             return ERR_PTR(-EINTR);
-> > +             return ERR_PTR(err);
-> >       }
-> >
-> >       /*
-> >
-> > base-commit: e178a530a81621a29efbca49b3b78202a18236e4
-> > --
-> > 2.54.0.1032.g2f8565e1d1-goog
-> >
+Now, the attacker has an opportunity with Liveupdate, since the devices
+are already assigned, if *somehow* it flips a bit like ACS_RR, the
+incoming kernel might see both the devices in the same IOMMU group.
+Who detects this case and what happens if this happens if the devices
+are kept assigned to these VMs?
+
+Thanks,
+Praan
 
