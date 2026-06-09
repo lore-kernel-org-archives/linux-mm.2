@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C53FECD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 253F9CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363816B011E; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
+	id 8BA766B0120; Tue,  9 Jun 2026 15:17:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33B056B0120; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
+	id 86B996B0122; Tue,  9 Jun 2026 15:17:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 250D86B0121; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
+	id 781716B0123; Tue,  9 Jun 2026 15:17:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 157506B011E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D04A91A074E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:11 +0000 (UTC)
-X-FDA: 84861332262.22.84343EB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 677856B0120
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:19 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0503790AA1
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:17 +0000 (UTC)
+X-FDA: 84861332556.20.EC86762
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1CBDC160007
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMBuXHKj;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2EC2410000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJGWcflN;
+	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032630;
+	s=arc-20220608; t=1781032636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WOpj7e1Nhzq+smZTE7xHDrYEYXBQOG4Wg4O9/mQv0/U=;
-	b=IrozAtNxesqV3cyTFWaiUB5qwmZ2chRqOyfRE77exrFXyN48kqP4qs4iV5/cszjBPsXQEL
-	kx7Tp4VZyYNevLf/g8+Qn6f+Rs1o1MX4SfDOkf1vpf7XBGxxVUe3GebQc1WeispJNkPIuc
-	tQJFQ3waqYVbrOUg75uMpxz7NKfCH+o=
+	bh=0vBcgswxHnJVjRfzfe4sol9/FUdXWuk9h/h15LXryYU=;
+	b=eUgjumQY+j5hdRkZUexxB51XBvf+Gk2qXwt7aXV4sx7fxzHdGkRIMzJxIidqojWen8puJS
+	IGjDyfoA49J4aTXQNRo6tw02eGCbEskAIJEXhVRjpoDmtR+g3ukPMR1ADDq+63GJCiGS+D
+	nb0Xp+AuzjZYBwQp/AgUkAA1e6M1tyA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMBuXHKj;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJGWcflN;
+	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032630;
-	b=vZr2z2tAo0A8/H9HKYteThFc1tO+ICxjY9bfvNs2S1q684qCakvntfNHMX+2JYp+moAUa4
-	6I4/k4SZnc5X5dEuWioCj7/FRHJlTb8CeL4DzYonoGYT8FWJRwBLmIUMzsjmFWaN/UQe4M
-	ucdrSIVlerQ/4OMXnTB2K8hmLI8Yt3A=
+	t=1781032636;
+	b=AErUxvyY80u81ZECKnCDHhQvEJGAD5fQ52/Bhtup/y0cenrUfiIMTvDZC1jDLFvfogVmIj
+	47qMdSnTB8258C7Y+YC/sNoD1H9UUF70AzUQ7pwnRM059mo8E6c6wEDqKb7G1BgwZdacym
+	t4QX2AHU94Z9mZvfsCXCtR7ADgD8VcI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D442405B4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 80695406B8;
+	Tue,  9 Jun 2026 19:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AD21F00898;
 	Tue,  9 Jun 2026 19:17:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36D1F00893;
-	Tue,  9 Jun 2026 19:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032629;
-	bh=WOpj7e1Nhzq+smZTE7xHDrYEYXBQOG4Wg4O9/mQv0/U=;
+	s=k20260515; t=1781032635;
+	bh=0vBcgswxHnJVjRfzfe4sol9/FUdXWuk9h/h15LXryYU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dMBuXHKj7RBMnrn8vqr8h9A0cqlKkwuGkdYwYlk5HTqvGLjz5KyjqENj1lJ0wBl6c
-	 67Koi+t68S/qgWgzIaTGps9fGoTf+rEnGeetWs2XB4tLee1Q29kYYzFkRNke9lZ7TG
-	 F2LfbPPnohHoYTJmZxkiXkyIFiUVquvh/atI+hSocOxWAgUREe7//Ydi6jmh+0ZBz9
-	 aaSV208dDkez7DyZrzCT1tqrZCdkDFqlfLSQ/puHn434pX159mMhJdG98G5JAAkhEf
-	 U/kbPDSxMX7Vz8z/PRNLH2V+XO/7a6gbfCKFZQr2d4k7tQiqyQklJ43UbLiFX3VyS2
-	 k+Z8/7PoKuN9Q==
+	b=QJGWcflNSh6sOYC4ukSS5Gx/oNMYV0HgjwWjG0RF2pFsvZU8qk1Klls5Ps0LskIVr
+	 QZAdRfPu5eTf1wFPIVYIg5jfHlJ4v2vjSSHik2KzVdv02pYwOnwv1IEfzma9XETfdP
+	 w9ECu9XPIWVQfwA/bU6cQqXn5jZqvetAYF2/Z4jfRqZpDeTUvGJXJC///PmnT59Bx4
+	 p1Ya9/0kdz9iVuA6Tk4ThQfJ6t7uFQHnf/jEqy6HbQVvBb/pGPTQ0wtHd9U3Q3O768
+	 m80m/joroPPzC9tzm9LeWFs+dv7j0VChFsMQLhEsViifiouT96slfEkJj06Ba6nscQ
+	 TyIqJQnGJYuCw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:20 +0200
-Subject: [PATCH v2 41/83] block: rust: introduce `kernel::block::error`
+Date: Tue, 09 Jun 2026 21:08:57 +0200
+Subject: [PATCH v2 78/83] block: rust: add max_sectors option to
+ `GenDiskBuilder`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-41-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-78-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +92,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4552; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=NIOSFhSPNxZhzeKeGIxP5rwZxvn86AQcjaih/HmSERI=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTZOFzdFIMSshGFudWmfHLuQiMwx6tHAFLj3
- aRHUI8FQHSJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk2QAKCRD6UCkIqsW9
- 0MT5D/49nDByyphJs16CpsUBJQfuY/Jfg9V9KHly+Mo6HIhh2UrcaH1n80P875Kyz0m+sNCeXu1
- B/QAaoAb35Y/RULsjofHll4JlMDxuYjoE4lppDLn0F2aa5Kz1P9ujoe0arE+dGAh8dxKYicCUSC
- /Q/Iem7dwXnhJSx0gscIiB8w24DN8yA1YqRDuwAMxLKos2HweBg4PqdPbe9IrSdQXlSAATUsDFl
- DtmKEDrI1hfdNsZU+GPNc7c42c+RLfo8kQRrwMZOlg4c/eXjL9wlaWN1ZnD/nsmlYXO5x7cXqzg
- 5wET2xLrgxkTFlgvYWJRW/TN6kvOyZhCgEAyIIQ2WFthIPzYwJbrVkKldHIfxyxZdlAaL4HaVcp
- DHnO57hsHbvg0aacNhmxK2VkUhax27Rc2Jl1NNpCGUJNcmmFw9XukCn6G2tP8eZZ6ZTOW68OiPF
- wPW/eB21y1mFa8CP4kXQPHuPPy77RLx3UswOMpYdPhvzZD4dYsCBVnTBFYr3ZdD6+kFJMRE5fII
- 8G1eQ2BbBZyhxr/TleLh8MGjjYH9mC9g27dZ7Wfms2y5thH0c0bhyYAW390TAQq7DGsNQmSuiCh
- suf9YEpWUTCcDoJZrvOngWRV6dCPk4KLyjNHSaWoVeVcTzs7mf6u9V3caF9/5j9yB4GMGxrnAO/
- rVeZt73bEmgtG0A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1620; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=HoPPP8LHyfFhtce3K0cUJuW8NUYoe+z4X7dgaxFLGfE=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT7S1gTtW+R1WhBEPArVYTcHteX7mgWXqCHu
+ TgIUJ9j4RmJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk+wAKCRD6UCkIqsW9
+ 0MPdD/0diJL/A2gSYUNUwHklP3bHcD/77AQjbTl7KVNQrN/kmQvABFD9xTfID5LimPN5gwnDeBK
+ vm2AJdxSZ3PbOyQs2aBEXnm0c7ossw/opjWZ2lMbc7uxV55+wNurDPo9CjVtqzNCjy7QIs21dBs
+ Y2bUvKFpQsbNkgiuGSF7HEGuaFdpabmHDTrYyR7YM+Pmx4vLs0qiWiQygWTNIwn7iIIN0fpmjkA
+ VrBc4LfNcHsCMtNb10VS1TQzSJa+77ceu08WfF9acCVJ44jhF/BDMu8lSgD0fPmS7jZqWKZTuIe
+ jmMxx4XRYFIHfgD/5DRd3HnGSvA9q800AlCTrcxyYdVIrAR4/4eCobhxFyXnkLYojGJiy20O/9Y
+ wwwcCEiHuHYiBvmXA0nMhkAvfshZcJu1raF9gtUDBgxyDSDrHaDPDP8ay+spS+UYdTP3u6yMiYi
+ pGeYRQzkhA4ZnhcGZy45GadpiPZ8sf2z/4/6xJliKLX9N/yDPJ04Mwq6mvwTRYOpdzr8URH6jHW
+ ygCAqRZpjDI3sF4jpVMaF2VDsPfgH7fRycsHCc5c6vhaSHWfSXJkxUc+B5I0YzQryV5UIo3mtPZ
+ vWnoO1tFE6ZjT7pMk31qA+VnVKnOk+7BstKDYXsMhgynKA6amnzncerTtDgswXJLlwANnaXwddT
+ T2INwiJ1HtR0AiA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 1CBDC160007
-X-Stat-Signature: jiknt1zub6xrtt8ghao9pmt3n5yh5pme
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2EC2410000A
+X-Stat-Signature: fpynhheucx499mp4fy6eckmehx3dfckz
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781032629-277220
-X-HE-Meta: U2FsdGVkX1+IxWy32OwqkgDovtX2XyNkHbZyqK/rlT+gY9CsgHyxDUaw11eLJP3q58Wrv4w+ro3B4xfOkHAzJSE6dAGOT0SWcVeWmpu8N9jRjp2oh46Xl7CmLuzIRwdwvWm5qj8cboVuHWnpjQ7YVmyavWrxpoCt5AOLxfCZD5LB27MQj6f9yVXoz62dV7UswUi19W1UcJXeapK3baT+Mg1EckWJNLBQ5D9xfgCdWYyK9X/SA64Wkx7qSX3lN4xDeAEA5wZezeK8O4UoGusgP/9QgRWL56DmySKlWSTRONlsconD+jiZPbXihiFUOi/fZYSq4qtlG4aeJvdKUsGBiPrGvEzwrg/T56v5SCc3+ctfs07PvwgOkFCn59m1kIXHWjxycYX/nAK8IRUV425nLW7U3Z3lU3dxN3GxAs/b4V0hh8asFp8UMSfRQT3augcNQ+m+76SFHvKRqpWH0uxpbkONjuyNESHw0ShCTtuaw9tVJFgJCb50U2IVrIl0gGk3GfOM796uQq19bmdmJpS6YQUoXwfVNbB38Tc0TlyeyliiuM0G2Zdi5hMxzYBc2vEGzRT5qIxmaF4PNxtHfByCfPApuYKh4QnMcJgIauFuX4j7f575YcNAdw0sWkcAMz9FT+5rtgjvCfOnB5/HWfbYXxy7zmLy+jvscrTEbzsvTDoofWbXhKTeejbQ6/zLkHNDgHQhun0LGUT2+gcbAuapdqLusrF5xK/eSs16FFMT1wXMQMvgi/k9hl4k11+2x5upxqAroc+CBKBs9YWV5CUWqad9Zefn8h188fPZtKBQFy6wIjsSuwlpfftCS4+WcO3WcO+btVJEJ2URzHH4fgLPBLciS8Ed9OQvuh7QiOPxbTEyg/QGLRgvaoehzbV4xvKfz117svomrzb8ax5418M1bNIAz2GYiQzbjWGWiUTMHHKe3QhpTR/oYkY2t6HaHK868xfkqXkTFTmo11JlOto
- jlrB9jVY
- 2ETYyNISkpZbuGl90TzoF7fIPl3Pp1W3Fqi51GPtMH4dQBycqz/S2ZPfqiDhrxtZAKnj7xCMEx9ronMOImsckp0wpZRymkzraVq1r3/s9/oXWbnP2ZucOavl4t/tdt+0x/fjfu99sVVH4SeW1nGCXlJRhN0VzqYVWOXI05fzYItE7Uia2qNQGDN+UoWBmk9/IDoNLO62YU/Yf02PjkoyKL1O06nvDnlIJUSXC8oIFRyjJhZG8LOZ9LF1zDCHL/yVrtDfOn3QRAbHrp6LDpdybEdacIeXzXCXuhEFJ4k3AJDdlvyAuB1GCLf0ICkLZPQ4NVUSViag5nSC9uBSj2m9hygVR6UBnrT8ovzCYcrDDdk3+HWo=
+X-HE-Tag: 1781032636-606566
+X-HE-Meta: U2FsdGVkX19nuQU1FLgyYlWI1aSgko+/qXtmFt1qXshMwwrupqYoOczwbHeguBZ/xtC1OMxN3QPQLnTZjGQa+Kjkb0fmzDEpEOCQmMkAC14bipTecwuFyEkICtMeVTTh/1iLcc3te75VxKrYQDXaPJOJ4uYflJOtfmKXjCYQPOCYz+hSxxMipAeFgcMwcl5Q2wgyFaAZh6cJVbySuxuflziiyX2b5g+eO3a3pVctjYXWRAeKo4yUuMDjpXrMD5QMy+QLNDVoHxWnaxJ7a/EFbXIHuyEMYpflH2wdG3vS3vnrwIZSo/jmfC3H/0BsKIxHu39aDaw9NRVBCrIgFHxwuP1N3vDhkCkb77Nn2h3Go5Zy3AO18SdZQ6Mj0p3yC5csZ27vp3Ej4et9BCH/ZepNqA9tu4IUn8z1j48cqV32/zENt43SaZpvuUaxOkNFDdZNc/Rk8wvfsYBQsiQu7mP9PcCS1af20DH0x74KauNeFgVFn1VkUb9P39BtxhaM0Euh1TbXXQjwJRppw2gaViDLzQhhZy/+ReF3bogOMvgHoi62w6r+ok/d8BMG4a4Dup9oIiLxsMgYTc1oY7KMulu19sEQVyJjx82F5nZzYilys0D1UikQNOQCwuPBJN4KLJU4K6ivRoGsAb8xJWVebs7nZEqxSp/hLs0a2Vqo5eEEqou3t9H7jLmex8ZPdyy05Ql9LHDQPElpl5+PB+6SHxOQnUlADjSkaHeOE11SGninSwTmaJgpk0hMyLkDO7C/5b+b8O4PEq2w+O5qMdncYfxKimdejGESr0TTSkEqekr8skd9/hBcn1KCmq/EoGqrsQyymJEmwVCVNwKzlESsD5IEob1KyqoN0ARNA8Ynv2Cs0dxZayBrt23aTmv874M/qBChipeprPMcyWbABL+l9roO5n/LmvNYx26zZSU06bSVqYkMR15k8BQmyh03lBBkCwBxDv7ft9CBIn/6x3Q49aD
+ eHJdjP4J
+ vHu19gKJsd98rU4sgLOOPKcCPIHAatWkMBdcv0TdAkhjiM6bAHYnfTlXd8Myoom0ZYGm0eygn30wrwCz21MtgllHrT/2haLTdTaa2hZlr5x+rJUXCJzhhy9e4+p6GCqfZS+Y7VHugddj9Goa+3qZ8E6O21eSQqB2Q5m/YzSIcL633P7t1+UwlPsZ6yXf9nsEPwfu2NHWjja2pSumIPmvOusROviMFIVJj9N0X84nbxQABhVaQwbV90ts/BFujsPULfyzs3N6paq9aEJsvZJ8krryvWOCdNIw+RN97EXfqN9sILvv5twZl24IqQ3xHpapiNDCNLP4bKZy4FWDJjfKDTlG1id2xpWECIN0xf7sPU1Gec+6bOm7y6ifCsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,134 +123,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Block layer status codes, represented by `blk_status_t`, are only one
-byte. This is different from the general kernel error codes.
-
-Add `BlkError` and `BlkResult` to handle these status codes.
+Allow drivers to set the maximum I/O size when building a `GenDisk`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block.rs | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/error.rs |  3 +-
- 2 files changed, 96 insertions(+), 1 deletion(-)
+ rust/kernel/block/mq/gen_disk.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
-index 96e48a2e6116..b3578f28871a 100644
---- a/rust/kernel/block.rs
-+++ b/rust/kernel/block.rs
-@@ -18,3 +18,97 @@
- /// The difference between the size of a page and the size of a sector,
- /// expressed as a power of two.
- pub const PAGE_SECTORS_SHIFT: u32 = bindings::PAGE_SECTORS_SHIFT;
-+
-+pub mod error {
-+    //! Block layer errors.
-+
-+    use core::num::NonZeroU8;
-+
-+    pub mod code {
-+        //! C compatible error codes for the block subsystem.
-+        macro_rules! declare_err {
-+            ($err:tt $(,)? $($doc:expr),+) => {
-+                $(
-+                    #[doc = $doc]
-+                )*
-+                    pub const $err: super::BlkError =
-+                    match super::BlkError::try_from_blk_status(crate::bindings::$err as u8) {
-+                        Some(err) => err,
-+                        None => panic!("Invalid errno in `declare_err!`"),
-+                    };
-+            };
-+        }
-+
-+        declare_err!(BLK_STS_NOTSUPP, "Operation not supported.");
-+        declare_err!(BLK_STS_IOERR, "Generic IO error.");
-+        declare_err!(BLK_STS_DEV_RESOURCE, "Device resource busy. Retry later.");
-+    }
-+
-+    /// A wrapper around a 1 byte block layer error code.
-+    #[derive(Clone, Copy, PartialEq, Eq)]
-+    pub struct BlkError(NonZeroU8);
-+
-+    impl BlkError {
-+        /// Create a [`BlkError`] from a `blk_status_t`.
-+        ///
-+        /// If the code is not know, this function will warn and return [`code::BLK_STS_IOERR`].
-+        pub fn from_blk_status(status: bindings::blk_status_t) -> Self {
-+            if let Some(error) = Self::try_from_blk_status(status) {
-+                error
-+            } else {
-+                kernel::pr_warn!("Attempted to create `BlkError` from invalid value");
-+                code::BLK_STS_IOERR
-+            }
-+        }
-+
-+        /// Convert `Self` to the underlying type.
-+        pub fn to_blk_status(self) -> bindings::blk_status_t {
-+            self.0.into()
-+        }
-+
-+        /// Try to create a `Self` form a `blk_status_t`.
-+        ///
-+        /// Returns `None` if the conversion fails.
-+        const fn try_from_blk_status(errno: bindings::blk_status_t) -> Option<Self> {
-+            if errno == 0 {
-+                None
-+            } else {
-+                Some(BlkError(
-+                    // SAFETY: We just checked that `errno`is nonzero.
-+                    unsafe { NonZeroU8::new_unchecked(errno) },
-+                ))
-+            }
-+        }
-+    }
-+
-+    impl From<BlkError> for u8 {
-+        fn from(value: BlkError) -> Self {
-+            value.0.into()
-+        }
-+    }
-+
-+    impl From<BlkError> for u32 {
-+        fn from(value: BlkError) -> Self {
-+            let value: u8 = value.0.into();
-+            value.into()
-+        }
-+    }
-+
-+    impl From<kernel::error::Error> for BlkError {
-+        fn from(_value: kernel::error::Error) -> Self {
-+            code::BLK_STS_IOERR
-+        }
-+    }
-+
-+    /// A result with a [`BlkError`] error type.
-+    pub type BlkResult<T = ()> = Result<T, BlkError>;
-+
-+    /// Convert a `blk_status_t` to a `BlkResult`.
-+    pub fn to_result(status: bindings::blk_status_t) -> BlkResult {
-+        if status == bindings::BLK_STS_OK {
-+            Ok(())
-+        } else {
-+            Err(BlkError::from_blk_status(status))
-+        }
-+    }
-+}
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 05cf869ac090..6dd14a72526f 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -163,8 +163,9 @@ pub fn to_errno(self) -> crate::ffi::c_int {
-         self.0.get()
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index a50ba7b605d7..6d760dafade5 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -58,6 +58,7 @@ pub struct GenDiskBuilder<T> {
+     zone_append_max_sectors: u32,
+     write_cache: bool,
+     forced_unit_access: bool,
++    max_sectors: u32,
+     _p: PhantomData<T>,
+ }
+ 
+@@ -77,6 +78,7 @@ fn default() -> Self {
+             zone_append_max_sectors: 0,
+             write_cache: false,
+             forced_unit_access: false,
++            max_sectors: 0,
+             _p: PhantomData,
+         }
+     }
+@@ -181,6 +183,12 @@ pub fn write_cache(mut self, enable: bool) -> Self {
+         self
      }
  
-+    /// Convert a generic kernel error to a block layer error.
-     #[cfg(CONFIG_BLOCK)]
--    pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
-+    pub fn to_blk_status(self) -> bindings::blk_status_t {
-         // SAFETY: `self.0` is a valid error due to its invariant.
-         unsafe { bindings::errno_to_blk_status(self.0.get()) }
-     }
++    /// Maximum size of a command in 512 byte sectors.
++    pub fn max_sectors(mut self, sectors: u32) -> Self {
++        self.max_sectors = sectors;
++        self
++    }
++
+     /// Build a new `GenDisk` and add it to the VFS.
+     pub fn build(
+         self,
+@@ -199,6 +207,7 @@ pub fn build(
+         lim.logical_block_size = self.logical_block_size;
+         lim.physical_block_size = self.physical_block_size;
+         lim.max_hw_discard_sectors = self.max_hw_discard_sectors;
++        lim.max_sectors = self.max_sectors;
+         if self.rotational {
+             lim.features = Feature::Rotational.into();
+         }
 
 -- 
 2.51.2
