@@ -4,101 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF22ECD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7EBDCD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:04:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0E26B009D; Tue,  9 Jun 2026 06:04:14 -0400 (EDT)
+	id 37F686B00A2; Tue,  9 Jun 2026 06:04:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA16D6B00A2; Tue,  9 Jun 2026 06:04:14 -0400 (EDT)
+	id 3309D6B00A5; Tue,  9 Jun 2026 06:04:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D906A6B00A5; Tue,  9 Jun 2026 06:04:14 -0400 (EDT)
+	id 21F036B00A7; Tue,  9 Jun 2026 06:04:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C692A6B009D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:04:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8682A1404C9
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:14 +0000 (UTC)
-X-FDA: 84859938828.14.5B0C992
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 130176B00A2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:04:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9D2DC1AEE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:26 +0000 (UTC)
+X-FDA: 84859939332.12.3D02020
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8BC99140016
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ienTDyd5;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 394A71C0002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMqEQqfs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780999452;
+	s=arc-20220608; t=1780999465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+MeZs9obcZ3lUPK/UEdDwZZjzRqi4HCT0YL9x/bz95U=;
-	b=BvYKYVJ0lUV1EqBBU/vugWjwi1B8pP7lvJsoa9ltSYVVK3jslEy0echR0URjuXtjn6vZs9
-	XJOfqWkrveAz61TCQP9TX0VwzPA+bb2I8KILMFpE/68PJZXJQHcxS8Ne2Aqe5mqigw4Y5O
-	VEVREhOQfUCKSKYzxXRngGgIHvLl0rk=
+	bh=24LLS2IujXIsxqj/N2znkwF2LDRJBt9IcN4tpduhzAE=;
+	b=DIWonpX7jEjVAuSkMofkv8fzVMFE7j72oMxYMaxw51dfnx0xDhqx3Wil4I3dL/9HfvwLIX
+	ge5JZQuozKV+TVPIqWaY0fCaeqYLfqjHJmHdMgFAGsJi0ZahCo2z2F1dKyyAbNd1CJethh
+	qoekpTjjC59NVuqhhQwsSElX5K3s+uQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ienTDyd5;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PMqEQqfs;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780999452;
-	b=8a3i476vSISD6YiSPs1UfthA89tQsb1/6BwzG0l8ikXnuiHialbTfEeOFEmiLdhrK5bpiP
-	Mq5OWhr4olFHak6Bi+ds+Iaf0f9Z/T4Gll7kdE/gW1CtQOpoYS5Yb1kkz34ayqTAdLbEse
-	G5bqAmOxivZAkjL9S4sTIINu43FXdjM=
+	t=1780999465;
+	b=wMo2/dMvqbcNxtgcQPoUfcUHL3uUn7nQYWW5jAFnqemFVX9Lc77knEA5MYqX7i0Q80977J
+	gnpVM0CkgyyTM2YkDVQEVctwFo8SzRGmRn3g6I/7r0wecq4VLnk9zzO2DVoARoPB9tN0bc
+	5+bp26ATyAwBlb0Yz/Q+OlaTUTCY1os=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C388240E29
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92051F008A2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7835942ADE;
+	Tue,  9 Jun 2026 10:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F0F1F00893;
+	Tue,  9 Jun 2026 10:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780999451;
-	bh=+MeZs9obcZ3lUPK/UEdDwZZjzRqi4HCT0YL9x/bz95U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ienTDyd53bqKYsembdNr0XOcC0E7PSBw4ZeOr0ufuUtJ6x5SM3yWYlkf18QLDt6wt
-	 r8NXW6VzCGioL0iwZahAd1m6SJPgs10JHJSujck95cxraC08FZ5n8fWJmk/bpaaYKW
-	 Revh5mn4Fv9QzNKX2b8dQm4cwk3IqHa6sMnmxud+4aboz4XG9xFrsI1c4v5lhMBEkP
-	 LkMo3ghnTomSzpOR1csFH0tYGqOgLpeFYt1Vz4jswymsA5RqFn3ToxNSddDDlyD4jw
-	 9I1l0uizqCVii7tvYVWDRv9tmO0ZtMvi9MJauO0kwCOTzDa4wr8H2nP0eKsAr2oMt9
-	 DHXkxlNvZSV3A==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-9157ec935c5so836488185a.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:04:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+05xYV3DIzk3L+oecyFlDUwGTjHOg9MUu/9dZOgiXcNKyIBy48KUkev/gj06KcQkc5EdiACBjboA==@kvack.org
-X-Gm-Message-State: AOJu0YyeVAFVQzoZAka22j+qAJUdZEiAM/C4A/fDequdG99Bwn6bNdic
-	YVxN9v3ix3OHfgQvgILJGBmsvheO+wkCh4FZC7DHvqborvUYtt8aKJAkRp8KwlfWzxx/zc0p+Zt
-	Fb0CqjgJIEfzKYtT1NxleOaoOdRmYjHs=
-X-Received: by 2002:a05:620a:2681:b0:915:efc6:e918 with SMTP id
- af79cd13be357-915efc73ae5mr810085a.51.1780999450900; Tue, 09 Jun 2026
- 03:04:10 -0700 (PDT)
+	s=k20260515; t=1780999464;
+	bh=24LLS2IujXIsxqj/N2znkwF2LDRJBt9IcN4tpduhzAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PMqEQqfsqjHJVuhYQMqXBYsaeM5c11yAnSX6xVGwLIcYg5Yw3INpoCNKJskFiSK0j
+	 QDyEmE5+nMlosFDj076ls0CDm5m7Wb6d0TTKmdbQ4Aksg4GCEjK6+r4Z3M7HLS6PCA
+	 rgrUcoaWQXoGZ1cqNdEwg34FBd1FL51/1cKLXVFYirvtI7z04jfLVVF22jYrb5ELWc
+	 OV71WWrFihbTS3XI1GQTka39+gd47rgXU/MpkDwvVgum/mFqzrkb+YFzV8mftijhv2
+	 /GMNhKqLDCHwC/EXKK/UF6tj4yVrkG5u+9YPYsikuxP6ZDOsjXZu3/0Rf7v8yPgDVa
+	 sqIOYM43j437w==
+Date: Tue, 9 Jun 2026 11:04:10 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, virtualization@lists.linux.dev, 
+	linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: New design
+Message-ID: <aifkpYCj3CuERL4q@lucifer>
+References: <cover.1780906288.git.mst@redhat.com>
+ <aiePVsiV-w-IZ8A4@casper.infradead.org>
+ <20260609033042-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-References: <20260608143242.2869392-1-usama.arif@linux.dev>
- <CAGsJ_4xOcTTkpVnno9RgTAkj5-62dLASUa9YnJYSLOEiU1ULww@mail.gmail.com> <50c03b64-1809-4000-88dd-ab147ddc6620@linux.dev>
-In-Reply-To: <50c03b64-1809-4000-88dd-ab147ddc6620@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 9 Jun 2026 18:03:58 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zhfTJ-2f=scbYW9peieLpJCgqrOUi9aV+OFqRsM+FKUw@mail.gmail.com>
-X-Gm-Features: AVVi8CdM1B4we3xYC38gIoo6NMFRsjfPZfIqdxezrPL8vjEj8UowskPVnaMPaMc
-Message-ID: <CAGsJ_4zhfTJ-2f=scbYW9peieLpJCgqrOUi9aV+OFqRsM+FKUw@mail.gmail.com>
-Subject: Re: [PATCH] mm/swap_state: remove unnecessary lru_add_drain() from readahead
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, riel@surriel.com, david@kernel.org, 
-	baoquan.he@linux.dev, chrisl@kernel.org, kasong@tencent.com, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609033042-mutt-send-email-mst@kernel.org>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8BC99140016
-X-Stat-Signature: fcwpndqse44jhxg179935pzcbbknzx93
-X-HE-Tag: 1780999452-902539
-X-HE-Meta: U2FsdGVkX1+FvFvbWlosHGS2cTiKF3kYA7Hz3SRdQuuFfOxj3y04cnZ+2GPVdli00uHnCLAV9qbKnKMWtwD0Lb2rZT8E00qbOg7/xnjbNUuPIO21Rr6UjORB3aWROKgI+bf1u2msK0LkTQWdw5tNphFX4pXYH+//mYcHXUZLuaQxO6mfusDuMzPTDPUQ5zo+f59kLSi+c0ZBMFhRaD7o01syf9kSsxVTGPOGKmDEbc1D4IQZPHihV9jvwg4OQGV0tXqT6OFnyKeUOhNAASnia6i4Lk811b6gAcQ5xxXGESElwgFZBoE0fN6grQzpLYYO/8P0kJQkxHrJK5l6v44zHAbH2DxwmqOofs3DRtpWC0j4dtEJEZgYJISLI5eysXxS83GL7EWQ7KXsRjpYRqJpHCo+XQpFcG7wBrib11QcnIMp/iTV5VXS0ovxufE/KwBUWmI0VHvpAtqGcnd8nYaY4jrghEfUjdXm4al9gBsrDnU/twlSw+wpGH1Z88JhmLNqCRmegdJ896/3gfUfNZxOQYGdiiD3mZZz0PFmGmp55kjUX372keKeW3lGiie5z/7ALpDIAsKSU25ujvS4NfJJqhinCuuap9nmEO9R+okFMfedLihlXxGRF4Jtu22FiuSWu5H77MEpSM/5lU7akvVDzyosEn9ZQIxq0roVCGHg3YnCsq2PzdZQ4icQmX7mAhYs8xUPFFB2NmMhhiHlo5k6IfS/Gl5KpQQB6sKctMcqFAn6XNqA9ESpnCXDWxU4JP2bgIJKaAeoef9oMRqUE5CaMiuiBWwCnuKniQmDzWtkIEQRyrMH+7ZMfPtcCa2/t55z586FuBAiyjxtXrNtr+owmdylMQVB0zWRvJddzac+pBqhkU6q1xia/rDmNsIS6Z300pWtf5+h7XIpZrne1hXfIhJd58SwkY5c6z2s0ZZQhe/mH/YDsJgWKKQx172LfWvU/vRTxGokJU3xqff6dYj
- Wea//EVk
- 4aG+AdlJodVRz28fMltcfsc/O+hMnXy+920lNBdV9wjn1ADDfPDgjLrXEWXp1jN7H2efFIVUx9NcbBsiRVSn44z9NJW+udfhIx1NeuFCL6aoRl1Bve9fCHCGUzQoYMPxfCk1S0s7Zx/WuA5nZ3OsJBv/rTDfOyky4i+aLGpQhK+xhu2sdfLr2dZ4NNOO1YtoDLvRRmG5CRGkPihLhHBB+n+Ipw9jeaV8yBAQkj3Oe7nbcZ9uN0qSWUk7EHI3yc5/7abEny4Dw/WfsdkWFIhhxFiYSZyKNsHZQm2ISMS2/XUeGtMBfcR6TKMqwm/omsPV4KkzRzQvPvzWMu7hebjfXPrew5XMvy1XIafCy
+X-Stat-Signature: o3njh3hrcat96arwq7k1j8t6kyn97cso
+X-Rspamd-Queue-Id: 394A71C0002
+X-HE-Tag: 1780999465-308000
+X-HE-Meta: U2FsdGVkX1/VUJYTVP/R3DOxd+pJyX708O8UHz2/afsLx2mPiU3CwDFEJNRQFm0siwyYYBDPfrp3chcMeCOBbPX38p5TimF6XdvfCB5trINMZrq4WET6QfWaZ/+O7hTC16XRtunIfXaOGDXhaVX9ZEuFllszlVXYv5C3wvGdkKwB0OeScmXlqBNZBM1nj8qzlTksYQdkKdtIV3tTuvJEiHO+ptgejqhKR1ngpoplZTJNZfZoMMokmSIo2cRJDwfoBQqgaM0sGUuOGS27KDp0SB2oiMgnOTDL/viyo7hOrXY4ibjcbKCy+ZOgbxvArFF621kwI+bHbVDBU3GJX0I634Khy2zm8Oyl7TefrzsJr01flr1w0/OokWR6fY07yhtkwHaE/mhstvmKe3oII6q/6JeabuPUoXOn4z6MAYIugDZTUK1XO30lEa0U6vXlVVVJfJzJocBM8cPz1V9LcxDVvubZbe24FLaVoAYHArW6YHWZn26riWn8IQ6/4Cq9c5ycuDKKQulb2ZdGPavtfxt6XAB8zbBUPFD327E7IKX8XS8kxQQZ/CHX4YT1Gw9pr2/ICMZspyQ+S9zoQopL8bwYg27x8W8VkGJELdQ+h5TI9dyn8DsPZGWKVhx2veXhkRepa9SdTrFpZNgRB2HfZrmFihOguk5kKLN+5J4RE0EiEB7wD0ERRrUnDMKnNWQWWEz1ptkfknLE1I0IEgRJpkQ1P28o+E5rAXa+1+J0PV1HEIPrRhkXDGPnk5eZ9aW6lwkyzZJJev/o5XH21umxQXS6mb78PtbA+zds8TafZvgyHt81DoG+cxrnMsOPNvG7hyyHRa6Xf4uBWVkpZsLffcGKeaneWgxxEB9tg5+A3+Zc5brkEEXJHYdmIJaxDQL9rSM/SyjIDFzKfDg3mHrP1Knr+BKlGSSE/AiSm2YRVe5JhORD0fky3IN4R6kmN/V2Rgv1JRI+cG57TMKa1uNHzAW
+ 7HXU32Lv
+ o6DuNhQUsthk13j8PpOgxDGAKLF0iNzecBmRF1uVgCL5OVlFe38jOpZURx3mSfl3HWL/CyLjH4rdCZU+rsOXLWrmHvSsOSV8tU/stijxISiy9WHSDQ9OUTjQ/81KEFcJoy3GsvZtgy3k7s7Mjjkf6+JrhR5JnwIp2k/GeYhIPSrBucCcMTLa+PUuVh67qd2chf8SZEh/GqHJ79dFahGhxXjM2OVTgZ0L58jmJN60zLgeQuO9xc4uqMW2ZPr7YZ+448uypB34kojIx61AxC1fPjTbxz5LrqZJIUS4Uz9NYaBga6Exlbmd7dif5aRkyHs6YKJxIwBAwUf2vnuc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,107 +111,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 5:30=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
-ote:
->
->
->
-> On 09/06/2026 09:01, Barry Song wrote:
-> > On Mon, Jun 8, 2026 at 10:33=E2=80=AFPM Usama Arif <usama.arif@linux.de=
-v> wrote:
-> >>
-> >> swap_cluster_readahead() and swap_vma_readahead() end the readahead
-> >> loop with an explicit lru_add_drain() call. That drain is a leftover
-> >> from 2.6.12 era code and serves no functional purpose for the callers:
-> >>
-> >> - do_swap_page() ignores LRU residency for the readahead folios;
-> >>   it only needs the target folio it called swapin_readahead() for,
-> >>   and if the write-fault path needs the target folio on the LRU to cou=
-nt
-> >>   references accurately, it runs its own lru_add_drain() at the
-> >>   wp_can_reuse_anon_folio() and do_swap_page() sites.
-> >
-> > right. as i can see the below in do_swap_page():
-> >
-> >         /*
-> >          * If we want to map a page that's in the swapcache writable, w=
-e
-> >          * have to detect via the refcount if we're really the exclusiv=
-e
-> >          * owner. Try removing the extra reference from the local LRU
-> >          * caches if required.
-> >          */
-> >         if ((vmf->flags & FAULT_FLAG_WRITE) &&
-> >             !folio_test_ksm(folio) && !folio_test_lru(folio))
-> >                 lru_add_drain();
-> >
-> > and the below in wp_can_reuse_anon_folio():
-> >
-> >         if (!folio_test_lru(folio))
-> >                 /*
-> >                  * We cannot easily detect+handle references from
-> >                  * remote LRU caches or references to LRU folios.
-> >                  */
-> >                 lru_add_drain();
-> >
-> >>
-> >> - shmem_swapin_cluster() immediately locks the  returned folio, waits
-> >>   for writeback, then operates on it - LRU residency of either the tar=
-get
-> >>   or the readahead folios is irrelevant.
-> >>
-> >> - try_to_unuse() likewise locks the folio and calls unuse_pte() withou=
-t
-> >>   depending on LRU presence.
-> >>
-> >> Folios newly added to the swap cache by the readahead loop sit in
-> >> the per-CPU LRU folio_batch and will be drained naturally as the
-> >> batch fills (FOLIO_BATCH_SIZE),by the next reclaim/compaction
-> >> lru_add_drain_all() and so on.  The unconditional drain only
-> >> synchronously flushes a partial batch and forces contention on
-> >> lruvec_lock.
-> >>
-> >> On a 176-CPU production host running a memory-pressured workload, this
-> >> path was observed to call folio_batch_move_lru() from
-> >> swap_cluster_readahead() ~28K/min, a very large source of LRU lock
-> >> traffic.
-> >>
-> >
-> > Do we see a workload improvement? If yes, can we put the data?
-> >
->
-> Hello Barry!
->
-> So lru lock contention is a source of issue in the meta fleet.
->
-> This problem was specifically seen when I ran `perf lock contention -a -b=
-`
-> in production on a workload that has a really big anon heap and heavy swa=
-p
-> activity.
->
-> When I tried to trace with bpftrace who was the biggest consumer, it was
-> readahead.
->
-> It is easy to run perf and bpftrace on prod on this specific workload, bu=
-t
-> more difficult to flash a new kernel and see results. The easiest would b=
-e
-> when kernel upgrade happens and this patch lands to see the difference an=
-d
-> I can report back.
+On Tue, Jun 09, 2026 at 04:06:08AM -0400, Michael S. Tsirkin wrote:
+> One other question: would people like to see it as a single patchset
+> or multiple ones 1-4? Multiple ones would be easier to review but
+> of course this means no actual perf gain until part 5 is merged. Is that
+> acceptable?
 
-Yes, it seems fairly straightforward to reduce LRU lock contention.
-From the review, the patch looks good. I=E2=80=99m just not certain whether
-we might be missing any corner cases.
+Personally I'd like to see multiple patch sets, not all sent at once.
 
-I would be happy to see it queued for testing once the mm tree is
-ready to accept new patches. Is it too late at the moment?
+Rather - send the first, wait for review, and once people have given tags,
+then send the next - rinse and repeat.
 
-Feel free to add:
+That makes life easier for review, allows forward progress, and avoids
+noise on-list.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+>
+> --
+> MST
+>
 
-Thanks,
-Barry
+Thanks, Lorenzo
 
