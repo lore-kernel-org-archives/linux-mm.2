@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DADC6CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A627CD98C8
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EA4C6B0122; Tue,  9 Jun 2026 15:17:24 -0400 (EDT)
+	id 781AB6B0125; Tue,  9 Jun 2026 15:17:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49A846B0125; Tue,  9 Jun 2026 15:17:24 -0400 (EDT)
+	id 732E96B0126; Tue,  9 Jun 2026 15:17:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B7246B0122; Tue,  9 Jun 2026 15:17:24 -0400 (EDT)
+	id 66FE86B0127; Tue,  9 Jun 2026 15:17:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B7346B0122
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCC1DA0712
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:23 +0000 (UTC)
-X-FDA: 84861332766.19.8A5EFFC
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 572E36B0125
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:30 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2FF612079E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:29 +0000 (UTC)
+X-FDA: 84861333018.08.6E377D4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0F6DB1C000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XRZMzO2n;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2B97714000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NlrvzFZv;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032642;
+	s=arc-20220608; t=1781032648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=67YOcpbRpSvyeMAWDdHjO8J84Lo+TPp/ZYE9AcqGdYc=;
-	b=ylY0vTArOk+XU2yy5lm3DUOOjz+lbaFg9+qwjFsQcxkWAsqhkI5BsRI98m6vD7C18vy0Xa
-	nVtdy4oXy83TTeExmHAsAttNWDP18l3VjLk1Ju38odbJ1b4Jz3kUP5vgzrDmNZMdQO6rJO
-	bWwrXVEwepHYmTMYXlerzsd8BN7FbD8=
+	bh=l4agbTirNlyUYcdjQT8pmN2Uz+Tb+GEZRsrovxY+04g=;
+	b=edQRyDA4pTDFhCmw0HY3Kif6IRn1r/E3fY3GebItRYOlgn3Axar8mrwqibpXSeUfIHogKv
+	2JdyWeV+czme5T/zM7hnMin/dUAP84zwsau+8Gn24QwDvLLedwfHOfHIMMp5ej2igQvfCS
+	P8O2SqUiKqhLDFsK0dAbTGcUzRjP0sU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XRZMzO2n;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NlrvzFZv;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032642;
-	b=FnJOtpiJPaJoYW0HFT04z1Oxdq14GY/qMv/b/ABH9yMAuBxEtwF8dKC2SBinaWYQ9DHJcU
-	YOBOEAg8awfw/GZ/PzIMQs05L/L75lTbrk61b3j5c/5i0aKBieZHEWQWCYNS6D1paG+EzG
-	N8kH/2rVv8Tv5gPTdvaB6SzJJcrjpFo=
+	t=1781032648;
+	b=ZoEe9QiEIdTu7Ojp7V+IXquJTWPyK56duJIDTn9U+IQM+Eqn+YZ1uzMhgeTaufveiAR7b1
+	lwuFLq9QhTnah58g4Nw6BRSNwANDWSln8ObVVHpzPyXueaS6krXsRDbVdb/0PwxjPY7rz4
+	sdL3JxYQh41v54Geebed03OT0a+IoVE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 649A643982;
+	by sea.source.kernel.org (Postfix) with ESMTP id 76EC64024D;
+	Tue,  9 Jun 2026 19:17:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF751F00898;
 	Tue,  9 Jun 2026 19:17:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E801F00893;
-	Tue,  9 Jun 2026 19:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032641;
-	bh=67YOcpbRpSvyeMAWDdHjO8J84Lo+TPp/ZYE9AcqGdYc=;
+	s=k20260515; t=1781032647;
+	bh=l4agbTirNlyUYcdjQT8pmN2Uz+Tb+GEZRsrovxY+04g=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XRZMzO2nzYm/oXccW/HVI5Dk5QvbHo+TtdY3/UR6W3/B08le5NVKnk551rf9JD85Y
-	 5LTO9PZTcuWeC8lUNCkMTwYZazubh9vN0OCO78aOBhXmKkds3ilmrKFObR0ZDY865T
-	 yZJz7FAbsCVk1N3mDDlXCcHJg+liy+vXk2QRmWD7flbbPJO/mJT37SlvO3+xHV9DvV
-	 XnqNOhi3ANXS3m/GB1H+XxwB1BYDfiuIaywBqfOWrDsRuSUijJEGoWVNKWyIu9VTIs
-	 kjqF+7h2oqA9wncI7Smy3PRK1TQnKdSv+yrdMXHMx1g3Z34NfCrdb5adK8sXvtzyxD
-	 xO0iGaW3vjokg==
+	b=NlrvzFZvPGR4r0FNlUqsKm++UKOhHK9QP0yTaBU7RQVTO9eHAX6zE73w7SOEXOqzz
+	 HbqiiTpXR9TGlS3R1TpzwnAtw6OLHW7j1knJpzQuF1e2fd/qEFd7Ucy//TBEc/0zG0
+	 /85I1zCRbhg2xHXdMU4mUkMdbQBEOI611kkbd/C4oOPDg7eDylgpbUd/NxpHdeZ63U
+	 xF4Z34AwNl4fAkpkmCVUBZLoKhABDFEbUZI+/VPNNgi1tPJErzbOhbadAj10o4G+lp
+	 9PS5nNaobsnkaCbtJ/Pa8O3hsxb0Ft3qvZ3psLw2KYXw71L9zYW6exHzoYng1bQ8bS
+	 rZNA+z5ZE6EZA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:04 +0200
-Subject: [PATCH v2 25/83] block: rnull: add no_sched module parameter and
- configfs attribute
+Date: Tue, 09 Jun 2026 21:08:53 +0200
+Subject: [PATCH v2 74/83] block: rust: add `Request::queue_index`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-25-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-74-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4147; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=O+jl2F2xzeizmKeEFp6OfGRrahz8fj9S64rA8TqH02s=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTL8JCj0D2bsrjx8If5DE09F4g67MwSLHApp
- 73TkQ+1MHWJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkywAKCRD6UCkIqsW9
- 0J9pD/0ZofgGrMZ//q3Xy/zRBs9l2Vn3GJKNw929z8MAETbFVoorBU4y/U2yUDQdOC/XDmdXoWe
- 4Nad5uh/xRXZLpOBiImot9EG5hP6Thp9W3yxSZid30wvFnEQmd6AFD4aeT6XxuZCKQo39OI4dVM
- ARB1aecc9qrZoBbKU1ENcIcdx62S/9bYRzzNb4rHA2k2ud8A1qLJOpTHSY/nhLm/tUd7RyyT4wg
- +R+I6e0hBErrB8mvUDaWQqwH5PJ3XbO/ZpJLnPzjyTgaIO0rOvRdnSBAs3tc5Rv1rKWDSSk3tDs
- G8g+HH+/i6eikJIifHkiCzoz57AUBNGhuoSdcPuXIKF93tV78JMecTIeTt1zHa/F8ww5WE9GFlz
- 0weMV4RIuJDvJ8j2DibdYfEBBit84BFLl3cDiqKVDcdwn0fyrPPatCCMWKnO/uEf4LbW950oFWT
- YAmEGjCQrE3TEs8aB6Y8MR1fUOvEkT4MVsHWlTL3LKbgfImUIaZFxI5rgVYF3f/QImdzmCgbFhF
- JMOmNxi6kPiilGy/70601nmr17+xmJ438F5FASSqQ0w5UPM/xinWQNrjAiyQcZHaVukg/uVQ4ni
- VnVwDn8bBaoX5wZc618giL/7vqrVikGfPITYl6S9Zw7UC9rA8WMOlGk3O41AWuSmGlIj1mDiKu8
- aypOiV//2X6dgCA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1020; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=fop9S+9mzVcsTkO1rMOxG+AfrBnmsW7E8Z0RHs803s4=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT3vhakzgq4tXf5rIzfy3B6X1NktI4mR2vyG
+ W7qLn2llZGJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk9wAKCRD6UCkIqsW9
+ 0Bg7D/4snWv9goqos2qzgRQYcA8FkUKrKYnV6R6LAk7i9bC3v34ZUm4z7VyF+eJWfWf7o9V2Er8
+ TbQZy5aVqp6ptRU1JCmcHZifV+9oQ6ywjAbputtg8TgQHjUQ2c28RZzZdwJDHRFpT6qUYkeJ7lc
+ 5nWrAhMhkxiFs8f4jZiFnU3P63hgN3dyOWS5mrO41E13MtvQ0/Dq89IlRTRGvihZbagHHD1IKsA
+ TSoIEhfng5ttW+FQLZft2CpwPoz8IjnlflIGn5JTM+adojBxi2le3/MYoso83fC/8YEMQC6f9zM
+ sEeY0E03bg1r8Pc4KPyG1QHTsaQyO6/xpFZAR2hT0fZubKdABYnBt1ESu8EcWmU0XqZDbG+VGw0
+ Y0Mb3xXr3s0mEZ6VnY3A8wBem47djoGLzkoiDukouoN40CfeWvBodvM5ZFb69nLL3imY+xE0b7k
+ L1/cjFAzaR3sBLT0vCHzjSFo0HV8KzTzOtPlt77fSHtXRGfK92wysvVWo1ZUClsdTKXa/tAPfZv
+ 0v/lusk/BplPsNb9+xgGQvAwcjQ9rNu9ZE587fvULiyig1jEbu0RTZONQSjXLN6H2iinQ65N7NZ
+ 0MRGFoQqvNbkKm8pGOgr3vIvmgbIGYlT7iKFtWGmqA2AhYDsz1OhXxGaEgB2jfRT0rkCV7eydxd
+ HtfYGWM0XD9snvQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0F6DB1C000A
-X-Stat-Signature: dqx8zx4ttetp97e4ehogimfh8xbs5uht
+X-Rspamd-Queue-Id: 2B97714000A
+X-Stat-Signature: d48eurpa34it5pfbpmisd5izycja7my6
 X-Rspam-User: 
-X-HE-Tag: 1781032641-460765
-X-HE-Meta: U2FsdGVkX18Kogruqnzy1qoP+aMsUeEPyPjWE9Ghur08Co+niaufYcpUofpMVca+fWWn2ftBqD7eHS7G1gICwmclyz7jSVrYrRHwAs8k8uPja1YmJftzWA0NImOLnnMG66YXJ7eNE0ZXABTJl3DfikxKvxokdiBnyNeF5muLAQlKQ+j97DOZOUWLBqx2HAuGIKbz8qlg5QH++vE+Igg07njweqRyEAte3NsiRvMYrGzQq6cJdQt8j3K471Q1iPZ0qk9Pk9pTopTblVKE4TQ+6y8vk1C2tbN8ekgLWbkoVR2P2hvY0RIjEzm3C4z0ZAkncqosTAA9EkLELGCpTABNM/f+3eIgpDh1Iv06PWsyR/1Nk4epSJcb1MvqGgVP9Lij/JbVgRLaVrcW9SdA30PxZixt8r7DIVQfojyG/djsRzETRBMq9vayRiFDr/L5eKwTfaOMZE4bXeW7u9vW/n8hncvB9UpQaWj0/Lu8R7SSYLrfnRkiSe6tqlsy2M2vfEO+Xf/NhzZ7YukAj1Lwd9+qhMZvq+0ooSB6Oic8NE7U9tmy6Q9mZSINTYcYGcWpCJpBpkCcI2G4a5icPB3Vao7uKsWevx690atRkbGoy+45DMMzZGBt/U+oAoR4Q9j7JlgHr9O0ZwgHI7Cz4PicfXj7csE0oBvR0m2Tq2tRAgsyo/aab6VL8knw8EbCU24EGtTH7DfLAHltEJaCMKBGRmv1YjKsw32uUhWLfpmzmLV+iJ0RnuUIj4lTZyt5gE7NAqBZtB3/Zf1N88guZJ/YOxw3iihP8na1X5/Gw7FhlruBoMr0xQbYIhCIhc9SotBc0bFJ8dqnj4mJKyxjZNk5mbXRDwxWNgGcJr2tILsm36+VXBgko7W3bj2EJ2KxrIBsfQ1PIAF8J1h4xUhM/OXi7yTvu/5SsbdmajMJpUPEUtxoU26K0XQLQR8GsrShLT0Wn1AzqBqA+WykH8qXTobh+pv
- jFM5tQah
- 38Gv2wUX3pLhxTBZpuySq7GcgzDGRuKIH6rjU8BxOu0Lg3QRNk5KzPHwU1SdjpmaS2x5/dtZEBYS2KluJ/qv/kPL5vVDMLqkF8mFNxUd/nalT5jKOBcI4FQGSKuxqGPBXrMWjDnaKifQfaVF5L0XejDFu31ZtbLK48kkLRZVNoI+ELf2dlJTu9KmpqcNenigt/jasZBwLc7EKyIMphT+Prj1QTabymyKd2sOa1VlqAtmIEK+4XOzGg41FGwtrjg4kxrDISHMgzWmYW1UApkwwGMEPUfN1KozD1c03yaEzZBJoiVBHd4YfDhKH7DApIodbjFpS6scoosVAIrO02kTIxUzMwywTUvwG2udiIF/knRJ9rymBLlVoisCAww==
+X-HE-Tag: 1781032648-768039
+X-HE-Meta: U2FsdGVkX1/UnMvH6ze4gs7yFEXESdYg3BxZIG8vnPUGOQC6rIxaWyIGaWYaGkdVA8AjOEQjXHgetalLkp7G8hdlB8lS4eI2g44K7kuS3tT3G+tY/1gY/R1L6Q4xif30YZtpOgcS03miS9Yi2zvb1gHHbGpv3j7sB933Q4e27T4Ng0bEN7nk4dWqWgCQRc8lA+HctefwqoLwPVre35Mf6b6Forxqbx9yQc+BskQoJF97grDEqk7BMwefiObYJbPYggb4AHml8sC2bMnfCb2qJVwxVYIw2amU/5PEl6RIhz1J7UoHJetcvAPUzaudmM+ueJX5n5zsUj6GRl9vb+aW1JCOqZXR2T8i+Nq/wRjSMT11jZNyOQmkj7b0OJMINUtVbPQizSgtW+5rmqql/7VYJBkbU1uEd6Tdv09/ZFHl/mSeBHYahcC/MKLBCC3irz1uPG0CoHTBH3GdhbVukWxPldpK3xxJfPkOExLOFmLf9/4XXrq66qg9zPApaCfy/XwMP5t3IXPpYB1bmGGjT/Kt0wqQDlSIs+9HNLyIukyVtXoPDa593NNx4TOBrzrRWMpdE+WoKEqwheAixRklEWTYyLBlQvqKLW+917sMG6iWS4nd9xohc7Nc9pEl4wqWcFg9DlIf8L96BFg4ltXh9i2R0iGIkHpt0xSzijc/ZZoOWttKyZ6LCssRf+QU/gREoZ/f+22wvwf/nOpGCLkouzPQ5tVNVKzYRbUnoIWM3DU9MS+rZqiYNG4t13Ej/tp/Il9s/DOQOo2wppu8MLiraKjlMW+H3YQQr/m0SFAqGrDohg9G4cqaCyY0MLlT+0jfZz0oL7aEoql4jfW5PxJ6WM2dvaQrDt/f0TKmjIv9kaS62t8VTtnin/3rMzEnsQLu3QqonX88n32PS/blfh5a4/JTAEltm8OYMuqhBG43bbhieTRmitARTqPpDoq99tUUQn6Q58iCemLkeiXZXTPXw8M
+ GeReREL0
+ vbHdWI/jKd+zbWybHt9Kij+CsbD+9embEp/wSzP5rFtQrjEUArmtI+P/SbyAgh2Gc4v1ldl72CZz60QH9NOTjCf+MkmvJmfeftdIINTgs2ciwoFeu4kSUzYqnLJmnMkMiyF/g2j3uYXuQY6YrbwU42hTgQWRVZo3/KpP8h+EOOsNRaHozpLYduIwdpaQR6IgfVjJrA9pRCSsEVtLmtU4Qtxb/erfkwt3OJnMqvnMdjoaROiyfOQ4DVIT3wJzDiLxIEZOaKDPMzRZmcdTjfuhtZKgxQbHBtkwZiK3j+Bx7KD67uCbA9T7/zKUscg/Zl2nSULPkkl2UsKYdRAayrtUEKEoxNVD56htX+7QT4KuWnOlKTdsXvURHMtkShqk7AsWT5XLYpFB+hlb12AU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,131 +122,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for disabling the default IO scheduler by adding:
-- no_sched module parameter to control scheduler selection at device
-  creation.
-- no_sched configfs attribute (ID 11) for runtime configuration.
-- Use of NO_DEFAULT_SCHEDULER flag when no_sched is enabled.
-
-This allows bypassing the default 'mq-deadline' scheduler and using 'none'
-instead, which can improve performance for certain workloads. The flag
-selection logic is updated to use compound assignment operators for better
-readability.
+Add a method to query a request about the index for the hardware queue
+associated with the request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  6 ++++++
- drivers/block/rnull/rnull.rs    | 25 ++++++++++++++++++-------
- 2 files changed, 24 insertions(+), 7 deletions(-)
+ rust/kernel/block/mq/request.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index e47399cd45a4..d9aead646ae0 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -94,6 +94,7 @@ fn make_group(
-                 use_per_node_hctx: 8,
-                 home_node: 9,
-                 discard: 10,
-+                no_sched:11,
-             ],
-         };
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index 05b167dfc6c6..54b5202567f8 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -191,6 +191,13 @@ pub fn hw_data(&self) -> <T::HwData as ForeignOwnable>::Borrowed<'_> {
+         unsafe { T::HwData::borrow((*hctx).driver_data) }
+     }
  
-@@ -115,6 +116,7 @@ fn make_group(
-                     submit_queues: 1,
-                     home_node: bindings::NUMA_NO_NODE,
-                     discard: false,
-+                    no_sched: false,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -183,6 +185,7 @@ struct DeviceConfigInner {
-     submit_queues: u32,
-     home_node: i32,
-     discard: bool,
-+    no_sched: bool,
- }
- 
- #[vtable]
-@@ -217,6 +220,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 submit_queues: guard.submit_queues,
-                 home_node: guard.home_node,
-                 discard: guard.discard,
-+                no_sched: guard.no_sched,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -322,3 +326,5 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         Ok(())
-     })
- );
++    /// Get the queue index for the hardware queue associated with this request.
++    pub fn queue_index(&self) -> u32 {
++        // SAFETY: The requests is guaranteed to be associated with a hardware
++        // context while we have access to it.
++        unsafe { (*self.hctx_raw()).queue_num }
++    }
 +
-+configfs_simple_bool_field!(DeviceConfig, 11, no_sched);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index bdc05b3f6072..cb5b642f68e5 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -30,8 +30,8 @@
-     new_mutex,
-     new_xarray,
-     page::{
--        SafePage, //
--        PAGE_SIZE,
-+        SafePage,
-+        PAGE_SIZE, //
-     },
-     pr_info,
-     prelude::*,
-@@ -110,6 +110,10 @@
-             description:
-                 "Support discard operations (requires memory-backed null_blk device).",
-         },
-+        no_sched: bool {
-+            default: false,
-+            description: "No IO scheduler",
-+        },
-     },
- }
+     pub fn is_poll(&self) -> bool {
+         let hctx = self.hctx_raw();
  
-@@ -148,6 +152,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     submit_queues,
-                     home_node: module_parameters::home_node.value(),
-                     discard: module_parameters::discard.value(),
-+                    no_sched: module_parameters::no_sched.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -173,6 +178,7 @@ struct NullBlkOptions<'a> {
-     submit_queues: u32,
-     home_node: i32,
-     discard: bool,
-+    no_sched: bool,
- }
- struct NullBlkDevice;
- 
-@@ -189,13 +195,18 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             submit_queues,
-             home_node,
-             discard,
-+            no_sched,
-         } = options;
- 
--        let flags = if memory_backed {
--            mq::tag_set::Flag::Blocking.into()
--        } else {
--            mq::tag_set::Flags::default()
--        };
-+        let mut flags = mq::tag_set::Flags::default();
-+
-+        if memory_backed {
-+            flags |= mq::tag_set::Flag::Blocking;
-+        }
-+
-+        if no_sched {
-+            flags |= mq::tag_set::Flag::NoDefaultScheduler;
-+        }
- 
-         if home_node > kernel::numa::num_online_nodes().try_into()? {
-             return Err(code::EINVAL);
 
 -- 
 2.51.2
