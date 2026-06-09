@@ -4,130 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD5ACD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:17:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C239BCD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:21:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2B6F6B0005; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
+	id E474F6B0005; Tue,  9 Jun 2026 06:21:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDBB36B0088; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
+	id DF8156B0088; Tue,  9 Jun 2026 06:21:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF1426B008A; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
+	id CE71B6B008A; Tue,  9 Jun 2026 06:21:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE90D6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97216A04DD
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:17:08 +0000 (UTC)
-X-FDA: 84859971336.01.41CD5C3
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3384C4000B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:17:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKafXaJa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B86E86B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:21:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 482801404D5
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:21:39 +0000 (UTC)
+X-FDA: 84859982718.10.592A938
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 836B42000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:21:37 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R12gHDtd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781000226;
+	s=arc-20220608; t=1781000497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
-	b=RTQz5nyoGwascHM6f3XCpzlg0tWAw9ul1/GgsrN4hmQrvGOopfIoCgT/rSnsPB7xuEfmak
-	heg7GgLLOM9qsfYKpmx7x2IGpc6qI07fGDtoH+d7dT0GexePbvmx4qPiSK72g00molwsBl
-	CTBQcaPy6wYLP+Suq2u9iiNbaeXCQ6g=
+	bh=V4Ph1widB3Uasbx8UfjADsWm4gH4OeEO4rKw81THVzo=;
+	b=8m2XFowLYSanCxnjUVzt6ShzaVUdnssoqBC2alO7ycRR6x6yGbHamEYkY8FimJRobRmvvx
+	+VPGU3cm5l2X3wiEEoUyjc7AnJ417cjc0Lz3tz40aUEYS/+y6ixCake5IXoLUjwXUkWJyg
+	RkExVi0nBeXA2KyveWurHA9PA3j/ykA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKafXaJa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R12gHDtd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781000226;
-	b=Iv5VnKoGehJdmZM9JEULbE02u/WLTCNMb8HOmOVxpaXqvrseI60d4fekCSeLAqjndLxxW2
-	taeyupq0MAuUBy9qqBNtmhSHoJrXXNfFMHkk7kpUvwTTz9wO8fS1GJbhJoo4kLCm72y/Fm
-	z+z3d6lnq096Y4M/L9SX9Xw9KXoxWH8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781000225;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
-	b=BKafXaJa5kPPsoZn2XroufWFV5UImcaVeuajAoeIzHYaZNKBxyArr61syhaF2KxWI3rIox
-	SNhX5BEnN3HSoitz43ceAOoniyDT29sloK8UdI+AeDVWyrhFtYyrlndsCM9kSKTDQjiv5M
-	QAk+R2l2CnpGZ0pHPKad2rVJ1ws3q58=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-8s8NRUZMObubB8m96RkZ1w-1; Tue, 09 Jun 2026 06:17:00 -0400
-X-MC-Unique: 8s8NRUZMObubB8m96RkZ1w-1
-X-Mimecast-MFC-AGG-ID: 8s8NRUZMObubB8m96RkZ1w_1781000220
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-660f247c238so9406306d50.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:17:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781000220; x=1781605020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
-        b=jciZjhc+oxUqGsKEuh9R1LQj9mDHHsZQZLvWuRTCbbW3+iW0jgR7s22eER+ivDzdeR
-         wMsGHBRc2ld5CciY+3FYGjofmS4pgNkyyOn4RiKdiOHxmL0uJjtRkDl/H5HNPnFLcHZ/
-         DnFBJmJW4fjUPqaVdUV3ljcVkM00+90OM1tA9aOrwFUHBFEiASs8ma2wm/ybcWHww83o
-         mxETT5NXA6WbC3JdwSS9Ajb0LWg3EM+xwAGQusd1GHLC+tLJXR8OiH8f5mIY3CuAYH0W
-         2Lpk3SCHiQUroxOv2oHGbhxnpMCMIOIeSnvDyp/bV7B+JA+Lubc/TUPsBpViDTcIPICD
-         tBEQ==
-X-Gm-Message-State: AOJu0Yy2U+AYZ+MINAEHZ1H7mlYAMwS8bsy7sBn2LADwOW0zKXfaWEZS
-	tUzInU26bOZHzHQXBzlczYgZjz04aPYs6mCR08TUluMn6F+2nGkPyr+TUL8o7Mx4+q2Zd5MfB7B
-	t+0NVuKFtLs7ddZe0412K8UD2ANK5rXEe6osO//BsyG3crFm2GRu25lPNJQaRnSyBDRpH7YrKq0
-	Ovmfc/gCauBFzcR5IY7oNFxtv7H/U=
-X-Gm-Gg: Acq92OEL6QLvCZZW0JcJD+sjOv5EaKcsasMxbWurK0Lgy0QS17l7VHwEJ2uxslWlemn
-	JubPSvuBjhHOdOFubM6kEI4ykpn+t6qsYNZ9I8Pgj1uWoKlCPXT7qsHI9fLoG+wCyc05q7jmstb
-	hpqviCT57+p7BZhwvqTk8Xk1MWVUNcXjk1bJARn33jpM/CYN9QtOq/OKi6Zz3hiDokip8/mZ6eQ
-	yadnQvmapFq+ggH
-X-Received: by 2002:a05:690e:1248:b0:660:6ead:8997 with SMTP id 956f58d0204a3-66106e67419mr18440074d50.28.1781000219989;
-        Tue, 09 Jun 2026 03:16:59 -0700 (PDT)
-X-Received: by 2002:a05:690e:1248:b0:660:6ead:8997 with SMTP id
- 956f58d0204a3-66106e67419mr18440039d50.28.1781000219417; Tue, 09 Jun 2026
- 03:16:59 -0700 (PDT)
+	t=1781000497;
+	b=jHS8DytJqWEHgiOv11/n0GRXP16UDal2q5ZfkNlaKRCGIHka7A/qSobacmK5I6Z3wn3HLq
+	oKRpuHPjX1OtcujA8zqcBNCIWDex0vDrKTbB8McH8nzKfWRwvvdEexZergXLnnw523vw2S
+	Vt1O19w3qPaYOX2I9BISFKeQpyGE6ik=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D67A60172;
+	Tue,  9 Jun 2026 10:21:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78C91F00893;
+	Tue,  9 Jun 2026 10:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781000496;
+	bh=V4Ph1widB3Uasbx8UfjADsWm4gH4OeEO4rKw81THVzo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=R12gHDtdlxbeRxELb6SDgKRtfj+fwZDLOVEpZbQePGw/nOQkWaIQmCuDI88nfJzjA
+	 IvoPuBSlLHbh51k40ngxIIwP5OZdeneUpOoMHc67EXoAwGqsqgO91UO5zMToC3iRCx
+	 os6a4JKHG09hrtwLjQ0sBr103Tb+FDBljP9trJsDylI8qBKsBcFpgEM06fPZIBnK+m
+	 Z1PfibgbcUoBPJ2c2tVtio6byjaWZeRjA7L/5NWRom4Xuq/UjoamHHyhW6pc4NTJ7c
+	 eoatT3argSs6R56MGCPFYQf8u6vroYxOzLuldNUHRCxSN9gkAHhdYYEA/zQ6JKI13W
+	 vC3sEOjH4p1Kw==
+Message-ID: <878faef6-bbd3-43ec-af82-6da675a5f8fe@kernel.org>
+Date: Tue, 9 Jun 2026 12:21:34 +0200
 MIME-Version: 1.0
-References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
-In-Reply-To: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 9 Jun 2026 04:17:45 -0600
-X-Gm-Features: AVVi8CcqpE3Gp5uSjQiihRNOm7dLMU3OwWkokZs_CGlcncsgI6JZd4n96mwqRZc
-Message-ID: <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
-Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
- khugepaged and use in mglru
-To: Luka Bai <lukafocus@icloud.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org, 
-	Luka Bai <lukabai@tencent.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lY91HEjoCnRwWWa1QNvKic95GZ2EP-dAiJcR1a8u6-s_1781000220
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3384C4000B
-X-Stat-Signature: uooieiy6uwgwmq4yxciym85pnbrtq499
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/9] dax: plumb hotplug online_type through dax
+To: Gregory Price <gourry@gourry.net>, sashiko-reviews@lists.linux.dev
+Cc: linux-mm@kvack.org
+References: <20260605211911.2160954-7-gourry@gourry.net>
+ <20260605213143.A18F01F00893@smtp.kernel.org>
+ <aiNFezMarbvIZNa0@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <aiNFezMarbvIZNa0@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781000226-704643
-X-HE-Meta: U2FsdGVkX1/rdn+AEvBuD5s+578yX4lqqfey0gyn/oRbz5Vqaop6RAQ5gN4XAYYCDKSnJh/2pNmRuSAjSoha62iCuy75Vf+oz64xfRhALdxJkv5vbUPm8tV1XadFQ5jUBgzN35JTz+WbZq9ZZ0zZ1VusY2JcUpkMfdonq+Lcv8+2p8aDBt6Lsdfee7Pn43LITWDb4EOWG9Z2LVJlxIyswyaI6/UqMZDcbFuigLPbDWIx1uq2dXBciK8ZibkVecJtsX+p9pXH8seCkbv494FdrVe8is3/lMzGDS1IZ0vHfJBNbF5y/DhZZcVXaDtQiBJ1qXcx3ZyPu4Mpv+ZNH/77g4hJlztnKSqKBTRM7e11bqhi1TOqYtY0CuwkgZ+3/+70wtR2hY2vFfCoV4c9HPlZJAJD/aCchjkunlWlR2q0KGS8j5d447LS9stB9ImU/mtb6BazVV/Ma8mafi5gKgv/m1Q07aaFQX5g0q29NpND2MMw3P+EQtnIWJG/cNb9iFEEN8Bv+FHYJIjoSbGOafEr3YgS8CBKMCM25WSBszDNFqcY5OXVzfW68GtSIZCQWqjQOMBkifuzj0V7z8EjFKtOn25pdIVcqL47t1BoYtAr/nbDfz6A5IaN0+Fa0r7aCWX4e3Zk6InCLSxK26GGZJqGmFaf9ZYlmPr+Cf5dcAGfyyRrvB2q7xg6R8Ii4m+911G6j6n1MAR+0ampoYIMaSEnL5vJF44iuyhvNklkRwgcFxERA/YHLHMXm5OlFqzq7BYefs6N2wlytIu+OaOEsUoRoWFxyoaRKe1XhExgpCl3vYoLlOb3JhRf5mLf7OHN+vWqMiqGMgSv/eM6Zwt9NmCpbGyWGtrj/Qg1hYJyBj/MuPLifFvfzx1H2EuYPnI5VM64OuZpszR/rUlWPRnb0tn+yNV7fMQp2WwgKfGX7rwtNJtyNLcL6GpCrIJBWWDBl99qgPXAHzkTyT58OkIK3Cx
- UBAvA6k5
- w/PAgo09i6mOFZaMRW+EjUABM8WriPTKU6CYCeJblAj8uczw3OB7jsk2KM2bv+BcVcGFz3yobBvBJ3vLC2XO/g4llLWzdnkS07I28t9nP4Qu/laSVRZvsue/1liaca298NYqjPrSQ7xVahv8H027ZhoS3mTNAtZtoemFV2mLIXyoVN01Pw/goBeteOiPqJLdmLJ6OMSyPfeiCZJ5XMMMbAHFkT1jzEqC60Ew53fvj0U0qQwbTJWz+1t274U0sz0Wru9HpjquA9yb88SYLNtiHc4XWrS73DeWsbqXP1fHPMPqkc5Z26x+qKkl/jhJ3EfHmWG4NbdmpcGEpgUEbQdM4MJ2GRJSohf3vlgjR
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 836B42000B
+X-Stat-Signature: 179mtpqkr7ejxa3r36temxgi3ytkqy8e
+X-HE-Tag: 1781000497-370840
+X-HE-Meta: U2FsdGVkX1+HGnmtd0GjdE7t23+xKcsVvnJoSNbUkaGjbk8RNTaTxHWCvTLPBsSUAmNpN9Y9Wx6FLHE9CzOuMez7PaGM5axiWeh0CnZgpxrD6NJZ7T/21loRSBwrgqnd1rzaIkhU9gMQb69Vnc/lC9GMuKIBWwnzAXT5/Fvth5oyZ9aG6Sb3shPerim+DzhUiqE4AihZoy2SoUZTqUOf/cfBFyIGGq3CIRg7PlGveP1C1A6Zfvs+SL+FuqXmCt9doAoTIxQ+LbWjlaMrZzIwkgKWcNnCn2MOwL2tHsA0wqnNEct2hbbxWPlgmR5sW5ocnqPzqc8HC/s7vtuTKSRufyH/aBWxlqJFpaN21EE3XhaY7th9XgvhvmSPe/7qnQ/ynilk/sBsJm1hQGX8FNr2wofEOhmuj25Edpqr7GktbCSujhmABkjjdNy0XRSwcz0NEOgE/5od7H3JifLKq4TekLE23Jxyk0GMVfKVbd7Zy4mwfY2sZYjsOUDRonh6wJ5DOs6HDmwZ2H/nl4tGn9dT7bnYFPuZgsEX9/5FWhGDeRQID30lEECP9iGvNMUoDEgw0IF7vjTTVIYbw4QgsMCaaDkPs2KMnUMF2cDD9SuG7ntxrb0xxgF4jyItJunKWrxLwzz8xggR2lNCrnrAwQuASRqOqPteqgM10SkRUbaI+TGsP5JuXoHA1ADTloEAqu15w+h6w0QiZMpnV+kyRB1tfq2gRYKPMnvISEvmrIJyISV7TsxWp/OqLTFihzOuQIFmZYX1iAhFgtf1DHId31zp9A1DhD8kQODJFxgxEdU3YJ5aVQibEBZl/YY1WSuBKoo/x5Y/7o5TFTQfOz07tK6ej02ODVCAf1JRkKkqiiF5rBvVP/4FxSJJpdbozIoldDG8HRHXriNo79H4fQNvGjubYWXfKj1azbvPhrPT0Mr4LOMJCKxZmaD0K0qC5rI5bo2Lvkxqtmijqo0PlXivvh7
+ QiFqN7mv
+ GXLwtzFf/K6uOsf/Oqff6A9eZ/OsnvVrPliIUxBoFz23Mw7P8uU0P9qIXNwYL9uILHyFU79YHE+R7Kbuu/78XScCrODvSXH7cOdWz7seDxW+xoBq7gQCTDBVjnSFj+0THu6KtJMocTadYQNNXF2LJ5JaUimCfg6vFSVn6fsp9Cgy6HPDDYILNKYTbijFC2Bv0IO+gi/nJYcgDBVMi7+08aB8oxsyL7GNlZ59Yhx7VtAm3Ye1Apcj4mYoJRGCTxhfWDKXKkoFUi3LtKMzhHZHun9U7M8W1SSPaGKaX+8ubuDQMjEukECwCJuNTkxSBRQPNKrzUVrtz2n5bFv9nFFkoveOLNlDWmXhPLyRvDzdw0WzO7q2Nrr+wmW/ztDD4YT2wA6VF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,216 +138,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 30, 2026 at 10:33=E2=80=AFPM Luka Bai <lukafocus@icloud.com> wr=
-ote:
->
-> Khugepaged is a background daemon for collapsing feasible pages together
-> into a transparent hugepage in all sorts of orders up to PMD_ORDER. Howev=
-er,
-> it doesn't have any preference in its collapsing and just iterate through
-> all the qualified mm_struct, and scan their page tables from the beginnin=
-g
-> to the end. It is quite inefficient especially for large address spaces
-> considering how slow the khugepaged can be, and may waste many hugepage
-> resources collapsing memory areas that are seldomly accessed.
->
-> We would like to give khugepaged some preference hints when we found
-> certain areas are good condidates for collapsing. For example, if some me=
-mory
-> areas are frequently accessed, then we know that it's valuable to merge
-> them into a bigger folio since it will reduce many tlb misses.
->
-> For example, MGLRU has walk_mm() and lru_gen_look_around() that are used =
-to
-> scan frequently accessed areas to save some works on rmap walking and
-> generation elevation. By the same time, they are able to find those
-> hot memory areas, it should be valuable to merge these areas into folios.
-> MADV_COLLAPSE can be used, but that will cost too much time and will
-> harm the performance of reclaimation and slow down the process that may
-> enter the slow path of memory allocation. So the better choice shoule be =
-to
-> tell khugepaged to asynchronously do it.
->
-> We add a khugepaged collapse hint framework in this patchset. The caller =
-can
-> call khugepaged_add_collapse_hint() to add hints for khugepaged to make i=
-t
-> prioritize collapsing these specific address we found before doing Round-=
-Robin
-> scanning. Each mm_slot which belongs to a mm_struct in the previous
-> mm_slots_hash is now a khugepaged_mm_slot, it comprises the old mm_slot
-> struct and a number of NR_KHUGEPAGED_PRIORITY_LEVEL struct
-> khugepaged_collapse_requests. The request struct for each mm_struct will
-> be put in the global struct khugepaged_priority_queue with respect to its
-> priority when __khugepaged_enter() is called on this mm (we give each mm =
-request
-> structs for hint dispersion and balancing across all the mm_structs that =
-will
-> be added in the future patches), and all the hints will be put in these r=
-equest
-> structs. Each hint will have the target address and the target vma struct=
-. An
-> example of the framework is like below:
->
-> global collapse hints queues:
-> prio 0 ------()----------------------------------()---------------
->             mm_slot0(process A)                mm_slot1(process B)
->                |                                               |
->            hint0---hint1---hint2---hint3       hint4---hint5---hint6
->
-> prio 1 ------()----------------------------------()---------------
->             mm_slot0(process A)                mm_slot1(process B)
->                |                                               |
->              -------                                       hint7---hint8
->
-> The khugepaged will try to scan queues from highest priority (which is pr=
-io 0 in
-> the graph above) to the lowest priority (which is prio 1 in the graph), t=
-hen go
-> through the list, and check out all the struct khugepaged_mm_slot (which =
-are the
-> mm_slot0 and mm_slot1 in the graph above), so it will start from mm_slot0=
- in queue
-> of priority 0. Then khugepaged will scan all the hints listed in the slot=
- (hint0 ~
-> hint3 in the above graph). After handling one hint (no mater success or f=
-ail on
-> collapsing), the hint will be deleted. If one khugepaged_mm_slot doesn't =
-have any
-> hints in it, khugepaged will skip it and scan the next mm_slot in the sam=
-e priority;
-> if there is no hint in the queue of prio 0 anymore, khugepaged will scan =
-the ones
-> of prio 1; if there is no hint in any prio queues, it will fallback to do=
- Round-Robin
-> scanning like before.
->
-> khugepaged_add_collapse_hint() is for adding hints, and it only gets call=
-ed
-> by walk_mm() and lru_gen_look_around() right now. In the future we may
-> call it in more scenorios when we found hot memory areas. For example: in=
- damon.
->
-> We tested the performance by using valkey-server (based on redis) togethe=
-r with
-> memtier_benchmark to simulate a gauss distribution on the get/set operati=
-ons on
-> a 160G, 64core x86 VM. The dataset is about 3G. After preloading db, the =
-testing
-> parameter was like below:
-> memtier_benchmark -s 127.0.0.1 -p 6379 \
->       --ratio=3D1:1 \
->       --key-pattern=3DG:G \
->       --key-minimum=3D1 --key-maximum=3D3000000 \
->       --key-median=3D2000000 \
->       --key-stddev=3D150000 \
->       -d 1024 \
->       -t 1 -c 10 \
->       -n 2500000 \
->       --pipeline=3D32 \
->       --hide-histogram
->
-> Since we wanted to see the influence of khugepaged collapse hints on the =
-reduction of
-> tlb misses, we made khugepaged do scanning every 1 second, and used the u=
-serspace
-> interface to do walk_mm() for the cgroup which valkey-server was set into=
- every 2 seconds.
-> We made sure the server was all 4k pages before we run test, and only khu=
-gepaged could
-> collapse them into large folios. We enable the anonymous THP of order 9, =
-which is pmd
-> size in most setup. We used perf stat to monitor the tlb misses statistic=
-s.
->
-> After repeated tests, we could see dTLB-load-misses with a 13.50% reducti=
-on, and saw
-> dTLB-store-misses with a 5% reduction compared to the setup without any c=
-ollapse
-> hint. The final throughput for the memtier_benchmark was about 2% to 5% i=
-mprovement
-> on average, which was not that obvious compared to the tlb miss reduction=
-. We believed
-> that was because there were too many factors to influence the final resul=
-t of a random
-> redis test, so the influence of tlb misses to the final throughput were c=
-ompromised by
-> other factors.
->
-> Patch Details:
-> =3D=3D=3D=3D=3D=3D=3D=3D
-> * Patch 1 is to add the basic khugepaged hint framework like we introduce=
-d
->   above. Details can be seen in the commit itself and the comments in the
->   codes.
-> * Patch 2 is to add a slab_cache for khugepaged_collapse_hint which can
->   improve the performance of allocating and freeing the hints.
-> * Patch 3 is to add a deduplication machanism for the hints so that we wi=
-ll
->   not add a hint that points to a repeated address.
-> * Patch 4 is to add the accounting for successful collapses initiated by
->   hint or non-hint.
-> * Patch 5 is to add the collapse hint in lru_gen_look_around() and walk_m=
-m()
->   of mglru.
->
-> Thanks for reading. Comments and suggestions are very welcome!
+On 6/5/26 23:54, Gregory Price wrote:
+> On Fri, Jun 05, 2026 at 09:31:43PM +0000, sashiko-bot@kernel.org wrote:
+>>
+>>> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+>>> index 592171ec10f49..41ccb618a1464 100644
+>>> --- a/drivers/dax/kmem.c
+>>> +++ b/drivers/dax/kmem.c
+>>> @@ -172,8 +172,9 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+>>>  		 * Ensure that future kexec'd kernels will not treat
+>>>  		 * this as RAM automatically.
+>>>  		 */
+>>> -		rc = add_memory_driver_managed(data->mgid, range.start,
+>>> -				range_len(&range), kmem_name, mhp_flags);
+>>> +		rc = __add_memory_driver_managed(data->mgid, range.start,
+>>> +				range_len(&range), kmem_name, mhp_flags,
+>>> +				dev_dax->online_type);
+>>
+>> [Severity: High]
+>> Does capturing the auto-online policy at device creation time break dynamic
+>> sysfs policy changes?
+>>
+> 
+> @David - we talked about this ~6+ mo ago at this point, i originally
+> proposed something like MMOP_SYSTEM_DEFAULT
+> 
+> https://lore.kernel.org/linux-mm/20260114085201.3222597-3-gourry@gourry.net/
+> 
+> https://lore.kernel.org/linux-mm/c4ed9675-269c-4764-86d5-87f4f83fc74d@kernel.org/
+> 
+> '''
+>    I don't like having fake options as part of this interface.
+> 
+>    Why can't we let selected users use mhp_get_default_online_type() 
+>    instead? Like add_memory_resource(). We can export that function.
+> '''
+> 
+> I guess the argument here is that the value can't be cached?
+> 
+> But we can't really enforce that.
+> 
+> This is a behavioral change we have to agree on (either we change it or
+> carry something like MMOP_SYSTEM_DEFAULT for this).
 
-Hi Luka,
+I don't think we'd need a generic MMOP_* for that purpose (the core cannot
+really do a lot with that AFAIKS, and the scenario "unspecified" doesn't really
+occur in memory hotplug core).
 
-I haven't reviewed the code yet, but the overall concept is
-interesting (it should probably be a RFC first though, but that's
-fine).
+I guess you could have some indication whether the user already configured it
+manually (bool online_type_specified), and handle that in the handful of places.
 
-I had future plans for something similar as part of the thp=3Dauto work;
-however that requires significant thought and investigation into how
-we can properly gather hints for collapse/split THP candidates. From
-my perspective we'd want a more global structure/system outside of
-khugepaged, that would directly call khugepaged (and others like
-split, etc). It would also tie into the allocator so that at fault
-time it could leverage the hints to make better decisions. My fear
-with this series is that making a decision now might complicate future
-work by adding complexity we may eventually want to remove for a
-better solution.
+if (dev_dax->online_type_specified)
+	online_type = dev_dax->online_type;
+else
+	online_type = mhp_get_default_online_type();
 
-If you have the chance perhaps you can lead a discussion on your
-proposal at the biweekly MM alignment session.
+Of course, you could also just call the old interface when adding without a
+preference.
 
-+David Rientjes as he leads those discussions. We could use that time
-to layout a plan for what needs to be done for this work, and for the
-work surrounding thp=3Dauto as I beleive they will be interdependent :)
+A negative online_type could also be used as "unspecified" in your code (MMOP_
+starts at 0).
 
+But the question really is which semantics we would want? is that exposed to
+user-space somehow, such that the user could query it ("default")? or how does
+this get set, and how does it later get used while it could have changed
+system-wide?
+
+-- 
 Cheers,
--- Nico
 
->
-> Signed-off-by: Luka Bai <lukabai@tencent.com>
-> ---
-> Luka Bai (5):
->       mm/khugepaged: add framework for khugepaged collapse hint
->       mm/khugepaged: use slab cache instead of normal kmalloc
->       mm/khugepaged: add deduplication when adding new collapse hint
->       mm/khugepaged: add accounting for successful hint or non-hint colla=
-pse
->       mm/khugepaged: add khugepaged collapse hint in mglru reference chec=
-king
->
->  include/linux/huge_mm.h    |   2 +
->  include/linux/khugepaged.h |  20 ++
->  include/linux/mmzone.h     |  17 +-
->  mm/huge_memory.c           |   4 +
->  mm/khugepaged.c            | 460 +++++++++++++++++++++++++++++++++++++++=
-+++++-
->  mm/rmap.c                  |  27 ++-
->  mm/vmscan.c                |  33 +++-
->  7 files changed, 549 insertions(+), 14 deletions(-)
-> ---
-> base-commit: e1af79f3291a268adf4e149e1faba3052743e898
-> change-id: 20260530-thp_collapse_hint-ec92bd943797
->
-> Best regards,
-> --
-> Luka Bai <lukabai@tencent.com>
->
-
+David
 
