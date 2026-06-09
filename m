@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFAE7CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D715CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:30:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26B836B0005; Tue,  9 Jun 2026 06:28:49 -0400 (EDT)
+	id C32B16B0088; Tue,  9 Jun 2026 06:30:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21CD86B008A; Tue,  9 Jun 2026 06:28:49 -0400 (EDT)
+	id C09926B008A; Tue,  9 Jun 2026 06:30:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 133736B0095; Tue,  9 Jun 2026 06:28:49 -0400 (EDT)
+	id B1FC06B008C; Tue,  9 Jun 2026 06:30:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 014476B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:28:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A51081A04D8
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:28:48 +0000 (UTC)
-X-FDA: 84860000736.16.7A376A9
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A052B6B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:30:39 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3733F1C1FAB
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:30:39 +0000 (UTC)
+X-FDA: 84860005398.17.3023214
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CA9438000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:28:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyGbmwbd;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781000926;
-	b=pqBY7KWCnHG9b5D4VPnwgXt3Ysv0y1bri1fR7OPeyMyV6GwVJd0b5yuhhf/o+23LiDt+NL
-	/ivJewvNupx/dsn96Ad310zKd7xT0YCr0NZcJsO2PBSiEe4NeLRYLYfbuzeuTDsLoINisQ
-	HtUbSUTYo90Of+qtwzvDAMjDQzCFy2c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyGbmwbd;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 645D8140003
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:30:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCfhvpTn;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781000926;
+	s=arc-20220608; t=1781001037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+SHoQ7xNtOaoKB7nux+V0oS62sZyKCmF2ZcVQ8xYDiU=;
-	b=YH1ZnGZ4Hq015UTuh8gyvwRQOjd3T+c7OYJEjxMFsxyVZHmZ7L4Tz+ZZQNt8dD2nKVbeR2
-	obLhq1GqJjxyZOsBTXiQqzq2FtFh6l0iOQs1BHOVlcDJB1ASrr7O3YN9hREKLu4pIE10do
-	7wUkyLjzUrBPZYRpfsHzVPqkdvVpqiI=
+	bh=26KX2jHwHNm8eXprGG2y3XAY+vgE+LdH1rP58OyeAbQ=;
+	b=KyAOEza13fvcJbqTtBf/h0rrij4qb1ZEdrG/dEv6ucGXgWKwIJhgOQeZH5ZCNCXPfm8hQP
+	3Nm2a8Sgh5FcC0Lje42vbUOJWluK7Uk3j97Opy1HQt98+l7LLssa+wV5c22tJ3yPvNfHTi
+	/mu19TYSDgbpwrECFZso0d6UUyZl2wo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781001037;
+	b=3y5wT7spC8K88pnnOb+5E1rUKhMeNfkNrzIP/m466vsHVSK0mikn/jWOPaIBGmYW61dEhK
+	EXtv7XZY9b2izUyzdmw8oezqifofTTYzGXVcL0liYdtUmfyIMRxkqUjcgAxn1vv/fGYCs5
+	T40D9Ci5xNt7dDsFX3Evh87ZLQ9eeT4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UCfhvpTn;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5EC0424C9;
-	Tue,  9 Jun 2026 10:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FF31F00893;
-	Tue,  9 Jun 2026 10:28:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 82DBC4435A;
+	Tue,  9 Jun 2026 10:30:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9679A1F00893;
+	Tue,  9 Jun 2026 10:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781000925;
-	bh=+SHoQ7xNtOaoKB7nux+V0oS62sZyKCmF2ZcVQ8xYDiU=;
+	s=k20260515; t=1781001036;
+	bh=26KX2jHwHNm8eXprGG2y3XAY+vgE+LdH1rP58OyeAbQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SyGbmwbdd5XrvGBPC4jzaUkgTIRls6eJTjJbCdxY30m55XrPAhK0fOXmpf3Xill0n
-	 EQ6LfKs6LC3lXC5srQa3fIvZMXhSmgFjSOv8BuCgmrKvClxJEhLfBogPR/ZJFRPJRF
-	 mVs1/2BXEl40pOkeJPYO1QiFWRoCSo3BxQksl73jrMrw2X8G3TVw7yPmwpwPR6SFwU
-	 BWHjrtumql7CDoKF7pQM6F8ZfNNKOyeezEUfvXtWCy8p8y0Jh8/+whKFTPEw71NGzZ
-	 2lk1uT8omaO+lX36OijgsDFyLMFQjivuFDKMedHWy2kzHagTNuhwunsHOGIYgvax/E
-	 csVdx69VZgUMQ==
-Message-ID: <c10c4248-87c6-4997-848b-cb94a71835f6@kernel.org>
-Date: Tue, 9 Jun 2026 12:28:38 +0200
+	b=UCfhvpTnSWk2f3zzIKvXboL/IH9t3wMyYHffBWdoOBJh0lEGYxvv0zMa3e5khz7Le
+	 d2hzbsG9Gfe7mwc1pb7bEG6rhE4CRvs+AvDc8vRZ8f+6eR+UD1iqDDFPCyj2Rjc984
+	 SKmCJ/ytgoqedkPhHnbCN2nkcEMnwTu4x4rla/rMUt3ym7XOJHiPCHBTQxTug7sCBM
+	 ziie8680XZupr1eKDWYgo684B7VPQWYc8gh4SyhYx12U6PuKuM2U44FY5l9sLJY4lv
+	 qV7Rf59kBPiMcoBEXMkYMzkLqUf6YMl0Kuku8zoyGVjXBoa5dBfriyEV8TBJ6AB18Y
+	 BOKSb6lbKn2nA==
+Message-ID: <54b57630-f33d-4982-b8a3-b358b4cab30f@kernel.org>
+Date: Tue, 9 Jun 2026 12:30:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-To: Andrew Morton <akpm@linux-foundation.org>,
- Gladyshev Ilya <ilya.gladyshev@linux.dev>
-Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, foxido@foxido.dev,
- harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- rppt@kernel.org, surenb@google.com, torvalds@linuxfoundation.org,
- vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com,
- pfalcato@suse.de, kirill@shutemov.name
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
- <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+Subject: Re: [PATCH 0/6] userfaultfd/pagemap: pre-existing fixes
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>
+References: <20260529172331.356655-1-kas@kernel.org>
+ <20260529173448.40a37785ecbecb6868fdd6a2@linux-foundation.org>
+ <ah2S7MJ2VK6R-NSN@thinkstation>
+ <04875b82-6671-4f43-aa59-190fd09c7108@kernel.org>
+ <ah_xuV5PUKTfT5ua@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+In-Reply-To: <ah_xuV5PUKTfT5ua@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CA9438000A
 X-Rspam-User: 
-X-Stat-Signature: 8hd7jziehre5cdiyxa3xukcb3n3rid1o
-X-HE-Tag: 1781000926-806289
-X-HE-Meta: U2FsdGVkX1885cDsJptsR0ANFB8lBiC/Y28aVqh9VG2anzl1XMcOMpuFUnhHiukSi1nsb/C03aeK/Ol2cqnY3KjKp+E52VW3/avcMShe0MzSpCYVDKNKadDr/GwFWL+xLBkt/GtR6eVlXlYk4HHoVVVxZz+TzK0GInHKxpemUh2Se5PbFb49fFXcdDfZHwFV+kB1UPvxYkI4phrxxNr8xdf8muCxbWhxawbaVVy18bZS3Vmo8DYiQMvwHYVpAJvMOMl5w91dOokQsyOrX7ApIS0B181UBPOh6DNtr800bLcTrmlnDUeMGM0cFnTDqwkF79pDArMSdxMxBCiIoh2NPc5InooUmExVrQW1CpIhnFYcOXpWK7sKvEzF7j8gH9fpxxX7H00+C588uXPoPISDNt0X35HLnGdYHzgCFJ/D87qIQ3Bkrb8PcQ1sD1waso47ZGgmK/XCHVmwm+a5a+W9JIfh/WoKdJKG3cbuvD6l7VXHyhDqtv+MwlrFNcUcfKPBJa410MeBOGckZMyVcbf+FiSoofqnA3vgTL2Hp8npEyxpsZY1veVHDCgdBQEpqzMRMHiMK+qYytIcC6S8AF4W0Edatql5V9zTv4VtVgv+W6PWrjQriReetL7fKwNAEAwSm7vGAkaZseGGjVSYFfNiRDpp51iDREGFCrcfWelueeGlJnxfbWci0MYgcfw8ONlXDetwrwhTHldq0wXM6lWi163Ov/3DNu5HrtgaE0/VZZAJB/yuGaVJSCbEkJhFE3ynjsPb5HDZzWoKz6xcfDOZ73O5sxOUwARQmqwiAv60+28bswwdcCC5RGPffeLLVrNOfa5JNTZVIf7fNLaHl4vIx32cNgNAfjhNJC/BDWlfmUfWunyQBRMOVormB0BLI3GZObo4kAEUXISi+uCvuFhS+B0fY0a8JlvASV7MDfsQYANSnet8jXGv5wz/ycvTcGuoLHeMlWbCutHKp2Xa9hZ
- px0Rw5o3
- 92mHVw7bwCV3gD5Anf3Ns7Xyc8CbFiDGFtiwO1O5heAI6vATM1sIr3gg6sxHmMNHNpgC2justAz6vuXuyeDrmoGV+F3kr3TT2OjGmeClfg+jcezZlEQFTgDX/wd3KObevRpPejDD0ECnsd+vFyLZOsb4FNKKKYEUSglZ5hTwf0f1pjlprv6JzXXpztD6QcQWKqf3n89BsuqFA1Rq+TRMmDEPGcTeanbaKBhfzXMr7OR+GKEKg3LV3NvZKSkiyrP3C1i0BbC4oCoRDdIeKni+WwzUZzIYLD8rIMqyoAncZ05FnAmexn3NVWiC0ghMheyOYmcEc
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 645D8140003
+X-Stat-Signature: shu6pkctxjorqpmqcek6qwdi7t7fu94k
+X-HE-Tag: 1781001037-141452
+X-HE-Meta: U2FsdGVkX18sHX9+7GSOvptZ4hmchyHM/Ms4t7WDFS0+Nfg4UBYM5TbatgBP/JYyE0qkbVTB0tdydrYJdnBvuXmjC7ldbKf71EgZ97lPsNvhOKzq2okDCYXzJ9O554RpLkLcDEobo6DsYvK05+OJlNHSSBYLjzPmCP77N5i2zeAreu+7qwsmek+J3fNmjIjdMdotNtYocBf+SmCmgBpQ9GZJLJTvW51qz9fzwsjKjZ+Kyd8VLRi8MUDKySsp/t3ksjvvsrO2K2Pk/lYZTXNg7h9vzrmvzZlqaudo+r4sGpKfRii5T7HtHn1fQ6tD5/MNYvV9w8XVm8y+Gb/pyMleS68uiujzbBhTSx4JVXE0jR2H7CdkxmciYaP8lIF93l2DtLP318zd1zCce+FOJ6FjphnxPu2TnVntMPP1k4uT7uy18CnWCOfrLZGhYWj4yJ9H5mYY6lKEuyuOLNoAxJA9aEtSi2UFyaWs7bObcvoqDxSRzgh7X4Snj7Cn5snZd93meLXMj7USIQd7fxo12RCwCsZKq144RUWqRCIuvRq4XhCOoEVuMdSaUtHf4MVHMW6RslOl5at/QD/xnZiIfv2Y7S4Ax0jwaDz9IjjaBQlcGRibKfpsH+ZdH/TYz0fqaxEhThYhPfL1DlCYdezQOc4oXt124vNJ4Dgy+jxzc4ucfMGMVHkO7HhIu8ahX6mftCbc88Ab5YogPdd+UV6bAv0OHgpGNmk4JRlGEDZHLfZ+bEFap6fZZsMHpVQTbNVlYCAm+cQ/Ab23eTs15/CtCnaRHtCSASzDbvXkDE19ftxC+SUiau3iVSGSkKc7m8E8MNy+hyVVpB67hemItHteuvKRGpld6Ad7Yb16PZeGZ5uBD4q40mWYQA0kzhu2NQAdLkME+nHLKISA6KXg5k6FXcy6pZO/wbMJnq57OobnPDJ4u28smlEJakxhh6eUpx1X4ZvO65LhKiAkzb2V/VMa9jA
+ htELBJTl
+ zjZbLfg9eEZIURJ7yKpSzLxKNQiV0c7X5AvwnhhknyKZejBCXaC+qnZM6gtFde/K0ZqrKqNldiwQWMmcVX2gTHgU1f8Fg6d1J9IhAn+gexkm+/HkSMOX3XnpRMUjIe7N890D/cDYR85yt+6mLHquVeqT77jNResyzuVeGXWcjtuwnQXEpgBtgwU8UrKqqlHL2i2pp7KKrfSUMVWSoCtHy16/Bdr0dasT3S25Ja9rQ3Zndt5iEaMePtTlnM9cIwn81u7Fo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,24 +142,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 00:47, Andrew Morton wrote:
-> On Mon, 08 Jun 2026 21:53:01 +0000 "Gladyshev Ilya" <ilya.gladyshev@linux.dev> wrote:
+On 6/3/26 11:21, Kiryl Shutsemau wrote:
+> On Mon, Jun 01, 2026 at 05:04:31PM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/1/26 16:17, Kiryl Shutsemau wrote:
+>>>
+>>> Seems to be passed now.
+>>>
+>>>
+>>> Yeah... :/
+>>>
+>>> I will look at the new batch of pre-existing issues when I have spare
+>>> cycles. I am not sure I have the bandwidth to find the bottom of this
+>>> rabbit hole.
+>>>
+>>> What do you want me to with the main userfaultfd patchset? Sashiko
+>>> failed to apply it because it is on top of the pre-existing fixes.
+>>
+>> I suspect it might have a minor conflict with another incoming fix from Lorenzo
+>> as well.
+>>
+>> Probably put it into mm-unstable early after the next release? At least I think
+>> it's not in mm-unstable yet and we are approaching the net release quickly ...
 > 
->> This patch optimizes small file read performance and overall folio refcount
->> scalability by refactoring page_ref_add_unless [core of folio_try_get].
->> This is alternative approach to previous attempts to fix small read
->> performance by avoiding refcount bumps [1][2].
-> 
-> Thanks.  Nice numbers.
-> 
-> AI review had some things to say:
-> 	https://sashiko.dev/#/patchset/df26082871b4c65b2bd38d409026237c08572836@linux.dev
-> 
-> I'm not sure we want all those new VM_BUG_ON_PAGE() calls in the long
-> term.  They look like development-time assistance. 
+> I guess I would need to patch man-pages that got applied. I put 7.2
+> there...
 
-VM_WARN_ON_ONCE_PAGE is usually more than sufficient to catch stuff early during
-testing.
+We really should merge man page updates only after stuff is definitely in. :)
 
 -- 
 Cheers,
