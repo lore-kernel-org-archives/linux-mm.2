@@ -4,135 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED404CD98C5
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 15:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05ACFCD98C5
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 15:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F2B76B008A; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
+	id 6D9386B008C; Tue,  9 Jun 2026 11:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A3076B008C; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
+	id 662C66B0092; Tue,  9 Jun 2026 11:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 291816B0092; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
+	id 551B86B0093; Tue,  9 Jun 2026 11:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 115BC6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7DA41C2E8C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:08 +0000 (UTC)
-X-FDA: 84860772696.03.6E2E1EB
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0373B1A000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ki1houUI;
-	spf=pass (imf19.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 458586B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:35:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F0AA1C2CDC
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:52 +0000 (UTC)
+X-FDA: 84860774544.28.9D24B2C
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3C3E3180010
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ToVdkFO/";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781019307;
+	s=arc-20220608; t=1781019350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
-	b=FtTbkArEU4X5oLYqN0QHV1ShAzb7FLgL+0jf/xSTDUkx8B1OjfmsRg1GqyoZCufotyaVEz
-	l0829DGJ09TmcsBDr4HpT6EypVa+FdD5K+9M7PpeUHK7aMlQs9k13yXcUrqSJsoAgjEJlB
-	Dw0jE/w9IgO6KTuIEG6kZxa2XRWhayw=
+	bh=fMNVrJ+zylUZaoWsNGMkq8FYpb2q8Its7Sc70f0OoMM=;
+	b=tiFo1HAhaDs04HqEpOpmGTTK2f1b+XFesHXGQLyCUXcSjg4ueBWYq7sc+nZKslkA/BlH68
+	8I+alrKhTkgh7vcjvIo8IH0kYGO2cva0YL31ROoV1lPhv5d+0mVQ82KtEVS/TUNmfCvh/Y
+	6Jg9GqLKmcTShSpbjma+pCVcimG0XPI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ki1houUI;
-	spf=pass (imf19.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ToVdkFO/";
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781019307;
-	b=vMeZNkeA/2sMn8oZfeHCRtyNSb1nKeXr7szfLqj4etwSmyPvtJdnMjJF8hunneijyAQ+nt
-	QiHiEZO3pXxf3MZz8ALDQ8m06QD7WMHgUUV/13jbGXVesWszN3bIgI8LxMAFcZK23D12zw
-	iaRbBNlmMpe4jx/G6dhs5iQQpBqmyjE=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf2911f93cso448895ad.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 08:35:06 -0700 (PDT)
+	t=1781019350;
+	b=TCKCoL/EKxlUm9yxbeBgk/TtqW1sgF2GeCIBXu12ZVVSMLSWWOIqWeDudn2fY6/Q0INP74
+	l979l1e9x7S2QM0JyN14o7VmJcQBw9GkvIAeq/J50ovzGe4ROrBZA/bj8j+lwDEnuvVDFw
+	aBvt20B3+9ivdJcpjec9C5UJ6dfpKm4=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9156b74006aso411970585a.0
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 08:35:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781019306; x=1781624106; darn=kvack.org;
+        d=gourry.net; s=google; t=1781019349; x=1781624149; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
-        b=Ki1houUI1l6/BCEhu9FLuX2gdZoL1lLH4O5JPEIOUMTyLXzCEOn8k3IjXNbR3hRgBU
-         tKZtUo1F/uMCmEk5JubmE04fUUheaPAgOnZ7NtsA4kgro8nauQPKwiiFW24PzFYo3um4
-         2GktoK9QbKTPeZn+N5/FWFf47FXiJLavlWVc72voJ7xu7XweMngANZ4G+Iq2BsjSK8Yn
-         mh54knw8NG1ksWC6ITgEUoyodB4K0aRjeAtwMJ23qUqGVR8Ws+kayiB+ujsFJRacV7ll
-         wCaspQh4kKYFQF6JKrpQC2ieASylBkJB1iUo+cCySx4qukTEqWYzzenOz//OJCsr/jhF
-         1u2w==
+        bh=fMNVrJ+zylUZaoWsNGMkq8FYpb2q8Its7Sc70f0OoMM=;
+        b=ToVdkFO/j9BmN5+D6EEa9Wm/tNvEGe7uN9t/4JpYaZj8tQ6NbFI3hA9zemqPSuaqXQ
+         1x3ip3dc7j3MUynLE2Wmz/MO1CxtI2bhV3mdPXKI/kgtbTR4KJqXoHgSDdwUvBeBzeCY
+         dGF5e38sVvPS/exKwrVBIGrbBvdrX4hzm9kPuTmFp9TPHPVw5XLWLXZwgVaTBvso2fhU
+         yhZpG+9dElqPavGbSdJnIRVj6so8c2RGBarzUrejh7rtZ3eh14dvZmOXdE4GOF+UvobF
+         /Ne9KxQ6deaoZlTyVmHYXwmiouztNCuH+2pVIzi5LYztqEjv3g/TyJpoECLvEdCTd7QC
+         OyiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781019306; x=1781624106;
+        d=1e100.net; s=20251104; t=1781019349; x=1781624149;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
-        b=Gm4wsp8WomvdIWdjtdE+FnVrvpajm7GzTjecd8PcuqM+QHET1w3oDOyrRm+2RiXy78
-         f09of6+oTUtxBZgHfjRnfqp4GkDV620bMvUnLqtgGX+N2ThGE6elNizlfl2gW3/AEJvw
-         1TVIL4pNeddbrhAmN+1A03Zs30PDHWWXgrFCyimzb9jJ4OhqBiiDJnAKjFBb5uZFgpyZ
-         qDvSY/kstUtS8Cx7nFCO6SrGSB2srvqPfyl4o+vngCZfXr80EmUHEZHjT46uqQlcDuPk
-         tpoMFNHUQL/57hFh/RcUoj8hbJWvKMarG8EIKxYpFHd+BGdYsG0BQRTO8Lx738xIksiQ
-         xuYA==
-X-Forwarded-Encrypted: i=1; AFNElJ+2IuX4mwk2cXmNZJWcBqyAxfGgoc7FkiwUe/3pLDycxay6kMMJ6ACNST0QjeRCbjs46Od3E9gLjQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy3F8zSVc/TV0il/7J1u9UO3EkD7YnLd+dpNYC5vMRTrmiPC8/1
-	9W4aAHTlQ2PC45AVFepbncHR9Yg4wOyKTyBgrXd/cPZpSbRJ+JpaMmGyfCJc2A4FPg==
-X-Gm-Gg: Acq92OEytH+yfhYTLAgwxBCk4Gdkm+Sjz3+jI0dju92y+1/iY7klIoSkdOMSwrhLJ4w
-	odViWh9O+N+071jaNil4us3ipwOZUM6pGofcxkC0troNaIUxjGCkjjdHEZT7ncUh/5msBGq83dz
-	hiGzYdxqIuWgjyubu55ir+9Vgktbaf47TvULrpxMrk9rpO0IMrg2OxvwQb/bFNP/hjCswbPQQpU
-	TidYVU4fADiKHtGE5LDG2l8SG+wM6xT5xC92F7vcvuwNlteBtv3MZ5BNP21wFuBkrr8XoYQ/O/V
-	pidWuDCEm5tCOmm3Ow/j+x6R76jCgM683gTsPfeK9mbSBKLea4UEHjxQVcltx+9cJWeXMfiQmMN
-	GHLCeDiketyiTg9nrgVKPriGFOssAAlYzmBCIqMIbcwOu311LwhPKu883VOvgyGuRRNFUTdx1RF
-	7Kcfcdcn2KigUMCtBeyf+vYt4g9anX0pgOP8zKKVabIGb6oeBtw0Pd7e/50DfLVH6ACCoBUmmp+
-	mbFDRrn5A==
-X-Received: by 2002:a17:902:e885:b0:2bd:7e8e:ad56 with SMTP id d9443c01a7336-2c1eafba702mr7653595ad.6.1781019305283;
-        Tue, 09 Jun 2026 08:35:05 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf827e6sm24737580a91.1.2026.06.09.08.34.59
+        bh=fMNVrJ+zylUZaoWsNGMkq8FYpb2q8Its7Sc70f0OoMM=;
+        b=BBc/RPO+LxDG/3RuIb7iXtD5BlXr3hkdMH1ZcNtFhQaSZze5arS3g70nIJE21U2lN6
+         QshHn6vIIp2kARgFkRs3el3M+kSs0cdI8q4EORy90eOk6yH/AiU5FLms3nHx/wZDho7v
+         0bG/rFtyVUdBzhoIbNTr6mZf3Ni85aOiVsM3qVMXhc4y70ggpbAlgwl2+wl/3KGDqoDt
+         4pjDzBWumvgU+GesbtpizHDrYEVMx8EuCPneZE7utfcC02uZEMSAp8Nd6xrnGOPKYZ6Q
+         F4XgMguGRaVHFMS1VzpKH2lRxj+FTfSq9M4rnN3L1Y1HJJ6o+em5acSHJ080zE/09zhY
+         NZdg==
+X-Gm-Message-State: AOJu0Yxl7bIUfYgqmDQo+7v8N2a5Og3nKh9q8eJqj/7unaaIiYxDhscc
+	zXbTxr5K6fB+j8doLMCgboY4SKwmxUN5zqQnoMLBe8/6JYxtzwj5dE/qJaySKd0QSPU=
+X-Gm-Gg: Acq92OGSW9hCKAioksn4L6/rJ0PmK6o5muZe9E2gZ9D60rumjm7ybHqyI3D3dEiI/qF
+	Fe+LgchKxOvRiscTv7WbaN0F622r2zhxM+NEfd66Ka56cpz13RChCxblR/+Q4/I84AkvHf48tar
+	WgPyQDBhN5m/ncuNv1E7/xdfB4BycLI6K1ao9Jc8lyqBkLPYw24mvGMboXr1T6BbI7cOMcSYrvB
+	EiI5xasYCS9Ggq4YI9cADo3ilKqdRM8yIOtlruDzhAyG7pX/sO3LGsLYle8vmoqIjGhZ0b0KYLY
+	HZv4hIoNnx2iyodLlE/5pzgbjOwjyykW2UyTAXYYpYFMACHoPpjIbBS4BIOyOWyeIPqFLiZ9ZTZ
+	YNLvvugjP/X8Q7Y6RPcfSWuogtjY2j+sX1sSCwk6L2hCgkVc+YxUtvKZ7wemh5h3Pu352tGbyer
+	t+rSMAjRFIEhlEwLYMDDw21FXSjYvtNkNbwhuizYE/YvPaGMAwmOAAmzUbRbdYB2InsXUkU8XFL
+	8lS+mxExoUxW3k+eg==
+X-Received: by 2002:a05:620a:454b:b0:915:7732:ea7c with SMTP id af79cd13be357-915a9da3801mr3475555585a.43.1781019349028;
+        Tue, 09 Jun 2026 08:35:49 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a3bf5f9sm2173658385a.35.2026.06.09.08.35.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 08:35:04 -0700 (PDT)
-Date: Tue, 9 Jun 2026 15:34:55 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 08/12] PCI: liveupdate: Inherit ACS flags in incoming
- preserved devices
-Message-ID: <aigyn66-xQ_9JBW6@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-9-dmatlack@google.com>
- <aiXWmR-ettxin4LC@google.com>
- <aiaeOVomxQZhoM3K@google.com>
- <20260608181640.GO1962447@nvidia.com>
- <aigtS3UDdhUGp3m0@google.com>
+        Tue, 09 Jun 2026 08:35:48 -0700 (PDT)
+Date: Tue, 9 Jun 2026 11:35:46 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	linux-cxl@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
+	akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, osalvador@suse.de, shuah@kernel.org,
+	alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+	ira.weiny@intel.com, apopple@nvidia.com,
+	Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH v4 8/9] dax/kmem: add sysfs interface for atomic hotplug
+Message-ID: <aigy0ut410TItkgB@gourry-fedora-PF4VCD3F>
+References: <20260605211911.2160954-1-gourry@gourry.net>
+ <20260605211911.2160954-9-gourry@gourry.net>
+ <1cb0514b-c753-411e-8ff8-80fa29837441@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aigtS3UDdhUGp3m0@google.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0373B1A000A
-X-Stat-Signature: ge6gs1rmsp79axgnh4miqawo7r7uhdhu
+In-Reply-To: <1cb0514b-c753-411e-8ff8-80fa29837441@kernel.org>
+X-Rspamd-Queue-Id: 3C3E3180010
 X-Rspam-User: 
-X-HE-Tag: 1781019306-378381
-X-HE-Meta: U2FsdGVkX18TKHx2S+GTNH6yqfiZ7MryG1AhGISUwRYbPyq4E77eSWqcmKVtJbYRJeQJUOYdEWjzMHW26UL8yICF4a4ona9GagPn+tcpGJhVh3SyMAkPHTeSBaaudJeY31Yzd/NhvIsd84aChSdTJC36ReU1OpMa4pj5uARD27HcuCieGsZL70RK6w1lN34qxsweOVIewb9eA9SsFrHpEvsdZhl9MPFbTgTAbmo1Mo4o2/QA86p9MTW3kJR66BNgCMzKSoPoYOJdsDrqeRV+nFfQR8sKbQSD6dUI/aLL82q0a3eAS2Rd1qJrturTYOyMGI7zM/FQ8kB+DfqnVXzE+qbPe8d34DSJ7C5j9KlCIcbj9OvpfzVTdrZGQAbmsQtZtiCc+3zjOkRc1/RxYpQ1W1dZ8A9nTla1AsjAMMsh+8BKFN3PSg3LrmyC9uHCocUA0+KTR8wmqRUt68TBn7F76ZRWK5kUyCsbZd9U8DdpWZ7tQIdqj7y6/z9FW0pIj6GtHFP+FyYcdwJ395tDkqvEAZ0fKoBDARYDELmSAh8NItGWGpd2/2RFvWu7Ek/h09wv6LjPfSr0uRvLpIhzLeWvv0pQnE+xlv1HcxZVFYnX30nn2JoPMyc0Xs5xpaHZqFnFYpWeAVQeUDUQPAUtf8trwneZ4fOMQVPG0eEyPDStNzZr9g4rVcmNjgNgsvDOAd8Z8cVzjBfzvFmIv43SlqeGVVcVC9lbjeaYCXCvly+WQ7hv9GMMSSuvV/G1Ycrfwg7Nf9jMKnomZPpva40F8VH9ymcfyW8Lc3QoL3RmGii4irCCoZXE8tlmYqWfhU8uNGClBONshP80EpcRaDP5js9WmR6EvkBM4pXI3jOe2RFLSv0YMOMS27d4k3VyzQtXeoZE0ew02AM8siMZoropZlFj/gjx+zaYmw5CFJlsUtuSRGx/MAv07dSajKcT2iqx9JuQ0bXRzxJY7yRPeO5hWkE
- pFQzjYXx
- 7T3TLpIod1xwg5TOeWlKvqu5khL9NndoghOugLFEPghGMlquYqG0H83fhVMYDLLOFD69jMXybyCwDUxCzfe22iFvvImdopyzjYvdTv1d5S2wUOHS6PS4XrHSBUPuw98L/LFtbk0eOcKIFIzrAPgc2VRycs5ANZ+/SE+I3V2NcF/DNuXlYmOOZn6+n/P3p224I3qPtgyAw616p3KDzOKDTk+70tsEKduIIany2QFFJ9wsdiClGs0SFA2Diqi/NQ36kJcQuM26WFgV7dfaHbpptAtPVTo/rRtrQmDZJwTiSUeTfMdYhBSlPUfBwZTJIKGlA7kLx/CybTWy31Suod+Q06xPhVQQu8BMK7uzBEArjJS8TVCg=
+X-Stat-Signature: ffji8euetc55mu9qw8ayud8akjwckrgu
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781019350-75215
+X-HE-Meta: U2FsdGVkX1+bkbXrHfGc3r+/6OfxW96W7wEQ1mrauCnEPOB4gaPoKSCgnwP5425eMRJj3CevJha9fqLiQLw0szmG8LWeNJfTu2eto4GrdqxP5WV6jzIsq2UKHPLcK7iNq787Q8f5JfuDwf3ZR0zpq4b2L7H/gOrr931LooVR/Sj58KjHLpEPU6x1e3/BFN95TVWIIIN4JBvYjxvBt8CsEEVVA4SyQ3XEkKd6wTyfhfLfNtJqQN6hZ7DnEF3zTnSc4Ha+h7CADiQWNiZ+E2lrrTT0M7IGTNLGSmhisybIK/LhfZhFQa+aUreDis2QGpD9mVl3MBmZR7XUOZJZEe2OnceTEIt+SD4mDWSvwXlHAH5KOydK8dvlhvGl7hnsWkJKBbof0o2ZEOoAcl5D60lxsn9mCyARI1KCvoJ3ImmoUxP9uZUpH/ZCZJ8alAcsffy7/ChUhbKBPZeYv6tdukLtKTocZeP5qB71LOofXIHvP/Tu2aoUbb7fImRPBhwfcUUjFJMYFes6GWAwm99Ygx03p4QD0SkyMqX3o9s2Tz5DUz9EvRl9ZF1wfmQ0Hse7SLM9fV6//U4U+PIsvXEi+AT8tHSn7lgYOmFx4PCczYV+maYpgZ0VK4HkIE1nQtRNjmNYs1zaljdUD6/gN1h+ya/+ZISFY79jMWPLPTdUTyc1Ad4l3Mz4CEBoZlE35W7mFfbjyswMd1PoNIq79K9U8PENRpzR3iq1MpaHcLzTRjhsp+7w7Q8jOjDIqDK0rD30AiK27V0mTOo56t9o/IX32+hQwbED08lSScd4gggJdhnxDgQ7ZQI46mIWymiWeC2knuArL1os+/0DnuD+Ty/ENvdiQqvnib0tO2I5ylK6Nz2ZUgf7yKvCwm9T1Kz1H1ZBDrJxQvra+MlhuMYIskhntsAYs+oTU3z6DOgjSEQTlejIrCFEubeJhs4nccgOALKHNWazxCnnwqzdMts+PK4Tha+
+ Js39KUEi
+ HLMPHBh3N7m6sKzGdY26tjYDtWcZ4K8EfSt3WH89Usp2CI6vZqINjb58SETXIV80yGfJ/D6luWXZI0zqP5XJwQrTuWWWXMVMkuVtd1GITp9l1EvnNkDL+VjMuJBAbYuEZmbIPJQdyE3scai+CumYHfDoI5xbjHnB7+uGySDcE7ZCLrtpFCp+Y2fmO4KF1ebgXpOhXdr/Kb07AOaEf9l0kIlyZ9A5t9y011myOE0v60/Axa0K7MrUheO/gCr+LFv3txMVEMUWN609/fObCC9P3ekkLEdZE58+fSXy/hM9oiH9R7IBsbm53dsiIxUeme7dgsmJE0RnRxAilUhU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,30 +126,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 03:12:11PM +0000, Pranjal Shrivastava wrote:
-> On Mon, Jun 08, 2026 at 03:16:40PM -0300, Jason Gunthorpe wrote:
-> > On Mon, Jun 08, 2026 at 10:49:29AM +0000, Pranjal Shrivastava wrote:
-> > 
-> > > My point was that a FW exploit can meddle with the bitfields of the
-> > > ACS_CTRL to spoof and mis-report the ACS flags.
-> > 
-> > Devices can also ignore the ACS flags. I don't think this is an area
-> > where we should be worrying about devices being actively hostile.
+On Tue, Jun 09, 2026 at 12:26:07PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/5/26 23:19, Gregory Price wrote:
 > 
-> I'm wondering what happens if we preserve IOMMU groups across a kexec,
-> but a switch's ACS capability is dropped or the ACS_RR bit gets cleared?
-> The incoming kernel assumes that it's the same ACS cap from the old one
+> >  
+> > +static int dax_kmem_parse_state(const char *buf)
+> > +{
+> > +	if (sysfs_streq(buf, "unplugged"))
+> > +		return DAX_KMEM_UNPLUGGED;
+> > +	if (sysfs_streq(buf, "online"))
+> > +		return MMOP_ONLINE;
+> > +	if (sysfs_streq(buf, "online_kernel"))
+> > +		return MMOP_ONLINE_KERNEL;
+> > +	if (sysfs_streq(buf, "online_movable"))
+> > +		return MMOP_ONLINE_MOVABLE;
+> > +	return -EINVAL;
 > 
-> Now, the incoming kernel restores the groups assuming they're still 
-> isolated, but the hardware no longer enforces it, silently allowing DMAs
-> & breaking isolation? 
+> Should we try making use of mhp_online_type_from_str()/online_type_to_str()
+> [possibly a nicer exported function for the latter] to avoid duplicating this ...
+> 
 
-Again, to clarify, I'm aware that we aren't preserving IOMMU groups,
-the incoming kernel has to rebuild the groups. My concern is that if the 
-ACS_RR bit is cleared during the kexec window, the produced grouping would
-be different than the old kernel. What happens if two devices on the
-same bridge were assigned to 2 different VMs?
+In patch 6 response i point out adding MMOP_UNPLUGGED
 
-Thanks,
-Praan
+If we add MMOP_UNPLUGGED as a state that is only use by callers of
+memory hotplug to represent the current state - but not as a valid input
+to memory_hotplug.c - then we can simply this as you request.
+
+Although we'll need to add a couple lines to memoryN/state parsing code
+to disallow MMOP_UNPLUGGED as a valid input (otherwise you could
+permanently unplug memory without the ability to get it back... unless
+you want that?  Seems useless to me.)
+
+~Gregory
 
