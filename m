@@ -4,140 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0FCCD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD768CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDC7E6B0005; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
+	id 4527A6B008C; Tue,  9 Jun 2026 10:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8D2B6B008C; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
+	id 429686B0096; Tue,  9 Jun 2026 10:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA3846B0096; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
+	id 3401C6B0098; Tue,  9 Jun 2026 10:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA94F6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 507FF1A05CE
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:27:59 +0000 (UTC)
-X-FDA: 84860603478.08.D746676
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8FCA1C0002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:27:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvEx0LGu;
+	by kanga.kvack.org (Postfix) with ESMTP id 241026B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:28:19 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD1DB1A05DA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:28:18 +0000 (UTC)
+X-FDA: 84860604276.05.9D0DC69
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3762240010
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:28:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xjnfkonv;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781015277;
+	s=arc-20220608; t=1781015297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PKSUe2ZShhtV7rCIocQmxdI/1q9ALaMdNbgo63AIhb0=;
-	b=0tz5q3Wa0EIrvv8At7bckQTOko5eI00nGn+bOr2fFJr/BwnLEi7VGnGvuhXxWsEGU33anG
-	zKO0+XlaZrY/KbFpE8Ds0qSsCY+uSgB1iDzgUyRQwuSVpw4H9n6c4U5EBJWR9NPq95gSND
-	tqB5Zgw5QwgtkiepWvluNeYudjj7W04=
+	bh=PjHIRpjtlXIyylASoF8WIzC6zkAZuxm/NxysGVUExR4=;
+	b=TCsg0Dtxj3VEZpBGLgMQsk26zPQRqW9gCzw2sXBalJSiDf6CqFf21VpduPYBBWRgxAk+Qj
+	ThYOw/0CP82aykSo4RGkWrhmGTsD1SN3s93vc7Y4Mzbk40LZBZ0bOM+IADa6bf2jsf1Fj7
+	SXCdrdiaBHTomqq26gKt9rofxsQeytQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvEx0LGu;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xjnfkonv;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781015277;
-	b=LNsSGfkyt8qvohaXEzZN2Rg+I5ATxIY289G8GSYtrIygeH6m1igNoIcc0mwzSkpr30T/vR
-	RWOFKxPCb3hgpfM9dknD4b7h0cx+JpBwT18yDO85b4k5fdBzD2ZJxXZyIdyatPP1ScO2nH
-	URQGm+sKia5Xr+2rYLPYk1ZF2nDhliE=
+	t=1781015297;
+	b=v7Lg+dxP8x1bMc6MF2m1bv+M0vX3eHJH4oqg4MUCFNhkCx1cxSJMyYqTlcxZ9EMZRMASaJ
+	PTCzEAJnZfKJu1pfyP+3Fvjf4EMOeCYTGdKAw2Eh5xbNzBVtQ15wCcZyeMQUHQPc8IQ0ZX
+	Dm80cUOdr+YnQhv9YoqQ+ETQLaOLInY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0685E601D6;
-	Tue,  9 Jun 2026 14:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E361F00893;
-	Tue,  9 Jun 2026 14:27:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6938940454;
+	Tue,  9 Jun 2026 14:28:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4641F00898;
+	Tue,  9 Jun 2026 14:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781015276;
-	bh=PKSUe2ZShhtV7rCIocQmxdI/1q9ALaMdNbgo63AIhb0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YvEx0LGu2EMoKvtx/1rRr93im3SvYiAuVmh+qxGpdz1QA1k8bd+GpCxWdLW2rnWTU
-	 Fa3vme8+XkgtU68ZaEPCe+JTXC8BgkUZd7QKa0mXAmuovdCq0dCsvOZxk+KAsvrMEu
-	 d9UNlPZRJ0zOrU44kTxPwnXHqXikJleUDJzJgZq/yaokVvEgsKdRY+i0HeNsuoE6Kr
-	 JukL3a0yFqdp2ZsYdgg9U+Ii6b3RjW0TYmrrIwBTZEQCgTGSMzlI0H32RrkMYX7IXW
-	 hMLdfVU6A93WnStc/UM/X6eWhFT4bhfkbSWDFX6/bH8O1kYCwxTkrar44lyTD0eS/L
-	 NWsybGqB70e+A==
-Message-ID: <106e71e4-975c-4337-aaff-a00628827477@kernel.org>
-Date: Tue, 9 Jun 2026 16:27:50 +0200
+	s=k20260515; t=1781015296;
+	bh=PjHIRpjtlXIyylASoF8WIzC6zkAZuxm/NxysGVUExR4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=XjnfkonvBA7BPNQ+bKKY6oIc51fRqT6F7xQ5JkGtkh/+n3vxfPebE28AtnI121Tz2
+	 VY5M28uj9LWKoQr/N+8GKcqeMxutY2VcXRe+22FgmwDZiv4EAI2xGaDAukkgr6aIkl
+	 GZw2xTY619ykBheB5bPqXoEU+eRmKSJ3j/Pb0eMgaacWWtVljP7Djn42kDX3tlOANd
+	 oeWIJzCmqgwa4HLNDgS8Gzfmd5E66hbCgIYGHiqh2YC72J810QRKJJrBp4WyFR5CsV
+	 +JJQzoYVTrUwNt/1MaLPyCIaWdQEC0rK/onYbEg6TXottOQSyUkdmarinDxoUVsTEz
+	 h/Iy4rexr7Ydw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>,  linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,  akpm@linux-foundation.org,  linux-mm@kvack.org,
+	skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
+	jasonmiu@google.com,  linux-kernel@vger.kernel.org,  corbet@lwn.net,
+	ran.xiaokai@zte.com.cn,  kexec@lists.infradead.org,
+	pratyush@kernel.org,  graf@amazon.com,
+	Logan Odell <loganodell@google.com>
+Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
+In-Reply-To: <aibYJvzQQnpoN6YW@plex> (Pasha Tatashin's message of "Mon, 8 Jun
+	2026 16:12:56 +0000")
+References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
+	<178083348872.1648214.17778188633648887952.b4-review@b4>
+	<aiVp5RlbWRz5VnPB@plex>
+	<178091437240.1648214.10761111570005003901.b4-reply@b4>
+	<aibYJvzQQnpoN6YW@plex>
+Date: Tue, 09 Jun 2026 16:28:12 +0200
+Message-ID: <2vxzo6hjss8z.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm/mincore: present-PTE scan cost after pte_batch_hint()
- batching
-To: Chengfeng Lin <chengfenglin@stu.xmu.edu.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
-References: <5fb8bead.17483.19eab4626f5.Coremail.chengfenglin@stu.xmu.edu.cn>
- <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
- <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3762240010
+X-Stat-Signature: 9e6c3awdzej53xir9pghqiky8cuxpep3
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8FCA1C0002
-X-Stat-Signature: zhs9d6yfbpznngtembro8zh5owphe1gu
-X-HE-Tag: 1781015277-630247
-X-HE-Meta: U2FsdGVkX180dQoRPj2eqsNOZMW/y5KgzpGJk19NUHZyoU8TkjvrVfNVir+dOzyY5W5x1iKSdfyxtJCwM+gAer/Afc3rm7Vm0t9Ny0Y6c4u6ty4pbXcyq4ODkUvcom3EDaiPxVgI2Vbs94NZ6r/vuaoAwEvlYRM6e7FGW1o9r9IhiT6MPrypmY5QnWp2+XN/OvNLqDLoWORRIegoPWJigM6BLXzIvdZQwkGh77tLg4+hW04ZulVkV5JMsC87PRdH6D1jXvbsCP0Dl9I4cg0aoyt9osB6OZ9MlwicJlk7M7d47OZuVU7Gdagi74rTgq8dRtQxb+TccEXSpBx3M5GfhDleZIz44KJyYkTrD/HpAhQD3MxDkS6+owmUT/PqBssCq3/15RxlmQjuKbn0KyzH9xhDV09qnmDppgHmHUq/8H6wTTJ4/n6pboo7ruZDP0Md2koc6hHA1NximXvC0U2hTjIzCCrpWFZoFjAIhEiBi4h9xe4h7S4HBDa+bkaDmzlmadP7TC9H4hfz5oEiBKVWPs9WZMIjJA2VOKRzacrtoEoabKQa7VT5ji0U1GDUah/t/S3H3wAp7u0j3pK98sxXYavTNwa03VEjt1HYVRxLm0sAXoQPaCx25Wi76zO3Di3vCE0osRAUKnVBzm/SDEjOBNS/Jl4jSkoumTWs1TVdc8eliRlSbF/l9j4J5KsBhF4cuiMThuost5KXFsjP3YExEBfv5vUnRPDbZ0GOXp+p9Iu5qJDWPCOdfg1Kq785i5F4KZBOAJg52IF7PWlPIi2X0SDRubu60+UaIYeCkI4A7yRKoPzprv6zu0DCtMbkKgMDo7IXun+qnAnOwL31RRNl7YpPeVmM7dPbS/ZfhqV5qcEwOLHGf+cfWTM3rgc9st9bMieKgN75vNWit/s0aK9DVzwS6DcZOQnrakczm0ziRaLO3xaaTV30dLWQhpBbPw8HcO2sehURNscgErC9iQh
- 7ynZ5hnM
- 8ym0loz8YGeqNNOK6L8su5Scx5bCSQK45TEZsT8gmzh+QOb6OIzxeaKbMB8r3pWQnxMnjAdL8G6ZkkIDKgt3kqksEQabgWbgVtAd0N33p64WVgTMCOA+IGbKyxyB17sH2ici9fOjkYRmQQanE8QMB2eI+j1WfoHxprebfQwsEg4vAMUoPTYWCATeE3lFxteMYvWpDV+VmZrUq9MLxaM1M1EVYFI4ea2OJRGEB4VHOWRk0NVLTMrF16o0I2pz0qwliWz4ySqLWVPibSVZUbg1K2sxuZIzlkWZVkcH5phUkpfVLuyRj3QoO+1MU+Q==
+X-HE-Tag: 1781015297-274526
+X-HE-Meta: U2FsdGVkX18ckEdI6K9Cj7IQntItaTGLMRglwgPjGYBaM2BNlYZOTXHjetStEa1DsKvN9KsHr/lw7xAL5/fEZ5ogKK6RvLkBjMsKZRqaQvnoFgW0QGRz8Ume64/eDwnXa5NPpKCO2uhGcBbOkup5ThSpYWruZcgOzlUgji4vVIhFchbIUZMsJPIHIHsnD2mXE62OzpQA7hAXjAJNb/1OF1jjX7paiwOD3K+noh0iMJnYvT8hrEsI2ntLekNNc604Bya0RvAzfLLeE+fjHGuQWJKy9k5RDg8qRNIwp5eprZTgu3ZYvb2M5G+eOIS6NKNIhp14podLRLOp1XuDw0xGWqMa1DBXYDoBXm/hAsmccsguUyP4uCIgBmFFxVYN72QeInfAq5wJs6MEiJNhIg5xdD5UMRa13F23YBOfDmwreo839lMYnWMqYrXHAdxEnzxZO9zqkQuphwncm21k9HHv5G/ARnIgmzoM54KcPmDO8aik5BrmuFUAvJTVjXWIP+5FKCzKEbZLhMUtF+UOFsjH7gaSg3hGEadicuSQnKW7KPq2sb8aFg9z0T8yQk4hwZ0gifTySSHMW/seirKlVv/6bDyeNEP3+ApSWfmpdS7nefO+HovABFcjfLNl06U4i8xBM0IZtckZWCCpZDRNjBg5eKTM6txiK8Ys6vyD0imwhmNW0TBNNqhunXjA19ygoeR7/dWSfeyxSxUPjv3E67p0gt1pu8oWLuZdM2zDc9EVJhPfwedsdLaSQO0uU3ZwmH9t/VEQlnWPOGJK8ABRLCDT2xqjx/iUzYypRG15DTK+D0f0a3aq2lJFlQFBvtmvSrVhiSxE165xktDHiFu6XYGlkF+5f20aaSJf81fajR9/Lcd+/y2GP+xKx9VY9KcnqmKPRZ07pn20boIrHgcuqhbbn5DPpq/wBSi2r10HBHtcQpLJPdshbHrtwLHBrzD+hK0jXLHdruFavWDjDkKg/Vc
+ m1r6a7F/
+ +TPUtCtqfYfEmYCzeC4ZjzkW6ULZktuDt0/NF1OCxA8CrKZ63esBCUCV+OsRVO9Tct1LPBa58RBouSZD3B9s7ZqIxSZGqHQRpmTFvSL/f/DYSpla0jospJrOOkycZuGHFylNQ7H6kvC5utBJhjcPjh1P8PA6krRV9NTjI2EOUalmtNSpaS+9OqvMYfdQ+prAfG8J6P68N5iHVDocurReRqF4nPPjNfngKymPzHoliW5vOO8NVBd1dHMJU9Wga9fyk1+gBBZc+ZwBv7mKI2pITQWcaIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,78 +102,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 16:12, Chengfeng Lin wrote:
-> Hi David,
+On Mon, Jun 08 2026, Pasha Tatashin wrote:
 
-Hi,
+> On 06-08 13:26, Mike Rapoport wrote:
+>> On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
+>> > On 06-07 14:58, Mike Rapoport wrote:
+>> >=20
+>> > > On Fri, 05 Jun 2026 03:32:26 +0000, Pasha Tatashin <pasha.tatashin@s=
+oleen.com> wrote:
+[...]
+>> > External users only need to include the headers they actually use. For
+>> > example, LUO shouldn't have to pull vmalloc or radix tree KHO
+>> > declarations, and memfd does not need block.
+>> >=20
+>> > From a maintenance point of view, it is much easier to catch ABI
+>> > changes when the file with the appropriate version has been changed,
+>> > and most likely the version of that file should be updated. If a single
+>> > header contains compatibility versions for several different data
+>> > structures, it is easier to miss the correct version update.
+>>=20
+>> No matter in what files the definition lives, someone can forget to
+>> update version and we may miss it during review.
 
-> Thanks, and sorry for the confusing wording.  The plain statement is: I
-> observed a performance difference in a narrow x86/QEMU synthetic mincore()
-> case, and after your comment I checked whether this is really a codegen issue.
-> 
-> The wording in my first mail was too abstract.  What I was trying to say is
-> only that the benchmark focuses on one specific case:
-> 
->   private anonymous memory
->   MADV_NOHUGEPAGE
->   faulted/resident base pages
->   repeated mincore() over the range
-> 
-> so the measured path should mostly be the present-PTE scan in
-> mincore_pte_range().  I agree that the 8/16 CPU rows are not very useful for
-> this path; please treat them as extra context only.  The useful data is the
-> single-threaded / low-CPU v6.15 -> v6.16 A/B and the patched variants.
-> 
-> The compiler used for the lab kernels was:
-> 
->   gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+Perhaps we should have some tests (maybe with kunit?) that can catch
+this? If you change the format, the test fails. So you'd have to go and
+update the test, and at that point it should be more obvious that ABI
+version needs bumping.
 
-Okay, GCC 13 was released 3 years ago.
+[...]
+>>=20
+>> Sorry I wasn't clear. I agree that kho_vmalloc, block and radix tree
+>> should have their own versioning rather than rely on global KHO version.
+>>=20
+>> What I don't like in your proposal is mixing versioning of a component
+>> with its dependencies.
+>>=20
+>> I think that versioning should be completely local to each component.
+>> LUO should not care about kho_block "on wire" layout. This should be
+>> encapsulated in kho_block.
+>
+> That is a fair point.
+>
+> As I mentioned in my previous reply, we can definitely look into making=20
+> the version checking more modular. For example, each component could=20
+> implement a standard compatibility-checking interface.
+>
+> These checks could run early in boot to determine whether each component=
+=20
+> is capable of accepting the incoming preserved data format.
+>
+> Whenever the component is later used by LUO, memfd, etc., we can query=20
+> that cached status. This achieves four key benefits:
+>
+> 1. It avoids delaying the compatibility check to the actual time of data=
+=20
+> retrieval, which is too late to safely abort.
+>
+> 2. It prevents a local incompatibility from triggering a global kernel=20
+> panic, allowing us to handle failures gracefully for just that specific=20
+> component or session.
 
->   GNU ld (GNU Binutils for Ubuntu) 2.42
-> 
-> Your point about x86 pte_batch_hint() is exactly the right thing to check.
-> Since pte_batch_hint() returns 1 on x86, I agree that the expectation would be
-> for the compiler to optimize the batching logic back down to something very
-> close to the old base-page path.
-> 
-> I checked the generated mincore_pte_range() code with the same GCC/config setup.
-> The function sizes from nm are:
-> 
->   v6.15 original:              0x1fb
->   v6.16 original:              0x245
->   v6.16 batch<=1 fastpath:     0x1ec
->   v6.16 with batching removed: 0x1ec
-> 
-> So, with GCC 13.3, the v6.16 original build does not look optimized back to the
-> old x86 base-page shape.  The v6.16 batch<=1 fastpath and the v6.16 nobatch
-> variant produce the same mincore_pte_range() objdump output in my build.
-> 
-> I also checked Clang 18.1.3 as a cross-check.  With Clang, v6.15 original,
-> v6.16 original, v6.16 batch<=1 fastpath and v6.16 nobatch all produce the same
-> mincore_pte_range() size, 0x1f9, and the objdump output is byte-identical.
-> 
-> So your expectation does hold with Clang, but not with the GCC 13.3 build I used
-> for the original lab runs.  This does not prove a compiler bug, and it means my
-> original report should be narrowed: it is not a generic x86 mincore()
-> regression claim.  In this check, GCC 13.3 generates a different
-> mincore_pte_range() shape for v6.16 original, while Clang 18.1.3 generates
-> byte-identical output for all checked variants.  The timing signal I reported
-> came from the GCC-built QEMU lab kernels.
+I think the right time to do the compatibility check is _before_ kexec.
+That is the only point where you can safely abort. Once you boot into
+the new kernel and discover you can't understand the passed data, you
+are in a bad spot already and should reboot. I don't think think you
+really can gracefully handle these failures.
 
-It's probably a good idea to
+For example, say you fail to understand the incoming PCI data. So you
+have no idea which devices are participating in live update and cannot
+correctly probe any of them. Which effectively means you cannot resume
+any of your guests since you have no idea how to restore their device
+state. The only path you are left with is to reboot. I haven't read the
+IOMMU series, but I imagine the same story applies there.
 
-1) Try with newer GCC
+For a more benign example, let's assume one of your memfds that back VM
+memory fail to restore.
 
-2) Take a look at the actual difference in the generated code
+In this case, you can safely leak that memory and run the other guests,
+but at that point the host is in impaired state. You don't want to keep
+running it in this state. You likely either do a reboot, or if you feel
+more adventurous, you do another live update.
 
-Is it some inlining decisions? E.g., if the function is larger, other code is
-likely to get inlined?
+In either case, there is no "safely abort" after the kexec happens.
 
-The function is not particularly large, so it's a bit unexpected.
+So I think our energy is better spent solving the versioning story
+_before_ kexec. After kexec I think it is perfectly fine to error out
+and panic or expect a reboot. You can't salvage much at that point
+anyway.
 
--- 
-Cheers,
+And I think how the versioning format looks also should be based on the
+design of this pre-kexec check, not the other way round.
 
-David
+>
+> 3. It keeps the local version local, as you suggested, so it is checked=20
+> only by the consumers of that specific component.
+>
+> 4. It provides a clean path for backward compatibility, as components=20
+> can individually decide whether they understand the incoming data=20
+> format.
+>
+[...]
+>>=20
+>> Actually FDT "compatible" handles versioning nicer than composite strings
+>> You can have
+>>=20
+>> 	compatible=3D"kho-v4", "vmalloc-v1", "radix-v1", "block-v2";
+>>=20
+>> and check fdt_node_check_compatible("vmalloc-v1") for vmalloc and
+>> fdt_node_check_compatible("block-v2") for block.
+
+I agree. Even if we don't use FDT, something more structured than
+composite strings would be nice to have.
+
+>
+> That is actually very similar to what I am proposing=E2=80=94individual v=
+ersion=20
+> tokens (which in my current series are concatenated into a composite=20
+> compatibility string separated by ';').
+>
+> But let's not get too fixated on the composite string formatting. I=20
+> actually really like what you are proposing: using integers for versions=
+=20
+> and having each registered component carry its own "NAME" and version=20
+> number in the KHO FDT.
+
+There is another nice thing about numbers that Logan (+cc) recently
+pointed out. You can tell which one is bigger.
+
+At some point I think we will support multiple versions of a data
+structure to allow for upgrades. At that point, it will help to know
+which one is "newer". So if both kernel versions support version 3 and
+4, you can use 4 to serialize.
+
+This of course is harder to do with strings.
+
+>
+>> And we wouldn't need to reimplement string parsing ;-)
+>>=20
+>> But yeah, I do see value of making components versioning and KHO global
+>> versioning independent. I just don't like composite strings and I don't
+>> like mixing versioning with dependencies.
+>>=20
+>> Since we are moving from FDT for the most things, version should become
+>> a number rather than a string and version compatibility should be
+[...]
+
+--=20
+Regards,
+Pratyush Yadav
 
