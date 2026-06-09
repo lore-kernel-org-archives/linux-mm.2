@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA7D7CD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24B6CD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:45:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CC5D6B008A; Mon,  8 Jun 2026 23:41:28 -0400 (EDT)
+	id E3EEA6B008A; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07D796B008C; Mon,  8 Jun 2026 23:41:28 -0400 (EDT)
+	id DEF756B008C; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED5106B0092; Mon,  8 Jun 2026 23:41:27 -0400 (EDT)
+	id CDEB26B0092; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB4726B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:41:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72318A03BD
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:41:27 +0000 (UTC)
-X-FDA: 84858974214.12.1C7B9EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C81ED140008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:41:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LY854tlU;
-	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BDEB06B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 521DBC1992
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:45:03 +0000 (UTC)
+X-FDA: 84858983286.13.8691E78
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ECEA11C0002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:44:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GqlAwjbC;
+	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780976485;
+	s=arc-20220608; t=1780976701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qyQXosIVlm1d2ieq06VqSov3tK1/uj2RCw2AMDVsioc=;
-	b=FGFgL5jzPn7zgoCAMSI5EHlYOLS2gPbkG4UAtgVnvRFHrBUuomf5ELgpJp+dnAYa8jjg4Q
-	Sg5tT2u7KUac/P1U/Fx4Qo+SBuSk3bVSrSR8GjtOXfzB5HSmwxo5ZmaDe5uD/NRbeE0i82
-	icTdnR9BuppCVGrgoT3+FCcTdJdUpHk=
+	bh=cJEBHfzpdSI7jJEj6r2mkE4T7/MNZZCxJ7D6F6LoI5Y=;
+	b=rSE06TEaTQmaVFeI6trMCNXX1dKL7v4j8KeOWe0WhKQIsKTEsd5Xmdt9MmTrAX9amMF7k8
+	5yBnKd2yGvL0Jv6FaCB1vcYmcAUyu2MWhaXlkh9XTzW3wYEfMD20u2cpbWzdsN0eSj9EKz
+	oqvbq6CQY7+A5H9xGs4xuERw0dxrtKg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LY854tlU;
-	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=GqlAwjbC;
+	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780976485;
-	b=zyHf541pJnrZ4R6ovaAFdXOf1DJOZKybQ0Hdh301eGqe1wNO0Pzq2oibiMs6wuAjOZwa84
-	zGEWL1S9+Un0QobpNf5j3aXxjAXWA1dJ9Fr6t15joN0fszYXOi1eZLUn/yYkx+ucKBEFZ0
-	nRLvED2+afO868MRiDmRPDIMNKSEQHY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2C329601FD;
-	Tue,  9 Jun 2026 03:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3984E1F00893;
-	Tue,  9 Jun 2026 03:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780976484;
-	bh=qyQXosIVlm1d2ieq06VqSov3tK1/uj2RCw2AMDVsioc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LY854tlUWARShj8og/Lt4O7B/KQkrffzr1mcnOnwau0bA8SQwHE4m+rhQJdSqRjow
-	 G5dB0CcwUxxKaV+FXI6P8cs3TfXU+lQDWtXs/HZdQiT01DBMNh62p8LWOXfTq4KcPk
-	 l2QR25t/3we7HjtMxgAlEKB7XznXfbVLt1ZnV3YFBCJVPWleyQcAiT76iivgcU1Vni
-	 q8cJZPEOCNEExzTiKWef9IQU0gzYhCtj6V3YCyZ1K616IFPm8wkkQ5N6ODiaeCh+ij
-	 GzDALhlxx/TZFy1ugnHb/2lD/8u9JhfRJLYEXBxqYCrT6HZ70AZx6ZO/yDAYdLa7wE
-	 4rdjsd4msd/hw==
-Message-ID: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
-Date: Tue, 9 Jun 2026 12:41:18 +0900
+	t=1780976701;
+	b=VzFtWKffaXpg+Kb+GdMlNmQbWaG32UyEJ9l4MbHTYfx5ty1bcoQhDZByMNO0BYFZkCmWsY
+	VLYA/sK40iJpP3PVwZDG/rYq5FrGeiWTSnnU6aDL4t3PGGYWVXUuN7B4YsrBp7NZKEftXu
+	Y+S5pmHhc7pkJFS76si0dhlxpbbgJiQ=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cJEBHfzpdSI7jJEj6r2mkE4T7/MNZZCxJ7D6F6LoI5Y=;
+	b=GqlAwjbCyhW4RI4yEiZPHwk/dY5roBbGJrKi9EArE6LHLMvAsS7RauBNLsVr9E3p499erBOPl
+	jeQdzcPN4HPQm9UdJWeiUnbMnsgi6YfBFzLjfW1V5mxjFf1UhmAxtorymZ4IgRxS823qinTE0K6
+	0pnZ+K7Ms9zr+S1HW6B7kUQ=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gZF2n6hb5zpStk;
+	Tue,  9 Jun 2026 11:37:05 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 885E7203B8;
+	Tue,  9 Jun 2026 11:44:54 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 11:44:54 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 11:44:52 +0800
+Subject: Re: [PATCH v5 1/4] mm/page_alloc: only free healthy pages in
+ high-order has_hwpoisoned folio
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: <osalvador@suse.de>, <lorenzo.stoakes@oracle.com>, <jackmanb@google.com>,
+	<hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>, <david@kernel.org>,
+	<william.roche@oracle.com>, <tony.luck@intel.com>,
+	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
+	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
+	<osalvador@kernel.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
+	<willy@infradead.org>
+References: <20260531055829.3636554-1-jiaqiyan@google.com>
+ <20260531055829.3636554-2-jiaqiyan@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <84a0b176-8534-e03a-9e6e-400c74ddab0b@huawei.com>
+Date: Tue, 9 Jun 2026 11:44:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260601095706.106551-1-hao.li@linux.dev>
- <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
+In-Reply-To: <20260531055829.3636554-2-jiaqiyan@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ah-naIiz09TTBpXo@fedora>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------icvouGHUGgkSuPMt58PwY0t3"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C81ED140008
-X-Stat-Signature: qjcsn1es7nu67o73dq1roxm1a446ycai
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ECEA11C0002
+X-Stat-Signature: ngqnjwxjhdnyfi87ginghc5jftxsdgro
 X-Rspam-User: 
-X-HE-Tag: 1780976485-400459
-X-HE-Meta: U2FsdGVkX1/LBJS44qZLPpnqFXqSiihFUfkuUtZSJj83AbVmTnK5kED0dBL7pl/iwu2Ngd2yxXURDKSqMikFACIJ2iSZe/eqF1/Uf0QJehxoU2htb4kKLYuvXz7ZPpGnoU739p8Iuqg+3aL0ouGXfYzMW5yGTuOvROrZJjbNVergE9U4M1sIdZtutoXpx6Y4LhTnutXk6BNxeBapcZBxpd9RJgG4njBISNHpEJhPQlRo1u+jjt2GYoKoeUEWaYsQBOmVjlmKiaWnYetvwp1+HqfyHAZPnawYh4ABBHzyRD8eNPNJka9G1JG39JNzL8VS/O80WeeI0LPQxDPODwQ9jyAx3a01pmvZ6uxEvK2JEEOvtokGfyN6Aph+8dgBYZt3SLKQdM4vjXePXi14vn5tHjNkkF6CXYPjYBEgxTzZLTVfq4bBZZ6+hm9YWTPdiLoDEttDyTlKF6zc4cT0KhLLoOe0mp+8xhC3Gmky0h3F8HcWZUfQurEEvUQ/g7NgC3LG3EPdYLGtu7nTMJhU30CmfGiE9XmqvSUCywR7JTlYBw4FMyaAlDdh/tS7JRcftYfHuARDjQiOtf53EAmnWEKvdvRYT+flDLwzLtP5U+8UVohLaynOc8bWqNw0YFBt6RmRgrywT9PQnm4mpdWx1f+MX0SoLTY/1QlXOcEgM1ctOzRBjno42vil8cp5JuLBQdcWVjB0XjEvmgWCV117HrXgdEjPshrhxNDwB415eZt2AqJvxj6CV5SBUVJi12WdIMy03f4BVBMP1T74NkchijYZ7lVW9oHuVx3OTLEncDmGmsILqxgHrYZiXSG5zafw1Kc6pIX47aZcV9iptDhJX/ccS4G8xnxkv8pZb1vi0Mv7y4UO1zqCOJsydKs6Oak9P7TM+2Ql35rAjqCXL3KLbBUJUldbbHeW7Rck7JNnywVIIWaw0e47C7GN4jSUCm2IWDWx9BjInOVJSazl28q4Gnd
- malJhoid
- 3n2BkyvwgHCIB0ncHWj9tD0MYJxMEqYW+kjyTXeZLumaHeZmWwrDa4xtz1BfABpV0roPCzlwjB/fmy9vck1xaThu2A3Ebq5lp5q4uRrs2f04fEX7EuNs3YfGOZn6i3DP4yW6A2l3NkjxhHL+PMhuxkIP03OOzAYDNZjW26/eL8PHypVZh8ACqlJ1Ja3tzOlvpROW61soeqMOd2+Isj2cUnjJY7Kl/cXBYpMsEDy4JeH0t0LAbfdFurffwJGzvGeWN5H1Yp8Jiz4g8yZBU6HPt9RrXmCw+DauhbpkB49SxJNEf0GA/o0IVrCicYCcrVzxswtsSh1bnBNBO7/ZiV1Meq6W2CwG8JDNMkzmuTmQkgtYCUkoBj58K6hr7fTcEZcFJjA/L7gQyiK9gqMl3lsExNbE/2ZAvZgtyFAri8yIl8BOX/PWr+shUGno5b+sCov7pHSGiaUL7DfIo+Qw=
+X-HE-Tag: 1780976699-222621
+X-HE-Meta: U2FsdGVkX1+FQUT+WUktbX3znQrPhUeCU3dE+YFZSdcvuVGxntHeLnq6qjQYEjMMMDa6NedrAXORzawhfiRZnvv3ZS5dLCLyVQ6KK+ofF+XmR5Sf9FByBJaTR29ZzqwdFTT2X5XY6jHEHU65I+q4Akg87/CsoWsmKMpUR+Nx9ujbqb3r3VDrkwNronXIsWM4u263Js0+K26u1WPoTxrzITqDQjLEeG3HomGSfqHSX1Z79FENp+PjeitGLx4ywJtPY1JEVwXyrPlf9aGBtbOLeF9SydFxUR33TgEsx4J3imfRcIdmi29CBq9i+bX4WUEJtH8vdD0U2Lq7vxNeLZzNspG38qlGQSVgEyBhmTwdw5D56OgMlVj9A6CDlmBZmBKmBB2NsXuSYLZUctFiMpb5xopqG5D3JA7oVN1A3hIvpgjUM/ODWKhPh7cnnsyjkCVCVEVwiVYIcWtq7wyzk09w4khohYN/bF37plC8lrRscKBt3WVNP3cFeA7mWXkaei27vJ2L8knUb6JQZCq/Z0gm1hokun/9vMSwXUFlvqfJKEZqaV1UItHbCtiwS4a9IaBnFpIrq7oMdUrGsnSfE8h+EBTu5FWnlqiLyK8gBApEet9HNPhrb72i2VRa7f0bwEaY3STommazbbWVAifnX9F5wCA3inb4OFBmkXfNF48AtY5t6uf9f4XfEiaXqaM8pUAAk/AlFXB75qTio9JjpHfzk2wPoqgO99QCGokyARDqClNMeBz3taO3Cp2NzhiceXjk3wFYsj40NSyimOQs0VYBkk6YggKADR0jiBaRS1kqDxLWkPhN2/7MqcebVNUguMqjg+HDbcDIz1cErGA+VUjlvRYmiZHUI/qczXF3jwnNpiXW+qhhyojCV/loAQBQEoAIlSAkErWmoso0fr2lqh4qFG7RavmScN5/QneYok2QBojpGypjqNHDE78Jz52CDUOBIAatdiFDIc0i8jvS1Cx
+ 72jCHiOw
+ zhxQoaHdi+Lx9BIVwoPa2l5y/UtVcpRA1gQNGukg4mFp+k0Ny56SmwrtbRrR+YdvUOq8KD9xuS+cjBrrrrWqwCQyJGmcDhzSg48AFW1KluMkD9fTbTHBIsorns+AkgPdGWgzVjnxjwg4lkzl9ZEe9VVGIid0d9gFZpZ6pfEC8t8ZXk1hglKtzA+AZqf6Xs2pNXf4dzPKt/Ayx8kNBGo3+32MqMUIjD6d2jX+vbDJHgran1mq2vgiost4ZjwQ9PpaMk9derURCbFM668ljyJUeESCY3zA2lMC6wGtgtbOsUwEDu5RU0l4KUAn5AVxUinIuCi0FkTX0P2zU/pTuOsCwIA67A0JGGC/2P0HNxTNi2EYr44GcYkoKkvM4xm/9IF2q6pnkKzwhL51FzWH2tcKifY1D9esoK5x2XVszDY/78hinS8OA7b2gs9mXZcXcZQTpxbIsNfVdT0QEV46IvRnrNjBCo3J4eQg70ytVvvd4Kr500R9iXK+nxPfmM/hIMzAQM++TIPGuMsQ9ZFN9Mf0xTz8XJBsu5I1kR/9ZvtrS6Vr/WHzRFVieRz4JoPCO7e7yTZmo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,127 +114,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------icvouGHUGgkSuPMt58PwY0t3
-Content-Type: multipart/mixed; boundary="------------LsToChgsNI00hjF1rIQcAz1L";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-ID: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
-Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
-References: <20260601095706.106551-1-hao.li@linux.dev>
- <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
-In-Reply-To: <ah-naIiz09TTBpXo@fedora>
+On 2026/5/31 13:58, Jiaqi Yan wrote:
+> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB folio
+> becomes non-HugeTLB, and it is released to buddy allocator
+> as a high-order folio, e.g. a folio that contains 262144 pages
+> if the folio was a 1G HugeTLB hugepage.
+> 
+> This is problematic if the HugeTLB hugepage contained HWPoison
+> subpages. In that case, since buddy allocator does not check
+> HWPoison for non-zero-order folio, the raw HWPoison page can
+> be given out with its buddy page and be re-used by either
+> kernel or userspace.
+> 
+> Memory failure recovery (MFR) in kernel does attempt to take
+> raw HWPoison page off buddy allocator after
+> dissolve_free_hugetlb_folio(). However, there is always a time
+> window between dissolve_free_hugetlb_folio() frees a HWPoison
+> high-order folio to buddy allocator and MFR takes HWPoison
+> raw page off buddy allocator.
+> 
+> Another similar situation is when a transparent huge page (THP)
+> runs into memory failure but splitting failed. Such THP will
+> eventually be released to buddy allocator when owning userspace
+> processes are gone, but with certain subpages having HWPoison.
+> 
+> One obvious way to avoid both problems is to add page sanity
+> checks in page allocate or free path. However, it is against
+> the past efforts to reduce sanity check overhead [1,2,3].
+> 
+> Introduce free_has_hwpoisoned() to only free the healthy pages
+> and to exclude the HWPoison ones in the high-order folio.
+> The idea is to iterate through the sub-pages of the folio to
+> identify contiguous ranges of healthy pages.
+> 
+> free_has_hwpoisoned() is added in free_pages_prepare() as
+> a shortcut and is only invoked if PG_has_hwpoisoned indicates
+> HWPoison page exists and after checks and preparations in
+> free_pages_prepare() all succeeded. free_has_hwpoisoned() then
+> can re-use free_prepared_contig_range() [4] to decompose healthy
+> ranges into the largest possible chunks of different orders.
+> Every chunk meets the requirements to be freed via free_one_page().
+> 
+> free_has_hwpoisoned() has linear time complexity wrt the number
+> of pages in the folio. While the power-of-two decomposition
+> ensures that the number of calls to the buddy allocator is
+> logarithmic for each contiguous healthy range, the mandatory
+> linear scan of pages to identify PageHWPoison() defines the
+> overall time complexity. For a 1G hugepage having 8 HWPoison
+> pages, free_has_hwpoisoned() takes around 1ms on average on
+> a system having 56 Intel Skylake physical cores. This is
+> 15x to the case of freeing no HWPoison page. The cost is far
+> from triggering soft lockup, and fair for handling exceptional
+> hardware memory errors.
+> 
+> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net
+> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net
+> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+> [4] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.com
+> 
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 
---------------LsToChgsNI00hjF1rIQcAz1L
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Thanks for your update. This patch looks good to me while some comments below.
 
+> ---
+>  mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 85 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index e47679e7a9db..03df929abca6 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -208,6 +208,7 @@ gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
+>  unsigned int pageblock_order __read_mostly;
+>  #endif
+>  
+> +static void free_has_hwpoisoned(struct page *page, unsigned int order);
+>  static void __free_pages_ok(struct page *page, unsigned int order,
+>  			    fpi_t fpi_flags);
+>  static void reserve_highatomic_pageblock(struct page *page, int order,
+> @@ -1309,6 +1310,14 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+>  
+>  #endif /* CONFIG_MEM_ALLOC_PROFILING */
+>  
+> +/*
+> + * Returns
+> + * - true: checks and preparations all good, caller can proceed freeing.
+> + * - false: do not proceed freeing for one of the following reasons:
+> + *   1. Some check failed so it is not safe to proceed freeing.
+> + *   2. A compound page has some HWPoison pages. The healthy pages
+> + *      are already safely freed, and the HWPoison ones isolated.
+> + */
+>  static __always_inline bool __free_pages_prepare(struct page *page,
+>  		unsigned int order, fpi_t fpi_flags)
+>  {
+> @@ -1317,6 +1326,15 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>  	bool init = want_init_on_free();
+>  	bool compound = PageCompound(page);
+>  	struct folio *folio = page_folio(page);
+> +	/*
+> +	 * When dealing with compound page, PG_has_hwpoisoned is cleared
+> +	 * with PAGE_FLAGS_SECOND. So the check must be done first.
+> +	 *
+> +	 * Note we can't exclude PG_has_hwpoisoned from PAGE_FLAGS_SECOND.
+> +	 * Because PG_has_hwpoisoned == PG_active, free_page_is_bad() will
+> +	 * confuse and complaint that the first tail page is still active.
+> +	 */
+> +	bool should_fhh = compound && folio_test_has_hwpoisoned(folio);
+>  
+>  	if (fpi_flags & FPI_PREPARED)
+>  		return true;
+> @@ -1443,6 +1461,16 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>  
+>  	debug_pagealloc_unmap_pages(page, 1 << order);
+>  
+> +	/*
+> +	 * After breaking down compound page and dealing with page metadata
+> +	 * (e.g. page owner and page alloc tags), take a shortcut if this
+> +	 * was a compound page containing certain HWPoison subpages.
+> +	 */
+> +	if (should_fhh) {
+> +		free_has_hwpoisoned(page, order);
+> +		return false;
+> +	}
 
+When the code reaches here, the hwpoisoned pages have passed through kernel_poison_pages,
+kasan_poison_pages, kernel_init_pages, arch_free_page... These functions might write to
+the hwpoisoned pages. Is it safe to do so?
 
-On 6/3/26 1:26 PM, Hao Li wrote:
-> On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
->> On 6/1/26 6:56 PM, Hao Li wrote:
->>> Sheaf structs are exchanged through node-local barns. Since barn stru=
-cts
->>> are already allocated from their local NUMA node, this patch aims to
->>> allocate sheaf structs from their local memory nodes as well.
->>>
->>> To achieve this, the obvious choice would be using cpu_to_mem().
->>> However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
->>> through possible CPUs, whereas cpu_to_mem() is only initialized for
->>> online CPUs. Therefore, we cannot use cpu_to_mem() and instead need t=
-o
->>> use local_memory_node(cpu_to_node(cpu)), similar to what
->>> __build_all_zonelists() does.
->>>
->>> The primary goal of this patch is to improve NUMA node locality.
->>> Although the actual performance impact is minor, it still yields a ~1=
-%
->>> improvement on a 192-core, 8-NUMA-node system when testing with the
->>> will-it-scale mmap test case.
->>
->> Oh, nice :)
->>
->> I have a question though...
->>
->> I wonder if would be better to handle this by e.g.) not returning empt=
-y
->> sheaves back to barn and freeing them if the node id doesn't match and=
+> +
+>  	return true;
+>  }
+>  
+> @@ -6936,6 +6964,63 @@ void __free_contig_range(unsigned long pfn, unsigned long nr_pages)
+>  	__free_contig_range_common(pfn, nr_pages, /* is_frozen= */ false);
+>  }
+>  
+> +/*
+> + * Given a high-order compound page containing certain number of HWPoison
+> + * pages, free only the healthy ones.
+> + *
+> + * Pages must have passed free_pages_prepare(). Even if having HWPoison
+> + * pages, breaking down compound page and updating metadata (e.g. page
+> + * owner, alloc tag) can be done together during free_pages_prepare(),
+> + * which simplifies the splitting here: unlike __split_unmapped_folio(),
+> + * there is no need to turn split pages into a compound page or to carry
+> + * metadata.
+> + *
+> + * It scans every raw page of the compound page and cause nontrivial overhead.
+> + * So only use this when the compound page contains HWPoison page(s).
+> + *
+> + * This implementation needs rework in memdesc world.
+> + */
+> +static void free_has_hwpoisoned(struct page *page, unsigned int order)
+> +{
+> +	unsigned long curr = page_to_pfn(page);
+> +	unsigned long end_pfn = curr + (1 << order);
+> +	unsigned long next;
+> +	unsigned long total_freed = 0;
+> +	unsigned long total_hwp = 0;
+> +
+> +	VM_WARN_ON(order == 0);
+> +	VM_WARN_ON(page->flags.f & PAGE_FLAGS_CHECK_AT_PREP);
+> +
+> +	while (curr < end_pfn) {
+> +		next = curr;
+> +
+> +		while (next < end_pfn && !PageHWPoison(pfn_to_page(next)))
+> +			++next;
+> +
+> +		if (next != end_pfn && PageHWPoison(pfn_to_page(next))) {
 
->> it's not a memoryless node.
->>
->> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
->> places that can allocate sheaves from remote nodes; sheaves allocation=
+Check next != end_pfn should be enough. If we have next != end_pfn, we must have PageHWPoison(pfn_to_page(next))
+or we can't exit from above while loop. Or am I miss something?
 
->> could fall back to other nodes and then SLUB could keep reusing those
->> sheaves from remote nodes even after memory is reclaimed.
->=20
-> This is a good catch. In addition to the fallback mechanism, task migra=
-tion
-> between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main(=
-) can
-> also mix up sheaf structs across different barns. So yeah, changing all=
-ocation
-> locality is not a silver bullet.
->=20
->> If this works well, we probably don't need to handle it in
->> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they wil=
-l
->> eventually be freed, while covering the other case too?
->=20
-> freeing the empty sheaf if the NUMA node mismatches instead of putting =
-it back
-> into the barn is indeed a good idea. I like it. But unfortunately, my t=
-esting
-> didn't show a clear performance improvement, though there was no notice=
-able
-> degradation either. :-(
-
-Hmm... the idea still makes sense to me, but yeah, it's not late to fix
-it when we have data to back up.
-
-> I also did some more testing on my patch too. Under CONFIG_PREEMPT_LAZY=
-, the
-> improvement is only about 0.5% (sometimes 1%). And when switching to
-> CONFIG_PREEMPT, the patch doesn't seem to yield statistically significa=
-nt
-> benefits, likely because sheaves get mixed during task migration.
->
-> So, perhaps the performance gain just isn't worth the extra complexity.=
- It's a
-> bit frustrating, but maybe we should just abandon this direction and ke=
-ep
-> things as they are... :(
-
-Ouch. Don't let it get you down, it's completely normal for experiments
-not to go as planned.... ;)
-
-> Thanks for the feedback anyway!
-
-No problem!
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------LsToChgsNI00hjF1rIQcAz1L--
-
---------------icvouGHUGgkSuPMt58PwY0t3
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaieLXgAKCRCGXBN6rc5S
-1qrpAP4gLfwO21CzsCViBt4GtnDpBmQbtO9g3lhYDimYxD6SHAD8Dm3/YTjrRZNF
-LYUGhDRyGBnaix6vUOKP11K78F4DLg4=
-=Bx/E
------END PGP SIGNATURE-----
-
---------------icvouGHUGgkSuPMt58PwY0t3--
+Thanks.
+.
 
