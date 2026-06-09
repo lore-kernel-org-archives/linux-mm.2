@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE70CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D25CD8CBF
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:54:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290EC6B0005; Tue,  9 Jun 2026 09:49:58 -0400 (EDT)
+	id 111716B0092; Tue,  9 Jun 2026 09:54:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21A916B008A; Tue,  9 Jun 2026 09:49:58 -0400 (EDT)
+	id 0E9AA6B0093; Tue,  9 Jun 2026 09:54:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E2CA6B0092; Tue,  9 Jun 2026 09:49:58 -0400 (EDT)
+	id 026196B0095; Tue,  9 Jun 2026 09:54:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ECCA56B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:49:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD373C21BD
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:49:57 +0000 (UTC)
-X-FDA: 84860507634.17.54392DE
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3B3CD8001A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:49:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E72FB6B0092
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:54:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ABE01C23E7
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:54:43 +0000 (UTC)
+X-FDA: 84860519646.01.CFC49F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AEA504000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:54:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crpKqVn1;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781012995;
+	s=arc-20220608; t=1781013281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+G1EW7+M/7Jpt4UDPj+TTL5ny3BpzLPZZXl1ymkmAZ4=;
-	b=uE/2th6bxuWPTc7bN+SuxuNFWXuipmMMuygtEGQ7m+riSPqfRIr0iN90lHj8FQWkYp2H09
-	yUVmHCMu223fJdswPmHxCuA4PpUY7AeK/9ajvHLOVVvb7bw51P/wvgbS4YUZULfvT8JSTm
-	FDPU2BfE+fb/v9+NN/C9IfXqjROT5BQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mgkuRymXgQquqyekcZ0fsD/A7mXWgkkGEwrlai+T3Ys=;
+	b=SuKcY6CkVSIDx7Pif2jucBUbhfZ5bQR2Neh/kfX7S5QpLzcm+thJXB8X39pBZClNFmms7v
+	+wonl/saoSCTa4loasB0skzkGqKabYY5Q8ayBXWaSy7tmWlQ0lIociH59zRORtROXIogch
+	bFedzUYUnVvhpB0ThwVYS+QGDnkm8Jk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781012995;
-	b=1+TDcd5RddtDqApP0WEC4DCvCLcXlmCs0HnJgf/GtAomLj8gYY1mDldYtp7iepi6FsJsHt
-	CKg1XBsQ+68aBs9ekfyKWAafLnyPd56HRG8lA5OkgXmiOPy/tMCU67Xphb4MQGy93sa8M4
-	mJCKE+mdyHim/CpppqDdlA8CrbSw+Yw=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gZVdn0Ywpz58fc9;
-	Tue, 09 Jun 2026 21:49:49 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 659Dnhdw042464;
-	Tue, 9 Jun 2026 21:49:43 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 9 Jun 2026 21:49:47 +0800 (CST)
-X-Zmail-TransId: 2afc6a2819fb216-0fd65
-X-Mailer: Zmail v1.0
-Message-ID: <20260609214947060zpq8Z6jdYop1TceXXcLoQ@zte.com.cn>
-In-Reply-To: <CAA1CXcAsx3cU6HNea1MgLocGReoGoFQaq3NBFd-NUeOW8nJjmQ@mail.gmail.com>
-References: 20260609201202615oT6yd_LtIoKkGLksFaCha@zte.com.cn,20260609130611.88058-1-lance.yang@linux.dev,CAA1CXcAsx3cU6HNea1MgLocGReoGoFQaq3NBFd-NUeOW8nJjmQ@mail.gmail.com
-Date: Tue, 9 Jun 2026 21:49:47 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <npache@redhat.com>, <david@kernel.org>
-Cc: <lance.yang@linux.dev>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <usamaarif642@gmail.com>, <yuzhao@google.com>,
-        <aarcange@redhat.com>, <akpm@linux-foundation.org>, <david@kernel.org>,
-        <chengming.zhou@linux.dev>, <ljs@kernel.org>, <ziy@nvidia.com>,
-        <baolin.wang@linux.alibaba.com>, <liam@infradead.org>,
-        <ryan.roberts@arm.com>, <dev.jain@arm.com>, <baohua@kernel.org>,
-        <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>,
-        <rakie.kim@sk.com>, <byungchul@sk.com>, <gourry@gourry.net>,
-        <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-        <wang.yaxin@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBtbS11bnN0YWJsZSB2MSAyLzNdIG1tL21pZ3JhdGUuYzogUHJldmVudCBmb2xpbyBzcGxpdHRpbmcgZnJvbSBpbnRlcmFjdGluZyB3aXRoIEtTTQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 659Dnhdw042464
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 09 Jun 2026 21:49:49 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A2819FD.000/4gZVdn0Ywpz58fc9
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3B3CD8001A
-X-Stat-Signature: sks3mbj3j6mgcutn8d9ct5wcksnz1ujf
+	t=1781013281;
+	b=C3QYKP+eLYzLHSnfrxmKN5u1xbCgwifIIP1AvkUR4zGnpwYQHHi3N2iD8ZgUU7q6eKx3vE
+	U9dE0aaJQ2HhQ8OVAo1dbNr8Tx2cwAkQYh+P6jKJ5Dn7azVYjQVX9JJmZiAcoszFfZpYo2
+	7FIlLzRKkYzF5x69edZLtU0PoPVqoiE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crpKqVn1;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B0A0F43E9D;
+	Tue,  9 Jun 2026 13:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612CE1F00893;
+	Tue,  9 Jun 2026 13:54:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781013280;
+	bh=mgkuRymXgQquqyekcZ0fsD/A7mXWgkkGEwrlai+T3Ys=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=crpKqVn1JWgYYIiLt8y4v0XMABNcx+oc+u28Cu7f6kEwae/cC9sENy69hKtuy4bqV
+	 2afTNlO7RRMw7rUrE2AMYUVuETWhPzE5mfW1LQjUvgNgLwSWpQS97R5PwvN0jf/2+p
+	 PQZQBt/2Z0xeyM5lv2+q2Xk/ACPBgincxLhUiZENZiIGceQddsRc0nZueEsWwKs0P9
+	 qRSqWvMCbstOXC7RD3SmmF+p4nrjlGeaFGcP+UlOuRI8ihLvAALCKr8u+hvXDG6MVV
+	 0OZyjvlXmf9NNTbobcyEMw/t8S5Tzeg/rON3AylWffcoMExEfA5pDFozSjEikCZbwF
+	 19eWSe3M3l14g==
+Message-ID: <78ce28fd-62eb-4197-b167-73be7bd86217@kernel.org>
+Date: Tue, 9 Jun 2026 22:54:36 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>
+References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
+ <agr8Nzr8rnDBTuVX@pedro-suse>
+ <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
+ <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------2XWiTgcVnut66LZ1X3d9Xaqq"
+X-Rspamd-Queue-Id: AEA504000B
 X-Rspam-User: 
-X-HE-Tag: 1781012995-817651
-X-HE-Meta: U2FsdGVkX1/B6XBUJVkL+63s/EyiXGND8GwwmEFcNcFJpvCXTk1/snrOMlg8KZivwFNuXjWR+mbg/5fx1/3HEWIyjw2MnnMT3Pw1h+grhWx/fRjcDbjQIBEBBsppkUCafzZHBRhY9r+6ATKcq50egcM6xRIz20ZlL0sJmZzHYfAacLQZ3NSKXcmkJ28tAkS6zbIRYMvyDB1HIaPHTQzEsA5CVh88A5FW13EbRrPCOGLLtJIAQO37t6opyN73N7K0sAC1e+T7CaSuPq9Jvv7sat5gg113VdB0DMhT9u0/yWDZD9FtDtNYbrAYyYvVnCzcHvoR0dCAD1JDOogiio3r160YZAsuMe2WK87q4YSYudEvqxVVB1bhQqSWZZbUsGt8uZeIwCFH4nN+cKFkhKJEo48JV9rNgSjyHIl9ZAPoR0KWDWiWs5NylX2jvhgBxLkUHQ0MdOtETM37+rBfvkytru0qUEYfjlpG2iV7o43eeyhGxa6WMMFZnyPoVjK4TY6aq3+JjYP9Y4DW/iqGSqIM0lZ0qcGTRfe5xwlKzpPtNGNUDOwzX0sifJ/npokneWCotQpbcF3rbDb8/vzk6vhr+sQ50QH5wO4C5Rl0potlmHn82v6/sBPGuPt1v0dUPTQeE+2x0UZUr+FwsIH7w1zZpNr/KyOSQt++zsNmwuQXYUkvahymAEUXWsFKcxLpZghX0CTanGzEJQZ26Vex0WPwz0/3ocUAsIJrjsCdDy5L7TQr1exTVtli0jJM9iHPLxOoHsR1lYnhMSRrMJqRCM/WXYlK/9l9y3YL3DUS+R/4xEwe6s3k/mVarkUhiYKBir8sKInGPo3JwDN/HQq58IlV2lOjHhB/A31R9hxsTrJxiJB6SENCJchginRSiW5fK/MYEaNpSNroigbZ+Rxh469dKLqjvLaiWaBB+GuGzuU0AWwAeg3meGH4hCMeCqxzf0ktjs5TCQxYsmM3ouTTG38
- GgTNlC/w
- dxSsUKIui73m4jLk0hj6uMEo8jrSpXkxalF5sxvz6tq+NHSvMccVdD9nw5pBbAiKwHqg2rc1FFz2+QfAVHSZ3rWk7ZE6MrYjO0cW3xGSd6D7OMXg2OkkZUcpcL0/WBavLdQacQQno7QwtaU2Vl3gu0stMXyy7uBll+yuAOknrOEDE7yseJPW2Z0AA/uewLcTdNsAVD8UdfP9FmIH4y4/AmgBf+sPhpaBM8NPQfYtS28uGNZ4=
+X-Stat-Signature: fxihjrsz96s8ncqqyifkd9qzfxxyiizw
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781013281-655503
+X-HE-Meta: U2FsdGVkX18EVTIF1K5oe7WQsg2eWu1V4XoOWotBjbNMe5lZk+WLgqEzuf2XsT6vkItxAYjavjGsIh8EdI/CBanaGqHNbesVIXfySU00yqsFEoHwRFmJ6FORNxHLwnIKMHcRX3C4xAZWytrKHeNc+gL6u+u8W1olCeDHFaWHq9Qz3vOwmp4cwx+zKHH9ub2WHYzHvNdT4ncyHdCQ2BjBAaE39em56p3z7DSTbnKJFSdGdB7kIK3ytZLc159AHAqOmeaGhUqCsZ8/CXXAXbZ+NgN1tvKVRD79hrK6PlO/dSQQ6JKgfwRFOjsk+5DiVW2PIw6nvHaNmw4/ayXAx3/f36Bt1KvevXQZbYg7oPHDSu9Ea8UQudLRUu6UUZHF1DOqAOv8Orkk80dfTIQwazsudpsVrdL5r57IZid7j2vu2YbyCqI+Y2SNpzqYRp+A+vydso8LoRtnx/nfoO/6Ipu6CQrTqkVdP4/l1i2bBKkkvl8XVAz9za4t+MqSdOit7zVpOKdeMoNUWD+M5ymTBpEjjLFir7PctIrhuyX4q6ZaUy0IyQBMHKLPxAYiufMNFGMXvyH+uVHRA7W817ONdZWpdQ9Vw3j9UwuXlCUdI7BD0AETZbZa8SnMfodH7UqG/utcr1BmRbxar33lzvoOWJuBRaAwXxx3IccsR8RAPpxyo4/HMyF9GFnh/MRcyZffzbSYd6Cwrtl//8vu4y24X5cN7C+EnSFYLfi7ViAanwja2l1295NLktvu+Lb3jfFEJdxSl55h6Sh26jewvRpHXDFokANPMT5IygSDlplG2T3XkSJ0W1lhkBfNLa5fs0MzyWcqeIg3euj8D7wkZds9Zoa+aiCfGJEyAhxcEdbnTpUTU3eyZs4soBInKwWB0slVSBYW2SBROr2hcl1fgEc/oBPWOKKESBVsRKmWbbQkCPsanayzL3Bt8HYH9ghIkAHvWVBqc0sPom6ejqtZfa3t2OK
+ E1KoCTUB
+ 4j9YtVSNqXRR9kV82azXaJxxlaRvHhXejmiceuH//ldNy3j7nR3bZYR0G5Smyu7ubeHdyQPkO6k3xRTQpqxmZmBKTJJm1MVFq/cl5a3CenwX2JetZVnKXsLvSGiKCzwwTxb7sqXwN1kbX3oZ8PT6QSzoaCnhOhikL7vPYy7gAZEeVVwPOQIRZ1Vrq5f1NkNKFWlU4dCFCLe9al2o+qUR9dMJxLzPawgI6a8ILlhzCjYjDMW3JTHXXtlvOYNb+9nzEsjKu8tROoiAGVidbEVaTz0Gx+0W3jlIb1g1ldXip3r3njp68MgwNhN+Np/jk01BCGDIRiwbTJWxNPPblXx8HHqll9DHjrEMlIbGu/R08oneDyLqpd4TXZ808XwiqMv2XcJZtivNgTgrVqu2HlBPalnMY5+zx6Np+iLEcyp9ixWYHkOSj0jfNKVEXK5+QFxmdciP8KBN9fmVQD8U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,41 +100,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > >AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
-> > >a huge page (which may contain many zero pages). If KSM is enabled and part of
-> > >that huge page is mergeable, it can easily be split by KSM, rendering THP's
-> > >efforts futile.
-> > >
-> > >Therefore, in our actual production environment, we typically avoid making the
-> > >same region both KSM mergeable and THP always.
-> >
-> > Right, some setups may choose to avoid using KSM and THP always on the
-> > same region. But that is not something the kernel can assume :)
-> >
-> > David noted in the RFC that QEMU may use both MADV_HUGEPAGE and
-> > MADV_MERGEABLE, while KSM can be enabled later system-wide.
-> >
-> > And I think Nico means something different from KSM spliting THPs in
-> > general.
-> >
-> > KSM has been able to split THP before. the new part from b1f202060afe is
-> > that a KSM-triggered split can also remap zero-filled subpages to the
-> > shared zeropage, outside KSM's own use_zero_pages/pages_to_scan controls.
-> >
-> > Maybe the changelog could spell that out :)
-> 
-> Yeah maybe I didnt properly explain that :p
-> 
-> After some thought I still think the alternative approach i mentioned
-> in the RFC may be better.
-> 
-> ie) prevent the zero-page merging that results from KSM splitting a
-> folio. The check we add here is more general and will skip this
-> zero-page merging with all MERGEABLE mappings, not just those causing
-> the issue (the KSM splitting). The result is that even migrations, etc
-> that are also MERGEABLE will be skipped needlessly.
-> 
-> If we use this approach we also don't need the first patch of the series.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------2XWiTgcVnut66LZ1X3d9Xaqq
+Content-Type: multipart/mixed; boundary="------------TiMeMR5Lo7gpXV0wWewZC1LH";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>
+Message-ID: <78ce28fd-62eb-4197-b167-73be7bd86217@kernel.org>
+Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
+References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
+ <agr8Nzr8rnDBTuVX@pedro-suse>
+ <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
+ <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
+In-Reply-To: <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
 
-Yeah, That's also what I want to suggest.
+--------------TiMeMR5Lo7gpXV0wWewZC1LH
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+On 6/9/26 9:52 PM, Vlastimil Babka (SUSE) wrote:
+> On 5/20/26 06:35, Harry Yoo wrote:
+>>
+>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>>
+>>>> 1. Allocations and frees can happen concurrently at any point betwee=
+n
+>>>>     these steps, and we cannot introduce heavyweight synchronization=
+
+>>>>     mechanisms on the fastpath.
+>>>>
+>>>> 2. Currently, cache_has_sheaves() checks whether a cache has sheaves=
+=2E
+>>>>     This works now because sheaves cannot be enabled or disabled onc=
+e
+>>>>     the cache is created.
+>>>>
+>>>>     The question "Does this cache has sheaves?" should be split into=
+
+>>>>     "Does this cache support sheaves?" and "Does this CPU actually h=
+as
+>>>>      sheaves enabled right now?".
+>>>>
+>>>> 3. Once the sheaf capacity update is complete, no sheaf with stale
+>>>>     capacity must remain.
+>>>
+>>> Why? I don't see a huge problem with having multiple sheaves with dif=
+ferent
+>>> capacities, as long as you adequately, opportunistically kill the she=
+aves
+>>> if they don't have the desired size (say, once a sheaf is fully empty=
+).
+>>
+>> Haha, you got me.
+>>
+>> Right, enforcing a single capacity at any given point introduced so mu=
+ch=20
+>> complexity that I started wondering myself about whether this is reall=
+y=20
+>> essential.
+>>
+>> My main concern was that the performance characteristics would become =
+
+>> too unpredictable, but actually, users can avoid that by disabling=20
+>> sheaves, shrinking it, and re-enabling it. So that's not an enough=20
+>> justification.
+>=20
+> My concern would have been that we would need to track capacity per she=
+af if
+> we allowed sheaves with different capacities to coexist.
+> But patch 3 here already does that, so it seems it's necessary anyway..=
+=2E
+
+It is challenging to avoid that because, let's say, a CPU releases local
+lock, goes to sleep to reclaim memory to allocate a sheaf, re-acquire
+the lock, and install it. But sheaf capacity might change or sheaves can
+be disabled in the meantime.
+
+Probably wrapping the entire alloc/free path with something like
+SRCU-fast might help avoid that... but that sounds quite ambitious (to me=
+).
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------TiMeMR5Lo7gpXV0wWewZC1LH--
+
+--------------2XWiTgcVnut66LZ1X3d9Xaqq
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaigbHAAKCRCGXBN6rc5S
+1sTJAQCXB3/zmPYt9ZMQc+w1or2ioE4hbAopvJA0ha8uY+bcqwD/c60gL7CZMR58
+ReFwFzstlLLXK7lZVyYwZoe/kx8aRgI=
+=KobS
+-----END PGP SIGNATURE-----
+
+--------------2XWiTgcVnut66LZ1X3d9Xaqq--
 
