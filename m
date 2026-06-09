@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9693FCD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C69E7CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 057646B012E; Tue,  9 Jun 2026 15:18:00 -0400 (EDT)
+	id 38B876B0130; Tue,  9 Jun 2026 15:18:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02F4A6B0130; Tue,  9 Jun 2026 15:17:59 -0400 (EDT)
+	id 33C856B0132; Tue,  9 Jun 2026 15:18:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87F16B0131; Tue,  9 Jun 2026 15:17:59 -0400 (EDT)
+	id 2527D6B0133; Tue,  9 Jun 2026 15:18:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D89296B012E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 144C46B0130
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:18:06 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A18C21C2F83
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:59 +0000 (UTC)
-X-FDA: 84861334278.18.992B31F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D8C9A100009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f6x+HKtj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D285C12076C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:18:05 +0000 (UTC)
+X-FDA: 84861334530.18.792A3C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F3A96180008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:18:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6rVcgBb;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781032684;
+	b=wBWP2BYdBEjmO6mP9dQf5UTVHCGlmSgl9rlrpQQ2RXrHFwigtzQuWMiRgIv8DSQvbev7QY
+	SlVOjr71se+CyJDlJPf0kaPtTV/LkY9Vx72ATCBQTebTL8PVvv1RLbYbO5iDxAmsLDuiYu
+	8nU+hKVj+U4HCzx3cbXg1HJevE7MMgM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6rVcgBb;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032677;
+	s=arc-20220608; t=1781032684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qkLI2fdYByXyCgDm4iAAw5nvnTz6NbS2AU9RKI9kMBw=;
-	b=nev5LDRhTLRBKQDY8Nv5RhnYPAiZYitZOuwk2cSfFaQiBu49yv7fzCZ1degCVN9NmQY1ZS
-	Epqlt21fEZHmpW3ufJCFkyiTMxEfxwp43JmVxn+r1udYrK8feC1tA6Q96xh8e//mrJw+3m
-	Rh/WOPE97raTkDsQusM6YPDbUwyrBCQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f6x+HKtj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032677;
-	b=LRk6U5UjhyFOEW0qU5I6DCSu7J34fvLo18HQMgeunKTG8ZLQk4H1UT//rJZtF87Wj6lhfa
-	rVZNDvomL7JtWT/r+dpR7mHwp/pZXXghdJ3xOtJsVMpt/YMgsET2h+UO+r8x002Tj5lgqt
-	Ynr8CZe9thViZED0kwR2ZlrWtwRmRuU=
+	bh=OomWwZ2E/uUmvbXfccoW6uFSslUSkDomnKFoGy4lNf4=;
+	b=4Enb0WHuWu0vPpO2gc/2ci3gaCyHifBe6winIbWEjrEaOCuf/nnaoAp+9xVJcwXI7v+1VO
+	Hd+Mx+SlXi8PRgV/987PBB1QHG4Y2b4/g3QDuA+Mwt1XRVUP3eye2WbABb5Dd7ni5JEdGK
+	lbXNS147eYDAR7q11rqrJKFVhIs//7Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63BAF602C4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F35643E4E;
+	Tue,  9 Jun 2026 19:18:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF811F00893;
 	Tue,  9 Jun 2026 19:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2B81F00898;
-	Tue,  9 Jun 2026 19:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032677;
-	bh=qkLI2fdYByXyCgDm4iAAw5nvnTz6NbS2AU9RKI9kMBw=;
+	s=k20260515; t=1781032683;
+	bh=OomWwZ2E/uUmvbXfccoW6uFSslUSkDomnKFoGy4lNf4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=f6x+HKtjJQa//HVdP+jdTpzgQjMzAXX/8DUi4w8cMw/3BsbtWRGn6bd2e49kjJLr5
-	 MCqb+PhjDxHazy6xuaIa+TQF0xQ5bPBUJQCwGH08tJ8HseG3ZXIZ5P7I4j+ILQPg7c
-	 P77wIouKbJuIMS9bOJ9JRPVQ216+621pDd2wUQmBx9/wiZFhl0m1fc0gYsN0clMt8x
-	 4tSiZAZp1nt/nGi1UAanZhW267SFA5ipsbZGlbhyEoBMuiT6tdDTBk+TBk42hpAuNA
-	 GHqlY+n/YJbdj52UmMDovdi/cmva7RBh/7TR7syAiDLxJxugc9wUY2/WmV7OLRe98Y
-	 LKRSWXqiSEXkA==
+	b=X6rVcgBbqqcy6A9FVMlgU1UJoH0xU01VsG5i8Ygg4IsKChRY/9VOAsjBR3iUedsxo
+	 Brp/4f7kIscPxi3a1CuvX4BzmBWghtHS229HEPJSstGiaeSS/JiR9mi98eyr+FeDXT
+	 3z3F3KO77EcCY+EKLfnozl19/RjLbZ1WwF8FfcIHw0fYtgYnuQz6mDa8LQY+mLQrxO
+	 FdUHyNX5GzlF8CTW0PVbwtZUtBT4YaHZOWx9VCiBjIHTZW8yTt1n2nNwgpOH5nHVh5
+	 s/u6t9qIAdIawLWUS3Pw15SYD6Ar1e9qz2td99E6lHfJ7i8iL+fmVF7nFhX+MqfMQi
+	 yNelwjegkjg9g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:07:47 +0200
-Subject: [PATCH v2 08/83] block: rust: add `Request` private data support
+Date: Tue, 09 Jun 2026 21:08:55 +0200
+Subject: [PATCH v2 76/83] block: rust: add `request_timeout` hook
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-8-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-76-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -89,32 +89,32 @@ To: "Liam R. Howlett" <liam@infradead.org>,
  Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+ rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9400; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=IAlWkCq69WO4onn9FqDheU5v7rVQqR0ixWrEuSku+Rs=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGS7NyFEmzZd5N67NuhGtgFIfmFZn7yqauVsq
- hBmYwRv/xuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkuwAKCRD6UCkIqsW9
- 0LPiD/9L2omkcWDTbakIiMk5Ihy3WJcxnZhFx+yd0Aw6J6PCE1tGLdx8egOh8hEmDqKO4LSpjCS
- HwuaOKBz1zq7J1wqo83FMDQ3ihDLZShdQ5bVAzZ+SDREyie0Tf7tln/nyMdZk84VykRn05tI3wY
- KtGWxuwh1LDwjPCzvbRUsNEfGfXt/izPMZsRj8CAx2F/R90al+BiQgPKBuPAMvoVpvxK5IHgH+4
- oVf7qrNw0SmhClSKn4UeYDhMjnj7eVm2zVVVhB+0z8zAuXZByKMdD5/wKkNZbotpEr60e7dXjAz
- bdT+b4dUlZ/TJNuXTzuI9kmXNd0iRwl7il8KPNwoX/wfeEyzoOUefYWsGhEnpzRSz6x8eYBWwdz
- RON96H7Z7Pza5TakQkhStQdmVkiMHGKSM7YSuuG2vHtvYHhf2zyKCRRptBcjlbKRNuPPlC8UDIC
- LT1VHlg2nlnTDQkugFTiLJYX9p+mqPdYKoWb5XD1P2kqA7YaZfDaM4W5vwwjw+XJLFN9DF3jrCg
- A+4vK44bZesXVrZUgG0GVrDly1Gg6+n/IKnZiE7UyImj8/RqxOk3SjbKRImkCIdjQGF9EKKb5BN
- BV+B0LxuV1V61KuZ1UC3Y0GgXktYCDk75RjGNw0oMXutl51YvoKIy5fkMYS1OdKoVpVMUvY+erF
- Z+yXmonrvVQnC0A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6548; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=97jxH/QmtmH/CWohF6JLit6bM5t2zk5/a3nktYO+2ZM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT5RrlseORLgOiPT447AgxzjasPLzO3FtBsB
+ GDuy3HwtJ2JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk+QAKCRD6UCkIqsW9
+ 0FU6D/4w74QvjVjFXSovnx/Stq9wkAc4CPI43xP8x1Grj/P5qSz0FJqXX1dizqKmTuaLX3ClnB+
+ pR5tp9eY0sOz0ri5A9awMYIcBqbQvFR9cdXUhDeLczI4iIMaG3/hG86CGS0tlsRXpv8ixwhgUa5
+ LXSBEwLccPUHos62AEBrJqmi428crWlgbNHmWRun4/vFduQi2pNd9CrtV+2BmcKXmT43/9toGJS
+ 1w4lvTIqkwkCvSq7lKF4yMDtko4L8peJuF8y9zUaMmsA9io/FqVpXvjNGAXyoxwUHiSnx6ZdWDW
+ Q+6IBUXA6DqGRZyRaqg+rtyVPeA6EmPNdqH5Et1iGA+AlBulTUMSGmaqxvCGnAmaF9ApiuoPO4J
+ UQ9wyk21GdV8G/q5F55DXkpIzswLIfZkn4aTca+A9ktr+lCosJf9N8XGeHEJWC+oZOSOHI67Bqd
+ tJyUzCSqWpUxusCek7oAup3sgT7AqqMPS0rxVPxIuZtwStw2NCoSvPtFZNtMbCjyj5PJeJe6wrg
+ SzouRr+/KKNuQsBEXIxx+0KRfhu3qmnZ5Bb0rCJ4qrPX7/twL8eksXNu9+4cSI/rkrWd6NZAl51
+ mBgbi4cUrutsWQQ+ZznN2lQJvrApVfnqUeDgtDLP7aqMUV5wSXdb+g5UgQfYLy81cBY8/FoJRMM
+ fCuMkCEyeqmZKAg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3A96180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D8C9A100009
-X-Stat-Signature: kjyts5c8eef8qm36jww78ip957neprjk
-X-HE-Tag: 1781032677-718091
-X-HE-Meta: U2FsdGVkX180uYlpuJ14GTLLa64CdGqYs30BtIJoQgatmbsmWc91ON5MMQpATb0+GrzA6R6SADb7yF1j2Ui4WVBu4Y7RjojvB6+6B8l31w/ZboquNgJdL3S/wHWqIhwEEeDNcQiX0BX+qFQsSZsdsPfhtVVVnkXVt4C26oHo5ITzovOKH7Xe9Q6nptSi7ufgJq7XoGLxtwq7Mq6XqaD/tLyDSjF6EioovV/HMrZ53FOy5n4A7/DvJEaJUH9DLppXSYLhikdnvW45Clnu30JZkUQgVLOwpssSnj2kdk4csOFYxcOM3Fla+fA1FCL3FlJFW8ZhagUSleCo1lQAmmEpq/pqPaho60wPuwfOQM+IxRhZrk0+D/Jj5hgOvAPE5lbvVwJe3cgTKQ8bl5B9VBfxgcwqmucSDqJhtOvLh7tE7MpMxHDn0zVVkKymTEXEbBrXPsQ8ffVt5qKvEBxOCEo4qBoU4QnN0Ps1KU1U9/KXP6/DSp2tnytY4b/MNhUVzS6z6dr9QaDXi6SpYwiKpYk59Tyqtr1abUYYxaI2hqeoDqcPlracmAXf+Ip4RS2fmDi/qIHBOWPDGY0tlh7IuZoP6t6vpuQqLT5dG2HWGyPubIAU1Sdlt32euoNN2vxhThWCAKBo7yVaJIgsYHhU0OamH00guRhj3yoLw2DtBP3fOaAGMBoqnybtWrScrAn7vP6T1FizP/zN459sbICKF6isjn8rbDKENWyv6gqiUkd2QCcOUkTW+/BkP/YYy22jx4WBS3cypP2GXXlM5wHyRKy2UqP0F6yTszwCzAaHzJSBuiNcn9YK0dt6xtJy8gTIdcb1H/x+IiVDI9ZMDBOmypwXLkXKQAIgiR2NAn0k0TxODFKow2sZ1nqLVjgzMEEcoqqCQ1W36AqBQOORyKiats/b8Zs88hhST9sO32ZiNP7oCamPCXn2lmOsCBfBLWdANOxwY4P88l/0OHnG/JFrqOY
- zXQNXWO/
- IEvg12PEab1W/MJFW3B+os0+oWxJmjaa1DC1hiTUYCIibk6J/D/hWUVH5s2kHzYGUzlI59VD4Fh3rEfr+Uw792exqvONFr3F7hn2/c/1rjskH68nFk5DGMn1cgh7k98xUNUtGN/rGeblbLicTieL+fLoZFly6ZmhBKCExh7WyOdyX9rOMiJRU4Roeq0hZy/eAIWWKSz0Ro3a9MinZctU9EaAugfOipWEbJvhMbCiHDNOwpVKvpUK8rOIcVJmrTr41JyrqMbvH04ly/GKrTIVkN3VSOTm56XaocADsjpdmuBOOfcG4agQ84GOr7o7MV2z0zCVQvjBLbKA3+TWPSFi/DNy4pA==
+X-Stat-Signature: b8schgkronxjskzrw9nijjx9kugw7xmt
+X-HE-Tag: 1781032683-153780
+X-HE-Meta: U2FsdGVkX1+kR0An2hnwSCvlNjQVHgE/GaBz29aDAy3jrc0C6vpCz5e3xTtl1ztTU6j7tVfx/UUdUGYXY4Ys+0x33tiK5GdvnLPR9B4eClASKDXhIOWVQWDknhXgQdhh5gDE68Hscg7wEZdtQKKktKw39icUBGye8sWPQzZtgSf1XbAaOKHGve7DTr7g65PWs3PiVJjVQrXuJV+Wm6/xckzhuBfF+XNzS6mp864I5rVBONhm4lIVQzalQAjaL7zSm7NXlQM7PpN5vsc590Yek8o0uTshDqPgciZ7r9wx1LTJE9WN2zX6LF4ItIVlzDiVEkSp9XW5pd754h3+aegUPjowDJqPn4O4XisZzTzaXpbA8aGlFkxe71jfKJa+CBGQcEy1U+c/LH26XIm7auISt8G8enNAPC6Si0h6Zb4B0KCdnFgJY4QAIy8+mDL2bsnIaz4XxX/WZC8H4BjtseADUGQA32gr0cwZkWZ4O+1IaRQEx+auPmAJgSPJ6ppmwxD7JyqIV9xX5pRFe3tHboGO7ahajV6tWj2XLLhMz/jJoTP9JZJp+mijn7AtDQ/gGrGaBMuXlCgv5D6fuZikujCBMkMk6dxAqOENHOoYXhzAdXylaTwkch6+Zh3P31ZFtXpqBSXxH9Oi/Blnzt6DApz+CdWMCfvMnOou386zszaMXVMpp+/evqQNZJCkmdA62yt0g1g3gg4pAd2iL0kRW4oEiECEkZ+ktONTSXw+qHGTotKvJzZxoZxm7a1EjbD8xl7Y8wYxQi1kU6/2J/szbTp/X/6Xm087FA7kDrSujyScp3FLssA3Hu9vxaNpZd5IfvyeHdWvsSGek9VLLgqU+bwl5Y+wD6xhrfYzmJX3q/oB083w9059FHICGAMejve6CHHZIjPtU2Wp+9YoDANRHk617RCx7Ti2USmVfAbwFUdFNY/upkSjm7+lJTcY1FTBFW7G5L9LWFqIJiYGxWoYbww
+ KVvdcrIm
+ Ofxl1daniRogQNrw7PPA3BKelUS9KSMxtD/r43FelCJ5wFbR24N9fPgSbFdMkgmPp4G8BgfPtgjPEtVQ8i89pNmMXGyGGuRrMn/bvGug99JDeRbHhCVx5YzjL7ZvyWdduyOwbsAiwVV0T7Wh0nsGZalS/EPGe4MFHTcVvylZcRjZL/t564zml5t56ZUfDAqTtEvAMwBABd1LL+iSlTZ+NlHDo84ZkJXOcXHBsFGjnCwe/nsme16rPkKEoC+bw7mLrrToIQMTVYiE6mm9aI7RpsWczyOVzy5uLKYPc4j6g7v23aspGHdBL/hmYPJtcmoQVIbrVajyj8Cd/dnVDrn16AtwRzQOOKAsQZ60j2bpiECszwKkhmxdFgs/kBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,233 +122,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
-
-C block device drivers can attach private data to a `struct request`. This
-data is stored next to the request structure and is part of the request
-allocation set up during driver initialization.
-
-Expose this private request data area to Rust block device drivers.
+Add a hook for the request timeout feature. This allows the kernel to call
+into a block device driver when it decides a request has timed out. Rust
+block device drivers can now implement `Operations::request_timeout` to
+respond to request timeouts.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs       |  5 +++++
- rust/kernel/block/mq.rs            |  6 ++++++
- rust/kernel/block/mq/operations.rs | 26 +++++++++++++++++++++++++-
- rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
- rust/kernel/block/mq/tag_set.rs    | 24 +++++++++++++++++++-----
- 5 files changed, 74 insertions(+), 11 deletions(-)
+ rust/kernel/block.rs               |  1 +
+ rust/kernel/block/mq.rs            |  3 +-
+ rust/kernel/block/mq/operations.rs | 78 +++++++++++++++++++++++++++++++++++++-
+ rust/kernel/block/mq/tag_set.rs    |  1 -
+ 4 files changed, 80 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 69cf62475446..dd7a30519870 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -132,6 +132,11 @@ struct QueueData {
- #[vtable]
- impl Operations for NullBlkDevice {
-     type QueueData = KBox<QueueData>;
-+    type RequestData = ();
-+
-+    fn new_request_data() -> impl PinInit<Self::RequestData> {
-+        Ok(())
-+    }
+diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+index b3578f28871a..23795dbe08c3 100644
+--- a/rust/kernel/block.rs
++++ b/rust/kernel/block.rs
+@@ -42,6 +42,7 @@ macro_rules! declare_err {
+         declare_err!(BLK_STS_NOTSUPP, "Operation not supported.");
+         declare_err!(BLK_STS_IOERR, "Generic IO error.");
+         declare_err!(BLK_STS_DEV_RESOURCE, "Device resource busy. Retry later.");
++        declare_err!(BLK_STS_TIMEOUT, "Operation timed out.");
+     }
  
-     #[inline(always)]
-     fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
+     /// A wrapper around a 1 byte block layer error code.
 diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index b8ecd69abe98..7718b106eb49 100644
+index 47e1f860c6ba..a306181d88ce 100644
 --- a/rust/kernel/block/mq.rs
 +++ b/rust/kernel/block/mq.rs
-@@ -69,8 +69,14 @@
- //!
- //! #[vtable]
- //! impl Operations for MyBlkDevice {
-+//!     type RequestData = ();
- //!     type QueueData = ();
- //!
-+//!     fn new_request_data(
-+//!     ) -> impl PinInit<()> {
-+//!         Ok(())
-+//!     }
-+//!
- //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
- //!         rq.end_ok();
- //!         Ok(())
+@@ -138,7 +138,8 @@
+ };
+ pub use operations::{
+     IoCompletionBatch,
+-    Operations, //
++    Operations,
++    RequestTimeoutStatus, //
+ };
+ pub use request::{
+     Command,
 diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index bb23a32f3983..c49ca2e8bbb2 100644
+index d28af9a5e006..2b340675f976 100644
 --- a/rust/kernel/block/mq/operations.rs
 +++ b/rust/kernel/block/mq/operations.rs
-@@ -29,6 +29,7 @@
-     marker::PhantomData,
-     ptr::NonNull, //
- };
-+use pin_init::PinInit;
- 
- type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
- 
-@@ -44,10 +45,27 @@
- /// [module level documentation]: kernel::block::mq
- #[macros::vtable]
- pub trait Operations: Sized {
-+    /// Data associated with a request. This data is located next to the request
-+    /// structure.
-+    ///
-+    /// To be able to handle accessing this data from interrupt context, this
-+    /// data must be `Sync`.
-+    ///
-+    /// Requests may be cleaned up by a thread different from the allocating thread, so
-+    /// `RequestData` must be `Send`.
-+    ///
-+    /// The `RequestData` object is initialized when the requests are allocated
-+    /// during queue initialization, and it is are dropped when the requests are
-+    /// dropped during queue teardown.
-+    type RequestData: Sized + Sync + Send;
-+
-     /// Data associated with the `struct request_queue` that is allocated for
-     /// the `GenDisk` associated with this `Operations` implementation.
-     type QueueData: ForeignOwnable + Sync;
- 
-+    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
-+    fn new_request_data() -> impl PinInit<Self::RequestData>;
-+
-     /// Called by the kernel to queue a request with the driver. If `is_last` is
-     /// `false`, the driver is allowed to defer committing the request.
-     fn queue_rq(
-@@ -252,6 +270,12 @@ impl<T: Operations> OperationsVTable<T> {
-             // it is valid for writes.
-             unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
- 
-+            let initializer = T::new_request_data();
-+
-+            // SAFETY: `pdu` is a valid pointer as established above. We do not touch `pdu` if
-+            // `__pinned_init` returns an error. We promise not to move the pointee of `pdu`.
-+            unsafe { initializer.__pinned_init(RequestDataWrapper::data_ptr(pdu.as_ptr()))? };
-+
-             Ok(0)
-         })
+@@ -151,6 +151,51 @@ fn report_zones(
+     fn map_queues(_tag_set: Pin<&mut TagSet<Self>>) {
+         build_error!(crate::error::VTABLE_DEFAULT_ERROR)
      }
-@@ -271,7 +295,7 @@ impl<T: Operations> OperationsVTable<T> {
-     ) {
-         // SAFETY: The tagset invariants guarantee that all requests are allocated with extra memory
-         // for the request data.
--        let pdu = unsafe { bindings::blk_mq_rq_to_pdu(rq) }.cast::<RequestDataWrapper>();
-+        let pdu = unsafe { bindings::blk_mq_rq_to_pdu(rq) }.cast::<RequestDataWrapper<T>>();
- 
-         // SAFETY: `pdu` is valid for read and write and is properly initialised.
-         unsafe { core::ptr::drop_in_place(pdu) };
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 7444de3c8522..1882d697dcf3 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -107,12 +107,12 @@ pub fn complete(this: ARef<Self>) {
-     ///
-     /// - `this` must point to a valid allocation of size at least size of
-     ///   [`Self`] plus size of [`RequestDataWrapper`].
--    pub(crate) unsafe fn wrapper_ptr(this: *mut Self) -> NonNull<RequestDataWrapper> {
-+    pub(crate) unsafe fn wrapper_ptr(this: *mut Self) -> NonNull<RequestDataWrapper<T>> {
-         let request_ptr = this.cast::<bindings::request>();
-         // SAFETY: By safety requirements for this function, `this` is a
-         // valid allocation.
-         let wrapper_ptr =
--            unsafe { bindings::blk_mq_rq_to_pdu(request_ptr).cast::<RequestDataWrapper>() };
-+            unsafe { bindings::blk_mq_rq_to_pdu(request_ptr).cast::<RequestDataWrapper<T>>() };
-         // SAFETY: By C API contract, `wrapper_ptr` points to a valid allocation
-         // and is not null.
-         unsafe { NonNull::new_unchecked(wrapper_ptr) }
-@@ -120,7 +120,7 @@ pub(crate) unsafe fn wrapper_ptr(this: *mut Self) -> NonNull<RequestDataWrapper>
- 
-     /// Return a reference to the [`RequestDataWrapper`] stored in the private
-     /// area of the request structure.
--    pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper {
-+    pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper<T> {
-         // SAFETY: By type invariant, `self.0` is a valid allocation. Further,
-         // the private data associated with this request is initialized and
-         // valid. The existence of `&self` guarantees that the private data is
-@@ -132,16 +132,19 @@ pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper {
- /// A wrapper around data stored in the private area of the C [`struct request`].
- ///
- /// [`struct request`]: srctree/include/linux/blk-mq.h
--pub(crate) struct RequestDataWrapper {
-+pub(crate) struct RequestDataWrapper<T: Operations> {
-     /// The Rust request refcount has the following states:
-     ///
-     /// - 0: The request is owned by C block layer.
-     /// - 1: The request is owned by Rust abstractions but there are no [`ARef`] references to it.
-     /// - 2+: There are [`ARef`] references to the request.
-     refcount: Refcount,
 +
-+    /// Driver managed request data
-+    data: T::RequestData,
++    /// Called by the kernel when a request has been queued with the driver for too long.
++    ///
++    /// We identify the request by `queue_id` and `tag` as we cannot pass
++    /// `Owned<Request>` or `ARef<Request>`. The driver may hold either of these
++    /// already.
++    ///
++    /// A driver can use [`TagSet::tag_to_rq`] to try to obtain a request reference.
++    ///
++    /// A driver must return [`RequestTimeoutStatus::Completed`] if the request
++    /// was completed during the call. Otherwise
++    /// [`RequestTimeoutStatus::RetryLater`] must be returned, and the kernel
++    /// will retry the call later.
++    fn request_timeout(_tag_set: &TagSet<Self>, _queue_id: u32, _tag: u32) -> RequestTimeoutStatus {
++        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
++    }
++}
++
++/// Return value for [`Operations::request_timeout`].
++#[repr(u32)]
++pub enum RequestTimeoutStatus {
++    /// The request was completed.
++    Completed = bindings::blk_eh_timer_return_BLK_EH_DONE,
++
++    /// The request is still processing, retry later.
++    RetryLater = bindings::blk_eh_timer_return_BLK_EH_RESET_TIMER,
++}
++
++impl RequestTimeoutStatus {
++    /// Create a [`RequestTimeoutStatus`] from an integer.
++    ///
++    /// # SAFETY
++    ///
++    /// - `value` must be one of the enum values declared for [`bindings::blk_eh_timer_return`].
++    pub unsafe fn from_raw(value: u32) -> Self {
++        // SAFETY: By function safety requirements, value is usable as `Self`.
++        unsafe { core::mem::transmute(value) }
++    }
++}
++
++impl From<RequestTimeoutStatus> for u32 {
++    fn from(value: RequestTimeoutStatus) -> Self {
++        // SAFETY: All `RequestTimeoutStatus` representations are valid as `u32`.
++        unsafe { core::mem::transmute(value) }
++    }
  }
  
--impl RequestDataWrapper {
-+impl<T: Operations> RequestDataWrapper<T> {
-     /// Return a reference to the refcount of the request that is embedding
-     /// `self`.
-     pub(crate) fn refcount(&self) -> &Refcount {
-@@ -159,6 +162,17 @@ pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut Refcount {
-         // field projection is safe.
-         unsafe { &raw mut (*this).refcount }
+ /// A vtable for blk-mq to interact with a block device driver.
+@@ -521,6 +566,33 @@ impl<T: Operations> OperationsVTable<T> {
+         T::map_queues(tag_set);
      }
-+
-+    /// Return a pointer to the `data` field of the `Self` pointed to by `this`.
+ 
++    /// This function is called by the block layer when a request has been
++    /// queued with the driver for too long.
 +    ///
 +    /// # Safety
 +    ///
-+    /// - `this` must point to a live allocation of at least the size of `Self`.
-+    pub(crate) unsafe fn data_ptr(this: *mut Self) -> *mut T::RequestData {
-+        // SAFETY: Because of the safety requirements of this function, the
-+        // field projection is safe.
-+        unsafe { &raw mut (*this).data }
++    /// - This function may only be called by blk-mq C infrastructure.
++    /// - `rq` must point to an initialized and valid `Request`.
++    unsafe extern "C" fn request_timeout_callback(
++        rq: *mut bindings::request,
++    ) -> bindings::blk_eh_timer_return {
++        // SAFETY: `rq` is valid and initialized.
++        let hctx = unsafe { (*rq).mq_hctx };
++        // SAFETY: `rq` is valid and initialized, so `hctx` is also valid and initialized.
++        let qid = unsafe { (*hctx).queue_num };
++        // SAFETY: `rq` is valid and initialized.
++        let tag = unsafe { (*rq).tag } as u32;
++        // SAFETY: `rq` is valid and initialized, so `hctx` is also valid and initialized.
++        let queue = unsafe { (*hctx).queue };
++        // SAFETY: `rq` is valid and initialized, so is `queue`.
++        let tag_set = unsafe { (*queue).tag_set };
++        // SAFETY: As `rq` is valid, so is `tag_set`. We never create mutable references to a
++        // `TagSet` without proper locking.
++        let tag_set: &TagSet<T> = unsafe { TagSet::from_ptr(tag_set) };
++
++        T::request_timeout(tag_set, qid, tag).into()
 +    }
- }
- 
- // SAFETY: Exclusive access is thread-safe for `Request`. `Request` has no `&mut
++
+     const VTABLE: bindings::blk_mq_ops = bindings::blk_mq_ops {
+         queue_rq: Some(Self::queue_rq_callback),
+         queue_rqs: if T::HAS_QUEUE_RQS {
+@@ -533,7 +605,11 @@ impl<T: Operations> OperationsVTable<T> {
+         put_budget: None,
+         set_rq_budget_token: None,
+         get_rq_budget_token: None,
+-        timeout: None,
++        timeout: if T::HAS_REQUEST_TIMEOUT {
++            Some(Self::request_timeout_callback)
++        } else {
++            None
++        },
+         poll: if T::HAS_POLL {
+             Some(Self::poll_callback)
+         } else {
 diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index dae9df408a86..ec5cac48b83f 100644
+index 66b6a30a9e66..6d3882c01d9d 100644
 --- a/rust/kernel/block/mq/tag_set.rs
 +++ b/rust/kernel/block/mq/tag_set.rs
-@@ -8,13 +8,27 @@
- 
- use crate::{
-     bindings,
--    block::mq::{operations::OperationsVTable, request::RequestDataWrapper, Operations},
--    error::{self, Result},
-+    block::mq::{
-+        operations::OperationsVTable,
-+        request::RequestDataWrapper,
-+        Operations, //
-+    },
-+    error::{
-+        self,
-+        Result, //
-+    },
-     prelude::try_pin_init,
-     types::Opaque,
- };
--use core::{convert::TryInto, marker::PhantomData};
--use pin_init::{pin_data, pinned_drop, PinInit};
-+use core::{
-+    convert::TryInto,
-+    marker::PhantomData, //
-+};
-+use pin_init::{
-+    pin_data,
-+    pinned_drop,
-+    PinInit, //
-+};
- 
- /// A wrapper for the C `struct blk_mq_tag_set`.
- ///
-@@ -39,7 +53,7 @@ pub fn new(
-         num_maps: u32,
-     ) -> impl PinInit<Self, error::Error> {
-         let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
--        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
-+        let tag_set: Result<_> = size_of::<RequestDataWrapper<T>>()
-             .try_into()
-             .map(|cmd_size| {
-                 bindings::blk_mq_tag_set {
+@@ -126,7 +126,6 @@ pub fn flags(&self) -> Flags {
+     /// `ptr` must be a pointer to a valid and initialized `TagSet<T>`. There
+     /// may be no other mutable references to the tag set. The pointee must be
+     /// live and valid at least for the duration of the returned lifetime `'a`.
+-    #[expect(dead_code)]
+     pub(crate) unsafe fn from_ptr<'a>(ptr: *mut bindings::blk_mq_tag_set) -> &'a Self {
+         // SAFETY: By the safety requirements of this function, `ptr` is valid
+         // for use as a reference for the duration of `'a`.
 
 -- 
 2.51.2
