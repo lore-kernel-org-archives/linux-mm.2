@@ -4,133 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C4ADCD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 21:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83233CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 21:44:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8C586B00DD; Tue,  9 Jun 2026 17:12:40 -0400 (EDT)
+	id 728656B00CC; Tue,  9 Jun 2026 17:44:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D406B00DE; Tue,  9 Jun 2026 17:12:40 -0400 (EDT)
+	id 6B2A46B00CD; Tue,  9 Jun 2026 17:44:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2C446B00DF; Tue,  9 Jun 2026 17:12:40 -0400 (EDT)
+	id 553046B00CE; Tue,  9 Jun 2026 17:44:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F4396B00DD
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:12:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2B79514073B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:12:40 +0000 (UTC)
-X-FDA: 84861623280.28.F528E53
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E76B31C0012
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:12:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uBE4ogiS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmTSAtbU;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uBE4ogiS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmTSAtbU;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 411D96B00CC
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:44:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAB58164EAE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:44:36 +0000 (UTC)
+X-FDA: 84861703752.21.8101392
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 055B980008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:44:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DGzOyuCh;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781039558;
+	s=arc-20220608; t=1781041475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FnlPumnoP1QUrRfMOMDX/uOPlORxRhIf1SgZh5OHpg8=;
-	b=ZRTaAoRbpJkACRCCa4IvJDllnNtIieA1/r1yqIU+pJveDNOoO189sgddn4zS3oU9ItS+M0
-	IEw/NJbMw+FRCm90PFikg5ATbc7BhjvuVompCSSKVqAZg6wRkRdoUOS9pSKTxdydrhxI3S
-	IFaqJLkoVmMf+ce04dLpuv/SG9lScxg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781039558;
-	b=A3EFTcndh+YLkfmU/+gWYr17gyd8A7vFLYnsDUx+kVJU/iwAj+Yn8E/EgFu55e/Q7jEX5R
-	uF47IQnJm0v42A8u5KMNu+Hi94A0zVEfp6DI+PlgkhW2Wim5Dk2oDU+ZAUfjc5NFCjkrOk
-	VRfeEVHf6IPDMyjOLXqX8fIt2YfXpmk=
+	bh=aD/5zoYJey3JVZwJskUEOWQGpMW2wHY02NSSmxoYtHs=;
+	b=BMA2oj3Gi6n9g4ubtY7UPQnISLx3wFFMEEVAaHEELGAo7PgITN81jWBZYos793brtB91Tv
+	a5oRLYIpNgx/c/yp6ZsenAvNcOEF6wSdq47YTQNIrR4PJowNzTjcjvsF+qWr6k2fNzlcK/
+	r6wDOyrE79s/yTHSCv/T7QMNO0xllz4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uBE4ogiS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmTSAtbU;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uBE4ogiS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zmTSAtbU;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2E6946AC18;
-	Tue,  9 Jun 2026 21:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781039556; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FnlPumnoP1QUrRfMOMDX/uOPlORxRhIf1SgZh5OHpg8=;
-	b=uBE4ogiSo6YE0QfRRL8um+PL/x62b3GSQrz/YeaqqV3QuXgw9zhlycGbetDodUe1HKhJPS
-	VHigpgrTuqSLgOSw7bPC1M21SFQNdqObOvQsFKc0PXerveiwPbK1HParc2WFW1qTZ4HeoV
-	lskFl8WV3WIyWOOSqxzbvuuS1DAjrxQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781039556;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FnlPumnoP1QUrRfMOMDX/uOPlORxRhIf1SgZh5OHpg8=;
-	b=zmTSAtbUzRhxaUBZ/Ax2qkGNeJtY3RVllL3tAEjcYcqwDz/+/tBJimg+jzp0lb0zUeg6Xo
-	nt1ve/6yjNFqecCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781039556; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FnlPumnoP1QUrRfMOMDX/uOPlORxRhIf1SgZh5OHpg8=;
-	b=uBE4ogiSo6YE0QfRRL8um+PL/x62b3GSQrz/YeaqqV3QuXgw9zhlycGbetDodUe1HKhJPS
-	VHigpgrTuqSLgOSw7bPC1M21SFQNdqObOvQsFKc0PXerveiwPbK1HParc2WFW1qTZ4HeoV
-	lskFl8WV3WIyWOOSqxzbvuuS1DAjrxQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781039556;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FnlPumnoP1QUrRfMOMDX/uOPlORxRhIf1SgZh5OHpg8=;
-	b=zmTSAtbUzRhxaUBZ/Ax2qkGNeJtY3RVllL3tAEjcYcqwDz/+/tBJimg+jzp0lb0zUeg6Xo
-	nt1ve/6yjNFqecCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28EDA779A7;
-	Tue,  9 Jun 2026 21:12:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dHWeBsOBKGrlWAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 09 Jun 2026 21:12:35 +0000
-Date: Tue, 9 Jun 2026 22:12:33 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Chengfeng Lin <chengfenglin@stu.xmu.edu.cn>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [RFC] mm/mincore: present-PTE scan cost after pte_batch_hint()
- batching
-Message-ID: <aih_dIMqIeKzvFh2@pedro-suse.lan>
-References: <5fb8bead.17483.19eab4626f5.Coremail.chengfenglin@stu.xmu.edu.cn>
- <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
- <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
- <106e71e4-975c-4337-aaff-a00628827477@kernel.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DGzOyuCh;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781041475;
+	b=464tE/8Rz6MjmJUSz2hGs9GGxniELPhOrLOxlp/vmtdeg2NrnBaEIu4Skv1hcLjPiuZFZs
+	5H3S/trrTHD5ou5vExP27R+wEkOKLzDcFND+hRkj/mqkTj9Ib9n3fkgob1gTirgAYu/jm6
+	u+VGkzh5KqpJS6nyAHOLDIDzgqu7lf8=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-91563382bcfso696808285a.0
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 14:44:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781041474; x=1781646274; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aD/5zoYJey3JVZwJskUEOWQGpMW2wHY02NSSmxoYtHs=;
+        b=DGzOyuChzyWEQBTx4IYokjjPjdtSkuZj5JSQ2CzqUiFELvfOuCE/Gthu45fGdHv3nC
+         3v7URTNTO9CNTSAWsQB/61aYw13PHNkepAEHDJCUvdHms9qsbxVUHtGM0+d+rp/hJMJN
+         Va6DlLpjGn8+mfdOwiI2ff91YFI6eELkgBhSYTmPRUJg3CfdE7tbRW/LU2d6RyU2gZ2U
+         448oNveaSWq9+1s1EKXqiWvKx8Bhf/Je33wMbrKM6U/9nKv3HmyMwTbHiE1eQdalbfnL
+         yg3Uf9aNp7hnLYqjgr4tnF2AcJsQfiyPerFL8cp4MPqOWPC8LycK1K+9pbo0rY9VUlXF
+         wzMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781041474; x=1781646274;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aD/5zoYJey3JVZwJskUEOWQGpMW2wHY02NSSmxoYtHs=;
+        b=l7hPQu7ALdjRxf+Zf8M6oudgCtuwiOMa8EVZ8VXFvrXF5EJH3b+ZEkmjD7fyc1/f9D
+         83uTlbvWkf2ulJ/uDXpz+WbEUbvfGohny7dzPWu/GPftIJkoCVsYDygfBhx0SRK/60oa
+         Wxh4wCnYLDm3zp+AMB2Y5K81h8QI2sQ64z1kE2T8OdbkIUrAQP32v65EVZH5dOvYEsGf
+         mSGAsGprviNX6MPaTmXExGjz37dlmH5uZzjR4ebjrc8DLbMLFZrR/SNJNEf3uE6hsw7N
+         I2dkV3OSIw+CTyr990limYjIzD0EKz8hYtheownoC9iR/O5DuBBrit20nUBudmRkpyn1
+         Goow==
+X-Forwarded-Encrypted: i=1; AFNElJ+SOtcLKeejv5lh/OcUA9+1sp2cXwXx3uALoZsA6/qjXW9TBuIJDjwUhOStoN0+MfC+ETQ+UNXmLg==@kvack.org
+X-Gm-Message-State: AOJu0YxzIyYnHujOrXCH1JJEWugW6RO3Mw5xsY0rs5HWkLf9X7B6PAF1
+	ERrIp51+YGcEqczZc102muhTZJ+aIbfm8ERUHQ08xKqadro3+KpaMw4evTWyJ6uoy+g=
+X-Gm-Gg: Acq92OHL3SFgYMEHXmkh+MSurqcG9weG+8R5ajH7MaSCxtYlhlPBRUlzm6wE37xP+VQ
+	1Fvl/4y14Kq9w1Wmo8rbzSfde4hAFz3pzHgkrKctbn/FQi0PwSDbUvi93T6CIp5peTVDY3NqF+g
+	3YJweT5NaXryoczID6DwMs0ZHz+PAnAeuDVQzy/Kzxy/PYKYshMMfyX5V0gUuDsVF8/Qsa3n/tl
+	TWnUERnz5iljXs/tVVwWoSU48RT5U3M2zEdaA+dSgiN1GEWZWyaEVkxeL4rIL8uIxD/bE2Q4ieN
+	lTm7/kVgQBvYIRA7N3Cy+paQJW58wLiL2wq04Bpm6dS80zhIAlS8/WyiaZdG5oPG6VJczuzEJxX
+	58bbgTgR7fyszhorFNUekJHEqgYEI9jjV8hrSlgVnirVfAGZmHn8yaWxiP3NwDtP+ebfKTpb3Jl
+	2VDIXEj1lD5VYFDn3o9Qq013IiB41sZAIlxoGPBlPZo2oFJqDDEB6halDqIGiRjWjUT5KLl2bA9
+	9U5SLI7ui5pacvBVjFApln6rK+D
+X-Received: by 2002:a05:620a:880e:b0:915:cda5:27ff with SMTP id af79cd13be357-915cda52bcdmr1869020485a.45.1781041474035;
+        Tue, 09 Jun 2026 14:44:34 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a381abfsm2275058085a.27.2026.06.09.14.44.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 14:44:33 -0700 (PDT)
+Date: Tue, 9 Jun 2026 17:44:31 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Alexander Duyck <alexander.h.duyck@linux.intel.com>
+Subject: Re: [PATCH splitout] mm: page_reporting: allow driver to set batch
+ capacity
+Message-ID: <aiiJPwhn6gF3ILur@gourry-fedora-PF4VCD3F>
+References: <b25ea6c63503f24c8b5b64910a44dc03b5aa610d.1781020302.git.mst@redhat.com>
+ <aihRBTaTUmgYmZfX@gourry-fedora-PF4VCD3F>
+ <20260609160506-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <106e71e4-975c-4337-aaff-a00628827477@kernel.org>
-X-Rspamd-Action: no action
+In-Reply-To: <20260609160506-mutt-send-email-mst@kernel.org>
+X-Rspamd-Queue-Id: 055B980008
+X-Stat-Signature: ykeu6qax93tou4fhdd66owm9mt63rt7o
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E76B31C0012
-X-Stat-Signature: dtqstwtnpb67nyxmzargqfc4q9puugxb
-X-HE-Tag: 1781039557-244736
-X-HE-Meta: U2FsdGVkX1/V8412G7KVSH8j+LfOzGssL4wtIIuy4OOMte7XGpc0w7jJ/ipqIHzke82B5cWuiheihi5b0Zfqaxh8G4F9uS4Dz+ET/DGOFgkWGh5sPWo0Xu3sZPEQRpelv0AliWzsWCwI1zfgcyl5d6J1BJwqURenhl/t8HwZy+HIEIc4Yc8q0R+G5Zy4YhhIFIMiB0zrYJX+TllGIheumHWFW0kCHrZwYPRkfon1EMKDLpioG+VmYNliG4n2c/nDtlPNkwleK6nk5nYvHq4f+PLseCze3ND0nZhd6LrcgCcf/MJX8HqibUjBEzWS29pBLUomHkTUE/Scfhz9CkkHSo4o/U16b+rejCfR+TFcCrr01iFOSsv360GQn/tLO/fIw0Yv02mT0A7i1pVUrcZicBuuakFCMkqBfeVHWd6ZwchG8E9kfBwuwMuqgGMsIllmYcxwECbiVZkWtLphzivCg131D92OdhG0cmmP1+31S0h28CdqY/v7LaaVUFEeZP5r0t6uPc6CSy0npyvYBy+b20YMLgpeohSSuTL8ERAfXtH6ij2FkIdtLximYgqVIUpjLakshW1BUmJqOXcD5FdOIduCHWd0d+7oWK67v6qjRlGyii2mRjEBlnkx40YnMstARLhlm7Wj7yNPwT98f0dI/AvJEZFBs59f/yfmzTi/teMQzkds4P11F/UMFbf/J8oTNDvh6quUCF8wIYxmVTawjO6vKlmeEYdxHXtA/LIECrtfAbsocPwbF29ErAQHrRYKAJZtY7oziCB4+qkCY5Ij2jmfp58h3gV9eIgrEM547TfCGI1me1s76XOFb9FGpKrWnrHOIujmKfNihtnpMZBj+Rgg7W6k2W/Q0431/sRUvjbuwYTfa6zqm4VO5ewLLeg0vAOCVcA/xnyjtj/AxpC9msMvdT+hKv7tH7V+RiMou2oizSg+OO6qoAk15yPhGEsLDuA8lt2mycsaNukeBop
- O1OfIy2c
- kFwOTdzUQVpFc7R/EIB/JPmvGSCmV/acsDBTudraLxqWckoXT9wiCetSIwl5vzFP5G8PE74G927/y2Toa+3WqMrsAqpSRZzU+rYxlqZ1GzisEUSKnCVEd2sfrvFvQKqRJ/Yqsxp4laRZ+FTyC/nuS7yBBLJRGVw4LWbdR968VcwML2jQ/Qd3r05cZwRktGZ87VYTIbg158LzrLZtLyK/TQePpX6rjMOuxJzzjCcbRdTL6QJfelVdA7Fl1XcKb1087GriwCKkZMOQvAIZXCD0lxsBiqZCcUUW9OBu8yAJY6lMe6OVtxcqxraY/gQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781041474-853
+X-HE-Meta: U2FsdGVkX1+0zYk0YID1lMkWnEKxW2St3Oz2sVh/2J4wnvWjGhSzlCa6cgLCU+z85aVvtU0N8I482bY+pV38o0vY9mmKTediNqqzkJxqoqURRxlaqIry/ARzWuMbpbcrp63vJHvQLC00hqUKWbC02uK+aMQIYkloY5yLubA9zeeVdHpOuwO5P/M6ks6MqY/WaeNtOLQPpHFeLplLKhbyXBHAIy08cJulUGVRWj5yLjIxNDpnQP9x0tNpQbaUXSOJJx93z8lsaOY7JzEBODP4TfxSC2yTeUdDapPE0jjY2P/COgdUkUKawC4U/c6GJgaJu7w1xNUmJ51wtopZXm5YIVS0uJIbuOIHaxdfJ8L9W5Sg9UYdh04BXWjDEXxjnw4toYxqfxq/T01MucJ0IiJq9Sj2khD8TMQW1cgtR38pIWc0uQFGoLheKktNOZawaDjikQ40V06Ewa1qRkFYkYfH+UYL/5aRbWakn7iS7s31xK5pa2cx2lX/T6s0D4XLplbVzL3vQfFLaQM/BWdO+KnRI9e1jSLjpp87Yq7pI1nyN0/xVY5jQRhEpZVI7vMUsmPcYLPg3XnBy2dAikt4+FMfFfW0AOdTcrWcqyCx44+w3zq5SmnZ2v465OwH1cyR/3FEPMb9Xw7tjwtrMpzszEGNS5G/X3Jb2vnCW7oTM1XJevsxisSwr3qWl6PatYCxMKzG2MMOwYEboXKWSPCEdp4XR765PEJdUeGQhjJvV1NqWiziFFXd8e4ULu/4SGbv9kx++5mThAjbpVRIuYKePTqx/LXbU1LDXirtLJ8m54Qaptt3BTr/PPYeMn0RU9dF4bljOQNWQ0sjNIqCt2unA0QU1PGhy2QgGraxiB9ZYRPjvhmZBXkC9sHFuqJqLmdqCgUI0mhsCSqfWX+sY725crvL/5BeFlvpzl7yZTTB9HDmixxDz8OQ8sixgZBzucvdFJ+sVJHazATzf7vrPQg9meC
+ 7j4oANSB
+ 3dwNeVVllYM7OT2y5KPpOSoVmTyhIyOSlBRSSJuO1el2VCZGMZCbwInTRnDu9GLomzhuGeRsXCBRMHEYLdI3yZWpgkOtjY4FwaLiSc17v0IitjWXkj3A65Gz+b6R3NOlEdJAA7xoPcAbcTrSta4o/dg5eVyxBk8BjqWDdH10AquCwcwT8FkiHwrVWbHIz2sV17I9vo386fB2hHpRAcoZimm2NQa7f47cQl3NiPrwBbiAIM0YjKMk0ZvC3xRlWdf2qvZB+cmEEIeTMHK6Mj17wxiurovWqAZQUsJaNbzIUdkrE3JeOiX1wPlGq6i3t+KCqsVyCH4V4t9R+HLJV4Yb0b5GGlIIFpL3QZWjzM3Xt+LCGGE1itJoD7B94uHOb7qpOrxIWkCSrTWxdQR0karlk+VuT7MZ9BN2YkLsOdNIAImhE8f/6/8Gr78bpXoHtguUB6KtJNF7ZFCtWuiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,104 +156,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 04:27:50PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/9/26 16:12, Chengfeng Lin wrote:
-> > Hi David,
+On Tue, Jun 09, 2026 at 04:08:08PM -0400, Michael S. Tsirkin wrote:
+> On Tue, Jun 09, 2026 at 01:44:37PM -0400, Gregory Price wrote:
+> > On Tue, Jun 09, 2026 at 11:53:20AM -0400, Michael S. Tsirkin wrote:
+> > > --- a/mm/page_reporting.c
+> > > +++ b/mm/page_reporting.c
+> > > @@ -174,10 +174,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
+> > >  	 * list processed. This should result in us reporting all pages on
+> > >  	 * an idle system in about 30 seconds.
+> > >  	 *
+> > > -	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
+> > > -	 * should always be a power of 2.
+> > > +	 * The division here uses integer division; capacity need
+> > > +	 * not be a power of 2.
+> > >  	 */
+> > > -	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
+> > > +	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
+> > > 
+> > 
+> > Initial look - is there a div-by-0 here?  I noticed the old check
+> > prevents this from being (0 * 16), but i don't see (on first pass)
+> > the same check anywhere.
+> > 
+> > Unless this line below always forces the above to be a
+> > PAGE_REPORTING_CAPCAITY if it's set to 0.
 > 
-> Hi,
+> It does, does it not?
 > 
-> > Thanks, and sorry for the confusing wording.  The plain statement is: I
-> > observed a performance difference in a narrow x86/QEMU synthetic mincore()
-> > case, and after your comment I checked whether this is really a codegen issue.
+> > > +	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
+> > > +		prdev->capacity = PAGE_REPORTING_CAPACITY;
+> > > +
 > > 
-> > The wording in my first mail was too abstract.  What I was trying to say is
-> > only that the benchmark focuses on one specific case:
+> > It's worth making this corner condition a little more obvious.
 > > 
-> >   private anonymous memory
-> >   MADV_NOHUGEPAGE
-> >   faulted/resident base pages
-> >   repeated mincore() over the range
+> > The code intends for 
 > > 
-> > so the measured path should mostly be the present-PTE scan in
-> > mincore_pte_range().  I agree that the 8/16 CPU rows are not very useful for
-> > this path; please treat them as extra context only.  The useful data is the
-> > single-threaded / low-CPU v6.15 -> v6.16 A/B and the patched variants.
+> > if (capacity == 0)
+> >   capacity = PAGE_REPORTING_CAPACITY
 > > 
-> > The compiler used for the lab kernels was:
+> > but that's not reflected in the changelog as a default value.
 > > 
-> >   gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+> > When happens if a driver sets (capacity=0) either on purpose (???)
 > 
-> Okay, GCC 13 was released 3 years ago.
+> what would the purpose be? if you don't want reporting do not register.
 > 
-> >   GNU ld (GNU Binutils for Ubuntu) 2.42
+> > or
+> > because there's a bug (???)
+> 
+> exactly ??? since where are we practicing defensive programming in kernel
+> APIs?
+>
+> > and then page_reporting.c forces it up to
+> > 32?
 > > 
-> > Your point about x86 pte_batch_hint() is exactly the right thing to check.
-> > Since pte_batch_hint() returns 1 on x86, I agree that the expectation would be
-> > for the compiler to optimize the batching logic back down to something very
-> > close to the old base-page path.
+> > There's something to improve here.
 > > 
-> > I checked the generated mincore_pte_range() code with the same GCC/config setup.
-> > The function sizes from nm are:
-> > 
-> >   v6.15 original:              0x1fb
-> >   v6.16 original:              0x245
-> >   v6.16 batch<=1 fastpath:     0x1ec
-> >   v6.16 with batching removed: 0x1ec
-> > 
-> > So, with GCC 13.3, the v6.16 original build does not look optimized back to the
-> > old x86 base-page shape.  The v6.16 batch<=1 fastpath and the v6.16 nobatch
-> > variant produce the same mincore_pte_range() objdump output in my build.
-> > 
-> > I also checked Clang 18.1.3 as a cross-check.  With Clang, v6.15 original,
-> > v6.16 original, v6.16 batch<=1 fastpath and v6.16 nobatch all produce the same
-> > mincore_pte_range() size, 0x1f9, and the objdump output is byte-identical.
-> > 
-> > So your expectation does hold with Clang, but not with the GCC 13.3 build I used
-> > for the original lab runs.  This does not prove a compiler bug, and it means my
-> > original report should be narrowed: it is not a generic x86 mincore()
-> > regression claim.  In this check, GCC 13.3 generates a different
-> > mincore_pte_range() shape for v6.16 original, while Clang 18.1.3 generates
-> > byte-identical output for all checked variants.  The timing signal I reported
-> > came from the GCC-built QEMU lab kernels.
+> > ~Gregory
 > 
-> It's probably a good idea to
 > 
-> 1) Try with newer GCC
-> 
-> 2) Take a look at the actual difference in the generated code
-> 
-> Is it some inlining decisions? E.g., if the function is larger, other code is
-> likely to get inlined?
-> 
-> The function is not particularly large, so it's a bit unexpected.
-> 
+> So I'll update the commit log to mention PAGE_REPORTING_CAPACITY.
+> And maybe a comment near capacity field?
+> Should be enough?
 
-FWIW, I don't see anything costly in the linked commit. The compiler /should/
-be able to inline and constant fold everything (for near byte-identical output).
-Though I vaguely recall that GCC uses pseudo-metrics (probably not LOC?) when
-figuring out what to inline, not necessarily something that maps to machine
-instructions directly.
+I suppose the question is whether capacity=0 should cause a WARN (i.e.
+only a bug explains that value), or if capacity=0 means something
+special (i.e. use the default) and therefore that should be documented.
 
-So I am curious as to whether this is a compiler issue as well. Or if this
-particular build just happens to hit the issue due to some random limit.
+I don't know which of these is the case, but if it's the latter than
+that deserves a comment yes.
 
-This could be worth a test, however:
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index cdd68ed3ae1a..0e0ac7138d8c 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -373,7 +373,7 @@ static inline void lazy_mmu_mode_resume(void) {}
-  *
-  * May be overridden by the architecture, else pte_batch_hint is always 1.
-  */
--static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
-+static __always_inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
- {
-        return 1;
- }
-
-
--- 
-Pedro
+~Gregory
 
