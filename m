@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AADECD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADEB6CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C34226B00A1; Tue,  9 Jun 2026 15:11:11 -0400 (EDT)
+	id 221866B00A2; Tue,  9 Jun 2026 15:11:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4316B00A2; Tue,  9 Jun 2026 15:11:11 -0400 (EDT)
+	id 1D2276B00A4; Tue,  9 Jun 2026 15:11:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFA2F6B00A3; Tue,  9 Jun 2026 15:11:11 -0400 (EDT)
+	id 0E8956B00A5; Tue,  9 Jun 2026 15:11:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BFD16B00A1
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11B8E1C2F8D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:11 +0000 (UTC)
-X-FDA: 84861317142.16.0E00683
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFABA6B00A2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACABB4077C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:16 +0000 (UTC)
+X-FDA: 84861317352.06.2F37867
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6836FA0003
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuQYPx1P;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0453E4000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UbhsD/Lb";
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781032275;
+	b=vRfh5eoLcsqkCOZpzfRzcFgkGdRbkp52LmXo13Lq+bld3cRhgjBtJMc91bFaieBGHKkOPV
+	bn1pmiZE6Uglvh/0wqf9Q18TTl8iDZZlXuToTJLP1HQYLOoYaeet6RTE1x5WexNbRWDTYX
+	eFjXsyp3qIj7YtcsFvZnU5esgVw/y4M=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UbhsD/Lb";
+	spf=pass (imf04.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032269;
+	s=arc-20220608; t=1781032275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zLr5CLPfIXCjUx/yqmdeB165LH9EbFQ5aO9LrGL70xQ=;
-	b=EkbpB7VeLLtJs2HU4Qu8PevKgJruLH3NxC6awTufClPyKwWhlIg1r3LwhB5oO4dGvBewES
-	9JxKbcdOXsvPjJPGvOOAm23GR/nPjSiiWEUwgtS1qx1+dXrur2QKqYJQPHat5SH7wlQEF/
-	ahwlwcN2FA7954TX8uCjTRlyCUD7xcE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nuQYPx1P;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032269;
-	b=CME8QNZEXXisMT+XWfi8AZ6gBFDaj7jsfJo5/pDZ6REoY73xoG4V7jLn4WU7MYOVesDVMR
-	mUBAiZi3uwTTG1QP5cgFv9cIIcZfy90x9GV/EcgUD2keQp6GfAHalgjsHCF9VRmkq6Whla
-	2BBLtRqtYjSyxbUQFq1+/0/sbMpXInQ=
+	bh=DgBQwxbMweV6Zkbj2/J7QySjjyAJfiQJ6Oi1laC2E2E=;
+	b=b+I5S5NPK0oEI5GTaj3IGeRRhjv1Lt3uSfKybTd318fPLXnY+L6ufJzkHo1NpIkEXtWVUM
+	hMPrZ6Xpap0CnyhpTv0CXUxhuCfD2WHutiCWp1bAqVwdYxl99Wa61sRH+wPcsBMDi2HibP
+	qQ/VkQ7/OfedARLPk0xTDYPUyJBUD3Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EA3C9602D5;
-	Tue,  9 Jun 2026 19:11:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38621F00893;
-	Tue,  9 Jun 2026 19:11:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 923DD602D3;
+	Tue,  9 Jun 2026 19:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA321F00898;
+	Tue,  9 Jun 2026 19:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032268;
-	bh=zLr5CLPfIXCjUx/yqmdeB165LH9EbFQ5aO9LrGL70xQ=;
+	s=k20260515; t=1781032274;
+	bh=DgBQwxbMweV6Zkbj2/J7QySjjyAJfiQJ6Oi1laC2E2E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nuQYPx1PsxsnailNXG1ho0LHPrMkIZkpy4NqAJ2mJ3oDsasqR+f+Y45zebfqY0SKo
-	 3MZHGKSdBGXJHJaC+DeBrNboCdqknkVI2VtYFqa5/1F8lKDhRK9SSHb7vnjQPLm9ZI
-	 slMrD5cqEHyaCYtkuX0B0UI0kTPXkx9zdJ+Jte5HDuJAT9pDi0+/h/fe245OGiCrwr
-	 nCUOYC1bPBh06pwygqjUYtGx6SoQxz7aQvswDE14j3GXQ7pIXsqRr5tEOY/9BYtax+
-	 Cgb5SmQGjitdFRQKJsjXVePlqLAOy46TMhPF5WWytp/ZpDTcS62f6aZ/bmRawL5OWA
-	 hMLzNU/zYF+Bg==
+	b=UbhsD/LbUCehg1QTO7E5Unt9lyPSrvNa7/2GuoaAkStPWOTqPv2ABuVxIOA3fMdGz
+	 PUmt65Gh9wmh+FDCTdDSm6xGptUyjtZfAh6ushZmjXEYaFbKoNQ84HqArEiiu/pGgO
+	 IzE7/CCC08113x9AP/PMci8kj5k/PelI1CBIvTY72zPpiHxaN3k9++cT7G2BFljOXx
+	 5kDtjFj+btkuK2OeAiqRyrihgMOr2ydXNQhu1kLWjW7edaFcja0gIf/iQq8e5vfP9i
+	 wgQ4IzeN03/FI4i4ZCxBQyvdta6M5wv8rs1Q2zUCPw2/7Fgdq8QfRIGwixJEmrWfiz
+	 HPjudMd9DXgRQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:11 +0200
-Subject: [PATCH v2 32/83] block: rnull: add partial I/O support for bad
- blocks
+Date: Tue, 09 Jun 2026 21:07:44 +0200
+Subject: [PATCH v2 05/83] block: rnull: add macros to define configfs
+ attributes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-32-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-5-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,30 +92,31 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9670; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=xV+OONEs9Ld1Dxqfh4dzHUhstJCVgf4f6VVBNqpaotw=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTREVg3urPjuSLlm/682SoGEi1sYXPkiTpgi
- iPWSVRqemCJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk0QAKCRD6UCkIqsW9
- 0AwsD/0fOiEtoWSB/RGdXRgEjP+HqCgBV+3fN5unUlchYeBh/g7LbqhGVP3GBg5VFh2/9a6BxFf
- lU8h9LrhpM3DGOiGdDsM+6VVEBxn48QZmHRuVVnJNeOvaSdKM/XHwAHI2xU/Nc5t1eZaPEOLPXN
- OYnbe17eArn7XEOIkEw4Bw3YO7oh1yt1dYEdmbj/W5iHO6CoBkT3n6VSVQGmjUIsTotQPBlCTSX
- buTVNuq1/GDiG2L3YpRRoT1FubfStQzxixG65DvAlCewwKPdpTS4HZZLZrMuvQ8gCaqYb++ljXy
- YHB1wwwDB3pClCLJcW+cPEl27Ipasuz+ICo3dS52yYrPHnONAQLMvcuhUWeEliK3Dn/lL+X27g9
- xQZc5skJdlXcQ9k1OFinMN/JHkag2jqgJVI+jAIsiejYnasdJ/62JsUeh8S1VNghrsuA6lU+wpQ
- uS7ZpI84EjkmYE1bP4jZVc02AsvF7DcVO/FPTHi6jvVeBKgj5CUOumYcklayr3q+heTzta2jWY3
- QL8PUpNTIerN/kAAyEZo7bSS8d7sIcvviYI3TE/+VnhuFn3f8+nS2XN7zP6YnVqI2L6ea/QaOib
- 4DI6hyKdSw45yjWQCl9BnJ77bDSF0Z3mN6gAn3X8jftuYNdLuuz2Rdx0+fF1wpQs6zc076Filsj
- dBauCb+4T77Pa/Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10514;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=mkT4eThBe4It8KWqsiOtBJt/DANWdnHxd0qXiVgZJI8=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGS4cw7+kfXwUnAvj3tdI1tU/JIPYwTDkhIsj
+ 0/J6tjx/T+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkuAAKCRD6UCkIqsW9
+ 0MZID/4ymdYkqB7ckKLRVkyTg+DrfULQJOo33DREmgb9MUDfl2wUZ/DkUXOCE01NnuGswQZjgbL
+ dKGyJQQBAMDis8nIFLT33hauvbtk8OerUfQwTJv0RLgjFVKK/h3rWpZngwnM64b8DTjwYnOW7Dy
+ chJISfMmP/raWJa/87NdX9ES8DxjfPRD4uuoSKPBceZFiYQkQVThHd8zCrSrvdQBqo4VdtLhAZ5
+ JtnFr9220oUuKE5iYa1CboZ1/eiGdCBNYRxToFBRirop+UVeZAR+07wqYBZjNjfYgBuD8uudK4K
+ p7mSFt3CDKVCTclJ0X+XnBelhsPMLosVjcBO+ytI6MadUXzPxg+2TSgkIHMSkJV4I3yJroqZI2N
+ wcmkDk9XWBp6/I20EnJwDqhAkzlkXMECPjd5CQhDC3wZIqN3XmGWsmM95MqQPH9pWKfClmJKfyn
+ 1lBrz6wjnn1QMNqvOCDZgiSHP0BMqutOQ9g6MoQdNoDIh2FSHYxbjMnA37YPm+N50MNeEDWsm6h
+ bqDP7wDHNuXJQAomQg0dknkgdRR4q6bxe9kugzIUNc6CatP9dMKxytHJR7BW7WmJFwXRfgV2Fmq
+ t2ZizLRiNVaJNejR1mBk7VZM+LrbMJa3Vg3DMQ0imfCu8d3Uwchte0SN6zDpVLkDoGU5CiK/r9p
+ qAL5XeLz/iM9UaQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6836FA0003
-X-Stat-Signature: n794q7ooe4qmhpjm4ju1y1i3asbr3bnp
+X-Rspamd-Queue-Id: 0453E4000C
+X-Stat-Signature: zqxg5jdymoour1q7wibabygc7msnat1y
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781032269-751645
-X-HE-Meta: U2FsdGVkX1+Pg2lnqrLXhY76mog39lUd4gxOnvZSj8dUK+trGDzVKpw3Ktc/BRX6mJZM8Di8iMDfDOgSRsvEWvrvdpJOQo/YPq+RFIgcoBVIRc9YNVPa9zwWQGmXpHRowK7JCOjcic9EOTspDNs+wbfdzg1zAl9qb8SvRxC0g5+b9swVRslDGw8GnsoSoCRZ6JBoq71OyHD0v91XPbkjF435fvpP9bvadTeEuQwP1NyKEl6kh1gT0QAltNVdJfeZDaoMXit7BJ2uKGNfz6B6wvwUQ4LrrkP0Pck8GXq2260730IDGv+DMfdT+gQI1evV1hHKcS3Kgj9E1PZfPDJity5nMfmJD4EGFs/CUlW5pDdOZ0WB5CEVx1MpBabKsmrOov4xnarotvfQfqhDJHaIc4JbeAPOt8rRoQnQPqRhgxQ5NwjojDTt9gaRkP6GFSkGB9rd0iVnFm1JU2vzVD1U/grLI+L02614aqpcRfmV6lRLXR26WxNJtN3IYF97QvqbxtrFcPl0hU/kp45SC1Kia9hIX0ymeQ1hv6nUTPdYwl4F400Zb48Crsiz8nED5bCoyJlVxZ4ZZXyWfGGYg3hkzhW6sahaiuD5Nb8SuccFztdsd7rlJt+jM8BkJPtLfEtaMA5UsvHcWcYhi7+pDfPNE7SnW4+sO7GUZpIsLpg53vdpGuyVS7qGBmKXm+XwGcWASCvRn/Q4EvnXzdWXjtPqQgohGHssK9+Z1QkG11JshY5F0Utja321HCjH4dvDHwtgwviRsZc3uT+LlBXAB8d6YOOX+j3OYNDqfQE4kB6eidzhYh4s6N+gbgOFM7mN+VB+3xj/C7OhM2OJ9Vqkz91RDQbfcsVMdMd+KPKM27qinNDHxyoVhmhP424jSb9yqRJAhsi2N7xmX3bjmG4LZCCd+9n0+RT6WrRqlcupEpJgZvFL4pcDs9e7l76GfzYm30dbY6i1H3IextJDT/50gup
- Y2jxm162
- 70HSZA/jl4hjcYuYgM4DYCTKt6y6C2leamjmz2c2W28qxhLG5oW6p9DJyikk771DDvOH69PvZbOVRSeTlbbwBX1m8bYDsXUlKq/jg/ajCXt4pzOO89kV90g9K8Y5vo6WDec1tjEAllURfHdkrlLEXMgkRDNnTPRqUvpq+exuqg5Agu431Odn7CFiBIVyoYprbARonWTTXOClsWE+JpefD5fWS7Tn7aNcBqezcYrJJPojy6qYZ0kjgcfqaO6pRLs/sl+F7DjvcCqJnjyFf/eUmiURZe/6IZj8qcbUaOBMV8++nhvukAGnsRhIEWJUaMvF0jUVV
+X-HE-Tag: 1781032274-499878
+X-HE-Meta: U2FsdGVkX1+pT/TrtZz/4WGBlAnBnDhxc20YVLRqISyBGy1Z19dcNjofq3GYw+X39ST4c0vNgCi8muG7pw88bPEM52yGYyr3fr3vg1mhMoGQI+FnHG6pj5pavHymoqRuSe1AKs7aE7ffZxmQisQUWivYNxnPnA9bJoz0ZSxAsE0mm7zZjJcPHloULZWSl9gLq5HVuCRZNPr3Wa/+khMkWYM0x+12OzgcyuumSHUGUPtKno1YuoADDMbETxPe8vVJQZuf5z/AyvbZQjbY3FY85FJnKMlOFKVwukDyaTEp0XKnnaInXrJdOoNrmuc9Y7S+LLCF1MQyewa5h/9eHyLE/lXspRXGyG8RG1+uK8JKdNT2Eu9/MyPK/xPuFsfI+nz59mY0ZhFSvCKu0SXbCMWR4mnmv+N/HqD9+H4HJXpw3SxukBTKrezu/yGiqdrVzm4QDzGSvnFyfSdg3dETGEChs7vTobMhhTMA8TwiX0JAv+dIy53oHRkEOkzB8FwDnY64EWy9Fjb3yPPTtY88K9t7pvn0IY09GxrfO/rQ/Lu2Hh/xpJRNWaF41y5wkV96Rw7q5uQ44BulyyrEQOastzKxSF7AhcXMdMgn6Am5VNAp8spV6guefx92m8Yu3m5Uoq7wa6jBzEwnRRqTnCSvZ8re+JWHiIO+MM+T0nPhgWSP5xWe2mwYMMbKYJ7CJL9GeyXzNR/5TrU1AxqlfzkONdfialbepCac1K8S/+c6IBEkx29y0lanISG52Q9G/MVG2KgZ9cSmvo937pjHk2rBRuqcTQtcCarAuinj9aVjLpr1a6atF6yaS3w0mcBuPv4RrQTHwCcdJIC2V2f8Hon7LOhSKaFdU6JihrpuIobjt+Y3v0DXLzXdKhgDOOerR2OMRjlLsqaCRuInHITNulU7/TZltFo2Mto1fgonf/Cu/emxq/mJxlrHL811hx/JabZXjxjMPqmdA/XKuhHa3QtILUZ
+ /wcOU/M+
+ t/lYvhTnLtuomaV8vg/SMXFaJD4nP6H99r7BUi7RaH61ssnUnOPOZ+MKYszddxlRa7LeUWn9MzfuWKLaV4XuO9e31igXaY65cxz8lhFAXcpkfH5UaaujjIu/wBrHnWuVQb5r6ph7wiQSoP9TZ/fwLUlyrCWuhmF58oUIePE3UNCPrPJyOaILT/dF4rzRO+ghATIPAPPetTDOQ6S/4/wi6IJE00hnDtBtT23Ggqe6PFc8uEAGHryd/GLkRgFcBy/1XYzoc+jPfWa8FwIpFXCkl5aUX44+I+8kU482RsswqMh8Vz8qNLJIrQVDfsvfqB26BTU0W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,257 +124,327 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add bad_blocks_partial_io configuration option that allows partial I/O
-completion when encountering bad blocks, rather than failing the entire
-request.
+Defining configfs attributes in rust is a bit verbose at the moment. Add
+some macros to make the attribute definition less verbose.
 
-When enabled, requests are truncated to stop before the first bad block
-range, allowing the valid portion to be processed successfully. This
-improves compatibility with applications that can handle partial
-reads/writes.
+The configfs Rust abstractions should eventually provide procedural macros
+for this task. When we get more users of the configfs Rust abstractions, we
+shall consider this task.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |   5 ++
- drivers/block/rnull/rnull.rs    | 126 +++++++++++++++++++++++++++++-----------
- 2 files changed, 97 insertions(+), 34 deletions(-)
+ drivers/block/rnull/configfs.rs        | 134 +++++++++---------------------
+ drivers/block/rnull/configfs/macros.rs | 143 +++++++++++++++++++++++++++++++++
+ 2 files changed, 179 insertions(+), 98 deletions(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 05229ba9173a..0e9fe8cdc07f 100644
+index b165347e9413..fd309fc17e66 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -103,6 +103,7 @@ fn make_group(
-                 no_sched:11,
-                 badblocks: 12,
-                 badblocks_once: 13,
-+                badblocks_partial_io: 14,
-             ],
-         };
+@@ -1,18 +1,39 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-@@ -127,6 +128,7 @@ fn make_group(
-                     no_sched: false,
-                     bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
-                     bad_blocks_once: false,
-+                    bad_blocks_partial_io: false,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -198,6 +200,7 @@ struct DeviceConfigInner {
-     no_sched: bool,
-     bad_blocks: Arc<BadBlocks>,
-     bad_blocks_once: bool,
-+    bad_blocks_partial_io: bool,
- }
+-use super::{NullBlkDevice, THIS_MODULE};
++use super::{
++    NullBlkDevice,
++    THIS_MODULE, //
++};
+ use kernel::{
+-    block::mq::gen_disk::{GenDisk, GenDiskBuilder},
+-    configfs::{self, AttributeOperations},
++    block::mq::gen_disk::{
++        GenDisk,
++        GenDiskBuilder, //
++    },
++    configfs::{
++        self,
++        AttributeOperations, //
++    },
+     configfs_attrs,
+-    fmt::{self, Write as _},
++    fmt::{
++        self,
++        Write as _, //
++    },
+     new_mutex,
+     page::PAGE_SIZE,
+     prelude::*,
+-    str::{kstrtobool_bytes, CString},
+-    sync::Mutex,
++    str::{
++        kstrtobool_bytes,
++        CString, //
++    },
++    sync::Mutex, //
++};
++use macros::{
++    configfs_simple_bool_field,
++    configfs_simple_field, //
+ };
  
- #[vtable]
-@@ -235,6 +238,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 no_sched: guard.no_sched,
-                 bad_blocks: guard.bad_blocks.clone(),
-                 bad_blocks_once: guard.bad_blocks_once,
-+                bad_blocks_partial_io: guard.bad_blocks_partial_io,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -389,3 +393,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- }
- 
- configfs_simple_bool_field!(DeviceConfig, 13, bad_blocks_once);
-+configfs_simple_bool_field!(DeviceConfig, 14, bad_blocks_partial_io);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 5486eb6dd921..be0b4bd25e53 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -160,6 +160,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     no_sched: module_parameters::no_sched.value(),
-                     bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
-                     bad_blocks_once: false,
-+                    bad_blocks_partial_io: false,
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -188,6 +189,7 @@ struct NullBlkOptions<'a> {
-     no_sched: bool,
-     bad_blocks: Arc<BadBlocks>,
-     bad_blocks_once: bool,
-+    bad_blocks_partial_io: bool,
- }
- struct NullBlkDevice;
- 
-@@ -207,6 +209,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             no_sched,
-             bad_blocks,
-             bad_blocks_once,
-+            bad_blocks_partial_io,
-         } = options;
- 
-         let mut flags = mq::tag_set::Flags::default();
-@@ -250,6 +253,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-                 block_size: block_size.into(),
-                 bad_blocks,
-                 bad_blocks_once,
-+                bad_blocks_partial_io,
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -352,15 +356,66 @@ fn discard(tree: &XArray<TreeNode>, mut sector: u64, sectors: u64, block_size: u
- 
-     #[inline(never)]
-     fn transfer(
--        command: bindings::req_op,
-+        rq: &mut Owned<mq::Request<Self>>,
-         tree: &XArray<TreeNode>,
--        sector: u64,
--        segment: Segment<'_>,
-+        max_sectors: u32,
-     ) -> Result {
--        match command {
--            bindings::req_op_REQ_OP_WRITE => Self::write(tree, sector, segment)?,
--            bindings::req_op_REQ_OP_READ => Self::read(tree, sector, segment)?,
--            _ => (),
-+        let mut sector = rq.sector();
-+        let max_end_sector = sector + <u32 as Into<u64>>::into(max_sectors);
-+        let command = rq.command();
++mod macros;
 +
-+        for bio in rq.bio_iter_mut() {
-+            let segment_iter = bio.segment_iter();
-+            for mut segment in segment_iter {
-+                // Length might be limited by bad blocks.
-+                let segment_length_sectors = segment.len() >> SECTOR_SHIFT;
-+                let max_remaining_sectors = (max_end_sector - sector) as u32;
-+                let length_sectors_allowed = segment_length_sectors.min(max_remaining_sectors);
-+                segment.truncate(length_sectors_allowed << SECTOR_SHIFT);
-+                match command {
-+                    bindings::req_op_REQ_OP_WRITE => Self::write(tree, sector, segment)?,
-+                    bindings::req_op_REQ_OP_READ => Self::read(tree, sector, segment)?,
-+                    _ => (),
-+                }
-+                sector += u64::from(length_sectors_allowed);
+ pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
+     let item_type = configfs_attrs! {
+         container: configfs::Subsystem<Config>,
+@@ -164,99 +185,16 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+     }
+ }
+ 
+-#[vtable]
+-impl configfs::AttributeOperations<1> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().block_size))?;
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u32>().map_err(|_| EINVAL)?;
+-
+-        GenDiskBuilder::validate_block_size(value)?;
+-        this.data.lock().block_size = value;
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<2> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-
+-        if this.data.lock().rotational {
+-            writer.write_str("1\n")?;
+-        } else {
+-            writer.write_str("0\n")?;
+-        }
+-
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        this.data.lock().rotational = kstrtobool_bytes(page)?;
+-
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<3> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().capacity_mib))?;
+-        Ok(writer.bytes_written())
+-    }
+-
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
+-
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u64>().map_err(|_| EINVAL)?;
+-
+-        this.data.lock().capacity_mib = value;
+-        Ok(())
+-    }
+-}
+-
+-#[vtable]
+-impl configfs::AttributeOperations<4> for DeviceConfig {
+-    type Data = DeviceConfig;
+-
+-    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+-        let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_fmt(fmt!("{}\n", this.data.lock().irq_mode))?;
+-        Ok(writer.bytes_written())
+-    }
++configfs_simple_field!(DeviceConfig, 1, block_size, u32, check GenDiskBuilder::validate_block_size);
++configfs_simple_bool_field!(DeviceConfig, 2, rotational);
++configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
++configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
+ 
+-    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+-        if this.data.lock().powered {
+-            return Err(EBUSY);
+-        }
++impl core::str::FromStr for IRQMode {
++    type Err = Error;
+ 
+-        let text = core::str::from_utf8(page)?.trim();
+-        let value = text.parse::<u8>().map_err(|_| EINVAL)?;
+-
+-        this.data.lock().irq_mode = IRQMode::try_from(value)?;
+-        Ok(())
++    fn from_str(s: &str) -> Result<Self> {
++        let value: u8 = s.parse().map_err(|_| EINVAL)?;
++        value.try_into()
+     }
+ }
+diff --git a/drivers/block/rnull/configfs/macros.rs b/drivers/block/rnull/configfs/macros.rs
+new file mode 100644
+index 000000000000..30bb32238457
+--- /dev/null
++++ b/drivers/block/rnull/configfs/macros.rs
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+                if sector >= max_end_sector {
-+                    return Ok(());
-+                }
-+            }
-+        }
-+        Ok(())
++use super::{
++    DeviceConfig,
++    DeviceConfigInner, //
++};
++use core::str::FromStr;
++use kernel::{
++    fmt::{
++        self,
++        Write, //
++    },
++    page::PAGE_SIZE,
++    prelude::*,
++};
++
++pub(crate) fn show_field<T: fmt::Display>(value: T, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++    let mut writer = kernel::str::Formatter::new(page);
++    writer.write_fmt(fmt!("{}\n", value))?;
++    Ok(writer.bytes_written())
++}
++
++// The lock guard is passed to `store_fn` so the powered check and the
++// store happen atomically. Releasing the lock between the two would
++// allow another writer to power the device on in the gap.
++pub(crate) fn store_with_power_check<F>(this: &DeviceConfig, page: &[u8], store_fn: F) -> Result
++where
++    F: FnOnce(&mut DeviceConfigInner, &[u8]) -> Result,
++{
++    let mut guard = this.data.lock();
++    if guard.powered {
++        return Err(EBUSY);
++    }
++    store_fn(&mut guard, page)
++}
++
++pub(crate) fn store_number_with_power_check<F, T>(
++    this: &DeviceConfig,
++    page: &[u8],
++    store_fn: F,
++) -> Result
++where
++    F: FnOnce(&mut DeviceConfigInner, T) -> Result,
++    T: FromStr,
++{
++    let text = core::str::from_utf8(page)?.trim();
++    let value = text.parse::<T>().map_err(|_| EINVAL)?;
++
++    let mut guard = this.data.lock();
++    if guard.powered {
++        return Err(EBUSY);
 +    }
 +
-+    fn handle_bad_blocks(
-+        rq: &mut Owned<mq::Request<Self>>,
-+        queue_data: &QueueData,
-+        sectors: &mut u32,
-+    ) -> Result {
-+        if queue_data.bad_blocks.enabled() {
-+            let start = rq.sector();
-+            let end = start + u64::from(*sectors);
-+            match queue_data.bad_blocks.check(start..end) {
-+                badblocks::BlockStatus::None => {}
-+                badblocks::BlockStatus::Acknowledged(mut range)
-+                | badblocks::BlockStatus::Unacknowledged(mut range) => {
-+                    rq.data_ref().error.store(1, ordering::Relaxed);
++    store_fn(&mut guard, value)
++}
 +
-+                    if queue_data.bad_blocks_once {
-+                        queue_data.bad_blocks.set_good(range.clone())?;
-+                    }
++macro_rules! configfs_attribute {
++    (
++        $type:ty,
++        $id:literal,
++        show: |$show_this:ident, $show_page:ident| $show_block:expr,
++        store: |$store_this:ident, $store_page:ident| $store_block:expr
++        $(,)?
++    ) => {
++        #[vtable]
++        impl configfs::AttributeOperations<$id> for $type {
++            type Data = $type;
 +
-+                    if queue_data.bad_blocks_partial_io {
-+                        let block_size_sectors = queue_data.block_size >> SECTOR_SHIFT;
-+                        range.start = align_down(range.start, block_size_sectors);
-+                        if start < range.start {
-+                            *sectors = (range.start - start) as u32;
-+                        }
-+                    } else {
-+                        *sectors = 0;
-+                    }
++            fn show($show_this: &$type, $show_page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++                $show_block
++            }
++
++            fn store($store_this: &$type, $store_page: &[u8]) -> Result {
++                $store_block
++            }
++        }
++    };
++}
++pub(crate) use configfs_attribute;
++
++// Specialized macro for simple boolean fields that just store kstrtobool_bytes result.
++macro_rules! configfs_simple_bool_field {
++    ($type:ty, $id:literal, $field:ident) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page|
++              crate::configfs::macros::store_with_power_check(this, page, |data, page| {
++                data.$field = kstrtobool_bytes(page)?;
++                Ok(())
++            })
++        );
++    };
++}
++pub(crate) use configfs_simple_bool_field;
++
++// Specialized macro for simple numeric fields that just parse and assign
++macro_rules! configfs_simple_field {
++    // Simple direct assignment
++    ($type:ty, $id:literal, $field:ident, $field_type:ty) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |data, value: $field_type| {
++                    data.$field = value;
++                    Ok(())
 +                }
-+            };
-         }
-         Ok(())
-     }
-@@ -421,6 +476,7 @@ struct QueueData {
-     block_size: u64,
-     bad_blocks: Arc<BadBlocks>,
-     bad_blocks_once: bool,
-+    bad_blocks_partial_io: bool,
- }
- 
- #[pin_data]
-@@ -449,6 +505,30 @@ impl HasHrTimer<Self> for Pdu {
-     }
- }
- 
-+fn is_power_of_two<T>(value: T) -> bool
-+where
-+    T: core::ops::Sub<T, Output = T>,
-+    T: core::ops::BitAnd<Output = T>,
-+    T: core::cmp::PartialOrd<T>,
-+    T: Copy,
-+    T: From<u8>,
-+{
-+    (value > 0u8.into()) && (value & (value - 1u8.into())) == 0u8.into()
++            )
++        );
++    };
++    // With infallible conversion expression (direct value)
++    ($type:ty, $id:literal, $field:ident, $field_type:ty, into $convert:expr) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page|
++                crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |data, value: $field_type| {
++                    data.$field = $convert(value);
++                    Ok(())
++                }
++            )
++        );
++    };
++    // With check, no conversion
++    ($type:ty, $id:literal, $field:ident, $field_type:ty, check $check:expr) => {
++        crate::configfs::macros::configfs_attribute!($type, $id,
++            show: |this, page| crate::configfs::macros::show_field(this.data.lock().$field, page),
++            store: |this, page| crate::configfs::macros::store_number_with_power_check(
++                this,
++                page,
++                |data, value: $field_type| {
++                    $check(value)?;
++                    data.$field = value;
++                    Ok(())
++                }
++            )
++        );
++    };
 +}
-+
-+fn align_down<T>(value: T, to: T) -> T
-+where
-+    T: core::ops::Sub<T, Output = T>,
-+    T: core::ops::Not<Output = T>,
-+    T: core::ops::BitAnd<Output = T>,
-+    T: core::cmp::PartialOrd<T>,
-+    T: Copy,
-+    T: From<u8>,
-+{
-+    debug_assert!(is_power_of_two(to));
-+    value & !(to - 1u8.into())
-+}
-+
- #[vtable]
- impl Operations for NullBlkDevice {
-     type QueueData = Pin<KBox<QueueData>>;
-@@ -467,40 +547,18 @@ fn queue_rq(
-         mut rq: Owned<mq::Request<Self>>,
-         _is_last: bool,
-     ) -> Result {
--        if queue_data.bad_blocks.enabled() {
--            let start = rq.sector();
--            let end = start + u64::from(rq.sectors());
--            match queue_data.bad_blocks.check(start..end) {
--                badblocks::BlockStatus::None => {}
--                badblocks::BlockStatus::Acknowledged(range)
--                | badblocks::BlockStatus::Unacknowledged(range) => {
--                    rq.data_ref().error.store(1, ordering::Relaxed);
--                    if queue_data.bad_blocks_once {
--                        queue_data.bad_blocks.set_good(range)?;
--                    }
--                }
--            };
--        }
-+        let mut sectors = rq.sectors();
- 
--        // TODO: Skip IO if bad block.
-+        Self::handle_bad_blocks(&mut rq, queue_data.get_ref(), &mut sectors)?;
- 
-         if queue_data.memory_backed {
-             memalloc_scope!(let _noio: NoIo);
-             let tree = &queue_data.tree;
--            let command = rq.command();
--            let mut sector = rq.sector();
- 
--            if command == bindings::req_op_REQ_OP_DISCARD {
--                Self::discard(tree, sector, rq.sectors().into(), queue_data.block_size)?;
-+            if rq.command() == bindings::req_op_REQ_OP_DISCARD {
-+                Self::discard(tree, rq.sector(), sectors.into(), queue_data.block_size)?;
-             } else {
--                for bio in rq.bio_iter_mut() {
--                    let segment_iter = bio.segment_iter();
--                    for segment in segment_iter {
--                        let length = segment.len();
--                        Self::transfer(command, tree, sector, segment)?;
--                        sector += u64::from(length) >> block::SECTOR_SHIFT;
--                    }
--                }
-+                Self::transfer(&mut rq, tree, sectors)?;
-             }
-         }
- 
++pub(crate) use configfs_simple_field;
 
 -- 
 2.51.2
