@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA80ACD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C09ACD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:16:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EC1B6B0107; Tue,  9 Jun 2026 15:16:08 -0400 (EDT)
+	id 843FA6B00CB; Tue,  9 Jun 2026 15:16:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C3F16B0108; Tue,  9 Jun 2026 15:16:08 -0400 (EDT)
+	id 81AFE6B0108; Tue,  9 Jun 2026 15:16:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B30A6B0109; Tue,  9 Jun 2026 15:16:08 -0400 (EDT)
+	id 731656B0109; Tue,  9 Jun 2026 15:16:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C3F46B0107
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:16:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ABB71165009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:16:07 +0000 (UTC)
-X-FDA: 84861329574.18.D6011F5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63BCB6B00CB
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:16:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C7001406EF
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:16:13 +0000 (UTC)
+X-FDA: 84861329826.05.D3C7C8D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CC691A0018
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:16:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jw3H/Q3g";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3864F18000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:16:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUzkqU+Z;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032565;
+	s=arc-20220608; t=1781032571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3lgi4BvnuP8dvWHNylWqJ5utFJtojJuMjE3Nz2Xk8c=;
-	b=c7cU8vAhq/TDg2ZwKWHpj5htX3tWqgE1PN7Ro05IiwauO0bzoDmq/RvtqeL/0vVbIFIlR7
-	m2BA4OPhGLGuDDtqXcqV5b22kGOsOmuiaf86+ZEQpEVHvfUU/LzkilUEgu6Htyu4bqxPGu
-	uGAXnJhPp+iGSQBsu63yZ17AhjeSdG8=
+	bh=Orhut8IhA4k/fI1g8VtdPP5GiujeWv5wMA2yYIWY1p8=;
+	b=Vp0yOxs/ZQUszD9pcvPKa3WeA8tfUPOqk5lrK3lbaxBhhsDpIRGPOpmT0zAf+A5RxiM9Hu
+	cC0syRp7k52ee+KtuekSLNkYlM9Vy0lH66YdkwAHAcKdNgi8yK4AFLgBeB903KIuRhJELL
+	k9CIggiyPCbch20pRwce1E2JIwGACtQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jw3H/Q3g";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RUzkqU+Z;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032565;
-	b=TuzduuxsVtoQMP+xjXFR7/GSCaaLdkK6T+Wld72P245FcXB7D/PwvXl6VIZUxhDUEnylv+
-	bjnk+QPvCmlo2BiPcDQ/4MTiz6QCs7dFGm1nlHfxEVsqOSxjsa2LNjYWRap6hbrXsbxRmr
-	xj6H8AoZsBe5LW2oOIR+LlZQV3gPKtg=
+	t=1781032571;
+	b=5ZiA4Iqj34J+2Yi7espFSwlOJQZzDffa1DJuwaOHxKOsxzpchcK0bR12jdxlqPRicgMl68
+	UqxLqFOCaheyKHwws3Fn3EhgutSr3ut0J42Kcgne9iGCGo6RNhb0gvlpvbOBIhrI0kmizz
+	I8NpeS5OY5uDOgq2XCMq3YISfALPyfQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2987243E31;
+	by sea.source.kernel.org (Postfix) with ESMTP id 862B143FAF;
+	Tue,  9 Jun 2026 19:16:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48B81F00898;
 	Tue,  9 Jun 2026 19:16:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3CC1F0089A;
-	Tue,  9 Jun 2026 19:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032565;
-	bh=G3lgi4BvnuP8dvWHNylWqJ5utFJtojJuMjE3Nz2Xk8c=;
+	s=k20260515; t=1781032570;
+	bh=Orhut8IhA4k/fI1g8VtdPP5GiujeWv5wMA2yYIWY1p8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jw3H/Q3g3yHtjPIAShUuvFoegF8tqdbx/yiX64UeAWL7gLz2R6aeB/6bcgMAFYfX+
-	 qdr4L1CerL0er728ZHZ4Vr6lsEleYCtd3dnM1gVcuPNSHRNCKoJDUGyhJOPl29r8Wr
-	 1Oil0uJnHHH+WNKeCm+hmTHJVTv4dLZnonRPThd6ol3KUnHqnD/ZzgZeIZ1k2pGy/O
-	 yRgp4CsOogjtHlhnDlBLw7GnctxuUYzeFbRPQxvLoZCdzkSLN4TI855YFEqxLge1F/
-	 SLFwSDUDMLgj8nG8tj09nSbVLo7TTTl65FtYZyDwBUa1kUk0ivIFg+ayFQh/AHQ5HO
-	 Plw+Zl29cAUAA==
+	b=RUzkqU+ZXawZrmlyk04BLnOhiuJzHkfl61joHhZcBaJzAK6ZcL1k6CE2FsibWxiU7
+	 RYBL/UjhqKpDI+/39m/Z9JiKYUdcO9PK8ohduC4fYu3E0T7i5TCnvfraScXLOaEGh3
+	 S+gZoTn3QrqlDt0k4RgvmC3st+7ihZ7uo8hy0+zJrYWIuqmhltbPlwr+FbaM63QyRz
+	 11bRCpQFv0VBLxZiB3u+NuaeVqyC7/FHEQu/r+IjOwfRffZHpGz6sep1y/Xcc7GZ4X
+	 3+pEleRTX5HmupMZswDkaL2Y8vLRrOkd4yCOBevKooC1A4X0p6ue4AtmVgoE3jCKKY
+	 vxwxONaV/5lkA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:33 +0200
-Subject: [PATCH v2 54/83] block: rust: add `map_queues` support
+Date: Tue, 09 Jun 2026 21:07:50 +0200
+Subject: [PATCH v2 11/83] block: rnull: add timer completion mode
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-54-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-11-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -89,32 +89,32 @@ To: "Liam R. Howlett" <liam@infradead.org>,
  Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+ rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3830; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=1/oGMHKJngamxy/YHU0uRCSEeVu7aFtuzPGZ9TvHG3k=;
- b=kA0DAAoB+lApCKrFvdAByyZiAGooZOWj3cCG2U8+E3n3Tx3zuIx6/yQjgqJBN0irwutd75dDd
- okCMwQAAQoAHRYhBFeK2cjZZnYmKsBqhvpQKQiqxb3QBQJqKGTlAAoJEPpQKQiqxb3Ql6oQAIXd
- 9lWv1cDgGI7fP3R1gNts3WYj4RA+OhgzhbTerMr1sIBoD0a6gKcGvV0+p6o1sVFZN1iqIka++11
- pSozYjaes478Tbr6cJMx3Q+rvpZfWhuSWzT0kIO3Gx858LHrufA6VpiyzQEMqYfdKM4N8YYZ3kn
- I31DkpEe0tsQ1kphWJ5OeqzzVSLqLmmNhwTtLMVQoLlIiv9L+btIHGNvOyL1FLNxqt5KFnpsg2Q
- FDbbKUSUEC2poyjuCxLGx7X96fCyCoodylGu1pGpedoVJrJx5zxgYLhrbqTYvxsX7S9hO6cuXnj
- wdXrYDMIay2dzq4IEv2RxfIgInhaYr5oQfYZginSxw6xpMlFUOAkpv58qPy1sdd8obSwM/JkwSY
- JfC3oi7LqjzLVuwSoJPMZL/TLG1j5h9/wYTeeJhnws+FmdbuaD8lAQhyqt24+0N285pOEaupAY8
- 1aplUuy556oWZH0R36MfNMevlodFy7+Na0Bu8SZr6YrBc6lJmkCcF0LJzEnd4VEDKyIID99DLza
- WO+RHsJnYLWflvvnRqoX7Sv/98qPDWQ7pqmdO4e/wtVyr2MGTw2IiC+piaHEhJqv0ToWuXfNiSe
- ieHwW6vuyMEuinefgYAI8anN6jcQgvPRUEWxdNiltSWXqYW5lDP++LXCzr/ITiruskuIJ5FnOMU
- e+Sce
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8400; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=2WihwLY3BKsR/bUh+8xVFcjC68ymvUSpcl2aNu7m3ro=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGS+rU1gDuulIyezDBGUgrXsFtIS6RTlCiVRL
+ 3EBNU/is9GJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkvgAKCRD6UCkIqsW9
+ 0KnwD/0bwBHMPBBCjhyRdIxobUfjyBnsEtn2wXnswCENj7OIZnPKIiR4pzsIijIprkOLi+Xh/rR
+ Aj2+xTHMdRGVHPz/gZX2rsrde9a3ar0Eqv3xd/8WtXbW6lFynQTgEqBsDxD4xFHDvegdth1FFFT
+ zX6Qs7QhtK9QoQvbrizt2qP/+Rc6QCoLB7CKXr4UhWV1BIC4TQjVZMlhGvF+VTW5UU6lOTQ72IR
+ aLsHVbe03W2nuO8HOhl6d/ZqzPAeifmI5KvH6ep0ARDTCIGK+7g/TLrNKlSScLmMUI5MQ5H0XYb
+ X8n+mA5zynpdOnPAuFv8N0LTtN7TaOokE8mGIiTXgswZXdxqzx/mGIRxNY6iQ3yOhyyCw0wAwCS
+ Cbr/JD8gjj8qUQcI2yThBBSvXn9mJOxuqVJSYT4QAeemEQE6w7nKrCITN5OZ/6haENVWg3jHt+W
+ I+nckkSVS3F8v8ZU42L/H9IHaekvx3yaQuGlA5lZtiHrGSPojoJevRkJNlMc7gbaLoOfyPYU0oa
+ YF8Q4ELRoA2VIIp1QMDK4jKssuV2eDGgH3QC2E76jp0oKV7BGb2ul+h1T6nqQjPxfua+9H0TXal
+ /QJfn3BY4k+XN9vv4Dlvo2mk+mIUBCPqRTcdN1t+d8CDzAJBpIT00omYkYnAesldTy4wyE3fiEs
+ /ZAVOJ55sXdCcww==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3864F18000C
+X-Stat-Signature: 7ji9hm7dsjwwh5b1yxaj4o4r44ec9zde
 X-Rspam-User: 
-X-Stat-Signature: hw1sck5rbiqtxpayngbcczgws4r67u1d
-X-Rspamd-Queue-Id: CC691A0018
-X-HE-Tag: 1781032565-555940
-X-HE-Meta: U2FsdGVkX1+6SAXcT7COM0S0fUK8TGwQWyfqUcCtjaBhr9h9So/4x8y3Q0EcnMxQPHZWDe3/eurWohgpDJP/fF9d6Ef1hYxRUGAYlMHc+XQMEu8UC2Vc7V0/2cCR1AwiQIoKK8a66qjOUOq2Kkp/AVte3pim7TdWUQE+3Z0AnwXZSbzsVnaJKVH6iQ39HBoB3X/mhL8h/0lzq0lfwR2xt97MCQA+4Do8dLxQn1CXora+lTOBqM94dnd+79WToCZds+tGbYR6gaNj4mYLAVMFYZln+0j4RaLaPmtJtbNzQHQBgrdgisTkcMxDhqic1AmOUoRsIGJWW+U4aKGv0i3pQNSRmoQiie/HVdxQfv6nO9jk3vy6ivOGvlnIoSeUIUrXJvkCltwnB9imqifvJtJgx+tDeIdoMYWmbfOSSKF+My5FnmLuMpucPlPcSg2hK8mtloyHA0YDA1wzEYfUeDppMW9xp97DLC8+UBRnxcqImttfJAuYQvfHO2pbfARZPMRPG+xnBd6fd5O69SJi1vo+C9xH3lfxw95G/nDIJgpx8N/smKVkYmpg3Z5O2svbADOwSk0Rb0uxrAOO2iFN/EaODp9U9xxDANSPBDNlCZK1VMeS9HncQ5KiGC9SvLwwkMqLrw9a3OtaiQi3oslV57zAMRoQY5tcgxdmS2V9fFEMNo6z6xRMgVEV2z3pKkq58QnKq/4PKZXF883q1n5EQ1ai6vDM5DcFvrVT3sUCNJFxgGjec9rcIQpuw0VTIT0LwC8WRIeZReaNECSMMk6bA3JmmCWG1spKdqMKfklnJFwCwqqwxqgRkhHqO2D3SvFBHxYNAWi+iQm3qo1/9EJDj4+3ZAbi17RwAWxAFEv2HFjrB1PBC1rn+bw2lj+auCHCnxveVNtkyGItCwPviK3M+9YN32fNeQ74Rtt53krzb+UxrQC411MK2ra5dlEhOpzXTvuN0p8g54031U5wUfL6LzS
- +q7ehZrV
- hATTbyGuYgUlozzENrNoUJERhcwdDoXqvaIfypQI7htMxd52KEAPlmUU5YOZcxieM0dMRjEI7CdXc+mDl0zjShfXr1KddONAJx23ziVF4lciOHjXN8VS8DTW7SALvJbtSwEiA+K+RNQ/RGQdjVjR4RYaMU9vQwD7g2SR/tNHTBhJ3/pyu0iw5DcSoQCeUMSLDMvjCtTrfgFekx0Jza7fF/NgvyyuvTvzPDlCp8/qWdJxFt3usFXDLw0AzQZuNt4QCMI9w4TO7verof/pgk2bHqtRj4MFbdI4RkObOM79w+hqG+9bwftiwzX79XioMhKj+a6yQtpAQpLlHoZYr4j8Sma4YsZ3nKP8tnqe2L0Mhx16dsekmz9cHbsL1TEMsGw7bfEZHj3D8Uwb2/mg=
+X-HE-Tag: 1781032571-513627
+X-HE-Meta: U2FsdGVkX1+/V6l/1Nl8Z6lfF0uoa4xX2+kF8ddqJyi2KfMKrgxwyVtW4LJfz3l68ohx50fFuejOxfr7x7SX672VEpTGpraBT9WYK6C19uo1FQuvIT0BUV1v6VIYV8B4qB5W5sReWkzhsbDZsarQjcFVCR5vS8p6mM3+PNGV1e425220siooTtixLID4HoMQmzLN1q1f6yrOJ48Pq/AVAB4Viq4rxDD/I46JrlUf3RBxv+fkkEoBCtAYPWJACkqE/UMN+8Wgrx5XGPRC2XdfidWguV6VxA2L1X9PWbNTEIOTc3Dxtm9QMmYEIPuMgJV+AVXpaT8QOXKfndlLii29V9+EX/9DCMteCp6SfmMLZ4bmAcq2LmnCqTOiP0Cibi36dT7nRQ4vWl0jHhLDFk7DvpS7CYGj66H1yF/K21ODTXJNzHUi7KN2F8nMBvjXVJ474O/7Wgxv7UI70mUZ3WTjwWIcYk3jyiGJb/m98bKGJOvu6Ii8SEq4Nsvx2B19xd4iwZQ2xTnyaET1sIsJ9aXJMbDmILtI1EG+BGsARccQvzPOaW/ZOmtQGqfvAMOdBVgRIlYixVHr0OsRdx+JNxrdBW3yB3lV5Y+vdR2u5xA0GTp5jurM1iqU//7NA+rss6AmZE65NMCiiI5y4nZWSLSCKATeHS6mi3ifp6+WEZ4PAnbSOhI3qT59g8k3K4qChKjW0W5FN3w8VGPB/JeNdTglb3vLkO7spMi5poIWe96mQIsgzJTvhu4cySi5kRF5FP755/zXdN1CkSVDrcYUQF39gCleM6XTZV2V4U2lHUTTIEgVUqHD1oeFALLeLG7pPPpP6PJZitM5jve6ry1wbzjndjjrNs+4N//mkfrEy1BbP3QZUh5zaDEUiVneLlbSH3nHhsRL5hjss1OevAJEiFDRqmF+J0Gvk7JVdG8ao21JOHUrf5pFWd1dhNhvhvENVV0zlxni5fJhVrnHudvhBHX
+ mzmfPNKY
+ k7OCJ+qra96vOKfpLGtW/+tsYF/5mNe5orYnNJdXiatrRO8P2r3fDV1ZbScDqErhb2OKC5vDXMLyZCv5CrKxxbmxXfT8A2lratPU2RL6Pxte3E/tMxwH2B4cx0wet+eIP7pE1EFUqZeoM4fWZ0+4NYdQH40fr+I7o1bZBN+U4F+ry4P+l6Bfnr/88sVk3CtftrFy3dZ4XKE2hkYUf2FpxxY6cwpigXmRZBpbK86jEqqf80RFSICplQ9ksPNcthMMZwhFG423Z8anCgr6FZRc5ExnnyZCrpit0SEdmYpCJW+kBxJtn7LrDz7cqEU2APCn4iQIY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,107 +122,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
-
-Add support for the `map_queues` callback to the Rust block layer
-bindings. This callback allows drivers to customize the mapping between
-CPUs and hardware queues.
-
-The callback receives a mutable reference to the `TagSet`, and drivers
-can use the `TagSet::update_maps` method to configure the mappings for
-each queue type.
+Add a timer completion mode to `rnull`. This will complete requests after a
+specified time has elapsed. To use this mode of operation, set `irqmode` to
+`2` and write a timeout in nanoseconds to `completion_nsec`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/operations.rs | 29 +++++++++++++++++++++++++++--
- rust/kernel/block/mq/tag_set.rs    | 13 +++++++++++++
- 2 files changed, 40 insertions(+), 2 deletions(-)
+ drivers/block/rnull/configfs.rs | 34 ++++++++++++++++++++--
+ drivers/block/rnull/rnull.rs    | 63 ++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 90 insertions(+), 7 deletions(-)
 
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index 71d4192d627f..8a418bf0f3ba 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -12,7 +12,8 @@
-             gen_disk::GenDiskRef,
-             request::RequestDataWrapper,
-             IdleRequest,
--            Request, //
-+            Request,
-+            TagSet, //
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index fd309fc17e66..83b474f6da60 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -25,11 +25,15 @@
+         kstrtobool_bytes,
+         CString, //
+     },
+-    sync::Mutex, //
++    sync::Mutex,
++    time, //
+ };
+ use macros::{
++    configfs_attribute,
+     configfs_simple_bool_field,
+-    configfs_simple_field, //
++    configfs_simple_field,
++    show_field,
++    store_number_with_power_check, //
+ };
+ 
+ mod macros;
+@@ -56,7 +60,7 @@ impl AttributeOperations<0> for Config {
+ 
+     fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+         let mut writer = kernel::str::Formatter::new(page);
+-        writer.write_str("blocksize,size,rotational,irqmode\n")?;
++        writer.write_str("blocksize,size,rotational,irqmode,completion_nsec\n")?;
+         Ok(writer.bytes_written())
+     }
+ }
+@@ -79,6 +83,7 @@ fn make_group(
+                 rotational: 2,
+                 size: 3,
+                 irqmode: 4,
++                completion_nsec: 5,
+             ],
+         };
+ 
+@@ -94,6 +99,7 @@ fn make_group(
+                     disk: None,
+                     capacity_mib: 4096,
+                     irq_mode: IRQMode::None,
++                    completion_time: time::Delta::ZERO,
+                     name: name.try_into()?,
+                 }),
+             }),
+@@ -106,6 +112,7 @@ fn make_group(
+ pub(crate) enum IRQMode {
+     None,
+     Soft,
++    Timer,
+ }
+ 
+ impl TryFrom<u8> for IRQMode {
+@@ -115,6 +122,7 @@ fn try_from(value: u8) -> Result<Self> {
+         match value {
+             0 => Ok(Self::None),
+             1 => Ok(Self::Soft),
++            2 => Ok(Self::Timer),
+             _ => Err(EINVAL),
+         }
+     }
+@@ -125,11 +133,22 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         match self {
+             Self::None => f.write_str("0")?,
+             Self::Soft => f.write_str("1")?,
++            Self::Timer => f.write_str("2")?,
+         }
+         Ok(())
+     }
+ }
+ 
++/// Wraps [`time::Delta`] to render the value as a bare nanosecond count for
++/// configfs attributes that historically used this format.
++struct DeltaDisplay(time::Delta);
++
++impl kernel::fmt::Display for DeltaDisplay {
++    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
++        f.write_fmt(kernel::prelude::fmt!("{}", self.0.as_nanos()))
++    }
++}
++
+ #[pin_data]
+ pub(crate) struct DeviceConfig {
+     #[pin]
+@@ -144,6 +163,7 @@ struct DeviceConfigInner {
+     rotational: bool,
+     capacity_mib: u64,
+     irq_mode: IRQMode,
++    completion_time: time::Delta,
+     disk: Option<GenDisk<NullBlkDevice>>,
+ }
+ 
+@@ -174,6 +194,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 guard.rotational,
+                 guard.capacity_mib,
+                 guard.irq_mode,
++                guard.completion_time,
+             )?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -189,6 +210,13 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ configfs_simple_bool_field!(DeviceConfig, 2, rotational);
+ configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
+ configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
++configfs_attribute!(DeviceConfig, 5,
++    show: |this, page| show_field(DeltaDisplay(this.data.lock().completion_time), page),
++    store: |this, page| store_number_with_power_check(this, page, |data, value: i64| {
++        data.completion_time = time::Delta::from_nanos(value);
++        Ok(())
++    })
++);
+ 
+ impl core::str::FromStr for IRQMode {
+     type Err = Error;
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index dd7a30519870..3e7a47e6d0e5 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -28,6 +28,15 @@
+         Arc,
+         Mutex, //
+     },
++    time::{
++        hrtimer::{
++            HrTimerCallback,
++            HrTimerCallbackContext,
++            HrTimerPointer,
++            HrTimerRestart, //
++        },
++        Delta,
++    },
+     types::{
+         OwnableRefCounted,
+         Owned, //
+@@ -59,7 +68,11 @@
+         },
+         irqmode: u8 {
+             default: 0,
+-            description:  "IRQ completion handler. 0-none, 1-softirq",
++            description:  "IRQ completion handler. 0-none, 1-softirq, 2-timer",
++        },
++        completion_nsec: u64 {
++            default: 10_000,
++            description:  "Time in ns to complete a request in hardware. Default: 10,000ns",
          },
      },
-     error::{
-@@ -126,6 +127,11 @@ fn report_zones(
-     ) -> Result<u32> {
-         Err(ENOTSUPP)
-     }
+ }
+@@ -79,6 +92,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         let mut disks = KVec::new();
+ 
+         let defer_init = move || -> Result<_, Error> {
++            let completion_time: i64 = module_parameters::completion_nsec.value().try_into()?;
+             for i in 0..module_parameters::nr_devices.value() {
+                 let name = CString::try_from_fmt(fmt!("rnullb{}", i))?;
+ 
+@@ -88,6 +102,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     module_parameters::rotational.value(),
+                     module_parameters::gb.value() * 1024,
+                     module_parameters::irqmode.value().try_into()?,
++                    Delta::from_nanos(completion_time),
+                 )?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -111,10 +126,17 @@ fn new(
+         rotational: bool,
+         capacity_mib: u64,
+         irq_mode: IRQMode,
++        completion_time: Delta,
+     ) -> Result<GenDisk<Self>> {
+         let tagset = Arc::pin_init(TagSet::new(1, 256, 1), GFP_KERNEL)?;
+ 
+-        let queue_data = Box::new(QueueData { irq_mode }, GFP_KERNEL)?;
++        let queue_data = Box::new(
++            QueueData {
++                irq_mode,
++                completion_time,
++            },
++            GFP_KERNEL,
++        )?;
+ 
+         gen_disk::GenDiskBuilder::new()
+             .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
+@@ -127,15 +149,43 @@ fn new(
+ 
+ struct QueueData {
+     irq_mode: IRQMode,
++    completion_time: Delta,
++}
 +
-+    /// Called by the kernel to map submission queues to CPU cores.
-+    fn map_queues(_tag_set: &TagSet<Self>) {
-+        build_error!(crate::error::VTABLE_DEFAULT_ERROR)
++#[pin_data]
++struct Pdu {
++    #[pin]
++    timer: kernel::time::hrtimer::HrTimer<Self>,
++}
++
++impl HrTimerCallback for Pdu {
++    type Pointer<'a> = ARef<mq::Request<NullBlkDevice>>;
++
++    fn run(this: Self::Pointer<'_>, _context: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
++        OwnableRefCounted::try_from_shared(this)
++            .map_err(|_e| kernel::error::code::EIO)
++            .expect("Failed to complete request")
++            .end_ok();
++        HrTimerRestart::NoRestart
++    }
++}
++
++kernel::impl_has_hr_timer! {
++    impl HasHrTimer<Self> for Pdu {
++        mode: kernel::time::hrtimer::RelativeMode<kernel::time::Monotonic>,
++        field: self.timer,
 +    }
  }
  
- /// A vtable for blk-mq to interact with a block device driver.
-@@ -418,6 +424,21 @@ impl<T: Operations> OperationsVTable<T> {
-         })
+ #[vtable]
+ impl Operations for NullBlkDevice {
+     type QueueData = KBox<QueueData>;
+-    type RequestData = ();
++    type RequestData = Pdu;
+ 
+     fn new_request_data() -> impl PinInit<Self::RequestData> {
+-        Ok(())
++        pin_init!(Pdu {
++            timer <- kernel::time::hrtimer::HrTimer::new(),
++        })
      }
  
-+    /// This function is called by the C kernel. A pointer to this function is
-+    /// installed in the `blk_mq_ops` vtable for the driver.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function may only be called by blk-mq C infrastructure. `tag_set`
-+    /// must be a pointer to a valid and initialized `TagSet<T>`. The pointee
-+    /// must be valid for use as a reference at least the duration of this call.
-+    unsafe extern "C" fn map_queues_callback(tag_set: *mut bindings::blk_mq_tag_set) {
-+        // SAFETY: The safety requirements of this function satiesfies the
-+        // requirements of `TagSet::from_ptr`.
-+        let tag_set = unsafe { TagSet::from_ptr(tag_set) };
-+        T::map_queues(tag_set);
-+    }
-+
-     const VTABLE: bindings::blk_mq_ops = bindings::blk_mq_ops {
-         queue_rq: Some(Self::queue_rq_callback),
-         queue_rqs: None,
-@@ -439,7 +460,11 @@ impl<T: Operations> OperationsVTable<T> {
-         exit_request: Some(Self::exit_request_callback),
-         cleanup_rq: None,
-         busy: None,
--        map_queues: None,
-+        map_queues: if T::HAS_MAP_QUEUES {
-+            Some(Self::map_queues_callback)
-+        } else {
-+            None
-+        },
-         #[cfg(CONFIG_BLK_DEBUG_FS)]
-         show_rq: None,
-     };
-diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
-index 157c47f64334..d3e93ad98b6e 100644
---- a/rust/kernel/block/mq/tag_set.rs
-+++ b/rust/kernel/block/mq/tag_set.rs
-@@ -116,6 +116,19 @@ pub fn flags(&self) -> Flags {
-         let flags_raw = unsafe { (*this).flags };
-         Flags::try_from(flags_raw).expect("Expected valid flags from C struct")
+     #[inline(always)]
+@@ -143,6 +193,11 @@ fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool
+         match queue_data.irq_mode {
+             IRQMode::None => rq.end_ok(),
+             IRQMode::Soft => mq::Request::complete(rq.into()),
++            IRQMode::Timer => {
++                OwnableRefCounted::into_shared(rq)
++                    .start(queue_data.completion_time)
++                    .dismiss();
++            }
+         }
+         Ok(())
      }
-+
-+    /// Create a `TagSet<T>` from a raw pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be a pointer to a valid and initialized `TagSet<T>`. There
-+    /// may be no other mutable references to the tag set. The pointee must be
-+    /// live and valid at least for the duration of the returned lifetime `'a`.
-+    pub(crate) unsafe fn from_ptr<'a>(ptr: *mut bindings::blk_mq_tag_set) -> &'a Self {
-+        // SAFETY: By the safety requirements of this function, `ptr` is valid
-+        // for use as a reference for the duration of `'a`.
-+        unsafe { &*(ptr.cast::<Self>()) }
-+    }
- }
- 
- #[pinned_drop]
 
 -- 
 2.51.2
