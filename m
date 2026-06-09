@@ -4,170 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00513CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC53CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F9C76B0088; Tue,  9 Jun 2026 10:07:32 -0400 (EDT)
+	id BD3F86B008C; Tue,  9 Jun 2026 10:07:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AA756B008A; Tue,  9 Jun 2026 10:07:32 -0400 (EDT)
+	id B5D456B0092; Tue,  9 Jun 2026 10:07:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 173016B008C; Tue,  9 Jun 2026 10:07:32 -0400 (EDT)
+	id A4C7C6B0093; Tue,  9 Jun 2026 10:07:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05DE86B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:07:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4DB91C146F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:07:31 +0000 (UTC)
-X-FDA: 84860551902.24.6F2101F
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010021.outbound.protection.outlook.com [52.101.201.21])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D0984A001B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:07:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OLlInpZk;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 916236B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:07:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 551961C2CCA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:07:44 +0000 (UTC)
+X-FDA: 84860552448.09.4A68338
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 495111A0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:07:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Hmjro+z/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781014049;
+	s=arc-20220608; t=1781014062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yMhR78U3lnBOoyU0FBotXnURlWnGQC85qSxaCUWPDZA=;
-	b=wclueEM5gNdIp70OZPR/86A8WKhrDvpu9jhUcjpVjMZrbLw+CPJ7BBJn+oYjLOTXvMhXXR
-	mn4ppG33i5hNxBJBPrqnu1EXAPG1FnVKJ+lLEIr9O8M4Ji3MAq01GjQMdwyoOjA9xstUUF
-	IFAl1uV42KbM5Jt9bayUG21pUls5a0o=
+	bh=Wt6o/EznFR/k4GQholhfxjjaCQtWzd26qREhKs6Ou4U=;
+	b=ArNAgRbVNhVxt5v5E6GbuOf40xFFzOTOtkCqJP9r0dbOz9hcgqdHeu263zk6weJszYDwR/
+	VBpkUT2AsVMJ85TIIPrJ6Oo8tNniSmsTAxF/KdbhpqBB1b8RkDDfIEle1uG9Ugwg2Bjy8E
+	omPIpE3Rxd27mRcBAXAV08bkCjytS1M=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OLlInpZk;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.21 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Hmjro+z/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781014049;
-	b=HrO1OFxGoTiiNgxntw2+ibGYKVgF2XhQSfhHHi64l7uOdSuNiHMcte9ha9s89ksVwwzXdS
-	DIaMW95CsennJT3XbJ3wg1WJQqKXUoyLNncwDZqB6qsba0ZruhBu0lVbcdLGeIZVz2neO4
-	RkmUnorSO962mnYPhpReQqfw/yHihQg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tjAbLOPAHixomfPlDLplBze3nfLwatUJOkKvP7fvN3P+6QaRFkB7xkXPdZPegRDK7uNMWjxjTV5Ga6S8ihrZ28zEdiOm5dTmHbOrXdqSdI6cYFanXok0FxWWdElo1nw6WHUQFRX+5tOFFjgphq03lZ3pVwMi9HSre7aDukC/fgM5TnDSGmOp9iQ8jU4nmbb2AA8BFn9w2smQt7HA65I/jAu7D5xkvr62NoA8ZjFvmUSeFiNdgaKIuoYteKJgv/bQy4jF7EbQ85b+DU40pAR6k2NtzU6aypRr+WPXEOVHF+DqjchcyDIsl4UvlEMrhly9IbmNIWFTkuNroMBuoMa6bg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yMhR78U3lnBOoyU0FBotXnURlWnGQC85qSxaCUWPDZA=;
- b=rnHosUMGfXq7Ad6y+jse+QAJTeEsRVxc3bmn9nr93kQTNkeCFZr+7vBOn5UVVRzrdY3SaZhpkHakmxga6l6QV2tVLorex3X3ETsUrMNFl3+sUVkwpYx8xYfYE2EAtLnGU3G9PthwMBdZuI1UvOLuVGwiteO+T2q3W6WIdMHfL3Jnmy7sXV7QAOOLiLEs7+TdMDvUpBpn2xzyX3hNspdylfB4SXIp2b7pHcQdG6Z0FYP+BXpXCaD9/ARQONCcFN3vtzP2o5i8oQx/DyRK2xo3JoWfyIr0HtKIuxPjJKaZgFpxsPjJdQMke9EaO4przlipEXgUcfCWvsQ8tUo1heXCiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yMhR78U3lnBOoyU0FBotXnURlWnGQC85qSxaCUWPDZA=;
- b=OLlInpZkbQ7wEKKhpqXuObdYm8evfXc/vu+NQ7bqx6m2R7SpGAPx4GpV18mkRP+oB+8KLK3FTdqp1onjztpQE8l+V/ewOHiXzZP7uU8Kb/yHclRhEvKLQuYfr0Xs0WHZLUL4NkJxnAz7xwLJGHsrf1GRHLF/aL8PetnFlxae+ptle+O0Fm7T165v/w+IclHT3YXxHQ7rZaBI3Tw9FRWQ0efKiB6IcFTCjlZ8E1zoVcTz4ccRTDct3L727oUpPd5Hx7ckK8Zr5K59G94zM4XJJY/MtEGq0xk6f1HXTUqK0lYDekH0KvxFV4AdN6vZ7CAyJZmsJqvfwvJhAdQ3C4d/Tw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CY5PR12MB6249.namprd12.prod.outlook.com (2603:10b6:930:23::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.13; Tue, 9 Jun 2026 14:07:23 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 14:07:23 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: xu.xin16@zte.com.cn
-Cc: npache@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- usamaarif642@gmail.com, yuzhao@google.com, aarcange@redhat.com,
- akpm@linux-foundation.org, david@kernel.org, chengming.zhou@linux.dev,
- ljs@kernel.org, baolin.wang@linux.alibaba.com, liam@infradead.org,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com
-Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
- from interacting with KSM
-Date: Tue, 09 Jun 2026 10:07:20 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <18102ABA-0D8E-4DA0-AC30-544E34E445D5@nvidia.com>
-In-Reply-To: <202606092147587040QWUtifMcXLhNfANT7GRO@zte.com.cn>
-References: <202606092147587040QWUtifMcXLhNfANT7GRO@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0224.namprd03.prod.outlook.com
- (2603:10b6:610:e7::19) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	t=1781014062;
+	b=exUWLKkeF8VYBCZKEBzZBmoRjxut/sAD3LmXMRsJO49gFIY0fJclfCDHMpl6qdRMuL241t
+	1qLr+ytIkrWbbXqSc19pAfLipGQJkeE4Td+nOu87x9vdo0sooFkfKI/I4nu4hX5nISSdH6
+	7DjINDuE00vlrdvTaEoRphSchn5GpGo=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bec449cf976so775938466b.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 07:07:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781014060; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HjZPZd4Pooz8JLgqNB7WQJCQIOq3yE4QjCsOe7eLBP85fj6wpFARTwQj89ZCwXEvrO
+         ykHr6wVjOWDwRGcGn2ma4v36dpb/kx10BiGWhY2N+OkqJXXK1St+LrRYVY40ZuLvHxoI
+         9gLj7Pl6vENDRzexQ3Vs4zIuJzerz4I5dlE9YZWamP32aEm13icap80xzELARUutPH85
+         SG30zkVAwwNVWs0xASQ1lg+ptNm2VHaqch4A/bP8VZG7pt+8LenKqpjKDIqR3SLevMa3
+         7zWhhZ0G+fh9T0v1z8DHNnyu6MbspD6Ki75yQ0mEG7nzFNwl2jqXFdr9eMqsFSI/572/
+         i/GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Wt6o/EznFR/k4GQholhfxjjaCQtWzd26qREhKs6Ou4U=;
+        fh=59KW9WfCYA8HqT2MvuMj3e90WdF1WzCsImMuu1VYGDM=;
+        b=l1/fxvhRYt7TOBoqmUFlP1xFrs5SOtOxFmw5MkDlAubIZgvDavQFaYKDqIE7E3ciWe
+         1b3PPRrms2CQbIygZ2bJ8bt2qFjRB+EsuCHQzBlF6myWvjG+DHLK4UwTuAvST0yrtWTM
+         mvg9KJ4/YD/sold/HELvpdvGOAww8+DBiughw4pRWdArVyXhBeVCTih7JJWpIAnD5Itl
+         fBTpeunZpbGG+7Fz4ec5MOo0UFWwaXvRTeLlHiGg2oqHQJ/VgFRuyD41MInkG3Ak76ym
+         b4CVwBI9vx/AdFKHZwjC50+Ij7lcFr+3UUfvfVLFtAqNgdDH6evoR4KP5dKvBSNVvbgp
+         LjDg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781014060; x=1781618860; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wt6o/EznFR/k4GQholhfxjjaCQtWzd26qREhKs6Ou4U=;
+        b=Hmjro+z/rps5kOcAw8V4whciJlGoX1tZEoRcC4F0MYOaNq66ute5rcELYWyjvc0k8a
+         1Jk5nsH35pFFAxAg8eNYvQ1UPtH9lQLymoMkOVZSOYqUAnR7Sst1+lYJDwy0AHPy9W+1
+         Qs071syDxY6nRsDUUw9Mz29vRj2XmYJcavvw3cXuHQORKVawMRuvMFa/MKqtgi5HX8kF
+         /aWK079bbCvLMnO7CJn7mHmBv+tM4yG+Ovr3LBXKn+kUY1q+FwK8HaW6m+9immVEv1Sp
+         CrQ8VocuU/7bsD4ZzuapVy5Tj+UI8OSkLMWWI48vcV9QjheKHlpfOzkDIL1DqNhJHoZD
+         prkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781014060; x=1781618860;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Wt6o/EznFR/k4GQholhfxjjaCQtWzd26qREhKs6Ou4U=;
+        b=LI713cdOVatIn/X6qhiVJBrzlAvHMxj/7bwIniMkXZfRnKgrQv2zkHaHl5KdRjb0Kj
+         RzDrh0AJ1cFn5cng2R1/06ie+2PiIzw2a9wdxJnW7tG0BdGzh6tKCLMXTRr8mkDkAfVJ
+         ElVrlnWfXS6QVu1gqVbV6m+IFV0e9PPApF6uaqgztQywhKPQ9hG8YMy8AxMhOym0tgTe
+         uQbX3Xim/PwpdKVfZwIXqX5zer+eMy3NUCq9tcQAMagzWJ3G0Icrju5PHRydWFXQ1P/+
+         WrVE4eTs5eMKU7zmOoqKZxn8fLSSjiZUM7/xsJZER7gs0uiN/Skcist+5bJIUbX1q+So
+         fw1A==
+X-Forwarded-Encrypted: i=1; AFNElJ8eNQ9WtB42HaZjB0tuKZVo+FOG2f6G1wvyx/BucJUwGBnY4estI6uKaw4Ig6GVGL0d2+AjbYgOiw==@kvack.org
+X-Gm-Message-State: AOJu0YwNA12QTTvi1NKk/TLZwfBx8IbHuiw4+jpeyutC1fSJxs2n3qUj
+	dn08y+zZC+rlRoZBQG7NAEHdJdxXSGbK/CjZQXAhH+R1C857g7aSW9cq10si+6MGAj/vwcWOJSj
+	uqCjAa1ynh0VrouziB8N+kLXoMWgE9Mw=
+X-Gm-Gg: Acq92OH1k9VSl7P6MExlHvhIU4FvkGfg9b02kXe61q3/6w9BdE7si1dfuLVQFq1sq9Q
+	hSalANeVh+spnPsVVHQQqRt1oOlPQ5x06NcXvIHE85mcFSl1H0Okdbv7kDgercnYJ7tw/5yqp5g
+	n8VhHsq3HD10slzSt0p82BW/WOxwo2K2pdVD7BfQHLW60Bpz7qa0pTJZc1rl3FJIdp76A0C0zR1
+	lDvcOT7RQkWp2FW45/MJ/a8kdIFyhxSMOB/6KseZcf2yUjBBdpO+Wxj7g7vJ4iHk+MqrWWSqdqh
+	qo8X4jgMZBaXCBXM6Hn39W5UYFQfSOQ9/s21tN8AuN6gYwVi
+X-Received: by 2002:a17:907:1c0d:b0:be2:11d7:8b05 with SMTP id
+ a640c23a62f3a-bf37234b77fmr955413666b.24.1781014059950; Tue, 09 Jun 2026
+ 07:07:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CY5PR12MB6249:EE_
-X-MS-Office365-Filtering-Correlation-Id: dafdab88-0ac0-44fa-a508-08dec6306da5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|6133799003|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	dCA3fy8aP1D8xyF2bsJPzYX/gEtzWDxbicbZH7H72AtmZDsb73tjsGoQOYUMOuHlTbzwv61uhlam486AMO+0W8nR5ZR/xuCFo/qExCZ+8PlzBBlzDB/bCuQnRDuCNMSg4/sfa0NURS/oEMQyFeGCgVuwR8C7+QGSzNovKSHKvx4wowonMqewnS6RtrCKPknDjYqWgJhICHVVnOcfXikTkttRJfvOPOp4mRLU7F6SoknTG8iPgwDvhhBK7DFXI6CdbBzwGApm6/IFO0AO6s9Q/kqicYH4hXXZuu2BK8i/QEHgX5BRTbzLZvQGlINX9cGNdwPBw4Dl1MMX3bybSTe9TM8bEKbzoIUcVEVOa4fLzcCB9QP5BDxcUmjBjmUc8Ki4KFJT53xw8SAGkTdhiB6ZItUUtnT6gD9/WEBO9n2UdJBAUK+kdqNcAQiMz67aMUUwjONfGaeNC8JgSzTK1xVQsOGTc3dr1OkU8bP9Ob67jMH7VpXPMZ5RBppSI77CXUZaxKKs3k8Q/9UB1B4qKmzfciCjNOB2zEG/MNQIXNdhxZdXr9N8gsqsg8R4apy7wA9TrPKv1ep2Klzxhw+TpokPE/q3sYeHEMhR46dUPorCCTk7oLPoRgnB2rWE4qxqsFUhcR21bWnO/zHSqpWhRraYtqaxV+k/wtFeUmp5JDcJ5VCe6sLSTrxz5EPoyyLYJP61
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VU4wVlRWOFB2YWxBRXpaUk1tUjNvU2ZJOEhNUjlQOWxYRUIwdmp1U1BBaUpx?=
- =?utf-8?B?UHFBa1hsc0trazh2WkxudUVKMjN0TVI5d1dIdFBORE4yNTlVREtyeEpKWWtU?=
- =?utf-8?B?c0lvdFBDRTF6OTFiS25XSWJQU1NpcGU2VVNJT3JSSFRDVnhvQ3Vyd01NajNa?=
- =?utf-8?B?N1lpUHluOWNQTFRLK2lkcm9KaXlUQWpwTFpRc2t4V3lrVlRVUjBVUktHRFh3?=
- =?utf-8?B?ZHV0ODFMWklHbDNGenBDcXRWblE5ODllbHNQc1poNlFpTkdlaHUwS0ZYdW5v?=
- =?utf-8?B?OEpRNjFTemZzbWJ1R1JCWStCZkFhUGkvckNRa3VNeTRCTVNiQVlTZmE2ZmJU?=
- =?utf-8?B?anRGK2ozT2UvaTlPSXc2WW55MDd1QUx0Q2NCd1ZTVGFXT2QyRmQzWHZWcUlv?=
- =?utf-8?B?MUticXBUSm83bFNQdEE0NVJCMHM1WUJaNUxvUWlUTEpuMCtSOU8vS0ljeFJl?=
- =?utf-8?B?ZEtlRGphMU9FNUZ3QlpPOEMwSnNuS3dOUXYyRTVGbEN4R00vRDJUSnk1S0dT?=
- =?utf-8?B?WlNSNkpZK2Q3T3JKNDU5Q1g5RnV4N2RlVk8yVmFWc1lZbktsa3BpTCtMTHQw?=
- =?utf-8?B?MTZaYS9rTi9OQVpKTTRBOEdlbE9IV2p2UFlRazljNmZsREJxRVl1MlZZTE5T?=
- =?utf-8?B?YUI1d1VtbWNXRG4xM0FabWtWMUJBekFLempaRlltZDJyWk5WVEZRZWJUYmpp?=
- =?utf-8?B?ZS9WRk1mY3M4emV6YUNVYVhFNVVnNDJRZnk0OEJ4NGZPM29zZDl1WCtsV1A5?=
- =?utf-8?B?RWJvc1FMeDlWVC9zT2JWNndhUUQvMDdSRXFlNTJUSmJ5ck9uNy9DM1RwWkxG?=
- =?utf-8?B?SXN4bEtkMWF0KzRhMmtxM21OdEp4M2JicWpCNldUazZwelNNUitVSC82LzBo?=
- =?utf-8?B?VTVCcDFuVkR1Z3VVVWx6UWhVb3BGUVVESmQydnNJK1dhUi9WV0wzU3dlNXIw?=
- =?utf-8?B?bERGTlVzd0tpWW4vWERlSTNqQjdrYkd5R3NhM3dvTmhJdFFkb1VjdmNSSkt4?=
- =?utf-8?B?Um1rbzUzVkJOWmpvMDhQNVJTeVZmSWhsNFhwSC9xenNGTGEvcy9wZnJEc0dT?=
- =?utf-8?B?L1JwMERmWlRhSm1mVTd0VWd0VFZLSFJmUmFXSVBIYkdhVVBVVnQ4bHlTczhu?=
- =?utf-8?B?RWVnenE1dG1tNm53UFM5cmxuSTdHT0s0M1VCUzJ5NGVxOFRNTE5JR1IyeG9r?=
- =?utf-8?B?NFJ5Q1JlWGgxQ3dSWS9FQ0FyUC9YUVFtS1o5SXc1b0ZYQ0xYSUJ2RDFyd0tn?=
- =?utf-8?B?NE9iS2hhUklNc1E2ZWVQTlRpU3BoSzBBQ1hsWEx4ejh1amh1WktpOTB4YWlG?=
- =?utf-8?B?bUNkUFNCL3V1Q3Bpbnd6VkZGWDZYMXJXUFlOVTE1TklsTHNreVNPai9zSmN5?=
- =?utf-8?B?S3Z5Y0kyR3A2VXE1UGN4SENuVnNITWI1VUxIR2JWMTBrOHhVS2FxUFlNS1Fo?=
- =?utf-8?B?bjl1ZE9zYVVWeEZFR1VET2dvL3FCVE55a0d5Vmw3TGxJeTZoeldRbjkxN0FH?=
- =?utf-8?B?NVBqNUtsN1E0YXFlN09PL2ZCdkgyNytsMzJZRW1XMHVGTGcxbmE2dFVXckFM?=
- =?utf-8?B?dFNLcTlLc09JeTZzaW5DWGtNelpCcnFIOUJkZWdFZ2I2RWpQUExsaHVObzRy?=
- =?utf-8?B?Vjkzb0N6ZmhLWlV1NVYwUytNWEVYdkdCMUhUMjRkcG41NDJ0R1ZIdVNTR1d6?=
- =?utf-8?B?eXBuWGpJV2R1a2NDR05iQWQzRTd1N3g5NDlHMFVnOVFIWVR4a1RjRnUvV0RZ?=
- =?utf-8?B?dHRDcXM2V0dBMXI5SytEL2VlTEdLL1phbkpIdjlYWmRoL0lEQXlFaC9SOGVk?=
- =?utf-8?B?TFdmQzFkSDR6Njh2V1BJRlM2YWhUSzg3SWxMNHFLTkNEVlJ0cWRVUE1TVCtT?=
- =?utf-8?B?dVE5cGtxT0hqbk8yUDR3OGxHelNZTmJHdUpBc0M3bVZxcm5zTG9iK0p2MXZJ?=
- =?utf-8?B?OXMyWU90QjV1eXhQdW0veTArMnVxVmJzQm82Q1ZvbFFHUFBtN3VBZm5lS3Fs?=
- =?utf-8?B?dmFPSUFFYVdRK3c5SEZhZmU4dm5CRkFPcWNuSU1UZG8yS1NyUUpoVkZQZUw5?=
- =?utf-8?B?TC9KSmdDUHA1T3FrQUxXTFNKbjNjb2Q4cHFndzBYbWNBeUM4aFlvQVB6czQx?=
- =?utf-8?B?RDJCVUdTOS8vM1dUVENveCtzRlVEQ21vRGRCcTcrb1lNc2x3cFJMVG9HUFdm?=
- =?utf-8?B?VXVjSXhWRnFoU2NEcU1GNzBLWVRLZVdkVzFpbEp1OHhHMER4NXE4M0dZSjRu?=
- =?utf-8?B?ekZITGM0NUliQlJOVlBWNGdUdHFjcjNVTTZGRkNuTnphNE94M0IvazFNcGlN?=
- =?utf-8?B?SmxLa210VnFuek1vY3lVeUpLdlBsdkp2SmR1OVNXNXRKMHM2VTJtQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dafdab88-0ac0-44fa-a508-08dec6306da5
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 14:07:23.5379
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sRU/SC/CP3Pysr8h7/8mSiRKkdBB5mcgDKb+f6IrgEpao9WBkq1Q0xJFUfYcrE7L
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6249
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D0984A001B
-X-Stat-Signature: tqzdz8hd37n1d6saxfedd5exjd81kkij
+References: <20260608143242.2869392-1-usama.arif@linux.dev>
+In-Reply-To: <20260608143242.2869392-1-usama.arif@linux.dev>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 9 Jun 2026 22:07:03 +0800
+X-Gm-Features: AVVi8Cci0dNQnERKudte59zrkbuYB_aCiWIkJHOx3eoOMxs3tM2KtU7-W6HquQ8
+Message-ID: <CAMgjq7D_VVJy_a4dT+eSzUBXHvA-L=C-mrvhMOBBLrTO3J-3Rw@mail.gmail.com>
+Subject: Re: [PATCH] mm/swap_state: remove unnecessary lru_add_drain() from readahead
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, riel@surriel.com, david@kernel.org, 
+	baohua@kernel.org, baoquan.he@linux.dev, chrisl@kernel.org, 
+	linux-mm@kvack.org, hannes@cmpxchg.org, shakeel.butt@linux.dev, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 495111A0005
 X-Rspam-User: 
-X-HE-Tag: 1781014048-637220
-X-HE-Meta: U2FsdGVkX18SadijYNjz+YzZ63rU5KhKa3vXsMqhzpcDcVEj950OwnF1GK2jZoT2oZ6XoL/Wik9yYM+0cv6BcVGVfy63wLZPvHUT7T3auA8F3/E4835xyI6LRR3oblG085nG72/DkTGTLa5rzUIjwZaNaBIeHeelQfP4nGtv9A2CwgqmRXmFLeRTo2qVDc5ASn/xqwShwe7xwsqvb7d5pxZjL5M3hqUkR97NJZ0g/3/sTO7FDsF7JJ/Z4L6nolRdIaJHHVi9AFoGOkH0jZ5FCO8V2uGGibyoB/9XGNZNXo3j3zFNmfjKflXC78P7RWIho/crPWyPUkuRPImMBTQL9BPGWpUZWCK8bE7v0y/3sGwbEwjMxWUXOP2HBGhRfjt5BofXZQp7ZdmUADxkap72VO6N6vljvQezMqjc5y0lObqBLIh6jMU/DaMK0SQCPV0M6Z2tsdQqFQCg6OvjIXsFKAvWvLqCmnywG/iidcDshObTujfHdpaD5oZnSUMAYvdOd9RxcIdFkW3TiIvViSCLD7Ze58J5zhT5Hresza5eu8uewEBizBS+By3/GjhKcezb26Ot3Ykmc6qaAW884hdZ9J2jwJPDvNos69OLGpPiL3ckgbV4XP8sitM79DWlbKVFoVWnFkensN5KHzQI1VOEENbnr4oy7FjbpnvbAv4BPY8PCNlgPpRjfHpIzrPTDgAEvxueAA44RA94MHjGiasXiYZ0IWx0pEIGKNzZD3KuRzg7TRbtPaCZsYR2nwgmMIXHBVhhVMHK2Lum7NzQOwaMDxdnMpYTWp8MkME0aX3jgeVSLtwoX5igCPVqPwEGHcttPcTMFA5zGrSqDo8M3v3IybdVAZB8G+RW/ACfJxr0Vb3E/ehRgShKRzTtT+O+w+4b7gQdYMoOWAKJNIg8WUW+Y3RNFE6ZtqOmFTDYKguJuSmbvfpGmOOwZuIloaN9kSFUkLtWT4iCBtqqhC7U9Vb
- OsgXfAF7
- g53n7Otc+hPvK3y8Pf5bqqZPX58OEr2hTHEwXtuipwBlj09ChDFs7tZAmyE/uW8k7ZwtRKtY1HntbqyHZo335C+mg+dt+zn+PiobDb8a5hlgHa2IKrqeFsHvHkQV+moAB9+tsmDsUjsSmMbqpfpv7mBohtwYuVk4w8blaTGWJlm8bFG7bvk8oq5hWRAWCCQDi+FX2pLd1W0ZkQUlWoKBuS5WLVX7pPm5tipIhszzeylYmD3djycCRy3H7OrryBuxGWKfMFT+Bk2pntMLLKdRVhhFI/Bs5tFTnmdlSqkG1A7CiQfxSd3nY/G4xkMFT5WkbkiTYpi+kUi9TPr5nF4mR3v9zGyk8xBBd3YEwhYNESqKfcgkymowLDkfUJkMEIYmdwhUvitWkADcWxDgfFY/6hyPBXhMfHpKC5tl0JtKRZuUsGgV8MkbVVw50XxbEGLTsSfpiDr6YDKjTW+YpvZo+Mf2h2jTG8sXEFWeBAyPqy7AbQh/1rjceEcSyML2J/3NyryPKxZqmlc6DoQxx5LcXdDjvgA==
+X-Stat-Signature: asgpt4jg53wzk1j56qbkgpye33xu8gmo
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781014062-103998
+X-HE-Meta: U2FsdGVkX1+XUsHtsleLf4d2R2HiRSMlIMwmmcI9PAHJ1CqB3VTlRPsPbqpNXPmAXsjh9B7Y6E7xiJYAmiyECTRryVNmfD7gWI8KrSXUaMTsh6bWxcbHQIp8qCzfJ5TEU2X9HO8RMUxYcUm5JqmqcF+kLaAr5GBIFAv0MCYF60qwt7DKx2LwWjmsQOJd2cv8aUVeP+KIUxEoXctE8YOzAAmZqhkvnVIrq3/5ffKgjereXLLH6ovOS215hXUrFc1J8u9bQulxv22cb07DVgQlJjsByxgp22u5GL6CZSquDmViZOaVCWI7/i9CuRtDoDkidSTmTOgKiuQnhgJfc2YotsSpZbl7H4XAUMlAAoJ6WQ9B7AURTg40JaoCVbahha/qiC2gesTqljyYAaZHxdYbzMKjTDE0anW4sxJEUzajvtwwukY74ZcUZDHnoLqkX9coKG7G+Wo0XGu7fiG6opHVXrnchDfBf59zMrIspdOzcN16h7WppaEJe7xNWYFxJFTBPXZUYzw8qKlVEpa+TJZ/0DmG8rcYrIhTg3JQEF6HX1IFD/JvoYYKr5uvAbjCOrxSaVdan15v6HMfuuJKyI9TVqoqkhc9bKfrXrgKBuwSCQ4zlFWLE4xmk9bvHUfzsWYWRYLyojHVEQxsUfbeoewvNizjKLAkMYArgycoBta+pJTxfmV5TsGpyvGRG/7fIwcNx+XB6FfzUDIeif4DYWyYippHdvjuSzNgeSsBSfdiSJt1y9yfkqwl6h7ph/mmtYG8Ty/n8HzMrMTfjTKa7ezwRDphdhPR6q8gjechJFVOvy55DmV4iTJEq7DezE4FSxQtNupwSAVdUBdKwFVO8kxml9eqZKrmH+Tw6EQvGtAcUhdZG8LPDwXKJNVa62r8V+PHwY9VC1J8tAqYoSusYfgaYyOpSjlEKa0uL2bi216mLz+mC7LfgaHiRn+HQNCKMHvBGBd06zjO1QLqaf2QvP1
+ uh2bYoVi
+ W4epaPokWreDjJfAOAQokW/AAA4feWmgiHr2w6ICPkFztJbsPPWPcwlTRMy25qfBWFC4PAJvDw0PesrDLj8/NNSI+yNW163oJrqqK5L+dWN9xs3sbeKotTPbtwtfSum82VbwNVEbgZRqRTtE0Ly5t90KaoWDT64TkhnBkyBliVTPAebskXD/VTS18J0tTE5PfSN43NAb9tg5lD06+5QVS9QFwTE5Phq/jHB4OtLvuSTquYsh0rGgTh6gnQ576wDuH8988Vtj1zSrk9NICrrEK4BZHLNo+SDpKTbIVnbgiABf6f1xuVZ6LZRjBv55yfF7tkGv5MPWCc5qwyr6ZCMOj16j8tYRke+cgtPmgiJqARwNK8Ego3ndp2y8sG9NcpD676BgD03sEXNS4W+k0kCopftQyOSkcBhrwVP8vBX/UcYtC9jTLkYYqBwhW+dtQmDbcmAhOlqD0kw7mAAqDxh05dScnJNmplIZxHjuMuxyWRmE1tXvCf4Vs8aU0F1Qa5Io/XkHBwSqa6dCAkyk8ys8ou/+cXSAG0OB0f7mVCeE5eCl2KRs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,70 +141,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9 Jun 2026, at 9:47, xu.xin16@zte.com.cn wrote:
+On Mon, Jun 8, 2026 at 10:45=E2=80=AFPM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+> swap_cluster_readahead() and swap_vma_readahead() end the readahead
+> loop with an explicit lru_add_drain() call. That drain is a leftover
+> from 2.6.12 era code and serves no functional purpose for the callers:
+>
+> - do_swap_page() ignores LRU residency for the readahead folios;
+>   it only needs the target folio it called swapin_readahead() for,
+>   and if the write-fault path needs the target folio on the LRU to count
+>   references accurately, it runs its own lru_add_drain() at the
+>   wp_can_reuse_anon_folio() and do_swap_page() sites.
+>
+> - shmem_swapin_cluster() immediately locks the  returned folio, waits
+>   for writeback, then operates on it - LRU residency of either the target
+>   or the readahead folios is irrelevant.
+>`
+> - try_to_unuse() likewise locks the folio and calls unuse_pte() without
+>   depending on LRU presence.
+>
+> Folios newly added to the swap cache by the readahead loop sit in
+> the per-CPU LRU folio_batch and will be drained naturally as the
+> batch fills (FOLIO_BATCH_SIZE),by the next reclaim/compaction
+> lru_add_drain_all() and so on.  The unconditional drain only
+> synchronously flushes a partial batch and forces contention on
+> lruvec_lock.
+>
+> On a 176-CPU production host running a memory-pressured workload, this
+> path was observed to call folio_batch_move_lru() from
+> swap_cluster_readahead() ~28K/min, a very large source of LRU lock
+> traffic.
+>
+> This is a direct continuation of the cleanup started in commit
+> 1aa43598c03b ("mm: remove unnecessary calls to lru_add_drain") which
+> removed the equivalent drain from free_pages_and_swap_cache() with
+> the same rationale. A detailed reasoning for this is present in [1].
+>
+> Remove both drains.
+>
+> [1] https://lore.kernel.org/all/dca2824e8e88e826c6b260a831d79089b5b9c79d.=
+camel@surriel.com/T/#u
+>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/swap_state.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 9c3a5cf99778..6fd6e3415b71 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -836,7 +836,6 @@ struct folio *swap_cluster_readahead(swp_entry_t entr=
+y, gfp_t gfp_mask,
+>         }
+>         blk_finish_plug(&plug);
+>         swap_read_unplug(splug);
+> -       lru_add_drain();        /* Push any new pages onto the LRU now */
+>  skip:
+>         /* The page was likely read above, so no need for plugging here *=
+/
+>         return swap_cache_read_folio(entry, gfp_mask, mpol, ilx, NULL, fa=
+lse);
+> @@ -951,7 +950,6 @@ static struct folio *swap_vma_readahead(swp_entry_t t=
+arg_entry, gfp_t gfp_mask,
+>                 pte_unmap(pte);
+>         blk_finish_plug(&plug);
+>         swap_read_unplug(splug);
+> -       lru_add_drain();
+>  skip:
+>         /* The folio was likely read above, so no need for plugging here =
+*/
+>         folio =3D swap_cache_read_folio(targ_entry, gfp_mask, mpol, targ_=
+ilx,
+> --
+> 2.52.0
 
->>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
->>>> when splitting isolated thp"), splitting an anonymous THP remaps all
->>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
->>>> This flag is set unconditionally for every anonymous folio split,
->>>> including splits triggered by KSM.
->>>>
->>>> When KSM is enabled with THP=always, this causes two regressions:
->>>>
->>>> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
->>>>   split_huge_page(). The split remaps all 512 zero-filled subpages to
->>>>   the shared zeropage at once, freeing the entire 2MB THP when KSM only
->>>>   intended to process a single 4KB page. This bypasses KSM's
->>>>   pages_to_scan rate limiting, causing ~1GB to be freed almost
->>>>   instantly.
->>>>
->>>
->>> Why do you see it as regressions?
->>
->> Since the zero-page remapping was introduced our test has shown the
->> following behavior changes:
->>
->> With use_zero_pages=0, the merge rate drops from 60MB/s to ~6 MB/s
->> even after raising pages_to_scan. The KSM merging is now much slower
->> and CPU utilization has increased.
->>
->> With use_zero_pages=1, ~1 GB is freed almost instantly, and it no
->> longer respects the pages_to_scan behavior.
->>
->> Even with just this patch (1 & 2) or the RFC linked in the cover
->> letter, the issue no longer occurs.
->
-> Understood. You're saying that the additional processing action in split_huge_page
-> (remap unused subpages to shared zeropage) increases the scanning cost of ksmd.
->
-> However, I still wouldn't simply classify this as a performance regression,
-> because commit b1f202060afe increases memory savings through this action — so
-> it saves memory at the cost of additional CPU overhead.
->
-> If you want to address the increased overhead on ksmd, I think we could add a
-> check for the shared zeropage in cmp_and_merge_page, and skip merging when a
-> shared zeropage is detected.
->
->>>
->>> AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
->>> a huge page (which may contain many zero pages). If KSM is enabled and part of
->>> that huge page is mergeable, it can easily be split by KSM, rendering THP's
->>> efforts futile.
->>>
->>> Therefore, in our actual production environment, we typically avoid making the
->>> same region both KSM mergeable and THP always.
->>
->> THP=always is a global setting used in many production environments,
->> so these features now interact very poorly together.
->>
->
-> Actually, I have long thought about submitting a patch: add a new interface
-> 'skip_huge_page' under KSM's sysfs, allowing users to choose not to split huge pages.
+Thanks!
 
-Just think out loud. Or just skip huge pages all the time unless memory pressure
-is present. Basically treat KSM as a way of reducing memory pressure by merging
-pages.
-
-Best Regards,
-Yan, Zi
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
