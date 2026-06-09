@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40973CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C59CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A88F26B00C2; Tue,  9 Jun 2026 15:12:45 -0400 (EDT)
+	id 57F876B00C4; Tue,  9 Jun 2026 15:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A603D6B00C4; Tue,  9 Jun 2026 15:12:45 -0400 (EDT)
+	id 557436B00C6; Tue,  9 Jun 2026 15:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94F516B00C5; Tue,  9 Jun 2026 15:12:45 -0400 (EDT)
+	id 46DE66B00C7; Tue,  9 Jun 2026 15:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81A7F6B00C2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:12:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52F6E12079E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:12:45 +0000 (UTC)
-X-FDA: 84861321090.13.A8E9245
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 35E876B00C4
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:12:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9B4EC275F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:12:50 +0000 (UTC)
+X-FDA: 84861321300.06.A0974DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 93B4C16000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:12:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dy16hqjQ;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 307E6A000E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:12:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cV+8i+U4;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781032369;
+	b=p4uUeSqY2a7Gey3dkHD1vkA9snrKi64v++BNDHjCI48c6GOuYHZn8qCB1rwQ+jFcOk5lpN
+	3KxAqB97XugIhV2/XMRNT1Lt3iXAFg2T+PJOvD6wObAsf6pEMXgqbxhywas5L+02f9npIA
+	Shp/dCZ0PhC+3y1myxe6vzuHG1kW6kQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cV+8i+U4;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032363;
+	s=arc-20220608; t=1781032369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9SH0w8iIvKNdd0B99CMlOWkeY6yYgzCEx1TAgow6z0=;
-	b=dfUlB/WjgB3t+bKj3VI5LYx5NDgM15BsgXNa8n++hvvixtjwVYjzt6diOgjD6UiOs1N5xT
-	LusR5DaxMTWaSV/mw2I4fCAuwaWHdKZ0LwHmKo8+mbKETY+ZUzZ1gSwhCig7/atL482Mgd
-	1ENnFl3pdjFA5KO9Ionpa7HYJGDz1Hs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032363;
-	b=533Z9WaFUpa+Yye/n07y5rOKOTnUeEhbaaTK1SiMWN0GOJnDsYL4n8mY1NEl1T1kvIV5YR
-	BYBWY7liZCNIGhfQcBSLBudbzjj72frDFkLgJSh+t/I59Lhp+YLc17FTnYsVecfyJuhqt3
-	5d0u3OLq+hK74+h4Lzi1ZGkqku8wWBg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dy16hqjQ;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=E4zTF3buoXlpdVNSPu+eDYHPwLwVvZ/+F/dMjwaTG3c=;
+	b=onT8FiT+LazgTxYktCmr59fib4fH4HZ+CrPPlwl5IeKpZ9HccBxtWXyg5c1EPpHoZZ+y/j
+	LkWqHmGi8fuDWHHpjucStsLn0Gtq9oM/tiieQD6Vjx4MXdsOEzLaFdN7Ruh7RKIzdic7e6
+	OI1/jgfkCzyMnQEUsFJ4isdB3pgAWp8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A142602D1;
+	by tor.source.kernel.org (Postfix) with ESMTP id C3681602C4;
+	Tue,  9 Jun 2026 19:12:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE171F00893;
 	Tue,  9 Jun 2026 19:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EAE1F00898;
-	Tue,  9 Jun 2026 19:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032362;
-	bh=z9SH0w8iIvKNdd0B99CMlOWkeY6yYgzCEx1TAgow6z0=;
+	s=k20260515; t=1781032368;
+	bh=E4zTF3buoXlpdVNSPu+eDYHPwLwVvZ/+F/dMjwaTG3c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Dy16hqjQw2Mog1tvdwcHBgxNe6GgyDQM9lfuJiH/uSL8HAFAWfLPU6tA8x9VRqQwd
-	 k+3SzKdu754K2Qb2Vyyl+iCqoQz5wlixX76y9mxsGH+LOLu23YCNSnl2t0wBebYnRz
-	 oF/vaWFXAdOFWQX3Zl5UAFkKbK2R5pR9gPPIkKpTpEpNhwjhrh0XOrnay2hDQYlF3m
-	 BIi2jA5ulZsvWpQsOrZmxd2LWCfCbHRd5+N3kYu+LV783dC4sl4qhmAHF40BN7rfBB
-	 Jjg+bT3idl2VsnrwL9xR2aaZUsQu3DLq1qcvG9nTflg/a20RuBa7EpB/Rn6NLLWVh6
-	 Q9NcMxrDuw+cw==
+	b=cV+8i+U43n6XAVH0qKkpGqpEw8THPoG5GDx+77Vr2ca87tK5ut2BVqSJULdHo1hL2
+	 p141gWkNxfeG+5Mp+0//5KGEv9Ew8Es2Wg2t0JcC0kWYLoBPXxGylq46Rbn++CsN2C
+	 rxRVwg2gLrybVWOZzFw/p1pquEa8GbekwyeJNuK0ZRP/FSAmbjb+yCzjvUogsJBlQt
+	 z8ObVLIcZlAamjFkoxSImz5RQ0HosmKZe56bJZwHqpKYXNk+zUVqyNknLi1wepHEnA
+	 5nY9UbuI1j5int48wYdOuU0RwIBC1XMNTg7FIYdFlvDav+85pC0rfutBWdBWXAsGBz
+	 eF1kGp0QexmlA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:58 +0200
-Subject: [PATCH v2 79/83] block: rnull: allow configuration of the maximum
- IO size
+Date: Tue, 09 Jun 2026 21:08:54 +0200
+Subject: [PATCH v2 75/83] block: rust: add `Request::requeue`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-79-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-75-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3966; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=JQ3kG/WGGmu6/EYTDHQbX/u4S5Z3d/R/pgMZd3cP0HQ=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT8rNaIp8s3qv+4COUoMMnibZPjUIMIFeJDh
- oso6l2MqniJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk/AAKCRD6UCkIqsW9
- 0PsFD/4xE6M+uoXN4PZ2IfrksGAEmNVSk7zRi9n1KitGIRUO+UXtc5+N2QRfjVe6sYx7Tp7EqAs
- RWiPCK8XoQeu59WSbcfLQ6Uiw6+OnhcWG4IDQbZeiAmkq5lLXGEMMjjCFXyVE/P2oXHqkSHL65u
- mDxAorO3h2M2aPim/kUBZ+OYSg4flgEeSi6cQlnv/O5PjQwJpDiQVAs4n5gcq6M39Iayt3dZWgv
- JO4rZFnYQNdCiVv5rO4clM2Y0y+V5YHquDcJvYq0Oq3PkNhSh8qeJ63Qe/2H/6rhoc/GaNlzGQp
- o2UVDDj3YdOvRIiUJrbMTZeTzySTO6BhLPRqXnreFIoK3Ek7loiI2whFBNS5OiOa8lqgwuWg5WS
- ZDcru6GX3keiMByCTYc5cBeicOZE7LVFuTxIk/kpX85QvuOc2Egr2xcgF9za/QGg2hTJ+zF/Ary
- OWqTvc335xTd7d6HXnj0Ab2Guam7+eCfzPNROf3FkFhh0fFO+T3U6AKk7/s73rIttGmhrGCX4sl
- HNulUFvD1lcl6anYjUPepd7whnquIe0VJKe4iy06/U3LG/vQo7Y20FXtVs9roAu63NfhByKGIaY
- bJ6U/vhYVBd/Edt5kZth5o2Zv2P/vSkHHDxXS8uwwqkdeevhuVh8vvI/I9K/xkmHUlm97NHGq0S
- /IRjhjK6XdwyWCA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1374; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=scALI3Of9papCU7IjOqZJ1u1Kulf0qIwjxsjg5iYtNw=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT47losJJyzKx25dxqwhmsAjiaceinSmISuB
+ 74LtHjCMIuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk+AAKCRD6UCkIqsW9
+ 0LVCD/0f5aMN4ivKJwIUmvoBpEA1oTSTTcWwTQ16DMSlB5Da4QnuLb8vhomM9pCloc5XmQfBJVe
+ qfLrZ5PEe94IN8vCQ9jUEmNPGg8kZai0Z2UmGyu3saUkwWfk35EPalRebaU3bFakJe6Zux3Qn+C
+ BCA1441jxGPWzc5hT1zAYwETUK1gDEEKvXgWWZYByEBtyvtkSwHkbMw9Abc21zj4l2Whif5mdt/
+ p2E7/Ua4A4a8xt8TzoI6cUe0EtH4VjqAlhBpMl1OSy2GPdt4BKGdA74sZFsePhuN0+m36iX32Fr
+ l9ulhIZ06xNRCWeDAZQuGVHa6IFUBTv+ttHLvkmOAygMpix6R6KEY1jCEij+OgWFeMuIQ3cLYiY
+ Q1+XFRy6t5fRHV2U8l3jB8bwJ9e4oqpOGWtxMthi/JNx1k06WvYkvrZtgb815J39s/qrSB79ek0
+ NdQxosr1F95TF2BCXp5PJ+6+r1rS3EWQXxkXrY0X4s5Ohqnb1+mP4veGTa3jC3Dwo1XEGnbdoKd
+ yZBgHkUrRaDXNEalYdKUMv1k5ht0gKKOD2EDZxuSqjhtc4hkixpQ9DzFIFEL7GnPLf2zObrUTFt
+ l/FDNHE0kaVd9ziq2D0/SxRMg19xpq/cFQjhPzccSgFYHbvH+z4wESovJwNK3B9azUnXASAq91T
+ jXMzYewRKtk7MLw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 307E6A000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 93B4C16000C
-X-Stat-Signature: o7b7oe8sjc1jjg5ks5eaznmd393unyuw
-X-HE-Tag: 1781032363-290613
-X-HE-Meta: U2FsdGVkX18AzIEn1luYnmmoqlnfvcY1RF7DuRdZdACUo5B4m+uvnEIZhsroceUPI5bn815hli9PK4xB+WZ7xfphUCSNz9S9m2GU2XqSb+ray+ZjjGoDAdEvYtY/NnnKeg0/iLxn0fLpZFC5F6fjH7tg5rrqYAempuQrxNCXqVdylqcTslH8rLbQay5EeKOY4r6CwQhYYraLtQk1tlR//+e+o055/3BMIXx9chhatuv4Mlvy6t72ON4rSEsosQcleWJLnQoSJBQj9s5ucSMQtutZxrVd7r5QI4al66/C6PHhAmk1laWAt4GhtpGVpO3D/CVWu87DcRsiwse/tJNwMh9/45j45lw70Quu1h4y7Kkq8/+xIWq3uVSEdOHKQCWHM2I9z0LhVWyQtU8oraWvBtcwto0FJEto3AlSzv9Nc0Rs2tnpe7Gh6IIyYZpZr69Ztj7ev3YrpYVQfLyeebxl84tLpnWkWYehBRQYbNvd5s+dZ1YXScq8yNk3518B6Pzf9UWQaDKR3B7b6yxhnQFTtBAugS3yBagdaL39FE8IoaBiRjogUkYc3nnYebT98lnUSP5ClIJk4smoca08wy3MlW6F5oRl5v8a9LH13UfYSQGGpCdegQhanI0gbnawZgbUxBd83RbWgTWifTP8bDmOojqR8KJDlhOphIdgENU1tX+RW2S2rnLXhqfjRtzTPF8TAvI13SGZVFLNM2YkNXFa7U0sV/xTghWQ7Ipd14muWL6CLQzZX7k0WE3AUbgg+Bf7rEF1FWJFrarKd2BvgE4SwJk4pD/dQIvj/ARBAkQYYycdr+vqeQECffIoMTlujsnmEfFpINDzh44oX3bZW5hR+cfMMsOA3fT2dL12X/jInsyf8kwurtPag61FppiOPCwKekbtuHZHNGl3LaQL8suXEPsBBW37A17cX/YTbhyyfAh/gA+D4OLY1ZbGXKaSgyA/rCVPOjwI2LyVLjxXcRi
- xiaL8gs0
- dGFzekBe1F/bVvE1NNV32CFZMKlNF3Z1xTrTNRy6BTOaWguELFvvYjA+jNhW+YIAfaG1n1aupti96KR7wBohduqgk+1ZltiaUT61JhZQMjwO/hfPGqGBECi2zwbUO2kn07pAtiSNftPw1PODdVxHHUewwXtyK8WbcpdxYRVCOmTCWhpvQx4386bhg+U5eD0gYXlgibWkNntiYNdUTVSsEnqOWeycrgxNKPf/kfhRN8RHppgOKogA3yu/wTT4Y/pLeAQc3NK9AsLOSA2XTj1YGkGlsOX2jFP4ODV6hofNBbbizQqRi7rtXXptkuooV9lOz8Sb2
+X-Stat-Signature: m8k1pci3xowfaasji3yanghrj68t37bu
+X-HE-Tag: 1781032369-563298
+X-HE-Meta: U2FsdGVkX19U3YrUonEm5C4aKffbg/OYNZe6wREaAqdRQpsUvsix0Trid5l3lbSGSTkUOEvakN1LdUP+GEazWoBrgaRS/zY1FBajQO+LIYW+958ZBvkVW7QI24WCrviH4ZnjNLqNnfVg+SGjw0nHdFOw6YIhhfqlpGYsmlBbaxSD0hobrX6uANsFT8RVkriGAU8LLPv0fbdEvYyXaZ8Ua5S0KqRl8usKmByqKrQN/NGdclzshR/P99MvoNQpMTlIZFjnT+rxoXdonS6/IHJuP7BtfZfmsewXLBPNHRSC15yJZQsfNv/LlpR5UyGFSh3mHKJ7cPpM4pCGMXe00bqp3IRSAJE9EVzx7IXgiV5mQsmBJel2pnw/qZb0ZsgnJI+Q792iJSaREVqqXHeAYpGkodspCz5k5pbwrvz2pF7U+g8v6KGZMR1DsdOqPk3fdej9uaCIgbzmVDeSz0l+3NBwVnxwk5Aq0yHzmP0lOMzQ/m3xya0oEKao2CuuknXiLOvv79kG04zYYwSRpyrj0Boh+9oUqxKQ2dsf875TUvtixqG/AMkgUqj34ggmdkzAgq3NcyrBq+/e3lxerfTW8yC7hvv3xJ0tsUth54WEjaXGGe1K7wdnQZ2sPlbv5f++aZ4Es97mKOvueWD/KdzS3GxJFgUIW5e96yhWm+z6DWSFMYnIM3P0iN+lZ0Y+QMGgugu+mg3BBNGjC4prsS20OXQCfWqm2QkjC5Tz1TksTaSaUr9WJ449dnCudLRywqARYA3C9xBnNsA4EwfNNP2iqS4VkntSC48YSlVHlGPi253Yf1yY//ARVO4QHiO8o2xll4TQgvzWaBVixeZtY/EeEZYX3iMJm6NFBJX0LUlXcaSqgcyD75lcrNA3yVzWX6pS995J26rraNC04IsIwqaW9f+6JjYBj72PtJtnAiZ4xdwrpFSScgXLfVsO/jpaZ7NkqYD+aiHkjeeujMHPS/P6nMy
+ i1F42mMN
+ hCYTp7fri0qYnHZP8DuD6yUPIEgVl8DvJ9yU3d5V6eXWt5F/fwDw0qg6MKV2fDWDRRwGll0r1Cl/gpTSB7dBfZZRLu7WSH7t/TGilHTlM0IcwbNM0wf87XNaoe24FujSPnKcdMSGzNAUIB/KoKc22gh6UGHQxdiaB7IX4LTY+sc6nC9HoXMkpf1ki3nC9XmY71OPbfZMr5vzuX5W3HkZLDigk5MDT0GoNOANjnLxNpNG7JOknzwaWNK8a+UB1teBWykSMVDnUWgsVFycV6jPx3ETJwUBsXY4EEBTwXsjd8vN4FBsg4oNCRiVuRPKTLC/yvDGq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,105 +122,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add module parameter and configfs option for controlling the maximum size
-of an IO for the emulated block device.
+Add a method on `Request` to requeue the request with the block layer.
+Drivers can use this method to send a request back to the block layer
+without processing the request.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  5 +++++
- drivers/block/rnull/rnull.rs    | 10 +++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ rust/kernel/block/mq/request.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index eaa7617e5ffa..5ab217e43e2b 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -132,6 +132,7 @@ fn make_group(
-                 zone_append_max_sectors: 26,
-                 poll_queues: 27,
-                 fua: 28,
-+                max_sectors: 29,
-             ],
-         };
- 
-@@ -219,6 +220,7 @@ fn make_group(
-                     requeue_inject,
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     init_hctx_inject,
-+                    max_sectors: 0,
-                 }),
-             }),
-             default_groups,
-@@ -312,6 +314,7 @@ struct DeviceConfigInner {
-     requeue_inject: Arc<FaultConfig>,
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     init_hctx_inject: Arc<FaultConfig>,
-+    max_sectors: u32,
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index 54b5202567f8..bf6d58139ab4 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -100,6 +100,18 @@ pub(crate) unsafe fn from_raw(ptr: *mut bindings::request) -> Owned<Self> {
+         // SAFETY: By function safety requirements, `ptr` is valid for use as an `IdleRequest`.
+         unsafe { Owned::from_raw(NonNull::<Self>::new_unchecked(ptr.cast())) }
+     }
++
++    /// Requeue this request at the block layer.
++    ///
++    /// If `kick_requeue_list` is true, this method will schedule processing of
++    /// the requeue list on a workqueue.
++    pub fn requeue(self: Owned<Self>, kick_requeue_list: bool) {
++        let ptr = self.0 .0.get();
++        core::mem::forget(self);
++
++        // SAFETY: By type invariant, the wrapped request is valid.
++        unsafe { bindings::blk_mq_requeue_request(ptr, kick_requeue_list) };
++    }
  }
  
- #[vtable]
-@@ -384,6 +387,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 requeue_inject: guard.requeue_inject.clone(),
-                 #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                 timeout_inject: guard.timeout_inject.clone(),
-+                max_sectors: guard.max_sectors,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -612,3 +616,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-     },
- }
- configfs_simple_bool_field!(DeviceConfig, 28, fua);
-+configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index f909360ec70d..15b8c365b9fa 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -204,6 +204,10 @@
-             default: true,
-             description: "Enable/disable FUA support when cache_size is used.",
-         },
-+        max_sectors: u32 {
-+            default: 0,
-+            description: "Maximum size of a command (in 512B sectors)",
-+        },
-     },
- }
- 
-@@ -307,6 +311,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     requeue_inject: Arc::pin_init(FaultConfig::new(c"requeue_inject"), GFP_KERNEL)?,
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     timeout_inject: Arc::pin_init(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?,
-+                    max_sectors: module_parameters::max_sectors.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -352,6 +357,7 @@ struct NullBlkOptions<'a> {
-     requeue_inject: Arc<FaultConfig>,
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     timeout_inject: Arc<FaultConfig>,
-+    max_sectors: u32,
- }
- 
- #[pin_data]
-@@ -487,6 +493,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             requeue_inject,
-             #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-             timeout_inject,
-+            max_sectors,
-         } = options;
- 
-         let memory_backed = tag_set.memory_backed;
-@@ -548,7 +555,8 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             .physical_block_size(block_size_bytes)?
-             .rotational(rotational)
-             .write_cache(storage.cache_enabled())
--            .forced_unit_access(forced_unit_access && storage.cache_enabled());
-+            .forced_unit_access(forced_unit_access && storage.cache_enabled())
-+            .max_sectors(max_sectors);
- 
-         #[cfg(CONFIG_BLK_DEV_ZONED)]
-         {
+ impl<T: Operations> Ownable for IdleRequest<T> {
 
 -- 
 2.51.2
