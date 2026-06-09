@@ -4,132 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BA7CD8C92
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:52:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C077CD8C92
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E006B008A; Tue,  9 Jun 2026 08:52:25 -0400 (EDT)
+	id 73E866B008C; Tue,  9 Jun 2026 08:53:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C455B6B008C; Tue,  9 Jun 2026 08:52:25 -0400 (EDT)
+	id 7169C6B0092; Tue,  9 Jun 2026 08:53:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B6C6B0092; Tue,  9 Jun 2026 08:52:25 -0400 (EDT)
+	id 62C786B0093; Tue,  9 Jun 2026 08:53:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A720B6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:52:25 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 408BF8F5AC
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:52:25 +0000 (UTC)
-X-FDA: 84860362650.19.EE54984
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 67B8620011
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:52:23 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gMsLiJ/k";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 534BA6B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:53:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28EFEA0573
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:53:01 +0000 (UTC)
+X-FDA: 84860364162.03.75A5146
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E0F06C0015
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:52:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D3sxU875;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lydqrcde;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E5p0l2vR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/qcl9yXQ";
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781009543;
+	s=arc-20220608; t=1781009579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6RVksM1q/xCzaj5QI2KqOkAZj28JqLKLzQFq6yryIo4=;
-	b=YTBM3BBNJ0owUHSI6xEwqfxQfCLTAUOcL8K5AwWRHZwclNFRkJRLlUyahIpfInvrGP84BU
-	fzyU3WRd8wlwBUMvMJmiR3s1WKmPxlyfsPstAezL1PenHR9fZ1/i3drz6ktzwj/611O4dK
-	AsunQjNTE0bJpO3bcs9IJrdjv28luiU=
+	bh=YjVs4XMojEDCZDsneHUjmf+6PVevcMqyxX1dX7ene70=;
+	b=V2IORUE08McypNR0Nv2RhJZa2H2kVWzccj9HAh88GTUL4SlhYpexvvyS/oGNAojQ9LzJhc
+	GzQOT0Ixjd0MzldAiQUqTCOiOzHmaP2eGkK3Rd5hRJkgXpJjQEVTwyh4t7IUhL1ILIYND9
+	FjbmwZQ013Y1GYujmyQoacUp2KIl+Fo=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gMsLiJ/k";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D3sxU875;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Lydqrcde;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E5p0l2vR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/qcl9yXQ";
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781009543;
-	b=J71uBAFG41B+SRMiaPmRBUqKqSFLS0W5tF/GLPQipFRtxAN/ZwYQoVNFcYyvl40QqZw0d3
-	RScXEbEmaVy2tr9wEU+0uJF3jDBdIpf6Bn0pE8FHaw5Y15a5M5BvG2C1XJxKEhrq9JA6vS
-	lTtX4fSlOJms0u8+cZ5SwEh7wQ39eu4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D5F9433B3;
-	Tue,  9 Jun 2026 12:52:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E1A1F00893;
-	Tue,  9 Jun 2026 12:52:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781009542;
-	bh=6RVksM1q/xCzaj5QI2KqOkAZj28JqLKLzQFq6yryIo4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gMsLiJ/kd4lFpp0rUts/FQ32exqVF+EjEbMhMwmzetICiVvEWYclp910lfp2WZR2a
-	 wpZJxiFq94Qxa6otRthSQVe/XirLEXN+bi2tek4xxWokxIhvt7yN9SiPYoWCv21pOL
-	 N9eG3lcDurR5E+WXDoao2/Ca6NFb1IcLADYTFgSr1s6DTJcLIVSjgmCm50InLQ6bMI
-	 WPgTGrpIPE92wCnJb0frum0xr3FCUiIF9EsjNJxfNji9rB273wouFm1GLaY2YNcbaL
-	 ZJ7HIpzG4xrt6TbjAhh73IdJUmhiwnYwPGk5nLG8ABMdHAfJyjtIlSsEk74UBj/KIg
-	 qxS8qP2qe616Q==
-Message-ID: <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
-Date: Tue, 9 Jun 2026 14:52:18 +0200
+	t=1781009579;
+	b=QddXJd3VU/0xCYCtLsHsuFxX4obS+7W6vow3j7ixv2oThFxV/R8UqX2QYgWobYoRG68uUi
+	UkWg5kvS0VWVBz8EJsQjCwkXLq5tPiXSwLKDqqgzOlsTysHFvp0Ww87HPZ7QjweGcaOS+y
+	6rFnltsmIi/0mI/kuD3a0ZpAqejLGZ8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6F4387599F;
+	Tue,  9 Jun 2026 12:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1781009577; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YjVs4XMojEDCZDsneHUjmf+6PVevcMqyxX1dX7ene70=;
+	b=D3sxU875kN70T0k1ZVYP9/E8y2C526A1rckA9z0cLAfzHFl1kIf+w82Oz/0wkqviJaBluv
+	1liRSl1kEmUo1AgPYzvfXbNp3pYN6mA2lOG/qugCxyuDgLMKY9odM8ELxvwVSPpsiw7mqh
+	nc/D+lzSLjAX/vZpkxoqK7h5fLCRAQ0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1781009577;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YjVs4XMojEDCZDsneHUjmf+6PVevcMqyxX1dX7ene70=;
+	b=LydqrcdeYiAka5kpfgjfXTGMot6slWhu4iN1WL/VymRlCSQNY2PQ7UfTg211b34ndFZL6Q
+	zY4Dy4l8Fb4Lx0BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1781009573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YjVs4XMojEDCZDsneHUjmf+6PVevcMqyxX1dX7ene70=;
+	b=E5p0l2vRyc4Aamw3PZVZDZMxitZ+J7/tHa+G1PsNtT4tWBTSHyIZCAYADXfyKQCnMwK03J
+	h8XcA7s62eeQCNGURjfIwiravYlhf86bEQXB5WrkyUH4OwlVX4yVrEqx7FsIM4gRbNhcqK
+	WnJE/cldEn/uoMKXeqGksCk3xFgWSEQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1781009573;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YjVs4XMojEDCZDsneHUjmf+6PVevcMqyxX1dX7ene70=;
+	b=/qcl9yXQ05C4n3FIWYXNaPy9IIWptYcXNBNYxuZveZpo7H0K5Tpb6S0sZjVPVtKsdgnSXH
+	iHdeyBLUvHfYc1BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5FF84779A7;
+	Tue,  9 Jun 2026 12:52:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DaBnF6UMKGoQcAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 09 Jun 2026 12:52:53 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 08919A0A90; Tue, 09 Jun 2026 14:52:53 +0200 (CEST)
+Date: Tue, 9 Jun 2026 14:52:52 +0200
+From: Jan Kara <jack@suse.cz>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, 
+	hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com, 
+	linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org, 
+	shakeel.butt@linux.dev, hannes@cmpxchg.org, riel@surriel.com, kernel-team@meta.com
+Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in
+ memcg slab shrink
+Message-ID: <5exadtggg276xp5tayiqbbomnms4hjyaopmgu3chfpl2ug56dq@vyhswy2afzmo>
+References: <20260609123047.1948242-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
- <agr8Nzr8rnDBTuVX@pedro-suse>
- <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 67B8620011
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609123047.1948242-1-usama.arif@linux.dev>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 1g5f7c6nf1gnpbceu6cy1cbj7x8mgc3p
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781009543-46882
-X-HE-Meta: U2FsdGVkX18NQwkG1mist1W1kjYA0qPdcmfGMpcO9O0japO81YywRJH61fy7cGL4FpHDV1g6fmSUGas9MY9eXL4qh6rKkD2eGs5yV3/bITtkptshNxIV2JXe8N+M0KtJUZc0eLXPePx6NppedTii+5oFc3vMapGFaMp+Frn8EL2RdfeO2zionwkL/TN3O//+/TR6XJycTSdtUAOqPxggNYH98w7smmHYZCPCvclxYom9eO0S59913KgYiKWFrbJPOxzoGx0XyLxObuLlStAf5zLocy85JDLpax6Lu4nsYPE2sdL3Zz5orIIawvQhwlv1GZ+YSDykjj8EMUnxJK+grp1ysJWCilSGB1RJ0sXs3cFdSozKDZIC6a5jIr0AO4/uL3179icXP+0H21r5Wi9V+tNXD7+Rps2UqCMWe2w+mxwOIDanBpwniEiPEgz78pypV/+0QXUEjopfcMdNqMrTHRMePdWB4flonlAg/k420ykUBYqDr5nvkvuAgX/jJJBrpxHJmI0n7ZRmMTO2uW+39/hYRI9c3j5BLtN2NDelEMrbm8zT6eyVJtucPtRnGuxwWR1RpaP2Q3PsjkMeKSLnp0tdRX6xuhh2YGgM/g5hq/Vj7sYZdOncJTWg2C1BaS826tT3pDMQdc6uRklcvuKOKxb5YfYiLcOEPzYkUSSHzaG7Oh60BslXw3zlzxJn92sQ0gGCycyjt3dU5JP/aopmryf/90Sm+moT1iTdgdtjI7vamY4AFxd6omzZ9QgWARrJUUCTvZZWfiyOvlK1dtBU8XiYjbOMmmMlWrb1oV2FsGOn8cO2iheaqNFwJ7/aGFvqz2rPcgSd3X/TkOMrMoDFyrwFNYl+xUpRgLBqK2Wq68sZpC5BEwlfeZFmVVvl2rpNhRLSYybREV7QC1/iR57tvq1EIO+Mz+wyZudgFWM2n+h749nFYRENbv18qoKEARepOzzEWWG8o67KsGjodol
- Ep4LfdUg
- BZEEO5tygEnC8XJyQcSYjcKm5ohE0p3m2LX6rplM6cbBlk0EE7nemDsXc+8RyzuGYMdvlCJ+Ehpqw+pXXCvJESzKCd6CcocUFsJu0PHqSQKHq1abR7K4zaj8y5g1hJ1qmd/8t/0D3muPNxL2MpsRdSScUl/wNyHmU6klxslYxxX9zZHtjMF1PZYS/pXnpjlroCbnOWdE139ydoib+J6REkbFXAe9ZUKH+ikHbm+aCOU78CQV89FRo9Ke9kcE2yWQSxpqz
+X-Stat-Signature: y9kgonmjhoano8x6una7985bou916ty6
+X-Rspamd-Queue-Id: E0F06C0015
+X-HE-Tag: 1781009578-97443
+X-HE-Meta: U2FsdGVkX18xlu2vIxt2Y0Jxv/PFa44PeLuNJKWR/ipLk0j/6KdUZiRwx6EajI1STKVbDmnP9MkBF72TAO1JhnUfyN1xMW62oYH90sChKeTx6qfTDJEvm1dZtJtBgsYJNjKSlzu5PW3eJgMVWqB4ruMm/KyduOi1kLgLd7Ql4MZfwLF19bzrQuMS3tIGfncENowZsUmhqj8S1KadfkyfBM+llrtN11eSNvOudur7iAJloszrduPA7gtIngBBRFmeI9IPDIxLycCEt/GaemaT+ny9jsdu/d6aYd5v+BCTSOGuxFynraF/EmQtI69Xr1oe/fWwZ+J0QTxSI59/rEbJ4phGjcKh5IfltveTeS2nIOz5jS7lZNe4Iz/9PL8Sb0wk11TT3Hx34U0LmY91ycGuikwcJ6UZpV83tuuTAgQJ1Kjrcfb5LJJLmcmohXKfkQ4pZrey7mYpvd/H6Fee+fH3piXHBzlOByhJ6Cg8rOHndWqxXAdpgwPJpAQKGpcws9Nk53X4w1FXB55lYvBGtm235/EzqFs7AfDhhm9pkJBgFxyIDNHGf8/uPdxoCZk73DZNHm6TZtJIdzMQI9hPWIGZzdLRMqFWksFtaS/OpTjSrRJGttU4HkDDUvjalSX+92YV3DpStrMCTWk+uYKQDXwcz4jyWn4D2vXqd5GYG1gotWspSTsijSxmbZ2KNohUVV63axc+humaYrArxwnV5S2YuBG8RJRcwSgmzwFIYcDxrh08glMQfkWFQFlre2AmAVaenjz7wH9ipgVaLkSXNVxAl08tEoVEdUXRrxuf5EdWNaMDo8Yt1swrpJhKQ+hDecRLiNkSNin17Z61doV0h8WV8xQkLmWo2qfHp+beLRfWW5sR0eH3r7zu/fQCFYxioFrcs8i34FNnyajNF9eqQXtbrRCbTDkVXICYnZVn7vWMmWndkYIh4COQdddrXUBnXpPBMspAIki3g5CWNGS/WFF
+ MvkKIOcF
+ tOY7Hcxwoq5j4jI56UYPq/OAolOauefJnu147fjDNx5SB1iv5PN+Q+QfIhqv+EYhAmEqEsSt0OrBQ7M2744HIIz4s8WQDuazfDMgSx8b80iL1FMe0BpvZfpNRWzwMqanRyZ0sbd48fqKQ460PEJj+BRYmSTvV8A/pzSlu8Zvrn8XJsUzTvp7i+Tlbm1gZXVwAI6SRSOr5TMbgh5mZlLD8+mRI8NHClA//urIrMNw0bD+kGscvd3MZovFZAcsTiwc6KAKjIJgaHZDmhTaKE64ZadyYDmKat86MnJx1cAkpyoYZz5raMlnr5xog3MZ/g12pFKi5Ih7kd/UBg9fnYWErkfXX0ngUYtD7O5sMXiIQ98wVcvoPKfjNVxTTOBstwWhJBd3zIS+J3A84Yk5Gbc+TbhGBwznwIZT+tgYY+kM/yDFjilY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,53 +136,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 06:35, Harry Yoo wrote:
+On Tue 09-06-26 05:30:47, Usama Arif wrote:
+> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
+> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
+> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
+> btrfs extent maps and xfs inode reclaim operate on filesystem-global
+> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
+> None of them filter by sc->memcg.
 > 
->>> ==========
->>>
->>> 1. Allocations and frees can happen concurrently at any point between
->>>     these steps, and we cannot introduce heavyweight synchronization
->>>     mechanisms on the fastpath.
->>>
->>> 2. Currently, cache_has_sheaves() checks whether a cache has sheaves.
->>>     This works now because sheaves cannot be enabled or disabled once
->>>     the cache is created.
->>>
->>>     The question "Does this cache has sheaves?" should be split into
->>>     "Does this cache support sheaves?" and "Does this CPU actually has
->>>      sheaves enabled right now?".
->>>
->>> 3. Once the sheaf capacity update is complete, no sheaf with stale
->>>     capacity must remain.
->> 
->> Why? I don't see a huge problem with having multiple sheaves with different
->> capacities, as long as you adequately, opportunistically kill the sheaves
->> if they don't have the desired size (say, once a sheaf is fully empty).
+> The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
+> calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
+> whose bit is set in the per-superblock shrinker bitmap, which on a busy
+> host means hundreds of calls per reclaim pass. Each scan queues the same
+> global shrinker work item that's already kicked from the root path.
 > 
-> Haha, you got me.
+> Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
+> the returned total stays positive even if a memcg's own dentry/inode LRUs
+> are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
+> in the memcg bitmap, so subsequent reclaim passes from the same memcg
+> re-enter super_cache_count() and pay for the global counter walk again.
 > 
-> Right, enforcing a single capacity at any given point introduced so much 
-> complexity that I started wondering myself about whether this is really 
-> essential.
+> Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
+> or root). The memcg-aware dentry/inode LRUs keep being counted and
+> scanned per memcg as before; only the global fs-specific hooks are skipped.
+> The root/global shrink path still drives those hooks; only their
+> invocation from non-root memcg slab reclaim is removed.
 > 
-> My main concern was that the performance characteristics would become 
-> too unpredictable, but actually, users can avoid that by disabling 
-> sheaves, shrinking it, and re-enabling it. So that's not an enough 
-> justification.
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-My concern would have been that we would need to track capacity per sheaf if
-we allowed sheaves with different capacities to coexist.
-But patch 3 here already does that, so it seems it's necessary anyway...
+To me this makes sense. However I'm bit surprised that XFS inode shrinker
+(which is what gets counted in nr_cached_objects for XFS) isn't memcg
+aware. I guess since these inodes are on their way to a relatively quick
+destruction, nobody really bothered. So I'm fine with the change, just
+I'd like to make sure XFS folks are aware and don't plan anything in this
+area.
 
-> When I first started, I was quite cautious and obsessed with the 
-> invariant because many parts of the current implementation assume "a 
-> kmem_cache has only a single capacity, and it doesn't change", but 
-> that's also addressed by this patchset. So that's not a big issue either.
-> 
-> I agree that it is worth trying to allow sheaves of different capacities 
-> and hopefully that would be less intrusive. Let's see.
-> 
-> Thank you, Pedro.
-> 
+								Honza
 
+> ---
+>  fs/super.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/super.c b/fs/super.c
+> index 378e81efe643..5216c5dbd4c4 100644
+> --- a/fs/super.c
+> +++ b/fs/super.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/export.h>
+>  #include <linux/slab.h>
+>  #include <linux/blkdev.h>
+> +#include <linux/memcontrol.h>
+>  #include <linux/mount.h>
+>  #include <linux/security.h>
+>  #include <linux/writeback.h>		/* for the emergency remount stuff */
+> @@ -169,6 +170,19 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+>  	wake_up_var(&sb->s_flags);
+>  }
+>  
+> +/*
+> + * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+> + * operate on filesystem-global state and ignore sc->memcg. Driving them
+> + * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+> + * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+> + * the global path (kswapd or root direct reclaim) regardless. Restrict them
+> + * to that path.
+> + */
+> +static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+> +{
+> +	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+> +}
+> +
+>  /*
+>   * One thing we have to be careful of with a per-sb shrinker is that we don't
+>   * drop the last active reference to the superblock from within the shrinker.
+> @@ -198,7 +212,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
+>  	if (!super_trylock_shared(sb))
+>  		return SHRINK_STOP;
+>  
+> -	if (sb->s_op->nr_cached_objects)
+> +	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
+>  		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
+>  
+>  	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
+> @@ -259,7 +273,8 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+>  		return 0;
+>  	smp_rmb();
+>  
+> -	if (sb->s_op && sb->s_op->nr_cached_objects)
+> +	if (sb->s_op && sb->s_op->nr_cached_objects &&
+> +	    super_fs_objects_eligible(sc))
+>  		total_objects = sb->s_op->nr_cached_objects(sb, sc);
+>  
+>  	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
+> -- 
+> 2.52.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
