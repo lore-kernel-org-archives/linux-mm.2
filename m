@@ -4,87 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 458BCCD8C9D
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 00:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B51CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 01:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8820E6B0092; Mon,  8 Jun 2026 20:54:48 -0400 (EDT)
+	id D5B426B0005; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85EA96B0093; Mon,  8 Jun 2026 20:54:48 -0400 (EDT)
+	id D0C6F6B0088; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 795DE6B0095; Mon,  8 Jun 2026 20:54:48 -0400 (EDT)
+	id BFAEF6B008A; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B9506B0092
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:54:48 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39A361C21A5
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:54:48 +0000 (UTC)
-X-FDA: 84858554256.03.8274265
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ACDDE1C0009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:54:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T0IlKExM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AFC436B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34DEEC179E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:14:58 +0000 (UTC)
+X-FDA: 84858605076.12.5256DFC
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 512F640004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:14:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hxJdyFkG;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780966486;
+	s=arc-20220608; t=1780967696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Jo6v5LwZ9ZiVMHZVW1HuuvAQB6tY4B2I58Ij6xQSkaM=;
-	b=7xEAnkXmtsaiF+YBxjHjKuT3kwjc4IhC3nxaZ9URABq+Wo0lCUUqYXyzcEHzc675hskvRQ
-	8CJ+HICx6p+39/X2yaULngGt+i8S0tuXzeneB3usphd4esbGNIwDD1l5Y9226HlrPhG00c
-	aJsO863vQgXt+J4Okap4lIN9lu0AuoQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
+	b=Wbs6nHSPNeuIwrkYpQ+Dt79t6QB+zbhe5p7PZqCUj3JXGuNThSu4b8jRmlHt5UK08Kfsps
+	aVpwOllDKM5mKQlwo1T9jfMEBOLSFu5eevkbzjFrUarMSr7ITOthfd6jT78GCZUyUaJ3LF
+	AFqxLqEFXZmSAsfb/EXWA8OwHCjOIFM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T0IlKExM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hxJdyFkG;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780966486;
-	b=fCWqDST2VPEPaNpgLVIPMDsmOEWP8YDiS//ZwHDcaNSpHE5j1ACh5rdcZ/WSptvs5SSq/z
-	zAS4j2fUKRhW3YRHtfzGtTyGaxS5nbLvNGfZ6zEg9sasAgf6KVRjeQpU/12NtnDeTc1Kc1
-	0EPzEgMOzb9sG0LXSha9WZsJ50RzNFg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1339C601E1;
-	Tue,  9 Jun 2026 00:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814E71F00899;
-	Tue,  9 Jun 2026 00:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780966485;
-	bh=Jo6v5LwZ9ZiVMHZVW1HuuvAQB6tY4B2I58Ij6xQSkaM=;
-	h=From:To:Cc:Subject:Date;
-	b=T0IlKExMhP67Am9Ab1dPAxhi38p2Vua+v4TKu3QPQfHGzA8IHzar1Y5jk2fDSmNtM
-	 PvUclIhidEI+NxyHipSY/tYmzKtQGSKF+tzkba2pJiMUuS3eMGgXUmOoOEft3SbcnC
-	 6PohtZry+ysT3rdCbEkCM6yrvWoQmnBcgnDaqV5zAyLjuiROanwrZ0mQqVQRtY5aEt
-	 lohzX6dcvd4nS63QrGw5NSGpNxRIaAhy71vASE2ytg2dzMY4R7wze4bPcmN9B7HvYV
-	 Ibvym0crZS2p+N8yfedo7ztg1rafTOGRRWI03QRSu+hrODc96ovoRj0PttrXOcM26M
-	 SarjuB4DjXbyQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] samples/damon/mtier: handle damon_start() failure
-Date: Mon,  8 Jun 2026 17:54:41 -0700
-Message-ID: <20260609005443.2122-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	t=1780967696;
+	b=nr+w1FKOB9aXfE1PhJLBF6HsN2KvJ88iBpNMevjj0WIRy/pisdKOwLzcfJdWNcST53e/1b
+	xSztQoDQMM9C7CLRv1jdG0ZyvFPpOrjLvX8P2g2DijEMSS/PLBDVq0Uhu9+rvpPA//OpbL
+	3qgw2No2gCA1YE680IcK9K4V9p54bSs=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-915c36e32abso192460185a.2
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 18:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1780967695; x=1781572495; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
+        b=hxJdyFkGOMTK600DbnykHsxDYHUkXtkmuFXIOZpiAOclAeHm4ShopwkGMgnoicyS8b
+         OpfpAymqwk8TLwbdBekMQMgkTiuYWyFUcBuTd1OwJJfVOZrhOWloF7I6M8v8YFccQZCU
+         EcxblL1fQ4vAOcdUEy6U/ToHgen+GWGfEh8nMQEOQL9XGgIU8s8vpeMoIL+wA/fvJZ0K
+         g1rZ6Lz2uh6pkftkU8hGwYttXFksCwZzCCycYRlWh7DLJxusWszm3aU6pzT5fEdt2TTt
+         jhO52zTRU9gotAClkXL2bCARZKu9Sq/y1y6Z7EOJg2+i7bV2DHhzY0PBzCsgAXxMMpzy
+         2o3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780967695; x=1781572495;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
+        b=Hw9guroT8eVXGtt9l0DpCBZsW6icl+kyx3TWugO78UGArTFXd+xr2sKArHKlhZbYpa
+         bx4f91tI2LsXKF0h9bkRGhOjHrJtMHod7hHCF+FoQdDMhAgnAnayW5BHREJBUk56k3TM
+         ssOmM79/4CvfBF5h+c/LwK7lNc0w0JSO/8Dx/6jFjwIJMS5lSWrEMIyffWzkoGEHOGMB
+         9I/azM/uLFeq2GlStiXqUGQjY9UjT0iQntKBrboox2L+JL7A+2ft66wh/PHKZpCSpagO
+         VksWPXNnE33GvyNnsLywjb7b2HH3jen6qTEfev7hQQH5s6GkEBruRsXwtS+Q3XcpuB9G
+         Wz1A==
+X-Forwarded-Encrypted: i=1; AFNElJ8XNDtnmrSf6gEzs2lgCdki5q/U24p+3NoBisp8fEGHgdi7qR03JUzYgAFKgEm24aX5NlY/KQJQSA==@kvack.org
+X-Gm-Message-State: AOJu0YxYnxQ1NB6ILVaoDupAs4f16DAT6NNKS8PVv/2S7VNM6CkhqJoR
+	BBJS+U6U3Mz6ZG7eipBMmebjHRQQLQ+vHL2yJq6WXFNacvOHb/PDBEe2oxLVCZJef+g=
+X-Gm-Gg: Acq92OGROMjQQGaCHIq0Hj+yQ8/Nd1LyKgD/rqMnW5glL59DpnyyK3S5uEPjtADDsbW
+	+HZulSYsy4+B9t2ZYUmG7T9PR8IOyIsz/hoQ7JxyFIPSqwzvm0Sm0t6SCzOWWfRp0muGne5ppJK
+	ATxRvVl+YzLhzaIFnt9ZtoADi9YW7jsffl9x6heasUPjk7tqJYJFs+rOBO9Zt9FuFQzYBh4Ad/C
+	v2ChWJHHhDT0oZ5MBoDCmtrxPkyFPy0h4QOB6lqHZmIGmjVCYC3lxL+KpWnLLdbVN3tG/X7Md2y
+	uM8uN21lIx9757iNUAvbsZo+Z8J+y7L4jlNRyRCBQlS1p9WuLplLhEDNpHtVuGKHmZrYyYyTKpD
+	W1NjhYETa0Zm+IZ4DeaNb8VVs/XA08Bq25+dHjHJPfVTOJTJkjivsBQ0dmztFZzdE9alKemlcG9
+	zM/pSYLDNmqjKuutSb/YtseAOUWNYjNOQXthj9LeXdy96jKQUCRd7lw0aPFormAw==
+X-Received: by 2002:a05:620a:1b8d:b0:914:c0ab:f1ee with SMTP id af79cd13be357-915a9d93f2fmr2862027885a.44.1780967695361;
+        Mon, 08 Jun 2026 18:14:55 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a009fe7sm1902384885a.8.2026.06.08.18.14.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 18:14:54 -0700 (PDT)
+Date: Tue, 9 Jun 2026 01:14:53 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, jasonmiu@google.com, 
+	linux-kernel@vger.kernel.org, corbet@lwn.net, ran.xiaokai@zte.com.cn, 
+	kexec@lists.infradead.org, pratyush@kernel.org, graf@amazon.com
+Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
+Message-ID: <aidnjw5pH_z45gJT@plex>
+References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
+ <178083348872.1648214.17778188633648887952.b4-review@b4>
+ <aiVp5RlbWRz5VnPB@plex>
+ <178091437240.1648214.10761111570005003901.b4-reply@b4>
+ <aibYJvzQQnpoN6YW@plex>
+ <aicF5Sa11B4ujfSa@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ACDDE1C0009
-X-Stat-Signature: f9ynipfnkmm4y1wh8ddg51hmrmop4agd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aicF5Sa11B4ujfSa@kernel.org>
+X-Rspamd-Queue-Id: 512F640004
 X-Rspam-User: 
-X-HE-Tag: 1780966486-570688
-X-HE-Meta: U2FsdGVkX1/3zuuHtW61QnnG1GDdONn7Mu9a0gU9F29ydS5HVSlb/R1Ci3Q9SGajfIOfwwxA6zPKTi4xNUPMOLZcFwv2NPr5fmSj2T10YpPyEdMs+pDQBLleRxzz1JFU8cr2Jvj3VaYOnNx0KpF6121qMhv9Jxm/prSXV1d1XpjHP0dRK9qkuuGrXC9FR7fNJef3FdyOE78iU7xQROWKys76+ocfx/JUmqezpJqSzcmRfoQT3ASA9r7mPmnEwagNXIpx5HbP8j9zewVL+QEPN8qUfyeMF1s34KZ3QD72kajU7NsWftDBcYHzhjlYDbQyfko9qCOQ/06/sYEspf43O4TJLW69LLSgJ1nUupGqS7yLm1sS+X3tXoMJTYEiHhzdWWH2g3k78qJeXCvaXqw5kSal3hCfGQq32lxzUl/tjXWSYXbicvQKoz7Rl5fAMRXOsY7m3zfic5C0gNPU3TYqXfzxDeVcRwbeVm3Il8UvxvIqda1zTjrTftR85Ae186e2bI58mzb9EqkiW2p4HKyeWH2tS9NiR+YQhNe3B2g7aXyqaXfSzldfdrBxvqsw+x45zmgPUMnNRl/dtH6Gml03bufiQIaTAReH0fkQ9a+uW+wmkPY1qgBH0WowNdujU3XvFhK/gvZPmfM4wxenWiewmoEryc0X1JmUqmi6xTQWooJCbmVHk4rhdQSUjwSbr+cVHQintWv/g9ai0gPzq0V8S2UuQ7zCNiVFmaTyJUlRhmVOo9XXb0IUBUrwpCP8PcFy+uLLfbQGe/YrWq9MkNvwg+fSlPCgZWB0nvKEpPjIVarHT6tynn0evcHvOvFQsyInCgm7igYEsvuJS3AYi1keVfQPGID4yiNrTWMOcrTdoFNpvx1KMU5B4k21maI46Q/MEcZIwg3IvNz5/2gjbE+6WIQGeOZ4SYJ25sRww/B2Vu4UyI78RmTboCYpkUuMabkFUANZe9Neg5UZ6OarMZA
- BrUGYEIL
- RDbK+jMVqMNlkMgvbc5Drp41Lk4rE1g1Mu1y8eg+WL1816xtAxmH4bGaj+gfZIDsFDSfV0C+yAxQwAh6ex/nFtQNju1zSnkbEtJm76nbUR+U0u/UQrDfPY50J+kDs7hBn5/hIAbwQMR0CgoJT6gOQ/tzsVVrgCxoHhc8KLCLuCT5nhmVPLETuBIwz0hk/4ItCfUl8sR85yYAPSvazgcsBsX9vcypY9TesaYF1hCPKGxt4Nm87X3qeunh/nZwtKIiD1AgqZ8aFkhiSoPVSgl45/PROgQ==
+X-Stat-Signature: njxk6jzpzjwy1agxp1tk3o3sprxj4ndc
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780967696-242957
+X-HE-Meta: U2FsdGVkX19I7omvYHSijh5MGsVaXa5ynVciYPimr05qcN8tCqELXgqQbqYsBQomelDkyMUcy8+6ilB4SIzqlvHKh3eGz5Hxzvs2ZyqqHqoZGoHD+3NH0MAHfu0TcNwdWs6FbY/AIOOEli41RsF1iPOUuzLaEIJJEGVLd4YmK+rthB2LGDpcpM8pVecvdMmNSIG8dbj+BZYpAsdHhfZoQ0Yu/GCUOYmSMNZ5KeJiD6rC/dJZHECcWYGzFheJGD++8wUKvrkqWwU/ZnAoKfK0q6U9l/NIWUud0zIh/cbw+9mIvm8EcniuoVS725T6vjBKNAAXmhyK0vsO0x9U8tNqcMNFYvVQ4+RA8LOZHE+xhMc5eygo+2SBqExaX1Fc6y4ZGXD0OndK8KwP8g4Pu5nNrJ66/5TzASRaPirblen30UDMEwrj+PheOZRHmuXPZvzBr7gbLw0+CgPDzpDUXdmsx0S3rjsN0l3/ZiiCNnSuKd9n2dpv8JDYAu88XsRoLEC58YNfHuCY+rjPaloh7EAD+rRAjO3A0GbDmJtJmZ9g5YvrJHNqkt0FgiCUUECUjnvasEU5IkapFfuOQbHEDZaOiXZmpuq85QRM2AFy0mvuiWXEjn5LonnTcf00re97/Q2hY817WOoN//B0wwDChvUZJ/DjtcHabmBF0ZvclusdM0HiSfmSl+KQuMhcwsPbBk64TotMhdmZWgS72+sRIrLE0R24otUxeoDdklq6jG8EGv6AJL+28tQ7OPeFpVr6xXKva9KsPKUab6fIVnZImWhDJeGewHGRam+w8UoHbcdgK+3xc9CllMVvhKrbnJpeV6tJtpOELO2bL5C4O10F/0/iQvn9ZWU6m+yilD4sBWj2ZBwBp32o/eu2pFyQLLNNxhz2fvbzxy+rqzeHJahdQIXnsojOPxAS4ilxTpSyZWul1TI68TVg1ExW06R8Q+kw8UdXC6WD3VMJ1n6yPu5nIgK
+ MXXUPyX3
+ dIHLR/U9UqHHMujrgJXyZ6zT2ei/+reMAb0v/YRnxbAZ6l6fuVk8/x1fCPzOSNPm7w4L+9wElA1nBIIb8Q7gVrgFMVIH6ovflkXA4lN+mZpfDRqlm6uS5pXqvSlMwqns3engFYZa2vCFE8kBvNplY/ouNAn/fQUJfv7edkU0W4lPIhOKk+1yVpOaqDFw2dqEUmlMkF+fWAK7zWBmpOPHxJSWeLpzsHcIhDQvOFN0xBkRczxfEm/fg2hLju3Gxzx1QY8nsDln4KZDEXpLjACnAzxBbCjxqmYOOeWZ6azugKTkQ0RI673Vry+OcQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,73 +124,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sample_mtier_start() callers assume it will clean up resources
-when it fails.  And the function does the cleanup for context buildup
-failures.  However, it is not doing the cleanup for damon_start()
-failure.
+On 06-08 21:11, Mike Rapoport wrote:
+> On Mon, Jun 08, 2026 at 04:12:56PM +0000, Pasha Tatashin wrote:
+> > On 06-08 13:26, Mike Rapoport wrote:
+> > > On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
+> >
+> > Keeping all of that in a single KHO file is the wrong approach and goes 
+> > against how other logically separated subsystems in Linux are organized 
+> > (e.g., mm/vmap.c, mm/vmalloc.c, etc.). Yes, there are some messier 
+> > places in the kernel as well, but keeping this in its own dedicated 
+> > kho_vmalloc.c file makes complete sense to me.
+> 
+> Either I hallucinated or b4 ate a paragraph from my reply ;)
+> 
+> Regarding the code movement
+> - splitting radix tree makes perfect sense to me, just the documentation
+>   part needs more care than mechanical move
 
-As a result, when damon_start() fails, it could leak the memory for
-DAMON context.  Also, if damon_start() fails for only the second
-context, the first context will indefinitely run, and avoid starting
-other DAMON contexts since it is running in the exclusive mode.  Stop
-possibly started DAMON context and free the contexts in case of the
-failure to fix the issues.
+Agreed. I'll also pay closer attention to the documentation.
 
-Note that the issue can reliably be reproduced because the module calls
-damon_start() in the exclusive mode.  For example,
+> - I'm fine with abi/vmalloc.h, presuming KHOSER_PTR() is not part of it
 
-    $ sudo damo start
-    $ echo Y | sudo tee /sys/module/damon_sample_mtier/parameters/enabled
-    $ sudo cat /proc/allocinfo | grep damon_new_ctx
+Yes, I will move KHOSER_PTR() to the shared compat.h in v2 so it's not 
+tied to vmalloc.
 
-Because the first command is running another DAMON instance, the second
-command fails the damon_start() call because the new DAMON instance
-cannot exclusively run.  And without this fix, by repeating the second
-and the third commands above, we can show the memory consumption is only
-increasing due to the leaks.  It requires the sudo permission though.
+> - I can live with kho_vmalloc.c although I still consider it unnecessary
+>   churn
 
-The issue was discovered [1] by Sashiko.
+Appreciate it.
 
-[1] https://lore.kernel.org/20260608112455.274231F00893@smtp.kernel.org
+> - I'm against moving vmalloc APIs from kexec_handover.h because they are
+>   very close in nature to folio and pages. I don't see core KHO as
+>   responsible for preserving physically contiguous ranges but rather as
+>   preserving allocations. Not sure we'll ever support kmalloc(), but still.
 
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- samples/damon/mtier.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+That is a very reasonable compromise. I am fine with keeping the 
+consumer-facing function declarations in kexec_handover.h so they remain 
+grouped  with folios and pages.
 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index eb1143de8df17..66b591f2180fa 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -174,6 +174,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
- static int damon_sample_mtier_start(void)
- {
- 	struct damon_ctx *ctx;
-+	int err;
- 
- 	ctx = damon_sample_mtier_build_ctx(true);
- 	if (!ctx)
-@@ -185,7 +186,15 @@ static int damon_sample_mtier_start(void)
- 		return -ENOMEM;
- 	}
- 	ctxs[1] = ctx;
--	return damon_start(ctxs, 2, true);
-+	err = damon_start(ctxs, 2, true);
-+	if (!err)
-+		return 0;
-+
-+	if (damon_is_running(ctxs[0]))
-+		damon_stop(ctxs, 1);
-+	damon_destroy_ctx(ctxs[0]);
-+	damon_destroy_ctx(ctxs[1]);
-+	return err;
- }
- 
- static void damon_sample_mtier_stop(void)
+> > However, overall enforcing the use of KHOSER is unrelated to this work. 
+> > I have my own thoughts on this, and perhaps with proper versioning, 
+> > using KHOSER_PTR everywhere would be appropriate, but let's keep that as 
+> > a separate work.
+> 
+> This is a separate work, indeed. But regardless of the versioning it's
+> already better than plain u64 because it provides type safety.
 
-base-commit: 947b8ee1c1735e548454493da9999a2647621bb0
--- 
-2.47.3
+Agreed.
+
+Thanks!
+Pasha
 
