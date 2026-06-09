@@ -4,100 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 632F9CD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E707CD8CAC
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:13:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C74C86B008A; Tue,  9 Jun 2026 04:12:18 -0400 (EDT)
+	id C770D6B0095; Tue,  9 Jun 2026 04:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C24CA6B0093; Tue,  9 Jun 2026 04:12:18 -0400 (EDT)
+	id C4E4E6B0096; Tue,  9 Jun 2026 04:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B13EF6B0095; Tue,  9 Jun 2026 04:12:18 -0400 (EDT)
+	id B64D96B0098; Tue,  9 Jun 2026 04:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FBDC6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:12:18 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C9FA1C26E1
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:12:18 +0000 (UTC)
-X-FDA: 84859656756.24.20E2118
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5EFB210000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:12:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBNfFi7p;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780992736;
-	b=k5EtgqZytUTsURb4J6SgxS3y/ssKs3xNOwqXscSvKYegHzTw0aNoi7HsTwkucmDp+981+s
-	1bk2eK/OGiLVnRg6JDH0GmpqnUl9QqpIhDmY6jALqQVlUlDJWhXagX+u8eJXnofntHBz//
-	ANvX7XASxXNIqufSJnlYHbCthfzO35s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mBNfFi7p;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id A5DD76B0095
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:13:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6CA03140475
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:13:51 +0000 (UTC)
+X-FDA: 84859660662.13.FCA370D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AC10D1C000D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:13:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PB6NWsR4;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780992736;
+	s=arc-20220608; t=1780992829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6iy6WqC0AyHBkc7kR6hVPweXwlBpVwgmOI4XY3Av07c=;
-	b=bVWjOswyHD9nSqs5Su82HxARafUFFRw/lLsj2IvP1C0fnKLHkTSSSNgFiqlCghrcJ6d8gQ
-	43ckXDuRahW3BI8NuTkF0ODh5F4jYaVLWR9dcF0Uhy6YqrLHvuOWt8j8+2xedaRxnrxOVP
-	M8Sny75zExPB+vINtnKmuv0tN/BpHEo=
+	bh=F3/jNBu5N7OCPMcWMcRwgTuxydIWRqWnD8HUI8iOmjs=;
+	b=yATnNQeQEaDN8p2S75nqmq9EaPeNWj7J3Jq7+7BVGZXt7t+OiY21IbA97kkkc7781lg40r
+	vpTSXwWGUpOInfRROjwUM0kwmiCh3zEyhqjNbmGqmcUNzGv3k5nZMIixbR7xEc0fQ074Qm
+	BjjfjhMIZHLwgAhi37rKkkIrhp669+g=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PB6NWsR4;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780992829;
+	b=7p7aWPcIBwB1q93/TGQE+1INDagaaB4nWwSwNU/1V5QcBCjk+dRKP9DGwy+AAm7RMtzwUQ
+	rMgdbt5o6RUgb5P3jbzPDfzfzAGgVuURpPPGkcUfd8H5q+FJz57RQh06Aira1ELiygCuBw
+	dPqVTZTE7VUdpk+NhZb/BhSJLc0ADlk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5994F42A96;
-	Tue,  9 Jun 2026 08:12:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414941F00893;
-	Tue,  9 Jun 2026 08:12:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2923B601E1;
+	Tue,  9 Jun 2026 08:13:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702151F00893;
+	Tue,  9 Jun 2026 08:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780992735;
-	bh=6iy6WqC0AyHBkc7kR6hVPweXwlBpVwgmOI4XY3Av07c=;
+	s=k20260515; t=1780992828;
+	bh=F3/jNBu5N7OCPMcWMcRwgTuxydIWRqWnD8HUI8iOmjs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mBNfFi7ppl4+IUjL4paapjKUUGOFLBiQiAJsdBQDha5aP4aWh/vLeYKkEYguX4EB8
-	 ZBU3SBR96jhLjV1NqLg4LNvs+iSd0iB/5Y2Dd3MlHOIpLsMuIOehzo5Sn5rY7D12en
-	 A1bhQYr+0gvzV+z6xEZjwdZMka0w5T8ppl9kn1Rnoq2Dl/XprTERRJTJ+SImEIrg6Q
-	 CRLqd/6h4NBJOvnwoCC87TC0tOF6mamlktlGki3+Pt4XlKIrui0MLA+tnn4vUkhYQ7
-	 XFbwRGDgXNzeKKthtrWKBPW4b+luJ0ChgndRKis1p9FUreefx9dSGBhJFmU/wEXuSG
-	 eAUkN7WiysX/A==
-Message-ID: <ab5aef53-5387-43a0-beaa-5cdc10ca111c@kernel.org>
-Date: Tue, 9 Jun 2026 10:12:02 +0200
+	b=PB6NWsR4+oVPktwfSl2DPOt9yWl9YbtkJepNVYv6U7Wjormv0lqP1TJEto6Ojbd8e
+	 F8+uBW9J43tW8SI4U62b+6gEkza+rScAxWTLZbJ970WWqbjDcFwEDVS0lmbTyV/Goz
+	 CMVlyoEz+l9WK8j9o6W6ME9gY6eMVVn5YIIukI7T+mUL3TZs+FlVszUuvYtEE7lrA2
+	 a5xVkN2hKvFI7UKhH93mv/WT5DXi706A+Ro0syhpvXHuMwDiBKQBFs/Bz10A0eegAC
+	 tcQ3y/AEa/o/p5rwIFarRgGv4n9wk9RupiImfc3gP+dg37RmbobFwYh3X5GC4KGFfJ
+	 TJm6NmAUjb9zQ==
+Message-ID: <da818e2b-f6c0-47cc-a9a7-472500151315@kernel.org>
+Date: Tue, 9 Jun 2026 10:13:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: New design
-To: Matthew Wilcox <willy@infradead.org>, "Michael S. Tsirkin"
- <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <cover.1780906288.git.mst@redhat.com>
- <aiePVsiV-w-IZ8A4@casper.infradead.org>
+Subject: Re: [PATCH v8 2/3] ksm: Optimize rmap_walk_ksm by passing a suitable
+ page index
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org
+References: <20260609124703736MQ6Jkpc_7wR7HaeDDPk6k@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aiePVsiV-w-IZ8A4@casper.infradead.org>
+In-Reply-To: <20260609124703736MQ6Jkpc_7wR7HaeDDPk6k@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5EFB210000C
-X-Stat-Signature: 9kkxjgzi8upynspdzfwu4ppgch9ah6hh
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AC10D1C000D
+X-Stat-Signature: 5t1zfr9f7s3kmr3679xiy4qthjdbwo89
 X-Rspam-User: 
-X-HE-Tag: 1780992736-102171
-X-HE-Meta: U2FsdGVkX18owl3/LQamIGwqt/0o41aWN8+8fY1yq++FmHVTGZ31uRe234ZnXmTVjXx/80LaPqKmJYc5XiAuxhc0ykzI42HsOUWKhgeHg731ku8YyFsNsE8cstUp9BqQ4h904bBJJXlWjhpQPzBXeEt0W5Fn3Srf3eJ6Eq8tUzZleRbW2EPtEKkJL5X/xm1zPaN+WGo/pHmnxgt7IrLIADlcg9K85cQs4rC/idgmPwQrCUXSWBC3KIO34x12k3ivYJBaI3Z0jE0jIXYhzk+LJaJTOhcRIv5WO6ninpQvR4yBf1OY/nRPCHaRkg7driL4Atnk0U9krW5IpSF+p8YamSH27bDe8q/n+7F1aMvfWUsMwjlHa7y/Fv9ywu2I4V53E/J2BrHYpN9zBGdxDq604w1KSHF2WRxWOkMcjcwpp+0KtIAdtci5tAaiKrfF2yLifTwjN3I9pZiYMn4NqMeAIQsn0lKapOGTqiWDdJIzm4R94DlvWrWOIjblYtuxdlCsPgEPa4/bFud7U1ZWgCyqZtb9SVV2pKI+PsAB1cVl74Qq+2Tle3g0GOMDDhG4QhUjhvdT/b9qKpGvBo1YBjI6ZPzUDF8cY8okCxhOTpQ8iFspdLnGxrcZVDBD/zpI4OW+evGv4mVVslGMc6GHfYwcLhr6IO0q59CMhc3ZdZXqc/nq8nLGcmE1CFgPQ555EC0fQvm7lQxfHe+WorOZ7P7dMuxHpmaw6u7Rah4MIvc2w7mwrI0B7bOJUbGoeX5/AHRazJEifAtIgC0J5nwWy1oEi/DLqw0mbLXKXoTD2R8jCt8e6MQZj0n4+NqW2IamI5nq1lhq7QfCZjZt5BxVEPeGgyWevq4Dj+z2/JQvQIVNVX/Jqph63Upjb1cLLKCDWwKF5iponL2K0reR6nUMpLh5HHl4B0CLcJ6KK0r3yjos/woN+RDKqZco8poJkK9hghXcKBkd53rD2ZiRWeSkedC
- jkQOJRwO
- xu+QauFtMADN1x+c0Zyc8GhZsAPiL037Lpn4ZN0TCOrlfckmpgiZtQvH2LNmCzU12MIA92gEJqRTDN6uNOx9wo4SBzQWwWhNp903Eb06ELcXBI7bSa4ZAYD/nTmoN20j9Bnm2kNxcANorDzy1gTkiDu5tt/mt8IcXF9IedVnRaQpY+GBBD8i+1rVQQYRtC8UuNiUPgDlCyktyLLMA2bLYzxYbzsTVDWCMC+LVcpQWhzt1XKX/JUer2lmF28+V1SRKk+59+QXscKhQPUxp7rxY+VZAWungJxqSPR+YHzxev9uASXB7vjMZGu0Lo+tDrGfjLH5SaTXsNjAPI/Exl0bIVf8mXWoZ5elx+VKIvuu/X36GhL1mzugQZWJpMrBAb9Ds5XAH
+X-HE-Tag: 1780992829-448183
+X-HE-Meta: U2FsdGVkX19flmUL04mQHnNQcO6wMoTC8qmO4OqJVsQM60UG253ANbRYS11iMa9PkjOXcnmCcyHwbFRTCi6xWh+ZAJIkZFUS26D+V6iStD+dmkWYvooJMSbFxRggQAfTqPzgERqpO7b2m4EQo5LPuD+QnQlIi/ZMhh2hpY/zcTDdYxo2SoXQlrvCyzQKYsLkqCEEjRksI38V5Jan4E8+g7NQYc0siV6SiBelxT5fdu48IMjPxllgLB4Pg7exQTVlTBj6TUpetohUwHJQ1ZKBHpXuwuh+bAwr1fTYUSRLxFRcZWflBF/D1gkaivpMMD6Df3a2pO15RHsGAaFiKK/QfLYyMKNs3OsjjH1HWDN8D1qIHc8QBsFV+rmT/gtRoe6oDv2xroOEVpkOrWnnOBZrYZu2TtusZvcDe+B0Krk05nThhK4DrEGlID396H6DXZ5HeGyAiZJUCx4ifcuyliZZYiDh7HSSYDrfRhuyZ+zoSigbDPXQf8JjdZ2dTGM7lIDBg8U3yqxsh1A8h6jvqGCOU9SZNW9DuM55s8UorZRffdsJYzi+MdcRsA0Ne4u5LuYw4kFgC/IpRZDi3VvQAX/2vrS1TOcSSu/HjH2YuLBPm/UiZSSfUWOTxIjQhUC9ngdqyrtlX+imDkJLvZSmdzDOaK8tlLNkiQdeNhGbb6//5RAqIovbbAr9ebVzVnd5HSjgicKe1iqiq9IvKSQB5dgjtEH9z3AQoKLYzk3anlj2BCPZFlFJwvSpspiYeUIvlmFd2n1k9Av1KxdaqXLf4dXY/w+2dLOSMfgK0BxefRXMLJ6IBkqpNjDYl1j998pyecR4D6IOdLwFpqTqZckGQ7BZt6ZIzPrz+TBI2URQNQoCzWxtmee9x1QnsVMKekiYttMEedJiY7jojpj9dX6zj1De4/0jLmQrQvC8PV7tmoehjmjbipTASZWN2SOiB43IukeDVF3lmotudAD61fWqhH+
+ E8CoKQ/W
+ /G45qaGDbxsNHWAz3yCkV2w0u2yp3nB3/GqXzNforz8K7fKa3tzCcDKQZO2w3avCCRHljOYpumgpmIogUyFbteHB2rqSp2arzFuxZvxHMTQxHNjzp4wY01NaKEyr3gRlu9FROiNc4FkfM+sbkN6Cq2g4fGRSmtg7vl/+BEycXm6Jb9QKUM6x9d5SobzvyXLqd1tPinJUIdRT2xyOZ2eYVtvAW4wZjJ7WeDK/dScIEmhw7rQAMh/ArVgXfn+L3u1hcmBuHApcF5P+Ko8mrUKiyXT1rTVgviQ5l5ARLp0Dlg+SF9h8bvWnsNRJaceejg1gPKaauDryxC6rwjgP3q0/RJ7kDvJ/vjHGRQlu0gfgjmhraxl6IQjqBlqowmHRH4gRaDOHRy59LmAcUUixW7Kx9mepOpy+G72GaTwHg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,66 +138,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 05:58, Matthew Wilcox wrote:
-> OK, here's how I'd structure this:
+On 6/9/26 06:47, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> 1. Introduce PG_zeroed for buddy pages
-> 2. Set it if init_on_free is set
-> 3. Set it from balloon driver
+> User impact / Why this matters to Linux users
+> =============================================
+> When a system runs with KSM enabled and memory becomes tight, KSM pages
+> may be swapped out or migrated. The kernel then performs a reverse map
+> walk by rmap_walk_ksm to locate all page table entries that reference
+> these pages. If A large number of unrelated VMAs can attach to a single
+> anon_vma related with this KSM page, then rmap_walk might be severe
+> performance bottleneck.  In our embedded test environment, we observed
+> ~20,000 VMAs sharing one anon_vma without any fork – purely from VMA
+> splits， which cause 200~700ms duration of rmap_walk_ksm.
 > 
-> https://lore.kernel.org/lkml/c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com/ 
+> When one of those VMAs mapped a KSM page, then this KSM page's rmapping
+> will become bottleneck with hold its anon_vma lock for a long time. The
+> anon_vma lock is not only used by KSM; it is a core lock protecting the
+> VMA interval tree and is acquired by many critical memory operations:
 > 
-> but add FPI_ZEROED instead of an extra bool parameter.
+>   • Page faults: do_anonymous_page(), do_wp_page() (during COW)
+>   • Memory reclaim: try_to_unmap()
+>   • Page migration & compaction: migrate_pages(), compact_zone()
+>   • mlock / munlock: mlock_fixup()
+>   • Process exit: exit_mmap() (tearing down VMAs)
+>   • Cgroup memory accounting: mem_cgroup_move_charge()
 > 
-> 4. Introduce page_is_zeroed like this:
+> If one thread holds the anon_vma lock for hundreds of milliseconds
+> because of an inefficient KSM rmap walk, any other thread that tries to
+> acquire the same lock (e.g., an application taking a page fault, kswapd
+> reclaiming pages, or a migration thread) will block.  This leads to
+> stalled application threads, increased latency spikes, and in extreme
+> cases container timeouts or watchdog triggers.
 > 
-> static inline bool page_is_zeroed(const struct page *page)
-> {
->         /*
->          * lru.next has bit 2 set if the page is already zeroed.
->          * Callers may simply overwrite it once they no longer
-> 	 * need to preserve that information.
->          */
->         return (unsigned long)page->lru.next & BIT(2);
-> }
+> This patch reduces the worst-case anon_vma lock hold time during KSM
+> rmap walk from >500 ms to <1 ms, thereby almost eliminating this
+> source of lock contention and improving system responsiveness under
+> memory pressure.
 > 
-> (you'll notice this is similar to page_is_pfmemalloc() but it doesn't
-> need to be in mm.h)
+> Real-world examples:
+> ====================
+>  - JVM / Go runtime: These use mmap for heap regions and later call
+> mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+> splitting the original VMA into thousands of small pieces over time.
 > 
-> This step is going to be a bit fiddly.  We weren't expecting to return
-> multiple flags in page->lru.next, so clear_page_pfmemalloc() just sets
-> page->lru.next to NULL.  So somewhere we need to make sure that
-> page->lru.next is definitely NULL, and then allow both the zeroed and
-> pfmemalloc flags to be set in it.
+>  - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+> or anonymous mappings are managed with madvise(MADV_DONTNEED) to
+> release specific pages, which also splits VMAs.
 > 
-> The important part of this is that it allows the zeroed flag to be
-> returned from the page allocator without introducing pghint_t like you
-> did in v2.
+> * Why the benchmark numbers are realistic: We observed ~20,000 VMAs
 
-I previously raised (in v2? not sure) that we could using a pageflag that are
-only used for folios, and then simply clear that flag on the folio allocation
-path such that we don't get false-postives with the bit set.
+The "*" at the start looks odd (the list above used "-", and I assume this
+should be separate from the list).
+
+> sharing one anon_vma on a production system running a Java application
+> with KSM enabled. The lock hold time before the patch was measured at
+> 228 ms (max) during rmap walks triggered by memory compaction and page
+> migration. The benchmark reproduces that VMA count and lock‑hold
+> behavior in a controlled environment.
+> 
+> Root Cause
+> ==========
+> Through local debugging trace analysis, we found that most of the latency
+> of rmap_walk_ksm occurs within anon_vma_interval_tree_foreach(), leading
+> to an excessively long hold time on the anon_vma lock (even reaching 500ms
+> or more), which in turn causes upper-layer applications (waiting for the
+> anon_vma lock) to be blocked for extended periods.
+> 
+> Further investigation revealed that 99.9% of iterations inside the
+> anon_vma_interval_tree_foreach loop are skipped due to the first check
+> "if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
+> number of loop iterations are ineffective. This inefficiency arises because
+> the start page index and the end page index parameters passed to
+> anon_vma_interval_tree_foreach span the entire address space from 0 to
+> ULONG_MAX, resulting in very poor loop efficiency.
+> 
+> Solution
+> ========
+> We cannot rely solely on anon_vma to locate all PTEs mapping this page
+> but also need to have the original page's linear_page_index. Since the
+> implementation of anon_vma_interval_tree_foreach — it essentially
+> iterates to find a suitable VMA such that the provided page index falls
+> within the candidate's vm_pgoff range.
+> 
+> vm_pgoff <= original linear page offset <= (vm_pgoff + vma_pages(v) - 1)
+> 
+> Fortunately, we have already linear_page_index. in ksm_rmap_item in the
+
+Misplaced "."
+
+> previos patch of series, so that we use it to get the index to accelerate
+> the searching.
+
+Avoid talking a about "previous patch" in a series. Something like:
+
+"Fortunately, an earlier commit introduced the linear_page_index to struct
+ksm_rmap_item, allowing for optimizing the RMAP walk."
 
 > 
-> 5. Now you can start skipping various zeroing steps higher in the call
-> chain.
+> Test results
+> ============
+> A rmap testbench can be obtained with two Out-Of-Tree patches at [1][2].
+> After applying the OOT patches and building rmap_benchmark from:
+> tools/testing/rmap/rmap_benchmark.c, we can start the performance test.
 > 
-> I understand David's disgust with vma_alloc_zeroed_movable_folio()
-> but that is surely a separate cleanup and nothing to do with this
-> patchset.
+> The testing result in QEMU is shown as follows:
+> 
+> KSM rmapping	Maximum duration		Average duration
+> 
+> Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
+> After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
+> 
+> [1] https://lore.kernel.org/all/202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn
+> [2] https://lore.kernel.org/all/20260530170404509QpJmBtpSjn3uQHeVKA2iA@zte.com.cn/
+> 
+> Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+> Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> ---
+>  mm/ksm.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index e0ba29e3c0a4..9e1879d96751 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3208,6 +3208,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>  	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+>  		/* Ignore the stable/unstable/sqnr flags */
+>  		const unsigned long addr = rmap_item->address & PAGE_MASK;
+> +		const unsigned long index = rmap_item->linear_page_index;
 
-Well, in my reality, we're just finding interesting ways to work around the fact
-that GFP_ZERO sometimes does what we want, sometimes doesn't.
+remove_rmap_item_from_tree() does the hlist_del(&rmap_item->hlist); once we
+clear STABLE_FLAG + rmap_item->linear_page_index.
 
-So we leak information out of the buddy to really only handle one scenario:
-fixing up GFP_ZERO currently sometimes not doing what we want.
+So, this should always be valid (just like rmap_item->anon_vma). Good.
 
-I'm afraid we couldn't use the above trick to punch zeroed pages back into the
-buddy: some random user doing alloc+use+free would be unaware that there is a
-bit to clear.
+>  		struct anon_vma *anon_vma = rmap_item->anon_vma;
+>  		struct anon_vma_chain *vmac;
+>  		struct vm_area_struct *vma;
+> @@ -3221,8 +3222,12 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>  			anon_vma_lock_read(anon_vma);
+>  		}
+> 
+> +		/*
+> +		 * Currently KSM folios are order-0 normal pages, so the end
+> +		 * page's index should be the same as the start page's index.
 
-So I assume really only folio allocation would make use of this, to work around
-our problematic GFP_ZERO implementation.
+Maybe best to say "Currently, KSM folios are always small folios, so it's
+sufficient to search for a single page."
+
+I don't even want to imagine how large-folio support could look like, and how it
+interacts with rmap_items :/ Let's hope we'll never have to go there, and if so,
+this code here will be the least of our concerns.
+
+Do we want to explain a bit how this works and on which properties this relies on?
+
+"We can simply use the linear_page_index of the de-duplicated anonymous page
+that we remembered in the rmap_item while de-duplicating. Note that
+mremap() always de-duplicates KSM folios: so if there was mremap() in our parent
+or our child, we wouldn't have the KSM folio mapped in these processes anymore."
+
+> +		 */
+>  		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+> -					       0, ULONG_MAX) {
+> +					       index, index) {
+> 
+>  			cond_resched();
+>  			vma = vmac->vma;
+
+I hope we're not missing some other weird corner cases. Sashiko seems to be
+happy, but I don't trust that ;)
+
+Hoping other people can also give this another look before we move this upstream.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
