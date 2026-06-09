@@ -4,76 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D13DCD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFA37CD8CA7
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C97A6B0005; Tue,  9 Jun 2026 04:49:16 -0400 (EDT)
+	id 5FBB26B0088; Tue,  9 Jun 2026 04:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77A936B0095; Tue,  9 Jun 2026 04:49:16 -0400 (EDT)
+	id 55B416B008A; Tue,  9 Jun 2026 04:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B7C96B0096; Tue,  9 Jun 2026 04:49:16 -0400 (EDT)
+	id 3FBB66B0095; Tue,  9 Jun 2026 04:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8626B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:49:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A35C6B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:51:19 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 882398E0C5
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:49:15 +0000 (UTC)
-X-FDA: 84859749870.18.6B4FD8E
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A36D21A0006
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:49:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780994954;
-	b=nKr8lnyo4sLGam+U26FFBfc8Gp0MT9fRFNQ/C7DNLFIfxPIXZflj9TMr05by4YSableS53
-	xeZbtRmTKjRUe3b62aVHmg//5C/3MV9iM1ACU9dpv9T0lmix6KRNOiOHVafTCDtZ/vOTAp
-	kkOD6P8YwjNxrZPeCj5rNgaL2VAlIh8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D57A94041A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:51:18 +0000 (UTC)
+X-FDA: 84859755036.18.0E91CC7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 05DB94000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:51:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OlpdyG3U;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780994954;
+	s=arc-20220608; t=1780995077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CUt2avdTk8/Y9zQJRvwkjFtF4Atz0QcnLZptk5BlEC4=;
-	b=jTcszIYgIlC1ILo2lsP2JiXsWtIplGm7DDdkaqh35+TPj8WwL2MW/G3bfrLxYxdxeXnC/e
-	FMkeJ8u2Ved9iCVBs78/2XoWoRISwLv5OvZlMDruLAjPpckcan4XyJKir40Vjg48EMGnL9
-	zi/Uoe7+SAkmPznQLSoYckBl8lgEDN4=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 201B768B05; Tue,  9 Jun 2026 10:49:10 +0200 (CEST)
-Date: Tue, 9 Jun 2026 10:49:09 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: baoquan.he@linux.dev, akpm@linux-foundation.org, chrisl@kernel.org,
-	usama.arif@linux.dev, kasong@tencent.com, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-mm@kvack.org, hannes@cmpxchg.org, david@kernel.org,
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
-	ljs@kernel.org
-Subject: 7.2 candidate? was: Re: [PATCH 2/8] mm: merge writeout into pageout
-Message-ID: <20260609084909.GA12512@lst.de>
-References: <20260601113449.3464734-1-hch@lst.de> <20260601113449.3464734-3-hch@lst.de>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+nDVPgpp1Ly0QDUYr7vUHvL0g/QTd0ZvsPif4iWADII=;
+	b=oB5opyDmo/HahWBrNJTpX+JyY+YV6zSkIWLA3f7KnP01zdlM+SHppQjCwoGWq0TsHgmywM
+	99bG2uRZoNEzazyFLVvNT9izzQ5/6zvpRkJ7rpeQaqXr0KDUw9POOWh5uGn/pDB0PdLxq/
+	2U0z3Re8o2hxPL8oSkBPjCZqqOnjcU0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OlpdyG3U;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780995077;
+	b=XBxWrKULcA/xsPUe0o8HLQahF6LxKYL6bJymVuO40lBodsWBSm+8O1FGaAROjiHKEgh4o8
+	Sy1uwkIHUBloBvXQwfKVKFUkpyknuLo7g0qNScr0q0D+GOp1L0DAVe2d2iQR2lhRlrGUur
+	wMhGWrTL0EnR37crF15GqIP6hjKUPSw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C456419FC;
+	Tue,  9 Jun 2026 08:51:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFD51F00893;
+	Tue,  9 Jun 2026 08:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780995076;
+	bh=+nDVPgpp1Ly0QDUYr7vUHvL0g/QTd0ZvsPif4iWADII=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=OlpdyG3UWPhN1uXUi98IS74Ht7BSPhiSYXnOsvq3E9qRV36IJ1OihYJtlMI+FIDb2
+	 BjaN0cFx5TeAcuSB2Y01mncxs1/23kq5jocXpuToxCv3ylCnu5nrYfa69QY2zOjSg8
+	 KyuAK/rDFdlzRoFajLcIr2NF0UBmFlzkuppUGyXxPcYKrX5Dwv+/Gs65j5koj99G6j
+	 zeoX2ruCuxcLz0jWqz6Ug9q6Q6qjd+vUNEpSO9mIqOKk82ggH0V7vXHlNgqBcHsO1J
+	 prkdKVrcewMaXpQJzozyHqLV7he3TIuGYrbQk1sqldsf/DCdswgif01DNxmqVvkJiv
+	 +KNuzkHNMeoSw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Tamir Duberstein <tamird@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry
+ Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Daniel Gomez
+ <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 05/11] rust: xarray: simplify `Guard::load`
+In-Reply-To: <178067251349.96312.11784247103754750756.b4-review@b4>
+References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
+ <20260604-xarray-entry-send-v4-5-965f6028790e@kernel.org>
+ <178067251349.96312.11784247103754750756.b4-review@b4>
+Date: Tue, 09 Jun 2026 10:39:21 +0200
+Message-ID: <87ik7sglae.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601113449.3464734-3-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A36D21A0006
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 05DB94000B
 X-Rspam-User: 
-X-Stat-Signature: s1xf4o4rj9ttxannrb1m4p8d84odoxt1
-X-HE-Tag: 1780994953-777503
-X-HE-Meta: U2FsdGVkX1/pOYQ/+7NHNz2hdNG+Qi5RrFaJTD6waeyuaGvbWthIPjc9wYrusREG9rIk5V8yUQTG9yXv6RmGENtLGppH5c4GqPX3Edz30lWh+UsQGg/2+Z+V/CviugHJtv0nL8dgMnCUoymM9D55qlAe8nNkp1fN8nBO6X0TCz0nGJ24wtEGEgjOqK2C2GNtcolSMZB7gk2sMKcYpn0A7o1ZF2tV+tU3PxFv+m+dRjU977MVcaAMw7mPdri7V1if4Dj4RfWStZsv26ZJuGAS0kI81e7IxD0TsY7fJEDajogviGpzKshEVtE8eYIlv7pQdQvynhOvbS70P4+FkBj5RbClo1ZXg0eV3XkBrHdZqxNjwVvZLJ2X0cn1wrBiHXeziAuNq0oBvsXQyQlVEz+uOetCQ0HC900KWWRfq5Uir87FnXyJ0WmGZ7GpULjMp7OGXcI8SKHsz1XHTL5d1EVPRSI5eAAieBhwr9tnhCLKivLHYGqCzMJCB/IITGYDW4Huo6TMpCNltlcQJMlFAs49G9fxzNsMP1HcOKYrWysSogxD1jEAtrz2OKqSrE5H8MIfN9eGwm4dMf7fqSq3VeUGMu3xjeYxXIomK8Oyc0FP87PQwSShVzMu0MwUuGkmB/uA/a7s+aHTv1britRjM794deCd+x7QsZzHQLj7O4gm6k88c+U2P+goFeUyhQcf3+suIviLXJyMobMFYkCQFJ5pdQixh+1XLE+ezp/jZ1wCMGcqobZHZJo+xlkgWu1xN8V8CLpCzXA/rK8I7BkDDYrhviKtO+tslpEK7Z7qutfBjnnxof0KD/wsUTxosluyvswe8+OutlTUmYaMJSkUv9JUYvfsnbS+W7UlgNJXZrlGgff8XnAIdoLJIwgNzeI8AZ2L3vGpe7wZE289MvYpe5t4wFzYTdYvQmbEO34ni7Hp44AwBFTHbDDIANX4PXFnlPWKDwIyNODfYOrst6ed/gR
- 090M9V4G
- qZbFgoBeZG+Wnq8ko0+9rFnnds22WO1hE11JZWHzw7wr2J5It3hh1g5+ifL7qoFJ8CQsrLasUlrx8wVmeyNSr2kTo9FOBsDqxhok/gym66Elnq9F72cg7wwpKL97wSmWYbnpIr8NZzNEQy/I=
+X-Stat-Signature: rpj65zfabiad1fhomrdp4cbuzoetuozn
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780995076-817903
+X-HE-Meta: U2FsdGVkX19is0uDmlGeQj6WhBveVl2TiKdUduSdQ0hDJB/LSAkrp+J+u4i2ruqpmnoza6/ikIDZyndylQhLR0n9vYXYzh+RszRf4+4iueHrxBCTR8n5lsNrAsOecMnGkQtBDomXr7teWtka8p+0prV7LtA2KhTjhUbtqK3FWIw5rudIbCegAVjQehAhpPPtoYXukojIHSvNSOLZei6iii3Ww6+F4Ybyipk/TiDqB81PE4zahIlxmmbkc65UI69xr2p9wmL8MCcvs9j0CiIZn1HEsvTo18HpQHMAtqKhxoB+hUwm06BfylKYvJKmtlyuJOxAji47KvZamWlW+ZyxJiAFgqXrSvowCV1Sh2rvvjsb2RTfQtu6gb/fOoHnfQ86PvINUPCB7eN6pehJUo+3XOBtoo6xP8ie1J4ZkpO2dSMT/a6SQY0adNoi256PQcTNyTFeZl6vbNXQg5VptIQb7nD8wdKBLpndpbcVD/GsTG4fjhaAwipu5jHw/nxa6+ANFjQ2WOg4vxQBRU+kiuAG0dBsIhXm7D0wceb80PWzTgIK2LBj/qwupoW3OzP2mxGPlRTGkztcr2OXmUuNnYbLcm3AKlIRmSdasLw4h3Pq+cJZmCkL+Bl1D8wsbPXFDaYi73ZwSS+3MgAAA3Lmz2dMmRGrbu9vLPKybx9CMoF3++2ucNAM+ck7Aw33wCH2fVjEqjdzCMzUDR/JWe6q6Md5fDbuSDSz0fyVsbkp38GNAjSZupaUszSqxmCaaZCqFXXtNrR4ijJAWs3iNXipu+PB/Ic5OH4V0owtDE57K9TekI/5NDl3Y6rqOhYapDMqrgxoKWi7isKiH6i32690qDNE2+H5V4CDYp1TkmP7BefgoQj8e3xZkGzEb0cLhDUDqfHhtPCVBPx2Q8pNqpnJ7dAYsYZdPVs/nYTyUXZUwmsFI6F5Is7QuM3onxRLgqAH6MxJDJXQPstPQsR0JVK0pVU
+ hKx928Fy
+ wicHpIsNhAXBFg5n2GdXnuyAxDICvQYDcflO2ujAV/cKStUa6XRrXQ7NQlcMO7gfgif7nCaFl4PFD6mKNKOqEQYc+lYVv+8yCP7tNiIRGdax0n7/Vf92tox/qVMbvk4ewXhzNl0rHaLZGU41uf6jYkcUYDn8uzZIeJd/EGG2/SijMOIf/hgwlA2y/yoa23DR5ed6XOWOadU4lqMhZxqqbZsElah/+ZujytfZ54r/hlMX2gw+yFFEU+OzPsksvNGRwuoEUUfRI+mQwIOA7n/sFyR3kLMjQaRdwhn1nEoMcoRjS+HPZh7d9p0nCw3+xq7njXfVqqexMvTWBww4YqnZmY5kbg02dOq2M9pQ9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -81,107 +102,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Can we maybe pick this up for 7.2?  It is a trivial cleanup that would
-be nice to get out of the way.
+Tamir Duberstein <tamird@kernel.org> writes:
 
-On Mon, Jun 01, 2026 at 01:34:28PM +0200, Christoph Hellwig wrote:
-> writeout is only called from pageout, and a straight flow at the end, so
-> merge the two functions.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/vmscan.c | 63 ++++++++++++++++++++++++-----------------------------
->  1 file changed, 29 insertions(+), 34 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e8a90911bf88..d7303eea1265 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -612,45 +612,14 @@ typedef enum {
->  	PAGE_CLEAN,
->  } pageout_t;
->  
-> -static pageout_t writeout(struct folio *folio, struct address_space *mapping,
-> -		struct swap_iocb **plug, struct list_head *folio_list)
-> -{
-> -	int res;
-> -
-> -	folio_set_reclaim(folio);
-> -
-> -	/*
-> -	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
-> -	 * or we failed to allocate contiguous swap entries, in which case
-> -	 * the split out folios get added back to folio_list.
-> -	 */
-> -	if (shmem_mapping(mapping))
-> -		res = shmem_writeout(folio, plug, folio_list);
-> -	else
-> -		res = swap_writeout(folio, plug);
-> -
-> -	if (res < 0)
-> -		handle_write_error(mapping, folio, res);
-> -	if (res == AOP_WRITEPAGE_ACTIVATE) {
-> -		folio_clear_reclaim(folio);
-> -		return PAGE_ACTIVATE;
-> -	}
-> -
-> -	/* synchronous write? */
-> -	if (!folio_test_writeback(folio))
-> -		folio_clear_reclaim(folio);
-> -
-> -	trace_mm_vmscan_write_folio(folio);
-> -	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
-> -	return PAGE_SUCCESS;
-> -}
-> -
->  /*
->   * pageout is called by shrink_folio_list() for each dirty folio.
->   */
->  static pageout_t pageout(struct folio *folio, struct address_space *mapping,
->  			 struct swap_iocb **plug, struct list_head *folio_list)
->  {
-> +	int res;
-> +
->  	/*
->  	 * We no longer attempt to writeback filesystem folios here, other
->  	 * than tmpfs/shmem.  That's taken care of in page-writeback.
-> @@ -674,7 +643,33 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
->  		return PAGE_ACTIVATE;
->  	if (!folio_clear_dirty_for_io(folio))
->  		return PAGE_CLEAN;
-> -	return writeout(folio, mapping, plug, folio_list);
-> +
-> +	folio_set_reclaim(folio);
-> +
-> +	/*
-> +	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
-> +	 * or we failed to allocate contiguous swap entries, in which case
-> +	 * the split out folios get added back to folio_list.
-> +	 */
-> +	if (shmem_mapping(mapping))
-> +		res = shmem_writeout(folio, plug, folio_list);
-> +	else
-> +		res = swap_writeout(folio, plug);
-> +
-> +	if (res < 0)
-> +		handle_write_error(mapping, folio, res);
-> +	if (res == AOP_WRITEPAGE_ACTIVATE) {
-> +		folio_clear_reclaim(folio);
-> +		return PAGE_ACTIVATE;
-> +	}
-> +
-> +	/* synchronous write? */
-> +	if (!folio_test_writeback(folio))
-> +		folio_clear_reclaim(folio);
-> +
-> +	trace_mm_vmscan_write_folio(folio);
-> +	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
-> +	return PAGE_SUCCESS;
->  }
->  
->  /*
-> -- 
-> 2.53.0
-> 
----end quoted text---
+> On Thu, 04 Jun 2026 21:58:11 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> Simplify the implementation by removing the closure-based API from
+>> `Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
+>
+> This is simpler, but the closure-based API was here for a reason (to
+> avoid passing around untyped pointers). This patch is estabilishing the
+> style for subsequent patches, but doesn't honestly describe that it is
+> doing so.
+
+I'll be sure to mention this in the commit message for next spin.
+
+>
+>>
+>>
+>> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+>> index 05e6dc1ffe69..7da57c778669 100644
+>> --- a/rust/kernel/xarray.rs
+>> +++ b/rust/kernel/xarray.rs
+>> @@ -212,28 +212,23 @@ fn from(value: StoreError<T>) -> Self {
+>> [ ... skip 26 lines ... ]
+>> -        self.load(index, |ptr| {
+>> -            // SAFETY: `ptr` came from `T::into_foreign`.
+>> -            unsafe { T::borrow_mut(ptr.as_ptr()) }
+>> -        })
+>> +        let ptr = self.load(index)?;
+>> +
+>
+> Inconsistent whitespace.
+
+Thanks!
+
+Best regards,
+Andreas Hindborg
+
+
+
 
