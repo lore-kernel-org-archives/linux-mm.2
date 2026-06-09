@@ -4,94 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A081CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F553CD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D84016B008A; Tue,  9 Jun 2026 05:02:38 -0400 (EDT)
+	id 9B71F6B008C; Tue,  9 Jun 2026 05:05:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5B0F6B008C; Tue,  9 Jun 2026 05:02:38 -0400 (EDT)
+	id 9681D6B0092; Tue,  9 Jun 2026 05:05:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C70746B0092; Tue,  9 Jun 2026 05:02:38 -0400 (EDT)
+	id 856956B0093; Tue,  9 Jun 2026 05:05:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B680D6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:02:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F1DAA04A7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:02:38 +0000 (UTC)
-X-FDA: 84859783596.16.032324B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 36C2114000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:02:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dsLDsInS;
-	spf=none (imf09.hostedemail.com: domain of BATV+083e98ba33f2cf22ed17+8325+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+083e98ba33f2cf22ed17+8325+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780995756;
-	b=YGka68CLysUxxzt2Pe4zwwzT1IRltbKC0B7KGoHuHerr0stUnHirfvHYTM6vDvxbSST1Dl
-	gs3e29OrprGj0y5DcHhUzfJ8nTOY1VLi8m9KnGCoHvPn8H/6FM/vlko85XStjcze4+2a2I
-	/8BuCNxqTgIRe18Sqqf2kRydVjbo02w=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dsLDsInS;
-	spf=none (imf09.hostedemail.com: domain of BATV+083e98ba33f2cf22ed17+8325+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+083e98ba33f2cf22ed17+8325+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 74C1F6B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:05:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C56B1C1F1F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:05:59 +0000 (UTC)
+X-FDA: 84859792038.07.00CAA22
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A518A1A0009
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:05:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C+Tlgdbx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780995756;
+	s=arc-20220608; t=1780995956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GC+JFhsCFvp9I/Y1vIdUPY4ekT1XSIP7QJ8l6HwbvF0=;
-	b=fIr0HL3/4wx+AycOXZjn2QGBw4c3SXHmH8hpIUc7Ar0oJgyL9+M3YUKd1cXNawmUYXvKJ5
-	rIhSRmFZa4mLJ8gPXG7mQRKgK3vDD0/p/9KC0nn5yDp/pe/x8oK4yzYHPIGEr8ZRSZhAEq
-	Mum7vG6Dixy7x9urQf+CgDX1eN/y+2A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GC+JFhsCFvp9I/Y1vIdUPY4ekT1XSIP7QJ8l6HwbvF0=; b=dsLDsInS9LgdI49BKcSHqGKzP5
-	RUD0cSBudcKScGPIp4griuRcI+vx7ZBC90UCwVLQINp3UPJJeW3UVDvaHup0rAZ+vmozbwhoTt5eN
-	WGruOqfXRt4d+GwJYOn7UHj3aoFbnNsz0+bVvqs3HvEEcz/m8IVzAVW+cBuydAP8G7ZGTTawReOtK
-	8r+Aoi2Z08gpZM0iRcgKPXA+6mqjRLQKDQLy7hMZSd5akZv2iE6oI1OuAbqAL7w9Za4bdShYVsQx9
-	6oRE+UHYhEMD3+o1Q4Y/gU8cpSOA0xusbruF7C2Eksu4GILWR9wG4UuJqcSC7zdyVuhLMoRAXP+fv
-	OG3ge6qw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWsLw-000000058d3-11W1;
-	Tue, 09 Jun 2026 09:02:32 +0000
-Date: Tue, 9 Jun 2026 02:02:32 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Hannes Reinecke <hare@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Andy Whitcroft <apw@shadowen.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: increasing PAGE_ALLOC_COSTLY_ORDER, was Re: [LSF/MM/BPF TOPIC]
- Memory fragmentation with large block sizes
-Message-ID: <aifWqFpSkcMU31UO@infradead.org>
-References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
- <aifAm1rRKF75HVeM@infradead.org>
- <1225376d-dc29-44a1-add6-0cb14926a538@suse.de>
+	bh=Wxr1O8JNsfK2/FvtzBM7LZ4zEH7+MeXY2kg9gcsAEbU=;
+	b=C/YoWaf5WPG6bYy2pUjuVA0Nc+dlhqf7BETdQHsls/9GKQJHK3o7/wgxDhAR5YOs2lDnFH
+	1DvR5h1ZArfi0HR70hCnaqZNNI3Fx9GZfDxZ8Ifx1YbxruTzMaje4OjN13428tVFdIq+Fy
+	XQSRxlhwOSs99wdJJuSzSSIshbi/Byo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C+Tlgdbx;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780995956;
+	b=PRY571gFX8YcHs3IqGlgRIXE2NUAU2zHaqz4LnkXHKeob6Ey8QDaO5Y+5WdN9Axl8mn1oG
+	JLPSmNT4dkfdApLR3M658vVx/vPIPhdjA/8GIrJXeObxS8Npg7NGopax01gdYuuxYvsUjE
+	+f/0cXyC31dXIjMhp40YQ7oJCtn0G4M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780995956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Wxr1O8JNsfK2/FvtzBM7LZ4zEH7+MeXY2kg9gcsAEbU=;
+	b=C+TlgdbxHqs/9+kBiL0ZvoftMgjjiyisq9SSlVLp65cZ4vrc4ZSIpatv/E/sh07NX6tkAI
+	dxE4pHJlEmuaQ2itZrTHXa4XgcXv0Jd+nvCgGtKYMZHvuMAVKLhHM0PwrGAbDsA4hJFUQU
+	lR+jxiwbKkNgb2QYYohounJSBa/B8TE=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-br5zg_QaMtul7Bh7G_nZ2g-1; Tue, 09 Jun 2026 05:05:42 -0400
+X-MC-Unique: br5zg_QaMtul7Bh7G_nZ2g-1
+X-Mimecast-MFC-AGG-ID: br5zg_QaMtul7Bh7G_nZ2g_1780995942
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7df25ce3000so41103857b3.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 02:05:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780995942; x=1781600742;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Wxr1O8JNsfK2/FvtzBM7LZ4zEH7+MeXY2kg9gcsAEbU=;
+        b=Uh0vO4Ug7IJe6phwlUYpG2zJv5tZ60ooB0e7XZ+US8AmhmlL8SD6vsKkWyfgsnUkZg
+         mHbO3KBq6C2dS4sL4r0TwZPex27tOxqzIilOXqRxXtaDagIHmI0U3SDsd9/2PteriSGF
+         azhicmFqqsiw5UmSFqtc70DhBOhM8R5ExN9kYf+Citi4TesCTwkGc8e1KG0OF4UdvwsG
+         vfVquNjCD6+unAJyYaZxd7esz0VYx5Iq6vbks+5bBZEmoe5ZW8vnyMGcsFNF/R4ePVVC
+         lftHErvUnb6KRm3EMIc71wKZS+SOvdqpyJWDF1BZZbBozUubKNEuYCEjTvwW18cmA0YI
+         2vkQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9L2zfsu1JyfkkfSHI0ZTGr3qWWI1Z70IaBEH1RiL0KYpxPz984/frsCqrBA1befv/05q5wqyWvlA==@kvack.org
+X-Gm-Message-State: AOJu0YzecS5V1lIGzNNyho2WvxV8B0OfpGNUOJkFBu5z7KEa/XBh/Mvd
+	om7Fw2cDhVBOHiITrIPDSZIKxau+iblBgDT7grLIUy3M4SW+4boXw/c7xxNYDl27rcVLYcL6Wzb
+	gKqLs6euJAh1a55v4/lJLpNFa+Gjkh8E1f/H6SBhO5C3EQDgurIkZRvEtTa0qwSko4jc2KiRJn9
+	K2jCrgW7QcHvYOMnwsd/kV/rm/8k4=
+X-Gm-Gg: Acq92OH9U3Frv1F6GEVy6PrOcRyU+Nxc93yz3B+iGyorzWK39naYy2wLUH4vyWAbTKY
+	ELz7iz1+NpN9Jq66Wiji5KJ5W/8ZMSoSV4cg+cvQxgnD7CLtHlsA5H2CvbUUgrpSPbATd4NalSv
+	S2MHWTtT9Zo2daQ4PeMNsYNmO4/tuFW41Z9ulyFvqjwdj9J/7Nrg600y7JeyTg0b5S5EC9gUuC+
+	M47VCjpa8zgRWow
+X-Received: by 2002:a05:690e:4190:b0:660:62e5:92c9 with SMTP id 956f58d0204a3-661070cd438mr15281263d50.63.1780995941973;
+        Tue, 09 Jun 2026 02:05:41 -0700 (PDT)
+X-Received: by 2002:a05:690e:4190:b0:660:62e5:92c9 with SMTP id
+ 956f58d0204a3-661070cd438mr15281195d50.63.1780995941422; Tue, 09 Jun 2026
+ 02:05:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1225376d-dc29-44a1-add6-0cb14926a538@suse.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 36C2114000A
+References: <20260605161422.213817-12-npache@redhat.com> <20260606102800.26940-1-lance.yang@linux.dev>
+ <2553caae-9e0e-42a7-8b61-d1216f1e81fa@kernel.org>
+In-Reply-To: <2553caae-9e0e-42a7-8b61-d1216f1e81fa@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 9 Jun 2026 03:06:27 -0600
+X-Gm-Features: AVVi8CdL9z1ryjSRfDfxfMh1RqlVgMHDGw_iSqBSnBDCj2SVI6kmrVDBphqzbx8
+Message-ID: <CAA1CXcBY_2372eJru8VoCq90rUMxn7w23hHou68MmXRv48NRXg@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v19 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Lance Yang <lance.yang@linux.dev>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com, 
+	jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, 
+	liam@infradead.org, ljs@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com, 
+	rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com, 
+	sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com, 
+	tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, vishal.moola@gmail.com, 
+	wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
+	zokeefe@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: YXGk4eEX1o58jLe5ZNbXob6MOW6sLxJoHfO5L6tZByE_1780995942
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: xgeo6t36o53fznx3gtky4sp4irbki6kp
-X-HE-Tag: 1780995756-277440
-X-HE-Meta: U2FsdGVkX19NM8gm7A4Il1LNiuNgEiv1kNUl97GSZndojutYp9qr1/JySHS9ZrwoziseCl6Mnp8mSpmqxhxTsF2ZQu82dqJENUUu7Is0k5O6vdLBw6omYRB0QXMdApbNTtpimTKaEX850xNh8QfOn4PI8oY+X4uSQWu/vODcZrAQ4rCF8Wf7gj2NKxSFW+rSFHPS9pqe/nElejN1RD/JfHacZEhPtikWXSVCfd/4+fyBksyoWBX6KQ8JddJ20iO20nzSHlkzojOFHJQ9TKo+DnrcvjZYrIivxzosiiuPRlx1mMYfOhIowKmjsInwIZr24CzlhSW471Hu/ETVFR2+2W4dS5jXrX7tvcskrpTqkmgDa3RXVUIPl7EUhZxIXf1XZvqMNNnOgZ5mNg15Vl1qoLcVg/Jhcacdbasj0YFDGpYEFFjBa2LpRmnqheWCHAhW+ZEffddWNwDuWYXmNtMtPYXbAKa7NgQqb0c2eIn4WB/577ZFI5MuXAVzDDUxGBaqY9qyJ+mexhAQfhFUrFGOVXowwQKhrO11Hsg8Jfb7AHv0aBc8gxAI8ZDcNlJjuNh6jQrXhaxR4R1JvDxd7ySNyYzyzN3tw+TnOQuPBFRQe1IFEcMpUOLph6lJYIeBtkzlq2UbAPbpLhZq6FIcWWnhqQCO5oDG2sisfHFMxmCCSobKR7/zPin0qayW/xLEYfo9oAgFyWtEYTj9sMw1FoylImuUIdZZ4GImKKZVcbcpfoFX8RnHT+HM6WjEpFwGBoRNgwDOblJ7wFL8qKlC/2CwcpnJJBJHxQHcfkWXA2semCNsWsS9kDypmp7yA+EZvqqCSuXyDrOJhLBsF9VT7CH5NRZF41IAa0fcINdX3Vadb+scGzelGhKazE2BsL7HrvreyKLIJQT1kO6wVILE0gt6u3bNDxNePcdsH7S6AKCqKbYVX+ZrNfIVfFvHxsMmE3T3ltS2l8NFWtDDErThWS5
- 7dAMrjQv
- sj2UQBN3NKQfGrxMgwpU77TkcBwvLMlm6fHscbu1yVauwgvRjOj/6qXMSauE5mV0oSHgo8V4dWX03ghrYfQ4lJGzb9dSsR/zEz/+0ymbHT5O6e7d68edHtPzZ6kGYMBkiwg7L2pfAbrSiLHl2jsKQcq2yVum7ICoMnhbZv9A93GgK8HB51MyTFpmd3rf9Y/WuufYSHjSC4KN5fOha1tb7JkuQyt88DBNLs6lPBPqivVLo6qPFMKD1zvMTq9qhLjJhDPOl0G3LNlxstbed6dUN9ePBbN+RU1oOLNp0U2fq2fbgm5zQUGIqFvmzAqBYtsXoqVoiI3E+sEzMynB48xTxrLTR7HUgyHn3WQLzmjUjdwU+427xs5n4HXXxjF7qVmNMjSeDTJkWsU7fWuEmsCPiNA28gC+bxb1S4kU8E8iqJtGlHus3zEfx3brfD8pDxAB0zKrT+Uqxq1LWEY/HV6jyoMnWXa2EUdrVhGq1ZJxWj4DOdjcHzy2xlqWdiCFE8QBcdPIfkFrANjP9NQ495ryypxb2e9nTlyqbJ60zziL0bo8r507HGAP09lFH7+o4qYWJYF48NnTNcOItZJ8=
+X-Stat-Signature: fqwsf5d78ouyygri11spy5pfh9pxarrm
+X-Rspamd-Queue-Id: A518A1A0009
+X-HE-Tag: 1780995956-420820
+X-HE-Meta: U2FsdGVkX19/ZSU6M1BQTIXbieo5JF7vjYGcZA4exysOgF9EBQ9OkAvNCtfUKDLm9+w4ICUGZbRqBGCBUHwOzR/fvMD+jZmKVHkCdCKXdu0uGe3vQPoolp3k/hkm2Klv3ygFDpGOikg9xpgMY53wZ9lkTRta6BCAY4nepjTO9X8mcMdKoeJYPiU0jbOd1Hgezl5cBDqJsCs4OJdLYaKviyAsmd/+jOu9zR/cde+EGaveMpuvotHcsBYCdbvRWwPGsArc5pzGSa2vFeTaRg8epc+P4lJbm78fOCPHYS81HihAyFAvVV1XCNmby3XTlphs8ZVDCX3Z7qARNIM3C0UOby/FNBEZH0uKyCg9crmSuoZJJjEtHMqurKPj22IbB3wlccXYZkTewAc62umZnAZ0nil0eFt2p9zkBGRMOHqeQF+oXSzHbuY2l8ZD/6ULWAEJnfFDbg6NEfp3MVhQ54h9De0Y7ZhQQM14h7vP6ygFsa9dJwhsp3ZoOXjuRDka6691RMgGKij4fP8ErETkwPMsYW+JR+tW9omuppVuB5EMliahKpegKiAlbtcyZlX6YD/HhW9DCTKeYEo8MUlREFej7nwN7sB9dJA39WQZMdHQOMWyGzKN7ixoXuShQQNbF1nnpzEMSj8suXn89VGRWVALy1NHbZlZ045g9ufGBLRJ3syISVJDVnEnu9DSvlCodX5O6hxjADS7TDc1U+GleE9YmWwPSd8cqZgbzP6Itdvns+aZEwCQlw7LW7QDyf+dSsjaqDoIIyMhuG49nXMZcpldric9nRb5a+ln4N/vqu53KhilnotrNryBHcCczqpKF9gKNinr8EKEsAuaM6C/XzCvOZ2MC510g2ZL1882JCk9ueEHXHl1OP+TDAWWKh+BUIOzc7Gs934f0qirE5a8HQVBDaXejgv5EUrmFzlAL6VbrKF1J4qvocA5GCBabaEuRp7QD0J9XwBT66jcWADibQf
+ enL9zQ2U
+ B7LNSLfcUDL+vkZH1w7nPpQo2PAGG3VSI13OkgKcNCw6e5ynDyBgm4Od3nGcyzLIp9nvjwvOS8fxoHqMIhvtKgkaVQg6cVGFhehYTYC6GCmq+F15uqcyHEGR4r3M0WQ1EWnmdn514Ay6T83WMBVTyzmA6dlL7dAy4iCTgYx2oR5w7rpM17Qo6q9DQoGAnzUCkwWCRBjV7uqIlPaOy/1e7YVDkUEYLIOyTZlBDEXV3m29GWcSqanh0TeT6Ji5AkB0xK0o6AMvJ6j/dHmObJY5qDsrvCooyQqkD8egvPr6ApXitj2Mvf14Tb6ZffyJmbpr7p/BrL2m3Lq763TDnCPdWwF0bKoWsTcjXGKLFdS1XvctgnhCSmO4aaCwjwkpZy2KL0EKv1QQ0ykqptjYlWjPfSMVf8yy3Fut21r63DKdenr12tmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,52 +142,263 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 10:39:14AM +0200, Hannes Reinecke wrote:
-> With 32k block sizes the picture changed completely; the 'bump'
-> vanished, and there was only pronounces spike with 0-order pages
-> (about four times the size of the spike with 4k block sizes).
-> 
-> This led me to assume that compaction broke down at 32k block sizes;
-> this assumption was confirmed by Vlastimil Babka who pointed out that
-> there is a maximum order to which page compaction is attempted:
-> 
-> include/linux/mmzone.h:
-> /*
->  * PAGE_ALLOC_COSTLY_ORDER is the order at which allocations are deemed
->  * costly to service.  That is between allocation orders which should
->  * coalesce naturally under reasonable reclaim pressure and those which
->  * will not.
->  */
-> #define PAGE_ALLOC_COSTLY_ORDER 3
-> 
-> and it's main usage is 'order > PAGE_ALLOC_COSTLY_ORDER'.
-> Which ties in directly with what we're seeing.
+On Mon, Jun 8, 2026 at 8:57=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+>
+> On 6/6/26 12:28, Lance Yang wrote:
+> >
+> > On Fri, Jun 05, 2026 at 10:14:18AM -0600, Nico Pache wrote:
+> >> Enable khugepaged to collapse to mTHP orders. This patch implements th=
+e
+> >> main scanning logic using a bitmap to track occupied pages and the
+> >> algorithm to find optimal collapse sizes.
+> >>
+> >> Previous to this patch, PMD collapse had 3 main phases, a light weight
+> >> scanning phase (mmap_read_lock) that determines a potential PMD
+> >> collapse, an alloc phase (mmap unlocked), then finally heavier collaps=
+e
+> >> phase (mmap_write_lock).
+> >>
+> >> To enabled mTHP collapse we make the following changes:
+> >>
+> >> During PMD scan phase, track occupied pages in a bitmap. When mTHP
+> >> orders are enabled, we remove the restriction of max_ptes_none during =
+the
+> >> scan phase to avoid missing potential mTHP collapse candidates. Once w=
+e
+> >> have scanned the full PMD range and updated the bitmap to track occupi=
+ed
+> >> pages, we use the bitmap to find the optimal mTHP size.
+> >>
+> >> Implement mthp_collapse() to walk forward through the bitmap and
+> >> determine the best eligible order for each naturally-aligned region. T=
+he
+> >> algorithm starts at the beginning of the PMD range and, for each offse=
+t,
+> >> tries the highest order that fits the alignment. If the number of
+> >> occupied PTEs in that region satisfies the max_ptes_none threshold for
+> >> that order, a collapse is attempted. On failure, the order is
+> >> decremented and the same offset is retried at the next smaller size. O=
+nce
+> >> the smallest enabled order is exhausted (or a collapse succeeds), the
+> >> offset advances past the region just processed, and the next attempt
+> >> starts at the highest order permitted by the new offset's natural
+> >> alignment.
+> >>
+> >> The algorithm works as follows:
+> >>    1) set offset=3D0 and order=3DHPAGE_PMD_ORDER
+> >>    2) if the order is not enabled, go to step (5)
+> >>    3) count occupied PTEs in the (offset, order) range using
+> >>       bitmap_weight_from()
+> >>    4) if the count satisfies the max_ptes_none threshold, attempt
+> >>       collapse; on success, advance to step (6)
+> >>    5) if a smaller enabled order exists, decrement order and retry
+> >>       from step (2) at the same offset
+> >>    6) advance offset past the current region and compute the next
+> >>       order from the new offset's natural alignment via __ffs(offset),
+> >>       capped at HPAGE_PMD_ORDER
+> >>    7) repeat from step (2) until the full PMD range is covered
+> >>
+> >> mTHP collapses reject regions containing swapped out or shared pages.
+> >> This is because adding new entries can lead to new none pages, and the=
+se
+> >> may lead to constant promotion into a higher order mTHP. A similar
+> >> issue can occur with "max_ptes_none > HPAGE_PMD_NR/2" due to a collaps=
+e
+> >> introducing at least 2x the number of pages, and on a future scan will
+> >> satisfy the promotion condition once again. This issue is prevented vi=
+a
+> >> the collapse_max_ptes_none() function which imposes the max_ptes_none
+> >> restrictions above.
+> >>
+> >> We currently only support mTHP collapse for max_ptes_none values of 0
+> >> and HPAGE_PMD_NR - 1. resulting in the following behavior:
+> >>
+> >>    - max_ptes_none=3D0: Never introduce new empty pages during collaps=
+e
+> >>    - max_ptes_none=3DHPAGE_PMD_NR-1: Always try collapse to the highes=
+t
+> >>      available mTHP order
+> >>
+> >> Any other max_ptes_none value will emit a warning and default mTHP
+> >> collapse to max_ptes_none=3D0. There should be no behavior change for =
+PMD
+> >> collapse.
+> >>
+> >> Once we determine what mTHP sizes fits best in that PMD range a collap=
+se
+> >> is attempted. A minimum collapse order of 2 is used as this is the low=
+est
+> >> order supported by anon memory as defined by THP_ORDERS_ALL_ANON.
+> >>
+> >> Currently madv_collapse is not supported and will only attempt PMD
+> >> collapse.
+> >>
+> >> We can also remove the check for is_khugepaged inside the PMD scan as
+> >> the collapse_max_ptes_none() function handles this logic now.
+> >>
+> >> Signed-off-by: Nico Pache <npache@redhat.com>
+> >> ---
+> >> mm/khugepaged.c | 146 +++++++++++++++++++++++++++++++++++++++++++++---
+> >> 1 file changed, 138 insertions(+), 8 deletions(-)
+> >>
+> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >> index ec886a031952..430047316f43 100644
+> >> --- a/mm/khugepaged.c
+> >> +++ b/mm/khugepaged.c
+> >> @@ -99,6 +99,8 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, M=
+M_SLOTS_HASH_BITS);
+> >>
+> >> static struct kmem_cache *mm_slot_cache __ro_after_init;
+> >>
+> >> +#define KHUGEPAGED_MIN_MTHP_ORDER   2
+> >> +
+> >> struct collapse_control {
+> >>      bool is_khugepaged;
+> >>
+> >> @@ -110,6 +112,9 @@ struct collapse_control {
+> >>
+> >>      /* nodemask for allocation fallback */
+> >>      nodemask_t alloc_nmask;
+> >> +
+> >> +    /* Each bit represents a single occupied (!none/zero) page. */
+> >> +    DECLARE_BITMAP(mthp_present_ptes, MAX_PTRS_PER_PTE);
+> >> };
+> >>
+> >> /**
+> >> @@ -1440,20 +1445,130 @@ static enum scan_result collapse_huge_page(st=
+ruct mm_struct *mm, unsigned long s
+> >>      return result;
+> >> }
+> >>
+> >> +/* Return the highest naturally aligned order that fits at @offset wi=
+thin a PMD. */
+> >> +static unsigned int max_order_from_offset(unsigned int offset)
+> >> +{
+> >> +    if (offset =3D=3D 0)
+> >> +            return HPAGE_PMD_ORDER;
+> >> +
+> >> +    return min_t(unsigned int, __ffs(offset), HPAGE_PMD_ORDER);
+> >> +}
+> >> +
+> >> +/*
+> >> + * mthp_collapse() consumes the bitmap that is generated during
+> >> + * collapse_scan_pmd() to determine what regions and mTHP orders fit =
+best.
+> >> + *
+> >> + * Each bit in cc->mthp_present_ptes represents a single occupied (!n=
+one/zero)
+> >> + * page. We start at the PMD order and check if it is eligible for co=
+llapse;
+> >> + * if not, we check the left and right halves of the PTE page table w=
+e are
+> >> + * examining at a lower order.
+> >> + *
+> >> + * For each of these, we determine how many PTE entries are occupied =
+in the
+> >> + * range of PTE entries we propose to collapse, then we compare this =
+to a
+> >> + * threshold number of PTE entries which would need to be occupied fo=
+r a
+> >> + * collapse to be permitted at that order (accounting for max_ptes_no=
+ne).
+> >> + *
+> >> + * If a collapse is permitted, we attempt to collapse the PTE range i=
+nto a
+> >> + * mTHP.
+> >> + */
+> >> +static enum scan_result mthp_collapse(struct mm_struct *mm,
+> >> +            unsigned long address, int referenced, int unmapped,
+> >> +            struct collapse_control *cc, unsigned long enabled_orders=
+)
+> >> +{
+> >> +    unsigned int nr_occupied_ptes, nr_ptes, max_ptes_none;
+> >> +    enum scan_result last_result =3D SCAN_FAIL;
+> >> +    int collapsed =3D 0;
+> >> +    bool alloc_failed =3D false;
+> >> +    unsigned long collapse_address;
+> >> +    unsigned int offset =3D 0;
+> >> +    unsigned int order =3D HPAGE_PMD_ORDER;
+> >> +
+> >> +    while (offset < HPAGE_PMD_NR) {
+> >> +            nr_ptes =3D 1UL << order;
+> >> +
+> >> +            if (!test_bit(order, &enabled_orders))
+> >> +                    goto next_order;
+> >> +
+> >> +            max_ptes_none =3D collapse_max_ptes_none(cc, NULL, order)=
+;
+> >> +            nr_occupied_ptes =3D bitmap_weight_from(cc->mthp_present_=
+ptes, offset,
+> >> +                                                  offset + nr_ptes);
+> >> +
+> >> +            if (nr_occupied_ptes >=3D nr_ptes - max_ptes_none) {
+> >
+> > Looks broken for swap PTEs in PMD collapse ...
+> >
+> > collapse_scan_pmd() allows them up to max_ptes_swap and record them in
+> > unmapped, but they don't get a bit in mthp_present_ptes. And then
+> > mthp_collapse() does the check above:
+>
+> Right. I assumed this is implicitly handled by the optimization in collap=
+se_scan_pmd:
+>
+>         if (enabled_orders !=3D BIT(HPAGE_PMD_ORDER))
+>                 max_ptes_none =3D KHUGEPAGED_MAX_PTES_LIMIT;
+>
+> But we perform the check a second time.
+>
+> >
+> > nr_occupied_ptes >=3D nr_ptes - max_ptes_none
+> >
+> > So max_ptes_none=3D0 + 511 present PTEs + one allowed swap PTE won't ev=
+en
+> > call collapse_huge_page() for PMD order.
+> >
+> > Shouldn't we account for them in the PMD-order check? Something like:
+> >
+> > if (is_pmd_order(order))
+> >       nr_occupied_ptes +=3D unmapped;
 
-Yes, we've also seen similar issue with memory allocation beyond
-PAGE_ALLOC_COSTLY_ORDER.  Right now the maximum block size supported
-for XFS is 64k, and there's various workloads for which we'd like to
-make use of that.  Increasing PAGE_ALLOC_COSTLY_ORDER to cover 64k
-allocations would be extremely helpful to make it perform well.
+This solution seems good for a temporary fixup. but longterm we may
+want something else. I'm still not sure how we plan on supporting
+swapin without causing creep. So I'd be ok with adding a fix for
+legacy PMD behavior until we know how to handle mTHP creep correctly.
 
-How has PAGE_ALLOC_COSTLY_ORDER been chosen?  And what would it take
-to increase it?
+> As an alternative, we could either 1) skip the check there for
+> pmd order (as the check was already done); or 2) introduce+maintain
+> a bitmap that tracks non-present PTEs.
+>
+> @@ -1475,7 +1477,9 @@ static enum scan_result mthp_collapse(struct mm_str=
+uct *mm,
+>                 nr_occupied_ptes =3D bitmap_weight_from(cc->mthp_present_=
+ptes, offset,
+>                                                       offset + nr_ptes);
+>
+> -               if (nr_occupied_ptes >=3D nr_ptes - max_ptes_none) {
+> +               /* Check was already done in the caller. */
+> +               if (is_pmd_order(order) ||
+> +                   nr_occupied_ptes >=3D nr_ptes - max_ptes_none) {
+>                         enum scan_result ret;
+>
+>                         collapse_address =3D address + offset * PAGE_SIZE=
+;
+>
+> 2) would probably be cleanest long-term.
 
-> It will probably make sense to align the maximum block size which we
-> currently support (ie 64k) with this value to ensure that compaction
-> works with larger block sizes. Or maybe even the other way round;
-> tie the maximum block size which we support to PAGE_ALLOC_COSTLY_ORDER.
-> But that would mean to restrict the blocksize to 16k, whereas xfs
-> works happily with 32k. So we might want to raise PAGE_ALLOC_COSTLY_ORDER.
+That would be best for future swapin support in mTHP, but I still
+don't think it solves the creep issue. Perhaps we could combine the
+two bitmaps to determine if it would make the future collapse eligible
+again? Not sure but ill start thinking about it.
 
-block sizes larger than PAGE_ALLOC_COSTLY_ORDER work, but it doesn't
-perform great.  So I don't think a hard limit would be good.
+Should I send a fixup for this using Lance's solution? Or does Lance
+want to send a patch out with the fixes tag?
 
-> Question is, though, how could we measure the impact?
-> This particular value has been in since 2007 (commit 5ad333eb66ff1 'lumpy
-> reclaim V4'), and it might well be that the original
-> reasoning doesn't apply anymore.
-
-I've not even seen much of a reasoning for picking the value in that
-commit.  Or did I miss something?
+>
+> --
+> Cheers,
+>
+> David
+>
 
 
