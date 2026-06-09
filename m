@@ -4,136 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5B3CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AFEDCD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 18:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D3316B008A; Tue,  9 Jun 2026 13:58:43 -0400 (EDT)
+	id 9417E6B0005; Tue,  9 Jun 2026 14:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7838B6B008C; Tue,  9 Jun 2026 13:58:43 -0400 (EDT)
+	id 919366B0088; Tue,  9 Jun 2026 14:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 672546B0092; Tue,  9 Jun 2026 13:58:43 -0400 (EDT)
+	id 856146B008A; Tue,  9 Jun 2026 14:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5222C6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:58:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AE141A0703
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:58:43 +0000 (UTC)
-X-FDA: 84861134526.17.343C304
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 17E81180007
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:58:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lrfa0Kkl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781027921;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A4096B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:10:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 111E2164F9B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:10:25 +0000 (UTC)
+X-FDA: 84861164010.03.E326062
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D9DFD140013
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:10:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zLBEZnL8;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781028623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WOO7uvOn0arlDojJxvw+4H1znmBcEQoW0aSiqI14dLw=;
-	b=CYTH3cCTvlp5qLVNlK90vHoVNLeNQkH6ocupXILWwzgNRrr2JtanPKPqFpm7t3aKL6l1UD
-	dyGLOzAUH0AwQOufWnCDOtgXw7aPCA1v5s8yzVedIAEKoia4RYGzD0uZM533ctFlaltVhv
-	/LnMmxOaPd50SBsGGtf6kel2jdpZqjk=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lrfa0Kkl;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781027921;
-	b=BZzS7KBWC4jYz2VogMxd3b/KYjgRCHa7+N+3jq+hKLJC6bDRP+65ToDBy4oo8HOIG6ooNt
-	pbYxzab1L/NiQxj1ylW7rlvqpwO4y8dQhPEAwi+ZCf8i9EZyLkWzkOd78c8uzz17c+KPSA
-	MoInmhG0vntHPBMKxeWD/g1yuMBjeOU=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45eedcdaeaaso4029095f8f.3
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 10:58:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781027920; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TGzWadScmhukoQfJ1ezGABJv/v0HlCkdSVaxs/PSDBiGFXIeOGYqwomaMdwrDUH6jf
-         2PLTPnV1XJh50jWW1pBo83i78uXCm2bX8Az5duGEaSzTs784OLdezjRVJVfR9mMuOnR0
-         uUmopM8Dl9z6Z/7rJ/uMCZgjmtHs19IxCW8PJ38CLGoo+R2ctIDs44YaiUqH5HHMrhtP
-         mw5VsEvgl+e3Nqpqegt639i//S/Rr3KyViUseKBCysXOX7qSHKagjPnLzpzTH2QhXgEJ
-         c1mThulnTJb7AD5QOxMcCKWH3qsE3mYokBB3pGC74dlj3+UGsLEYHQ6O/Tl33Amsu7ZN
-         LoKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WOO7uvOn0arlDojJxvw+4H1znmBcEQoW0aSiqI14dLw=;
-        fh=T+RnvNed4xseW39oq7NKldywZ7ptPy0XNS2Xza2zypU=;
-        b=VDCtX2dJcnVWmKbl9hqmzEiEYcR0LQ+GaFvpjT9rkg4vXStCCX7kT/rmrX38gLmxWZ
-         mLCRix1wA/dVcr7rCBprJHiYaErV19wajjtwJraSWF4sXRjsS1sZz8C9JUOcno5E2Wui
-         qhWi7XWvyR4bryr9nr3mxeqTmzjDxk5JUTM6gC/1eyZDmX8UADxyIrkr8MFWQYGw9KiM
-         zKZroIwGdigDyjAyUmlYJoDOzc6ycMOdeNmY1Svz+eeytPfwSZU3nTo9MQklsTGPFMvJ
-         bMafiiOHRuBDdROnr1ETXllT4iRpi6gk5xdNZgmvjofEBWBAwHFuceSSKeffBge+zCwi
-         zeUA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=gTxiinItA/M18gsL2pov1Gxb8jn8dEK6DGbUFosQnQY=;
+	b=U4hF2U1Ab0LXhk+vIk2nHY3nMd7AiafcUm43aEpwHQlufWMTc6n+rQfd5XdrcAlzwKHAwG
+	Fi6l+et7Ucw5Q8tzzGeO6geTdb/IAxtKQz21fYE17izPp6Aydm2WcApHHCJCiCgAsRTrQL
+	LUV8oiC92fxlYUSSuBopjDNvkujnp+Q=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zLBEZnL8;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781028623;
+	b=HzqfeZ81KmKgtfmHU8wMWoZ0jPiC5oQllLUSNyd66ez2T1LkLjh4ES5KbO954cWik/4fRT
+	emnbRLxeKwY6I4YSdjA6oJIjKB0GNiBEArNtSZpXxUV6W8fYOVelkIPtuAd3S8dqVwj9CO
+	B8cQQnkqxAQKr/HPSdz8tL5R+obp3mM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FFFD60218;
+	Tue,  9 Jun 2026 18:10:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1551F00898;
+	Tue,  9 Jun 2026 18:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781027920; x=1781632720; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WOO7uvOn0arlDojJxvw+4H1znmBcEQoW0aSiqI14dLw=;
-        b=lrfa0KkldtltcmGuzsfKznQscv8AKCFxVSMp7Krh8bqlgoyeON7VK9NENOmmFtXY7A
-         AXCrk46sgotwcu3hoFS5Yw0Zyl5+G4g3H6IkHa4s7/IpH5G/ZRY+yLJH7mADtvDzFV/k
-         MrfixWUNW4/w5Qg8vnTOlzA7OB1tpd+vTS21x4ybtrk9qMJJo19W4/CesWRg9nJg/LbH
-         h4eWjumhUCMeIrg4oiLO84fNnedWXW1fgAftE+7JSn3/mrRQO7FhhTUPRH0ahW+uwY6Z
-         Y+peyP5yMApwXgZmQBVVpp9Z30kzBwivJuuO22sQaaMYLfF8YYISbMi36SVejXYYMhbZ
-         vqVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781027920; x=1781632720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WOO7uvOn0arlDojJxvw+4H1znmBcEQoW0aSiqI14dLw=;
-        b=M6mPhpHZw4A+PRUV1Usr+n3iIOZT91YHHoIcRQ4kS5Q6pcbne7l7fWgAIvNiMosbzC
-         8XcFk+pE7RKilb+zFqNWkDwKX0U6+ZnP0bgJgnNRf0wjS0eD1m9bHlih0bDBkQWH33TO
-         lE1GyzGgC+D3j2UW1zyfPdXKDg8bqFvzYcaWs40R0pSHEJWoAlgExXuvi1XrzjHgAq0C
-         dn9SMp/nB6Wm9zJPf1rwersDR9Q87Wv8arr3Ua6Lqei4FtzSvcR8J5ify86G+UOr/2QL
-         UArgmsd6uM34/LGXpjnLKUihQdgf0LJnEL+BkgBX7RaOp73EYQeZMpk645UUYLl169pM
-         GXsw==
-X-Forwarded-Encrypted: i=1; AFNElJ/I+4AKg8akrCfme61FzSiVktdnKvZtvZGz07Ymb9HfGRnSoJqHJuVEc3AQ5a9/QAmeYk1+n0FHrQ==@kvack.org
-X-Gm-Message-State: AOJu0YzewwR8jcDQc2bRAxBoFHIUT1wB77fAi0NKpi2j2nHo/YPZeoLc
-	UiXoMD7Mcm+iMdlGbOVdlQEDVSfK1hoKbeu75SM28HV3uonEFpd6ripOn6zP+XAJM2bYwzthJ+p
-	mEhAmos7nz1kkIppd3sLu+8GJAABYgsI=
-X-Gm-Gg: Acq92OFFetlmWM3E16y/MBzi2ylO3/qkevpf4inT0VRcf2paAhH7AdSwmDdEMtV6HGL
-	BdR3TmTWTYDki3PIQkycntPG5MqlwgnhE+fGsuNGWXWdj47/nXTGXSwaD7rvZ6gdN3aM9Unggf2
-	7L9Y0VpH35UUoERZMAafngeidQ2AIPjXg8Q5gBf9o2RELJWk5YqpgeS5hf5kDSKDPMYPCsFPX7a
-	R6s8WW3+zOVSxuOfLWdbRUhDXC7rDPDGovcXQjKE1KOeOhG0Sm6st2XyMctV08xQRbyLvXLEvh3
-	gUgkIaRFtY7b9R+HGEfK8WsHCPTVxAqKvQlVAA0ONqxKTKcblA==
-X-Received: by 2002:adf:f88c:0:b0:45a:e3dd:586b with SMTP id
- ffacd0b85a97d-4603063a9e2mr25146309f8f.18.1781027919659; Tue, 09 Jun 2026
- 10:58:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260609113520.3507783-1-haowenchao22@gmail.com> <20260609113520.3507783-3-haowenchao22@gmail.com>
-In-Reply-To: <20260609113520.3507783-3-haowenchao22@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 9 Jun 2026 10:58:28 -0700
-X-Gm-Features: AVVi8Cfs-5dvdPAkueMrChO2nVP3oBPz5uW3NVI9ESM4cPEFe3I4YU7vPCwtpS8
-Message-ID: <CAKEwX=PsAb+Fja3_Nj9Qq55z1szKLo89BhzS9jHivA1e4uwiCA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] mm/zsmalloc: drop pool->lock from zs_free on
- 64-bit systems
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Barry Song <baohua@kernel.org>, Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 17E81180007
-X-Stat-Signature: iiru5hygtp395fetjnu5gshr355fp31s
+	d=linux-foundation.org; s=korg; t=1781028621;
+	bh=gTxiinItA/M18gsL2pov1Gxb8jn8dEK6DGbUFosQnQY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=zLBEZnL8a3T5c/z7U6Cj4ItzXNne0YkfEHRwKpnAz3vsg3C4GobBxMmrl/ZSci7aU
+	 Q2zWXEr4eDoaFCZJm1Sg9eTHvVnOo6Zjxcb8wLu7iV4BrZixhfKBj7vaTI8CTiHBvg
+	 n6zTywTsgpDeOOxzzmUZbqlsgwx0NwylIDGItyGc=
+Date: Tue, 9 Jun 2026 11:10:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Jason Wang
+ <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?ISO-8859-1?Q?P=E9rez?= <eperezma@redhat.com>, Muchun Song
+ <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
+ <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
+ <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>, David
+ Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org, Andrea Arcangeli
+ <aarcange@redhat.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
+Subject: Re: [PATCH splitout] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+Message-Id: <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
+In-Reply-To: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
+References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781027920-195062
-X-HE-Meta: U2FsdGVkX18x38iAFfGWIv9SuiW52xQvloZHRUuK4beONDSF2ezNMN0H+ZxNAvUXjNS1GyJP9hvgwia5/nBIZQTzE8MhWGVxysZ0RDFfWzOpNSwBx640u4J5hERO2ErIAfvmcb2ZgKTAQQaeYdKWHl/+e2BpJTxhJ9/b4U1alglve3xg/Ut0/GAe/vdAzp0vZXIYX4UawJLgSL4VsWIX8NTr2iZKHhWor3VdesqCyLWnNb7AWxcENlPSovtRvaAtEZxQ2IBqmgMmO8zi6T0U+fFJCLntLOvhy6JzjCa4PjxNOocGU0xhMi2OWByN0fkzjIJwrQICqsZsPCaLxC+yvXxTAJKP5bWs7R5HNW4Ybavi7OjCc00txMcmR6NUXnmNLf207wWJ7R5qfR1aUNKVKkdZIIC3TeHOm28vkIZ7R3TmDRz0l4BPjWlZURdsrMVWsP/LzW7syWJmibbGCh2FgXnWkqYtpzU7z36rY5HjKWfIRECw4kIIuhP/aFvwnW7RaLbC4F80ZBtUdj6WzvrNi69JBXZLwoz/i+josE3XNHuBFJwyjZSO/UU3bcuqCa0nqiT6nruAHp1W5lwf5vViWdMBrbItxM0VvBHnoPrwV8AXt6/0Nx160oKsFC5eqJg+h8h9jFYd7qzoleR8OMytQYKnwL5Jf5Q0/AdVwYeNDAiUWaVsg6nxIfTeWXPLdZuynng8TNaahZPNgX0b9RTWOr9vCTz4VzZ2/XxykHQeBX3agowQeqKGwipM/fCC2RDDawysQJnoyISVg5XwPl+4Pfj6Xsg1b9cqOO9qS4hGevEGjqnMV2idIFDMYUnjHUQRNTnbGrg4DjT6Rvo+qrCpsbSPeHkjbCnRVbxD+KbIuMeH1Qn+KTQMmSzXE5GrewWYta+XL5RIeDhBCUxDrrXKL5xgw3VQlYWfzt8VENI9dmaALAlYEHbh24pAZvIRNLbyDfgkS8dtk/WmKNLmZZ4
- ZFKPt9EC
- qdDGV5jPBykICfLp8UQJ5YBW9NAkrKdx5wKyHWmBTlN9Rnw7giRBoN2blU5XKIoW0pD0+vACmK15CYJX59pCFKC4NR919ea6Y3hwFnsJKxdJPiTZU28WZ1afssTJ/xMe+DY1fueimuQAlNbvxKLIPzhyFnl9TBtF5Z44WxedaczMZc6CfUmga/utdZ7rAoQV1TakcpxLNo7VkZkPt83YUp63zP7i+h55KQQkI2QvDqrmAnL2d7yWpC/OQJtgVyIzMmAPQQnFGRE6L+0/aHuv0rTvjLRd4rHkHdjZboW6hVooWe7MQk4vTWdDyCbN1yTuIoLwtSrxq6BoOsDwvf8x0qekLAzUgNuhxq3q9FdQLXmB9ymIfMycJrQmY2Vikm8lup+QX991QglYcIqjRccsw/3Bl/QvAQrDIjTCqLxfjbMNkhJFmTBp6WesapXH8IxVX8r6Q0fKvO65WWSEbH0rv5IAXqotPCvPgbvyD4VTQJ4FSJsAKHqKTlcOrRwGgVYTPWXnBMGINOoTGtot7o7apNY7zF9yJTXBnPug5D6b45mJmAuuJYDKDHnQMVxU5WWU4U/09shOBNawxtRydoTwKWJZD/A==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D9DFD140013
+X-Stat-Signature: a6fmy5zq3ti14xes47e6p6eyhqq4u555
+X-HE-Tag: 1781028622-484202
+X-HE-Meta: U2FsdGVkX18e+INuENN9M3SclnkLUR3iHnZHtUzXOdm+KsIQJ40R3yTqoFX1z8JrjzhDBMJD1iLK7Rbwl5tt1SDSTfmi9y/r3Swd3ILAFThcOa3cUN0fQ2Zb3II/Rr5bfAFasoe7q5MPKfgcrz8A2sw7Ty5+LIH2NfSe2jk6d9w9lOLEGXJzvhtTqU3x/gnbMOrDEmk2G0tGLR/r9GoL1G1NvoJKBl1t7SY8lHPS9f448EtPjmwDyS+Q1B2Qtqt8M1ihrEMrhiHn1W63Pgw9FO6AptNEFojxQ+1KBk9xxTu+JKiU0C+iUbQqTX2KsNB7D2gZ0pFm4JhiuxNZTpugcY+9kxCrjfHaJpETsjjE+WI+I+tI4g01WdKLDqlOYx+J7e3QNGfbJ9KdZ8aulR+MEMQzV5zy5kJnTBRgPmOpZUK+cgoS3C+sEPF62NUjZelLykeybaiWL939qSjGUELz1ou5W8dlNLffD1yGCJ9pJlrGAZtcQfIUvaLKjt/c2/BQgDQnWGmPq99dgwcZsVkSC9PlO9B9CiYHNHvo7iBNtNEC1aTyZOfQdZpdRmuogsCBIP0UUyLH2NWv2xc85YUm5n5pmDgKZyNimTA8Cu+dgaUsHDA5qiucWax22WF2i1ihm2nenzfoHf9Sb4Rulbm8SPfmFodSSA5sA0+KXNbDorBUfEIoGtMA4Gh3B7XDI7vpm2G1HUqcegkevB5ZjtzsedQ35TN+NZ+xc7O6omZ1bshTz4wH/2DsbKRQeVb6Bz8pEhrBCfuT6JV1BXZd4aauaVIwWwuzWso66GSaurXGLOghpNyNzau5g2V8/9/1jHJKlpknpLOLfKsVMeqfAhoWXEtr73LT1X0Vtezqdt8LF/kXYN8nNPltGOxCdjjXSvCYKfboY3I9QzIQjo+zLnu5+Qe8indhCLEmATpSTDGuIzx3UnaTHthnFITv3FCTO07zZPKWZVlBhRNgj+aWBvD
+ xJG8+x17
+ RPeCuyM6zlt13YtGhVLbi+WcbFOKsKt6ExY1EZP5Bpkt2+Bv2qlCn+JH8z3fryv/iHvsdfBiW8o1j36+w0EA2CNwbfxTdzWhIUujsya8T58DOanZ5xFpLC3I0wDe8NOgpoYOBxwqdIz5KksP7DQesaBAPJgsBQCV4bozpsqz/hFWaXGZfMnjnv3Fcl4xMpOjy1X/k7wJoag2z7uQ46hYXFQc/H9fqCrXXTC0JzEYmDuuZ2kaiimnZdDlYiNzSF0cB0lgsG/Ckb6LmbYClTWiBajKKRZD0P4Z9FnPQzHdfb7tdkUqTQhGNRNzl6rechh0+FEoPccTwCGufnPoLU81FGVlIF754a9VVQ9sydrr5sB+6AsSJxsHbIDXbyWq89sH0rZZT2BP2UwimUf8nApFtkdctF93pzMYwLNLD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,31 +113,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 4:36=E2=80=AFAM Wenchao Hao <haowenchao22@gmail.com>=
- wrote:
->
-> From: Wenchao Hao <haowenchao@xiaomi.com>
->
-> With class_idx encoded in obj, zs_free() can locate the size_class
-> without holding pool->lock on 64-bit systems.  Page migration also
-> takes class->lock and only rewrites the PFN field of obj, so:
->
->   1. read obj locklessly,
->   2. lock the size_class derived from obj's class_idx,
->   3. re-read obj under class->lock to get a stable PFN.
->
-> This eliminates the rwlock read-side cacheline bouncing between
-> zs_free() and migration/compaction on multi-core systems.
->
-> Annotate handle_to_obj()/record_obj() with READ_ONCE()/WRITE_ONCE() to
-> prevent load/store tearing on the lockless read path and silence KCSAN
-> data race reports.
->
-> When ZS_OBJ_CLASS_BITS =3D=3D 0 (32-bit, or 64-bit with obj too narrow to
-> hold class_idx), zs_free() keeps pool->lock.
->
-> Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
+On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-LGTM.
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> TestSetPageHWPoison() is called without zone->lock, so its atomic
+> update to page->flags can race with non-atomic flag operations
+> that run under zone->lock in the buddy allocator.
+> 
+> In particular, __free_pages_prepare() does:
+> 
+>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> 
+> This non-atomic read-modify-write, while correctly excluding
+> __PG_HWPOISON from the mask, can still lose a concurrent
+> TestSetPageHWPoison if the read happens before the poison bit
+> is set and the write happens after.  Will only get worse if/when
+> we add more non-atomic flag operations.
+> 
+> Fix by acquiring zone->lock around TestSetPageHWPoison and
+> around ClearPageHWPoison in the retry path.  This
+> serializes with all buddy flag manipulation.  The cost is
+> negligible: one lock/unlock in an extremely rare path
+> (hardware memory errors).
+> 
+> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+> in this file operate on pages already removed from the buddy
+> allocator or on non-buddy pages (DAX, hugetlb), so they do not
+> need zone->lock protection.
+
+Sashiko is saying this doesn't do anything "Because
+__free_pages_prepare() executes entirely locklessly".  Did it goof?
+
+https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
+
+
 
