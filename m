@@ -4,91 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86981CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C558FCD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 15:11:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF566B0092; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
+	id D1E3C6B0093; Tue,  9 Jun 2026 11:11:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87366B0096; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
+	id CCF296B0095; Tue,  9 Jun 2026 11:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4206B00A0; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
+	id BE4BE6B0096; Tue,  9 Jun 2026 11:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB58F6B0092
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F001A0611
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:49:30 +0000 (UTC)
-X-FDA: 84860657700.19.3385760
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 94A838001A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:49:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erX6JcxZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AEA606B0093
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:11:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 467341404CF
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:57 +0000 (UTC)
+X-FDA: 84860714274.02.36ABAF2
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 61DCA20013
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pUfSkrGg;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781016568;
+	s=arc-20220608; t=1781017915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=taRgX81yJwI75jVPUy3ya0pHHgm8A4dha5HwvheVriA=;
-	b=ZlKWYpykvlusWsdX3mStARqGY2PN9SmpSrEl0hpEqarafmCBaxlK4JMBAYMQtN2rKlW6pV
-	pRcuKbkaGAXQmR1mCZJ+ZE/B3P4+NDWQcrv1ZkboKTKu3JTqkyxgS7jLc5pjSbDvEv0pMY
-	hZ2E7Qc9NQdjpFOPXyWVdMtxjINmqQg=
+	bh=4JHWQ15ZRzqnNTI4yBH6/uoHMgLXFxEcxAiVyb8DKfs=;
+	b=z092tvUZNlcrJ+H3Aep8zNPEVgKj8oYZjPWCv15tpKntD3r5bdPPVsmjsJB2lXFwdxI0Mn
+	P9JDdkwoSV6TzUOKOx//LIh7eunfI6egmxUqtewvKABgY2qe+/khOGbCnpMFZ6zQEUtxSN
+	3BYLVsZwJX7V54xgsKHDSxaHnF/vriM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erX6JcxZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=pUfSkrGg;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781016568;
-	b=JQrji6nvZFf20/vCaVTPzyoDs/E54W5SkJ/2QZHF41BD0fPXSNphdXW4B89JZIk/xpNPRU
-	AlSTanwLpdnKykdGyo0dSNz1RBWkfSZSiUXIUwDkJ1qjmuzNHJKouSk98O6/JNEtxAyu09
-	Vsgfj+OKzNrPGMO5zguND4i6NnulTp0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15A0F600C3;
-	Tue,  9 Jun 2026 14:49:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230CF1F00893;
-	Tue,  9 Jun 2026 14:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781016567;
-	bh=taRgX81yJwI75jVPUy3ya0pHHgm8A4dha5HwvheVriA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=erX6JcxZmIcrZHCAP2aqWFKZfJeXTO2GXWNjtqNyT3fI4ae3SFvQ+uj/xwBiSLWEm
-	 0XXbMJrQmYdX2XXxmSAZpAmKAEM+hczHm8PLuZDYQipS3uh0sqgKTiLcuenNPV0SDG
-	 KoV4yZGT6yb+sW6dwdzWh/pApVzsqvkOzR3F2y9BFXjzRlybBVrxzm0Rc7r3XAk0ff
-	 7zQQ+tnPRKcvBgnyR62eqIFoUkJ0Hm8PcpBg43sJJTjkbRaYSz3JTs5Ogo4L425H8d
-	 eIg0dyf4aJAnl/h4HfnEGY9yXmrV9v0i1NM47T3Hctkq1qF5cpJAEwFpCDlfhH2XBE
-	 n9XUCvNAnVceg==
-From: SeongJae Park <sj@kernel.org>
-To: Zenghui Yu <yuzenghui@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	wangzhigang17@huawei.com,
-	liqiqi23@huawei.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] samples/damon/mtier: fail early if address range parameters are invalid
-Date: Tue,  9 Jun 2026 07:49:17 -0700
-Message-ID: <20260609144918.69429-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260609064653.1829-1-yuzenghui@huawei.com>
-References: 
+	t=1781017915;
+	b=ENXrwz7NRf66tpvssq6QSv85s7uyNtI13a/YRb6iWYKMPSbLDQrrqC0axd2JOYNJfQGJ6t
+	FlPLPKbpz1ZkoirwGPOoldim0iparuPQeA5iRvvb8kYR2X1nOd3s45dGTS1v6Z25GcM9tB
+	30E1MwqA8IE+dj6ZT8Ky/a67QhnouUE=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-91562bf6c12so692714085a.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 08:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781017914; x=1781622714; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4JHWQ15ZRzqnNTI4yBH6/uoHMgLXFxEcxAiVyb8DKfs=;
+        b=pUfSkrGgRc9NGwkWV6NKqfCtqpyPgph8B5Ugz/CUZth+IN/HU6o7APAgdDJpPShqFR
+         XJ24Gi6+m1IAz2ZrQkgPYCJBn2bYXMln4Sz7SJv2ldRkFPoItHOzBsQ66vxtsBRo+Ffr
+         rr8Ivqso64rrl7923SV7C5Rm4bfJ2XsgqGoK3F086UwkgA//hFkmCPE2K09Sv7EIVCYT
+         IWuu6mnTIjG5S6MpuViAiQ3pbWY9C//lUlQ+sJ1FG6WusU/PkKGsto2i8nfzPb/xSrue
+         c2qaxa49EsrNM8kf34vmj+4q5fZneLjh183WHWJQvv7kGcUCkPEojV3MVK5T/Z4ne2YT
+         d5mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781017914; x=1781622714;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4JHWQ15ZRzqnNTI4yBH6/uoHMgLXFxEcxAiVyb8DKfs=;
+        b=q8SD2Sz/td8cHEckgXsxt6rRxDw2/VrZEe+25WM2BrfPmH7vmHrGoAqDFG7bM8cFeC
+         qnqK+7I5jEhIvVP4X0Bc3peuIBx/idxA+mnRGKdp12P+wD90UeLNSBVCyAO2B3oB2yg7
+         KQ8SgqQieviIg1r8EvBIi82enDf+TH0x6OJ39PEuSNpIvvH2N9nY015rDlKUcnoIzOnn
+         y4vw/JCLkPXyUNC5d/Ln66T5vFGNcedLMP1iUs2vQsAFlv/j41BorOJweErqG79Zlods
+         u/+nInoVUs/+U5558dK8Ej1UPlSCpXnHcK8DU28rNMMA4wwoCPwpE+MzJlP8LkaJrAs8
+         tIHw==
+X-Gm-Message-State: AOJu0YwuxWjWVVoirYVVicc6PvFV6WpinU4aLsCLLA2LC+/vZaZzc0O3
+	V97wcGGldkyqgoxwCc55xXS39e/VPGGvvRFycJKhUqgfjjuExi5JsRps3O2Rr7dnbAU=
+X-Gm-Gg: Acq92OHmxgtGr+0mfBnbEa7+nIUNgqZgUF0gwCOSlgRT2qVd02feQeYrOZ9+rNyR1oY
+	qLnCyGC8gTuG0M4sjACmY+RFqkh+8wbSN61os4ftTFUlbEMgs2f83kqRZ0ZFHhHal8HAYx8E4I8
+	MS05XmxkdTx1Z1uigmSlVhB2GXYeDmI5N796g7uSnFK3X1OjLWo/7Ilzsjac9l3TPCYoGWhqUSG
+	I/Sul7vZcbL2XJ80rTEYvR837iBo4e+NT88m314rIRtpg0TnZRZQOLgLsai7Nn0MbYwaZpOYVG1
+	BNYEJeftUkwhhiwj7MQ7lWMdX4WXFxMbbkpm+j+pf8IrAcveivXhWITbUhp3yn9uLUFpecyy7/w
+	M2jaCwtuyKNdDEPddXCWyi/FblZif6HjxrKngBeKqaM4jbaVTrGg1u6nyRAutz1flD6JJAQhWQu
+	VVeoQWCJZ99cP8zVnCModxjkLZ4SvBYtFEeZA3owLnGmNFlFxPvWwVcOVwAYp96cZkqTwYHk1Ab
+	NK/+qWpD5sxsWChEg==
+X-Received: by 2002:a05:620a:4546:b0:915:cf88:1e3b with SMTP id af79cd13be357-915cf882096mr1578753385a.47.1781017914136;
+        Tue, 09 Jun 2026 08:11:54 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a237330sm2207058485a.16.2026.06.09.08.11.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 08:11:53 -0700 (PDT)
+Date: Tue, 9 Jun 2026 11:11:51 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	linux-cxl@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
+	akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, osalvador@suse.de, shuah@kernel.org,
+	alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+	ira.weiny@intel.com, apopple@nvidia.com
+Subject: Re: [PATCH v4 3/9] mm/memory_hotplug: export
+ mhp_get_default_online_type
+Message-ID: <aigtN28XUvHyCSkG@gourry-fedora-PF4VCD3F>
+References: <20260605211911.2160954-1-gourry@gourry.net>
+ <20260605211911.2160954-4-gourry@gourry.net>
+ <eaea4aac-fcba-4f83-99dd-f8289e5556c0@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eaea4aac-fcba-4f83-99dd-f8289e5556c0@kernel.org>
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: te5mk4pcq8ohqtdd4tbsuwb6ahhqktmy
-X-Rspamd-Queue-Id: 94A838001A
-X-HE-Tag: 1781016568-618071
-X-HE-Meta: U2FsdGVkX1/5xJWw+NRtHQuLLjU9ex1ZEEowkFthvvMd0KmeQxb1/cEYNh8cD+s+0dXV0+7QoHEds5uXfriKRsWaX4QaI1Aq9UkpLzFplC+1xCqtiBZZ7gJa2waxUvtgITJs45UCseRq89+Dt6PCDYJDt7hZwEkrtH7R9ZgcYtnMMY+YQw74P/ndyHtk2hv2RoMN5mrH1o9iJGpGTEBdIU49lj8F1cC6FbNBtIbhUtwtATw2p9Lz+VKEwwMbaDOKUjyY+zxxYHl9GTCbzj5de/W0W3hHObERhgMow2Jy6wt3QrYvd7dffNXFlhd4NlLVMCuU6H0M1mqLW7RCqi0KKo76WM1At7JvYc3/wZY2pJ1pKYoV5LqwWC56RYmHC+KAXPQ/coP6fDNG/q9QzCI3qX4crDXDBmc/dzvrPOQWX8jOwHN8+qlD/1zKxR4BvTr49KGb3TE2xKqkK76U5RNznMAHDhX5A4IM9In/xhpqKNWU56gN2Mi+QgGTxVyE8Kbgu4ulbGZWyI1YMLw4tdvuB8moawcr5JpTA4QN32dVQqChFP5MZnvjqiibyeskyL2y8e1aVOBmGx0j8mURhh84g/2OvEkZXoy7d6E2aQkweKHvxtDt0tIY3gZrkzCrsHltRLm0kFI7agaXjk0bqUDjXwktGph0ZA0c/EeCusU4RqwsDdYafggwhQqrvYo1WPEB0dbaiisH6yX1X0Pbs7pppjQpXeS0lIv6v0I2qe1EdCn7Jrhor1onZvYFcy3WfuR5KHP14wR9cibVLWOe7ke5oJ8MWTwikMUg6L/YEVy86tB8U6rI0nDcCbHfN7KE6jInijGNzGAHPSr+8w23XjGqEU3LbFD8KO/DIEU5C4rLr+tWrJsEMS46psCSC9cY7AWnn3bZjUsyzW07A8prCP+DLLQFhlPnRchGfJLHqb3BDSBCewLk5RvKrq9o8L2Cn46mLU+MtV9HsX9N8dJAVri
- SFztBRz/
- u6+JEFJwBKlrEwDdnnjPwsIxlZnAXORoyrIMzQz6XkCe6SDw7RsDrOIgud3K24AKhwyCNERX1Q5VkuXRE5BcQ117f95bwwvZneg7WoJ8er+Px1ef7gZB/UlC9hFEl0Ev6B9G1QUY4GGSq8XOu4auV0FrJRn8xy4Me2Ym8kE+ls3Sd8wXDAM+W8G/R0mrdPofATcgJHQIjQZCcn3Fjg4d2rEyqUYxkIGXXkIXqhnKdg1nt8tEicOXs+a73bPMZSa5+bz+eBOEC1/q5jZ8cnywzk1KSIQ==
+X-Stat-Signature: 7nnsqjfm7hqdijc8mm67pk5zmk4wokkr
+X-Rspamd-Queue-Id: 61DCA20013
+X-HE-Tag: 1781017915-671889
+X-HE-Meta: U2FsdGVkX1+9rX/jET0r/Yt/0bruN1y7FM7MhS6X/w7D1J8aZgEfxEcCwLxCao1FgmsmECdvRel0s0Dgb3cAuJnbY6EwFwJbSZRRE9QmoBXQamXKaffIXTGSRpQihMA3O9SfOxWtDmaoZyCr9mM4by4I5w76fkFB3EJ7HMd375ur1ye6sSJFDcp5Dd0F/4rEnxjhlWjYQfAFjkOyYcFBufKRZWEDh9lr2bKvu5jq5d/5DDJDYhY4Fa7BqJWp8pS1d94ITR4xbUNC2DutCQo+r5pPzA4eQPPew7XqAFjfRSu/S5qHxzqwIlFqouZhlBVFxYgGsji/u5U+jfb51LwCLM04PFfhLFr23jLFoslnG2lt79mYUlmXJf3QLYs32bM1gRA6RjZ52sIlfxtnyCMqo5AWkO67ukt/BSuSWHr20JcmJBlkzAgxEZVvlNnAltYIq6iIWPK55ukjIyFuEzn+rVsQ86fHSfpi47RX/R6QxZyWP/2UIINkF7lNGjQuLSHHKBf8BGjb2ls9f7A6kcpxXi52XA/yKTOzxpQRswyUhWsbEbALNGNpjTx0TvdFkEbN6vWFV1G0jYEK2ej/Aslq36vtZnnI11PVf7foynT6ipJIAjGriX/xPA1KZmHrcdO5G/8lnDpkzr/douUpl09s/rM/hOtCzkSMce549nTWYyZ+kD9tI2WDBCsTHZz/JEbC2vGr5GfYHr5OofaZvGJLvGmJH/5lOJVsDsoeSJeUWxcQPHXRitujfieLEE5UulVZz7HCv9XO3Q7hbUXuTLk24f7YcuV5Mtgqo7dGry5JLrdOpHvs67XfNyz25rmn+VH1QHC+G/3IrW6ZHpdB2emWgHlSr++0h/P90gdgu5MIjgEDwA3/RQvKTSvg1fQJ3ebTREncLUU1Az9lRU1+DdLLIZ/HKplxogv50lmJftXBCvgaF9+sSj/E/6QK9fU2jrXY8lBTU6L909qJV5I5PBa
+ 7eyuzb01
+ iwl13yd3IuHxByaKMrgrE7XoJK5XRJ6pePioi8PHkV7+GLxyIHns9o0m0A7lBJjWIg+DZh2HrhZfx4+uc7z2V7N8TsGgubAc5L4eeuV+IUHSQ86/RGvfJWJ0wo4wNyb9Kb2GiM6Qr0ZCjm5BFVthjYxW2g1fnd9G+xb1Q2vy4gkIcReG14cVvuyKnWTlolNwxPespOfFJp1j5xU2o0snKay13Q303dwE0PjWtKOPWnXVvp4Nf/Q1Up896O0HrlZzziMdr37kjvOXzaCOPOpmAVrQ9NeQZ9sSDDeRo/55rp1nh+M2de72N2i3f/QQXTlfGV9/JT6aLHHwZHRCkOMJOKh7go8Wt1dSkmaNP8mPmgWEq7sXnUpbtVqTWLT440bQTBn5B0Wnnb9Rmia2J19hzcfx1hXtHlUsS++BCkfl2kCyfM6Xsndi79F2dYlaYdav3iHyUuDnLO5M1torJXAVS4gf/R1Ac9HVvpALbL5MjBgDX/Us=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,79 +126,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 9 Jun 2026 14:46:52 +0800 Zenghui Yu <yuzenghui@huawei.com> wrote:
-
-> The comment on top of `struct damon_region` clearly says that
+On Tue, Jun 09, 2026 at 11:52:21AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/5/26 23:19, Gregory Price wrote:
+> > Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
+> > and the mhp_get_default_online_type function for hotplug use cases.
+> > 
+> > Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
+> > the same driver code, and chose the dax_kmem path as the default driver
+> > path - making it difficult to require hotplug as a predicate to building
+> > the overall driver (it may break other non-hotplug use-cases).
+> > 
+> > Export mhp_get_default_online_type function to allow these drivers to
+> > build when hotplug is disabled and still use the DAX use case.
+> > 
+> > In the built-out case we simply return MMOP_OFFLINE as it's
 > 
->     For any use case, @ar should be non-zero positive size.
+> Ah, you mean without CONFIG_MEMORY_HOTPLUG
 > 
-> which is now verified in damon_verify_new_region() if the kernel is built
-> with DAMON_DEBUG_SANITY.
+
+Yeah i'll update the commit message, thanks!
+
+> > non-destructive.  The internal function can never return -1 either,
+> > so we choose this to allow for defining the function with 'enum mmop'.
 > 
-> The WARN_ONCE() can be triggered if the mtier sample module is enabled
-> before node{0,1}_{start,end}_addr have been properly initialized, which is
-> obviously not good.
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
->  ------------[ cut here ]------------
->  start 0 >= end 0
->  WARNING: mm/damon/core.c:217 at damon_new_region+0xf4/0x118, CPU#59: bash/341468
->  Call trace:
->   damon_new_region+0xf4/0x118 (P)
->   damon_set_regions+0xfc/0x3c0
->   damon_sample_mtier_build_ctx+0xe8/0x3a8
->   damon_sample_mtier_start+0x1c/0x90
->   damon_sample_mtier_enable_store+0x98/0xb0
->   param_attr_store+0xb4/0x128
->   module_attr_store+0x2c/0x50
->   sysfs_kf_write+0x58/0x90
->   kernfs_fop_write_iter+0x16c/0x238
->   vfs_write+0x2c0/0x370
->   ksys_write+0x74/0x118
->   __arm64_sys_write+0x24/0x38
->   invoke_syscall+0xa8/0x118
->   el0_svc_common.constprop.0+0x48/0xf0
->   do_el0_svc+0x24/0x38
->   el0_svc+0x54/0x370
->   el0t_64_sync_handler+0xa0/0xe8
->   el0t_64_sync+0x1ac/0x1b0
->  ---[ end trace 0000000000000000 ]---
+> -- 
+> Cheers,
 > 
-> Note that the same issue can happen if detect_node_addresses is true, and
-> node 0 or 1 is memoryless. Fix it together by checking the validity of
-> parameters right before damon_new_region() and fail early if they're
-> invalid.
-
-Thank you for this patch, Zenghui!
-
-> 
-> Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-
-I think this deserves Fixes: and Cc: stable, like below.
-
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Cc: <stable@vger.kernel.org> # 6.16.x
-
-Other than that, looks good to me.
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-I applied  this patch to damon/next [1] tree.  We are now quite close to next
-merge window.  We (mm community) want to focus on making mm.git more stabilized
-and therefore ready for the next merge window, rather than adding more changes
-that are not really urgent.  I understand this series is not really urgent,
-because it is causing only DAMON internal weird behavior and one time warning
-on debug kernels.
-
-Hence, Andrew might not add this patch until next -rc1 release.  In the case, I
-will request adding this to mm.git after next -rc1 release.  So, no action from
-your side is needed for now.  Let me know if you think this is really urgent or
-I'm missing something.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+> David
 
