@@ -4,98 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCD29CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 16:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FB0DCD98C5
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 16:17:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1708A6B0005; Tue,  9 Jun 2026 12:16:32 -0400 (EDT)
+	id 8ED016B008C; Tue,  9 Jun 2026 12:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 147B16B008A; Tue,  9 Jun 2026 12:16:32 -0400 (EDT)
+	id 8C4136B0092; Tue,  9 Jun 2026 12:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0851F6B008C; Tue,  9 Jun 2026 12:16:32 -0400 (EDT)
+	id 7DBC86B0093; Tue,  9 Jun 2026 12:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EC25F6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:16:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81D581C1893
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:16:31 +0000 (UTC)
-X-FDA: 84860876982.29.5C0EDD9
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 91C3A20002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:16:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KCMiFdDQ;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F4196B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:17:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0824E1206D2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:17:49 +0000 (UTC)
+X-FDA: 84860880258.25.7C950D3
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A617F80011
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:17:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q17QO1Oo;
+	spf=pass (imf02.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781021789;
-	b=eowl9wGabMkhFFIWWzeZ95dtMQuzbBLwho6cwwqVES8/1BWJeFiLnXTSb9Vmry3b4v3FDE
-	vt/tmYRMofRKhFdpEEtsZuZxDHKZvSBweo0/zH9kH8pq5PCVj2d2/NLX19Ot0ktmiRhn/W
-	W7fZ6RHNOgD/y/MdoXkl0QsCkq5+GcA=
+	t=1781021866;
+	b=7DedHJO7orj/VZWDzHOQ185oesH+keFDST9edl68I/QeGqgXzz0mzVk6EzlcBuovwiu2x2
+	3Bq72h470bmwziC66RW07NvpmUEH5rDH6JmCXxkYNgG6ToQflIvBxTF0QfVxhSHx+BI9eK
+	ThnpehW4+hOENB8TbrcVtJbr17PYAXM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KCMiFdDQ;
-	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q17QO1Oo;
+	spf=pass (imf02.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781021789;
+	s=arc-20220608; t=1781021866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99lfJJqgGV+EWW3BmhkNn6qfLnQ2f2pBi7n0sNfkhRc=;
-	b=3sRIdg8cmK3vJXtiFCcF/+mNmowKjYgQ6KE/mXIQJjZWrd6zQsztO/spRNuH7Osoy3xHl3
-	bHJN2WkLOcEwwi2svtH5QF2eQiuGNtk5YejXUvrP2hM5zWfBNQUdHU2WCeh9fQ88s5BOXV
-	FxH+e9ZBfx9tO55FOK7/rq8380pArtI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=99lfJJqgGV+EWW3BmhkNn6qfLnQ2f2pBi7n0sNfkhRc=; b=KCMiFdDQRjj3L4VP/YosTAJIHo
-	A1HbCUZVuYN7QbDdovs+Eez4e7YWDN+MESTqcmSKS0X6xUE+/AB4Y5lJHiz4InUoPPj+XMC/hNkIt
-	SioyR/IQr8KNLhMSRH3hkQYgLUjy0MRbm2DjaC0AvRXaMOmnFidXdYk7mFLsSOrzNMMOmQ/LJpl8i
-	nuiqHmuYaSIWoHJjOT8sCdtQYwbS7cZgmqX5m7G9eEmq9xw7YOJ6gbnSImVGYELlJCN5W7MqHe6y8
-	x+dP6G3HTloYyhhFNFNGEJlk+s/4eVl+CagKaZMtwcfdmNv+j22FgaAjBLqep+zJea+ZaVcfsyC2W
-	5NT40grw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wWz75-008WX7-3A;
-	Tue, 09 Jun 2026 16:15:40 +0000
-Date: Tue, 9 Jun 2026 09:15:33 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v9 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-Message-ID: <aig7jzwDHfVCxikl@gmail.com>
-References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
- <20260609-ecc_panic-v9-2-432a74002e74@debian.org>
- <174b8d76-5514-4942-af5d-c975ff95ee03@kernel.org>
+	bh=VcNntx/NGAvfH+oGg7l4M6S28fmu1J5RocdEzpCM4Lw=;
+	b=YZKD6zjVrwYqQcktQrd1+xUygEev87AHJl/j5pELWJ8oxl1Lyuz0A2Ijx1b/5CE7VR8+1M
+	FpTrZwoVDMvqwZytlHS/aan4Rb6gLy4tRC7ndCoegXoZzI2+oLDUOVCucDzlR1ScfzpxAL
+	zHMcGacFN33dLPSKrpvWyfIYHgllUmQ=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490b613a17bso56686615e9.3
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 09:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781021865; x=1781626665; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VcNntx/NGAvfH+oGg7l4M6S28fmu1J5RocdEzpCM4Lw=;
+        b=Q17QO1Oor3SGy2uJPKyvyqHT7Bf8ZDZ8/z12aswdhxKTifNJXydT+JRx37WVjRSrCC
+         QXqFpEEyKjBxIzAgc5PPsgVsqeJNDsyaLJ6AHHWtb2pkJIVSlYGokZ6K8XYxnQY7Hk3N
+         gaGX6sWLpxaKWeqFeh1B8NJ0AGTsfu00v3fGvGGeLl4Da7/Isi8iJ28eBb31D9YuN4Ls
+         lQrzTlpsTKLxSx/SSHLn6+L0jETbjtPeofxFgR1q9Gwo2juEU7B9bkYWDrMSYH6SvfAO
+         CXPVTollQyMald5vrlbaw8negjUI+f2V855Gr7X0Z+z5sfHhQub+gbR72aub3diBaDng
+         Ld/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781021865; x=1781626665;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VcNntx/NGAvfH+oGg7l4M6S28fmu1J5RocdEzpCM4Lw=;
+        b=bm6IugMlaPdYJ1MaPppOgIe+ld4NB7wAdlGtYBLvNiMN2cFpdPQ5tOMalmLWQBS+r/
+         KCcTfkwOBHZQYlIYa2o94mFqIMUNo+vgctwv/Fr39K8WzsyMh1Bvu02JMNtsfQj8uYZT
+         pbJIMDz915nAVyjpquGdBrvG9BMMOnx8li60oCjBhFuzXXzBKMc26boaXCopfen9ORPl
+         oqcfeHETTqwNMQW+fz4QF4CWhAAnuk1nIC8u5A260RVqW/Vu5hIhqLxQnGh/4FeVzcqd
+         VWw24lHTtpbHkjJWi0WZchGrVH14Qxp+BuAmNkFNWJZZq8wNcJUUF6Ob6KjfozahYk1p
+         xv1A==
+X-Forwarded-Encrypted: i=1; AFNElJ/Vy8actPYTy7ZesxwVS3YaQHd8pWGNdII7rbVDQGEJT+VTgV05I2iSA7I7a43vRVgjzPL+/rSkXg==@kvack.org
+X-Gm-Message-State: AOJu0Yze3apWYx97iGQtc80toXUL2d1SCaesne03uRLP0IfXSkLC+Cpu
+	56qEZM42F2zBdOE/gVoGQvSxIsna9t4DxhZPntq6Xt3eOjiQNeDRCLdy
+X-Gm-Gg: Acq92OH9X1nIuqpngnp68TvQzPpLjn+K1I5vOtL4L+SC/TgsGHypmFhANtccULudh8Y
+	ajEYpQDUMOgfpwq2zwIjiMhB95biHI3IRKuHYzXpu14ruUKcZgHfjLpX3wTVkH7AmDtgekkx/Sp
+	2+O6XblRYYa22IyrAuxY3Ggp1ZaTFM3fm+DblRk3Lr4suU7VALMfh2WpgVJ5iP5Ft6Pog4KvRcb
+	y/8f9QCaRq02+Z01zY6PzGAtW6YOqKsAcxtK6amWa0JfK5Z9YP9rDgHtmpNjzVAFv1ElUap++rz
+	1fLoAs6j87lsfi2KjREbicTsnwJjOzWbivxsx7ScZeu/nLlo5iAD/cqDgP46WeN6bGiG7/I6eg/
+	MmEqG2A7Ovg5yfIwUl+5lGliBFC+wsRpkWSLO8B+afuBfu0Q+kQfzo6R6tk5P6R9j96ekwe97BN
+	RaWZdfdcrc4jM+4IKwRgO//OuhAkwGWyMKRQq1l44tv00uV81ANoh85lxsalpmHDAFFsTa2+cqK
+	RLJUE+My55vrm+NI7NT9osGMl0PvA3fPsc=
+X-Received: by 2002:a05:600c:5292:b0:490:688b:f9f8 with SMTP id 5b1f17b1804b1-490d722e5ffmr47179415e9.27.1781021864447;
+        Tue, 09 Jun 2026 09:17:44 -0700 (PDT)
+Received: from localhost (pat-125-253.wlan.net.ed.ac.uk. [192.41.125.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3fd502sm492555605e9.11.2026.06.09.09.17.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 09:17:43 -0700 (PDT)
+Date: Tue, 9 Jun 2026 17:17:42 +0100
+From: Karim Manaouil <kmanaouil.dev@gmail.com>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, kinseyho@google.com,
+	weixugc@google.com, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, willy@infradead.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+	rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+	rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+	peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+	stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com,
+	jic23@kernel.org, aneesh.kumar@kernel.org, nathan.lynch@amd.com,
+	Frank.li@nxp.com, djbw@kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 6/7] drivers/migrate_offload: add DMA batch copy driver
+ (dcbm)
+Message-ID: <20260609161742.phipg7eid3yy4j7f@wrangler>
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-14-shivankg@amd.com>
+ <20260609000009.dvh7gfbmiz76eliu@wrangler>
+ <a5777c52-9af5-43c0-93a7-dbe4d41f9e86@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174b8d76-5514-4942-af5d-c975ff95ee03@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 91C3A20002
-X-Stat-Signature: doojfe7dt4asxxa5seh33gixnajcq9yn
+In-Reply-To: <a5777c52-9af5-43c0-93a7-dbe4d41f9e86@amd.com>
+X-Rspamd-Queue-Id: A617F80011
+X-Stat-Signature: fyqpq1xg7imwzwcs8nxmicphuzz33szp
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781021789-571716
-X-HE-Meta: U2FsdGVkX1+qkU87xmH8yvNYvXvqDGthGWPyHcQSW/YQkc2si5z5nJU6A7amSTre6GeS485bXEGPt6gN1cjQKfjDWzpnqabQxdiIfe4EHKqcrGRqlmAW2696zBn//1azJsWR1AZf7kvGbknpre/pIESwX7P9JU1gWwc3BovHtUaCLMheOIqRSm4TxEItPzEVyhp5XepfcidpecZufSbeZe+CEKcJfkQvnnmMuU00w3otIIc7SPjsReswYzidCsMYplT5342b3qzjjV6fxJDi+Vu10Zo2RN08Vt08kL8mjvPZ6QmHY6OjoDPC3Jg7CAbxvJG6EYcYUql9rwSpuI4kyrIC5dfKnshY7WIXA7LvX5OQmVVfmWXe6yvS/KZjHjVkLsBJ1kIqZLcUtgoSXvzshuFC7Pg143sTztjio9rUMXt2sZBR3j623iY+fmTyTqQ/9frFsVvADend/p4QzdeSf4nZzyQrw1KVAtdQZst3HjSz8whmsPHn6Y5qs59hSrYs/y/WrtfcjI+fzZNlKEHwDbVMMVRuilEqjZK6w9EtTYt0rme94QHSfjaS8Spbks5COXhjybF+zrCzaZo5Y0+QJ5u57uGoNLhQGLkqjLmcmP+tk1jwKnxrJ9AZRmi8xgNtS/HkxOmED1CbESCk9AcIRaAz6znDyaQd1w2MrI/gVrwdoh9PCN8Y945ritbOvy1uGlmgdIAweOb5RHspL0CJjpYJTF7H/8ibbOUAHaOYA2JsXwA8QlY3PltiSVCl+83cYXa/kvLc2hbNcFxU+oL1PLXHMrfWR5xK2SXDFhITdO3Uh4XS48jmjzQEzk8ibgtJWYySou/6xFXy/lwPLG/6KxGzlN5A4OjmPoIhKQ6lbzfsiClWTmD72+0yhfFPDAzpebBvknYmwGLVqn7DrYbiriqspnLytb4wmtokgEb/Z8vJ5i0BE9wX980tqsPBwGq3uetciPx78GSGcYCYquA
- XeM7a2YI
- hLnUa8/6gz58Dc+LzYdE6CNoS5BLIIUrNVWEP/nU17eDjibLeKJwGHR3M6bhS+flu41mO2BoVNJSi9rmyNRWPCA0SWD7cXXE6ZqwIaZ7rPKUNBRyjY30PeN0LEQjGXQPkH4FnOytC+xP637ShJikT610nZ/7ZQTW2e8xeav9E5U9IbxEcyG5y4aQiVDMD3/M1jEPAfSVyhJxQRsO7daV26VXqMtJv980P1QkqQtfwEs/RkqlLlGJPNo7iS/1A1u+bz1XOLXsn1BTuObTNbWb87VyLXWrroJZYd0aagyofEsWHqY20oT9M0YbpIV2NvnQGv3zUlHR5bc3njdSFYZd43MabiPfhCy83MasMSja6DKqV+dMZg9RvARGQo+pGM+EIFD3b
+X-HE-Tag: 1781021866-522759
+X-HE-Meta: U2FsdGVkX1+DUpqcBH8fHfjaC/LyDmLMiYbH4e8p1d8VTG4sv43y9s+U9/bv5SnKdaGt+uR5Tvy33EJ3b8aicrFVNxLM2/8lyaXZBPoTaNY+ToXy3qxU4ckCQzLOiQEv7JIITcRCnKhAbkgsct1zB2PKXw1KVn33SVuZ9ekEDujFNrToB8sEypB2b95Vd/8PiFF+Jr5Z4zPr0W7Tp8w2efJFHS+87IN9HmJOyWkPp3tfle/WGeLYYsRT7TAlwPMgD7/SmEVssXZL+Q9zfy8LyVmO3l9fbdy6LtPsoahfUjAEOMKX4g9YUQtpcuZtFJJFFfhAiXk9moNLj21mjzQf5FTfIfi1cwfDWkPfcSX3dHzcq6VpSg4gOuO3JNi+Vc6zR8UW/HVfM1Gw8wS+/L4+1vAVaeUc3QML+CpEMrF4rxa+j9yvUMU2nq0LuqTLfy0aMrC7t9qKKLBm8jYByiDlYxLEADrKusxSfW5jJefDJ9zb2luX+gH0fWDY5++xZoaDrUoKo4H0UGaSlLyJ2lQm4hLZ1p2XAiI+v6usC/mdibS+a44+ZnVD0z77tiHukY393Bbe38w6qLTTepW5O3uqhz2TR9rJ2XNklW+96BWXVsuQPcnxvmcASiDczbHxYMRvbkFOFrWUaEaEkx9XYHsFwONZNv1DQjC1UEsF2KX/yZKcgmhROFCewDMs/4X8ukQp5ym3AXfCIqVOO6Yz86C+qcHCMBtCkW0NeX5aj8LvL9+8eNI+22ZHgWNUFTxBRgNZgJ5tJRHApjbF9T3iMSFtgF71UtRo2b0g2L7Sl/lxphIwsuFBAPMY2t/cBU3OlBHbARJ67flf1dv1fjBDp0gpYyvuXw8HSwgqs0bdkuWInZ92pc7gS2CD3ZIFShw3R32Ki/iv6Zn4sz4v6a0aJaSu51LkhWLUFAMm+7cuRQtInfbl8M94h2bhwzVNaMwxP0un8D2eKJ9TKibpbl0Vw3F
+ Dk+9BAOO
+ J42ZgeOrdph2hi1/yukJ7MiSU9rdB9qcMLFAIA77Ng1OS2v8tYU9OqTNDVdgybXIYqVjoySIN5eg0fr/I1zQIM5nHkQKVAON4TGd9OEfVu6trYcugOm5QhatNOucjJ5M5PPazntn0xU4owkNlXgNFj7o+ySj3m2zGkuUXftbqbLznyDrRVMt9dcdL2KsfmW6LODNTsE88OaTDKLA7afH01cdrf/K2ye3SbU0Za20Bpyv2JFIQj8wdA+s/SmfSKhwQyCkJAnlqA7N9pt13lEXO4eNvzpOCteIu2s7/i3/KiIxo/t7lhmDrXX6J4v7R1OUL1Ur+MAIRKbTvS/b+2BbLXH332OlW7EeWkUMHbYJq5ubmAJ1qh6EF7C1jXT8z6sts5Wx6q7hTNYYecVtiZl4tNV/N6RJ2ZaYkGMHYG1xXJzNxUEEv+FvJ0/OrQ5OyKrKS3/zpbHXcwcocAOlUAuUpfV5ki6pL93h09uHOnS+LHgOH8NYNiyTXw98E7LJFKw5AOjmklyTxbcDh7s6tSNHOiXLsYoc85SJFezh3sWwtIhLvRFH5+LWhGVeXEQBy6ij58b4Xks2t4q6GoTJiFCOYlZ3CDLt23hwp3Apd9IymckQod9XkQT86gQU83uBKiWJLPwRpebZBzfqIOymkbmO8JuLxexJoDGzZLkiWcnUem4Pp8AU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,130 +134,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 04:41:01PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/9/26 12:56, Breno Leitao wrote:
-> > get_any_page() collapses every HWPoisonHandlable() rejection into a
-> > single -EIO via the __get_hwpoison_page() -> -EBUSY -> shake_page()
-> > -> retry path.  That is correct for the transient case (a userspace
-> > folio briefly off LRU during migration or compaction, which a later
-> > shake can drag back), but wrong for stable kernel-owned pages: slab,
-> > page-table, large-kmalloc and PG_reserved pages will never become
-> > HWPoisonHandlable(), so the retry loop is wasted work and the final
-> > -EIO loses the "this is structurally unrecoverable" information.
-> > memory_failure() then maps -EIO into MF_MSG_GET_HWPOISON, which the
-> > panic-on-unrecoverable sysctl deliberately does not act on.
-> > 
-> > Introduce HWPoisonKernelOwned(), a small predicate that positively
-> > identifies pages the hwpoison handler cannot recover from:
-> > 
-> >   HWPoisonKernelOwned(p, flags) :=
-> >       !(MF_SOFT_OFFLINE && page_has_movable_ops(p)) &&
-> >       (PageReserved(p) ||
-> >        PageSlab(head) || PageTable(head) || PageLargeKmalloc(head))
-> > 
-> >   where head = compound_head(p).
-> > 
-> > PG_reserved is a per-page flag (PF_NO_COMPOUND) and is tested on the
-> > page directly.  The slab, page-table and large-kmalloc page-type bits
-> > are only stored on the head page, so those tests resolve the compound
-> > head first, then re-read compound_head(page) afterwards: a concurrent
-> > split or compound free that moves head invalidates the just-read flags
-> > and the loop retries.  The lookup still takes no refcount, mirroring
-> > the rest of get_any_page(); the recheck closes the common split race,
-> > and a residual free->alloc->free in the same window can only mis-tag
-> > a genuinely poisoned page, never reclassify a handlable one.
-> > 
-> > The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors the
-> > same exception in HWPoisonHandlable(): soft-offline is allowed to
-> > migrate movable_ops pages even though they are not on the LRU, and
-> > we must not pre-empt that with an unrecoverable verdict.
-> > 
-> > The list is intentionally not exhaustive.  vmalloc and kernel-stack
-> > pages, for example, do not carry a page_type bit and would need a
-> > different oracle; they keep going through the existing retry path
-> > unchanged.  This is the smallest set we can identify with certainty
-> > by page type.
-> > 
-> > Wire the helper into the top of get_any_page() to short-circuit
-> > those pages before the retry loop runs.  On a hit, drop the caller's
-> > MF_COUNT_INCREASED reference (if any) and return -ENOTRECOVERABLE
-> > straight away.  Pages outside the helper's positive list still take
-> > the existing retry path and return -EIO, leaving operator-visible
-> > behaviour for those cases unchanged.
-> > 
-> > Extend the unhandlable-page pr_err() to fire for either errno and
-> > update the get_hwpoison_page() kerneldoc to document the new return.
-> > 
-> > memory_failure() still folds every negative return into
-> > MF_MSG_GET_HWPOISON via its existing "else if (res < 0)" branch, so
-> > this patch on its own only changes the errno that soft_offline_page()
-> > can propagate to its callers.  A follow-up wires -ENOTRECOVERABLE
-> > through memory_failure() and reports MF_MSG_KERNEL for the
-> > unrecoverable cases, which is what the
-> > panic_on_unrecoverable_memory_failure sysctl observes.
-> > 
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Suggested-by: Lance Yang <lance.yang@linux.dev>
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >  mm/memory-failure.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 58 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index f4d3e6e20e13..eed9de387694 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -1325,6 +1325,46 @@ static inline bool HWPoisonHandlable(struct page *page, unsigned long flags)
-> >  	return PageLRU(page) || is_free_buddy_page(page);
-> >  }
-> >  
-> > +/*
-> > + * Positive identification of pages the hwpoison handler cannot recover.
-> > + * These page types are owned by kernel internals (no userspace mapping
-> > + * to unmap, no file mapping to invalidate, no migration target), so the
-> > + * shake_page() / retry loop in get_any_page() can never turn them into
-> > + * something HWPoisonHandlable() will accept.  Short-circuit them to
-> > + * -ENOTRECOVERABLE so callers can panic on operator request instead of
-> > + * spinning through retries that exit as a transient-looking -EIO.
-> > + *
-> > + * The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors
-> > + * HWPoisonHandlable(): soft-offline is allowed to migrate movable_ops
-> > + * pages even though they are not on the LRU.
-> > + */
-> > +static inline bool HWPoisonKernelOwned(struct page *page, unsigned long flags)
-> > +{
-> > +	struct page *head;
-> > +
-> > +	if ((flags & MF_SOFT_OFFLINE) && page_has_movable_ops(page))
-> > +		return false;
-> > +
+On Tue, Jun 09, 2026 at 01:01:21PM +0530, Garg, Shivank wrote:
 > 
-> On a second look: Do we really need that? The page types below never support
-> migration. So I guess that check is not required?
 > 
-> Apart from that, looks good with two comments:
+> On 6/9/2026 5:30 AM, Karim Manaouil wrote:
+> > [You don't often get email from kmanaouil.dev@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > In my opinion the driver should be at drivers/dma/dcbm, other DMA drivers
+> > in the same directory like idxd and sdxi can just export a struct
+> > dma_migrator. It makes it easy to have everything in the driver's own
+> > directory. For example, idxd has some internals headers as well as an
+> > already existing dmaengine implementation in drivers/dma/idxd.
+> > 
+> > PS. I am writing an implementation of this based on idxd. I'll try to
+> > post it soon with numbers.
+> > 
+> > You can add
+> > Reviewed-by: Karim Manaouil <kmanaouil.dev@gmail.com>
+> > 
 > 
-> a) HWPoisonKernelOwned: this is not the common style for us to name functions.
+> Hi Karim,
 > 
-> is_kernel_owned_page() or sth like that would do.
+> Thanks for the review.
+> 
+> I'm excited to see your idxd based implementation.
+> 
+> For plain memory to memory copy, which is all migration needs right now,
+> the public dmaengine API is good enough, and idxd/sdxi/ptdma ... can
+> all work through it. I'm curious which features you're planning to use
+> from idxd internal headers that dmaengine can't provide?
 
-Ack, I will rename it is_kernel_owned_page()
+Hi Shivank,
 
-In my defence, most of the functions similar to HWPoisonKernelOwned()
-has this name format, and I got this discussion earlier (with Lance?
-I think). Here are the similar function names in that file:
+I'm still testing, but the initial implementation I wrote with
+DMAEngine had too much overhead because of the sgtable allocations
+and the conversion between kernel scatterlists to device descriptors.
+So I entirely bypassed the DMAEngine API by directly passing the folios
+lists to the driver.
 
- * HWPoisonHandlable
- * PageHWPoisonTakenOff()
- * SetPageHWPoisonTakenOff
+I know it depends on the use case. If you just want to offload with no
+latency requirements, then DMAEngine is fine, but if the goal is to
+achieve high bandwidth with minimal latency, then it's a problem.
 
-I will update in the new version.
+Another example, if you have to do several independent copies of 256 or
+512 4KiB pages in a short period of time, there will to much stress on
+sgtable allocations.
 
-> b) The function doc can likely be simplified a bit. No need to mention the
-> short-circuit stuff, for example, IMHO.
+Another problem for low latency is DMA mapping.
 
-Ack
+Anyway, I need to collect more numbers. I will try to share my insights
+with idxd asap.
 
-Thanks for the review,
---breno
+> Also, my understanding is that driver/dma houses DMA providers,
+> whereas DCBM would be consumer of DMAengine APIs. So is that right
+> place for it?
+
+I think you're right. It makes more sense when viewed from that
+perspective. In fact, maybe at some point we will have some more generic
+memory offload infrastructure to support sharing, load balancing across
+several acceelrator instances, numa-awareness, handling batching for drivers
+and asynchronous offload (to workqueues with completions).
+
+-- 
+~karim
 
