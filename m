@@ -4,93 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D251CD8C92
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D22FCD8C92
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:31:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D9C86B0005; Tue,  9 Jun 2026 08:31:00 -0400 (EDT)
+	id D0F8D6B0088; Tue,  9 Jun 2026 08:31:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98B156B0088; Tue,  9 Jun 2026 08:31:00 -0400 (EDT)
+	id CE7426B008A; Tue,  9 Jun 2026 08:31:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0866B008A; Tue,  9 Jun 2026 08:31:00 -0400 (EDT)
+	id C24866B008C; Tue,  9 Jun 2026 08:31:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 79F2F6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:31:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E8A2C1CE0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:31:00 +0000 (UTC)
-X-FDA: 84860308680.19.8197130
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DBD2A2000F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:30:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xL6tUdLv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B34AB6B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:31:30 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1961E1A0516
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:31:30 +0000 (UTC)
+X-FDA: 84860309940.24.24B37EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 85E7E4000E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:31:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGN3A0SD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781008258;
+	s=arc-20220608; t=1781008288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gSmhLbRZiCMLmvUSNQ09XQZBUjKHV+qKidrVgGQPtjM=;
-	b=nZuMEkCyEEZ0XfVdoAV7zkb6fwAe+2dHYemvbNJjK9KgPvyHrnQrkop7hJxgWmLg49HBa8
-	BSq7c+sW+pCfKA2r9ryJf1UxwJ7njrLtEdkszxrFsHTpFPC9hUmq39BrZWeq0VPQj9wKmQ
-	Tz8aIfYQ9iVbaJV5Iqrlima2w6xQiRQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=U0BaS54KHmvaXv/vxGfu2k/i8IbrbsOc/M3Rcwgq7Dw=;
+	b=rSBYQ5/I26BqINRGQhoSmFy0BozSRUc20xImjHjBwbN4ZIXe4oGOT84S0bDg324nIkOGF+
+	rWbRR5mUVU8s7JMwsjhzgUdSCviX2doiqxARq5WGXeciK/KtGt5pukgdRvDl+D8LbCC9AH
+	lb0vaVrx5vJ7F+hAYhtOcaEMG3vGgRs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xL6tUdLv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dGN3A0SD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781008258;
-	b=R1uP2yiR1/03D37Z3h7tPQSGf1mbUFNLaXiO2tAimZiuAd17Zt6nwJLQvDqK2ujmo07gMA
-	MibZKkm+gHTCdaZxe73OO4O67FNGxS5TWO9ZgwQRu5tT3cj4FEx9fZKxJQsU+v0F1Mtsxp
-	sG5GKWL3EeWPs2+U818zRw2dSDEyxig=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781008254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gSmhLbRZiCMLmvUSNQ09XQZBUjKHV+qKidrVgGQPtjM=;
-	b=xL6tUdLvO6wGf/3x5Mz4uaE7Lf7/4EskVXo/P2dSlSfwoRuhGCMkji/5Y2L2/fQPurQWhF
-	vjGt7pbV7bzOhX82Yj03E58N+R5IWqGcIM0UJL7FGy6s1Jb4gIrp6RYHf7nIsd3i19HxhV
-	mjaJZlEr5mJaXetgmCzeJfrWRziwUbE=
-From: Usama Arif <usama.arif@linux.dev>
-To: brauner@kernel.org,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-mm@kvack.org
-Cc: hughd@google.com,
-	boris@bur.io,
-	clm@fb.com,
-	dsterba@suse.com,
-	linux-btrfs@vger.kernel.org,
-	cem@kernel.org,
-	linux-xfs@vger.kernel.org,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg slab shrink
-Date: Tue,  9 Jun 2026 05:30:47 -0700
-Message-ID: <20260609123047.1948242-1-usama.arif@linux.dev>
+	t=1781008288;
+	b=2yI8lw2gAawefj1Lust/9z+7Rs+jV/bwlDJBqS20oU04GGLHmiOct9TFnzhT9pXv+QZG7r
+	wiI/iWwpZGzk6sofLpUWgQDzJdIJJMIlVOLHbE+1fLSuIyMk5uaNP66n4+bfxj0tLwf31x
+	07z+2+9w1p4JFoOTkmCyBZRFBjGgN9o=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D7F7601D6;
+	Tue,  9 Jun 2026 12:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490E31F00893;
+	Tue,  9 Jun 2026 12:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781008287;
+	bh=U0BaS54KHmvaXv/vxGfu2k/i8IbrbsOc/M3Rcwgq7Dw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dGN3A0SDVSKqo2u1/wQ1/zVpc+14ph63BVOcD0I/vMtQr0hMIYhCoXkbL3y4aG7DW
+	 V8KxpK4g9iEEMonj89HX9vwHYAGVSAtrcdef4mDz4zC6vM2OZyNv9qL7Q2HRAOnxlp
+	 DDQzpPv8YcLrfItttOb0rtHpzrNNoHrV0WslXokKvznC1rvg9SC60g/b5luQgq9+PE
+	 JEPqg0CTcCGWslG4Ll+E8a8u++cUTkflEOYJ+gXXZA81xJPvTJxi9DYl1ZrT1oNiHk
+	 QZXLXVpk4LrgnJPKYn2yz81/1kKzPW2V2wEBgkYL/3Q34Fqo7uGPmNkWThn9pk7CaT
+	 oDi6N6dqKuPig==
+Date: Tue, 9 Jun 2026 14:31:24 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, 
+	Christoph Hellwig <hch@infradead.org>, "T.J. Mercier" <tjmercier@google.com>, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, lkp@intel.com, linux-kernel@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-mm@kvack.org, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, linux-s390@vger.kernel.org, Dan Williams <djbw@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org, Arnd Bergmann <arnd@linaro.org>
+Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and
+ set_memory_decrypted
+Message-ID: <20260609-micro-pogona-of-wind-eab41b@houat>
+References: <20260522225853.878411-1-tjmercier@google.com>
+ <ahPqbfH54R3JJyaV@infradead.org>
+ <20260527160716.GN2487554@ziepe.ca>
+ <20260604-dangerous-tuatara-of-sympathy-28e05e@houat>
+ <CAO_48GEJsg4X7++zg-ztQgVibY_FjjManaA5_W3usjicGUQPdg@mail.gmail.com>
+ <20260604135712.GV2487554@ziepe.ca>
+ <CAO_48GH3NP09U6TdB5drbKY0TpwvtBXwrf=Jajsr5ttNbC_u9g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="o22bjoh6ffgpsyxy"
+Content-Disposition: inline
+In-Reply-To: <CAO_48GH3NP09U6TdB5drbKY0TpwvtBXwrf=Jajsr5ttNbC_u9g@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: kwxknakfpaw55hrua1c74z6obmyhq6w1
-X-Rspamd-Queue-Id: DBD2A2000F
-X-HE-Tag: 1781008256-275919
-X-HE-Meta: U2FsdGVkX19sZC0hf8exsYPbc89O9O9SD1XuCUH0iz9LARXWCnoJKyR2j241DJR1tunbjF+EiFLx/97syoV+6JHNvMshNk3Ui9oBP4JkpwOIdehUHR8YCAlQOB18zIjGjd+3sOaTKesy+pO1IKO7yM792JyenaY3UNeQtwIfGRCr64wQSXf0FWvAoyVt5k9ZeHd0zj3efH0YPFTUnU/PhRaoQpDXwP5/YGDxqU1tE+QAddahKfYZqkOd8ihNztSpu6KfvinZXq2f0CDWAyclOtxIwMDIWQV+D7FtoVCgB/b7lR6KzaBsJMrKlEt4cKGn0Ldg+1whjLV9Jh6KJRiHN54wyc0tmQS+K49DKq4KBc3/lhJHhVvBO1n8avMTfAjSFKSJJYumDrXFEnQkKzfjnBsd+gnE+PP/puajDt1C2TWjkjmF3NYQyfrfIKU1JtjhZwZj0RKbVFYqwyau8cr4ItoXaysDMnHHe50ZSxH4zLxB/W/Ed1Ld2CGWclHb/mqsBCftJF7uovQBJk77rQcf7wW2/NuOBdSf6WVHREOqhDarsul+0VoHlERqtUXYJ6zczkL1wFaGU1hX0A3LaAccB8tqJB9n/X+XlVjSYF5gWexhAxvLQ5f0kQCK6dThNhQ0ryOWCoZ/qQNOBlJ9rXeS/HXRNN//70jV2D891JJAForvtrG01KdiGrFZhDyFjgPu5BNd/t3rCYEfje49vCiHGyFzTV7N4uxcEtpgCgLikVtaWGxV0tL9GpwJH/6pl+E4sMMpww99P4rS9123RoaanC/Xu5T1jzwtd3jkAGBMvt9OnJ/qBZHSenMehXdF8m9Q/f0lCth+121K21RqAC2T7QIsn3ol8F8o1BOivHDPykd0jFRcCRU1b2oxylUEfUnfHJtIf/AeS6td6rfBKARZeVwIosuT4G0nRxeCv9/gpS7HcTlid9eXJJMSnla+ejl/eiAaxNIVsLKqrMmwfKH
- +YQ8UG5i
- I72/56nf7A9G7mlh12+tTTzCHQLpI0yycePpo2RjR0CDfBMpCLZTGcYIDkxNyDPOXW/p/8UGs/aHGcnE9wyRCIxenJHnZ7aMqmcE4+0jeHfy3hHht1drrqYP2fqOlga3xI8IcQpWnvjaWCNVntauT8WTyzPAcKuWcnJBDQhnInR5ljC2uTbHa8y0CIbbpaG2DRPsgDfjD0c4bx4+Rx/r2dJJtAOu4Bmd+d1uYjXTtwVyu8tvLAhTkXHuvfw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 85E7E4000E
+X-Stat-Signature: kw9kyamiz3bynjci75uw3pek6pqmggkz
+X-HE-Tag: 1781008288-378055
+X-HE-Meta: U2FsdGVkX1/RvBySRojlKR9eu0W90ESzcbYnD/KXfLTvDRaIJj5/MXDsbmGZJBRPRvilwi0HjmPBHs8h+iFCB48vNSiGLsjgF/eaEKAvLvCnUWJc49w/DtVyEv8ek03VpTF9tDyXp/1xUVSyjFBKvJt15cwaR3JK4/seblVx7ZU3+rfz19KuDF9O00Y2PCUASc+KAFPRo1Noju8+cBethpG4eWM2rEaG1Kf7NQn9740XjCgk6bAU0lclIrJnFUDjfPAYxG5tasUYVohIhkH6G/eZynaUK5v/RRbcJr6L2Ud7Igs5M6urvYJkAmhr3rWmLPeD1TXzCoPVS3BCadQ/tpknbUeyfeJI/tvkHTQf6NeoBURhxbVNSJpU4FoBtK9c/BxWjm+T+ndq2aP5tiucdsopC1JhezxSzTgrHweFMCQJanQ8p8murx4RBSoER62coseAeV7Fii9wRn9iLNAdmIcluI8RaFAnKVmtIilBbRrxUnCjaPmpY3rlwnDHMoVKi03z87KgpPIS9YHq0KLXFoYBcWMqrlMIDbcXDpknAe6ZBYEsKv53cXBkbZm9FGqRuqG3oOX2EPok58c9C3P1/POZ0X9LlFfPavbFZUxSKmUbIv8qUoJxqaJt/dHVpB4wXsEpZ0vrPfj9SFC1jyx6M26i9fB3/ixTNJHm6Kq+OkHQ9SJyNNcgHoPRJTOmTKzAZC5qQKfe734Z46SaBWgHY2Zpg3ectk7SygvUC1scTb+Nkc6hvW9waqG5wK57uIDMCzTJFbR15myoY1nyIvqc+o5UZlK8Re6HbEv3lwFUo31uWCfVQFkxjnipLwhCZrxNAr/x8t7d2jY1TDunZRGS4PZsM9yzi6dQzgVeDM0LZtODzE5jcc4/1RnD3sasq4mdfNAF5IE0EK2m9cen0SjNywxhMxRw1xDh6wEb51gm0irtpnE20fhCAafjPGKaBSs3FdA6lDglFmew7SoEWhc
+ 7SRIormg
+ pmKpPFdHbrwa5g7Rd1f1GSEAN1OyYspa3lMLBgh8bY/ICjuW214tfXeh5b4lFWC1KGiiPseQSedFXSMXGUCRd6CNl2masC88PKGf55T2cYdCo418SREp78URy5VSKvnzaawkwBuykqhcEL/hM+7iun1+uyQajEjOOommae4xhLzCYm7Et7zAosH5r8ZuHKLJTHL8yWNz/8V7slcBq5gCiD4CUbUdqNgRnaD1hj8ZfRMtGpV+nhsCJm2JT76S9hsF7A7PypTWyb8sElmOimkz9/d/CaitphOALPKnsIEOilU+oFAHZ7rgdHiVmFmW6jT5/B7seQUX3nzZXiiktX3J9HmVpZHqOtN2J0lDp4EpXqoE3Mi6VJN8AzPN2IoDbofKd3QNYkvIXEJxhplQ1wAYuzA87N43C1l3yaGpuxGHq2ulLucle3x3Q66qp8gWWppIeuPUvXBSGCL35EPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,88 +103,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
-dentry and inode LRUs are memcg-aware (via list_lru). But the optional
-->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
-btrfs extent maps and xfs inode reclaim operate on filesystem-global
-state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
-None of them filter by sc->memcg.
 
-The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
-calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
-whose bit is set in the per-superblock shrinker bitmap, which on a busy
-host means hundreds of calls per reclaim pass. Each scan queues the same
-global shrinker work item that's already kicked from the root path.
+--o22bjoh6ffgpsyxy
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] powerpc: Export set_memory_encrypted and
+ set_memory_decrypted
+MIME-Version: 1.0
 
-Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
-the returned total stays positive even if a memcg's own dentry/inode LRUs
-are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
-in the memcg bitmap, so subsequent reclaim passes from the same memcg
-re-enter super_cache_count() and pay for the global counter walk again.
+On Mon, Jun 08, 2026 at 08:47:15PM +0530, Sumit Semwal wrote:
+> Hi Jason,
+>=20
+> On Thu, 4 Jun 2026 at 19:27, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > On Thu, Jun 04, 2026 at 12:51:49PM +0530, Sumit Semwal wrote:
+> >
+> > > Given that Christoph's objection is not really about the modules part,
+> > > but that the set_memory_{encrypted,decrypted} should not be used here,
+> > > one option is to revert 78b30c50a7ac until that issue is sorted out?
+> >
+> > Please no, we have stuff already using this so it would be a
+> > functional regression. Revert making heaps into a module since that
+> > doesn't have a functional regression.
+>=20
+> Thanks for your comments.
+>=20
+> To me, it looks like while system and system_cc_shared heaps share a
+> lot of code, their user bases have different needs. It's apparent that
+> system_cc_heap users don't care about it being a module while system
+> heap users would very much like so.
+>=20
+> I also discussed this with Arnd, and he suggested we could rearrange
+> the code so that system_heap_cc_shared_priv depends on a new Kconfig
+> symbol like
+>=20
+> config DMABUF_HEAPS_CC_SYSTEM
+>         bool "DMA-BUF System Heap for memory encryption"
+>         depends on ARCH_HAS_MEM_ENCRYPT && DMABUF_HEAPS_SYSTEM=3Dy
+>=20
+> This allows building both into the kernel or leave encryption choice
+> up to the consumers of the system heap.
+>=20
+> If this is agreeable to everyone, I can post Arnd's patch.
 
-Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
-or root). The memcg-aware dentry/inode LRUs keep being counted and
-scanned per memcg as before; only the global fs-specific hooks are skipped.
-The root/global shrink path still drives those hooks; only their
-invocation from non-root memcg slab reclaim is removed.
+It would be the perfect compromise, thanks!
+Maxime
 
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- fs/super.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+--o22bjoh6ffgpsyxy
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/fs/super.c b/fs/super.c
-index 378e81efe643..5216c5dbd4c4 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -24,6 +24,7 @@
- #include <linux/export.h>
- #include <linux/slab.h>
- #include <linux/blkdev.h>
-+#include <linux/memcontrol.h>
- #include <linux/mount.h>
- #include <linux/security.h>
- #include <linux/writeback.h>		/* for the emergency remount stuff */
-@@ -169,6 +170,19 @@ static void super_wake(struct super_block *sb, unsigned int flag)
- 	wake_up_var(&sb->s_flags);
- }
- 
-+/*
-+ * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
-+ * operate on filesystem-global state and ignore sc->memcg. Driving them
-+ * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
-+ * per-cpu counters and queueing duplicate work: the actual reclaim happens on
-+ * the global path (kswapd or root direct reclaim) regardless. Restrict them
-+ * to that path.
-+ */
-+static inline bool super_fs_objects_eligible(struct shrink_control *sc)
-+{
-+	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
-+}
-+
- /*
-  * One thing we have to be careful of with a per-sb shrinker is that we don't
-  * drop the last active reference to the superblock from within the shrinker.
-@@ -198,7 +212,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
- 	if (!super_trylock_shared(sb))
- 		return SHRINK_STOP;
- 
--	if (sb->s_op->nr_cached_objects)
-+	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
- 		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
- 
- 	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
-@@ -259,7 +273,8 @@ static unsigned long super_cache_count(struct shrinker *shrink,
- 		return 0;
- 	smp_rmb();
- 
--	if (sb->s_op && sb->s_op->nr_cached_objects)
-+	if (sb->s_op && sb->s_op->nr_cached_objects &&
-+	    super_fs_objects_eligible(sc))
- 		total_objects = sb->s_op->nr_cached_objects(sb, sc);
- 
- 	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
--- 
-2.52.0
+-----BEGIN PGP SIGNATURE-----
 
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaigHlAAKCRAnX84Zoj2+
+dvQjAX9ms+5hiJAqLxOa025CX1FKZOt3A7bbVhvzSW0b67H16z/faZkoRrXNZzHG
+FzjVGG8BgPW0Xyovl2KeSzQ85rYqIeg+8H++YPYve/0/YEmMBjN+LF51bW0Wp/ZC
+DU4p8h04Yg==
+=jwe3
+-----END PGP SIGNATURE-----
+
+--o22bjoh6ffgpsyxy--
 
