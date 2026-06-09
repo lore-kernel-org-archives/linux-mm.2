@@ -4,100 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B4DACD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D96CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:59:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9664A6B00A0; Tue,  9 Jun 2026 05:55:45 -0400 (EDT)
+	id ACB386B0098; Tue,  9 Jun 2026 05:59:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93D756B00A4; Tue,  9 Jun 2026 05:55:45 -0400 (EDT)
+	id A7B986B00A4; Tue,  9 Jun 2026 05:59:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87B416B00A5; Tue,  9 Jun 2026 05:55:45 -0400 (EDT)
+	id 991FB6B00A6; Tue,  9 Jun 2026 05:59:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 74EA96B00A0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:55:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F4291C1BCB
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:45 +0000 (UTC)
-X-FDA: 84859917450.30.57D7725
+	by kanga.kvack.org (Postfix) with ESMTP id 8B2676B0098
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:59:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3167B1403B9
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:59:35 +0000 (UTC)
+X-FDA: 84859927110.22.62C3880
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6A07440002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCpzHnM+;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7C9F94000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:59:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhOXKGqU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780998943;
+	s=arc-20220608; t=1780999173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1IiR55/RulSC2eWpOF+KGlXaH6ldC7P9xSrMn9WJLk=;
-	b=5lXUsw7c97KNWf/7PW0K/J6q8Y9D/V/9oNFzwuo4ES0fxo7CYWEDFmrnWQk3GGwXn9Wo1E
-	OvQYzai0snCxDMJCobrC7P91MtlBBeKMTJCmyxR19O+0VZYgofTm9XtfojkCzZe3bkqH9B
-	+L3BmJV86OtT+3jMH95WqgyA9PW8dRE=
+	bh=oWSy9s2Uo+D2yHOeSy2A7Sp60cndUtpnDFI5TAu/XEo=;
+	b=s6i3YBAlvCap1L/qUnDiKdChBGdn7F84YZ2QdbAdmCPFDDzfsThyy51LEX/LyLae3T93V/
+	7o/K3fD78mIIdXk/ggZ6oZLhHLoE3WDWM0diPhoD0p9oKpttVx5/KbdeufOxYGFJ9yfpCQ
+	CEtVPtsHXwdlXT/ROK1SsRaYY+Sn8MA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCpzHnM+;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IhOXKGqU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780998943;
-	b=65i5gvcT+M98cfQ8liGRkST6fAnrJ9sCBpdoayMti9gzzlv3lN/21Ljtte+tVewgi3J1kO
-	8VBrHqbRDzkQQ33fd9veLDwtBACicDQ6vNDJcT6agp2Sc/g1hDPjPeJ2UbygLa9FXNmcmM
-	tgkRVeM3px4TxXE9dBhN1lIxG2z7rWo=
+	t=1780999173;
+	b=5vtuxrXUCF9CvxZmOJceExJqM++GTgNnwhsAUeObQ0VUOYuxhKTUiWgw2jALZVWwlOHNs4
+	9I2XjN7IEaNnE5ADM0ZPRvYWTrgdxC2Awu4Wo9RStG16NdBA6n0UC4aCqvOh2MYwnvSZzj
+	xg8lAiZ1jVAAVyXXAWNOCwOtjBMAc7o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00E5960200
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF8F1F0089F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:55:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0CD5D601FD;
+	Tue,  9 Jun 2026 09:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8D91F00893;
+	Tue,  9 Jun 2026 09:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780998942;
-	bh=P1IiR55/RulSC2eWpOF+KGlXaH6ldC7P9xSrMn9WJLk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lCpzHnM+ociPyCwLK8ZSKrJXX/jk8DuMyT71AJusrn60JMYrO7FoOABcGr2oaKaGt
-	 UzehcJLhf+OFk7reU2zVzLbEuBldtxHRNASdUZWcFFL3JCSNrNm3XXkm/1HnPybIeR
-	 8716z1DqvmkEddNvUnqSg8AhrJ3+kpnl7FcqUSdEb4OchDPteOEgQsO23C5BTbHQBl
-	 ZtiM5cvF6M/SiG4Q9HM0GbykCS/0eYHjn7c5LuQRAKWoelzsLBWa82SRySyC/vAt/5
-	 Rv3a3nEElJLNC21M+yBAZmpoha2vUjIO+fjHN/nvamnht4qLOPqzmmTL8Tc0/9/OP1
-	 l1DP4fPoXG5Jw==
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-9156ceb55ffso463095085a.0
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 02:55:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+DWHhAGotR3OVUaFsFb6efHE2lLNSqM85paSPflz64hu+GAXFOVbi/mtR/c3IBCbIw2lCPoR6kUA==@kvack.org
-X-Gm-Message-State: AOJu0YzQ91l7q/jCU9fkQpd5Q5YWJiUtf9nhHNZI8sczw8mafmn4bRTI
-	dhudyPDjvQBxsxPruAjcTndgjsfQKhOrk8T5f+RekCSUYW60DUM2ebVCiwQeR2r/TfLtNPKHtTc
-	HqkvLGAWjDsfz5F+9WhvvwNqtPTnux3Y=
-X-Received: by 2002:a05:620a:1a0a:b0:915:40ff:4e10 with SMTP id
- af79cd13be357-915e822bf5amr267763585a.4.1780998941890; Tue, 09 Jun 2026
- 02:55:41 -0700 (PDT)
+	s=k20260515; t=1780999172;
+	bh=oWSy9s2Uo+D2yHOeSy2A7Sp60cndUtpnDFI5TAu/XEo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IhOXKGqUm6L3V+PBCFLx67FYr5PsFMcbN8iSD1NfcEvWmdqO1IP3BZkVDj1sw63/M
+	 apLzVHIK4EixUi2aDQGo1i3D6CQjQZQAyTTRWonxcj6OYqXjLA2A6tnS26zawG0v/U
+	 4bRg85UPf5OQH8W25ixAjOnIt04JWfQK+nLTlb+Snbb67b8wOnCbTcnj7dArmM2f8n
+	 nNQc0Move2S6KHgziXDATYzb18y1O67QArByqe1mug5UI9O21vuFaInqgXDJ8SMdJd
+	 bm4ORDubVKyTFExlCDOkwInIP0TdzhHU7KBG3UXzglmS1XWhKXp2Y7wZ9Kfu62EuYp
+	 vBYTCJQ3hEfIg==
+Message-ID: <f0953b11-7524-40c6-9d8c-9aa8b8fd24ea@kernel.org>
+Date: Tue, 9 Jun 2026 11:59:24 +0200
 MIME-Version: 1.0
-References: <5fb8bead.17483.19eab4626f5.Coremail.chengfenglin@stu.xmu.edu.cn> <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
-In-Reply-To: <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 9 Jun 2026 17:55:30 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yC6Cgj-gmnd+=kxyyzQGs=9_re429-wCaTmsHr=Oh-VQ@mail.gmail.com>
-X-Gm-Features: AVVi8Ce0tYnSjjzSLbh2mXfQqFfQ0i_dsWLVka8kn9Bp2MZmOm_4M4zJPGNEPog
-Message-ID: <CAGsJ_4yC6Cgj-gmnd+=kxyyzQGs=9_re429-wCaTmsHr=Oh-VQ@mail.gmail.com>
-Subject: Re: [RFC] mm/mincore: present-PTE scan cost after pte_batch_hint() batching
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Chengfeng Lin <chengfenglin@stu.xmu.edu.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Dev Jain <dev.jain@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6A07440002
-X-Stat-Signature: tqwr93bbq7cgn59ducgdymqrrayttw8f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: constify oom_control, scan_control, and alloc_context
+ nodemask
+Content-Language: en-US
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ kernel-team@meta.com, longman@redhat.com, chenridong@huaweicloud.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, rientjes@google.com, chrisl@kernel.org,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com,
+ jackmanb@google.com, ziy@nvidia.com
+References: <20260609002919.3967782-1-gourry@gourry.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260609002919.3967782-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1780998943-825191
-X-HE-Meta: U2FsdGVkX1+N8jzHOWzZmu/sace+hIMvM0whNhXQuzfSAwmJVEAiYkiPjxBAE4xdVeMdB9aAAClLFm++kiP/oBNBC67kv8xFpnGoAlvL6es5H169P6czHebhk6jBeJEtw0KyZkY7msf8PBpdBSfNWvYF1fNtnPQgNG+sCUMkGaFiBLcKjq6L+r3Wlknr/A0o50poOKsCPaCeEFyxZdu3lTrFLkAodqA0WFOaz6bet5/4cKlc77iFfqO7eaQUYlHIFnjGez5+BVmGLIr/Kb+zx/HvromN/K1PjfcJqa3X5ocFv6IpurOEphnvFw1v2W7aLgfFNNFJozzbkoxlZBYAcVkLytoHJUk2LxTP1W1IRdCOdt47JGuY3nJ5m2MQd40Mp2/Qh+iog+fPL6pn8j9hcRZ8dPHPoAyEbPXgyNUaEARjnImxTocgMWra85ZyGyWwhSqpiLzaIhgF2DQ4cqIZ3eKTkV4SKOsslPweTzklD28MIjfpSd6pNSHhDXNITauNBB/TJApqniKl//d0NITrMGYSHU8UYvgPf/8qae0byaQ7t663UD24KXp3UCvhCv+HVhkIiTufW5ODrmjGNODhxGgC0BFqMRUwuF+ywkSGM43ZCXR+dcq9IQ+tFyh9avt/Fel/+uX/fV8i7lorf3UkbkANoL/6qYIcdO2brfQSO2bcpeYra79/QbZeDcdIRHyk2Cc9ufoszcA9ASCyzA7bf0nHEqxaBb3QUhDUCvQ5SE3hXbVkR13dHBJ9RhvKboCaSDWCYYpT3c4cjpBPh3fF06Ch/vT1mle1BOmpn9SX2qC8Jt1nRhUGXxZTXkdMymZTgicUrsxhMjTDCVh9O2pnSWtNzBlJrJDCkuJLBe2m4bwz2N/1aVcYntFZaCxPYjv5MKznZjxYJD0GzPbIQgC8v29gQurGZhAh/xIEKnepdIq+sug6o3lxLG4pEO6CetalhB5fOsV6gve1MMX8BJ0
- f9kolfyO
- pJezo98+Ev9EMgELIYaXLvrIdPJ6mKyersSaciL4WP4GQLlGPsguKeRwVIUfWh0P23VZPrBoyh2g/4waCfVUTV839Rpajrg+YGorKhDV7tZhDYcZAqn3QPuvN8F9qkHMrX9IOOBhvui/aCZEhXGB8/D89q7nUpmGcfW85X3acPBk1CJ6MG/sKyizPwN9SGgCwyBsyxc9OI9nSqYgw5WcW7lPqr0fvV5x0yfxQc9SwtVWJyuCZay6o2Wrmr/M26HrbWRYjXB4m7DooCLhcS8XcgsJLWyG229X9HxhuAjb3LAS0mFpWFcbGHI0r8AhRPDIwXoL7xtDvyZfGKIH8lII6tXjJELX3haCgSdnKvaakr1D8JZWeUPtIR4sqCWckIcZoAK8ukeobvaVMRZH7UJPOLAKQg+Xfl9CGfy64PRkQQkaIcIkhaWOQVi/nfwnHaAFjR47STaH9f8yX7Ic=
+X-Stat-Signature: zzhhy7sske4nuw4sntfprch76tf4z5ia
+X-Rspamd-Queue-Id: 7C9F94000B
+X-HE-Tag: 1780999173-439883
+X-HE-Meta: U2FsdGVkX1+gsx8QVysG7ynGFptusiMiIZ6aHgppOw9PndvHieGkLmw0JO+9G/xiWveAagtqWIZWWHAC22A9BEDq4XV/bPZ3GhlIDZqt8zMgaITdqKT0O7yHrAQlzsXjQOMlmWkiGJOZBVk+1GEH+JfbeYtoPopn1fjkK0nRj3tBdxBvMSBiOOSHGHMc3KeMPG4GgOqUfZbR4rngZH6e+/wg+tYD35pvqqfjUDCeKuL7zNBYocLbdDZk8CcrMFoZ0GQFxTCLdgCLrCPWNiABa4ZkSfqIJJLvQWCCecxO3zqnqS+lU8kADUhES/JJYJuQXDbbmJeRzj++8wjdXZRVvSoOcdRZWw4j0MLihFQQkckTmEBiJGS8B348bvsjhfngjg7IPlNKoSe5dErAc6l2CSj6h66jddYfBH7WGCjG79mV86MHOGTl4xEqXDr2Qxrr8Xcuon4SDkcaf2GKFsE/71byxhmP5lSEbo7Mo2kbjFNexZzTKAHft+dsplKVaCfDETurpwTng/fiWZpHTmitA5mRnXplvLcCQe2jjjHVE31hOjIUMP66A/xMXLePi0OtJFVesytpgoItmMSyXoE1vylRVrZvVU2WzNe8IZMk69VFL1V5/Hlh7Dgea3j2CgPfo2ww5wE3Y7A1ORHfhBkW1cFCkafoilhmdIxRGBPzGxZ4oD0taAE/zsl2jQ7CvJ8wQ5g//LiizFa5Ni+aIN7pKYt0KTUG8vKKUieTGTHGw7sNmojiMmIG+Rh6dQtRVdCDG4/2y74rNoVeVyUJjnZDrQsCyqL3zdqZkwOTmD4E1GxH2rx8kzBt2htRPgT25C1Y5snjQ81lRAWIv+I4vHqrQ7AK6PC8Eb77FxKU8IeJwZfDAYvDqxDtq5P/vfwy70bxmKFFcL3YAh+0yn73IXXvO0tK6DclHTH0rTQb8fdHITOiSTulxXKkFhTe/DTC54ZFcqXoEsZ7a0/ar0RmwEj
+ X67Ezubc
+ kM2bywVnbl4jPHr2xjjgJbFlo7QIf3LrK/cc5aOR62u4ksmDDjdSZwRnrtFDEdXnSZPbEGIyJ1hX+J15plQxIR4nGvF0SRXHHeS9phK89uCzaij3NPycdheT9bkf6qVWz9galOxQj24P2qHOpqz08jtWU1KECU2V+5IhnWJscSz7b3YpLVoHXhsIdcQ+K4PKfI8TnuCs8OKWNcu9RG9nzl/d4c23dbKfM+WI5gdl/HeyK/qIIpnQ2QZ4mN8u913NUVjmSVOZ0DfXtXpi8ObJ0qSpBL62EOt9a6IumIIfs/aRS3xQ+Y5tZ6bTg5BUCFADk8d2USlIz+bH0Kx6HSXoRlOMCp9g4AukeGpXCJNHgW9QusO/Q4uw+ZM5yTe30D3/ISwhppLli1Tu7pNA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,264 +141,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 5:01=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 6/9/26 09:26, Chengfeng Lin wrote:
-> > Hi,
->
-> Hi,
->
-> >
-> > I found a source-calibrated synthetic mincore() signal in the resident
-> > base-page PTE path.
->
-> sorry, I'm confused. Did you mean to say "I found a performance regressio=
-n" ?
+On 6/9/26 02:29, Gregory Price wrote:
+> The nodemasks in these structures may come from a variety of sources,
+> including tasks and cpusets - and should never be modified by any code
+> when being passed around inside another context.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-I guess so.
+Nice!
 
->
-> > I do not currently have an easy arm64/mTHP validation
-> > setup, so before trying to arrange that more expensive validation I wou=
-ld like
-> > to ask whether the candidate fix shape below looks reasonable.
-> >
-> > To keep the scope clear, I am not presenting this as a production appli=
-cation
-> > regression report or as a generic mincore() regression.  It is a contro=
-lled
-> > reproducer for a real userspace-visible syscall path, with the page-tab=
-le shape
-> > kept intentionally simple:
-> >
-> >   mmap() private anonymous memory
-> >   madvise(MADV_NOHUGEPAGE)
-> >   fault in all pages
-> >   repeatedly call mincore() over a resident 64 MiB range
->
-> Okay, so I assume a mincore() regression. On arm64?
->
-> >
-> > The practical hook is that mincore() is the userspace-visible residency=
- query
-> > for an address range.  The resident anonymous no-THP range is intended =
-to
-> > isolate the base-page present-PTE scan and avoid file cache, swap, THP,=
- marker,
-> > and unmapped-range effects.  I would read the result as source-path evi=
-dence for
-> > the hot path below, not as evidence that every mincore() caller or a sp=
-ecific
-> > application workload regressed.
->
-> This reads very obscure and cryptic. Was that written by, or translated b=
-y an LLM?
->
-> The way it's phrased makes it a bit hard to digest.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-I really suggest we first write in plain, imperfect English and then
-use an LLM to refine it.
-
-A direct translation can sometimes make it very hard for readers to
-understand.
-
-I think I share the same native language as Chengfeng, but I still
-find this email difficult to read.
-
->
-> >
-> > The intended hot path is:
-> >
-> >   mincore()
-> >     -> walk_page_range()
-> >        -> mincore_pte_range()
-> >
-> > The main metric is mincore_ns_per_1k_pages, lower is better.  It is the
-> > wall-clock time spent in the mincore() scan, normalized by the number o=
-f pages
-> > covered by the range and reported as nanoseconds per 1000 pages scanned=
-.
-> >
-> > As a release-level starting point, the matched-PREEMPT 1/2/4 CPU bridge=
- below
-> > uses original release kernels, QEMU direct boot, 9 repetitions, coverag=
-e
-> > disabled, and the same CONFIG_ADVISE_SYSCALLS setup:
-
-Sometimes QEMU produces highly distorted performance numbers.
-better to re-test on physical CPUs.
-
-> >
-> >   scenario: no_thp_pte_scan_64m
-> >   metric:   mincore_ns_per_1k_pages, lower is better
-> >
-> >   CPU   v6.12.77   v6.18.19   v6.19.9    v7.0.9
-> >   1     12827.667  15677.444  16482.667  16726.333
-> >   2     13628.444  16102.333  18256.889  17270.333
-> >   4     13798.222  16739.333  18892.111  17068.222
->
-> Okay, so we see two steps of "degradation". I assume this code is so perf=
-ormance
-> sensitive that even compiler changes might easily affect it. Because all =
-we do
-> is scan page tables for present entries.
->
-> The mincore optimization went into v6.16.
->
-> >
-> > This shows cumulative cost relative to v6.12 in the primary 1/2/4 CPU m=
-atrix.
-> > I also reran the 8CPU/16CPU release-level bridge on the same scenario. =
- These
-> > rows show the same general direction, but the shared lab was busy durin=
-g this
-> > rerun and the high-CPU rows have higher CV, so I include them as extend=
-ed
-> > context only:
-> >
-> >   CPU/mem     v6.12.77   v6.18.19   v6.19.9    v7.0.9
-> >   8/16 GiB    17251.889  23335.556  21863.556  21664.778
-> >   16/32 GiB   16697.333  21428.333  21629.778  21628.333
->
-> I don't think measuring concurrency here really makes a lot of sense.
->
-> Especially, as it's becoming a rather weird, unrealistic micro-benchmark =
-that way.
-
-I'm not sure multithreading is involved here, since the reproducer
-is single-threaded:
-
-https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/blob/main/m=
-incore-present-pte-scan/reproducer/mincore_present_pte_scan.c
-
->
-> >
-> > The 16CPU rerun had two QEMU returncode-139 failures in the original 36=
--run
-> > matrix; I filled the missing v6.12/v6.18 samples with a clean two-run
-> > supplement.  I therefore use the high-CPU rows as context for the relea=
-se
-> > bridge, not as part of the primary matrix.
-> >
-> > Follow-up release-ladder and A/B testing narrowed the main step to the
-> > v6.15 -> v6.16 window.  The strongest suspect is:
-> >
-> >   4df65651f7075 ("mm: mincore: use pte_batch_hint() to batch process la=
-rge folios")
-> >
-> > That patch improved the mTHP/large-folio case, but in this base-page re=
-sident
-> > PTE scan I see a sizeable cost.  The original commit message mentioned =
-that
-> > base pages did not show an obvious regression, so this may simply be a
-> > different x86/base-page corner than the original arm64/mTHP test.
->
-> Okay, so it is on x86 then?
->
-> On x86, pte_batch_hint() is hard-coded at 1, so the expectation is that t=
-he loop
-> and everything should get completely optimized out.
->
-> >
-> > For the v6.16 introduction-window A/B, all rows below are lab QEMU dire=
-ct boot,
-> > 9 repetitions, coverage disabled, same PREEMPT and CONFIG_ADVISE_SYSCAL=
-LS
-> > setup.  The 1/2/4 CPU rows are the primary matrix; the 8CPU/16GiB and
-> > 16CPU/32GiB rows are the high-CPU follow-up:
-
-I don=E2=80=99t really understand what the =E2=80=9Cprimary matrix=E2=80=9D=
- is, or what
-=E2=80=9Chigh-CPU=E2=80=9D means.
-
-> >
-> >   scenario: no_thp_pte_scan_64m
-> >   metric:   mincore_ns_per_1k_pages, lower is better
-> >
-> >   CPU/mem     v6.15      v6.16      v6.16 batch<=3D1 fastpath   v6.16 n=
-obatch
-> >   1           12946.889  17117.667        14560.556              13843.=
-222
-> >   2           15053.111  18214.667        15714.778              14270.=
-556
-> >   4           14942.000  18338.222        14397.889              14719.=
-667
-> >   8/16 GiB    15046.444  17540.222        13696.333              13200.=
-000
-> >   16/32 GiB   14674.111  18928.889        13949.000              15351.=
-111
-> >
-> > The high-CPU matrix completed 72/72 with all_cpu_match=3Dtrue,
-> > any_noapic=3Dfalse, all_autorun_exit0=3Dtrue, and all_semantic_ok=3Dtru=
-e.  One v6.15
-> > 16CPU timing sample in the main matrix was an obvious outlier, so the 1=
-6/32 GiB
-> > v6.15 value above uses a clean v6.15-only 9-repeat supplement.
-> >
-> > I also ran ftrace attribution on the same path as mechanism evidence, n=
-ot as
-> > clean timing.  In that run, v6.16 original had a higher mincore_pte_ran=
-ge
-> > average than v6.15, v6.16-nobatch, and the batch<=3D1 fastpath:
-> >
-> >   kernel                       mincore_pte_range avg_us
-> >   v6.15-mainline-preempt       6.040
-> >   v6.16-mainline-preempt       7.899
-> >   v6.16-mainline-nobatch       6.031
-> >   v6.16-mainline-fastpath      6.103
-> >
-> > The smaller batch<=3D1 fastpath helped, but later v6.18 testing suggest=
-ed the
-> > remaining cost was more about the hot present-PTE branch layout.  The c=
-andidate
-> > shape I tested is to check pte_present() first, while keeping pte_batch=
-_hint()
-> > for batch > 1:
-> >
-> >   if (pte_present(pte)) {
-> >           batch =3D pte_batch_hint(ptep, pte);
-> >           if (batch > 1)
-> >                   fill vec[0..step-1];
-> >           else
-> >                   *vec =3D 1;
-> >   } else if (pte_none(pte) || pte_is_marker(pte)) {
-> >           __mincore_unmapped_range(...);
-> >   } else {
-> >           mincore_swap(...);
-> >   }
-> >
-> > On x86, pte_batch_hint() defaults to 1, so this mainly measures the
-> > resident-PTE hot path layout.  On arm64 the batch > 1 path should still=
- be
-> > preserved, but I have not validated mTHP/contiguous-PTE performance yet=
-.
-
-Is the performance improvement mainly because the tested PTEs are always
-present, so some conditional branches are avoided by the patch:
-https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/blob/main/m=
-incore-present-pte-scan/patches/mincore-present-first-fastpath-rfc.patch
-
-It looks like the gain does not come from fixing an actual issue in
-the existing logic in any case.
-
-> >
-> > The v6.18 confirmation A/B.  The 1/2/4 CPU rows are the primary matrix;=
- the
-> > 8CPU/16GiB and 16CPU/32GiB rows are the high-CPU follow-up.  All rows u=
-se the
-> > same no-THP scenario, 9 repetitions, and coverage disabled:
->
->
-> Which compiler are you using?
->
-> The expectation is that the whole code would get optimized on x86 such th=
-at the
-> behavior is just like before.
-
-yes.
-Likely due to QEMU behavior and some compiler-related effects.
-
-Best Regards
-Barry
 
