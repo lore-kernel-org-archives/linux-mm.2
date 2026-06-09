@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0F0CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C53FECD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 511816B011C; Tue,  9 Jun 2026 15:17:06 -0400 (EDT)
+	id 363816B011E; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E8836B011E; Tue,  9 Jun 2026 15:17:06 -0400 (EDT)
+	id 33B056B0120; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FE8B6B011F; Tue,  9 Jun 2026 15:17:06 -0400 (EDT)
+	id 250D86B0121; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F6136B011C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDA4F165023
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:05 +0000 (UTC)
-X-FDA: 84861332010.12.8E8D626
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2FB8620008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ln4G1iif;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 157506B011E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D04A91A074E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:11 +0000 (UTC)
+X-FDA: 84861332262.22.84343EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1CBDC160007
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMBuXHKj;
+	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032624;
+	s=arc-20220608; t=1781032630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=umeS9rSQGXG+kg9FrmoD3TXShidPIQhNP8+xWx74Hs8=;
-	b=akd96fTEJrGhR19a8iUtetP037fIhpVMIG0NBgcYgryvglBy5rYpeUcQmlJykYzqq2GBjz
-	sGogQyOxliVgeNEuP9wP4OgM5iKo4CNWodMdZsQ2d2CGWbb8CUMuBUxdYWy4cH+TGbesJZ
-	91VIpsa/iWzCe5ztOxDLh+9cw6NXpp8=
+	bh=WOpj7e1Nhzq+smZTE7xHDrYEYXBQOG4Wg4O9/mQv0/U=;
+	b=IrozAtNxesqV3cyTFWaiUB5qwmZ2chRqOyfRE77exrFXyN48kqP4qs4iV5/cszjBPsXQEL
+	kx7Tp4VZyYNevLf/g8+Qn6f+Rs1o1MX4SfDOkf1vpf7XBGxxVUe3GebQc1WeispJNkPIuc
+	tQJFQ3waqYVbrOUg75uMpxz7NKfCH+o=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ln4G1iif;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMBuXHKj;
+	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032624;
-	b=BfBacenuwXmGoBUqi1UU3rW4Xx2h0Qy2lc1dnZItmRrUsSlsO3f8OGQMZpVtSx5VVUMc8S
-	qnRhxsgIjMAL4v+3cbMxiUCcxXCB1PN6ueAKN0gUrcvHOsHQDgnbJt0D6zXrb+q4DkoBAY
-	7Lio3Q7pommPxCdEH0Vw7nZuAd+1QF4=
+	t=1781032630;
+	b=vZr2z2tAo0A8/H9HKYteThFc1tO+ICxjY9bfvNs2S1q684qCakvntfNHMX+2JYp+moAUa4
+	6I4/k4SZnc5X5dEuWioCj7/FRHJlTb8CeL4DzYonoGYT8FWJRwBLmIUMzsjmFWaN/UQe4M
+	ucdrSIVlerQ/4OMXnTB2K8hmLI8Yt3A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B522F602D1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D442405B4;
+	Tue,  9 Jun 2026 19:17:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36D1F00893;
 	Tue,  9 Jun 2026 19:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387E71F0089A;
-	Tue,  9 Jun 2026 19:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032623;
-	bh=umeS9rSQGXG+kg9FrmoD3TXShidPIQhNP8+xWx74Hs8=;
+	s=k20260515; t=1781032629;
+	bh=WOpj7e1Nhzq+smZTE7xHDrYEYXBQOG4Wg4O9/mQv0/U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ln4G1iifeGEWneCXz36TrX17jEw24VQfjkiYMflm5rTiRv+zy/knoxB8xHHVS5WE2
-	 NHACg8+KORXckGrd+3swtQYGvjFt/Bun0rrRKsvOCwuLZ9vcsyn9SP8+f2zIQK+i14
-	 gRL9NebxrpbEKYpduWvdDoEX4tayxg/lX5D5p55PgwFfsQabdy47tBoHDSLf12UFbY
-	 SEfSN/O9lj/CTOlCQdRTxYgbzJYxIXcTnp9zV6MR9LyFJTYskw2lo3Hm3DmWxkG+fw
-	 NvdaVeMUaefgcNsgT0DVQ60raX2nPJ0LhBGjHCM9V3nMt8FDGPJ1wWxlBraQ6HEkBD
-	 0mKxdmgJ00z4A==
+	b=dMBuXHKj7RBMnrn8vqr8h9A0cqlKkwuGkdYwYlk5HTqvGLjz5KyjqENj1lJ0wBl6c
+	 67Koi+t68S/qgWgzIaTGps9fGoTf+rEnGeetWs2XB4tLee1Q29kYYzFkRNke9lZ7TG
+	 F2LfbPPnohHoYTJmZxkiXkyIFiUVquvh/atI+hSocOxWAgUREe7//Ydi6jmh+0ZBz9
+	 aaSV208dDkez7DyZrzCT1tqrZCdkDFqlfLSQ/puHn434pX159mMhJdG98G5JAAkhEf
+	 U/kbPDSxMX7Vz8z/PRNLH2V+XO/7a6gbfCKFZQr2d4k7tQiqyQklJ43UbLiFX3VyS2
+	 k+Z8/7PoKuN9Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:05 +0200
-Subject: [PATCH v2 26/83] block: rust: change sector type from usize to u64
+Date: Tue, 09 Jun 2026 21:08:20 +0200
+Subject: [PATCH v2 41/83] block: rust: introduce `kernel::block::error`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-26-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-41-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8857; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=v0XQhwyOc620vsCHIPz3I6cOTlfWRB5GqFO9hLn8R5k=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTMD0m8HIb02rdULtOHdHfQabhQNf3AvX2lP
- d4k2ie8Ml6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkzAAKCRD6UCkIqsW9
- 0DoXEACElQZIRs2ATiX3r5JUC1LZWpwkeycYVxgmZiH95ILTB6Vo8aNShxNEGxNIX6iLJyN8g3e
- /7+Zy/eDbFG0rdcuAmp4g2zxNhdMCkniFPEx4HueAgAsD5ODQdTD8gD7/+kSz4s7s8SopZEsq3j
- GDkOd0as0fJqfOscklxZ5+IzLMt1r+G4Ir/RMFzV/0c67wWdXDJQOF764/vzGab5ptBGvNpSiyk
- KTog832s4Sb5kVjc0fCU3W2JbZyvmYteFCxX/qdWFkHmNsAdmOMzBtS+Da3ka8yRck0BSlmOiC8
- sEpN364gTrW4uPxZNnUXGGHQ4z87EDUXbzIjikzmNqj9MwVEHBvqHD5EU6y4RLXpa4RohOR3oTc
- 34UmtfhVsp/a2UgjKCkSyQNt8vlpC1Guh+Pj3/Hse6EnO/ZPudSgZuoaRLCiXQGcJ5im+ChuUbK
- Lv4kup8LjfrA6C0HIBuWQDQ7j+8RK0oSqu/lcH8g7ToP3yY9gNvOYUsEJwyANWdaY/QfwwMR/Af
- qYHmqO11qROCmvxB64tjPfaKuq8zsG9WWPKZdKnR0VWMNtAIztfuwXraXOQ8MmSllcaRTJ6dcxA
- JgyOpET+kgIEnvZfEK6vWb9G0iPTYsTfB3mXk3oreP58i5jXbXltXyJfMLRsMHq+oDaD+HedqIi
- xAa6WY4KstRaB2w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4552; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=NIOSFhSPNxZhzeKeGIxP5rwZxvn86AQcjaih/HmSERI=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTZOFzdFIMSshGFudWmfHLuQiMwx6tHAFLj3
+ aRHUI8FQHSJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk2QAKCRD6UCkIqsW9
+ 0MT5D/49nDByyphJs16CpsUBJQfuY/Jfg9V9KHly+Mo6HIhh2UrcaH1n80P875Kyz0m+sNCeXu1
+ B/QAaoAb35Y/RULsjofHll4JlMDxuYjoE4lppDLn0F2aa5Kz1P9ujoe0arE+dGAh8dxKYicCUSC
+ /Q/Iem7dwXnhJSx0gscIiB8w24DN8yA1YqRDuwAMxLKos2HweBg4PqdPbe9IrSdQXlSAATUsDFl
+ DtmKEDrI1hfdNsZU+GPNc7c42c+RLfo8kQRrwMZOlg4c/eXjL9wlaWN1ZnD/nsmlYXO5x7cXqzg
+ 5wET2xLrgxkTFlgvYWJRW/TN6kvOyZhCgEAyIIQ2WFthIPzYwJbrVkKldHIfxyxZdlAaL4HaVcp
+ DHnO57hsHbvg0aacNhmxK2VkUhax27Rc2Jl1NNpCGUJNcmmFw9XukCn6G2tP8eZZ6ZTOW68OiPF
+ wPW/eB21y1mFa8CP4kXQPHuPPy77RLx3UswOMpYdPhvzZD4dYsCBVnTBFYr3ZdD6+kFJMRE5fII
+ 8G1eQ2BbBZyhxr/TleLh8MGjjYH9mC9g27dZ7Wfms2y5thH0c0bhyYAW390TAQq7DGsNQmSuiCh
+ suf9YEpWUTCcDoJZrvOngWRV6dCPk4KLyjNHSaWoVeVcTzs7mf6u9V3caF9/5j9yB4GMGxrnAO/
+ rVeZt73bEmgtG0A==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 2FB8620008
-X-Stat-Signature: rrn9mcncoh4o17673ftehtah3sj3inrb
+X-Rspamd-Queue-Id: 1CBDC160007
+X-Stat-Signature: jiknt1zub6xrtt8ghao9pmt3n5yh5pme
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1781032624-914542
-X-HE-Meta: U2FsdGVkX19/q38BoXUTTHycq8tu93tB8DPCCWLNSB1feDMni7fy161j6RJDdCXInLnsRjyTjIOVFMk820o/JLDh0OXo4Q1kbd79eHrt11kk/V2yaS48CpiBCiCkqZA56YrPMPQiENFju/qb3DmKRSJIZFCID1Lix1FWcMBCnxeYi5xawV9t3IoOiLILJvissgctBGvDsj79AfNeIU2Iy4VhQHD8tLmpuaKoxWrm1JL7bcD/aPuJ5XqF3+NWyIixfI4Y/qCn0EjOrvOTfERAOKhANRDSFQWDKFIW0/TtkGQsl8nJISGxnMV+ZizneAfcXEZwXuKb4q+Vnymj7++T/gCXUQjvBvUrNFU8LwJ1z9JcuGM154YZWieoADQaBkNtKeChg3f/5yRGRppFZbL3fcyZ0jrrdfVq+xLmO+L0GQQZNfDGchKyUtM4RsZ9izjLxWF9XlBrH1sOWpf7GeP9m011WovpBbmjQUVas819JM3q4cvGMqt07cQ2HAsSyMnOb52NkO7BMcCqureJ9qVsCe9kl2MuW3hC2fKuFzc7NH+QFenSnWulZl2x1DF/9nIe3pGn9KtAkSw5UyyfD0c3z51CEKU0MHC0b1AFcxmYC8EQdYQkVB9S/Bq0wbROOBkD5maAJqUqPu43ENHMVsk4myvSHxV8N8aR2hSW5bKD+vH4RudWTz5IzXrbwy9LmiL6n4kX7t41U6yQUWcoRM3ma3hqIW4/C62i47hfDRFm3NRpsJspdrEO1nTLR/KWLyPb53D6TKv/TJELl/qAAMqVtAPm2KWbtmAiASsS65S4g+Pv3BlBhUzfb4FugwztKtUaDMSHncoWkcrP+H8cayxELkcf8/v21XQDDjpEGI6ZXyMTwkPnCkkZyzaDrhCt6fZVTuE5JMsGpif0+HmEA7M8ZvKDgMPnW4jqQtPoexi08nSykswEq7w4u8ppcTdR5b5HKOe5RP8afCdc1NosU1Y
- 99zA77av
- L7vb/ilEFgQzCzlEYRh7a/g/TvyxhP7aI/OjJD0Wi9pJfYAh048ALU4zpGgzbABTv/eOlvJiXH/Tr6Q9v4/nS0jDqugAWnN2iz5pIHtCdtFm/jeSbOiV2du+JfWh7qY+p6xKmaMXc5PYQG47BAcbiMYGVGlQe65/iUTyRgxrBGERezskqQHyhQVqXfKuWOiiwSPfy8lDb9bASbRlDXTJLb7ItS3dL6DU26cofE7pPAweqAvrF9V7fdr1YofRyXDbChkaoqkAM9trbBfZ7jkMd+KooqM852NGvMEp8TMdnWpi6rMHrNOI5bSuU4vcDpkY+76Qp
+X-HE-Tag: 1781032629-277220
+X-HE-Meta: U2FsdGVkX1+IxWy32OwqkgDovtX2XyNkHbZyqK/rlT+gY9CsgHyxDUaw11eLJP3q58Wrv4w+ro3B4xfOkHAzJSE6dAGOT0SWcVeWmpu8N9jRjp2oh46Xl7CmLuzIRwdwvWm5qj8cboVuHWnpjQ7YVmyavWrxpoCt5AOLxfCZD5LB27MQj6f9yVXoz62dV7UswUi19W1UcJXeapK3baT+Mg1EckWJNLBQ5D9xfgCdWYyK9X/SA64Wkx7qSX3lN4xDeAEA5wZezeK8O4UoGusgP/9QgRWL56DmySKlWSTRONlsconD+jiZPbXihiFUOi/fZYSq4qtlG4aeJvdKUsGBiPrGvEzwrg/T56v5SCc3+ctfs07PvwgOkFCn59m1kIXHWjxycYX/nAK8IRUV425nLW7U3Z3lU3dxN3GxAs/b4V0hh8asFp8UMSfRQT3augcNQ+m+76SFHvKRqpWH0uxpbkONjuyNESHw0ShCTtuaw9tVJFgJCb50U2IVrIl0gGk3GfOM796uQq19bmdmJpS6YQUoXwfVNbB38Tc0TlyeyliiuM0G2Zdi5hMxzYBc2vEGzRT5qIxmaF4PNxtHfByCfPApuYKh4QnMcJgIauFuX4j7f575YcNAdw0sWkcAMz9FT+5rtgjvCfOnB5/HWfbYXxy7zmLy+jvscrTEbzsvTDoofWbXhKTeejbQ6/zLkHNDgHQhun0LGUT2+gcbAuapdqLusrF5xK/eSs16FFMT1wXMQMvgi/k9hl4k11+2x5upxqAroc+CBKBs9YWV5CUWqad9Zefn8h188fPZtKBQFy6wIjsSuwlpfftCS4+WcO3WcO+btVJEJ2URzHH4fgLPBLciS8Ed9OQvuh7QiOPxbTEyg/QGLRgvaoehzbV4xvKfz117svomrzb8ax5418M1bNIAz2GYiQzbjWGWiUTMHHKe3QhpTR/oYkY2t6HaHK868xfkqXkTFTmo11JlOto
+ jlrB9jVY
+ 2ETYyNISkpZbuGl90TzoF7fIPl3Pp1W3Fqi51GPtMH4dQBycqz/S2ZPfqiDhrxtZAKnj7xCMEx9ronMOImsckp0wpZRymkzraVq1r3/s9/oXWbnP2ZucOavl4t/tdt+0x/fjfu99sVVH4SeW1nGCXlJRhN0VzqYVWOXI05fzYItE7Uia2qNQGDN+UoWBmk9/IDoNLO62YU/Yf02PjkoyKL1O06nvDnlIJUSXC8oIFRyjJhZG8LOZ9LF1zDCHL/yVrtDfOn3QRAbHrp6LDpdybEdacIeXzXCXuhEFJ4k3AJDdlvyAuB1GCLf0ICkLZPQ4NVUSViag5nSC9uBSj2m9hygVR6UBnrT8ovzCYcrDDdk3+HWo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,214 +122,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Change the `sector()` and `sectors()` methods in `Request` to return
-`u64` and `u32` respectively instead of `usize`. This matches the
-underlying kernel types.
+Block layer status codes, represented by `blk_status_t`, are only one
+byte. This is different from the general kernel error codes.
 
-Update rnull driver to handle the new sector types with appropriate
-casting throughout the read, write, and discard operations.
+Add `BlkError` and `BlkResult` to handle these status codes.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs    | 71 +++++++++++++++++++++++++----------------
- rust/kernel/block/mq/request.rs |  8 ++---
- 2 files changed, 47 insertions(+), 32 deletions(-)
+ rust/kernel/block.rs | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs |  3 +-
+ 2 files changed, 96 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index cb5b642f68e5..73f14d6e379f 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -218,6 +218,13 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             kernel::alloc::NumaNode::new(home_node)?
-         };
- 
-+        let capacity_sectors = capacity_mib << (20 - block::SECTOR_SHIFT);
+diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+index 96e48a2e6116..b3578f28871a 100644
+--- a/rust/kernel/block.rs
++++ b/rust/kernel/block.rs
+@@ -18,3 +18,97 @@
+ /// The difference between the size of a page and the size of a sector,
+ /// expressed as a power of two.
+ pub const PAGE_SECTORS_SHIFT: u32 = bindings::PAGE_SECTORS_SHIFT;
 +
-+        // Prevent overflow in usize/u64 casts
-+        if usize::BITS == 32 && capacity_sectors > u32::MAX.into() {
-+            return Err(code::EINVAL);
++pub mod error {
++    //! Block layer errors.
++
++    use core::num::NonZeroU8;
++
++    pub mod code {
++        //! C compatible error codes for the block subsystem.
++        macro_rules! declare_err {
++            ($err:tt $(,)? $($doc:expr),+) => {
++                $(
++                    #[doc = $doc]
++                )*
++                    pub const $err: super::BlkError =
++                    match super::BlkError::try_from_blk_status(crate::bindings::$err as u8) {
++                        Some(err) => err,
++                        None => panic!("Invalid errno in `declare_err!`"),
++                    };
++            };
 +        }
 +
-         let tagset = Arc::pin_init(
-             TagSet::new(submit_queues, 256, 1, numa_node, flags),
-             GFP_KERNEL,
-@@ -229,13 +236,13 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-                 irq_mode,
-                 completion_time,
-                 memory_backed,
--                block_size: block_size as usize,
-+                block_size: block_size.into(),
-             }),
-             GFP_KERNEL,
-         )?;
- 
-         let mut builder = gen_disk::GenDiskBuilder::new()
--            .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
-+            .capacity_sectors(capacity_sectors)
-             .logical_block_size(block_size)?
-             .physical_block_size(block_size)?
-             .rotational(rotational);
-@@ -250,12 +257,13 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-     }
- 
-     #[inline(always)]
--    fn write(tree: &XArray<TreeNode>, mut sector: usize, mut segment: Segment<'_>) -> Result {
-+    fn write(tree: &XArray<TreeNode>, mut sector: u64, mut segment: Segment<'_>) -> Result {
-         while !segment.is_empty() {
-             let page = NullBlockPage::new()?;
-             let mut tree = tree.lock();
- 
--            let page_idx = sector >> block::PAGE_SECTORS_SHIFT;
-+            // CAST: Device size limited during setup to (2^32)-1 on 32 bit systems.
-+            let page_idx = (sector >> block::PAGE_SECTORS_SHIFT) as usize;
- 
-             let page = if let Some(page) = tree.get_mut(page_idx) {
-                 page
-@@ -265,43 +273,50 @@ fn write(tree: &XArray<TreeNode>, mut sector: usize, mut segment: Segment<'_>) -
-             };
- 
-             page.set_occupied(sector);
--            let page_offset = (sector & block::PAGE_SECTOR_MASK as usize) << block::SECTOR_SHIFT;
--            sector +=
--                segment.copy_to_page(page.page.as_pin_mut(), page_offset) >> block::SECTOR_SHIFT;
++        declare_err!(BLK_STS_NOTSUPP, "Operation not supported.");
++        declare_err!(BLK_STS_IOERR, "Generic IO error.");
++        declare_err!(BLK_STS_DEV_RESOURCE, "Device resource busy. Retry later.");
++    }
 +
-+            // CAST: Page offset always fits in 32 bits.
-+            let page_offset =
-+                ((sector & u64::from(block::PAGE_SECTOR_MASK)) << block::SECTOR_SHIFT) as usize;
++    /// A wrapper around a 1 byte block layer error code.
++    #[derive(Clone, Copy, PartialEq, Eq)]
++    pub struct BlkError(NonZeroU8);
 +
-+            // CAST: Casting from `usize` to `u64` never overflows.
-+            sector += segment.copy_to_page(page.page.as_pin_mut(), page_offset) as u64
-+                >> block::SECTOR_SHIFT;
-         }
-         Ok(())
-     }
- 
-     #[inline(always)]
--    fn read(tree: &XArray<TreeNode>, mut sector: usize, mut segment: Segment<'_>) -> Result {
-+    fn read(tree: &XArray<TreeNode>, mut sector: u64, mut segment: Segment<'_>) -> Result {
-         let tree = tree.lock();
- 
-         while !segment.is_empty() {
--            let idx = sector >> block::PAGE_SECTORS_SHIFT;
-+            // CAST: Device size limited during setup to (2^32)-1 on 32 bit systems.
-+            let page_idx = (sector >> block::PAGE_SECTORS_SHIFT) as usize;
- 
--            if let Some(page) = tree.get(idx) {
-+            if let Some(page) = tree.get(page_idx) {
-+                // CAST: Page offset always fits in 32 bits.
-                 let page_offset =
--                    (sector & block::PAGE_SECTOR_MASK as usize) << block::SECTOR_SHIFT;
--                sector += segment.copy_from_page(&page.page, page_offset) >> block::SECTOR_SHIFT;
-+                    ((sector & u64::from(block::PAGE_SECTOR_MASK)) << block::SECTOR_SHIFT) as usize;
++    impl BlkError {
++        /// Create a [`BlkError`] from a `blk_status_t`.
++        ///
++        /// If the code is not know, this function will warn and return [`code::BLK_STS_IOERR`].
++        pub fn from_blk_status(status: bindings::blk_status_t) -> Self {
++            if let Some(error) = Self::try_from_blk_status(status) {
++                error
++            } else {
++                kernel::pr_warn!("Attempted to create `BlkError` from invalid value");
++                code::BLK_STS_IOERR
++            }
++        }
 +
-+                // CAST: Casting from `usize` to `u64` never overflows.
-+                sector +=
-+                    segment.copy_from_page(&page.page, page_offset) as u64 >> block::SECTOR_SHIFT;
-             } else {
--                sector += segment.zero_page() >> block::SECTOR_SHIFT;
-+                // CAST: Casting from `usize` to `u64` never overflows.
-+                sector += segment.zero_page() as u64 >> block::SECTOR_SHIFT;
-             }
-         }
- 
-         Ok(())
++        /// Convert `Self` to the underlying type.
++        pub fn to_blk_status(self) -> bindings::blk_status_t {
++            self.0.into()
++        }
++
++        /// Try to create a `Self` form a `blk_status_t`.
++        ///
++        /// Returns `None` if the conversion fails.
++        const fn try_from_blk_status(errno: bindings::blk_status_t) -> Option<Self> {
++            if errno == 0 {
++                None
++            } else {
++                Some(BlkError(
++                    // SAFETY: We just checked that `errno`is nonzero.
++                    unsafe { NonZeroU8::new_unchecked(errno) },
++                ))
++            }
++        }
++    }
++
++    impl From<BlkError> for u8 {
++        fn from(value: BlkError) -> Self {
++            value.0.into()
++        }
++    }
++
++    impl From<BlkError> for u32 {
++        fn from(value: BlkError) -> Self {
++            let value: u8 = value.0.into();
++            value.into()
++        }
++    }
++
++    impl From<kernel::error::Error> for BlkError {
++        fn from(_value: kernel::error::Error) -> Self {
++            code::BLK_STS_IOERR
++        }
++    }
++
++    /// A result with a [`BlkError`] error type.
++    pub type BlkResult<T = ()> = Result<T, BlkError>;
++
++    /// Convert a `blk_status_t` to a `BlkResult`.
++    pub fn to_result(status: bindings::blk_status_t) -> BlkResult {
++        if status == bindings::BLK_STS_OK {
++            Ok(())
++        } else {
++            Err(BlkError::from_blk_status(status))
++        }
++    }
++}
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 05cf869ac090..6dd14a72526f 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -163,8 +163,9 @@ pub fn to_errno(self) -> crate::ffi::c_int {
+         self.0.get()
      }
  
--    fn discard(
--        tree: &XArray<TreeNode>,
--        mut sector: usize,
--        sectors: usize,
--        block_size: usize,
--    ) -> Result {
-+    fn discard(tree: &XArray<TreeNode>, mut sector: u64, sectors: u64, block_size: u64) -> Result {
-         let mut remaining_bytes = sectors << SECTOR_SHIFT;
-         let mut tree = tree.lock();
- 
-         while remaining_bytes > 0 {
--            let page_idx = sector >> block::PAGE_SECTORS_SHIFT;
-+            // CAST: Device size limited during setup to (2^32)-1 on 32 bit systems.
-+            let page_idx = (sector >> block::PAGE_SECTORS_SHIFT) as usize;
-             let mut remove = false;
-             if let Some(page) = tree.get_mut(page_idx) {
-                 page.set_free(sector);
-@@ -326,7 +341,7 @@ fn discard(
-     fn transfer(
-         command: bindings::req_op,
-         tree: &XArray<TreeNode>,
--        sector: usize,
-+        sector: u64,
-         segment: Segment<'_>,
-     ) -> Result {
-         match command {
-@@ -356,13 +371,13 @@ fn new() -> Result<KBox<Self>> {
-         )?)
++    /// Convert a generic kernel error to a block layer error.
+     #[cfg(CONFIG_BLOCK)]
+-    pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
++    pub fn to_blk_status(self) -> bindings::blk_status_t {
+         // SAFETY: `self.0` is a valid error due to its invariant.
+         unsafe { bindings::errno_to_blk_status(self.0.get()) }
      }
- 
--    fn set_occupied(&mut self, sector: usize) {
--        let idx = sector & PAGE_SECTOR_MASK as usize;
-+    fn set_occupied(&mut self, sector: u64) {
-+        let idx = sector & u64::from(PAGE_SECTOR_MASK);
-         self.status |= 1 << idx;
-     }
- 
--    fn set_free(&mut self, sector: usize) {
--        let idx = sector & PAGE_SECTOR_MASK as usize;
-+    fn set_free(&mut self, sector: u64) {
-+        let idx = sector & u64::from(PAGE_SECTOR_MASK);
-         self.status &= !(1 << idx);
-     }
- 
-@@ -380,7 +395,7 @@ struct QueueData {
-     irq_mode: IRQMode,
-     completion_time: Delta,
-     memory_backed: bool,
--    block_size: usize,
-+    block_size: u64,
- }
- 
- #[pin_data]
-@@ -432,14 +447,14 @@ fn queue_rq(
-             let mut sector = rq.sector();
- 
-             if command == bindings::req_op_REQ_OP_DISCARD {
--                Self::discard(tree, sector, rq.sectors(), queue_data.block_size)?;
-+                Self::discard(tree, sector, rq.sectors().into(), queue_data.block_size)?;
-             } else {
-                 for bio in rq.bio_iter_mut() {
-                     let segment_iter = bio.segment_iter();
-                     for segment in segment_iter {
-                         let length = segment.len();
-                         Self::transfer(command, tree, sector, segment)?;
--                        sector += length as usize >> block::SECTOR_SHIFT;
-+                        sector += u64::from(length) >> block::SECTOR_SHIFT;
-                     }
-                 }
-             }
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 54fe580b7b42..9e176f015ab8 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -178,16 +178,16 @@ pub fn bio_iter_mut<'a>(self: &'a mut Owned<Self>) -> BioIterator<'a> {
- 
-     /// Get the target sector for the request.
-     #[inline(always)]
--    pub fn sector(&self) -> usize {
-+    pub fn sector(&self) -> u64 {
-         // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
--        unsafe { (*self.0.get()).__sector as usize }
-+        unsafe { (*self.0.get()).__sector }
-     }
- 
-     /// Get the size of the request in number of sectors.
-     #[inline(always)]
--    pub fn sectors(&self) -> usize {
-+    pub fn sectors(&self) -> u32 {
-         // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
--        (unsafe { (*self.0.get()).__data_len as usize }) >> crate::block::SECTOR_SHIFT
-+        (unsafe { (*self.0.get()).__data_len }) >> crate::block::SECTOR_SHIFT
-     }
- 
-     /// Return a pointer to the [`RequestDataWrapper`] stored in the private area
 
 -- 
 2.51.2
