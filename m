@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C9ADCD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15714CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 843EB6B00FD; Tue,  9 Jun 2026 15:15:35 -0400 (EDT)
+	id 6951B6B00FF; Tue,  9 Jun 2026 15:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A466B00FF; Tue,  9 Jun 2026 15:15:35 -0400 (EDT)
+	id 66C916B0101; Tue,  9 Jun 2026 15:15:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7308E6B0100; Tue,  9 Jun 2026 15:15:35 -0400 (EDT)
+	id 55C236B0102; Tue,  9 Jun 2026 15:15:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F6866B00FD
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:15:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0524A91552
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:34 +0000 (UTC)
-X-FDA: 84861328230.17.140B186
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 44DC3160017
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l88p8bP6;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 456316B00FF
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:15:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09C1040752
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:41 +0000 (UTC)
+X-FDA: 84861328482.13.C57643C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BEEBA180009
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCNyr4Ju;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032533;
+	s=arc-20220608; t=1781032538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uM6bRZfyW/+v1bt/o770rG+SNBq/AlbWF2/41XM/k+A=;
-	b=k2eE1oepL6U77YWiGUe+0RYOwVUv6OwWYyaUsn+7xnzP9zWdT+Djvf0TY+29qT/Y2MPuUy
-	8qDQf+l4rX8LzcfDczWZzNrxb8H+jjUxoXX5lhu8tbwd2ghAEZdFUAaB0VtdqNpu47OPaW
-	mFszBqVKh9ICKrjH+EnTWg0U3EaTKpU=
+	bh=DQaitxpNA51/3rHHdgAAaeOKOYDYafiFasueOGXY3OQ=;
+	b=1IzoyjkgrCC5SankOwu56Zmudlk4PlubU4TII6YYLmeo/IYdSCH5mDLjGti4lMpy6rQPnv
+	hQIv4P13FDjHO3cHoZNnkigPOTp3Aix8QLbmECFx67o3g372zvDRHKBCJijnR7mEqWnsZq
+	XqGfCKzC2uT25PLnx5knUxZ+tVUK13Y=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l88p8bP6;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XCNyr4Ju;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032533;
-	b=gXu3LL7VytTpL596girJIcC8+1xPp4e+x2wpSpEkPOuo4fVQ/VoLc+b85Q3DW2sQxxX2EF
-	SWOvofor9wrU1WFymFuaE2z1ysVnCUrGKOw4LIUe+V6H68eFPVKaC2Z9TMCRZJl8qaVRTh
-	euJSVaKe2aw+g0tsQHy/DlOMsyqzcD8=
+	t=1781032538;
+	b=dt2eHQFEoryzCAorLVPOZgN3wizuIDOk9WFN1+mjsEuROjPTHwTvjfJHKt/vHadUxF42kd
+	3kNBnfjra1tv5jBgQyzssXfM6iCOiRn0JtO7nJTDgfiF/HdEoQLphwqHyxADnMVS5h9wRn
+	tH7i+wd6MR/YZG5ldXxrlQ56bL9w7cM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7970602CA;
+	by sea.source.kernel.org (Postfix) with ESMTP id ED5D3402AD;
+	Tue,  9 Jun 2026 19:15:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A811F00898;
 	Tue,  9 Jun 2026 19:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61991F00893;
-	Tue,  9 Jun 2026 19:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032532;
-	bh=uM6bRZfyW/+v1bt/o770rG+SNBq/AlbWF2/41XM/k+A=;
+	s=k20260515; t=1781032537;
+	bh=DQaitxpNA51/3rHHdgAAaeOKOYDYafiFasueOGXY3OQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=l88p8bP6SypH1B3G9l7zVj9b/Pcn5qkGcYpYy46zP4wfP8aE311oYvWFaRV4RO94S
-	 oHmeW5e/OcBjzKZ4ITwXpOFOkXKiELIvdD9/6UubvXMlI1Hc36Z/XtHvo7V418iSRM
-	 +LFo1uWgrYARxP6CHGO4I9MOsTIjrOPJq+EDIg5+GQE4u7CVyQe63cGa7E53/G4hH7
-	 cZluIg6rJosMrDFE8puMXRQt6FswTjEzufiFSaL2/1whSv9zpw06WX/3EhmFbQtJmF
-	 Lmdy6b4gbeYjt+NaHpxf/30qFl8rkMv0qKdZ0hQs+K9Nbaq5EBhGu/7pyT5P26nXIb
-	 Nmw2PAcqkkE4A==
+	b=XCNyr4JurIsv41OBXAtAuO/k84pBtoNQEWQ5PF3mC/KuhrTmfNh5K1S/BqKvioNbC
+	 3h/BKwqGFI7MVQWDF3UzHSS7cP83EsnGqPHLzg3uulZr8lkLuF3OJXqPgyQIH29etr
+	 V3Ii4X5e6Q/l1xyPtDiIkSTWSAzFDX9Tbs8NEEiy2YwiYfH2QzHaQGJPJE5SXAdfvJ
+	 lnuZ03AeL8IJyt2sTbfiWzB6vXEal4kxHh40iqhNrd63JQuUlMGQw/GpVSuoBtvq86
+	 oRzljUW8hmoqECP1aptnMXf35hEaFnUJff4mwCOWJU5iIbzAh68yjaymwv0ZMun4Of
+	 UkT9UXb/qIieA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:17 +0200
-Subject: [PATCH v2 38/83] block: rust: introduce an idle type state for
- `Request`
+Date: Tue, 09 Jun 2026 21:08:52 +0200
+Subject: [PATCH v2 73/83] block: rust: add `TagSet::tag_to_rq`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-38-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-73-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,31 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13481;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=e88GUFL7aWGGbG4bgQFnEUpaUQZNG/CxzSPfdvkzNv0=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTXV79hhxFxeQyl4m6URu3O1sAL2/W5HbrDn
- t0kpZ/CGCuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk1wAKCRD6UCkIqsW9
- 0LRcD/9DzJC8KbV9dHlUFIVG30iAFMsShgJ3JYDCft8sbI3kFYTWZ8dDgxFoIb3LNqW0f0+buvy
- SQBiqEjWo5N/X1z8pt8GEISdjmlx65DCP6YzlyOaligEtYRTWb+WsuzpH1QNoZXb/cjZCv1SH5h
- 0VnQs+O+bCv0E2hPnmRs/AszUWrqGhE1zUL45q8RFEP3cr74XC3CD3yYeA/s+3DnaThsgxoB5+e
- tsU+LyHu5aobYPzpXceJq3YMnGyBmMkZEA15DRM6xsCWQaQfeMcmsiY6FLBZZpmSpAHd1zELrqD
- iuB0rADphtTBR48h7NgpLjdZunRG/Ml60tZq0J4lJgIpp2sh4hoefPyLGCRsR9bkmgth7awc3dY
- 49FF42wxvUXgEjVdJK2e+2I13aSxEKnR6Jp1V1DGiUfY/QTjDVSARLVR5JkwuVUyt2k2FkdaHhP
- L9f3jEqZm+tKqFGAXXykd4xPz69V2I4C3MY9gupyaqVxx73oXBxF7lrdYoJkCw68V2+nd4/nC2D
- nc9YMrk2n2+p1Y5Jl0bgmO/2iyHVef+PCJQlMmpNFaxXFZtrT5NFlZkfKiZd3CgccNlAKy6pRmv
- MHEyHDR/euz69oewTesoEzGe4wCb238AKO2qcjUTGdThaoOTAkVUTSONhUyNj/RbQwxcmaQcvKf
- q9CI1PkB0P4i7ww==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4610; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=4OiBFQGmKFx0gHrsLZFCxFqfXlZh7LnoMq7hJUvpKfY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT2zkh/Q8CgSEFyUkKpGV9RCrunuLVdbVgq9
+ vD6EgNAjT2JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk9gAKCRD6UCkIqsW9
+ 0HP4D/wOTaFywqxSb/E8W41kcuSGxbImFnwDDJAFeKlSlQ5jetbEzO3M98Gk6NOpFL8zha+hBPd
+ 5wuvIgS4Gknn6JxldU/yvZl2RUKkZrG15tNNEezVsvzVz2ZmmFQ5JWs+RE+bQ1D6ZtMY7q5kbE9
+ kMIJSK2g7DTFR1kdC1Q1xJ517sy+wq12RlrhepNpA2x8rYLwTsLpIWS1Rxdw0bYH9u6xwSYiWG+
+ qE7CvRB1Z1RylJ1aSURv5iyltcrpqdsRQ7D5s1dVmWENhW/6EodN4WAqkVw9xJpKz3qfHS6v2ec
+ ePTDI3X5aFW+k6HWR1JB7B+D8DaBAUOeqz0pmsU1PBrd8S3QH8+qugx8HU0464yvCnGzruf/STC
+ kuXPhBvxMkT5Wf/X9h0yXeskbKt9gRQBAv3hb7Zfal7kDsdRPh9fQ3M3jT9xdmz0F3JckxEeF2O
+ UV1oI3XcxgWOcGFHWRSHNHITtVjSx9SDDJPiNsSzYdcSZFLZoIJzwxQZXfb5A6Fwr4vQ9d2606X
+ da6Cj6Q0DolEIA2oaxmwNw9xlLMh4Y9Bu93LaBRuoedijwXl7BUOQEi6knVCcJ26Oo9dLoSPzFS
+ Kmt2Gyr7hhKxp50XsSLvbnRXsV0SlXU56U1kgS99dg6iwOXN4KIVKLw8W2b3H7kkB4S3sioYtNQ
+ AoEfd5Rj6pG+HrA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 44DC3160017
-X-Stat-Signature: 6iae1qhufj4xz3it7rqrbfbco74fi9gt
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781032533-926588
-X-HE-Meta: U2FsdGVkX18U3JRh3pdw5uqB9anOYNsxXi+++fFvojHH2+ZS9v8DDqMzEMzPW+g8lcd+fEWZRw/rJDdjboO6ecK6jbAH0WDWjlAJQFc9BknGy8TXVsL/ZNDkDVxttUIEuAgGMMHwUP3jE+AJ97MOEfX3csiODnsjP0z7xCUrxu2wWm5ldWSZO6LHKyRCWujRtj72SEOkP9EhMxoA7fS+9Xl2UDoo9OuSZ6f1HQL8g0f5XpfXfgVdMlepaBkWv4CGxwi3TCCzodJuyIGUib8XX588vdo1hN0SNq8eu2pvBfzNnuVQTbJSh10IDPZUnQGeCQgfHgcMp3Xy8KCAp67Jg08t1XSALSpSAq4CJ5MFygp/8WAfBjigJnBko2/gJsI+Lal6OxxdzvADlbArrIsE2nhi4DregmrUXedzf2NB0B4JSIIwJ5WTmaAqQWrbyeL/Yh9vg/wQLq5VBfTivBq/nMVXvc5eQSNuVSKv+yOabNp8vZEggcjscPdOJlDYKUEym1sFYTPoNnbWqA0a1UmwTmpa4D3ihp9D2DtNFRzrGx6G6MU7fjfJgdg9soHm13fZF4lJ5MfYdtoK1yBOZ7p2j1WchI2vpaJUCV7C+Ds9p4NXzmXKLNstdnEwcI4biKFg9lVVEelDr6aU58BIN2KepfEBi3CAUxr2dsi2cWv2wgADIZMD1/5MKGdWYkPflSgjhXrVAkcJR2IwOFD5/57dj6uCg30TSftJGGUylPRfPdGIC/CVpznl3aoOa+CJErvfHqmo/JwSLa9m4/N3HUWePxeOL8YJPHOVy141c7d2shJedz2bpIUF2l0PxwYL9LOgwxPwQFjukD2N80rfS4SwYlNt8qqIUwkiXpHDwF+55wdBAiBizmP57ohF2YMeGaNZ5qnj9oZK62Rtk+VfnZd/VGVSU+NXlNLwoeMn0oqWvDhlz6sSy4geLIkMIlmuD1ORaAWU3LIuisn6qy5ZSj+
- ScQNwF9q
- 0292w0zxzvvwo8gJJarmic5s+RtiSW/1iBRfyEFSdcHtgT0H7r0f2lIMm30cBH/UELDHQIsQlEDBFrl9OdoSY+dHrc2+TkiwJ4NMF0EgL4ioDvBv9+TD5l4lKHih+FZzRq69hBaTJVaRVZlo7rTRrrdYXSB18HfSPD6PLw50PggrZ5vYCVo9E6G08Qw7zuTf7+9R+6FSMKE6Ms7JoWzx3XnR3sV8wE1e8LATapOjJ3nfKCUk5tVbai2BU1QHAOPW8CXcR55ZrwMsLm550Q6nXN2yn84q47OfVJsqpeJxd+ERJ8L5Y1VXyYhT1BniwMcOXjsGK
+X-Stat-Signature: wtzwducog8zawn1orcw45ecbxby5m3bw
+X-Rspamd-Queue-Id: BEEBA180009
+X-HE-Tag: 1781032538-832609
+X-HE-Meta: U2FsdGVkX19JNpINOKk/6TJ9Q9Rt3Ko8EOL+gbJMEsf3NmDJMNuyO6tzQwXKgl6VAHfIM/cIEXVyM2jiyJCuV8ctHILXmG6wj88wiuej1U1/Dgp7qs+dEADHI6kPpSyzfeM98bBziJIvpex54/s0RzW1/91LCIe1iW2vAY2MvlWRL+fDKWNHZCjjZi2sqfwYIZw7zSMYAtrNJ9RKUF/bI66Q7ubV62wyt3PKBVYViXTRGD1ExPJVgt6p1QATs6dAuuHM9zXvxgDIrs2jzURTi/4OKOlUpyMrN+i67BpPcxGZsiKTHvGoNuX8gIfh1Of3i6MYkgBlbrCfIdgbxYCw15vQCoFRsXRVByAH88ozSLTkJxSWG04gV0X6gRdVMghxwqS7B7lwCxCA/Md9dE+XMquGjkw608DOJuV058m3RhoJ0sD8QaL6BJAY6zsiNzTXAu7lrYUv/zEc81qpyDBdLAGPk4I9pcSj0tE9WstfDSLyQ0ARRfBlxAh8wwb3C8h7SwiG1rmwgVqmERHFBq7NPbD/92e+LirG+4XuC8hL3/C3NO2c+5f0wxxNTR9roCcSSHWGqPlPGw0P/41izBbkVT69UHw5mMWtmomk7l7oxwNgg7wXmMoaQOAxBVO7G/MUf/twq5SaM87r9bkIMiRHfMm+YH/7RTM+sFwHatN93zBkuRhxxFfsqe7SW4R7UeUcqMieHUFpMAm5li7GMXDnzi62Q9YTZn6Ayi7vbmNU0QplR2pWUamlRcMAdjJJPZ93+DBy0Nn23XYh8p59d8tbSF+M3e7nIgsWpee19/x0vOo8omEDvXrW8vjU1jRy4VZ5MwHRAuDm5BRqBzmmWqxnocuQci9a0lCU+MrtZKHPa/PLSTz9sHLEfkr2zISdJyia7Jr5+jX5ygh8bMAKKvk3/m7IIiaundVoiniy062u7IbwaxxPcMke8bzXQkCL8sBh1wvoUDw2QOB8kjFZpAm
+ 5XLdKlnK
+ IEntFS8LDuy7hCnqTKnXKqyu7MyEQsGdLBihZ56CSGtBYOaJWXzqrjOc/QpZNYgvRjz8gC6EpGVh92Y6Gd5Xrrrq0ialy125ugXk3FjeUSxILgH5Lu5/OWAQhKE6pemQgr9J5/6sPdCGyXW22znr/tu6i9YZvZamt7X7F1aEaFL6QbkbZc5zzi54Kx/wUnVbQA3JmPKYCnzw9OQQ16stOLvYYVKxAfYrbhZCh+vy4KVG96h0ilcsYP+nczLUlvqLk5IxfhuuekhdxxAjVtAZeV/dlcRqaNNky7Nolt5g/z+PPFHWXv3wo8twdy5fNjIqClAJW80byVQmunwiHUFxLfFhpYArBf0BzMqVUmCzuB/JQdSO+wDWUfo8PWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,357 +122,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Block device drivers need to invoke `blk_mq_start_request` on a request to
-indicate that they have started processing the request. This function may
-only be called once after a request has been issued to a driver. For Rust
-block device drivers, the Rust abstractions handle this call. However, in
-some situations a driver may want to control when a request is started.
-Thus, expose the start method to Rust block device drivers.
-
-To ensure the method is not called more than once, introduce a type state
-for `Request`. Requests are issued as `IdleRequest` and transition to
-`Request` when the `start` method is called.
+Add a way for block device drivers to obtain a `Request` from a tag. This
+is backed by the C `blk_mq_tag_to_rq` but with added checks to ensure
+memory safety.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/rnull.rs       |   3 +-
- rust/kernel/block/mq.rs            |   5 +-
- rust/kernel/block/mq/operations.rs |  15 ++--
- rust/kernel/block/mq/request.rs    | 149 +++++++++++++++++++++++++++++++------
- 4 files changed, 137 insertions(+), 35 deletions(-)
+ rust/helpers/blk.c              |  6 ++++
+ rust/kernel/block/mq/tag_set.rs | 66 ++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index fd9b770965a6..bb8c4df08218 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -593,9 +593,10 @@ fn new_request_data() -> impl PinInit<Self::RequestData> {
-     fn queue_rq(
-         hw_data: Pin<&SpinLock<HwQueueContext>>,
-         this: Pin<&Self>,
--        mut rq: Owned<mq::Request<Self>>,
-+        rq: Owned<mq::IdleRequest<Self>>,
-         _is_last: bool,
-     ) -> Result {
-+        let mut rq = rq.start();
-         let mut sectors = rq.sectors();
+diff --git a/rust/helpers/blk.c b/rust/helpers/blk.c
+index 422289d617ae..1f3e5c661096 100644
+--- a/rust/helpers/blk.c
++++ b/rust/helpers/blk.c
+@@ -53,3 +53,9 @@ __rust_helper struct request *rust_helper_rq_list_peek(struct rq_list *rl)
+ {
+ 	return rq_list_peek(rl);
+ }
++
++__rust_helper struct request *
++rust_helper_blk_mq_tag_to_rq(struct blk_mq_tags *tags, unsigned int tag)
++{
++	return blk_mq_tag_to_rq(tags, tag);
++}
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index e89c76987b54..66b6a30a9e66 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -6,7 +6,6 @@
  
-         Self::handle_bad_blocks(this.get_ref(), &mut rq, &mut sectors)?;
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index b095cc7f51ce..77e3593e8626 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -88,10 +88,10 @@
- //!     fn queue_rq(
- //!         _hw_data: (),
- //!         _queue_data: (),
--//!         rq: Owned<Request<Self>>,
-+//!         rq: Owned<IdleRequest<Self>>,
- //!         _is_last: bool
- //!     ) -> Result {
--//!         rq.end_ok();
-+//!         rq.start().end_ok();
- //!         Ok(())
- //!     }
- //!
-@@ -131,6 +131,7 @@
- 
- pub use operations::Operations;
- pub use request::{
-+    IdleRequest,
-     Request,
-     RequestTimerHandle, //
- };
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index 1b20df25d6df..01917ef213d1 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -8,6 +8,7 @@
-     bindings,
+ use crate::{
+     alloc::NumaNode,
+-    bindings,
      block::mq::{
+         operations::OperationsVTable,
          request::RequestDataWrapper,
-+        IdleRequest,
-         Request, //
+@@ -17,7 +16,9 @@
+         Result, //
      },
-     error::{
-@@ -25,10 +26,7 @@
-         Owned, //
-     },
- };
--use core::{
--    marker::PhantomData,
--    ptr::NonNull, //
--};
-+use core::marker::PhantomData;
- use pin_init::PinInit;
- 
- type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
-@@ -82,7 +80,7 @@ pub trait Operations: Sized {
-     fn queue_rq(
-         hw_data: ForeignBorrowed<'_, Self::HwData>,
-         queue_data: ForeignBorrowed<'_, Self::QueueData>,
--        rq: Owned<Request<Self>>,
-+        rq: Owned<IdleRequest<Self>>,
-         is_last: bool,
-     ) -> Result;
- 
-@@ -154,14 +152,14 @@ impl<T: Operations> OperationsVTable<T> {
-                 == 0
-         );
- 
-+        // INVARIANT: By C API contract, `bd.rq` has not been started yet.
-         // SAFETY:
-         //  - By API contract, we own the request.
-         //  - By the safety requirements of this function, `request` is a valid
-         //    `struct request` and the private data is properly initialized.
-         //  - `rq` will be alive until `blk_mq_end_request` is called and is
-         //    reference counted by until then.
--        let mut rq =
--            unsafe { Owned::from_raw(NonNull::<Request<T>>::new_unchecked((*bd).rq.cast())) };
-+        let rq = unsafe { IdleRequest::from_raw((*bd).rq) };
- 
-         // SAFETY: The safety requirement for this function ensure that `hctx`
-         // is valid and that `driver_data` was produced by a call to
-@@ -177,9 +175,6 @@ impl<T: Operations> OperationsVTable<T> {
-         // dropped, which happens after we are dropped.
-         let queue_data = unsafe { T::QueueData::borrow(queue_data) };
- 
--        // SAFETY: We have exclusive access and we just set the refcount above.
--        unsafe { rq.start_unchecked() };
--
-         let ret = T::queue_rq(
-             hw_data,
-             queue_data,
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index c06907dfe5b5..f94e9c2181d0 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -24,6 +24,7 @@
-         HrTimerPointer, //
-     },
+     prelude::*,
++    sync::atomic::ordering,
      types::{
-+        ForeignOwnable,
-         Opaque,
-         Ownable,
-         OwnableRefCounted,
-@@ -33,6 +34,7 @@
- use core::{
-     ffi::c_void,
-     marker::PhantomData,
-+    ops::Deref,
-     pin::Pin,
-     ptr::NonNull, //
- };
-@@ -42,6 +44,104 @@
-     BioIterator, //
++        ARef,
+         ForeignOwnable,
+         Opaque, //
+     },
+@@ -39,6 +40,8 @@
+     Flags, //
  };
  
-+/// A [`Request`] that a driver has not yet begun to process.
-+///
-+/// A driver can convert an `IdleRequest` to a [`Request`] by calling [`IdleRequest::start`].
-+///
-+/// # Invariants
-+///
-+/// - This request has not been started yet.
-+#[repr(transparent)]
-+pub struct IdleRequest<T>(RequestInner<T>);
++use super::Request;
 +
-+impl<T: Operations> IdleRequest<T> {
-+    /// Mark the request as processing.
-+    ///
-+    /// This converts the [`IdleRequest`] into a [`Request`].
-+    pub fn start(self: Owned<Self>) -> Owned<Request<T>> {
-+        // SAFETY: By type invariant `self.0.0` is a valid request. Because we have an `Owned<_>`,
-+        // the refcount is zero.
-+        let mut request = unsafe { Request::from_raw(self.0 .0.get()) };
-+
-+        debug_assert!(
-+            request
-+                .wrapper_ref()
-+                .refcount()
-+                .as_atomic()
-+                .load(ordering::Acquire)
-+                == 0
-+        );
-+
-+        // SAFETY: We have exclusive access and the refcount is 0. By type invariant `request` was
-+        // not started yet.
-+        unsafe { request.start_unchecked() };
-+
-+        request
-+    }
-+
-+    /// Create a [`Self`] from a raw request pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - The request pointed to by `ptr` must satisfythe invariants of both [`Request`] and
-+    ///   [`Self`].
-+    /// - The refcount of the request pointed to by `ptr` must be 0.
-+    pub(crate) unsafe fn from_raw(ptr: *mut bindings::request) -> Owned<Self> {
-+        // SAFETY: By function safety requirements, `ptr` is valid for use as an `IdleRequest`.
-+        unsafe { Owned::from_raw(NonNull::<Self>::new_unchecked(ptr.cast())) }
-+    }
-+}
-+
-+impl<T: Operations> Ownable for IdleRequest<T> {
-+    // The `release` implementation leaks the `IdleRequest`, which is a valid state for a
-+    // [`Request`] with refcount 0.
-+    unsafe fn release(&mut self) {}
-+}
-+
-+impl<T: Operations> Deref for IdleRequest<T> {
-+    type Target = RequestInner<T>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+pub struct RequestInner<T>(Opaque<bindings::request>, PhantomData<T>);
-+
-+impl<T: Operations> RequestInner<T> {
-+    /// Get the command identifier for the request
-+    pub fn command(&self) -> u32 {
-+        // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
-+        unsafe { (*self.0.get()).cmd_flags & ((1 << bindings::REQ_OP_BITS) - 1) }
-+    }
-+
-+    /// Get the target sector for the request.
-+    #[inline(always)]
-+    pub fn sector(&self) -> u64 {
-+        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
-+        unsafe { (*self.0.get()).__sector }
-+    }
-+
-+    /// Get the size of the request in number of sectors.
-+    #[inline(always)]
-+    pub fn sectors(&self) -> u32 {
-+        self.bytes() >> crate::block::SECTOR_SHIFT
-+    }
-+
-+    /// Get the size of the request in bytes.
-+    #[inline(always)]
-+    pub fn bytes(&self) -> u32 {
-+        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
-+        unsafe { (*self.0.get()).__data_len }
-+    }
-+
-+    /// Borrow the queue data from the request queue associated with this request.
-+    pub fn queue_data(&self) -> <T::QueueData as ForeignOwnable>::Borrowed<'_> {
-+        // SAFETY: By type invariants of `Request`, `self.0` is a valid request.
-+        unsafe { T::QueueData::borrow((*(*self.0.get()).q).queuedata) }
-+    }
-+}
-+
- /// A wrapper around a blk-mq [`struct request`]. This represents an IO request.
+ /// A wrapper for the C `struct blk_mq_tag_set`.
  ///
- /// # Lifetime
-@@ -96,9 +196,28 @@
- /// [`struct request`]: srctree/include/linux/blk-mq.h
- ///
- #[repr(transparent)]
--pub struct Request<T>(Opaque<bindings::request>, PhantomData<T>);
-+pub struct Request<T>(RequestInner<T>);
+ /// `struct blk_mq_tag_set` contains a `struct list_head` and so must be pinned.
+@@ -193,6 +196,67 @@ pub fn data(&self) -> <T::TagSetData as ForeignOwnable>::Borrowed<'_> {
+         // converted back with `from_foreign` while `&self` is live.
+         unsafe { T::TagSetData::borrow(ptr) }
+     }
 +
-+impl<T: Operations> Deref for Request<T> {
-+    type Target = RequestInner<T>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
- 
- impl<T: Operations> Request<T> {
-+    /// Create a `Owned<Request>` from a request pointer.
++    /// Obtain a shared reference to a request.
 +    ///
-+    /// # Safety
-+    ///
-+    /// - `ptr` must satisfy invariants of `Request`.
-+    /// - The refcount of the request pointed to by `ptr` must be 0.
-+    pub(crate) unsafe fn from_raw(ptr: *mut bindings::request) -> Owned<Self> {
-+        // SAFETY: By function safety requirements, `ptr` is valid for use as `Owned<Request>`.
-+        unsafe { Owned::from_raw(NonNull::<Self>::new_unchecked(ptr.cast())) }
-+    }
++    /// This method will hang if the request is not owned by the driver, or if
++    /// the driver holds an [`Ownable<Request>`] reference to the request.
++    pub fn tag_to_rq(&self, qid: u32, tag: u32) -> Option<ARef<Request<T>>> {
++        if qid >= self.hw_queue_count() {
++            kernel::pr_warn_once!("Invalid queue id: {qid}\n");
++            return None;
++        }
 +
-     /// Create an [`ARef<Request>`] from a [`struct request`] pointer.
-     ///
-     /// # Safety
-@@ -120,7 +239,7 @@ pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
-     pub fn command(&self) -> u32 {
-         use core::ops::BitAnd;
-         // SAFETY: By C API contract and type invariant, `cmd_flags` is valid for read
--        unsafe { (*self.0.get()).cmd_flags }.bitand((1u32 << bindings::REQ_OP_BITS) - 1)
-+        unsafe { (*self.0 .0.get()).cmd_flags }.bitand((1u32 << bindings::REQ_OP_BITS) - 1)
-     }
++        // SAFETY: We checked that `qid` is within bounds.
++        let tags = unsafe { *(*self.inner.get()).tags.add(qid as usize) };
++
++        // SAFETY: We checked `qid` for overflow above, so `tags` is valid.
++        let rq_ptr = unsafe { bindings::blk_mq_tag_to_rq(tags, tag) };
++        if rq_ptr.is_null() {
++            None
++        } else {
++            // SAFETY: if `rq_ptr`is not null, it is a valid request pointer.
++            let refcount_ptr = unsafe {
++                RequestDataWrapper::refcount_ptr(
++                    Request::wrapper_ptr(rq_ptr.cast::<Request<T>>()).as_ptr(),
++                )
++            };
++
++            // SAFETY: The refcount was initialized in `init_request_callback` and is never
++            // referenced mutably.
++            let refcount_ref = unsafe { &*refcount_ptr };
++
++            let atomic_ref = refcount_ref.as_atomic();
++
++            // It is possible for an interrupt to arrive faster than the last
++            // change to the refcount, so retry if the refcount is not what we
++            // think it should be.
++            loop {
++                // Load acquire to sync with store release of `Owned<Request>`
++                // being destroyed (prevent mutable access overlapping shared
++                // access).
++                let prev = atomic_ref.load(ordering::Acquire);
++
++                if prev >= 1 {
++                    // Store relaxed as no other operations need to happen strictly
++                    // before or after the increment.
++                    match atomic_ref.cmpxchg(prev, prev + 1, ordering::Relaxed) {
++                        Ok(_) => break,
++                        // NOTE: We cannot use the load part of a failed cmpxchg as it is always
++                        // relaxed.
++                        Err(_) => continue,
++                    }
++                } else {
++                    // We are probably waiting to observe a refcount increment.
++                    core::hint::spin_loop();
++                    continue;
++                };
++            }
++
++            // SAFETY: We checked above that `rq_ptr` is valid for use as an `ARef`.
++            Some(unsafe { Request::aref_from_raw(rq_ptr) })
++        }
++    }
+ }
  
-     /// Complete the request by scheduling `Operations::complete` for
-@@ -145,7 +264,7 @@ pub fn complete(this: ARef<Self>) {
-     pub fn bio(&self) -> Option<&Bio> {
-         // SAFETY: By type invariant of `Self`, `self.0` is valid and the deref
-         // is safe.
--        let ptr = unsafe { (*self.0.get()).bio };
-+        let ptr = unsafe { (*self.0 .0.get()).bio };
-         // SAFETY: By C API contract, if `bio` is not null it will have a
-         // positive refcount at least for the duration of the lifetime of
-         // `&self`.
-@@ -157,7 +276,7 @@ pub fn bio(&self) -> Option<&Bio> {
-     pub fn bio_mut(self: Pin<&mut Self>) -> Option<Pin<&mut Bio>> {
-         // SAFETY: By type invariant of `Self`, `self.0` is valid and the deref
-         // is safe.
--        let ptr = unsafe { (*self.0.get()).bio };
-+        let ptr = unsafe { (*self.0 .0.get()).bio };
-         // SAFETY: By C API contract, if `bio` is not null it will have a
-         // positive refcount at least for the duration of the lifetime of
-         // `&mut self`.
-@@ -171,25 +290,11 @@ pub fn bio_iter_mut<'a>(self: &'a mut Owned<Self>) -> BioIterator<'a> {
-         // `NonNull::new` will return `None` if the pointer is null.
-         BioIterator {
-             // SAFETY: By type invariant `self.0` is a valid `struct request`.
--            bio: NonNull::new(unsafe { (*self.0.get()).bio.cast() }),
-+            bio: NonNull::new(unsafe { (*self.0 .0.get()).bio.cast() }),
-             _p: PhantomData,
-         }
-     }
- 
--    /// Get the target sector for the request.
--    #[inline(always)]
--    pub fn sector(&self) -> u64 {
--        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
--        unsafe { (*self.0.get()).__sector }
--    }
--
--    /// Get the size of the request in number of sectors.
--    #[inline(always)]
--    pub fn sectors(&self) -> u32 {
--        // SAFETY: By type invariant of `Self`, `self.0` is valid and live.
--        (unsafe { (*self.0.get()).__data_len }) >> crate::block::SECTOR_SHIFT
--    }
--
-     /// Return a pointer to the [`RequestDataWrapper`] stored in the private area
-     /// of the request structure.
-     ///
-@@ -328,10 +433,10 @@ impl<T: Operations> Owned<Request<T>> {
-     /// `self.wrapper_ref().refcount() == 0`.
-     ///
-     /// This can only be called once in the request life cycle.
--    pub(crate) unsafe fn start_unchecked(&mut self) {
-+    pub unsafe fn start_unchecked(&mut self) {
-         // SAFETY: By type invariant, `self.0` is a valid `struct request` and
-         // we have exclusive access.
--        unsafe { bindings::blk_mq_start_request(self.0.get()) };
-+        unsafe { bindings::blk_mq_start_request(self.0 .0.get()) };
-     }
- 
-     /// Notify the block layer that the request has been completed without errors.
-@@ -341,7 +446,7 @@ pub fn end_ok(self) {
- 
-     /// Notify the block layer that the request has been completed.
-     pub fn end(self, status: u8) {
--        let request_ptr = self.0.get().cast();
-+        let request_ptr = self.0 .0.get().cast();
-         core::mem::forget(self);
-         // SAFETY: By type invariant, `this.0` was a valid `struct request`. The
-         // existence of `self` guarantees that there are no `ARef`s pointing to
+ #[pinned_drop]
 
 -- 
 2.51.2
