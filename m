@@ -4,92 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEF0CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB8DFCD8CAC
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:03:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FEA26B0088; Tue,  9 Jun 2026 04:03:11 -0400 (EDT)
+	id 1E1BF6B0005; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D55C6B0092; Tue,  9 Jun 2026 04:03:11 -0400 (EDT)
+	id 1B8436B0093; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EB456B0093; Tue,  9 Jun 2026 04:03:11 -0400 (EDT)
+	id 0CE886B0095; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E1D56B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:03:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0E1E1204D0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:10 +0000 (UTC)
-X-FDA: 84859633740.14.E333A33
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4CB5C140007
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jRsT/4aB";
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780992189;
-	b=hcinwgnlYSTzFHbPZb+eusdzg5T6g/u2xqUQtDvvzMsyKm3mF35hMVsI/YcluTtRHu6LLF
-	ygJ7XDHKCEHGR6iHB47C56ioXdbd9OdrYIcPabqXP6B35c1oGcomWynEQXwQ5dXcJ2z/Yf
-	gQLaf3lCOvAeO0+5KP3zvMuepM+2338=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jRsT/4aB";
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE4BA6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:03:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8D2C1C1E87
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:38 +0000 (UTC)
+X-FDA: 84859634916.13.6DE1B8E
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D4DDD4000D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xQAuBxMb;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780992189;
+	s=arc-20220608; t=1780992216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUcVuWAo1N6d6dSjCQRntUYShy5LQAwX8omMTfd5mYY=;
-	b=HrX5s1VnVHLHUVivfIlj7g67Qt6ew2dHdqB7lDXSuYC1Jn/YqYXJv27PJCrlS8jhKkG528
-	rncBkTDaixY2qwK8fPM4HfcQaFuQP6j9tt1ADartmVim9jobCerHdI3TkoM+2881VyxlnV
-	fWC1BEmslrTJ1mr29is8cZigoB9NZMs=
-Message-ID: <3306b3b4-a063-43f9-a740-2311dd87be3c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780992180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AUcVuWAo1N6d6dSjCQRntUYShy5LQAwX8omMTfd5mYY=;
-	b=jRsT/4aBlYtkb7QyMASuQsaRCIGhVQN28SEQahPXRkP6GdrPmLYHyV3FPEJEvccUtoUjgS
-	bqwbEEfE3urBD6PIGshjjfBeQMLGqIgDhPHFvxB1Pdzq/taY9MywfQfbiAgh8BaO4tcAgd
-	CgI1a9LIBP+8p3ujctXEZz1NlV8s3XI=
-Date: Tue, 9 Jun 2026 16:02:46 +0800
+	bh=HlBlOHMPbvtbUB1n/vkZ2Ftsfcpe6TvbqLXbZg5mnVk=;
+	b=xDBpGWvtameVv9C58Ut/hoOUKYlsuxcnQYe8+jEhqO1eT8fB7ByR6k3bC6KsUC9FOeJjIj
+	SsQL8OGKJJti1YWzmleASdfSuUFoQRzhS0Yj39xKjthFyfRBuCD535l6mnfULSP8GfAV2U
+	J459u4GIqCpttt9BgyMD2j3MiGbM5Hk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xQAuBxMb;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780992216;
+	b=wg4Qm7HunPRoDBuvqT6uoSJxvs2QJ09tHcT0DECeFQxljosurXD1wNJFX7hm9hlpkNUrgj
+	MMmWZu/aebYLDsh1KTSa4TxRNNE+dH4+1nWPtf1oSk1fCxljy9MoDmoBqu1VTLv/z06qTK
+	k2iybvecsXPL/vckmmZAzbd6xnWjfNc=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=HlBlOHMPbvtbUB1n/vkZ2Ftsfcpe6TvbqLXbZg5mnVk=;
+	b=xQAuBxMb8mzsb7Jf7ox4zUkRKG53+Cimxagzt8XKYaOjdENJso8ZC07weXNRQH5oR687sy+m6
+	uXXB+h8Fi4Kp8IbHwqYAtIXlS6EWgn4Ic3ovMEgUrzAUwgGaWTXAQWhBYp6VKMDgM8ICPj468nr
+	/yxBP9dKfByAYRac+9pNCAs=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gZLn15GD0zKm4s;
+	Tue,  9 Jun 2026 15:55:33 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id C430940565;
+	Tue,  9 Jun 2026 16:03:29 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 16:03:29 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 16:03:27 +0800
+Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
+ to all MF_DELAYED cases
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <1fcac146-cb21-7012-3eeb-e4bcc6d9ac0b@huawei.com>
+Date: Tue, 9 Jun 2026 16:03:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: hannes@cmpxchg.org, baolin.wang@linux.alibaba.com,
- akpm@linux-foundation.org, david@kernel.org, shakeel.butt@linux.dev,
- mhocko@kernel.org, david@fromorbit.com, roman.gushchin@linux.dev,
- muchun.song@linux.dev, qi.zheng@linux.dev, yosry.ahmed@linux.dev,
- ziy@nvidia.com, liam@infradead.org, usama.arif@linux.dev, kas@kernel.org,
- vbabka@kernel.org, ryncsn@gmail.com, zaslonko@linux.ibm.com,
- gor@linux.ibm.com, baohua@kernel.org, dev.jain@arm.com, npache@redhat.com,
- ryan.roberts@arm.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <ah3MuK3GuimKVORB@cmpxchg.org>
- <20260609032058.23770-1-lance.yang@linux.dev> <aifB-YGdJAGzgprt@lucifer>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aifB-YGdJAGzgprt@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4CB5C140007
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: D4DDD4000D
 X-Rspam-User: 
-X-Stat-Signature: hhd94bm3hq4xt8cxeufmekj88ncnxhyz
-X-HE-Tag: 1780992187-326999
-X-HE-Meta: U2FsdGVkX19UTtxcdziP3T3EWOu5jXcQqEv6w1w5a6MRHVrnmJBkxJdxuB5rlw8SKcpoxGPNiFXKa5D8jSU0ikkd/ws/uP8EhVxI+eytM3cGmkNXv4KFHjurbj+T1R3XsANo2LRhMHZe4GmwlVLblbXrF7sr9dUMMBRlQSFGm+X3xMzRzjSemU8OhQIAtGWr+dSW7QYZZg6g1Nrwdaez/k/i5sQ6R6b6d6jqjbdds20C9/aL7v1fFiF2GKxOACeWPmx4nYHZ/7duiYIcTINCrfi1O2g6ydXM0SaZyFzKqL/r5ZdeKXkWwfS5/5PLSY/dgOoa2ZotOorNzIRUQDaEaVZKbAbrM/V/d2OhqtjVMLrbauht/oUxw012An2SvTJNKRubOaXIeQFSESOeF/4n5Y12a4/AZJ5wvFllSwuRpp83ul9V9UkCPwMrPIQgI/Fv/xYfoPzu3voYvet6TZ4gkrI4lFQSh7MFyAhocuR89ZsFm1XZKIjK0hpztk+cpyzDto/aqlg9I+VJMn12ygAx92SSkOe8dV+Jbz2v1/Z9sg3BmEZJB6W67x4YKiBghFHD8OcnkQ6dV3gCMMhfNHUnfAAVkkMT0/00LqKjWND+mBQ3qFngLeyENmvrBKzrWl/1AYjjzrc7cKSDHccPeEDx2zM4yXACU7AHDXQ6/fBKAIurrRtjyumgIPjYufcdLhgEIu/++tF1ma3Dy4Zemc3LU2RFHeCKTdsK7jg5QVxL5h5WftHvi2eaZnaEQhHmFESPC4IFoWT2ZYQ/nYTznMVLC5BV6cpWu9UsiB0bk1eXLYlcUaVwcckn5W/ISQZ71wS0utNqjMpca3b39CvAaqcPk6mWH+FnzkOq94pcarfl9BSrFqVa8nkH6l59TPTgJXGEtFKgiYPh2mU6IGItJt7oHT4p9Q3ZnRV25M4jH7en5kRGV66THL5SttwoVhuXwGTa7fYNaMtkxDSxnHp8gNG
- JBNKLE1e
- k5f1fdhioDTcbPGYb3P4lgVQsSMwMGcN67dNALGRFyzkYOGe/3o03Woqyv1MRjSsjhCXnrbOTNvQU7MUyBscFLyPoS3Z5HBfEJzkX8ngATcSg+dDEJJmwxS+kNCi1cfuROrzUARyHSD63zYnAavK2e/aBuV/szsCPhP3FhVn6c9RzqZOgCYDqasigK3+ic7CGXJmdq3DaXIGgcC0B8WNKiH9/EQs7iYaAM/Ze9eaOC64YgCizBR9lp/weuVLNn8HfzEkwuO8bnR8v4zVW8TvNgD3v/Q==
+X-Stat-Signature: 7do7hns9xz76wop87e87yc1uunzjwmth
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780992215-128834
+X-HE-Meta: U2FsdGVkX18ipXUkbvDQjB78h01/z978308APvm8OQy192XgXfihSgPtvesvpdYH6tCL9rzpY+fdtxXjnbkCKXG3jvUvocdb/EsPzlNQBJs6vpYFlhDtVlxdvC9NQMEs4i7/ycu6BuKD6K+uqlMquBUqsSK2r+P7Wal9awyTUW+NPTgFFPi3EaqGYNwA+F2CUxqXyyEW38Ce9Ab//2WEkiYOY/URnzSJi7wCbCE7cSs6/rItPCv92ho+Fm07lOjFG6kRCAcIqTwHhXW1wHaAQKJslodSywbU27iaINtQRM1U6DsNdlX47jLgtLp898QVzJkHubC+yDUf58M1X76wYEoH8N7c05r/xV5J96vQu6a5fAMBW9F6D+EMxH9jKD1QEKVfSYXj+3nteA36F61Vo95bdHY9dbU64iFfoE3WLsluelNa/tPzn6X2sYZOtybJpXOHkjrZJHh94ngRmZcFZnekKvQuNmbhcnQUxsEEikmZaMOCgn7NkB3N6XkQTJtHslDrahY6DtefUCIYAcCvFhH2MFkozHR9Wwa7JVdZaEAArT28RYv0IgUBEqVpgECfOqvKO/0/9kEuxmG98Cc4q3PC9eFB999I1Nt60DCg4UAkpqq4qXV+s+0vRyMuGSf3SGX2E/Pb91Nbh4co+W5gvgiJ07d+rMRcWy57wXg0t2sYGIHlgXsA8KO8wWVFWVJ3F54EzovzOR2E4izAYDP+YoKLXZK6zRxzqM1A3bXJXP6KZG0O6CmrbdpGe4dwcMWHftmCfx19RjpgsoAX2RLlbaMC9p+WQr8+ZZoS16wx2Pgz50jmNHgwRwkN2b9GcQoULF/x7itDSObpY7WqypWt6aTyrqnjZodpFWkGyg3AKpRnIeDCjUpopCZfnaxR50sKNLgJDsVwMwK+3Y8R7JC2wkkVfV9GpQj5bIYQH7f97G3dztLaIDul8L2XZmVmER6fPfF1EF9AGFccYCAuvbB
+ EV22MJzt
+ U9YDh2TYReEyyANfiBu0lpeYtAh/heFvCULu1fBVmOI/6uz6376o5g9RLkQUa032+dL1bTlhgaGRT51ULciBb09pbVVVwDMlweHIELs9bogX+Z3wYYfQCkliFLCtczNJEYQ0bGZnh6eHwv2I2kDYT5t224F6xwkUROEozuzvSkbGtk7ut2KhX+GxD2GFE1xtCj6p80KIkMIioK6COHl+PoYFJS+YKrUAgwLiwU1lpvdcWy8t7DgjflBAuA7AUgkb6LZgizpp3DI0JsjcC7fmvqAaRqsO1+XLEs0MHuLYtZxE5rba7gOBf4EnmAWBWHa70SedqLOAEy/Sb8CiofXkxdqC1rXU1aRdMFQb5Y2vM0zqWYU3i5zDIuFCxtM1MK6Jjz+fo5SnStVUg+wd/dmsouyzszZWLwoFvs6KfIkjB/iKvOeOVwPfJcsPSZaUna/iTxtwXVWlU08Mte9PNNcfU8TaDBvrBmhq2R8PvukzfuwvNJAy245aeCFWrOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,118 +115,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/9 15:35, Lorenzo Stoakes wrote:
-> On Tue, Jun 09, 2026 at 11:20:58AM +0800, Lance Yang wrote:
->>
->> On Mon, Jun 01, 2026 at 02:17:28PM -0400, Johannes Weiner wrote:
->>> On Mon, Jun 01, 2026 at 09:21:35PM +0800, Lance Yang wrote:
->>>>
->>>> On Wed, May 27, 2026 at 04:45:16PM -0400, Johannes Weiner wrote:
->>>> [...]
->>>>> diff --git a/mm/swap_state.c b/mm/swap_state.c
->>>>> index 04f5ce992401..9c3a5cf99778 100644
->>>>> --- a/mm/swap_state.c
->>>>> +++ b/mm/swap_state.c
->>>>> @@ -465,6 +465,16 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>>>> 		return ERR_PTR(-ENOMEM);
->>>>> 	}
->>>>>
->>>>
->>>> Shouldn't this be limited to anon swapin?
->>>>
->>>> e.g. vmf && vma_is_anonymous(vmf->vma)
->>>>
->>>>> +	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
->>>>
->>>> __swap_cache_alloc() is also used by shmem direct swapin, so shmem can
->>>> get here too when handling a large swap entry:
->>>>
->>>> shmem_get_folio_gfp()
->>>>    shmem_swapin_folio()
->>>>      shmem_swap_alloc_folio()
->>>>        swapin_sync()
->>>>          swap_cache_alloc_folio()
->>>>            __swap_cache_alloc()
->>>>              folio_memcg_alloc_deferred()
->>>
->>> Good catch, I think you're right. I shouldn't have dismissed that
->>> branch due to "/* Direct swapin skipping swap cache & readahead */"
->>>
->>>> @Baolin please correct me if I got it wrong :)
->>>>
->>>> folio_memcg_alloc_deferred() itself doesn't filter shmem out either; it
->>>> only allocates the memcg list_lru metadata for deferred_split_lru:
->>>>
->>>> int folio_memcg_alloc_deferred(struct folio *folio)
->>>> {
->>>> 	if (mem_cgroup_disabled())
->>>> 		return 0;
->>>> 	return folio_memcg_list_lru_alloc(folio, &deferred_split_lru, GFP_KERNEL);
->>>> }
->>>>
->>>> Since deferred_split_lru only queues anon large folios, doing this for
->>>> shmem swapin doesn't buy us anything :)
->>>
->>> Yes, agreed. I don't think it's a big deal / show stopper in terms of
->>> user-visible effect, but of course still worth fixing.
->>>
->>> I'll send a follow-up patch.
->>
->> Thanks.
->>
->> Looks like this has already landed in mm-stable. If you're okay with it,
->> I can send the follow-up.
->>
->> From: Lance Yang <lance.yang@linux.dev>
->> Date: Tue, 9 Jun 2026 10:56:45 +0800
->> Subject: [PATCH] mm: prepare deferred split metadata only for anon swapin
->>
->> __swap_cache_alloc() prepares deferred split metadata for large swapcache
->> folios.
->>
->> That also covers shmem swapin, because shmem_swap_alloc_folio() can call
->> swapin_sync() with a large order[1]. But shmem folios are not queued on
->> the deferred split queue, so preparing the metadata doesn't buy us
->> anything there.
->>
->> So let's limit it to anon swapin.
->>
->> [1] https://lore.kernel.org/all/20260601132135.14272-1-lance.yang@linux.dev/
->>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   mm/swap_state.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/swap_state.c b/mm/swap_state.c
->> index 9c3a5cf99778..7adac957c2b8 100644
->> --- a/mm/swap_state.c
->> +++ b/mm/swap_state.c
->> @@ -465,7 +465,8 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
->>   		return ERR_PTR(-ENOMEM);
->>   	}
->>
->> -	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
->> +	if (order > 1 && vma && vma_is_anonymous(vma) &&
+On 2026/6/3 5:55, Lisa Wang wrote:
+> Generalize extra_pins handling to all MF_DELAYED cases not only
+> shmem_mapping.
 > 
-> A folio can be anon for a non-shmem file-backed VMA though?
-> E.g. MAP_PRIVATE-mapped file-backed mappings?
-
-Ah, good point! vma_is_anonymous() is too strong here ...
-
-Maybe use !vma_is_shmem(vma) instead?
-
-> Not sure if that's something that'd be a factor here/meaningful though.
+> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
+> folio. Hence, take that into account when checking for extra refcounts.
 > 
->> +	    folio_memcg_alloc_deferred(folio)) {
->>   		spin_lock(&ci->lock);
->>   		__swap_cache_do_del_folio(ci, folio, entry, shadow);
->>   		spin_unlock(&ci->lock);
->> --
->> 2.39.3 (Apple Git-146)
+> As clarified in an earlier patch, a return value of MF_DELAYED implies that
+> the page still has elevated refcounts. Hence, set extra_pins to true if the
+> return value is MF_DELAYED. This is aligned with the implementation in
+> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
+> set to MF_DELAYED and extra_pins is set to true.
 > 
-> Cheers, Lorenzo
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+
+Thanks.
+.
 
