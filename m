@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7B99CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5935CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2529A6B012A; Tue,  9 Jun 2026 15:17:48 -0400 (EDT)
+	id 18F2A6B012C; Tue,  9 Jun 2026 15:17:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22A116B012C; Tue,  9 Jun 2026 15:17:48 -0400 (EDT)
+	id 140AD6B012E; Tue,  9 Jun 2026 15:17:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 167D66B012D; Tue,  9 Jun 2026 15:17:48 -0400 (EDT)
+	id 055D16B012F; Tue,  9 Jun 2026 15:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 02C336B012A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:48 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5D971C150C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:47 +0000 (UTC)
-X-FDA: 84861333774.05.D6F6AD6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EA0A7A0018
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ef6/ao6J";
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E71BB6B012C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:53 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AAB321207A5
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:53 +0000 (UTC)
+X-FDA: 84861334026.02.AF5674A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E22D6C000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BOpkIGy0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032665;
+	s=arc-20220608; t=1781032672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yhhiPZN9dpoZ4xyJGnlIqf2UGsG9mC/RzPjjGnQZ8J8=;
-	b=eH8gp7T/9A54bfmRZeVvD3T+g9+CGv5ZJxn0d12zXKLobsjNMrcbkKQQEziUv2zoUUKtAu
-	AJLOwJMKXbQg7zt5cTZnqnoqMQYzZLAm0gXwLmKGHbYC5kBUye9tO2WAkXEZQOMFeUWA8X
-	WSigO4qYt6591OPr2ZoOOrUqU9jyKk4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032665;
-	b=fCZ6ecj9PmrzSi++sHiBWy+9ejc7HUdqr1Qx+BM5Rhs4c8v7YNxOyigYw/U0DkdN/9zY81
-	fNjJqeQ7B/ZXnSnSw4yzv6gScxnffsOYOC9m5VKC9zw2PHr1cU7GPnPcsg4m1CGbxtLhQi
-	V2CSeoShOI1TA5qQrKudhHzqziLLE0w=
+	bh=dAPErZub35CZRx6cRiD4tDxfNHqt4EuvLpyZZOzwYBc=;
+	b=YYdx78yDG6V3KMjAvm5UAbfkwTGtivTW0+iF3qqFnlqggKNoXddl26TWj+eQVf50x2qEI4
+	5zEEjbJ1XSAhFl5DFinqI+ijP/TRrZ4RlT+GrUycSOWAHT1Xi9rnLucHGqy5iF1SJZBR+A
+	8ZNT45zjS8AkdeFiYvQK5JgjTV6xIbk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ef6/ao6J";
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BOpkIGy0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781032672;
+	b=UjSgQlmWMNPG6yvY+oX5T5FwqKu1yLRPh0W6cHz3SmhbEjFKKgwAfMY43tq0mkaGuyMncw
+	W6jx0lJnOWyiOW02i3Sw/l72ZQN3yWZhI0Jm/IkazQrvy/BaotqjKd7UbcYlUqrB7n/iFE
+	mU2pfPfTogKQ1ynqhJNEorEhTRCi508=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 698326024D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 38F6F42A0B;
+	Tue,  9 Jun 2026 19:17:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A021F00893;
 	Tue,  9 Jun 2026 19:17:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80781F00899;
-	Tue,  9 Jun 2026 19:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032665;
-	bh=yhhiPZN9dpoZ4xyJGnlIqf2UGsG9mC/RzPjjGnQZ8J8=;
+	s=k20260515; t=1781032671;
+	bh=dAPErZub35CZRx6cRiD4tDxfNHqt4EuvLpyZZOzwYBc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ef6/ao6J/2x2P2Q0Ul+w5+fI3fcDAeHUvj8joaMLKxAOVfCBVdPNot/Dls8xWkw8p
-	 v+JkUcacIS0nQQkJ/g5mHuqZ6LTZavpNlH7Vq7SckIE2cKU70qtoKIoJSOBQsKxLX6
-	 EsGwOEGpGG8IWiJH4xnBt5uAgSQDGPmrzm5TAyXHdJ3csKbYVR2KJyH8LD8yeOaKMB
-	 eO/8GZHy0QdHegguUdWDWs0DcCD1TiXd+Mfco4iYtoI3Z/sXFZ+TpLtsba4Tbw3+7V
-	 cjGLu+gU5awGymhS6I9SChG4YS4j6jqfuQPBSnfW4CFpyz81vaDHIOJ0LNmGEUMY9a
-	 NQ0qZYbWXBpcw==
+	b=BOpkIGy0vWKfnVPuc32W+RgiwQEKWwVFlLjhaG3yLag7kuk3JZrioSTHUZazNEX9V
+	 UYOWlrhQf01weTRZYF+AWKbbC8q2gM+G5u15fl51lLINl16hXrFlqkS7lgNRODpgE+
+	 nOTTpXBhf+f30wu/FazulF8lUv3UGupacuXC1k9KlNDZH2AvDBjxupV1PZz/0LgBg5
+	 UNxNy0Uaflf3dLD4ei4zWmAUPXm2HYky5KcP5wgkS0qfxeMAvZ4DuIdECWQL9Iic1z
+	 cVDdL7uFG8iWEaAuzUCLfzeslTJtOUcRK8AvbyKyzUS8/RUKHTTAkfYS5iPQcz5zLa
+	 IMb36Yp7Os6eA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:15 +0200
-Subject: [PATCH v2 36/83] block: rust: implement `Sync` for `GenDisk`.
+Date: Tue, 09 Jun 2026 21:08:50 +0200
+Subject: [PATCH v2 71/83] block: rust: remove the `is_poll` parameter from
+ `queue_rq`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-36-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-71-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +92,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1041; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=6A74Jcx8EHUn7wYuZ9sgvdf2Nhmf1F3bFtPD29rpOao=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTVV4QA6fjC6s5QJaM+DuAAdyzosiERGRI2a
- nDPiCvCHpqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk1QAKCRD6UCkIqsW9
- 0ONmD/4z/u7pdgX5Wmx6bwNyWB7SgoBcZbYO0GePl/pxDjGYrsXBAKCaR+jIq7gru/rtRnshdS/
- S0P4TMMhpGCOhEBoc5NpThiIJBzW3N3u/kL4X9FOxsEs7jdy1tCyUPZrlxWzi5QVbSowIVdo/Mb
- WVTCRroH4sw+/02YE2fKpBLUhNyzc0GRG5Qu0DdFMrHxJRDsOK0EAFlRvzJ2gb4E16xFBJv8rFg
- 0qEcfUc+f/5FKhLO8QHeS1qOSPQFC9/AANVaJr8MdbO1NY8BTnLXMf+yuyjr0VdynNTDtInejC5
- 7+OsySI1f8LWISEwii89pTJ+aey3e9JTXUB44v56mcrUrAA5HwbIxe0QrEZePJWfllIIBUVXK8j
- SRmyAz1KO6c7xMEgiKtdNeB+3wpH44dMtkiOUIQKUD2Gbt6pJD2T3iBhMv8+hOJlZQHsEOj2LbV
- GXOrsB75EiLe9qmROJ3RTxojwEA/O3HyReIJhIveUu/5JJSEqTEmUkDMtoexgHbVnK2hD5UGOmM
- 3TquGBebSsc0PsF7c4v/tR71vnCbhOIcchnkbWsyk3DDItKVKIToZQ7sC3FVAHezHNxEdZS44r3
- oCQ0x6gzZjYl3a6jO0cPAREwRMDet2vkSIgEqB09MIEIXMHeUl5DGM50Sll8XyZGhVhrIUNr4Nq
- XxKWA13bCrjnvFw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2480; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=xd/altTiEmLts+ET/xrl2RTBlfY83eAmYmlDKop0Y4U=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT027BJxlk5QPCxItS21m2vrFHxGANnDAgd3
+ IbcDwh3OPWJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk9AAKCRD6UCkIqsW9
+ 0LF9D/923dP0veZGR2zfMjDu/gMAkrMiM1R4hyi+SVGsVcewgN1D1luGHrk+H6j9V9TNVrzS3m6
+ gAu8+oplAnEp2FcSumoCdp/D73QHljzxq14myEC0wZOTOWbipS6Luej/4wgrDTMJO+UdnzdaRAG
+ tKWS5Rw8c55Far19Gncm90UVqlxCq9AoO48teIcKl1MVaXKxWKoIwLh9ditcZ/Qg+S/JHr2SFGm
+ POz0yCG2RJFhL/2heewf+s22ZeNWiUR6MaamuAMoylXhwM91kP9LpEm8uFYPqU7ouq9olV85igQ
+ H8j8K2posTmlHNBupPFh5/oMBvs849KJZGeAIF+V6iIgP3qE9bCtJSPhshNO9c7YO1OAsOdMNKO
+ EOLU0Jc+EgcjqVQQmvW8Ze+pokll8AGRSI5y+BQ8eDqnhsw+eh3Ptn6EzgDBCObgcaDPXbMJtDJ
+ LKdbN8DtBmwp9llutBwp6TGpT1ceS4Ph8/TYLzq+oPZPK5skpRNp9tFVRGrARV3dSMR/TX4jJzI
+ /odctllp+jTuef2Z3pKiFTukcgCXrHCbsOuSnrQvkM+4m9/SGaGaqX1/PVHEjBG0kkuXEB3v6fz
+ juSBiv5FucmvVh4zkjKh6Hen50NFyv70eNX1r4Wb+JJKe6Gc3Z4uQt5bqylYSF/DCZLDcoQxLwN
+ 8UH8FXhYWmjQsOA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: EA0A7A0018
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: z4rc7kkg5iedwydd3rq5hqhzzihnirne
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781032665-803167
-X-HE-Meta: U2FsdGVkX19JohW+IAF7aFV6pTYNm62H9JrH3NIqqA4za5NWbyi/k5I95hogxltNC0SVWA5Nfi1xgkEHmYu3b5cMd8+l0FLM8KDVmb2dNtkcGr717cgn8JCC8zTMRj6bWeAVhruttHvJeGcCIh+52x0wQNV3ucMfW41qPqGcNVpyRbTKjxE/OFUbaFgqDdIYoHeTZBV0uvp6eFP60r7QwRp0UKHSjL3lQlwYtez35/FLHF+S6pkt0VElCmKe9QZAKEMc6QkKXmfB03IiKNeUcj571OB2vnA77SUyy9e77zBb32zvHpVL1Q8Cm8qH5WP+i5eVnFwKG3wlz6kosRIQXHeHTO/xx3el+dVJGy0vFdUXj8fdYkwGq3jYA9r7Vn894MrWzO3/kLfFStWWdQzZqtJIMECtvFbC25gG7ZAmzWA4XjwWgMOBBisy18mPiZttO/NFnvDYgzebOp2DwfVposy2WTWgYMytgOq1QHHi1aBuy5XnZy6X+RUK53ac0zvMYflIv/ql3WGkA7gRz8gTey3UbDHclRaAK5wyOXOgaSCyEJpSlDyrwijsALTv05gac2cXiuMREqU4e0TgsS89oO3aZGuBegc/Eaytdh+jCJsTZylKAYOavRr3RxZrtzGrmKwZlVn7mlf42h79egwSk2QA3ZsB/s0iGm4vJdrrpLfa37KbHDe4hrNCznPW/vdYwbQrxSIuBtlCPJr1B6zFkKbR4WySPoUsLAiVJiOeAMAOCrjyBiamLVi8SitYEVaJW6fyabSzdeDXpjsYiREXUQujTG8OnoMvwV11AGJTx2UkBD0PEIqZRXscnJnNtCJnG5zxvHRWmGLzU4TTYWPliRzhQ98FUGhWSEFb7bARLIMC0Ai+g4l30LDsYXjMmGnUmPQQkqGxG0ANiY4N2rIdgurnKYx8xICTxjSTItUAIbCUpwhJ7EVRA2a16FpgnG7dc6GP8yqFqX1JAYCjs9i
- lsAlWg89
- Lm8/qNbQ+43cbGVaXGMUGNpye0WWoYPoITcKIV7aTMu+0K+XAzDMIJbVAJK/1iQ1U8CwilIJvXIQg7KhvNoxipYYW/TVIfjio7dPn96rvBlGd/UKpdgOO0Q8LIyhoOlY17+hh9j1PWwqyPksO2lBKnAlxfAtL3YOtsUuXGFxNyiet1SQB8LlAUxZ97oec4zOiFPgcrkDGgU/wJ32/xWsBtCsWRWzTEkdnIQGq6+OLMddiyTV5CtfLJ9ujnHLG3LndZzukH/pOrIsJ9l5fbaFO2zLWORa7ScHDZ3lLHL4lTQGiVTnwZZ+/SNTPA3VCI8Xw6yt0/YwyYg6p6JYmdeGXvZIpT0QSFqIeHLldZAPBw2mq2XSB7CmIvAIUzg==
+X-Stat-Signature: 14fbda6qiu75pk6jaixjjtqcs3u87aaa
+X-Rspamd-Queue-Id: E22D6C000C
+X-HE-Tag: 1781032671-726057
+X-HE-Meta: U2FsdGVkX1+CkgUDHVcQy+Xj2SP1zyUzTeKtfEAcmLUKd7r66T7wLC7MF7KEMsiV+nEtB9zqE58HdaNyAF5dGW8DVXVFRqqTh5OGZzqWK1x4qV/4u32B41h3QwwFdI6H34FvsQ/OZa0g1Mqbk+tuif77txgYklBQjqLKO3okfH2Q2p6dKwMNfyEIWN+LIOLqmVhLywOcA4/HBLdGHLtfDocCLAfc4Q4wzhd8F9a+RqfCSQ/EJgNjKMchr04650vTm1JGnj1X+i4oykmuJzTcBFy2gcTgJdRGwOqZGFWgpB91zvPXGuk1dRXhTbRIwYhRRH1/hqbByuG6s07DvKn9dnWyCQ8G+K3RYEvJ93PMgieNh/6rLW6SDM9r6UNoHqTea7fheYnRkME3dmOK9buJHjWA2PBEmuPlIuDp2MgKpSmf4HmUhq5F6JnxW0usSduNsFEEg1ufMTxps/T7nwORwZUAApKFupfA73J3tZonswFH+oAUmg4kN9mbsfz9Raz3jL/wn0hvlKFPSCHG9+WcR+8FO22yoDVdTJjeu9zU7c1/6Ynlyzc1k+w/Jipyu9gRRGgOIX0BmGCKy1dRmn8633FQ2YOm5MZ2hNMizX0ao+al+O9+R4qLhEEJxuc4Kwn262BUB1pAAI+23VPLZ0z0xDZ+Sk3ybS/7+eHu+c2Jz/cerHTunbOGmzT82OVEBnCIqTljVZpFvFIsGbavYnZgGjE+eqvx8Ac7mdlb0WZvNu1E221eqNSNHFcJRESwelbN3D9LWCnxsWfpE/Krcyt0KQKN1Xt6FK41hGlQXHDrSR9pLDMbyeYb/JlL/Vz+9eEIyD0P/KMBEWm8FyDbPTX/yaPDsPpA8f1d2J4u745BXkTefLHj+ywcsc3cWSaU2wVIvHwcFk4TUO8v0mosA/ztLxARrAJmGT6uInq0Gcji7L8M0soBTPfwYgAtFHWtPPzzn50biSP0qulXYHV5Qsc
+ PjqbEZ/a
+ i+VI0oj2OfVrDOZe5j2FbVULsDQBzxRJ+dQ5DqhUINTBZwXqlu6Eqsm6Z/qutOKs6ZOpSJtKtoj3SNt5b2kYB2OV7nznE7WF0zE2WtpXvdPvfuKXyAs62cIo5PyC0u5ha/Qk4qifNm6N4exlAhIQ5LP2aJFP6X0msMoogaa8om6Xcgc56GXaM6p76waYCSsyKOeOU0pXRcgWBXWYDPvpd04JCzM32VUGVo1BxK8EzavfxH30CPFeIxMMrEpcQDDzq/wUSyiMt6flDRbEENIPgos+YPlG2oJaIHpVWWJ6tADSAW0Seqtb53lwYO5Md2kZRB1jy5DzHQ6qvlkwW0XkmtpU/WaDnTz2XuKEtaSl6E88RY9nppfmQpZZ5qgK+T6RBLKQdgHO9S2dKWZlwsk18zVIg1FIjBKnraY44
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,36 +123,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-`GenDisk` is a pointer to a `struct gendisk`. It is safe to reference this
-struct from multiple threads.
+The information can now be obtained from `Request::is_poll`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/block/rnull/rnull.rs       | 1 -
+ rust/kernel/block/mq.rs            | 1 -
+ rust/kernel/block/mq/operations.rs | 7 -------
+ 3 files changed, 9 deletions(-)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 2b204b0ed49a..94af85fe1716 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -234,6 +234,17 @@ unsafe impl<T> Send for GenDisk<T>
- {
- }
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 32af69bbf8f0..8e17b2b17a66 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -960,7 +960,6 @@ fn queue_rq(
+         this: ArcBorrow<'_, Self>,
+         rq: Owned<mq::IdleRequest<Self>>,
+         is_last: bool,
+-        _is_poll: bool,
+     ) -> BlkResult {
+         Ok(Self::queue_rq_internal(hw_data, this, rq, is_last)?)
+     }
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index e8f0d03f2ff7..47e1f860c6ba 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -90,7 +90,6 @@
+ //!         _queue_data: (),
+ //!         rq: Owned<IdleRequest<Self>>,
+ //!         _is_last: bool,
+-//!         is_poll: bool
+ //!     ) -> BlkResult {
+ //!         rq.start().end_ok();
+ //!         Ok(())
+diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+index 505e7d2b2253..d28af9a5e006 100644
+--- a/rust/kernel/block/mq/operations.rs
++++ b/rust/kernel/block/mq/operations.rs
+@@ -93,7 +93,6 @@ fn queue_rq(
+         queue_data: ForeignBorrowed<'_, Self::QueueData>,
+         rq: Owned<IdleRequest<Self>>,
+         is_last: bool,
+-        is_poll: bool,
+     ) -> BlkResult;
  
-+// SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a `TagSet`. It is
-+// safe to reference these from multiple threads if the `Arc` and the `gendisk` private data is
-+// `Sync`.
-+unsafe impl<T> Sync for GenDisk<T>
-+where
-+    T: Operations,
-+    T::QueueData: Sync,
-+    Arc<TagSet<T>>: Sync,
-+{
-+}
-+
- impl<T: Operations> Drop for GenDisk<T> {
-     fn drop(&mut self) {
-         // SAFETY: By type invariant of `Self`, `self.gendisk` points to a valid
+     /// Called by the kernel to queue a list of requests with the driver.
+@@ -214,11 +213,6 @@ impl<T: Operations> OperationsVTable<T> {
+         // `into_foreign` in `Self::init_hctx_callback`.
+         let hw_data = unsafe { T::HwData::borrow((*hctx).driver_data) };
+ 
+-        let is_poll = u32::from(
+-            // SAFETY: `hctx` is valid as required by this function.
+-            unsafe { (*hctx).type_ },
+-        ) == bindings::hctx_type_HCTX_TYPE_POLL;
+-
+         // SAFETY: `hctx` is valid as required by this function.
+         let queue_data = unsafe { (*(*hctx).queue).queuedata };
+ 
+@@ -235,7 +229,6 @@ impl<T: Operations> OperationsVTable<T> {
+             // SAFETY: `bd` is valid as required by the safety requirement for
+             // this function.
+             unsafe { (*bd).last },
+-            is_poll,
+         );
+ 
+         if let Err(e) = ret {
 
 -- 
 2.51.2
