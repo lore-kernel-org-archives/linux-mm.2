@@ -4,139 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A8E3CD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 542C1CD8CA7
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:13:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E09FD6B008A; Tue,  9 Jun 2026 06:06:47 -0400 (EDT)
+	id 8E3996B0005; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE2226B008C; Tue,  9 Jun 2026 06:06:47 -0400 (EDT)
+	id 894C16B0088; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF7F96B0092; Tue,  9 Jun 2026 06:06:47 -0400 (EDT)
+	id 782FE6B008A; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BED326B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:06:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7373C140416
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:06:47 +0000 (UTC)
-X-FDA: 84859945254.27.7DF9B13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 957AB20004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:06:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/DNTIH/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6788E6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E8FC14A8
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:13:01 +0000 (UTC)
+X-FDA: 84859960962.17.D27C47A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A556F1A000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:12:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AQvkCB9Z;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780999605;
+	s=arc-20220608; t=1780999978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ihPSDA/h0Hov+M03ajn9GoQMpAb1QB0ZzEH18p98fI=;
-	b=q0AeWZ4f58PqKmTUfpzLC54YZQPUYlqODu1GU4ykT+ZZHwjH319LlNuYqruUUdHeCw1KMp
-	Xp6BXGVLkadSRA2zp/8eYwdAFHqtd0Zolk+yoBQRlPSKQMI5vwtJ1sav6wdsJBKpzO2jwl
-	a5uiBXExOOOie6bSBz5WEnKUn0PiAqA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
+	b=lP+79mnV5QDv+dsgKrUrY5YLGnACz/z3enR/P7J8e8gH5vgZJ9C5Onq/IEtK/BzGHYS9BH
+	8xuHJ3ei8O2Oafrwq3/LZ+9kHtwQaLuIO3EgSG9+qj0UUYggYaRgUY8bJA71tB1VRk7/Zb
+	Se9Z6lQTJNChysSUVTRgn5/aShQ2ipY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="f/DNTIH/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AQvkCB9Z;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780999605;
-	b=pILHluZnrV/Y6zNVhvZBoPF+bTq3LeTgaGYkXeL8Gyop4kJbDkXg1pHwTuzH3JF/MLt4qj
-	6XpazC5aDr9kpWss+6MyVZ9kJk3ebepTFzaSzi5PwqNvidl57GifhEju+colfWmpiiJRWZ
-	yALWW8JvDTy4NPZd8Kedc3FHaXydPY8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8AA74090E;
-	Tue,  9 Jun 2026 10:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF681F00899;
-	Tue,  9 Jun 2026 10:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780999604;
-	bh=1ihPSDA/h0Hov+M03ajn9GoQMpAb1QB0ZzEH18p98fI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f/DNTIH/yx46ZasoAMnEH1+Guyhpk0JvhSaZTirQQds6faAGBzhYHerjrdgUJJXsL
-	 NxG7D2lZanD7LmDxrolbWQwz1dgenNB8N/Sk3ZjzoJtO4qCGocSDl3ka2ajzQwzINO
-	 ufSlpY6Mw0IEcUn5oDqsTUaF8tN4YxQX/omJoDv9avZg2Lj5GgPJLD6hYn4LMbVlWS
-	 qJpz8NsESC8hOvNFqp6R4rjHENMkwgI54a/ADNU+G/qhYgGo93a+0egI/oPX4EKYS2
-	 wQTSOcY/Hqs6YvPvTydGkejXD076sN7iZsS1Aj3OK7xeY3ZHeOFWVwc1J1o3NMWSbe
-	 ZhJct0Cn7Aa9g==
-Message-ID: <b62e071b-9dec-423f-9b4b-e3c34ea0a409@kernel.org>
-Date: Tue, 9 Jun 2026 12:06:38 +0200
+	t=1780999978;
+	b=VNVQjq+b8qFEctnKWhQjzgzPGIeQzGxohyu3xrbSEsJuRnBmpY065iUuh3r6zysPU0jOtO
+	vK5DizC7yKgi7DfQV3Q5ZhCaZicox7VJQIsQUuBDkFe5AYy+0AtclYZDD+MPy2owPEAevM
+	SyCyX8me19zzJCL4dmJvFjIUds4Goio=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780999978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
+	b=AQvkCB9ZsWCBeMpTymGbxBIbGqDKbeguT4R4TaR8Nk8wiTNz+2f8/EKe5PMg1a5lDBLAvl
+	djztnE7kOkTRrO4yEb9i3dg0+vov6RQByrbX6p4Wm+zCVVIQflG/Nf5Uw9GO6F3U8AI6nN
+	+BI/JYrM1Appa+9iCo5zc+EIM/Dk7l4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-19N6L3grMD-PUnp09GEbNw-1; Tue, 09 Jun 2026 06:12:56 -0400
+X-MC-Unique: 19N6L3grMD-PUnp09GEbNw-1
+X-Mimecast-MFC-AGG-ID: 19N6L3grMD-PUnp09GEbNw_1780999976
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490ae016853so35178785e9.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:12:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780999975; x=1781604775;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
+        b=speYmz/eQpfni2OhC9U3EBC6ZXfA5ZSDeZWRs47QkEk2gqMyeiv0GsTZf35ilqMtmp
+         cW3BrDieWp4yJ3LhaTsuLpkvAmdUiGBSGMtEs2oYLwDTScpy5RJTObWfwNz05tA5Blrf
+         a0aQjo/YLNFWjV7z81btH/y6fzQovnj6cAzNFmL5YvxfySpM8I6/cHCe7c1OOtw4w8MC
+         gcPvhkNvZQyUG4mq9MyhZGshgX0ew0k5Zbak2PjfsooIMFBPVgcI/xKQgMmXVLV5u2Qa
+         gwI9SJdnmgTIREcRiFnE36RFIDQKyG1w2G0rSHbXPmKOcdJlY8v4syZoA97mIRpcCpRk
+         AZ/A==
+X-Forwarded-Encrypted: i=1; AFNElJ93H+nRiH28kjvk7mnfupml1xgbjeHkqR8B9KXQNAi5kHtd6mQTjWN2HCWDXXgV8MVnkmlitzu2iQ==@kvack.org
+X-Gm-Message-State: AOJu0YxEx71kCsrEq8hNOuEehX3bHy6+33Q5EmLFGXwGT8cKX4KKPmZn
+	mj12QEJytkCuZ/0nN+0A9ONcsOh/gXf1HIBE98EXoMmqM/PNJDtuemGWPkKGNpj1n81OQ0EmIt/
+	eb/j2UpR8Zy/pnKqysNkiuPfPn4XBoYZZTfrnKu+8Gz8tQJMl1/cw
+X-Gm-Gg: Acq92OEM/63SaEBUcg4r5d3B3m8Tovh5jRgV4zBB5yzS/mooebN2krCUYynQ616Kxsx
+	T8ofqZx2Ikr1ehI1hGUkXr6bYj2vljUaKHSENJMEeZTeEn3GZ/Lz3wNyp67psTmMKsnbVsMfASQ
+	GjWQvziRs9JvOA4itQr63o+HIuZbfjmIWUAeloKV11wfmbkDbigCsgyZVAUMJXRdqWjlfky0RnH
+	4fDHS7V3PcLuL8bzf+rKrMIb0cUS6jHAxqreIbwLKFQve1AAYqF5zmZCr6tBUeJ8/cpIjev4JvN
+	deUf8aGFq3pYaKS3VcYzHjuMiAxtf1JOsmWC12kAlVwUWwKdqJ0ttmXttGr4gxUW7MH8yt+nNed
+	onSVupSt2BRcEqsjgsrzqoZVAjsFAWgs1tK0bY1li8KpwCYPXhX6J5w==
+X-Received: by 2002:a05:600c:3107:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-490c264cc2emr328880095e9.33.1780999975313;
+        Tue, 09 Jun 2026 03:12:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:3107:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-490c264cc2emr328879275e9.33.1780999974756;
+        Tue, 09 Jun 2026 03:12:54 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c15cesm460773715e9.5.2026.06.09.03.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 03:12:54 -0700 (PDT)
+Date: Tue, 9 Jun 2026 06:12:49 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>
+Subject: [PATCH splitout] mm: memory-failure: serialize TestSetPageHWPoison
+ with zone->lock
+Message-ID: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/9] mm/memory_hotplug: add multi-range hotunplug
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- linux-cxl@vger.kernel.org, linux-kselftest@vger.kernel.org, djbw@kernel.org,
- vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, osalvador@suse.de, shuah@kernel.org,
- alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
- ira.weiny@intel.com, apopple@nvidia.com
-References: <20260605211911.2160954-1-gourry@gourry.net>
- <20260605211911.2160954-6-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260605211911.2160954-6-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 957AB20004
-X-Stat-Signature: mbzppbigpon1ojxhibawrn6w7pt464zp
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nDkFEXgaPmOWCSKiFsut3LdB9JKwQi_YqJ-eguXBYLg_1780999976
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780999605-141258
-X-HE-Meta: U2FsdGVkX19wUVsw36xz71A0xc2J7EFYJNwFfOJXddSYiorShOJFg7xZtlNmrvdyw/eOiAodImqc7smHo5dO8Aq1Nuq03piOtrdz0C4E0xycnuiJI3nz/z/3OqBn5mLZ+N1XxqyXLtqhkHrrYB/3NT1mxAzjksUH1065ktG4YaFV/CY74HvwcfKcr4TcLDFOHEahNg2jUQIUM1E7wgepJNrKbtqH9/WBlmIbjsyeTfSLnwXGBJuQlxsNL44RH6jQ1upyckdCjXXGdbvn2qaeYg77Sx6yizwM5I6PCsghZ6OxSqN3CdyNevnqMXXQ9SEKV5gG97s/T0NuB4Kf7w2XJCs981QNDXG/AZHHaZFnlfB72p6NtLBlI6YhQs46sXlIkpHnjRathQRDxZGCw42HLWPs6S5JQKGfbWQAlpmC8zcDOO4W5ZqjkKbLII8ckMKTUkRAEQbRe2TRZA6SfvUxpUpRngPblyWcx+qpQTxaKJXuiiEX4F/VtIPaWsdzUnIMn8cFHsK/tjFZwit4wUJHRHt/AiRcs7eSpocRa8AwDOrEotlzHXbwYdw6FURptXO/QQrF5swn6N2k5PNsq4uiAnhN/PAbxFXdoXf2Sp1/Y/IAQBWRqbTkJb8dDqJ+b++y0rKC7I6PPXQfdwRETahKGxbC451N0czYdbHMrkMwX4R6j66dFawR8rclJ7B2YtVUqGNLy9EEXITO4Xsxwix3TtVpuRIAFDXqqYpFCco01HE6dw+dL9VsshQlfQEBGOAkwzhaI2fFa6kJw43Eiy9zQmRwrSNXFyXk4ctZFo7ZQWYW5IbThoqnYg7DrwEfVBTH1eY2gCLwvoMvLOF168WW49iTNOEu4uMu+bX/epHyLzSchh02EIi6qC1P5Az5PTTuN34QG/DEzyxT7pOSed1DHNkJvCtvUJfqQNUnZlRV5Zch0NIqn2j5kKJkAHUOFcPOkInHeHxPnhtGuxba+ko
- hKtyZdA8
- zpj973AgnFssZXSeveteenrOWJKc4ebnBSnoSRsTcrWKnTUD2V4PUIIOfw9sVfEzkncP89Nx8mODYCcg/zNOOSI6TtLQv72xD1pfhyrJ3mGzBORdN8pOIkmFNhdtIUNkdd7N46Kl2gelGhI3LteZVlrvCFGyYrUK7LjSaOQRxeKcxDvdTSBMT4c3Dp/tHW5kfGgw58S+5xtXZr38vsYaH/+xMcM83PtgYxuAQ2C+DupA+WSJNRCXGfLxQX4Enf01UiX/CUYNDopr+YNt20c1rFNFySlWebdydYHs3hzo8fzues0EK8xz9M6+sxQ==
+X-Stat-Signature: a545u75tdie9s7zc95c8zi6s55wfnznq
+X-Rspamd-Queue-Id: A556F1A000C
+X-HE-Tag: 1780999978-670879
+X-HE-Meta: U2FsdGVkX18Ce7xLOw+FfEeFmMfbt8KMu6u/W9hHBALLa9ZpW5kq9CTRqJ7CtB1FW7WcVLVS94EJip0PqraBc2zjzrBBaXeIXLNZ1apizgz4h5Rs2YS5nvRHakrYGIi8jo6UGLK/yBPXUaxZCwiq9LNzkU3jTAg+ZE716u/hRPU3VREkECaXD4XeqvG8+fsLb3GEMvqf23FsnwN1a8vuLKbOGj8x9X28f2yWLRcvJqiRyG4RfEnLns2z//I1RK1jFyHdohUvjDuWPGjBZrDu6jLlqMF/Io2Q8nPxSR8h05H/1tuutuGjRP6PSOhsrGjda8gIhFDGNpX/BJf3IyJQKVcNk78kn22Dzj4ePHIExmy5OaTMuknRk0mfFYe0tT/oynArDUfzLyutLfoJcJkz2skwkO0jqdiNS1hpEB//xfPfBUJEl7eOm92Cie+3hQ3OhhvdLS9cM1ImMtptR/anboc/qbljTvxYlzaAI6/W2pueNntRI1vN4p5kvMR8lVfH3WKWnK3eWRHPkoZ5FWMPfb/uVXaM6Gh9iRIuEe/tOJUJ1/YYgRkrM845/npKMn+wNfzu2N/gR+5tE7gxgy9nxCErAmZyIddF5FjKHSQlWmtiATA8+rlyNGJ2meZwRWXLZhAgz1mwNOnioGLQtwszEllBGoiR5f+790XM9PU70ScLpBEBqUiaifcnbFT8HmsCx+0pFe9C6PGPdkyaRxHh9f5ntKpQe0GlpMs1OaNmLordD7m4EESmRtJUf6C9tyAaigUqQODLR2wUkPOOlWAEmjrZf3Iwz6rakhFEUqCA4VvQnap8RNlqTBI2c2Db5M0yJvmBBOWStlRr/+UXoCu1OYtzilW7NyNLLby8h4dRrMauoEFkXQLEEOLOhh+3cby0blVa+vbx4t7yPEFl0ZMlvQwDZGGezCo6sVk7su5J4d6lTgx/5xqqaT9qN0GB1nliELAwwGDGPl02fvuklqE
+ hFqw31+J
+ eTUxsL0Lzj3X/lc5PbkMWvUTdClKV22dOaVP79Cnj8S5Lexirc0boMDZSLUfPXT1ivso1qCwFDn1jfYKF24S444xIY9W5wboQUcfNOry8WvG5bpFgRzkh4i1VrCK99AffMUsduB1HC2QVUJJw/Qz4ARww2AMv0IzVblPyys909AZXse94/srpN828q9r6MLnjoolQ1DJXZThf37i7c4xCdho6Nw1v+95gGq44gqSb/DQ2Jtg9OvM+hgjb6nLWLtImwxSepjxuDgiT7j+CYFAcLsOTZHPJ/plvySZDKKeOVkZurYTjwilkCzDfXiylX4u+WSRVTgdqWwc2A7G8EMfjbafVUQeTy/cHPY2s0I7C1Yu6yzHe+/ttW0eHMFw93wi76kUmwpIDWTgjL5kS3R3dvn29E6B6EM6AXvSy8Jzi44ZPZmE/F/+LryNX1P8hsjf1uz6wjHhjmI+010FycSyy3m2T0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,38 +160,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+TestSetPageHWPoison() is called without zone->lock, so its atomic
+update to page->flags can race with non-atomic flag operations
+that run under zone->lock in the buddy allocator.
 
->  EXPORT_SYMBOL_GPL(offline_and_remove_memory);
-> +
-> +/**
-> + * offline_and_remove_memory_ranges - offline and remove multiple memory ranges
-> + * @ranges: array of physical address ranges to offline and remove
-> + * @nr_ranges: number of entries in @ranges
-> + *
-> + * Offline and remove several memory ranges as one operation, serialized
-> + * against other hotplug operations by a single lock_device_hotplug().
-> + *
-> + * Unlike calling offline_and_remove_memory() in a loop, this offlines *all*
-> + * ranges before removing any of them.  If offlining any range fails, the
-> + * offlining of the ranges processed so far is reverted and nothing is
-> + * removed, leaving every range online as it was before the call.  This gives
-> + * callers all-or-nothing semantics for the offline step, so a failed unplug
-> + * does not leave a device split between online and removed ranges.
-> + *
-> + * Each range must be memory-block aligned in start and size.
-> + *
-> + * Return: 0 on success, negative errno otherwise.  On failure no range has
-> + * been removed.
-> + */
-> +int offline_and_remove_memory_ranges(const struct range *ranges, int nr_ranges)
-> +{
+In particular, __free_pages_prepare() does:
 
-Is there a way to just generalize the logic in offline_and_remove_memory() to
-multiple ranges, making offline_and_remove_memory() then a simple wrapper around
-the new offline_and_remove_memory_ranges(), providing only a single range?
+    page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
 
+This non-atomic read-modify-write, while correctly excluding
+__PG_HWPOISON from the mask, can still lose a concurrent
+TestSetPageHWPoison if the read happens before the poison bit
+is set and the write happens after.  Will only get worse if/when
+we add more non-atomic flag operations.
+
+Fix by acquiring zone->lock around TestSetPageHWPoison and
+around ClearPageHWPoison in the retry path.  This
+serializes with all buddy flag manipulation.  The cost is
+negligible: one lock/unlock in an extremely rare path
+(hardware memory errors).
+
+Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+in this file operate on pages already removed from the buddy
+allocator or on non-buddy pages (DAX, hugetlb), so they do not
+need zone->lock protection.
+
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+---
+
+Sending separately as suggested by multiple people. I also added
+a Fixes tag.
+
+
+ mm/memory-failure.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index ee42d4361309..3880486028a1 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2348,6 +2348,8 @@ int memory_failure(unsigned long pfn, int flags)
+ 	unsigned long page_flags;
+ 	bool retry = true;
+ 	int hugetlb = 0;
++	struct zone *zone;
++	unsigned long mf_flags;
+ 
+ 	if (!sysctl_memory_failure_recovery)
+ 		panic("Memory failure on page %lx", pfn);
+@@ -2390,7 +2392,11 @@ int memory_failure(unsigned long pfn, int flags)
+ 	if (hugetlb)
+ 		goto unlock_mutex;
+ 
++	/* Serialize with non-atomic buddy flag operations */
++	zone = page_zone(p);
++	spin_lock_irqsave(&zone->lock, mf_flags);
+ 	if (TestSetPageHWPoison(p)) {
++		spin_unlock_irqrestore(&zone->lock, mf_flags);
+ 		res = -EHWPOISON;
+ 		if (flags & MF_ACTION_REQUIRED)
+ 			res = kill_accessing_process(current, pfn, flags);
+@@ -2399,6 +2405,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+ 		goto unlock_mutex;
+ 	}
++	spin_unlock_irqrestore(&zone->lock, mf_flags);
+ 
+ 	/*
+ 	 * We need/can do nothing about count=0 pages.
+@@ -2420,7 +2427,10 @@ int memory_failure(unsigned long pfn, int flags)
+ 			} else {
+ 				/* We lost the race, try again */
+ 				if (retry) {
++					/* Serialize with non-atomic buddy flag operations */
++					spin_lock_irqsave(&zone->lock, mf_flags);
+ 					ClearPageHWPoison(p);
++					spin_unlock_irqrestore(&zone->lock, mf_flags);
+ 					retry = false;
+ 					goto try_again;
+ 				}
 -- 
-Cheers,
+MST
 
-David
 
