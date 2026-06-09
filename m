@@ -4,91 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD8D6CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:02:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23AA5CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6326B008A; Tue,  9 Jun 2026 15:02:34 -0400 (EDT)
+	id 26E8C6B0005; Tue,  9 Jun 2026 15:10:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96936B008C; Tue,  9 Jun 2026 15:02:34 -0400 (EDT)
+	id 21F276B0088; Tue,  9 Jun 2026 15:10:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAC2E6B0092; Tue,  9 Jun 2026 15:02:34 -0400 (EDT)
+	id 10E5D6B008A; Tue,  9 Jun 2026 15:10:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCA3F6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:02:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8223F1406EA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:02:34 +0000 (UTC)
-X-FDA: 84861295428.18.0C09F8A
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 59A5E10001B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:02:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aE3DSxvB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id F16996B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:10:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E67391423
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:25 +0000 (UTC)
+X-FDA: 84861315210.01.310E5A7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id ADE161A0009
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I4EdEHZ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781031752;
+	s=arc-20220608; t=1781032223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EOtMs5rqZfbuAW2ldhtXi46B8R0gj+b3MU1GZP9Re8k=;
-	b=sg5t3PrRTVcwzLY1JKPvtb+W+T+lM4x4WT78ZbX8bTPwFC+C/ZTMNJQMeipRNOQ2dDIsiR
-	b8ZMHtzgosn/f34eiQERba9oHAVcyMVyzLxiOaXCc6rVW0VyrrUlu8fmWSzYjxyv//EwFA
-	qoYtT95pk515j2QFf+KjRSnLJsIe7B4=
+	bh=iHY5maGdy9Y0fuMpxRd+GJYueXrmulzdgPUuxeFdpc4=;
+	b=rM7jJ7Y9sbnK0ym5rcWL3WEl7FejVdFr/t9U1u2BON3czF3vexBpUWSdlieZWy8rSYnJqG
+	uGPuAPBh5meugu54OEt+37PeaZmYjSoBQ2hAO2MI8yrrmNgvMfIc+f+KGutuiGDD26y/Bf
+	IFMitpqFahkxLVgufupTMux9J1uzyMs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aE3DSxvB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I4EdEHZ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781031752;
-	b=Z4NxZELbqCBL0HgBBYy2fqhmdymKiZlHAwvL9kMdWzVDQCLY2+7LNp0f4inpUmVymcPaND
-	6PTC+3khCmhhMWQluSgRy8SeWNR1zV5UfPkfteNbHq3hlVKJHBIB6NHbQrDUJAnuOHu67Y
-	C0zOVHW8ijBSQE1eBEjstdHEzZ4l6fE=
+	t=1781032223;
+	b=Hkz9A5J4rmDEel3JO9NrioV+GUhAwiGHRCeiq50sTsu/7g567YqpcGNhanJN7aSSKn1wf9
+	dTnjB/3QkpJzz6dlSMyE88ozCIKpRvOHDNFGOa6KD2pXmnk6n4zkcg68cobaqP6kBiSpFQ
+	sSkejYRHbCCtfJA2WexESgS2ZylP/0I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DB9554059D;
+	Tue,  9 Jun 2026 19:10:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C511F00893;
+	Tue,  9 Jun 2026 19:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781032222;
+	bh=iHY5maGdy9Y0fuMpxRd+GJYueXrmulzdgPUuxeFdpc4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=I4EdEHZ+4mOmI52HAVmdSd2wciDtFR0/Q+5iTwm0ly5YvhTwazYPxYmIXCZDfXVgG
+	 /yWbJXOrQ8VVEfrF56ldHexNv1vKEoGR/BDVNXFAoRcdUFs0hIg33NJWhSorfpLJhj
+	 KiHE791tF/dKvrwu49a0YvcEPMDV0g1LLZ69Rgy4nxvZzFtmKsH/BG/5DxmOk8zyjL
+	 YtlEV63v70Nv13rR2eBVB5qP8EKyqc9II4cD/gxONQFburypTp7oMl+KJx/nBgyLoP
+	 Gcpx/6A/AnoCjUyYM4QxsG50NUdBe46PL8in5Olq8ABlsP/rKX+6L//CUhJwFeu0rI
+	 k4QpjPTh30YVg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 09 Jun 2026 21:08:22 +0200
+Subject: [PATCH v2 43/83] block: rust: add `GenDisk::queue_data`
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781031750;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EOtMs5rqZfbuAW2ldhtXi46B8R0gj+b3MU1GZP9Re8k=;
-	b=aE3DSxvBnLeIfrzT7nkodC0YGRnfhF5zMrZwdWQC3a48frXDgmu//IgOJTudrhP1JITrok
-	YG1aB8ZtQP7yRtP3m+ogEwBcF4CKDDybUJkYtL7MKULedbQcEz0yCWdLxE6gOm0pmtIlbg
-	AXDfRrUrhQLuL732pQLGRdld7uJ+Wa4=
-Date: Tue, 09 Jun 2026 19:02:25 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
-Message-ID: <1b6509a832dba9a7e24ddcdc23fb75247b267c78@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-To: "Andrew Morton" <akpm@linux-foundation.org>
-Cc: ivgorbunov@me.com, Liam.Howlett@oracle.com, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, david@kernel.org,
- foxido@foxido.dev, harry.yoo@oracle.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- muchun.song@linux.dev, rppt@kernel.org, surenb@google.com,
- torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de,
- kirill@shutemov.name, ilya.gladyshev@linux.dev
-In-Reply-To: <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
- <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-43-82c7404542e2@kernel.org>
+References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
+In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Benno Lossin <lossin@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Frederic Weisbecker <frederic@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ Jens Axboe <axboe@kernel.dk>, John Stultz <jstultz@google.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ "Liam R. Howlett" <liam@infradead.org>, Boqun Feng <boqun@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ rust-for-linux@vger.kernel.org
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1051; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=QdUIpX955IjWtpvoketZafjzxxc6bEWigg7uBvUHVaM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTbpS7sC8gUW2Adx4HtZ/fpiNOjSfvNGjo6B
+ NBvkfxPGy6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk2wAKCRD6UCkIqsW9
+ 0GkKD/4jKQPzH7UvTzlymlTkzO6nFr0uD+r+lxJMwBCVa3UJ7O/Hiw74mJ5raWq/ELYiqGwZ17q
+ BK1XKroXvE7lo3/W2fjw41bqrmg1v56WWQQfNlCe/w5rXtisEs7WSUsxgwCTsH8MlMbBxAYiVZG
+ BIgAp9fMcFefidQZ1rioOGGQK7fWOKhtfN5V26APj4FSH2klG8pNPYv8Qwnn1QRljsT6htLvVtA
+ 8agBETAJEBn2/gcReU6RDaUgyv5WTdYOjApi8mzoW0qVVEbCIpAAAAbKOQS2rWMdXdg9kq5mYnG
+ Tw2PhohLdqYMM8qX1sSrGUawgIxfRckb+2DrR21SUtQ1lCAu64PxoOsK1xd79HwdUVxCeO4FJcv
+ uby53gHiQsCDK5U8guolyHcVWzSBlfgq21+1KxTxw+IlDlBA3knAIa5qrr9P3+5XI6mugMLJtyX
+ qtx1NZcFEUEgzSOv8x8/9oKtpIIaV5eiaMsrd2jP9evv3IeFMKt6Tfd9297ONwbX8A6l5J+WgHB
+ FDG2ITMtxPEO99CIBhv3hFdzJeDlUZfp8VC5npQDoZrc4UyRyEVrzgE/1AWgs+JCqqZw2PPQdgO
+ 6KXUT/c+OsYDx+LwGjkGzaUQk9zkDIJyJQMTzczdk2TAJAZyLPhBaQec/R0MrXSL/IxGvyOBlzr
+ Le8kjM8gfkCjTvQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 59A5E10001B
-X-Stat-Signature: i7t43us85yyd8ohm4nomwt43g55pi6ey
+X-Rspamd-Queue-Id: ADE161A0009
+X-Stat-Signature: b6kuzofy6yrnum8wsi31p89wtaig5h8z
 X-Rspam-User: 
-X-HE-Tag: 1781031752-172733
-X-HE-Meta: U2FsdGVkX18urhpvnhd9zRq9HI525cTBd5I0Sjv/nLePkP1iCpHlBW8S2955gg/Kr4amXNtjhanE03EP+2jniHunevXGLBMKtQZVhr5+nfm81cPR8YPBn1TEm5/bLwg7TaJqkyB3KrmOaTZK5/4UOlaCoS2PCgdcEwRiZu/gqJl9Z8oD9W8DbkgsyZehAPWcr/fbxC8T1kHIw72FSWJrqmGnSe4a8zQOSXnF5T9t3n2pkpSzI36TcxCm4ok3N4gF7KZRvn6E/iyIjwzME8rPMMrXviCRbaAV49V0tp0o794teslnIm8da/oruuylYGLo4xu3mA0z0Io/fHUaeiR9KqPieOEzWsQ5FKE8ctBnmgmurcc0ie0PNt5pTQzvHfZXXYqUXmFyX7dYhPiQ/HDau9V3q6QPuZYQzU7o0eGqvC3tn/KQnVB0ZgOn5voI1Se7SnUflWjrm5O+pFXfd4RfQW7B2CDK/xFzzLAsbaytFjx2QsaX+7PDIUrr5kCiFYOaevTpWG/9c1PAFoM+8Sdg73PCuO79TqvtnrmBmppBg5wmfwtxfMsmc0SXpr1YosVJ7Z0P29e6yvuJmwg8xx4jss60tEA2ecf8AMxNJmfnnuXV9sw7NYw/vYmhdNO3zP9U/55qlaFxHULwWseQHmx7XlLDMyu5I9WONLH5SFiNUA+OjXaXz/ljjWpeiqp8/bZu9v1AB4TS8beMg6NS1keCmiVj2rkGGBqIIosRVv2ZnNN8LzBwqp6j9AlG9m9aV9LaR0bDwXme4aZt8e6vi/OuOaWPII+M4fShYdt2nzX734EhEoqaLBKF16e7bTWpw+i1IEQQEJ5FvJJ2JhAfS2Vdoc2/qKFBBi4WOHBXUWY59gPu98ZybDBDnJ0nJUQ4DtEV1zfQOjWFvkQMh1p/1BW0npRDn63kOS0Gcb12Zh25G7GODit4bdEszyhjp36vfhZZKvguMW3D3t2MK7NrIp5
- vDJXJGAR
- LPFZbSxg/51UfH1fofeWGxI9RnAdV3DR4X74wfPRYULqAuGIfrmiKUZlAEahrD6skHxz8OAUtK8inkVbfMDXE6iquDjwKUn2z/Oag5oJnIylzOFbPHRwM9Y875lS1TgyeARcj2JWCgELidxsvL40IS+hVpCnl64wJKFPr/WrORROreWfDjSVzUVF1hJSIyYV/9NHE4+oPpXeMTARs6DwaWm9fj5FMASmGVVfCX+ahFkvrxaYn2T/fQu7j/xtKHdeYt1xBzBl1JVZA3xE=
+X-HE-Tag: 1781032223-518637
+X-HE-Meta: U2FsdGVkX1+J0SeMV2LyVJxaUE44x+/jBkCyQX5LrwjNbXnokfllfg72veWzFc1+GDspMi347vk09by/IoGW2qiGigflkvYw8oCdYQrXzTa7Mgy49W4/7kadb2824SkgDgEXR+hMeeMg/lN3Oov9kodOblR7FuPpRov6ited/9Eg81X7amko35LeCPc4T+lsqy8zWiXqULkIApGQYQXL2Gx03BcI/hGr8qMOMW0gymQet8m9cWxcFOvUtPkUWOtSkFrVJDQyckS4zS3aW2IbAsDRJhSN6GuOerFcYnKnlllLdkqupTzBSfotIe9BY6vUqwjiCflN12ZciH4QO4AgrM4piPuFHpcDylxcrMTM9GKLtpvX3XRabJKuIYwBSknG0Y7qqpn0zZ7bdl8fL2P9SR6nRnMvz13hJgBfCwAlcB/W1LAe8h4lynEiBYcgX1AvfuLsp9ETej+NSGwPU5FJTdGXG9ADlq6pJTU+8b9VcOyQFHNFWwX9z/RjY6/z0yPf/5yTxufL9/MjRqwE+3cefDQnA6oWDQHhAxb3QdKTtansNAeUwLRU5qWZEXnSf7XC0qIPLxTRjfL1ru+jvkAZp7tuUKqnnQNGP1CLLSN9jhqqltt1kOGbeJOg3YjJqeaE+G9xXhy1tP3Rx0UQUN2CCfky0jWDKS+6DXP0L7HS3ObFFRk+ayvLl+lv/Q3rHzea62OQCSfzJL37Asgb9jCOvRFhrWcMRRASxiHmFzry/PfHqKWjykRE5+Fd3ar+BU8Vin6s2o1PRuAAGHpQRgS3JYiYTeM1qRKJG2gkc4Wh6AQeXSpuGOrL0hPbkzp6tyiCnpQJFctjpQDVqkxeMa4Jcq+FFS7jpVzmfdrhyA5R04ibSEQ8Io8hqF8xFPeOtqucC+THEtceAImsl+OCv7sG+5ZY686UVsRfw14y/3mXwDpzus/r5c1mAensH+6vxC0LHw6Hj2RF2y6/mU3cE3J
+ 5P7gARH2
+ /VH1ozljZPB/ysKornBbV5QWPEqV9ybJXF4w3DyozxFeR/Yf1aQIv2aL/Z/t+Cw76CYsq6UTZznQ5cRkTXRPI2yvfKkMUZFi15XjPQ5c0LHjpRfW25obwYXP+8ESn0g5ubs82OeKbwNGPl2qRtATAUbrySmWgSK5uhDar+ESVnOTn9WyBZYdL9PAz1Zrx3akvVRsFvbiNNjfG460Y41FiEqU05lm8bn/0du6/L7IHhNmjsNMuVvR4pUvV/OpwqGTco3Qe9hd9NSN9Y57/5Td5YMnrM/AHswATmYnD00mFtuJK8j/Gorbh+0cOwuazt+RuViox109RV1xpF/obGqzA+0QKrqhilf5BmG0BXz21m16zHW5aeX3A8W7rdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,33 +122,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Mon, 08 Jun 2026 21:53:01 +0000 "Gladyshev Ilya" <ilya.gladyshev@l=
-inux.dev> wrote:
->=20
->=20>=20
->=20> This patch optimizes small file read performance and overall folio =
-refcount
-> >  scalability by refactoring page_ref_add_unless [core of folio_try_ge=
-t].
-> >  This is alternative approach to previous attempts to fix small read
-> >  performance by avoiding refcount bumps [1][2].
-> >=20
->=20Thanks. Nice numbers.
->=20
->=20AI review had some things to say:
->  https://sashiko.dev/#/patchset/df26082871b4c65b2bd38d409026237c0857283=
-6@linux.dev
+Add a method to borrow the private queue data of the queue a `GenDisk` is
+associated with.
 
-Will look into it, thanks
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/block/mq/gen_disk.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> I'm not sure we want all those new VM_BUG_ON_PAGE() calls in the long
-> term. They look like development-time assistance. Perhaps you could
-> make those a standalone patch at tail-of-series so we can keep it in
-> linux-next for a couple of months then throw it away before any
-> upstreaming?
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 6ba8d88f63a9..49ce5ac4774d 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -260,6 +260,12 @@ pub fn queue(&self) -> &RequestQueue<T> {
+         // SAFETY: By type invariant, self is a valid gendisk.
+         unsafe { RequestQueue::from_raw((*self.gendisk).queue) }
+     }
++
++    /// Get the queue data associated with this [`GenDisk`].
++    pub fn queue_data(&self) -> <T::QueueData as ForeignOwnable>::Borrowed<'_> {
++        // SAFETY: By type invariant, self is a valid gendisk.
++        unsafe { T::QueueData::borrow((*(*self.gendisk).queue).queuedata) }
++    }
+ }
+ 
+ // SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a
 
-They are cheap and can catch bugs that are very difficult to debug. So
-I'd like to keep them, if possible. Maybe change to WARN_ONCE, as David
-suggested.
+-- 
+2.51.2
+
+
 
