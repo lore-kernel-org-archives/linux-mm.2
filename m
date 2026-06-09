@@ -4,104 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E87CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F35ACD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:51:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8318F6B0088; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
+	id 5EBED6B008A; Tue,  9 Jun 2026 03:51:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 808E26B008A; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
+	id 59D8D6B008C; Tue,  9 Jun 2026 03:51:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 746056B0095; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
+	id 4B2BA6B0095; Tue,  9 Jun 2026 03:51:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 62EF46B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F1DA41C1CA2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:32 +0000 (UTC)
-X-FDA: 84859596864.05.BD38F34
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 23AA41A000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lh3KQeKK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A9366B008A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:51:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCC8EC1C9A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:51:55 +0000 (UTC)
+X-FDA: 84859605390.18.6CCE9B6
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 81DF4180002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:51:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Un4O6Gug;
+	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780991514;
+	b=TUzV5WtZPo/aBjG46F5KMcHnvLHj560AVbAk4TLoNslB8R/kEeTbKLUKW/3H2I3Bk5qjr9
+	4XzLVDvWghw1Yv8A6tQB2tyjJBus665fUc+qIn5Am0LmncYECDKzQvWR/OBksTGkj18/pL
+	fu2J5F8CdCiR3RoaxxeWP7ohk5QSDE0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Un4O6Gug;
+	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780991311;
+	s=arc-20220608; t=1780991514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3+mzxVILVCJrFtycDB+LRStStiIqPuiAbLfUSeAzUo=;
-	b=QM6OPnK3m43n88HX6FNMiNj83ws6zZJJRWHQz+GVj3aSNojZvasMjHkBqDmg40C9h2pH6C
-	Dwp8yUvwxx7HUB1J3FWJoSDAG1DR6pRE7VLW1EPSL2ucckEGRtdbdIqZGBWxdh/itVSezk
-	1EI2GXDifOpkqYBft3SJVsSgAxRiD0o=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lh3KQeKK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780991311;
-	b=hmUeJqkttW4TrisolOx/1tJUKkmkYGulPxZtcaOb5ehao3o1M69EdiMSLDjH0ERuznc6NY
-	uPI334gMXsOOdh3imWWD9C3uPds73nTSlw6gPPMcnuTfjNEDmR5TkzCHuLhmZSHy7pEL8s
-	IBcAitFjgD0FKLJUEe3CS602PiRP824=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FA23443E2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F411F008A5
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780991310;
-	bh=P3+mzxVILVCJrFtycDB+LRStStiIqPuiAbLfUSeAzUo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Lh3KQeKKmievG3xTheEKaVvOT1dmL4oXP4rsslq+cR5khxSjroDT8s+CQnjNG70jb
-	 uuMDUyMS6mUFlPLvvToDEw4DAwXpRfZDgJG5eCtvj7gtsFDnHFXxKMKqF0/QuoqZKZ
-	 ARi2861UtMbt03vvuhOwDfN4D1SnTBWj7Ssg3Tu4I5kugJJOksutbVhg0d1vz64LHL
-	 /C4p5MKkNrFNd74QDOqAvCc+oY60p9/uj5QE0KFcTfH4O5S3LtzGtbiWyH5D9Dsi3i
-	 cvQ4AzzEA1tadAKd0Cwj2c/ZgeQcHLzRO+QMcmDNpBk5LKJoUGFSHGRjnBZq6d2dgf
-	 X/fAfNoieHZ9w==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9158c621ebbso626425085a.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 00:48:30 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyTJP6uwCqrGw60dyAiyns/1poVmi4lYP8yK91OC+aAjJLhEgMT
-	FNmiXEwOhpI6sgqCdrj9A4wwQjldlekp96rBlH4WLyThJjL2e5HaphmFAjXukyZwtF4v2Cw2A3p
-	mlBLWoJa529dw3u0cbE9svMjE3Wc36oc=
-X-Received: by 2002:a05:620a:c4b:b0:915:c271:f91c with SMTP id
- af79cd13be357-915c271fca1mr1851463685a.5.1780991309343; Tue, 09 Jun 2026
- 00:48:29 -0700 (PDT)
+	bh=2FM4sS/C5uG7Pi6GSiyi+YB4VWpWxENKePM4logKFk8=;
+	b=GYiK7lklh+xwOD6e1C+RidbH+WAj1R/xwDmDvtbDC3NXpPp9KZpMPAyRHNfuX8NlgJPVZs
+	gBPTd8oRbuopS1D0Zuy41XWiTUFOG8O3p9V9hhP3X9YGdrQG5QmdCqNL2nv/WlGRWJmjhb
+	sf9p8ErBiJyWzbRwkJIF1+4xQzLG9Ug=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2FM4sS/C5uG7Pi6GSiyi+YB4VWpWxENKePM4logKFk8=;
+	b=Un4O6GugkBeaXI2tHa2pBYDiDsQNOT3aw8431Ml92QSBu5/2j/xqtEeqpALgdvA7z46KaugH2
+	1DZmGtnDu8tDUmW2iNV15nVdEeHyJ1KXdK+HCzE1oRxGwRVFGxLlF4K1jw88UF3b/Pw//53l6+X
+	GOLUWCp1IxoyE73b5Suc1Fc=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gZLWb4131zRhWL;
+	Tue,  9 Jun 2026 15:43:55 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id C8ECD4056A;
+	Tue,  9 Jun 2026 15:51:48 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:51:48 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Jun 2026 15:51:47 +0800
+Subject: Re: [PATCH v4 2/7] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <76848661-d3cb-03d5-f351-4ffdf889a09e@huawei.com>
+Date: Tue, 9 Jun 2026 15:51:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-References: <20260609002919.3967782-1-gourry@gourry.net>
-In-Reply-To: <20260609002919.3967782-1-gourry@gourry.net>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 9 Jun 2026 15:48:16 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z-Cd9aNirdvRSKCz07qNqH4EEeF37rGUpGOJnSgSL-Kg@mail.gmail.com>
-X-Gm-Features: AVVi8Cfqzi3SIKls0BC4hWZyF4MXPP-oDhMfanMs2lMZ83TPVeLkEv4_siixdsY
-Message-ID: <CAGsJ_4z-Cd9aNirdvRSKCz07qNqH4EEeF37rGUpGOJnSgSL-Kg@mail.gmail.com>
-Subject: Re: [PATCH] mm: constify oom_control, scan_control, and alloc_context nodemask
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	kernel-team@meta.com, longman@redhat.com, chenridong@huaweicloud.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, rientjes@google.com, chrisl@kernel.org, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
-	jackmanb@google.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 23AA41A000C
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-2-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 81DF4180002
 X-Rspam-User: 
-X-Stat-Signature: uyr1kdukecaqjionin69ezocboo4mrg7
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780991310-18325
-X-HE-Meta: U2FsdGVkX1+0C48VfO6WzaPBLX20jDnwdfy78ew257WjSH7O2bE3K4LnLbS1CBrh38L0o2fSetNdm+Ar6k8Utbx72bl1sLtNbZHgdebr1qPsQu/ZTn4X5aYjlWMpBo+ciVCNmn407Wrt3uLvaimtS/8aOqbAWiEmljeg8pawnccaL9VZmB5pMReiTezenIjhV1nYL+PDOBgErVj9RGp3rlVuBuFAVwqrbdheHxMtJlOiqEwUlA21dWzElSbyI22U3RWzn9nwDgX1VUEljWdEZEPFOgTa5DxloCxXPxCArRc1/IPMVcxTYU9zHk2CYyPRQN5FpNmpr6t8EM/OFcXfooNuvhP6Wdd+W17xQPTtCCHVWC151POoGEA4Dh7rtezaLU1+xVx3g16kBFMtXlOScmXfpjA3BXAAzvAfzUgcS/BlSMb52xSq1J8i6SYFneRGGrMbvNRwZHXSzVQH6zQLFxZ7kkOR2P8Ll7ac/LqE80RCDUrS0yFxcjWPN5MHahGTY+QbwOg6clzepANAHZvQhwvORlDuQMmsGbl7LPon0Aat4uHWudC6fGCOFZB7ENuYUfkLLQgpVZjy6ZusKxTcdF7HJOm/pYfHxb3pDY8M36if37kEUlZkCGw+1rHq0YcjmyGkLrCixWk2LSiM8Ht+LedClpMksacZoULmkjRWVksME8/gGeYkSx2VTTPhrQsxvp8a/N87j06M5uWPBVbscRsD+L9SxbAQtv9oxLD9EGMR73FCPWPjDFBjLsVQxcoeBrXmwyPrWPH1LkwRN9rIvkwZsM6/dazWSqpy0W6ZKpEC4DuqFKS7AV5XyoQuElcXg5LFM8Sc8vkreY/lAzEHqT87BuXxY+h4jeRacGuVae8Gqd3iT6tkf4uVy8pNpx6kEKlKUa4n8YW4qLLFP+CUy2/1uAdp9ThFZ2SJd5O4WkcmHEhkYqYY8cXuuGBOI+JUs0A6H62Yom9HXeqC0+i
- K+Td2EuJ
- ozgYWiQTcmQOlk4HQVp4IXIy3OHziMMgR/enGyZgOOFr0pbxspPKfRRKw/Dlo3AOfWm6rxHcYHwIrUoAgyz/Nyx5tUBpWsu+WgE+q+GyqeELNMYkuHBtN+Ed1VeXEpiMk6JyNpwsMevcQtFa7CAA9Lezb08WbZMK6o9AAUItzfP+hE0Zh+JisNdo9qw6Q0ihnTFGr2R8CLvBvI02IfQqeicAlrrfyrl0DwLDTBJ8j1U9lS/vesK+Lw+heVv0ZARvxsegNnI0SJapNJqOVJlOjrR6J4y/c/1VHYPtFxGis4KzxvNatjATBKNRJQJWkHbmP6vRhuoEAs7XUWdJ5Bxj2q1TqaZgixjegn/8MzOE5FwAFdMhzVqr3LhnEppgUnymFW0pW9lMsJZ6L+WRlz3gSRih9rq2xhuNSZp9a
+X-Stat-Signature: hr5r7e9cfth8wqwf68o43q44q99btf63
+X-HE-Tag: 1780991513-489859
+X-HE-Meta: U2FsdGVkX1/j6OMJVJVuum9EB3k5OXkY8b6R6RrTOKifH9pQBHHL8P//GzDKC/oVUhVZEvQvHAzrvA/fsbdmwW2tRpPBhqoxr69VILUOhLFoFbt4dvwbEDaGr/LkxQ7LtHZ74sLDWDxLB9TCFM5mESRuNyHIXMpF6swPJ5GYxzs/41OwzBXobWKfSPcpAA2UylpH/Lmz5FRG9lzxetDusX4ahSKdNaXFmplP5PbKpRnYpreE5rymBPMCcBxQqO/4EkD21Wx1Q5VOHBDTfEAwE6fH6lfFiwR8R0ngwCw24uQs6WkZGSF6hHsMSKOGRxh4TeCg+6xGg3QpuGioOM2/pPehP1lrfqLBceiQDEwZcke30J5AOWouBAW91W6gBZBE13pMeWjlf9aBKNet+FMxq8c3RXrqDuthz0K2Xo76Y+LH/Z1xhQh/3Nuu3C/c6VresoU4WMYG9b85g0gBJemnIxYlXChOns2CmfT0kPj8EOm13j0lB3ePNYZDjnA2wHsU5ZPS4O4qPVW5nyay2fEOO4hR78M0COldVBeG4sWLgxE6oMwy2thjBAXy098AaXAf51/1gAG7EuvoSn5ogGvgsRnNssAfLMC1VWjAPX7Kl4nSRgZymEBuNhUUqxXU2VhV0+BbGUg5AotXh9tJ4t43yOEhpEbOGQE6QRS1RMk+pBAF25IHYZOUy3GOr8SyGC5hl8FetRDuCNsk2xpt3i6mj6PkdUDyX+irSz0Hfp0EA+xapjOBQ4iUz5W2mMvciPCAoaWVeAzfPcvVwssDZW5qPy63XZg2/x8fynFC8zzGOnEB34apJ2M6c8JOt5NQ25QEMlg9hoz1oMIgpYTPVBF0dkC88KWillBGHUmDmoPfgQmMYP8tSKo9+IvS2JqB5DQJ/fIjAJUW+ecL0TnbLEyl6rpTbSZcWIHTwVUIs+I3kza215TY1tA1fOGG8by6Y0VznCPPdiMWHtQCdVfA2mo
+ a177tddu
+ su3Fe5cqj1emXZZG33gaph7xelOdT6/oi1O2ibbNLhHZGhYBEcjvmmkuz5Eshvgw4qKpKO5Omnz77rtmcmQgGdjGU8xLWm+ulwzibts0c/bNkYcWrcvBPS0ka4EX+1QucTWkN2YZqpkWVqW212nPJT7ALycQ8QFg6zjovL/YyC4Z0dUG9lKUjgpP+5mwtTLjic1qm2WzYkAAaPGypZS35ZCO4WI8NPRxJw55j4TtHkFQNf5vhs5Q94MSmrc+xhdHJZUmcJXJZpFODpeFCsvsok/5KLa5HRbmo4lhMnd34sBGvjPtooZTa9Y6arrJ329IcE54Pv/kczFFNRpl/w154/lCxzFwRQeyCr7REEEmaAdvq4lWLlkca+WCYNGSk4/4L8Kp3PQgFaWLxfGi1M+DKO11pksCFMZ7mWC96nnGQeeBsOT7SLcI1uM6dWrWn8VPoBj3S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,16 +115,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 8:29=E2=80=AFAM Gregory Price <gourry@gourry.net> wr=
-ote:
->
-> The nodemasks in these structures may come from a variety of sources,
-> including tasks and cpusets - and should never be modified by any code
-> when being passed around inside another context.
->
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
+On 2026/6/3 5:55, Lisa Wang wrote:
+> The .error_remove_folio a_ops is used by different filesystems to handle
+> folio truncation upon discovery of a memory failure in the memory
+> associated with the given folio.
+> 
+> Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+> page" to be written to the console. MF_DELAYED is then relayed to the
+> caller of truncate_error_folio() as MF_FAILED. This further causes
+> memory_failure() to return -EBUSY, which then always causes a SIGBUS.
+> 
+> This is also implies that regardless of whether the thread's memory
+> corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+> memory failure with MF_DELAYED will always cause a SIGBUS.
+> 
+> Update truncate_error_folio() to return MF_DELAYED to the caller if the
+> .error_remove_folio() callback reports MF_DELAYED.
+> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
+Should we add a Fixes tag here?
+
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+
+Thanks.
+.
 
