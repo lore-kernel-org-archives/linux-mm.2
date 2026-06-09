@@ -4,149 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B4B0CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:44:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 420DACD8CB9
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:50:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6111E6B0005; Tue,  9 Jun 2026 13:44:44 -0400 (EDT)
+	id 815986B0005; Tue,  9 Jun 2026 13:50:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8206B0088; Tue,  9 Jun 2026 13:44:44 -0400 (EDT)
+	id 7C5A16B0088; Tue,  9 Jun 2026 13:50:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FDE96B008A; Tue,  9 Jun 2026 13:44:44 -0400 (EDT)
+	id 702B36B008A; Tue,  9 Jun 2026 13:50:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40E2E6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:44:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C68741406A9
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:44:43 +0000 (UTC)
-X-FDA: 84861099246.17.E355840
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EBC9218000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:44:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=J3VBvaZn;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781027082;
-	b=uN2AWn7q4lZc0C5Ghuca+CTjSM2o/tcRojVtwThOolIEADmv3FQCuZQXM8+5LX5Wx0M+dn
-	Q5GYFIeN/3X8JMM6pmFH+ALBIT344Dh+Ttp1PqYQ6StSK/JuOjflJJXRzJegvWl6d9sHj9
-	TjMtMawRu7S+f9KvCydhGZeywW9rMLg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=J3VBvaZn;
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62AEA6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:50:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DC501C274B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:50:52 +0000 (UTC)
+X-FDA: 84861114744.05.AFFA84D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0269D100004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:50:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dkkd8v1W;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781027082;
+	s=arc-20220608; t=1781027450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=taYzpL3NOUpJl8K0/+Ucx7wOW5hZPsWROMd3M/VgR5g=;
-	b=GjaXddgnUKlnWkEEnF5YxvBjaOK8fVrP3tq7VpJr7YFPxkZAqegxK3WwpWdro9eWURNB/v
-	iwmQR47ecaTUPO/HHSxSsVs3J9uUMTJBGMDP3YhL+UcOCigYySRefxeUBJkYLm1a7Wid0+
-	1G9KZzP/VgQBKkJ/GDevQJs08etWcIc=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8ccda0ac4fcso59412176d6.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 10:44:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1781027081; x=1781631881; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=taYzpL3NOUpJl8K0/+Ucx7wOW5hZPsWROMd3M/VgR5g=;
-        b=J3VBvaZn57ygyg5m8Iw9+bsgZVM0A4Qld0d6eyGAHrD3v71/QeuUcopKaawjp3F5FL
-         Rai7FGOxgA5nG/1+RkRKq76lYzqZHZzocLrcsvyCeDG5uVxB/iF9EMBpfZuXzaxiMm0c
-         uJzmAOfbBoGr4GSAWRV3oTFSgEIukoEScJlNASDF8aIZ4kJuKaTTuFMtgVjRrzl1S6Rb
-         sPpeuSXKG3laY2RFfsOD0o0XfOTenEmsyOjqnTfvLXMMV2ScF0SCvxx7YpVznJCpYAPJ
-         L4jhd0m6z2xj+gOnZ4BQ+7eAyFWTxP71q4KjbGbZqjvgU1ePUuOw6ogUdCdykyImKmVO
-         eHuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781027081; x=1781631881;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=taYzpL3NOUpJl8K0/+Ucx7wOW5hZPsWROMd3M/VgR5g=;
-        b=c8x9Ng1JASze0h6rN2hjs7gAr/TCYCfDZFHe8D5tceXzdJecwJHAfRzDKrwlDCNGTs
-         f8hfULwLdNabzGXiCi5gnxwFtEM9/NpoobG2OWvJ66l10ZNFQQsKqOX7UnnNkCnHn0Gi
-         onPZX31ms5OOcfepDLKB9UAXUNeNNAfJfcbaPojoYVgkFms7EpIlcphQhGg+LGkTBpiA
-         cYftrF2B6tsNMOQtQEtRV/0TPsdPf5cWQZ2OtOH3roPRknNJOKJ4fgloA9cEfx8ee858
-         61ieMcmzG470wVgfj+cXrWzKBbtvmA/WEz32X0SbkhlK7jPlX3aZLJwEhNzs1lHHiJMo
-         BWDg==
-X-Forwarded-Encrypted: i=1; AFNElJ/pUQ7f8fi9l5qPX13I1m8ZLUuDplOgftpta4h1Zzyvg5pMa3eEQZABBmI8GZ3a7P7I46fH5Y7z+Q==@kvack.org
-X-Gm-Message-State: AOJu0YwfoD3xvEo0VeqcYWBkhM91egugQqXMLj9UxjJxP6InbxIEflHv
-	zbRIoKNsOYDAYUsgknx/zumDIj6PJQn9h/AIiRSHn4JaahTnwc/SkWIDvMXPyhb2A54=
-X-Gm-Gg: Acq92OGDju1xfJNrFn/Fxqtbzx1T+uoJIpGP+rQJFf8bKXB3C0x9Vzx6wtSNxS6AMBo
-	zGjibCZcsw7lHMr6Fb6qj3ImcnLCT0WogoZzcz+j5MYMUWHHpnkJIc4iAvA+XAF5Oumj/+/Mdxm
-	UqPtTEPlvFZLsu3pONT6VDylGN+xb4qDwORfAH3/ChiJEYk2LRH0kxXgekLdNBxy39qaDW7CiZA
-	tIH43KaXF8APJgyEl9gbyfLER44Y6vdzjNGtVG6f1El8ceatwNCBTT696TWkmPHZF1vekkxNoQx
-	Vrl1yru4ooSswdZht08bwCCVRYUuXQNUEm5mXqz6pq4HOtnvciKTGLNTObyGrLYKtMFj44O38SI
-	Ya146fpJo1MvMPVTOaHlL/on1vGQit/uQR4Uw2py6GbhspW4BVcd0AZT10hOBf5GcknWVeQEw4G
-	APfk8+KG49O7vkglkAmD3+Zk/1DwPBdxo56RikTWh9jPRogYphZ/+U4at90edXJ5T6+1yJ7zAHa
-	f91//B3FAmaAHev3g==
-X-Received: by 2002:a05:6214:262a:b0:8b3:fb6a:d370 with SMTP id 6a1803df08f44-8cf1dcfe9dbmr56987546d6.37.1781027080849;
-        Tue, 09 Jun 2026 10:44:40 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccdb915csm211312426d6.14.2026.06.09.10.44.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 10:44:39 -0700 (PDT)
-Date: Tue, 9 Jun 2026 13:44:37 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Alexander Duyck <alexander.h.duyck@linux.intel.com>
-Subject: Re: [PATCH splitout] mm: page_reporting: allow driver to set batch
- capacity
-Message-ID: <aihRBTaTUmgYmZfX@gourry-fedora-PF4VCD3F>
-References: <b25ea6c63503f24c8b5b64910a44dc03b5aa610d.1781020302.git.mst@redhat.com>
+	bh=riqPe4mF8Xf/nvA1oOAWh2F1ufWhKQ7N3vQCbEzqwFI=;
+	b=nk0Q5tL8H1TE6He2mRF0nghoz4KhCVW8yy76Zt0DZ6hS9T7TH9Ck3yko+kFYpVaithP0eG
+	X0t0VqNbXEgry8082QBo+nM/gYLZaOaq1UwsoUUYb42HqkCX94Xo/sdDRKJ3FS6sfFZERq
+	sYIt2fCjjTv9U0awWcE+kVvBmO9Z5TI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dkkd8v1W;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781027450;
+	b=PAly1JYEIqpIE2oDmuT6eQtFpksRPneFf9OcPB5WIeuNvzrxm0DGp8hpOeSZJOsp49Fx2R
+	BdnbGARa0LiF/Oz7dioe8KWW0WoWMXNmwpmS29sz1ZjbSc2Im8MFyjHqy3gVwRc5GyxGfF
+	8ERqVssQMhJLtDKelBr0crB6fahpheQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 14CD644031
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBE71F0089B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781027449;
+	bh=riqPe4mF8Xf/nvA1oOAWh2F1ufWhKQ7N3vQCbEzqwFI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Dkkd8v1WU1HJD+eaAnqGv4pQ7cqvVBq4l03cGW/0HbUk5qsp8dibb1D/pKNbJs01I
+	 GL86tQoHylg6mHQw4/B99eAJZOg9KqdWsCsd2y6KGxnImH+PWrMpDKVk4kdfgplcgN
+	 3gpJFxe0Uy93JyRdeqKFaOpq+oipAwKa1WF5SdK4p8VLffgIcgUSoSwJ4OLeU7I3CZ
+	 oA1QN7GIZplX+DSIs2O+vvF1itqP/7cxv2q3O5NZ59HkqmaeLmJqqe/ZBH+AL/HcBN
+	 zPwHP19jVekFKigH9kRUwhPkN+vbXVNAxHSaQ7vOyJlWqwL29VjC0x+6HUXA8tD5ni
+	 BNNWqd7C9aKIQ==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bec449cf976so817105566b.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 10:50:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+BVKZr25rOWPczVbPI+uR1736beneoGfYf8V1cxl3Hpxk4o39iTpTNORruAVpP4XD17syDSFb6vg==@kvack.org
+X-Gm-Message-State: AOJu0YzuqEqaQnRw0Kse2S7VRmkPue9GoDb5qCt8Je29xYKGeyHapfq/
+	RhRpbW2dlVSnS1jC4auMeqPQ29FIDY684qF0+dxY9kLfLkBy6PEGSXxniAFlYp9eQoLPjzO4sF/
+	cxfiuBHX6LNUUKJ4F+nYl48wVk4/fwYk=
+X-Received: by 2002:a17:907:b809:b0:bf9:cc72:6e05 with SMTP id
+ a640c23a62f3a-bf9cc72723emr112423266b.25.1781027447765; Tue, 09 Jun 2026
+ 10:50:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b25ea6c63503f24c8b5b64910a44dc03b5aa610d.1781020302.git.mst@redhat.com>
-X-Rspamd-Queue-Id: EBC9218000C
-X-Stat-Signature: yosbgytn5jbthfe17kh914p88r1wbmpd
-X-Rspamd-Server: rspam03
+References: <CAHPqNmyHRwhi7uZN5WP8h8w3peAy-y4ZTmN4pb-OaS2RbdkD3A@mail.gmail.com>
+ <CAKEwX=PpwDawVzfxQn3AuuxQu4Kn24-0NcoXg24=eHD+sBk-9A@mail.gmail.com>
+In-Reply-To: <CAKEwX=PpwDawVzfxQn3AuuxQu4Kn24-0NcoXg24=eHD+sBk-9A@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 9 Jun 2026 10:50:35 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMUv5gBkTEst=8GtyPTn1cixFggemHt-p_tPG55fosOQg@mail.gmail.com>
+X-Gm-Features: AVVi8CfO-HYgjbOYhNhP1BvKXT26PpMBc6Im-P4-X2faQPMvAA5Lk-KUpDprk_I
+Message-ID: <CAO9r8zMUv5gBkTEst=8GtyPTn1cixFggemHt-p_tPG55fosOQg@mail.gmail.com>
+Subject: Re: [Kernel Bug] INFO: task hung in zswap_decompress
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Longxing Li <coregee2000@gmail.com>, syzkaller@googlegroups.com, hannes@cmpxchg.org, 
+	chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0269D100004
+X-Stat-Signature: y659mbzhnojwfpmz44647ncqu4sxo76a
 X-Rspam-User: 
-X-HE-Tag: 1781027081-694347
-X-HE-Meta: U2FsdGVkX180HLm3HFMPo7i1/wMn0Zs8iVguvMlr0pwA2IAd0zJTlGuv+lm12eunGUd8ISXC4xcNNv6i8BvCKslJjObT1jdNj9u4vY9+O6irspUwJVprotFzo5q7Fi5MTa/t0mAM/5hPMeZjk+W4zZAjH1L9iGhKdR2cduncvxZH3qU1tfb/JhoS/NosuXIIfUgelTbS6N+RsYn5Q7PgddFlxpd5JdiVjOcvfsMynfqtyoauzbhyu7NUWFHS+aA6IUrsjK8bA3LE/PdexnAMlcuiiKgpihQ/gx9iAesAmqiO+eajEU7oG1KmtrK7p+OFq/VdqrH2PLgIQGFWOVI1FTfBi6up+sCoL8p8csDDWGm7YCj4PStQqJcRMBN2fo/spFEVjFO6WdBm1h94FWu9MgnaxyIEJo65F6MWwwjb773oQAXYQtO4ucKzc5fu05wsGtNGj9Zu04qTKkOoC/VYcOndHT/YxBPhkB0/U+Sii4EqpOqEo1ejRRWEDkufrPM7L//9S6eggXQNiq9Ly3ILLfvur13BYScmOErOot8TjXuKj+GZPzMk5LoawOVTqhrRBLEJZXCN+2cfA3A98PxKJSe73GPImuTCkKcddy0I9fOVgvp8pCuUQI7M0Ueyuw6O+4jOQOVL48lVeYrGOc1dyw18etNuR2Q2Xe+9TZ0VluQE8+eTXN1hvvfE1Ch+Cp/HmtDqJbpXoEJaHmLmpzLsPi005ABl5jFEHy+FX78qQjj0tt0SLnuZgY0vBy+4aFrfBVUSliSaQbCFKkiNKBJkmmxP0OUUUXgPyPVBPfOyvwG7iwoin3BowQUDBdRXNpCebbKUUHgGRd08/jR8wO05ygGqqX9pfCPovPN0AebbqkeicemgVGxI5sjggQn8Tu3xwF4Vp51C+o/Shs6iiXM7UlxA54qH1jRTVYdIBjZCIAYpDbsggQwv6wX0Co4NIBj/3bvXRO2EWI3hK1gWYqO
- KBZJtz30
- xsXIAJOBz5CSNOYhr8dpllI0Z1vgziDNG3MNA57agxnlMehf1E49NjHM/hbepmYFun/FSEklTcx+uTW4YdYP2+OI6mf+pfy6e72h75tU8OM9/C/8ti/JLjxVOOzbZRfghaZbVouc41OOvW7TzXhDgfTW7ns6QvMb8bvyzRnLnfb1skDhzS/hxG90M6DVz23mZ+lgTTZ4rPSiBoT1KPKLIB3QInhsD6j19aqvfahmK7vfKaxtzMU72+z2yqQEUlL0fiXA7yol3C8dkevyYrLvi2ZZZPJjgxpxKzlF5GR4l2Rp5KHkgUPab+2930B+P/FRSiMIE1WLG18K2MqvMhnqKNIx+xF+fQJKB0rqEuYsvVjB93Q/axLonOgsx9RW3u8heWMfMGeJuS544l8d90k9qZLsllswe3pyCjWyapFPN4saOEJbDsQoSHM2P8pAMvuF+d8J3ByOZnKfegTI=
+X-HE-Tag: 1781027449-683523
+X-HE-Meta: U2FsdGVkX1+T3MV/jWC/MTNdaVaDppstWccKVxAs+5ktBYZhFLTdwi7SKA78HLG8X+AcD3MxLlMDXgE1yCNmV+2cJqzsQ7yJuvykTI95vteq9PGSxRp71DihJv0qwdHqffnXUKADBPNYiYciHMCZRScJFJc/RYq3Q4JuEB1IV9UGVon+55xxUvEQqvHeMqQoUDTd4hVefhhiMcE60BXt26tDDA79dju44VKsommstKmH9U6wIuWRo5byDg6V4O7ebmQ4bcwQsTPPDf+X76aQ3cRJxQqCDBlzrfg1pVvFA8G6xYEc/oPR5B9vf7HPSaNsvptZGcCwryj8xiVqwMyWGTFn2VO6muiYXYfr+FSglgpFyC41ZmRRIb+44Yq7hy74vCbJEobqP7oJ8NoDpp/2nvuQtBaPvAC60f0uWJcq8ewzlumbhTLgEupJ92STSc4dX5fyCf5TRIfwdqZ7Z45WHvMSDi3/YzhPSNxst32oq2lTZcQgp7YLWDq380mD5F8F0lqVEpqjY8P/0Cm/l00qgIOJH5+dTwZuFnDLNsGvHRmpFo3jCCFbQFQeX1/RZxfBR3NUh1JXJGEgQfMR0NEJODqDR4LtuqIPicelZbTaNY5rN32Jyy9AFzhTZy9C+7/7vDfnwaylmi0vHtUOXcJBmD7/ByRmFIRROWnyYWOneTIVobA5AiXzHY1li+qjJf3fMLysfT/2I5jRGn821ZXSBphB+a/7q/86SKHWOK0CcQpeI/WJy4FNLN6U0wDKOAy670sWbYxWbg6+OV/opSgvOaCsXn5pMZx7ioWphhkaDFCCZeLpj4XqSyam4Qi2+fmn9SeO1BAsqGpWiibQ6DwljbzUymyzWGj9skP2+OLrDreGC047VY9VUgF9/EvMUFvtUYjp7tFnm1Gkmxk8R2XuMHYgaO72C9ZTtSzxMGZCIq4AypDQ/OcmZxw237snzp9CNSg5XTmDyGFMB2svFFq
+ /g4/RdC/
+ n5QRHxCUshELZC1klz5bl5evjYlphC3ogdjSDtHtC5ew9H4k15/XtK9sXZZ31SCpvprF+kGcfECL4Mv+55MenfEWuxotee6VJ1e57oReYArUBbWXtNTvBGOGd1JiGdYmuzEMN2XYGLz3qTG3xjbmNWwUC3/oHpJSE9XJ52ss32foedbq3SwGAG3RQaODrG2g/rJz+N6wNfiK96w7jFWSnxQODVeLrSgt+gGmOMRe/4S1sCzKTV1R6t/QABUGn8uFMeoVYWntAeBpTZ3YJt736IZmuPfVrO09xDHps7NAJFiLINm0MvICBYZKiV9JKx2q/Ihqy5WiOuq2jVYxiojqFNmzE0j7blmgMY3uR4BcyXY6BvjAWGn4oIsnJLi4Xe253tNQtOcEfwmIqdu1hk9lpfmxftg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,47 +105,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 11:53:20AM -0400, Michael S. Tsirkin wrote:
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -174,10 +174,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
->  	 * list processed. This should result in us reporting all pages on
->  	 * an idle system in about 30 seconds.
->  	 *
-> -	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
-> -	 * should always be a power of 2.
-> +	 * The division here uses integer division; capacity need
-> +	 * not be a power of 2.
->  	 */
-> -	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
-> +	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
-> 
+On Tue, Jun 9, 2026 at 8:40=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> On Tue, Jun 9, 2026 at 4:51=E2=80=AFAM Longxing Li <coregee2000@gmail.com=
+> wrote:
+> >
+> > Dear Linux kernel developers and maintainers,
+> >
+> > We would like to report a new kernel bug found by our tool. INFO: task
+> > hung in zswap_decompress. Details are as follows.
+> >
+> > Kernel commit: v7.0.6
+> > Kernel config: see attachment
+> > report: see attachment
 
-Initial look - is there a div-by-0 here?  I noticed the old check
-prevents this from being (0 * 16), but i don't see (on first pass)
-the same check anywhere.
+If I am reading the report correctly, it seems like we are doing
+swapin from the page fault path, and waiting for the per-CPU mutex
+that is held by kswapd. Since we can sleep waiting for decompression
+while holding the mutex, it's possible that we have some kind of
+priority inversion where kswap held the lock, went to sleep, and
+didn't run again for a while. But that always been possible for a long
+time AFAICT.
 
-Unless this line below always forces the above to be a
-PAGE_REPORTING_CAPCAITY if it's set to 0.
+Do you have any more details? Is this a new regression (observed when
+upgrading to v7.0.6), or is it possible this was a pre-existing issue
+and you just found it on this kernel?
 
-> +	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
-> +		prdev->capacity = PAGE_REPORTING_CAPACITY;
-> +
+> >
+> > We are currently analyzing the root cause and  working on a
+> > reproducible PoC. We will provide further updates in this thread as
+> > soon as we have more information.
 
-It's worth making this corner condition a little more obvious.
+Yeah more details like a known-good kernel version, or even better a
+reproducer, would certainly help a lot.
 
-The code intends for 
-
-if (capacity == 0)
-  capacity = PAGE_REPORTING_CAPACITY
-
-but that's not reflected in the changelog as a default value.
-
-When happens if a driver sets (capacity=0) either on purpose (???) or
-because there's a bug (???) and then page_reporting.c forces it up to
-32?
-
-There's something to improve here.
-
-~Gregory
+> >
+> > Best regards,
+> > Longxing Li
+> >
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > https://drive.google.com/file/d/1Bx2unEf-QntjVi8g6Zw7QNO6OP4cjGO_/view?=
+usp=3Ddrive_link
+> >
+> > https://drive.google.com/file/d/16xzUrwOvwE67cnMPH3AhhNRWq6hr26Qj/view?=
+usp=3Ddrive_link
+>
+> + Kanchana, who last worked on this piece of code
 
