@@ -4,129 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4A5CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD5ACD8CA8
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D0586B008A; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
+	id F2B6F6B0005; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9820E6B008C; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
+	id EDBB36B0088; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 897226B0092; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
+	id DF1426B008A; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BEE06B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 163EEA04C7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:15:01 +0000 (UTC)
-X-FDA: 84859966002.13.8069B97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2091E1A000D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:14:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e2N/6LAi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CE90D6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:17:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97216A04DD
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:17:08 +0000 (UTC)
+X-FDA: 84859971336.01.41CD5C3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3384C4000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:17:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKafXaJa;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781000099;
+	s=arc-20220608; t=1781000226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oe68d4vJMX8BTuAelw2E6Iqw/eVTlmlqYKm4lxOkTlw=;
-	b=Sp2b3GaL7q73466uHjPNC6dIhxwgKlFK7US4uJRe4i98bEhUa8ZIczGWNtZmRaJd8XMGD7
-	haD5ynIMyQQJqjahWRxXVMHCQsggSinJC+VxvF+tqrw+eMSAo5J6JKd0P3euPv7vfimszH
-	bo6sr3XKqtovAr3REoZMz9o/izJS9dw=
+	bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
+	b=RTQz5nyoGwascHM6f3XCpzlg0tWAw9ul1/GgsrN4hmQrvGOopfIoCgT/rSnsPB7xuEfmak
+	heg7GgLLOM9qsfYKpmx7x2IGpc6qI07fGDtoH+d7dT0GexePbvmx4qPiSK72g00molwsBl
+	CTBQcaPy6wYLP+Suq2u9iiNbaeXCQ6g=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e2N/6LAi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKafXaJa;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781000099;
-	b=c9sC8EVi55vNEyspE8XHkFJcKWvGlZgY5bc9qQfWrfLzBwKfJTU6NkX4LpY406YPBd+FmC
-	VezhtU+/TO7gkwKKvrDwG3i+YeyQwoW8eg8bcl4XN6vIDCjW/hoSw9bSbhEVjbE5GXcRRm
-	dtwm1xlNKn94NbXS8BpDsRbwS4PjgjM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 45DC8435A8;
-	Tue,  9 Jun 2026 10:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C441F00893;
-	Tue,  9 Jun 2026 10:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781000098;
-	bh=oe68d4vJMX8BTuAelw2E6Iqw/eVTlmlqYKm4lxOkTlw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e2N/6LAiZ3lmiOQCT7v1GbceXrHi0XCDbgiPs+4M/QY/AtQXyUFVQBv6VN4/+wwnR
-	 9VQDGaGwK3UVL+oaPqcLFD9l4X4AT7sZrQkpBhgeXSiG8a7K7CAwRz1aUAhoGeQeEm
-	 qKHVHInPdCy3tMRm59aXN7qSmn2uwxU58TpKXnJm42TH63tVOFoVa6rYwAZTkc8ZgE
-	 bJYkg1sCLmFJRaeOPKqr4+NFM1/pNlgp+4u4sPJRyiAlOnVQ/RoBH2nIxGR3z2TNfG
-	 Sf/ronQ3jqRYY4B8PIyoVSPFg7wgqO2T2PASbVCkq7fl4L1w8p96FEMReNNhOZySik
-	 7+0vy7xtx5zQA==
-Message-ID: <aec090c0-137c-475d-9236-fc581bf1c97b@kernel.org>
-Date: Tue, 9 Jun 2026 12:14:55 +0200
+	t=1781000226;
+	b=Iv5VnKoGehJdmZM9JEULbE02u/WLTCNMb8HOmOVxpaXqvrseI60d4fekCSeLAqjndLxxW2
+	taeyupq0MAuUBy9qqBNtmhSHoJrXXNfFMHkk7kpUvwTTz9wO8fS1GJbhJoo4kLCm72y/Fm
+	z+z3d6lnq096Y4M/L9SX9Xw9KXoxWH8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781000225;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
+	b=BKafXaJa5kPPsoZn2XroufWFV5UImcaVeuajAoeIzHYaZNKBxyArr61syhaF2KxWI3rIox
+	SNhX5BEnN3HSoitz43ceAOoniyDT29sloK8UdI+AeDVWyrhFtYyrlndsCM9kSKTDQjiv5M
+	QAk+R2l2CnpGZ0pHPKad2rVJ1ws3q58=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-8s8NRUZMObubB8m96RkZ1w-1; Tue, 09 Jun 2026 06:17:00 -0400
+X-MC-Unique: 8s8NRUZMObubB8m96RkZ1w-1
+X-Mimecast-MFC-AGG-ID: 8s8NRUZMObubB8m96RkZ1w_1781000220
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-660f247c238so9406306d50.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:17:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781000220; x=1781605020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aNttG2V3Yc3+inhQrJw8rUw2/59pdpZuTVtKZr8ukKg=;
+        b=jciZjhc+oxUqGsKEuh9R1LQj9mDHHsZQZLvWuRTCbbW3+iW0jgR7s22eER+ivDzdeR
+         wMsGHBRc2ld5CciY+3FYGjofmS4pgNkyyOn4RiKdiOHxmL0uJjtRkDl/H5HNPnFLcHZ/
+         DnFBJmJW4fjUPqaVdUV3ljcVkM00+90OM1tA9aOrwFUHBFEiASs8ma2wm/ybcWHww83o
+         mxETT5NXA6WbC3JdwSS9Ajb0LWg3EM+xwAGQusd1GHLC+tLJXR8OiH8f5mIY3CuAYH0W
+         2Lpk3SCHiQUroxOv2oHGbhxnpMCMIOIeSnvDyp/bV7B+JA+Lubc/TUPsBpViDTcIPICD
+         tBEQ==
+X-Gm-Message-State: AOJu0Yy2U+AYZ+MINAEHZ1H7mlYAMwS8bsy7sBn2LADwOW0zKXfaWEZS
+	tUzInU26bOZHzHQXBzlczYgZjz04aPYs6mCR08TUluMn6F+2nGkPyr+TUL8o7Mx4+q2Zd5MfB7B
+	t+0NVuKFtLs7ddZe0412K8UD2ANK5rXEe6osO//BsyG3crFm2GRu25lPNJQaRnSyBDRpH7YrKq0
+	Ovmfc/gCauBFzcR5IY7oNFxtv7H/U=
+X-Gm-Gg: Acq92OEL6QLvCZZW0JcJD+sjOv5EaKcsasMxbWurK0Lgy0QS17l7VHwEJ2uxslWlemn
+	JubPSvuBjhHOdOFubM6kEI4ykpn+t6qsYNZ9I8Pgj1uWoKlCPXT7qsHI9fLoG+wCyc05q7jmstb
+	hpqviCT57+p7BZhwvqTk8Xk1MWVUNcXjk1bJARn33jpM/CYN9QtOq/OKi6Zz3hiDokip8/mZ6eQ
+	yadnQvmapFq+ggH
+X-Received: by 2002:a05:690e:1248:b0:660:6ead:8997 with SMTP id 956f58d0204a3-66106e67419mr18440074d50.28.1781000219989;
+        Tue, 09 Jun 2026 03:16:59 -0700 (PDT)
+X-Received: by 2002:a05:690e:1248:b0:660:6ead:8997 with SMTP id
+ 956f58d0204a3-66106e67419mr18440039d50.28.1781000219417; Tue, 09 Jun 2026
+ 03:16:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
-Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260601095706.106551-1-hao.li@linux.dev>
- <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
- <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
+In-Reply-To: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 9 Jun 2026 04:17:45 -0600
+X-Gm-Features: AVVi8CcqpE3Gp5uSjQiihRNOm7dLMU3OwWkokZs_CGlcncsgI6JZd4n96mwqRZc
+Message-ID: <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
+Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
+ khugepaged and use in mglru
+To: Luka Bai <lukafocus@icloud.com>, David Hildenbrand <david@kernel.org>, 
+	David Rientjes <rientjes@google.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org, 
+	Luka Bai <lukabai@tencent.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lY91HEjoCnRwWWa1QNvKic95GZ2EP-dAiJcR1a8u6-s_1781000220
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3384C4000B
+X-Stat-Signature: uooieiy6uwgwmq4yxciym85pnbrtq499
 X-Rspam-User: 
-X-Stat-Signature: uqdhwqcwd3kyodkrkz3efzzy6nn5tppb
-X-Rspamd-Queue-Id: 2091E1A000D
-X-HE-Tag: 1781000098-451157
-X-HE-Meta: U2FsdGVkX1+GkaY5dCdeMa0KqIPSgF8MEbhGCl7M7pq+hSgAKE9/cuTxjxmetVFiInL696aB725nPYUmbs+2+Tic27z5y498wu5hcp0kX972mlB3mdWfTZj7GSSgpZR056WXwF7CQCHdxr264kBgwqVBtEG7yS5fQs6sr0dg5zzXzbmX280cA6lR78ZecEepWKCSvA1EH4QrgigGThsI2bwcouNu8PATm3/rgVjWhHobeitSL6DwbMSK0pFEj0Ztge2u/X4kcG8h0mxJnWOMjF6IGcvzIBB8b+xZY0ImJ0tpv7WcJIz2b2x2MnpGQRoYaGBDYkPOLAQ3fkekPjXn+8DGspSWVDQT7YdfQ52ORr2LCNoWnWx66CPmMSUJh87d+4ku9OdxRAAw0ioCA57HfrIISAirjdIoLjfycznhGgcSFykr0J1Rwv54BBatFcQybw4bWvE0TtRXvqQO4Yt48OIYjVGQVxXKoirZWVxOHgJkrDDDEQpxeVgw3/ZNSLHnXbHMDhYVs2hFnwjtxhQQrCBw1Clzv+/QbUvsN3p79way5XtMgJNqyi73fHnJXBp5boBfcBlOS704pICCxj11FgA0TE5fGxbaL922T72mBADbLYMdN5Ud2iihXZ/qe+kWeVxayVrTCQ56kT4GFc5CTdp0tFyYDi3T8gikUxYa5n4iKEqLsyRSImhzVY+92V6RKVQjtOC45k27zBKMnw+AiMo2vIlcnrwlAuWI5ycf7FvMZdfY+J2aMVFINYvdqotVlDAQzVD/1DNv1HThC/6bOZNcLjUkG9mnGflS9oahICpttdTKRqIr61Lt83tT05KTr7sP/OiOWn8bGz+xuSgogow193tYHox8WHKbjiB992k0BTQBhJHAZCkcQgDlrPyelm4ruJdcLHiKN9UEmHdZ7zlh3OZjuGalv4tkcXVdf7L1Ms4ubT7IPFHw7/mDdxPtj65R/uUi9jNm8j5zkUI
- xndTorb4
- jNVD54LzT4XvWx4islckT3+y7TeNg/KxzsDy4MKq7efKBLqDC2WpHARWI6FAj3MQtn8lZ27Wt2ja4J32FOwDCtLl2jakxUlSXshi3GPd0QFJSYfCmikfRQrtt74HJV90PGVatvio0a90fU0wqkU5bO36i3prTa/LO+XcZzCA/58yZvUnQel/PMqSYTHXFKAyLH17b1jR8mVRdGqEs/GAwK7/Zv+0dDd2Qnk44HtZXJuNC1jz1x4VHlChMzSgtzurekCwG
+X-HE-Tag: 1781000226-704643
+X-HE-Meta: U2FsdGVkX1/rdn+AEvBuD5s+578yX4lqqfey0gyn/oRbz5Vqaop6RAQ5gN4XAYYCDKSnJh/2pNmRuSAjSoha62iCuy75Vf+oz64xfRhALdxJkv5vbUPm8tV1XadFQ5jUBgzN35JTz+WbZq9ZZ0zZ1VusY2JcUpkMfdonq+Lcv8+2p8aDBt6Lsdfee7Pn43LITWDb4EOWG9Z2LVJlxIyswyaI6/UqMZDcbFuigLPbDWIx1uq2dXBciK8ZibkVecJtsX+p9pXH8seCkbv494FdrVe8is3/lMzGDS1IZ0vHfJBNbF5y/DhZZcVXaDtQiBJ1qXcx3ZyPu4Mpv+ZNH/77g4hJlztnKSqKBTRM7e11bqhi1TOqYtY0CuwkgZ+3/+70wtR2hY2vFfCoV4c9HPlZJAJD/aCchjkunlWlR2q0KGS8j5d447LS9stB9ImU/mtb6BazVV/Ma8mafi5gKgv/m1Q07aaFQX5g0q29NpND2MMw3P+EQtnIWJG/cNb9iFEEN8Bv+FHYJIjoSbGOafEr3YgS8CBKMCM25WSBszDNFqcY5OXVzfW68GtSIZCQWqjQOMBkifuzj0V7z8EjFKtOn25pdIVcqL47t1BoYtAr/nbDfz6A5IaN0+Fa0r7aCWX4e3Zk6InCLSxK26GGZJqGmFaf9ZYlmPr+Cf5dcAGfyyRrvB2q7xg6R8Ii4m+911G6j6n1MAR+0ampoYIMaSEnL5vJF44iuyhvNklkRwgcFxERA/YHLHMXm5OlFqzq7BYefs6N2wlytIu+OaOEsUoRoWFxyoaRKe1XhExgpCl3vYoLlOb3JhRf5mLf7OHN+vWqMiqGMgSv/eM6Zwt9NmCpbGyWGtrj/Qg1hYJyBj/MuPLifFvfzx1H2EuYPnI5VM64OuZpszR/rUlWPRnb0tn+yNV7fMQp2WwgKfGX7rwtNJtyNLcL6GpCrIJBWWDBl99qgPXAHzkTyT58OkIK3Cx
+ UBAvA6k5
+ w/PAgo09i6mOFZaMRW+EjUABM8WriPTKU6CYCeJblAj8uczw3OB7jsk2KM2bv+BcVcGFz3yobBvBJ3vLC2XO/g4llLWzdnkS07I28t9nP4Qu/laSVRZvsue/1liaca298NYqjPrSQ7xVahv8H027ZhoS3mTNAtZtoemFV2mLIXyoVN01Pw/goBeteOiPqJLdmLJ6OMSyPfeiCZJ5XMMMbAHFkT1jzEqC60Ew53fvj0U0qQwbTJWz+1t274U0sz0Wru9HpjquA9yb88SYLNtiHc4XWrS73DeWsbqXP1fHPMPqkc5Z26x+qKkl/jhJ3EfHmWG4NbdmpcGEpgUEbQdM4MJ2GRJSohf3vlgjR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,61 +135,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 05:41, Harry Yoo wrote:
-> 
-> 
-> On 6/3/26 1:26 PM, Hao Li wrote:
->> On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
->>> On 6/1/26 6:56 PM, Hao Li wrote:
->>>> Sheaf structs are exchanged through node-local barns. Since barn structs
->>>> are already allocated from their local NUMA node, this patch aims to
->>>> allocate sheaf structs from their local memory nodes as well.
->>>>
->>>> To achieve this, the obvious choice would be using cpu_to_mem().
->>>> However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
->>>> through possible CPUs, whereas cpu_to_mem() is only initialized for
->>>> online CPUs. Therefore, we cannot use cpu_to_mem() and instead need to
->>>> use local_memory_node(cpu_to_node(cpu)), similar to what
->>>> __build_all_zonelists() does.
->>>>
->>>> The primary goal of this patch is to improve NUMA node locality.
->>>> Although the actual performance impact is minor, it still yields a ~1%
->>>> improvement on a 192-core, 8-NUMA-node system when testing with the
->>>> will-it-scale mmap test case.
->>>
->>> Oh, nice :)
->>>
->>> I have a question though...
->>>
->>> I wonder if would be better to handle this by e.g.) not returning empty
->>> sheaves back to barn and freeing them if the node id doesn't match and
->>> it's not a memoryless node.
->>>
->>> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
->>> places that can allocate sheaves from remote nodes; sheaves allocation
->>> could fall back to other nodes and then SLUB could keep reusing those
->>> sheaves from remote nodes even after memory is reclaimed.
->> 
->> This is a good catch. In addition to the fallback mechanism, task migration
->> between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main() can
->> also mix up sheaf structs across different barns. So yeah, changing allocation
->> locality is not a silver bullet.
->> 
->>> If this works well, we probably don't need to handle it in
->>> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they will
->>> eventually be freed, while covering the other case too?
->> 
->> freeing the empty sheaf if the NUMA node mismatches instead of putting it back
->> into the barn is indeed a good idea. I like it. But unfortunately, my testing
->> didn't show a clear performance improvement, though there was no noticeable
->> degradation either. :-(
-> 
-> Hmm... the idea still makes sense to me, but yeah, it's not late to fix
-> it when we have data to back up.
+On Sat, May 30, 2026 at 10:33=E2=80=AFPM Luka Bai <lukafocus@icloud.com> wr=
+ote:
+>
+> Khugepaged is a background daemon for collapsing feasible pages together
+> into a transparent hugepage in all sorts of orders up to PMD_ORDER. Howev=
+er,
+> it doesn't have any preference in its collapsing and just iterate through
+> all the qualified mm_struct, and scan their page tables from the beginnin=
+g
+> to the end. It is quite inefficient especially for large address spaces
+> considering how slow the khugepaged can be, and may waste many hugepage
+> resources collapsing memory areas that are seldomly accessed.
+>
+> We would like to give khugepaged some preference hints when we found
+> certain areas are good condidates for collapsing. For example, if some me=
+mory
+> areas are frequently accessed, then we know that it's valuable to merge
+> them into a bigger folio since it will reduce many tlb misses.
+>
+> For example, MGLRU has walk_mm() and lru_gen_look_around() that are used =
+to
+> scan frequently accessed areas to save some works on rmap walking and
+> generation elevation. By the same time, they are able to find those
+> hot memory areas, it should be valuable to merge these areas into folios.
+> MADV_COLLAPSE can be used, but that will cost too much time and will
+> harm the performance of reclaimation and slow down the process that may
+> enter the slow path of memory allocation. So the better choice shoule be =
+to
+> tell khugepaged to asynchronously do it.
+>
+> We add a khugepaged collapse hint framework in this patchset. The caller =
+can
+> call khugepaged_add_collapse_hint() to add hints for khugepaged to make i=
+t
+> prioritize collapsing these specific address we found before doing Round-=
+Robin
+> scanning. Each mm_slot which belongs to a mm_struct in the previous
+> mm_slots_hash is now a khugepaged_mm_slot, it comprises the old mm_slot
+> struct and a number of NR_KHUGEPAGED_PRIORITY_LEVEL struct
+> khugepaged_collapse_requests. The request struct for each mm_struct will
+> be put in the global struct khugepaged_priority_queue with respect to its
+> priority when __khugepaged_enter() is called on this mm (we give each mm =
+request
+> structs for hint dispersion and balancing across all the mm_structs that =
+will
+> be added in the future patches), and all the hints will be put in these r=
+equest
+> structs. Each hint will have the target address and the target vma struct=
+. An
+> example of the framework is like below:
+>
+> global collapse hints queues:
+> prio 0 ------()----------------------------------()---------------
+>             mm_slot0(process A)                mm_slot1(process B)
+>                |                                               |
+>            hint0---hint1---hint2---hint3       hint4---hint5---hint6
+>
+> prio 1 ------()----------------------------------()---------------
+>             mm_slot0(process A)                mm_slot1(process B)
+>                |                                               |
+>              -------                                       hint7---hint8
+>
+> The khugepaged will try to scan queues from highest priority (which is pr=
+io 0 in
+> the graph above) to the lowest priority (which is prio 1 in the graph), t=
+hen go
+> through the list, and check out all the struct khugepaged_mm_slot (which =
+are the
+> mm_slot0 and mm_slot1 in the graph above), so it will start from mm_slot0=
+ in queue
+> of priority 0. Then khugepaged will scan all the hints listed in the slot=
+ (hint0 ~
+> hint3 in the above graph). After handling one hint (no mater success or f=
+ail on
+> collapsing), the hint will be deleted. If one khugepaged_mm_slot doesn't =
+have any
+> hints in it, khugepaged will skip it and scan the next mm_slot in the sam=
+e priority;
+> if there is no hint in the queue of prio 0 anymore, khugepaged will scan =
+the ones
+> of prio 1; if there is no hint in any prio queues, it will fallback to do=
+ Round-Robin
+> scanning like before.
+>
+> khugepaged_add_collapse_hint() is for adding hints, and it only gets call=
+ed
+> by walk_mm() and lru_gen_look_around() right now. In the future we may
+> call it in more scenorios when we found hot memory areas. For example: in=
+ damon.
+>
+> We tested the performance by using valkey-server (based on redis) togethe=
+r with
+> memtier_benchmark to simulate a gauss distribution on the get/set operati=
+ons on
+> a 160G, 64core x86 VM. The dataset is about 3G. After preloading db, the =
+testing
+> parameter was like below:
+> memtier_benchmark -s 127.0.0.1 -p 6379 \
+>       --ratio=3D1:1 \
+>       --key-pattern=3DG:G \
+>       --key-minimum=3D1 --key-maximum=3D3000000 \
+>       --key-median=3D2000000 \
+>       --key-stddev=3D150000 \
+>       -d 1024 \
+>       -t 1 -c 10 \
+>       -n 2500000 \
+>       --pipeline=3D32 \
+>       --hide-histogram
+>
+> Since we wanted to see the influence of khugepaged collapse hints on the =
+reduction of
+> tlb misses, we made khugepaged do scanning every 1 second, and used the u=
+serspace
+> interface to do walk_mm() for the cgroup which valkey-server was set into=
+ every 2 seconds.
+> We made sure the server was all 4k pages before we run test, and only khu=
+gepaged could
+> collapse them into large folios. We enable the anonymous THP of order 9, =
+which is pmd
+> size in most setup. We used perf stat to monitor the tlb misses statistic=
+s.
+>
+> After repeated tests, we could see dTLB-load-misses with a 13.50% reducti=
+on, and saw
+> dTLB-store-misses with a 5% reduction compared to the setup without any c=
+ollapse
+> hint. The final throughput for the memtier_benchmark was about 2% to 5% i=
+mprovement
+> on average, which was not that obvious compared to the tlb miss reduction=
+. We believed
+> that was because there were too many factors to influence the final resul=
+t of a random
+> redis test, so the influence of tlb misses to the final throughput were c=
+ompromised by
+> other factors.
+>
+> Patch Details:
+> =3D=3D=3D=3D=3D=3D=3D=3D
+> * Patch 1 is to add the basic khugepaged hint framework like we introduce=
+d
+>   above. Details can be seen in the commit itself and the comments in the
+>   codes.
+> * Patch 2 is to add a slab_cache for khugepaged_collapse_hint which can
+>   improve the performance of allocating and freeing the hints.
+> * Patch 3 is to add a deduplication machanism for the hints so that we wi=
+ll
+>   not add a hint that points to a repeated address.
+> * Patch 4 is to add the accounting for successful collapses initiated by
+>   hint or non-hint.
+> * Patch 5 is to add the collapse hint in lru_gen_look_around() and walk_m=
+m()
+>   of mglru.
+>
+> Thanks for reading. Comments and suggestions are very welcome!
 
-I think if that approach doesn't complicate things unreasonably, it makes
-sense to do it even if there are no clear wins (as long as there are no
-regressions).
+Hi Luka,
 
+I haven't reviewed the code yet, but the overall concept is
+interesting (it should probably be a RFC first though, but that's
+fine).
+
+I had future plans for something similar as part of the thp=3Dauto work;
+however that requires significant thought and investigation into how
+we can properly gather hints for collapse/split THP candidates. From
+my perspective we'd want a more global structure/system outside of
+khugepaged, that would directly call khugepaged (and others like
+split, etc). It would also tie into the allocator so that at fault
+time it could leverage the hints to make better decisions. My fear
+with this series is that making a decision now might complicate future
+work by adding complexity we may eventually want to remove for a
+better solution.
+
+If you have the chance perhaps you can lead a discussion on your
+proposal at the biweekly MM alignment session.
+
++David Rientjes as he leads those discussions. We could use that time
+to layout a plan for what needs to be done for this work, and for the
+work surrounding thp=3Dauto as I beleive they will be interdependent :)
+
+Cheers,
+-- Nico
+
+>
+> Signed-off-by: Luka Bai <lukabai@tencent.com>
+> ---
+> Luka Bai (5):
+>       mm/khugepaged: add framework for khugepaged collapse hint
+>       mm/khugepaged: use slab cache instead of normal kmalloc
+>       mm/khugepaged: add deduplication when adding new collapse hint
+>       mm/khugepaged: add accounting for successful hint or non-hint colla=
+pse
+>       mm/khugepaged: add khugepaged collapse hint in mglru reference chec=
+king
+>
+>  include/linux/huge_mm.h    |   2 +
+>  include/linux/khugepaged.h |  20 ++
+>  include/linux/mmzone.h     |  17 +-
+>  mm/huge_memory.c           |   4 +
+>  mm/khugepaged.c            | 460 +++++++++++++++++++++++++++++++++++++++=
++++++-
+>  mm/rmap.c                  |  27 ++-
+>  mm/vmscan.c                |  33 +++-
+>  7 files changed, 549 insertions(+), 14 deletions(-)
+> ---
+> base-commit: e1af79f3291a268adf4e149e1faba3052743e898
+> change-id: 20260530-thp_collapse_hint-ec92bd943797
+>
+> Best regards,
+> --
+> Luka Bai <lukabai@tencent.com>
+>
 
 
