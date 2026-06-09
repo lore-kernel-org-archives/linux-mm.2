@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8395ECD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 500AECD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA52E6B00A4; Tue,  9 Jun 2026 15:11:22 -0400 (EDT)
+	id B98716B00A6; Tue,  9 Jun 2026 15:11:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55926B00A6; Tue,  9 Jun 2026 15:11:22 -0400 (EDT)
+	id B702A6B00A8; Tue,  9 Jun 2026 15:11:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44C56B00A7; Tue,  9 Jun 2026 15:11:22 -0400 (EDT)
+	id A85F26B00A9; Tue,  9 Jun 2026 15:11:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1FD56B00A4
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 971496B00A6
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:28 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 902401A0746
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:22 +0000 (UTC)
-X-FDA: 84861317604.11.54F8974
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D3404C0004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:20 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BjLr6wq4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57CF01C2752
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:28 +0000 (UTC)
+X-FDA: 84861317856.11.AD6BC1C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 82ABDC0009
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:11:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXDYoeVZ;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032280;
+	s=arc-20220608; t=1781032286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KilJT6sKvydSYR5+me7VI/DGNTEVkZbaYVToN0IHPfQ=;
-	b=aTL8obn3yvHZv6sGG0GpHPtRL69fSEKnYs1O+4pYRkX19Vx7CpUBsByLhREA5DYvpIKEV5
-	3pSagOl1CsaU1MSHRorrOrPz/R0SmPhmhGphB5I4Ej4v3vvfg6fBmzWRxxrKvzUsWMrqG9
-	2oK64POnaG6R/B1frcX25ymk80aV4Ic=
+	bh=Genwro56cY+UIXWxa1GkqiC9jUD33al3dVJcd/tkiNo=;
+	b=Ffpk3WWqBw+8IpuKOO6gjBoat962oP5pVLDQYu+QX+ontf7VFY+L2+Xr6UWH4qW+g6ggyi
+	d45SMzexPqdnWxrkeVDoySbKNLV4IUvXcD5YO/8i9a5Ngh85OY52UgWQqI440739j5aV00
+	5tZPe3zog6fDtphYbjZPK6xm/CdNzCI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BjLr6wq4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZXDYoeVZ;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032280;
-	b=k4KxiXd/IJyKj1HX5agZ2XQwXqGbmWFf+cE49M+B8+0mGKd2VWX+UX6ZeoAwbov6emuNxP
-	U/b4nnMhIHFqApbuLzj4Ag/h1SRP2yxtVoiv+/n39FDPnATT4LJq6B3yCfVzzH5xSXlk0C
-	jPdTFTBoFXlyn/IE6dM/JIy12hxMETc=
+	t=1781032286;
+	b=LLYqG4s4ir+kgBqrszyAWX0mTWx/bTsyswTQgg1m5cAYK21OJfbkUR9z45LZP9uil0o2Dk
+	/TNIpipmcsJWbQcy0W/WMBGSO+ySjbDiBw4b9Ko/5ehyYWPP19fRqpQmDuHYUbvexD4zbL
+	e2eTCLwsnMkF4Z4SeJeIpcRgo0a0aXM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 65911602CA;
+	by sea.source.kernel.org (Postfix) with ESMTP id D372B43A5B;
+	Tue,  9 Jun 2026 19:11:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C771F00898;
 	Tue,  9 Jun 2026 19:11:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C241F00893;
-	Tue,  9 Jun 2026 19:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032280;
-	bh=KilJT6sKvydSYR5+me7VI/DGNTEVkZbaYVToN0IHPfQ=;
+	s=k20260515; t=1781032285;
+	bh=Genwro56cY+UIXWxa1GkqiC9jUD33al3dVJcd/tkiNo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=BjLr6wq4e25sVTou0OaA6fD+9JF++b1zX3fzRdWtlKGizoHcOiMZQ7eSaLZkaQ/GT
-	 qlTFftploMEN10YzFDj6Edo+qC4MJjG/cS7KqxpRyAgugcKFr1bAHTYjHFmhiZxIee
-	 IlxcTGJBV0ZgmVmbWTjj4jgMP2krdboUiOMkxqG9mIMYBzPrYmcyt44gapjfWXziGY
-	 5tkX0g+Ps3sNKE9uTRpBnvAYCAzQEGfLHiq60I8zC0e++1WYve+FV8N0az+ouabHUO
-	 /OB1c8SRM45bd5k/jAqLzJ8GddId96lhURhdpoqgOpe04dFueNadbtUcjipLX8cOP6
-	 MqpMgzu99sw8g==
+	b=ZXDYoeVZKI30KjnBvSohk8mjBZd6jwRPYFqkUn6nNY0zNisn6gre1LlbDLVxtgxmf
+	 RcGpnkt3BgKupb9mb0Y/848Os7fo6XAmFreBrYorbRAogCKdFwYtGRqH3fEVOMntj6
+	 o+Hgu7cbfGCyJiY7bN7CQFgvxaCns0ZUIeGv5p64GnQBuOIWZhw73oAJw4xnaTOka6
+	 3S7I+6Z4RB8UWZtVdQAzUBXdDzRVMhf/4yz3nMPJTt0znjKbaD+Z6y720cdZo8Cvzm
+	 IJZwVFC0UFK+a6xGbaWv75tNxuAwnyeBy8tn/fRC7fkY47aYPTjyG7xaf9Cgc2kN8B
+	 oiS3/7pGuo5hA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:10 +0200
-Subject: [PATCH v2 31/83] block: rust: add `Segment::truncate`
+Date: Tue, 09 Jun 2026 21:08:09 +0200
+Subject: [PATCH v2 30/83] block: rnull: add badblocks_once support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-31-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-30-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1671; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=mBVFER4nWrZs+8ynhjMfZaNZazMthVQxUgWM919F7I4=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTQNzHBxSzi8DrV8H8g1Ugz2ZxPBx/cKvwuy
- 5a8kGpX0RWJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk0AAKCRD6UCkIqsW9
- 0Hw5EACkjHqDIlzn7uZ2gAggaV5oUwQ+rp2jrz3Nma9IjCrnBK4Q9p6cn/1CrpI8nyc7uVlIwbC
- 5+Vn+PielpQcAGzBTH55vXrrepSbx+zx4Kue04PX0vNq2Q2lIVlBDPvGg5FajY03X3MtMtTEV6B
- UQSEKX7OUt7j0VUA+wwaLwxw6NZJFvQbIwsfqo7qFPSUakUotBvyxwP0bdpdulzWgxhUgjd4ppx
- nQqzGSG1Pd2TfvNDBubKFRLcOpbSQAtifywnvaNPTHWb2YVEDj541UArVxVoqOCMGJnrQWqf+Xu
- W9QjQoA/HEi8cQ3JMt3JBZlaIWjLT0BagtBWUhfyhaUL62UpsnYP+5WKag7xRI5J8No+Nt2yaQp
- S1pstT1rf7lbQmqjjjX6yEo4+XAiT77Uhc0eMF29yjfUJtfPcN3xs4nwosWa0WIbKr5cSnNH3Wv
- p/9C1a0gK2oCFoYlrkiasejuWjM5YCff8+uI5R90KnFWGrkpuw73yo0ybUed5y61Y0BYpGtk1KN
- t0BHh3h2x8DTu33oax6VhJoH4DKqunh/6ax+B4o8Bqks6KRA3y+KLhZpQTlY2/SobAzBnPH1QCW
- uaaA43Wzb2Uf7FBC7GR1tdXKuKsqs0Y85bpkP5PGeEpINnbwXwpuATZuvfQWVCLzmNYgLVvXgrV
- ts+xMNrZWroS58Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4985; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=qZlgs0sK+HX7M/TrC9q/wYE8rUGAPlyTT8AOUXdX4Yk=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTPGfHlAiKSZ2KoOX7dAG1VcEApOjObDwOa2
+ 1pRADm+b/iJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkzwAKCRD6UCkIqsW9
+ 0LTZD/wKvry2ERjhKHe30Tz0FYhDCvD5njsXCp7hpiJ+vTZbjExI1h7XCB2ebt/+VCJz/3m856v
+ A8nO+NsPm8ezrty4X/Pv++6IRkoxFQJI8NDKjqNQde1FrPl1UY/5uxlhtXgEKqDy57jDFjs3Wfc
+ y3n6Xae60waSpqvVrOH5T9Fkk6AQI7loOr+L/4CQuSDeFKVblEhugCUFC7voOocOx6sMSvC+6gS
+ n7LI/bqtdL7SOoe3iD7APjUqn0ulJ/7/imTZqsGIEPaSdD8UE8ft2709LldeVqHMVtduZm9cROI
+ +qXh4ariZkXnuOengqFXoPHFSUfiboSdjFmuyf6gk+xN8ZFfopfuwDLBjzzwG30KFbFcjzFFzcq
+ SrVliLC8au1PDN1SPHSquoeHq4RL0wZEMLt8B/HhyV53jqgVJMRL58iL9a0dACn1eRG7w7gPwo9
+ NihFdSZNh2q5gBHaE9e4D3hp84UqHfcPQnFiyimsfjVujTs0KIFsC7o5TzZ60v2W6ZRtwFGhDJQ
+ fw31v3XM/B3kVAc3oaK8S30Ioy/ed8H7xbRSv8eFWVn1+vTc5qnF/OGzhJSBtPvpZCJpuJHyJm/
+ wL8myMhgNUsDHAw90318RVeRb76yA0xxrb2DWdBLEDcfMQ5NWCqAQmTcG2jGnUlXhxV3JrqT5u1
+ xeFKzNyVK8MqfHQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 82ABDC0009
+X-Stat-Signature: 3fs91qdaa4hie86riptp1qnpzn6p5x14
 X-Rspam-User: 
-X-Stat-Signature: z93g87h7m3nurc48cfwoqh5hicxwjeza
-X-Rspamd-Queue-Id: D3404C0004
-X-HE-Tag: 1781032280-501535
-X-HE-Meta: U2FsdGVkX197XZ0BYpryEd8pBchWcQKgQySh/XNuqEPLLPuQSMLVwq3eI/tUVc4fvKSSR//ED5iN7aIlKyyQ+Wf6mq0AecpCEBipNloKXkyXKc35Da1K5+HsZLPtk1U1ezn9Q1Dd6ZLDu/mYl6+EcAP/hzeYvj3s6oPt7mhRZbBDTOOmKoeMnt92SpxR2JAoIopK4+rFtxDSBN9Er9Ae1yW1KyckAxL61a0gYB1xv2Kbga8Mixg/VstqaJZ55uq2NJ+pZ0gLxN/whL5DGZrW2YJv6Fx50+NwhaSAHjcoZrUeK6zFa6QwSjivJ7HCYcY0XOg2649SgRD5HUS4oR5gMipvrCouMMNuTFDXkp5MYvtjEmo1jseR07hER3EBMGlh9nxUrCLCXT7PMgMhLZspriEom9ibCEMCbf7A8Uw/3PbLgbdGVC0g/4fFEB0GFfVr3Qg8H9T3bFZU+AjwUxBS+BRrqwcuZbiHcbOrxS8oI7MxK1/Z49ESDUjm9Nx6NspKvc7Xe0P1zSy3PZ6ZACh3b2ijI58xRSRFjYAbFtvr8h6Yrg7d/aTYeOBrTyyzAQVnUqSwddW2+fZ1te9SknKsuu+UVysXaYf2FaCVtrigA9NZJ8VuBGpeoN+D5fz3m0uFq8EkZhdDf8jq7KD5aHeJlKoJsF8TP59S9zKveaFeA2deUJvX3bgswaHsbATMMLhamLqYZXvoXp1GGkqyw9GAAGkDJdM2s4O9pjNNV2NYwzd9MYRbuqaiDUGlAldnQR4h0M7jgRA7xLNwEUAc3AX9wvqM3YT2Fognp61CVC63lmCdyThQ2QgL1R3BEa4LDWykiOzCN729jLWbgn/r2Ss3rXnmt4H19ya2vaWKedi48cPgKfFrUdbrGZUuLyH/1a+01XnfUQmBzv/hobXhWK1DOh0X/QVeqdp6YuFeYL1jOouwok2tJw3uNud1arWAf4BIDLm2FVQV/DFRIMN04Bb
- /jkCaVCB
- TZ1scpxZrHv/ssFHrnPJtx3+kEDciHAC8ry3oBSc0CwkFI14joKJllK2ehZ7t9ATIAktxszP1fasUDdWTW62PZfSuH/M+AAoQkNrWlqtvLxyZc4wkyQbs9kyBlsTTCD+q4r4aiuLQsf0I8ZlmTsmuPi9eh775BN6j12xqXMe9PPFzbqJhIivk4vm2tFPECZkOTPeY6ISyeob2Z4WjYZFNbqLWhvgSk2AmOtvhMjgdYagVQ80PEDsh5xQbG1DvSDpcRsJnQnjkeHYqe6CXvyehrdc74xV3lzA8Qe/bZgy2YzZO6YyfMVuDpOOrxTR3O2g5nRNd
+X-HE-Tag: 1781032286-708513
+X-HE-Meta: U2FsdGVkX1+hiLVrpTlrFEBp2ZiVzeqTEmohY6D4bU/25Ns1GXfcYgpbJDFy2ayWG5v/Yair719cTUN/tYDZXNPSXpUXLYFPObfmHZQZ8w1s1LcnzF48DwX1MiEIFAmGTnghCud9y+4z9loQYQbM66K9q1HClYApN9QKpspypCAhwGmF9IyPVdPRUrtu1ehUVM8YB6AQ/IMuRlT6dhexF/N8a0w+QuMjxJnoKl2tvIJB3Cea/hqD1s8y+8fsIx4UxlVtOrtRrzjEgn3Kd2SxtlDLxMs6b0r9xRCuNLFdAXRw4zzN9/InzJ0l8cAqn/J4OeK+kuI44Vjx672SIVXJWu6Ny26sSg8OBszlmsAnoGTIyVkvaao/mPAMt5il5wdOEW8dnRoNFMCy5/zGi6uibNb5W+ge21KX1sBT/1ZDiWEVChdRDsjTn8uqxiBnh11yVgg+4N1VrSp/kiDeVucp+TJog97j7fmVevofnV/RF4BtU28Ps4oLs2NxCDNFtZPjSea0bNyKf1ro/dsa42vSyaHDiMm8fBct/gaIhHMhFgSl7ofHfqQ1H9pk3VAqEzs84xpWptA28poLMsnpwZCiFoyU9EqtBigTXDybFUh1nPXEVP1xwZN2+kTciId4wGOolxdpO5QCaPqditdSZKw0yBt0pQr84jhZ115hWlh27jUu/LoEqhhveh+asGa45uwJ/67OCFI7t7RzlojGEQaqjq/eurgjCrLtZq17ONOvuwgk2L5XB/7IMQU8+u5Im5W8LEzT7hk4zM4bGfqJZHiyLamuViwaz3upBo552pUD9W2nG1gbcv72YzioNZXBRBTKCKDiQir1VZEdDAeWiJL+avhSa8UQn6co29qMgwHB4xjGoolCQtdaeqRvhMNrusdCltBJQlqQKkCWM4BkXWy0XiAZ6iNfSYmaipbubndnmfFxDirKwxv+K9D04/QOr/Ksc9FAYt5KqkQVkk20Qn6
+ 8Yjyz6Gt
+ M35Yv7M7nskHblaodSZ/3niN+Kzjbn1Yd8LAhPu8rL/IFpUwTvA6bUJ0t1g5hHDGZaaRbV0s7PRnFE9rm7j9FMBhqsQGj7AbmQB4nu8zJwzW3lqAn8mNEFXYOW7uC9c/1E7rrR6DDFeqxaYe0tBIErRLNzMgvMxoaaM7h60hCo7/bekFOKkSwEfVMLF3RJVuEkLxFRJ1DgjRJ539pKpJc2IIR5EtrBbIiqFinWmvwLUNwc4vJRRXdYvnMjEnboVd7DhKWj9m0n7j4XSgT9UpiqjyqmAP4tBetWZ07Z7JZls77rw/S9LD0nGnvzOFi9hyDABAAT/Mj/jMAXULayRhBofwA0iJmIGl7j7Zn+aXWNE1W2W6heVRk+W+oMOWTuJ5KdBWN2fZtRHx21gRpPqd6kUW+g3jISdjTR7qt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,45 +122,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method that limits the remaining length of a `Segment` without
-moving its offset. This complements `Segment::advance`, which can skip
-data at the front but cannot trim data at the back, and gives callers a
-way to clip a segment to a maximum byte count before handing it to the
-existing `copy_to_page` / `copy_from_page` / `zero_page` helpers, which
-already bound themselves by `Segment::len()`.
+Add support for the badblocks_once feature, which automatically clears
+bad blocks after they are encountered during I/O operations. This
+matches the functionality in the C null_blk driver.
 
-This is needed by rnull's partial bad-block I/O path, which needs to
-clamp per-segment work to a sector boundary computed from the bad-block
-range.
+When badblocks_once is enabled:
+- Bad blocks are checked during I/O requests as usual
+- If a bad block is encountered, the I/O is marked as failed
+- The bad block range is immediately cleared from the bad blocks table
+- Subsequent I/O to the same sectors will succeed
+
+This feature is useful for testing scenarios where bad blocks are
+transient or where devices can recover from bad sectors after a single
+access attempt.
+
+The feature is configurable via the configfs badblocks_once attribute
+and disabled by default, maintaining compatibility with existing
+behavior.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/bio/vec.rs | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/block/rnull/configfs.rs |  6 ++++++
+ drivers/block/rnull/rnull.rs    | 21 +++++++++++++++------
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/rust/kernel/block/bio/vec.rs b/rust/kernel/block/bio/vec.rs
-index 99ab164d4038..61d83a07397f 100644
---- a/rust/kernel/block/bio/vec.rs
-+++ b/rust/kernel/block/bio/vec.rs
-@@ -81,6 +81,18 @@ pub fn advance(&mut self, count: u32) -> Result {
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 4db3ba26c2d1..05229ba9173a 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -102,6 +102,7 @@ fn make_group(
+                 discard: 10,
+                 no_sched:11,
+                 badblocks: 12,
++                badblocks_once: 13,
+             ],
+         };
+ 
+@@ -125,6 +126,7 @@ fn make_group(
+                     discard: false,
+                     no_sched: false,
+                     bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
++                    bad_blocks_once: false,
+                 }),
+             }),
+             core::iter::empty(),
+@@ -195,6 +197,7 @@ struct DeviceConfigInner {
+     discard: bool,
+     no_sched: bool,
+     bad_blocks: Arc<BadBlocks>,
++    bad_blocks_once: bool,
+ }
+ 
+ #[vtable]
+@@ -231,6 +234,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 discard: guard.discard,
+                 no_sched: guard.no_sched,
+                 bad_blocks: guard.bad_blocks.clone(),
++                bad_blocks_once: guard.bad_blocks_once,
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -383,3 +387,5 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
          Ok(())
      }
- 
-+    /// Limit the remaining length of the segment.
-+    ///
-+    /// Shortens the segment to at most `new_len` bytes. If `new_len` is
-+    /// greater than or equal to the current remaining length, the segment is
-+    /// left unchanged. The offset is not modified, so subsequent copy
-+    /// operations still start from the current position.
-+    pub fn truncate(&mut self, new_len: u32) {
-+        if new_len < self.len() {
-+            self.bio_vec.bv_len = new_len;
-+        }
-+    }
+ }
 +
-     /// Copy data of this segment into `dst_page`.
-     ///
-     /// Copies data from the current offset to the next page boundary. That is `PAGE_SIZE -
++configfs_simple_bool_field!(DeviceConfig, 13, bad_blocks_once);
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 90dbf318c2f8..5486eb6dd921 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -159,6 +159,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     discard: module_parameters::discard.value(),
+                     no_sched: module_parameters::no_sched.value(),
+                     bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
++                    bad_blocks_once: false,
+                 })?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+@@ -186,6 +187,7 @@ struct NullBlkOptions<'a> {
+     discard: bool,
+     no_sched: bool,
+     bad_blocks: Arc<BadBlocks>,
++    bad_blocks_once: bool,
+ }
+ struct NullBlkDevice;
+ 
+@@ -204,6 +206,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
+             discard,
+             no_sched,
+             bad_blocks,
++            bad_blocks_once,
+         } = options;
+ 
+         let mut flags = mq::tag_set::Flags::default();
+@@ -246,6 +249,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
+                 memory_backed,
+                 block_size: block_size.into(),
+                 bad_blocks,
++                bad_blocks_once,
+             }),
+             GFP_KERNEL,
+         )?;
+@@ -416,6 +420,7 @@ struct QueueData {
+     memory_backed: bool,
+     block_size: u64,
+     bad_blocks: Arc<BadBlocks>,
++    bad_blocks_once: bool,
+ }
+ 
+ #[pin_data]
+@@ -465,12 +470,16 @@ fn queue_rq(
+         if queue_data.bad_blocks.enabled() {
+             let start = rq.sector();
+             let end = start + u64::from(rq.sectors());
+-            if !matches!(
+-                queue_data.bad_blocks.check(start..end),
+-                badblocks::BlockStatus::None
+-            ) {
+-                rq.data_ref().error.store(1, ordering::Relaxed);
+-            }
++            match queue_data.bad_blocks.check(start..end) {
++                badblocks::BlockStatus::None => {}
++                badblocks::BlockStatus::Acknowledged(range)
++                | badblocks::BlockStatus::Unacknowledged(range) => {
++                    rq.data_ref().error.store(1, ordering::Relaxed);
++                    if queue_data.bad_blocks_once {
++                        queue_data.bad_blocks.set_good(range)?;
++                    }
++                }
++            };
+         }
+ 
+         // TODO: Skip IO if bad block.
 
 -- 
 2.51.2
