@@ -4,133 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D22CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 00:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E078CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 00:22:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBB466B0005; Mon,  8 Jun 2026 20:21:13 -0400 (EDT)
+	id B5E0D6B0005; Mon,  8 Jun 2026 20:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6C226B0088; Mon,  8 Jun 2026 20:21:13 -0400 (EDT)
+	id B0E666B0088; Mon,  8 Jun 2026 20:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA9AA6B008A; Mon,  8 Jun 2026 20:21:13 -0400 (EDT)
+	id 9FDBF6B008A; Mon,  8 Jun 2026 20:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AFFB36B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:21:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8375C1A0246
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:21:13 +0000 (UTC)
-X-FDA: 84858469626.01.5FE337F
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 72A4E40002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:21:11 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="K+9Wf/hC";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 902276B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:22:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 325481C16E0
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:22:38 +0000 (UTC)
+X-FDA: 84858473196.27.9E5D0BF
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 644CB1C000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:22:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ih7y8eRE;
+	spf=pass (imf20.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780964471;
+	s=arc-20220608; t=1780964555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nMxKF71adannrd63C7MsvxGSgfSWBTtH/nWzNGXKxjQ=;
-	b=nZulqLMbE4H3b1ZI29zZiRSuQPjBN7MC5uM9lfZIrfhhQsS60OIBglKxfY+4U6RNyoxBX1
-	mAx8j5fsdNYTaBUrsBzVP/Rfucxxfcbnt58HOfK7hsNAbuvenfeSr0CWKLNWO9V1bAuFpj
-	hCHG4rBINZQbDTpIiVnxCwnAxHaKJos=
+	bh=/r868swnwk6b4PbmCC02knXswyUVMKeggBBbPSgTEpM=;
+	b=vgoGd6xrG2mZYNF/ZGGY4eU0AXU2WCD//EwIz3dbBYpn+98OZjCGL7CaO8xNvylSiRgvLR
+	qdm9CdFyv1CGq1XdGwsu6a9/WkVhIfJcBwiCRwX3LE0z7QH1gSauj+Gj1FAZeeP656Cu0K
+	btfb4U+sWcLCcsRXXKebS8+ZulJ6JGk=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="K+9Wf/hC";
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ih7y8eRE;
+	spf=pass (imf20.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780964471;
-	b=g/pkAv6r+/TICYG1RLc3FLcYu6zMIkphxTXQaHcJEQF012zVxTVi0z1NxN5fsxfVxfLjdG
-	EBTUYhTflEMTbdAvcUZbq+KCT3275ZaIUV/AWAHWezJrdvogxgyarBdGziLBm/3oiTLD5O
-	8MGayUmD1dTxcuin1HXF0UzJ6PcOdik=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa5be9ab1aso4594891e87.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 17:21:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780964470; cv=none;
+	t=1780964555;
+	b=34NNA2DY0yHWSo3TeGM64Cz1ZeK53xIggpeEIttcHm1K9uWBH10odz8hk+Vd7gr6GFKDNj
+	fj78n9CUMb69dNK45iDPqG/7rL60zm3PW1mC7H/XyrhuiXAjjVUOvTeGPqt+DwsJfcNq1n
+	1PBoYa7Rux7KK/evf+H0QfgsOzPgtGc=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-396771119c4so49739051fa.0
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 17:22:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780964554; cv=none;
         d=google.com; s=arc-20240605;
-        b=O1PPffqQkxJ4MMGrJVUFRK45C+Y666Jh3Cyv71F9hIOSoNfNQGdbSc0FS7LU/HTHUx
-         l8W4wD/ArSsUkFhgBN3Fm3hcrpncBoZAkX5nMnIsQpLDEbAQPX647GEJBWdURCCunvfm
-         SMY+5L8yRK1tiqQBGvmQrF9SNGh3Evs6sXWqpo6T677NEn7H+ms9uEoFUWgfvM/ytgfh
-         j8Au40pJ4brIKiYCBj2krLQ00zZ19drj+Ny5g3U/jxbAdnbn/p/KzGw/jIoeXuNnr9zA
-         dP1JwS/dVGa+UiAU/wUGTqY0FAIti6lHEw+/WexOjBCuX6m3cX5mYbXVhNYe7eRZN2Fo
-         7xhQ==
+        b=ONtULP58D/UpSCTBPg8aeMuMF+Vfa9foL8ruofmkLgnbAMy3ox1qCfwH5Gozcp67y0
+         52ZLNGDwT58agt3FSctNl4aYIxv62gspO+av1Zgc1Q071WJMMCftvDI6hc1hNm4H2RHL
+         9UQfQDHpchwHs1IVJGOKoQ11GRTOeCbC1GAcSUaZGFInjBQJRxWMjEq5hzYtzfiqSChn
+         UTTGF2kjvDv9LwiB5cW+eRW8wr9KnTQaaBmKmSQrrqlPSAE+So37xGkoqXXy1cRKfmgY
+         fhFKnrZIRPUPtEh54fIqdiar2qMWL+c5/zR+2JnKiiBHMAWG48N8AAhcYU85RzGFzmIE
+         A11w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=nMxKF71adannrd63C7MsvxGSgfSWBTtH/nWzNGXKxjQ=;
-        fh=BBvyAtA9iICHZVGRvRaeGTciah2mnf18wnDZ0kQOi5o=;
-        b=iVVN5ZiwUxQeBD48claOgOlpT70Cet68DSdFGZsY6prw9WUd66w/87ZNGaf5TLEJfi
-         rB3akfIx35Ke0XNbZue3RYU+VolEIjHTuzCF2M4fqi5ySCDur6odVwgb8zjf+yTwnH3z
-         yRavPMnqTO6skfnBRDdmCGDNhCW7x/+BwrloGIL66bhui/ClvBxje+adPSg40qCBXgi/
-         mJT/Jc0tIC7sm/9+Wc5/F3kf1XJ1dTcOKvYAVlFwYtvzCLLD9rxZreoNcFA5yKERTka8
-         HpUcT1H+KJ+RyX3Z7TGjio82k5BSYtSQlBTq03pcMgg2prUfWYKp8K9XHiaTTutsfDiD
-         dWeA==;
+        bh=/r868swnwk6b4PbmCC02knXswyUVMKeggBBbPSgTEpM=;
+        fh=80agzs7ScbzF7dqCEv+ieEGxIb1bf/XtpkY341gnCT4=;
+        b=Mqo8N4mc6oLv+4JHubF3XB0cm5mOp+EJv9ez/hguKXrbLvPYc67u1y2GNsdxzIEc1p
+         V4Wv1vkspaMpte7o+YSZlBmh/UDvJcjRWM4Ylu/neSiDA1yQzbzrlaiNm4CIBwKAEir+
+         C+9l1eiyEnIRGgf4Zfr2I3O2b2+uoE/Vib+6J0rDgiZZ33HAv3KnuQFdkCtvSiQ3UAf3
+         Rezeg4PgNRIVwD9yUgrayO/oUFvE1OqXnNphI0Z7ym4QQKkpejQnA5jZ5wcI5uTv3DSk
+         Jl8EFZ0HeyYE/M/cUD0ydxr7ziOe82LaXo28kmMGUaHeY244cvlku+PnlxIlCk7oxZQd
+         JBdw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780964470; x=1781569270; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1780964554; x=1781569354; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nMxKF71adannrd63C7MsvxGSgfSWBTtH/nWzNGXKxjQ=;
-        b=K+9Wf/hCbuF+hpvT6DsFf5ayozaKgqMFgVUg1Ed/s9qD3jj2f0pfzB5MG3kUwC1VAh
-         VGQN+iuKw/JYKP/MMOurmvx/utP4SxUPDy6YSxwlknDLmn66UzP7a+TlURPEdgJUpV9G
-         CE/D8MCg+/I1tkdwi6fy+wvA3Q5+ZmyjHeQ0hEBoqPWFqYQl1zMCqjkNtJlx6LZwHdvv
-         b3J0+xVqk4ozrmqxzUNxwNbRM7c/YV7yGQHF+5s3R4hh1cfZEVaG+ZE8ARGfVi5BIJMg
-         ExRI0AP5J+OfD97wZyh6kFXfMSlfH6JEVAbkHzEpZGLYv3OeV41LP33I2Ae6KiAl/suo
-         82Dg==
+        bh=/r868swnwk6b4PbmCC02knXswyUVMKeggBBbPSgTEpM=;
+        b=ih7y8eREEVcCooJwvrScHhPP9Tta7hwWbWI4F3Kf9aKkfyHYJqVbrrS4NvJcbOLJOA
+         7LsOjOffluWmuXJlIJCjRMtkDvWHFKJLw9GrqcrZC5SJoGpyel+wD8DCuS7ojp+qVHLF
+         IEURC/tE7EB6iHJxmMbgoP62Yn3GoqwGXI9Djz2r4czEytjoLclF/ZSwUj7MthFaCGXL
+         cJFEKE+7tRxAdlwL1jOYv1093C9rsoXMPuhQ/OP/cox76BXFzIneQp2WmlsTy0jJ55Cv
+         30aaac4/W8e9v3kjDJUwgGh4lRNrn/TKI8wYtOBMLFimCBhOcRKXGkMg3KWDsEJ2Teoz
+         teuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780964470; x=1781569270;
+        d=1e100.net; s=20251104; t=1780964554; x=1781569354;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nMxKF71adannrd63C7MsvxGSgfSWBTtH/nWzNGXKxjQ=;
-        b=Mhy0tTg0J2DBB3YMJ+3QsBPCelMTUkajmMEfiHxsZhc4uGsUo/t3RGHVMQwWSBqIzK
-         GJokCxLGa+q6nByab570DhYdaqf3XrdGARpDI2N0EytugQskX65l34YcZBQLwNAIo4B2
-         N4qO146H0hp9YwdQiEWBUuEqldf3ArHHVbeb26KEISGppcwZZUg5/4uGMaqHGgCysIdu
-         y2mefRIvBuJ4VjmACvMkudEsunVtkUrvlpn0nrtO5ykQX8Lkwq2hJV6pHeYBG8OzKKA5
-         Jo7sRn2aQoxzdt/uKSFNoFYQqdHv3eccUSyKgoMma7vYocTC44TmdTrzWukKFOhOlkzq
-         Egmg==
-X-Forwarded-Encrypted: i=1; AFNElJ/MrBQFWYqgqQE7NAqug3NJ15Fd5LOcUNsti/RaVikIdzVtkCN+PsT4hLPTQzaFLHuv8AvIRdOj9g==@kvack.org
-X-Gm-Message-State: AOJu0YzOmqs5gMjTNV8ItHrhl4tBmCUp1Ope8Chwo59oSPfWObo3gKXR
-	EIRe9ocufCYdRmVNUXqen3Q7cpyinyWP+ZyPZqVgwYxE38kc3kdFQWHfr+dLQgaRgRWSAUvqMe6
-	tp2VB5O/kPJ572+IRkTnPAlAf9ktZOpE=
-X-Gm-Gg: Acq92OFEWpWMMI37nP1zAUBOgq+cEhifzKuwt+DF4Fkz6HZ+EqiUVM4uupZztSSXgLu
-	pmBEurheIhIcR2PR0H9B8PRqbtqYlMG7EeTRhINPrMyFvcAEvncDxxqkqvIKHlP11JEBXQOF8S2
-	bz6hep5Z3NkYzAuvpRTStrdRbV9+B3DYUVlJKOlmZcgXCG1eXCmrjLqejUDYCqFj1WqrLgUszl8
-	jIDLUPubz2hJsMWgD2bwQK/23mY+HuGIjjxaIhhY1AhbX9HBEYYcZtQ0wrEoiugeDFer6HYEnf8
-	zK0Ax5QJPpaRcQ/omg==
-X-Received: by 2002:a05:6512:1596:b0:5aa:8824:156a with SMTP id
- 2adb3069b0e04-5aa88241616mr4463116e87.46.1780964469559; Mon, 08 Jun 2026
- 17:21:09 -0700 (PDT)
+        bh=/r868swnwk6b4PbmCC02knXswyUVMKeggBBbPSgTEpM=;
+        b=py+1xRkxagOABmwXc9IaMpiouorzjMDWb5WEC0GQejC381FQADks3ShQpTQgnkxmzG
+         qviszr6lyNjm6bUcQAjm57on6pUoyyJcsypWOv9jq6o1d3lvBrFFDtB+orAHWkuBYYdN
+         NsJtIj8LY9qEysh/+869HW8wV0axbYJNEKO1jJ0NcDdYzL5TQOFXLeCJ7YVLG9MSxcIP
+         bw1k3xrMPSVNMmRrgVmei/A76IPktfp+PQPODa0zkLwZ3KO1kHt+pqAkVifV9j/CkYZQ
+         vrVfS29kxG90slBuAU4w+MQzO0X9wbfOulOKY1xxS7JyReTyUv34yl2w9RNg2YbOHpgn
+         2+6g==
+X-Forwarded-Encrypted: i=1; AFNElJ/fZ3gcR7mlQhD5RI5u9Bs/g+t/D5pocbv1P+kYJzBcp7FqOBQ1MRJcgm44OLx2KygsaNPYSRgBaQ==@kvack.org
+X-Gm-Message-State: AOJu0YwIY8DWz1HW/07QtQ3M0p8quXeOoqE/dKAhlQktid+7Kor3Z3tn
+	IrnmOelBmSbQaMHJOYUaVBR4vmV+xU/g8ja3TN24LLW671yQXv42cDntEjtnu0nicneQ61H+tzC
+	B1K0XFUk0VERaWzT8mfYp8DqWPu39ygklWS7HFt4=
+X-Gm-Gg: Acq92OHNFLfLDWHz/VQb/WPrhUhIFZzRskTJoeK7y9WVs4v4RG25x3P7IYb5admT8Jc
+	m2ah/4pPyxMAO62XzoI1dl9cb+rDsxhknmZQCZ0MStn8YvPLLQkEQQzF7ypyszIxsHF0h+HoSSA
+	5nQ1qhr1NgCMn3H91ry11KCRA9UyPsei5e7MF4iuW//jmU59juagz9h0ItqPmy8ra9YuxWNGqAv
+	Z/VQ/7Zidi9yqdgYIg4gAe5FpaZ6oHwGuu9EHNiZFVdNsCZf9ZZ3flFCaptCHkT9qY435M07pq2
+	cGMyPhPpAEAcGcBS6WHpW4SZ0Er8
+X-Received: by 2002:a05:6512:3092:b0:5aa:6a12:7d58 with SMTP id
+ 2adb3069b0e04-5aa87bc8f89mr6724065e87.30.1780964553687; Mon, 08 Jun 2026
+ 17:22:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-4-willy@infradead.org>
-In-Reply-To: <20260608210618.3437216-4-willy@infradead.org>
+References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-5-willy@infradead.org>
+In-Reply-To: <20260608210618.3437216-5-willy@infradead.org>
 From: Hyunchul Lee <hyc.lee@gmail.com>
-Date: Tue, 9 Jun 2026 09:20:58 +0900
-X-Gm-Features: AVVi8CcEVGKC8OwDulcWh78ICZQdlZ03a8-9zWvTs7VbPspvNDE-uJyVOZ8fkyo
-Message-ID: <CANFS6bbCV7L2spgNPNQTn+uMNaT1259yhbVvH75+5bzt77LKxg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] ntfs: Use zero_user_segment() in handle_bounds_compressed_page()
+Date: Tue, 9 Jun 2026 09:22:21 +0900
+X-Gm-Features: AVVi8CdVNgx7JSzQmEQ4hsGBApI4RlpcIiwPoZ_I7mM019Hx_PxCkgAVfMUqQzE
+Message-ID: <CANFS6bYejoz4cuX1n4h=En1RhzmNb6urJdFGw9df1qNxdpD-0A@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] ntfs: Remove references to page->__folio_index
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Namjae Jeon <linkinjeon@kernel.org>
+	linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>, Namjae Jeon <linkinjeon@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 644CB1C000A
+X-Stat-Signature: 7f6e3t47gawta49efsn4bdfk5fseyeex
 X-Rspam-User: 
-X-Stat-Signature: znk4hud49wobb3eszzyq9z41npizig9t
-X-Rspamd-Queue-Id: 72A4E40002
-X-HE-Tag: 1780964471-265128
-X-HE-Meta: U2FsdGVkX1/JUENMulBLVwMtHGiY22uWXd1jYG3mcyNmbS/YsFBaDy3svWeAF4+AF1hkXGHX0wn9g1UrRraqMGR0J4jAZ0DIxkq1iaA+TU1XXpY/e6s1CFNRcFKiwmrPQ2hqyAcL8v1I/LtRGU3KQNsV12SiDTSTEKtL0yQ4+q+rBTT9rlH6U4HQuFfOgyQnodpWmg43wBNi7JomiJjEIRrinQi0Wq5jzeZWZo9UO6c58Q6VmWWKviOfVUSE2pW81TMieFWICMKeDpJm3bWPXxWNRLdUmIqXW7P/xylFY/dzXc/DjoU6FbXvQXJVuvN5vkJqsNyLrTSwccaB9EtsjHU2Uu3iD5yYn8fg87tUA2/qHwCisKbDLvwTrB9V6x3s23kWfD6Ji70RXyw7wVCKoxPvqt5U6l2IriLixtVXIhg300UFSXpzbBJj2J0xHmHnH/aivx9TaO183Ork30Ui1MTcxuvvzdqY5lo8VZtZifMrvZC5NQXlfrmnvt1nzNZMRCQ0rXYEmFQ2HCim+i+dbrlkiVWlkY+1px2UaU55utPpR/ZOVJBfC2dulA1KsRMVrACL3BEYI1AaUC9VLRsLvTTIuOGX+egQwxwuPomDW/N96aCsp0Vmbn2yk3kY3/tAw5NydxoOVwSGxpC9mxogijqiXEk53CZ9LuGtrHK8oI3RUSbNqNNcntSuVlJcYXmCYmvxqYz8hixY23gRV0JxxNC5NGgq4lGsvHzXG9/YJLxvILIYnREkXcC/3wU0iuARVtQTtPiGvToyicuPXDRuVDZZmo9VYJvRZS/zZS3pFw3QVSzTPV4sZL/JAdj2SGm8izHtSbx8A3B1OJvu7Cb2TPzV9UGC5LzuY0Ff7pR8wut4jTDilcGdrmRgW3zc+ZTVUbF3cTK6Gem+HQNG2HmqeK8XGUJA8XoDIXIoGc9qLAtM+QIBATjcLmmXvhVXZgg82kbwJ5nEKe/rEYljoc2
- 34nUDHWj
- IrfGNGGbl8lR5ogyXYZ12tNEtJ4wkzlgj7Iw/NXK+AWjUHps8g5vgnw+EVsqiQSXGrOlP+Wj0Y3QfjQyVVgVtWCjBjg5wlA7dOaXMLUJUz+cAl3F30qbgQdO7drv0pQPxQ+wONP2dchRX7aQQ1ZLqbGkPxz3ojRQEXTDP9XGpj2O5jzMh2NI2ASPGRON29YXoHJtLmIKUzxmSNOQkh7Ey+9t6brWWSp/RmqL2Ns4QzWLgzfRHOff1Sp5a9ZpgZGR7aSJO8qAaS+KHvHHsQ0ipI3pH8Pkx/wW1YQGPzdBprGGWsFlw75gUuxRI8SXyM4JqCdvDvW9BOTI6r4ErI3dpbso7UQ8/AUbcLS93gzy51lphX4b2/Guy8fA5nsujYtc3NyBzgp2eDmLMmHqseDa9q/b8sRIjrSG6DKS0r+/DmKy/PH1O/CS/RODHl3Mb2esBw0mM4RAzCU5jQZtfknYnoCZwWtUj5JJsWdtk0H2kRInnPVM34Bvnu1ytOQk3Zg2LyFBnL/JAzLgAOR7BspXiZO2D4T1xWEdW6Fu1ihVugeish7wPv/Hr3SM9Qg==
+X-HE-Tag: 1780964555-793025
+X-HE-Meta: U2FsdGVkX1//CwAolZ/vc3Srzwgn1UoEuqaGag8kMdTam13mNr2RK7JJpj6mHerlcPrso9tqqdbHHrs5zyy87NOxcbi7Lsi2qhxIzYcQVWDiTar+76W0W4gYVCk/JeJcsBrttYjkCzmMp2Afrfch5jbokC1L0n6BdYv12zUBDFdxsMTKk5+3Wdvj8zLJKdNZ0vAPWhxNyIVu0qkK4IEpxTMiH/b981tQue76pFkWm0O78l7nOGYLwEOzZZdrfzpK4OogN+XFmyahQavLrqNXRBtlib2+lxcUiVGyLgyEXzs4LXfKbdwQktixWZNhH0UnI5900hM3mhJ87w4wtC9paVbzVExyLiM90XeUI+QQc3hP0JZU8n2GaGgehB9BQIu/+WTnuea1ZBygmDHRVjCowqPGDFYE6beyzozY8k9mN4Ya4YTKRWBWD0Lj3T43SFI7ilnn0r/gX3nT49s45vyBv2KqoeZluJpf4jKXRcPhJ97lv9/5/J3cMb50amAeIASTo+B9GfLKR2nRGoBh8a1cUd00c7OAhh+vilxXjU8IGPOhjPchKLPUwln2RzJxbpYJj7zxnMzeJA1S0zQM5yjWzMkXRQk8jpfIdfcnImvBv/AMxp+FD/K2N2hL5MsLe9Ux0gr8O80lzGJOkFvpxW94jlCIyLQdJKwJbB7ogMxSxAEEwxBzh+UtKVpJApdN+If84v8wi8C3pfMY6PbDaALyLdWsOjD+YX7CXckIsj5LP4ZoFRgN5kH9OUvLQMUg/HtzzofENr14mrYMxyNhVDcDX/DcgpIHGvTqVDDDBNgjACd/JDXpYVo7qGooLDnY1RE4uv9EwRb7ehtEv/k4YC1FL+7qyVgx0TTtVLJtiTqGB2PWsmUtiIeh45y8Tleea52RvAIp2UbrXFVDzeKpyA/vLroiXEThQ/y9QKQfBZuMjMDQxGshVaSKEd8r6Dxms/pE9YubsLheJjndGYQFXU/
+ 3af6iRWB
+ enZAFBomVscBagCJeitoe+2doa5N5IuuelGZY595/KFRHF+EXMmv+9cycA+5bhYsNTvonvpRQl3fQqbe2tA5SuUURd4oiSheD4BGv1AgypRF1ynGbP7KDNlSdFZOb2FsINJX4CWdlTEMyXYa7Z4Kt46Mlyw/xCAI1CH7cETuTTZwNWKhKjQMNordCEH6IB30qu0jeOCbXeqZTlZVj/7P0Ws8W+2dFN8owJWqt8ldWKQWXcBowpYYaKUgRvdXlLbM0a3aRN4y+SSR/+0PmfJtwQl4GTgbOzGr7nkXLQ678xLCAGMZ5D8llU0Ba2ZsB/0wMhSKQQKiyo/KeZptMuC5DU5xZ3/UexFIGovm0773YYefRW17frm8me3fqCgpWMHZfTIUtfn6zhYAnLz61YT8C4058kqn4XgoTVSFdnodi6+u3ap8I8hBqD0f3Ltatn75z5MHeTjDIkj+xXJ0VIoBZZY+h04Xu7mYhHMyzfsDgIfqnIPqiu3KPS/NhmxDrGrhoOEIRUu0okOFnUc/3G7Wxeyjh0f0eizF9WsbZQtGf6UeRAY0XdH3prcp6SXqf/7Uu+xrxnCWVHETZniw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,9 +142,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 tthew Wilcox (Oracle) <willy@infradead.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
 =84=B1:
 >
-> This fixes handle_bounds_compressed_page() on highmem memory
-> as page_address() does not work on memory which has been kmap_local(),
-> only on kmap() memory.
+> Pages don't have indexes, folios have indexes.  Correct this in
+> ntfs_read_compressed_block() and also remove a use of page->mapping
+> while I'm in here.  Also convert the calls to unlock_page() and
+> flush_dcache_page().
 >
 > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
@@ -152,62 +153,59 @@ Looks good to me.
 
 Reviewed-by: Hyunchul Lee <hyc.lee@gmail.com>
 
+> Fixes: 495e90fa3348 (ntfs: update attrib operations)
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Hyunchul Lee <hyc.lee@gmail.com>
+> Cc: Namjae Jeon <linkinjeon@kernel.org>
 > ---
->  fs/ntfs/compress.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
+>  fs/ntfs/compress.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
 >
 > diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-> index b279f38636d6..89067fecf5a0 100644
+> index 89067fecf5a0..eae0339a8518 100644
 > --- a/fs/ntfs/compress.c
 > +++ b/fs/ntfs/compress.c
-> @@ -108,16 +108,16 @@ static inline void handle_bounds_compressed_page(st=
-ruct page *page,
->         loff_t pos =3D page_offset(page);
->
->         if ((pos >=3D initialized_size) && (initialized_size < i_size)) {
-> -               u8 *kp =3D page_address(page);
-> -               unsigned int kp_ofs;
-> +               size_t offset;
->
->                 ntfs_debug("Zeroing page region outside initialized size.=
-");
-> -               if (pos >=3D initialized_size) {
-> -                       clear_page(kp);
-> -                       return;
-> -               }
-> -               kp_ofs =3D initialized_size & ~PAGE_MASK;
-> -               memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
-> +               if (pos >=3D initialized_size)
-> +                       offset =3D 0;
-> +               else
-> +                       offset =3D offset_in_page(initialized_size);
-> +               zero_user_segment(page, offset, PAGE_SIZE);
-> +       } else {
-> +               flush_dcache_page(page);
+> @@ -455,14 +455,14 @@ int ntfs_read_compressed_block(struct folio *folio)
+>         struct page *page =3D &folio->page;
+>         loff_t i_size;
+>         s64 initialized_size;
+> -       struct address_space *mapping =3D page->mapping;
+> +       struct address_space *mapping =3D folio->mapping;
+>         struct ntfs_inode *ni =3D NTFS_I(mapping->host);
+>         struct ntfs_volume *vol =3D ni->vol;
+>         struct super_block *sb =3D vol->sb;
+>         struct runlist_element *rl;
+>         unsigned long flags;
+>         u8 *cb, *cb_pos, *cb_end;
+> -       unsigned long offset, index =3D page->__folio_index;
+> +       unsigned long offset, index =3D folio->index;
+>         u32 cb_size =3D ni->itype.compressed.block_size;
+>         u64 cb_size_mask =3D cb_size - 1UL;
+>         s64 vcn;
+> @@ -811,14 +811,16 @@ int ntfs_read_compressed_block(struct folio *folio)
+>         for (cur_page =3D 0; cur_page < max_page; cur_page++) {
+>                 page =3D pages[cur_page];
+>                 if (page) {
+> +                       folio =3D page_folio(page);
+> +
+>                         ntfs_error(vol->sb,
+>                                 "Still have pages left! Terminating them =
+with extreme prejudice.  Inode 0x%llx, page index 0x%lx.",
+> -                               ni->mft_no, page->__folio_index);
+> -                       flush_dcache_page(page);
+> +                               ni->mft_no, folio->index);
+> +                       flush_dcache_folio(folio);
+>                         kunmap_local(page_address(page));
+> -                       unlock_page(page);
+> +                       folio_unlock(folio);
+>                         if (cur_page !=3D xpage)
+> -                               put_page(page);
+> +                               folio_put(folio);
+>                         pages[cur_page] =3D NULL;
+>                 }
 >         }
->  }
->
-> @@ -222,7 +222,6 @@ static int ntfs_decompress(struct page *dest_pages[],=
- int completed_pages[],
->                                  */
->                                 handle_bounds_compressed_page(dp, i_size,
->                                                 initialized_size);
-> -                               flush_dcache_page(dp);
->                                 kunmap_local(page_address(dp));
->                                 SetPageUptodate(dp);
->                                 unlock_page(dp);
-> @@ -758,7 +757,6 @@ int ntfs_read_compressed_block(struct folio *folio)
->                                  */
->                                 handle_bounds_compressed_page(page, i_siz=
-e,
->                                                 initialized_size);
-> -                               flush_dcache_page(page);
->                                 kunmap_local(page_address(page));
->                                 SetPageUptodate(page);
->                                 unlock_page(page);
 > --
 > 2.47.3
->
 >
 
 
