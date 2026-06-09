@@ -4,141 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58102CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBADBCD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2BE16B00A0; Tue,  9 Jun 2026 10:39:57 -0400 (EDT)
+	id 416686B00A6; Tue,  9 Jun 2026 10:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C02F06B00A6; Tue,  9 Jun 2026 10:39:57 -0400 (EDT)
+	id 3ED2E6B00A8; Tue,  9 Jun 2026 10:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1A006B00A7; Tue,  9 Jun 2026 10:39:57 -0400 (EDT)
+	id 32ABF6B00A9; Tue,  9 Jun 2026 10:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A46476B00A0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:39:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75FED1C2BC4
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:39:57 +0000 (UTC)
-X-FDA: 84860633634.25.D67E5CD
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 835B5140011
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:39:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=etEknEkV;
-	spf=pass (imf09.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 23F4B6B00A6
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:40:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1A8FA05E6
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:40:14 +0000 (UTC)
+X-FDA: 84860634348.26.59961FA
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 05CDFC000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:40:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NWYFODOC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781015995;
+	s=arc-20220608; t=1781016013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xjikVzeHQvQn86OhIn4rkOMRYcykRqfrspB/jiiXnos=;
-	b=4IYrBJvvSWA88IsQsCOqnoptxL56DAnBzg5JZm4xBndkkK1B+CoZKSAnT06zaVM9kjYC2N
-	b3pZtkUQNlaOT17Yt5GF7uG2wDvwWDpu/tsylsGxEqvopeI7zo7Q2jY+I+VHUJ/mQKUv1H
-	qcWq2Ap3uJLV90BSfyV9aiNLDsP/9ik=
+	bh=Fmac61i2dwLocCOx7qcTqnbQ43RtfTqLMELLfckgZ38=;
+	b=MvCyZ/ral4qfGcL0HETPbSHrTjopka3CkAXXsEsJJlrw9TaEqCegyZDCNMTvt69B5c88/+
+	mvbu6X0MzdzggW17ETUACXZZm8OlMhpyjiS6U6YpCOnOqGtrNw0iahWJt6zV1yCOHzZ6UD
+	YqiW4GHK/ie5i1Ju/dlOowKx6QEm8zk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=etEknEkV;
-	spf=pass (imf09.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NWYFODOC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781015995;
-	b=b69qQwOYkiYBDuIWr+2g119uYWvQJSm8EB78dzRgan5HKMuTVejLIaJ7pyTQzXqcrWpmg9
-	lNrFVaKE2G0FvSvTJG4JXwuSIb6hpBZNpFaaHpedrnYkC/bmEJPZjDk7FsKSFhVXr1f/Ak
-	QQ/lvQloAci4qeO89bTWSDEckq9Yty4=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-841ad134423so176584b3a.0
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 07:39:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781015994; x=1781620794; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xjikVzeHQvQn86OhIn4rkOMRYcykRqfrspB/jiiXnos=;
-        b=etEknEkVC9tGWMCjA7I8oIMAE0BBwlHYSHZRY9oDXdJu3WF/fvXoHwjL0ZcZjUUV/c
-         +nYrgkpuVn1Lgs+PBmrhkeq/BUc2zOy/h8jcln4mdOUifgePe2aVWlXiYvlKHcODvwXe
-         o8lb2RyQtmyUzpFKhgwHcEuoV9lDtmHBkFcDGHt1SEkLlUO5bLFZabdwU5zpl7mvI3KQ
-         JVP+Gefht3cj0nRX5B0cuQshEi5Ov5AFLkO3/VZQcMlei8Ho0lPBdoF1PZwmw3q8w6Sf
-         nCJ0oWx3AorVFd/aju1IDBr6mqECC/8cdHUed/FID0C7nwkvknUGJEaKPkGOqemkLFx9
-         PxrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781015994; x=1781620794;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xjikVzeHQvQn86OhIn4rkOMRYcykRqfrspB/jiiXnos=;
-        b=UhfwZhVQJ098IZ9Pf4ZB0tvdeQGsFn0dtf5aAFfaVp8AM4iKsSkEeFDfBflXDt6e8y
-         iNZKBQbBAmD86df5vhWpZzmLYh2UGjoobK9HS7dTCRzUceFpMJ4KCr9143LPSq/vETeV
-         iJXEJatsZXErXNu3uTqhulNOONsuv0hwrvJiAR/ZG9JyiNU9rBtrLZ9xq7OEZXeXw1YX
-         EiKl5u9Qus3I1QJgMtRvil6dKrYhxNEwy6GMUAqM56fMagLqIFeWQ3/HGJ0Woisi6sFI
-         UKtWfQ4e0a/H+vlCGL937LJ4TIiXpEcHy9V4gN6ektetl8rKZbs7/HGAM+u4KM9urkBY
-         bQjA==
-X-Forwarded-Encrypted: i=1; AFNElJ8hBMfxTNl/o7nCYOmWQY7f/1JTAuBKKZFxPVwwAghbl4l+s4OHMr4y+YPkyOIrat7K5G9vSPfXPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy8kUct0wiFeQhNt/bk7riTS2RKKsqckZsVtaTp+4kfT+JNk9lA
-	tmuxcYi8WRyItfXco0fzj5tSTrw8JRr5k9B4vTcbPToQ0cD9/ijJMfu3
-X-Gm-Gg: Acq92OFibzIpi1Os4WSkvVTUhV2frYmn72RqJbNSX9dIoWUYasz1rh6mj+w5ekH3D4B
-	OuIuh6P6agavzuEd2MSBJHeEgRE6g/LlHf4uXowOVY9gn6VKC82kSF4HNJ6JQv6XSO/Gz1QOI6C
-	b4gTkTEEfbDuhEvyaIrDyMXB79oBrXES/7EosdYDuYLiulfI9UW9GHUeVRN0hrTDta1olEh2vAa
-	nEXrnDiS2yXqSHPXbdSN9YKUF3vk2VN1wkZUJGBbXnVTBcnXVwxMasTh9QjVVFNgXc5skzqE20v
-	zNGgBDRyDkvmbaqp5pLmo5cT7OH7+3yVS7lRjKZGGVRYlwxRdp9z9Wq1bYH4wZuvahQNMqoVqHF
-	UZUbO8UKq3d1OI08NeYyPm+ZycXcYiQhQP/CmQXbVWyCSq7jHdu0VvtEhxuIUVJ19EAMIj1D+Z3
-	NrlRDcLH+Tu1aDj6xzz3oAJnnAub3XFJvZpnmMKxjlQVNu21AQBe1KWQlWtFQvNYut4qHZMwf6Z
-	gDi22L5gjGJTvrqvzNw8QxA
-X-Received: by 2002:a05:6a21:699:b0:3b4:82e5:b906 with SMTP id adf61e73a8af0-3b4cd424041mr11738801637.3.1781015993812;
-        Tue, 09 Jun 2026 07:39:53 -0700 (PDT)
-Received: from o6.lan ([188.253.112.242])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b315esm17939677a12.26.2026.06.09.07.39.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 07:39:53 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	hpa@zytor.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	yang@os.amperecomputing.com,
-	jannh@google.com,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [RFC PATCH v2 3/3] x86/mm: make pages read-only in the direct map
-Date: Tue,  9 Jun 2026 22:38:01 +0800
-Message-ID: <20260609143801.7917-4-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260609143801.7917-1-xueyuan.chen21@gmail.com>
-References: <20260609143801.7917-1-xueyuan.chen21@gmail.com>
+	t=1781016013;
+	b=aM4WkdVHExq87LNlPYUxKlE2ZW1ow8ZmRjVG/GX2bZIwPdqYWwlxeJzGkqXQjc+joi8pyF
+	p28UzH11UKitToELnoQeioFxFobMqpZl7nmmkWUVHemTajUq65tQwAq+7UiS0Yayx7i8xd
+	mvJ8BGEcjLK9ZIN3sEvI/mlnINC41rQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781016011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fmac61i2dwLocCOx7qcTqnbQ43RtfTqLMELLfckgZ38=;
+	b=NWYFODOC/z8fN1av0PD2atwJekgdJSlGgtsB7NkKlRnF+0qjL4q6Mu8Wxh0l/VpAyWI8Zt
+	Wy6iYczj3eNFCiaIiYg086C5pcDhiihOM+vqBWNagn7Xutgpmko9Ki/FPS+q/j6qsFd4B0
+	5nvk5YbJG7OOEMyRaZiGQYmTY2xkTNs=
+From: George Guo <dongtai.guo@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Alexander Graf <graf@amazon.com>,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	George Guo <guodongtai@kylinos.cn>
+Subject: Re: [PATCH v3 0/3] LoongArch: add KHO support and selftests
+Date: Tue,  9 Jun 2026 22:39:45 +0800
+Message-Id: <20260609143945.512688-1-dongtai.guo@linux.dev>
+In-Reply-To: <20260601092823.110362-1-dongtai.guo@linux.dev>
+References: <20260601092823.110362-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 835B5140011
-X-Stat-Signature: yy34o18z1h48utxib14dtn3zwqa41o5p
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 05CDFC000A
 X-Rspam-User: 
-X-HE-Tag: 1781015995-178382
-X-HE-Meta: U2FsdGVkX184UPdAeajCBNBOYCvgtUwmt4J1vI7U0TNxmsujlkKMXbf0e3quDRGB9lVNyOVqdyjjcSUJGRYOkeo1PLKnmRTFfQ7mTnPQdTMTsHZktfFd2Il3ErGtHYpDST3mjS+eCqBhDgC9itUhtUI6TnsZWl3teB5q8UnAaHwbX2jk/8zCDe15zHE+xAHcEH5Q5i/jM+tmYomQ3yI1+6y3277xPspOTHmfh/P9sqs0Mf17DpFwNvazfVWFlmJhOgvDhn0/BGT9V43TWUeMpUnR9iR78OnDw/ul91dhY7LFYmcvI0K0q9uxdFH1TAjjeHymDbHT9R6FhzROhGChrcrA8VLomSpQ58x6jqO8k3jiP0QvNlrQRA8v/CqMrwPm/eBzx/8fwK5QcsytGA+NWstJeI72FrxePSPDerwKmEhzaKzAzI4bMAaF0dh/MWYYmfYT3NI4CmGrBBa5y9u5CYjXw1ou1b7qmzTXUGd5Q22aaMw1lc7ZtCLYQYpzHLNN98+qI7JW2gX8bwOAnzsd16464fZTU6ZsT/0JNYuiu2Ob9kymQknkJUkOEl//VRT8Zb+heYRBEeFXBZ70gmamKpi5B7E7A8mHy1qGV/ROSOEU20PCjUXZMlDr3TW2iXwsC3ZkuDot9tOZ3eSkUHdF9wNC5M7xXdxMDEc85rmtcELlfgutiU9VZQweGVFTnF8SxArrk7ggC1DKRU+pGVAsTMNDOZsj1V/IvduEkk4SBmgira9pJIKyAtYTAc3oD9LM+Gf280vat7AsxlIcHHNe/OMh6JFCTFI0YP63HHndOlSwqWuE1ytMDRfNYYXxRvmLFM/AoHwMtDkFUiGXPo4yLpCzL2/OFj5C60e/QlT39ZDCdc4EpnWeSSjiuOrb0Mhwm3dCjgLsqIdDMJyzYCo24lZbWj1M4ujLe8Jr960t6RGfJ4gzz1OdgQHXp8BQJYIpeyauh0qwm+Uq223rYVn
- +UHgHM7p
- xCHp4OEQq3xsFYRdY0Rd2Pgal6/GUjUmxaXRmtyKd5HVsOD57RXC15+qP9TUQinmYHOSSz7GmDGvm4Iwkht3XX6ND1WoDO0rjD7r5tf8wXf8uUIk1LJz0ConuuPnwxvFLzMpgwEt7hQWd0CsALZSvqxmWV2xRJWlp3kQg74cIdnkep+t3y4Oj0L47s3HsmO+sYQTFOKKLGis7W+TpIhGxl/8TPXfR8GUTp8Eb5cE17JiubiukgsMjTP3zxPnmwgyFFGT3DAomZqX1U5OSQ6MFBPKEhFr7xlVMpdCI2QqfrsWToMxWdwYiXEEsGPEKjcksR93xJPF6etoPYKinsi8J+jqYxCO4h1AxHuvydjzCATiwIGQo3N4AWQJga2treVlaaLuA9/lHn2a9FbyUnhmZqFpHIyjDR1oGeOV3L4Nu9AKV3Shc9LXvVzYf50ZQw17NDTnvFWeOgxwsBtrn3rrgQguHHKtREt7M2Tb+8o4Li6VLdv2euas04xcxV8qFH/iwWPR1pe9AsyjiB8ijcqu1SSmHmJkYVEbC2VXuNdN4yleKvX3MiHMjgiuMvWSep4tIdrNcQ4gaMbjNhwlB6I5TimxTeqoW6q3Jpxn+C0cJE3EMw+8=
+X-Stat-Signature: pafnciiwko9kk5x453dkc3tgqp1ofc9t
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781016012-987254
+X-HE-Meta: U2FsdGVkX18QWc/4c1KJSbOcdmxr72njz5J5C5AIWdEpRlrVte3yRlXlf1SyoCcGC0Kbpq+PwQUaE0V0FwfHC4WBVMDDskY2D1Z5x1vP/zrMzd0o9qI5RKPShHwQB/h95kqbI5QrftqdKhQbl1V4e/63mBPvNtc5T2FD7WrxGxiNalbnnbUo23m8NUJMOUWHjA91UwwW1EaQuVFCW9HBY7Nw2CCMqNS69HzGKLG4qhW29w2XWJnKoPS2pc5KGMS8IkE4kIGnNLoAIkYAMOA23WvHxYDeVeqE/yvR2D29Ik5uZPjLHfw6mPdURD4qR4fYeV0atwlRAC+Bsb1qtt8owD+TfaQG8MMr+pwCc5gA4TSCoSAIbOVLv5f/yUW90xONRRnmSQgcv6qgIX7c0kwkG7MM7VHoC+PPTJWUDwgjKWi2dIM4rMeHjk2335eXtYdBTZlopL68v8Fk65zP6OxO1yU15TbG1oFl09Dv7WxusNsoj0QwsWdlemHm+ZzcT8tBZcMNvE7bFeGu0rg7Iz8WbgSgUKWoqjWsmzSkYSP2EaD5Ex4nxGLcVVY6k5lsruBW9ijmEjKvkrJMAzDPloeq83JmPR3GEzAeKgug7S9PxEtifrTr9GWBarRu0RGVLpSv3DDYLe2RlzOh0eARwDNIr8UKepKRbV09KCHB32A8hMWierj3OxGwWqtMuEqUddvc3EXIPZg7yeDb6CFJ7wsoEiUgw8DQUFnwqyBhlU43lsDnJ9FKl1T1t8IQnxKK3bq8lYJihuYr00Q5DEjYVsSPMq4cy8O15CEZHn/L8h9w5ICd9m9BrrRP7drP/7zO9o5jjm7swBgOx/kMvFZh9wYSAbEl5vSRP2JkxDr97DsWM01VljgpeF8mst0kuKnDeOt2YO3IcNxDbUXfuByA3OY+ApYk5rRVJZpjzpP9jg+CfZGXLPKSjC+iWe9s7lPLSRiZlJg2OIhVeVRzPeZ+MwM
+ a+nJqKSI
+ OjMU6E907ePeT+cMyEaMt5P6Byd5RuwLczWkPpp2Ue5tdLUm/sGEb8rQ6YFtkRO+oPNj6NKbitH4YLZVlrHwOSCTZr6P2xVHZGdaQwOO0Gt7sql1nz/zL8K3oPOCw5oHWNArEvkbHjjxNK5CfXTRs1k4dKlx9Mr/xbTtR9KCAkpePO7oXDaMKvRAnJRw4urF2OuRE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,49 +96,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement arch_make_pages_readonly() for x86. Make the corresponding
-direct-map range read-only so unexpected writes fault instead of
-corrupting shared contents.
+Hi Mike, Huacai,
 
-Reject highmem pages because they have no permanent direct-map address.
-Treat the set_memory_ro() update as best effort. If it fails, leave the
-mapping unchanged.
+Gentle ping on this v3. In the v2 review you mentioned you'd wait for
+v3 for a more detailed look -- v3 addresses both points (folded the two
+selftest patches into one, and replaced the LoongArch-specific kill
+loop with timeout(1), with the timeout value set per-arch in the conf).
 
-Co-developed-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
----
- arch/x86/mm/init.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+No rush, just making sure it didn't slip through the cracks. Happy to
+spin a rebase if it's gone stale.
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index fb67217fddcd..ff0a7003eaeb 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -3,6 +3,7 @@
- #include <linux/ioport.h>
- #include <linux/swap.h>
- #include <linux/memblock.h>
-+#include <linux/mm.h>
- #include <linux/swapfile.h>
- #include <linux/swapops.h>
- #include <linux/kmemleak.h>
-@@ -38,6 +39,14 @@
- 
- #include "mm_internal.h"
- 
-+bool arch_make_pages_readonly(struct page *page, int nr_pages)
-+{
-+	if (PageHighMem(page))
-+		return false;
-+
-+	return !set_memory_ro((unsigned long)page_address(page), nr_pages);
-+}
-+
- /*
-  * Tables translating between page_cache_type_t and pte encoding.
-  *
--- 
-2.47.3
+Thanks!
 
+--
+George
 
