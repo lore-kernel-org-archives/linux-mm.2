@@ -4,88 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 022AACD8C92
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C4ACD8C92
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286036B0099; Tue,  9 Jun 2026 08:05:05 -0400 (EDT)
+	id CEAC56B0095; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2101F6B009E; Tue,  9 Jun 2026 08:05:05 -0400 (EDT)
+	id CC2926B0098; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FF0B6B00A0; Tue,  9 Jun 2026 08:05:05 -0400 (EDT)
+	id B624D6B0099; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE30E6B0099
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:05:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9C8348F3CF
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:05:04 +0000 (UTC)
-X-FDA: 84860243328.10.1E0E2AA
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3ABE4180008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:05:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CXDXQgZI;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A3CB86B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 539D3A0540
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:07:26 +0000 (UTC)
+X-FDA: 84860249292.17.47FCAA0
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8F6AD20004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:07:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WZrwDR1d;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781006703;
+	s=arc-20220608; t=1781006844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=k79YIo8QOQKsrDYvlKnWPNsBhiUhq9Oggnh1XXaaAxw=;
-	b=HCLZz9ZxQknOFWg+BohhV3bBVbNOqx+Mb6y08afUj9hnqo/vtnRr0ieD4thtJgmWspirdm
-	m9c6NvoN9UxovwjD+2wlbrmPmJUTuxuf5Nv6fhsZLsqnx1NoYZF+XToV1oEyfEGa3gbZvf
-	MofzpQ4uYaC9LHSz0jcja5t3DpEc320=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oQV1qTMhPd4s+f85QfPCGgKH/8NH/n1/pSa26JOffws=;
+	b=8KrMtJh9cLq2J/rEyMyDYK5zOuftDkEPSJzdiREuLfIJjcXDmPUx3QpDSIIwdAYXPW4g/6
+	f2kJIU0RRiHVrK586QVBxcv8a2EAYO2PBp0cZ3ciXApofuiWylEDeJjZCXLAJcnJe2RREn
+	GbSQ3Nf0RWuag6I8DqTziZTewyE2vxQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CXDXQgZI;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WZrwDR1d;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781006703;
-	b=Tu0vNCy8RNhpn4YfqjwzktqkqYtRCqJUMzKNNsIVBlTXeEJXEHdOgVO7FppQObEdAQPRfD
-	AGppYRLdegVT0W6u9sSqFRqC7h5MbHrtA3aRmg7NLc34ET3WwLMb1m6mI2QdWIHz3gINuL
-	RbInguxDrth37fu5l1nGASLAwGWhNI8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	t=1781006844;
+	b=acHQq6QgMFn3Mo00DPAOlqlWl0WrvnYOKS2Bcjf6WlgXV7hOfsS/bqQwXb8MDpStnaEKMS
+	fV9eP3K3pjcACydlPVVubV3HaIKGlTCO8IwZIIgoB3x5y7HQ8fYy6ZPrzcOOTpTQKax9tY
+	7QlQDY1PI+NvvAgnGupwZJjNJ5NbqPs=
+Message-ID: <cff57120-f2b6-44ec-b4cf-b7d5d8637723@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781006697;
+	t=1781006843;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k79YIo8QOQKsrDYvlKnWPNsBhiUhq9Oggnh1XXaaAxw=;
-	b=CXDXQgZIWnWZQFuZNeFWGtdtDAqIJpkSM8/sATcbi1GujaaExCPIkUnnO6ZloTfAN/KaQj
-	DoxtVhMY0sY5/G3ZQAabDXlsLPQVqmu1n61wmSwOn7jjH4A44LCSZAAVzGJtuaAjg0Bv9N
-	v8+2eO/Ir0zTJscfgZ1FQD58yxyw7VM=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE accounting
-Date: Tue,  9 Jun 2026 20:04:43 +0800
-Message-ID: <20260609120443.71864-1-lance.yang@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQV1qTMhPd4s+f85QfPCGgKH/8NH/n1/pSa26JOffws=;
+	b=WZrwDR1dbDAxxV3rcVSBtMHFC0p79DyleGzg3tzrI3PDp9bc98p5olVHu4Gyo+iSI3YUPy
+	QhfFwYhx7YBdF6WxhgJs3ZHexNJuNQlDKm2JHuILHC+ERL2XwPCmO0Kvcpl5hORriOJx0b
+	37tyfmeCWOwMbGalha94x4Wcsde3Gs0=
+Date: Tue, 9 Jun 2026 20:06:31 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH 0/3] Remove __folio_index again
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260601192626.150804-1-willy@infradead.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20260601192626.150804-1-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8F6AD20004
 X-Rspam-User: 
-X-Stat-Signature: 9msmbibyjga4uinsw18xx7koc314gq8s
-X-Rspamd-Queue-Id: 3ABE4180008
-X-HE-Tag: 1781006701-901181
-X-HE-Meta: U2FsdGVkX19Znkc6yX2bjLmfVVo67AcAAMw4CC88AHVKuhqxkIvtHBgibqRL2ALsC7tOj67lEhy8hYuNZqVfIiz1iGv6twUxGhiIy2OuN5pACwiC7ErHNxnAAQT4ADqWVPNlCTa9ULCOtWEpi6vFEUoyMauK9Te4x4bP3/PogK7Wz9eULE+h0N4YtG2wpy4e2oWlxBhEwMGcQptZPjSKShsXWruftpHeOG3GeF4I7ABjLxptBY7C813Yx9Qyd/yGvF0u6uswAdCw3yZzNxdonxWKstZ3gEr8+y9rWwmjW0eQbDKTY0AFZBh4t1i0iq+sPE4TnIIuzXfcFxedboo6qWgGGC/yB0tKEuR69Sy1TOHJksFj8jVF6y5xKMw6yVSqzovTjf9J6NVxUUPBDj9La0aq5PjXy7V1MgZ1XzJN3azjmcZDNW5oTLaQRdHHj3XzUtJwJDiA31uC23c+oLDLIozc5zptrnMzzL6c2UNQ6ifQD5b6ydS9JOdAa85aAp9kuqoK0xMGamTM/1zXo7CZnZeqQcdUDyVG+dmz2sTUxqZNt4M+oDvv1TTcDhAkZFvrXa5f3uR/AlemSd2eorJe0u1DkxCYSqBvQmzCnFVEmu78tX2RUsFud6m/j3XwFa3QPzKdyLDNgf9Xt5p1eB6PYIC2opslBkCnP/Zi6JdLhsQ5Zhf5NCPf092VH2JjP3vZ7FoS1vhf52cqC6o232Gik/y4RxyVWy+8aORxutWpm9badMlmgX79MF3E84q+iaHcRx+ykz522XwQv+vvcxpHQmSXAUfYA/mgBzcbW8jTRoHMsFpMKRdmIyIwL5mgDVCxM4TPrrnmze5yxmJoKmiuZ5g3cTG3l4EuAKpdiYvWW6qOt07C2NCWDKoKlaM2SM+JWmIyEm95j5POLWA+ND7+YwojHVyHDU74V4YSqSvV9LOnpcC+qp86h9YUUzM+b/Bdhy3qunTHDVg+TJ920wG
- mskeze2v
- yNa4wEAi03uHKi0s4Ur1ozbxPVN5YK3qhCRNfj+KgirtTQxaKt4x+ozrPD70QcJy8AXVTs/uEL0k96nKt7Qwjyu+JhC9Z9a9Ed5muOkerCyo83rRnxqZA9ie4X4kWjgFoKlabDTFnWpHYfI+U0pU63APDgMscUpo9rfqZ01zG0zzUkH93zPElbZJNQPTIr6T2t3jnDIDqBr5g8t3i9JLPQrxrurnkVoNyMQJySILg2Umwy9MJetiNWnkteuMBx5mYgxDnwreF7zL4w5M=
+X-Stat-Signature: j16roewcpuqaaru15zsqs5cczkwpgyqm
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781006844-44754
+X-HE-Meta: U2FsdGVkX1/9pCHwjzQ4PQvLmNGbasmRZ0TReSjN3JeT3ddUpLmzh4fCW9Z4mrM4qOEMsY34/ayV0H3hRKGZGSWMvOLN/KckiilWi64vZUXnlCM3qOUT3+g59eJQX+/Uj7fIKZmLUbnt806F8P1kQVCT5/oHyjZhaKAUsXh7utXfl8N0wyEkguxvU6AshbxIJdHTDAtcYByfii9gkj/nUP4Ggp4PC7YStTPNeFa923Gqkn8OKEeIZnvKL3ca/31SrdKdv7urfMyRMxxlr88E6tBl3Y2Q4kvAw1OGGb5hiikODeu+CA/39k7v2JpbJZEPSVOc20ftsWtFZh/OPXV9ah4yFqgnBF3lsF83zEmxq1cc61UW6dD+5AqZ0Cri3W6OWcfbssbCA91bVNbzJoXsbeL74ki8ieqGyceaU0W9dMBpfqsDoPhVNe+htNZzKihOz9N4USRHU89PySezR835acD92w9HRs2EnLju96SaUF5egqO6jiVIVubHXTDhcL1O9V3l6xAWNGLMh9nG9rD+EkNr9jP9kosGOeiFPdjlFtr+oIVuScx1ZvSIsFjRBtqKx6exm1Gi7XbvJknLxm6ckVD5AqnMDf0xQgZTKgxJfq2ePpRZQnUEjEIepg9iItZptc8daBPicso5cw+0KGvfgIU15UYowZbm06EAfpFo6mA46+gYP/TUDPXG14ZILcZSngrFqJ0KXqJwoHqsqb21D1QiszqLtVrEIGPhuEh1LjKsB3SkbX2v5lo64UXU8n9UW3Xprm4AJz/xUflO3omn8O2O7AymChGbGOANrycW5t/kqWu5NSIP751p80HYACuPfig1onae6MpgNwPx16FJqpHmZpRCJ4ykra9Y23pr8E0a2mMRyLhptQSpQt6SjH+44UaVwylpUWafC/JUIzJFXViDrcU1LDgpaBBYvEOvwBQz37/GwEDema/YTjazTA+ApishdsoxsB1BywRWtqx
+ kGwbOBKo
+ irrXK1imfQpKxS6vvQRXe8MjYGzTzNTyASpUssjDEqzvtZSHSwZaRRTxnZ3V3gLeALYo+IBXQ6jNhtVCIxGe2TtHqlcvjQ6Z1GYHg8DLenS1/9mOyydnw69CtZ4LqtMjYZv0xJ1Mt6op3JAQkh3umANXkRiHYKK8WSlp7pdlKXH4D65YBGIOvQ5uR4zlz8MEJzkniyu/uqAulUr6wkGOOS/Lj9f8wJy/D+7ZZQKF2XCkCdu6+6KpW+Zd99ik7p0+1PjyHGCHyI7zrYl6kUQTTt4U+vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,57 +89,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
 
-mthp_collapse() uses mthp_present_ptes to decide whether a range has
-enough occupied PTEs to try collapse. Swap PTEs accepted by
-collapse_scan_pmd() are counted in unmapped, but are not represented in
-mthp_present_ptes.
-
-When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
-so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
-then checks the PMD-order candidate using the bitmap.
-
-With max_ptes_none set to 0, a range with 511 present PTEs and one swap
-PTE no longer reaches collapse_huge_page(), even though PMD collapse can
-handle swap PTEs up to max_ptes_swap.
-
-Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
-through max_ptes_swap, while lower-order mTHP collapse does not currently
-support non-present PTEs. Keep non-present PTEs out of the lower-order
-eligibility check.
-
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
-case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
-
-[1] https://lore.kernel.org/linux-mm/CAA1CXcD7WAiA1b9GTLAuNZ+kHaFx0SzZwpBkqAZ=s+RHsTUaow@mail.gmail.com/
-[2] https://lore.kernel.org/linux-mm/20260605161422.213817-12-npache@redhat.com/
-
- mm/khugepaged.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b12187709f6d..617bca76db49 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1508,6 +1508,14 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
- 		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
- 						      offset + nr_ptes);
- 
-+		/*
-+		 * Swap PTEs accepted during the scan are counted in @unmapped,
-+		 * not in the present-PTE bitmap. Account them for the PMD-order
-+		 * candidate.
-+		 */
-+		if (is_pmd_order(order))
-+			nr_occupied_ptes += unmapped;
-+
- 		if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
- 			enum scan_result ret;
- 
+在 2026/6/2 03:26, Matthew Wilcox (Oracle) 写道:
+> I renamed page->index to page->__folio_index a year ago.  That proved to
+> be insufficient to prevent people from using it, so take more extreme
+> measures.  This breaks tools/mm/show_page_info.py (I expect) but since I
+> don't know python and have no interest in running this script myself,
+> I invite the author to fix it.
+I am the maintainer of the show_page_info.py tool.
+I've been quite busy lately, so I apologize for not replying in time.
+I noticed that you have already fixed it in the v2 version,
+and I have reviewed the change.
+> Matthew Wilcox (Oracle) (3):
+>   ntfs: Correct use of folios in handle_bounds_compressed_page()
+>   ntfs: Remove references to page->__folio_index
+>   mm: Remove __folio_index
+>
+>  fs/ntfs/compress.c       | 54 +++++++++++++++++-----------------------
+>  include/linux/mm_types.h |  9 +++----
+>  mm/zpdesc.h              |  2 --
+>  3 files changed, 26 insertions(+), 39 deletions(-)
+>
 -- 
-2.49.0
+Thanks,
+Ye Liu
 
 
