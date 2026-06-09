@@ -4,156 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C906CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30629CD8CA7
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:11:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FE426B008C; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
+	id 4F9C36B0005; Tue,  9 Jun 2026 04:11:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D5BF6B0092; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
+	id 4A9FA6B0088; Tue,  9 Jun 2026 04:11:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB6E6B0093; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
+	id 398D56B008A; Tue,  9 Jun 2026 04:11:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E6636B008C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB14714046C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:06:20 +0000 (UTC)
-X-FDA: 84859641720.11.1CEC63C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5E0E31A0007
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:06:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kiq42VhM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780992378;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 297E56B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:11:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C39BC1204BA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:11:45 +0000 (UTC)
+X-FDA: 84859655370.01.E8E7859
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BB1C1C0008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:11:43 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YacnIGR1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1780992703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
-	b=QOIDBleGcD9yQPwBjjGqmLl5S707LOB6NIVAIUW4yNGexp8AMIBTvEt16P77Q+1ZNk0NYe
-	YChjzfJvKekJikCK8i7DsIwgCxatuIVcYYz9pqQVRfi7ftcT6OazSxn7+N6bKmcgG6zL0w
-	MBDrYmvgOYF1Krtwlvbac7rsUbHQnjE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kiq42VhM;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780992378;
-	b=f7XWQyl5GlbBaKFUSoX8qA6Vg0Wg+BIwLrU5Qokh8XfPwuVnzvA/3TG3DypvEhl9iNgC5m
-	zBQSQmOEW+q+Q4e5c66rJ4BvFawUD97Ti3iIMu56kSr3vOJCA7n0v7ufPhJ11V2AOiUS27
-	O69+lhI9IsnPECmUySY0jLnZT2oxskQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780992377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
-	b=Kiq42VhMcVXfGAf3wXnwpx0rSquOFqCSzr2nmMupo6e2aDlUMDfo//4kDd2V72BWVek7Tu
-	6xgNyfm1ExW8tvFJW0A7hivT5iLmc1nRBQU+8628cBPLHZDxUVJr4IDNFyP8YkOiLvFWXB
-	SfexR1oJTK8wucJrsMT1XIQot1A34cI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-K_HsveaBNqWg9gm1nrM-4g-1; Tue, 09 Jun 2026 04:06:16 -0400
-X-MC-Unique: K_HsveaBNqWg9gm1nrM-4g-1
-X-Mimecast-MFC-AGG-ID: K_HsveaBNqWg9gm1nrM-4g_1780992375
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490b8adf8b8so47882715e9.0
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 01:06:16 -0700 (PDT)
+	bh=8QsY1n5N4iqtdC4BlDMhKaWRGC0gk3S4nMtz5szdAAI=;
+	b=wunqaVikTlyKBsHd3pNQ1UuY4iyQn+WXFA1mt+KzeLTaF9LW3VH3lYDFEE7Uz/Z5mSYSLY
+	QNAgv7LsUKwcvbjUm7j0dlILgJ5YrTarhkzog3T1WnlKTehp9l2Y+5gmqIzzj1eQJkfrME
+	MOnQtkz590yqAwSVwM4VoYuKI+zoQPM=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YacnIGR1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1780992703;
+	b=ISK99zGP5K1mux1y83/MlW5vK5htFMut1taRuy7qY3HwCZ1hBaTpd2pQvbYgUAszPxCEd8
+	cQIC3xayO9xnjMpwwx21xDpU0BKyyLR2JwVgFj7UI+zPi0EXZO6D+qqM+Y2VvXdo2+SA/Y
+	KxVvm/F+hLXh+PpSsNrTLyJvlFCXWgk=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490d1e54b3bso15243785e9.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 01:11:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780992702; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E9vNm+9rwY6Zn2ymjM3bxHO29n6K55cLd/9ZWY0tCIx6Rt2kKtbb5fBPQmPWD8FfBW
+         vsPNnLE/eFbAwdCgNT1niP/O3dTS+tHtpVYmIPTfMebcchkFCpp4836mhC9awCFa7Dzo
+         uZgbjT3C6cIFDXbclmXo8aaP/l1b82gD4qR7owpUFDVWNBVQir+bPDSTFdGTUNMOeN+D
+         iPJYPA04Q7jvZplxmd4tXeUVLYvSwYOQf1aUjXnFh4/k2cO7JOvl/k1m24fR5g7McCQg
+         m65gEnJ6xqFjaT7WEeCvnSU01xTmyO8Dp8C29m4IOMdbwqG+D0qSnaJfh5dNR909+5sH
+         6LiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8QsY1n5N4iqtdC4BlDMhKaWRGC0gk3S4nMtz5szdAAI=;
+        fh=RQCdDb6nyM0BOihcSzFeLjFJ2KMShNvK3ABOaU7XC/w=;
+        b=eJij57UJNeZ4XNNjY1hCACCDRFAj4OPLAWpcMGObOalSXl3NQ34BfpJOTCjKJoc6PQ
+         BrR5LamnBs1Zf2fHdClRyjFswrXsGC0nP793wdq4PX8opqYdHDBDnw+U//ucL2JMWHe7
+         kHvU/Ivvtl5hqWQqJoVyE3GHzn2zHRY6nZXuPDtqjYTJ/yg8W4BELTBdWJfXTA4LwLC6
+         hfMYQIG08a6nbM1ST7GnEkXD7fChiEFF+dDC/LtMMGedf5ObxUSqKxArqQweuZy351yU
+         BdPs76YU7osaoS1DMJnyQCPN8OtBxQhsCXgLXtXex+vy+ZEFDrFH6o3pEP3Kt4/QxNVL
+         X54Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780992702; x=1781597502; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8QsY1n5N4iqtdC4BlDMhKaWRGC0gk3S4nMtz5szdAAI=;
+        b=YacnIGR1+u5eoBCZx9lquzrTFXatGc45Eb3P1BGB/3a3Jl8W0W2VN414tdbmykdstH
+         BQLTJSha+q+4ZzJKRgQaGEUyMiZ2yyHCp4JD7YJzENd6eaJIPNOL2iyeEmOfdyVxauT8
+         ETNthGVLaBCV1mGF8PSWZqT7DMuiVwnUT79QTpZ21BdX+IYw5pUjd/GnJ1QchDmvxTTH
+         HTAObfDRQHTuq330N6NNF2043qrLNg8nawK0cR5Omt5j0iiCzGPmeMpCiEUTQ73cHYEV
+         /EjIiv/reEdrUV2o/AzjI/HSBWV15fvNrxyCzNQHbpV16CGS1TZK/Y7IQlrhkeza6m0Q
+         lHQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780992375; x=1781597175;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
-        b=V3iM+UxPK/xYNY4YTUylpv5X5un0Q8jggFPCnLTiN+v5NDEI3a4pcOVqriR4RMxfCd
-         y6kjQokBdYf7b73tZGvFtdBSgz41C1aSao0/6/Bd8hSXoqpZG0TwlqWwvfPBCiTFMNNK
-         JIv5OMvVEeA19H7aEnPR0D9Sk2i6JKBUt6zlwLjGI8VdKpxAvwzSbkjoVnD9svclt0fh
-         xD5z2jXRuuNN7PcFzk+1Zvskwv2ycX0+T27CBkwMicf55pStDynKA3jauq6PaFEtzT9c
-         hywpGnma6X+Eyh+Wi7V9W7mwUZAVHttdIXVEDnWVUySfrYpuQHrccU7RHHVQMHSfDnN9
-         Gl5w==
-X-Forwarded-Encrypted: i=1; AFNElJ9FLk+iuRyAIBVkNA7W+4ToyWa5V+Wj6v0NYZ3f0jALAHv5JvvaA/kSZUzA6CSXzMFyTRjdqE4Flw==@kvack.org
-X-Gm-Message-State: AOJu0YycHlsRXSrInxtTP6twQ2lckkeq/jVwnUng/F2uqm+98UWBNCai
-	DOc/xD6IFTI38E/7Kurg2JSkD7/Yz0teUw7Y75xT+m6ulC1tjPwZGOoy7wxBRB5sDO7nVjFQSNp
-	0vLttlxHY2ti9t0YnEHnTnzn4kzqxu/UiwQDtI0wXmmWKUOeTCIN7
-X-Gm-Gg: Acq92OHpTSXmiQWNvrsB+Hv1++T75NCEy8BUa3Zcc10PmxbSDPxhS4628Jq/QsNXTbO
-	t7N5JsmaQP+9JnzWhW/TNyHPaHV9GTdjGd2UiR1v1/sEIo02pdsAqMBs547tbzq3ThcyILsqFAK
-	0kJ3GdAMyszK5zhnCTh/fhYN0AciyogzLaTPGtja18MNwboTW7HUpWEKr17qWnBd0mHZ9qXq9TA
-	iPzqrwpL5kD/QX8e5DQag2oybdRYgVPD8Q7wcDMuyRc2qBBvwjq8Vc0Ei54Kw2NjPwPu196+iJq
-	Su1UPkIHpqqY6XOKoZWdy6Ft4b2Hh1SQHLFq/0G14Kfppjz2K5jBS+Hygs0txb4oE865GR8jUWu
-	BO0pYOJMNCvq9GWv1VYb70u64XUrsjhx5hTHqi+dGpODmCAF1LD7nhg==
-X-Received: by 2002:a05:600c:3515:b0:490:b409:94f4 with SMTP id 5b1f17b1804b1-490c2602a24mr294886835e9.28.1780992375120;
-        Tue, 09 Jun 2026 01:06:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:3515:b0:490:b409:94f4 with SMTP id 5b1f17b1804b1-490c2602a24mr294885445e9.28.1780992374486;
-        Tue, 09 Jun 2026 01:06:14 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3d66c8sm440082815e9.10.2026.06.09.01.06.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 01:06:13 -0700 (PDT)
-Date: Tue, 9 Jun 2026 04:06:08 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: New design
-Message-ID: <20260609033042-mutt-send-email-mst@kernel.org>
-References: <cover.1780906288.git.mst@redhat.com>
- <aiePVsiV-w-IZ8A4@casper.infradead.org>
+        d=1e100.net; s=20251104; t=1780992702; x=1781597502;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8QsY1n5N4iqtdC4BlDMhKaWRGC0gk3S4nMtz5szdAAI=;
+        b=FMmhobx694Foe9DfDTm5YGXHwZa5NXYbkW2z5ucEHtMAy3YZVk+0n7D6TJX0yS/o8P
+         BXi/GOiWBHaf7IYzbb+nN4Zw8+xgIdmsjnpLpbghHodwCdS/X1hB+heps+jukhEfIUX8
+         9kiQ42BKCKhNzYPlEVT3eBvY1asjdThIAwY25McMcs98drJ/s8aWi1bOrWx0Hxerdyld
+         atC0F0FKPuQZ9osZY+Qjf25yheXWKLHrEAhgydgag0zrAeknTJ5vkcUG/KBaosBMwU/j
+         4inZ8h4Plpw90WeIt7jfXguUiBSqNfi4RG1F+SxdU0Khsau/S457okpIUrijDNgP6hdE
+         i1Nw==
+X-Forwarded-Encrypted: i=1; AFNElJ+f6DNZsJo5WqHM4LxvfpzfPM4yFhSKyKmBadHqpmLNgR6hgvmy/QKEK+QFvHFHbMbRI0RC5vG9QA==@kvack.org
+X-Gm-Message-State: AOJu0YyLbUmynwkM0jZb2WV1+l3zf0N14KJZ3bZ+9DRzX4tJuYilMigx
+	++CJ+dmyGMaTVXEIVPSoFSasWgVzADQdYdcNa8bMjCRyGqMJioemfCaof6gqw0SpTaPfMExTAnV
+	YD/ds/60ZNQL5HuZWNUJ/gHJhPU7Xyyw=
+X-Gm-Gg: Acq92OGiap8LJktrhTJ0XcMV8xEwo8JBYMtga2vHEImGSNig3+Nbps2iPQQHpRPexRx
+	8gg7ZSjLGhB/Y9IfSCACNVY9HAzShXwnPfzRkfep2yrNPijYxNUt1sV8QOL1HnPlYxipiZQGZfG
+	6FYs+bcDVdmAG4Drgk+73LutiGm5TIagY8vgDGLNhP4rsxXZe21HA/iS1Qe51ssO/03ixHYd+5b
+	6ydvTTiKuhy97fQA7LskzqnLRewA//ZNVxLiRdemBRDd5dQXdF+wo8pFr8pmsSOp/xradPi9Eo/
+	gTlxgVtQQGXx9Hhq6uPOKw4F8cT3UMO7nNYBH1QtW3X/VOZN6PI9kX6oIYZJiLI=
+X-Received: by 2002:a05:600c:34cb:b0:48e:6db3:ff3a with SMTP id
+ 5b1f17b1804b1-490c25b09a2mr318277935e9.16.1780992702020; Tue, 09 Jun 2026
+ 01:11:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <aiePVsiV-w-IZ8A4@casper.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: C3NeejsChlmMEsm8kmjMmJvgwKwG3dL81jyasnf5wy8_1780992375
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 5E0E31A0007
+References: <20260605031008.397328-1-kunwu.chan@linux.dev> <20260606005431.89186-1-sj@kernel.org>
+In-Reply-To: <20260606005431.89186-1-sj@kernel.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Tue, 9 Jun 2026 16:11:30 +0800
+X-Gm-Features: AVVi8CdH0juoNThKREsErMsXdOM9cAvNHpugD-3PSlQpcq7Fci8WlqM2nwe8H74
+Message-ID: <CAN_Opa8sqs-V-jFrGZa6jwJKdHqT=7JPeLKcU8E-cCM74ON4DA@mail.gmail.com>
+Subject: Re: [PATCH] Docs/damon: add TLB flush policy document
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	damon@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Wang Lian <lianux.mm@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 7jqye5fx43zsr6fu6pbugaaiahget1fr
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780992378-781969
-X-HE-Meta: U2FsdGVkX1/7YrVhb1i3Ucu2aAVtqEaW5Y/TO4bYimxG2c2+I2wpAvUccCcNN2bWg5v/kurL2AvSwvWgduDzh7PNgiJVsaumva4JV9AjDe5ijircfCl5lACM305xdhy4d9kXiT2YZQtDRbebSXYEv0yxqG9I4Wyvhh8GqAYXAltWZ3HhL1FPlKCuyDxfWp6+cyDeZp07JP98fLZW7DrmkIN+m1A17pXgvo/voQrGiSfrylkg7AaZkTS4lUtnb3bAlgg/imP5kxDL57BONhi7muHnvf71TAA1KG6vN9u4VuaOrzeSPeDiBblz5i86CAwPZIAp5ReVug9BbRC8DLbOHN5pVEWz56TcjS1TBpq4z0hOnwlNu3doB9hgG9Lh7O2Gtc8U/tFU4EM9+a2t0UGSMAKjxZ6dDuvHROeUIkg9Yp6NDUYIy/n2Bq3dv/CyJSS0Wf9q9D8dsO/xAQqI0wpMyF+J0TKhNRifUwEpwOTeoMJ99Kr1/Mn1nGDQP7eqOeg3etRyh3L2U/16zf4ULubm13xDrxeQ6coycEp3q4p+EvK8tzRFAQfAglqdbeK/VcB+tWof63W7+rp4F9jnBG7edR9Ng0FeJ9uV8ypvFRKVwa9qnGCsQNw6Cfs9WMX1Nc+joYYdM4tBGZkwlA5Yc9+5l4b17pbVkjtudJn1uDqf8H2oQMLthMprUIUDFUCMFVjPd/o+gx2KY51/vZF/wT6Fls0cojrEPKBxskpgQQTOl4nLBYhwzMz/OQK+ifDEnK38uZLF+exHy0O1xE5hfvdU1wPdhNDM1fYXlxahNIKlqS0b/hKjSzbNQazykS0AXxOg7W9D9vDqmDVTkp8izbyN4VKn1kibSPXP7kfZbBCNo7ZJIKsUf1NU/IwxOCNAw5x+7C3UJxXSBzbv4V3iOHVVRSAsACUgCPy0Jm3/DKx1Sk2Jok299uwPscpEZK6eLa34XszAHtvOZcp1yW0/0JL
- H+hUTi2M
- qGr5Dc6+7hY02+eayNGHsBrk0YcIo2xSruaDBW6E3A826LWHoM6kYfoU9BXnU1zsrUwWJJ2bAWmfQ8sfHRb1jVtNAY3CUmX7mhxnh6lqlALbkE1wSF7NcHTQPOSnZOUJPqAWx785PGAlnewbyG0uNe/3htr5II7qVlZrhg6/uxfjJGeEeHwkO7byBxzWn91zPLZzQJmXE11ov1Ev31tp5fUuExOuv+Yx7tl3WV0ZID/5G1KVoPynutZ/5mjrOD1LL9ixlhs6EGU4rGWxofKMdSRTsUPedPfAMKewhTsV9pDJ+/oMMNmOkxss1fya8AZ2txfcDNea5VrMQdHap2u0XAZGeNgynwsSPhVpd/fTh8VYxnsLPKBOwAtJiMdheM48G0tRODLFViTl21dcxTSwaS/IzYl9nM95Z7QyO
+X-Stat-Signature: s5jha18eoy74peemdc4j7moxizzrssfb
+X-Rspamd-Queue-Id: BB1C1C0008
+X-HE-Tag: 1780992703-902649
+X-HE-Meta: U2FsdGVkX1+sQhp6nW9OWkM3cOHDsjxCiqonE0FvnJVSo2K81y8nDslqr01wac5G9OaonxHaWOq4TSKI6xRUWSc5NWyvJrIaBM3Qj35+uUCshYXQThau7Nii4upWliMXIzOlXs7EWPGceUPtOHVtaDsOJSzejEyuKXTSLIM3DYYwWRy6FAbkX74sBkeOwLVGmcBNLj/WZuADgCaPXRnKQeDDJfBTomjrjxwvMsGFjAFw5Y4x077cwWYwS8gQM/nNAM0GxS5DHlniSkve9NLnCls+NhkMsSJsQvIi4gg2pSfo20h2skfR4ILPgGr3i+FpOGx+HvPs2+2KtdV8s1DFIHSud3664NoyuYAeT/iBDNZevV/oARg0SLpgf6stcddtc1mo92+/lwPl4MDR+u7jm0Ws6TPpvvbfxZwjbF7QuCKDiADBM8HnIcIOVwIl9nnpLKoc6nR9PY9hK4IN5LW2UOfHAj5dH4S7PRCmodedjmAoFTTb/QRBm7vWIw2Zvwajnpwq416dI5NKo8QD+euqMMv6QKWGYikbfNTJs+c1APmhUSF9bHJdxMIsVV/no1qakNtE7UKnSC1O2qLWuZYJ5Ijd5EuMRKQPJgaR2oLQurIYaUn8XC42eQazr4En3nV9abf30I9HcvK433aQKdD6Y3UPGmL0nCMayei+i/n4GleNZW7HOlDqi+xmV5KBLMe5P4k986sJ0AFcCJdHF6b2GnKXgs9+PtQ6IzRi0Y+WDvQHPfBNppLJth5G8qH+2MN9MNdPj4zDEDpXH1FRLnEJtZAI6DIpPNtUtncC4sWqobDGpwxkd8fjsNuTaV2l9BIT6DOe8S73MvF8WjtQUgWaP2RGu/xerdDULEYiMTDykYS1+Kd+CcYD9dJRtafqOSORpnIoNa0dYWQPWiVxKBSKTAY5kbmjiISx9EX3UfdMRY+gnxOIStbvI/pUdR/+9qWyPNR8iqXLC2lmlXBxTsi
+ BULkmBHO
+ /zwuj/qTWKwTN51y2Kqka3fi04p/ViTsn5EKvhNK3uOMKMOfqGK97jzT+kGZqkSXDrFYoUZpjZXt417TsyyqPqAtDAB0Fq1ndBi8H5/1my4Sa5VaklLw2MMyOMRKENLsAXPBA4+BP2yrL4BSd4MJF3HUEvD9Q9hj03VLYd0EC0WnN3l8jCEn0fKKry0suKVsvy+5EsKfvrB4RKD/jKs7Rv/OrYreHEVbpOOsJ51xyuHEJWyfkut6ct2aE4rLyaEpK3JbI4HCT+49ifAzIAT3lmQtvwQP9Tn1q9KdEYAcGFM4yn74mXwlMz33J4kBM/mUikqIfP6wjVB2Wzl8l+gRRxXrSnl/FrhQQsbgBa4GCR8LP7ZU39nv0/AI8/bDadZEiiCjveOrblvvtHOu6O5ys6oz4PoupCzGA+7AlAnUaDG1iyQkfcYETHgY+iWR9WSzNk8Hn2QS9KjEQWBn5t8OZ2O2jrhg7+v6hWmmQb2RZ6/68aD77nR/LNGUscNDJH2mrC7Jb9FE1GB3Na0+lassFhB0wDP6LK4+GHvG1OBWrQLJQeW/LpMzRNYKjXCBRExalbgu99u0ufO6kixlYxAiGpAjU80JWv+9HktAfq22rLikVh11onUrjmpC7oEFT6qgEBs0CHv0TZYhyW/s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,70 +141,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 04:58:14AM +0100, Matthew Wilcox wrote:
-> OK, here's how I'd structure this:
+On Sat, Jun 6, 2026 at 8:54=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
+>
+> Hi Kunwu and Lian,
+>
+> On Fri,  5 Jun 2026 11:10:08 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrot=
+e:
+>
+> > From: Kunwu Chan <kunwu.chan@gmail.com>
+> >
+> > DAMON avoids TLB flushes after clearing PTE Accessed bits for sampling.
+> > The overhead was measured and found significant [1].  Production
+> > workloads with large working sets flush TLB buffers naturally, so
+> > accuracy impact is negligible.
+> >
+> > On systems with large TLB buffers and small test workloads, stale TLB
+> > entries persist across sampling intervals and produce false negatives.
+> > This comes up repeatedly on the mailing list and in private inquiries
+> > [2][3].
+> >
+> > Add a document on the design decision, trade-offs, test environment
+> > problems, and recommendations.
+> >
+> > Link: https://lore.kernel.org/20200403103059.12762-1-sjpark@amazon.com =
+[1]
+> > Link: https://lore.kernel.org/20260117020731.226785-3-sj@kernel.org [2]
+> > Link: https://lore.kernel.org/all/20260526145034.91594-1-sj@kernel.org =
+[3]
+>
+> Thank you for this great patch!
+>
+> >
+> > Co-developed-by: Wang Lian <lianux.mm@gmail.com>
+> > Signed-off-by: Wang Lian <lianux.mm@gmail.com>
+> > Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
+> > ---
+> >  Documentation/mm/damon/index.rst     |   1 +
+> >  Documentation/mm/damon/tlb_flush.rst | 131 +++++++++++++++++++++++++++
+> >  2 files changed, 132 insertions(+)
+> >  create mode 100644 Documentation/mm/damon/tlb_flush.rst
+> >
+> > diff --git a/Documentation/mm/damon/index.rst b/Documentation/mm/damon/=
+index.rst
+> > index 318f6a7bfea4..5e239437dab3 100644
+> > --- a/Documentation/mm/damon/index.rst
+> > +++ b/Documentation/mm/damon/index.rst
+> > @@ -19,6 +19,7 @@ DAMON is a Linux kernel subsystem for efficient :ref:=
+`data access monitoring
+> >
+> >     faq
+> >     design
+> > +   tlb_flush
+> >     api
+> >     maintainer-profile
+> >
+> > diff --git a/Documentation/mm/damon/tlb_flush.rst b/Documentation/mm/da=
+mon/tlb_flush.rst
+> > new file mode 100644
+> [...]
+>
+> Great document!  That said, it feels like a good complete article or a pa=
+per,
+> rather than DAMON documentation that pursue to be short and essential.  I=
+ feel
+> like this fit more to be published in a blog like DAMON project blog [1],=
+ or
+> news site like LWN.  If you'd like to, please feel free to upload a PR or=
+ send
+> patch for DAMON project blog source [2].
+>
+> Mainly due to the verbosity, as I above mentionedd, I'm not sure if the c=
+urrent
+> shape of this patch is the best to be merged as is.  I also find the back=
+ground
+> part of the document is a kind of duplicate of some information in design=
+.rst.
+> What about putting only essential information in a condensed way on the
+> design.rst?
+>
+Thanks, SJ. I agree =E2=80=94 this document reads more like an article than=
+ short docs.
 
-Thanks a lot for looking into this and writing this Matthew! Looks
-workable, let's see if there's rough consensus around this.
-Two questions to make sure I understand.
+I'll follow your suggestion and submit it as a blog post to the DAMON
+project blog instead.
 
-> 
-> 1. Introduce PG_zeroed for buddy pages
-> 2. Set it if init_on_free is set
+Will send a PR to [2] soon. Thanks for the clear guidance.
 
-Not 100% sure why we want this bit. And I am not sure this works
-actually because init_on_free does kernel_init_pages
-and does not flush cache on arm32.
-You will notice that user_alloc_needs_zeroing ignores init_on_free.
-Right?
-How about we skip step 2, make the patchset a bit smaller?
-
-
-> 3. Set it from balloon driver
-> 
-> https://lore.kernel.org/lkml/c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com/ 
-> 
-> but add FPI_ZEROED instead of an extra bool parameter.
-> 
-> 4. Introduce page_is_zeroed like this:
-> 
-> static inline bool page_is_zeroed(const struct page *page)
-> {
->         /*
->          * lru.next has bit 2 set if the page is already zeroed.
->          * Callers may simply overwrite it once they no longer
-> 	 * need to preserve that information.
->          */
->         return (unsigned long)page->lru.next & BIT(2);
-> }
-> 
-> (you'll notice this is similar to page_is_pfmemalloc() but it doesn't
-> need to be in mm.h)
-> 
-> This step is going to be a bit fiddly.  We weren't expecting to return
-> multiple flags in page->lru.next, so clear_page_pfmemalloc() just sets
-> page->lru.next to NULL.  So somewhere we need to make sure that
-> page->lru.next is definitely NULL, and then allow both the zeroed and
-> pfmemalloc flags to be set in it.
-> 
-> The important part of this is that it allows the zeroed flag to be
-> returned from the page allocator without introducing pghint_t like you
-> did in v2.
-> 
-> 5. Now you can start skipping various zeroing steps higher in the call
-> chain.
-> I understand David's disgust with vma_alloc_zeroed_movable_folio()
-> but that is surely a separate cleanup and nothing to do with this
-> patchset.
-
-
-
-One other question: would people like to see it as a single patchset
-or multiple ones 1-4? Multiple ones would be easier to review but
-of course this means no actual perf gain until part 5 is merged. Is that
-acceptable?
-
--- 
-MST
-
+> [1] https://damonitor.github.io/site_about
+> [2] https://github.com/damonitor/damonitor.github.io/tree/master/blog_src
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
