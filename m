@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC31CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2520CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F4626B00F3; Tue,  9 Jun 2026 15:15:07 -0400 (EDT)
+	id 228136B00F5; Tue,  9 Jun 2026 15:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CC0A6B00F5; Tue,  9 Jun 2026 15:15:07 -0400 (EDT)
+	id 1D7EB6B00F7; Tue,  9 Jun 2026 15:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E2846B00F6; Tue,  9 Jun 2026 15:15:07 -0400 (EDT)
+	id 0EE066B00F8; Tue,  9 Jun 2026 15:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BF0F6B00F3
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:15:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27D4DC221B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:07 +0000 (UTC)
-X-FDA: 84861327054.28.300F8DF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F19496B00F5
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:15:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C9EBF1C281A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:12 +0000 (UTC)
+X-FDA: 84861327264.03.245F5DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6816E160013
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkYwzbAL;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0ED99180008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:15:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILJ4ZGV3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032505;
+	s=arc-20220608; t=1781032511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q3myJXRVGS6pYA1Jmu7PlFD54lLFsKGWr7dOlhEJ36M=;
-	b=s78cH60eFWEzr/dCRVwnkx10li2xzU2KlwQtUNHJOmTAvG73jF+IP0EoQ9YUq6sokYTBy/
-	AbPg9aE+eSa4Hrd63QRpaOMBAqUH0OKtk6NRzDEsM7DbdWpFmBFwCOPGoWGDtH2O+PAmHS
-	NEcNOlxTa/i7owtrJFqoiFeS1HLcD+U=
+	bh=64hvSmLNolq6thR/XE1WahjnyPiD4J8xEpWXph8IhxU=;
+	b=oaPHjveYvj5K+n103508nvFjqMfIWqO5PjeEykcsWITUj5keTYMCShY09u3xcQb7kEXe2n
+	W1w+9n/BIDuvctmCCeISEEoCYAJtU9ceaobKSOlOBqCgnOlZGiYwWK95rYcoKHVUFF32H8
+	qDlLMlvYSPyCJck0gGWdYmnKdlDghvU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkYwzbAL;
-	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ILJ4ZGV3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032505;
-	b=CSJk337zl6sofV9RiOpEo7YwPIfE/csbIv5R+hZmyDoUh5H+B+MAXMoBSamN2VsIgf9jh/
-	iv33r1VgoSAKYgvq2HVK1nbHiiUZ4TFgUmytUO4olsUNmeiXmiO2Si55fMRo2HRAt8guPh
-	c4NjjatgCL1/K+u8i30q2V35NCh3xHo=
+	t=1781032511;
+	b=xJ6ZrYbbInASERRSOp50ZyHytC0mLyJ/qbL4vBK3DLlq+O51zXBOtJHaMQYglEV6m16tCm
+	H+u3KzuqMZ4Tfa/otNsDhvK0AEweEervhQRHvsxDKTbVe4Hglk20rpekiR876ngzp2pPQ7
+	eN3InqxvYPMsEWQGrUDsHSiiuWvlmUk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC42A602CC;
-	Tue,  9 Jun 2026 19:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89CC1F00893;
-	Tue,  9 Jun 2026 19:14:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 99ABC602CC;
+	Tue,  9 Jun 2026 19:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4970E1F00898;
+	Tue,  9 Jun 2026 19:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032504;
-	bh=q3myJXRVGS6pYA1Jmu7PlFD54lLFsKGWr7dOlhEJ36M=;
+	s=k20260515; t=1781032510;
+	bh=64hvSmLNolq6thR/XE1WahjnyPiD4J8xEpWXph8IhxU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gkYwzbAL3t+TSX+8S2eqNxw5+5hJ2hR7DgJKhsh5ygCRD0DYuIGmtF3S5OWlI+DVD
-	 ILLbpjWp+pDxlHlOYGcnblEmUuPPIRTHjRvTiFOyHiunLV/QJOnjkxMjAWwRA9TK9i
-	 KWbpl5H8TVsheFt6uMxykY9rMLURh3tpn5+QokX/tXdadPoqfceb8qqQnSxLsoDBmv
-	 BqyjGIiAteBuMUtxlAN6yt8up8N2DksEUKxVNizJE+q1L05eomwtP7QxORbiItN+OH
-	 3ggY4CnFywEKYgfiiKjHDLixFHHp/OjC8w6hWJw97swZxczPO3y0UWEup+I0fEMABd
-	 JKkTHWq9iIPUQ==
+	b=ILJ4ZGV3IqhZKH9TQnw/S+0cy9b56XT90Qwagujd3q8x0Dr0hMVaLhsl/3XdWRHVq
+	 E6koHy5xCOlv8iDzC1IwtRwNRrWU412XAyZNC8ne/hwGDhILazbZ8i3t09gJpDalis
+	 wJ0JqcmxEp07yCSIsELbbLuyWnexgc30pw09eSenYfYBeYqqBKkesHqwHL/6pKdmsb
+	 4Sbo+qipLgem/kIYtOsmUWP+yPGyjBPF5WBQ5LvaCYixLpsvj0//8c6ssvZYqUxK/J
+	 s47/hjd4zM0UDTuo3X9bC5ZK1Bv+5XlqZ0pa4vGdSaN99upOFsPJQfyX19HJGdE77r
+	 hnZc2RwqC5h6w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:43 +0200
-Subject: [PATCH v2 64/83] block: rnull: add fua support
+Date: Tue, 09 Jun 2026 21:08:42 +0200
+Subject: [PATCH v2 63/83] block: rust: add `Segment::copy_to_page_limit`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-64-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-63-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9701; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=5ZDAw2d4+wjEV9WBL84Feycxe65EY0rEcU1DrNk0Mw4=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTuAz1cLMPwLLtPPjzuLS1WhD7/D4OChQeKr
- pc/tbbTv1uJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk7gAKCRD6UCkIqsW9
- 0J+LD/9XjmhK/H/XcSIv69e4TN+NKqL0T1jXIEseBLH5bopZMhMPXWkyh1lge+JOmGGhxTVWf06
- v1sTI+3NDDjThUEBexq+7f04qpcqDniA5Afj0/4q80EkTnrDxvxvJ2K6nInRKPOQlKXv8PzeaEO
- xNB0HJ4a9Q/kkqA4SKicjU2Pe7CJxNQ5C4pcveQXfk4y0lvHPyFKUV8XpZlp8W+XVMmBRwxG3qz
- ZVFn2dEEMFRumjbRpmX4RR4DvXCn8RbjAfNX2pPToQELTWesuFzNuIw0nZ6pJ9TbbSN55DnFjz7
- pNu18c1OrN9SDAZ5GoGESpohSljq2tgIsr3vWJhJ7Ca04rreJC3JmFFCxYu0wqQzDScSQNDe5lI
- Hv3MI0PMPcwh5Fu6b1PyULbRSJ3zdQcUiOT4o9mLA12NFyT6FMw6LqkRJZAazr8vi7JPKvajAwW
- P5gLITw5nAK0qaw18VeDRmOy2bLb1zkUD98+76ABmpu3wwQ75avD6rtrQtHYVz878xBn7EJwTKP
- A3LQnUm+8l8IlxbBcvzIi7ffkuzxmXRzHBg7qnRrLNPfEpp4Ol1O1nd3Pyz0b24W62iKTipVbW/
- MSC9TH0wSw8vZMNsICXBL4zx2PJ/2VU9q3p43i9asDn2CGoD9gJ417TwpytDtCuRJTgTtWfnxPP
- 2c0V/Y8qBmsVUgw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2086; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=5+GUPrHafhi7e06njalxCX3qEtJzRjQWZ+jqQPaKrWg=;
+ b=kA0DAAoB+lApCKrFvdAByyZiAGooZO2hozbAw63hLJZ4uFn9jmNCLHArRdSgJaa5AlVUL8B6Q
+ 4kCMwQAAQoAHRYhBFeK2cjZZnYmKsBqhvpQKQiqxb3QBQJqKGTtAAoJEPpQKQiqxb3Qx+cP/2/W
+ ms5Tmyn1Z/jTN07+FyjyTUSksEZV2eNtSnPfn+USQ3MWIf63EoTMejbL93puBw4G9QuRs9mezAZ
+ jdtRrCILq3VtPqdFtdYRIrjZzeSHKZy9u2l+9QmI8uAIkMl6TwHxswM1XjGYB09WNl3jvTpysFa
+ QLVzHdICSrtPOK1TvUCJUs3zA92cxKEY84XPRVpGh1jnWleCYI7ZEtiuzlLseEIFgGhv3oSguWL
+ xdEKUluwi/j+kLqo1LMR856+wcpzl8ujsESFklsm5nBW6Wd1AygX8RFUTzD+DuemwWhAhiCzeO+
+ JEdcwfO3MNzTi3roXxSHuglsRaol4BJO5dV+JXx/q37ns0vuxc5dBdJ+4xh1w4IL3az5kB6Gdsi
+ DABd7XeiTBCf3ZUicvObJ+p/w1jBtoZ5TE2SU5UH7c/DDnoBlF5/WIXJwkKWUvq0Mj1xQ1U1EF8
+ mfH26FpRa5F4Ol3QOooJVp5hJqtthHVXlyjJqdOuWi+A/PDtqQ1LUNuEALgRDO/ec+C13MDo1ZN
+ MpzCaFWHq3AA0UEJ4qtTLO8TToZ6QmTvhMgYFDelcOErKCXqcpFViSa3qcKH9aMY61sNysMxuUE
+ Ay2NQVXelzeffKyV8c8Lg2+DWJhhwbCwUT/XKAJ/4at764te4+OUcIfOUzMrcxMjfiNzpP9Urm6
+ +DfSb
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6816E160013
-X-Stat-Signature: jzf45upnghutth1izxatirq46ptwter5
+X-Rspamd-Queue-Id: 0ED99180008
 X-Rspam-User: 
-X-HE-Tag: 1781032505-806669
-X-HE-Meta: U2FsdGVkX1++GLoxNZAmiY5iSFRJ0TRDrxLv9H6fCti7b9ocS6JinCmDdUtwJnpy6KfeX/hOUcwF/8Bp0xhQyYImneC3OY6Pbo7vxTCH9F7gVQhujkJxRRimcG1dy3sdeakeRFMRgScu2jN96d2q3YAoRC2QI1AFaNCGMJ9TjokBmgeaLfGoMNOsDotHo4+4nXF41o44c2p4mqMy3HOQQaMN4n2Elx8tV+TpVTrQDq2LFCpT5+vZlFRL137ezollMtwkiuo8iPoDzh/UJFZJcYkGuE4NmiOH5Xmf9Axqa00JIfoobDFaTNqW5aucJS4bnJbDwBVE+V98/j98/tPpj0jSO4uCNcA7AAcxAZQWvVZiGHPuGF9n6L36lCf5nnn55b96Uq3A59qP88JUnB+GcJx9Cqz1gB35dIU0X4//jEiRxe2V09SijkiDMwrMBPjHbpkYnIj0suJMI8o6yzOqttoLiK54DLJwNYxQnojvVcRYLvbIFKurbUtrCKdVlJ5xPL/sYaiI7Lq1hbPYxfROrPigAIBrzMmKzUP8h4D+5nmxQhWOQ2XV3cTHkqrZBaLJFDB4QIZ+/TC6ljyI1TmtO2efD/F9747hEZ/qtzZbZSq58ns5bdiLiU3GSR8aAVgaJijDKgpd78dHf2dWkKVX6rZxdOOx7ze+Fk0zC/ze5EAv7AeaLVXj8RvyCnBlbJvjpYye0pIXGL6U19Q+gF2IDKI1Pkj/Ga4ubv4uvmyw/T/zFBwZXyHhpsH3cqhrxn+h+bDPBD+fCYTIy2nGmg58PAQoH3iQ8NjZhoHwEXm9QVeVoBLW/HUFLXPAx20M1/fvGmW7etMu2O+Bc/Bekp4g+RQdefFsaj+sL5FN9QvxTt0sEuslkR29MiM1VSrjgfVCzepxExHYjvdxtwqnxPx+jV5DwSJDySCViT6BZPqYV7oqHv0dcoYsNvr6mRpR/NB39K8K0WxCJYNz9w3/a3L
- 2gax5R4a
- yUBXW5hLghzyEaXUOzIlpOuPPD7yBkWtniu+qVDG3F1CiF8pUsJybsCOXOBzKTKmip8bZlby3FGjjpMZASi0xIYOCQN3lHmeu3ZbWRIB2UH1KKfGRgQVDgZFYMO64zlsbh8QzB6cMp1pqlNJg/+JfJ2ucTLBy20P1PAoHJDXkBiL73pVu/0JYq5HCqUayavIC1b/sTAfHmxCsESq9BTXtvvdpMAiArfvuEr3ldh/4I+BbpIJomAsT5omo1L+WjmoMGKD7FyXV1WIp7Xa1zlGyVnQWpp2gsKv9rXUXZvacnx8Gkn9/tkNWkVLmffSt2Bc+25h3
+X-Stat-Signature: 83jgas1hy4dsszo9r8szzwrwykuuh6yi
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781032510-984566
+X-HE-Meta: U2FsdGVkX1+qrRw/+95L3OeCgKfPPSBUSOt5lfG4fB3/VxcYUVnaLeEt8oL7MWOD62Z9AzpROAakk+Ekas5SvbhhbmX03U4u4LCyFV/TMhDz5YNyAskQCCZf8ECIXne76UjLRTwfowePxuXy7srUMT1k2K5LgoFszcB2FtLLenFvnDq2LwSLM0CYDaINYHWu0zcZnhP2tj1cxjE9K0FphBmmandzPqzB/luO+mll0X94sW4xMK2UHxn8pF3ly9ZOy8JRaUn7bJ/nV9Y2NIsxPC/BM3Sz7sLOyVUuR/jbhOvVKArEwlXoIr12zNaTYueTb+4+jZT1QcKlmKEPL5VL/jVfIwvHKjs3CaYhMVpD21wQ3YHSAzzOhIXYgf2R8ecWVpOYHf1dZpBUBT5nEWHDCS83tJrA3jKonpDhGWethEJm2x/5sdI/aExqCbUsljx7KjPZberdQji8Ffld/rkBtoAV9uHkmS708JXmSWic+xbqzjkl49a/6Df+vxQXzYjXAgNfkD0eaZEcDBJuXr6KJzpLLmkBSKwkEq9r91fJ8VsIFU/In2xZEY+NaHBc1n6WHwpnxoRNURw/6n13fHajdaDoWiDzaJ8i59DmdM3+CtHhxlAEpV/LMw1w7piFiHhFMryMH4dan14epUTveb1il8t46YiHAvwDkCTaIpJPufUiA6QPZILVVFu3JmuIlLRqJlSkr8JoP2V3VjenECZrW0W9S5mxenYbv4ulc3qeQ1tNxaVUdCczAcvKvG2fVN4LmU1N6sFDOXnHiFwJr9UleM15oRL4WDKQlIHIjd8Aj13w9Ve1aWpAGb16go8DH7gmUg++2p/NkZiokOl/rGZyqb/bW2V2kfWN8NFex+Dj6S9sIGhTnLRTOXRM+H1Rwb50z+WVcsSby1n2joGwsqvM+ARqIVAimVGJuWqKnAxgEzSFhv9aNISXiXKj1iTa3BGQk3QF9c8/rhhvo2T7GFZ
+ VPOUVMsz
+ u9Z4xfGhOdgwOrCeG1e94mRZuG22HOBi8UJpC7LTTWJEEVgsVTdCYR/tuUDr1H2JJPfjCL5LADx4XnLir7xghPIyBWfuer4fBkeDqThuWPdLWWQbYKpWj4qQbLT+L/kyX/TIH931OasAh5PqaHd9siiDO4k8OhlXsrkeggxrSqizoZikiz6iteRF3DcWunMClDG0nx3CuZ8FRSntl4EnqVCQoWv0MtQ82zP0/bT/qz+S2/EbiZn03DkPJPIORUz6ta2kW+qESeYR74KvSIkqnfbIGAirWyFgj2wIj0O80PIjXLR8z82el10UQ2kNDFGU/b1Z8/ydQ2St6/SgXadz8faUMGTN52QPvZUn+MT/n3J4D3a8Uf8j79CKjxH7b7Dm+uLv4HR8mDBJWJrtZCtXpF5wWKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,251 +122,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add Forced Unit Access (FUA) support to rnull. When enabled via the `fua`
-configfs attribute, the driver advertises FUA capability and handles FUA
-requests by bypassing the volatile cache in the write path.
-
-FUA support requires memory backing and write cache to be enabled.
+Add a method to `block::mq::bio::Segment` to copy a bounded amount of bytes
+to a page.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs          |  5 ++++
- drivers/block/rnull/disk_storage.rs      | 22 +++++++++++++----
- drivers/block/rnull/disk_storage/page.rs |  1 +
- drivers/block/rnull/rnull.rs             | 41 ++++++++++++++++++++++++++------
- 4 files changed, 58 insertions(+), 11 deletions(-)
+ rust/kernel/block/bio/vec.rs | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 0637c1e0ab22..8195d645ecc6 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -128,6 +128,7 @@ fn make_group(
-                 zone_max_active: 25,
-                 zone_append_max_sectors: 26,
-                 poll_queues: 27,
-+                fua: 28,
-             ],
-         };
- 
-@@ -169,6 +170,7 @@ fn make_group(
-                     zone_max_active: 0,
-                     zone_append_max_sectors: u32::MAX,
-                     poll_queues: 0,
-+                    fua: true,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -256,6 +258,7 @@ struct DeviceConfigInner {
-     zone_max_active: u32,
-     zone_append_max_sectors: u32,
-     poll_queues: u32,
-+    fua: bool,
- }
- 
- #[vtable]
-@@ -322,6 +325,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 zone_max_open: guard.zone_max_open,
-                 zone_max_active: guard.zone_max_active,
-                 zone_append_max_sectors: guard.zone_append_max_sectors,
-+                forced_unit_access: guard.fua,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -515,3 +519,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         }
-     })
- );
-+configfs_simple_bool_field!(DeviceConfig, 28, fua);
-diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
-index 7667830bd616..4a9bf480221f 100644
---- a/drivers/block/rnull/disk_storage.rs
-+++ b/drivers/block/rnull/disk_storage.rs
-@@ -92,6 +92,10 @@ pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) -> Result {
-         let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
-         access.flush()
-     }
-+
-+    pub(crate) fn cache_enabled(&self) -> bool {
-+        self.cache_size > 0
-+    }
- }
- 
- pub(crate) struct DiskStorageAccess<'a, 'b, 'c> {
-@@ -205,7 +209,7 @@ fn flush(&mut self) -> Result {
-         Ok(())
-     }
- 
--    fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-+    fn get_or_alloc_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         let index = Self::to_index(sector);
- 
-         match self.cache_guard.entry(index) {
-@@ -239,6 +243,12 @@ fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         }
-     }
- 
-+    pub(crate) fn get_cache_page(&mut self, sector: u64) -> Option<&mut NullBlockPage> {
-+        let index = Self::to_index(sector);
-+
-+        self.cache_guard.get_mut(index)
+diff --git a/rust/kernel/block/bio/vec.rs b/rust/kernel/block/bio/vec.rs
+index 61d83a07397f..82e89a1d17c3 100644
+--- a/rust/kernel/block/bio/vec.rs
++++ b/rust/kernel/block/bio/vec.rs
+@@ -102,13 +102,38 @@ pub fn truncate(&mut self, new_len: u32) {
+     /// Returns the number of bytes copied.
+     #[inline(always)]
+     pub fn copy_to_page(&mut self, dst_page: Pin<&mut SafePage>, dst_offset: usize) -> usize {
++        self.copy_to_page_limit(dst_page, dst_offset, 0)
 +    }
 +
-     fn get_disk_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         let index = Self::to_index(sector);
- 
-@@ -256,9 +266,13 @@ fn get_disk_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
-         Ok(page)
-     }
- 
--    pub(crate) fn get_write_page(&mut self, sector: u64) -> Result<&mut NullBlockPage> {
--        let page = if self.disk_storage.cache_size > 0 {
--            self.get_cache_page(sector)?
-+    pub(crate) fn get_write_page(
++    /// Copy data of this segment into `dst_page`.
++    ///
++    /// Copies at most `limit` bytes of data from the current offset to the next page boundary. That
++    /// is `PAGE_SIZE - (self.offeset() % PAGE_SIZE)` bytes of data. Data is placed at offset
++    /// `self.offset()` in the target page. This call will advance offset and reduce length of
++    /// `self`.
++    ///
++    /// If `limit` is zero it is ignored.
++    ///
++    /// Returns the number of bytes copied.
++    #[inline(always)]
++    pub fn copy_to_page_limit(
 +        &mut self,
-+        sector: u64,
-+        bypass_cache: bool,
-+    ) -> Result<&mut NullBlockPage> {
-+        let page = if self.disk_storage.cache_size > 0 && !bypass_cache {
-+            self.get_or_alloc_cache_page(sector)?
-         } else {
-             self.get_disk_page(sector)?
-         };
-diff --git a/drivers/block/rnull/disk_storage/page.rs b/drivers/block/rnull/disk_storage/page.rs
-index 88dc9a2476bd..846269d31c63 100644
---- a/drivers/block/rnull/disk_storage/page.rs
-+++ b/drivers/block/rnull/disk_storage/page.rs
-@@ -15,6 +15,7 @@
-     uapi::PAGE_SECTORS, //
- };
- 
-+// TODO: Use rust bitmap
- static_assert!((PAGE_SIZE >> SECTOR_SHIFT) <= 64);
- 
- pub(crate) struct NullBlockPage {
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 0695cbd07f1d..c3126b923367 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -191,6 +191,10 @@
-             default: 0,
-             description: "Number of IOPOLL submission queues.",
-         },
-+        fua: bool {
-+            default: true,
-+            description: "Enable/disable FUA support when cache_size is used.",
-+        },
-     },
- }
- 
-@@ -267,6 +271,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     zone_max_open: module_parameters::zone_max_open.value(),
-                     zone_max_active: module_parameters::zone_max_active.value(),
-                     zone_append_max_sectors: module_parameters::zone_append_max_sectors.value(),
-+                    forced_unit_access: module_parameters::fua.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -307,6 +312,7 @@ struct NullBlkOptions<'a> {
-     zone_max_active: u32,
-     #[cfg_attr(not(CONFIG_BLK_DEV_ZONED), allow(dead_code))]
-     zone_append_max_sectors: u32,
-+    forced_unit_access: bool,
- }
- 
- #[pin_data]
-@@ -422,6 +428,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             zone_max_active,
-             #[cfg_attr(not(CONFIG_BLK_DEV_ZONED), allow(unused_variables))]
-             zone_append_max_sectors,
-+            forced_unit_access,
-         } = options;
- 
-         let memory_backed = tag_set.memory_backed;
-@@ -439,9 +446,10 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             return Err(code::EINVAL);
-         }
- 
-+        let s = storage.clone();
-         let queue_data = Arc::try_pin_init(
-             try_pin_init!(Self {
--                storage,
-+                storage: s,
-                 irq_mode,
-                 completion_time,
-                 memory_backed,
-@@ -474,7 +482,9 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             .capacity_sectors(device_capacity_sectors)
-             .logical_block_size(block_size_bytes)?
-             .physical_block_size(block_size_bytes)?
--            .rotational(rotational);
-+            .rotational(rotational)
-+            .write_cache(storage.cache_enabled())
-+            .forced_unit_access(forced_unit_access && storage.cache_enabled());
- 
-         #[cfg(CONFIG_BLK_DEV_ZONED)]
-         {
-@@ -553,6 +563,7 @@ fn write<'a, 'b, 'c>(
-         hw_data_guard: &'b mut SpinLockGuard<'c, HwQueueContext>,
-         mut sector: u64,
-         mut segment: Segment<'_>,
-+        bypass_cache: bool,
-     ) -> Result {
-         let mut sheaf: Option<XArraySheaf<'_>> = None;
- 
-@@ -561,7 +572,13 @@ fn write<'a, 'b, 'c>(
- 
-             let mut access = self.storage.access(tree_guard, hw_data_guard, sheaf);
- 
--            let page = access.get_write_page(sector)?;
-+            if bypass_cache {
-+                if let Some(page) = access.get_cache_page(sector) {
-+                    page.set_free(sector);
-+                }
-+            }
++        dst_page: Pin<&mut SafePage>,
++        dst_offset: usize,
++        limit: usize,
++    ) -> usize {
+         // SAFETY: We are not moving out of `dst_page`.
+         let dst_page = unsafe { Pin::into_inner_unchecked(dst_page) };
+         let src_offset = self.offset() % PAGE_SIZE;
+         debug_assert!(dst_offset <= PAGE_SIZE);
+-        let length = (PAGE_SIZE - src_offset)
++        let mut length = (PAGE_SIZE - src_offset)
+             .min(self.len() as usize)
+             .min(PAGE_SIZE - dst_offset);
 +
-+            let page = access.get_write_page(sector, bypass_cache)?;
-             page.set_occupied(sector);
- 
-             // CAST: Page offset always fits in 32 bits.
-@@ -569,7 +586,11 @@ fn write<'a, 'b, 'c>(
-                 ((sector & u64::from(block::PAGE_SECTOR_MASK)) << block::SECTOR_SHIFT) as usize;
- 
-             // CAST: Casting from `usize` to `u64` never overflows.
--            sector += segment.copy_to_page(page.page_mut().as_pin_mut(), page_offset) as u64
-+            sector += segment.copy_to_page_limit(
-+                page.page_mut().as_pin_mut(),
-+                page_offset,
-+                self.block_size_bytes.try_into()?,
-+            ) as u64
-                 >> block::SECTOR_SHIFT;
- 
-             sheaf = access.sheaf;
-@@ -632,6 +653,8 @@ fn transfer(
-         let mut hw_data_guard = hw_data.lock();
-         let mut tree_guard = self.storage.lock();
- 
-+        let skip_cache = rq.flags().contains(mq::RequestFlag::ForcedUnitAccess);
++        if limit > 0 {
++            length = length.min(limit);
++        }
 +
-         for bio in rq.bio_iter_mut() {
-             let segment_iter = bio.segment_iter();
-             for mut segment in segment_iter {
-@@ -641,9 +664,13 @@ fn transfer(
-                 let length_sectors_allowed = segment_length_sectors.min(max_remaining_sectors);
-                 segment.truncate(length_sectors_allowed << SECTOR_SHIFT);
-                 match command {
--                    mq::Command::Write => {
--                        self.write(&mut tree_guard, &mut hw_data_guard, sector, segment)?
--                    }
-+                    mq::Command::Write => self.write(
-+                        &mut tree_guard,
-+                        &mut hw_data_guard,
-+                        sector,
-+                        segment,
-+                        skip_cache,
-+                    )?,
-                     mq::Command::Read => {
-                         self.read(&mut tree_guard, &mut hw_data_guard, sector, segment)?
-                     }
+         let page_idx = self.offset() / PAGE_SIZE;
+ 
+         // SAFETY: self.bio_vec is valid and thus bv_page must be a valid
 
 -- 
 2.51.2
