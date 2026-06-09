@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB48CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:44:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86981CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26EDC6B00AE; Tue,  9 Jun 2026 10:44:33 -0400 (EDT)
+	id CAF566B0092; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21F8C6B00B0; Tue,  9 Jun 2026 10:44:33 -0400 (EDT)
+	id C87366B0096; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10E7E6B00B1; Tue,  9 Jun 2026 10:44:33 -0400 (EDT)
+	id BC4206B00A0; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F10DD6B00AE
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:44:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF1931C2D9D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:44:32 +0000 (UTC)
-X-FDA: 84860645184.02.A4E4F36
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0192B180003
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:44:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJKSK6tf;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781016271;
-	b=5wd+bppf+4ot5I0hbLClM02y1vnUizquqfzPIw/fvGJ9croRSbPNnNlyoMl+bi94Jweq+w
-	WSMT8+CY0nXllxla7yDri7hFvgOODHBVk04QJyfkRecHc+XWdxgLW3SXcMFErKpIK63XA9
-	1aPxcwV8y7iwEX+HgLhNALjTZa3h/8o=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EJKSK6tf;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AB58F6B0092
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:49:30 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F001A0611
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:49:30 +0000 (UTC)
+X-FDA: 84860657700.19.3385760
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 94A838001A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:49:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erX6JcxZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781016271;
+	s=arc-20220608; t=1781016568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/LTuxyle4YoYh6mY0LGl6PYWDtEkH8oJY1eKe6M/oM=;
-	b=GIMjPnuU6ajbkspxey9kG7eP9SqmvXasq5VJtgfieceSh7kJqcOYwZS2+4jxOACOELGg4l
-	Gyw7yvKl++L5UgtXUHqC0b0j9uHD1022f/Gk25UxEwjeAQNx1ogSrghO9Xtd79Wt6RDiZ5
-	w01X/7gnuPELNktR4bbmbNc2xcpEDIQ=
+	bh=taRgX81yJwI75jVPUy3ya0pHHgm8A4dha5HwvheVriA=;
+	b=ZlKWYpykvlusWsdX3mStARqGY2PN9SmpSrEl0hpEqarafmCBaxlK4JMBAYMQtN2rKlW6pV
+	pRcuKbkaGAXQmR1mCZJ+ZE/B3P4+NDWQcrv1ZkboKTKu3JTqkyxgS7jLc5pjSbDvEv0pMY
+	hZ2E7Qc9NQdjpFOPXyWVdMtxjINmqQg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=erX6JcxZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781016568;
+	b=JQrji6nvZFf20/vCaVTPzyoDs/E54W5SkJ/2QZHF41BD0fPXSNphdXW4B89JZIk/xpNPRU
+	AlSTanwLpdnKykdGyo0dSNz1RBWkfSZSiUXIUwDkJ1qjmuzNHJKouSk98O6/JNEtxAyu09
+	Vsgfj+OKzNrPGMO5zguND4i6NnulTp0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3663D400AD;
-	Tue,  9 Jun 2026 14:44:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C241F00893;
-	Tue,  9 Jun 2026 14:44:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 15A0F600C3;
+	Tue,  9 Jun 2026 14:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230CF1F00893;
+	Tue,  9 Jun 2026 14:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781016270;
-	bh=h/LTuxyle4YoYh6mY0LGl6PYWDtEkH8oJY1eKe6M/oM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EJKSK6tfVoJfiMgc65JDw1LIyZwhbCYFJ3Tz/3CwUMx3/5qsVcjmjKiAxzYA/3Qb4
-	 QvQa4BIxuGn/y+ux8TJDW8wqnFVt4urkORkNhmAJlHwSGb1s5qzzX8ZlyIH98yBFRR
-	 MKvmBJgT0TdeXaF7HkAvPYUx9HKR9//s1yI96X9/4rTdJsxLuRZZLjxYp0kgk9tISF
-	 y1A9lH6yCx2M9/lCAm2cc24Ywpyr7XAnNyZZ//htrYoMku9+9uCsAhafxcYp5lGY2p
-	 J3HEhuZxvxK++83GrMDTzCCiMkAhd03bO1Of4cCFG3HwLQMOZecKuLqd5oF1Ik0svP
-	 JhWkimEXcNyiw==
-Date: Tue, 9 Jun 2026 15:44:21 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: Luka Bai <lukafocus@icloud.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
-Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
- khugepaged and use in mglru
-Message-ID: <aigktfOjYwxhzEhb@lucifer>
-References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
- <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
+	s=k20260515; t=1781016567;
+	bh=taRgX81yJwI75jVPUy3ya0pHHgm8A4dha5HwvheVriA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=erX6JcxZmIcrZHCAP2aqWFKZfJeXTO2GXWNjtqNyT3fI4ae3SFvQ+uj/xwBiSLWEm
+	 0XXbMJrQmYdX2XXxmSAZpAmKAEM+hczHm8PLuZDYQipS3uh0sqgKTiLcuenNPV0SDG
+	 KoV4yZGT6yb+sW6dwdzWh/pApVzsqvkOzR3F2y9BFXjzRlybBVrxzm0Rc7r3XAk0ff
+	 7zQQ+tnPRKcvBgnyR62eqIFoUkJ0Hm8PcpBg43sJJTjkbRaYSz3JTs5Ogo4L425H8d
+	 eIg0dyf4aJAnl/h4HfnEGY9yXmrV9v0i1NM47T3Hctkq1qF5cpJAEwFpCDlfhH2XBE
+	 n9XUCvNAnVceg==
+From: SeongJae Park <sj@kernel.org>
+To: Zenghui Yu <yuzenghui@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	wangzhigang17@huawei.com,
+	liqiqi23@huawei.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] samples/damon/mtier: fail early if address range parameters are invalid
+Date: Tue,  9 Jun 2026 07:49:17 -0700
+Message-ID: <20260609144918.69429-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260609064653.1829-1-yuzenghui@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0192B180003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: w4x3ygg9tp8dwx98edffg9mpe796mxma
-X-HE-Tag: 1781016270-514831
-X-HE-Meta: U2FsdGVkX19Q0VDMLpY7NL+KJiKFtrHV/WE5xqMLQ+XreP5QSZblyfBEQJ5n3xdlpcUk3OZ2gd50uMdZrZktaM4Pqsg6A8Ns/110xqWwEe7tgDWSUkHde6iCoB6qEXTyKhnkqltUGRcmRODA7pyL2UPzPLjO6MHZSyGCSQPVm2GkeQUzKhREgOO3bBL0prMagvWFrJZ3EVoYDNfjq6M3LR9ynDOIiaQOjkaMTnzo2axmaiIor/QUp4DN1XbnSyP2oPDehsWryl9qUeYjijMRx0gXMKh9bQKMCifXr7yCsTFgQnYfsbF6mfkTKo+cJD1a9TaGaClC2Rbxm0NVEfOcyxD5yXeBXZFMfu157NXzw2wrN+/1YUELzEyIOc1npaQ8U2OkVVFobRLlJj1UThM1C6a8tnNzttusQXGEuJhD60fCJMVoDrzhFa+ngwtYMAH35LE3cm/v241IHqj8DzIHRv9qRq4I7dfe4yGvqgvrt3sdBGp1mFgReg3fZPsml2v5PgYKrui+qnjBx+kEcJpR05gSVzVZIykLPutkaIZdTx7aVm7TEMra/qxaiZ8jid9SPs4rSO2sZkVkrY8lE+Nz0HFJYOwUxyC3BVX13L/JiW8ODvU3ps33SQ2bLj7vwJJb/diw6UzSggKu8TvMbiPyw6mc2fim1UJT7VkDoLs1f3n4keE7nKey75WV4qEY0V0Bw+fcrINRPbqFu9grkzCS+tchNCcCj4dwdfzzyTp1oTEr8Y1qxWBm3jF2ufiyN6M2Nv/ZMZ3gTIolYE41KUk9naqisennNT/C2V2NQZ2M8dJ7UJ49gtj+Qq1BleYpI8SnxbvsGc2bnpbiVTJhYXxpUITZsq9NaW20yY+nwaodiiN3m8Dekwxx0S5Ii8juv5+lhOQr65F+iZsJbaS+JMrUtpbL2uF+kqYYrqY4wjiB71f+1JHQMF0ITmr4groFnKfiVCNB1maA7yK1RH2drvr
- vIDVfhvf
- m4nbfOr+hg5NOrkHFNIFX3WnOcqfCemTXVoIefpjLhFTqTzAgV77EM3qi+qATOUHDtCnukMKkBuoIVB51vi0j95AJRWZsa/pEBAL+GcGAck605zL3HAfCh4zm6UMBocHegcqX9r/aKfdfJKfIqChpEgZddm6NfCn14iLWZgQN1IzlUmchGlL1mqsGNLswd36/H+vBg6mhhIPwE1JlqoHKwqfcyc8j31hRj8lkiPNCYp3PKpcdAqUw2z7L0S0xjzjbWp0T
+X-Stat-Signature: te5mk4pcq8ohqtdd4tbsuwb6ahhqktmy
+X-Rspamd-Queue-Id: 94A838001A
+X-HE-Tag: 1781016568-618071
+X-HE-Meta: U2FsdGVkX1/5xJWw+NRtHQuLLjU9ex1ZEEowkFthvvMd0KmeQxb1/cEYNh8cD+s+0dXV0+7QoHEds5uXfriKRsWaX4QaI1Aq9UkpLzFplC+1xCqtiBZZ7gJa2waxUvtgITJs45UCseRq89+Dt6PCDYJDt7hZwEkrtH7R9ZgcYtnMMY+YQw74P/ndyHtk2hv2RoMN5mrH1o9iJGpGTEBdIU49lj8F1cC6FbNBtIbhUtwtATw2p9Lz+VKEwwMbaDOKUjyY+zxxYHl9GTCbzj5de/W0W3hHObERhgMow2Jy6wt3QrYvd7dffNXFlhd4NlLVMCuU6H0M1mqLW7RCqi0KKo76WM1At7JvYc3/wZY2pJ1pKYoV5LqwWC56RYmHC+KAXPQ/coP6fDNG/q9QzCI3qX4crDXDBmc/dzvrPOQWX8jOwHN8+qlD/1zKxR4BvTr49KGb3TE2xKqkK76U5RNznMAHDhX5A4IM9In/xhpqKNWU56gN2Mi+QgGTxVyE8Kbgu4ulbGZWyI1YMLw4tdvuB8moawcr5JpTA4QN32dVQqChFP5MZnvjqiibyeskyL2y8e1aVOBmGx0j8mURhh84g/2OvEkZXoy7d6E2aQkweKHvxtDt0tIY3gZrkzCrsHltRLm0kFI7agaXjk0bqUDjXwktGph0ZA0c/EeCusU4RqwsDdYafggwhQqrvYo1WPEB0dbaiisH6yX1X0Pbs7pppjQpXeS0lIv6v0I2qe1EdCn7Jrhor1onZvYFcy3WfuR5KHP14wR9cibVLWOe7ke5oJ8MWTwikMUg6L/YEVy86tB8U6rI0nDcCbHfN7KE6jInijGNzGAHPSr+8w23XjGqEU3LbFD8KO/DIEU5C4rLr+tWrJsEMS46psCSC9cY7AWnn3bZjUsyzW07A8prCP+DLLQFhlPnRchGfJLHqb3BDSBCewLk5RvKrq9o8L2Cn46mLU+MtV9HsX9N8dJAVri
+ SFztBRz/
+ u6+JEFJwBKlrEwDdnnjPwsIxlZnAXORoyrIMzQz6XkCe6SDw7RsDrOIgud3K24AKhwyCNERX1Q5VkuXRE5BcQ117f95bwwvZneg7WoJ8er+Px1ef7gZB/UlC9hFEl0Ev6B9G1QUY4GGSq8XOu4auV0FrJRn8xy4Me2Ym8kE+ls3Sd8wXDAM+W8G/R0mrdPofATcgJHQIjQZCcn3Fjg4d2rEyqUYxkIGXXkIXqhnKdg1nt8tEicOXs+a73bPMZSa5+bz+eBOEC1/q5jZ8cnywzk1KSIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,41 +96,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 04:17:45AM -0600, Nico Pache wrote:
-> I had future plans for something similar as part of the thp=auto work;
-> however that requires significant thought and investigation into how
-> we can properly gather hints for collapse/split THP candidates. From
-> my perspective we'd want a more global structure/system outside of
-> khugepaged, that would directly call khugepaged (and others like
-> split, etc). It would also tie into the allocator so that at fault
-> time it could leverage the hints to make better decisions. My fear
-> with this series is that making a decision now might complicate future
-> work by adding complexity we may eventually want to remove for a
-> better solution.
+On Tue, 9 Jun 2026 14:46:52 +0800 Zenghui Yu <yuzenghui@huawei.com> wrote:
 
-I know this is future planning stuff, but I want to point out that we need
-to see significant rework of the THP code base before accepting any further
-major changes.
+> The comment on top of `struct damon_region` clearly says that
+> 
+>     For any use case, @ar should be non-zero positive size.
+> 
+> which is now verified in damon_verify_new_region() if the kernel is built
+> with DAMON_DEBUG_SANITY.
+> 
+> The WARN_ONCE() can be triggered if the mtier sample module is enabled
+> before node{0,1}_{start,end}_addr have been properly initialized, which is
+> obviously not good.
+> 
+>  ------------[ cut here ]------------
+>  start 0 >= end 0
+>  WARNING: mm/damon/core.c:217 at damon_new_region+0xf4/0x118, CPU#59: bash/341468
+>  Call trace:
+>   damon_new_region+0xf4/0x118 (P)
+>   damon_set_regions+0xfc/0x3c0
+>   damon_sample_mtier_build_ctx+0xe8/0x3a8
+>   damon_sample_mtier_start+0x1c/0x90
+>   damon_sample_mtier_enable_store+0x98/0xb0
+>   param_attr_store+0xb4/0x128
+>   module_attr_store+0x2c/0x50
+>   sysfs_kf_write+0x58/0x90
+>   kernfs_fop_write_iter+0x16c/0x238
+>   vfs_write+0x2c0/0x370
+>   ksys_write+0x74/0x118
+>   __arm64_sys_write+0x24/0x38
+>   invoke_syscall+0xa8/0x118
+>   el0_svc_common.constprop.0+0x48/0xf0
+>   do_el0_svc+0x24/0x38
+>   el0_svc+0x54/0x370
+>   el0t_64_sync_handler+0xa0/0xe8
+>   el0t_64_sync+0x1ac/0x1b0
+>  ---[ end trace 0000000000000000 ]---
+> 
+> Note that the same issue can happen if detect_node_addresses is true, and
+> node 0 or 1 is memoryless. Fix it together by checking the validity of
+> parameters right before damon_new_region() and fail early if they're
+> invalid.
 
->
-> If you have the chance perhaps you can lead a discussion on your
-> proposal at the biweekly MM alignment session.
->
-> +David Rientjes as he leads those discussions. We could use that time
-> to layout a plan for what needs to be done for this work, and for the
-> work surrounding thp=auto as I beleive they will be interdependent :)
+Thank you for this patch, Zenghui!
 
-We prefer to discuss THP topics in the THP cabal meeting, which both THP
-maintainers regularly attend :) having separate sessions we might not be aware
-of isn't really helpful.
+> 
+> Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
 
-And 'THP auto' is a broad topic rather than a new feature. I don't think it
-should be seen as a topic 'owned' by anybody, but rather something that we
-as a community should discuss.
+I think this deserves Fixes: and Cc: stable, like below.
 
-Series that appear from nowhere trying to implement significant changes
-along those lines without community disucssion will not be hugely
-appreciated :)
+Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
+Cc: <stable@vger.kernel.org> # 6.16.x
 
-Thanks, Lorenzo
+Other than that, looks good to me.
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+I applied  this patch to damon/next [1] tree.  We are now quite close to next
+merge window.  We (mm community) want to focus on making mm.git more stabilized
+and therefore ready for the next merge window, rather than adding more changes
+that are not really urgent.  I understand this series is not really urgent,
+because it is causing only DAMON internal weird behavior and one time warning
+on debug kernels.
+
+Hence, Andrew might not add this patch until next -rc1 release.  In the case, I
+will request adding this to mm.git after next -rc1 release.  So, no action from
+your side is needed for now.  Let me know if you think this is really urgent or
+I'm missing something.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
