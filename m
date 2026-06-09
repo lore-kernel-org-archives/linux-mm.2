@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B51CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 01:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56578CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 01:26:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5B426B0005; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
+	id EF3946B0005; Mon,  8 Jun 2026 21:26:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0C6F6B0088; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
+	id EA45E6B0088; Mon,  8 Jun 2026 21:26:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFAEF6B008A; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
+	id DBA4E6B008A; Mon,  8 Jun 2026 21:26:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC436B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:14:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34DEEC179E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:14:58 +0000 (UTC)
-X-FDA: 84858605076.12.5256DFC
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 512F640004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:14:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hxJdyFkG;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA90A6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 21:26:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 580584039A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:26:52 +0000 (UTC)
+X-FDA: 84858635064.27.0350277
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B208EC000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:26:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NDu8XmTw;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780967696;
+	s=arc-20220608; t=1780968410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
-	b=Wbs6nHSPNeuIwrkYpQ+Dt79t6QB+zbhe5p7PZqCUj3JXGuNThSu4b8jRmlHt5UK08Kfsps
-	aVpwOllDKM5mKQlwo1T9jfMEBOLSFu5eevkbzjFrUarMSr7ITOthfd6jT78GCZUyUaJ3LF
-	AFqxLqEFXZmSAsfb/EXWA8OwHCjOIFM=
+	bh=9A9HKNDjCOFxOH9ro8orT7VGeTJr6whymC7UekT3Z6Y=;
+	b=mGZUikBebaouoVXvEhg2VzdPvcdC+q/c0MDlD9T5kovOQe4X8yhoGGCG0SbyeTmNtMvnie
+	qC+PJSdRCFWOu2IZtJ7htLsy4rmlNcb+g4W9hUDsX/9ZtpvtJNkakPXiZrs60Gj2Iw8cfW
+	vIqht3BbYhgX6QkBZvkj8ZcXjEOunkg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hxJdyFkG;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NDu8XmTw;
+	spf=pass (imf28.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780967696;
-	b=nr+w1FKOB9aXfE1PhJLBF6HsN2KvJ88iBpNMevjj0WIRy/pisdKOwLzcfJdWNcST53e/1b
-	xSztQoDQMM9C7CLRv1jdG0ZyvFPpOrjLvX8P2g2DijEMSS/PLBDVq0Uhu9+rvpPA//OpbL
-	3qgw2No2gCA1YE680IcK9K4V9p54bSs=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-915c36e32abso192460185a.2
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 18:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1780967695; x=1781572495; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
-        b=hxJdyFkGOMTK600DbnykHsxDYHUkXtkmuFXIOZpiAOclAeHm4ShopwkGMgnoicyS8b
-         OpfpAymqwk8TLwbdBekMQMgkTiuYWyFUcBuTd1OwJJfVOZrhOWloF7I6M8v8YFccQZCU
-         EcxblL1fQ4vAOcdUEy6U/ToHgen+GWGfEh8nMQEOQL9XGgIU8s8vpeMoIL+wA/fvJZ0K
-         g1rZ6Lz2uh6pkftkU8hGwYttXFksCwZzCCycYRlWh7DLJxusWszm3aU6pzT5fEdt2TTt
-         jhO52zTRU9gotAClkXL2bCARZKu9Sq/y1y6Z7EOJg2+i7bV2DHhzY0PBzCsgAXxMMpzy
-         2o3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780967695; x=1781572495;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sgWc+GbcdT1TE4KoGHerpUiSmy6CQo1tAeSFDOuPHPo=;
-        b=Hw9guroT8eVXGtt9l0DpCBZsW6icl+kyx3TWugO78UGArTFXd+xr2sKArHKlhZbYpa
-         bx4f91tI2LsXKF0h9bkRGhOjHrJtMHod7hHCF+FoQdDMhAgnAnayW5BHREJBUk56k3TM
-         ssOmM79/4CvfBF5h+c/LwK7lNc0w0JSO/8Dx/6jFjwIJMS5lSWrEMIyffWzkoGEHOGMB
-         9I/azM/uLFeq2GlStiXqUGQjY9UjT0iQntKBrboox2L+JL7A+2ft66wh/PHKZpCSpagO
-         VksWPXNnE33GvyNnsLywjb7b2HH3jen6qTEfev7hQQH5s6GkEBruRsXwtS+Q3XcpuB9G
-         Wz1A==
-X-Forwarded-Encrypted: i=1; AFNElJ8XNDtnmrSf6gEzs2lgCdki5q/U24p+3NoBisp8fEGHgdi7qR03JUzYgAFKgEm24aX5NlY/KQJQSA==@kvack.org
-X-Gm-Message-State: AOJu0YxYnxQ1NB6ILVaoDupAs4f16DAT6NNKS8PVv/2S7VNM6CkhqJoR
-	BBJS+U6U3Mz6ZG7eipBMmebjHRQQLQ+vHL2yJq6WXFNacvOHb/PDBEe2oxLVCZJef+g=
-X-Gm-Gg: Acq92OGROMjQQGaCHIq0Hj+yQ8/Nd1LyKgD/rqMnW5glL59DpnyyK3S5uEPjtADDsbW
-	+HZulSYsy4+B9t2ZYUmG7T9PR8IOyIsz/hoQ7JxyFIPSqwzvm0Sm0t6SCzOWWfRp0muGne5ppJK
-	ATxRvVl+YzLhzaIFnt9ZtoADi9YW7jsffl9x6heasUPjk7tqJYJFs+rOBO9Zt9FuFQzYBh4Ad/C
-	v2ChWJHHhDT0oZ5MBoDCmtrxPkyFPy0h4QOB6lqHZmIGmjVCYC3lxL+KpWnLLdbVN3tG/X7Md2y
-	uM8uN21lIx9757iNUAvbsZo+Z8J+y7L4jlNRyRCBQlS1p9WuLplLhEDNpHtVuGKHmZrYyYyTKpD
-	W1NjhYETa0Zm+IZ4DeaNb8VVs/XA08Bq25+dHjHJPfVTOJTJkjivsBQ0dmztFZzdE9alKemlcG9
-	zM/pSYLDNmqjKuutSb/YtseAOUWNYjNOQXthj9LeXdy96jKQUCRd7lw0aPFormAw==
-X-Received: by 2002:a05:620a:1b8d:b0:914:c0ab:f1ee with SMTP id af79cd13be357-915a9d93f2fmr2862027885a.44.1780967695361;
-        Mon, 08 Jun 2026 18:14:55 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a009fe7sm1902384885a.8.2026.06.08.18.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 18:14:54 -0700 (PDT)
-Date: Tue, 9 Jun 2026 01:14:53 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, jasonmiu@google.com, 
-	linux-kernel@vger.kernel.org, corbet@lwn.net, ran.xiaokai@zte.com.cn, 
-	kexec@lists.infradead.org, pratyush@kernel.org, graf@amazon.com
-Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
-Message-ID: <aidnjw5pH_z45gJT@plex>
-References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
- <178083348872.1648214.17778188633648887952.b4-review@b4>
- <aiVp5RlbWRz5VnPB@plex>
- <178091437240.1648214.10761111570005003901.b4-reply@b4>
- <aibYJvzQQnpoN6YW@plex>
- <aicF5Sa11B4ujfSa@kernel.org>
+	t=1780968410;
+	b=78Bw4nwNjZI1XbkgtaTXXiz250UlIf3SEgdx6/5pJHuqV0JYHJeM7KkbmyiwcuNjIi+X9K
+	fuP/rnekCS+MWCiy+DOX70ZzUT1873NSI1lzATDO2HyEKH16vizy/OzHHeVJZvpFIwVNPc
+	/X3UBD1UWO1Ie4zIryCTewgbfiCZjOg=
+Message-ID: <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780968407;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9A9HKNDjCOFxOH9ro8orT7VGeTJr6whymC7UekT3Z6Y=;
+	b=NDu8XmTw15FLxN75fltkeRI9h3xD8mEddL7iQKFF0S+FyoIYNJ/utCXwZr8GUH/2YsT0wj
+	pRpbccaHRhf1op49DtLCG0fdEWnDrAjbmFqH/SpaisKRPguSw4+PWFb5KUmNEVgu3FF0Ab
+	NUxOKJgqM1nm3HQlGBGgYy5G6eqSaSw=
+Date: Tue, 9 Jun 2026 09:26:03 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aicF5Sa11B4ujfSa@kernel.org>
-X-Rspamd-Queue-Id: 512F640004
+Subject: Re: [PATCH v3 4/6] alloc_tag: add accuracy based filtering to ioctl
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Abhishek Bapat <abhishekbapat@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <b608a6f7d71e3b728f766dbc6dfa1d1753ddcff5.1780701922.git.abhishekbapat@google.com>
+ <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev>
+ <a58e659e-5f54-4511-9a29-dc921002d102@linux.dev>
+ <CAJuCfpHtdd=9D68cfRp4HDHHHCZdzTNP_RH9i2D-f9tJXht56A@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpHtdd=9D68cfRp4HDHHHCZdzTNP_RH9i2D-f9tJXht56A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B208EC000C
+X-Stat-Signature: 6e8e17546oiuncc8a7hnxj6pc39wtcw9
 X-Rspam-User: 
-X-Stat-Signature: njxk6jzpzjwy1agxp1tk3o3sprxj4ndc
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780967696-242957
-X-HE-Meta: U2FsdGVkX19I7omvYHSijh5MGsVaXa5ynVciYPimr05qcN8tCqELXgqQbqYsBQomelDkyMUcy8+6ilB4SIzqlvHKh3eGz5Hxzvs2ZyqqHqoZGoHD+3NH0MAHfu0TcNwdWs6FbY/AIOOEli41RsF1iPOUuzLaEIJJEGVLd4YmK+rthB2LGDpcpM8pVecvdMmNSIG8dbj+BZYpAsdHhfZoQ0Yu/GCUOYmSMNZ5KeJiD6rC/dJZHECcWYGzFheJGD++8wUKvrkqWwU/ZnAoKfK0q6U9l/NIWUud0zIh/cbw+9mIvm8EcniuoVS725T6vjBKNAAXmhyK0vsO0x9U8tNqcMNFYvVQ4+RA8LOZHE+xhMc5eygo+2SBqExaX1Fc6y4ZGXD0OndK8KwP8g4Pu5nNrJ66/5TzASRaPirblen30UDMEwrj+PheOZRHmuXPZvzBr7gbLw0+CgPDzpDUXdmsx0S3rjsN0l3/ZiiCNnSuKd9n2dpv8JDYAu88XsRoLEC58YNfHuCY+rjPaloh7EAD+rRAjO3A0GbDmJtJmZ9g5YvrJHNqkt0FgiCUUECUjnvasEU5IkapFfuOQbHEDZaOiXZmpuq85QRM2AFy0mvuiWXEjn5LonnTcf00re97/Q2hY817WOoN//B0wwDChvUZJ/DjtcHabmBF0ZvclusdM0HiSfmSl+KQuMhcwsPbBk64TotMhdmZWgS72+sRIrLE0R24otUxeoDdklq6jG8EGv6AJL+28tQ7OPeFpVr6xXKva9KsPKUab6fIVnZImWhDJeGewHGRam+w8UoHbcdgK+3xc9CllMVvhKrbnJpeV6tJtpOELO2bL5C4O10F/0/iQvn9ZWU6m+yilD4sBWj2ZBwBp32o/eu2pFyQLLNNxhz2fvbzxy+rqzeHJahdQIXnsojOPxAS4ilxTpSyZWul1TI68TVg1ExW06R8Q+kw8UdXC6WD3VMJ1n6yPu5nIgK
- MXXUPyX3
- dIHLR/U9UqHHMujrgJXyZ6zT2ei/+reMAb0v/YRnxbAZ6l6fuVk8/x1fCPzOSNPm7w4L+9wElA1nBIIb8Q7gVrgFMVIH6ovflkXA4lN+mZpfDRqlm6uS5pXqvSlMwqns3engFYZa2vCFE8kBvNplY/ouNAn/fQUJfv7edkU0W4lPIhOKk+1yVpOaqDFw2dqEUmlMkF+fWAK7zWBmpOPHxJSWeLpzsHcIhDQvOFN0xBkRczxfEm/fg2hLju3Gxzx1QY8nsDln4KZDEXpLjACnAzxBbCjxqmYOOeWZ6azugKTkQ0RI673Vry+OcQQ==
+X-HE-Tag: 1780968409-252020
+X-HE-Meta: U2FsdGVkX183ltY0CNZMjNZl9aRJi8hlm/yiEYMNCBIxyWEeaSfYAX7di14Q1CH4KnrIdeAF13uvoujZfzQEbT81Twedh5ITkxjqQPbf9k5WKm6jXfF2u8ZvTO0EtPPFA7yMhu5cxM4Sh067SLDLp6awvB/AcYfOwghRNIvGgH0JcihXGkdt3mnS/LHHkOpu6hfIV59jIZnIm+zPhiYnFHQKuz3KJ1MUAhXDYl2QZQde1lAnYul8m6g8OEG9iR+k7/cww7J2XI7ucSoEj1stRSKc8CXnQ1P9GN8gjfdJBQyk7qHshj7V0ccdBFjVGEgOsgw5QhltRn4WM0t+TAzPHNZqsuj2Pqz9CJCWb7zRbSctGsXxerTUqNwiA+gUrPl+bGLTZnoZ5rcPYrpAIi2VkIE5cgauS4kCv11gD/PLiW6cEOdaCY0iBfzH2a/74WIEy+5hx8dYECMw+vSLzogPlZ7RQqhaY87ND69ffiWUim4e630Bs1uOi6r17BqsVz8JNKUzWUIZ1JgnDmi8rCR80MbZuSmnM7YH9qsA2au+1jnKq1WTI5te0gWRl91z8i2T7Mhd+//grzfzlarOi8Mc0P7nyupakOP9l/jv8Nnh5D9LRnMs2fTlkZEbGPGPPX+jrTsG3UXe4yYCmwlzvb7SceidpHN1d5I9rrEUa5rgsZqflnf3/EPFCeCUbjBSeY5xMRq2NnNPqL352oYXpkJUmc0sd9tBGDQKc4bB02GYPtUYMZaj+ceQ4EFpwl5XkDysI2nJhJZYrzJEqi4IesXgG0d99zkVmNejBdvX/6PVCeqSF+p9VGV71WjkmnDLWADSjZkuSeUoYOuVBYXjTFiUp860yyHfdHABFdRkAPM6VAiVykD5HgITyDjVjModLpkRiDhGTyG2XGjVDaHOiaoynuMbq5ZyD/8hQhpuVFtn1rAbOwTDKsMIbV+Y1Eduh0Sm1wZQBNze/FlDCADbGX0
+ V/j6urJk
+ zLI0r/gY3XnFVEhJvpZAGBz7uy8qZwdxOGXAJ0qRfXhVWsCzVyl2UAcw1iVEFhgfD4T0IZWeU7eFDJW+wgz4c6U/PD8f07XQTopBEpaKZ8yca5CVskRn3yrARXvcLxPNJ/Z0qt8qaY6KKB8iArNv0IUcJK1udVVqbdU/jKuQw5yfKMAmwNFBgj1TJ9DZqJeRP9juayFXr2De+pB5PdLMLfaaczLnRWgtrnbVpuV4Y35+jussdhrwigX+puw5fFUjdUZI8BpQV5KtCmyjPBSJX/IQitGgbyFjH0TlAZVmR9bq7JV+tKZDS9Y9NJcVVr5Ab8Dbu1IbrCT5iqV4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,54 +97,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-08 21:11, Mike Rapoport wrote:
-> On Mon, Jun 08, 2026 at 04:12:56PM +0000, Pasha Tatashin wrote:
-> > On 06-08 13:26, Mike Rapoport wrote:
-> > > On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
-> >
-> > Keeping all of that in a single KHO file is the wrong approach and goes 
-> > against how other logically separated subsystems in Linux are organized 
-> > (e.g., mm/vmap.c, mm/vmalloc.c, etc.). Yes, there are some messier 
-> > places in the kernel as well, but keeping this in its own dedicated 
-> > kho_vmalloc.c file makes complete sense to me.
-> 
-> Either I hallucinated or b4 ate a paragraph from my reply ;)
-> 
-> Regarding the code movement
-> - splitting radix tree makes perfect sense to me, just the documentation
->   part needs more care than mechanical move
+Hi Suren
 
-Agreed. I'll also pay closer attention to the documentation.
 
-> - I'm fine with abi/vmalloc.h, presuming KHOSER_PTR() is not part of it
+On 2026/6/9 04:55, Suren Baghdasaryan wrote:
+> On Mon, Jun 8, 2026 at 1:25 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> On 2026/6/8 14:22, Hao Ge wrote:
+>>> Hi Abhishek
+>>>
+>>>
+>>> On 2026/6/6 07:36, Abhishek Bapat wrote:
+>>>> Extend the allocinfo filtering mechanism to allow users to filter tags
+>>>> based on their accuracy.
+>>>>
+>>>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+>>>> ---
+>>>>    include/uapi/linux/alloc_tag.h | 3 +++
+>>>>    lib/alloc_tag.c                | 8 ++++++++
+>>>>    2 files changed, 11 insertions(+)
+>>>>
+>>>> diff --git a/include/uapi/linux/alloc_tag.h
+>>>> b/include/uapi/linux/alloc_tag.h
+>>>> index 0e648192df4d..42445bdb11c5 100644
+>>>> --- a/include/uapi/linux/alloc_tag.h
+>>>> +++ b/include/uapi/linux/alloc_tag.h
+>>>> @@ -20,6 +20,7 @@ struct allocinfo_tag {
+>>>>        char function[ALLOCINFO_STR_SIZE];
+>>>>        char filename[ALLOCINFO_STR_SIZE];
+>>>>        __u64 lineno;
+>>>> +    __u64 inaccurate;
+>>>
+>>> I was wondering if it would make sense to define inaccurate as a flags
+>>> field
+>>>
+>>> (e.g. __u64 flags with ALLOCINFO_TAG_F_INACCURATE (1 <<0)),
+>>>
+>>> so that only bit 0 is used today and the upper bits are reserved for
+>>> future use,
+>>>
+>>> aligning with current kernel codebase.
+>>>
+>>> This design also allows for better extensibility if we need to
+>>>
+>>> add new flags for any reason in the future.
+>>>
+>>> We also need to add flag validity checks if we go this route.
+>>>
+>> And I've reviewed the issue reported by Sashiko, and I think it's valid.
+>>
+>> When we expand the allocinfo_tag_data structure
+>>
+>> struct allocinfo_tag_data{
+>>
+>>       char modname[64];
+>>
+>>       char function[64];
+>>
+>>       char filename[64];
+>>
+>>       __u64 lineno;
+>>
+>>       __u64 inaccurate;
+>>
+>>       __u64 bytes;
+>>
+>>       __u64 calls;
+>>
+>>       __u8 accurate;
+>>     /* padding */
+>>
+>> }
+>>
+>> I think user space may see two fields related to inaccuracy.
+> Yes but one field (inside allocinfo_tag) is the input parameter which
+> user provides to specify the filtering criteria and the other is the
+> returned tag information. It's similar to any other tag attribute
+> which you can be included in the filters.
+>
+>> How do you like these modifications?
+>>
+>>
+>> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+>> --- a/include/uapi/linux/alloc_tag.h
+>> +++ b/include/uapi/linux/alloc_tag.h
+>> @@ -20,7 +20,6 @@ struct allocinfo_tag {
+>>        char function[ALLOCINFO_STR_SIZE];
+>>        char filename[ALLOCINFO_STR_SIZE];
+>>        __u64 lineno;
+>> -    __u64 inaccurate;
+>>    };
+>>
+>>    /* The alignment ensures 32-bit compatible interfaces are not broken */
+>> @@ -40,7 +39,7 @@ enum {
+>>        ALLOCINFO_FILTER_FUNCTION,
+>>        ALLOCINFO_FILTER_FILENAME,
+>>        ALLOCINFO_FILTER_LINENO,
+>> -    ALLOCINFO_FILTER_INACCURATE,
+>> +    ALLOCINFO_FILTER_FLAGS,
+>>        ALLOCINFO_FILTER_MIN_SIZE,
+>>        ALLOCINFO_FILTER_MAX_SIZE,
+>>        __ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+>> @@ -50,16 +49,20 @@ enum {
+>>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
+>> ALLOCINFO_FILTER_FUNCTION)
+>>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
+>> ALLOCINFO_FILTER_FILENAME)
+>>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 << ALLOCINFO_FILTER_LINENO)
+>> -#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
+>> ALLOCINFO_FILTER_INACCURATE)
+>> +#define ALLOCINFO_FILTER_MASK_FLAGS        (1 << ALLOCINFO_FILTER_FLAGS)
+>>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
+>> ALLOCINFO_FILTER_MIN_SIZE)
+>>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
+>> ALLOCINFO_FILTER_MAX_SIZE)
+>>
+>>    #define ALLOCINFO_FILTER_MASKS \
+>>        ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+>>
+>> +#define ALLOCINFO_FILTER_F_INACCURATE    (1ULL << 0)
+>> +#define ALLOCINFO_FILTER_FLAGS_ALL ALLOCINFO_FILTER_F_INACCURATE
+>> +
+>>    struct allocinfo_filter {
+>>        __u64 mask; /* bitmask of the filter fields used */
+>>        struct allocinfo_tag fields;
+>> +    __u64 flags; /* bitmask of ALLOCINFO_FILTER_F_* */
+>>        __u64 min_size;
+>>        __u64 max_size;
+>>    };
+>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>> --- a/lib/alloc_tag.c
+>> +++ b/lib/alloc_tag.c
+>> @@ -249,8 +249,6 @@ static bool matches_filter(struct codetag *ct,
+>> struct allocinfo_filter *filter,
+>>                   struct alloc_tag_counters *counters,
+>>                   bool *fetched_counters)
+>>    {
+>> -    bool inaccurate;
+>> -
+>>        if (!filter || !filter->mask)
+>>            return true;
+>>
+>> @@ -277,10 +275,11 @@ static bool matches_filter(struct codetag *ct,
+>> struct allocinfo_filter *filter,
+>>            ct->lineno != filter->fields.lineno)
+>>            return false;
+>>
+>> -    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+>> -        inaccurate = !!(ct->flags & CODETAG_FLAG_INACCURATE);
+>> -        if (inaccurate != !!(filter->fields.inaccurate))
+>> -            return false;
+>> +    if (filter->mask & ALLOCINFO_FILTER_MASK_FLAGS) {
+>> +        if (filter->flags & ALLOCINFO_FILTER_F_INACCURATE) {
+>> +            if (!(ct->flags & CODETAG_FLAG_INACCURATE))
+> How would you filter records which have only accurate data?
 
-Yes, I will move KHOSER_PTR() to the shared compat.h in v2 so it's not 
-tied to vmalloc.
 
-> - I can live with kho_vmalloc.c although I still consider it unnecessary
->   churn
+Sorry, I overlooked this case.
 
-Appreciate it.
+Since allocinfo_tag_data exposes both inaccurate (from allocinfo_tag) and
 
-> - I'm against moving vmalloc APIs from kexec_handover.h because they are
->   very close in nature to folio and pages. I don't see core KHO as
->   responsible for preserving physically contiguous ranges but rather as
->   preserving allocations. Not sure we'll ever support kmalloc(), but still.
+accurate (from allocinfo_counter), userspace developers might mistakenly 
+read
 
-That is a very reasonable compromise. I am fine with keeping the 
-consumer-facing function declarations in kexec_handover.h so they remain 
-grouped  with folios and pages.
+inaccurate instead of accurate when checking accuracy.
 
-> > However, overall enforcing the use of KHOSER is unrelated to this work. 
-> > I have my own thoughts on this, and perhaps with proper versioning, 
-> > using KHOSER_PTR everywhere would be appropriate, but let's keep that as 
-> > a separate work.
-> 
-> This is a separate work, indeed. But regardless of the versioning it's
-> already better than plain u64 because it provides type safety.
+How about we add a comment to clarify?
 
-Agreed.
+struct allocinfo_tag {
 
-Thanks!
-Pasha
+     /* ... */
+
+     __u64 lineno;
+
+     /* filter criteria only; see allocinfo_counter.accurate for actual 
+accuracy */
+
+     __u64 inaccurate;
+
+};
+
+
+LGTM for the rest.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+> Overall I would prefer ALLOCINFO_FILTER_MASK_INACCURATE rather than
+> ALLOCINFO_FILTER_MASK_FLAGS. The fact that this attribute is a
+> single-bit flag is a technical detail. It's still a tag attribuite
+> like file and module names and IMO deserves its own filter.
+>
+>
+>
+>> +                return false;
+>> +        }
+>>        }
+>>
+>>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
+>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+>> @@ -318,6 +317,10 @@ static int allocinfo_ioctl_get_at(struct seq_file
+>> *m, void __user *arg)
+>>        if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+>>            return -EINVAL;
+>>
+>> +    if ((params.filter.mask & ALLOCINFO_FILTER_MASK_FLAGS) &&
+>> +        (params.filter.flags & ~ALLOCINFO_FILTER_FLAGS_ALL))
+>> +        return -EINVAL;
+>> +
+>>        if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+>>            (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+>>            params.filter.min_size > params.filter.max_size)
+>>
+>>
+>> Thanks
+>>
+>> Best Regards
+>>
+>> Hao
+>>
+>>
+>>> Thanks
+>>>
+>>> Best Regards
+>>>
+>>> Hao
+>>>
+>>>
+>>>>    };
+>>>>      /* The alignment ensures 32-bit compatible interfaces are not
+>>>> broken */
+>>>> @@ -39,6 +40,7 @@ enum {
+>>>>        ALLOCINFO_FILTER_FUNCTION,
+>>>>        ALLOCINFO_FILTER_FILENAME,
+>>>>        ALLOCINFO_FILTER_LINENO,
+>>>> +    ALLOCINFO_FILTER_INACCURATE,
+>>>>        ALLOCINFO_FILTER_MIN_SIZE,
+>>>>        ALLOCINFO_FILTER_MAX_SIZE,
+>>>>        __ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+>>>> @@ -48,6 +50,7 @@ enum {
+>>>>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
+>>>> ALLOCINFO_FILTER_FUNCTION)
+>>>>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
+>>>> ALLOCINFO_FILTER_FILENAME)
+>>>>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 <<
+>>>> ALLOCINFO_FILTER_LINENO)
+>>>> +#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
+>>>> ALLOCINFO_FILTER_INACCURATE)
+>>>>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
+>>>> ALLOCINFO_FILTER_MIN_SIZE)
+>>>>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
+>>>> ALLOCINFO_FILTER_MAX_SIZE)
+>>>>    diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>>>> index ddc6946f56ab..cbcd12c4ef9c 100644
+>>>> --- a/lib/alloc_tag.c
+>>>> +++ b/lib/alloc_tag.c
+>>>> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct,
+>>>> struct allocinfo_filter *filter,
+>>>>                   struct alloc_tag_counters *counters,
+>>>>                   bool *fetched_counters)
+>>>>    {
+>>>> +    bool inaccurate;
+>>>> +
+>>>>        if (!filter || !filter->mask)
+>>>>            return true;
+>>>>    @@ -275,6 +277,12 @@ static bool matches_filter(struct codetag *ct,
+>>>> struct allocinfo_filter *filter,
+>>>>            ct->lineno != filter->fields.lineno)
+>>>>            return false;
+>>>>    +    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+>>>> +        inaccurate = !!(ct->flags & CODETAG_FLAG_INACCURATE);
+>>>> +        if (inaccurate != !!(filter->fields.inaccurate))
+>>>> +            return false;
+>>>> +    }
+>>>> +
+>>>>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
+>>>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+>>>>            if (!*fetched_counters) {
+>>>>                *counters = allocinfo_prefetch_counters(ct);
 
