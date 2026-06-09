@@ -4,100 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F98CD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 05:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C70D7CD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 06:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E7586B0005; Tue,  9 Jun 2026 01:34:47 -0400 (EDT)
+	id 9BB666B0005; Tue,  9 Jun 2026 02:08:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 197E16B0088; Tue,  9 Jun 2026 01:34:47 -0400 (EDT)
+	id 993046B0088; Tue,  9 Jun 2026 02:08:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AE026B008A; Tue,  9 Jun 2026 01:34:47 -0400 (EDT)
+	id 8CFFD6B008A; Tue,  9 Jun 2026 02:08:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F19556B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:34:46 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 7F79D6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 02:08:27 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CDE61403F2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:34:46 +0000 (UTC)
-X-FDA: 84859259772.12.5A8AB07
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 58C34A0002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:34:44 +0000 (UTC)
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C0921C250A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:08:27 +0000 (UTC)
+X-FDA: 84859344654.12.5FFF0B5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D7298A0002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:08:24 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bgrmiMVR;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XJJDZ+ur;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780983285;
+	s=arc-20220608; t=1780985305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5mfjWRsQdGdiYIf88/4zuTnbWIV/8IAFDOhF+AeSMR0=;
-	b=x8e83UsdAu3xFv9VqMQkpnPjWMPVhjImTjZLqnbLOuQhO0li/WCwWnpZ/yu9VGsJ453M5j
-	CMTzgoJm6xDyiRFkRQZVCG0d56jHoV2LYDdAgpUbVktUgtCkBE1HWO1Nggak9BCVJk/KFX
-	Or3tAulvBNt8fHQyh9anp5VjHXRAktQ=
+	bh=lbOz6L7GY6LUh60QQjLA14yLmOVQNSrkAN1JuAX65lY=;
+	b=o4lW1b8hG96qScaDeXS1teMGaeCSfHIpik4sSLKFpSJFhxLd252lwhRtLsl5Y+pkFeNbHY
+	E4ZbARHbJqVtEpM7hjv6ekJn4XSKcsXIfRs3on6QTghrBTGOCaoyccR0+o9kxxbqs86bk/
+	mxoh6+VG0bHXk1NWb+x5jyHJ9oeI3+E=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bgrmiMVR;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XJJDZ+ur;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780983285;
-	b=TC7Bf1dfP7Zwk7ukipzk8gTvsKs36T/NPTXYhVIlL58rWgCMdh7YTbup7eE0Wu/VvnJw1q
-	9zHS0YwKq2KdRWKNNmQO9t/OpbHBO2kHifwU9akqTUvpQkccnDz+eLBst/EmBSstl5t6NV
-	Ez7VN6oMltKO+jQM9jTfv/sNw8ZP/LE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3252B169C;
-	Mon,  8 Jun 2026 22:34:38 -0700 (PDT)
-Received: from [10.164.19.15] (unknown [10.164.19.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 396DD3FE53;
-	Mon,  8 Jun 2026 22:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780983283; bh=kRP3VSO1BrC4vri0+L29KFGhsjb25YswCQ3fFsgsieI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bgrmiMVRYCu1CJfKKQYjTtR+oniRzXdVYTtjXELlorPtcvHGcmC5HzH9x+CbuzRVr
-	 s/+NqoTK+Sm17mnqBQAkkeU9C0IlkAJtc8Y1ufP7KRVMey8WL/5D+dQeVcq7hyRweA
-	 g9KMu5ACf9OOMHGT+HGDlDO0zvXlGp9gZpfZpuIE=
-Message-ID: <996a1f61-3b59-40ef-9508-ef339cc0c931@arm.com>
-Date: Tue, 9 Jun 2026 11:04:27 +0530
+	t=1780985305;
+	b=dWyygKXn8F1BdU9czny+nO3T4D9PzKR5yxtyLW8I6CCSOWVFST3fbl1oSev7Mvk301RJ44
+	D1g/mAHaWIW/jeAIf34ts0Yu/KDuvi15dlV8yUUNrr2cThaLlPJbsVvNSAVfqlI1VSY9gt
+	zSkuY6DdV2UKgecOqF/96X4NL1lRGb8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780985304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lbOz6L7GY6LUh60QQjLA14yLmOVQNSrkAN1JuAX65lY=;
+	b=XJJDZ+urmvq35XyvnvzmcDs0ksHm9aygngKtj1VCy8eBDMS0AdjYuQ86V1AYDD4CpzBdGL
+	QMWBFLhIem8EPm9Fc7xXHaefT09LKJa9KfPEpcymksZZi22UGYtIgKMbGuTR/QHruBXl5A
+	mXsY4a4HVbhmOv9bWnHVwl/SvvZFLwo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-CiiFh2z4PQSasqSREsKifg-1; Tue,
+ 09 Jun 2026 02:08:18 -0400
+X-MC-Unique: CiiFh2z4PQSasqSREsKifg-1
+X-Mimecast-MFC-AGG-ID: CiiFh2z4PQSasqSREsKifg_1780985295
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FD03180065C;
+	Tue,  9 Jun 2026 06:08:15 +0000 (UTC)
+Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.189])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98CB719560A2;
+	Tue,  9 Jun 2026 06:08:07 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Jann Horn <jannh@google.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>,  Christian Brauner
+ <brauner@kernel.org>,  Li Chen <me@linux.beauty>,  Kees Cook
+ <kees@kernel.org>,  Alexander Viro <viro@zeniv.linux.org.uk>,
+  linux-fsdevel@vger.kernel.org,  linux-api@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-arch@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  x86@kernel.org,  Arnd Bergmann
+ <arnd@arndb.de>,  Andy Lutomirski <luto@kernel.org>,  Thomas Gleixner
+ <tglx@kernel.org>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,  "H. Peter
+ Anvin" <hpa@zytor.com>,  Jan Kara <jack@suse.cz>,  Jonathan Corbet
+ <corbet@lwn.net>,  Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
+ executable startup
+In-Reply-To: <CAG48ez38OEE8ZPLyU6nr9=cYx-hMsdoh5WRrv-GMZGMDKyyOTA@mail.gmail.com>
+	(Jann Horn's message of "Mon, 8 Jun 2026 17:02:06 +0200")
+References: <20260528095235.2491226-1-me@linux.beauty>
+	<vealb52tv5suireenkke4lul2l3wbnaul2rp3ea545ly5wa5ty@yk3aksvp7skt>
+	<CAG48ez38OEE8ZPLyU6nr9=cYx-hMsdoh5WRrv-GMZGMDKyyOTA@mail.gmail.com>
+Date: Tue, 09 Jun 2026 08:08:05 +0200
+Message-ID: <lhubjdk1c1m.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] mm/migrate: rename PAGE_ migration flags to FOLIO_
-To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
- david@kernel.org
-Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
- rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
- rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
- dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
- peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
- stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
- aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
- djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Lance Yang <lance.yang@linux.dev>
-References: <20260428155043.39251-2-shivankg@amd.com>
- <20260428155043.39251-4-shivankg@amd.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260428155043.39251-4-shivankg@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 58C34A0002
-X-Stat-Signature: exasn8s6dj3herod8pamznaxtw8tmws9
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: e65ChdFYnyDGG6E3bfO8BpdMt2GPpZXVBK7sdeuLm-E_1780985295
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D7298A0002
 X-Rspam-User: 
-X-HE-Tag: 1780983284-127951
-X-HE-Meta: U2FsdGVkX18LAyaF+7FnjtMGm7yN3lEVLk9RLJzhReV48ctVkiKvXyXOEpC31Yej+FtheZleW2FxKyjiNFpKVLy3SZ7duUqWI5rZJHF3zBtDRp7cvuuTfqg5zBzWN0gdMBEXh+kiCeVZVshrk0dE8bDA6OAAfgt3uvOx/cbLy68cIZq93XNro26rwLra7BPQb7AG2b75LU1XRvv/B2sGDJ5T88/Il9EJ0SVxA+gFFa7qYDtDmLxG2FSR115evsq1kFYn6e8OB/76JDObJnRDwjHqY4M9WyydhyBI5V+tkkouBCqGZ83OsEDmuK0Cc0oia3SEncP/in++VVdbE8pQeq76r0FkHmSOYffwe2dAHOm1ytg3wvGAMZOFTT8AqnA3qaOzozMMb57M7b4cwTX82C80gH0Dpnkw5LHujrGaOjAXyidh132zd63PYi8c87RM+1R5oAAZS35eDUnVf1jKpNWfkU4DQWEy1w1soa+LuWLiJw4UMhctF7sa9uWh2H9U5TNZ3RtvMWkgnJHpdF8nY3aIWdXFQJmZTa4Ww3VmNG+b3L8rJHHCE8jdH3QZUMdc+MzpvuSK85sumdiEIdCUV/O6Yc+yfZN+sn6sYYJCWioajoUDEAjZyUdGorD0OyehQfwDpNJAvSmbCQnpSyr1uE2f/KPG9LjJfZx13sso84JB36qybYTFui9qdKBDqZyu2GyxHrW2GSe85QIQ4BtA44lIbDXxaXYVsV/2oDMbXU8NeTIheEv0u4FJT08iqkI1BQHV3hYT3xIpAagAvNxO6DuyDvg/iiyADb9NwT9ExZ5H6DMZZWESgJon9vOQpo527oj8rx+UuniKgJXQEXzHqUvvhSgf3IM45Oo+FkCViOcoJgBxsu/Mg3QVQhfpgvz550YgkmOFNmPDhKSLl0yda6X0qsHrFtDZaPL9op7AA2HhRS9EfGskzXBNbcDkivagXgGAJX4MTzRQQjhfe5J
- 04RboXjL
- c4W7WwMLtGz7NSVRqrqhoxVv8cRYyn83bQH6nlkurlkKGDr3RHXpOIo+zAbbLE7UCW3rbENHe21gX40V8QXEghoTh6PYF07G5d0uRHozxWUZKvBTC7uBMX8l/zy6G/AwSU6/S75MyrNEN+dD7vmKQCx9IlpVwjPZLMf9Z1h6Hwje+NDTZg8CPajfU0MPXnjlwTj2CCUbPmp/1b19I6Sg6MVfonrDpCBlrOqy/MXuTEZqF1FRxwpSHO8hWMOtcHku0Mo6Dwu1wtWxyIiHunJoopOyp6npjMcTHiwAab1+L+8haexlG36Hs5uJCvTtyv6YDo3swM/vOdSLrPTCDSRu53Pa9Vjc8bl7wnDmC0g0JWfF30wO2yO6aL9ijt61PstdtGlt6LRv3llTYYTXa8q0zbG6G0j01yaNDTCgEnvcW/N1/IU2yJ8PDJlqBhRJfCEiQwsTVF3Ko+GMF++U=
+X-Stat-Signature: s1se43qhrqgdz5pdp34eznfsf5o1zxyr
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780985304-315529
+X-HE-Meta: U2FsdGVkX19gSZby+kimDHjEKHnAzw3StT2ZUzy8ED3YYa8/afNY14pWhfPTd5+G8uHEnlYHB5jq33kv3kY1fHIGDVV3mGSY64XrGcDfJO4XFmw0Zx0TLika31xdpJWx8VFudR0FAJ1dAfKqySm8mfCa8vsmjE8OVzuRRzAsRKY3Tjk0FeKc2wzPrJA7VFhKHGVSQRzb3CGNKoBNzKqlsntvJ/rX4SyA5cXEr5LMutMQsY3PNfKLW9NyU5Hm8Aq4SK5Y6W1rGBnXZmb6EBgWqWDccgkwDa6CYqU/Cxs0M15meWf3L1A+j9jG0KqTYq9nX29zCbBFW2Xx7Md/4GFVD5MYgOGpUQzfs6sppgNH7L8r746QxQ6MQ41x6F6389KTbd7Z6RgJIJMLi3sv5bH2fsbNGwXqDc9UHMxsaKu6xADIP7B8QgBLtzvX3DmcqO+D9Ri9XhJjv4fyR3mgjceJ3mDt+8xUIT8gZpzTzXdgkOJ/Yr3jpsQ4OgyFio+RFqKdAMjx/4AqMWZjZesRXUaxLtO/mc43LjboKykyA2ikLBITL9G1iLO4CE9wKpx0mDAAEseFSWLdhtNG+RAAA9CmoIT1uTd1dVV7avHhniZQ1HKsLU9IjvixuW4xQ2JK23MBY8PVNgzzmJNsfqn/OM/WJ0k90keA2uE3q+/3DCCf9L3YpJIGIgs52eWgCQCDXUypBIt2GG8NUFNkXrSVsmlT/inhPXcRFpZZjRlOpwCxULjYbE/On3CNDbMFvvDlUILHIBBEp1eiVGFh3j3YFKwkOcGpHzU7u7FoYV5AyQHwfNhsUDoiJMcj6z6BClIBBotrsvgltt8owkr2cyIIaXoDcVQMLMP0JTceLC3lY9oILN0fcWTS494onrhUAebt7c9YOOos/6+R1yWsDDDG8Y7It9/Fifs1vlSUkRATyfYaL5y9FJe9nhHV28Fb9VKvx/FyJsIRvKG5AnUA66RtZLj
+ DJkSVjl0
+ pnQN25STm5lQ5cBCpBrpFuj6PiqHu62OHF6qsO4+a3mYGroHRuQYovRksxAB5u3TKN7fstx56VLOE/Cxu7r1zdUbS8+lic8QjL2GPXjs0+2HPtx9KK7GCkQVerwIru9vG7qnPy7t9n9Zp8zBhvZ0BiJ13E2UnPxzTiGb+abj+3g9ZrOd9kbX86IHG+49Dt3qFnFMlOduvYp5WJ22mNKNFm6KuSt0rIaxur7XKtW3DFRvpgex1NdeLeoM01iS9aOlc+Za/ZrStKlZxMtijb0k5Sa0hCP3EQzsKj+6f0NJ+FOFBVRBftJiYX7MJEg2oJW2dgqI457s0/wY8EIGJzx1+cvp7TCEdZuKR+Xg05u3iIcc4EyHC/dg52hXYtx9c3em2OG7aYFjHc9RONyLqZEsbDBbsKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,176 +120,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+* Jann Horn:
 
+>> Per the above, the primary win would stem from *NOT* messing with mm.
+>
+> As you write below, I think we have that with CLONE_MM? The C function
+> vfork() is kind of a terrible API because of its returns-twice
+> behavior, but I think if process cloning with CLONE_VM|CLONE_VFORK was
+> wrapped by libc in a way similar to clone() (with the child executing
+> a separate handler function), or if it was used in the implementation
+> of some higher-level process-spawning API, it would be a perfectly
+> fine API?
 
-On 28/04/26 9:20 pm, Shivank Garg wrote:
-> These flags only track folio-specific state during migration and are
-> not used for movable_ops pages. Rename the enum values and the
-> old_page_state variable to match.
-> 
-> No functional change.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
+No, there is still a problem with SIGTSTP handling because we cannot
+atomically unmask the signal during execve.  We need to unblock SIGTSTP
+before execve in the new process, but this means that it can get
+suspended by SIGTSTP.  Consequently, the execve never happens and the
+original process is stuck in vfork:
 
-migrate_folio_undo_src() has a parameter "page_was_mapped", change that
-too?
+  posix_spawn: parent can get stuck in uninterruptible sleep if child
+  receives SIGTSTP early enough
+  <https://inbox.sourceware.org/libc-help/2921668c-773e-465d-9480-0abb6f979=
+bf9@www.fastmail.com/>
 
+More on the low-level side, it's difficult to make sure that execve gets
+a consistent snapshot of the environ vector.  Both vfork and execve need
+to be async-signal-safe.  Any locking or memory allocation (except for
+the stack =E2=80=A6) persists in the original process after vfork returns. =
+ The
+environ vector can be large, so making a copy on the stack is not ideal.
+It's even harder for getenv/setenv/unsetenv implementations that use
+locking instead of software transactional memory.
 
->  mm/migrate.c | 48 +++++++++++++++++++++++-------------------------
->  1 file changed, 23 insertions(+), 25 deletions(-)
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 8a64291ab5b4..0c6a0ab6ecce 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1135,26 +1135,24 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
->   * This is safe because nobody is using it except us.
->   */
->  enum {
-> -	PAGE_WAS_MAPPED = BIT(0),
-> -	PAGE_WAS_MLOCKED = BIT(1),
-> -	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
-> +	FOLIO_WAS_MAPPED = BIT(0),
-> +	FOLIO_WAS_MLOCKED = BIT(1),
-> +	FOLIO_OLD_STATES = FOLIO_WAS_MAPPED | FOLIO_WAS_MLOCKED,
->  };
->  
->  static void __migrate_folio_record(struct folio *dst,
-> -				   int old_page_state,
-> -				   struct anon_vma *anon_vma)
-> +		int old_folio_state, struct anon_vma *anon_vma)
->  {
-> -	dst->private = (void *)anon_vma + old_page_state;
-> +	dst->private = (void *)anon_vma + old_folio_state;
->  }
->  
->  static void __migrate_folio_extract(struct folio *dst,
-> -				   int *old_page_state,
-> -				   struct anon_vma **anon_vmap)
-> +		int *old_folio_state, struct anon_vma **anon_vmap)
->  {
->  	unsigned long private = (unsigned long)dst->private;
->  
-> -	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
-> -	*old_page_state = private & PAGE_OLD_STATES;
-> +	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
-> +	*old_folio_state = private & FOLIO_OLD_STATES;
->  	dst->private = NULL;
->  }
->  
-> @@ -1209,7 +1207,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  {
->  	struct folio *dst;
->  	int rc = -EAGAIN;
-> -	int old_page_state = 0;
-> +	int old_folio_state = 0;
->  	struct anon_vma *anon_vma = NULL;
->  	bool locked = false;
->  	bool dst_locked = false;
-> @@ -1253,7 +1251,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  	}
->  	locked = true;
->  	if (folio_test_mlocked(src))
-> -		old_page_state |= PAGE_WAS_MLOCKED;
-> +		old_folio_state |= FOLIO_WAS_MLOCKED;
->  
->  	if (folio_test_writeback(src)) {
->  		/*
-> @@ -1302,7 +1300,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  	dst_locked = true;
->  
->  	if (unlikely(page_has_movable_ops(&src->page))) {
-> -		__migrate_folio_record(dst, old_page_state, anon_vma);
-> +		__migrate_folio_record(dst, old_folio_state, anon_vma);
->  		return 0;
->  	}
->  
-> @@ -1328,11 +1326,11 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  		VM_BUG_ON_FOLIO(folio_test_anon(src) &&
->  			       !folio_test_ksm(src) && !anon_vma, src);
->  		try_to_migrate(src, mode == MIGRATE_ASYNC ? TTU_BATCH_FLUSH : 0);
-> -		old_page_state |= PAGE_WAS_MAPPED;
-> +		old_folio_state |= FOLIO_WAS_MAPPED;
->  	}
->  
->  	if (!folio_mapped(src)) {
-> -		__migrate_folio_record(dst, old_page_state, anon_vma);
-> +		__migrate_folio_record(dst, old_folio_state, anon_vma);
->  		return 0;
->  	}
->  
-> @@ -1344,7 +1342,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  	if (rc == -EAGAIN)
->  		ret = NULL;
->  
-> -	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
-> +	migrate_folio_undo_src(src, old_folio_state & FOLIO_WAS_MAPPED,
->  			       anon_vma, locked, ret);
->  	migrate_folio_undo_dst(dst, dst_locked, put_new_folio, private);
->  
-> @@ -1358,13 +1356,13 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  			      struct list_head *ret)
->  {
->  	int rc;
-> -	int old_page_state = 0;
-> +	int old_folio_state = 0;
->  	struct anon_vma *anon_vma = NULL;
->  	bool src_deferred_split = false;
->  	bool src_partially_mapped = false;
->  	struct list_head *prev;
->  
-> -	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-> +	__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
->  	prev = dst->lru.prev;
->  	list_del(&dst->lru);
->  
-> @@ -1404,10 +1402,10 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  	 * isolated from the unevictable LRU: but this case is the easiest.
->  	 */
->  	folio_add_lru(dst);
-> -	if (old_page_state & PAGE_WAS_MLOCKED)
-> +	if (old_folio_state & FOLIO_WAS_MLOCKED)
->  		lru_add_drain();
->  
-> -	if (old_page_state & PAGE_WAS_MAPPED)
-> +	if (old_folio_state & FOLIO_WAS_MAPPED)
->  		remove_migration_ptes(src, dst, 0);
->  
->  out_unlock_both:
-> @@ -1439,11 +1437,11 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  	 */
->  	if (rc == -EAGAIN) {
->  		list_add(&dst->lru, prev);
-> -		__migrate_folio_record(dst, old_page_state, anon_vma);
-> +		__migrate_folio_record(dst, old_folio_state, anon_vma);
->  		return rc;
->  	}
->  
-> -	migrate_folio_undo_src(src, old_page_state & PAGE_WAS_MAPPED,
-> +	migrate_folio_undo_src(src, old_folio_state & FOLIO_WAS_MAPPED,
->  			       anon_vma, true, ret);
->  	migrate_folio_undo_dst(dst, true, put_new_folio, private);
->  
-> @@ -1777,11 +1775,11 @@ static void migrate_folios_undo(struct list_head *src_folios,
->  	dst = list_first_entry(dst_folios, struct folio, lru);
->  	dst2 = list_next_entry(dst, lru);
->  	list_for_each_entry_safe(folio, folio2, src_folios, lru) {
-> -		int old_page_state = 0;
-> +		int old_folio_state = 0;
->  		struct anon_vma *anon_vma = NULL;
->  
-> -		__migrate_folio_extract(dst, &old_page_state, &anon_vma);
-> -		migrate_folio_undo_src(folio, old_page_state & PAGE_WAS_MAPPED,
-> +		__migrate_folio_extract(dst, &old_folio_state, &anon_vma);
-> +		migrate_folio_undo_src(folio, old_folio_state & FOLIO_WAS_MAPPED,
->  				anon_vma, true, ret_folios);
->  		list_del(&dst->lru);
->  		migrate_folio_undo_dst(dst, true, put_new_folio, private);
+In general, I prefer the vfork+execve API over things like posix_spawn
+because eventually, you have dependencies between the syslets, or need
+control flow.  This introduces a lot of complexity.  Conceptually,
+vfork+execve is much simpler, and in many ways quite safe (even mutexes
+work as long as they do not need a correct TID).
+
+Thanks,
+Florian
 
 
