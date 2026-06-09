@@ -4,142 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FB24CD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:38:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61EA2CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:38:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21FAA6B00A3; Tue,  9 Jun 2026 05:38:01 -0400 (EDT)
+	id CCF366B0005; Tue,  9 Jun 2026 05:38:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E1B6B00A4; Tue,  9 Jun 2026 05:38:01 -0400 (EDT)
+	id CA6CA6B0088; Tue,  9 Jun 2026 05:38:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA12E6B00A5; Tue,  9 Jun 2026 05:38:00 -0400 (EDT)
+	id BBC7A6B008A; Tue,  9 Jun 2026 05:38:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D51E16B00A3
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:38:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98770163C4F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:38:00 +0000 (UTC)
-X-FDA: 84859872720.06.EA12A3E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BD973C0002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:37:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q+Au3FIt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A98426B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:38:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D7A0164718
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:38:33 +0000 (UTC)
+X-FDA: 84859874106.02.B1B3EFF
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 17B4240004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:38:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RpU3rkyb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pDGmlFH1;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RpU3rkyb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pDGmlFH1;
+	spf=pass (imf12.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780997878;
+	s=arc-20220608; t=1780997911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qwucw59smD/DvO9rrlszZBUvmF6xEK7aWAcJM+Z/Or0=;
-	b=EjKsi/5X+F8mQ6pc0a2D+ub0GMSr8rNbCJCWqxmmeyopbG3Ztl4poFWa+u9MjrP3H8L7f1
-	gQDOpnz5nFz0KjlqAoatR5kfYBlm0VCCuWU6lVDEidm62ZRCqZSy9mG9030HMqnihlnT/4
-	v10JDdCj8gPsynrT3BdE96gxKxnofLc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q+Au3FIt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=Srm7PK7AT6aFPTM2v6yJ9xkkVvxKv/0zAI9E1iz1CtU=;
+	b=Z3/uqCsc5LAttnzaVr6GP7s2RG4AWe5b/w3pEQcxWsglkij3v+cHH4CX/5wORql+a7pW7P
+	XxG/CiuWSDJuYyXgUJF1a60qnK/T9CKVjQyqWtW7IG3f8WOyoFV9Q+5JnBTbIUROa7J2Kt
+	z7qEeMfkEl2IfXIAPR2NbtvSr0WtbfU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780997878;
-	b=hpU9CvEEOvmXsQEQnYGWO2wikOOtA6NPLJ7Ifa0s79BFMiF4oqzougOC+EfyNxmEQ8u/KK
-	x7W5CRLZXV/9x8fL8SiA0kWAZfRaAeJUqBQTXugx4oi9w8JQ1vvaRNZadRXQz4CEyU7OyD
-	dRk0sfIUotp+Gn3xon2Vdit/dKwffRI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D526E4321E;
-	Tue,  9 Jun 2026 09:37:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3B21F00893;
-	Tue,  9 Jun 2026 09:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780997877;
-	bh=Qwucw59smD/DvO9rrlszZBUvmF6xEK7aWAcJM+Z/Or0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q+Au3FItnV7du1RLl4QATejS6hA1CyceafytEBvGMuQml68C9tuUZwoPCQPB0zRAC
-	 buyqQFvTdHEl/zQ153mQLsgVrtjSn4vwEPyxhddme+E7dBwamiXU+J4kqrFiQwxxTs
-	 9I4XlAguFmoe1oj5buy/ZzUmCMzdKZxLj9oQUoHLk26kUeH6J4Ha0YGjm+NdY/XOOK
-	 8901TAkTc63VYP0MrqQMVZQ3enZdAGdZc29weefq3Dwf5qhNKCZI0wGAABGgcfx9Gv
-	 lbtdIjlw0rRdSKldNnYxl203EN/R/YKJbndAYyt0Gm3J16Oix/0lq3FRPUM2IeLunm
-	 X3PW5vaZTIVRw==
-Message-ID: <93e279bb-3f83-4906-9eeb-277621f6893d@kernel.org>
-Date: Tue, 9 Jun 2026 11:37:49 +0200
+	t=1780997911;
+	b=L1dLOc04Fv9zdbbn9bWw5frw81pBSX/lx2HBIk7yeyRZXQp12ml9cJFct/jttco7us8sAH
+	VnBaJTl9eQd2mUryybA79ODT7wgj+x6mCtFcJuXkd7rMWTP7DC/QS8afCW5BStt5v/lt76
+	TTjHBhFYeIhMCbxZxnNGsFfc76ZzcTk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RpU3rkyb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pDGmlFH1;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RpU3rkyb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pDGmlFH1;
+	spf=pass (imf12.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A4A326A901;
+	Tue,  9 Jun 2026 09:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780997909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Srm7PK7AT6aFPTM2v6yJ9xkkVvxKv/0zAI9E1iz1CtU=;
+	b=RpU3rkybMsMghOlt3HwyUr22B00VNY79+Pq3HaO/+h6Bx+/m3zVc558EWP7TZVEnsKxbYG
+	u+5saTqDMGBnyFDbRru6EON8ql9QfTIzBZCYP5oEjqViKI1AzjQlRRyWdS99PaBaAKji84
+	tbd1Lt6ymPN6dF7/PPdEJYh9+2ktt4Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780997909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Srm7PK7AT6aFPTM2v6yJ9xkkVvxKv/0zAI9E1iz1CtU=;
+	b=pDGmlFH1FMvV/iCjLi0vK52DoSH7RL697Fp3yAtsGROXYwQF1Qt34Rw0GMjbfJyL/elsyY
+	y2Nk3ATPt+959UCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780997909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Srm7PK7AT6aFPTM2v6yJ9xkkVvxKv/0zAI9E1iz1CtU=;
+	b=RpU3rkybMsMghOlt3HwyUr22B00VNY79+Pq3HaO/+h6Bx+/m3zVc558EWP7TZVEnsKxbYG
+	u+5saTqDMGBnyFDbRru6EON8ql9QfTIzBZCYP5oEjqViKI1AzjQlRRyWdS99PaBaAKji84
+	tbd1Lt6ymPN6dF7/PPdEJYh9+2ktt4Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780997909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Srm7PK7AT6aFPTM2v6yJ9xkkVvxKv/0zAI9E1iz1CtU=;
+	b=pDGmlFH1FMvV/iCjLi0vK52DoSH7RL697Fp3yAtsGROXYwQF1Qt34Rw0GMjbfJyL/elsyY
+	y2Nk3ATPt+959UCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2F753779A7;
+	Tue,  9 Jun 2026 09:38:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8vWXBhXfJ2o0KgAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 09 Jun 2026 09:38:29 +0000
+Message-ID: <fac2d527-e861-4f79-8e45-35f8993cc33d@suse.de>
+Date: Tue, 9 Jun 2026 11:38:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: constify oom_control, scan_control, and alloc_context
- nodemask
-To: Lorenzo Stoakes <ljs@kernel.org>, Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, kernel-team@meta.com, longman@redhat.com,
- chenridong@huaweicloud.com, akpm@linux-foundation.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, rientjes@google.com, chrisl@kernel.org,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com,
- jackmanb@google.com, ziy@nvidia.com
-References: <20260609002919.3967782-1-gourry@gourry.net>
- <aifDlU96HSRy72Rb@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: increasing PAGE_ALLOC_COSTLY_ORDER, was Re: [LSF/MM/BPF TOPIC]
+ Memory fragmentation with large block sizes
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Andy Whitcroft <apw@shadowen.org>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <f22caf98-1375-493a-a275-0500ffac3e81@suse.de>
+ <aifAm1rRKF75HVeM@infradead.org>
+ <1225376d-dc29-44a1-add6-0cb14926a538@suse.de>
+ <aifWqFpSkcMU31UO@infradead.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aifDlU96HSRy72Rb@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BD973C0002
-X-Stat-Signature: 6kuf96hz8pw4xm4itxhqh3z5b9sb8pki
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <aifWqFpSkcMU31UO@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 17B4240004
 X-Rspam-User: 
-X-HE-Tag: 1780997878-954693
-X-HE-Meta: U2FsdGVkX1+/3lcZ2YofSSg+154TJJUbCV8TlFrMKruKqyXX3H2Up21b2IeYjw5cNHpu5ikwrBfB9WXkZhgSZVjkOh2COEGybV0A0CRi20gaAlf+lN6XJSIGAHxSt0vxFvO98lSM+MwIkfNmFXZXLGtx3dKsMR+jsmO8q/EsjMi25YWIM1aWGJadDtoinqssCmzVyPAMAHTohoehmtml+ySERiO32J5NbWTIe8SM1c8bFZnDv9xAKFfQKmzq7wuUdknQ7EQtgulqN/0I7CevKp7H11H3NOagrGmX/za2Lv6I6eW+YJuMrrz/5WnHejPzhicWEJWVDLRZsQ0Nml57nysXLWtb0qcRf7z5DK5EuShkzaAPqXy/zsYmCSVK2Zkq/6/iOBCePxufrR/dHxTALxsBW3tGlA7//Edor6b2UWC1obNChUe+vPWsKvytpgQZ3yvI/3DVtwXSNkEUMz239o16J0/AKLX1Fv4ZtM1uWk65/rn4CrBZMacUVNhRtAtEebCDpsac4gaJC/fIYBGM+pKcghInUXbfhGqWzo372jWyEZLwEfDB1NOpLOTGkP1QAlQdF5wm6IhnAuE2WrucEFDm9clcq+hRJ93gBsfz5y4mI+hljjVnCDf3Uhk5OVuoMX1RFrfh2QJyZ/Z34wqfMWq7kkeWM0i/t+BPXIB1FIZvA12vWQNkeYwFm6+iTAuesHwoqq6xvwPVv44YhrZPmMF6rxell/jfZYaLn9hkvrB+F6I16NxnZTod60nDtJbd7AlqoSrotGbjdfsKjX/jc5DBYnL8rf/GEkSmtuNgp6cCWZfaxPM0OxZo/FQVsXjy1YkCkb4c2zNgKaAqATJKT66ZVv9yedPuu55wZC7/xK4hyKzmqn/AgOcHpCp/Lp9DJ3wx1oAdC8Kia4EhRrHzX1I/D6fe+rkDzBxpQbSAuvNW+sxRupP6/JqutGgrh12thqm0xpdwRaWBgDGrlIl
- uHO9BreO
- KsQfccZSMnr0fxPIUwNwBVLti7qKpw0PfBmPd2xycjGUc3BgGE0uGde0srlvCjIdK25DzIqAXBUVZyhntiOL+brxZhAc2t7hJSXl22ushGP7jHowLBcFKFwSiQr6RsBwe6N1KCik+n6EWQth7G6CE7J39+K8D0XbCHTXV+duaDqKsP7iMd4u3i1IKVvJJHzHe+NuSCwWMCaINFlC6OdGgcj1hPgqPD1JLgLqWVYZaldrugLwnYtAqKwua9b6gLl5GKpPUskBpTtjEqBtZfZ2mtP38u2vhuPyv4B2CPRvNHdsF8UXq9dVVZKSClcmhnmkZxbDfPpXO+aBJTcEuYRI8lRVA61CujP1ZmsMfk7I2PA7UA7sr40xeMx9ebTgAVi0VCzBZlIj7C4dIHKk=
+X-Stat-Signature: opmqnq6mzhra3naa1mf7dbjcz1dzo11u
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780997910-492838
+X-HE-Meta: U2FsdGVkX18mzMtRb66IBaTZ7E90MyiAAso89S2MO5W+aN71nSP/fGuira7bfOHjb0QxY/VvZElnozkfrY7OIXBmkNKRP925mc1YhlqU5EHYI3raK1pBtHcIGo4nHUzTYELt5mIEW24e7BqOZqX5FF8Mxr2DtbrdVVa0R4X9oe+nUqW6naIDWPPMeapYbfWRBHuM3KR3OQKE+oIzQQUaI0yNyCseS+6N2LuzX6n50PIsHLxPiJI47UCSTNgkoxItqwt4afwojklzVO/4Co7VK3lkWypqQTlmtJXzIYBM/mJL3UqRu9e1tRYJuVu91tc3g5KfBGBfFSFxClIoT7msqP/zm2BfibNwxfYSw1zOKWGiA1BOU5QuJI196i2SIf2dveISHYelcF9CH0QGy4979Q+wMPvzdq9d2vhFtjVOwfkgCNYiNqtOY7eCaiDWB4doUthKgusxBiIAHsWKQbqMP8JRMSq2Lufos0SYvKZS7NURnYi9F+f+PurMLQEqIutNEk3TC7Kt3mN1zh1ywUKOZIfgnsecQalwWXc+wpTja4Uw+fn10C2CI7AGIFdscHi9Lg80MiGTj00a9vB3/FQ841al1gaCpbze8Ivek80JtyXQpjcaF6XMThiXzauhIvYLTWjYpaWfHsanRednUQSn6R2/uVNxR4cYWhk8jZlOMQ7bi5z0EVnYUDiEznJlNftDur5mrdKsN5Lsq9MlwEXy0VWrUipwB5pCytRwpJdPOvm7ERT6ToaeiPYTJlCr8P1EXSpTuLR0Bou9DyqA2AWNczpW72YHlzvR5xoPnw6yIGr2U+JRCnchjNzhRT/D7G7XP2rYz3tgPFs+pkC+ZNr7991PtqeXcEnohhkb0jEct++Plj+Iouz6lNV0NfNWwusQjravntbnGu3u5fQutpZ9hNu3JCaKccX25iKFMPmXI6YazmmOzhDfZp+8WSq5lZHoIG+2XM+/XjFy6FCVG0s
+ waHbdmi7
+ uMq8bKdTwXzCO8A5iZUslqYMLOVm0bJ0I82AFqA9gIl4oZQbHtNMnvp50tevXJOzqQBeneIiJlMk0ZxMBqdMLtqZQugtriyVlFSYxTDpeChiWW7PctYpAd29M0GunHqnsjx8m3PBqoH4Sqtptb1myT4Arat8svAlhTjJ/GkkGNRLCBef5OazVreU7syAtcK7WJK07XqTyc87cXGHrnG1JuZ1p+f0aZgurIL+anxd6fAibDVYiJkDN6S+/S9l1WCuPZQz7PVi27+qFkE7MXUWRA9tjgQx7LV2Dq2sSjq9XN2Ek75U9Qg9TFjA/R3DztiqfCOWbEq8vQCEh8yru/UtgYfJ+QAmzFMejW/6qx57ASAIGZvjfe14Ng5NAZDvaXPwSKVYj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,31 +145,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 09:41, Lorenzo Stoakes wrote:
-> On Mon, Jun 08, 2026 at 08:29:19PM -0400, Gregory Price wrote:
->> The nodemasks in these structures may come from a variety of sources,
->> including tasks and cpusets - and should never be modified by any code
->> when being passed around inside another context.
+On 6/9/26 11:02, Christoph Hellwig wrote:
+> On Tue, Jun 09, 2026 at 10:39:14AM +0200, Hannes Reinecke wrote:
+>> With 32k block sizes the picture changed completely; the 'bump'
+>> vanished, and there was only pronounces spike with 0-order pages
+>> (about four times the size of the spike with 4k block sizes).
 >>
->> Signed-off-by: Gregory Price <gourry@gourry.net>
+>> This led me to assume that compaction broke down at 32k block sizes;
+>> this assumption was confirmed by Vlastimil Babka who pointed out that
+>> there is a maximum order to which page compaction is attempted:
+>>
+>> include/linux/mmzone.h:
+>> /*
+>>   * PAGE_ALLOC_COSTLY_ORDER is the order at which allocations are deemed
+>>   * costly to service.  That is between allocation orders which should
+>>   * coalesce naturally under reasonable reclaim pressure and those which
+>>   * will not.
+>>   */
+>> #define PAGE_ALLOC_COSTLY_ORDER 3
+>>
+>> and it's main usage is 'order > PAGE_ALLOC_COSTLY_ORDER'.
+>> Which ties in directly with what we're seeing.
 > 
-> Thanks for doing this, it's nice to gradually up our const correctness game
-> (as much as C can ever be const correct :)
-
-+1
-
+> Yes, we've also seen similar issue with memory allocation beyond
+> PAGE_ALLOC_COSTLY_ORDER.  Right now the maximum block size supported
+> for XFS is 64k, and there's various workloads for which we'd like to
+> make use of that.  Increasing PAGE_ALLOC_COSTLY_ORDER to cover 64k
+> allocations would be extremely helpful to make it perform well.
 > 
-> LGTM, builds locally too, so:
+> How has PAGE_ALLOC_COSTLY_ORDER been chosen?  And what would it take
+> to increase it?
 > 
+Not much; it's basically a setting which we can change.
+Measuring the _impact_ of the change would be the tricky thing.
 
-Nice.
+>> It will probably make sense to align the maximum block size which we
+>> currently support (ie 64k) with this value to ensure that compaction
+>> works with larger block sizes. Or maybe even the other way round;
+>> tie the maximum block size which we support to PAGE_ALLOC_COSTLY_ORDER.
+>> But that would mean to restrict the blocksize to 16k, whereas xfs
+>> works happily with 32k. So we might want to raise PAGE_ALLOC_COSTLY_ORDER.
+> 
+> block sizes larger than PAGE_ALLOC_COSTLY_ORDER work, but it doesn't
+> perform great.  So I don't think a hard limit would be good.
+> 
+I was thinking to tie the block size to PAGE_ALLOC_COSTLY_ORDER, and 
+make PAGE_ALLOC_COSTLY_ORDER a Kconfig setting.
+That should give us enough flexibility to test out things.
 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+But sure, just making PAGE_ALLOC_COSTLY_ORDER configurable would be
+enough here for now. Until someone comes along wanting to have larger
+block sizes.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Question is, though, how could we measure the impact?
+>> This particular value has been in since 2007 (commit 5ad333eb66ff1 'lumpy
+>> reclaim V4'), and it might well be that the original
+>> reasoning doesn't apply anymore.
+> 
+> I've not even seen much of a reasoning for picking the value in that
+> commit.  Or did I miss something?
+> 
+I haven't seen anything. It was merged in 2007, and I would suspect
+that with compaction (which went in 2010) most of its reasoning will
+be obsolete anyway.
 
--- 
 Cheers,
 
-David
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
