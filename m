@@ -4,155 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 542C1CD8CA7
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:13:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E4A5CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:15:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3996B0005; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
+	id 9D0586B008A; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 894C16B0088; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
+	id 9820E6B008C; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 782FE6B008A; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
+	id 897226B0092; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6788E6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:13:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E8FC14A8
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:13:01 +0000 (UTC)
-X-FDA: 84859960962.17.D27C47A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A556F1A000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:12:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BEE06B008A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:15:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 163EEA04C7
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:15:01 +0000 (UTC)
+X-FDA: 84859966002.13.8069B97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2091E1A000D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:14:58 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AQvkCB9Z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e2N/6LAi";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780999978;
+	s=arc-20220608; t=1781000099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
-	b=lP+79mnV5QDv+dsgKrUrY5YLGnACz/z3enR/P7J8e8gH5vgZJ9C5Onq/IEtK/BzGHYS9BH
-	8xuHJ3ei8O2Oafrwq3/LZ+9kHtwQaLuIO3EgSG9+qj0UUYggYaRgUY8bJA71tB1VRk7/Zb
-	Se9Z6lQTJNChysSUVTRgn5/aShQ2ipY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oe68d4vJMX8BTuAelw2E6Iqw/eVTlmlqYKm4lxOkTlw=;
+	b=Sp2b3GaL7q73466uHjPNC6dIhxwgKlFK7US4uJRe4i98bEhUa8ZIczGWNtZmRaJd8XMGD7
+	haD5ynIMyQQJqjahWRxXVMHCQsggSinJC+VxvF+tqrw+eMSAo5J6JKd0P3euPv7vfimszH
+	bo6sr3XKqtovAr3REoZMz9o/izJS9dw=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AQvkCB9Z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="e2N/6LAi";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780999978;
-	b=VNVQjq+b8qFEctnKWhQjzgzPGIeQzGxohyu3xrbSEsJuRnBmpY065iUuh3r6zysPU0jOtO
-	vK5DizC7yKgi7DfQV3Q5ZhCaZicox7VJQIsQUuBDkFe5AYy+0AtclYZDD+MPy2owPEAevM
-	SyCyX8me19zzJCL4dmJvFjIUds4Goio=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780999978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
-	b=AQvkCB9ZsWCBeMpTymGbxBIbGqDKbeguT4R4TaR8Nk8wiTNz+2f8/EKe5PMg1a5lDBLAvl
-	djztnE7kOkTRrO4yEb9i3dg0+vov6RQByrbX6p4Wm+zCVVIQflG/Nf5Uw9GO6F3U8AI6nN
-	+BI/JYrM1Appa+9iCo5zc+EIM/Dk7l4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-19N6L3grMD-PUnp09GEbNw-1; Tue, 09 Jun 2026 06:12:56 -0400
-X-MC-Unique: 19N6L3grMD-PUnp09GEbNw-1
-X-Mimecast-MFC-AGG-ID: 19N6L3grMD-PUnp09GEbNw_1780999976
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490ae016853so35178785e9.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:12:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780999975; x=1781604775;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eG5xXsnRbSzhdk92bHjLO+lAL03tD8JhyLJB5wX13vg=;
-        b=speYmz/eQpfni2OhC9U3EBC6ZXfA5ZSDeZWRs47QkEk2gqMyeiv0GsTZf35ilqMtmp
-         cW3BrDieWp4yJ3LhaTsuLpkvAmdUiGBSGMtEs2oYLwDTScpy5RJTObWfwNz05tA5Blrf
-         a0aQjo/YLNFWjV7z81btH/y6fzQovnj6cAzNFmL5YvxfySpM8I6/cHCe7c1OOtw4w8MC
-         gcPvhkNvZQyUG4mq9MyhZGshgX0ew0k5Zbak2PjfsooIMFBPVgcI/xKQgMmXVLV5u2Qa
-         gwI9SJdnmgTIREcRiFnE36RFIDQKyG1w2G0rSHbXPmKOcdJlY8v4syZoA97mIRpcCpRk
-         AZ/A==
-X-Forwarded-Encrypted: i=1; AFNElJ93H+nRiH28kjvk7mnfupml1xgbjeHkqR8B9KXQNAi5kHtd6mQTjWN2HCWDXXgV8MVnkmlitzu2iQ==@kvack.org
-X-Gm-Message-State: AOJu0YxEx71kCsrEq8hNOuEehX3bHy6+33Q5EmLFGXwGT8cKX4KKPmZn
-	mj12QEJytkCuZ/0nN+0A9ONcsOh/gXf1HIBE98EXoMmqM/PNJDtuemGWPkKGNpj1n81OQ0EmIt/
-	eb/j2UpR8Zy/pnKqysNkiuPfPn4XBoYZZTfrnKu+8Gz8tQJMl1/cw
-X-Gm-Gg: Acq92OEM/63SaEBUcg4r5d3B3m8Tovh5jRgV4zBB5yzS/mooebN2krCUYynQ616Kxsx
-	T8ofqZx2Ikr1ehI1hGUkXr6bYj2vljUaKHSENJMEeZTeEn3GZ/Lz3wNyp67psTmMKsnbVsMfASQ
-	GjWQvziRs9JvOA4itQr63o+HIuZbfjmIWUAeloKV11wfmbkDbigCsgyZVAUMJXRdqWjlfky0RnH
-	4fDHS7V3PcLuL8bzf+rKrMIb0cUS6jHAxqreIbwLKFQve1AAYqF5zmZCr6tBUeJ8/cpIjev4JvN
-	deUf8aGFq3pYaKS3VcYzHjuMiAxtf1JOsmWC12kAlVwUWwKdqJ0ttmXttGr4gxUW7MH8yt+nNed
-	onSVupSt2BRcEqsjgsrzqoZVAjsFAWgs1tK0bY1li8KpwCYPXhX6J5w==
-X-Received: by 2002:a05:600c:3107:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-490c264cc2emr328880095e9.33.1780999975313;
-        Tue, 09 Jun 2026 03:12:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:3107:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-490c264cc2emr328879275e9.33.1780999974756;
-        Tue, 09 Jun 2026 03:12:54 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c15cesm460773715e9.5.2026.06.09.03.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 03:12:54 -0700 (PDT)
-Date: Tue, 9 Jun 2026 06:12:49 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>
-Subject: [PATCH splitout] mm: memory-failure: serialize TestSetPageHWPoison
- with zone->lock
-Message-ID: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
+	t=1781000099;
+	b=c9sC8EVi55vNEyspE8XHkFJcKWvGlZgY5bc9qQfWrfLzBwKfJTU6NkX4LpY406YPBd+FmC
+	VezhtU+/TO7gkwKKvrDwG3i+YeyQwoW8eg8bcl4XN6vIDCjW/hoSw9bSbhEVjbE5GXcRRm
+	dtwm1xlNKn94NbXS8BpDsRbwS4PjgjM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 45DC8435A8;
+	Tue,  9 Jun 2026 10:14:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C441F00893;
+	Tue,  9 Jun 2026 10:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781000098;
+	bh=oe68d4vJMX8BTuAelw2E6Iqw/eVTlmlqYKm4lxOkTlw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=e2N/6LAiZ3lmiOQCT7v1GbceXrHi0XCDbgiPs+4M/QY/AtQXyUFVQBv6VN4/+wwnR
+	 9VQDGaGwK3UVL+oaPqcLFD9l4X4AT7sZrQkpBhgeXSiG8a7K7CAwRz1aUAhoGeQeEm
+	 qKHVHInPdCy3tMRm59aXN7qSmn2uwxU58TpKXnJm42TH63tVOFoVa6rYwAZTkc8ZgE
+	 bJYkg1sCLmFJRaeOPKqr4+NFM1/pNlgp+4u4sPJRyiAlOnVQ/RoBH2nIxGR3z2TNfG
+	 Sf/ronQ3jqRYY4B8PIyoVSPFg7wgqO2T2PASbVCkq7fl4L1w8p96FEMReNNhOZySik
+	 7+0vy7xtx5zQA==
+Message-ID: <aec090c0-137c-475d-9236-fc581bf1c97b@kernel.org>
+Date: Tue, 9 Jun 2026 12:14:55 +0200
 MIME-Version: 1.0
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nDkFEXgaPmOWCSKiFsut3LdB9JKwQi_YqJ-eguXBYLg_1780999976
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260601095706.106551-1-hao.li@linux.dev>
+ <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
+ <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: a545u75tdie9s7zc95c8zi6s55wfnznq
-X-Rspamd-Queue-Id: A556F1A000C
-X-HE-Tag: 1780999978-670879
-X-HE-Meta: U2FsdGVkX18Ce7xLOw+FfEeFmMfbt8KMu6u/W9hHBALLa9ZpW5kq9CTRqJ7CtB1FW7WcVLVS94EJip0PqraBc2zjzrBBaXeIXLNZ1apizgz4h5Rs2YS5nvRHakrYGIi8jo6UGLK/yBPXUaxZCwiq9LNzkU3jTAg+ZE716u/hRPU3VREkECaXD4XeqvG8+fsLb3GEMvqf23FsnwN1a8vuLKbOGj8x9X28f2yWLRcvJqiRyG4RfEnLns2z//I1RK1jFyHdohUvjDuWPGjBZrDu6jLlqMF/Io2Q8nPxSR8h05H/1tuutuGjRP6PSOhsrGjda8gIhFDGNpX/BJf3IyJQKVcNk78kn22Dzj4ePHIExmy5OaTMuknRk0mfFYe0tT/oynArDUfzLyutLfoJcJkz2skwkO0jqdiNS1hpEB//xfPfBUJEl7eOm92Cie+3hQ3OhhvdLS9cM1ImMtptR/anboc/qbljTvxYlzaAI6/W2pueNntRI1vN4p5kvMR8lVfH3WKWnK3eWRHPkoZ5FWMPfb/uVXaM6Gh9iRIuEe/tOJUJ1/YYgRkrM845/npKMn+wNfzu2N/gR+5tE7gxgy9nxCErAmZyIddF5FjKHSQlWmtiATA8+rlyNGJ2meZwRWXLZhAgz1mwNOnioGLQtwszEllBGoiR5f+790XM9PU70ScLpBEBqUiaifcnbFT8HmsCx+0pFe9C6PGPdkyaRxHh9f5ntKpQe0GlpMs1OaNmLordD7m4EESmRtJUf6C9tyAaigUqQODLR2wUkPOOlWAEmjrZf3Iwz6rakhFEUqCA4VvQnap8RNlqTBI2c2Db5M0yJvmBBOWStlRr/+UXoCu1OYtzilW7NyNLLby8h4dRrMauoEFkXQLEEOLOhh+3cby0blVa+vbx4t7yPEFl0ZMlvQwDZGGezCo6sVk7su5J4d6lTgx/5xqqaT9qN0GB1nliELAwwGDGPl02fvuklqE
- hFqw31+J
- eTUxsL0Lzj3X/lc5PbkMWvUTdClKV22dOaVP79Cnj8S5Lexirc0boMDZSLUfPXT1ivso1qCwFDn1jfYKF24S444xIY9W5wboQUcfNOry8WvG5bpFgRzkh4i1VrCK99AffMUsduB1HC2QVUJJw/Qz4ARww2AMv0IzVblPyys909AZXse94/srpN828q9r6MLnjoolQ1DJXZThf37i7c4xCdho6Nw1v+95gGq44gqSb/DQ2Jtg9OvM+hgjb6nLWLtImwxSepjxuDgiT7j+CYFAcLsOTZHPJ/plvySZDKKeOVkZurYTjwilkCzDfXiylX4u+WSRVTgdqWwc2A7G8EMfjbafVUQeTy/cHPY2s0I7C1Yu6yzHe+/ttW0eHMFw93wi76kUmwpIDWTgjL5kS3R3dvn29E6B6EM6AXvSy8Jzi44ZPZmE/F/+LryNX1P8hsjf1uz6wjHhjmI+010FycSyy3m2T0g==
+X-Stat-Signature: uqdhwqcwd3kyodkrkz3efzzy6nn5tppb
+X-Rspamd-Queue-Id: 2091E1A000D
+X-HE-Tag: 1781000098-451157
+X-HE-Meta: U2FsdGVkX1+GkaY5dCdeMa0KqIPSgF8MEbhGCl7M7pq+hSgAKE9/cuTxjxmetVFiInL696aB725nPYUmbs+2+Tic27z5y498wu5hcp0kX972mlB3mdWfTZj7GSSgpZR056WXwF7CQCHdxr264kBgwqVBtEG7yS5fQs6sr0dg5zzXzbmX280cA6lR78ZecEepWKCSvA1EH4QrgigGThsI2bwcouNu8PATm3/rgVjWhHobeitSL6DwbMSK0pFEj0Ztge2u/X4kcG8h0mxJnWOMjF6IGcvzIBB8b+xZY0ImJ0tpv7WcJIz2b2x2MnpGQRoYaGBDYkPOLAQ3fkekPjXn+8DGspSWVDQT7YdfQ52ORr2LCNoWnWx66CPmMSUJh87d+4ku9OdxRAAw0ioCA57HfrIISAirjdIoLjfycznhGgcSFykr0J1Rwv54BBatFcQybw4bWvE0TtRXvqQO4Yt48OIYjVGQVxXKoirZWVxOHgJkrDDDEQpxeVgw3/ZNSLHnXbHMDhYVs2hFnwjtxhQQrCBw1Clzv+/QbUvsN3p79way5XtMgJNqyi73fHnJXBp5boBfcBlOS704pICCxj11FgA0TE5fGxbaL922T72mBADbLYMdN5Ud2iihXZ/qe+kWeVxayVrTCQ56kT4GFc5CTdp0tFyYDi3T8gikUxYa5n4iKEqLsyRSImhzVY+92V6RKVQjtOC45k27zBKMnw+AiMo2vIlcnrwlAuWI5ycf7FvMZdfY+J2aMVFINYvdqotVlDAQzVD/1DNv1HThC/6bOZNcLjUkG9mnGflS9oahICpttdTKRqIr61Lt83tT05KTr7sP/OiOWn8bGz+xuSgogow193tYHox8WHKbjiB992k0BTQBhJHAZCkcQgDlrPyelm4ruJdcLHiKN9UEmHdZ7zlh3OZjuGalv4tkcXVdf7L1Ms4ubT7IPFHw7/mDdxPtj65R/uUi9jNm8j5zkUI
+ xndTorb4
+ jNVD54LzT4XvWx4islckT3+y7TeNg/KxzsDy4MKq7efKBLqDC2WpHARWI6FAj3MQtn8lZ27Wt2ja4J32FOwDCtLl2jakxUlSXshi3GPd0QFJSYfCmikfRQrtt74HJV90PGVatvio0a90fU0wqkU5bO36i3prTa/LO+XcZzCA/58yZvUnQel/PMqSYTHXFKAyLH17b1jR8mVRdGqEs/GAwK7/Zv+0dDd2Qnk44HtZXJuNC1jz1x4VHlChMzSgtzurekCwG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,89 +134,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TestSetPageHWPoison() is called without zone->lock, so its atomic
-update to page->flags can race with non-atomic flag operations
-that run under zone->lock in the buddy allocator.
+On 6/9/26 05:41, Harry Yoo wrote:
+> 
+> 
+> On 6/3/26 1:26 PM, Hao Li wrote:
+>> On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
+>>> On 6/1/26 6:56 PM, Hao Li wrote:
+>>>> Sheaf structs are exchanged through node-local barns. Since barn structs
+>>>> are already allocated from their local NUMA node, this patch aims to
+>>>> allocate sheaf structs from their local memory nodes as well.
+>>>>
+>>>> To achieve this, the obvious choice would be using cpu_to_mem().
+>>>> However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
+>>>> through possible CPUs, whereas cpu_to_mem() is only initialized for
+>>>> online CPUs. Therefore, we cannot use cpu_to_mem() and instead need to
+>>>> use local_memory_node(cpu_to_node(cpu)), similar to what
+>>>> __build_all_zonelists() does.
+>>>>
+>>>> The primary goal of this patch is to improve NUMA node locality.
+>>>> Although the actual performance impact is minor, it still yields a ~1%
+>>>> improvement on a 192-core, 8-NUMA-node system when testing with the
+>>>> will-it-scale mmap test case.
+>>>
+>>> Oh, nice :)
+>>>
+>>> I have a question though...
+>>>
+>>> I wonder if would be better to handle this by e.g.) not returning empty
+>>> sheaves back to barn and freeing them if the node id doesn't match and
+>>> it's not a memoryless node.
+>>>
+>>> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
+>>> places that can allocate sheaves from remote nodes; sheaves allocation
+>>> could fall back to other nodes and then SLUB could keep reusing those
+>>> sheaves from remote nodes even after memory is reclaimed.
+>> 
+>> This is a good catch. In addition to the fallback mechanism, task migration
+>> between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main() can
+>> also mix up sheaf structs across different barns. So yeah, changing allocation
+>> locality is not a silver bullet.
+>> 
+>>> If this works well, we probably don't need to handle it in
+>>> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they will
+>>> eventually be freed, while covering the other case too?
+>> 
+>> freeing the empty sheaf if the NUMA node mismatches instead of putting it back
+>> into the barn is indeed a good idea. I like it. But unfortunately, my testing
+>> didn't show a clear performance improvement, though there was no noticeable
+>> degradation either. :-(
+> 
+> Hmm... the idea still makes sense to me, but yeah, it's not late to fix
+> it when we have data to back up.
 
-In particular, __free_pages_prepare() does:
+I think if that approach doesn't complicate things unreasonably, it makes
+sense to do it even if there are no clear wins (as long as there are no
+regressions).
 
-    page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-
-This non-atomic read-modify-write, while correctly excluding
-__PG_HWPOISON from the mask, can still lose a concurrent
-TestSetPageHWPoison if the read happens before the poison bit
-is set and the write happens after.  Will only get worse if/when
-we add more non-atomic flag operations.
-
-Fix by acquiring zone->lock around TestSetPageHWPoison and
-around ClearPageHWPoison in the retry path.  This
-serializes with all buddy flag manipulation.  The cost is
-negligible: one lock/unlock in an extremely rare path
-(hardware memory errors).
-
-Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-in this file operate on pages already removed from the buddy
-allocator or on non-buddy pages (DAX, hugetlb), so they do not
-need zone->lock protection.
-
-Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
-
-Sending separately as suggested by multiple people. I also added
-a Fixes tag.
-
-
- mm/memory-failure.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index ee42d4361309..3880486028a1 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2348,6 +2348,8 @@ int memory_failure(unsigned long pfn, int flags)
- 	unsigned long page_flags;
- 	bool retry = true;
- 	int hugetlb = 0;
-+	struct zone *zone;
-+	unsigned long mf_flags;
- 
- 	if (!sysctl_memory_failure_recovery)
- 		panic("Memory failure on page %lx", pfn);
-@@ -2390,7 +2392,11 @@ int memory_failure(unsigned long pfn, int flags)
- 	if (hugetlb)
- 		goto unlock_mutex;
- 
-+	/* Serialize with non-atomic buddy flag operations */
-+	zone = page_zone(p);
-+	spin_lock_irqsave(&zone->lock, mf_flags);
- 	if (TestSetPageHWPoison(p)) {
-+		spin_unlock_irqrestore(&zone->lock, mf_flags);
- 		res = -EHWPOISON;
- 		if (flags & MF_ACTION_REQUIRED)
- 			res = kill_accessing_process(current, pfn, flags);
-@@ -2399,6 +2405,7 @@ int memory_failure(unsigned long pfn, int flags)
- 		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		goto unlock_mutex;
- 	}
-+	spin_unlock_irqrestore(&zone->lock, mf_flags);
- 
- 	/*
- 	 * We need/can do nothing about count=0 pages.
-@@ -2420,7 +2427,10 @@ int memory_failure(unsigned long pfn, int flags)
- 			} else {
- 				/* We lost the race, try again */
- 				if (retry) {
-+					/* Serialize with non-atomic buddy flag operations */
-+					spin_lock_irqsave(&zone->lock, mf_flags);
- 					ClearPageHWPoison(p);
-+					spin_unlock_irqrestore(&zone->lock, mf_flags);
- 					retry = false;
- 					goto try_again;
- 				}
--- 
-MST
 
 
