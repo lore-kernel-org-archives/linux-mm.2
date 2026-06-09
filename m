@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E94BCD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA7D7CD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29AB86B0005; Mon,  8 Jun 2026 23:37:13 -0400 (EDT)
+	id 0CC5D6B008A; Mon,  8 Jun 2026 23:41:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2250D6B0088; Mon,  8 Jun 2026 23:37:13 -0400 (EDT)
+	id 07D796B008C; Mon,  8 Jun 2026 23:41:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EC786B008A; Mon,  8 Jun 2026 23:37:13 -0400 (EDT)
+	id ED5106B0092; Mon,  8 Jun 2026 23:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED8A36B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:37:12 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4834D1C1AD9
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:37:12 +0000 (UTC)
-X-FDA: 84858963504.24.7BC51F4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4831980006
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:37:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bA0CPMlq;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780976230;
-	b=sZBoFeHSdpXp0uSJD0QWUY+I8s+Q4VIlx6aYjMMJDuaEtEx9axpS1tBIHLtdfH/fNZS6Z+
-	HSJgNconNPEfDND4MslJZl+r13fDkEIRoWuudZjPfV9fhikZGMp+PjHBInWgIC4e+/jsnp
-	g+fvgeswWOnGlwYUL7J/fmnHFvnN280=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bA0CPMlq;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DB4726B008A
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:41:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72318A03BD
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:41:27 +0000 (UTC)
+X-FDA: 84858974214.12.1C7B9EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C81ED140008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:41:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LY854tlU;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780976230;
+	s=arc-20220608; t=1780976485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=sAU94trGdt4pmC8akWxyY2yODZN6Ff6XllokUmBz0fw=;
-	b=8hF/b29JOuBlD9hB5tmh3JcoNIyrQo9iSX/QQQE+iftSANzoRlc/+3Lbvl13FfaCdftsB5
-	Wa3tXGmPs+TTQfL/9GChmMD1pd7Hx3N9TN4ddt0da9dyqfrIk8ETqsUXC3S+CiklTY4vxd
-	ryTsEovGKowsNP7ArY0oXGEOjXeoGlo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780976229; x=1812512229;
-  h=date:from:to:cc:subject:message-id;
-  bh=KW5C4lJSk6O2gOxYt1A2csvxMRKpWeYC2DUHpt6Hpco=;
-  b=bA0CPMlqeGN/jTQLjknJNTAZnoF5asZHt+NHIFjhsa+MpcEM4geACaBU
-   8OIwZQHIDRVefPoXqpvOcdUJp4kOZYRTNWaUdH7sJOYkoAOYosppIfmXZ
-   AimfrFeMyhfZdv9RSji1eF3BK0rpACtnqYcquQm1fa1JRRxkzNdx7g1yu
-   tmaSHxmpilLul9iGsa3ZponLRcDyZueTv7rgJYdZ3nQ6TXMss3zQZZCBK
-   SQ/iDYnXRz+eAT8DU4sJiefpnTUrWYJnd9g5esfuE5J2DyrcrLrR/8CHN
-   L4KRa3LoYkCYuZKthEjqhxaJM0W3UlJc0voKRkZM9d1GQpbyMMtsrL1o7
-   g==;
-X-CSE-ConnectionGUID: 8ouTqUXTSBqhtWCiXE/Uwg==
-X-CSE-MsgGUID: bNujCjXUTYysZA171oe0OA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="92050281"
-X-IronPort-AV: E=Sophos;i="6.24,195,1774335600"; 
-   d="scan'208";a="92050281"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 20:37:08 -0700
-X-CSE-ConnectionGUID: n2nXO1NuTPSYrVoazEOnig==
-X-CSE-MsgGUID: F8H7oA6wS960+pPHh8laNQ==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 08 Jun 2026 20:37:07 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wWnGy-00000000JaG-22YX;
-	Tue, 09 Jun 2026 03:37:04 +0000
-Date: Tue, 09 Jun 2026 11:36:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [rppt-memblock:fixes] BUILD SUCCESS
- 7c2eee9c136734825ff524dd8b2146438a4f8250
-Message-ID: <202606091134.TX4vLFgO-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4831980006
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qyQXosIVlm1d2ieq06VqSov3tK1/uj2RCw2AMDVsioc=;
+	b=FGFgL5jzPn7zgoCAMSI5EHlYOLS2gPbkG4UAtgVnvRFHrBUuomf5ELgpJp+dnAYa8jjg4Q
+	Sg5tT2u7KUac/P1U/Fx4Qo+SBuSk3bVSrSR8GjtOXfzB5HSmwxo5ZmaDe5uD/NRbeE0i82
+	icTdnR9BuppCVGrgoT3+FCcTdJdUpHk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LY854tlU;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780976485;
+	b=zyHf541pJnrZ4R6ovaAFdXOf1DJOZKybQ0Hdh301eGqe1wNO0Pzq2oibiMs6wuAjOZwa84
+	zGEWL1S9+Un0QobpNf5j3aXxjAXWA1dJ9Fr6t15joN0fszYXOi1eZLUn/yYkx+ucKBEFZ0
+	nRLvED2+afO868MRiDmRPDIMNKSEQHY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C329601FD;
+	Tue,  9 Jun 2026 03:41:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3984E1F00893;
+	Tue,  9 Jun 2026 03:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780976484;
+	bh=qyQXosIVlm1d2ieq06VqSov3tK1/uj2RCw2AMDVsioc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LY854tlUWARShj8og/Lt4O7B/KQkrffzr1mcnOnwau0bA8SQwHE4m+rhQJdSqRjow
+	 G5dB0CcwUxxKaV+FXI6P8cs3TfXU+lQDWtXs/HZdQiT01DBMNh62p8LWOXfTq4KcPk
+	 l2QR25t/3we7HjtMxgAlEKB7XznXfbVLt1ZnV3YFBCJVPWleyQcAiT76iivgcU1Vni
+	 q8cJZPEOCNEExzTiKWef9IQU0gzYhCtj6V3YCyZ1K616IFPm8wkkQ5N6ODiaeCh+ij
+	 GzDALhlxx/TZFy1ugnHb/2lD/8u9JhfRJLYEXBxqYCrT6HZ70AZx6ZO/yDAYdLa7wE
+	 4rdjsd4msd/hw==
+Message-ID: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
+Date: Tue, 9 Jun 2026 12:41:18 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260601095706.106551-1-hao.li@linux.dev>
+ <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <ah-naIiz09TTBpXo@fedora>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------icvouGHUGgkSuPMt58PwY0t3"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C81ED140008
+X-Stat-Signature: qjcsn1es7nu67o73dq1roxm1a446ycai
 X-Rspam-User: 
-X-Stat-Signature: fx1yznzgzh7qtm7c4jwe876zhw9p6hqu
-X-HE-Tag: 1780976229-331284
-X-HE-Meta: U2FsdGVkX19iLkYMXE3e9Kpk4lkD2lF2wS4OVa6xGlAlBdiTTBRBkQb15xjRYCf6KpnANZQ7GmM2E/5IfbCcOToWtAWzEjDIWS0NVZJ3okO/bQCmeFZm8+/LnK6r7t/wMVRK0Y6mrZo3cqIT5wknmF00uUL7G+zbCzzaMg++mgPmET5qi3vq/fuNB9IAgJV1Tt5gXyGSdrS9xt5DSya5axgKtNpCoxtU+LpGO9E+qaJQ000mLpNhzzRaI1VK0lcZgulwPDcfkzAhGQ83Vjp6y1oaQmET0eNrFypYxHAN4nYYeGIo6D/k9m2q9ddkfD5++cWYCr+i/sxmwuE47lwWgqTdCF2AgSQEE8dyR1HtnbzjABDAqB9Bn9Rur5Z88wmhsYZR48dqsajlsYJ/+m0qzMcbiHqId+I+l6nzNeAmlt3babnuAiQcnMe5X9FfY2RwdTcnqu0mJ1zia7DzIMRbMbxce+9ZN617mm8BkK1wxKvgvnNZ3Xr8v/AucHHw4ImQswqm8tLZm+xHf5QX85yTUuY4iND1aShq3kPicOBBoBldAaXp5A1gRZA6ypZKgSPH4Cc2iyViEJ3SjSjcovwnEzC8Jruli2QXkUNr75W8ELywWsgMDhsT6uFCHHneVwcOpIq2RRwpSl/fd49Ljxdtrp8UwwE+Mjfab7STATQeysPvAJpJmDx98phEs2vrfaED6vsju1wqAltUJ8XBstTpjWEfRMXbAfUmQrc6DAgMy5uFHggB/kTlOlTCipWk+IDsF6K7tAn5AAJl3rzcjY6ajnb5n1r7UqflULym1pd+3GBUwMKf88Q7pyNaD9H5UNnPdu03SVMz3kdeHZbYjyMfUJhXLqSy7TdN2j42s3DhaKLh7H4b1RdisElkDoAx/gscyYObWMQjLrjS6Vr2bN/eezC4gsVwjWdaCAPEB7eJAurGhycYgdcL7dfF3BLD3crt2ymPO7EKzX7aAYNydtn
- T4kWvkbm
- Ncv2t4EzDA4Lg7DOWImhJKNP94xkTV7JQDwUwovfnIdqLKboxk8llIa7MpzyHI97YXHKMEnzFHEFpiNXMxqZnbu/JLr4T8Y9mdXEMkzlfc2gU9XH2bt2Y6GqB7ABkyQH5Xqi/rxjGTgNaf5FqvdHHejUBtbXkWLTTdqkDia/cNHTxr/4OETc0H4u/iPjsPcJqJnjXvTn5k5XjY1I=
+X-HE-Tag: 1780976485-400459
+X-HE-Meta: U2FsdGVkX1/LBJS44qZLPpnqFXqSiihFUfkuUtZSJj83AbVmTnK5kED0dBL7pl/iwu2Ngd2yxXURDKSqMikFACIJ2iSZe/eqF1/Uf0QJehxoU2htb4kKLYuvXz7ZPpGnoU739p8Iuqg+3aL0ouGXfYzMW5yGTuOvROrZJjbNVergE9U4M1sIdZtutoXpx6Y4LhTnutXk6BNxeBapcZBxpd9RJgG4njBISNHpEJhPQlRo1u+jjt2GYoKoeUEWaYsQBOmVjlmKiaWnYetvwp1+HqfyHAZPnawYh4ABBHzyRD8eNPNJka9G1JG39JNzL8VS/O80WeeI0LPQxDPODwQ9jyAx3a01pmvZ6uxEvK2JEEOvtokGfyN6Aph+8dgBYZt3SLKQdM4vjXePXi14vn5tHjNkkF6CXYPjYBEgxTzZLTVfq4bBZZ6+hm9YWTPdiLoDEttDyTlKF6zc4cT0KhLLoOe0mp+8xhC3Gmky0h3F8HcWZUfQurEEvUQ/g7NgC3LG3EPdYLGtu7nTMJhU30CmfGiE9XmqvSUCywR7JTlYBw4FMyaAlDdh/tS7JRcftYfHuARDjQiOtf53EAmnWEKvdvRYT+flDLwzLtP5U+8UVohLaynOc8bWqNw0YFBt6RmRgrywT9PQnm4mpdWx1f+MX0SoLTY/1QlXOcEgM1ctOzRBjno42vil8cp5JuLBQdcWVjB0XjEvmgWCV117HrXgdEjPshrhxNDwB415eZt2AqJvxj6CV5SBUVJi12WdIMy03f4BVBMP1T74NkchijYZ7lVW9oHuVx3OTLEncDmGmsILqxgHrYZiXSG5zafw1Kc6pIX47aZcV9iptDhJX/ccS4G8xnxkv8pZb1vi0Mv7y4UO1zqCOJsydKs6Oak9P7TM+2Ql35rAjqCXL3KLbBUJUldbbHeW7Rck7JNnywVIIWaw0e47C7GN4jSUCm2IWDWx9BjInOVJSazl28q4Gnd
+ malJhoid
+ 3n2BkyvwgHCIB0ncHWj9tD0MYJxMEqYW+kjyTXeZLumaHeZmWwrDa4xtz1BfABpV0roPCzlwjB/fmy9vck1xaThu2A3Ebq5lp5q4uRrs2f04fEX7EuNs3YfGOZn6i3DP4yW6A2l3NkjxhHL+PMhuxkIP03OOzAYDNZjW26/eL8PHypVZh8ACqlJ1Ja3tzOlvpROW61soeqMOd2+Isj2cUnjJY7Kl/cXBYpMsEDy4JeH0t0LAbfdFurffwJGzvGeWN5H1Yp8Jiz4g8yZBU6HPt9RrXmCw+DauhbpkB49SxJNEf0GA/o0IVrCicYCcrVzxswtsSh1bnBNBO7/ZiV1Meq6W2CwG8JDNMkzmuTmQkgtYCUkoBj58K6hr7fTcEZcFJjA/L7gQyiK9gqMl3lsExNbE/2ZAvZgtyFAri8yIl8BOX/PWr+shUGno5b+sCov7pHSGiaUL7DfIo+Qw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,143 +95,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
-branch HEAD: 7c2eee9c136734825ff524dd8b2146438a4f8250  memblock: don't touch memblock arrays when memblock_free() is called late
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------icvouGHUGgkSuPMt58PwY0t3
+Content-Type: multipart/mixed; boundary="------------LsToChgsNI00hjF1rIQcAz1L";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <5d8abe93-edd1-4b18-9ea4-7731dc831223@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: allocate sheaves on local memory nodes
+References: <20260601095706.106551-1-hao.li@linux.dev>
+ <33506b25-ab2f-4f31-a380-7c0fe65567a3@kernel.org> <ah-naIiz09TTBpXo@fedora>
+In-Reply-To: <ah-naIiz09TTBpXo@fedora>
 
-elapsed time: 9939m
+--------------LsToChgsNI00hjF1rIQcAz1L
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 123
-configs skipped: 2
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                   randconfig-001-20260609    gcc-15.2.0
-arc                   randconfig-002-20260609    gcc-13.4.0
-arm                               allnoconfig    clang-23
-arm                              allyesconfig    gcc-16.1.0
-arm                   randconfig-001-20260609    gcc-13.4.0
-arm                   randconfig-002-20260609    clang-23
-arm                   randconfig-004-20260609    clang-23
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-16.1.0
-arm64                 randconfig-001-20260609    clang-23
-arm64                 randconfig-002-20260609    gcc-13.4.0
-arm64                 randconfig-003-20260609    gcc-15.2.0
-arm64                 randconfig-004-20260609    clang-23
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                  randconfig-001-20260609    gcc-9.5.0
-csky                  randconfig-002-20260609    gcc-11.5.0
-hexagon                          allmodconfig    clang-23
-hexagon                           allnoconfig    clang-23
-hexagon               randconfig-001-20260609    clang-18
-hexagon               randconfig-002-20260609    clang-23
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260609    gcc-14
-i386        buildonly-randconfig-004-20260609    clang-22
-i386                                defconfig    clang-22
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-20
-loongarch                           defconfig    clang-23
-loongarch             randconfig-001-20260609    clang-23
-loongarch             randconfig-002-20260609    clang-23
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260609    gcc-11.5.0
-nios2                 randconfig-002-20260609    gcc-11.5.0
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                         randconfig-001    gcc-8.5.0
-parisc                randconfig-001-20260609    gcc-14.3.0
-parisc                         randconfig-002    gcc-12.5.0
-parisc                randconfig-002-20260609    gcc-16.1.0
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc               mpc834x_itxgp_defconfig    clang-23
-powerpc                        randconfig-001    gcc-10.5.0
-powerpc               randconfig-001-20260609    clang-23
-powerpc                        randconfig-002    gcc-8.5.0
-powerpc               randconfig-002-20260609    clang-23
-powerpc64                      randconfig-001    clang-16
-powerpc64             randconfig-001-20260609    gcc-8.5.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-23
-riscv                               defconfig    clang-23
-riscv                 randconfig-002-20260609    clang-23
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                  randconfig-001-20260609    clang-23
-s390                  randconfig-002-20260609    gcc-16.1.0
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-16.1.0
-sh                    randconfig-001-20260609    gcc-13.4.0
-sh                    randconfig-002-20260609    gcc-11.5.0
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260609    gcc-16.1.0
-sparc                 randconfig-002-20260609    gcc-16.1.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64               randconfig-001-20260609    clang-23
-sparc64               randconfig-002-20260609    gcc-10.5.0
-um                               allmodconfig    clang-23
-um                                allnoconfig    clang-16
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-23
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260609    gcc-14
-um                    randconfig-002-20260609    gcc-12
-um                           x86_64_defconfig    clang-23
-x86_64                           allmodconfig    clang-22
-x86_64                            allnoconfig    clang-22
-x86_64                           allyesconfig    clang-22
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-011-20260609    gcc-14
-x86_64                randconfig-012-20260609    clang-22
-x86_64                randconfig-013-20260609    gcc-14
-x86_64                randconfig-014-20260609    gcc-14
-x86_64                randconfig-015-20260609    clang-22
-x86_64                randconfig-016-20260609    gcc-14
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    gcc-16.1.0
-xtensa                randconfig-001-20260609    gcc-16.1.0
-xtensa                randconfig-002-20260609    gcc-8.5.0
+On 6/3/26 1:26 PM, Hao Li wrote:
+> On Mon, Jun 01, 2026 at 08:28:16PM +0900, Harry Yoo wrote:
+>> On 6/1/26 6:56 PM, Hao Li wrote:
+>>> Sheaf structs are exchanged through node-local barns. Since barn stru=
+cts
+>>> are already allocated from their local NUMA node, this patch aims to
+>>> allocate sheaf structs from their local memory nodes as well.
+>>>
+>>> To achieve this, the obvious choice would be using cpu_to_mem().
+>>> However, init_percpu_sheaves() and bootstrap_cache_sheaves() iterate
+>>> through possible CPUs, whereas cpu_to_mem() is only initialized for
+>>> online CPUs. Therefore, we cannot use cpu_to_mem() and instead need t=
+o
+>>> use local_memory_node(cpu_to_node(cpu)), similar to what
+>>> __build_all_zonelists() does.
+>>>
+>>> The primary goal of this patch is to improve NUMA node locality.
+>>> Although the actual performance impact is minor, it still yields a ~1=
+%
+>>> improvement on a 192-core, 8-NUMA-node system when testing with the
+>>> will-it-scale mmap test case.
+>>
+>> Oh, nice :)
+>>
+>> I have a question though...
+>>
+>> I wonder if would be better to handle this by e.g.) not returning empt=
+y
+>> sheaves back to barn and freeing them if the node id doesn't match and=
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>> it's not a memoryless node.
+>>
+>> init_percpu_sheaves() and bootstrap_cache_sheaves() are not the only
+>> places that can allocate sheaves from remote nodes; sheaves allocation=
+
+>> could fall back to other nodes and then SLUB could keep reusing those
+>> sheaves from remote nodes even after memory is reclaimed.
+>=20
+> This is a good catch. In addition to the fallback mechanism, task migra=
+tion
+> between CPUs in __pcs_replace_empty_main() and __pcs_replace_full_main(=
+) can
+> also mix up sheaf structs across different barns. So yeah, changing all=
+ocation
+> locality is not a silver bullet.
+>=20
+>> If this works well, we probably don't need to handle it in
+>> init_percpu_sheaves() and bootstrap_cache_sheaves() at all as they wil=
+l
+>> eventually be freed, while covering the other case too?
+>=20
+> freeing the empty sheaf if the NUMA node mismatches instead of putting =
+it back
+> into the barn is indeed a good idea. I like it. But unfortunately, my t=
+esting
+> didn't show a clear performance improvement, though there was no notice=
+able
+> degradation either. :-(
+
+Hmm... the idea still makes sense to me, but yeah, it's not late to fix
+it when we have data to back up.
+
+> I also did some more testing on my patch too. Under CONFIG_PREEMPT_LAZY=
+, the
+> improvement is only about 0.5% (sometimes 1%). And when switching to
+> CONFIG_PREEMPT, the patch doesn't seem to yield statistically significa=
+nt
+> benefits, likely because sheaves get mixed during task migration.
+>
+> So, perhaps the performance gain just isn't worth the extra complexity.=
+ It's a
+> bit frustrating, but maybe we should just abandon this direction and ke=
+ep
+> things as they are... :(
+
+Ouch. Don't let it get you down, it's completely normal for experiments
+not to go as planned.... ;)
+
+> Thanks for the feedback anyway!
+
+No problem!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------LsToChgsNI00hjF1rIQcAz1L--
+
+--------------icvouGHUGgkSuPMt58PwY0t3
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaieLXgAKCRCGXBN6rc5S
+1qrpAP4gLfwO21CzsCViBt4GtnDpBmQbtO9g3lhYDimYxD6SHAD8Dm3/YTjrRZNF
+LYUGhDRyGBnaix6vUOKP11K78F4DLg4=
+=Bx/E
+-----END PGP SIGNATURE-----
+
+--------------icvouGHUGgkSuPMt58PwY0t3--
 
