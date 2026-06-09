@@ -4,95 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BE63CD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CA8CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A749D6B0005; Tue,  9 Jun 2026 10:33:35 -0400 (EDT)
+	id 014806B0095; Tue,  9 Jun 2026 10:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A24D76B0095; Tue,  9 Jun 2026 10:33:35 -0400 (EDT)
+	id F07596B009B; Tue,  9 Jun 2026 10:33:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961FF6B0099; Tue,  9 Jun 2026 10:33:35 -0400 (EDT)
+	id E1DFD6B00A4; Tue,  9 Jun 2026 10:33:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 84C8D6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:33:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3898FA05EC
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:33:35 +0000 (UTC)
-X-FDA: 84860617590.10.2087B3A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D20446B0095
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:33:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FD591C248A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:33:48 +0000 (UTC)
+X-FDA: 84860618136.15.2118498
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7A8211A000C
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:33:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jR6h5cLR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id DEC5F20008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:33:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kHUR4rBF;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781015613;
+	s=arc-20220608; t=1781015627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yAwQzCcKV6xIGEtBzqxQ3COTqDOfT90qmmiQBuBzWZU=;
-	b=y3ZHC/4XKd0SeT6LQlthhmL6ipHt0WzKmId1MNIiAEi8mvaWFpbgP+SENvTqCkzmN8Xuqz
-	YCwSGOrmLlDEEYSSIH3R6sx/kip197gwYk+X0KF5yUJinRGHpmEaxq4u2muYq2z9eULH1t
-	qV/ESQbgXDHagY9povvTRqpo4T0xy84=
+	bh=741Q+uof+wQFQ/KVIzOQr/dYcimcckvcggwLVqMRUHA=;
+	b=DEbRIis1jipRhZoh7G5fTvoJ4S/pBk9EXtj8ewgsiXpghwr1KLsoMxOWGc384TubPH5wOo
+	5KoA/YL7pfw/1uGVxKFiAkLdVQva9Z+hJvAASUhfPPi6Cgp3F7+46WXEr3+PLdqRHxnwND
+	KykfSXEl7kFG+fFLVCYOynzLFe6ov78=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jR6h5cLR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kHUR4rBF;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781015613;
-	b=lJZJR5MmIr3jlZ1XXhtgQut+YE4PhPQxZsnaWc/m1mFKJZNPqtjtYXrQ00icRqLcGTubow
-	q/ecU6QL2eg5o2Z/hn4Na8xS201Dp8mFwqEp93h1id2HpbcvSwJy8BUIj26lO4gn1TNFIM
-	VmaYv4qdiEBrDx4hnFB0afZm955aFWs=
+	t=1781015627;
+	b=eA7F3W5hJqivvLHMerPlJjqR7bBTiQbyX1fWs6muLz4tUKZS9mMeMxevI6kVDK6lSRNCnq
+	QWZ1FxfTawxLXy/RKMpn4JKFiEhhwdDUCCEhCUP3dFpkQA7H/GPAW8vF2Xur/tjeXR0DnM
+	mPDZjcR9sfM70BrKtEC638niuqwKDvA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B199E435AE;
-	Tue,  9 Jun 2026 14:33:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4439C1F00893;
-	Tue,  9 Jun 2026 14:33:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FC3D4396F;
+	Tue,  9 Jun 2026 14:33:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5170D1F00898;
+	Tue,  9 Jun 2026 14:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781015612;
-	bh=yAwQzCcKV6xIGEtBzqxQ3COTqDOfT90qmmiQBuBzWZU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=jR6h5cLRTujiltPSm689nN920+3X6yo5OD4R884+TkTANE/D6veFgcNFK8J9g6K2Z
-	 OK4at4p99jOAG8zdRm8aWzewXlItlUeUEUh4JkkNSplo/jRskZZ7h9b8BE80utgoTy
-	 bLGqLeqXxHFzP92wW/MtMiSWEXdUaJPdXhHOz2+E+Ay4Hm8rGEzjykfbW2yqIX1ItT
-	 DXJ1F54Fyvux8kMJiS9ZauKV9V5vnjHC4ZC7fKP1PnC/Ht0w1fWeGT4xRMewWcwo5e
-	 xK4sOtVyJOp8m4bnjyXthx/HCjrBBH6toZ87zTvyau3Fy/kYJFCwBdBOKl2G/rEO9B
-	 +BP2y6GDEmaMA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Mike Rapoport <rppt@kernel.org>,  linux-kselftest@vger.kernel.org,
-  shuah@kernel.org,  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  skhan@linuxfoundation.org,  linux-doc@vger.kernel.org,
-  jasonmiu@google.com,  linux-kernel@vger.kernel.org,  corbet@lwn.net,
-  ran.xiaokai@zte.com.cn,  kexec@lists.infradead.org,  pratyush@kernel.org,
-  graf@amazon.com
-Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
-In-Reply-To: <aidnjw5pH_z45gJT@plex> (Pasha Tatashin's message of "Tue, 9 Jun
-	2026 01:14:53 +0000")
-References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
-	<178083348872.1648214.17778188633648887952.b4-review@b4>
-	<aiVp5RlbWRz5VnPB@plex>
-	<178091437240.1648214.10761111570005003901.b4-reply@b4>
-	<aibYJvzQQnpoN6YW@plex> <aicF5Sa11B4ujfSa@kernel.org>
-	<aidnjw5pH_z45gJT@plex>
-Date: Tue, 09 Jun 2026 16:33:28 +0200
-Message-ID: <2vxzjys7ss07.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1781015626;
+	bh=741Q+uof+wQFQ/KVIzOQr/dYcimcckvcggwLVqMRUHA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kHUR4rBFVL/T4vICCboCXOzze8FceQXTZiNRz6s3JJecr2Gjc5VWC7rXex5kGkMoc
+	 Yk48rvqV9UXv+9V60aig44D5VNszwAhafWcxBuj5+M2N0czUG0DExOOCYaSUMx7vpp
+	 J3GHHxhb9QlViItZPlpnAniPaf/BT7/QPDEzlFceuCZGdt5KhZOHfaqrkhzBeRhV53
+	 8QpeXxAeahVqJiuTsEaUuO8ndu1Aee/5B39ehZ9M/Il5fHz1sF7szV7FKFcrnkUxCD
+	 ZnSxOBhaKDj4vAXzWw7LhiYT9ICmbpNc8I15bGENBjm88o49kDzL4RiVr868y6LsKC
+	 2bgWvh2KIcuJg==
+Date: Tue, 9 Jun 2026 15:33:40 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
+ accounting
+Message-ID: <aigj8wehALMDySTC@lucifer>
+References: <20260609120443.71864-1-lance.yang@linux.dev>
+ <7d081256-5b30-4e3c-b948-85ba76ad0e1d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7d081256-5b30-4e3c-b948-85ba76ad0e1d@kernel.org>
+X-Rspamd-Queue-Id: DEC5F20008
+X-Stat-Signature: xaudqcfo41it9zw6nipxyw9g5xea1baa
 X-Rspam-User: 
-X-Stat-Signature: ytzbi14ce1n6uxnj7yizxgi5d68eg9jo
-X-Rspamd-Queue-Id: 7A8211A000C
-X-HE-Tag: 1781015613-261275
-X-HE-Meta: U2FsdGVkX1/EdEga76VZwetQDwkLc34JxKULIW1XwTWxGrLmbmc0aVJaihggXI73k1FyrOJzCoS13n5Rw4aOARglWH8qGu62tIsjmtzo+P/tgKs8eW9phGmHhPgTXv3lo597lHi4j9oDi/kZ3Sx3FJ4tz4P5tlD2OudvmxmKKko4PmKG6DZaJ+rUPO9Lisx6l6SkfUenIDnoYeecoZBH/3SnF+prX/DpxzkifeJk0ahGfwN2NDDyRrhi9Khj87L69Ye2sEmy8NZYhh1Q54wcmlshEx18tYwTmNwowRzjZNTFnNWXl/iGCY4Q7FtbUytjJdtEUyT54FSgwp3QRQfUjuEXoM9e4Q4IX35/m4UsFrEveLmBzj29VdlzBas3T7RJLWNaZGfizf9tdk9y/dmvAYnpvbrvkDKzSUPzE6EaeWpLpUDiQ+EdezuBgRzNRK60RIiK9m0fdYfj1TT11dx7zlqdzaqMHJsA/9u6VuYgcUNbKl4j/9aiBqErlxDgtLuX9Y3kWS814Sq1H2iPD0CeUvgQtQL4NeVILOXbxSS1SZUebeDnJ6Zz5DngtNF6fmdRwHH/w/vSMAE/ptQKStpi36qHkriGi6vo7I6Guy/rQwrSvcewLB/p2gp2eMaXJeKZxy9vm/1VZoRibR623r9x3So7hvIsgcDb0zji/YTOdukXNPzVc6YdPXjBfykTkLog0ICYkFJPO+Kdf39WXjMdrbdXZM0wiiTKupjA61JYTNr40Lrxe4FTpWktRQscSaVJ2/FayS435bTyTvVtucRHPdRWstixJ8mmkE3DcThBvsGohL3Y/k3MSfulX3pMHIDxcpAHgHfIqjnM1mhXIuZnBvgq6azMqlEI0yQTEY1fNcUsMmvynfO1yRuMaEVLVIK/oVE1eMI7Ys2hRUrDsV6IMZRSFuXdTBTi4Bz/ZTcVA38w5JUkwW5UIAqKbav+gNtxlPC6gbXcb5wLZQT6a4B
- JIJodFLK
- FK3FtuICJAChaHQo+QmrqyByULwuCtTByNkVfCe69t2KpNnQACvTSEg8RZKNualMrhmyPkLQcBvXANk8KSTg8KdfbWQ5VYUPQB8K7heHerYmIj0OEQsjRePFLidK5gKzCykyshDADu6afIg04rgAATEHUNxp7yxJ0/hArR9zGpTn0d+COuFOTaQFtv0pcS2IWSaReEXLTSN9FL6CV3t6PpdquKA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781015626-496561
+X-HE-Meta: U2FsdGVkX1/hNuIGSOPx0ZrIc5ySqFFI08K1emaeU6dwjWU2PxuPzg0VxI1lgjn21+vZC9MOXfk1IYlkacNoXS4N+HI2qz7OBjArPbNIsH8LI/yFd1mwu56Of9pCI+vGQY1HkVJqC1Gp2mWWeLlkj9BWrWdUEr8w7HdvrRZyZa5L51xqyIULfWrpZ90eM9BPRc3QvzrmxQbFW+G5qj/6gm4d0jauikymHNNdRh/cHTMC3uAkhnqMFZIughuqxAU9jyZf+5OvGXil+xB3WyQ3+K/oRsy1s5lhO8KepVUS8XftlNaFDbmZCoxBk6ImNcN0eZzs810NzX/kRlSicB9ggoxcMzVQirMMJtmYPBefpx4T+ACPnrwS/qeVSEnJwv+BW6HmCHXXzfmqDbPwEPKFyB5jUdst+pDVdWOzRTdN8ONJbgU31xJkOOy3qUof7F9sdOHF8j/Ov+3IKfisvnO9SDiZVOpyMoirgXtBRYl6Fjb73pnjuEjoKPeZwIFxfXAJ/ezCDD08nbgce5uZE+8WU46SPnCEcmHf3AEB5Xr5Z8GH4P0b2NgLNaBq1ekPsknh5w6gbyLqPsf/KQjVGAU87eV8dOOq+BzYlrrEKpZxCnHXl6L/bYkLcMIsOoGTurst4TTnla50v5F9Hw443qtUfbV3/qMsj9toA7Ve9RpRVFI4duuZu6x/ixJjgs0DHTs9oklOOmrqkQGQUL92RziIKqQ/V7N7FJZiwtwAZGrbqIRCPyToa2MGGUPX/iYUzzgwJIhEBIPTzOn/XRlUHeoL+rFU/OO2tiwmJOg2Ekxgxz77wv5ZL1Z0WMhXb+RGFoAK23ZWj343S0pr9nApZJIRS3afYxJfc6kiZPmZYqzmUZiLFnsSPbyPAqwJbQKokuwpl0Y6d5MMgctW72495c4DAEXsOVAtMtrdVWOXRSVhzXtb9Et6FLi3gg8PRky0fzEm8/8lGSSi5UgQsJbGXCV
+ x6p1Hqz2
+ B80tMzCayr0evidw8VYlDnFd+vDkUheBTr6LlQ3sVqM8Sy3i0QUiJy361Tvp41jOzt69/24ur99ab/6qzSFtHp1y7VL5gk5700jAxSx7Av/moHZ6plmDH36JYCCNMfsPxBl3n6whtT39mrRMGJ523Yebv1RvY37tIx2cbZqcL0r3rBodZiYiW8PZn48iMGcbsEr/KjP52KrHAdGsXzCO3XzAKbdf6dlCf4M8GFKLArAxxj44h2W9YSreFyA1WMcLT0kOxHSUNLaNbVw0TVk1EPbouhqerwW0wvYs5U+99fwVh6U5xjw/e5npqS71zRF1loey0XfVCQ4aqVhg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,71 +94,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09 2026, Pasha Tatashin wrote:
+On Tue, Jun 09, 2026 at 03:16:10PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/9/26 14:04, Lance Yang wrote:
+> > From: Lance Yang <lance.yang@linux.dev>
+> >
+> > mthp_collapse() uses mthp_present_ptes to decide whether a range has
+> > enough occupied PTEs to try collapse. Swap PTEs accepted by
+> > collapse_scan_pmd() are counted in unmapped, but are not represented in
+> > mthp_present_ptes.
+> >
+> > When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
+> > so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
+> > then checks the PMD-order candidate using the bitmap.
+> >
+> > With max_ptes_none set to 0, a range with 511 present PTEs and one swap
+> > PTE no longer reaches collapse_huge_page(), even though PMD collapse can
+> > handle swap PTEs up to max_ptes_swap.
+> >
+> > Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
+> > through max_ptes_swap, while lower-order mTHP collapse does not currently
+> > support non-present PTEs. Keep non-present PTEs out of the lower-order
+> > eligibility check.
+> >
+> > Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> > ---
+> > Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
+> > case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
+> >
+> > [1] https://lore.kernel.org/linux-mm/CAA1CXcD7WAiA1b9GTLAuNZ+kHaFx0SzZwpBkqAZ=s+RHsTUaow@mail.gmail.com/
+> > [2] https://lore.kernel.org/linux-mm/20260605161422.213817-12-npache@redhat.com/
+> >
+> >  mm/khugepaged.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index b12187709f6d..617bca76db49 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -1508,6 +1508,14 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+> >  		nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
+> >  						      offset + nr_ptes);
+> >
+> > +		/*
+> > +		 * Swap PTEs accepted during the scan are counted in @unmapped,
+> > +		 * not in the present-PTE bitmap. Account them for the PMD-order
+> > +		 * candidate.
+> > +		 */
+> > +		if (is_pmd_order(order))
+> > +			nr_occupied_ptes += unmapped;
+> > +
+>
+> LGTM, there is a bit of opportunity for cleanup in the future :)
 
-> On 06-08 21:11, Mike Rapoport wrote:
->> On Mon, Jun 08, 2026 at 04:12:56PM +0000, Pasha Tatashin wrote:
->> > On 06-08 13:26, Mike Rapoport wrote:
->> > > On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
->> >
->> > Keeping all of that in a single KHO file is the wrong approach and goes 
->> > against how other logically separated subsystems in Linux are organized 
->> > (e.g., mm/vmap.c, mm/vmalloc.c, etc.). Yes, there are some messier 
->> > places in the kernel as well, but keeping this in its own dedicated 
->> > kho_vmalloc.c file makes complete sense to me.
->> 
->> Either I hallucinated or b4 ate a paragraph from my reply ;)
->> 
->> Regarding the code movement
->> - splitting radix tree makes perfect sense to me, just the documentation
->>   part needs more care than mechanical move
-
-+1, separating radix and KHO block makes sense.
+From my point of view, accepting the mTHP khugepaged changes was essentially a
+big compromise on how much it adds to the mess of the existing code base, and
+AFAIC we shouldn't accept any further major changes until we actually sort this
+mess out :)
 
 >
-> Agreed. I'll also pay closer attention to the documentation.
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 >
->> - I'm fine with abi/vmalloc.h, presuming KHOSER_PTR() is not part of it
 >
-> Yes, I will move KHOSER_PTR() to the shared compat.h in v2 so it's not 
-> tied to vmalloc.
+> For example, as we no longer have the VMA here, collapse_max_ptes_none is
+> imprecise in uffd VMAs. We might try collapsing where there sure is nothing to
+> collapse.
 >
->> - I can live with kho_vmalloc.c although I still consider it unnecessary
->>   churn
+> We could likely handle the userfaultfd_armed() part easier: some indication that
+> we must not have any pte_none() would be sufficient.
 >
-> Appreciate it.
->
->> - I'm against moving vmalloc APIs from kexec_handover.h because they are
->>   very close in nature to folio and pages. I don't see core KHO as
->>   responsible for preserving physically contiguous ranges but rather as
->>   preserving allocations. Not sure we'll ever support kmalloc(), but still.
+> Also, I don't see a good reason why uffd would not be allowed to collapse with
+> zeropages ... it's really just about missing faults due to pte_none().
 
-FWIW, I agree with Mike here. I also see kho_preserve_vmalloc() as a
-memory preservation primitive, same as kho_preserve_folio() or
-kho_preserve_pages(). So I think it belongs in the main KHO header.
-
-I also think it would also be nice to have vmalloc in kexec_handover.c,
-but I can live with either way.
+Ugh uffd.
 
 >
-> That is a very reasonable compromise. I am fine with keeping the 
-> consumer-facing function declarations in kexec_handover.h so they remain 
-> grouped  with folios and pages.
+> --
+> Cheers,
 >
->> > However, overall enforcing the use of KHOSER is unrelated to this work. 
->> > I have my own thoughts on this, and perhaps with proper versioning, 
->> > using KHOSER_PTR everywhere would be appropriate, but let's keep that as 
->> > a separate work.
->> 
->> This is a separate work, indeed. But regardless of the versioning it's
->> already better than plain u64 because it provides type safety.
+> David
 
-It would be even nicer to have some sort of type safety for KHO vmalloc.
-On preservation and restore, you lose the the type of the array, and it
-is very easy to make mistakes. I gave it a try some time ago but
-unfortunately couldn't come up with anything good.
-
--- 
-Regards,
-Pratyush Yadav
+Cheers, Lorenzo
 
