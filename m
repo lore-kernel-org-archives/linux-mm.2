@@ -4,139 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA30CD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 22:01:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC00CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 23:04:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DA346B00CA; Tue,  9 Jun 2026 18:01:10 -0400 (EDT)
+	id 925A46B00AF; Tue,  9 Jun 2026 19:04:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A456B00CC; Tue,  9 Jun 2026 18:01:10 -0400 (EDT)
+	id 8D6276B00B0; Tue,  9 Jun 2026 19:04:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93866B00CD; Tue,  9 Jun 2026 18:01:09 -0400 (EDT)
+	id 7EC536B00B1; Tue,  9 Jun 2026 19:04:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFF346B00CA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:01:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63076407F5
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 22:01:09 +0000 (UTC)
-X-FDA: 84861745458.24.289B28E
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 435BD20008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 22:01:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lZjv/CTI";
-	spf=pass (imf13.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781042467;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB6B6B00AF
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:04:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14553164EFF
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 23:04:36 +0000 (UTC)
+X-FDA: 84861905352.09.0B9CC46
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 61145160002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 23:04:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3AZwoagkbADQiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.78 as permitted sender) smtp.mailfrom=3AZwoagkbADQiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781046274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1NtSP0SUwGm7j9cBn9U8+z1zuObW3D+JrhcLu8mBRJU=;
-	b=SSNodRQfBda80ExR5h4nOaqvw6oeIbQY1BJhyr/vKiiCS5SMrLaMWaLMqc8OhOowNOLS94
-	GyNQ/FaRU7CxorEguMUpxMbgTkpuAGtBnQw8/uzNkAsXGDWisTBcgg/3FYuTZUu6a71Gpr
-	nyyLs1bSJgmcrxZQAK3bSyEDvZH3BSs=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lZjv/CTI";
-	spf=pass (imf13.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781042467;
-	b=LAGRgNSsBI32DCVV73gMIaIieQTW+UupJtpmRCJgzhn/Ba51Go3pYXKjyraE6ITvQElVuN
-	xByPlfzzh6lqhi/HcM/NEuPVkM4m8liJ1oNocwRofeAMEiPul+KeSoALW6f+eYCwSyEK7M
-	CIo7QKBbjyrdnabU7cPwgEI2P27KOgw=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf2911f93cso8145ad.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 15:01:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781042466; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Q21RsX4j7dFxZlJVDIItJPKVoL+DYwW10xr7LrLR4M5x26YGHUfNi81BMiGJwFGxQz
-         OpvJ2PkmPCLiNDmXm0KNvETX0W2pAHPUnkzzeKF5zEqzP8mcqKpBp7dVc1ZmKmJCA3VD
-         yb48mN1K0OzpKyDffWhONpZ16kA1wLXLpioHgx0Ua4RVRCrJr0Ax7B117IdfHLpQR96v
-         ssQqlIzTa/QQMRvd68hG7brQiyYCsBwDfcj04vYaSirr4K34wmWWT2VmAw9y03gZFCGJ
-         zgJQNCLRzUD+pC+iUhD9mIdGZYor6CywsCCtLoCYuWKAg9N0xxW/s5HyDrIaHSqRsUtB
-         XPxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1NtSP0SUwGm7j9cBn9U8+z1zuObW3D+JrhcLu8mBRJU=;
-        fh=s5rbEoBXTXLDjRSQbRXGJfRDFbeOw2Q3Vb8JGw075cs=;
-        b=ctT4gnHdZBIOeQxflI8rYIfsCkYynKFKpMdIiqQY+MZ307KRjH0xs4X21AU+meYrYl
-         8fEZlZ2hL03YTa3+fcYaL5zE8Ei6woKXfm3Ih/F9dRxUiqATVDaI53sTwz3f9/RmkNef
-         IzHyHKzao92bpWljW/tC8s14QU7LeDS8JyqdnjXDm5VZ2Jo2/FMGp+TZHUoGRbIcGOlP
-         ko1r4ykWwTxmUDo9xh0FvBCgDwLg8uup2Iz3HDah765zjIJT1PBAjZfXICALvuJsDdee
-         q1MxwOq9mPTQGC5CxInzEA8et4LVUJGGFaSSoOYLOu4ZLhhbuuEyXrtnlNg5XfKlK27T
-         866A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781042466; x=1781647266; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1NtSP0SUwGm7j9cBn9U8+z1zuObW3D+JrhcLu8mBRJU=;
-        b=lZjv/CTIc9gIF2aNE+vFzjUMet7ZyW+8tp/qjyGAGS358V1sSF8L7l6k1Y49xFXN40
-         8btNRYLk7pv9v/+ijCVc0gt4tNDaKs/BO2ok8oZPHGWDlZzJRRNq+b0+Rqb1PFlDUGFa
-         qjaV5nVHG6ZRfs828pvjXLr8CtC1fdwCRsJdfuHyq3Jgl7wI8W/QEIR+e1papZwWX8Y/
-         Q7UZHFHiOhfZ3X6hA7CmXmyP1CYKSXfXoHVzbBQ9Fyt/YWUYMvWXlbso8wk3bJwQGgP7
-         e1otQ5QQKJmUuOhLbqtmSJTM79nHJadsuQaq3Vzo6yXOejlOGqlQDfQhxWqqhtS2GTvm
-         3tHg==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=yLcbPIP3DqH41We2y8RFQOo6XVKoUumZBhjBdhDFF2M=;
+	b=Js70XF4BSKuMCYvkJcr8dXRwJEWtKeF5BVkTuw/hU5qG+bPUL6xiPSsG/ok8WSpxQX7t8T
+	yfy9Ih0VtUsAeQNGvdBYTzFOBFw+FuqTi0q2QBTfEbFRQAXlD18y0dqVrAg2fyueTJtUWh
+	BMiPknyEEGziMFFtXq5Xanp6t2ZlNa8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781046274;
+	b=BrWTuqFFjRWvbDfttR1rgkZAURQNriTwIyhLwkUJG7IMLWggg69IDoo1ylOYp00CRLUV6k
+	Yo8kHc3ckRP+QCtqWrdO2pbi1sTbj+ODCv2Cu0hWb1d09Tm+keq9Qee20AZISL4cKFRg4H
+	jBLvtD1cXQ3U8MlwjvefC3gIgb0kNkM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3AZwoagkbADQiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.78 as permitted sender) smtp.mailfrom=3AZwoagkbADQiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-43cce86b0c4so9677152fac.3
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 16:04:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781042466; x=1781647266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1NtSP0SUwGm7j9cBn9U8+z1zuObW3D+JrhcLu8mBRJU=;
-        b=rSCgDJBfxp7soOOSBgqCjn3oztK2aco1Dgn2WoEtjhM0YR7vaPfUcZI2lbUg7ILItg
-         qPQYz5nQcLurULqEzMJdEzj50JDjzYZr5/42CtI+tIM4lKekmSmtpuHhCq8Ex/u0AFUa
-         jV21G2CteF7LlO52Kk10I4QArr23W1cEUy1Y8tnPJ090f1sq77czzQF0DnNdsW5GXV3k
-         T6EjeueYgAfsuwJM+xgWIJAGeSQULJbYoSJ5cKrJx25OO6QpPkJlJKXUKqh8UbXn4xVD
-         DsGr19kbGu7s6sRELpZAYGCBbcKj/V8gB0Ek0t3lcWEAGYierjuuPI+oyN3GBkntTccp
-         G/bw==
-X-Forwarded-Encrypted: i=1; AFNElJ+U21u1DYa33tzyiIM1j6MLYHoCtcGFa3o8wT10jEnK7d2X13cn7PWiLqKwADgWK1ReaxJtw8cwBw==@kvack.org
-X-Gm-Message-State: AOJu0Yxrf2wNFYt5OHCHezXm8VTtItA3q3sHNRd12vLWNlE+VuFeBFhV
-	xkklCuUDzJfDU53vBrKQkFZQ403INRckK57ublKuzEL6EPVpjrWMZvdXZgG0xbunFzhio56CnLu
-	f/uWn03NVnPMVwJKNSRLhJfzFQlKy7vO35MDgAvR7
-X-Gm-Gg: Acq92OEWzWG0kRW8oxQ1kDiBQs77iIcWKr71kXdwFfIJZ4+ir7fRe1cS6hjxBpUaBNx
-	nXCPqpbsMx5rY+hURjveHDyw1hsnYa4MrywNmUtInJNnO+pUFuR9IjsLCDkX5yCFLtkNEiXPihv
-	TXzVvCnGjJMbK4cqd08IWXhIrU08dBr61LaCJhLpMkryZvRB9yiCk75KA6fGjjD+i3rtlyA9QdP
-	vSUEOPUTEPExDLAJ0HkxeaEfGDXv8w+Oix+HVWhShSygB+XZMWkGuKSBKTi31nKk8RXzOQtiyO4
-	G8PHJg++iJXU07nl25p4Nybv9ehIvhYooSeEi4wUI4HFCRxQZegfSYqEUwk=
-X-Received: by 2002:a17:902:d2d2:b0:2b0:b925:da98 with SMTP id
- d9443c01a7336-2c1eb729f9amr8197905ad.19.1781042462584; Tue, 09 Jun 2026
- 15:01:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781046273; x=1781651073;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yLcbPIP3DqH41We2y8RFQOo6XVKoUumZBhjBdhDFF2M=;
+        b=hQjPybTqHa/aGD2jvQosVZMcykXiguvUoa2L3yHz3cUiaxATHUJleITVAcYPckGJMb
+         qBQznBv5tjMW4ELu23t6U4U5gWBo/gRBDifYlUe31xjWDsmsx2W7fZJhG5LZCu0Eky0S
+         XE+K0Oqyz6PNTLLrUj4mAma47yzNXOBlELhkg4FxinSdv8aHJ3vARp8LlmWQqk2gT9lr
+         wLQYt4vwFcOgfz00iE2N55RA70HHtEvgrzbOlV8LYDhoyzcGfshb93X5A9j59njcfrHo
+         GgOtYBkLIueo03b7g8DmLzOJDf/rh0nRggAY4No/x2OP34pbUO3I3Z6yOZz+CY37i3iS
+         cU/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+CtfsxdF1ZCFcXuz4BDnRzsAawJsI3coAlPWPcWwYL2aqpNl8boiP4aVAWijzw2KczYBtkHT+qCg==@kvack.org
+X-Gm-Message-State: AOJu0YyUx7tTFhwy1MJfI6MLIJZ7+7vbgVRmvr1A9+PnOGC1XsNz+2Ux
+	XRzxmXnoCzJXpLICBfIxDtsMSVpkOApYxwELIArl2qsqsqnuztkDi1wjOlkR0g6E2katxhGBCtK
+	kM6FOo+oIuIFe3tkw3UAks0NawwqI2O/I54bX2CHpmvNSJE5QP3erMfNhejo=
 MIME-Version: 1.0
-References: <cover.1780701922.git.abhishekbapat@google.com>
- <0e91fdd3a88dbe5220d15c4c8ff7b8f66e86af7c.1780701922.git.abhishekbapat@google.com>
- <41a7ebb9-1113-4f13-abbf-6f55d99d62f3@linux.dev> <CAL41Mv7jOJ0rtAEDZP2DEGa5d1GfTbK=DXg8k1BL5qjFuQjNuA@mail.gmail.com>
- <2b7fa423-c721-4157-96ba-93bee5010044@linux.dev> <CAL41Mv5ZzuVRy5cjp_Ozn=9QCpCe1mFS36o25Z1dnbYCvNs9+Q@mail.gmail.com>
- <CAL41Mv6XfbSMUvdU9btrtsh-HXejCH=HZmCuTL1gKRe2XAPvpQ@mail.gmail.com>
-In-Reply-To: <CAL41Mv6XfbSMUvdU9btrtsh-HXejCH=HZmCuTL1gKRe2XAPvpQ@mail.gmail.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Tue, 9 Jun 2026 15:00:50 -0700
-X-Gm-Features: AVVi8CeRKyHBDVE23XU6WUHDaYn9m65HDG64T09E-rZM88Ujcm7iUS2g5TRRM9Y
-Message-ID: <CAL41Mv41N43YZOa3jcRWvY+5NP7fO8DCv5vMfLx06Pv_90jwwQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] alloc_tag: add ioctl to /proc/allocinfo
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+X-Received: by 2002:a05:6820:4b86:b0:67d:ea53:b9c8 with SMTP id
+ 006d021491bc7-69eac8d9b8dmr3506618eaf.18.1781046273469; Tue, 09 Jun 2026
+ 16:04:33 -0700 (PDT)
+Date: Tue, 09 Jun 2026 16:04:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a289c01.39669fcc.33b062.00a9.GAE@google.com>
+Subject: [syzbot] [cgroups?] [mm?] WARNING in hrtick_start_fair
+From: syzbot <syzbot+2cbf10efc23b22ff9c31@syzkaller.appspotmail.com>
+To: anna-maria@linutronix.de, cgroups@vger.kernel.org, frederic@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com, tglx@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 435BD20008
-X-Stat-Signature: 6qqhctoptzy4xqtkqafanu8xkr4ouu5i
+X-Rspamd-Queue-Id: 61145160002
 X-Rspam-User: 
-X-HE-Tag: 1781042467-140290
-X-HE-Meta: U2FsdGVkX18ATSaHyDV+p02rWT3b+f7QLiNlV5CnodLu8TPCw5xQKThuCJK6l4tTdfe1zI6A4RSNVmYcA8ND9Eugr+lEwLGopQkxKv3r2hmXP4nyIyaRIl7QqFMbfLv/6zI38wc6mxJjdu9P9FsgDpM1aFTt5zd9YHpFXXO51tGJrMjqykL7u+cHEvdgJRYOTxnCdW/bYOAHs78F8e9U09QHGjXQOvg1Lgcu7qWONEzpoKluYwAsgWDjAtQ36++U0eo2ffkR//rNDtSBQhHdQ5YiK/oNtPJvi2GU2Z+4mxzy2JMZ+DryYy+mY3sFwqukF1PbBdVp5yn+kfrGjms9kNJhBbmmYzQqcnRuKMITsbT4FsAEqbp0eRqMArpA3jrPWwkG8mg8/PfXVdO1cD365nD99f7xCpDs34P2zbfG5/aAz3DdvHGzh1zIY+i5zyoSI9f4qXa6tA1OWytmkrcsrMyNVMS0kuwauIWrTUaNBJ+OO2f/Gf6cJJmqRQlI1+3dsqsFm/9dDRJeDR2tJolXP5KGzAqjtH54Rug/357mlKRKbjV08SqtCeUD+ocg2WRsT3/KbqTx2o8L8qbJwdUNpaE9Eh3MZ+K3W6+HWW+jotbp91FIDxSNeBHKZHUUjg3hqoJM7HVCi4tysqanNRmTKAY8sEt6BM4WrDumAJRQT4uatSjsAnb/vfXbGjciiYB+iBOusUpvTmdqGPG6JAx+0o2REgCvQcfwqrs8cYxEX6WCfLh4KpbgcqjrrQ+HTdv7CLTbb0O9reGiJAQOUTLOjf7mH9+17mAoVvDLmYi/QpB/q6PTaAkroVUQBFAig7Qri/UvupBwCq+qgMpM1KWzP4NwtgHTbaU14SWmTWzSbJ/AsOA59l+rpqoavQDBue1n8ga9CGtgOorW3Jieg2jf3MVI8451XT8uFf4zD3sXWikwcaiCMlF5WOPg6+CQmG1+AJeypc6oW7lDPW0IIH0
- dfAGhppO
- BD2cWcaQgV5YlTF8bu286AvqgndJZYfeSO9Um7oXPw5tdWnSSylX/bguDb89hwM921WZHCEdZ0AkNZ3ne19ydo3cEfsE7ehvrRr+T402vPJOb3qc4uMv4JwXYvfEoDiKSLLHtvOuRSrOEz92rHaY7ufUJfuvjYT7kAStNzXje3W94LfHkPlG1WnHU7p6v8YEaFc80odprCuC/O0deHTetqcatwpTaaEbcJd1/Rb+km2K5iKzgYmm0TTiiYwS43IiAI3+7MkoBNQSxdx4NaHErzv5yUwpZF5K9GjNz66glDIFjifAYXiDS+V2FqQn3TlLJ0Pk5OJDAiEA5qQA=
+X-Stat-Signature: 5j6rz1h1wpmhfcsn1ecznyqrqgs73foy
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781046274-636773
+X-HE-Meta: U2FsdGVkX1/naUHydapv4sWONKHnxT2k8Ip1fcMLgADXm8MQmijutWlRG+Jd8ZlvA/ccu2nIbbA8WuVK9iQZqW6kvFF1yp8MDX9pwgOlcH8vwtO1AkejSfjdeY+pHk5k0WaM65dlm3KRNBYxy20clD9ov2eCPCPLDq1omVbRVqVHtTy3m+cPTKH0v9rNLZacX3XEE6/IJtEv3HkBIhdYcUGPcZ6v1GX2QlNFExv7SdTTGjAtU6ir09W8DY02LTjDeEznheLt5NKykMaKrpQ5OvHUcdBuyxwxsHsPotX/mJ8gHn0eVGYxwvxh7BmcAqq8burmphAbyTcKcLyI4486ni4xJt8BJC59mKpVCjgqbKZ9jcd9+ZX/h7MZRx7e0zySGlNpk/rgYdmqY/l+uwAqViQKGUwmpXVObPURxxWj1gOqxVKYLsagfUrKo4/PsMVCfB4r1k7KDYKxN/CF6PBrUXcZreEoCMDVc6Y7TAILI1lC4rxphBGSFKn4EK6DmImAkXvYiTGe8j8WMJJdT2nmeiXXQNS89LGWZjJFkk+tCbtaUINV57MRUkhaGnFN7Fs4g7sywzakzuXKBctzA7BFq5Or0RHei1tVnksZbqntsXrfifsRaYLNcY+UB+8Ju/ppX/GTcXHiHtTtJ6XrnSIDReuTxDxSf/d0155YNVqiD9xNXfDzS3B2/MngJUfbeIwNqScppIF9VxGsnv9cSqNygXGQKMZCmT9UNkF9UgwQVLuA+TkoGXRj1QCSaQ/EvZrye4m02tUyy1ZAj8xvzD+fgv6e+gyhzCeEyCbUA9W8x0UXNc+DHFejKKp4Z7GcxOjhgH04NGLFA8W5CYBbWdvX1ofI5Hl0xJfY1lh5OoANS0kbcOntJGEBj4ywBR3VKuLFGIcRdY++juKMs7b4F6aWKetRc3h4vGfs6gXuCFiNOiH5hSF1+IrFIIJyMT+TAjYRqmfbrgQFjzoG5lMdhX2
+ tlPndf2l
+ +rkEogc6hXqTCMEDiYUFuvCoCyY5yRbZHu1LkRkiLOpfUSQZl0504jHoEy6nUrg76AS7Sd1AD8b335IAnB7mldMwv2ZbE/tCujoXS2K8oTYjZKt/A9KMxFm8ZdfZc1VGsL2FiRum62BGuhHHbfXvO4Uk6xCD7InWHU49+ajd1YsbsgUP4QkvJ1YD4ho3UxwJEoL47VhF3M1Ag7cMs6Hnrv2fC7jimE8BdMvkpKOLxjPpDrcw98SnbzCawMYf2hi9QeA20mm+j+2mOS1Yrn2ZlYdmc7AEnn7/8Asu3eTF46p78pQcqGV8V5jpeQGMOLAB1h/NxLX07PzdwUNnfk1Jr4ZMOF4aSuRasJbMONn8PHQ5SAWoOhKCaXfnDgdBDYxd85hqP0silhZuPCIQUgqzxmSZIun1NikPEBehDuFmwPPj64oDCdXUzYdnqkWFCF+Ni9nTd8XTj6D9Tjb2pyyf7a6S/EDcMGZo4gylnDgRoN5fJ1aKXFif8kpL3ANt95AgwZPsRk91+MbnPy6WXTyzN4gJbLm9R4CRCS9hjHYuJ7PPbvM5BnLUvzyP35HjwDk8ncPgpBDklz5sh/9bWOcuJe6Rl0YvKVvakI+1blfcVcWCUFYzkJJwXUPytL0g6uv5JEGBqHxhFob8LjU/2mH3Kw8w9xsgUdEzpjyXhRSIi/TpEfxiFgNmyDG3Twak8MqJckNHHfWJg1fj6c+VVKAwj39EORApBn5VUcwtMylyr6OmUrQRedLbGf0YdKwYhR9bvWVcVtUNnckIMemDZ4oijnPP932PwncRwkMZrYwCF7HuogxFDZduYwRlSBDw/qMThP6uWmWZLnwk0sj2PbLdW7rvQ51YOOXnAGCQwGRFtBaD2p58mc3QH+6bhamOhHLQNJdaHZdiSnYy1VV+bJ7omgQ9UCqmzgYF8W6g4sCE1kElxapcUYhy/XlxluZbc0PQMc6+CsDSh2c9GDRpxpCTNHLvsltIJ
+ nGcQ4x1n
+ YRnLzsiiqtBNBjEBCimIYIShvkAImd4cCCwdTJtrJl4ZnILjIf2ptRKiTWLgYfdPcNbeKECNj+E7/vkdT63Vm7TJmu9dm8jKfmvAhjxreHIOWwvEYJyvt9SZwHGp2iGL2RQdTyX9+bsmK3+7zgjDe7DMBsl5CbhH3hKHPEMaACntlhLU77xk4I76ITXvA+cVWHCbviFYY3nS7atcjY2hTof+c9EsnIRNcdtQBQn9gIroYnZY/rFZ58+yGzYVJDvJuibzLqMu0DzeBTLXpcUpK5Wyo7ZZItYiKMzLy47RDYwN5uaiNMaYhuPIfZaH45+RjbQ2V7+1VS4a/Chx06ktqrtOeE70LHESVapqW3vkPZnetsi8MlngLYR/2RddKH1UmMcWXroak83I1iX+BWD4ytJQEeNefIfxK3ApGriKaXp5IX6JRBeUhVXA04eXCSuSeDLXrnwCWeICSf0cZQtRTDrhAL+shsJhgheeawQfjOf1bgboWRrJ899K76Ui51+B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,633 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 2:54=E2=80=AFPM Abhishek Bapat <abhishekbapat@google=
-.com> wrote:
->
-> On Tue, Jun 9, 2026 at 1:51=E2=80=AFPM Abhishek Bapat <abhishekbapat@goog=
-le.com> wrote:
-> >
-> > On Mon, Jun 8, 2026 at 6:44=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
-> > >
-> > > Hi Abhishek
-> > >
-> > >
-> > > On 2026/6/9 08:19, Abhishek Bapat wrote:
-> > > > On Sun, Jun 7, 2026 at 6:53=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wr=
-ote:
-> > > >> Hi Suren and Abhishek
-> > > >>
-> > > >>
-> > > >> Thanks for the new version.
-> > > >>
-> > > >>
-> > > >> On 2026/6/6 07:36, Abhishek Bapat wrote:
-> > > >>> From: Suren Baghdasaryan <surenb@google.com>
-> > > >>>
-> > > >>> Add the following ioctl commands for /proc/allocinfo file:
-> > > >>>
-> > > >>> ALLOCINFO_IOC_CONTENT_ID - gets content identifier which can be u=
-sed
-> > > >>> to check whether the file content has changed specifically due to=
- module
-> > > >>> load/unload. Every time a module is loaded / unloaded, the return=
-ed
-> > > >>> value will be different. By comparing the identifier value at the
-> > > >>> beginning and at the end of the content retrieval operation, user=
-s can
-> > > >>> validate retrieved information for consistency.
-> > > >>>
-> > > >>> ALLOCINFO_IOC_GET_AT - gets the record at the specified position.=
- This
-> > > >>> is the position of a record in /proc/allocinfo.
-> > > >>>
-> > > >>> ALLOCINFO_IOC_GET_NEXT - gets the record next to the last retriev=
-ed
-> > > >>> one. If no records were previously retrieved, returns the first
-> > > >>> record.
-> > > >>>
-> > > >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > >>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > > >>> ---
-> > > >>>    Documentation/mm/allocation-profiling.rst     |   5 +
-> > > >>>    .../userspace-api/ioctl/ioctl-number.rst      |   2 +
-> > > >>>    MAINTAINERS                                   |   1 +
-> > > >>>    include/linux/codetag.h                       |   2 +
-> > > >>>    include/uapi/linux/alloc_tag.h                |  54 ++++
-> > > >>>    lib/alloc_tag.c                               | 232 ++++++++++=
-+++++++-
-> > > >>>    lib/codetag.c                                 |  18 ++
-> > > >>>    7 files changed, 312 insertions(+), 2 deletions(-)
-> > > >>>    create mode 100644 include/uapi/linux/alloc_tag.h
-> > > >>>
-> > > >>> diff --git a/Documentation/mm/allocation-profiling.rst b/Document=
-ation/mm/allocation-profiling.rst
-> > > >>> index 5389d241176a..c3a28467955f 100644
-> > > >>> --- a/Documentation/mm/allocation-profiling.rst
-> > > >>> +++ b/Documentation/mm/allocation-profiling.rst
-> > > >>> @@ -46,6 +46,11 @@ sysctl:
-> > > >>>    Runtime info:
-> > > >>>      /proc/allocinfo
-> > > >>>
-> > > >>> +  Profiling data can be retrieved either by reading `/proc/alloc=
-info` directly as
-> > > >>> +  text or programmatically via `ioctl()` calls defined in `<uapi=
-/linux/alloc_tag.h>`.
-> > > >>> +  The ioctl interface supports structured binary data extraction=
- as well as filtering
-> > > >>> +  by module name, function, file, line number, accuracy, or allo=
-cation size limits.
-> > > >>> +
-> > > >>>    Example output::
-> > > >>>
-> > > >>>      root@moria-kvm:~# sort -g /proc/allocinfo|tail|numfmt --to=
-=3Diec
-> > > >>> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b=
-/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > >>> index 331223761fff..84f6808a8578 100644
-> > > >>> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > >>> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-> > > >>> @@ -349,6 +349,8 @@ Code  Seq#    Include File                   =
-                          Comments
-> > > >>>                                                                  =
-         <mailto:luzmaximilian@gmail.com>
-> > > >>>    0xA5  20-2F  linux/surface_aggregator/dtx.h                   =
-         Microsoft Surface DTX driver
-> > > >>>                                                                  =
-         <mailto:luzmaximilian@gmail.com>
-> > > >>> +0xA6  00-0F  uapi/linux/alloc_tag.h                             =
-       Memory allocation profiling
-> > > >>> +                                                                =
-       <mailto:surenb@google.com>
-> > > >>>    0xAA  00-3F  linux/uapi/linux/userfaultfd.h
-> > > >>>    0xAB  00-1F  linux/nbd.h
-> > > >>>    0xAC  00-1F  linux/raw.h
-> > > >>> diff --git a/MAINTAINERS b/MAINTAINERS
-> > > >>> index a31f6f207afd..77f3fc487691 100644
-> > > >>> --- a/MAINTAINERS
-> > > >>> +++ b/MAINTAINERS
-> > > >>> @@ -16711,6 +16711,7 @@ S:    Maintained
-> > > >>>    F:  Documentation/mm/allocation-profiling.rst
-> > > >>>    F:  include/linux/alloc_tag.h
-> > > >>>    F:  include/linux/pgalloc_tag.h
-> > > >>> +F:   include/uapi/linux/alloc_tag.h
-> > > >>>    F:  lib/alloc_tag.c
-> > > >>>
-> > > >>>    MEMORY CONTROLLER DRIVERS
-> > > >>> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-> > > >>> index ddae7484ca45..a25a085c2df1 100644
-> > > >>> --- a/include/linux/codetag.h
-> > > >>> +++ b/include/linux/codetag.h
-> > > >>> @@ -77,6 +77,8 @@ struct codetag_iterator {
-> > > >>>    void codetag_lock_module_list(struct codetag_type *cttype);
-> > > >>>    bool codetag_trylock_module_list(struct codetag_type *cttype);
-> > > >>>    void codetag_unlock_module_list(struct codetag_type *cttype);
-> > > >>> +unsigned long codetag_get_content_id(struct codetag_type *cttype=
-);
-> > > >>> +unsigned int codetag_get_count(struct codetag_type *cttype);
-> > > >>>    struct codetag_iterator codetag_get_ct_iter(struct codetag_typ=
-e *cttype);
-> > > >>>    struct codetag *codetag_next_ct(struct codetag_iterator *iter)=
-;
-> > > >>>
-> > > >>> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/=
-alloc_tag.h
-> > > >>> new file mode 100644
-> > > >>> index 000000000000..901199bad514
-> > > >>> --- /dev/null
-> > > >>> +++ b/include/uapi/linux/alloc_tag.h
-> > > >>> @@ -0,0 +1,54 @@
-> > > >>> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > > >>> +/*
-> > > >>> + *  include/linux/alloc_tag.h
-> > > >> nit: it should be include/uapi/linux/alloc_tag.h
-> > > >>
-> > > >> (I guess you may have missed the comment I brought up before. It i=
-s not
-> > > >> a critical problem though.)
-> > > >>
-> > > > Apologies, I missed that comment earlier. Included in the v4 patchs=
-et.
-> > > > Thanks for bringing this up.
-> > > >
-> > > >>> + */
-> > > >>> +
-> > > >>> +#ifndef _UAPI_ALLOC_TAG_H
-> > > >>> +#define _UAPI_ALLOC_TAG_H
-> > > >>> +
-> > > >>> +#include <linux/types.h>
-> > > >>> +
-> > > >>> +#define ALLOCINFO_STR_SIZE   64
-> > > >>> +
-> > > >>> +struct allocinfo_content_id {
-> > > >>> +     __u64 id;
-> > > >>> +};
-> > > >>> +
-> > > >>> +struct allocinfo_tag {
-> > > >>> +     /* Longer names are trimmed */
-> > > >>> +     char modname[ALLOCINFO_STR_SIZE];
-> > > >>> +     char function[ALLOCINFO_STR_SIZE];
-> > > >>> +     char filename[ALLOCINFO_STR_SIZE];
-> > > >>> +     __u64 lineno;
-> > > >>> +};
-> > > >>> +
-> > > >>> +/* The alignment ensures 32-bit compatible interfaces are not br=
-oken */
-> > > >>> +struct allocinfo_counter {
-> > > >>> +     __u64 bytes;
-> > > >>> +     __u64 calls;
-> > > >>> +     __u8 accurate;
-> > > >>> +} __attribute__((aligned(8)));
-> > > >>> +
-> > > >>> +struct allocinfo_tag_data {
-> > > >>> +     struct allocinfo_tag tag;
-> > > >>> +     struct allocinfo_counter counter;
-> > > >>> +};
-> > > >>> +
-> > > >>> +struct allocinfo_get_at {
-> > > >>> +     __u64 pos;      /* input */
-> > > >>> +     struct allocinfo_tag_data data;
-> > > >>> +};
-> > > >>> +
-> > > >>> +#define _ALLOCINFO_IOC_CONTENT_ID    0
-> > > >>> +#define _ALLOCINFO_IOC_GET_AT                1
-> > > >>> +#define _ALLOCINFO_IOC_GET_NEXT              2
-> > > >>> +
-> > > >>> +#define ALLOCINFO_IOC_BASE           0xA6
-> > > >>> +#define ALLOCINFO_IOC_CONTENT_ID     _IOR(ALLOCINFO_IOC_BASE, _A=
-LLOCINFO_IOC_CONTENT_ID,     \
-> > > >>> +                                          struct allocinfo_conte=
-nt_id)
-> > > >>> +#define ALLOCINFO_IOC_GET_AT         _IOWR(ALLOCINFO_IOC_BASE, _=
-ALLOCINFO_IOC_GET_AT,        \
-> > > >>> +                                           struct allocinfo_get_=
-at)
-> > > >>> +#define ALLOCINFO_IOC_GET_NEXT               _IOR(ALLOCINFO_IOC_=
-BASE, _ALLOCINFO_IOC_GET_NEXT,       \
-> > > >>> +                                          struct allocinfo_tag_d=
-ata)
-> > > >>> +
-> > > >>> +#endif /* _UAPI_ALLOC_TAG_H */
-> > > >>> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > > >>> index d9be1cf5187d..a0577215eb3d 100644
-> > > >>> --- a/lib/alloc_tag.c
-> > > >>> +++ b/lib/alloc_tag.c
-> > > >>> @@ -5,6 +5,7 @@
-> > > >>>    #include <linux/gfp.h>
-> > > >>>    #include <linux/kallsyms.h>
-> > > >>>    #include <linux/module.h>
-> > > >>> +#include <linux/mutex.h>
-> > > >>>    #include <linux/page_ext.h>
-> > > >>>    #include <linux/pgalloc_tag.h>
-> > > >>>    #include <linux/proc_fs.h>
-> > > >>> @@ -14,6 +15,7 @@
-> > > >>>    #include <linux/string_choices.h>
-> > > >>>    #include <linux/vmalloc.h>
-> > > >>>    #include <linux/kmemleak.h>
-> > > >>> +#include <uapi/linux/alloc_tag.h>
-> > > >>>
-> > > >>>    #define ALLOCINFO_FILE_NAME         "allocinfo"
-> > > >>>    #define MODULE_ALLOC_TAG_VMAP_SIZE  (100000UL * sizeof(struct =
-alloc_tag))
-> > > >>> @@ -47,6 +49,10 @@ struct allocinfo_private {
-> > > >>>        struct codetag_iterator iter;
-> > > >>>        struct codetag_iterator reported_iter;
-> > > >>>        bool print_header;
-> > > >>> +     /* ioctl uses a separate iterator not to interfere with rea=
-ds */
-> > > >>> +     struct codetag_iterator ioctl_iter;
-> > > >>> +     bool positioned; /* seq_open_private() sets to 0 */
-> > > >>> +     struct mutex ioctl_lock;
-> > > >>>    };
-> > > >>>
-> > > >>>    static void *allocinfo_start(struct seq_file *m, loff_t *pos)
-> > > >>> @@ -130,6 +136,229 @@ static const struct seq_operations allocinf=
-o_seq_op =3D {
-> > > >>>        .show   =3D allocinfo_show,
-> > > >>>    };
-> > > >>>
-> > > >>> +/*
-> > > >>> + * Initializes seq_file operations and allocates private state w=
-hen opening
-> > > >>> + * the /proc/allocinfo procfs entry.
-> > > >>> + */
-> > > >>> +static int allocinfo_open(struct inode *inode, struct file *file=
-)
-> > > >>> +{
-> > > >>> +     int ret;
-> > > >>> +
-> > > >>> +     ret =3D seq_open_private(file, &allocinfo_seq_op,
-> > > >>> +                            sizeof(struct allocinfo_private));
-> > > >>> +     if (!ret) {
-> > > >>> +             struct seq_file *m =3D file->private_data;
-> > > >>> +             struct allocinfo_private *priv =3D m->private;
-> > > >>> +
-> > > >>> +             mutex_init(&priv->ioctl_lock);
-> > > >>> +     }
-> > > >>> +     return ret;
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Cleans up the seq_file state and frees up the private state a=
-llocated in
-> > > >>> + * allocinfo_open() when closing the /proc/allocinfo file descri=
-ptor.
-> > > >>> + */
-> > > >>> +static int allocinfo_release(struct inode *inode, struct file *f=
-ile)
-> > > >>> +{
-> > > >>> +     return seq_release_private(inode, file);
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Returns a pointer to the suffix of a string so that its lengt=
-h fits within
-> > > >>> + * ALLOCINFO_STR_SIZE, preserving the trailing characters.
-> > > >>> + */
-> > > >>> +static const char *allocinfo_str(const char *str)
-> > > >>> +{
-> > > >>> +     size_t len =3D strlen(str);
-> > > >>> +
-> > > >>> +     /* Keep an extra space for the trailing NULL. */
-> > > >>> +     if (len >=3D ALLOCINFO_STR_SIZE)
-> > > >>> +             str +=3D (len - ALLOCINFO_STR_SIZE) + 1;
-> > > >>> +     return str;
-> > > >>> +}
-> > > >>> +
-> > > >>> +/* Copy a string and trim from the beginning if it's too long */
-> > > >>> +static void allocinfo_copy_str(char *dest, const char *src)
-> > > >>> +{
-> > > >>> +     strscpy_pad(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Populates the UAPI allocinfo_tag_data structure with active r=
-untime
-> > > >>> + * profiling counters extracted from the given kernel codetag.
-> > > >>> + */
-> > > >>> +static void allocinfo_to_params(struct codetag *ct,
-> > > >>> +                             struct allocinfo_tag_data *data)
-> > > >>> +{
-> > > >>> +     struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
-> > > >>> +     struct alloc_tag_counters counter =3D alloc_tag_read(tag);
-> > > >>> +
-> > > >>> +     if (ct->modname)
-> > > >>> +             allocinfo_copy_str(data->tag.modname, ct->modname);
-> > > >>> +     else
-> > > >>> +             data->tag.modname[0] =3D '\0';
-> > > >>> +     allocinfo_copy_str(data->tag.function, ct->function);
-> > > >>> +     allocinfo_copy_str(data->tag.filename, ct->filename);
-> > > >>> +     data->tag.lineno =3D ct->lineno;
-> > > >>> +     data->counter.bytes =3D counter.bytes;
-> > > >>> +     data->counter.calls =3D counter.calls;
-> > > >>> +     data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Retrieves the unique content ID representing the current allo=
-cation tag module
-> > > >>> + * layout, allowing userspace to detect if modules were loaded /=
- unloaded.
-> > > >>> + */
-> > > >>> +static int allocinfo_ioctl_get_content_id(struct seq_file *m, vo=
-id __user *arg)
-> > > >>> +{
-> > > >>> +     struct allocinfo_content_id params;
-> > > >>> +
-> > > >>> +     codetag_lock_module_list(alloc_tag_cttype);
-> > > >>> +     params.id =3D codetag_get_content_id(alloc_tag_cttype);
-> > > >>> +     codetag_unlock_module_list(alloc_tag_cttype);
-> > > >>> +     if (copy_to_user(arg, &params, sizeof(params)))
-> > > >>> +             return -EFAULT;
-> > > >>> +
-> > > >>> +     return 0;
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Seeks the ioctl iterator to the specified 0-indexed tag posit=
-ion, reads its
-> > > >>> + * profiling data and returns it to userspace.
-> > > >>> + */
-> > > >>> +static int allocinfo_ioctl_get_at(struct seq_file *m, void __use=
-r *arg)
-> > > >>> +{
-> > > >>> +     struct allocinfo_private *priv;
-> > > >>> +     struct codetag *ct;
-> > > >>> +     __u64 pos;
-> > > >>> +     struct allocinfo_get_at params =3D {0};
-> > > >>> +
-> > > >>> +     if (copy_from_user(&params, arg, sizeof(params)))
-> > > >>> +             return -EFAULT;
-> > > >>> +
-> > > >>> +     priv =3D m->private;
-> > > >>> +     pos =3D params.pos;
-> > > >>> +
-> > > >>> +     mutex_lock(&priv->ioctl_lock);
-> > > >>> +     codetag_lock_module_list(alloc_tag_cttype);
-> > > >>> +
-> > > >>> +     if (pos >=3D codetag_get_count(alloc_tag_cttype)) {
-> > > >>> +             codetag_unlock_module_list(alloc_tag_cttype);
-> > > >>> +             mutex_unlock(&priv->ioctl_lock);
-> > > >>> +             return -ENOENT;
-> > > >>> +     }
-> > > >>> +
-> > > >>> +     /* Find the codetag */
-> > > >>> +     priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_cttype);
-> > > >>> +     ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > > >>> +     while (ct && pos--)
-> > > >>> +             ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > > >>> +     if (ct) {
-> > > >>> +             allocinfo_to_params(ct, &params.data);
-> > > >>> +             priv->positioned =3D true;
-> > > >>> +     }
-> > > >>> +
-> > > >>> +     codetag_unlock_module_list(alloc_tag_cttype);
-> > > >>> +     mutex_unlock(&priv->ioctl_lock);
-> > > >>> +
-> > > >>> +     if (!ct)
-> > > >>> +             return -ENOENT;
-> > > >>> +
-> > > >>> +     if (copy_to_user(arg, &params, sizeof(params)))
-> > > >>> +             return -EFAULT;
-> > > >>> +
-> > > >>> +     return 0;
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Advances the ioctl iterator to the next allocation tag in the=
- sequence and
-> > > >>> + * returns its profiling data to userspace.
-> > > >>> + */
-> > > >>> +static int allocinfo_ioctl_get_next(struct seq_file *m, void __u=
-ser *arg)
-> > > >>> +{
-> > > >>> +     struct allocinfo_private *priv;
-> > > >>> +     struct codetag *ct;
-> > > >>> +     struct allocinfo_tag_data params;
-> > > >>> +     int ret =3D 0;
-> > > >>> +
-> > > >>> +     memset(&params, 0, sizeof(params));
-> > > >>> +     priv =3D m->private;
-> > > >>> +
-> > > >>> +     mutex_lock(&priv->ioctl_lock);
-> > > >>> +     codetag_lock_module_list(alloc_tag_cttype);
-> > > >>> +
-> > > >>> +     if (!priv->positioned) {
-> > > >>> +             priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_=
-cttype);
-> > > >>> +             priv->positioned =3D true;
-> > > >>> +     }
-> > > >>> +
-> > > >>> +     ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > > >>> +     if (ct)
-> > > >>> +             allocinfo_to_params(ct, &params);
-> > > >>> +
-> > > >>> +     if (!ct) {
-> > > >>> +             priv->positioned =3D false;
-> > > >>> +             ret =3D -ENOENT;
-> > > >>> +     }
-> > > >>> +     codetag_unlock_module_list(alloc_tag_cttype);
-> > > >>> +     mutex_unlock(&priv->ioctl_lock);
-> > > >>> +
-> > > >>> +     if (ret =3D=3D 0) {
-> > > >>> +             if (copy_to_user(arg, &params, sizeof(params)))
-> > > >>> +                     return -EFAULT;
-> > > >>> +     }
-> > > >>> +     return ret;
-> > > >>> +}
-> > > >>> +
-> > > >>> +/*
-> > > >>> + * Entry point ioctl function for /proc/allocinfo routing reques=
-ts to fetch the
-> > > >>> + * layout content ID, seek to a specific tag, or read sequential=
- tags.
-> > > >>> + */
-> > > >>> +static long allocinfo_ioctl(struct file *file, unsigned int cmd,
-> > > >>> +                         unsigned long __arg)
-> > > >>> +{
-> > > >>> +     void __user *arg =3D (void __user *)__arg;
-> > > >>> +     int ret;
-> > > >>> +
-> > > >>> +     switch (cmd) {
-> > > >>> +     case ALLOCINFO_IOC_CONTENT_ID:
-> > > >>> +             ret =3D allocinfo_ioctl_get_content_id(file->privat=
-e_data, arg);
-> > > >>> +             break;
-> > > >>> +     case ALLOCINFO_IOC_GET_AT:
-> > > >>> +             ret =3D allocinfo_ioctl_get_at(file->private_data, =
-arg);
-> > > >>> +             break;
-> > > >>> +     case ALLOCINFO_IOC_GET_NEXT:
-> > > >>> +             ret =3D allocinfo_ioctl_get_next(file->private_data=
-, arg);
-> > > >>> +             break;
-> > > >>> +     default:
-> > > >>> +             ret =3D -ENOIOCTLCMD;
-> > > >>> +             break;
-> > > >>> +     }
-> > > >>> +
-> > > >>> +     return ret;
-> > > >>> +}
-> > > >>> +
-> > > >>> +#ifdef CONFIG_COMPAT
-> > > >>> +static long allocinfo_compat_ioctl(struct file *file, unsigned i=
-nt cmd,
-> > > >>> +                                unsigned long arg)
-> > > >>> +{
-> > > >>> +     return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr=
-(arg));
-> > > >>> +}
-> > > >>> +#endif
-> > > >>> +
-> > > >>> +static const struct proc_ops allocinfo_proc_ops =3D {
-> > > >>> +     .proc_open              =3D allocinfo_open,
-> > > >>> +     .proc_read_iter         =3D seq_read_iter,
-> > > >>> +     .proc_lseek             =3D seq_lseek,
-> > > >>> +     .proc_release           =3D allocinfo_release,
-> > > >>> +     .proc_ioctl             =3D allocinfo_ioctl,
-> > > >>> +#ifdef CONFIG_COMPAT
-> > > >>> +     .proc_compat_ioctl      =3D allocinfo_compat_ioctl,
-> > > >>> +#endif
-> > > >>> +
-> > > >>> +};
-> > > >>> +
-> > > >>>    size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t =
-count, bool can_sleep)
-> > > >>>    {
-> > > >>>        struct codetag_iterator iter;
-> > > >>> @@ -993,8 +1222,7 @@ static int __init alloc_tag_init(void)
-> > > >>>                return 0;
-> > > >>>        }
-> > > >>>
-> > > >>> -     if (!proc_create_seq_private(ALLOCINFO_FILE_NAME, 0400, NUL=
-L, &allocinfo_seq_op,
-> > > >>> -                                  sizeof(struct allocinfo_privat=
-e), NULL)) {
-> > > >>> +     if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinf=
-o_proc_ops)) {
-> > > >>>                pr_err("Failed to create %s file\n", ALLOCINFO_FIL=
-E_NAME);
-> > > >>>                shutdown_mem_profiling(false);
-> > > >>>                return -ENOMEM;
-> > > >>> diff --git a/lib/codetag.c b/lib/codetag.c
-> > > >>> index 4001a7ea6675..a9cda4c962a3 100644
-> > > >>> --- a/lib/codetag.c
-> > > >>> +++ b/lib/codetag.c
-> > > >>> @@ -19,6 +19,8 @@ struct codetag_type {
-> > > >>>        struct codetag_type_desc desc;
-> > > >>>        /* generates unique sequence number for module load */
-> > > >>>        unsigned long next_mod_seq;
-> > > >>> +     /* bumped on every module load and unload */
-> > > >>> +     unsigned long content_id;
-> > > >>>    };
-> > > >>>
-> > > >>>    struct codetag_range {
-> > > >>> @@ -50,6 +52,20 @@ void codetag_unlock_module_list(struct codetag=
-_type *cttype)
-> > > >>>        up_read(&cttype->mod_lock);
-> > > >>>    }
-> > > >>>
-> > > >>> +unsigned long codetag_get_content_id(struct codetag_type *cttype=
-)
-> > > >>> +{
-> > > >>> +     lockdep_assert_held(&cttype->mod_lock);
-> > > >>> +
-> > > >>> +     return cttype->content_id;
-> > > >>> +}
-> > > >>> +
-> > > >>> +unsigned int codetag_get_count(struct codetag_type *cttype)
-> > > >>> +{
-> > > >>> +     lockdep_assert_held(&cttype->mod_lock);
-> > > >>> +
-> > > >>> +     return cttype->count;
-> > > >>> +}
-> > > >>> +
-> > > >>>    struct codetag_iterator codetag_get_ct_iter(struct codetag_typ=
-e *cttype)
-> > > >>>    {
-> > > >>>        struct codetag_iterator iter =3D {
-> > > >>> @@ -204,6 +220,7 @@ static int codetag_module_init(struct codetag=
-_type *cttype, struct module *mod)
-> > > >>>
-> > > >>>        down_write(&cttype->mod_lock);
-> > > >>>        cmod->mod_seq =3D ++cttype->next_mod_seq;
-> > > >>> +     ++cttype->content_id;
-> > > >> I have a comment on the content_id bump placement.
-> > > >>
-> > > >> ++cttype->content_id is placed before idr_alloc and the module_loa=
-d
-> > > >>
-> > > >> callback. If idr_alloc fails or module_load returns an error
-> > > >>
-> > > >> (While the chance of this occurring is very low.), the idr entry g=
-ets
-> > > >>
-> > > >> rolled back but content_id has already been bumped. The actual
-> > > >>
-> > > >> content didn't change in this case, so userspace would see a
-> > > >>
-> > > >> different content_id and assume the data is inconsistent when it
-> > > >>
-> > > >> isn't.
-> > > >>
-> > > >>
-> > > >> Thanks
-> > > >>
-> > > >> Best Regards
-> > > >>
-> > > >> Hao
-> > > > While I agree with your comment, I decided to place the counter
-> > > > increment there because the chance of failure is low. Furthermore,
-> > > > even if it falsely invalidates user data, the user will simply quer=
-y
-> > > > the content again. This placement also aligns with where the
-> > > > previously used field (cttype->next_mod_seq) was incremented. Let m=
-e
-> > > > know if you still think I should move it. Thanks!
-> > >
-> > > Sorry, I should have marked this as a nit when I raised the comment.
-> > >
-> > > Given its low probability of occurring, it doesn't block anything for=
- now.
-> > >
-> > > The reason I raised this comment was just in case someone adds new lo=
-gic
-> > >
-> > > in the feature  that could fail. But if that happens, we can move bot=
-h
-> > > next_mod_seq
-> > >
-> > > and content_id down together.
-> > >
-> > >
-> > > Thanks
-> > >
-> > > Best Regards
-> > >
-> > > Hao
-> > >
-> >
-> > Sounds good, so for now I am not touching this patch and keeping it as
-> > is other than the file path nit inside the UAPI header file.
->
-> Actually, checkpatch is complaining about using the same filename
-> inside of the file and hence I am dropping that comment completely.
->
-Actually, I realized the header file lacked a proper copyright notice,
-so I'm including that.
+Hello,
 
-> > > >>>        mod_id =3D idr_alloc(&cttype->mod_idr, cmod, 0, 0, GFP_KER=
-NEL);
-> > > >>>        if (mod_id >=3D 0) {
-> > > >>>                if (cttype->desc.module_load) {
-> > > >>> @@ -368,6 +385,7 @@ void codetag_unload_module(struct module *mod=
-)
-> > > >>>                        cttype->count -=3D range_size(cttype, &cmo=
-d->range);
-> > > >>>                        idr_remove(&cttype->mod_idr, mod_id);
-> > > >>>                        kfree(cmod);
-> > > >>> +                     ++cttype->content_id;
-> > > >>>                }
-> > > >>>                up_write(&cttype->mod_lock);
-> > > >>>                if (found && cttype->desc.free_section_mem)
+syzbot found the following issue on:
+
+HEAD commit:    a87737435cfa Add linux-next specific files for 20260608
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=11715db6580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=da47745f686dc823
+dashboard link: https://syzkaller.appspot.com/bug?extid=2cbf10efc23b22ff9c31
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12df60ae580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11edb0ae580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/85d19fe6bb4e/disk-a8773743.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/30c683ce26e1/vmlinux-a8773743.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/4db5027513d2/bzImage-a8773743.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2cbf10efc23b22ff9c31@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+task_rq(p) != rq
+WARNING: kernel/sched/fair.c:7656 at hrtick_start_fair+0x196/0x1f0 kernel/sched/fair.c:7656, CPU#0: rcu_preempt/18
+Modules linked in:
+CPU: 0 UID: 0 PID: 18 Comm: rcu_preempt Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
+RIP: 0010:hrtick_start_fair+0x196/0x1f0 kernel/sched/fair.c:7656
+Code: 42 80 3c 20 00 74 08 4c 89 ff e8 85 e3 97 00 4d 39 37 0f 85 0c ff ff ff 48 89 df 5b 41 5c 41 5d 41 5e 41 5f e9 4b 65 fa ff 90 <0f> 0b 90 e9 d1 fe ff ff 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 82
+RSP: 0018:ffffc900001777e0 EFLAGS: 00010087
+RAX: ffff8880b873ba40 RBX: ffff8880b863ba40 RCX: ffffffff8197c7de
+RDX: 0000000000000000 RSI: ffff88802c528000 RDI: ffff8880b863ba40
+RBP: dffffc0000000000 R08: ffffffff8fcf0b0f R09: 1ffffffff1f9e161
+R10: dffffc0000000000 R11: fffffbfff1f9e162 R12: dffffc0000000000
+R13: 1ffff110170c78d6 R14: ffff88802c528000 R15: ffffffff8dc217d8
+FS:  0000000000000000(0000) GS:ffff888125a76000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007eff95e6a540 CR3: 0000000028e30000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ set_next_task_fair+0xa68/0xce0 kernel/sched/fair.c:15058
+ put_prev_set_next_task kernel/sched/sched.h:2770 [inline]
+ pick_next_task kernel/sched/core.c:6443 [inline]
+ __schedule+0x3e03/0x5550 kernel/sched/core.c:7144
+ __schedule_loop kernel/sched/core.c:7308 [inline]
+ schedule+0x164/0x360 kernel/sched/core.c:7323
+ schedule_timeout+0x158/0x2c0 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x312/0x11b0 kernel/rcu/tree.c:2123
+ rcu_gp_kthread+0x9e/0x2b0 kernel/rcu/tree.c:2325
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
