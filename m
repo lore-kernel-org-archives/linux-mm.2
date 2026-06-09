@@ -4,139 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993A4CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 20:53:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E99CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 20:54:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2E036B00E6; Tue,  9 Jun 2026 16:53:30 -0400 (EDT)
+	id 026366B00E7; Tue,  9 Jun 2026 16:54:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDE816B00E7; Tue,  9 Jun 2026 16:53:30 -0400 (EDT)
+	id F18C16B00EA; Tue,  9 Jun 2026 16:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCDDD6B00E8; Tue,  9 Jun 2026 16:53:30 -0400 (EDT)
+	id DE0C36B00EB; Tue,  9 Jun 2026 16:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B54DF6B00E6
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:53:30 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BE3D1A0791
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:53:30 +0000 (UTC)
-X-FDA: 84861574980.01.7EB01F5
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5AD3F140007
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:53:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UGcH+PGh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC4366B00E7
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:54:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66C95140644
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:54:17 +0000 (UTC)
+X-FDA: 84861576954.19.41F9595
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7C8C52000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:54:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Bls8DDTg;
+	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781038408;
+	s=arc-20220608; t=1781038454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ciPLz0BxzGV6iVw62tuwMuRgsc1E7ocBiaZ0b0Nuy6o=;
-	b=mPaeJXQrEOoxf/BTcX2Vl8GmV0B4EA0YT5IpMVSx9ybZ0h8iv5Erqg/pdOWW6YrCANAllN
-	npS/Tj7gte8+JUVCiwIFq+K3QnGFMnnZJmhfmez+LO86l2PZ6H+Mk3x8Y+TiiKDtL0ur8e
-	zufpEiQFZRMwOnrYnU0zLw0L7LE6Pj0=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UGcH+PGh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	bh=Ltc2sYZ1jQgNq8eTbayFrnsEjmaFVkawinOpfFW6WKo=;
+	b=8Y8L3mpsu2D5pj+Rx3LKs0ytmZKymXpfmymp6qkVNnKHzHwWmR8WQdoqS/o8yAMK/JNaSO
+	i6hElnuVtSLaa7GxkcuR6v7jazNqOXaB7O3hwOleVunsNIB1r5bNcEgODLmmi3LIkmKJWv
+	XnwJ0Dntk/CkyE/+/KXB+KPxUJ8HIcE=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781038408;
-	b=3VQoMgGuIJKB8VzE2CfI0mQimc4pkz2fYiBjCUZJpszaZGQbuAomM+JGxoNlxlwt3AaQAi
-	cxj4ayTsZ/RktqaHA2xpZu75VsaJ2afr93oa4Jnu3eN9ybhbeU4LiJdIndrnVcwcxsMEZh
-	AyIUlbavIFcYtBVXQcNXqQAq9U3bTEw=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf2911f93cso3645ad.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 13:53:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781038407; cv=none;
-        d=google.com; s=arc-20240605;
-        b=M0Fb/5oPRbZW8+BmhIv+UgnixXQtE+D3MqJRnVEo+gpXjxwbwKDITE4luyW/KNFOfd
-         b24o8OxrFp41cA/RMlwHldtFfCW99NrL/U1TgHaY1vAjQ+sz3dCha1+hfFRWSDsid8Ge
-         jfkSAiGreEiavbMHxbIApeIOGIPkok+J8z3N/rl1zhxufpToM17HNAmR2sZKHMuuzcQs
-         IKtfh9n9ne8CDMq3IqEVsK5FHE5TGlw2JMMC9heCH4iRABoCHP996HYFgx4LcL1yscJr
-         GghMMZ3iHX+qveXGkHNetKoivBSjNZjE9CiqcR5h/sd3YCZTU4LRuvxev4Bsvzy7F9vI
-         nuRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ciPLz0BxzGV6iVw62tuwMuRgsc1E7ocBiaZ0b0Nuy6o=;
-        fh=Dbm59YGvkyz4Hi3zuGWyQn/X28JC+URoyMaJB8spD7M=;
-        b=OkpCjE+c0SOPcd3O+kHuLJj4XiNLNrWQOEmIE0DpPIrWjc9VY0o4s6UNT6TZUS1q8m
-         zumPscYZq832bSJ/RzksA36d3L/F/2TjDf4QCuvNxMDnWtmOkFoRsHTBRLtLTRiOOmth
-         TzWz9xb97ynwPfPx0nT607udw9thsZ2DdSGrVlSC+incOn9JvXKMJ7pACFZDzFCa1WU8
-         5QbMTItZgO30DDQQL6OHWDmw63OEMLwuVs2aoXFZY4F7xc6gKu4JPdMZqgqQS38ALGLL
-         gHV7JaXgGwez0Pg2XmykaNKqw79Pi9fAaf8217y8+WmdqVTQX2oXnKFof7+JOTKX0rj+
-         2TKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781038407; x=1781643207; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ciPLz0BxzGV6iVw62tuwMuRgsc1E7ocBiaZ0b0Nuy6o=;
-        b=UGcH+PGhIBP4Mm7mx2zx0F8veUh8SDJpNQYGdUMkNqpg/ubiMj+822CaWblWeTv4wW
-         WsPlpQcgnEIAAdA96dggHXtzutZ3BaUecmIVVG4EzmfD9aBlxFwP01cYDuTxFiw3W/96
-         eFGTr9kPheziISrL+RZvniEeb3RbXqQwTDffYted9+3cZwSe0WOhx1tD3ONr/zrdd1UN
-         45U+7OSoHEzUEc0Snm2FFFKHwOJ/NjDlTMrscXyYh8p08QN09XMaIhZ/QKCulTLQKGKu
-         M3g422Nkfza8CbJwwbClS0hZwzpql/wdb+ArM22McwGseBmK86KQtS9ttBgT2ww4biL1
-         DNiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781038407; x=1781643207;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ciPLz0BxzGV6iVw62tuwMuRgsc1E7ocBiaZ0b0Nuy6o=;
-        b=PhnO93mOVwXSeNs4AyAedAuT4YZyYdWuMnA4samRBQ+/wujhKCHZWOMlJ3Y/bp30vE
-         dnGGDhvrj5DHG6xDEADqyRMgq2PeGQIJLwVdUuQhi7JBtW0Uuds0sKOcn0HWt50aGbpP
-         vvg7zP7pGYzm+DEx9v9/QjmVddHx1zo5cK+2mMhpQ5rOMfYNzg8Wu/cjx9IZeIwISBIx
-         NB+pz62magGBGrZK8WJTDDjgphnTCHNojG4M9FZF1aUL4+LZJdO6pzdWt/wjCG/CA3Nr
-         ihP68Qe3spDW4w9w1tADo39zvwRccwHpoYMF6pp0HwdoujnaUmpQPp9k5OW7naCSSboi
-         qbZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Yv3n5QoVi/dslp6NcS1yoAhxSnUcwM846z5/7M4nyMIxse0B/kmjwwo43k69vBr3VPfUSFyFvJQ==@kvack.org
-X-Gm-Message-State: AOJu0YwKh+EGV/msZ+L774eSX0H10pnzLAHE5yxAyF6njWY4skEfzwGO
-	tT/RfyVGGuASsGND/9vz0rF18LvbgPDSI8kticwtzfLqoZOuA52VzQJrBWsc4wLiMPGrvByKfzi
-	Ei+zOeiizOfa2/JRUBDJ0HnwzDNQVyN5RJKr/iWah
-X-Gm-Gg: Acq92OGh0sKXDnOsWJ6mb0myxhTY/8xPgBTkRyhNLXvNkFavb0R1fbvdbnlCMR+ldSa
-	EOy4F7ap6YdeJZiUdWaThUllahQyGojwmKRe8CKnOZIdbxiqZrzKceI7of7ohQSBx9iho1uOaGS
-	RjkiUwP0uohRC5G2K0GXgl4dXlLutlN+EiZWVGHJQ68u8Pm2ngDqEFuvnW0AO8NiBN0jMFailA+
-	HpPmNT0GjmYT6LDFQhTFbBbtdR1hi5wvVSkXmdeqb1ek+VjGH1NWWWjayC96aFR/RrjmSftnA5g
-	GHSeCKuCAnd0XeuLLUmjGsinIPGPK0+sGGrkG7jjzg9KJhEW/pqxqHXJHbc=
-X-Received: by 2002:a17:903:2283:b0:2c0:b19c:2e10 with SMTP id
- d9443c01a7336-2c1ea96cbb5mr8374015ad.0.1781038406624; Tue, 09 Jun 2026
- 13:53:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1780701922.git.abhishekbapat@google.com>
- <b608a6f7d71e3b728f766dbc6dfa1d1753ddcff5.1780701922.git.abhishekbapat@google.com>
- <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev> <a58e659e-5f54-4511-9a29-dc921002d102@linux.dev>
- <CAJuCfpHtdd=9D68cfRp4HDHHHCZdzTNP_RH9i2D-f9tJXht56A@mail.gmail.com>
- <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev> <CAJuCfpGbxO0zu_UAWCYNNv8RHgT=E4AF0tgG-kWoLXECOL3byA@mail.gmail.com>
-In-Reply-To: <CAJuCfpGbxO0zu_UAWCYNNv8RHgT=E4AF0tgG-kWoLXECOL3byA@mail.gmail.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Tue, 9 Jun 2026 13:53:14 -0700
-X-Gm-Features: AVVi8Cfn78ORqX4oA_nr5VyV7O6esWdCgDaXx8ANezh2vF1JBG6XK4Z31C3kswU
-Message-ID: <CAL41Mv7pdX-m8rOQE+PjwTUkXi4x5FffR=6Yjhe2N7-DBaR2VA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/6] alloc_tag: add accuracy based filtering to ioctl
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	t=1781038454;
+	b=Yen02Nt/49r7XBJTM5qmESlugEj8w1JngaEHZMqnhIEQJ5HKtpfsGk2WhsOidTK5CcyjDK
+	BlI0+1uEPKxgXIOF7GuuWDZIgTt0B2ZjJmJ7/ViBF1cto0BAkztr86nqvFnuuPGgQUl68G
+	8R5OGW+8Fvh8hUrdBxTpUSzxkWPkhH8=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Bls8DDTg;
+	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AgfhAQe1GscJzS2yTdSejJlW4aibatjzT3Cm4+gLGyKtKYDoeUrbTTF+HkyNkc2WFCYsTwJBudx3kUysXgZ1sJmXC0rUYKuIdaEKMkmL/YiaZEdwYmhVorKFgNotzzTBBgCW6dSowkzyZG16tg8Lb8MQ7/tdvDnI87Urrb3Pyx3qa/oPkoTRsMA4ctTpUFYFQ7nZl0kmlKpMwe+LBOzwRMYcvlXzJplSX7mrBPWMZbDNF+8gviS8LG+tf6J53hwHFsQUvnhjIsyIniEe76Adyb1yicfEjoE4dZuuBTK9Rl3q6Ez99NDNSGvOFglcVobBAxT7pc2WJ+D+3HR3x3SYpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ltc2sYZ1jQgNq8eTbayFrnsEjmaFVkawinOpfFW6WKo=;
+ b=EVKjdBNm6raEklR9EcU9l4qK+QjtqOFwZprCaqggqr4kTrfkAPo0larsO7mHVyQhdBr9YKNAkkEj0klqHlLIGsnPgum0cTnHF0nD19T5Z/d0L0Xgs3O/3kYreG8FzgwUddKTvPv0hlRUUW+BBjdqoxNuRoip2Ed6K5qcXzrGalrPdyAqAUes4kixWMiVTtryESyrq2+Ao0YLW6oDsV/nUdkSsPqCTprjywGT6mbUK6POxE+Qz5GwEABk9dEvAK24MvUDQZbyDTx2oFp8KdmWiPwN6buudNwjnwYXtbmLIvtrh36ybn7AOkcF2hmYQ/TkCPbMJS0SVcnck3OHGsthkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ltc2sYZ1jQgNq8eTbayFrnsEjmaFVkawinOpfFW6WKo=;
+ b=Bls8DDTgrhVeCbxS1VeLDjLpB0FNtm9Yh8idr9VrS3G/fU/xtK4fd9F8rZYk5tgqqsiF/nxS8WjSBqL2LWOjfdDVZuTRTFRl0igWDqIVfTveiNpkIkFD9Z0i/sd4k/TX/qKYOFaky8jEK5Yj+ujlrTYlaN6DjB2ulZGGPV6ysL/37tC2ozB6IxZzhZ5/uS4+tPnUJ6mMnyjnMLZUtBrqgQJTq9VZCbeq8QkoGRyvDTfIFok1ECEQeRgUDtn1PjVc1rSTwKVQ6lVAbVgfywRCW3euhRQAFyUm1+gO66zsCNHInn1IKXkRqhAFAAABoamdb9B97gCl4Twyo2qDuHl6LA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SJ5PPFF62310189.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.11; Tue, 9 Jun 2026
+ 20:54:07 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 20:54:06 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+Subject: Re: [PATCH splitout] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+Date: Tue, 09 Jun 2026 16:54:01 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
+In-Reply-To: <20260609162437-mutt-send-email-mst@kernel.org>
+References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
+ <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
+ <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
+ <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
+ <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
+ <20260609162437-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5AD3F140007
-X-Stat-Signature: r3zkfbecth43ko6f1b1yb8uupj6rwaqm
+X-ClientProxiedBy: MN2PR07CA0025.namprd07.prod.outlook.com
+ (2603:10b6:208:1a0::35) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ5PPFF62310189:EE_
+X-MS-Office365-Filtering-Correlation-Id: 270f9ed1-70e5-428b-6024-08dec6693ec1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|22082099003|18002099003|4143699003|6133799003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	dN3lE9NMPCGxxFoK2kL3CR279kE+EjTz1dK8AS3Z882MSlSdKzKEsVm7e/BVtk5BMxz5tyat6AVo94Lj8w3rQ7IMr8MBwsFeKf4KYPdTe8A6k62eYRJUAcPFF4P/rO/acNillj2Bbi6MPEZIIuruogExfDH8OzsVEPbbNkzbBIqhRXnQAvbrSz8plH/rHhQtEs+AhbMs4zGqHBInLAXjFAeVIQozobXsgf8AstcAz3exhLRFAkfx84hIsoEwxxyi7jB2hnlDuh8PBaZ7vUu1Jq3TDZB2Ez3m1iW5I9SAs4OHMCov0XiZ6wEt89AkQLt96HtwQIiX8jrAOdiCVoAhsvTwswHmRizGstgyLpOQmbUTNxzJFzWGyOBODy+mB/zRcX4FMYucryZNm7+5Alm3VmHpjAdRBaL+RtV2UjwOJJjwPkzEufOF7tvq48vdC8zkX4FdwucGCnicPgVF17+d1zJBOE/QCJ8OPQdTndFJhbhwp7sAiReFI7R03TpugpC16n21JGScd+c6L6UAkEImATCQ5qNdlJB/Gv7LxEfPp54ZRhY39MubtoJbRFu7jcD3+ccHcRf0p3l1rMqnFFxvVMNfzxD1C66Alt36tO+r18bdXkXfed/yzevI3VmhY55NPLp7gCpSrXlWa9QRh0bgS2LO+NSGZq74DavfqrfWF5BY7NUl77mj0DxJVjMgBvuQ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(22082099003)(18002099003)(4143699003)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?sIS2/Ov940ohoBpB0x+uTu7OKGyc2K7HXdt4zvZv6vK9+/sqlQnaVf6uZj+E?=
+ =?us-ascii?Q?8ula9ugnF3VQ13S3+F2XA6A/TCWbFr48zrG5/x4MvYd8yuPSKmZzj6yjDM4+?=
+ =?us-ascii?Q?BonBA7LFbv9bo0uFdsvVNO+q5QXlredM5csEUcNVDMGBLElnshREeh7XsIwA?=
+ =?us-ascii?Q?omcObGJsA12jHy8ZLp6ogTHNjzGC1u+t+trLbzJ6iWBy6WWWRmT+X0jgfcDi?=
+ =?us-ascii?Q?z4hzj5ceVxo/RYqaLeId2F2cKytvRLuQAaq+bmUN6Jg0IrtZ7kR4YjdjiexQ?=
+ =?us-ascii?Q?38p0Mhh40/rmqcBw8ZNUMpy45IxGqTmirlIHqYDNiGxHhV3zxyMCvC0uD5HV?=
+ =?us-ascii?Q?k4QJ73ICaEmUeqFRLCy4Jkw6q5nS3lD8D26zsrh/RvNL6NgYHmv/u8FdbFx9?=
+ =?us-ascii?Q?Ly4RPaxoyZ2ipnB0Gjy6ktRid1MmbDWw499DGmcx6yZs8mQq33MPU6+DJyYC?=
+ =?us-ascii?Q?BunntUZF9Xeku6xf3K4R/GjGlnxdxlp8DqMRY52bCphwxrLmHLmIfq1W3Gzd?=
+ =?us-ascii?Q?FkHqQDjj5bHgGRLRH7m6QMcZEbbguFNFeKoO/1v2wy2UFIdjrRJFyInyn6nc?=
+ =?us-ascii?Q?yLBkvFpWlDLlOPgzC6CX3zM60P4pIemcUpG7epKXS2WYj2rVgMmclGlxg5x7?=
+ =?us-ascii?Q?UMXzmlPyI0snW5VoNHfYsYimqyk7C/93MQewKohoZrWMcsiDEKbpI8xYl920?=
+ =?us-ascii?Q?+qhek6AKgjRwUK5Pqj6SglEvZadFasr6+b0veFhKRPpHJ7pvWtWc+2IpmfrD?=
+ =?us-ascii?Q?uwRMTWB/euIc2hdx7tZHvxZ4mgAUPoYQAwlvJAnNVjDU6RhRjv/I7F50nnUH?=
+ =?us-ascii?Q?aETUvbk5PMTjzD82yAXJIJcjdrtNqxJO5wCX7LzSDwzTD1IRc/lgxkkkCUo/?=
+ =?us-ascii?Q?Kcs52NaRO/uW5bJUL57pGyD1ZUrolAwX3Aqge9ROqGpLQ5CbKtLf2yVQyh2t?=
+ =?us-ascii?Q?Rs2duiaJFeVjfxLBxO0gBS1GkYvPGw8oKCA2abF3WY6E8U8MbY1uCk0baDAb?=
+ =?us-ascii?Q?23I7K2e2lGu8zcOv87b80aDCWEHppyB3E8INN1I2r7Cj9eVi7RDt12OdbRxk?=
+ =?us-ascii?Q?/0R9rY8SPaqaRB20EhbwsGisw5jpitJpz16UAWKoIAvD5L3sxQiQLWXKc7B6?=
+ =?us-ascii?Q?R56sitmLZ0iGK+WawoKv/aqueR6viF+clQ2rgceydKn81JaaXkmOsDVQo1OI?=
+ =?us-ascii?Q?X+JvEtQc5ms7kis9TEL+heZFw9XAPydPG5ftw5VkWE+PdgLfXbFUNyv2ith3?=
+ =?us-ascii?Q?08/kOK0rtx8wouiyqlx91l9HwuJTwYAu6Wz+tia5PxwkJAMZr3gIKA0Guk8C?=
+ =?us-ascii?Q?0oPCy/HVpKB6PGCqqG+9pYA3LIYBiDghYKXRjlpsRYwBR8pCV/3kfVaX3Ujb?=
+ =?us-ascii?Q?uyglXjoyyuoaGHi2SxgO42C4rNKsPJKQuJlJp3aVcq+PTJqk4oqvXduA73RX?=
+ =?us-ascii?Q?OvSzBNJmS/16vKQWtQ2DJ4RpfrITGR03IHs3aroalF81vTftT4VNFGEuVXNy?=
+ =?us-ascii?Q?wTU6PfkMCT/o+ViHCuZgefo+tPciCoX/xj0sXfZCpbAbHvr9BpAheQokY0KU?=
+ =?us-ascii?Q?dZpvpCeV6bdHy+C0Oe931OVbDNhmG1wTJXZgN//hExsx2agH8zVhcTdY7yHz?=
+ =?us-ascii?Q?RUKgRN63ZQqqT6CZ7uNfum6fA9OC2CRNoO6LUX65gJjeUkSuc4+Aq7YSHyQn?=
+ =?us-ascii?Q?1iVi/ysJ/fVaR1OzHcMdC3/Jab4nagbjDgj4N05N2uAvS+yT?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 270f9ed1-70e5-428b-6024-08dec6693ec1
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 20:54:06.0971
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xj1kNZgD+u5aVdvO4nparUCyV2DRfevVDfuwQpPk7Dbc34lvGw6fOeIcf4bTG2mG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFF62310189
+X-Rspamd-Queue-Id: 7C8C52000C
 X-Rspam-User: 
-X-HE-Tag: 1781038408-497229
-X-HE-Meta: U2FsdGVkX1/7H++tTB2BKe6lua9/nrDOYdpz75KNgXZnhT68dZtYAnzEjPNGa0YlAXVfdolCfAc2xD6I0ZkL5IdqtiyYYzZF4Q6yxIFeGLPWB8qMK6NwPaiMO53R/f7PJ3pZqTwyyxUibgSc/7caszhm6d7XfnuKMA/0+vmqb2OhqMj7rFXBjGrFSlThGMfwZ3NWkZxlmsWrOoBxqJbsKv7bpqoA66ZCU/u3/fVt2L6Bjj8bIZa139mLeIIepoeHkgDj79O5U0Rgk5yAHMM9/lnZZejUUWeHDm4vWJxqGiYwwPN1Pn7mxF9utUg3iioyMAPCtAxPbNiBx5hxn9KdHtYGT6LW2m1bm/LnSxmt6fDX4k51K0ophuhV4RK0MGIBMuHVx4uCwmVOhh89noHQiPGeWdEPmsrSB0uqAUSaq9X9DIwl/dRJntgLh97MCPq+lwa9MnDe7CkwEZK4hvPtYuAFqGomj90io2G3wMNR4EnHfAUEC13gkBSXOQWfmo2eRuoyj2NJidp1BnFP5omm0B5wBbMdc7tgFlelyfLyUASLHQIk4VqedMWyBhkGVkGDfKvfqtPmI52PP9rOW+tkkqh1KTJ7Rg2ziEHtCdiKh8GTDA5w4mFWne+Upuaf9/5mnQnttegWQzrMp9UyiQ1HDmGs7/uS7Ilg6acNw5y8Wt9rn4e0/qufCiXaGj/8Jug3r/kdC7VGCKx03lAj7t8FH1ns+jJpvPssDObteW4SrSbSjORr0+qEjPXeM0EazujL7PofD7wZkwvPo/LrkyIMvm1MkW9/odrvX2+2sz0octXpUy7brIvq5H/j62sntVT+8U/fjzIVaunuiRsdtkgeBrA2XzNGegKrFBC9sjQK+NFbmjYVq4YzhbFVUqdmBUTArD1Dy+VtlUfEQZhsXH0Ica8SDc9+m03PNfzPcllF397GFhymzMETlpWvShNzXzbFHhANjTSqrTu0Xv5TzqR
- aesC/zge
- 0Ml2HAWs1Ne7vnlgXR0t00R5sgwVKfQ5eS5kdbWn47CgsoZyVIM4ZeHU+b7fvtyLV6eOYxUKibJjbwWdzufigY3NhzlO1LuXwdjR581VBOHXfVfzzjd7iz/1CbD0tPeFSiiDlWVoot73Mzlb1igpGpaWCOrelYTaUO+lrzCCN8x39p529F1tZkCigggHacP0PelTSaHthG2v6gZBhnvuEmEDOI1ISmgVIwwjxVZ44FMp6uXGSqLNg6HjCXX3vp4qXn+kGgO6hsVgBdfV5Uwd/KmAYXIAq7vi+WwK0enYomqonDPg13LnO4xeXrSAKmL8JsdrG1B3TEJUNZ08=
+X-Stat-Signature: k9oo9w7sqh7w9n654qeocs5jco4u64jo
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781038454-659638
+X-HE-Meta: U2FsdGVkX1+8LfZ7C0n76k4ipQUnmXMhOCyclOglVJ/3T7jaGrdbfp66QcKDI5uHRtxuUrSnao6J/ZDjcubTX0OwdQnz1f9IkdFu7w7bUGDnXJjqE/7D29RJoW31SH405pqoUr0bpY2TxaFKHJrc7k6Rwpg63gawiSJ2W6IMs1YkvTUCgZz07/rMmSyydRcYj/ANPLG2gnC4d6J0d+wvkJm8ReO15aBTFGUV/2ieE/BJ8J5kjeKH1B9uBqlMKDdDNBj4LMT0WNkUilYb3s6LpV2jwHKJTArw0J255mnvcrZ97mFK5RfbaXZYpyeWsXvC1puhPqzdViEHvfTwqfpP08TUFPcmsEMMofosE9NCOeL/0Q40RO4ynORBBvAJhqXqZtz41lBDhJa+WxI02ApGV4B7JXTHfqoE8Gx5ytdSwTIoBMBBJfhHehVQV8SBxc/DGfq+dhu8VnTg2JaZuC1pwm9rPbwA73w8wuNIudSQ4bctQD5SehuntMflsJYqpOIJ3Pk/fOB2jWMG7Uo9BKxc7M/UA4SPR4oJ+EE8Gvkxjr013qQD17czSL+aBJbHWm6GWyZHAfCB8//FCtPAbaFd5Xznjr5I2/1niegsctUmP5YYIAsV4PiDkSJLkREtS5QwfHatypBBsUVwy4QEleHkJh1SlrTYooSgL6l5sc7CYVB2OHIq/bgm8qoQqThEDuLZ1G04BIYE66jCddHj6PqIQcjpgk8HAbfyiiE5iDPDdpcHw3uHFBJWGaUuprBk03OeLCZ9BborXBDbxreY0AaSbqGZG79ZqfzQjcduof9mnWngx3Ny8bf5Z0whelXsR0u+1IwXA0IWamJEH+sH0seJrm1d79LPC1lS55HVsH9VbThhPcsIetwChyUkiJq0qyB/9vR9lFOyBG/avqaGhfmMlx/gtnymuiXYttVmvFtPQtBdUC02pITlB+4kHJ+QPp+gNJhfncVlqtJStduZo9T
+ LhW2meJG
+ 9q8gGKGy6KVNtsoVNgnIXH8gIyfer07W2RiT9lZTkA2houeC79Hx5Fqurc680yGekRFjiSAENZGn0VYl8t7wxMa3JfpxEG1Sej03rlNlvgKYvcPxaLstaQ1XbkGpsFKj+szzf5cBcn7ai0s5ebKhjGw1I2VOY35/na3FZwhzHs0tW91gSPDpomj/1wSmk0nfAbjEp8ipDUEeMeQr5wec+8WbCpU9C+WxiEvGDwvPndw6Ha4mrcC6RNa9MuRkfd98d9YqINN4vPd7/G34AIX1ku/iknjPjgrGBadLwzlRfgiFO8mIM3J7h7CgI7GToenGsJlOhW9D3W1/PFSUq7Mse9xNo6OUB6FVSwIEcTGui6RMNfc+hTN3bsFQ+hV+tgbYgeVzTzr4NB5X8G82tik9lEvNgNtETTcAprWGYbbqNaZltF+1OYY8wQtuFwdHG/Kss68UG0KVAad/uJehbCyaCetn4A9nPtbhJmZT9KxvoZSOesfKEyjPaPo2Hr/PGJGqy2Gc0UAgijQvE+No=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,310 +189,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 9, 2026 at 7:41=E2=80=AFAM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
+On 9 Jun 2026, at 16:34, Michael S. Tsirkin wrote:
+
+> On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
+>> On 9 Jun 2026, at 14:39, Zi Yan wrote:
+>>
+>>> On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
+>>>
+>>>> On 6/9/26 20:10, Andrew Morton wrote:
+>>>>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.=
+com> wrote:
+>>>>>
+>>>>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
+>>>>>> update to page->flags can race with non-atomic flag operations
+>>>>>> that run under zone->lock in the buddy allocator.
+>>>>>>
+>>>>>> In particular, __free_pages_prepare() does:
+>>>>>>
+>>>>>>     page->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
+>>>>>>
+>>>>>> This non-atomic read-modify-write, while correctly excluding
+>>>>>> __PG_HWPOISON from the mask, can still lose a concurrent
+>>>>>> TestSetPageHWPoison if the read happens before the poison bit
+>>>>>> is set and the write happens after.  Will only get worse if/when
+>>>>>> we add more non-atomic flag operations.
+>>>>>>
+>>>>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
+>>>>>> around ClearPageHWPoison in the retry path.  This
+>>>>>> serializes with all buddy flag manipulation.  The cost is
+>>>>>> negligible: one lock/unlock in an extremely rare path
+>>>>>> (hardware memory errors).
+>>>>>>
+>>>>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+>>>>>> in this file operate on pages already removed from the buddy
+>>>>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
+>>>>>> need zone->lock protection.
+>>>>>
+>>>>> Sashiko is saying this doesn't do anything "Because
+>>>>> __free_pages_prepare() executes entirely locklessly".  Did it goof?=
+
+>>>>>
+>>>>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a72=
+7b90.1780998980.git.mst@redhat.com
+>>>>
+>>>> Battle of the bots: it's right.
+>>>
+>>> Yep, __free_pages_prepare() changes the page flag without holding
+>>> zone->lock.
+>>
+>> __free_pages_prepare() works on frozen pages and assumes no one else
+>> touches the input page. To avoid this race, memory_failure() might
+>> want to try_get_page() before TestClearPageHWPoison(), but I am not
+>> sure if that works along with memory failure flow.
+>>
+>> Best Regards,
+>> Yan, Zi
 >
-> On Mon, Jun 8, 2026 at 6:26=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
-> >
-> > Hi Suren
-> >
-> >
-> > On 2026/6/9 04:55, Suren Baghdasaryan wrote:
-> > > On Mon, Jun 8, 2026 at 1:25=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrot=
-e:
-> > >>
-> > >> On 2026/6/8 14:22, Hao Ge wrote:
-> > >>> Hi Abhishek
-> > >>>
-> > >>>
-> > >>> On 2026/6/6 07:36, Abhishek Bapat wrote:
-> > >>>> Extend the allocinfo filtering mechanism to allow users to filter =
-tags
-> > >>>> based on their accuracy.
-> > >>>>
-> > >>>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > >>>> ---
-> > >>>>    include/uapi/linux/alloc_tag.h | 3 +++
-> > >>>>    lib/alloc_tag.c                | 8 ++++++++
-> > >>>>    2 files changed, 11 insertions(+)
-> > >>>>
-> > >>>> diff --git a/include/uapi/linux/alloc_tag.h
-> > >>>> b/include/uapi/linux/alloc_tag.h
-> > >>>> index 0e648192df4d..42445bdb11c5 100644
-> > >>>> --- a/include/uapi/linux/alloc_tag.h
-> > >>>> +++ b/include/uapi/linux/alloc_tag.h
-> > >>>> @@ -20,6 +20,7 @@ struct allocinfo_tag {
-> > >>>>        char function[ALLOCINFO_STR_SIZE];
-> > >>>>        char filename[ALLOCINFO_STR_SIZE];
-> > >>>>        __u64 lineno;
-> > >>>> +    __u64 inaccurate;
-> > >>>
-> > >>> I was wondering if it would make sense to define inaccurate as a fl=
-ags
-> > >>> field
-> > >>>
-> > >>> (e.g. __u64 flags with ALLOCINFO_TAG_F_INACCURATE (1 <<0)),
-> > >>>
-> > >>> so that only bit 0 is used today and the upper bits are reserved fo=
-r
-> > >>> future use,
-> > >>>
-> > >>> aligning with current kernel codebase.
-> > >>>
-> > >>> This design also allows for better extensibility if we need to
-> > >>>
-> > >>> add new flags for any reason in the future.
-> > >>>
-> > >>> We also need to add flag validity checks if we go this route.
-> > >>>
-> > >> And I've reviewed the issue reported by Sashiko, and I think it's va=
-lid.
-> > >>
-> > >> When we expand the allocinfo_tag_data structure
-> > >>
-> > >> struct allocinfo_tag_data{
-> > >>
-> > >>       char modname[64];
-> > >>
-> > >>       char function[64];
-> > >>
-> > >>       char filename[64];
-> > >>
-> > >>       __u64 lineno;
-> > >>
-> > >>       __u64 inaccurate;
-> > >>
-> > >>       __u64 bytes;
-> > >>
-> > >>       __u64 calls;
-> > >>
-> > >>       __u8 accurate;
-> > >>     /* padding */
-> > >>
-> > >> }
-> > >>
-> > >> I think user space may see two fields related to inaccuracy.
-> > > Yes but one field (inside allocinfo_tag) is the input parameter which
-> > > user provides to specify the filtering criteria and the other is the
-> > > returned tag information. It's similar to any other tag attribute
-> > > which you can be included in the filters.
-> > >
-> > >> How do you like these modifications?
-> > >>
-> > >>
-> > >> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/all=
-oc_tag.h
-> > >> --- a/include/uapi/linux/alloc_tag.h
-> > >> +++ b/include/uapi/linux/alloc_tag.h
-> > >> @@ -20,7 +20,6 @@ struct allocinfo_tag {
-> > >>        char function[ALLOCINFO_STR_SIZE];
-> > >>        char filename[ALLOCINFO_STR_SIZE];
-> > >>        __u64 lineno;
-> > >> -    __u64 inaccurate;
-> > >>    };
-> > >>
-> > >>    /* The alignment ensures 32-bit compatible interfaces are not bro=
-ken */
-> > >> @@ -40,7 +39,7 @@ enum {
-> > >>        ALLOCINFO_FILTER_FUNCTION,
-> > >>        ALLOCINFO_FILTER_FILENAME,
-> > >>        ALLOCINFO_FILTER_LINENO,
-> > >> -    ALLOCINFO_FILTER_INACCURATE,
-> > >> +    ALLOCINFO_FILTER_FLAGS,
-> > >>        ALLOCINFO_FILTER_MIN_SIZE,
-> > >>        ALLOCINFO_FILTER_MAX_SIZE,
-> > >>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> > >> @@ -50,16 +49,20 @@ enum {
-> > >>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
-> > >> ALLOCINFO_FILTER_FUNCTION)
-> > >>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
-> > >> ALLOCINFO_FILTER_FILENAME)
-> > >>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 << ALLOCINFO_FILTE=
-R_LINENO)
-> > >> -#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
-> > >> ALLOCINFO_FILTER_INACCURATE)
-> > >> +#define ALLOCINFO_FILTER_MASK_FLAGS        (1 << ALLOCINFO_FILTER_F=
-LAGS)
-> > >>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
-> > >> ALLOCINFO_FILTER_MIN_SIZE)
-> > >>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
-> > >> ALLOCINFO_FILTER_MAX_SIZE)
-> > >>
-> > >>    #define ALLOCINFO_FILTER_MASKS \
-> > >>        ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> > >>
-> > >> +#define ALLOCINFO_FILTER_F_INACCURATE    (1ULL << 0)
-> > >> +#define ALLOCINFO_FILTER_FLAGS_ALL ALLOCINFO_FILTER_F_INACCURATE
-> > >> +
-> > >>    struct allocinfo_filter {
-> > >>        __u64 mask; /* bitmask of the filter fields used */
-> > >>        struct allocinfo_tag fields;
-> > >> +    __u64 flags; /* bitmask of ALLOCINFO_FILTER_F_* */
-> > >>        __u64 min_size;
-> > >>        __u64 max_size;
-> > >>    };
-> > >> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > >> --- a/lib/alloc_tag.c
-> > >> +++ b/lib/alloc_tag.c
-> > >> @@ -249,8 +249,6 @@ static bool matches_filter(struct codetag *ct,
-> > >> struct allocinfo_filter *filter,
-> > >>                   struct alloc_tag_counters *counters,
-> > >>                   bool *fetched_counters)
-> > >>    {
-> > >> -    bool inaccurate;
-> > >> -
-> > >>        if (!filter || !filter->mask)
-> > >>            return true;
-> > >>
-> > >> @@ -277,10 +275,11 @@ static bool matches_filter(struct codetag *ct,
-> > >> struct allocinfo_filter *filter,
-> > >>            ct->lineno !=3D filter->fields.lineno)
-> > >>            return false;
-> > >>
-> > >> -    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> > >> -        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> > >> -        if (inaccurate !=3D !!(filter->fields.inaccurate))
-> > >> -            return false;
-> > >> +    if (filter->mask & ALLOCINFO_FILTER_MASK_FLAGS) {
-> > >> +        if (filter->flags & ALLOCINFO_FILTER_F_INACCURATE) {
-> > >> +            if (!(ct->flags & CODETAG_FLAG_INACCURATE))
-> > > How would you filter records which have only accurate data?
-> >
-> >
-> > Sorry, I overlooked this case.
-> >
-> > Since allocinfo_tag_data exposes both inaccurate (from allocinfo_tag) a=
-nd
-> >
-> > accurate (from allocinfo_counter), userspace developers might mistakenl=
-y
-> > read
-> >
-> > inaccurate instead of accurate when checking accuracy.
-> >
-> > How about we add a comment to clarify?
-> >
-> > struct allocinfo_tag {
-> >
-> >      /* ... */
-> >
-> >      __u64 lineno;
-> >
-> >      /* filter criteria only; see allocinfo_counter.accurate for actual
-> > accuracy */
-> >
-> >      __u64 inaccurate;
 >
-> I think we had comments showing which block of parameters are inputs
-> and which ones are outputs but I'm not opposed to an additional
-> reminder here.
 >
-Ack, I'll include the recommended comment.
-> >
-> > };
-> >
-> >
-> > LGTM for the rest.
-> >
-> >
-> > Thanks
-> >
-> > Best Regards
-> >
-> > Hao
-> >
-> > > Overall I would prefer ALLOCINFO_FILTER_MASK_INACCURATE rather than
-> > > ALLOCINFO_FILTER_MASK_FLAGS. The fact that this attribute is a
-> > > single-bit flag is a technical detail. It's still a tag attribuite
-> > > like file and module names and IMO deserves its own filter.
-> > >
-> > >
-> > >
-> > >> +                return false;
-> > >> +        }
-> > >>        }
-> > >>
-> > >>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> > >> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
-> > >> @@ -318,6 +317,10 @@ static int allocinfo_ioctl_get_at(struct seq_fi=
-le
-> > >> *m, void __user *arg)
-> > >>        if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
-> > >>            return -EINVAL;
-> > >>
-> > >> +    if ((params.filter.mask & ALLOCINFO_FILTER_MASK_FLAGS) &&
-> > >> +        (params.filter.flags & ~ALLOCINFO_FILTER_FLAGS_ALL))
-> > >> +        return -EINVAL;
-> > >> +
-> > >>        if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> > >>            (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> > >>            params.filter.min_size > params.filter.max_size)
-> > >>
-> > >>
-> > >> Thanks
-> > >>
-> > >> Best Regards
-> > >>
-> > >> Hao
-> > >>
-> > >>
-> > >>> Thanks
-> > >>>
-> > >>> Best Regards
-> > >>>
-> > >>> Hao
-> > >>>
-> > >>>
-> > >>>>    };
-> > >>>>      /* The alignment ensures 32-bit compatible interfaces are not
-> > >>>> broken */
-> > >>>> @@ -39,6 +40,7 @@ enum {
-> > >>>>        ALLOCINFO_FILTER_FUNCTION,
-> > >>>>        ALLOCINFO_FILTER_FILENAME,
-> > >>>>        ALLOCINFO_FILTER_LINENO,
-> > >>>> +    ALLOCINFO_FILTER_INACCURATE,
-> > >>>>        ALLOCINFO_FILTER_MIN_SIZE,
-> > >>>>        ALLOCINFO_FILTER_MAX_SIZE,
-> > >>>>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> > >>>> @@ -48,6 +50,7 @@ enum {
-> > >>>>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
-> > >>>> ALLOCINFO_FILTER_FUNCTION)
-> > >>>>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
-> > >>>> ALLOCINFO_FILTER_FILENAME)
-> > >>>>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 <<
-> > >>>> ALLOCINFO_FILTER_LINENO)
-> > >>>> +#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
-> > >>>> ALLOCINFO_FILTER_INACCURATE)
-> > >>>>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
-> > >>>> ALLOCINFO_FILTER_MIN_SIZE)
-> > >>>>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
-> > >>>> ALLOCINFO_FILTER_MAX_SIZE)
-> > >>>>    diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > >>>> index ddc6946f56ab..cbcd12c4ef9c 100644
-> > >>>> --- a/lib/alloc_tag.c
-> > >>>> +++ b/lib/alloc_tag.c
-> > >>>> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct,
-> > >>>> struct allocinfo_filter *filter,
-> > >>>>                   struct alloc_tag_counters *counters,
-> > >>>>                   bool *fetched_counters)
-> > >>>>    {
-> > >>>> +    bool inaccurate;
-> > >>>> +
-> > >>>>        if (!filter || !filter->mask)
-> > >>>>            return true;
-> > >>>>    @@ -275,6 +277,12 @@ static bool matches_filter(struct codetag =
-*ct,
-> > >>>> struct allocinfo_filter *filter,
-> > >>>>            ct->lineno !=3D filter->fields.lineno)
-> > >>>>            return false;
-> > >>>>    +    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> > >>>> +        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> > >>>> +        if (inaccurate !=3D !!(filter->fields.inaccurate))
-> > >>>> +            return false;
-> > >>>> +    }
-> > >>>> +
-> > >>>>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> > >>>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
-> > >>>>            if (!*fetched_counters) {
-> > >>>>                *counters =3D allocinfo_prefetch_counters(ct);
+> Actually memory failure already plays with this down the road no?
+>
+> So maybe it's enough to just SetPageHWPoison afterwards again?
+>
+>
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index ee42d4361309..4758fea94a96 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  	if (!res) {
+>  		if (is_free_buddy_page(p)) {
+>  			if (take_page_off_buddy(p)) {
+> +				SetPageHWPoison(p);
+>  				page_ref_inc(p);
+>  				res =3D MF_RECOVERED;
+>  			} else {
+>
+>
+> and maybe in a bunch of other places in there?
+
+You mean for fear of losing HWPoison flag in the earlier TestSetPageHWPoi=
+son(),
+just set it again here? Why not do it after get_hwpoison_page(), since th=
+at
+is the expected page flag? Miaohe probably can give a better answer here.=
+
+
+
+Best Regards,
+Yan, Zi
 
