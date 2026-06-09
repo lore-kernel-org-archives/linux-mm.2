@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D88CD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 089F6CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72A7C6B0093; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
+	id 6DC5F6B0095; Tue,  9 Jun 2026 15:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 701ED6B0095; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
+	id 68CC86B0096; Tue,  9 Jun 2026 15:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 617DF6B0096; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
+	id 5A2EF6B0098; Tue,  9 Jun 2026 15:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5309E6B0093
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24589164F6F
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:54 +0000 (UTC)
-X-FDA: 84861316428.10.E4E3B02
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4987A6B0095
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:11:00 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1F4EC270F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:59 +0000 (UTC)
+X-FDA: 84861316638.17.AF9DE12
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5A6C5100011
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6D/bcpS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2D70F4000F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyT24jGX;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032252;
+	s=arc-20220608; t=1781032258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6HqbIExdtN+AFhFGHKtY0qW2xobLkHXMaLIXspxSgS8=;
-	b=gnPrks+cK/19ezMtKnuTuaiE1G+KVTRLD4lzqmL0VzM6O7CzmtpWSCaWBLfno+jloHo07c
-	hrZ0zYEfAEDRgrvtqDCOg88hT2eg4Xox7McPc4OShV/s4F2jNOk8TiMoRBCAFjEuRws/HK
-	d6F7qMaxx127knziIZLMgnE78JLGe34=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6D/bcpS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	bh=z3StJ1SDVAol/xVojKQU2uRTOblocEMLOnL3mqoENfg=;
+	b=Mq1aouFFd2idK8t195GOMfmLvfCSW4NBOb3hGf3vV3OQPcYC6mL5u8g42ewxh8OCbueHqO
+	varLbkZLDw2S84+iOYOdmyesOJOJYDJdnI2Oi1vrfIJzTnZSvUG7ZyjVsAkemiQCKna8j2
+	R2IQjS8gAfqjnWk5TF6naeYmvrkj0aY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032252;
-	b=pCfdf3xQw0REp35jxckcLK14jyIcyinDRi4VbS4NQrbkV+kEmdYJFOveImvPSahCdELype
-	ep/brPavHnnXMRxsc7HzeRJt4nWOmr0rvOdcuqVjmppUwly0/LOmwcHsYqfw+0HV9vTEf7
-	t1fZKvoqG+tpBNJz1vmXfh7EHVfU2kU=
+	t=1781032258;
+	b=syazzQXUeP2AKDYe0+pfModuCzBAC9GpLFo7U6W4XUGHEZzuLnjACxCnS9JaN3cOErWKgx
+	8djlCTfiToqbCOYejNpnRIdXIqOSOfV+39/blsbKpLgY3qaED9Ukvsuo1HExZMZrNcvNjK
+	VTE1Y4gwHHH8VoFh7yHvtUFBD49QYrE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PyT24jGX;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A42D843C27;
-	Tue,  9 Jun 2026 19:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562B01F00898;
-	Tue,  9 Jun 2026 19:10:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 781A840477;
+	Tue,  9 Jun 2026 19:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317391F00893;
+	Tue,  9 Jun 2026 19:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032251;
-	bh=6HqbIExdtN+AFhFGHKtY0qW2xobLkHXMaLIXspxSgS8=;
+	s=k20260515; t=1781032257;
+	bh=z3StJ1SDVAol/xVojKQU2uRTOblocEMLOnL3mqoENfg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=l6D/bcpSBHJLSkUvVBypuKACqnuIrkZBk+O3bR/NcXh4yg6VprxqYRJdD8mi33lzi
-	 uQ2HmLjWQqdo6F5rNTZU+sGh4hTf2xdX8xiX82z9pTwLYFa17wFMl/CfwGTu51KZNu
-	 k5EzAHtnLS7/2Na+8Wc30PUDOcGdKvFfIt0YU+ECG8oFIWdIeHzgXhCFy9bfRDBa1A
-	 pMN97/jjWoi+KGZv7D1v9lbz/cAaz89L1UgVDxSbNLBo39tLNclsRpF0Vb1OZvqNbE
-	 gXo9gX1PS6ug3TwCVOwX5e3ytkJm1EpTQ5EilMEVMW/C6sQSt1kXK+wW/w/WJT+KfZ
-	 L4KPp2m0QiRgQ==
+	b=PyT24jGXtIi3d0UF04FVHwiZclVhw/6Ja+SJ0WHyKYnIz34KeUUX8ad3sCHCDHAKI
+	 /n1gD3j6hBu41FBHAfylAUdeDpuzs/GQkt+EqsM8aezKqsnqi8i7Zz9H0Q0amI9ghX
+	 bZUFwofKeBJuAGg1pJS6stvUEGb+n8sRJGcRs5ZApZw90maEIicpz/WebeBGlZ+Nr/
+	 PRM/9VNUd6DluM5kek4MBKALBdIHMyBfBuqBp19OeWGjiJnoA1bUubIuQntNfBLQ5z
+	 gpBAQGsEJ5ZlWDqFcTuX4C04foUANCTNaw+daq0g9pVXGwS49d62pEHwJdfWHcSYgO
+	 Uy12ml271T44w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:08:59 +0200
-Subject: [PATCH v2 80/83] block: rust: add `virt_boundary_mask` option to
- `GenDiskBuilder`
+Date: Tue, 09 Jun 2026 21:07:42 +0200
+Subject: [PATCH v2 03/83] block: rnull: adopt new formatting guidelines
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-80-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-3-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,30 +91,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1931; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=/gyZSLKa2TzHdBLdP1ZJPQOHQ8gDmiUSAZ/ZBCdP9G0=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT9TT0R4aUtBtSeuFFz1LbiE1VCD8K7ODM7E
- HRL8FuebEOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk/QAKCRD6UCkIqsW9
- 0AZRD/9o4BTmJllPti16gUC3pq38UjvIoqBZxFPKYSys1RmxO+GlJRTZhPxaMmMvC3xZiw4wO3D
- WoiymkCJM16OQvte0AYdP3F7/GsJBlASsCR26pDFFbbFp8xG1UnwouPXwA/gJjWfQ5IhjA14IC8
- MVjQ8guFgpMDjzcrdOlbrq+x62bDx6Bh3eZImuQnZJ0vRGnFWM5J2H9GTGbSEUJ7cMNxAY7I64A
- hlcjpdPTpTbrEQjf07jqihO+UQ+1TE/45VcWtwdqFzws1IocOuarZVN+UQRjTULDzjh6ZbO8E6G
- QJCxvd7NoofCN7ykAra33D2JQlM9WOK9uRzcM5T3/UJZCGJ/9ddd6QKq7zZqPDWB+uGIbLPpAI8
- vKEaFpCx84GwO4Q6S/z4DIq0AJRwfvCYqzn4YocMN/RSajWK/n4Zsh27llz/xmi8Fwpexy4um1d
- ZfdlHNnc+N9fzzAw7msyM3cM5JcW2hKp7Ld4qtDOxZ3V6EHSGfyIN3wcoYThPZxYOT99SwZF2c7
- cqen7CXW6JUdqbdgpnskGdzXm6b73Jxjozc0Mf+ZGn/un8dkRV7R9dKbyy71NV6rOTrWqusoqxo
- wyU+nt1pe/SKYe1opyuU+H9rGDE4wg7Mo6LH8H0c87jgCScnJ1N+Y8iVSziHlxesRcv52u5Bcqb
- n8L8bBljBkJo53g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1057; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=4NVXyfJD6Wc3B91hTYpUVWCQ5xmIczODt3j5Z23HY6s=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGS3eaUcUB7ex1Rk0/NrKNjqPU45h3WR6lcRF
+ 3h/f82EGjWJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihktwAKCRD6UCkIqsW9
+ 0G5wD/908gLu/c/luttZa3fhus/yQ22Ibyd1bQaE7Go+HRNeE0PP5PijB26fEiwMq+wZapKjfdF
+ cD0lxtPlkAJVWuWuZMEQvHzv6J0+ty/3lmAAZH0EYuNh91xn2ME9AtGQe4sqk8YZefRw/t4glgD
+ Ok4VQbhmdyOTfo7LVrggMkNcY0hlyGoBf98O3LYmyavBT1HnoY/DxeRyK+iUTWA0bA4IkgSZsNV
+ 4sbHm2WLjLP2yXmdWfa4BNfU0ASOfzEHa1Yp1EIOPicsDZTrKrmGz1VEDUjpe8+vV8hukWazy00
+ Na+XzMEtJ/leSsLYEIaOY9CBnjoWCjH/oHPAXpLuLrd6lOfpXEtg4MSWfkKn9yldpPZzUzidEdW
+ uGHTkxc3guVO56mTrk51YkCcsjDa0//MCCEK2VY5ToUCbCUYZdyq9qe1VpUcW3kJp6m83AuLMrf
+ 881PPqrOdhirescgirjUkUSYVc7V/BpVtpIhrXbB0ll2MD5ve9oMY3mDNkwr/Pj5O82VakOQcfP
+ moq5YSm46RG3ISMDFJF5hDRDbzbKrJ852TWNAv4rdk6/TUMKY8frEIdz1goOCaB6afbhDaQ+nhv
+ ByCqFxHXnAGfwSm8MMWzExl3veZcnaO4TvvjJJV+4tVPBJdGRsfAppZUQ1x3YZNhN4dNctHK2je
+ 3oVTGh1mKkqd5dA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5A6C5100011
-X-Stat-Signature: tn848epoubgm5dycj1mhzfbg4f768kan
 X-Rspam-User: 
-X-HE-Tag: 1781032252-653124
-X-HE-Meta: U2FsdGVkX1+huFPdr8ZX9FelKVaKAGNXZw0rGfa4y0LLVDFLytry/OPna0i75KMbuRTKLG9atsyGVWYB3LnGQV+FFZF/aD/cbzStidVVqs3oLuuHCcNSY0JseXXGcaf4Wdmoc+AhKqBjfjlqCs0IG0ivWZUSaXeZXLjf+xTHHk6Zry/lJYVAhHqs8mPTv7Se6/QXFud2kyZ9bFRwR1ihMR/MRPbhLFPWAvFwMr3jCFGMy+YD8cG2QxAsUMz5rIbB3TZmUwoHO5mq11lp3ZejzvuiJgNdGfDJIULls+kjMQfWCj/z/lUKacX/ES/fomXvNRA8YAqCQAaGFWar0hpY+k9U7ox3z1VUZ830poNnQZNx7LA6UI3sg7+tDkhAzwPMeChxJvWWxrZTSChd9sGY1Vp5FK12sBeJqxx9ncwQCZnpE+NQRedsU5iXyxM+o+a1y9zhtp6U86dNHi/jaTVWbdYa2AcUvkpwNljj+wqkQKP6DMYpzABVA7caQmw/qBWTOh/HeyLS23vvzSpmXWZItv4S35NkqM6MXimcHh1GwlrrT7/skigO2ryAcTJN4OojJsS6UQuqbgimc8BoodbATaztBjWBGdGonwR1iRO79qjEEnhw1xzRymzZoTzAhh+tc9SRc1hUSlZYLs4UZLf5wxLTG0ummutTrYeyXVT6rvVJLTRazjglE5z6OOcK18GrWX/yXOShx5AM7YOds4wBjupJ8MYAX66uXxB72STk0rPZAN+vC4aDt5QUvGazQghEYv7X5XTVV6qJ/bpI0h4aqpGZIHyCjX0oQhZjKh1H/o635JjMHGLGuPdi1UP953u5lwvF67dXZmqn9F8iBiQjLCJqCmXzpJHSIRQ7RRPQxlIpo0KpFdjIBi8yAM6wmyQ8Zi2stO/ZkSLXmtHTuNa3/H+QDIb7j7xtGtkplE0pH22RA5hZWW54SG9uEYgWKXwaSgleFlN6b3qEkZ3dn1R
- hHCO+eIt
- qMWk8EP/9/vLN89oHyg33OnU2BVbZpjqt5ObzsysxdnWJJ7FTixudf9LCG1svw6K2ILmmQUEozSoGJNBj2yqbuK1Ej9sBY1B/lJv85BkdBa97TI9oN85gFzWVGrsLPV6+tE/Twd+fZHpmOVRuwK1cNwu09lcdShVrADmS4S1q4kCSOaaiP7JvKjZNqAFmvCPJEBEdwGzOqtFufSp/dDjatzK13RvqPtMfzzgzFX5yK0Qz7Gl7QCwxodtzYyJ6toist3wI56vtnELoI/3hi8F4A25oleuyvbJn227C2EMu471OTg0TjznZD6rDhX3DA/L4XVE9GUaghO3GC0hFQ3rYM3f3VPuxxrjWmhMiGSZ/66BP1EKv8qrWEbTSDw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2D70F4000F
+X-Stat-Signature: m6za4xhcum814yosqtkycdmhcou7uh8i
+X-HE-Tag: 1781032258-15871
+X-HE-Meta: U2FsdGVkX19heaiOueC47PYfERHh7HkaPWTgSxJw+Jq+jAmscpTSlIc7hIpEw3i/632NFNbvDEmHctm6BzSTcQJIhJAUsfoE0HCYqVPmI5AhBqD4Hh8zdM1PkGF86U1/tYS/uBHSk7+Yl8FA3bMO90q4XswrflxVcYazzZh+vyEwuxpaMah5Qhlgj6lqTS1UlZ2G4skGcK+wVRg0oGo6N+e2qxQmJPTxm7MLLWX7qs3UAAA/sG5fLyd61vrzCMBIB1dGdvfeqTmU2b0K+YGiVw+w0rd4lXkvfIqBctYFj8ICAuFDtqaGjzEUi8j/wcMn2hPFSyyvb8mY6WuSA6KV8YT65EMlz4UHjrK4Hj1daTBB116WWOIhu35hink1f7A2kIyvFrdzqYIrSiRr69vDeNG+7bOIlfk7wSEq2JOhe3uZwH2eMQfU6fZJ4KWmi5pAgtq4oeTm30XAYkqpiECKecsIX/rDafH9JLZ+LYkJKypWSt1KtoRkIpQVwAI9yWN0WmQ4BfC8myZhATOQ9MTuX/CEgIM3DT3EXKTff+nCTL9/JHZLkFJmuopfXE4WeA/6aF6jbSS6mUQJdIC76JolKGxtpR4qKiyhopPr64g5G2lQhRKgRmUfXZO/IKz70GxiOoUS2QRrYLWJp6AECIb2e/pCnKSLwG1eFwBoHJHQ5ob4yt3CSeGPRfUmJ7zEJqXntXg4KdRncjMcHMLofitXN10IiwH3L2O3RtwT5azwgx640oW/WlrbzKCgG9v5CwA7zRh91glSDNx+jhDMXEheRSg/QIxu1CMSA8EOYpQGQxZtyVDRwyNAVhhzjCEkKFOMtBd+zbIRvPcnh6wqnm659a4DrWPfJZHnTsezMtF5i55YwkC53twVWDfzS4jONyqsRfkUIoMVbkL3vnqLZDi3erIdnP0q7Oee0bVpuXF9xCt810nzVANvWBn9uh9+XEndp2pmW/OV4uItef/wSn6
+ vuPeiEOe
+ duvDsWQIynvzv9w6JQJzztthGjrlbIO6xGfn2gl/X8bkJqYKjf0W31LliXln6fvL7ND2dC12JqUSJA5/00K3LD6UbRffWKz4dGEiM0cSiFFmz1XPeVKjB5GaP5v6o0yzqNv29QHYP1/T+mhLZoEW7+M+W2WgzO7pf1acMjmNiTZTTkShQ3mAzbal1oGD6TpVvmwZclh32uqbuPrEzaps/2/5G4cTUJUBPM0fiikpDv1F9OC2dL9tCzKIBjdN9Ruf4fVEUGioqwPJM/Pu/hwqUPls8g9/DBkWOrCB5Al3R4/53wV8/0A42zP9spISuJ/E4k4JhV0MnH3KBK17Kq7GCGI7ktA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,58 +122,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allow Rust device drivers to set the `virt_boundary_mask` property for
-block devices.
+Reformat `use` statements to have one item per line as required by the
+updated Rust formatting guidelines. Apply a formatting workaround to
+ensure `rustfmt` produces the expected output.
 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/block/mq/gen_disk.rs | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/block/rnull/rnull.rs | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 6d760dafade5..38057ebc0878 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -59,6 +59,7 @@ pub struct GenDiskBuilder<T> {
-     write_cache: bool,
-     forced_unit_access: bool,
-     max_sectors: u32,
-+    virt_boundary_mask: usize,
-     _p: PhantomData<T>,
- }
- 
-@@ -79,6 +80,7 @@ fn default() -> Self {
-             write_cache: false,
-             forced_unit_access: false,
-             max_sectors: 0,
-+            virt_boundary_mask: 0,
-             _p: PhantomData,
-         }
-     }
-@@ -189,6 +191,15 @@ pub fn max_sectors(mut self, sectors: u32) -> Self {
-         self
-     }
- 
-+    /// Set the I/O segment memory alignment mask for the block device. I/O requests to this device
-+    /// will be split between segments wherever either the memory address of the end of the previous
-+    /// segment or the memory address of the beginning of the current segment is not aligned to
-+    /// virt_boundary_mask + 1 bytes.
-+    pub fn virt_boundary_mask(mut self, mask: usize) -> Self {
-+        self.virt_boundary_mask = mask;
-+        self
-+    }
-+
-     /// Build a new `GenDisk` and add it to the VFS.
-     pub fn build(
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715febe8..d58d2c4c5f63 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -10,12 +10,19 @@
          self,
-@@ -208,6 +219,7 @@ pub fn build(
-         lim.physical_block_size = self.physical_block_size;
-         lim.max_hw_discard_sectors = self.max_hw_discard_sectors;
-         lim.max_sectors = self.max_sectors;
-+        lim.virt_boundary_mask = self.virt_boundary_mask;
-         if self.rotational {
-             lim.features = Feature::Rotational.into();
-         }
+         mq::{
+             self,
+-            gen_disk::{self, GenDisk},
+-            Operations, TagSet,
++            gen_disk::{
++                self,
++                GenDisk, //
++            },
++            Operations,
++            TagSet, //
+         },
+     },
+     prelude::*,
+-    sync::{aref::ARef, Arc},
++    sync::{
++        aref::ARef,
++        Arc, //
++    },
+ };
+ 
+ module! {
 
 -- 
 2.51.2
