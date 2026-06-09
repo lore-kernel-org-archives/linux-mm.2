@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 754CFCD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 04:52:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C13CD8CAE
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 05:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6A796B008A; Tue,  9 Jun 2026 00:52:09 -0400 (EDT)
+	id C95FB6B0005; Tue,  9 Jun 2026 01:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1B526B008C; Tue,  9 Jun 2026 00:52:09 -0400 (EDT)
+	id C463A6B0088; Tue,  9 Jun 2026 01:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C31156B0092; Tue,  9 Jun 2026 00:52:09 -0400 (EDT)
+	id B5BE16B008A; Tue,  9 Jun 2026 01:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B2A556B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:52:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 403E8120418
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:52:09 +0000 (UTC)
-X-FDA: 84859152378.09.4A37F0A
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 59E75120008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:52:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf29.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id A10B56B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 01:06:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DA7012042A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:06:54 +0000 (UTC)
+X-FDA: 84859189548.13.0D3AADB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 804F1C0002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:06:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7odLtzK;
+	spf=pass (imf28.hostedemail.com: domain of linkinjeon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780981612;
+	b=pxybQsv/WnpH8YNyuoa42syS4uX6sUb1Pb9op/54eaiCS3TkuVM4zdVqu2zl2Ptzx8tVhC
+	lktYYL4RyrwM/ykLkqcECpxDAOj+8+WCmLqlKT0Q71r1eC4Jc+yKyAEzKDuvrhajgWBELt
+	lpV0lL1IrqwluZ6rgAXe1VTv6HVjntA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7odLtzK;
+	spf=pass (imf28.hostedemail.com: domain of linkinjeon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780980727;
+	s=arc-20220608; t=1780981612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0xQ+vFfzssjZ8cSG0f+9g+vvZzY/itiUhGKwaFw9e+M=;
-	b=u373kF57Oa/Bz8k23Yp6Xh11kJVKTODdQLp4kSMMWSIrjQkT42F5Qbpu2mLxqDZ67IqkpL
-	gsU/9ArrOIq32LOYO/UuGvKaHWokSTMpggO3GmJtVJKJXCnPidn/IjSzPjlHaQtkmZnKfU
-	ooIHJsUdfTyHbh7OC1Hcn16dGw5ahPw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf29.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780980727;
-	b=XOtLMSJ7/Mx4/hBElpYcZgxdmUtjEfCLHsKl1ROW/xClqyV37E4uW2MP5vpddtxIQ3ZI84
-	tMU2j5z5zjf8CFtA3HQ0wNO/p4jy1loe40mXeEpEosXWPEm0HyzfoEy9Ce1ZF56ubTS53t
-	tgCtaaq/JfEsttShzbBOh0ErzhgeMVo=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gZGjF3fYpz52SGf;
-	Tue, 09 Jun 2026 12:52:01 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 6594pu0o045375;
-	Tue, 9 Jun 2026 12:51:56 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 9 Jun 2026 12:51:57 +0800 (CST)
-X-Zmail-TransId: 2afa6a279beddce-17c13
-X-Mailer: Zmail v1.0
-Message-ID: <20260609125157911GlNj7g3jjFsvz1MSDjF7r@zte.com.cn>
-In-Reply-To: <f6834452-a244-4bb7-8982-136f00591f87@kernel.org>
-References: 20260530170711362Lxt422zijBMtOvPlJD-0-@zte.com.cn,f6834452-a244-4bb7-8982-136f00591f87@kernel.org
-Date: Tue, 9 Jun 2026 12:51:57 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>
-Cc: <akpm@linux-foundation.org>, <chengming.zhou@linux.dev>,
-        <hughd@google.com>, <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>, <corbet@lwn.net>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NyA0LzZdIGtzbTogYWRkIHBnb2ZmIGludG8ga3NtX3JtYXBfaXRlbQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6594pu0o045375
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 09 Jun 2026 12:52:01 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A279BF1.000/4gZGjF3fYpz52SGf
-X-Rspamd-Queue-Id: 59E75120008
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JSmZZXCHaEGGL/4nRb1w7Q3fqAEMLXnTrHJuHv8jMg4=;
+	b=W4s92K2+WKTJRvjkuZjkK0911M96/NDxAWsfHng7LnwovqFoek/QvuJT0gU2AyhgrIvmf+
+	CjTkujFsSKqbWdog1NNGXzWT/q5eo9BkPkqeTtOiP+gMFhqfsGAo1/DY7Z37FZijRE+el+
+	ZvvymUJ5ovBcr4/f62vTUoEygAvnGLA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 01F25601E6
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:06:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7601F0089A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780981611;
+	bh=JSmZZXCHaEGGL/4nRb1w7Q3fqAEMLXnTrHJuHv8jMg4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=i7odLtzKyeWt4OfkJY2Dq5sKMbddv/Fs3b3USqUXnT4DQKHFhIm4SdMfnZqEnf4Mz
+	 jMKu4vswewUyT0JrG7v4sCPtUvsKupUvnim4VsVugriYScyQ6FF75YUrtJK4WSDCXf
+	 43BcNiIX++WNvKZDhEck14yVlpk9pIbTMpO/3x4cQayfwDdi3zzZZofIFu5hUxJbIU
+	 WyTNVAjzLndL1obHdMAYHgDEcG46lqik0+OQHjisi47+y8twlWJroDRFZR32lJifbF
+	 Xj8khn2dXcFc5D21r+jxytYKj13rodwvKHYazlE8dMdq/qSerdzp80jITmPuyqNBjZ
+	 3FNEwLxfFWn/g==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-beb8a08a6c8so721783266b.2
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 22:06:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9/Gj4LB+6avQK9XNYwjKVVKy0J6pszyLkVdthmH/n2ZW5mDtZSc41lrhOq8IRZz1hskY+5nMdJRQ==@kvack.org
+X-Gm-Message-State: AOJu0YyO9HGLZ9NHg+C9D6ozvhAcRMbYeZth+HAqaWNeuPYL44InMupD
+	OzSV5OvP8YCzIAW7MDS7snjIgM2fEVTK2uYFqZh5O1nQsopbx5TO1QB+FH/QR5w1b+LpfvqFlYP
+	lceEix+5dwre9fTVknaTSznUp3RkxF6M=
+X-Received: by 2002:a17:906:dc8b:b0:bec:64c3:9ac0 with SMTP id
+ a640c23a62f3a-bf371e4e3aamr904505366b.14.1780981610177; Mon, 08 Jun 2026
+ 22:06:50 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260608210618.3437216-1-willy@infradead.org>
+In-Reply-To: <20260608210618.3437216-1-willy@infradead.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 9 Jun 2026 14:06:37 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-JmegoqrNR-FyLgvBW3qzWK2FYSsNmxTY33Yi_qu3cqg@mail.gmail.com>
+X-Gm-Features: AVVi8Cd3R2E9UIB9ys0n7A5gsqUoAl2XbQeWvqCvfsDFaTDj3QI7vviC7yYslZo
+Message-ID: <CAKYAXd-JmegoqrNR-FyLgvBW3qzWK2FYSsNmxTY33Yi_qu3cqg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] Remove __folio_index again
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 804F1C0002
+X-Stat-Signature: hn4hyn6jmw71fr4rdut33de9ebg6oxrx
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 58eqsnw6kakftojeacwnyqdqerfjugsc
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780980726-717491
-X-HE-Meta: U2FsdGVkX19pNroR583stUsvJnO4hYIUoAhCbr8ehlTXSO0d6zOJji9ghy4MqcQGw9bQSFZlkJeyxRx0MILzdogAvfPmVHVZf6inZ6b+7V1uJN5gZ4vlR72eQGONBnHzt+zjbaIDBJ4243MP9R3Yjrm8KfuGIAwxhuqJ6X81gUXPDCGHGvYImb5XoMfXL2iu++EH/4OckhX9Cg6jl0yoEPMcW9xvHNV7Ch/VDO3rl1PzQqVA39o6uCWVIYvuFl5bfNqc09dWEt6Q9LPF0pkOX7ivUbpA7KnGEOY2WsuFctfd7mY50VIQqbKjfBBTbKyn+8HGjMFJ21Eu7kgOQknpvvckfEEKQFCFcekj/d625mq733E6H6RxB538CHsGrcsmx8fu0XOhEa7AMhhS50/zvwodSr5YiPf0VkbLP/SYXNW6y1yXZ4PRf08lR0MDU7xhNpFfDYhkwpXJBMM5yFQrelW4uXHPT4l19he75hfxThx7mxXqW2qa7EaGxhN8fEX1kFw/5Lcs5Kvvn67MZEBUbyu2/NIlowblrtIxDpSCDnM6ZxUNCFgR4HS/I/O5qBvxnFEKhIuDvXQy7S6PXdW0jDjQuaHGEJ5ZwrXiKFFp2IO65cAW/XSMauSAQ4Us65+PCou4mVMwPYrCKAUyCKOu2EOH4+l0rto/BvbLBL5gRRjYY3NK3/AFtuj7N7R4/oyCI7BzgpHX7S9SNBshZmQ1O60BWfDmr2fIGY/OyURENWaly/C2KQvw4g8GiHBXHJFID7H4xoftI5xRSt3uaCJO3Xyj0WEpIhIKrsirI9ZLf1FB60D8Ju70cOghEgDlaFkySDcso/5/W8FFfRmJsJdKPRHbTKIpkK8myNskadUzTNsrFx7AeGl/eTuaj7TxxbcZB66Auuk27MARTwAWczVkE9evPS1takbrzGBhIviL2R/+7hcZcmKsvB+ARyokW982W8S6R2TiWDKdwah2e8n
- K3V7SBYC
- RL7tIwfJuzg6fbftTMycvzATAMErsqSHvEpl9N262c24FyuSTWyzH+BPD6LAp9F2SBnOJQJloHvaYrSF5Pb8l8hMBERQq9pHeJyh0fbj0YQkjp8MjF4ylsUMVu0GHZEk6lvBqOogbfHMK9bhHFFirWfNbjz174xUtB79AOszFpCrymVEDW6xLNyqb91QkznOXSEjt0UgU8trer0Q=
+X-HE-Tag: 1780981612-499291
+X-HE-Meta: U2FsdGVkX1/vuHQshmowOX0063Wxp8qIMEhBTxvOYrNKYyKTpiQEq5gMw0g8/LsiOu1yfJbfNuY92emUckgSEFxvVZps06ZnOsnuKZ9SPuyuwG56k5ExLgRoc5WZ+ufGYGS0RMlR3EQcnHqozSlq+xEuFMfski7z4+PbVP6mGyPvpL5pl8STY53DUXNfsvcBKccgOiS+zgJlcyVxQ90qSkjlczSpP86MlNi3qbKusxmF2hat2olIZ9/LRKQPpqLxiLr/fsVjxc45WXSpc8CE/09D2RVzdm3idEg3mOEbKtgAgcIGbplXciBXSwwbqyEVKK1aUO5N2ed3eOHJYmb2QtLo87dV/UZL5Hm2S6PjAjRhmgDmkw+hmJ6GGn3dmnuMKii0X68qQFIdEN4CeQiK/tvkG6UX4tA4oG3rNJ4oCJMPzg76HwnULl2xU+2ffDRJA8QFYV+BDxRliQSN3XtYgoEyUG+/HLwWtS9TfFUoQCOPKJ43tdw97L4PFcoQB8j32JBArF3F+xxBUSQTViP3L6IN85xA+xE9Dg6mPu2JJYCjbV+f01i5S17JSOasW+n0MDmjROAj2DkK2hQ4OqUVmLEUPV0iBwUAydCtqmxq5Sv9ZmnbKtb6jLYPQNxaW7B9Y86Bd/Ydm3h8bPPRpx8CffQALdvTMcncJXIQXO+naVFWGUutJRaS0+SZRoIN1/oJEosK3f0lpMl1H+akD7SWe75YKZl3tfneXekq1TBH2o5tkwJaEUbX5czbjvKsGbjcevwGu7m98wfiycN0VPmdMZIOnsEzRKxn+myck/j4hjTkTb32yOxirs4la2aixeyGpemfZSfxAZ9lAk1ZgkALjAhu/hckV/rVgHztiho0ekjvaUF7DTibRqdeQFHXVOPbhGpvbSp03VOUMEz2SHPb+jiJ33/HUPCTlsxxX1lsEaOb6FJ6VL3g5/gtvLFqZgVRzk57+x/7OZlzppqOakD
+ OX9Thkmh
+ u/qpNggxTXoPBDY1RAB05hjvAVcSXHuPXauPT7X+vUEzvXnwCh922BvCwL+F3xllAC1kW9aBbA3PmAyHfPDv1Cyy8OutdQ8Zf+5dcgsMJvkhwt3vqGgqLkPhN+IVkEV0URRoFmxEX6MeejJKmwXCqS+UW+TfRyeefHwhmj/M/7byWudAI3V090ADEAzqDY9qKC5pLSm2p8K4sCXwCxWAA/RTX1BwSnfIANAIRVscytHG/IZLY77GNK6YvjR7ajZm4HcG7P6hkwd4GWgZqPKnoHUskQDGNiW0QCVa5b59Ra91JHdc5bJefUj6nL7+ul8CsBKeFOQbQTkXE5E0a89Hv8wv0KuLk3eqOvqeqZXWRnJ03ZsUOHRuqoWMaPqI4X96RLWPcUUfQqTlkWnSYfZXof6UF7xi+mayTyOjc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,41 +102,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
-
-> Is the "maybe" stuff really something we should put into a comment?
-> 
-> What about something like:
-> 
-> "Must can only reference the VMA while still holding the mmap lock, so
-> reference the anon_vma and calculate the linear page index early, before
-> stable_tree_append(). If anything goes wrong, break_cow() will clean it up."
-> 
-> > +	 */
-> >  	rmap_item->anon_vma = vma->anon_vma;
-> > +	rmap_item->pgoff = linear_page_index(vma, rmap_item->address);
-> >  	get_anon_vma(vma->anon_vma);
-> >  out:
-> >  	mmap_read_unlock(mm);
-> > @@ -2458,6 +2481,10 @@ static bool should_skip_rmap_item(struct folio *folio,
-> >  	if (folio_test_ksm(folio))
-> >  		return false;
-> > 
-> > +	/* There is no age information in stable-tree nodes. */
-> 
-> Maybe we can make it clearer here:
-> 
-> "There is no age information in stable-tree nodes. We might end up here without
-> a KSM page for example after COW."
-> 
-> > +	if (rmap_item->address & STABLE_FLAG)
-> > +		return false;
-> > +
-> >  	age = rmap_item->age;
-> >  	if (age != U8_MAX)
-> >  		rmap_item->age++;
-> 
-> I think with these things addressed, this LGTM.
-
-Thank you for the thorough review. I agree with your suggestions and have sent v8.
+On Tue, Jun 9, 2026 at 6:06=E2=80=AFAM Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+>
+> I renamed page->index to page->__folio_index a year ago.  That proved to
+> be insufficient to prevent people from using it, so take more extreme
+> measures to make it inaccessible except through struct folio.
+>
+> v2:
+>  - Split patch 1 into patches 1-3
+>  - Remove inversion of the i_size condition
+>  - Use page_offset() instead of page_pgoff()
+>  - Preserve the call to flush_dcache_page() in all circumstances
+>  - Use offset_in_page() instead of open-coding it
+>  - Remove shadowing definition of struct folio in patch 4
+>  - Delete the printing of page->index in show_page_info.py
+>  - Unname the padding where folio stores index instead of trying to
+>    create an unguessable name (Arnd)
+>  - Justify removal of page->share in patch 6
+>
+> Matthew Wilcox (Oracle) (6):
+>   ntfs: Inline zero_partial_compressed_page()
+>   ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
+>   ntfs: Use zero_user_segment() in handle_bounds_compressed_page()
+>   ntfs: Remove references to page->__folio_index
+>   show_page_info: Remove printing of page index
+>   mm: Remove __folio_index
+For ntfs part,
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Thanks!
 
