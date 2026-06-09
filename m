@@ -4,132 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBFF4CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E06BDCD8CA8
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 10:57:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E54316B0005; Tue,  9 Jun 2026 06:56:14 -0400 (EDT)
+	id 35A4E6B0005; Tue,  9 Jun 2026 06:57:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E055C6B0088; Tue,  9 Jun 2026 06:56:14 -0400 (EDT)
+	id 331986B0088; Tue,  9 Jun 2026 06:57:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF3B56B008A; Tue,  9 Jun 2026 06:56:14 -0400 (EDT)
+	id 247036B008A; Tue,  9 Jun 2026 06:57:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B748A6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:56:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BF4E1C262E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:56:14 +0000 (UTC)
-X-FDA: 84860069868.21.ED93E27
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7D563100002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:56:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AjtFR0yL;
-	spf=pass (imf14.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 138396B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 06:57:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D57C81C15B0
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:57:29 +0000 (UTC)
+X-FDA: 84860073018.11.A4C929D
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 19828A0011
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:57:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=R2Ebasz7;
+	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781002572;
+	s=arc-20220608; t=1781002648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zdMxQIDs+l/KSPJFUNCwvqWbxtsN9baWYoGyb/P1vPg=;
-	b=MifBkSYFbzXMNnIjgByQ2J9YD0bg4167LeYvgX9Rx2IeznDIsD+sdarqDt0LL89Ll8JLn8
-	vVqa4JI1Uam6pk4sU9RCA53CX5PSNw8KDYEO6VkEuXk4smZfpn41YxChRJjUqVDyvPpikW
-	V60RXhoO1MYAXI1oYhl8F2p5OuOUhyE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AjtFR0yL;
-	spf=pass (imf14.hostedemail.com: domain of praan@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=fa8zz6R4p8oQR9YfNRRWZX08Hmu4ZhsxlCE5B6JMwdY=;
+	b=rm7k2G1k5jgqpIdVjUIEap2cBSbkUZdM0UY1UVjldqLeH4QPOuorEb4xcgCo0zPpSe+2Qr
+	yLEPX0JJsqFyPI07ckdXgwO7+PTAeDML5t6brKwT8Fa9Fe5f/417sUHQy20QTixI7GciUv
+	0H4ABXhkmT+N5paVNMlQLkEDeFgwhBA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781002572;
-	b=7T8r3T2HS7TYkU0XEvYywjK6+6OxBvo1f7nxWO0f4m3cHEO3UdtQrezyal1ISM2PMzqIxo
-	rF/ltBl4ej2OaOLnuL5AIyYR774QVasFbvtuYl4L6JAQOQ3/RlotjrSjjXLfdFH4RqWebd
-	45St7AqTQQADFaAyVbr6uQ/X2g5DOVg=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c0b1a48855so496435ad.0
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 03:56:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781002571; x=1781607371; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zdMxQIDs+l/KSPJFUNCwvqWbxtsN9baWYoGyb/P1vPg=;
-        b=AjtFR0yLC+Am9huN2UgMZ8EhR680wkaBsON2fcojfYw5ZZSAjc5P62cd4wDcF48nkI
-         r5bOZIYCHj97Irptm/cnuA7U/1nHo/dZrEDpUOnDKGyEwT0xXVS/K5sv+wt5t2fmPh8j
-         7A0fOAgDdMjZ4qhB0rDF4uE0VATsynrmOYI1XIZelGuOkbrMHyio1tvDmUfkPKEXT2z8
-         zpNo93mV5qBvpmXcqhhvPA51LYuvrUrnUEWTCEg08X0wJStjyNBet3s1ox/ezJV4UX58
-         vx0T+iMhy1qDNueCp1csV1qTjfG2ygtrCtPlnzaQEljbAeMEQ1d+jZB+shx27wiDYFhA
-         8Clw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781002571; x=1781607371;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zdMxQIDs+l/KSPJFUNCwvqWbxtsN9baWYoGyb/P1vPg=;
-        b=moimshdgDYIPRRjiLXXNdJzs9nfJWR0PnsO4T8CDSxY+GWR8HaZUSnvNKHZjELzoVq
-         rQrTIwWV3F5uEPRmgGR6csqSTPvNneiO8eGk8YNw+Woc12KZoqWTu5ddOhUwwfrOaD1d
-         n+2K3gYo6ujaQrBLkACBbULO+VOEAeXhFIY7p5atsPy+sA9ucKPr/2298gOq0w4c2jQF
-         cdYe2KIqhdIGBE7d/qUxpFAC/T8QDD4puTGnzCePz1XJZ0y2MxGua5wCHr0tNgCi2vse
-         WSg7dsUPdNnsIyT3WS50QicIrNXDPQPbinDrMCeHLnzKScmq105nWWvSlHshyunCyZ7s
-         /D2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+J8qMRGPzU8xVaZJfD/Bc0+aP+zMgSFHI7Ld+PzTTPYsZEpufP0+X4XZ2dCxnMlkIl3ecmd4J6oA==@kvack.org
-X-Gm-Message-State: AOJu0YwyKCjkN4CH21PSgAzLldFHGACgX9taGVl8djYO6I4b3Ozo+kui
-	pqk8z6DeRmrOXzJFPdGe9PA/jqmQT//vRvvbulc4bU26o1hLg2k2/mWfOEuNOK+nIw==
-X-Gm-Gg: Acq92OEX9/f7HEK0wkpxwBitdda3g7J0gkbe6Luxe3VZlvFrhBZFIAxDfyq8UYcL7tM
-	pTkG8bHvwP8AGwa8JWwnPXJ5JzFFhRPgjux0f8U4QVe+HMFWiYCEsIDRWgPBYNOEnE0z5w04XEE
-	Y4B3e8X0Nwlt+nz4fior1fhNflwvEns9puSjDp0x7JnBhnLMA+H0CAv7x0SGbr7oR8+XPkLtfkA
-	eZ0TdfNKnUJf7syMOY1NImzIah529AeLTz1ERY1f+Zp/zB5awWz0kZCr3enb6kbpTGQNkUFYAQW
-	WPW+VjOsYyVs0oEOC2zSp0WcK5axgFi8IwrvdoISrop2CKPEFgeVmvyq7abjU4ELNchpDOqakQQ
-	UaGm4UDYe7zMEScwBSIij0ZwKGG1ljtzCkxv00/QV0bNofn/UfVYwUxCNmBY8gUbPv2yQRRoLzA
-	tM65ydH6sv5YmQkqFkGhKdniSaL6l55IG+9Tay/dKFEbBwug/r9WRv3NrLDCDgxihAtMakLHA=
-X-Received: by 2002:a17:902:f708:b0:2c1:ee6e:be23 with SMTP id d9443c01a7336-2c1ee6ec5ebmr6732565ad.33.1781002570788;
-        Tue, 09 Jun 2026 03:56:10 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f711e52b0sm19480623a91.15.2026.06.09.03.56.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 03:56:10 -0700 (PDT)
-Date: Tue, 9 Jun 2026 10:56:01 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 07/12] PCI: Refactor matching logic for pci_dev_acs_ops
-Message-ID: <aifxQalxwM_hic6F@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-8-dmatlack@google.com>
- <aiW_M7y0fFwLN84G@google.com>
- <aic46OtIKfLhdoKy@google.com>
+	t=1781002648;
+	b=ruiKfApp7iMlTzwrtk+ub+SeL8IRTlkUVFpwZtcPtAUT4rswjXMZYM1BRiRBBbopXCB7DT
+	lPYc30YBzfOElBuB/vhSygucCO4jVs3hZTR6BfokUGLdH6cELAnp8OIdNund+TD7PjH3Dx
+	aZxbF9QPtCMMbf0Hhm8LAffKeR5mWMw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=R2Ebasz7;
+	spf=pass (imf15.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=fa8zz6R4p8oQR9YfNRRWZX08Hmu4ZhsxlCE5B6JMwdY=; b=R2Ebasz7sqx+PQI4Hl+rYq/Yah
+	KTpeniLLengUedpR0JZxa5kHQkS/sXBigQJVRtOblpTfnfdBT7PlkvhZL2VTR5zqvINsMgKVKrZ46
+	qzxqWewlD80vhGHWzUC+QnReOX533BW5H8jSGhy+0WZfadKWzi0vZNbJNPhCY2GVozO5KpZNAQa+4
+	DTSWN/XhKQe06Y5LHdmR14pTdR5qTILMr5lEHJ0HJk/FdI+Z2sj866hO11kM7Dp7GbfK1Y9mD0CnH
+	f1piZ1PerfnSuwVedlK4tkEItLxaeSBwIi/QUS+x5E3XjsOtDokiuWKgkeQx9RG//0zC3fU5qqxSL
+	wTS/Cw1w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wWu8w-008LtA-2j;
+	Tue, 09 Jun 2026 10:57:15 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 09 Jun 2026 03:56:55 -0700
+Subject: [PATCH v9 1/6] mm/memory-failure: drop dead error_states[] entry
+ for reserved pages
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aic46OtIKfLhdoKy@google.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D563100002
-X-Stat-Signature: skzgwndkwhfenpumsjnsxpr593bycmse
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-ecc_panic-v9-1-432a74002e74@debian.org>
+References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
+In-Reply-To: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
+To: Miaohe Lin <linmiaohe@huawei.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, linux-trace-kernel@vger.kernel.org, 
+ kernel-team@meta.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3199; i=leitao@debian.org;
+ h=from:subject:message-id; bh=S/LBPsjK30OHelXFeIEq2OoL51toNBeqnKCcHXf3YZ8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqJ/F+RwM7FNvMEmtMWZ1Zg7fCTG+bxJiZsvZCe
+ jH49HaDs1+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaifxfgAKCRA1o5Of/Hh3
+ bfWQD/99pUoutynRjvnbUr1KG39G7HbZBPVQotVsVqujJ9kMtd9WYO/9Mq3ApucmJ6rxrDOdobr
+ yPsAWi5L8Wm73ds8YU2RpvtWBfvLX/YKGlouKI4VCMFSfMXgSpIVfvqToBnSnXnle1Pm6uN4aHG
+ Su/eUPNTnkRnSCNIQZ3NoOJqX9xlrjiw87zP9aNgGsevb8IL5aye9meJZT6lwaJEa4WGQTryZVK
+ 1EWkgs3iLPgAy8Nf5jktGpIypnon4nRmgrDPra9MiuftTp02o5z9W7InLcCTU8iHtkWuwiUGyw6
+ 8+z+8GWgLrWP7kOSwnAsTpCKXoBjWaK0KMEEjgJm5q9GAMX3oI71isW9u6MfmWF5aOGBBpWAmw6
+ Fwj3o7IdL5b8hVzrjX9Yr+p+YmZ6bqBm7RPZu/JCnD5v2xHTCaL5LlSq9sfXGbcb5hl0y8zOyCN
+ VfgEju0mpzTSYmG1UVCfqTfEoyYpaA3Yayl/HpNQYWnRS31qopEgKxfK8bUxEoA2V7QUBJLs9kb
+ 9jeKdSDWaKGK11XjAbCoFgOXq4D3kBZY19n9Yw9Y8+XCFaazzzLLgWLIHKZUvhhKduqc1nzU9yX
+ yfXU1OZKQWCSVA1cl/ULE1LKeZX7FwWiNh+J68MQDCHCvREc08UbvgpdecFdOpdsOyllqWBpmZL
+ xRzlYtE7rZewwOw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 19828A0011
 X-Rspam-User: 
-X-HE-Tag: 1781002572-122458
-X-HE-Meta: U2FsdGVkX187/2NPRwXnaH5Vggc06hI1suSAqpqdcDPioB0nm+otss9JjEUrizp0BctmG1aOx50SSmgfC20j9HN3w7Hz58sDTz6Y8zuHxMdOFpu8sEeFri306z9oy2VgMOgM57mIR6j3JVfCQvlxgaJmELXIPKmIJ8YpfZYXa3NQtIpn0mdJzmwlNZoBFT/14QPCWmODog21VdJ1KP7dvUnI2+gFHtAZ7Ghk7iWM9YuISZM9Qm1TScS7/92yfySinCKEoAkZMh/GoXvMLNMCu7z/aOJ7Iib310H0zwz+WyDmPlEeu8tpT8sR9yyPnkrRq6PK8zJ03pM9JVMVCV1WJnEtIKqwL3imHKQ3GouTgCOBcJkTkMgWptVzM8GBUhTBoKs9ppO/z7LUPkLRhQw45vNb7nX7emXQqXPxwZKf/o3NWJg6tBNBKMlQdFE1EDa2JAzsLrzcoBOK5rfvC7yaG3orwyJS468oQGCJmIStr+A5grRA/x1E8ACrud98zt18qlT5bZkrAHGbtknoD5Rwt7cukVsizd133NrohQuBzsIxuoWKjuSM8a67e9AVQndFUOeGRErmG/y20p4AiKv7UFGaa1W8aK35Ta7jnk/Q8AYEApuhO1P638XEEQ/Wcvzq4PSCCKIhdCXOtLF5utJNWRKvVuKgCTYTg9QyzY2fgUzUrJXTch1OKzbwbt+SY7wRIIXQ1Uc6jPdtyg8UCrTMiCLmxAtjWdpAdq3ED4ZYL/2DUTvnYCa0m0lB9BGbVoZbHkl9cV1K6rsA/+0bdki5zKrvDo17oqhXfYaL0+fQK0FwDxstDy0ZlkXUjGq+pner0RE29U77mdzpvMLbQAFeKKJsG0YBRyq9F7ccIQiacQsRPe1cENXFpwWQHOG7LWJUr22a+RDFibZ7CAxRF7wZCT2RRx/nb0ay3wFIBwtg1A8eiG+mKgFPhjBpTHoV26Ej4f8Z0ghk9ehk0RcmGU/
- n7EoEurh
- pOPLQPt6rag7qnqZG3FiLiklrhkSarFJeZE3jNj2+zoSGlxW+FOd+I2yAD2giEHB/Vk1TpbMinggjkRkAWnJ2GNQP1uA2xldfxEO7dK3uRUplwmaRflkArSQu26Uhn8S0nIl3tmfxsABS2SjqZfgVCdhk4kxYkCbsJFydL8mLdQrW/8MgECFAm9ZOIIdyIV38JOsDHpQkWEYpVaFUN/WQcoIsPbNq0ZMJtnDdPm9nnLMCiy/Li/q06vQi04xqR5UU7buOUT2Y+pSBmdmhbvEmHp4kGV3ag18LI3QNNNvU4MdQq/Kz5EpwXwyC8/umFOpUhhDQrfkSEBRBOB1dK3wWdfwlcOVGRUjryO54l/ZdSLYircG2JC1LoNTB3dLEb8edRHBUZQc+zahHhzDQ9JfleFkUnsRhOVav5Qjn8R5gJejns3fEa0qqbXB5Rg==
+X-Stat-Signature: jidz6dmwcbrr5r4zhnifra6g3bxcztff
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781002647-716759
+X-HE-Meta: U2FsdGVkX1/EnePrQHTcrFCquCd37TKH3ghkXrH1r9KoQpEqpghKUd8ct41Wu7qdErXcS/L2fkH5jVxJH71pXWbyuohmWPM2yghiCC+iPPvW5DxcGalXi/O33JVoc96jenNHD+A0nQ2INbGxZiP5liH80FnUqpn1NO1z718/zUYTpUs7Jvk8/zpsHjtBH4HuJacdbbjeYpu4fQgiv2ZwLGCXtFcUOgU0VbRhaPkWTUM1BwDYvUAoQxd1LMFqbgaSOYtCTt0BXv/CG3hpwQJzxLgw3JCf7MNXN0FfpooLdn/hqit83dvAKp6MLTYibCyB0mKtlTWEwaHyG0a3G+P4YGVkmaE/l4J156BdPQSxXB/NKOTZkxUTag0I71dMFVGefsDH2llfqobvBaQOqxcxja31nZFdrcsy8NCj39F/o7iWAt3ezYmF14uXu0Pa/cDHafhsJtkRA83qSWJkFWcnZWnuvLpHyy5XvJE8UBmxmQPnUahRQIgUBfPFhEO1LjzWm1a/7n6gWaB5+SuIrcbPI4qX/eMuknJ99no4ssxv92xXAlbDZk5+OoT/RHiPpIiMlV4SqgklL5+KJLtqK88+4wIXZFiWZk0gRz98w9SOGVUuyb3zS98ebH7og/f0lM6r12mgLaioJHsIEmfIEEeHHprlOMnZOaqFMHzLXxlZFWGNq/cedyM/GugDGVcAmuOjwIukuAxMFkI166sIYar+slQCwzsSBs57n/y5UdUpJZ+VbRusfJBfLC0Y7Mma5mxeYzExaJZswOfFlfW7H4ZuatJ16DaP5pZDsjBF6nFK045KH8PN0U6ZDNzczfZXtBKRl1Gcd7R4FBxLIgXAooiMxr3zSRlqfXeQ3tgyBXsva35I2mqSEiqZTiKBPqhEgDRgz0o+iQr2v22yXpxto+9OrKluvgIjbn1SQffhd95mrpRtCyOoMijyRAdMmc/BUk90sjj3TVoWMn26yv0y3MN
+ Oiu42Qao
+ nRvKXUwrYSCZhXfUnPLl4T0pl5HyfvyvYfs2b1kX6HewB+ziipTCtqA5X812kbxno2kO7a/nKEAyZGWrIcD17TQhjj8RCC72D8HA8EFtsbKym1Xcz/k7gkqXCMQ0UROi8ygy5DbizDhsJYzSqerDMKVN78PviYzzfJXmS/1Isrkqh+XecrSM3XAbwwG0zlgGQHblSLGJtirQVJ5jqUpCjmmyYstT+ioKkDBuXybck3mqA6M1gtfdxianNSzXpHuuBmRAXZ+iWHGihT+CqVtnD2/8W64AA6vo6wD4DDBBGBuUWOAcxtlWJgZpbajUg5YdqfwZkw4kg2ER24MvkeVXEsdSwLvhwQt3vP3DwQh+jJk2kNTAWEiMTiPunBxCn1GSDJiNxo5zg/3lmA4ZpX1gJr3aD7pFUrrEd/mpDuJE6j95klVFUn3bBgDZ3xD0d+7aonu/a7DgEb6kkXbo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,100 +124,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 09:49:28PM +0000, David Matlack wrote:
-> On 2026-06-07 07:01 PM, Pranjal Shrivastava wrote:
-> > On Fri, May 22, 2026 at 08:24:05PM +0000, David Matlack wrote:
-> > > Refactor the logic to match devices to pci_dev_acs_ops by factoring out
-> > > the loop and device matching into its own routine. This eliminates some
-> > > duplicate code between pci_dev_specific_enable_acs() and
-> > > pci_dev_specific_disable_acs_redir(), and will also be used in a
-> > > subsequent commit to check if a device requires device-specific
-> > > enable_acs() during a Live Update.
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Signed-off-by: David Matlack <dmatlack@google.com>
-> > > ---
-> > >  drivers/pci/quirks.c | 50 ++++++++++++++++++--------------------------
-> > >  1 file changed, 20 insertions(+), 30 deletions(-)
-> > > 
-> > 
-> > [...]
-> > 
-> > >  } pci_dev_acs_ops[] = {
-> > >  	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-> > > +	    .match = pci_quirk_intel_pch_acs_match,
-> > >  	    .enable_acs = pci_quirk_enable_intel_pch_acs,
-> > >  	},
-> > >  	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-> > > +	    .match = pci_quirk_intel_spt_pch_acs_match,
-> > >  	    .enable_acs = pci_quirk_enable_intel_spt_pch_acs,
-> > >  	    .disable_acs_redir = pci_quirk_disable_intel_spt_pch_acs_redir,
-> > >  	},
-> > >  };
-> > >  
-> > > -int pci_dev_specific_enable_acs(struct pci_dev *dev)
-> > > +static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
-> > >  {
-> > >  	const struct pci_dev_acs_ops *p;
-> > > -	int i, ret;
-> > > +	int i;
-> > >  
-> > >  	for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
-> > >  		p = &pci_dev_acs_ops[i];
-> > > @@ -5481,33 +5475,29 @@ int pci_dev_specific_enable_acs(struct pci_dev *dev)
-> > >  		     p->vendor == (u16)PCI_ANY_ID) &&
-> > >  		    (p->device == dev->device ||
-> > >  		     p->device == (u16)PCI_ANY_ID) &&
-> > > -		    p->enable_acs) {
-> > > -			ret = p->enable_acs(dev);
-> > > -			if (ret >= 0)
-> > > -				return ret;
-> > > -		}
-> > > +		    p->match(dev))
-> > > +			return p;
-> > 
-> > Nit:
-> > Should we check if (p->match != NULL) like we check for p->enable_acs &
-> > p->disable_acs_redir(). 
-> > 
-> > Otherwise, it seems like we're mandating the existence of a match op in
-> > the pci_dev_acs_ops here? Today, we just have two Intel entries in that
-> > array, both of which need the match op. However, AFAICT, it shouldn't be
-> > mandatory for future SoCs that might only need a simple vid + devid match
-> 
-> *shrug*
-> 
-> I would usually say those future SoCs should be the ones to make it
-> optional if and when they need to.
+The first entry of error_states[],
 
-Well.. that's fair I guess.
+	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
 
-> 
-> But making p->matc optional now isn't so bad:
-> 
->         for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
->                 p = &pci_dev_acs_ops[i];
->                 if ((p->vendor == dev->vendor ||
->                      p->vendor == (u16)PCI_ANY_ID) &&
->                     (p->device == dev->device ||
-> -                    p->device == (u16)PCI_ANY_ID) &&
-> -                   p->enable_acs) {
-> -                       ret = p->enable_acs(dev);
-> -                       if (ret >= 0)
-> -                               return ret;
-> +                    p->device == (u16)PCI_ANY_ID)) {
-> +                       if (!p->match || p->match(dev))
-> +                               return p;
->                 }
->         }
-> 
-> I can include this in v7 if you would like.
+is unreachable.  identify_page_state() has two callers, and neither
+one can dispatch a PG_reserved page to me_kernel():
 
-I don't have a strong opinion here, this should be fine.
-It's just that we have NULL checks for p->enable_acs and 
-disable_acs_redir too. It'd be nice to keep the same pattern.
+  * memory_failure() reaches identify_page_state() only after
+    get_hwpoison_page() returned 1.  get_any_page() reaches that
+    return only via __get_hwpoison_page(), which only takes a
+    refcount when the page is HWPoisonHandlable().
+    HWPoisonHandlable() is an allowlist for LRU, free-buddy, and
+    (for soft-offline) movable_ops pages -- PG_reserved pages do
+    not satisfy any of these, so they fail with -EBUSY/-EIO long
+    before identify_page_state() runs.
 
-Thanks,
-Praan
+  * try_memory_failure_hugetlb() reaches identify_page_state() only
+    via the MF_HUGETLB_IN_USED branch, where the page is necessarily
+    a hugetlb folio.  hugetlb folios don't carry PG_reserved at that
+    point: hugetlb_folio_init_vmemmap() calls __folio_clear_reserved()
+    during init, so the reserved entry would not match even if it
+    were still present.
+
+me_kernel() never executes and the entry exists only to be matched
+against by code that cannot see it.
+
+Drop the entry, the me_kernel() helper, and the now-unused
+"reserved" macro.  Leave the MF_MSG_KERNEL enum value in place: it
+remains part of the tracepoint and pr_err() string tables, and
+follow-on work to classify unrecoverable kernel pages can reuse it
+without churning the user-visible enum.
+
+No functional change.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/memory-failure.c | 14 --------------
+ 1 file changed, 14 deletions(-)
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..f4d3e6e20e13 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -980,17 +980,6 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+ 	return false;
+ }
+ 
+-/*
+- * Error hit kernel page.
+- * Do nothing, try to be lucky and not touch this instead. For a few cases we
+- * could be more sophisticated.
+- */
+-static int me_kernel(struct page_state *ps, struct page *p)
+-{
+-	unlock_page(p);
+-	return MF_IGNORED;
+-}
+-
+ /*
+  * Page in unknown state. Do nothing.
+  * This is a catch-all in case we fail to make sense of the page state.
+@@ -1199,10 +1188,8 @@ static int me_huge_page(struct page_state *ps, struct page *p)
+ #define mlock		(1UL << PG_mlocked)
+ #define lru		(1UL << PG_lru)
+ #define head		(1UL << PG_head)
+-#define reserved	(1UL << PG_reserved)
+ 
+ static struct page_state error_states[] = {
+-	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
+ 	/*
+ 	 * free pages are specially detected outside this table:
+ 	 * PG_buddy pages only make a small fraction of all free pages.
+@@ -1234,7 +1221,6 @@ static struct page_state error_states[] = {
+ #undef mlock
+ #undef lru
+ #undef head
+-#undef reserved
+ 
+ static void update_per_node_mf_stats(unsigned long pfn,
+ 				     enum mf_result result)
+
+-- 
+2.53.0-Meta
+
 
