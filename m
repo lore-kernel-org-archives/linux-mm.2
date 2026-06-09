@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6229FCD98C5
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403E9CD8CB9
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:26:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9B3E6B0093; Tue,  9 Jun 2026 10:21:25 -0400 (EDT)
+	id 784406B0088; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD3CA6B0098; Tue,  9 Jun 2026 10:21:25 -0400 (EDT)
+	id 70DD96B008A; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5226B0099; Tue,  9 Jun 2026 10:21:25 -0400 (EDT)
+	id 5D50B6B0096; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 89CA26B0096
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:21:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5183D1A05C9
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:21:25 +0000 (UTC)
-X-FDA: 84860586930.30.E50E944
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 485706B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D999E1405BE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:26:53 +0000 (UTC)
+X-FDA: 84860600706.09.5E606D3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A4F5180016
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:21:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dBYBOWtN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 50790180009
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:26:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5AHoeDv;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781014883;
+	s=arc-20220608; t=1781015212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wvTmgzWVeo+cgK/5Fasuy9LNL6Vq1lM40f7iFKommVk=;
-	b=nrMtmXpkkmdRqqR5gMnMuwxYts+T58mXxl+60/Fb6wd43KdhA2jL8cMxgK5DMsVJ7rFZ5G
-	FwZyo3dsYEA/LxSOzNVa/mLqFuufvUvGZA+mDSTrS0u6+yRUKCkibydOI6cHPKcW1BX+D1
-	MaHhoP0tu46nMwGRA/mfKFtHLk7nIRU=
+	bh=UKRI414IfLHNNeYwOL/nAAWOqGtR7JlYa1a+TkI80SU=;
+	b=k5mzck/4Ib0gUZrd7QV5K9QFcUPLbPQllQz1pL9Ir6qYyXHWj2nPFvFhMediXwkjt3lHcp
+	VBq91nFAapk8bKJUSXeJK29g0M0ply5YdAut/7+ys8XNCCU3E9dyeDsEMZP1ekzbfUUxuU
+	ToBQJl2bpF+2j/naK3y5krBLqtlespE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dBYBOWtN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5AHoeDv;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781014883;
-	b=B88Gd7HTrAB8KTaPVzL/vJ/6iufbz8BeQ/PyhPT3YoI7IT7ZBtgSJmRpdaGJAm/kuAwxqY
-	2Jnpb1sC7ss+NytesGPp9D+Z0WayXBhBH0MoVzyQljnTnzpv9HXHL2SpizaneDCmj+0k9C
-	cakWSVxeEgFsaDIC+poE5actWvFoLRQ=
+	t=1781015212;
+	b=rcTb8hKbjyCH6XjC0peNyy4m+KWoma7bZkFBNIML8RboCQtxsegZ57vugGoc6VB9/W5Heh
+	ILH1u73cub0BURYSr8PZYATAY39iJ7sIyV1IG9+JU+BkQZxalTyA6qNCTA/kT6QhMfmSXD
+	uGbaziv+1dr+pADueNiA6+A4fdCGVOg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 39C2960208;
-	Tue,  9 Jun 2026 14:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C0C1F0089D;
-	Tue,  9 Jun 2026 14:21:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AE43E600AB;
+	Tue,  9 Jun 2026 14:26:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C911F00893;
+	Tue,  9 Jun 2026 14:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781014882;
-	bh=wvTmgzWVeo+cgK/5Fasuy9LNL6Vq1lM40f7iFKommVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dBYBOWtNu/9rQ/xS6E0Bw2JnAvyTScw1/GnV+s5gpa21kSaJ5OgEOXYiBRekApavu
-	 0Z+vAyNSAatnCKVudQPt//H/Wewnad9lZvbZp22exymEo+BS7h8wRx9eCBB2OB+7v7
-	 dLnhKOANWGhxGTbWLcO2MZdu/jdp/s2gYVedTw0qqhV7Tz2n6MVxZPSl1DF3mqiNf8
-	 LAvVA/sUOP8PYD0LTy0dhWVVqpvhGg0a7cHs1wuRMBQFucoL9G1cbydrMrZSmqAqUX
-	 ZK30IofnXwoemrHCcWtANjWbnIg7Kk7tWLzBFys7O+8j97A1HPH2uz5vYPCCfwGh7h
-	 53aM/zUo1sY4w==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2 2/2] samples/damon/mtier: handle damon_stop() failure
-Date: Tue,  9 Jun 2026 07:21:17 -0700
-Message-ID: <20260609142119.68120-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260609142119.68120-1-sj@kernel.org>
-References: <20260609142119.68120-1-sj@kernel.org>
+	s=k20260515; t=1781015211;
+	bh=UKRI414IfLHNNeYwOL/nAAWOqGtR7JlYa1a+TkI80SU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D5AHoeDvOTSuS+c9WN66Zv2jy+bHsL1T2USkxRt494TKRa7W9h8il6Gknwx18UBCH
+	 3PXZi4ikQQP75Xw1WS26zhyiVdg0j0JR3tTyRg4prn9e9qRoDGsaXesw2Lph3W4Ro6
+	 h5y9x+Rd0tJehXvqLtKs6MzWNWsr5uTdNWRKIatNgMr/CjVLgWC/osSO9W9LxkBlTs
+	 mzeJ+gGGUO3PIHLLP9jVj5AzwmycmXeCqJY0flLZgiT4gAS3rjQoIfPW1wOQcT6Pul
+	 d4hM0kCWNtY3Vb8CvXLzeP//3npyp5k+Nw/ibfFikW+hAvPLjpSraeaUhwD6HkyHAB
+	 upA13YlcG1NDw==
+Date: Tue, 9 Jun 2026 15:26:43 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>, aarcange@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
+ from interacting with KSM
+Message-ID: <aigigBa4LY3mtSL7@lucifer>
+References: <20260609114619.144416-1-npache@redhat.com>
+ <20260609114619.144416-3-npache@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609114619.144416-3-npache@redhat.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 50790180009
+X-Stat-Signature: dn8nbarx13xjmww4gysjtadb7j5qnmau
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A4F5180016
-X-Stat-Signature: 3qewfu4i1gwcus9u6ctapozndyij7fzu
-X-HE-Tag: 1781014883-906887
-X-HE-Meta: U2FsdGVkX19TJieNuLDwCoSds1DN6t2zWBubNQFxZA+FaRY4PBG+YXzZYuuCJl8o6W+dwst7XJvQb9F0UD5/OgZHE0m61efprApDRMrqTrv+OsVonZbqbsCD/EPqff6Td5ffoj/vtWwVny5H4ZJuvEjZQ8KgiVGscTGpeFPkNCmRe0n9C2ujrHBgRQn7GEoFTesBEtrKCzZ1icucROWoh7St1Z07aJN78A4BmfTzrZiy4/bXkz4e/9qXGLTP7Cd1H9FcNRBbaa3ub/SUizYZ5DTyPtmFrCYtPiHs8oURmh0cNoNGhCSBcxqOcBXK/niNjgDYM5wutBC/a2xROyV0aivAN3ZztWPmzBSJBHLnz4TFgyu8vHnSMuJisNsR7X1mTOMbR9vFuzfNj9AatGKD/4LVp1koBFkcr9RtbbvkrZp0MF8uHO3QLaCSHOBzthATDfuJ+zvGZ9Wk9YNUpkhK6b/Ri64eFsRAWusX3NOgjTops43DoZUgOoQRqUDnypq9ekTw5GIlWfe8Slx1iOM8aKx9ivqVboVO3x2CXZjy9pu4cUHxnexV0CL8bXTZz8F0AZfahnhG0bjccLv3Mm6yGb2T1p3qdBmZ4tK4hQ42HF9OHz94uVWajWTp4KRXYY3Hik8PMSEa4TejcyGUe+KIYH6c2dj5l0JMaxd1WG8tmARBw/sG/YHxXc0RPGNhYA7RHCSUSBwpSK0cGmpljUKI9nxEWOvvndp/DdB6DBSTEhrSrG7OcExfqgXDZyFJG8WEjIIq8PP9Wyqa/eh41BqfmSC6GoUxhctaAOATNsqAV3dnVmbUdCW6f9mWyLdpkjcu1O9JIKO4lnE3XKl3PrXSHnyx+6EaJ43M3Gwy6YVcTd9WdIb2AgQucnysgYFaQJcHwWby+lMCRpv8mjGH/MkvlfaOSU32HPRa9kiiN/n9nF4TTbQDcOwAQpN+g6Cw5gxOVEfT7TPjHsl4qsomQWT
- keM+azsC
- vCvvQr3s5jQXMNAowzawMHYey901hZxTIu0muXMJ3xehKNfUE7WdM3ey4IyLPvcOpolffdR0ha+MI8Y2v8A/kEKio9IwM1sPtGQw/NOTaALbgUh/QgbIOZMtBaids1d32ze+pDwQiucsxiwyPYAd74+4/KPQ7x6AJKUYL3KycXyzklrl6RmnAByw/7OwS2dce1bq4nrUedIF/DUeGJEyy3mWfLwuB0LQ17ct6Tbc/NTlKjlDTbz8s6QzNr08DaiLBdTOki25A2JmiqgnFi+APWeMylA==
+X-HE-Tag: 1781015212-954139
+X-HE-Meta: U2FsdGVkX18hHHksa2KcomVcGxRiuKR290POOmpk2YKwWklj0r2oN6m9WG/hDeS6K5epbX89h+NSr6uEsbF73WmSkEXNsVQuMGu4CY/B7hqT/pBCVUbXHLCzBhtRCHV4VP/YIb57J/ZEKI92jnu0sxmm/CpSvDCUphwF2lY+o3ghnWe9TX/cM/Zg4O2+jo6otT11rHu6g7p1wZaklwoFVsJ/nZxLDgY7PrpnQMD33gJXP+ekEElHEIlFRt0z5lZevYeqma54wwpoKW/Jaj4WL+H/IW7D+ebk0NOLSiAda8OIIeFcXIDciDXGexxSe818SW7y3Mtdh9MfGAJywKOxfUjnmkkTEjh2VEsQ+75qzOJ6n8gJKIRoolV8YoGr1ym8ImD+Yaz2pi8pNmRhuMOQ61wmyTC7KFyWFp5Vf178U/VoCpCLSk9XW95uPTpQ8WmsxLbnFL2o/N8W1FOY6KHYMvDtB+9PE7yYGhuSYs8K31b6qz0LErnHyjPYl6/mQDOS+POGMQ3TPN0iwbyIjZQTytYsjPsQ/VuajpWtCZLvTrQ4RuE8Em8N/uZR/VXnpuhZBbj8oq70ViqD+LCpKEjiowGMld3Ay2RFfj7LDoNOuHJIXUzOklpcja0dXiubhL9zHqkpfQ3gkybpJ3IkL2VWZdUF3FQ653X+jCichxo6EUN10KyH11ybUr6t5UFgOYZ9ukhAg8sL0FUWyWwdefqZCoLSV+q1gRljr++tEubjGIcWqPdiz0dpsVoFSry527Zyf2oUYOx14tMiiIz61adignsseTATo+uqEDmMh7OiCLcvEbqglYvIJw+QTtRIXEQ4xAEUAERDSHGEmGu4UUXhRrjc9yECbul9q4qsEOvdHas2UV9o/YYE54Cwn4WHAMf3w7NV3tgdO6Px0GL+76KA0GDvXEgG/5nJAwVqRG9JR+Dg2H4qi8fWDxQbuUGuDeH6r7euYIoRAes69AdqSRj
+ ubhNNLhs
+ 5fczuAOHBH5AuNyrt7NAVqWLtfIraNBMuzGI0c+8I7PoMF1Dlfais4yueaLqNUWgLj3DqlD7ZCPYXiJHEdMOpdpVwqz1IPKoEgwqHbis+Cdv/a9fypFnhitmBoFDols56wf7Rgcuh4G/wSkpyZ1LkjMy6c79YIkweCd9lg0wz2FXe+cQW696Dgsb4+ce4SixjOGxKIXwDtDjPkXKvMcBqoP8WhUUyQxn8JK2WCU3pB+vpo29ZFF6fPyWE02GO1asm/vHLpDFlVUuH8poX9UPf5RXxI0w/hM2Mjk6uQHMweSGwPz9cxLlEGjxhNBAAQW3B7L8/RHLrti9Vd+Mo7Z2uHD8xTrijao/nZcMm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +101,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sample_mtier_stop() assumes its damon_stop() call will always
-successfully stops the two DAMON contexts.  Hence it deallocates the two
-DAMON contexts after the damon_stop() call.  However, if a given context
-is already stopped, damon_stop() fails and returns an error while
-letting the DAMON contexts that have not yet stopped keep running.  This
-kind of unexpected early DAMON context stops could happen due to memory
-allocation failures in kdamond_fn().  Because damon_sample_mtier_stop()
-just deallocates all DAMON contexts with damon_target and damon_region
-objects that are linked to the contexts, the execution of the unstopped
-DAMON context (kdamond) ends up using the memory that freed
-(use-after-free).  Fix the issue by separating the damon_stop() to be
-invoked per context.
+On Tue, Jun 09, 2026 at 05:46:14AM -0600, Nico Pache wrote:
+> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+> when splitting isolated thp"), splitting an anonymous THP remaps all
+> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+> This flag is set unconditionally for every anonymous folio split,
+> including splits triggered by KSM.
+>
+> When KSM is enabled with THP=always, this causes two regressions:
+>
+> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
+>    split_huge_page(). The split remaps all 512 zero-filled subpages to
+>    the shared zeropage at once, freeing the entire 2MB THP when KSM only
+>    intended to process a single 4KB page. This bypasses KSM's
+>    pages_to_scan rate limiting, causing ~1GB to be freed almost
+>    instantly.
+>
+> 2. use_zero_pages=0: The same split side-effect occurs through the
+>    stable/unstable tree merge paths. Each pages_to_scan iteration
+>    triggers an expensive split_huge_page() that silently frees 2MB,
+>    while the scanner wastes cycles on tree searches for zero-filled
+>    pages that were already freed as a side-effect.
+>
+> Fix this by restricting TTU_USE_SHARED_ZEROPAGE being set in the case that
+> KSM is running and the VMA has VM_MERGEABLE.
+>
+> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/migrate.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index d9b23909d716..f410f972fc5e 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -304,6 +304,15 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>  	if (PageCompound(page) || PageHWPoison(page))
+>  		return false;
+>
+> +	/*
+> +	 * Let KSM handle the zero-filled page deduplication according to its
+> +	 * own rate limit (pages_to_scan) and policy (use_zero_pages). Without
+> +	 * this, a KSM-triggered THP split would remap all zero-filled subpages
+> +	 * to the shared zeropage as a side effect.
+> +	 */
+> +	if (ksm_is_running() && (pvmw->vma->vm_flags & VM_MERGEABLE))
 
-Note that DAMON_SYSFS also allows multiple DAMON contexts execution.
-But, it calls damon_stop() for each context one by one.  Hence this
-issue is only in mtier.
+Please use the new VMA flag API.
 
-For the long term, it would be better to refactor damon_stop() to always
-ensure stopping all contexts regardless of the failures in the middle.
-Make this fix in the current way, though, to keep it simple and easy to
-backport.  I will do the refactoring later.
+This would be vma_test(pvmw->vma, VMA_MERGEABLE_BIT).
 
-The issue was discovered [1] by Sashiko.
+> +		return false;
+> +
+>  	VM_BUG_ON_PAGE(!PageAnon(page), page);
+>  	VM_BUG_ON_PAGE(!PageLocked(page), page);
+>  	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+> --
+> 2.54.0
+>
 
-[1] https://lore.kernel.org/20260609014219.3013-1-sj@kernel.org
-
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- samples/damon/mtier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index 66b591f2180fa..faaaaa12e6206 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -199,7 +199,8 @@ static int damon_sample_mtier_start(void)
- 
- static void damon_sample_mtier_stop(void)
- {
--	damon_stop(ctxs, 2);
-+	damon_stop(ctxs, 1);
-+	damon_stop(&ctxs[1], 1);
- 	damon_destroy_ctx(ctxs[0]);
- 	damon_destroy_ctx(ctxs[1]);
- }
--- 
-2.47.3
+Thanks, Lorenzo
 
