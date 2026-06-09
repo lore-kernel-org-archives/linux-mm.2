@@ -4,138 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2815CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30DB3CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06DA66B00AB; Tue,  9 Jun 2026 10:41:18 -0400 (EDT)
+	id 9249A6B00A7; Tue,  9 Jun 2026 10:43:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 045EB6B00AC; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
+	id 8D4DF6B00AC; Tue,  9 Jun 2026 10:43:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9D776B00AD; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
+	id 7C35D6B00AD; Tue,  9 Jun 2026 10:43:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC4E46B00AB
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:41:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9C01D1405C7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:17 +0000 (UTC)
-X-FDA: 84860636994.25.257A544
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AE07D1C000E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a4DzZPZh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6705B6B00A7
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:43:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9F802120628
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:43:33 +0000 (UTC)
+X-FDA: 84860642706.17.0DBEFCB
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8FEB118000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:43:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=COdwqkDQ;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf16.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781016075;
+	s=arc-20220608; t=1781016211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
-	b=XrtPEEYhJHqYTp8K6zhIH5m9jiBGlZswGltQeSTN077HojZj4Ak6iSZbot9BaHrUI9XdZl
-	TVzbrNzBhUgJdkjj988O3+hVqWWY5T1Z8z765MCfBQ+lYK/xXYv8iqqcQiEGiMufRTSm2P
-	bRhsutb+XylbBMkp14iC3y6sImN6PUE=
+	bh=/y9sk2WKJk6IVRAkewpieDuGt24dURWTghxoT+OO5zI=;
+	b=id6NnK8Y6IDkE8kwG81kRj163Agp2wfMLLCMedMQIG32B937Xl6WR275APs5ecmCnTLrCm
+	0QtCdmcV8Fl74MzUjIh4cBWUOnPVz9P9gr3fVjwnOM9dKv4xpkapchHKkQsV3boSqo4kJy
+	p9Iy4jQ9wxekwfedUuUnDob5oH75Li8=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=a4DzZPZh;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=COdwqkDQ;
+	arc=pass ("zohomail.com:s=zohoarc:i=1");
+	spf=pass (imf16.hostedemail.com: domain of me@linux.beauty designates 136.143.188.15 as permitted sender) smtp.mailfrom=me@linux.beauty;
+	dmarc=pass (policy=none) header.from=linux.beauty
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781016075;
-	b=1+nAbP1P4v0NN6Qg1rnziJFZMPHAS9m2DxUtM5Owt9fgNJSX2xuWRYIHqLVdpwqrbIlEG5
-	4L6AUOML7vMk9/7Tr0HtCz7Ddxg0LZifHdikYXz1konR15vjQrhR/5m+YxxCSEPczz2OOf
-	QGB93p2Y6RV3GqMATfIlcuzaR9i20Xs=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5177d1ff061so2300861cf.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 07:41:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781016075; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JRTMrWkbd9MQYu+09Luxwp/AqlWdojp6dUniuYMA7YyjL+jjBb+zo8gAMxm0DM7IxL
-         oHcJuQzj7IxlpM66hz+JxvMt0Z6sQKo8V0Rp9x/qIrSMNZNH6/z4wEyhZM7hhBh0O9+u
-         MAi7IYsQpU86xR02EXlGqwbpWpxK9O6ougAq5azESkMDEFZOlcNuvIniFQ5zpSC0bh+C
-         2M2eHtCvfIi/VI58axhCNFu7GXr7hPMtAlFd3SHE6DZqSrlYWVUaSvZi/ourrgY5DV9/
-         KM/IdzydSY5xFjatdULeLa5DKxv6bqls28PRPJzZTiZcSWPrsZV+9iy9ux7hlPteD1nt
-         dvKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
-        fh=pHZi/rsk/GIsBujV5RlZiuFG5tmQz2rm+CUN0sV9mCU=;
-        b=fpaTHYWIg1exgSGjc/Q1W1xQG0+fADOkwhHqy33m8CBk+NYQFrdgxPaAjICVh9n7q8
-         eTLrmUJUhGq+fUkOfIBmf7+IjYMuW7GUZyDMDikMg2f2J0LetT8xqla1L+pkPmc6YNhq
-         0lXQwi5D6Wk1m4wUo0eMqFFxjZPTiowgZYY4Tfj0hScmPEVKl9Dt00nlVqjfZ53XSMxO
-         dKiVM0XwBu9teGwAwyApErjIbFEMBATRNIql8tjE4nkvWs4c+NR4YbT8dVpWdHEC/W5f
-         ml9pMvWv09QLUeOOYGoAgMQrF6sXcNd1AWebLuqG8QTsB8MpBWN5VAaF7ByAWxBm3gjV
-         NJ6A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781016075; x=1781620875; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
-        b=a4DzZPZhYJKqLuyy4JKlnKCMtu70I/M9ScHXENca2TIdK5EjsCk9+UZp/WFOKVQp1s
-         8NHPJRxWn36StJp6uKICZ+Q9C126mL1koERWPYEh3TqxWmwDfQ7WRUiGIJ+FCf0AkK0H
-         pSlXLpScXMhnW3VeMNAUzC2wnZvn8Tye7LyDQC2eOJrzF46fSuuwSVgO6RhTkjDrClbR
-         fP+1F0MUFJkDGUc6rLfZsEiXoUBkX6EUeI3MR5flP6ZswLdV2EjRpE7e3kgmX7+6vLi6
-         X4jJMRsiyl5NUlELOeuVMBYgRtqymMJ0FxK4hbZbKRyC03UQhti3RXm449tpDIQ+Rv62
-         IY4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781016075; x=1781620875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cs6tgEzoVHYpv7k21ybqH49sF46z7hX0J0ePiR98zrw=;
-        b=YvzvcZXPNjMjEkWCa2YjYmEQypVS/bNVaxMrT1Gq/Ih17x5LVIjdhQHrzTWTgnRNb6
-         JI7R5PGOPMM7/5UNGxe1S7OpT7+sSD66LRQQI5e6458mjlemxOU3U4M044QNGP1LuObr
-         0PoIHYPA/Y29RpnT0w65vLmfccah2PBrmIMoR//EYmpM+phkXZOusOCrSWZOU5oAqHAx
-         y8fM/IkPrkyxAj15iTp3NPmVqob3ztMGJKmcta+ILoObAbnRkGn4YaY5YurFNvrKgSqp
-         81f7cM1iffD9ne+XxDXxwIBlciwbyQm+smEh/4OybnXekaD0TANjmlBl2kNzKUTJon4a
-         cnIg==
-X-Forwarded-Encrypted: i=1; AFNElJ/2u/4w+5N+tUXdnGyU8DX80uBaAEa0JT+lZLDGSc8hBV9mJbIOuLfYZTfTCxs8i1ee2Lrn07hPog==@kvack.org
-X-Gm-Message-State: AOJu0YzzGov5SWW5Md7LXeV1isJxYg9VjFtfbXuUTh7+tBDhNolknx9D
-	RnU0ABs+h0acGnaGn15toNQb7ykQWszSogRxnT7cgcEfnwuuUMGIoSRskU3IpBn03tDHEs/E38n
-	UMa5iZGTn7m92SkpP9NgpEBdHJywfHKnHaGEVqkrc
-X-Gm-Gg: Acq92OHpFChIzn5kbM3IYmMPOlnn4k29+FEaNLdkH3wow5ZNmJwiBhPYOYXswuB6n38
-	t+3LZhIEJT1XVMayzkuQh8YWCV2Mii+GL6vN84K3ZRQINZHb9XFEn/uo/nyajIiOhpOIBydxD4C
-	paCkdoh5X8VEQ/my1AOkX2ij/Co9/+O2UOk2W6N3CZBGZUhmR8dMMTYr9lX6ezird4yfYe0Pkox
-	i3mAjkM9sY0h/MqYGtZl94ejXedWRNQ7hgPZjUxAtEn8ffaUHCnRynlNZe6JHIP5MkEWQ3c84cI
-	xefQuvCPTpzJMVsZ+s7alJeRsbgkghaYGPgenX1dMQaRwwxE
-X-Received: by 2002:a05:622a:aa4a:20b0:517:5ec3:b59c with SMTP id
- d75a77b69052e-51798027065mr33863531cf.2.1781016074112; Tue, 09 Jun 2026
- 07:41:14 -0700 (PDT)
+	t=1781016211;
+	b=o36W5CwoyGwSx6g1JbpNJjF4aXbMTk4gcSxfUfdO0xC4+ZygT7AbgcMos0n1fFBYup+JfU
+	gsYt2cECMHrXYpILQobn2s/DN64s0Uvae21l8VrNZqsV2R4lMjS5imCFwl/Tlui7VJMprT
+	lrjJfCq+f6Q1/+Jn/cVllBzLZof3JQ4=
+ARC-Seal: i=1; a=rsa-sha256; t=1781016191; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=h7rLtiBgT6JIZSxmJMtvUqc4vDZXEE84xSFHH7+I7DRRoiIxpI6USJd4jeM5QKxTHLBOjRdGlGPZK491r6Ic0mZHo4E6Os5MnWiN1hQAtcqCaRDitY6VvI2f6oz5eb3b9mj4UTqInmHmmH9FyLo9Z/0p24DR0VZIseC0o1dhDWA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1781016191; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/y9sk2WKJk6IVRAkewpieDuGt24dURWTghxoT+OO5zI=; 
+	b=f9q23nRD9SwH6P0dfQ+zaosNvHpR6OplQgfllXtgS+3kEfwrreImsF/Jw5oxfWk7c+v3pkV1oH1syqog/nU1i9ccZ4I1GbIytyRi6YvbmuDAhDo245bgvuYxw4L4FU3++fOLhMhm6/JQ6zyOrPZnYLAzpv71AKwoFhzJKFwluyk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781016191;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=/y9sk2WKJk6IVRAkewpieDuGt24dURWTghxoT+OO5zI=;
+	b=COdwqkDQJ9R0ZBvzBwIwlx+nRdcQO9W3BEy4BNPz+VcJ0wKYsAMd0YbHmrS6azhT
+	338RbHqaewKGsSI9be4yoWBCQGRKqjBZG5nbubYRN/04VYI2Y18hEQ5IZt8uHveiPhe
+	CGUwP+qJQjwM8IFoZr8xMCL7e4gyrv2AhDkkmgj0=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1781016184094100.75145563479225; Tue, 9 Jun 2026 07:43:04 -0700 (PDT)
+Date: Tue, 09 Jun 2026 22:43:04 +0800
+From: Li Chen <me@linux.beauty>
+To: "Andy Lutomirski" <luto@kernel.org>
+Cc: "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
+	"Alexander Viro" <viro@zeniv.linux.org.uk>,
+	"linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
+	"linux-api" <linux-api@vger.kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"linux-mm" <linux-mm@kvack.org>,
+	"linux-arch" <linux-arch@vger.kernel.org>,
+	"linux-doc" <linux-doc@vger.kernel.org>,
+	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
+	"x86" <x86@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+	"Thomas Gleixner" <tglx@kernel.org>,
+	"Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
+	"Jonathan Corbet" <corbet@lwn.net>,
+	"Shuah Khan" <skhan@linuxfoundation.org>
+Message-ID: <19eacd64508.26b92c022125848.262962729296162879@linux.beauty>
+In-Reply-To: <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+References: <20260528095235.2491226-1-me@linux.beauty> <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner> <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
+ executable startup
 MIME-Version: 1.0
-References: <cover.1780701922.git.abhishekbapat@google.com>
- <b608a6f7d71e3b728f766dbc6dfa1d1753ddcff5.1780701922.git.abhishekbapat@google.com>
- <1ec17313-cd2b-4389-a05d-998757af30b3@linux.dev> <a58e659e-5f54-4511-9a29-dc921002d102@linux.dev>
- <CAJuCfpHtdd=9D68cfRp4HDHHHCZdzTNP_RH9i2D-f9tJXht56A@mail.gmail.com> <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev>
-In-Reply-To: <ebcbe4a8-127b-4d12-83f1-dec93f0a9c61@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Jun 2026 07:41:01 -0700
-X-Gm-Features: AVVi8Cd8Mw9UFnLHYjZB_VFyvF_jL4KOSZdNa8eQSyaG7dF5Q3xsZiPC-kanxu4
-Message-ID: <CAJuCfpGbxO0zu_UAWCYNNv8RHgT=E4AF0tgG-kWoLXECOL3byA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/6] alloc_tag: add accuracy based filtering to ioctl
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Abhishek Bapat <abhishekbapat@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AE07D1C000E
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8FEB118000A
+X-Stat-Signature: oxsisuqtxkansf4sr8aghjfwbqazfc8i
 X-Rspam-User: 
-X-Stat-Signature: 8ku6i6tb8afn6uc7dncqnni4musde3y5
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781016075-387979
-X-HE-Meta: U2FsdGVkX19ILnXIT6lx+Gzvs6XbCVLnbuHQ63YgFq/cDVfdDgyyGA1dtYHTy/F4vc4vZgY8O9fe//TPjK1D8QWhhKAyvFSEE4HzVFADi7jcWLfFEKym/BvVEKZ62eXqEPTtUUHJzaVEolQF15V4wn5Bpj5SvaeBYk3WXnUmJPG96gswHXTxXLzvH2N1UgASS5jq1slmfoREDpFLWuDr14tkGsrgtKgGDXVXyM+HNe0Z3IZoPD8dYRRl52HagpvuQW6zCzMMnlBbrTTiAwd7c4SxGk5725j5O+g8EX2ZF/7P+H4LCPY/lXa/l4IxQYkJk/HWG8sDEOv+2EW+jIz9XrBPvJSlzMAYXW2iINg3GByJfLMJNQjOVo6uodsdR/qStwl2nAmqTmlnc9MHdoYJaAytzFKK4yEGJiCGCbDtv3qgUgyY25FLtUlB5TpWtfGqky5SOCh0iWI9fniffr/PbkmWcNFBfYIOq7r5tfRM+AJpNz3OXKUPuK9HBpkka+jhKVGXjJlZjrf7wMyclfzQSVKcw/1mLLDNjREl6+WhWSYVkbNVrzYz1qYAqLqfeLFk/NG+nHNHr5bw0LlvwIq3sFu07GauHnh/6eOorwjkURiBIBhRHPKdsl09YUjzJeZgQ+kd7xw3o0Sf0tyhLWmJ3osKD5RRBAjNtiudLgpSjr9yjcVlcMsSn2LP5AsUY76weZvKxQQ9j1Ikb5HmtQ7R5t8LgA07o1fKSM8QF1v/9ZDBlMiOLX1VhWgLLuvy47U8uchgq3j7kVyDXjlsUxEWy1tlj38eXnKMLTD/Aux7jcmgP5YH8CKCwpgZXSSunXc1URjGUHnYleEDAxPKLd3FpDh0ZhLLHdMGnLj0AXuW4egAlVk1fr9e5IjTrtbmI31kBFqHKYIPbq94B3c8xT9cstmRZr1/0sLmRvhIOYp3ncIZ8MQ9xBylkPKLV1YEi0PHzn2el6SPNV2p3WOvWkq
- qvJF0Fp2
- eu1dgvvgN05eRCd4ZhcrR+OiDTPGiFulV+nO3FR2yzw4jKGYYDLm4vHNlogvetc9AEfcPpFZ1eUNDV67VpJge0sji8kBnelhnxjm29oORMBfGu14nRfNduLpyN6SfVs/TyWttJUOTR/WlY/i8mB7M3F78OSrhdpxrB5fxXHjBTP6miok7mtnFmzxzb8WVx9f9Wa+2xD4GCMpXglXW/A/6QwslsMf2iXnnynj0seaZCRA0cOrCrmUnF0Bz/JwlPYyJnRJEgtH6q0bE51Z2H8Au/iuA9vP6viRdFfEs9us5canoqiSm0THBEDw9zIVMHvjY71wEW9xLIa8JJo8=
+X-HE-Tag: 1781016211-771253
+X-HE-Meta: U2FsdGVkX19AAWD1pgzawin3WgyYjQLFPK+NiooQb3TOZcXJfrvIZPt2HEFaArknWH+OcmL8YAErdvLpJQf4BXiKzu/uOzeW1yEpEtqu7CT0VKHmgty0aupwbQpOBYEp5xVpx4R5Pr5qUFcCPt9cR/uxESDxGdIPwFfJuHq7qvxJ1w7dwr6Bp5ISJc881acftUcjkA6xlE6TcOo9kNfKuTPCeAS6sYUY3iw01mLK/WWr9c99QfghgPcPIKsJN/LcphFKzLWwMpnzxWJt8zD1FMjy5ZjFZ/ZiQwtZOiYw0vP33WZmTxyvTElSjBMzLqok86QjcJd87O7xWTpQ8kS01zat++8TMLIQ05oDj7UBgkoKszZ5B0j3JBf3aySEdDmNM3CyhQQHoZ3NCLpfPTSSS5g7TOkcJKYyaZEStozPYQMX3RQf0TFN9qsOA16B9tuHMp2fIDq1ehUNdwWcJF1YdIppg4hJYpO14RnVTwo7KoK4JwUvLCdtP8EA8PSHU5TR/sOZiBb5M0I8M4axFbYmmvORW61DyO2nvqldiBvKs66wEhAg2x4x1tR5lp0cgCH1peOa8QWZOy8DkkI/e3qeJqEe6SXB0nLjQB+i9IJQxFeLhUnURXQHjo2HM73Wi4CiHaAsz9y5bAXbEdEb/LsBmyON4HS3wAJk+l4zeC6Z+3kPZ1xDgmdWiP5xHchryVqTRKhzjCFHqGJPZEAdwR98geEvZgjFhDbDYzr3qwbGW/EbXSQFv9TxB8Lx3glZbz+IGcVwpy4guCepIpshCLb0Ryt3seiJEMYULU2/X1vzLZEEAQEEDj8z5NfwmqbB4o6CFyTOd6nTurSYjIa8YukBphNKk7ByVxYGKfQgZ5pQHLHDe2be6h/IUAtTLI/9PvDMDKZpxMPmdaxFasGp0ETgBBvgx5v5VtzAfY8MY4Mov+7UxecQJQf2lLV00OXuwvZZoLtlsGjmnefCvAJepei
+ LDymXmN4
+ LYWXOvMQtVTSFvXkIXE72wLqVpDp0ZyyW837fk3IngQMFbZQ8yyWV7O+S6oXbbSu3x72I1A3vpZuoKQi66fUaOmB3ljVemE+JW5N9EDCzftTZgExo2teqP/cU8VEekcWjcM1TvFLTHBhFjpyHNdBmNOKhB9s/CnqddnjiFKDZHCoH99z+n+yJGFx9RY60Ht8Vqn8MmDVw2W0so5FIkXTAEX4J/8IjqZhmsZIizeyXytl0KCZi/fpbb7QFGd4rrNNowRxDAu+JEnRNAXja9UCn9x3Wa3haSfYYDyh6C+BEIzkl0egwLEkEM5pzAAoBe+sk7fgld+QUIOMo4Tx1nIlp/DI7xFlr2W0SPGmYXvX/i3ddbcqu3DjHCynIoeF+5GHgwNRq2vqsKezsEG9LdrJeyyqrn1exs4mHLbhO3vYFCh/Y0NBB4iH7kYB3d3uWS2Iz9vqXlzTuCXoWQUNLdvcAjpNJcneVStmTDfmwJr5aj95LOLSmn9c6qb0fNcc1nWrjDqJ2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,301 +116,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 8, 2026 at 6:26=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Suren
->
->
-> On 2026/6/9 04:55, Suren Baghdasaryan wrote:
-> > On Mon, Jun 8, 2026 at 1:25=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
-> >>
-> >> On 2026/6/8 14:22, Hao Ge wrote:
-> >>> Hi Abhishek
-> >>>
-> >>>
-> >>> On 2026/6/6 07:36, Abhishek Bapat wrote:
-> >>>> Extend the allocinfo filtering mechanism to allow users to filter ta=
-gs
-> >>>> based on their accuracy.
-> >>>>
-> >>>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> >>>> ---
-> >>>>    include/uapi/linux/alloc_tag.h | 3 +++
-> >>>>    lib/alloc_tag.c                | 8 ++++++++
-> >>>>    2 files changed, 11 insertions(+)
-> >>>>
-> >>>> diff --git a/include/uapi/linux/alloc_tag.h
-> >>>> b/include/uapi/linux/alloc_tag.h
-> >>>> index 0e648192df4d..42445bdb11c5 100644
-> >>>> --- a/include/uapi/linux/alloc_tag.h
-> >>>> +++ b/include/uapi/linux/alloc_tag.h
-> >>>> @@ -20,6 +20,7 @@ struct allocinfo_tag {
-> >>>>        char function[ALLOCINFO_STR_SIZE];
-> >>>>        char filename[ALLOCINFO_STR_SIZE];
-> >>>>        __u64 lineno;
-> >>>> +    __u64 inaccurate;
-> >>>
-> >>> I was wondering if it would make sense to define inaccurate as a flag=
-s
-> >>> field
-> >>>
-> >>> (e.g. __u64 flags with ALLOCINFO_TAG_F_INACCURATE (1 <<0)),
-> >>>
-> >>> so that only bit 0 is used today and the upper bits are reserved for
-> >>> future use,
-> >>>
-> >>> aligning with current kernel codebase.
-> >>>
-> >>> This design also allows for better extensibility if we need to
-> >>>
-> >>> add new flags for any reason in the future.
-> >>>
-> >>> We also need to add flag validity checks if we go this route.
-> >>>
-> >> And I've reviewed the issue reported by Sashiko, and I think it's vali=
-d.
-> >>
-> >> When we expand the allocinfo_tag_data structure
-> >>
-> >> struct allocinfo_tag_data{
-> >>
-> >>       char modname[64];
-> >>
-> >>       char function[64];
-> >>
-> >>       char filename[64];
-> >>
-> >>       __u64 lineno;
-> >>
-> >>       __u64 inaccurate;
-> >>
-> >>       __u64 bytes;
-> >>
-> >>       __u64 calls;
-> >>
-> >>       __u8 accurate;
-> >>     /* padding */
-> >>
-> >> }
-> >>
-> >> I think user space may see two fields related to inaccuracy.
-> > Yes but one field (inside allocinfo_tag) is the input parameter which
-> > user provides to specify the filtering criteria and the other is the
-> > returned tag information. It's similar to any other tag attribute
-> > which you can be included in the filters.
-> >
-> >> How do you like these modifications?
-> >>
-> >>
-> >> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc=
-_tag.h
-> >> --- a/include/uapi/linux/alloc_tag.h
-> >> +++ b/include/uapi/linux/alloc_tag.h
-> >> @@ -20,7 +20,6 @@ struct allocinfo_tag {
-> >>        char function[ALLOCINFO_STR_SIZE];
-> >>        char filename[ALLOCINFO_STR_SIZE];
-> >>        __u64 lineno;
-> >> -    __u64 inaccurate;
-> >>    };
-> >>
-> >>    /* The alignment ensures 32-bit compatible interfaces are not broke=
-n */
-> >> @@ -40,7 +39,7 @@ enum {
-> >>        ALLOCINFO_FILTER_FUNCTION,
-> >>        ALLOCINFO_FILTER_FILENAME,
-> >>        ALLOCINFO_FILTER_LINENO,
-> >> -    ALLOCINFO_FILTER_INACCURATE,
-> >> +    ALLOCINFO_FILTER_FLAGS,
-> >>        ALLOCINFO_FILTER_MIN_SIZE,
-> >>        ALLOCINFO_FILTER_MAX_SIZE,
-> >>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> >> @@ -50,16 +49,20 @@ enum {
-> >>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
-> >> ALLOCINFO_FILTER_FUNCTION)
-> >>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
-> >> ALLOCINFO_FILTER_FILENAME)
-> >>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 << ALLOCINFO_FILTER_=
-LINENO)
-> >> -#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
-> >> ALLOCINFO_FILTER_INACCURATE)
-> >> +#define ALLOCINFO_FILTER_MASK_FLAGS        (1 << ALLOCINFO_FILTER_FLA=
-GS)
-> >>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
-> >> ALLOCINFO_FILTER_MIN_SIZE)
-> >>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
-> >> ALLOCINFO_FILTER_MAX_SIZE)
-> >>
-> >>    #define ALLOCINFO_FILTER_MASKS \
-> >>        ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> >>
-> >> +#define ALLOCINFO_FILTER_F_INACCURATE    (1ULL << 0)
-> >> +#define ALLOCINFO_FILTER_FLAGS_ALL ALLOCINFO_FILTER_F_INACCURATE
-> >> +
-> >>    struct allocinfo_filter {
-> >>        __u64 mask; /* bitmask of the filter fields used */
-> >>        struct allocinfo_tag fields;
-> >> +    __u64 flags; /* bitmask of ALLOCINFO_FILTER_F_* */
-> >>        __u64 min_size;
-> >>        __u64 max_size;
-> >>    };
-> >> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> >> --- a/lib/alloc_tag.c
-> >> +++ b/lib/alloc_tag.c
-> >> @@ -249,8 +249,6 @@ static bool matches_filter(struct codetag *ct,
-> >> struct allocinfo_filter *filter,
-> >>                   struct alloc_tag_counters *counters,
-> >>                   bool *fetched_counters)
-> >>    {
-> >> -    bool inaccurate;
-> >> -
-> >>        if (!filter || !filter->mask)
-> >>            return true;
-> >>
-> >> @@ -277,10 +275,11 @@ static bool matches_filter(struct codetag *ct,
-> >> struct allocinfo_filter *filter,
-> >>            ct->lineno !=3D filter->fields.lineno)
-> >>            return false;
-> >>
-> >> -    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> >> -        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> >> -        if (inaccurate !=3D !!(filter->fields.inaccurate))
-> >> -            return false;
-> >> +    if (filter->mask & ALLOCINFO_FILTER_MASK_FLAGS) {
-> >> +        if (filter->flags & ALLOCINFO_FILTER_F_INACCURATE) {
-> >> +            if (!(ct->flags & CODETAG_FLAG_INACCURATE))
-> > How would you filter records which have only accurate data?
->
->
-> Sorry, I overlooked this case.
->
-> Since allocinfo_tag_data exposes both inaccurate (from allocinfo_tag) and
->
-> accurate (from allocinfo_counter), userspace developers might mistakenly
-> read
->
-> inaccurate instead of accurate when checking accuracy.
->
-> How about we add a comment to clarify?
->
-> struct allocinfo_tag {
->
->      /* ... */
->
->      __u64 lineno;
->
->      /* filter criteria only; see allocinfo_counter.accurate for actual
-> accuracy */
->
->      __u64 inaccurate;
+Hi Andy,
 
-I think we had comments showing which block of parameters are inputs
-and which ones are outputs but I'm not opposed to an additional
-reminder here.
+ ---- On Tue, 09 Jun 2026 08:01:57 +0800  Andy Lutomirski <luto@kernel.org>=
+ wrote ---=20
+ > On Thu, May 28, 2026 at 4:05=E2=80=AFAM Christian Brauner <brauner@kerne=
+l.org> wrote:
+ > >
+ > > On Thu, May 28, 2026 at 05:52:21PM +0800, Li Chen wrote:
+ > > > Hi,
+ > > >
+ > > > This is an early RFC for an idea that is probably still rough in bot=
+h the
+ > > > UAPI and implementation details. Sorry for the rough edges; I am sen=
+ding
+ > > > it now to check whether this direction is worth pursuing and to get
+ > > > feedback on the kernel/userspace boundary.
+ > >
+ > > The idea of having a builder api for exec isn't all that crazy. But it
+ > > should simply be built on top of pidfds and thus pidfs itself instead.
+ > > It has all the basic infrastructure in place already. Any implementati=
+on
+ > > should also allow userspace to implement posix_spawn() on top of it.
+ > >
+ > > fd =3D pidfd_open(0, PIDFD_EMPTY /* or better name */)
+ > >
+ > > pidfd_config(fd, ...) // modeled similar to fsconfig()
+ > >
+ >=20
+ > After contemplating this for a bit... why pidfd?  Doesn't a pidfd
+ > refer to an actual process that is, or at least was, running?  This
+ > new thing is a process that we are contemplating spawning.  I can
+ > imagine that basically all pidfd APIs would be a bit confused by the
+ > nonexistence of the process in question.
+ >=20
 
->
-> };
->
->
-> LGTM for the rest.
->
->
-> Thanks
->
-> Best Regards
->
-> Hao
->
-> > Overall I would prefer ALLOCINFO_FILTER_MASK_INACCURATE rather than
-> > ALLOCINFO_FILTER_MASK_FLAGS. The fact that this attribute is a
-> > single-bit flag is a technical detail. It's still a tag attribuite
-> > like file and module names and IMO deserves its own filter.
-> >
-> >
-> >
-> >> +                return false;
-> >> +        }
-> >>        }
-> >>
-> >>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> >> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
-> >> @@ -318,6 +317,10 @@ static int allocinfo_ioctl_get_at(struct seq_file
-> >> *m, void __user *arg)
-> >>        if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
-> >>            return -EINVAL;
-> >>
-> >> +    if ((params.filter.mask & ALLOCINFO_FILTER_MASK_FLAGS) &&
-> >> +        (params.filter.flags & ~ALLOCINFO_FILTER_FLAGS_ALL))
-> >> +        return -EINVAL;
-> >> +
-> >>        if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> >>            (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> >>            params.filter.min_size > params.filter.max_size)
-> >>
-> >>
-> >> Thanks
-> >>
-> >> Best Regards
-> >>
-> >> Hao
-> >>
-> >>
-> >>> Thanks
-> >>>
-> >>> Best Regards
-> >>>
-> >>> Hao
-> >>>
-> >>>
-> >>>>    };
-> >>>>      /* The alignment ensures 32-bit compatible interfaces are not
-> >>>> broken */
-> >>>> @@ -39,6 +40,7 @@ enum {
-> >>>>        ALLOCINFO_FILTER_FUNCTION,
-> >>>>        ALLOCINFO_FILTER_FILENAME,
-> >>>>        ALLOCINFO_FILTER_LINENO,
-> >>>> +    ALLOCINFO_FILTER_INACCURATE,
-> >>>>        ALLOCINFO_FILTER_MIN_SIZE,
-> >>>>        ALLOCINFO_FILTER_MAX_SIZE,
-> >>>>        __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> >>>> @@ -48,6 +50,7 @@ enum {
-> >>>>    #define ALLOCINFO_FILTER_MASK_FUNCTION        (1 <<
-> >>>> ALLOCINFO_FILTER_FUNCTION)
-> >>>>    #define ALLOCINFO_FILTER_MASK_FILENAME        (1 <<
-> >>>> ALLOCINFO_FILTER_FILENAME)
-> >>>>    #define ALLOCINFO_FILTER_MASK_LINENO        (1 <<
-> >>>> ALLOCINFO_FILTER_LINENO)
-> >>>> +#define ALLOCINFO_FILTER_MASK_INACCURATE    (1 <<
-> >>>> ALLOCINFO_FILTER_INACCURATE)
-> >>>>    #define ALLOCINFO_FILTER_MASK_MIN_SIZE        (1 <<
-> >>>> ALLOCINFO_FILTER_MIN_SIZE)
-> >>>>    #define ALLOCINFO_FILTER_MASK_MAX_SIZE        (1 <<
-> >>>> ALLOCINFO_FILTER_MAX_SIZE)
-> >>>>    diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> >>>> index ddc6946f56ab..cbcd12c4ef9c 100644
-> >>>> --- a/lib/alloc_tag.c
-> >>>> +++ b/lib/alloc_tag.c
-> >>>> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct,
-> >>>> struct allocinfo_filter *filter,
-> >>>>                   struct alloc_tag_counters *counters,
-> >>>>                   bool *fetched_counters)
-> >>>>    {
-> >>>> +    bool inaccurate;
-> >>>> +
-> >>>>        if (!filter || !filter->mask)
-> >>>>            return true;
-> >>>>    @@ -275,6 +277,12 @@ static bool matches_filter(struct codetag *c=
-t,
-> >>>> struct allocinfo_filter *filter,
-> >>>>            ct->lineno !=3D filter->fields.lineno)
-> >>>>            return false;
-> >>>>    +    if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> >>>> +        inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> >>>> +        if (inaccurate !=3D !!(filter->fields.inaccurate))
-> >>>> +            return false;
-> >>>> +    }
-> >>>> +
-> >>>>        if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> >>>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
-> >>>>            if (!*fetched_counters) {
-> >>>>                *counters =3D allocinfo_prefetch_counters(ct);
+Yes, I think that is a real concern.                                       =
+                                                                           =
+                                            =20
+                                                                           =
+     =20
+In my current local WIP I tried to keep that distinction explicit.         =
+                           =20
+pidfd_spawn_open() returns a pidfs-backed builder fd, not a normal pidfd
+referring to a process. The builder fd is allocated as an anonymous pidfs  =
+                                                                           =
+                                                          =20
+file with builder-specific file operations:      =20
+                                                                           =
+                           =20
+    file =3D pidfs_alloc_anon_file("[pidfd_spawn]",                        =
+                             =20
+                                 &pidfd_spawn_builder_fops, builder,     =
+=20
+                                 O_RDWR);                                  =
+                           =20
+                                                 =20
+and the normal pidfd helpers still reject it because it does not use the
+ordinary pidfd file operations:                                            =
+                           =20
+                                                                           =
+                           =20
+    struct pid *pidfd_pid(const struct file *file)
+    {
+        if (file->f_op !=3D &pidfs_file_operations)                        =
+                             =20
+            return ERR_PTR(-EBADF);              =20
+        return file_inode(file)->i_private;                                =
+                                                                           =
+                                                          =20
+    }                                                                      =
+                                                                           =
+                                                          =20
+                                                                           =
+                                                                           =
+                                                          =20
+So the current split is:                                                   =
+                           =20
+                                                                           =
+                           =20
+    builder_fd =3D pidfd_spawn_open(...);       /* builder object */
+    pidfd_config(builder_fd, ...);    =20
+    child_pidfd =3D pidfd_spawn_run(builder_fd, ...); /* real pidfd */
+                                                                           =
+                           =20
+Only the last fd is a normal pidfd for an actual child process. The
+builder fd is only accepted by the builder operations.                     =
+                                                                           =
+                                                          =20
+                                                                           =
+                           =20
+This avoids having to define what waitid(P_PIDFD), pidfd_send_signal(),
+pidfd_getfd(), poll(), etc. mean before the process exists. The downside   =
+                                                                           =
+                                                          =20
+is that it adds a separate open-style entry point and is less uniform than =
+                                                                           =
+                                                          =20
+the pidfd_open(0, PIDFD_EMPTY) spelling Christian sketched.                =
+                                                                           =
+                                                          =20
+                                                                           =
+                                                                           =
+                                                          =20
+If people think there is a better way to represent the pre-spawn builder
+state, or if the preference is to integrate it directly into pidfd_open()
+with an explicit empty/future-pidfd state, I would be happy to discuss
+that.
+
+Regards,
+Li=E2=80=8B
+
 
