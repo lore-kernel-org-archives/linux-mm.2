@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA185CD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFAF3CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561A46B0126; Tue,  9 Jun 2026 15:17:36 -0400 (EDT)
+	id 252EC6B0128; Tue,  9 Jun 2026 15:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E94E6B0128; Tue,  9 Jun 2026 15:17:36 -0400 (EDT)
+	id 22A166B012A; Tue,  9 Jun 2026 15:17:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FE856B0129; Tue,  9 Jun 2026 15:17:36 -0400 (EDT)
+	id 1196E6B012B; Tue,  9 Jun 2026 15:17:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FA6D6B0126
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E80901644C6
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:35 +0000 (UTC)
-X-FDA: 84861333270.24.9C5700D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 01BCD6B0128
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:17:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC9538F951
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:41 +0000 (UTC)
+X-FDA: 84861333522.25.089959E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2031B40013
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LruU/bVU";
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id EE9E214000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:17:39 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yh4qFHgw;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032654;
+	s=arc-20220608; t=1781032660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p4d5I6NPrj9QC3rwhT3LQJHa+sFgEUUsxiN1Rw94+DE=;
-	b=7Pa8LbEgi8szZERzU58uJrNSX8bm8QHhPQk+hsm/mqvoR7rB94G2gXPxXfTSTQwF06uX8V
-	daVT5twgqtG7T9O35WdFHqvNLqhbL5Xc5Z6tkA5+J6+29VnFouatPEMwpoUes0QogjNReq
-	Wi8j+Ny1RojoYiqpoxG04a4UjbIEBRI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032654;
-	b=LXqrd46lHIVqUKTpTIXj0h0QUrHaX1R8tEU0wR1aRtAfnBCCfc8bTX378WBisoc8r7wyZ9
-	gosFf84FJgbqZAJvAJP2S+W16YHgPZFdsv5qX715iXY+kZDWVBej14B2y4Gy5M8iwzikZk
-	+GCeNXfcZBcdXp1D7voQ/6/vMAmJSp0=
+	bh=F3cUw+ZLEEIEYCWFefqNhKQoFd9lfmv4Djxg5dSyh6Y=;
+	b=LWRG2Zyy6VyR0akWkdB2RcX7zmLoUYPxG7gR9OqtemC5TalZKRo0G0WuXf5DH1Vm1JqB7f
+	qq4rKOyOOnqIehTVqrNH69WNcIQFx3xG/6/tgmme77g/ikllIqKSKDHcAGnhmA1nHY3j+9
+	exJARu5JQ6xUZsQy9qhMI8ZKd3cAVqw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LruU/bVU";
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yh4qFHgw;
+	spf=pass (imf09.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781032660;
+	b=eNhJ3KrdfZW1BGuuSPv2uaJWdxCZDxfWZfJuNy2xQHvHFWGleHvUel5ZG2YUYX+oEfkOcU
+	sa9d8kX6GUPnOXQ1Y2eweTRdlIRSvpAuhgFdGYuSUokBu8Il4FHNH//96Iu26LSAahYPjF
+	nhkoD/sfN4UHQEIUBX/jgEB2bbYxuls=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 74B5E406ED;
+	by sea.source.kernel.org (Postfix) with ESMTP id 42C1640B3A;
+	Tue,  9 Jun 2026 19:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B2B1F00898;
 	Tue,  9 Jun 2026 19:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F381F00893;
-	Tue,  9 Jun 2026 19:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032653;
-	bh=p4d5I6NPrj9QC3rwhT3LQJHa+sFgEUUsxiN1Rw94+DE=;
+	s=k20260515; t=1781032659;
+	bh=F3cUw+ZLEEIEYCWFefqNhKQoFd9lfmv4Djxg5dSyh6Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LruU/bVU77MdbFwvtz6tVmVrLebbYltpAyDnwaI/L/LiUSYzHPzOHjRpQGG1B0B8k
-	 nn5Jmd8IxW3BhKtJQUSXx/YNYEZVj6eYpbutYbHnFIoEImSTZejbs2amCQM0+nlr71
-	 L1MxooAh3o3g/sGwX4ONYXHiqpysjm4P2HZ7o/tt3CpyHSTQ3rtzCNmHxMVoQsrAls
-	 3zgdYKdnNLIbrSlrsqieFvEbnj81xd3gOtI0GLc0GV92gyVjECNoQBQeWGNCA8kMCI
-	 0LsjhRO3fgTgr/xfHgcQ4fASYVAOdRJ8zEtVO/PvfoYfqjXeIJ16HgtURboUMq2lGZ
-	 ZfHKDcLs8VkIw==
+	b=Yh4qFHgwl9dPDE+Dd804+hehfek3T3KktZ4KLW8E0ND8oPBDHwHPhZK4oxN4Jt9cG
+	 EE0iARjt5TMMkCAoYKrdklnyXyi+i7wv319+qcsz6IBM0GK99bDE5MzRYlBgv1ZmO1
+	 j1YuADV5qkveEai4nkTjSJI6iL0kWqkODtqVr6bj6SaJ5OgO6XjFXWcs6IohWfvxLU
+	 ZGgYe2DY+DClniqoBYYOtq/3PZc7lpl6YRqYN7x2SQCCr3MdD8lyK9N5SABAnhEWVT
+	 zKebynE+sZt7YwTmDKGLRm8D6GCuWXU+uqH+p6zleDLieCbFam4bWKcqtcX7DryVTn
+	 YZ22OhmrgDUcQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:09:00 +0200
-Subject: [PATCH v2 81/83] block: rnull: add `virt_boundary` option
+Date: Tue, 09 Jun 2026 21:08:29 +0200
+Subject: [PATCH v2 50/83] block: rust: move gendisk vtable construction to
+ separate function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-81-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-50-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +92,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4411; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=mQLcR4pADqmwISKMJS96CwmsvxCUmL6qoCmsZgQdi8k=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT9ToLPR7x5aepZTCfCm4HkjbgUTRQRr8bi+
- tSPr1Q92iOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk/QAKCRD6UCkIqsW9
- 0Aj8EAC2EoIkwX9KZomazlQrN/N8C7wXO55qgCiGfevd0Arj+x9lodAq2aTUUrDM01s/qoJZ2q1
- LvRpFf+WmwsdVW7UFlwZgCfaiUBQdMT94rxnN0WMm8GVVE9DMC3ma4u/SVC8GLNgpzSU9UQ2gcw
- aZHwZTzw5/e80I9Qvin84j+ml5alD3PfvBvSkknSX3jgwp5XRcCva7H7XFUs68rvu+yV4p/cc6b
- Hg8LxEPI+7/ZdrOBLtEJ9pn5HhJqp6wZ5T5eMvnurirWHXzwBm4tEtsQNUsN1kUIM236MIR4rcf
- HeJ1LqEecW1kzwAUFEcz3z230Vuud6OmaaU6fkwqbDg3TkrPPfHbsO2gm92OzbvMv1l5u5V8PRt
- gMtAfjC+RS4XtVmilxUn6adKKG88lqpHr9K5pvPpBAPQkUAZnumxDvtiW1+KBeVP/Tx64vBGa/j
- sacJzs2KDVCTn/7sXKDoFunqaH0m34aby1033yoKawIwnK33+FGLHeFSU7UG78KubP2CyDWEu60
- E/gt2qz4kn34tHBwPT6rVfUDomeePgXkKN9mqA62vZn5lmRHagfDZdnZxJHxd/CjXtl4q28PilY
- kfMdnyG5t5tf1lnoCf4rEq/0osNjf1KQBD9CXKMHFEJvIjbMq9Dda/UhHEg+rYAZZHW8R/uPmMu
- 6v6OG2Elg7F5Y4g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5125; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=nWZZSuCE7eRuBTdr1Tw1jnn7BhOeTAryxo5+j0nH9IQ=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGThwYPLrFFscsf6EbG3+a5iaTayyAq94Nxgz
+ iFI6puKAgmJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk4QAKCRD6UCkIqsW9
+ 0J3GD/9P/NG4qDSfiZLT6kaSKJVYbPTGQp/wYmerkXDHyXttYDguhsRf0Qbec3e33McsoMnGXdn
+ FDVdkp9zxo2TQ9yg/KTko4Kfk/r8uOuKf8LQF1kLfAS7vV5Y5h0WHp/lN3VsGTMD0Oh1TQbr3+t
+ mnOhDCph7RJk/hDPa+AQBTo+q6GWMOuATQ9WMJCDb2vmPNVP2y/kyfZTA5Y2RgjJqlGyrA4vkkI
+ ibGl+WdC6oa+1nv9sGtlNBDUb76uMcDz8gwvNRtQTDW86JB+Dv5KrdWr/lPgAxgbB+ivkG1iAVl
+ wnnitGsYMBoqLT8x53Cgd72es41XV/ZIxXrjHOOvvLrs14Iw3HFDrHQjP/qTdjoAkRfOydVsYT+
+ XpiV4YZSkQbdfPIyraHZBqaWmWgb7CvprxvkSNSLJv0WheMyLt0kTBijoO26x7ogyYEEDNrh6Lz
+ ZeICGdPddeacasO0sobyJl/FZ4AGx4OdqsBW586ctFoIwwQHQj0SgQKIlvI2IGMxME5pryXnvtT
+ np0gGKYMTz63Nqy2l0eOyWgzxyPGL2b/5g6dKZJ2T56cWODWW/Gxnq9bBnVZH2i9JLWm1eB3uM9
+ kZusZVyLHqvdEjAJRF5qvdnu67LxpdjEDeb+P8xy2g3S1+b+hYG8TGJ1bogFAC3hn2/3P4kwyMj
+ 0EgP1DUWmyYA8zg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 2031B40013
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE9E214000C
+X-Stat-Signature: uz1ipaptw3up8qutysdgrmybn95ofjn1
 X-Rspam-User: 
-X-Stat-Signature: w3pbfb6xpfazi7carssrxpsigrbbzzb7
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781032653-685986
-X-HE-Meta: U2FsdGVkX1+Aggdpk8OBz9PjiPzHhwo9fYrcrTJQ3q4HwM4xuLwqjBr938ZZfr1AwOdgfrc/EyG7qmIIEJgK+6wunftUPya5Sg9aaWeQtXyte9ERchNdnlCTC317Lfi0gtR6dCPRTEoMqMb2HatYLPY3zR0/jfPasNt1o+B8IawNS6V264cgZ1RQG+umcEKnkoUaAMh6KEdYhM6U6CUn9vaEWxrWVXtzD3xUZsPoQi+xkuHHypppd8PNz7ecojD+MkBu/0Z9UuBmGK2C0gMUoBIVu5KgSz/tfUs0WGqL02OXesXwY0OQdx/2QJqY1YdOYSl+ClibEc+IyQTgUqZS0zEtvu2PAKcOG1DU/peDVsGAtOwosYXH31wyzP5AG0FU0B90Fq95Qlat+Vw+pBcV8vwQ10wgDwsj3zA5KEM4HkwkkLoT+t1jPYCIqBlArFwsYZcF3kSDIaijMFJu4OEU40r79jORUFO+cZMh1qbdwJBqMjoLz+wcwc9gLnCFC5fiNIoL5DpeyF8XCLTLgDRlbCBjxyMhpHhZ5uzOSAHrBuc0m0NDzKUtNzeTyWADMzE6YFphNYF/+SxtR0twI9uXy902Ub9rlKk//Hx/BmAQ7KP6PhIxBQuK0U9k3U8Mgi6uW6xffIe7vOMN47x35l3zG1DGR3MSHCw5VoO9p+Z0FfUS8KaDgLaUHXxRpPMEQT9kh9FIFwLhOBobjGO1eQNkn6iPTNt2mL0lCULWTvL8Ky+wDZgSkdOec9eFG+Rfhu04cn1ZE/OA4VGwn3evd8TDHIyfif36bF//Rr+EMdQButk5tcS3leJ9C18QPA/BfZuiaXcb1un13JsP1001P/2Vi2O/V3RSfVLDlGHSlAczRXfP+fQCNHDfDC0Srb8uPK+cMhJDWCAZe3I9FmfMXP/2T3f48S4zVMQbx05HyvT5CpzVpIpcnsdkqMYf3T1i3F3lCoATAFDN+26NRUqfAdt
- W+O/BZXa
- /pLIzSIA1WSMcdAjGLZIIpWp+J8arEY8JlrQNmT644EdxD2iwW8wLdDOAJtgH2gDzevYpZiX4wpvMgZSnSNcB2xIqovQ8lEBzzxYmA7wP7zXgDp2ZiwbAYlSImX4xvel0HfDu4pVfPUzHH7ZTiyrmG3YP+7bbcw//1glJiagUmeu71aX7c5hI9QqAHvjWq1SKFuDh8efxy4FV9a9/xSUueEyiyW+tEpXbFvlNVbtMZbrid5O/ufLlTjDLDaO7rMcpKcqV4i8fJKymiMfJJEUgumSbEZRZWcM+u1sFls3EknPLXE13bDBuuX8v6TlO0tVlgdRfWGidc18niY/maQ8NcXs+uo1XG4YvAU78Dtp8+Vb4dB6Z7jMVfCtX9A==
+X-HE-Tag: 1781032659-105527
+X-HE-Meta: U2FsdGVkX19AnxFI2ReFlBxnaxwRokgPkiyccQipnY+4VbzAafelM4wfggvUUvX9FljUeLTED1qCaSHkiln7e5GIBWtXg1gWTwoitSqQR5oOTT1wQFOWsOgnvb7L53Ed2VBOyB+/wR/kalsrXlPBFcg/Rm2d/8h9KgGdHho4LQ4ZIktKi8PkG0+HE0e5JrfnrIQziqgn2hFaUT8B8TD1XdBTxDritKaOIxF11BJ4hC3AagjdaCO9qS54hQ+BpDgDpgShzP2bZz1wFmvSG8XgAv5Yqp2UFJQ4c5AIyozBy18ymNez8aNIjEG17m9eRucgRWk5ft6r5a4vKAPvfucm0LmWzp/Y6+eiLJBH5K5cEFxQTAXL+rE0JAfLuqIgS+0ntGXSYxAiYDxvMz56GMQFKd+8x0x8Al0h7eSYzs8YPpmfI2Li7j7sy53mUot9e398GfmYb/YDD2B+60fCfVRtm5JSXpA2/4RVza1OFOZYaH0mOUBbKUp+XM5MLNslOS14H7Kl7BGxG0ZOxP033GNATZVOO/w5pwnDTI8694QrE31bhvqNMx+hC5MnrZpKmTjZtMDExelPLUwUW+eb3k52gwv0pUv/oYLNNqPr3hQ+UNOz5F3AKG/w/HIE3/PoIg2BSD3lDBJEaFA2zoFcoZwcTMMZxbCaP5FEk5dHzaKS3CMap4+4nHlQLDr7994NBx/vPAtQWOdGpkosQt0688p2MMw/YXjIYS7ZAV9Kwl6oWWXt3O2ke+EoBcyboY9kajL9vNTpJb7m/2CJDfZU8VC4K2G1imcLv8smef71AkPhTNE1Qf2T0tBe2AxfLrLfL1gjpVzhl2xWd8gjBCu4SjqeWbGkp0L4X6VsvEPU//cso9bgx6t6EQWCLPDnyK1pH+9NZhpB+W+/gqt0yUejvEAni4bCbVpvj+SRpjGQGuaUkZrGIuhpK6gEYlSUVvgYDkHoqEODed2l+RNLk0ASspJ
+ faoauJ4J
+ /3NrSamOqRMbgbf0eTd5oxlOnTP5n9qRWiS7WI4Acs6kTmqOTTd+mP8IAwta1G/bVrsul1Z0ri4KTfs+QXelyFvczzYuvU7tdLzWuuRIJkq4ZDswzuHakTe0XxI8glPnsCClAu2a4ueU9gqZmgigrLMXLHoZZUG2zbJ0cVRAuZoaJ4j5ktiAA8+QhAaCx8+AO2LCw7HeqTtxBeu687EJ6+BJ0puCp0fiEQfPqo+nMyxoj9Pb1YZnO+RCcG6UCO1By3Ie9q05ZBI0aXUTsiKlecbQi0dSwuobDxTjtQKSNJF7oRHu8+/AgtwZdI8RcG9POmg/mg8FftCFpUsoT63/AmkjDag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,127 +123,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a configfs attribute to configure the virtual memory boundary mask
-for the rnull block device. This allows testing how drivers and
-filesystems handle devices with specific alignment requirements.
+Refactor the `GenDiskBuilder::build` method to move the `gendisk`
+vtable construction into a separate helper function. This prepares for
+adding zoned block device support which requires conditional vtable
+setup.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs |  5 +++++
- drivers/block/rnull/rnull.rs    | 17 ++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/block/rnull/configfs.rs  |  5 ++-
+ rust/kernel/block/mq/gen_disk.rs | 67 +++++++++++++++++++++++-----------------
+ 2 files changed, 43 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 5ab217e43e2b..3e054339226c 100644
+index 2dfc87dff66a..8fa16dbc2a75 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -133,6 +133,7 @@ fn make_group(
-                 poll_queues: 27,
-                 fua: 28,
-                 max_sectors: 29,
-+                virt_boundary: 30,
-             ],
-         };
- 
-@@ -221,6 +222,7 @@ fn make_group(
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     init_hctx_inject,
-                     max_sectors: 0,
-+                    virt_boundary: false,
-                 }),
-             }),
-             default_groups,
-@@ -315,6 +317,7 @@ struct DeviceConfigInner {
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     init_hctx_inject: Arc<FaultConfig>,
-     max_sectors: u32,
-+    virt_boundary: bool,
+@@ -290,7 +290,10 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+     }
  }
  
- #[vtable]
-@@ -388,6 +391,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                 timeout_inject: guard.timeout_inject.clone(),
-                 max_sectors: guard.max_sectors,
-+                virt_boundary: guard.virt_boundary,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -617,3 +621,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- }
- configfs_simple_bool_field!(DeviceConfig, 28, fua);
- configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
-+configfs_simple_bool_field!(DeviceConfig, 30, virt_boundary);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 15b8c365b9fa..147dc8498c3a 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -28,7 +28,10 @@
-             BadBlocks, //
-         },
-         bio::Segment,
--        error::{BlkError, BlkResult},
-+        error::{
-+            BlkError,
-+            BlkResult, //
-+        },
-         mq::{
-             self,
-             gen_disk::{
-@@ -54,6 +57,7 @@
-     memalloc_scope,
-     new_mutex,
-     new_spinlock,
-+    page::PAGE_SIZE,
-     pr_info,
-     prelude::*,
-     revocable::Revocable,
-@@ -208,6 +212,10 @@
-             default: 0,
-             description: "Maximum size of a command (in 512B sectors)",
-         },
-+        virt_boundary: bool {
-+            default: false,
-+            description: "Set alignment requirement for IO buffers to be page size.",
-+        },
+-configfs_simple_field!(DeviceConfig, 1, block_size, u32, check GenDiskBuilder::validate_block_size);
++configfs_simple_field!(DeviceConfig, 1,
++                       block_size, u32,
++                       check GenDiskBuilder::<NullBlkDevice>::validate_block_size
++);
+ configfs_simple_bool_field!(DeviceConfig, 2, rotational);
+ configfs_simple_field!(DeviceConfig, 3, capacity_mib, u64);
+ configfs_simple_field!(DeviceConfig, 4, irq_mode, IRQMode);
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 49ce5ac4774d..79a67b545eca 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -34,20 +34,24 @@
+         ScopeGuard, //
      },
+ };
+-use core::ptr::NonNull;
++use core::{
++    marker::PhantomData,
++    ptr::NonNull, //
++};
+ 
+ /// A builder for [`GenDisk`].
+ ///
+ /// Use this struct to configure and add new [`GenDisk`] to the VFS.
+-pub struct GenDiskBuilder {
++pub struct GenDiskBuilder<T> {
+     rotational: bool,
+     logical_block_size: u32,
+     physical_block_size: u32,
+     capacity_sectors: u64,
+     max_hw_discard_sectors: u32,
++    _p: PhantomData<T>,
  }
  
-@@ -312,6 +320,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-                     timeout_inject: Arc::pin_init(FaultConfig::new(c"timeout_inject"), GFP_KERNEL)?,
-                     max_sectors: module_parameters::max_sectors.value(),
-+                    virt_boundary: module_parameters::virt_boundary.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -358,6 +367,7 @@ struct NullBlkOptions<'a> {
-     #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-     timeout_inject: Arc<FaultConfig>,
-     max_sectors: u32,
-+    virt_boundary: bool,
+-impl Default for GenDiskBuilder {
++impl<T> Default for GenDiskBuilder<T> {
+     fn default() -> Self {
+         Self {
+             rotational: false,
+@@ -55,11 +59,12 @@ fn default() -> Self {
+             physical_block_size: bindings::PAGE_SIZE as u32,
+             capacity_sectors: 0,
+             max_hw_discard_sectors: 0,
++            _p: PhantomData,
+         }
+     }
  }
  
- #[pin_data]
-@@ -494,6 +504,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             #[cfg(CONFIG_BLK_DEV_RUST_NULL_FAULT_INJECTION)]
-             timeout_inject,
-             max_sectors,
-+            virt_boundary,
-         } = options;
+-impl GenDiskBuilder {
++impl<T: Operations> GenDiskBuilder<T> {
+     /// Create a new instance.
+     pub fn new() -> Self {
+         Self::default()
+@@ -126,7 +131,7 @@ pub fn max_hw_discard_sectors(mut self, max_hw_discard_sectors: u32) -> Self {
+     }
  
-         let memory_backed = tag_set.memory_backed;
-@@ -558,6 +569,10 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
-             .forced_unit_access(forced_unit_access && storage.cache_enabled())
-             .max_sectors(max_sectors);
+     /// Build a new `GenDisk` and add it to the VFS.
+-    pub fn build<T: Operations>(
++    pub fn build(
+         self,
+         name: fmt::Arguments<'_>,
+         tagset: Arc<TagSet<T>>,
+@@ -157,30 +162,8 @@ pub fn build<T: Operations>(
+             )
+         })?;
  
-+        if virt_boundary {
-+            builder = builder.virt_boundary_mask(PAGE_SIZE - 1);
-+        }
+-        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
+-            submit_bio: None,
+-            open: None,
+-            release: None,
+-            ioctl: None,
+-            compat_ioctl: None,
+-            check_events: None,
+-            unlock_native_capacity: None,
+-            getgeo: None,
+-            set_read_only: None,
+-            swap_slot_free_notify: None,
+-            report_zones: None,
+-            devnode: None,
+-            alternative_gpt_sector: None,
+-            get_unique_id: None,
+-            // TODO: Set to `THIS_MODULE`.
+-            owner: core::ptr::null_mut(),
+-            pr_ops: core::ptr::null_mut(),
+-            free_disk: None,
+-            poll_bio: None,
+-        };
+-
+         // SAFETY: `gendisk` is a valid pointer as we initialized it above
+-        unsafe { (*gendisk).fops = &TABLE };
++        unsafe { (*gendisk).fops = Self::build_vtable() };
+ 
+         let mut writer = NullTerminatedFormatter::new(
+             // SAFETY: `gendisk` points to a valid and initialized instance. We
+@@ -233,6 +216,34 @@ pub fn build<T: Operations>(
+ 
+         Ok(disk.into())
+     }
 +
-         #[cfg(CONFIG_BLK_DEV_ZONED)]
-         {
-             builder = builder
++    const VTABLE: bindings::block_device_operations = bindings::block_device_operations {
++        submit_bio: None,
++        open: None,
++        release: None,
++        ioctl: None,
++        compat_ioctl: None,
++        check_events: None,
++        unlock_native_capacity: None,
++        getgeo: None,
++        set_read_only: None,
++        swap_slot_free_notify: None,
++        report_zones: None,
++        devnode: None,
++        alternative_gpt_sector: None,
++        get_unique_id: None,
++        // TODO: Set to THIS_MODULE. Waiting for const_refs_to_static feature to
++        // be merged (unstable in rustc 1.78 which is staged for linux 6.10)
++        // <https://github.com/rust-lang/rust/issues/119618>
++        owner: core::ptr::null_mut(),
++        pr_ops: core::ptr::null_mut(),
++        free_disk: None,
++        poll_bio: None,
++    };
++
++    pub(crate) const fn build_vtable() -> &'static bindings::block_device_operations {
++        &Self::VTABLE
++    }
+ }
+ 
+ /// A generic block device.
 
 -- 
 2.51.2
