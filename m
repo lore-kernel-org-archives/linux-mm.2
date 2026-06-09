@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE6BCD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95F14CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 643036B00C8; Tue,  9 Jun 2026 15:13:02 -0400 (EDT)
+	id 0768D6B00CA; Tue,  9 Jun 2026 15:13:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F4216B00CA; Tue,  9 Jun 2026 15:13:02 -0400 (EDT)
+	id 027EF6B00CC; Tue,  9 Jun 2026 15:13:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 509886B00CB; Tue,  9 Jun 2026 15:13:02 -0400 (EDT)
+	id E806C6B00CD; Tue,  9 Jun 2026 15:13:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E20C6B00C8
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:13:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DD8D1A0741
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:13:02 +0000 (UTC)
-X-FDA: 84861321804.13.15723B9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D45AF6B00CA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:13:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6AB511406EE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:13:07 +0000 (UTC)
+X-FDA: 84861322014.09.57CE4C3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3879D1C0002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:13:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/lEsSss";
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9389F1C0008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:13:05 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TFpYDTDB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032380;
+	s=arc-20220608; t=1781032385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=as5ubVXy9pDah6a38S1Rm853FewwW17NrvS6Iq2Oams=;
-	b=pumX/my0g9kre+xw+gxN8PgKvieUMq5MQJ8D4gRmxKnswl7TN3dUp1mFoAiMH3p2gpLmsj
-	788cNzU9g5aX94g5ua0NyDmRnAdJcTVWpBNCNdCYmyzexeZULK8OWkRzLASWHjiUDYXZtG
-	/bY4VNa2YA3viQis3/w/D/H3/LuCL28=
+	bh=JnD8AYBlSFJHV8ifo4XwIzlj5eOON9Q0z1EH0iWmsCE=;
+	b=yf0teSsZqu4xE8m2GLrddfg4rTdSe2Ak3RXin4MURr0Z+QxNYb+nDa+9Z+1h67zbo1zGR3
+	Vz43cwq8cdAeeaebtKy9Kpq92Tb8KD5T7MdKs96sVouAbadtZeDDDJWD2ySndBQ2AF3AZI
+	SMZe95WcnFjK2JeaFLfPHKooQZlsWqw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/lEsSss";
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TFpYDTDB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032380;
-	b=ri3zjhB4lP4pRaWLjWNo9+92btKY7Fr2hACX+ToPNCjd185/1LR9eHSP0vTC74/UuFiCqt
-	rBgxVTOaZKwz5iiSjBiedMFsHqzBC2nc4/k76eHXCc/yJmKlLTAQJabNhzUJHFvov1/ziJ
-	ynMDFF4ilchEQ0hUQ4Odp5k38/U4gZg=
+	t=1781032385;
+	b=Zzy2Qvw+OcaYkkMJUodhnlxkRDUdsIr62SHcYqTqnz9/xjsV0/CinUunO0XHz0fLD6NbI4
+	uMvFQlLCLyxAMGG07CEoY+WfeXojfQrgpef81VRfbDKtfqOybDQLFZ+cjfRsq3U73nDZo7
+	hed1Uk5r8Jqp/u8oeAhI4r5471Dvcpk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EF2B43ECF;
+	by sea.source.kernel.org (Postfix) with ESMTP id D351B441BE;
+	Tue,  9 Jun 2026 19:13:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1051F00898;
 	Tue,  9 Jun 2026 19:12:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E301F00893;
-	Tue,  9 Jun 2026 19:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032379;
-	bh=as5ubVXy9pDah6a38S1Rm853FewwW17NrvS6Iq2Oams=;
+	s=k20260515; t=1781032384;
+	bh=JnD8AYBlSFJHV8ifo4XwIzlj5eOON9Q0z1EH0iWmsCE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=H/lEsSssWyII8rY8RleQpGtSmi85awUyW7eU8iflg601qoIsT4qvYikr89gNkQ9En
-	 kpHtW+3/uHGG0TQLBmeLNw4LNRWw9HxF1h1SsrzJVmefWnkA0GJBdqgBqcSDdifXK+
-	 BJ3OGGtsAmojbqYNtD2QRYQoxG2VwRH3b5UaRJp6C1csUcgiQ42EG3BcXVWWfwxJIe
-	 BmF2GyFgl5qXK0j/NGKK8XWulaEixftONEsoWE9ClN+AXkmLxtx7Pfx3/ejBB3vDxX
-	 tneJSr04kv1HM5s95zRZlMrMR7bhLMt3o5nGzJpRo1QEht8RBBtk504u3WHLdFQf6g
-	 4U6JzxI2Ar/Jg==
+	b=TFpYDTDBuIAzpa+0TjHG5dMSItuqqqLZhFGeQ34qoDBgGbY2MoHw2glhTaoX81oCm
+	 9z0VXjifWppnmUn0b/0WnuVlIJ/msxO6TdXR2BXu0PffY8j17xDH0BLMyNEONtfaa5
+	 0b0MveTNIZzwhgPjhPSz024RZcIvQd7gj+d/h3U7rX+T2oT+TRUe6R9PPvaDucAlo3
+	 dhgUYoDWmMPr6lEelcLBQi9AtCdCLExLm7X/WjKemb0TbVpLy6lOWzE9nDibDxjxrJ
+	 rKsjZGaDcoo4HrDKmvyXeaniKekTP9LHlqPsMQ7A5+RAgenOJURmR0Y/El9KRA68M3
+	 nSA6T58L5V6UA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:09:02 +0200
-Subject: [PATCH v2 83/83] block: rnull: add zone offline and readonly
- configfs files
+Date: Tue, 09 Jun 2026 21:08:25 +0200
+Subject: [PATCH v2 46/83] block: rnull: add shared tags
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-83-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-46-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -92,31 +91,31 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15517;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13841;
  i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=T3pkCjSoqlz/5eAmoml0zuQJKOlZemt616lr74wbC6g=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT/2B21XD7rkanWLOYqJi6E0g5N/32wBgJiA
- UCG8Z2zaGOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk/wAKCRD6UCkIqsW9
- 0A+vD/4/R6jsny4DtPvTLS1Zr0bhgTMsff+cmB0ZHGOBF9MtJTa/RQYLe0TMvKsNc/IkT+Kgmvm
- A5i9CAXdoH9F+qJN5qNlaD2zK7Z1OuHFiEP//e3oPSP6dML1WQDU+tQL/podg/speszIl1GvbcY
- BvDSKpJuEWoNNjKCqTRjJD8LNKMNjTrags41FXp45aiVXyDpR6c3e7nOgjOBHbxMNSnL3D9aEzr
- zXaxnRtik7GXFMqqggZ9npK1ksk33uqIBLNVWz9TTnlwt7lPph4vfOjBreeKPI5slUKaXv0dOb1
- 9LBh+pu4tvgbpXJoC1qxZv51uD1g3fP6nXyxBZL5iSLBJGNBRUy8ytmLuAToScyG+NMXMSQymn7
- L/1gju6Hg7GQWX1PDXvkGpFZhYwZcgq8uH59xstBP80I79wcq3bWBqBbobtIKsfMCEsFxt23ylr
- JaOG1XYJ0t89feKumt9mtu32Eavil0dSQG2KICfpsAUhDEQFIR4BoiwlMxmOgnO3AMEyWmLupe8
- 3Mp4lwR3QoWLERLfx1owl6xHJKDTNyjY+IaccJTfGP0cK2ONl56Fe4s26NwF/CwXoKD18W8zbtJ
- pGeyYuKoT6AppvcmtiANY3tEOldxVP9uH5e8HeoYdl4NnQnS8v35lObymH6iOA+ZUtPAhdPWaC0
- B5YQyVZzCWRu3zQ==
+ bh=OyYo3h9FH7tddSUSU2yGqcG1rcOMZa8+hV0gLvVXT30=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTeznS9taKg4dSs5gVp6USJA2+jTJFwZidH4
+ aBNBag7rUaJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk3gAKCRD6UCkIqsW9
+ 0HtxEACstjqG92HymGqbWHGNy9sEvKNUzNlbVl7NQKWv5rxeAIN2/U3xOvzo9HHjRbXBbQrz3Hq
+ /ygvkPv1e/v6mOOFMSHLLL3rwlfgGXZ1JSZykGsCYNc+ggl6+cGbuOetVXEt4E0LHzqNLBi1/IY
+ 4E3qoazdTGvD7Ms4eycgZ/Q9WpPM1SzmnGZz6iucfO0/zumZhVEWty6ofpwVDXWA2pMjJNFymCx
+ lVC7/sgmJfQzvMMLAskuJwCBQ57FncfWBQKlyUT8TWJdmtQCVjyNFRH0D/pafBn7M0nYTwi217H
+ z45FxqGkhzSe0AOZJgfmWf4yE3DgJ95LqlxaG3pXKulcf7m2L9LehCoEfOKVVF0Wvb55/pAiPu1
+ ofTBQ2sJKjf8pNdm8/R3UVcO44WJDbll32vo6/h4tIpH/P4STXAW/SnZPN23Q2T4M945He/g21E
+ d1hK4m6b4ljc6hjIh92kokd0Xn2nVnajcqZpNhCxSG98at29luZcwruLAag6M2KtV+1uimnIKP2
+ mAiMahiFIBKe+4ZW9KIKuScsxOkaQ6nwg6XckyaCxi16iIC6CJ7HQ7Ix5xu/ndi9o/2pcp5kc4+
+ JS4G2uI7K7ZdKlm2BQq93oxC4S2WvjB28W1v9h8A0C+6Mlafa8QUaVhUF4EOvUXAWSg2+xy7v/7
+ GS9TiRF96HEb1pg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3879D1C0002
-X-Stat-Signature: h3wrt94ubkqc3zigaph83115ziwpqkeh
 X-Rspam-User: 
-X-HE-Tag: 1781032380-812200
-X-HE-Meta: U2FsdGVkX19RQDmk9XgX663ONmbU9fahnPoamd0RxmgYkr/Zw9UJQxlLNuk2uSV4svswivkQ4mDCjGVddoROI16nPqTixrrl2C+6OLS38PD1Op9CqD2sSylovP2rl9XRUHz0HZ+ZlOJULxlN+6fNTigrmVMkeZorEMZULmYlPrQybm31Mg0GZyG1Wc667MwNwNAi2ktX//Q7OiYGLTP09fc7Kh/IA5jKAeVuK8rYLicZ9HF0YLkBYk3XWYP5oF3ZH4ZOZetfhAUPfL8npgoLxku+NCiIU15zlalIlOjE4kHTgsSXIVL5QxyB5ypHMZomDo41fjsw4F4zWmc2GQ7zMXpxBO2XuOjijMDg3V9Spt2mz8Nd07UjPFtIAfQPcVDeUBxl6fGDQLmHRCr+nWT5qyWHFnkaR7hjKGk8e3/oAdgFlQknPhiXFJNlK9K65L7+nOEQYyx2yV1qY7ZebHWeca5OmcxjNPAKaHGvBGRT6f7bUNBSjII3li/Yc5G1IWdvrKuU5cj46G3TK6A6jY32FQb5QeG1B1KM30Hm668I0bQ5Q25SbRkHC8lQWMVivfTF6LUUumTu2ZsFZJPLwqc2NkzFlTWYI4FjzDD6STFMbwQBjsS7dzWsxnANkYbx6XIQY1CwJk5EsJl6OptVOQvjQdzUN5o1D9ovmWOCpmXLQpsH9nGynXamYMMT+aa7LI6o0mPGjUq5WORfkZNO3EBMaTczNdSAb6azAaGlwpGuK+ZgJGVcH+CsbfpCGMWzEF9m2Fb/7yVj+jW6BUdJ1GzE4zdHqcj4nvzAEUloaMenKh0apVkFAerJjb2aGDDrAitmWLVN2P14/9ZolpA6mbtmJxS+5TJ4+Bf9uyaR9VxKfVYskETQ8732ViGsioT9oIadn4fU29ln3M03OpYU8SdgAcHHOSJw8XRIY6f0IQjU5lFP8wEWwAEqAMQcc5k0IqUTBSEOwJ56duRtFXPzMnF
- 1ggabXTx
- j/zhvtGDwHbv/MZKKienZTJvY0Kv5zCzwgEndhyol/U3dbWQ+rG5oyacuY3jsuDOwRFqHe9jPvLQI7sLd0hhADS/dT8vINtmGMkT0iPqu5y1ct8occCQpBsI35Hn+7UyGMWEaNqGvq1MaGohIfZyj+vGjYw64KFXRukSFnRaasOHM21io9tgVaQGiQOdUIhGpr0gZS8qm4o/DDECOXwtgDrWPt9W4uohJb2LIwjnTmLUt8kDtlKflv8vyelAySDe6pPSGOm1xGkNMv8VtnIb1gddMBh/f6LmFQq7Z/i444Elc1DSeBJJmpwvwT+iPjntmk6vf
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9389F1C0008
+X-Stat-Signature: xyxtgc835jeuaxp8epfrcc3du5f5hqmm
+X-HE-Tag: 1781032385-873237
+X-HE-Meta: U2FsdGVkX1+q6dn9a/K+IuQDydJSL5+WLt2/Etxz5RxvzPFFBIu1cOPlFUYBqWNpyWfL4yPY7iEhsFm2/aPSfEWs/yTsTShK5jj8xswNgjIIpKnR8N0FfShJYk9HbqMs64uMAez42mA4zZ26/fCKahKpYHr7QkQ9HuPWDxQDK3lUh0ssSeuV3XtQwDOX/MgdkzfIPGlpDUhzkZRVSpnqTc9brWbUncXXlJIG3QLyUod59oAPO76nC1vCaUSKD7OoeVfUeJ1e19iXQVS7bWqDtsGuNPzaKG85PYvOvH9EVHWwpvu3DmlPvQ8PMt53TFbZWN8a+VFwnBUqP41vSWkOFJLDzfYkIcWZ6XP+vEetC4CK6VTD2tOrAAqg+MAtfWDrR/X893p774Kv/dcDowAVfa9CN4x5tcZBodBqu3O/Bxh5WIhkKki3JCD4bLMmmH+NuwLftG/0PlSDTfdyU4CEtu06ySiUMXGBFQgC1xzkn4t5d3L88S3SbGInYczA9hSDezbVk+22hKIpuyScX6QhfDC371/X73IzHyOGjQE40FDuWhOsZL5UdwNGQvu2I6l/mZ6ICBvLYT/Asanfe9Jbn8Zk/ZfrKrBkG+JLW8ZQd8ZwlQ07G180LD+bpwPA5IPAFnushSRC1zl/0CvGj/SssE2QyNSSA1Ot+VZZ+gDPgofmeoxP2P+Yt7N2X4vJKBoBkvjg9Fua3vvG3/6e6vMBrvQGqrMHZ6wDN9uG0XxjinHBfLKIMxiqrTSvoSKt6mXQ8RmoyEtFcsHmSW5HsUbZKqgbVAQhVsd8mfhpdpeIwNBuAQlx8CVK/nQjMN6uycbbvlRfSouJRPyLsTgDaL3THzvyQEL9kCs/m5ILJi3WKe5alheTM5rGc56EQJN6pIJDg/j0bpZhA+tbZdS7DfjkwiMiJr42KKF+uP42Bw8ujw931ZXlLjXEAS1I8lj5PMsuvP/VvZujEuYSM4zTv00
+ JFW0exip
+ 8qhdhdM+SkVi3RX6OC+cSvkp1EGuEMHPNCb1E0IehmR9j/ogbNcVc5SjpHcHn5AdgMjsAlGxC6Ll/eVpvWdFvLyuahQTfaSoGllOA+gTNLUHdqMQad5dcjTXa3odyR0qBoomroieIiePmgWbmgru4vFJlw2BMcG+YHYZxAXaaTH8F85K9y2hRFgcSrrDKAkaqPSMFglyMW+weYTjAfdNR4EhOEla3syXwEX8LwjRZ54urJ+eVzAztRUqSaPIHLo+Z5M5hwKt0tWHFuh+75q2q3R4+vLURqnvkblF7z9ja2N0tmuBU76UwmG5Z93MKMTM0zDjT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,417 +123,386 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add configfs attributes for managing zone states in the rnull zoned
-block device emulation. The `zone_offline` and `zone_readonly`
-attributes allow setting specific zones to offline or read-only states,
-which is useful for testing how applications handle degraded zones.
+Add support for sharing tags between multiple rnull devices. When
+enabled via the `shared_tags` configfs attribute, all devices in the
+group share a single tag set, reducing memory usage.
+
+This feature requires creating a shared `TagSet` that can be referenced
+by multiple devices.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs     | 76 +++++++++++++++++++++++++++++++++
- drivers/block/rnull/disk_storage.rs | 59 +++++++++++++-------------
- drivers/block/rnull/rnull.rs        |  2 +-
- drivers/block/rnull/zoned.rs        | 83 ++++++++++++++++++++++++++-----------
- 4 files changed, 164 insertions(+), 56 deletions(-)
+ drivers/block/rnull/configfs.rs |  44 +++++++++----
+ drivers/block/rnull/rnull.rs    | 136 +++++++++++++++++++++++++---------------
+ rust/kernel/block/mq/tag_set.rs |  18 ++++++
+ 3 files changed, 136 insertions(+), 62 deletions(-)
 
 diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 1bab38c55698..43d01b419579 100644
+index 5e6bcf9d31d8..a84854e7c358 100644
 --- a/drivers/block/rnull/configfs.rs
 +++ b/drivers/block/rnull/configfs.rs
-@@ -135,6 +135,8 @@ fn make_group(
-                 max_sectors: 29,
-                 virt_boundary: 30,
-                 shared_tag_bitmap: 31,
-+                zone_offline: 32,
-+                zone_readonly: 33,
+@@ -10,9 +10,12 @@
+     bindings,
+     block::{
+         badblocks::BadBlocks,
+-        mq::gen_disk::{
+-            GenDisk,
+-            GenDiskBuilder, //
++        mq::{
++            gen_disk::{
++                GenDisk,
++                GenDiskBuilder, //
++            },
++            TagSet, //
+         }, //
+     },
+     configfs::{
+@@ -45,7 +48,9 @@
+ 
+ mod macros;
+ 
+-pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
++pub(crate) fn subsystem(
++    shared_tag_set: Arc<TagSet<NullBlkDevice>>,
++) -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
+     let item_type = configfs_attrs! {
+         container: configfs::Subsystem<Config>,
+         data: Config,
+@@ -55,11 +60,17 @@ pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, E
+         ],
+     };
+ 
+-    kernel::configfs::Subsystem::new(c"rnull", item_type, try_pin_init!(Config {}))
++    kernel::configfs::Subsystem::new(
++        c"rnull",
++        item_type,
++        try_pin_init!(Config { shared_tag_set }),
++    )
+ }
+ 
+ #[pin_data]
+-pub(crate) struct Config {}
++pub(crate) struct Config {
++    shared_tag_set: Arc<TagSet<NullBlkDevice>>,
++}
+ 
+ #[vtable]
+ impl AttributeOperations<0> for Config {
+@@ -69,7 +80,7 @@ impl AttributeOperations<0> for Config {
+         let mut writer = kernel::str::Formatter::new(page);
+         writer.write_str(
+             "blocksize,size,rotational,irqmode,completion_nsec,memory_backed,\
+-             submit_queues,use_per_node_hctx,discard,blocking\n",
++             submit_queues,use_per_node_hctx,discard,blocking,shared_tags\n",
+         )?;
+         Ok(writer.bytes_written())
+     }
+@@ -106,6 +117,7 @@ fn make_group(
+                 cache_size_mib: 15,
+                 mbps: 16,
+                 blocking: 17,
++                shared_tags: 18,
              ],
          };
  
-@@ -627,3 +629,77 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- configfs_simple_field!(DeviceConfig, 29, max_sectors, u32);
- configfs_simple_bool_field!(DeviceConfig, 30, virt_boundary);
- configfs_simple_bool_field!(DeviceConfig, 31, shared_tag_bitmap);
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+fn set_zone_condition(
-+    this: &DeviceConfig,
-+    sector: u64,
-+    cb: impl FnOnce(
-+        &crate::zoned::ZoneOptions,
-+        &DiskStorage,
-+        &mut crate::zoned::ZoneDescriptor,
-+    ) -> Result,
-+) -> Result {
-+    use crate::zoned::ZoneType;
-+    let data_guard = this.data.lock();
-+    let null_disk = data_guard.disk.as_ref().ok_or(EBUSY)?.queue_data();
-+    let storage = &null_disk.storage;
-+    let zone_options = &null_disk.zoned;
-+    zone_options.enabled.then_some(()).ok_or(EINVAL)?;
-+    let mut zone = zone_options.zone(sector)?.lock();
-+
-+    if zone.kind == ZoneType::Conventional {
-+        return Err(EINVAL);
-+    }
-+
-+    cb(zone_options, storage, &mut zone)
-+}
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+configfs_attribute!(
-+    DeviceConfig,
-+    32,
-+    show: |_this, _page| Ok(0),
-+    store: |this,page| {
-+        let text = core::str::from_utf8(page)?.trim();
-+        let sector = text.parse().map_err(|_| EINVAL)?;
-+
-+        set_zone_condition(this, sector, |zone_options, storage, zone| {
-+            zone_options.offline_zone(storage, zone)
-+        })?;
-+        Ok(())
-+    },
-+);
-+
-+#[cfg(CONFIG_BLK_DEV_ZONED)]
-+configfs_attribute!(
-+    DeviceConfig,
-+    33,
-+    show: |_this, _page| Ok(0),
-+    store: |this,page| {
-+        let text = core::str::from_utf8(page)?.trim();
-+        let sector = text.parse().map_err(|_| EINVAL)?;
-+
-+        set_zone_condition(this, sector, |zone_options, storage, zone| {
-+            zone_options.read_only_zone(storage, zone)
-+        })?;
-+
-+        Ok(())
-+    },
-+);
-+
-+#[cfg(not(CONFIG_BLK_DEV_ZONED))]
-+configfs_attribute!(
-+    DeviceConfig,
-+    32,
-+    show: |_this, _page| Ok(0),
-+    store: |_this, _page| Err(ENOTSUPP),
-+);
-+
-+#[cfg(not(CONFIG_BLK_DEV_ZONED))]
-+configfs_attribute!(
-+    DeviceConfig,
-+    33,
-+    show: |_this, _page| Ok(0),
-+    store: |_this, _page| Err(ENOTSUPP),
-+);
-diff --git a/drivers/block/rnull/disk_storage.rs b/drivers/block/rnull/disk_storage.rs
-index 6797b7996da3..879dd5d96e65 100644
---- a/drivers/block/rnull/disk_storage.rs
-+++ b/drivers/block/rnull/disk_storage.rs
-@@ -65,27 +65,45 @@ pub(crate) fn lock(&self) -> SpinLockGuard<'_, Pin<KBox<TreeContainer>>> {
-         self.trees.lock()
-     }
- 
--    pub(crate) fn discard(
--        &self,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
--        mut sector: u64,
--        sectors: u32,
--    ) {
--        let mut tree_guard = self.lock();
--        let mut hw_data_guard = hw_data.lock();
--
--        let mut access = self.access(&mut tree_guard, &mut hw_data_guard, None);
-+    pub(crate) fn discard(&self, mut sector: u64, sectors: u32) {
-+        let tree_guard = self.lock();
-+        let mut cache_guard = tree_guard.cache_tree.lock();
-+        let mut disk_guard = tree_guard.cache_tree.lock();
- 
-         let mut remaining_bytes = sectors_to_bytes(sectors);
- 
-         while remaining_bytes > 0 {
--            access.free_sector(sector);
-+            self.free_sector(&mut cache_guard, &mut disk_guard, sector);
-             let processed = remaining_bytes.min(self.block_size);
-             sector += Into::<u64>::into(bytes_to_sectors(processed));
-             remaining_bytes -= processed;
-         }
-     }
- 
-+    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
-+        let index = DiskStorageAccess::to_index(sector);
-+        if let Some(page) = tree_access.get_mut(index) {
-+            page.set_free(sector);
-+
-+            if page.is_empty() {
-+                tree_access.remove(index);
-+            }
-+        }
-+    }
-+
-+    pub(crate) fn free_sector<'a>(
-+        &self,
-+        cache_guard: &mut xarray::Guard<'a, TreeNode>,
-+        disk_guard: &mut xarray::Guard<'a, TreeNode>,
-+        sector: u64,
-+    ) {
-+        if self.cache_size > 0 {
-+            Self::free_sector_tree(cache_guard, sector);
-+        }
-+
-+        Self::free_sector_tree(disk_guard, sector);
-+    }
-+
-     pub(crate) fn flush(&self, hw_data: &Pin<&SpinLock<HwQueueContext>>) {
-         let mut tree_guard = self.lock();
-         let mut hw_data_guard = hw_data.lock();
-@@ -286,25 +304,6 @@ pub(crate) fn get_read_page(&self, sector: u64) -> Option<&NullBlockPage> {
-             self.disk_guard.get(index)
-         }
-     }
--
--    fn free_sector_tree(tree_access: &mut xarray::Guard<'_, TreeNode>, sector: u64) {
--        let index = Self::to_index(sector);
--        if let Some(page) = tree_access.get_mut(index) {
--            page.set_free(sector);
--
--            if page.is_empty() {
--                tree_access.remove(index);
--            }
--        }
--    }
--
--    pub(crate) fn free_sector(&mut self, sector: u64) {
--        if self.disk_storage.cache_size > 0 {
--            Self::free_sector_tree(&mut self.cache_guard, sector);
--        }
--
--        Self::free_sector_tree(&mut self.disk_guard, sector);
--    }
+@@ -139,6 +151,8 @@ fn make_group(
+                     cache_size_mib: 0,
+                     mbps: 0,
+                     blocking: false,
++                    shared_tags: false,
++                    shared_tag_set: self.shared_tag_set.clone(),
+                 }),
+             }),
+             core::iter::empty(),
+@@ -215,6 +229,8 @@ struct DeviceConfigInner {
+     disk_storage: Arc<DiskStorage>,
+     mbps: u32,
+     blocking: bool,
++    shared_tags: bool,
++    shared_tag_set: Arc<TagSet<NullBlkDevice>>,
  }
  
- type TreeNode = KBox<NullBlockPage>;
+ #[vtable]
+@@ -245,17 +261,20 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+                 capacity_mib: guard.capacity_mib,
+                 irq_mode: guard.irq_mode,
+                 completion_time: guard.completion_time,
+-                memory_backed: guard.memory_backed,
+-                submit_queues: guard.submit_queues,
+-                home_node: guard.home_node,
+                 discard: guard.discard,
+-                no_sched: guard.no_sched,
+                 bad_blocks: guard.bad_blocks.clone(),
+                 bad_blocks_once: guard.bad_blocks_once,
+                 bad_blocks_partial_io: guard.bad_blocks_partial_io,
+                 storage: guard.disk_storage.clone(),
+                 bandwidth_limit: u64::from(guard.mbps) * 2u64.pow(20),
+-                blocking: guard.blocking,
++                shared_tag_set: guard.shared_tags.then(|| guard.shared_tag_set.clone()),
++                tag_set: crate::TagSetOptions {
++                    submit_queues: guard.submit_queues,
++                    home_node: guard.home_node,
++                    blocking: guard.blocking,
++                    memory_backed: guard.memory_backed,
++                    no_sched: guard.no_sched,
++                },
+             })?);
+             guard.powered = true;
+         } else if guard.powered && !power_op {
+@@ -427,3 +446,4 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ 
+ configfs_simple_field!(DeviceConfig, 16, mbps, u32);
+ configfs_simple_bool_field!(DeviceConfig, 17, blocking);
++configfs_simple_bool_field!(DeviceConfig, 18, shared_tags);
 diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 81f9e2d03f31..b6371fe4ebeb 100644
+index 181fce551a91..bcf6a85f1cbc 100644
 --- a/drivers/block/rnull/rnull.rs
 +++ b/drivers/block/rnull/rnull.rs
-@@ -798,7 +798,7 @@ fn handle_regular_command(
-         if self.memory_backed {
-             memalloc_scope!(let _noio: NoIo);
-             if rq.command() == mq::Command::Discard {
--                self.storage.discard(hw_data, rq.sector(), sectors);
-+                self.storage.discard(rq.sector(), sectors);
-             } else {
-                 self.transfer(hw_data, rq, rq.command(), sectors)?;
-             }
-diff --git a/drivers/block/rnull/zoned.rs b/drivers/block/rnull/zoned.rs
-index 808449cc49e1..cf0eb5d31840 100644
---- a/drivers/block/rnull/zoned.rs
-+++ b/drivers/block/rnull/zoned.rs
-@@ -179,7 +179,7 @@ pub(crate) fn handle_zoned_command(
-         match rq.command() {
-             ZoneAppend | Write => self.zoned_write(hw_data, rq)?,
-             ZoneReset | ZoneResetAll | ZoneOpen | ZoneClose | ZoneFinish => {
--                self.zone_management(hw_data, rq)?
-+                self.zone_management(rq)?
-             }
-             _ => self.zoned_read(hw_data, rq)?,
-         }
-@@ -187,18 +187,14 @@ pub(crate) fn handle_zoned_command(
-         Ok(())
-     }
- 
--    fn zone_management(
--        &self,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
--        rq: &mut Owned<mq::Request<Self>>,
--    ) -> Result {
-+    fn zone_management(&self, rq: &mut Owned<mq::Request<Self>>) -> Result {
-         if rq.command() == mq::Command::ZoneResetAll {
-             for zone in self.zoned.zones_iter() {
-                 let mut zone = zone.lock();
-                 use ZoneCondition::*;
-                 match zone.condition {
-                     Empty | ReadOnly | Offline => continue,
--                    _ => self.zoned.reset_zone(&self.storage, hw_data, &mut zone)?,
-+                    _ => self.zoned.reset_zone(&self.storage, &mut zone)?,
-                 }
-             }
- 
-@@ -214,10 +210,10 @@ fn zone_management(
- 
-         use mq::Command::*;
-         match rq.command() {
--            ZoneOpen => self.zoned.open_zone(&mut zone, rq.sector()),
-+            ZoneOpen => self.zoned.open_zone(&mut zone),
-             ZoneClose => self.zoned.close_zone(&mut zone),
--            ZoneReset => self.zoned.reset_zone(&self.storage, hw_data, &mut zone),
--            ZoneFinish => self.zoned.finish_zone(&mut zone, rq.sector()),
-+            ZoneReset => self.zoned.reset_zone(&self.storage, &mut zone),
-+            ZoneFinish => self.zoned.finish_zone(&mut zone),
-             _ => Err(EIO),
-         }
-     }
-@@ -283,7 +279,7 @@ fn zoned_write(
-             if self.zoned.use_accounting() {
-                 let mut accounting = self.zoned.accounting.lock();
-                 self.zoned
--                    .check_zone_resources(&mut accounting, &mut zone, rq.sector())?;
-+                    .check_zone_resources(&mut accounting, &mut zone)?;
- 
-                 if zone.condition == ZoneCondition::Closed {
-                     accounting.closed -= 1;
-@@ -367,7 +363,7 @@ fn zone_no(&self, sector: u64) -> usize {
-         (sector >> self.size_sectors.ilog2()) as usize
-     }
- 
--    fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
-+    pub(crate) fn zone(&self, sector: u64) -> Result<&Mutex<ZoneDescriptor>> {
-         self.zones.get(self.zone_no(sector)).ok_or(EINVAL)
-     }
- 
-@@ -420,7 +416,7 @@ fn try_close_implicit_open_zone(&self, accounting: &mut ZoneAccounting, sector:
-         Err(EINVAL)
-     }
- 
--    fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-+    fn open_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         if zone.kind == ZoneType::Conventional {
-             return Err(EINVAL);
-         }
-@@ -436,13 +432,13 @@ fn open_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-             let mut accounting = self.accounting.lock();
-             match zone.condition {
-                 Empty => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                 }
-                 ImplicitOpen => {
-                     accounting.implicit_open -= 1;
-                 }
-                 Closed => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                     accounting.closed -= 1;
-                 }
-                 _ => (),
-@@ -459,14 +455,13 @@ fn check_zone_resources(
-         &self,
-         accounting: &mut ZoneAccounting,
-         zone: &mut ZoneDescriptor,
--        sector: u64,
-     ) -> Result {
-         match zone.condition {
-             ZoneCondition::Empty => {
-                 self.check_active_zones(accounting)?;
--                self.check_open_zones(accounting, sector)
-+                self.check_open_zones(accounting, zone.start_sector)
-             }
--            ZoneCondition::Closed => self.check_open_zones(accounting, sector),
-+            ZoneCondition::Closed => self.check_open_zones(accounting, zone.start_sector),
-             _ => Err(EIO),
-         }
-     }
-@@ -535,7 +530,7 @@ fn close_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         Ok(())
-     }
- 
--    fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-+    fn finish_zone(&self, zone: &mut ZoneDescriptor) -> Result {
-         if zone.kind == ZoneType::Conventional {
-             return Err(EINVAL);
-         }
-@@ -547,12 +542,12 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-             match zone.condition {
-                 Full => return Ok(()),
-                 Empty => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                 }
-                 ImplicitOpen => accounting.implicit_open -= 1,
-                 ExplicitOpen => accounting.explicit_open -= 1,
-                 Closed => {
--                    self.check_zone_resources(&mut accounting, zone, sector)?;
-+                    self.check_zone_resources(&mut accounting, zone)?;
-                     accounting.closed -= 1;
-                 }
-                 _ => return Err(EIO),
-@@ -568,7 +563,6 @@ fn finish_zone(&self, zone: &mut ZoneDescriptor, sector: u64) -> Result {
-     fn reset_zone(
-         &self,
-         storage: &crate::disk_storage::DiskStorage,
--        hw_data: &Pin<&SpinLock<HwQueueContext>>,
-         zone: &mut ZoneDescriptor,
-     ) -> Result {
-         if zone.kind == ZoneType::Conventional {
-@@ -591,16 +585,55 @@ fn reset_zone(
-         zone.condition = ZoneCondition::Empty;
-         zone.write_pointer = zone.start_sector;
- 
--        storage.discard(hw_data, zone.start_sector, zone.size_sectors);
-+        storage.discard(zone.start_sector, zone.size_sectors);
-+
-+        Ok(())
-+    }
-+
-+    fn set_zone_condition(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+        condition: ZoneCondition,
-+    ) -> Result {
-+        if zone.condition == condition {
-+            zone.condition = ZoneCondition::Empty;
-+            zone.write_pointer = zone.start_sector;
-+            storage.discard(zone.start_sector, zone.size_sectors);
-+        } else {
-+            if matches!(
-+                zone.condition,
-+                ZoneCondition::ReadOnly | ZoneCondition::Offline
-+            ) {
-+                self.finish_zone(zone)?;
-+            }
- 
-+            zone.condition = ZoneCondition::Offline;
-+            zone.write_pointer = u64::MAX;
-+        }
-         Ok(())
-     }
-+    pub(crate) fn offline_zone(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+    ) -> Result {
-+        self.set_zone_condition(storage, zone, ZoneCondition::Offline)
-+    }
-+
-+    pub(crate) fn read_only_zone(
-+        &self,
-+        storage: &crate::disk_storage::DiskStorage,
-+        zone: &mut ZoneDescriptor,
-+    ) -> Result {
-+        self.set_zone_condition(storage, zone, ZoneCondition::ReadOnly)
-+    }
+@@ -143,6 +143,10 @@
+             default: false,
+             description: "Register as a blocking blk-mq driver device",
+         },
++        shared_tags: bool {
++            default: false,
++            description: "Share tag set between devices for blk-mq",
++        },
+     },
  }
  
- pub(crate) struct ZoneDescriptor {
-     start_sector: u64,
-     size_sectors: u32,
--    kind: ZoneType,
-+    pub(crate) kind: ZoneType,
-     capacity_sectors: u32,
-     write_pointer: u64,
-     condition: ZoneCondition,
-@@ -628,7 +661,7 @@ fn check_bounds_read(&self, sector: u64, sectors: u32) -> Result {
+@@ -158,19 +162,30 @@ impl kernel::InPlaceModule for NullBlkModule {
+     fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         pr_info!("Rust null_blk loaded\n");
  
- #[derive(Copy, Clone, PartialEq, Eq, Debug)]
- #[repr(u32)]
--enum ZoneType {
-+pub(crate) enum ZoneType {
-     Conventional = bindings::blk_zone_type_BLK_ZONE_TYPE_CONVENTIONAL,
-     SequentialWriteRequired = bindings::blk_zone_type_BLK_ZONE_TYPE_SEQWRITE_REQ,
-     #[expect(dead_code)]
+-        let mut disks = KVec::new();
++        pin_init::pin_init_scope(move || -> Result<_, Error> {
++            let submit_queues = if module_parameters::use_per_node_hctx.value() {
++                kernel::numa::num_online_nodes()
++            } else {
++                module_parameters::submit_queues.value()
++            };
++            let home_node = module_parameters::home_node.value();
++            let blocking = module_parameters::blocking.value();
++            let memory_backed = module_parameters::memory_backed.value();
++            let no_sched = module_parameters::no_sched.value();
++
++            let shared_tag_set = NullBlkDevice::build_tag_set(TagSetOptions {
++                submit_queues,
++                home_node,
++                blocking,
++                memory_backed,
++                no_sched,
++            })?;
+ 
+-        let defer_init = move || -> Result<_, Error> {
++            let mut disks = KVec::new();
+             let completion_time: i64 = module_parameters::completion_nsec.value().try_into()?;
+             for i in 0..module_parameters::nr_devices.value() {
+                 let name = CString::try_from_fmt(fmt!("rnullb{}", i))?;
+ 
+-                let submit_queues = if module_parameters::use_per_node_hctx.value() {
+-                    kernel::numa::num_online_nodes()
+-                } else {
+-                    module_parameters::submit_queues.value()
+-                };
+-
+                 let block_size = module_parameters::bs.value();
+                 let disk = NullBlkDevice::new(NullBlkOptions {
+                     name: &name,
+@@ -179,27 +194,30 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+                     capacity_mib: module_parameters::gb.value() * 1024,
+                     irq_mode: module_parameters::irqmode.value().try_into()?,
+                     completion_time: Delta::from_nanos(completion_time),
+-                    memory_backed: module_parameters::memory_backed.value(),
+-                    submit_queues,
+-                    home_node: module_parameters::home_node.value(),
+                     discard: module_parameters::discard.value(),
+-                    no_sched: module_parameters::no_sched.value(),
+                     bad_blocks: Arc::pin_init(BadBlocks::new(false), GFP_KERNEL)?,
+                     bad_blocks_once: false,
+                     bad_blocks_partial_io: false,
+                     storage: Arc::pin_init(DiskStorage::new(0, block_size as usize), GFP_KERNEL)?,
+                     bandwidth_limit: u64::from(module_parameters::mbps.value()) * 2u64.pow(20),
+-                    blocking: module_parameters::blocking.value(),
++                    shared_tag_set: module_parameters::shared_tags
++                        .value()
++                        .then(|| shared_tag_set.clone()),
++                    tag_set: TagSetOptions {
++                        submit_queues,
++                        home_node,
++                        blocking,
++                        memory_backed,
++                        no_sched,
++                    },
+                 })?;
+                 disks.push(disk, GFP_KERNEL)?;
+             }
+ 
+-            Ok(disks)
+-        };
+-
+-        try_pin_init!(Self {
+-            configfs_subsystem <- configfs::subsystem(),
+-            param_disks <- new_mutex!(defer_init()?),
++            Ok(try_pin_init!(Self {
++                configfs_subsystem <- configfs::subsystem(shared_tag_set),
++                param_disks <- new_mutex!(disks),
++            }))
+         })
+     }
+ }
+@@ -211,17 +229,14 @@ struct NullBlkOptions<'a> {
+     capacity_mib: u64,
+     irq_mode: IRQMode,
+     completion_time: Delta,
+-    memory_backed: bool,
+-    submit_queues: u32,
+-    home_node: i32,
+     discard: bool,
+-    no_sched: bool,
+     bad_blocks: Arc<BadBlocks>,
+     bad_blocks_once: bool,
+     bad_blocks_partial_io: bool,
+     storage: Arc<DiskStorage>,
+     bandwidth_limit: u64,
+-    blocking: bool,
++    shared_tag_set: Option<Arc<TagSet<NullBlkDevice>>>,
++    tag_set: TagSetOptions,
+ }
+ 
+ #[pin_data]
+@@ -243,9 +258,50 @@ struct NullBlkDevice {
+     disk: SetOnce<Arc<Revocable<GenDiskRef<Self>>>>,
+ }
+ 
++struct TagSetOptions {
++    submit_queues: u32,
++    home_node: i32,
++    blocking: bool,
++    memory_backed: bool,
++    no_sched: bool,
++}
++
+ impl NullBlkDevice {
+     const BANDWIDTH_TIMER_INTERVAL: Delta = Delta::from_millis(20);
+ 
++    fn build_tag_set(options: TagSetOptions) -> Result<Arc<TagSet<Self>>> {
++        let TagSetOptions {
++            submit_queues,
++            home_node,
++            blocking,
++            memory_backed,
++            no_sched,
++        } = options;
++
++        if home_node > kernel::numa::num_online_nodes().try_into()? {
++            return Err(code::EINVAL);
++        }
++
++        let numa_node = if home_node == -1 {
++            kernel::alloc::NumaNode::NO_NODE
++        } else {
++            kernel::alloc::NumaNode::new(home_node)?
++        };
++
++        let mut flags = mq::tag_set::Flags::default();
++        if blocking || memory_backed {
++            flags |= mq::tag_set::Flag::Blocking;
++        }
++        if no_sched {
++            flags |= mq::tag_set::Flag::NoDefaultScheduler;
++        }
++
++        Arc::pin_init(
++            TagSet::new(submit_queues, (), 256, 1, numa_node, flags),
++            GFP_KERNEL,
++        )
++    }
++
+     fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+         let NullBlkOptions {
+             name,
+@@ -254,37 +310,22 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             capacity_mib,
+             irq_mode,
+             completion_time,
+-            memory_backed,
+-            submit_queues,
+-            home_node,
+             discard,
+-            no_sched,
+             bad_blocks,
+             bad_blocks_once,
+             bad_blocks_partial_io,
+             storage,
+             bandwidth_limit,
+-            blocking,
++            shared_tag_set,
++            tag_set,
+         } = options;
+ 
+-        let mut flags = mq::tag_set::Flags::default();
++        let memory_backed = tag_set.memory_backed;
+ 
+-        if blocking || memory_backed {
+-            flags |= mq::tag_set::Flag::Blocking;
+-        }
+-
+-        if no_sched {
+-            flags |= mq::tag_set::Flag::NoDefaultScheduler;
+-        }
+-
+-        if home_node > kernel::numa::num_online_nodes().try_into()? {
+-            return Err(code::EINVAL);
+-        }
+-
+-        let numa_node = if home_node == -1 {
+-            kernel::alloc::NumaNode::NO_NODE
++        let tagset = if let Some(shared) = shared_tag_set {
++            shared
+         } else {
+-            kernel::alloc::NumaNode::new(home_node)?
++            Self::build_tag_set(tag_set)?
+         };
+ 
+         let capacity_sectors = capacity_mib << (20 - block::SECTOR_SHIFT);
+@@ -294,11 +335,6 @@ fn new(options: NullBlkOptions<'_>) -> Result<Arc<GenDisk<Self>>> {
+             return Err(code::EINVAL);
+         }
+ 
+-        let tagset = Arc::pin_init(
+-            TagSet::new(submit_queues, (), 256, 1, numa_node, flags),
+-            GFP_KERNEL,
+-        )?;
+-
+         let queue_data = Arc::try_pin_init(
+             try_pin_init!(Self {
+                 storage,
+diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+index bfb8f8af4ee1..5359e60fb5a5 100644
+--- a/rust/kernel/block/mq/tag_set.rs
++++ b/rust/kernel/block/mq/tag_set.rs
+@@ -124,3 +124,21 @@ fn drop(self: Pin<&mut Self>) {
+         unsafe { T::TagSetData::from_foreign(tagset_data) };
+     }
+ }
++
++// SAFETY: It is safe to share references to `TagSet` across thread boundaries as long as
++// `TagSetData` is `Sync`.
++unsafe impl<T> Sync for TagSet<T>
++where
++    T: Operations,
++    T::TagSetData: Sync,
++{
++}
++
++// SAFETY: It is safe to transfer ownership of `TagSet` across thread boundaries if the associated
++// private data is `Send` (it will be dropped with the `TagSet`).
++unsafe impl<T> Send for TagSet<T>
++where
++    T: Operations,
++    T::TagSetData: Send,
++{
++}
 
 -- 
 2.51.2
