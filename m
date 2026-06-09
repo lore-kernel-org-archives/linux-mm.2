@@ -4,118 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB2ACD8CAE
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 04:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5395ECD8CAE
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 04:39:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E04836B0088; Tue,  9 Jun 2026 00:23:58 -0400 (EDT)
+	id 47F066B0005; Tue,  9 Jun 2026 00:39:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB4D86B008A; Tue,  9 Jun 2026 00:23:58 -0400 (EDT)
+	id 4569B6B0088; Tue,  9 Jun 2026 00:39:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCAEE6B008C; Tue,  9 Jun 2026 00:23:58 -0400 (EDT)
+	id 3934F6B008A; Tue,  9 Jun 2026 00:39:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC846B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:23:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 15C5A40401
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:23:58 +0000 (UTC)
-X-FDA: 84859081356.13.C29C81E
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 328E38000B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:23:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rqwj6kqH;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 286A06B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:39:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1FD08DCFD
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:39:41 +0000 (UTC)
+X-FDA: 84859120962.01.1153186
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCB8C40002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:39:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf17.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780979036;
+	s=arc-20220608; t=1780979979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIp1fAQDnn86oxS0ZtsIzqUmKzi30Ra2bA1c7IATHpA=;
-	b=5I4uv1yPxgtzf95LR09w0dPaEiiPNoY3wqNmrJcejBG+mtCzcSKj+Rtxg8JADKPRZWqaFu
-	qURi7XPn4yo8C5+E2SoSavX3RuV3Lmaq3iqgVtMjAXf5pgoblglkuzyE43Wiuft+pBE6lr
-	+WcOsJmtWAI6YL9H789HG0VcvmU/9kE=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=qLFsiwUGn9Ehn/0e2w5EV/2Wa4qPIqqSTMyEXl1IZpc=;
+	b=jaSOUo3Rba4Mki/McPdAG7ZhMwp6lreIIN6t089H28l8+wu98trzO8pPGVDg81oSlQ+sKD
+	dvK+ef6FsSNvpS3DW3q/2xrPw6Ws2CHSoRc12xn9WTZpR6LqtmNbmv6mvtF3K0LFaNwD7B
+	SahQDvP4qqNZ4Ck8ZeZR3vQ2l07+N+4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rqwj6kqH;
-	spf=pass (imf02.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf17.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780979036;
-	b=DDhbwMXes3u0uRaN2qtjPyEnrr6H5urKHepf1tq6iCGev5AEB5BOy2RPTpB/dinXq9YC8G
-	JfwFdBfRZ/gnaNsh0+4a+X8m3/yteuCptPv7GQtkdBvpuEUxCfx+PoosMc32Nr0a5LSqmF
-	UKkDIj7pfPjEOt8bxnrGd22Kmuc8yqQ=
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7e6dcc22cbcso4479875a34.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 21:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780979035; x=1781583835; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xIp1fAQDnn86oxS0ZtsIzqUmKzi30Ra2bA1c7IATHpA=;
-        b=rqwj6kqHFhFWvKTyL1XRy//ylVIb3SCGdOotz/fD5qooioZk5c0bePYkkAePuDEW65
-         eXev7lhEEqUfjJ+UhEhRvUuhHNbFuItyRbm3xJIOHYfNmocNX2PelRk16auowLeGjR1R
-         FHqesYus2s9Rk9XX4wg89EanYmHcg4DD/ILQkET5rVAT9dIFfwDX3BYayZd3ETQZ3xXz
-         Tba6wOmf4/eAAQ1biVTudDljQjVOqPpd0+U4hKyv7mzYdfbQZCU04p32sSLa83H1UqkZ
-         QjuTxWunVKMlHbfHqy89QARqSKWgQF9W8rIPGbda+8VKsYapKKE3G/v9xVzjEqU+Cwl9
-         CnGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780979035; x=1781583835;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xIp1fAQDnn86oxS0ZtsIzqUmKzi30Ra2bA1c7IATHpA=;
-        b=ns2BKCuDVIo5imGrZ0HfvCAwUG3Yots/YBhcvsfktIjNvB1F0u6ZMsFdJy9srYuESH
-         A2BSyWRi7HowKNAJPh8vV8vyz3sDMEE9yf61WRQ7R6XMeWBnCuDxXabM7rMnIGxwgb3m
-         cIGEURAvGn/vnEYYYJUDifZW2vXe8WxlAll16070IOlJGWrDVgkx5QfpZooDlf4uLJBn
-         6mP4lF7V6hQqwC1QKINwGDKPESbVq37mWpG8rvrw1dH3oSjr2BQjhd/xPJOpnM0zQtpF
-         nttcd1qVJnjeet3EccZ6nwXKh60212qGVIQdx7ZlCkZl1A4phkCrI4wp2Xl68RWxMtii
-         rV6w==
-X-Forwarded-Encrypted: i=1; AFNElJ87P1a1JVQOkUhAkyAwuoOp7Gl/wzf6Iwwq0BCNPOvx4mLMr3tb65q2/Kh2WtfCQuoUkk2PwsMiow==@kvack.org
-X-Gm-Message-State: AOJu0YwKn4o/VKqEPAWeFp8by8GSgwv8KFQkCvMG2mzu8UlGZwcOz01X
-	HJZ2G0fxSy0k4IraP/XVvAD/FjTjQRtl1yRr3lxVXeDmj4pbcnRKewCi
-X-Gm-Gg: Acq92OEtN7pUW313c+qnrGcH3PcJRi+79Oa4gvE2aV1ALk40YRAaBLcjk5/XEi34Bev
-	kT4+5v3FMXfgrxw88F/ve3yzOeA+Ax/L7RsoySM7CSdvm+v/Bg1FGG7WNKY0sLUXVXIk4Efed2T
-	OkVZvB/py5a4AU9WLLpZioJRrXMDRv6XJZe/qp3pTAq2My34MibPFK4eRHP06ADpCkDF4iIswUN
-	EZnwNhELGrARFiXTP/cQ86nrZE723uxZF7UeuPJKW4+jmVSEFMP0DyItVyJTCfIHdZ518gnbdVz
-	vPd48stAaNuTbdyKbw/bnvEpFlmHikjmNQ4JrnqKyYZPfPeo88agPB+2SYv29qfTwVIkRPHmCiI
-	Gr8z2Yc52VFEtkPdM2U1IT76PeSsh6/Xzm/HCrgq4dqwJLjT+XO3cqr+90PejC+RPLGtroReivq
-	1HvRXW1us69z7xCQjs1+mD6QNmPU4/x0FHczzVmAJ5OszTPbHE3CH6i3dj19IjaTWuy3hPryNt0
-	uw=
-X-Received: by 2002:a05:6830:3883:b0:7e6:e385:4c1e with SMTP id 46e09a7af769-7e70c60dec8mr11089234a34.4.1780979035155;
-        Mon, 08 Jun 2026 21:23:55 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:54::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6e745fea5sm12954375a34.5.2026.06.08.21.23.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 21:23:53 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Charles Haithcock <chaithco@redhat.com>
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Respect mempolicy when calculating surplus huge pages.
-Date: Mon,  8 Jun 2026 21:23:49 -0700
-Message-ID: <20260609042351.143573-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CAMcbwu5=TK_EjZ=wN5fqLC-DVUendE+CBWX0pN7KBF+1ZwD7Vw@mail.gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 328E38000B
-X-Stat-Signature: knrxdoxspozadnsmfptgkotkagc84gat
+	t=1780979979;
+	b=CTt65T0KEkPOQRLM63d2BHogZjoOo9fGZK6hogGSdHplxDzIFU/vYl5Fi6SOe2GLh6FzZ5
+	WpTYve+4BurqSxkAfK3vkS2qGvlGIbMjI0Mr4sJdJzFrxD/p8jA8QudqVR4jV+gDNmLCEX
+	H5D/URgARDihqvNQOvh6T0FKOF8xgGY=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gZGQv5bRPz5BNRf;
+	Tue, 09 Jun 2026 12:39:35 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 6594dTb9032774;
+	Tue, 9 Jun 2026 12:39:30 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 9 Jun 2026 12:39:31 +0800 (CST)
+X-Zmail-TransId: 2afa6a279903aee-0a940
+X-Mailer: Zmail v1.0
+Message-ID: <20260609123931349fw0hnPPf7UBWQT0P7Ej2L@zte.com.cn>
+Date: Tue, 9 Jun 2026 12:39:31 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin16@zte.com.cn>
+Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <ljs@kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIHY4IDAvM10gS1NNOiBwZXJmb3JtYW5jZSBvcHRpbWl6YXRpb25zIGZvciBybWFwX3dhbGtfa3Nt?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 6594dTb9032774
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 09 Jun 2026 12:39:35 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A279907.000/4gZGQv5bRPz5BNRf
+X-Rspamd-Queue-Id: DCB8C40002
+X-Stat-Signature: o4a3rubf3ihpxt1k5mfg4kco8nb35dqo
 X-Rspam-User: 
-X-HE-Tag: 1780979036-710528
-X-HE-Meta: U2FsdGVkX18hjmdp3ZPAxOKf2sNg6lwsBBrwEyRecesBbWMWTL58zxI+3zbsCAnAAkukbF//B0Ax32bGng+eQWl3Zp5xy8VslHp2i2DWxWWNX315OO1qoiIvIToYX6sC8EWt/fFDLQ465IGVK+SO+vo23WVznrhdcO/HU9BAoqNlK7qFYUBVbROs36IjD5P6eGGCOekrj1uEQ3k2QWpWQPmjiUVNpUFf5fuOF2UMaQe4Z4zJBE72lWnSswIJvJ2jBXFwpX/Y4aqz23NfjZs1rYn2WkNnR8JFGrC6K3o2ZV8iP3q0f9P2hGTwcwG7RMrY0db03QSDAqJMKA2mqIG4xuyWKyD5e7Q8ldXiyr3AyGNITZUe/8DLzeidZZE6VfTTmIAkCOueGcMsUsoZMLuyzqYr74qKi92/zINxWAV1f2XLqLTXTQk1BDxIDuQI7MbE81pcozrnayQOjsxlzG4qhEgHuPP+bDeyW1rqw7TqMwktN0wJY2xJZe9GoVoNdqVKfmTRZ2W56rNDSYjmPx3X4yZEWMUFCiVtNj1JhvQVP2WPQuGv8OjJqlaY0bIPW+gEKbCJw4KUlyVrCihGZfEsGMm6lrULOfcWwFYB6o36YM6sra7R++uSGeqTAteNjTXqnMERhpbCJEVV9hKH1AKbM54bkKCoUuNVx5oZ0UJf3CbE87hd7OruhkFKJQFV9zC7i9LiUr5v6eVvXYnfwXN7CBPC6MrCgQw3jsISTuT3LGrzRcQ+p8nAb5yxmHT4obOxRx5UZrF9vo1vHI5TIqJM1c1enjzJXRPFouri3RY8TTAUwzncoOBtYXZUsZD623Dd5ZwSoIGuuj0JRkA70Nqj9lw9Eyn3ky2Voz74W5mTuyaD9JCd3TPe/KPNdCBm0tqATTVUMBgh2wwBtOIs49jM/sLXTxHTf3zWkiFyCuH5N4rUH8/VgF+8OJHOskWjJ5XTeeAokcAU1nrxoZngZ2X
- 2qYDLhNd
- 0alkL72wyHoI6Wzn+h/NGWktVwYjl4Ij/FP6da7uC8LoI1RB8jyrEMiF5h51jdavziCd4YN8hF29CPSn7RnjmuZ/Ae4TwzlxXAqvCJnhGE5BZQmHKjoukVQkAv86R3khIWhk0y7/3k7EB0cW6E/XVj/+7Kq+dRokUas++9+QiCtztFqNOXBmawE+JVGXjXfxCRgFm481VJOETF1FvfT0pddEOI3ecY5/j4RYpsAVLQ9IeaNod3uyieLjkbRHSEHIZoNj+rDK8qtrVC1OigV45SBjBrJ4Rd8XTkgaFveY15peswc2zu+Y3A3mh5zcOIpw7AsBOw6dYgl1Aw3otsLnfc3dYy4QLnY12qw5TRL4dTKc5Js5WWEM7/kwMloPP/WVHUfBe3Ivg5qRw3GOlxIgzDS13aAyt6yr0hd33beQfGVtFiPNA9IUTg1auWUp3lYBqSrCVUT2/owJXk0BxzM8IqM88f0rFlpm7aOS55cXmJsLubi7Kbze5bXf+JL0KQGK7bdl1bLUJZMsBiyshAVYLGiEwcTnfTy4FjfuDF1tGri9QUgihETltczZNdA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1780979978-876365
+X-HE-Meta: U2FsdGVkX1/ylTRCbmZzcY/MlAXjy9AN6FW3Kurv1cAO1H4rAigXFHRxDKpXOSMd4dkq8f8dpzdw6O6qHzUK5cHNMLWHitXL/Xwwl5O3iyd8gi4+gmkhy7zQk45MHnFBol2Unng3bBFmttuILODhHFbvxdswTtzBS/cD7fByshi0JEeOz1rjWh4LsvjPXCm+US21naeVbfqCv1hSz8RoQch8ddCpRhaxCEOrocIrsUnSuidh419wMd7SMWf3AXtDzkIoJk6A4qg/IITvhj6IUD3+8cPWLqlxp/sqDeXvEWzkUh4zKv7tagahn9JDr4y/Ug4K6yuKzYGYbMBdbDa1Z6WbhdcrspwccSj4Kp1f1gioINQ/iI63chmo1h/kgH0PM3/dTiU8eNH7al69OZz1fFxqjkS+FMh/BRG17ITbNpGQ13bqtgo+fgAuvj0ak5iyB8pl4cn88gte3DizN8oJRpvEgYbkCr0DWuu7vq2u9yngdhpa3XIzcKTye+bLWvZK5foeAqSDrOa+NABFJN5fRVlNbC293CDt4qb6wxanZNuO2qo+wVCXOjUeV9dAy6wJhnOEhNjRP8h9TMW/vdnWBOP0/x6VgvGc9Kx8YLPdI6DwkfFHJ4LBlbbrSWKLM2JToHYq1/ogeU9895XLlDonZF1ogJAiQJHD8o31HHdqfoTcjwtE0IsJiOdxwqJQJESjP+7SnowfkXUD2zJ6b5YRwO7DEbjRhVCprhud7KHMU9m/7dngJlVJwxAppKHY7mslAFwnKD3teF/yesanxr3kuw9HhFzG4wQ35eI8m++ktIPYDxpxp1AqAR/NJ1D+VrlPQ1gYPk5zZLMkjxEtKSeh1HKtqNJFvQLx+J0utdI1XmYSqe7yPg5c0XHpnghwJQpOctYMIOpxAfGz+9EoNODEyCGojP03CvDv2FTiDBWnt7d1FoUbJ8F3RYDDsgSaLCmFXhWHr82LRP31JC9Z97i
+ gsR2E7sb
+ mV9OzBikqQ6B0tArFyKEf0SwVc3KKRVWbJmbcBF4i3E0SAp7PbQ93P9B37kcX5vSbuEypOidKxLMA7RsfCJ+asGmug+hJ36JIlXswOM+apTLro4isN51NU3ZFvPBVLqbel37G1gWghODlKXvfoXv7Ug2rgvG9UJQcv0n85uOWsbRIvpaSWxFFn6KOaJEYOhlG2wJDVUf1rrV8p6Qcs9RaQWcmJKt4EbKgQ1c4aiOBfMAqSRBzGUg1LH9EZpwLqd8Jvu5c0mvfGLIYWtFXSAmDBPntSqZTNzJvBAbbfsYlJbDAbBquGugip+Nj+7+jdgMa0pHKtrJBFkdZeQKRh2IxOp1nbak29UU8xWttlk9/l8O14Qt88O9YE6cEQQvuoz+xjgylBCrLwjCw9qE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,86 +94,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 8 Jun 2026 10:21:22 -0600 Charles Haithcock <chaithco@redhat.com> wrote:
+From: xu xin <xu.xin16@zte.com.cn>
 
-> On Tue, Jun 2, 2026, 9:20 AM Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > Hello Charles, thank you for the patch!
-> 
-> You are so welcome, and thank you! I'm newer to contributing to upstream so
-> I welcome any and all feedback!
+This series fixes a severe KSM reverse-mapping performance problem
+that can freeze applications for hundreds of milliseconds under
+memory pressure especially when a lot of unrelated VMAs sharing a
+single anon_vma.
 
-Hello Charles, welcome!! : -)
+Two key highlights:
 
-> > I just wanted to add that it seems like this is a known issue. From the
-> > comment in hugetlb_acct_memory (the only caller of gather_surplus_pages)
-> > we have the following comment block:
-> > [...]
-> > So it would appear that getting an exact number of pages to allocate,
-> > and ensure that there are no changes with the reservation or which nodes
-> > those reservations actually go to is a lot more difficult. But I think
-> > we can do a bit better.
-> 
-> Agreed; actually, after submitting the initial version, I went back and
-> have been working on adding per-node reserve hugepage counts to the hstates
-> and adding some selftests for them. It's going well so far, but I'm
-> hitting an issue in accounting where, after reserving a static hugetlb page
-> on node0, reserving and then freeing a surplus hugetlb page on node1, and
-> then freeing the static hugetlb page on node0, followup reservations on
-> node0 additionally count towards surplus pages even when there are free
-> static hugetlb pages on that node. Trace-cmd revealed allowed_mems_nr_free
-> is returning more than what was requested resulting in the over-allocated
-> surplus pages to stick around rather than be freed back.
+1. Lock hold time drops from >500ms to <2ms
+   - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
+     anon_vma lock hold time during KSM rmap walk went from 705ms
+     down to 1.67ms (max) and 1.44ms (avg).
 
-I see. So from the perspective of the system, even though you free the
-static hugetlb page, the system views that as unavailable to other
-reservations and so future allocations go towards surplus pages?
-How exactly are you freeing the page in this case? And how long do you
-wait between freeing the static page and allocating the next page?
+2. Real user impact
+   - The anon_vma lock is also acquired by page faults, reclaim,
+     migration, compaction, mlock, exit_mmap, and cgroup accounting.
 
-I wonder if you are seeing this issue without your per-node
-hugetlb page situation as well. I have seen quite a few hugetlb folio
-reservation restoration accounting bugs recently, including some that
-I think are still in mm-new. If you're developing against anything
-other than mm-new, I'd suggest trying to build on top of that to see
-if your bug still persists. 
+   - A long hold due to inefficient rmap walks stalls application
+     threads, causing latency spikes, reduced throughput, or even
+     container timeouts.
 
-> I plan to dig into
-> what's causing that, however, if doing so leads down a nasty path of adding
-> per-node accounting, I may need to fall back to the first version of this
-> patch (but with selftests) and be ok with simply doing "a bit better" like
-> you mention.
+   - The problem occurs even without fork() – VMA splitting (e.g.,
+     via mprotect or madvise over time) can create tens of thousands
+     of VMAs all attached to the same anon_vma.
 
-Sounds good! I wonder if it would be a good exercise to measure how
-much we typically over-allocate by when using the simplified calculation
-I noted in my previously reply.
+Real-world examples:
 
-> > FWIW, I think over-allocating is actually not fatal (although
-> > overallocating
-> > by a lot is obviously not desirable) since we free all the unused hugetlb
-> > pages at the end of gather_surplus_pages.
-> 
-> Agreed on this point as well; afaik, surplus hugetlb pages are viewed quite
-> differently from static hugetlb pages where surplus hugetlb pages are "best
-> effort." Obviously we should try to reserve the requested amount, true
-> users of large quantities of hugetlb pages should tend towards setting them
-> on boot rather than dynamically.
+ - JVM / Go runtime: These use mmap for heap regions and later call
+mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+splitting the original VMA into thousands of small pieces over time.
 
-Yup, totally agree here.
+ - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+or anonymous mappings are managed with madvise(MADV_DONTNEED) to release
+specific pages, which also splits VMAs.
 
-> > [...] I wonder if an approach like this
-> > could work:
-> > [...]
-> > So we compare the mempolicy-perspective "needed" and compare it to the
-> > global "needed" and take whatever. Since we are taking a max it should
-> > only ever make it more likely to actually succeed with the mempolicy-bound
-> > hugetlb page usage, even though we still can't make guarantees since
-> > a free page on our node may be taken by a different reservation later.
-> 
-> This is considerably simpler than a per-node reserved hugetlb page count!
-> If I end up falling back to my initial patch, I will absolutely be adding
-> this and attributing you. Thank you!
+* Why the benchmark numbers are realistic: We observed ~20,000 VMAs sharing
+one anon_vma on a production system running a Java application with KSM
+enabled. The lock hold time before the patch was measured at 228 ms (max)
+during rmap walks triggered by memory compaction and page migration.
+The benchmark reproduces that VMA count and lock‑hold behavior in a
+controlled environment.
 
-Sounds good with me : -) Good luck and have a great day!
-Joshua
+For systems that do not have thousands of VMAs per anon_vma, the
+patch adds negligible overhead (a single pgoff comparison). For systems
+that do suffer from this issue, the improvement is dramatic:
+1) Worst‑case anon_vma lock hold time drops from hundreds of milliseconds
+to under 2 ms.2)This directly reduces blocking of parallel operations that
+need the same lock – page faults, reclaim, migration, compaction, mlock, and
+exit_mmap.
+
+End‑users will see lower tail latency (fewer application stalls),
+higher throughput under memory pressure, and no more spurious
+lockup warnings or container timeouts caused by excessive lock hold
+times.
+
+In short: workloads that do not hit this pathological pattern are
+unaffected; those that do will see a 100x to 500x reduction in lock
+hold times, which translates directly into a more responsive system.
+
+Change Log
+==========
+Changes in v8:
+1. Suggested by David:
+
+  * Drop the tracepoint and testbench patches and leave them as OOT patches.
+
+  * Rename pgoff into linear_page_index and update the corresponding commit
+  desciption.
+
+2. Fix AI's issue: Use process-self's KSM counter instead of global KSM counters.
+https://sashiko.dev/#/patchset/20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn
+
+
+Changes in v7:
+Mainly to fix some issues AI review points out at:
+https://sashiko.dev/#/patchset/20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn
+
+We have completely correct those possible flaws according to AI useful suggestions.
+- Patch 2: There are mainly 3 changes as follows.
+	(1) Use COMM-PID filtering during trace parsing to precisely match the right
+	    events.
+	(2) Graceful handling of single‑NUMA node. trigger_rmap_walk() no longer calls
+	    exit(1) when no other NUMA node is available. It returns an error, allowing
+	         the caller to clean up (disable tracepoints, restore KSM config) before exiting.
+	(3) Fair comparison for anonymous / file tests with KSM. anonymous and file‑backed tests now
+	    use fork() to create thousands of child processes, each sharing the same physical
+	    page via copy‑on‑write (or MAP_SHARED). This ensures that for all three page types
+	    the latency measurement is based on a single physical page mapped by many VMAs (≈ NR_SHARERS).
+
+- Patch 6: There are mainly 3 changes as follows.
+	(1) Fix mapping size tracking after mremap and protect the original pointer on failure.
+	(2) Use baseline delta comparison to eliminate interference from global KSM counters.
+	(3) Fix error-code confusion caused by pread/close interactions.
+
+
+
+Changes in v6:
+- Patch 1: Defining a single event class once and instantiating the individual
+	   tracepoints with DEFINE_EVENT, as AI said:
+	https://sashiko.dev/#/patchset/20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
+
+- Patch 2: Suggested-by AI below, three useful changes are done:
+	(1) Safe event pairing – Now stores folio and rwc addresses for rmap_walk_start
+	    and matches with the same addresses in rmap_walk_end, eliminating
+	    cross‑thread interference.
+
+	(2 )KSM configuration preservation – Saves original KSM settings and restores
+	    them after the KSM test, avoiding persistent changes to system behaviour.
+
+	(3) unlink in advance to prevent potentialfile leak – unlink(filename) called
+	    immediately after mkstemp, so the temporary file is automatically removed
+	    even if the program crashes early.
+
+ - Patch 3: a separate, standalone patch to update the MAINTAINERS file.
+
+Changes in v5:
+- Patch 1: replaced local_clock() with tracepoints – no overhead
+           when tracepoints are disabled.
+- Patch 3: switched from vm_pgoff (unstable after VMA split) to a
+           linear page offset.
+- Patch 4: adapted to the linear page offset; added user-impact
+           description (real workloads, lock contention examples,
+           VMA splitting scenario).
+- Patch 5: simplified to a single process with 32 pages (instead
+           of multi-process), as suggested by David.
+
+Changes in v4:
+ - Add a tracepoint for rmap_walk
+ - Provide a testbench for rmap_walk
+ - Add vm_pgoff field in ksm_rmap_item
+ - use vm_pgoff instead of address >> PAGE_SHIFT (Suggested by David and Lorenzo)
+
+Changes in v3:
+- Fix some typos in commit description
+- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
+
+Changes in v2:
+- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
+- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
+
+xu xin (3):
+  ksm: add linear_page_index into ksm_rmap_item
+  ksm: Optimize rmap_walk_ksm by passing a suitable page index
+  ksm: add mremap selftests for ksm_rmap_walk
+
+ mm/ksm.c                          | 56 +++++++++++++++++---
+ tools/testing/selftests/mm/rmap.c | 86 +++++++++++++++++++++++++++++++
+ 2 files changed, 134 insertions(+), 8 deletions(-)
+
+-- 
+2.25.1
 
