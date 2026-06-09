@@ -4,79 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E67CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F17BBCD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E296B008A; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
+	id 31EDF6B0005; Tue,  9 Jun 2026 05:26:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F6606B008C; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
+	id 2CF7F6B0088; Tue,  9 Jun 2026 05:26:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90C536B0092; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
+	id 1BE376B008A; Tue,  9 Jun 2026 05:26:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 815AA6B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 412B21404AE
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:22:24 +0000 (UTC)
-X-FDA: 84859833408.30.36AD597
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 79160A000D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:22:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWQgzVI5;
+	by kanga.kvack.org (Postfix) with ESMTP id 0DC476B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:26:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4BF71C2607
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:26:06 +0000 (UTC)
+X-FDA: 84859842732.18.7DB25D7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0E6A240002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:26:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF1jpp6v;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780996942;
+	s=arc-20220608; t=1780997165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ng9jHxhLKm+wupNc2lT6TIXiphnAOWpSgu5QGHBRdkw=;
-	b=B2Lisbk5SLWL+1x7qObHlta8O6m3vvc60tbtfyjGiUoMa/eYeciZIqcGRcZMVkX2YrPh7P
-	O+/d3yU/qqJYi/hsrLcM6V8f1uZo+ABqUthNaAPJ+f47G49XbbnaHrHQpJdRfeXg+aYYFH
-	NIE/ggfwJEdFzIKY8zPplkN+64PMCCo=
+	bh=fT247pCf2/V6ARxuw9Ry4Z2KZS4dVDh/CvQ+WKMkRLs=;
+	b=lcDkOuuIpXCNIHdFx3fBsmsBF4L/8Ni/ZTrclfhXt59wgw7LwdTJKry958DPjky8X5VCmo
+	R1dFHTQvZ9SfEJmd/tAQVeRRWMB5vIAOm2I082Dus5oJ//ffBKx4ofG44NcqVLFa6CS45V
+	WPoyIXkiA4SrgE8u/lalyCyavQs29bI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWQgzVI5;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF1jpp6v;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780996942;
-	b=YzLPJa4vilk1Clhrr2aCzImzsuVZCsIPDT0As2FLj/TRqOVgiZD2+/M/xgr65EF88vZuEV
-	O9scZOhqA7ozv1DFAswAJzu8yFwsrsKLrn/uDNUufRJK1d5b+xpatlJ7zR/Unoc6SLh3CM
-	IWGgN7uLdGJ619QOe7yxJlaeNuqNz0Y=
+	t=1780997165;
+	b=AfL6CWhYBqWpUSe8FEbl9OyCTitt2rGySywHHQmaNzJlL6z04O+OBSe852OCRX/lddQ2bj
+	GjE77gRY7Jdmggod78s5kGk3E/Z1i7J0Fd8ixT5m5mC+jyGwI2tZN+PzA8Gz5ggRrhNtL7
+	SHb4YK6tMjTPUPOwcPBm8hYkDhOuEdY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B08E54004E;
-	Tue,  9 Jun 2026 09:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02581F00893;
-	Tue,  9 Jun 2026 09:22:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F9B760154;
+	Tue,  9 Jun 2026 09:26:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852971F00898;
+	Tue,  9 Jun 2026 09:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780996941;
-	bh=ng9jHxhLKm+wupNc2lT6TIXiphnAOWpSgu5QGHBRdkw=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=SWQgzVI52LaHkB7VoZBRP5Hep43cRjdcNaxoxP8s799rSQR10tuC9zEdbcd/OK0Zj
-	 Qg3Zi8Q0kZHVXMrubP85luSqXwcss6sIuQfi5UcGSdqCRJnTLeYEaWLGQD1uL4No8P
-	 4dVL7kNGywcze91d2iG8aL8qFav98WG2jmJjOxXXgT+nRAEvhnyZrU7AZCf0TJtAxk
-	 W46BDDJ6FNLWOuVjkypQK1MjWqyS41ToH7O8dLG49OTre8ayvppG0u13AMTq/sH/3E
-	 4y1SS98K7w1YJraYhy7Im77ox9c+GhETrnx7gdUt60C3ToM9xXEs7mziD4jdyMP0/O
-	 rPTkApO9tZc1Q==
-Message-ID: <c600d34b-8424-4ff9-adab-f6aa654d7ca9@kernel.org>
-Date: Tue, 9 Jun 2026 11:22:16 +0200
+	s=k20260515; t=1780997164;
+	bh=fT247pCf2/V6ARxuw9Ry4Z2KZS4dVDh/CvQ+WKMkRLs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZF1jpp6v/dXCeWr7H1p7HtA++QO5V5PbD/834AWaM1fA5wfB5NOwDk70hyhVOoyJs
+	 ciupynr8vusnykDt6q/Xl2hxtnA/TLwYsL8xtFB6w0WVWhqkVahhEgywOv5lVpQ/yj
+	 Me4eyQsUzWJWqEWFgDLzQFPgLQvsuskD1QicKh+dCqivZBb8Igy5YB3fAlk8FQZNlg
+	 6PUqHLqlwO1KbLESLAntW2eYdlMQHFlFDxnIS3oGGn0XLPxi6+IhWD5wwI9kF7VWH1
+	 YletVPTwk0H1Kkqkjd+VxK/+F3pC5locj+t7miBietqXB6RidJJ89yPA8aN7vdi3C1
+	 1BIN16E1qzTog==
+Message-ID: <b7fb4184-7a99-42c7-8ee2-4c7fa20827c4@kernel.org>
+Date: Tue, 9 Jun 2026 11:25:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: 7.2 candidate? was: Re: [PATCH 2/8] mm: merge writeout into
- pageout
-To: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev,
- akpm@linux-foundation.org, chrisl@kernel.org, usama.arif@linux.dev,
- kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com,
- youngjun.park@lge.com, linux-mm@kvack.org, hannes@cmpxchg.org,
- mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org
-References: <20260601113449.3464734-1-hch@lst.de>
- <20260601113449.3464734-3-hch@lst.de> <20260609084909.GA12512@lst.de>
+Subject: Re: [PATCH mm-unstable v19 11/14] mm/khugepaged: Introduce mTHP
+ collapse support
+To: Nico Pache <npache@redhat.com>, Lance Yang <lance.yang@linux.dev>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, liam@infradead.org, ljs@kernel.org,
+ mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+ mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, pfalcato@suse.de,
+ rakie.kim@sk.com, raquini@redhat.com, rdunlap@infradead.org,
+ richard.weiyang@gmail.com, rientjes@google.com, rostedt@goodmis.org,
+ rppt@kernel.org, ryan.roberts@arm.com, shivankg@amd.com,
+ sunnanyong@huawei.com, surenb@google.com, thomas.hellstrom@linux.intel.com,
+ tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz,
+ vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org,
+ willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+References: <20260605161422.213817-12-npache@redhat.com>
+ <20260606102800.26940-1-lance.yang@linux.dev>
+ <2553caae-9e0e-42a7-8b61-d1216f1e81fa@kernel.org>
+ <CAA1CXcBY_2372eJru8VoCq90rUMxn7w23hHou68MmXRv48NRXg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +140,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260609084909.GA12512@lst.de>
+In-Reply-To: <CAA1CXcBY_2372eJru8VoCq90rUMxn7w23hHou68MmXRv48NRXg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 79160A000D
-X-Stat-Signature: zj34twqynnfs9sutzz7pfj913ayafb5n
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1780996942-320518
-X-HE-Meta: U2FsdGVkX18mx59ZBkUUNhR92KGYbA7XnlpoCBFYeFhL9TVy827Skykh17bYXUfcHNYEaRC+GLOnQqVvbyMSDBEQAVhsCwpbEQPPRH2PCAhMkCNrvMysnsfrW1+Gy1iJDQS0jPf9YOjcV6jRcRfuO9XX1jQx+0bwcAM/5atoCrIycctGpe3PEDXbstLVGjF62GRXmPUeK/4GYrblvnxHUf6gjYPZJmvp8NHPWwC4YHIGHgfyUcbyn1hVe9RSiQyK4JwMih/M/psZvugRE1cBAtanDW0/sEiuvTkkBFRlCpwzFgOxd0AH4N4jAFq+JQet0jL1kgJaII0F8CGZhQMi8VSYafM1zGbmxDa/f7uZQOiRzxi4/eEKkUf9CIT2FxRc3suUVVBaSLb6HrfUz0Sgv5JalYFkXxSBhR3aagbVxqO2Pws+ubnr4IHI6ZMIgEj4V3xbtCJkaxAlnGI4GOJ0vH0p5OAT7Hw+Szg4HpVH2Ru8cTGHOYyK3WQvi6aRCuDbfdoW4OVpbDedeRNrfoJAxLMKNCQFecygiMoOQjv4bAnXuEGPbSNWAUb5I7QsBF0CSiIsvRIjxJmJSn7T/Kp7TKj5RvLkrTe5WfxuccNn8FYgxc6+hTuWMT2i8mPyNKLwm/APMLiVpvmVf9kYiOA/1L2vuDdS74RB6mhUgHBuq6JI8KxOZyfR1Yps2GSPEtuG7OlCK7wMoO8J9MuQgdt1v159VOY+4Lx4Ot15cVucJot6tHMWPEyCxEtp8BdyNM18cmUGcqZPU9xJkOZzAlHAPzRrgfCP7F09mOg4EivHMW/UWXnkXTlSARwOx/VNFbw5Bf6XhanG//JNWaOTJK1CcsZNhp0SECprjkJ7YF26/WAda591KgPK+eUnf8C7mN+s2x6Yu6O9IlcAXc+xQ0FLO4Y9ra3u4tXvKz0bbJSTv4Ej511LxuCSd/lCsJwawZIOKT0s7WJ3j6Qc5zto/ou
- /dW/EFCs
- 9QxQTaICDZYf9qJxCQnGuqwTWDKQ34yl8qqpQixueafI8KznELUrt5hHK7v/Xw9QEM2Et/UwpiGpioFrX8+JjtF7vnXhagcdHHc/C/tkshSVQe5X68hlb7w2ksQafDwnaFsph+g3K5CGdsoRDu/zpMOaYcITNBT8I2fi++gNHHWRCqZ6lKaDuj1H6hHjh4miOSWCnKOcEuXrp4AGwRBKtjmtWKETITMCaQQYael11dS91q19IfBesWktmTYhZ+COLzgayBl/l/9I/Ht5XO++JL5H3Tg6k822Gk7eao0t+2PQYI6ycC8+TebQWBnbzyJ8vjF8NUsdgj+yerCI=
+X-Stat-Signature: rw686mnhi1xsxoiqkund1p5rupt4tjht
+X-Rspamd-Queue-Id: 0E6A240002
+X-HE-Tag: 1780997164-92731
+X-HE-Meta: U2FsdGVkX1+dvA+fy7BtDemwmL0M6E7W3bKEj+7mRydFDDIFPASyz0tLevAZTF7Ifhrbh6FikDQpXz/v1xtEIKiYofUNGe0AX6NHkcgP1owUELd+fz45Tx+UzUwwoGwJ8lIBRRNuy1ss+BlAUTonb2wmf/2cQCc4M7Q3iRepfJDv4pbL9wlxRNZM9N4H2ExYn0WJ9tXnT6oLOvpEljSoHIF/hjjBGLkvTWl4hjPW2DfR1gQ6GG1kXRTdPdBrZ4Z7PcQtE3xAVZnVW0SD2rzBYP+M8HhG4PyK/yeAliOIZeiPYsMbIy0xEUAU1KXIUh0x3Zf3rs7RNjrOC+bGB1SOEemqUrE3qNH9qflJ6mWNAUEnx+2icMbGlSOSiYpJEeiyvo1wpFaEAYMxRpzm4Nrdi5qc0rh+tRJWwa0tk0O0uaBKuasAoPhhhAS5w2sfcAKIPmlkYmaeNe+Vz3bL+Tx9IexIVaVe6TntY77lQsNc7fDW4qR+ljA/ljeSST4cpLNuJddGWPAd6PZu01OjOzIo9c+C6KLp0+yk5za78/FXvZ1WH1zi4iJjiKHsAoSNBT5/RSl4AlnkqdfUQz9n/u3tTe/k29iPjqzKAhKUWEonLmT0JeN2ENfu6EI/Zp5Buvuh8JUtns04v0YlbdFb5ez8uWDQCah63dEu6Uu2W+Z1ZttUcZ1kkLhpJcVM+wd+7dpDdZyWSF/p+Se1MSRH64hn3rBhpaQ/9FiQbFSyQ59smvVmxW85dU1X9sGhds/TIEPmChyNpNl4rhUWKzId99XmtG3+FIgeX3+hsuWORLT6WcU9RtrJJlnKFDnWavJmfTenj7xTxCOmDtiXWgjCFZsysnu/mxUxHrhMS76dHyn30nf7mns8UOqxbfTqBkjGfKzZHw4T9/ctjOIJXgHWnT98bpn+NK2cpHDRPxfS7jmAKEaVZcyOHqWqRnp89f/hKuNJTHJaFSMp5kJncLOK44G
+ 59qe6Ak+
+ 28cbg8T+T+LqQBLRBfTKPgh+AVQ9qrvfdfC8bSaT7c8j0B47AwOE7oz0Va2j54UvGu44D3fZQPZA2DsfR5wxKfblOyL3mBQJa6k9QFF4iTqi2Jr75w8x7nJRtJo42ARWf4JD4gzRzDb5kJR0VEra2qQaVxzdDnmBYQEz80MnkMmD6+X1QACMhhBhW893WZSEFAAo14ueZOSWeicxqO1ZR6POUl4sdqd0PsD9LIBJGwW7bqhyoX9XBqnlFrWktjiTU/+K9CflzrT3H6dp1N8Eb5XbtI3jlw1ifia662+4XVsdNDB8hYO5M2yYbXTDCNIOddo2/Zb4//PXRoOTmEXvqDmZ+WGB4701pqUEHe1dkIPbWbFGA0/2MAwsmjqPWong06ZT5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,111 +158,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 10:49, Christoph Hellwig wrote:
-> Can we maybe pick this up for 7.2?  It is a trivial cleanup that would
-> be nice to get out of the way.
+On 6/9/26 11:06, Nico Pache wrote:
+> On Mon, Jun 8, 2026 at 8:57 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 6/6/26 12:28, Lance Yang wrote:
+>>>
+>>>
+>>> Looks broken for swap PTEs in PMD collapse ...
+>>>
+>>> collapse_scan_pmd() allows them up to max_ptes_swap and record them in
+>>> unmapped, but they don't get a bit in mthp_present_ptes. And then
+>>> mthp_collapse() does the check above:
+>>
+>> Right. I assumed this is implicitly handled by the optimization in collapse_scan_pmd:
+>>
+>>         if (enabled_orders != BIT(HPAGE_PMD_ORDER))
+>>                 max_ptes_none = KHUGEPAGED_MAX_PTES_LIMIT;
+>>
+>> But we perform the check a second time.
+>>
+>>>
+>>> nr_occupied_ptes >= nr_ptes - max_ptes_none
+>>>
+>>> So max_ptes_none=0 + 511 present PTEs + one allowed swap PTE won't even
+>>> call collapse_huge_page() for PMD order.
+>>>
+>>> Shouldn't we account for them in the PMD-order check? Something like:
+>>>
+>>> if (is_pmd_order(order))
+>>>       nr_occupied_ptes += unmapped;
 > 
-> On Mon, Jun 01, 2026 at 01:34:28PM +0200, Christoph Hellwig wrote:
->> writeout is only called from pageout, and a straight flow at the end, so
->> merge the two functions.
+> This solution seems good for a temporary fixup. but longterm we may
+> want something else. I'm still not sure how we plan on supporting
+> swapin without causing creep. So I'd be ok with adding a fix for
+> legacy PMD behavior until we know how to handle mTHP creep correctly.
+> 
+>> As an alternative, we could either 1) skip the check there for
+>> pmd order (as the check was already done); or 2) introduce+maintain
+>> a bitmap that tracks non-present PTEs.
 >>
->> Signed-off-by: Christoph Hellwig <hch@lst.de>
->> ---
->>  mm/vmscan.c | 63 ++++++++++++++++++++++++-----------------------------
->>  1 file changed, 29 insertions(+), 34 deletions(-)
+>> @@ -1475,7 +1477,9 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>>                 nr_occupied_ptes = bitmap_weight_from(cc->mthp_present_ptes, offset,
+>>                                                       offset + nr_ptes);
 >>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index e8a90911bf88..d7303eea1265 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -612,45 +612,14 @@ typedef enum {
->>  	PAGE_CLEAN,
->>  } pageout_t;
->>  
->> -static pageout_t writeout(struct folio *folio, struct address_space *mapping,
->> -		struct swap_iocb **plug, struct list_head *folio_list)
->> -{
->> -	int res;
->> -
->> -	folio_set_reclaim(folio);
->> -
->> -	/*
->> -	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
->> -	 * or we failed to allocate contiguous swap entries, in which case
->> -	 * the split out folios get added back to folio_list.
->> -	 */
->> -	if (shmem_mapping(mapping))
->> -		res = shmem_writeout(folio, plug, folio_list);
->> -	else
->> -		res = swap_writeout(folio, plug);
->> -
->> -	if (res < 0)
->> -		handle_write_error(mapping, folio, res);
->> -	if (res == AOP_WRITEPAGE_ACTIVATE) {
->> -		folio_clear_reclaim(folio);
->> -		return PAGE_ACTIVATE;
->> -	}
->> -
->> -	/* synchronous write? */
->> -	if (!folio_test_writeback(folio))
->> -		folio_clear_reclaim(folio);
->> -
->> -	trace_mm_vmscan_write_folio(folio);
->> -	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
->> -	return PAGE_SUCCESS;
->> -}
->> -
->>  /*
->>   * pageout is called by shrink_folio_list() for each dirty folio.
->>   */
->>  static pageout_t pageout(struct folio *folio, struct address_space *mapping,
->>  			 struct swap_iocb **plug, struct list_head *folio_list)
->>  {
->> +	int res;
->> +
->>  	/*
->>  	 * We no longer attempt to writeback filesystem folios here, other
->>  	 * than tmpfs/shmem.  That's taken care of in page-writeback.
->> @@ -674,7 +643,33 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
->>  		return PAGE_ACTIVATE;
->>  	if (!folio_clear_dirty_for_io(folio))
->>  		return PAGE_CLEAN;
->> -	return writeout(folio, mapping, plug, folio_list);
->> +
->> +	folio_set_reclaim(folio);
->> +
->> +	/*
->> +	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
->> +	 * or we failed to allocate contiguous swap entries, in which case
->> +	 * the split out folios get added back to folio_list.
->> +	 */
->> +	if (shmem_mapping(mapping))
->> +		res = shmem_writeout(folio, plug, folio_list);
->> +	else
->> +		res = swap_writeout(folio, plug);
->> +
->> +	if (res < 0)
->> +		handle_write_error(mapping, folio, res);
->> +	if (res == AOP_WRITEPAGE_ACTIVATE) {
->> +		folio_clear_reclaim(folio);
->> +		return PAGE_ACTIVATE;
->> +	}
->> +
->> +	/* synchronous write? */
->> +	if (!folio_test_writeback(folio))
->> +		folio_clear_reclaim(folio);
->> +
->> +	trace_mm_vmscan_write_folio(folio);
->> +	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
->> +	return PAGE_SUCCESS;
->>  }
+>> -               if (nr_occupied_ptes >= nr_ptes - max_ptes_none) {
+>> +               /* Check was already done in the caller. */
+>> +               if (is_pmd_order(order) ||
+>> +                   nr_occupied_ptes >= nr_ptes - max_ptes_none) {
+>>                         enum scan_result ret;
+>>
+>>                         collapse_address = address + offset * PAGE_SIZE;
+>>
+>> 2) would probably be cleanest long-term.
+> 
+> That would be best for future swapin support in mTHP, but I still
+> don't think it solves the creep issue. 
 
-LGTM
+It wouldn't, we'd simply maintain the state we collect + rely on in separate
+bitmaps. On swapin, we'd have to update/refresh bitmaps I guess.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Perhaps we could combine the
+> two bitmaps to determine if it would make the future collapse eligible
+> again? Not sure but ill start thinking about it.
+> 
+> Should I send a fixup for this using Lance's solution? Or does Lance
+> want to send a patch out with the fixes tag?
 
-It's rather trivial, so throwing it into mm-unstable for a bit to merge it in
-the second MM PULL would make sense to me.
+If Lance could send a fixup, explaining the situation, that would be nice.
 
 -- 
 Cheers,
