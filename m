@@ -4,135 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE61CCD8CBF
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E641CD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E58F6B009B; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
+	id 19F756B009D; Tue,  9 Jun 2026 09:20:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BD606B009D; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
+	id 1787D6B009E; Tue,  9 Jun 2026 09:20:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45DCC6B009E; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
+	id 018B66B00A0; Tue,  9 Jun 2026 09:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E116B009B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:20:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03CFD1C12BB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D44296B009D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:20:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 92F78C1FC9
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:17 +0000 (UTC)
+X-FDA: 84860432874.02.F97400D
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A51EB20002
 	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:15 +0000 (UTC)
-X-FDA: 84860432832.15.ACB33C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4AD8F4001B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:20:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qn/TwL6p";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781011214;
-	b=QG9mT1F041naF9sppQF9gWVpd1I/+7F8FiwGZY46vod7tblpokb1682ZrIvBsfpu8MBC/1
-	xF9MAnIUaeX9/nYcpYzzk2tbEBQOk/5i53w4fSwuIZ9JI4379FG5i7WTLLK6ll1NukrQRy
-	87+PN0b3gWcrHrtIORZpDcUFrNueha0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qn/TwL6p";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YcLiiZ6m;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781011214;
+	s=arc-20220608; t=1781011215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hVaej1augRXIFWuAG42FMnav00Af7NNV6S/ONanWmPo=;
-	b=txXj4Au7cTDB7mUXh2q/ViwgLZqmwbJCXSc9FSqLSma3BXknFoBvQVQ5X5FhNVWKl48h3T
-	+oaHQeJJl68pIBLde3jUD8rvdGCFY/bbDyz7dUOjF/kj+0J6Wq5mY8ZF1j4z48agdv30FO
-	el8hl3tJxLN62ZduaLMgaWuC/K34pRc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9B9486020F;
-	Tue,  9 Jun 2026 13:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3D1F00899;
-	Tue,  9 Jun 2026 13:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781011213;
-	bh=hVaej1augRXIFWuAG42FMnav00Af7NNV6S/ONanWmPo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qn/TwL6pgtT8QYIE9U2tP7uwoTgnLZz5sBSxMK2focx9/jk2s/mZGV6jNIp6+u3yq
-	 8wZgDhqklVGdn2RBWWSd4Kyr07glvsviq1pvtYGuGqkUUo4Iv2IXUHGiCXvXjNaGWk
-	 HJHR8oUDepujeZnV1PtcHCahmpScFH24ynMezpMPC702Q+vHoXKRwDi6W5MJkEoVbx
-	 c3FYIdYM1rMWUD4LkBqXFhBz8pLo+zvc89WIAk18ilxCNBTv0ywoHSoEqqsN/Or0sC
-	 EQ92l4d61A//VQFI9bTm+k5Yf12jzwdQbVXmZWlVYAoRNayPsgNkhQdIR3ur/C2Zvo
-	 SbrMwa6K0XmBg==
-Message-ID: <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
-Date: Tue, 9 Jun 2026 15:20:07 +0200
+	bh=wSL5CmzTD1LjszwUA61HuGE+7rKiRm908LOwnsMCpzw=;
+	b=k5E20CkgNEqIVxafq+P1vku9I1yuAHMiNcglsh+LIR7wXqGyrRw5Bi+JZY6IRhdOOqKe0n
+	4Nnf2OUnmUCy6pgJNLPQPTaPAyRz2Lb4NyowbgPk3CxXoSsOD7Du1Oi5Ckx1Dw71JZDj32
+	bOgr/mpiRnfvf/zFuBwvve2JzLX6mGw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YcLiiZ6m;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781011215;
+	b=IYSG+sy31gshwmExnFkWftC+W9M0tguZPznRFKb2HYbMy7+v6UewRHl60xcCtE6bX/pYda
+	Ek3e99kXcmvNkTS+jJP7PJgFfLrfq9HXWE3apWdoYutctW8sbutVzcPApWBKQDxvo3fNpq
+	yDx0YRpZ9AZnqkYIutQSb3hTAYB+50Y=
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-304d7f31215so4820197eec.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 06:20:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781011214; x=1781616014; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wSL5CmzTD1LjszwUA61HuGE+7rKiRm908LOwnsMCpzw=;
+        b=YcLiiZ6mkbdzxLNh8+v4ZKAbxGFNtgz3LEta10CiZqsd5PpAhEcQ2T3YA1SEYTzKVv
+         uBzJWR9oruJsqlSgF18RfVjjf8BXCTgdzljssM+vZu+xXjedRQd0pK95MDdXPFr+3zMu
+         86C2RjF8U3OdlZ3RR6tpQ5i1Iah2ykJ7sd67D/+wMhmD37/CuTjMMvSGMmse93tbtL2j
+         osNKQ/+HZbE2GYmFCPU9MjHJoUPopkbfB1gKVsINVdS2UcapVeUx4VnMhGYhWfwOR9qp
+         EwFy3pRwuzxZKri6aAfz2Mf+1gc2s5PGSymNUH9vEsZy6ZerFkIx2DAjSAcbmv0r11jB
+         YqCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781011214; x=1781616014;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wSL5CmzTD1LjszwUA61HuGE+7rKiRm908LOwnsMCpzw=;
+        b=kL0Exs/67KQZKjIq8QUIEDyfFuW/HS+V7crJ0AjY+DlTATBqDFQu/yJr8AIAnTFJkp
+         9+sPJAfkLOV4cAddz3ZH+T/Bd5AZKAwtd91Hl3XLTVnW1ulMI89JZvUxMtmkdODT1H3Z
+         VgWLac/xAeWNjzOgte2j1DnGYfrEb/pUjdev94LW7ELk7kx/DSIZMmkU0O1jEJK9wNK8
+         YY6Sv8qpcEAODVt9B4Oqqe9P5GZNBB1cgxkqvvqjCAxAys/OYXz+1v92s3aTt7pgESEv
+         gZ+ugDyzt4oZSOWLj1nvUJtUz33vi0SWoHqo3C4eIZWYglUQ0UU3iu3T7tIOxK5Wqxeo
+         IYVg==
+X-Gm-Message-State: AOJu0YzJMu6svQ/5RB9XX4ZnLEozWX4FO/VylMAO46JgVhXTFS31jZJ0
+	UTjY60LXxLSNAAXavWPHjM95f6dTbWZ0uLkuH85ks84hWAvjttsIJIhuISo+4Q==
+X-Gm-Gg: Acq92OHK5FpqMKhvGZVbpyh+LmhysCA83PrtvdYAqvYeE44B/0FM8IPEapW9kdhNApA
+	ZwtBumZMjPnynbrSQ4DpBXi0eRU2nkKma+870d5a+UCl2sLCKUdrWOxvEqin2dK2dGVP37tUd7D
+	7l0ZAGlE1hGICa7WCKGN+mw0JsYF1t7+Tu+EWzT+H6URw/vgzimZ5q50jx7d+qp5mV/YvXzcZ5u
+	EK6HMxYAZif8tQY9NOboHGd4poTKZvmDtbZydvfD/6QSHZ+NfyFGbQfJ673JIMZgOCDy6YJItiU
+	dELP5Pp5Gb0LpUSr3PLoItR55M/YNV32TIWd+Kl5vqBAVqMJuv6xESwlYBjdqZYvhPkn8b7EIAC
+	jr7QPr47quxOQ6jIfMIoHROztTBXfZcgX9rAonKvxPzrtaQojl6ZyJEFWEhmYJCDFz+QueFnGg9
+	yMgAGqMlkGtY0wJ1GuXBFqiw+cew5o6u9LDB2AaMbukcwHuLogB80Hd8FG+Mf9
+X-Received: by 2002:a05:7300:2311:b0:2f2:6dde:df66 with SMTP id 5a478bee46e88-3077b5a13cemr11222291eec.22.1781011214188;
+        Tue, 09 Jun 2026 06:20:14 -0700 (PDT)
+Received: from localhost.localdomain ([129.41.58.2])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db55f60sm27162467eec.6.2026.06.09.06.20.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 09 Jun 2026 06:20:13 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linux-mm@kvack.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	David Hildenbrand <david@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [RFC 3/4] mm, swap: make SWAP_NR_ORDERS runtime
+Date: Tue,  9 Jun 2026 18:49:33 +0530
+Message-ID: <19688ab5ab8017467749e003cf630c76a4b2b198.1781000840.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1781000840.git.ritesh.list@gmail.com>
+References: <cover.1781000840.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
- accounting
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260609120443.71864-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260609120443.71864-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4AD8F4001B
-X-Stat-Signature: ky1i63h8dnbw6ud5qzrk8stpe38b8h4y
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A51EB20002
+X-Stat-Signature: c87wmpnymz6677t5rytq95ae9oa95t1d
 X-Rspam-User: 
-X-HE-Tag: 1781011214-545878
-X-HE-Meta: U2FsdGVkX186Trf4gW7JIOYIUz63CsR9bxwQlZ941curbU551iiZNVF/3gBy1R/a0Yi9DngSnapMTz1WlEvaIZBQMgjFx592g2NB6xE8MGBW+8gqzsyQPSj/fnF7E/EmbysCIDAyGtx0BX6Y9zm2XqVmeQ6ry/SrHMPHg62QiX2L1uWlSb9e6OnqQdgtxy/fdly+DZol7Ke38G2Vu1YOAR6uLsuop+wDiEQsArFv7pklev42FP8/Sc9fB8LNx4/X+5XD/uV7clUvvv84niNyJUjQ4aQMTNd1UdlqoVSczUw9Nnyw5jT4mUlVmunApOxG9Q/pg2O8MWJXRhj9Z81PcANL7hpFl2IsE1+iDaBsaeLLMhTEOovtthP5KiHhIup38VaC7iXFr/iMi5dvx9TtE1PJ2x3rl0k/A+U6Uwr7t5W2/PjXXYBsOLEJ4viSgzMfD1HHJ50tExz15D5h4lONiwHdfgZlv8mr9uqg7AORmofEjfLaLM+pSXdFhQ8w8vSoc0uQuLHxoe3JmzX33vF8LOr2lMevkXrTF8vdRR2TWGH1hiiNOJwgPL1R75EUFelQwtOpVIG62g0OZx8mOj0++ArUd0HMGeqRcceRk6Z+a9oWkAr5ox06Q8SwkqEBmcMswHCwYmBrbSEO6oCyjajxPGOzVmxVzHdAiHvBzpeQIGA6HYXJ2vnXwxfto1BwcZKV2g8JIl6PQKeVVqRX+hcqDt/DvqlpeVa6FwaU5p7WciE5F5k07f5nW5Hmoob+3uNxXQOI1t/SDPb7mHA3Q4YE2kzRTEa42Bd6fkViR7dnoRsCC8qFdsSBlVShEyFQhpb2NyNySni8wKS8Mbh0C6eFJB6+Z9vz3exQus/ey6VxBWX7hl9aAQvDzPge+naKIXVeRboGZCncrZjOP3YH/hN1uyS+J6tf0vqAkchlcW2LVNx3XtwnK+CBQbCPK7PKt3DVnm3ayjCUCebRfgs3lRm
- dL9hzTXg
- B5ij5CWUJcmkAHyS/UOO7LWjzlWjaOxcJ0nCr+S7Wx4PI1geFHrAVuDUrk8KtPpu7vbEwsL1YycUypZTubAIeGUm1+xqi76FzySYJnln3H3t8NsFKwKa2lqxlXUIrF+5be2MPpcgANZWzH0lBqhH7JtkAcBAkePRpDBfOE00/owE6R7JedyXHw8nfPGjMdgTsy1OtNIXRS0p+4ZtXodJ4xCWMF7qx+kPqAPDvyXzKY6NPHcNdFJxas+djKXn2nBo9jWcJ
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781011215-232863
+X-HE-Meta: U2FsdGVkX1+TNP5SEDaGCl2zpz3/R7eeTiroXxR8pUSoOAhXz96ZrEZIlwZ8i2CUQlFKvZTYp7w9u8bgzrjAheyzyYKIN7dqsLoSOQTVlOCZQdwoI0ROAHRLgYPmYTMeD0YPm7YuH+WgH6oI343BbWwPT3GHJyLw1OtnadhuYwfdRjuq7cGJWqVFcKzGKfY+YpYbj6WckXOLzIXGcbflq3scweiw+oOjRVqsfVtdpbaja93KjcNywhw31MboDToL7HHt0Ruu7kl/vtM6BuKKjgX6d18ZwN0obq1/VLISqxjvMT7Y/iJyAvmph2hvqVPErtdE7AkBYwfShtE+ZCnWKAGhXuL2YxMQI5eAFD2db5FmfvVe+Q3H/mkJuNq9GavLEDy0WK8tWDEzESafhigxdwrlqCdgI0wP2drRtbkKhWFNfiK/PdN16avNR6+SqdO30FO1jWWxmA+bwNjv71O4RA7o+3+S/e1sQLXQy7e0TSI1bNlcC/5J+03xeYQYl/I2vg5oFbpGTNSR3PRiL4mMjTTq+6ZANHdbc6+upeScR6wb19Lkc7QoyM4t5nSeGx+1pDwk+WWe8XGUbNrOQwbEvr3h0mBY3atLV8EbVamBNgCo+/bGCKdPWmCDYKQsMYCM36i3kJyzx1R0yKHx6rwFivngTHSI9C3i3pC32e2xgEi1ShQad+W91d/ltDLU/CP+GL/UF7uw9XGEsyW+DTJv0V8fkKmoImq18Y9PSf7sk24ejPSRQEyM7Ly3p14wP2PLiNOJfznKEqxG0yJOZmhC9TsBWIjvZa+1G3AX/TpXMVpU3A1GE7evxsdiDq3AJZCOzkehJId266EnxaLvWPyCRCZTLx46PRcj4dVvimd+QUC3/kqTisgKd1prESgLHLbh6UP35UGpILWc3RlevlmzmoKvUtyrM5L4495tgxZOMnvrca8pmc/9XSQCDAZa87g6pOfRdO7AFnelC7d43kT
+ b1TU7ryJ
+ zvMvV+QUpaMY5lbKd0QC0SZbDlO7M45uCdOcMXXEzuVV3VfhcVg41vRYgrvOxursAU00UP/qteqT3x7WXoOQY2AmeOO/ydyeAEuoc6+9SCqggU0FCdrMQ8+7areiDi3RIAQZWf3dbxPXhgUVcQMBS2+4BctOFqrsz/MPXDds3Gv9Q85f7vMzYEby5euVf0GtTAQp366jxUXEuG++JcGAahQ/GH2jXhpC4iuICjskTZ22s3oa6nEOdxK3Bdf8TnkskeXfPvK5l8V2ISfcv63taVxyNR7M9+zsi8KfeA2WkosAKU9gXKqKY5uIwWU6mPlAWEEumH1quBiU0ILchL117COQIZgaeMkP1PO+kdQUuo2IFoGUU3XfpmSCfF0d0dMguq428uY4UB/jWz4x67/eDKv73EpV8tCdr6b71Q94frB9GVJkNcFcCLIUL6S06K0IRriSaOb/71XaTlYmScFHeArGxX2rcjD12WSQECqBxsOi8Kk9HvtHxcH+Y37X5CFatcXNbHNJy8KI8PtvDhID536cbst90J9bDMeFSReSWyqfWGI45vEe/1BzvzjYTNWsw7woCs1sz76ZQO4kkPr1JzQxweDDEnsi0GhBBEdSTIGUPpob92jRWNjMgfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,37 +131,338 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 14:04, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> mthp_collapse() uses mthp_present_ptes to decide whether a range has
-> enough occupied PTEs to try collapse. Swap PTEs accepted by
-> collapse_scan_pmd() are counted in unmapped, but are not represented in
-> mthp_present_ptes.
-> 
-> When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
-> so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
-> then checks the PMD-order candidate using the bitmap.
-> 
-> With max_ptes_none set to 0, a range with 511 present PTEs and one swap
-> PTE no longer reaches collapse_huge_page(), even though PMD collapse can
-> handle swap PTEs up to max_ptes_swap.
-> 
-> Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
-> through max_ptes_swap, while lower-order mTHP collapse does not currently
-> support non-present PTEs. Keep non-present PTEs out of the lower-order
-> eligibility check.
-> 
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
-> Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
-> case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
+SWAP_NR_ORDERS is currently a compile-time constant defined as PMD_ORDER
++ 1 when CONFIG_THP_SWAP=y, else 1.
+This patch converts SWAP_NR_ORDERS and all the relevant code paths to
+make it runtime dependent. This is needed for architectures like powerpc
+book3s64, where PMD_ORDER is decided at runtime depending upon which MMU
+is chosen (Radix / Hash).
 
-Right, probably we just want to add the Fixes: tag once Andrew moves the series
-to mm-stable?
+One thing to note here is, if any of the allocations required in
+swapfile_init() call (which is a subsys_initcall) fails, then we have no
+option but to panic. This is inline with how memory allocation failures
+in other subsys_initcall() are handled.
 
--- 
-Cheers,
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ include/linux/swap.h |  10 ++---
+ mm/swapfile.c        | 105 ++++++++++++++++++++++++++++++-------------
+ 2 files changed, 78 insertions(+), 37 deletions(-)
 
-David
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 46c25523d7b8..063ab7c4d4a5 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -224,9 +224,9 @@ enum {
+ #define SWAP_ENTRY_INVALID	0
+
+ #ifdef CONFIG_THP_SWAP
+-#define SWAP_NR_ORDERS		(PMD_ORDER + 1)
++#define swap_nr_orders()	((unsigned int)(PMD_ORDER + 1))
+ #else
+-#define SWAP_NR_ORDERS		1
++#define swap_nr_orders()	(1U)
+ #endif
+
+ /*
+@@ -234,7 +234,7 @@ enum {
+  * The purpose is to optimize SWAP throughput on these device.
+  */
+ struct swap_sequential_cluster {
+-	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
++	DECLARE_FLEX_ARRAY(unsigned int, next); /* Likely next allocation offset */
+ };
+
+ /*
+@@ -250,9 +250,9 @@ struct swap_info_struct {
+ 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
+ 	struct list_head free_clusters; /* free clusters list */
+ 	struct list_head full_clusters; /* full clusters list */
+-	struct list_head nonfull_clusters[SWAP_NR_ORDERS];
++	struct list_head *nonfull_clusters;
+ 					/* list of cluster that contains at least one free slot */
+-	struct list_head frag_clusters[SWAP_NR_ORDERS];
++	struct list_head *frag_clusters;
+ 					/* list of cluster that are fragmented or contented */
+ 	unsigned int pages;		/* total of usable pages of swap */
+ 	atomic_long_t inuse_pages;	/* number of those currently in use */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 016a5aa0cb93..0a78802528cf 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -118,16 +118,12 @@ static atomic_t proc_poll_event = ATOMIC_INIT(0);
+ atomic_t nr_rotate_swap = ATOMIC_INIT(0);
+
+ struct percpu_swap_cluster {
+-	struct swap_info_struct *si[SWAP_NR_ORDERS];
+-	unsigned long offset[SWAP_NR_ORDERS];
++	struct swap_info_struct **si;
++	unsigned long *offset;
+ 	local_lock_t lock;
+ };
+
+-static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
+-	.si = { NULL },
+-	.offset = { SWAP_ENTRY_INVALID },
+-	.lock = INIT_LOCAL_LOCK(),
+-};
++static struct percpu_swap_cluster __percpu *percpu_swap_cluster;
+
+ unsigned int swap_slots_in_cluster __read_mostly;
+ bool swap_table_use_page __read_mostly;
+@@ -545,7 +541,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * Only cluster isolation from the allocator does table allocation.
+ 	 * Swap allocator uses percpu clusters and holds the local lock.
+ 	 */
+-	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
++	lockdep_assert_held(&this_cpu_ptr(percpu_swap_cluster)->lock);
+ 	if (!(si->flags & SWP_SOLIDSTATE))
+ 		lockdep_assert_held(&si->global_cluster_lock);
+ 	lockdep_assert_held(&ci->lock);
+@@ -562,7 +558,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	spin_unlock(&ci->lock);
+ 	if (!(si->flags & SWP_SOLIDSTATE))
+ 		spin_unlock(&si->global_cluster_lock);
+-	local_unlock(&percpu_swap_cluster.lock);
++	local_unlock(&percpu_swap_cluster->lock);
+
+ 	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+ 					   GFP_KERNEL);
+@@ -575,7 +571,7 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	 * could happen with ignoring the percpu cluster is fragmentation,
+ 	 * which is acceptable since this fallback and race is rare.
+ 	 */
+-	local_lock(&percpu_swap_cluster.lock);
++	local_lock(&percpu_swap_cluster->lock);
+ 	if (!(si->flags & SWP_SOLIDSTATE))
+ 		spin_lock(&si->global_cluster_lock);
+ 	spin_lock(&ci->lock);
+@@ -1016,8 +1012,10 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 	relocate_cluster(si, ci);
+ 	swap_cluster_unlock(ci);
+ 	if (si->flags & SWP_SOLIDSTATE) {
+-		this_cpu_write(percpu_swap_cluster.offset[order], next);
+-		this_cpu_write(percpu_swap_cluster.si[order], si);
++		struct percpu_swap_cluster *pcp_sc = this_cpu_ptr(percpu_swap_cluster);
++
++		pcp_sc->offset[order] = next;
++		pcp_sc->si[order] = si;
+ 	} else {
+ 		si->global_cluster->next[order] = next;
+ 	}
+@@ -1178,7 +1176,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ 		goto done;
+
+ 	/* Order 0 stealing from higher order */
+-	for (int o = 1; o < SWAP_NR_ORDERS; o++) {
++	for (int o = 1; o < swap_nr_orders(); o++) {
+ 		/*
+ 		 * Clusters here have at least one usable slots and can't fail order 0
+ 		 * allocation, but reclaim may drop si->lock and race with another user.
+@@ -1376,13 +1374,14 @@ static bool swap_alloc_fast(struct folio *folio)
+ 	struct swap_cluster_info *ci;
+ 	struct swap_info_struct *si;
+ 	unsigned int offset;
++	struct percpu_swap_cluster *pcp_sc = this_cpu_ptr(percpu_swap_cluster);
+
+ 	/*
+ 	 * Once allocated, swap_info_struct will never be completely freed,
+ 	 * so checking it's liveness by get_swap_device_info is enough.
+ 	 */
+-	si = this_cpu_read(percpu_swap_cluster.si[order]);
+-	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
++	si = pcp_sc->si[order];
++	offset = pcp_sc->offset[order];
+ 	if (!si || !offset || !get_swap_device_info(si))
+ 		return false;
+
+@@ -1770,10 +1769,10 @@ int folio_alloc_swap(struct folio *folio)
+ 	}
+
+ again:
+-	local_lock(&percpu_swap_cluster.lock);
++	local_lock(&percpu_swap_cluster->lock);
+ 	if (!swap_alloc_fast(folio))
+ 		swap_alloc_slow(folio);
+-	local_unlock(&percpu_swap_cluster.lock);
++	local_unlock(&percpu_swap_cluster->lock);
+
+ 	if (!order && unlikely(!folio_test_swapcache(folio))) {
+ 		if (swap_sync_discard())
+@@ -2166,6 +2165,7 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
+ 	struct swap_cluster_info *ci;
+ 	swp_entry_t entry = {0};
++	struct percpu_swap_cluster *pcp_sc;
+
+ 	if (!si)
+ 		goto fail;
+@@ -2174,9 +2174,10 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	 * Try the local cluster first if it matches the device. If
+ 	 * not, try grab a new cluster and override local cluster.
+ 	 */
+-	local_lock(&percpu_swap_cluster.lock);
+-	pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
+-	pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
++	local_lock(&percpu_swap_cluster->lock);
++	pcp_sc = this_cpu_ptr(percpu_swap_cluster);
++	pcp_si = pcp_sc->si[0];
++	pcp_offset = pcp_sc->offset[0];
+ 	if (pcp_si == si && pcp_offset) {
+ 		ci = swap_cluster_lock(si, pcp_offset);
+ 		if (cluster_is_usable(ci, 0))
+@@ -2186,7 +2187,7 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+ 	}
+ 	if (!offset)
+ 		offset = cluster_alloc_swap_entry(si, NULL);
+-	local_unlock(&percpu_swap_cluster.lock);
++	local_unlock(&percpu_swap_cluster->lock);
+ 	if (offset)
+ 		entry = swp_entry(si->type, offset);
+
+@@ -3029,6 +3030,16 @@ static void wait_for_allocation(struct swap_info_struct *si)
+ 	}
+ }
+
++static void free_swap_info_arrays(struct swap_info_struct *si)
++{
++	kfree(si->global_cluster);
++	si->global_cluster = NULL;
++	kfree(si->nonfull_clusters);
++	si->nonfull_clusters = NULL;
++	kfree(si->frag_clusters);
++	si->frag_clusters = NULL;
++}
++
+ static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
+ 				   unsigned long maxpages)
+ {
+@@ -3057,17 +3068,17 @@ static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
+ static void flush_percpu_swap_cluster(struct swap_info_struct *si)
+ {
+ 	int cpu, i;
+-	struct swap_info_struct **pcp_si;
++	struct percpu_swap_cluster *pcp_sc;
+
+ 	for_each_possible_cpu(cpu) {
+-		pcp_si = per_cpu_ptr(percpu_swap_cluster.si, cpu);
++		pcp_sc = per_cpu_ptr(percpu_swap_cluster, cpu);
+ 		/*
+ 		 * Invalidate the percpu swap cluster cache, si->users
+ 		 * is dead, so no new user will point to it, just flush
+ 		 * any existing user.
+ 		 */
+-		for (i = 0; i < SWAP_NR_ORDERS; i++)
+-			cmpxchg(&pcp_si[i], si, NULL);
++		for (i = 0; i < swap_nr_orders(); i++)
++			cmpxchg(&pcp_sc->si[i], si, NULL);
+ 	}
+ }
+
+@@ -3179,8 +3190,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	arch_swap_invalidate_area(p->type);
+ 	zswap_swapoff(p->type);
+ 	mutex_unlock(&swapon_mutex);
+-	kfree(p->global_cluster);
+-	p->global_cluster = NULL;
++	free_swap_info_arrays(p);
+ 	free_swap_cluster_info(cluster_info, maxpages);
+
+ 	inode = mapping->host;
+@@ -3531,6 +3541,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	struct swap_cluster_info *cluster_info;
+ 	int err = -ENOMEM;
+ 	unsigned long i;
++	unsigned int nr_orders = swap_nr_orders();
+
+ 	cluster_info = kvzalloc_objs(*cluster_info, nr_clusters);
+ 	if (!cluster_info)
+@@ -3539,11 +3550,19 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	for (i = 0; i < nr_clusters; i++)
+ 		spin_lock_init(&cluster_info[i].lock);
+
++	si->nonfull_clusters = kmalloc_objs(*si->nonfull_clusters, nr_orders);
++	if (!si->nonfull_clusters)
++		goto err;
++
++	si->frag_clusters = kmalloc_objs(*si->frag_clusters, nr_orders);
++	if (!si->frag_clusters)
++		goto err;
++
+ 	if (!(si->flags & SWP_SOLIDSTATE)) {
+-		si->global_cluster = kmalloc_obj(*si->global_cluster);
++		si->global_cluster = kmalloc_flex(*si->global_cluster, next, nr_orders);
+ 		if (!si->global_cluster)
+ 			goto err;
+-		for (i = 0; i < SWAP_NR_ORDERS; i++)
++		for (i = 0; i < nr_orders; i++)
+ 			si->global_cluster->next[i] = SWAP_ENTRY_INVALID;
+ 		spin_lock_init(&si->global_cluster_lock);
+ 	}
+@@ -3579,7 +3598,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	INIT_LIST_HEAD(&si->full_clusters);
+ 	INIT_LIST_HEAD(&si->discard_clusters);
+
+-	for (i = 0; i < SWAP_NR_ORDERS; i++) {
++	for (i = 0; i < nr_orders; i++) {
+ 		INIT_LIST_HEAD(&si->nonfull_clusters[i]);
+ 		INIT_LIST_HEAD(&si->frag_clusters[i]);
+ 	}
+@@ -3599,6 +3618,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	si->cluster_info = cluster_info;
+ 	return 0;
+ err:
++	free_swap_info_arrays(si);
+ 	free_swap_cluster_info(cluster_info, maxpages);
+ 	return err;
+ }
+@@ -3807,8 +3827,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ bad_swap_unlock_inode:
+ 	inode_unlock(inode);
+ bad_swap:
+-	kfree(si->global_cluster);
+-	si->global_cluster = NULL;
++	free_swap_info_arrays(si);
+ 	inode = NULL;
+ 	destroy_swap_extents(si, swap_file);
+ 	free_swap_cluster_info(si->cluster_info, si->max);
+@@ -3922,6 +3941,10 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+
+ static int __init swapfile_init(void)
+ {
++	unsigned int nr_orders = swap_nr_orders();
++	struct percpu_swap_cluster *pcp_sc;
++	int cpu;
++
+ 	swapfile_maximum_size = arch_max_swapfile_size();
+
+ 	swap_slots_in_cluster = generic_swap_slots_in_clusters();
+@@ -3939,6 +3962,24 @@ static int __init swapfile_init(void)
+ 					    SWAPFILE_CLUSTER),
+ 				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
+
++	percpu_swap_cluster = alloc_percpu(struct percpu_swap_cluster);
++	if (!percpu_swap_cluster)
++		panic("%s: alloc_percpu failed for percpu_swap_cluster\n", __func__);
++
++	for_each_possible_cpu(cpu) {
++		int node = cpu_to_mem(cpu);
++
++		pcp_sc = per_cpu_ptr(percpu_swap_cluster, cpu);
++		local_lock_init(&pcp_sc->lock);
++		pcp_sc->si = kcalloc_node(nr_orders, sizeof(*pcp_sc->si),
++					GFP_KERNEL, node);
++		pcp_sc->offset = kcalloc_node(nr_orders, sizeof(*pcp_sc->offset),
++					    GFP_KERNEL, node);
++		if (!pcp_sc->si || !pcp_sc->offset)
++			panic("%s: per-CPU kcalloc failed for cpu:%d, node:%d\n",
++					__func__, cpu, node);
++	}
++
+ #ifdef CONFIG_MIGRATION
+ 	if (swapfile_maximum_size >= (1UL << SWP_MIG_TOTAL_BITS))
+ 		swap_migration_ad_supported = true;
+--
+2.39.5
+
 
