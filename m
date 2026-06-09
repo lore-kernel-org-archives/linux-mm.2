@@ -4,109 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E24B6CD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3608BCD8C85
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:54:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3EEA6B008A; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
+	id 4FE636B0005; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEF756B008C; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
+	id 4883E6B0088; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDEB26B0092; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
+	id 39E8A6B008A; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BDEB06B008A
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:45:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 521DBC1992
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:45:03 +0000 (UTC)
-X-FDA: 84858983286.13.8691E78
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ECEA11C0002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:44:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GqlAwjbC;
-	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A85D6B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B99F18DC6B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:54:29 +0000 (UTC)
+X-FDA: 84859007058.15.B3143A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D4D558000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:54:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1eRCX0V;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780977268;
+	b=Fyg4Dfd1Mbp3wpFMA9/8uobX7kYDLrICLxFDrQauzGxvh3h6Fmaji9d1nsd8ybwJ6RCBqP
+	EGKGDf852agqSJfNAeuEwn5oWbSBfJh0v6dWHqlz11sx5alW1QO1EobXDWakakcqUOnFtl
+	+psiLQzQVH/YvXlNi4G3X6a/tuYebQ8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1eRCX0V;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780976701;
+	s=arc-20220608; t=1780977268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJEBHfzpdSI7jJEj6r2mkE4T7/MNZZCxJ7D6F6LoI5Y=;
-	b=rSE06TEaTQmaVFeI6trMCNXX1dKL7v4j8KeOWe0WhKQIsKTEsd5Xmdt9MmTrAX9amMF7k8
-	5yBnKd2yGvL0Jv6FaCB1vcYmcAUyu2MWhaXlkh9XTzW3wYEfMD20u2cpbWzdsN0eSj9EKz
-	oqvbq6CQY7+A5H9xGs4xuERw0dxrtKg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GqlAwjbC;
-	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780976701;
-	b=VzFtWKffaXpg+Kb+GdMlNmQbWaG32UyEJ9l4MbHTYfx5ty1bcoQhDZByMNO0BYFZkCmWsY
-	VLYA/sK40iJpP3PVwZDG/rYq5FrGeiWTSnnU6aDL4t3PGGYWVXUuN7B4YsrBp7NZKEftXu
-	Y+S5pmHhc7pkJFS76si0dhlxpbbgJiQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=cJEBHfzpdSI7jJEj6r2mkE4T7/MNZZCxJ7D6F6LoI5Y=;
-	b=GqlAwjbCyhW4RI4yEiZPHwk/dY5roBbGJrKi9EArE6LHLMvAsS7RauBNLsVr9E3p499erBOPl
-	jeQdzcPN4HPQm9UdJWeiUnbMnsgi6YfBFzLjfW1V5mxjFf1UhmAxtorymZ4IgRxS823qinTE0K6
-	0pnZ+K7Ms9zr+S1HW6B7kUQ=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gZF2n6hb5zpStk;
-	Tue,  9 Jun 2026 11:37:05 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 885E7203B8;
-	Tue,  9 Jun 2026 11:44:54 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 11:44:54 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 11:44:52 +0800
-Subject: Re: [PATCH v5 1/4] mm/page_alloc: only free healthy pages in
- high-order has_hwpoisoned folio
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <osalvador@suse.de>, <lorenzo.stoakes@oracle.com>, <jackmanb@google.com>,
-	<hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>, <david@kernel.org>,
-	<william.roche@oracle.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
-	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
-	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
-	<osalvador@kernel.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
-	<willy@infradead.org>
-References: <20260531055829.3636554-1-jiaqiyan@google.com>
- <20260531055829.3636554-2-jiaqiyan@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <84a0b176-8534-e03a-9e6e-400c74ddab0b@huawei.com>
-Date: Tue, 9 Jun 2026 11:44:52 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20260531055829.3636554-2-jiaqiyan@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=TqrgAu/JqewJItrwuRMduRmwxB/x1xVSsT3lOJ0PyWs=;
+	b=zqr99cOcArvcQZoepABW7y5U/nc7+iRJftK3/d5ExvYU2hR/0Jl5x7fXUBe8oudM49UU3B
+	TB1ajdAW1kylWY6vCQqYJnh17KJZZK7EpJ4gLm1VRKsoBcexx0uciN4CMvNHqxx2mkhQON
+	g7iHUCXgvkR3AhTdJXP64rVW7IOPquU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCF8D44255;
+	Tue,  9 Jun 2026 03:54:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7876B1F00893;
+	Tue,  9 Jun 2026 03:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1780977266;
+	bh=TqrgAu/JqewJItrwuRMduRmwxB/x1xVSsT3lOJ0PyWs=;
+	h=Date:From:To:Cc:Subject;
+	b=V1eRCX0VUSKmAYCbu72vNTgDCPEHeZ3q2KWPdEgH+NS2RH4N2EkvVGbQlXmgQylsb
+	 7SmRcAr3hOfDPHGfQ1bt/JO1NlE8EBuu1W158kgptwux+Ui1Au7CMot+vRx2IXfRdh
+	 Rb9UvKHr+Y/mYPhMdvlomi0FRcZSG+S8J++EEqEk=
+Date: Mon, 8 Jun 2026 20:54:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes against 7.1-rc7
+Message-Id: <20260608205426.3319be94a327307e23b34f3b@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ECEA11C0002
-X-Stat-Signature: ngqnjwxjhdnyfi87ginghc5jftxsdgro
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4D558000B
 X-Rspam-User: 
-X-HE-Tag: 1780976699-222621
-X-HE-Meta: U2FsdGVkX1+FQUT+WUktbX3znQrPhUeCU3dE+YFZSdcvuVGxntHeLnq6qjQYEjMMMDa6NedrAXORzawhfiRZnvv3ZS5dLCLyVQ6KK+ofF+XmR5Sf9FByBJaTR29ZzqwdFTT2X5XY6jHEHU65I+q4Akg87/CsoWsmKMpUR+Nx9ujbqb3r3VDrkwNronXIsWM4u263Js0+K26u1WPoTxrzITqDQjLEeG3HomGSfqHSX1Z79FENp+PjeitGLx4ywJtPY1JEVwXyrPlf9aGBtbOLeF9SydFxUR33TgEsx4J3imfRcIdmi29CBq9i+bX4WUEJtH8vdD0U2Lq7vxNeLZzNspG38qlGQSVgEyBhmTwdw5D56OgMlVj9A6CDlmBZmBKmBB2NsXuSYLZUctFiMpb5xopqG5D3JA7oVN1A3hIvpgjUM/ODWKhPh7cnnsyjkCVCVEVwiVYIcWtq7wyzk09w4khohYN/bF37plC8lrRscKBt3WVNP3cFeA7mWXkaei27vJ2L8knUb6JQZCq/Z0gm1hokun/9vMSwXUFlvqfJKEZqaV1UItHbCtiwS4a9IaBnFpIrq7oMdUrGsnSfE8h+EBTu5FWnlqiLyK8gBApEet9HNPhrb72i2VRa7f0bwEaY3STommazbbWVAifnX9F5wCA3inb4OFBmkXfNF48AtY5t6uf9f4XfEiaXqaM8pUAAk/AlFXB75qTio9JjpHfzk2wPoqgO99QCGokyARDqClNMeBz3taO3Cp2NzhiceXjk3wFYsj40NSyimOQs0VYBkk6YggKADR0jiBaRS1kqDxLWkPhN2/7MqcebVNUguMqjg+HDbcDIz1cErGA+VUjlvRYmiZHUI/qczXF3jwnNpiXW+qhhyojCV/loAQBQEoAIlSAkErWmoso0fr2lqh4qFG7RavmScN5/QneYok2QBojpGypjqNHDE78Jz52CDUOBIAatdiFDIc0i8jvS1Cx
- 72jCHiOw
- zhxQoaHdi+Lx9BIVwoPa2l5y/UtVcpRA1gQNGukg4mFp+k0Ny56SmwrtbRrR+YdvUOq8KD9xuS+cjBrrrrWqwCQyJGmcDhzSg48AFW1KluMkD9fTbTHBIsorns+AkgPdGWgzVjnxjwg4lkzl9ZEe9VVGIid0d9gFZpZ6pfEC8t8ZXk1hglKtzA+AZqf6Xs2pNXf4dzPKt/Ayx8kNBGo3+32MqMUIjD6d2jX+vbDJHgran1mq2vgiost4ZjwQ9PpaMk9derURCbFM668ljyJUeESCY3zA2lMC6wGtgtbOsUwEDu5RU0l4KUAn5AVxUinIuCi0FkTX0P2zU/pTuOsCwIA67A0JGGC/2P0HNxTNi2EYr44GcYkoKkvM4xm/9IF2q6pnkKzwhL51FzWH2tcKifY1D9esoK5x2XVszDY/78hinS8OA7b2gs9mXZcXcZQTpxbIsNfVdT0QEV46IvRnrNjBCo3J4eQg70ytVvvd4Kr500R9iXK+nxPfmM/hIMzAQM++TIPGuMsQ9ZFN9Mf0xTz8XJBsu5I1kR/9ZvtrS6Vr/WHzRFVieRz4JoPCO7e7yTZmo
+X-Stat-Signature: qhbfgi7ecbnp4ksk6htiw8or5go36mb3
+X-HE-Tag: 1780977267-766961
+X-HE-Meta: U2FsdGVkX19ePGVDcIOR9TsNXzWxciogrbuKfoPvF2NHcor2EM/eysoN1/+HZHYwgfcTvbW+36HstgHmzXRLsU4BXdVZ+C/TZ3hD0R6ocA6x2zE52fzPqys/1cTdpI/BHnRYHhQslF4UslWkee7166qjBYGWL0lZgRHvQNTQxc8h+aAYjLg3mjRHXGbwYS4bUA1EHD/GAIAw+G64BfsUSUtNQ8fXlR3e39io+UAF4F7GYd42OqtvU3udbrMlCOLHFPqk/LxNJ/eqyzrmgU9EiNuDtM29bYdWRwPuD0XBmW6Yz+/bJ+kSZYTKDTDFibjiZ8rgm3USCb5IiFcspigXEt5EyyTVz6hWg8oowo+9ABWh2cwmvfuyoJtAHpRCEg3FWpnjGrogtYqBJLwEfQbCW/WMW/TZAfID1G9TDoyUaRXXulEyr4E4GqbP6jMGVhWNTrkX8QecI96PFm2ZK/lNa3wX3vXuY/e7lzHJteX6Dpy7lfo8MIAOoAzpyqR+Vuyuq84F0Nf2YK7KNjMb9tw5d3H/A6OU5MVeYnoI7A3SGx4uC3YyTUS4UZFJ6DZ9JkFh6SkTMGkJYpRTP3gOdx8ynFGIA2qjE28iod2UfkfGBUFiKjLw9d9xlOFouEHOGhsWWN99jphkCQBr3jks+KnYWvUfXdwzU/Wj4VXTwMB0Q4XPqhDJ69vhgiAyHukZ1xEQVZqlHrwX/IuOfu/yTNaJI1iCwoKep7Ep2rRckKVnts798zNsSQh0aXYDwg9f4n0fXX4k3Agqq0y5UBddC7XawIHwJMaIHvtqFbVAvYIIAk0Dk/B5g6TcPxzofzcuCoFj4Ir1LITjIAojNSTixS2JdxC9WPbI4cSsrY/MrRI6KDm8VE2Eu0Wq/HvTcp+lVH/3DFf1zc+Bqg2/kyOnp2AxUbJYScFjmNzJDVxq8XA31mWN2U/TTvI2DzmL8i3F7tpMgnoX+kNaMb5dtTdYHnA
+ DCFWz39l
+ jdpqM2/PRULM7qt66Xs/V9rRW3K75eTxxuXAQgZqua+E3AFz1pfxlzOtXlRkTZTqK1uGDvVRRoeKDQahhrrTtft0VlRMG+nExOg9VuFQ40o7tzEfyd+GVcwfW3Qnn2dRhbt/DCHjAsplhJJ5F6Up6ra2h226v/e/IPRfcgH1SwY9Zsk3TkC2Ld1w0Kena+6R1TiteuP5w/AzTVHVrq17LJtNdN5coNicS/vssa14/zO3DN69amtCnRinzQQkQCyrJxm7qMO+XjI3+1G9p3+/HumsVvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,179 +86,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/31 13:58, Jiaqi Yan wrote:
-> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB folio
-> becomes non-HugeTLB, and it is released to buddy allocator
-> as a high-order folio, e.g. a folio that contains 262144 pages
-> if the folio was a 1G HugeTLB hugepage.
-> 
-> This is problematic if the HugeTLB hugepage contained HWPoison
-> subpages. In that case, since buddy allocator does not check
-> HWPoison for non-zero-order folio, the raw HWPoison page can
-> be given out with its buddy page and be re-used by either
-> kernel or userspace.
-> 
-> Memory failure recovery (MFR) in kernel does attempt to take
-> raw HWPoison page off buddy allocator after
-> dissolve_free_hugetlb_folio(). However, there is always a time
-> window between dissolve_free_hugetlb_folio() frees a HWPoison
-> high-order folio to buddy allocator and MFR takes HWPoison
-> raw page off buddy allocator.
-> 
-> Another similar situation is when a transparent huge page (THP)
-> runs into memory failure but splitting failed. Such THP will
-> eventually be released to buddy allocator when owning userspace
-> processes are gone, but with certain subpages having HWPoison.
-> 
-> One obvious way to avoid both problems is to add page sanity
-> checks in page allocate or free path. However, it is against
-> the past efforts to reduce sanity check overhead [1,2,3].
-> 
-> Introduce free_has_hwpoisoned() to only free the healthy pages
-> and to exclude the HWPoison ones in the high-order folio.
-> The idea is to iterate through the sub-pages of the folio to
-> identify contiguous ranges of healthy pages.
-> 
-> free_has_hwpoisoned() is added in free_pages_prepare() as
-> a shortcut and is only invoked if PG_has_hwpoisoned indicates
-> HWPoison page exists and after checks and preparations in
-> free_pages_prepare() all succeeded. free_has_hwpoisoned() then
-> can re-use free_prepared_contig_range() [4] to decompose healthy
-> ranges into the largest possible chunks of different orders.
-> Every chunk meets the requirements to be freed via free_one_page().
-> 
-> free_has_hwpoisoned() has linear time complexity wrt the number
-> of pages in the folio. While the power-of-two decomposition
-> ensures that the number of calls to the buddy allocator is
-> logarithmic for each contiguous healthy range, the mandatory
-> linear scan of pages to identify PageHWPoison() defines the
-> overall time complexity. For a 1G hugepage having 8 HWPoison
-> pages, free_has_hwpoisoned() takes around 1ms on average on
-> a system having 56 Intel Skylake physical cores. This is
-> 15x to the case of freeing no HWPoison page. The cost is far
-> from triggering soft lockup, and fair for handling exceptional
-> hardware memory errors.
-> 
-> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net
-> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net
-> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
-> [4] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.com
-> 
-> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 
-Thanks for your update. This patch looks good to me while some comments below.
+Linus, please merge this batch of hotfixes, thanks.
 
-> ---
->  mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 85 insertions(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index e47679e7a9db..03df929abca6 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -208,6 +208,7 @@ gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
->  unsigned int pageblock_order __read_mostly;
->  #endif
->  
-> +static void free_has_hwpoisoned(struct page *page, unsigned int order);
->  static void __free_pages_ok(struct page *page, unsigned int order,
->  			    fpi_t fpi_flags);
->  static void reserve_highatomic_pageblock(struct page *page, int order,
-> @@ -1309,6 +1310,14 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
->  
->  #endif /* CONFIG_MEM_ALLOC_PROFILING */
->  
-> +/*
-> + * Returns
-> + * - true: checks and preparations all good, caller can proceed freeing.
-> + * - false: do not proceed freeing for one of the following reasons:
-> + *   1. Some check failed so it is not safe to proceed freeing.
-> + *   2. A compound page has some HWPoison pages. The healthy pages
-> + *      are already safely freed, and the HWPoison ones isolated.
-> + */
->  static __always_inline bool __free_pages_prepare(struct page *page,
->  		unsigned int order, fpi_t fpi_flags)
->  {
-> @@ -1317,6 +1326,15 @@ static __always_inline bool __free_pages_prepare(struct page *page,
->  	bool init = want_init_on_free();
->  	bool compound = PageCompound(page);
->  	struct folio *folio = page_folio(page);
-> +	/*
-> +	 * When dealing with compound page, PG_has_hwpoisoned is cleared
-> +	 * with PAGE_FLAGS_SECOND. So the check must be done first.
-> +	 *
-> +	 * Note we can't exclude PG_has_hwpoisoned from PAGE_FLAGS_SECOND.
-> +	 * Because PG_has_hwpoisoned == PG_active, free_page_is_bad() will
-> +	 * confuse and complaint that the first tail page is still active.
-> +	 */
-> +	bool should_fhh = compound && folio_test_has_hwpoisoned(folio);
->  
->  	if (fpi_flags & FPI_PREPARED)
->  		return true;
-> @@ -1443,6 +1461,16 @@ static __always_inline bool __free_pages_prepare(struct page *page,
->  
->  	debug_pagealloc_unmap_pages(page, 1 << order);
->  
-> +	/*
-> +	 * After breaking down compound page and dealing with page metadata
-> +	 * (e.g. page owner and page alloc tags), take a shortcut if this
-> +	 * was a compound page containing certain HWPoison subpages.
-> +	 */
-> +	if (should_fhh) {
-> +		free_has_hwpoisoned(page, order);
-> +		return false;
-> +	}
 
-When the code reaches here, the hwpoisoned pages have passed through kernel_poison_pages,
-kasan_poison_pages, kernel_init_pages, arch_free_page... These functions might write to
-the hwpoisoned pages. Is it safe to do so?
+The following changes since commit 9d7bea186ba5a002456471edf36cc9b69f809397:
 
-> +
->  	return true;
->  }
->  
-> @@ -6936,6 +6964,63 @@ void __free_contig_range(unsigned long pfn, unsigned long nr_pages)
->  	__free_contig_range_common(pfn, nr_pages, /* is_frozen= */ false);
->  }
->  
-> +/*
-> + * Given a high-order compound page containing certain number of HWPoison
-> + * pages, free only the healthy ones.
-> + *
-> + * Pages must have passed free_pages_prepare(). Even if having HWPoison
-> + * pages, breaking down compound page and updating metadata (e.g. page
-> + * owner, alloc tag) can be done together during free_pages_prepare(),
-> + * which simplifies the splitting here: unlike __split_unmapped_folio(),
-> + * there is no need to turn split pages into a compound page or to carry
-> + * metadata.
-> + *
-> + * It scans every raw page of the compound page and cause nontrivial overhead.
-> + * So only use this when the compound page contains HWPoison page(s).
-> + *
-> + * This implementation needs rework in memdesc world.
-> + */
-> +static void free_has_hwpoisoned(struct page *page, unsigned int order)
-> +{
-> +	unsigned long curr = page_to_pfn(page);
-> +	unsigned long end_pfn = curr + (1 << order);
-> +	unsigned long next;
-> +	unsigned long total_freed = 0;
-> +	unsigned long total_hwp = 0;
-> +
-> +	VM_WARN_ON(order == 0);
-> +	VM_WARN_ON(page->flags.f & PAGE_FLAGS_CHECK_AT_PREP);
-> +
-> +	while (curr < end_pfn) {
-> +		next = curr;
-> +
-> +		while (next < end_pfn && !PageHWPoison(pfn_to_page(next)))
-> +			++next;
-> +
-> +		if (next != end_pfn && PageHWPoison(pfn_to_page(next))) {
+  userfaultfd: remove redundant check in vm_uffd_ops() (2026-05-31 21:50:26 -0700)
 
-Check next != end_pfn should be enough. If we have next != end_pfn, we must have PageHWPoison(pfn_to_page(next))
-or we can't exit from above while loop. Or am I miss something?
+are available in the Git repository at:
 
-Thanks.
-.
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-06-08-20-51
+
+for you to fetch changes up to 0c25b8734367574e21aeb8468c2e522713134da7:
+
+  mm/mincore: handle non-swap entries before !CONFIG_SWAP guard (2026-06-03 16:25:52 -0700)
+
+----------------------------------------------------------------
+11 hotfixes.  9 are for MM.  8 are cc:stable and the remaining 3
+address post-7.1 issues or aren't considered suitable for backporting.
+
+Thre's a 2 patch series "mm/damon/{reclaim,lru_sort}: handle ctx
+allocation failures" from SeongJae Park which fixes a couple of DAMON
+-ENOMEM bloopers.  The rest are singletons - please see the individual
+changelogs for details.
+
+----------------------------------------------------------------
+Alistair Popple (1):
+      arm64: mm: call pagetable dtor when freeing hot-removed page tables
+
+Baoquan He (1):
+      MAINTAINERS: update Baoquan He's email address
+
+Cunlong Li (1):
+      zram: fix use-after-free in zram_bvec_write_partial()
+
+Kaitao Cheng (1):
+      mm/cma_sysfs: skip inactive CMA areas in sysfs
+
+Lorenzo Stoakes (1):
+      mm/huge_memory: use correct flags for device private PMD entry
+
+SeongJae Park (2):
+      mm/damon/reclaim: handle ctx allocation failure
+      mm/damon/lru_sort: handle ctx allocation failure
+
+Shakeel Butt (1):
+      mm/list_lru: drain before clearing xarray entry on reparent
+
+Usama Arif (1):
+      mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
+
+Wang Yaxin (1):
+      tools headers UAPI: sync linux/taskstats.h for procacct.c
+
+Yilin Zhu (1):
+      ipc/shm: serialize orphan cleanup with shm_nattch updates
+
+ .mailmap                        |   1 +
+ MAINTAINERS                     |   6 +-
+ arch/arm64/mm/mmu.c             |   1 +
+ drivers/block/zram/zram_drv.c   |   2 +-
+ ipc/shm.c                       |  10 ++--
+ mm/cma_sysfs.c                  |   8 ++-
+ mm/damon/lru_sort.c             |   4 ++
+ mm/damon/reclaim.c              |   4 ++
+ mm/huge_memory.c                |  45 ++++++++++----
+ mm/list_lru.c                   |  21 ++++---
+ mm/mincore.c                    |  10 ++--
+ tools/include/uapi/linux/acct.h | 128 ++++++++++++++++++++++++++++++++++++++++
+ 12 files changed, 204 insertions(+), 36 deletions(-)
+ create mode 100644 tools/include/uapi/linux/acct.h
+
+
 
