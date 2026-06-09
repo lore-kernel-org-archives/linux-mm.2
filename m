@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC208CD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:35:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 166FFCD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:39:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 009CF6B008A; Tue,  9 Jun 2026 09:35:51 -0400 (EDT)
+	id 650E96B0088; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFCC66B008C; Tue,  9 Jun 2026 09:35:50 -0400 (EDT)
+	id 628786B008A; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEB796B0092; Tue,  9 Jun 2026 09:35:50 -0400 (EDT)
+	id 565376B008C; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CAF326B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:35:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 696B2164B8B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:35:50 +0000 (UTC)
-X-FDA: 84860472060.24.821C651
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3BCD980014
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:35:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QzMh49Ds;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47A276B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:39:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAB7014055F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:39:07 +0000 (UTC)
+X-FDA: 84860480334.19.2EBD438
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CE75C2000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:39:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DHA5pvdG;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781012148;
+	s=arc-20220608; t=1781012346;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fac/qHX5WhfF08NyL9azVrutmt3ga+s6RNOocK4YyzE=;
-	b=JBXpxMjM8Ymfj5S86Owv+2zzL6otRjGgHZN+SdENe3M6fm9/FH7LOWK0Ozj++dumDaTY5O
-	4SX255fk/Tp0u4gI88pkHgU5W4vifAWagU4Q5WofCApmsf9YQDY14/YTkc9sGpSiedVF6z
-	vec1/0/dmc75IpC30VRfCyZ5gYwOgik=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QzMh49Ds;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=YJV2I1pYWH8I5eTLLlBTFWiw8BNl9+kPEFYXmmxRFA0=;
+	b=ve5NdaF49Hr6GAqWX4MPrgM7ObplblQRJH6l0hekLV7aBHBQzbTURkhCITgunJ/vb5HG6+
+	KzRdE4U7rrIS5OS6jBmN4o2dMRl9vC4c4ZvRZfe6sb6DOeoOZOgabaEs1eKiKxji8Im0QN
+	n4y7WXtP/gDX5+YQWHr+gHQ2oI8TFrw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781012148;
-	b=puGYQIsvDvqey2+EVWv6M6YMUQmO8Kaku2GKIDMnyDH6SgEpwri2ASA5dA/0FADqBU5/qK
-	Lm9galvZoAUOUeR5XDH2Qvd5JjVquxJbhegVCUDeRhT/kyt4wNWoP059jirdbmoptVj9e0
-	k5LtdYZlqRhWVLneitl2reszN5on13g=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	t=1781012346;
+	b=TbhdqKmd65Uw+cR6JVNUKjr1joY2V1K7/zMslpLefYNswLAr+nL6J/dj+hRW/shXaYt6q9
+	qJguUXdRC0xFekqnVU2l3wcT3xqZkJ/IQlRnhsrCL5TxNrCWnzZtR+EkwRGPLQOl2RXVqk
+	K38J/hW3f6/NcSYRQG3mhwDA7v2mA94=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DHA5pvdG;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <86575450-1d56-43be-a4fd-6f451e5be4e3@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781012144;
+	t=1781012343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Fac/qHX5WhfF08NyL9azVrutmt3ga+s6RNOocK4YyzE=;
-	b=QzMh49DsK+rj/HXv5ZB23N3Vey836AfUWpRWeQB+4uJpkIFKUHr/nYKDkrrc3u9axP/w6+
-	G8LnrLfGwv5PmvjS5plSoaMlSixod6mR3J7+nv+mIwdPz2OS4IGGsXKprqsCyP4tQInw82
-	IWHwXtMn288yweMaFWfxY47HQQDv6/g=
-From: Usama Arif <usama.arif@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Harry Yoo <harry@kernel.org>,
-	hao.ge@linux.dev,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org
-Subject: Re: [PATCH RFC 00/15] mm/slab: introduce alloc_flags and slab_alloc_context
-Date: Tue,  9 Jun 2026 06:35:33 -0700
-Message-ID: <20260609133534.3548059-1-usama.arif@linux.dev>
-In-Reply-To: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
-References: 
+	bh=YJV2I1pYWH8I5eTLLlBTFWiw8BNl9+kPEFYXmmxRFA0=;
+	b=DHA5pvdG52Z8Irgr/MLUCeE3l55DgnRt1kYMY2LtcWTgvjyHXVXQzZmJRQoBDdVBAzJEN4
+	Rqo+Pc3l9/iqRCZMu3i2P2MnJItVE+ySpQCrTGcA4wmxKkIqwdSPoVVHf8MV1e7lKqzy7O
+	z3+XUebaAMcRd6oZZlVWxxJQ1nu+Jgw=
+Date: Tue, 9 Jun 2026 14:38:58 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg
+ slab shrink
+To: Jan Kara <jack@suse.cz>
+Cc: brauner@kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, hughd@google.com, boris@bur.io, clm@fb.com,
+ dsterba@suse.com, linux-btrfs@vger.kernel.org, cem@kernel.org,
+ linux-xfs@vger.kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+ riel@surriel.com, kernel-team@meta.com
+References: <20260609123047.1948242-1-usama.arif@linux.dev>
+ <5exadtggg276xp5tayiqbbomnms4hjyaopmgu3chfpl2ug56dq@vyhswy2afzmo>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <5exadtggg276xp5tayiqbbomnms4hjyaopmgu3chfpl2ug56dq@vyhswy2afzmo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3BCD980014
-X-Stat-Signature: ueiw49g4qs5j1ea3hp15sycxp76z7dey
+X-Rspamd-Queue-Id: CE75C2000A
 X-Rspam-User: 
-X-HE-Tag: 1781012148-777891
-X-HE-Meta: U2FsdGVkX1+7PdOq83M2xhHkmJgNnrVTTr7+SK1cnMuxMjVSfCYpouAw3Um26RjLRVgQRP14wOVW2jNd75vkOe5Zlmy0HB1j7gGtfuikxNvFDcGR9EfS1uMAqFSy/khSycyjilAYUbuuZGaXN5kpKsukvmqyNl0u+nyrLXCNDBfTAxxt8c/XaJXS+Dilc07I2SKtuMOLzbDomcMj2igRJiUFtVCskAiGXq4l+YMgT/tmdLZvMxh0B+HAns5mU/8kP009UsWg4hBamQ/HB9LzeHa1sZn1vNRwzmmG4FVsdkz5MWHi5Tf+kzYwJPEMXLd0Nxjrt0bf5ABPU5jfHuuSxDJb8BOrvbYBZI4wyUWFBhfXbZYq6FNNOXsgJMpdcO3OaFyWiIztO9mQrrsp448f4lkKUdr8vRXe1wgfqNsxj/E1dMcZc/iQjd8OyubbPN4In0jOMWV90Z4n83RfrE40UFZtnEP4jGd87Rx7qRmyATB3ElpVizClNB3LOBzYE6VhYe+o52zQQS4mXEZy2DM+rKQT7hD+djr5UcB6ABAc1q/+6nUURrif/1bH6Wrm2SX9yE46d1rAz9BeD3emUaDEOCLR//Kxyt4rVQqDL8P7RB3AglJomLpiWjptgYmGzyKaAecPHh7R/W13dAohS1f+79RoAjJTzGRj8OnLmjZw4KFPY1d2phoWQ0cGQcvpovJr1Io2WNaxSxtJP2aI9zKHtVOPv+RJGVQOZhlLQdDF9/v70qZbg5vLv6hGN2PAydAdULEZDP8YUig5fE+yQOgsifKwFcZdjH/+wTvHxHhnf/wthUZpG60HieH549f1FHoDKtKvuxbHOOg3jAoVhPr6QpnEeKMzMPAy5Q4URTfkCq0r/MZ32/3kWZIK4dI42OWhtHHWXnM6H15VjWSgI3ljgKJm81DUACXJNOYNE2TDZdoqWub0L9wj3UPvbF/0IY3zLORaIn/HD8qXQv9hvEQ
- oIoXtvS6
- sRCTPiy7ClL8/nFwMOqj4VAd/B5qbJHyutJlEVm9F/M242Szwj3HoD82gnaFf/Z9a51lHa6nkHMWdwW6zWVni/93l2wgDcii5fPhkY4pQzS+QYHpxUbCzXgb/HUH2PalJgqu8i+oQBGVX6xksV0TzGeepkn3VSYj4f9wuI7mIF4Q0EIS6Xm4sJTmlb+xYRGiD4RPg+JzC0IMMmXOvZhMQ9T2IZK9LJSECkDVPJVIhjG7N6HDs3XRbiGM7uCz3yR6jc0O2rgDI0hUxhgo=
+X-Stat-Signature: oz17khbq4p7h8h8px4cegpw5rif3nccb
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781012345-228107
+X-HE-Meta: U2FsdGVkX188SmNBNIGetEa/JezCQLHOhLpgp5xISzCbXOktsTft+Z/+XSeqDHplvGD61iDIahT3G8qufjj3GPNKgkiWH7Z1qqbWBKP3NE2EWwr0ZCWqx/gbDkREy1R/aNBSCFZTMAD1qVPJT5Xr7KnPnZeqL++8m39pAYRIt2MXkKTUjoua57yZ5NFbom5Y6PY1PjY9/ZbaDcMEM+vondf1DtFc+qh0cUQbtLesp/CibFwPcT9ueC8PebGgRUKJi4kaMmyALqLH4RTqlWwgVi/5XNacz/OqJmj7/l3u3yjBtW/VjU/3rxjTNTK/4hm5EvPvd4/56vuP5oXnvjEtn015Ptr1Pqluc7Ow2ciB+PNvIashQncKIjqvPsg/FKsH7Hvahr1R6cc9VpuoaZ/8Kv2lQx4foJFNQi6tShwLJwExBv4TF0Vq40ZObX5VzDjagTRlnHib5rGbibWDjbLTU922HHv3uR4sRSMVhatjtz12kdB+wuRdYFFeWAO5h5gOCt8o03zsKaUdFqynPxjRn55ItOfKHRYcI/VAOVAdAghpBd1mJ5JH4f5l0nrzIGcetsrlp7Ww62RPQaWTGuyZXcXqQ+duoGjLl3pZXnKKxoSUQb/xj1sI6ZVmhkS2PyMLZgJSKn01LrMmCfZuiOZ0TkviL5fLze6WFbkL0B0X4+L32dqqhwzwifk6xTQGSESLYfDz8R5nEYlinn3KcAl9xC1xQgNCiVm5P5JucnyF5IrVAuDoZojKcFKx5UB82RwMB7BpkWy5BVpPzH+OWyYdqBa5KtNa88PqnZ5MtrcZ6HqpjSVtFhTgJrgrpXHnYMwYxGOOddEc1r59Oo3snDRbIE3gOJTjZn12pEqo+C1zC4RPWPekEfMua/drv44GWZzD1GOK6r9owd/6G58d15sn7SXIAOtasOo1bh1Pg5oxWKPSjFoT7NBddPibSsDVFtKMVz/UnExN7ZO1Ix+c5Cu
+ 4Yx8EDOp
+ xUOGkhlevSC8aGKAnyWxsveX3mY9zEO5BbKyarTUWWjbXhnUYN2yt/jO97I+d3Y5PHOqvtgj5o2JVj0LxGSkuYYl2htiqU7oDcqS6ag2yEDLApMbWw+pufSuww87jll9h6VpV8xbWmqKFJ6I2a3D3F44+J3GHkbi1p+QoTGKn1KwB+DJFhmamZA6FjZb/o5jQZA7qqaclZ2vq7f46JLITw2YxATn+fOWxGawBnP0FGuUXSGV3kzJVZ7xCRz/a4ZH6LIyC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,118 +95,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 09 Jun 2026 11:17:45 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-
-> This series is based on slab/for-next. If all goes well, it would
-> hopefully go to slab/for-next soon after the 7.2 merge window, so any
-> other work can be based on it to avoid conflicts, as it touches a lot
-> parts of slab.
-> 
-> Git: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slab_alloc_flags
-> 
-> The slab implementation currently relies on gfp flags to convey
-> some context information internally:
-> 
-> - The absence of both __GFP_RECLAIM flags is interpreted as "cannot spin
->   on locks", and intended to be used by kmalloc_nolock(). But false
->   positives are possible e.g. during early boot where gfp_allowed_mask
->   clears __GFP_RECLAIM from all allocations. This leads to unnecessary
->   allocation failures and workarounds such as fd3634312a04 ("debugobject:
->   Make it work with deferred page initialization - again").
-> 
-> - __GFP_NO_OBJ_EXT exists and takes up valuable bit in the gfp flags
->   space, only to prevent recursive kmalloc() allocations for obj_ext
->   arrays and sheaves.
-> 
-
-Hello Valstimil!
-
-I think memory allocation profiling uses __GFP_NO_OBJ_EXT, and I dont see
-it being removed in the series (hopefully I didnt miss it).
-
-Adding Hao Ge in CC who did this in the commit:
-mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
 
 
-> The page allocator uses its internal alloc_flags to convey various
-> context information, including ALLOC_TRYLOCK (meaning "cannot spin").
-> This series copies that concept for the slab allocator, with its own
-> slab-specific internal flags:
+On 09/06/2026 13:52, Jan Kara wrote:
+> On Tue 09-06-26 05:30:47, Usama Arif wrote:
+>> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
+>> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
+>> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
+>> btrfs extent maps and xfs inode reclaim operate on filesystem-global
+>> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
+>> None of them filter by sc->memcg.
+>>
+>> The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
+>> calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
+>> whose bit is set in the per-superblock shrinker bitmap, which on a busy
+>> host means hundreds of calls per reclaim pass. Each scan queues the same
+>> global shrinker work item that's already kicked from the root path.
+>>
+>> Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
+>> the returned total stays positive even if a memcg's own dentry/inode LRUs
+>> are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
+>> in the memcg bitmap, so subsequent reclaim passes from the same memcg
+>> re-enter super_cache_count() and pay for the global counter walk again.
+>>
+>> Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
+>> or root). The memcg-aware dentry/inode LRUs keep being counted and
+>> scanned per memcg as before; only the global fs-specific hooks are skipped.
+>> The root/global shrink path still drives those hooks; only their
+>> invocation from non-root memcg slab reclaim is removed.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > 
-> - SLAB_ALLOC_DEFAULT - no extra flags (the value is 0), but explicit
-> - SLAB_ALLOC_TRYLOCK - do not spin on locks (used by kmalloc_nolock())
-> - SLAB_ALLOC_NEW_SLAB - replacing existing 'bool new_slab' parameter
-> 			for allocating obj_ext arrays
-> - SLAB_ALLOC_NO_RECURSE - replacing usage of __GFP_NO_OBJ_EXT
+> To me this makes sense. However I'm bit surprised that XFS inode shrinker
+> (which is what gets counted in nr_cached_objects for XFS) isn't memcg
+> aware. I guess since these inodes are on their way to a relatively quick
+> destruction, nobody really bothered. So I'm fine with the change, just
+> I'd like to make sure XFS folks are aware and don't plan anything in this
+> area.
 > 
-> To reduce the amount of parameters in various internal functions, we
-> additionally introduce slab_alloc_context (also inspired by page
-> allocator's alloc_context) for passing a number of existing arguments
-> and the new alloc_flags:
+
+Thanks for the review!
+
+Yes I am hoping that if there are any objections from xfs or btrfs, it gets
+raised. Have cc'ed the btrfs and xfs maintainers and reviewers.
+
+Thanks!
+Usama
+
+
+> 								Honza
 > 
-> /* Structure holding extra parameters for slab allocations */
-> struct slab_alloc_context {
-> 	unsigned long caller_addr;
-> 	unsigned long orig_size;
-> 	unsigned int alloc_flags;
-> 	struct list_lru *lru;
-> };
-> 
-> This also replaces the existing struct partial_context.
-> 
-> The last necessary piece is kmalloc_flags() which can take the
-> alloc_flags in addition to gfp flags and is intended for the recursive
-> allocations of sheaves and obj_ext arrays, so that both
-> SLAB_ALLOC_TRYLOCK and SLAB_ALLOC_NO_RECURSE can be communicated.
-> Internally it decides between kmalloc_nolock() and normal kmalloc()
-> depending SLAB_ALLOC_TRYLOCK.
-> 
-> The rest of the series is gradually expanding the usage of both
-> alloc_flags and slab_alloc_context as necessary, with bits of
-> refactoring. Then, __GFP_NO_OBJ_EXT is removed completely.
-> 
-> Note that some usage of gfpflags_allow_spinning() relying on absence of
-> __GFP_RECLAIM remains outside of slab (and page allocator) in memcg,
-> page_owner and stackdepot code. These can thus yield false-positive
-> decisions that spinning is not allowed, but should not result in
-> important allocations failing anymore.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-> Vlastimil Babka (SUSE) (15):
->       mm/slab: always zero only requested size on alloc
->       mm/slab: stop inlining __slab_alloc_node()
->       mm/slab: introduce slab_alloc_context
->       mm/slab: introduce alloc_flags and SLAB_ALLOC_TRYLOCK
->       mm/slab: add alloc_flags to slab_alloc_context
->       mm/slab: replace struct partial_context with slab_alloc_context
->       mm/slab: pass alloc_flags to new slab allocation
->       mm/slab: pass alloc_flags through slab_post_alloc_hook() chain
->       mm/slab: replace slab_alloc_node() parameters with slab_alloc_context
->       mm/slab: allow kmem_cache_alloc_bulk() with any gfp flags
->       mm/slab: pass slab_alloc_context to __do_kmalloc_node()
->       mm/slab: introduce kmalloc_flags()
->       mm/slab: remove __GFP_NO_OBJ_EXT usage from alloc_slab_obj_exts()
->       mm/slab: replace __GFP_NO_OBJ_EXT with SLAB_ALLOC_NO_RECURSE for sheaves
->       mm: remove the __GFP_NO_OBJ_EXT flag
-> 
->  include/linux/gfp_types.h       |   7 -
->  include/linux/slab.h            |  14 +-
->  include/trace/events/mmflags.h  |  10 +-
->  lib/alloc_tag.c                 |   2 +-
->  mm/kfence/core.c                |   6 +-
->  mm/memcontrol.c                 |   5 +-
->  mm/slab.h                       |  16 +-
->  mm/slub.c                       | 423 ++++++++++++++++++++++++----------------
->  tools/include/linux/gfp_types.h |   7 -
->  9 files changed, 288 insertions(+), 202 deletions(-)
-> ---
-> base-commit: 500b2c9755301742bdbb61249511ac11a4665dae
-> change-id: 20260601-slab_alloc_flags-25c782b0c57c
-> 
-> Best regards,
-> --  
-> Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> 
+>> ---
+>>  fs/super.c | 19 +++++++++++++++++--
+>>  1 file changed, 17 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/fs/super.c b/fs/super.c
+>> index 378e81efe643..5216c5dbd4c4 100644
+>> --- a/fs/super.c
+>> +++ b/fs/super.c
+>> @@ -24,6 +24,7 @@
+>>  #include <linux/export.h>
+>>  #include <linux/slab.h>
+>>  #include <linux/blkdev.h>
+>> +#include <linux/memcontrol.h>
+>>  #include <linux/mount.h>
+>>  #include <linux/security.h>
+>>  #include <linux/writeback.h>		/* for the emergency remount stuff */
+>> @@ -169,6 +170,19 @@ static void super_wake(struct super_block *sb, unsigned int flag)
+>>  	wake_up_var(&sb->s_flags);
+>>  }
+>>  
+>> +/*
+>> + * The s_op->nr_cached_objects hooks (used for example by btrfs and xfs)
+>> + * operate on filesystem-global state and ignore sc->memcg. Driving them
+>> + * from per-memcg shrink_slab_memcg() invocations only burns CPU walking
+>> + * per-cpu counters and queueing duplicate work: the actual reclaim happens on
+>> + * the global path (kswapd or root direct reclaim) regardless. Restrict them
+>> + * to that path.
+>> + */
+>> +static inline bool super_fs_objects_eligible(struct shrink_control *sc)
+>> +{
+>> +	return !sc->memcg || mem_cgroup_is_root(sc->memcg);
+>> +}
+>> +
+>>  /*
+>>   * One thing we have to be careful of with a per-sb shrinker is that we don't
+>>   * drop the last active reference to the superblock from within the shrinker.
+>> @@ -198,7 +212,7 @@ static unsigned long super_cache_scan(struct shrinker *shrink,
+>>  	if (!super_trylock_shared(sb))
+>>  		return SHRINK_STOP;
+>>  
+>> -	if (sb->s_op->nr_cached_objects)
+>> +	if (sb->s_op->nr_cached_objects && super_fs_objects_eligible(sc))
+>>  		fs_objects = sb->s_op->nr_cached_objects(sb, sc);
+>>  
+>>  	inodes = list_lru_shrink_count(&sb->s_inode_lru, sc);
+>> @@ -259,7 +273,8 @@ static unsigned long super_cache_count(struct shrinker *shrink,
+>>  		return 0;
+>>  	smp_rmb();
+>>  
+>> -	if (sb->s_op && sb->s_op->nr_cached_objects)
+>> +	if (sb->s_op && sb->s_op->nr_cached_objects &&
+>> +	    super_fs_objects_eligible(sc))
+>>  		total_objects = sb->s_op->nr_cached_objects(sb, sc);
+>>  
+>>  	total_objects += list_lru_shrink_count(&sb->s_dentry_lru, sc);
+>> -- 
+>> 2.52.0
+>>
+
 
