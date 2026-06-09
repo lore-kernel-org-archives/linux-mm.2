@@ -4,96 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403E9CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0FCCD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 784406B0088; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
+	id CDC7E6B0005; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70DD96B008A; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
+	id C8D2B6B008C; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D50B6B0096; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
+	id BA3846B0096; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 485706B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:26:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D999E1405BE
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:26:53 +0000 (UTC)
-X-FDA: 84860600706.09.5E606D3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA94F6B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:27:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 507FF1A05CE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:27:59 +0000 (UTC)
+X-FDA: 84860603478.08.D746676
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 50790180009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:26:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5AHoeDv;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8FCA1C0002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:27:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvEx0LGu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781015212;
+	s=arc-20220608; t=1781015277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UKRI414IfLHNNeYwOL/nAAWOqGtR7JlYa1a+TkI80SU=;
-	b=k5mzck/4Ib0gUZrd7QV5K9QFcUPLbPQllQz1pL9Ir6qYyXHWj2nPFvFhMediXwkjt3lHcp
-	VBq91nFAapk8bKJUSXeJK29g0M0ply5YdAut/7+ys8XNCCU3E9dyeDsEMZP1ekzbfUUxuU
-	ToBQJl2bpF+2j/naK3y5krBLqtlespE=
+	bh=PKSUe2ZShhtV7rCIocQmxdI/1q9ALaMdNbgo63AIhb0=;
+	b=0tz5q3Wa0EIrvv8At7bckQTOko5eI00nGn+bOr2fFJr/BwnLEi7VGnGvuhXxWsEGU33anG
+	zKO0+XlaZrY/KbFpE8Ds0qSsCY+uSgB1iDzgUyRQwuSVpw4H9n6c4U5EBJWR9NPq95gSND
+	tqB5Zgw5QwgtkiepWvluNeYudjj7W04=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5AHoeDv;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YvEx0LGu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781015212;
-	b=rcTb8hKbjyCH6XjC0peNyy4m+KWoma7bZkFBNIML8RboCQtxsegZ57vugGoc6VB9/W5Heh
-	ILH1u73cub0BURYSr8PZYATAY39iJ7sIyV1IG9+JU+BkQZxalTyA6qNCTA/kT6QhMfmSXD
-	uGbaziv+1dr+pADueNiA6+A4fdCGVOg=
+	t=1781015277;
+	b=LNsSGfkyt8qvohaXEzZN2Rg+I5ATxIY289G8GSYtrIygeH6m1igNoIcc0mwzSkpr30T/vR
+	RWOFKxPCb3hgpfM9dknD4b7h0cx+JpBwT18yDO85b4k5fdBzD2ZJxXZyIdyatPP1ScO2nH
+	URQGm+sKia5Xr+2rYLPYk1ZF2nDhliE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE43E600AB;
-	Tue,  9 Jun 2026 14:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C911F00893;
-	Tue,  9 Jun 2026 14:26:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0685E601D6;
+	Tue,  9 Jun 2026 14:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E361F00893;
+	Tue,  9 Jun 2026 14:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781015211;
-	bh=UKRI414IfLHNNeYwOL/nAAWOqGtR7JlYa1a+TkI80SU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D5AHoeDvOTSuS+c9WN66Zv2jy+bHsL1T2USkxRt494TKRa7W9h8il6Gknwx18UBCH
-	 3PXZi4ikQQP75Xw1WS26zhyiVdg0j0JR3tTyRg4prn9e9qRoDGsaXesw2Lph3W4Ro6
-	 h5y9x+Rd0tJehXvqLtKs6MzWNWsr5uTdNWRKIatNgMr/CjVLgWC/osSO9W9LxkBlTs
-	 mzeJ+gGGUO3PIHLLP9jVj5AzwmycmXeCqJY0flLZgiT4gAS3rjQoIfPW1wOQcT6Pul
-	 d4hM0kCWNtY3Vb8CvXLzeP//3npyp5k+Nw/ibfFikW+hAvPLjpSraeaUhwD6HkyHAB
-	 upA13YlcG1NDw==
-Date: Tue, 9 Jun 2026 15:26:43 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Usama Arif <usamaarif642@gmail.com>, Yu Zhao <yuzhao@google.com>, aarcange@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
- from interacting with KSM
-Message-ID: <aigigBa4LY3mtSL7@lucifer>
-References: <20260609114619.144416-1-npache@redhat.com>
- <20260609114619.144416-3-npache@redhat.com>
+	s=k20260515; t=1781015276;
+	bh=PKSUe2ZShhtV7rCIocQmxdI/1q9ALaMdNbgo63AIhb0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=YvEx0LGu2EMoKvtx/1rRr93im3SvYiAuVmh+qxGpdz1QA1k8bd+GpCxWdLW2rnWTU
+	 Fa3vme8+XkgtU68ZaEPCe+JTXC8BgkUZd7QKa0mXAmuovdCq0dCsvOZxk+KAsvrMEu
+	 d9UNlPZRJ0zOrU44kTxPwnXHqXikJleUDJzJgZq/yaokVvEgsKdRY+i0HeNsuoE6Kr
+	 JukL3a0yFqdp2ZsYdgg9U+Ii6b3RjW0TYmrrIwBTZEQCgTGSMzlI0H32RrkMYX7IXW
+	 hMLdfVU6A93WnStc/UM/X6eWhFT4bhfkbSWDFX6/bH8O1kYCwxTkrar44lyTD0eS/L
+	 NWsybGqB70e+A==
+Message-ID: <106e71e4-975c-4337-aaff-a00628827477@kernel.org>
+Date: Tue, 9 Jun 2026 16:27:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260609114619.144416-3-npache@redhat.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 50790180009
-X-Stat-Signature: dn8nbarx13xjmww4gysjtadb7j5qnmau
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm/mincore: present-PTE scan cost after pte_batch_hint()
+ batching
+To: Chengfeng Lin <chengfenglin@stu.xmu.edu.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
+References: <5fb8bead.17483.19eab4626f5.Coremail.chengfenglin@stu.xmu.edu.cn>
+ <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
+ <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781015212-954139
-X-HE-Meta: U2FsdGVkX18hHHksa2KcomVcGxRiuKR290POOmpk2YKwWklj0r2oN6m9WG/hDeS6K5epbX89h+NSr6uEsbF73WmSkEXNsVQuMGu4CY/B7hqT/pBCVUbXHLCzBhtRCHV4VP/YIb57J/ZEKI92jnu0sxmm/CpSvDCUphwF2lY+o3ghnWe9TX/cM/Zg4O2+jo6otT11rHu6g7p1wZaklwoFVsJ/nZxLDgY7PrpnQMD33gJXP+ekEElHEIlFRt0z5lZevYeqma54wwpoKW/Jaj4WL+H/IW7D+ebk0NOLSiAda8OIIeFcXIDciDXGexxSe818SW7y3Mtdh9MfGAJywKOxfUjnmkkTEjh2VEsQ+75qzOJ6n8gJKIRoolV8YoGr1ym8ImD+Yaz2pi8pNmRhuMOQ61wmyTC7KFyWFp5Vf178U/VoCpCLSk9XW95uPTpQ8WmsxLbnFL2o/N8W1FOY6KHYMvDtB+9PE7yYGhuSYs8K31b6qz0LErnHyjPYl6/mQDOS+POGMQ3TPN0iwbyIjZQTytYsjPsQ/VuajpWtCZLvTrQ4RuE8Em8N/uZR/VXnpuhZBbj8oq70ViqD+LCpKEjiowGMld3Ay2RFfj7LDoNOuHJIXUzOklpcja0dXiubhL9zHqkpfQ3gkybpJ3IkL2VWZdUF3FQ653X+jCichxo6EUN10KyH11ybUr6t5UFgOYZ9ukhAg8sL0FUWyWwdefqZCoLSV+q1gRljr++tEubjGIcWqPdiz0dpsVoFSry527Zyf2oUYOx14tMiiIz61adignsseTATo+uqEDmMh7OiCLcvEbqglYvIJw+QTtRIXEQ4xAEUAERDSHGEmGu4UUXhRrjc9yECbul9q4qsEOvdHas2UV9o/YYE54Cwn4WHAMf3w7NV3tgdO6Px0GL+76KA0GDvXEgG/5nJAwVqRG9JR+Dg2H4qi8fWDxQbuUGuDeH6r7euYIoRAes69AdqSRj
- ubhNNLhs
- 5fczuAOHBH5AuNyrt7NAVqWLtfIraNBMuzGI0c+8I7PoMF1Dlfais4yueaLqNUWgLj3DqlD7ZCPYXiJHEdMOpdpVwqz1IPKoEgwqHbis+Cdv/a9fypFnhitmBoFDols56wf7Rgcuh4G/wSkpyZ1LkjMy6c79YIkweCd9lg0wz2FXe+cQW696Dgsb4+ce4SixjOGxKIXwDtDjPkXKvMcBqoP8WhUUyQxn8JK2WCU3pB+vpo29ZFF6fPyWE02GO1asm/vHLpDFlVUuH8poX9UPf5RXxI0w/hM2Mjk6uQHMweSGwPz9cxLlEGjxhNBAAQW3B7L8/RHLrti9Vd+Mo7Z2uHD8xTrijao/nZcMm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8FCA1C0002
+X-Stat-Signature: zhs9d6yfbpznngtembro8zh5owphe1gu
+X-HE-Tag: 1781015277-630247
+X-HE-Meta: U2FsdGVkX180dQoRPj2eqsNOZMW/y5KgzpGJk19NUHZyoU8TkjvrVfNVir+dOzyY5W5x1iKSdfyxtJCwM+gAer/Afc3rm7Vm0t9Ny0Y6c4u6ty4pbXcyq4ODkUvcom3EDaiPxVgI2Vbs94NZ6r/vuaoAwEvlYRM6e7FGW1o9r9IhiT6MPrypmY5QnWp2+XN/OvNLqDLoWORRIegoPWJigM6BLXzIvdZQwkGh77tLg4+hW04ZulVkV5JMsC87PRdH6D1jXvbsCP0Dl9I4cg0aoyt9osB6OZ9MlwicJlk7M7d47OZuVU7Gdagi74rTgq8dRtQxb+TccEXSpBx3M5GfhDleZIz44KJyYkTrD/HpAhQD3MxDkS6+owmUT/PqBssCq3/15RxlmQjuKbn0KyzH9xhDV09qnmDppgHmHUq/8H6wTTJ4/n6pboo7ruZDP0Md2koc6hHA1NximXvC0U2hTjIzCCrpWFZoFjAIhEiBi4h9xe4h7S4HBDa+bkaDmzlmadP7TC9H4hfz5oEiBKVWPs9WZMIjJA2VOKRzacrtoEoabKQa7VT5ji0U1GDUah/t/S3H3wAp7u0j3pK98sxXYavTNwa03VEjt1HYVRxLm0sAXoQPaCx25Wi76zO3Di3vCE0osRAUKnVBzm/SDEjOBNS/Jl4jSkoumTWs1TVdc8eliRlSbF/l9j4J5KsBhF4cuiMThuost5KXFsjP3YExEBfv5vUnRPDbZ0GOXp+p9Iu5qJDWPCOdfg1Kq785i5F4KZBOAJg52IF7PWlPIi2X0SDRubu60+UaIYeCkI4A7yRKoPzprv6zu0DCtMbkKgMDo7IXun+qnAnOwL31RRNl7YpPeVmM7dPbS/ZfhqV5qcEwOLHGf+cfWTM3rgc9st9bMieKgN75vNWit/s0aK9DVzwS6DcZOQnrakczm0ziRaLO3xaaTV30dLWQhpBbPw8HcO2sehURNscgErC9iQh
+ 7ynZ5hnM
+ 8ym0loz8YGeqNNOK6L8su5Scx5bCSQK45TEZsT8gmzh+QOb6OIzxeaKbMB8r3pWQnxMnjAdL8G6ZkkIDKgt3kqksEQabgWbgVtAd0N33p64WVgTMCOA+IGbKyxyB17sH2ici9fOjkYRmQQanE8QMB2eI+j1WfoHxprebfQwsEg4vAMUoPTYWCATeE3lFxteMYvWpDV+VmZrUq9MLxaM1M1EVYFI4ea2OJRGEB4VHOWRk0NVLTMrF16o0I2pz0qwliWz4ySqLWVPibSVZUbg1K2sxuZIzlkWZVkcH5phUkpfVLuyRj3QoO+1MU+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,65 +145,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 05:46:14AM -0600, Nico Pache wrote:
-> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> when splitting isolated thp"), splitting an anonymous THP remaps all
-> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> This flag is set unconditionally for every anonymous folio split,
-> including splits triggered by KSM.
->
-> When KSM is enabled with THP=always, this causes two regressions:
->
-> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
->    split_huge_page(). The split remaps all 512 zero-filled subpages to
->    the shared zeropage at once, freeing the entire 2MB THP when KSM only
->    intended to process a single 4KB page. This bypasses KSM's
->    pages_to_scan rate limiting, causing ~1GB to be freed almost
->    instantly.
->
-> 2. use_zero_pages=0: The same split side-effect occurs through the
->    stable/unstable tree merge paths. Each pages_to_scan iteration
->    triggers an expensive split_huge_page() that silently frees 2MB,
->    while the scanner wastes cycles on tree searches for zero-filled
->    pages that were already freed as a side-effect.
->
-> Fix this by restricting TTU_USE_SHARED_ZEROPAGE being set in the case that
-> KSM is running and the VMA has VM_MERGEABLE.
->
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/migrate.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index d9b23909d716..f410f972fc5e 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -304,6 +304,15 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->  	if (PageCompound(page) || PageHWPoison(page))
->  		return false;
->
-> +	/*
-> +	 * Let KSM handle the zero-filled page deduplication according to its
-> +	 * own rate limit (pages_to_scan) and policy (use_zero_pages). Without
-> +	 * this, a KSM-triggered THP split would remap all zero-filled subpages
-> +	 * to the shared zeropage as a side effect.
-> +	 */
-> +	if (ksm_is_running() && (pvmw->vma->vm_flags & VM_MERGEABLE))
+On 6/9/26 16:12, Chengfeng Lin wrote:
+> Hi David,
 
-Please use the new VMA flag API.
+Hi,
 
-This would be vma_test(pvmw->vma, VMA_MERGEABLE_BIT).
+> Thanks, and sorry for the confusing wording.  The plain statement is: I
+> observed a performance difference in a narrow x86/QEMU synthetic mincore()
+> case, and after your comment I checked whether this is really a codegen issue.
+> 
+> The wording in my first mail was too abstract.  What I was trying to say is
+> only that the benchmark focuses on one specific case:
+> 
+>   private anonymous memory
+>   MADV_NOHUGEPAGE
+>   faulted/resident base pages
+>   repeated mincore() over the range
+> 
+> so the measured path should mostly be the present-PTE scan in
+> mincore_pte_range().  I agree that the 8/16 CPU rows are not very useful for
+> this path; please treat them as extra context only.  The useful data is the
+> single-threaded / low-CPU v6.15 -> v6.16 A/B and the patched variants.
+> 
+> The compiler used for the lab kernels was:
+> 
+>   gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
 
-> +		return false;
-> +
->  	VM_BUG_ON_PAGE(!PageAnon(page), page);
->  	VM_BUG_ON_PAGE(!PageLocked(page), page);
->  	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-> --
-> 2.54.0
->
+Okay, GCC 13 was released 3 years ago.
 
-Thanks, Lorenzo
+>   GNU ld (GNU Binutils for Ubuntu) 2.42
+> 
+> Your point about x86 pte_batch_hint() is exactly the right thing to check.
+> Since pte_batch_hint() returns 1 on x86, I agree that the expectation would be
+> for the compiler to optimize the batching logic back down to something very
+> close to the old base-page path.
+> 
+> I checked the generated mincore_pte_range() code with the same GCC/config setup.
+> The function sizes from nm are:
+> 
+>   v6.15 original:              0x1fb
+>   v6.16 original:              0x245
+>   v6.16 batch<=1 fastpath:     0x1ec
+>   v6.16 with batching removed: 0x1ec
+> 
+> So, with GCC 13.3, the v6.16 original build does not look optimized back to the
+> old x86 base-page shape.  The v6.16 batch<=1 fastpath and the v6.16 nobatch
+> variant produce the same mincore_pte_range() objdump output in my build.
+> 
+> I also checked Clang 18.1.3 as a cross-check.  With Clang, v6.15 original,
+> v6.16 original, v6.16 batch<=1 fastpath and v6.16 nobatch all produce the same
+> mincore_pte_range() size, 0x1f9, and the objdump output is byte-identical.
+> 
+> So your expectation does hold with Clang, but not with the GCC 13.3 build I used
+> for the original lab runs.  This does not prove a compiler bug, and it means my
+> original report should be narrowed: it is not a generic x86 mincore()
+> regression claim.  In this check, GCC 13.3 generates a different
+> mincore_pte_range() shape for v6.16 original, while Clang 18.1.3 generates
+> byte-identical output for all checked variants.  The timing signal I reported
+> came from the GCC-built QEMU lab kernels.
+
+It's probably a good idea to
+
+1) Try with newer GCC
+
+2) Take a look at the actual difference in the generated code
+
+Is it some inlining decisions? E.g., if the function is larger, other code is
+likely to get inlined?
+
+The function is not particularly large, so it's a bit unexpected.
+
+-- 
+Cheers,
+
+David
 
