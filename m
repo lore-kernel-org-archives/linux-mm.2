@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC8DCD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23079CD8CAA
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 14:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AC176B0005; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
+	id 42DC36B0005; Tue,  9 Jun 2026 10:04:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CDF6B008A; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
+	id 3DE7D6B0088; Tue,  9 Jun 2026 10:04:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29A0E6B0092; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
+	id 2F4956B008A; Tue,  9 Jun 2026 10:04:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B9276B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3E631C2CE0
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:56:36 +0000 (UTC)
-X-FDA: 84860524392.22.25B80F1
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5F3C2180004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:56:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nMaYrvGu;
+	by kanga.kvack.org (Postfix) with ESMTP id 209906B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 10:04:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFA7D1C2D3E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:04:43 +0000 (UTC)
+X-FDA: 84860544846.20.F3B304E
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E1D4D4000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:04:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dBp9B3Jy;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781013395;
+	s=arc-20220608; t=1781013882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1v2Zddelxf5PmwGEW+ZgV6CJT0DFyt74H17htCtqM/Q=;
-	b=dCTQsxPXHD5O1dSZc+EQ1mryFqOxnsWDEm+my3kKKag/gupsTi/CTe79YXavSw0p0qlfwt
-	4pRhZPQJlEYvRiDQAl2bLMFq8REcsevupRzg1wenjtFheBsTTtyn0eXSHWEw388vp44p+d
-	voyS5wT667CDuUeb1QSDMiUAWvOProA=
+	bh=c2X6ceXsUYSApmdLkh3PVusM4XweOQmUdFpOH3H9jJc=;
+	b=5rEhThHcdYD8uiu72IIZLBwH/h5h/8R9NFZljmxO46uja8i2inHyIG26McvaQCJKOsGe6s
+	kUTD1hNmA7+W4dJYAyMCs7TjvQs6SjwtOHCB+N1t9P4rk7GG/9OlOcdl5WfF+e+JyX6FoG
+	D9/6plrWXF17Q9dSv500Yz2W2GG3y88=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nMaYrvGu;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dBp9B3Jy;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781013395;
-	b=jeS+GAfSWtOoy0qRlS3GMp65q27vljOZF03I/PKpXc08Vqr0MxHQQytkXbWvjrDds3k/k+
-	RT1x2JvXLurDdib6YpHU7SEdx5rS7P5d1j5+zO+wUwjJnIdEH9exmIyyYknzW5Uf85gPBS
-	S4IoGMj1KuHyJJg5VE+3pEbRZrh8Ayc=
-Message-ID: <71507be5-8430-4a3d-af80-6777a421565e@linux.dev>
+	t=1781013882;
+	b=Yef8kJ7HcSL3tWyoaNkDBIdB+eXF0ENIJPXOan6lqjzY9N9BoZBVMTIZgEgrMgEeR737sQ
+	44fy2aiAd33JfWLlo2JH6nDPsgkgzO90JKAYtOPeAkYFyncCSyY3w4vv83MKQESishwiS6
+	7oilZ2QC04ee2Og29CEQlO+oDeCRscc=
+Message-ID: <b3a6dc63-7701-491a-ad06-ee0be7d23123@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781013392;
+	t=1781013879;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1v2Zddelxf5PmwGEW+ZgV6CJT0DFyt74H17htCtqM/Q=;
-	b=nMaYrvGuCeqWHmltN1ytkMCfwNtkbJpJ4jzqKPOiAiwD1CT3Ikqp1qtu38bNoRi8P55fhM
-	3j4PIc6f8XGb1i/FAhZJLCaUWxMJJjXUG7kCJEWvfRhklPvXr8PvzgQof8/3XFkygYlqxB
-	69BSvaQiOridjvKTAIVdsOEpU9Rkj84=
-Date: Tue, 9 Jun 2026 21:56:13 +0800
+	bh=c2X6ceXsUYSApmdLkh3PVusM4XweOQmUdFpOH3H9jJc=;
+	b=dBp9B3Jymr0LeLKSWlvx32Kdjtkw4ksdKB90fajcjVzs2BdPKYQbEUWwCeAN4v7A4bJmxn
+	dPm9v/Re4gl7oEf5/ABo6jAAG9/8emQh2zN/4SleDrwlKjBbN03QzTicHbCHQWbdYWQPGS
+	p0Bd/Wv3HjYSwGtp1ya12t2vfhlM3/c=
+Date: Tue, 9 Jun 2026 22:04:16 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
- accounting
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260609120443.71864-1-lance.yang@linux.dev>
- <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
+Subject: Re: [PATCH] mm/huge_memory: fix memory leak when
+ kobject_init_and_add() fails
 Content-Language: en-US
+To: ranxiaokai627@163.com
+Cc: linux-mm@kvack.org, ziy@nvidia.com, ljs@kernel.org, dev.jain@arm.com,
+ akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, baohua@kernel.org,
+ "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org,
+ npache@redhat.com, Ran Xiaokai <ran.xiaokai@zte.com.cn>, liam@infradead.org,
+ ryan.roberts@arm.com
+References: <20260609131249.89288-1-ranxiaokai627@163.com>
+ <c9500789-5a27-4348-84b6-a787230edebf@kernel.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
+In-Reply-To: <c9500789-5a27-4348-84b6-a787230edebf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5F3C2180004
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 47x397k8ytr7odhybme8afant8hn71yf
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781013394-664875
-X-HE-Meta: U2FsdGVkX18gd++2+bxe6XB3Bzf/1/i+Frb9EEIitqIiyG1Kmlcyv5B4lG1WtGAlM7uYhxlZV1noOTtNYLbRNSjaGVM7nGE9vjWzBOPgHF3xbPbehWt6ZPUWiRV/AKtD6k/cvGT7nAWthFFwge5Yp8TDv5GWyfWAe7r+rtzaa9oEy1boqHKTdrm27L54AHmh6BU6ek762gG6BxAK7Er/cp44g8kFnlgrWZUPnbCUhFtimxY9aORu/L9b8QMrpzdTOqqUfBgGBFGfXbvcOrrJry4VZ3FubEAxQY48Omg3rloWS+z9NNXndJAjA3lvOhvKz6l8CYZn3p1sTOxUY/t6VSo/p0tTHRMaHVc/295MH+WFAu4IP+h0q9pmOv5rQBni5oO6g2dU4eoaNYdY2lwL14Zl1/jPZ8daOj/ySZISwElXhBlO9EFXztMlaApNJhpWAS7aadk5Jm/4qlXr8KZXh/UVKbS4LJwLqcKcbiCPAZd53uBOAj18FyZWL2my5eVHGzshvakhe8FZnKVpOIYku8Q+7SJLrrWMARNq32KUa1ZAXV+nER4uLpvtQ1UvNX4GPiEFdT18aNyrJDpScaxle7612EUAb7BuGp6w9JtKuCZ9/nprS+HUr6wEkBuSrJoLWS0FPAn914bGO/wJyLV8nNOOZX/xzGTZSa4XODCrxpgcbXMY0O9Trl5CWG6fR2TYxQ2evZjWyVLOnpzAA3UShYacdTlmWZMIoQmuAc+MMUUp2vrkNZN4J7v2+udgQs06+p6KDAqUOjmT43Tx8PdXfVAtt+VP8u6ZfhpaDksUA30AVkwoBnrqahwf0Ju2+yosr3fA/s4slvp65oF2qpmCQWtPPxPremMdaKMh5UFXnqEdMw1wZEj5gA1bJly9+oSilf1aB5Q30LUXU0uMxxC79nqhSPDeyVtnoxGm8e8Cv4pfPHX0RvgpiK+2V6N9Q2lZuiOw3vyUD8NbiWA3sfa
- NG9iql+D
- 5dzCAWNrcoSyh25o4sI7UzWbEvHvnwW9naWbTb1QfynLzkZlRuiCLVurIT1YQo2SCojgv+e34llDgdnGj827ndDmBK2As46i9CmsVSdbCH45ZO1oNgXwxrJdN7hEb+KJXljFfRLrWw65vkhs0arJfIKrHjZ0EE6W3nZPydzMZ+aenTSnvRr13RSc/u/eTYZBJcwEXkS+RsESet+FByN5r+reV2A==
+X-Stat-Signature: 1iwmthnqdapo3irhe9tckbgmhogxwabs
+X-Rspamd-Queue-Id: E1D4D4000B
+X-HE-Tag: 1781013881-64504
+X-HE-Meta: U2FsdGVkX1/kctI9nyFPLxkQ+k+d2QclC07mGfjH3seHc/aKNnyyl56xyhJVFmfLPYVpENQWiTBiJDvF9sr32dXNksYdlGsHUPZPvbTbUlDlWlbCPE5odB21RaUIGsFPxllvcI97OnXjGHW12FJqxfe6FqHCIYlbWzv3neYA4UKd3sOixjGnQauMJygd+h9Y2UgZGvsunjFQiiZZ4Q07p5BmDJ5M2Is0m8d4PA+JCPQaqnJnJd/CWOvAD9quClxJlZR7XUXfoixPb/rqxru8Q0M+bDja2lwqKhV7/bq8Vy7OH1QXrfmzDNe1Ikp12G9Dbl8S0GRzq9Fa9NxDSYJnzEW1eVq053CSxzP2YVbuPsdY/IBJqqtnnW+of5DA9D4Iht/1utulKvcss4k8dJhS8OaWDYYCS2/I7L4M5U7zkmTHxDiTgwF1ZF/4sY5kZTgKcootE/R+iB4CW+gdPGwVTHoSn6PnsKTBltiP5uRDFH8zWmbQ9PiSNQi8jE5R7SI3uqGkUrK4Yc9BiSPbRiSDLznFdUQ+ZQb/aUfmLVhba957LGtv4smxSV0UhpobaYWItbO03b5S9D4yhkwaSI0s8kDoU0Sm8gGswaAUC3CGX+19VbG8+yc1jGmX0zLDWbF8viZBCKIOSBwo13//KQYPoYNDIyPFnVnEO30iFUYH+RccnRjGl5VbFqvKlkN4FQang1UobVUHOlek8GEEnidNQEVHLCIe/wsQa+KqV9U4Sz/Pm5tT3gsmI5ZMnyh9z+Ua++AlGRYTg4012BTE9e2JjRmN3gDfzrF2VpGuTAmwxOBzoY+qQvb+XUqyl6tVngto5TOitzOEhDKFTi2YJOc9Mk+nSbp7z4jbhImz+W3sNU3LAuGHNWXecYOc6MODTedWm0y+X6Pc5pNRzRFDhLJB218oKjfDIhiiDbzads79jQ/1MQKAh7NvPyVt2l3r9cDcvpQfWdWmwb5TBtW2QmL
+ b4coQVzw
+ dvc30b1j91Wcm2xa7ItfV8GPn28FV0jlyNDvv8AoPNuFggvCxvUt6etdzFpQzQNw1eTzRgHiSS8AC7abux8PSXdxfwg8TNnZKqRH/S+3SLCzvyAnqutIhi0DxISfxAtr9GRavvzFCM5CyE9PLn/GY3ssdIWylg2pJszSy1bcfHGs0JA3358RQhUT/g3eOE3YmFSaSqEO6i9ohitfb0d/dTgNfVZ1mGT4BIQXS9s0fO6fKdbonqlAg1hU62OT4hqZQKGl1Wg4pQbDydo75CAp+mhPmW7fvFbdwaDMhS2QCpVumiw2k/3z99fhvnBGKSMznP2LTbgfOND86JwwPwgMLzdeASOYrELO/796TTUyi2s5tYc7hpLrvUWltpfcJp+tK52RD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,36 +96,53 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/9 21:20, David Hildenbrand (Arm) wrote:
-> On 6/9/26 14:04, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
+On 2026/6/9 21:19, David Hildenbrand (Arm) wrote:
+> On 6/9/26 15:12, ranxiaokai627@163.com wrote:
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 >>
->> mthp_collapse() uses mthp_present_ptes to decide whether a range has
->> enough occupied PTEs to try collapse. Swap PTEs accepted by
->> collapse_scan_pmd() are counted in unmapped, but are not represented in
->> mthp_present_ptes.
+>> As documented in the comments for kobject_init_and_add():
 >>
->> When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
->> so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
->> then checks the PMD-order candidate using the bitmap.
+>> "If this function returns an error, kobject_put() must be called to
+>> properly clean up the memory associated with the object.  This is the
+>> same type of error handling after a call to kobject_add() and kobject
+>> lifetime rules are the same here."
 >>
->> With max_ptes_none set to 0, a range with 511 present PTEs and one swap
->> PTE no longer reaches collapse_huge_page(), even though PMD collapse can
->> handle swap PTEs up to max_ptes_swap.
+>> This is because kobject_init_and_add() may have already allocated memory
+>> internally for the kobject name (kobj->name), and leaving the refcount
+>> at 1 prevents its release callback from being triggered.
 >>
->> Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
->> through max_ptes_swap, while lower-order mTHP collapse does not currently
->> support non-present PTEs. Keep non-present PTEs out of the lower-order
->> eligibility check.
->>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> Fixes: 3485b88390b0a ("mm: thp: introduce multi-size THP sysfs interface")
+>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 >> ---
->> Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
->> case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
+>>   mm/huge_memory.c | 7 ++-----
+>>   1 file changed, 2 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 653f2dc03403..601750dbe79f 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -790,11 +790,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
+>>   
+>>   	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
+>>   				   "hugepages-%lukB", size);
+>> -	if (ret) {
+>> -		kfree(thpsize);
+>> -		goto err;
+>> -	}
+>> -
+>> +	if (ret)
+>> +		goto err_put;
+>>   
+>>   	ret = sysfs_add_group(&thpsize->kobj, &any_ctrl_attr_grp);
+>>   	if (ret)
 > 
-> Right, probably we just want to add the Fixes: tag once Andrew moves the series
-> to mm-stable?
+> This looks a lot like:
+> 
+> https://lore.kernel.org/all/20260411062152.2092967-1-lgs201920130244@gmail.com/
 
-Yep, hopefully Andrew can add the Fixes: tag when applying this, once
-the series lands in mm-stable. Should be soon, I guess :P
+Right, the same issue :) There is a v2:
+
+https://lore.kernel.org/linux-mm/20260412175428.2613383-1-lgs201920130244@gmail.com/
+
+Still pending, though ...
 
