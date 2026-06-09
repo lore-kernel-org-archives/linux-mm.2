@@ -4,110 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB8DFCD8CAC
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:03:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C906CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:06:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E1BF6B0005; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
+	id 7FE426B008C; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B8436B0093; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
+	id 7D5BF6B0092; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CE886B0095; Tue,  9 Jun 2026 04:03:39 -0400 (EDT)
+	id 6EB6E6B0093; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE4BA6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:03:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8D2C1C1E87
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:38 +0000 (UTC)
-X-FDA: 84859634916.13.6DE1B8E
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D4DDD4000D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:03:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xQAuBxMb;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E6636B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:06:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB14714046C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:06:20 +0000 (UTC)
+X-FDA: 84859641720.11.1CEC63C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5E0E31A0007
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:06:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kiq42VhM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780992216;
+	s=arc-20220608; t=1780992378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HlBlOHMPbvtbUB1n/vkZ2Ftsfcpe6TvbqLXbZg5mnVk=;
-	b=xDBpGWvtameVv9C58Ut/hoOUKYlsuxcnQYe8+jEhqO1eT8fB7ByR6k3bC6KsUC9FOeJjIj
-	SsQL8OGKJJti1YWzmleASdfSuUFoQRzhS0Yj39xKjthFyfRBuCD535l6mnfULSP8GfAV2U
-	J459u4GIqCpttt9BgyMD2j3MiGbM5Hk=
+	bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
+	b=QOIDBleGcD9yQPwBjjGqmLl5S707LOB6NIVAIUW4yNGexp8AMIBTvEt16P77Q+1ZNk0NYe
+	YChjzfJvKekJikCK8i7DsIwgCxatuIVcYYz9pqQVRfi7ftcT6OazSxn7+N6bKmcgG6zL0w
+	MBDrYmvgOYF1Krtwlvbac7rsUbHQnjE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xQAuBxMb;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kiq42VhM;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780992216;
-	b=wg4Qm7HunPRoDBuvqT6uoSJxvs2QJ09tHcT0DECeFQxljosurXD1wNJFX7hm9hlpkNUrgj
-	MMmWZu/aebYLDsh1KTSa4TxRNNE+dH4+1nWPtf1oSk1fCxljy9MoDmoBqu1VTLv/z06qTK
-	k2iybvecsXPL/vckmmZAzbd6xnWjfNc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=HlBlOHMPbvtbUB1n/vkZ2Ftsfcpe6TvbqLXbZg5mnVk=;
-	b=xQAuBxMb8mzsb7Jf7ox4zUkRKG53+Cimxagzt8XKYaOjdENJso8ZC07weXNRQH5oR687sy+m6
-	uXXB+h8Fi4Kp8IbHwqYAtIXlS6EWgn4Ic3ovMEgUrzAUwgGaWTXAQWhBYp6VKMDgM8ICPj468nr
-	/yxBP9dKfByAYRac+9pNCAs=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gZLn15GD0zKm4s;
-	Tue,  9 Jun 2026 15:55:33 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id C430940565;
-	Tue,  9 Jun 2026 16:03:29 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 16:03:29 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 16:03:27 +0800
-Subject: Re: [PATCH v4 4/7] mm: memory_failure: Generalize extra_pins handling
- to all MF_DELAYED cases
-To: Lisa Wang <wyihan@google.com>
-CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
-	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
-	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
-	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <1fcac146-cb21-7012-3eeb-e4bcc6d9ac0b@huawei.com>
-Date: Tue, 9 Jun 2026 16:03:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1780992378;
+	b=f7XWQyl5GlbBaKFUSoX8qA6Vg0Wg+BIwLrU5Qokh8XfPwuVnzvA/3TG3DypvEhl9iNgC5m
+	zBQSQmOEW+q+Q4e5c66rJ4BvFawUD97Ti3iIMu56kSr3vOJCA7n0v7ufPhJ11V2AOiUS27
+	O69+lhI9IsnPECmUySY0jLnZT2oxskQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780992377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
+	b=Kiq42VhMcVXfGAf3wXnwpx0rSquOFqCSzr2nmMupo6e2aDlUMDfo//4kDd2V72BWVek7Tu
+	6xgNyfm1ExW8tvFJW0A7hivT5iLmc1nRBQU+8628cBPLHZDxUVJr4IDNFyP8YkOiLvFWXB
+	SfexR1oJTK8wucJrsMT1XIQot1A34cI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-K_HsveaBNqWg9gm1nrM-4g-1; Tue, 09 Jun 2026 04:06:16 -0400
+X-MC-Unique: K_HsveaBNqWg9gm1nrM-4g-1
+X-Mimecast-MFC-AGG-ID: K_HsveaBNqWg9gm1nrM-4g_1780992375
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490b8adf8b8so47882715e9.0
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 01:06:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780992375; x=1781597175;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mtkf4sgMqVoG+F92sfanLnqPLF7Ap+Es97Nko8xXfZE=;
+        b=V3iM+UxPK/xYNY4YTUylpv5X5un0Q8jggFPCnLTiN+v5NDEI3a4pcOVqriR4RMxfCd
+         y6kjQokBdYf7b73tZGvFtdBSgz41C1aSao0/6/Bd8hSXoqpZG0TwlqWwvfPBCiTFMNNK
+         JIv5OMvVEeA19H7aEnPR0D9Sk2i6JKBUt6zlwLjGI8VdKpxAvwzSbkjoVnD9svclt0fh
+         xD5z2jXRuuNN7PcFzk+1Zvskwv2ycX0+T27CBkwMicf55pStDynKA3jauq6PaFEtzT9c
+         hywpGnma6X+Eyh+Wi7V9W7mwUZAVHttdIXVEDnWVUySfrYpuQHrccU7RHHVQMHSfDnN9
+         Gl5w==
+X-Forwarded-Encrypted: i=1; AFNElJ9FLk+iuRyAIBVkNA7W+4ToyWa5V+Wj6v0NYZ3f0jALAHv5JvvaA/kSZUzA6CSXzMFyTRjdqE4Flw==@kvack.org
+X-Gm-Message-State: AOJu0YycHlsRXSrInxtTP6twQ2lckkeq/jVwnUng/F2uqm+98UWBNCai
+	DOc/xD6IFTI38E/7Kurg2JSkD7/Yz0teUw7Y75xT+m6ulC1tjPwZGOoy7wxBRB5sDO7nVjFQSNp
+	0vLttlxHY2ti9t0YnEHnTnzn4kzqxu/UiwQDtI0wXmmWKUOeTCIN7
+X-Gm-Gg: Acq92OHpTSXmiQWNvrsB+Hv1++T75NCEy8BUa3Zcc10PmxbSDPxhS4628Jq/QsNXTbO
+	t7N5JsmaQP+9JnzWhW/TNyHPaHV9GTdjGd2UiR1v1/sEIo02pdsAqMBs547tbzq3ThcyILsqFAK
+	0kJ3GdAMyszK5zhnCTh/fhYN0AciyogzLaTPGtja18MNwboTW7HUpWEKr17qWnBd0mHZ9qXq9TA
+	iPzqrwpL5kD/QX8e5DQag2oybdRYgVPD8Q7wcDMuyRc2qBBvwjq8Vc0Ei54Kw2NjPwPu196+iJq
+	Su1UPkIHpqqY6XOKoZWdy6Ft4b2Hh1SQHLFq/0G14Kfppjz2K5jBS+Hygs0txb4oE865GR8jUWu
+	BO0pYOJMNCvq9GWv1VYb70u64XUrsjhx5hTHqi+dGpODmCAF1LD7nhg==
+X-Received: by 2002:a05:600c:3515:b0:490:b409:94f4 with SMTP id 5b1f17b1804b1-490c2602a24mr294886835e9.28.1780992375120;
+        Tue, 09 Jun 2026 01:06:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:3515:b0:490:b409:94f4 with SMTP id 5b1f17b1804b1-490c2602a24mr294885445e9.28.1780992374486;
+        Tue, 09 Jun 2026 01:06:14 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3d66c8sm440082815e9.10.2026.06.09.01.06.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 01:06:13 -0700 (PDT)
+Date: Tue, 9 Jun 2026 04:06:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: New design
+Message-ID: <20260609033042-mutt-send-email-mst@kernel.org>
+References: <cover.1780906288.git.mst@redhat.com>
+ <aiePVsiV-w-IZ8A4@casper.infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-4-a5bc7db5a9b2@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: D4DDD4000D
+In-Reply-To: <aiePVsiV-w-IZ8A4@casper.infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: C3NeejsChlmMEsm8kmjMmJvgwKwG3dL81jyasnf5wy8_1780992375
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 5E0E31A0007
 X-Rspam-User: 
-X-Stat-Signature: 7do7hns9xz76wop87e87yc1uunzjwmth
+X-Stat-Signature: 7jqye5fx43zsr6fu6pbugaaiahget1fr
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1780992215-128834
-X-HE-Meta: U2FsdGVkX18ipXUkbvDQjB78h01/z978308APvm8OQy192XgXfihSgPtvesvpdYH6tCL9rzpY+fdtxXjnbkCKXG3jvUvocdb/EsPzlNQBJs6vpYFlhDtVlxdvC9NQMEs4i7/ycu6BuKD6K+uqlMquBUqsSK2r+P7Wal9awyTUW+NPTgFFPi3EaqGYNwA+F2CUxqXyyEW38Ce9Ab//2WEkiYOY/URnzSJi7wCbCE7cSs6/rItPCv92ho+Fm07lOjFG6kRCAcIqTwHhXW1wHaAQKJslodSywbU27iaINtQRM1U6DsNdlX47jLgtLp898QVzJkHubC+yDUf58M1X76wYEoH8N7c05r/xV5J96vQu6a5fAMBW9F6D+EMxH9jKD1QEKVfSYXj+3nteA36F61Vo95bdHY9dbU64iFfoE3WLsluelNa/tPzn6X2sYZOtybJpXOHkjrZJHh94ngRmZcFZnekKvQuNmbhcnQUxsEEikmZaMOCgn7NkB3N6XkQTJtHslDrahY6DtefUCIYAcCvFhH2MFkozHR9Wwa7JVdZaEAArT28RYv0IgUBEqVpgECfOqvKO/0/9kEuxmG98Cc4q3PC9eFB999I1Nt60DCg4UAkpqq4qXV+s+0vRyMuGSf3SGX2E/Pb91Nbh4co+W5gvgiJ07d+rMRcWy57wXg0t2sYGIHlgXsA8KO8wWVFWVJ3F54EzovzOR2E4izAYDP+YoKLXZK6zRxzqM1A3bXJXP6KZG0O6CmrbdpGe4dwcMWHftmCfx19RjpgsoAX2RLlbaMC9p+WQr8+ZZoS16wx2Pgz50jmNHgwRwkN2b9GcQoULF/x7itDSObpY7WqypWt6aTyrqnjZodpFWkGyg3AKpRnIeDCjUpopCZfnaxR50sKNLgJDsVwMwK+3Y8R7JC2wkkVfV9GpQj5bIYQH7f97G3dztLaIDul8L2XZmVmER6fPfF1EF9AGFccYCAuvbB
- EV22MJzt
- U9YDh2TYReEyyANfiBu0lpeYtAh/heFvCULu1fBVmOI/6uz6376o5g9RLkQUa032+dL1bTlhgaGRT51ULciBb09pbVVVwDMlweHIELs9bogX+Z3wYYfQCkliFLCtczNJEYQ0bGZnh6eHwv2I2kDYT5t224F6xwkUROEozuzvSkbGtk7ut2KhX+GxD2GFE1xtCj6p80KIkMIioK6COHl+PoYFJS+YKrUAgwLiwU1lpvdcWy8t7DgjflBAuA7AUgkb6LZgizpp3DI0JsjcC7fmvqAaRqsO1+XLEs0MHuLYtZxE5rba7gOBf4EnmAWBWHa70SedqLOAEy/Sb8CiofXkxdqC1rXU1aRdMFQb5Y2vM0zqWYU3i5zDIuFCxtM1MK6Jjz+fo5SnStVUg+wd/dmsouyzszZWLwoFvs6KfIkjB/iKvOeOVwPfJcsPSZaUna/iTxtwXVWlU08Mte9PNNcfU8TaDBvrBmhq2R8PvukzfuwvNJAy245aeCFWrOw==
+X-HE-Tag: 1780992378-781969
+X-HE-Meta: U2FsdGVkX1/7YrVhb1i3Ucu2aAVtqEaW5Y/TO4bYimxG2c2+I2wpAvUccCcNN2bWg5v/kurL2AvSwvWgduDzh7PNgiJVsaumva4JV9AjDe5ijircfCl5lACM305xdhy4d9kXiT2YZQtDRbebSXYEv0yxqG9I4Wyvhh8GqAYXAltWZ3HhL1FPlKCuyDxfWp6+cyDeZp07JP98fLZW7DrmkIN+m1A17pXgvo/voQrGiSfrylkg7AaZkTS4lUtnb3bAlgg/imP5kxDL57BONhi7muHnvf71TAA1KG6vN9u4VuaOrzeSPeDiBblz5i86CAwPZIAp5ReVug9BbRC8DLbOHN5pVEWz56TcjS1TBpq4z0hOnwlNu3doB9hgG9Lh7O2Gtc8U/tFU4EM9+a2t0UGSMAKjxZ6dDuvHROeUIkg9Yp6NDUYIy/n2Bq3dv/CyJSS0Wf9q9D8dsO/xAQqI0wpMyF+J0TKhNRifUwEpwOTeoMJ99Kr1/Mn1nGDQP7eqOeg3etRyh3L2U/16zf4ULubm13xDrxeQ6coycEp3q4p+EvK8tzRFAQfAglqdbeK/VcB+tWof63W7+rp4F9jnBG7edR9Ng0FeJ9uV8ypvFRKVwa9qnGCsQNw6Cfs9WMX1Nc+joYYdM4tBGZkwlA5Yc9+5l4b17pbVkjtudJn1uDqf8H2oQMLthMprUIUDFUCMFVjPd/o+gx2KY51/vZF/wT6Fls0cojrEPKBxskpgQQTOl4nLBYhwzMz/OQK+ifDEnK38uZLF+exHy0O1xE5hfvdU1wPdhNDM1fYXlxahNIKlqS0b/hKjSzbNQazykS0AXxOg7W9D9vDqmDVTkp8izbyN4VKn1kibSPXP7kfZbBCNo7ZJIKsUf1NU/IwxOCNAw5x+7C3UJxXSBzbv4V3iOHVVRSAsACUgCPy0Jm3/DKx1Sk2Jok299uwPscpEZK6eLa34XszAHtvOZcp1yW0/0JL
+ H+hUTi2M
+ qGr5Dc6+7hY02+eayNGHsBrk0YcIo2xSruaDBW6E3A826LWHoM6kYfoU9BXnU1zsrUwWJJ2bAWmfQ8sfHRb1jVtNAY3CUmX7mhxnh6lqlALbkE1wSF7NcHTQPOSnZOUJPqAWx785PGAlnewbyG0uNe/3htr5II7qVlZrhg6/uxfjJGeEeHwkO7byBxzWn91zPLZzQJmXE11ov1Ev31tp5fUuExOuv+Yx7tl3WV0ZID/5G1KVoPynutZ/5mjrOD1LL9ixlhs6EGU4rGWxofKMdSRTsUPedPfAMKewhTsV9pDJ+/oMMNmOkxss1fya8AZ2txfcDNea5VrMQdHap2u0XAZGeNgynwsSPhVpd/fTh8VYxnsLPKBOwAtJiMdheM48G0tRODLFViTl21dcxTSwaS/IzYl9nM95Z7QyO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,23 +161,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/3 5:55, Lisa Wang wrote:
-> Generalize extra_pins handling to all MF_DELAYED cases not only
-> shmem_mapping.
-> 
-> If MF_DELAYED is returned, the filemap continues to hold refcounts on the
-> folio. Hence, take that into account when checking for extra refcounts.
-> 
-> As clarified in an earlier patch, a return value of MF_DELAYED implies that
-> the page still has elevated refcounts. Hence, set extra_pins to true if the
-> return value is MF_DELAYED. This is aligned with the implementation in
-> me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
-> set to MF_DELAYED and extra_pins is set to true.
-> 
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+On Tue, Jun 09, 2026 at 04:58:14AM +0100, Matthew Wilcox wrote:
+> OK, here's how I'd structure this:
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Thanks a lot for looking into this and writing this Matthew! Looks
+workable, let's see if there's rough consensus around this.
+Two questions to make sure I understand.
 
-Thanks.
-.
+> 
+> 1. Introduce PG_zeroed for buddy pages
+> 2. Set it if init_on_free is set
+
+Not 100% sure why we want this bit. And I am not sure this works
+actually because init_on_free does kernel_init_pages
+and does not flush cache on arm32.
+You will notice that user_alloc_needs_zeroing ignores init_on_free.
+Right?
+How about we skip step 2, make the patchset a bit smaller?
+
+
+> 3. Set it from balloon driver
+> 
+> https://lore.kernel.org/lkml/c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com/ 
+> 
+> but add FPI_ZEROED instead of an extra bool parameter.
+> 
+> 4. Introduce page_is_zeroed like this:
+> 
+> static inline bool page_is_zeroed(const struct page *page)
+> {
+>         /*
+>          * lru.next has bit 2 set if the page is already zeroed.
+>          * Callers may simply overwrite it once they no longer
+> 	 * need to preserve that information.
+>          */
+>         return (unsigned long)page->lru.next & BIT(2);
+> }
+> 
+> (you'll notice this is similar to page_is_pfmemalloc() but it doesn't
+> need to be in mm.h)
+> 
+> This step is going to be a bit fiddly.  We weren't expecting to return
+> multiple flags in page->lru.next, so clear_page_pfmemalloc() just sets
+> page->lru.next to NULL.  So somewhere we need to make sure that
+> page->lru.next is definitely NULL, and then allow both the zeroed and
+> pfmemalloc flags to be set in it.
+> 
+> The important part of this is that it allows the zeroed flag to be
+> returned from the page allocator without introducing pghint_t like you
+> did in v2.
+> 
+> 5. Now you can start skipping various zeroing steps higher in the call
+> chain.
+> I understand David's disgust with vma_alloc_zeroed_movable_folio()
+> but that is surely a separate cleanup and nothing to do with this
+> patchset.
+
+
+
+One other question: would people like to see it as a single patchset
+or multiple ones 1-4? Multiple ones would be easier to review but
+of course this means no actual perf gain until part 5 is merged. Is that
+acceptable?
+
+-- 
+MST
+
 
