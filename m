@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A01CD8CAC
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D88CCD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 08:28:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A40036B0005; Tue,  9 Jun 2026 04:26:38 -0400 (EDT)
+	id 70E2B6B0005; Tue,  9 Jun 2026 04:28:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0686B0088; Tue,  9 Jun 2026 04:26:38 -0400 (EDT)
+	id 6E5686B0088; Tue,  9 Jun 2026 04:28:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 906866B008A; Tue,  9 Jun 2026 04:26:38 -0400 (EDT)
+	id 622846B008A; Tue,  9 Jun 2026 04:28:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EA976B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:26:38 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C8201C1EBA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:26:38 +0000 (UTC)
-X-FDA: 84859692876.07.4979799
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1F1040009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:26:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mJaSDUGc;
-	spf=pass (imf11.hostedemail.com: domain of vladimir.murzin@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=vladimir.murzin@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 528786B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:28:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16CF7164737
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:28:05 +0000 (UTC)
+X-FDA: 84859696530.14.3D43D56
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8112A140008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:28:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ePD+sA10;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780993596;
+	s=arc-20220608; t=1780993683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNEiL25jLm9POHPH27wOyewK7kZxaI+xHPG08xT1M34=;
-	b=TP0GlFT3BpvKUCswSktHjl9xGx96dcIEdlAMtV5znTy2CYrfZZsQ6NsMc3wg6YlZIlfcK/
-	f+UYLczbkVSuqCIjRn4pnVO93BsebwsuN9fBAYD9vODdh/3RRIdmHLxKlCp9AieygNV29i
-	ADG9EnHWp53GCPRf1MHvqUF3Dl6ABeY=
+	bh=KUTWvkYgd4SUoz3GQ3EreKamUH7kzM6u+lTKw2+UhB0=;
+	b=NBm7cINsHzHWF6cq4q3PafmzqxNc38fcLKZ2+EeLcvX/TIA66rlit3i19AG3DfZN4nXyJ/
+	+GQjavKQIx0nHyvrhCRUUHiWnifz84ZMocA9KZUR3g8MJRKtsU4Mche1+Wn4e6eHP8aOV7
+	08HF1Vd5LL/Ry0zEQsnbPV+WMarzYpQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mJaSDUGc;
-	spf=pass (imf11.hostedemail.com: domain of vladimir.murzin@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=vladimir.murzin@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ePD+sA10;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780993596;
-	b=6V//PU0tlUZBG/l7GffRwO2Q5ZZyIanAsa1v+90IGbMoWpZwQES1IU/0rnVA9ulS1REaEd
-	M3a9ftPHKxu23Grhep269ykodZFqLVpDIuzzO1wPkK1Y/c1wDxv7mcJW5Cvv+yHi0Z+WlD
-	dN2eJ0fhiB4jgUZkkJqXqga1Ei8VlL0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BB552437;
-	Tue,  9 Jun 2026 01:26:30 -0700 (PDT)
-Received: from [10.1.38.173] (e121487-lin.cambridge.arm.com [10.1.38.173])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF7863F93E;
-	Tue,  9 Jun 2026 01:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1780993594; bh=Yoo/97pymrQY5ONHYeyzpmC5cmDHw3EWNj3VX3KKs18=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mJaSDUGckTEW2cEbViQ2Y9cbstKnsRfKnWiSBkOsT20+8kN+ghoWrdrovk4UE4G92
-	 gj/2Tpf8iA1JtlD+yUL6Ew15movzmGVGJldLk+P4cITzDAI/Y+W3366q2yK018N9RJ
-	 V7e5CVm3j2zR/TdePl7zFwH4kY7u9AHYNyBhTkkg=
-Message-ID: <4f635592-b294-4303-a045-d529de29875c@arm.com>
-Date: Tue, 9 Jun 2026 09:26:28 +0100
+	t=1780993683;
+	b=c9sG1x6Qa+uLLikSifI8E681P6GfGvHxbjAXfgLPO4kZ4iOWIzZFxR5EhUmuyKBujquK9H
+	7xxehhX0DG2QZr5zfWQVSiW9AuJjmwACtOWm0SF2ZTAgINf09nZfGzeNJejU/OOZ773EYF
+	Cld6l8t9RPH9Vh6nnVnl5d9tm431i1k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 01614601DC;
+	Tue,  9 Jun 2026 08:28:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36681F00893;
+	Tue,  9 Jun 2026 08:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780993682;
+	bh=KUTWvkYgd4SUoz3GQ3EreKamUH7kzM6u+lTKw2+UhB0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ePD+sA10auk+0GlzUNcXqGiA8HKi9Y2JwdUhisxwcywX35moIyMcANbTc/VRTQR51
+	 MFUniUu0p7IYhynxwNLyu9DK2+4bdeMicIOdPck5dsrai7aWkMWZ8Gzqvl14HSbcHy
+	 YE5h+kNNN5zaeYqYUloL6UIVR+QXltPLiXsoeqRd8IxXJvKqRZ8/vC/jZP2nacV6tm
+	 JF7koe1kXEKnDblzzOl1pQvxXc1S1WrIYcWyOVnXhC2qkVLQYeaHU72h3uc885vivn
+	 T2PDleobwrFY4cxvaH2202R6Kv63uQcLtOK9UdL4CUrq1Z8cSLbQJy8vuLu/cH+IjJ
+	 enacxdiPUbdgw==
+Date: Tue, 9 Jun 2026 09:27:56 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, 
+	david@redhat.com, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/2] fs/proc/task_mmu: change lock_vma_range() to return
+ error code
+Message-ID: <aifEZEisSFABmYiW@lucifer>
+References: <20260606015729.1837935-1-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 15/15] arm64: mm: Unmap kernel data/bss entirely from
- the linear map
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
- Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
- mark.rutland@arm.com, Ard Biesheuvel <ardb@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Liz Prucka <lizprucka@google.com>,
- Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-References: <20260529150150.1670604-17-ardb+git@google.com>
- <20260529150150.1670604-32-ardb+git@google.com>
- <a1b27e97-182c-485d-a448-56c19c5de2c2@samsung.com>
- <CGME20260609062840eucas1p1d49831bfdb3447e38a3cadc803a9afc0@eucas1p1.samsung.com>
- <6a9c0f55-fe98-4063-864b-8f7e1f4fefd7@samsung.com>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <6a9c0f55-fe98-4063-864b-8f7e1f4fefd7@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E1F1040009
-X-Stat-Signature: aonyqyozm371nyjoaeaq36zj5q8tc55w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260606015729.1837935-1-surenb@google.com>
+X-Rspamd-Queue-Id: 8112A140008
+X-Stat-Signature: mu1cgb5e15nhrdnye5n4kyi8redoxs4a
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1780993595-422271
-X-HE-Meta: U2FsdGVkX1+LHJJYH/wkT8tTo42mVCoxIFtz/pJRDchff1S/G6JduBSLo3lU/vecdMu34jC3Het6ksbsVDRVepTVYQc//4tbIapse7z1lz1qTJmhAytwbTAForPn1uDHgsC9u/6EcnkdwUTFL3luGtK5QuCm4/n4UYW5RfLVZV0lLacuKg5evSTdKeAOP2nQmq5heJ/VDBusd8gKD6T43Jii3YkGE6Pb/K4uUcErN3hv3z74fMaoWLqHVvjTW9UIPDA2NfbR1eeu3YKQR2qGFrHvGCtJDyD2JitwFXJh3l7rxAzwtMmqUQ4uP3qSo3MK5krPnVqRufZQxQjNZqTlrtsYNsSrlp9POVoeh39Omk/DM45OEeFJDHr2sBUg8x4DjauI38dFynkJN6w2N23MzbAIuHC20PUQrYGgTT8Gk2LzkjB2k2P2zH4dx6NDkk3WHOFzyllV59HGrkNDqtx3rllfo96kWBt5hw4V870MuqhLvKPPrF4lvslLbXxEu0p7Dilh8iqHizzgio8UPgRKZHt0RNdyZy1Bf5ToS1tKV3gzGeAJhUpeY6QsHjHuDLoSmWQKb+wDy6/gz/Pe3F1v3ePDzutZeU0cndrKppTZT9FATOPxr47ZrJ1Gu6GadIG1REV8DDoAUCHLast781qWVvH2lphKaFZzwzpkCruiCdUuEgBkZbNWpJeRmcSvIKiK2dZoufu2odK4lWZug/8YJYrXyll7ydfIuuhJylcWWD1I/UD7gb56I40850Z/siV65cauWCPp5yyuYndgpYxnMWR5syIvpDOHl+s14qd2RpaMjdOCc21fOYDm2wYps1pzU/6aXX4BgkffLCK9brfQ85YBKBZbM2MTVWx8s6LH8z4AB7bAmK2Jde0q48CNBXni6VbqzCeDTpyDWdvbJKzwnR173Xm43JQsL11RQGfdVl0/mbB8lhkXO6bEgkhXR5R+JusnoBvcLJm2v9vhU/D
- L7iYzip+
- R0/v5gCagmnwCSoHlPMT+ZFOlWYK20pJbPK81PFr3v9Hu6nyKVop2azUvDxnT6GcR7rCKv4ONMphk+XTyw1/aPPM+2t0U2jBjkC4W1q1cy/m46643gd6amewCpsng1UGqI8wOF9wH5xgy7R6QQwoyaD25Sdk5/J55SK4Iton2TdWdXrIYEbPNk34m4YcGnXCXxmD9kVxtWC9CKr/FU9hobxNE/4vetKcKmXMATTeb6jn33UetsDE3XUqMuujljJEbef6rcCGnICGQOPYiEQR8H4rC8Q5Qe8ZiM7EHqPcKaXFtw/WJNnfMGHW793G5/8f7FkLVnm7rY3FjSh1HjZ9wh/orwLzqeiWNePldc319r7cey1BIaJBWeLIfCf29tzg0ip64UHv/8iYKty4Ii0X5NcYhLWWxQ2KRuC2ARPmUyvjvhXK5ieeM8RGn0hkRKhbhljevHv9l4mHp98I=
+X-HE-Tag: 1780993683-439477
+X-HE-Meta: U2FsdGVkX18iGbyfNY1LpnyPFSo3hnaWsxuRHxKcMVMqmYDFe38lvaky8PxfaG33Cy4t8GPU86H+7IrX1Gdtb47ftyK0IpzaRBn874SuMss3POnw5Xl6jaYFRyhxYAbPg4goX87UtAi7AC9ViMDBBJeCtkmITUrBshuqxSZcEe6TfHA84kP3NViYI870n/FCkt1Az9cHPbWgj9DTDvVWGkvgwoevqLRtJdjyMb9r+LNwyRvLcYP3bHe+73gIF8qanByJfVIlbWaYbC6b+uI5IRqtplAij7EEXMUctaWqJpPjUN8A4MSdIy6pPYglDVWffQCCLII6MC19YURU+XwkW+vehn8AG+1q02RVZCdthVuNziJeR7Pl39bfNhcLC6/iL+PrxeW9knhv+YBGkvXgPeKM+HOs42cDl1fXujUCjV4dGoV9v+5m6BqrGyY5dOv5JHEJaKuAa3W+cshcPwk5mx3fxY6+otgP4Y42TlAf9cxSn1bAJeSqUANCYcyXhjWfCntCFqnBa0kblDLquqY1SGFMpIahbe3ytTfTrCVFWLxNXaRy1ZL2P8M/u+wd+JEpSzMyFDJIjq8lPfNLxjook/3D/W1zs6RjGsbO1Al56Cx0cVgp61/GZNVmM6QUXvD4DJxxqjfFqh/hQ4JyrDRvKZ6/j2jOj9hUUw7egjEmor1Eo9LoB8IgPsouLhKzKVbkUjOCuyNmZrAKsGuNI+k4jVxLVpg9xvcY5eSvgu/3vxfILUagrkcUcK16IE2DU01MUzzAZz7l2/Tv765oBRovddhkBLb4whzzhm2ZI+esaFOVv9FRhKAHwFQ7p1WFrq7wpmZKkqP8yeKaLGFWKHIvyTIHoXEF/3nzPkeRvzoB0CUBbkoeBvokp+8iDhnozamWY8FLHgt+vrODknH2Cib+vj4zG2ZALgefAN9Ahc3kpnVvzfpyY3CNRW7ymP/HvhSjWIg90YILfYT9ZqawI9T
+ HLXVY2Px
+ m1zl2nMKbUePrfFG7F7fvGuys1ssuRZnq3Ge6oietikC3YDFe4tI5LY0C4gETwizL/gPxZPYSDvkb9Tr+eP7mepXClgma5e43PgfgVvi7obgfDLYrAHVGIiJvwp9BrJKP213cp7BzFtK2iXaAVE8hBSknmb4YDDbV2EKRY5OtyTSrrQ9ZaGi8FTrI+9K9+98/oBoeGz82h8ArrMUKxfRdfI6nLkibcb0XxMANfT+99UoCuOETsr/w/MAHliG+96rZUaFpDQ49Yt1zxy2oBYKoNWepa0c8+r8UBkXBSi0wJruuv/FYpBxdkXExKSQf6FwXadXEmJxNI6k3URCSmnttZ8RU4qI38bFCe2Ln
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,52 +93,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, Jun 05, 2026 at 06:57:28PM -0700, Suren Baghdasaryan wrote:
+> To correctly propagate error code from lock_vma_range(), change it to
+> return the error code instead of the boolean. This simplifies error
+> propagation code.
+>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-On 6/9/26 07:28, Marek Szyprowski wrote:
-> On 09.06.2026 08:22, Marek Szyprowski wrote:
->> On 29.05.2026 17:02, Ard Biesheuvel wrote:
->>> From: Ard Biesheuvel <ardb@kernel.org>
->>>
->>> The linear aliases of the kernel text and rodata are also mapped
->>> read-only in the linear map. Given that the contents of these regions
->>> are mostly identical to the version in the loadable image, mapping them
->>> read-only and leaving their contents visible is a reasonable hardening
->>> measure.
->>>
->>> Data and bss, however, are now also mapped read-only but the contents of
->>> these regions are more likely to contain data that we'd rather not leak.
->>> So let's unmap these entirely in the linear map when the kernel is
->>> running normally.
->>>
->>> When going into hibernation or waking up from it, these regions need to
->>> be mapped, so map the region initially, and toggle the valid bit so
->>> map/unmap the region as needed.
->>>
->>> Doing so is required because pages covering the kernel image are marked
->>> as PageReserved, and therefore disregarded for snapshotting by the
->>> hibernate logic unless they are mapped.
->>>
->>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->> This commit landed in yesterday's linux-next as commit 63e0b6a5b693
->> ("arm64: mm: Unmap kernel data/bss entirely from the linear map").
->> In my tests I found that it breaks booting of RaspberryPi3 and
->> RaspberryPi4 boards with the following kernel panic:
-> One more comment - reverting 63e0b6a5b693 and 53205d56212c (dependent
-> change) on top of next-20260608 fixes this issue.
-> 
+Logic LGTM, couple nits below, but:
 
-Thanks for report! It seems it already has been reported and discussed in
-another thread [1].
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-[1] https://lore.kernel.org/linux-arm-kernel/aicVyebkEMs6w6UV@sirena.co.uk/
+> ---
+>  fs/proc/task_mmu.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+>
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index d32408f7cd5e..023422fcee12 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -162,13 +162,13 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+>  	}
+>  }
+>
+> -static inline bool lock_vma_range(struct seq_file *m,
+> -				  struct proc_maps_locking_ctx *lock_ctx)
+> +static inline int lock_vma_range(struct seq_file *m,
 
-Cheers
-Vladimir
+Could drop the unnecessary inline here while we're here.
 
+> +				 struct proc_maps_locking_ctx *lock_ctx)
+>  {
+>  	rcu_read_lock();
+>  	reset_lock_ctx(lock_ctx);
+>
+> -	return true;
+> +	return 0;
+>  }
+>
+>  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+> @@ -245,10 +245,10 @@ static inline void unlock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+>  	mmap_read_unlock(lock_ctx->mm);
+>  }
+>
+> -static inline bool lock_vma_range(struct seq_file *m,
+> +static inline int lock_vma_range(struct seq_file *m,
 
-> Best regards
-> -- Marek Szyprowski, PhD Samsung R&D Institute Poland
-> 
+Same comment as above.
 
+>  				  struct proc_maps_locking_ctx *lock_ctx)
+>  {
+> -	return lock_ctx_mm(lock_ctx) == 0;
+> +	return lock_ctx_mm(lock_ctx);
+>  }
+>
+>  static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
+> @@ -311,6 +311,7 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+>  	struct proc_maps_locking_ctx *lock_ctx;
+>  	loff_t last_addr = *ppos;
+>  	struct mm_struct *mm;
+> +	int err;
+>
+>  	/* See m_next(). Zero at the start or after lseek. */
+>  	if (last_addr == SENTINEL_VMA_END)
+> @@ -328,11 +329,12 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
+>  		return NULL;
+>  	}
+>
+> -	if (!lock_vma_range(m, lock_ctx)) {
+> +	err = lock_vma_range(m, lock_ctx);
+> +	if (err) {
+>  		mmput(mm);
+>  		put_task_struct(priv->task);
+>  		priv->task = NULL;
+> -		return ERR_PTR(-EINTR);
+> +		return ERR_PTR(err);
+>  	}
+>
+>  	/*
+>
+> base-commit: e178a530a81621a29efbca49b3b78202a18236e4
+> --
+> 2.54.0.1032.g2f8565e1d1-goog
+>
 
