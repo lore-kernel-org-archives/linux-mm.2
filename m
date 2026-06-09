@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6466ECD8CB2
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:10:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D88CD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 19:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C822A6B0005; Tue,  9 Jun 2026 15:10:48 -0400 (EDT)
+	id 72A7C6B0093; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C58F66B0093; Tue,  9 Jun 2026 15:10:48 -0400 (EDT)
+	id 701ED6B0095; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6FC96B0095; Tue,  9 Jun 2026 15:10:48 -0400 (EDT)
+	id 617DF6B0096; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A4C326B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:10:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 45A0912079A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:48 +0000 (UTC)
-X-FDA: 84861316176.13.5E500CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 656C24000E
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dz4cqmJl;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5309E6B0093
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:10:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24589164F6F
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:54 +0000 (UTC)
+X-FDA: 84861316428.10.E4E3B02
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5A6C5100011
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 19:10:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6D/bcpS";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781032246;
+	s=arc-20220608; t=1781032252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ViEAmKmawxcF7N2WCFkvitTjmdUVh88IGEYKrsZa4rs=;
-	b=GvCGh8O0G6Y2fOWpJyx5QWk5lRJjWo0eW/4Q5ES2FeXvaPq12F4pzkmugABbtkO/0Hn5I1
-	PpfbLsyoypNX/iDCSDniTjiMPA4L4UczPUpSnYMxUTvDUMvaCT1d/50oPAtF7uqE0ffYR9
-	ncKa9cTS58CbXO1AAZMScFXd6sQYXYQ=
+	bh=6HqbIExdtN+AFhFGHKtY0qW2xobLkHXMaLIXspxSgS8=;
+	b=gnPrks+cK/19ezMtKnuTuaiE1G+KVTRLD4lzqmL0VzM6O7CzmtpWSCaWBLfno+jloHo07c
+	hrZ0zYEfAEDRgrvtqDCOg88hT2eg4Xox7McPc4OShV/s4F2jNOk8TiMoRBCAFjEuRws/HK
+	d6F7qMaxx127knziIZLMgnE78JLGe34=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dz4cqmJl;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l6D/bcpS";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781032246;
-	b=G0A3AruUf038mhhj+qtYGoX3qow3qN4vckVZjNFEtCx7zjidXLed8aNC2iHsFkziorjuRJ
-	3EHHEKH4Is0LmXeGL2yQODMfl3zA7dhq0sGiRakdTvPMK3IFLJj45zYaar9WTf2+Su8LE/
-	vOFCbxzrysCeZFwvCANRRyRbhW3/hBU=
+	t=1781032252;
+	b=pCfdf3xQw0REp35jxckcLK14jyIcyinDRi4VbS4NQrbkV+kEmdYJFOveImvPSahCdELype
+	ep/brPavHnnXMRxsc7HzeRJt4nWOmr0rvOdcuqVjmppUwly0/LOmwcHsYqfw+0HV9vTEf7
+	t1fZKvoqG+tpBNJz1vmXfh7EHVfU2kU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F3CA9602D3;
-	Tue,  9 Jun 2026 19:10:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7DC1F00893;
-	Tue,  9 Jun 2026 19:10:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A42D843C27;
+	Tue,  9 Jun 2026 19:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562B01F00898;
+	Tue,  9 Jun 2026 19:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781032245;
-	bh=ViEAmKmawxcF7N2WCFkvitTjmdUVh88IGEYKrsZa4rs=;
+	s=k20260515; t=1781032251;
+	bh=6HqbIExdtN+AFhFGHKtY0qW2xobLkHXMaLIXspxSgS8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dz4cqmJlGK6zP1GJh8CiPq58n1tvdzDUWuVqpvqJF83oQPnB2lhpcMK1Re1PTMp8n
-	 W+Tfe9M9q/+WpSZE0J8Zsw1M4i+EXly/2tqH4GDRNUz30ZxVUImUfW9qiTCD4F66tp
-	 VHldJTtRunXv1ARJB8J8gXzUQy3k9u9Rx5CucVgt1SFADAh+8w3WIxebdYeGLLtdAW
-	 W7Ta8dhN1wz1x2ZIexM54QH9ifybplFHKE49uDjQ+q9EoBv+vK2xXmUsN07JCGcL5x
-	 NzH7/G/zrmcJPXemmxdQSdviLFCysSDnKAUvwi8Ol/fllT+LHQ5Qv9omDYKQVFrJq3
-	 RSU0pk3Bt/xrw==
+	b=l6D/bcpSBHJLSkUvVBypuKACqnuIrkZBk+O3bR/NcXh4yg6VprxqYRJdD8mi33lzi
+	 uQ2HmLjWQqdo6F5rNTZU+sGh4hTf2xdX8xiX82z9pTwLYFa17wFMl/CfwGTu51KZNu
+	 k5EzAHtnLS7/2Na+8Wc30PUDOcGdKvFfIt0YU+ECG8oFIWdIeHzgXhCFy9bfRDBa1A
+	 pMN97/jjWoi+KGZv7D1v9lbz/cAaz89L1UgVDxSbNLBo39tLNclsRpF0Vb1OZvqNbE
+	 gXo9gX1PS6ug3TwCVOwX5e3ytkJm1EpTQ5EilMEVMW/C6sQSt1kXK+wW/w/WJT+KfZ
+	 L4KPp2m0QiRgQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 09 Jun 2026 21:07:59 +0200
-Subject: [PATCH v2 20/83] block: rnull: allow specifying the home numa node
+Date: Tue, 09 Jun 2026 21:08:59 +0200
+Subject: [PATCH v2 80/83] block: rust: add `virt_boundary_mask` option to
+ `GenDiskBuilder`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-rnull-v6-19-rc5-send-v2-20-82c7404542e2@kernel.org>
+Message-Id: <20260609-rnull-v6-19-rc5-send-v2-80-82c7404542e2@kernel.org>
 References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 In-Reply-To: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
 To: "Liam R. Howlett" <liam@infradead.org>, 
@@ -91,30 +92,30 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4728; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=bVLUGu7Yg0gIIoubIKQz4YBEP/nNvOd82422m1mRrnQ=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGTGbf6fmgZgdL2qiDikI8Dlf9jeRNjBJ2UPJ
- UzTC72Je16JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihkxgAKCRD6UCkIqsW9
- 0J1rD/9EI6gaU8QWYs3K+I+msNoR8AihBwE6+XAin0W8lX+Fh2dpKy2KgPS0aDv3XhPrVQVApMc
- CeW3HxCugLxc42a0yRckCX8VLxWGm873dyJdDq/N06Vy0wQf65U22ubt9BKzjMPs6bjHguDd8mK
- IJAVG3SlTVU/RnsCOnJitaVqi3BIc07MzbXdbX956GIIdaAsD0/KjUqTGWIoU9VXJFUWavG+uG1
- fkfGJGCPH54b0WBCgOvrV1lzVfERmYGQ7I//4z0ZUBp17Iq0SgXwSpqLAm7iI91F2kx63LT6X7O
- 51Mr2gtaIcmO433FOh082r47ymS63Xwh802eJimAyOL2pwbZHA11DTjSq587JCN4DTHkUU1AwZM
- DLpL5Yrr6BQz7JkRAKdqpmLxip4JGZczzaCc7W/lV6/e5aTl+KsWdPKR3tRmryh7Ify+/lo2pK0
- /hd1dUgVc7GzOehIvxoMETyGagOW2cpc1bkID57Rk5XFpeZSi2L/aM/z8WzWreDE3H3G44vTQpi
- uFStrF7v5ihgAR2f+DHyTP7DgFBuCqKl9Aa+pAj+HUjFFEOaA0PwY+oNxWt3ABrfLmCOW8MCq/P
- Y5Rx3N+9hGz8fsnacW0kRXPdvnlqrZ00rz8LAZtPwaJTpn3F6xc1Itomhod5p307PhVOPXPUR21
- OmL/ScaWsC86CUg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1931; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=/gyZSLKa2TzHdBLdP1ZJPQOHQ8gDmiUSAZ/ZBCdP9G0=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqKGT9TT0R4aUtBtSeuFFz1LbiE1VCD8K7ODM7E
+ HRL8FuebEOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaihk/QAKCRD6UCkIqsW9
+ 0AZRD/9o4BTmJllPti16gUC3pq38UjvIoqBZxFPKYSys1RmxO+GlJRTZhPxaMmMvC3xZiw4wO3D
+ WoiymkCJM16OQvte0AYdP3F7/GsJBlASsCR26pDFFbbFp8xG1UnwouPXwA/gJjWfQ5IhjA14IC8
+ MVjQ8guFgpMDjzcrdOlbrq+x62bDx6Bh3eZImuQnZJ0vRGnFWM5J2H9GTGbSEUJ7cMNxAY7I64A
+ hlcjpdPTpTbrEQjf07jqihO+UQ+1TE/45VcWtwdqFzws1IocOuarZVN+UQRjTULDzjh6ZbO8E6G
+ QJCxvd7NoofCN7ykAra33D2JQlM9WOK9uRzcM5T3/UJZCGJ/9ddd6QKq7zZqPDWB+uGIbLPpAI8
+ vKEaFpCx84GwO4Q6S/z4DIq0AJRwfvCYqzn4YocMN/RSajWK/n4Zsh27llz/xmi8Fwpexy4um1d
+ ZfdlHNnc+N9fzzAw7msyM3cM5JcW2hKp7Ld4qtDOxZ3V6EHSGfyIN3wcoYThPZxYOT99SwZF2c7
+ cqen7CXW6JUdqbdgpnskGdzXm6b73Jxjozc0Mf+ZGn/un8dkRV7R9dKbyy71NV6rOTrWqusoqxo
+ wyU+nt1pe/SKYe1opyuU+H9rGDE4wg7Mo6LH8H0c87jgCScnJ1N+Y8iVSziHlxesRcv52u5Bcqb
+ n8L8bBljBkJo53g==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Queue-Id: 656C24000E
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5A6C5100011
+X-Stat-Signature: tn848epoubgm5dycj1mhzfbg4f768kan
 X-Rspam-User: 
-X-Stat-Signature: s1xggywbp544eu14pbykbgzh3g1iaz9u
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781032246-279567
-X-HE-Meta: U2FsdGVkX189dpQOGXPw9M5sGF0O+xzPRbfmcCCNOoU3ou3xRWA3r6w/PRazR0cLUaI/ICiCNDRNmOPur657p9D+F0RpfqH3SScHE9147yQgrwNmbZ94tpqCkK+UBeSAA40OlzuwO3tLsBpD+nq3LLfSTlBkEu4xcRCJZGIl51iv/Fg6IHyEZe//EwXmXUFLnt+By4/YDcW0/z6y+Ys1J3dZ2IncFPEQ37XSrK+SWchKMQ0nX7BNfQ1SzEiRVglH/aGQrYMYX6Go1LRkE8Lu3jfyLi6s4I9yLS6GfD6JaOwE1sSuqMOhRMO04wZK+RnHUiR1xuhs8YQkzQSu7VCuGepTowKuiOZLw1xn/PxM7V78ncKP6XDKJq48cKkDkZYd/3J1oR/+jKzNfOwU4D7r95vqf6XB9UA/qrVFIoJOjpHfopMKFxbuJIsrTm+vNSBesBHmaLRRdNB/s8+iGdKQeTIE7xB8EcKOjuQa37ydUdzC23s8C8xVZTMJw4H7cgadTAxwdMrA01XkMplFZLbE9Jmz7Bc29R33isZZeytpdHuE0tqseBg/aCVTHKdgDEEZ1imkXycKP6NCJuzTJKLvmTp9eOh6gyAj0u2BYHwAWDhyriKzsBbGtDZMeuzXVRp9djIVDwd1xbxMJGlxhOhoCX6jh1AhNAoEQ2MfYI9R1lJ6d64i2aw13e/f7isJncnCgyC+7MYReqfRecZq6DnYqOACFTh4fPRuJlsQlP/wL2tAyaNlOvqIM9FcBen+Rq4MEeTUPfe30mOO3Xk0PpJQLV2qaQWQJZgAGEntumGz55kKfCq8c1jIjizXJwWbZGYuO5BfUw303nijPDSlcDdvRS+iHvwbYCHkUmP/IEW6LukYdFazRB53Bgug1UKTY00Elx5qfL/98uAR2j9KuCZ2fA2JycqOmAEVYrxBpXZQpR6JlGHud2f/XcNqzQr9Q3FNTkr/+rb2xtrCWfEdJyN
- rTP4VX65
- TJ6vBqO59/VYkAo5TFu0Uy3VpRkPftBFTdriDixXQ0LQoeBi5PDrRbW2ZFjqXXc30PHnIptm60J4hIgxmSIDM7MUpHN8Z5WCjSf2/bh2RFk8T20jguujV08gZLjhVWf6RAuJoSYffLLw//BJPtGJnfKkUaxmu8+R81geKkPci+jqPLYmKv5t+4Ravb310HMO8BXpWYJ1BefTRsVsKN6PrsYZr5JiSXm6x1w2Agwf92rDJGNfgdxP13vIgToBaH777fl/O1/cbBHcM2PkkzxAP+gn1KfNd+vywsLZlSpGdBUN66E4RkqudIOWDk1tqSjdNbxhZ
+X-HE-Tag: 1781032252-653124
+X-HE-Meta: U2FsdGVkX1+huFPdr8ZX9FelKVaKAGNXZw0rGfa4y0LLVDFLytry/OPna0i75KMbuRTKLG9atsyGVWYB3LnGQV+FFZF/aD/cbzStidVVqs3oLuuHCcNSY0JseXXGcaf4Wdmoc+AhKqBjfjlqCs0IG0ivWZUSaXeZXLjf+xTHHk6Zry/lJYVAhHqs8mPTv7Se6/QXFud2kyZ9bFRwR1ihMR/MRPbhLFPWAvFwMr3jCFGMy+YD8cG2QxAsUMz5rIbB3TZmUwoHO5mq11lp3ZejzvuiJgNdGfDJIULls+kjMQfWCj/z/lUKacX/ES/fomXvNRA8YAqCQAaGFWar0hpY+k9U7ox3z1VUZ830poNnQZNx7LA6UI3sg7+tDkhAzwPMeChxJvWWxrZTSChd9sGY1Vp5FK12sBeJqxx9ncwQCZnpE+NQRedsU5iXyxM+o+a1y9zhtp6U86dNHi/jaTVWbdYa2AcUvkpwNljj+wqkQKP6DMYpzABVA7caQmw/qBWTOh/HeyLS23vvzSpmXWZItv4S35NkqM6MXimcHh1GwlrrT7/skigO2ryAcTJN4OojJsS6UQuqbgimc8BoodbATaztBjWBGdGonwR1iRO79qjEEnhw1xzRymzZoTzAhh+tc9SRc1hUSlZYLs4UZLf5wxLTG0ummutTrYeyXVT6rvVJLTRazjglE5z6OOcK18GrWX/yXOShx5AM7YOds4wBjupJ8MYAX66uXxB72STk0rPZAN+vC4aDt5QUvGazQghEYv7X5XTVV6qJ/bpI0h4aqpGZIHyCjX0oQhZjKh1H/o635JjMHGLGuPdi1UP953u5lwvF67dXZmqn9F8iBiQjLCJqCmXzpJHSIRQ7RRPQxlIpo0KpFdjIBi8yAM6wmyQ8Zi2stO/ZkSLXmtHTuNa3/H+QDIb7j7xtGtkplE0pH22RA5hZWW54SG9uEYgWKXwaSgleFlN6b3qEkZ3dn1R
+ hHCO+eIt
+ qMWk8EP/9/vLN89oHyg33OnU2BVbZpjqt5ObzsysxdnWJJ7FTixudf9LCG1svw6K2ILmmQUEozSoGJNBj2yqbuK1Ej9sBY1B/lJv85BkdBa97TI9oN85gFzWVGrsLPV6+tE/Twd+fZHpmOVRuwK1cNwu09lcdShVrADmS4S1q4kCSOaaiP7JvKjZNqAFmvCPJEBEdwGzOqtFufSp/dDjatzK13RvqPtMfzzgzFX5yK0Qz7Gl7QCwxodtzYyJ6toist3wI56vtnELoI/3hi8F4A25oleuyvbJn227C2EMu471OTg0TjznZD6rDhX3DA/L4XVE9GUaghO3GC0hFQ3rYM3f3VPuxxrjWmhMiGSZ/66BP1EKv8qrWEbTSDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,156 +123,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a configfs attribute to specify the NUMA node for rnull tag set
-and CPU map allocations. This allows testing NUMA-aware block device
-behavior and optimizing memory placement for specific hardware
-configurations.
+Allow Rust device drivers to set the `virt_boundary_mask` property for
+block devices.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- drivers/block/rnull/configfs.rs | 19 +++++++++++++++++++
- drivers/block/rnull/rnull.rs    | 30 ++++++++++++++++++++++--------
- 2 files changed, 41 insertions(+), 8 deletions(-)
+ rust/kernel/block/mq/gen_disk.rs | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 71b38373be33..2f3fa81ea121 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -5,6 +5,7 @@
-     THIS_MODULE, //
- };
- use kernel::{
-+    bindings,
-     block::mq::gen_disk::{
-         GenDisk,
-         GenDiskBuilder, //
-@@ -91,6 +92,7 @@ fn make_group(
-                 memory_backed: 6,
-                 submit_queues: 7,
-                 use_per_node_hctx: 8,
-+                home_node: 9,
-             ],
-         };
- 
-@@ -110,6 +112,7 @@ fn make_group(
-                     name: name.try_into()?,
-                     memory_backed: false,
-                     submit_queues: 1,
-+                    home_node: bindings::NUMA_NO_NODE,
-                 }),
-             }),
-             core::iter::empty(),
-@@ -176,6 +179,7 @@ struct DeviceConfigInner {
-     disk: Option<GenDisk<NullBlkDevice>>,
-     memory_backed: bool,
-     submit_queues: u32,
-+    home_node: i32,
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 6d760dafade5..38057ebc0878 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -59,6 +59,7 @@ pub struct GenDiskBuilder<T> {
+     write_cache: bool,
+     forced_unit_access: bool,
+     max_sectors: u32,
++    virt_boundary_mask: usize,
+     _p: PhantomData<T>,
  }
  
- #[vtable]
-@@ -208,6 +212,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-                 completion_time: guard.completion_time,
-                 memory_backed: guard.memory_backed,
-                 submit_queues: guard.submit_queues,
-+                home_node: guard.home_node,
-             })?);
-             guard.powered = true;
-         } else if guard.powered && !power_op {
-@@ -288,3 +293,17 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         Ok(())
-     })
- );
+@@ -79,6 +80,7 @@ fn default() -> Self {
+             write_cache: false,
+             forced_unit_access: false,
+             max_sectors: 0,
++            virt_boundary_mask: 0,
+             _p: PhantomData,
+         }
+     }
+@@ -189,6 +191,15 @@ pub fn max_sectors(mut self, sectors: u32) -> Self {
+         self
+     }
+ 
++    /// Set the I/O segment memory alignment mask for the block device. I/O requests to this device
++    /// will be split between segments wherever either the memory address of the end of the previous
++    /// segment or the memory address of the beginning of the current segment is not aligned to
++    /// virt_boundary_mask + 1 bytes.
++    pub fn virt_boundary_mask(mut self, mask: usize) -> Self {
++        self.virt_boundary_mask = mask;
++        self
++    }
 +
-+configfs_simple_field!(
-+    DeviceConfig,
-+    9,
-+    home_node,
-+    i32,
-+    check(|value| {
-+        if value == 0 || value >= kernel::numa::num_online_nodes().try_into()? {
-+            Err(kernel::error::code::EINVAL)
-+        } else {
-+            Ok(())
-+        }
-+    })
-+);
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 6323327d4a5a..1d0faf524f5c 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -20,7 +20,10 @@
-             TagSet, //
-         },
-     },
--    error::Result,
-+    error::{
-+        code,
-+        Result, //
-+    },
-     memalloc_scope,
-     new_mutex,
-     new_xarray,
-@@ -93,6 +96,10 @@
-             default: false,
-             description: "Use per-node allocation for hardware context queues.",
-         },
-+        home_node: i32 {
-+            default: -1,
-+            description: "Home node for the device. Default: -1 (no node)",
-+        },
-     },
- }
- 
-@@ -129,6 +136,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-                     completion_time: Delta::from_nanos(completion_time),
-                     memory_backed: module_parameters::memory_backed.value(),
-                     submit_queues,
-+                    home_node: module_parameters::home_node.value(),
-                 })?;
-                 disks.push(disk, GFP_KERNEL)?;
-             }
-@@ -152,6 +160,7 @@ struct NullBlkOptions<'a> {
-     completion_time: Delta,
-     memory_backed: bool,
-     submit_queues: u32,
-+    home_node: i32,
- }
- struct NullBlkDevice;
- 
-@@ -166,6 +175,7 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             completion_time,
-             memory_backed,
-             submit_queues,
-+            home_node,
-         } = options;
- 
-         let flags = if memory_backed {
-@@ -174,14 +184,18 @@ fn new(options: NullBlkOptions<'_>) -> Result<GenDisk<Self>> {
-             mq::tag_set::Flags::default()
-         };
- 
-+        if home_node > kernel::numa::num_online_nodes().try_into()? {
-+            return Err(code::EINVAL);
-+        }
-+
-+        let numa_node = if home_node == -1 {
-+            kernel::alloc::NumaNode::NO_NODE
-+        } else {
-+            kernel::alloc::NumaNode::new(home_node)?
-+        };
-+
-         let tagset = Arc::pin_init(
--            TagSet::new(
--                submit_queues,
--                256,
--                1,
--                kernel::alloc::NumaNode::NO_NODE,
--                flags,
--            ),
-+            TagSet::new(submit_queues, 256, 1, numa_node, flags),
-             GFP_KERNEL,
-         )?;
- 
+     /// Build a new `GenDisk` and add it to the VFS.
+     pub fn build(
+         self,
+@@ -208,6 +219,7 @@ pub fn build(
+         lim.physical_block_size = self.physical_block_size;
+         lim.max_hw_discard_sectors = self.max_hw_discard_sectors;
+         lim.max_sectors = self.max_sectors;
++        lim.virt_boundary_mask = self.virt_boundary_mask;
+         if self.rotational {
+             lim.features = Feature::Rotational.into();
+         }
 
 -- 
 2.51.2
