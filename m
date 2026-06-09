@@ -4,81 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3608BCD8C85
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FA94CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FE636B0005; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
+	id C099D6B0005; Mon,  8 Jun 2026 23:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4883E6B0088; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
+	id BE18E6B0088; Mon,  8 Jun 2026 23:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39E8A6B008A; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
+	id AF7636B008A; Mon,  8 Jun 2026 23:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A85D6B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:54:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B99F18DC6B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:54:29 +0000 (UTC)
-X-FDA: 84859007058.15.B3143A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D4D558000B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:54:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1eRCX0V;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780977268;
-	b=Fyg4Dfd1Mbp3wpFMA9/8uobX7kYDLrICLxFDrQauzGxvh3h6Fmaji9d1nsd8ybwJ6RCBqP
-	EGKGDf852agqSJfNAeuEwn5oWbSBfJh0v6dWHqlz11sx5alW1QO1EobXDWakakcqUOnFtl
-	+psiLQzQVH/YvXlNi4G3X6a/tuYebQ8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1eRCX0V;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F0E66B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:58:43 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67895164414
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:58:43 +0000 (UTC)
+X-FDA: 84859017726.25.136B935
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 61A51A0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:58:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KVlTeVzl;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780977268;
+	s=arc-20220608; t=1780977521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=TqrgAu/JqewJItrwuRMduRmwxB/x1xVSsT3lOJ0PyWs=;
-	b=zqr99cOcArvcQZoepABW7y5U/nc7+iRJftK3/d5ExvYU2hR/0Jl5x7fXUBe8oudM49UU3B
-	TB1ajdAW1kylWY6vCQqYJnh17KJZZK7EpJ4gLm1VRKsoBcexx0uciN4CMvNHqxx2mkhQON
-	g7iHUCXgvkR3AhTdJXP64rVW7IOPquU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCF8D44255;
-	Tue,  9 Jun 2026 03:54:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7876B1F00893;
-	Tue,  9 Jun 2026 03:54:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780977266;
-	bh=TqrgAu/JqewJItrwuRMduRmwxB/x1xVSsT3lOJ0PyWs=;
-	h=Date:From:To:Cc:Subject;
-	b=V1eRCX0VUSKmAYCbu72vNTgDCPEHeZ3q2KWPdEgH+NS2RH4N2EkvVGbQlXmgQylsb
-	 7SmRcAr3hOfDPHGfQ1bt/JO1NlE8EBuu1W158kgptwux+Ui1Au7CMot+vRx2IXfRdh
-	 Rb9UvKHr+Y/mYPhMdvlomi0FRcZSG+S8J++EEqEk=
-Date: Mon, 8 Jun 2026 20:54:26 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes against 7.1-rc7
-Message-Id: <20260608205426.3319be94a327307e23b34f3b@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D4D558000B
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xDehR9KUPqQoyrvx8dJ31pkODcCvkj2FH2Lxm05cnXs=;
+	b=7Xpe5kt2CmanmDaclAahA1QrbaLDgPEn92USyDn5C0bvaw35oD4hJtZ51RKjMilkNvzHGO
+	fw7hCMhP8lLT+eHW2Qiryi0hjLWpevijSeoBjuj5ELGacSKqakwDRKbjycvSvfOPwz/B0S
+	8TnITBHYo3Pshp6+++Fgf1eQnkipaUw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KVlTeVzl;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780977521;
+	b=ZiIuiHpKurViOGl9Dkjcs2Yzp1JWK0CoSde9AYEI8ohfmnRhy47Eu40R1kNkD/CRJZlqLh
+	iBtk4NLPiJhdTXkCiiHugkCfM5TOZTmiZhwD69f1jjsBBAfsbweIZmwbsNPTcOogr7mDEE
+	qrq76BNAP1kDalhAPcU7Cr4MVpLSBQA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xDehR9KUPqQoyrvx8dJ31pkODcCvkj2FH2Lxm05cnXs=; b=KVlTeVzl9gptlTf4cf7ti0YqgJ
+	7kk+WIHxe9bLMr9/Hp/bFKPomJ47VM1tIeLfJ7rJQUI08BwrhmkvK6qFmt6IMUzZYsoYkIxw3B7zi
+	JWPXVCZ7AISi190rWHuQ09w56bLkkAbrvCWACJPXO/yATVyEjvqpfYE2Yp0GFLtYEOfte24XHgzJE
+	+0tiFEB2S+OtQv+0nDJeD+Qz/XFxNL2jSOmqPh7RGxbo2rHbqO350yEC2x/aITEp3N8tYGySUI4zH
+	YH4iSQtf+HUkHagh3FteqaTUXJVBL8b9ARb1RHHDhWxulKlgxlRbKKv8+cPZuIYWZcFexiH9GmPHc
+	W8Iz1jWg==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wWnbS-0000000Ewtw-1GGB;
+	Tue, 09 Jun 2026 03:58:14 +0000
+Date: Tue, 9 Jun 2026 04:58:14 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: New design
+Message-ID: <aiePVsiV-w-IZ8A4@casper.infradead.org>
+References: <cover.1780906288.git.mst@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1780906288.git.mst@redhat.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 61A51A0005
+X-Stat-Signature: 9gmtj74maor56by3edstzpu1a7jfifs6
 X-Rspam-User: 
-X-Stat-Signature: qhbfgi7ecbnp4ksk6htiw8or5go36mb3
-X-HE-Tag: 1780977267-766961
-X-HE-Meta: U2FsdGVkX19ePGVDcIOR9TsNXzWxciogrbuKfoPvF2NHcor2EM/eysoN1/+HZHYwgfcTvbW+36HstgHmzXRLsU4BXdVZ+C/TZ3hD0R6ocA6x2zE52fzPqys/1cTdpI/BHnRYHhQslF4UslWkee7166qjBYGWL0lZgRHvQNTQxc8h+aAYjLg3mjRHXGbwYS4bUA1EHD/GAIAw+G64BfsUSUtNQ8fXlR3e39io+UAF4F7GYd42OqtvU3udbrMlCOLHFPqk/LxNJ/eqyzrmgU9EiNuDtM29bYdWRwPuD0XBmW6Yz+/bJ+kSZYTKDTDFibjiZ8rgm3USCb5IiFcspigXEt5EyyTVz6hWg8oowo+9ABWh2cwmvfuyoJtAHpRCEg3FWpnjGrogtYqBJLwEfQbCW/WMW/TZAfID1G9TDoyUaRXXulEyr4E4GqbP6jMGVhWNTrkX8QecI96PFm2ZK/lNa3wX3vXuY/e7lzHJteX6Dpy7lfo8MIAOoAzpyqR+Vuyuq84F0Nf2YK7KNjMb9tw5d3H/A6OU5MVeYnoI7A3SGx4uC3YyTUS4UZFJ6DZ9JkFh6SkTMGkJYpRTP3gOdx8ynFGIA2qjE28iod2UfkfGBUFiKjLw9d9xlOFouEHOGhsWWN99jphkCQBr3jks+KnYWvUfXdwzU/Wj4VXTwMB0Q4XPqhDJ69vhgiAyHukZ1xEQVZqlHrwX/IuOfu/yTNaJI1iCwoKep7Ep2rRckKVnts798zNsSQh0aXYDwg9f4n0fXX4k3Agqq0y5UBddC7XawIHwJMaIHvtqFbVAvYIIAk0Dk/B5g6TcPxzofzcuCoFj4Ir1LITjIAojNSTixS2JdxC9WPbI4cSsrY/MrRI6KDm8VE2Eu0Wq/HvTcp+lVH/3DFf1zc+Bqg2/kyOnp2AxUbJYScFjmNzJDVxq8XA31mWN2U/TTvI2DzmL8i3F7tpMgnoX+kNaMb5dtTdYHnA
- DCFWz39l
- jdpqM2/PRULM7qt66Xs/V9rRW3K75eTxxuXAQgZqua+E3AFz1pfxlzOtXlRkTZTqK1uGDvVRRoeKDQahhrrTtft0VlRMG+nExOg9VuFQ40o7tzEfyd+GVcwfW3Qnn2dRhbt/DCHjAsplhJJ5F6Up6ra2h226v/e/IPRfcgH1SwY9Zsk3TkC2Ld1w0Kena+6R1TiteuP5w/AzTVHVrq17LJtNdN5coNicS/vssa14/zO3DN69amtCnRinzQQkQCyrJxm7qMO+XjI3+1G9p3+/HumsVvw==
+X-HE-Tag: 1780977521-996961
+X-HE-Meta: U2FsdGVkX1+RrSXhIH72fZxR+XtB3hyJkqzZznxCuELwGbTpUKBmxj4KWtAnsbQP+B1J+kriMleWyYEZ1U2iZJvqaxzidvnBqBNKYwx9Wepz9VofQ+eLcCPYkLScEHvO7XjZ1QhlcJVn3ASynmNUEbSAR/hkRCmzg7toilLShk4LZVTs2o4GtnSuWq12R+sfkDZAJ9Sp0NS2HHjFxM0YVTPNtwcwgaqL3rvt6PlZ4aVvBUuMApQlkKfKWN1QJewnvW/osc33UEUuUixlRr6XCNxx8+yJf1xq2KYM6MU4poAlTsZumRRShBPdoIRCSKqDb+idhrf3GvliPHoMvl4bzprf02kRFwsw+cji1ndNb4IByqGiA4DKT4oAzmBJOpicFrHRHd7rJQToKiLqAUQVld2lmIZ5St6eWivTd2vgOtkq14MLxJiZHmTQBE0m/nTLhCpuBMAMLTYNg0lMrSd/TfMjPTkCvulGuqa/VkrphiLFUfmEPSJOsIiKmuzD0xjHyKQMAPgmvxllmgfBHJt3Ne1e0kQn8CWUDYku4GI/KP+v9sFe9w2VKzbgKc3zUuGcoQa0lzc76zYbiBpUKkMUWJyWd6cdgVJubZNQ832AzuMLTjK8OYs0PGPGsP0KpWgC6XgPicd3agSEK2hswHjns5FqgMF5D7hXCTeC6hbD38/H/Q6v93Dd7Np9mTg8wXuUJrR7/aXbSNa75d8g3dB7X1hd+5yNsGLbcVC36mqL/4g3GG8lvs8s6AH1mdKON9AScSdFCz5pBskQJGQkCWIpvpzvVK0j2mrsOAUknWDEWl8aSFFjoP083qWmTB+sQmZUVOhEh/uq+4vsbe7Jd1km/4bIJBQufmg4kAJmLwHD0dwDJzXlSM9tyeVGcQj5sblZ38n9AbToAu+mtf3xSSQ5Ml89IxEVzRQts3BmUeUiqz/Ic+8WKLriEvMq7StOdDsYVn5SumwDfZFSWl1RZeS
+ 89SYags+
+ wFgAWPaTuBB1+RedDg8cLb7pCwPTCjk1WvXs9lE4SURcFkpYuBswh0vpdpEF6VSFTTF69vDotYQ/fj5FtI79y/VKmevY0mGaPtF9qLbZZxyV7L9QjVZ346xp6RrK57NdFB8LBkWlvcuMp/9Aqq6e3m7DGAsTsKRmK49SigS3yWTVfG68o7JOkAbrLlpihHUfoRgeHFxJHcJGCJAqImawaEHZ1z4PXTc38gy/AR6qpVx/rhUjwFTlcpX/Y8/3wf/jvCIdQAIBTcezGJJeVeWvPAM1D/JIQvCL+Wmr5jF3N9Blw1rUIihfMbsAq9v6LfXXA7PTpgHJ90pNDRYTtDykycDD/v2mXSJV6IAbbIph0sEOhXPAVo68haD4NtQt1KApk1NOw212cxfZINr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,77 +123,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+OK, here's how I'd structure this:
 
-Linus, please merge this batch of hotfixes, thanks.
+1. Introduce PG_zeroed for buddy pages
+2. Set it if init_on_free is set
+3. Set it from balloon driver
 
+https://lore.kernel.org/lkml/c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com/ 
 
-The following changes since commit 9d7bea186ba5a002456471edf36cc9b69f809397:
+but add FPI_ZEROED instead of an extra bool parameter.
 
-  userfaultfd: remove redundant check in vm_uffd_ops() (2026-05-31 21:50:26 -0700)
+4. Introduce page_is_zeroed like this:
 
-are available in the Git repository at:
+static inline bool page_is_zeroed(const struct page *page)
+{
+        /*
+         * lru.next has bit 2 set if the page is already zeroed.
+         * Callers may simply overwrite it once they no longer
+	 * need to preserve that information.
+         */
+        return (unsigned long)page->lru.next & BIT(2);
+}
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-06-08-20-51
+(you'll notice this is similar to page_is_pfmemalloc() but it doesn't
+need to be in mm.h)
 
-for you to fetch changes up to 0c25b8734367574e21aeb8468c2e522713134da7:
+This step is going to be a bit fiddly.  We weren't expecting to return
+multiple flags in page->lru.next, so clear_page_pfmemalloc() just sets
+page->lru.next to NULL.  So somewhere we need to make sure that
+page->lru.next is definitely NULL, and then allow both the zeroed and
+pfmemalloc flags to be set in it.
 
-  mm/mincore: handle non-swap entries before !CONFIG_SWAP guard (2026-06-03 16:25:52 -0700)
+The important part of this is that it allows the zeroed flag to be
+returned from the page allocator without introducing pghint_t like you
+did in v2.
 
-----------------------------------------------------------------
-11 hotfixes.  9 are for MM.  8 are cc:stable and the remaining 3
-address post-7.1 issues or aren't considered suitable for backporting.
+5. Now you can start skipping various zeroing steps higher in the call
+chain.
 
-Thre's a 2 patch series "mm/damon/{reclaim,lru_sort}: handle ctx
-allocation failures" from SeongJae Park which fixes a couple of DAMON
--ENOMEM bloopers.  The rest are singletons - please see the individual
-changelogs for details.
-
-----------------------------------------------------------------
-Alistair Popple (1):
-      arm64: mm: call pagetable dtor when freeing hot-removed page tables
-
-Baoquan He (1):
-      MAINTAINERS: update Baoquan He's email address
-
-Cunlong Li (1):
-      zram: fix use-after-free in zram_bvec_write_partial()
-
-Kaitao Cheng (1):
-      mm/cma_sysfs: skip inactive CMA areas in sysfs
-
-Lorenzo Stoakes (1):
-      mm/huge_memory: use correct flags for device private PMD entry
-
-SeongJae Park (2):
-      mm/damon/reclaim: handle ctx allocation failure
-      mm/damon/lru_sort: handle ctx allocation failure
-
-Shakeel Butt (1):
-      mm/list_lru: drain before clearing xarray entry on reparent
-
-Usama Arif (1):
-      mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
-
-Wang Yaxin (1):
-      tools headers UAPI: sync linux/taskstats.h for procacct.c
-
-Yilin Zhu (1):
-      ipc/shm: serialize orphan cleanup with shm_nattch updates
-
- .mailmap                        |   1 +
- MAINTAINERS                     |   6 +-
- arch/arm64/mm/mmu.c             |   1 +
- drivers/block/zram/zram_drv.c   |   2 +-
- ipc/shm.c                       |  10 ++--
- mm/cma_sysfs.c                  |   8 ++-
- mm/damon/lru_sort.c             |   4 ++
- mm/damon/reclaim.c              |   4 ++
- mm/huge_memory.c                |  45 ++++++++++----
- mm/list_lru.c                   |  21 ++++---
- mm/mincore.c                    |  10 ++--
- tools/include/uapi/linux/acct.h | 128 ++++++++++++++++++++++++++++++++++++++++
- 12 files changed, 204 insertions(+), 36 deletions(-)
- create mode 100644 tools/include/uapi/linux/acct.h
-
-
+I understand David's disgust with vma_alloc_zeroed_movable_folio()
+but that is surely a separate cleanup and nothing to do with this
+patchset.
 
