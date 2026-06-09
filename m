@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2A1CD8CAA
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 11:36:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAE22CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 11:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F7DA6B0092; Tue,  9 Jun 2026 07:36:04 -0400 (EDT)
+	id 198146B0096; Tue,  9 Jun 2026 07:36:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CFC16B0093; Tue,  9 Jun 2026 07:36:04 -0400 (EDT)
+	id 16FEC6B0098; Tue,  9 Jun 2026 07:36:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BE5B6B0095; Tue,  9 Jun 2026 07:36:04 -0400 (EDT)
+	id 05DED6B0099; Tue,  9 Jun 2026 07:36:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CD686B0092
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:36:04 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D070CA050A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:36:03 +0000 (UTC)
-X-FDA: 84860170206.05.C343767
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E5317180002
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:36:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecuCVuUC;
-	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781004962;
-	b=ohcxf9arPYMK968/OFP7g8lpYJJ7vvjmj2oGu0dMJr2bg6RDCcyx9I/Wsvjn3FQj59l55S
-	Im836KdnfnIy//ZpBColg1LN9jcQVs+NnteBDOzOoAI8v0aHR6AuNie+knFtoxoFDiuqcT
-	QxpNp6Labp8hZDvRTrRKO9HSxlXf8Uw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ecuCVuUC;
-	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E77A76B0096
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:36:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 849B1164951
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:36:07 +0000 (UTC)
+X-FDA: 84860170374.01.F423F43
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9364320003
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:36:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JTN1Ljss;
+	spf=pass (imf03.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781004962;
+	s=arc-20220608; t=1781004965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKDSLwDdGTSyq9QGc1Jp5iLqo9aL/jeA2DLoFosrfnI=;
-	b=v/8ctQK/Ndcc7c5TXNwQ1Pu6uoMzGMgKVVeIQrmEoVPvnNzmj6B5OMkLa0G6zJ2WoUmPnM
-	iYhEo+xGoVwtzprnHuNTvuTrmZHzSAkYKgXW08wiBLvX1yH8JpiTfm60AFcG9uyzTqb4r0
-	ojeQA+8oEQJNJgWe5XvWvN+ycEvkyfY=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36c68964315so2612274a91.2
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 04:36:01 -0700 (PDT)
+	bh=6/nTjntuZjnrvE8ZyTpIYFayYnVSKdUVLKXvluFBzrU=;
+	b=SUAFTV6QxV/5VAv7dxqLIPWgn8OH6r0q+0/rXiseutyr8eDipZJjTjz0B3FqW6YshOlNyv
+	11M4Qzw8u+3dtjHAO+NtqLFjyhqWizwkZpJd4RrnFt1LvB2YUmnXizdR4cCoRUFHM/SFI1
+	fYn7Y1Zt9m7le99R05p24b5v/D0EpDY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JTN1Ljss;
+	spf=pass (imf03.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781004965;
+	b=Iyxa/mfv3Yuf9ox11teoYF6fS17AQiXlofq6enQkmjOKE+TXN9LJeGBZ6Yn8E/mPHmvide
+	dEBs2It4nY+zSIFmyJP2Ux9NyhczPT5bxLgHnAASzn1Lz/NJIokTLFuU+YUPjd6k6bWX4R
+	MmrGtQS5w4a8UdSONYo49RG/eRAuWB8=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-36bd175fdbaso3338646a91.0
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 04:36:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781004961; x=1781609761; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781004964; x=1781609764; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AKDSLwDdGTSyq9QGc1Jp5iLqo9aL/jeA2DLoFosrfnI=;
-        b=ecuCVuUCsiFuAbsM5h1VbPg+tRGpsZCpdOuEd/oZtLlGLxad/hJ9IbvZYMvCnt7bIP
-         n6w6Fl752vJfrGVMpnxEJiIjvqHVys/nhI17zexxUuhbxSbvpfYyuptLPwqmiYi3DbIr
-         DlFm99m4uT/3QzRIX442eumrIgJlKqvp43B0027V6Bb39Fo9wUZA2gZwbxVp8FzCdepp
-         gB8aC7NYJbPX/8kkQCaq3mD5agR4ih0ZdvR7dnUYJ31Det0SM4526/ELdAVjKmBVhrvu
-         1nOv21eMgU2+ckK64k/YVxMQ6l77tNlwFXySKu6Qd+jKu3oG9ky4H81QdNB7otDysnEO
-         J8Ew==
+        bh=6/nTjntuZjnrvE8ZyTpIYFayYnVSKdUVLKXvluFBzrU=;
+        b=JTN1LjsszpuJpVW3lUTGOSVFUijMEsBzxn3Wvig0Ww2uATknDbj+/L+UJln7cUqodD
+         XHtr92A/FG7hGgE+S8PisN3kJHcYuRl/AlG85sYmBZXyIC9zV9FHIQnKmVpDfV5oZUca
+         8hCOltAuM9jI377zMRbR9MyWoMix+mgkR663kNMaIRK/dX0RLV4ReUYKu32YdMrQiBip
+         fp3MK1Ai/wfVvCWN2PQKJkKU8ybQNtIQRhtRt6vY8O5yZhOR9YABMKEAQbQtS3DuHAhe
+         hY7tbS0bohtS00rwpxJCgwqcnasfDtwV2XkxxPjBTpsbZLmHyRfJnaqQuhCB6j/JZO9G
+         rgng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781004961; x=1781609761;
+        d=1e100.net; s=20251104; t=1781004964; x=1781609764;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=AKDSLwDdGTSyq9QGc1Jp5iLqo9aL/jeA2DLoFosrfnI=;
-        b=sl3Rv6WGDUg5VC0DwwXfchVh/S9nCMeMR5UVXQEb6smD+Cez4ALn/a5xfJANywwGsF
-         cBXvhZC6P0TfC2TaLN2yimi3nR/il2iRADgd9uPDfxwCR4ybgiXWF2figh0t4/qAz/nC
-         wBt7+wXjCL4qCgI/j9wCMiRtJ6yQoxoHoYy1VhJg6f7dmgSxmEWxefKx2fjeosypL5Xj
-         mA0FNo3DnWO/XAVbfX53nb5gpthpvzXCkNKRrcCJPYxbHcAOsNImRVbjwdXvR25smWTG
-         EhosCizXmUarx5c7c3L0LAqr4a7RgEbPIDubPCrF9BfSByIyVhdmxCd0Ok/z9Ym8zkhU
-         8XFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9XIHOEtFSMQYBHRtrxzxCFeKsdrrhdIa1hwjwTCfCLWriw39HsSDpZzZuLz7Idjy/XMrolXfCYTg==@kvack.org
-X-Gm-Message-State: AOJu0Yyj455e7wS5xuRLahDUxRUQoHPaGT2qGYO+plBDxSMYf3IU3SZk
-	M6GT0U8yvxSprWKkYQfhnZyZGR7xkmAcwQJYympscWJfA/4R0aCZDKAM
-X-Gm-Gg: Acq92OEGCY5CfH3WDUzMc7KufywCScP4/mJJmyjpzzBZzRfSQMivNq0CGrXFHnFEVf0
-	USqfr0EFY+n7odIgLzHYWv9xkD6JtCtmoR6wUz1c8w7xEFeFMJ/qqPXXcCaEU9iDKgYcb7a1uUB
-	xzP+AxXDuVpHUQflR3oBug1YOBbpjapTxaNyVzzN3h3fGv8lciqsz6V3qqI1kQ64Ab7sg6ALTPR
-	9EqKGKRdiSpsqONGwRoNtycOe4VqkIgFAVGiO2m/DcXiDP8RWOn6WCsVtm9qFvzWJHX3wHD22QG
-	VpGv+WqGK5Cl48aTIzL4SfIQ9rCCNuddczS621h7PEeKGLe+KrK67vPsCy2YnEUdsKGnW4Jijsl
-	6ZRgqFJTufqTnuPmaik8Ledxa8git4ZJe8RPdAySG+WSydWxNln5iI04KwKJlQANniFi06qBUQK
-	b/slHkcPR01SwjZNKfpgLkaagk8+stREZJDYEvI3Ks4hyfeC2WKg==
-X-Received: by 2002:a17:90b:2dc7:b0:36d:cf58:b79 with SMTP id 98e67ed59e1d1-375211ae901mr3093505a91.19.1781004960720;
-        Tue, 09 Jun 2026 04:36:00 -0700 (PDT)
+        bh=6/nTjntuZjnrvE8ZyTpIYFayYnVSKdUVLKXvluFBzrU=;
+        b=m0NrKxUIB3EhdrnHCZc3hfkEaI1nmV3hwDKFQMSMbyoUUdWUsmf1ACDrODYVtb9QZ7
+         gDTadmOzqPa3Y6pmxaRp/jrv5MY0f7sXyjp2UHs4r08OUl4c8OaH2B48PSsovLBW1f3I
+         pQZkgIlRwl1JXv3hS5kdqRReNnj7EMH5nab/DhsQOR0khZXSZzhD3OT73tD9uQFRjEBZ
+         671FDNRm7CyZSHs1WpyRz+2PE4Z+CTa97OK0yvKtkqWgviiA3nNfalWG2FCw+ehJlvW4
+         d48Kd3ksQ0p6BL2HruW6KFzF/aBMAlHcTQc7NhoYp9a8DIZQyBzMEp42+Tys8/2g+n2j
+         eBSg==
+X-Forwarded-Encrypted: i=1; AFNElJ/QwVttt22l6FEkIP3jeaVoOpjHnaUfkv3MDNP2thlHrPL2GT8wG/ZfmPyg4kSfHrVn6loYYZBR3Q==@kvack.org
+X-Gm-Message-State: AOJu0YwDzUXSN0FGDp7elgByuVwFAKtK7sSwa1M+rWnY5cCx/gIJGvUs
+	wP5bNx2u5mZVvA7n0b+mhzVKpaWoT18DwYiCYEQ5oZRr9Q+sxZ8cVEvU
+X-Gm-Gg: Acq92OEgNjaxknAqI4exk+mT5DX8V039XNWzfkKpvNoucMtErJXIvIR0QrKkEdveFWa
+	bjgBRP0VISQnbLdumEA5Qi05XFJ/3LbpwH83gD9sixiOlnYQGtOUXsHqeMJhggnb+beuzBrx6FE
+	BmLHF9W5OIRsQsvHNsGjmRqK8J8a63zhjZZ9SshIg+Q+LKeW3PKXfuRIgr9pENUmFEf/ZwEtwtE
+	o86mK9rzoGNifPM5LYb3b/9zjh6ae5p+nvTm4jSfy9IYeps9snxW6z46KnkBQ8PEjBqB8kHIgW2
+	jqS989rLMMSzq9SvbpOG8UkPC0xmDldsadtkTZPJgvW4Hd2ieY0TcZF0eB1g8YCTzZkoIztdDhv
+	uF6PkHuxOUlCIPpUuSIBDznFXl7SrI4l03gKBpwaAtwdlH6X+Xb48tx7883JsJizMtwXnBQdtuy
+	8jp3rrLxDKnESAW7PqO/qua8vDHgjjAh/7+oFFJcQL4TpZ06bX1w==
+X-Received: by 2002:a17:90b:2742:b0:36a:c4b:76cf with SMTP id 98e67ed59e1d1-370f0b55e45mr21925890a91.23.1781004964510;
+        Tue, 09 Jun 2026 04:36:04 -0700 (PDT)
 Received: from ubuntu22.mioffice.cn ([43.224.245.232])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6c668e98sm19655292a91.5.2026.06.09.04.35.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6c668e98sm19655292a91.5.2026.06.09.04.36.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 04:36:00 -0700 (PDT)
+        Tue, 09 Jun 2026 04:36:03 -0700 (PDT)
 From: Wenchao Hao <haowenchao22@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
@@ -99,23 +99,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: Nhat Pham <nphamcs@gmail.com>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>,
 	Barry Song <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
 	Wenchao Hao <haowenchao@xiaomi.com>
-Subject: [PATCH v4 2/4] mm/zsmalloc: drop pool->lock from zs_free on 64-bit systems
-Date: Tue,  9 Jun 2026 19:35:18 +0800
-Message-Id: <20260609113520.3507783-3-haowenchao22@gmail.com>
+Subject: [PATCH v4 3/4] mm/zsmalloc: drop class lock before freeing zspage
+Date: Tue,  9 Jun 2026 19:35:19 +0800
+Message-Id: <20260609113520.3507783-4-haowenchao22@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260609113520.3507783-1-haowenchao22@gmail.com>
 References: <20260609113520.3507783-1-haowenchao22@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E5317180002
-X-Stat-Signature: w86aam3he4qhx7r1y559396s6i34w8np
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9364320003
+X-Stat-Signature: tqfbowxoftab1gq3a6hqsrb58bh1ddou
 X-Rspam-User: 
-X-HE-Tag: 1781004961-32556
-X-HE-Meta: U2FsdGVkX1+Uxh3fpI72BYbSw/nLVVNw5+H/PmKhbyH/E76N0H/G3WT9qxO9Esk+DMAK0HZ13A+aZVUXzN5V81K30sMbUPoDXNtMLhgoS3RB25nnVCszbWQEvO9jbqkoXI1ZWSw+mdGKMYGWWnm116FVbIeAWKzDh9YkMsjm2UKoh9uRJVOKouEDQSJTmtneXx6Wo6VTGN3sAoReXRjXY8tr4mJSclabC2Va2O7nCmWbRlTDZzKkEZ5BYEJ0p9tduJIDdCTb7zu1Ga1ewmNSMyXj5f0jj/kxarLH72AuPDGTl4Gt5zjPHc11pAK4IW+UD3yD2HyQZwvuyOrhC0nZEe7ep/TjMF75pCU7AjUoY8xTOc2qXwxVjzZR8rzYCle5FCdQatuVkoYavM5cd5zapc1Kk3rfAudC8PecSMkGDmmAQ3RFhcns8dkJ1po8zg4WCJF6xY7AsvDylanTm7a1iPG5js5pki6ZSeS20lUI3AEmFkAIpnx/6HJhMSRWQGqMuq5d8iFxn1hV8rNvQ9YQeRQ73sBQptsK8OZm5oY+z2RlajnM1+EXl5RI9avZ6FKt1FStFEB4Nb4kfD6Y645KUWrYttfmR8DGl35ScHl0g4hr5YhZ64epcuFbwYgccFtZgP7v4IXIP+EvHNt2JY+2+E2Xh6MkwAXuWNozazg6hXw9in9z8TyYnJBbnvvAxPU2tvMCxEgiXx3DWB+TKPEEmpHb9t+fUSpV9AVtRVvp/BDw73PPaJmKDpo38p8H6l+tM9dWYMO5vEBpePPycOectpRPgS3QAOgfla2dMy1lSLmpvWCrkF0wKO/yA+jvRUPqU8/exQv77/I01E2XHqR5U8pgjpeGb5WgKz801+ExUeDrx3QXnwFpN095HY12XmtLahDsZzkfAYurn89AkqKkPxezUT7MLBaJlGKMf9ATG5N9LG8Tkak5XEoLZx6S+m+cklmA9/dNs05ufyR0b3F
- 1gzPRaWs
- i+ovrbKt6lN5ArlMuN/KNo5hRDhHC3EqeRpa3qPYYTLZqswM88zWVUwW5UeN9nueJ9VS08XZm0g6G4DvfAt3I3EgwTM02xEwvb9czMnyd6Snn1uGyw5Xu0lYP4JPBCAlHdesNKAHvLYlbvl9TYuGXDFFUa38ICXTbxyIhpWXSVVESNKdI4v5jsRvhmtWtee9dHmSW5dBU5rT4WNdX6YYvGQ8LuRpM9NltVko+qWJNGe5oEHdZ7NnltncH3IC8nQ0uqU88MuTFIeDZXqoMbsRL5+0IaiQnp83mlvxRCvmu3JrBAlaaqYEERyZr9IK+Ni+SfRAQ0j8Q8H6hetGMYjYq01H4M2A+DZcy1VMBkTNLEOkyAl/YusVOqxOYXhYcFZ8DzaZZ3h8vyE6XKX5CMUqyqFFnvKMTmZ4MZF3m4iaNt5JMczu1wChdrBrxFNtv5ESFZEJQxHBhpO5cWeeeYgdySjtbyQ+IIbEZTFkUw6m2T3npCWnwJC/s4WL5AfANUk8+B+GsoyNf4NFwDJRrsqplLONhXg==
+X-HE-Tag: 1781004965-941149
+X-HE-Meta: U2FsdGVkX18FkmO/GIJ5b/luIxAB1C2rOE9GxUgqA7PLqZqE7w/AJ1FLlq+AhNEXFeth2O5Yp1i0xMySrhcIe96qYUVLBICffgP++J45wcxP0zrlSq90BuNyQ4Iass/xsxhoO848Q//0EllNc0PAY2sDr+h9lCsTW+E+DDFTIcuLOq5IKeagVXTFoAgUoTA91r3ckVbQDqsWPTEB0bFU67AbLFS41ZLSwSjfN/Tc/nuSTZSOVQoH5DKnVE+IE8njIOa4jsdwqqrrOJTj8DVaYYzC9gy4oDId/gCl2vLmtx9JzpXxRAdJUeto7LaxzMX248z1rBuAJVY34ECsG8iz8wZbxqaThr9+hfOI/hP8z3NhkandWxYJJauhKbroChTaaUC7eJkuMaIwdP73mzRC/G1Blflr1TFYcwsbY7I1Sz+jlqBiHqjzrTlPDl8H7+3KDmT4O4ukhvH1TBXKIeHwxbNVMOpxADTfdMCExnoA1rQnd5agO0WBEKG0dyyjK3ypt60rYy09d6Yp1oHp1fe1Z4zL8iLGa6mCJzfaIBS9ZZMS+GUeBV4UHQgpd7UHEI8a6e2m6sLq7W88WPgUR6tl+BDDzSV8Am7xVAPe1SgTx5BY6MaMfvYy3ibiIupt3RXOTaz5Uw48z9L2b0mdT74UgjIRvBMIuvesvJTXFeEScbLR/TdI+Ke/ojthME0Sxpl5k9HdUI1ugAEOvOOrPLBRYw0yUQM+qD/V0EdZMGtd/vgz/p2C3Ts3qQLMznuQLHLDF0S4znr8Pl7I1y4aoEwzt/sukFx6N+loN0QResg8NqxfYqVLDrtByUZr/fchN3z7t0ko5yocUG74JEmefo2QTe9SotAPy7NLT7g3FLhsabtr5mF+7WCZs3wfULixdF2OJ01Cloq2aDR5O5SJ8Ncw9Fs5Gk1lzC97RFK8LH1cKcS3s1xBFNijI/anWZiQQ5fkZt/v+LS6hriArEw3YiG
+ dqkuODll
+ mcSYB/3zVPOMcyapWkG4uMhX2FpKYqD80ZFYeQAYvyiBuduPte64GctI3b1bi19CLtTdfUB025xtwTvza+nR5Zh0lq0Vmi/acQesJV98HyUQwV63GdZLERrvU5E7U3130Ne7DzZPhcTc9aJ/HBwJufstzRSD3rr5gnbJC9MdEzcJaGUPI4VdWwGmpvoNNy4jd1U9cdTUSym9jZm74sU1h2tSZwQNi2/3O1fpQtpgH47Z/ijO2OcJgl4xaDXsnAY/H9lp+42N5x67Xpz0TsxciCWOk3Cliebk5z3iyjZKHfOIkk0fI9Ni+D9C0+UR3kVQtTA5+XJd0zHzEnu/Et4b0YIdiJx4asM1WDn0EYFuRq4Q+mwMGqs2Wdl7ZgtC4HDKXl+0Qgo6HkjgSZzH8rulZD5wodIaAOFmgDDoDyE1cV/sRoQQYPxh4LOSanox5TABzTkAEnJ6323FyIOQn2z0aa1zLZDWcRU2Kb1zmvH2W6BQvw8sLixTfYwj26Wg+Qa0XTeQS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,150 +124,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Wenchao Hao <haowenchao@xiaomi.com>
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
 
-With class_idx encoded in obj, zs_free() can locate the size_class
-without holding pool->lock on 64-bit systems.  Page migration also
-takes class->lock and only rewrites the PFN field of obj, so:
+Currently in zs_free(), the class->lock is held until the zspage is
+completely freed and the counters are updated. However, freeing pages
+back to the buddy allocator requires acquiring the zone lock.
 
-  1. read obj locklessly,
-  2. lock the size_class derived from obj's class_idx,
-  3. re-read obj under class->lock to get a stable PFN.
+Under heavy memory pressure, zone lock contention can be severe. When
+this happens, the CPU holding the class->lock will stall waiting for
+the zone lock, thereby blocking all other CPUs attempting to acquire
+the same class->lock.
 
-This eliminates the rwlock read-side cacheline bouncing between
-zs_free() and migration/compaction on multi-core systems.
+This patch shrinks the critical section of the class->lock to reduce
+lock contention. By moving the actual page freeing process outside the
+class->lock, we can improve the concurrency performance of zs_free().
 
-Annotate handle_to_obj()/record_obj() with READ_ONCE()/WRITE_ONCE() to
-prevent load/store tearing on the lockless read path and silence KCSAN
-data race reports.
+Testing on the RADXA O6 platform shows that with 12 CPUs concurrently
+performing zs_free() operations, the execution time is reduced by 20%.
 
-When ZS_OBJ_CLASS_BITS == 0 (32-bit, or 64-bit with obj too narrow to
-hold class_idx), zs_free() keeps pool->lock.
-
+Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
 ---
- mm/zsmalloc.c | 75 ++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 60 insertions(+), 15 deletions(-)
+ mm/zsmalloc.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
 diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index f84258d63917..fe20ab297542 100644
+index fe20ab297542..1602ccb6d814 100644
 --- a/mm/zsmalloc.c
 +++ b/mm/zsmalloc.c
-@@ -21,6 +21,10 @@
-  *	pool->lock
-  *	class->lock
-  *	zspage->lock
-+ *
-+ * When ZS_OBJ_CLASS_BITS > 0, zs_free() skips pool->lock; it picks
-+ * the size_class from obj's encoded class_idx and serializes against
-+ * page migration via class->lock.
-  */
- 
- #include <linux/module.h>
-@@ -457,10 +461,13 @@ static void cache_free_zspage(struct zspage *zspage)
- 	kmem_cache_free(zspage_cachep, zspage);
+@@ -878,13 +878,10 @@ static int trylock_zspage(struct zspage *zspage)
+ 	return 0;
  }
  
--/* class->lock(which owns the handle) synchronizes races */
-+/*
-+ * Pairs with READ_ONCE() in handle_to_obj(): zs_free() may read the
-+ * handle locklessly, so prevent store tearing here.
-+ */
- static void record_obj(unsigned long handle, unsigned long obj)
+-static void __free_zspage(struct zs_pool *pool, struct size_class *class,
+-				struct zspage *zspage)
++static inline void __free_zspage_lockless(struct zs_pool *pool, struct zspage *zspage)
  {
--	*(unsigned long *)handle = obj;
-+	WRITE_ONCE(*(unsigned long *)handle, obj);
- }
+ 	struct zpdesc *zpdesc, *next;
  
- static inline bool __maybe_unused is_first_zpdesc(struct zpdesc *zpdesc)
-@@ -817,7 +824,7 @@ static unsigned long location_to_obj(struct zpdesc *zpdesc, unsigned int obj_idx
+-	assert_spin_locked(&class->lock);
+-
+ 	VM_BUG_ON(get_zspage_inuse(zspage));
+ 	VM_BUG_ON(zspage->fullness != ZS_INUSE_RATIO_0);
  
- static unsigned long handle_to_obj(unsigned long handle)
- {
--	return *(unsigned long *)handle;
-+	return READ_ONCE(*(unsigned long *)handle);
- }
+@@ -900,7 +897,13 @@ static void __free_zspage(struct zs_pool *pool, struct size_class *class,
+ 	} while (zpdesc != NULL);
  
- static inline bool obj_allocated(struct zpdesc *zpdesc, void *obj,
-@@ -1451,10 +1458,58 @@ static void obj_free(int class_size, unsigned long obj)
- 	mod_zspage_inuse(zspage, -1);
- }
- 
-+/*
-+ * Resolve @handle to its zspage / size_class and acquire class->lock.
-+ *
-+ * When class_idx is encoded in obj (ZS_OBJ_CLASS_BITS > 0), it is
-+ * invariant under page migration, so the handle can be read locklessly
-+ * to pick the size_class.  Once class->lock is held migration is
-+ * blocked and the handle is re-read to obtain a stable PFN.
-+ *
-+ * Otherwise (32-bit, or 64-bit fallback paths like UML where the
-+ * encoding is disabled), fall back to pool->lock for the lookup.
-+ */
-+#if ZS_OBJ_CLASS_BITS > 0
-+static inline void obj_handle_class_lock(struct zs_pool *pool, unsigned long handle,
-+					 unsigned long *objp, struct zspage **zspagep,
-+					 struct size_class **classp)
-+	__acquires(&(*classp)->lock)
-+{
-+	struct zpdesc *f_zpdesc;
-+	unsigned long obj;
-+
-+	obj = handle_to_obj(handle);
-+	*classp = pool->size_class[obj_to_class_idx(obj)];
-+	spin_lock(&(*classp)->lock);
-+	/* Re-read under class->lock: PFN is now stable vs migration. */
-+	obj = handle_to_obj(handle);
-+	obj_to_zpdesc(obj, &f_zpdesc);
-+	*zspagep = get_zspage(f_zpdesc);
-+	*objp = obj;
+ 	cache_free_zspage(zspage);
 +}
-+#else
-+static inline void obj_handle_class_lock(struct zs_pool *pool, unsigned long handle,
-+					 unsigned long *objp, struct zspage **zspagep,
-+					 struct size_class **classp)
-+	__acquires(&(*classp)->lock)
+ 
++static void __free_zspage(struct zs_pool *pool, struct size_class *class,
++			  struct zspage *zspage)
 +{
-+	struct zpdesc *f_zpdesc;
-+	unsigned long obj;
-+
-+	read_lock(&pool->lock);
-+	obj = handle_to_obj(handle);
-+	obj_to_zpdesc(obj, &f_zpdesc);
-+	*zspagep = get_zspage(f_zpdesc);
-+	*classp = zspage_class(pool, *zspagep);
-+	spin_lock(&(*classp)->lock);
-+	read_unlock(&pool->lock);
-+	*objp = obj;
-+}
-+#endif
-+
- void zs_free(struct zs_pool *pool, unsigned long handle)
- {
- 	struct zspage *zspage;
--	struct zpdesc *f_zpdesc;
++	assert_spin_locked(&class->lock);
++	__free_zspage_lockless(pool, zspage);
+ 	class_stat_sub(class, ZS_OBJS_ALLOCATED, class->objs_per_zspage);
+ 	atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
+ }
+@@ -1513,6 +1516,7 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
  	unsigned long obj;
  	struct size_class *class;
  	int fullness;
-@@ -1462,17 +1517,7 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
++	struct zspage *zspage_to_free = NULL;
+ 
  	if (IS_ERR_OR_NULL((void *)handle))
  		return;
- 
--	/*
--	 * The pool->lock protects the race with zpage's migration
--	 * so it's safe to get the page from handle.
--	 */
--	read_lock(&pool->lock);
--	obj = handle_to_obj(handle);
--	obj_to_zpdesc(obj, &f_zpdesc);
--	zspage = get_zspage(f_zpdesc);
--	class = zspage_class(pool, zspage);
--	spin_lock(&class->lock);
--	read_unlock(&pool->lock);
-+	obj_handle_class_lock(pool, handle, &obj, &zspage, &class);
- 
- 	class_stat_sub(class, ZS_OBJS_INUSE, 1);
+@@ -1523,10 +1527,23 @@ void zs_free(struct zs_pool *pool, unsigned long handle)
  	obj_free(class->size, obj);
+ 
+ 	fullness = fix_fullness_group(class, zspage);
+-	if (fullness == ZS_INUSE_RATIO_0)
+-		free_zspage(pool, class, zspage);
++	if (fullness == ZS_INUSE_RATIO_0) {
++		if (trylock_zspage(zspage)) {
++			remove_zspage(class, zspage);
++			class_stat_sub(class, ZS_OBJS_ALLOCATED,
++				       class->objs_per_zspage);
++			zspage_to_free = zspage;
++		} else {
++			kick_deferred_free(pool);
++		}
++	}
+ 
+ 	spin_unlock(&class->lock);
++
++	if (zspage_to_free) {
++		__free_zspage_lockless(pool, zspage_to_free);
++		atomic_long_sub(class->pages_per_zspage, &pool->pages_allocated);
++	}
+ 	cache_free_handle(handle);
+ }
+ EXPORT_SYMBOL_GPL(zs_free);
 -- 
 2.34.1
 
