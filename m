@@ -4,89 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C397CCD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 18:41:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B44BCD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 18:44:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37CD96B0093; Tue,  9 Jun 2026 14:41:37 -0400 (EDT)
+	id 9C1E66B009B; Tue,  9 Jun 2026 14:44:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3547A6B0095; Tue,  9 Jun 2026 14:41:37 -0400 (EDT)
+	id 9722A6B009D; Tue,  9 Jun 2026 14:44:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26A9F6B0096; Tue,  9 Jun 2026 14:41:37 -0400 (EDT)
+	id 887996B009E; Tue,  9 Jun 2026 14:44:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 168216B0093
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:41:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2D4BC26C5
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:41:36 +0000 (UTC)
-X-FDA: 84861242592.21.E5A88A4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AA9F6B009B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 14:44:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D638164FCA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:44:00 +0000 (UTC)
+X-FDA: 84861248640.07.E7C68A0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1291EA0016
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:41:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/s/LF6J";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 612994000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 18:43:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdZRuRX7;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781030495;
+	s=arc-20220608; t=1781030638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rRqUAdkAgr6Ypp8Su6+2n5PtsOSqMs20GrK0aAXdiU0=;
-	b=i6dpP/2IDmW/snZ6+sU5FXCKugprJoKgDYQVthvtXQt3dmvUAqvUirfBGBiCNvD4jCRtAm
-	WGxeG1jyxFjps1XeBQawulhtDLI5/ritBfFEJI+Z+BBVnDQcJpF5qthq5hRxtVAX6tIdfu
-	l7wx0giuvOSGLTXM1FaTBTPuc8OPPMc=
+	bh=UDdhMXu9kTVIt3wruTdJooHHQbl6lrTqQlfRXfiUst8=;
+	b=cPtU7gtrqu165d4pAx3Xs7QelFL9RXFKTGSYgfqh2w4GABZjGQ2v74pkU+tt2JeRxswjJb
+	jUhllt2OlOsFOpAzlpXkp7NwVqxjKH7/uQ6+6JfL2ojcREi44cT3Mpg9Vs4LA1sdM+h/dG
+	o76FbIiwdVyvVRXLY0CLnXqrXy0qmaE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/s/LF6J";
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hdZRuRX7;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781030495;
-	b=4G4E8R1BqiJiDwN5qVUb/bs6uOxQ+vcd14ytBH4Qa/Zh6O+lPsGqh5h2XpiH8Sfu3Vfruu
-	Ms6+mjta5Q36kNyIxUtfpJdEVRKUrrp/a+C7aSWhYd+eHsRQaeEIRDgXQa5Us4w2PAHTtD
-	B8nH5KpkqrTNpcM4eKo3+kb48ED0GDU=
+	t=1781030638;
+	b=5rztkL72pO114gJcshNm6QYtNNYlYmeaPbXDzOkxVpwzx6uJtfP/4WbW4/vOmRWaKAZbeI
+	BOktLklenTjcGah1bopV4zUixghqhE5D9KrrVjNcjuG/lweAY3BHGb8pvjSq8JZiXbMBqL
+	O5rJCFc2BK7hatijA/csGixdpKpTVp0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D0E86024D;
-	Tue,  9 Jun 2026 18:41:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02BC1F00893;
-	Tue,  9 Jun 2026 18:41:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D8E7F602C5;
+	Tue,  9 Jun 2026 18:43:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A84B1F00893;
+	Tue,  9 Jun 2026 18:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781030494;
-	bh=rRqUAdkAgr6Ypp8Su6+2n5PtsOSqMs20GrK0aAXdiU0=;
+	s=k20260515; t=1781030637;
+	bh=UDdhMXu9kTVIt3wruTdJooHHQbl6lrTqQlfRXfiUst8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n/s/LF6JEqwIWKt9Q7XElB33dDXdgS/LPOJVRmRcwWm5MAB6i2lkrwfbAhA0gfTx+
-	 59NfwWG2KwBDmUOV6bsAfxSArZcFcKV/SvaBUmia5LCaZ2W7892C52u+Z++06W3dCi
-	 C6/ZSHM+j2i3qfGcqTHnuo0H3xgWvHlFCel0FC0751zl6BUXxf8XZ3j5MpyPEp6p9I
-	 zwFfXxt2Z03iYrdd+7P/RBEy/Qe1jPd2NSesyYWhKUw9wu1wMX3EAziFf4gQ/LvBPk
-	 35cWOxTQwJ7vG4cyGBIvJewYSa968HRt1WkEKYwHe420u5TmWsPPFerMxQRedNug1m
-	 CrKWll7YTrRgw==
-Message-ID: <cf2bb24e-9341-4ded-b238-064dca442a92@kernel.org>
-Date: Tue, 9 Jun 2026 20:41:25 +0200
+	b=hdZRuRX7DVwIWySSLtdp6y2vC5NLSzZuGYW1Uuc5vdvfxgj4MHQ1XGKPIixDOxvcY
+	 L7WZ0ZvHDk8eEnT2U5QcZTntgqutkmJSwZcX7uS7iI2+Q+3rHg7QGyjN5h7B/MLP/r
+	 ukL/MafBughuUa5kZOZqrV3QdmKH5QaTG0HUvleOZIXoP+URZgOZZ0bby9cbsez0dN
+	 7R0EwPRa1SR2BnXm+symIHhaP53ayU0ccWRprQYy/kzbgP8nAfVINU33XnYC475aX2
+	 W+L0CTWE/EF7PxET5xg1rout6m4fQgp2rQPQcQHY0e4MMDGnm+cRCdD21H/R/QWSqH
+	 Hn6kDpfiPomiQ==
+Message-ID: <508cad64-3b00-4a2c-812b-fee69f2d5f27@kernel.org>
+Date: Tue, 9 Jun 2026 20:43:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- kernel-team@meta.com
-References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
- <20260609-ecc_panic-v9-2-432a74002e74@debian.org>
- <174b8d76-5514-4942-af5d-c975ff95ee03@kernel.org>
- <aig7jzwDHfVCxikl@gmail.com>
+Subject: Re: [PATCH v2 6/6] mm: Remove __folio_index
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260608210618.3437216-1-willy@infradead.org>
+ <20260608210618.3437216-7-willy@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aig7jzwDHfVCxikl@gmail.com>
+In-Reply-To: <20260608210618.3437216-7-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1291EA0016
-X-Stat-Signature: tpaofzb61qfzqbsgcc3nyyf39mpaqysu
+X-Rspamd-Queue-Id: 612994000A
+X-Stat-Signature: zf6bn8ehn56ihqgfguxcbktryafk38hg
 X-Rspam-User: 
-X-HE-Tag: 1781030494-692268
-X-HE-Meta: U2FsdGVkX1+Dcim8toNKHZUK4zDGxvByYL9i4qxZ5FjkXkObLfQsnlNQcfk/iPegnu1Gre4TADqaQtJviF9br1sltjLHy9XzNff5BuxemKxPa89uRkf4McOr3XX4e097qrXfwWw8BYgqVU/tm8OPEdMk2sNZuEX/zn5FSGK7iVJrg+O8FMgnZIQcJr9gPL1rnN7hf1cy/BiJUDnkp6h27GHJImwCWTJqgLSzxqB2v7Rn1c5GNwWre5ebF0H2yIbzuAa4Ce2jt9DejdVCnIL3OUogpUCoZVSSANtU20o9nYYxmv8FGQ7stuiZja0MWtxXmQ1qasdqNh0pCI+r/vYW6z/w4QHJKj5vFxTAOESI7UdLHktvO2p3phHVfu2pz77X96/3WExY86H0Ny1mxoboLzKXGZh4nNmbUHlqnSH6pMHKONYaXVIjIAzV+bULcDpxNimjEBHqpk6epJJFPF94UBSdyRIID90CmLuzycG4Ixh1lGxVafm4pPFFtxq7rwXscV+2/wGZMUEExZe1vh89TMo34JKVcOYHP0iA1Ulj6mvMptimqMD7kJ2XcKLiyIX0HMUoTyNx5XVrH0lIew/OHIiJtqxl8tatcVycsaGeqZNSPg0AFaeNsYVJwh5ZMOjLwyebU/HbktY2uqyKfvtGt6Y8X0XywDInaAFJuHKymjljXbhE47iam6s3LjYEh/zmupCcQG5dTM3iQ3bKUtvb9om6uhy+FM+p2WG/wRyf7rYNB7EMfzQw6zy7pUOovuGCVqlMpxfEc0KAAKB/1ubUTID6tlCmYtM3+1h9vHtBwXUrozBbP+H0h7Uefn8YeYJvTaUIDuSbq5scfA6dADuFeptffKWWFgR+iJJXRkqHMTC2y4jMlAIV/m6Qhebo7E4YrqPIWPYr7dDtwN78OoP8ZcKUDxgCeMzEg2rsMORnKzbITlf6yXorycaTiQAl//iLhsvOsP5nzqXTwb3T5f/
- WX5Rp/+c
- zaOQoXoceTHm2n0TOq8sNGweCMMtSWF+h1Fp9/AwnlEmisgtQbmiw3jnmptQWFBoOOC/KFN8+e8of5cPH/CeT8v3pHo+AgfonxJE2IWls3F8BbTzTOsVQdTUHQnn+Yw/FUVl8cq76h8fDveyiRzYK4Tglydcmg13OWoeJbI2VsBMF3mziHJtsCEU++CAmXqTyNJloK+0q7ror0Aoi+2rHCTMvhMNi5/HJ3EnLWyHyuDyLjB3CUNTml/8G7r5a7O/pzYwuCH9vn59luOfGDJa5vLpnaAPYoeu3j6UPZeAmK/LyCzRJ6aAmqexYbvrkazr7nrEA7iiaIm+BXCvgZKozgIXalrKC+JlBDiwn9KoI/pKVf7tuli28CF0jMa7F3kcRNoDG
+X-HE-Tag: 1781030638-326872
+X-HE-Meta: U2FsdGVkX18yRgwtEYfOc+ixm9QPhMGyb1dqVcJcJ8/HEHiVsjFuB5O5yskf4bgl3fpV9W94rKfUxhv1JJ/OsI6vbBkLDRFCva1qX/SQzp7/8dZgDTrCemkrSocJ8r4OCUD5USHA3uiYdNgEW6vXoF90FUCNA+Ce/y8gzJwWXt/w3diiU7AZpIBKVlpCgikQtsQT0d+iKPacX6MYsDHi589TT9K5CCgw2NRayP6Pt6B/4mK1zZzRdlPxJL9emqEDpRFrZMqfbnw/EQ6mvSCON5DHzoSa8SpjiIn9ScKnYs3617o7XHdDgKH1M4V0t1T7eybHk6vYr1QYqRRviJXTT+FnnQqV0pdU4JcJ31klUgIyDhOXnTAvu8z4GUF5070/0DlZHYpqUr4uqJQt5ekiVGriRYCUqQjBARgJL27IhmDOev1/ceOutHYI/otBySqSBvxZW8EiqPPPEJ/9+cF0M+1Mviy0i9G+A3s6ta/vImOTVIuFAI7N5yM5DEk7qut3Vo70RV0bHiGEoEWwy3KELVTOna+UMMRh7PHpnyk4mUATsHRux2L+R/6+82ZaWIGu0PS5EsSIsgA83MKc/tW2ChJpma1pqS1GnrOQsqa5/D+vdOuoAD9jntNVpJ4tYk+akuWvvyRccqmUbP20lgYXiZRZJb4aGcgaGkiO3wZeGTGTEOhP574OPcdDdTQzCqiMluXnCU/j3oTPPDIL8ObgA2UTEl3kl+x1chYwGtbm8VUkE9vPueovxwv5OOSU7lx3IUDvZbPS7C+HoyVlNxs3qn/8K9GO11WlMPWWycMHSDV/TGEjgcq0qtMEJCuBPb4O301dhfLHgx+H5mdp+BIvju5KIRir9DqEnhCqpPfSjp3CQcyMEvHzGU9J4EyE1qzZneuW5KTo/w6QFXVeN4+prXkr+RsnajKu/Q3cr6eDjYRCQaiF4Gm4+h1NUrnf5eH+iGL1bDHZa7W7csQpccg
+ ghvm+Dt9
+ X2jT41lLdWSbuAfBWg9Z1EkZR6PG0rqHVxSOBRspxNvRI6b7L5Bd3EloBcbtdo5R9jVVE70sCo8KtolhKJjQbBU7SLllci0EGI3drmkT8/X2lsWbwlp8YqzJFoZKnaNTq34ePA0nmabt2cUSlOSsLDYV4dWEIPloadqqbePelX4sbpQ+kGx1Ci4DPXYh1zmD8MYEIAPGGcX93DC/e8qBmNK1ahvXsouwwJ1m5X292y5icGxtq6hMMcY0xfnRhWrWVUm+OBZlmIsM8L+uc33zJVfaNeiv9V+FAuLjTlKaRkRVIZYd/kedzxAoRrAmBHC3wlEVg/tUJvA3p4syHUnRo7NXC94F7DAV2DB7B1kGNBP10uy1RQl1p8z2M5wCT/05bYnqAh0IpowYVPoxGsn3LiHY5XVbyFu2g0ocn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,134 +138,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 18:15, Breno Leitao wrote:
-> On Tue, Jun 09, 2026 at 04:41:01PM +0200, David Hildenbrand (Arm) wrote:
->> On 6/9/26 12:56, Breno Leitao wrote:
->>> get_any_page() collapses every HWPoisonHandlable() rejection into a
->>> single -EIO via the __get_hwpoison_page() -> -EBUSY -> shake_page()
->>> -> retry path.  That is correct for the transient case (a userspace
->>> folio briefly off LRU during migration or compaction, which a later
->>> shake can drag back), but wrong for stable kernel-owned pages: slab,
->>> page-table, large-kmalloc and PG_reserved pages will never become
->>> HWPoisonHandlable(), so the retry loop is wasted work and the final
->>> -EIO loses the "this is structurally unrecoverable" information.
->>> memory_failure() then maps -EIO into MF_MSG_GET_HWPOISON, which the
->>> panic-on-unrecoverable sysctl deliberately does not act on.
->>>
->>> Introduce HWPoisonKernelOwned(), a small predicate that positively
->>> identifies pages the hwpoison handler cannot recover from:
->>>
->>>   HWPoisonKernelOwned(p, flags) :=
->>>       !(MF_SOFT_OFFLINE && page_has_movable_ops(p)) &&
->>>       (PageReserved(p) ||
->>>        PageSlab(head) || PageTable(head) || PageLargeKmalloc(head))
->>>
->>>   where head = compound_head(p).
->>>
->>> PG_reserved is a per-page flag (PF_NO_COMPOUND) and is tested on the
->>> page directly.  The slab, page-table and large-kmalloc page-type bits
->>> are only stored on the head page, so those tests resolve the compound
->>> head first, then re-read compound_head(page) afterwards: a concurrent
->>> split or compound free that moves head invalidates the just-read flags
->>> and the loop retries.  The lookup still takes no refcount, mirroring
->>> the rest of get_any_page(); the recheck closes the common split race,
->>> and a residual free->alloc->free in the same window can only mis-tag
->>> a genuinely poisoned page, never reclassify a handlable one.
->>>
->>> The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors the
->>> same exception in HWPoisonHandlable(): soft-offline is allowed to
->>> migrate movable_ops pages even though they are not on the LRU, and
->>> we must not pre-empt that with an unrecoverable verdict.
->>>
->>> The list is intentionally not exhaustive.  vmalloc and kernel-stack
->>> pages, for example, do not carry a page_type bit and would need a
->>> different oracle; they keep going through the existing retry path
->>> unchanged.  This is the smallest set we can identify with certainty
->>> by page type.
->>>
->>> Wire the helper into the top of get_any_page() to short-circuit
->>> those pages before the retry loop runs.  On a hit, drop the caller's
->>> MF_COUNT_INCREASED reference (if any) and return -ENOTRECOVERABLE
->>> straight away.  Pages outside the helper's positive list still take
->>> the existing retry path and return -EIO, leaving operator-visible
->>> behaviour for those cases unchanged.
->>>
->>> Extend the unhandlable-page pr_err() to fire for either errno and
->>> update the get_hwpoison_page() kerneldoc to document the new return.
->>>
->>> memory_failure() still folds every negative return into
->>> MF_MSG_GET_HWPOISON via its existing "else if (res < 0)" branch, so
->>> this patch on its own only changes the errno that soft_offline_page()
->>> can propagate to its callers.  A follow-up wires -ENOTRECOVERABLE
->>> through memory_failure() and reports MF_MSG_KERNEL for the
->>> unrecoverable cases, which is what the
->>> panic_on_unrecoverable_memory_failure sysctl observes.
->>>
->>> Suggested-by: David Hildenbrand <david@kernel.org>
->>> Suggested-by: Lance Yang <lance.yang@linux.dev>
->>> Signed-off-by: Breno Leitao <leitao@debian.org>
->>> ---
->>>  mm/memory-failure.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++--
->>>  1 file changed, 58 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index f4d3e6e20e13..eed9de387694 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -1325,6 +1325,46 @@ static inline bool HWPoisonHandlable(struct page *page, unsigned long flags)
->>>  	return PageLRU(page) || is_free_buddy_page(page);
->>>  }
->>>  
->>> +/*
->>> + * Positive identification of pages the hwpoison handler cannot recover.
->>> + * These page types are owned by kernel internals (no userspace mapping
->>> + * to unmap, no file mapping to invalidate, no migration target), so the
->>> + * shake_page() / retry loop in get_any_page() can never turn them into
->>> + * something HWPoisonHandlable() will accept.  Short-circuit them to
->>> + * -ENOTRECOVERABLE so callers can panic on operator request instead of
->>> + * spinning through retries that exit as a transient-looking -EIO.
->>> + *
->>> + * The MF_SOFT_OFFLINE / page_has_movable_ops() opt-out mirrors
->>> + * HWPoisonHandlable(): soft-offline is allowed to migrate movable_ops
->>> + * pages even though they are not on the LRU.
->>> + */
->>> +static inline bool HWPoisonKernelOwned(struct page *page, unsigned long flags)
->>> +{
->>> +	struct page *head;
->>> +
->>> +	if ((flags & MF_SOFT_OFFLINE) && page_has_movable_ops(page))
->>> +		return false;
->>> +
->>
->> On a second look: Do we really need that? The page types below never support
->> migration. So I guess that check is not required?
->>
->> Apart from that, looks good with two comments:
->>
->> a) HWPoisonKernelOwned: this is not the common style for us to name functions.
->>
->> is_kernel_owned_page() or sth like that would do.
+On 6/8/26 23:06, Matthew Wilcox (Oracle) wrote:
+> People have been abusing the existence of __folio_index.  Since that
+> was too subtle for them, unname it entirely.  Now we can't use it in the
+> FOLIO_MATCH, TABLE_MATCH and ZPDESC_MATCH macros, but that's OK, since
+> we don't care whether these fields alias index or some other field.
+> Also remove page->share since all users have been converted to use
+> folio->share and I'm absolutely certain somebody will start to access
+> folio->index through page->share if it's not removed.
 > 
-> Ack, I will rename it is_kernel_owned_page()
-> 
-> In my defence, most of the functions similar to HWPoisonKernelOwned()
-> has this name format, and I got this discussion earlier (with Lance?
-> I think). Here are the similar function names in that file:
-> 
->  * HWPoisonHandlable
->  * PageHWPoisonTakenOff()
->  * SetPageHWPoisonTakenOff
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Some of these probably date back to our old way of handling page flags and
-things, like PageLRU.
-
-But we really should stop :)
-
-> 
-> I will update in the new version.
-
-Thanks! Probably best to wait a bit, the merge window is coming up either way,
-so this will have to wait a bit either way.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
