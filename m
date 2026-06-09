@@ -4,133 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 634FCCD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 00:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99019CD8C9D
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 00:19:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 787B56B0005; Mon,  8 Jun 2026 20:18:47 -0400 (EDT)
+	id 0845A6B0005; Mon,  8 Jun 2026 20:19:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 738F16B0088; Mon,  8 Jun 2026 20:18:47 -0400 (EDT)
+	id 05C1A6B0088; Mon,  8 Jun 2026 20:19:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626E76B008A; Mon,  8 Jun 2026 20:18:47 -0400 (EDT)
+	id EB3A06B008A; Mon,  8 Jun 2026 20:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52CC26B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:18:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7DDC1C2137
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:18:46 +0000 (UTC)
-X-FDA: 84858463452.18.07529EC
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DDD8C4000B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:18:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dZtHxtra;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id DA3036B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 20:19:33 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7C9F1C2144
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:19:33 +0000 (UTC)
+X-FDA: 84858465426.12.BE04496
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9566A4000B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:19:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RnONu2+T;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780964325;
+	s=arc-20220608; t=1780964371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pHNfRp0QH0ivmNsCb3p1tkED6tQ7dzWkpJwWEGenuCw=;
-	b=ayd7j72LzVdCE6gb81ZE93NbBEEYm7chQGPVSp9eqYFSg6kku7t61dEkCkcFsOg+7TuuEL
-	Ph2djPQPuG1NEnYK3t1BTFxZ+ptBdiR0DFdr18OtMk0XaUdH+4HPEBwF8NisWp9nnJR4Tv
-	SicYo7FveUvDoiGb5kZmqeB+9vGi7mY=
+	bh=Ya4+fO9XzBWfdc4Ka8Bh+sYylF5sEr5adVMzLIQQnag=;
+	b=A18lkaQxPWnnCUSaYH90h1dznaOJbYOw+lrddsaP+ctBcW/S7xZNmGpDhxmYHiZGVlTMaS
+	LRKAvlo4c5uQ4OzW5il+O7KwYs+++fVEs2eZI9P36G46/eEHUiUgfmXlbSL3dIpwUJYOyg
+	CfgX5u6T555AUVUYPE7T/TE4E+47rsw=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dZtHxtra;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RnONu2+T;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1780964325;
-	b=m39dGMaf2UkboD78qEeCBfBGXxcrdgZ2RmqzJn6305l26L1xx2rcX/OT9DRJtvWRByFPES
-	AYnqxMbGLN0NMsHdjlb4YFZvcNYLEdJaBDVqfWBpxUAbCcVr7XR2rW7ddP89K1VRYi3oAA
-	lmOOrPVTaBZcNVQCqSjhcowMBN3Uf4s=
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-39677245e15so46810901fa.1
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 17:18:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780964323; cv=none;
+	t=1780964371;
+	b=MzguddNn8gP6DcVjom4IsHh6kYooVHdpWJp+RBe3+b1e0AmgjPg90OBJHv+pUboGSuy77r
+	oIRLHaCLs/0YWvxItVpQWnKVxC/+x+B4XorwCT8DgbBuJpBlvmjNOlEqR1rCSnyfhpK6uX
+	NidIs/JF3kN4Pji85qY8FYaBuBoHX74=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf2d865383so380335ad.1
+        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 17:19:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780964370; cv=none;
         d=google.com; s=arc-20240605;
-        b=AhuBO7zVlljGKGb7JIyxgl6VcQSSJAmi+b+6nlwoYUv0RKx4ohJqykmsJjbDaNEX6f
-         rF7ZB4se8OQMF1bn1PnBlbPPJ0znfrsbW2m1zqIGbVCUkKrjvcdE9qSa44Hk3kZ8Ia4G
-         z6gq+QYQcRMTpzlLJVBGgGpXXSXU2J8bsmsUeY9A01eYK1takArsAgmLAr7+j2WHSKUm
-         vh97WfH8HSEM2RZOLfG1XP1KjDayUOBUUeywaCD6xb/ljmphBIcEcf5j2Um2sqU3Rn8Q
-         97v/9oWRP5mkBzstqc9HOZ+/uKrBq+owJ2oB5re+nFe/2d/hhJnR0fvyMO8Kn2HrztIi
-         W4kQ==
+        b=ShSlp4JMdRaGJ5lwK5gIGb7Fx/YmvLUteoDr4gLY2BHhoLrvUX4ZNgqAyDzZP0CEg4
+         vmx0a+4ndGlG8BEMicIQTSZ5j1dvmcT7KWfT01/5rkxWB0G93DjGRhZ5xInZKsBLqyoZ
+         Smyzs6o5s1c9V6B6WTdL6i0chj/npbbp5TLWO+E8DQE9k/tC10vBmaFlRW/s3dk6kWKh
+         D7YGAykwrcnj4Srii7p3gPEbZncVYdwA9K7uc3zSENuSqVl9nUrt6J+PEniCGjqiS7Df
+         kRtfPjWHbvT6wgb7cryMDikklbNKwTvsSo3sOrTp4L4grOjC4/X+gEw1Ts/pgfXajUvu
+         IxQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pHNfRp0QH0ivmNsCb3p1tkED6tQ7dzWkpJwWEGenuCw=;
-        fh=KcyXcfAFA9dc18eBLB2Ks1hHUr2j15u79P4e03dHhTY=;
-        b=WGtH6XuiKsTTpUXcHilFqz3fg97LKaRa9JjUPKtbI+R2NA9za06TuFBwWt57BcefHQ
-         yIxdBnDi8YUgpMD7/4AZWD/9D18dIxFwfgLDApW1cfFfdrustS9NQaT6YRKkZd22c471
-         gFeO0ey1CWRA0bQ6pceNfWyViNDaTGdwVPoWXlFw7G+qV+Ym5BigxhLs646ti8aOtcMo
-         olIjWdI3Sw/ryuyXhY6chAfkSoo5ZySQPsajE00NWSnWykfmXwhZaooKRBaR1psjNqaD
-         04EDXPfCo89G1VaiGw/j6+6tSXduHYu2XwIx0k4K1yzeGqT0ChYdIE6fmFrsxjSr/bIt
-         H8zg==;
+        bh=Ya4+fO9XzBWfdc4Ka8Bh+sYylF5sEr5adVMzLIQQnag=;
+        fh=TwBgEnXQtvmy5oFtcgYMhL8Bfu+GCnFyMo5zhijG+EM=;
+        b=YuH1IKwSWCN6aia2QSUrTRJaGX2jDJfa0oy4nG+m74MNkRL2CGdqzugAgFhhsyY3VH
+         bD3c0q8jPXJytWlooMnxozpX6oqF7Zt+fR02LfUvYFOgok75xJI3RoucvDuAQu53QcY+
+         Kc/Dcxm+ySzIe/VLkTVRFd8q64Mn6KKCyRRQTzjboS3qmXrhZHqpH6LA+1nWSAzEBW56
+         LvLdnCLKDXHIYR280qcqB+mXkcBw1VKFWbIAQB9avqWgFwsTh1ix3XoPYKaDwICEu65D
+         g2ZAJtuys3cmXxSOYh3PFI+3A9Z9HZolFJJQyouJBEjKvNX50qBOHotdM/K/qOypvjTh
+         uGyg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780964323; x=1781569123; darn=kvack.org;
+        d=google.com; s=20251104; t=1780964370; x=1781569170; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pHNfRp0QH0ivmNsCb3p1tkED6tQ7dzWkpJwWEGenuCw=;
-        b=dZtHxtraeH+Xpa1T3tljNpSUfKb3vwbIgbgAYjBU0/6wMQfWrwlPSU9Hv4x7U2Vj+1
-         OKHS7xv7pVyT+a8pVA4SNOGlp6mFg/Mo+ZJ1oSJfIA4ieIPyCmW+4FPYdnO7JdG9Bymd
-         2pgQOb7I+m8PnjJ0EjUUKCfIjoSZ2b7mun7fHwBDrgeHy/caLXSrXtj9XT3hPpFuAtvy
-         LQnby+N/mg8nZjwK3TNpvIBzVTJcWZ6TfwwRhQ+OxZ7metfltfPIq3Sf7+zQtt+250wK
-         4lJuL0m9cOv7dOtv81ALMYOCnT6pToKL8YumTtW873/NRmzndJq/sKdeT7mdYGdLPGwh
-         sP4Q==
+        bh=Ya4+fO9XzBWfdc4Ka8Bh+sYylF5sEr5adVMzLIQQnag=;
+        b=RnONu2+TxLNUcRLa4/Tvm1mM82qXfS4+5MtuwWixCqqucpsoE8OTunr+iBEJe2oqAs
+         c2TY0O1Mtt58Dhwp6RV7OsfHuIqmcPrWXf8N6ls8ixtImJ305Qldt2LF/3aSzkr2hZJ0
+         tMOPttMbKpx0zuJErBJashj+VDmSnqKiMjf4dPGV03IRUrrsZg6lFcg1zs+odiNTU4UQ
+         /LKT+6Cz/TfAsPwrp+YkYPXotpQoAu/y2QlLpW6DPAdfD39HZywOlz6OjAP5XGgb2a3j
+         ju2yY713OHXll2hdWjqAkh/Fd0VFCENOWYvqaAnRmK5z/Gl5bq3zE0gl6CtvJKSMX0Fu
+         g2vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780964323; x=1781569123;
+        d=1e100.net; s=20251104; t=1780964370; x=1781569170;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pHNfRp0QH0ivmNsCb3p1tkED6tQ7dzWkpJwWEGenuCw=;
-        b=R57SB7gHCZgn+TRnP9jCYYjSZDzlXTxQ+IIixXvOUaDlFYu4jcBWOvP6y+Mwy6ERjT
-         orstNIzFvvUAHELnvfshsS7lPYiHSo0Rtaae4mmUlYLXhPwJpAzE8BbCU1LUbASYOCXj
-         vEfhALFPmaRxvmuWYQBFS+2RMWL1BybwoeTxPiPfdL6z+4XNoh7qKrXlud4m8gD9ubBi
-         TqcWWHfGAyJUfWR37c9yXfUHzKhJwzgp6IcK+YzCdUfX1Zk0g9t8HF+z6R7oMRJmWb07
-         vHGvcoGuqinyFQYFOAwrnxLKeXcBXkyXtV6YnJd1hdOJULgIgE7bSM6jNxmLOdgBDeVs
-         ARDw==
-X-Forwarded-Encrypted: i=1; AFNElJ9/rcMMDWRYEe2thx0e1K5jgWyqoCy6X9S5KzVED3XQbD46hWSY6FDpbpLC2PP3BVzAYRHEsmRHdA==@kvack.org
-X-Gm-Message-State: AOJu0YzRBjywpzUyDncF9Xi5KyNttVCv2JNu3aQ+pKM1lN5DOgRMoTRK
-	NP0+ZoYADtgc5z138ZOn3ToPBctIWz0OAilYArl/XX10roDmPHrAK0EU4dXnfRIeL+Weutt5yPg
-	K+t5csSqiuwbF3KyVohkzOVIheHOycfs=
-X-Gm-Gg: Acq92OFIu6P9ZzzD5u1bYnqwMdVUo4ntUsysDRZo5G/ekVC3U94qWMzSacZqAKXq4md
-	lG2eaiI86ZK9e5CZE36X5oJzuYNTkkMUgcw7Ze57dlVAs+Pab7jnKNd5WR0sfgyrgF38HC+Tkt5
-	nQdJ8AOWv4VTNLCYh2EFo14In4BqmkU8sYI5+I88PXFHYTNaqyO4mmSZnB2G2tW5ceD9LVsT4NP
-	sLj3sG0xEoY6vgBgmmCk2XXK6EFkRET+YD8zeJgd87382fPD5GR3hkBNKolqUnwNvfn2MaeYfAD
-	koMPbi4HS8mZrHTS2g==
-X-Received: by 2002:a2e:be2b:0:b0:396:8d0f:249b with SMTP id
- 38308e7fff4ca-396d08d066cmr52060061fa.12.1780964322709; Mon, 08 Jun 2026
- 17:18:42 -0700 (PDT)
+        bh=Ya4+fO9XzBWfdc4Ka8Bh+sYylF5sEr5adVMzLIQQnag=;
+        b=pDB7qKZ5L5me3Fx8NepYFWtSGUGtiYpvFX1a5pVNkXcOarBV6x3N/TUj26DpOixqn9
+         NnhfzQEfcb5b0Fk8yA9N4rcI8j/PXy3r790+84pQIXePpNxBeVZ8p0Q0SX2qd1EP+Fnl
+         /1+6HZtzJR2gXAWgWS6Tv9fvHoCc6zkodj+hxjyulT1EzXkAJxtqqy3bG8H1vr3Gw8wc
+         xvo51lNF2HD+/JlF7rrnULng9YurQE0IzlkOoeS9+2EQaLDABenqEzbXycbatOmrbKnE
+         SFp/0zIMVldtSTevmQFxTpkeTHD/cUHGW5hTIHdVT+uEnJsjg9o8avxfAiZil6JThOHX
+         1/Dw==
+X-Forwarded-Encrypted: i=1; AFNElJ8ecMiaPSjl9fSeoTpfdHlnenxhqwCeWEfDqumnMkmi00EgLbxqyA86fosZW0muhtEMvuhgYDytHQ==@kvack.org
+X-Gm-Message-State: AOJu0YyEhhk6Gu9dtJ3QTSjlceZqpmi5UWUn1tRUK0aZ3Gk+B5afNB3u
+	eo/38wNM6VcKGjRYhWsMatL1cUX9FL0RgT2Wr0ESmgix0Ze6dD8w+s/KC+doRkUFGwXwme8cl6D
+	bO9wtLkb6/F/HrzuB1IPtCewDdF9WH+iKkM+ACohQ
+X-Gm-Gg: Acq92OH/R/VO9k8YizT6TrP7HUraxBny/jz/QYwR0OyTBHfef+++ymggRrj4RC1CmfF
+	tK5NoQANt7RMrVPNiHaWSYH7X/ZuO90FCk1VX0E3rxRUlCJPKxwrZbmkFaYZTxMiwA3cpcklAUL
+	EfbEs6fZ0bZ6F1OPrKWS5C6kBKO6cQi2oYAWGhATlLiYjs9Pn7sUBkOVZipuvvqr0RR5v62YseZ
+	B+8iP9i/Ay1MYEKIvvA9bxaEg1XW9ijyIj8E8oM0seVpwwVzEOaLT8sE4qUCFOvUBP+Q7XPPmSx
+	JyxijllFiuzUwqa/K0Om/5S/LA1I7bRJhjWfTW5Dofu58wmB
+X-Received: by 2002:a17:902:ced0:b0:2c1:ee6e:be20 with SMTP id
+ d9443c01a7336-2c1ee6ec4f3mr6353845ad.30.1780964369832; Mon, 08 Jun 2026
+ 17:19:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-2-willy@infradead.org>
-In-Reply-To: <20260608210618.3437216-2-willy@infradead.org>
-From: Hyunchul Lee <hyc.lee@gmail.com>
-Date: Tue, 9 Jun 2026 09:18:31 +0900
-X-Gm-Features: AVVi8CdkX_aLXqBlaPzMju4XHc5nOcO271OPhrU-2TGGmnU5WyxBdf1WFLomVi4
-Message-ID: <CANFS6bb=5JJ0-bBusAugG_EaLW4ws8Z9zvJJJjv2eyWXqRpJpg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] ntfs: Inline zero_partial_compressed_page()
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Namjae Jeon <linkinjeon@kernel.org>
+References: <cover.1780701922.git.abhishekbapat@google.com>
+ <0e91fdd3a88dbe5220d15c4c8ff7b8f66e86af7c.1780701922.git.abhishekbapat@google.com>
+ <41a7ebb9-1113-4f13-abbf-6f55d99d62f3@linux.dev>
+In-Reply-To: <41a7ebb9-1113-4f13-abbf-6f55d99d62f3@linux.dev>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Mon, 8 Jun 2026 17:19:18 -0700
+X-Gm-Features: AVVi8CfX0QyYbAeRHXTJeGRPllP0GCdLx4rHVaUYJ_oHiIiT8YRFTysM4ZblUVw
+Message-ID: <CAL41Mv7jOJ0rtAEDZP2DEGa5d1GfTbK=DXg8k1BL5qjFuQjNuA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] alloc_tag: add ioctl to /proc/allocinfo
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DDD8C4000B
-X-Stat-Signature: 3c6ftrhwakqb7zn7tiun4yj7o7asupj4
+X-Rspamd-Queue-Id: 9566A4000B
 X-Rspam-User: 
-X-HE-Tag: 1780964324-950955
-X-HE-Meta: U2FsdGVkX1/iuSzvwwpXKKV12ruwOh7r2rXcaF3XQ33LjD5Cg1Tix1SOp+sS6mrNy1zN4jpug+oWIF7Go3M1WzOViLiR6LQSQbj75+wvXCQdnCodUrpcGTSW4VI/bBVDNnaTPDAXJpnUBU1bP77v4CPkOqkibhKLTZFU9EQAWcfPlygFgPWO9c/LqSVC0OZLtkbWHuNTg5HFwc7V/ITdrSlCeud3HXBqgC3rGdISHFpmV46/KDsaBzpi0Cw6KnqGAk6QKSPUVPN3VZw+WiRSFYcWu4q8yghO7NQBMTqT/0jRmBbuoZL/YDm5tO99aIBir4OdsS+hdLxY3sKfq71ajvbWGk1CucK2WhCiOp0idRfjITWxN/RdddIde+z0CuvNconDBLb+Qi6vtvHMlX7pj1mxbZuKZl8lHsswOqaXmHCC30KTI+jBpp0IjjGkqJOOQ+6lKJrMDzQXL8r0Z66gtIIpu5irBKV2sZYqS4pGJ4UJw/nJdnnIVGpeCZd1qhfUub4Y5jvJdVMZa7cL2GhIcQRVwkOmhbMRmu8u5kr+ivgMgUK0Mi6lDet8h+9vXcBeggplJEYfdOUplvmjsWi573hNUdz6by5P63Ljg08IClgD+g2T81PRh4AU7yY2hHN15HjAnL3vMxqbypRlyNcJ2TftkmSKi+/Wk31JSSDzWTA4IvK/sYIB+y3RM8l5UrHBt6PWA43RQsE4zXDKWqnYhez7pKBzByeOL6c6zDqILgVozLk0BOOUz5BBlIsgjd9fTOzOrhXAQcZjWeYeR53QhAxtrY0P9CffzzOuGE2HNVFzAhdbdIGsVUcMREOIw5tBWTNrBl0cUx/uhGIqfC4r3LPIUo74YjuKhxvYGfQjTqu6VxRkoOB9vnJByq57Qjk7isjaVPnwevY0Q5QHDny8d6okY2YTOe8dVSxknGSzlD95/78SwnXRjp6Au7jMV7wTDq07RLon7JMswQjXED+
- vDtZJOcE
- OcA1unW5zy6yDD6vv3cx4LT3JAczbp/76nfFs+firYw1G1Z45zfwBlenXeden327XDihkJryUUPZD5wGKF8d22G5hguUSK730FHQRemSVHd92MMDEoskvbpDuZOPWUtqHADu/ebD3YxUuGpnTDXAoTPeOfSOEwe1yd285UyEUfEMjBL/Sm3pB/JvYnucXZ1fP/4HPq8I/eo5pCmgik9K/TuvoPv6C8pESDlSa1QmKzmOM6R+S/m4dsPou7+f6pe6EeJto77B8nE9aJ0IeGMG7UHKSV0ad8bzTuqa0HnHr4JS4su2mQACZfDrflfPXQ4FT1qnd3AmW5vG3uc41Hyvv8RCmFSx8CPGl11yS0RXrgJWNNLYbrJ7pf0xJlt6wQNPQjuPp9HVLJelEhfAzl0I5cRQOkNFmnW3XZJXTiUWbwVWtil3flFjkc60VTtYOE557oeuBqdGbvaZIu+qcVzsRNPnpMBN+6UHPZ+9IFK4f+swfnponQ6uU42vVSaZE602KU5R/+b/AfVeVG3xdDRNB15cq5xJbK/gaL21zFntgb6Ml472XfVcFQSXUgbvjj18KHr37KJT04wzuU2U=
+X-Stat-Signature: raaaup1uxyq7tbe4mwwst461z8oo4aq3
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780964371-374647
+X-HE-Meta: U2FsdGVkX18QvdiRNNJpKdO1lA6gL79ytLqmsVSQcmgEqm617TdX212ktF9/pCC2Wr1VCQ1UAuab0pDb6R07OSKtk879tw6oAb0wdFd3BHg7aazo5rO19BWSg5Gu7GX35lSVkfPmzxbPxiut0B20jhc5HSv01y7Y+gqBpgJj6yUVMG5HvtG9JhNCV/zkmWRn1/etPyNS9P+gBuk0X2UmHDfqtAeUvCsTOCix9ordV4fgCuKcYeNiKD8IUyE3QOK1wPI0MBF9YpTB4oDFv+SVu/fRPfviMKKa7Di3A6X3vmhCVYKYy5fmYbT4R/VyHT3jQ/++o06teCxo7CdoswhkhuInVFKxz5ThVSZ1gOrFxbCPCuesjRi7iTq6ynATNbaCnnnahnGlPhHxUXH2ltnE9fo+p5JJBow9VMBcWH+IsI7JpCmxAghbTIwX/HTkD7Vaa96cPbSx98RMEurJwI9OQISGHtNg59O6hqh+/4Zr3RsR0/G6fjpvElBldGrbAHTzDQMIs3PzPC8qUYy8CiEg2JREBG3l8QusfGnJTX1eLMdXhY+5W23P/prL5S8UcVRl7xKr8oRnbCoHm1vyrA0iG8p/LsaS5Mw8guUJiu3XLxKLFaPX5HgD3Gehoiqke6asOxmYM3kFXROnpEMQ8y0nLgHMyJ2Ug/Juig0Xjr8KcNVpmGeuRZSoXd4WqpxwNaTOqQiuJ+cWaPeZMHa19iK+fQTe0QoFk3P+LFByeDMU3okz4GC9pw9bfJE+s9GU186ZgRiRurBxfojeOPpfjD0KY/hWp1nv9Q2YwwEmTF9RuGRkUA1kyagGv3ZLmG79J9RAUJKw7B4dHpg19Avgt5+zLiU8VZDCaq+j9Mo0wXlfbWzXyKVt7hF0IHenH4XmrYhQCI3SeXSfaVP9vQYIFZFwmv09K0NuknlQ7zpn3MyxLSswuSpCYbuX/+nZHKmlA1XJarLYyqv5iJToqkZdwVK
+ +IggJGcG
+ 2uc4zfK6rzph9XElAeTM8NWqeHf+aS5nkHQ2JbeY3mdle+h3su1NbXJ2MdmiB+4yYMRMHC6yFtVgjBNTXCavOUXeNcYl6eE5NsO1KMdiBeVCkFaaZSjmzwUAHYhAlcLptKJ+1+X82cW25VFfoO8zZXvDETntHr2NMIR6de/rlCbmvH7ERKesHBHelOzIlckJUD7mY/iF0lmQGMXzkClLId57Qo9+6LH1bD1/+ITXujwoDW07dEc9ThlJPBjOyHlUhz7jq0YCcMsWXFVMsnuaO0CyeSarcXOBCT9tFuS6OrXPIg/MqE+lyyfRm112VK2X5Srpkgcoo0wT7Jw4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,91 +142,567 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=EB=85=84 6=EC=9B=94 9=EC=9D=BC (=ED=99=94) =EC=98=A4=EC=A0=84 6:07, Ma=
-tthew Wilcox (Oracle) <willy@infradead.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
-=84=B1:
+On Sun, Jun 7, 2026 at 6:53=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> zero_partial_compressed_page() has one caller and the next commit
-> will make changes to it that make it inelegant to split across two
-> functions.
+> Hi Suren and Abhishek
 >
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+>
+> Thanks for the new version.
+>
+>
+> On 2026/6/6 07:36, Abhishek Bapat wrote:
+> > From: Suren Baghdasaryan <surenb@google.com>
+> >
+> > Add the following ioctl commands for /proc/allocinfo file:
+> >
+> > ALLOCINFO_IOC_CONTENT_ID - gets content identifier which can be used
+> > to check whether the file content has changed specifically due to modul=
+e
+> > load/unload. Every time a module is loaded / unloaded, the returned
+> > value will be different. By comparing the identifier value at the
+> > beginning and at the end of the content retrieval operation, users can
+> > validate retrieved information for consistency.
+> >
+> > ALLOCINFO_IOC_GET_AT - gets the record at the specified position. This
+> > is the position of a record in /proc/allocinfo.
+> >
+> > ALLOCINFO_IOC_GET_NEXT - gets the record next to the last retrieved
+> > one. If no records were previously retrieved, returns the first
+> > record.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > ---
+> >   Documentation/mm/allocation-profiling.rst     |   5 +
+> >   .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+> >   MAINTAINERS                                   |   1 +
+> >   include/linux/codetag.h                       |   2 +
+> >   include/uapi/linux/alloc_tag.h                |  54 ++++
+> >   lib/alloc_tag.c                               | 232 +++++++++++++++++=
+-
+> >   lib/codetag.c                                 |  18 ++
+> >   7 files changed, 312 insertions(+), 2 deletions(-)
+> >   create mode 100644 include/uapi/linux/alloc_tag.h
+> >
+> > diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/=
+mm/allocation-profiling.rst
+> > index 5389d241176a..c3a28467955f 100644
+> > --- a/Documentation/mm/allocation-profiling.rst
+> > +++ b/Documentation/mm/allocation-profiling.rst
+> > @@ -46,6 +46,11 @@ sysctl:
+> >   Runtime info:
+> >     /proc/allocinfo
+> >
+> > +  Profiling data can be retrieved either by reading `/proc/allocinfo` =
+directly as
+> > +  text or programmatically via `ioctl()` calls defined in `<uapi/linux=
+/alloc_tag.h>`.
+> > +  The ioctl interface supports structured binary data extraction as we=
+ll as filtering
+> > +  by module name, function, file, line number, accuracy, or allocation=
+ size limits.
+> > +
+> >   Example output::
+> >
+> >     root@moria-kvm:~# sort -g /proc/allocinfo|tail|numfmt --to=3Diec
+> > diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Docum=
+entation/userspace-api/ioctl/ioctl-number.rst
+> > index 331223761fff..84f6808a8578 100644
+> > --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
+> > +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+> > @@ -349,6 +349,8 @@ Code  Seq#    Include File                         =
+                    Comments
+> >                                                                        =
+  <mailto:luzmaximilian@gmail.com>
+> >   0xA5  20-2F  linux/surface_aggregator/dtx.h                          =
+  Microsoft Surface DTX driver
+> >                                                                        =
+  <mailto:luzmaximilian@gmail.com>
+> > +0xA6  00-0F  uapi/linux/alloc_tag.h                                   =
+ Memory allocation profiling
+> > +                                                                      =
+ <mailto:surenb@google.com>
+> >   0xAA  00-3F  linux/uapi/linux/userfaultfd.h
+> >   0xAB  00-1F  linux/nbd.h
+> >   0xAC  00-1F  linux/raw.h
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index a31f6f207afd..77f3fc487691 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16711,6 +16711,7 @@ S:    Maintained
+> >   F:  Documentation/mm/allocation-profiling.rst
+> >   F:  include/linux/alloc_tag.h
+> >   F:  include/linux/pgalloc_tag.h
+> > +F:   include/uapi/linux/alloc_tag.h
+> >   F:  lib/alloc_tag.c
+> >
+> >   MEMORY CONTROLLER DRIVERS
+> > diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+> > index ddae7484ca45..a25a085c2df1 100644
+> > --- a/include/linux/codetag.h
+> > +++ b/include/linux/codetag.h
+> > @@ -77,6 +77,8 @@ struct codetag_iterator {
+> >   void codetag_lock_module_list(struct codetag_type *cttype);
+> >   bool codetag_trylock_module_list(struct codetag_type *cttype);
+> >   void codetag_unlock_module_list(struct codetag_type *cttype);
+> > +unsigned long codetag_get_content_id(struct codetag_type *cttype);
+> > +unsigned int codetag_get_count(struct codetag_type *cttype);
+> >   struct codetag_iterator codetag_get_ct_iter(struct codetag_type *ctty=
+pe);
+> >   struct codetag *codetag_next_ct(struct codetag_iterator *iter);
+> >
+> > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_=
+tag.h
+> > new file mode 100644
+> > index 000000000000..901199bad514
+> > --- /dev/null
+> > +++ b/include/uapi/linux/alloc_tag.h
+> > @@ -0,0 +1,54 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> > +/*
+> > + *  include/linux/alloc_tag.h
+>
+> nit: it should be include/uapi/linux/alloc_tag.h
+>
+> (I guess you may have missed the comment I brought up before. It is not
+> a critical problem though.)
+>
+Apologies, I missed that comment earlier. Included in the v4 patchset.
+Thanks for bringing this up.
 
-Looks good to me.
+> > + */
+> > +
+> > +#ifndef _UAPI_ALLOC_TAG_H
+> > +#define _UAPI_ALLOC_TAG_H
+> > +
+> > +#include <linux/types.h>
+> > +
+> > +#define ALLOCINFO_STR_SIZE   64
+> > +
+> > +struct allocinfo_content_id {
+> > +     __u64 id;
+> > +};
+> > +
+> > +struct allocinfo_tag {
+> > +     /* Longer names are trimmed */
+> > +     char modname[ALLOCINFO_STR_SIZE];
+> > +     char function[ALLOCINFO_STR_SIZE];
+> > +     char filename[ALLOCINFO_STR_SIZE];
+> > +     __u64 lineno;
+> > +};
+> > +
+> > +/* The alignment ensures 32-bit compatible interfaces are not broken *=
+/
+> > +struct allocinfo_counter {
+> > +     __u64 bytes;
+> > +     __u64 calls;
+> > +     __u8 accurate;
+> > +} __attribute__((aligned(8)));
+> > +
+> > +struct allocinfo_tag_data {
+> > +     struct allocinfo_tag tag;
+> > +     struct allocinfo_counter counter;
+> > +};
+> > +
+> > +struct allocinfo_get_at {
+> > +     __u64 pos;      /* input */
+> > +     struct allocinfo_tag_data data;
+> > +};
+> > +
+> > +#define _ALLOCINFO_IOC_CONTENT_ID    0
+> > +#define _ALLOCINFO_IOC_GET_AT                1
+> > +#define _ALLOCINFO_IOC_GET_NEXT              2
+> > +
+> > +#define ALLOCINFO_IOC_BASE           0xA6
+> > +#define ALLOCINFO_IOC_CONTENT_ID     _IOR(ALLOCINFO_IOC_BASE, _ALLOCIN=
+FO_IOC_CONTENT_ID,     \
+> > +                                          struct allocinfo_content_id)
+> > +#define ALLOCINFO_IOC_GET_AT         _IOWR(ALLOCINFO_IOC_BASE, _ALLOCI=
+NFO_IOC_GET_AT,        \
+> > +                                           struct allocinfo_get_at)
+> > +#define ALLOCINFO_IOC_GET_NEXT               _IOR(ALLOCINFO_IOC_BASE, =
+_ALLOCINFO_IOC_GET_NEXT,       \
+> > +                                          struct allocinfo_tag_data)
+> > +
+> > +#endif /* _UAPI_ALLOC_TAG_H */
+> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> > index d9be1cf5187d..a0577215eb3d 100644
+> > --- a/lib/alloc_tag.c
+> > +++ b/lib/alloc_tag.c
+> > @@ -5,6 +5,7 @@
+> >   #include <linux/gfp.h>
+> >   #include <linux/kallsyms.h>
+> >   #include <linux/module.h>
+> > +#include <linux/mutex.h>
+> >   #include <linux/page_ext.h>
+> >   #include <linux/pgalloc_tag.h>
+> >   #include <linux/proc_fs.h>
+> > @@ -14,6 +15,7 @@
+> >   #include <linux/string_choices.h>
+> >   #include <linux/vmalloc.h>
+> >   #include <linux/kmemleak.h>
+> > +#include <uapi/linux/alloc_tag.h>
+> >
+> >   #define ALLOCINFO_FILE_NAME         "allocinfo"
+> >   #define MODULE_ALLOC_TAG_VMAP_SIZE  (100000UL * sizeof(struct alloc_t=
+ag))
+> > @@ -47,6 +49,10 @@ struct allocinfo_private {
+> >       struct codetag_iterator iter;
+> >       struct codetag_iterator reported_iter;
+> >       bool print_header;
+> > +     /* ioctl uses a separate iterator not to interfere with reads */
+> > +     struct codetag_iterator ioctl_iter;
+> > +     bool positioned; /* seq_open_private() sets to 0 */
+> > +     struct mutex ioctl_lock;
+> >   };
+> >
+> >   static void *allocinfo_start(struct seq_file *m, loff_t *pos)
+> > @@ -130,6 +136,229 @@ static const struct seq_operations allocinfo_seq_=
+op =3D {
+> >       .show   =3D allocinfo_show,
+> >   };
+> >
+> > +/*
+> > + * Initializes seq_file operations and allocates private state when op=
+ening
+> > + * the /proc/allocinfo procfs entry.
+> > + */
+> > +static int allocinfo_open(struct inode *inode, struct file *file)
+> > +{
+> > +     int ret;
+> > +
+> > +     ret =3D seq_open_private(file, &allocinfo_seq_op,
+> > +                            sizeof(struct allocinfo_private));
+> > +     if (!ret) {
+> > +             struct seq_file *m =3D file->private_data;
+> > +             struct allocinfo_private *priv =3D m->private;
+> > +
+> > +             mutex_init(&priv->ioctl_lock);
+> > +     }
+> > +     return ret;
+> > +}
+> > +
+> > +/*
+> > + * Cleans up the seq_file state and frees up the private state allocat=
+ed in
+> > + * allocinfo_open() when closing the /proc/allocinfo file descriptor.
+> > + */
+> > +static int allocinfo_release(struct inode *inode, struct file *file)
+> > +{
+> > +     return seq_release_private(inode, file);
+> > +}
+> > +
+> > +/*
+> > + * Returns a pointer to the suffix of a string so that its length fits=
+ within
+> > + * ALLOCINFO_STR_SIZE, preserving the trailing characters.
+> > + */
+> > +static const char *allocinfo_str(const char *str)
+> > +{
+> > +     size_t len =3D strlen(str);
+> > +
+> > +     /* Keep an extra space for the trailing NULL. */
+> > +     if (len >=3D ALLOCINFO_STR_SIZE)
+> > +             str +=3D (len - ALLOCINFO_STR_SIZE) + 1;
+> > +     return str;
+> > +}
+> > +
+> > +/* Copy a string and trim from the beginning if it's too long */
+> > +static void allocinfo_copy_str(char *dest, const char *src)
+> > +{
+> > +     strscpy_pad(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+> > +}
+> > +
+> > +/*
+> > + * Populates the UAPI allocinfo_tag_data structure with active runtime
+> > + * profiling counters extracted from the given kernel codetag.
+> > + */
+> > +static void allocinfo_to_params(struct codetag *ct,
+> > +                             struct allocinfo_tag_data *data)
+> > +{
+> > +     struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
+> > +     struct alloc_tag_counters counter =3D alloc_tag_read(tag);
+> > +
+> > +     if (ct->modname)
+> > +             allocinfo_copy_str(data->tag.modname, ct->modname);
+> > +     else
+> > +             data->tag.modname[0] =3D '\0';
+> > +     allocinfo_copy_str(data->tag.function, ct->function);
+> > +     allocinfo_copy_str(data->tag.filename, ct->filename);
+> > +     data->tag.lineno =3D ct->lineno;
+> > +     data->counter.bytes =3D counter.bytes;
+> > +     data->counter.calls =3D counter.calls;
+> > +     data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
+> > +}
+> > +
+> > +/*
+> > + * Retrieves the unique content ID representing the current allocation=
+ tag module
+> > + * layout, allowing userspace to detect if modules were loaded / unloa=
+ded.
+> > + */
+> > +static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __u=
+ser *arg)
+> > +{
+> > +     struct allocinfo_content_id params;
+> > +
+> > +     codetag_lock_module_list(alloc_tag_cttype);
+> > +     params.id =3D codetag_get_content_id(alloc_tag_cttype);
+> > +     codetag_unlock_module_list(alloc_tag_cttype);
+> > +     if (copy_to_user(arg, &params, sizeof(params)))
+> > +             return -EFAULT;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +/*
+> > + * Seeks the ioctl iterator to the specified 0-indexed tag position, r=
+eads its
+> > + * profiling data and returns it to userspace.
+> > + */
+> > +static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg=
+)
+> > +{
+> > +     struct allocinfo_private *priv;
+> > +     struct codetag *ct;
+> > +     __u64 pos;
+> > +     struct allocinfo_get_at params =3D {0};
+> > +
+> > +     if (copy_from_user(&params, arg, sizeof(params)))
+> > +             return -EFAULT;
+> > +
+> > +     priv =3D m->private;
+> > +     pos =3D params.pos;
+> > +
+> > +     mutex_lock(&priv->ioctl_lock);
+> > +     codetag_lock_module_list(alloc_tag_cttype);
+> > +
+> > +     if (pos >=3D codetag_get_count(alloc_tag_cttype)) {
+> > +             codetag_unlock_module_list(alloc_tag_cttype);
+> > +             mutex_unlock(&priv->ioctl_lock);
+> > +             return -ENOENT;
+> > +     }
+> > +
+> > +     /* Find the codetag */
+> > +     priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_cttype);
+> > +     ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > +     while (ct && pos--)
+> > +             ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > +     if (ct) {
+> > +             allocinfo_to_params(ct, &params.data);
+> > +             priv->positioned =3D true;
+> > +     }
+> > +
+> > +     codetag_unlock_module_list(alloc_tag_cttype);
+> > +     mutex_unlock(&priv->ioctl_lock);
+> > +
+> > +     if (!ct)
+> > +             return -ENOENT;
+> > +
+> > +     if (copy_to_user(arg, &params, sizeof(params)))
+> > +             return -EFAULT;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +/*
+> > + * Advances the ioctl iterator to the next allocation tag in the seque=
+nce and
+> > + * returns its profiling data to userspace.
+> > + */
+> > +static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *a=
+rg)
+> > +{
+> > +     struct allocinfo_private *priv;
+> > +     struct codetag *ct;
+> > +     struct allocinfo_tag_data params;
+> > +     int ret =3D 0;
+> > +
+> > +     memset(&params, 0, sizeof(params));
+> > +     priv =3D m->private;
+> > +
+> > +     mutex_lock(&priv->ioctl_lock);
+> > +     codetag_lock_module_list(alloc_tag_cttype);
+> > +
+> > +     if (!priv->positioned) {
+> > +             priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_cttype=
+);
+> > +             priv->positioned =3D true;
+> > +     }
+> > +
+> > +     ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > +     if (ct)
+> > +             allocinfo_to_params(ct, &params);
+> > +
+> > +     if (!ct) {
+> > +             priv->positioned =3D false;
+> > +             ret =3D -ENOENT;
+> > +     }
+> > +     codetag_unlock_module_list(alloc_tag_cttype);
+> > +     mutex_unlock(&priv->ioctl_lock);
+> > +
+> > +     if (ret =3D=3D 0) {
+> > +             if (copy_to_user(arg, &params, sizeof(params)))
+> > +                     return -EFAULT;
+> > +     }
+> > +     return ret;
+> > +}
+> > +
+> > +/*
+> > + * Entry point ioctl function for /proc/allocinfo routing requests to =
+fetch the
+> > + * layout content ID, seek to a specific tag, or read sequential tags.
+> > + */
+> > +static long allocinfo_ioctl(struct file *file, unsigned int cmd,
+> > +                         unsigned long __arg)
+> > +{
+> > +     void __user *arg =3D (void __user *)__arg;
+> > +     int ret;
+> > +
+> > +     switch (cmd) {
+> > +     case ALLOCINFO_IOC_CONTENT_ID:
+> > +             ret =3D allocinfo_ioctl_get_content_id(file->private_data=
+, arg);
+> > +             break;
+> > +     case ALLOCINFO_IOC_GET_AT:
+> > +             ret =3D allocinfo_ioctl_get_at(file->private_data, arg);
+> > +             break;
+> > +     case ALLOCINFO_IOC_GET_NEXT:
+> > +             ret =3D allocinfo_ioctl_get_next(file->private_data, arg)=
+;
+> > +             break;
+> > +     default:
+> > +             ret =3D -ENOIOCTLCMD;
+> > +             break;
+> > +     }
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +#ifdef CONFIG_COMPAT
+> > +static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd=
+,
+> > +                                unsigned long arg)
+> > +{
+> > +     return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg))=
+;
+> > +}
+> > +#endif
+> > +
+> > +static const struct proc_ops allocinfo_proc_ops =3D {
+> > +     .proc_open              =3D allocinfo_open,
+> > +     .proc_read_iter         =3D seq_read_iter,
+> > +     .proc_lseek             =3D seq_lseek,
+> > +     .proc_release           =3D allocinfo_release,
+> > +     .proc_ioctl             =3D allocinfo_ioctl,
+> > +#ifdef CONFIG_COMPAT
+> > +     .proc_compat_ioctl      =3D allocinfo_compat_ioctl,
+> > +#endif
+> > +
+> > +};
+> > +
+> >   size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, =
+bool can_sleep)
+> >   {
+> >       struct codetag_iterator iter;
+> > @@ -993,8 +1222,7 @@ static int __init alloc_tag_init(void)
+> >               return 0;
+> >       }
+> >
+> > -     if (!proc_create_seq_private(ALLOCINFO_FILE_NAME, 0400, NULL, &al=
+locinfo_seq_op,
+> > -                                  sizeof(struct allocinfo_private), NU=
+LL)) {
+> > +     if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc=
+_ops)) {
+> >               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME)=
+;
+> >               shutdown_mem_profiling(false);
+> >               return -ENOMEM;
+> > diff --git a/lib/codetag.c b/lib/codetag.c
+> > index 4001a7ea6675..a9cda4c962a3 100644
+> > --- a/lib/codetag.c
+> > +++ b/lib/codetag.c
+> > @@ -19,6 +19,8 @@ struct codetag_type {
+> >       struct codetag_type_desc desc;
+> >       /* generates unique sequence number for module load */
+> >       unsigned long next_mod_seq;
+> > +     /* bumped on every module load and unload */
+> > +     unsigned long content_id;
+> >   };
+> >
+> >   struct codetag_range {
+> > @@ -50,6 +52,20 @@ void codetag_unlock_module_list(struct codetag_type =
+*cttype)
+> >       up_read(&cttype->mod_lock);
+> >   }
+> >
+> > +unsigned long codetag_get_content_id(struct codetag_type *cttype)
+> > +{
+> > +     lockdep_assert_held(&cttype->mod_lock);
+> > +
+> > +     return cttype->content_id;
+> > +}
+> > +
+> > +unsigned int codetag_get_count(struct codetag_type *cttype)
+> > +{
+> > +     lockdep_assert_held(&cttype->mod_lock);
+> > +
+> > +     return cttype->count;
+> > +}
+> > +
+> >   struct codetag_iterator codetag_get_ct_iter(struct codetag_type *ctty=
+pe)
+> >   {
+> >       struct codetag_iterator iter =3D {
+> > @@ -204,6 +220,7 @@ static int codetag_module_init(struct codetag_type =
+*cttype, struct module *mod)
+> >
+> >       down_write(&cttype->mod_lock);
+> >       cmod->mod_seq =3D ++cttype->next_mod_seq;
+> > +     ++cttype->content_id;
+>
+> I have a comment on the content_id bump placement.
+>
+> ++cttype->content_id is placed before idr_alloc and the module_load
+>
+> callback. If idr_alloc fails or module_load returns an error
+>
+> (While the chance of this occurring is very low.), the idr entry gets
+>
+> rolled back but content_id has already been bumped. The actual
+>
+> content didn't change in this case, so userspace would see a
+>
+> different content_id and assume the data is inconsistent when it
+>
+> isn't.
+>
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
 
-Reviewed-by: Hyunchul Lee <hyc.lee@gmail.com>
+While I agree with your comment, I decided to place the counter
+increment there because the chance of failure is low. Furthermore,
+even if it falsely invalidates user data, the user will simply query
+the content again. This placement also aligns with where the
+previously used field (cttype->next_mod_seq) was incremented. Let me
+know if you still think I should move it. Thanks!
 
-> ---
->  fs/ntfs/compress.c | 34 ++++++++++++----------------------
->  1 file changed, 12 insertions(+), 22 deletions(-)
 >
-> diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-> index 76bd806b41ed..c904858dff3d 100644
-> --- a/fs/ntfs/compress.c
-> +++ b/fs/ntfs/compress.c
-> @@ -96,26 +96,6 @@ void free_compression_buffers(void)
->         mutex_unlock(&ntfs_cb_lock);
->  }
->
-> -/*
-> - * zero_partial_compressed_page - zero out of bounds compressed page reg=
-ion
-> - * @page: page to zero
-> - * @initialized_size: initialized size of the attribute
-> - */
-> -static void zero_partial_compressed_page(struct page *page,
-> -               const s64 initialized_size)
-> -{
-> -       u8 *kp =3D page_address(page);
-> -       unsigned int kp_ofs;
-> -
-> -       ntfs_debug("Zeroing page region outside initialized size.");
-> -       if (((s64)page->__folio_index << PAGE_SHIFT) >=3D initialized_siz=
-e) {
-> -               clear_page(kp);
-> -               return;
-> -       }
-> -       kp_ofs =3D initialized_size & ~PAGE_MASK;
-> -       memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
-> -}
-> -
->  /*
->   * handle_bounds_compressed_page - test for&handle out of bounds compres=
-sed page
->   * @page: page to check and handle
-> @@ -126,8 +106,18 @@ static inline void handle_bounds_compressed_page(str=
-uct page *page,
->                 const loff_t i_size, const s64 initialized_size)
->  {
->         if ((page->__folio_index >=3D (initialized_size >> PAGE_SHIFT)) &=
-&
-> -                       (initialized_size < i_size))
-> -               zero_partial_compressed_page(page, initialized_size);
-> +                       (initialized_size < i_size)) {
-> +               u8 *kp =3D page_address(page);
-> +               unsigned int kp_ofs;
-> +
-> +               ntfs_debug("Zeroing page region outside initialized size.=
-");
-> +               if (((s64)page->__folio_index << PAGE_SHIFT) >=3D initial=
-ized_size) {
-> +                       clear_page(kp);
-> +                       return;
-> +               }
-> +               kp_ofs =3D initialized_size & ~PAGE_MASK;
-> +               memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
-> +       }
->  }
->
->  /*
-> --
-> 2.47.3
->
->
-
-
---=20
-Thanks,
-Hyunchul
+> >       mod_id =3D idr_alloc(&cttype->mod_idr, cmod, 0, 0, GFP_KERNEL);
+> >       if (mod_id >=3D 0) {
+> >               if (cttype->desc.module_load) {
+> > @@ -368,6 +385,7 @@ void codetag_unload_module(struct module *mod)
+> >                       cttype->count -=3D range_size(cttype, &cmod->rang=
+e);
+> >                       idr_remove(&cttype->mod_idr, mod_id);
+> >                       kfree(cmod);
+> > +                     ++cttype->content_id;
+> >               }
+> >               up_write(&cttype->mod_lock);
+> >               if (found && cttype->desc.free_section_mem)
 
