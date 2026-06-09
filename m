@@ -4,136 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B717CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CEDCD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 03:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A47A06B0005; Mon,  8 Jun 2026 23:18:43 -0400 (EDT)
+	id 84F9A6B0005; Mon,  8 Jun 2026 23:21:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D0F36B0088; Mon,  8 Jun 2026 23:18:43 -0400 (EDT)
+	id 8006D6B0088; Mon,  8 Jun 2026 23:21:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 898AD6B008A; Mon,  8 Jun 2026 23:18:43 -0400 (EDT)
+	id 6DF5A6B008A; Mon,  8 Jun 2026 23:21:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 741B46B0005
-	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:18:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E68F11A03B8
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:18:42 +0000 (UTC)
-X-FDA: 84858916884.07.11ABB83
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1402040004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:18:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J7Lbo461;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58CC46B0005
+	for <linux-mm@kvack.org>; Mon,  8 Jun 2026 23:21:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 061FD16436E
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:21:31 +0000 (UTC)
+X-FDA: 84858923982.23.8EF17B2
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8DFD2140007
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:21:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FZke0vfO;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780975289;
+	b=4rqjlkRcM/WWveeGSUVQOeinuU2s3lKSUH6aKj0qObsYj8GgSEsvwMcyXWlDjTcCU53dZt
+	wwF/KA5vRUG0os4DASFBx1htOtplB+7JPa/SV1Isu/WUI4tSaP8N3DXkVE4jKVg1s3rVzy
+	i1wnf4hESML+LXpzcoxHDuxDFkiINJQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FZke0vfO;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780975121;
+	s=arc-20220608; t=1780975289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8MhYUiXWRAVVrdhX1Xj1vk/zHhvhBV8KDCeIyuVj2g=;
-	b=kGdzRBXEaGUkP6wzVhSGRbDAtpJCLMr1n8HR7blf+Wukw61GxpzmfFAjrMODbYWAAKBeQn
-	1pYyrSXwa2NHSVviaoH/taLZPYA6OLo/5B7ree4bKvZTvnciLtiDhczZD5Donup/K0516w
-	Wa9WjdmXzsU2aiCg1bFqOfgRIHQCRrA=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J7Lbo461;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780975121;
-	b=CSB+6fehO6kckT/d8rl5+9ZProgibF2apj6W27e0c0OfCbTYoGc1e7Bau+LOkMBYeM3Ckn
-	zTdQlUAqgLxBRV8dkXNCibTR/mgmCWhK9QtxVjFNICC6D7suTkq1c1zjZf2Z7OiUkgZWbd
-	9cd0FP/bCCaAlzGJC+XiBoiJtb6B7O4=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36bdb11bf8bso2913717a91.0
-        for <linux-mm@kvack.org>; Mon, 08 Jun 2026 20:18:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780975120; x=1781579920; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w8MhYUiXWRAVVrdhX1Xj1vk/zHhvhBV8KDCeIyuVj2g=;
-        b=J7Lbo461wEZYxAq5hDgC31OGEyrmLAG8q9/01ksETAjS3/rxEVDMEOrFn5/mUGmi05
-         n++Nj1uSZfuluGI3PU5I69q3IKjrxuJ0wI0jFtXZMxokUOBo97zVIq376n5knxbpvMJ8
-         +sgbWIKP+7CAdnFXEXP2EWCa0OKO1gRbo1/t8T0tufeNlItHLjP8f7CoPTjM71toT11O
-         lwMQBkW77+VVgRqP8cThDfFbCPkB4dx5OMdJfa5jj5o//DSNQRw+5LVUhzVuU7gJvNt8
-         QWj08vBTBeEfLWS1A46SZ8y2JVOyMog8Y+2nOz+vF0nXHuJBRxoXnxZD48cJO0xE2aPD
-         8XZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780975120; x=1781579920;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w8MhYUiXWRAVVrdhX1Xj1vk/zHhvhBV8KDCeIyuVj2g=;
-        b=LC166urQeaLeHlJR46Ck+13LaV3sE6sto6jMGjLu9oayQ+zwvhuvvstxdjVD216sP0
-         J7e8bj88zR5fuPGMcta03Er5ZOY1GmhJqPHN08SgmquriwUmNME3NANAmeA2hPRVSRd8
-         J6ctleNzog03hrolu8gR31AGdBuOTCfJRbO3NqH0XcuFvu9XczzrbfUDfO76pijJvLGw
-         H9Sbzk9TLsaGJuw5Jqkc7lS71W7v4RN+7NhwCqb1aLSpwzkCwz8/dTxyZvXvz1doMCCG
-         039B9T0TfB+Ba+BKuP3/DO+NuPMprx7JqIQwdSSriZ2uJalxXSAUCW7cLuCO9c1JWD9X
-         6npg==
-X-Forwarded-Encrypted: i=1; AFNElJ/2ZwhKMsb9GpZGzxLcbuTmlzn6/811gBRBZVGrByahG2RZbsjxLbvkxlA0zK9HbD09sroiidTbnA==@kvack.org
-X-Gm-Message-State: AOJu0YxMbFfNdfmpL/hxk40FiJ0VPDdLOpHZrHm67m4UfgzQXeRa4uGK
-	IL85Eca+1unDVZ7djA4aGp/x8ZFPR/j5Sxql7kyrGRXSN0dLRUovMSic
-X-Gm-Gg: Acq92OHOl+CIzSPk2R1WFMBlypkDjV17XFf/wpy3rQpZJsvB64VGiz4ake8m7yBSZo2
-	jwzvSouOuU8QRUFjVJlUf0AtgxKpAz09kqouLAN2EWmJC6v9rKUXCYBCSCbadGmfpmZF0XxldFy
-	qmdU1icsr4swIrNOnHzTyhyF3Uh2ZfCXDfyTiLDEe+ZFoZH+VMn4f+t22vwKbjb7qJWFTv/2Bas
-	hAqrrP2hRzHrV98UnTl4Q21wUV9Xph6yKqWCidB76qLsjRVrLJij4+rb6znGL/3y1a3Qp7/6OOl
-	B8RWEjPW8V7lIwNTD4cZfiLRGTEcqNYwhc7uQRhrX5QUCKMkUCwuKFIAegVHv0q9jRryWFrQNbd
-	f73JHBroFUrNaUBwVx+51/vsxdeiJv3S28BUPMafXRXnD06f07/FcrrHfCrpugQvh41xDlRwM+3
-	d5e6GOIAfLGSJ7LI5rdmeJUtxr+Aew5fMPa8TKSZyIK69+vjX8trLaSw==
-X-Received: by 2002:a17:90b:1809:b0:368:6998:b49d with SMTP id 98e67ed59e1d1-370eeff6b37mr20150357a91.10.1780975119848;
-        Mon, 08 Jun 2026 20:18:39 -0700 (PDT)
-Received: from [10.125.192.72] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f8bc5asm204871655ad.27.2026.06.08.20.18.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 20:18:39 -0700 (PDT)
-Message-ID: <1c25650e-bf98-2863-d505-9b94c385668b@gmail.com>
-Date: Tue, 9 Jun 2026 11:18:26 +0800
+	bh=xlehNq+dGhjF8xlBwPq9xUEl93005P8DJEDN49foV2w=;
+	b=6YsNbMZuSJ2Qqkcoinkm7lEg35vLNu2x/t5EKS7SskgkhygOgntOqgzDII4CaDYG6G4+YQ
+	cApm+OB39xxAv0TVXPlQlIbB+vq9RONXLF6sOsJP/iKiJ4WxPNpZohLrfbjU9mBfxhldJB
+	UjBp8dMA+oKFPT1JFBwkl6od1vuGU2M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780975283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xlehNq+dGhjF8xlBwPq9xUEl93005P8DJEDN49foV2w=;
+	b=FZke0vfO68yr6RGe+gmExYKpGubD3NRE4r0BoJb/bgJd1TBzspF/AJkmv3vdYQ21xphqqT
+	GO3OdzWzK4UGast1YrK+Oz22+ee21ay+UTrsAJ/sfTXt82KPv26klQsKExZBVj2Y82Gykb
+	gWOI/qBsQAz01ln6jRz1jxcjWYDh1vs=
+From: Lance Yang <lance.yang@linux.dev>
+To: hannes@cmpxchg.org
+Cc: lance.yang@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	david@fromorbit.com,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	qi.zheng@linux.dev,
+	yosry.ahmed@linux.dev,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	vbabka@kernel.org,
+	ryncsn@gmail.com,
+	zaslonko@linux.ibm.com,
+	gor@linux.ibm.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 9/9] mm: switch deferred split shrinker to list_lru
+Date: Tue,  9 Jun 2026 11:20:58 +0800
+Message-Id: <20260609032058.23770-1-lance.yang@linux.dev>
+In-Reply-To: <ah3MuK3GuimKVORB@cmpxchg.org>
+References: <ah3MuK3GuimKVORB@cmpxchg.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
- per-memcg
-To: Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>,
- shakeel.butt@linux.dev
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- mhocko@kernel.org, mkoutny@suse.com, chengming.zhou@linux.dev,
- muchun.song@linux.dev, roman.gushchin@linux.dev, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260526114601.67041-1-jiahao.kernel@gmail.com>
- <20260526114601.67041-2-jiahao.kernel@gmail.com>
- <aho7nepN5jZtKmef@google.com>
- <8c0e60e1-5713-69f0-a687-088c87e75764@gmail.com>
- <ah4ZZGl7GYJf54Wz@google.com>
- <ff344c9f-51da-8b3a-e7a9-c4a7f4702ef8@gmail.com>
- <ah9i3uhh3PFiS0Uk@google.com>
- <c7870fe2-3588-79db-cbfb-bd6a2b78f594@gmail.com>
- <aiBpibRNi0BcM1Zu@google.com>
- <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
- <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
- <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com>
- <CAKEwX=MQ3xXBAY-2H8vA+XSX5GHNBubJ2GCYAXGD+Hra++ZM7A@mail.gmail.com>
- <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com>
- <CAKEwX=PF9hfERC_QMq+rjkSc-BsJyawMgTe+EhwR_86HiQKm=Q@mail.gmail.com>
- <CAO9r8zN6VVZz7dpjNrh8n7wbLkqcrsROPm70MQQxO49HJSmMFw@mail.gmail.com>
- <CAKEwX=MCFbsh9ndBtR0-bGRr_=v-6bBwTo=muzd9ZSD-LAK1nQ@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAKEwX=MCFbsh9ndBtR0-bGRr_=v-6bBwTo=muzd9ZSD-LAK1nQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8DFD2140007
+X-Stat-Signature: 3d4ab9cg1ekc3ptq9yfkhku8hfn861id
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: k7m6tz6hpazshbbzqpxigmkecbjz8qmq
-X-Rspamd-Queue-Id: 1402040004
-X-HE-Tag: 1780975120-59009
-X-HE-Meta: U2FsdGVkX18qiLIyOh/v5wqthRT2A5UyUQhqgL6KarrQw53a55Ozznv+j9unSjhnlocJ4l6xk+uhUio4XF0NOnLzR7Al89coeMo0NG6WXE0UiKB9k1xkI2QWvyjxofAoIoHsqoYShiJ62Owpkb27T0diDlr+FG9zcEHPKeVLlnYKkIkkNGDsAruFoNOjPNwMbb0OFu9f4+lTidH68FNj74iJvSPUo859GYLdB1ihm3vmayHH8sPtDDE2SqrP8yC0xwm9Bo/HtYPDHxtni93pNiuYEQ1bTrA/uTR8D5KCqbzxS4yl1r+ogvLqL9fFZW4nTS/R4FBRbjvnK9G6SOqL16kcJVgMabE3WaNnFrJIEzU+EyMH+wdMVSJdSXyf2TkC+HinYZRmoe+CNFYKo07Y4dSoUJ04EWST4TOJ+FwP9zFR1kdgBQP9Hq6E7MTv8mAavrP/Ep5ds8wx4UPFnOunWPyPEZnn9m1gK29i9ZCkUNueZfaa2EnoKWVI7stsYp627proKU2uIpi4F9LvkAJfqkr6TILEtYoiQ4Qr8vXsA9mdNvqw/Dxybj5t2WJMOCqgUClhk6TMbyRp5x9aiTClothO47cXnIAGqbz8v7m9YqR75Mxl/nIqPfKKQY9mMAsvqm516iSyCJx+7XLKwc9IzptWBQfFJiZ98Wt6FN6w990p5+KcjkyoqNwvWXF2e8dEBLeEzcWOqZnftLvT8oFkRntYLIZ6JlOnWpNg9Zgd6grid0fOrZ5/kRMvfgeDgiAgUnT2wEcY2zn+Ith1mjgOjUbB0Lg+5s8jAExXM4LZ6PANaPbiI4NpSUU6y/k4uO4rnENlcN2XxNxZ3emtzKIurNRlBJnYvz0L3VpkS/n3unjQxCwl5F08BbcXTMM4in/eIHIPgcfOWyuG7//5Z6LpNKUZhUNlftxhritOWlYQecV4+UF0pzOxqPTiAcHnbjbScMcY78UBknWzqduJHMl
- YI6y6qCc
- 0J3YivzHHVod2qJa4vnjwTBtF9afshtKss6SWwHE9KXsJweOj4YQYd5ol1VoAxwSmIahCPpXp77q0RhwRTdde5KjrX5Hr0YIUHnj4kYPSSRo1GbLF3oOUNMmhoxLvhqJtHYCIFk7hiUpMbanHDC7Kggan3Ey0ZI0mab5ArV8V0H37mHl/ERTamp7vJViyHhZ3rbA9FC/Bn4dVrJsxmD5BaRTmmXj0qV2ZRzkeE2Cdbg1i5rnA43vlNCg/1IQz4Q6UgTzdn/zC3ld175mM8xMZp8IOp76s/4cJmldc+Lu40hSs2/Me+8Os9U9GbIFmk66h4sEBrtXyTuKY6vBVi0ZlmL2u2tZ1f4+HJFYavN1nj/uh70YfK8pbbODXbMRA0yzGBUmCZk75eWGqee3Z3CkBMIk0453cBmaKHW6tF7Gyg4b3ziAXZFjUBexB6ZMCoibEaRjxl/+Ex8JjTpKECVqnWCwSpCUgBUXyCxq3fcz5q6OBFgCKvJn+vgvW8imaoLw3m/CvHntMCB7iSANdyVBP7a/AeA==
+X-HE-Tag: 1780975287-391202
+X-HE-Meta: U2FsdGVkX19mqsDG0nIoHh1I3iP5HWzU9huqaPztPBNIpsqgkRpzFvTwpbDWhdHLykSMT6KqGESoWYFLrhsloljNtw+bHnm96p0GvheS2Zc7D2nLBTxW/HJH9Yic1evBnkbm9e4/ZErTgKgXdd1EJdHZfPxUMgj+hg2e4s12dD6SO7BQOaZZnLBvEC8QedU/19Yo49Z70PwRGkbouzm7+vcZMeRim7A+QyM1CxZ1bS5nNcs06QAl1EyDycCElIB8GadXMRMbQCHjR9JdmZYRPNPSFHrbCa7PBeDW4Ze5BomKNY4iBWVhP1HxBz04wPY6p3sT1zQnuZTdVO/NtRcAiDwYi+49G2EBuwI4HEBFkpN4booY2FaV+C4YW11Sx0P3uY6COwpbjL8KUAwD4igH/ZlLI7JP28l10J/Ix+NL9F+sUOoNwRB1mU1tkoCFczrqjSCF6mh5+LO7c/Eew4omBUS36AOw/9O3Lni1j/SRXZNuuGdg83nrAsX5+vm2FYGrbFLbTxzUaS1Iwz6O7LeG+Leoy+Z0wZMVVDU1kKwr12zjzOZnEbyluzXFOvTVYbA0OX3v3aYhwDVWbhas7FrKVCz8O3xX8vwi+cRf8lCjUQE4FKf/8hrmvZ2KfgIioALq4GTSfmXLH9hET9OqZbgQFqsPWza0a4T4LTC9ceK09z0ztckLSI/F8TPikWiPaV1fzJ7QCfHzFxmnQSjAbxp3a05QD2QpYU8mdt0wAFalysBvK1kB3elbNLlj4UiMewBhLN7/L7OTfOIQ5KjfjNtPq5k2HuTBQNoSVzeyESZxGQTZcrLe6QcZIXnZvOWs1yAqGKMS8IwE77Z+w05WjiGmy6GojnhiWl/HNsggPBLtMushvtimWlZfYwZsWtHhtgYzub/njy7crbto5v0yKyoZpT2nIilo423MX/101ohIAfnsVfEdO6A/gqGIObnDBi+fT5WtURWO+spMUearnvr
+ RnTXA4SA
+ AQSfCk87ZjugJV0O2DMCDtMz4deHDTJ7qSLTev5FUrebIpLVp3MUwlKoy3EHYVYdlw4qlS8WTo79nJmB8VAWHY+uob+29Z46yKp+7jKQ0gZK6r+Z5WtxmAZEzFtoIuk94VNrgGYGT2nQs6yZ0MwuLv+rl+QrGHw4V5r1XvMjbdIvrBTt/Le0ulqpxp5JUtF62RSCI77PpE7Nsn2+nNNDhZjljLUrY/hkzUrfkjLVyI3Gj7hk/Y9T64XYjCXJB2422xqyylnZUNem/Lj5ixY1N0sri7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,41 +114,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Mon, Jun 01, 2026 at 02:17:28PM -0400, Johannes Weiner wrote:
+>On Mon, Jun 01, 2026 at 09:21:35PM +0800, Lance Yang wrote:
+>> 
+>> On Wed, May 27, 2026 at 04:45:16PM -0400, Johannes Weiner wrote:
+>> [...]
+>> >diff --git a/mm/swap_state.c b/mm/swap_state.c
+>> >index 04f5ce992401..9c3a5cf99778 100644
+>> >--- a/mm/swap_state.c
+>> >+++ b/mm/swap_state.c
+>> >@@ -465,6 +465,16 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>> > 		return ERR_PTR(-ENOMEM);
+>> > 	}
+>> > 
+>> 
+>> Shouldn't this be limited to anon swapin?
+>> 
+>> e.g. vmf && vma_is_anonymous(vmf->vma)
+>> 
+>> >+	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
+>> 
+>> __swap_cache_alloc() is also used by shmem direct swapin, so shmem can
+>> get here too when handling a large swap entry:
+>> 
+>> shmem_get_folio_gfp()
+>>   shmem_swapin_folio()
+>>     shmem_swap_alloc_folio()
+>>       swapin_sync()
+>>         swap_cache_alloc_folio()
+>>           __swap_cache_alloc()
+>>             folio_memcg_alloc_deferred()
+>
+>Good catch, I think you're right. I shouldn't have dismissed that
+>branch due to "/* Direct swapin skipping swap cache & readahead */"
+>
+>> @Baolin please correct me if I got it wrong :)
+>> 
+>> folio_memcg_alloc_deferred() itself doesn't filter shmem out either; it
+>> only allocates the memcg list_lru metadata for deferred_split_lru:
+>> 
+>> int folio_memcg_alloc_deferred(struct folio *folio)
+>> {
+>> 	if (mem_cgroup_disabled())
+>> 		return 0;
+>> 	return folio_memcg_list_lru_alloc(folio, &deferred_split_lru, GFP_KERNEL);
+>> }
+>> 
+>> Since deferred_split_lru only queues anon large folios, doing this for
+>> shmem swapin doesn't buy us anything :)
+>
+>Yes, agreed. I don't think it's a big deal / show stopper in terms of
+>user-visible effect, but of course still worth fixing.
+>
+>I'll send a follow-up patch.
 
-On 2026/6/9 02:01, Nhat Pham wrote:
-> On Mon, Jun 8, 2026 at 9:48 AM Yosry Ahmed <yosry@kernel.org> wrote:
->>
->>> But OTOH, this does seem like a recipe for inefficient reclaim. We
->>> might exhaust hotter memory of a cgroup while sparing colder memory of
->>> another cgroup... But maybe if they're all cold anyway, then who
->>> cares, and eventually you'll get to the cold stuff of other child?
->>
->> Forgot to respond to this part, the unfairness is limited to the batch
->> size per-invocation, so it should be fine as long as you don't divide
->> the amount over 100 iterations for some reason. Also yes, all memory
->> in zswap is cold, the relative coldness is not that important (e.g.
->> compared to relative coldness during reclaim).
-> 
-> Ok then yeah, I think we should shelve per-memcg cursor for the next
-> version. Down the line, if we have more data that unfairness is an
-> issue, we can always fix it. One step at a time :)
+Thanks.
 
-Thanks a lot to Yosry, Nhat, and Shakeel for the great suggestions!
+Looks like this has already landed in mm-stable. If you're okay with it,
+I can send the follow-up.
 
-Let me summarize what I plan to do in the next version to make sure we 
-are on the same page:
+From: Lance Yang <lance.yang@linux.dev>
+Date: Tue, 9 Jun 2026 10:56:45 +0800
+Subject: [PATCH] mm: prepare deferred split metadata only for anon swapin
 
-  - Drop the per-memcg cursor and keep the root cgroup cursor 
-(zswap_next_shrink) logic intact.
-  - Stick to using the zswap_writeback_only key, and change the 
-proactive writeback size to use the compressed size.
-  - Consolidate and reuse the logic between shrink_worker() and 
-shrink_memcg(). Enable batch writeback in the shrink_worker() path, 
-while keeping the writeback behavior in the zswap_store() path unchanged.
+__swap_cache_alloc() prepares deferred split metadata for large swapcache
+folios.
 
-Please let me know if I missed or misunderstood anything. Thanks again 
-for clearing things up!
+That also covers shmem swapin, because shmem_swap_alloc_folio() can call
+swapin_sync() with a large order[1]. But shmem folios are not queued on
+the deferred split queue, so preparing the metadata doesn't buy us
+anything there.
 
-Thanks，
-Hao
+So let's limit it to anon swapin.
+
+[1] https://lore.kernel.org/all/20260601132135.14272-1-lance.yang@linux.dev/
+
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+ mm/swap_state.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 9c3a5cf99778..7adac957c2b8 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -465,7 +465,8 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	if (order > 1 && folio_memcg_alloc_deferred(folio)) {
++	if (order > 1 && vma && vma_is_anonymous(vma) &&
++	    folio_memcg_alloc_deferred(folio)) {
+ 		spin_lock(&ci->lock);
+ 		__swap_cache_do_del_folio(ci, folio, entry, shadow);
+ 		spin_unlock(&ci->lock);
+-- 
+2.39.3 (Apple Git-146)
 
