@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D25CD8CBF
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC8DCD8CA4
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 13:56:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 111716B0092; Tue,  9 Jun 2026 09:54:44 -0400 (EDT)
+	id 3AC176B0005; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E9AA6B0093; Tue,  9 Jun 2026 09:54:44 -0400 (EDT)
+	id 35CDF6B008A; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026196B0095; Tue,  9 Jun 2026 09:54:43 -0400 (EDT)
+	id 29A0E6B0092; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E72FB6B0092
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:54:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ABE01C23E7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:54:43 +0000 (UTC)
-X-FDA: 84860519646.01.CFC49F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AEA504000B
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:54:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crpKqVn1;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9276B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:56:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3E631C2CE0
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:56:36 +0000 (UTC)
+X-FDA: 84860524392.22.25B80F1
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5F3C2180004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:56:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nMaYrvGu;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781013281;
+	s=arc-20220608; t=1781013395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mgkuRymXgQquqyekcZ0fsD/A7mXWgkkGEwrlai+T3Ys=;
-	b=SuKcY6CkVSIDx7Pif2jucBUbhfZ5bQR2Neh/kfX7S5QpLzcm+thJXB8X39pBZClNFmms7v
-	+wonl/saoSCTa4loasB0skzkGqKabYY5Q8ayBXWaSy7tmWlQ0lIociH59zRORtROXIogch
-	bFedzUYUnVvhpB0ThwVYS+QGDnkm8Jk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781013281;
-	b=C3QYKP+eLYzLHSnfrxmKN5u1xbCgwifIIP1AvkUR4zGnpwYQHHi3N2iD8ZgUU7q6eKx3vE
-	U9dE0aaJQ2HhQ8OVAo1dbNr8Tx2cwAkQYh+P6jKJ5Dn7azVYjQVX9JJmZiAcoszFfZpYo2
-	7FIlLzRKkYzF5x69edZLtU0PoPVqoiE=
+	bh=1v2Zddelxf5PmwGEW+ZgV6CJT0DFyt74H17htCtqM/Q=;
+	b=dCTQsxPXHD5O1dSZc+EQ1mryFqOxnsWDEm+my3kKKag/gupsTi/CTe79YXavSw0p0qlfwt
+	4pRhZPQJlEYvRiDQAl2bLMFq8REcsevupRzg1wenjtFheBsTTtyn0eXSHWEw388vp44p+d
+	voyS5wT667CDuUeb1QSDMiUAWvOProA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crpKqVn1;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0A0F43E9D;
-	Tue,  9 Jun 2026 13:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612CE1F00893;
-	Tue,  9 Jun 2026 13:54:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781013280;
-	bh=mgkuRymXgQquqyekcZ0fsD/A7mXWgkkGEwrlai+T3Ys=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=crpKqVn1JWgYYIiLt8y4v0XMABNcx+oc+u28Cu7f6kEwae/cC9sENy69hKtuy4bqV
-	 2afTNlO7RRMw7rUrE2AMYUVuETWhPzE5mfW1LQjUvgNgLwSWpQS97R5PwvN0jf/2+p
-	 PQZQBt/2Z0xeyM5lv2+q2Xk/ACPBgincxLhUiZENZiIGceQddsRc0nZueEsWwKs0P9
-	 qRSqWvMCbstOXC7RD3SmmF+p4nrjlGeaFGcP+UlOuRI8ihLvAALCKr8u+hvXDG6MVV
-	 0OZyjvlXmf9NNTbobcyEMw/t8S5Tzeg/rON3AylWffcoMExEfA5pDFozSjEikCZbwF
-	 19eWSe3M3l14g==
-Message-ID: <78ce28fd-62eb-4197-b167-73be7bd86217@kernel.org>
-Date: Tue, 9 Jun 2026 22:54:36 +0900
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nMaYrvGu;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781013395;
+	b=jeS+GAfSWtOoy0qRlS3GMp65q27vljOZF03I/PKpXc08Vqr0MxHQQytkXbWvjrDds3k/k+
+	RT1x2JvXLurDdib6YpHU7SEdx5rS7P5d1j5+zO+wUwjJnIdEH9exmIyyYknzW5Uf85gPBS
+	S4IoGMj1KuHyJJg5VE+3pEbRZrh8Ayc=
+Message-ID: <71507be5-8430-4a3d-af80-6777a421565e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781013392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1v2Zddelxf5PmwGEW+ZgV6CJT0DFyt74H17htCtqM/Q=;
+	b=nMaYrvGuCeqWHmltN1ytkMCfwNtkbJpJ4jzqKPOiAiwD1CT3Ikqp1qtu38bNoRi8P55fhM
+	3j4PIc6f8XGb1i/FAhZJLCaUWxMJJjXUG7kCJEWvfRhklPvXr8PvzgQof8/3XFkygYlqxB
+	69BSvaQiOridjvKTAIVdsOEpU9Rkj84=
+Date: Tue, 9 Jun 2026 21:56:13 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
- <agr8Nzr8rnDBTuVX@pedro-suse>
- <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
- <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
+Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
+ accounting
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260609120443.71864-1-lance.yang@linux.dev>
+ <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------2XWiTgcVnut66LZ1X3d9Xaqq"
-X-Rspamd-Queue-Id: AEA504000B
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5F3C2180004
 X-Rspam-User: 
-X-Stat-Signature: fxihjrsz96s8ncqqyifkd9qzfxxyiizw
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781013281-655503
-X-HE-Meta: U2FsdGVkX18EVTIF1K5oe7WQsg2eWu1V4XoOWotBjbNMe5lZk+WLgqEzuf2XsT6vkItxAYjavjGsIh8EdI/CBanaGqHNbesVIXfySU00yqsFEoHwRFmJ6FORNxHLwnIKMHcRX3C4xAZWytrKHeNc+gL6u+u8W1olCeDHFaWHq9Qz3vOwmp4cwx+zKHH9ub2WHYzHvNdT4ncyHdCQ2BjBAaE39em56p3z7DSTbnKJFSdGdB7kIK3ytZLc159AHAqOmeaGhUqCsZ8/CXXAXbZ+NgN1tvKVRD79hrK6PlO/dSQQ6JKgfwRFOjsk+5DiVW2PIw6nvHaNmw4/ayXAx3/f36Bt1KvevXQZbYg7oPHDSu9Ea8UQudLRUu6UUZHF1DOqAOv8Orkk80dfTIQwazsudpsVrdL5r57IZid7j2vu2YbyCqI+Y2SNpzqYRp+A+vydso8LoRtnx/nfoO/6Ipu6CQrTqkVdP4/l1i2bBKkkvl8XVAz9za4t+MqSdOit7zVpOKdeMoNUWD+M5ymTBpEjjLFir7PctIrhuyX4q6ZaUy0IyQBMHKLPxAYiufMNFGMXvyH+uVHRA7W817ONdZWpdQ9Vw3j9UwuXlCUdI7BD0AETZbZa8SnMfodH7UqG/utcr1BmRbxar33lzvoOWJuBRaAwXxx3IccsR8RAPpxyo4/HMyF9GFnh/MRcyZffzbSYd6Cwrtl//8vu4y24X5cN7C+EnSFYLfi7ViAanwja2l1295NLktvu+Lb3jfFEJdxSl55h6Sh26jewvRpHXDFokANPMT5IygSDlplG2T3XkSJ0W1lhkBfNLa5fs0MzyWcqeIg3euj8D7wkZds9Zoa+aiCfGJEyAhxcEdbnTpUTU3eyZs4soBInKwWB0slVSBYW2SBROr2hcl1fgEc/oBPWOKKESBVsRKmWbbQkCPsanayzL3Bt8HYH9ghIkAHvWVBqc0sPom6ejqtZfa3t2OK
- E1KoCTUB
- 4j9YtVSNqXRR9kV82azXaJxxlaRvHhXejmiceuH//ldNy3j7nR3bZYR0G5Smyu7ubeHdyQPkO6k3xRTQpqxmZmBKTJJm1MVFq/cl5a3CenwX2JetZVnKXsLvSGiKCzwwTxb7sqXwN1kbX3oZ8PT6QSzoaCnhOhikL7vPYy7gAZEeVVwPOQIRZ1Vrq5f1NkNKFWlU4dCFCLe9al2o+qUR9dMJxLzPawgI6a8ILlhzCjYjDMW3JTHXXtlvOYNb+9nzEsjKu8tROoiAGVidbEVaTz0Gx+0W3jlIb1g1ldXip3r3njp68MgwNhN+Np/jk01BCGDIRiwbTJWxNPPblXx8HHqll9DHjrEMlIbGu/R08oneDyLqpd4TXZ808XwiqMv2XcJZtivNgTgrVqu2HlBPalnMY5+zx6Np+iLEcyp9ixWYHkOSj0jfNKVEXK5+QFxmdciP8KBN9fmVQD8U=
+X-Stat-Signature: 47x397k8ytr7odhybme8afant8hn71yf
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781013394-664875
+X-HE-Meta: U2FsdGVkX18gd++2+bxe6XB3Bzf/1/i+Frb9EEIitqIiyG1Kmlcyv5B4lG1WtGAlM7uYhxlZV1noOTtNYLbRNSjaGVM7nGE9vjWzBOPgHF3xbPbehWt6ZPUWiRV/AKtD6k/cvGT7nAWthFFwge5Yp8TDv5GWyfWAe7r+rtzaa9oEy1boqHKTdrm27L54AHmh6BU6ek762gG6BxAK7Er/cp44g8kFnlgrWZUPnbCUhFtimxY9aORu/L9b8QMrpzdTOqqUfBgGBFGfXbvcOrrJry4VZ3FubEAxQY48Omg3rloWS+z9NNXndJAjA3lvOhvKz6l8CYZn3p1sTOxUY/t6VSo/p0tTHRMaHVc/295MH+WFAu4IP+h0q9pmOv5rQBni5oO6g2dU4eoaNYdY2lwL14Zl1/jPZ8daOj/ySZISwElXhBlO9EFXztMlaApNJhpWAS7aadk5Jm/4qlXr8KZXh/UVKbS4LJwLqcKcbiCPAZd53uBOAj18FyZWL2my5eVHGzshvakhe8FZnKVpOIYku8Q+7SJLrrWMARNq32KUa1ZAXV+nER4uLpvtQ1UvNX4GPiEFdT18aNyrJDpScaxle7612EUAb7BuGp6w9JtKuCZ9/nprS+HUr6wEkBuSrJoLWS0FPAn914bGO/wJyLV8nNOOZX/xzGTZSa4XODCrxpgcbXMY0O9Trl5CWG6fR2TYxQ2evZjWyVLOnpzAA3UShYacdTlmWZMIoQmuAc+MMUUp2vrkNZN4J7v2+udgQs06+p6KDAqUOjmT43Tx8PdXfVAtt+VP8u6ZfhpaDksUA30AVkwoBnrqahwf0Ju2+yosr3fA/s4slvp65oF2qpmCQWtPPxPremMdaKMh5UFXnqEdMw1wZEj5gA1bJly9+oSilf1aB5Q30LUXU0uMxxC79nqhSPDeyVtnoxGm8e8Cv4pfPHX0RvgpiK+2V6N9Q2lZuiOw3vyUD8NbiWA3sfa
+ NG9iql+D
+ 5dzCAWNrcoSyh25o4sI7UzWbEvHvnwW9naWbTb1QfynLzkZlRuiCLVurIT1YQo2SCojgv+e34llDgdnGj827ndDmBK2As46i9CmsVSdbCH45ZO1oNgXwxrJdN7hEb+KJXljFfRLrWw65vkhs0arJfIKrHjZ0EE6W3nZPydzMZ+aenTSnvRr13RSc/u/eTYZBJcwEXkS+RsESet+FByN5r+reV2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,113 +93,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------2XWiTgcVnut66LZ1X3d9Xaqq
-Content-Type: multipart/mixed; boundary="------------TiMeMR5Lo7gpXV0wWewZC1LH";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>
-Message-ID: <78ce28fd-62eb-4197-b167-73be7bd86217@kernel.org>
-Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
- <agr8Nzr8rnDBTuVX@pedro-suse>
- <682945f5-2d00-4bc8-8e23-59189b4472c6@kernel.org>
- <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
-In-Reply-To: <e8f0e69f-c846-423c-9ee7-cbc62675697f@kernel.org>
-
---------------TiMeMR5Lo7gpXV0wWewZC1LH
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
 
-
-On 6/9/26 9:52 PM, Vlastimil Babka (SUSE) wrote:
-> On 5/20/26 06:35, Harry Yoo wrote:
+On 2026/6/9 21:20, David Hildenbrand (Arm) wrote:
+> On 6/9/26 14:04, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
 >>
->>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>
->>>> 1. Allocations and frees can happen concurrently at any point betwee=
-n
->>>>     these steps, and we cannot introduce heavyweight synchronization=
-
->>>>     mechanisms on the fastpath.
->>>>
->>>> 2. Currently, cache_has_sheaves() checks whether a cache has sheaves=
-=2E
->>>>     This works now because sheaves cannot be enabled or disabled onc=
-e
->>>>     the cache is created.
->>>>
->>>>     The question "Does this cache has sheaves?" should be split into=
-
->>>>     "Does this cache support sheaves?" and "Does this CPU actually h=
-as
->>>>      sheaves enabled right now?".
->>>>
->>>> 3. Once the sheaf capacity update is complete, no sheaf with stale
->>>>     capacity must remain.
->>>
->>> Why? I don't see a huge problem with having multiple sheaves with dif=
-ferent
->>> capacities, as long as you adequately, opportunistically kill the she=
-aves
->>> if they don't have the desired size (say, once a sheaf is fully empty=
-).
+>> mthp_collapse() uses mthp_present_ptes to decide whether a range has
+>> enough occupied PTEs to try collapse. Swap PTEs accepted by
+>> collapse_scan_pmd() are counted in unmapped, but are not represented in
+>> mthp_present_ptes.
 >>
->> Haha, you got me.
+>> When lower orders are enabled, collapse_scan_pmd() relaxes max_ptes_none
+>> so the scan can cover the whole PMD and build the bitmap. mthp_collapse()
+>> then checks the PMD-order candidate using the bitmap.
 >>
->> Right, enforcing a single capacity at any given point introduced so mu=
-ch=20
->> complexity that I started wondering myself about whether this is reall=
-y=20
->> essential.
+>> With max_ptes_none set to 0, a range with 511 present PTEs and one swap
+>> PTE no longer reaches collapse_huge_page(), even though PMD collapse can
+>> handle swap PTEs up to max_ptes_swap.
 >>
->> My main concern was that the performance characteristics would become =
+>> Account unmapped PTEs only for PMD order. PMD collapse supports swap PTEs
+>> through max_ptes_swap, while lower-order mTHP collapse does not currently
+>> support non-present PTEs. Keep non-present PTEs out of the lower-order
+>> eligibility check.
+>>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
+>> case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
+> 
+> Right, probably we just want to add the Fixes: tag once Andrew moves the series
+> to mm-stable?
 
->> too unpredictable, but actually, users can avoid that by disabling=20
->> sheaves, shrinking it, and re-enabling it. So that's not an enough=20
->> justification.
->=20
-> My concern would have been that we would need to track capacity per she=
-af if
-> we allowed sheaves with different capacities to coexist.
-> But patch 3 here already does that, so it seems it's necessary anyway..=
-=2E
-
-It is challenging to avoid that because, let's say, a CPU releases local
-lock, goes to sleep to reclaim memory to allocate a sheaf, re-acquire
-the lock, and install it. But sheaf capacity might change or sheaves can
-be disabled in the meantime.
-
-Probably wrapping the entire alloc/free path with something like
-SRCU-fast might help avoid that... but that sounds quite ambitious (to me=
-).
-
---=20
-Cheers,
-Harry / Hyeonggon
-
-
---------------TiMeMR5Lo7gpXV0wWewZC1LH--
-
---------------2XWiTgcVnut66LZ1X3d9Xaqq
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaigbHAAKCRCGXBN6rc5S
-1sTJAQCXB3/zmPYt9ZMQc+w1or2ioE4hbAopvJA0ha8uY+bcqwD/c60gL7CZMR58
-ReFwFzstlLLXK7lZVyYwZoe/kx8aRgI=
-=KobS
------END PGP SIGNATURE-----
-
---------------2XWiTgcVnut66LZ1X3d9Xaqq--
+Yep, hopefully Andrew can add the Fixes: tag when applying this, once
+the series lands in mm-stable. Should be soon, I guess :P
 
