@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD150CD6E79
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 04:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3703CD8CAE
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 04:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 282326B0005; Tue,  9 Jun 2026 00:12:46 -0400 (EDT)
+	id 216EB6B0005; Tue,  9 Jun 2026 00:19:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 232D06B0088; Tue,  9 Jun 2026 00:12:46 -0400 (EDT)
+	id 1EE9C6B0088; Tue,  9 Jun 2026 00:19:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1218B6B008A; Tue,  9 Jun 2026 00:12:46 -0400 (EDT)
+	id 12B146B008A; Tue,  9 Jun 2026 00:19:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02F116B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:12:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3F3BA03CA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:12:45 +0000 (UTC)
-X-FDA: 84859053090.21.FC08324
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7ED8040005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:12:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JZ1T1k9d;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F01916B0005
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 00:19:19 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82FC61C1B9B
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:19:19 +0000 (UTC)
+X-FDA: 84859069638.20.42FC84D
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2EC0940004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 04:19:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780978364;
+	s=arc-20220608; t=1780978757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4h6x44t/kUL5SJGKCThKAyRtoW9WrlvFmr2fXLO09kY=;
-	b=b7a2T6Hd6K4vywthKR0qaRzb2cynl1CpECMdEl3LMsSO7BUU5aAVv8xkY9s9VHelZ+mBkB
-	9gxBT6x0PScZgZxg+zW6w54GPnsgRwOJdrHqxJWICQ25rEwXw4gsa4YD9nwEccWZ0zKgG/
-	p+NMLYgRrWKcXScgHg3WiJAd2bMWkjw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JZ1T1k9d;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SOZp0gh/2PfoEyy8u28l7wEylW2vg6YnuVSVA+V7Vwc=;
+	b=z/+T6XV5Bg70MxZ32mq06yuUxQ/5Jj4nzOlpA7hMpytZvNwC5UQw06JTJgcrQiuAiPYBQc
+	0AcefxRf7v59KyuyaW0Z2IrRy4IbzFYt7ZeMYDgrIgqEhZl7zruqRT6cxZI1ev0zST6NE3
+	EUiGjv4+y52E4cz3u5OpbkHFhiYKUBA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780978364;
-	b=kRJd07+2k1+utLcaw10iVdqu1gnXZcSQ0n0hHYBzgxmHt2qPxmP2pUNE/afJN7AQ13rxvN
-	aBuL7xrWlmczg1hUNpIcB1AaewXjvep11EjibMoUQteAfrIATl+hX2PyKTjpIQ2+BqoRq3
-	45DagG6H4p5vULwvDnQMOCIK6VSEc6Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780978361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4h6x44t/kUL5SJGKCThKAyRtoW9WrlvFmr2fXLO09kY=;
-	b=JZ1T1k9dmfNfGxSCYXOE5B1BNYHUXaoBZFJM7tL5++Ew64OXoBMeebrwgAbt2wTLRUqGDP
-	QvS/wtp+R9YSs7rg4JVmPaj+/Ev64gd+FXdmJV4LY2gNE9MRq4J9OkXPquGoTZew1+bs2l
-	iuqJkMfsYm/i8jxh0QxrcwvENfug+D4=
-From: JP Kobryn <jp.kobryn@linux.dev>
-To: linux-mm@kvack.org,
-	willy@infradead.org,
-	shakeel.butt@linux.dev,
-	usama.arif@linux.dev,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	mhocko@suse.com,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH] mm/lruvec: trace LRU add drains and drain-all queuing
-Date: Mon,  8 Jun 2026 21:11:56 -0700
-Message-ID: <20260609041156.31127-1-jp.kobryn@linux.dev>
+	t=1780978757;
+	b=ER/b2peFXZw1j3TR3wdJcDwo1YmEFcK0iyMDRtx4QOtm4Fzb8NFZ92iRLYS2hSLZEUUhGj
+	dy8L+nr6PNeCAG3dBDebepoHduiNom7AaxAkHekZTofvN2aTDX8ly2AGEOTrqRM7ymGx3L
+	PgYIJn+yJ7ALamc8AZcp1C3ZLCLv/IU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 9 Jun 2026 13:19:13 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 9 Jun 2026 13:19:13 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Hao Jia <jiahao.kernel@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org,
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev,
+	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org,
+	chengming.zhou@linux.dev, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org,
+	kasong@tencent.com, baoquan.he@linux.dev
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+Message-ID: <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330>
+References: <6deeaea7-3cd1-4403-29fc-d2dc55c297f8@gmail.com>
+ <aiBqzOtEv5iAC_qC@google.com>
+ <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
+ <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+ <aicJBVT4pBvmyooT@linux.dev>
+ <aicZ-5GX9De3MAU7@linux.dev>
+ <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+ <aictKA0XWMWbxFdN@linux.dev>
+ <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 7ED8040005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+X-Rspamd-Queue-Id: 2EC0940004
 X-Rspam-User: 
-X-Stat-Signature: h36uz3kte4unuyggpxcd1urwud6b8t84
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1780978363-437643
-X-HE-Meta: U2FsdGVkX1+20oN0XT3KMlOLXiGNosRMPdzh9BRMQVw1KCOIcRDtzqk9JJNKXWFpLUFdp+KyQErX9i8mvK85SJaSJU5SQQqDoFTAaSltanUvH9pYj0o0AgD18+GnnYlcMvFDLG/l4YQao+ozJsBvqYMIjegioob1nn8ESZvT2K74RjTswpxtInJ0jJY/RAX9KC6eA8sUK9XmoJ8k5vImDzjVhUxte46pqABdvTqXTKqUeLiEyaN0wNa6ku71FGAe2K8CfspETYN/3Fbwgrx5j5xhZukxPFgue2cT++kksEy0+XH06ASzVc7pF6tcly8AHMwqkm8L7IZLcjgoE/CJBkY953KU1szb73eUOL/5roJf7wInaa1kyw4i6WN7OwZ+UaK3Q5KV+GsD8uSRfKhSA6TPgdtVtyvyfW3Bwv/9wNjvyWws08B5EJsrn7bXMoNLgS/xWSxEC8Tx3nWqIKb4KeLYSCiua+twKlEDTkOzI9pdyOQdnSGO5tefr+wyxTEW2ptBZbwSOw0wGrRYpIrJ6fnBwHbmA+AbfiwxaQt1VHQMyQWw20K9f1lWbJDkvXgZfY1qSf3DDFDsaC6C5nzOuQyhOHMw4DVOKDQ8oAR3gNp6J7Z9hx+P0ctIZcAxIARVFMO2H909nBW+I5QLqhLzU1SsGNLOijRg9uLXv8RJUzP3SItrFm2H/v2IJ03wGDjEnRDIXmbUb5FNXYKaHjk4mqLxVT3JqcHHL9yoD1m1T5ICL8nFYP52W0qKXapSAQLfrEhsHjW4wZPP/INv5E23iVQgs2RTcj2KEjvZtIlc9Rm+gjnFP8AWmwZydm5D3gMrUGA9Rg2QMoQg031UVL4V93gwoTajsu7mymyoY7IQvaGC3oKMmREmaBh22awic3bW6nw5CPZAvPZNNse9+wf9eDxZbB4tVtBJrItx919IsELRPQwFz7GoyWaXsEMJhTmMTS6tfigNWKbrTg/zB68
- dzcLunYS
- NL77sxJL31rmTYLwfMlOPYJ6UULGHoJQ9eGt33jfpSLfL6hdzOH+aTEwPAjb9lx0x7lDLIyiXmE7S1RxmGjcQA9u4n55CYPZyAc452F8jf2cf2E8mTmdvfNIGXtXvN93miw7nykQxdP1Slp2oXwbfIK6OiBZgF5WXCr3kZx3HQT5zKt3hl0YhspdYTtA4mMJhDQMo
+X-Stat-Signature: b9hc3r8b4z4cq4km7y38mt437j8srt1z
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1780978756-436235
+X-HE-Meta: U2FsdGVkX1/zdigC3XFk96jtckRTwnYW2BJhKAun81KWbpfqSjd8H86v2lIcVQo9T+OEpcRvEmVM6JiFKk+B/aw4M9ila4jJAlaw2v5UCShwQv7nikcdIhTeHAc3nEI1iB2qO7G99+MrkF6OMLrLELXTW0n498HbZS6I4e5PvxFYc3awSx4IXjYsGLahDTIR6gOlXUKQ9wW+6NoZpbg76Nr3xOXtRjLhubmb1ga7HFy+XcXP6SN1/cFk4shO4nH2sQxZVxOz0CqMZHwDRKMPngcwZYTebMl7N5TENdBUF381ILa3p5gwf7rRqF4BEVBMKTCEZ+1OduFArRgpDpQt2XnkusFMzY/l+Rpt/ewe4j0aDrBsjtshWiQVmBD5f2ANyNn5UcXDOETVD3yFzdYkeLGnrSf6Mdai0FtjcmmnEuURScQDZXrfn2R3F5c+6FgXAogI2VsZ4FeKaDfSJ88lKn5ek5UhP39ONGUpMRps5A9toFiMUbR1b1kr+TaPmTqNwFGLlgTNojf7otsJvYTJCphcUirhpUagBBTepTXk7zs22y4SZYkVW+mOQDYDKiH1SYQCSopT7NqF633Rz1jXWLs6prfBZZDKwCKTHG5/Ny1hIizx+pNTsHn+0pNM/WdE/yBIvn9czYHOW0Wxwo+FOFxPW3Fh/OLCzWr4SrMgqyjC/yQUJpwpPfgjWXRPVbVAQTiu6wWB43gh1+GXf74z7hIDMK3zwWWwYFR2TUHbCwUbbKL/7zIUEaafBUNwfvuJlOeVin1/pKCiLDGT3VZ4OZQ37D6vFa80eMYro81aGJuKtGVo06QajjfMptippm1PUIKUFERYQeVbUQYEfXJ4GmD6GSeiL9Z6ybzif0ohh6HOzVrs8i/p/zAYmgYl+hUN54ZTUpsfF36Nh+FN+N2nMvOqLhwzcjrNh0eH6P0KovS0nGJ3PUkiqdNh1TLg6/ZeuDguAaAUJ3rgqeIfAoZ
+ MOVVkff0
+ eXsqTKUlzk/yFVeuTLOQLugGl4O6rGKIJWEUTIMcSdXfdX+TkzbwtVWCrASSmb0xyhLEcKz5vsXZ1CBjAVMfpjGOM6IF0RiIQBIPGX09XOgvqb8IVx5g+YvfYswZ+YIVMnvhbNkdEyPLBL+S7tz2/H6BhTXJU01f/Y0tmR2B2gpnuQM41nvtltVuMTIxMUDXuKgKFqULkMb3C/+VqodhCYVSVkFogXpk1caZYByObdq05zJi+ETBPwWA7arvS4tnCbLmYhGgQw0gLmHc18YzKYUqhBqVszNh9NcIcU0A6Rr2kXf1yCUQfBCfzd+JbcwUNSAbGY/n1bmHprizV/TKELypT4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,103 +96,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-LRU add batches can be drained before they reach capacity. This can be a
-source of LRU lock contention, but it is not currently possible to
-attribute these drains to callers with existing tracepoints.
+On Mon, Jun 08, 2026 at 03:27:07PM -0700, Yosry Ahmed wrote:
 
-Add mm_lru_add_drain to report the CPU and lru_add batch count when an
-lru_add batch is drained. This allows tracing to distinguish full drains
-from partial drains and attribute them to the calling stack.
++Chris +Kairui +Baoquan
 
-Add mm_lru_drain_all_queue to report when lru_add_drain_all() queues
-per-CPU drain work. This captures the requester stack and target CPU for
-remote drain work. The event is named as a drain-all queue event because
-the queued work can be needed for batches other than lru_add.
+Hello
 
-Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
----
- include/trace/events/pagemap.h | 40 ++++++++++++++++++++++++++++++++++
- mm/swap.c                      |  6 ++++-
- 2 files changed, 45 insertions(+), 1 deletion(-)
+Thanks for inviting me to the discussion, Shakeel.
 
-diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
-index 171524d3526d..ea8fc46bedb0 100644
---- a/include/trace/events/pagemap.h
-+++ b/include/trace/events/pagemap.h
-@@ -77,6 +77,46 @@ TRACE_EVENT(mm_lru_activate,
- 	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
- );
- 
-+TRACE_EVENT(mm_lru_add_drain,
-+
-+	TP_PROTO(int cpu, unsigned int nr),
-+
-+	TP_ARGS(cpu, nr),
-+
-+	TP_STRUCT__entry(
-+		__field(int,		cpu	)
-+		__field(unsigned int,	nr	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->cpu	= cpu;
-+		__entry->nr	= nr;
-+	),
-+
-+	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
-+);
-+
-+TRACE_EVENT(mm_lru_drain_all_queue,
-+
-+	TP_PROTO(int target_cpu, bool force_all_cpus),
-+
-+	TP_ARGS(target_cpu, force_all_cpus),
-+
-+	TP_STRUCT__entry(
-+		__field(int,	target_cpu	)
-+		__field(bool,	force_all_cpus	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->target_cpu	= target_cpu;
-+		__entry->force_all_cpus	= force_all_cpus;
-+	),
-+
-+	TP_printk("target_cpu=%d force_all_cpus=%s",
-+		__entry->target_cpu,
-+		__entry->force_all_cpus ? "true" : "false")
-+);
-+
- #endif /* _TRACE_PAGEMAP_H */
- 
- /* This part must be outside protection */
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..c385b93582eb 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
- {
- 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
- 	struct folio_batch *fbatch = &fbatches->lru_add;
-+	unsigned int nr_folios_add = folio_batch_count(fbatch);
- 
--	if (folio_batch_count(fbatch))
-+	if (nr_folios_add) {
- 		folio_batch_move_lru(fbatch, lru_add);
-+		trace_mm_lru_add_drain(cpu, nr_folios_add);
-+	}
- 
- 	fbatch = &fbatches->lru_move_tail;
- 	/* Disabling interrupts below acts as a compiler barrier. */
-@@ -928,6 +931,7 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
- 		if (cpu_needs_drain(cpu)) {
- 			INIT_WORK(work, lru_add_drain_per_cpu);
- 			queue_work_on(cpu, mm_percpu_wq, work);
-+			trace_mm_lru_drain_all_queue(cpu, force_all_cpus);
- 			__cpumask_set_cpu(cpu, &has_work);
- 		}
- 	}
--- 
-2.54.0
+> > > > Youngjun is working on swap tiers. At the moment he is more interested in
+> > > > allowing a specific swap device to a memcg or not. I can imagine in future there
+> > > > will be use-cases where there will be a need to demote data on higher tier swap
+> > > > to lower tier swap. What would be the appropriate interface?
 
+Speaking of my work on swap tiers, I recently submitted a patch and am
+currently considering memcg integration:
+https://lore.kernel.org/linux-mm/20260527062247.3440692-1-youngjun.park@lge.com/
+
+The future use-cases imagined above seem to align with this
+direction. (BTW, I am currently waiting for reviews/feedback from the memcg
+folks on this patch. Any reviews would be highly appreciated!)
+
+We could potentially assign a target tier
+for writeback within the existing memory.zswap.writeback interface. 
+
+For instance, '0' could mean disabled, while non-zero values could represent
+specific tiers, which would maintain backward compatibility with the current
+version. Alternatively, if zswap is treated as the default top tier, 
+the `memory.swap.tiers` interface could potentially replace `memory.zswap.writeback`.
+
+Furthermore, this could be expanded so that each swap tier can demote data
+user-triggered demotion between swap tiers.
+
+Based on the current patch's ideas combined with my swap tiers concept:
+
+Assuming a hierarchy like:
+zswap -> tier1 (SSD swap) -> tier2 (HDD swap) -> tier3 (Network swap)
+
+We could configure the active tiers via a setting like `memory.swap.tiers`
+(tier2 enabled, tier3 enabled).
+
+For example, the concept of `echo "100M zswap_writeback_only > memory.reclaim"`
+could be extended. A user could run `echo "100M tier2 > memory.reclaim"`
+to explicitly trigger demotion from tier2 to tier3.
+(BTW, if we combine these features, my personal preference for the keyword
+format would be `<size> <demote_prefix><tier_name>`. I think it would be
+better to explicitly indicate that it is a swap demotion by using a specific
+prefix followed by the tier name. 
+Or make demote prefix another key is also possible)
+
+So, the whole picture would look something like this:
+- memory.swap.tiers		: Interface for configuring the tier mask.
+- memory.reclaim                : Entry point for user-triggered demotion.
+
+> > > Things will probably get more
+> > > blurry with memory tiers and compressed memory nodes though.
+> >
+> > I think there will still be distinction between byte addressable and fault on
+> > access devices.
+> 
+> Yeah, I think it makes sense to define "swap" as fault on access
+> (zswap, SSD, etc), and memory tiers as byte-addressable (even if you
+> put an SSD behind CXL and make it byte-addressable). But I also
+> remember seeing discussions about unifying memory tiers and swap in a
+> way, and it makes sense from a reclaim perspective (swap or demote
+> first?).
+
+
+> > > > will be use-cases where there will be a need to demote data on higher tier swap
+> > > > to lower tier swap. What would be the appropriate interface?
+> > > >
+> > > > BTW does zswap folks think of zswap as a top swap tier or something different?
+> > >
+> > > I haven't been following the swap tiers work closely, but personally I
+> > > do think of zswap as a top swap tier.
+
+Regarding zswap's position, I agree it needs to be defined as the default,
+top-most tier in swap_tier. In my early RFC, I allocated a separate tier
+specifically for zswap:
+(https://lore.kernel.org/linux-mm/20251109124947.1101520-3-youngjun.park@lge.com/)
+
+> > Same for me though I imagine swap tiers would introduce some duplication i.e.
+> > different way (interface) to set limits for swap tiers for a given memcg.
+> >
+
+I also agree with the concern about interface duplication. We will eventually
+need a mechanism to control swap amounts per tier, which requires thinking
+about its relationship with swap.max. (I raised this as an open question in
+my early RFC).
+https://lore.kernel.org/linux-mm/20251109124947.1101520-1-youngjun.park@lge.com/
+(Further Discussion and Open Questions Part)
+However, since this feature is necessary anyway, wouldn't the proposed
+interface be acceptable without causing conflicts at this early stage?
+
+Additionally, `memory.zswap.writeback` seems redundant. Restricting a cgroup
+to only use the zswap tier (assuming it's the first tier) is practically
+identical to disabling `memory.zswap.writeback` (correct me if I'm wrong).
+But there is no problem to integrate it as I think
+e.g  `memory.zswap.writeback` could internally act as an alias for setting `memory.swap.tier` to 'zswap only'.
+
+BR,
+Youngjun Park
 
