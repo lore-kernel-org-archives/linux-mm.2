@@ -4,110 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D6FBCD8CAD
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:45:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E87CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 07:48:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 016886B0095; Tue,  9 Jun 2026 03:45:40 -0400 (EDT)
+	id 8318F6B0088; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09DD6B0096; Tue,  9 Jun 2026 03:45:39 -0400 (EDT)
+	id 808E26B008A; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF8736B0098; Tue,  9 Jun 2026 03:45:39 -0400 (EDT)
+	id 746056B0095; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA71B6B0095
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:45:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94EA91C205D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:45:39 +0000 (UTC)
-X-FDA: 84859589598.22.D789F51
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 30C37180006
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:45:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ir0xcoM2;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62EF46B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 03:48:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F1DA41C1CA2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:32 +0000 (UTC)
+X-FDA: 84859596864.05.BD38F34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 23AA41A000C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lh3KQeKK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780991137;
+	s=arc-20220608; t=1780991311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ktNotGT5JK3I/QKLXmHwe1WwS3X3UN7pBsbxz+Du+Ho=;
-	b=I5CyMnAbR62uTQ7n6XuLQl4j1pZy9ndiNhk33FzEyxt+4/y7bL5Iwpev3b0zoSb4WMxuwn
-	Wli+H5EGYclMLlHsIVFaKI612QsbBP+j2iz22mRkK3saRcKUb54ZhYX4NPE178jGnYEEB/
-	CE6iQYD+aGIWTD59VzXinDaXiAoiUQ8=
+	bh=P3+mzxVILVCJrFtycDB+LRStStiIqPuiAbLfUSeAzUo=;
+	b=QM6OPnK3m43n88HX6FNMiNj83ws6zZJJRWHQz+GVj3aSNojZvasMjHkBqDmg40C9h2pH6C
+	Dwp8yUvwxx7HUB1J3FWJoSDAG1DR6pRE7VLW1EPSL2ucckEGRtdbdIqZGBWxdh/itVSezk
+	1EI2GXDifOpkqYBft3SJVsSgAxRiD0o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ir0xcoM2;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lh3KQeKK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780991137;
-	b=N8TlpWRdccQYV/n5OAep5aZlrWewFHT8rXAdoQK7lQg6BGmOF1pQ5BBlOha2g8/SJoQfSq
-	FBDVOY2ZMgmoG4zJYa8d/Oepptgs4SEtGpCB/Xm/gGMtpMLsR1UHKFDuU74GtQsTcg8wCr
-	vaZD2/f1llVq58e/ixy0xZAkRxGErkE=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ktNotGT5JK3I/QKLXmHwe1WwS3X3UN7pBsbxz+Du+Ho=;
-	b=ir0xcoM2vUj6JNmJbu+CcwVzu3LZqtzPzJp/pM+t2wzqE0wKOoCeyP3lyYi3Boy3N4bDXvc6x
-	dPbx4PndL6ZdmZsxeg4IGgGNKjDFs8FrQKZxExEg87ArBAy9l3W/obldyebACkFqnGmLxtINLwf
-	3iQAE9vH2qgPmIqc6x0uilI=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gZLNK6bxfz12LD1;
-	Tue,  9 Jun 2026 15:37:37 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3E05440561;
-	Tue,  9 Jun 2026 15:45:30 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 15:45:30 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 15:45:28 +0800
-Subject: Re: [PATCH v4 1/7] mm: memory_failure: Clarify the MF_DELAYED
- definition
-To: Lisa Wang <wyihan@google.com>
-CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
-	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
-	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
-	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
- <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <6ed7e4e9-6256-4348-235a-e5b4bf132f57@huawei.com>
-Date: Tue, 9 Jun 2026 15:45:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1780991311;
+	b=hmUeJqkttW4TrisolOx/1tJUKkmkYGulPxZtcaOb5ehao3o1M69EdiMSLDjH0ERuznc6NY
+	uPI334gMXsOOdh3imWWD9C3uPds73nTSlw6gPPMcnuTfjNEDmR5TkzCHuLhmZSHy7pEL8s
+	IBcAitFjgD0FKLJUEe3CS602PiRP824=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FA23443E2
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F411F008A5
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 07:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780991310;
+	bh=P3+mzxVILVCJrFtycDB+LRStStiIqPuiAbLfUSeAzUo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Lh3KQeKKmievG3xTheEKaVvOT1dmL4oXP4rsslq+cR5khxSjroDT8s+CQnjNG70jb
+	 uuMDUyMS6mUFlPLvvToDEw4DAwXpRfZDgJG5eCtvj7gtsFDnHFXxKMKqF0/QuoqZKZ
+	 ARi2861UtMbt03vvuhOwDfN4D1SnTBWj7Ssg3Tu4I5kugJJOksutbVhg0d1vz64LHL
+	 /C4p5MKkNrFNd74QDOqAvCc+oY60p9/uj5QE0KFcTfH4O5S3LtzGtbiWyH5D9Dsi3i
+	 cvQ4AzzEA1tadAKd0Cwj2c/ZgeQcHLzRO+QMcmDNpBk5LKJoUGFSHGRjnBZq6d2dgf
+	 X/fAfNoieHZ9w==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9158c621ebbso626425085a.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 00:48:30 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyTJP6uwCqrGw60dyAiyns/1poVmi4lYP8yK91OC+aAjJLhEgMT
+	FNmiXEwOhpI6sgqCdrj9A4wwQjldlekp96rBlH4WLyThJjL2e5HaphmFAjXukyZwtF4v2Cw2A3p
+	mlBLWoJa529dw3u0cbE9svMjE3Wc36oc=
+X-Received: by 2002:a05:620a:c4b:b0:915:c271:f91c with SMTP id
+ af79cd13be357-915c271fca1mr1851463685a.5.1780991309343; Tue, 09 Jun 2026
+ 00:48:29 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-1-a5bc7db5a9b2@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam07
+References: <20260609002919.3967782-1-gourry@gourry.net>
+In-Reply-To: <20260609002919.3967782-1-gourry@gourry.net>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 9 Jun 2026 15:48:16 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z-Cd9aNirdvRSKCz07qNqH4EEeF37rGUpGOJnSgSL-Kg@mail.gmail.com>
+X-Gm-Features: AVVi8Cfqzi3SIKls0BC4hWZyF4MXPP-oDhMfanMs2lMZ83TPVeLkEv4_siixdsY
+Message-ID: <CAGsJ_4z-Cd9aNirdvRSKCz07qNqH4EEeF37rGUpGOJnSgSL-Kg@mail.gmail.com>
+Subject: Re: [PATCH] mm: constify oom_control, scan_control, and alloc_context nodemask
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	kernel-team@meta.com, longman@redhat.com, chenridong@huaweicloud.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, rientjes@google.com, chrisl@kernel.org, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
+	jackmanb@google.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 23AA41A000C
 X-Rspam-User: 
-X-Stat-Signature: yod1dmuf11iwexp1x9reqb8t4kefetaz
-X-Rspamd-Queue-Id: 30C37180006
-X-HE-Tag: 1780991136-673924
-X-HE-Meta: U2FsdGVkX1+28UMOrg6sWSYbuIZXaEg1s8dan2OX8Dv7F71PRSo9mxeDpg+pUt4yUXmYqrF9VTTi1xUswFRo3W6ZmQteZgJJA7BlBKyzbgcL7KYm+I25s7FKdzb0Gwb52DdKGIINvGumAUTVpOiOmFbOtA1r1pwYYA10/aos2nqa0yZnPmQf2/tNTl1LY7TqGx4rejqkzHe3mkbSV5foQKoz33SuS9NUvUlpT1HwRqfo0q/qGlYI7JaCybHPG109afxBywjXiRPIcqD9Bf2ti/GQabktkvW1bEAK66wNRKq+SQygjYbXRYTmu1cQ6eu+b1tp/U97Ed8wNuo6l0U64DRz/i/bj+F4ebAnXizx8y/DdRMCwfU18Pc7fXFSr5UQwnGfCnmEQa63NThP1Z1hkYRkW7K/q9V6xox1KnJg1NOYTYuROyvWMgEFbsh/h5TD4pzzusHTHJB8xuarS2hn2m/B440IjL2HYvM0+DpcQIkloIvDd1xpFXE9tyw5hjTYsXBSR3Hj9/01OzjqaTI+GQQ2u0ABWpqii3/TKkBcQj9UfYkHUJaUwSyQrRxU71YJ+lMcQluHQf6eoPFpQr9KMMtLA99eQtntzDzjbUfjYchcGry6PD14/+1RmwO+bmFRW3Y59cQB5Dk7Fva1qOFW8RNAA+YnPpPiOfaw9+QiJGAg5am/uapIDvD+VIY2m0Mn55VRQfLzV64/L8s8dr8pA4jXkBFpvK2oLDfJjU227tn1ajPwgfxa+3EURds/j3LuU0/Fu4AL0bZtfakdZ4Jr+3b3nmEmthRI6Mfags16US5LpK+9LCMDTRfJURQUfuFLZOFicJduZvPLthy7Y66E48hpxfhMaKhGOGqhLlnJjOX9PvnvhMxoSzzJedLoWbzwKJWogPRdCxS359IxeofNX5x8TR9MfhXjnVk2u6W0f7bczkBhAb3drAUYXTFyySOOjcSVZO5CZBUVkXn6kJ/
- O652hCi2
- eRNUuPm9kW6bbHiKI3g4BAcawS07YV9rM4Fm+QtbOmhnemghiqmiuKOOx89pS+a7F7HZvrBSIl5fl5lcNrRkAHMByfejz6fHZj8jOH6sunL58Rr5xrvZzwwngGWxVeVvWEN00ewCRw4UeZYi7GzlaFbvYnUthYXeIgztMxCUediEW0XEvuZlf3Tr+z910ihRvVA7m5JDlhRPVen1cYR66OLPHAo0fCvS76UYvx1Q+t+nHr6BE9wjPfi4aipmBIV9h54Y+0by4g72FtLXBlwntVIqywQp9O5PzjFN77oSgUkGkfiFKKpfcUjYEybdDGEZuTciYQLMOCG9pOSShiaFhQm2+6aAOlYVduvKtHcNA7HGbaHIwmbEUG4sEqhpTzMiGtE3lqatCnEXgpOKbtm6wDzNfxZlwy/vti0oioQdZY1tELXhUkiQORUgv3B270TDhlVQN
+X-Stat-Signature: uyr1kdukecaqjionin69ezocboo4mrg7
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1780991310-18325
+X-HE-Meta: U2FsdGVkX1+0C48VfO6WzaPBLX20jDnwdfy78ew257WjSH7O2bE3K4LnLbS1CBrh38L0o2fSetNdm+Ar6k8Utbx72bl1sLtNbZHgdebr1qPsQu/ZTn4X5aYjlWMpBo+ciVCNmn407Wrt3uLvaimtS/8aOqbAWiEmljeg8pawnccaL9VZmB5pMReiTezenIjhV1nYL+PDOBgErVj9RGp3rlVuBuFAVwqrbdheHxMtJlOiqEwUlA21dWzElSbyI22U3RWzn9nwDgX1VUEljWdEZEPFOgTa5DxloCxXPxCArRc1/IPMVcxTYU9zHk2CYyPRQN5FpNmpr6t8EM/OFcXfooNuvhP6Wdd+W17xQPTtCCHVWC151POoGEA4Dh7rtezaLU1+xVx3g16kBFMtXlOScmXfpjA3BXAAzvAfzUgcS/BlSMb52xSq1J8i6SYFneRGGrMbvNRwZHXSzVQH6zQLFxZ7kkOR2P8Ll7ac/LqE80RCDUrS0yFxcjWPN5MHahGTY+QbwOg6clzepANAHZvQhwvORlDuQMmsGbl7LPon0Aat4uHWudC6fGCOFZB7ENuYUfkLLQgpVZjy6ZusKxTcdF7HJOm/pYfHxb3pDY8M36if37kEUlZkCGw+1rHq0YcjmyGkLrCixWk2LSiM8Ht+LedClpMksacZoULmkjRWVksME8/gGeYkSx2VTTPhrQsxvp8a/N87j06M5uWPBVbscRsD+L9SxbAQtv9oxLD9EGMR73FCPWPjDFBjLsVQxcoeBrXmwyPrWPH1LkwRN9rIvkwZsM6/dazWSqpy0W6ZKpEC4DuqFKS7AV5XyoQuElcXg5LFM8Sc8vkreY/lAzEHqT87BuXxY+h4jeRacGuVae8Gqd3iT6tkf4uVy8pNpx6kEKlKUa4n8YW4qLLFP+CUy2/1uAdp9ThFZ2SJd5O4WkcmHEhkYqYY8cXuuGBOI+JUs0A6H62Yom9HXeqC0+i
+ K+Td2EuJ
+ ozgYWiQTcmQOlk4HQVp4IXIy3OHziMMgR/enGyZgOOFr0pbxspPKfRRKw/Dlo3AOfWm6rxHcYHwIrUoAgyz/Nyx5tUBpWsu+WgE+q+GyqeELNMYkuHBtN+Ed1VeXEpiMk6JyNpwsMevcQtFa7CAA9Lezb08WbZMK6o9AAUItzfP+hE0Zh+JisNdo9qw6Q0ihnTFGr2R8CLvBvI02IfQqeicAlrrfyrl0DwLDTBJ8j1U9lS/vesK+Lw+heVv0ZARvxsegNnI0SJapNJqOVJlOjrR6J4y/c/1VHYPtFxGis4KzxvNatjATBKNRJQJWkHbmP6vRhuoEAs7XUWdJ5Bxj2q1TqaZgixjegn/8MzOE5FwAFdMhzVqr3LhnEppgUnymFW0pW9lMsJZ6L+WRlz3gSRih9rq2xhuNSZp9a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,15 +109,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/3 5:55, Lisa Wang wrote:
-> This patch clarifies the definition of MF_DELAYED to represent cases
-> where a folio's removal is initiated but not immediately completed
-> (e.g., due to remaining metadata references).
-> 
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+On Tue, Jun 9, 2026 at 8:29=E2=80=AFAM Gregory Price <gourry@gourry.net> wr=
+ote:
+>
+> The nodemasks in these structures may come from a variety of sources,
+> including tasks and cpusets - and should never be modified by any code
+> when being passed around inside another context.
+>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-
-Thanks.
-.
+LGTM,
+Reviewed-by: Barry Song <baohua@kernel.org>
 
