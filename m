@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D447CD8CA8
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 20:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6D51CD8CAD
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 20:34:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F12B36B0093; Tue,  9 Jun 2026 16:24:30 -0400 (EDT)
+	id 97CE36B00F0; Tue,  9 Jun 2026 16:34:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3506B0098; Tue,  9 Jun 2026 16:24:30 -0400 (EDT)
+	id 907726B00F1; Tue,  9 Jun 2026 16:34:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2856B0099; Tue,  9 Jun 2026 16:24:30 -0400 (EDT)
+	id 7A8196B00F2; Tue,  9 Jun 2026 16:34:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5C26B0093
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:24:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59595164EB7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:24:30 +0000 (UTC)
-X-FDA: 84861501900.05.65BF093
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 698F86B00F0
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 16:34:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A3921A05D6
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:34:32 +0000 (UTC)
+X-FDA: 84861527184.08.AF245E8
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EF72DC0009
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:24:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RgO1q+TW;
+	by imf17.hostedemail.com (Postfix) with ESMTP id BE19C40004
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:34:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iN9QJQlh;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781036668;
+	s=arc-20220608; t=1781037270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nTUa2dI672FDZzKGV04n9VclX+EgypGNikp/bmy4IOc=;
-	b=blHLJ6InEan7RSJt/raKvrkpgNOYYKtl6VD88DuVgP/MhRx8cB08NAphVENYl+Yuy6ZwHP
-	tzGIozTcvKCMC68IKwAXenOC4DrlBfw7ktBHOfp7ORVCWUSfPBunlmk6BUhalh++e099Kj
-	3SjNmcVhdhtdkVygInjgWFL3MMcHj88=
+	bh=4mpHDCXlfPC40orLRXh0LNnJgWxWBHHqm2OypJ1ZmuY=;
+	b=ifdvfuGcepgDmTvDcxamoRcan0vtM6iZvXDnYVRzVLqEzsq5JVST8D5trgT0Glhj31m98q
+	IZEdaZwRwhU37rjnb1i2INl9mp1d7VGixG5L64vzI+1kapuEZ6rEQaxdJZsqEIWohUdNnS
+	DqCULdKy+ZXR5EbtgeQChJ0cFHeUCP4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RgO1q+TW;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iN9QJQlh;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781036668;
-	b=qdmtrZHQNzYj9NG5YJomlR08GQMwyoY/LyKyWZyFhI3IfbTeugzt+zYcRjK9LSyH6qLTSc
-	maTy2yFA4g7h8S+zDOMmADgLxjXOTsKkLpk+KdJNGf3Wug1Co1q3j6oLoe9QrijBDjMKWl
-	8tx1HCyMt7ct80Xp36XTWQyKFe/Ln48=
+	t=1781037270;
+	b=jV302ee2e8aXEI02y06vgzAdM+7nHX66PnVu0/Bs3yj7NLq8kPhmKp23/fzLLaqPaTtxO8
+	q4yhxqUyxlUhLHTjtu32ZFUU4BWsr9szOIRhPD9Os9Mu55A/KhqGSrGPvTxqm5sWIPMQ/O
+	7a00WfbsEcykS/IMIDom5J1L9GA4Lno=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781036667;
+	s=mimecast20190719; t=1781037269;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nTUa2dI672FDZzKGV04n9VclX+EgypGNikp/bmy4IOc=;
-	b=RgO1q+TWO8/tFnevqDoV0a0ucccHN42YiLl67jxFW0vgLsHQ/Kl3+HmciZZeHFCXI4NYky
-	oPdoSFSqiVlVFkNpafkkF6kegF4dKiY62YyXTZYPMUnnotEyT7I2RODJcan1b+7df8ispa
-	N55OA4nxhEeZmbKNAnVMAWT8f4G2nuw=
+	bh=4mpHDCXlfPC40orLRXh0LNnJgWxWBHHqm2OypJ1ZmuY=;
+	b=iN9QJQlhpjoVm5lQDiDmG8Mdy+bEZFeq4clyfIaj3wI2aqq+3/19LlwVeDl3ZZNgpZj/FI
+	nTEk0viUKbFROk1GUFdoWP56vKJrKh/0JOVdlgmr54V0pXoNzUKiv9Kgk6Qt8nR5pVBiYq
+	Zjvngm2DwamzMiJkewUO2qJ5fTthQtk=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-2qY9vrbbPZKEf60NFIqSzw-1; Tue, 09 Jun 2026 16:24:25 -0400
-X-MC-Unique: 2qY9vrbbPZKEf60NFIqSzw-1
-X-Mimecast-MFC-AGG-ID: 2qY9vrbbPZKEf60NFIqSzw_1781036664
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490d3f03883so14523345e9.1
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 13:24:25 -0700 (PDT)
+ us-mta-97-XnYp4kSWMI6G1f1dgbxekg-1; Tue, 09 Jun 2026 16:34:27 -0400
+X-MC-Unique: XnYp4kSWMI6G1f1dgbxekg-1
+X-Mimecast-MFC-AGG-ID: XnYp4kSWMI6G1f1dgbxekg_1781037267
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490abeb7298so62416515e9.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 13:34:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781036664; x=1781641464;
+        d=1e100.net; s=20251104; t=1781037267; x=1781642067;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nTUa2dI672FDZzKGV04n9VclX+EgypGNikp/bmy4IOc=;
-        b=NaK1xRBvhhCOU7ze29chKlrkPjT5znXJZ6tlgykr+nxO9wFRpk0bqQUeFmNcOZ0jXe
-         onFhLHbwQ0TtMVAZgZhG9MacEjb7/omnua9tuufviHguIsZXkcQHOmVPu72GgPsxPEg7
-         Gt9sUvq6XpkA9tkCpG4ASYY+6vGAIqSAfQf5zKxEkQGCRQSuRE7/Ddxqm6ZUvIl2iIwk
-         pD7Sd/W72pAGZzJOekLY7zBOwBKDO6yOQh1GYRzm9qUaJwk4Wbpus9PmrKsmo2dxt9Ys
-         vLIniY8djs9QmB+C8j0Zc7hLeR/6RN9ejkGslm+pJr8ipel0hmK/XMlmzpaIR1WHT6Ua
-         opqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9+3qx3sTjfrh77FMXXGFu/j+TMQn8aQy5j0Bn/s1COW5cUahVDQUz20gH67TdZUMaS2riQzO68nQ==@kvack.org
-X-Gm-Message-State: AOJu0YyQZznQg6AT08HA19xYaVOb5kcwXrRDVRAS7gdyaNGGqYVu3AwT
-	JzdertDWss2XDfQwQiEvuqilE8JoVCm9jISRYvP3hBl/vgUULxCZsvCDWFmT58BJ2KnLivpezaF
-	y8PDBW/pQvxiFslwGFWctQaqZRsmyhNHWuQKH4Y6poEcIuewjsiki
-X-Gm-Gg: Acq92OE49QcUZ3DBywsqsZ6GQKLC649gNpjhgNVxMd5j0qEIdkl2h8yAIANysu2GVtI
-	QyAUSde89QXsczZl01uA8Fa1IeDyFWGAXdDwORU1GCKiiNBwz+RO9NlPRKIqZH8kO2CtfVfLTLZ
-	nSCLe1qggif97qJI76qSTTpYtHD9C85h24nak8rsIZXXh205+I6miZ3JrhMl/gN6lHAx4GVocH8
-	yME9JM8bRDNAqW9EqiYJYjLDiW0yWxzO+p8+OkxjYTdfy4YcDrry78veUyH0C2oaxnqNLBxD1Hf
-	5bzZ0ArRELzkwxu9pUgEUl40zX2lLvcT3R0n5yz1DepI0g0+vSyUAoqpD0dnmKefqrElcTqHIDW
-	9WRXp+xxCucbQLI6uSl6Z+6bSxST887Pa163E2SbVMOIdfnAZvWkEsg==
-X-Received: by 2002:a05:600c:674f:b0:490:b4bc:4f3d with SMTP id 5b1f17b1804b1-490c25b06a1mr339837675e9.18.1781036664328;
-        Tue, 09 Jun 2026 13:24:24 -0700 (PDT)
-X-Received: by 2002:a05:600c:674f:b0:490:b4bc:4f3d with SMTP id 5b1f17b1804b1-490c25b06a1mr339837295e9.18.1781036663783;
-        Tue, 09 Jun 2026 13:24:23 -0700 (PDT)
+        bh=4mpHDCXlfPC40orLRXh0LNnJgWxWBHHqm2OypJ1ZmuY=;
+        b=TjKqqrxxaA1g/yMrcz5NKtglHIlLjnrkSXFpDfzlGGsnSuyFEV0OvW7DPeOfacwMpd
+         UgvBKySKM2vzRqL20aFDE/4j/cW2nGynmowm8h4Ya8LVZDv37YlA/YWJWDNLgt+aP/q8
+         36yILZBljqqNg6723sEbA+b/77n5NH3hqUNyooI0RHWiqLr9D3iTkSIaai8AeW9MzI2k
+         80mPKwh0oroofHqWEmWR4qMo7hNXR1/F+BzmyXyyWqNicTZDLi1DhXp3HEJ58hM2xwjD
+         uOolJjAeE7NbmMquisNfOHqm3vB/KdttTXeGyc0FmtnvUm6czhZlrmZyp7M8wx7VIg6L
+         GSIw==
+X-Forwarded-Encrypted: i=1; AFNElJ8AFMuLwaq5tEEfmRACzSBUbd68nkr17QLtmbJfDY2SahKgpnKRqdBz5xDRK6DPJISU1u9YheA8SA==@kvack.org
+X-Gm-Message-State: AOJu0YxLviFQdTP3IVYsIz/jCQEucSzvHFarU9Ev5x8arzwwQJ1in6Y8
+	wczD/wotRaI/RP+afywK8dinjalTN37TrQK0b9fTbk5n7CXD9v/G+kyfvKlpeM+FlTkb8iIkCel
+	PCwgkxDm25Xgc+tlqrTB/rW3OUgQEZW/sX2nei+Wz09HpXZ81uf0j
+X-Gm-Gg: Acq92OF+XLTEq7uWoy9DfriE+jn7dI0EsR5XDmibII9srjJDTqBvkICJX35LSeDSdEv
+	ogLte8Es25rzLINnAk0tsNo9b2VPzm+WRV8YB+IT8YPm7ndunN3a5hOqSMw4JVnnL3HJ8NuYO4c
+	0ZfDGGClCdhAK0DmHWRLrb5+M+HF8PXRWR2Ucf3HZP4J7o8nwY2X7xxdXnb5FNlSV8Sp3xaAGYj
+	ka3Z6bWZGiFwyAOpQaAa6KA+8gJayYxwar3OeEGLc2Zq0gdGkh3RNUcA/cOOaoOaXlWE9OJ34fN
+	sJpRsyfhR1bVLcFJa2YdhZgJuWU7nJmX+Nu01LijxP28f1E1ta1P4AsoUWs14rJRWewUimV6QBR
+	AzO1hxDM5HqiiGBineAVRy2WkE8/usOWH7jGzxRBswC+wDCIKEJrBAw==
+X-Received: by 2002:a05:600c:3f0e:b0:490:d38c:7836 with SMTP id 5b1f17b1804b1-490d38c7867mr111793455e9.3.1781037266601;
+        Tue, 09 Jun 2026 13:34:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f0e:b0:490:d38c:7836 with SMTP id 5b1f17b1804b1-490d38c7867mr111792775e9.3.1781037266071;
+        Tue, 09 Jun 2026 13:34:26 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f35133csm62850063f8f.25.2026.06.09.13.24.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490dcab44dfsm1176375e9.2.2026.06.09.13.34.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 13:24:22 -0700 (PDT)
-Date: Tue, 9 Jun 2026 16:24:17 -0400
+        Tue, 09 Jun 2026 13:34:25 -0700 (PDT)
+Date: Tue, 9 Jun 2026 16:34:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
@@ -112,7 +113,7 @@ Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
 	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
@@ -137,24 +138,27 @@ Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
 	Naoya Horiguchi <nao.horiguchi@gmail.com>
 Subject: Re: [PATCH splitout] mm: memory-failure: serialize
  TestSetPageHWPoison with zone->lock
-Message-ID: <20260609161227-mutt-send-email-mst@kernel.org>
+Message-ID: <20260609162437-mutt-send-email-mst@kernel.org>
 References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
  <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
+ <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
+ <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
+ <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
+In-Reply-To: <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Jnd6yT_rMM2CxZN1VdynhMlVmMe1vq-J6Bl5iArE3TQ_1781036664
+X-Mimecast-MFC-PROC-ID: IzjLYU20ZnT5mwrGNzjhG19ZWKyUk_BS1J3NPr4ogEs_1781037267
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Rspamd-Queue-Id: BE19C40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EF72DC0009
-X-Stat-Signature: bmt3jx3spp1hi4gegc9eo3j85a8ku4kt
-X-HE-Tag: 1781036667-482100
-X-HE-Meta: U2FsdGVkX19xwrMLHayY2c3bqslR2JAm7XFTSlfl2KH8yZdDkmaX6eGZDNGT9N+XeI9BeT5mxiGIdmGC5KhKWDqXk1j+Oj0lT61S3u83/39QRpkT/MAamhw50ae28iniKSDtJf9wy8gub3xefNXQj78oy5eeCPtUCXFfbbQ79E5j/6edMt39o/2C/4KU+2eHRa84gnHkRQzs+CjKkbZ3WGg26pS/c35yCdV3amt8lzVILXOcwCv4tI+E7qcfgu3Ne9N27pleeGytS53o6Nv2jpmmPp3CsOzKMgOaddE4e9f/GguHv6CVWmpZEBvgLCY8hBDbJ+SKl4cK8r+uWoAimmQqHm+3krbOk7G94z32/xqnsUq6cVjpVxIgUDN6xc2V8KJMi9qyCbISiTZTGVbM+nkoQ9uYssN995ECmzNw685XKRAh31ktoWJBoA56x4aNchqFdVeabGGbBRYf42WGPXNJ4ub7sXbaL/e3+ObhM6NoDaLEXcl/OdVh2NIPAdoyx+ppFMOVvQ+hLF1EgnAiy49y0/AfNxZxECtnwkCeYsmg01ywHwom/o2jCcZxYXuWHtrnH0ExBdCSjlYSHSUQd3AmBZjihJWg87P49YP4Ds3FdLObI6D71l00Mt9oNPxVxX8askJ2lfBIbVp4HqnEsQnto9a5bzIfkJtBcDLxCzY3jK4DGHmU8sTV9NZhk55vTkWSZKnIr67MPcUCipLNja90UzGmaXQF+dT4uOXQ0/8Q72j7S19bzwllhRD5pCXOKBT+gJyWgzGRTQLazdQmHOv4LyMlUnnFBfQu26sqwfgoj51SNO3UqWMO++nXxfBqVtYbhWF3b6Kdbq2jJ9RTGFbRlLfJ0aTO3sYLRaRZ08YEq+fq2kb6ac/xbah+bNjZOrHp1/TJt+a4N6F7Hsgmes0ZQaPkT3ssVbDh3vCUzqROvjGtUzi4FQpHCnkgOWFMhUpnJR0oAE/OKb3BpvS
- +O6whQGg
- btY7Hqg5WHKv9Tbcfu7/FlUw16+4TQktf8ctOh6+YF6/uSeI6vWM6nYAVyaQ0Fzr+akhJJPyl7YF5/hAez8xcOKxH2BKIfLhtEGCZN260eD0UiwsaDuyAWO1GOjK0DwZ9hmmJe8EY5aBXlsZ2rGx2jtn2d7ZUILDff3Brr+hY1Xs2xCf4AVU9QDzQviGBVj7HzCt7EQucjtF7RRl7ZUfQLzaf5Z1OlBICaHgg+dIEZ95Ttas9D0bof2gdUM2ZMnw69n5LiCnUsxaeBdKpajAQwAUFXXKpuyoWTBYzpHYwmaS6oKgrkTir7/6aRUqLHiuiBHFuj6bkNkz9B4Y9JhDQM7wr+wqC/QLIjZIMer+Di7Xs7lRN6WwLrmUD9z+h/kdMumqwKYnjjBucPUaP0QobL55WhRN1WjyNCdTFvMuds2j2mzhlOQuneXv3NtGrytl+gO7ObtZhrsonMuE=
+X-Stat-Signature: rsprtnudn6qibtaxsuica7n54zpedido
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781037269-212854
+X-HE-Meta: U2FsdGVkX18I7IXKXZccy5BIvyJUR8Z9BjnSEYCHNAgulvzs/dL2kNMuOePYHyS5ZzcbOtWryGcgjt3qditNhS2UVbQZBQ0wUCcufrZmcDwnsuMfEt/ok1MAM4CZrA1b9gvlOK3ofLfESodjExyYB8XFLSvhIUn7oRnAyK+o61dkKH8WrCmhVe5GQAJpV30yt09nxEwdcqVPQwiMKFwJdLqkcI+Id2acmN3sfgn4lby6PUfyXPAxPMjcjPbxHWPcJCY1fEVQqfT2mHmAKLsJjb5OJfW9nWuBPvZLoTa9Y88qVRE5X0VT28We7g/M/f/iNcmEuYvf8Qud+Ddx8MyjkGRPpcfhHZN3gsxeBPlQZOLRDDdprmyePr2jRj9EXAVGvqKC3uan+ki2g91aofG3OUFcHlmU+y5pcfRWKKwwW3t58ZY08Di9rof/e5jTYtbS+rbd37ewU30zZU+rKN3xxTxBw45yJnmEYki2C+cqttINlBviTN6DlEKiXbuUAzti/T/IWfVQYSXPG3z/TOzb1Gxh6wOXxJI4Qdqrno5+8m1zMQ2MyNo2O4Cr94PaawG5+NO309DmWqFMoCzgTTGQ+bPM44HvNT0ROiQoIc1vbJ8dVGRIu6MR/xLx+H4uhg1Ppj+zoeACZf1yeMvstJjFmGlMoMy2xwWelrLee9+/Z9CwKai4yyJmkwZVvDXCi3iIGPPFKjGkGtBFD5oXjJvssA4WnDbNH2wqtyaVdTe8bLUOuE7pQ7DCVIpHk+MCY7b0YREcCbDwRNViP84/1tRcoYHNkbeZD4nK5bZQdF2NKlp1/WwTfoEPy+o2Ay9ZW41QFQYKrRAinu4gqRvPwdkQ4V7iQaVtyHdkOSoCCBFAeFUnuNV4rlBm1jTud6mWQYFOj4u9dnmOHs2eq2fIOJic4RRjrl3LG9fbqo5HIjqJHvA3LTS/21pXCaVnO0Ia7APWcjKWP2P0SgBpNKw4jW3
+ R0/a/gN0
+ LwQ7624Quz2BbizhKAr8XIPRYq0aGRm3A85fhbIJPboD3xxh7CF9LiY2VqmLtKARN0kbZiQrLcCUa5UhacRFVHLN1OBO2ImV7n+cnxPj/pIs7/h6N5WJeeoTiXVZqnU9vaaIJHRS2Xm0oQ8en5+bSzR66GRnLth8Y7qUQcvNusq3MEwzXypysWe/i1YDSU422tGQ6x5DuGVMaZ2eiUFEeefRJGktgjr9HI6foMeJDV5BWmgr4/K727S5Z0F+CDeD8ewdQTpE9QeDkzyCBaxx+gGHYr+1ijVEFYNqqBOOsd4t9/jdSaSQz/oKUk+U05AcSZXWI/mk/Skii2XHRtGagsn5iiiZiTPNTgB7LQCZZi7ZmaHXkwVlO3uMZCSJvC5yc2lldXlBTtjicr3UwoDtvGWWGV3CXYMHt+CH7slVu08TncFML1WavfO6uF5v0Snfz6IXnZJByMFfO0As=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,44 +166,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 11:10:20AM -0700, Andrew Morton wrote:
-> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
+On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
+> On 9 Jun 2026, at 14:39, Zi Yan wrote:
 > 
-> > TestSetPageHWPoison() is called without zone->lock, so its atomic
-> > update to page->flags can race with non-atomic flag operations
-> > that run under zone->lock in the buddy allocator.
-> > 
-> > In particular, __free_pages_prepare() does:
-> > 
-> >     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> > 
-> > This non-atomic read-modify-write, while correctly excluding
-> > __PG_HWPOISON from the mask, can still lose a concurrent
-> > TestSetPageHWPoison if the read happens before the poison bit
-> > is set and the write happens after.  Will only get worse if/when
-> > we add more non-atomic flag operations.
-> > 
-> > Fix by acquiring zone->lock around TestSetPageHWPoison and
-> > around ClearPageHWPoison in the retry path.  This
-> > serializes with all buddy flag manipulation.  The cost is
-> > negligible: one lock/unlock in an extremely rare path
-> > (hardware memory errors).
-> > 
-> > Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> > in this file operate on pages already removed from the buddy
-> > allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> > need zone->lock protection.
+> > On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
+> >
+> >> On 6/9/26 20:10, Andrew Morton wrote:
+> >>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> >>>
+> >>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
+> >>>> update to page->flags can race with non-atomic flag operations
+> >>>> that run under zone->lock in the buddy allocator.
+> >>>>
+> >>>> In particular, __free_pages_prepare() does:
+> >>>>
+> >>>>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> >>>>
+> >>>> This non-atomic read-modify-write, while correctly excluding
+> >>>> __PG_HWPOISON from the mask, can still lose a concurrent
+> >>>> TestSetPageHWPoison if the read happens before the poison bit
+> >>>> is set and the write happens after.  Will only get worse if/when
+> >>>> we add more non-atomic flag operations.
+> >>>>
+> >>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
+> >>>> around ClearPageHWPoison in the retry path.  This
+> >>>> serializes with all buddy flag manipulation.  The cost is
+> >>>> negligible: one lock/unlock in an extremely rare path
+> >>>> (hardware memory errors).
+> >>>>
+> >>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
+> >>>> in this file operate on pages already removed from the buddy
+> >>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
+> >>>> need zone->lock protection.
+> >>>
+> >>> Sashiko is saying this doesn't do anything "Because
+> >>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
+> >>>
+> >>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
+> >>
+> >> Battle of the bots: it's right.
+> >
+> > Yep, __free_pages_prepare() changes the page flag without holding
+> > zone->lock.
 > 
-> Sashiko is saying this doesn't do anything "Because
-> __free_pages_prepare() executes entirely locklessly".  Did it goof?
+> __free_pages_prepare() works on frozen pages and assumes no one else
+> touches the input page. To avoid this race, memory_failure() might
+> want to try_get_page() before TestClearPageHWPoison(), but I am not
+> sure if that works along with memory failure flow.
 > 
-> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
->
+> Best Regards,
+> Yan, Zi
 
-Oh. So it only helps with the prezero patches. Maybe other places where
-flags are touched locklessly. Not __free_pages_prepare. I was too
-focused on that. Scrap this please. I'll try to think of something.
 
+
+Actually memory failure already plays with this down the road no?
+
+So maybe it's enough to just SetPageHWPoison afterwards again?
+
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index ee42d4361309..4758fea94a96 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	if (!res) {
+ 		if (is_free_buddy_page(p)) {
+ 			if (take_page_off_buddy(p)) {
++				SetPageHWPoison(p);
+ 				page_ref_inc(p);
+ 				res = MF_RECOVERED;
+ 			} else {
+
+
+and maybe in a bunch of other places in there?
 
 -- 
 MST
