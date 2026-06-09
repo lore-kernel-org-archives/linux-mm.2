@@ -4,84 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C4ACD8C92
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0F8CD8C92
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 12:12:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEAC56B0095; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
+	id E03686B008C; Tue,  9 Jun 2026 08:12:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC2926B0098; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
+	id DDAF16B0092; Tue,  9 Jun 2026 08:12:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B624D6B0099; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
+	id D17596B0093; Tue,  9 Jun 2026 08:12:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A3CB86B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:07:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 539D3A0540
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:07:26 +0000 (UTC)
-X-FDA: 84860249292.17.47FCAA0
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8F6AD20004
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:07:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WZrwDR1d;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C0A146B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 08:12:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86E94A0552
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:12:22 +0000 (UTC)
+X-FDA: 84860261724.22.F88070C
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 68884140008
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 12:12:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781006844;
+	s=arc-20220608; t=1781007139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQV1qTMhPd4s+f85QfPCGgKH/8NH/n1/pSa26JOffws=;
-	b=8KrMtJh9cLq2J/rEyMyDYK5zOuftDkEPSJzdiREuLfIJjcXDmPUx3QpDSIIwdAYXPW4g/6
-	f2kJIU0RRiHVrK586QVBxcv8a2EAYO2PBp0cZ3ciXApofuiWylEDeJjZCXLAJcnJe2RREn
-	GbSQ3Nf0RWuag6I8DqTziZTewyE2vxQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WZrwDR1d;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781006844;
-	b=acHQq6QgMFn3Mo00DPAOlqlWl0WrvnYOKS2Bcjf6WlgXV7hOfsS/bqQwXb8MDpStnaEKMS
-	fV9eP3K3pjcACydlPVVubV3HaIKGlTCO8IwZIIgoB3x5y7HQ8fYy6ZPrzcOOTpTQKax9tY
-	7QlQDY1PI+NvvAgnGupwZJjNJ5NbqPs=
-Message-ID: <cff57120-f2b6-44ec-b4cf-b7d5d8637723@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781006843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oQV1qTMhPd4s+f85QfPCGgKH/8NH/n1/pSa26JOffws=;
-	b=WZrwDR1dbDAxxV3rcVSBtMHFC0p79DyleGzg3tzrI3PDp9bc98p5olVHu4Gyo+iSI3YUPy
-	QhfFwYhx7YBdF6WxhgJs3ZHexNJuNQlDKm2JHuILHC+ERL2XwPCmO0Kvcpl5hORriOJx0b
-	37tyfmeCWOwMbGalha94x4Wcsde3Gs0=
-Date: Tue, 9 Jun 2026 20:06:31 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH 0/3] Remove __folio_index again
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <20260601192626.150804-1-willy@infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <20260601192626.150804-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 8F6AD20004
+	bh=HTZIEvPjjaoA2MuYVhvZwCr9z/DIZJdrQxkxg8vuSEo=;
+	b=HphV5fne2yuW/wV0cpi5LE8TQ/harCgxvD2sighUHB2X8q5KZeKiofmTqowfqsG2NasLii
+	WxQWXD+YGjczWL1y6N1Igkbl31NLGp0o1Bwsp0SfSrQpef6prfzOH3YFs0QIot1wtqEiLP
+	EB0iPVfWZaL0kweTHW60Pba24nRHmrU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781007139;
+	b=dT+53yNp2TPk6U94OJx0/cGW4JqagqRd3iPjPh7X+btdX+vSX/m4qk8UkiNrm7dQGL/mi0
+	eNelq/DjsCifgrVeEpZXzDOMtazs6/cA1ppVnJXDrKbzDf4QYc83EV53dr8zn/wGmIL8u0
+	vIsBKv5GzbKK227hljtW//fNqbZDqMI=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gZST234gmz4xNtM;
+	Tue, 09 Jun 2026 20:12:06 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl1.zte.com.cn with SMTP id 659CBxAP077273;
+	Tue, 9 Jun 2026 20:11:59 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 9 Jun 2026 20:12:02 +0800 (CST)
+X-Zmail-TransId: 2af96a2803129d0-b6578
+X-Mailer: Zmail v1.0
+Message-ID: <20260609201202615oT6yd_LtIoKkGLksFaCha@zte.com.cn>
+In-Reply-To: <20260609114619.144416-3-npache@redhat.com>
+References: 20260609114619.144416-1-npache@redhat.com,20260609114619.144416-3-npache@redhat.com
+Date: Tue, 9 Jun 2026 20:12:02 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <npache@redhat.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <usamaarif642@gmail.com>, <yuzhao@google.com>, <aarcange@redhat.com>,
+        <npache@redhat.com>, <akpm@linux-foundation.org>, <david@kernel.org>,
+        <chengming.zhou@linux.dev>, <ljs@kernel.org>, <ziy@nvidia.com>,
+        <baolin.wang@linux.alibaba.com>, <liam@infradead.org>,
+        <ryan.roberts@arm.com>, <dev.jain@arm.com>, <baohua@kernel.org>,
+        <lance.yang@linux.dev>, <matthew.brost@intel.com>,
+        <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+        <gourry@gourry.net>, <ying.huang@linux.alibaba.com>,
+        <apopple@nvidia.com>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBtbS11bnN0YWJsZSB2MSAyLzNdIG1tL21pZ3JhdGUuYzogUHJldmVudCBmb2xpbyBzcGxpdHRpbmcgZnJvbSBpbnRlcmFjdGluZyB3aXRoIEtTTQ==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 659CBxAP077273
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 09 Jun 2026 20:12:06 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A280316.000/4gZST234gmz4xNtM
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: j16roewcpuqaaru15zsqs5cczkwpgyqm
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781006844-44754
-X-HE-Meta: U2FsdGVkX1/9pCHwjzQ4PQvLmNGbasmRZ0TReSjN3JeT3ddUpLmzh4fCW9Z4mrM4qOEMsY34/ayV0H3hRKGZGSWMvOLN/KckiilWi64vZUXnlCM3qOUT3+g59eJQX+/Uj7fIKZmLUbnt806F8P1kQVCT5/oHyjZhaKAUsXh7utXfl8N0wyEkguxvU6AshbxIJdHTDAtcYByfii9gkj/nUP4Ggp4PC7YStTPNeFa923Gqkn8OKEeIZnvKL3ca/31SrdKdv7urfMyRMxxlr88E6tBl3Y2Q4kvAw1OGGb5hiikODeu+CA/39k7v2JpbJZEPSVOc20ftsWtFZh/OPXV9ah4yFqgnBF3lsF83zEmxq1cc61UW6dD+5AqZ0Cri3W6OWcfbssbCA91bVNbzJoXsbeL74ki8ieqGyceaU0W9dMBpfqsDoPhVNe+htNZzKihOz9N4USRHU89PySezR835acD92w9HRs2EnLju96SaUF5egqO6jiVIVubHXTDhcL1O9V3l6xAWNGLMh9nG9rD+EkNr9jP9kosGOeiFPdjlFtr+oIVuScx1ZvSIsFjRBtqKx6exm1Gi7XbvJknLxm6ckVD5AqnMDf0xQgZTKgxJfq2ePpRZQnUEjEIepg9iItZptc8daBPicso5cw+0KGvfgIU15UYowZbm06EAfpFo6mA46+gYP/TUDPXG14ZILcZSngrFqJ0KXqJwoHqsqb21D1QiszqLtVrEIGPhuEh1LjKsB3SkbX2v5lo64UXU8n9UW3Xprm4AJz/xUflO3omn8O2O7AymChGbGOANrycW5t/kqWu5NSIP751p80HYACuPfig1onae6MpgNwPx16FJqpHmZpRCJ4ykra9Y23pr8E0a2mMRyLhptQSpQt6SjH+44UaVwylpUWafC/JUIzJFXViDrcU1LDgpaBBYvEOvwBQz37/GwEDema/YTjazTA+ApishdsoxsB1BywRWtqx
- kGwbOBKo
- irrXK1imfQpKxS6vvQRXe8MjYGzTzNTyASpUssjDEqzvtZSHSwZaRRTxnZ3V3gLeALYo+IBXQ6jNhtVCIxGe2TtHqlcvjQ6Z1GYHg8DLenS1/9mOyydnw69CtZ4LqtMjYZv0xJ1Mt6op3JAQkh3umANXkRiHYKK8WSlp7pdlKXH4D65YBGIOvQ5uR4zlz8MEJzkniyu/uqAulUr6wkGOOS/Lj9f8wJy/D+7ZZQKF2XCkCdu6+6KpW+Zd99ik7p0+1PjyHGCHyI7zrYl6kUQTTt4U+vA==
+X-Stat-Signature: 9g9ai1a8j57faso6eaqdsyipcw6hb3nr
+X-Rspamd-Queue-Id: 68884140008
+X-HE-Tag: 1781007139-199068
+X-HE-Meta: U2FsdGVkX1/p9nsBewDkF5u1iiOSo3v43kWRVylhtXV03fY5Vm3Sx53i/gA6mgiMllHCds+i/Q22eZGA1XKmCMWN8FeSBIOlkWWfWFaV+xfXDIMDiWCl572O5zzF3bZo7RP24823QeI4MoAHBSC0JnYVzRwe+cUchaHNZ9T5RGBUS6xxwBwTu0daNqHhy6rxDuHECjTsfXaQk4lbDp0UUJqV4PsfN0IjFbPKX8XwC5hpM13SZp9sghDRye4qDEhCP7UvAXT/Lh3ZoMPnOLfb50Flu4tBbLHTgYqUSZFhHYQ+yVqrAWzsWt0UGkstkA7CThCTHA+CbEn+OGouXsVooejLAE2aoODP/NCYRVwzvAJjM14m0jcHZRVujVoJUkEsa8BG/xiVjufB/126F06yjN4PT1NgeQ6Iq2uKVxmgDTXPZCWFgCWRe3p25aR+MdawRvKeHyRsy+1HTUBcwogg/9XlHhDiF+PK3Cvgzday1+Y4R7aKI1Tmx9yHixTfFjV/9JljMfOAH+4gkEYL4pihadsL1g4n+rMoIltMRsGq27aLqDB+Ce7+wFjUcVXjHnV4UjwBbHBsOdbIpDowz9ec/mLlEbTEjzp1QTX2hH+N6q67jJAc1PX3cQydUc5eYksaSuFEHLJKMHlIdZhjVn+GAokdZYAN2IkMve3oK/u9RvV2U/H1NvwfCfxQ/3nVQhE596lp//AVAQZO2zh0P9H0V17NCjgP8H8QATuWsvqXra/F/8iHHMqRbGst2/r36O6uzh6VPBbTB3dMU5w9WALfopYIjx+gpmUyyhQ9JvWHMRUB31hg9lPZ686ZQf21YKznKGaPoQtyEAtq19U6c3PvcxQfrV48NsYeEMlk41HLVpn72Mm8BgurasdW5qhQVTRsIB8dW/EuhjBvOgxNA8RE6oOmrB6faOjbeX0xOBEKbtJ2mTj2J9wYXgHK6WTsbaO+pTRe1KuSFpQHnA8j5xf
+ KRsE5p/+
+ H/GuPWp2pk3cloZQ1vLPEd3QNTF4ule3g0oYc6uNVxZUPDQVVLqqKE8NeBSJMWxTN7qUS1LsKvj03mk4qWi6WZEmkgqCcZ6HfOZsRJTZz4ftmhHNpVdmQOvIMUJ6TOYJHjFvZWnFnMClYzUsikq46UT8xT86Dvxdw8PPeZt/cmmi2KyDC+5zmFkpEWiYDq5zfJrvSLdUMB/Cvvoa5X1i3B2bJ0FinRRoLi0KNHToemo8WqFg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,29 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/6/2 03:26, Matthew Wilcox (Oracle) 写道:
-> I renamed page->index to page->__folio_index a year ago.  That proved to
-> be insufficient to prevent people from using it, so take more extreme
-> measures.  This breaks tools/mm/show_page_info.py (I expect) but since I
-> don't know python and have no interest in running this script myself,
-> I invite the author to fix it.
-I am the maintainer of the show_page_info.py tool.
-I've been quite busy lately, so I apologize for not replying in time.
-I noticed that you have already fixed it in the v2 version,
-and I have reviewed the change.
-> Matthew Wilcox (Oracle) (3):
->   ntfs: Correct use of folios in handle_bounds_compressed_page()
->   ntfs: Remove references to page->__folio_index
->   mm: Remove __folio_index
+>Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+>when splitting isolated thp"), splitting an anonymous THP remaps all
+>zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+>This flag is set unconditionally for every anonymous folio split,
+>including splits triggered by KSM.
 >
->  fs/ntfs/compress.c       | 54 +++++++++++++++++-----------------------
->  include/linux/mm_types.h |  9 +++----
->  mm/zpdesc.h              |  2 --
->  3 files changed, 26 insertions(+), 39 deletions(-)
+>When KSM is enabled with THP=always, this causes two regressions:
 >
--- 
-Thanks,
-Ye Liu
+>1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
+>   split_huge_page(). The split remaps all 512 zero-filled subpages to
+>   the shared zeropage at once, freeing the entire 2MB THP when KSM only
+>   intended to process a single 4KB page. This bypasses KSM's
+>   pages_to_scan rate limiting, causing ~1GB to be freed almost
+>   instantly.
+>
 
+Why do you see it as regressions?
+
+AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
+a huge page (which may contain many zero pages). If KSM is enabled and part of
+that huge page is mergeable, it can easily be split by KSM, rendering THP's
+efforts futile.
+
+Therefore, in our actual production environment, we typically avoid making the
+same region both KSM mergeable and THP always.
+
+
+>2. use_zero_pages=0: The same split side-effect occurs through the
+>   stable/unstable tree merge paths. Each pages_to_scan iteration
+>   triggers an expensive split_huge_page() that silently frees 2MB,
+>   while the scanner wastes cycles on tree searches for zero-filled
+>   pages that were already freed as a side-effect.
+>
+>Fix this by restricting TTU_USE_SHARED_ZEROPAGE being set in the case that
+>KSM is running and the VMA has VM_MERGEABLE.
 
