@@ -4,96 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CEA4CD8CA4
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E67CD6E79
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 09:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A40636B00B2; Tue,  9 Jun 2026 05:18:56 -0400 (EDT)
+	id A1E296B008A; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0C36B00B4; Tue,  9 Jun 2026 05:18:56 -0400 (EDT)
+	id 9F6606B008C; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92DD86B00B5; Tue,  9 Jun 2026 05:18:56 -0400 (EDT)
+	id 90C536B0092; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 817086B00B2
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:18:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24AF5C18EB
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:56 +0000 (UTC)
-X-FDA: 84859824672.08.A575881
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 815AA6B008A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 05:22:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 412B21404AE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:22:24 +0000 (UTC)
+X-FDA: 84859833408.30.36AD597
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7484D20003
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:18:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mfELCQqu;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 79160A000D
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 09:22:22 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWQgzVI5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1780996734;
+	s=arc-20220608; t=1780996942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJajBhmopjl8Hwhv2eDy4ETytAFbNHaX96AYwL3i/hA=;
-	b=esy/MiNZXSoahJnc7XyMP2z1P4MB88KPhmwoi4TIIIrPKvraRbWG3VXp1fCr1AfUmeLBlZ
-	Im8DqQX7IO769QLeXUJJGM6t4j4wrQzAF2PUvna/L2PYqgcyqtyjM2tC1cwJtNCcNGGRB+
-	fqcOsGRgWSWOak7OEnSx9SfF5pakECI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1780996734;
-	b=2vnWd1KOCKZr56LeZFoX8fBUgHlmJgpyH33MMIZ4PFf1y1x7pSKUwz977NXqxroIK3riMR
-	TiNDNlFA1pOZHEaGEm0g2TwyExPBh1egT+K+hSKqV+GoLVIWU4ajuUookawVarsa2a6ECd
-	VRwdcAtBNCzddMZIq8Nbn9vfIYLrwLY=
+	bh=ng9jHxhLKm+wupNc2lT6TIXiphnAOWpSgu5QGHBRdkw=;
+	b=B2Lisbk5SLWL+1x7qObHlta8O6m3vvc60tbtfyjGiUoMa/eYeciZIqcGRcZMVkX2YrPh7P
+	O+/d3yU/qqJYi/hsrLcM6V8f1uZo+ABqUthNaAPJ+f47G49XbbnaHrHQpJdRfeXg+aYYFH
+	NIE/ggfwJEdFzIKY8zPplkN+64PMCCo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mfELCQqu;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SWQgzVI5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1780996942;
+	b=YzLPJa4vilk1Clhrr2aCzImzsuVZCsIPDT0As2FLj/TRqOVgiZD2+/M/xgr65EF88vZuEV
+	O9scZOhqA7ozv1DFAswAJzu8yFwsrsKLrn/uDNUufRJK1d5b+xpatlJ7zR/Unoc6SLh3CM
+	IWGgN7uLdGJ619QOe7yxJlaeNuqNz0Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1A14436FB;
-	Tue,  9 Jun 2026 09:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4161F00893;
-	Tue,  9 Jun 2026 09:18:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B08E54004E;
+	Tue,  9 Jun 2026 09:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02581F00893;
+	Tue,  9 Jun 2026 09:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780996733;
-	bh=OJajBhmopjl8Hwhv2eDy4ETytAFbNHaX96AYwL3i/hA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mfELCQqul9/aT0coI5OmrsKZe7PO1SayKTXlVzHfo5FdJBS510xBL5TFtBeFv1y3P
-	 Z3GvMh2Hwb1/qdm39TsNjQ5D8N9er45dQ5cYq3QdlIjwMOVZFxjCZZV9LJNaQ1MjDk
-	 Rh7md2C8uFOyx5bhIbbF5dmc6QW8SCEe4YAsnnFRBGbWrdsTbe/o7w/nyo+Lypqzuh
-	 2ess4G9bFRWrg2DvUeVJ5GAlWD1ErJZHnoSJkT858OBpogUyzV+ZJ9EOD612txR2H3
-	 fQxsOqVZlNxw3+qjQdeAvxOi2jvHlN6TkOG7rK/Y++TaUsOOJvu5x8Hq+uZqiGRql9
-	 hLtXn+P/tGUWw==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Tue, 09 Jun 2026 11:18:00 +0200
-Subject: [PATCH RFC 15/15] mm: remove the __GFP_NO_OBJ_EXT flag
+	s=k20260515; t=1780996941;
+	bh=ng9jHxhLKm+wupNc2lT6TIXiphnAOWpSgu5QGHBRdkw=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=SWQgzVI52LaHkB7VoZBRP5Hep43cRjdcNaxoxP8s799rSQR10tuC9zEdbcd/OK0Zj
+	 Qg3Zi8Q0kZHVXMrubP85luSqXwcss6sIuQfi5UcGSdqCRJnTLeYEaWLGQD1uL4No8P
+	 4dVL7kNGywcze91d2iG8aL8qFav98WG2jmJjOxXXgT+nRAEvhnyZrU7AZCf0TJtAxk
+	 W46BDDJ6FNLWOuVjkypQK1MjWqyS41ToH7O8dLG49OTre8ayvppG0u13AMTq/sH/3E
+	 4y1SS98K7w1YJraYhy7Im77ox9c+GhETrnx7gdUt60C3ToM9xXEs7mziD4jdyMP0/O
+	 rPTkApO9tZc1Q==
+Message-ID: <c600d34b-8424-4ff9-adab-f6aa654d7ca9@kernel.org>
+Date: Tue, 9 Jun 2026 11:22:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: 7.2 candidate? was: Re: [PATCH 2/8] mm: merge writeout into
+ pageout
+To: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev,
+ akpm@linux-foundation.org, chrisl@kernel.org, usama.arif@linux.dev,
+ kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ youngjun.park@lge.com, linux-mm@kvack.org, hannes@cmpxchg.org,
+ mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, ljs@kernel.org
+References: <20260601113449.3464734-1-hch@lst.de>
+ <20260601113449.3464734-3-hch@lst.de> <20260609084909.GA12512@lst.de>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260609084909.GA12512@lst.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-slab_alloc_flags-v1-15-2bf4a4b9b526@kernel.org>
-References: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
-In-Reply-To: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
- David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 7484D20003
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 79160A000D
+X-Stat-Signature: zj34twqynnfs9sutzz7pfj913ayafb5n
 X-Rspam-User: 
-X-Stat-Signature: 8yrby9fqi3xm7sft86yhkuis6xiz5kwh
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1780996734-128610
-X-HE-Meta: U2FsdGVkX1/6b54Us6HK1m+SuTsP9Ga2hhBniwxWNlO4VP+MXZxYA0zPjoA5vQ2zbfa3Nu1paD8hhZs9HnJjqPoThMWnDBNOC3rzS/4OCKxQX+7AkybDeSaH2iX+MXFQkjubfBYSCdWOF4zTdOFClqQLWtp2VfV/4uFUd96XhfCRvdGohbyeEhT1bAib/Gw2Xo5oh4FZRi9bUzIy1huo6VtzL9u0wHYaoD5V+U82cSiMVfndS9/7Bh6dLWCtKZAH7mOzkhjbmshjF9ZUpPCYZqYCiVPa4qLjHK1kvC9rONpLSu6pstB+y63Uij+dFnoFfpkT04cGTQSZI/HNG0SCIqjYKW41hlcu5pMntyqtDhh47f57i/e9JrCoDhuVvJ8e3dcaFt9QRjgfk4UNeUX+AUFti+iEl0T79Yss+CwKJCBgX9qh+wfxAdTLHpJamUuo0a8PNW+ERiSzb5w/4+s85Vc2uCFGuYn4EnMKr71XMC7gZWmP3NVN97u51UNhOBp0S64XedbPKWBVYZw/AQr0m7RowJC6Znpg4a0jGWWlxRgjWSZYDzWkbXbSiHcd6aSu+MmAtdggBbuOEQorReynXZZN0rKa4kfSRs9keJgcgvBk2JWTSdziKXOlbw1X/5TIzdR5i1sLWqmj2nqlpWbZDmNMVDEKxND6+XIefG+tu1scrFFoymxmWeb7hKS5y7hfwfd8yzHoqwsWJdzGALJMj1M6s4VhdAKev6FcV0pEkKHIuLX9hZFui8IxEax3D5wVnGZwV1zXV4oFjZZl489QMPcgF43QxkCyXTxZSXqHdyfXN/2lveDFU3lo7p2BWjHmJFLuqfCLgv1BgZugcfCTKO11Epf6XrJSHCKWzy+oNAZM+Qx88Gha8DvDxsAJ+/lzDlYaYUsMG/re/+DiH7FOguazRvK23vvywhiOKVXT00NBj+TCeQ2laWk5QyJHqpeZHx6UPcqdAMHF+Yg3JNU
- xG/jX6eD
- 4gJJq0hPq979BFBIOHESMj5IgYtL7tmWucVpKpT5t9KD+bfHIoo35yp8swt5UFO1U+ajNDIpzrD/1rYqzEYrBjZF2jDdMRoiLVr3bwrz/MhOWCXe2qJWMbis46FziTfgAgwW6ByDGyHLy2TQLEUgYOdvWW+pFHEkWDk7jj28CZ5rHElYs+L9CvuSDOPRuGS2ZgK72/ZdjF67jDRPpTZljnmRKP28T7D4xY2nuMUjfV9x+6PDuWxRhHR+KYksI7u+Ry/Ut8vUj9D2Jv5mvwMLFD+o6UvLzZ45eQ6c9
+X-HE-Tag: 1780996942-320518
+X-HE-Meta: U2FsdGVkX18mx59ZBkUUNhR92KGYbA7XnlpoCBFYeFhL9TVy827Skykh17bYXUfcHNYEaRC+GLOnQqVvbyMSDBEQAVhsCwpbEQPPRH2PCAhMkCNrvMysnsfrW1+Gy1iJDQS0jPf9YOjcV6jRcRfuO9XX1jQx+0bwcAM/5atoCrIycctGpe3PEDXbstLVGjF62GRXmPUeK/4GYrblvnxHUf6gjYPZJmvp8NHPWwC4YHIGHgfyUcbyn1hVe9RSiQyK4JwMih/M/psZvugRE1cBAtanDW0/sEiuvTkkBFRlCpwzFgOxd0AH4N4jAFq+JQet0jL1kgJaII0F8CGZhQMi8VSYafM1zGbmxDa/f7uZQOiRzxi4/eEKkUf9CIT2FxRc3suUVVBaSLb6HrfUz0Sgv5JalYFkXxSBhR3aagbVxqO2Pws+ubnr4IHI6ZMIgEj4V3xbtCJkaxAlnGI4GOJ0vH0p5OAT7Hw+Szg4HpVH2Ru8cTGHOYyK3WQvi6aRCuDbfdoW4OVpbDedeRNrfoJAxLMKNCQFecygiMoOQjv4bAnXuEGPbSNWAUb5I7QsBF0CSiIsvRIjxJmJSn7T/Kp7TKj5RvLkrTe5WfxuccNn8FYgxc6+hTuWMT2i8mPyNKLwm/APMLiVpvmVf9kYiOA/1L2vuDdS74RB6mhUgHBuq6JI8KxOZyfR1Yps2GSPEtuG7OlCK7wMoO8J9MuQgdt1v159VOY+4Lx4Ot15cVucJot6tHMWPEyCxEtp8BdyNM18cmUGcqZPU9xJkOZzAlHAPzRrgfCP7F09mOg4EivHMW/UWXnkXTlSARwOx/VNFbw5Bf6XhanG//JNWaOTJK1CcsZNhp0SECprjkJ7YF26/WAda591KgPK+eUnf8C7mN+s2x6Yu6O9IlcAXc+xQ0FLO4Y9ra3u4tXvKz0bbJSTv4Ej511LxuCSd/lCsJwawZIOKT0s7WJ3j6Qc5zto/ou
+ /dW/EFCs
+ 9QxQTaICDZYf9qJxCQnGuqwTWDKQ34yl8qqpQixueafI8KznELUrt5hHK7v/Xw9QEM2Et/UwpiGpioFrX8+JjtF7vnXhagcdHHc/C/tkshSVQe5X68hlb7w2ksQafDwnaFsph+g3K5CGdsoRDu/zpMOaYcITNBT8I2fi++gNHHWRCqZ6lKaDuj1H6hHjh4miOSWCnKOcEuXrp4AGwRBKtjmtWKETITMCaQQYael11dS91q19IfBesWktmTYhZ+COLzgayBl/l/9I/Ht5XO++JL5H3Tg6k822Gk7eao0t+2PQYI6ycC8+TebQWBnbzyJ8vjF8NUsdgj+yerCI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,146 +141,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All users of the flag are converted to SLAB_ALLOC_NO_RECURSE. Free up
-the flag bit.
+On 6/9/26 10:49, Christoph Hellwig wrote:
+> Can we maybe pick this up for 7.2?  It is a trivial cleanup that would
+> be nice to get out of the way.
+> 
+> On Mon, Jun 01, 2026 at 01:34:28PM +0200, Christoph Hellwig wrote:
+>> writeout is only called from pageout, and a straight flow at the end, so
+>> merge the two functions.
+>>
+>> Signed-off-by: Christoph Hellwig <hch@lst.de>
+>> ---
+>>  mm/vmscan.c | 63 ++++++++++++++++++++++++-----------------------------
+>>  1 file changed, 29 insertions(+), 34 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index e8a90911bf88..d7303eea1265 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -612,45 +612,14 @@ typedef enum {
+>>  	PAGE_CLEAN,
+>>  } pageout_t;
+>>  
+>> -static pageout_t writeout(struct folio *folio, struct address_space *mapping,
+>> -		struct swap_iocb **plug, struct list_head *folio_list)
+>> -{
+>> -	int res;
+>> -
+>> -	folio_set_reclaim(folio);
+>> -
+>> -	/*
+>> -	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
+>> -	 * or we failed to allocate contiguous swap entries, in which case
+>> -	 * the split out folios get added back to folio_list.
+>> -	 */
+>> -	if (shmem_mapping(mapping))
+>> -		res = shmem_writeout(folio, plug, folio_list);
+>> -	else
+>> -		res = swap_writeout(folio, plug);
+>> -
+>> -	if (res < 0)
+>> -		handle_write_error(mapping, folio, res);
+>> -	if (res == AOP_WRITEPAGE_ACTIVATE) {
+>> -		folio_clear_reclaim(folio);
+>> -		return PAGE_ACTIVATE;
+>> -	}
+>> -
+>> -	/* synchronous write? */
+>> -	if (!folio_test_writeback(folio))
+>> -		folio_clear_reclaim(folio);
+>> -
+>> -	trace_mm_vmscan_write_folio(folio);
+>> -	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
+>> -	return PAGE_SUCCESS;
+>> -}
+>> -
+>>  /*
+>>   * pageout is called by shrink_folio_list() for each dirty folio.
+>>   */
+>>  static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+>>  			 struct swap_iocb **plug, struct list_head *folio_list)
+>>  {
+>> +	int res;
+>> +
+>>  	/*
+>>  	 * We no longer attempt to writeback filesystem folios here, other
+>>  	 * than tmpfs/shmem.  That's taken care of in page-writeback.
+>> @@ -674,7 +643,33 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+>>  		return PAGE_ACTIVATE;
+>>  	if (!folio_clear_dirty_for_io(folio))
+>>  		return PAGE_CLEAN;
+>> -	return writeout(folio, mapping, plug, folio_list);
+>> +
+>> +	folio_set_reclaim(folio);
+>> +
+>> +	/*
+>> +	 * The large shmem folio can be split if CONFIG_THP_SWAP is not enabled
+>> +	 * or we failed to allocate contiguous swap entries, in which case
+>> +	 * the split out folios get added back to folio_list.
+>> +	 */
+>> +	if (shmem_mapping(mapping))
+>> +		res = shmem_writeout(folio, plug, folio_list);
+>> +	else
+>> +		res = swap_writeout(folio, plug);
+>> +
+>> +	if (res < 0)
+>> +		handle_write_error(mapping, folio, res);
+>> +	if (res == AOP_WRITEPAGE_ACTIVATE) {
+>> +		folio_clear_reclaim(folio);
+>> +		return PAGE_ACTIVATE;
+>> +	}
+>> +
+>> +	/* synchronous write? */
+>> +	if (!folio_test_writeback(folio))
+>> +		folio_clear_reclaim(folio);
+>> +
+>> +	trace_mm_vmscan_write_folio(folio);
+>> +	node_stat_add_folio(folio, NR_VMSCAN_WRITE);
+>> +	return PAGE_SUCCESS;
+>>  }
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- include/linux/gfp_types.h       |  7 -------
- include/linux/slab.h            |  2 +-
- include/trace/events/mmflags.h  | 10 +---------
- lib/alloc_tag.c                 |  2 +-
- tools/include/linux/gfp_types.h |  7 -------
- 5 files changed, 3 insertions(+), 25 deletions(-)
+LGTM
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 6c75df30a281..a93b8bd200b7 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -55,7 +55,6 @@ enum {
- #ifdef CONFIG_LOCKDEP
- 	___GFP_NOLOCKDEP_BIT,
- #endif
--	___GFP_NO_OBJ_EXT_BIT,
- 	___GFP_LAST_BIT
- };
- 
-@@ -96,7 +95,6 @@ enum {
- #else
- #define ___GFP_NOLOCKDEP	0
- #endif
--#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
- 
- /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-@@ -137,17 +135,12 @@ enum {
-  * node with no fallbacks or placement policy enforcements.
-  *
-  * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
-- *
-- * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-- * mark_obj_codetag_empty() should be called upon freeing for objects allocated
-- * with this flag to indicate that their NULL tags are expected and normal.
-  */
- #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
- #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
- #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
--#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
- 
- /**
-  * DOC: Watermark modifiers
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 11e82fdbe8d3..15d1917b81d3 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -1043,7 +1043,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
- /**
-  * kmalloc_nolock - Allocate an object of given size from any context.
-  * @size: size to allocate
-- * @gfp_flags: GFP flags. Only __GFP_ACCOUNT, __GFP_ZERO, __GFP_NO_OBJ_EXT
-+ * @gfp_flags: GFP flags. Only __GFP_ACCOUNT, __GFP_ZERO
-  * allowed.
-  * @node: node number of the target node.
-  *
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index a6e5a44c9b42..c1a05ff0feab 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -54,18 +54,10 @@
- # define TRACE_GFP_FLAGS_LOCKDEP
- #endif
- 
--#ifdef CONFIG_SLAB_OBJ_EXT
--# define TRACE_GFP_FLAGS_SLAB			\
--	TRACE_GFP_EM(NO_OBJ_EXT)
--#else
--# define TRACE_GFP_FLAGS_SLAB
--#endif
--
- #define TRACE_GFP_FLAGS				\
- 	TRACE_GFP_FLAGS_GENERAL			\
- 	TRACE_GFP_FLAGS_KASAN			\
--	TRACE_GFP_FLAGS_LOCKDEP			\
--	TRACE_GFP_FLAGS_SLAB
-+	TRACE_GFP_FLAGS_LOCKDEP
- 
- #undef TRACE_GFP_EM
- #define TRACE_GFP_EM(a) TRACE_DEFINE_ENUM(___GFP_##a##_BIT);
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index ed1bdcf1f8ab..63686b44a23d 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -776,7 +776,7 @@ static __init bool need_page_alloc_tagging(void)
-  * If insufficient, a warning will be triggered to alert the user.
-  *
-  * TODO: Replace fixed-size array with dynamic allocation using
-- * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
-+ * something similar to slab's SLAB_ALLOC_NO_RECURSE to avoid recursion.
-  */
- #define EARLY_ALLOC_PFN_MAX		8192
- 
-diff --git a/tools/include/linux/gfp_types.h b/tools/include/linux/gfp_types.h
-index 6c75df30a281..a93b8bd200b7 100644
---- a/tools/include/linux/gfp_types.h
-+++ b/tools/include/linux/gfp_types.h
-@@ -55,7 +55,6 @@ enum {
- #ifdef CONFIG_LOCKDEP
- 	___GFP_NOLOCKDEP_BIT,
- #endif
--	___GFP_NO_OBJ_EXT_BIT,
- 	___GFP_LAST_BIT
- };
- 
-@@ -96,7 +95,6 @@ enum {
- #else
- #define ___GFP_NOLOCKDEP	0
- #endif
--#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
- 
- /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-@@ -137,17 +135,12 @@ enum {
-  * node with no fallbacks or placement policy enforcements.
-  *
-  * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
-- *
-- * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-- * mark_obj_codetag_empty() should be called upon freeing for objects allocated
-- * with this flag to indicate that their NULL tags are expected and normal.
-  */
- #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
- #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
- #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
--#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
- 
- /**
-  * DOC: Watermark modifiers
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+It's rather trivial, so throwing it into mm-unstable for a bit to merge it in
+the second MM PULL would make sense to me.
 
 -- 
-2.54.0
+Cheers,
 
+David
 
