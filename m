@@ -4,115 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC640CD98C5
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 15:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED404CD98C5
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 15:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E76D76B0088; Tue,  9 Jun 2026 11:33:26 -0400 (EDT)
+	id 3F2B76B008A; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E27A26B008A; Tue,  9 Jun 2026 11:33:26 -0400 (EDT)
+	id 3A3076B008C; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E086B008C; Tue,  9 Jun 2026 11:33:26 -0400 (EDT)
+	id 291816B0092; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C74DD6B0088
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:33:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E47EA0609
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:33:26 +0000 (UTC)
-X-FDA: 84860768412.18.792E478
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7915B180008
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:33:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="XVSTOPs/";
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 115BC6B008A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 11:35:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7DA41C2E8C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:08 +0000 (UTC)
+X-FDA: 84860772696.03.6E2E1EB
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0373B1A000A
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 15:35:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ki1houUI;
+	spf=pass (imf19.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781019204;
+	s=arc-20220608; t=1781019307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b6BCUZOSGcGQwGTjfIKiafZBTm2kPzDMfyKQlIS2Xtg=;
-	b=58W1clojSLelx2yaLw1jrKykYUgiT0Zdrumg8HK/+bWVTfpaFeRSmHmaU0VKVGJ6HJiBtO
-	nKaYG0gnqoP4t/OfWmJn0ydpZHXuPaEykpYlkK6uxLmnHDRA3FmioQdtPqjGeg0vG/ab7P
-	UEAZFiTgRJhcJMWC4otxLcrKrY1h1pE=
+	bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
+	b=FtTbkArEU4X5oLYqN0QHV1ShAzb7FLgL+0jf/xSTDUkx8B1OjfmsRg1GqyoZCufotyaVEz
+	l0829DGJ09TmcsBDr4HpT6EypVa+FdD5K+9M7PpeUHK7aMlQs9k13yXcUrqSJsoAgjEJlB
+	Dw0jE/w9IgO6KTuIEG6kZxa2XRWhayw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="XVSTOPs/";
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ki1houUI;
+	spf=pass (imf19.hostedemail.com: domain of praan@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781019204;
-	b=0SgzMOVyIuxM8EHD5ecyQjLUq+hgtTdNhPY+ZDJbr1kTwMpov/rLhmVYXEsGBSnzOm3TgE
-	s1juEwzu/FWR4CeFHnQgprZZUBNjR6+mcbE8fcRDeN+kK0fscBFm52RTKjZNdu+7VsvzFs
-	3SM03E7mSKEInlg309HFyjJXV6YAfvc=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177945a279so60892911cf.0
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 08:33:24 -0700 (PDT)
+	t=1781019307;
+	b=vMeZNkeA/2sMn8oZfeHCRtyNSb1nKeXr7szfLqj4etwSmyPvtJdnMjJF8hunneijyAQ+nt
+	QiHiEZO3pXxf3MZz8ALDQ8m06QD7WMHgUUV/13jbGXVesWszN3bIgI8LxMAFcZK23D12zw
+	iaRbBNlmMpe4jx/G6dhs5iQQpBqmyjE=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf2911f93cso448895ad.1
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 08:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1781019203; x=1781624003; darn=kvack.org;
+        d=google.com; s=20251104; t=1781019306; x=1781624106; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b6BCUZOSGcGQwGTjfIKiafZBTm2kPzDMfyKQlIS2Xtg=;
-        b=XVSTOPs/aJBIjJJTgJt6L/55rRJgug/oYzprhVGM7FpldWxYHJ0vky5QLBCvfkHLQy
-         rT0yG+uh5hkvAraiMCd55xxbPzX5VoOAc9mC311z4twdVw+9mcC0RKE5BT59nMXCb5aa
-         +kbClLtTie53HWTFL661G24AMcb3/Tq4jgaVFOnpE//dqGEY/kRvhbqA6xMwJJ6BHS8I
-         fV8x3lEeClsIP9Hu2D8JHNTJi8GqIcJo7HCMftIaSpBoGOzf1xldyMmbpvMD9h2RR554
-         osRfnnyQ4/u2ckf0ku3rwctZaWG7j9PERMr3MqjYKwyqq+JR/77Cbkvm0pAMcXpwvGS7
-         yIrA==
+        bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
+        b=Ki1houUI1l6/BCEhu9FLuX2gdZoL1lLH4O5JPEIOUMTyLXzCEOn8k3IjXNbR3hRgBU
+         tKZtUo1F/uMCmEk5JubmE04fUUheaPAgOnZ7NtsA4kgro8nauQPKwiiFW24PzFYo3um4
+         2GktoK9QbKTPeZn+N5/FWFf47FXiJLavlWVc72voJ7xu7XweMngANZ4G+Iq2BsjSK8Yn
+         mh54knw8NG1ksWC6ITgEUoyodB4K0aRjeAtwMJ23qUqGVR8Ws+kayiB+ujsFJRacV7ll
+         wCaspQh4kKYFQF6JKrpQC2ieASylBkJB1iUo+cCySx4qukTEqWYzzenOz//OJCsr/jhF
+         1u2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781019203; x=1781624003;
+        d=1e100.net; s=20251104; t=1781019306; x=1781624106;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b6BCUZOSGcGQwGTjfIKiafZBTm2kPzDMfyKQlIS2Xtg=;
-        b=HgPGy9RQnqTIK0RY6E9Y+JbEH498tFaUDChbcoAX7ulhFsGiVvRaof6+vKtFpNUmKR
-         yosGaD+cv1CISBVrrFwRPDQQGnhSjJbY2VFSLPrHhCWPD2jAsXERZn/tKB5V58zIba94
-         Pt5B5bkFB4XIr31vWTpB6juCx1+Mh2gP1PSYXuAJ+i0NGJiemj1r1qWpR6vi4MUY88vI
-         VOu2vgf8DuXbjlbY1DHXU3hn/yOdPdxoNLNZB0pxZ9UbxvJUZsNR+hLJVAYgyCCcYDKf
-         8u7SPpmm/PLhJysRuMG6IlfWAlEQ4S2X7/b35PyxP7oO97+mVlFQXg38dQRwxUH9ulI4
-         XGUw==
-X-Forwarded-Encrypted: i=1; AFNElJ8oytig9xLjJVT72AeVuR57AaNsgld9gV0RgnE8BDKGEV86U77stZO+yctuOx8jv7aO19uSk1xSkw==@kvack.org
-X-Gm-Message-State: AOJu0YwkW9uzWYdzIsyOZp0QA969ACH7yuqx3lFBLE3yQYYaOspxekZh
-	3N5ekC0e3GIKz+5UazSTvhd/hOKhZ48s5r9+VirHv4/yg62HtWWQBF0gk64M/AjYH2JIgQ7PAFJ
-	4tEy0
-X-Gm-Gg: Acq92OE0bQBj59wo2kjrlQ2wvD42gIS03Eb9K+7gp+Ddbe3KE68WBByy5MTwBs5oHZv
-	4kHsvBijLCTVqoqrWq/82hNu9WOaj72l7jnrue09SEf79Qcg3SrzhrSvgIkqLmdTO4SgtO+Ws9v
-	5xMdf1I1Ingl80t8eSxJ2u5AP11DYFp2pCo0BcSV0fmqCfMW8jJcuWb1g74jcNrwZOUU0gstn/O
-	GE3MG58nRwUdfmXwCsT+ntyT7QyOAoC+BClsOnEye5oywtdXPkowvmePb3k4p+NJMFUkXZvFYDS
-	CVeeIh4W5BHnzO/MNW5/3fmd5nDht2CatBmr4uDxIP6FzaGb9TiSGXluDEpeueWvQNH4+daa7xs
-	PyOikOafJNilhToOpNdoKLHLAaBvUMQZKh/avi0kw+BgJloZn2jjcKg0f7/Om6Ddt8ANcbB5QwG
-	CLbVTZLuZn/Lm4VX9qMzQvOjXJ3je9gcNBQEaoJZrscF6TzWaA7u1Gdrszf9wprz3A/mOzOqWmE
-	virViDHIblCTYtvCA==
-X-Received: by 2002:a05:622a:1451:b0:516:e10f:b1fa with SMTP id d75a77b69052e-51795b0cfa8mr290431301cf.2.1781019203248;
-        Tue, 09 Jun 2026 08:33:23 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775dffb14sm193985651cf.28.2026.06.09.08.33.22
+        bh=UyfvIUyYOvTVt/UpRIulwDCiz4s89QiTYmiwF1UuTbs=;
+        b=Gm4wsp8WomvdIWdjtdE+FnVrvpajm7GzTjecd8PcuqM+QHET1w3oDOyrRm+2RiXy78
+         f09of6+oTUtxBZgHfjRnfqp4GkDV620bMvUnLqtgGX+N2ThGE6elNizlfl2gW3/AEJvw
+         1TVIL4pNeddbrhAmN+1A03Zs30PDHWWXgrFCyimzb9jJ4OhqBiiDJnAKjFBb5uZFgpyZ
+         qDvSY/kstUtS8Cx7nFCO6SrGSB2srvqPfyl4o+vngCZfXr80EmUHEZHjT46uqQlcDuPk
+         tpoMFNHUQL/57hFh/RcUoj8hbJWvKMarG8EIKxYpFHd+BGdYsG0BQRTO8Lx738xIksiQ
+         xuYA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2IuX4mwk2cXmNZJWcBqyAxfGgoc7FkiwUe/3pLDycxay6kMMJ6ACNST0QjeRCbjs46Od3E9gLjQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy3F8zSVc/TV0il/7J1u9UO3EkD7YnLd+dpNYC5vMRTrmiPC8/1
+	9W4aAHTlQ2PC45AVFepbncHR9Yg4wOyKTyBgrXd/cPZpSbRJ+JpaMmGyfCJc2A4FPg==
+X-Gm-Gg: Acq92OEytH+yfhYTLAgwxBCk4Gdkm+Sjz3+jI0dju92y+1/iY7klIoSkdOMSwrhLJ4w
+	odViWh9O+N+071jaNil4us3ipwOZUM6pGofcxkC0troNaIUxjGCkjjdHEZT7ncUh/5msBGq83dz
+	hiGzYdxqIuWgjyubu55ir+9Vgktbaf47TvULrpxMrk9rpO0IMrg2OxvwQb/bFNP/hjCswbPQQpU
+	TidYVU4fADiKHtGE5LDG2l8SG+wM6xT5xC92F7vcvuwNlteBtv3MZ5BNP21wFuBkrr8XoYQ/O/V
+	pidWuDCEm5tCOmm3Ow/j+x6R76jCgM683gTsPfeK9mbSBKLea4UEHjxQVcltx+9cJWeXMfiQmMN
+	GHLCeDiketyiTg9nrgVKPriGFOssAAlYzmBCIqMIbcwOu311LwhPKu883VOvgyGuRRNFUTdx1RF
+	7Kcfcdcn2KigUMCtBeyf+vYt4g9anX0pgOP8zKKVabIGb6oeBtw0Pd7e/50DfLVH6ACCoBUmmp+
+	mbFDRrn5A==
+X-Received: by 2002:a17:902:e885:b0:2bd:7e8e:ad56 with SMTP id d9443c01a7336-2c1eafba702mr7653595ad.6.1781019305283;
+        Tue, 09 Jun 2026 08:35:05 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf827e6sm24737580a91.1.2026.06.09.08.34.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 08:33:22 -0700 (PDT)
-Date: Tue, 9 Jun 2026 11:33:21 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v4 6/9] dax: plumb hotplug online_type through dax
-Message-ID: <aigyQcBH3HRrOn23@gourry-fedora-PF4VCD3F>
-References: <20260605211911.2160954-7-gourry@gourry.net>
- <20260605213143.A18F01F00893@smtp.kernel.org>
- <aiNFezMarbvIZNa0@gourry-fedora-PF4VCD3F>
- <878faef6-bbd3-43ec-af82-6da675a5f8fe@kernel.org>
+        Tue, 09 Jun 2026 08:35:04 -0700 (PDT)
+Date: Tue, 9 Jun 2026 15:34:55 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 08/12] PCI: liveupdate: Inherit ACS flags in incoming
+ preserved devices
+Message-ID: <aigyn66-xQ_9JBW6@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-9-dmatlack@google.com>
+ <aiXWmR-ettxin4LC@google.com>
+ <aiaeOVomxQZhoM3K@google.com>
+ <20260608181640.GO1962447@nvidia.com>
+ <aigtS3UDdhUGp3m0@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878faef6-bbd3-43ec-af82-6da675a5f8fe@kernel.org>
-X-Rspamd-Server: rspam07
+In-Reply-To: <aigtS3UDdhUGp3m0@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0373B1A000A
+X-Stat-Signature: ge6gs1rmsp79axgnh4miqawo7r7uhdhu
 X-Rspam-User: 
-X-Stat-Signature: pzbq3jnza4qirfzsoqq37fgdnduajce7
-X-Rspamd-Queue-Id: 7915B180008
-X-HE-Tag: 1781019204-138389
-X-HE-Meta: U2FsdGVkX1+RU4X0CKB7FOLP7aEII1ls5JKVCMrLFxsa2Ti/kWkX9pB5O7Fm6zZLMNVRQ4WL0JhAZ9KUjHMLLofB6a4UF/6pc8l5inElOp2XzwAR55TYRQfIfxGrd1M0dX+j/Ao630JBDivBCC/TdzTkIhxWdv5cy+70Oc/s9W3RnRpkRisGQZTijmJBLyT1TutS8SoUBR3ajNHYqCGlTyCzmaF6Ut8r/gdf1gTw6MEjMaOVF8cTPJy24thnkxJFIw5hbi/q7rcuff4Rtvsqiguj5zB7pmyHFeG8LJ6ImegAcEp19OQ0qR5VDD2NKJ7FTdNKXIYn26flEMtggDO62Xy8RXZLZ2IMtQ86QYB1NpguLLNy+GnQVC7s/31TKyjlAMIdn/dOdQNrm+FOeI2XiL35wXZzqe6bjlQacmzzb/7j7F7z8oAeDqp/tZrSLHk3s4zmgqnSPebjWs/bKGzWCDHk1RbmsubEy9woIekkkZw8TH5qVxePF4aGc+7B0CvIfDb2J7RW8yfU2SQFcmCUyGx6gHN5SmTOrmsrR3ahrHAbymRfjG8EK3NUFaN8NiCfHQG5a0rrXT45RFf9yvhV1xNRkkGZloGjgwJAvekSBnIuZCsC+a5YWb6bmBPVIMbq8nBdRJEDvKC2BQF7yTkj+RWDkqtxwQTO4pF6mPOmoK5yPWopJ07TtAsIT36rCEocEeZNp6fB5VsZymwdtkiSIBFk1KlB4StkLzRo0sjA9zvs12rl7e3LShEvwtoJ6fPV8oNlkQC5YGTc1fz7vp+cW9G+Y6cztIZpjnG0YLEzBjwt1DM1AYfcZe0zI1usq0TWDiz0Q7r3XhQV6eNDV4NyLoPBVB67gq/eIrtacSfmSusL2NM6cDmWzmxc8wqMS0Cq6yqi2LMSZS/K/mN5DFyBEj/OFapMwZueNHSPnjAUF8uctnS3ZwUvPXLqJXc2HAsjORmkCFvo7uJDaaGjuZ6
- stSgNRQr
- syzbMgFyiCC0iSK1Z3mDBqz872hIWnMijmiL5NIxOjSJz2G1qSu+ZxO+9WxH9uQ27oew1vyZJMEW6yq3CIv7azaDWA9UWUl0xWBdLgAG/krdXGWfNt3Vj09fHHIeiT8bOElNeRyslEEg7V/6m95z99JbVkIyVh9netFwvNSAA4orbdb/oZJyUvb1jHIC8czFuTtkLQgwkL5BF2FymOJhSDs+v3g2piEfUMgGcnu6cOldVi640B47nF54Nhwfi4sMlgkq1NQjnt89If4ITELliJVJReoyDsukrvNDT8QPckPcst0jWkFUrVWxB7TQSD81IX6GBMIaoRqytKGsKU56VzHVYwE16LaeTXzxL4VQJO+yT+vdcNxKvr5WcImFXgPk+M0QAYuYSO9NMI19qABK5pRv458xmM29WLcOH/aACeMlfWM9XP2M1z/gLGXg5O5RHmZKOHDRUYLdq+4Y=
+X-HE-Tag: 1781019306-378381
+X-HE-Meta: U2FsdGVkX18TKHx2S+GTNH6yqfiZ7MryG1AhGISUwRYbPyq4E77eSWqcmKVtJbYRJeQJUOYdEWjzMHW26UL8yICF4a4ona9GagPn+tcpGJhVh3SyMAkPHTeSBaaudJeY31Yzd/NhvIsd84aChSdTJC36ReU1OpMa4pj5uARD27HcuCieGsZL70RK6w1lN34qxsweOVIewb9eA9SsFrHpEvsdZhl9MPFbTgTAbmo1Mo4o2/QA86p9MTW3kJR66BNgCMzKSoPoYOJdsDrqeRV+nFfQR8sKbQSD6dUI/aLL82q0a3eAS2Rd1qJrturTYOyMGI7zM/FQ8kB+DfqnVXzE+qbPe8d34DSJ7C5j9KlCIcbj9OvpfzVTdrZGQAbmsQtZtiCc+3zjOkRc1/RxYpQ1W1dZ8A9nTla1AsjAMMsh+8BKFN3PSg3LrmyC9uHCocUA0+KTR8wmqRUt68TBn7F76ZRWK5kUyCsbZd9U8DdpWZ7tQIdqj7y6/z9FW0pIj6GtHFP+FyYcdwJ395tDkqvEAZ0fKoBDARYDELmSAh8NItGWGpd2/2RFvWu7Ek/h09wv6LjPfSr0uRvLpIhzLeWvv0pQnE+xlv1HcxZVFYnX30nn2JoPMyc0Xs5xpaHZqFnFYpWeAVQeUDUQPAUtf8trwneZ4fOMQVPG0eEyPDStNzZr9g4rVcmNjgNgsvDOAd8Z8cVzjBfzvFmIv43SlqeGVVcVC9lbjeaYCXCvly+WQ7hv9GMMSSuvV/G1Ycrfwg7Nf9jMKnomZPpva40F8VH9ymcfyW8Lc3QoL3RmGii4irCCoZXE8tlmYqWfhU8uNGClBONshP80EpcRaDP5js9WmR6EvkBM4pXI3jOe2RFLSv0YMOMS27d4k3VyzQtXeoZE0ew02AM8siMZoropZlFj/gjx+zaYmw5CFJlsUtuSRGx/MAv07dSajKcT2iqx9JuQ0bXRzxJY7yRPeO5hWkE
+ pFQzjYXx
+ 7T3TLpIod1xwg5TOeWlKvqu5khL9NndoghOugLFEPghGMlquYqG0H83fhVMYDLLOFD69jMXybyCwDUxCzfe22iFvvImdopyzjYvdTv1d5S2wUOHS6PS4XrHSBUPuw98L/LFtbk0eOcKIFIzrAPgc2VRycs5ANZ+/SE+I3V2NcF/DNuXlYmOOZn6+n/P3p224I3qPtgyAw616p3KDzOKDTk+70tsEKduIIany2QFFJ9wsdiClGs0SFA2Diqi/NQ36kJcQuM26WFgV7dfaHbpptAtPVTo/rRtrQmDZJwTiSUeTfMdYhBSlPUfBwZTJIKGlA7kLx/CybTWy31Suod+Q06xPhVQQu8BMK7uzBEArjJS8TVCg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,115 +140,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 12:21:34PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/5/26 23:54, Gregory Price wrote:
-> >>
-> >> [Severity: High]
-> >> Does capturing the auto-online policy at device creation time break dynamic
-> >> sysfs policy changes?
-> >>
+On Tue, Jun 09, 2026 at 03:12:11PM +0000, Pranjal Shrivastava wrote:
+> On Mon, Jun 08, 2026 at 03:16:40PM -0300, Jason Gunthorpe wrote:
+> > On Mon, Jun 08, 2026 at 10:49:29AM +0000, Pranjal Shrivastava wrote:
 > > 
-> > @David - we talked about this ~6+ mo ago at this point, i originally
-> > proposed something like MMOP_SYSTEM_DEFAULT
+> > > My point was that a FW exploit can meddle with the bitfields of the
+> > > ACS_CTRL to spoof and mis-report the ACS flags.
 > > 
-> > https://lore.kernel.org/linux-mm/20260114085201.3222597-3-gourry@gourry.net/
-> > 
-> > https://lore.kernel.org/linux-mm/c4ed9675-269c-4764-86d5-87f4f83fc74d@kernel.org/
-> > 
-> > '''
-> >    I don't like having fake options as part of this interface.
-> > 
-> >    Why can't we let selected users use mhp_get_default_online_type() 
-> >    instead? Like add_memory_resource(). We can export that function.
-> > '''
-> > 
-> > I guess the argument here is that the value can't be cached?
-> > 
-> > But we can't really enforce that.
-> > 
-> > This is a behavioral change we have to agree on (either we change it or
-> > carry something like MMOP_SYSTEM_DEFAULT for this).
+> > Devices can also ignore the ACS flags. I don't think this is an area
+> > where we should be worrying about devices being actively hostile.
 > 
-> I don't think we'd need a generic MMOP_* for that purpose (the core cannot
-> really do a lot with that AFAIKS, and the scenario "unspecified" doesn't really
-> occur in memory hotplug core).
+> I'm wondering what happens if we preserve IOMMU groups across a kexec,
+> but a switch's ACS capability is dropped or the ACS_RR bit gets cleared?
+> The incoming kernel assumes that it's the same ACS cap from the old one
 > 
-> I guess you could have some indication whether the user already configured it
-> manually (bool online_type_specified), and handle that in the handful of places.
-> 
-> if (dev_dax->online_type_specified)
-> 	online_type = dev_dax->online_type;
-> else
-> 	online_type = mhp_get_default_online_type();
->
+> Now, the incoming kernel restores the groups assuming they're still 
+> isolated, but the hardware no longer enforces it, silently allowing DMAs
+> & breaking isolation? 
 
-Hm, I suppose this would do it.
+Again, to clarify, I'm aware that we aren't preserving IOMMU groups,
+the incoming kernel has to rebuild the groups. My concern is that if the 
+ACS_RR bit is cleared during the kexec window, the produced grouping would
+be different than the old kernel. What happens if two devices on the
+same bridge were assigned to 2 different VMs?
 
-I'm using -1 as "DAX_UNPLUGGED" at the moment, but I could actually just
-add MMOP_UNPLUGGED as an explicit mode which only has relevance to callers
-of hotplug (the state of the hotplug region they currently control is
-MMOP_UNPLUGGED) - but not to hotplug itself (memory_hotplug.c doesn't
-use it / rejects it).
-
-Then i could use (dev_dax->online_type == -1) to mean "use system
-default"
-
-I'll bring this up in the mmop/str patch whether we should add
-MMOP_UNPLUGGED.
-
-> Of course, you could also just call the old interface when adding without a
-> preference.
->
-
-This is essentially the same thing, but we'll eventually want to pass an
-online_type through the interface, so may as well just do as above.
-
-> A negative online_type could also be used as "unspecified" in your code (MMOP_
-> starts at 0).
-> 
-> But the question really is which semantics we would want? is that exposed to
-> user-space somehow, such that the user could query it ("default")? or how does
-> this get set, and how does it later get used while it could have changed
-> system-wide?
-> 
-
-I think this is the core question.
-
-What selection of these values do we want?
-
-  echo default        > .../dax0.0/hotplug  # -1
-  echo unplugged      > .../dax0.0/hotplug  # MMOP_UNPLUGGED
-  echo offline        > .../dax0.0/hotplug  # MMOP_OFFLINE
-  echo online         > .../dax0.0/hotplug  # MMOP_ONLINE
-  echo online_kernel  > .../dax0.0/hotplug  # MMOP_ONLINE_KERNEL
-  echo online_movable > .../dax0.0/hotplug  # MMOP_ONLINE_MOVABLE
-
-  echo default        > .../memoryN/state   # -EINVAL - nonsensical
-  echo unplugged      > .../memoryN/state   # -EINVAL - nonsensical
-  echo offline        > .../memoryN/state   # MMOP_OFFLINE
-  echo online         > .../memoryN/state   # MMOP_ONLINE
-  echo online_kernel  > .../memoryN/state   # MMOP_ONLINE_KERNEL
-  echo online_movable > .../memoryN/state   # MMOP_ONLINE_MOVABLE
-
-And lets say the use sets a value, should they be able to return it to
-the system default?  I don't think that makes much sense, considering
-the default is really only used on probe.
-
-i.e.:
-
-  cat .../dax0.0/hotplug                     # default
-  echo online_movable > .../dax0.0/hotplug   # online_movable
-  echo default > .../dax0.0/hotplug          # -EINVAL?
-
-The point being that .../dax0.0/hotplug doesn't exist unless the dax
-device is already bound to kmem - and so by the time you can set it, the
-point at which (hotplug == default) being useful is already passed.
-
-Does this seem reasonable?  The tl;dr is
-
-+ MMOP_UNPLUGGED
-+ #define DAX_HOTPLUG_DEFAULT  (-1)
-+ dev_dax->online_type = DAX_HOTPLUG_DEFAULT;
-
-~Gregory
+Thanks,
+Praan
 
