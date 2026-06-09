@@ -4,106 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD7B8CD8CB9
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:27:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E958FCD8CB2
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Jun 2026 17:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E82F16B0005; Tue,  9 Jun 2026 13:27:37 -0400 (EDT)
+	id 35FF46B0088; Tue,  9 Jun 2026 13:28:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E33016B0088; Tue,  9 Jun 2026 13:27:37 -0400 (EDT)
+	id 3109E6B008A; Tue,  9 Jun 2026 13:28:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D48F26B008A; Tue,  9 Jun 2026 13:27:37 -0400 (EDT)
+	id 2266B6B008C; Tue,  9 Jun 2026 13:28:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C39126B0005
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:27:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F8B3A060D
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:27:37 +0000 (UTC)
-X-FDA: 84861056154.16.2572327
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0C55812000A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:27:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JRbBnebo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13B566B0088
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 13:28:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ABD8B90BB0
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:28:16 +0000 (UTC)
+X-FDA: 84861057792.24.4E342FD
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 60AA4180002
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 17:28:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=HE3ZkDji;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="U H5I0Kp";
+	dmarc=pass (policy=none) header.from=johnericson.me;
+	spf=pass (imf24.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.138 as permitted sender) smtp.mailfrom=mail@johnericson.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781026055;
+	s=arc-20220608; t=1781026094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CRCzUiE2hwh6Hqbc2UBSoVPwWk3hneuD42gLXpyxaT8=;
-	b=4KVFIySSSJUqlRSaxlyvaI03bqRcZkiuna0X6uIU6Ci75TIq9p1xQeyOWvNzhEPMl5S30z
-	BsNRbEhqwwcRZ2aD43t3NenfzruDUJjq9jLsHfXOv5oOjIjnkxeDROWETiNA4fpPDpVbm0
-	YdxfqK94HJDqot3E3IENNztXQUR6Rrw=
+	bh=snmIR5TlwK9lFoo/BHJwgJJSAFxLeac4ICD6l4oUvpg=;
+	b=ou98n5Nd00Ng1LTS45Nk7Khm+XSvhSZ03qRM6hCUF+uR6DurgzjZ0xz6z4iVPnIcL/kblF
+	l2nChhyvqjIgokRiQe1QNvZwOo9wmj6biZ0efG6OcBITo6FZkTPGmZTostonk2w2IdddRM
+	5+UCBkDlKY4SymbLr5oQVGiw2wjWFuM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JRbBnebo;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=HE3ZkDji;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="U H5I0Kp";
+	dmarc=pass (policy=none) header.from=johnericson.me;
+	spf=pass (imf24.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.138 as permitted sender) smtp.mailfrom=mail@johnericson.me
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781026055;
-	b=TCH/2ZHF1uJZW/3+ykH4FOvPolQPFPPV6wUBZVYJ14z0sKuLk/u78JDpdTUskjkm95FcTG
-	6i6vKaCHOeq0OdL6o/khfPQ1C89/GIL1Q2r/zNfaO0U82HchDlBiC6zn9HBNS/12p5px1x
-	/1dBhiaKsvj62bZZsQNSkDnD4LzLK/4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781026051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CRCzUiE2hwh6Hqbc2UBSoVPwWk3hneuD42gLXpyxaT8=;
-	b=JRbBnebo77gJlbzFks5VoRzUf9dv8lQdMhZldAuKM9IeGTyIHsU+fGVCsMdWb0ezail2gx
-	OlpKSgQSLB3yCuYdoHXI1CuMYIlCd0txR7DJHJ2+LcSPg09SIx4CruDT8mx8QYs0X/YBw6
-	vZXg0NHk3qDJICYS6/5iKDCEdtPcak0=
-From: Usama Arif <usama.arif@linux.dev>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	xu.xin16@zte.com.cn,
-	npache@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	usamaarif642@gmail.com,
-	yuzhao@google.com,
-	aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	chengming.zhou@linux.dev,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com
-Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting from interacting with KSM
-Date: Tue,  9 Jun 2026 10:27:15 -0700
-Message-ID: <20260609172719.803537-1-usama.arif@linux.dev>
-In-Reply-To: <18102ABA-0D8E-4DA0-AC30-544E34E445D5@nvidia.com>
-References: 
+	t=1781026094;
+	b=ep/eS36ukwzvhtWEj+tyNmLN4WfDuxa1+XmcgAl1ApEm4h3jSR/bs5m4H/5wZ3WYYbQKNF
+	gXTjtyW7YVuxKXYnEFTZ7RkYV7KWegClVphzWv7i0WjTqD9zRMbAlSaMn2g8k8mEvIiWRz
+	bxoqnPGPBzXeyta4hZ3Z1fx8s2GrwX8=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id C2CE513804A9;
+	Tue,  9 Jun 2026 13:28:13 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Tue, 09 Jun 2026 13:28:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1781026093; x=1781033293; bh=snmIR5TlwK9lFoo/BHJwgJJSAFxLeac4
+	ICD6l4oUvpg=; b=HE3ZkDji5I5YD9LxdPIcf92Zc+LYhfx40Jg/wbA8GXORicY2
+	QaiWMJvbkKCx7kyflIVHAf0X2IZC2s7Uxc7VoTJOtONJLgNixkFVFvKfVzutf3mX
+	G6lmVW/BGgpmF5Ai19QSPr9U0SGccEI73IDWbUJASZdWYLS2EKdESKF5mQJlYdQt
+	WgAGt3dmqFC2fqC6qGhTb5jJd5gj/GNQnN19p55+qo/mhwNsFkYoas6LUw5GTLJX
+	jCKRA5rdGSwMTbeRIAynA6dk105bfMXz+Jn6ZpEQaZGz4pf/vjvLEQx0LPoFbntc
+	DUuPxnL0x4ZU62vchhzJp438Naua5Lfqn+wg2A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781026093; x=
+	1781033293; bh=snmIR5TlwK9lFoo/BHJwgJJSAFxLeac4ICD6l4oUvpg=; b=U
+	H5I0Kp/D7aH/EguuehCHLLkrYN9Bp+EY5ICsflRQcHHT+hKGuQwmQDakepYBbcD6
+	CXwZ9GTCxQfoaBle1Y3q7rx6jEIXzIAYUr6iPL2KDitv+FibE6k6RVw6nWtlaHss
+	sOVsxbYZ40CLIC0Lag/ykPexVQ6Nudu+RICDqHotOhtHWUKHTCg2ZEDJkSsS4gtF
+	vaOiZlovRO/pBEUwEhZB/kFYW6Oj/1UnrVCK3xrC50c+w4dCtyfOLyWsA5LNKCoT
+	rySdgpTZ+0ceakchtQ2ZiJJDzVMD3KXmCImjonpbbqv7e1O+1fWifjS8AKNNMZJe
+	4g/9+/0rFIw/rN3mkjc8A==
+X-ME-Sender: <xms:K00oajkRORc133r7PC1IBlKXMDjSqvW9vIjnqG_QZbkAQOYotfILsQ>
+    <xme:K00oahpf4FLWEUbd6wOCxg3-u_RCJdbNqACdOD7aR8p36lWn3JPMHHQ58CWH_FVHo
+    3LLoLJvohH3MaOvvmfK4gvIdMgmqZ-vDA4y1Xzq4zN0vAr9xnYTw98d>
+X-ME-Proxy-Cause: dmFkZTFbWbIVgk3oNIIQ+G+AHYlJwWdcELEDDoIiIUBvnYRJd3CsISE3I/JOVyG2d0IybM
+    lj5uQrrQaowMUeTn4kKKsnFzToChT0pwu6ZWOuYIZaTZFJK7mNfbD1w3DbZcQCw8ITSvLG
+    oY/9k9GxCUV7/ZlAa32DEFwc1lP/VEBX786Dt0GHxWvqfvPEnbcxdzQC2RraHKCXyD0c+G
+    QBNYH0rV6FloMMOiwEzsyT/H/C1ZzgFYQZp2hAg7/d8uHURiK6WYeFwyLQ9VyDwHkmVLQM
+    IUqgsriFiBf0fPDUN+cEn2U59ltSXiLLd9IK9k8Y2rbCO86LV+C/AQJFGtHozyB6MGfJRL
+    Y4HFNmgYr28jA2vrdstJgPu3J/ljJskwYqY8g5qRoXRlodCXtOlo+zfmpAwUfMqUT+0Ksb
+    UQzCGN8T164/oXuv+XWsOh3ppLWk3oKF6KnbkCWj1S+hz1UIGg7wt4nauAWLkDncPtNq+r
+    5wvHbtEWlfiN2WuDh9tM+gLZUn21C0mdPOqzgjIpMfftaEDOVhs+L4tpETZ9dA0DHSttkd
+    DCazvhjFTaGTVDY4dE6gGV4VMGv0h+vktmXOPmvTtan8nVuvQ0e8dF2TVjIgG3nYoj0TRc
+    M8dVN9ly4LG6QhDwxgXQJiXin4CiOh/KmiqdBDpGeU7fArNOWRmEEn5rCPJA
+X-ME-Proxy: <xmx:LE0oar9BUiQp_qrgSrScH1M3f-UE7OtajjYJ26_u59UFWO3P90M4Ng>
+    <xmx:LE0oarrfVWp2ygG18KNq77pu68TRdhCVd9V3fNc8BttVQO9k9YD-3A>
+    <xmx:LE0oahiexkHx_MqYM2F7qOj3QDFZgah_DQDHi_-PN5DcK-BK_aswcw>
+    <xmx:LE0oahDxlnOWbriQaaU9aOrsncRT_PUU2vxksIAdCgYbPXnFVrOLqw>
+    <xmx:LU0oak0sJQRlsXUCBkAWIgEKRUMvsHFR_SYwXJpDwlB9AROrqdxW8eLT>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id DC8082CC0083; Tue,  9 Jun 2026 13:28:11 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 0C55812000A
+X-ThreadId: AtGJywdvvpER
+Date: Tue, 09 Jun 2026 13:27:47 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Li Chen" <me@linux.beauty>, "Andy Lutomirski" <luto@kernel.org>
+Cc: "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Al Viro" <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linux-api <linux-api@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-doc <linux-doc@vger.kernel.org>,
+ linux-kselftest <linux-kselftest@vger.kernel.org>, x86 <x86@kernel.org>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Thomas Gleixner" <tglx@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>
+Message-Id: <4e049396-377d-48a7-a34c-91318413a876@app.fastmail.com>
+In-Reply-To: <19eacd64508.26b92c022125848.262962729296162879@linux.beauty>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+ <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+ <19eacd64508.26b92c022125848.262962729296162879@linux.beauty>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated executable
+ startup
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: pr8y8jh4fhoy747jzx8nmac49fi4inyq
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781026053-418448
-X-HE-Meta: U2FsdGVkX1/4Ed/wUtisVgWJTG1GgIiG/6dwfJ5bJ5eA7sa02BjIU7ru0ppelFMer3SGxkQbBx0teCwq033040mx0IS/NogDt3xha5+WpxgncRM9oXUHmyarDmb8yCIpbZ7Ahu7EF1p3LVUANvOx1ZIO3g+mgkOWFChxrUIw26zxkMj+aPuaq63bxUcGHVLYK9YvbZLvtjvSNRB3O67M7NX0uWIfIemD1m61h5J9M/2i+hgX7+3lBCZr/kIoDhMKJfZFJzwIXctswKPxadqBx1v7nWBPJt5nutFL+Zx52U4J13y9z4uUcQ+7Xfgh2uknEgts9orkHfBtKYGywdYfOGYz8MPWTtuXgSJU4KnKFHUTzhIxunwWzg/bsNeAkd3cr9qARwrHijyp+zRzaEZtNcg9vrS+AiH4bFxWaQVix7rzjiz/LRZKyJn3LglQIgGBXtaD2fvgDCkuxfRMdoPiGSRHH+WdNnn35VTEck6gohYukMof93qP/rCllopR49UiQRmDeCwgQxC2SvXrlTxWQ1hakIU1Drum80O67LPRDDcVMGVymQ2SsKq3SVYuaCEcyOi0pmOMMWHuMNbiLzGbCFoR9aumbi02NH66P84Bvm353di6BpNUHJxzSoI63N1LWDxNcLwTA19tv8APJwVBV5wdSkYSkuHfw33lnNhqJCgE7zunNfdxVaPL52H00ZVmu9F4ydT8H2aHkAwBJ4vN/iyY5XVPmuNydsNfFXLP/5tkIYavWOmkrV4lmBtEP48qdltzWeqtGopnA6KqyQrgyRl/NPLVEBapAaQAr06QnoIJQiEC55meK3W5ZAHyJ4lMyclJ3OBVbeY/xTvba6tRZSkUIxdkXHTQU6yQBj3nGhj5YkpEczx3vL5NQBmVo4a9woLblqH3WmtBPPrryxn0u1R3ZlUV/238H0V1f17GjIJXQGHinPlcSHyXX2bc3AxJGVGMGjpx8Je2zZ56+Ap
- xPogxpM5
- 26IZOq5lq/oVLMaMqbPWazAvG2dpSdghYWMH24DS0JRKFfUjVNP1sm1Lqo07YjXKfPEuE5Bw0f+xgNXcOPK7Sa8NKlXNRgmTwUIN78pb9C8iFLzpqJ/ku5ZjFDRAqHgS/9FonWHxOuUb5oFsVs3kRxeG3jwhxBm5zToVIbotHSbhzxI0hylXEIB0TnAPuPEk/jB2Rtg9KWOH7V1GfRs36Vi+0CL/O++vBot6zOlHXkbsinj0ZPwABIYIOMd+hslNXQp+HzZseE4gnsvL2qlYequoUOFTn3BAX/dZEM3lfxFA6Su8+w+WXvm3uXDoowo9lXk31wxcXOkR7uNZnpJlVfstRLTnWCSzOd/k15k6TsUKJ1pYe5wQmasROaLSQ7/lTj3kxBvAyFBDrd/CHAo6HmvmtZNNx+28QDtkw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 60AA4180002
+X-Stat-Signature: 9n8szkfpwyx17shgwh88prt6s4wbobuy
+X-HE-Tag: 1781026094-685913
+X-HE-Meta: U2FsdGVkX18KVP/4WCHNagf2ls1wxPyP6zUwpShYamNl8EryG8czo2vihs6+Ywk/Ar4ADhFSsaawqMOEK933KdwbnmuQmz4n8tA79BwWlWdd4rvPNTJhQzBLEMDtfCbQez3Am1CDDjl+IoAUyK6YDWsarAoxUTY/bdo4QMJl3LGpvtQyUiW9iIK9TlOHicYvSP89uuvoWJcFX871nd6Zsyz2OYXcVICVphn/79r1MUvw0RtdwAKznvY69RxXv79XblmsBh/s014DStiD27/MiJSkYOQoGYMdU/WUX60CMu9epVsQ5Z7Qwxp8NoOLu2E0IqT885rLzc0h3P805T5c8XS+fhpFu/Ud7zseylypkfNap2510fXURMA6li1VJ7pf4WXTKF1CsuNs0FUTyNQuFoAUK/86ZUXE7zfDAGqbWM9vLYEFNUhM+Yo0SkAXp1vmAFEjUD46T25xpUUrUFJSNqrJ3RFFSrILEPhq07iJhb69D3wmnRbGs2UlrE0UVi3Nv6ShcC6A2B9QrR/sil9qvdF9BOidmXHLM1673zQsMoX5HqLggAvwSYi8g75s6E8TF60MVSkwkkQRocbCPFJL34Y+btyrTGU8+mT4Wy1xfc1JDRp5zWJBvTyI3dXTeGsjE9dz3kYevU2BtjQ8yeLQ7qiWcTyv1Yjs89ytHGeMlENcVCfWEt1pgTEip5gFW9zJheMIvwK37WvzhaQbheJ3b/lfJbjFabmhjME6wsUo0z6ZxgPCeB8k5r+yEbC9RqLpq6cdR1bGlBZt5PUrvtIAILuFAwpPBjUbubCvsRtiv+G+YQc8r+gTzCbVOZUfcCu66gvLsWnVBrBm7QAsWprnMHqayI7srXFWHgKRvSUWVSqLVggoqpQfnqgTGu+gK3Ftqkjygg4lwOq5vTl21exc9E3103UyqNq9KyBGTN/5fgDQNI5NICQtW5hed33s2I9lC5E4A9GFpb/QYN66+sp
+ Vt2eJphh
+ oHemg/vmxKgFk6uyaQuIuWHIKbqhFK2RDlTAV05RsvaiVLaXVU+q68axBAvg24P4rN8frm6aZcrXU+vanwqjo4Xg8InJpKEYGgziq01s+2DrDKzYMw/TAt/euZyKJeBNd+9H5Gk+bXVZsLpYJqtQgqT69kXQpDLNwaVCEI+sYBtiwLSwf3OozgUpp6bJt/P2tnm+9CqAIJ1ongUMPX2rKCU7G78l/AU7zU+TGnff4OJStqebKybN3/1TBhObOsXUuFmqvZXotirDIvWK0gAb4T4TapIGltuAe5OzUUJYn5XFisILuEpJoGYmQcjl1QTu6QgusY0oVMzFgTyZIM07eWzhaAvv7eIn7BqlVLdtUXj961H0I/dRAF3SinQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,78 +144,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 09 Jun 2026 10:07:20 -0400 Zi Yan <ziy@nvidia.com> wrote:
-
-> On 9 Jun 2026, at 9:47, xu.xin16@zte.com.cn wrote:
-> 
-> >>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> >>>> when splitting isolated thp"), splitting an anonymous THP remaps all
-> >>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> >>>> This flag is set unconditionally for every anonymous folio split,
-> >>>> including splits triggered by KSM.
-> >>>>
-> >>>> When KSM is enabled with THP=always, this causes two regressions:
-> >>>>
-> >>>> 1. use_zero_pages=1: KSM calls try_to_merge_one_page() which triggers
-> >>>>   split_huge_page(). The split remaps all 512 zero-filled subpages to
-> >>>>   the shared zeropage at once, freeing the entire 2MB THP when KSM only
-> >>>>   intended to process a single 4KB page. This bypasses KSM's
-> >>>>   pages_to_scan rate limiting, causing ~1GB to be freed almost
-> >>>>   instantly.
-> >>>>
-> >>>
-> >>> Why do you see it as regressions?
-> >>
-> >> Since the zero-page remapping was introduced our test has shown the
-> >> following behavior changes:
-> >>
-> >> With use_zero_pages=0, the merge rate drops from 60MB/s to ~6 MB/s
-> >> even after raising pages_to_scan. The KSM merging is now much slower
-> >> and CPU utilization has increased.
-> >>
-> >> With use_zero_pages=1, ~1 GB is freed almost instantly, and it no
-> >> longer respects the pages_to_scan behavior.
-> >>
-> >> Even with just this patch (1 & 2) or the RFC linked in the cover
-> >> letter, the issue no longer occurs.
-> >
-> > Understood. You're saying that the additional processing action in split_huge_page
-> > (remap unused subpages to shared zeropage) increases the scanning cost of ksmd.
-> >
-> > However, I still wouldn't simply classify this as a performance regression,
-> > because commit b1f202060afe increases memory savings through this action — so
-> > it saves memory at the cost of additional CPU overhead.
-> >
-> > If you want to address the increased overhead on ksmd, I think we could add a
-> > check for the shared zeropage in cmp_and_merge_page, and skip merging when a
-> > shared zeropage is detected.
-> >
-> >>>
-> >>> AFAIU, KSM and THP do often conflict with each other. THP tries hard to collapse
-> >>> a huge page (which may contain many zero pages). If KSM is enabled and part of
-> >>> that huge page is mergeable, it can easily be split by KSM, rendering THP's
-> >>> efforts futile.
-> >>>
-> >>> Therefore, in our actual production environment, we typically avoid making the
-> >>> same region both KSM mergeable and THP always.
-> >>
-> >> THP=always is a global setting used in many production environments,
-> >> so these features now interact very poorly together.
-> >>
-> >
-> > Actually, I have long thought about submitting a patch: add a new interface
-> > 'skip_huge_page' under KSM's sysfs, allowing users to choose not to split huge pages.
-> 
-> Just think out loud. Or just skip huge pages all the time unless memory pressure
-> is present. Basically treat KSM as a way of reducing memory pressure by merging
-> pages.
-
-I do agree with this. I questioned about if it even makes sense to split THP
-with KSM in RFC (https://lore.kernel.org/all/20260510114001.600681-1-usama.arif@linux.dev/)
 
 
-> 
-> Best Regards,
-> Yan, Zi
-> 
+On Tue, Jun 9, 2026, at 10:43 AM, Li Chen wrote:
+> Hi Andy,
+>
+> ---- On Tue, 09 Jun 2026 08:01:57 +0800  Andy Lutomirski <luto@kernel.org> wrote ---
+> > [...]
+> >
+> > After contemplating this for a bit... why pidfd?  Doesn't a pidfd
+> > refer to an actual process that is, or at least was, running?  This
+> > new thing is a process that we are contemplating spawning.  I can
+> > imagine that basically all pidfd APIs would be a bit confused by the
+> > nonexistence of the process in question.
+> >
+>
+> Yes, I think that is a real concern.
+>
+> In my current local WIP I tried to keep that distinction explicit.
+> pidfd_spawn_open() returns a pidfs-backed builder fd, not a normal pidfd
+> referring to a process. The builder fd is allocated as an anonymous pidfs
+> file with builder-specific file operations:
+>
+>     file = pidfs_alloc_anon_file("[pidfd_spawn]",
+>                                  &pidfd_spawn_builder_fops, builder,
+>                                  O_RDWR);
+>
+
+What does your builder fd point to, explicitly? For example in my other reply I
+talked about how it was "real" process state. In my FreeBSD patch, for example,
+I found there was already a status for a process "in exec", and I figured that
+was clean to reuse for one of these "embryonic" processes that also hadn't
+started running. I would reckon that Linux probably has some similar notions.
+
+> and the normal pidfd helpers still reject it because it does not use the
+> ordinary pidfd file operations:
+>
+>     struct pid *pidfd_pid(const struct file *file)
+>     {
+>         if (file->f_op != &pidfs_file_operations)
+>             return ERR_PTR(-EBADF);
+>         return file_inode(file)->i_private;
+>     }
+>
+> So the current split is:
+>
+>     builder_fd = pidfd_spawn_open(...);       /* builder object */
+>     pidfd_config(builder_fd, ...);
+>     child_pidfd = pidfd_spawn_run(builder_fd, ...); /* real pidfd */
+>
+> Only the last fd is a normal pidfd for an actual child process. The builder
+> fd is only accepted by the builder operations.
+>
+> This avoids having to define what waitid(P_PIDFD), pidfd_send_signal(),
+> pidfd_getfd(), poll(), etc. mean before the process exists.
+
+I wouldn't be so sure this is necessary/good. For example, I think it could
+make sense to wait on a process that has yet to be started; one just waits for
+both the process to start and the process to exit. Obviously a blocking syscall
+in the thread that is spawning the process is not useful, but the asynchronous
+poll variation seems fine.
+
+As long as there is real process state here, it shouldn't be too hard to
+implement.
+
+> The downside is that it adds a separate open-style entry point and is less
+> uniform than the pidfd_open(0, PIDFD_EMPTY) spelling Christian sketched.
+
+I do think there is no point having two file descriptors. The file descriptor
+that previously referred to the builder/embryonic process then can refer to the
+real process, right?
+
+> If people think there is a better way to represent the pre-spawn builder
+> state, or if the preference is to integrate it directly into pidfd_open()
+> with an explicit empty/future-pidfd state, I would be happy to discuss that.
+
+Hope the above answers your question? I suppose my ideas lean more on the
+"future" than "empty" side --- there is indeed a thread in the thread group,
+with real VM/namespace/file descriptor etc. state. Moreover, state gets
+initialized before the process is started, so the actual start is a pretty
+lightweight step of just letting the scheduler know the now-ready process can
+be scheduled. The only thing that distinguishes the embryonic process from a
+real one is simply that it isn't running --- i.e. isn't (yet) available to be
+scheduled --- so the pidfds holders are free to poke at its state.
+
+Cheers,
+
+John
 
