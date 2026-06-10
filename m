@@ -4,162 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4D7CCD8C90
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 17:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5FA4CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 17:57:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8D256B0005; Wed, 10 Jun 2026 13:49:17 -0400 (EDT)
+	id E43B36B0005; Wed, 10 Jun 2026 13:57:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6B286B0088; Wed, 10 Jun 2026 13:49:17 -0400 (EDT)
+	id DF3506B0088; Wed, 10 Jun 2026 13:57:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97B4D6B008C; Wed, 10 Jun 2026 13:49:17 -0400 (EDT)
+	id D0A6B6B008C; Wed, 10 Jun 2026 13:57:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8848C6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 13:49:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9989D1A0264
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:49:15 +0000 (UTC)
-X-FDA: 84864739470.22.1DCAEAA
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 87D5480003
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:49:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Mfx0qQvV;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781113753;
+	by kanga.kvack.org (Postfix) with ESMTP id BB6546B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 13:57:24 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5ACB9401B3
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:57:24 +0000 (UTC)
+X-FDA: 84864760008.16.DAD8B6D
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3B7C7140006
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:57:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FMZfG3P3;
+	spf=pass (imf23.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781114242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=46dTS54fJkFDX+n3fNAtP/BR3hdg+QzeIr8BMTbVi98=;
-	b=8NWOcV7eXAInzxmQeEmYPjDqlzF8ED1OjTl5+zN89XSjtU62j80Jhcn2u2uEemCDqQwFf4
-	QrGdpVx/Lhsw303/xzU2gYn6D0y07A13Pr4D7I7qysRlvW92Rsmw1p1alOPX9+eQkkEU48
-	RraEgsyZZPe6QXNFW26sT2SYf6wIfJc=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Mfx0qQvV;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781113753;
-	b=zxdFzPeFUUs1UHQ8kfhaT7l0yOblho0NjiX5b8B+9WEyHRqUij1p/hwD7R6lfAGYAKHb/R
-	veOgEZYUdp2/Sqi+Uf4C6wXYiyBssW8464T1Nfsthwc69IBIGUQmJUc8XzV4rDiyIvt5fq
-	Wo21OZc1NgCKUiSryf81jpbVABuEpfU=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-13809ed8fbeso1360928c88.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:49:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781113752; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IhPpx0XdoyCW0lxieO0bqrpY4PCEJpgsimecN/Ut8iB7Bg0ocks46hpiI+Q22pf15K
-         wWONxOcRCLRcrAf5RhCnPHukGFCCZ0qnWeebhTiIgugT7NZJqG7BfbYZZgnPTqxzhng8
-         /BMH1J8qA2Ie3Aglf3Hls3c04uMcdNjrdmeHyLCFOnVvKTvbPdAFnVHUDOdh6rKwnH7J
-         XtavOrHDFzhJl5eNVAq+7D5p2Y9GQ+p8zbUedn/PjtKBiZM0sY4QJj8szzMAIEmVesY+
-         7wbTRAXQt7aPuL5p/sRRkT23W1U8/Dl0F3/NHOkP9JGMZSC3NgoZsNGIx8X/rwDaJg0e
-         K5/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=46dTS54fJkFDX+n3fNAtP/BR3hdg+QzeIr8BMTbVi98=;
-        fh=rn56rOP3ryz8Uy6o0CR81rJyckwBlLLnmugWlBe9soc=;
-        b=iuCiERHVyqLh5nNnkj6Rf/2iWq94z8cY4IhAuZc6+4ovdS0Zd77ZlfTGfiJYvYoy7h
-         FO8qFv0hDVXMep0WWZ+xOMdpBrSgegqHHEARDjqFsKRpkge6CwShq+//ge+yGkgOoSPp
-         /N72SiaktT9xhT+OEU9m5WGGwmZ71/fxpkswvourUgNF41kcTYg1JcRccc+5kIQUzCDW
-         dt4fF8NZVwkkuo6mWG7TSYT3sBdl04lOcZYYLk+rff1DXKbAGAlsXFSvrttjHVfeqWiY
-         5XUU//dCERDrKZVXNp1pgCAwn0PFt4ntFter8GMDgdRfqnOsH0ZtDziVOFIssIwurxw6
-         uhlQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781113752; x=1781718552; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=46dTS54fJkFDX+n3fNAtP/BR3hdg+QzeIr8BMTbVi98=;
-        b=Mfx0qQvV5Ptic7AwoNPrTaoVX38C+8vELfvndU1QbLu7C9XFDvMgPW7ZTx0y5CdF2p
-         ZuYvoW0Z75C3J244pDjCJN5WhTAl7TVZqd9ciprRNO/Mhj91Lkbih7/RD8Bhm+fyfpyR
-         wVUoQEfTTJY5MfeSvMcEQ12UcG0kMmNc0mH7BdjDYt734VUdJkgRSNqVB3aRV5ib4ob0
-         JKV0dlxQhuRbv9GChpXjlhGVTRfvDvSMkjCosjF3Xfp49in+WfbJFLOrUQmf2Usk/ow8
-         ObMEY5YIAgfAKEMCkVBVo5qz31ATCWDSP7/LwF5pf6gpRkJYkE8E/dStwQSh0MyFSakP
-         99rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781113752; x=1781718552;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=46dTS54fJkFDX+n3fNAtP/BR3hdg+QzeIr8BMTbVi98=;
-        b=izu89zUF/fqtnE6Qw10NPEW1pqhPymnnO8sz9zEse57nrNDwU8oG4KV6ZaqjP9VT2h
-         c0ChU4lo/6Y2jZ/oMNHQqr31tVsqYdfyXCmlQTbANBesPIkoVtY5abLCoigQwjeaQ/uE
-         p70aDj6jxwwtgkpkjilXLD1IkB0TbttMO93oqNrQbpdtwZu1ffp3FNW2UC5YhQQLpTzb
-         yd6Hi86uCwm/wYdts+bJ1RUZwo+yU2Ai6w0x+7hJorx6mkmJqE4tW60ZfB1H+Hz0sjUX
-         +6SEXkbKNH3GnXDe4pUhq3khTCzj7WVg4VuNL+ueOzpQJorZbuqHObKYxS83EnNTI9IZ
-         ix+A==
-X-Forwarded-Encrypted: i=1; AFNElJ94C3uwFKjHYbpQ0QCMAkBaT7fuIYDduZOsqi9k3gibpIaYu6JQjQFXERXGrfkFY3fWqMzYQAsI3w==@kvack.org
-X-Gm-Message-State: AOJu0YyQucLHpSNR1M6asqCLgrfD9woUoDkV1U/gmHjJXvSu6XUDQkoo
-	v3t5wd0gAcHwp/aYYey2v/EMQ+loxrPuqOIU+Ru3x2AbjaRfqzk6rHC6rHoWXxK9L/dO+brQNgP
-	kMW5N5PFtVZKzGZRKC9+ztwX/4A1Z5TLUvF6Dnp+O
-X-Gm-Gg: Acq92OGrTj0nOjeAaq7pA61pn9cj9ShFOYfmQtrhzllwy6XotAtq5imieWTf8ayesF7
-	8FA+ZWLpUNhGXsVLRcx5yOwfNQuPBjX0Bv8J7YHzau/48Byj1bfPR1VBt+i7ovIVtgzayBbgo+/
-	ZYgTTtRPwxTvMSzjo/bXQsOTKrRfytVG74bZ8j5dDo63gyHhiCiHuiKgHwZ4HHXLt1Zwaf0+C4M
-	AMFEYAUZck8nQldxDpL2vI9M7zerq4xVMktg577yQYdqwFLrQA6Yfor3vtzqupu/HP3D9K8tYlh
-	t5p8U5leRg17PCzv1IUwccobtkGV/G2lJq/Ec1rBX3Y9iRs2q74jiame7SHcZZbjqamotNhUSJu
-	QFVfc
-X-Received: by 2002:a05:7022:6b8c:b0:12d:de3e:52c1 with SMTP id
- a92af1059eb24-13840b97c4dmr92377c88.37.1781113751391; Wed, 10 Jun 2026
- 10:49:11 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 10 Jun 2026 10:49:10 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 10 Jun 2026 10:49:09 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <aiMVLtblIKu1DQWJ@google.com>
-References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
- <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
- <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
- <aiMVLtblIKu1DQWJ@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TtdGMbUuSGcoHFLrymBJZ08Jr0hWDxTV7oU5nDom8zw=;
+	b=7tU2IUyX4+sbb0xWhN8c66sbPNSWC7Uc3v4aaRt3mT7PC2RaW14WDj7Ot4F6psWpbKPKjf
+	c3n//YVPouHyF3C/Xol+HL2Urjxe1mpQHacZsTUEwnqTvSYrjrZaxIPtdPU7O9RTSAUVmD
+	XOVAjChMbeh3V/LW0YAGijWQOLK+wR0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FMZfG3P3;
+	spf=pass (imf23.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781114242;
+	b=0Xr1tXoe8vz+peTpKqqKo6LsPv4INLRtz52WhQwRdwuJRijK25r57BWvcoqtuIk6ZLkPcw
+	B8zuHNsfd0mMsJsvYCnXmtk3eKGK56lNHtRuHmdHES+CAT4oNbiT/AYiBRlXn8l6Ohfbsn
+	QnR1i4hc17rDgOQyvwCrdCSqify7BFE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781114239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TtdGMbUuSGcoHFLrymBJZ08Jr0hWDxTV7oU5nDom8zw=;
+	b=FMZfG3P3vcrwigPol9KDhU2dsyNDkkhZgt7JaxrvHVcNUI797BVeZ1Az7WWARoedhUfduI
+	wza2iGuAXLuNgXS91NF1A8YDXvMi9SEt0ugqqGhZeXfmI9KstgiJ8yNK4ssC/j/ayfzQRu
+	4LxBDVl/cztDWQvfMBNdTOStN09WdkM=
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86 under 5-level paging
+Date: Wed, 10 Jun 2026 10:56:51 -0700
+Message-ID: <20260610175651.647515-1-ihor.solodrai@linux.dev>
 MIME-Version: 1.0
-Date: Wed, 10 Jun 2026 10:49:09 -0700
-X-Gm-Features: AVVi8CeVNL_ZT6N2PrMDnjQ93ySm3TRS4viAqGi095JXk89KfuwRXMizMLlfDgE
-Message-ID: <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
-Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 87D5480003
-X-Stat-Signature: hggpdqrwi7z4w4kh16fy68n48x1gtn7c
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3B7C7140006
+X-Stat-Signature: ohaba4szzoj6yc6wmtoy466ngssky3ek
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781113753-727599
-X-HE-Meta: U2FsdGVkX1+c1IZPah7Ax6DT6mJkqCm9eiddPJLxGtrrHP8Zd07iouOYlJnSf2a8TGPHrMOAUuQjrZS0dn9/6oeS39ZaiPvNe+Ru+akXAYfvX6jfb9ld7owGko4nEHXiO9UNy39crSAAZMSSwf3xiW083WIGFPudb/EJornzCtNTm4951dVg+0Sb3trZLX3R6DjqfckPJ/820uKfqX0f49PSc3bposfvl2XRTZAFFlBA8ItnoHLfR0vX+xk5Etvk8Vm/azMHiaOP6dV+/rsyCa4HUwSIZXgTPNjur4Re001i7PQtmDO8rmT73nS3Hg7uKPjeQjik5VFj/mIsOv6B5sAD6MeISCVYl8e+mlufEeHNqH/nNhpiuGbHnCNvoIBoe3JihLfZWpMhvNfgTwnDT9zaa4cGH1A31XMm7cXMNsrNjPKi2ckkK68bg+e7jeTufDfSFjY4kqOAKgLBFmv1GiO9G7k9WRDx9tPiipiqFbLRyOaY2qHVHH8D9IRXyqqfpKQN9Fr6tOXjQ144UFh9F6cSniqiZYdGnA2X5dJtx08ur4a8gCSmira1XhUuAMJK365VBJ79SadzAqOjDBx5kcqbsreL3QXbkP5U/7siLYE5O8mOf3xpyv6OJGnwlDlJFguw8FzIOITrRACzPG8jTdta43psfROII0luBZFqJj/fn3ZAUQImhVC587GD5vKZz86mEYJ3G34Z27fparOKSF0DKo2Oax2NgF2tXMzUq0qTibDjbVLaPv00D2CRyTWNWRtdkVoZSyF+cKJj3mvR/fh4DphaXpo4VaxaRzXibS69q2MjptzkbeHG57x5ZqqrNjwZc/4+galcHTBwsJtDi6z5Pf7JZkj7PBczI73efQ/56Wl7U9I8eX8bSSV1+w4e5yb/sDZvC9IVIIYcmgApi22ll9oFq4Wt4k/G+kWT+d7GCmrYxuUSo6QbSypba/mdPJyIudJZExXSP7HOTB9
- oxYAdtNH
- krmnrw38jzMrsb3TyG8bZlWcnrjH2Ix73FVscym73+YppTylK71Nh58YtOnjDdQPCYEmdlCDUOhoG7UtTTCc33YT1PdRXa0dih4Zvwnf0CHXFGBh/Jzh7ysb0c/YyxQ9EKjjyiL5dAtf30nISyRqrDTJs4x9hOr7d+c8IdRcJJa7EySssWirgvjyNpmLND+TEqYYebFqTtsYizecG3GD/HT+sDSGaYZN3REGG/7gnj15A91nOEPG+ATQk4hgo0QUnQCACEQgzt/yCdUE4OXfIxqHwUoMsk+bbzfJh2eAWzxn3CJlQDBUw63hSN8sIMQEjaI93VuEO+4GC96KhgprNZ3y+uT4Jd1h7+41JGaTCPMjkWCzNDm39aR/S26CRZinsah2zF6smXvk/u3YIj8n5/O0z3d0T2ZPm2fZabugKr4YaFEiLqY91prNtyjWA5fZ+eOdLFeyFlH7lSTNsCbv7Xz1MzqQma0TmwKFtYJ668FLQ5lXn33r0xab4H4d3UpR+oA6BwNhubByJDk41YqGaVnDGIg==
+X-HE-Tag: 1781114242-331446
+X-HE-Meta: U2FsdGVkX18+QJwKPTiU9x5EMHaT8svQVypVjwCf19i5fzuScT5JBMzjE2cy/91OZf6pxb4SxGMQUa8aKLYZNf9KpTS03JdM5V3APd0g7IvQAXQRt36uIKOwFRtvAAyl6hbKSJ/e5ueQ6cVkkAvcw30gCWnCHFn7mxMw0p92KPM6bhKLKDoil2IIgur+6pJuuTNNuEjPPl7PtYXaNN0d4KAk6n09iAyxjrpImZEy4MbM+y0UAYHYqXv5wNjWnpzFzEa9BbXW162vlL/XbpmgzwiVjsk+0jAo8C7HddxFJTOG/cgK73krFfwSyP1XbGN5rWIepjBCNWTUqHX7tQDcFpCWVrwnSYwalw7ASXFc2yfOxYi+zWvFW2EDcSBqq73R0nMFZbkqNNhWphV1I0jhzqfM47DYIZLRJ7JvsdXCv4SZpjAFWo9r69eIrfPFTY1yt6n9L6kt8ctddkyFWVh9uPIZorl9gnRKZfaQz7ImegNoh1kdQo3Va95LbBMaaEPskB3Z9BQR4MN3HtLWvn6tpgMAvMhKEC8tGdD0oiv+obBCgN+EjbwmuAMi6S7mj5Bx2a1o2YS8bTT+jCmZGw6P1hRuK+GlFn6T9bsJeTd7OixLdXyI0PqKJzTgXLPEn4xcwEx5Erk5iCDK8kpPOkrI4NmwHuSL5poEKgIBf18iU9LWRzB/lGBkGj7VQZzFKoCTCA+4ckgKVHJlBnA0LxnehcY9pYnq4QUXeKPqJTBdlbB32H8vqK2KCOQ+C7VsBs1P9EfDFts3Iw3AuSUzsjM7vRuN48uqEYp8tBZolMJc8e2PhHzEwG+vTXk9aF0ox8DPRcWrzfc3Wl3w4xU/gx9pX5LCV6apdyBPhWqk4ojwKOo2k1m1VgdIykFOV6KGiUULU8OyoEW6JZ+e9XgYUiBXgUAqds4ccj5Out0wm4sWeqjr78iOLdIw+Xug7xo2gM/c+yODFx5vlK/4LwebjhQ
+ 9FsDaAbW
+ 3OuVDK/xbTni6J4qeR9J5LzU/8Ovh5iAiJGIRmHYZ7TnemKFt9IhwWrEL6wIoFZviIBejFFIkzK02jQFi6UJIG3kbwb6CTCZG2mkfnt4F/G+1jJo4dRSQfNOx40dhMK86yFG1tkc0P5de4DJQ3nwjby0hr1SyDp9Oh51l1h2CeJuBl7IIvexDfP1WUP19pept0SXFnLRth3tpeHxhKPJHbfdW6Vj1CHRkNGIV1cMLFaAsp9HPtuEtZtCiEsCeQOvAnWqxWZdPVuXwX0uOh+6csd7LDywdKNcik1tovcrLRfrrvXJCVOC31Ytk3+QWeY2BMHvVWcnizLYtkeD2/1sOTucl7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,60 +91,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On x86_64 with 5-level paging (LA57) and inline generic KASAN, the
+following flaky splat may be observed on boot:
 
-> On Thu, Jun 04, 2026, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> >> + KVM: selftests: Test conversion with elevated page refcount
->> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
->> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
->> >>       take a dependency on CONFIG_GUP_TEST.
->> >
->> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
->> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
->> > but we're _also_ actively working to remove the need to pin.
->> >
->> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
->> > memory" syscall.
->> >
->>
->> Hmm that takes a dependency on io_uring, which isn't always compiled
->> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
->> CONFIG_GUP_TEST.
->
-> Or try both?  If it's not a ridiculous amount of work.
+    BUG: KASAN: wild-memory-access in do_raw_spin_lock+0xcf/0x260
+    Write of size 4 at addr ff110001000c90b8 by task swapper/0/0
 
-CONFIG_GUP_TEST was tried in [1]
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.1.0-rc5-gcba33e0b2907 #1 PREEMPT(full)
+    Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+    Call Trace:
+     <IRQ>
+     dump_stack_lvl+0x54/0x70
+     kasan_report+0x117/0x150
+     ? do_raw_spin_lock+0xcf/0x260
+     kasan_check_range+0x264/0x2c0
+     do_raw_spin_lock+0xcf/0x260
+     handle_edge_irq+0x35/0x770
+     ? do_raw_spin_unlock+0x51/0x2a0
+     __common_interrupt+0xae/0x120
+     common_interrupt+0x7c/0x90
+     </IRQ>
+     <TASK>
+     asm_common_interrupt+0x26/0x40
+    RIP: 0010:identify_cpu+0x2b2/0x3460
+    Code: 00 41 c7 07 00 00 00 00 4d 89 e6 49 c1 ee 03 43 0f b6 04 06 84 c0 0f 85 a3 1c 00 00 41 c7 04 24 00 00 00 00 31 c0 31 c9 0f a2 <89> c7 42 0f b6 44 05 00 84 c0 0f 85 ad 1c 00 00 41 89 3f 48 8b 44
+    RSP: 0000:ffffffff97807df0 EFLAGS: 00000246
+    RAX: 0000000000000020 RBX: 00000000756e6547 RCX: 000000006c65746e
+    RDX: 0000000049656e69 RSI: 0000000000000000 RDI: ffffffff98632fd8
+    RBP: 1ffffffff30c65fc R08: dffffc0000000000 R09: 0000000000000004
+    R10: ffffffff98632fc4 R11: fffffbfff30c65fb R12: ffffffff98633050
+    R13: ffffffff98633048 R14: 1ffffffff30c660a R15: ffffffff98632fe0
+     identify_boot_cpu+0xd/0xd0
+     arch_cpu_finalize_init+0x24/0x1f0
+     start_kernel+0x31e/0x3e0
+     x86_64_start_reservations+0x24/0x30
+     x86_64_start_kernel+0x13a/0x140
+     common_startup_64+0x12c/0x137
+     </TASK>
 
-[1] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
+It fires very early in boot. If kasan_multi_shot is set, the reports
+are non-fatal and keep repeating, and the boot CPU wedges before
+userspace is reached. The accessed addresses are valid 5-level kernel
+pointers, so the report is a false positive.
 
-It looks like this
+The root cause is in generic KASAN not seeing
+cpu_feature_enabled(X86_FEATURE_LA57) set, because the bit is cleared
+in identify_cpu() when the offending interrupt happens [1]:
 
-  static void pin_pages(void *vaddr, uint64_t size)
-  {
-  	const struct pin_longterm_test args = {
-  		.addr = (uint64_t)vaddr,
-  		.size = size,
-  		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
-  	};
+  memset(&c->x86_capability, 0, ...);   /* clears X86_FEATURE_LA57 */
+  ...
+  get_cpu_cap(c);                       /* re-reads CPUID, restores it */
 
-  	gup_test_fd = open("/sys/kernel/debug/gup_test", O_RDWR);
-  	TEST_REQUIRE(gup_test_fd > 0);
+addr_has_metadata() then uses the 4-level threshold, and 5-level
+kernel addresses fall below it, so kasan_check_range() reports them as
+wild-memory-access.
 
-  	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
-  }
+Define USE_EARLY_PGTABLE_L5 in mm/kasan/generic.c so
+addr_has_metadata() uses the stable variable, as
+arch/x86/mm/kasan_init_64.c already does.
 
-  static void unpin_pages(void)
-  {
-  	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
-  }
+Some context on how this was noticed and reproduced below.
 
-So in the test I'll call pin_pages(), then try to convert, see that it
-fails with EAGAIN and reports the expected error_offset, then I call
-unpin_pages(), then I convert again and expect success.
+We started seeing flaky splats as above [2][3] on BPF CI runs after
+runner hardware has been upgraded. Specifically, new x86 runners are
+c7i.metal-24xl AWS EC2 instances, which are Intel Sapphire Rapids
+machines that support LA57 feature, and have it enabled.
 
-Are you uncomfortable with the CONFIG_GUP_TEST interface? What would you
-like me to try with CONFIG_IO_URING? I'm thinking that the main
-difference between the two is just down to which non-default CONFIG
-option we want to take for guest_memfd tests.
+The splats can be reproduced with qemu on any x86_64 host with
+  -cpu max -accel tcg
+
+Build a kernel with:
+  CONFIG_KASAN=y
+  CONFIG_KASAN_GENERIC=y
+  CONFIG_KASAN_INLINE=y
+
+Boot it with kasan_multi_shot. The fault fires fast before userspace,
+so no rootfs is required. For example:
+
+  qemu-system-x86_64 -display none -serial stdio -no-reboot \
+    -smp 4 -m 5G -cpu max -accel tcg \
+    -kernel arch/x86/boot/bzImage \
+    -append "console=ttyS0,115200 earlyprintk=serial,0,115200 panic=-1 kasan_multi_shot nokaslr"
+
+It's a timing race, so a single boot hits it only sometimes.
+However running several qemu instances in parallel on the same host
+significantly increases the hitrate.
+
+I confirmed the proposed fix eliminates the splats.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kernel/cpu/common.c?h=v7.1-rc7#n2001
+[2] https://github.com/kernel-patches/bpf/actions/runs/27271262414/job/80542509369
+[3] https://github.com/kernel-patches/bpf/actions/runs/27260143782/job/80505353689
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+---
+ mm/kasan/generic.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+index 2b8e73f5f6a7..b5f430f2dbb6 100644
+--- a/mm/kasan/generic.c
++++ b/mm/kasan/generic.c
+@@ -9,6 +9,13 @@
+  *        Andrey Konovalov <andreyknvl@gmail.com>
+  */
+ 
++/*
++ * check_region_inline() and addr_has_metadata() can run very early.
++ * For example, in an interrupt taken while identify_cpu() has the CPU
++ * capability bits temporarily cleared.
++ */
++#define USE_EARLY_PGTABLE_L5
++
+ #include <linux/export.h>
+ #include <linux/interrupt.h>
+ #include <linux/init.h>
+-- 
+2.54.0
+
 
