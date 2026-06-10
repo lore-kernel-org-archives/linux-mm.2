@@ -4,182 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE13CD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD0FBCD98C5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C962B6B0005; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
+	id DB8066B0005; Wed, 10 Jun 2026 19:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C20EF6B008C; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
+	id D68F06B0088; Wed, 10 Jun 2026 19:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0F16B0099; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
+	id C800D6B008C; Wed, 10 Jun 2026 19:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 92C416B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B0701A0339
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:10:33 +0000 (UTC)
-X-FDA: 84865549146.20.F11D567
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012033.outbound.protection.outlook.com [40.107.200.33])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 31FECA0012
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:10:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kwB3HARn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781133030;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B59AE6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:21:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A81814033A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:21:14 +0000 (UTC)
+X-FDA: 84865576068.19.F88A972
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 27EDB180006
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:21:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KxhTTE1R;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781133672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
-	b=09yajxeswDuedGoUk/zNxVRDSX/8q4hvBoHvne3CKBbHVlC8tdDcdRSw/gBJiekO0Y7uVU
-	wGjevKIcV35mkcJPgXzH85pw4JdnTW1iTSXZY9mc39dAvXetSoIdvsLi/0MFx5eieGrTtI
-	KDo8zduKoLhblP8CChjZ8BsTkhhIkJM=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kwB3HARn;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781133030;
-	b=j6s4sdc8ChxuBWLDyi35Nj5gDeJHhDcce8xyVkvDmCqsvqhvpmGQi4AklVUeeR++/7HO4B
-	+R2ctVR/xqXG6p26pDGFrxAid9RvJUdQBMsD9bFBS93Zm2VR/IJ1jBdMZ7YpTvsbvxKKdy
-	o3ajh2vGjfu3qkEfQSUR8oKZYnLmWVc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lknDu3aRMVxIslYbAIUcFjYFhD76npJBLuMfEKJt5WJDM1WvTixjSYI3g6oEzMGGMfbjgruFvHXVD1643DFQ7bWQKVZBFeleXRZ4g4WWkZxRo7Ve3pI+7opDwnHrOtGwF9Py4uA1CpsX72/CDoUcqQkVyjmRf87BoLrXcCv+YbXbd04BCgTndQcjiJNjBkypXqhIGsuq+eoTrSA32bUX8+clDEnsRtJ4KsW24M/y2j036JvSLGbKb7a4+oNudESvi3cAO+nPybYWE0I2PkMea2n8VCjEMmk7M8fL+fIB99Q9RrBk0ebuSOQ4wl2eox6frJneeds5GB8IuL7wbp7dIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
- b=BiOJCbrQbVja09cBtIiVC3cA9yZAesgtmyqpzHZfU23cRaT+uJ/doqU84vcVtOov5NIx6mDiXClArVyWrYYzrrLYjf0e9EpApkNuJNv1Btwg+e2d7+MDk3FSi5Etvz3vqjz6uPDlw1cqQCYGdKuCKOSqSUYTAwOTIVpAJ3DpJaNJKOT2yfZfpfjTPy2Gf5vYVCtszhrnDgyVbiOACbFaVuqG144PngHvLtcZwaOUMSr/R/Pz1vNerk5/bTKQIydKUyuZ7ONH75W0gkRyBuk3NrXN1skREF9+R82d+1P12z0OBMjH2d34LKvACY9Xtc9It0HNdgS6XeYaauH+TZUj5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
- b=kwB3HARnXkzxDZ+GqrR+mJS1DL5x3B4Yh0C3ZfhSew9QYWW7B/I4GSfoXwJ78OKYHJI0f1TKnajhCjBbZtAAXdvjisTztle40H5Ye7UnBuL0cJQojGLiP/ALyvX4QIEI1ABvM8H9Eaiwi4Gxs0oCUO7r3URwJOMAr0/3M3u72+hulyaEhFZCYWYWr+hMl3wIRupyhTIRtn6W6A3qzhSDDXSWOkV40meFJq8QFOZNE56sn44znZKH8Fx/K2qPlBU6LURsmLTJOCrff7y3qvNiPcwyU2d/wWOLaxDIY8bJ4lVgmch57g75Vz97fXBTG6YKF0R30sR34lkqh4BzBjDmTw==
-Received: from BL0PR12MB4995.namprd12.prod.outlook.com (2603:10b6:208:1c7::23)
- by MN0PR12MB5908.namprd12.prod.outlook.com (2603:10b6:208:37c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.15; Wed, 10 Jun
- 2026 23:10:16 +0000
-Received: from BL0PR12MB4995.namprd12.prod.outlook.com
- ([fe80::dde:9068:4b1a:53e2]) by BL0PR12MB4995.namprd12.prod.outlook.com
- ([fe80::dde:9068:4b1a:53e2%4]) with mapi id 15.21.0092.014; Wed, 10 Jun 2026
- 23:10:16 +0000
-Date: Thu, 11 Jun 2026 09:09:55 +1000
-From: Balbir Singh <balbirs@nvidia.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, kernel-team@meta.com, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net, 
-	jonathan.cameron@huawei.com, dave.jiang@intel.com, alison.schofield@intel.com, 
-	vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com, 
-	longman@redhat.com, akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org, 
-	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com, sj@kernel.org, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
-	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev, riel@surriel.com, 
-	harry.yoo@oracle.com, cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <ainsAU6T58hGDdWY@parvat>
-References: <ag6XyvxR-NU5rGn-@parvat>
- <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
- <ah47NNhuiClgGCdn@parvat>
- <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
- <ah-0CyZurn5D1ezY@parvat>
- <ah_RcTU8SpQG7hab@gourry-fedora-PF4VCD3F>
- <aiDVMgu0viTIml8H@parvat>
- <aiE5DZC8Io4SNI3H@gourry-fedora-PF4VCD3F>
- <aiFSZfRlFPd7qlIw@parvat>
- <aiFtJFqkpbZ9qFvM@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiFtJFqkpbZ9qFvM@gourry-fedora-PF4VCD3F>
-X-ClientProxiedBy: MEVPR01CA0060.ausprd01.prod.outlook.com
- (2603:10c6:220:1fd::12) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZKdrW8MSyYpUdE/yN9cJchnfw0mivcsg5Esu2sk15iE=;
+	b=2+3BxbRjildNg1L1VCsIDWS6978QeSDdhvTi1QtcjY+mfV/E8tTD0DW6Ka87/wzXm4LS0I
+	sZMVQdF+FTldtpn1nDkOYHe6bL6BCJTWwdX5tDBRrfU3EBfqttyz+7634HcrWu8uaLzOwn
+	BXc7LiqbAR/Moc+JDLF7qvukSU4wnOs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KxhTTE1R;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781133672;
+	b=3IHo6m5baqCO9g9ovC1WWnTblcuAOWiIRLUqY1W0tYRVjQLMc/6cN2v3zyJ313nqvhUSQt
+	RzcDXYuK5JB9z2/5/egixCdtAtJhpV0AydDf60V8XzNIyX+iZNOTJO/BhS3KTVyOFes9YN
+	H557+sU1JB7c7ruP2HBHJIgdvGPClUc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781133669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZKdrW8MSyYpUdE/yN9cJchnfw0mivcsg5Esu2sk15iE=;
+	b=KxhTTE1R84GXIzfi4AjA0QLkq2hACD5bG8AXTiValPDgZx4utDK4WqZFdSxRWhDoCo4ePW
+	4bCMi1guYsCXdEiHJX8D79uE04PxfTQwPCF9oiyK++rzdKYOiQXS99nxam2krxIS/jBS3E
+	yLMj+lGFa1MDkzN2hJTaBfktTRoP5XU=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>
+Subject: [PATCH] mm/shrinker: do not hold RCU lock in shrinker_debugfs_count_show()
+Date: Wed, 10 Jun 2026 16:20:48 -0700
+Message-ID: <20260610232048.62930-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB4995:EE_|MN0PR12MB5908:EE_
-X-MS-Office365-Filtering-Correlation-Id: 523ebde2-54da-4a5d-f682-08dec74565d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|11063799006|4143699003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	lW7F/PF/3npE2o8VU41xtDio0wnrf80UaqaXr1JkpEOAoy3mFAtu3+c6dRsUGRwrw32lcE/w1wRJvuHMHkSPr8/A2TqQ+/IlTeCB/R1esI2Aa2zmMbjgnxW16LEiQq1KzxdZOFXmMWxjCsXqeZHP+ORG0kgnoIDxBZQJqG/u1/7DyOirwFMp2gFDRcm65yVrHyAQUSgXl5PPracoTAbgnmBJu+GOgNEYUFafZEugLwP95EWz2EGjU86lS5Pa84a8C93Gh/qbEpMVMqFHgDQGSHl1md/OOxKneoH8xSKAL/6LkKqhRpQEWCMetdgaOP/TiQZR8wsi1o6tZ2xBqZ1N4h+/5Kx6emKio/Euws++sBrp8wukcQ03lnI8F4M032jYGT9yClL8pAJ1MTiWeWis1bu1cVEP0Wajl3kIkvAtvAZ+z6BqnCawb2JgA6oL5Ja7T3JSet6s0dUkDx80qy1sLpWwWmqvC5Q2S8PJ0gzvNwv53VhVoz3CfNBVy/TvRV+4Xj6XBGe3nam0TtYrBzqEw4TfEZnZlS7Oz0FzKOpwGiKqm12ndA1KgIT3Le0UWFmvo2J5d5L0dc0cip+R8IC5p3IRfo3BPA2TfUK8wlspS9uIAwPuz/Q/UkXcfpKkoXvjumyewEX0Uhi85PfcMMU4QTWfRD7UoEL0DjxcUtniayIZ0KIvGpPwHGKTmuIlNbN2
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB4995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?S/nVMxMP610VSk5DkAjfgUV+0Ujbx25bvSiFf/Lq4wxqSE2i77DYDVuTGyNn?=
- =?us-ascii?Q?a3VY+T6VEb5v7aWC3+Nl41JxvzGOJ09ja7DXUSh31NcevTfuCS27nGWK6UMg?=
- =?us-ascii?Q?L4nsBt1dD5pCSvl/ol/JlIFyAojMp4DG7bS2eCJCjnMM5hnjaJTzEZZ4Sz7E?=
- =?us-ascii?Q?xo0ghQib1WelPh2xP4tk5zD/gdTC45PbV2bk26MfNh4rYqM9rd3LPbJNa7a8?=
- =?us-ascii?Q?i+TGuuS1T69vrqKfpmQmkTS5NJeGcE1wiM/NdPcvNjampunG9RXru2cGXZyr?=
- =?us-ascii?Q?X90ymolgOegBMvvzNJ7I+Jx5A4O6bIsQ4ZnwlrrnCWy2MjICYDeD1yW4/3Rs?=
- =?us-ascii?Q?/1NpZNPcaaQanTfuSbTqA32KJqyVgLgaIZJ2/w/GmsGh94whwtz60m8u0IDf?=
- =?us-ascii?Q?znivqCRdn8dbNOsPHiY3vDA0a3jAxjlEInhQMg/tkqxt3MyAvk9LlnRidWxr?=
- =?us-ascii?Q?Q3ss2dAYgohViHegNjCYYXisDP7LJ7SuZZqY43l+ZmLfVwp2dGkcCpOdi+fi?=
- =?us-ascii?Q?rM3T3exuPmLPhP8j1j+V/ED4vIXpVNk2Mt4wl1QVR+2miBo6M3gHDWcSEBN+?=
- =?us-ascii?Q?CjRLvo+xoac5rOtIgpQ80NkzacJz/DnV9p8pwQhEYvnb1y2SMTQ6LKhXVK5h?=
- =?us-ascii?Q?q2nZx+li74ntpRmC3AIbHJZfqfj9gN+LXwYJZAfHIe4XNBrci83aMR+ug8br?=
- =?us-ascii?Q?QEiEILlkfWQKnvYnPcTkmx1gnUa8i2Ms1PBB66onHV/1lU8dtCPJflEc3OKv?=
- =?us-ascii?Q?iNdwjOppftRYidgRimEsw7l3VtLTKpt5JSMnTTTCkFZWSuuJYsrqkXzc4j0+?=
- =?us-ascii?Q?Ih85D9iH5syRZA2LkthU9wiWTLCP0pKS4T2g95lPKqycjFaUb2/CyMxIAxle?=
- =?us-ascii?Q?c0Vm86fsgNRUb+YPwgWgCVGNZF2tdw/ISFYHfJ2tjxFeam+bpH9PprF3oVCp?=
- =?us-ascii?Q?eJErJ5Elv8nx/vbfGAlenEOi9gK79f8D/rEEpTK0q1dGV+/byRXBPT3RGFSL?=
- =?us-ascii?Q?hDozgp+yELYha7iUBMhF4DpN3+ecnYxM4SP6QWi4XEpLkuVTxKGqOlfpeMD3?=
- =?us-ascii?Q?iW/8YdhW0hhYg68eshmAgTmcmiEHjUgTauTvWtYGKiFj4k9w+v1HJ2B7XUce?=
- =?us-ascii?Q?A1t/Z6RsM1Cl/eaoiMG5OjXtIpDlzGbYZttIRTDb870EfbF6zQsY/BDVx2aW?=
- =?us-ascii?Q?JLhtkWOCec/HFPbpl8WQLzbEv8UKW+xzFbg5ks05EHbrz8MI2i+5GwjNaJLp?=
- =?us-ascii?Q?gVEK1f/bEzdUHEChUgTLknE/BN8z4+mSTOJjHof2xUgzKS8BxV4UDP3DgfeK?=
- =?us-ascii?Q?O7189eV2X03SW6CFxob1/de2cLkbxUbNBFL5ltlMsHM+KI2J9Q2rmjz4uvBR?=
- =?us-ascii?Q?fl602RfcoxinaVmgSvO5KCgchixwhysRQrE9KA7ALLDfcWWLcL5Z4O0jqN7G?=
- =?us-ascii?Q?cOSTgbIuVIJDihklOO4GreWmN3C5qWa6JSGlsreCiyJtnBKvZqufH/gFoaTH?=
- =?us-ascii?Q?b7VGUexerpDOjj5dmBaumAcrjGhouTFR00UO+t2hb8daOKvx/3aF9+EA5JQ2?=
- =?us-ascii?Q?ePH3UBBKet8/vmAdxoNsmJB7xOie5Uywy8F8PucOxjrLILx9XlYNH3zW0oM4?=
- =?us-ascii?Q?Ecu1vKb6IJX0Al+nGWuxZizxmPFVX9QsmSz8W+xbqH5lfc5Wu82CMTWJ/dXy?=
- =?us-ascii?Q?jnxRCz1l12eSnJmtcxgEDQkIvkLloRZ1iEAwK5Pg7Q7R56zmYlZSdNwj/wCO?=
- =?us-ascii?Q?7UQmn9vXhg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 523ebde2-54da-4a5d-f682-08dec74565d4
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 23:10:16.3735
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DWBAlI9D1uQ983qG39qtCUkMgpVVcBcmMSq7+G4p3WGky1Dq1BxV7mAFCF9n6Su/wszMq1pQNpDIEO0MBtNn5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5908
-X-Rspamd-Queue-Id: 31FECA0012
-X-Stat-Signature: uzufjuyjudcdqi85tqxpxmajbrkutdze
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 27EDB180006
+X-Stat-Signature: 8c3igxu1mfwmmuahjztqm7joeye19dxp
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781133030-796796
-X-HE-Meta: U2FsdGVkX18VldBDn6Yusk7mFQun7JMH3GIjqvKXLFxGtyifLWwrU3S0pd1V+gSs3XgNkNhwhYWNPKATqx17FpPaOy80UZ226HA1ZKax/QlW412hioUs47gf06tt25J1gUlDBeyqc+LunjUf0zoJJG6ijsRxrFdm2mMauII6I/uS4okJ564quAks+htv7hSucAFEMZN5iamKFA4n/BhiXN3Vy9y/hpRJzQAEblgTper0qJT9MFY4utxAdG4Eat44gs2adNNpbtn/+F/7xH7asI5X1GmN84WhXlKQKyMmwgq0E/LxMFlIrM4XvSKeIYq5XujmLQ2GwTNB2aN/4YSaMo9mxFiX9TwDQP922V9aKuOZsJgTAcsqnv37+tkt8+acJraRa4v0uUO80p72c9tPS8T+ZcJnWuTQGfH/58LRBewyb7chMxrX2rZt7g7IoYLqPpO9EMM0zdEF4OuGl0R3QSQsYyUNMhrhhlfay2Vc8nIFQad6M58xpmeQS4K4Li7DwdScGrVhIT87kllMlfPalXHR1QxPlat0+k9seKl44e2tsItC23OOgg0NRrmiHR/RnYVW3izob2GKZ2o/fhgkY8ZXC9um5a1ZzwfmltV8OVaArMVbMMbqMESdK0XujhHwkTnfZhVoMYwOl/GMj0nQSwl8zQl0jigcAhzXVbqR4XwkrIbPTna1UXaeBynw8ep9X/BU+SrtqBS0vHpOnziQHF2ZTSNNqdVnp2W9jJnsLSpCfrEDSDR10BtcpbQlomb1ARE8yM8rL3VArouVdi0G498JNYUqoLeFgcKoCME3ZG8edQSF85+WuGxMxnztGMSbrgq4ABnr5Vk6zWWpx7KOFSUQds/Y8iynh16nTGmyOlyZSuwLcQZEM1Z4OJV2PlXuj4pOzScEq0WIFqZubEIg9t9aEqjh1otn4y99rpKquXOvOtT7spTQbQ8Ea+Y8Y21Fn04XN1DerRuyBoYeRGz
- QnfIJakf
- oMxMUio9mGihcf06bEUxyWybl3GpCTfsJvzMFuKWqXkgQ6IlUXntr8H0hMwlM2u+37jH+HKddcv463F9pnv90eVTjwJW1HiLMDRr2PteH74bhRbZSPINLlEWv9cXcq1tDiK1FI72YOcAyIH/dPk50d/tznTeFYY4cW0yrGWv/HffulLvArpeTcgpJy7r23QkItvMpuJmqJbC3EqSi7ujGpln3OkzHPeiVvwSNrEOjJB/ENEzySHAdYwr5KGO3peWJnE7SZLnjFlChbAX+53q1O+jlkf58G4s0y+1my/2QVXIbz0McrqU7RXs1GuOCAoc4ZPfgXTc2y5Ib2N1zTCQ44nmdYdPncKMjdtT9kwrHH/h2HXO3dPKqo2/5/icpm0vFJWLXf1ZWjUCI3TdYZxAsuG7vqGgOcj8rYSE+Xc4D0a/bMrrcuedZkgLlZbGKQGufHRDrfMkBbZQ7uShzRsILLkqfYsSlzAyL6PQa
+X-HE-Tag: 1781133671-426369
+X-HE-Meta: U2FsdGVkX1/GEDN2cm3m3V7lYfjFZcaRVy/nhKvvv2TvWaKW9i3ZED4vIYPsHZFnBSjvCk4e4OJHdF5tKvHUuttgXIyUohEXX7RJOirLlbHexKyZ5j7d+iCF6UBqOC4EtegzUbwB9pLcAP/tqzWJlV/relYBbdkIaBzKAuBLTG+u7i+tc044t6oOAp0NOspHoDfoRvYMkrzcBAuVH1bkar++Vin4WfJEprBscR8MwuyF9SwZu8dT01uQdIvtiZ/iwHwvliC9lcA6VGJsTZ/kBFPnaDJ3dywaSjovg/9IYZWHnU3CU3OXQh3zzAmGat9xBKXDA+PYlUgK50N/iXrxZLBy1J8NSxlaH58NS4CviIJEICV3VcK/RvD9cmQU1hAOi/gUcfjFpMB2aux+Du//UJ4Isbd/WmQrSB8yhRRp1K2v/WgcnMmYqrdmNfQ2wQ+h9gRHnI4gT8XLzA8e9seDah14YlEzp8rcnK9xlHgUWZ7UNoXUA0Kw8xsxi07oyH9Th9J0DJ/tMA0NxdnUvMqYSnmkCsnvNEAzwPjBJk3/8EswMOX+p1G870RLlCN+ayXORQCz530ek6J7pH+FaRaz05dnj0X9WV6LmTEnFnvyT57P1sDhb6OoeMEjlk5S0O5pfItkdyA5GmmcY0gJIXoLx6/8rVCLuLmM1zFYX+UCgtLg8M0+z8IsTEI2ckrmB2I7klfnt1+EFo8GoRQ/by6TxG1tZUWBUQcTe6TRxt4oZq2lARAPuRwHA6xi4wTrtHimVnbhShr9qsfl2BnpOfdSYBvThfpNrnch7Vt4mXNG6Fwo6ZMbK9DdfhP43NwTf4xEX45BTRw9NX6GNIJ3Zov0x0NeszhPE6Ljoks2w2e+274Bcr8FLWv1eJ78B1t8fYm/BSYaQHgy9Dd5lylidemtFEBhcUgITQrABmzyvKc+thEmjRMWDNWSSnh3T5n7u/9Qd6QsM9OzRSbpInluIDA
+ bvaeST/6
+ j7kNupiCYa8b2wlSiHeXDbJ6Ul+LlyvjG13AJiw3BTu+yvOjWXDD3t8L1tiMdCER8mYQPGaSyWNt0Uwq126Uf7mgXIRiRyU8t34msNWnUv/jCnGeiTwPdfbM+Zxe0Hg5/JEUUBOD7KYw6+xmoFXWDeAqMH8cg9JKeCUW25wany/a/OYdCknsti4lZhF/oTPaQq9CjhpdSNeORMxPZvmHZrVtiwcjae/EH1oZiUeh5s3xhsqzky77sndfJ18JUi6e+YBl3DV+9wOYQcINfOgeQBYK271BaZUxsVO2faSG1ZyzVwGw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,177 +90,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 01:18:44PM +0100, Gregory Price wrote:
-> On Thu, Jun 04, 2026 at 08:35:19PM +1000, Balbir Singh wrote:
-> > 
-> > My concern is that __GFP_PRIVATE is too wide, I wonder if we'll have a
-> > need to support N_MEMORY_PRIVATE may not be all homogeneous memory nodes.
-> > Very similar to how not all ZONE_DEVICE memory is homogenous.
-> >
-> 
-> Can you more precise about your definition of homogeneous here?
-> 
-> Are you saying not all memory on a private node will be homogeneous?
->    While possible, I would argue that you should not do this and
->    should instead prefer to use multiple nodes - 1 per memory class.
-> 
-> Are you saying not all private nodes will be homogenous?
->    I don't see the issue with this.
+Reading the debugfs "count" file of a memcg-aware shrinker can sleep
+inside an RCU read-side critical section:
 
-Yes, I meant, nodes might belong to different devices. These might not
-want fallover allocations, for example __GFP_PRIVATE falling back to
-unwanted nodes.
+  BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+  RCU nest depth: 1, expected: 0
+   css_rstat_flush
+   mem_cgroup_flush_stats
+   zswap_shrinker_count
+   shrinker_debugfs_count_show
 
-> 
-> > > 
-> > > Agreed, but also one which can be deferred and played with since it's
-> > > all kernel-internal.  None of this should have UAPI implications, and we
-> > > need need to accept that we're going to get it wrong on the first try.
-> > > 
-> > 
-> > Agreed that we might get the design wrong, until we fix it up. I feel
-> > that __GFP_PRIVATE should be an evolution of the design to that point.
-> >
-> 
-> Possibly.  If we can't guarantee isolation without __GFP_PRIVATE, then
-> we probably can't merge the baseline without it.
-> 
+shrinker_debugfs_count_show() invokes the ->count_objects() callback
+under rcu_read_lock(). The zswap callback flushes memcg stats via
+css_rstat_flush(), which may sleep, so it must not run under RCU.
 
-I'll rethink about this, but I am concerned that __GFP_PRIVATE is too
-broad, in fact it breaks isolation by allocating from any private
-device. Again this is a function of how fallback lists are organized.
+The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
+and returns a memcg holding a css reference (dropped on the next
+iteration or by mem_cgroup_iter_break()), so the memcg stays alive
+without it. The shrinker is kept alive by the open debugfs file:
+shrinker_free() removes the debugfs entries via
+debugfs_remove_recursive(), which waits for in-flight readers to drain,
+before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
+already invokes the sleeping ->scan_objects() callback with no RCU
+section.
 
-> > > Because pagecache pages are associated with potentially many VMAs.
-> > > 
-> > > The fault can be a soft fault or a hard fault.  On soft fault - the page
-> > > was already present, and will simply fault into VMA without being
-> > > migrated.
-> > > 
-> > 
-> > Let's split this into two:
-> > 
-> > 1. unmapped page cache is never impacted by mempolicy and should not
-> >    end up on private memory nodes
-> > 2. For shared pages, mempolicy would be hard, but it would need to
-> >    be on a set of nodes backed by private memory, depending on mbind()
-> >    policy
-> >
-> ... snip ...
-> > 
-> > I'd need to think more about this. For now, my basic requirement would
-> > be that unmapped page cache should not come from/to private nodes.
-> > 
-> 
-> This does not fully describe the problem.
-> 
-> A file can be opened and cached as unmapped page cache, and then mapped
-> at a later time - at which point the mapped copy would share the filemap
-> page cache page.
-> 
-> Worse, because it's file-backed, you can have the memory faulted onto
-> your remote node - reclaimed - and the faulted back in via the process
-> accessing the file via unmapped operations (read/write), at which point
-> you've had a silent migration occur.
-> 
-> Basically consider
-> 
-> Process A:
->    fd = open("myfile", ..., RO);
->    read(fd, ...);  /* mm/filemap.c fills page cache */
-> 
-> Process B:
->    fd = open("myfile", ...);
->    mem = mmap(fd, ...);
->    mbind(mem, ..., private_node);
->    for page in mem:
->        int tmp = mem[page]; /* fault into vma */
-> 
-> The result of Process A running first is Process B thinks it has faulted
-> the memory onto private_node, but in reality it's taking soft faults and
-> just getting the filemap folio mapped in.
-> 
-> If you wanted mbind() support from the start, we would have to limit
-> applicability to anon memory only.
-> 
-> Shared anon memory is different, as there is a radix tree that deals
-> with a shared mempolicy state.
+Drop the rcu_read_lock()/rcu_read_unlock().
 
-Ack, need to think through this.
+Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/shrinker_debug.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-> 
-> > 
-> > I am open to this, I was coming from the blueprint approach of:
-> > - Let's mimic N_MEMORY with N_MEMORY_PRIVATE and then pick and choose
-> >   what features to change or make specific to the implementation
-> >
-> 
-> N_MEMORY essentially states:
-> 	"This is normal memory touch it however you like"
-> 
-> N_MEMORY_PRIVATE (_MANAGED, w/e) says
-> 	"This is NOT normal memory, there are special rules here"
-> 
-> So, no, lets not mimic N_MEMORY.  This is a "closed by default" design,
-> while N_MEMORY is an "open by default" design.  This design choice is
-> explicit to make reasoning about these nodes feasible.
-> 
-> > > This is informed by a single use case / device.
-> > > 
-> > > There are users / devices that don't want any UAPI for their memory,
-> > > but simply wish to re-utilize some subsection of mm/ (page_alloc,
-> > > reclaim, etc).
-> > > 
-> > 
-> > But then, why do they need NUMA nodes? Do we have a list of use cases?
-> >
-> 
-> So far i have collected:
-> 
-> - Network accelerators carrying their own memory for message buffers
-> - GPUs with semi-general-purpose working memory across coherent links
-> - Acceptionally slow distributed memory that you do not want fallback
->   allocations to (so you want to deliberately tier what lands there)
-> - Compressed memory (just another form of accelerator really) which
->   has *special access rules* (i.e. writes need to be controlled)
-> 
-> In most if not all of these cases, the right abstraction to reason about
-> where memory *should come from* IS a NUMA node.
-> 
-> - the network stack can be taught to check if the target device has a
->   node with memory and prefer that node over local memory
-> 
-> - accelerators can be given private nodes to manage memory using
->   core mm/ components, without worrying that general kernel operation
->   will put unrelated memory on those nodes or do things like migrate
->   your pages out from under you (unless your driver/service requested
->   that).
-> 
-> the tiering application should be somewhat obvious / trivial.
-> 
-> > > 
-> > > I am trying to test whether, lacking __GFP_PRIVATE, any normal runtime
-> > > operations access private nodes removed from fallback lists are reached
-> > > via something like the possible / online nodemask.
-> > > 
-> > > I remember, maybe a year ago, there were per-node allocations happening
-> > > during hotplug and that's why I originally proposed __GFP_PRIVATE, but
-> > > I'm trying to re-collect that data now.
-> > > 
-> > 
-> > Thanks, I look forward to the next set of patches. Let me know if I
-> > can help test what's on the list or if you want me to wait for the next
-> > round
-> >
-> 
-> Really I want to get the minimized set out the door so we can start
-> breaking this up by feature (reclaim, mempolicy, etc), because trying to
-> reason about it as a whole is infeasible - and I cannot be the single
-> arbiter of every use case (I simply do not have sufficient context).
-> 
-> I'm reworking it all as we speak.
-> 
+diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+index affa64437302..cda4e86428c8 100644
+--- a/mm/shrinker_debug.c
++++ b/mm/shrinker_debug.c
+@@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+ 	if (!count_per_node)
+ 		return -ENOMEM;
+ 
+-	rcu_read_lock();
+-
+ 	memcg_aware = shrinker->flags & SHRINKER_MEMCG_AWARE;
+ 
+ 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+@@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m, void *v)
+ 		}
+ 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+ 
+-	rcu_read_unlock();
+-
+ 	kfree(count_per_node);
+ 	return ret;
+ }
+-- 
+2.53.0-Meta
 
-Look forward to it
-
-Balbir
 
