@@ -4,134 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05840CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 14:41:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59555CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 14:44:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68D126B008C; Wed, 10 Jun 2026 10:41:40 -0400 (EDT)
+	id 642A86B0005; Wed, 10 Jun 2026 10:44:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63CF66B0093; Wed, 10 Jun 2026 10:41:40 -0400 (EDT)
+	id 5F3386B0093; Wed, 10 Jun 2026 10:44:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52B836B0095; Wed, 10 Jun 2026 10:41:40 -0400 (EDT)
+	id 509C06B0095; Wed, 10 Jun 2026 10:44:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41A1E6B008C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:41:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8C37161823
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:41:39 +0000 (UTC)
-X-FDA: 84864266718.06.9E14607
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D118F140011
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:41:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hbhtbieh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of doehyunbaek@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781102497;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 41CDD6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:44:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7666A0121
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:44:50 +0000 (UTC)
+X-FDA: 84864274740.05.A03FFE4
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6F26180018
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:44:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VDBTDO3B;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781102689;
+	b=Gn8FNJzpQW2KvHckAaXt+e3M9NeuDTQU6LGVHz9PhpMFL6uhacKydNaz7iDJFKE5TxKViP
+	zXb6y5KM6NUJrh78nX6ltUm76qJotMoP9/3ICRDifAZDgBabZCPy3AceLh8QotL6DpviN/
+	zoEmlMTWBamw0ANiJ/IXUng63aP4NG4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VDBTDO3B;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781102689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J3ECnoRaw03PN8SDn4t5pTOE7Fjc8A5WosNk33q0VdQ=;
-	b=GTMNxQlGooz33kFEx0STLKyPBu56xyQzfrWJT19T6LZQCxmsl+OjEniFPt10cjXKBtcEJT
-	lXZiQWFK+sWCxaZ48XGfFcyuLpoCTe41kksdfTBnh4WheaAXThSqr0UzEu23fYLwUPUUnh
-	MhdZ2mwpegYtJtHJPGDX3Ukc58kbRPw=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hbhtbieh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of doehyunbaek@gmail.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781102497;
-	b=FJJZlxa6NBVf9z+CmHkdH+v4QoCUGNMk5DlF9+YtRHP+q+5FwlbeHb/XyLF7J7KXGDxv9P
-	i5X75nq5qeXZMMQo4Tr1jNcERLDaxTHn4FTXGyzRgZKk38sYyQoNHb1r8yUhMbTlDcdZFi
-	/EbU60avNpmxxPne7mQ91CKzVPXkWjw=
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-660480b3982so557525d50.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:41:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781102497; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MzsVPYQ2SzWPZQh3qIo4Q1FfkaXJ6Ps4A0iJU+jnlU3C9jy1c8lgyUSknF5CaLOsNF
-         ehWZFbCCChy13jEwmceabAMk5Ap6maj4pyZ3VlMxp9Z0Q1Rt5DU6N7Hqj1AnleS/g5zc
-         rWd/ybEkSe2VhuCiWRVP3uHtfW6RfRE4NJCaHciXqbszElpZ3IrFdvi+bBKEBSeDrqeg
-         hRnFhtQ0xP5oAUcdonO5VoB5cEdnYmyMyOOCm3J4xZLg62mfTDaWN2LrUgO19FiBDDts
-         PKR3dh6YuqXw1i2mMGZ+84a6DNbD9dz1aAuZrjRny+0gm743ElkwCoiCiyPplNE98R9C
-         w4ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=J3ECnoRaw03PN8SDn4t5pTOE7Fjc8A5WosNk33q0VdQ=;
-        fh=QSUSxbPxNs+PuBItX8qyDBtku7lQovHRLqLjOgFb1pY=;
-        b=V3PZY16YYgMw19N6Q5s9EH2MFcq87YIzLY+qIA6eEvyrLZYjRKLH2GPOaV5tSlD3BC
-         uOHG+2pBJivXwHUBQdQX4BgczsLesZUaXwzqqqwUZpORZLEXdTIGgnAEnvxtz93MjUXj
-         Z0EFGdX5w3gQU1JBcNR/ESn0hV9QbxV7EN73AuK1AX9Om6USYI/rLQBu080UDDkODx+9
-         2+jhuEDlee4dnXJf4EQyhPrTGWctzatiQEPG50biXJJlpm0jxTqDQoNhVgmYs8Jdab99
-         yf/WkJ/wo/dbLzWCf2XAOspCOkgrSMdXXUGzqBkXfpUhWKfH7V8LCM9Sq/oER56Au1XJ
-         a7XA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781102497; x=1781707297; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J3ECnoRaw03PN8SDn4t5pTOE7Fjc8A5WosNk33q0VdQ=;
-        b=hbhtbiehdKVgSICziEPLLJcx072QVrkci7MMnQ8orYBAfl+IBPgi9F+K36MK3PxHAF
-         JRZEiLlXYAj6iGXbpDL9XPJzbK6Xg2Ll1JZa9pqE4CPe3V+y4nKc2UmrRBBfKpM6/QZi
-         RNGNUobMsFDaiFu9T/pSJKAARfidQW3gTxOdCWPjLL36dnpqfZYfCCqz6nxX6Uujha4b
-         JugQLqUcAFd8RyUlHxVdyWrk49zcOENTKeIkkgRWmihjkpVQUOFXDZuHn8Folpc0Wk2l
-         2wmeZ+Gvc5XMLIepgqlQtAX0cdVxq240xNj+g36zQBhC3OZQtsnWmVrUC6rZXt13BMeI
-         IFEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781102497; x=1781707297;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J3ECnoRaw03PN8SDn4t5pTOE7Fjc8A5WosNk33q0VdQ=;
-        b=g0DqJYkWcPlFgxKS92Vg2aedTrkunQsyA2Wbjfof8wyCwgA8ukYPQ9CR1YOoFa7yEV
-         P0j+3K3TcYnL2fQRGPlD6kWc2CheJaTZ6XK2hTvBtCZLcCV3UNUW8OC+x53ahMTkPPw2
-         LUzqlcFBNOfswEu6/VCDRuSNgfI+cVdLwGU8KKqvPBSxjsDmdmAR4LLMtdY5hpMpSHbU
-         upeeOU+k/LdarUC4nr41BU2FAW3IW5cCzO+W6m5iNLshmU/wCOvjr4rY3pp86dUNJkoN
-         gB2HxJ+RdO6ZFd7BTVF1lQMUALPs1/45HcGz7pLEVNAQSYvfXiyYNRaegoe+q2+yQohM
-         FinQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+DrZzYZw1Iz194A7/427NoluWD2dqGMp3byRXCfAFww0T+ULC9EirI0Rst6bb749iqUwQ9fZCeGw==@kvack.org
-X-Gm-Message-State: AOJu0Yxv+3GDNVj45tz0q5rcS+HrRG2TY6W0X8bmZCC3OIZVZpAKDjms
-	YG4vM0LpP7qtxYtyz6JN7VVa5N+VpJjRAlDK1vOxPgu8TjEmP4QZeWU2h6ZHKUwbwKQNirDp0ql
-	68ASuBRUNis1LWW51BIoHqGPdU8vb/tk=
-X-Gm-Gg: Acq92OHrDex6a3pvF+MnWWmnN+JWUaOPN4Yw1HznjXjO9HDsZfi6GL7clpCPOg8Ekp+
-	l0pPHgJ5ywi1Uox6meWoeQOzdBJYs3tLEnr637rFWhw40mOxxpxdaTbVOFDD7yW9JasopN6UJ6Z
-	f8KocsiZGaHY0QUSK8lRyBNP7EB2ovwrVfUCAGUHFuj3cl8sz7Sg1JGLTlpQQKUbBAxlhIfQxQ0
-	87Ae8WVnXPpF1l/7j3wgdAWU5mJhESjewAErmZ7N64NGzsEnh2MPOSjYMY9IoWZNYP1dPT2LBuV
-	RgLaEaRmckrcXYdRC65ayjQL9Dc9ge7qmTgOj8jaD7PNC+qjN2oNj4b9Y5mnnGQgPmkzm4GXGEP
-	JWe5eO10=
-X-Received: by 2002:a05:690c:c510:b0:7ba:d784:8b59 with SMTP id
- 00721157ae682-7f2b24517e2mr46666727b3.7.1781102496564; Wed, 10 Jun 2026
- 07:41:36 -0700 (PDT)
+	bh=BzCn6b6UmGM6MN4FH8vAmI52xJGSimW6RiYOs0ytMMM=;
+	b=gekD36RlUiBa1IrM/dbqjtv0m/GbGBGt2Nq4z/ok5Pc8M25zp0H/P5ZgJC4MGigMnbKV/p
+	YiSzAgJqI20pW+4d4I4S1DGO8ccnEHTT37VjzK6AA9s/4dnF318EVLeZx/II2fgfvkqZPb
+	e9YX6tq8lDId4StANfyPDGWfIMiJ0S0=
+Message-ID: <680441bf-c878-4a00-8787-63ad8b201bc9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781102686;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BzCn6b6UmGM6MN4FH8vAmI52xJGSimW6RiYOs0ytMMM=;
+	b=VDBTDO3BAO6hLxi6iOc37vvpCK8wGKr7CNjsD8rkNY93C1/iuMZNJuNRr0td9oEtwgmeIg
+	MglagS7vWDJ8altcBd213gMQRPhdBhAPyhLMxhOQs+gTPzB3B3lUlj5/iMCMZFjR8cvqzF
+	GJYMGtp/5o1EArf4Tl4AZzavsTiezLM=
+Date: Wed, 10 Jun 2026 15:44:32 +0100
 MIME-Version: 1.0
-References: <20260610053951.553739-1-doehyunbaek@gmail.com> <20260610140217.65110-1-sj@kernel.org>
-In-Reply-To: <20260610140217.65110-1-sj@kernel.org>
-From: Doehyun Baek <doehyunbaek@gmail.com>
-Date: Wed, 10 Jun 2026 16:41:00 +0200
-X-Gm-Features: AVVi8CfkGlQtzkdy7N4hrt8LYt2S_-OHJvl9Twtw0u9LuNxesLYSD1U1AF8K38Y
-Message-ID: <CAN-j9Upu0grcp=AL42m8b41GCnU3+CUYJbj9=dg1esUAJ0hguA@mail.gmail.com>
-Subject: Re: [PATCH v5] Docs/{admin-guide,mm}/damon: fix DAMON documentation details
-To: SeongJae Park <sj@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [v2 00/16] mm: PMD-level swap entries for anonymous THPs
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, ljs@kernel.org, shakeel.butt@linux.dev, alex@ghiti.fr,
+ kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ chrisl@kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com, kasong@tencent.com, ziy@nvidia.com
+References: <20260602142537.198755-1-usama.arif@linux.dev>
+ <aa712058-7b4f-4421-b265-c3173fcad87c@linux.dev>
+ <52cb5ce7-ece2-4e52-9e4e-5e476c34f8be@kernel.org>
+ <1acea238-0495-4e2a-8026-22d5cbdbab21@linux.dev>
+ <14846f4d-3d23-4f87-9d87-05bce67f6f99@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <14846f4d-3d23-4f87-9d87-05bce67f6f99@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F26180018
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D118F140011
-X-Stat-Signature: fmdqhumhyjpctmg898j6ih8iiin1ogdq
-X-HE-Tag: 1781102497-86543
-X-HE-Meta: U2FsdGVkX19KGpFyIvvDfAr/2bfzZK29W2LOOPcuXOJkBvAOyPomCByk956djZzLcWPRl/hAw5w7QmXph1Jl9sUnzTvx8jUbGoOatJ5f0kX7Cby8UMbxtuiq8ip+c1Se2YYb2xOoClO/RUHGoEc4zfS+jI9deLZJU56kb4dqnGoYGt2dMuYDctLxFRfIaI0v1sTRVStW0Xyah6I88ZR8ZHTWNRiccI9Dkz2CJt7E/YjvxkjHUWCPLoHbMWkjkck4a8i71hbFnNLOYnPfcuEDXsGANHYAuBtf9rOFXmv7TUz+GqP92C+VuKm2xPWFKsG2ljcUtzIOd6dbdeN1LR7z5UfBgKc1K+wmkgEBI9TIMOg1Ev16srHYirKgky5Gu3bShGfqFGueY/vbgtMZr19ukv78nPQgPdOidQX9pb/tpANk2gnWiOdWO9E9YdnIQaJx/r+hNfuCFsHLjEBwvfq4phzc3j/ynnHMfrAfPWmmsPc5M8uTBy+XW1ZsTD0Z2W7JXFZio3RUOtwTfhf1M/2eOsM3qwZHFdAzAQAJB03UDyV1aokfbqbWj+rx7KQ+qHJMEQDxLkXTP5Buabzg9lrcyw3UzGK/ZnwJJ29Wl9CI6frE3LIi2pay1NG2z2N8Uy6GtUno54wdEg+vEUxijA3qS/GpldBx/xrj6N0ucrEbnyrKxSESTgFFsQFe+uPmu+9fWwD9YgrTwG2VtbWXyhlbmJZQxUEdEgQtV3P/q0XOqqax2bwZ3ZwhegcjD9MYafE0zEpmlIFTjqnIQzdqr/byK7WPbYMroamr8Qg7wCUz1jDBdkHcTJdV3RE4WT+mlIlF/KFESEbnMJ3imH2zuQoKyuJfa9c1ApIuFp2h/bSdrwNqIXz7S1/xoIfQZcjUKIQz+JzmgpwxlFtinuyb0zlYS4I0X3HOXPd0bc6PVOKjcO8H1IA5KtX6tKFSAUw+uaFp7+4GQ/zwWT3D6JdiMT8
- FZ34StHY
- 5G8cZntIpjgLcTPO9zvn4uLUoq8b6IVqafMkTOG5g8qZWGJo+otAiT0NhRGleDaMhT1uQSZxnHzIyv5h5Tz/++SbOsS4SwvUlSUdnOfQ6tCBnRGLSlhIXQRLOmGBEi9+2OMKaGMJZMxs8aLtaYOb7O4yEi8uWMP3gx7FdQQve08VOq5i3zEok4mZrawON97anf+bfrOFdVf/ShvNgOzRgvh096hxZz+SjniSX/NG6vSK3vrzee1Xw1R9okRMF+4FiILWbaz32ZKpvIb2NN2cKSIEXwnB5NHH5HJQXqr1MH4w+ZHcvM7HRtdXXJfn8XXw2LCofpgS3p6z11zoPi1eWr/BEhBbcHNdzMrtmj1ewW4BR6HNJ4Q5UluB54wsU6Ec9xaBzy/dJxS+04C0bXM+dnu38Jg==
+X-Stat-Signature: umypcuekwbmozeo58xfy8msate79mxfj
+X-HE-Tag: 1781102688-9441
+X-HE-Meta: U2FsdGVkX1/iTo+f5d5s6WvyKn9r/VHmmdDIOUCxnAxmzC+KBGqG7bCosSDXnhdlLnFHX4ayUDAVoRbTPzm1tHTi+11nl34hlpkQW1t95a2j4ubw1gy+faF0nXzwB5GAcSt/wKnLpbTgQ40P74F/Wnl+IkhULfME/YtG/spk8XwYw4FMNhztHFJiFG1sxvusqHg3snwYB2bvg7fx1GBJLXs17p6cTcEAPbzj/m0GmF8oj7FVYgydUlAvd+iMZ/lccgfqhVdzj1mS5RLUcRo76AGC0LJ4hwsv2lz7MzZEcbDCftcKExL+TR94mBwOQqhGGpMDWsOpxtqU2dsersu3xw2d8J9Wv2sNpT+Pcih6KUevOmvh7FPF1c8iBXNW9GnEyvcOWe6LJZZ+9gFBlMf9q3PO6kSyKUiZ6ziB3V/PeWyFKQ/rI02MyPHvnG8c6z/iWtFQlwYkolnuNKNrFvc5QE1/gsC8DSXC4y3Cbi9vLIhuJyLebaV0FcKNETqpbNSZoFgZWZ0H5ZFLm5Sv2womjcvRKQqAZVe5dSW4TeoVvd2eBu3VtdchR13sCHpHh4+EPjWJFVgxU/c5gVn6dJnqJDpN+FFNKPXd9tIddMLWyb8VlHah+h3zQ6kexN9DLoVNkoMcjzVr4ueUJimOqLcjmo5fJVH8icwGUfjmg9Hg+6q6nqk5/Ea3I4n7XCS4fMm4SBD0p9bqzNVaEZQ5krIkrxe3044P6njfMCgWQc1GePd2ds9pCiT/uLimop2h+wMmsWLd2yjYiIRpDAdbBC0z6Daks80nEN46OQ/NkwHyDBKQ1F4jm/EVcw4sB0yvd269mlNM20AmR530sFNhkjySe8NpTBITJH8iVNkiQHhOt5bngGj3L91Tnq+bdSSa2iJxlDN40qFvaDbYxpvyWPDhJH4jnxkEMU1YPwJMGMS0XYgfS/9fbXWfMu/sU3YlLdLjtHauSS7J/1d9Wb40614
+ 4fbmAgPI
+ mUW+dzH9XLPQAAAeXXaWl9lY/Y7sSal/C5X+asANU3yoMqN09xO5UXumK3zEB97BMbp3o3PpM1wVzofCr56QnQLTJcQhizd1iJREXwigHwuE1lvUY/a0qVo4j21nVy1pzfY4EWBHX27DdLwK7O+trNSxhM68hwST0slWH/2FnYcvg/9tn7sJ9WQAK8uuIKtM6aH9i606Vor8cBV5oSZSAAr4OcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,17 +103,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Let me know if you think this is really urgent or I'm missing something, though.
 
-Thanks for reviewing and applying it to damon/next.
 
-It is not urgent from my side. I needed the English documentation fix as
-a base for the Chinese translation patches.
+On 10/06/2026 14:48, David Hildenbrand (Arm) wrote:
+> On 6/10/26 15:01, Lance Yang wrote:
+>>
+>>
+>> On 2026/6/10 20:24, David Hildenbrand (Arm) wrote:
+>>> On 6/9/26 16:29, Usama Arif wrote:
+>>>>
+>>>>
+>>>>
+>>>> Hello!
+>>>>
+>>>> Just following up if there were any reviews/comments on this series!
+>>>>
+>>>> I know its a large series but was just checking if there was any
+>>>> feedback?
+>>>
+>>> It shall be reviewed. We just finished the mTHP khugepaged review to get it into
+>>> 7.2, so we've all been rather busy.
+>>
+>> Right, mTHP khugepaged was a rough one. Glad we got it over the line,
+>> but yeah, there's just been a lot of THP work lately. pretty nonstop ...
+>>
 
-Dongliang, would it be okay for me to send the Chinese translation
-patches based on damon/next, or should I wait until the English fix is
-picked up by mm.git or mainline?
+Yeah its definitely a lot. I have set a target of leaving review comments on
+atleast 2 patches from mm per day myself, but even that can sometimes be
+difficult! I will try and help out more in reviews.
 
-Thanks,
-Doehyun
+>>> (I mean, just take a look at the THP-related flood of patches we are fighting
+>>> with on a daily basis, it's not funny anymore)
+>>>
+>>> This is clearly going to be 7.3 material, so there is plenty of time given that
+>>> the merge window is about to open soon.
+>>
+>> Usama, I'll try to make this one a priority too. Looks interesting :P
+
+Thanks Lance!
+
+> 
+> I have two other bigger series to review, but I should soon get to this as well.
+> 
+
+No worries at all! Thanks for the reviews! and yeah definitely 7.3.
+
+I will send this out again when 7.3-rc1 opens (rebased), so that the reviews wont be on
+outdated code which could cause some confusion.
+
 
