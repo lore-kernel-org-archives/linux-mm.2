@@ -4,110 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F7ACD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 19:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96462CD98C5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 19:53:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5ABA6B0005; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
+	id 9C05C6B0005; Wed, 10 Jun 2026 15:53:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D31D16B0088; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
+	id 9703E6B0088; Wed, 10 Jun 2026 15:53:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C20286B008C; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
+	id 886416B008C; Wed, 10 Jun 2026 15:53:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B37436B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DE731C2362
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:42:55 +0000 (UTC)
-X-FDA: 84865025910.29.F9ACBD7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 51C7E1C000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:42:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dsgeVa7B;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781120573;
-	b=gTtAX0HPJku9zwgiYxqz1roZJenKRT1u+foxr+1fqbIjU2Wf2SMGL5YB1xd3k+5D2IXj4L
-	QY44bEoW/efkxGO78cEh2VRBfaA4HCyMEeaWrVD9f1vRBvM4jneR7FZLwyXelGWgyhTqWD
-	TIdDOEsQi9gNGX6QwIsoYcUdnlFMZJ4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dsgeVa7B;
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 789526B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:53:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CFBE6C1262
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:53:04 +0000 (UTC)
+X-FDA: 84865051488.23.437B6CC
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E4D668000B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:53:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KIT1SxJv;
+	spf=pass (imf02.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781120573;
+	s=arc-20220608; t=1781121183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=58bz1zNf/OMQJBgfzAHBVSCsX9KmSLxmT+3J1ec1tiY=;
-	b=Jl6Ds5QuWcY1xWEfd/682USuepusEOd+5g/Wh14c3eJS6MOGssQp4LUlS79DPOTaawkVVQ
-	UcL/xjm1kP4tHJ/WyjcxDVZR88hm8D4zi0DfCrxoxsW6jNwY/7L1XW1siadNMvjHxD7+6j
-	OAp26hlcWNzG7CbUFy0f3rajfbnkDbI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781120572; x=1812656572;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dP4HXRIDYUSR15Nwgds/5wXJm0luZvRegrcYrhnfNy4=;
-  b=dsgeVa7Bkc0R/SJuoEpX7xkdwwIvOupnbyYT+Wi/AohkLjQLg+wb7Dfm
-   /RghFr2p3GPDgzVVCYkZ/T+ZjAN2MDi+veStU5o//qHcGgxwrQIWjfqIS
-   CUlxag0gdlCxsjfA1o8Uxh/mROv9hkZ2iCy1M/Mn44d0lXNkNSczyS7SE
-   7lJMmnGml6feyXJ+jAp1zLXsUcDzcXEtj3hiGfZmLMjaYqvdjv/DNpi3A
-   E/28KmTd1VV7BJ5V8M2RQxSR3D1h+7pnZBwzqg0ny5ULavjgizD8hesAJ
-   sRbxJ6vuHtvlObmfsCvoK+E/3Ah+ZBmz223r+9CovfRv4XXjO2f3DW0Fk
-   Q==;
-X-CSE-ConnectionGUID: gTaZ8c//SWevn6+oqTnmPQ==
-X-CSE-MsgGUID: v59iub8bR3mKsuHuyLJuIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92243800"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="92243800"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 12:42:51 -0700
-X-CSE-ConnectionGUID: 3jQBOfo8Styw2yrTc2+UuA==
-X-CSE-MsgGUID: h4L2fMvHR8umsHN+MGctDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="241847089"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 10 Jun 2026 12:42:48 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wXOp3-00000000Lq2-2zVn;
-	Wed, 10 Jun 2026 19:42:45 +0000
-Date: Thu, 11 Jun 2026 03:42:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Abhishek Bapat <abhishekbapat@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Hao Ge <hao.ge@linux.dev>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>,
-	Abhishek Bapat <abhishekbapat@google.com>
-Subject: Re: [PATCH v4 6/6] kselftest: alloc_tag: extend the allocinfo ioctl
- kselftest
-Message-ID: <202606110300.R4LPBVBO-lkp@intel.com>
-References: <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fFNM+csKuGsAi8zW+tua6hmsF6Jv56ZUXMuPVDdT++g=;
+	b=GRsf6rKuJiU3z/Or30qv6MctWI5hpAh+5Bpn0NKvVG6KeyRSVepMRQI+mwRnWWSoSGCBei
+	oGHylcOEW7/NNxYvgXdGpL8dDjqSsXZTZ2IYXvuOwV6x9VTd+KAzuj9+7ENQafK/oXP/iw
+	+TA4SZtmop/MTzCRVgPq7AzSxrLpzVw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KIT1SxJv;
+	spf=pass (imf02.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781121183;
+	b=ka1LhFLD96nmjeR4aOYZCElcR+isz5tGRsSqKHU1Omr0QP4VCT9EMCKOWuZ9j3VWS7x3rG
+	IbFBywE+RS1l5ItjIrkuOlD/BRjPHyVl48wbQZjMIpyL697yq7FeKAujonEI5Fr7fY6Wm0
+	/jgNfecaakh4YxEeG7bE8LksVGqBgXw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781121180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fFNM+csKuGsAi8zW+tua6hmsF6Jv56ZUXMuPVDdT++g=;
+	b=KIT1SxJvnnMM9esD4/wv1ZtvrkIc7so2MoZbLd8fD4HwqlXWLnTI1+chx03t1ehbZlvO7s
+	Yb2l8RO/m2g+mbEg2u+yzJJ47onjz5+Z+eevu3UsW0VRqvjJ11JKxC5Wu+YlyBrOosrTTO
+	hyNY3tLcrojL03mL86KA6EMszoCnHmQ=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: linux-mm@kvack.org,
+	willy@infradead.org,
+	shakeel.butt@linux.dev,
+	usama.arif@linux.dev,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	mhocko@suse.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
+Date: Wed, 10 Jun 2026 12:52:20 -0700
+Message-ID: <20260610195220.12403-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
-X-Rspamd-Queue-Id: 51C7E1C000A
-X-Stat-Signature: i8ydfu4nhnkhbmw67xip7bmbabqhzipk
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E4D668000B
+X-Stat-Signature: tep6awrc98rdmx6cqdbbzhqnprh88emf
 X-Rspam-User: 
-X-HE-Tag: 1781120572-848224
-X-HE-Meta: U2FsdGVkX1+L8V26TIC6/jAwVgp43QkGZ7UgwqMMG9iaaP47z5mQE/wSX0L5qa2J0MEBFasFNlbnmgLU5ot7W+eZxxG8wbiR5pBY28j4w33TVCqJGK0i8H6X07KvyUwz8nTaXLmZlA8FyIYnB8kpLCE4fbnsePm0tvXP5xYWKqZSuCBFlHc+jPpo5v9akuHgiyqFG+GZTMkei8r+cfZP8ZQKBB75/JrKfQHMxSG5duBiOl+EYteJcg4Pxha17PFDJzZu/srJMPIBOiUd/zQQ3qryLvPd2JABMm8aurjpZiALe508dIUyIsBUL6xR1KhUY+MI6WeCP/MgBfiHAg1KaU4IHTbOOL1ZnRumfsVv+3MGCKGTRhVE+xXPlICrtSmuEGvyRBljQC0NDnGCYB8JxKseqW3GR4jV/xfXtFiV7swfLQhrrkSgI5nKkz0MFyGjpN+sDnZ1BdGDnPDO9azJTo28paDQJ7xcXLyNw9MZTQXj5OzeOSFd5OzykalvEyZ881PgvQjBzZA920cYlmA2O2Lea7k8kovPXVWomluiFMQ52DIeEHj2LX2NxAOjbvnUcxc1UZxx97jEgD4lasBUx2HHVmlmwegDfaNDQEae6GGwg1QxkwdOHYp8R+cUp3UHr/+oWpQa4usAqhbExstrv4tnYui0X5BTHoYerOB8tfXsg+szAHq0aCRE0j2Zd6iMkRowQ8XFhV6B+guQiGwxuEoAZ+mvOm6KTfTu2+g/N9tMymSxWC6zqMTbrigD5ULZEzqv+1l2gMXUQtyi8PHJI0X8CosEG9mI02OvHY6+LmM+rYsUCbiefPPiZ9QsGC2LE6Q2vE8k7hi91Vro/HGMlAoRRtbtu17gCOqaVn+SrF4YuR1WH4B+3EMSl3xMS50tvqlXGZmWX1pUwoEgPG8ZTgNinI/eL/pck5W9mSaC28izj36majfJV0Q+CC2ME8lV17BCStYZeiIS46UwXcm
- oYgIWro3
- makWKZs226Le5O1Z19NAqFz6HvfWlcPxsQz7KNMN9h/9D+JXd/nIqVXI/IUMb53DLcfGuuFEN2W/K+WjDec3YW99aaeKoXnpiFbn7+UuhZSnXErig3ZQxXvEKOQXCbNX9l2pTpe5rUmhO5EAW+sGOyq7dU/32P5DS7bJsXOkt9WyjsiDgz7eRoL9gh3DKsjrMHeX+ucxdjhWa6bd1YuEMQznR63z+M4PzsZU1MRWKVD9PyQ5bySf2fyxgzaWyjVycjaAwDQMKHrZ4AT2lwIKA5OEke8ZqFXieiH0stz6XWK+aXxpmxsj5/aM46g44OLvNmDthBn9+V4TDUk4bhATplAt4KimWcjoZIwndkf2G+sM2aKCUzmW+2SU1Q3WM8ZsauR3tDkHJSl2VOTBaUwrSSBa2WxA/m77U33A/8vK5NV9nJ1A=
+X-HE-Tag: 1781121182-606934
+X-HE-Meta: U2FsdGVkX19sNr9CEz4LQlSZ5PVcV4mg9E3SUbnY+8O9o8177dchCBlZ0XAAMRtju6WUj0zXtc3Rco4mbdptRRwp7hd/xUKAjXfLTrFfpb5R4uE1CAwNWK9ICza7SKKEbixj1oeB9OGdGFzx5B0o0c6IYqDq9jf5+Ymn7+2BS90hrtnXllTw1oFBBdmxqXNsG3bA8OgBVf3WAPrXBHMcnDBhPLRgtfQ7cKICyxxfU8SaKQKEk8D76YAr6JozE5z2pZvkgyBCtCJmEQwCOPUtbciDRq27Fo/4RBbtaq7az2bPOwiQ+RKUalvss8aiBWF4KWLJdka8cuvM+my8c8eReqg4cokL3SYYpHtrF/X+bha7tz/cGO2oCgKeFJxxMjg9rnna+co+oEeAHFl9D7h3+JZ6EvX44a+SzQmZUBLgrhFjlYDrhtlYCs67FsPszJTCJ/jW9v8t904Gg/c4i50dc4wXfCgdw0xaAAeqUYDuKZBdDtqL+lcYTYJR3IbVTJJr2JErCOYWPOqe8I5Ug/qsGpif7bwt/vK1LTak7t1cJTbXKVgLG9L29M/2oTXBzWtaTnTppTkWqv31tyfh5iJ4x2dNEu8QHFdhtb68YBvFo6Ep0q+MuUNyipUUuXWVHfvho6DGdxVGxZxq9N0uKgRdq3t1Daj+Zw/p6HnrORmgXKM88z2/6A7U0cYRUMyFgdIF7dYiQac6K+zDIIUy8xy1SNBJNgHXgePz4wnJZ2VMNVm2d1SVFK49AgfREP8JesjfW/RqBxwHQ/RYHwcRy1ZzOTDuIjeszrWNmykPuaiiBTbws1xj25AdHXGu75nJS/wU7z5qObexiw48jd7BWOF0f0SAaNXaZAPiOD6QWFA54m5TbYbtjOMe8kmlgPxlRzawugfwF/dFlpZt9FIcVdaZirdmSw3lec+VCI4wDpVGmP2ynxtmTS7z9zBuF7rqR88iyFZfpiDRIV5gLc88ILU
+ n4jIKXjx
+ 015Q+aL/do67/V+U4uLAA6W06BRu6k9yRGzj1jJxbByWPPOD48FAY6T2ieqdCu48/6ttVphpgh2jWTIsqm+r/eQiK/VV1ZU5ST3zYElF5F1x62wMS1RpcSyYjbmUB8XpFzyUwvthntUEH5HjyNoZHNVFNwjF+bWlabIHEsMJYHUQUSDl2VYpHiXNExPuZ/mtTSsKdEiqcNq/d3BE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,51 +103,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren,
+LRU add batches can be drained before they reach capacity. This can be a
+source of LRU lock contention, but it is not currently possible to
+attribute these drains to callers with existing tracepoints.
 
-kernel test robot noticed the following build errors:
+Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+lru_add batch is drained. This allows tracing to distinguish full drains
+from partial drains and attribute them to the calling stack.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on next-20260609]
-[cannot apply to akpm-mm/mm-nonmm-unstable shuah-kselftest/next shuah-kselftest/fixes linus/master v7.1-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Add mm_lru_add_drain_all to capture callers of __lru_add_drain_all and
+whether they set the force flag for all CPUs. The tracepoint resembles
+the signature of the enclosing function, but is needed because of
+potential inlining.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Abhishek-Bapat/alloc_tag-add-ioctl-to-proc-allocinfo/20260610-081508
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat%40google.com
-patch subject: [PATCH v4 6/6] kselftest: alloc_tag: extend the allocinfo ioctl kselftest
-config: sparc64-randconfig-r061-20260610 (https://download.01.org/0day-ci/archive/20260611/202606110300.R4LPBVBO-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260611/202606110300.R4LPBVBO-lkp@intel.com/reproduce)
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+---
+ include/trace/events/pagemap.h | 37 ++++++++++++++++++++++++++++++++++
+ mm/swap.c                      |  7 ++++++-
+ 2 files changed, 43 insertions(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606110300.R4LPBVBO-lkp@intel.com/
+diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+index 171524d3526d..ff3da07ccb40 100644
+--- a/include/trace/events/pagemap.h
++++ b/include/trace/events/pagemap.h
+@@ -77,6 +77,43 @@ TRACE_EVENT(mm_lru_activate,
+ 	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+ );
+ 
++TRACE_EVENT(mm_lru_add_drain,
++
++	TP_PROTO(int cpu, unsigned int nr),
++
++	TP_ARGS(cpu, nr),
++
++	TP_STRUCT__entry(
++		__field(int,		cpu	)
++		__field(unsigned int,	nr	)
++	),
++
++	TP_fast_assign(
++		__entry->cpu	= cpu;
++		__entry->nr	= nr;
++	),
++
++	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
++);
++
++TRACE_EVENT(mm_lru_add_drain_all,
++
++	TP_PROTO(bool force_all_cpus),
++
++	TP_ARGS(force_all_cpus),
++
++	TP_STRUCT__entry(
++		__field(bool,	force_all_cpus	)
++	),
++
++	TP_fast_assign(
++		__entry->force_all_cpus	= force_all_cpus;
++	),
++
++	TP_printk("force_all_cpus=%s",
++		__entry->force_all_cpus ? "true" : "false")
++);
++
+ #endif /* _TRACE_PAGEMAP_H */
+ 
+ /* This part must be outside protection */
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8..e14b7612f896 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+ {
+ 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+ 	struct folio_batch *fbatch = &fbatches->lru_add;
++	unsigned int nr_folios_add = folio_batch_count(fbatch);
+ 
+-	if (folio_batch_count(fbatch))
++	if (nr_folios_add) {
+ 		folio_batch_move_lru(fbatch, lru_add);
++		trace_mm_lru_add_drain(cpu, nr_folios_add);
++	}
+ 
+ 	fbatch = &fbatches->lru_move_tail;
+ 	/* Disabling interrupts below acts as a compiler barrier. */
+@@ -869,6 +872,8 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+ 	if (WARN_ON(!mm_percpu_wq))
+ 		return;
+ 
++	trace_mm_lru_add_drain_all(force_all_cpus);
++
+ 	/*
+ 	 * Guarantee folio_batch counter stores visible by this CPU
+ 	 * are visible to other CPUs before loading the current drain
+-- 
+2.54.0
 
-All errors (new ones prefixed by >>):
-
-   lib/alloc_tag.c: In function 'allocinfo_compat_ioctl':
->> lib/alloc_tag.c:346:58: error: implicit declaration of function 'compat_ptr' [-Wimplicit-function-declaration]
-     346 |         return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
-         |                                                          ^~~~~~~~~~
-
-
-vim +/compat_ptr +346 lib/alloc_tag.c
-
-   341	
-   342	#ifdef CONFIG_COMPAT
-   343	static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd,
-   344					   unsigned long arg)
-   345	{
- > 346		return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
-   347	}
-   348	#endif
-   349	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
