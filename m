@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8918CCD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 20:30:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22132CD98C5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 20:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2E096B0005; Wed, 10 Jun 2026 16:30:06 -0400 (EDT)
+	id 6529C6B0005; Wed, 10 Jun 2026 16:33:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADF2D6B0088; Wed, 10 Jun 2026 16:30:06 -0400 (EDT)
+	id 5E21C6B0088; Wed, 10 Jun 2026 16:33:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4E46B008C; Wed, 10 Jun 2026 16:30:06 -0400 (EDT)
+	id 4CAB46B008C; Wed, 10 Jun 2026 16:33:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BE56B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:30:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AEDE16452A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:30:06 +0000 (UTC)
-X-FDA: 84865144812.09.9659147
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4DBE914000F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:30:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=y7RNisUK;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3803A6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:33:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5B568CEEF
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:33:28 +0000 (UTC)
+X-FDA: 84865153296.30.DE72841
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3B3FD10000C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:33:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QMyPIU42;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781123404;
+	s=arc-20220608; t=1781123607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MgCn5Wxf+Irho0mKTHH0dDK8u5CVGsf6qFgr8U0oMWw=;
-	b=pKze6lkFork1LLNulZhHg+1ZJZgmwRk7OFHAP+xbNAaWD181loBwI6acy8rYprrsyYoqd0
-	q80r/7b/LCvAg51bBP4F8H29QhSft5P0C1ibKIKVsM30YBsfJwKp+pBIR5W0Lk1E9LI5oM
-	bZGBokkQen82AgklT8cHFgYfRMWDCMU=
+	bh=MeFCnd1HkJMSS1G/3jmmfWDV0XllC/uyHmcaIoiXzGw=;
+	b=5bPGnIv9DrLj2nX9wrrOulnUIpxCkAeT3o0n3s2co61p9MysFB6k5JN7O4pVgYQUC7aEQz
+	stiipQpe8JSljWHddo3nisI7UvTEA/g2LHv3T9NFqrqKIUV+FwmTm9Sse/iJ2Ud46h7gA9
+	WOszmPi3kgNAQZ/tiwmveAE7TdaGfhY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=y7RNisUK;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QMyPIU42;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781123404;
-	b=mekC0+PVQtAdTnnSedVSQfDzygh9nj6HUDUpzuT/+oX3tBCSCVwJZhPO651Vc3bwdle7Se
-	txHmrYLrO94hLW1bqY27xU6FVGklonx/zZPP/+xZCuSJdtHglsmH80VLxT8t8pBq1DRqxN
-	iGKYkFKXyty3IaKRsXMVf3kGcEmcF3g=
+	t=1781123607;
+	b=O8tTk1CSCTgWxtoToe1rPdyOzrII5LuBb12R0MqX+XasIUapvtHgZmR1JlHYEKCP3aB5wO
+	YIFrj5swnh7wzix1lwdJu8mDnkep/Zta5CEFT180YdXbN35LU8gHTElXwnDUB3Z0CDkBsW
+	veCMgVNV0BpqVZ55d68qBfLKhdW6QP4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3425D436FE;
-	Wed, 10 Jun 2026 20:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883721F00893;
-	Wed, 10 Jun 2026 20:30:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FDA1601FC;
+	Wed, 10 Jun 2026 20:33:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEADC1F00893;
+	Wed, 10 Jun 2026 20:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1781123403;
-	bh=MgCn5Wxf+Irho0mKTHH0dDK8u5CVGsf6qFgr8U0oMWw=;
+	d=linux-foundation.org; s=korg; t=1781123606;
+	bh=MeFCnd1HkJMSS1G/3jmmfWDV0XllC/uyHmcaIoiXzGw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=y7RNisUK62V0jAffUfNT+LXxlH8Q2iVR/V5651z4ZI6WJBb+ttUACVits6mh1As9e
-	 GwOZGq6p4Vt3g25I3lWlu7fewuV2Ej8AC1bSXL5n0zDTdHOKMR3C9qcprAJbiFA/5D
-	 MKfWVZsGnRY+K9LLKotfDh50px1hqVaoXV7iDegM=
-Date: Wed, 10 Jun 2026 13:30:02 -0700
+	b=QMyPIU42joDy+HDnBw+dgcKKIyvtruqbfbs2j67CxLuoCGIrmvPQ7MmQaeqMTvj8C
+	 Lvw3z0y0NfqMEY57T6XaZvbTaBml812RqtdN9CVJnZUx7qvdqA3kAsfvMd/Oycyh7d
+	 xfXjW7hPIHprnh6JOdZRWBap8UjdlroXjdRup9YQ=
+Date: Wed, 10 Jun 2026 13:33:25 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Lance Yang
- <lance.yang@linux.dev>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico
- Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
- <dev.jain@arm.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: Re: [RFC PATCH] mm/huge_memory: do not add dropped split tail
- folios to LRU
-Message-Id: <20260610133002.4ded8d8cdc8e23e434fedf1a@linux-foundation.org>
-In-Reply-To: <20260610120535.2370844-1-zhaoyang.huang@unisoc.com>
-References: <20260610120535.2370844-1-zhaoyang.huang@unisoc.com>
+To: Samuel Moelius <sam.moelius@trailofbits.com>
+Cc: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ "open list:MEMORY MANAGEMENT - GUP (GET USER PAGES)" <linux-mm@kvack.org>,
+ open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/gup_test: reject wrapped user ranges
+Message-Id: <20260610133325.617652c3639b27b131de8b8e@linux-foundation.org>
+In-Reply-To: <CAE+C+DZWRsKF8m5d-N-vkyp6rEw_T=ccWpUdqZVVYZ=oNfCvnA@mail.gmail.com>
+References: <20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com>
+	<20260609182705.7b3a46e7c4661bd55f8561eb@linux-foundation.org>
+	<CAE+C+DZWRsKF8m5d-N-vkyp6rEw_T=ccWpUdqZVVYZ=oNfCvnA@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4DBE914000F
-X-Stat-Signature: 3jnu1i3b67qqr11943tnhrs5sud9a7n5
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3B3FD10000C
+X-Stat-Signature: 58sfiyii48s96cmnfcz4wkk36r5scy1q
 X-Rspam-User: 
-X-HE-Tag: 1781123404-204313
-X-HE-Meta: U2FsdGVkX19xXMwoI7ypiRx/lUwJ7iCEtQsP2FRoCRTnMa5D6DJEPp8C4I40njjTPNIjzz8nFqMaIzOmC7LI5xnraOjHBE96Mnz0KDxSUqmAL67g7NXJVGDsjd360HM16HIZI965C3KoqudzBBNbrnjpa0eQH5N0cS7IwzH6YZk7H15m4/0yLxbxQN4OxeYHrpjONRCXv1gQjufMNIfzny4cnug3GOsZ8Xu1oB/M+xzooBQjOOodj/+J5WdqeLwE+vKxRvp5xM1cW+eLYIo7Idwpr4kSBkueavj5qK8dyXUiQy161KHYDvpWluCcN9GfZqPaZ2+5ZN903LWO5gNCQL856IU486mMmG7aiE4DGdQDImTrgUauYV+3VJ+X1v1dfTb5Fx6Y7z4Oq5fFLGMr5bmTwHG9WcbV66ERzRsBicaGgmf82agg2SHeXUtHNfCym6raVx5x6SXXeZ2sQEOkjkj4Vyl9oj4R7COUI6teUfAeiJuI20bkidNCMdoGZJCuHO9RBHeeBnndhPfz4DGOrhBbgUpj+aXPpzSQBLVOpjF5pStEIYYIU06gRPRhdQhAecSJ0X8/ElHr0AJcay4EZUV36wsW5rXVrGTxF0n2wHTOG9VAq4evk1h3Lf0Yvn6DrGJ1h8xoKhT0mEOqev+zTn94YCdVXnqX+q1z5/tX6SlHhwMJuyMeHWh92zCeS7BflK84MSt1aCvgpokY/QoMz7jXgmLCX4hQmZqNRSykZyJixbHtp4MWTJQx0NloAp4XEjHVzIzwUW+qp+D9QKaw8OfIuiOb3tWosBuQ9OKMqlGOrrpvBtGj9DXBG1wnKCQ21dQydrkBO9maQQ/nksvvx3EM19q3xEkp38HXLRy52i74Pn2PbI63Jpn1wdTtOYYE2yL2pnLpIQenyJy2JVS9kxINvjl+B5CHzoi7VGUmhTGFicFYX/zwVMp1UacbczaBdMlaRtv942CtCg4B6Yx
- TSM526Az
- QOgMnhDh0itusFms39rS4Y1TO9XTqlF3Xx8Gc3sqTMa2Q72evp8PvhHaeDehmhm+SYwQUevWJkSyu1TQDY3mvAS2wpMIx2toBQl/i7xRvrh1WDkPz8guKGfcXK7QkR8s3AzN225447sotGomFYf7+PKNcx+7GufJaVAMwLxDN3XHvpMOOMUsgnTJLZSvWggrS8iU9ECwnpNuatv8T5d2OILdUURz3ISZHI+UIDLBp+j55ekWr5nW7vaNsbVQGZEZqhALyveAsPcOJqj4ZOX+xi4mQGXI79odKQRFzH7Tf/4nQSVuYfhPfrtvgApRB95DI04xpmYC7N/Mx6uM1OKuctCdy64pFL950uNKiXjGN1sr2W4oZGMDeeNjVRNF/roDQpgFUo9HgAM0+bFqAylS0bFnR5zRIbn76ucWM
+X-HE-Tag: 1781123607-325814
+X-HE-Meta: U2FsdGVkX1+u0QCTf8U9MujteAnyPtfagkRM3hJb0FQ9xr3CxBe/xrAMxPTfXN4el51UYiRhfpXbnI10kqBl/ZtEn9610A8sJ+8GwZ5mOOX0e9EUWxQzLSDpBEiV2vcTfjD07iWTKBODM0yuE/kCwh4+Z1kCAbXNuOH8HtRq1EZngvXM41o1+DG55qpUzbje/ZUt5ZtgKdCsV+QUAmwI4mpeIXSKLgVwJJeaP0eut7eIgcHl2yV9Is18FzEZvhUvFo1YPGC7RaxpEt8nLLAvsBiELNR4rZOkw2mUxNh6ddVZ+iDJqW6vGjSkTdJmEF2oXWGAx5WyCw77KVl3JSBTq0Uis82VD4xplS5LOHGefsmqDktIfbnfLSsDkBT8uvSzSKfsQh8TbpKew9CKtSunxiS6ygOVhxiNw/W9KQa/Qt6sabbgtnK0g6NlyA3Sy2uIF+6l4qlL+XzBD3uJ/tfE+ekQF7LJDyPzcMs7Na+QITVezNW4ho5pq0dtY/H/7TOzlau4k+7tNXNeMA3vWa+e3uNDq9T+E7iVF8LPO1AN6+zQd7Oi55MK0PInYCekRX8Phe11ztXHWR6eeTQQ8nE0VhiCZc3h2OjMrP2fNvsbZgGoozlx+yTiD3HYzk8QHvhAHOyg2YvU/7ein/6rqKWp+DAVUzUWhxHCaRcp7XUxFN2yYpTb7c0Tmiksjf9qObBy5/pOf8v3OkNsIQcf7mpf7OkPVxR5vHS8V9sFPejfEDXIViK7urIWWjWWz6u5ZJMNxtTnF+/uU6pk2/2hKMKny56byXVMGhi0gN3mCvHkJMhDr8BoGvdK42THExI7Mkil0svRWh4VQzn89fbS3WIyzjnW+nhQlDT0RJoxZAv9iFuLrPSN2twb520TuBv7Roa3/UvXeLvG4fOS5ZTuptwnMCUrBeVNqk1FMRT76RUQUEQq7AzoDihvMrNeRR6Kj/utiKeDqnKZLNQhsakmBLJ
+ PeF2W4Dh
+ 5YO71sLqWxxS2o9s9EbekFIti/0qTjD4XwhtXC2v2amJ8BN8RWc3Vy6iCGKzsj7svp+Qet9/PwOJLuLSDwjdK7ngHRrtenuZ+sAGDpFzMIUfr534u8qaY/i1rVxwgXwAjKA9r6gPS3c6KkgTztAnFss4xWf/yk/T2gvaAavV94e4qvbA7k678Jl881E2knVBg8yiRFMhYfl0K+fKhemzDqfhvdCz5iyNBKq1fl2h/FzzVg6ClrSGGfLOJFRKTIJOXw6Sx6NQNh66izvlRlMsERO0dxj12g3pBnVdgZaE4O7Cu41dBpUC9solOtoJ35QHvYP1KMOC+M3j+9+vtZIb4lSHe1gv+LvyBhFLK+ejEfbHNdvGSRODyYkimSsxEYApTfMcZfyM1DhNBm8n6bi403TlSFDUSPoQgBKRX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,56 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Jun 2026 20:05:35 +0800 "zhaoyang.huang" <zhaoyang.huang@unisoc.com> wrote:
+On Wed, 10 Jun 2026 13:22:32 -0400 Samuel Moelius <sam.moelius@trailofbits.com> wrote:
 
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+> > >       start_time = ktime_get();
+> > > -     for (addr = gup->addr; addr < gup->addr + gup->size; addr = next) {
+> > > +     for (addr = gup->addr; addr < end; addr = next) {
+> > >               if (nr != gup->nr_pages_per_call)
+> > >                       break;
+> > >
+> > >               next = addr + nr * PAGE_SIZE;
+> >
+> > Sashiko AI review identified a pre-existing possible overflow here on
+> > 32-bit machines.
+> >
+> > https://sashiko.dev/#/patchset/20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com
 > 
-> The kernel panics are keeping to be reported especially when the f2fs
-> partition get almost full. By investigation, we find that the reason is
-> one f2fs page got freed to buddy without being deleted from LRU and the
-> root cause is the race happened in [2] which is enrolled by this commit.
-> We solve this issue by reverting a f2fs commit 9609dd704725 ("f2fs: remove
-> non-uptodate folio from the page cache in move_data_block").
-> 
-> There are 3 race processes in this scenario, please find below for their
-> main activities. However, by further investigation over the code, I
-> think there is a common race window for the truncated folios between
-> split_folio_to_order and folio_isolate_lru, where the folios lost the
-> refcount on page cache and remains the transient one of the split
-> caller, under which the folio could enter free path and compete with the
-> isolation process. This commit would like to suggest to have the folios
-> beyond EOF stay out of LRU.
-> 
-> Truncate:
-> The changed code in move_data_block() lets the GC path evict the tail-end
-> folio from the page cache through folio_end_dropbehind().  Once
-> folio_unmap_invalidate() removes the folio from mapping->i_pages, the
-> page-cache references for all pages in the folio are dropped.  The folio
-> is then kept alive only by temporary external references, which allows a
-> later split to operate on a folio whose subpages are no longer protected
-> by page-cache references.
-> 
-> Split:
-> After the page-cache references are gone, split_folio_to_order() can
-> split the big folio into individual pages and put the resulting subpages
-> back on the LRU.  For tail pages beyond EOF, split removes them from the
-> page cache and drops their page-cache references.  A tail page can then
-> remain on the LRU with PG_lru set while holding only the split caller's
-> temporary reference.  When free_folio_and_swap_cache() drops that final
-> reference, the page enters the final folio_put() release path.
-> 
-> Isolate:
-> In parallel, folio_isolate_lru() can observe the same tail page with a
-> non-zero refcount and PG_lru set.  It clears PG_lru before taking its own
-> reference.  If this races with the final folio_put() from the split path,
-> __folio_put() sees PG_lru already cleared and skips lruvec_del_folio().
-> The page is then freed back to the allocator while its lru links are
-> still present in the LRU list.  A later LRU operation on a neighboring
-> page detects the stale link and reports list corruption.
+> Does the __u64 or Sashiko AI point require action from me?
 
-Thanks.  Sashiko AI review might have found some problems with folio
-flags:
-
-	https://sashiko.dev/#/patchset/20260610120535.2370844-1-zhaoyang.huang@unisoc.com
-
+Not really.  The patch makes the code better, that's what counts!
 
