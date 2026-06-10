@@ -4,89 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D4ECD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85BACD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:54:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4969A6B0005; Wed, 10 Jun 2026 05:34:14 -0400 (EDT)
+	id B1D866B0005; Wed, 10 Jun 2026 05:54:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4473B6B0088; Wed, 10 Jun 2026 05:34:14 -0400 (EDT)
+	id AF54D6B0088; Wed, 10 Jun 2026 05:54:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35D226B008A; Wed, 10 Jun 2026 05:34:14 -0400 (EDT)
+	id A0AFA6B008A; Wed, 10 Jun 2026 05:54:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 24D216B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:34:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54839A08F7
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:34:13 +0000 (UTC)
-X-FDA: 84863491986.30.788B0DA
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2302E180006
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:34:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cjbT4HkY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FD6E6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:54:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 19CCD928EA
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:54:10 +0000 (UTC)
+X-FDA: 84863542260.29.34EF0DF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 52F6020004
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:54:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nrslpx/I";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781084051;
+	s=arc-20220608; t=1781085248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dk7BqETwt1DrvYbxUKuqhVVwlZI00/HTv1khPS2seEc=;
-	b=2qTFwnkqaAvKCcJWvHhEIhpUlbqfwZk2BnYCf03Q8JFWUav8ujGxO8tD3g4YdirHRLVPxb
-	J8wS7Pc4HVTjeeZ4lvWalgozyPoTOQ9mb/6A+UyTZADhPKcjHjjhzeI+EKVGk0FHx+UX2Z
-	ojezRwhnicgYb8lkKjUCu3aLLUwsERg=
+	bh=AOOcC8vMo1WFVxSe0Q2hEdY4dvsi3HRkW8edOmhhaUY=;
+	b=M4dB7SCQu49BUVnVgrw7PAmkSJIKdfs35/tmlbpK5J2L53Er9touqQyiuT0OuH2bDzYFvu
+	O+Lnr0wlldH8blgsfuKtOAhdpqEYXOXLam4ab9/igPdDZiEtIdN2mPjXlSB0T6P7s0aSil
+	3CHOnA7Aa7ge+JdDMxtfaeJixwQRy1k=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cjbT4HkY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nrslpx/I";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781084051;
-	b=UPbEbC0QSHUErCGUNqdWCAm1i3GBRYYWJCI9ZpUJPwP3OkktgKwQF8wvQe01T3AL/3Ekgo
-	0rhLaplPmICKYAuToS9XBHfvHBpvFhxF3OPlvx0/WhcivcOPTSzyuHuZqJWfng9NfFNfO4
-	nJRWRAA3Oj/F2w3DxqoXhjpZgQ/HAdM=
-Message-ID: <c7ae2aa9-a1fb-4965-a213-f9cfb2aa101e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781084049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dk7BqETwt1DrvYbxUKuqhVVwlZI00/HTv1khPS2seEc=;
-	b=cjbT4HkYBQVsl+bCiuvR2WfEUswGc3O0wL7S3NyuhEiVMtplPo4vtl1IuBW1YId1HFRhkQ
-	vklsXeFT8lAWzpM/j3nl/JgjhJ4AYbEcRGmCqUUcXOTaTdBn2DVgQz+Mr1E/N2VfY5Q9Rk
-	sPhTmFzZFQGCYRjtwjyaXNb5cmh+6oM=
-Date: Wed, 10 Jun 2026 17:33:33 +0800
+	t=1781085248;
+	b=DRAYQCENOcI4RwHnJpwGRIfFhk3iNiinrbQ+/ZnBhNOaJFM7/VtNNCxcWsSWOhh2YOgqtj
+	py3Nrq4rOVPxe2Xb0QOA3r7ezqSH4k6ozSYbDfOXsuzXNPHQUzMohRRP0SUkmvXqwI44cw
+	Pw1kdFME4QTzwzThfjMUOPNY/ofYVKQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B6D766001A;
+	Wed, 10 Jun 2026 09:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD371F00893;
+	Wed, 10 Jun 2026 09:54:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781085247;
+	bh=AOOcC8vMo1WFVxSe0Q2hEdY4dvsi3HRkW8edOmhhaUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Nrslpx/IDtHzrfEr6PGCpfnTV5w0wOhuIa93SI6qWJhfb0DJjsGLY0GrIJMb38TF9
+	 5fdwRdTy9CcTc2RJoQPrvhc+U2n21psKLy0r21v2JMutKIDf9mQxssI5R0lbNCdqkb
+	 4igKAcZHoSI65ZP97JwqonD0iAoXumtbwD4ytQaM9yOrjUEAw1ceeXikWE2w/h7qDR
+	 C3JLWj0hOnQiju/bIiul8zGY8jTAhkeW+4s8FvCwphsUYNLFRPcDjNwwVUiXPGAiGo
+	 0X9vaicMShGUwqSusinGGPfgY3BG+Y9JL21r3yudLPjWD8d7asyTxhOjjG0ELui978
+	 7tZJkRRwInc/A==
+Message-ID: <f2b5189f-10de-4685-97f3-6ee08d159743@kernel.org>
+Date: Wed, 10 Jun 2026 11:54:01 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 6/6] kselftest: alloc_tag: extend the allocinfo ioctl
- kselftest
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sourav Panda <souravpanda@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>
-References: <cover.1781042698.git.abhishekbapat@google.com>
- <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1] io_uring/rsrc: add fast path huge page handling in
+ buffer registration
+To: Christoph Hellwig <hch@infradead.org>
+Cc: sw.prabhu6@gmail.com, axboe@kernel.dk, io-uring@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dave@stgolabs.net, dongjoo.seo1@samsung.com,
+ Swarna Prabhu <s.prabhu@samsung.com>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, Matthew Wilcox <willy@infradead.org>,
+ Zi Yan <ziy@nvidia.com>
+References: <20260608062937.804758-1-sw.prabhu6@gmail.com>
+ <c924fb59-be47-4fa5-adbf-a50a831ccd7b@kernel.org>
+ <aikBIESiJftxBdfL@infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aikBIESiJftxBdfL@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 968o7hf8erqosqd5ihp8poigo5to5gp7
-X-Rspamd-Queue-Id: 2302E180006
-X-HE-Tag: 1781084050-47159
-X-HE-Meta: U2FsdGVkX1+6KMKq1on3p/xEKmmPfUkdTRjbHOLVK8Fwovvyyfz+LrEP9i4s+d9LP+AEAV7TnAsoZU+E2hoatDJbcAOqsgiwOPNGDCyAQET9h7tD8g1axcgoQJ30Qv8cXB2JXRja7TmxIBbWoRTP6+U4y/tRQH/JNCfniW7ISRjvqk/ppYEnECCo8GGyqqRCWiAdOdtVAG0M7HgAgYVX0CFSk/aCFuT4Tz8SwD54XreunqA4UavzDfLR5EHzr9k/C963MpHyxZRtOa8X6CYKGXib1/lK6Q0GuqsLOFj9ny1ZtKso5QqG9cFTf8oBgdEpIDu17UmpiPfOgqVGOVPDe0L2B7mptqRV4tToOS6VCiFlSLV7puZmtyoty/KCAjRl3xFcwf1/CijFDVF0UEY7pUoXfMIy8S7IADBXS/zY5h/SvI+pVyhtKgKhmWtO1mWGlsnzqXO0hzUuXiQAPHHBRZwSTy31C7f1Q+6s7JsjbuCQ7vfqiTOXoP3eOwI6IPZXfM8/PpJ3ojsWDg+ZvlHyPUaoRY+rW9bn+RmWI81EamwGFdJbINVJkgHdJN+jPaHHb/tLA0gf7yp7+zdprBLicF9hpXcDJz3XTFtVxhNVnou3+KWxDXv9fLT/VCeMIdxwarUF1ZoIXfJuZAOF3v+xsdiBxN4trXVxK2EeKxDZ+UobrYcrDsI5BUyLmq51uDOceHUkvnfRzppBPqDuIZ+b3BnJBICakmgc9v74aNAbTArXHbrNKtqkxCC6BkdrU75MheCHUgvxf1Di4zcw8JT6JvT/1N+zy4sxQJ8s++KkFORZ2g6zy8VaJ09eAvRLS3RazQa/1/y+0Jtov+Zms9/7N+n6nlWa+ekPqb1oZDtrqrunkUcPl97TMs1DS8iWu+CC55Rk6uJh6o1cKF/hTBxkM8FFfuG1m3paqFUJcotW398V509xfOwdtG14DvyE5wyknUpug3aKImPLd2Jdg4+
- ckbus4uj
- RE2jamb4/63so96rwZ+dqyENWugLkV92H9KvvJBQCM+VTBW+nJy4qt3DUz+o2fNff/Lqtz9QhunmPHBw1L+jCIvOEAl4juk7Q2ePVQeoN3G5/PB4OFzWf2dypjSjOecZDpK3uqtCPSDgjq56HLre/mea/E6ODGm6oHaQH5RR51wouECapxK3Qf6juuxb2dcRkmptc0AbEi3hPt1Uyt994amTGgzSONU+hk4Lcm4KsLoTA0uVbMsL062Ypjzg66rJLqqzuMeQsSwxTIPui2yqwAXxBfrs3xLRNXajS4Xdv1FM6jdywM1XSvbK8Cp5Bgkn4yJyrKnyOtOL06krZwIzsP5Z3UA==
+X-Stat-Signature: th6woo68h8db1z9arp4cy6hwbwaq5mdy
+X-Rspamd-Queue-Id: 52F6020004
+X-HE-Tag: 1781085248-278810
+X-HE-Meta: U2FsdGVkX19c1zJeN6jwsb43F+/JCh19b2BI8gQSUG67CBddTWyJ4AkfItQt1FlgdqjiikQv7mq7wGjaGkC8X9vNGuFOjYAanp3XrB1Xx+ss2SVnp1FEl1TT2lzKhyakpyXnk7zex8/qkMtIXFy6flKkOpxppG9UlG5Jyw9mFxC16BKFMM9oZTVkfrbkAWDw1xiZg3P5WKEqjjB2U38Tw+abK3AtdjMG3Ix/ua1dqNH21mscTcUTO74oupmCzfE1GoMhgB1KT2ruviRcK6807A9Uh+acug6mWoZImtNnNKBmkDk6AL3ZJVyrQaz2flxADhSnd9B8pE3LnrVWGsCQwdyjOBCxzhK9Sr5DXLKWkvXXMft5psIJs5Tn1SHk8zVV6DGH3c6uKTorN1GhGb33Gbjgn7hm1g5CAfbMNnGTGwZc+nilnfJTqMZFGKM2D28cysMLi5v1gJBIHwssTwRhgqWJHql6jpamuq7EWhLuZh4l+yvU9fD3IOqzSsw94PUE1bHgkM2YCkxHj9xF2OvcrF26egEuLLaaT94hb4LORMA0qibeg8+cnZa1Y/cU0mntmVKIDVrcfCx9fC7pM70/DEZxSoAORlWCgAknkdZBEGuXscr44EwTnT9AbLBpMjYJbBiuNM2rdDT++EP4MPWJOL+XDPozfQYmvgBBrhv7fgq1WC9QXi5yTPZjMs5/y/WGySZMzI/AecfxLhFpF/QiERtOtQSH9koFZGZ/I8v/GpNUHSZmA0axjze8k3Oa4BjvCtuRG4PDiOx4SOmBXxwjBkOTbUV5B0WPRvr7DxuYfvqDaLteHZMI1fTRv8xeACI+Kn0RWLL+lJZZfDDnIrjAVbwWY9554BLRtvlWEExPo3yGfb+LrO04nRpA4GI6BX9vUnHXiqtpDCaMFi7gOJJdTUqdGG+w1G4jpoFVKVVNe4EHRt9rDt7UUa1YS+IMDl0l4bYphHSUOf/BP1XKp+E
+ EfTJaqRm
+ 2ekfcZ24ld/duIBlE+3LgcdnMeYYMEWn0xuCJUPGLb7gSYUqShDxDXmseB9jx8TwM+izilxEM/AahrLAz6YclVfJa1GngrY+amBMbH1GwDQDtaDQihzJC6n7UWgl4qEXmRXUOwHrBRzvHDqzGgPyr1Tk/VkQhcajne/evuG2crdlMrokaeUhR5jk/YdwI/5cgxy8BjQlBhRDqqBD8aOPq7eqz2deKi5VegQmKvZVop2iq3t064rS9nsHnrR5DvGlxzvwqC4mayLyuWOGxuU2Aaa2mb2nY3w2tj+dQ9BMghLutlIc6KujQeJuJo29EWNJoPWc61nqbuWFCe5gxZ9+5UcbyBpaMGn42n2VOFyhJNi/3bXBxt/nFyUU/NwoPWc8UwOfLUW7QGXZ1ZH/y3msXdzT+ocZtkQXSfP9eJeGExMPWuZo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,272 +143,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Abhishek
+On 6/10/26 08:16, Christoph Hellwig wrote:
+> On Tue, Jun 09, 2026 at 08:36:43PM +0200, David Hildenbrand (Arm) wrote:
+>> I really don't like arbitrary GUP users to starting to special case hugetlb
+>> folios, and making assumptions of how other pages they pinned look like (IOW,
+>> how the page table mappings actually looked like).
+> 
+> Me neither, but the current interfaces are kind forcing them :P
 
+Yeah :)
 
-On 2026/6/10 08:12, Abhishek Bapat wrote:
-> Add the following 2 scenarios to the allocinfo ioctl kselftest:
-> 1. Validate size based filtering
-> 2. Validate lineno based filtering
->
-> The first test uses "do_init_module" as the candidate function for the
-> test. This is because the associated site will only allocate memory when
-> a kernel module is loaded. The return value of get_content_id() changes
-> every time modules are loaded or unloaded. Hence, as long as
-> get_content_id() values at the start and the end of the test are the
-> same, the memory allocated by the do_init_module call site should also
-> remain the same. Consequently, the test can assume consistency between
-> the value returned by the ioctl and the procfs resulting in less
-> flakiness.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->   .../alloc_tag/allocinfo_ioctl_test.c          | 204 +++++++++++++++++-
->   1 file changed, 203 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> index cd9cf229ae1f..5d2f13900a47 100644
-> --- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> @@ -311,11 +311,201 @@ static int test_function_filter(void)
->   	return run_filter_test(&filter);
->   }
->   
-> +static int test_size_filter(void)
-> +{
-> +	int fd;
-> +	struct allocinfo_tag_data_vec *tags = malloc(sizeof(*tags));
-> +	struct allocinfo_tag_data_vec *procfs_entries = malloc(sizeof(*procfs_entries));
-> +	struct allocinfo_filter filter;
-> +	int ret = KSFT_PASS;
-> +	__u64 target_size, i, pos;
-> +	bool found;
-> +	const char *target_function = "do_init_module";
-> +	struct allocinfo_content_id start_cont_id, end_cont_id;
-> +	int retry = 0;
-> +	const int max_retries = 10;
-> +
-> +	if (!tags || !procfs_entries) {
-> +		ksft_print_msg("Memory allocation failed.\n");
-> +		ret = KSFT_FAIL;
-> +		goto freemem;
-> +	}
-> +
-> +	fd = open(ALLOCINFO_PROC, O_RDONLY);
-> +	if (fd < 0) {
-> +		ksft_exit_skip("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-> +		ret = KSFT_FAIL;
-> +		goto freemem;
-> +	}
-> +
-> +	do {
-> +		found = false;
-> +		pos = 0;
-> +
-> +		if (__allocinfo_get_content_id(fd, &start_cont_id)) {
-> +			ksft_print_msg("allocinfo_get_content_id failed\n");
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
-> +		memset(&filter, 0, sizeof(filter));
-> +		filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
-> +		strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SIZE);
-> +
-> +		if (get_filtered_procfs_entries(procfs_entries, &filter, fd)) {
-> +			ksft_print_msg("Error retrieving entries from " ALLOCINFO_PROC "\n");
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
+But general rule: if you're outside of MM core and test for hugetlb folios, you
+are doing something very wrong.
 
+> 
+>>
+>> Ideally, we'd have a pin_user_pages_fast() variant that would give you a list of
+>> folio ranges instead of individual pages.
+> 
+> Yes.  iov_iter_extract_bvecs and thus the block direct I/O fast path
+> would instantly benefit from that.
+The tricky bit for such an interface is that, soon, some pages won't be folios,
+but we could still end up with non-folio pages in the address space (e.g.,
+vm_insert_page()) and have to pin+return them. So using folios is not future-proof.
 
-As I mentioned for patch 5, the retry loop in test_size_filter calls
+There are some long-term plans on providing an interface that would abstract how
+you refcount something you GUP'ed. (because, some pages we GUP in the future
+might not even have a dedicated refcount, all still fairly unclear). But it's
+all not really finalized I think.
 
-get_filtered_procfs_entries() which reads fd to EOF via fdopen/fgets.
+For now, we could expose a folio+page/offset+nr_pages interface, where we,
+long-term, would not be able to return non-folio pages (e.g., vm_insert_page())
+and would instead, in the future, fail the request if we stumble over a
+non-folio thing in the page tables. That sounds reasonable for now.
 
-If a module load triggers a retry, the second call to 
-get_filtered_procfs_entries() gets EOF
+Another solution would be, exposing page-ranges (e.g., page + nr_pages), whereby
+we'd say, that all pages in a range belong to the same compound page, and that
+we took a single reference for all pages in the range. IOW, page_folio() would
+for now be the same for all pages in a range.
 
-immediately.
+As soon as some mapped pages are no longer folios, we'll likely have to modify
+plenty of drivers either way, that blindly cast pages to folios ...
 
-And Sashiko has also reported several minor issues.
+So maybe a folio-range based interface is good enough for now.
 
+-- 
+Cheers,
 
-Thanks
-
-Best Regards
-
-Hao
-
-> +		if (procfs_entries->count == 0) {
-> +			ksft_print_msg("Function %s not found in procfs\n", target_function);
-> +			ret = KSFT_SKIP;
-> +			goto exit;
-> +		}
-> +
-> +		target_size = procfs_entries->tag[0].counter.bytes;
-> +
-> +		memset(&filter, 0, sizeof(filter));
-> +		filter.mask |= ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE;
-> +		filter.min_size = target_size;
-> +		filter.max_size = target_size;
-> +
-> +		while (1) {
-> +			struct allocinfo_get_at get_at_params;
-> +
-> +			memset(&get_at_params, 0, sizeof(get_at_params));
-> +			memcpy(&get_at_params.filter, &filter, sizeof(filter));
-> +			get_at_params.pos = pos;
-> +
-> +			if (__allocinfo_get_at(fd, &get_at_params))
-> +				break;
-> +
-> +			tags->count = 0;
-> +			memcpy(&tags->tag[tags->count++], &get_at_params.data,
-> +			       sizeof(get_at_params.data));
-> +
-> +			while (tags->count < VEC_MAX_ENTRIES &&
-> +			       __allocinfo_get_next(fd, &tags->tag[tags->count]) == 0)
-> +				tags->count++;
-> +
-> +			for (i = 0; i < tags->count; i++) {
-> +				if (strcmp(tags->tag[i].tag.function, target_function) == 0) {
-> +					found = true;
-> +					break;
-> +				}
-> +			}
-> +
-> +			if (found || tags->count < VEC_MAX_ENTRIES)
-> +				break;
-> +
-> +			pos += tags->count;
-> +		}
-> +
-> +		if (__allocinfo_get_content_id(fd, &end_cont_id)) {
-> +			ksft_print_msg("allocinfo_get_content_id failed\n");
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
-> +		if (start_cont_id.id == end_cont_id.id)
-> +			break;
-> +
-> +		ksft_print_msg("Module load detected during size verification, retrying...\n");
-> +	} while (retry++ < max_retries);
-> +
-> +	if (start_cont_id.id == end_cont_id.id && !found) {
-> +		ksft_print_msg("Entry with function %s not found in IOCTL results\n",
-> +			       target_function);
-> +		ret = KSFT_FAIL;
-> +	}
-> +
-> +exit:
-> +	close(fd);
-> +freemem:
-> +	free(tags);
-> +	free(procfs_entries);
-> +	return ret;
-> +}
-> +
-> +static int test_lineno_filter(void)
-> +{
-> +	int fd;
-> +	struct allocinfo_tag_data_vec *tags = malloc(sizeof(*tags));
-> +	struct allocinfo_tag_data_vec *procfs_entries = malloc(sizeof(*procfs_entries));
-> +	struct allocinfo_filter filter;
-> +	enum ioctl_ret ioctl_status;
-> +	int ret = KSFT_PASS;
-> +	__u64 target_lineno, i;
-> +
-> +	if (!tags || !procfs_entries) {
-> +		ksft_print_msg("Memory allocation failed.\n");
-> +		ret = KSFT_FAIL;
-> +		goto freemem;
-> +	}
-> +
-> +	fd = open(ALLOCINFO_PROC, O_RDONLY);
-> +	if (fd < 0) {
-> +		ksft_exit_skip("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-> +		ret = KSFT_FAIL;
-> +		goto freemem;
-> +	}
-> +
-> +	memset(&filter, 0, sizeof(filter));
-> +
-> +	if (get_filtered_procfs_entries(procfs_entries, &filter, fd)) {
-> +		ksft_print_msg("Error retrieving entries from " ALLOCINFO_PROC "\n");
-> +		ret = KSFT_FAIL;
-> +		goto exit;
-> +	}
-> +	if (procfs_entries->count == 0) {
-> +		ksft_print_msg("Could not retrieve procfs entries\n");
-> +		ret = KSFT_SKIP;
-> +		goto exit;
-> +	}
-> +	/*
-> +	 * We depend on the result of procfs entries to create the ioctl_filter. Hence we
-> +	 * cannot recycle the run_filter_test function here.
-> +	 */
-> +	target_lineno = procfs_entries->tag[0].tag.lineno;
-> +
-> +	filter.mask |= ALLOCINFO_FILTER_MASK_LINENO;
-> +	filter.fields.lineno = target_lineno;
-> +
-> +	ioctl_status = get_filtered_ioctl_entries(tags, &filter, fd, 0);
-> +	if (ioctl_status == IOCTL_INVALID_DATA) {
-> +		ksft_print_msg("Trouble retrieving valid IOCTL entries, skipping.\n");
-> +		ret = KSFT_SKIP;
-> +		goto exit;
-> +	}
-> +	if (ioctl_status == IOCTL_FAILURE) {
-> +		ksft_print_msg("Error retrieving IOCTL entries.\n");
-> +		ret = KSFT_FAIL;
-> +		goto exit;
-> +	}
-> +
-> +	for (i = 0; i < tags->count; i++) {
-> +		if (tags->tag[i].tag.lineno != target_lineno) {
-> +			ksft_print_msg("IOCTL entry %llu has incorrect lineno %llu.\n",
-> +				       i, tags->tag[i].tag.lineno);
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +	}
-> +
-> +exit:
-> +	close(fd);
-> +freemem:
-> +	free(tags);
-> +	free(procfs_entries);
-> +	return ret;
-> +}
-> +
->   int main(int argc, char *argv[])
->   {
->   	int ret;
->   
-> -	ksft_set_plan(2);
-> +	ksft_set_plan(4);
->   
->   	ret = test_filename_filter();
->   	if (ret == KSFT_SKIP)
-> @@ -329,5 +519,17 @@ int main(int argc, char *argv[])
->   	else
->   		ksft_test_result(ret == KSFT_PASS, "test_function_filter\n");
->   
-> +	ret = test_size_filter();
-> +	if (ret == KSFT_SKIP)
-> +		ksft_test_result_skip("Skipping test_size_filter\n");
-> +	else
-> +		ksft_test_result(ret == KSFT_PASS, "test_size_filter\n");
-> +
-> +	ret = test_lineno_filter();
-> +	if (ret == KSFT_SKIP)
-> +		ksft_test_result_skip("Skipping test_lineno_filter\n");
-> +	else
-> +		ksft_test_result(ret == KSFT_PASS, "test_lineno_filter\n");
-> +
->   	ksft_finished();
->   }
+David
 
