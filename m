@@ -4,114 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA416CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 16:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE38CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 16:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DC136B0005; Wed, 10 Jun 2026 12:43:42 -0400 (EDT)
+	id 268DB6B0093; Wed, 10 Jun 2026 12:47:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B32B6B0088; Wed, 10 Jun 2026 12:43:42 -0400 (EDT)
+	id 218C46B0095; Wed, 10 Jun 2026 12:47:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0B906B0095; Wed, 10 Jun 2026 12:43:41 -0400 (EDT)
+	id 108466B0096; Wed, 10 Jun 2026 12:47:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DAECC6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:43:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59EE5A0211
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:43:41 +0000 (UTC)
-X-FDA: 84864574242.21.4CDEEEC
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2B01D4000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:43:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Qdt8hOVK;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781109819;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F0F6A6B0093
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:47:43 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F74A1C0E50
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:47:43 +0000 (UTC)
+X-FDA: 84864584406.26.91F3527
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 75A3A20006
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:47:41 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pOpl6iFc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781110061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E6i02pwHwWBJz0bYCliXn0Muz4Zv1nNp47/hW+WRQ6k=;
-	b=ClG8xYDPK96mbhYc4aqzfugKjOsZZoR4sqpMNyZKn1X5F4YRlZrWOpbglnDSDakjgwe5X0
-	eatIfzATIn9K2tJ/DD4nqOCvs5L78LegVnPqUHClsfJqMwu2rIdG90voYJJEXkWFIN44wC
-	g/NcRXEpyvlcW06jpKX0dvZWsx6PDA0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Qdt8hOVK;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781109819;
-	b=kILNjZ2XawxFFiQFp5cee3j4eQl7lFMS+qhdpSnWywGuCUm/2Vdzya1ZaCdhxhM3dkZQcy
-	Cq0DqbxqBqpgyXa2gqy05aFKVhz/zW/tUPGSbgayt3JMUE9oJ4imGedjx34lgty/0xuhKw
-	us0hgS1WF+vVPWKD00ScNNDq+xsGs2M=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8ce9df31840so52881616d6.1
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:43:38 -0700 (PDT)
+	bh=ESwUSaSMN8gaVV18KOTc1a43xJoRWKiKKFNyBgNOt8Q=;
+	b=OKedNSmuO/Qrmy/hv+xpRluJ5/J/JDy3o3WsjFQkYdV87H4d5dM3H3n0KaaucRUWcYku0o
+	Pz2cxnedxnp4mXiF3L4Ro8r4anZc6JjQ91I04/BX5pm6M/CSj55d9yZgpvGO0ZoDDMp3/3
+	KgvabNxTuwXbgdv5tgRcW4fV8b2qWi8=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pOpl6iFc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781110061;
+	b=8WdMhJbOZZvw/li38jWKFFTl0POq32+aWYhigvk33+/ceJLGvfqqpMjC4C0Bg8Tgs+mmWv
+	0633wSL4P6hoWeYyH5ZBIIQuWgymxx/BgvZvhObGpjLGE57dxJaKSyXE0diQ+PSgupFXoW
+	sm7pWGjSEXynmMUTNhRb/wQSTnxFv9U=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45ef41adbc1so5237755f8f.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:47:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781110060; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FeA0a/PXLvhTunHpLHNyUpsV2nC93vuGYjjmBLI/17ih0+HGg5gZk4lTlk77zRWu2x
+         f3olwDZas+kF+DiwAkw7X0cTa/f5Em+vBOWEuZREF6GVLSmUq5X9jIl46QQTXeSjZUvU
+         wyOoT4qqklcWnBdGHIaQgMEx/uq/hUiU5kDd5bIqmOGrIGzEE2vZtETXI3BSz9sTCgcJ
+         Yx16QSRTbGfekkMrWMbuyqK0IQuYfU2EIhJJQD19ismV82FfQVOk6DIthjVu8dOPEAp8
+         /2nejBAsaKBK2PxTJarRht3Dqi7auzGHigI8h1CoNkILLI6GYUK5n4jzSUUu45Q81ZzH
+         k5hQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ESwUSaSMN8gaVV18KOTc1a43xJoRWKiKKFNyBgNOt8Q=;
+        fh=ttuOrSWfzZHjgM3vruJNtKxktSsw8qqW02SQhXCq8OU=;
+        b=B/c1J2Qinx1q90+fPoDkpUEo21aEWTec2kzbfUyIGY3yTv3ekvKcLXHo4V8xS4Y68M
+         e2Yp663Rrp29+XOqlvmqwhVauAcNVvw0dQzVg/e+5DkviEFUPsNjZdJcxb4RD7e0C5lR
+         rEVIaiHkrDq1CH4ZRtEGjsnurA33q6JTFJpytBNVDzVTpP27xwIPGuYBmrTSj3NGGvWa
+         tPJrQaT8rZAgYYQze4l5FxEz5RQzfylP3I4WcypxmRBuE1qTq8lJ5Rl0BFcEwiJrxF+N
+         BcNzPtd6O7rzFeLK6NTo1aN3peKzg/WrLJh6LgEV38MsAeFbzjXc4TevdYSHNSSnB0AQ
+         932w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1781109818; x=1781714618; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E6i02pwHwWBJz0bYCliXn0Muz4Zv1nNp47/hW+WRQ6k=;
-        b=Qdt8hOVKsg4iIlxonXsxgqdx4BsAxsDohbFecC7bGkKL6l325zk+QwssoYL3W9hOqG
-         0Mi0TluFWA5yqutHU7c17SBdey2ytZqcJq50xDXV9yPN5HKKUVcoZDUqGFtyrmmc56ny
-         Ig6rJAuFT5GWLTQUqXinLtC09GxL0uCm/Gi0+sc+VMJ/OZ4U4DhFBTZ3Gs1U4+XaaOE0
-         2tO3PpdOYu48WPjrjmZguamgBXU4Tz0RHaMIbqACg3ANw13fyDgTaKXZHNTdnThX8mrG
-         7FW3nReybgvese4CnW2LlX7TBLwoFyfXYd43F8MxtvZcX2H/WfxVvFqA+tZFW2wFmAYw
-         qpDw==
+        d=gmail.com; s=20251104; t=1781110060; x=1781714860; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ESwUSaSMN8gaVV18KOTc1a43xJoRWKiKKFNyBgNOt8Q=;
+        b=pOpl6iFcJ897Ia5YHJ75+/6XD586IsoZFuXkscfuiIqWFFfidvCWSDQwkCt+rbg2Mj
+         laP1xsf6lPdr3Ko0bi+43SpUkwrBuO41JEEJNHRwN8DPX+DlSj2Xg4pImty0WkYpvVJW
+         WxFJM8oM5EThrWgGogTfiCOrL86xwhRBX9Lf8toUAv/6RcX8y156OcZAWhKFbRZwKGD6
+         wnAXEiuHJ974HW/2G9rnhIjiGBkshDRYvoQCozIKwGc1dMIKP0v7SQZgZAeSs6qBtimO
+         uR/mgytUw5Qf/6TbTJKRHXYim291ATvx3Vhb3yB+e38ek/ugXxm72s5WmyaE6GwMlsTA
+         x3/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781109818; x=1781714618;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E6i02pwHwWBJz0bYCliXn0Muz4Zv1nNp47/hW+WRQ6k=;
-        b=aCMOHpIB+2igP86juaA7y0shRbHGpD3QHraQ+jLTY7DQNBY2zZ5x8ytqHDYxbEl3/a
-         uaQFEGMH2XTIR2Ys7jPRJNlqLXpzyZCTA7P24tb2gnxqljlfIr/yqVulg05s+OudgRFs
-         Yjy9w20kylP5VrA0XIxgWm5GZ4EVWJA2omFUaTRtQiMK2uULlikAdcejTEVpitRgyk1b
-         OZwYV39NhO10Teq2olqDSWFZ2PbtfeIeuP1fZ/IztfP1RsgubBDgeGdr8yw4Y34mtXQ/
-         ogPK5VHj/0XLGY+vBgmmFt1ikB+6CKJSOY3g7J5xWc+SUYNvCcSKYI65NwC2TBX6t/y2
-         U2VQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ad5o+Hkjfi+O5EQ2941gQfC6XDKOZjUXi8k8O4b+MeX7O9rPsrLI82xmyaIcU+I+Cr3b/ejcv4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzW3kxxXiCR2ZikjFINlo7WEe/sNkrMNf593GIRIU/lvUw7AFv/
-	ntHOq1xJt+xvjzQj6m5RJlfPVbQ+lLJCeNHkeRoooGwCyVddguhz14gyCrzvH1a/yRs=
-X-Gm-Gg: Acq92OE8XGsTfKMwk86OSyEIpDJEBCLA4unN4Iv7kP3yhiz+lI3pYa7Vb5jM0XZP5N8
-	QtbNitBsQcc9gUTADxMqMcHXH0QD5PXOYPLgNBWtLLLKtR0MFqkE/e0gO1SS89xGRylGKy24Ca+
-	nHP5nk9KME8AOgA/O9mI1jW4XqEKXCg5yob3cAhE0QjAFYOcYm+HC25xY9i0fbRFMNrJ34O1h/2
-	YFHAdNGG/3Y6cdOJQM3808A+QiKETgN3RBank2Mpfq/XHHA7Jm4oaiSW9D6aCN7QJHmtAnZnt5F
-	tbAYQBtRDfPIDYE3JO3qYqWkCj/1ruUCkjHMS+ANZUVHasQsmthn5x4jvkQDPAU1YxF2YnAFTxq
-	oIU/C6M3CkuEp3wwqscCA3CBZprterUxo/FTVJA26H6vEM+WSPAW2wL0AIr9AlsuGef2gZqjcDV
-	omjklrrmYVU1IZ2YRAFx+bzJfireLJhmBC
-X-Received: by 2002:ad4:5be5:0:b0:8cc:2a92:48f2 with SMTP id 6a1803df08f44-8cee625246bmr434460006d6.39.1781109818092;
-        Wed, 10 Jun 2026 09:43:38 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd055181sm237170586d6.30.2026.06.10.09.43.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 09:43:37 -0700 (PDT)
-Date: Wed, 10 Jun 2026 12:43:36 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, chrisl@kernel.org,
-	usama.arif@linux.dev, kasong@tencent.com, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/8] mm: merge writeout into pageout
-Message-ID: <aimUOAFQ0x8nm2oX@cmpxchg.org>
-References: <20260601113449.3464734-1-hch@lst.de>
- <20260601113449.3464734-3-hch@lst.de>
+        d=1e100.net; s=20251104; t=1781110060; x=1781714860;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ESwUSaSMN8gaVV18KOTc1a43xJoRWKiKKFNyBgNOt8Q=;
+        b=bQj9511DTUZi0VSzH5aLkJFF0tqDr0ja1kIsev8VIMlOuBxG4OZqeCsgqWToHZNWYU
+         dobVROAY74SujN8kCi4AGjcDLg2aJJPPVAqMCljrd1LVBbpK4mPkC5qlYy5wC5LqKF/g
+         szs5rv8XG7qUR/B1sCF++x9iAdPlBPt7Y52uNCtBt9whSljYd/xkSSBnQhJkPjCbRSis
+         EMQp/uzSAMBBcym2dVqrw6c/8nbIsppD5rtz6c+JLrZzd+a21WzRfez6MHlp9ZPyhJ7Y
+         d03fcDviqKlq4nHT7zhrr/lpTORVyHMBPVxRVw2wq1ry5SFkvWEyd2Pfuz76nJWRCN89
+         DBNQ==
+X-Gm-Message-State: AOJu0Yx1BFhFBxHGoaltI4Se9tTwOYpt1m3ZIiVoFZaNEo2ZHIYqLnKO
+	Pjp1fusuYXrvJC4WMRYoswgJ/kXw1W474W+h6oz/vTIyUQAxm4O3jgxeOVWDrhO+TQsXWbvLNEn
+	hCtJKbxyVYjzvw9GjRD1mdtmeh4ptcq+yR4EmqA0=
+X-Gm-Gg: Acq92OFSmmQBiqFppWK6pgOXMycOSp1FfLK7E3y8v+D9h36v4U8tV9fbwe1I8CiE6I7
+	8imIh+gVWNBr+hdWO1YWY3ILOy3f59aPcM2BH6eKA8yCazLBrtyb/+kpubPJvxFbqohJVfvfIjZ
+	G9yGfFsJ1kSrDdxkDyEHddGAQ4eUiaqlM+2ZtGPwFbf9fbDdcUtQrTkftz9QtOwLVNCSoZI0fAf
+	luw6LSJ0CBdP/5h9Ze8lLsimkOXu4dn/swX5YTLC84aD4VHFAVc3FqiR8zFJxavxLZfbRoMf8oE
+	aJpWs4A6Epgm3iDX1FQKZ4ipxNlqFkAqkg2SYvpNni5raHfGAZg6h6dqVQZpzHp2/Q==
+X-Received: by 2002:a05:6000:c90:b0:43c:f66e:f24 with SMTP id
+ ffacd0b85a97d-4603063b3b2mr28648109f8f.35.1781110059782; Wed, 10 Jun 2026
+ 09:47:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601113449.3464734-3-hch@lst.de>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2B01D4000A
-X-Stat-Signature: arst36ufjcp3asu9dbio61rmur6mixny
+References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev> <CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
+In-Reply-To: <CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 10 Jun 2026 09:47:28 -0700
+X-Gm-Features: AVVi8CdibRwha3d1CfpGB8ubIFe97a8Qmo_1hlKcwbO82ukPA1P5NQ3oansSh6A
+Message-ID: <CAKEwX=MFt=Z5x5meSgf6H6B2a4J9Uf9RgHtBLEqJgyCiJbtyyw@mail.gmail.com>
+Subject: Re: [zswap?] BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+To: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: linux-mm@kvack.org, hannes@cmpxchg.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 75A3A20006
+X-Stat-Signature: yucfj95r3n3h8d1iejnw7e4fki949bpw
 X-Rspam-User: 
-X-HE-Tag: 1781109818-392925
-X-HE-Meta: U2FsdGVkX183xq3OITRy9TUrSygL7HHd7BO12e4oZ3/dHVtUBRA1+bUW9kpyiSNYV+/E+RqWB14Apn6OYaXMMfnc74uaA3jcRz6iXSzkDr8ujmvyH8HHQhEoSnq4gSkO0Pot8mczhmKA9iSX5NenHuXcolqwW1C4w+6z4Y03LzsYoSi/+2iHT9F5PDx8o9a8n0AmNF3K9oLD8wEmpZGeIWIIfjnBFnicrMfcAZJpH0a+Z6ss9VLM/6sq6suHIKRswMN7vwcvgrSE3H7Wp7vk9Q7lniFFCXrtUIvN3n4Hdmo8RRqK/3paDPeFnCQQtcJhAEonBI2My54HeKIR75GfQ33pvhcFGlRlqvM60JYBheyot7j2Zn3zjhstheTCFhhFySjRT2ECxo2iyjsyF1i4vmz6G9eWqF7eXM24Pv9NWA23mRPP78Vm8HHLvmepSgJKTppSGoeXgl/J0IGlTydulQWToPNWwtdbp7kGAEAS7FB+J27tR3xh/ZzN92gKmbdEdt4atPOtUT8ANXiI4pkBh8fUGp8CwtTD7Ou4+9cotG8LKDLtY/3LeXlwV7E+xcHaUfy4D3gjMur0tqqGTAGh3Fmw2B34HpJ5aBSXDfJuF7elrHCkv1YGH2rPpsj8F6oKHS9UGDcXSawARcq/mYTfTDB2PJkINS30SkmDzy9KLWFfTsqZnFYax7lJsJkR9KNJCf8IdzzWxA/CuEtuHOLrMz8L1zFEFhOMDo+JnRg+mULRSmCtj6UZcvDBo/UsAdXlVAYL7K2oIoSPNuHGcHgqXwEn90ddJTm/COZDr0dgPWKFUw3R/ioExL8dbd2K4RTCldqQGXhq2/P8+BNjatV4dB5GEKnUwl5OfNceMFqMII8HUVpZJ9GiEtxONhN/wq2Ae9EmtAw1XGlqwkHNhY7bfwvvbmsTGlQ5Se29/pfdeLV9l0K9BMmfMixgs+hMeHJi3WyFE6CaadOPPSoiaYI
- /w21cZfT
- ROVeNIQUknzdnq+wsDfoUEAYtK+V4zPjijHeBf14vyhOgzSJ0CDFHe9EKSUkQwWKAXFLpV/X3Dbtic2pxbI0sSUOnBXp4vEQZtiiQ6jA8qxLB2UYkOpXoWQ4/F7d3aoSDSK7mO11LekWhF7Fs87Su1VmR6L4lwTs2UvyryFrTWCtTlorS8R4rYWcnm1UkqOlJxWaVxx4X/w+jOA7zXsjIg/aIo3U9MOeVT7sJ64Lvh9CqZr3IacvdkMX9DemS9kObgxCtUGwRfVBmBzP+uBLzi46NYQHyEyfuZfTbYXiCRQlkV4TDXQwEuRUm0rmzipMc1wP3HiTvQIJJUSldRBi5sUKPUFIRGlBpaLF6NUCRDH/Ku0R5L4fRfRpAatrapCHl1cT/pIRpOYGtv/GlPelzZ42yJc0V0YfofY1vI74/7sjMTUr3nw8N7m2syvb+pmqmCPYNR694Zke2B5Tfx9E54csg05OXMJs7PQhrVfwvdtjK2Hs=
+X-HE-Tag: 1781110061-578468
+X-HE-Meta: U2FsdGVkX18U0/rwtKRypUaf7++s9U7EMiZpaC6ykHWXhH0cN52njczyHnQEwQhF8RKoZQPKf5Eo0RqO0LxG8VSyDU8iW3R6V/mavcBUGpuQvECvWIigoJHYj3B3NA2cPkxjuRpe2GjJqWOsXZ68AyzCEJoGdumXDSA5zd3Mw0b+nUf0YrBqy0O7mygSmDNNdLNYirnwcyBmCXHMfNcJj0QOQtfdp7ctROcUxaKOXkG5mA5cDar3HHErhfeytdLSe4rmTLGzjUAYQZ7uUz9gScw6YaVGC8N9mHUmJWqx1L3upqKLt35fy6xnr589R150jjMXdPbodxhXbjIztT3KWwYRXtnRGy4HR3RN5t8cKh1SMi7X9gHJowJDQ4SbwVXGz5h+SJCFlwpwker4HONOnnoleIXR0LIqyCKlsPWUuvBqvPaG7y81DCD58dCcXp9e5GR3H8O5Odc6fNGtSvlH61zlrYClhmsGIwxZEBWo7KdqIAtiCqBN9BvZFAP1YDsbiDOgFRspRSWAja01T4J8iiz/MZmeX3F6aNp8GhfgFjnE1uV7hdUZ0rzK8nkGWp3lVOVX4ulOKfPmJue11kSNRwrx3Z8wF1jU5Kch2D5fYZHktJD7gFvzNMOqyCOaHxUSxOyz0DgTQQTon/H6hLoqEXq/2kJXHpJ8Fr/9DkiU7rEn93ZN46NclgeF7EHTVEOOYg5kt9+6mY4A9hWuQamh248iK3s/jE6dWTbQKnPyfBFB1CXacY8KPu9J9UMfIqgu6MDWCp1/KE3yU5aJr/8yJ71tRbwdQN7y0/6W50NGyDZUqdIkaFM/ggPIzZdAdG9/8ljBPV0PR7/+v1MgWESCHznojnVkwk7Pftoz6vFyJpqI9SZZiGEjf1kn2fEsCq0X11fhi6Ba6pGfze4ef6UvsWwsLjrFVH4/EpYsnuin0l0A1Jr32b6kCzS2PJ/MaOVDL6E7GPjsG/6m3JezCS1
+ vJrDyBDT
+ E1s7ZL4BrYFvEioNhKSBwx6N3msblfhcZtK82C54YfK4KiKyV4b2O5JKEYvABjxzqPoNSdmRF7VhyVG1MHF0C74pc8MsTL7OmWnPcmjLPbjF0/I4mjHUFRDw475NcNJcXHOpihTC0ttI+wL3t2pwgAO9oDcJuFq8WBvjjY8inY4uy49TWPrN94bXorHXtR96f67+5Tzgkp4xhcrqNvCCuG/f2sFXjEvGlXczhUk0xrFBe9LlLqKd5Upb9ZeUG8o2jNuu7qh0327oqqwGgm8AnyUWgbwREjWtftnPaOhnFBLwgT8rZlY8lvWxbpZc08LjwGHtHRXi+Tgjmqog1rk8FM7V64JPp6+nDotoiuORFx0BK9f1Ff59Lkdx2L4eqVumBSfSKcboUCFtm0oANf/f2sSMBchhU6lV7VixN1f4/dpI5uquqLzcF8vr1X9kyu0gpWyRRy7HCzHgjg4KWeM23HUqQyYk1WfMoxuHVrh8QXethjxXN9LWZFJet5pPFUuKq4v2r85W2qffPafI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,13 +137,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 01:34:28PM +0200, Christoph Hellwig wrote:
-> writeout is only called from pageout, and a straight flow at the end, so
-> merge the two functions.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Wed, Jun 10, 2026 at 9:38=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@linux.dev>=
+ wrote:
+>
+> Thanks for reporting, Zenghui.
+>
+>
+> >
+> > Hi all,
+> >
+> > The following splat was triggered on the mainline kernel:
+> >
+> >  BUG: sleeping function called from invalid context at kernel/cgroup/rs=
+tat.c:421
+> >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name: cat
+> >  preempt_count: 0, expected: 0
+> >  RCU nest depth: 1, expected: 0
+> >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0-rc7-=
+00056-gacb7500801e9-dirty #304 PREEMPT
+> >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-prebu=
+ilt.qemu.org 08/13/2024
+> >  Call trace:
+> >   show_stack+0x18/0x24 (C)
+> >   dump_stack_lvl+0x78/0x90
+> >   dump_stack+0x18/0x24
+> >   __might_resched+0x114/0x170
+> >   __might_sleep+0x48/0x98
+> >   css_rstat_flush+0x54/0x564
+> >   mem_cgroup_flush_stats+0x9c/0xb0
+> >   zswap_shrinker_count+0xe4/0x1e4
+> >   shrinker_debugfs_count_show+0xd8/0x268
+>
+> Ah, this seems a bit tricky.
+>
+> Seems like shrinker_debugfs_count_show() is invoking
+> zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_count()
+> triggers a stats flushing, which might sleep. Not ideal.
+>
+> Is the rcu_read_section() here to protect memcg or shrinker? For
+> memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
+> memcg before returning.
+>
+> (memcg maintainers please fact check me).
+>
+> If this is for the shrinker think this needs to follow shrink_slab()'s pa=
+ttern.:
+>
+> rcu_read_lock();
+> list_for_each_entry_rcu(shrinker, &shrinker_list, list)
+> {
+>     if (!shrinker_try_get(shrinker))
+>         continue;
+>     rcu_read_unlock();
+> }
+>
+> But OTOH, doesn't seem like rcu_read_section() is what keeping it safe:
+>
+> rcu_read_lock();
+> memcg_aware =3D shrinker->flags & SHRINKER_MEMCG_AWARE;
+>
+> We get the shrinker reference outside of the rcu_read_section(), and
+> just dereference it without any checking inside of the section.
+>
+> I think we can just remove the rcu_read_(un)lock() here?
+>
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Also, looking at the code a bit closer - if (!shrinker->flags &
+SHRINKER_MEMCG_AWARE), we shouldn't be getting into this loop at all
+and inducing all the memcg-related overhead at all...
 
-LGTM for 7.2 inclusion.
+The code really should be structure as:
+
+if (shrinker->flags & SHRINKER_MEMCG_AWARE) {
+    total =3D shrinker_count_objects(shrinker, NULL, count_per_node);
+    if (total)
+      ...
+} else {
+   memcg =3D mem_cgroup_iter(NULL, NULL, NULL);
+   do {
+   } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)) !=3D NULL);
+}
+...
 
