@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C34BCD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:54:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF8C1CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1396B008A; Wed, 10 Jun 2026 05:54:24 -0400 (EDT)
+	id 52D256B0093; Wed, 10 Jun 2026 05:55:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B91A06B008C; Wed, 10 Jun 2026 05:54:24 -0400 (EDT)
+	id 503896B0095; Wed, 10 Jun 2026 05:55:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA7956B0093; Wed, 10 Jun 2026 05:54:24 -0400 (EDT)
+	id 441136B0096; Wed, 10 Jun 2026 05:55:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 969196B008A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:54:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37466120949
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:54:24 +0000 (UTC)
-X-FDA: 84863542848.04.A204F30
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 937DC1C000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:54:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jH67hAAN;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781085262;
-	b=D3kv1F7+fuAYRXja1w0o8SzYJeiYhI5Q/g5OPrzFPqy5UPyjmvbyvYLo6rdcIwjole9vYa
-	Pk79x/GcWuH0hCXiRD7xitTUzGk3EsfO2hwqS3vO1pRHyUuY9Tr5CVRLtpUFfIPP/K0hwX
-	K8YvspvLa0W9YvrJA9lcK97vpzKXoic=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jH67hAAN;
-	spf=pass (imf21.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 361FA6B0093
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:55:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0399D120949
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:55:45 +0000 (UTC)
+X-FDA: 84863546292.07.230955B
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0EBA1140004
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:55:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGpfeFjm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781085262;
+	s=arc-20220608; t=1781085344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJ+oozuTPWZxI5kixO5e7S8FM2lyDR3C9rSQw3An66c=;
-	b=nSugsG+QluAURENKP9eldtV2G5/m9Y6KW45QARfx0Ez5l/aAWYLnYAdOMAcV9oGcUmASDP
-	Tncu5NQiSUtTlj+ZxEVgnALu94qpYwTzGZYLkHr0xz5Eu12SZKG4TDrPcZNwng+vw1dm7E
-	hNILZvfSXl9fmpWDUgVAOe2o+1M/bpo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WJ+oozuTPWZxI5kixO5e7S8FM2lyDR3C9rSQw3An66c=; b=jH67hAANF8wuJYBMqz+qTNr8+T
-	nORRSP5pvnJJPbq5vwen1ZKCwTaW0SEbxnHjxJLzGVTBJM+PIWeXD4P1At/BzKrvIgotviRRpS+8g
-	7nhaiWFOrrg8OWXQBAEM9PYMeCgg5S23Y3cx4YqzHUs1UQyPSlLjbBngmrAkVBgCZwxE9UMe7Ckuz
-	XTy7BcjWOLSatFNmIjq1JmYPpB7j17bCoRVouLW5hy9fG1B4SUyE4zroqKZqNaYX+mWJYkfMzqLKg
-	AFWQA4DMtBH4hodbla/UBBN0qaG2+ifF7eHoK1DcAUT8OvNtBYyQXwwoic+fNS5hK1Z8zeYe5McY3
-	twfitMzw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wXFdG-0096hL-1t;
-	Wed, 10 Jun 2026 09:53:59 +0000
-Date: Wed, 10 Jun 2026 02:53:52 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v9 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-Message-ID: <aikz-gW9DHeyrksy@gmail.com>
-References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
- <20260609-ecc_panic-v9-2-432a74002e74@debian.org>
- <174b8d76-5514-4942-af5d-c975ff95ee03@kernel.org>
- <aig7jzwDHfVCxikl@gmail.com>
- <cf2bb24e-9341-4ded-b238-064dca442a92@kernel.org>
+	bh=DXXf5kDNkZaZma579LeFr3+QRDi52FtRCi+F8Ah0BJ0=;
+	b=HQ7B/hGfyuoTvZdMwvRctVrbXVHtENZIsXe++1Ez4WoLrB0xVHEftPnRVZXvYwrvEWycaV
+	XauUMAdK0IECGFt95eSccvK3MBcMRTeSHd4syR6AY4UBSkaLblXd79fsDkxTH5H8CGgmd8
+	aYowoGwV/aUHszRc+f74s3XMT+PGh4k=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kGpfeFjm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781085344;
+	b=8Qo7bTZwjHa/qR9FaxKoWjGa3t87RnkOeBvknsj7uJ+LQNuGNygb0jzBeiOliswiRCIl+5
+	aGHlPdkLSXrMjYQR8A2kt0J7dIOWqOHh5irtcAsG9HB/LlbAPGT8flawjFrfeNcnldESag
+	WlMgsgfiTQ8tIcyWklcVhz6eZMN654k=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490bc6a7958so58146145e9.1
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:55:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781085342; x=1781690142; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DXXf5kDNkZaZma579LeFr3+QRDi52FtRCi+F8Ah0BJ0=;
+        b=kGpfeFjmKwz5R32zm46ukwPADIYjBSBqFfmuMpceDjkmr6IuLhznYdvvGJIEHToMHr
+         4ztzYfdqLVrtEuOhFwsI5osUM7f1pp9V2u+e2u1/P7Akg5jtvxvFpxCSonfOnJzg+FmL
+         hgpqGAoiUVYYNPA+3f1rLtuZhes3V/L9llfluYfdJiA6X5+DC4zrcl0G+a4zwD4M8mHx
+         Z3n8RgymomUqipl6ZRhlEtn3bhr3YjTAC8yOcvsRwnFDy1wcZVzCqlEEJuCValXlaDpp
+         zP384gPn/20sezN6fDePMfQGIM9RpYVWjBCSihfEhZXsrVfetyzj4gaxgfd04XMKPpgg
+         E3KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781085342; x=1781690142;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DXXf5kDNkZaZma579LeFr3+QRDi52FtRCi+F8Ah0BJ0=;
+        b=h2diUQXz6BpkJiLfa4KZKzt8aAAS/1PBCM/ZiJlIPRkDsRpHEGyuJhzdgC1ZEHfSyS
+         KoU2oqcfFVQT2J41uT6rpX2AX36Z7x6LvuIO1k7dYX1EbFAA+UONQWzMxcn9cYdVRgum
+         LuAj1qlLA4lsvQtEACtKZbWw9CN4feSZHB8e7CiCJbPMMsZnFxstuy0RfsQzJc8TZVGm
+         4LS4qEyQOjpEWPz7LsjtjRoxujlng4sY43ZnwazHZlEf4vhGo4wClZFVM00D46+zfqEE
+         gwlF15c2TFk9VaGvU6g0hXzOrrx+kZUggjVm0opx/ONaln6Ed0/eKio6bJH04o+jYtHo
+         heyQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8hyhW+k7F4lcGYgptOGQu7Aol7jF84jMM+XaRFSupJIMc2v2+uUs5GBjh7ojBblsypkSzvZPljDw==@kvack.org
+X-Gm-Message-State: AOJu0YxGY11V8qxZhF2duMousdXYRkIJO5QZx+Bzct45+aqwX+2WcNKM
+	Mm7DPBpf1Za2Yx7vcR0q14qBDO8DcXjKZ1IrIgbL28nR8Ncrrr14jAtg
+X-Gm-Gg: Acq92OGyRnJtSFJwemrwVuqnwVoLSIbedRVb6bAy6D0BTaaZlTw5WBq3+iguzN4jeXN
+	Nur/fBozfARrEIjCpaUMftowQZNRTiiJbXOT11Op4aK/F5u8ql4JE4+El4HTJTjFt8QcQW5VxrE
+	X9dKBINyZSmnuZREcBBbIl1nJaQciWlGoFKqtaifqNNby6W2nMMLCnFd9QWBSmVxR8Oms84lEEh
+	7eHc8dKJfnpA2MjE6XxjQfsliL7P5AZ1qe/toU8fIQDk3lAYejECkcU+7bdTDIW+N3jTMLZUwnk
+	Q1DloMVK9/h5TimC7obVVxfgXQWOdJ3IS+42eO134ZC8foHxfCUNsfITsinvOikHvJXlBKa4Md4
+	5O+7+p3RDNlMauSknuPUn88MTyr3jOKZtqK++LcJ6mxIU5c8UBYkpTh93mk0NjI6CTJw7s70xeQ
+	vIADKkDNhfiegPGg13IDCPBu8tYctyxvSLvy/bsBNhC4Qy2DpjF6VzSdf3UtZ22R/8y7jRLUcaE
+	mjoXVqCCw==
+X-Received: by 2002:a05:600c:6096:b0:490:c1cb:48f4 with SMTP id 5b1f17b1804b1-490c2d038e8mr309043665e9.12.1781085342059;
+        Wed, 10 Jun 2026 02:55:42 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490be1f69bcsm591850845e9.8.2026.06.10.02.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 02:55:41 -0700 (PDT)
+Date: Wed, 10 Jun 2026 10:55:40 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, luto@amacapital.net,
+ safinaskar@gmail.com, akpm@linux-foundation.org, axboe@kernel.dk,
+ brauner@kernel.org, david@kernel.org, dhowells@redhat.com,
+ hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+ patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+ willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260610105540.5901a5be@pumpkin>
+In-Reply-To: <aijxfxXrWLCVqV6-@gondor.apana.org.au>
+References: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
+	<aijxfxXrWLCVqV6-@gondor.apana.org.au>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf2bb24e-9341-4ded-b238-064dca442a92@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 937DC1C000A
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: zqwieohek6fto76snjfg67i3juffq34x
-X-HE-Tag: 1781085262-980898
-X-HE-Meta: U2FsdGVkX19a9h4C15oV8Eiol/dzTk8nGKePCH29TVoWXThDl7n7Ng2DmmYQuXKcgEuo89obMMnhxOjwunN9UHi2+92ltjt2NwwrsT64gny6bPYRf1Ge209ZPQeWBtYHYVg2fZksHIdJyPnNZBw4e1bS7HsPrastpLf4EHxn+xgu/TBqqZlHdLH+a1dmTlMXpw1m+3ryenPt6EuCvKEkOcQsCLLiN+ZRl++tFDZcOmOf59LTlUNNm95DHIAAuyB8WcHJhWx4PoVK1MBaK/z04DV+G3GxlRdpqZwvVkEGJSoREnmNfKvt0itraWdhkcvc/yDigN8EWjG6rnYu9aRjChamvXWX8sxD2NvBk0xT7XAvP2Cr/COx5Uc+E+g3dTwLaTPnFnMP4KRGWzYLtrzFP1iLYbpgr7OZOQZmWaSyzWIuxLjGbesKP3lOZF3TI4Xg5E+1skXNDaYsykYB4OL5+HqV3OJVL16kSojHP3jGKbC4/JQQLEGkcWEB+kJ7ISFrZZui1V9ard7PERyKZodWVZiWfmzqx5OmVmHDqie3UvoOcWrmFZxC1gZqhLn33sOTfjdd2iGw3SCauEuTBrCSokuX8gQAN8f825F8o9Gvg7gIBw7mGfPVzE9cm1h/B731vfGaSQBCpotKiFeCO139dds3FCnLOT1jUWxUYk8hzxQRNE7fpv6CDs17n1HUwSpB++yjAtAYgCR/i/zRdPEf/0p+qxSsZWhtkMISEEBpRNsbJu6Qlbwpaa4IV5gPuO49+yRQguqpn9s4ZdL2sFzrPVym5O/O342vBFPI7CAgAvaEShr96m2u3C7PKumzOx3Q/4hyf14MigySErhpYxOO4CkkXevTKOGZQWxWh0Kt37sUMU0h2oJ4LQ+yg6psfMD4Eip+qzQYQz4/u6aYHMum8wz9MNJfsEdiFguvtqWB0dst3XMDoXHDM7+58z8iE3pG95/ayXYZMcR1EA79QHI
- nklLppag
- na94Gn4ET8iuaiSfgaQTbU6CPPriUvHxUB5/X1b2Frwjd2FAmwVf3tDmGfcOSw7s2fu+K1q7hDhsLU8vzbKXPBuKzT7oEFmQVpS+ZX6umLKhQash/Ise00cC3w6sXmhy3mForwc1Bi/B+ShFHdwNHwMP5BfUvbJzwhbym1jF2IP3L/frBRLhqQcZPg/Y1QXXqsgrhE+uRTs9fARWGaP1huXcW/qQV7Xfewapp4GehDGEDAKwnKVUeCj4JmmWaKwD3eQ92gmD/9ibQHTw6f9GxK5+oocBXtNud7P/pK/MRCVDHUAS746lakaQJidNXDF6swKYdBMZNZ3xFtW4=
+X-Stat-Signature: u5ktej818qbe4ekfbdi8fwd9bob8rdx4
+X-Rspamd-Queue-Id: 0EBA1140004
+X-HE-Tag: 1781085343-201483
+X-HE-Meta: U2FsdGVkX185HwQw5t5EFKK7QTi+R1U1RlBpEwee3mLBF/lXOs/PyCQJdxcDhs8McmDDqVTlIWNeByW2cYe2sh8odQ/WV86cH4gUW+8qqXZNkHULYY7L8DdQDkRUmarjki3hVmiWxknupfIWeDNxN9TZvXQCNJ9DfzDKrjCxP/o1XKCmqPpbr2wsN8jcV+JpWJwnPXEghbUsDiKn4xTCFjqqb5RTcLHUKkNvyizEg8rCHX+WZFJmWquq15abQKHVe6rRZWQSJPdQjvLEVECsXr72B6rYYkSmoGUmyIBRbps7dsx+hViY1vcMuOWMATIwFAS6VDQKb3oLDECspkKeDNqBe/nOq4WpL6FutX0QkBHQaWuo9KeKMEeI0DyZhD4mkouQYdW7mm5UuFUfMYHfXMSnw2cz3CLrAizs9ZjpqM7LKNCs23rwNCzZf2/+KzpKtyTbPlpLCfat0D/q3uoZ8bEu+7gOVDOHXSVF3+LFrEMNzQzkwN9tyJ9mkcx+chBPkg+KFC7HTUvsD0LCPYheybQt/4LZuZ2Iw+BuvDzYti1Y5/w7EiXJBBJI1bVFpATbBPmbcEYzpZq1o4nNP6CF76xVR7R5Rh3sYc3Si6e2vSGU3N5SbnNOLwaqKjzFm+31PDnN4r1Mkvq0WIAselgTz1ttTIlqi9E5SFmcHacrD819NcF/UyJQaMSSRNCB6sGhvbflBuvvBFtVx/LJJuT1XznycOpNBp99l6IJS3WcSN4HNMFGW6vmNAw1700DoFs/zK1sYridEMRtpYzlLjyZYsEYGFyBRpt4aNu2lIzNyXcD3L2WugEjAfEes6zJkmRQfseNRIm+ZkObPrfZfmMentA3JocNZjbXyj7/LGT633kWkC7oXhDnfK/hPN+wXxCFyZgyKI3o/PHG6x/0X1qMXciuzghGSBF5nK/451SfZJQQ7vYFa0zjv1OxOB9f/gL1iRQ0V6cre7NRXw45xMF
+ cn91dghn
+ dyTNDzQTwjX3hmaQq13gl59hBD0yDO4q1rKuQq9cugvUGe5nwTq2c7bbuS1AGQNFtrlaZ/CLO/jAwGh93zIU+AYBt/TEZc70nryJNyZMzAtyYigS2jv+/G3UCG5WICkUwpA1C6Xhn1bhxq7LrfC5WwcEfrHYVeufAPxaGM+m6zzPGe6QNdL+IPzBnoVhJA3oy9eWjKhYJpJCdpXoHnT9L+R2UV0Q1gRyU93vBbtkueL1f6ZdK+VCg8BglXjGmgNqphPG1bqLw574vAButhYQUKgePyPq8VD8PRfY9PslBvion1Vk+78BBACLcVIW04MhVaXuaJVO8u7LHu79XzRiCSp3hEq2pU/h990ygNRVpCVOayILgMXajdcpi0LcCziGOvhW7yHd+M+5NtqvnTsX64jiGQOhNCL7bKOeT/8ERHY5PA0EAT+ARKV0vmwcTipdHSk+lxpBcB8kh1QaeYm+SF4To3EsbGL3RcNqEhDyu17e7Z+hi/lVcHhyKUxFxRr6oklo22iDvaUEOtslum/FKsgWf4qdOBUTy9qMww1YfGjtjasRny3hC1CD8WrngHQvHKCiY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,38 +128,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 08:41:25PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/9/26 18:15, Breno Leitao wrote:
-> > On Tue, Jun 09, 2026 at 04:41:01PM +0200, David Hildenbrand (Arm) wrote:
+On Wed, 10 Jun 2026 13:09:19 +0800
+Herbert Xu <herbert@gondor.apana.org.au> wrote:
 
-> >> a) HWPoisonKernelOwned: this is not the common style for us to name functions.
-> >>
-> >> is_kernel_owned_page() or sth like that would do.
+> Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> >
+> > Because I think splice() is a *cool* feature. It was always *clever*.
+> > I just don't think it's worth the pain it has cause.
 > > 
-> > Ack, I will rename it is_kernel_owned_page()
-> > 
-> > In my defence, most of the functions similar to HWPoisonKernelOwned()
-> > has this name format, and I got this discussion earlier (with Lance?
-> > I think). Here are the similar function names in that file:
-> > 
-> >  * HWPoisonHandlable
-> >  * PageHWPoisonTakenOff()
-> >  * SetPageHWPoisonTakenOff
+> > And it's been around for a long long time, and after more than two
+> > decades it's still most definitely not _widely_ used.  
 > 
-> Some of these probably date back to our old way of handling page flags and
-> things, like PageLRU.
+> A couple of years ago I used tee(2) in dash(1) so that we could
+> avoid reading the input line byte-by-byte which is what every other
+> shell does in order to pass the rest of stdin to the executed
+> command.
+
+The shell just needs something like MSG_PEEK to do a non-consuming
+read from a pipe.
+(Without the strange behaviour of a second offset.)
+
+That would be simple and could have been implemented 40 years ago.
+
+-- David
+
 > 
-> But we really should stop :)
-
-Ack!
-
-> > I will update in the new version.
+> https://git.kernel.org/pub/scm/utils/dash/dash.git/commit/?id=44b15ea09a9ee5872cf477e4ffc6b42ef37d1e46
 > 
-> Thanks! Probably best to wait a bit, the merge window is coming up either way,
-> so this will have to wait a bit either way.
+> It's definitely niche but made a huge performance difference to
+> this rather common scenario:
+> 
+> echo 'command
+> ...
+> rest of stdin' | sh
+> 
+> I didn't even know tee(2) prior to this, even though it was added
+> way back.
+> 
+> Thanks,
 
-no hurry at all,
-
-Thanks for the review,
---breno
 
