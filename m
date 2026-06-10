@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8F71CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 422BDCD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33C906B0098; Wed, 10 Jun 2026 11:41:00 -0400 (EDT)
+	id A1AB86B009B; Wed, 10 Jun 2026 11:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313BD6B0099; Wed, 10 Jun 2026 11:41:00 -0400 (EDT)
+	id 9F2166B009D; Wed, 10 Jun 2026 11:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229C56B009B; Wed, 10 Jun 2026 11:41:00 -0400 (EDT)
+	id 92F9B6B009E; Wed, 10 Jun 2026 11:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1326F6B0098
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:41:00 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4E651C0CA6
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:59 +0000 (UTC)
-X-FDA: 84864416238.24.99F8024
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 813DB6B009B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:41:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B5F712019B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:41:07 +0000 (UTC)
+X-FDA: 84864416574.07.4C04FB0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 16B1440007
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:57 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9199840010
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:41:05 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aCXPhkm8;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnIo4SnC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781106058;
+	s=arc-20220608; t=1781106065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uzrQqVr+7rwNnJX12Vdm6hcXiPQHxl3cGwRGRVjeEkE=;
-	b=V+moxOJv/76K2hdwpFtSTT3BFUQ78ELvBxYkt84vxP3IkwcwqCgw3Dr1fr+l9BFC5xf4gO
-	is0GCLnSdSEPisZ+Tmyoy3/52XnY42A9prTKQdSFDldSdgxyouOi5Ttcxx1zrMRHf0MIxU
-	GUdCmJ97B2mOpxtUy3TRT+3KZzFPo7U=
+	bh=yRohSSU7buAwP8rkGvuFsooGceecpgqW9FG/cY7L87c=;
+	b=t0n+PzRJUHEiDuhifQUOqNMeKsC5bMolxynYzC21AakS2OtuNxWvQcMfXrVSQKbrWBlJQu
+	iTn/tIsxQ8Adb2/xFdlRnb45X6jFZuCE/VY6gRqjux3tKHHolIYz/EHJPNVHap3QDfO0jw
+	nTeYT89PcEdK7olbL9gapv7xbxHIU3U=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aCXPhkm8;
-	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mnIo4SnC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781106058;
-	b=RHQhF0YT6EZeUiufFaSN5XcnZBqETF2y6xzrMmR8+eJ1RAdO5KtcA07WFFNXILVdmN8LGu
-	DWQE0JEN+ZwkBPyMate4oC3IPisOnA9xpgMkc1BdqAlFBS6iiStWSoeDxD8O+saAr5uh3g
-	q98X24RIXQu8BwlbjejZq2ZlavHBccs=
+	t=1781106065;
+	b=Mh2BYTeDCwd83YBuwYZ76K/nWKb8uU45LkAeaS8m+KQDOH0lYqj7boL+ylhMWmIMoZA64G
+	5b/T3ayqmYQvDOxq+eo6LspYok2vJrNqg3wnm32xSAnGw/4gE81+c9QDhQ9U87RxRzaxeR
+	OkULs8WDoQRZszzWTeOf7UufuyQ+2nM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABDCF60172;
+	by tor.source.kernel.org (Postfix) with ESMTP id 22807601E1;
+	Wed, 10 Jun 2026 15:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E454D1F00893;
 	Wed, 10 Jun 2026 15:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19E11F00898;
-	Wed, 10 Jun 2026 15:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781106057;
-	bh=uzrQqVr+7rwNnJX12Vdm6hcXiPQHxl3cGwRGRVjeEkE=;
+	s=k20260515; t=1781106064;
+	bh=yRohSSU7buAwP8rkGvuFsooGceecpgqW9FG/cY7L87c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aCXPhkm8nAkdUVhcPCJUTOjkUtEJISo7BfGZrCD7i28tiCbagbHjNon8sAPgrzyYc
-	 2RkRNiVBG+fSPgFQixWt62WNno7HDDOpVLkxlbVAOff0N2BRYxkY26fOCMQgqnxIQg
-	 Vo6/+wKzhCMrPVUUkdYBvEko/zuKCyMmAc5ejtIHc93n94xPW9QfEejrYaYkqazkc0
-	 TZ+dRNAy1COnYajg+g3r+nMP1/8JHCUZ3ShqlSynY7NQKWfgT6lUPu/5jED69sEsyf
-	 rTxnFxgtwHqzh6qGp2iD7D9WVL1dU3WYdmEvzAnc8FubCtBIY8M6+XDQ9jNguIIFzo
-	 OR6jq3M1atcFA==
+	b=mnIo4SnCqJZi4Zezto2wNu4R9ghQQlbBBS1ONRe0lv42vFME08dn0cs4xiR3ZtQC+
+	 W/WEGkU0/zRVgGy4KlAwKUXewIIBBY/mfIoVx3rI54ZWxEXAxO2JMjk/RzZD+DKFRC
+	 V7+1TDExqnms4jOu2eO9pNHmcLaR7QJ9qWHYXGmblyNs5lYHYJfko8GpU1cc79LCZw
+	 FgrLywy46zNqot1QYCaUMSsxguO24wNGd2K5ig1lLBP3pCAfIjaPYuPvn/DbJI1gn7
+	 J5s3wVmYglUFGS7abi/4zSN+AfWq9+MtKAcDTH4+M2oo2XV63fnhGioWrfaFUE6U+O
+	 gJUEmgf82O+Eg==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 10 Jun 2026 17:40:07 +0200
-Subject: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
- SLAB_ALLOC_TRYLOCK
+Date: Wed, 10 Jun 2026 17:40:08 +0200
+Subject: [PATCH v2 06/16] mm/slab: add alloc_flags to slab_alloc_context
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+Message-Id: <20260610-slab_alloc_flags-v2-6-7190909db118@kernel.org>
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
 In-Reply-To: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -87,14 +86,14 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 16B1440007
-X-Stat-Signature: bfzj3w4oskuc4je9tr8mwysadanzxz84
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781106057-286467
-X-HE-Meta: U2FsdGVkX18Qz7yWm/SlT5Sn//tooMP/smEdzHZcVYQ9s4KuRMCggjKbmugU+4/ODmYGJB2XaYD7qg4gxY4f4kQugsZbBfXCCdyfB7xYr42IzhDOFCmCuQBIBfjxm0NTO2ttkxLGi3wzZIDnsIxu3FBm+dtXtsBZs3eUVB0LE90Snmiq9Pk99LlcoTlh4qboAQbN0Hpylm/jxUR3QWzqWeo1upboCtSeGwLKBCD0gMa0BHtf/59B27dpxI0eh/E8nJ4/2MqD77ZzWnrje+GPxVByeQqLxKEp3U72NxyJomCXRP1BAEVdpTqSr/82sgsxTu/KMSWN75q9jcfeX6HaUv9kKFzJihVPkqhqxsRntbFuj3xhNe2FpDSsra7RaxRcg8rxUXdbe3es1tSATrQ1cqk0Jy6DWB10n3Wj590qGMTBDAQCiKCyd+piv6wDQ3jQL+v/TcrOzGtMlTm2svQli+xcIMOCXuN7pMxvgVW71e1C++tPgX6LofVL+CK5Mpa1a4vNxJb+1tzdt63CiDUpjDJ7NFmOl86YjoEY/PB36HHRQkjULjkcF2ao9K/LuHYsTpes8dz8GDH/4h8F5Bcg69SWFbDq3mmNf4iLFWNhXxlz9oL5j/UJ8CzPGBzdSM37FotVgtP6JZxKXX39GcUnsB5UaOFOmmA1qk/ChNVeFnUiiJrqyyon64xDdmTPpc9nbE+RA/0nnI52TNFXewMwsTAB+LnRpHuB9sBHhWi+QtunrAxvFkLJJauyli9LrtByOXa+wS1zZbJEEraSyVtJ5oqy7VcY10jsdgGee/xNgxt7b5mh2b9TB5lARzybp00hYKhXjA5baxWlYg/+uDzJLQ38YjpN5eqKTNF9T1/dH7tH5dsLEahX2HUZQhPWJgUp8Ax05EKnD0CAtKO/Pzi77/Nl9OI8ljIan+5gPqmf4QnPj7VoCtAZdGmOLzvc1dakQ/pv0dyTCXgUM6i5C2N
- JrEfgW4y
- zSwv647r/8OCMSio9EpEYe/0qZsPMEdUv3Gr6in32K/GChARvPSI2RZVtXym1rZC7oyHE8XiYKgbcnWDmcxVVn+7Gl6xvJdk4QNoV/Qf7XzHN4OUiCyVdkijffsvC4BKN08TGxKL5RrzNh3SRP4gz/d+MGZ1S+vjpGjtHCPuJQFhIUeQq1d3LpSgxM5l0vR3fnR5/qi6j98kFckRdcHYgd7qnL6YNmEwEXblSpJwejP4li99VFA8D6oorYtyvhnKT6w1A0josZAd9ExjAIbHq52rYO6zW+RHw+Eno
+X-Stat-Signature: wcywt3k7rr8s5yg1um9iembsff8i58tu
+X-Rspamd-Queue-Id: 9199840010
+X-HE-Tag: 1781106065-500092
+X-HE-Meta: U2FsdGVkX1/RnuFISmALYq13L/xCWcWqqoCI1OTXkGD/KI9wVqU7hd1fcSc+FjynnIkgZiko4FskyY79hJTJPKNbh3h8zq22qPneSVbHevRMlHUGPYcEJ62OwyU6RqvQ7Yb71lJLtKPb0I/1nNfDq0rTCDLmN5nmXOPBtA4cP2DdXbpdKv1GI0HcEL+pbHngVNFlphCH7g9QIAKdC5vN0xsbY4UIFfluhPbx4nYnkLSLto/au8kmdQw2kapXtY4rBq5Y8WaTlFvUlGujEM5elb8qA6ZH1ZjpQRhMx1TapynlqL+94pzpSvuGGX/bRQCvg5HhlQYU/o3RqciGrxaRriUNaNmptyj0zV/9qhfhk+jqH27jLylf35zJM1AW6D6BshPOAQJGqaaw/XBk6kuYLx1fCqSIftRW9fVD65fTDEehFaffuGJt2JckRnZAEi+4+GIRuphskZgRYD3/yUJMo3RrT8647HIg5OaLA1GCDU+Squ0rBknNSGb7VH3Lu1lTTNl9i9++e8LxmKphRrVngH3dw0WZatj3Ad3h1pzDJey6CU+lZsuduuiajPoG8hORKn8aca61byNrCP8Unz1MrSn7atxsZeAieKuFKRCdlVqxetTHkpeUuaisiJNlzesSQ8/nqAQF3eYZRi5Vc0TDxNJLcG/gYBunKn4i5q3oD9yF7B5tiCMkuL8hrL2hLtQ4NmB8pKY4pCq1cXeRPCBHy5eUziDvlOiJs2tMsB2nkryf2fNpwTCdV95xMrjcRtbUcsA6NkPJyH0yAQenk3lnQA/fyx4b2H0FfmteWD8oEXbqt5ct5M6VqYd7hcPKB836Gi9SMZFxo8R0BvYZhmCzVexV/C0h6AuMlguhXQUE529uCR2qmGSEX/TgmeTOC7ja43lPuwX5gsOffjdSOkpTwwyoWkp/tOSJHRalgikewqb1ub18vMEzad2rwHdCXUkGS0ZAK0ubLWXa9XPrWMW
+ rh5frGSi
+ I6MU0pHLBiZm+Dhw1sb2cWYMn4PEAQCmdVTycdy7arkVelOaMSFqjl6zJvISPCraCExpLAXPBKnte2lNmAGAIr9IOGIrZhY0/C6iRM4skZKKDubqqwiJ+J/xc5FuJwGUjgKZWDOWn3utJ8ZmNIpfPAuX2HEWs9hh0DFAM9Cq1JwZzVAr6lB8LMN5A7pzO63+n5P1UCbpJXed8Ku9zaWhDmxSDyG+NPiiQOGCToORfLxFMoc8TDOqO1U/cympRy9TIt/uMC+/VFLd2TfTf8YK1apQELC0hEnmjIGza
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,133 +101,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Similarly to the page allocators, introduce slab-allocator specific
-alloc flags that internally control allocation behavior in addition to
-gfp_flags, without occupying the limited gfp flags space.
+Add alloc_flags as a new field to the slab_alloc_context helper struct,
+so we can pass it to more functions in the slab implementation without
+adding another function parameter.
 
-Introduce the first flag SLAB_ALLOC_TRYLOCK that behaves similarly to
-page allocator's ALLOC_TRYLOCK and will be used to reimplement
-kmalloc_nolock()'s "!allow_spin" behavior. That currently relies on
-gfpflags_allow_spinning() and thus the lack of both __GFP_RECLAIM flags,
-importantly __GFP_KSWAPD_RECLAIM. This can give false-positive results
-e.g. in early boot with a restricted gfp_allowed_mask.
+Start checking them via alloc_flags_allow_spinning() in
+alloc_single_from_new_slab() (where we can drop the allow_spin
+parameter) and ___slab_alloc(). This further reduces false-positive
+spinning-not-allowed from allocations that are not kmalloc_nolock() but
+lack __GFP_RECLAIM flags.
 
-Also introduce alloc_flags_allow_spinning() to replace the usage of
-gfpflags_allow_spinning().
-
-Start using alloc_flags and the new check first in alloc_from_pcs() and
-__pcs_replace_empty_main(). This means some slab allocations that were
-falsely treated as kmalloc_nolock() due to their gfp flags will now have
-higher chances of succeed, and this will further increase with followup
-changes.
-
-Remove a WARN_ON_ONCE() from refill_objects() as it's now legitimate to
-reach it from a slab allocation that's not _nolock() and yet lacks
-__GFP_KSWAPD_RECLAIM for other reasons.
+_kmalloc_nolock_noprof() initializes ac.alloc_flags using its flags that
+are SLAB_ALLOC_TRYLOCK. slab_alloc_node() and __kmem_cache_alloc_bulk()
+are not reachable from kmalloc_nolock() and all their callers expect
+spinning to be allowed, so they can use SLAB_ALLOC_DEFAULT. This is
+temporary as the scope of slab_alloc_context will further move to the
+callers, making the alloc_flags usage more obvious.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slab.h |  9 +++++++++
- mm/slub.c | 17 ++++++++---------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ mm/slub.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 1bf9c3021ae3..96f65b625600 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -16,6 +16,15 @@
-  * Internal slab definitions
-  */
- 
-+/* slab's alloc_flags definitions */
-+#define SLAB_ALLOC_DEFAULT	0x00 /* no flags */
-+#define SLAB_ALLOC_TRYLOCK	0x01 /* a kmalloc_nolock() allocation */
-+
-+static inline bool alloc_flags_allow_spinning(const unsigned int alloc_flags)
-+{
-+	return !(alloc_flags & SLAB_ALLOC_TRYLOCK);
-+}
-+
- #ifdef CONFIG_64BIT
- # ifdef system_has_cmpxchg128
- # define system_has_freelist_aba()	system_has_cmpxchg128()
 diff --git a/mm/slub.c b/mm/slub.c
-index a3cac7281cc6..e79fbca11bc0 100644
+index e79fbca11bc0..ef745b37d063 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -4638,7 +4638,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
-  * unlocked.
+@@ -217,6 +217,7 @@ static DEFINE_STATIC_KEY_FALSE(strict_numa);
+ struct slab_alloc_context {
+ 	unsigned long caller_addr;
+ 	unsigned long orig_size;
++	unsigned int alloc_flags;
+ };
+ 
+ /* Structure holding parameters for get_from_partial() call chain */
+@@ -3693,9 +3694,9 @@ static inline void init_slab_obj_iter(struct kmem_cache *s, struct slab *slab,
+  * and put the slab to the partial (or full) list.
   */
- static struct slub_percpu_sheaves *
--__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp)
-+__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
-+			 gfp_t gfp, unsigned int alloc_flags)
+ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+-					struct slab_alloc_context *ac,
+-					bool allow_spin)
++					struct slab_alloc_context *ac)
  {
- 	struct slab_sheaf *empty = NULL;
- 	struct slab_sheaf *full;
-@@ -4664,7 +4665,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return NULL;
- 	}
- 
--	allow_spin = gfpflags_allow_spinning(gfp);
-+	allow_spin = alloc_flags_allow_spinning(alloc_flags);
- 
- 	full = barn_replace_empty_sheaf(barn, pcs->main, allow_spin);
- 
-@@ -4750,7 +4751,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- }
- 
- static __fastpath_inline
--void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
-+void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, unsigned int alloc_flags, int node)
++	bool allow_spin = alloc_flags_allow_spinning(ac->alloc_flags);
+ 	struct kmem_cache_node *n;
+ 	struct slab_obj_iter iter;
+ 	bool needs_add_partial;
+@@ -4452,7 +4453,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			   struct slab_alloc_context *ac)
  {
- 	struct slub_percpu_sheaves *pcs;
- 	bool node_requested;
-@@ -4795,7 +4796,7 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, int node)
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
+-	bool allow_spin = gfpflags_allow_spinning(gfpflags);
++	bool allow_spin = alloc_flags_allow_spinning(ac->alloc_flags);
+ 	void *object;
+ 	struct slab *slab;
+ 	struct partial_context pc;
+@@ -4503,7 +4504,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	stat(s, ALLOC_SLAB);
  
- 	if (unlikely(pcs->main->size == 0)) {
--		pcs = __pcs_replace_empty_main(s, pcs, gfp);
-+		pcs = __pcs_replace_empty_main(s, pcs, gfp, alloc_flags);
- 		if (unlikely(!pcs))
- 			return NULL;
- 	}
-@@ -4928,7 +4929,7 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+ 	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+-		object = alloc_single_from_new_slab(s, slab, ac, allow_spin);
++		object = alloc_single_from_new_slab(s, slab, ac);
+ 
+ 		if (likely(object))
+ 			goto success;
+@@ -4919,6 +4920,7 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
+ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list_lru *lru,
+ 		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
+ {
++	const unsigned int alloc_flags = SLAB_ALLOC_DEFAULT;
+ 	void *object;
+ 
+ 	s = slab_pre_alloc_hook(s, gfpflags);
+@@ -4929,12 +4931,13 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
  	if (unlikely(object))
  		goto out;
  
--	object = alloc_from_pcs(s, gfpflags, node);
-+	object = alloc_from_pcs(s, gfpflags, SLAB_ALLOC_DEFAULT, node);
+-	object = alloc_from_pcs(s, gfpflags, SLAB_ALLOC_DEFAULT, node);
++	object = alloc_from_pcs(s, gfpflags, alloc_flags, node);
  
  	if (unlikely(!object)) {
  		struct slab_alloc_context ac = {
-@@ -5359,6 +5360,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
- {
- 	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
- 	size_t orig_size = size;
-+	unsigned int alloc_flags = SLAB_ALLOC_TRYLOCK;
- 	struct kmem_cache *s;
- 	bool can_retry = true;
- 	void *ret;
-@@ -5397,7 +5399,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
- 		 */
- 		return NULL;
+ 			.caller_addr = addr,
+ 			.orig_size = orig_size,
++			.alloc_flags = alloc_flags,
+ 		};
+ 		object = __slab_alloc_node(s, gfpflags, node, &ac);
+ 	}
+@@ -5406,6 +5409,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+ 	struct slab_alloc_context ac = {
+ 		.caller_addr = _RET_IP_,
+ 		.orig_size = orig_size,
++		.alloc_flags = alloc_flags,
+ 	};
  
--	ret = alloc_from_pcs(s, alloc_gfp, node);
-+	ret = alloc_from_pcs(s, alloc_gfp, alloc_flags, node);
- 	if (ret)
- 		goto success;
+ 	/*
+@@ -7256,6 +7260,7 @@ static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+ 		struct slab_alloc_context ac = {
+ 			.caller_addr = _RET_IP_,
+ 			.orig_size = s->object_size,
++			.alloc_flags = SLAB_ALLOC_DEFAULT,
+ 		};
+ 		for (i = 0; i < size; i++) {
  
-@@ -7216,9 +7218,6 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
- 	unsigned int refilled;
- 	struct slab *slab;
- 
--	if (WARN_ON_ONCE(!gfpflags_allow_spinning(gfp)))
--		return 0;
--
- 	refilled = __refill_objects_node(s, p, gfp, min, max,
- 					 get_node(s, local_node),
- 					 /* allow_spin = */ true);
 
 -- 
 2.54.0
