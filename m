@@ -4,92 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16419CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 05:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F95CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 05:40:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A5D6B008A; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
+	id C100E6B0005; Wed, 10 Jun 2026 01:40:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531F66B008C; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
+	id BC0A06B0088; Wed, 10 Jun 2026 01:40:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F6F6B0093; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
+	id AAF906B008A; Wed, 10 Jun 2026 01:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 39DB86B008A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8B30920CF
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:14:49 +0000 (UTC)
-X-FDA: 84862838298.25.88D2D5C
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2DC39180003
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:14:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=SRtexRuX;
-	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+	by kanga.kvack.org (Postfix) with ESMTP id 96C516B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:40:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31D2714080D
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:40:09 +0000 (UTC)
+X-FDA: 84862902138.14.7AEA8E9
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5B3D61C000D
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:40:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVlVJr9Q;
+	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781068488;
+	s=arc-20220608; t=1781070007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=CAQW/woRlD6nMS40SYfYEy04qnRENam7hotbzTsoZO8=;
-	b=Cd6oDbdDboqcGbA9tDNkAmlaE6z6MOTgd7SxbfRUnpY9+KBjLNxqCs0/odfKv3B2qbPUXV
-	+cBKC1lsjLzQK5p4Ufx7/UR4cuk5FVl0mCrryu9nMm2GxLxdGF4txDR1erPUkETykBZhzU
-	sQ9N7y4YmCv9e1uAB9x4NEOxrTHAYuw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=SRtexRuX;
-	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZXdRRa/zk7c1is5MErVAcERRsYOulHfSrsDOswfrhUg=;
+	b=WjHC4nLsbS+M/TljNke6dtdNtQMwfLJXFfLgBmmY6P+hC0QksNMGFh0twHcbOshKzuU2LR
+	+JisIn1qiBfEQwAEnLtw9EI9YAwDBNrWqwa8YRL05iv1sZxBCi7q4uscRTs9ozI7VJRTJh
+	cOfBmDZzj5Ggq7VJi9A8U0KTBzbbxKg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781068488;
-	b=xDIxmTaJpIJOHhS249+gTUwvy4Tr1jy6Vrs8HDzzl2upAZVpf+A/G316U7vvUcC9aTibd4
-	mDEpf3sVw2ASXgfHOxXCS7eN7KymEgtJ3hUN7a1SkYSVFL/k5yqSpDbEpGkHWuuR6+NI2f
-	mXsQHRMxRh/VWTKAIT+4CR7knSHCstc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:from:
-	content-type:references:reply-to;
-	bh=CAQW/woRlD6nMS40SYfYEy04qnRENam7hotbzTsoZO8=; b=SRtexRuXBTK493UySnuP5ALAyo
-	Ufy0HINvTDsaMlNa2KbGBrDy3M2mD7oyb3K1uRfPZMycB8X6zumdthneP7PwKuWnxd5zs6rionpGo
-	CqVwZyAAgtMS180w2Sww0de4fpAm3YKHdPZPh4Q5m8+BlUowPqXDnOu/OvmIeJeySkzUlQVQ80poU
-	UfmB5QYu7L0pjXyJBBSf14lin4VNjPcw7OMXBPS9dJK5aJW8WVlAgKf4YfupIYwp5UaqDfieNMppl
-	d2qkzQ1y1nhCAHFMEtboyBji+UBQaYqHGcvs3No1FfiumRPjop7cisWUioyEz0Za2KLJZliLTqXRb
-	zHrKaoZA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wXBGr-00000004AWe-2FLp;
-	Wed, 10 Jun 2026 13:14:34 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Jun 2026 13:14:33 +0800
-Date: Wed, 10 Jun 2026 13:14:33 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: metze@samba.org, luto@amacapital.net, safinaskar@gmail.com,
-	akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org,
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org,
-	jack@suse.cz, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
-	patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aijyuX14ahOf53zM@gondor.apana.org.au>
+	t=1781070007;
+	b=Ef3R6aRotbDXjDPsZbsw0RALFHSQW48+ftktM4J5UDjiuTBzM4gV2ClX7n/majs01PPC3l
+	t2drhzQcHkK72RSSLtKiImJw5lgni678slwVYv6AYoQBYc9rA4CjYh+1jRFF9VCsEvd9E9
+	RlkP5H/xf3rTWfdQf/I/BB0g1KymW20=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QVlVJr9Q;
+	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45ef9df68bcso354184f8f.2
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 22:40:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781070006; x=1781674806; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZXdRRa/zk7c1is5MErVAcERRsYOulHfSrsDOswfrhUg=;
+        b=QVlVJr9QfWyOTlMkOCicqfZ9QUFVq3IQPv7jFRUcyQPzwdUHx6ToReQ4dBkD4oy+ZO
+         DBgUw6GnQCKAjbTFtFKXerB1YARbB5+JnizAelmtV0bHY5e9H2mjBSvBJp4NNLDd44FA
+         SwFEnc44/nHGY/FfcVARvc6fhMkjAGN1YhuwQWUuroz72dhFpgGeWJHf78V5fBKrIOue
+         7u85y2GRWU35sTvo3Pcsowv+LYklIFwnummD9HevnZ54aEo1XEFh4+9jXfCVy7s4jy3m
+         Mm0LBgnJEXf4+tOTiYjpldARrt86seKTiUTzD5HK0TCqbYfa0lekW8YnlM28oJh8wknA
+         lNWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781070006; x=1781674806;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZXdRRa/zk7c1is5MErVAcERRsYOulHfSrsDOswfrhUg=;
+        b=Ze6wGcWNtcQ1vGjDAikQR8LfCvOtxZOmP47bZi1Bet/d4ZS7gugXu64Fn1tv1ZN2R6
+         f4O/mTNKghcYTPQkCheRvokX3JTCGv7X9Xpt6O133ugES/94nIMjhVSm7l5j470c8HQY
+         +yozECrUbDWIu4B0+gi7dpQnfHXDydBRLzPPsM3Qh1uikTvao0yDamydmfdISqY2HOvw
+         DEJVqqLvefsKXYjgq7OUNvqEyHmfUoiyKCH+G39AHBEY5er29IZYrwUK/E3V2nrh2SjM
+         nFDN+/kPM5jEKsavROsX7gtocb8Zx+m6JQOwngm3Xr1oGpue221myGOs8LuKL9+9qSQ/
+         XD3w==
+X-Forwarded-Encrypted: i=1; AFNElJ/tPZZ6DGRRyDg2ARXtXyjf2GWCSbSVQ5NI98ja5zpelEqheZ2XDhbxSgj5mhN4mGGrCDUp1uW5Gg==@kvack.org
+X-Gm-Message-State: AOJu0Yw533isH0VVfdLvB+f3VM94VDUmwA4jiL/0UG4E5voJxiu+AptU
+	t6CAjslut9tx6awrLPk5qHTLRjpEnuUBP3P/7qnVrtnV+HNU+bkxjX2q
+X-Gm-Gg: Acq92OGFl/Hr0WqzjMUKECO7FOgtsJBNgF0xZDcPwX8yOpVz4uEkkX7P0Z1mW95svka
+	G7ZvTJQ2Bt+94ldMGtQNfB5/kTK7jfOivhMp9TrilmpnElrIQmLx7xdXb6zuU3JmUFq0PyTAqWg
+	OL2ITurrD/7uKoRs/TtoLBi41ntvTOuxU/qLf9/G8r2hPX7QA0x5OSo6seMK4QA8weqyeRKmSgn
+	MVqEsr1yYo+i4UROcqoGYOaMdMCT5GRDkYFJ4Pc3nmEJ2eQJn3LqJen2fBcSzhYDQVLLehTGHIB
+	5KumbIRoFHXf3rmcNFAzB+5mNWr+KlPdaqFzCON+8rQjg5HinqwaOiVPrd9apH4C793/tWV845W
+	N0gSsDv7FgxRLvSvZoMfSbaJbTc6FMkxC8pvlACuMIQwOsrCy8+NBi9PQarKD/q/NT48UK0GoMv
+	ybLQEHB1DqJYqVW3kXeRCsR6kztrpgCYKBWLa/A/FI3aDjPLV0Kd7RIygAvh4qdYrTW+ET5LOmi
+	u5u2hSXIxP6GSEUSdQDR50eCh0AgrdHFCiXsc9jgcRs9D4l
+X-Received: by 2002:a05:6000:70f:b0:45e:8a08:93fa with SMTP id ffacd0b85a97d-460566c1c21mr3027030f8f.4.1781070005579;
+        Tue, 09 Jun 2026 22:40:05 -0700 (PDT)
+Received: from doehyun-dev.pradel.rg.cispa.de (x06.xlate.fw.cispa.de. [195.37.157.6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2f2710sm53831009f8f.14.2026.06.09.22.40.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 22:40:05 -0700 (PDT)
+From: Doehyun Baek <doehyunbaek@gmail.com>
+To: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Doehyun Baek <doehyunbaek@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5] Docs/{admin-guide,mm}/damon: fix DAMON documentation details
+Date: Wed, 10 Jun 2026 05:39:50 +0000
+Message-ID: <20260610053951.553739-1-doehyunbaek@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whL0oLvmh3FO9SapDhgrXMT_d6qkP2V3OBjysOWXod2Og@mail.gmail.com>
-X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.netdev
-X-Rspamd-Queue-Id: 2DC39180003
-X-Stat-Signature: 3ed9o1xhpsgihary5hxuf5oxiwwuqzaf
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781068487-434827
-X-HE-Meta: U2FsdGVkX1/PZalO9OGDMQT631YBQoQjYd2THQSvPPLFxWjNRLPOvwTCNEFhBc06ZB6O8I6Iqi8txbul1Yhrx5ornxEncxSQ1VMrR4Ji9KN+qxjem2nQeQp4K1UgxqGa5IkGUx5DKPX3J4L7qLtMh/TR0RTKGsor8g5h48RgfrKagHLzOE2wKp5Pi/F+j72MWOalNFScU8DYvcGFXBIP1eHM8QQm6z6qaeL8ls+ky5ujQ+WDxGWmexemd9lY4hgB9s/dD394XWSvOkwG+en407350yxRCo0MfokMwkWYKKNPbeHmgy2WtRgC3kVcsUWoAbVu3mj+47ZnBgudMR1+QQ2xi2b32oXsQolY0T7plPdGgcpWte6hRgKgCIVLPdCPsw78Pwbejz7rJkbQUXoBSSM5pwGOG0QXCxEQnnL5uWiWm67PfFkSImUyMcL5k/HHCvUObL0cImh/fwi13jS99MbpgbzPKPyN12fPFQN636PM5KSVgBEj0E0tC8bgOsA8+YPCX2TXdoZrv5K+qk7P8veBqfylyWa9YsCRmg/4Ezl5lGzr1QJO5twCNgIrCvLWTy+dXyMY92DscEVmFsSlD8Cr6/F4POEDNhy2k2tYnz1iHzYWd2V/uJYS/7QQcCbvpKDRR5cnNx4nFjSedaEFwOmVB0ghQTg1ZRMVRMXGeHMSPqQy5btXXwWCY8ArFsXU77eXdsqu0P4A/CkaMPUyBW04JNqPMUn4Xx4y1qL6YQtTEZz0BnA7UjlSaD8hB01cVZbkldNAvlGaGR0fNgy2XSMlat4JaOfEMGbreUSe/bc72IvVUjacwwQdo04DlF/q7MRPemQ020GFsiF1IrABhdn4S0VBbj1MghG7/XzEoxed7xKtdDeueyIPXw9R9Ki3J3a8bAq+nE8psjLMTzNkd2OjasiwKH9zTQNd3mBUDnDP12wzZGgFM4YOqC/p9CJzV4rxT6VZXb6d+4kpcVe
- ykd2t6fa
- 3DCOZDC5XdhaUME8rjfC4+E63RMnOBcTLkuQQ+gX0wg0LRf6a7b5qvDEDiq7O/XK8Dse1HUEs9I/XihcsX70FZM1x+FximiPKaoPoAY3x9srhOQ9cJOs7iLLekEAOaAlr6pC+XDbs7YWeZSK/Z47wzGlQB/pDrI+6IOyOA+wtorEdvFPJm2ta2++BFaAjRfNi+Whlzzi+rhjEVbsLV4mfYp64uq45NHCeo75VYNkQw2fpl7xelbyxx7ncXeF8ImhE0FWi7uD1jfgB4xIpcJ/Uoe7kcn2n2e+vqrgzHh9dg7a+nxAAUZ7/1FUtfTIvP2ZVjNlLmELJJIdM89eAGvERrprTsKsTJgE3AP7n9gCeQ54vhKZveT3nhrMFpRRErQT53cI8GKxWXZHazdII8HZ2fQxs8w==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5B3D61C000D
+X-Stat-Signature: 45skjr64newde6u4a1y4ity5gdpzpg74
+X-HE-Tag: 1781070007-669506
+X-HE-Meta: U2FsdGVkX1+9IDKsHyE6S/nJUjaAfWYOJFdAxhkhTJimzJa/FMaYs9XBMuRjFiQQlCTrW4qEGV+T9hgX+uRrl8AgHFmdItKl4uIxqJUBZik5QP6WfyKIJasLE3XUh0ivZX5POI3wJKHWDD4FKROenyKqxFEYYLDFU6ETQ8WrHwhCLZ0o66bQuOTv/pURKUWtlWk2x5KXUCTv7su5u67ouXI4fFRTtoldO5n0wRRGG26I9xYR0CrztCdIoNgyzut9UFSvg3kGQFps1SDNTO9bcWEEv1So8V8DgDiU74sWgdlGxN0WMs+jWFl5FqUzBj4vzSH+4RBrF4SQchGeULCyALioz+hFWJ0teHXPD2NAeQKCzDfFuEc+V8w86PcJ0Q4vWAcR1TMjTcbmo1p8oIYHhmmhcBdk35pmOL873ue0RIqd2/etIaj0C3s53x2z7N0ubsQ4zwepL6Id/nhhK+AfRCacy8GaJHWZvrc+sYUF/mCNDzeHOKL81fB5yg2CVxi0LwBe8smMTMTWNrdOcFOWUuNbdt5JcILEf7BCIv7vMrCaMvlIR9t7GjvvAIozrshNaqoRABJhLU7pTfghUcQPKahxotWNXHb0w9aezKvR3zT7H1yKWWF9UlG+Vv/JUhIVSVOYaHsBN4hv000APrsaDi9L3kRvU7JgQE3CilB1yKT4FGnjCSP8bCiLWln2OMbf2Mc7XGnDwpjRXsH9hmvtkan/Qgf3jeNwvwXxcTNknSr8eazdSXLd1WPX3wo18awOa9wvUcqUvMR1cYFGAR/Qrq7bM2WKVVfvi00Vg1d0M23XohqzOrxd8mXVhBOqawYNM9oAVIKJv+51yohTkuXnef7qEV/ub9wxzHR1jtx8IpTMBxEb+qsg361L8fYexsLlmpHeBu0TOw9yeOb81GHJgOeOmmHAO8Fz/I04BZLmT1lz14lE3RrjxsNO/+0I2V4/C2oWUJyTHLKG/icpz2v
+ O0lgHy1n
+ 403LF8OaOzmGOK3HrMzT1PcU/a6M3DrGov0VisbysTqBC8fLmTl4cW+xhiPXWqxJbcIxf1E1MsoxrtLS92kybaE1ql5EPsKiwvvy0/PdlzDlUgbjQMqPV5N5Zs9SDPSAXBH2KtK9XvUwHxwYiEtKXXqcweOzyWq+Vlpqyzg7X0uquG7t8P1O6a12HEdFEyLfrLPQTn9fxTse1kld6HrhU/+TtVu8sggziElapQJs+nHDYhFQ6oB7t9P2v2OEejxKCvgCk+tU0y17drK01cZmrz9l3CxvC4V2syaR3S56ZI5j+AwnSW4DCA6A3aRBiIFREjlUEi7/noCp//of/HvrOV01wx6gBJx6VXW8USZCOLE1FY1yk/Zw23QjoC1idxu5tS/YXytj7NExPMDI8QC8UjR6omwHeiue7WAKepy3DUqS2JTS2IItt3hOQbkTFymm8AJQFfKFFusWJ5n8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,25 +128,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
->
-> Nope. If your web server opens files with write access, I'd be
-> extremely surprised.
-> 
-> And if you don't have write access, and you're sending out data from
-> files you opened just for reading - the onle sane case - you hit all
-> the existing problems with "I can certainly look up pages, but I damn
-> well shouldn't pass those pages to the networking code without copying
-> them".
+Fix minor DAMON documentation issues.  Correct the sysfs scheme file name
+apply_interval_us, the DAMON_STAT module count, a malformed reference, a
+misplaced label indentation, and a few typos.
 
-How about using write access as the gate to zero copy?
+Signed-off-by: Doehyun Baek <doehyunbaek@gmail.com>
+---
+Changes from v4:
+- Rebased on mm-new.
+- Sent the English documentation fixes as a standalone patch.
+- Dropped the Chinese translation patch from this submission.
 
-IOW allow zero-copy if you already hold write access, otherwise
-perform a copy.
+ Documentation/admin-guide/mm/damon/usage.rst |  8 ++++----
+ Documentation/mm/damon/design.rst            | 12 ++++++------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-Cheers,
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index 011296f1e7c2..b2649ea011f9 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -246,7 +246,7 @@ writing to and reading from the files.
+ Under ``nr_regions`` directory, two files for the lower-bound and upper-bound
+ of DAMON's monitoring regions (``min`` and ``max``, respectively), which
+ controls the monitoring overhead, exist.  You can set and get the values by
+-writing to and rading from the files.
++writing to and reading from the files.
+ 
+ For more details about the intervals and monitoring regions range, please refer
+ to the Design document (:doc:`/mm/damon/design`).
+@@ -264,7 +264,7 @@ Please refer to  the :ref:`design document of the feature
+ <damon_design_monitoring_intervals_autotuning>` for the internal of the tuning
+ mechanism.  Reading and writing the four files under ``intervals_goal``
+ directory shows and updates the tuning parameters that described in the
+-:ref:design doc <damon_design_monitoring_intervals_autotuning>` with the same
++:ref:`design doc <damon_design_monitoring_intervals_autotuning>` with the same
+ names.  The tuning starts with the user-set ``sample_us`` and ``aggr_us``.  The
+ tuning-applied current values of the two intervals can be read from the
+ ``sample_us`` and ``aggr_us`` files after writing ``update_tuned_intervals`` to
+@@ -377,7 +377,7 @@ schemes/<N>/
+ In each scheme directory, nine directories (``access_pattern``, ``quotas``,
+ ``watermarks``, ``core_filters``, ``ops_filters``, ``filters``, ``dests``,
+ ``stats``, and ``tried_regions``) and three files (``action``, ``target_nid``
+-and ``apply_interval``) exist.
++and ``apply_interval_us``) exist.
+ 
+ The ``action`` file is for setting and getting the scheme's :ref:`action
+ <damon_design_damos_action>`.  The keywords that can be written to and read
+@@ -743,7 +743,7 @@ counter).  Finally the tenth field (``X``) shows the ``age`` of the region
+ (refer to :ref:`design <damon_design_age_tracking>` for more details of the
+ counter).
+ 
+-If the event was ``damon:damos_beofre_apply``, the ``perf script`` output would
++If the event was ``damon:damos_before_apply``, the ``perf script`` output would
+ be somewhat like below::
+ 
+     kdamond.0 47293 [000] 80801.060214: damon:damos_before_apply: ctx_idx=0 scheme_idx=0 target_idx=0 nr_regions=11 121932607488-135128711168: 0 136
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2da7ca0d3d17..c16a3bb288d0 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -86,7 +86,7 @@ To know how user-space can do the configuration via :ref:`DAMON sysfs interface
+ documentation.
+ 
+ 
+- .. _damon_design_vaddr_target_regions_construction:
++.. _damon_design_vaddr_target_regions_construction:
+ 
+ VMA-based Target Address Range Construction
+ -------------------------------------------
+@@ -930,11 +930,11 @@ control parameters for the usage would also need to be optimized for the
+ purpose.
+ 
+ To support such cases, yet more DAMON API user kernel modules that provide more
+-simple and optimized user space interfaces are available.  Currently, two
+-modules for proactive reclamation and LRU lists manipulation are provided.  For
+-more detail, please read the usage documents for those
+-(:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim` and
+-:doc:`/admin-guide/mm/damon/lru_sort`).
++simple and optimized user space interfaces are available.  Currently, three
++modules for access monitoring statistics, proactive reclamation, and LRU lists
++manipulation are provided.  For more detail, please read the usage documents for
++those (:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim`
++and :doc:`/admin-guide/mm/damon/lru_sort`).
+ 
+ .. _damon_design_special_purpose_modules_exclusivity:
+ 
+
+base-commit: ce70d5abbf4f9930a07eddb06f40a0ea3494e33a
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.43.0
+
 
