@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DE55CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 12:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB499CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 12:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FBD36B0005; Wed, 10 Jun 2026 08:18:40 -0400 (EDT)
+	id 100246B0005; Wed, 10 Jun 2026 08:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ACFF6B0088; Wed, 10 Jun 2026 08:18:40 -0400 (EDT)
+	id 088C36B0088; Wed, 10 Jun 2026 08:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89B556B008A; Wed, 10 Jun 2026 08:18:40 -0400 (EDT)
+	id E92B76B008A; Wed, 10 Jun 2026 08:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B07D6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:18:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31AE4165491
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:18:40 +0000 (UTC)
-X-FDA: 84863906400.05.3098408
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4DC97100010
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:18:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jMOXA8GH;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781093918;
-	b=REo6PRzdfdDoJ2pqTR7JUrDiwm0UyXPCI/Hq77hqOqNAEie/+/dBVZ1SvVByOiF673JKvj
-	ZtTU7SlfqBoUhgcpgxlZRiWrMqxdEgHT6vSwZxSeVR9LLn33lDYjFdjaSv/6ld7xLjlwyx
-	LtOcOAy8vKFp4no9p/+ixOBVmPl7m9M=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jMOXA8GH;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D59336B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:21:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 811881A097A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:21:13 +0000 (UTC)
+X-FDA: 84863912826.30.44FB414
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BE7C080018
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:21:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=akMPVhfx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781093918;
+	s=arc-20220608; t=1781094071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/nmKCF3PlHtsp8BoIrnN8jgGS3KEpCp0NRU8EXhq3c=;
-	b=jhVRwsnbDSUSrT3YBwX02oVQVYa3V3LUbFMTmdzKawHAMBLMUrot2gywSdHSy0nIRNMrN2
-	tuBDpPaP1q4WDOqCmi/twO9N6mFlW1e+Kiwjts0SFNoFJrGoAi8h7fbqdOUig09dmyUO2U
-	OcWEe5BHAVvCFJnYRSV2QQ3Rhd5YWJQ=
+	bh=a50tMtdpQDTnzTpaK5Q8i3OL0e4khg4RGHRIQxs1leQ=;
+	b=ar20EA6EgKvzxiFSfLKeopwrxHKNPrbcYgkRwKK8sMUeV2YwFb9k/q3Cz3WvhlyGVNKNdq
+	ktyVI+aFX92ctpaiCJkbGGomViXe8AC/lk1gXFUYX+FpcIqOSPN7YcPbUND7dzBsZzUhog
+	b4N+5KKFfBUHGWZ4XQIpFGlCGiZ72Kg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=akMPVhfx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781094071;
+	b=bX6QujMjFddjrs69n0I0a86rwHOB8ST4AdcF3/sjT3yUzBDPO+yhVhgd9/GZg9iSIQz9BL
+	MJ8cVClX7U2wDt4fd/kNKkG8mtzcSghZnY5OsDM0L/f2Z8YAEubn5swBv1gM8Nv7k4fo7q
+	wSd2L8gXhmvPpzUfR4uzJa6F737y1ro=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2596D43466;
-	Wed, 10 Jun 2026 12:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A981F00893;
-	Wed, 10 Jun 2026 12:18:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 390426001D;
+	Wed, 10 Jun 2026 12:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0F61F00893;
+	Wed, 10 Jun 2026 12:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781093917;
-	bh=A/nmKCF3PlHtsp8BoIrnN8jgGS3KEpCp0NRU8EXhq3c=;
+	s=k20260515; t=1781094070;
+	bh=a50tMtdpQDTnzTpaK5Q8i3OL0e4khg4RGHRIQxs1leQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jMOXA8GH07QhcMhyvYrDmhrTiwuzZdFOFsw6UOyGLBIL/AyIsle0E/ksi4Ir8BMtJ
-	 0w0lsgWx/FlQlZon7VbUS2DLTEd87ZIeDUuifkhcshfeZi3hzakJMP7A89qkYTMpYu
-	 EMpaGOIEj6y469m44xy6EDVh7+0oY0eMY6bDDg8VrOqlos9uZwYGTPKIrtaKkX/+cB
-	 Xgo17v8axIMsXMZy498yaCjQJXJiovxlljAIGiRNXKWiF/gFHjDp/K7aYlPE4NSv/K
-	 vODFoFcBsYyGX7YfcMs96aNJlDauvjGwyAaR/H6pbrARFZsRx80zE6bNNQ8PQEH/on
-	 pYM1Idh4qADTQ==
-Message-ID: <05a8071f-d3e7-4a24-985a-41fd5639c8e3@kernel.org>
-Date: Wed, 10 Jun 2026 14:18:32 +0200
+	b=akMPVhfxGvtalWUO0OgRsv68Go+o+3t7MAmYT0dp6OsxlUC1e6AyfVLF/sabFbfnm
+	 TYXTpQFdV+014B6UOGjc3ykeBPuOXoGqhyV/uYSgobvajXDcfWOgjHEuEKVgennMnd
+	 m+3FU4t6Ek223HZamneqahsgsrdoj9VAs15OkTL/cScrnK+YyCVzv70h+1bcx9recK
+	 fvG5Rb1K0B/iXM+9VtOS0wpaMe6sI+zLjHtAt3dQPGZ5GJa+JmK4LV+b7lPv0H1R0f
+	 Kc7+K0TM7HnZmB8+jOOJVMV6GSxQ10HDMoDy91dVFaJ73aeHm5Oxr5LuJb7+cG52UQ
+	 s307kLXL6ywhQ==
+Message-ID: <33003570-fe67-4c08-ab7c-fdc9f85e2147@kernel.org>
+Date: Wed, 10 Jun 2026 14:21:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/gup_test: reject wrapped user ranges
-To: Samuel Moelius <sam.moelius@trailofbits.com>,
- Andrew Morton <akpm@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Samuel Moelius <sam.moelius@trailofbits.com>
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  Peter Xu <peterx@redhat.com>,
  "open list:MEMORY MANAGEMENT - GUP (GET USER PAGES)" <linux-mm@kvack.org>,
  open list <linux-kernel@vger.kernel.org>
 References: <20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com>
+ <20260609182705.7b3a46e7c4661bd55f8561eb@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com>
+In-Reply-To: <20260609182705.7b3a46e7c4661bd55f8561eb@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4DC97100010
-X-Stat-Signature: en4i5q44eg7h69g8nu33wk8rfradms55
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BE7C080018
+X-Stat-Signature: gxfo7bpx8m3h8xdnrnckkmr6e3116j61
 X-Rspam-User: 
-X-HE-Tag: 1781093918-301175
-X-HE-Meta: U2FsdGVkX18ffB4gPckVMLVdsfRexPHGgLSzZ+vExmU4lzoFacx+XASzCfqTuoZgDq0X1MEsp4x/99y7RoB/zSXrKJVce+6kJGdodteAX4smne0d5MxGsdNbxWWbxBdxpa1o4dt/ykflrQ7Hmb6B7lmQsUbdHfUuIFopvi4Mj2LYTuBDFp2I/tuG1aE12KmlQ4ZFETI50jnpG7t1FTYKRIQYEKwnuYyMb0+TVii40EZJPU6Y9hluNEHHHrvfzWcdZggnCIGo/FtiJodzLBAgA61JlEdqr/Gd4i0YIGopQphqcm6ysyrQroBaApOp/58Swpp4MXR1t2JsCInOQdSWJzVlOeXxsW5bWRTlRJA6lLOD0L7v32gHGuj5/zlbQ2rxv2nEEHwL6KYOWkLH+L0922KidbLWy2fOWIZ/espKi9Dx39O4IGo7eVjD4UsWIlP/USJsr5DaO5MOYTsNpcjpcZBW6LInFgHLg8wxyPPWrFLFpIQSe/xpLzYtsBwOJuTFy6MyijrQ0PvxWG9gUa6NzQtvVJY93cPN2pbVU3HA+VOBIX/RVYVtyXr2IKkfp+9pRIcHyGfO+y4DCFJWJdxVGyTUXRI0B7N3n4/hOlBvnIlAU/ELJ0Ntt7BRFWew0SliAWhYGKlSBA7MnwAdN+y1mlvn2wcah92YUIoqyfsxiyGXrvyUZlsRgLK0G8kXeldBzh7vsHDKlajacHKpBzpXBW/oaBOe+t1kvbCq4XF/YcviWT+x3V3POt9i4420stN4ZkDMCin6aAwNzAsgldhjKe0bqsSqu6CmWjVXUqw2jXlUaooLO5Ss+7NOUDSM++AhHvi64x/XnhwCk4do5/1hEd5YdGvCIWEBLDHtW7mpjcBC4vvh7GSefNVWi7VipCXzphjtm+w2mfZFgH27f5+E7VAOQz5mGa60kbvNskRxGDIChRZHJYlPCZ+Mnpd8oWeSwQ+WfqppjDDcMdAA1K6
- CHpG7/cM
- Wx5z95LsoxNNF6fI1ipt2aURk/iCswtUOm7igYNZPRiy5ShpQDLkRnSN6hq6BE58E+vDl+8wuaKfsFWBRl49O04/coUDzh6z0nMXJ2I5NZajttK8vPU2fgxm9UUgrma2Ksq3l1EXvrsZubmW0R/W52SPY2mlXHIygm5JT4+V3cS7aYCmPvQrCWFnE86lZL/eXOJfnhWTJTN+jeGilu+O9dtd+ZwVgj5e4ofxYrxKong9ghjyhj9EYkdOqczzXZ/8oWm7WSDzYOqAnUhHzWnGwTQPMDJNwJUSp952oteRESKFtK8kf1xSqf0llzn4ikBqZD/SYbGB1pS0rzdF44tyQf1T32K8vS/gBdC2GdFNARidt5NcU57meEViHVz1DgE+dt+j8
+X-HE-Tag: 1781094071-663330
+X-HE-Meta: U2FsdGVkX1+9RUHWPIaBIMeiXIuJTIoOTOGnlhqGciHxkalJ4sYfUrWuIQ2dsjZ1eW99qhkf8DwNDuyjRj+8zjRvifxwbIC+bR2rWRP5ylXYxgwJCb8jhFttABNWnt1yzwrWnBavUBQ6QxOQzjuX3xZ5uFSe+LbinPNFhjXYiaW3VEcLn99JCEZ9olXg55/csztK/kZ3T/y9P8QDgiKeUrwOG2dORfaZ1+M7nFvuK/inshw5Kew8DrYkqOTIXIDAzNo1oLAkwJaFX/pOqSU8tWxTTMrxZeT3YROKv9LtfkrEnGEnKe8cJ1nuOgF0xIckK72yW9pP7/CqoV6a7OSMVZkjaolu94fIQ72pOZ4jeyJisKOvqlVO9c6m7CdWdGdlejzA+dCVCIIdlgHBcXAsh5oa3JeSb4mINlGx5RkJEqVUhsQQ0ERdO9TwhIA0+BQtgggjZoPzV0G9JIxrfx7dWTJN7Ige2+f6VBJW8mBq54aXGUrECZBaBVbqywyh/y7lDwzYUUD+Y8D7yy1QCnId3N8pJjtDpD0fZNOYJKZnS0/0SMF9iejpOD0ixr6zCI4s7dYbD30EApzqPKtJOgPOiKhdiP5rYWk+e40qwmqEMbSzpCjNuTT42r/2jcg7Mt+iLCEl0FzXHfiRM7wL7BHA6oJ6+TbWk87HlQgfY/Kv5/fs7MDsFU62SYaX4LwzIzE8d98K7c7LKbqGG8fU/A57Lnc9JmqGCHYMsi90muHA7fd2hEaYTkr37riR8VZhrUtEvv7idPsqt2zJYETgcKle63DdjjfRLYMRdiUCDqRXX7LGGuZ8CGRv8PKZOWC8FU+swqJ4vI+qpFyXPp9z8BNc8+jd85SoFCA8Xh60xxDtXc9mdVZS9yqadSf3yW4q9lLf+ZKoiuzg3HuxEIzKXDCOiCxamO8MSY6lKQLAyC4fBdFK169UOvvhHWEj+WmlP4Qr2SnHaEbQ7WDaPBPJD22
+ I4vjubnX
+ M8OisazvWpmGCKULUDoA5mqbtprLFExiL9weWCCLyOSjjma+C5bfM7ylhSi97rVnrmL9vzqv8teX3tEE3LrGAennG954QjCfTTcefOiDME6R2zSm9iqi8Y7iixf/SQwqzkiemF0PrDuQBlx5lJLbx1KHu8WtgmdTr8ZUktMCT3brV+a3U1TsSmDPdoQ1tOcH2ZShPBuitcT1Vj75xx1SRWaD1qUqDBAMg+lZjlhwGRtX6DDvi8EdxAI0TU84/FRyYBj/ArXm02B7Ec/nrYIGay+b5fjofyqHIX5p9R3B8XA0KMuDyvWxMYRDhwbjwPJ7RCY77JNO+miCX98bIMtCRe0WjAnpzJ6MzIsRC9orLtobb5ACIK7viPJrno/KMnFwkSm2/BfakQ45qNVs9QonXJr48tKZQXIj5IEgKzk7dcHQ9n/c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,69 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 02:48, Samuel Moelius wrote:
-> gup_test accepts an address and size from the debugfs ioctl and
-> repeatedly compares against addr + size. If that addition wraps, the
-> loop can be skipped and the ioctl returns success with size rewritten to
-> zero.
-
-Yeah, it's only used for testing and (a) not expected to be included in
-production kernels or of so (b) only accessible to root.
-
-So we didn't particularly care about making this interface watertight.
-
+On 6/10/26 03:27, Andrew Morton wrote:
+> On Tue,  9 Jun 2026 00:48:15 +0000 Samuel Moelius <sam.moelius@trailofbits.com> wrote:
 > 
-> Compute the end address once with overflow checking and use that checked
-> end for the loop bounds.
+>> gup_test accepts an address and size from the debugfs ioctl and
+>> repeatedly compares against addr + size. If that addition wraps, the
+>> loop can be skipped and the ioctl returns success with size rewritten to
+>> zero.
+>>
+>> Compute the end address once with overflow checking and use that checked
+>> end for the loop bounds.
+>>
 > 
-> Assisted-by: Codex:gpt-5.5-cyber-preview
-> Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
-> ---
->  mm/gup_test.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+> Looks sane, thanks.
 > 
-> diff --git a/mm/gup_test.c b/mm/gup_test.c
-> index 9dd48db897b9..eb4c9cda16ed 100644
-> --- a/mm/gup_test.c
-> +++ b/mm/gup_test.c
-> @@ -105,11 +105,15 @@ static int __gup_test_ioctl(unsigned int cmd,
->  	unsigned long i, nr_pages, addr, next;
->  	long nr;
->  	struct page **pages;
-> +	unsigned long end;
->  	int ret = 0;
->  	bool needs_mmap_lock =
->  		cmd != GUP_FAST_BENCHMARK && cmd != PIN_FAST_BENCHMARK;
->  
-> -	if (gup->size > ULONG_MAX)
-> +	if (gup->addr > ULONG_MAX || gup->size > ULONG_MAX)
-> +		return -EINVAL;
-> +	if (check_add_overflow((unsigned long)gup->addr,
-> +			       (unsigned long)gup->size, &end))
->  		return -EINVAL;
->  
->  	nr_pages = gup->size / PAGE_SIZE;
-> @@ -125,13 +129,13 @@ static int __gup_test_ioctl(unsigned int cmd,
->  	i = 0;
->  	nr = gup->nr_pages_per_call;
->  	start_time = ktime_get();
-> -	for (addr = gup->addr; addr < gup->addr + gup->size; addr = next) {
-> +	for (addr = gup->addr; addr < end; addr = next) {
->  		if (nr != gup->nr_pages_per_call)
->  			break;
->  
->  		next = addr + nr * PAGE_SIZE;
-> -		if (next > gup->addr + gup->size) {
-> -			next = gup->addr + gup->size;
-> +		if (next > end) {
-> +			next = end;
->  			nr = (next - addr) / PAGE_SIZE;
->  		}
->  
+>> --- a/mm/gup_test.c
+>> +++ b/mm/gup_test.c
+>> @@ -105,11 +105,15 @@ static int __gup_test_ioctl(unsigned int cmd,
+>>  	unsigned long i, nr_pages, addr, next;
+>>  	long nr;
+>>  	struct page **pages;
+>> +	unsigned long end;
+>>  	int ret = 0;
+>>  	bool needs_mmap_lock =
+>>  		cmd != GUP_FAST_BENCHMARK && cmd != PIN_FAST_BENCHMARK;
+>>  
+>> -	if (gup->size > ULONG_MAX)
+>> +	if (gup->addr > ULONG_MAX || gup->size > ULONG_MAX)
+>> +		return -EINVAL;
+>> +	if (check_add_overflow((unsigned long)gup->addr,
+>> +			       (unsigned long)gup->size, &end))
+> 
+> I wonder why those fields were made __u64 instead of ulong.
+> 
+>>  		return -EINVAL;
+>>  
+>>  	nr_pages = gup->size / PAGE_SIZE;
+>> @@ -125,13 +129,13 @@ static int __gup_test_ioctl(unsigned int cmd,
+>>  	i = 0;
+>>  	nr = gup->nr_pages_per_call;
+>>  	start_time = ktime_get();
+>> -	for (addr = gup->addr; addr < gup->addr + gup->size; addr = next) {
+>> +	for (addr = gup->addr; addr < end; addr = next) {
+>>  		if (nr != gup->nr_pages_per_call)
+>>  			break;
+>>  
+>>  		next = addr + nr * PAGE_SIZE;
+> 
+> Sashiko AI review identified a pre-existing possible overflow here on
+> 32-bit machines.
+> 
+> https://sashiko.dev/#/patchset/20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com
 
-LGTM
+I mean, we don't really care for gup_test.c about any of that. The patch here
+looks like a decent cleanup, so I think we should take it.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Fixing odd things on 32bit that will never happen? Not so sure.
 
 -- 
 Cheers,
