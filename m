@@ -4,116 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61AD8CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 16:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 250DBCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 17:22:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1A46B0092; Wed, 10 Jun 2026 12:51:57 -0400 (EDT)
+	id E35DD6B0005; Wed, 10 Jun 2026 13:22:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972B56B0096; Wed, 10 Jun 2026 12:51:57 -0400 (EDT)
+	id DE6756B0088; Wed, 10 Jun 2026 13:22:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 861186B0098; Wed, 10 Jun 2026 12:51:57 -0400 (EDT)
+	id CD52F6B008C; Wed, 10 Jun 2026 13:22:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 74AAD6B0092
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:51:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1CBC31A01E0
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:51:57 +0000 (UTC)
-X-FDA: 84864595074.01.C896F17
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 017AB20011
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:51:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=gXzzDIzN;
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781110315;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B8F206B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 13:22:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EC391C0CFB
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:22:47 +0000 (UTC)
+X-FDA: 84864672774.17.F89C686
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 35489A000B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 17:22:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=trailofbits.com header.s=google header.b=WGzE17zL;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of sam.moelius@trailofbits.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=sam.moelius@trailofbits.com;
+	dmarc=pass (policy=reject) header.from=trailofbits.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781112165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qO7PcTURECVwaL537JQLmKXQDPG+aZWd6lpbt9X9Cxg=;
-	b=UKXU4gRpn6r3pnRWPhsGxpQPeRuaBe//cGmn59kNSBYTNUQ3ixteN1vAlgqgnXUYkArptJ
-	h7itXbkyFpJ+kYGBj6EmliOxXZBoxOQzzeMeMPYrFCTWjSanzlFoVQuilRHj/4NwXzBF3j
-	lKwKBVoEWKlRQTeHYrJ35kdDPt2J37U=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=gXzzDIzN;
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781110315;
-	b=rZgX3udiA+3RQuosaerwEedjqj1ySQp5C8weHLfekMluRJdeEroPJFD6gqmCmNwXpakuUl
-	sLrtUlVwZZn0CUty7WcfzevVOeSAITcGap79RizqwnWgu6eLhz4dYRLqz3VjrTeBrUTtzN
-	Yim1RO8fxaB/C4V1gTDYTpC9hXuwT3o=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8ccef25789fso48385486d6.3
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:51:54 -0700 (PDT)
+	bh=AQP4ydNn8mcSRgfuE7UM+2i3I7RwByF2VRfClw8B7tA=;
+	b=KhUgwTc+t7cNMsALoXaZgC7m59aE2DmTKXA51YZVkRxnP9FEuvmiUjToTNDTIZPYtkR+m+
+	e0L9UuY+5w5A62dvphLmSd8zYZxfSzq+A4xfgO6TB3H9RP80aQMjInfshmrpK24O0rN1C+
+	tO7568D8a2DaNeecjEy5uujhGyStv/g=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=trailofbits.com header.s=google header.b=WGzE17zL;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of sam.moelius@trailofbits.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=sam.moelius@trailofbits.com;
+	dmarc=pass (policy=reject) header.from=trailofbits.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781112165;
+	b=oZskB2LzaLV7Mo1N/WpvI09TnVndG7pGW7+4dtSddVjyLMbhuDBTlnXvg1+xF4j7bpdUho
+	Pv8bmFuF9rxBAcubdaORpgcDkvSGQ8VC8UWQtHU4dXcBsO8g+oBHwLrzxrf4N1yYpwacvi
+	cobkYMVDvioqRjNUUJdQ95I7zpI4/ho=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aa68d9dc18so7238260e87.2
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:22:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781112163; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PJ5wh8A30MqEwDI8Ur6h/Gd0Y5VzaYkfdwY4N4lP0Hv4+6o/FEbOhMs/C8gsBAArXq
+         oiyUN0qj1qk73yOi5sKPOJoNwK9ZLQ1z/aroy9qnw5RmTvpnkhNQqjD/yrKllhufWWfZ
+         EhJCQl5qPjiO/QXIzrPYhpsdAgeYf3fVPnIB71z5TeBl0YjUo6y99drx56p9cElhaNj0
+         nSE9TCCkeAbL1ET8fi9yZVZM4T1AeNpc5EZHE+wHu4Mu8tz/lurPB09jnow6FMQeoyyq
+         5h+gTIU4rYjptOM8i3bjLMHkLD/fdAzgvd5GUt2j9tflmqWXNKYSvD1qvDBSBsUe+Hjy
+         jvFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AQP4ydNn8mcSRgfuE7UM+2i3I7RwByF2VRfClw8B7tA=;
+        fh=NOSeFDVSUCcr+AV+rSq1zcyNzzCcogNBMkDFBKyDp+g=;
+        b=BNHsuNymFASxqDcG4uOu0QZGsf+a6AVCY0MOO4zxRmic0ZbQrx8X8ClliI8WGE0a6u
+         vQyqpVJ7v1thESfrBJ+357Cr7fitslIvo+3KQ6JSEPXJKvgZ4Hhev+mcyHVmsoeOUgaP
+         oAz00BCDB6v3JhQ3ia/SQCFKTMaYXROKVD/52L4SQN+E+73w8dpVB1rCpmvFR237tF6J
+         fDCMgPce9g0w59Ylo30SkI/D9zRKrYxb2IIfXiVT/tXHRfEXrqox/dSYZ1T726RyTqcZ
+         Pn3EbnxmGlNym2Z+scgVlmh6JGxTG/JJyI/Z5Tj5rh5reGo3pJVL3B5kuKR9JrQDYJpk
+         2ohQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1781110314; x=1781715114; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qO7PcTURECVwaL537JQLmKXQDPG+aZWd6lpbt9X9Cxg=;
-        b=gXzzDIzNTT5uTO2WDWMh2EaPp+fPSU61/hmbUP6TKDrqHLyFAb22cIdibEpOhTnLtF
-         ptIM4tPJG4OiI2lXd5ezuLncNe2LyR4+foRRLqFkJeIbUpiLj5yJ0pRCnRA4o10BbzI/
-         SkgI5b/eKlv+tZoqiX+9kAu1b2IENd0u35EpR7vio4MyRQcKseSai97ctinTFawtFCm8
-         P+6Tr9JKn3zlI2Di/NjO20RjfQowDk0t+FAINgjrMIW89GPIv9/TbAnGW55N1FNzTjwU
-         jOJP7AjV9Xbo3AO5/KH2FTucgwZeuU33U6yBn2nAj5zgsSJU+UFxcdgDKOpOJewKSa+v
-         H2Qw==
+        d=trailofbits.com; s=google; t=1781112163; x=1781716963; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AQP4ydNn8mcSRgfuE7UM+2i3I7RwByF2VRfClw8B7tA=;
+        b=WGzE17zLPMcfALI7+WPfti8RAPHUeSKNu1zTcFDLeQ+qwgKmh/nVqa7AKo91OGsd8X
+         QDwZn7u2M6t8TxzHXmeBuZg4F+0z3TvoMiwM855Zimtq5LqMwKfvPm2iw6izMmV1dA7u
+         l8hIRcBP5S1Lyy3bYu4vW86iihW8AwzTSAB4d+1vW69+UbREBWxDSmmxOaBc0pM/fxOQ
+         vZzLXpyhaWdd7gFSXs+S4XwJg1Kgqn78PcIhep+hij3H1bkXiqovg3+mmU4QKLX7RwRG
+         VA0W74j5DSll1QzlNmjbL/Iige838Yg8Fst/13bRC2vUwNFfpCwOl1HbYxz9f7na89sn
+         p3dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781110314; x=1781715114;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qO7PcTURECVwaL537JQLmKXQDPG+aZWd6lpbt9X9Cxg=;
-        b=FGeqJMo0T2cMMqR4B18ghl4RCvv55lDuHT2qzIf/vsPXnW/soQb0NyrZnZH0kvvMSz
-         SOU2/wjt2FfNHJMStzbExHtORdjY+ATNe/mYiINDuKaURvkik0nX8yFoT5yLNFghG2yF
-         NmCame9/2sU11SDKmna2S8XfUKtfI4mlgaZ/A2LH8ghzZ9YX7hV7lzFsmoL146kwlEqh
-         LqiOwYz1GdJHhMJkOvj+t44udzctxNwo4cKy9GCbrFeJL8aPS7QzZ4fD/5RvxT4YpCQV
-         BcIAY+FSGIhZ1WczGcMKs2kAu268dMBJiw3TGneKxI+8F5OhXWW8S28DjwJFQCYObt5v
-         QcfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ82VEa/v5gvqM1XXjKdmPVXLgK8k19G4KxaWItux9PwNWFENGCd5v5Xz2hfnjTYJsm8eFqbe2PDwQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy6Vvvf7OXUrUnDYYYhOPFjH63jULBFl4ZHkRF9G23g7XHPTspu
-	lyIDBXu5eTggsYEtwSeN/T7KRswdxQasn0klP/7iUi2yHd2RpXA7WIRxrfGEmsAGOQg=
-X-Gm-Gg: Acq92OESep168xSF0kKdlmhuGivywTjZm3waxLrlZZ5ymLgu+t20fOsduuWhllb6fBv
-	KGySL121IBUcCper+1VjLSZqPNvGFeiiSQI6AL4QniJoZbvKLwM2grGqC2jlmxXmGH7kK2H3d7B
-	7vD+L+qxLDcVKez2rgz9l3YShf8u3zZ59OTLov144o8Rah6lUMElSYR10GLr5qsqpwpPk3TimtV
-	tBjmhy+/JtR60BzILY1qJ2qTReNOUGHiWYnZxRcZ9oO9RWwIAhvC5xs7CWcaEfdrCjiQTGpLKS0
-	C3JHYSv42KMKLEsTzn1RLLc/zqdkFHn8otJjBsSeaO6rXVzznrV2fK8jjMs1rx3iuTianuWFgXm
-	QTr1G5NdSyW0yX9aEyN+zdsbopVnhn0vO7otxsd1wp30EPDTscLgRgg/mpbWt6Thokg2W8gwiPl
-	dX4ZZOLS8ipvFBXBbfkvURyUd1Kt8iKO+q
-X-Received: by 2002:ac8:5f84:0:b0:517:b58e:a1e4 with SMTP id d75a77b69052e-517b58ea315mr236682201cf.41.1781110313972;
-        Wed, 10 Jun 2026 09:51:53 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51775e2e16dsm222674371cf.31.2026.06.10.09.51.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 09:51:53 -0700 (PDT)
-Date: Wed, 10 Jun 2026 12:51:52 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, riel@surriel.com,
-	david@kernel.org, baohua@kernel.org, baoquan.he@linux.dev,
-	chrisl@kernel.org, kasong@tencent.com, linux-mm@kvack.org,
-	shakeel.butt@linux.dev, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm/swap_state: remove unnecessary lru_add_drain() from
- readahead
-Message-ID: <aimWKLoE_BBFkbE6@cmpxchg.org>
-References: <20260608143242.2869392-1-usama.arif@linux.dev>
+        d=1e100.net; s=20251104; t=1781112163; x=1781716963;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AQP4ydNn8mcSRgfuE7UM+2i3I7RwByF2VRfClw8B7tA=;
+        b=Wm50EREBs3sqIg/LFE67Kcx845EJcdfkPCebowFOJuhmWdeFSfAZm1fNN+CljyzvqO
+         gLzmynJwSy3w21ummj1aut1dWm2njRXRJiJ/gQQHntlTvxsi0DSmbgDYcoTDaWGrBSW0
+         QbKV6t3w9lXi0b0OEUP9T62Av3MTA3+S4/xOn1pqTFzIuoD5484JD165fdNWxyuAgXtV
+         RBhRzqkloVV6JPHdYvFBFaZzSpOkfAOA1qfwGBhgI9hL/yD0Igv64uAJk0IxZOvyZkak
+         m+ryxcjHg3U7qjDUHRSXoUikLb9AD3UOIsSUio7Qg9dMguibF9k4R+1Fow3VzkzhyQwK
+         EzXg==
+X-Forwarded-Encrypted: i=1; AFNElJ+U9pHcKeF84OUHbzGCzRZPPNCf1+YjyMD0EfoBinhudvB4r+8voEjOgMUczdzclfwQxltiN/Lxyg==@kvack.org
+X-Gm-Message-State: AOJu0Yxy6JnCbxe4q4OhiMPUQ3khhTQ6fgI2uCXNfK5ZxVYy3JYF4CVS
+	1tzdJSoS23d7hWerQZ7RGaeon3wTSbdNPSr+YFPuOjFP/i+JKgM1Ruz0VDHZMHlxfDyWldO2ui9
+	z7P1AE1ay3geVRJ+Sli4zllPABU+6Lw79MQ9JV1mDlg==
+X-Gm-Gg: Acq92OF61l2f8DJIC5YLpR3/kXpw99G2oA/7LovNGhKRv2kbzKqGgWY79UpRqO/qfZf
+	fPF1LrpxL+m2gSUV8qyNKkJI2BXcA3Od9Vp1px6vKquiESAy/SzZ3KZe+Vg6qPIVK25FDVjuG8s
+	zDEhwGUxV+As88VvvkzJTD5lgG0s7tFAft/4ShvS7CnwzkJnTFh5QWr6rFnzsbSFsH4ozVcB/KB
+	QZE40PBmom2JsbGRJM4mGtc9FkBGKM4OBLr3WSn+kCb/3JTNVLyY7gJfdB9XhVEDec8m7JBWp2k
+	+PehoHzAlzvIHwqV
+X-Received: by 2002:a05:6512:3ca7:b0:5ad:abf:1d35 with SMTP id
+ 2adb3069b0e04-5ad0abf1fbfmr2096278e87.32.1781112163270; Wed, 10 Jun 2026
+ 10:22:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608143242.2869392-1-usama.arif@linux.dev>
-X-Rspamd-Queue-Id: 017AB20011
-X-Stat-Signature: kx5pfzhgco667i3yze3p6xdiqonhcf8h
+References: <20260609004814.1240586.6294d614ac80.gup-test-range-end-wrap@trailofbits.com>
+ <20260609182705.7b3a46e7c4661bd55f8561eb@linux-foundation.org>
+In-Reply-To: <20260609182705.7b3a46e7c4661bd55f8561eb@linux-foundation.org>
+From: Samuel Moelius <sam.moelius@trailofbits.com>
+Date: Wed, 10 Jun 2026 13:22:32 -0400
+X-Gm-Features: AVVi8Ccl1n62_SATde1PSfwJYYkyV6A1vR5zk2jBboWmoHUQBMvas5WuWQhS1to
+Message-ID: <CAE+C+DZWRsKF8m5d-N-vkyp6rEw_T=ccWpUdqZVVYZ=oNfCvnA@mail.gmail.com>
+Subject: Re: [PATCH] mm/gup_test: reject wrapped user ranges
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, 
+	"open list:MEMORY MANAGEMENT - GUP (GET USER PAGES)" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 35489A000B
+X-Stat-Signature: ncthmgkynzfqffd5tujdyo97ohug5e6d
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781110314-485697
-X-HE-Meta: U2FsdGVkX1+VDCH2PiQEr7CeDn+EMALgh7Uv9w90Ig71TdYFvxBll+WBUb8i49yJJjI10zgyQeYbwOt5zb/Sh+JM5s9g651rOwJIiCxYyPP9j+hywknGMTTKU1vNF9tp7zP3tQwE047uJttlXe5vXxGaMX2HbEYke5fdNu14wvfse1ztvIRK7wlzsHoyP+/xQjcVGP9BjCqGRHafQfI++Spewhe/1LVRmZalhsw96erzJIBe6GN7cgLDsmbe3bH1rVm+inhPWMugPymtneY5KdLapnCQ3HtbjHEVleULU1ZoVHMpHC7igJ3+G4O+ozXYayl32KkrCHyNXLvXEHpDCV8p1o4zvkDYkBsCJJ8G0R4GE33oHpI7UYuoaUn+V7ZdYlNTqj9ud6ss6Sp4OTW//cddVVFJI0PEe3jRdFgMJCuIXa3ehOD98bJSf34Sa3H1CI6NqRwBkHJ9hNTBhXyQQnXVL94m5D1lbRDHoGMk9t8tyuCoupxwrvuepSJ2PblVnDZOKtVLcmZornh0P2W+Tbth9i0uhfQPq5hm/n5tP2EtPkoWEmoKYvInKLSdxE3JEboerNqTVtBCDYQIduK9ByUOkBlumrwaKMDQopliHKXJDovj75Udknz0KQYvGmJM7pkNVPTKzg0h56o96GeTjEg+z/a/skdcDuSW/+9qx5xiPDg2704MZcF+sTeKeh8jj7CCgb7mt2jmZnIJSFh+iWYYgR8KjNsyx260A/BZGGwFWuxoxKcEWzoDBntJleAosbTqbc2hljWUIhGTsezlMXFwzF4N3sPj/BYBSAI076vRBI7PJQcSzgBvaic4IqQOWaQZkZWQeQhxnswaSwBQQmAQmVWAiyoT+Aexnb+MkhkK1teP5flLLEWCLOlXkwUuNLNH2PwXvzIob7vGPpsMgFRq1u/3bsc1T2c4iDNz24AULpUJFf1hiInOT73eG/ZGN/gjjFC4WBdqD/G1sUl
- dyLq0WNl
- yCp27e1RvgbRHR5Wyw2TKDdUIpqQntfvaVGq7VYXYpdXCPbk7g83er9TvRefR3CniyQ5f5liUpV8vcLwxeK5+cOj0v+nT6AcmEZY/lMDc8/mGuFwEVqdDgaOSQ7ZsiwM9G8fvdCAlHPUGwzHnG1O3D/CisobA0IOiFjsA5ZHQYuP0esvGDGT09FumhoY+RwE5UmlSl7hoWuj3TLltARchTfCzLYJhSwAC3wsqnz4iwlYWutUW2tf/INodMnr8i4VwwUHJvjRLh4vSuaIOaSCCgwc0/mGbSvB0jIkxc1qAKWPv2e5LDmFc0vy4wgwDRBmAJPPa/ku9jECZyu0rJyGMjIEiUpvzGxa1PwQvwaYKxz0yIPEFdDpe9+he19S3hL98AiaBxl5/W9AkjYF4XByG0Wr1rOTy+mRcaQD2uA/Ur+w+PLWIBdwTK09FCZc064By/kt+rBiPUh8jGw8U/KtqIIczA9m9CNSBthrXLPnzV6J89gxCOI1zXdv8WWMUbxqEyQYQnsngTcI9I1k29CJcM9C7eKeJgzkeKP5L8yfEAgz+t/jtKkyTRP6ccQ==
+X-HE-Tag: 1781112164-837519
+X-HE-Meta: U2FsdGVkX1/b4DL7+X95O1KLneHNoJtqJ3HkLAo3hoy/hUZWqi2QNRyly+E+mvvvA+S33e/7dtK8ntWEFiOe17Au9pgAIEJxboXHo4EPbuP2snM/uLW+D6bJBP1QMocJ2Au6sfqJvl30mL7RRYm32lV92m5Z/KW9s3okuNsEIfyc4JT5Pvhcv9Oxx/tPQ4XCGc4U/W6GMxZWKEvAaNMZLmyv7QU8Kv1iJVCI+xR/p6tSxjAPJML1gbsn379v+RtP/oasCo0mGzUlPDDu9AttMP2fovtnsPj5sBHP0hw7JzhVXw0AWTaEVnaw2s9mslnHR3KmHI8/rMt/p+VOdq/7mtwZkszdBQh4/L78rORS3gpHHPKvGsYrwgswmAY2LxDKlI0nwSthNzjaNIq5kp1DshywWh/ztRPSZsqqWtlt3HR3H3rTjuIsDIO8J61kWjnfhcgkA1mckJYJcaceivrOElAUBVw5x1IkHPTmE4gJEMhkYxBHgNHxORxNHIQhMXvEBmC0yuBqVPeXhRBOFgl8AN4creIofNlOOM+Wf4uXCfE/pCOV596s4s3TZVSxwAwjBD5C6yXOf+7Pmt63n3pfTVRleJsoETNtkTjh832+FOeXwFmFd2XA6z0DS7fCeG1qUSvZGtaZYK/wNCwCl/9yeiieTwvqGCeMjcDJFJyRBSTkiLfKm4v8YDMP/206njp7udVKmjSL7wQgAy9doDLLEQtJtp9vE8m/TlPj75Kyil4FRnZqUt13+fZ5Kn5YSJ74wq1FPv9xsa6RTYTwQrDxs1Do2OG3BQ6ZAIesacEejDh2Ga/fQv+GYw0huqAeUQcMohogQQW7I6o+BPV88VcN0hY14MH8CZ75MPTk4cVax47Kc6BBXGcsemqjHrGsZrx/GcuZ/WLv9vfNYWJg6SlRnCcsCncKcQgQlPTl7no/3U977nMUyPq3FQsYgUBP4CHLbxdJKyPvFA/etLwZmo6
+ Y3V3Ybf/
+ BHx8pH610casPHDwO8+UbmhZBOLlckIZ6exQjxb2ZWayjv5vtkVoW32YmwUkRwms2XM2KMSQ+L/HDr3+YlmGN5ggB9vhiqvhWrOpDKVAAdlirZ0fUuy/u5jgVF9A+V+DHBEBQ66AUQGL4PViHK/rEUbOq5rEXhW6PJJ8KXOcdBc4PFvae6XeqQHGv6d62sZ/hl9cYcuU2NZDnUEdaotfAJYwpXehqh1xjRGE/s9AgyaZfygfsvBhyHelumI4LYLPxmmrvGLml/4DF31DeZTxWnoeWkomutLbqTEzvViiU/GKG88DixAnz1uD6pEf4mtdoYCoDtlqFrKS55i8RnVSAaJxAyuqxHJtrWnS2+pwqKZwvaC1Xtiy/h4wb/anwnqvyudZny5xLGjBbzGJkJaJAZPeMBqs+f9S7MOnIks8Ejjgn3iljTwJYqltz76mjVODvsgOFdk70EuTrvWVaOFhsCaeoKOEI6JYYCgHX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,46 +140,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 07:32:42AM -0700, Usama Arif wrote:
-> swap_cluster_readahead() and swap_vma_readahead() end the readahead
-> loop with an explicit lru_add_drain() call. That drain is a leftover
-> from 2.6.12 era code and serves no functional purpose for the callers:
-> 
-> - do_swap_page() ignores LRU residency for the readahead folios;
->   it only needs the target folio it called swapin_readahead() for,
->   and if the write-fault path needs the target folio on the LRU to count
->   references accurately, it runs its own lru_add_drain() at the
->   wp_can_reuse_anon_folio() and do_swap_page() sites.
-> 
-> - shmem_swapin_cluster() immediately locks the  returned folio, waits
->   for writeback, then operates on it - LRU residency of either the target
->   or the readahead folios is irrelevant.
-> 
-> - try_to_unuse() likewise locks the folio and calls unuse_pte() without
->   depending on LRU presence.
-> 
-> Folios newly added to the swap cache by the readahead loop sit in
-> the per-CPU LRU folio_batch and will be drained naturally as the
-> batch fills (FOLIO_BATCH_SIZE),by the next reclaim/compaction
-> lru_add_drain_all() and so on.  The unconditional drain only
-> synchronously flushes a partial batch and forces contention on
-> lruvec_lock.
-> 
-> On a 176-CPU production host running a memory-pressured workload, this
-> path was observed to call folio_batch_move_lru() from
-> swap_cluster_readahead() ~28K/min, a very large source of LRU lock
-> traffic.
-> 
-> This is a direct continuation of the cleanup started in commit
-> 1aa43598c03b ("mm: remove unnecessary calls to lru_add_drain") which
-> removed the equivalent drain from free_pages_and_swap_cache() with
-> the same rationale. A detailed reasoning for this is present in [1].
-> 
-> Remove both drains.
-> 
-> [1] https://lore.kernel.org/all/dca2824e8e88e826c6b260a831d79089b5b9c79d.camel@surriel.com/T/#u
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Tue, Jun 9, 2026 at 9:27=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Tue,  9 Jun 2026 00:48:15 +0000 Samuel Moelius <sam.moelius@trailofbit=
+s.com> wrote:
+>
+> > gup_test accepts an address and size from the debugfs ioctl and
+> > repeatedly compares against addr + size. If that addition wraps, the
+> > loop can be skipped and the ioctl returns success with size rewritten t=
+o
+> > zero.
+> >
+> > Compute the end address once with overflow checking and use that checke=
+d
+> > end for the loop bounds.
+> >
+>
+> Looks sane, thanks.
+>
+> > --- a/mm/gup_test.c
+> > +++ b/mm/gup_test.c
+> > @@ -105,11 +105,15 @@ static int __gup_test_ioctl(unsigned int cmd,
+> >       unsigned long i, nr_pages, addr, next;
+> >       long nr;
+> >       struct page **pages;
+> > +     unsigned long end;
+> >       int ret =3D 0;
+> >       bool needs_mmap_lock =3D
+> >               cmd !=3D GUP_FAST_BENCHMARK && cmd !=3D PIN_FAST_BENCHMAR=
+K;
+> >
+> > -     if (gup->size > ULONG_MAX)
+> > +     if (gup->addr > ULONG_MAX || gup->size > ULONG_MAX)
+> > +             return -EINVAL;
+> > +     if (check_add_overflow((unsigned long)gup->addr,
+> > +                            (unsigned long)gup->size, &end))
+>
+> I wonder why those fields were made __u64 instead of ulong.
+>
+> >               return -EINVAL;
+> >
+> >       nr_pages =3D gup->size / PAGE_SIZE;
+> > @@ -125,13 +129,13 @@ static int __gup_test_ioctl(unsigned int cmd,
+> >       i =3D 0;
+> >       nr =3D gup->nr_pages_per_call;
+> >       start_time =3D ktime_get();
+> > -     for (addr =3D gup->addr; addr < gup->addr + gup->size; addr =3D n=
+ext) {
+> > +     for (addr =3D gup->addr; addr < end; addr =3D next) {
+> >               if (nr !=3D gup->nr_pages_per_call)
+> >                       break;
+> >
+> >               next =3D addr + nr * PAGE_SIZE;
+>
+> Sashiko AI review identified a pre-existing possible overflow here on
+> 32-bit machines.
+>
+> https://sashiko.dev/#/patchset/20260609004814.1240586.6294d614ac80.gup-te=
+st-range-end-wrap@trailofbits.com
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Does the __u64 or Sashiko AI point require action from me?
 
