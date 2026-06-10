@@ -4,137 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40592CD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 10:36:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3401DCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 10:42:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 850BA6B0093; Wed, 10 Jun 2026 06:36:48 -0400 (EDT)
+	id 71F3F6B0088; Wed, 10 Jun 2026 06:42:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D98C6B009B; Wed, 10 Jun 2026 06:36:48 -0400 (EDT)
+	id 6F7076B00A1; Wed, 10 Jun 2026 06:42:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A1916B009F; Wed, 10 Jun 2026 06:36:48 -0400 (EDT)
+	id 60D226B00A2; Wed, 10 Jun 2026 06:42:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B3F6B0093
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:36:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1FB31652D6
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:36:47 +0000 (UTC)
-X-FDA: 84863649654.01.29B521C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 28D1A4000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:36:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZ6Qtz5g;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 507B06B0088
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:42:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F22E4C2E7D
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:42:03 +0000 (UTC)
+X-FDA: 84863662926.08.CC9421E
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0B118A0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:42:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sfF61J0j;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781088122;
+	b=IY7G6pW/w6eeWoWzOsnGBc0OVox5DxT0Seeg9Gf7Oksy8q26R31j70+xjZ+cGopVa8VLmT
+	rLG+2+GpV5c1nYJNwxFvO5+ZYiLntdsVOxYAAjbYxeX0IssCOwtiYF/B1ntiRXfMG+6twN
+	nMBSpSYH35zQx/X11mbhaUt54V76Pzk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=sfF61J0j;
+	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781087806;
+	s=arc-20220608; t=1781088122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CQTUqMitfqK5SwCaGpDybdGAV/jF7E+YCtgF5UZzAMY=;
-	b=IVI0GL2FuVJupAtZ9hCnQMrvKnmyJOTpS4XpWZgDqDRgechEatBKChCbabJDjp6L49rKMQ
-	9u9n5upzbaiHg3bMCgxa/VCHCsfX/I/JsfEkF/E+uaIZ3tBakVfWlYjU9F+BQmd7rGpXw9
-	bj54KJaBrpT1wU77CTvRaETNOETNEHA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZ6Qtz5g;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781087806;
-	b=5NkU6RDDo+wGS21KLYjLjCo9ndMIo3kgQCM1+eydQ1XX0Ek5dBWw3MVZQ6KmFCInHSrQ6b
-	bnAouiaJA3cvVV56RQOjm7XFnX1V4Mt1LJE6CW8MNK+fyqsiJCduhcSBB9EbGGbz2Ld/C5
-	F6AB9DuEYdaq4qyXWi0urEp14bdcLDE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19B9A44153;
-	Wed, 10 Jun 2026 10:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1821F00898;
-	Wed, 10 Jun 2026 10:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781087805;
-	bh=CQTUqMitfqK5SwCaGpDybdGAV/jF7E+YCtgF5UZzAMY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EZ6Qtz5gdMn6joD4fDvudVD1fDvvX0o+8W89oZW7JfLsZpzbLBCwlOA8Voq9iO/kr
-	 aA14LfnEBNTbSyb1xHTkXJqMoGDF22+Bf9h1BARo8/KUGW8pA1nI6GHcXGjCV4yXhF
-	 YFcBaCbIEYsFWokpBZyTpNxNofl4tKiy5is7YfjRBsgsycoY7oU9oFWX6nbh0KvZwE
-	 mikZKysht9uP2cvN0kQd0mKgq7MUe9MaMTVbTq1bIWtHpe5Ohd/fFqdhAr+pXWVkKA
-	 jk+otMGHmjLlbM3VfnjBA7Kd1vMIMNFApuCKn4FVask8SpRTVlp8sRns6tfAKlXWiu
-	 7mkbtuQaCXBkw==
-Message-ID: <ba9f23b5-6133-4bf2-a71d-4449d53912c5@kernel.org>
-Date: Wed, 10 Jun 2026 12:36:39 +0200
+	bh=pgx1xgYrFcSjqIUoyhFqGxYUzhtvYzBpQalCqkbKQaU=;
+	b=1y1EvZULf3PPjthj/2w5vLc7kOOef0hIlr6wF1frJBsgEzqBv7fZ1UfyaSg/PpsxF5J5yo
+	fZw774LIGtzsdd/fTbMMIL7+k7kJUPBtw19bmSnw2UQq02IxVxjm/xaC55G0yHV+IjWPuh
+	ED/G0mOAgeEETXRSa0l8y+MLYVLH3U0=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8ce9ddeddefso71210716d6.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 03:42:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781088121; x=1781692921; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pgx1xgYrFcSjqIUoyhFqGxYUzhtvYzBpQalCqkbKQaU=;
+        b=sfF61J0jF50T7oNTg0oodLrN4zxXPJC7Sf3Td8y/ZhYLES02rR7VCTOWlXfT1O+ewr
+         UxLPdfmVmOYiB7Mv4NB3fNO3ISZAJ1xXuzW81x/kSp6WJMjGBPJe6WhTNLgD0WrBwb0C
+         9sJSEC3BUKJOd80MUijIp7xnTO6Csm1vUDJOlUHkfJwS1bx13EJ8nCw3vZYDFosAwInA
+         fvFqnQCiaN8R0hJ8BvSEzjQXIHpxdq9qZF30+c1vM0WNlQ3wVU2fhBxDZpaBVRSmFIAE
+         ovFrv4OMQwNECyI4WGZGChJcEj9dMB1JmC1MYGS4RCxAEuACPIF+vB59wPBw+iTnvtFU
+         QZWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781088121; x=1781692921;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pgx1xgYrFcSjqIUoyhFqGxYUzhtvYzBpQalCqkbKQaU=;
+        b=IYY6QyeQRq+VXLt33LlxTj/qns/tdo4m79XmZrwonUGnYRNruUtx0DipEBbr/Jpj8f
+         1VF4IRvxFNYNKD5c0osbHtns7qFOu2MKvIKBR+cDY3tUPK5rRXcY+udwiTu1tHV9W9Wa
+         jDEr3YOTrpYILtQlegUDr+ahLVrGjwHl/gTfskRn6qizJ8kzO8EkufM5YQQszg/e86/k
+         /R0COa07Qmrs1lHCuKQEN01B2nKKhG4UODuzXRBNROke+efIByNXgtfuv4k3raXb7lhu
+         0ZRhpOg3+ohFAr9KS2+uJglN0N013d1s1d3dg79b0nVGiDbSEDCXFNOl8cG9Ms0W7tRw
+         hJvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9n8ql5fKoL0fXWrTBddMoGDRUEFgAm4KCw2HcPmYfzvIPOP/3R5w1VDIMzw40iTFwM7OEyPYVgtg==@kvack.org
+X-Gm-Message-State: AOJu0YzsQuy/ZCEpjx+D8uVxNK1kaMoBXxKpu3/R28a0sqZ2z18QTL7O
+	PPTwAcdfro0v4koOuyLrbmGQ865Kf4eOpX2d0POhG7cfEjfaLkI+ep45xa8eq70owCY=
+X-Gm-Gg: Acq92OF714qsXD2adLgQ15gIw1ipvZjvimdgw5JU3qYiEaUG0MljC0IjgpNopbivhBu
+	qkQC89ltMni/Wlxbj0OhpN7uWOw/vbIxm5GWQKhkNndum6d14BnweF8uebMliQzaSBLNs6eRj0P
+	UpKPPTlPN3B4BO90YF1Qp4lf5exiLa4seag3+L0HLBbBvsDtQt/Q6R7eSiFs2YAuhFx/a8YkJEz
+	M3TV3/JxYwbiIQqDkqjPwGMl0KUn7qzupdG6XSuaEpUrnoVy137jr5zKoRTX/xq+JDOJO5GBEs7
+	SSMtVhsY0OSdGYhs+fUhAud+XhuwjEeidm2bYTZnwESyaRL52AkCORmYsvLdZMWZ2AxHovGsEL5
+	b1QkzjECkZtqkz1OVR3m5p1lAeOyphrIke1X0GOkYZmypq8gVe/4SrKC/+IzPrhEpToR5NtbL4G
+	cymL0e9eQuo0POpHzDphw4tj5+fkTXD+CnQ5T+u9Zn3R5T1p0lys1i/P5Dk4kGZeWKKysvHNqFI
+	K2TeoOy5YnqQZ04mQ==
+X-Received: by 2002:a05:6214:c68:b0:8b5:6654:7556 with SMTP id 6a1803df08f44-8cee63e377emr394580386d6.42.1781088120984;
+        Wed, 10 Jun 2026 03:42:00 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd06e4d6sm231860136d6.36.2026.06.10.03.41.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 03:41:59 -0700 (PDT)
+Date: Wed, 10 Jun 2026 06:41:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	damon@lists.linux.dev, kernel-team@meta.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <ag6XyvxR-NU5rGn-@parvat>
+ <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
+ <ah47NNhuiClgGCdn@parvat>
+ <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
+ <ah-0CyZurn5D1ezY@parvat>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 01/15] mm/slab: always zero only requested size on
- alloc
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org>
- <20260609-slab_alloc_flags-v1-1-2bf4a4b9b526@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260609-slab_alloc_flags-v1-1-2bf4a4b9b526@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 28D1A4000A
-X-Stat-Signature: upc3i41s9c8yqn9kcczra9agmaefwfra
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah-0CyZurn5D1ezY@parvat>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0B118A0005
 X-Rspam-User: 
-X-HE-Tag: 1781087806-159630
-X-HE-Meta: U2FsdGVkX1/bl0WB8IIsgU/0HxVHLwcZDN5OStRKu/gJe3Ds0iLJCj52UCZA7NryJYdo+toRn05u+GiGc9H3iMo9Yn8I4/TEzdgKYrMJ5hpWKMCzOF3ZENfi8Lov+p6xJr5F8DR0UMIPAwkh4S9eViHC+0RwheQwUx4pU2kfIisSczMiAyzRMtHILZrMZsIkYlp07EblKe1PcasTfXw4mFM15HlTVPe67qV41AMV7Y66ml3bL9SHhB8tU/7k85UsfD6dHkgOk/sFM6ED+phpkHUJY/sNmc12VMPKVQResRnJ4A3BwPLlAoG3akEWhhMEMMWSAA5cPNQ1Zfj60ebgBoM0/5ZhlXXjmhQ4vVkue/Mb8u1zjhphQmYXTPIdZ7/rpK6SfnrYLG0kuX9z6a9DMh6q5/cBshbU1ggQqLDJ5wwMz9/NyxrEvOAqfzo7jT0mujxEgIWtD0NGjW3Bb6Lj4W4huQIGpHqhdS4iAVt3ySwD1Ckq/5Xjriwc21HCTTLiJkDQl+WbO/3Xb41IU27wiN2I/lX7I+ghVSgSL9J/rxc8QMlnlMBlGWRuCtRGoLzmJT+VJpxAMrGwDISHtGvNxJp7DF8pwyWKR8Css5IwfNTrZexFcmbksoaTtE6lsY8Xl4+osavEJOix8NPbWS1GAV6SdijKL7m2bauhLp4/vKarrFej3Rxs8ufx8kPfhMLIsTUJn/H1PtKvF0/zAN7UUc9aY7/d/uYS0PelxxB3x/dwKs8I6GMJ7SnT5gRXGRsT0lPtvBgXrbvIwO+7LCPMnOkKkfAfPZBDm++ms7LpVXNMQA/aE/Dzrp8xzGOnnLloEPlqtzWGIvUEe+VT5tGjrdtWzifRF3KF23qkHTmu5y1LB9W3w27TpKIvurChOABzMoitFViNmBPA9ApuoObrJ8ybBaaOpMzEsiLJURASbnXmp4mrKxX6lovOoH0Or2v+0ZLbdFhX5WuI5uVjK+x
- WbjQdaS1
- qlr3qo3A6BM3v6wnEs0DXmVxG6+BiUT82pesB/ug2JPs3WqsCEF1AnHSfrXhExhQW5lLqYJtEBy3/asqdzkJB2tHrhiSi0JC0CUkI1WRoblsr2ymM1nnjOVQi3eZKYRi8FQC0ZMIWjjYuCdKNK9kilTj0ibSuR/iUuAQhd0n0LlhEe8vd/6Cm5QZNfrfD8uMtTQ4giKrt2tf4YfS+pZIjYsbDyRQ2lo2y4mYjrQKfomg3uUzCPRIiqSfgxOpiHeMtsEj26POnFUd7DgvLeb8ltwLnMkkXTpJMiNQP
+X-Stat-Signature: hdwg75d9puptaui4n37ri1i7qutx5msi
+X-HE-Tag: 1781088121-24168
+X-HE-Meta: U2FsdGVkX1/OaP6sRUJ353potUkByZGQ9QM3TqTMspsY/PR51PMhLP3S21y3emsHFfLjPbt/LbElWkmXMF94jOsP2v1b//A4wjEjsVsHdw0GGuiDPkiQ2vIif/KQNe5tghurX7CVWQEKV17bUdTkko8Iln9LrI1u6g0QfhaOj8o0KwEPujR/AvKe/71+/oE53ZVTZWydMkDwJxDcip13Sam4hdMnQqo15P7Anw8E+I35W3/6khNQuchdwvCPI27RWDP2/t1fat6wIobFqbCOVgTF/29TqVeziXuwbQ7x4Da3W9cw3D26Bzcm/4h/ZPc3W44Iep/h36eLhUb97jRQ9Rpt29nq5hypuACdXXzCVSbCCF/6bmFFmXX6NTnNb98MhpG/smOq64H1xen8aJ8m1dA/UUonWkOaN8WBBu2Tyr0jur1bexVTW/ttgogOs/ggcPmVWKKjbG545SM1aGAYp5KavnfPDdLe5oZfIA8XAG/L6wvCg/quMzAjgLJKL6/K8qUQ2vVDOjjBYBt+uWfsiLDJI4I3CbYuBO/NKwNQfrlmKNe8LPstBKLxI7GEOV9Sa/ElEa9hGPBhFN2FaFj3aJZt8fVtl/wjVocdkYM5DJuR3ffxYHb0bbPtsytxwUurp88GNCUYwjwatwRatlEPcIuE73QfhK9ddj9f2Wobp2n5gS0OQK0xRnot2n+MAuh1bXRFnhvpRbi4FH+y6CpmDbWO0oE7AZPezfbB8rTJAnEW9+S3tdY2FFIffzjbyxe87lstodM4WkOp00zlmQ/rgTBUDMomhi7FAwdnKZh2qwmEHYDTdA4ElNDQHoDN4ia4uZYgqBzUeU6C7W2YNyt/981iJj8qkkLBAWr6zTjbaH7WMqAR8VfX8VWmCdI46nODAN+ztmlUhaP/QCda8yy0tYACB76hvxcRU1Qw5IXsc8SgtmIuyv0HJt7pY+5c6TBSC5TThSGcCaV5jMQBVkh
+ mVg+dxYz
+ BzQRF60tQFbni6kDWKB9LE0PADJDi7hlSwr94R+ZLXZnTCpVTvxph3Cgbbfa4mTYZaehopULPVY73h2pon4sG6aPd/CgleuAuPbwOG4Kv8sMjRCq2k/O6S4B8hgvGcK9bHWDZsd3LaUI7JCrZBfwURkx7KgSh7ZURtTd/aygfXlCYMDKhlWrzmhBUi344FNagJ1/3EXLvns1AXqan0D1YfgxTJrz6nJeKNcNUVCg1jtqZUuzHg/NJd3F5WXepieifBPXEmF9RtdC1wtU0xNZhwLQhHWtkxEWiPqHAljCWArDqukoYH40sbmp9sC+I4XrSNpJJ73IEoyvwdzhOgv1kpUyVquK/uJ2L3Yg0ZHLsGFcCSqOE5pvur5vy3gsbCARo5un7YLSbKSbPBI1WdK9L+biR9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,59 +149,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/9/26 11:17, Vlastimil Babka (SUSE) wrote:
-> When zeroing on alloc is requested (by __GFP_ZERO or the init_on_alloc
-> parameter), we have been trying to zero the whole kmalloc bucket size
-> and not just requested size, if possible.
+On Wed, Jun 03, 2026 at 03:00:01PM +1000, Balbir Singh wrote:
+> > 
+> >    __GFP_THISNODE cannot be overloaded to do anything useful here.
 > 
-> This probably comes from the past where ksize() could be used to
-> discover the bucket size and use it opportunistically beyond the
-> requested size. This is now forbidden and enabling debugging such as
-> KASAN or slab's red zoning would catch this misuse. Therefore, nobody
-> can be relying on __GFP_ZERO zeroing beyond requested size.
+> Let me clarify, I meant to say, let's use a nodemask for allocation
+> and __GFP_THISNODE gets us to the node we desire, if that is the only
+> node. My earlier comment might not have been clear.
+> 
 
-Well, Sashiko says I'm wrong because krealloc() might be used later and then
-the initially unused part might become used and we won't clear it because we
-don't (unless slab debugging is enabled) know the original requested size
-anymore. So we have to keep zeroing the full s->object_size in the cases we
-currently do that.
+I've been tested an stripped back patch set where I drop all FALLBACK
+entries for private nodes (including for itself) and only keep the
+NOFALLBACK entry for private nodes.
 
-> Theoretically it might still improve hardening in case of unintended
-> accesses beond requested size accessing some sensitive data from a
-> previous allocation. But then, init_on_free is probably used also for
-> hardening and would have cleared that.
-> 
-> So the usefullness of zeroing beyond requested size is practically none
-> nowadays. The disadvantages for doing it are:
-> 
-> - Interaction with KFENCE, which perfoms the zeroing on its own because
->   it has its own redzone beyond requested size. As a consequence
->   slab_post_alloc_hook() has an 'init' parameter which has to be
->   evaluated in all callers (via slab_want_init_on_alloc()).
-> 
->   For kfence allocations in slab_alloc_node() this evaluation is subtly
->   skipped over in order to do the right thing. Other callers (i.e.
->   kmem_cache_alloc_bulk_noprof()) evaluate it unconditionally even if
->   they do end up with a kfence allocation. This is only subtly not a
->   problem, as those are not kmalloc allocations and are using
->   s->object_size as requested size, so it doesn't interfere with kfence's
->   redzone. There's just a unnecessary double zeroing (in both kfence and
->   slab_post_alloc_hook()), but it's all very fragile and contradicts the
->   comment in kfence_guarded_alloc().
-> 
-> - Interaction with slab's redzoning where we have to limit the zeroing
->   to requested size.
-> 
-> We can make the code much more simple by always zeroing only up to the
-> requested size. Move slab_want_init_on_alloc() call to
-> slab_post_alloc_hook(), removing the parameter. Remove the red zone
-> handling.
-> 
-> For kfence's zeroing code, update the comment. We could remove it
-> completely, but due to possible interactions with KASAN, there are
-> configurations where neither slab or KASAN would zero the object,
-> so simply do it in kfence. At worst the zeroing will happen twice, but
-> kfence allocations are rare by design so the cost is negligible.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+This effectively isolates the nodes for any allocation without
+__GFP_THISNODE.
+
+This also precludes these nodes from ever using non-mbind mempolicies,
+which I think is a completely reasonable compromise and something I was
+already expecting we would do.
+
+Notably: slub.c injects __GFP_THISNODE internally on behalf of kmalloc,
+which causes spillage into private nodes because slub allows private
+nodes in its mask.  I think this is fixable.
+
+I have to inspect some other __GFP_THISNODE users (hugetlb, some arch
+code, etc), but it seems like fully dropping the FALLBACK entries and
+requiring __GFP_THISNODE might be sufficient.
+
+~Gregory
 
