@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1932ECD8CAD
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 00:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AEECD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 00:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 533EF6B00AA; Tue,  9 Jun 2026 20:28:59 -0400 (EDT)
+	id B4F5B6B00AB; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50B966B00AB; Tue,  9 Jun 2026 20:28:59 -0400 (EDT)
+	id B26FE6B00AD; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 448126B00AC; Tue,  9 Jun 2026 20:28:59 -0400 (EDT)
+	id A3CC36B00AE; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 337426B00AA
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:28:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C1173120834
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:28:58 +0000 (UTC)
-X-FDA: 84862117956.24.217FDE6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2994D140009
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:28:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7FsShf2;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 93D3B6B00AB
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 420731C3161
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:29:44 +0000 (UTC)
+X-FDA: 84862119888.08.277F0D6
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 483051C0008
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:29:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k2Ykltry;
+	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781051337;
+	s=arc-20220608; t=1781051382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4E4UY4FfWUNC2nK0Dr4oLj0xnMk5zECoJncsDnalNtw=;
-	b=COQZK6b3EEgLfCmPR993pQyQ6MAeC0SitDC06mt5KpBYQetWUe+XTySFlX/B606UiO2lMY
-	jdJZjHBpeb0ESvMJXOH+15Uo+YhCvNnnnv9cnV4kfNHPpLjY9CDQ8HySh6MTbdflroRKKM
-	qyk/oY6h4kBCcc+lBuO/ufUOWZYGKBU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781051337;
-	b=o15VCuS0L2Sjw2SouM9lC2eBS/nQOOJF0C9yCvXx6jKi2b0FESZt5GR37yfykorA/jubVU
-	N0pAbcagkhX3xGcwE/aVu1YaUNM0+EaZ+Vjb9CjpOgvXouyeb0dauWDt7Ynlv8BpMAZac/
-	E/wQmMMjY1HaTs3xAmGIQuDunKzAtV0=
+	 in-reply-to:references:dkim-signature;
+	bh=n6nRitLA5dXPldaPWFJdkV5WToaQRP9IZnc/9WgQeWE=;
+	b=lX70zsx6HCEbSCJwyyMSmxS69qvYkCTGYRg6O8nvool5ta+gJFcSPqZ1jTXL8lno+6dweE
+	2TV34IaTFMNv7Cphhxt9vgWqML/Y543QupSodMPe+AkJN4b3QSwUzIzAkWcgJaHvASfmF2
+	HkMF2gOwzE5CV9xvCJwO5wGt5UnxEjg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7FsShf2;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 995836024D;
-	Wed, 10 Jun 2026 00:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438871F00893;
-	Wed, 10 Jun 2026 00:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781051336;
-	bh=4E4UY4FfWUNC2nK0Dr4oLj0xnMk5zECoJncsDnalNtw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j7FsShf2j4vEawnYKBXki4gjQLNiBbfrl7pW8mNu/dcG6VuRCm/D1a/aa6lA/ESkI
-	 QVzgWuKLiwkKfkYaAoXAKTOAmg7eWokZ5sFGN/CFiDYoeQyIxDFa3Y6Erqa1le2QXO
-	 26eVOIETmn77ObZTc/4Ja33Aj8YNZ9EW8fmYhh5Yl7K4ZZGqgh6gc2TRuOYONwJjfZ
-	 eegMU3yx2BvxvHc3uhgr/oXeg9J/Biss+RDdJoAaGip/rkXLLKyUjO0r3CAQBHtTBc
-	 THLxgr/18vwkM6Zo87bbeEa0e7uZ7n8tt8TMDMLQjgBOxz0RY2SlfeaeT99HiljVGG
-	 qPK9cdG2u49AA==
-From: SeongJae Park <sj@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	ranxiaokai627@163.com,
-	linux-mm@kvack.org,
-	ziy@nvidia.com,
-	ljs@kernel.org,
-	dev.jain@arm.com,
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=k2Ykltry;
+	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781051382;
+	b=ETOrXfrs6GVJlfDI+RQ8uOMyR2PNZqYZbjMUV1uICJRUnLMj6oZnCSS54EpEKGoDQGWjo2
+	dCGF9eJZDkZJu5AzA0S9vad8MmxYH4cvkeuvwu6ggbFZMAox4TMZfItSAKhTeSy6iCOiNb
+	qjGuap50my7MQ/tT1Z/SUSoQKWANo+U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781051379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=n6nRitLA5dXPldaPWFJdkV5WToaQRP9IZnc/9WgQeWE=;
+	b=k2YkltryaSxG3AYCOSdIpuXULa3fQ8OUMTERCHllVLhHajWA21GfAKY3mmj4y1OIY0Ll+u
+	slAp1PHk4pDzgon8/6fFc2Z1xLfIvaOIPZ0bj/wjj8VBODn21z+8Aod9n4xk4kZzMLMlFT
+	NhnyfLkdTaiG95Q8ZhTlOO10X6Mih8o=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: linux-mm@kvack.org,
+	willy@infradead.org,
+	shakeel.butt@linux.dev,
+	usama.arif@linux.dev,
 	akpm@linux-foundation.org,
-	baolin.wang@linux.alibaba.com,
+	vbabka@kernel.org,
+	mhocko@suse.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
 	baohua@kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	npache@redhat.com,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	Guangshuo Li <lgs201920130244@gmail.com>
-Subject: Re: [PATCH] mm/huge_memory: fix memory leak when kobject_init_and_add() fails
-Date: Tue,  9 Jun 2026 17:28:45 -0700
-Message-ID: <20260610002846.77541-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b3a6dc63-7701-491a-ad06-ee0be7d23123@linux.dev>
-References: 
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/lruvec: trace LRU add drains
+Date: Tue,  9 Jun 2026 17:29:19 -0700
+Message-ID: <20260610002919.14102-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2994D140009
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 483051C0008
+X-Stat-Signature: fcin4fr4mfghtcdpz4bkd77sagfkj6fs
 X-Rspam-User: 
-X-Stat-Signature: wkxd5xd1xpycm576cre3949z5tuc57qp
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781051337-876317
-X-HE-Meta: U2FsdGVkX1/jisSfSan0Dn0MkDlQWB4Uc+AwwRCgT7pDuxz4ExhAK+6mxA+McZNloXtNA6uj8USjpiB0U1vBTCB5xM76voERgqumMZPG0Q9SKKA97M7/EEDPLmyDrWyE0RsLC4SOWqpIzewc5j239KWJZNuoactHpcdK05HBh9myhTrHJMIao5cnBOP43JzKgHQ4cq3SfSMXziWFwp0JkAJ3voS0ki4r2s0cD8c0oh1FoFcT+fvcskNZJ7VeDrKPxKoaQvOG2VkTDJ1/UcHQdGffnUpy2gyxJbz0Qkr3pkN/L3l/aehY57TfCKGC3mBF1OTQwQeUUnLjzUUarxataCyWShMlTt2SsTla1mmRO6hs7jzdD+LRtmpGyiz2PbtnK2LGcVCNX5AZAfIWdHwxaSQq0I9pQlwzieKh1rDPopSaUO90kNxsDv1Z+FlFOClW/DQm1t8waWPRRYK84ytLndaVp3TjMiCMignIe/4O2NeeR1Qt8nczYt+or75MYHveWxjAu0lGBe78R7uhNmhgQk2sHDd+wkBFiumPmHYU0OT7kZtJQOp80GF2JTYlOXOxigf40cCT+vFrAtskYNc2QWd+S2988ZljJ07Z89XdT0KVDYsrzatsgY/j/M320XXlTLE+MKoKTxhCH0JePoi5/rwSU5aHaoD7w1/JjTaedlWM0L1vRFbyNLEvnWpN/Wupeh3XQT3+vpP1VKLubl+vpi5uWc3eGMoC+2aSMWVeAsxUSbGn8lu9ctnVP5QSIFLSfBF4l2hR/tDB5DsQdq56A3r/GeAbaCJfvwPrIx28bQxGhuFgKPJ75UCq+cF/Ke9Umyb2Vu6W/g6KOlxmJ24rOqKH02r+cZUU5ntCKawCY1+V3xuqwMb84GJmkg0A6/NICCzrdQa5xyfbuxVh5UKAKAsI4/5/r5zajRvvSbxGqcVn5FQH5DyHmi2MT49h7N7AUZOX+Bqu6dGt1Z2ZLGH
- BXng+K83
- eshet65eEQVKQiD2PwVgSRxtrR+lHpYhtkiKaItzDI/6SE5wFCNJtG2dmCNulaFaih6EyhbSsxQ9+oOojcGUXQwufMxr1n6NIjEgOrOSjf2KNgiHyOEPp0jvX8jevo29MJrzjRbUtutSulZuVNjgx7WCHcJmgrK8BHZpcSKGECnF7D/VX2N7CBFu1QVaJvhpmQkGeQfW/ihvDwkW09amsipPKyFMTvNjl8VfyinY85N2bfoGV9mtMor+Mnns9v885BelC2KJKMic1TkmFyjgoJOt4VytqDh4v/cTs4ChM5L/EtxDuu2TVBEDG5v6YVOIpn+hy3OZbUd5/v+Nz3EhkW4iw//wzfPQAks+xjslVwCuc6o3H1HswftOq5WN3/IcomTCV
+X-HE-Tag: 1781051382-742676
+X-HE-Meta: U2FsdGVkX1+KlloEpK8UxZ4UpXqTlLdbCbikzu6Zxx3YsW2HNc4wHxNHvDD2GLJPeG5C701HqAn4UsBRfYeW/iPnjR3CfqpSTu7Yg78WiucZMThitwX/FEbL9n9CpwttP5j1Y03pzY+JjYX97SMH7yEIdKIl2/eBNlrEPeW6b055IehncpkIY4WhPGW2v3Zlk9b4Zypk+IxwWI/F2+vP1Ngn497CZJoe2W4wXbZ/QH1Hagqf9tPYmNPGPIhd/QPYrfyfLqjFvfv+XKmDHKLxh/J/SRNqFamtOB62du+Fe6SSiR8A5Rt/M8es3XGWU9T32q9geNaDzZ0BECreJ7xZY/k2MrQF3jxng/Ff0DWuHGg1GVza3YXH7XrKELHiZIUe6amHyFEyRKXT8xPfIAK5dui5Icki3OrNw51c0KhkCwmpDgNNpu4hDXNlzKu+a3/ZEQFYJZppUidephyHjGWkjDlj9cG66K/XzvhUjbnKbneBeaTlRnwiHMtaqerPdbCEaoAFIoR/TczGnsBoQdj6fn5X6SbICddDEuA3X0o8q5+sic4UowshdPhJ1bXyRnsLKfsyx3q79TmEaC8jdXlGn15R/S9H52Yxcw9X2mb8iH4J5VgW6jCO6czb0iM+OOUnSBxqTsech1Z56gFfk+6O81e4p1u443DXyIT2nOK0ips/wM0hyPuPGSofzyqn/tyjKcAJ+8zEV9pZzXGqGSzDP4yiO9JFdgGgoIFn1DqQrwvyu+gj5OW5A6fny7mSTBmk/ymox3jb9YZ8E/4it8iRa0bUNxR7jwJqpe/C5AZfQZNQUzfQUtWavJs+fXfz8SsMO9sdr280IFr9wSt6bPHsnvvTrEDuOu9sroPYDj1rQlAOTZqg7p3WlAZRKiB8ktrL5CP5ICXaHsYZuW/XlmWLNv/teWNck2BUnhT0ec1UVTz9NNc6FOx9BgGu4a+BvHGNQjKI4sreQ+cz0hU6qGZ
+ gFxUBrPd
+ 5rqvAhAfVeAOpBi8gg96rDpyLl8uiOUQlh7Oucyx33+bykCuEm9MxrpLLhemDZZdaFSJEu48SiHz/cu4uaV61ZZ48RdEzdFk5j8Ot3if8xpK1ZVB5IXefbm3SQY/7NrCZQEU7gb1Iv3UgVHsq6D4DxSUEuLDZ4TMxjz5LQY1zvXJhEd9F4e7x1QMSTemkWBNqaMhqEXN81r2TFYw/X8kluU6iGqMGkjLvNQmF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,66 +103,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Guangshuo
+LRU add batches can be drained before they reach capacity. This can be a
+source of LRU lock contention, but it is not currently possible to
+attribute these drains to callers with existing tracepoints.
 
-On Tue, 9 Jun 2026 22:04:16 +0800 Lance Yang <lance.yang@linux.dev> wrote:
+Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+lru_add batch is drained. This allows tracing to distinguish full drains
+from partial drains and attribute them to the calling stack.
 
-> 
-> 
-> On 2026/6/9 21:19, David Hildenbrand (Arm) wrote:
-> > On 6/9/26 15:12, ranxiaokai627@163.com wrote:
-> >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >>
-> >> As documented in the comments for kobject_init_and_add():
-> >>
-> >> "If this function returns an error, kobject_put() must be called to
-> >> properly clean up the memory associated with the object.  This is the
-> >> same type of error handling after a call to kobject_add() and kobject
-> >> lifetime rules are the same here."
-> >>
-> >> This is because kobject_init_and_add() may have already allocated memory
-> >> internally for the kobject name (kobj->name), and leaving the refcount
-> >> at 1 prevents its release callback from being triggered.
-> >>
-> >> Fixes: 3485b88390b0a ("mm: thp: introduce multi-size THP sysfs interface")
-> >> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >> ---
-> >>   mm/huge_memory.c | 7 ++-----
-> >>   1 file changed, 2 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index 653f2dc03403..601750dbe79f 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -790,11 +790,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
-> >>   
-> >>   	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
-> >>   				   "hugepages-%lukB", size);
-> >> -	if (ret) {
-> >> -		kfree(thpsize);
-> >> -		goto err;
-> >> -	}
-> >> -
-> >> +	if (ret)
-> >> +		goto err_put;
-> >>   
-> >>   	ret = sysfs_add_group(&thpsize->kobj, &any_ctrl_attr_grp);
-> >>   	if (ret)
-> > 
-> > This looks a lot like:
-> > 
-> > https://lore.kernel.org/all/20260411062152.2092967-1-lgs201920130244@gmail.com/
-> 
-> Right, the same issue :) There is a v2:
-> 
-> https://lore.kernel.org/linux-mm/20260412175428.2613383-1-lgs201920130244@gmail.com/
-> 
-> Still pending, though ...
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+---
+v2:
+  - removed mm_lru_drain_all tracepoint
 
-I added the author of the patch (Guangshuo) to the recipients list of this
-mail, because they may better to aware of this.
+v1: https://lore.kernel.org/linux-mm/20260609041156.31127-1-jp.kobryn@linux.dev/
 
+ include/trace/events/pagemap.h | 19 +++++++++++++++++++
+ mm/swap.c                      |  5 ++++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-Thanks,
-SJ
+diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+index 171524d3526d..fc28745507be 100644
+--- a/include/trace/events/pagemap.h
++++ b/include/trace/events/pagemap.h
+@@ -77,6 +77,25 @@ TRACE_EVENT(mm_lru_activate,
+ 	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+ );
+ 
++TRACE_EVENT(mm_lru_add_drain,
++
++	TP_PROTO(int cpu, unsigned int nr),
++
++	TP_ARGS(cpu, nr),
++
++	TP_STRUCT__entry(
++		__field(int,		cpu	)
++		__field(unsigned int,	nr	)
++	),
++
++	TP_fast_assign(
++		__entry->cpu	= cpu;
++		__entry->nr	= nr;
++	),
++
++	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
++);
++
+ #endif /* _TRACE_PAGEMAP_H */
+ 
+ /* This part must be outside protection */
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8..8fd6808bfc6e 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+ {
+ 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+ 	struct folio_batch *fbatch = &fbatches->lru_add;
++	unsigned int nr_folios_add = folio_batch_count(fbatch);
+ 
+-	if (folio_batch_count(fbatch))
++	if (nr_folios_add) {
+ 		folio_batch_move_lru(fbatch, lru_add);
++		trace_mm_lru_add_drain(cpu, nr_folios_add);
++	}
+ 
+ 	fbatch = &fbatches->lru_move_tail;
+ 	/* Disabling interrupts below acts as a compiler barrier. */
+-- 
+2.54.0
+
 
