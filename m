@@ -4,102 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B126CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 124CFCD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91ABB6B0005; Wed, 10 Jun 2026 11:00:57 -0400 (EDT)
+	id 28D426B008C; Wed, 10 Jun 2026 11:02:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4256B008C; Wed, 10 Jun 2026 11:00:57 -0400 (EDT)
+	id 2643C6B0092; Wed, 10 Jun 2026 11:02:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744D66B0092; Wed, 10 Jun 2026 11:00:57 -0400 (EDT)
+	id 17AE36B0093; Wed, 10 Jun 2026 11:02:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 656256B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:00:57 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17D5D1A015D
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:00:57 +0000 (UTC)
-X-FDA: 84864315354.05.0933D7D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 064626B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:02:06 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95D66140155
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:02:05 +0000 (UTC)
+X-FDA: 84864318210.26.B662A9B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 36FE7A0011
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:00:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lHjoTr7s;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9DD61100015
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:02:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLp7gKfV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781103655;
+	s=arc-20220608; t=1781103723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RTuU9FrMu80USEPHZIsR86q72HI9h9O4g+u2c63dTjM=;
-	b=FVPK7K/I0FuBiKfEYtoc0F0tQgu1Flcoyo2W45sGV8z7lHQH7UVxsAktRqmFoIwS57oOdn
-	xNSm/8DFWA6pGEoLUMKZeN42eDvN72i5IwN2SCPRcR3LnoxP9XyaeboTJJzdEiCtTu3yFZ
-	WGoro04sz/JbJ+sa7VIK7WWdYxqeuKg=
+	bh=vBNtytDEfxL/pz+YWvvBjkIv0STW5xtFZ5ArtldVzng=;
+	b=BGyt1MKUNaycAzrzW4WB41XzVh0PB2pwCZitppVDGqGFGG2v1T7bAm7SaSYPJUVmp1cH16
+	yk1n+vyJQFLX289Sxh3VCFk9byxO48T3ITTNPY+SBHYhls1frBrJETVjI8Jp9AMZsyBJZe
+	pFDY80+/0ryC4PklJaQDaVqhyK7bIVI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781103655;
-	b=BZc30Jc6qZANchswrSF6bDVrxYAh4tgA1IE0llH/Dq5oQbxxvLb+tFzmk6xlblc+xm8LPZ
-	lpqgJLr3UZZgk2EYRjZV2wZlA8LvL04VOO7Lx5gYNuLNYVlMW0c5GWdCVgVBVBvhFHoo2T
-	Hw2TMYWsUTcMRAcvmReITfPTX8q7j6Y=
+	t=1781103723;
+	b=Kn2Wq1gzofYC1leA2awsfEXKIUviBpAKPPkbbwyAT4VPZYnpl92OqxAacK0SvhfasssNi5
+	69hiFDk05aSoYX3UPsIeP+1ZZnLQAoB56t7zum50TADgh6DEFX3ElGAdr0aIUbEB3yww1W
+	s3pb2oiJdcmKgnd349GetzwVnKiuhJY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lHjoTr7s;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLp7gKfV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D99760172;
-	Wed, 10 Jun 2026 15:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B991F00898;
-	Wed, 10 Jun 2026 15:00:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A88860172;
+	Wed, 10 Jun 2026 15:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DBD1F00893;
+	Wed, 10 Jun 2026 15:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781103654;
-	bh=RTuU9FrMu80USEPHZIsR86q72HI9h9O4g+u2c63dTjM=;
+	s=k20260515; t=1781103722;
+	bh=vBNtytDEfxL/pz+YWvvBjkIv0STW5xtFZ5ArtldVzng=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lHjoTr7sIlcC9HNescoIpEPVQhPYNXrrn8kuYOlfh41Cd/1Outqp9FnHfcUeTMY0W
-	 iEkxlDCU3g121k8qL8QB4vVFyvlUqmahDpoM0wbD8edNTZvDyu4kC9L/+4efEQZRg9
-	 9ug6ej2V7Wp/wLNPpr+vhhwio/AUSHk/cMZ3X0VOJN7l2YevgVwJt4HvwPKD5azCJG
-	 3SsQehi0gO+JbVNmV9/lYMQEJp8KkZYPn1kJg0aUkJmJdAkjrHcgY+pbbeBIYzyBH6
-	 dVPiOO+/ZBtF/BOxpPF09c9LCbWa+wijIvDfgmdiu0fzJngBcN+9tIejaPyPefGGlK
-	 1ZJJoJQDTfZsg==
-Message-ID: <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
-Date: Wed, 10 Jun 2026 17:00:33 +0200
+	b=bLp7gKfVv/9idt34PBmdyss+uSKw2MKefryQrQaKGYAWWA+NaBBePteRGwjhZTf5D
+	 56Mjj1k7nqRj3m6j999DvmlcY2YW/yRGz34KW67UpK9ml1Ved+Fx+AVqNeFDjhdqn6
+	 nTTWZJSgJ8ffEQuZn5w2yUciiDNPvcTqvhv1e4AiKwtqdEBWwbbv9t3lJTenYuLYfX
+	 NZD5uPEmEPBeTGslQ3YItaQ1YVezpSEj8Z9lpr3hhDhx6EsoaF5Zfvb/jqmWWr6jqv
+	 woj3Vwb/dYXbBhm8tVzjrcyuZzQSU2YzUlKBrzg7EL0Iobu+0AVyZw5hSBXARpzIyc
+	 yt+zhN82B1EeA==
+Message-ID: <d05e51a6-428a-420e-b6ba-54f94d029f1e@kernel.org>
+Date: Wed, 10 Jun 2026 17:01:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-To: Gregory Price <gourry@gourry.net>, Balbir Singh <balbirs@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
- kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
- linux@rasmusvillemoes.dk, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
- mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
- riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
- roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
- zhengqi.arch@bytedance.com, terry.bowman@amd.com
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <ag6XyvxR-NU5rGn-@parvat> <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
- <ah47NNhuiClgGCdn@parvat> <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
- <ah-0CyZurn5D1ezY@parvat> <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
+ per-vma lock
+To: Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
+ willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>
+References: <20260606015729.1837935-1-surenb@google.com>
+ <20260606015729.1837935-2-surenb@google.com> <aifO_rCurVhFRTcl@lucifer>
+ <CAJuCfpFOpvNmV4aHnk3Vi0Jg4vF4Cmsm86h2vODZ84FVLXt9yw@mail.gmail.com>
+ <aikLCwuzqBetvDrf@lucifer>
+ <CAJuCfpHX5zoaD9XxDGbpXHs5U_8OrRyRuk=Nx8CjDb5qMNy0jA@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -146,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+In-Reply-To: <CAJuCfpHX5zoaD9XxDGbpXHs5U_8OrRyRuk=Nx8CjDb5qMNy0jA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 36FE7A0011
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9DD61100015
 X-Rspam-User: 
-X-Stat-Signature: d6xkypht8dmz4mshhymer49rxdimk86w
+X-Stat-Signature: pkh9mw4cisghgx7u7omdb3hjos873zt5
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1781103655-849845
-X-HE-Meta: U2FsdGVkX1+QvJIGqLKmGIHk5BjLoKGsgNjUCGi7pUg7+/c6bbqwC079lXmS+4pSjv3zCu1B9qfHcfnbBkAxrmjIqJjRGgoRT/3kSq4sHcGUQga4zMFdz0RHXLjhF68P8lSZN2GTLTIZV0vDfu48XjFRifX700YXf8743mg1Nf0VfDKib8mgcOj+aKg7+2mj2HUqcXDxzbMSpPYx355HcrFhESj83mq/NV6aXQEmRAuldhsB3zAVRnPh9F+krSbjuNBc1JQT2z1NcxBJdModY7j3O6UPLe2ohckBYkVHipzfXt66+1DVBpNEut+zYDWeLCHc7wOvX/GGYlev1ii0+93RuwLYhBgrUdlyE43PLPRAi5J4djrz6tG64yzTDMY3aFMgo8n/y9dWnfzsrQ2QFmCkKTqiFsHMYSxAf6NdjQZ2rSYG9zmM1BeIZE+jd5RDs2+x16yoFO2ejPIb7B/CUOTs5QhFyNOTxIbxcw/GJnKmbskmm5aPDR8oqO9OUV3MgyBlEzxvgLTEW4CnueOVcEHBShcmwUG3FmxoAwNh6hjdICnsIqZntpaQSguxsE3hFd3Q/OvVBsW9P8WHpIXTMqzPDwVfjxK5/4Khnx3YiEpg68V1Eg41VWC4rO+HjGWm/bqjlSGhFPHwJftC9057Y2xNdFXFNzuMTGvKUv6wEPPTCXzfqiwN2XtRKlaraoWsDqC1gCMh+7zjp7CfAtwXfTy2LfrCV8QrYq+u04qb+apy1LMo/A1yLzZHn8T0RVC9GiHltbYJdk+IZ3bAsQRsw2TRlUlbk2YoEzF6Zyaa/hw6tNR62aJFYIqRDCwxz0CY2iKr3u/uCUMHWUEh2T9yhROmK7rmK6NSSdIR6m8Ex3BNqeIkwB2ElHYlVyaE87xOryydmkVsKFl4/zUlgJlGpkGJNcTmmigU3o0iDIdbtet1h0vH5SKn7b3E+fw9mKpt8xiX/gwQoynZKkJ1wuZ
- uJxvI4TT
- 1f/m6Yyp/Sc/ENudAIRj7sz2jetiRlE5uTb/a+2Y5lUXV6JVUb+WkqaO2ATk7fzPZ03mQv262uq/6zy0Wa2U4OCPqfAx+oln6It4RIYVyryv/0YwHaruHDgLhXCC8glXZH7VVeCiw0k+Txm+ey5VlY9YzwHsMbQ5lKr24kfOEw2+nIhO7i91lQZrLv6SecnHGjQ65Ze8ggttsbcZb41O0D5dphhPgsUr2Lj7cee3OZ/303qIQRZSND7i8WtE8nfyugFF1ruv4E8ADRPKhFqgrXY8c4RYkgngCRosqXrdNx0h/G45LdIBzOg7f2CbVQMHDPVvgdC2OYYl6Nbo=
+X-HE-Tag: 1781103723-243604
+X-HE-Meta: U2FsdGVkX186UlZ5oTCEnQmWPE7UrK6pQDgAvIksJ14wjPksJPDyPVluuTxj/ZI3GaPoYkEJbWN2KxA3peU3vx9eatcFNlveL0ohC73FDsaxiF6/NkObxdIbZ2adhF3a6msGuN+aJpqV5QOdOikxXK3YdlFnQgYuEQf8pisAuTxRF6oNCth0cLBeIWI5xo1akzf9Vp0TS3oH6zLdFjGHgRix7/SbruRsjaMVrvTL/BSvW9kNxEb0T+kuiPtOn+i3yJVm5YCa5aL/qmt0YUstO57lNwwBQKM00TXJU8mGy5O5PFh2nCKr+cKPUOF6rHHd97Jdu2ysV7XlFiv1vVZ34m5abMTRXrwCNEu5KOp0870JSS4506gULRajym4JKPiOytN8Zl/25FjBQPrN+IIdi9/2cDZhycG7tprsj6iOAbARtnciaELNDvxRaohibPrcqOPPHFTuH66EVOpe+6hfu6+l2xLa6+yc/9hf70b8VwSlqnkk+Gd/zsXfg8Bd6yeM1DySzWN0tvLRF0KbdY6FFh7Qru7UTdIvdCNIHQEpybFVWymBWHr1Il9MvIfHJEKySAOoWwBZ77VAIBcGC50pS0m3PLOpxF5n9hyk1OVt3xQ3zeozwWwRH4gm7jD4DxoF2XO76v8nfyOSRKx/ZB+okl35dd+k4WyaG8ibzHg/1+AdOI7GLNH4n5H74h0RampdqmTYRnTBhy+UExONPyMoVP46FwfAWNie/M1PvowwHkqSx8m6Wu0w3DUv74AcZnPRAWRR/4c8jqRLYrzZTafk+rnU9l1Z46lMWM12+JlSh3kGfnCa9lrTNChSVksJjBRs0yobtneKl0qBTNeWxeSDXe1NaqebrNtsfsrTDHPyj6iMHNhf/Gx8PfQR11PixB2HkZx5Qb1VqeIeMwERsh9SkcnvaGgpJBzf5NDbUD+kQ7DBzS+eBnwSydRA0eX67pb//4dH+FtiNpFNeFlGYnV
+ wdGhwwlc
+ MiszqZOOVRumPdHjsrTAnxeITTyASiqzQf+GwmvpEi7CFV2ev8pkkt/P11ae6IJ9KS/R2N768tPecFOzo2eNxeZANCr+3OdHAxvwbIoXHESwy9W1UY3MU0nQNn9512yjh90BYY1z76rW+b0l8YPqOOmQnLfeD3FU9WycIEQR5aTELx12t4KYCoQJKOCJ+9/c0NzdFN/yPennpge/t14r/x2vrEV07vdONJVTqBmTS6sPtQkpk0NHzd/e5TeTIJSOSY531wSmNQzdMFrkgrgAA5shVtwoBs4M2Av8eW858XdMyB92kCrs/YrECvi5u3JWIkY3mW2mb6kFUpqw65LlW9Jp/RTIW2ZYQoeT8DiCGkTfGNUQAU3W7RKgtyM03RTGycU8SlEKGc71VSMIpkJ47tgsyxcVQlLVvW/9H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,48 +144,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/10/26 12:41, Gregory Price wrote:
-> On Wed, Jun 03, 2026 at 03:00:01PM +1000, Balbir Singh wrote:
+On 6/10/26 16:56, Suren Baghdasaryan wrote:
+> On Wed, Jun 10, 2026 at 12:05 AM Lorenzo Stoakes <ljs@kernel.org> wrote:
+>>
+>> On Tue, Jun 09, 2026 at 10:11:03AM -0700, Suren Baghdasaryan wrote:
 >>>
->>>    __GFP_THISNODE cannot be overloaded to do anything useful here.
+>>> Ack.
+>>>
+>>>
+>>> Ack.
+>>>
+>>>
+>>> Sadly, for now we do (see my later comment).
+>>>
+>>>
+>>> It looked nicer I think :)
 >>
->> Let me clarify, I meant to say, let's use a nodemask for allocation
->> and __GFP_THISNODE gets us to the node we desire, if that is the only
->> node. My earlier comment might not have been clear.
+>> Yeah tbh I think you're right
 >>
+>>>
+>>>
+>>> Ack.
+>>>
+>>>
+>>> We need it to avoid resetting vma_start, which is being reported even
+>>> when no normal VMAs are present.
+>>
+>> Well previously smap_gather_stats() would just be a no-op for a gate VMA, as it
+>> has:
+>>
+>>         if (vma == get_gate_vma(priv->lock_ctx.mm))
+>>                 return;
+>>
+>> Not sure if you'd have VMAs past that (is that even possible?) but in that case
+>> we would have set vma_start previously.
 > 
-> I've been tested an stripped back patch set where I drop all FALLBACK
-> entries for private nodes (including for itself) and only keep the
-> NOFALLBACK entry for private nodes.
-> 
-> This effectively isolates the nodes for any allocation without
-> __GFP_THISNODE.
-> 
-> This also precludes these nodes from ever using non-mbind mempolicies,
-> which I think is a completely reasonable compromise and something I was
-> already expecting we would do.
-> 
-> Notably: slub.c injects __GFP_THISNODE internally on behalf of kmalloc,
-> which causes spillage into private nodes because slub allows private
-> nodes in its mask.  I think this is fixable.
-> 
-> I have to inspect some other __GFP_THISNODE users (hugetlb, some arch
-> code, etc), but it seems like fully dropping the FALLBACK entries and
-> requiring __GFP_THISNODE might be sufficient.
+> I should explain this case in more detail. proc_get_vma() returns a
+> gate VMA once it finds no more VMAs. So, in this case if VMA tree is
+> empty, the first call to proc_get_vma() will return gate VMA. Now, the
+> original code was using vma_next() and would return NULL when the VMA
+> tree is empty and in that case it would bail out early here:
+> https://elixir.bootlin.com/linux/v7.1-rc7/source/fs/proc/task_mmu.c#L1423.
+> I need to use proc_get_vma() instead of vma_next() because it works
+> under RCU. So, the new code matches the previous behavior, but the
+> condition is different. I'll see if I can resolve this in a nicer way
+> but that's the gist of it.
 
-Sorry, I haven't been able to follow up so far, and not sure if that's what you
-are discussing here ...
-
-After the LSF/MM session, I was wondering, whether if we focus on allowing only
-folios allocations to end up on private memory nodes for now: could the
-__GFP_THISNODE approach work there?
-
-Essentially, disallow any allocations on non-folio paths, and allow folio
-allocation only with __GFP_THISNODE set.
-
-I have to find time to read the other mails in this thread, on my todo list.
-
-So sorry if that is precisely what is being discussed here.
+I guess some well-named helper that encapsulates the check would already help.
+But maybe the whole logic can be overhauled.
 
 -- 
 Cheers,
