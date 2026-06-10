@@ -4,128 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA148CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAC20CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 16:00:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8127C6B0095; Wed, 10 Jun 2026 11:59:33 -0400 (EDT)
+	id 57BE26B0096; Wed, 10 Jun 2026 12:00:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C3886B0096; Wed, 10 Jun 2026 11:59:33 -0400 (EDT)
+	id 552FE6B0099; Wed, 10 Jun 2026 12:00:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B2346B0098; Wed, 10 Jun 2026 11:59:33 -0400 (EDT)
+	id 469336B009B; Wed, 10 Jun 2026 12:00:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A7316B0095
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:59:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE97F140193
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:59:32 +0000 (UTC)
-X-FDA: 84864462984.30.F4AD270
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3098F40004
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:59:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B596G8wn;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781107171;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35E506B0096
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:00:20 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA16C1201A7
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:00:19 +0000 (UTC)
+X-FDA: 84864464958.11.BAF7800
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf05.hostedemail.com (Postfix) with ESMTP id ABE2C100014
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:00:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pn9kcXHU;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781107217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Wwl5EFOwcAOEDq8p0RlqImogvq+z7shANIcC+8tlztc=;
-	b=CxtMjfjevZ5POcbj7+i/9l5S/bGgg+y8e3MliFBy4WODsgIOGS8goyUItLogaz3ugFcfdL
-	XWjq8x5XW7rFC5c4cmSSYacSLXOmZ8z0XdzcRe+EC4ZAg/FvNAFesB8q9PWWPccDKJrG3K
-	4BtQaUEZuTS5Cl/kAoqOtKv5AS9E4AQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781107171;
-	b=QdWTmZOi7Xk+jlpjQNY2DuEVHONopwAltE3hdTXasHhtT3tToQ1kRMHF55uHwpdAFT9ttS
-	WRpFZ+HmAaeZcf797ZkE8hWhc9hqVLd3WWg8z28qpcCp0HLSf/ha8vWBq+PfMloz0Fgv4m
-	0t2ibDfuhu8HXKQ2OJ93fhL2pko/QE8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B596G8wn;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BC0640560;
-	Wed, 10 Jun 2026 15:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC621F00893;
-	Wed, 10 Jun 2026 15:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781107170;
-	bh=Wwl5EFOwcAOEDq8p0RlqImogvq+z7shANIcC+8tlztc=;
-	h=Date:From:To:Subject;
-	b=B596G8wnDvRmb7UeeKOXoUJnVEaxNNezk/kt+6eRUKSVAn8HYJU26RIJuJq0jCFVy
-	 ARrLxecy2/jdFDvEf1TBuUaOu85pCBE5/uvzNuTMHdBql46cnUCwfYWYDwys3Igyiu
-	 EJwqvkFm+ZZCegIAZnBqvinTVbtYTlxPsqv2imToSnY4OyzF6Q0x3F46rDHskGrZYl
-	 06+fENzyrC/W0Rg5iKikVRRkZyfrOAluHpNXD2yzwxZqPt9TAoAmdhie6eWM88RfKB
-	 dVo7T2ZOf0NyWCFsXA3a2IfQ/mpEYe+ykhicN8KeDwtVrSsSHNh+bsEp+MacaLql+J
-	 mqAsGCPhmzU/Q==
-Message-ID: <8ca7bdec-847d-405a-adb9-ada87e7222aa@kernel.org>
-Date: Wed, 10 Jun 2026 17:59:18 +0200
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VEDUkC8AXaU4PRdZaXQ1N+8ibbW+O3iaY6lkOQGumLU=;
+	b=yzMJD79p6ynDL7SRRuzXzE5gXSSPGoeKHuiWYtH9TR34lE0v9L1ftt7Pv99eK3bD55ZfBS
+	lodTU8dGRtSvQ3MoRPbbPX1N/+FGffZwVwJ4cAhnzDzXjefExYgY9nymAXvdxIdHhS9cmI
+	FTiZGN+QKAigISV28NXDD7016htn3lk=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Pn9kcXHU;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781107217;
+	b=eW7Lr8waoFJ7yeIwDxdKEIKnxWiRJId0fpnd8FWOsC2EWYnCw16R1owQ3jV92RQ6ijOYoD
+	Otdp54uGw4ZCQ/tnuQyS0uHlbbI1YcbmLSf91Bmd/eFAF+dqoeAj7a1i2OoF0s+aCrm4Io
+	vR/9iys7KL4X6pkf3NnDdgZf159sHRI=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5177d1ff061so524871cf.1
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:00:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781107217; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bEJI/asq5JrHbkfpGhiLkCVt/uWq2iDB/LrLSBbZFZPDHofcYwGqmhtNWUnP6xjMhA
+         4NJ4Pet6jd+xvIB4QaCnbsQUfXGUrCZb9PhC6zhEqlAJvbyQkqDFqIt4No+xPZ0B5EO7
+         IaBv7/+JYWifr8pcJAs/Q+paWMNqt3yXqsk+fqZkgyn1c2geOnqamkT2lJGm0L5N7upk
+         Oa7wDebveMy7RT+HXLZxPb3mbjlBjMa0C7ewHdBhMr56yEVXvN+INotO3mOgf9Ou/igM
+         F6lGeYuMUX1YiXVNTyH/hfMGwxO/ZvZoWbY5rZJr5+DdFKjQ8ntCE+TlvnR00AxkueO6
+         NZnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VEDUkC8AXaU4PRdZaXQ1N+8ibbW+O3iaY6lkOQGumLU=;
+        fh=ZaLG9hswg7Ke3RINj4mzS+/aXw69N5B41f6/MYRLCfo=;
+        b=OP89QPs5JIV9FqLxjZzN0Yysgkr/+UeSXua3jxRVkkwaBXmzeJyfrsIs7NztkMAXbv
+         fVxgeIMQIsEfAshata/GxrY8EmCv3OL/UxVR+SkoSpj2+OBI54wenCWmaXRB8Ms2vXGb
+         Tj2JyPkkcOXnGch6ontNz/7LuIzsJ1+8m/U+gr+rYUoKFD2b3ZCx7vlndzY4yX8FXxb9
+         nKJKHChe9J50/3hwvXpwx1UaUl9jVN3F2ANV5cvs6oThYdd8Z+Lzby3IjnCyMNFmE6Fd
+         A5KYhb+t0w4Vps7Yjc47KHWg6I+wy8MJ5LWT8bC87RxskAejvyksI61j8LlhsGPL/D3C
+         zzlA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781107217; x=1781712017; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VEDUkC8AXaU4PRdZaXQ1N+8ibbW+O3iaY6lkOQGumLU=;
+        b=Pn9kcXHUzA47gXdq2ETndw042FYoDi/tCO3qsDyCNjqH18FuD9d2eubyNvNX9HdkWs
+         yGzPwVXilkfMYIuceSMcpDV7wbyggZHGJiRCMEkGxi2tgrba1SfGO+U4ASy8PjohO6Lm
+         4yUMlvKwfG3RK9LFrhFppVb6K1InHipCfnrO0MV3DCdONL3RfGsUIhUyoE30Z7NR7Z9e
+         hwUWASEvHEdwq4+6UNm9MCn053HnZbg8r7ooYj2w4AT73yxB2XNd/C52/Iw7J7qdz+h+
+         MmzKi3jQEElKq5K66VcyBqiBQmt2WOjGWWzYeIpdh35j/IeIrUH9yQyZIebwj+O14xI0
+         sM7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781107217; x=1781712017;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VEDUkC8AXaU4PRdZaXQ1N+8ibbW+O3iaY6lkOQGumLU=;
+        b=NLuQUZWwKWu5oK6e3ORvSyuzhmUU9jWDvdad0/0KYCYB7Ue0Scpc9b2CkDT+G2I1nU
+         y4IyxznDcYqJOt3DnG08jNVFN9CIy8MJTkCPahY6b4akE60LVezEiXaiH56vdJ9LCzFn
+         SkQDmzEFobYUUXn7/YzbUsRe3vOJ01IkUAEu1lCUNhWVY5Qy8HJZ3WQsWhD/jbr3EAAi
+         diY5U5GQNpbNBM9ezVr331QiDQAgoIShCzCngq8JIQfm87ddRXvRzoRM+xjvacOmGQMJ
+         cB6cxLZBc9S3CYR0zH8QCFjEo6wkhGg9p6Gwzj6Zy/QOqj9aKUM7RasegfRw3eVOZ2Gl
+         6TzA==
+X-Forwarded-Encrypted: i=1; AFNElJ+RDeim7MKtpyYJ5ApsQzOfA+JjbMuMV1oqlMBbywnDF+UbZR+EjRIc9sPIG8eDNVJoXBG0hdYuww==@kvack.org
+X-Gm-Message-State: AOJu0Yxvvv/RZHlhTIqIogTwBD6LgOydID0L8mIwA36dp7nt5KILYn3S
+	iEEGBIptYIhjFgBTCL1WTY9AyV4RULSuAsx6y8JfS57+YMLb9ZzM8VgzJ87JIALV9UZxAtlMkSc
+	Fi20FUJryc6wJ8ARh0Yf3MeU3ARg84fTqobKcYAOA
+X-Gm-Gg: Acq92OHhbGuVexTEMFpf2WmozAe16P5nxuCYyfBmcaa7s1j0vtqh/73UhdnU9Y/yP8w
+	Zn4e9Kh2X16IG7vJWCZN0UDkjDPw5HDnZNmezsiVOI6KuBKjjpmQTUHunPx/Ke3M4fpmGrCpJP4
+	OdW1IYLa3QU4cQpZ2gLN/4cLI3bR7v7W+CRoza/s9WVhr0oZAaywZjVoke5jruKu/WydAm0Dr8V
+	/inw27EIlzokRKR3LJCdS4TzeKyFFyUNit/lnCDyBM2kWDF9hknB5E98LtKfrqf5pkABPFohIPM
+	5K2g/1Y3gY7YPb0m2anZ6MKlbBO3EZkWQBZYUGjhNUBf0YNs
+X-Received: by 2002:a05:622a:4a0c:b0:4ff:bfd9:dd31 with SMTP id
+ d75a77b69052e-517e98c90e1mr820931cf.5.1781107215898; Wed, 10 Jun 2026
+ 09:00:15 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-06-11
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3098F40004
+References: <20260606015729.1837935-1-surenb@google.com> <20260606015729.1837935-2-surenb@google.com>
+ <aifO_rCurVhFRTcl@lucifer> <CAJuCfpFOpvNmV4aHnk3Vi0Jg4vF4Cmsm86h2vODZ84FVLXt9yw@mail.gmail.com>
+ <aikLCwuzqBetvDrf@lucifer> <CAJuCfpHX5zoaD9XxDGbpXHs5U_8OrRyRuk=Nx8CjDb5qMNy0jA@mail.gmail.com>
+ <d05e51a6-428a-420e-b6ba-54f94d029f1e@kernel.org>
+In-Reply-To: <d05e51a6-428a-420e-b6ba-54f94d029f1e@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 10 Jun 2026 09:00:04 -0700
+X-Gm-Features: AVVi8Cf8c2ltD77T6hmJFDSlT2HwjMv7U0PwhT3D91ZCpnXZBbc7zzCdnWOEZWo
+Message-ID: <CAJuCfpFwkkeA8e77s-Hm0YdxMJ2Y60vu145pZw7iiXtNoDzTzA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] fs/proc/task_mmu: read proc/pid/smaps_rollup under
+ per-vma lock
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org, liam@infradead.org, 
+	vbabka@kernel.org, willy@infradead.org, jannh@google.com, paulmck@kernel.org, 
+	pfalcato@suse.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ABE2C100014
+X-Stat-Signature: 81d4zo7sj7umqme5zx6pqogatfr13aja
 X-Rspam-User: 
-X-Stat-Signature: q3pu7c35j11t4fq5bdz6okh53qah8gjz
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781107171-940401
-X-HE-Meta: U2FsdGVkX19DP/dOYMQ662CEyPqx9+uzcUcmA7WHTj3ujqCD0uu+7u9KdpH9Mqcy7d0BDgIeVlBahZfaDbxrFZOrcwqtjWiIvoBnvxurlxGHAFJJhNSTWoiOdSCv205hXIe5lk31PNd3lrzw/f0dWbHwm24UsCM8U9l3ahHCrmO2xzWhw3woTAQ2as+iDTpZpbD1UI7H9pCQUTZIEPwZxLpA73Sr0o+3w/UKTUAi3xDrsAWSFGclSaLjP0+2ProhcuE1D2llNt3kLPQN+zQWgj6z0YaUfp6SS64C/Rt35d5+FvDQRM4TuZoZb0YOV/IKWPrnghBlqDIjh/AYrv7QUx+fIuLXahkHFc49Ik2MeW/KTHywacaX+ILLpm1ak8imSiexNkbewfLzI+O/Sz4auBflVMzdUxPN2ilwgaQj7W2JAVM+czDAe0feJNNkgtCV/+9I/2gU3SkQdtSIhwCrp5ncVaJviZjMsjTXGv6VJelgiqOeZg4uFHulhKEWTEJ+CPXHVWgHJNiFUQkCvdk1qFU4jrxVDeu9QBjnm0D1lXUHQgOktOtsIaqsSD89I04afGlj0+d2JNWixdZUK8z+NPr3iafS7aUnHrN1eM2aVtK7B+obLKwQRl2PDxxf0jzfNlgHInvbu3MI/LZuh1ZkSvD0Jd0gMG7V2wMWDZtAtGPFLaZS02SblHG8T9basY6A7aYQibyxbLG7J09VrN+xTeAeO3n6lI0ImYOEj13VWINeX3QgtEDtpkikKUKzdNGTgT/6H1+SxTmecXX06FLqjpLPxEfFHuSl0xECBmRPybW5xpOXawRCa2YFqWEzcvjvc7KnI9+HX9/Lt965EiZSaayNR1P99xd6WLDuMNzMGxAB0OkBc2Fo2CmL/L7bIfUuD+gUrM5qqIt2JgnV+PMAIFofQsZoQb3npEPkPMBsqmCrkR2hqfAwgc7fnmbK/kvZ+C14qgFS4WEbNtbNhfm
- m3JOHIUv
- 81S5yQgDogKIs8/LEJpO1ANBa5BWfRvmpTPchIDhs3nYgkaBeFhiVNhpQqboAqnDnA10lSteqckbatScTfUrWZfugjUriCwW+A/OvAZGNBpB1W8dnzt1aVd02Ggfu2vkuFh2XF9IA49B+vpykfvnS33yxaQ3IxzX6HatLq9+cXhhkTCJfuTm85y+FH/X0z1LoeO06B3VUuL/cclIFibXxBEcFi3pEPYP9aGeK+iuL0SILmVxDv6prTlTqKuuaFKDa04+QuocVOfE423jMGba0zOW9z2YEPqeB8EZZnzjbIeBcBmk5us3yShWi9Y/NoepAz34rqU6TCRXGBoFkTyxzKw+EspdsndWtHfgiziDxBUya5150bvGRBVNdRxTRSFTdZXVruLGg8tzmfck=
+X-HE-Tag: 1781107217-995454
+X-HE-Meta: U2FsdGVkX1/Tc/FEW/uuTOOhvm0AOAGaD6hYO6VEv2nTccjhbRJCW2yYJXIvbjtb/8sT6lLFx1HUb2vZ9WP5w9/agQcTgdjRERS/lsYKQfxEoqZkuSla2JqlBowQn2JyGmuBCj1PyuS2wC2eh0K4dA5uTI2vltU6KvAIpDlO6Pgp9G5H67J1bxPDXCC0rtpDjTBmopgL0wbSpekHVZmDdazU8gEGKVGF2VHaavzN7N2NG9394NVmyYmhnsqPcEzdZnyNT0vKJy/B1pYwEmm6LmiUk4BXLDFPX+53CGOQSS2wqxiPxOJxsoZS9Da+UpjQK5ERWAtwOVpIdz85xVGABXBQPS+h0TPZQtpE7RQMzPLOr9jz9s39LAtIqAWYNrPQaH0jdpRVmQEcvcbmRroozlPJyoFVaL4V216vuBZBVrdDyOMCZkWR/yEt5fyLV/e6XaaLjwMALbx01J5dsJn/iwNkVudanOJeK3mfxcrQN1WOtvt8+AXKZwfLIne39U0I5KcYoXPQHcb1jAfW4alXR5r3UesUQOUGq/cQ03K7DgcjClM820aHqn2eD5Gj3LwpSimEy09x+XeKboIoqDPhQBaXlrHHKo9zNABJduMzN5mLqKtYg7hEv4m4z5E6T7GIJwSTqCnD8dqPozYLhyLzHyHs8fww+TI6ZivNPyv3g/rU7kwHP5ccLm5X60H3mr8nPrTVGGRzDrP6p8Okcz6UAwFaflh72M4gI12dAX5zMJQd3qbOWnIfaOyF3q64m4SRtY0yzZwwYem70X60RuGSS8Q1V1+XvHRqbG3/7zH/0HY3b+iLHRKWxFAmmSF/oiLu4+tJPpsU9scLBJDN51fM1p8z/7g6Sf8tCv261z1Qe2hyxOyIbAYGfOjP2nVh4r4+Pb+hNyxjzbJdJ3JN9w/f569PhmFF2ipNBO6+EGXmseT5piyUQ1vmBeR0Ehib5AZ1tN0M1JpIjJ6JNn+SJLt
+ l43bkQ12
+ pkfNG6frOOxQv8SjYOKjybQqO2ov+4CbKFPUTAjXkIW5QMLy2Fkok0o5F4ql84sgQ9Fi6JhW4g4AQlMAiMd9vbaza2XUtqr+CLUalLavsVn4PfUKOjeGdvvZv9gWmKmMLeESsgwKL0hObv6XJHn0d6Hbqyi0sXDHUmFjgg5MyOL/wucAWIYtYmnaMW8E8XFgib7/v2tse9WnfEJMhsJIzp3uy/P7xgRKXcuiqaE7LKDkoH4r4SFFX4TuyLua+esztu7Su2IS9SpV6Vuwei8QcIsFU3YGjHdzTuoiq1oR0wEM8jKyp8DbwDbFbOEIvawqkY1xKLheCrfgu8VKMqhOOTEq3JtiWpS6KJBDTaJy9OZGP1D1ilwgFsZESIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,36 +144,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Jun 10, 2026 at 8:02=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 6/10/26 16:56, Suren Baghdasaryan wrote:
+> > On Wed, Jun 10, 2026 at 12:05=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.or=
+g> wrote:
+> >>
+> >> On Tue, Jun 09, 2026 at 10:11:03AM -0700, Suren Baghdasaryan wrote:
+> >>>
+> >>> Ack.
+> >>>
+> >>>
+> >>> Ack.
+> >>>
+> >>>
+> >>> Sadly, for now we do (see my later comment).
+> >>>
+> >>>
+> >>> It looked nicer I think :)
+> >>
+> >> Yeah tbh I think you're right
+> >>
+> >>>
+> >>>
+> >>> Ack.
+> >>>
+> >>>
+> >>> We need it to avoid resetting vma_start, which is being reported even
+> >>> when no normal VMAs are present.
+> >>
+> >> Well previously smap_gather_stats() would just be a no-op for a gate V=
+MA, as it
+> >> has:
+> >>
+> >>         if (vma =3D=3D get_gate_vma(priv->lock_ctx.mm))
+> >>                 return;
+> >>
+> >> Not sure if you'd have VMAs past that (is that even possible?) but in =
+that case
+> >> we would have set vma_start previously.
+> >
+> > I should explain this case in more detail. proc_get_vma() returns a
+> > gate VMA once it finds no more VMAs. So, in this case if VMA tree is
+> > empty, the first call to proc_get_vma() will return gate VMA. Now, the
+> > original code was using vma_next() and would return NULL when the VMA
+> > tree is empty and in that case it would bail out early here:
+> > https://elixir.bootlin.com/linux/v7.1-rc7/source/fs/proc/task_mmu.c#L14=
+23.
+> > I need to use proc_get_vma() instead of vma_next() because it works
+> > under RCU. So, the new code matches the previous behavior, but the
+> > condition is different. I'll see if I can resolve this in a nicer way
+> > but that's the gist of it.
+>
+> I guess some well-named helper that encapsulates the check would already =
+help.
+> But maybe the whole logic can be overhauled.
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-06-11 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+I'll see what makes more sense once the cleanups are in. Thanks!
 
-So far we don't have a lot of topics: I'll have some clarifying questions around
-virtio-mem for CoCo, and likely it would be a good idea to talk about memory
-hot(un)plug+memory ballooning for CoCo in general (what already works, what
-doesn't, which requirements/limitations do different platforms have, etc). Apart
-from that, I'm sure interesting stuff will come up.
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
--- 
-Cheers,
-
-David
-
+>
+> --
+> Cheers,
+>
+> David
 
