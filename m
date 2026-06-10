@@ -4,124 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B4FCCD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 14:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C8FDCD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 14:37:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7531B6B0005; Wed, 10 Jun 2026 10:18:11 -0400 (EDT)
+	id 80C346B0005; Wed, 10 Jun 2026 10:37:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 704156B0088; Wed, 10 Jun 2026 10:18:11 -0400 (EDT)
+	id 7E3926B0088; Wed, 10 Jun 2026 10:37:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619DC6B008A; Wed, 10 Jun 2026 10:18:11 -0400 (EDT)
+	id 6F9E06B008A; Wed, 10 Jun 2026 10:37:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 50FC66B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:18:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D017D120144
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:18:10 +0000 (UTC)
-X-FDA: 84864207540.09.4F4965C
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 960EFC000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:18:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="J60w/vow";
-	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.216.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 63C536B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:37:18 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09589A0102
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:37:18 +0000 (UTC)
+X-FDA: 84864255756.22.8307C8F
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2E646A0006
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:37:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=MSc8Az2U;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781101088;
+	s=arc-20220608; t=1781102236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TtsvHh9Pn+Rylz6+XRT7TQz3RFIWkIYkOyPrXmDgVAQ=;
-	b=lE8o9AT6n/Q2faKOp3pqQLB+Jw2uI+nHtjZj0TCGjzprypmW7AL9Wmywcu/DTpc8oKxD6L
-	XlJgtfWigch0xbkOvEUzyr40NAHLdFkQWMjNQMlDxhOlHvST4/oYhnktYQuysbkOw+Opxp
-	P6viZN6g3JwxtGtO17NFQvuE+gk5b+0=
+	bh=hztkJLAOrt3y4FASh5Bx2C0OqdOIndw7eniIOKrpzws=;
+	b=CiX6Dli9Zz2xt54iuNrsGD+GL1mzssmjYLXaZyL0uLkzYh+sTstxX2rqqlqDA6a687W5Cj
+	wYb1vQQi1hU8xsn6EDpgguorQwpUyiB/4iMhTXIxgF10isCALXkTmrbV2X2JitqjbWkr5r
+	MALpyg+Orn9tPOv9R9G3fWjxoLfbJEs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b="J60w/vow";
-	spf=pass (imf28.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.216.47 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=MSc8Az2U;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781101088;
-	b=BpQYWeY5gxoAsXYuWyl7tjMVM9ZfQHFJVNl29q0pbss5y/SjoPGKz9WVVcM46LHu/26oDX
-	SvXVExNnrTh4VW4icX2LpT0F82yMBqFqYZPsxlDIPPLFDs10w0fxDihIC0eIv4IWl2HWNq
-	xNY6VZvtoCHs7feLrOPCV9jCRsxVfvA=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36d630c0e35so7368103a91.3
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:18:08 -0700 (PDT)
+	t=1781102236;
+	b=Y9kWNf/gdlFdrUusW58KZzI8A/Zxx4x6+iQ1LJnubvKlsi1Y4DIDFKjKIZZlOL/rXrydPK
+	nYr9OybSs6puhVh0vC5VbQHuCQ4L8g2STxVGfAO074bYOfczgCl5Jg8Ilk6Xv9JjZn0o0n
+	4MKWekG9MVmIbIZl+mBmA2dF5k53G8g=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c0b1a48855so80995ad.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:37:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1781101087; x=1781705887; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TtsvHh9Pn+Rylz6+XRT7TQz3RFIWkIYkOyPrXmDgVAQ=;
-        b=J60w/vowbx3gKmPrDWmljvjMF7AbZ1GBqYQO5hgZQHbV9nvNWCnyomax7VMTjmKMvL
-         viYuk+9s9OmPEmhDqF7DpeoWUY1GjTqccNuOGZsWnKeOl6Gvn4F2N7SRT7rM9RgKo0GW
-         9QvDZ3O2oqP8/JOm79k8VlXcXACQK0JC49V7w=
+        d=google.com; s=20251104; t=1781102235; x=1781707035; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hztkJLAOrt3y4FASh5Bx2C0OqdOIndw7eniIOKrpzws=;
+        b=MSc8Az2UJgnJhx/pMfA/CPL6vF5oohz6aHAvhDZ9g0Z9IpYH7czAoBXwu9bU52Gp2s
+         nbAI+pO5n8BEjUDdgH6cW+6w67E/z9kBNBKocYirFkPgvyCSDYnKnIX/Q/ZG0TnvAD7F
+         1FBVNPixB1kRpj9YPOx9ZhgdQWuMay38esW4zFvjtxmyp6qUyYkH99jA4CIawn3+XJ4V
+         nAVOtLW0HwkXwLmIoAez/qoPwAg5UxaFUAEQ34K5wSt5+17ZgYywZ4w9fkkwGJ1ARRQi
+         5bt8I35DsEsoIWxOYy3hFDZ0rwntToOqOskc9zhEzf9C00ez3YEmPjl+MLhVDUp6l5T4
+         IK6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781101087; x=1781705887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TtsvHh9Pn+Rylz6+XRT7TQz3RFIWkIYkOyPrXmDgVAQ=;
-        b=AuiZaXycZZg6hbNZ3ZVdItwJqFzecAGQLEdp2uP7EOPaSWs5nFUAmhjj1psUDnI504
-         YkwIrdv7zSkmllvr+EIENjZwp/9b42gLPkX4mjScY0fY4VDOhiaTTQZthOB2H2en1pSN
-         F+GAqmOiZDxWH4P7yLOkga6prQoTJaj9EaMp1ReDAPWxTD7V09lFMsqQwOtUrjKqWLvQ
-         FGl6CiJpcP/p2yhQ2d3iwuFb8JuKjr/vpdib31d3iLLxsblDospa7ga9LBetoilT+G+t
-         GZquT8A7GaSq/KxUKuRO0awCuk7laETSswPiB2cZyuWeqZeS20ogYUbt8bA7OZFkWUd1
-         9tug==
-X-Forwarded-Encrypted: i=1; AFNElJ96o1EJO+vkH8X2upGsrgiFe/tZVVNE0yIUsp92ekiTfvfNveF9SbPkWeIwOLxX4ETW5QzjII+1Bg==@kvack.org
-X-Gm-Message-State: AOJu0Yy/gpuS9mUNnTbZv+q2x53qv/g0kB+t+QzcORjJGmoJbnEJbNtX
-	ipEjN/74t1/W61aiqRK07KAs1uJxDZZjC16cQsfLDM8LP/cdCNdVOIFEdUAUIBYByLd+OIkBbx/
-	gtOaWFgE=
-X-Gm-Gg: Acq92OELrldlP43USgmEy6Pe9HeqHLQew7NXtH/eFapYfvZo8hOyLaSTbffWAKGOTEz
-	rJXn8EfM4ZWo9OKQ+kwWAy1p1HZSgSjwVwR4AwlAa6A9qd22p30KT82uexISf0qfF3Jqu+ozjb2
-	Bx1O7WC+BPERSCxwFDNFk+v+Hy0jnFbP57RtkZ3+tYAnWW/KqyTliNNGxf90qTHiBEz4f0RFlwu
-	jDU7gDOjczIT4k7MZD7HL2Ep5xfpDcoKbO6IpGNR2W/Qjkj15bHMafJ+NNiTVQiJ3mIdSgY3XYu
-	Y7d1P6Vf99XgKmTlV1qxx2g0xYYNthc/qyTNg5HkOet7YJCvKXURjLKgnefbemjoLk4dcGawl+2
-	dMp7sC95gVA8dw4agRRohgrsNybBdvcN28mx/UhoUfbYqd6P1GWI/6/HPr9uMaIxR0Y3t+OIMNe
-	bmvhkn1W56INqx+LGME/QMfxuOk/fUDhtJGfJGWwoBl1H/dmdcmsYZ0XsWDWeUNYQZkRYG5GL77
-	tGJiTclntz1e+8=
-X-Received: by 2002:a17:90b:5787:b0:36b:8824:d7cc with SMTP id 98e67ed59e1d1-370f057a115mr28498615a91.20.1781101087384;
-        Wed, 10 Jun 2026 07:18:07 -0700 (PDT)
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com. [209.85.214.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf830b2sm21445722a91.4.2026.06.10.07.18.06
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jun 2026 07:18:07 -0700 (PDT)
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf30d530bdso67883535ad.3
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:18:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+K1xnUEiQ28QlGgAWZ5QehY44x85vRZriPKeAb6eBvKLPHkTEsY543RqG1qaB/dO4xkkcng/zVqg==@kvack.org
-X-Received: by 2002:a17:903:244e:b0:2c0:ab92:584c with SMTP id
- d9443c01a7336-2c1e8209b98mr287326215ad.25.1781101086478; Wed, 10 Jun 2026
- 07:18:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781102235; x=1781707035;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hztkJLAOrt3y4FASh5Bx2C0OqdOIndw7eniIOKrpzws=;
+        b=TsXJQ/K6YWTXvPu3nTEadDU0LCcaXOE8k4LHqzLKLT/PFmwMOsbUdxL2zxUKDEF9oP
+         oHbEm4bhV2crc/0dpTiGQS+YvYiRW1tVobAd9JaRFd0qQWsNoGAJGSkWUw8V8F2IDuO9
+         LaFaypM+nSbIw2iJSokWt9ZJ778vJcpFJK4Ew8oCtcCaIxdLjtIYY57sHy9dVN+BaXKD
+         G0aPo6LvsjCV2oaa0APE4JKzGr+gs4Z0YbbBiEtWfda/XB8YA8Fdv64hU/0lEBDQZf0A
+         Rz/mO16Tbth1ldcrLG7hOftXhJvAEpkfglLMN+CDMU4Jg3TOHUIFZActoNWvbpH08Jqc
+         fQxA==
+X-Forwarded-Encrypted: i=1; AFNElJ9+kxz0of77XQws60EoT9bOAbxpxCPQ1aFOPKZ0GH8JEiIB735y8vqrPTP5LAUX4iUrUqypzleKIA==@kvack.org
+X-Gm-Message-State: AOJu0YxMIXXLh0YVeCSVTwzO+GYVHIOZMGOXLowCRXZM/1ZIbl9A8I0Z
+	bhPTBvXCTpL2qBOsQ2MCDl7mID2Q/bh43LRuNMRa5N6jIwa7Pjz4wf5Bi04R0oHxGQ==
+X-Gm-Gg: Acq92OHwOLtUpN4QmcrHf9Uo2X3oT2G/NnMtW6YIKovQmgrgdbqL8gLroiEwkQqPDim
+	mpD4oPCTZm+sPO7JBD3DX4W1BMK4SuH8iNhS7yTLmvanxQE7bgYQPL1kKxdBF3VXh1MIAagtjH+
+	pUz1Kjoac64u+6PAFTeoCuuV2Mu0W0JDOIwwk8waztNJ30ecH9srqGCcDPskc7Ppq5Wq4FcAtu3
+	AdqjEkWalp8m2Qa6OhRRj67U4bSXunXNqNrYs/ciXhHnunfwu2xcA0LJIhasRnIQmE3nWWSDLI2
+	zxM+88iwjXzrXfX6oUXFXnHvQOnn8gbv2YahHeZzFYJ6vf1BSDmZPgnxkiL1DIITpdqtX7gzgdI
+	FcMsqycQgg3gfXGV9Qf35o3/tZhU/bdfoWlCdW6ERhxlJJAIP0XMywfeomZdsNzs1SoSvNrQ3kP
+	/j80+FND8nf88qm9sjA3Ea8hYYoSOrmLm0IhEqxTiumZfmMLgLXYfC19vv2KQObHJ2sL229Qw=
+X-Received: by 2002:a17:902:d4ce:b0:2c0:b1b0:376e with SMTP id d9443c01a7336-2c2d936f08cmr13905ad.8.1781102234239;
+        Wed, 10 Jun 2026 07:37:14 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842828821c5sm23191040b3a.32.2026.06.10.07.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 07:37:13 -0700 (PDT)
+Date: Wed, 10 Jun 2026 14:37:04 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 08/12] PCI: liveupdate: Inherit ACS flags in incoming
+ preserved devices
+Message-ID: <ail2kLnW43fF_Sqa@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-9-dmatlack@google.com>
+ <aiXWmR-ettxin4LC@google.com>
+ <aic6mdiZ0qUJpFca@google.com>
+ <aihLTgs1Y49OXQaV@google.com>
+ <20260610000704.GR1962447@nvidia.com>
 MIME-Version: 1.0
-References: <CAHk-=whL0oLvmh3FO9SapDhgrXMT_d6qkP2V3OBjysOWXod2Og@mail.gmail.com>
- <aijyuX14ahOf53zM@gondor.apana.org.au>
-In-Reply-To: <aijyuX14ahOf53zM@gondor.apana.org.au>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 10 Jun 2026 07:17:46 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjeLy2n9H82_THob=wzOEfsQT_yP05ZH9qY7NTWgj2R_A@mail.gmail.com>
-X-Gm-Features: AVVi8Cf89LEbA8IWp6kUXfdfvHtLXSvqRDQpEPExTR6LsZaq3LaagKRbHX8i3Yg
-Message-ID: <CAHk-=wjeLy2n9H82_THob=wzOEfsQT_yP05ZH9qY7NTWgj2R_A@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: metze@samba.org, luto@amacapital.net, safinaskar@gmail.com, 
-	akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
-	viro@zeniv.linux.org.uk, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 960EFC000A
-X-Stat-Signature: kqsoyto7yqpsnxhhrj3ks95mn8ibq9pj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610000704.GR1962447@nvidia.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2E646A0006
+X-Stat-Signature: grzs18o4r8c1fdye41or9ezs4rt1x6zq
 X-Rspam-User: 
-X-HE-Tag: 1781101088-448694
-X-HE-Meta: U2FsdGVkX1864/24AVoAoh+7tom8LJHXtzwt9gp1GB0kFKPtNm9o/zTbzyLe1Tpd6pGiKFVOFMT+RNubeepnurm3Lk7XzGtG8E9Ek8kdGZ0gILswtS4bIcTNMFz+r7ZwO5hUpOxZIWhOXN/3jlPPQCY4kja1CB+wUIOeX2Hy+Cl6VKL7AABcK9fSCfsx3+2ULzqGJgpCQDdypZPx0qjE34QaJlg8W5M0Ri9rpvgDl6FeUuAggd4SbrgccPe0dVIDOqiXQ0K8UKaEZJ1mMbasmwM5hTUMQAZWi0/A/scqo4Efm23WFGK/5yf7zp3aLqEEyTGeuXRh7e1vL6vS4M1NPxDH9MDRYsrsTokWPst5X5WHyOraAJoqdXoS1MiAJ1fIySWSbgoOZEElSOgO0E//IYnXNesrTCpmcOH93LJBd5ytlzxgUnCcDU59KQqUV5mB9tNulBcZi6qsgdjTVcOi60W2/MKYYv8M2XC61fpCniYA+eDMlAy7dsO/KILRxY0/8gY5yYEsmgboWtoQ9H0RIaLPNIeynjUXKCZvdYuJoylGDgmYvLqSNKrkoX74WcArqs4KGfvWVjW7rM2zHo5CQLXpc9OidAv6ZcvTjSBLI71W/0frWBtKhVwbDnfBz578NtvZHLNnRALfKFBOAX7sPAPI2Zf6mKfssbUTib+C7JWhTCPKpd2Zy0OJbFZaljeZ10AfavkxwVwZsuFLMxltxZbeyw5jNn+4hoKN6OKfs6968RApDF7M0U0oI62JvA/yeRuAz/04CWDhKEfJHG7e1CUx1d7r5NFS0g8W4MmDbnrzLx8Bf8M3msr6MR7gZ6WXgKsDs9UnejEpa/H5jsnNupdITsqvdOssWEz05TIWRTtjdCShO2gn226wURppAa+IuTc5uZjSt/Q7F5qYXsR0iRz2IpBWXdNBOXKQEudQ0rnQB9MEc2u7TGYnX1HK0cUbx0cMFPsdZvdrxogHmza
- s4GvY35K
- 4Sr5rAzYkTGpSifUBtDOUgNvVwkMdjDpG+5Cmu4UTdg2sV3/KFj5NuY6ygDKV3cOQFVR9L0BSHLchWLjyteLkXSGCrE7Qb4J54/tcodkHAdgMB1jcQDfvbBYGdQeWoDgPyANDoXko+BSEbjGiZXab25IIpw9AO6yPFV3BBRswiipuMsQHeEQWaj1T/z0KMFcPcPmMFJZlxO9r5uhKr5UJWZxP9Hhv0t8uE0X/1jJmnli6if9KphPZcG8uGzp4Q6U023fVhFTecSrkSmFl1qL2rg8y9D/xI5uuI3m1eMd2O9ohFSTsvPN/MxlUBx0Fhy15emSifns2RFlF07NCFJaUjn8Yq6gvD40vh4KmvEc5NpdSQ3eBwA6p8vxu3SREg2VUyQrmFGtYOz2MX4jHWIVeqr/gg1iM5jMWPYEKdMbT1dlCFxY2clGgF0H4IlTL2+hwACNBvuDTBmuOk8V951g7dsBVP9RcL6LdDAPcCemrXKwso+PBb6647nrYQAUJ8DbEw6l7P9O1eZG9GNuipv4Nrqo+RWRRfRlL2UduIjdz4lIGokQgNk/nDS3F+yQ9QtUqr0pM
+X-HE-Tag: 1781102235-19383
+X-HE-Meta: U2FsdGVkX1/MFimLkeJc/q/1oQxYlmu/pLlOcGWJOms4jT8IaAQBm2SBvCtVI+BozD1RAa9OTEDhnjCaK25ca6K+mjgQRYaALHuikCFO3Eyk/Umn5n+WL1UADfO/MDHxSokYLWwd6u2h1mvsM0fBY76ER/qivio4Rqv+UUBmm6mvY3GnMIrikhD8GG7NGNn7dcTbB0fFidsxPY7o6GyT45ix0xO9eQicEn3wch5spoJEVEG8MoW3xlpPyWdIEQ+v/fUzHYdtz8ETz+wrDE5AgynSroqmy2kimAfRIKRJ8qc1bNAibFOxn2eF0HvfuBqmdrlUCC848J48bmZhO+4JqPFKi3BskKvFgCxdPPwm+nYUHoz52+NrkIXGlZ2UhDe/lt4uHSfZEYZZ3xUnAbqj/z22GKmolt4yoiB6gHr3KOtI5u8WbaQYasoZnn5b0G7vXF7Gc0MDG7nlAKjWCb4RfpZ0Ffp9P2Q8KyDIxQMALqPNyyMAWBV6VnOIaeugZu8WfG4gF9N8XwMzBmNomLbtJjV+DdNRONsgQ1uAsxJ31vx4XO0L5R8EgqvFqkzxmHUkyg9qht2zzAB0oUzafwOvJ0tzrhRD7vd5Zj6tPMwTP6NwWYdypixQgmcj/tEW3vb0ksWVJUP4TsE4hty8zjaH7xX3jurwayW+Nrm0aTK53B8dJVpNaMxEzfl5IPA2g1IxogDgwGu6ckEeG17yOyAWTLQrhQCpw7fbxBuTUtgF46u1MXSuqQUYd7Myo4Ns7+Zzu47Sy4cw3OluozHzCnNgipUK86PqKxhxlG/ou7GfnGCbxacdUckQ6DQbGhB5ERjvWyQHcJs3C5oPq/NN3+VTF18CTQVKduzVLT5EwHhyIGHSNkiT8EyVWLsLS/tMwHkMpHjWC/qClHR0ujf1cQG1v2IrxclhIG9mOJMl1qb08F4qU9vDdBaz0E7SGa0fy+I2JyhlxqxVrIGjNxVfRNV
+ Dz2eWTLn
+ T9SQtoyqtWgWFzkPOLBsmODcLUdvu51EJqrS/Wba5dKWwyEKtbzaIFPLzNJZhOJUt5iLEDfEMxhw/Kncct8E0yDxSG/MbjLpZqljwoeTIBGiFLfCDV3aUQaOONUTwew7FqNeM5TuPGfrzUWOJwrGCbjd+ZQb7nQwBk2s+cctxlrF1+DdXr0/xnSB3maG+X5oT0ypsX95nIsvPvHzJgtlEM3eCJQ+hlI+XujWFis/H1tIuVTfsZx53w/XiGqBWgFBS10u5yjKlagM6E2A8SNMC9JXaRE7H2mhLJXgz370MhDijNHQGJ6T7xMYgCqK+/BL5o6ZFR81QBNZoileZom6a5711mSXjWAJ50CUrKkG0FPnGPer6wC4JxzDnTIcLwc57fWkEEY0RtLTsPVj4kWRm3k0sq1r/RoBy4A92Q8Uu1TIn9xJWv2yTLFJ7MafMQesw6wrX9OHkfQwHmEzqYOKut1KsS4WZ0NGWryaY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,39 +139,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 9 Jun 2026 at 22:14, Herbert Xu <herbert@gondor.apana.org.au> wrote:
->
-> How about using write access as the gate to zero copy?
+On Tue, Jun 09, 2026 at 09:07:04PM -0300, Jason Gunthorpe wrote:
+> On Tue, Jun 09, 2026 at 05:20:14PM +0000, Pranjal Shrivastava wrote:
+> 
+> > Now, the attacker has an opportunity with Liveupdate, since the devices
+> > are already assigned, if *somehow* it flips a bit like ACS_RR, the
+> 
+> If this is possible then your environment is already security broken,
+> no need to involve live update.
 
-Well, it's too late now - no sane user would open files for writing
-just to read from them.
+Ack. Alright.
 
-And if the file isn't opened for writing originally, it won't show up
-in the fd. So we'd have to do some after-the-fact "is this writable
-using the credentials we had at open time" thing.
-
-Which we do for some /proc stuff etc, but it's disgusting, and it
-isn't how any of this should work.
-
-Plus honestly, in any *good* setup, the normal case really shouldn't
-be that the source is writable anyway. In benchmarks, sure. But in
-real life? Hell no.
-
-If you're doing web serving of static content, your web server simply
-should not have write access to what it is serving. If it does, your
-web server setup is simply hot garbage and probably riddled with
-security issues anyway, because you clearly spent absolutely zero time
-on any kind of "minimal privileges" model.
-
-(I'm not saying that splice would be primarily for web serving or that
-serving static pages like that is an interesting load - I'm using it
-purely as an example of why saying that writable files should get
-better treatment is crazy: it's not how *any* of this should work at
-any level at all).
-
-So no. We should not treat writable files as some kind of preferred
-model for performance. We should discourage that kind of behavior, not
-encourage it.
-
-                  Linus
+Thanks,
+Praan
 
