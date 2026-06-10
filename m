@@ -4,95 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57937CD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 19:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F7ACD98C5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 19:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EEF76B0005; Wed, 10 Jun 2026 15:38:40 -0400 (EDT)
+	id D5ABA6B0005; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49FDA6B0088; Wed, 10 Jun 2026 15:38:40 -0400 (EDT)
+	id D31D16B0088; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5966B008C; Wed, 10 Jun 2026 15:38:40 -0400 (EDT)
+	id C20286B008C; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D0086B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:38:40 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2BD5120283
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:38:39 +0000 (UTC)
-X-FDA: 84865015158.18.1D37473
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 50E4980009
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:38:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MNkgL23Y;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B37436B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:42:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DE731C2362
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:42:55 +0000 (UTC)
+X-FDA: 84865025910.29.F9ACBD7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 51C7E1C000A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:42:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dsgeVa7B;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781120318;
-	b=Zs1UHOvU/Xa8dPYluCpL6ak5aFJzwEcYsUk3oq4SWWsgXjtR+msgLDE6x81gQnB8zrU8Cz
-	yNReO1U3LaQYoODD6B3DHuUMW0PB4seHe7VBiIOXFipXkSW3lDboEn8MM8ETglVBCG/8DE
-	RvWfFq1kJqm4faNa17f0YwLexMf7JI4=
+	t=1781120573;
+	b=gTtAX0HPJku9zwgiYxqz1roZJenKRT1u+foxr+1fqbIjU2Wf2SMGL5YB1xd3k+5D2IXj4L
+	QY44bEoW/efkxGO78cEh2VRBfaA4HCyMEeaWrVD9f1vRBvM4jneR7FZLwyXelGWgyhTqWD
+	TIdDOEsQi9gNGX6QwIsoYcUdnlFMZJ4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MNkgL23Y;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dsgeVa7B;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781120318;
+	s=arc-20220608; t=1781120573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NlqXfjmgJLP/Q6k6kAvLcMiBTA3fQFMIe/Jy/ZMH6YY=;
-	b=GCzSG54cWkraoGgxjY1q1gWV+50svVh4M/aI0g4oRpdh6sENdHDg1q5mGpaOw7jkCWCp9X
-	UrNkvZQg5ylFY+MgJK+a3qQ5qXlPGudR+6Ymqsuiak2h8zsCldDhOgpx6nUoTZ1R0dG2pa
-	NbfMjoYK+tYfO1G9LlkP3dkQYTmZI04=
-Date: Wed, 10 Jun 2026 12:38:24 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781120311;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NlqXfjmgJLP/Q6k6kAvLcMiBTA3fQFMIe/Jy/ZMH6YY=;
-	b=MNkgL23YGeQs7rdqJ/NzOA1ozu1wl7Gki/fXyrtzOFf0AN4RNNuWsTzbOH/GeE6KBpRGnV
-	pLqAUiPCEabrG1q+3xcmO2u6AqNjiIRcj6S91RWnhPUak7RKpy/MFyh/K2Av0p04RczBX0
-	N/LgJqjNapYS99MxamG+tyqk5sa1xGw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: JP Kobryn <jp.kobryn@linux.dev>
-Cc: Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
-	willy@infradead.org, usama.arif@linux.dev, akpm@linux-foundation.org, 
-	vbabka@kernel.org, mhocko@suse.com, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, kasong@tencent.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/lruvec: trace LRU add drains and drain-all queuing
-Message-ID: <aim8zKzCH7p-6v1h@linux.dev>
-References: <20260609041156.31127-1-jp.kobryn@linux.dev>
- <CAGsJ_4xk2Q3xTkQYMPb7rnvnvVsjp24uXRcOja5RxqSbQpdoEg@mail.gmail.com>
- <3e55e520-b979-4b1c-874c-3b4e5ca629e2@linux.dev>
- <d676cf78-4b0a-4d6b-b322-f64826aaca75@linux.dev>
- <aii7WWFmAyoXn9rk@linux.dev>
- <6e7739cc-327e-4ca9-86f4-17729b624632@linux.dev>
- <ffdf9b07-487b-4668-a91b-27b0ab29c70d@linux.dev>
+	bh=58bz1zNf/OMQJBgfzAHBVSCsX9KmSLxmT+3J1ec1tiY=;
+	b=Jl6Ds5QuWcY1xWEfd/682USuepusEOd+5g/Wh14c3eJS6MOGssQp4LUlS79DPOTaawkVVQ
+	UcL/xjm1kP4tHJ/WyjcxDVZR88hm8D4zi0DfCrxoxsW6jNwY/7L1XW1siadNMvjHxD7+6j
+	OAp26hlcWNzG7CbUFy0f3rajfbnkDbI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781120572; x=1812656572;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dP4HXRIDYUSR15Nwgds/5wXJm0luZvRegrcYrhnfNy4=;
+  b=dsgeVa7Bkc0R/SJuoEpX7xkdwwIvOupnbyYT+Wi/AohkLjQLg+wb7Dfm
+   /RghFr2p3GPDgzVVCYkZ/T+ZjAN2MDi+veStU5o//qHcGgxwrQIWjfqIS
+   CUlxag0gdlCxsjfA1o8Uxh/mROv9hkZ2iCy1M/Mn44d0lXNkNSczyS7SE
+   7lJMmnGml6feyXJ+jAp1zLXsUcDzcXEtj3hiGfZmLMjaYqvdjv/DNpi3A
+   E/28KmTd1VV7BJ5V8M2RQxSR3D1h+7pnZBwzqg0ny5ULavjgizD8hesAJ
+   sRbxJ6vuHtvlObmfsCvoK+E/3Ah+ZBmz223r+9CovfRv4XXjO2f3DW0Fk
+   Q==;
+X-CSE-ConnectionGUID: gTaZ8c//SWevn6+oqTnmPQ==
+X-CSE-MsgGUID: v59iub8bR3mKsuHuyLJuIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92243800"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="92243800"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 12:42:51 -0700
+X-CSE-ConnectionGUID: 3jQBOfo8Styw2yrTc2+UuA==
+X-CSE-MsgGUID: h4L2fMvHR8umsHN+MGctDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="241847089"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 10 Jun 2026 12:42:48 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wXOp3-00000000Lq2-2zVn;
+	Wed, 10 Jun 2026 19:42:45 +0000
+Date: Thu, 11 Jun 2026 03:42:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Abhishek Bapat <abhishekbapat@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Hao Ge <hao.ge@linux.dev>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>,
+	Abhishek Bapat <abhishekbapat@google.com>
+Subject: Re: [PATCH v4 6/6] kselftest: alloc_tag: extend the allocinfo ioctl
+ kselftest
+Message-ID: <202606110300.R4LPBVBO-lkp@intel.com>
+References: <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ffdf9b07-487b-4668-a91b-27b0ab29c70d@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 50E4980009
+In-Reply-To: <d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat@google.com>
+X-Rspamd-Queue-Id: 51C7E1C000A
+X-Stat-Signature: i8ydfu4nhnkhbmw67xip7bmbabqhzipk
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 5dymg6as38r8xa38ucfuamcpcpng4dr1
-X-HE-Tag: 1781120316-341397
-X-HE-Meta: U2FsdGVkX19xdRSeKs2KgaJ82y7zRvXv9dbwy20l6fBCPhPNtyJrG6jvIFIItmJfms0uUKJZ1hLel+Ib3PH/CKdHI91PT1hoXLXPo81TSLgsCWqlwS8IZB460hwJ3EFo3+FbaKX00RansoxYu0krdEBSl3yw8+A7LjlFma8lTXKGkbvu711bv6/kN68Zl4x7hFWryYq9NY6+AJlMfNXwqBZzeo9V7g3j8d+fWWI6Xnfjr/alLKc/uDsTIQZnScyrYKta4CXmid8PHqA48eyNEJvz8HVx7celKWVMNG974JJFRzi7sixLiQKKDUp9WAIUNOCs+CMGOfQLW6xlHK1ju8nskUn3Re2GWx8yWCZJMQn1Uj83q+WoAcRGXcb6OAphs8I246RsFY6aTWJA2KD2fhkHfiQSSK9L8nDvnU1HvWY7YqR5BaDWUFY3ew8kAKcKsMaPyzY4z5eXwsCPG+izMZd7yPcrKjv9OcB/SIzu9vIIPqIhVVUdPmezPfc+Xdti1vkDG2BL9fJAj6F5hlMoy+cZGflX0my/V1UXzTkufzyUK0hmVKoxD0DCh8zTWbxeJ4Ja2Eq7vnttANudpBOHz+bbO4LrLRCRfv6Z5vIThGVo4dZGdS8u91/xTUe9DJ1lcgOQHqlhj1Lm9QGXIAVcvP7NUKTcwaJkjh7jrHYy6irjwbEMaK1BASVxCAHSYC/Kitg+GsgUBD61lFuF/1XtnnC1wh/ijDYndfrG5ku97ptOQfA2dZUDi81yAk25T8nJPanPPtOHMIlNDWPAKcxL+Q/teWBurpa/GJZQZ5m50HQFRqBxNx9ODLK82r+JRnV/Uuw1yUFyjVUw6a4MYRv0Ozo2NGgBeFRFdnOzhp+dVd+1+0ZRqNE16dZMhcNXbIQxzOQLQRJRnmcuLGkrbXRjuAABF+bgOgwFBPit+2emrbzbR7LUchM2KCDMJJqSB8Cqexe8YewFSkkFF+kCjEC
- JX1anddw
- 5lPIy6Xw9yEeKuFHlNSYHWLTzwAlaQyaea1eOEvqtA15XQWgv7RXced9C6SEyerTMgTOHhQ9EF5ZWGj2xzoZ2mS7CoXk1/mzzS8z1zpy1Wg0pHGkHFq9/9RSQjABealrCkpQFJ+4U2M1G0jD1kTsgNmlrN++o47enWDnPePO0YeaQ1tjcGxxFpvrJKMHwTFDkCp+Gt/PWycR18ohyjS15JiHmTs/wjgfT/+NMIWmNAfTwbIU=
+X-HE-Tag: 1781120572-848224
+X-HE-Meta: U2FsdGVkX1+L8V26TIC6/jAwVgp43QkGZ7UgwqMMG9iaaP47z5mQE/wSX0L5qa2J0MEBFasFNlbnmgLU5ot7W+eZxxG8wbiR5pBY28j4w33TVCqJGK0i8H6X07KvyUwz8nTaXLmZlA8FyIYnB8kpLCE4fbnsePm0tvXP5xYWKqZSuCBFlHc+jPpo5v9akuHgiyqFG+GZTMkei8r+cfZP8ZQKBB75/JrKfQHMxSG5duBiOl+EYteJcg4Pxha17PFDJzZu/srJMPIBOiUd/zQQ3qryLvPd2JABMm8aurjpZiALe508dIUyIsBUL6xR1KhUY+MI6WeCP/MgBfiHAg1KaU4IHTbOOL1ZnRumfsVv+3MGCKGTRhVE+xXPlICrtSmuEGvyRBljQC0NDnGCYB8JxKseqW3GR4jV/xfXtFiV7swfLQhrrkSgI5nKkz0MFyGjpN+sDnZ1BdGDnPDO9azJTo28paDQJ7xcXLyNw9MZTQXj5OzeOSFd5OzykalvEyZ881PgvQjBzZA920cYlmA2O2Lea7k8kovPXVWomluiFMQ52DIeEHj2LX2NxAOjbvnUcxc1UZxx97jEgD4lasBUx2HHVmlmwegDfaNDQEae6GGwg1QxkwdOHYp8R+cUp3UHr/+oWpQa4usAqhbExstrv4tnYui0X5BTHoYerOB8tfXsg+szAHq0aCRE0j2Zd6iMkRowQ8XFhV6B+guQiGwxuEoAZ+mvOm6KTfTu2+g/N9tMymSxWC6zqMTbrigD5ULZEzqv+1l2gMXUQtyi8PHJI0X8CosEG9mI02OvHY6+LmM+rYsUCbiefPPiZ9QsGC2LE6Q2vE8k7hi91Vro/HGMlAoRRtbtu17gCOqaVn+SrF4YuR1WH4B+3EMSl3xMS50tvqlXGZmWX1pUwoEgPG8ZTgNinI/eL/pck5W9mSaC28izj36majfJV0Q+CC2ME8lV17BCStYZeiIS46UwXcm
+ oYgIWro3
+ makWKZs226Le5O1Z19NAqFz6HvfWlcPxsQz7KNMN9h/9D+JXd/nIqVXI/IUMb53DLcfGuuFEN2W/K+WjDec3YW99aaeKoXnpiFbn7+UuhZSnXErig3ZQxXvEKOQXCbNX9l2pTpe5rUmhO5EAW+sGOyq7dU/32P5DS7bJsXOkt9WyjsiDgz7eRoL9gh3DKsjrMHeX+ucxdjhWa6bd1YuEMQznR63z+M4PzsZU1MRWKVD9PyQ5bySf2fyxgzaWyjVycjaAwDQMKHrZ4AT2lwIKA5OEke8ZqFXieiH0stz6XWK+aXxpmxsj5/aM46g44OLvNmDthBn9+V4TDUk4bhATplAt4KimWcjoZIwndkf2G+sM2aKCUzmW+2SU1Q3WM8ZsauR3tDkHJSl2VOTBaUwrSSBa2WxA/m77U33A/8vK5NV9nJ1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,45 +115,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 12:20:19PM -0700, JP Kobryn wrote:
-> On 6/10/26 11:54 AM, JP Kobryn wrote:
-> > On 6/9/26 6:21 PM, Shakeel Butt wrote:
-> >> On Tue, Jun 09, 2026 at 05:16:15PM -0700, JP Kobryn wrote:
-> >>> On 6/9/26 5:07 PM, JP Kobryn wrote:
-> >>>> On 6/9/26 12:44 AM, Barry Song wrote:
-> >>>>> On Tue, Jun 9, 2026 at 12:12 PM JP Kobryn <jp.kobryn@linux.dev> wrote:
-> >>>>>>
+Hi Suren,
 
-[...]
+kernel test robot noticed the following build errors:
 
-> >>>>> Do you need tracing on each CPU individually, or is tracing the
-> >>>>> entire __lru_add_drain_all() invocation sufficient?
-> >>>>
-> >>>> I think the latter would be fine. The remote work will invoke the
-> >>>> mm_lru_add_drain tracepoint, which will show up as kworker stacks. Since
-> >>>> the event already has the CPU, we could see where queued drains actually
-> >>>> ran.
-> >>>
-> >>> Actually if it's just a single invocation and the only event data is the
-> >>> force flag, a tracepoint may not even be needed. Other probes can be
-> >>> installed on function invocation and read the single argument. I can
-> >>> drop this from v2 and keep the single mm_lru_add_drain tracepoint.
-> >>
-> >> No we do want to trace the callers requesting to drain from all the CPUs. If you
-> >> trace just lru_add_drain_cpu() then you will only see that the drain is
-> >> requested for a given CPU but no information on the requester. 
-> >>
-> >> Also as Barry said, I think single trace for whole __lru_add_drain_all() is good
-> >> enough.
-> > 
-> > Right, but couldn't that already be done with fentry or kprobe? If we
-> > only need the calling stack and the argument value of force_all_cpus I
-> > don't see a strong need for a dedicated tracepoint.
-> 
-> Nevermind that. I see it's declared inline so I'll add a tracepoint and
-> send v3.
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on next-20260609]
+[cannot apply to akpm-mm/mm-nonmm-unstable shuah-kselftest/next shuah-kselftest/fixes linus/master v7.1-rc7]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks. BTW even without inline keyword, compiler can still decide to inline
-a function, so kprobe/fentry are not always reliable.
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Abhishek-Bapat/alloc_tag-add-ioctl-to-proc-allocinfo/20260610-081508
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/d0a8308b4d0799876d24461a8ed9b5a71d3e1e89.1781042698.git.abhishekbapat%40google.com
+patch subject: [PATCH v4 6/6] kselftest: alloc_tag: extend the allocinfo ioctl kselftest
+config: sparc64-randconfig-r061-20260610 (https://download.01.org/0day-ci/archive/20260611/202606110300.R4LPBVBO-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260611/202606110300.R4LPBVBO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606110300.R4LPBVBO-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   lib/alloc_tag.c: In function 'allocinfo_compat_ioctl':
+>> lib/alloc_tag.c:346:58: error: implicit declaration of function 'compat_ptr' [-Wimplicit-function-declaration]
+     346 |         return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
+         |                                                          ^~~~~~~~~~
+
+
+vim +/compat_ptr +346 lib/alloc_tag.c
+
+   341	
+   342	#ifdef CONFIG_COMPAT
+   343	static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd,
+   344					   unsigned long arg)
+   345	{
+ > 346		return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
+   347	}
+   348	#endif
+   349	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
