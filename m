@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88066CD8CA8
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 01:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5FDCD8CA8
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 01:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C66666B00D1; Tue,  9 Jun 2026 21:52:21 -0400 (EDT)
+	id 711396B00D3; Tue,  9 Jun 2026 21:53:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C17886B00D3; Tue,  9 Jun 2026 21:52:21 -0400 (EDT)
+	id 6E8DF6B00D5; Tue,  9 Jun 2026 21:53:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53F66B00D4; Tue,  9 Jun 2026 21:52:21 -0400 (EDT)
+	id 626996B00D6; Tue,  9 Jun 2026 21:53:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FDFA6B00D1
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:52:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 444641407C0
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:52:21 +0000 (UTC)
-X-FDA: 84862328082.29.0B26AB9
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 63AC31C000F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:52:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nY1Rvv7u;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781056339;
-	b=8mWh6O2N9cYSLcYHJ3I1c2WeXzbSZx5+wiMTBbFxrtLco/GhXSXlynbREXj7Zmd7fOBdCi
-	jmpFowT8u8HtcdcH/RWTm0LBQv1j0pEwfgwpdZ69OtjKPlm8CF2cteBsi0nPla0VDjlnLc
-	Gft8FeDsi4JmeU6w4C2abTk7Sn0krt4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nY1Rvv7u;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 51B5B6B00D3
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:53:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EA681C28D0
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:53:35 +0000 (UTC)
+X-FDA: 84862331190.28.D75F4B3
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5A6F9140004
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:53:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bbsvwp/d";
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781056339;
+	s=arc-20220608; t=1781056413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6oscucqZTI8tSihrRZeF2fgG5t8dL22gX+gkmV9L8W4=;
-	b=gWMlnToIRMesUiZ8V6nwWvFSvTRE2QwitLdG1IEDRvzYy0esx3cF46UYgtpkzyKXhZ21oN
-	tBGq4C/8fJwUgRyyRurR8lXKnLQlQ5sLX/SwrofKBDlU/fO0gxui4zmIZoHh7VzWURb3AZ
-	5UgnZt3kyazTwnPdI7EOZIDZ5xC/yEY=
-Message-ID: <82057285-60b5-495d-a8f7-c05635155138@linux.dev>
+	bh=FrmWqzviIqBB3IDNdu15PDEAaOUICtqvo3B9Gs8vRaM=;
+	b=VhLEzRMVqgQAsMUG3N6MXlb4T7mvFPoyE/pdaxyp5YHxo0oBLARg4NcjrWKJ3jU8oCSQFH
+	tWlZGTDo6xegbw6XoZFTXc+QljPfh80Um1uTmzlzqp1dNFOGnvv2db5CFM0T1WEfG4OOw7
+	07hKlm8i6YP+XoV7j0NgV1vt2KBeMYY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781056413;
+	b=uAgjplCWb5hhnSs1s393iP8gTw3cTmVGBvzvCILCw4yw+X2mV9fBGqQ5mOMul4pQZ1Ylgf
+	1XYt7bhYOUsHqQAgbQqc1mR3MHOf2lvhM69MXi5VdMrTfNh8i6jp/tCHP4AAP73YqZsdR6
+	+dprwilXNf/T/asYkxrNASbCpbq/+L8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="bbsvwp/d";
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <c7a83b2f-ee5e-4de1-807c-311db839b4d5@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781056337;
+	t=1781056410;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6oscucqZTI8tSihrRZeF2fgG5t8dL22gX+gkmV9L8W4=;
-	b=nY1Rvv7uawJYgbbdUyiyZq9VfwnkTI3SugGnKRmXoIJzTVcizL3U8XZdmIOYRRKFBMysnc
-	cAWdVah2fFmlLhYO0nlTTME7rRatZoleac/jBspH/obwuNEibBznGKklVxhho1e9qNAuI1
-	lS3aG1ZxLLeDUa24/iwZ1YSDJ+K7Hgg=
-Date: Wed, 10 Jun 2026 09:52:08 +0800
+	bh=FrmWqzviIqBB3IDNdu15PDEAaOUICtqvo3B9Gs8vRaM=;
+	b=bbsvwp/dxTTGFU3RSHnkuoHl/y+d0uyW4xm7CWNpqBW1pML/tXksWqhJhsHBKFqph+sFH1
+	VUw2Jhbbk3xza8B43C6LX8sOiyplrt59k6ZZYcMcrt9rkM/VF+k1vNX9igbWdCfqr9KFh/
+	KJAYQiN60SoRDXVMnxifP1B3OyY5p0c=
+Date: Wed, 10 Jun 2026 09:52:52 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-unstable 1/1] mm/khugepaged: fix PMD collapse swap PTE
- accounting
+Subject: Re: [PATCH v4 4/6] alloc_tag: add accuracy based filtering to ioctl
+To: Abhishek Bapat <abhishekbapat@google.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>
+References: <cover.1781042698.git.abhishekbapat@google.com>
+ <7f3a4ddb3f132464f17716eaae657a6367d6dd05.1781042698.git.abhishekbapat@google.com>
 Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, ljs@kernel.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260609120443.71864-1-lance.yang@linux.dev>
- <b2d0cb7a-15fb-4b29-b86b-795d5b904a9d@kernel.org>
- <71507be5-8430-4a3d-af80-6777a421565e@linux.dev>
- <20260609115610.9a62a2dbb814bb9d5a19ac2e@linux-foundation.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260609115610.9a62a2dbb814bb9d5a19ac2e@linux-foundation.org>
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <7f3a4ddb3f132464f17716eaae657a6367d6dd05.1781042698.git.abhishekbapat@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 63AC31C000F
+X-Rspamd-Queue-Id: 5A6F9140004
 X-Rspam-User: 
-X-Stat-Signature: xssnzbq7gbq4e77csgtcgei849j5b57g
-X-HE-Tag: 1781056339-421664
-X-HE-Meta: U2FsdGVkX18V474kfEXwmy9JkF61NfOI32NqAd0dxOYJqEL3KOfWR79Qqjop4AhdyTUWbkecy4Jdj9oY7WgjxUeFc72JWnS3TW4boDdITrMxLhnE/eoHIG3L6lPb54sSQbdx8PVw+aiqnacGxJy4I5zRyPBy6H9T7hT8JX8h+Tt24Zq7jb8N2Hp9F/8Y8euGHnv04Ej7Q8UYDikct4jfGYDgI/mgSQryO6KmEEmlPXu71y+tMpJH7t1U3u1r5YtUHDM/xWz4a08yMFZpDGGYF070Cz3kySpWZFjedGSgvZrMOBnMTKTDDxhr/l6sXDp4JGi7XNX44Tm5RMWo/iDQGt0Rrba5Qz/mlO4fBsb9avOdh2ufrzbR1nOuA87o7DsaHM8gSyKDqjGZs53hgLU/9lkdsaEs//Z2AW85ZO0QMQdm2MtMOdD2hTZhLob9aOzUA53yuN5PQOdO+Lmkdj9H296FlrNsSOpA3GZOVv+OX+dzV8NLd9cwAG8AfEitApL8laA0X//WAzScQgRMNDUNWeP69cEn0I0fIyLii8KY4V93e8jLjJhYgQeNByeEa2/r5WfJ5IUyJrcv0gOUnjC5NoVw/zklPPJSP8bV7Svx7uuQtANPGYeWJWwrA26NTrMQhQROOf45hPBthvs0KtgQcm25mOEVacIE72hJklJYR1TiYngCzLr04huZZe8FpYtV2LEpOIlFtAaH3c+8OUUSsxycw8Pmq6QITyT6wWhws7896ZbExU1zIJWyA9NLfaUxFCZh+sp21drPsgPuZhMwkx7R697/pvAUDfLMLzVpGrr1OFa8fa3ZjlbtXfCQiJbt50GnuQv0uiipc9zm/9Cj9RBuDVp2LmeT6OkIcl64B+qFtJKuDRZt8k6iyibOMbEXirRUXbhMpeHyhetC0jUBJ4PKC3wqyY8LJ7L+mV0fnZZ4MEa8sFOs4y8Tr4wwSxgfo/i1fKKM8qwWM76r+FT
- RaVDY8N4
- /aktO9enSRcJX4o2wp848N1ZKCDtoIKVb+ylJa2Ctf8EdSsI2VHtVA6dlhNZHXj0F3ivLxh2678/ADtgTUuZMvkONxfjXiWgHK89DTVGAxGN3IfNnhMrsxb2qfixjyt20b/CfYCa20bfJyZFklArunqm+3Sww8IztBQoLw7eVCZdN0HTh50w4nC3P8CctHvy4RpOOl6lzKmH40528jy+m8bwP0g==
+X-Stat-Signature: fkiut6pikjdjedq8mtc6w7i99fkk9rix
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781056413-444309
+X-HE-Meta: U2FsdGVkX1+agD+xBxsYCnaEG8xgwbD0QoYx0xvb2gxjR45tYMjf+Cw0xa4mTNX5d2ZPLowCzqhxmS1EfVVaB7RSFFHD78jGYM7ahMTE3aiXLfqUUtpcoxiwVupIZKsnw7w6QzRPFgqUsiEMkmcZzMtWxYstVjWJ5r5UVCR9gqVxQzayYT10yK1tvrioK3+lg90WsCK6pDOzwtq9hOawKmuv6pgVD8mSWTsXrgGNtIJ2iuh0qJoVEbtOcMr47KYukGWpPdKl21s+LCIDk3Qq2VDDk1W9zO430u2fNRRBoi15DGxMW+pEWNQ5RbPpW0TUQHvR/d/SuQwelzJU80IqC18f9UoRQ/jy4C8BF4bwgLTuS3OMlvEd7Ikyh2jVg1j2HjJYLTx9rK/wruw6wws76KdaSn91Ma8QfrSPDCSGg/xfXbE+hbfJvEKOE/2oZTxwiTPdWZ4c46Ij2x+jrkBGUcL1ypH4tScizaP8MFIVdEPz/Dr/k6Ku7i426LP6WxItqVlkR/pkTJJJnWeB4ASheluIcBEd7RMIPADgYvCZs4syScQAutSBGFPHGdzfODXwByqpcVbez7vMYKZKvZ6OkhoGATRxMZcvgbmWvixhfsCozFgrnjFc1vYeNbRwrMZ7SJ6szWhzAAwqdlgZypV+L5jz9ms8GSykLE8aRH1yJ23mEV5l/ApQg9bOoCQuYIfNsDx9mBb16YumE5d402n0PX1n3W03Rcju3el1fSmwLm3pS0R38l9yDWpPdTfewpQguaZUJ5o8kqkH9LcOk8Bqsi2bi4MyG9x0IZRO+LoF5LYej3EXJV3Q8Mq2+UqdnoKee5yQ4Lkwa3KrOZ7vqSOtL0vz63a+8pAaKnWscaD7oihCdW7mObTQAjhQVuzXh9r4TMHvWf9qTvydPQG69MbGBmPw5q7cGeLPnjHv2iYnbyoJnuQbf+FsYOS2qs1hI14szS+BudbVXPtxLhflRje
+ N/poAOcY
+ RZNPc9QZquIVOCEWGtzLG7tGjsqQYualq6ea3q4Pb/I61VpwseiVUWX81rz+EG2I7Psf3ARNO4BZ33PV/ZBRL3Y7bwcQpOMwsugtJVX6tS3f4/2uK157yTUapedt0QsktSO/UduYErAvARPSL4yoaCjp8nRbe702ibgQnwmaPZHoePdOhoCJk87RR7NeG6Z40qqQGGh2EozlYphEhnsTNkYS7zMVqK9lgbWUIEA7arOFlr4zGnTC2F6JQNTWdACtOV4G48auU4tmF5y899AucjK39drRfV6BPCK6N9nM9nD9cZWK7spuToFQ3/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +95,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On 2026/6/10 08:12, Abhishek Bapat wrote:
+> Extend the allocinfo filtering mechanism to allow users to filter tags
+> based on their accuracy.
+>
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
 
-On 2026/6/10 02:56, Andrew Morton wrote:
-> On Tue, 9 Jun 2026 21:56:13 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-> 
->>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>>> ---
->>>> Sent separately, as discussed in [1], to spell out the PMD-order swap PTE
->>>> case. Patch [2] is still only in mm-unstable, so no Fixes: tag.
->>>
->>> Right, probably we just want to add the Fixes: tag once Andrew moves the series
->>> to mm-stable?
->>
->> Yep, hopefully Andrew can add the Fixes: tag when applying this, once
->> the series lands in mm-stable.
-> 
-> No probs.
 
-Thanks!
+Acked-by: Hao Ge <hao.ge@linux.dev>
 
->> Should be soon, I guess :P
-> 
-> I move the second batch into mm-stable after Linus has merged the first
-> batch, usually.
 
-Okay, got it :)
+> ---
+>   include/uapi/linux/alloc_tag.h | 4 ++++
+>   lib/alloc_tag.c                | 8 ++++++++
+>   2 files changed, 12 insertions(+)
+>
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index 7f5acbb44c14..6ea39c4869fe 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -26,6 +26,8 @@ struct allocinfo_tag {
+>   	char function[ALLOCINFO_STR_SIZE];
+>   	char filename[ALLOCINFO_STR_SIZE];
+>   	__u64 lineno;
+> +	/* filter criteria only; see allocinfo_counter.accurate for actual accuracy */
+> +	__u64 inaccurate;
+>   };
+>   
+>   /* The alignment ensures 32-bit compatible interfaces are not broken */
+> @@ -45,6 +47,7 @@ enum {
+>   	ALLOCINFO_FILTER_FUNCTION,
+>   	ALLOCINFO_FILTER_FILENAME,
+>   	ALLOCINFO_FILTER_LINENO,
+> +	ALLOCINFO_FILTER_INACCURATE,
+>   	ALLOCINFO_FILTER_MIN_SIZE,
+>   	ALLOCINFO_FILTER_MAX_SIZE,
+>   	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_MAX_SIZE
+> @@ -54,6 +57,7 @@ enum {
+>   #define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+>   #define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+>   #define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
+> +#define ALLOCINFO_FILTER_MASK_INACCURATE	(1 << ALLOCINFO_FILTER_INACCURATE)
+>   #define ALLOCINFO_FILTER_MASK_MIN_SIZE		(1 << ALLOCINFO_FILTER_MIN_SIZE)
+>   #define ALLOCINFO_FILTER_MASK_MAX_SIZE		(1 << ALLOCINFO_FILTER_MAX_SIZE)
+>   
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index a936cf18611a..73fb3d0ab821 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -249,6 +249,8 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+>   			   struct alloc_tag_counters *counters,
+>   			   bool *fetched_counters)
+>   {
+> +	bool inaccurate;
+> +
+>   	if (!filter || !filter->mask)
+>   		return true;
+>   
+> @@ -274,6 +276,12 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+>   	    ct->lineno != filter->fields.lineno)
+>   		return false;
+>   
+> +	if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+> +		inaccurate = !!(ct->flags & CODETAG_FLAG_INACCURATE);
+> +		if (inaccurate != !!(filter->fields.inaccurate))
+> +			return false;
+> +	}
+> +
+>   	if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+>   		if (!*fetched_counters) {
+>   			*counters = allocinfo_prefetch_counters(ct);
 
