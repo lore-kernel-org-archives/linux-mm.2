@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA86CD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 08:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C75E7CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 08:45:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56FBB6B0005; Wed, 10 Jun 2026 04:30:42 -0400 (EDT)
+	id DEA536B0005; Wed, 10 Jun 2026 04:45:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5207F6B0088; Wed, 10 Jun 2026 04:30:42 -0400 (EDT)
+	id D9AC36B0088; Wed, 10 Jun 2026 04:45:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436446B008A; Wed, 10 Jun 2026 04:30:42 -0400 (EDT)
+	id CB0716B008A; Wed, 10 Jun 2026 04:45:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 340E06B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 04:30:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC68440909
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:30:41 +0000 (UTC)
-X-FDA: 84863331882.10.5C61F25
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 01C22180009
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:30:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V5VqP0g0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id B9F866B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 04:45:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 498AE1A08FE
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:45:17 +0000 (UTC)
+X-FDA: 84863368674.09.1089008
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A675A4000E
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:45:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Z3ILBt7g;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781081115;
+	b=P7sz1nuwTkXX9eqfH/TkMIltpf2Zm+TkxQvTd+D/Gno5UpayWjzPvgHXxvgBOm1t32clSq
+	Ow9WTUTWKZLc8Fzf0M25oVtgjLUW3XPZKsLobUDPlplD4RES06EJwU72iWhfLDBHU60xfP
+	e/6RU6u99VQK4BdOsQPEiRO0vnFH/wI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Z3ILBt7g;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781080240;
+	s=arc-20220608; t=1781081115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UyYAKG2WDoLAbE1LWkheGa6RjXvXcPLoe7XXaMCnGK8=;
-	b=v5D/+Y0Yo/wpXVsn2mCEoh7UAvISWo9W3BZCpuU4WsBB7CEThcnlkQAnXUVdy2VtsqgE2i
-	pURkbZ54RHDpkc6bBfqdDwk3X9TEsMYMx04l+NfjyuonIf91t4lGCaaueDoCcnsJVdXhSA
-	4twMB43mVYYJmz7PJXpWChnCVuvbL/8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=V5VqP0g0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781080240;
-	b=3+H77Z/d8kcL5W8/ylMwhQZkwxSyhIN8qJ0pqLqP4f5pSdYEwGV9aQqf8lxDwIcYr+aN/I
-	KY5gZUf+GHkBtRvpBeR/4wmhsznmp0I0iYVqOiE/6sy63CcYd8K6ged5pS5MZZaP/edQP9
-	BX5eGd07tQ7YNfIFZcDfXEgu9tPsqA4=
-Message-ID: <104171fa-6a1c-43b0-a6c4-f71f54129d88@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781080237;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UyYAKG2WDoLAbE1LWkheGa6RjXvXcPLoe7XXaMCnGK8=;
-	b=V5VqP0g0/2QVtPLYQCSiV719xuD7bOb3CpvhN+0IMKIh/j5Y/g3qYhAVH2bW/olN69GYBR
-	EJuAtb1QASKglqFL4XeS/eWvX0P+oCQWoqP2kbIJVGWzUcxp7YJYLzyTuWA//bCOuiJwNU
-	3qIkjmrDd9VEF33VtktPcvQCTv2VPks=
-Date: Wed, 10 Jun 2026 16:29:53 +0800
+	bh=AQEpnm1qCy04PBYgpVHbcMk1PPswJBtmq9NpRzCamVs=;
+	b=wWNSpO/nHixRJcovVj2sFZUl4uCdXNxVFkX4vV2S9R7BH0Ucr+g19pNUx6wPzFSaY4HGsl
+	XWDkqbHS/GIpPAa88bLpDSEv81iEBOoTpBlcEsLGJeWhEUi6rWm5uU8KaVXmsoHMRBQ+Mm
+	UTCRmvFnzkZCx/pGkHBBXaYbGMVEZwY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781081107; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=AQEpnm1qCy04PBYgpVHbcMk1PPswJBtmq9NpRzCamVs=;
+	b=Z3ILBt7g0kYvDp5cOeVdDqqd0WwVFj4Nq3t9RVt1wvRMENbWF2LmYIP02VFaXyAuKXlAQ6tP0mi1HYF8kPzd2Av+2lksiP+AxRyfJ87d3xx/xoyiHOzDuGVm6aNIdUq86xhpid0TSv9+OCTmYFTykNXvuHfJT2dRU6Q6Nnz0+F4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R841e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X4a5o-R_1781081106;
+Received: from 30.74.144.110(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4a5o-R_1781081106 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 10 Jun 2026 16:45:06 +0800
+Message-ID: <529db4e0-6635-4e3d-8ce5-f215ad9220cf@linux.alibaba.com>
+Date: Wed, 10 Jun 2026 16:45:05 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH RFC 00/15] mm/slab: introduce alloc_flags and
- slab_alloc_context
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Usama Arif <usama.arif@linux.dev>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm/mincore: present-PTE scan cost after pte_batch_hint()
+ batching
+To: Chengfeng Lin <chengfenglin@stu.xmu.edu.cn>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260609133534.3548059-1-usama.arif@linux.dev>
- <fe1bd73b-d956-442f-8c4f-f5f62587346e@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <fe1bd73b-d956-442f-8c4f-f5f62587346e@kernel.org>
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>
+References: <5fb8bead.17483.19eab4626f5.Coremail.chengfenglin@stu.xmu.edu.cn>
+ <74cdec57-67aa-4ae3-a416-e39846049ab1@kernel.org>
+ <2780f0f6.176fd.19eacba49bb.Coremail.chengfenglin@stu.xmu.edu.cn>
+ <106e71e4-975c-4337-aaff-a00628827477@kernel.org>
+ <aih_dIMqIeKzvFh2@pedro-suse.lan>
+ <307c2254.17b12.19eb0678f22.Coremail.chengfenglin@stu.xmu.edu.cn>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <307c2254.17b12.19eb0678f22.Coremail.chengfenglin@stu.xmu.edu.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 01C22180009
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A675A4000E
 X-Rspam-User: 
-X-Stat-Signature: 5odqb91z691rmahuis5z3xwksebdmabz
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781080239-74694
-X-HE-Meta: U2FsdGVkX1+KS8lHtTCWsHNa6dqSmd8A/3FMrmNXr+TAb+cMmhQx4hF/pgf4zzjf5D9A9aZ8sg1Ynp8U/YFlYEmy+QBkB72Mj4YBRxie6ks+CY+Q3cBO9rRLa4D/GlJCl5wD01Lt0caplH1QIF1JeC36k0jYOHmGOcLKtT6kgOkpACVMhDz/DaWSJynXiDdQBNLLN0JG/ln+8FiEi5RThrSQxTHgSIc/UgsMICgGOsK8x0A30eu8uHlh0jFE7fBjzJaASHj3WerRM/MtdZq+ZRnH1tPT6dM5ndXnpw1W2Kq2rWMTWegLqLK+8WkyvdoAx8+8/H46vSZmkFIO4Yom0Tjf/RxxMYcDIN/9vXmqKqS/nI/cz+KBjLcvAEoT/OCsp6Qk5lDIRZMlBVewlcMeME+2+e/apFALRjnCVscapZJJ/2GM0Oe9nO1VfhjQbvnCg4MIf6wlLcRmfN8nepZAWvr5VEcGO8J+YWs3yQZmkEJ5DSzCgqNJgwtR/kCjoZr1EKdgKH/GAA41gaVGiwUNr1izbXR/xSq5G+8Hc/EAjfzawMh94l3hz+6W1xmqJb/hGXCCgWbiPSfCr/noTviurWfKV2UIAQT0SnrHYvSuVqjMu6VY54JI+VGlL0KN4u9BMXc2Z6212kLoUfFLfZKtSZyEzqlLT3Qb8JNPYUY3cJnccIOjeAABFnq//gCS0XFmIl9ElnK+DBThxO2A9Sck/A0gk3YIt5RpK3UlHEPWH8Ut2NIpjbVuQ7I9UZn8G2qY9LMcoaO54Ih55ZSM8vRxBLeMkonexeMN0y9crEO7MG/lJWnbbTkeg91ZnGUZmoYX2zbPRe/ZTRHR+M2G7nVRwe3/SaHudu00AmmtkFLJQr+ylUtlUJ3RL3Lue4nhSJia4nrUkgqxlHLQdnxZQbn6v5IOybN3YvWUpnLI7401lZGJMXW6+KdiQNbNEpMabm/KZBD0BmAodoJiJl2pmlG
- ywUSNEAy
- ls5ssSBJWll0AmGLoeOyVI0VxcpCUlKTMnEbk7QwNYjJVhRmIY/qaoNSVnMyKSgG4nTYp19j+pwePNJ5GuomLMJoEKEDOYQPUXQNCo+E4e48jdmhaASIVuhw5q/bNsmXgQLw7EePIo6RvS9bvLsLOTB7SGB5rWLJtC0WaenQUaVH9xmD6nK+oxA1aNte4usHw4gjhNseudiFvNY67p4wI3Xki2xmLAd9tWUY2+0FEMU/cTQYC+HjXX2UmyAwyUGZvXl1lXxlXGfZjFrbJOD/tfBMcFbb8Xg2q+7dEh2NLCbBkW09x7/Wy2MTRHQ==
+X-Stat-Signature: tupmtpsr5t36y3zz4fg96dabmfkd3g65
+X-HE-Tag: 1781081112-643215
+X-HE-Meta: U2FsdGVkX19sJDJBksF3SBjbcXEw4GwJMP8zukr/7D7h4btI6c8J9rJzv5b+W5SfCxA0+UV8D+ofVhml4ytEXBghNLK1Q7ozrCOB6R+KEiDgxqFuMem69m8Iz2oFJmPOMZyXAPblp1UW/UGQuUkR48KRdBdyiwWiUZGuGdbYUmqkxai/67JJE5jrCmZGLIixqxoUWxOQJiAP4AQHJswM+uf5OFIqJ3uU+hAW8YtQXdabvv7p5wovtF2QRPVLS30/nGh+3mcniU6DpRg/yfR7yp0C9RcXPcNxcOeQRdoky+9BjiZB/8MMmlom7oqxUnQ93oUgKKOAp/SowP5hGp7TKDPLsYmLs3+dyBTlYCfXEvlWb4IA/Z95VRqr3H4CWZjPDH6WO1fDBRtQR+Iy0oykOBsYQh14BjCVlIWXw9PmGdF8u21xSR+wtKNFEZXySllM82bm4LHMYjmfDC+1NpnLMGgPSC+FSuX3N1N4P/ZbBy/duDmv/hDGn+K/EXGf+5WCPUUBOcFppYnR9Sq8seXKTX1V1zI22tfw5wrbpHBLaIPS7MOgH4k62vcqcwllSHyv77DXsVKV8JwrwGBiO3oy7gCvrzD1YDmd2TyI7oPy0PJTpL03w/exY+rpaiVLte4yB48UzYr4yX30Rh6W8Te0C4tcyuF8XNGBecIGPcsNGXS/fEzMzZhL/KYo8QC4QsIrifRhpv7GU1mSA3Elyf3JRa41aHRsSRD/xOmp/e1F7q8ZST8RQc0WRx/+fTG3nF0TAwdBvbcRa6jQcJt4pka5FrdVdhKQGglE4wNSkDM0T7e75UbhZJkni7wkvX/tyJVybChru66UZrSZd4+Xqs1QPXg/64uD6PP/Jnh/tC+LKtadpcroGJtWSASdCunuvY6eROfOLqV4tG1PB8otccv8MaNrM+/uetTIGartRYpHV71Q6fihuaeVEjqd2Jngl0mU2yIATgJ3xlOI3Ci4XUL
+ xYIkmToa
+ /M7gT0pJ42rfFlCuUcAPR8DdRnDrsPw9rIWFRoH8NM4BaOr2U4Fo5uawY0WgBucsRUchE89UigQ4y0pP5/eDlzi7gKwwDlIH4Bp01ph99JKOINIdVwywXvXOZ66LfUQaDWJLoEDH+1Ga50U77W4t/zqlAlD1f8ckNBxmQexpLz/XQRY7iblIl+T++UqGFEYyEjakqSBM673QczPWWZVjSwP5PDZjNj+xauC7xOCR38oLNjN4fRWxUjicQZj4CJMQw+S+leX25wOc9so4Fyrd3VDWXiGSkAX+0C9vayCWi/p2Cd5aeg3D93h97qm/37tOnwQGfc3Av/wL++0Gb79UX1jPxoiG+ci4ajq/CQt67pPAJ66it16yjyBpce9qd5D5Fb+94rZH/15bgFNLgnIG2LdggOb3FVq7coYhtwgUYOp2lVpo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,165 +98,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vlastimil and Usama
-
-On 2026/6/9 22:28, Vlastimil Babka (SUSE) wrote:
-> On 6/9/26 15:35, Usama Arif wrote:
->> On Tue, 09 Jun 2026 11:17:45 +0200 "Vlastimil Babka (SUSE)"<vbabka@kernel.org>  wrote:
->>
->>> This series is based on slab/for-next. If all goes well, it would
->>> hopefully go to slab/for-next soon after the 7.2 merge window, so any
->>> other work can be based on it to avoid conflicts, as it touches a lot
->>> parts of slab.
->>>
->>> Git:https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slab_alloc_flags
->>>
->>> The slab implementation currently relies on gfp flags to convey
->>> some context information internally:
->>>
->>> - The absence of both __GFP_RECLAIM flags is interpreted as "cannot spin
->>>    on locks", and intended to be used by kmalloc_nolock(). But false
->>>    positives are possible e.g. during early boot where gfp_allowed_mask
->>>    clears __GFP_RECLAIM from all allocations. This leads to unnecessary
->>>    allocation failures and workarounds such as fd3634312a04 ("debugobject:
->>>    Make it work with deferred page initialization - again").
->>>
->>> - __GFP_NO_OBJ_EXT exists and takes up valuable bit in the gfp flags
->>>    space, only to prevent recursive kmalloc() allocations for obj_ext
->>>    arrays and sheaves.
->>>
->> Hello Valstimil!
->>
->> I think memory allocation profiling uses __GFP_NO_OBJ_EXT, and I dont see
->> it being removed in the series (hopefully I didnt miss it).
->>
->> Adding Hao Ge in CC who did this in the commit:
->> mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
 
 
-Thanks for the CC. I'm now aware of this.
+On 6/10/26 3:20 PM, Chengfeng Lin wrote:
+> Hi Pedro, David,
+> 
+> Thanks. I tried two newer GCC builds as well, using the same base config and
+> the same mm/mincore.o build target.
+> 
+> The GCC 14.2 sizes were:
+> 
+>    v6.15 original:              0x1e8
+>    v6.16 original:              0x229
+>    v6.16 batch<=1 fastpath:     0x1d9
+>    v6.16 with batching removed: 0x1d9
+> 
+> I also tried GCC 15.2 from the Ubuntu 25.10 (Questing) packages, extracted
+> locally rather than installed system-wide:
+> 
+>    v6.15 original:              0x1e0
+>    v6.16 original:              0x221
+>    v6.16 batch<=1 fastpath:     0x1d1
+>    v6.16 with batching removed: 0x1d1
+> 
+> So GCC 14.2 and GCC 15.2 match the GCC 13.3 direction: v6.16 original still
+> does not collapse to the old x86 base-page shape, while the batch<=1 fastpath
+> and the nobatch variant produce byte-identical `mincore_pte_range()` objdump
+> output. Clang 18.1.3 behaves differently: all four checked variants produce
+> byte-identical `mincore_pte_range()` objdump output there.
+> 
+> I also looked at the generated-code difference. It does not look like an
+> obvious extra inlining decision. With GCC 13.3, GCC 14.2 and GCC 15.2, the
+> original, fastpath, and nobatch builds all have the same external
+> call/relocation targets:
+> 
+>    __pte_offset_map_lock
+>    __pmd_trans_huge_lock
+>    memset
+>    __cond_resched
+>    filemap_get_incore_folio
+>    __folio_put
+>    swapper_spaces
+> 
+> For GCC 15.2, I also saved focused optimization-dump snippets for
+> mincore_pte_range(). They show the same direction before final assembly: the
+> original build has more GCC intermediate code than the fastpath/nobatch builds
+> (321 optimized-dump lines and 993 RTL-expand lines, compared with 299 and
+> 921).
+> 
+> The visible difference is the PTE-loop layout. GCC keeps the v6.16 original
+> `step`-based batching shape in the generated code, so the present-PTE hot path
+> has an extra split/jump through a common advance block. The nobatch and
+> batch<=1 fastpath builds produce a more compact, identical
+> `mincore_pte_range()` objdump.
+> 
+> After Pedro's suggestion, I also tried forcing the default helper to
+> `__always_inline`:
+> 
+>    static __always_inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
+> 
+> That did not change the result in this setup. For GCC 13.3, GCC 14.2 and
+> GCC 15.2, the always-inline variant has the same size and normalized
+> `mincore_pte_range()` objdump as v6.16 original, not the batch<=1 fastpath /
+> nobatch shape.
+> 
+> I put the updated GCC14/GCC15 nm/objdump files, focused dump snippets, and a
+> short side-by-side block note here:
+> 
+>    https://github.com/lcf0399/linux-mm-regression-evidence-2026-05/tree/444d66373b7be32f7a06b52b3d9ced7c2c53264f/mincore-present-pte-scan/codegen
+> 
+> One caveat: I have not rerun the timing part on bare metal. The timing signal
+> I reported is still from the QEMU direct-boot lab, so I do not want to
+> overstate that part. The codegen comparison above is static `mm/mincore.o`
+> evidence and is not QEMU-dependent.
+> 
+> So the narrower result is that newer GCC did not make the codegen difference
+> disappear in this check.
+> 
+> If there is another specific compiler/codegen detail that would be useful to
+> check, I can look at that.
 
+I quickly tested using your test cases (haven't reviewed your test code 
+yet) on my x86 Xeon machine, and I didn't observe any obvious regression 
+(tested 3 times, taking the average), and the data shows some noisy 
+fluctuations:
 
-> Thanks for the heads up. I missed it because my series is based on
-> slab/for-next and that commit is in mm-unstable. My patch 15 actually
-> modifies the TODO comment that is meanwhile resolved by Hao Ge's patch.
->
-> Which means my patch 15/15 can't be used as-is, and at worst I will drop it.
-> But I'd encourage Hao Ge with Suren to find some way to avoid the gfp flag
-> usage too, because it's now quite a niche use case (preventing false
-> positive CONFIG_MEM_ALLOC_PROFILING_DEBUG warnings, IIUC?) to take a
-> valuable gfp flag bit, IMHO.
+test cases: ./mincore_present_pte_scan no_thp_pte_scan_64m 1
+metric: mincore_ns_per_1k_pages, lower is better
 
+base            revert 4df65651f7075
+2675            2670
 
-I previously used __GFP_NO_OBJ_EXT because it serves the same purpose as 
-in slab.
-
-We use it here to prevent recursion within the page allocator.
-
-I hadn't anticipated that __GFP_NO_OBJ_EXT would be removed so soon.
-
-I agree with you. Since slab no longer uses it, retaining this GFP flag 
-solely for debug is indeed costly.
-
-I've also been thinking about possible solutions today. Since we are 
-working in the page allocation path,
-
-we need to take various race conditions into consideration.
-
-For instance, what if an interrupt is triggered inside page_alloc, which 
-then invokes page_alloc again?
-
-I'm not sure if such a scenario exists in practice, but I believe we 
-still need to account for it.
-
-I would highly appreciate it if anyone could share their ideas.
-
-I've made a note of this.
-
-Would it make sense to hold off on merging patch 15/15 for now?
-
-We can always include it in a later cycle once we have a proper 
-replacement for the
-
-memory allocation profilingside. Thanks Best Regards Hao
-
->>> The page allocator uses its internal alloc_flags to convey various
->>> context information, including ALLOC_TRYLOCK (meaning "cannot spin").
->>> This series copies that concept for the slab allocator, with its own
->>> slab-specific internal flags:
->>>
->>> - SLAB_ALLOC_DEFAULT - no extra flags (the value is 0), but explicit
->>> - SLAB_ALLOC_TRYLOCK - do not spin on locks (used by kmalloc_nolock())
->>> - SLAB_ALLOC_NEW_SLAB - replacing existing 'bool new_slab' parameter
->>> 			for allocating obj_ext arrays
->>> - SLAB_ALLOC_NO_RECURSE - replacing usage of __GFP_NO_OBJ_EXT
->>>
->>> To reduce the amount of parameters in various internal functions, we
->>> additionally introduce slab_alloc_context (also inspired by page
->>> allocator's alloc_context) for passing a number of existing arguments
->>> and the new alloc_flags:
->>>
->>> /* Structure holding extra parameters for slab allocations */
->>> struct slab_alloc_context {
->>> 	unsigned long caller_addr;
->>> 	unsigned long orig_size;
->>> 	unsigned int alloc_flags;
->>> 	struct list_lru *lru;
->>> };
->>>
->>> This also replaces the existing struct partial_context.
->>>
->>> The last necessary piece is kmalloc_flags() which can take the
->>> alloc_flags in addition to gfp flags and is intended for the recursive
->>> allocations of sheaves and obj_ext arrays, so that both
->>> SLAB_ALLOC_TRYLOCK and SLAB_ALLOC_NO_RECURSE can be communicated.
->>> Internally it decides between kmalloc_nolock() and normal kmalloc()
->>> depending SLAB_ALLOC_TRYLOCK.
->>>
->>> The rest of the series is gradually expanding the usage of both
->>> alloc_flags and slab_alloc_context as necessary, with bits of
->>> refactoring. Then, __GFP_NO_OBJ_EXT is removed completely.
->>>
->>> Note that some usage of gfpflags_allow_spinning() relying on absence of
->>> __GFP_RECLAIM remains outside of slab (and page allocator) in memcg,
->>> page_owner and stackdepot code. These can thus yield false-positive
->>> decisions that spinning is not allowed, but should not result in
->>> important allocations failing anymore.
->>>
->>> Signed-off-by: Vlastimil Babka (SUSE)<vbabka@kernel.org>
->>> ---
->>> Vlastimil Babka (SUSE) (15):
->>>        mm/slab: always zero only requested size on alloc
->>>        mm/slab: stop inlining __slab_alloc_node()
->>>        mm/slab: introduce slab_alloc_context
->>>        mm/slab: introduce alloc_flags and SLAB_ALLOC_TRYLOCK
->>>        mm/slab: add alloc_flags to slab_alloc_context
->>>        mm/slab: replace struct partial_context with slab_alloc_context
->>>        mm/slab: pass alloc_flags to new slab allocation
->>>        mm/slab: pass alloc_flags through slab_post_alloc_hook() chain
->>>        mm/slab: replace slab_alloc_node() parameters with slab_alloc_context
->>>        mm/slab: allow kmem_cache_alloc_bulk() with any gfp flags
->>>        mm/slab: pass slab_alloc_context to __do_kmalloc_node()
->>>        mm/slab: introduce kmalloc_flags()
->>>        mm/slab: remove __GFP_NO_OBJ_EXT usage from alloc_slab_obj_exts()
->>>        mm/slab: replace __GFP_NO_OBJ_EXT with SLAB_ALLOC_NO_RECURSE for sheaves
->>>        mm: remove the __GFP_NO_OBJ_EXT flag
->>>
->>>   include/linux/gfp_types.h       |   7 -
->>>   include/linux/slab.h            |  14 +-
->>>   include/trace/events/mmflags.h  |  10 +-
->>>   lib/alloc_tag.c                 |   2 +-
->>>   mm/kfence/core.c                |   6 +-
->>>   mm/memcontrol.c                 |   5 +-
->>>   mm/slab.h                       |  16 +-
->>>   mm/slub.c                       | 423 ++++++++++++++++++++++++----------------
->>>   tools/include/linux/gfp_types.h |   7 -
->>>   9 files changed, 288 insertions(+), 202 deletions(-)
->>> ---
->>> base-commit: 500b2c9755301742bdbb61249511ac11a4665dae
->>> change-id: 20260601-slab_alloc_flags-25c782b0c57c
->>>
->>> Best regards,
->>> --
->>> Vlastimil Babka (SUSE)<vbabka@kernel.org>
+I still suspect it's an issue with your QEMU test environment. I'd 
+suggest retesting on bare metals.
 
