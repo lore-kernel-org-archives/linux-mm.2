@@ -4,93 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D35EFCD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 06:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C7EFCD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 06:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D60A26B0005; Wed, 10 Jun 2026 02:21:57 -0400 (EDT)
+	id 99BA26B0005; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D112E6B0088; Wed, 10 Jun 2026 02:21:57 -0400 (EDT)
+	id 924FA6B0088; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27046B008A; Wed, 10 Jun 2026 02:21:57 -0400 (EDT)
+	id 7ED066B008A; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B1BE76B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:21:57 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E34181208E0
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:21:56 +0000 (UTC)
-X-FDA: 84863007432.03.3300B4E
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3A42040006
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:21:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 698A16B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F23291A088A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:29:51 +0000 (UTC)
+X-FDA: 84863027382.18.6305947
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 41DD314000F
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:29:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjycE5Aa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781072515;
+	s=arc-20220608; t=1781072990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rj1kq9ETBwbErly3UT33Ox0T/tSwNluIMj5iqfTLDt0=;
-	b=Cgk5G21OVwwy11nrl7ARPPaUZuYPirrSMz0aNbVAFxcFXv0Bmrf/CAT0DLYygnL83aO9PL
-	7DXK/gga4YrrS3P7tVVaVh+skWu4GDnxNYCgGgjOtwsQaiTHlP1SDYpb80Y6N3I4lRtcBd
-	GoC5JhbHWrOUVkUPu6CZf4PhaER4Dzc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
+	b=sTelgEvw1tvDivmbKKU1qk8zHHwoAAZfOfblCtTiy+GF+9HtiXeqnf1ic1ld5pi2yegPhS
+	QkkQiddJpY1w0zOyJa31YyTM3Cs8DVmRjZVLBLK25zIHBCf+3kLrVQaSCzeaZ7Wu7K8MJE
+	VC4bg/rJpm6vt0PSPqnq3uSXMNUABlI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjycE5Aa;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781072515;
-	b=h9Ghom7covTwgOcH2+StUQ6nrOQhF3/0MieyyKOaXVF12PoT74KSKMwfWEO77QxrCT3Xma
-	7CvZ+0J0FDoE2+vhGGAquLk+gjdzUBoAjoNW/I5SEZDylbLabwRt0PKrYqqRkiCSfalbNL
-	ow0zx7nhD0ER4HETsoOPEFxW2ygjKmk=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gZwfL1B3wz52SFx;
-	Wed, 10 Jun 2026 14:21:46 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 65A6Lail069606;
-	Wed, 10 Jun 2026 14:21:36 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Wed, 10 Jun 2026 14:21:38 +0800 (CST)
-X-Zmail-TransId: 2af96a290272a30-5a139
-X-Mailer: Zmail v1.0
-Message-ID: <20260610142138377xoCoUM7vV_7bXkEkruK-f@zte.com.cn>
-In-Reply-To: <eff26d08-d824-4459-858e-277760fcb4a2@kernel.org>
-References: 20260609124746153K8Y8tYI_4pNVKogGMdglR@zte.com.cn,eff26d08-d824-4459-858e-277760fcb4a2@kernel.org
-Date: Wed, 10 Jun 2026 14:21:38 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>
-Cc: <akpm@linux-foundation.org>, <chengming.zhou@linux.dev>,
-        <hughd@google.com>, <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2OCAzLzNdIGtzbTogYWRkIG1yZW1hcCBzZWxmdGVzdHMgZm9yIGtzbV9ybWFwX3dhbGs=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 65A6Lail069606
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 10 Jun 2026 14:21:46 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A29027A.000/4gZwfL1B3wz52SFx
-X-Rspamd-Queue-Id: 3A42040006
+	t=1781072990;
+	b=sGVOhtsoA4PE7o3y8hnwQ95A00NGvtEuhwWdc6mNjbI0k6B6TE/Vg0alMTbCIsP6U/zBuN
+	pEcFOBP+09hAwfk062NuM6wdk3/QeXB1ntPyf2rKPWDVBDaFJar1431q+dVmmK0o/+Yy7v
+	xSBOFUaRdwHRvTqKqKx63nY86GyRfag=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c859a374903so2238171a12.3
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 23:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781072989; x=1781677789; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
+        b=SjycE5Aa4TKH+YMoYITFeyM3ecpySyf8rMlxMFDlgcblNB1z4zMMSNqpHJiC3+sP1k
+         XWFrnhn16LceOdftXFPt4Mwf6ImPouSsv2hnrfTtcM4G/jpBWl6Xu4DFHNXpC61eVILl
+         4OVFfd1U85AZKHljrqIcd9KNAT8xKTVEqbBPMmveJL8pAzYYjUCbBE/cV3tcIgHpOC/E
+         kF35Ap6oUM8XdAxNtP1zw+2ocAUG8q9Nur++h2GLQyOFLWtvxe3YaZh86lWo2Sd88c4I
+         7vxmbCcNeCzzHOwJzHCItulrnM3Nr3+vvltTj8zlEArspB++To/4AxYurqrtaM83Z2os
+         Lgbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781072989; x=1781677789;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
+        b=dJxG/hdgCBhuUJ4XGVCKX9wGzbSm5IEQ/DgrRqYBkQC8lYKZcGrI6oG3yvBpMgjq8u
+         EGUGnPH0DJ9RhwQSGKHoq70x4nziRbht4CXwtwJJEZqbiKreHeYCaUedlThXLbUSHTKl
+         uNhe+gu2ATg/uvjAr/widw5+drpMBZq2XJDSYAP2qycPfoIQhwr6xrYsY/PIG9Hid6TT
+         4MBXdsG3ISlpM3lqgR1/v9a4GlQ+LGQoZCldeiSefx5Yi81C6AkQVe8brec1J1sNMmfr
+         GzaYJsGbW2IwL9wBDBZP9Vdr/5jpRAnn24+84XzqELuH9qY/fSck20vTtstrcBm72Sc5
+         rbsA==
+X-Gm-Message-State: AOJu0YzQQM9i4uYqYYsZOJNf0OImTjRF4/i3qigRzeFQM2sCvfejNvDT
+	4fGyKHo9d7q1QsaIYXZFPKntfOzZrvGg+iZf6fFl5WPF0Njxgg2lqwKz
+X-Gm-Gg: Acq92OFSQR2UjVW64iOCRKIs8M6tPRMaCf0sd4z8pVj9cgHJmG1Ag4oNCdrbExidU3F
+	won1H3UtewuL+RFOVFAmDIJAiTShmxmKoSoAajrGQjVwZs1Uzf8KpoJZ4brg1Pm9BvwXDZf3pX7
+	YfRUNgYfp1urCBQSwWS0DAT1ehz9Xk9GhwDhwe04CaeoAgJ2hY74T3WZplkytXx6e0igD3zwEh5
+	/Pvjv6o7muNV/ESiffprX/B/Z4EJYOXkDnVN1BOWW85ET5fae6wDq3G2SlwEaxtsYsmjKWFTFIa
+	rTwN7xaArMTIE/EQeAHDquDMS6y6wZxmfIAjeKtcdzCqDEhFr7ctufBjSNZ4mgUs2G58+7OYQdq
+	5MS4xZvJwCsfVttRlTydTiCimcoYMUgjbVt14HZMnXhLlV29F6HZ6QTHIrrz0SXF1kf1VMTOiqW
+	eav1vVpA5SkBf6GtU/X/+goLWS+1l2XaLx
+X-Received: by 2002:a05:6a20:1615:b0:3b3:1951:489b with SMTP id adf61e73a8af0-3b53bf75f2amr8504650637.45.1781072988909;
+        Tue, 09 Jun 2026 23:29:48 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df04a0e9sm17535932a12.13.2026.06.09.23.29.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 23:29:48 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [RFC 0/4] mm, swap: Enable THP SWAP for PowerPC Book3S64
+In-Reply-To: <aig3PFm9jst8cHxn@yjaykim-PowerEdge-T330>
+Date: Wed, 10 Jun 2026 11:00:43 +0530
+Message-ID: <pl1zdksc.ritesh.list@gmail.com>
+References: <cover.1781000840.git.ritesh.list@gmail.com> <aig3PFm9jst8cHxn@yjaykim-PowerEdge-T330>
 X-Rspam-User: 
-X-Stat-Signature: 55ahhtct67ox8bte3ns49komnwa5a4c4
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781072514-496681
-X-HE-Meta: U2FsdGVkX1/WR2yFEGhh6XujMriqGEWPEMfIWXGMBiCwf8NVMPvEBEmkdXzw7eFiEJ77FRWQPXqshKi4Qt9Cqoy5FGqU2EFyTqEtwE//jZL4NxMDv/mh3svS7LH8saNFZvO7BFnVDM4gYmTO4vM0BbcFj44wENIMcvFeXWJ/3a0+qfVSiLv+EqNgIKS/3VTS/iwAUl7wU3jV40CBK1Q3tomo8vdSdkW0AgnGAzkyCMctwRMp/a0JS4O9wtHwOy9/3S40WCXgI3Xs/UkZEZJ+aFz3auxRg28ewbhpXOs/89DakKlP+1dhrC8RAF5gH1y1bAZ6MYCpUh8H3Qqo53H7taEceUsgzP/D39+kMOtpyDufXaiwx8G5gZfJEY7C5U9PA+yrB33oom3CnRwL1l1/dkcW0QEnL8/QK8O1nBQtQYsXBxbaryYgnbb7bqkcxW+nMQ0uB+NeQoKRElIf7yg7vkN+hAcVcOyOC0lmp0WwyqnLtOvmqXn7L/bcD7qwKi/w/RseRFfECoFHklTIq47M7KSVj/jAnwIc1d0M4h/zd77u4QedF9utx9mQjBU8mU9qTZUE0OitDa6XJmV4ztWh3yomm6CoB4oDDJFstjlCtomK/4IPAlEZMTFUDHD++Z7M7AFB/UkQXB94L2q1pMTbmA2Xm2YY8/aGeP720ZTMwqzbn9camyPY0t1diHsMadPp/HX5D9PAoc/9Eafi61ZB7E4grQe4+QuDtdxaHmDZUPbLS4gTLZBc7G0WfIDW6c3FqjQ4DsapZZP/E0mI3Jvy1lhcAU8tmU6i3SDTAKozggmAXtlsS4V/w2eKpmcD0YcXjy/LAcpNFzGFyEEFP+pVGSan/iJik6qI0wqxFsprmCthWH7MgIlCb2wKcOwHpyL0RSzOkHYzDmlejwpQwWaM8RSWZFCg3706qtbEzWWbIbjIOWYs+wiY4/jfRGtK0Q/+5jZCIEgVsAPUXom8eTc
- k0DkIO8/
- Y3sU9CwqMa6EKD/F3nGbSkzRn+sjSL63PipMpLzK10wj2pzjNtVBiUe/9ZeIofqPMYzAnwDb8MqMClMpEY16JCdjEq/X4EaVZURYt/njk513c9/BJeLNCvw+anVGqE2+xHE0Wf2LjCvjRddTq/gxDSFYwYvalNlolV2Ce1OLLt4PmsIjD3qR/WEH+7Y3kV06LIPQkES/Q0WgaBFQ=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 41DD314000F
+X-Stat-Signature: jrbkj37hfc4rpi78xswmsrdjtheepkoo
+X-HE-Tag: 1781072990-26565
+X-HE-Meta: U2FsdGVkX1+t15+4Gen7ICqx8tDJIeWg6zpOGmcFtVbwUCR/NSadSm5IrIQ+20tBOjwkk5UAJtOhv7YxDM8d2z+J0JMvyCR5VmNSdcBtLCB2NNb+6Sh3CKIx0RuGPXBGAePRb8UzwSgHeBHLaOD2wIFcKHlMcwfdwDbvEFMhc78x9FWDDdAAAjfK5Mz4L9ExmRoWzp7RUV/82zV4IVYo+1XsP3WLoZ5fPLWKcqNWiLu1t1iOfPVCwbBMbYRnWANXywA31iYgf3iG5jhMfjPwNAPaglqi4PDftxQ1USvo6MAqc/y3D6AY4Dng7KZHpkRVIz/51QSNbN0doRZWLPll5XvBeK2aZ3nZs+m0ZojSKlhQ2kAvZHI910DBBWVNA8QTNN28Dl8YB8Rj5donQvjzKKr7T2PbbxrZYPeeVUxUMBf2Y8zPR0bqPaKnzNi1PzyV/99sMxQPnIjb0MGgkrjcc8WPM13kXSvY7iPlXup79cCs3noSbwBoU89UJI/WwXcmsQgQaCCGBSNmJPB46e3ftJ3Bqci1ElkyokYfZAfamJXd8L+9jVWNvKGCmAHLWolzb8Ho1PkI8Wf+jpHxN/vnBl/UcsMrXDvradXcpUbNi7nUQpsAYW5vmop21kx27+vT3KR27ssbTu2phTEa1kgPRJvA82s33t2vi1T0x6osHtezJkMrrGfS49mIMzckkRZ073owDoEi0a/OA+dk2ep+bnJtyULm9ANqhHUacs6pZPK5zAcJOA7l6W50UOxSD+QSUiz84s6l0fEGNg7hkurBqeW9kNdEbLsv+JbPfyzqiY+HjBDw8WpbC11CE5Zi0G3jTmFC/yYp6MTYs7zQN+G+ff9nX/u8NvDgcdwEwQemsNbHBcieLZFImSFq+wyrY3INCzsKurB950OZStQX0aO8tceuZO6Mvprg76dKGooVu9k1sawmiDINSrMqGVRRk0lGgMGj0+ksfkVvf7W2nlo
+ o8FhgC0M
+ W6inwL5Z+4gexV03UKY0gVpYMui+OwtPuLSTY55ARi8d89ttSlIuQzxfJAM9FywA/vmwdZIeONbdRI98vl4Ahf6ItLUfBFdWEu9v8TdZHVW8Jz5Mzels4+TrsFatjc+EArguJyMLVjiZEPU70eVPcGojUL4xmpj2dmY160JHEdCouOG7MgFOfp64MgwOXQxZi2IDPuzyi8GDevjFoeTi6qKObOpwi4Z1Mqrao9/G1eJDWlc1GDYOhewxLpL2oOcsheJG3I/8vw1IlCW3AJ9ZNMUFnd+BBh+S0vdaLn4TuUIIPNd2RgORhbSPCPX/3kJY3GVUSs7/RT+sIYY9PmG5n0/Mj+xfuRlGnc47F5Yo7KwogzIhD/hF1XOJnUZ5pS3lRwQbLPRgpQzFxPQ32JcKT0SYk6sJn+uyBUq10FEOTmgmsCf1N9liobXGQ24DBTTAUthNPe5CPXWfsMIopij/uH/CX71a8H3YPS7lGq3BEPnPPLsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,134 +110,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +static void prepare_pages(struct global_data *data, int nr_pages)
-> > +{
-> > +	/* Allocate exactly pages for the test */
-> > +	data->mapsize = nr_pages * getpagesize();
-> > +	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-> > +			    MAP_PRIVATE | MAP_ANON, -1, 0);
-> > +	if (data->region == MAP_FAILED)
-> > +		ksft_exit_fail_perror("mmap failed");
-> > +
-> > +	/* Fill all pages with identical content to encourage KSM merging */
-> > +	memset(data->region, 0x77, data->mapsize);
-> > +}
-> > +
-> > +static int mremap_merge_and_migrate(struct global_data *data)
-> > +{
-> > +	int ret;
-> > +	void *old_region;
-> > +	void *new_region;
-> > +	int nr_pages = 32;
-> 
-> Likely you should do
-> 
-> const unsigned int nr_pages = 16;
-> 
-> and then simply multiply it by 2 for the temporary larger mmap.
+YoungJun Park <youngjun.park@lge.com> writes:
 
-Ok, thanks.
+> On Tue, Jun 09, 2026 at 06:49:30PM +0530, Ritesh Harjani (IBM) wrote:
+>> On PowerPC Book3S64, MMU is selected at runtime, so macros like PMD_SHIFT are
+>> effectively runtime variables in the Book3S64 code. THP swap code uses these
+>> macros for e.g. to size some of its array data structures based on PMD_ORDER.
+>> This patch series makes that usage dependent on the runtime variable.
+>> 
+>> Sayali did some performance runs of this on Book3S64 with Radix and it gives
+>> 40-50% performance improvement. We also plan to run it with Hash, will soon
+>> update the results.
+>> 
+>> Note that this patch series is based out of linux-next (next-20260608).
+>> 
+>> Ritesh Harjani (IBM) (4):
+>>   include/linux/swap.h: Remove unused leftovers
+>>   mm, swap: make SWAPFILE_CLUSTER runtime
+>>   mm, swap: make SWAP_NR_ORDERS runtime
+>>   powerpc: Kconfig: Enable THP_SWAP on Book3S64
+>> 
+>>  arch/powerpc/platforms/Kconfig.cputype |   1 +
+>>  include/linux/swap.h                   |  17 +---
+>>  mm/swap.h                              |   5 +-
+>>  mm/swap_table.h                        |   6 +-
+>>  mm/swapfile.c                          | 132 ++++++++++++++++++-------
+>>  5 files changed, 106 insertions(+), 55 deletions(-)
+>> 
+>> --
+>> 2.39.5
+>>
+> Hello!
+>
 
-> 
-> > +	long merging_pages;
-> > +
-> > +	prepare_pages(data, nr_pages);
-> 
-> Is it really worth moving that into a helper function?
-> 
-> > +
-> > +	if (ksm_start() < 0)
-> > +		return FAIL_ON_CHECK;
-> 
-> Why the merge here? Wouldn't we want to merge after mremap()? mremap() will
-> just unshare either way?
+Thanks for taking a look at this.
 
-It maight be redundant, which was introduced from the last version v7 to calculate
-the base KSM counters.
+> Instead of making SWAP_NR_ORDERS fully runtime, could we set it to the max
+> PMD_ORDER possible on PowerPC Book3S64 as a compile-time constant in the
+> swap.h ifdef block? (My assumtion is PMD_ORDER max not too big.)
+>
+> I think the general runtime version adds cost. It impacts all other archs.
+> percpu_swap_cluster needs a runtime alloc,
+> the si/offset and nonfull/frag arrays become separate pointers, and some
+> accesses get one more indirection. And for nr_orders=1, the allocation
+> itself is just waste. 
+>
+> With a compile-time possible max constant, the only downside is some acceptable amount of
+> wasted bytes per CPU / per device on Book3S64 (the unused entries in the swap
+> offset cache and the nonfull/frag lists), with no perf impact. the perf
+> improvement comes from THP swap itself, right? Other arches see no
+> impact at all.
+>
 
-> 
-> > +
-> > +	old_region = data->region;
-> > +	/*
-> > +	 * Mremap the second half region to the first half location (FIXED).
-> > +	 */
-> 
-> Okay, so we create a VMA and populated anonymous pages. Might be from THPs, do
-> we care? I guess due to the split-on-dedup, this should be ok.
-> 
-> Now we mremap half of it over the other half.
-> 
-> 
-> > +	new_region = mremap(old_region + data->mapsize / 2, data->mapsize / 2,
-> > +			    data->mapsize / 2, MREMAP_MAYMOVE | MREMAP_FIXED,
-> > +			    old_region);
-> > +	if (new_region == MAP_FAILED) {
-> > +		ksft_print_msg("mremap failed: %s\n", strerror(errno));
-> > +		return FAIL_ON_CHECK;
-> > +	}
-> > +	data->region = new_region;
-> > +	data->mapsize /= 2;	/* mapping is now half of original */
-> 
-> Let's avoid the use of trailing comments where possible.
+I looked into the memory waste comparison between static v/s runtime
+alloc. And the wastage for per-cpu alloc data structures (with Radix
+MMU) will be 0, because we use kcalloc_node() which will use kmalloc-64
+slab. So slab padding would anyway add some memory waste. So it is as
+good as using static arrays with some max PMD_ORDER for the
+percpu_swap_cluster.
 
-OK, thanks.
-> 
-> > +
-> > +	if (ksm_start() < 0)
-> > +		return FAIL_ON_CHECK;
-> > +
-> > +	/* Attempt to migrate the merged KSM page */
-> > +	ret = try_to_move_page(data->region);
-> > +	if (ret != 0) {
-> > +		ksft_print_msg("migration of KSM page after mremap failed\n");
-> > +		return FAIL_ON_CHECK;
-> > +	}
-> > +
-> > +	/* Ensure ksmd scan two turns at least to update ksm counters */
-> > +	if (ksm_start() < 0)
-> > +		return FAIL_ON_CHECK;
-> 
-> Why do we have to re-run KSM? ksm_start() already performed two runs. To remove
-> any leftover rmap entries?
+For the other lists you mentioned, it anyways adds a onetime negligible
+cost which isn't worth for making SWAP_NR_ORDERS runtime. 
 
-The second run-ksm is necessary since we want to check if the counter
-ksm_merging_pages is correct after mremap.
+> patch 2 looks fine as is. SWAPFILE_CLUSTER backs much bigger per-cluster
+> arrays, so runtime sizing makes sense there, and it looks like no impact to
+> other arches or the current code.
+>
 
-> 
-> But fundamentally, wouldn't it better to query before+after the
-> try_to_move_page() the PFN of all pages, to (a) make sure that they are the same
-> before (all merged, if not -> skip) and (b) make sure that all were migrated (if
-> still old PFN -> not migrated -> BUG).
+yup. That make sense. 
 
-That makes sense.
 
-> 
-> > +
-> > +	merging_pages = ksm_get_self_merging_pages();
-> > +	printf("merging_pages:%ld\n", merging_pages);
-> > +	if (merging_pages != nr_pages / 2) {
-> 
-> 
-> [...]
-> 
-> > +TEST_F(migrate, ksm_and_mremap)
-> > +{
-> > +	struct global_data *data = &self->data;
-> > +	int ret;
-> > +
-> > +	/* Skip if KSM is not available */
-> > +	if (ksm_stop() < 0)
-> > +		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-> > +	if (ksm_get_full_scans() < 0)
-> > +		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-> > +
-> > +	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-> > +	if (ret < 0 && errno == EINVAL)
-> > +		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-> > +	else if (ret)
-> > +		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-> 
-> Why are we not simply using MADV_MERGEABLE instead of the prctl?
+So, unless someone else raises any objection - I will give this a try
+instead of patch-3 in this series and will get back with v2.
 
-No special reason here, I can switch to use MADV_MERGEABLE instead of the prctl if you think it's better.
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index e67e64ac6e8c..57abd8b2c9a1 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -204,6 +204,9 @@ extern unsigned long __pmd_frag_size_shift;
+ #define MAX_PTRS_PER_PGD       (1 << (H_PGD_INDEX_SIZE > RADIX_PGD_INDEX_SIZE ? \
+                                       H_PGD_INDEX_SIZE : RADIX_PGD_INDEX_SIZE))
+
++#define ARCH_MAX_PMD_ORDER ((H_PTE_INDEX_SIZE > RADIX_PTE_INDEX_SIZE) ? \
++                               H_PTE_INDEX_SIZE : RADIX_PTE_INDEX_SIZE)
++
+ /* PMD_SHIFT determines what a second-level page table entry can map */
+ #define PMD_SHIFT      (PAGE_SHIFT + PTE_INDEX_SIZE)
+ #define PMD_SIZE       (1UL << PMD_SHIFT)
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 46c25523d7b8..5f1451f8f266 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -224,10 +224,14 @@ enum {
+ #define SWAP_ENTRY_INVALID     0
+
+ #ifdef CONFIG_THP_SWAP
++#ifdef ARCH_MAX_PMD_ORDER
++#define SWAP_NR_ORDERS         (ARCH_MAX_PMD_ORDER + 1)
++#else
+ #define SWAP_NR_ORDERS         (PMD_ORDER + 1)
++#endif /* ARCH_MAX_PMD_ORDER */
+ #else
+ #define SWAP_NR_ORDERS         1
+-#endif
++#endif /* CONFIG_THP_SWAP */
+
+
+-ritesh
 
