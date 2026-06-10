@@ -4,132 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EED6CD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 22:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF0ACD98C7
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 22:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5D06B0005; Wed, 10 Jun 2026 18:00:14 -0400 (EDT)
+	id 582326B0005; Wed, 10 Jun 2026 18:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 240076B0088; Wed, 10 Jun 2026 18:00:14 -0400 (EDT)
+	id 535AA6B0088; Wed, 10 Jun 2026 18:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 109096B008C; Wed, 10 Jun 2026 18:00:14 -0400 (EDT)
+	id 449736B008C; Wed, 10 Jun 2026 18:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EEFDF6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:00:13 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 995B2120192
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 22:00:13 +0000 (UTC)
-X-FDA: 84865371906.19.12ED278
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8D395160013
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 22:00:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uk+akrjU;
-	spf=pass (imf08.hostedemail.com: domain of elver@google.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781128811;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC936B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:08:58 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A70BB1646EF
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 22:08:57 +0000 (UTC)
+X-FDA: 84865393914.10.F7B52F4
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BC963140005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 22:08:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zrxb3FL4;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781129335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4aXC5fY4yg+OQHnUSe8aIXKwQ9lP7hn20bvK5ZGXMYk=;
-	b=FF109pIbkrcea8ecMUbYmiWloEvQcj6NjYi8C5gcP/VwMavX6lDySV7Dp/+CuvidK86iGS
-	ugiuqE3DxgeL68IREz3e0TUf7Ly7pgs3MTCyL9YWlDyD/VFYGSVYeDqbLtbPv1Xz9Ka9vm
-	JjcorguWezUe4fw1TBP/a1UJ3wB7+Yg=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uk+akrjU;
-	spf=pass (imf08.hostedemail.com: domain of elver@google.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781128811;
-	b=x54r0CBrfcByUaLVUjjxByAKMzo9w9CePx5/GtCjfq+BpXimYFVGGfnoA1gsKppiOc8uff
-	HBCtkBQ4GVhrnahJJzCaknfDEpOcnT6oRSfk8YjO2o6v7h4pFP4tyaKf8g2S5kDI4oyd3u
-	Yfp5iSn2xSl0slIWRI9JcUkbK91CM60=
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13817614cd3so3123695c88.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:00:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781128810; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I4YvWW3b7iHTvpM6negkd1+kTkgT1d9dDYQjglzMBUOVVr3/kXIV3mGtvYqqZlL9Gt
-         2oWlvEcecba5PfPoMmVGg7sXJxma7g8IpFWg1E8AAfzEu2mfv/XOubwx/KFl2wNEukor
-         xfoXTUQbM3XGvbz9rSsuScv3QsQ8LHaY/VaqjQpMJPRr3WuP/MWUbkyzH5ejcQtAKCCC
-         mfr09mZFHcg9WL2x+RFDX4aKpYneFN+cnF5Rkytd+FYLI92K72kI+U2Z+JwSJ1uorauB
-         wsiofIh/hf+jcj739T9znHJ/yJeU6xynUH1dDOiCz4sx4aGdlNqYRPm9KvK0uXm/x0tb
-         WKKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=4aXC5fY4yg+OQHnUSe8aIXKwQ9lP7hn20bvK5ZGXMYk=;
-        fh=iwVoqGO31tZ/ImhWW0nEzZi22sXYrhGjkRiPbXBWplk=;
-        b=NioRqMnQgSf4hR49UzQBEuu1cmarsr6RlEFIPorpQONvLyT5+Rla6Uj5JzaFSIxRJU
-         3cthxlcAaAkNLiCXdqA6ZylAazy6IMCog7+uk2n3Xllt0h1BlDXazJJimDEAmDZVcqBl
-         H/ZvSyQ0gAVcPQs9BDZDLvv5mG3jtB4n29TPPSH/F9Sm/Z71r28hQ13VElL+kaekcWSx
-         l6qdHU5tmVr59eT2EVdayQ53WJ4+3kY5T+9W2cZFWF4bvAhWvrSg6lSU+I2GW6eYYNpo
-         gU98wKm+ksNUcIYLdLsZPlVKBB8TF2uIWVu4Lp73NV3lDoTpKlNLB/00ZeJDxHBX5MQ3
-         6eyw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781128810; x=1781733610; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aXC5fY4yg+OQHnUSe8aIXKwQ9lP7hn20bvK5ZGXMYk=;
-        b=uk+akrjUtwiLm2ReLD/SEm7FhBwTxjmUQ8ZavlvTfnZg6Tg2xJMjBT8XDoZU4t9P7R
-         +LGVokHTdbCzV5fcdXDYYnCTMPl1bwuD1dlQuRhO5zoSKgFl5vU01kZGgt67qVvC4GUQ
-         jVWQfUnIJi90Y2JQI4O/eWroyuZF9rqaloK7tTykOSpvHrE8zlY1BkMRscecPO3iFqku
-         HnYwRpBEpWZ8pNKH2njgmMGUchChJFpLVz5AUotRn1yEMdezyE6w7sCR9/S/VBUskQh4
-         U4v7sY2lWzXaBOeEMAOL2C0RurLWD040C+ok2LDAd2dysJ4d/KY7wwvVMxLzewxpYx7w
-         voXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781128810; x=1781733610;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4aXC5fY4yg+OQHnUSe8aIXKwQ9lP7hn20bvK5ZGXMYk=;
-        b=Ml/Iew3UQjbh2dp3RdGI3cYvEHohCA0cQq6pIrtypXjS112/ghZtqs0GuaogUEVawP
-         TJqX8sIj4xQCe/QYbMRFxJ65A/TEGbNurbKoyy+2I+xH1S65kYh28ZnG9S81evWRv8tp
-         oPPTVTM/995dBTqropCkjn6zhO4ZIvy475C25pXvvoEgXCl70O012qNaJRyLpfBIzPHJ
-         EI9RWrH6ilpBej6lkU+HmFaXyE5VJ26PA9dyefh3eACtjFUv5/vtQDEFGmSnrKyMwpaU
-         ZxkVoL6Nr7tn0nk6ugx0zuNwdaALIUPyEldbZ/rYOLRWP70EMU2MDcaIHRh8jIFjgs7T
-         2DPg==
-X-Forwarded-Encrypted: i=1; AFNElJ+3nNpJCMUEE7GZ35jHDxG5HlDyFEVbq7fdUAvY05Pg8EF81nNdBSTphPDmRXQ18GvWv3awMSeEvg==@kvack.org
-X-Gm-Message-State: AOJu0YwhDUtdXYZZfut9emmUZoIf0zWCAfedX1mKTS8PJT0CqfKIOgfT
-	70AGB7OSDkhipv9+ZUaUEfnNZL69J+tsRnBe3wRr6g7kyDUmrZ0u5O/M+ucHJFwLy0ltIIvapT7
-	AkbyO6qzySB+9D0WCLvP1QF0ldRT8rK1ri59neXfO
-X-Gm-Gg: Acq92OHeUHxBajM3OMD89X6B4p4wCp6XA6FbTg2DIF4eXiPeByEUxHkh+1f3YvFuhCm
-	klp7auPo9VL4kruuR1ufxzq7+Uqok0XkdrviUdDwh+SWQQbDifVHuA4WZBh3SmZ/3SoyoodjSzM
-	nIaRggvyYN0vWiW40A14RSewW+aAGGSu2CFVUCYPxt4ArBW1oij8U3dES50pwxU4bmXrhgXgjAw
-	tS3C81Aqrp46M/Fx/skFQIMcXEwl9bPT7GB6hr7aOI2SCjlqLeZj7FauEQ5Uyc5wNoWIex87XMa
-	lIiCF76OdNZbGDmf9NxvxsNZatMrsrEYhQrXWu8fc1RKics=
-X-Received: by 2002:a05:7022:603:b0:11b:f056:a19b with SMTP id
- a92af1059eb24-138066e1d35mr17149337c88.18.1781128804838; Wed, 10 Jun 2026
- 15:00:04 -0700 (PDT)
+	bh=39aNbmqxEB+y6+1wWTCRLTDBM71LF6M8Aba7hsLG8MY=;
+	b=2ELKxXX9lbiCfcFyb3I0vSKve9f4KP0BhwpULJPVKZXOzGF5CUWRLQIAyOI33VtExqaEVJ
+	AncWaE+lu4ax8VatbmTDk9AiWnc5eMf56oLjIMmdR8kg/B7B/tz5T0KAQteswKEHDkQwZa
+	J6ABZbnX299xe1M02gC0PNHioVRDmz8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Zrxb3FL4;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781129335;
+	b=lMejv9LZGpLHuO7mEYRkr8hwuKm4g/x4IvWiQgorORH+Eqjw4Nf8ks7hiuRGtPsTrMccmu
+	xHYNfJ/Xjv63ETbxQD2QI2+gDzO1BvEaIvI2dsuTUOelU8IYWBKIyzfAEzKDw9v2AfHonV
+	Q1XhIKibF5AqpJVT5w589q4IGFEpH8o=
+Date: Wed, 10 Jun 2026 15:08:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781129332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=39aNbmqxEB+y6+1wWTCRLTDBM71LF6M8Aba7hsLG8MY=;
+	b=Zrxb3FL46twEX1WBwuZLWQ779qKrDYvF50ani6DQ3jZEUa98SS7HpjymMNdzrDgJs0vCVv
+	sUSKUvySZ9X0TQPgEsKi8YnG3AxD6vM9/mdISGXx46PAa6t7M65d6fWyYNuKNWW8OoSD6I
+	+EuusAiK6LesCg9NtECCznFgLn4HYOg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org, 
+	hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
+	roman.gushchin@linux.dev, qi.zheng@linux.dev
+Subject: Re: [zswap?] BUG: sleeping function called from invalid context at
+ kernel/cgroup/rstat.c:421
+Message-ID: <ainb3W_-i5ish_K6@linux.dev>
+References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
+ <CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
+ <aimbPCBloe0Dqk7t@linux.dev>
+ <CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260423093420.038ce8c6ffb45279d0a809a0@linux-foundation.org> <20260610212111.561726-1-jkrshnmenon@gmail.com>
-In-Reply-To: <20260610212111.561726-1-jkrshnmenon@gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Wed, 10 Jun 2026 23:59:28 +0200
-X-Gm-Features: AVVi8CcDTxjL3_blywDrNvb1KV19KMan71BbwA0t5VUY2rzsqCjQQaaiGCpfUOY
-Message-ID: <CANpmjNMRpc33npsBbAqmgn9vfm+HtkAhDOEcM5Aro9Ej8y78+w@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] KCSAN: data-race in mas_wr_slot_store / mtree_range_walk
-To: Jay Vadayath <jkrshnmenon@gmail.com>
-Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, jannh@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8D395160013
-X-Stat-Signature: mc59h954micqnkhoexwgrboxgjpezgka
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BC963140005
+X-Stat-Signature: t86n486s5duhi1uo61p5sun4u16qwft5
 X-Rspam-User: 
-X-HE-Tag: 1781128811-34324
-X-HE-Meta: U2FsdGVkX18lg1pzcto2Je9MB8JUiRirb/fmZ5gjuIZ+JiZxBjieRqQjqP6AoBXc8ca8ap1Rpa67IhZb+eTprC+1lALacANAWgsK2oo7UzNf9LC6qMN57rjREvOo2cN40Xf95xNyUOeEIACIP6ncVBsj++jz/LbRanbdrzF7RXy7bNlgVTN16SUB1lvzgR0/qdeoxrkbWcjbpkiHuZuEPFghSYdZ8OSTwdB36+c+oIgQarwGmQFPCIH5pCtf1zoLXg2df3ipqL+N0gIFU1UqHrj8S4PF3OpgjnFfC7R6tu1VRUsq7YpX29kVRymajOgGwG3LRr1pRCK13JrLKvaC8ZNIJe6zxzZapXQar4TRx2aM/2Swo9RZGpCNIMknfjqAW+WqyURv9QEWhQBMfRWoUcZoXPY4F240BB/l08SvBj5MeMco9r5L1/tlzqSVnS/lYy9WxWvNhhq/LK2QGRSV5mELaMjHljoe9EjS6nmF0Kfu9TzQuz8tJN4Sd6XkkZ8NUs+NgTYpBSkuWXsAtj3qZKTvORz2B8V3MYV28q7M4XONHMBXMri2t8j5vV0/FofP+2hG/7yvhoF3wy/2Yj1Kg7D7YgTs/fx0tKQmrN/AMp0OPLvSa4Ppm4zVgWe/GTVhDKlh33scPCo0Ylj7eTZVj7piA5AhaAMjly/orkM3ojgfIykhGQlRHXb+LqLxp1mWOTuj4a+XptxNU4NuphmTB2us5EEbGzKZMml6JvUIEDBQPUiKECvQ4lFkIeLDWqPk9WLmeKjv6GLqBnOp2PALHczskvMZnj2B/EjhilGChHP82tKVNnZ0H5xzObECt1b3fgS29yc8PzK9OVx6sofTiTKeXYxL4F4GLzYiVA5Z0QDyoNLez46793U+kSPzJgaKxYwVGoT9ghF0Jss1UyjrFjvHM9lDuUFiOrUD6INgg+LzHf2mYEdX90YoU5oSnZUGaWgzoJiBiizAhFkggJ9
- Shdr5DZu
- lPO0BwAy3pinXDutjcaWiH80owkveksFuwHVM5L1X4CZi7XEA7QPLJEZtT/SNIIDGrte3gd7uGsMZqpvBrHAYgGbsAKR7Rucyl63mvIxXLZ5NpwcTAjJzuqlgLBpOIJKqpUaTC2wA9Msz3ZpEfGLPmOVqnA1OCHxI8KETrKn3kG6nbopabLTjdsZuuMlcZ9ESOCbmLDGFmkpTiSFv4Vi9CVl1vW6B2R8I7zbsv4mS/lzV5zP5QwskY0KowQUJiIAEvK8xqx04syrZ3QPf5OEwZ8KSjOGDXw/0/fjuar6orq50zTwiG0euF8xQT3jZurJxNOBM1ygsOUu0eU8lPLWo5etqOluCNCZXNtF9F6SXbhB9Ndr0F5FS/xSt+NWwlaRCLqIDYtp2H0xKFHQck0kzAUHcubQL4O5O5TZbZSJuoJDp0zqIIoN+uB5xz4DH2lPOqMpH2cbGSnb1+Ym22XWM7z7SJ+G6frlOnW/laCV+ozD1OVMISqQXb7kP/h8aXs151hGX8dWmI+bnmCD91FwWBXXErAKVaeTrw0Z8hhNDBUYTqvogc2UunWT2xv7lzhBakUPleh6ow4IIEhlDqcJk5XGX5mcbHWjyzhnZRPIRnHm6cJLBZ2EgSNLJcQV+oDT70/mQhxTQvGsaYkI=
+X-HE-Tag: 1781129334-603374
+X-HE-Meta: U2FsdGVkX19zCl4Qwq2T44WC/TXCCX2mSg8KNXCwGr3AgFKLYpmYn9AuoZoX7eMnFqVQTyTKd6LPa0so38oNdR7Bw+baPWfn08GtN/35KFuieUS5GIzl08K8BUXg3lcyOWzyr/qN5GOl5TGObqv7kLka/F0pyJKpSWOHgvZyvSGOlJqxoCPpDnRicz0K0l6BjuZQx3e1Y47YwfPBw7Jeh6isETJ97wca/RMgr5jggT3KXgYOfrwHsKj1IKCHN9zn0+iGYj7gnMnEySp/aj6l9J3E+sFmcEx8LIOZPV3TplUZGUw6gu87Pgs3r30bdVBBmi5XuNGooV9YFXv/g+atetokGIe+USmTLo/wFWQ7uPK2XjSjZkDNpHtlDH0j+jpEK0xy/0JzmrgDoS9adujFQKaNtx5XAau42rowkXg8uaj5CexQf/ZAslgoHAbIu8/puhDVbTzXmyWQ1ZQoeluXD4xSMb5W2MLuPv7pX94MqPD5ebDHpzmltx5yCN19xspJMlt0UNIsOsLPd3zlu372f6/pf0+orf3asNf/Dse8tmYMIZGogqYL1Pj5uwl/dPYieYwEJScM2kfThcki0G4mcUBBFJ0SU0vxawz7JMhebZ8idTm7A4X0op1Qyy6Orb4HqVntZ8n6MC30CK335WOJhru4YudBAnpo0HZ6pBeV6lc15ZERf/boirAZUa2tMPh08xGs0ByKi7ChvlUEwUsdeqPOQ4SEAP8I2xDZzQx1xEfQ0nelwLOLQ7tpvrWyBw8QcZXiWS9vH+M8GBdVKk2/lqVRCnb1nFXRfbUW/Epr5rh8OtKq2BNElFq6l4VThMD45N5MzeIUC5tyYaKxahSvG3tAraYBpGygFci7RmB1bur2h0U3oJR00lFjM83DmGcsaBSUSgqyANnjhfe1Ayn06JhjiYz50g/56nlCWDfXovWCi7ALL+hj0nphWLpHhjbWWAUeEgm01Vb/aVwV2tt
+ CnS0GyoG
+ VdCOmrm8ZWnMDzyP8nEL3PVuVbMfi2VJqjnxVfA2Lkoe7hySLO1XhHN0QTQUIAx4upS2aOmYQsCWnTKwW968Z5TPw1iiv1RnG7EFKgw7KjNUKWmJXrA707o0BqAmWDvlDtVYr8ykHMfqlzaZlyz3ZYAdmjfywVYmFskT0NWTpkF4CoTcPUySnYUzHqlMJznqsfUHMfv/POdcCFwlG7a8nMbbxMN0J+CXruGIi1A167FYeS21Mk6Kg8yv9wbmiovX61gx0QJ3DO2zZ+sEFPff4P0N8Rh7HBGlZ8vsybVHCmPUdK+K7BRIkyWDTpZv9JpBRQBJ2J3uIs2WiYvnT/E2f3p6Dfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,38 +94,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Jun 2026 at 23:21, Jay Vadayath <jkrshnmenon@gmail.com> wrote:
->
-> Hello,
->
-> I am a security researcher and was able to independently reproduce this
-> data race on an x86-64 host using a KCSAN-enabled build of the affected
-> kernel version (3cd8b194bf3428dfa53120fee47e827a7c495815).
-> The crash can be reliably triggered using the provided PoC.
+On Wed, Jun 10, 2026 at 11:38:29AM -0700, Nhat Pham wrote:
+> On Wed, Jun 10, 2026 at 10:31 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > +Roman, Qi
+> >
+> > On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
+> > > On Wed, Jun 10, 2026 at 9:05 AM Zenghui Yu <zenghui.yu@linux.dev> wrote:
+> > >
+> > > Thanks for reporting, Zenghui.
+> > >
+> > >
+> > > >
+> > > > Hi all,
+> > > >
+> > > > The following splat was triggered on the mainline kernel:
+> > > >
+> > > >  BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+> > > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name: cat
+> > > >  preempt_count: 0, expected: 0
+> > > >  RCU nest depth: 1, expected: 0
+> > > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0-rc7-00056-gacb7500801e9-dirty #304 PREEMPT
+> > > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-prebuilt.qemu.org 08/13/2024
+> > > >  Call trace:
+> > > >   show_stack+0x18/0x24 (C)
+> > > >   dump_stack_lvl+0x78/0x90
+> > > >   dump_stack+0x18/0x24
+> > > >   __might_resched+0x114/0x170
+> > > >   __might_sleep+0x48/0x98
+> > > >   css_rstat_flush+0x54/0x564
+> > > >   mem_cgroup_flush_stats+0x9c/0xb0
+> > > >   zswap_shrinker_count+0xe4/0x1e4
+> > > >   shrinker_debugfs_count_show+0xd8/0x268
+> > >
+> > > Ah, this seems a bit tricky.
+> > >
+> > > Seems like shrinker_debugfs_count_show() is invoking
+> > > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_count()
+> > > triggers a stats flushing, which might sleep. Not ideal.
+> > >
+> > > Is the rcu_read_section() here to protect memcg or shrinker? For
+> > > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
+> > > memcg before returning.
+> > >
+> > > (memcg maintainers please fact check me).
+> >
+> > mem_cgroup_iter() handles the lifetime of memcg, so there is no need for rcu
+> > read section for memcg.
+> >
+> > >
+> > > If this is for the shrinker think this needs to follow shrink_slab()'s pattern.:
+> > >
+> > > rcu_read_lock();
+> > > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
+> > > {
+> > >     if (!shrinker_try_get(shrinker))
+> > >         continue;
+> > >     rcu_read_unlock();
+> > > }
+> > >
+> > > But OTOH, doesn't seem like rcu_read_section() is what keeping it safe:
+> >
+> > Shouldn't the caller already holds the reference to the shrinker which it is
+> > giving to this function? Does debugfs file entry holds a reference to the
+> > shrinker which it is giving.
+> >
+> > After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
+> > shrinker_free_rcu_cb), so this rcu read section is against that.
+> >
+> > I think we can simply use shrinker_try_get() here as Nhat said.
+> 
+> Hmm, so is this unsafe even with the current rcu shennanigans? What's
+> stopping shrinker to be freed by that callback before we enter
+> rcu_read_section()?
+> 
+> Seems like this is just implicitly correct - shrinker_debugfs_detach()
+> and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
+> shrinker_free_rcu_cb);, so if you're reading this file, then it's
+> before shrinker_free_rcu_cb() is even registered?
+> 
+> Do we still need rcu or shrinker_try_get() here?
 
-It's not a crash, it's a data-race report. Data races are more subtle,
-while technically UB, they are tolerated in some cases in the kernel;
-please see: https://lwn.net/Articles/816850/
+I think you are right that we don't need rcu or shrinker_try_get() but it is
+more about an active debugfs file reader. Suppose we are sleeping within rstat
+flush from shrinker_debugfs_count_show() and there is a parallel
+shrinker_debugfs_remove() call.
 
-> However, I am not aware of a method that can take advantage of this bug
-> to achieve a practical exploit.
+shrinker_debugfs_remove calls debugfs_remove_recursive and deep in the stack
+there is a call wait_for_completion(&fsd->active_users_drained) which will wait
+for active users, one of which is sleeping within rstat flush.
 
-An analysis of its severity would be appreciated (e.g. corrupts data, etc.).
+So, let's simply remove rcu read here.
 
-We've been trying to do this with syzbot. This report was also caught
-by syzbot, and we have some AI-based workflows that attempt to analyze
-benign'ness/harmfulness (take it with a bucket of salt):
-
-> An unprivileged user can easily trigger this data race by performing concurrent
-> `mmap()` operations and memory accesses (page faults). However, the race only
-> results in a spurious fallback to the slow path of the page fault handler. It
-> cannot lead to memory corruption, privilege escalation, or denial of service.
-
-Sounds plausible. Source:
-https://syzbot.org/bug?id=3ce3ffd8320398fb3336831c3cb1e7b3ba60d64a
-
-Either way, marking the accesses appropriately is typically encouraged
-so that optimizing compilers don't become too clever and break the
-code in future:
-https://docs.kernel.org/dev-tools/lkmm/docs/access-marking.html
+> 
 
