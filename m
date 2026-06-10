@@ -4,105 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4243CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 02:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2C3CD8CA8
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 02:15:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299476B008A; Tue,  9 Jun 2026 22:11:41 -0400 (EDT)
+	id C8A6B6B008C; Tue,  9 Jun 2026 22:15:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 270486B008C; Tue,  9 Jun 2026 22:11:41 -0400 (EDT)
+	id C623C6B0092; Tue,  9 Jun 2026 22:15:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F726B0092; Tue,  9 Jun 2026 22:11:41 -0400 (EDT)
+	id B9E9C6B0093; Tue,  9 Jun 2026 22:15:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 036F66B008A
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 22:11:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A90411407C5
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:11:40 +0000 (UTC)
-X-FDA: 84862376760.13.54D0F5E
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BB283100002
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:11:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=c2g3JD5A;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf14.hostedemail.com: domain of chenyichong@uniontech.com designates 54.204.34.129 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA16A6B008C
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 22:15:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE664120860
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:15:26 +0000 (UTC)
+X-FDA: 84862386252.15.EE909C7
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 208AA80006
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:15:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D6ijSBnP;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781057498;
+	s=arc-20220608; t=1781057725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IVSAXr3MVUuIvyQwhDMWEDoA0VCM2OOBNmbT/fX15ZM=;
-	b=clUfPSTQHebCMtgeG9Qyq9fVvQS6JMwZZB2gQl4yzT83w+rHhe1PqKrKYlueowDmtWGaWl
-	bOcgNkwprbA4qpJS4J6N0DYy1vUam1wGiCDAN8h/w/o+0vEB/v4KWnrrHrqOIs3cIIkFOu
-	Jdnx1Tlx4iWJew/4p8Yr4AAE50QvriY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sUscgkaVB9GhkTyYmcNNOPyIpn4q5HzwEqwgoYRL1cI=;
+	b=6wrArVK8wtZQHTlfvkTGxMZRjHrJv5dv+v14SAM/5PmnGnMnjDqxHr8tqYsOF5jX8WkM7v
+	k6oA3pIo2mZpe6K6jf9oLaWu1uVZVd06ZP3sNX51WgVNaooGpLb+JukeC9vaGEn8sGfVco
+	B/CgBPPkihb4UL1IakXfNkHBLL1m7Xw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=c2g3JD5A;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf14.hostedemail.com: domain of chenyichong@uniontech.com designates 54.204.34.129 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=D6ijSBnP;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781057498;
-	b=YDmr4ebKbxI+uqRPaUmmPbtb+7ZSwGIFSSammqUDCK/eOufDJrcGbIXPKXR12hffHPkCsz
-	TwX/rhny3Seb6iRqq41Jsx0bwftOUPToIu5GZIpF1lvgYwZ4RAGOwmUbwE7RhjvkMFpJ1i
-	SBRs6d1aPyttBfyPLL1HT/MUMMQBQRg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781057492;
-	bh=IVSAXr3MVUuIvyQwhDMWEDoA0VCM2OOBNmbT/fX15ZM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=c2g3JD5ADekPpK/isoyNXDE19XRrbY5VqjFMP02LaMDUY87wjoI3ZDJ7P1ufGNG6f
-	 BiFb8e+eCgJB2UzPIAfB6zAA/8e6tINOCy5puFnG1J6tt+LnKs9flN+crSzUPuXCR+
-	 vqZTah21KrmlpGP5KG67VzFjrLiuAScI53WHay5U=
-X-QQ-mid: zesmtpgz5t1781057477t84f1543c
-X-QQ-Originating-IP: 77ArkWXT4jANmxzP+zcN0Xg6IIggm0KvJLEK0dOynPQ=
-Received: from Shurima ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 10 Jun 2026 10:11:15 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15137944461439253450
-EX-QQ-RecipientCnt: 4
-From: chenyichong <chenyichong@uniontech.com>
+	t=1781057725;
+	b=WIPKM9nm+gs3vxdazybiwtDa3LUx+Cmo8gnDHI6HBVuxNKraa9zpMPWvkYPmBJQ7kaCDgx
+	Tzg3Cj6A6tozNzfRoMUavXNd2rDF4qO6HPzXiKk83/yXMZsUrVmO5cQ/kNb6/AyR3SDB4L
+	twfziNPeuBw6uIjDDTT5hLTG/tKIJD4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781057722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sUscgkaVB9GhkTyYmcNNOPyIpn4q5HzwEqwgoYRL1cI=;
+	b=D6ijSBnPu590JadANQn6yWI4D34v3+8oS/4hsrM+AztYMR9ELQesm+n+bMbpuT5UnnPVdP
+	3Sm7CUM7F7pRDF+SZFmKWng6A/cUb4qDR+aUBv6agV1CvTEsE1Q0M3wyCDU3CXHWnk0aUn
+	MwSKL8vK12126gyL1mz8G54ZZJd+g4c=
+From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
+Cc: xueyuan.chen21@gmail.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	chenyichong <chenyichong@uniontech.com>
-Subject: [PATCH] tools/mm/page_owner_sort: free per-record allocations
-Date: Wed, 10 Jun 2026 10:11:08 +0800
-Message-ID: <D7AC1314C01DD894+20260610021109.132538-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	yang@os.amperecomputing.com,
+	jannh@google.com,
+	dave.hansen@intel.com
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero folio read-only
+Date: Wed, 10 Jun 2026 10:15:07 +0800
+Message-Id: <20260610021508.46000-1-lance.yang@linux.dev>
+In-Reply-To: <20260609124549.aff7e774603c4af188009408@linux-foundation.org>
+References: <20260609124549.aff7e774603c4af188009408@linux-foundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: N2K7JO7TcIoEJCwugUhsgR0sp9dBpocDHWke+jbT2VWQia0n3Exm0kHm
-	luwS74gHwUMY6IOx4KBNDV4f16lV6Y6+ZCaOUx/uqXz8mfvAEHYp3lnj0y9A0/pBRVrvlVK
-	s6zSUl46j2/MlrEibzY8+sM/uW0hpXT5n3H2rBnzTIcXX7mPuM85VQAIzpAHpc0zSFUlc4L
-	pAL8QAzopdwjuA7QDcvFvnvj3o7+DMzdh3e5eKwr+r2lOGq27wydfDb7dx5O+OHDR7LjMGh
-	pwcnMGMpRWxzfg4e8j834u4PBwnn1mjNvTpCGwiA/RxP0nDv/TIeqSam8BFzmnS2nllIPhv
-	v5RKMSemP7NrxEoLsA5uummP3sE+3G64zHPggy8274HrGqBXPeD8OzskKRc649iedojhIk0
-	LVl+gUPNw3ZJ24qXZFXjXSIjFrgKOIEWYo5L847zaacpE8eknqW0dkszzB/t9IyvXC9fPDH
-	oCsXJHhw/mqlnX3Ethr9xuIkjWKfdmtjFz4j795Gl2UGzUVmeCtGDhzwxnod+bcJzT12ZLi
-	1FvUv5csiGePkbYuapSyOvuylwQ2fRMFpJYDQ5ErtfjxmG2vWglPoWDqbSUkGAEMvaFTiEx
-	g6pGK96dvRTF3NoBIAt3X6bqg1tJjTy9NOuWPlyHX7tSt+dTC4jtIQTY90SAXA4Ueji3R2+
-	9B1Aa/FfX1kXhJ639VUMBa7nDCTHUyJj07doV/RbQAzCVdCNdqMHQB3ooeXlzA+xJew43aj
-	VkGFUkFvMNT8NubscwYPzr8OuPH57/i+BlLvVN8T6A9GcJW99rlLu3rJg0/8dZMSpIgTF6q
-	83wvD+mFEF17ia/48AI8KHU5kkKr4968F26SVp0Rc8Zujkp7As9AMTqspx8SOnBH4prvtqK
-	JWn4wJqmmdvgWEQe3ETbqmHmkYEffe5ESAmdgFGoMy2RoFP1iROOPPxqqrudEjeuvZXRYSX
-	NDfhh8DdSUnbUZecaEyjwioK113ztO608frxkdIfjWlvMdvuDRUZ0EkCm1LQVtp669vmDXV
-	H6ij9x1g==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam07
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 208AA80006
+X-Stat-Signature: 98z779aaf6jqtosboxked5w1cw89g696
 X-Rspam-User: 
-X-Stat-Signature: 5efqdfpk7xd6k8b6oysmke7qrstspoie
-X-Rspamd-Queue-Id: BB283100002
-X-HE-Tag: 1781057495-117154
-X-HE-Meta: U2FsdGVkX19xbisl734OpTQ3w6yoiiWQS0Q4zouxqJq7ncRPrd9jpl4iUGQG4eziOo6bTc8n9rAdurfuflhIfbXfMkV/ed4Fp42F8+Vkb7SeEEnt0U54l+YEt3oRtaMaHxlL7ma/exQFps1NsVNf4z0vf7Mv6Asmlvi0brKGfABJ3ZXiATRyhTrW2ra8LwIkUt42fMvgrE71v8i9S70EVBTbjvfPKxa2mkBZj4Bfsl01UTNGpGEZmRhhz0rEAHB/Pe3U/vPaEzDF8hJYYEpu9f5rcV/aDLamKJ6KobHr17l1v61oGwvfWAh4VDjQf+DwEHDRajnq4Bu18iTcyG6B5XWqp+i30myUidtW+7JM6iXy/U+n1KfjvvEgPY4aUSrfMlXlVHVsEGITWoXoUP1yjLEzLYj6Vp0IzCaTCK3PdYzCqpCgm2ut/JksGDvLb8bWGyP5v9lhnDVwFpTHjDaV3gXdX19bbFaDifeDhvWiL6hVvL13AOzmggK7eGio72h220Ffemcf1SlX2AC37EXVO88N/Zv8fhkvzLAycJ8uvZVEm6B7LoF257iQD69KPw8XhJzh7jp4g9HBJbDYPevj1QHTpgJ8aZEPyeXFEIqgDknygBb0kebF4A510k0PtJcRaTl5d/QjerbKGbD4yOrS5Grzsvo9pX4T1xv8Hmjho6179HMFLKlmw/0il4zBCEvw16vg1GHyrheB2+AboZQLW7bmoh2J+YJrnkgA3K9XPqdMhIpH7pd0fDAY73PTbRokSDZwAYJBdCeLDdcKqzYrItxDllCKcNQcH4bEQ6Pxu+Excepajv3rvM5K16O+wZAbDU/H2IExICItCnrCdl38aUfWSX3nvUOjgAyym/cRoo6g/cVQGsHxU1ucV15aZS9kOHb/xWzB1kO5izcSE49u2z+ML5Ddg8SBo6OaKb5w9+/JuwiegVC+yYxg5w/zquy3DrXCSHwesS+/WgGwkeV
- NAfkB1ek
- O5v62VOpPXyspafXM5SptJ2QqGTdGH8H/gF+nQobu/kTmM6H0xns41DPPCG/FVSe/SjIyys6GVpNxseczezNDnSksnMTPLte9nOs1MNXlFso97uiG/3BlTNzbFb6PUcFqPqvOStYCszl4Z91GPjVtBMBE7dPTc5O4kFKWAj51ynDmlUbJ7haFmhcxN0iB12hasKexVVZWjV71Bu9jWURiEdqXRss72R7s6PjzkrbwaDfPGmEqxWtbQ8YcbhxoFF7Sv2mVsRPUDbW1jmJhonL/Esqk0IywaeSdy5/tFQqCZ9UPiEb6mK1qY02k9aS/bMIfrJfMJIYWEH8AXnVuMnPu8MKUUTmfDuYEX9m/+7P/AccZXkWNHKixtDccOaToNSh6cbxeynbdi/yT/Js=
+X-HE-Tag: 1781057724-791273
+X-HE-Meta: U2FsdGVkX18xAdWBosAw01TBLXR/Fxlqu5fA7n5cMzgUoIGNFg7dVCy1JCj3R6MdJn9lufOASLWQiDIuusIa5xVRPj7oJodIUcpLciN9EzodB5YVHR4L64WBUBLbMo3WB5YmOd3mKsjlfeO1fhK4RaBbE/J2zkepF7Ymj8cs7FoQcPyIsj9HVkgHUGRWLMeLi9wIwigIOaPceeEtihy23LZh3hZfYXyKCfxlKA0hgZ7Yqi70CZQL23lGlPV7Ltl4K38bCL0zHozSCLQp3FsgTutQ7rX1I7UvYLwDAVDHOWt35GS/OQ6EnreeNjo24YAkYmETjHK3Vuvus30Mh9ukCc68Gu203tXryr/HkMly8enWTkTrCEcK0JYgKUOx/4lfKtFZbHqoVA+VC6RQJb9j+lR6yIIPnWzzNiMQXg9lmTxqDNhEKnqOhwCCTCUpHzBeVE29cbrROhRPsxT+K/Z21zTVA/hLBMGTUEtKu8DfwLyrHsMZk6xkY5cLbs1zsEkgbr+0MxVZa4QI9XCWsF7arVtKhQKUFuFIf1lOtJTQMPAVKARTI3TI6PbJrG2Ti6V2M85HJve0oDL8I18IA9pMLKCOBLKQKcNH0WZC67VuD5ri8E4Yt8CYO8lVywFqsRZ31X27spTD15gGSFnSNeRuBZ5PjbywCcUVGXnozzgXsJ4yDxy23tJNHFt2O19aQJZS29XkCBuA4UhtHdHFluZjpkrbv2BQpPYbXYUlRkY/OShVJviTQYeniIV6MJMR64oGm0RID0P1PHk0JJqEJqGYyEqgl0uingOidXe87jB+QT34mMep5ngVKqsUXDe/eURImwF1wuUXllnqBpZhr9DvZx7+9cJNa0m2uG8VbwcAsMHqS/BaeULBKP2Ru5P9xboj/0Ci8C5ELTBPy3MpHu+PuZqz0YkFpJK7HDERQUvQryiocd72czQ35kLkBihYtr1NA8K+gR4Nmp+bl+BE/HU
+ BF3Kw2t/
+ IWigJGyyI9kCvD4jXh8BA/NYDVIXyN7mn8WLbEo44cipoSkBBtM1VrkMmK/ln+QP7RexweCmp+0cM3vmoFI9A57ImSkB11Ad2fYGSO7wxuzN7FjJ6TFDI5xXzP9tXhg97n6C2mpmAyJ9dD6/hO/KSsx8uNz0SN7NCqiuXKoae/vvR6ddCn1noWmmgyUnHVV5KJcfNUNsTY+qiEXlPudzlHipjYnC2cqKevfTEbu7ZINmFMmnmizOzvbYLgH0X311eu++idj1fyXhRCJ+WwF1KoVbRaVEB+wFySff9IaMEk/P33Avx3FFlIMUc2iEEJVVIJex8cr4RwaFgT8kqWD5RP1RvHiJsFxrds20fFnkZLTjFKFdbHFeRZMKV3iWnUibCfvMorHRF1XBB0YSpuKHU+OElGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,83 +117,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-add_list() allocates a command name and text buffer for every page owner record.  The cleanup path only frees the outer list array, leaving both allocations for every retained record behind until process exit.
 
-Records discarded while culling also lose their allocation references when the list is compacted.  Free those records as they are merged, track the compacted list size, and release the remaining per-record allocations on exit.  Also handle allocation failures in get_comm() and unwind the command name if allocating the text buffer fails.
+On Tue, Jun 09, 2026 at 12:45:49PM -0700, Andrew Morton wrote:
+>On Tue,  9 Jun 2026 22:37:59 +0800 Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+>
+>> The huge zero folio is shared globally, and its contents should never
+>> change after initialization. As Jann Horn pointed out[1], the kernel has
+>> had bugs, including security bugs, where read-only pages were later written
+>> to. If the persistent huge zero folio is read-only in the direct map, such
+>> writes fault instead of silently corrupting the shared zero contents.
+>> 
+>> Add arch_make_pages_readonly() so mm code can request read-only direct-map
+>> protection for a page range. Direct-map protection is
+>> architecture-specific, so the generic weak implementation does nothing.
+>> 
+>> This was inspired by Jann Horn's read-only zero page work[1] and follow-up
+>> discussion[2] with Yang Shi.
+>> 
+>> [1] https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/
+>> [2] https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/
+>> 
+>> ...
+>>
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -308,6 +308,11 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+>>  	return 0;
+>>  }
+>>  
+>> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  static struct shrinker *huge_zero_folio_shrinker;
+>>  
+>>  #ifdef CONFIG_SYSFS
+>> @@ -982,8 +987,14 @@ static int __init thp_shrinker_init(void)
+>>  		 * that get_huge_zero_folio() will most likely not fail as
+>>  		 * thp_shrinker_init() is invoked early on during boot.
+>>  		 */
+>> -		if (!get_huge_zero_folio())
+>> +		if (!get_huge_zero_folio()) {
+>>  			pr_warn("Allocating persistent huge zero folio failed\n");
+>> +			return 0;
+>> +		}
+>> +
+>> +		arch_make_pages_readonly(folio_page(huge_zero_folio, 0),
+>> +					HPAGE_PMD_NR);
+>
+>Can it simply pass the folio?
 
-Signed-off-by: chenyichong <chenyichong@uniontech.com>
----
- tools/mm/page_owner_sort.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+Right, this came from the RFC v1 discussion[1]. David preferred a page-
+range helper for possible future non-folio callers, not something folio-
+only.
 
-diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index e6954909401c..67a7fc6d9de2 100644
---- a/tools/mm/page_owner_sort.c
-+++ b/tools/mm/page_owner_sort.c
-@@ -372,6 +372,9 @@ static char *get_comm(char *buf)
- {
- 	char *comm_str = malloc(TASK_COMM_LEN);
- 
-+	if (!comm_str)
-+		return NULL;
-+
- 	memset(comm_str, 0, TASK_COMM_LEN);
- 
- 	search_pattern(&comm_pattern, comm_str, buf);
-@@ -386,6 +389,12 @@ static char *get_comm(char *buf)
- 	return comm_str;
- }
- 
-+static void free_block_list(struct block_list *block)
-+{
-+	free(block->comm);
-+	free(block->txt);
-+}
-+
- static int get_arg_type(const char *arg)
- {
- 	if (!strcmp(arg, "pid") || !strcmp(arg, "p"))
-@@ -480,9 +489,15 @@ static bool add_list(char *buf, int len, char *ext_buf)
- 	list[list_size].pid = get_pid(buf);
- 	list[list_size].tgid = get_tgid(buf);
- 	list[list_size].comm = get_comm(buf);
-+	if (!list[list_size].comm) {
-+		fprintf(stderr, "Out of memory\n");
-+		return false;
-+	}
- 	list[list_size].txt = malloc(len+1);
- 	if (!list[list_size].txt) {
- 		fprintf(stderr, "Out of memory\n");
-+		free(list[list_size].comm);
-+		list[list_size].comm = NULL;
- 		return false;
- 	}
- 	memcpy(list[list_size].txt, buf, len);
-@@ -841,8 +856,10 @@ int main(int argc, char **argv)
- 		} else {
- 			list[count-1].num += list[i].num;
- 			list[count-1].page_num += list[i].page_num;
-+			free_block_list(&list[i]);
- 		}
- 	}
-+	list_size = count;
- 
- 	qsort(list, count, sizeof(list[0]), compare_sort_condition);
- 
-@@ -876,8 +893,11 @@ int main(int argc, char **argv)
- 		free(ext_buf);
- 	if (buf)
- 		free(buf);
--	if (list)
-+	if (list) {
-+		for (i = 0; i < list_size; i++)
-+			free_block_list(&list[i]);
- 		free(list);
-+	}
- out_ts:
- 	regfree(&ts_nsec_pattern);
- out_comm:
--- 
-2.51.0
+Of course, we could also add a folio wrapper on top of that if needed :)
 
+[1] https://lore.kernel.org/linux-mm/929875a2-9e94-4dbc-9c98-b342ccc3f4e2@kernel.org/
+
+Thanks, Lance
 
