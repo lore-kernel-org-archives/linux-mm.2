@@ -4,148 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D8D7CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F99DCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:40:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4FD6B0005; Wed, 10 Jun 2026 11:31:01 -0400 (EDT)
+	id 892D76B0005; Wed, 10 Jun 2026 11:40:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48BF16B0088; Wed, 10 Jun 2026 11:31:01 -0400 (EDT)
+	id 86A216B0088; Wed, 10 Jun 2026 11:40:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A2026B008C; Wed, 10 Jun 2026 11:31:01 -0400 (EDT)
+	id 7A76E6B008C; Wed, 10 Jun 2026 11:40:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 289E46B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:31:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5CBF1C0CFB
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:31:00 +0000 (UTC)
-X-FDA: 84864391080.25.72813A8
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 085E7A001F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:30:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QMvwanYg;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 6B94B6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:40:23 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F409162022
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:23 +0000 (UTC)
+X-FDA: 84864414726.16.0E273EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6A01B140016
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5gNJkTh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781105459;
+	s=arc-20220608; t=1781106021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3bboFVFfkG0GIFTD2ahnJgVC8EVO2PxrJueSwSbO4OM=;
-	b=eLMXTZUjCpSSnYtod9N6rhRAGTD82vb44fHEp7UIKdETTLP3JkwDs37/FPMadIGlp2OkGJ
-	dXrjG0wRGx97jswV0u0z8rAy6adv+rvpazfFigL/EF0bmRNNQtnpJ4qPNKCJhksX27DbQW
-	GS2TA9GcIDKjxVpGPkOno7dqYlzVxzQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781105459;
-	b=EoQI/hoKIaedTXe+VkLzFf6nmISEuYmxtfozrfRNli0F+lIyUNJm3UtduoG37Dbdo6eLq1
-	uVa8fBZg+xijOP0ksB9bblgCWfXdeU19sIXE/pNqNTj9sADda57wcn5Ji71/Yqhaa/t5UL
-	sEhtutvDstukPnmHm0XhsoKDBX+zV4g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rh6k92Y5yfUvQ1Ydl5es3+m24euL6hyzwkyjlD+xQ1I=;
+	b=kamXDtRiGiaSi+WRy9XqzuBs1QmJrvlZW0g55vDRv0Mx+X9XQbo62ihMYN0/9UayDyrMfj
+	D32SXxY2HMX6IDbkXIdTWy4R5Cj3Wwi6lPBElcA2qrrxw7FgkRUUcwzz0y1RRYGetttr9U
+	ugn+wXO8ILJxW7oTwC68tQP8vDoNkCI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QMvwanYg;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8ce9de10985so81001926d6.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:30:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1781105458; x=1781710258; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3bboFVFfkG0GIFTD2ahnJgVC8EVO2PxrJueSwSbO4OM=;
-        b=QMvwanYg6BDrUIlwNmaNudBk93OVPlz1FsJteYyHt+4gvXOSMYQJe2HW9abYEPnJoa
-         6zQZJzgNDQ96IFXOQgNpR3DWlDg/MtW9+VMaDwT3MnmhOT5/9RMpC3eYKHHvOKvEyo/z
-         le8bjPfkHlbdENSl/MatZVyR6k4f4FfctToxdBJ5eK9Ev6i7amW9bP45YQFdtOvxJuvw
-         noeGzvMDbHUjg3WeJl41cIzwzDdTCTpSRY9AR+/L8dj1O+V7PQFL0hs4pgBHYGOJksT+
-         ibiYBC+LH6vZpUXQAN342v6bwH72e60CHTGDDrTaUL15znV8pTMbbVE6yKP0mXXX3Ili
-         WDoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781105458; x=1781710258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3bboFVFfkG0GIFTD2ahnJgVC8EVO2PxrJueSwSbO4OM=;
-        b=isQBF9Rz4nckSu+HZYQBfHuYtI0uMuguj7siugARUGG8AdwYYily9NhngZknOwmr3m
-         g0mTJgOXHDW+jO2MZ+SCRqhCzptNAQ8CpIHSI7iyS/hWnY5yKgE0sLFgSFuuJLZXyLJQ
-         04rTqPNokg3EG4xfRZGXlnfXnJ1D76g3aZZQcUFo5xtqBI2SPdllDpD/VPfNqqp3epVR
-         QW6ZONEWFSW0+e/dSuzjwjks8ygtGEzxMkuuxiJgfCIs405JCmuK1/hS74bTC6DK6f9g
-         /7WY6yZI5Q1twroLay/Vk91ak1j+/db/2/ZWmlHMVg4RrQtllQATpCkPCPnxPiNNQy2r
-         KiqA==
-X-Forwarded-Encrypted: i=1; AFNElJ8lvUpssUek5t9Thx7Ey2oX1QdYWOZSKFAhJKVOQazp6bmgx480T5pDJahYdbHQzAIinHoJ+xmaMg==@kvack.org
-X-Gm-Message-State: AOJu0Yz/jePBDjzmkE44QMAKf/Blh0IRgp7xqJ0jtajAbJ42zF5QY3fn
-	qtajRUrs+M1xQ35ft0VujAzJgacc0dKeU//esb2OHwSWMuLYsHGVDLvcuBtYZe1QRhw=
-X-Gm-Gg: Acq92OERaaJl+l7nYGt+/j1WCggDGriPvy+54v+E+Kc/HX2K4xvqm/CKwc74mVmRwj4
-	Xbeh4Cs3Qan8B45rzaW6c7wyC73/OvHG1Q6BT15GkBbBPlxYwXcxyraLAMKKBYEl7RE3tbZ5+ye
-	9G0zBbtzWSGy8QsGScgC6uqf2M4BkgP0u00aKstzTgwyl2jJmjPPgHmJiUuXQETpb/uBv26RGkY
-	uN/v3O6yFK1SymAA0taTPQJZvPlSezlUypZjx+MtBwwTKSsFBHyAo4yBlLIaql7H/if+jgUweSt
-	4bcAGgSWTznbsJs6n66GE4l/Qc26w81GznZ2I2Uv5444jM2Tj1vNrF79zdHJNkaC0i+940JD13Q
-	rq11qRSmUr1q2JcTnP3LOlzwKXT5gYHUbwvHqXnDQTPPLDd7OlOZYm/j+/i3VvPry4jgVNxG13c
-	j+/y9y+U5VBs2SXSI/eQdy7ayGyNjXTZZLdadFWiDgPH+ZfOLD+gmupvPAXyK1pdecQ+9Amgzp2
-	0EOp3sHnyFudseCWA==
-X-Received: by 2002:ad4:5d61:0:b0:8ce:afa5:7603 with SMTP id 6a1803df08f44-8cee8bcbffdmr300230056d6.14.1781105455435;
-        Wed, 10 Jun 2026 08:30:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd053210sm233198056d6.26.2026.06.10.08.30.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 08:30:54 -0700 (PDT)
-Date: Wed, 10 Jun 2026 11:30:52 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio Perez <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Alexander Duyck <alexander.h.duyck@linux.intel.com>
-Subject: Re: [PATCH v2] mm: page_reporting: allow driver to set batch capacity
-Message-ID: <aimDLHoETsdWppAi@gourry-fedora-PF4VCD3F>
-References: <cb43adc61d2ed3069b2fe428f3e051dbdc4cc28d.1781097156.git.mst@redhat.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5gNJkTh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781106021;
+	b=vwSaGh8pK/d+E00A/n5eAlUWIVxrFcLNalS37+I8xrmKjuI+g7CBsqAgEaw9bgrjTSUQ8l
+	LD4ZyaSg31lV+J8uYM1p1uwRZZ/GC87fRij71Zz7ze12V6ObehjeCDFpgfog1AOcER/YNy
+	P3/kDsuVs0T95dG4pbB9htOa63wphqc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CC025601F9;
+	Wed, 10 Jun 2026 15:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417291F00898;
+	Wed, 10 Jun 2026 15:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781106020;
+	bh=rh6k92Y5yfUvQ1Ydl5es3+m24euL6hyzwkyjlD+xQ1I=;
+	h=From:Subject:Date:To:Cc;
+	b=Q5gNJkThO/m2qp1lkXJFqQaBB8SIHT6CIi8Qj5jPW5jfIX8YyEvV7VIB4Nn4+aG2X
+	 hLuXcz3sIQz6ljVMErk3JkZNmqUGJpd2nSXULBASDJbfQF5YyUFx3bu0s+n0YlzFRl
+	 Jxu3ly32wNL/+kRr0G5N+6zH/jHTURY85x5I2ayOpOHtaCvhx7fD9wMxkCNN7g/1ms
+	 iebecj6TSgrh6xha2dzaTCfpgDOd9SpX4z20D3I7Vg3lybrTtVH1gwCufq0LG8iwhs
+	 kPPP6tZsPBPtvswVFKD/1ULSU7THWCJy5ZKvm+o6quJzm6rTOzK94drCj8PZFtqXlD
+	 iTW114BWt6elA==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: [PATCH v2 00/16] mm/slab: introduce alloc_flags and
+ slab_alloc_context
+Date: Wed, 10 Jun 2026 17:40:02 +0200
+Message-Id: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb43adc61d2ed3069b2fe428f3e051dbdc4cc28d.1781097156.git.mst@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFKFKWoC/2WNyw6CMBBFf4XM2poy4SGu+A9DSFsHqDat6SDRE
+ P5dwLhyeZJzz52BKVpiOCczRJos2+BXwEMCZlC+J2GvKwNKLGQhU8FO6VY5F0zbOdWzwNyUJ9T
+ S5KWBdfaI1NnXnrw0X+anvpEZt85mDJbHEN/755Ru3i9f/eenVEiBustUpiudY1HfKXpyxxB7a
+ JZl+QAQBFkpwwAAAA==
+X-Change-ID: 20260601-slab_alloc_flags-25c782b0c57c
+To: Harry Yoo <harry@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 085E7A001F
-X-Stat-Signature: yehs895oy9ep81sg8oqjsxk5hhtzcfsa
-X-HE-Tag: 1781105458-211973
-X-HE-Meta: U2FsdGVkX19mAoabdUopOy+KhEr0NeNTIyaaClD+mCNSMaiv6ASlC64J7KV9BtjJhbWuIgM6QCvjKRWuNw3Sza1YrfZ2BSnVfDiOe0Wi2YzGnPB5TNoBcsOE2eWKHp5lxANmyj8k3FfMpPwhu0dmrVHlNvAjBLLmC6GIxBeJT07Qa0gVreuf5KOFFR3OOuxCFvt03FVR0095IdzHlBFrvM0E395pyi5xCvKLmMNEfYOTQlAPtYHvGnHW+hsJLpEuldbnNAaLKGhbKo3jKY+vZQoFt9kaDA06U+fz5Mf7kW5B5ox5Yfg2l2/a+o2VGaGRj/7rXnhH/N5/0xAktcK26hKRgAkbe9XLtQJNMHmUh3gDAhmuEVvuuAuysHJOe6Ob3MWHlL2BwZDYkEiu0JvNUypHeOp+Tq/6EZb3Ilj4GfCY9k4Z95b7fCCrviqSwoLIcw23AWcNXHcxSa8MWNqesuuHrnoYZiOyvnCGBJxXN8quDZf0PJ+umt8paTgjqwvVAZoHyqHYAlp9DoyQydPL0HOh167KQXsBMH0F8Old98yQR2gk0UGUxS12pQZuCJW9unsBg7Gjt82L6m6nJ4lTgIVBYEArAwrPTdV8YlUg+eStOU1+LV8eMvLjMTTZuf+YAy7SwugE7yJWhO1yvH1PSSlSZ/cgD685k0D4A7fvHvOibJoUsGwWfxOBIg4gJXTu+fSulFfOwIPapMK3j3a1unJSlCVFFQW2ERcVHqN/5N5eLcjMRbQqqmkRfTuXKPehXdAcEyJj1jNLgq16N7K0tF39YU+oBHVs/UVnsohdvxuVzsbi8iQbhSRfGkeZHZasSCNxIbUsxTW539KSkQqBXbNKG1ZO9QJ+FwLN2x0cP9l04VsW4E46k6DF2IO2uoOgwR5kJVKysUvDwOGzU1jsQyA2Zj0U+Jc3VKWIohXVeHng8/Esm5dB6YShgdNtMUMMGJoeLPE5ylZE/Umw5JG
- XAS6vjaO
- G0BykE8jioblhBJhTZSoT4x9u8nQ0+b+Jlds/w7f+eBMMl9yuBGtpB/LzWMS+cTGOuoNXUsj1stl3iKPjOgcLEedHO5P+ndCWXkIPAfhTVAJi78EBq5HXlYfcV5oWGW3Y2kU9+aYqC8WAGQMl74/99ZqUK1mIDtNWFuZO9DyIj0AjTvsNSvfFzmv5SR9WoxNJA2IkDr//Uulm/PWl53twfvrdfCOYa/IO2ItTa38tNFr5mOLR0f4rvksPv40v8QHSYAzIpyjl9+sAD2rVxVndE2RX52ZlSDS6y8M0X/1ziZH9VyPoOfZ5r9Fz3O3j4A8r9xh20Aw5aaQwbmZfBqhjw6I8msQuVRALhAPaaAlv6Z6Nl9AvxIFSwaKJ7zXTgQ8to3zSSHfe9GC8z4SIZeWJtU7pwnfpKpPXuICxwtw8mEO7wtxarLqCJdaaUxrgofgSeDW3ZCIaEPqCxADkkGucjz/QLop88lvsDEW8QxhI6j30ejLlJs6yYF/oj/S1N3rzb0u7KoDToKhZSpBzM3YCk1QbJoVIwB9/824K
+X-Stat-Signature: 5wf6aabrhzxkpenbcdtoh9jfdjquspf1
+X-Rspamd-Queue-Id: 6A01B140016
+X-HE-Tag: 1781106021-659021
+X-HE-Meta: U2FsdGVkX19SwsqbMP9gsaREFpze1ydvKzj0AaNtjrOR/pRn2tg9QdiZhSZifmciwE+DaFjQNKAJGdg0J8LES44YZUAFJ+kG9ta0MCA5xlwNqOUEzrSHCqUZmjnuLsTRToAOQ0CRpZVzK7vlYu+AN10YbWQBJQQt2qH3953YIhgnG0EDvYCURj5KoupUrl0/Hg7f+tIyJxZ1MzmyabK3HGq/ypxXCcQBMSYwRqQxBxo8fVVqvF/CDqwldAiH8NRz0avOS84I0+KNxxEh8IHXM9DN7tn/G8YS/vcWTzsWsC0kqY93levjzq4+YJktWBkI3QYi+k46kRsy+SAuaKlbehMSZrqT2WAV0xUTPZZ8CT18pxfnAxnbK7OTfBuDP7J1MynRz4rZRkN6rZEqlRxFaRvvMuVfujECNt40QLTjBLXTpYhRQshmHr/SCUvEwaXCfLTzwn4FViAyV9wLtvCRIngK6B6Gs49PpHv3tBc4jnRgkONcHSi1ipza3leQILpAs6ZZrdJydh39KY1kmTINrzjcJm0uuRvpx9zc8FQyo5XsI4YzOb6cq+eEOy8Tka++kTcZLr1zO43hd5rV7K+bvX8kuHY32mNY2iN/y/8+Lv+et65EAllvx2SDQfxpCjA1kW6/5MItgeVg9xeSDQIFZm0jnBEA4GUbdNHuhSec27HU9kfdkx04jyvOTXop/bvF1Bm0UhMf7tFWt512OTeFANl1Uuz0TNIiwLnd2+WE695rG5U2zayQHD+f+fEfMZ4RxJ8NGIrjk1/isbuY/GTVbQ9CsnsulGOhkgl4YzCjeG4mghCKIv/IYgTR9CyBFDtloCCMixx/wmlfjzne1cW/A2hgDM16YARotMevIrA4I2Ca8F8K7LUF7ww4+Oz6MmIXhxZEG9rtOQBSo1wd7Ry9pVmjYt1oDVWpwTrHSMI49MAUSaBrdWCxDZmbpw2fOlbMr8aLBvjdcI/ZRbrIAOW
+ 7qL+7Tkk
+ ll0ZuolbciPEvjZ/Ov6gwvBqaqiCWbr0K8W9fuwbeHlamUHSUzecihaUTlYVgmi8+vyWuS7pfB3IqPUIOFw5yl4j5ybBj1qkOLBjVP7PNEokVd3H35nyTt74etUXG2V/aJ458a4p66RL+KKXnCuvLO1VSN559zziz9o8rFnSzjV1p3XAEH5X6Y4N8Ezu5uoUiufnnKMmqsZNh7dT6/WmendajzfXL3gRvjhqKwm+UGu7GPFVYb2ct0YrR37ndoR5g6qfxMrdQeK1L8L04kwUgy/akMAA7Us04+Xewkk2ahnatM0HaQZwmnlH5X5UPSxvjU+YceI9HYQL0hoJfTu116TgJUb0TsXCkPVe9pnyLIxZroJWkQB4/nFV3TA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,177 +104,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 09:17:08AM -0400, Michael S. Tsirkin wrote:
-> At the moment, if a virtio balloon device has a page reporting vq but
-> its size is < PAGE_REPORTING_CAPACITY (32), the balloon driver fails
-> probe.
-> 
-> But, there's no way for host to know this value, so it can easily
-> create a smaller vq and suddenly adding the reporting capability
-> to the device makes all of the driver fail. Not pretty.
-> 
-> Add a capacity field to page_reporting_dev_info so drivers can
-> control the maximum number of pages per report batch.
-> 
-> In virtio-balloon, set the capacity to the reporting virtqueue size,
-> letting page_reporting adapt to whatever the device provides.
-> 
-> Capacity need not be a power of two.  Code previously called out
-> division by PAGE_REPORTING_CAPACITY as cheap since it was a power
-> of 2, but no performance difference was observed with non-power-of-2
-> values.
-> 
-> If capacity is 0 or exceeds PAGE_REPORTING_CAPACITY, it defaults
-> to PAGE_REPORTING_CAPACITY.  The 0 check and the clamping is done in
-> page_reporting_register(), before the reporting work is scheduled,
-> so we never get division by 0.
-> 
-> Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
+This series is based on slab/for-next. As suggested by Alexei I will
+try to put it there ASAP (hence the early respin) and see if it looks
+stable enough to be send in the second 7.2 merge window week.
 
-lgtm asside from David's comment request
+Git: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/slab_alloc_flags
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+The slab implementation currently relies on gfp flags to convey
+some context information internally:
 
-> ---
-> Changes v1->v2:
-> - Document capacity=0 as default in commit log
-> - Document that capacity need not be a power of two
-> - Drop unnecessary comment about integer division cost
-> - Update comment on capacity field: "0 (default) means PAGE_REPORTING_CAPACITY"
-> 
->  drivers/virtio/virtio_balloon.c |  5 +----
->  include/linux/page_reporting.h  |  3 +++
->  mm/page_reporting.c             | 24 ++++++++++++------------
->  3 files changed, 16 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index f6c2dff33f8a..6a1a610c2cb1 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -1017,10 +1017,6 @@ static int virtballoon_probe(struct virtio_device *vdev)
->  		unsigned int capacity;
->  
->  		capacity = virtqueue_get_vring_size(vb->reporting_vq);
-> -		if (capacity < PAGE_REPORTING_CAPACITY) {
-> -			err = -ENOSPC;
-> -			goto out_unregister_oom;
-> -		}
->  
->  		vb->pr_dev_info.order = PAGE_REPORTING_ORDER_UNSPECIFIED;
->  
-> @@ -1041,6 +1037,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
->  		vb->pr_dev_info.order = 5;
->  #endif
->  
-> +		vb->pr_dev_info.capacity = capacity;
->  		err = page_reporting_register(&vb->pr_dev_info);
->  		if (err)
->  			goto out_unregister_oom;
-> diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
-> index 9d4ca5c218a0..048578118a4b 100644
-> --- a/include/linux/page_reporting.h
-> +++ b/include/linux/page_reporting.h
-> @@ -22,6 +22,9 @@ struct page_reporting_dev_info {
->  
->  	/* Minimal order of page reporting */
->  	unsigned int order;
-> +
-> +	/* Max pages per report batch; 0 (default) means PAGE_REPORTING_CAPACITY */
-> +	unsigned int capacity;
->  };
->  
->  /* Tear-down and bring-up for page reporting devices */
-> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-> index 7418f2e500bb..942e84b6908a 100644
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -173,11 +173,8 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
->  	 * any pages that may have already been present from the previous
->  	 * list processed. This should result in us reporting all pages on
->  	 * an idle system in about 30 seconds.
-> -	 *
-> -	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
-> -	 * should always be a power of 2.
->  	 */
-> -	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
-> +	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
->  
->  	/* loop through free list adding unreported pages to sg list */
->  	list_for_each_entry_safe(page, next, list, lru) {
-> @@ -222,10 +219,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
->  		spin_unlock_irq(&zone->lock);
->  
->  		/* begin processing pages in local list */
-> -		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
-> +		err = prdev->report(prdev, sgl, prdev->capacity);
->  
->  		/* reset offset since the full list was reported */
-> -		*offset = PAGE_REPORTING_CAPACITY;
-> +		*offset = prdev->capacity;
->  
->  		/* update budget to reflect call to report function */
->  		budget--;
-> @@ -234,7 +231,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
->  		spin_lock_irq(&zone->lock);
->  
->  		/* flush reported pages from the sg list */
-> -		page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
-> +		page_reporting_drain(prdev, sgl, prdev->capacity, !err);
->  
->  		/*
->  		 * Reset next to first entry, the old next isn't valid
-> @@ -260,13 +257,13 @@ static int
->  page_reporting_process_zone(struct page_reporting_dev_info *prdev,
->  			    struct scatterlist *sgl, struct zone *zone)
->  {
-> -	unsigned int order, mt, leftover, offset = PAGE_REPORTING_CAPACITY;
-> +	unsigned int order, mt, leftover, offset = prdev->capacity;
->  	unsigned long watermark;
->  	int err = 0;
->  
->  	/* Generate minimum watermark to be able to guarantee progress */
->  	watermark = low_wmark_pages(zone) +
-> -		    (PAGE_REPORTING_CAPACITY << page_reporting_order);
-> +		    (prdev->capacity << page_reporting_order);
->  
->  	/*
->  	 * Cancel request if insufficient free memory or if we failed
-> @@ -290,7 +287,7 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
->  	}
->  
->  	/* report the leftover pages before going idle */
-> -	leftover = PAGE_REPORTING_CAPACITY - offset;
-> +	leftover = prdev->capacity - offset;
->  	if (leftover) {
->  		sgl = &sgl[offset];
->  		err = prdev->report(prdev, sgl, leftover);
-> @@ -322,11 +319,11 @@ static void page_reporting_process(struct work_struct *work)
->  	atomic_set(&prdev->state, state);
->  
->  	/* allocate scatterlist to store pages being reported on */
-> -	sgl = kmalloc_objs(*sgl, PAGE_REPORTING_CAPACITY);
-> +	sgl = kmalloc_objs(*sgl, prdev->capacity);
->  	if (!sgl)
->  		goto err_out;
->  
-> -	sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
-> +	sg_init_table(sgl, prdev->capacity);
->  
->  	for_each_zone(zone) {
->  		err = page_reporting_process_zone(prdev, sgl, zone);
-> @@ -377,6 +374,9 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
->  			page_reporting_order = pageblock_order;
->  	}
->  
-> +	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
-> +		prdev->capacity = PAGE_REPORTING_CAPACITY;
-> +
->  	/* initialize state and work structures */
->  	atomic_set(&prdev->state, PAGE_REPORTING_IDLE);
->  	INIT_DELAYED_WORK(&prdev->work, &page_reporting_process);
-> -- 
-> MST
-> 
+- The absence of both __GFP_RECLAIM flags is interpreted as "cannot spin
+  on locks", and intended to be used by kmalloc_nolock(). But false
+  positives are possible e.g. during early boot where gfp_allowed_mask
+  clears __GFP_RECLAIM from all allocations. This leads to unnecessary
+  allocation failures and workarounds such as fd3634312a04 ("debugobject:
+  Make it work with deferred page initialization - again").
+
+- __GFP_NO_OBJ_EXT exists and takes up valuable bit in the gfp flags
+  space, only to prevent recursive kmalloc() allocations for obj_ext
+  arrays and sheaves.
+
+The page allocator uses its internal alloc_flags to convey various
+context information, including ALLOC_TRYLOCK (meaning "cannot spin").
+This series copies that concept for the slab allocator, with its own
+slab-specific internal flags:
+
+- SLAB_ALLOC_DEFAULT - no extra flags (the value is 0), but explicit
+- SLAB_ALLOC_TRYLOCK - do not spin on locks (used by kmalloc_nolock())
+- SLAB_ALLOC_NEW_SLAB - replacing existing 'bool new_slab' parameter
+			for allocating obj_ext arrays
+- SLAB_ALLOC_NO_RECURSE - replacing usage of __GFP_NO_OBJ_EXT
+
+To reduce the amount of parameters in various internal functions, we
+additionally introduce slab_alloc_context (also inspired by page
+allocator's alloc_context) for passing a number of existing arguments
+and the new alloc_flags:
+
+/* Structure holding extra parameters for slab allocations */
+struct slab_alloc_context {
+	unsigned long caller_addr;
+	unsigned long orig_size;
+	unsigned int alloc_flags;
+	struct list_lru *lru;
+};
+
+This also replaces the existing struct partial_context.
+
+The last necessary piece is kmalloc_flags() which can take the
+alloc_flags in addition to gfp flags and is intended for the recursive
+allocations of sheaves and obj_ext arrays, so that both
+SLAB_ALLOC_TRYLOCK and SLAB_ALLOC_NO_RECURSE can be communicated.
+Internally it decides between kmalloc_nolock() and normal kmalloc()
+depending SLAB_ALLOC_TRYLOCK.
+
+The rest of the series is gradually expanding the usage of both
+alloc_flags and slab_alloc_context as necessary, with bits of
+refactoring. Then, __GFP_NO_OBJ_EXT is removed completely.
+
+Note that some usage of gfpflags_allow_spinning() relying on absence of
+__GFP_RECLAIM remains outside of slab (and page allocator) in memcg,
+page_owner and stackdepot code. These can thus yield false-positive
+decisions that spinning is not allowed, but should not result in
+important allocations failing anymore.
+
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+Changes in v2:
+- Due to Sashiko review, drop the idea of zeroing orig_size
+  unconditionally, as it can break krealloc(). Thanks to that found a
+  pre-existing bug fixed by the new Patch 1. The kfence zeroing related
+  cleanup is implemented differently in Patch 2.
+- Prevent nested kmalloc_nolock warnings due to added gfp flags
+  (Sashiko)
+- Fix a pre-existing issue with opportunistic slab allocation from the
+  target node only effectively dropping __GFP_NOMEMALLOC and __GFP_RECLAIM.
+  (Sashiko)
+- Move kmalloc_flags() definitions to mm/slab.h (per Harry).
+- Link to v1: https://patch.msgid.link/20260609-slab_alloc_flags-v1-0-2bf4a4b9b526@kernel.org
+
+---
+Vlastimil Babka (SUSE) (16):
+      mm/slab: do not limit zeroing to orig_size when only red zoning is enabled
+      mm/slab: do not init any kfence objects on allocation
+      mm/slab: stop inlining __slab_alloc_node()
+      mm/slab: introduce slab_alloc_context
+      mm/slab: introduce alloc_flags and SLAB_ALLOC_TRYLOCK
+      mm/slab: add alloc_flags to slab_alloc_context
+      mm/slab: replace struct partial_context with slab_alloc_context
+      mm/slab: pass alloc_flags to new slab allocation
+      mm/slab: pass alloc_flags through slab_post_alloc_hook() chain
+      mm/slab: replace slab_alloc_node() parameters with slab_alloc_context
+      mm/slab: allow kmem_cache_alloc_bulk() with any gfp flags
+      mm/slab: pass slab_alloc_context to __do_kmalloc_node()
+      mm/slab: allow __GFP_NOMEMALLOC and __GFP_NOWARN for kmalloc_nolock()
+      mm/slab: introduce kmalloc_flags()
+      mm/slab: remove __GFP_NO_OBJ_EXT usage from alloc_slab_obj_exts()
+      mm/slab: replace __GFP_NO_OBJ_EXT with SLAB_ALLOC_NO_RECURSE for sheaves
+
+ include/linux/slab.h |   5 +-
+ mm/kfence/core.c     |   2 +-
+ mm/memcontrol.c      |   5 +-
+ mm/slab.h            |  29 +++-
+ mm/slub.c            | 439 +++++++++++++++++++++++++++++++--------------------
+ 5 files changed, 304 insertions(+), 176 deletions(-)
+---
+base-commit: 500b2c9755301742bdbb61249511ac11a4665dae
+change-id: 20260601-slab_alloc_flags-25c782b0c57c
+
+Best regards,
+--  
+Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
