@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27FFCD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 05:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16419CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 05:14:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 134476B0005; Wed, 10 Jun 2026 01:09:40 -0400 (EDT)
+	id 55A5D6B008A; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C5A6B0088; Wed, 10 Jun 2026 01:09:40 -0400 (EDT)
+	id 531F66B008C; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 021736B008A; Wed, 10 Jun 2026 01:09:39 -0400 (EDT)
+	id 46F6F6B0093; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E82286B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:09:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E27F40882
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:09:39 +0000 (UTC)
-X-FDA: 84862825278.21.8008EB3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39DB86B008A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:14:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8B30920CF
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:14:49 +0000 (UTC)
+X-FDA: 84862838298.25.88D2D5C
 Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E0E60C000C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:09:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hzp5pVhD;
-	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2DC39180003
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:14:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=SRtexRuX;
+	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
 	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781068177;
+	s=arc-20220608; t=1781068488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=RHcfWFsJiVmAbunXLJMpnVW4BYFuN/HfVIVR+xGLhEI=;
-	b=xGGqicUfS7BSsLC881TzqmTPF+MLgQWllw/LirTvwa+wS2DoUKRO2RJl2bL3g8jPZ5zsit
-	kTzSGBpWDLE8Q19kb2H3K4Zapl+jU6d4uF6gbXYex8/MxqHH+x1MU2BTeq/p8rPlRJrWkn
-	3qFHzNcoDBlr1AorKREuAwVKaJTyUb4=
+	bh=CAQW/woRlD6nMS40SYfYEy04qnRENam7hotbzTsoZO8=;
+	b=Cd6oDbdDboqcGbA9tDNkAmlaE6z6MOTgd7SxbfRUnpY9+KBjLNxqCs0/odfKv3B2qbPUXV
+	+cBKC1lsjLzQK5p4Ufx7/UR4cuk5FVl0mCrryu9nMm2GxLxdGF4txDR1erPUkETykBZhzU
+	sQ9N7y4YmCv9e1uAB9x4NEOxrTHAYuw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hzp5pVhD;
-	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=SRtexRuX;
+	spf=pass (imf16.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
 	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781068177;
-	b=QXgbYedyAeh3TN/+4g1fKHcmNRZqpCOanb9gIECTzHEF9YeJg9o9sXax2GDJNVqGgXssV8
-	AcLeC2H3JzKoxZvpD7kEK8Ej/IC5EoPGN7ptOjfZFvDXlaZd5dhq0wqzoFh1k2OOfOefh9
-	+ICijsinakOYARI4VtNc3z9dXxi0QLo=
+	t=1781068488;
+	b=xDIxmTaJpIJOHhS249+gTUwvy4Tr1jy6Vrs8HDzzl2upAZVpf+A/G316U7vvUcC9aTibd4
+	mDEpf3sVw2ASXgfHOxXCS7eN7KymEgtJ3hUN7a1SkYSVFL/k5yqSpDbEpGkHWuuR6+NI2f
+	mXsQHRMxRh/VWTKAIT+4CR7knSHCstc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
 	Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:from:
 	content-type:references:reply-to;
-	bh=RHcfWFsJiVmAbunXLJMpnVW4BYFuN/HfVIVR+xGLhEI=; b=hzp5pVhDHzkGjEcskk8K5YTF4w
-	THr3gJHBdtRQFFgqjsAsoO6fdixFyGmx122vU0xpz3axRJBjX349/KHDmcO0t8sH4xw+Nn0lt/jY2
-	SCXUJZfn5c4x28vA9gBWC5UStdt2+Xc6Yb2TjcMFlrA/5I6FMTEWn8xqpZJhbkdDPRxN3o2uieafk
-	4J+vNNegmU5IXK2JiB6U1o0OAAZk3SKxDW0MlWQqStNrM2RwBxeKqXqhzj2P+8ZrXakgBxE+jXi+6
-	pKl3Mfd5HH7xMDICRjPQ+ZIGawzxVsCyCGtqfxXuC327udHGQrdV2ws+61CZGoJ8rbu5CP75oRNoR
-	ypNc0+Gg==;
+	bh=CAQW/woRlD6nMS40SYfYEy04qnRENam7hotbzTsoZO8=; b=SRtexRuXBTK493UySnuP5ALAyo
+	Ufy0HINvTDsaMlNa2KbGBrDy3M2mD7oyb3K1uRfPZMycB8X6zumdthneP7PwKuWnxd5zs6rionpGo
+	CqVwZyAAgtMS180w2Sww0de4fpAm3YKHdPZPh4Q5m8+BlUowPqXDnOu/OvmIeJeySkzUlQVQ80poU
+	UfmB5QYu7L0pjXyJBBSf14lin4VNjPcw7OMXBPS9dJK5aJW8WVlAgKf4YfupIYwp5UaqDfieNMppl
+	d2qkzQ1y1nhCAHFMEtboyBji+UBQaYqHGcvs3No1FfiumRPjop7cisWUioyEz0Za2KLJZliLTqXRb
+	zHrKaoZA==;
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
 	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wXBBn-00000004AT4-37fd;
-	Wed, 10 Jun 2026 13:09:20 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Jun 2026 13:09:19 +0800
-Date: Wed, 10 Jun 2026 13:09:19 +0800
+	id 1wXBGr-00000004AWe-2FLp;
+	Wed, 10 Jun 2026 13:14:34 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Jun 2026 13:14:33 +0800
+Date: Wed, 10 Jun 2026 13:14:33 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: luto@amacapital.net, safinaskar@gmail.com, akpm@linux-foundation.org,
-	axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
-	dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
-	viro@zeniv.linux.org.uk, willy@infradead.org
+Cc: metze@samba.org, luto@amacapital.net, safinaskar@gmail.com,
+	akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org,
+	david@kernel.org, dhowells@redhat.com, hch@infradead.org,
+	jack@suse.cz, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+	patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+	willy@infradead.org
 Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
  preadv2/pwritev2
-Message-ID: <aijxfxXrWLCVqV6-@gondor.apana.org.au>
+Message-ID: <aijyuX14ahOf53zM@gondor.apana.org.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
+In-Reply-To: <CAHk-=whL0oLvmh3FO9SapDhgrXMT_d6qkP2V3OBjysOWXod2Og@mail.gmail.com>
 X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.netdev
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E0E60C000C
-X-Stat-Signature: d3qej74uetxofbzoio3oa3hmru579y9s
+X-Rspamd-Queue-Id: 2DC39180003
+X-Stat-Signature: 3ed9o1xhpsgihary5hxuf5oxiwwuqzaf
 X-Rspam-User: 
-X-HE-Tag: 1781068176-333328
-X-HE-Meta: U2FsdGVkX19C0P/b3vD6TsJiPmb1EYHkc1TVs0gPb2YmShSu+c3mKYeq9rS1DWKQancnqrARbXFffn1tv39twikcu6QBSW96U8IZy1rlJGSf6FRB3Mf+OgA1fUbcIahF4QO3DvPSnGaRWRHJsmFWsvD/J6O3KR4moW1Bxng5BlFS8Isl80xBci5qxDGZf9jz4yHCdRqKZkzF/d6XHMdQU1rwc3qeval12w/0h5mILYJIkfIJeWasZSooDFlt3wpHHQauS6mUzLoA5thO9eAd54FeViXCHqv/mRiNe1S2EtLYXBXDEJg1IE8qwhREuDjP7Mg65uiT9sPWRupb9Q10NF1HNe+yBsU2WKA/71ElWTVCz2t6vku/6ZeCg8Icbi1EVP1K2VBdyPyosnJQrbj80PM9qngQI1jQ8J5afSuL018MJ+P7EDIdbCBI/TBAhx1uP5I+tKgK0LOxMFrYZqFN2PA8oJdQNb7hxePOiXUAWd1SFnpr+yu8m0833e5JcLJqOLatsvAceAsNPUC+V0XvgVCriodEpih0O1gIRsTXcYXMTvpNPX7+ZUrVFkqnjtZkuT01+f9VHg6n4K3HjkWJ90cDVg5Tjy9JaN5yGG1wjkl7onixm7T/m5OuPGh12FHmIqLb/CkU9l0sEuaYfRJ5CsEFEND3nFVmf7BN29boBzDsr9ZYAmYLqn3YKHAVukkUPnXpvpGez2waxzflxsnUrTmKmnAISkKMDeqIONjfvFE1yaIJZpFg1OQu+lw+sV9f1jn8yxXYCLVu3mqewYW/SQUWomqRCUcZhHQ6/seyEyd1AXC/9F/OsFZUXEykpEuvxZ0g9N4qyBGsI+uP3+B/hU/3xy/Id6dwSloXed5ImteyfnQbIiCEuEjUZg3nuRAOjXN9QHBF/vcnPj8y9iWRAB2jZPtM7jfZZB4s8dtihnBlqx3jsznx6yUoa5CEI5BhRIv91m98WTDY9pYqW1o
- c24WatVl
- mn0VQo7DybIFNO2BaPxWJOHDQbKtQpdkZJ1SDbILTYaMp0mB8ett7THKosenIhueZdXPewTXzrOFjD/0e3NKzzTBCwQmvHqKswLAGGTBFC/YOtvApSEoTxAXRFJzzPz/ay33B+bq1JTogpdyqnFNCGSZnScmMtVd6Xa+vPVZkkjIu8mz1C7iRuJXSnYu9uMPDGtmrf6xYJz0PZYP9MuucsGSWxzYE+zG2dlixg0eTYZ5h46/Bdj1FOKAweLW/3lYCmkgWWVItsRRjVww0VKJ1XHbIASRoV4x8mywZSDkphvY5CRkvP1wP0V80rCT9vyQf8ut9GfrKluoplUet8vvjpLBiTVUrDSqLMWBga1lKyeJC+cnzXFg9qc0xmePvgpbZ+ugFcwFX/vTx+1A=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781068487-434827
+X-HE-Meta: U2FsdGVkX1/PZalO9OGDMQT631YBQoQjYd2THQSvPPLFxWjNRLPOvwTCNEFhBc06ZB6O8I6Iqi8txbul1Yhrx5ornxEncxSQ1VMrR4Ji9KN+qxjem2nQeQp4K1UgxqGa5IkGUx5DKPX3J4L7qLtMh/TR0RTKGsor8g5h48RgfrKagHLzOE2wKp5Pi/F+j72MWOalNFScU8DYvcGFXBIP1eHM8QQm6z6qaeL8ls+ky5ujQ+WDxGWmexemd9lY4hgB9s/dD394XWSvOkwG+en407350yxRCo0MfokMwkWYKKNPbeHmgy2WtRgC3kVcsUWoAbVu3mj+47ZnBgudMR1+QQ2xi2b32oXsQolY0T7plPdGgcpWte6hRgKgCIVLPdCPsw78Pwbejz7rJkbQUXoBSSM5pwGOG0QXCxEQnnL5uWiWm67PfFkSImUyMcL5k/HHCvUObL0cImh/fwi13jS99MbpgbzPKPyN12fPFQN636PM5KSVgBEj0E0tC8bgOsA8+YPCX2TXdoZrv5K+qk7P8veBqfylyWa9YsCRmg/4Ezl5lGzr1QJO5twCNgIrCvLWTy+dXyMY92DscEVmFsSlD8Cr6/F4POEDNhy2k2tYnz1iHzYWd2V/uJYS/7QQcCbvpKDRR5cnNx4nFjSedaEFwOmVB0ghQTg1ZRMVRMXGeHMSPqQy5btXXwWCY8ArFsXU77eXdsqu0P4A/CkaMPUyBW04JNqPMUn4Xx4y1qL6YQtTEZz0BnA7UjlSaD8hB01cVZbkldNAvlGaGR0fNgy2XSMlat4JaOfEMGbreUSe/bc72IvVUjacwwQdo04DlF/q7MRPemQ020GFsiF1IrABhdn4S0VBbj1MghG7/XzEoxed7xKtdDeueyIPXw9R9Ki3J3a8bAq+nE8psjLMTzNkd2OjasiwKH9zTQNd3mBUDnDP12wzZGgFM4YOqC/p9CJzV4rxT6VZXb6d+4kpcVe
+ ykd2t6fa
+ 3DCOZDC5XdhaUME8rjfC4+E63RMnOBcTLkuQQ+gX0wg0LRf6a7b5qvDEDiq7O/XK8Dse1HUEs9I/XihcsX70FZM1x+FximiPKaoPoAY3x9srhOQ9cJOs7iLLekEAOaAlr6pC+XDbs7YWeZSK/Z47wzGlQB/pDrI+6IOyOA+wtorEdvFPJm2ta2++BFaAjRfNi+Whlzzi+rhjEVbsLV4mfYp64uq45NHCeo75VYNkQw2fpl7xelbyxx7ncXeF8ImhE0FWi7uD1jfgB4xIpcJ/Uoe7kcn2n2e+vqrgzHh9dg7a+nxAAUZ7/1FUtfTIvP2ZVjNlLmELJJIdM89eAGvERrprTsKsTJgE3AP7n9gCeQ54vhKZveT3nhrMFpRRErQT53cI8GKxWXZHazdII8HZ2fQxs8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,30 +99,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Linus Torvalds <torvalds@linux-foundation.org> wrote:
 >
-> Because I think splice() is a *cool* feature. It was always *clever*.
-> I just don't think it's worth the pain it has cause.
+> Nope. If your web server opens files with write access, I'd be
+> extremely surprised.
 > 
-> And it's been around for a long long time, and after more than two
-> decades it's still most definitely not _widely_ used.
+> And if you don't have write access, and you're sending out data from
+> files you opened just for reading - the onle sane case - you hit all
+> the existing problems with "I can certainly look up pages, but I damn
+> well shouldn't pass those pages to the networking code without copying
+> them".
 
-A couple of years ago I used tee(2) in dash(1) so that we could
-avoid reading the input line byte-by-byte which is what every other
-shell does in order to pass the rest of stdin to the executed
-command.
+How about using write access as the gate to zero copy?
 
-https://git.kernel.org/pub/scm/utils/dash/dash.git/commit/?id=44b15ea09a9ee5872cf477e4ffc6b42ef37d1e46
+IOW allow zero-copy if you already hold write access, otherwise
+perform a copy.
 
-It's definitely niche but made a huge performance difference to
-this rather common scenario:
-
-echo 'command
-...
-rest of stdin' | sh
-
-I didn't even know tee(2) prior to this, even though it was added
-way back.
-
-Thanks,
+Cheers,
 -- 
 Email: Herbert Xu <herbert@gondor.apana.org.au>
 Home Page: http://gondor.apana.org.au/~herbert/
