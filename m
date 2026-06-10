@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AEECD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 00:29:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F3DACD8CAD
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 00:53:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4F5B6B00AB; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
+	id A60EF6B00AE; Tue,  9 Jun 2026 20:53:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B26FE6B00AD; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
+	id A11C86B00AF; Tue,  9 Jun 2026 20:53:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3CC36B00AE; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
+	id 9275D6B00B0; Tue,  9 Jun 2026 20:53:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93D3B6B00AB
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:29:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 420731C3161
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:29:44 +0000 (UTC)
-X-FDA: 84862119888.08.277F0D6
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 483051C0008
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:29:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=k2Ykltry;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 852166B00AE
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 20:53:51 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17CDBC25E4
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:53:51 +0000 (UTC)
+X-FDA: 84862180662.03.99868AC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 401D2A000D
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:53:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=acgc7xgk;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781051382;
+	s=arc-20220608; t=1781052829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=n6nRitLA5dXPldaPWFJdkV5WToaQRP9IZnc/9WgQeWE=;
-	b=lX70zsx6HCEbSCJwyyMSmxS69qvYkCTGYRg6O8nvool5ta+gJFcSPqZ1jTXL8lno+6dweE
-	2TV34IaTFMNv7Cphhxt9vgWqML/Y543QupSodMPe+AkJN4b3QSwUzIzAkWcgJaHvASfmF2
-	HkMF2gOwzE5CV9xvCJwO5wGt5UnxEjg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=k2Ykltry;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9sO0gIm4z95R8a+HuLm1r79PfCgTK1qEypIW9uF7ZLY=;
+	b=aswWfDEI2KlbeOiwEJK7lS2PLCszI9qggZ4i3zRE+rN5AGs3JomXxOy4V61ymemI1gIYwY
+	4PnYKnkpWlaEaByBQ+CU8NWUorxsoz/tMUmD9y9lInIY5WJyGa2BanfMKvPOo4M2cK6NeQ
+	D7Fbd72TREm8iEusOBHF1rimhyhkqF8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781051382;
-	b=ETOrXfrs6GVJlfDI+RQ8uOMyR2PNZqYZbjMUV1uICJRUnLMj6oZnCSS54EpEKGoDQGWjo2
-	dCGF9eJZDkZJu5AzA0S9vad8MmxYH4cvkeuvwu6ggbFZMAox4TMZfItSAKhTeSy6iCOiNb
-	qjGuap50my7MQ/tT1Z/SUSoQKWANo+U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781051379;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=n6nRitLA5dXPldaPWFJdkV5WToaQRP9IZnc/9WgQeWE=;
-	b=k2YkltryaSxG3AYCOSdIpuXULa3fQ8OUMTERCHllVLhHajWA21GfAKY3mmj4y1OIY0Ll+u
-	slAp1PHk4pDzgon8/6fFc2Z1xLfIvaOIPZ0bj/wjj8VBODn21z+8Aod9n4xk4kZzMLMlFT
-	NhnyfLkdTaiG95Q8ZhTlOO10X6Mih8o=
-From: JP Kobryn <jp.kobryn@linux.dev>
-To: linux-mm@kvack.org,
-	willy@infradead.org,
-	shakeel.butt@linux.dev,
-	usama.arif@linux.dev,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	mhocko@suse.com,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/lruvec: trace LRU add drains
-Date: Tue,  9 Jun 2026 17:29:19 -0700
-Message-ID: <20260610002919.14102-1-jp.kobryn@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 483051C0008
-X-Stat-Signature: fcin4fr4mfghtcdpz4bkd77sagfkj6fs
+	t=1781052829;
+	b=WP5gNevqFJ15n1WGdbU4hu1VL77Slza95J2d8GSA/3ZyAtkD+P9DqBFmH2OPg7ng2Fa0SL
+	8Kzs9EnLCgVLIAUsKBXdCyKTSKyhyXC6roCrhgcluaG6TZMGP8btkLLt6Y23QbWtm/T08i
+	0VmSZVnmsAVa2KvwW6Tvz4FZnzUDLwQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=acgc7xgk;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 83A2E602DA;
+	Wed, 10 Jun 2026 00:53:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE071F00893;
+	Wed, 10 Jun 2026 00:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1781052828;
+	bh=9sO0gIm4z95R8a+HuLm1r79PfCgTK1qEypIW9uF7ZLY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=acgc7xgkEu753ugPGGUjJS42dHPmgrdSxWxEl3bEd/o06wO8hf6DWmidvkiwJLPFQ
+	 hH3311AyJa+Z/NfGYRTP9TDVz6X/iSlQSoFPBQmczKZpHJ1s8+ftom0oW9mcuE7YyE
+	 gC2Lk9CMpaW6K6cnd1jRSb7PF67cSUFrf66896tE=
+Date: Tue, 9 Jun 2026 17:53:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>,
+ Farhad Alemi <falemi@asu.edu>, Yury Norov <ynorov@nvidia.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Waiman Long <longman@redhat.com>, Rasmus
+ Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+Message-Id: <20260609175347.9688ac8060bc072ebd58cbe1@linux-foundation.org>
+In-Reply-To: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+References: <25c4bc47-b65d-4c04-8a8f-18eef2b5566a@kernel.org>
+	<CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781051382-742676
-X-HE-Meta: U2FsdGVkX1+KlloEpK8UxZ4UpXqTlLdbCbikzu6Zxx3YsW2HNc4wHxNHvDD2GLJPeG5C701HqAn4UsBRfYeW/iPnjR3CfqpSTu7Yg78WiucZMThitwX/FEbL9n9CpwttP5j1Y03pzY+JjYX97SMH7yEIdKIl2/eBNlrEPeW6b055IehncpkIY4WhPGW2v3Zlk9b4Zypk+IxwWI/F2+vP1Ngn497CZJoe2W4wXbZ/QH1Hagqf9tPYmNPGPIhd/QPYrfyfLqjFvfv+XKmDHKLxh/J/SRNqFamtOB62du+Fe6SSiR8A5Rt/M8es3XGWU9T32q9geNaDzZ0BECreJ7xZY/k2MrQF3jxng/Ff0DWuHGg1GVza3YXH7XrKELHiZIUe6amHyFEyRKXT8xPfIAK5dui5Icki3OrNw51c0KhkCwmpDgNNpu4hDXNlzKu+a3/ZEQFYJZppUidephyHjGWkjDlj9cG66K/XzvhUjbnKbneBeaTlRnwiHMtaqerPdbCEaoAFIoR/TczGnsBoQdj6fn5X6SbICddDEuA3X0o8q5+sic4UowshdPhJ1bXyRnsLKfsyx3q79TmEaC8jdXlGn15R/S9H52Yxcw9X2mb8iH4J5VgW6jCO6czb0iM+OOUnSBxqTsech1Z56gFfk+6O81e4p1u443DXyIT2nOK0ips/wM0hyPuPGSofzyqn/tyjKcAJ+8zEV9pZzXGqGSzDP4yiO9JFdgGgoIFn1DqQrwvyu+gj5OW5A6fny7mSTBmk/ymox3jb9YZ8E/4it8iRa0bUNxR7jwJqpe/C5AZfQZNQUzfQUtWavJs+fXfz8SsMO9sdr280IFr9wSt6bPHsnvvTrEDuOu9sroPYDj1rQlAOTZqg7p3WlAZRKiB8ktrL5CP5ICXaHsYZuW/XlmWLNv/teWNck2BUnhT0ec1UVTz9NNc6FOx9BgGu4a+BvHGNQjKI4sreQ+cz0hU6qGZ
- gFxUBrPd
- 5rqvAhAfVeAOpBi8gg96rDpyLl8uiOUQlh7Oucyx33+bykCuEm9MxrpLLhemDZZdaFSJEu48SiHz/cu4uaV61ZZ48RdEzdFk5j8Ot3if8xpK1ZVB5IXefbm3SQY/7NrCZQEU7gb1Iv3UgVHsq6D4DxSUEuLDZ4TMxjz5LQY1zvXJhEd9F4e7x1QMSTemkWBNqaMhqEXN81r2TFYw/X8kluU6iGqMGkjLvNQmF
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 401D2A000D
+X-Stat-Signature: ftciapsm366jzkkpje8zxgmphz9ra6f1
+X-HE-Tag: 1781052829-727486
+X-HE-Meta: U2FsdGVkX19xu5Pdujbnr6lxerxjNCfRkHhBwEREvLbYE5NSiaEGdSmZ2uO6EEHarHwXsQhWzJYUsLJTV4kBqT+MM/Fx9kQwxl3+zH0JAP+uMjrrlhr3qdINEC4xER6zViIYYPQBGuVZsbpRtzsGRuIMGNehYDg9eiugr9Vu4QAj+OpnRNLJMjcG/ll1jViiGlcuSlYrh9H2UCIai7vH8KF/tqziyNvCiKAyM+MeFWIocQD56DkCaLSpnBdMW1o85pJEtROWafW2lP64VQOekBau/uqFC0JAW1Ri9eoL+ztt0oJpGgFAbSfYwZaNFd4qLTV1xtJWFM2iXE8DUApLNZDxMVv9BxmlRwROi2p7hfDoSG23s4ez65nzeFrYUJgOp0ev8JDaKwZ8Pfe7hIt/DQRowTrINoZOGjypvqlcJETHrVojjoVq9Kg9VcTP29srY5TGalRCNC+o4FaDNTpQQcMRrD4piHGmyEeimE09SNrSxjYqf0vmB8tjaHLxg5CUCwo96P1kJaZAjhYmTU4ppBaZsQgp557L1r2Urw2J9u46wcOWb2V7aRRewk9T2nni8M70fxc5xot+nuQp6dpaHnv+ccHs4mvhJvEVe7jY2LYpyZB2+cELXaHJP9nFYLm2/fGUabo4BIuur60sfovppPTsAMZFZK2Fc/RYR9XILZv9g3kFuqvzk5H+tXo85AsFR1JNI5pw543u6l4Qpb3g7S3/O1v8EnaYDOis2gPNSHM/WQUoOBNU9GILKvqe/70EL6mpIgt+33Jm6xJL5CoFPugwH5IS25V35VNIZlYowLryEFsp6x80ncAy2USUENy7xLzndhvHroIxpoGE15DWKq12VwCpEV59kLudrdXotDwF/Oib1AdLz58r1h40+OMvrki7a341wP03E+oJtROJjf2g3tF/FjggUmb2Kf4z0tckbg8iSrMnvzn+5gf+HoCYqI1VH51SfJeEPKGA0QR
+ mnGvDICI
+ OKmLpzxgNVzf+w1bqKYW3XY0AQNq4YrZ+dQ/0iMqTzdbZCQnrD7m/fgfDp12eib9pwNB+YejblGCW052D5ZflXc2gbApqGvN1aGhrei5l/A+dzKKF6bAizJ9+gcQctUZB20sj/uzSMljtsoI5gCwwddmRgCNZ0pa8HKxLEE+bqsmSY2Yo8zGkiTJp550YUTU46vA5CtEW8oRCxlM9sP9xORBsPPqgE50Fk0YiepITCgPJpIQQoXhsa1eJqvwbtorkBHILu/VHgA/FHBgL8QkEjbmjZVPjzOqAgIjoxPwlXToxEbJYuwk+/ThPb6YOXlCq2w9dadI+RxNFSVcMuhZGg+wdIjGunYop+TJz/iF5ft5EZhyK5Odh3DL2Lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,74 +98,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-LRU add batches can be drained before they reach capacity. This can be a
-source of LRU lock contention, but it is not currently possible to
-attribute these drains to callers with existing tracepoints.
+On Tue, 9 Jun 2026 19:57:41 -0400 Farhad Alemi <farhad.alemi@berkeley.edu> wrote:
 
-Add mm_lru_add_drain to report the CPU and lru_add batch count when an
-lru_add batch is drained. This allows tracing to distinguish full drains
-from partial drains and attribute them to the calling stack.
+> cpuset_update_tasks_nodemask() rebinds a task's own mempolicy to the
+> cpuset's effective, online mems (newmems, from guarantee_online_mems()),
+> but rebinds that task's VMA mempolicies to the *configured* mask instead:
 
-Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
----
-v2:
-  - removed mm_lru_drain_all tracepoint
+Hard to understand.  Was "rebinds" supposed to be "is supposed to
+rebind"?
 
-v1: https://lore.kernel.org/linux-mm/20260609041156.31127-1-jp.kobryn@linux.dev/
+> 	cpuset_change_task_nodemask(task, &newmems);
+> 	...
+> 	mpol_rebind_mm(mm, &cs->mems_allowed);
+> 
+> On the default (v2) hierarchy a cpuset that has never had cpuset.mems
+> written keeps mems_allowed empty while effective_mems is inherited
+> non-empty from the parent, and tasks may be attached to it (the
+> empty-mems attach check is v1-only).  A subsequent rebind -- e.g. from a
+> CPU hotplug event walking the cpuset -- then calls mpol_rebind_mm() with
+> an empty mask.  For a VMA policy created with MPOL_F_RELATIVE_NODES this
+> reaches mpol_relative_nodemask() ->
+> nodes_fold(..., nodes_weight(cs->mems_allowed) == 0) -> bitmap_fold(),
+> whose set_bit(oldbit % sz, dst) divides by zero:
+> 
+>   Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+>   RIP: 0010:bitmap_fold+0x5e/0xb0
+>    mpol_rebind_nodemask
+>    mpol_rebind_mm
+>    cpuset_update_tasks_nodemask
+>    cpuset_handle_hotplug
+>    sched_cpu_deactivate
+>    cpuhp_thread_fun
+> 
+> cs->mems_allowed is the only nodemask in this function that is not the
+> effective set: the task-policy rebind, the page-migration target and
+> cs->old_mems_allowed all use newmems.  The sibling cpuset_attach() path
+> already rebinds VMA policies against the effective mems
+> (cpuset_attach_nodemask_to = cs->effective_mems) and explicitly notes
+> that mems_allowed can be empty under hotplug.  Rebind the VMA policies to
+> newmems too: it is guaranteed non-empty by guarantee_online_mems(), which
+> fixes the divide-by-zero, and it makes the VMA policies consistent with
+> the task policy and with the nodes the task is actually allowed to use.
 
- include/trace/events/pagemap.h | 19 +++++++++++++++++++
- mm/swap.c                      |  5 ++++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+How is this bug triggered?
 
-diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
-index 171524d3526d..fc28745507be 100644
---- a/include/trace/events/pagemap.h
-+++ b/include/trace/events/pagemap.h
-@@ -77,6 +77,25 @@ TRACE_EVENT(mm_lru_activate,
- 	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
- );
- 
-+TRACE_EVENT(mm_lru_add_drain,
-+
-+	TP_PROTO(int cpu, unsigned int nr),
-+
-+	TP_ARGS(cpu, nr),
-+
-+	TP_STRUCT__entry(
-+		__field(int,		cpu	)
-+		__field(unsigned int,	nr	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->cpu	= cpu;
-+		__entry->nr	= nr;
-+	),
-+
-+	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
-+);
-+
- #endif /* _TRACE_PAGEMAP_H */
- 
- /* This part must be outside protection */
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..8fd6808bfc6e 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
- {
- 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
- 	struct folio_batch *fbatch = &fbatches->lru_add;
-+	unsigned int nr_folios_add = folio_batch_count(fbatch);
- 
--	if (folio_batch_count(fbatch))
-+	if (nr_folios_add) {
- 		folio_batch_move_lru(fbatch, lru_add);
-+		trace_mm_lru_add_drain(cpu, nr_folios_add);
-+	}
- 
- 	fbatch = &fbatches->lru_move_tail;
- 	/* Disabling interrupts below acts as a compiler barrier. */
--- 
-2.54.0
 
 
