@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C90CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 04:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27FFCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 05:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A2D86B0005; Wed, 10 Jun 2026 00:56:44 -0400 (EDT)
+	id 134476B0005; Wed, 10 Jun 2026 01:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 453586B0088; Wed, 10 Jun 2026 00:56:44 -0400 (EDT)
+	id 10C5A6B0088; Wed, 10 Jun 2026 01:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 368F06B008A; Wed, 10 Jun 2026 00:56:44 -0400 (EDT)
+	id 021736B008A; Wed, 10 Jun 2026 01:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 275FE6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 00:56:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1B2CA084A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 04:56:43 +0000 (UTC)
-X-FDA: 84862792686.02.ABD07E3
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 69D034000F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 04:56:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KPuBiriP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E82286B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:09:39 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E27F40882
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:09:39 +0000 (UTC)
+X-FDA: 84862825278.21.8008EB3
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E0E60C000C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:09:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hzp5pVhD;
+	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781067402;
+	s=arc-20220608; t=1781068177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LLL2tbdrNFlBdviOTZn0Zk3ROyJs5PUPFRhZVmiiFc=;
-	b=7R+nDR9+Sjr3NTzgUKsTrItPDpb+8nqQOLN68B0w5UzNPZmfxn8d4O74iQ4TryyxE1RUTQ
-	O5rBdHICUICzYXI4Wh1PvDcqRMb/xtE+8cDfObXX8hhzSDwA4E3kPKoas275QhQaNRYhzF
-	f9IyJbLb3T/GmWNAO5LFUrGJXv/hD78=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=RHcfWFsJiVmAbunXLJMpnVW4BYFuN/HfVIVR+xGLhEI=;
+	b=xGGqicUfS7BSsLC881TzqmTPF+MLgQWllw/LirTvwa+wS2DoUKRO2RJl2bL3g8jPZ5zsit
+	kTzSGBpWDLE8Q19kb2H3K4Zapl+jU6d4uF6gbXYex8/MxqHH+x1MU2BTeq/p8rPlRJrWkn
+	3qFHzNcoDBlr1AorKREuAwVKaJTyUb4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KPuBiriP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf22.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hzp5pVhD;
+	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781067402;
-	b=6m2IhC/a9nfzGTm/iOisjQgSJHHhcmfaSZiEViMui3z8cIgmrSxWL3IiWh3VGBnHAVZ8eq
-	hNWFj3vzVSETbGLM0+9yY5WebDxFRscPsonp8pF7u3PeH7zaYYroP2cd5GHLowWLjFTvqh
-	8yaaxvN2smFU6YYziBXqkm+upXd4e/M=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781067391;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3LLL2tbdrNFlBdviOTZn0Zk3ROyJs5PUPFRhZVmiiFc=;
-	b=KPuBiriPYIZuU/h3FBAcrg3LDOjUF8aU1rZmdx4wVK+aflBg2CGKw9m7R1bMQ1FVEQkXRt
-	Ic0ZjdMI9phOAGsUcb1YcW/p9qNnL/7uFt+ILEnBtoNRp9SINuHSrKB/m1sR4ZgqDuouP2
-	KW72VcXPpVdRT5n0iQZcR6RA7o3P5DY=
-From: Lance Yang <lance.yang@linux.dev>
-To: kanchanapsridhar2026@gmail.com,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	coregee2000@gmail.com
-Cc: syzkaller@googlegroups.com,
-	hannes@cmpxchg.org,
-	chengming.zhou@linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [Kernel Bug] INFO: task hung in zswap_decompress
-Date: Wed, 10 Jun 2026 12:56:23 +0800
-Message-Id: <20260610045623.10574-1-lance.yang@linux.dev>
-In-Reply-To: <CACpmpodS2J_n+Q=RqgL4rfHN7zChrrefU3u2qXfYkcv4+YnCbw@mail.gmail.com>
-References: <CACpmpodS2J_n+Q=RqgL4rfHN7zChrrefU3u2qXfYkcv4+YnCbw@mail.gmail.com>
+	t=1781068177;
+	b=QXgbYedyAeh3TN/+4g1fKHcmNRZqpCOanb9gIECTzHEF9YeJg9o9sXax2GDJNVqGgXssV8
+	AcLeC2H3JzKoxZvpD7kEK8Ej/IC5EoPGN7ptOjfZFvDXlaZd5dhq0wqzoFh1k2OOfOefh9
+	+ICijsinakOYARI4VtNc3z9dXxi0QLo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:from:
+	content-type:references:reply-to;
+	bh=RHcfWFsJiVmAbunXLJMpnVW4BYFuN/HfVIVR+xGLhEI=; b=hzp5pVhDHzkGjEcskk8K5YTF4w
+	THr3gJHBdtRQFFgqjsAsoO6fdixFyGmx122vU0xpz3axRJBjX349/KHDmcO0t8sH4xw+Nn0lt/jY2
+	SCXUJZfn5c4x28vA9gBWC5UStdt2+Xc6Yb2TjcMFlrA/5I6FMTEWn8xqpZJhbkdDPRxN3o2uieafk
+	4J+vNNegmU5IXK2JiB6U1o0OAAZk3SKxDW0MlWQqStNrM2RwBxeKqXqhzj2P+8ZrXakgBxE+jXi+6
+	pKl3Mfd5HH7xMDICRjPQ+ZIGawzxVsCyCGtqfxXuC327udHGQrdV2ws+61CZGoJ8rbu5CP75oRNoR
+	ypNc0+Gg==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1wXBBn-00000004AT4-37fd;
+	Wed, 10 Jun 2026 13:09:20 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Jun 2026 13:09:19 +0800
+Date: Wed, 10 Jun 2026 13:09:19 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: luto@amacapital.net, safinaskar@gmail.com, akpm@linux-foundation.org,
+	axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
+	dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <aijxfxXrWLCVqV6-@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 69D034000F
-X-Stat-Signature: s8dir6ntmadcyzja8p5wgw581xhe4xi8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
+X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.netdev
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E0E60C000C
+X-Stat-Signature: d3qej74uetxofbzoio3oa3hmru579y9s
 X-Rspam-User: 
-X-HE-Tag: 1781067400-886247
-X-HE-Meta: U2FsdGVkX18XxOHn0x2j6ejjbBVDCnwNRdfCQvguPH6eZ79Ys1lPPD4o2pozjpCs3I2L3tB75MDwSbloWMWGZ2X7oVn4Aqv8NffiBkMCyAtp1/0GH117UhyCp3V+isTiTazvTdIWilwHM8QQErfqas+Y6RLnWKNiuHLHkRQrpf0ZwUs6teIzoOI70az1sSostQdB/d3izMI+zHMaMRCeL+2ko5PNbK/BLuPwUUH2BFRoXTLP9h2tY1+nYKGlG1zq/3WEuvBKQ5T5TqLJQvL4IKRGYHXEMi7aLOI8BDxHeHEd4ZWA/cHXHVQqq7TebVxjxYehX9L3BkYNTiRcR+gDrumcCl2pCE/4pZhL2mw7Iwt4xPna8PcjZPRy8dGkxWI0JPNA0sYOVcWeWwRN+LpMZpMNjFO8aPKeCa5aI1qfjdldzrRX74GpufIAkLW4zG7d+VVSQwM0Jw7ysEdFLHawRUR8V7NWib5LTJc0r4KoPar+IQngQ0m1+NZWdJTHPPUbznZOY8YlGGxKpmES8T7CorJV4wYDnSBw1iYKkwt4jON2RGd4U+e/paWSm2Lct10d8kwOTrOCDqK8cX5HMptMQmhMJD7FWKya8sNGh6My7WX8dO4ifqS68/uQUFAkdsihtKb2Zf3Tgqfzqm91ctKm+xYuW7EpZa07NgWyDVHX4t+c6zS8jBj1g1OEqnkbfuNKKtY/B1JnhB2PMFDLZT1hqFxPliIB9YtaCKZMmUysmu/IRibg4iqRaxBopP0LCurU98fuWI3o1jr/+K+9MBppGIFaVebMeUguQu9Ro8MDIW5ImDJ7FL5C0T2cY1VzlviEIPmhLO2ezCYUx1zqN7yDRSyx8o9RGuCr0R4LJc3f3ZWLgaS7KpkGBvfLK4YajDlojOgG9dEjdaLU44kupQUUkO/ipKnXz6vrbmgd9CWWcTSdr9TaNoLbDWrNjDnH7vT3wa5TPhRjRE4nBi3pP4B
- mN/Mrsx4
- 6kwNVV8lVpIspNYGdJvz5AB72KzQP2gRZaJPdXAXfPNnJ0dyL/0SlV7jrlqHehsxJO5G9r3rzM298C4maAAm89+nHGIONGw1CMC274wERoFCKdx6aYUgo4QMSsdOSXmj6CA5nKQk06mh0Ymhb4Vz0uCClGZ7WNplgkbBPjYWP7gjW0nOQo/u5qecT2K/S1zr72oaqbOqkiUTPRpuHuDVWW4xvLUjJOAf08I2Kf5SKwLya8rRLrOnG64patzT8v/TxKOJL4O1vOAEllNBjB4NQYp+kmfSa2fP54jDjVQ9fGbxfSYdIF6pJBMedJ34E4Xq/xJZJ30g74LOZ2+7HZROMq01sNl8+o/e7IUZlp4Im7BBel2myIJS30pPZyw==
+X-HE-Tag: 1781068176-333328
+X-HE-Meta: U2FsdGVkX19C0P/b3vD6TsJiPmb1EYHkc1TVs0gPb2YmShSu+c3mKYeq9rS1DWKQancnqrARbXFffn1tv39twikcu6QBSW96U8IZy1rlJGSf6FRB3Mf+OgA1fUbcIahF4QO3DvPSnGaRWRHJsmFWsvD/J6O3KR4moW1Bxng5BlFS8Isl80xBci5qxDGZf9jz4yHCdRqKZkzF/d6XHMdQU1rwc3qeval12w/0h5mILYJIkfIJeWasZSooDFlt3wpHHQauS6mUzLoA5thO9eAd54FeViXCHqv/mRiNe1S2EtLYXBXDEJg1IE8qwhREuDjP7Mg65uiT9sPWRupb9Q10NF1HNe+yBsU2WKA/71ElWTVCz2t6vku/6ZeCg8Icbi1EVP1K2VBdyPyosnJQrbj80PM9qngQI1jQ8J5afSuL018MJ+P7EDIdbCBI/TBAhx1uP5I+tKgK0LOxMFrYZqFN2PA8oJdQNb7hxePOiXUAWd1SFnpr+yu8m0833e5JcLJqOLatsvAceAsNPUC+V0XvgVCriodEpih0O1gIRsTXcYXMTvpNPX7+ZUrVFkqnjtZkuT01+f9VHg6n4K3HjkWJ90cDVg5Tjy9JaN5yGG1wjkl7onixm7T/m5OuPGh12FHmIqLb/CkU9l0sEuaYfRJ5CsEFEND3nFVmf7BN29boBzDsr9ZYAmYLqn3YKHAVukkUPnXpvpGez2waxzflxsnUrTmKmnAISkKMDeqIONjfvFE1yaIJZpFg1OQu+lw+sV9f1jn8yxXYCLVu3mqewYW/SQUWomqRCUcZhHQ6/seyEyd1AXC/9F/OsFZUXEykpEuvxZ0g9N4qyBGsI+uP3+B/hU/3xy/Id6dwSloXed5ImteyfnQbIiCEuEjUZg3nuRAOjXN9QHBF/vcnPj8y9iWRAB2jZPtM7jfZZB4s8dtihnBlqx3jsznx6yUoa5CEI5BhRIv91m98WTDY9pYqW1o
+ c24WatVl
+ mn0VQo7DybIFNO2BaPxWJOHDQbKtQpdkZJ1SDbILTYaMp0mB8ett7THKosenIhueZdXPewTXzrOFjD/0e3NKzzTBCwQmvHqKswLAGGTBFC/YOtvApSEoTxAXRFJzzPz/ay33B+bq1JTogpdyqnFNCGSZnScmMtVd6Xa+vPVZkkjIu8mz1C7iRuJXSnYu9uMPDGtmrf6xYJz0PZYP9MuucsGSWxzYE+zG2dlixg0eTYZ5h46/Bdj1FOKAweLW/3lYCmkgWWVItsRRjVww0VKJ1XHbIASRoV4x8mywZSDkphvY5CRkvP1wP0V80rCT9vyQf8ut9GfrKluoplUet8vvjpLBiTVUrDSqLMWBga1lKyeJC+cnzXFg9qc0xmePvgpbZ+ugFcwFX/vTx+1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,86 +96,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Tue, Jun 09, 2026 at 08:36:29AM -1000, Kanchana P. Sridhar wrote:
->On Tue, Jun 9, 2026 at 10:50 AM Yosry Ahmed <yosry@kernel.org> wrote:
->>
->> On Tue, Jun 9, 2026 at 8:40 AM Nhat Pham <nphamcs@gmail.com> wrote:
->> >
->> > On Tue, Jun 9, 2026 at 4:51 AM Longxing Li <coregee2000@gmail.com> wrote:
->> > >
->> > > Dear Linux kernel developers and maintainers,
-
-Thanks for reporting this!
-
->> > >
->> > > We would like to report a new kernel bug found by our tool. INFO: task
->> > > hung in zswap_decompress. Details are as follows.
->> > >
->> > > Kernel commit: v7.0.6
->> > > Kernel config: see attachment
->> > > report: see attachment
->>
->> If I am reading the report correctly, it seems like we are doing
->> swapin from the page fault path, and waiting for the per-CPU mutex
->> that is held by kswapd. Since we can sleep waiting for decompression
->> while holding the mutex, it's possible that we have some kind of
->> priority inversion where kswap held the lock, went to sleep, and
->> didn't run again for a while. But that always been possible for a long
->> time AFAICT.
-
-Cool!
-
-Worth rerunning with CONFIG_DETECT_HUNG_TASK_BLOCKER=y, Should be on by
-default with CONFIG_DETECT_HUNG_TASK=y, but I don't see it in the config.
-
-With that enabled, the kernel should hopefully tell us which task likely
-owns the mutex :) If kswapd is sitting on the per-CPU zswap mutex and not
-getting scheduled back in, that should be pretty clear ;)
-
-CONFIG_DETECT_HUNG_TASK=y
-CONFIG_DETECT_HUNG_TASK_BLOCKER=y
-
-# detect after 10s in D state instead of the default 120s
-echo 10 > /proc/sys/kernel/hung_task_timeout_secs
-
-# 0 means use hung_task_timeout_secs as the check interval
-echo 0 > /proc/sys/kernel/hung_task_check_interval_secs
-
->>
->> Do you have any more details? Is this a new regression (observed when
->> upgrading to v7.0.6), or is it possible this was a pre-existing issue
->> and you just found it on this kernel?
->>
->> > >
->> > > We are currently analyzing the root cause and  working on a
->> > > reproducible PoC. We will provide further updates in this thread as
->> > > soon as we have more information.
->>
->> Yeah more details like a known-good kernel version, or even better a
->> reproducer, would certainly help a lot.
->>
->> > >
->> > > Best regards,
->> > > Longxing Li
->> > >
->> > > ==================================================================
->> > > https://drive.google.com/file/d/1Bx2unEf-QntjVi8g6Zw7QNO6OP4cjGO_/view?usp=drive_link
->> > >
->> > > https://drive.google.com/file/d/16xzUrwOvwE67cnMPH3AhhNRWq6hr26Qj/view?usp=drive_link
->> >
->> > + Kanchana, who last worked on this piece of code
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 >
->Thanks Nhat and Yosry. I agree with Yosry, having a known-good kernel
->version would be helpful.
->
->Also, it appears the kernel stack-trace is from before the merging of
->the per-CPU acomp_ctx simplifications wrt the mutex, and resources'
->lifetime being tied to that of the zswap pool.
->
->Looking forward to more details.
+> Because I think splice() is a *cool* feature. It was always *clever*.
+> I just don't think it's worth the pain it has cause.
+> 
+> And it's been around for a long long time, and after more than two
+> decades it's still most definitely not _widely_ used.
 
-+1
+A couple of years ago I used tee(2) in dash(1) so that we could
+avoid reading the input line byte-by-byte which is what every other
+shell does in order to pass the rest of stdin to the executed
+command.
 
-Cheers, Lance
+https://git.kernel.org/pub/scm/utils/dash/dash.git/commit/?id=44b15ea09a9ee5872cf477e4ffc6b42ef37d1e46
+
+It's definitely niche but made a huge performance difference to
+this rather common scenario:
+
+echo 'command
+...
+rest of stdin' | sh
+
+I didn't even know tee(2) prior to this, even though it was added
+way back.
+
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
