@@ -4,92 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8DBCD8C90
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 18:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB664CD98CC
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 18:38:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A389A6B0005; Wed, 10 Jun 2026 14:11:06 -0400 (EDT)
+	id B74F96B0005; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10196B0088; Wed, 10 Jun 2026 14:11:06 -0400 (EDT)
+	id B25AF6B0088; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 925F76B008C; Wed, 10 Jun 2026 14:11:06 -0400 (EDT)
+	id A1AD16B008C; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 820A66B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:11:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2397A4026C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:11:06 +0000 (UTC)
-X-FDA: 84864794532.07.C818D02
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 572D22000F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:11:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="DouEq/+y";
-	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781115064;
+	by kanga.kvack.org (Postfix) with ESMTP id 82CA76B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 122DB40217
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:38:45 +0000 (UTC)
+X-FDA: 84864864210.26.2498916
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F0240C000C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:38:42 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PDlp/Y4P";
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781116723;
+	b=ya7JCc0vG0e46ZfLZIGpKg0iHTLEbEt6c6AOdnjj2K9u61JtZZLevu/Mb5mFgUz764f4/f
+	8B9Qc+Q3Q5JUm7tod83JEqK/ngqsZ6SyRX/q/jjKzG7e4JAvkGeLgc98RFtCHb2xqTJrsL
+	2SsP1t6ycNy82puGzEtVA/QfkHvIPZE=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="PDlp/Y4P";
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781116723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCD6fQlo+amCuh2MJv98stulEbrclG69/C//PGhk/Sw=;
-	b=NAZjWOzZmHhQNR4lfXL6nzUoJ/0unxmfo9t6FlxhqV585kQ2qbhJz44XlVuks/0x60wciU
-	pR4+mxZIHE+TkyqZUcd7LZ04dKSXWONZFLHQFalEiZP+IrZRYnxHRBKjf+FkPLX6UD/UV9
-	0+aZcqa0VuaeoWDbSozZygyz/c+3t6E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781115064;
-	b=anunbfj0daN5EUzoalJzLf0wN/gVQtE0FHSkLL/cAmqh5CEhcY52cxScIcajM9uvGURQfM
-	xuoQIpZyLWLx4AMKnB2+mjU9A9rZI2i7L+77D2gyptsQGqVnfV4zMnwkeikxhy8TbnCRcO
-	pSebP64L2fRyZjHoiwK0Jdq2V9aA0Bc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="DouEq/+y";
-	spf=pass (imf31.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cCD6fQlo+amCuh2MJv98stulEbrclG69/C//PGhk/Sw=; b=DouEq/+yDo0pRJvgQ60O6kXBai
-	Ukq/D/vSXod6hUKOikuCeKPo8Me471D5X/InNXt9Mrw+d3nqA2q6LmVviXuqIRJzb65ymoXVaC6cu
-	I6I+MoIg4gwlIY9+c4q1/WILLKuesO+b4sus1NrvzKylUGGa4Ycq3nFf6n82n1PIdefK8QxRK8C/T
-	sow1zS8+CmxK6d94lM+hTMbNCTKWsosT0gqP88ddvHWhb5PMoZqydmsOBLxFxCxpkbMY9S6gxWIfE
-	AHD8TvWg6WlBgMeSfQW4RU0U0yZCJ2iwnv96dTNtAd64zHaFESP+O8jl4LDzmO3a5APYn9T4fPEjG
-	Swb+A1sg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXNOB-00000000QeG-3Mrs;
-	Wed, 10 Jun 2026 18:10:55 +0000
-Date: Wed, 10 Jun 2026 19:10:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>, sw.prabhu6@gmail.com,
-	axboe@kernel.dk, io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dave@stgolabs.net,
-	dongjoo.seo1@samsung.com, Swarna Prabhu <s.prabhu@samsung.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [RFC v1] io_uring/rsrc: add fast path huge page handling in
- buffer registration
-Message-ID: <aimor-73_1ij8Nbx@casper.infradead.org>
-References: <20260608062937.804758-1-sw.prabhu6@gmail.com>
- <c924fb59-be47-4fa5-adbf-a50a831ccd7b@kernel.org>
- <aikBIESiJftxBdfL@infradead.org>
- <f2b5189f-10de-4685-97f3-6ee08d159743@kernel.org>
- <ailLu70plC9WK2dB@infradead.org>
- <d80bb796-3cac-4de2-8bc2-cc799e5bbeb1@kernel.org>
+	bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
+	b=RHq4zMvByOPOuN58Gkob8CO+V5aZlVoVO9NimU9e9FhxekdN3pom0PivOh5UXWVzqrRTfT
+	VOR0yk9ui/QmtQsh6z+YUb1MlVVHD9Vwcpycc76coK1c0KEZ9mJf2jDA/yHGD8dQdF+xKQ
+	lw5jq8+CInFSkOijCgjo0pJh1H35vac=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45eedcdaeaaso4894503f8f.3
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:38:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781116721; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B7bywdYSAwYx7RCQZgl5YU8k1AEg3Mh5Z0sWp98FgB9jg8wAAxTa3KYoWVmXOj6C94
+         SlIzaijD/4oWJ6O9LO6Tf/UJtklIHfK8dQ//GE1r+meh2TSv9rRv2bOOx8GvQtVaiEk6
+         /4Y0pIytCYMyVLSa5joKuKN9nqj0xRMcVhMfmAxHfXoIid/1qNMeX+qJtcbWyi0FApr5
+         OcpHwFtvgBHOvl2IoYAe5mupG/LN+RWOXR9trgHVPXgszQiInWQj9h6CGA9CGbE5OPEN
+         YWwv0mlI6KjSwnCWY0Dt3PqmphtNlQjBbYX49iHEu3+udLxeIanYCTKzviOKpYpEVov5
+         RLyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
+        fh=Y60rf2H4XcdAIC2Tvm/AedCxOa/DBxApBMn6L8AMW6Q=;
+        b=QD+OnXbcGA2ii99QEVzMHgY+OeNkI3OK7/zDrG5MfrQXQUmj+nFq/YH2M0G9sN440m
+         JfvuEZNG+L5lmZisPTncDHmy0F3DpJ2v4VyVRffcNHtcEW+NOvTA0G3ZhUE4C9z2EVXf
+         +ziy51q6GIYO7Rjy6gnIrN1b2iK88hMMP+Qr1tpKQo4t5VOiyurQ1xKsojLFTqgLVKLM
+         lv1PdZoCXUMGhepH2yKMkxEg/q0HQIdoHeUL1i5/ACAeIOtnkzFsdu9OU1lTc+mPmfzi
+         PawdTNFRvBcn/9QW7SbHmRMonEepwR23wYX5a0tUJ6/Cb8gtsOJRrS1ktYXCHdzlTD+i
+         3cIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781116721; x=1781721521; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
+        b=PDlp/Y4PQylejPt6TehAHT98PdEBbc663zL+5zPBxjPErYXxChNrTLy2NWlrVBrprD
+         ryNiaQC6pvV/pA3Gnd0lp43r+NKEJGqnGF4gbknz2GRR6NRj2eiFMHm2yu8qaV27KZsa
+         Lg8m7uSlUHujARPra6gisC9CZJHvewasqWVHjo6tyshLWiGtWvtk2rR7NqopspqyQVq2
+         7rrxy5uaZT5P9PdfRDuBfrr6K/rY/LKIbRAnYnUhAB84y2ekeB8NjhpjMvR+eQAI3XPg
+         tYR9/i+9DQyJZYHc7ilW1Rl4qRceqNzVYCWyJO8selosB633KraODv19u43yjBzIUU0v
+         hy6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781116721; x=1781721521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
+        b=PwjG/lzD3gKWoI7EmDXZDyiM6DkUqKeC9Fz2+AN4jZf9Y39VTksLukWt0je+qircvh
+         4ETN7KCIAp0hPXclKm691iQm18JS13e1t8p0AnpCqOyIvAYWWbZjB5C1uptCzupFMY2W
+         YeF71BXEABd/JFbgGxiOp87jXIeTa4YMHmlA7DPV/U95aQa4yxHtNacc0QUtJjGJPX3r
+         y+SWZhmHH1xlNCutIeRs0NElwyJpT28tGgpeM/BRBi4o0c/xWcw3KGG8hodmInCMn52v
+         q1Rr1WamwDF8rc8xlU3o0zP0W0EpR7eNdSVToMxpkRbDOL+Xr7omnVyWAYZnm362izJx
+         h4rw==
+X-Forwarded-Encrypted: i=1; AFNElJ/v4Z5Roca4GuhTo38kUCwGzla1YReQ0gg2qnkPgULGn8euO4mhz0ScAkwMkqx38UbPLt5sQ3urJw==@kvack.org
+X-Gm-Message-State: AOJu0YwZXuga7R9dPKB6ZJdyjkUav2FPz+yJdViGg1vPiNbg0Q1oo8Qg
+	Qc+HrGlo3NjpXhjoewx6Bl2224u+hlbaapY+N2gooqtBzmfEp6p5KYyJLPMbybQ0JAhA0dtreZ+
+	mN4kZfJthW5LHp1SedqqHliYzrrmkmR0=
+X-Gm-Gg: Acq92OGXbtIcU/IO8/2hwFbVwc6cR2Cs4wXlxMKrahgEj5ef7cv8sxq6AU5NUpILzUE
+	YyMQq1QxxTmBcmRfUY6a9kCW62ZX0zxeyIwSOlEEF3mDci3y2zhK0buGs8VkMjPF0bJWeDpl5wS
+	z/6wNBK9P0qL8oNeyd5M9e5Cjf/+tuo+WGxrvEuB/d1ztbNmpphCvUGld2ku6sXLDAUnrTnSVO2
+	/yz3CGXYJdeYC7/Tw5Sc1JOajjuPumVjrIAIN+o04yq+7J4hMYMfVx+3xY/qUaYSTreRLQfm6/8
+	hkr6UZG2cE3W8HER5s2q7y/UOToT8BL3nfTDAKj4PdlRdAkTRbf0U6O6X2/MqshTLw==
+X-Received: by 2002:a05:6000:41d9:b0:460:5a6f:c0df with SMTP id
+ ffacd0b85a97d-4605a6fc0eemr7535620f8f.22.1781116721136; Wed, 10 Jun 2026
+ 11:38:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d80bb796-3cac-4de2-8bc2-cc799e5bbeb1@kernel.org>
+References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
+ <CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com> <aimbPCBloe0Dqk7t@linux.dev>
+In-Reply-To: <aimbPCBloe0Dqk7t@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 10 Jun 2026 11:38:29 -0700
+X-Gm-Features: AVVi8CewkiMbp3mr1hHULBn3VWhXybj-HjVzGCxD3tmD7HgTYvACIoxx_m8pXXw
+Message-ID: <CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
+Subject: Re: [zswap?] BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org, hannes@cmpxchg.org, 
+	yosry@kernel.org, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	qi.zheng@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F0240C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 572D22000F
-X-Stat-Signature: etfpry9xxzz197tcbipd8y6tsszoqqam
-X-HE-Tag: 1781115063-929071
-X-HE-Meta: U2FsdGVkX1/UY/5UFnzFIH4YWKpM0Q8srsV1XblKWYVf6KaXD4mUZsE2rR9Y+vIDWHyYeBxm4Ybdw6jFSJwCTtbBTbeOdibrUZwM5KSQSKqdlOhvkWhhO6e5rKyiIH3jRr/x/pub1zGIB/PtzIXTV7vpLqEXfprXfSXTubM+kGxnXVxKw+CfNzgS8QzeQ0Aq7G8bYbJW6cQIm7dUUZQ4Hwl6Fy8ZymMvCOrUvPbq5VSrKob/qTSTwc5wa6JYxAPrWnuK2l+uXdmZfsICSPdtrB+0l6Z1+g4zgv0CTtrXyTIEBLtMUY30IyMDjeVEufgv0qR1dZ01CKOqz7D1ZjmQsOzrKStwL/FCa8jt8nWXHguboVKQgR27eVrQFw/+pm9HOehxSQe3Fd1PruhFRciFB3RTKmRFlQAvm0bKh4iGyIl0Q8rwH8wqwmzSsxGO11iRUMD6Kgn2wScG37vxblEm+Vyr7oP0G+6HxM5568HvcKgra2a+TK+vZ2WPjWdO+A1WnuhosDpz8c7YCcBFjgJtfZw3HgsY5821yl6ZDaf5mu1aS/i7o2KFIrpbWywqhWl76aJpr2q6do7pT1IX4/+Rakr0nGbb3Vlp1CXq27aOIJta3P2Gu32acOYNFuPLW8vwclt8JnCMTJ4mFxJalNzfQuJYlDXTLQEM5gdG1LOPzdYSPEj0rHb5LNtmT+WiBNJ1mIM7iLlrEhjWhMLzE7lTIwUbWgHjSsSUJfn1yiRLz9mCohwIm1CI1mtncxQSYu+jpg7FXFXqK1Vezeiwe5ULCVzIRlHOK7LOexN2knjl7eSAJncatGbJ5YbHg8k0kpnpqwug9MCiAq4t5LGhj+FQM8pL2prSgdkqYDs01NOy4GrLclrW/LdM2hkHJaPBI27S+orcTyT4WhiS2Kii3GUoACHo9wS0tHCRTJ7Fd1DqkZTU8RAQtvUFHRvjBH2owBUNw9Irqnq8/2NYwVx4qBy
- XrVo6Pcl
- s1N27W26P5ejXlSNXC7GLlGrhTkoIn+SlnwRif2cCCXu9RopLDgtOboeRx4xlgFw9+SWbW3yqjl6865M4S00uvpeapwriZhBlUG6GnHR2Gx6X2A/OA7LLW3wxhL3gCzlnmS9rCt1cwtH5YDlSip6CgJ3rZ6CXx3HRWjzdoFx0HIcaS16ouQQ9jiUDdHhPRNv04ZE5Cn/XOsTbuV0+4NIIbhv/EYFdTWoRjgVuyL2PeLk8JccRmDRofY4HwEEXrnRgHBsGliCEatk28lbUK2akCXWm0V7CAiKRAtcsQxm6VhxbpNdAxDiYRgNHHJaI3nQA+VKEbAQEbLD8p+dHqSKfzzfy+xAJ5G75s9QhgdLbGIJFLkvi92pkmP3kS7yvMhmbPEy+huKrF9A2nOIhI/u/+6Sj99O4FBWIounRCSqPhaxwOrg4KePSzQuu6uNdNKJxw9CAXJAWwqAdN0jrZVoz0LOv8m67+REs5SByZpPsF0Y1r1TfWe5kt/TyGA2VekQl3VZRxLVNssAAasM=
+X-Stat-Signature: wz5mom1bg7o4iwsu84qgp9rqrno83i8c
+X-HE-Tag: 1781116722-664592
+X-HE-Meta: U2FsdGVkX1/LbUjMcLyPk+9fxNBrtY0H/JsaranKSqHGFRe9VP/fRr62tDel+5kmbmyjwzrHj8jk4mmUYYDIPcf7LruEsR897JgrxVLMEKPuc2ExJPqwSQ2OS+XcU72ihBk22Gn5E00nzpLgDOObY1wNjjy8B4qYUffY4leDogkRJQwsSREdl8eMhieWOHLC4C+rjPy1Xg3Eb4ZylOCeubW/pqcwzFzAHInLwDfcTamc75X1Q7HyGBrsncNQ5OjCtr7xOrCnRcmdC/m431axWvNB/S5svvE6RGAkYk9RW12d6GkFMpBTlsho/4gPURW+7ET0JRNxfNwEWaRC239SfCKCpdQSgGv6O4NrCJ7H+84IV0zCMngTcQ0iq8ktPVEBUGFQJ3mkwLNCjaMF1Lguk2puVUIhcTd9VabFTkHHsb6XJZlKlGb8yzd9GbgB6uozSA3NpqZagDhU6JzHAr4mrSvyCYOeK7yfUG8MS5bUP8Z4D5fC5nngPCrqxFCnXGKHf9ti1RwneLJFOIAiE02fyvJE7eULZ7D6cJAa8N+2vqBEFzLEW/HH/8dY4c3oeUXEIIPW4zXyY3uDiG0VjSNllFHwpjPVXOkaQNZiI+6anJf0bXVmO/0qhaUVmbskyUd8nuf5XbJRQanqx/Lbl88p3a9aaWgi0DUytv8MbbR+gwUAMSUzX6axrGyooOvZXx61LZzFn483yAMIuG/0Wch4Z7WpCFCKAO6IpZccfu+0Ow0LdIOaOb3ZdhSXsisrWBGd8xkZilpG0zVG6ROKPH5NKuPIycszHhhxG4hdnSe6QTuhCM3k6emUbYMPmLmkl5+1IiMrjKmk/S6PHSbZvU8JV40S5j/VkQe4z4f7/rs7CEG7PueRBTKs1EzM/K6hv7wXhLT5YZ7nSJxybOBls4OeqaoJtq7NLk4bjQE9QUNdB9BnaLHyaIrz9izZdvoGKaxfT76Kt3pH4LSZ7Kx8gYF
+ uYcU1nlr
+ /TFTUjP5d/MzNa4kR7ikZPSE98u1PHGUnFvlYbDenW1kSR7bNVAicCOHAMAv9XvfxKqNmqDgR3ywUAjZpZm+si2/qgy5VrgjFKr7218SalTrU2HG8zLR87QfR/QwKujIFnjX/t6qKc+XX4uBW58GaVGhfnj9VmaNxTl/n7tqnF2Vu1FnZtJJMgBR38p+5DRFlXsr5ab9/1w+XnzmIRrw9N1wuCeiYnEf15ggMnMUAYnA7TUdhuzbUqk66ytq1RPPXKaZukBWRkZtNA7mW3DauQsuHT/500t0md2D14wCdW8DfFKxLlmeGuJRRguKmccdSx5iUTL7sqymZ0UFd7rY9vg708ZexMtzpdeXtZh+D/MZFUSVYu4w8whoDcuZL9JLYeuk5GXIP6E2CUB14xsppjndAi+4fVI3yu3wYLP+zvjnVN/ukBkMLURHsnM4bhArD53iQ/lFhRrlQvY3jwlhqpUR8anhNN7AMBXqzWPpacMkeWfdaziIIT97eTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,43 +140,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 03:18:52PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/10/26 13:34, Christoph Hellwig wrote:
-> > On Wed, Jun 10, 2026 at 11:54:01AM +0200, David Hildenbrand (Arm) wrote:
-> >> There are some long-term plans on providing an interface that would abstract how
-> >> you refcount something you GUP'ed. (because, some pages we GUP in the future
-> >> might not even have a dedicated refcount, all still fairly unclear). But it's
-> >> all not really finalized I think.
-> >>
-> >> For now, we could expose a folio+page/offset+nr_pages interface, where we,
-> >> long-term, would not be able to return non-folio pages (e.g., vm_insert_page())
-> >> and would instead, in the future, fail the request if we stumble over a
-> >> non-folio thing in the page tables. That sounds reasonable for now.
-> > 
-> > I think whatever we're going to use for direct I/O has to also support
-> > non-folio pages, especially PCI P2P memory.  So coming up with an
-> > interface that support this ASAP would be helpful.
-> 
-> Yes.
-> 
-> I think we can keep returning pages as long a the unpin interface knows the
-> right thing to do to unpin them.
+On Wed, Jun 10, 2026 at 10:31=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
+ev> wrote:
+>
+> +Roman, Qi
+>
+> On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
+> > On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@linux.de=
+v> wrote:
+> >
+> > Thanks for reporting, Zenghui.
+> >
+> >
+> > >
+> > > Hi all,
+> > >
+> > > The following splat was triggered on the mainline kernel:
+> > >
+> > >  BUG: sleeping function called from invalid context at kernel/cgroup/=
+rstat.c:421
+> > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name: c=
+at
+> > >  preempt_count: 0, expected: 0
+> > >  RCU nest depth: 1, expected: 0
+> > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0-rc=
+7-00056-gacb7500801e9-dirty #304 PREEMPT
+> > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-pre=
+built.qemu.org 08/13/2024
+> > >  Call trace:
+> > >   show_stack+0x18/0x24 (C)
+> > >   dump_stack_lvl+0x78/0x90
+> > >   dump_stack+0x18/0x24
+> > >   __might_resched+0x114/0x170
+> > >   __might_sleep+0x48/0x98
+> > >   css_rstat_flush+0x54/0x564
+> > >   mem_cgroup_flush_stats+0x9c/0xb0
+> > >   zswap_shrinker_count+0xe4/0x1e4
+> > >   shrinker_debugfs_count_show+0xd8/0x268
+> >
+> > Ah, this seems a bit tricky.
+> >
+> > Seems like shrinker_debugfs_count_show() is invoking
+> > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_count()
+> > triggers a stats flushing, which might sleep. Not ideal.
+> >
+> > Is the rcu_read_section() here to protect memcg or shrinker? For
+> > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
+> > memcg before returning.
+> >
+> > (memcg maintainers please fact check me).
+>
+> mem_cgroup_iter() handles the lifetime of memcg, so there is no need for =
+rcu
+> read section for memcg.
+>
+> >
+> > If this is for the shrinker think this needs to follow shrink_slab()'s =
+pattern.:
+> >
+> > rcu_read_lock();
+> > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
+> > {
+> >     if (!shrinker_try_get(shrinker))
+> >         continue;
+> >     rcu_read_unlock();
+> > }
+> >
+> > But OTOH, doesn't seem like rcu_read_section() is what keeping it safe:
+>
+> Shouldn't the caller already holds the reference to the shrinker which it=
+ is
+> giving to this function? Does debugfs file entry holds a reference to the
+> shrinker which it is giving.
+>
+> After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
+> shrinker_free_rcu_cb), so this rcu read section is against that.
+>
+> I think we can simply use shrinker_try_get() here as Nhat said.
 
-This would be the get_user_phyrs() interface I've talked about before.
+Hmm, so is this unsafe even with the current rcu shennanigans? What's
+stopping shrinker to be freed by that callback before we enter
+rcu_read_section()?
 
-https://lore.kernel.org/all/ZbVO2RKhw-dLUMvf@casper.infradead.org/
-and the long thread:
-https://lore.kernel.org/all/YdyKWeU0HTv8m7wD@casper.infradead.org/
+Seems like this is just implicitly correct - shrinker_debugfs_detach()
+and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
+shrinker_free_rcu_cb);, so if you're reading this file, then it's
+before shrinker_free_rcu_cb() is even registered?
 
-> Would there be users for a new interface that returns page ranges as described
-> above, that would want to still unpin stuff partially? E.g., we give them a page
-> range that belongs to the same folio with only a single pin/reference, but they
-> would want to logically split that range and unpin pages individually?
-
-Urgh, no, we shouldn't do that.  ranges should be pinned / unpinned
-as a whole.  I'm sympathetic to "for this special operation we need to
-create a new range from this existing range and adjust the refcount(s)
-appropriately so each of the two rangees can be put separately", but
-I'm not sympathetic to "we need to allow each page to be individually
-refcounted".
+Do we still need rcu or shrinker_try_get() here?
 
