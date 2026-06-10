@@ -4,96 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0514BCD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 11:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8DBFCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 11:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23FFE6B0005; Wed, 10 Jun 2026 07:34:06 -0400 (EDT)
+	id 092E76B0088; Wed, 10 Jun 2026 07:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2179B6B0088; Wed, 10 Jun 2026 07:34:06 -0400 (EDT)
+	id 043056B008A; Wed, 10 Jun 2026 07:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 154586B008A; Wed, 10 Jun 2026 07:34:06 -0400 (EDT)
+	id E9ACA6B008C; Wed, 10 Jun 2026 07:34:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 04E266B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:34:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 891191A0969
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:34:05 +0000 (UTC)
-X-FDA: 84863794050.01.E626F8F
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5DE1C140011
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:34:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nMgRuPUs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DA2846B0088
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:34:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A49D1A0963
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:34:16 +0000 (UTC)
+X-FDA: 84863794512.17.8314B64
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B3F1A1C000B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:34:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JYHXWuFd;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781091254;
+	b=2jc+24Rni1l4AaWUxcj+WfvHK+EU/NfL6bUCLk8/Kj0iDMkDRFZCHUVmo1BD1kEcH2P52w
+	2KE7bfxaa7MdvZVQnrrNRZSX1A40gBTJp/dFDm0S0celLpwOu+L89oahad6JN0RlioI3oO
+	GL1qNpnR+rM/vxgiCuokSbx8hHknxgc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JYHXWuFd;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781091244;
+	s=arc-20220608; t=1781091254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XkPIYc6BxTC1Yyureze7Jc2IGyRH65P2wbDPNEliW2Q=;
-	b=qjcFydgt3cu8oI7Zu4yHjYWZFrGgU4hA7MBgRbBXl5oLvEIJ2zosKQV32crwUfKrIt89iu
-	+yxAH54bKquZxn4gIGsd+x3Q3mHlLV3Eq2DjiYyQeDuFiAUB+0VxLGRO21EOLcwkqXprIB
-	MPbRfpGwOUKWXSDS3eCaNK7ZJ0q7hDs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nMgRuPUs;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781091244;
-	b=C8eTRgcBvVkQjSCsgTdH96Rk9G8HArij3aHK3Q2P6H8vdkZ5C/7+udtXTO7piWRGttPFf0
-	pjO2RPnqpmq0wruNLL7mzwsziaSEYQLvQCAHdgJGo2f+BTMY+cetLaqsmm51ewba2vRaS6
-	sUmJyXNfGiRYIrXf9vTEER/m2igAETE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781091241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XkPIYc6BxTC1Yyureze7Jc2IGyRH65P2wbDPNEliW2Q=;
-	b=nMgRuPUsEF8gQiESTcWPWxWWBTGfXbuGadgVqAI4pbIRJufF1wFEEr2lZqs/7Nyb2C0vL+
-	A9avhuVNiCQ1fylOgqDEFHvbXwWvJoZD5BykXWoB21ypEEzJ1tcQT7AW/yw6ZfIZ4mC2fW
-	/hr0stp5on41u8nUGq09svg8KurEuaE=
-From: Lance Yang <lance.yang@linux.dev>
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hughd@google.com,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 06/11] mm: khugepaged: allow khugepaged to check all shmem mTHP-sized orders
-Date: Wed, 10 Jun 2026 19:33:52 +0800
-Message-Id: <20260610113352.25352-1-lance.yang@linux.dev>
-In-Reply-To: <b4d0c1a5a49284b1f0afb0810e056f6d88b17d30.1781083630.git.baolin.wang@linux.alibaba.com>
-References: <b4d0c1a5a49284b1f0afb0810e056f6d88b17d30.1781083630.git.baolin.wang@linux.alibaba.com>
+	bh=ojEE6G7x5Hyz18bffBqmv/qKtAjxoG29cTYIDqTjZjM=;
+	b=rdgEdzVrKCuOPCiQYZs/rkkKzMcwyR6tmWClDATqC9QRqE/XCmRahLHLqvYp0oF0fBXVkH
+	AZR3TjjhSsGGEdyHEshGv53CRNRTdDVqoORlnPHh2xSGo/C8Bc116kl6LgtfuNGd7EcGe+
+	MmfCQxWQP1C/svEwpo4K29xv6fm9PHM=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8ce9ddeddefso71642266d6.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 04:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781091254; x=1781696054; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojEE6G7x5Hyz18bffBqmv/qKtAjxoG29cTYIDqTjZjM=;
+        b=JYHXWuFdZKhPCnxI7ggiRGgMBuJkM5Dj7ry0fUWiMjT12qW1mfyUN6hIupzgS4F5cY
+         TS4BAUtj+ZS+h7+8Y0WoevxcK/Z+pBXUQr91eTVd8adZGCgT1CJaJnKpuhw/Ixbkt8pS
+         EOvGPLS3GeThcRQ1lEmhT4z5ENM86rTaPZoo6ETadR+b056oQGNGOcqfYl8tXGie3gWx
+         PiOennyTQoDiwOay/69s95aoyvJr7eghUEtB8pmdOq3mUGxRu2Wj/GwK9RNJyo1McW2T
+         3gkR+V0bYaWsKVTvlTfNknZ2B71g9DgjP98jXJKapmr4Q/radJ9wExq8xqeA7NB5A0ko
+         LURg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781091254; x=1781696054;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ojEE6G7x5Hyz18bffBqmv/qKtAjxoG29cTYIDqTjZjM=;
+        b=INUPx6Wxh8GovaKU0vdhUR3SbMcYjWsUPbQ0NHZDlfrAPGwbKmEwsz4Iv3o32vvI4w
+         fEzjkXSJRorlkK9A2urv5f8BeKRt3YV14As61NqKBl4NLjj7LjS5KskqzTjen5RL5/Q4
+         sGefhEh1QpSAQVZoXYlysn9e+4RAph0SU+RYH7ex6yGJTGJMadP+gyihH+4/sH+Yor/d
+         EIl066eqndIkl4jWlE5PIZ4TaIr7zmPutD+vHY3Xm8DhgCUw8nrnQBKWltNTc3BKHeDs
+         IvLmrTJoib+soxXos6qOYlBwrk7SvMlyFzHXwfyI1KtI/qOh5jkfZjVyMQbPQnsGi4iY
+         oP+g==
+X-Forwarded-Encrypted: i=1; AFNElJ+rBVi9xpOAsIzSE7k7lLJsVIChXL69SMbj90y1ViZrh2ZNDc9/eOeyWTX8K9mLyhUlp5glVH9kAA==@kvack.org
+X-Gm-Message-State: AOJu0Yws57RFRxAR6bQ+tHf2TxLoYS1nHcRZaysxdt980fNBANVluZga
+	PUnUr0l9VxkaqpgbW0A56N8w5Nukqvmsx609cyqvegSLudDIoYC3ZchaTkkq1NIvS9g=
+X-Gm-Gg: Acq92OEcS0957sebei7JNTl5kMgJk/Zh4+Awix6nHjfFHhja+x5OqqaDe/YATCA0bzl
+	R4scJfcBgyRAXBAnnD3UUBaoOGD4G9VURJyBPS1cZOvjD/VLQ/5jJjwczZ+wp6aaOoUbFfc38Ib
+	cXGImmr1MKeQCt0YmYN7zsPDywypNF358G1S8N7ga03vkIPROu/YeLZaqiBjUnCKDk0MoN8d0yU
+	+qQZqC++iaIbmMywEbcAYJTA4AJjcKZ5sGjZ1Rwi06ehn2LFX4/weoHP2sXJMPgrFCM3V+W/fow
+	uaImtxVjZEXHYEXkQHir7Wq2erRYftY19DlgpcFW4oVoKOsTgSVlYygIrLjYFf2C6OpxFAXI36Q
+	buIkABb4XW6Ug44WKAJ5HLXQr/DmwdiIOeOVvJEKqt2whIdGfoIHzA+SAf1ACm0eeF4J837VPHF
+	HJuHHWHB76giItGYm0gAdKP8jjEzvqXilbKm5xsIGgLF5kayeUpdqSqsUc+bUQ9hFAfGOrVO98b
+	7vSlvwxcsH+Uwga/UukS/GnEkoT
+X-Received: by 2002:a0c:fde3:0:b0:8ce:ca78:409c with SMTP id 6a1803df08f44-8cee5fe4e78mr277619976d6.10.1781091253735;
+        Wed, 10 Jun 2026 04:34:13 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cecd26e9e3sm225660056d6.46.2026.06.10.04.34.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 04:34:13 -0700 (PDT)
+Date: Wed, 10 Jun 2026 07:34:11 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Farhad Alemi <falemi@asu.edu>,
+	Yury Norov <ynorov@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Waiman Long <longman@redhat.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+Message-ID: <ailLs4akasGP1KLZ@gourry-fedora-PF4VCD3F>
+References: <25c4bc47-b65d-4c04-8a8f-18eef2b5566a@kernel.org>
+ <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+X-Rspamd-Queue-Id: B3F1A1C000B
+X-Stat-Signature: i5s8gjb5h6w638eguh11x8bmy3b8akee
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 58qqnn3s8f1x8q6q5skj9xsdufg78rq7
-X-Rspamd-Queue-Id: 5DE1C140011
-X-HE-Tag: 1781091243-685500
-X-HE-Meta: U2FsdGVkX1923O6+c5sTtc1CHNMY6l5kehLRC2v9CvF6k6kY83uQh7ovdqyB2J/sSa94ykHIntRqMWoQGmZ4v97VwvWJbxgF1WUSgn76ULk3XAuYMcsLGRxYOV8lm3YWLoX5dPx36LEwyK5tOLtSmgSGHlSTEazT0C5xk16etOk17unYpwhU6/AWFaqi0c3LTng3G0MM8b34hKRnuqU7H0ilritAcobd48WFwvpX9UwTDhap55TiYd9Pf9+DkiXP51PBaMWuJwD9SEq1yQ1fN78wLuCcYBIHzDXrEcClTfSepWTFoFhZSKfQUNDdDXqiKmsX6CapNvy720SuIFLrDnKJZi0oeT7QKx9lTA+ZJGkpnyxsc7ZNHQdt+AJypf+IxAjDfm/f5SzYmh2K71zHJ24W/pPj8sb5E1zJgT6cA45NUTmkIe4MeI2zbfaBiB5srdDXTCh0yI5qNxa14YFAjyWUvSXtjP1CfeRGeKCIMVew5SiqJ0DbQBIs6YMncf0H0yYxs89kV5mC5zss4/531C+l/yFFQ2+mAgZMrg6nskfsKyVTQzgLnayc4R9sc5He65sQKUOKrjkKI+r1jrlhleyuvKkdSQJxKAbXDbuFbH0Wi8Mfuga4fc+mIyxD8UdDDyUZAkj90CtllNyZgVioCNqceU76D0oPa7zCofnidcSIEwuPoB+2C6MEGmsuaqsGOucHNXSkzm6wBScCvLtj7gbKyFQvzGMqW3sxyQiXst0aEqPW2ceE2lXeYpSHglSITTZfI8EZoeEH1QOca3c7VUxAebbTQzPH7a5P3Mjlz8OxtWQU/ZpbLO3HuwXOvHSYSTQC8HeWeynw1eAxgHJ2RXQNnYM6sAi4VXIi2BEputZQ5Pge3VYwX/hglcDMqWu/NOVSwYjmOVKTQpR3UtTR3sycPF1ZPyRiypo5GTAZWPh2C+fbDmU2s7gzGrsSEADrxXjOPZrhuZ0ICEbZN7q
- IpfNowXq
- 2lQfy0nQc+/Z/N1hA4Aa0JT8lDJcvmO6O1J6rN9B0Yndz2l9/ynOBwLgjs6VI0TeXocXmKRoOYqqzKkDYngYJ/jjBwV3V+72JqL9YmZgWkT/tbwHsWJ09tE66WkJom4pUTg1KjPcsHksHJ3fLvjvCzhTsjQOoyupC8EE2rw5b4oIP3BmJdSdDRSIE1IDSbWa0zzrHrBeu/HGwPO0GHGQPf1IVtIA70y5u+R7Hj82WQT4HaD8=
+X-HE-Tag: 1781091254-688744
+X-HE-Meta: U2FsdGVkX191luJe/WxyJyQvapIFghjcZOkd6nDtDS9bFEztldFGCU9osuWTjoPAamjUWBpQjodg6UJoG0GAo9mFHGqzW2ojIG7pyGKcLAaqPH+rrAi2rzar6m3o/bxYOl0nYZRkKe0SMKKz5SYbrDm4GNCn8usmsYvBmsDJ747lfM4eXxkfJZN9fCkonh/lyk6Tqww+jSLdIiGswojjlwZLri5Q5DidL7T93rEGkYg2eYc/l6VukwulNToRk4UO41//yPLgPHgq07nZfmV0rkmRRGMBap4PVPOCpQqXtfClmtCHr2oYqDUoL73y5O2uwLd8ZJpWbjNlTY1PLnrHBCKo1S2hOaQpJVOwrcK4V9wq137xF5yg14K/jlbeHPVjgHGshPEd9YezeVIHNyjUOzkDgQgNqKXZtwW0lW+i/AC/9w6PJfCWa4wq4SW4JHQt5pjEh07+dmtuEM1pROwvvYyw2JO4fiKGqT6Dp5omS1APJGS4EYmut4H811JKcA4vSbye5Umr2fHdNda84eKfuhK1Gul3rCqtyxQ83lQwrouNU0Hi1vRrTWNAJ1sccUXtpyzapfQ3MoHzHkPpbwb4d+T+MDXMfGmgjAxHwaSI7GsBcxfZO0eFJWH/+jT7x2nYR34WTdaJwfioTBi2fQANGvspX05ECNe/4sNWMjEFQ3IzPLhfffsDxg+KcJ4nEg0plzVIxXfKsBhqeofFbKxp7MXgSBsoFxfRKReMA1wDTnyzz8Vn6MwzJJbOwiuORjBPGAQKdgZeu8jSmzv2oNIy0Jc4dRu8XdqO+P1yzVvPZ0e0ThiRrZgiiesvQ72rpgyd7wzF8cr3w6OhC4yhnvr9r8Ip/1QBx0PZexYW6BhfIU8W9WZuuKHyiXVTXv3n0GkAr90Pl5iukO5BGpr9xrpWJFfz7yql1TPu/BvIsarDzzGW8FYQmkwE9eKJTA2BjUcXp2ZJgmVXnEiVArpErsC
+ H3ofaZPV
+ ZBmQwr4iUBZKMqUoIFq1uC+viANlctg2Wls06Tdbjgr8hciPkWRdL002di6MoJtNccz8DcNVIyw3hOM8cLOHiHNeEd/dbiLX8o/o3eShtXp4Hh7bsMeAY1jQeCIGtIAX9kXFayu0JLks8RN4xnCmcP+498S60EHplfi7jRI8jWJUJIwver0Z6oaVfqQWY+kyUk84oKN5XZgFUaeOaw81fHQRMG/1SsWMNHnjcHYf0H+60FpJ9W0s+/pbofL8NBLF58JKuLbw2ihxdSDXO6r8pO9exa4wQdjbc2zZk/gZQhV7jWS7yX1pZVOTcs6CoC52C13jpPIK/IB3/QbPQm6+P81JTYPZth4leIefVkLJ4XNnVrm8h7FBxlkq+Ryn+MSqZYjVxT0jfFr/2dGz38B2PK4kTzjTlqyX+EhhF7erBzwAiqsKQ4MYpMM+NyeHOeD3eaTz2Fx6VCtvtUYNHi+icnWeEvJRv/YX2KeU29rlC4EO1FAAjkBKwpNPZyAiSi5V00akTV8qJKMS50Srsh76bW970rM4u0TUeC+SFviBojAGdrpYjS+Jg59E7lA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,59 +129,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Wed, Jun 10, 2026 at 06:29:14PM +0800, Baolin Wang wrote:
->We are now ready to enable shmem mTHP collapse, allowing
->thp_vma_allowable_orders() to check all permissible shmem large orders.
->
->Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->---
-> mm/khugepaged.c | 7 ++++++-
-> 1 file changed, 6 insertions(+), 1 deletion(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 75b18ec4a6c3..a87918b7e18c 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -578,9 +578,14 @@ static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
-> {
-> 	unsigned long orders;
+On Tue, Jun 09, 2026 at 07:57:41PM -0400, Farhad Alemi wrote:
+> cpuset_update_tasks_nodemask() rebinds a task's own mempolicy to the
+> cpuset's effective, online mems (newmems, from guarantee_online_mems()),
+> but rebinds that task's VMA mempolicies to the *configured* mask instead:
 > 
->-	/* If khugepaged is scanning an anonymous vma, allow mTHP collapse */
->+	/*
->+	 * If khugepaged is scanning an anonymous or shmem vma,
->+	 * allow mTHP collapse.
->+	 */
-> 	if ((tva_flags == TVA_KHUGEPAGED) && vma_is_anonymous(vma))
-> 		orders = THP_ORDERS_ALL_ANON;
->+	else if ((tva_flags == TVA_KHUGEPAGED) && vma_is_shmem(vma))
->+		orders = THP_ORDERS_ALL_FILE_DEFAULT;
-
-Hmm... for shmem, is the lower bound in mthp_collapse() expected?
-
-#define KHUGEPAGED_MIN_MTHP_ORDER	2
-
-#define THP_ORDERS_ALL_FILE_DEFAULT	\
-	((BIT(MAX_PAGECACHE_ORDER + 1) - 1) & ~BIT(0))
-
-KHUGEPAGED_MIN_MTHP_ORDER is 2, which was introduced for anon collapse.
-For shmem, though, we're feeding mthp_collapse() orders from
-THP_ORDERS_ALL_FILE_DEFAULT, and that only filter out order-0 ...
-
-		if (order > KHUGEPAGED_MIN_MTHP_ORDER &&
-			(enabled_orders & GENMASK(order - 1, 0))) {
-			order--;
-			continue;
-		}
-
-So order-1 never gets a chance. The walker stops at order-2 and never
-tries it, right?
-
-> 	else
-> 		orders = BIT(HPAGE_PMD_ORDER);
+> 	cpuset_change_task_nodemask(task, &newmems);
+> 	...
+> 	mpol_rebind_mm(mm, &cs->mems_allowed);
 > 
->-- 
->2.47.3
+> On the default (v2) hierarchy a cpuset that has never had cpuset.mems
+> written keeps mems_allowed empty while effective_mems is inherited
+> non-empty from the parent, and tasks may be attached to it (the
+> empty-mems attach check is v1-only).  A subsequent rebind -- e.g. from a
+> CPU hotplug event walking the cpuset -- then calls mpol_rebind_mm() with
+> an empty mask.  For a VMA policy created with MPOL_F_RELATIVE_NODES this
+> reaches mpol_relative_nodemask() ->
+> nodes_fold(..., nodes_weight(cs->mems_allowed) == 0) -> bitmap_fold(),
+> whose set_bit(oldbit % sz, dst) divides by zero:
+> 
+>   Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+>   RIP: 0010:bitmap_fold+0x5e/0xb0
+>    mpol_rebind_nodemask
+>    mpol_rebind_mm
+>    cpuset_update_tasks_nodemask
+>    cpuset_handle_hotplug
+>    sched_cpu_deactivate
+>    cpuhp_thread_fun
+> 
+> cs->mems_allowed is the only nodemask in this function that is not the
+> effective set: the task-policy rebind, the page-migration target and
+> cs->old_mems_allowed all use newmems.  The sibling cpuset_attach() path
+> already rebinds VMA policies against the effective mems
+> (cpuset_attach_nodemask_to = cs->effective_mems) and explicitly notes
+> that mems_allowed can be empty under hotplug.  Rebind the VMA policies to
+> newmems too: it is guaranteed non-empty by guarantee_online_mems(), which
+> fixes the divide-by-zero, and it makes the VMA policies consistent with
+> the task policy and with the nodes the task is actually allowed to use.
 >
->
+
+I think you can make this a bit more concise:
+
+  Creating a child cpuset where cpuset.mems is never set leads to
+  a div/0 when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds
+  in response to a CPU hotplug event.
+
+  Reproduction steps:
+     1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
+     2) Move the task into the child cpuset
+     3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
+     4) unplug and hotplug a cpu
+          echo 0 > /sys/devices/system/cpu/cpu1/oneline
+          echo 1 > /sys/devices/system/cpu/cpu1/oneline
+     5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
+        call to __nodes_fold()
+
+  The cpuset code passes (cs->mems_allowed) which is not guaranteed to
+  have nodes to the rebind routine.  Use mems_effective - the value
+  returned by guarantee_online_mems() - instead, which is guaranteed to
+  have a non-empty nodemask..
+
+Maybe add a link to your reproducer and the original [BUG]
+
+Link: https://lore.kernel.org/linux-mm/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+Link: https://lore.kernel.org/all/CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com/
+
+Does this need a Closes tag?
+
+> Fixes: ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}")
+> Suggested-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> Cc: stable@vger.kernel.org
+> ---
+>  kernel/cgroup/cpuset.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -2649,7 +2649,7 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+> 
+>  		migrate = is_memory_migrate(cs);
+> 
+> -		mpol_rebind_mm(mm, &cs->mems_allowed);
+> +		mpol_rebind_mm(mm, &newmems);
+>  		if (migrate)
+>  			cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+>  		else
+> -- 
+> 2.43.0
 
