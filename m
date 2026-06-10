@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3914CD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D53CD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 15:40:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537D06B008C; Wed, 10 Jun 2026 11:40:31 -0400 (EDT)
+	id BA0A46B0092; Wed, 10 Jun 2026 11:40:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50F9D6B0092; Wed, 10 Jun 2026 11:40:31 -0400 (EDT)
+	id B77D06B0093; Wed, 10 Jun 2026 11:40:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44C7F6B0093; Wed, 10 Jun 2026 11:40:31 -0400 (EDT)
+	id AB50C6B0095; Wed, 10 Jun 2026 11:40:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 326116B008C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:40:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA1C7120192
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:30 +0000 (UTC)
-X-FDA: 84864415020.17.0D2179B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 47BBE1C0010
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SEYUC121;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D1E06B0092
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:40:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66B181C0D0D
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:39 +0000 (UTC)
+X-FDA: 84864415398.29.E55632F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 87FFF8000A
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 15:40:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGXfLz7Z;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781106037;
+	b=NoZSyu3Rvn1Zj4SjeRS8ka/1uj6sj7vlD8K2qzEohkB6EMSXtnP11D9mObgo21lO75tqDt
+	M7PwMzXZHinRAiqj6sZuTQcDZO+LANNx7P2J8RYCbd79wEnF30gpNgmzQlr4CJwSEZ5aIs
+	Svn/VuuCjPXsoykylUVUDoWEk3QSrtI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGXfLz7Z;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781106029;
+	s=arc-20220608; t=1781106037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EcPADI751DZUFmAf8tMZbq8OK7pAbO29bPO2oNj30UI=;
-	b=QOPxPowDnMVciMcYaCvSVm9ZJpF9KiSB9wW3na2QkrARilnVELKWbSYaCFcqmb4aKow8x+
-	E8e6rchyBywzY0kuVBOasbW79HIRytxp2vrFa/b4AG42V7QzRTwK0W6TXhCz3l43MgA8ri
-	rdGSITo7Bn+DCQpnlLCyztlUNB40rdM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SEYUC121;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781106029;
-	b=wYyJwsfHbu/pLzLRk/6n7E+UEMrhu4Hn09s7bo95R5EB9BSYNm7f4O8u/OzOeyedgRa7nN
-	odgjaemKFe8fWrNevG8G1G26bEZft2/oSKy44jggtsQwRYOH3oDkjZ3/n7Pf5lRTIFBumR
-	8AOJAP7Mrd6cscuWOiht/Zh3Ui54RP8=
+	bh=ZhFKmHctgSxoJWqzBYD58wKUXHYe5psqPpAeu+LOPVw=;
+	b=b0dsPseKCQRN25amFmSn/ohVTDAtCv3N0e1q7NNXohVn0WfQhs3oEg3WoiFVa3lRqoVhUh
+	kiG5vbLggpGASutg0zJUfC231w1xvr+30Fmtt5hZE1GYd/fJTossySc2vT2c5Sf1j5t6Ut
+	8sULmVK+pqNRiKF7I69DqGvEddh/+/k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E366960172;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B8E84195B;
+	Wed, 10 Jun 2026 15:40:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067421F00893;
 	Wed, 10 Jun 2026 15:40:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119E41F00899;
-	Wed, 10 Jun 2026 15:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781106028;
-	bh=EcPADI751DZUFmAf8tMZbq8OK7pAbO29bPO2oNj30UI=;
+	s=k20260515; t=1781106036;
+	bh=ZhFKmHctgSxoJWqzBYD58wKUXHYe5psqPpAeu+LOPVw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SEYUC121sf/7PG2uBKmnFs6RVfZUcO9yIuyUGVekneIQcQDdInxcAael6nek53to7
-	 OWDpMOwTekAxg2MUzrujVjDdFt9FLj40D+spbz2KEUqE3j6X6Ny1RHH+I0XUqxZoei
-	 ysoQaGoHsOJSu6fINHXSgWRiMcemPkOXRnsqNuPxfIkrb1lMyd67U5atQNkKqeRcwb
-	 T5YWpOd1i98Ijvk4JyrVX6LWWmzrninQe1gP+7mGwW0lqBlMiWmRcE6D5cCtc95wno
-	 NItL0t3TzcaOWPAXW1sFVOuxprpWbxzV17wOoQkkVMqAdBgfr0op1nU2QIhqjGYScW
-	 psTFj/44omEEQ==
+	b=MGXfLz7ZZVI7GqiN/jfhQa/zsWy9FrniBQpUixElaK2h8d+l7MRqVQ9U8bttWhrvt
+	 pcuvBZg2MfxB/9/Q0PIRpo2dQdk99czRHJR83TG496O+h97+AWRBWC5Q1XxePGo1uY
+	 Nj6mAlYXB5M42sx679YfYDE8S3AV0NA1UprxNgEgUg7JrfPXFDsvnNLjTxXODA1/Ts
+	 cTTzAVYJcvSJtYdsG5XKPStNXixlNvTF6O1qZitE6feN8u6K2dDkj4bwvSr1IR3lsZ
+	 BGq5SoMUIYMoHVWEmCp4syrJtm8k3Ov8NEwXrxrKC43cc87FrLr6TPH65baRtzfrbz
+	 j9jTC+MmTLwew==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 10 Jun 2026 17:40:03 +0200
-Subject: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
+Date: Wed, 10 Jun 2026 17:40:04 +0200
+Subject: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
+ allocation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
+Message-Id: <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
 In-Reply-To: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -85,16 +85,16 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
  Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, stable@vger.kernel.org
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 47BBE1C0010
-X-Stat-Signature: 6gxg9hgbk459danx6hsbfscwubn5euri
+X-Rspamd-Queue-Id: 87FFF8000A
+X-Stat-Signature: whrxtf8znptre99ukh8e44zyn9zsmrpc
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781106029-693603
-X-HE-Meta: U2FsdGVkX1+xwSnfaANVQ4a9ybmO/0DJHBgSegFlyLF/ahPf7qalibZ8uNvINtulTpaZ2WdUDzECOH0KBGCAyaK6gDbq+ItuxJuRpdb9YUaNC5XOS6YEOM88qOxdWFhBc96y8JeWZxiCUV6RD+hATD0a0tVbMf+tbIrijp5Py4VmeUrtU1lGv9JruuY19VAW+Ta3oaIU/ijjZHec+3eF3qzfsWCfkjMKvI0YcAQzlHL0/TkBXm0zbPC2Yswv1u/f/jxM1fXOoXlYZ0KH2WGe77x1Oinvh1RFcM6CT01rVQWdL5HBlcbhu/YfF9LBc8qdkFuvb1NOLYQGoppxfZhcct20DkomqjcM+eQ+L/iW7voitPNm7G9yyam2CymBogsGYBTKcCTXOSQyrv4IqqyZoXGpMIym9UN8KPcvj/FSd7LZMqK8L90ilP8uya9LIStB4f2naVuyglfgyp2wCHBy04nK7nadgqlf3CwkpCZOcpG3qwL4oSw+VSp3EhjuuU5mvd0lz8r3z+ZlC/TAp4+eJyJbohjhHVfZh+3bVQYEEndenx26oGcr4puomzmqVujSwZWpqx/+0jfGdQh5JwKgiZcJrIERi3Gd6d5kWgvaKqHUdZf+npaZ0rCVQ9MqQRxC1bgLOnn2aC0xYBpLnIJLDypGexnGN/4VfWBR2yiP3h7Ugb9L/NZ0mZJR4BLSTnVXy90+xkUeeSgg9V96oQH76Zgg8BFs2EFZc5OtgdbpCk2C8DshfjxWnj97dDlBtwSzKlxxO+HZpHcLPbG5sU1Oz11NrpbL7NswWu4LNm1E9tE2zI3GgguSwfFOvxiJJphZRRLPNnYkd7JdHKWfor3t7+jWuutGROiPGpHWQTBaLFjTtXHwzISjcI7iZpGJn3954lHBXuUxYYBIYGaNuxiHZhn2HQsDpQN+hvyZbTYiFYMTCbvpeRGcEQqUjiKEYx0s8VbcpireXHk4WZwzSDW
- d5jy9OQ3
- lGi79bbOhFixMcdteWKsBfnMFFifWAMPYy1bCTTioKbj9z/hDsTTG+J47ooKmLB78+dNphoAcZ0d1fWms0yc5y010TX96EFnk9tkl++8wSZkojpz71F7IENKzRzSyS2KNlWI5l0X0K4963Svz/0HgY/w3rAz+yeXA5hGOtOAawT0oFk6KyAbtFV9vZy5X4Mk78dyWUJl1TcTNLwB6bcZDrKoV4efAIa0vqto0BoxjBpX3fsUjDWQ4AAQa709FHOwtoR8Ag6C/7L0c2SizNH32FXnGHcZwRFFD61xrjoYLJCQfHJ40C7adZMgZbodjeePkifr5
+X-HE-Tag: 1781106037-265248
+X-HE-Meta: U2FsdGVkX1/l97xDkb6T1NdOXdiwaQIwpTKyWfTxUQ6a3iPdO5LAQvSOny8L0UQhYwpelY5VsiLgrvgNwt8yRS6X/o81uyA+vz0cZ6nYvZd2MDfO8WkZ6uIME0Mbt2y2wyO9CdsZonWzBGpeJoJcMCfoLKvyju41QxFfOtWkOh/HMbVihnRVMn8B71BoEil96TKyq3xv8eH4SG3gDxK0eyWvyYnJ652N0onwEGa+lgaxYlaLUltauNTSkkvv+wJoqUHiBTp3m7cfAUiWATGtoNkjuguftpUXH+ICyvIBF4+v7uou0Nlwnc4a4E/YkKx6Sckrd4t4txxz0NxPHSHdfb7qcOpQUPQCBiEgAW9JA82XwiVsN44Ka0WAckPWNctDjYCGUJfmH4BEUtLubOjNbCUeC7WhOjCyIaiW+kgdo5NONO3ELwtlfqfEIJ0RBim6qQCPVniVkZKucoa5nEifjB81rX+pQPh//Eoisu5pef7oZdr4Py3Y8TkCsz1dJ4aq3h8xtbFIJ3Dq4qvdRG+LISFotpF+0FTGyMfmlXJPaYs1CIO0tpdUCMzyczhcIdjyXpzNtbhoxCIBnJax20n/wdCqUdgOUu8Bvt2f3VHpzNqk8zY30GroXzwRUYBuOtBMo77B9kU5OiXfiUrz/HbOV9tpES5589oRCcR8v5yx/eSIq5RSWHSb2ZSwpCirdBRqukvXue48QWZPjgQDrPJ0Jh9gHzUgJxhUPjrd9fbXUuDyn1sMiQME3hdz+YJUWmUDei4UE8p6j6SER9TtEY6uqoZQUZawkp6zflTiYhWUOkpvT2PCb/r+dNVWPfj0yclJNSdKxh5DMp4xDFff5hsMNN/pzUIduiof0HwdzkA/Rn3gGelRZfq8ZMPpLs+9MlE9SHuJAXOBjESdaztoQliVmnJW3SsOfHClCpNjr4L+2SCFpyjD3shYQG/K2Vn9gGcj/bKnXlV8pdZ0ZfRO5nw
+ hSVpKRK7
+ KD9JJsz9kZzAZmdgUgWDROGiDvUUtaRCOn45RtCPPOnInPzaO9IsLwkadP4tnb/oNrN7kdrbmL03cciy2jGwX3eHVQQRACbmbHPLXn55uxZJCDfdiPA1tmyrCtkP8bkQALLrjm4e8iZMC5WwgiZbsevuoHmQcGidTS12ykbXdyc/P/EEd4mZGhhBYnE4q5AI7q3aROG/Rnh0SGqxY6WOq0+oJc03ZLlpYqSx7I0YE5yLTQUlsVjlqGkgRdw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,56 +106,146 @@ When init (zeroing) on allocation is requested, for kmalloc() we
 generally have to zero the full object size even if a smaller size is
 requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
 
-But if we track the requested size, krealloc() uses that information to
-do the right thing. With red zoning also enabled, any unused size
-became part of the red zone, so it must not be zeroed.
+When we end up allocating a kfence object, kfence perfoms the zeroing on
+its own because has its own redzone beyond the requested size. Thus
+slab_post_alloc_hook() has an 'init' parameter which has to be evaluated
+in all callers (via slab_want_init_on_alloc()) and should be false for
+kfence allocations.
 
-However the check is imprecise, and will trigger also when only
-SLAB_RED_ZONE is enabled without SLAB_STORE_USER. This means enabling
-red zoning alone can compromise krealloc()'s __GFP_ZERO contract.
+For kfence allocations in slab_alloc_node() this is achieved by subtly
+skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
+kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally even
+if they do end up with a kfence allocation. This is only subtly not a
+problem, as those are not kmalloc allocations and thus the "requested
+size" equals s->object_size and thus it cannot interfere with kfence's
+redzone. There's just a unnecessary double zeroing (in both kfence and
+slab_post_alloc_hook()), but it's all very fragile and contradicts the
+comment in kfence_guarded_alloc().
 
-Fix this by using slub_debug_orig_size() instead, which is the exact
-check for whether the requested size is tracked. We don't need to care
-if red zoning is also enabled or not. Also update and expand the
-comment accordingly.
+Remove this subtlety and simplify the code by eliminating the init
+parameter from slab_post_alloc_hook() and make it call
+slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
+check before performing the memset, which will start doing the right
+thing for all callers of slab_post_alloc_hook().
 
-Fixes: 9ce67395f5a0 ("mm/slub: only zero requested size of buffer for kzalloc when debug enabled")
-Cc: <stable@vger.kernel.org>
+This potentially adds overhead of the is_kfence_address() check to
+allocation hotpath, but that one is designed to be as small as possible,
+and it's only evaluated if zeroing is about to happen. This means (aside
+from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
+zeroing itself comes with an overhead likely larger than the added
+check.
+
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ mm/kfence/core.c |  2 +-
+ mm/slub.c        | 23 ++++++++---------------
+ 2 files changed, 9 insertions(+), 16 deletions(-)
 
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 655dc5ce3240..5e0b406924e9 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -500,7 +500,7 @@ static void *kfence_guarded_alloc(struct kmem_cache *cache, size_t size, gfp_t g
+ 
+ 	/*
+ 	 * We check slab_want_init_on_alloc() ourselves, rather than letting
+-	 * SL*B do the initialization, as otherwise we might overwrite KFENCE's
++	 * slab do the initialization, as otherwise it might overwrite KFENCE's
+ 	 * redzone.
+ 	 */
+ 	if (unlikely(slab_want_init_on_alloc(gfp, cache)))
 diff --git a/mm/slub.c b/mm/slub.c
-index 63c1ef998dd3..e2ee8f1aaccf 100644
+index e2ee8f1aaccf..8e5264d3ddbf 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -4574,15 +4574,17 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 	gfp_t init_flags = flags & gfp_allowed_mask;
+@@ -4565,9 +4565,10 @@ struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s, gfp_t flags)
  
+ static __fastpath_inline
+ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+-			  gfp_t flags, size_t size, void **p, bool init,
++			  gfp_t flags, size_t size, void **p,
+ 			  unsigned int orig_size)
+ {
++	bool init = slab_want_init_on_alloc(flags, s);
+ 	unsigned int zero_size = s->object_size;
+ 	bool kasan_init = init;
+ 	size_t i;
+@@ -4608,7 +4609,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 	for (i = 0; i < size; i++) {
+ 		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+ 		if (p[i] && init && (!kasan_init ||
+-				     !kasan_has_integrated_init()))
++				     !kasan_has_integrated_init())
++				 && !is_kfence_address(p[i]))
+ 			memset(p[i], 0, zero_size);
+ 		if (gfpflags_allow_spinning(flags))
+ 			kmemleak_alloc_recursive(p[i], s->object_size, 1,
+@@ -4910,7 +4912,6 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+ 		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
+ {
+ 	void *object;
+-	bool init = false;
+ 
+ 	s = slab_pre_alloc_hook(s, gfpflags);
+ 	if (unlikely(!s))
+@@ -4926,16 +4927,13 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+ 		object = __slab_alloc_node(s, gfpflags, node, addr, orig_size);
+ 
+ 	maybe_wipe_obj_freeptr(s, object);
+-	init = slab_want_init_on_alloc(gfpflags, s);
+ 
+ out:
  	/*
--	 * For kmalloc object, the allocated memory size(object_size) is likely
--	 * larger than the requested size(orig_size). If redzone check is
--	 * enabled for the extra space, don't zero it, as it will be redzoned
--	 * soon. The redzone operation for this extra space could be seen as a
--	 * replacement of current poisoning under certain debug option, and
--	 * won't break other sanity checks.
-+	 * For kmalloc object, the allocated size (object_size) can be larger
-+	 * than the requested size (orig_size). We however need to zero the
-+	 * whole object_size to handle possible later krealloc() with
-+	 *__GFP_ZERO properly.
-+	 *
-+	 * But if we keep track of the requested size, krealloc() uses that
-+	 * information. Additionally if red zoning is enabled, the extra space
-+	 * is also red zone, so we should not overwrite it. So limit zeroing to
-+	 * orig_size if we track it.
+-	 * When init equals 'true', like for kzalloc() family, only
+-	 * @orig_size bytes might be zeroed instead of s->object_size
+ 	 * In case this fails due to memcg_slab_post_alloc_hook(),
+ 	 * object is set to NULL
  	 */
--	if (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) &&
--	    (s->flags & SLAB_KMALLOC))
-+	if (slub_debug_orig_size(s))
- 		zero_size = orig_size;
+-	slab_post_alloc_hook(s, lru, gfpflags, 1, &object, init, orig_size);
++	slab_post_alloc_hook(s, lru, gfpflags, 1, &object, orig_size);
  
- 	/*
+ 	return object;
+ }
+@@ -5230,7 +5228,6 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
+ 				   struct slab_sheaf *sheaf)
+ {
+ 	void *ret = NULL;
+-	bool init;
+ 
+ 	if (sheaf->size == 0)
+ 		goto out;
+@@ -5240,10 +5237,8 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
+ 	if (likely(!ret))
+ 		ret = sheaf->objects[--sheaf->size];
+ 
+-	init = slab_want_init_on_alloc(gfp, s);
+-
+ 	/* add __GFP_NOFAIL to force successful memcg charging */
+-	slab_post_alloc_hook(s, NULL, gfp | __GFP_NOFAIL, 1, &ret, init, s->object_size);
++	slab_post_alloc_hook(s, NULL, gfp | __GFP_NOFAIL, 1, &ret, s->object_size);
+ out:
+ 	trace_kmem_cache_alloc(_RET_IP_, ret, s, gfp, NUMA_NO_NODE);
+ 
+@@ -5423,8 +5418,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+ 
+ success:
+ 	maybe_wipe_obj_freeptr(s, ret);
+-	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret,
+-			     slab_want_init_on_alloc(alloc_gfp, s), orig_size);
++	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret, orig_size);
+ 
+ 	ret = kasan_kmalloc(s, ret, orig_size, alloc_gfp);
+ 	return ret;
+@@ -7339,8 +7333,7 @@ bool kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags,
+ 
+ out:
+ 	/* memcg and kmem_cache debug support and memory initialization */
+-	return likely(slab_post_alloc_hook(s, NULL, flags, size, p,
+-			slab_want_init_on_alloc(flags, s), s->object_size));
++	return likely(slab_post_alloc_hook(s, NULL, flags, size, p, s->object_size));
+ }
+ EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
+ 
 
 -- 
 2.54.0
