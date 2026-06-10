@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D37CD98CC
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 10:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79577CD98C7
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 10:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 086BA6B0099; Wed, 10 Jun 2026 06:29:45 -0400 (EDT)
+	id 364C46B009D; Wed, 10 Jun 2026 06:29:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0068C6B00A0; Wed, 10 Jun 2026 06:29:44 -0400 (EDT)
+	id 27A7A6B009F; Wed, 10 Jun 2026 06:29:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D755C6B009D; Wed, 10 Jun 2026 06:29:44 -0400 (EDT)
+	id 18F2E6B009E; Wed, 10 Jun 2026 06:29:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C35926B009B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F017D6B009F
 	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:29:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94BEB1A0926
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C75D81C288B
 	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:29:44 +0000 (UTC)
-X-FDA: 84863631888.09.341C336
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0C7F720007
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:29:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=I5wvLetQ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+X-FDA: 84863631888.21.4810700
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A607C0007
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 10:29:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gq78nX6R;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781087383;
+	b=NoGAqvjb4Fpi2jpVwx6+1Gaf0rbP72rZBJaOic8KYKrLL7wPl+jEErfJX0H0OvrOeEeC+C
+	UEy/0vyPvc0C/Th0FgRGWLLtf+qYbRqrwYR1fpzkjf8LjlCLA5NdinbkTm5uW3K3cnhjQa
+	iKvBfu/G1pIGzOrL2TBI/tAab90KneI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gq78nX6R;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781087383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vrIcOXzwuiScXs6fHd7aW1v6ogQNMzf9EWC7m6bJ12Q=;
-	b=fuLibw58fz9FVJXeWT7hmeX8fAaJHO2XoHlHEkiPeA+zjubpTKKO96T5DjMcU1Fu6l5F3g
-	TRJ1uTCFWG90eTylMe25gdbfRKwWQflj3Qp2jxva/HFqtiB79g/PBwdLriW1n/pa5THp+b
-	xQ5dvDBNvqSzaesU5aJ6NgINBXSpekY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=I5wvLetQ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781087383;
-	b=GpyluKnH6BT8Asw4GoNhriMVX26RXk6qeLasOjPklUFdh/Z80rsmSJJGqU9EY1UuZDi48f
-	EfeEhn03MZLN64z4aFxczH+/T0LH9Y9HcEdJCsD9lReZLmloGUt8OQthAzHFEDpwG0NLTo
-	1QfZHr+4+jsVAwbvGMAVtAanqSWRAZQ=
+	bh=uH2kHOlqaXzUSXC626PClBD0HY2gB+0EeBu4k4Dn1Fs=;
+	b=MQqKZTkkctNX8FWujEUJ3zYIeVw5EO6TJmeGPb5L0SDRCAfOxeHsY5hpALlWC4rmg0Omiz
+	CR5T1BbGbuTiNNmhiWjb+xDrjccNiApNLoHSrbKf6urRdrlzsy2einlVPIX+dSY4KRA+nq
+	ozBn1hjexGCGYT3wRMFPolq+n9LgnWY=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1781087378; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=vrIcOXzwuiScXs6fHd7aW1v6ogQNMzf9EWC7m6bJ12Q=;
-	b=I5wvLetQyovK8ZuhX1hBqhqeIt7y1iZ9Ba6Ic5nuH/1I9ZwTuApUOCRVadY0mdoOHAtfSYSKERMB+UWfD8ygEOCGWYjVO7YO2Z3RqmXHE8ptR6EuZnjkTpatOwzxN+HqdzvZoNdpnN7ux4U1HGkvdEA3D+z6z56/oUKYdvSfR/s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R531e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X4aU09U_1781087376;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4aU09U_1781087376 cluster:ay36)
+	t=1781087379; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=uH2kHOlqaXzUSXC626PClBD0HY2gB+0EeBu4k4Dn1Fs=;
+	b=gq78nX6RJyQP8BsK5Fq7IBPu42DAF2CV7nX3/+tzNLhlmtAVuSswZWT7PKLYW0HCbPYtUpq4nWBtzfIN3gwxO+9Cp/y/LHy9hvZnQnylrj87bzoV/vSJqhjt6RwI0x8Ii3qzQZTpSxiDN+OAi/g93dK73q76Ax629anIvguhQgo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X4aHmjA_1781087376;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4aHmjA_1781087376 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 10 Jun 2026 18:29:36 +0800
+          Wed, 10 Jun 2026 18:29:37 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -74,22 +74,22 @@ Cc: willy@infradead.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 08/11] selftests: mm: extend the check_huge() to support mTHP check
-Date: Wed, 10 Jun 2026 18:29:16 +0800
-Message-ID: <bbedc5afc56b0f7b2073324a3551159ed9cf5f9c.1781083630.git.baolin.wang@linux.alibaba.com>
+Subject: [RFC PATCH v2 09/11] selftests: mm: move gather_after_split_folio_orders() into vm_util.c file
+Date: Wed, 10 Jun 2026 18:29:17 +0800
+Message-ID: <b415d4e8f3456f49817e94a182d1e5ed832de16e.1781083630.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
 References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7A607C0007
+X-Stat-Signature: uzg4q3ofecykqwj86gjkemx8xrxkspj5
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0C7F720007
-X-Stat-Signature: bx35t88uo6nf58s7kmgo4q1kxrg5dmkm
-X-HE-Tag: 1781087381-412982
-X-HE-Meta: U2FsdGVkX1/ZSmYJiVrxczz+ADbK1JYXgV3uCd6fCXomP5++BGLklNbJhp9eAu4bXtEr8VurSu+YF9qIzxYEGCJn3QjMIPG+5rUsKzvcN6abXxb06SEh0CfBxvyx+FDTIpf1rh8cFl1QEoyb9SqiUWAwHax39dk11deYh3nCB3PzLvdYRYWNwrIQ40dvwb+zqbXys9NPnttse0l2Yr0miELbmqmffF24N9gVWFB1BxYvloxdjBFUS5ITab7xyYNyaIiGaeSPqfaUrIz42Uu88mZtE7ggY+y3ZBgDDsDuoqkVcxgDfM07wsQ1N6qtTJFsgv9Gu59aJalLxnDZjYSIznNiGMFy4Yx5ExGEQkpqs4KVdBkWldfTdDu1ByNXcuBGiX2IBc+dvijBWMlGeuaJXKJIew24dZkdRfm5NAyMsprHDY3Q89f5K8lcz5f7jmByePEboWgAiw/dE7/i8gWFK16nKHlHbrViFDMkcaL/XKdq6P11p/3vBtzJJ5C34NEtoxBYi376beIOujULC25DkGzoxrmK3y7SKS8TxJEEJ7xT3XhFl+0A9qE9378h/uSOXAmwONVVTJW3VQVr/ub0TQrbr097omY8cqpMZXsbNBH8RbciuqhwpaKZy+y19WBrv9SHtPGnwqolYzEFxWXGPrpU7mY1w/OPfRNJnntqEbJ61hbHg5PSnYEGkacyxKy823tKHjXz4PHHtp9FeYWDmBlXesxCzWCirMTlTtZK6npJzas3RLmrDBj1AiL0Fo2dpM4tIbVSEF0il9BWRcvM3EGcjvr+LWkQ6/gx11mRhwAuzjn1SjqhwrcC+DInynpjvBlluA9Qxa4s36nGXnL9YkfE3sCpoAPAbUF7WtTS2DeE1glnsOVOGfSzfOS1cGL4lIN7hXZYCtpF5nEk80X07WJcMIlrjheSwCapKqaTS6ym9ApKC4J+ADhZh63ptV+ZXVUPTYOIb1fYEZMkffV
- lsWuBgyH
- iZyau25M5jbMYWYxXfXbUrzoZMEs9wnnLcqK3hHSh2X1wSGIwDn2gXCWKkUNXy26ak8+lFaFZWoAme2NxY68roTPk5cLGuI3eeeqXIzEk075DmFmj34ACWdbMHcX+jDNNze4/f69ADPZnG5za+0DyLy83GfUqU1Y+MeeaDAYDrO8M4+PLekyyFfFlkL0NwLo8361WORo08x7Yn7I/aGVyE2xbiERkTGDF7wJn3ac+g5d5u0x15ZDFKaxXDQZEZ5080DX4ti/+iLHZomM+jveESfshPyFv1O3atD/ZJT1KmBVGRGE=
+X-HE-Tag: 1781087382-47191
+X-HE-Meta: U2FsdGVkX1+qa99YXd4Pxc/mUlH0Jj9YaNwE6/VYu/6K0/tsBUdQ0zjRn/Z5PzvfgrxiitAobm/i0TzPTimD24V49wUcGS8Y9U350p6RH02+cXAls4lTL/unyHYkLRR+zcMu7rSl9K7mhbc4vWdrdM0T19nLwGvDrd0+M/JJNtg3W+nQ9SeSfZxWGB5/mTu3eM+FNX/ymzPlvaNhE05ZE+uGBxOoubOzE9HGiSL0iL6vqy7I5+w/3RjWPAlaoeaspA1SdNoXcjGRK5Lv0DhoGvG+ckdeApM6AnA45PWWGAtMZAIZEsEQo7iteZO+lvbzHEDJAxrBJ+FJ/GYKyLKDFIPAD7V9P7JvrZvW3fAxLvitwh3m7K1ps/DzgL4csTZYqyn7La2XqqyvUUHxnu3wB3mSECeDR/3jHSK0RilO3XsgvLRmdsc+Voop7+7an5P1Tlj/P/jQcuFWO+Oiw1ZViTrQ5JMUDjFNMynJs4JjqPanRgTMivMzLOtLt2NHAFsC1TlHJBHL+2HRcySJYLulFTHM73jgUOL8zabZWTxdKRi1UJg+L/x6te2glM9bt7RVX0qST1Lx5Ez/NWZTxopKHNIfhESqQiYrnDuBn5tt+/+rKmZx6oRMuRhpnFqcQvZ69m/0BdUMNBZDkaUkDwRKbjbOesmlkEvVymPJft7h33zBLrWUk9FFugAqv1usQD/RG30f/XjXR61yBnii1Rv+Jtgo0xgzUPWT9uGtv9Z9CyZPG+PeDixq9tvYwhDJTsSgHtFFh9YH2Fe611Bxceb9YPUh3j1JqqYk0xdLEvUmegPoCk+O5xhwNxLBFlC7ApLfMR7ITxeQf8SyO8t2Rc26IJk8Aa8aISudP71uufyThtBIfqyM794QniN8IH91eIop9scI1Hcw5942Qz0H5/yjyHueca+bYsjPYGrjG3U1Wnh5gJEXKujSI8RdPR+7uZdl+jMMDzH38k+r+TQZqnm
+ qmvm6X05
+ RrqvgQqAlAZERKLUUdNA+NaVB/1yHqABk94rgMKkF35ESB3ncviZsZYBzguaTy5nJqpkJaY8xIfkjH8DpeDHhIcKpWTQrV5Q3aLuo/BeGp5XK2nB02Juc2PmcQWvHyxDzH85Hy7Tufcroo1iWhFmLLqXKU9P39r7WYwY6tlubBwxa+D8wrmikD3JeB5voprachXBW6PWrhcr/Im9Wyh1ITbPOKecodTz3WB/kmECGDFmM3zo7cgqOZP3GCTdISMKGgC9vUTZv/32YzPOPxl8732vhq3bI6LkWJK4jCX6bN1MFgi8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,456 +97,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To support checking for various sized mTHPs during mTHP collapse, extend the
-check_huge() function prototype to accept two new parameters specifying the
-address range and mTHP size, in preparation for the following patches.
+Move gather_after_split_folio_orders() to vm_util.c as a helper function
+in preparation for implementing checks for mTHP collapse. While we are
+at it, rename this function to indicate that it is not only used for
+large folio splits.
 
 No functional changes.
 
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- .../selftests/mm/folio_split_race_test.c      |  2 +-
- tools/testing/selftests/mm/khugepaged.c       | 66 ++++++++++---------
- .../testing/selftests/mm/prctl_thp_disable.c  |  2 +-
- tools/testing/selftests/mm/soft-dirty.c       |  2 +-
- .../selftests/mm/split_huge_page_test.c       | 14 ++--
- tools/testing/selftests/mm/uffd-common.c      |  4 +-
- tools/testing/selftests/mm/vm_util.c          |  6 +-
- tools/testing/selftests/mm/vm_util.h          |  6 +-
- 8 files changed, 55 insertions(+), 47 deletions(-)
+ .../selftests/mm/split_huge_page_test.c       | 125 +-----------------
+ tools/testing/selftests/mm/vm_util.c          | 123 +++++++++++++++++
+ tools/testing/selftests/mm/vm_util.h          |   2 +
+ 3 files changed, 126 insertions(+), 124 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-index 6329e37fff4c..45b84f7b364e 100644
---- a/tools/testing/selftests/mm/folio_split_race_test.c
-+++ b/tools/testing/selftests/mm/folio_split_race_test.c
-@@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
- 	for (i = 0; i < TOTAL_PAGES; i++)
- 		fill_page(mmap_base, i);
- 
--	if (!check_huge_shmem(mmap_base, NR_PMD_PAGE, pmd_pagesize))
-+	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
- 		ksft_exit_fail_msg("No shmem THP is allocated\n");
- 
- 	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index 10e8dedcb087..f69be6be0ecd 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -51,7 +51,7 @@ struct mem_ops {
- 	void *(*setup_area)(int nr_hpages);
- 	void (*cleanup_area)(void *p, unsigned long size);
- 	void (*fault)(void *p, unsigned long start, unsigned long end);
--	bool (*check_huge)(void *addr, int nr_hpages);
-+	bool (*check_huge)(void *addr, unsigned long size, int nr_hpages, unsigned long hpage_size);
- 	const char *name;
- };
- 
-@@ -276,7 +276,7 @@ static void *alloc_hpage(struct mem_ops *ops)
- 	ksft_print_msg("Allocate huge page...");
- 	if (madvise_collapse_retry(p, hpage_pmd_size))
- 		ksft_exit_fail_perror("madvise(MADV_COLLAPSE)");
--	if (!ops->check_huge(p, 1))
-+	if (!ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 		ksft_exit_fail_perror("madvise(MADV_COLLAPSE)");
- 	if (madvise(p, hpage_pmd_size, MADV_HUGEPAGE))
- 		ksft_exit_fail_perror("madvise(MADV_HUGEPAGE)");
-@@ -310,9 +310,10 @@ static void anon_fault(void *p, unsigned long start, unsigned long end)
- 	fill_memory(p, start, end);
- }
- 
--static bool anon_check_huge(void *addr, int nr_hpages)
-+static bool anon_check_huge(void *addr, unsigned long size,
-+		int nr_hpages, unsigned long hpage_size)
- {
--	return check_huge_anon(addr, nr_hpages, hpage_pmd_size);
-+	return check_huge_anon(addr, size, nr_hpages, hpage_size);
- }
- 
- static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
-@@ -412,13 +413,14 @@ static void file_fault_write(void *p, unsigned long start, unsigned long end)
- 		ksft_exit_fail_perror("madvise(MADV_POPULATE_WRITE)");
- }
- 
--static bool file_check_huge(void *addr, int nr_hpages)
-+static bool file_check_huge(void *addr, unsigned long size,
-+		int nr_hpages, unsigned long hpage_size)
- {
- 	switch (finfo.type) {
- 	case VMA_FILE:
--		return check_huge_file(addr, nr_hpages, hpage_pmd_size);
-+		return check_huge_file(addr, size, nr_hpages, hpage_size);
- 	case VMA_SHMEM:
--		return check_huge_shmem(addr, nr_hpages, hpage_pmd_size);
-+		return check_huge_shmem(addr, size, nr_hpages, hpage_size);
- 	default:
- 		exit(EXIT_FAILURE);
- 		return false;
-@@ -448,9 +450,10 @@ static void shmem_cleanup_area(void *p, unsigned long size)
- 	close(finfo.fd);
- }
- 
--static bool shmem_check_huge(void *addr, int nr_hpages)
-+static bool shmem_check_huge(void *addr, unsigned long size,
-+			int nr_hpages, unsigned long hpage_size)
- {
--	return check_huge_shmem(addr, nr_hpages, hpage_pmd_size);
-+	return check_huge_shmem(addr, size, nr_hpages, hpage_size);
- }
- 
- static struct mem_ops __anon_ops = {
-@@ -533,7 +536,7 @@ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
- 	ret = madvise_collapse_retry(p, nr_hpages * hpage_pmd_size);
- 	if (((bool)ret) == expect)
- 		fail("Fail: Bad return value");
--	else if (!ops->check_huge(p, expect ? nr_hpages : 0))
-+	else if (!ops->check_huge(p, nr_hpages * hpage_pmd_size, expect ? nr_hpages : 0, hpage_pmd_size))
- 		fail("Fail: check_huge()");
- 	else
- 		success("OK");
-@@ -545,7 +548,7 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
- 			     struct mem_ops *ops, bool expect)
- {
- 	/* Sanity check */
--	if (!ops->check_huge(p, 0))
-+	if (!ops->check_huge(p, nr_hpages * hpage_pmd_size, 0, hpage_pmd_size))
- 		ksft_exit_fail_msg("Unexpected huge page\n");
- 	__madvise_collapse(msg, p, nr_hpages, ops, expect);
- }
-@@ -554,11 +557,12 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
- static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
- 			  struct mem_ops *ops)
- {
-+	unsigned long size = nr_hpages * hpage_pmd_size;
- 	int full_scans;
- 	int timeout = 6; /* 3 seconds */
- 
- 	/* Sanity check */
--	if (!ops->check_huge(p, 0))
-+	if (!ops->check_huge(p, size, 0, hpage_pmd_size))
- 		ksft_exit_fail_msg("Unexpected huge page\n");
- 
- 	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
-@@ -568,7 +572,7 @@ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
- 
- 	ksft_print_msg("%s...", msg);
- 	while (timeout--) {
--		if (ops->check_huge(p, nr_hpages))
-+		if (ops->check_huge(p, size, nr_hpages, hpage_pmd_size))
- 			break;
- 		if (thp_read_num("khugepaged/full_scans") >= full_scans)
- 			break;
-@@ -582,6 +586,8 @@ static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
- static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
- 				struct mem_ops *ops, bool expect)
- {
-+	unsigned long size = nr_hpages * hpage_pmd_size;
-+
- 	/*
- 	 * read&write file collapse fails since khugepaged does not flush
- 	 * the target dirty folios
-@@ -605,7 +611,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
- 	if (ops != &__anon_ops)
- 		ops->fault(p, 0, nr_hpages * hpage_pmd_size);
- 
--	if (ops->check_huge(p, expect ? nr_hpages : 0))
-+	if (ops->check_huge(p, size, expect ? nr_hpages : 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -634,7 +640,7 @@ static void alloc_at_fault(void)
- 	p = alloc_mapping(1);
- 	*p = 1;
- 	ksft_print_msg("Allocate huge page on fault...");
--	if (check_huge_anon(p, 1, hpage_pmd_size))
-+	if (check_huge_anon(p, hpage_pmd_size, 1, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -643,7 +649,7 @@ static void alloc_at_fault(void)
- 
- 	madvise(p, page_size, MADV_DONTNEED);
- 	ksft_print_msg("Split huge PMD on MADV_DONTNEED...");
--	if (check_huge_anon(p, 0, hpage_pmd_size))
-+	if (check_huge_anon(p, hpage_pmd_size, 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -815,7 +821,7 @@ static void collapse_single_pte_entry_compound(struct collapse_context *c, struc
- 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
- 	ksft_print_msg("Split huge page leaving single PTE mapping compound page...");
- 	madvise(p + page_size, hpage_pmd_size - page_size, MADV_DONTNEED);
--	if (ops->check_huge(p, 0))
-+	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -836,7 +842,7 @@ static void collapse_full_of_compound(struct collapse_context *c, struct mem_ops
- 	ksft_print_msg("Split huge page leaving single PTE page table full of compound pages...");
- 	madvise(p, page_size, MADV_NOHUGEPAGE);
- 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
--	if (ops->check_huge(p, 0))
-+	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -858,7 +864,7 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
- 	for (i = 0; i < hpage_pmd_nr; i++) {
- 		madvise(BASE_ADDR, hpage_pmd_size, MADV_HUGEPAGE);
- 		ops->fault(BASE_ADDR, 0, hpage_pmd_size);
--		if (!ops->check_huge(BASE_ADDR, 1))
-+		if (!ops->check_huge(BASE_ADDR, hpage_pmd_size, 1, hpage_pmd_size))
- 			ksft_exit_fail_msg("Failed to allocate huge page\n");
- 		madvise(BASE_ADDR, hpage_pmd_size, MADV_NOHUGEPAGE);
- 
-@@ -881,7 +887,7 @@ static void collapse_compound_extreme(struct collapse_context *c, struct mem_ops
- 
- 	ops->cleanup_area(BASE_ADDR, hpage_pmd_size);
- 	ops->fault(p, 0, hpage_pmd_size);
--	if (!ops->check_huge(p, 1))
-+	if (!ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -903,7 +909,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 
- 	ksft_print_msg("Allocate small page...");
- 	ops->fault(p, 0, page_size);
--	if (ops->check_huge(p, 0))
-+	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -911,7 +917,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 	ksft_print_msg("Share small page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		if (ops->check_huge(p, 0))
-+		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 			success("OK");
- 		else
- 			fail("Fail");
-@@ -929,7 +935,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 	exit_status = WEXITSTATUS(wstatus);
- 
- 	ksft_print_msg("Check if parent still has small page...");
--	if (ops->check_huge(p, 0))
-+	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -947,7 +953,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 	ksft_print_msg("Share huge page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		if (ops->check_huge(p, 1))
-+		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 			success("OK");
- 		else
- 			fail("Fail");
-@@ -955,7 +961,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 		ksft_print_msg("Split huge page PMD in child process...");
- 		madvise(p, page_size, MADV_NOHUGEPAGE);
- 		madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
--		if (ops->check_huge(p, 0))
-+		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 			success("OK");
- 		else
- 			fail("Fail");
-@@ -976,7 +982,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 	exit_status = WEXITSTATUS(wstatus);
- 
- 	ksft_print_msg("Check if parent still has huge page...");
--	if (ops->check_huge(p, 1))
-+	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-@@ -995,7 +1001,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 	ksft_print_msg("Share huge page over fork()...");
- 	if (!fork()) {
- 		/* Do not touch settings on child exit */
--		if (ops->check_huge(p, 1))
-+		if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 			success("OK");
- 		else
- 			fail("Fail");
-@@ -1003,7 +1009,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 		ksft_print_msg("Trigger CoW on page %d of %d...",
- 				hpage_pmd_nr - max_ptes_shared - 1, hpage_pmd_nr);
- 		ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared - 1) * page_size);
--		if (ops->check_huge(p, 0))
-+		if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 			success("OK");
- 		else
- 			fail("Fail");
-@@ -1016,7 +1022,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 			       hpage_pmd_nr - max_ptes_shared, hpage_pmd_nr);
- 			ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared) *
- 				    page_size);
--			if (ops->check_huge(p, 0))
-+			if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
- 				success("OK");
- 			else
- 				fail("Fail");
-@@ -1034,7 +1040,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 	exit_status = WEXITSTATUS(wstatus);
- 
- 	ksft_print_msg("Check if parent still has huge page...");
--	if (ops->check_huge(p, 1))
-+	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
- 		success("OK");
- 	else
- 		fail("Fail");
-diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
-index d8d9d1de57b8..82c6e96ea6eb 100644
---- a/tools/testing/selftests/mm/prctl_thp_disable.c
-+++ b/tools/testing/selftests/mm/prctl_thp_disable.c
-@@ -67,7 +67,7 @@ static int test_mmap_thp(enum thp_collapse_type madvise_buf, size_t pmdsize)
- 	/* HACK: make sure we have a separate VMA that we can check reliably. */
- 	mprotect(mem, pmdsize, PROT_READ);
- 
--	ret = check_huge_anon(mem, 1, pmdsize);
-+	ret = check_huge_anon(mem, pmdsize, 1, pmdsize);
- 	munmap(mmap_mem, mmap_size);
- 	return ret;
- }
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index fb1864a68e1c..e198facf78bb 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -103,7 +103,7 @@ static void test_hugepage(int pagemap_fd, int pagesize)
- 	for (i = 0; i < hpage_len; i++)
- 		map[i] = (char)i;
- 
--	if (check_huge_anon(map, 1, hpage_len)) {
-+	if (check_huge_anon(map, hpage_len, 1, hpage_len)) {
- 		ksft_test_result_pass("Test %s huge page allocation\n", __func__);
- 
- 		clear_softdirty();
 diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 32b991472f74..4cc70873a674 100644
+index 4cc70873a674..86a603692826 100644
 --- a/tools/testing/selftests/mm/split_huge_page_test.c
 +++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -296,7 +296,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
- 	unsigned long rss_anon_before, rss_anon_after;
- 	size_t i;
+@@ -104,129 +104,6 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 	return false;
+ }
  
--	if (!check_huge_anon(one_page, nr_hpages, pmd_pagesize))
-+	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, nr_hpages, pmd_pagesize))
- 		ksft_exit_fail_msg("No THP is allocated\n");
- 
- 	rss_anon_before = rss_anon();
-@@ -311,7 +311,7 @@ static void verify_rss_anon_split_huge_page_all_zeroes(char *one_page, int nr_hp
- 		if (one_page[i] != (char)0)
- 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
- 
--	if (!check_huge_anon(one_page, 0, pmd_pagesize))
-+	if (!check_huge_anon(one_page, nr_hpages * pmd_pagesize, 0, pmd_pagesize))
- 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
- 
- 	rss_anon_after = rss_anon();
-@@ -347,7 +347,7 @@ static void split_pmd_thp_to_order(int order)
- 	for (i = 0; i < len; i++)
- 		one_page[i] = (char)i;
- 
--	if (!check_huge_anon(one_page, 4, pmd_pagesize))
-+	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 4, pmd_pagesize))
- 		ksft_exit_fail_msg("No THP is allocated\n");
- 
- 	/* split all THPs */
-@@ -366,7 +366,7 @@ static void split_pmd_thp_to_order(int order)
- 					   (pmd_order + 1)))
- 		ksft_exit_fail_msg("Unexpected THP split\n");
- 
--	if (!check_huge_anon(one_page, 0, pmd_pagesize))
-+	if (!check_huge_anon(one_page, 4 * pmd_pagesize, 0, pmd_pagesize))
- 		ksft_exit_fail_msg("Still AnonHugePages not split\n");
- 
- 	ksft_test_result_pass("Split huge pages to order %d successful\n", order);
-@@ -393,7 +393,7 @@ static void split_pte_mapped_thp(void)
- 	for (i = 0; i < thp_area_size; i++)
- 		thp_area[i] = (char)i;
- 
--	if (!check_huge_anon(thp_area, nr_thps, pmd_pagesize)) {
-+	if (!check_huge_anon(thp_area, nr_thps * pmd_pagesize, nr_thps, pmd_pagesize)) {
- 		ksft_test_result_skip("Not all THPs allocated\n");
- 		goto out;
- 	}
-@@ -657,7 +657,7 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
- 
- 	force_read_pages(*addr, fd_size / pmd_pagesize, pmd_pagesize);
- 
--	if (!check_huge_file(*addr, fd_size / pmd_pagesize, pmd_pagesize)) {
-+	if (!check_huge_file(*addr, fd_size, fd_size / pmd_pagesize, pmd_pagesize)) {
- 		ksft_print_msg("No large pagecache folio generated, please provide a filesystem supporting large folio\n");
- 		munmap(*addr, fd_size);
- 		close(*fd);
-@@ -735,7 +735,7 @@ static void split_thp_in_pagecache_to_order_at(size_t fd_size,
- 		goto out;
- 	}
- 
--	if (!check_huge_file(addr, 0, pmd_pagesize)) {
-+	if (!check_huge_file(addr, fd_size, 0, pmd_pagesize)) {
- 		ksft_print_msg("Still FilePmdMapped not split\n");
- 		err = EXIT_FAILURE;
- 		goto out;
-diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-index edd02328f77b..777f276044e2 100644
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -194,7 +194,9 @@ static void shmem_alias_mapping(uffd_global_test_opts_t *gopts, __u64 *start,
- 
- static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int expect_nr_hpages)
+-static int vaddr_pageflags_get(char *vaddr, int pagemap_fd, int kpageflags_fd,
+-		uint64_t *flags)
+-{
+-	unsigned long pfn;
+-
+-	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
+-
+-	/* non-present PFN */
+-	if (pfn == -1UL)
+-		return 1;
+-
+-	if (pageflags_get(pfn, kpageflags_fd, flags))
+-		return -1;
+-
+-	return 0;
+-}
+-
+-/*
+- * gather_after_split_folio_orders - scan through [vaddr_start, len) and record
+- * folio orders
+- *
+- * @vaddr_start: start vaddr
+- * @len: range length
+- * @pagemap_fd: file descriptor to /proc/<pid>/pagemap
+- * @kpageflags_fd: file descriptor to /proc/kpageflags
+- * @orders: output folio order array
+- * @nr_orders: folio order array size
+- *
+- * gather_after_split_folio_orders() scan through [vaddr_start, len) and check
+- * all folios within the range and record their orders. All order-0 pages will
+- * be recorded. Non-present vaddr is skipped.
+- *
+- * NOTE: the function is used to check folio orders after a split is performed,
+- * so it assumes [vaddr_start, len) fully maps to after-split folios within that
+- * range.
+- *
+- * Return: 0 - no error, -1 - unhandled cases
+- */
+-static int gather_after_split_folio_orders(char *vaddr_start, size_t len,
+-		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
+-{
+-	uint64_t page_flags = 0;
+-	int cur_order = -1;
+-	char *vaddr;
+-
+-	if (pagemap_fd == -1 || kpageflags_fd == -1)
+-		return -1;
+-	if (!orders)
+-		return -1;
+-	if (nr_orders <= 0)
+-		return -1;
+-
+-	for (vaddr = vaddr_start; vaddr < vaddr_start + len;) {
+-		char *next_folio_vaddr;
+-		int status;
+-
+-		status = vaddr_pageflags_get(vaddr, pagemap_fd, kpageflags_fd,
+-					&page_flags);
+-		if (status < 0)
+-			return -1;
+-
+-		/* skip non present vaddr */
+-		if (status == 1) {
+-			vaddr += psize();
+-			continue;
+-		}
+-
+-		/* all order-0 pages with possible false postive (non folio) */
+-		if (!(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
+-			orders[0]++;
+-			vaddr += psize();
+-			continue;
+-		}
+-
+-		/* skip non thp compound pages */
+-		if (!(page_flags & KPF_THP)) {
+-			vaddr += psize();
+-			continue;
+-		}
+-
+-		/* vpn points to part of a THP at this point */
+-		if (page_flags & KPF_COMPOUND_HEAD)
+-			cur_order = 1;
+-		else {
+-			vaddr += psize();
+-			continue;
+-		}
+-
+-		next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
+-
+-		if (next_folio_vaddr >= vaddr_start + len)
+-			break;
+-
+-		while ((status = vaddr_pageflags_get(next_folio_vaddr,
+-						     pagemap_fd, kpageflags_fd,
+-						     &page_flags)) >= 0) {
+-			/*
+-			 * non present vaddr, next compound head page, or
+-			 * order-0 page
+-			 */
+-			if (status == 1 ||
+-			    (page_flags & KPF_COMPOUND_HEAD) ||
+-			    !(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
+-				if (cur_order < nr_orders) {
+-					orders[cur_order]++;
+-					cur_order = -1;
+-					vaddr = next_folio_vaddr;
+-				}
+-				break;
+-			}
+-
+-			cur_order++;
+-			next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
+-		}
+-
+-		if (status < 0)
+-			return status;
+-	}
+-	if (cur_order > 0 && cur_order < nr_orders)
+-		orders[cur_order]++;
+-	return 0;
+-}
+-
+ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+ 		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
  {
--	if (!check_huge_shmem(gopts->area_dst_alias, expect_nr_hpages,
-+	unsigned long size = expect_nr_hpages * read_pmd_pagesize();
-+
-+	if (!check_huge_shmem(gopts->area_dst_alias, size, expect_nr_hpages,
- 			      read_pmd_pagesize()))
- 		err("Did not find expected %d number of hugepages",
- 		    expect_nr_hpages);
+@@ -240,7 +117,7 @@ static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+ 		ksft_exit_fail_msg("Cannot allocate memory for vaddr_orders");
+ 
+ 	memset(vaddr_orders, 0, sizeof(int) * nr_orders);
+-	status = gather_after_split_folio_orders(vaddr_start, len, pagemap_fd,
++	status = gather_folio_orders(vaddr_start, len, pagemap_fd,
+ 				     kpageflags_fd, vaddr_orders, nr_orders);
+ 	if (status)
+ 		ksft_exit_fail_msg("gather folio info failed\n");
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 311fc5b4513e..b43adfa92116 100644
+index b43adfa92116..b08bf655ab23 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -247,17 +247,17 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
- 	return thp == (nr_hpages * (hpage_size >> 10));
+@@ -194,6 +194,129 @@ unsigned long rss_anon(void)
+ 	return rss_anon;
  }
  
--bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size)
-+bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
++static int vaddr_pageflags_get(char *vaddr, int pagemap_fd, int kpageflags_fd,
++		uint64_t *flags)
++{
++	unsigned long pfn;
++
++	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
++
++	/* non-present PFN */
++	if (pfn == -1UL)
++		return 1;
++
++	if (pageflags_get(pfn, kpageflags_fd, flags))
++		return -1;
++
++	return 0;
++}
++
++/*
++ * gather_folio_orders - scan through [vaddr_start, len) and record
++ * folio orders
++ *
++ * @vaddr_start: start vaddr
++ * @len: range length
++ * @pagemap_fd: file descriptor to /proc/<pid>/pagemap
++ * @kpageflags_fd: file descriptor to /proc/kpageflags
++ * @orders: output folio order array
++ * @nr_orders: folio order array size
++ *
++ * gather_after_split_folio_orders() scan through [vaddr_start, len) and check
++ * all folios within the range and record their orders. All order-0 pages will
++ * be recorded. Non-present vaddr is skipped.
++ *
++ * NOTE: the function is used to check folio orders after a split is performed,
++ * so it assumes [vaddr_start, len) fully maps to after-split folios within that
++ * range.
++ *
++ * Return: 0 - no error, -1 - unhandled cases
++ */
++int gather_folio_orders(char *vaddr_start, size_t len,
++		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
++{
++	uint64_t page_flags = 0;
++	int cur_order = -1;
++	char *vaddr;
++
++	if (pagemap_fd == -1 || kpageflags_fd == -1)
++		return -1;
++	if (!orders)
++		return -1;
++	if (nr_orders <= 0)
++		return -1;
++
++	for (vaddr = vaddr_start; vaddr < vaddr_start + len;) {
++		char *next_folio_vaddr;
++		int status;
++
++		status = vaddr_pageflags_get(vaddr, pagemap_fd, kpageflags_fd,
++				&page_flags);
++		if (status < 0)
++			return -1;
++
++		/* skip non present vaddr */
++		if (status == 1) {
++			vaddr += psize();
++			continue;
++		}
++
++		/* all order-0 pages with possible false postive (non folio) */
++		if (!(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
++			orders[0]++;
++			vaddr += psize();
++			continue;
++		}
++
++		/* skip non thp compound pages */
++		if (!(page_flags & KPF_THP)) {
++			vaddr += psize();
++			continue;
++		}
++
++		/* vpn points to part of a THP at this point */
++		if (page_flags & KPF_COMPOUND_HEAD)
++			cur_order = 1;
++		else {
++			vaddr += psize();
++			continue;
++		}
++
++		next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
++
++		if (next_folio_vaddr >= vaddr_start + len)
++			break;
++
++		while ((status = vaddr_pageflags_get(next_folio_vaddr,
++						     pagemap_fd, kpageflags_fd,
++						     &page_flags)) >= 0) {
++			/*
++			 * non present vaddr, next compound head page, or
++			 * order-0 page
++			 */
++			if (status == 1 ||
++			    (page_flags & KPF_COMPOUND_HEAD) ||
++			    !(page_flags & (KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))) {
++				if (cur_order < nr_orders) {
++					orders[cur_order]++;
++					cur_order = -1;
++					vaddr = next_folio_vaddr;
++				}
++				break;
++			}
++
++			cur_order++;
++			next_folio_vaddr = vaddr + (1UL << (cur_order + pshift()));
++		}
++
++		if (status < 0)
++			return status;
++	}
++	if (cur_order > 0 && cur_order < nr_orders)
++		orders[cur_order]++;
++	return 0;
++}
++
+ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
  {
- 	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
- }
- 
--bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size)
-+bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
- {
- 	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
- }
- 
--bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
-+bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
- {
- 	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
- }
+ 	int ret;
 diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index ea8fc8fdf0eb..40c6d8c4f1b8 100644
+index 40c6d8c4f1b8..19d8568a8553 100644
 --- a/tools/testing/selftests/mm/vm_util.h
 +++ b/tools/testing/selftests/mm/vm_util.h
-@@ -90,9 +90,9 @@ void clear_softdirty(void);
- bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
- uint64_t read_pmd_pagesize(void);
- unsigned long rss_anon(void);
--bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
--bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
--bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
-+bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size);
-+bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size);
-+bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size);
+@@ -95,6 +95,8 @@ bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpa
+ bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size);
  int64_t allocate_transhuge(void *ptr, int pagemap_fd);
  int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
++int gather_folio_orders(char *vaddr_start, size_t len,
++		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
  
+ int uffd_register(int uffd, void *addr, uint64_t len,
+ 		  bool miss, bool wp, bool minor);
 -- 
 2.47.3
 
