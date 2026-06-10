@@ -4,135 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB664CD98CC
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 18:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37EECD98CE
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 18:39:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74F96B0005; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
+	id D72EB6B0005; Wed, 10 Jun 2026 14:39:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25AF6B0088; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
+	id D49EB6B0088; Wed, 10 Jun 2026 14:39:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1AD16B008C; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
+	id C39CD6B008C; Wed, 10 Jun 2026 14:39:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82CA76B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:38:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 122DB40217
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:38:45 +0000 (UTC)
-X-FDA: 84864864210.26.2498916
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F0240C000C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:38:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="PDlp/Y4P";
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B20A56B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 14:39:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 480C91C21D7
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:39:35 +0000 (UTC)
+X-FDA: 84864866310.17.ED362C2
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2FF9B1C0010
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:39:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GPmcdXu3;
+	spf=pass (imf20.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781116723;
-	b=ya7JCc0vG0e46ZfLZIGpKg0iHTLEbEt6c6AOdnjj2K9u61JtZZLevu/Mb5mFgUz764f4/f
-	8B9Qc+Q3Q5JUm7tod83JEqK/ngqsZ6SyRX/q/jjKzG7e4JAvkGeLgc98RFtCHb2xqTJrsL
-	2SsP1t6ycNy82puGzEtVA/QfkHvIPZE=
+	t=1781116773;
+	b=5pOhKXAmkbPk+GzSLg3ia7IznEiASZ6IzKZXd8n6g2NH35TfR+HJ3ihMWOi9YD8C4O2MGD
+	4yqmI1YQsT0k6jJBqU/M3ju1k73wrSG5J/yPHHrOkNKdyEbHcxbi8WC5AC2N4oAAABAjwL
+	Psrbk3X35ARMC7i2QeYPUwssHqC9RJY=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="PDlp/Y4P";
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GPmcdXu3;
+	spf=pass (imf20.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781116723;
+	s=arc-20220608; t=1781116773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
-	b=RHq4zMvByOPOuN58Gkob8CO+V5aZlVoVO9NimU9e9FhxekdN3pom0PivOh5UXWVzqrRTfT
-	VOR0yk9ui/QmtQsh6z+YUb1MlVVHD9Vwcpycc76coK1c0KEZ9mJf2jDA/yHGD8dQdF+xKQ
-	lw5jq8+CInFSkOijCgjo0pJh1H35vac=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45eedcdaeaaso4894503f8f.3
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:38:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781116721; cv=none;
+	bh=QAI5rGE1lcochlZ5iYlpDGay/XmnlZU+2TzD3/+oOuo=;
+	b=cPLegBSyLjckzwJuNOLDHI1ioh+CW9ha/F/u2To8unNfBDadzNUA4XYVM9FOJp/Udx4CyV
+	a4djVcanzrTmx9aqDLLzNrC91WXSdvpyMjtejlZawAHICo2wKpg+PXCWYINNbYOaqCo97b
+	kWcOkvpCryk1gMyremAI/0V/jx0EaO4=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4905529b933so76270495e9.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 11:39:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781116772; cv=none;
         d=google.com; s=arc-20240605;
-        b=B7bywdYSAwYx7RCQZgl5YU8k1AEg3Mh5Z0sWp98FgB9jg8wAAxTa3KYoWVmXOj6C94
-         SlIzaijD/4oWJ6O9LO6Tf/UJtklIHfK8dQ//GE1r+meh2TSv9rRv2bOOx8GvQtVaiEk6
-         /4Y0pIytCYMyVLSa5joKuKN9nqj0xRMcVhMfmAxHfXoIid/1qNMeX+qJtcbWyi0FApr5
-         OcpHwFtvgBHOvl2IoYAe5mupG/LN+RWOXR9trgHVPXgszQiInWQj9h6CGA9CGbE5OPEN
-         YWwv0mlI6KjSwnCWY0Dt3PqmphtNlQjBbYX49iHEu3+udLxeIanYCTKzviOKpYpEVov5
-         RLyA==
+        b=eWb8nGC7Ako186BU+nscdp9yeZil6U5F7xY7/NaNyWZBDk+laUfdy6w0rxmitaj4gV
+         die78ly+ltppqfkevzJFMqsaFaNdXB913zgLiowBLoYhBExRCpdz1GQgWLTqFzl9oTf5
+         vpqLN9NE/lIbhFzOi1E4nSG+SnU+5nQujjkmUjZZIEdml40LoV0+Q5lkhv7DstSp26f4
+         yaMonQQoQZMpwrCGUOOcrkifI2J3ocZuBn2/laflXW4nZh04KMes5NQkEzEDc+ryiJzh
+         okqX5Cuh5eTLttaJ3TPoXxf8euLzW7dNfD7sFjsLUXGS+FEGoTLoBM9KkiwYkMRZ7yc/
+         hRgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
-        fh=Y60rf2H4XcdAIC2Tvm/AedCxOa/DBxApBMn6L8AMW6Q=;
-        b=QD+OnXbcGA2ii99QEVzMHgY+OeNkI3OK7/zDrG5MfrQXQUmj+nFq/YH2M0G9sN440m
-         JfvuEZNG+L5lmZisPTncDHmy0F3DpJ2v4VyVRffcNHtcEW+NOvTA0G3ZhUE4C9z2EVXf
-         +ziy51q6GIYO7Rjy6gnIrN1b2iK88hMMP+Qr1tpKQo4t5VOiyurQ1xKsojLFTqgLVKLM
-         lv1PdZoCXUMGhepH2yKMkxEg/q0HQIdoHeUL1i5/ACAeIOtnkzFsdu9OU1lTc+mPmfzi
-         PawdTNFRvBcn/9QW7SbHmRMonEepwR23wYX5a0tUJ6/Cb8gtsOJRrS1ktYXCHdzlTD+i
-         3cIw==;
+        bh=QAI5rGE1lcochlZ5iYlpDGay/XmnlZU+2TzD3/+oOuo=;
+        fh=5escOOZtvpyeK9ietshRV1Q1W2n3qNiqyKFTmJ+aLsI=;
+        b=jRE/EChPd4nMk74f49barW2KJojh9TjUU7IRyA4x8vPuKmi6OIQuhn0YPAkE7UIiYY
+         7FKAonXreyipQYA8ovi7cXtvp9K8nn7o9Em1RQWQwHkXnwxfc/wmxqkOoJxyLIiwgZRD
+         iOux2AICxLNdg71Ti1vM0LXuRdx73pd7j1u8IClLipoUlErzcDalSI0wpWT9WKFj2s5o
+         GqvG4w7xxEAynGLYfa+ueGA3nijG7MwQRj9QyMkVMaPquT0vEJkFhYgfzk026ylYxMwS
+         3k1ywzi/tCXdqdX9fOmZofwgFjOeoSCBnoxkFJUfcIT4OmfOpSyln6li/aEmVggbju1W
+         n6HQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781116721; x=1781721521; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781116772; x=1781721572; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
-        b=PDlp/Y4PQylejPt6TehAHT98PdEBbc663zL+5zPBxjPErYXxChNrTLy2NWlrVBrprD
-         ryNiaQC6pvV/pA3Gnd0lp43r+NKEJGqnGF4gbknz2GRR6NRj2eiFMHm2yu8qaV27KZsa
-         Lg8m7uSlUHujARPra6gisC9CZJHvewasqWVHjo6tyshLWiGtWvtk2rR7NqopspqyQVq2
-         7rrxy5uaZT5P9PdfRDuBfrr6K/rY/LKIbRAnYnUhAB84y2ekeB8NjhpjMvR+eQAI3XPg
-         tYR9/i+9DQyJZYHc7ilW1Rl4qRceqNzVYCWyJO8selosB633KraODv19u43yjBzIUU0v
-         hy6g==
+        bh=QAI5rGE1lcochlZ5iYlpDGay/XmnlZU+2TzD3/+oOuo=;
+        b=GPmcdXu3vP+u/S87CPut/D+1iVBlia07ZTCvhd/UYXSgk9ugNFUy4gL5V/+ZshexVP
+         7ojRc8+iUFiNaLMrqs7HVRGPCe9evx2+XjFczl5tQ5C75qBqMZVRleObcepT0GDoUm4q
+         pqU7Gvz7Rxwl7mJncbGccsDV+2rUxdDBguWoW8Oapj/SFqA3p+P6fhm3EfBYz+Jo4DhM
+         ScWmV8FTULi3TMREja9pAComiYLQ1MKkiPrXtzgz2XW4nc5tnyhMtFpme92H5HG5dWe7
+         1OgtG+yEsB1fgEzGOq2FSjaUS9monl86kjLTNQoCgIiTpTYZgupEcsABlt2KM7LHO7fU
+         PBog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781116721; x=1781721521;
+        d=1e100.net; s=20251104; t=1781116772; x=1781721572;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8RuCbrjHdHdejmY/hF6S3P/9I3jRn8MnvP4hmGvjR9c=;
-        b=PwjG/lzD3gKWoI7EmDXZDyiM6DkUqKeC9Fz2+AN4jZf9Y39VTksLukWt0je+qircvh
-         4ETN7KCIAp0hPXclKm691iQm18JS13e1t8p0AnpCqOyIvAYWWbZjB5C1uptCzupFMY2W
-         YeF71BXEABd/JFbgGxiOp87jXIeTa4YMHmlA7DPV/U95aQa4yxHtNacc0QUtJjGJPX3r
-         y+SWZhmHH1xlNCutIeRs0NElwyJpT28tGgpeM/BRBi4o0c/xWcw3KGG8hodmInCMn52v
-         q1Rr1WamwDF8rc8xlU3o0zP0W0EpR7eNdSVToMxpkRbDOL+Xr7omnVyWAYZnm362izJx
-         h4rw==
-X-Forwarded-Encrypted: i=1; AFNElJ/v4Z5Roca4GuhTo38kUCwGzla1YReQ0gg2qnkPgULGn8euO4mhz0ScAkwMkqx38UbPLt5sQ3urJw==@kvack.org
-X-Gm-Message-State: AOJu0YwZXuga7R9dPKB6ZJdyjkUav2FPz+yJdViGg1vPiNbg0Q1oo8Qg
-	Qc+HrGlo3NjpXhjoewx6Bl2224u+hlbaapY+N2gooqtBzmfEp6p5KYyJLPMbybQ0JAhA0dtreZ+
-	mN4kZfJthW5LHp1SedqqHliYzrrmkmR0=
-X-Gm-Gg: Acq92OGXbtIcU/IO8/2hwFbVwc6cR2Cs4wXlxMKrahgEj5ef7cv8sxq6AU5NUpILzUE
-	YyMQq1QxxTmBcmRfUY6a9kCW62ZX0zxeyIwSOlEEF3mDci3y2zhK0buGs8VkMjPF0bJWeDpl5wS
-	z/6wNBK9P0qL8oNeyd5M9e5Cjf/+tuo+WGxrvEuB/d1ztbNmpphCvUGld2ku6sXLDAUnrTnSVO2
-	/yz3CGXYJdeYC7/Tw5Sc1JOajjuPumVjrIAIN+o04yq+7J4hMYMfVx+3xY/qUaYSTreRLQfm6/8
-	hkr6UZG2cE3W8HER5s2q7y/UOToT8BL3nfTDAKj4PdlRdAkTRbf0U6O6X2/MqshTLw==
-X-Received: by 2002:a05:6000:41d9:b0:460:5a6f:c0df with SMTP id
- ffacd0b85a97d-4605a6fc0eemr7535620f8f.22.1781116721136; Wed, 10 Jun 2026
- 11:38:41 -0700 (PDT)
+        bh=QAI5rGE1lcochlZ5iYlpDGay/XmnlZU+2TzD3/+oOuo=;
+        b=EwYqlmgY0MXxU680zjksjwEF8bSg/lvVegGO7StfMguTzugjU1OCNMkJko3W8w6I0n
+         0nBs6HHGS5OF4N9AuXRqh2jDBZG4zvpndBnDadu7gFZozZVyFUcay+6VQ/8wYa4KVZLy
+         vcXv+HDSfof5SWeUYOrmwLt/ggg+A29rQJA9+ghmzo91/BsccFUzh1scG+vSrbWTdpYX
+         2ryNQskxmxqbJ2dZb4qZm9A+cqkQLhhbrUk1KpyG3Fd/DHJ2hCgcvcHctfn9f/CMqZ+l
+         q+lunNRlQbIIcJlQ/4Kw/BVB29TJYn/TAul6854IT7tS0p8h4vzSCTucb66SrBX8qc5d
+         7NeA==
+X-Forwarded-Encrypted: i=1; AFNElJ/mnU4nyFHN6dt/HvxulTizY6/T95hhJAotv1JbMykxLW/UKqRvFjVS61I3sj/mvbj5NpK9Mrg3iQ==@kvack.org
+X-Gm-Message-State: AOJu0YwWCpj9/sBKXY0GI364fPkKMgCAR3JLpTx3gAIiY6hL6puElXam
+	MTDLuB1G91lCDzr1n8o/3oFSCgMAU3a+MhJV3l+v8Pmyb8zkMrCLhgmgOp67+93cr4+Gf9N3j7c
+	X65m39fmjDvq0bzarfFn2Q9n61GmdAOM=
+X-Gm-Gg: Acq92OESC5Z9H55aX0DiMdFiAbzLsgGyKCDrlSYITMhUzXJxeDIfCtbCaaFSo46Y2AE
+	mJFu1/JScahnQ8lm7ClgAcPaOC8IW334C+jOY0vhKravG78PS4F7IjcO5OoK0VDmC4Ot+COSy4B
+	pzYq0oqX/sWPTBaE8TIFRoeRcfsQ7SZOJN4VYgo9AqOr52iliu7TVKKwTsIJmTkbK4Ovqs6MP55
+	F2gZ+G1QCkkuSzsG74ieKetGkEc74NBNM7yU+9D5GHHGcMyB11bDstmxIPETuQF7LeZdtixMvWJ
+	JhbQmmWke7jcujUfZksClsaOyqCcwYhziNaIvEOdWv0+rkiU9Qe9
+X-Received: by 2002:a05:600c:c059:10b0:488:b187:3c with SMTP id
+ 5b1f17b1804b1-490c265b439mr323245315e9.14.1781116771269; Wed, 10 Jun 2026
+ 11:39:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
- <CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com> <aimbPCBloe0Dqk7t@linux.dev>
-In-Reply-To: <aimbPCBloe0Dqk7t@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 10 Jun 2026 11:38:29 -0700
-X-Gm-Features: AVVi8CewkiMbp3mr1hHULBn3VWhXybj-HjVzGCxD3tmD7HgTYvACIoxx_m8pXXw
-Message-ID: <CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
-Subject: Re: [zswap?] BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	yosry@kernel.org, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	qi.zheng@linux.dev
+References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+In-Reply-To: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Wed, 10 Jun 2026 20:39:19 +0200
+X-Gm-Features: AVVi8CcOmKKzzKpfqJi3RQYIzBaDejV9oYlpv_30ztPULZsRV2up2gs-F5uqBVw
+Message-ID: <CA+fCnZcRLZS4r=FBB6EX-G3+=X675q96hkdR_wLJexeuW-tPVw@mail.gmail.com>
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
+ under 5-level paging
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F0240C000C
+X-Rspamd-Queue-Id: 2FF9B1C0010
 X-Rspam-User: 
-X-Stat-Signature: wz5mom1bg7o4iwsu84qgp9rqrno83i8c
-X-HE-Tag: 1781116722-664592
-X-HE-Meta: U2FsdGVkX1/LbUjMcLyPk+9fxNBrtY0H/JsaranKSqHGFRe9VP/fRr62tDel+5kmbmyjwzrHj8jk4mmUYYDIPcf7LruEsR897JgrxVLMEKPuc2ExJPqwSQ2OS+XcU72ihBk22Gn5E00nzpLgDOObY1wNjjy8B4qYUffY4leDogkRJQwsSREdl8eMhieWOHLC4C+rjPy1Xg3Eb4ZylOCeubW/pqcwzFzAHInLwDfcTamc75X1Q7HyGBrsncNQ5OjCtr7xOrCnRcmdC/m431axWvNB/S5svvE6RGAkYk9RW12d6GkFMpBTlsho/4gPURW+7ET0JRNxfNwEWaRC239SfCKCpdQSgGv6O4NrCJ7H+84IV0zCMngTcQ0iq8ktPVEBUGFQJ3mkwLNCjaMF1Lguk2puVUIhcTd9VabFTkHHsb6XJZlKlGb8yzd9GbgB6uozSA3NpqZagDhU6JzHAr4mrSvyCYOeK7yfUG8MS5bUP8Z4D5fC5nngPCrqxFCnXGKHf9ti1RwneLJFOIAiE02fyvJE7eULZ7D6cJAa8N+2vqBEFzLEW/HH/8dY4c3oeUXEIIPW4zXyY3uDiG0VjSNllFHwpjPVXOkaQNZiI+6anJf0bXVmO/0qhaUVmbskyUd8nuf5XbJRQanqx/Lbl88p3a9aaWgi0DUytv8MbbR+gwUAMSUzX6axrGyooOvZXx61LZzFn483yAMIuG/0Wch4Z7WpCFCKAO6IpZccfu+0Ow0LdIOaOb3ZdhSXsisrWBGd8xkZilpG0zVG6ROKPH5NKuPIycszHhhxG4hdnSe6QTuhCM3k6emUbYMPmLmkl5+1IiMrjKmk/S6PHSbZvU8JV40S5j/VkQe4z4f7/rs7CEG7PueRBTKs1EzM/K6hv7wXhLT5YZ7nSJxybOBls4OeqaoJtq7NLk4bjQE9QUNdB9BnaLHyaIrz9izZdvoGKaxfT76Kt3pH4LSZ7Kx8gYF
- uYcU1nlr
- /TFTUjP5d/MzNa4kR7ikZPSE98u1PHGUnFvlYbDenW1kSR7bNVAicCOHAMAv9XvfxKqNmqDgR3ywUAjZpZm+si2/qgy5VrgjFKr7218SalTrU2HG8zLR87QfR/QwKujIFnjX/t6qKc+XX4uBW58GaVGhfnj9VmaNxTl/n7tqnF2Vu1FnZtJJMgBR38p+5DRFlXsr5ab9/1w+XnzmIRrw9N1wuCeiYnEf15ggMnMUAYnA7TUdhuzbUqk66ytq1RPPXKaZukBWRkZtNA7mW3DauQsuHT/500t0md2D14wCdW8DfFKxLlmeGuJRRguKmccdSx5iUTL7sqymZ0UFd7rY9vg708ZexMtzpdeXtZh+D/MZFUSVYu4w8whoDcuZL9JLYeuk5GXIP6E2CUB14xsppjndAi+4fVI3yu3wYLP+zvjnVN/ukBkMLURHsnM4bhArD53iQ/lFhRrlQvY3jwlhqpUR8anhNN7AMBXqzWPpacMkeWfdaziIIT97eTw==
+X-Stat-Signature: m7fq55gsq3ttn46srgkkqui3u7jio4gc
+X-HE-Tag: 1781116772-921129
+X-HE-Meta: U2FsdGVkX1+M9iBK8w/xMnh3eKTCfqC46e3kDZnmSsyhvyCJ7TDqawOUx3fvjjK9VGK+t7apWA9VDHPN08SlIn5vO64IZOfoMWN5da+dWW/C/3osL2+2hsoRrjQSmWOyIfy+K5j8BMetghwtcwkrei6uASV1aGRDeCelC/4c4bwSeEVLDqHThHM4pwHW0V+rA4DB4VX8QoLoATRs8p+vIOD2yyR1hdauMF0f+bC6Yv91ZD7k2YC9OZ7DqV28/y7n7XB6D90ZoGHvvdqvqq83tmkI1xmvbbLni/AgaDEnLSuvXmxwrMIcTvgujEhGyt5zS6e1cAKCgjXlB6s6v0Xkru4eBpKcKcywQmGXNLYoZ8c3EOKHIaSxhYy/lfPVniw8XnLpG75HcLCzWZ8aA3fw9pqlGsInDDJ1gkc9hYqkywOC7piaYvp+BtLMRawEc/uCUBcMWymLkXN1AcSWrZNaBPrc5sLVZMTgnfCX1eVxvhwA3JAyZh1CG02rDg60ZyDsWeYMGD25OAd5tsCUUMNExDqAmggLlcqVSe33TZ2wjyYVa5Nss5bPnnkZT0andacAa1QUVYKZwcgYNpZ0jY/qUzzY3z9ZEeAIvlJxoU0we1+O4aldcapoZVSjld+GSodsn/Urj1B98tDgRyvHNkHSl25DvxQtqTJ0JDl3m6f19M9WEhoIb2VjYJ5lUOjfxIdfyZjMIyCP5T2rizlghTNlj3zlo253EvZTnAD8JDRgIoW3czQugXfLEN35elJTVGN6CfEInW3s3d5fG+GxDZ6MXyd237nM7L1lSSlvw9U60giUe980NwgDaRB0UbA3neQJn63fiIMjDyl7F36LgiEv5ShPMbxSgrPVVLghXOBLVq2TJtL9RE6O8zeztRn5SuNDMgnSKyssvZcWHncJN2NjgqBXt8E87/b1LZWbiFDtgc6y+m1I4NVMNAhy35fOVlkVehKsdy6z85a6o8WgCsu
+ m91RIDqh
+ fOH5C0fZRQd7Sfw3u3KzCsWE0ffI23ufHGpeI1jdcCDy4Hu8VF6I7sPPZtEHOqxaQahTbXA5e5jfAvlqbIYnj/6AVq4G5X+MHvTo0YqMDoWDaWoOg2GIVP78KKB40V9CtvapGEK+dOSZx0AjMTkidbiIApEpGjv/oc7/HtoL8j/L7sTHVkF6dKFvoapNgAeusXRvuaNRSq9YErdWHp8SnoHvHsmXfkfL+BfYf/pFD7zl4egJIiCvcRRI1xAj6DnRofcukB9K+Ly4Gn2a+KBDtds301FMB/BnXjVf9V+sQtJr+awoZB6IYpUlWiDNUHzt9jPuVudYfQXicrrQLVNnvevpqWT1WTN+/XG0C59QiOcAYgNfHcmLKCMCXweaBYkz638Br/8jHEAAhLWMXZCOrWAfAcbmrHExB5eRLU9lSmXqShMUBUkHHGPYZEFbFG/qHcHNvbJJ2d8FtcU0ItQw6KdqxVWdOoKGsHIzt+pehjnk0D/DxVatRwQu5gPIlmk60IxD3h8i7Un4A+iYOZdqUTbWLSERqF/een9owQLzOCVvIIyq/uKtMJpSJVj92JobVOUmxO+W4hqlSHrpWWuOi7dK1kEXmJmXtHJMTmrcMdJ+gcNmskhxO3OqNeMAX38XDuuTcr/pLCyPYZrlW1+8/RiseRxceLWdPwmDKJDFy7P1djzbWRJokOk37Vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,92 +142,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 10:31=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
-ev> wrote:
+On Wed, Jun 10, 2026 at 7:57=E2=80=AFPM Ihor Solodrai <ihor.solodrai@linux.=
+dev> wrote:
 >
-> +Roman, Qi
+> On x86_64 with 5-level paging (LA57) and inline generic KASAN, the
+> following flaky splat may be observed on boot:
 >
-> On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
-> > On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@linux.de=
-v> wrote:
-> >
-> > Thanks for reporting, Zenghui.
-> >
-> >
-> > >
-> > > Hi all,
-> > >
-> > > The following splat was triggered on the mainline kernel:
-> > >
-> > >  BUG: sleeping function called from invalid context at kernel/cgroup/=
-rstat.c:421
-> > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name: c=
-at
-> > >  preempt_count: 0, expected: 0
-> > >  RCU nest depth: 1, expected: 0
-> > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0-rc=
-7-00056-gacb7500801e9-dirty #304 PREEMPT
-> > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-pre=
-built.qemu.org 08/13/2024
-> > >  Call trace:
-> > >   show_stack+0x18/0x24 (C)
-> > >   dump_stack_lvl+0x78/0x90
-> > >   dump_stack+0x18/0x24
-> > >   __might_resched+0x114/0x170
-> > >   __might_sleep+0x48/0x98
-> > >   css_rstat_flush+0x54/0x564
-> > >   mem_cgroup_flush_stats+0x9c/0xb0
-> > >   zswap_shrinker_count+0xe4/0x1e4
-> > >   shrinker_debugfs_count_show+0xd8/0x268
-> >
-> > Ah, this seems a bit tricky.
-> >
-> > Seems like shrinker_debugfs_count_show() is invoking
-> > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_count()
-> > triggers a stats flushing, which might sleep. Not ideal.
-> >
-> > Is the rcu_read_section() here to protect memcg or shrinker? For
-> > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
-> > memcg before returning.
-> >
-> > (memcg maintainers please fact check me).
+>     BUG: KASAN: wild-memory-access in do_raw_spin_lock+0xcf/0x260
+>     Write of size 4 at addr ff110001000c90b8 by task swapper/0/0
 >
-> mem_cgroup_iter() handles the lifetime of memcg, so there is no need for =
-rcu
-> read section for memcg.
+>     CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.1.0-rc5-gcba33e0b2=
+907 #1 PREEMPT(full)
+>     Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix,=
+ 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>     Call Trace:
+>      <IRQ>
+>      dump_stack_lvl+0x54/0x70
+>      kasan_report+0x117/0x150
+>      ? do_raw_spin_lock+0xcf/0x260
+>      kasan_check_range+0x264/0x2c0
+>      do_raw_spin_lock+0xcf/0x260
+>      handle_edge_irq+0x35/0x770
+>      ? do_raw_spin_unlock+0x51/0x2a0
+>      __common_interrupt+0xae/0x120
+>      common_interrupt+0x7c/0x90
+>      </IRQ>
+>      <TASK>
+>      asm_common_interrupt+0x26/0x40
+>     RIP: 0010:identify_cpu+0x2b2/0x3460
+>     Code: 00 41 c7 07 00 00 00 00 4d 89 e6 49 c1 ee 03 43 0f b6 04 06 84 =
+c0 0f 85 a3 1c 00 00 41 c7 04 24 00 00 00 00 31 c0 31 c9 0f a2 <89> c7 42 0=
+f b6 44 05 00 84 c0 0f 85 ad 1c 00 00 41 89 3f 48 8b 44
+>     RSP: 0000:ffffffff97807df0 EFLAGS: 00000246
+>     RAX: 0000000000000020 RBX: 00000000756e6547 RCX: 000000006c65746e
+>     RDX: 0000000049656e69 RSI: 0000000000000000 RDI: ffffffff98632fd8
+>     RBP: 1ffffffff30c65fc R08: dffffc0000000000 R09: 0000000000000004
+>     R10: ffffffff98632fc4 R11: fffffbfff30c65fb R12: ffffffff98633050
+>     R13: ffffffff98633048 R14: 1ffffffff30c660a R15: ffffffff98632fe0
+>      identify_boot_cpu+0xd/0xd0
+>      arch_cpu_finalize_init+0x24/0x1f0
+>      start_kernel+0x31e/0x3e0
+>      x86_64_start_reservations+0x24/0x30
+>      x86_64_start_kernel+0x13a/0x140
+>      common_startup_64+0x12c/0x137
+>      </TASK>
 >
-> >
-> > If this is for the shrinker think this needs to follow shrink_slab()'s =
-pattern.:
-> >
-> > rcu_read_lock();
-> > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
-> > {
-> >     if (!shrinker_try_get(shrinker))
-> >         continue;
-> >     rcu_read_unlock();
-> > }
-> >
-> > But OTOH, doesn't seem like rcu_read_section() is what keeping it safe:
+> It fires very early in boot. If kasan_multi_shot is set, the reports
+> are non-fatal and keep repeating, and the boot CPU wedges before
+> userspace is reached. The accessed addresses are valid 5-level kernel
+> pointers, so the report is a false positive.
 >
-> Shouldn't the caller already holds the reference to the shrinker which it=
- is
-> giving to this function? Does debugfs file entry holds a reference to the
-> shrinker which it is giving.
+> The root cause is in generic KASAN not seeing
+> cpu_feature_enabled(X86_FEATURE_LA57) set, because the bit is cleared
+> in identify_cpu() when the offending interrupt happens [1]:
 >
-> After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
-> shrinker_free_rcu_cb), so this rcu read section is against that.
+>   memset(&c->x86_capability, 0, ...);   /* clears X86_FEATURE_LA57 */
+>   ...
+>   get_cpu_cap(c);                       /* re-reads CPUID, restores it */
 >
-> I think we can simply use shrinker_try_get() here as Nhat said.
+> addr_has_metadata() then uses the 4-level threshold, and 5-level
+> kernel addresses fall below it, so kasan_check_range() reports them as
+> wild-memory-access.
+>
+> Define USE_EARLY_PGTABLE_L5 in mm/kasan/generic.c so
+> addr_has_metadata() uses the stable variable, as
+> arch/x86/mm/kasan_init_64.c already does.
 
-Hmm, so is this unsafe even with the current rcu shennanigans? What's
-stopping shrinker to be freed by that callback before we enter
-rcu_read_section()?
+It took me some digging to find which stable variable you refer to
+here; I think this needs to be better explained.
 
-Seems like this is just implicitly correct - shrinker_debugfs_detach()
-and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
-shrinker_free_rcu_cb);, so if you're reading this file, then it's
-before shrinker_free_rcu_cb() is even registered?
+>
+> Some context on how this was noticed and reproduced below.
+>
+> We started seeing flaky splats as above [2][3] on BPF CI runs after
+> runner hardware has been upgraded. Specifically, new x86 runners are
+> c7i.metal-24xl AWS EC2 instances, which are Intel Sapphire Rapids
+> machines that support LA57 feature, and have it enabled.
+>
+> The splats can be reproduced with qemu on any x86_64 host with
+>   -cpu max -accel tcg
+>
+> Build a kernel with:
+>   CONFIG_KASAN=3Dy
+>   CONFIG_KASAN_GENERIC=3Dy
+>   CONFIG_KASAN_INLINE=3Dy
+>
+> Boot it with kasan_multi_shot. The fault fires fast before userspace,
+> so no rootfs is required. For example:
+>
+>   qemu-system-x86_64 -display none -serial stdio -no-reboot \
+>     -smp 4 -m 5G -cpu max -accel tcg \
+>     -kernel arch/x86/boot/bzImage \
+>     -append "console=3DttyS0,115200 earlyprintk=3Dserial,0,115200 panic=
+=3D-1 kasan_multi_shot nokaslr"
+>
+> It's a timing race, so a single boot hits it only sometimes.
+> However running several qemu instances in parallel on the same host
+> significantly increases the hitrate.
+>
+> I confirmed the proposed fix eliminates the splats.
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/arch/x86/kernel/cpu/common.c?h=3Dv7.1-rc7#n2001
+> [2] https://github.com/kernel-patches/bpf/actions/runs/27271262414/job/80=
+542509369
+> [3] https://github.com/kernel-patches/bpf/actions/runs/27260143782/job/80=
+505353689
+>
+> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+> ---
+>  mm/kasan/generic.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> index 2b8e73f5f6a7..b5f430f2dbb6 100644
+> --- a/mm/kasan/generic.c
+> +++ b/mm/kasan/generic.c
+> @@ -9,6 +9,13 @@
+>   *        Andrey Konovalov <andreyknvl@gmail.com>
+>   */
+>
+> +/*
+> + * check_region_inline() and addr_has_metadata() can run very early.
+> + * For example, in an interrupt taken while identify_cpu() has the CPU
+> + * capability bits temporarily cleared.
+> + */
+> +#define USE_EARLY_PGTABLE_L5
 
-Do we still need rcu or shrinker_try_get() here?
+There are other users of addr_has_metadata(), besides ones in generic.c.
+
+Thus, should we place this definition into mm/kasan/kasan.h? And
+likely guard it with ifdef KASAN_GENERIC || KASAN_SW_TAGS (HW_TAGS
+should not be affected by this AFAIU).
+
+And let's also extend the comment to explain better what's going on. I
+like the way the issue is explained here:
+
+https://elixir.bootlin.com/linux/v7.0.12/source/arch/x86/boot/startup/sme.c=
+#L36
+
+> +
+>  #include <linux/export.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/init.h>
+> --
+> 2.54.0
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev=
+/20260610175651.647515-1-ihor.solodrai%40linux.dev.
 
