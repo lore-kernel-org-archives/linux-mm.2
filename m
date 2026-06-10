@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778D8CD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC331CD98C7
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 09:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDAEB6B0088; Wed, 10 Jun 2026 05:00:57 -0400 (EDT)
+	id 4DA556B008C; Wed, 10 Jun 2026 05:01:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB2816B008A; Wed, 10 Jun 2026 05:00:57 -0400 (EDT)
+	id 4B2246B0093; Wed, 10 Jun 2026 05:01:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF0756B008C; Wed, 10 Jun 2026 05:00:57 -0400 (EDT)
+	id 3C7BC6B0095; Wed, 10 Jun 2026 05:01:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BBAAD6B0088
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:00:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44164C2869
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:00:57 +0000 (UTC)
-X-FDA: 84863408154.23.F13A532
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ABCC6B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 05:01:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C87181C31D8
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:01:00 +0000 (UTC)
+X-FDA: 84863408280.07.30992FD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9E32E1C0009
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:00:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuW3SZpe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 311B240002
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 09:00:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UcMwQW8b;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781082055;
+	s=arc-20220608; t=1781082059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kMsVQi3orljSEvhMyPLIhta0ehH4Ys7jFOHwtglZDGE=;
-	b=P4NY+U3c6l3DrHM7dPOI06Qyp+4Nx0K9SP37cgl5DmqhHMH5WHWFEs0U5iBS5Ak5TbX4cM
-	Ot+Ri2M6zmvNMS7fEmmJO7Vmlym3b0+2ePgN9NDh3stLzG2kllecOghqlaJF3vopWoLz+r
-	6FU75w2Aj1L40QIePkBng0Cpk72Gr/s=
+	bh=4xZH8EKC20wOL1zK8SrV71TOgTZvNK+Q2MCOpHnV0qk=;
+	b=0l73Dkdc9RFedi1vTYl1taQ2gHBLj7Je4ClRkGC/7FFjBkPaGoVUAhRPk/iBj6+JLnruoD
+	gQBkKQzjvlMKdmK/2xGF28cCKerLBpzkeymKyzE1w1P4qpBcqmFLFsrU4/prXNqoDthDK2
+	FcKyCEVIQFV9+Z+femO9lnpTIfM+pbw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SuW3SZpe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UcMwQW8b;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781082055;
-	b=guhqefibJHUPQ4MVBpwye8kd3eYBI+mgrGvg6rXxGibfCZdczFIlHjViVjV3tKBtli2llP
-	ldikMr9Im1JiqZlYQ1wdcGehNIHh36MjH3ZFSSIAa0dwpVjjRuMMAB7f+vVc5DDBoH2Xj9
-	mhJidTOjlaGhj+yZ3tSU1eVOYwveTMk=
+	t=1781082059;
+	b=aIyvOKAMZfe3TFnuOci03J7KcyUfirij2Hqphr4EwamAZYMWEfuQeGm9pNPcDmspYMJ6WD
+	h1boQjF/l8VgT6nFQE/jqAJghpiZHQcrmvwIogQ3BXI6ZHFuaaqyXuXZSRcsEWctSZ2p20
+	UnRuLdmtmbiPtrqtLbHHVavPOkk60DA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32156602C4;
+	by tor.source.kernel.org (Postfix) with ESMTP id C253F602D0;
+	Wed, 10 Jun 2026 09:00:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCB11F00893;
 	Wed, 10 Jun 2026 09:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24291F00899;
-	Wed, 10 Jun 2026 09:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781082054;
-	bh=kMsVQi3orljSEvhMyPLIhta0ehH4Ys7jFOHwtglZDGE=;
+	s=k20260515; t=1781082058;
+	bh=4xZH8EKC20wOL1zK8SrV71TOgTZvNK+Q2MCOpHnV0qk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=SuW3SZpeXtKywlRGQRqMf83GIMeoG+6cVyHrFeSymZAyFIDD0DsP9Tt660M7uk0X1
-	 eL6m/dpEGUaGSftJAx0Bh8I5enp+po3UrTt7xLoN6651ub22mu0WyYWkQOjnGlZ7Vf
-	 Pf+mJXDxqWpqnS2T3A4Zl4uxHaGFHiLDcPgfilY/EOddg7gDe068WdKfp4YdrrH+OR
-	 7yOPcTybmCdrEZufDNJM0FyyvjGhONtVwoJcm/FkAZklOo/WgD+7OkcYAOytRJ4yFH
-	 vRPrRIdiheiE1/7uGZgaldTvVh/EWjdnYbalQ+5b0h2Qcq8oBjdHfxharAcIyGu0u1
-	 f5bRctCuLIaWw==
+	b=UcMwQW8baf1BbQC8hY62Pe9fOuFUnJ+5pZl56Q8GGZ901VZZ7ed02AStcU9fGWSPK
+	 RNZbKC3ojytfUijJoHkpOibsRZmdqGaZjlzHyIx1FqbZHuasb8+2IumKQAHzKqbrUC
+	 1E2Ja++z70UtQYNDfXHluXf6YVky4NGxticx9hHKT2lA3NG+fFxJr8zHWCLCfgqSpW
+	 8IljHP8oqDczRHMlienVePoW+DKWjNR2B8pmrgbIn9GOViM3ZohwRoHMRXHotvBPzI
+	 mwi5yykONmqUrhu2qjxvzLeYw46n6hwiQGXVAIYRcJws7Dxu1wP2501nAwCA+ApuGF
+	 aDGHfJiKr6ocg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
  Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
  Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Boqun
  Feng <boqun@kernel.org>, linux-mm@kvack.org,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] rust: page: add `SafePage` for race-free page
  access
-In-Reply-To: <CANiq72kZQxLEXnz1U7K82TZJWYUF=8f=wC=RtTL26ADfr9RQJw@mail.gmail.com>
+In-Reply-To: <aikJoacZW5JMEx74@google.com>
 References: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
  <20260605-page-additions-v2-1-03f04c8fdbbf@kernel.org>
- <HZuOc2PUMh5R8h7yC69l4I384agFUrcfrJrk7o9X2jR6aNPt9nrMOHWkc2G2ULw5H3iIbh6XL6ypXY4fmaqNDQ==@protonmail.internalid>
- <CANiq72kZQxLEXnz1U7K82TZJWYUF=8f=wC=RtTL26ADfr9RQJw@mail.gmail.com>
-Date: Wed, 10 Jun 2026 10:46:53 +0200
-Message-ID: <87cxxyhjeq.fsf@kernel.org>
+ <yztg3fMt3nlpoB77WlDBGmKhdPr_eF3t9L_v3G6i6BFUxNZbti0dHS1WDhIQDulHmXZ-YxOcuKuL9Tkr9pRI5g==@protonmail.internalid>
+ <aikJoacZW5JMEx74@google.com>
+Date: Wed, 10 Jun 2026 10:48:53 +0200
+Message-ID: <87a4t2hjbe.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 311B240002
+X-Stat-Signature: i7wz1afwag86aein8eicqp3udr4jao8z
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E32E1C0009
-X-Stat-Signature: a6zg4ckb9c8ky86kwusyzeizymsebjoj
-X-HE-Tag: 1781082055-687406
-X-HE-Meta: U2FsdGVkX18/Oy+QK6stkkNpi71jC7nxC4zZ/lUtsr9hBq8jPGFtzpx1P0BWOQXGsZPLpLECwCV/ek0T0IgHVVO09esi1P0p/hA39wibT+qT845WN/HMU9cDxsAciZy9o3jE8LuB6xdc4S0n2et94Y/HxHoJPcwsuX+icNImNQIyRcV1qpBtgl/ujWIUv6qMyUAEOQNPGZDe4RvAJsCtDVB47mArv/7tdo+BAgrt7FKGIRdvunM0i2g8Rnq/O8Z5C2ICUGejsVojK/muQnGL9EejTf49vAEHH5r3Cs3j8wOtmzTgX+yCVaZEoY5hNrZupz+0BIEYinhDicjmhVIP3ycB4o1O8pZyQ26rChnmMVfVus4pVt4Mk16kzT4DboJ90Hg2U96oroZwePHeAZzfEXjbeVV1yv+iSQ4NBJUjNihVl9OCrz42PoBnHyOXsarCV0OR+TgV4MNJGwDFGQCqV9HEYsKbmA9BVyNfDXZbAiwnKOUM8nqE066U3m+7BuoJpot6G7n/W/qK4oDwBqDTT6/iy/1ulx7zPV2d7AJ5Y9AMhyg+7BMZa8WMCnUCLSYHXjLuUfMILBTGlMKOnCCfAS6kZ0SFILjTXvjgfX/Cknz3l3gG/NqgVaU3IPVkDoo+x6v/32VZE99kiSO08kDoyFysBgxC4LvjMoXI0c6Ld8M8zrS5oYBG2vmvKVsm+p7CXVh1SYpsA5ObB5dTAZJpezuVFvrzvWlL09XkspA19AUwFHPDm8v4aaxGjYA8uE9cuXg0fDgOZjw5yYmOFE7o5GNLRE5z7H8uKIsHfCcAJ4isI8lUqUCaR7zSubWhH6w5iAJScm5ES9gAa0AA/KGhMkezlfEQHHeZ6Tqbpp3P0Wnyx1f1yBcghHRhBaHrrvGlkZ/476P/myX2UmedQ9xmx979LVzX9mteW59tW7IWa+GFhXvR71QyHFHTN19PxQWc/lfh1Sg09isN4oTUumM
- UrECD4R0
- naUQmCFsMsrNyxmgPheUhB67SrfYwOdcQTOFYnFBQu5GandrHUx5BHX+zo+iU+KLhyqwhob/3DbbG9bzPa+ZGJU+cUB+fdWl6vEkrKZPrx+mPXY5QoxIST6DddI9pkoVXbx8ZHXWC4C48MBwaS3ZuUezb28aFxQvRqs5Rqq/VHIJRehwTdODP91t6r4yv8N528946Z+RuSA12j2lk0qXlFaY+RC9L+v+cFYq83YL0pCMhYxVqE5C63t7m4S2+/kjuYX2j1yvBiDQf6AYN1Y6UHLL2xidzoKPPagDTpqqGpUH3JfyoucrkTiWOs1oPKXcVzr6ZJ5MEYfNtOxfANULuZ4Z80jhtgzfxz2W4XlP19tBJSzXsmefc0hRhVQ==
+X-HE-Tag: 1781082059-241128
+X-HE-Meta: U2FsdGVkX19D9cG6Df6qHy8aonnu1VsJOQpkvQvMCEb9Rqr5PfPjo4/56GEvlW3cZ4dKq8zRePAEzW+iu3GkzLbbGHocXUyhkXXWABh6fXAt5WjK9d0R0yFGTT0XZkb7pf/OlHUl2Qr98GGH4S8KqGvgN1bn29iJm7lcE94Qguq52usZHrMiAE6eM88J+uXRjYBRTr4sY3S/iUSb7z3WfZA1Nl6hxv2cB/gu/HE2jvBwse7s9lHc7MhmfOoET0skJpbWNHZdJ06coQYhlPXD/Qn2KGZPNtXkT72wpzm8jexDxxiPkEKphrmMQgFdakTzY76EwI/zPaljgSiPdaquj0b0bDYlbk42tBj+LBzXjH3EGEW/L5h00Q1AEAgBKHuJqzqje70yztEHj7tN8OR9voRgOSjtbcgMNvXiAJEbV/Dr/cXF794dNzJjf3DGAMSW6jNq0kjwxSJjp3845Usrm7/QoboD71pe80QVoNacEKMggWOFYSSBoquFG6co8HE+36qENkEXHI+BpA2jsT43pYSNo3uKqPoI3dxOczQRVeT3V42yC0cWsNnrx9iLn/gOw3rwdfcLxtMHnazOAWJmkJl+khaAZip3kdV2EWIx3Tf4iIUDJnvzNNC13+DCn4SFg2BOvyBlvWBZK3kx4h8RiAOmqOS3Ei609USgvfyWGT4w3ZJuiCJ0/8gnvVgHRAcYz1O9A1/wXhx6LfPdDTcBZrlpZnA8qUhtam/XW9kAvTGNBTWBUce2G3rvc2F88zhfIBb0MjLl+Ij9Q5rqfa6ylSEPjRYTcA9WPyr9LI8NjBaMwMk/3fzaAMe2Vl7cl+b18zP45G+dtyZNKGvO99r9wzYvB7hBCWJKA7BHIu2CuznEUV3Zbf1YuSPXLs/oUk3Pq1ROy/4vl6tAi5SgOHKGxD/E64Jt5kCJUiLnCuztCr8AodWOfTzX3mQAr/1HBHEz0C9pDPThRmPR+bBeoGB
+ ymKdS9Oe
+ b1agICtU7k4ibgwxpJz2jdcMA9vfnJomvIgQ9KAu+oD7DFWdsATJfGfiAgdj8M/wCOSX5akclyLSI9eloN+yTAsjVj8h5v2ldA/2QpEqb0lvOU0VLOFXL8+KTbXgnp1sym+IHr/B4OKrMiU/hZwVsmZnwPkvTFIzQvB7yupAPBNX8glwQ9K0SMa7z3+HmVkphaDHwDyd++zBQP+bZ20xFT2QhE+4pS55K3hVQi8b+GDeUH0XY7ZgBQWKQs7JzAuFch9ei7HcShS/dw0tm52apC5q8h+B+qjUhyNxy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,51 +98,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-> On Fri, Jun 5, 2026 at 2:49=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
+> On Fri, Jun 05, 2026 at 02:49:14PM +0200, Andreas Hindborg wrote:
+>> `SafePage` wraps a regular page but adds an invariant that the page data
+>> area does not incur data races. This means `SafePage` cannot be mapped to
+>> user space or shared with devices, and it becomes simpler to directly
+>> reference the contents of the page.
 >>
->>      bindings,
->> -    error::code::*,
->> -    error::Result,
->> +    error::{
->> +        code::*,
->> +        Result, //
->> +    },
->>      types::{
->>          Opaque,
->>          Ownable,
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
->>  use core::{
->>      marker::PhantomData,
->>      mem::ManuallyDrop,
->> -    ops::Deref,
->> +    ops::{Deref, DerefMut},
->>      ptr::{
->>          self,
->>          NonNull, //
->
-> The first hunk fixes the imports, but the second introduces an import
-> in the wrong style.
->
-> I think the first part should be in its own commit, and the second
-> should be here but with the correct style.
+> Perhaps it should be called ExclusivePage?
 
-This was sitting in my tree on top of already fixed imports. I probably
-made a mistake when I separated it for submission.
-
-I am looking forward to the day where rustfmt will be able to handle
-this for us without the added slashes.
-
-> But I just noticed the first part should also have been done as part
-> of your other patch I applied yesterday, so I just rebased to fix
-> that:
->
->   dea66841b9f8 ("rust: page: use the "kernel vertical" imports style").
->
-
-Great, just the second part left then!
+Yes, let's do that.
 
 Best regards,
 Andreas Hindborg
