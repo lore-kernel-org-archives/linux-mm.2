@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376C1CD98C7
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 01:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34316CD8CAD
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 01:21:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79A4F6B00B4; Tue,  9 Jun 2026 21:14:33 -0400 (EDT)
+	id 533A26B00BA; Tue,  9 Jun 2026 21:21:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7234A6B00B7; Tue,  9 Jun 2026 21:14:33 -0400 (EDT)
+	id 50AD26B00BB; Tue,  9 Jun 2026 21:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5762F6B00B8; Tue,  9 Jun 2026 21:14:33 -0400 (EDT)
+	id 44D0D6B00BC; Tue,  9 Jun 2026 21:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 323AA6B00B7
-	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:14:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE05816509D
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:14:32 +0000 (UTC)
-X-FDA: 84862232784.16.D4CAF19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5250E40002
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:14:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO6bucwx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 331FA6B00BA
+	for <linux-mm@kvack.org>; Tue,  9 Jun 2026 21:21:20 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBF18C29D0
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:21:19 +0000 (UTC)
+X-FDA: 84862249878.06.1783E0A
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4419A20008
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 01:21:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Lx5n6/+d";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781054071;
+	s=arc-20220608; t=1781054478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wvTmgzWVeo+cgK/5Fasuy9LNL6Vq1lM40f7iFKommVk=;
-	b=NHgySE0TfI9+vGM2QduRvInDHw21WvQVZIFjGoBDWuM4SI8TW/qioroL97sSAyF1M9LM5Y
-	RzzHsxC4ZevB//FfAWQn4Py0K9Vz1oKQ559/W+CwNECGplivKxxEZsNiNHcCUNWtAbA40L
-	R5TibVmoNA7vsi6GqjeCXrBGRHwVG84=
+	bh=azd4gYJ8VwEn2xnFPZe1dtA7NyI9LqyXIAgOAuiZywE=;
+	b=Su6/G2GRV7Pi2RUHfF9PODbT70h2X+xtwsDDuCMk8+l9yq2frjXD3WDitcKYDNRoNKapBQ
+	ZP9+nh+Zv6DwmsaUOT+ciiKO09CKdHddRQ3FFxBM4aPTVi5hBE7EKTra+/JTEi/VtGll0R
+	dBGe33sYLunpfyBApnraZFTMF5OE0Zo=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO6bucwx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Lx5n6/+d";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781054071;
-	b=F1eff7LtJ2c5hN2uoW3xplpFoP+dnG7tPBxx40bYfQdlnDpUjfM7sFM4ALLx94ZpBBG902
-	b8HiKUqbFfI1PSnojKrTEFApBGBsx4ie/AXaUhrlb5fCNOgMnREZOnJbauFtI8Jo4T6s5a
-	ikFToDmfmutq6y7oq06rd8tyQPVIoNc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A760E444D9;
-	Wed, 10 Jun 2026 01:14:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE111F00898;
-	Wed, 10 Jun 2026 01:14:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781054070;
-	bh=wvTmgzWVeo+cgK/5Fasuy9LNL6Vq1lM40f7iFKommVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OO6bucwx7vW5YEMf9brXc184EBcBckfFxzpfLJAKindDpNCCAwVjQ5kCkNUKTngNT
-	 NYxpjaSP1wymrtUvspJt+VwOlKLkkwDHT/plNs6NdxModjlMUBqYw2oLgNmWI2wN/i
-	 /9xxWMxiTCvyFRyco5xuNRQdpEpcWCPLvyIBbOO7KwEEE9OJbMcT/slewHi3pW3gzp
-	 x9PiEr42PNnPLaQDesMQGjajOY4DkPEYqGwp4lOk+aFqdZhLVI1kZePVCwIAoRhQR3
-	 qeLMcTkcOQCN2BulCCYNgKxweIxiDiwqjzzTMtEM9+IynkbPMr7BPLsiezp/SDapfY
-	 9LqourOYK8NdQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v3 4/4] samples/damon/mtier: handle damon_stop() failure
-Date: Tue,  9 Jun 2026 18:14:17 -0700
-Message-ID: <20260610011420.3018-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260610011420.3018-1-sj@kernel.org>
-References: <20260610011420.3018-1-sj@kernel.org>
+	t=1781054478;
+	b=FitE1p1EJpTPrTlln65TFwS0scemZCcv4wVAjKCUGwFrrOyQ3Zqw/8qhw34ouckfee2HPQ
+	OP/EqR4y6knQot2tegSJG02Wq+JOHzHkq+EJGpCfuNKVL8EN1tM9DcjMqkX8i+ESAhy0Sg
+	H/pxgYeoOf5G9hiviLqTlOhCd0bAppI=
+Date: Tue, 9 Jun 2026 18:21:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781054473;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=azd4gYJ8VwEn2xnFPZe1dtA7NyI9LqyXIAgOAuiZywE=;
+	b=Lx5n6/+dbX6TSJvF8ziNSZj3YhshjgeYfUcQDJVS9dPCZZfET22G20+Pf/vqtgLrj9wPs5
+	0YuheS0EQbx5JuKl5MpexDUnIWhLeb+pYnVWSVyVsa5IvT70EfyAvWwAYUmhIFjm4c2ZkT
+	oIx9CMq63WH0TFjWB4/fgIf0qyWSzk8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: JP Kobryn <jp.kobryn@linux.dev>
+Cc: Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
+	willy@infradead.org, usama.arif@linux.dev, akpm@linux-foundation.org, 
+	vbabka@kernel.org, mhocko@suse.com, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, kasong@tencent.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/lruvec: trace LRU add drains and drain-all queuing
+Message-ID: <aii7WWFmAyoXn9rk@linux.dev>
+References: <20260609041156.31127-1-jp.kobryn@linux.dev>
+ <CAGsJ_4xk2Q3xTkQYMPb7rnvnvVsjp24uXRcOja5RxqSbQpdoEg@mail.gmail.com>
+ <3e55e520-b979-4b1c-874c-3b4e5ca629e2@linux.dev>
+ <d676cf78-4b0a-4d6b-b322-f64826aaca75@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d676cf78-4b0a-4d6b-b322-f64826aaca75@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4419A20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5250E40002
-X-Stat-Signature: urr9uiq4s6wox1jqtc4894gt5bqzp4u4
-X-HE-Tag: 1781054071-170152
-X-HE-Meta: U2FsdGVkX18WyjKjAvmDhNO77nvr3ZsTb29VzyqT+A+a7VyJvagisxNVn49OXEd+4z1PRWAwO3qJSwJMIRR0L7E1lF8C0T5MJ0SBPwyWKKqwh+jDRbMpQv1PreZzybZP6qa9mHnr81KNDYedKSTZu6nMYlhHQa30epYZhjqHwCyteVWcXUWA9Tqvvnnz7SPCIt1bqIYFmR29So5h0FVXAFGvhCRq63vioTNocFXMiwNuQpGi9UGYHK1dutRLthrDVY2ZXIaK/VCy/m/MMvKzsrh3/Q8KKOCna3dkLJFLNiwFon6EfB/DEwOv4puldq+NnxBkP0g8RAbdTb+I6XwmJW3/qXn/O0DK28EIcT0MTdSbxFqAXEysnjD/dvJq3mNd/GOsd8vfKxXJYz3JXGeHaEixHdnqXM5Z06oBeNpzqXgbOjkD88mYr5G0YA8PZXE1Z8AvyyR6QFmVrf5iuT+fkh1419wc895M4Yv4eMhEDxNXtOQsZs2mfhH4bswKfixtsnDwaH/5OUZ3sRlJa4DNhsffrOEW1bF+Eg6Stv3R9AwefcWv/ueUl5m27JTfaCt1uZ88FZgnryEzoSwzWtaBH+fUidbVvqeBrkH+SRob8SR41pRtb8kexuDYsf7MZ5aqojQKtktb8TNtid1E/FY5sRAn/pljxCJxLXELggFsgsLFA27V6ayDhFgRK6IK0NeIjVrxKwt0NoA0vBXR751yW7tLlbBqGEMmX7Sx+e7mZi7MXsbw9TA7G6xSjC01GXR/1GVdZdsJ9+euos+9f4AcRYxQVRk8s7uk1dMVYDZJg8K4qg0y1I6V9RJC/xzSoG8rZDOWnKO4c8z/QpNuAjaVtTKuPHcVx7ze1RH2PJwtPXqyJf1X/0tq/H1SDmHiKPjNUKmmtezAAtC86C8EqigN5ThEZVVPoeDHAfI6fWqw9Ilf0rHoFT7tr/4VZa1NnS7DXoLE6A6Ivb0okvc7Hky
- 6NS3u4QS
- oBfngm/KAdEr2hqerEwwfTvhrg18rZ3KMo3YwpIftt2UyaTDwJy+9cqd9OrMEhb9qxseLLVt2nYpsIoKpDhCdU1bA7qjKv/Gnh8kp11pEhujIcdz6vz5oGMUuZ4jnp9B71n1x6wBeoBKwKrqMiQ0O9CuXVVE5UO7xEn5LoOrcVVGU5cPwhvzNsbZuC8ywCRPQfgDQ65Ack6ku0q9cdzUZfg/xFBk0gLqH50fBQHYPDnQYkRHCIxM3Cmc65uM1G6Z5TLdB3V7aI8kxaxhlokemSRfuAQ==
+X-Stat-Signature: xkirne7bcwdgkbr74qtpc5zhsixca36a
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781054477-321432
+X-HE-Meta: U2FsdGVkX1+9Q2OI09q7ADQCXdLkZnv7MF9GcBsN97WxKZtHY/oAHRBmE2rH3+01YY6DCfIr+PI66iNMV2asK6+SSrzPk0T/P96/jKOQQwDCIayc1G0GUVWgzraNP4MbHAorWF0kHT6Gf9/IGebNBjbOtUncXcbj3KQfFj7Aa5TBsZPJj8phK74NSka9cePqR9/fBwtoogq1jFgkc0CV36O1YALHXlkaUzkulxMP/TRJPsQtj8fSAA23Wqm6qSS+rlKZBzMjGKGq8YMuap9sFSfAbLjr5/9anSuvIK9pNpCzhqUtHHRMrPATHfWymqJK8PpJ5raxbU+LCU8TG6tXghbNeeoC5bmF2gF0rKRRuH8Yq1Nis8RS/g0UPc2BT5g50JrQh40UNL0TmctpjsSWZnnXigtx70+y1fZi+KYtox/38uk2hFEth5MZKW64HfwXE2/Ar5zZ7c1LrqXa08g2YZqT5TvRct1WzWMDyh0+iZiRdgYDJ6nhQ9kZLvTbFYl8CR4HVxw8qFbxOVTNQbIkginbca9Tn78pSu3xARRobGZjI8u0uufcDKyJS3H8tzZ8dGvsFQ31DMj/lb5x9VXFG8UiqlOEgm4p/64QR6vYtFGx6RUCCy/zSN9onEDVyJ94BMQecA6aiBPGckXiKIp2lCZBLh/MswGvI0I1NFQN91F7GqOzJgtouXPO74PQcliysLh2HVwuXrZIlh0ONgomvu83QjA5FgkonSaT9CdtJUUELwlWDNtEZTU9brxNho2147ElIoLCclGGc3G8ywQr+9NNW8ilaz7LEOajTpkUPhK66GULFX8pyxm/N4urslWiFcIktgtprONEebdaBohs3I+MzRHEfPZqyX0v0NrnIvy7j+5WcSTe1Du3kVysi3rJGGf32XW8G+XtMCp95yJhTaiElmxFjFkNw6hzMQascrrddGeTxS1yIdu34n9zqqZBUAwZ/LbI5OVQVVhcSUL
+ F24Aq3wT
+ b41pwO2/IbZtGrXbv7gFfKNd1gGke46VzSrYkoFoW0Vb2Xg0Z3k6LOnIObsANYXS0oyhIagL8aFi8g3tgNyAsk79Bs9O3Q82emNKIsQRC7C2D3DzfkIM7T/d7BQKxcJTc7ZyKJkl3FVsVb/Yu7uOGHYq/EPE38xlWNls+hf7Qz8+bciylDRPqkBSEh6/7trOjCg1GwTYR4+SC4Am78a4Bf8PlNnYC9c3TsiYrIQqwaSxRwp8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +97,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sample_mtier_stop() assumes its damon_stop() call will always
-successfully stops the two DAMON contexts.  Hence it deallocates the two
-DAMON contexts after the damon_stop() call.  However, if a given context
-is already stopped, damon_stop() fails and returns an error while
-letting the DAMON contexts that have not yet stopped keep running.  This
-kind of unexpected early DAMON context stops could happen due to memory
-allocation failures in kdamond_fn().  Because damon_sample_mtier_stop()
-just deallocates all DAMON contexts with damon_target and damon_region
-objects that are linked to the contexts, the execution of the unstopped
-DAMON context (kdamond) ends up using the memory that freed
-(use-after-free).  Fix the issue by separating the damon_stop() to be
-invoked per context.
+On Tue, Jun 09, 2026 at 05:16:15PM -0700, JP Kobryn wrote:
+> On 6/9/26 5:07 PM, JP Kobryn wrote:
+> > On 6/9/26 12:44 AM, Barry Song wrote:
+> >> On Tue, Jun 9, 2026 at 12:12 PM JP Kobryn <jp.kobryn@linux.dev> wrote:
+> >>>
+> >>> LRU add batches can be drained before they reach capacity. This can be a
+> >>> source of LRU lock contention, but it is not currently possible to
+> >>> attribute these drains to callers with existing tracepoints.
+> >>>
+> >>> Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+> >>> lru_add batch is drained. This allows tracing to distinguish full drains
+> >>> from partial drains and attribute them to the calling stack.
+> >>>
+> >>> Add mm_lru_drain_all_queue to report when lru_add_drain_all() queues
+> >>> per-CPU drain work. This captures the requester stack and target CPU for
+> >>> remote drain work. The event is named as a drain-all queue event because
+> >>> the queued work can be needed for batches other than lru_add.
+> >>>
+> >>> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+> >>> ---
+> >>>  include/trace/events/pagemap.h | 40 ++++++++++++++++++++++++++++++++++
+> >>>  mm/swap.c                      |  6 ++++-
+> >>>  2 files changed, 45 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+> >>> index 171524d3526d..ea8fc46bedb0 100644
+> >>> --- a/include/trace/events/pagemap.h
+> >>> +++ b/include/trace/events/pagemap.h
+> >>> @@ -77,6 +77,46 @@ TRACE_EVENT(mm_lru_activate,
+> >>>         TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+> >>>  );
+> >>>
+> >>> +TRACE_EVENT(mm_lru_add_drain,
+> >>> +
+> >>> +       TP_PROTO(int cpu, unsigned int nr),
+> >>> +
+> >>> +       TP_ARGS(cpu, nr),
+> >>> +
+> >>> +       TP_STRUCT__entry(
+> >>> +               __field(int,            cpu     )
+> >>> +               __field(unsigned int,   nr      )
+> >>> +       ),
+> >>> +
+> >>> +       TP_fast_assign(
+> >>> +               __entry->cpu    = cpu;
+> >>> +               __entry->nr     = nr;
+> >>> +       ),
+> >>> +
+> >>> +       TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
+> >>> +);
+> >>> +
+> >>> +TRACE_EVENT(mm_lru_drain_all_queue,
+> >>> +
+> >>> +       TP_PROTO(int target_cpu, bool force_all_cpus),
+> >>> +
+> >>> +       TP_ARGS(target_cpu, force_all_cpus),
+> >>> +
+> >>> +       TP_STRUCT__entry(
+> >>> +               __field(int,    target_cpu      )
+> >>> +               __field(bool,   force_all_cpus  )
+> >>> +       ),
+> >>> +
+> >>> +       TP_fast_assign(
+> >>> +               __entry->target_cpu     = target_cpu;
+> >>> +               __entry->force_all_cpus = force_all_cpus;
+> >>> +       ),
+> >>> +
+> >>> +       TP_printk("target_cpu=%d force_all_cpus=%s",
+> >>> +               __entry->target_cpu,
+> >>> +               __entry->force_all_cpus ? "true" : "false")
+> >>> +);
+> >>> +
+> >>>  #endif /* _TRACE_PAGEMAP_H */
+> >>>
+> >>>  /* This part must be outside protection */
+> >>> diff --git a/mm/swap.c b/mm/swap.c
+> >>> index 588f50d8f1a8..c385b93582eb 100644
+> >>> --- a/mm/swap.c
+> >>> +++ b/mm/swap.c
+> >>> @@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+> >>>  {
+> >>>         struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+> >>>         struct folio_batch *fbatch = &fbatches->lru_add;
+> >>> +       unsigned int nr_folios_add = folio_batch_count(fbatch);
+> >>>
+> >>> -       if (folio_batch_count(fbatch))
+> >>> +       if (nr_folios_add) {
+> >>>                 folio_batch_move_lru(fbatch, lru_add);
+> >>> +               trace_mm_lru_add_drain(cpu, nr_folios_add);
+> >>> +       }
+> >>>
+> >>>         fbatch = &fbatches->lru_move_tail;
+> >>>         /* Disabling interrupts below acts as a compiler barrier. */
+> >>> @@ -928,6 +931,7 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+> >>>                 if (cpu_needs_drain(cpu)) {
+> >>>                         INIT_WORK(work, lru_add_drain_per_cpu);
+> >>>                         queue_work_on(cpu, mm_percpu_wq, work);
+> >>> +                       trace_mm_lru_drain_all_queue(cpu, force_all_cpus);
+> >>
+> >> Do you need tracing on each CPU individually, or is tracing the
+> >> entire __lru_add_drain_all() invocation sufficient?
+> > 
+> > I think the latter would be fine. The remote work will invoke the
+> > mm_lru_add_drain tracepoint, which will show up as kworker stacks. Since
+> > the event already has the CPU, we could see where queued drains actually
+> > ran.
+> 
+> Actually if it's just a single invocation and the only event data is the
+> force flag, a tracepoint may not even be needed. Other probes can be
+> installed on function invocation and read the single argument. I can
+> drop this from v2 and keep the single mm_lru_add_drain tracepoint.
 
-Note that DAMON_SYSFS also allows multiple DAMON contexts execution.
-But, it calls damon_stop() for each context one by one.  Hence this
-issue is only in mtier.
+No we do want to trace the callers requesting to drain from all the CPUs. If you
+trace just lru_add_drain_cpu() then you will only see that the drain is
+requested for a given CPU but no information on the requester. 
 
-For the long term, it would be better to refactor damon_stop() to always
-ensure stopping all contexts regardless of the failures in the middle.
-Make this fix in the current way, though, to keep it simple and easy to
-backport.  I will do the refactoring later.
-
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260609014219.3013-1-sj@kernel.org
-
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- samples/damon/mtier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index 66b591f2180fa..faaaaa12e6206 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -199,7 +199,8 @@ static int damon_sample_mtier_start(void)
- 
- static void damon_sample_mtier_stop(void)
- {
--	damon_stop(ctxs, 2);
-+	damon_stop(ctxs, 1);
-+	damon_stop(&ctxs[1], 1);
- 	damon_destroy_ctx(ctxs[0]);
- 	damon_destroy_ctx(ctxs[1]);
- }
--- 
-2.47.3
+Also as Barry said, I think single trace for whole __lru_add_drain_all() is good
+enough.
 
