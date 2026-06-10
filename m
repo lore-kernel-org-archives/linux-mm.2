@@ -4,128 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59E22CD8CB9
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 07:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EAFCD8CB9
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 07:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C38C86B008A; Wed, 10 Jun 2026 03:24:44 -0400 (EDT)
+	id 64AD96B0005; Wed, 10 Jun 2026 03:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4C846B008C; Wed, 10 Jun 2026 03:24:44 -0400 (EDT)
+	id 6225B6B0088; Wed, 10 Jun 2026 03:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99F836B0093; Wed, 10 Jun 2026 03:24:44 -0400 (EDT)
+	id 55F166B008A; Wed, 10 Jun 2026 03:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88CC26B008A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 03:24:44 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B6E5165159
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:24:44 +0000 (UTC)
-X-FDA: 84863165688.14.491AEA1
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A984F40002
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:24:40 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pUAcpUCX;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 44F016B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 03:28:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09B2F1650E1
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:28:44 +0000 (UTC)
+X-FDA: 84863175768.12.8FD8E68
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 64295A0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 07:28:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fgvSiRD0;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781076282;
+	s=arc-20220608; t=1781076522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=crRRLRHMwOqSlZxpvEgm0rohsPbYMLQzjHRhzUhnKk4=;
-	b=uSg3mWJ3Znd6vaK44WSjB7y4saBSTX3lyXKfJmMTTthsPEAhhDoc7uvVVWcdA/OJcrOyKu
-	roWGiXFgjYK329/xDHY5o3lSnf1smP5l1KjonajG9qaz2jpNYXVFi3Fl6HMLCo7b7RSFYo
-	juqHrSjQEkcGJg6HVkGPTcMP2lzSEMU=
+	bh=Ujw8//AhBz2ofNEZXVOO0whE9ziRkQU7WuP9Q2n1nw4=;
+	b=DWAL6sbKm6aG4mGuxR1ll2rsNmf36vq3PcSitD0wmQDDXT1rqWl3G+gotN48Uq0xBaFd3C
+	gzZ6dPEphIq6IsclDcMZtFwwMkK2b2rELrBuS2iByi5NRUKFW+AxOEpQx+ZcTHm1dm4qBy
+	h3JuAANb4Jsf8Gfzmau803n4/a2m3xw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pUAcpUCX;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fgvSiRD0;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781076282;
-	b=cYyzckszbU7g8mU9zsALCAneWyVi6Bym4RiQZyHooCTaTb74iBy+FvuiMijMof+MBL0dUN
-	SeHhGX5ZzAgb6JINAUZamGMXQcAgmdpeAaxyDjoIZDungu8PsgtdOCHHcfHSlPkttxS5EU
-	qTjxLOcBCdtDNYARORLGM0OLWeJqm5c=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=crRRLRHMwOqSlZxpvEgm0rohsPbYMLQzjHRhzUhnKk4=;
-	b=pUAcpUCXcIbmjmTiSx3U5UTBV/3/rMsFIK5zjYAueWsPFLJehR3ItKMetYHDKTwv8ZOEcC+mq
-	7fOTCLSG5LPNHSiJlrZIYT9xa2sisxyjsFhiQ6iSHrPv7xClMP8PmlHnq2fWYf3JTIZVClsGMhe
-	yYfoS9ENJsp5sdYL/OjOC3w=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gZxsh0nwQzLlY6;
-	Wed, 10 Jun 2026 15:16:40 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id DCF44402AB;
-	Wed, 10 Jun 2026 15:24:33 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 10 Jun 2026 15:24:33 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 10 Jun 2026 15:24:30 +0800
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-To: "Michael S. Tsirkin" <mst@redhat.com>, Zi Yan <ziy@nvidia.com>
-CC: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, Jason Wang
-	<jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, Muchun Song
-	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes
-	<ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
-	<vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
-	<hughd@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	<virtualization@lists.linux.dev>, <linux-mm@kvack.org>, Andrea Arcangeli
-	<aarcange@redhat.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
-References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
- <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
- <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
- <20260609162437-mutt-send-email-mst@kernel.org>
- <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
- <20260609165829-mutt-send-email-mst@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
-Date: Wed, 10 Jun 2026 15:24:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1781076522;
+	b=3FSm4ah2JklnNlAKCeL+YXrvbWCqNFZp7JFT/Jcd6ze0Y3tSAkje41wd4K7kMvHzSvC6co
+	q4Gz8pJg12QrTDk2iA67HGRWsBgKER3213w6aVvvWr3w+dpBSLipxctKfHQytq4v+4nZBV
+	kPjOeLUpyEtf1ft1ECOWYXWnpUtOHhs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A615542A44;
+	Wed, 10 Jun 2026 07:28:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D40D1F00893;
+	Wed, 10 Jun 2026 07:28:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781076521;
+	bh=Ujw8//AhBz2ofNEZXVOO0whE9ziRkQU7WuP9Q2n1nw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fgvSiRD0nlrWeKZ00ARxxj8+SIeSOssxKo/IteKl5SNNXShxIV9RzZYZjW2fJDF4Y
+	 BRLJiLnad8I+/cgypVTOTIn/c5oxyEme4EK0poeNVEmG9QKE7i/U92Q7yjVt2JPZoo
+	 KKab8o9SdIM2XvpGoVICIQ4XwdgAVtaPGhU54ayQfCnfLlEaW3lPQVBllb9BkmzECO
+	 nE7j1CjEqBtnt3cNbOS7Erz0xZkaANJGk+ly24VtiJa0PCDT3qoW/N+IRr4nTvwqZd
+	 Z5PKSNrIQl7+mm2qzkxCg4AIGhgZkp5e7n9mKFUe2JXKDXK2WgGk0nXZXZ5u3/BshM
+	 PjG2C1OvGIzpg==
+Date: Wed, 10 Jun 2026 09:28:32 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Li Chen <me@linux.beauty>, Kees Cook <kees@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, x86@kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.cz>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
+ executable startup
+Message-ID: <20260610-saufen-zerfallen-uncool-5608105e0d8e@brauner>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+ <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20260609165829-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: A984F40002
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+X-Rspamd-Queue-Id: 64295A0005
+X-Stat-Signature: 8xe43q3ckbdqbsh4uxf1189a86iremoj
 X-Rspam-User: 
-X-Stat-Signature: h4hehqb88dwkaiigumwqpt6c3uu9ru6z
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781076280-25006
-X-HE-Meta: U2FsdGVkX18RSpF1qbo78oG1jKQc5ylMSpdnHjGb3qckCt5Nnh9oby/+f8W085Tu7dYV7J5cXP9YAPbKswgqOiU7mjh2cjXDe1I5LenR0olvD+ZAjLQNTbkjwgwk6ZGQn1AixoIOQTFItJGkC7aFFsn72v8x4QAvKe6ihvJD7rf7RGvjk9Y24eYZFoFY59zuPVCarbX4YWY+XQMxme0UoKmcssyJGjvFOj/a3geycTAR7jbl43Pglnca8y/SjCk2dQYOp6viKg+BJO5P0Ppwrx31wbvninS/tWx162JaD1KAUo3B2OClEFN+vvDvqVFbmVBEV5MkYM3cEnvbTc7GRetoHvhZGM+Rt8CPH+cCU1LcwI5VergZoHTvKcQ6dKMZfZtaX4nlhDkYkToPIY/aJEUrapbk8eNJraecNBTmzU07MFg75iYQvhN/5AkFUtTIHrWrkdSb6GxBU16ZcBqrwc8qY4JFEpNwGJQT/bBh3iPc6qUo/bYP/q4IS6KyS+gL9wQ0xvnzt7lvKPvMycJDpsk+59nrZiFHHJO8r+rKS9G2N9ftMWj0vqOJb7pz8kl+bh115r0hTPNHosRGfU3pbt3gmUiVZXrCmbHkLk3OQcHxx4f+6E/Na9qw9Ot859uuUOnIWjmB1/DaihoC/V8DryNk8q6hbg3z3WZObOy0BqR2BkpTdFlbTZpM6PjUTxALu3spnX7hxJBvNh8y55gag/i8+nseubGRkv1MPpf1jeZCqMknNc+dRIgAKrwWjPx1ume6m2ZMTq7w9zy+MCx0AGMPNe0esiWf6wDPvRdyrti914G1pmVNDaY9yjmS4vLB+/S38g0SzYuon3L3qVGSK9EW/9gzHn4sTaTFf4hPEVh3JQU0z8QUtUF83bnzxajax+47hbbbDo00S1F27rH9SJwVvj2PuIiAeZDWe7JAEOGnpJuCj3M4Q9Pki2xLkhDW9sFwiAorvf7mRaD3jrT
- GrdbGIkH
- Ad9ax+iI9ZwpZb/1tYqw7Xo9S1jD92JxOzXXSifDRThKCT8Hfup76vDVTQwI8zoQi91cvJdMzyAHtVYiePfOjqBH3gIBhDwLnVnOPQtMf887w4rcJtEECyUwAhS7ayl9mNuixiqNXd9GgRGjyTn9zAnYzXLwIf6oM1fRTJMewZ0CrDlV+lbWbVw4/6xw13xzbRmBB8PPL+ShJD/dHpX8SL2PpuUib4VtmulojXk/ieH5sHo/Po4s6MzsXr5ThKQaj1mHBWn2XrjnjXsHhEzC0YaclB/rDK1Y/fRypZ2FYU9P5d0IsnY0743dQu/10x6g7VMOAd6v+nKZAWIkoARNL1pFT+eHKQq1QqKEhmGGkKoGl17Y/3WS6PWziIYTYFA/x5cs0FsFtnpAN+rXCvZ9ZbYVzIClZ5PiJ1sCYBE69osTYjR7BprE8YRErnA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781076522-7239
+X-HE-Meta: U2FsdGVkX19aNaqPyI0YPi32MAh80dBVd4L6uliQ/GLJMj9zUHVYuWkuc6Iap0p2LcXj45QQaiAaW/ifZ9+KDI3dEVfw9D/xa5X9kZPAhTwpmRRBMfW88I5W82+MY/Gn59EN8HglupjhHKw7Ovc8a6AFIh8xxP7vFjXKnXUeYhSpFRE2ymNCKJx9YlfIjBWzkQLNRTWCPGb/jZbQTk3cHS+mabC1DA9l0FGU3v5Yt1175OdM36HNEGUcSBWHdTjH41LhcCgAECAg6JJlCs5qEPPa3+gSTT/ARqGXw2Wk/ctRPoxnuQlWHNJnPkIMt9qb0XmRZYrC3RRLCGMzRiAbY4uGPcQxlZ6P70StVl3Za/2pQwLrP8Hd1F28+Iqqj8p5xWeVIKMKeZTIo2OnYrO/Uzxjc0oLy9nxNfS40aK1JjCHJTvigu7OsiMqXxi5p0Zpqw6JlsTJ+1YEi/cdg9/1rOJnyb86R9S6LQNUYYPDx8URYUQorHBwH2G9ymFoPO0LNVFEDFlUNYHHpLW7wwh+NFv2/xDGvyqjKAQ7wMAQrcF5xOh2/07MGpmCDd7R7Zh15/NkiBphK21NriR9OgCplr1PI1qAVnQoDerI0+PiZTByYhSrmaJBH+VEkZUvth0KMMXyPry1MzfOb9F2JLUUhO67VfhrDmxXvjGCd/DLVvHBRbYQKWzCigBb51jn+BDP9NAW8y5n9q+V4V3NKQcqyCNy9isvqZdlCkjHTRlZf7YW0AZmkHxumoJ0+yR+Nv//2AXJ5gBMIbhm0mebgT/8OpWWtP9nQtcL4pMU+yySg0bcht9SsJOqvAnn/UbUBpX1omVttsE/m/1F48dJJwBitJ2t4vXlDXOq0vrW9QRV69V4hk6LSZseGSy80h6q97M2deEsw0HMdqnunWDo28v6yeFehmb6eJDs0ZnRUWFpRKCq1ewUazMAZxtFz4XN1gFxKcq9QEoRAJqdh/oounp
+ 01ejkUPJ
+ H0kl14hiNdYKuLpVWJxH8pql1LrJuBuSu8SBMugUfSawHjg176iuPPhsDdV5TgW3kYmfdS92Qh4yMha5TcZ2J/VsUGS28Fu4ddDJuUNTXqJgykPMDkD8KwoqzKu1vAmXtMCBofDamOY8vLMdMppnlxrKjmnnjIv23cNNEQykuwVnVW3lr2avPjiRXkMEKPgMSaYhQnENVoSkZP+DGswC9PFKPFLFGDCLwMReyxSY3rXHR4NH5Mo16BjqFxv1dRjf0w/VKa2l4eUUz/fRkeY1sWWlrt5Bkpb46FK/jHFPBTAgy212tKx6qm1RI+OcyCpKXQksVFXuB5T8C73WnorIVEwVlxDVh2o4Ki3pi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,99 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/10 5:00, Michael S. Tsirkin wrote:
-> On Tue, Jun 09, 2026 at 04:54:01PM -0400, Zi Yan wrote:
->> On 9 Jun 2026, at 16:34, Michael S. Tsirkin wrote:
->>
->>> On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
->>>> On 9 Jun 2026, at 14:39, Zi Yan wrote:
->>>>
->>>>> On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
->>>>>
->>>>>> On 6/9/26 20:10, Andrew Morton wrote:
->>>>>>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
->>>>>>>
->>>>>>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
->>>>>>>> update to page->flags can race with non-atomic flag operations
->>>>>>>> that run under zone->lock in the buddy allocator.
->>>>>>>>
->>>>>>>> In particular, __free_pages_prepare() does:
->>>>>>>>
->>>>>>>>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
->>>>>>>>
->>>>>>>> This non-atomic read-modify-write, while correctly excluding
->>>>>>>> __PG_HWPOISON from the mask, can still lose a concurrent
->>>>>>>> TestSetPageHWPoison if the read happens before the poison bit
->>>>>>>> is set and the write happens after.  Will only get worse if/when
->>>>>>>> we add more non-atomic flag operations.
->>>>>>>>
->>>>>>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
->>>>>>>> around ClearPageHWPoison in the retry path.  This
->>>>>>>> serializes with all buddy flag manipulation.  The cost is
->>>>>>>> negligible: one lock/unlock in an extremely rare path
->>>>>>>> (hardware memory errors).
->>>>>>>>
->>>>>>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
->>>>>>>> in this file operate on pages already removed from the buddy
->>>>>>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
->>>>>>>> need zone->lock protection.
->>>>>>>
->>>>>>> Sashiko is saying this doesn't do anything "Because
->>>>>>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
->>>>>>>
->>>>>>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
->>>>>>
->>>>>> Battle of the bots: it's right.
->>>>>
->>>>> Yep, __free_pages_prepare() changes the page flag without holding
->>>>> zone->lock.
->>>>
->>>> __free_pages_prepare() works on frozen pages and assumes no one else
->>>> touches the input page. To avoid this race, memory_failure() might
->>>> want to try_get_page() before TestClearPageHWPoison(), but I am not
->>>> sure if that works along with memory failure flow.
->>>>
->>>> Best Regards,
->>>> Yan, Zi
->>>
->>>
->>>
->>> Actually memory failure already plays with this down the road no?
->>>
->>> So maybe it's enough to just SetPageHWPoison afterwards again?
->>>
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index ee42d4361309..4758fea94a96 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
->>>  	if (!res) {
->>>  		if (is_free_buddy_page(p)) {
->>>  			if (take_page_off_buddy(p)) {
->>> +				SetPageHWPoison(p);
->>>  				page_ref_inc(p);
->>>  				res = MF_RECOVERED;
->>>  			} else {
->>>
->>>
->>> and maybe in a bunch of other places in there?
->>
->> You mean for fear of losing HWPoison flag in the earlier TestSetPageHWPoison(),
->> just set it again here?
+On Mon, Jun 08, 2026 at 05:01:57PM -0700, Andy Lutomirski wrote:
+> On Thu, May 28, 2026 at 4:05 AM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On Thu, May 28, 2026 at 05:52:21PM +0800, Li Chen wrote:
+> > > Hi,
+> > >
+> > > This is an early RFC for an idea that is probably still rough in both the
+> > > UAPI and implementation details. Sorry for the rough edges; I am sending
+> > > it now to check whether this direction is worth pursuing and to get
+> > > feedback on the kernel/userspace boundary.
+> >
+> > The idea of having a builder api for exec isn't all that crazy. But it
+> > should simply be built on top of pidfds and thus pidfs itself instead.
+> > It has all the basic infrastructure in place already. Any implementation
+> > should also allow userspace to implement posix_spawn() on top of it.
+> >
+> > fd = pidfd_open(0, PIDFD_EMPTY /* or better name */)
+> >
+> > pidfd_config(fd, ...) // modeled similar to fsconfig()
+> >
 > 
-> Yea.
-> 
->> Why not do it after get_hwpoison_page(), since that
->> is the expected page flag?
-> 
-> It's still in the buddy at that point right? I'm worried buddy might
-> poke at flags.
+> After contemplating this for a bit... why pidfd?  Doesn't a pidfd
+> refer to an actual process that is, or at least was, running?  This
+> new thing is a process that we are contemplating spawning.  I can
+> imagine that basically all pidfd APIs would be a bit confused by the
+> nonexistence of the process in question.
 
-Since __free_pages_prepare() executes entirely locklessly, the only way to ensure
-HWPoison flag won't be lost might be only set hwpoison flag iff we can make sure
-pages are not on the way to buddy...
-
-Thanks.
-.
+I don't think that would be a problem because every api just needs to
+handle ESRCH. Ignoring that for a second: the mount api has a builder fd
+that is later transformed into a pidfd. Which is easily doable here as
+well. My point is that all the infrastructure building blocks already
+exist in pidfs.
 
