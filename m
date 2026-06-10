@@ -4,154 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3414CD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:40:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3549ACD98C7
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B6A46B0005; Wed, 10 Jun 2026 19:40:51 -0400 (EDT)
+	id 969B16B008C; Wed, 10 Jun 2026 19:41:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 067316B0088; Wed, 10 Jun 2026 19:40:51 -0400 (EDT)
+	id 9411E6B0092; Wed, 10 Jun 2026 19:41:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E984E6B008C; Wed, 10 Jun 2026 19:40:50 -0400 (EDT)
+	id 856E16B0093; Wed, 10 Jun 2026 19:41:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DCAAC6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:40:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B18CA0117
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:40:50 +0000 (UTC)
-X-FDA: 84865625460.24.49F2C88
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 66B33C000E
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:40:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GGxJfdpW;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 761CF6B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:41:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B1BC1C187B
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:41:07 +0000 (UTC)
+X-FDA: 84865626174.01.24F9EA0
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2EAC816000C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:41:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUa6p8YN;
+	spf=pass (imf08.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781134865;
+	b=VFvEsGFDPXXBBZaijFuLYJfXnKaWUBQ8ms2WERRNBwxDWoZgTeBd5Z6pxy6ybM+yWf2ll0
+	W2HezYvTcEK+rh+ofhBR1wCW3Jf5RArDCLdSUX3ZoWYy4yRlrPpfFuaqOfxFYKo4INeU4K
+	nufReM2Hduuv/h9Imw1KOX3UIezNKq8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUa6p8YN;
+	spf=pass (imf08.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781134848;
+	s=arc-20220608; t=1781134865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6UG5wcq4wGvKWHWnLLL0Eo5kBz5QOPgbI/QFWsbUleE=;
-	b=dqFBL3B9qKkv4NkvGIDnaN8EaiVVb75e4q5F8kJtYnoKNzRgCOKbReb+5ImEjlNoYaCHOH
-	iVC3mxXbYqjEvhr24K5Gznv7k2uL7ExBskz62pjW+famiKyGd9o9HOHQtAE/qJc4eWc2sp
-	alIHBxx9Y1Qs5QX8GTcd4ODP3NZlKpY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GGxJfdpW;
-	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781134848;
-	b=pwvKRj2JeDjKUL+a3d7Rlnzw0zh0Yuxe5r2C5L3SyH2d9dtalJz75tZ8SiBI/ysSdrTZ4g
-	NtEzW+mQqMo1sFdYwJbLm2regAOsT1hJ4R47dZKPI6yB7R3hBVobAFCJtOsd4VFuig/bch
-	H8nZllDC4ZaaNOl51L3a/f8RCjFep5s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781134848; x=1812670848;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lQQ8KdopoOpPrsJ7rhAMPKyWe8FqtnwugRvEHRrHiuU=;
-  b=GGxJfdpWZCnBwHLjbJ812Tej0y4/ailqI1C+pDyj9ICf2EHLRujlwlGL
-   lmxVJYHleKrCK9GZSm7n1EBgBPnj0TbTwRW83HFNZJSgutB36hm2OO6dA
-   QNAllskSBwxpXQqSS8VVBPOdTPQkp7XHVl8H9hXTSZ3aGTlb+a5CwYkxH
-   cDHPWKnviQSExeqLWG4OBE7IFTqWW6LuCbcWX9xXg1dY9w49j4FSJsXs5
-   SY/yc0jpb7jxJmUDqkrrtEPMX5mc9ixlws3cB5bOjC2bLmvyxqlygBLaB
-   9QSaeoSS4Dn65XkPeD5JwfEYKLvnsGzps4/xjKTR6s/2jyD1sDIVUA4CE
-   w==;
-X-CSE-ConnectionGUID: QVI31LSHQBaJOlkfgLwK4A==
-X-CSE-MsgGUID: K5sqWn6bRdGW+y/3qYAcbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93050352"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="93050352"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 16:40:46 -0700
-X-CSE-ConnectionGUID: 67A4E6m8Q0eVZ5U1Ujb38g==
-X-CSE-MsgGUID: 9oaznthFSHqLORHQWWLQIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="242176498"
-Received: from smithj1-mobl2.amr.corp.intel.com (HELO [10.125.110.59]) ([10.125.110.59])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 16:40:45 -0700
-Message-ID: <58e36b2d-d036-471f-b9ad-87facad01fcc@intel.com>
-Date: Wed, 10 Jun 2026 16:40:42 -0700
+	bh=hItbBwzE/UemJbPm5Fn7DOlYpjoWK0GBfBYmIwvZBe8=;
+	b=ezt08xCwIZUsr5OksnkYbm1wRdqydJMUFG09YbUNkJ8NennI6XlahrsR9i7zqDxMPaxFLZ
+	TSuhafudeaGf3bm/bm3UPRq+mis8BFoZfixEoWpS3m7O9Zwl9dA7iYuSTNNkziL7n+QYe1
+	Xva+H9QCDP0WhD3mEbompUKE1NPwHc0=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso2607545e9.0
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 16:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781134863; x=1781739663; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hItbBwzE/UemJbPm5Fn7DOlYpjoWK0GBfBYmIwvZBe8=;
+        b=cUa6p8YN1A5ZQhGUCPFk1G0wsD8v/gwxMTYaBPxANbWgM5Gk5akMKnrrQE9xo/gaM9
+         wzihCYrT3702nQa3scv7YFG+WT3Rctp2/yDOfmgt6T+RWjmqQvkdV/aXahXdHfFRKBTA
+         21UNo3cCPTqSSHO3Y0pSSkhX0jjhCDL9udnJBXQh9qqKUrn08CXFOQyOZTgVw0o401q/
+         Vd7m1czRpxU0w1vCbRPI/ads0MCTQmTAvXh48S+kxXxahGtfB3/q2mlkJJIwFRy/IWdm
+         3EwJUnObGXmjeDwY65y03l7HeZpuvUp4fW36FsGx7PEW0plc7vIa8z7HJDI91/xC3gDE
+         bVCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781134863; x=1781739663;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hItbBwzE/UemJbPm5Fn7DOlYpjoWK0GBfBYmIwvZBe8=;
+        b=OxSOncMJcmCiKLZA6Mdc9v4tql77tLkvGD0X22LvKUOEkyt4LCFYU4Qsw+EJjYThdy
+         /PrQwuo/PmwWZEP5RSMP31eynQDXndghgpY206noSd9oPArZQaDUVW0SMrbRncjf+Rgg
+         SROj+Ob7YblLJyVF6SzBTbjW/wLLJtW3w1T89uPnsV6ikGJsHXsZ78mjvnhHdWwSuiGD
+         l1pNV6b1ji0kmFAsQOQhuYVnf/wJUf/ZXAbANENkWJm2AoEKrfgXev8iNhi8vk53+ztx
+         qJ/R7I8EwisQQtrQyzYe+6YYdJXXCtTNvu4LgWCYAb24TQgjzL7Tklm8IH5KwD7+19w/
+         KxPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ97qO8ZWEbkmtgoH2I1oATNv28GvPwWnktgnMCU5t+Yoi56RmHuNhZn3qUdouDKOOa5twx/5UY6JA==@kvack.org
+X-Gm-Message-State: AOJu0Yx+Gt5Mc7eyMfXUidlb5BqXwo1FxqHLofO73mMkIQuF+j00aYcj
+	IJxbvcSThzx2K99g1AhuLBjhzWYqqGBc9Qiu4x89IMWWocS18qP9L3XV
+X-Gm-Gg: Acq92OG0iQGEY3RGnZxFxMXxNgXW6BZ3HoQAEzI24/TFu52PcO4LUVZhT3GLZdNhA4a
+	9fZ6kh58S5xukbH3ymn6WknhOmCGpAg398BdVISOtpIPmT2kWo1s+nUrAuNxfhpEjMzvmiUSin2
+	SS4c/fhTNyyFUXq4PvtZ4RPyh/LVZpyg2iIV9zbyzj2GTX3tAYzdnk03DMkvemkDl5NNJ8rWMXh
+	Imq788uR07BrpZtAHnj/KXvCD8h3yDd75maZSYfH0rBKDRXJ4Vb9J7lvxbwjPqKGNHuozIpKtI/
+	ma6SPQajq6MU5VxecH6inSJ8/TDJlBMlnfn/NqxeT67snUeeBjOQpf4OdKmDP/GVt7fqxMccpMb
+	lUTBRwQu4/gGUj7Wh2SUa8EZ8K4cxHtupQbIqNHLhxc3JNmM3f+ybNqDed7LPNVBEqum8tc2ah+
+	MKRBCOBxFpLXAzVMeotokN13V4K+Ni1BUfanKiOYRmHhF9LMImDdoaWKI2rUfmYKkeVa+lzP0nD
+	IVinP4gxw==
+X-Received: by 2002:a05:600c:1554:b0:48f:e230:29f4 with SMTP id 5b1f17b1804b1-490e5318363mr872135e9.15.1781134863322;
+        Wed, 10 Jun 2026 16:41:03 -0700 (PDT)
+Received: from f (cst-prg-85-110.cust.vodafone.cz. [46.135.85.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e422e321sm4497435e9.0.2026.06.10.16.41.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 16:41:02 -0700 (PDT)
+Date: Thu, 11 Jun 2026 01:40:56 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Li Chen <me@linux.beauty>
+Cc: John Ericson <mail@johnericson.me>, Andy Lutomirski <luto@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-api <linux-api@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	linux-arch <linux-arch@vger.kernel.org>, linux-doc <linux-doc@vger.kernel.org>, 
+	linux-kselftest <linux-kselftest@vger.kernel.org>, x86 <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.cz>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated
+ executable startup
+Message-ID: <hd3i6pxxohsjesyid7nhuic6ppp6nyoxxpwa4mny6riqvpyqec@mylfprni2yaw>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+ <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+ <19eacd64508.26b92c022125848.262962729296162879@linux.beauty>
+ <4e049396-377d-48a7-a34c-91318413a876@app.fastmail.com>
+ <19eb181fdd4.6d028f442844776.3737831021032223216@linux.beauty>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] mm: Add RCU-based VMA lookup helper that waits for
- writers
-To: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOl?=
- =?UTF-8?Q?g?= <arve@android.com>, Carlos Llamas <cmllamas@google.com>,
- Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Todd Kjos <tkjos@android.com>,
- Vlastimil Babka <vbabka@kernel.org>
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
- <20260610230415.C0521C88@davehans-spike.ostc.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260610230415.C0521C88@davehans-spike.ostc.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 66B33C000E
-X-Stat-Signature: e4nmuqpx8yacdxfyfowb4xazfw165esu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <19eb181fdd4.6d028f442844776.3737831021032223216@linux.beauty>
+X-Rspamd-Queue-Id: 2EAC816000C
+X-Stat-Signature: or4q7pt5q4nfe39s38g1b4fd5dy6qg56
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781134847-261217
-X-HE-Meta: U2FsdGVkX1/9sqGGSeb/ZQY4nIKvGrbTOpyQWT2LJHgf+vU6lJPcSpL8mPUZb5SkAAiJaKbplieTAp+GjA8N5FamVlVJV4N+sFfFyuQm73QBDocM9CrPMYeNwEHncUf3lpWBwqVvgLz9DEZEL491J1nuclOTUTJ4uNQr700feoDz4joUHODvyiy5bsnKuJSKnC6DOHz6lrQyRGlGliDCry5Obojwuh5qNp+9KRoJdJUtGeRSKUba4uhPmRu5E59ZqdpeoXns6bXgYoyiZgd1uwXCWS4YuLcwqlsi/qcRb7GITfaCaMarhQKKN4rYPrnOhjrwbjqGWOQss+IW5m8v8pcGfTlZXZSuwJCZG1P28Jj1nC3+xU9emsFPCLKTnKaWC7ggEQv8YrwaaR/4alzzm77LpgRiFWPdYDYga6rFXyEtQkqzfWWPw3eHZ3PWsCEoEpTI5hWo72vPI6C0y07EtyMnC0wekrIy73Q72FUZKjZtF5yBVOVVagYtAgOlpKSk0b5GSQUgd1xaBUMPUv526jHDNxvAA+rA3hhZmRCH8c9GfzKMbVOb/qYZPo4XmsgpVPud+gxUX45BWrOjQYM/KQtkgSs+BWMTJIiXBK/2HbOL207QEZKesybVZMqnwfWnJ7W7+uo/FAXH69xSxjg1HKiAu7RCF4DauFus8gA5DvnnSs12dxPT37ZhUzAcVelODLx7ohDAFuZzS0cnYrHtOeWL5Njc5GtSaAzhBnQZiTpHHY42Ph9aQRhxp52jZ82RXkfiQG+FyrG7ewWkAbzlFwtF6rxLlW3XJzSX8+fC8akCVsxDHgbzqNYU4aR/6GOIzBt0uTT44WIRJBnBKssiC0cr7bkVyBLXD6VyvVvavkLEoDQdzl6t45oS1xJsxEVGMCCpygb2KLad6vu6ryc9xIQzu7Nds6nhQ8VwJkI5WwC24GUaGA2zVmtejkTD6xEOdDbSxuVZmnXq2vSsnog
- RK4O10FK
- 9gMl5YtknPWieGmVKxWtnQz40c1EDMg6CJYm5FUn6j544nm48BhrAcU64DU/CNPAKscb/gaxxy917c6rn43sMXG6kT3Z2O4NnYzyblFRhOPcWo78pc2ul86WdWBlYeypgB2s5jwMcKmetV06XnnIf/9qrvb7kezKfEXO4Cfq2Ju56+38ayfvf7nU91siAKZHnKQXqVLuiG4PhOu8=
+X-HE-Tag: 1781134864-126548
+X-HE-Meta: U2FsdGVkX19kZusPAQ3shqNxJBp3rKFtC5K0CXpBh9WiIWIE9Q5ZyPAJ8dtpEluxHsDGX/Yg+Mrq6hMWzEjFgfGUJ6u84qqkd13xo6r8rP8h94ZPrUkb9uGirfrqsdBCUI4/gT6F/8cH0EYBz7UbtdGJR9V098sL1+ptLUPOn3Qb0boFvGTyTZaK+2LOJi8x0OICeFQaAYY6LYSr6mUd3miok9Y78+v/YwznAECzSI6+n+61xiR9/WzAPZRncmRstTgyJYgkVYd1FPyMs5CMpoiCaJcP+/IlDR2Otv5iHm2/vLxkU5bdSbR1YEzxqfzOQMwQlpLkTNd0gqBmQK5pe/7+y6hrwU4g+nN0i0G0dLXRlp53XUG/SYsoa97RF3qMYck+gdhpc8RehECeazj/80s7HOvFCgSYSnU7zMD1mtUfqm80QvfwB2dqzjw9AAN0IFoDr5anaNG5FyP6bUrrX7JmPOJMrorkz8iLtZDQK5DammPFYULkGJOfBgOTklLYy8dyZ1TFwyso9nDK2npHTYuowcQ797F0gKjSqZdXs5XNbWwknffNJwP4+KQkKgq2VZJ0oa6t0fwdn4EUqLBbqm8OUQBUUmaskdrrPAOC8IrC6uzcU1+KRO01FiCB4JQQFq4j8x0uD9VsjUQIfa6Ws9Ctb4EA9qUezk6Md6Brgws5kEX75eKB3/qMDfoZsyybLOgDONc+0he26qCPMovO/I0f6i4eeHkO3W8KSwtk8CIplRQxzuAGzI2hc3ZHAN7z4d06XErbUbR36HFluQyjzZkfFa+eQi07mycAiH7/+gAeISNmP+CLrdku2mf5fQZ05eDs/Y4hsiC5e/GTl6rUYsWOBYl9keNanVLvJ5Pe+uzoQEaHZ0CmuECpD6qm8WWGBrjJn8bPxi0uUnsRbfgt7cjX2TQkKmz9jOvO/yXp7Go6wZNNqzOMLirewzUNq6Ig8VulVoA59sH6++Xy0YB
+ L1cJgm9c
+ QIlKaNugVypPik4Zm/8vaOGdS8CGVekD6K/vK/N2plOua+OGHZfqZPygXcBEkGDaNyF3BpXwl9a01VDEABKtEJtI7oV05x+iVaXm40GIGYB6jkDvPaxotme/czYH/dxplhUFMMg+L1TgGhOoZvwYdM2OFq9tyZihp53ZTGbwP9CiZgQYA2HQTZiz7So3JtrolpHlqph9X7ikadaN92pzEAwhhb3chXQ7THcqDIdYtnKEqYEuJBzhJeLtSJMVoD5/ug9x0JxBMYl1oTQLiWfdbX5bjPuuDlmfjJq+ofL+KEQWPGPSbV8u0Svt+NknpBec/dX7JgxBM8n1WfUweDhrx69g9hPX5+qzOBe1JKt0qzipkROHSe6Wdv4AL0uL/oIoF66jDvRy3SGbu3MQfPYLsB1PrrDXP5bv1KmrOm3bBg46a7BbyTR9F8XG4Hg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,21 +130,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/10/26 16:04, Dave Hansen wrote:
-> +	/* Slow path: preclude VMA writers by getting mmap read lock. */
-> +	guard(rwsem_read)(&mm->mmap_lock);
-> +	if (!vma_start_read_locked(vma))
-> +		return NULL;
+On Wed, Jun 10, 2026 at 08:29:06PM +0800, Li Chen wrote:
+>  ---- On Wed, 10 Jun 2026 01:27:47 +0800  John Ericson <mail@johnericson.me> wrote --- 
+>  > Hope the above answers your question? I suppose my ideas lean more on the
+>  > "future" than "empty" side --- there is indeed a thread in the thread group,
+>  > with real VM/namespace/file descriptor etc. state. Moreover, state gets
+>  > initialized before the process is started, so the actual start is a pretty
+>  > lightweight step of just letting the scheduler know the now-ready process can
+>  > be scheduled. The only thing that distinguishes the embryonic process from a
+>  > real one is simply that it isn't running --- i.e. isn't (yet) available to be
+>  > scheduled --- so the pidfds holders are free to poke at its state.
+>  > 
+> 
+> Thanks, this helped a lot. I looked at FreeBSD/OpenBSD/XNU after your
+> note. FreeBSD has P_INEXEC, OpenBSD has PS_INEXEC, and XNU seems even
+> closer with P_LINTRANSIT, described as "process in exec or in creation".
+> Linux does not seem to have a single equivalent today: current->in_execve
+> is only an LSM hint, while the real synchronization is spread across
+> exec_update_lock, cred_guard_mutex, and the exec path.
+> 
+> I am switching my local WIP from the two-fd builder model to one fd,
+> closer to Christian's sketch:
+> 
+> fd = pidfd_open(0, PIDFD_EMPTY);
+> pidfd_config(fd, ...);
+> pidfd_spawn_run(fd, ...);
+> 
+> In my current local version, I still use copy_process(), so the fd points
+> at a real task_struct/pid that is not woken until run. Following
+> Christian's point that existing APIs can handle this not-yet-running case
+> with ESRCH, I currently make ordinary pidfd operations that need a real
+> started process return -ESRCH before start.
+> 
+> I am not sure yet whether Linux should grow a general exec/creation
+> transition state like that, or whether a narrower future-process
+> lifecycle is enough for this API. I will think more about that when
+> working on the pristine process version.
+> 
 
-Welp, I actually ran and tested this, but it's got a big bug. The slow
-path is broken. It needs:
+As I tried to explain in my previous e-mail this approach does not cut
+it because of NUMA.
 
-	/* Slow path: preclude VMA writers by getting mmap read lock. */
-	guard(rwsem_read)(&mm->mmap_lock);
-+	vma = vma_lookup(mm, address);
-	if (!vma_start_read_locked(vma))
-		return NULL;
+Suppose you have a machine with 2 nodes. The parent-to-be is running
+on node 0 and the child is intended to exec something on node 1.
 
-Because VMA is NULL in slow path otherwise. So it'll definitely need a
-v3 or a fixup before it goes anywhere.
+When the parent-to-be allocates and populates stuff, it takes place with
+memory backed by node 0. If you allocate task_struct, the file table and
+other frequently used (and modified!) objs in this way, you are
+guaranteeing performance loss due to interconnect traffic to access it.
+
+Trying to add plumbing so that all allocations respect numa placement is
+probably too cumbersome.
+
+The primary example for that is looking up the binary to exec in the
+first place.
+
+userspace likes to pass paths which don't exist, meaning checking for
+the binary before any hard work is a useful optimizaiton. Suppose the
+binary to be executed is in a container bound with a taskset using
+node 1 and the content of the fs part of the container is currently
+fully uncached.
+
+When you perform the lookup on node 0, you are populating a bunch of
+metadata (inode, dentry) using memory from that domain. But the intended
+user will only execute on node 1, again resulting in a performance loss.
+
+In order to not do it you would need to convince VFS to allocate memory
+elsewhere.
+
+So I stand by my previous claim that ultimately a pristine child has to
+be created (like in this patch), but which also has to do the work on
+its own.
+
+Suppose there is no explicit placement requested anywhere. Even in that
+case there are legitimate workloads which will eventually be forced to
+exec stuff on another node. Even these have a better chance retaining
+full locality if the child process does all the work.
+
+Per my previous message I don't see a clean interface to do it.
+something quasi-posix_spawn is probably the least bad way out, it will
+also allow userspace to easily wrap the new thing with posix_spawn
+itself.
+
+Also note there is another issue with the fd-based approach: the fd will
+get inherited on fork and will hang out in the child afterwards unless
+explicitly closed. Suppose you have a multithreaded program which likes
+to both fork(+no exec) and fork+exec. With the fd-based approach you
+have no means of stopping another thread from grabbing your state thanks
+to unix defaulting to copying everything. There was an attempt to fix
+this aspect with O_CLOFORK, but this got rejected.
+
+Whatever exactly happens, NUMA is a sad fact of computing and needs to
+be accounted for. The approach as proposed not only does not do it, but
+it actively hinders such deployments.
 
