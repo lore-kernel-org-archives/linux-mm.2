@@ -4,91 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A7A6CD98C5
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE13CD98C5
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 23:10:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B3ED6B0096; Wed, 10 Jun 2026 19:04:24 -0400 (EDT)
+	id C962B6B0005; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365A16B0099; Wed, 10 Jun 2026 19:04:24 -0400 (EDT)
+	id C20EF6B008C; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BB5B6B0096; Wed, 10 Jun 2026 19:04:24 -0400 (EDT)
+	id AC0F16B0099; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F29026B0096
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:04:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCEBA1C2968
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:04:23 +0000 (UTC)
-X-FDA: 84865533606.28.90805CA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9E39010000A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:04:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DTrizq6c;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of dave.hansen@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=dave.hansen@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781132662;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92C416B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 19:10:33 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B0701A0339
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:10:33 +0000 (UTC)
+X-FDA: 84865549146.20.F11D567
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012033.outbound.protection.outlook.com [40.107.200.33])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 31FECA0012
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:10:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kwB3HARn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781133030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=gpyZZZNLSZtHqNbC+Nlr1PHoMfO4w5yV3od/4+bHqEA=;
-	b=EPiAo3+WJPV+XGggtMl5mWwc/dRnwzQ//wJkH9MNilF2rgjOpVxPHEbVx2cVdNGpsuMViO
-	i8SA0YNSDTYFZL7jUjrvVeZF+l3WiRpusB8WuGlJ6BPMBSXYJuJ/R599UAw6rUoSwhgAnj
-	VDrdZRQJQawCrA5mqpBUCqTbbe9MByA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DTrizq6c;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of dave.hansen@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=dave.hansen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781132662;
-	b=rMtFiIf8G0DBgKvPH/9oT229Kt1hAB/CAb20pNh6AT6tvpnVboxL9xtdldQJxQZiLSwDsT
-	KtYS6MBpfSIC9Aehi/XyIMBP+/NR/68fi0AS/VKpgG8JEwlTTPdigSUs6KFRUBtoelrcl2
-	h+2kEiON/5nZKsLMHO4GOy64WPD0lXg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781132662; x=1812668662;
-  h=subject:to:cc:from:date:references:in-reply-to:
-   message-id;
-  bh=19BDK6BwhTcrHnLv8z8OKRfT+e/osIT4EuXdhKNAOnI=;
-  b=DTrizq6cgA5B4M4YmDgPqKZsAuc7tKjqgrvuOshbDiBJeCYBqYRE3H73
-   X9jGQ0tDqoazC+ddGLztrEsTfFFlKAra62qz4VWaJj3MvB5MVTHrQnu3A
-   2V5TzHq6j8bOrbaNXJE+/HViQOFnNv56xMkvs8tXFfcH9MZqeSz039hj1
-   U00Mf9jNTzN7u3HFFl70fitMutHBush71V0H6W5bmbmUZPbrwuW77hSk7
-   19XpoNm6b5csONAomYpq5DVIkAQa2fEDyKbdWD12JloC7XF/asNhRXrp7
-   MhxdhtGMn7Q8ubghH6fnt2KdFdlXbJ5H5vaqhm8fDqpwUmNiO0bRuHXlL
-   A==;
-X-CSE-ConnectionGUID: I+X3XT9CSVyx6wUhEXI4tw==
-X-CSE-MsgGUID: qEkxALMnTY2SF2d1Vl2vkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81074131"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="81074131"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 16:04:20 -0700
-X-CSE-ConnectionGUID: aXawu264TMWGTsm2tch8Qw==
-X-CSE-MsgGUID: m2ctBtL5SS6Rmntdy+Cwzg==
-X-ExtLoop1: 1
-Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
-  by fmviesa003.fm.intel.com with ESMTP; 10 Jun 2026 16:04:19 -0700
-Subject: [PATCH v2 5/5] tcp: Remove mmap_lock fallback path
-To: linux-kernel@vger.kernel.org
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Alice Ryhl <aliceryhl@google.com>, Andrew Morton <akpm@linux-foundation.org>, Arve Hjønnevåg <arve@android.com>, Carlos Llamas <cmllamas@google.com>, Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>, "David S. Miller" <davem@davemloft.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, Todd Kjos <tkjos@android.com>, Vlastimil Babka <vbabka@kernel.org>
-From: Dave Hansen <dave.hansen@linux.intel.com>
-Date: Wed, 10 Jun 2026 16:04:19 -0700
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
-In-Reply-To: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
-Message-Id: <20260610230419.F746395F@davehans-spike.ostc.intel.com>
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
+	b=09yajxeswDuedGoUk/zNxVRDSX/8q4hvBoHvne3CKBbHVlC8tdDcdRSw/gBJiekO0Y7uVU
+	wGjevKIcV35mkcJPgXzH85pw4JdnTW1iTSXZY9mc39dAvXetSoIdvsLi/0MFx5eieGrTtI
+	KDo8zduKoLhblP8CChjZ8BsTkhhIkJM=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kwB3HARn;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.200.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781133030;
+	b=j6s4sdc8ChxuBWLDyi35Nj5gDeJHhDcce8xyVkvDmCqsvqhvpmGQi4AklVUeeR++/7HO4B
+	+R2ctVR/xqXG6p26pDGFrxAid9RvJUdQBMsD9bFBS93Zm2VR/IJ1jBdMZ7YpTvsbvxKKdy
+	o3ajh2vGjfu3qkEfQSUR8oKZYnLmWVc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lknDu3aRMVxIslYbAIUcFjYFhD76npJBLuMfEKJt5WJDM1WvTixjSYI3g6oEzMGGMfbjgruFvHXVD1643DFQ7bWQKVZBFeleXRZ4g4WWkZxRo7Ve3pI+7opDwnHrOtGwF9Py4uA1CpsX72/CDoUcqQkVyjmRf87BoLrXcCv+YbXbd04BCgTndQcjiJNjBkypXqhIGsuq+eoTrSA32bUX8+clDEnsRtJ4KsW24M/y2j036JvSLGbKb7a4+oNudESvi3cAO+nPybYWE0I2PkMea2n8VCjEMmk7M8fL+fIB99Q9RrBk0ebuSOQ4wl2eox6frJneeds5GB8IuL7wbp7dIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
+ b=BiOJCbrQbVja09cBtIiVC3cA9yZAesgtmyqpzHZfU23cRaT+uJ/doqU84vcVtOov5NIx6mDiXClArVyWrYYzrrLYjf0e9EpApkNuJNv1Btwg+e2d7+MDk3FSi5Etvz3vqjz6uPDlw1cqQCYGdKuCKOSqSUYTAwOTIVpAJ3DpJaNJKOT2yfZfpfjTPy2Gf5vYVCtszhrnDgyVbiOACbFaVuqG144PngHvLtcZwaOUMSr/R/Pz1vNerk5/bTKQIydKUyuZ7ONH75W0gkRyBuk3NrXN1skREF9+R82d+1P12z0OBMjH2d34LKvACY9Xtc9It0HNdgS6XeYaauH+TZUj5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CZTOqMgmbq6t1RboSLXU3Z4LuPBK9MEs2D2gguG1dsk=;
+ b=kwB3HARnXkzxDZ+GqrR+mJS1DL5x3B4Yh0C3ZfhSew9QYWW7B/I4GSfoXwJ78OKYHJI0f1TKnajhCjBbZtAAXdvjisTztle40H5Ye7UnBuL0cJQojGLiP/ALyvX4QIEI1ABvM8H9Eaiwi4Gxs0oCUO7r3URwJOMAr0/3M3u72+hulyaEhFZCYWYWr+hMl3wIRupyhTIRtn6W6A3qzhSDDXSWOkV40meFJq8QFOZNE56sn44znZKH8Fx/K2qPlBU6LURsmLTJOCrff7y3qvNiPcwyU2d/wWOLaxDIY8bJ4lVgmch57g75Vz97fXBTG6YKF0R30sR34lkqh4BzBjDmTw==
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com (2603:10b6:208:1c7::23)
+ by MN0PR12MB5908.namprd12.prod.outlook.com (2603:10b6:208:37c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.15; Wed, 10 Jun
+ 2026 23:10:16 +0000
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2]) by BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2%4]) with mapi id 15.21.0092.014; Wed, 10 Jun 2026
+ 23:10:16 +0000
+Date: Thu, 11 Jun 2026 09:09:55 +1000
+From: Balbir Singh <balbirs@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, kernel-team@meta.com, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net, 
+	jonathan.cameron@huawei.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com, 
+	longman@redhat.com, akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org, 
+	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com, sj@kernel.org, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev, riel@surriel.com, 
+	harry.yoo@oracle.com, cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <ainsAU6T58hGDdWY@parvat>
+References: <ag6XyvxR-NU5rGn-@parvat>
+ <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
+ <ah47NNhuiClgGCdn@parvat>
+ <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
+ <ah-0CyZurn5D1ezY@parvat>
+ <ah_RcTU8SpQG7hab@gourry-fedora-PF4VCD3F>
+ <aiDVMgu0viTIml8H@parvat>
+ <aiE5DZC8Io4SNI3H@gourry-fedora-PF4VCD3F>
+ <aiFSZfRlFPd7qlIw@parvat>
+ <aiFtJFqkpbZ9qFvM@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiFtJFqkpbZ9qFvM@gourry-fedora-PF4VCD3F>
+X-ClientProxiedBy: MEVPR01CA0060.ausprd01.prod.outlook.com
+ (2603:10c6:220:1fd::12) To CH2PR12MB5001.namprd12.prod.outlook.com
+ (2603:10b6:610:61::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB4995:EE_|MN0PR12MB5908:EE_
+X-MS-Office365-Filtering-Correlation-Id: 523ebde2-54da-4a5d-f682-08dec74565d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|11063799006|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	lW7F/PF/3npE2o8VU41xtDio0wnrf80UaqaXr1JkpEOAoy3mFAtu3+c6dRsUGRwrw32lcE/w1wRJvuHMHkSPr8/A2TqQ+/IlTeCB/R1esI2Aa2zmMbjgnxW16LEiQq1KzxdZOFXmMWxjCsXqeZHP+ORG0kgnoIDxBZQJqG/u1/7DyOirwFMp2gFDRcm65yVrHyAQUSgXl5PPracoTAbgnmBJu+GOgNEYUFafZEugLwP95EWz2EGjU86lS5Pa84a8C93Gh/qbEpMVMqFHgDQGSHl1md/OOxKneoH8xSKAL/6LkKqhRpQEWCMetdgaOP/TiQZR8wsi1o6tZ2xBqZ1N4h+/5Kx6emKio/Euws++sBrp8wukcQ03lnI8F4M032jYGT9yClL8pAJ1MTiWeWis1bu1cVEP0Wajl3kIkvAtvAZ+z6BqnCawb2JgA6oL5Ja7T3JSet6s0dUkDx80qy1sLpWwWmqvC5Q2S8PJ0gzvNwv53VhVoz3CfNBVy/TvRV+4Xj6XBGe3nam0TtYrBzqEw4TfEZnZlS7Oz0FzKOpwGiKqm12ndA1KgIT3Le0UWFmvo2J5d5L0dc0cip+R8IC5p3IRfo3BPA2TfUK8wlspS9uIAwPuz/Q/UkXcfpKkoXvjumyewEX0Uhi85PfcMMU4QTWfRD7UoEL0DjxcUtniayIZ0KIvGpPwHGKTmuIlNbN2
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB4995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S/nVMxMP610VSk5DkAjfgUV+0Ujbx25bvSiFf/Lq4wxqSE2i77DYDVuTGyNn?=
+ =?us-ascii?Q?a3VY+T6VEb5v7aWC3+Nl41JxvzGOJ09ja7DXUSh31NcevTfuCS27nGWK6UMg?=
+ =?us-ascii?Q?L4nsBt1dD5pCSvl/ol/JlIFyAojMp4DG7bS2eCJCjnMM5hnjaJTzEZZ4Sz7E?=
+ =?us-ascii?Q?xo0ghQib1WelPh2xP4tk5zD/gdTC45PbV2bk26MfNh4rYqM9rd3LPbJNa7a8?=
+ =?us-ascii?Q?i+TGuuS1T69vrqKfpmQmkTS5NJeGcE1wiM/NdPcvNjampunG9RXru2cGXZyr?=
+ =?us-ascii?Q?X90ymolgOegBMvvzNJ7I+Jx5A4O6bIsQ4ZnwlrrnCWy2MjICYDeD1yW4/3Rs?=
+ =?us-ascii?Q?/1NpZNPcaaQanTfuSbTqA32KJqyVgLgaIZJ2/w/GmsGh94whwtz60m8u0IDf?=
+ =?us-ascii?Q?znivqCRdn8dbNOsPHiY3vDA0a3jAxjlEInhQMg/tkqxt3MyAvk9LlnRidWxr?=
+ =?us-ascii?Q?Q3ss2dAYgohViHegNjCYYXisDP7LJ7SuZZqY43l+ZmLfVwp2dGkcCpOdi+fi?=
+ =?us-ascii?Q?rM3T3exuPmLPhP8j1j+V/ED4vIXpVNk2Mt4wl1QVR+2miBo6M3gHDWcSEBN+?=
+ =?us-ascii?Q?CjRLvo+xoac5rOtIgpQ80NkzacJz/DnV9p8pwQhEYvnb1y2SMTQ6LKhXVK5h?=
+ =?us-ascii?Q?q2nZx+li74ntpRmC3AIbHJZfqfj9gN+LXwYJZAfHIe4XNBrci83aMR+ug8br?=
+ =?us-ascii?Q?QEiEILlkfWQKnvYnPcTkmx1gnUa8i2Ms1PBB66onHV/1lU8dtCPJflEc3OKv?=
+ =?us-ascii?Q?iNdwjOppftRYidgRimEsw7l3VtLTKpt5JSMnTTTCkFZWSuuJYsrqkXzc4j0+?=
+ =?us-ascii?Q?Ih85D9iH5syRZA2LkthU9wiWTLCP0pKS4T2g95lPKqycjFaUb2/CyMxIAxle?=
+ =?us-ascii?Q?c0Vm86fsgNRUb+YPwgWgCVGNZF2tdw/ISFYHfJ2tjxFeam+bpH9PprF3oVCp?=
+ =?us-ascii?Q?eJErJ5Elv8nx/vbfGAlenEOi9gK79f8D/rEEpTK0q1dGV+/byRXBPT3RGFSL?=
+ =?us-ascii?Q?hDozgp+yELYha7iUBMhF4DpN3+ecnYxM4SP6QWi4XEpLkuVTxKGqOlfpeMD3?=
+ =?us-ascii?Q?iW/8YdhW0hhYg68eshmAgTmcmiEHjUgTauTvWtYGKiFj4k9w+v1HJ2B7XUce?=
+ =?us-ascii?Q?A1t/Z6RsM1Cl/eaoiMG5OjXtIpDlzGbYZttIRTDb870EfbF6zQsY/BDVx2aW?=
+ =?us-ascii?Q?JLhtkWOCec/HFPbpl8WQLzbEv8UKW+xzFbg5ks05EHbrz8MI2i+5GwjNaJLp?=
+ =?us-ascii?Q?gVEK1f/bEzdUHEChUgTLknE/BN8z4+mSTOJjHof2xUgzKS8BxV4UDP3DgfeK?=
+ =?us-ascii?Q?O7189eV2X03SW6CFxob1/de2cLkbxUbNBFL5ltlMsHM+KI2J9Q2rmjz4uvBR?=
+ =?us-ascii?Q?fl602RfcoxinaVmgSvO5KCgchixwhysRQrE9KA7ALLDfcWWLcL5Z4O0jqN7G?=
+ =?us-ascii?Q?cOSTgbIuVIJDihklOO4GreWmN3C5qWa6JSGlsreCiyJtnBKvZqufH/gFoaTH?=
+ =?us-ascii?Q?b7VGUexerpDOjj5dmBaumAcrjGhouTFR00UO+t2hb8daOKvx/3aF9+EA5JQ2?=
+ =?us-ascii?Q?ePH3UBBKet8/vmAdxoNsmJB7xOie5Uywy8F8PucOxjrLILx9XlYNH3zW0oM4?=
+ =?us-ascii?Q?Ecu1vKb6IJX0Al+nGWuxZizxmPFVX9QsmSz8W+xbqH5lfc5Wu82CMTWJ/dXy?=
+ =?us-ascii?Q?jnxRCz1l12eSnJmtcxgEDQkIvkLloRZ1iEAwK5Pg7Q7R56zmYlZSdNwj/wCO?=
+ =?us-ascii?Q?7UQmn9vXhg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 523ebde2-54da-4a5d-f682-08dec74565d4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 23:10:16.3735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DWBAlI9D1uQ983qG39qtCUkMgpVVcBcmMSq7+G4p3WGky1Dq1BxV7mAFCF9n6Su/wszMq1pQNpDIEO0MBtNn5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5908
+X-Rspamd-Queue-Id: 31FECA0012
+X-Stat-Signature: uzufjuyjudcdqi85tqxpxmajbrkutdze
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9E39010000A
-X-Stat-Signature: 4x7emxmaiw559fnqtfg9wcznj3pzde8w
-X-HE-Tag: 1781132661-951044
-X-HE-Meta: U2FsdGVkX1+q5Bbh+c5No+j4Z3jG7FtwrKLrNHdns520wv6rWC6seT8MU/jleoQ15LvxAlU7OlT7Cf0Jt1OEHF54j6K9Q00SiZkS3TmQWUopv5GUsn/qUDb6gSHK2YbT2BP0TBvoSOGFskEyWoqs7zmWiGdtEHKcnRo36YDdZYpd7xQ3pC+eW2qS6aBGnrLnQCqfhmIVHZrm8vK+ON/8Pu3pLxTTiB0AiVG9+cIlbUd8i86nB/6tcE3X2snFL5lRud2pq3kk4ktMb2EPTEHUAV8cKGWrX2D9NJds5ZltH+1jftGVGYhL6ZoLyGbKbV7Gpq5feiJFZB+XkQEvN2JL2skXN24CEWQfUKIECNpI1gEq+KvmAMp28Ppf1YI60Ldj87+Fpu0Kao8UCRINyhUTNc5JDWpO3JOytxnBP6XcBIv5ohdoNA1Nowhv5704VmypUh6UZqRc/2boQWRjbiWu4F7uliMV9YNSiTaOR+j5jk939zFEqmzFPIJVpXpjQmaUadClRFZSyI5/kEsleW26UTYstvzpP6KoiC6Wc6MoZoAEnRzuRGqudEqCmUZPDpz+v4VaFZEc5DxlJ6zViUDfgiOIXXOcRdRAhfnhBwjTI3tEfTos6fTgOZFvmDarB7M0qBGX7EOe5XCAbVfTJGwXU47imF83YXWf8whQm4CznWUF+SHtMcBaNg7TRdWdCGZxSikXyFEB/t0IjNdW42bmcLwD697kSqPS2bu8WdsTlN0L9TJLUgYIeg0JoOjwFVnbRqLOpu2SUIkK4fz1zN+IPa2ikG5tpWvyhnjrx80VlZchcrY26sPHsoEUwKg2WHke1SH1NCLrVLzNmUu53vcLIHrgRZCPUqqshvtKq7QQYlH4L0MyZ5k1etW7a337BM83d4jqnnxegv1jXrh4AD38BN5pNAoy3sPYHuvCrmHxqwMBlNXqV8fku9STweMt2GWo0PhrZTbEgNcsuZpjV6P
- 8z9sSc23
- D2s4rM/sh08O0l/1uNZT/HtKToi7/E/uH5poc37OV1qUbBRWSy5KMb1fjKHRUfo2lJujKOaZDdSHj8PWB8BIjKmFe/QN6nB9UnTd/eGNytIvWJRQ+k+lQMLfDcbWBmMmN57hNjM/CkYgIxPjTCiPg1o25bKmkglCZjTFmhV4HEOh0D9UhVGMyaTmVvWaZqr148b41pB3GL9faptVTVgO3IZ1gOb1lQ9gHVSFEekPgvPyykhey6olGyBet1U693UkqsfiCO4JfTkUDblkzI954dnldxLUSiCneIu3/w1VtjTbiaVd8wUiXKZQFyrruoLB/uKidZkS9wjEsX3RY1EBEVkSnG1LSXSNAU6Jk+3IobD7ESkRzsmT69XmMOlsMZaCY86vv4q2DaYvd5oaiVnbXhNToZ5TyKL2XPStMPXCnRyjqA/GoQENELJ3aZEO5apLpsln2/xWD/AmDegNUHCOO/lJkd/VbTE0MFrfH463642cSnd0efJRBhG9XucOEPQFNcQLxYiby6kaXUWzq89Iy4CpLTBTik3gEvsvwO/gkiN3v2O6JlTP/CAJLlOg1Ilrr4pKnT9zHRh7AzqndQ2l2Us7TdMvvc7hmkG1CdFu2FL9jH/xgLOFIxS1Vsy0oXkNP8xErGV2a1DHAKhYbR/lGViy+wkBv4KUaPPTP7XIOd7JWjwnm17erCXFuuyaY9KOK/JkQzYF1OKc22JM=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781133030-796796
+X-HE-Meta: U2FsdGVkX18VldBDn6Yusk7mFQun7JMH3GIjqvKXLFxGtyifLWwrU3S0pd1V+gSs3XgNkNhwhYWNPKATqx17FpPaOy80UZ226HA1ZKax/QlW412hioUs47gf06tt25J1gUlDBeyqc+LunjUf0zoJJG6ijsRxrFdm2mMauII6I/uS4okJ564quAks+htv7hSucAFEMZN5iamKFA4n/BhiXN3Vy9y/hpRJzQAEblgTper0qJT9MFY4utxAdG4Eat44gs2adNNpbtn/+F/7xH7asI5X1GmN84WhXlKQKyMmwgq0E/LxMFlIrM4XvSKeIYq5XujmLQ2GwTNB2aN/4YSaMo9mxFiX9TwDQP922V9aKuOZsJgTAcsqnv37+tkt8+acJraRa4v0uUO80p72c9tPS8T+ZcJnWuTQGfH/58LRBewyb7chMxrX2rZt7g7IoYLqPpO9EMM0zdEF4OuGl0R3QSQsYyUNMhrhhlfay2Vc8nIFQad6M58xpmeQS4K4Li7DwdScGrVhIT87kllMlfPalXHR1QxPlat0+k9seKl44e2tsItC23OOgg0NRrmiHR/RnYVW3izob2GKZ2o/fhgkY8ZXC9um5a1ZzwfmltV8OVaArMVbMMbqMESdK0XujhHwkTnfZhVoMYwOl/GMj0nQSwl8zQl0jigcAhzXVbqR4XwkrIbPTna1UXaeBynw8ep9X/BU+SrtqBS0vHpOnziQHF2ZTSNNqdVnp2W9jJnsLSpCfrEDSDR10BtcpbQlomb1ARE8yM8rL3VArouVdi0G498JNYUqoLeFgcKoCME3ZG8edQSF85+WuGxMxnztGMSbrgq4ABnr5Vk6zWWpx7KOFSUQds/Y8iynh16nTGmyOlyZSuwLcQZEM1Z4OJV2PlXuj4pOzScEq0WIFqZubEIg9t9aEqjh1otn4y99rpKquXOvOtT7spTQbQ8Ea+Y8Y21Fn04XN1DerRuyBoYeRGz
+ QnfIJakf
+ oMxMUio9mGihcf06bEUxyWybl3GpCTfsJvzMFuKWqXkgQ6IlUXntr8H0hMwlM2u+37jH+HKddcv463F9pnv90eVTjwJW1HiLMDRr2PteH74bhRbZSPINLlEWv9cXcq1tDiK1FI72YOcAyIH/dPk50d/tznTeFYY4cW0yrGWv/HffulLvArpeTcgpJy7r23QkItvMpuJmqJbC3EqSi7ujGpln3OkzHPeiVvwSNrEOjJB/ENEzySHAdYwr5KGO3peWJnE7SZLnjFlChbAX+53q1O+jlkf58G4s0y+1my/2QVXIbz0McrqU7RXs1GuOCAoc4ZPfgXTc2y5Ib2N1zTCQ44nmdYdPncKMjdtT9kwrHH/h2HXO3dPKqo2/5/icpm0vFJWLXf1ZWjUCI3TdYZxAsuG7vqGgOcj8rYSE+Xc4D0a/bMrrcuedZkgLlZbGKQGufHRDrfMkBbZQ7uShzRsILLkqfYsSlzAyL6PQa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,106 +187,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jun 04, 2026 at 01:18:44PM +0100, Gregory Price wrote:
+> On Thu, Jun 04, 2026 at 08:35:19PM +1000, Balbir Singh wrote:
+> > 
+> > My concern is that __GFP_PRIVATE is too wide, I wonder if we'll have a
+> > need to support N_MEMORY_PRIVATE may not be all homogeneous memory nodes.
+> > Very similar to how not all ZONE_DEVICE memory is homogenous.
+> >
+> 
+> Can you more precise about your definition of homogeneous here?
+> 
+> Are you saying not all memory on a private node will be homogeneous?
+>    While possible, I would argue that you should not do this and
+>    should instead prefer to use multiple nodes - 1 per memory class.
+> 
+> Are you saying not all private nodes will be homogenous?
+>    I don't see the issue with this.
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+Yes, I meant, nodes might belong to different devices. These might not
+want fallover allocations, for example __GFP_PRIVATE falling back to
+unwanted nodes.
 
-Previously, the per-VMA locking could fail in the face of writers
-which necessitates a fallback to mmap_lock. The new
-lock_vma_under_rcu_wait() will wait for writers instead of failing.
+> 
+> > > 
+> > > Agreed, but also one which can be deferred and played with since it's
+> > > all kernel-internal.  None of this should have UAPI implications, and we
+> > > need need to accept that we're going to get it wrong on the first try.
+> > > 
+> > 
+> > Agreed that we might get the design wrong, until we fix it up. I feel
+> > that __GFP_PRIVATE should be an evolution of the design to that point.
+> >
+> 
+> Possibly.  If we can't guarantee isolation without __GFP_PRIVATE, then
+> we probably can't merge the baseline without it.
+> 
 
-Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+I'll rethink about this, but I am concerned that __GFP_PRIVATE is too
+broad, in fact it breaks isolation by allocating from any private
+device. Again this is a function of how fallback lists are organized.
 
-This really is a nice cleanup. It removes the need to pass the lock
-state back and forth to find_tcp_vma().
+> > > Because pagecache pages are associated with potentially many VMAs.
+> > > 
+> > > The fault can be a soft fault or a hard fault.  On soft fault - the page
+> > > was already present, and will simply fault into VMA without being
+> > > migrated.
+> > > 
+> > 
+> > Let's split this into two:
+> > 
+> > 1. unmapped page cache is never impacted by mempolicy and should not
+> >    end up on private memory nodes
+> > 2. For shared pages, mempolicy would be hard, but it would need to
+> >    be on a set of nodes backed by private memory, depending on mbind()
+> >    policy
+> >
+> ... snip ...
+> > 
+> > I'd need to think more about this. For now, my basic requirement would
+> > be that unmapped page cache should not come from/to private nodes.
+> > 
+> 
+> This does not fully describe the problem.
+> 
+> A file can be opened and cached as unmapped page cache, and then mapped
+> at a later time - at which point the mapped copy would share the filemap
+> page cache page.
+> 
+> Worse, because it's file-backed, you can have the memory faulted onto
+> your remote node - reclaimed - and the faulted back in via the process
+> accessing the file via unmapped operations (read/write), at which point
+> you've had a silent migration occur.
+> 
+> Basically consider
+> 
+> Process A:
+>    fd = open("myfile", ..., RO);
+>    read(fd, ...);  /* mm/filemap.c fills page cache */
+> 
+> Process B:
+>    fd = open("myfile", ...);
+>    mem = mmap(fd, ...);
+>    mbind(mem, ..., private_node);
+>    for page in mem:
+>        int tmp = mem[page]; /* fault into vma */
+> 
+> The result of Process A running first is Process B thinks it has faulted
+> the memory onto private_node, but in reality it's taking soft faults and
+> just getting the filemap folio mapped in.
+> 
+> If you wanted mbind() support from the start, we would have to limit
+> applicability to anon memory only.
+> 
+> Shared anon memory is different, as there is a radix tree that deals
+> with a shared mempolicy state.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve Hjønnevåg <arve@android.com>
-Cc: Todd Kjos <tkjos@android.com>
-Cc: Christian Brauner <christian@brauner.io>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org
----
+Ack, need to think through this.
 
- b/net/ipv4/tcp.c |   31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
+> 
+> > 
+> > I am open to this, I was coming from the blueprint approach of:
+> > - Let's mimic N_MEMORY with N_MEMORY_PRIVATE and then pick and choose
+> >   what features to change or make specific to the implementation
+> >
+> 
+> N_MEMORY essentially states:
+> 	"This is normal memory touch it however you like"
+> 
+> N_MEMORY_PRIVATE (_MANAGED, w/e) says
+> 	"This is NOT normal memory, there are special rules here"
+> 
+> So, no, lets not mimic N_MEMORY.  This is a "closed by default" design,
+> while N_MEMORY is an "open by default" design.  This design choice is
+> explicit to make reasoning about these nodes feasible.
+> 
+> > > This is informed by a single use case / device.
+> > > 
+> > > There are users / devices that don't want any UAPI for their memory,
+> > > but simply wish to re-utilize some subsection of mm/ (page_alloc,
+> > > reclaim, etc).
+> > > 
+> > 
+> > But then, why do they need NUMA nodes? Do we have a list of use cases?
+> >
+> 
+> So far i have collected:
+> 
+> - Network accelerators carrying their own memory for message buffers
+> - GPUs with semi-general-purpose working memory across coherent links
+> - Acceptionally slow distributed memory that you do not want fallback
+>   allocations to (so you want to deliberately tier what lands there)
+> - Compressed memory (just another form of accelerator really) which
+>   has *special access rules* (i.e. writes need to be controlled)
+> 
+> In most if not all of these cases, the right abstraction to reason about
+> where memory *should come from* IS a NUMA node.
+> 
+> - the network stack can be taught to check if the target device has a
+>   node with memory and prefer that node over local memory
+> 
+> - accelerators can be given private nodes to manage memory using
+>   core mm/ components, without worrying that general kernel operation
+>   will put unrelated memory on those nodes or do things like migrate
+>   your pages out from under you (unless your driver/service requested
+>   that).
+> 
+> the tiering application should be somewhat obvious / trivial.
+> 
+> > > 
+> > > I am trying to test whether, lacking __GFP_PRIVATE, any normal runtime
+> > > operations access private nodes removed from fallback lists are reached
+> > > via something like the possible / online nodemask.
+> > > 
+> > > I remember, maybe a year ago, there were per-node allocations happening
+> > > during hotplug and that's why I originally proposed __GFP_PRIVATE, but
+> > > I'm trying to re-collect that data now.
+> > > 
+> > 
+> > Thanks, I look forward to the next set of patches. Let me know if I
+> > can help test what's on the list or if you want me to wait for the next
+> > round
+> >
+> 
+> Really I want to get the minimized set out the door so we can start
+> breaking this up by feature (reclaim, mempolicy, etc), because trying to
+> reason about it as a whole is infeasible - and I cannot be the single
+> arbiter of every use case (I simply do not have sufficient context).
+> 
+> I'm reworking it all as we speak.
+> 
 
-diff -puN net/ipv4/tcp.c~ipv4-tcp-vma-waiter net/ipv4/tcp.c
---- a/net/ipv4/tcp.c~ipv4-tcp-vma-waiter	2026-06-10 15:57:56.972472379 -0700
-+++ b/net/ipv4/tcp.c	2026-06-10 15:57:56.976472521 -0700
-@@ -2171,27 +2171,18 @@ static void tcp_zc_finalize_rx_tstamp(st
- }
- 
- static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
--					   unsigned long address,
--					   bool *mmap_locked)
-+					   unsigned long address)
- {
--	struct vm_area_struct *vma = lock_vma_under_rcu(mm, address);
-+	struct vm_area_struct *vma = vma_start_read_unlocked(mm, address);
- 
--	if (vma) {
--		if (vma->vm_ops != &tcp_vm_ops) {
--			vma_end_read(vma);
--			return NULL;
--		}
--		*mmap_locked = false;
--		return vma;
--	}
-+	if (!vma)
-+		return NULL;
- 
--	mmap_read_lock(mm);
--	vma = vma_lookup(mm, address);
--	if (!vma || vma->vm_ops != &tcp_vm_ops) {
--		mmap_read_unlock(mm);
-+	if (vma->vm_ops != &tcp_vm_ops) {
-+		vma_end_read(vma);
- 		return NULL;
- 	}
--	*mmap_locked = true;
-+
- 	return vma;
- }
- 
-@@ -2212,7 +2203,6 @@ static int tcp_zerocopy_receive(struct s
- 	u32 seq = tp->copied_seq;
- 	u32 total_bytes_to_map;
- 	int inq = tcp_inq(sk);
--	bool mmap_locked;
- 	int ret;
- 
- 	zc->copybuf_len = 0;
-@@ -2237,7 +2227,7 @@ static int tcp_zerocopy_receive(struct s
- 		return 0;
- 	}
- 
--	vma = find_tcp_vma(current->mm, address, &mmap_locked);
-+	vma = find_tcp_vma(current->mm, address);
- 	if (!vma)
- 		return -EINVAL;
- 
-@@ -2319,10 +2309,7 @@ static int tcp_zerocopy_receive(struct s
- 						   zc, total_bytes_to_map);
- 	}
- out:
--	if (mmap_locked)
--		mmap_read_unlock(current->mm);
--	else
--		vma_end_read(vma);
-+	vma_end_read(vma);
- 	/* Try to copy straggler data. */
- 	if (!ret)
- 		copylen = tcp_zc_handle_leftover(zc, sk, skb, &seq, copybuf_len, tss);
-_
+Look forward to it
+
+Balbir
 
