@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C7EFCD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 06:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB842CD8CB2
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 06:52:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99BA26B0005; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
+	id A81006B0005; Wed, 10 Jun 2026 02:52:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 924FA6B0088; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
+	id A37136B0088; Wed, 10 Jun 2026 02:52:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7ED066B008A; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
+	id 946FE6B008A; Wed, 10 Jun 2026 02:52:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 698A16B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:29:52 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F23291A088A
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:29:51 +0000 (UTC)
-X-FDA: 84863027382.18.6305947
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 41DD314000F
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:29:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjycE5Aa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 831FC6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 02:52:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E5F7408CC
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:52:22 +0000 (UTC)
+X-FDA: 84863084124.20.6A707EC
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 54021140008
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 06:52:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CQ/+jwHl";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3ogkpagkKCLERcZTVipYcXffXcV.TfdcZelo-ddbmRTb.fiX@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3ogkpagkKCLERcZTVipYcXffXcV.TfdcZelo-ddbmRTb.fiX@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781072990;
+	s=arc-20220608; t=1781074340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
-	b=sTelgEvw1tvDivmbKKU1qk8zHHwoAAZfOfblCtTiy+GF+9HtiXeqnf1ic1ld5pi2yegPhS
-	QkkQiddJpY1w0zOyJa31YyTM3Cs8DVmRjZVLBLK25zIHBCf+3kLrVQaSCzeaZ7Wu7K8MJE
-	VC4bg/rJpm6vt0PSPqnq3uSXMNUABlI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5Nma+8ZLl/ANIFmPcb7oIzPV1qmhLMChBX+uzNBOMDo=;
+	b=mc+3QvYZlJJKE4q++ZqpI55QrQ1p8fJqdB+ZbX7rBD3ffRbXhe9bFfpz8lVxY8kH0GOE8b
+	9PUCtVVb9788i+XAzTbsWYJKatoHfg0YQi+8PSk2xOsJTwALU55Q9UmOMVqQQ2c4G4iwA2
+	RvqhVkhoIUERynZ0kg3goKkzen3j+Mg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjycE5Aa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CQ/+jwHl";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3ogkpagkKCLERcZTVipYcXffXcV.TfdcZelo-ddbmRTb.fiX@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3ogkpagkKCLERcZTVipYcXffXcV.TfdcZelo-ddbmRTb.fiX@flex--aliceryhl.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781072990;
-	b=sGVOhtsoA4PE7o3y8hnwQ95A00NGvtEuhwWdc6mNjbI0k6B6TE/Vg0alMTbCIsP6U/zBuN
-	pEcFOBP+09hAwfk062NuM6wdk3/QeXB1ntPyf2rKPWDVBDaFJar1431q+dVmmK0o/+Yy7v
-	xSBOFUaRdwHRvTqKqKx63nY86GyRfag=
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c859a374903so2238171a12.3
-        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 23:29:49 -0700 (PDT)
+	t=1781074340;
+	b=LPK45k47tVEQIlM7YpUN+48YGPtOrgBG2TXWk1b04/ypMEEMVUqYXMzKzmrg/AODAR/z0e
+	HSLVLO+T26HyMCMoR2xkduF58/h73vm8JDIHCHhpGSDn1mC/4zRHZGr1ZRs0xjlFoYcopn
+	5bEiyK0W2hbEwfynV0OwCoAZ7WG0ZUg=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490b37e1f48so51439055e9.0
+        for <linux-mm@kvack.org>; Tue, 09 Jun 2026 23:52:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781072989; x=1781677789; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
-        b=SjycE5Aa4TKH+YMoYITFeyM3ecpySyf8rMlxMFDlgcblNB1z4zMMSNqpHJiC3+sP1k
-         XWFrnhn16LceOdftXFPt4Mwf6ImPouSsv2hnrfTtcM4G/jpBWl6Xu4DFHNXpC61eVILl
-         4OVFfd1U85AZKHljrqIcd9KNAT8xKTVEqbBPMmveJL8pAzYYjUCbBE/cV3tcIgHpOC/E
-         kF35Ap6oUM8XdAxNtP1zw+2ocAUG8q9Nur++h2GLQyOFLWtvxe3YaZh86lWo2Sd88c4I
-         7vxmbCcNeCzzHOwJzHCItulrnM3Nr3+vvltTj8zlEArspB++To/4AxYurqrtaM83Z2os
-         Lgbg==
+        d=google.com; s=20251104; t=1781074339; x=1781679139; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Nma+8ZLl/ANIFmPcb7oIzPV1qmhLMChBX+uzNBOMDo=;
+        b=CQ/+jwHlEWdL60WjuYJxu4mDhjxjt1KBcQjQyiWSrqGWhB85G3Jr8Rz/zyqfyYeMHe
+         jy2e91NA/Bf1WV72B7BkxNggInumg+q60fvgpKQ3AviV2GZZxoeROMATuqKpmHNVH/s/
+         8b/8Ni86yIMruUfooxVAoSSiMzwJoPN7+etKQJLH83Lhx6WNxT5LU2yrrrwOnfo/CILK
+         fSyvAe2VecdMEN/IvJcNBMssX+NRc7vRyVJLWordr1i557jJuLh/OBYdjeiZJJlN2GGE
+         ZnZigUFRd5G9cnovUJuZOkx86MofvDSyb4/MWKimwzXogstj0PJMPP8pPBlpT/dLqPzQ
+         4A4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781072989; x=1781677789;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXhoKBKFsBSVgBh+Kydkjm+k3Aw/b2vmM+J6r2LJmuo=;
-        b=dJxG/hdgCBhuUJ4XGVCKX9wGzbSm5IEQ/DgrRqYBkQC8lYKZcGrI6oG3yvBpMgjq8u
-         EGUGnPH0DJ9RhwQSGKHoq70x4nziRbht4CXwtwJJEZqbiKreHeYCaUedlThXLbUSHTKl
-         uNhe+gu2ATg/uvjAr/widw5+drpMBZq2XJDSYAP2qycPfoIQhwr6xrYsY/PIG9Hid6TT
-         4MBXdsG3ISlpM3lqgR1/v9a4GlQ+LGQoZCldeiSefx5Yi81C6AkQVe8brec1J1sNMmfr
-         GzaYJsGbW2IwL9wBDBZP9Vdr/5jpRAnn24+84XzqELuH9qY/fSck20vTtstrcBm72Sc5
-         rbsA==
-X-Gm-Message-State: AOJu0YzQQM9i4uYqYYsZOJNf0OImTjRF4/i3qigRzeFQM2sCvfejNvDT
-	4fGyKHo9d7q1QsaIYXZFPKntfOzZrvGg+iZf6fFl5WPF0Njxgg2lqwKz
-X-Gm-Gg: Acq92OFSQR2UjVW64iOCRKIs8M6tPRMaCf0sd4z8pVj9cgHJmG1Ag4oNCdrbExidU3F
-	won1H3UtewuL+RFOVFAmDIJAiTShmxmKoSoAajrGQjVwZs1Uzf8KpoJZ4brg1Pm9BvwXDZf3pX7
-	YfRUNgYfp1urCBQSwWS0DAT1ehz9Xk9GhwDhwe04CaeoAgJ2hY74T3WZplkytXx6e0igD3zwEh5
-	/Pvjv6o7muNV/ESiffprX/B/Z4EJYOXkDnVN1BOWW85ET5fae6wDq3G2SlwEaxtsYsmjKWFTFIa
-	rTwN7xaArMTIE/EQeAHDquDMS6y6wZxmfIAjeKtcdzCqDEhFr7ctufBjSNZ4mgUs2G58+7OYQdq
-	5MS4xZvJwCsfVttRlTydTiCimcoYMUgjbVt14HZMnXhLlV29F6HZ6QTHIrrz0SXF1kf1VMTOiqW
-	eav1vVpA5SkBf6GtU/X/+goLWS+1l2XaLx
-X-Received: by 2002:a05:6a20:1615:b0:3b3:1951:489b with SMTP id adf61e73a8af0-3b53bf75f2amr8504650637.45.1781072988909;
-        Tue, 09 Jun 2026 23:29:48 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df04a0e9sm17535932a12.13.2026.06.09.23.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 23:29:48 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
-Subject: Re: [RFC 0/4] mm, swap: Enable THP SWAP for PowerPC Book3S64
-In-Reply-To: <aig3PFm9jst8cHxn@yjaykim-PowerEdge-T330>
-Date: Wed, 10 Jun 2026 11:00:43 +0530
-Message-ID: <pl1zdksc.ritesh.list@gmail.com>
-References: <cover.1781000840.git.ritesh.list@gmail.com> <aig3PFm9jst8cHxn@yjaykim-PowerEdge-T330>
+        d=1e100.net; s=20251104; t=1781074339; x=1781679139;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Nma+8ZLl/ANIFmPcb7oIzPV1qmhLMChBX+uzNBOMDo=;
+        b=PqAYu6WSxsWII7XhjUUMk+TAkdzmgrDZbITbYkhmQ0Rx6zvR5kg+aqhO3KdWUK2jlj
+         mtU2Wu7kkglVTXK4Q3dnaiEOMOuo6x3kLt78RZ+bcKomBdBXV/Iz9sCZBrX/nGnAC3te
+         gWoVnOJKGgZOH/9yV5xkeZLKCjWsq0O3zinecAGdaAM76RJ25xa46JLlwliDtuvULivz
+         DQgAX7w8yDUZk4DHCh69WBz5Ozn4rMBg9DQP7XWyu7db2Xh8v4vb06Th129+V2s+WPi5
+         gk2MD16IEI9LopxNrFEJfVsN81g1snZj/zE5cDfz6INZnzPXknfvOoynv+w7bPR6+iVw
+         ZQwg==
+X-Forwarded-Encrypted: i=1; AFNElJ+c7XdMvDUUsIoZUzK3Ri8vFIDwAPzhTcUOsdYxCq3u5lioduB/jglGLE1Y5n7QX45h19fY3nVAvw==@kvack.org
+X-Gm-Message-State: AOJu0Yxon/00bX03jL7bEKVjLxoZdD9z17+mJrPYvdW/RRqm7RhrMw0R
+	+mB3xdZ9G2Vfx+IXzr0+rjs5LjGrh81zm28/Jslb6oUiMuUcbgY4FXL2c8ZBCinfNpKuy3Hcox7
+	n00dqdjlIqjZr8iWvhQ==
+X-Received: from wmbh23.prod.google.com ([2002:a05:600c:a117:b0:485:3a14:a74e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1908:b0:490:b5d0:598f with SMTP id 5b1f17b1804b1-490c25b5f6cmr386696345e9.13.1781074338597;
+ Tue, 09 Jun 2026 23:52:18 -0700 (PDT)
+Date: Wed, 10 Jun 2026 06:52:17 +0000
+In-Reply-To: <20260605-page-additions-v2-1-03f04c8fdbbf@kernel.org>
+Mime-Version: 1.0
+References: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org> <20260605-page-additions-v2-1-03f04c8fdbbf@kernel.org>
+Message-ID: <aikJoacZW5JMEx74@google.com>
+Subject: Re: [PATCH v2 1/2] rust: page: add `SafePage` for race-free page access
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Boqun Feng <boqun@kernel.org>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 41DD314000F
-X-Stat-Signature: jrbkj37hfc4rpi78xswmsrdjtheepkoo
-X-HE-Tag: 1781072990-26565
-X-HE-Meta: U2FsdGVkX1+t15+4Gen7ICqx8tDJIeWg6zpOGmcFtVbwUCR/NSadSm5IrIQ+20tBOjwkk5UAJtOhv7YxDM8d2z+J0JMvyCR5VmNSdcBtLCB2NNb+6Sh3CKIx0RuGPXBGAePRb8UzwSgHeBHLaOD2wIFcKHlMcwfdwDbvEFMhc78x9FWDDdAAAjfK5Mz4L9ExmRoWzp7RUV/82zV4IVYo+1XsP3WLoZ5fPLWKcqNWiLu1t1iOfPVCwbBMbYRnWANXywA31iYgf3iG5jhMfjPwNAPaglqi4PDftxQ1USvo6MAqc/y3D6AY4Dng7KZHpkRVIz/51QSNbN0doRZWLPll5XvBeK2aZ3nZs+m0ZojSKlhQ2kAvZHI910DBBWVNA8QTNN28Dl8YB8Rj5donQvjzKKr7T2PbbxrZYPeeVUxUMBf2Y8zPR0bqPaKnzNi1PzyV/99sMxQPnIjb0MGgkrjcc8WPM13kXSvY7iPlXup79cCs3noSbwBoU89UJI/WwXcmsQgQaCCGBSNmJPB46e3ftJ3Bqci1ElkyokYfZAfamJXd8L+9jVWNvKGCmAHLWolzb8Ho1PkI8Wf+jpHxN/vnBl/UcsMrXDvradXcpUbNi7nUQpsAYW5vmop21kx27+vT3KR27ssbTu2phTEa1kgPRJvA82s33t2vi1T0x6osHtezJkMrrGfS49mIMzckkRZ073owDoEi0a/OA+dk2ep+bnJtyULm9ANqhHUacs6pZPK5zAcJOA7l6W50UOxSD+QSUiz84s6l0fEGNg7hkurBqeW9kNdEbLsv+JbPfyzqiY+HjBDw8WpbC11CE5Zi0G3jTmFC/yYp6MTYs7zQN+G+ff9nX/u8NvDgcdwEwQemsNbHBcieLZFImSFq+wyrY3INCzsKurB950OZStQX0aO8tceuZO6Mvprg76dKGooVu9k1sawmiDINSrMqGVRRk0lGgMGj0+ksfkVvf7W2nlo
- o8FhgC0M
- W6inwL5Z+4gexV03UKY0gVpYMui+OwtPuLSTY55ARi8d89ttSlIuQzxfJAM9FywA/vmwdZIeONbdRI98vl4Ahf6ItLUfBFdWEu9v8TdZHVW8Jz5Mzels4+TrsFatjc+EArguJyMLVjiZEPU70eVPcGojUL4xmpj2dmY160JHEdCouOG7MgFOfp64MgwOXQxZi2IDPuzyi8GDevjFoeTi6qKObOpwi4Z1Mqrao9/G1eJDWlc1GDYOhewxLpL2oOcsheJG3I/8vw1IlCW3AJ9ZNMUFnd+BBh+S0vdaLn4TuUIIPNd2RgORhbSPCPX/3kJY3GVUSs7/RT+sIYY9PmG5n0/Mj+xfuRlGnc47F5Yo7KwogzIhD/hF1XOJnUZ5pS3lRwQbLPRgpQzFxPQ32JcKT0SYk6sJn+uyBUq10FEOTmgmsCf1N9liobXGQ24DBTTAUthNPe5CPXWfsMIopij/uH/CX71a8H3YPS7lGq3BEPnPPLsM=
+X-Stat-Signature: byy1db1txzux1iaraci1poqn93umio9d
+X-Rspamd-Queue-Id: 54021140008
+X-HE-Tag: 1781074340-532423
+X-HE-Meta: U2FsdGVkX1+v1vkrmMPhDJ5JMzRwjxqpapjhAinxverZdp5CEFOgZDPKok4LwjoGsi7gIiQhsCg/ihDEtqCH3K8VQsL68MepvAdy4anS1Cnc5PB+KXd3Dn6K+hTWgcI1PC31ZkR9MZicg+FLBXdZ4i4A7mPZb1hGpOtK06Q5QS2Ckxb/nMOTDRRUSenFufoyXQLPevhUTCVhLd/J7TfXuJoCY6QsHvXXRS0ld0t97D63aQSjrHURiq263u8odePqi32uVg5bFUuOiaZfnRBay79VAH5IxkskOEyz7jroZO7BgMvGSE4QhEPHn5rIK5wIWyO5govV158N6+ad3Ftybb1hABHSSwfzZQuqE0iehzUPfShUxqWNBAy50ScihxnZt4uO0XiOo3wBEdgctffOd5hYYXp2CSwKKK3v9zb+WrEaGnpxfWalSD+ddrhVbUQiocNqn3RnRjYeo/UMQe6I5OzcV1UYOp8JJ7PyT2JOHjvtaGHIYQpq2sU5hI70C1VtTDIAGfyvtAUX6676IPTub4tkMLjxC+GxbFI78jSKXhHJfwbyyM+fA+SXEBhOX80TIBINA85u1dET/v27BOgLa/lXIFOd8YMkpG/LSBuY4321Xo50+hsIAiFA8qXmVS0Hypd7xYANe6ZCgcoKc83tD5Olbdo0G66Jg4pSTfywuQ4XKVmbhOIragmQ9EhgA702TaKVQiMuxBjbIvvwzDRrpDn99GLwxMhVS2uHTyPqTlwz22wTRSfEJHQIppJLDspTowOc/1ytmg/ygZK5jBSJrwfolg6eam7cPelQXfmGe89Kvipn8fwSvCVEZhfaTY5++rDR+lsN685YN2UOkRZtAdXmWOPUmapEQy4IBa57uophW91Jwzye+jGFlWDbwSd9qXfkEZK+x7ARGk18utGEAdEmx4OGRxAgAT7nBfeIewJXGsEiRp8O/QpkGF8W4c9BsaYINqkDwPXEowm1tOW
+ dJBFH8Ui
+ Y3uKRhqPe6Iu6T738erfWv3KN4k86yYN0rpXA/yurj7Pjmqhjr8bQxfPcC81E492LhK4ia0R7c2dFWSDX5CZtGrU9vw6OfBxEbp1x7iJ+a8Ib3k4nnKKFUfEQlM5AhTJxpDbDcjFZ/i3fu2XxqD0+6xfHZIeuv4+8VvUSTbFnj4NotawxfEECB7ufNTdZIpESNVHKFczNzld5lNHoZMA259etK4+m0FPVt2SN4WyoJBnQplXMq/fIx8dDofmeT5vTEl/JdgFBZwNMyyIj0h7hnNajFnBHRr+IRdR1+sjpel7dlWeuhJhcZ2kyeO/2bqCY/MVRZJ/qqjGYqkUns7pFScjAq44pDv0JmpHjkdr5TjaNbQxpl5W6KOV5ejSMbUtqKOt4XF4jNP0mAlrpGSyz7O0NV8TXDQLGj8gxGVHUQ+Hek6P5wc7ZnaZeoHEZLcViGoe8Y9W5RUFakocc8MlcQjRQcnWZQjYRyepL2J2gUCmXi1W4fsVuY+jEYdIm6HMoCNrddJ7WHnR0yo141KfFhQnvcUc0THNEk+z6vpvpTFb6V1lzP0QvAGVYq/nBpXw1zTf3aTJySXHGnEwXTJ06qQQysgTFKtu4kXffg9nHn8TCrxigztrB+UTWVlsZK67Wgjyq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,112 +109,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-YoungJun Park <youngjun.park@lge.com> writes:
+On Fri, Jun 05, 2026 at 02:49:14PM +0200, Andreas Hindborg wrote:
+> `SafePage` wraps a regular page but adds an invariant that the page data
+> area does not incur data races. This means `SafePage` cannot be mapped to
+> user space or shared with devices, and it becomes simpler to directly
+> reference the contents of the page.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> On Tue, Jun 09, 2026 at 06:49:30PM +0530, Ritesh Harjani (IBM) wrote:
->> On PowerPC Book3S64, MMU is selected at runtime, so macros like PMD_SHIFT are
->> effectively runtime variables in the Book3S64 code. THP swap code uses these
->> macros for e.g. to size some of its array data structures based on PMD_ORDER.
->> This patch series makes that usage dependent on the runtime variable.
->> 
->> Sayali did some performance runs of this on Book3S64 with Radix and it gives
->> 40-50% performance improvement. We also plan to run it with Hash, will soon
->> update the results.
->> 
->> Note that this patch series is based out of linux-next (next-20260608).
->> 
->> Ritesh Harjani (IBM) (4):
->>   include/linux/swap.h: Remove unused leftovers
->>   mm, swap: make SWAPFILE_CLUSTER runtime
->>   mm, swap: make SWAP_NR_ORDERS runtime
->>   powerpc: Kconfig: Enable THP_SWAP on Book3S64
->> 
->>  arch/powerpc/platforms/Kconfig.cputype |   1 +
->>  include/linux/swap.h                   |  17 +---
->>  mm/swap.h                              |   5 +-
->>  mm/swap_table.h                        |   6 +-
->>  mm/swapfile.c                          | 132 ++++++++++++++++++-------
->>  5 files changed, 106 insertions(+), 55 deletions(-)
->> 
->> --
->> 2.39.5
->>
-> Hello!
->
+Perhaps it should be called ExclusivePage?
 
-Thanks for taking a look at this.
-
-> Instead of making SWAP_NR_ORDERS fully runtime, could we set it to the max
-> PMD_ORDER possible on PowerPC Book3S64 as a compile-time constant in the
-> swap.h ifdef block? (My assumtion is PMD_ORDER max not too big.)
->
-> I think the general runtime version adds cost. It impacts all other archs.
-> percpu_swap_cluster needs a runtime alloc,
-> the si/offset and nonfull/frag arrays become separate pointers, and some
-> accesses get one more indirection. And for nr_orders=1, the allocation
-> itself is just waste. 
->
-> With a compile-time possible max constant, the only downside is some acceptable amount of
-> wasted bytes per CPU / per device on Book3S64 (the unused entries in the swap
-> offset cache and the nonfull/frag lists), with no perf impact. the perf
-> improvement comes from THP swap itself, right? Other arches see no
-> impact at all.
->
-
-I looked into the memory waste comparison between static v/s runtime
-alloc. And the wastage for per-cpu alloc data structures (with Radix
-MMU) will be 0, because we use kcalloc_node() which will use kmalloc-64
-slab. So slab padding would anyway add some memory waste. So it is as
-good as using static arrays with some max PMD_ORDER for the
-percpu_swap_cluster.
-
-For the other lists you mentioned, it anyways adds a onetime negligible
-cost which isn't worth for making SWAP_NR_ORDERS runtime. 
-
-> patch 2 looks fine as is. SWAPFILE_CLUSTER backs much bigger per-cluster
-> arrays, so runtime sizing makes sense there, and it looks like no impact to
-> other arches or the current code.
->
-
-yup. That make sense. 
-
-
-So, unless someone else raises any objection - I will give this a try
-instead of patch-3 in this series and will get back with v2.
-
-
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index e67e64ac6e8c..57abd8b2c9a1 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -204,6 +204,9 @@ extern unsigned long __pmd_frag_size_shift;
- #define MAX_PTRS_PER_PGD       (1 << (H_PGD_INDEX_SIZE > RADIX_PGD_INDEX_SIZE ? \
-                                       H_PGD_INDEX_SIZE : RADIX_PGD_INDEX_SIZE))
-
-+#define ARCH_MAX_PMD_ORDER ((H_PTE_INDEX_SIZE > RADIX_PTE_INDEX_SIZE) ? \
-+                               H_PTE_INDEX_SIZE : RADIX_PTE_INDEX_SIZE)
-+
- /* PMD_SHIFT determines what a second-level page table entry can map */
- #define PMD_SHIFT      (PAGE_SHIFT + PTE_INDEX_SIZE)
- #define PMD_SIZE       (1UL << PMD_SHIFT)
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 46c25523d7b8..5f1451f8f266 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -224,10 +224,14 @@ enum {
- #define SWAP_ENTRY_INVALID     0
-
- #ifdef CONFIG_THP_SWAP
-+#ifdef ARCH_MAX_PMD_ORDER
-+#define SWAP_NR_ORDERS         (ARCH_MAX_PMD_ORDER + 1)
-+#else
- #define SWAP_NR_ORDERS         (PMD_ORDER + 1)
-+#endif /* ARCH_MAX_PMD_ORDER */
- #else
- #define SWAP_NR_ORDERS         1
--#endif
-+#endif /* CONFIG_THP_SWAP */
-
-
--ritesh
+>  rust/kernel/page.rs | 73 +++++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 62 insertions(+), 11 deletions(-)
+> 
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index d56ae597f692..f143b42d1bd6 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -8,8 +8,10 @@
+>          Flags, //
+>      },
+>      bindings,
+> -    error::code::*,
+> -    error::Result,
+> +    error::{
+> +        code::*,
+> +        Result, //
+> +    },
+>      types::{
+>          Opaque,
+>          Ownable,
+> @@ -20,7 +22,7 @@
+>  use core::{
+>      marker::PhantomData,
+>      mem::ManuallyDrop,
+> -    ops::Deref,
+> +    ops::{Deref, DerefMut},
+>      ptr::{
+>          self,
+>          NonNull, //
+> @@ -193,14 +195,10 @@ impl Page {
+>      /// ```
+>      #[inline]
+>      pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
+> -        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
+> -        // is always safe to call this method.
+> -        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
+> -        let page = NonNull::new(page).ok_or(AllocError)?;
+> -        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
+> -        // allocated page. We transfer that ownership to the new `Owned<Page>` object.
+> -        // Since `Page` is transparent, we can cast the pointer directly.
+> -        Ok(unsafe { Owned::from_raw(page.cast()) })
+> +        let page = SafePage::alloc_page(flags)?;
+> +        // SAFETY: `SafePage` is `#[repr(transparent)]` over `Page`, so a pointer to a `SafePage`
+> +        // with ownership is also a pointer to a `Page` with ownership.
+> +        Ok(unsafe { Owned::from_raw(Owned::into_raw(page).cast()) })
+>      }
+>  
+>      /// Returns a raw pointer to the page.
+> @@ -401,3 +399,56 @@ unsafe fn release(&mut self) {
+>          unsafe { bindings::__free_pages(ptr.cast(), 0) };
+>      }
+>  }
+> +
+> +/// A page whose data area follows standard Rust aliasing rules.
+> +///
+> +/// [`SafePage`] has the same usage constraints as other Rust types. Thus, it cannot be mapped to
+> +/// user space or shared with devices. This makes it safe to reference the contents of the page
+> +/// while the page is mapped in kernel space.
+> +///
+> +/// # Invariants
+> +///
+> +/// The data of this page is accessed only through references to [`SafePage`]. While a shared
+> +/// reference to a [`SafePage`] exists, there are no writes to its data. While an exclusive
+> +/// reference exists, there are no other reads or writes of its data.
+> +#[repr(transparent)]
+> +pub struct SafePage(Page);
+> +
+> +impl SafePage {
+> +    /// Allocate a new `SafePage`.
+> +    pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
+> +        // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
+> +        // is always safe to call this method.
+> +        let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
+> +        let page = NonNull::new(page).ok_or(AllocError)?;
+> +
+> +        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
+> +        // allocated page. We transfer that ownership to the new `Owned<SafePage>` object. Since
+> +        // `Page` and `SafePage` are transparent, we can cast to the raw page pointer directly.
+> +        Ok(unsafe { Owned::from_raw(page.cast()) })
+> +    }
+> +}
+> +
+> +impl Ownable for SafePage {
+> +    #[inline]
+> +    unsafe fn release(&mut self) {
+> +        let ptr: *mut Self = self;
+> +        // SAFETY: By the function safety requirements, we have ownership of the page and can free
+> +        // it. Since `SafePage` and `Page` are transparent, we can cast the raw pointer directly.
+> +        unsafe { bindings::__free_pages(ptr.cast(), 0) };
+> +    }
+> +}
+> +
+> +impl Deref for SafePage {
+> +    type Target = Page;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.0
+> +    }
+> +}
+> +
+> +impl DerefMut for SafePage {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.0
+> +    }
+> +}
+> 
+> -- 
+> 2.51.2
+> 
+> 
 
