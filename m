@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48E52CD8CB2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17347CD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 604F26B008C; Thu, 11 Jun 2026 02:06:52 -0400 (EDT)
+	id 0E7AE6B008C; Thu, 11 Jun 2026 02:19:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DBD26B0092; Thu, 11 Jun 2026 02:06:52 -0400 (EDT)
+	id 0BF226B0092; Thu, 11 Jun 2026 02:19:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5190C6B0093; Thu, 11 Jun 2026 02:06:52 -0400 (EDT)
+	id F3DCB6B0093; Thu, 11 Jun 2026 02:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 414646B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:06:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC732C1D5C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:06:51 +0000 (UTC)
-X-FDA: 84866598222.25.06148F0
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9403580003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:06:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ftEQ4RdY;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD4B76B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:19:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B20D1C1B89
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:19:13 +0000 (UTC)
+X-FDA: 84866629386.27.9A3ADAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B25934000C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:19:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhLzDqo5;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781158751;
+	b=rvfLcYU06LQWDK1rF6ddiSXsa9cLBdS42jxAfIB9L8AoH/HmDKysa7Ka6KhjiRqo1oItDi
+	0iHhK4gDbuDb+vhXO7e7XH6c3X4IaADW2uARYrCfCayprPpsDr83ZC++XkgxNF5acwsGlH
+	0F//z7kyX4YG1wv+AXKPk8tG0M2msq4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhLzDqo5;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781158010;
+	s=arc-20220608; t=1781158751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VY6cPLdBFMgAfHoRWeR+QE2M/b9diN2t5Veaeaq+jOM=;
-	b=PN4JkLeP39OJCn4KFFWNBaYeOl6plevZAgZgYbTZ6MaljDR9s3es0DWi/gMFRGTxGRFNpK
-	kFIjwNrfDzMF2TM2GsviViWBASjSdG9UnIoT8JRy6pO06COOaVv681J5AiZAps/cbaPlJG
-	nQCJhKfJCa+89/GC5kJ92Rt/7EoG6HE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ftEQ4RdY;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781158010;
-	b=FpDCS5llHgvX3lyQxdj2Qw7Yw//CNUo/2zZWWnvtliXZrRsQkknVcQexZfv/W8WEtZvM7V
-	CHaIrGULKVLLMkm2Z9GIrKNmZmW/BGvstBf+V3CQDj9dmLMlNXSkEnXzCdmbt4yarrJkNU
-	SbR2aBxkFUKhyf+3s1RMwuOSZthxz9o=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781158007;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VY6cPLdBFMgAfHoRWeR+QE2M/b9diN2t5Veaeaq+jOM=;
-	b=ftEQ4RdY3JzZb61UAxo9N15nCfYeH1ESPtYqnyAjeynqSBo43LkPMTTqO9JcKjiEFqHWVF
-	S69PLmCZYqmxG/x0wEF7QkOO2QdjEdRsGD0fs8us2gXWZ7jVGOYvplIaqm9zA46Hyvejsb
-	buz1f6cyS40AP9fHbkhYLyXLvaPrPKA=
-From: Lance Yang <lance.yang@linux.dev>
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	hughd@google.com,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse support
-Date: Thu, 11 Jun 2026 14:06:19 +0800
-Message-Id: <20260611060619.94738-1-lance.yang@linux.dev>
-In-Reply-To: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
-References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
+	bh=6aSwxGmpETKMO5gOuGeJq7TjqE4KH6CoAq7LEyPtOgA=;
+	b=GzdJAqnBznj5340vJz9BaoRQZn+hCb4d7LJustOb4Blnta1saufmLn49RFNqbiO6hDRtn9
+	ZkuIap6z/EJMOeqzCvbpQN3h4vhRAdTXZre0Uw0aXoy1K/nzDqmrUkY7gBF/NLouLM8F4R
+	RABt9CCJxH2O7fur/9IdrlnXuswdBTM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93DCC40860;
+	Thu, 11 Jun 2026 06:19:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB3B1F00893;
+	Thu, 11 Jun 2026 06:19:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781158750;
+	bh=6aSwxGmpETKMO5gOuGeJq7TjqE4KH6CoAq7LEyPtOgA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PhLzDqo5Cvrc1JYXyvEiz6ZvyzPSZs0EJwhq36Uf6vxl5qrM08p7VaOaG0m1oep+w
+	 n9B1+3LdImwuDTcMKpJzcT30v77sbUKgMEXEWBSatXHD1IKWvCIDFbu4+cm5DWqU+A
+	 jpokZDBR1qS4saVx83JIZ8PCml2r8hsFEgCusas/Wwjby17a08Z2WGqJ8euYVUkwnU
+	 UXSqgZYrHb8ijTXvOuIfKlLcqxnEZre/RTMh0cauC5r4tQCUK0niR6sZu5ntaBFXqs
+	 4oaA9r182MOJMtSMYnwKz97Sc3M3621e/hask6ityxPBJQsoe9UM5BU8SsU9KLp+iw
+	 jOgzrQ3ToKvrw==
+Date: Thu, 11 Jun 2026 07:18:55 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com, 
+	willy@infradead.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 00/11] add shmem mTHP collapse support
+Message-ID: <aipSe9Snx5x0esQx@lucifer>
+References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9403580003
-X-Stat-Signature: r1ttnm9w157q5mm77s7em3amq56tcqtd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B25934000C
 X-Rspam-User: 
-X-HE-Tag: 1781158009-778028
-X-HE-Meta: U2FsdGVkX1/0xWaXvDmKQmUZU5WH30xQo9pK8SC942p39CZsaL5JbcwKxEnJ/TQ2Alz12oXT4A3unN9XVlvn00J7tcnEwor0QQpq5CL7UgZW/fXFSu+gaVFhE/mzI13kc9iugZAWPBrwwac3bBgVlt17NZeZAsJysrlfIeb3hKiFI6ICiqaIaWltoh2GhKrX5IMik9peeIi/y2da3MwjkZ7LdTQxMl/ya2ro9SzYw4DK0sybbmC4N490C2M7drL3o4Unmh+cA0GDjYaI2E7hVGKiJuE7aSro3ng+iy/fxfl2sT6Bc5XpEYXCuILkzIKeICI2Uex3SN15FSJc+MUOawtcDx+oZP8kRROuRXCdP7QEeXVEHDODbJq10KfoPoZQlPcd91QKNRxb/+6kpwQaVgxkYYfghTFXzlgidootwkO3fuOYhZb/AJIW1Nn7yCnl/9Y3RcvMdDTbB1zY64loL9GXRK7/SaCcuI4p7CWpBEZ/+6R9F1tWDNbKUZaaU+3PTim8rtBruGyPbkaZORdplv0FX/1Byj3vjWz/2I/aLUrI0q2Tl7kTbHaF9I89/ekwvQ948EaXjAoEdDzbXvSNhGZb8ucOZh5NBhr5sBDsDaSrmyNQZJXeyxFrztTpM6xUeCVbKneT5s7I+66ju0bffSLPJWfaOiiP+ALYX4BOH5eYYRA81cPY6aZEALU8tajNjGVYWFEKNagwwEKOGadCt2aRdn+xM5JvbAWeyAi9qmoZAYDOzmHSZphvutBSByY0e01MOFkN9uIIoSDj0ZsBQPjNEAaLhj7gSSfA5BCZu/+JdvoWGU5JTVKZ8jnBnNgcZsvkvYp7Mg0YDY/fes7kmrQAZOxwGQX6tIuPOk4xatyWinSPGTRkkZC+RN+3FLQnG3c26fz90/b1uSUp6X2I+Wd9u9YL5PE45NW99cQB2vXf6jLoSN5mk43yk6Fxc+4QCteobQpP08B4ND5N/H/
- 99yP87gx
- WgSK5FWgeHqLp2oW43Qf9qnsr7xRgjLRV+BPDr02oVFFqe0cGkAybYpXKJiJQ2QIGloS3lOZCEimR101ea2dHlkihm74vfgBi16jZi2oRQDESAPJ9mT/m0rTvrRv18aQY9gqHHA8KsV3aTpU7TiDsUma5DEnTiXWDCKQQqfjJeUf7k8NS3datSgEDZbqlKq6bs6E8HSVd7x9eQYbj8PFfzP/uRA==
+X-Stat-Signature: 1x3dbud699uiwa7eb6mao44yc7gk5g3d
+X-HE-Tag: 1781158751-24710
+X-HE-Meta: U2FsdGVkX1/xv3OIpZr0oQxAmTcY2wDSzopBC9CL9jxyNPBWRoOLsQWARZhlLa2dMce9skIvHMUFcUuJrvsuXUDSGJf8tcaoIosqcE17hk6eXa39CM/Q+6FDor6bqv9kRv28T9SlRZ01MaiZYFeK5lpoZpQNZl7o/FcAB97wolBAg/jlhrkpPWfim4f3pEN6/StNt8fTEV5n4togT5yDVUo1idl7zKWgsg1bznL5yJvl5SUwBmVlItjdqJvucoqQol2a4XiOZoys3OIyCq75j6eLEaQuW6j+rIq8A/fLnfc7k5wiWI36eJpdzP1cV3NusDrjvMmut0w/sKR2IH9o/fWO1A+Ch5gAJ2UhVBtks6UGzyo/1vMMLtvFg57B4Bn6MTcYQPUqhsZfZKEmdlqtjKiN5pz8fwFgiw3n23lrlPBG+bsDT5oCThFxt6YC/vj01HxnOPuhOHO/rwPe3LygyfIdWVskshoBN+I78DzXf9CWudL+DJzcO6jN8rRAOlAqerTxN7ku5srhBaEvabNvv7x7RnKUiUng/Kxw/63UHxAVhR/cjxRFkcbSznbG75m7KsJSXLSDMoesERcS+TFrZuXX5DFZIiofxzBarBNYeTVGwCcsFFBr3XBFJMB8XpsUyep4xVjoH7veesrUkl+9CPCuBG5HlSkGUuHM6C8ZMcvzesuuRdWrhRN7ryN3VgFAhAAeEaFZpB/o5f7Ibg6jPZv6Zh9YdnHfqxnGJnmE3CVqOBfq00H26/G6RWarw061+FW2ym9nh1Qnn6Esg6iuZNgOLtg6F0wKcefCIfMmMDFPPhbBPZ2hJjYM0y3le3RamTVZTG4TBDa9TnPmIBrK3MB3+NtlrQ+0n2EZl/e1S+4bXevNjVqaC2O4eWoVK6dlOnc4nCMJOQ62YTBrujx08/6VpKiTcUWryUT5iAx9lzhQS83f+Yj416NZaNSITiZ+VGkbJrlpJsRW4UkVuL2
+ 80z2Y7wc
+ i1f/SuIfc1K/72GsjN+Is1EFE7xHN2nJQjNhz0/o09+LIfrMPLFScpWsW77GOAnAajYtJICezVWtpIPR6PfYkfM0yozabV5OK3+9IQJP5gf6Ufb5hYdXGJZq6cXxdVTjJWgffZA9S1QieNeB8xKH/JrkSMMF6aMJQ3ICYHLpi5uEsh3DGciYLtasKwFcamZRh12MAgHnjM5/n/6knjg+ehHsXGd075ku0kyBomNwG+OYQ509tGKNcVUbsWj9Zr86vKbH/x4p8LZHOdK7qUQGIBa0fIG7pYzKZJnRtdD9s/gKicb4xQ66XA5rY5bzgJuh3WYvh1mTsz/A01A0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,54 +92,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jun 10, 2026 at 06:29:08PM +0800, Baolin Wang wrote:
+> (Note: this patchset is not targeting v7.2, but posted for early feedback.)
 
-On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
-[...]
->@@ -2768,15 +2827,23 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
-> 	else
-> 		cc->progress += HPAGE_PMD_NR;
-> 
->-	if (result == SCAN_SUCCEED) {
->-		if (present < HPAGE_PMD_NR - max_ptes_none) {
->-			result = SCAN_EXCEED_NONE_PTE;
->-			count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->-		} else {
->-			result = collapse_file(mm, addr, file, start, cc, HPAGE_PMD_ORDER);
->-		}
->+	if (result != SCAN_SUCCEED)
->+		goto out;
->+
->+	if (present < HPAGE_PMD_NR - max_ptes_none) {
->+		result = SCAN_EXCEED_NONE_PTE;
->+		count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
->+		count_mthp_stat(HPAGE_PMD_ORDER,
->+				MTHP_STAT_COLLAPSE_EXCEED_NONE);
->+		goto out;
-> 	}
-> 
->+	result = mthp_collapse(mm, file, start, addr, 0, 0, cc, enabled_orders);
+Hi Baolin,
 
-Feels like the second 0 wants to be "swap", no?
+Speaking broadly, and to repeat what I said to Nico - I'd like to
+re-emphasise my _strong_ desire for us to pay down technical debt in THP
+code before adding any further major features.
 
->+	if (result == SCAN_SUCCEED && !cc->is_khugepaged) {
->+		/* If MADV_COLLAPSE, adjust result to call collapse_pte_mapped_thp(). */
->+		result = SCAN_PTE_MAPPED_HUGEPAGE;
->+	}
->+out:
-> 	trace_mm_khugepaged_scan_file(mm, folio, file, present, swap, result);
-> 	return result;
-> }
->@@ -2808,7 +2875,7 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
-> 	mmap_read_unlock(mm);
-> 	*lock_dropped = true;
-> retry:
->-	result = collapse_scan_file(mm, addr, file, pgoff, cc);
->+	result = collapse_scan_file(mm, vma, addr, file, pgoff, cc);
-> 
-> 	/*
-> 	 * For MADV_COLLAPSE, when encountering dirty pages, try to writeback,
->-- 
->2.47.3
+Really I'd have liked to see us do this _before_ khugepaged mTHP, but I
+didn't want to put Nico through more than he already endured with that
+series :)
+
+So I'd really like to see some action on that before we embark on any
+further significant changes.
+
+This is no comment on your changes, just something that we really need to
+address in THP generally.
+
+Will try to give some detailed commentary on the actual changes when I have
+time also :)
+
+Cheers, Lorenzo
+
 >
+> This is a follow-up patchset for mTHP collapse to support shmem mTHP collapse,
+> which is based on Nico's patchset[1].
+>
+> The shmem mTHP collapse strategy follows the anonymous mTHP collapse approach:
+> track present pages via a bitmap while scanning PMD ranges for collapse candidates,
+> then use the bitmap after the scan completes to determine the most efficient
+> mTHP order to collapse to. Built on the basic framework added for anonymous
+> mTHP collapse, the shmem mTHP collapse implementation is straightforward
+> (Thanks for Nico's work).
+>
+> In addition, I have added some anon/shmem mTHP collapse selftests, and now all
+> khugepaged test cases can pass.
+>
+> Note: I have not yet enabled large order collapse for file folios (file folios
+> currently only support PMD-sized large folio collapse). Although file large order
+> collapse would be more straightforward to implement after shmem mTHP collapse
+> support is added (requiring some changes to file_thp_enabled()), I think this
+> still need some discussion on whether it is necessary to support other large
+> orders collapse for file folios.
+>
+> Comments are welcome. Thanks.
+>
+> Changes from RFC v1:
+> https://lore.kernel.org/all/cover.1755677674.git.baolin.wang@linux.alibaba.com/
+>  - Rebase on the new code, and update to use the new functions.
+>  - Add more test cases.
+>
+> [1] https://lore.kernel.org/all/20260605161422.213817-1-npache@redhat.com/
+>
+> Baolin Wang (11):
+>   mm: khugepaged: add max_ptes_none check in collapse_file()
+>   mm: khugepaged: generalize collapse_file() for shmem mTHP support
+>   mm: khugepaged: add an order check for PMD-sized THP statistics
+>   mm: khugepaged: add shmem mTHP collapse support
+>   mm: shmem: run khugepaged for all shmem mTHP orders
+>   mm: khugepaged: allow khugepaged to check all shmem mTHP-sized orders
+>   mm: khugepaged: skip large folios that don't need to be collapsed
+>   selftests: mm: extend the check_huge() to support mTHP check
+>   selftests: mm: move gather_after_split_folio_orders() into vm_util.c
+>     file
+>   selftests: mm: implement the mTHP-sized hugepage check helpers
+>   selftests: mm: add mTHP collapse test cases
+>
+>  include/linux/shmem_fs.h                      |   4 +-
+>  mm/khugepaged.c                               | 174 ++++++++++++----
+>  mm/shmem.c                                    |  10 +-
+>  .../selftests/mm/folio_split_race_test.c      |   2 +-
+>  tools/testing/selftests/mm/khugepaged.c       | 195 +++++++++++++-----
+>  .../testing/selftests/mm/prctl_thp_disable.c  |   2 +-
+>  tools/testing/selftests/mm/run_vmtests.sh     |   4 +
+>  tools/testing/selftests/mm/soft-dirty.c       |   2 +-
+>  .../selftests/mm/split_huge_page_test.c       | 139 +------------
+>  tools/testing/selftests/mm/uffd-common.c      |   4 +-
+>  tools/testing/selftests/mm/vm_util.c          | 184 ++++++++++++++++-
+>  tools/testing/selftests/mm/vm_util.h          |   8 +-
+>  12 files changed, 492 insertions(+), 236 deletions(-)
+>
+> --
+> 2.47.3
 >
 
