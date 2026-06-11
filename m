@@ -4,134 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1630CD8C9D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:27:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4270DCD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF35E6B0088; Thu, 11 Jun 2026 14:27:37 -0400 (EDT)
+	id 7A6546B0005; Thu, 11 Jun 2026 14:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56666B008C; Thu, 11 Jun 2026 14:27:37 -0400 (EDT)
+	id 757876B0088; Thu, 11 Jun 2026 14:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1E3B6B0092; Thu, 11 Jun 2026 14:27:37 -0400 (EDT)
+	id 66D306B008C; Thu, 11 Jun 2026 14:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FF706B0088
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:27:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DEDB407F4
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:27:37 +0000 (UTC)
-X-FDA: 84868464954.25.7DCECC4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E45D220010
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:27:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X9OkH/nS";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 548096B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:34:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E239F1C38D9
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:34:36 +0000 (UTC)
+X-FDA: 84868482552.09.BAB4C06
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2562CC0003
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:34:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oaEuxGMQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781202455;
+	s=arc-20220608; t=1781202875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZLGFvqTlK6qAFIh/FbnUVu/Syu6iCO4Z21pxDpvgqg0=;
-	b=C/ynrpL+LJI7J/7a7dcI8wgUz8DucAQedmk3l/0XidkeWSoJEBBEALXTwSixiFm8+eXzD5
-	Y4DPfhKWq9EJ4fogz+R/gtAOE99+kmCLmcgiBEFnXw0eFx4x48DwdaJvFjjAqhj2Rc2LdM
-	ToMNQ2f42q40Orhwn2PlVqdAfvRVnvE=
+	bh=zR8MQSre2CLLZAd+twHHefU9+W/4bKjSzNIzMHlz7HU=;
+	b=mcbgqFN2bpve072xg+3NpOnPqt2SsTSNP4UyYUXjyXkL7i+uf5VuNZwRxGCRfzyHRkW/IW
+	TR3LG2zAL0HmyPnrdom0dlK3d7mKyow84LwD8Ex7UmxjJC3lRxTkZ5Iz5xNiniUaT1BJ+x
+	YlGhcL5sIGqCTEiQk1xQ54Rt3jlId2M=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X9OkH/nS";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oaEuxGMQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781202455;
-	b=P1Qlz/BGUIIkCJksxmJELUbh+Ihak/LE3+vWme+d0F0agX6Bn7soHVaOkTLHAXVHaDA8/n
-	WFUmEVzAP74ovZIDtJ0CCL792oF9+VP4k5xiwvR7uDs0RLwvVugrM8o1KgRRxXCB91ZOvk
-	nAQDKG1aPErgzGxIB20eyd1aeTP5U6s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781202454;
+	t=1781202875;
+	b=G4aJBbpkvNd2gI02H40kjx7bIxfPLEeK1ka0A7H2zzn6E7v+3LHssjYCF/zTJEfAWOl0P6
+	8PjuBdhl+BgXlL0uvWgd+xqAZfUNAqzLOfvvrC4bXu7pq1GAgTez4VGpiBz+RaXnAZ7LXe
+	GVtOk8eF8moiPME1RjMVI8P8ASNPecw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781202869;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZLGFvqTlK6qAFIh/FbnUVu/Syu6iCO4Z21pxDpvgqg0=;
-	b=X9OkH/nS22ymx9En8IQI7bdOqGLEJZm3lMJBiC7K2nmXtgfGsLx9CDq84+vCy1D3Se7rTp
-	pIwlFhOeA1G7kMGpdnSOqyh5RP/FNbzCv6lwFG6SVY0BUAzhwmuOHPqPhAuXCoicIH0L1B
-	p6Ip8YFO6r59mikWdY1ku7m1bfqIOhE=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-Vy8qAWIrOHukauaXjIXEGQ-1; Thu, 11 Jun 2026 14:27:31 -0400
-X-MC-Unique: Vy8qAWIrOHukauaXjIXEGQ-1
-X-Mimecast-MFC-AGG-ID: Vy8qAWIrOHukauaXjIXEGQ_1781202450
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-517ac42d958so1462301cf.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:27:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781202450; x=1781807250;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZLGFvqTlK6qAFIh/FbnUVu/Syu6iCO4Z21pxDpvgqg0=;
-        b=HqshFzorS946OUI4DjbeHqGT7VQ347mohsnCV9hPTGb4Wal90MeW6gVw9t+6tt8Gm+
-         Lewd0op1/I54sIkf13d/6I2jvgZdGnXlEih9fpwQnynsD56QBflBwb7BtbrpYmBK78sF
-         EBoH871XwUqfxg6/3zx3fW0veuvYdzYUjj8p66KCu0RH0N91L8Sk63PNHfZTA5+uWaSn
-         Df9Pj2JT7vZuodBue6vci4CIZXRifzLDY8XYWbbRDD+W8ITpILGjroHTBePrwMRK7ipY
-         BK04p4wxdnRtYHedtGX2MlZumq9bOmJ3RSUQRQgeictlnjqoL6hLL2d0ajtRWmtGBYgw
-         RlxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9L4D5hYZRYpXz/IUvdQdBYEZYQiTKTb8jPw8REM9erVNAG75muhLEA7X8UHGCAyb/dCpRNq4dxBw==@kvack.org
-X-Gm-Message-State: AOJu0YzohjFAJqOWp+YHIY86UYUzkkoayncDMxYpuQmX3iRxmjOf4B12
-	Q/bZhWig2Kv/YnzHTw/OddX5auim72AUNJegIlqwF73hud346WzBfWsuAkDi7S8C0d8K3cZ9F0G
-	JRmydDQF5tD3NReEzs47+fuhtPxSBdTsUhUXAcJObnG3QeMscb2+u
-X-Gm-Gg: Acq92OEyy9XucqxFSpkko0OscccehTYHU8L3vDdPKUaqSnESIqzcHyRkOVSTdtW8TTM
-	5WjfdX7OqZwb9WSfApLHA9rgJZ8dJLauNJFlCQ9zrGXhPHpdPp5sHzZ0r4uApcjxdd3O5oXRWpP
-	1WCyyU/fDr6aGnc9M9zDCJ3QPX05bhP3wOcbp7DC5G/Daj/iSa7tAJAcng3CjDWRjK7MrcWKq1k
-	9hYm0yrXhb74RIhyvnvO0KoFZzKeRQ9PjWjKzICl6v5zK+PvjLEjFuUBYVhaQDuXD+uV9Y7xDSM
-	pVQZ4lbv+DNkGmBKUJypTHxa4aJLSowroRlf2UisYvfq2AtrrYYGXiMxj9y9/MLqf/LfGSUzOS8
-	Tvw/AWRMsz2Nz9nSAESVo5qWRZXM2gEp/0upVIFf7raPPyuC2sMXlb5QSqEpGpcI97QbQX+sQiG
-	m4tHNYQjt0TZUQ
-X-Received: by 2002:a05:622a:4112:b0:517:859b:b584 with SMTP id d75a77b69052e-517ede3c543mr64499841cf.1.1781202450556;
-        Thu, 11 Jun 2026 11:27:30 -0700 (PDT)
-X-Received: by 2002:a05:622a:4112:b0:517:859b:b584 with SMTP id d75a77b69052e-517ede3c543mr64499201cf.1.1781202450026;
-        Thu, 11 Jun 2026 11:27:30 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb79df4dsm153201cf.15.2026.06.11.11.27.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 11:27:29 -0700 (PDT)
-Message-ID: <2793c81c-12f2-4c9c-bbc5-c9d88262c209@redhat.com>
-Date: Thu, 11 Jun 2026 14:27:28 -0400
+	bh=zR8MQSre2CLLZAd+twHHefU9+W/4bKjSzNIzMHlz7HU=;
+	b=oaEuxGMQmeP3ubbs7QW/tmE+RMQ58veYE+Q1dlIg6jqFBwn9fQO/fJfSwB3Y0+iGSunpvk
+	mvlrtmNlnX1YImA/xHPTX/n5a1iH3k7MT1wvMYZJtop8bJ+GcI/Q3Ccrr6fSLl3NCJw+wj
+	oY8rQjUB+tgObORLpgXZyqrRVM1BjFk=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Nhat Pham <nphamcs@gmail.com>,  Zenghui Yu <zenghui.yu@linux.dev>,
+  linux-mm@kvack.org,  hannes@cmpxchg.org,  yosry@kernel.org,
+  chengming.zhou@linux.dev,  qi.zheng@linux.dev
+Subject: Re: [zswap?] BUG: sleeping function called from invalid context at
+ kernel/cgroup/rstat.c:421
+In-Reply-To: <ainb3W_-i5ish_K6@linux.dev> (Shakeel Butt's message of "Wed, 10
+	Jun 2026 15:08:48 -0700")
+References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
+	<CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
+	<aimbPCBloe0Dqk7t@linux.dev>
+	<CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
+	<ainb3W_-i5ish_K6@linux.dev>
+Date: Thu, 11 Jun 2026 18:34:15 +0000
+Message-ID: <7ia4tsr9lye0.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/14] mm: thp: always enable mTHP support
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev,
- corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, ira.weiny@intel.com, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, yintirui@huawei.com, ljs@kernel.org
-References: <cover.1780066530.git.luizcap@redhat.com>
- <47f9202b-71b1-41e7-8185-426beb9d4a2c@redhat.com>
- <20260611112111.18be7ad24bb9ad3c7b3f83a6@linux-foundation.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260611112111.18be7ad24bb9ad3c7b3f83a6@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Q0EN5S4-Uk5N2-kzsLLSVi16D9PXM1Gwq7bRj7fOpFs_1781202450
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E45D220010
-X-Stat-Signature: tfq9fmg35rib94gt7he8mx64rzgei6mf
+X-Rspamd-Queue-Id: 2562CC0003
+X-Stat-Signature: 4igpm7tcxkwxypkdhmp5ddee76q7t4db
 X-Rspam-User: 
-X-HE-Tag: 1781202454-214952
-X-HE-Meta: U2FsdGVkX1/TV8aAeCqVEU1tQPlBJOw1N9Yn16Ql9tU4iSNPunv1caJbKqqwQLvQjXpa65uyqIS8uC3fuBo7o7QOzXIRXzRFYBPntW0t+1E9ciFYJewJDNHggYGYQngmAwZae38ncGmja57FDGP5Vfg4JtQYqwvGKvsvwtK3jXV6NSDgwsyMZatdjIW1NuaaPoTEXCmmjUo8zS/umXGe072HcOpbtFLEvPsPInJZE/EbUQtIKvQkWgO0suA6yqbV9U8zclKpgj8lkEl2tVQaDZcHBeo0o4QnUlgoG4D7qU6npdxdxTf6FjKSSC7HTlkSyLg6ZEiLVdKgP/WpNNtTHukVQXyXJEUBw+FFFahe/8FBYksZxLWIsOG/6dyItyAS22oxhPSUr+g8e88Rq3Z/QZaAazGTdFvzgPEvR0pUb0wiTFWnGcJeAYtse/zOs92kGqHqEP04LZ4pnf2x3cloJi8lyzt/KScRMP16i7V/5mksLHY16JuwZqr0rk620KR9nmJL/Ns0faLk1BLfEhI7ciyGghOCIxBj4DkNYiWpIfEu0RqsGTJfZR+FpPjkrk+fAdoTOBngOvEoSsnEisk/5eOWG4t6nFAZjNoC+gE4+b6z3lvW9P6xDvH6rSfCug8XDeBWMHISWjE4aQ7jRLK0p4ivRMHXzg76VinoO6pb5ngGBI19IfPqoFY1bapDVuwAAbB4VUHsUzm5ZUwq/WRzZU8FReaQMzwodIIFDiC7T7RymWkMB+OE5mr1FQoIdecKFgSMl1eARYije2meKOmwVdBYOJEPM1cdhPPLbjmBg5KdxJQqpN3f24jn8B9K8MQLFYyenEynlMTEXr9hUhWJjizfr+2vEebWF4fbe0WYkSbZvv10GKsC9JNupmsb8dJMUEbAkv8BXq+JK9oL745LpILeVCBM4HSCPF6vZhDQiZZEEQH+QzwdHbZk/P4tHpMIxoKk7GEaBtecccg+joV
- Wg6/pbSy
- Ol5oxIQ4twROSlgvSLvYAXdzwdp1LDw1ULbqQFdpdjXz5oCha/QpgDSxWCRMkHgViqYmeDe0d1sjL2yhQQ1h/x1o6pqL3O7y23kAsqYHH4bSLl3kkzdWmGqzmXlb+xKx8dVKETA2RlvKBDDK9PvnzwebJ6gu4H4K/CkNvIN5/hvuAmGFaGv7iK9hsk6U9DqSUHWI+QcaCo6YswUD4/aspiYWAqVK38B1wX6dA7vfUyLzra01HTS8VNNHjHc+BlcyOJHmd4vL0P+tMdn4Om+9u3ezj0Fj3q1S1iejr0vaAOS5m0Psuxg3e+My3D3mpt/uYLo5/sW6W33mRrXKEVDExZTexKkP8+4YTSfgjrm/Yot+DA83m9ocQDlVMRHTxqrtdOR4mXYHd+7TKkOk2YLued9IksYa8umHJes6Pe2KyzhtkStPZDhbltpwWZ6D78mPnNFMiB8uMJZqV5Ow=
+X-HE-Tag: 1781202873-990824
+X-HE-Meta: U2FsdGVkX18FiTH0R1ho1/Xb38VqfxYv0N7JjeKZUEPtnPfo0PePYGHCJUhlTphpUzRYVzQOnSDy5hptMlVZlgkGgYxpMnLpbMml3mOG/rh9pDz9HHR2FgtRxCdsXlGWKwKPE+QV0ef0xOaUuulqnpC1eegav2TmxStblC6a5NTM5nZtNjvI1xgs2xh936FziXpY4+HNH4B5QRJBJggIKIGl27IHWp1HCdKDUHU02difkTgEV6yD9cRVjzeFEwUoQAHZJn63FwxAUKTrlSB0gaxRugiveqMT+SwfXztY+7GZGu78yu7DVusonG0FZLYB+JwW6bUaZ/i5F/rrWQR94qzPAASgaRxFS3KLbZGc15b3y/1SGm2wGXeTC44jFCczxq3g49FqsxwOKhjXsZKXQoyV2dwnL3wvHWM+srsCmplWJm11LPbgtWi9B1Pt+qn/ZmhG9flWpJTRvA6p+B8tn4GItsQgqZgduUeeIzllMRNLXn6Fia0el6jhZmBWhum/rMX6YEWZMS+IzM34jT7axRCXa1TgP34ny9wHNWdj3UAjhCOYYR6x22Ca5ZbqNe/2/bcD/wcAClmlUufkFRu4yU0prDiPOL45Le/YSoXvmgAmoaqSKghwTMRXNqr/N9ITt+RqjiboY+BZ8zeU+Yfp1+dA7LdbWkHdkMU1tkk3Jx5Jgs68FocY1aE78UEnuAgtYXR++7cGlBcpx+95xnMRLZ4r6KWHblIo0xkgAWxss0icMcev4fZ59zT7c7EY5TnCuSrG61AGrg7K26EJqowDOJ4h3WaKwSAOghyoFfRWuUPsVX5+DTW0HLZ4Hdr01EjS3qJX3lWWou8yIkg9dpwgBL6w8qe3VzwiJSHjRzeWDWJtlTXkwG8jIfr+2tOxVeH5ezaH564sdkDQrNAKqCoYUApBGMChJ2gmGwzR6q3jdtUw7+tVxSjnW15p55L7KpvwASXTm2eY1wXE5qJg/G1
+ eIw84rl8
+ aIedcl4RUkEO3M3OrZLLNzAELMXVFeTXTIL0F7OtASyoK3xkiKg2RqU9YkVpt1fTEgOUlomxtzHhqlFOYe6Ti81NqE+eYKoDiyJjvLyeWIP3QmDCeKBold2QIjnrYzDkoY02+Upb62eesM8eJsl3jFYHpwFflnEOwDWnlHWKJQLlIiemLesVHf/ZCZpdtqtgTrXqo3yWXgLCmOxxZ45afavZqUtVbfqNylM6kuapUoL+yK9kPYnCScgWwSJTytdCTPJjcYC7QlLkDwYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,26 +95,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-11 14:21, Andrew Morton wrote:
-> On Thu, 11 Jun 2026 14:00:11 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
-> 
->> I wonder if it's time to add this series to mm-unstable so that it gets
->> more testing?
-> 
-> We're at -rc7, so it is precisely not the time to add new material to
-> mm-unstable!
-> 
-> Recall that mm-unstable is included in linux-next, and that for good
-> reasons, linux-next rules say "only material for the upcoming merge
-> window".
-> 
-> I *could* add this to mm-new, because that branch isn't included in
-> linux-next.  But mm-new is just a few-day staging branch for entry to
-> mm-unstable, so the same concept applies - mm.git just doesn't take
-> stuff which looks beyond the upcoming Linus merge window.
-> 
-> IOW, please refresh, retest and resend after -rc1!
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-OK, will do.
+> On Wed, Jun 10, 2026 at 11:38:29AM -0700, Nhat Pham wrote:
+>> On Wed, Jun 10, 2026 at 10:31=E2=80=AFAM Shakeel Butt <shakeel.butt@linu=
+x.dev> wrote:
+>> >
+>> > +Roman, Qi
+>> >
+>> > On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
+>> > > On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@linux=
+.dev> wrote:
+>> > >
+>> > > Thanks for reporting, Zenghui.
+>> > >
+>> > >
+>> > > >
+>> > > > Hi all,
+>> > > >
+>> > > > The following splat was triggered on the mainline kernel:
+>> > > >
+>> > > >  BUG: sleeping function called from invalid context at kernel/cgro=
+up/rstat.c:421
+>> > > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name=
+: cat
+>> > > >  preempt_count: 0, expected: 0
+>> > > >  RCU nest depth: 1, expected: 0
+>> > > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0=
+-rc7-00056-gacb7500801e9-dirty #304 PREEMPT
+>> > > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-=
+prebuilt.qemu.org 08/13/2024
+>> > > >  Call trace:
+>> > > >   show_stack+0x18/0x24 (C)
+>> > > >   dump_stack_lvl+0x78/0x90
+>> > > >   dump_stack+0x18/0x24
+>> > > >   __might_resched+0x114/0x170
+>> > > >   __might_sleep+0x48/0x98
+>> > > >   css_rstat_flush+0x54/0x564
+>> > > >   mem_cgroup_flush_stats+0x9c/0xb0
+>> > > >   zswap_shrinker_count+0xe4/0x1e4
+>> > > >   shrinker_debugfs_count_show+0xd8/0x268
+>> > >
+>> > > Ah, this seems a bit tricky.
+>> > >
+>> > > Seems like shrinker_debugfs_count_show() is invoking
+>> > > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_count()
+>> > > triggers a stats flushing, which might sleep. Not ideal.
+>> > >
+>> > > Is the rcu_read_section() here to protect memcg or shrinker? For
+>> > > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
+>> > > memcg before returning.
+>> > >
+>> > > (memcg maintainers please fact check me).
+>> >
+>> > mem_cgroup_iter() handles the lifetime of memcg, so there is no need f=
+or rcu
+>> > read section for memcg.
+>> >
+>> > >
+>> > > If this is for the shrinker think this needs to follow shrink_slab()=
+'s pattern.:
+>> > >
+>> > > rcu_read_lock();
+>> > > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
+>> > > {
+>> > >     if (!shrinker_try_get(shrinker))
+>> > >         continue;
+>> > >     rcu_read_unlock();
+>> > > }
+>> > >
+>> > > But OTOH, doesn't seem like rcu_read_section() is what keeping it sa=
+fe:
+>> >
+>> > Shouldn't the caller already holds the reference to the shrinker which=
+ it is
+>> > giving to this function? Does debugfs file entry holds a reference to =
+the
+>> > shrinker which it is giving.
+>> >
+>> > After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
+>> > shrinker_free_rcu_cb), so this rcu read section is against that.
+>> >
+>> > I think we can simply use shrinker_try_get() here as Nhat said.
+>>=20
+>> Hmm, so is this unsafe even with the current rcu shennanigans? What's
+>> stopping shrinker to be freed by that callback before we enter
+>> rcu_read_section()?
+>>=20
+>> Seems like this is just implicitly correct - shrinker_debugfs_detach()
+>> and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
+>> shrinker_free_rcu_cb);, so if you're reading this file, then it's
+>> before shrinker_free_rcu_cb() is even registered?
+>>=20
+>> Do we still need rcu or shrinker_try_get() here?
+>
+> I think you are right that we don't need rcu or shrinker_try_get() but it=
+ is
+> more about an active debugfs file reader. Suppose we are sleeping within =
+rstat
+> flush from shrinker_debugfs_count_show() and there is a parallel
+> shrinker_debugfs_remove() call.
+>
+> shrinker_debugfs_remove calls debugfs_remove_recursive and deep in the st=
+ack
+> there is a call wait_for_completion(&fsd->active_users_drained) which wil=
+l wait
+> for active users, one of which is sleeping within rstat flush.
+>
+> So, let's simply remove rcu read here.
+
++1 to this. How about this version?
+
+--
+
+From a4a018d026c9a39ec15a5b30014e81ce2381e281 Mon Sep 17 00:00:00 2001
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Date: Thu, 11 Jun 2026 17:40:21 +0000
+Subject: [PATCH] mm: shrinkers: remove unnecessary rcu_read_lock()
+
+Zenghui Yu reported a lockdep splat caused by sleeping within a
+rcu_read_lock section in shrinker_debugfs_count_show():
+
+ BUG: sleeping function called from invalid context at kernel/cgroup/rstat.=
+c:421
+ in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, name: cat
+ preempt_count: 0, expected: 0
+ RCU nest depth: 1, expected: 0
+ CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.1.0-rc7-0005=
+6-gacb7500801e9-dirty #304 PREEMPT
+ Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202408-prebuilt.=
+qemu.org 08/13/2024
+ Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x78/0x90
+  dump_stack+0x18/0x24
+  __might_resched+0x114/0x170
+  __might_sleep+0x48/0x98
+  css_rstat_flush+0x54/0x564
+  mem_cgroup_flush_stats+0x9c/0xb0
+  zswap_shrinker_count+0xe4/0x1e4
+  shrinker_debugfs_count_show+0xd8/0x268
+  seq_read_iter+0x1b8/0x4ac
+  seq_read+0xe0/0x11c
+  full_proxy_read+0x6c/0xa8
+  vfs_read+0xc0/0x2fc
+  ksys_read+0x68/0xfc
+  __arm64_sys_read+0x1c/0x28
+  invoke_syscall+0x54/0x110
+  el0_svc_common.constprop.0+0x40/0xe0
+  do_el0_svc+0x1c/0x28
+  el0_svc+0x38/0x128
+  el0t_64_sync_handler+0xa0/0xe4
+  el0t_64_sync+0x198/0x19c
+
+Fix it by removing the rcu_read_lock()/unlock() entirely.
+Indeed: it's not needed here: memcg's are protected by
+mem_cgroup_iter() and shrinker by being attached to the debugfs file.
+
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Change-Id: Ifa381f7983491cde61354af9b1cb14ca373c1f75
+---
+ mm/shrinker_debug.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/mm/shrinker_debug.c b/mm/shrinker_debug.c
+index affa64437302..cda4e86428c8 100644
+--- a/mm/shrinker_debug.c
++++ b/mm/shrinker_debug.c
+@@ -57,8 +57,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m=
+, void *v)
+ 	if (!count_per_node)
+ 		return -ENOMEM;
+=20
+-	rcu_read_lock();
+-
+ 	memcg_aware =3D shrinker->flags & SHRINKER_MEMCG_AWARE;
+=20
+ 	memcg =3D mem_cgroup_iter(NULL, NULL, NULL);
+@@ -88,8 +86,6 @@ static int shrinker_debugfs_count_show(struct seq_file *m=
+, void *v)
+ 		}
+ 	} while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)) !=3D NULL);
+=20
+-	rcu_read_unlock();
+-
+ 	kfree(count_per_node);
+ 	return ret;
+ }
+--=20
+2.54.0.1136.gdb2ca164c4-goog
 
 
