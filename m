@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA19CD98CF
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BDCCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CD6F6B0092; Thu, 11 Jun 2026 11:03:47 -0400 (EDT)
+	id 6BAE96B0005; Thu, 11 Jun 2026 11:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E856B0093; Thu, 11 Jun 2026 11:03:47 -0400 (EDT)
+	id 66B826B009B; Thu, 11 Jun 2026 11:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246CA6B0096; Thu, 11 Jun 2026 11:03:47 -0400 (EDT)
+	id 5A8CF6B009D; Thu, 11 Jun 2026 11:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 06DDA6B0092
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:03:47 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBEDCA0694
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:03:46 +0000 (UTC)
-X-FDA: 84867951252.08.97E3D2C
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 981D2140005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:03:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BE946B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:08:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A21C1C179E
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:08:21 +0000 (UTC)
+X-FDA: 84867962802.29.AD447F6
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5265B140007
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:08:19 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+	spf=pass (imf26.hostedemail.com: domain of 3Ys8qagkbAAUx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3Ys8qagkbAAUx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781190224;
+	s=arc-20220608; t=1781190499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fBL34ElJNAGmW1y1qrov52atV+/JHsBxV8I34oDQOCs=;
-	b=iqmlIb1iEYjWeYLmVHMXpHcvHxbow4rLiCo44yDOZPdR5bXHz7U5ALtMEhN1lpKNQzbl8r
-	F1TnhKszw0JOXubR/4pGH3IdlAiu2Iv7blftfIRbIKtKBGLTuCIvaxq5ugNvJKCNq2SV5r
-	0IzRl26aJVTsgMnsHzPS2rvR3Ioq1AY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=e9BYqd/TiVfBDllfAFAo9UUiMBctmNP8GPj8BiGaOxg=;
+	b=ByoWfp5LWhRnD83JYMfOLhPM7mUH86p6URqySilteM0png3WKUMynZMR/riY7qVK9TV1F0
+	NVQ9N5p/aTX0p67To1jKUyK0uBcq0UXbvG4HmbLUni6TIDwPTsO8iKhf0kck6DzQ1tVttU
+	ET89UYPBWqKUV7omp9QuWk0XynREkR8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781190499;
+	b=SmIiKBsJPaO8ayw0O7fybdCau6X+LgLJUj4DnVlRqin3KVVjxFalNLD/+XjjBz2hREb3bi
+	xLTSH8HJPrgoGxtb9IPWaQr+0mI8zaaC8KmDilHShK6/co5lxP1EXtBVDhhPNcfTbPCblm
+	6lVy91S+fqSXquu5R1SxQ9nfB3AuV7s=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf26.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781190224;
-	b=5z2vG4QdYqi4c60padcWvDT+9QE7w1c1kbvPzqW/xLxXNLkndFlTJD7NAUwkNtIBnumrin
-	AeD6B57YBQDH4sGmCu8Wg1luzK5hASjKbPjByEX3LukmODY5NaSIyDAzZymt+stftwZnXT
-	VAVP9eMuV73Uq6T7Y9Ks7azm+KUyfV0=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gbm9l4D8SzJ46bR;
-	Thu, 11 Jun 2026 23:03:23 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id D175F40571;
-	Thu, 11 Jun 2026 23:03:38 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 11 Jun 2026 18:03:38 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v4 4/4] Documentation/admin-guide/mm/damon: add DAMON-based Hugepage Management
-Date: Thu, 11 Jun 2026 15:02:44 +0000
-Message-ID: <20260611150244.3454699-5-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260611150244.3454699-1-gutierrez.asier@huawei-partners.com>
-References: <20260611150244.3454699-1-gutierrez.asier@huawei-partners.com>
+	spf=pass (imf26.hostedemail.com: domain of 3Ys8qagkbAAUx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.72 as permitted sender) smtp.mailfrom=3Ys8qagkbAAUx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e6d9be94a2so6119458a34.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:08:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781190498; x=1781795298;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e9BYqd/TiVfBDllfAFAo9UUiMBctmNP8GPj8BiGaOxg=;
+        b=rpBVNRHIyaZG/hvbDZP8otM8EtUnNOLiJZhfNtJD9CDq7bd+CDtE8QyVbns2wicXIv
+         tzu1ut0GGNbi7Baupw3N2Pw4iBU0XK05r0hN+7BGijRqSNZPopOkQRo4D8qxBaL1Sr9o
+         SSj41XT7bVwHTc7DQLWWXeJQ+LR+iNVY4FDblAX3sfGr9dEubiLY2FNUN7tkMsFh25+a
+         c+8r/BXVcuFxZ4kR9VJK7Yr7jktDKQ+q0U1YBwUlahp2z4aPeqA6F5QvCbyN4bIPUGks
+         bjCZDKKkAaKcEeKOWc/AlIUo3QV/spYgeFyVIY/iOtl8YrmylBI6XprmVIqhCdVLEYcf
+         mNrw==
+X-Forwarded-Encrypted: i=1; AFNElJ8RYTo/ApE6eT4wAnj2ceahbQI56R6CVoFqKPNPydgqK+5MRSHcDM+kHer4ySEmugv+ecD1nIh/0Q==@kvack.org
+X-Gm-Message-State: AOJu0YxneXrDN1vS8SEzvgQJZOBJYBEZ/qLgZA9wXnWzIWA2lP8+P0nv
+	y1C+R6Ifco51HGDT30JEcl1fnzway+lUdNPG9nxRJBeAwo1Zf1vNT82t44zcCh/47qEahknSDyU
+	50zyclSFEd9F6cyD9n8fxbY0Yo+dvBxaPFkWtoi5xtS7W03A9xBRgpu4smUA=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam10
+X-Received: by 2002:a05:6830:4908:b0:7e6:f7fb:968b with SMTP id
+ 46e09a7af769-7e773359ed3mr2706887a34.2.1781190498286; Thu, 11 Jun 2026
+ 08:08:18 -0700 (PDT)
+Date: Thu, 11 Jun 2026 08:08:18 -0700
+In-Reply-To: <aiq9kD3loZWsfZTN@localhost.localdomain>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2acf62.886d67d6.257b36.0006.GAE@google.com>
+Subject: [syzbot ci] Re: Implement a new generic pagewalk API
+From: syzbot ci <syzbot+cif8583cab9d33c85e@syzkaller.appspotmail.com>
+To: osalvador@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	david@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev, 
+	osalvador@suse.de, syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: f4bkmecdxcdb6qjmhc5qf6tebjddgfpp
-X-Rspamd-Queue-Id: 981D2140005
-X-HE-Tag: 1781190224-994348
-X-HE-Meta: U2FsdGVkX1+qT42sdR6Em2FkFgxQjUvkPWEyOESy9c/IQ5hDzwZQ0xNxuf4SZdUj11VkB2SyonU8TxPdip+ZmngA+csQ7iUCMdGk1CZkRwxc4aVEITg9lSlCeRDwFViQST18Lpw+dauIRcnxmmPropY5uj/mySI4q2nslQaTwsS+EDL+9aCPwkvfjGUXwOVTIWelehnhsVmm36fmCPVF4maxosyLYIGAdKsh3QSeleUkZpJ9IkdT7Z6rsEKMKubmjlEKG3UtbErszn5bl4QCx4ERT+i9ZUikBU/mwSpjil11Vj3DhR6lz1/g6I+JHyT3Yh1j3QVZncaxtxESp4d1EQ8zn07zgQad9m2R3roSjexLvu4t/Cu1ulusyv2FLHziRxWjK2T3JObAkJ7cehdB9Ow8+BvzL+Zrh/DROfR0i2Dr6BHCkNJmvH0bVHtiLDV566gYnOW/lg6lmvifEUuZIYfW6wgAV3YZfL7sgP6wvdyFIOVt1j9F4suePpJYeOX3zHBc1ld8TRwO62CaCs6jaywWZS13d5Tu/YfMamgSNTt5w4zJ9sChMD7GXadR+iPHHahYmDXrP2xIsU+fNykSEBlw18IYun+yj5JQZVDVjioeKujBDytg0tCv7HVeM+yPNwbPyG0HW8/CmrXwWe71z/13ODsah7ZmPA+3DGGRj542mrnbjToC8JtoxnQcnmClGzcJQkkhJTdsNsiX+J7L2JH4rcLm89Kf/EJyLoIkZSY4a9Wj4C73QcwAIrRtzKwW2zUS2IWhPjaRQgCR1cEHC2ckiP5fQaAxTz8ci354GXioRkzGMaCrMc15C3ZwCW1f2lP0D9jW7fa5XcqKBp3TpRcGXEGJjG+6WlpVSY/s1zU6zR3AADVii56PLfE8HoGo35xh183gexgBvozw/GFywv5OItWxNjSZN7YvM7HqT5SnqGl5+Hn2BzutO+cVLHH07u3AF8aMoM/qM9NgcbS
- L/4NybfG
- xebtvYy9/8hFGYxycSzbwoGXCF1MJfCjYm8oqVq7hM+uy09aNtzQAi4+xf4+tWIuVUl+B/KS/IfFsiZJY49/YA9a/Km0Bdchgaxr5t2JSue9x1LenVwZr/OG7xoSXUCb5vcZD5+tLNtcTOEEc903iwhGw6LS7kKAtoTmllNkwcRFarNFhFzjrTpA88ium2PKEq58DpXCIHs46BTIiggveFyc2rKJmzgeVjOSOOcRKOeHt273W1gGgmyv+VrbO237j3HyghbGjLKT4h70=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5265B140007
+X-Stat-Signature: 9xt9we74kf7474stz1xr4a7557ey3n8i
+X-HE-Tag: 1781190499-297999
+X-HE-Meta: U2FsdGVkX1/TDy3f8XRoA7NG3x7/fFeR4K/MnrotI1Tg8A3drytYQeG6lkLMuQAI4WROLfHQ9NG6b1S2JII3xZVolKECBEr+OwG7eX5QC+i3BgeTxPJd+ZZ0uBVyH6tGttndWskLMbQHXuex9RL3xKXGKrCuxzCy6ZzJdZ6zAmOhsQhFP8rKo3Ix/ust9f+38ZThz/h+T5i6kQXq0XQ3ExSl8ZW5r73tkW1XDkvoeFPagOv8QGxgDO5YnjLdDWu5rH8e0iWc/A+vEx5y+sVhBarZWV3YOZ5b9enUmhNmPu2gJjby5W5UOd0dalkRsoZEUhLZ/eYMdq9uc5tmp9Tn9pMfyTSCVznVuJWYuWeiMjMsFz4T+NnGyrZhNKADMULjpSNsbJ07KjvFFGtmRU+tNcHme0Z4apZtgjrYOcfBhzkkKmRQLrz7faUtOm/kecIs3BLXZPAHr4ucG07OLR79Qk8oUSDvEtoE0qrtJ/Z2UduQj2N9MaT7qoTLWWAOTorTH/NLOlGy7MR6BIEoPNIHi+jdMLe9drIHqmzM2byEeD9K4HH/CrG79RwEqVilDD+Ia2gT76mPZeEr0XplUCEYOfwydYqMYIRmGQ9Dlg07sMOZMZko5998ZqBNMDLILM0hjE6Tffqk80YtEif9ATbAtDVQi7PdeSJdMhv+UkTtytv/vy4ef0L7xxlLHPBptWR2KQyeLUWZMi7PfgJSTAvLB14QS5rGHCTUApKaX1JkccYOdP1QMZHR+BHVgRWMgvAPAbJnSQjP5qvlVJBfaaHglbG+qhUqiqS5MEhXxScmOCLM9znJl1eBF1N9Kg5w9fV+loke+/JfjM6W39HZyfthnSdieXvk+8jgbFoMGd1+lN7Trufb7fkpW/vVYLyd0zozMUna8vKhV5rOGisZPGWgHa+Ee39RSV+cO2+//z0FrNJ2lrFPpU25ZA93xSPaQV6oXAhd/8DVNPt6nPab34n
+ 1OWLDQaT
+ Xny/UD6bsi/+N+cKf5U1/sFOwiOxJvH3QvojtkPNba+qf/D/X8wtO9eM2C5R0yVni7BNgmh1DmbhZwFAR8I33vK/4pGP8sgDdJoElFpnhHsjeCAeitpmG0v73lvE2zpAb+uwkgg7tpoC8RIOqDQCHHm7bDGr+ebTNXVqQxRqUXxP0CggpIzd1YcuqDaFqAqetRzq8nyk4Of9aQTU2y96xN5ffdERxuzxVgIUMZiW/NmmrxLpovc+WAUXP63iyKgcjIVWFJ4ZT7Ui4O2UrceFdtH3lBac+ms4rdTnIIXG7QMyeyd3g2E2wgBIobva2NxDNP/R8ugxAeZyL/VzYtQyroZG+a1l/hxOPAPHOu0J/BBjx+1quEZdo2GmmqeSsB7LAah9pwiInuwYaRHy/qhVLExG82lFoF4bvEemARwLi85T/53ApUzcfh1BnpB7OIypZvW1d/Im49whJsnVZw6pupkCZPGJbt+Wx32sh5ntaEuLFGoyPtYuLGs6ysj5bYY+HAoMPEo6/x4Lm5JWnzlWn5P4b5tmS5yySFei0j9TuRp1aAgKHt020HKD/BlPjvO8SGoFGbS0QO4ejH4efv7BK6yceFHn0KCvs7ivr8pnhq+HA215r5y8LKf5HZy4P+wuwEdqigPvuPpOy58P2caAy4r4JaE+bD8ADg1JsC2RjrgJMZv4wmAA7JMJ+PRUrjpxTWohasqP95Lou+58BkxNOTQd6poeLjKrfcHfk7Qi1zT0oU32GxlEUh0aRlZbVMu63EJMcOU01vpYJLmHAdhcQ75xUtn1AxRh/dJa9am/RIo3DBlVH1vk4yyceyqf8q/FARCHnXPKKe9Yc/mJgytiTmqmCf7pO+G2Q4/gGAAKLUiRvmKgTrEMJQegwhezIfHLktU+KOa2oikKS0yTsFV8FVA9o4kLjjrPmk70WH7dgSd3TRIU23a0JNSeUwlFiQF2Ojs+R+hgnntWrbMcdhS7yY+nY6nlb
+ aQl0ZZlw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,151 +99,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+syzbot ci has tested the suggested fix patch on top of the following series:
 
-Add documentation for the DAMON-based Hugepage Management
-(SAMPLE_DAMON_HUGEPAGE) feature, which automatically manages
-huge pages by identifying hot memory regions and collapsing
-them back to regular pages. The documentation covers the
-module's features, operation, and all available module
-parameters.
+[v3] Implement a new generic pagewalk API
+https://lore.kernel.org/all/20260525165528.184397-1-osalvador@suse.de
 
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Patch: https://ci.syzbot.org/jobs/73cb101f-23d1-4b01-a2fa-2bb80c75788a/patch
+Testing results:
+* [build 0] Build Patched: passed
+* [build 0] Boot test: Patched: passed
+
+Full report is available here:
+https://ci.syzbot.org/session/98c0ca07-99bd-49e1-8b0d-a47659fee85b
+
 ---
- .../admin-guide/mm/damon/hugepage.rst (new)   | 113 ++++++++++++++++++
- Documentation/admin-guide/mm/damon/index.rst  |   1 +
- 2 files changed, 114 insertions(+)
-
-diff --git a/Documentation/admin-guide/mm/damon/hugepage.rst b/Documentation/admin-guide/mm/damon/hugepage.rst
-new file mode 100644
-index 000000000000..470ae2bc8cc3
---- /dev/null
-+++ b/Documentation/admin-guide/mm/damon/hugepage.rst
-@@ -0,0 +1,113 @@
-+================================
-+DAMON-based huge page collapsing
-+================================
-+
-+DAMON-based huge page collapsing (SAMPLE_DAMON_HUGEPAGE) is a static kernel
-+module that aims to collapse hot regions into huge pages.
-+
-+Where Proactive huge page collapsing is Required?
-+=================================================
-+
-+The amount of available memory grows faster than the amount of TLB entries.
-+This leads to higher amount of TLB misses and excessive cycle wastes. Huge
-+pages are meant to solve this problem. However, huge pages usually lead to
-+memory fragmentation and memory waste.
-+
-+Collapsing selectively hot regions in a specific process can avoid big
-+memory fragmentation, while increasing TLB performance.
-+
-+SAMPLE_DAMON_HUGEPAGE solves this by:
-+
-+- Identifying hot regions that have been accessed for a configured time
-+- Automatically collapsing the regions into huge pages back
-+- Auto tune the huge page usage ratio to meet desired targets
-+- Controlling the collapse rate with configurable quotas to avoid performance
-+  degradation
-+
-+
-+How It Works?
-+=============
-+
-+SAMPLE_DAMON_HUGEPAGE uses kdamond to identify anonymous memory regions that
-+are:
-+
-+1. Large enough to be backed by huge pages (``HPAGE_PMD_SIZE`` or larger)
-+2. Have been accessed for a configured time period
-+
-+Once identified, SAMPLE_DAMON_HUGEPAGE triggers synchronous partial collapse
-+of those regions. The collapse operation is controlled by quotas to limit the
-+impact on system performance.
-+
-+The module also supports automatic tuning of the collapse rate to achieve a
-+desired huge page usage ratio. Administrators can configure a target percentage
-+of huge page usage vs total anonymous memory usage.
-+
-+Additionally, the module accepts manual feedback from system administrators to
-+adjust the effective quota level based on observed system behavior.
-+
-+Interface: Module Parameters
-+============================
-+
-+To use this feature, you should first ensure your system is running on a kernel
-+that is built with ``CONFIG_DAMON_HUGEPAGE=y``.
-+
-+To let sysadmins enable or disable it and tune for the given system,
-+SAMPLE_DAMON_HUGEPAGE utilizes module parameters.  That is, you can put
-+``damon_sample_hugepage.<parameter>=<value>`` on the kernel boot command line or
-+write proper values to ``/sys/module/damon_sample_hugepage/parameters/<parameter>``
-+files.
-+
-+Below are the description of each parameter.
-+
-+enabled
-+-------
-+
-+Enable or disable SAMPLE_DAMON_HUGEPAGE.
-+
-+You can enable SAMPLE_DAMON_HUGEPAGE by setting the value of this parameter as ``Y``.
-+Setting it as ``N`` disables SAMPLE_DAMON_HUGEPAGE.  Note that SAMPLE_DAMON_HUGEPAGE
-+could do no real monitoring and collapse due to the activation condition.
-+
-+quota_autotune_feedback
-+-----------------------
-+
-+User-specifiable feedback for auto-tuning of the effective quota.
-+
-+While keeping the caps that set by other quotas, SAMPLE_DAMON_HUGEPAGE
-+automatically increases and decreases the effective level of the quota
-+aiming receiving this feedback of value ``10,000`` from the user.
-+SAMPLE_DAMON_HUGEPAGE assumes the feedback value and the quota are positively
-+proportional.  Value zero means disabling this auto-tuning feature.
-+
-+Disabled by default.
-+
-+quota_percentage_hugepage
-+-------------------------
-+
-+Huge page consumption to total memory anonymous memory consumption ratio goal
-+in bp ``(10,000)``. SAMPLE_DAMON_HUGEPAGE automatically increases and
-+decreases page collapse aggressiveness in order to achieve the given value.
-+
-+target_pid
-+----------
-+
-+PID of the task that is going to be monitored for hot regions.
-+
-+
-+Example
-+=======
-+
-+Below runtime example commands make SAMPLE_DAMON_HUGEPAGE to find memory
-+regions of  the task with PID 1234 that have been accessed in the last 100
-+milliseconds or more and collpases those pages into huge pages. The page
-+collapsing is limited to be done only up to 1 GiB per second to avoid
-+SAMPLE_DAMON_HUGEPAGE consuming too much CPU time for the collapse operation. ::
-+
-+    # cd /sys/module/damon_sample_hugepage/parameters
-+    # echo 1234 > target_pid
-+    # echo Y > enabled
-+
-+Note that this module (SAMPLE_DAMON_HUGEPAGE) cannot run simultaneously
-+with other DAMON-based special-purpose modules.  Refer to
-+:ref:`DAMON design special purpose modules exclusivity
-+<damon_design_special_purpose_modules_exclusivity>` for more details.
-\ No newline at end of file
-diff --git a/Documentation/admin-guide/mm/damon/index.rst b/Documentation/admin-guide/mm/damon/index.rst
-index 3ce3164480c7..6f2cad21a2da 100644
---- a/Documentation/admin-guide/mm/damon/index.rst
-+++ b/Documentation/admin-guide/mm/damon/index.rst
-@@ -15,3 +15,4 @@ access monitoring and access-aware system operations.
-    reclaim
-    lru_sort
-    stat
-+   hugepage
--- 
-2.43.0
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
