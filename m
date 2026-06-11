@@ -4,91 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51844CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2AECD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:55:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C5826B0005; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
+	id 5CA4F6B0005; Thu, 11 Jun 2026 14:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79CED6B0088; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
+	id 5A2256B0088; Thu, 11 Jun 2026 14:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DA696B008C; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
+	id 4B8046B008C; Thu, 11 Jun 2026 14:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EC656B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CA76C280B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:54:38 +0000 (UTC)
-X-FDA: 84868533036.02.F72B601
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5693340015
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:54:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NlkBtcSH;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2B66B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:55:32 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5FE2C2909
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:55:31 +0000 (UTC)
+X-FDA: 84868535262.07.DC5DC2F
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BCE7D140008
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:55:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b="lqoDUw/k";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="S xhnnWM";
+	spf=pass (imf23.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.141 as permitted sender) smtp.mailfrom=mail@johnericson.me;
+	dmarc=pass (policy=none) header.from=johnericson.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781204076;
+	s=arc-20220608; t=1781204129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bTVMqhjCGD00iChQYZ7sxVESMAqPZGe11o/lWoojvhg=;
-	b=MKLYGTZfGkluV1u4tw4RCOCqFhhMcclUsLrjePqfTycpBjeAFmGXs9P8AWhyH6N2LThawi
-	SzH/0z2QjNtX92RCQEXKPtrpDLEnilumEJ2y/zyFGFMRS5MrmCxlyUQu6xdBwfYYz6Nkkv
-	QgF/O8/atk9iKyNm+JDD5SC4vF9edNk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NlkBtcSH;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=hPOHqYG+iRF3Ic0VkRMBbLpS+z9IKrHddDy3pi2hdIc=;
+	b=ZhYYPaYAi76uIvTJqYQdWDw3FSLSloz2RLhzT6gt6RzWH8Q8tUpmw67bnegdWjmVXOZIGe
+	1s1MLLixJmDMt+QBccG7dEcDJ/t+pULTPSmzs8BQXMN/VUVMD9dYLPd1td10aPNfTq8g4c
+	IJQHBLeq07lYokdbzQ807MM02UdkxcU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781204076;
-	b=tDfC4pTpYQ6oYBTmYltFJhfYOf/5h+V8SOs1rgBjlX1GAT8YjIcHWQ1j8FqEkQC8EpKvi0
-	ZTEhiiOYPiEw4qkJpfYQI67HWKnQdFhel8yqYo/1MqzEZquplzz/mPZU3O+Xe1v/V6hu3w
-	HsM1TQOGrOi6Nkla5Lj3ARXYhXvR+5Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781204069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bTVMqhjCGD00iChQYZ7sxVESMAqPZGe11o/lWoojvhg=;
-	b=NlkBtcSHZ1zMzDysnEETRQ7OA/pXouAUtcel+hS5pavQcNanoQ6lWlKDq8ZYtl/ZsxkryN
-	HfiKWFVGQ9lgMLrTn+J8QnqLfV24vgS+a8pmwIEsYm+cRCYPclj0QwR7O6nss2AdIpwTKr
-	qh79uZRZHAAEVcq3X9YmXkuzUiTugLk=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>,  Zenghui Yu <zenghui.yu@linux.dev>,
-  linux-mm@kvack.org,  hannes@cmpxchg.org,  yosry@kernel.org,
-  chengming.zhou@linux.dev,  qi.zheng@linux.dev
-Subject: Re: [zswap?] BUG: sleeping function called from invalid context at
- kernel/cgroup/rstat.c:421
-In-Reply-To: <aisAd7IGVtCCEbF4@linux.dev> (Shakeel Butt's message of "Thu, 11
-	Jun 2026 11:38:28 -0700")
-References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
-	<CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
-	<aimbPCBloe0Dqk7t@linux.dev>
-	<CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
-	<ainb3W_-i5ish_K6@linux.dev> <7ia4tsr9lye0.fsf@castle.c.googlers.com>
-	<aisAd7IGVtCCEbF4@linux.dev>
-Date: Thu, 11 Jun 2026 18:53:59 +0000
-Message-ID: <7ia4tsr89ad4.fsf@castle.c.googlers.com>
+	t=1781204129;
+	b=BO2sf0tKLb2xxYU/+HqH7twR2fzrXyUMbnXSYYotA3RZteOs+g7Wl4FN4hHsXSfnYzDCj1
+	d8k5TH5hELiBWtY+PYYVe1qW9ANntCD+u4JOfEeDdvVvXneFEHj9R62BNFJ3FDne0Si0FM
+	RrofIjYpC9PxIx5HQXhiMrHhaTN0lQU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b="lqoDUw/k";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="S xhnnWM";
+	spf=pass (imf23.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.141 as permitted sender) smtp.mailfrom=mail@johnericson.me;
+	dmarc=pass (policy=none) header.from=johnericson.me
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 1652F1380100;
+	Thu, 11 Jun 2026 14:55:29 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Thu, 11 Jun 2026 14:55:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1781204129; x=1781211329; bh=hPOHqYG+iRF3Ic0VkRMBbLpS+z9IKrHd
+	dDy3pi2hdIc=; b=lqoDUw/kVA743bATY9h3WK1dphY3DTGWmWqfS7rSB5GSVn1J
+	as9WBsb+A9PKES5gRpl1K43ImpkJByEQ+OAGA8jgvTajebY1O93d+Ltmq8xdbZmr
+	UpjrbAZH15xpPstw++7hFOY+AQmRLZsb2gRNFyC6VpRAlni/E62ZfUjR+2Y7ilDV
+	5dalJkSjuO6iJHSs2PFitbvp8GbWY+Y4zFxsBDVzhzH13FnV4hN4gX3XoXsGEpU5
+	VX6YHz30fcubjL8dS4nRv3IXpnfilOnuPUp8p3r0TTr6X+SeYW3CB5Ye/Y8JCFpK
+	jE+5fg0CFoxi4Y/BBElq4gToBlMwJqp/uqu9MA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781204129; x=
+	1781211329; bh=hPOHqYG+iRF3Ic0VkRMBbLpS+z9IKrHddDy3pi2hdIc=; b=S
+	xhnnWMsEUraepm0he9orZCyxPfx/X2RF4T9x70S85+8jra4FIRU9EW5non7HfVsM
+	Ci2TSpRE8DCnorJZZDCFAJnPbE74cU40UqUFdxQG06Ca0gf4YOU1CcSzAl7STslr
+	hkiKH7TApmoVk+z9PZs+yoayKHgiTZtULPsVqW6Rrfak38XDnPycDho5FKzQBef1
+	CY6QNcMEThwJpZ3k8dCfdqYEOgLqhPFyaSw/8plKCDA4ADs1atRjXiHektoDVGfc
+	fFn8T2+BwlXB/s0NPeOq0qQ16jw7OASdZDZeHmvZZ39x54Pz2OrB2tDyBB1+NgYc
+	5/H2msE/XBzMbGzzvKNHA==
+X-ME-Sender: <xms:oAQralqwuh0eouA59R3_QIwyLFBttjzOXYhOIDERLdIbdk93hF5puA>
+    <xme:oAQraifGdN2-ZAHIe6oNEDRfSEnR6WUhOwyGtPPn4ubpqD8tEdnDMeWgLTUy6Ii6x
+    5vzuFyYmFZ2RIu87ORhcAz6vnLAsYx-tpUTNEZVfRt127tc0NsvnK0>
+X-ME-Proxy-Cause: dmFkZTFYpPOn7LI4ucgrxMRuvUt0Pp7TpsmWzC1UMf5Uv3HNtfQ/V0DF7oE2QhImNcQ7/n
+    hX3+SBSdsUULValjF705kUffDlbULeLEuQLe9sEh2MjAhjTTmycdP5MBvhnGe8dzZvyNon
+    El9MmMNYiTmjnLQ2tcVKntlKTVipyiBsZrqxOGT4HbGXTm+q5nJv2ou/btyVBYEM9hCWwC
+    5GGP97dtjAoQTfqjBznaZdB0rggqqROmubcwr/kzdeAmz621tqJGsS7RdmLEwmGJYTNNOO
+    USKMjLfMmFc65L14V1RzajGF3g6WHSe5i+BYmpu3hA0CfgzgP+VZ8oTuBT+38JRx/yxzgs
+    umnpTqvcNAd1NFNCHjofpW8OHDuMUHWjxpEVBjSNmRctxv64ki/DUB9+G7ogl7t9K3QVjK
+    Ow2Y0fYcjWb7JTEpo/PoDYWzEvTk9XEek3xh+BpzUH00rvEY2PWP7ywJRQTdPoMcVAn7Gn
+    r7cDKLJ65+s64x2Q942+XWGD/zOI1+7LvCGFjOH2uWfyZd0Fv7Ymr+gzCBsMoAv2xkL3T0
+    CqD6YGWIlZSwWzrToYEFEdrCnD2xjZeUFFAtwMMKqgh8H1xdIFhWYk77oCQivDvMMOaL+9
+    Tq0tCHKmG0ElxEfp2Q75UzEXsV7cS5F72NZyHP1i3LMypy67FGfWMnYliP7A
+X-ME-Proxy: <xmx:oAQraroOprWSkLgJ-7djeMHTInI52a640Gjt5LslcKa87iD22lOadQ>
+    <xmx:oAQraoatsZC0BtBctCPgAsy7fxQT3f9fqffQoMXyvPniBkKKuuh1bA>
+    <xmx:oAQralHhcfx828vfIPwoTAB7RPq0-Rlkt4Jh2VvoK2hJ4cYJKq3hrQ>
+    <xmx:oAQramZmlr4zGPtWbXjA0WPzKylSB7mfQzF7M44bZW6o1b9B_bhaGA>
+    <xmx:oQQrarNSduaBJQ-qynqxxgQ-ZwyRh49OZambtOBojf-3vpyXdpA0tC_O>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 0C7D62CC0086; Thu, 11 Jun 2026 14:55:28 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5693340015
-X-Stat-Signature: zg3fedggraaitqg8hmo3rio4hhwxd7sx
+X-ThreadId: AtGJywdvvpER
+Date: Thu, 11 Jun 2026 14:53:10 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Mateusz Guzik" <mjguzik@gmail.com>, "Li Chen" <me@linux.beauty>
+Cc: "Andy Lutomirski" <luto@kernel.org>,
+ "Christian Brauner" <brauner@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Al Viro" <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linux-api <linux-api@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-doc <linux-doc@vger.kernel.org>,
+ linux-kselftest <linux-kselftest@vger.kernel.org>, x86 <x86@kernel.org>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Thomas Gleixner" <tglx@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.cz>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>
+Message-Id: <9033ff42-9ee7-4b93-9570-a5adcd16e826@app.fastmail.com>
+In-Reply-To: 
+ <hd3i6pxxohsjesyid7nhuic6ppp6nyoxxpwa4mny6riqvpyqec@mylfprni2yaw>
+References: <20260528095235.2491226-1-me@linux.beauty>
+ <20260528-madig-fachrichtung-fehlinformation-61117ba640da@brauner>
+ <CALCETrWJQpLR4n1cpichBk8=uExSKLWTMGU3BufGdk_WE_p5UA@mail.gmail.com>
+ <19eacd64508.26b92c022125848.262962729296162879@linux.beauty>
+ <4e049396-377d-48a7-a34c-91318413a876@app.fastmail.com>
+ <19eb181fdd4.6d028f442844776.3737831021032223216@linux.beauty>
+ <hd3i6pxxohsjesyid7nhuic6ppp6nyoxxpwa4mny6riqvpyqec@mylfprni2yaw>
+Subject: Re: [RFC PATCH v1 00/13] exec: add spawn templates for repeated executable
+ startup
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781204073-79575
-X-HE-Meta: U2FsdGVkX19IpSDRKfzvvoAhdlCxE5SB3QGSN6tMyRWNolzfF3WuQsPMqolx9HQ4zAsQoOIUE7AgRs+oYqyThXhiJJ/dzkO9VZFdILgWlrIhOGIrVeZFRcjMS/ab2qq9LaA69k5IrRvXKbp7XxQBOjBnulbpv6Up6ZnRbugWRB7iUeDjC5n5tIrzFE3Iop66CAdDMGqle1VtyfXmJXUfdR65sCMVKzBy9V+U456sHVjdo18G5PG8ofkEm6qKGlS0be1n7zUj5l0+hHtn/MoVqCbLMgBwikBrK7IcTvHb/nIskaUiMFVc6mycfqz52vxHdA4z7U9CfEWBZEKr5z/Qw4uRibTIaZmqdCjsOD5uT59ydC06pdSMUXFrIkXK7ha5jAgPMXnKp4KAorWRIhqEloQ2hdpn8W1sMKNJ9t6SoSgJQJEjGjRl4+9zn4EEkTpwDmo+8MguGoMvCQR3fg4ZXfpqfD0hv5dVnVSMud1ZH+cGB2C6YtCL6j4y8ZcBvs0F6v6XKdrexZRY9JAGSTsfjKsRtvmAyXUW5UtL63MvYiXK2tJSzn4BdF4N/KvcjrI2yhf+uTQDi3enCMAn/J9Y4XaY97cEF5ceq2eioYATZI3CrXN5EF90jW1nGzPrrsv9+HOrWURo3xPCe5XgBxQYjX4elzNCMRkJbCeSE2Vsw9MSPCehEEn26/GCjxOSbMughQimxyKCHCV3LNTlowydhJ5VLO2BK2KpZL8XSwU3zXkiKH8/4mJq7uf8nijbyWfy97z1wC7VQtGVGCH/VK5Bx04oxnwscKOguOMtkNAjwrcBi5DDnCIDZEB49zyRfR4VwRUi3LH+eo0q0QVxTUKzwpgmQ5D/0aH01hbf0zA5UN2cFvEOX0h1N89ACsy+o0x9mVNc1MRfVupGm+jzFOkfo1umrks5Ydwz97xvS+fmwHUOf7KLw49phqa9YxnT/XVS3p9OtH0w5R4SrFfX867
- /ngoHqn2
- TlJWCUDGjyUbUeE3w2r7LckXu+vj9+2B/pfKsqkidrrJnJVk6BCroaxinNbz1f6JF/VfR6dn3KGC+c1LmjcO0pPthPOEvLQPeCiwjTCa/vjwVOM9eZkWOs7GZhtA/Ext/p0PwxwmY34JkXTwIe+lSErGaOY5PXcTV/EBEvsI2Fxs41XjNy2vZyL0lknfQ/1cEoAfdM8TbCQL7qvaJBdt2pvE1aDjx9I++BnFClPxDhXsLyuQWVMg3+/FF0h5UdLfWExcXBC7pgmYQIvRBvOH8ZlKHkX8aPRfjo5Uls1QlDas6IAk=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BCE7D140008
+X-Stat-Signature: rbkh763ggt5er3m44d6px8fa6o8xihxw
+X-HE-Tag: 1781204129-614305
+X-HE-Meta: U2FsdGVkX1/kvi+t+MQkCYjk1rzlV3Je2fZXFjyFsJXJ6OWGyVdu3CSE5oHjkAcFhb6kpdsGUVO5K5g22BvcUE2J1YohZT0I7IUPNvAsVL+tG1WDLYEQx11YuCsGvc6XjDX4rz69tQWzp9p6oRbm/MoT0tMQ+kl7TZrt3VhtciH+Woctzgsd9ZkMvem2VyFmtamoTKRVuSZEjSCsVOFt61kRXzJ1NrGmMSTT2+BXq4huHJAtb/FL7lPvRkkYo5PWUP8bo9ysM6WnanlHMbwtr/TnQ1bk9pySmvXFBSdAal25rp49mPZph80pENLOEo9R8DX+a6vehAHPXE0yt1XKlZ1odBljhUHx7xSdoI9qJO8YDsgX0CvIAbRT3rYkkz4F1RF7/EXFURWF51xd8N44s/5rh52d2oi6uwImdY5wVbr2OCcRmC0ONSRn1HgtPbOnxNZ6w4q9FP3MW2lGaF1W5hf1oh/cmbnE/kL3VWZtPue7vGD7Ffc0kNpL+cWDyR2vkPS/Qv5+oJsoCySSKUaR/pb4lCJ4CW0ufkgYlD0/aJ7bHA2nzYZ49yDebKKMnAn+4DF0s+VJJK8+JhmHLUGWe8vhbnbnC9VcAHESFyoDZhde0aSyjer+mXpwhCviiqGnfNR7JeRZ2UaTtMX8E5iwTvbH4Cu3tDE0W0578rx252gi/73663/26kBg81uQSgALqRw/Y+M7oWh/8Cl+sjbGZbCEtv4O75OvfhfQxIXZe5wP+pMxa9YMtY7MPddosKM3BjBNEdG2vWZUzYT48BN3D8a8yYk4kY4Iu/iAfCovaoAHUzSAEPWKy0Z4dJ0wi4kWr3iZuyIjpNc0AHztgR3t8TRndBXAT81KqWDMolbCdp2pQftbBWViU2mhdCQERLppT/eNiiH3QnNSvXbbAb/q4xuWFDapLoLUlcZcrlt+l3SEWQZHKnEEjYUz7Ga1MEg1smU9ofHkHOPLAqdrd9x
+ XTelij4c
+ 1Gr16OOdabjU3X0D9ZPdt55gCCsKCbupv/mLmaENzlU37OpF/M4m/5QEfOIv9hLFjFCzFQppYMChLHTFhHHATNorImX/Pgt8pgVoEvcuniWXyXrXPilcJE4gq9not+fswXqOSpg5Q//tEJhKH4G8MfGV4o5PL20jw4NbLIkJnkCGfJ5J8HHx19VuULu+gV9cV9OBAZI7QzMRB398scDZONougSsYCVn8Ap0UAHkJRBB2CrbfLeoTHzeH2l/Nkdh/DySWT+Su2jH7hhPn0u14qeh28VJq8LQhmYcFKtW2TUeBah81ilJPqg8jw0wZ2wIaBsbV53nEfokyJ3utZFQTWOIec99BJjVHhyOnN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,124 +149,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shakeel Butt <shakeel.butt@linux.dev> writes:
-
-> On Thu, Jun 11, 2026 at 06:34:15PM +0000, Roman Gushchin wrote:
->> Shakeel Butt <shakeel.butt@linux.dev> writes:
->>=20
->> > On Wed, Jun 10, 2026 at 11:38:29AM -0700, Nhat Pham wrote:
->> >> On Wed, Jun 10, 2026 at 10:31=E2=80=AFAM Shakeel Butt <shakeel.butt@l=
-inux.dev> wrote:
->> >> >
->> >> > +Roman, Qi
->> >> >
->> >> > On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
->> >> > > On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@li=
-nux.dev> wrote:
->> >> > >
->> >> > > Thanks for reporting, Zenghui.
->> >> > >
->> >> > >
->> >> > > >
->> >> > > > Hi all,
->> >> > > >
->> >> > > > The following splat was triggered on the mainline kernel:
->> >> > > >
->> >> > > >  BUG: sleeping function called from invalid context at kernel/c=
-group/rstat.c:421
->> >> > > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, n=
-ame: cat
->> >> > > >  preempt_count: 0, expected: 0
->> >> > > >  RCU nest depth: 1, expected: 0
->> >> > > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.=
-1.0-rc7-00056-gacb7500801e9-dirty #304 PREEMPT
->> >> > > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable2024=
-08-prebuilt.qemu.org 08/13/2024
->> >> > > >  Call trace:
->> >> > > >   show_stack+0x18/0x24 (C)
->> >> > > >   dump_stack_lvl+0x78/0x90
->> >> > > >   dump_stack+0x18/0x24
->> >> > > >   __might_resched+0x114/0x170
->> >> > > >   __might_sleep+0x48/0x98
->> >> > > >   css_rstat_flush+0x54/0x564
->> >> > > >   mem_cgroup_flush_stats+0x9c/0xb0
->> >> > > >   zswap_shrinker_count+0xe4/0x1e4
->> >> > > >   shrinker_debugfs_count_show+0xd8/0x268
->> >> > >
->> >> > > Ah, this seems a bit tricky.
->> >> > >
->> >> > > Seems like shrinker_debugfs_count_show() is invoking
->> >> > > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_coun=
-t()
->> >> > > triggers a stats flushing, which might sleep. Not ideal.
->> >> > >
->> >> > > Is the rcu_read_section() here to protect memcg or shrinker? For
->> >> > > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
->> >> > > memcg before returning.
->> >> > >
->> >> > > (memcg maintainers please fact check me).
->> >> >
->> >> > mem_cgroup_iter() handles the lifetime of memcg, so there is no nee=
-d for rcu
->> >> > read section for memcg.
->> >> >
->> >> > >
->> >> > > If this is for the shrinker think this needs to follow shrink_sla=
-b()'s pattern.:
->> >> > >
->> >> > > rcu_read_lock();
->> >> > > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
->> >> > > {
->> >> > >     if (!shrinker_try_get(shrinker))
->> >> > >         continue;
->> >> > >     rcu_read_unlock();
->> >> > > }
->> >> > >
->> >> > > But OTOH, doesn't seem like rcu_read_section() is what keeping it=
- safe:
->> >> >
->> >> > Shouldn't the caller already holds the reference to the shrinker wh=
-ich it is
->> >> > giving to this function? Does debugfs file entry holds a reference =
-to the
->> >> > shrinker which it is giving.
->> >> >
->> >> > After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
->> >> > shrinker_free_rcu_cb), so this rcu read section is against that.
->> >> >
->> >> > I think we can simply use shrinker_try_get() here as Nhat said.
->> >>=20
->> >> Hmm, so is this unsafe even with the current rcu shennanigans? What's
->> >> stopping shrinker to be freed by that callback before we enter
->> >> rcu_read_section()?
->> >>=20
->> >> Seems like this is just implicitly correct - shrinker_debugfs_detach()
->> >> and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
->> >> shrinker_free_rcu_cb);, so if you're reading this file, then it's
->> >> before shrinker_free_rcu_cb() is even registered?
->> >>=20
->> >> Do we still need rcu or shrinker_try_get() here?
->> >
->> > I think you are right that we don't need rcu or shrinker_try_get() but=
- it is
->> > more about an active debugfs file reader. Suppose we are sleeping with=
-in rstat
->> > flush from shrinker_debugfs_count_show() and there is a parallel
->> > shrinker_debugfs_remove() call.
->> >
->> > shrinker_debugfs_remove calls debugfs_remove_recursive and deep in the=
- stack
->> > there is a call wait_for_completion(&fsd->active_users_drained) which =
-will wait
->> > for active users, one of which is sleeping within rstat flush.
->> >
->> > So, let's simply remove rcu read here.
->>=20
->> +1 to this. How about this version?
->>=20
+On Wed, Jun 10, 2026, at 7:40 PM, Mateusz Guzik wrote:
+> [...]
 >
-> Thanks, Andrew already picked up
-> https://lore.kernel.org/all/20260610232048.62930-1-shakeel.butt@linux.dev/
+> As I tried to explain in my previous e-mail this approach does not cut
+> it because of NUMA.
+>
+> Suppose you have a machine with 2 nodes. The parent-to-be is running
+> on node 0 and the child is intended to exec something on node 1.
+>
+> When the parent-to-be allocates and populates stuff, it takes place with
+> memory backed by node 0. If you allocate task_struct, the file table and
+> other frequently used (and modified!) objs in this way, you are
+> guaranteeing performance loss due to interconnect traffic to access it.
+>
+> Trying to add plumbing so that all allocations respect numa placement is
+> probably too cumbersome.
 
-Awesome, thanks!
+Are we sure that last part is true?
+
+Let's also assume when this stuff was initially implemented, we didn't
+have it. If the basic thrust of this work is to replace functions that
+previously only worked on the current thread with those that worked on
+either arbitrary (not yet started) threads or the current thread, would
+that not prepare us for slowly migrating the allocation choice to
+reflect the node of the target task (new parameter) rather than the node
+of the current task over time?
+
+(This assumes the task is pre-placed on a node before it is actually run
+there, and that pre-placement happens as early in the allocation process
+as possible, so subsequent allocations can read off the
+partially-initialized task's node.)
+
+"Slowly migrating" is good here! It doesn't need to be the fastest thing
+out of the gate, but if this new proper spawning API gets popular as I
+think it would, and there is a clear path to optimizing it per the
+above, then I am confident that over the years it will happen.
+
+> The primary example for that is looking up the binary to exec in the
+> first place.
+>
+> userspace likes to pass paths which don't exist, meaning checking for
+> the binary before any hard work is a useful optimization. Suppose the
+> binary to be executed is in a container bound with a taskset using
+> node 1 and the content of the fs part of the container is currently
+> fully uncached.
+>
+> When you perform the lookup on node 0, you are populating a bunch of
+> metadata (inode, dentry) using memory from that domain. But the intended
+> user will only execute on node 1, again resulting in a performance loss.
+>
+> In order to not do it you would need to convince VFS to allocate memory
+> elsewhere.
+
+One thing I don't get about this is that isn't the cost doing a bunch of
+work searching the PATH for the directories where the executable
+*doesn't* exist? In the case of something like a shell that is going to
+spawn a lot of processes, I would think it is *good* to keep all that
+PATH crawling VFS filling to be on the shell's node, rather than the
+child processes' nodes.
+
+It is only the executable itself, the final step of the VFS crawl, that
+should be loaded into the other NUMA nodes. Insofar as (unless I am
+missing something) creating the process means finding the inode for the
+executable but not loading those pages, aren't we OK here? Only when the
+new process is actually scheduled and run must the ELF be paged into
+memory, and then that will happen on the correct node.
+
+> So I stand by my previous claim that ultimately a pristine child has to
+> be created (like in this patch), but which also has to do the work on
+> its own.
+
+I have not been a kernel dev, so my apologies if I am missing things.
+But in conclusion for me, the FS and other resource access patterns of
+*creating a process* vs *that process itself running* do not seem
+necessarily coincident to me. What you are describing as for sure a
+problem might possibly be a *good thing*, if they are in fact quite
+different.
+
+> Suppose there is no explicit placement requested anywhere. Even in that
+> case there are legitimate workloads which will eventually be forced to
+> exec stuff on another node. Even these have a better chance retaining
+> full locality if the child process does all the work.
+>
+> Per my previous message I don't see a clean interface to do it.
+> something quasi-posix_spawn is probably the least bad way out, it will
+> also allow userspace to easily wrap the new thing with posix_spawn
+> itself.
+>
+> Also note there is another issue with the fd-based approach: the fd will
+> get inherited on fork and will hang out in the child afterwards unless
+> explicitly closed. Suppose you have a multithreaded program which likes
+> to both fork(+no exec) and fork+exec. With the fd-based approach you
+> have no means of stopping another thread from grabbing your state thanks
+> to unix defaulting to copying everything. There was an attempt to fix
+> this aspect with O_CLOFORK, but this got rejected.
+
+I would think we don't need to worry about clone/fork very much, right?
+I think the premise of your emails, and just about everyone else's in
+this thread too, is that we agree fork+exec is bad, and the problem of
+unnecessarily sharing resources is inherent to fork. Furthermore, I
+think we all agree that while `O_CLOEXEC` and `O_CLOFORK` may help, both
+are unsatisfying solutions because they are opt-out not opt-in, and
+global to the parent process / preexec state (respectively) rather than
+local to the specific fork / exec in question.
+
+pidfds encounter these problems no more than any other
+file-descriptor-based UAPI, right? And I don't think it is good to blame
+any such file-descriptor-based UAPI when fork/exec are at fault.
+
+Maybe during the transition, when some things use fork and some things
+use this new API, stuff will be awkward, but I would rather that just be
+an incentive to complete the transition away from fork, not a reason to
+second-guess the plan.
+
+Once the transition is complete, and everyone is diligently assembling
+their child processes from scratch as is proposed, `O_CLOEXEC` and
+`O_CLOFORK` are both unneeded, and oversharing privileges will be much
+less common simply because "lazy coding"/"minimal typing" will only
+share what is needed --- anything else is more code/keystrokes!
+
+> Whatever exactly happens, NUMA is a sad fact of computing and needs to
+> be accounted for. The approach as proposed not only does not do it, but
+> it actively hinders such deployments.
+
+Despite everything I said, I want to be clear that I do agree that NUMA
+performance should be accounted for. Even if the first version isn't as
+great as it could be on that metric, there should be a clear plan for
+how future work can conclusively address it.
+
+Cheers,
+
+John
 
