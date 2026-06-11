@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90823CD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A00ECD98D5
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3A5F6B0095; Thu, 11 Jun 2026 07:50:58 -0400 (EDT)
+	id D39386B009B; Thu, 11 Jun 2026 07:51:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11646B009B; Thu, 11 Jun 2026 07:50:58 -0400 (EDT)
+	id CEA126B009E; Thu, 11 Jun 2026 07:51:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27736B009E; Thu, 11 Jun 2026 07:50:58 -0400 (EDT)
+	id BFFC56B009F; Thu, 11 Jun 2026 07:51:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B2CB66B0095
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:50:58 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73E8F1205C8
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:50:58 +0000 (UTC)
-X-FDA: 84867465396.27.78A7D09
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 926EB40005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:50:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lqt4DXND;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781178656;
-	b=3Ylsu4M71VDGxs0OJTBfWfkQOOcDuaJWmlI4OCQRpnwlnT/RYRtPEp/rxX0kPCoJu8wk8O
-	bJIgYFQTm2VvSfJzpIXgp1kS3MXpEVMw6xUatZkBd3pnzzstQe4p4NnZxbLo0dTvsoRh1c
-	QergN1kMwNJ8uyBkxOH4MrR1fN4V9Pc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lqt4DXND;
-	spf=pass (imf17.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFD7B6B009B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:51:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 775071C29FE
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:51:02 +0000 (UTC)
+X-FDA: 84867465564.25.D52209C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E5DDD140009
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:51:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HtGIR5+G;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781178656;
+	s=arc-20220608; t=1781178660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yrzlJyLu9uNWqK5gmAkFzGANXofsBniaCTW8GnMk0r0=;
-	b=756QbomZNp+TYVnGKlQURzxEPSoj2a9pCymmb13M+Z/kAMQUIkdkTYqn/iwU+7qk81ClUR
-	hrYIBRKwIftrwA/Sy42pjmkLENxM7VI4qwRh8+G8mcaYxGow2bIKSWiUmtr5w/gyACN6jq
-	xTA7M55prCG3iGpeg0BDmYwxC1RuyaA=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-46066e640easo438754f8f.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781178655; x=1781783455; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yrzlJyLu9uNWqK5gmAkFzGANXofsBniaCTW8GnMk0r0=;
-        b=Lqt4DXNDGfZvgkHzt/WAGYAbEbTSk4NBSgiKuOoh1/0AkDBxvyW1ms/n5D451sNV1l
-         fVUk8zHV5AYo/lQsUbWs7y7sPrJfsSH7q+7EB4jexI8oeFPCHjUVqOvbgx11nIKI+W9L
-         qJdXWxEgyQ4Pn46WdYPSPD1DnaCVxYEeN396LVYhcFyhRoYQPRc8SGKwqwKEUUTheCgw
-         8kmAUjdapG3ooTwvrTRWY7EmrTjuVn2lmn3mF4jjuOtqm8BCS6cLUoE75gnqkixS3SBT
-         8ZZo3fMbmjUXqg7Ykw2hM7mAAklOeTwPaGU18WTsQU+tX6PCPTgPAzG+crhVtBc19M2i
-         K+RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781178655; x=1781783455;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yrzlJyLu9uNWqK5gmAkFzGANXofsBniaCTW8GnMk0r0=;
-        b=pxNdO7KGv95DJzSgE0U1Vf00h2ZOkhNM4YNv/hxbk2wU7bIWEICPq3EGJBsY1UoXN4
-         MeHlHOtpBMMAq+rKPGRk+ffFSmV3q+zJJktTjJ3JzyxVypsZcre2O3WD8yERDsaS5+D6
-         ZVxHCD4RDU86uiz+f5i/2vTzBf9fldMgWTywkWZlPs2mrlB3M7lTXWh/bYxxjXDy9OhF
-         AKvtOGicQrQhR4rFJG1V7OlC+BFMPX/EhTrzS/GFZHk6GTTj5sR/501Pd15SbAJlu6Kn
-         OwSyWy36hAIHvJvf8HBhSfTubKliqBzsGGFcv6FbhL7cBu7tO9zZStD7XP926BNmoq7O
-         4mFg==
-X-Forwarded-Encrypted: i=1; AFNElJ85a6Ht/AOq3bOCmwZ+6jHmOfHlzuvOg7j+eUL8obhCTD9Z76xgj+5GL7x57B220WQ+F6V4BHEZSQ==@kvack.org
-X-Gm-Message-State: AOJu0YxOhSBxJRKuAN11Vrap3EzMc4Wk9RAjyO0wBGZ0nA3B2vIbxZUa
-	4LpGfXRuJrVaAx33RpfaVA37s8TWLqGY5blNQceaOE/vJ+I8dL8XSoMe
-X-Gm-Gg: Acq92OFXK0pj9kxy0xWUjKD+dX0wgPFa/XBIXIdrKh872MRqGBPEwLg8BK+Ltwnp6VJ
-	+Dt5Y8L0inoH2p6TXtAk2zn02obPrD8lPF0hsFdandZAh19XvgL2DFi4i5WPkESnhhv1bJHmocT
-	cZ+6gGT74B8ZmPr8QV1jZW8d03T1BHS6the7mh1iJORhYw9/lKL4OPC+gVXUxnxLWkBVmfh5yvP
-	tsFbiIARysu60qa5VupwtR94cfvK56E/gGiSFfsJ418OZWdRMfRIhO/qFiQfIKBdJ6kPO39a5Lt
-	2redTXVbD0jqZOywnvP0lPLS/aWkQwX3Cy8GA8gFu0I2Y2mzbbyzTIGXbES7EEpvBtrvXTvAAWO
-	GycAwjQdFsgE7JiMUhVqYoIRZm36m/csKuYMa0UTTFt6c4c66s35I1HZwYPoXbo81fruY4PpRzd
-	hz9aF5STH28ELk30qtaTt+GKQO1oFXZsa2iBFFIvLtpyfnDYwiZM6Ml+eKse0/zbKxexBFhCJmN
-	sMRUCaL9z6GKNf9V+OYaDiW3gHqYLEv/9KB+IxR9LLL
-X-Received: by 2002:a05:6000:702:b0:452:8286:86bf with SMTP id ffacd0b85a97d-4606758caf2mr3422666f8f.1.1781178654810;
-        Thu, 11 Jun 2026 04:50:54 -0700 (PDT)
-Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4602cda363bsm68265267f8f.31.2026.06.11.04.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 04:50:54 -0700 (PDT)
-Date: Thu, 11 Jun 2026 12:50:52 +0100
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Yichong Chen <chenyichong@uniontech.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] tools/mm/page_owner_sort: free per-record allocations
-Message-ID: <aiqhHE9uROfs_4p9@fedora>
-References: <ailAiIKTNSDHkUl6@fedora>
- <440C4C1E0D13E6D1+20260611023411.379986-1-chenyichong@uniontech.com>
- <aipzJR0KnO76crLy@fedora>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vCLT3MldI+CnLiU5868dQt6KO3qRHng7qPiO+N2n7OE=;
+	b=hIaxSKS1F7z75MwUkob8fPYmjQ78FjuT5/xaZn84i6kaKtc1UB7PLzkOrDx4RBpkm8ifHy
+	lNImE5jBr5SvZmaraPsxLgprSyrmV+s7cUEcJT4ICaVUesHdAnsIWBo4E08G4pbcbdNZVf
+	riPuHTAW1BEsZFt+cto8vH4ZM+M1w5g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HtGIR5+G;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781178660;
+	b=49PuCy8ns+TKzYuP4PMzRTu6g6qbeD9lUXicmgv4XjMsP5jRCTw0y514uSqTYrJlIQHwz5
+	tm4OmtqbiGsMI1hw4Z5fnJq5LBwlLE0+KeSJSBRxECV2NBpAL0eykOxX6SW1bg+VvhZT2W
+	mTz0GPJ43sp5LCICNMud8LjlrVH1K08=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6707B600AB;
+	Thu, 11 Jun 2026 11:51:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58731F00899;
+	Thu, 11 Jun 2026 11:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781178660;
+	bh=vCLT3MldI+CnLiU5868dQt6KO3qRHng7qPiO+N2n7OE=;
+	h=From:Subject:Date:To:Cc;
+	b=HtGIR5+GL916gH/Y7pQUGNkTbN8MuH3ekBiP39HWzBoSkEgMaLAkgnPbnhm/I1L1j
+	 X4Iqlnzjk019288Y3jDIkS31lfpOc547SmVUX+8LMufuQINzh6ToOVGHaxsumaqyCY
+	 QDj3r3WCdeyX8H1HWFPf0LWkeF/ni0rvSpxonwZm8w7zsIJThgeooc6qUHyh+8O3+Q
+	 fdJmR/+S8LilJayClGIGaRBQQ7bTdH+uW/ItfRA+PzKDyabxOb/IhhVw2ickuvSA9o
+	 vTs29BkfrR9t08hpDblYLpE4GXht/DHCQCCJ0aaFduvRTKKrHJuI0EId4Vaf8RvyII
+	 zBhFcdgUpcoCQ==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 0/3] mm: cleanup clear_not_present_full_ptes()
+Date: Thu, 11 Jun 2026 13:50:46 +0200
+Message-Id: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aipzJR0KnO76crLy@fedora>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 926EB40005
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABahKmoC/x3MUQqDMBBF0a3IfBuIkap0K0VCal50IETJpEUQ9
+ 97QzwOXe5EgM4SezUUZXxbeU0XXNrRsLq1Q7KvJaDPoodNqiXDZpr3YI0OQig2fGO1RIMqH3jy
+ mtwsjPNVDLQKf//trvu8fziCL020AAAA=
+To: "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+ Peter Zijlstra <peterz@infradead.org>
+Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.13.0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E5DDD140009
+X-Stat-Signature: nn1h7sazucu38ityess6stu4b4bm1u9t
 X-Rspam-User: 
-X-Stat-Signature: 1du1x8f4xyn933d5tes1z3x8frh99e7g
-X-HE-Tag: 1781178656-861614
-X-HE-Meta: U2FsdGVkX19aWyUNHR7R3hyVEYQcrykXxCP6MvQjY4/TP0RxHDYG8hofE6TXN1TAUMfyRIWwjaJKBkD1KeJolUHmBGxbfrrxC5miv2SjY10o0ZAUIii6KyB/pgh8rPG7AOf8lo+yS67ffFZqs1MNMd9QYErMnAyJezNjEg+9XluYPMsUDl1E1BX4J2jbyRjw/d9XksTBbpPzYaet/w9xLvR/QYkl228FRWRHun+5lZcLOP2JVkj0IBwEDFuAsQO5TZMMREDDgAIyAX6Q/hVs0MwkMi1T631Cp0AkO4fxvhnH7Vyruzgl1KB4J6ZK60HqAJZzkNH0gxtWcbZ+EzUnIipT7db/gKROstHTnVj5pJ6wIWFeYWr46II8+Imrk+ZMr3tIUSJMnm/eyuWRGu5+Co44tdtd8kRwxB1eBOLaSgN+y5XVOec6khE8oVJ6ygxHqcra0YLFHhdPE2ytuIlqlHxWA3FhJ4VOaaVcDQ5LltSTPs6eqPtzQXWHyC6l6RCCtSrrKCx/xMB7aFa2Vt0BAUNFmQ5pq85blDINjudAp2b29CcY7ur8/OuqseCLRwPTy42iSJG6njo04if+hQ2XIoTyG+6Xz/mo6hpRV+QKc+hDa68kzNVd/CE1+NN/aw2ansaOxYxYNyTEFGQHyLqod1MIjFqqcM29K1ldbLqjz/J7lAV8AcMrazWBXIob4qNjXOmwnv+rjShXRJR7VHzRnwIgUsxWHEnsE/s3VAhu4Gu+5sC95N6DxgL3hZ5kETzoq4k0uCcRQt+8uUX107+1pU7awFeAXbN5hnU4OcGp30ekuyW/uA0yxuCGUQNt+piJkRKDsgvo5HvkAJHJUniLx9Z81xzymWlCfp/vJU73wYR9g/lngxHeYCc/eZ8v1g810kT+jkFfRHK1R9Sc8HSnk7JcChger3AbVTwVXXP5/VXQ3FiRqkXqPjiC5zeEkzkAOosR6NW3ssQ4kyVJ6ie
- YBBt06sJ
- F9VxrONo9IcBOrs3bGrAQBpTuIR/N8D8Ge51JSlNBNMenVzW1ZbKS+vjhb462ZXu9wAUksDHIRXBBvNdKKBhiWgZ9ba+AE1cfV9ZJvY25vppI1ZprwEqst5TAjPJBbVWERmWkUvwb+VUFOymJcXkpdV9zVukleIWy06uOJDiRqAzOVwrUuwREOPiMrGLTH+EG+VCRacfhgCEdc2IU0Jc1LlaXA9HN28kcA1y6AU+vPIm5tOLV+84OBDF/+cxfaV8Ti+6kPWJjiZZBYu6rA9PY++tw8p22+M34AfDz7rJOhtfjH1ZFL6YYj3noiEoYuFhXC6ngZHlx4a69V9nW3tUhgeYx4N74yOAJYuIdQQ1w19gD5MPm4GBuu3P7xRixjuunt/6VRQrZ+lOj5H7qllOaU12MsUz/BgHkZEo6yEvYlaFR5Q6+8N5t7f8c0sgIPjK+wXMX13DiSmTWBzYVU2E39lQ0YvY4y0A4xXleImCPHuxXgdE3Tj9wcGG1Av75HSslF/TyDFFOVtXKTQwJCTllE9uuJZe8pqnMIKQjtv+MznL4KgI1AxfawoFBbGxuWfWi4Bpp
+X-HE-Tag: 1781178660-554253
+X-HE-Meta: U2FsdGVkX19c+1y5BWEQ5l+KQKx9+V8B1v/9eNgcgtuhVoO08exGyO6n7s53VIyF7rLwT+IPadkoc53jkKEjJRvQ7M+ntTk9J5e+VV7Fsl8BuA/0XqWrNvbj3CA1mybc5RHFAdN6Bwqk9WmWNuuLX41MDYCdtaytOhsLIq/n9fX5BxvPI6KAgRfl1HCLNaaXLwDBW37FQYT5ruMLLb1Z2MORvQrdxecnECVscRQFzC/icCyDCxcuvhZxgT95peqdo5SMD8/2Kz3kHHeDqzyvVxqPycsC09Dq/4urZJp9Hn4lUfn+G4aUMEPCHFm9qCm0jcetszr5HKYVkpGe40qSQIhxBuyh69Py6GsL1fQ3rXvQdAbGS/n4xjPvQvQv8jz1z+ndHSjkhaSDWYPVRCOhC2HpZAGTmYPX+zrZ77v2T8XvXHlXMSrC1uMXSm/mkKfHxQ1xXurj8pF8ODKDaLRzTMYvG3ZbIn2tGDW5PP9Qa1Ax8K4Uh8O6JRyGKlU8DfcKhh75tpKLYYXDYCjZSd/mx6xE6UXSX+NL36HxQH4bYtPhZOrsZv/2rGql/FEgtkYgRBoUAPk55bp7jsN55gM3n8GNtEUexbRAhzlEvlfMOJqleBkudweJQAKrg47WOVz3XD9a0JNBP8lOn/uDamvntu/xheto6wFa/j7Klt3uCcTl5nXRRCRzPnOLNfQCv5CRhqUfvSUUsyih7BunlKIrn5ecdey5SI+SB0mewaCgEFhw07cJArEnQ7f38QEaaVXJY9F7Lhnxl2Eaqx0N/hD3NPBRnZKjmVMOppG+urR6cbPWUUevT4NNKbrKgawPqOlq+GYBmbv5qu040UHhmD8ANJrr01WpXJxa/pnNN4htXkS7iapPSLzxv2hlAL9IdoeyJ08zMVoXcdgwX6WLMpWYFRKRNCYej9jqZYuclROIbg4ZYUx+UPLgfF2NIwLV2rrRn5GfyLnFOBRg42UAO01
+ 3vcFO594
+ aQ+/qMXVxwI7hlD2MpBj/ovJwI+t+lnsnskQ8f0kx1vVJO4pv+B7l37+YLE0c6D61rAXZWX0CFnz++YVLCXy5yD2m8P7pSlLqwhwq68dnRqv/SaQXDj+HWgHP6DZdAHOGZuxZa0Zu7BuTGoaK1n+JfNYjmUCy1Y3oayDh56d6vjjckSXFVSfSR++Kw72k3pvPCT6J1zAqgXuIeWSFSxMvqwuYDGE+Wh+uotlYhR8vyIqVsC0cjDlcS2i5ICWtcy62QHVU8UikqhrZ4FY/L6lBu8UaxJdY6cQnLhXp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,50 +98,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 09:34:45AM +0100, Vishal Moola wrote:
-> On Thu, Jun 11, 2026 at 10:34:11AM +0800, Yichong Chen wrote:
-> > add_list() allocates comm and txt for each page owner record, but the
-> > cleanup path only frees the outer list array. This leaks both buffers for
-> > every retained record.
-> > 
-> > Free discarded records during culling and free the retained records on
-> > exit. Also unwind comm when allocating txt fails.
-> > 
-> > Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
-> > ---
-> > Changes in v2:
-> > - Wrap commit message lines to approximately 75 columns.
-> > - Use "Yichong Chen" as the author name.
-> 
-> Thanks. Also, in the future send new versions as new threads :)
-> 
-> The patch looks fine, just see below for my comment you might have
-> missed last time.
+While doing some review, I stumbled over clear_not_present_full_ptes()
+and concluded that it needs some love.
 
-Sashiko also caught that is_need() calls get_comm(). That looks like it
-should be handling the NULL return case as well. It appears to be an
-existing issue, but it could fit into this patch if respinning for v3.
+Let's remove pte_clear_not_present_full() and cleanup
+clear_not_present_full_ptes(), renaming it to clear_non_present_ptes().
 
-> > @@ -480,9 +489,15 @@ static bool add_list(char *buf, int len, char *ext_buf)
-> >  	list[list_size].pid = get_pid(buf);
-> >  	list[list_size].tgid = get_tgid(buf);
-> >  	list[list_size].comm = get_comm(buf);
-> > +	if (!list[list_size].comm) {
-> > +		fprintf(stderr, "Out of memory\n");
-> > +		return false;
-> > +	}
-> >  	list[list_size].txt = malloc(len+1);
-> >  	if (!list[list_size].txt) {
-> >  		fprintf(stderr, "Out of memory\n");
-> > +		free(list[list_size].comm);
-> > +		list[list_size].comm = NULL;
-> >  		return false;
-> 
-> Returning false here sends us back to the error handling path in main()
-> where you end up calling your free_block_list() anyway. So we don't need
-> this here, right?
-> 
-> >  	}
-> >  	memcpy(list[list_size].txt, buf, len);
-> 
+Heavily build-tested, runtime tested only on x86-64.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+David Hildenbrand (Arm) (3):
+      sparc/mm: drop custom pte_clear_not_present_full()
+      mm: drop pte_clear_not_present_full()
+      mm: cleanup clear_not_present_full_ptes() and rename to clear_non_present_ptes()
+
+ arch/sparc/include/asm/pgtable_64.h |  4 ----
+ include/linux/pgtable.h             | 31 +++++--------------------------
+ mm/madvise.c                        |  6 +++---
+ mm/memory.c                         |  2 +-
+ 4 files changed, 9 insertions(+), 34 deletions(-)
+
+---
+
+base-commit: be18cf77e1e749c6469ff44df00eb026f7c0a365
+
+change-id: 20260610-clear_not_present_full_ptes-df3258baf7ed
+
+--
+
+Cheers,
+
+David
+
 
