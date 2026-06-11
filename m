@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2429CCD8CB9
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD24FCD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:49:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80D926B009D; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
+	id C11286B0093; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4F06B009E; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
+	id BC2106B0095; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7217B6B009F; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
+	id AD8256B0096; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614536B009D
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34C361C2FD7
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:40:56 +0000 (UTC)
-X-FDA: 84866684112.11.9E744BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6322840002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:40:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny6YH0ag;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 99C0A6B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CF03C1DA4
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:49:38 +0000 (UTC)
+X-FDA: 84866706036.26.16D9BE8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7BCB440006
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:49:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6SKi/fi";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781160054;
+	s=arc-20220608; t=1781160576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yi9ckVtDtphA7eMJncvdNkgvdgfwVN/oHKstajaBnTM=;
-	b=EjCXeOWSYw3D7zjN+MAFTM0MhRPlzbvCmz7isdoYxGYLfzRGpU/ArkKJBUJnE9YjGdwOHd
-	afJ3zDD0cP484z3JjwKRX3/JyENl9E9oG3yytOMZQ/XbRHfwJ90gF+3nikUhmAzEdwLnms
-	aK/yJX4AS+TZKX+Bm1jpgY++JTpaAU4=
+	bh=lC8ycInTVWa80ivQlmiFJsfkdHS3LZShZCSRnJHPAlA=;
+	b=eyeW7d0HlsgDGi04ZjeY4cvmSSA3u2jC39SC1LcBahPwDh+wZ0907apCTuNpMQJJTQNRck
+	O//+Kv6Jdo7Itfu24vpYljiujCP34Z3E2sqBElxZpU+26gzae3fsQq71kR8faQz4IvdwsT
+	DDxTY6ZgMtyEmrGQkDvYKQUtWMpc5RA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny6YH0ag;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6SKi/fi";
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781160054;
-	b=5HhToxWq55Zd2qdtdD/wCs3wDF/FKpsjANZbg47OKgtQG6lHL8hKr+o0FbsBRZkBxADSIA
-	Gn9aSuCgQdygoW4zj0lSQr1iIKf8p8/sWqV0h8llRt2PF1/kfbM526lNZyo8ZxjtdPZQGH
-	8pkLX1VMFa1SS92uB7aZihETWq7ULqA=
+	t=1781160576;
+	b=UVfAAAQkFpGrfesWc0Q2ZcDRAiKStZ7KakoV8QCs9h5WMuvq41pmoaVZEbncqDl0EoW5TK
+	8NFg7gHwHm+u7tqxcskA/HUBlP0HW5eNNOrwTMQf6qEBhRm5yTBE6htC5L55eAJToAq/WH
+	r7mqugYRSHjMGI7mRAhVw8j9k2NgEUY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37AD0403DB;
-	Thu, 11 Jun 2026 06:40:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD181F00893;
-	Thu, 11 Jun 2026 06:40:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DA789600AA;
+	Thu, 11 Jun 2026 06:49:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA841F00893;
+	Thu, 11 Jun 2026 06:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781160053;
-	bh=yi9ckVtDtphA7eMJncvdNkgvdgfwVN/oHKstajaBnTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ny6YH0agPhJrgPlTnLMxDnStHWnM4CN6azBueRu5KlTzXqgWrnXqCaxFDweGkL/aO
-	 Ivlbxesvv27d8fnL5f/gdFXAjaF3tMorYBLWKMojHQVEKzeVIv1LFgYTtJaA03N3UU
-	 T8O1eb2OUfiN0X/fDnGd1cdT6sjp1v3H95MDXqCAvXm68z4XVRmepW28tbE6k5jr8j
-	 p2n3azySbjTwdJ8a0EPBOzxdMNnnIcB3I8Q36ec8Mog6EDsxi3Xd8zjKS6YwMv9nRA
-	 u08TDIFox4+LWNfl0R0vgIb7vu11g9aqOWvqTvQ5bv/DRiSpNZSUO/KVOMJpcEPj1C
-	 9DTc4fov9V1dw==
-Message-ID: <7064a90e-4bf5-4be7-8b7f-a5a11dcee66f@kernel.org>
-Date: Thu, 11 Jun 2026 15:40:47 +0900
+	s=k20260515; t=1781160575;
+	bh=lC8ycInTVWa80ivQlmiFJsfkdHS3LZShZCSRnJHPAlA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z6SKi/fiaA2C2wYajoTbWuUo44PjNAOAJTiPHw824PI9E6pXkIHtOqCt7sirQQmdh
+	 6n2RHUP8v0VHzxMFhjmcUXxCXeLWeg3HED/QenMFuJBVdQUZEmSXodSDhbXbjJxaA9
+	 Oz3cxcXVtSYJD5EIR1nsweD9YH1JlSEorvZD0QiXHnUcKyDTiTrvx7r9P8CL1n/d9z
+	 MSWLmlCyFlV1zXBx07Rf1aI652Yke4Gu3EhZ78CfM9cotPK/qjynEoF2P+k3bULQTF
+	 7gqOsaS30CxIboAq+j7qM8/f+sqKLryS1gk8iaSLLOGohIllpuC+sVZo/9nvdTSKEj
+	 xOhsMuJp8cUQA==
+Date: Thu, 11 Jun 2026 09:49:22 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: dave.hansen@intel.com, xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	hpa@zytor.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	yang@os.amperecomputing.com, jannh@google.com
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero
+ folio read-only
+Message-ID: <aipacpSZrO1DKooO@kernel.org>
+References: <930d9121-9176-4a7b-a2d7-8224f94000d3@intel.com>
+ <20260610032022.23361-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
- SLAB_ALLOC_TRYLOCK
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------cLKhUE1LS3RNZ8H0WJkZPja5"
-X-Rspamd-Queue-Id: 6322840002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610032022.23361-1-lance.yang@linux.dev>
+X-Rspamd-Queue-Id: 7BCB440006
+X-Stat-Signature: cf53fmzmt3nw1mazqixr6kksf8bsnc61
 X-Rspam-User: 
-X-Stat-Signature: wr4odgcbft3ieyupkaxagoxrq81q967g
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781160054-83489
-X-HE-Meta: U2FsdGVkX1+gatq8Kb2584nQnr5mbyFkuAxIL046PYkcBgLLh0DbsM4XPR9D6xDH71Z6Ki2pO79YQKvTN97zRTR9JiTZFPmSKPvF0BGWynY3nLZGOeRxdLD47N4rs8XzdivX2S/N5czD3t+znIZ5xxBAwyugliPy5U3nY2KC8K2A7fIUxhg3dzH5Ddx7ZJtuqERBEPS/PK40a2kTsauS00YbvU/peQkd1+CCWoDBBmxKzY5VRZfg14JF4RNDgYxTDnHlpZBfQqb4IZzCicz9JCRBT6cCMni3FRFt5EDW/mH2UzD5Rmy4FbMlLvgeWczgiFdhOz7jMFVZefm8b00CWRI9Of0Jv/hdr88Qm7e0YmGlnE/vcXWUbrbmkSE8KhPmt9rLIbyyAleHxvCJwVyuKJBr/Fl88SMmtC1JbV0PMn/xHkf+vN+6EPKgdS3JgEcVyz7Ilz0YKmFoiibo2I4OjTF4QizF1TyKX3wjKP9NeuplqxzMzRb5TghJ47o0KxJJnEDhtwrkvWpkoH0WseHNYDJQeYX7+6O/Uo0eLerqI3m85r4V3TH6im1fGZbYxbfaQb8OPh7UaVz3wRWtA7LFFkXM1IjHLwcle3nyBg67fxJSL//unRK7/A29WauT0fD4iLblVrBVhGwIzDaJTYkBor6v5dnc3zOSKMo3fm0csjv6ewjgLA7nZOAlzNif6VmxHiYw1R99+6FgrXBXhwwT7nktPFQN/ilQwfkr4FeZxsuNIWt6e4+NTlYQz5FdEmT6YiEvV0vNVrQ9DrIfvAVfhcEM39MIfiHqASj4DGxf9cjFTvrhyOlK2VvvkZmqSHiRCnbQfUsezIIxhB/S01IIDp7RY/S3TqUUilq3fZ0qjhARp3tn6x6u8twmY95xauK+rAlzFgZRO9VqOnUArtzkEUtwSMGHMAfnF9ph1nKgzCi0vVNfkir5hHxM09f7g3WRIOX+NKBXbEVodJZ6pJz
- SJp/A3G6
- 6TH0Tsw3dnvRHrM33nsbkt48mqcLqPBJi3b7M0PZjnMgKj01qGKF0aJouLFYdqqZOfDIG7ilo5aoAZpIETwNuPhWYDtAUOzRjXtjf+8vYA6mxE5rO6rhFapCgKUq9IYc3D323qdpExLsWkfxmQHqXoZjP3b1BEXD2aGypwUJUx72gz0l9UQjgqR60Fn/hs1dJfIwiGCaUl1/3Y8lWojKuvj9T7wvCylYusCMg7ciLlYrzITIK1sxMppYvuZlxmybb2Ou0G1pBAniOSous6jEkv0FhSVGgQgsr6MSWy0Rt/nEoSHCaayf9B546fYxSQPR03jdtOjOiZhwsLdo3TIECLey2MGSzUOQyXOWFkHK2VYOJb4MFw78Qlo5UoW+S6BeCzDu+4SeTtSxWx/stwnVMRZtQ5OF/6PGTZZ1QvSrk0JNtL9tFTWjfYuVpqTwSg2XNsFdqRhTVkLsLkmkPdLzUQhz+aAumTmRVY1nGGFnSpcfZbJsv1L+IOn800gDagG8W0JPbT+6EURby5koWqBIfJs58E9xyHB2mAz8G4xDKC0zA+D1y1ilGaZfCUM73H69cxpDGYd6V0Ft0pww=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781160576-271062
+X-HE-Meta: U2FsdGVkX19BKSdFHPnVHOr8Xm3AxlOIKIushlpD41jy2Fh6njKwT2HMw7e8hcP6pKeO7bjGiEuj93v3JnChUtl2qzoG93uUHjVDJdlrNxxFgNMmeuD7hPYHJw0z41rqTk4qGUyMajW9G0BzRC3VmlPrWIdYo7u6mNY/ZxaO0DB2d4EIV5kqal5BS09OvvadmTXCQWTqf+s7gbIQct97Z7AQws9rDHdpBknb++f+zrMZirAJ0QTXAqZjdBZS0TZ/yNvm+HjHtB/Lvrk4cx5mXYNhmJOSgcfIiBYtg3zhcoCa2EZ4Un2zKAE4aqJRSAu8mybNh0nRyJx5a2hWrQAhJrZDiTaSMMObtXTHX094p0/DCAiXFdSh1yl9AWFMltO5VRH5zFBl+UMqkRwoaPiQCLsdTMCYxnpoe6WgO7F+/h5uiP4SKtm27vbV5k51esk3YlXfL+lLcCvgObTPhTJgbfumAiCzwGlH5A4P3zcTn856FghaAW7rgeQ27Cw7OpIhSJ1pdP7hpLsfRSgypYItLlmnUTg8SRhm1rpSALlmkDjFdo+khNjZaYvc62NokXL4s/zI+HpUbkLK5hoNw/vATevrCNHNx2MSjhKZ8vRI5xU991Jszoi2bKCkFf0KUAph7L2oSJZ0cQ/WaWiw5tnYskiB9yuvkmGzeM6OERrxS6ikWSr9rTlj/IzmuqWZAhxu4R+jiuWXIqXc8SyvHfhBNBJjNLBsmY2BdRRa3jtOrtTWSux4CwGcrj2aLmJ5hR23hA7XNiSjnzZaKKjhR31f8OXz3XqedVZwps7AA6bLg5wB5YQj/uT+5wqKbhHQFpfEamfhRYOHqFfWnByWAiGd1gIbV6MK2wa6cjF46ieO2eyg4ZdsmiFLHFra/XvfqDHLYvdXDgEH3aoytqYGEHyzFT79f1URNefxD76/38dm23QXN6EqfBbirO1VMxr8DUm1sTVBRT4N5QIdrV5WglL
+ t+Vbp18O
+ Cm7NQQZnmTV5Y3hYLOI1RuIMetefccEdl+YZvRv4xGd+DNtLxrBQilYAuzQ4k28K+6V0dMI598Cd/Mnl0awm2LYPOS8jbj5UjwdcQ0yOJiSi0KWUUnZ6saDQ54uSDJosqlrVkzz72ZEcTEhWTWGH48KMEcqDixltsKXjpX/41FxcygAnFoHeUong6TTHJNIT9ldzMGrPSSIO3VNybGZISTug22BXgVWqhE9liFzi4ZEx/MnUBp9N6D6ul6/0BnGEQZGP77x3qAYwgtGW1+lrE2Yvkmji6wIDAcfpnEjO6XdOmCN1dg4CAjMAWx2vxIWpXdVSoEAIO0J72gvk9PSIcaFrQ7QFQf3gd2vitzN9nndTgyF++ldA+DsLHk2Aufbd38u3X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,143 +101,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------cLKhUE1LS3RNZ8H0WJkZPja5
-Content-Type: multipart/mixed; boundary="------------cnCTg083TbHZKFbOy4OWEa5Q";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <7064a90e-4bf5-4be7-8b7f-a5a11dcee66f@kernel.org>
-Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
- SLAB_ALLOC_TRYLOCK
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+Hi,
 
---------------cnCTg083TbHZKFbOy4OWEa5Q
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jun 10, 2026 at 11:20:22AM +0800, Lance Yang wrote:
+> Hi Dave,
+> 
+> Thanks for taking the time to review.
+> 
+> On Tue, Jun 09, 2026 at 12:33:36PM -0700, Dave Hansen wrote:
+> >On 6/9/26 07:37, Xueyuan Chen wrote:
+> >> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
+> >> +{
+> >> +	return false;
+> >> +}
+> >
+> >This is a rather wonky function. It's going to cause all kinds of fun if
+> >it is used like this:
+> >
+> >	arch_make_pages_readonly(syscall_table, 1);
+> 
+> Ouch, yeah, it is ...
 
+We already have set_direct_map* APIs, why don't you add a new one there?
+set_direct_map_ro() for example.
+ 
+> >It's also kinda weird to have it return a bool, and not check that bool
+> >at the single call site. Some things come to mind:
+> >
+> >1. This function needs commenting. It needs to say what it does, when
+> >   architectures should override it and what their implementations
+> >   should look like. It needs to be clear that this can't be used for
+> >   anything really important. What should architectures do with alias
+> >   mappings? Are they allowed to touch non-direct map aliases? Are they
+> >   required to?
+> 
+> Agreed. Needs a real comment ...
+> 
+> Just meant as a best-effort direct/linear-map permission chang, nothing
+> stronger than that. I should spell out what happens, or does not happen,
+> to non-direct-map aliases, if anything, and make clear callers cannot
+> treat this as a hard guarantee :D
 
+It's not only about highmem, anything that changes the direct map might
+fail to allocate memory when splitting larger mappings.
+ 
+> >2. The return type needs to be reconsidered. Is 'bool' even acceptable?
+> >   Should it just be 'void' if callers can't do anything when it fails?
+> 
+> Maybe ignoring it is OK now, but someone may need the return value later?
+> 
+> >3. What should the naming be? "readonly" vs "ro". Should it have a
+> >   "maybe" since it's kinda optional?
+> 
+> Fair point. "make" may be overstating it a bit ...
+> 
+> With a return value, arch_try_make_pages_readonly() sounds about right
+> to me. If we end up with void and pure best-effort semantics, maybe
+> arch_maybe_make_pages_readonly() fits better :)
 
-On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
-> Similarly to the page allocators, introduce slab-allocator specific
-> alloc flags that internally control allocation behavior in addition to
-> gfp_flags, without occupying the limited gfp flags space.
->=20
-> Introduce the first flag SLAB_ALLOC_TRYLOCK that behaves similarly to
-> page allocator's ALLOC_TRYLOCK and will be used to reimplement
-> kmalloc_nolock()'s "!allow_spin" behavior. That currently relies on
-> gfpflags_allow_spinning() and thus the lack of both __GFP_RECLAIM flags=
-,
-> importantly __GFP_KSWAPD_RECLAIM. This can give false-positive results
-> e.g. in early boot with a restricted gfp_allowed_mask.
->=20
-> Also introduce alloc_flags_allow_spinning() to replace the usage of
-> gfpflags_allow_spinning().
->=20
-> Start using alloc_flags and the new check first in alloc_from_pcs() and=
+Realistically, I wouldn't expect 32-bit configs to enable
+PERSISTENT_HUGE_ZERO_FOLIO or even THP, so naming this function to reflect
+32-bit behaviour seems odd going forward.
+ 
+> >4. Should this new API be folio or page-based in the first place?
+> 
+> For page vs folio, I was mostly following David's RFC v1 suggestion.
+> 
+> Current caller is a folio, sure, but the page-range helper leaves room
+> for non-folio users later. Happy to add a simple folio wrapper if that
+> reads better ;)
+> 
+> >5. Is mm/huge_memory.c the right place to define a generic mm function,
+> >   even a stub?
+> 
+> Ah, you're right! My bad, wrong place for a generic stub. Will move it
+> out for RFC v3.
 
-> __pcs_replace_empty_main(). This means some slab allocations that were
-> falsely treated as kmalloc_nolock() due to their gfp flags will now hav=
-e
-> higher chances of succeed, and this will further increase with followup=
+We have include/linux/set_memory.h for such function declarations and their
+stubs.
+ 
+> Thanks, Lance
+> 
 
-> changes.
->=20
-> Remove a WARN_ON_ONCE() from refill_objects() as it's now legitimate to=
-
-> reach it from a slab allocation that's not _nolock() and yet lacks
-> __GFP_KSWAPD_RECLAIM for other reasons.
->=20
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  mm/slab.h |  9 +++++++++
->  mm/slub.c | 17 ++++++++---------
->  2 files changed, 17 insertions(+), 9 deletions(-)
->=20
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 1bf9c3021ae3..96f65b625600 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -4664,7 +4665,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, st=
-ruct slub_percpu_sheaves *pcs,
->  		return NULL;
->  	}
-> =20
-> -	allow_spin =3D gfpflags_allow_spinning(gfp);
-> +	allow_spin =3D alloc_flags_allow_spinning(alloc_flags);
-
-Sashiko wrote [1]:
-> Does this bypass the caller's gfp constraints for standard allocations?=
-
-> Looking at slab_alloc_node(), standard allocations now pass
-> SLAB_ALLOC_DEFAULT into alloc_from_pcs():
-> -	object =3D alloc_from_pcs(s, gfpflags, node);
-> +	object =3D alloc_from_pcs(s, gfpflags, SLAB_ALLOC_DEFAULT, node);
-> This default flag means alloc_flags_allow_spinning() will unconditional=
-ly
-> return true regardless of the gfp flags provided.
-
-Yes, but that's not used in _nolock path
-as mentioned in patch 6 description :)
-
-> If a caller allocating under a raw spinlock intentionally strips
-> __GFP_KSWAPD_RECLAIM (for example, by using __GFP_NOWARN) to prevent
-> sleeping,
-
-That's a horrible hack (and hypothetical. Nobody should be stripping
-__GFP_KSWAP_RECLAIM instead of using kmalloc_nolock(). That's purely
-broken).
-
-> won't this allow the allocator to execute spin_lock_irqsave()
-> on barn->lock or n->list_lock?
->
-> On systems with preempt-rt enabled, a standard spinlock maps to a sleep=
-ing
-> lock, so taking these locks in an atomic context could cause a scheduli=
-ng
-> while atomic panic.
->
-> Since there is no nolock variant available for custom caches, do caller=
-s
-> currently have any alternative mitigation?
-
-Well, RT kernels are not supposed to allocate meomry under a raw
-spinlock (at least w/ allow_spin =3D true)
-
-[1]
-https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db11=
-8%40kernel.org
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------cnCTg083TbHZKFbOy4OWEa5Q--
-
---------------cLKhUE1LS3RNZ8H0WJkZPja5
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaipYcAAKCRCGXBN6rc5S
-1vlSAP4uA7Ju8txQ+1RRIq0JRTyegK+jlhzzSR1685TnFW2XJwEAqBjZc2iaQWqe
-2tkPuBbObSXUfMAJjlbXtRikXRNiPA8=
-=tLgu
------END PGP SIGNATURE-----
-
---------------cLKhUE1LS3RNZ8H0WJkZPja5--
+-- 
+Sincerely yours,
+Mike.
 
