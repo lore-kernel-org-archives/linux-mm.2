@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE82CCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 19:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA8BCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 19:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE46C6B0005; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
+	id DD73E6B0005; Thu, 11 Jun 2026 15:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E95B76B0088; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
+	id D882D6B0088; Thu, 11 Jun 2026 15:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAB196B008C; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
+	id C9E1C6B008C; Thu, 11 Jun 2026 15:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8C906B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0E9101407C5
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:12:54 +0000 (UTC)
-X-FDA: 84868579068.04.1735B59
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 17879A0002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:12:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Uc8i2xo0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD5B46B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:16:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66BCCA06EC
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:16:04 +0000 (UTC)
+X-FDA: 84868587048.20.5EB26C5
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E4DC640012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:16:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DjhVC2O3;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781205362;
+	b=henFX4KZOhd9MHOIOgw/qucJIhfrO1NHH1AWNXgiHtUFCJ+K904yWSBCZvlBKRFPIPtQi/
+	WtKHdRUTTMJAFv3aA6+qUokr6e9ZAPzTO8Q3ghsMr4GenaPaI0MMAXTaa+FpNDamXXU4+e
+	UukOE+udr4GgfqKxfxigLptg+EEnTCE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=DjhVC2O3;
+	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781205172;
+	s=arc-20220608; t=1781205362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W/dpbNb5biEC/ytKDW9uZGewAoGZBA0EolTNHIvaZZk=;
-	b=AqqMQ81omtUdMdLe7qVuukcWJkl18BzXpVbmO9BjwUOffFF/I8mJEVhyTeNZlVSrcSYGxC
-	l9BxyV6ZhBfeOX212Th5vR6kVJPd0Hd1Uw7irXAQBYsIOg9gGxzY6oUVoyGLqZeEW+FdP5
-	riguD+t1+Tt3veYuTzm09vY5+D0R1ew=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Uc8i2xo0;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781205172;
-	b=4UoJ4qEEodpudGPRK60FOlrIqQQefo3HvdVv/H9M/7VcmeMO7RyHCQ3kq/jYheeZhLRjHP
-	QZ259Q2gXB4tDQW6oZnAAgP1a2bk7NXWwRgPyRZzjduEWPuyQFoHqNF8QMGPH3CliVJP0d
-	uXnnHehmR9LjdnKWbUhgiQQ5HmawXBE=
-Date: Thu, 11 Jun 2026 12:12:40 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781205169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W/dpbNb5biEC/ytKDW9uZGewAoGZBA0EolTNHIvaZZk=;
-	b=Uc8i2xo0DpuSALr6ftYCaW+0Z/S4F6T6le8Fv3+0J0wM8ZOvUTo604t7eekw5yBWEE74rT
-	1XToLGi4nkYSHnJ80iLFsNqN3yK320JIhhs0M1Kby8elC+hHeVYnHdf+3YGO5abK9j1c0Z
-	i7Yrj0r9Y69Sjt0cQrqNNPoUtcAyeyM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: YoungJun Park <youngjun.park@lge.com>, 
-	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
-	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
-	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, chengming.zhou@linux.dev, 
-	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, 
-	chrisl@kernel.org, kasong@tencent.com, baoquan.he@linux.dev
-Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
-Message-ID: <aisEWnb3pzmVC4dl@linux.dev>
-References: <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
- <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
- <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
- <aicJBVT4pBvmyooT@linux.dev>
- <aicZ-5GX9De3MAU7@linux.dev>
- <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
- <aictKA0XWMWbxFdN@linux.dev>
- <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
- <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330>
- <airzE7jD9UtyR17J@google.com>
+	bh=rZd4WLjqq4XvQwHB47ThdrCyV6Re/i6LgV+u2yu9EGA=;
+	b=NC0OSnS3PRNyRqtKCe8dD1PBsHKElS3eNugbhGN52ZciPr8xdjPMKG1JCiqkdWDyt/R1WZ
+	R1LwIPF+Yp6VFeXud74FViMOGf4EJl8mcir7b7axgkJxFWSLNVLru0YY4royJ6n1lbdCsw
+	xJPARwdQ1lJQZ9Q2w+p6Hnh+HdmEsZM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rZd4WLjqq4XvQwHB47ThdrCyV6Re/i6LgV+u2yu9EGA=; b=DjhVC2O3x2oTgn/xwo1dHD8O76
+	yREnZrPW3PKdThR4vYr/3TZle42hkbSQDwk507HmsgtNWQbHG+SmAMQogfrUq6FQK6NPe3Bg28K/k
+	5nfCDnlYa8uHKllJ7gswJjxhDCyy8avOiX83lqv2wbvaZZaTlWFyN0fd6QhRMmMjSwYAO4notbPs9
+	L1tr9+hkWAeGKwJc8EPFH5IhO40P3igMiFM/FqFfsZG4460RJwLFjRqZ8qpCjmT3pgMe0jd6fD9+Q
+	lhO6cvnWgF0E5PXRr+0w4C4jxu72ApfALVtT/+ldjp0n/H1XtVw93sD/VwRFZAgonMnjMvYDaGa4v
+	80OhGT7w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wXksf-00000002S6h-3zk7;
+	Thu, 11 Jun 2026 19:15:57 +0000
+Date: Thu, 11 Jun 2026 20:15:57 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [RFC V2 0/3] lib/vsprintf: Add support for pgtable entries
+Message-ID: <aisJbeVVxxNuYxQ6@casper.infradead.org>
+References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <airzE7jD9UtyR17J@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260610043545.3725735-1-anshuman.khandual@arm.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E4DC640012
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 17879A0002
-X-Stat-Signature: 9qzxgjy54gk7fwe8pohhoe1eznjbw3oq
-X-HE-Tag: 1781205171-438927
-X-HE-Meta: U2FsdGVkX19aFO4efkqy7Tt5cHDXzVfM/ECDGR08iSLXgmH2nDr+fmeDDXETbNR1DGpXwNep00Knh9Yd7oeEFW3XMDBJK9f9WxYEhvRuDMceYJurlDIYD34KHKnTwhsCMh05Ot5UxIO9UU4dtVhiWuskeq+ch57Ut31SCt2esomtWRFX+nTPzsmgNuYbuKUahaNoF1lpoxrqv+3HdhhmgS9EefRO7nWRgQIOG1AdVekqLgr07I43DO+htD+omc0rP3zYoZtJiOo97CmjdjNo/3kGPs94kYvLxIgjF9jJ7w4TFAVh2KhCeM5rsCAZ127VWmlZHLngvM8h4fcpnpijQ06ha4dgjJDkQLN75zd0o5zWu/NCg9ZGDj5xCaesR1fDBWmA+xARQVeyX7U0B+xz0qtpjrWBI/J6ZVFx3cp0vimvqvRqjka8WLU74Aojgbfk0quWI052wJoHkmnxMe88gNfdA9Ha6yvAWqth4bxFb/Q5BnBNt1IDYPUV19Nk4Yb12xG0YyAukB5o6BOQTSk+PR35msU2McPWGk1br+fS6C4SsalARHaradkpdW9EPoIzUNVXjGgpexfWcUZMTPZx4Vp+02Vl8mrPbjfEAZ5/x97PdZ5wFwZhTqjxwpYKbBZCJmHgJtTq7Lr0JLHZBQyl7/XtZ6zr2QYqqWppJVCAmVrbt5KX6f+wbpBwYALoe6zmI//C0So5LbsL6dIP2mvuz7x4+Ex9K+UiMFrtD+VKNX/MTywJNKLX2hIA8OIV9fCHDYKont7WnZB3g5oTz6y4rDKbqqF3EWLluUD6agh9vuUXpF28fg03Df7Yn7BibdqlhNnSwAeatsg6JtNBdtO00KBKvMtlUipuYGE5RQjc/UyBm6OFm+ZozMiMKDc8m6ymMhsP8OLoez6n7114YzgEVKtC4OkH0qiM/jUmkKMDOjZBuS/wAy977YGkTxsJ1cFGP8yoGG8Hscjq5zA0i8R
- xrjtPMt5
- p8/OJ/t+xl+d8nTwFHpWYWQvUMMtQwXOLHH6to1/SZ2pbGr0kdyP1djfVgh9bxxuPAerWUgTadK/JVY9brkWeJK+x7BwmJAmfDNAzyeRNrDtbjeJmrKdJFX2JmkfISfM31GrFqOJbjs56rntqfvo05lsxYvwizIhXl4bVS8+yRWgMMhgS7goP5Ykbnngc4z8w8oezASg1inOX4iglr/KRroidfBBHSkMWSZPB2nqzNgil/GD6MYwawySumjO9uDfr3PBYKJYk20ox1TBmLj/v7phghw/m3Vi1vCn7RNtht4PPhxdAKSQxMa64L5VF8RmOZuej98/yYBsefUI=
+X-Stat-Signature: nusrsfj4hbmwcsifsmm476zzeg44fdmo
+X-HE-Tag: 1781205361-209864
+X-HE-Meta: U2FsdGVkX1/jAK+W14rtQyHFJkmJ424zE18nnKSg0CdjUKte+wWglVbDue9bmFk/XTnYSOS5aUlw6dLYEKdQrApO9OqnNWP3HFiQ9YY+6iyc7P3vI0jr4ZhzKsshlA2qUNbpymRm7daPpeCn0Pdd2TKjgJqtUsdoHxl4JCAHmz9LwvYqfcVcEb2gJWxaAgk0yZZzxpHGB4IMK1b9e1xyhulWyEigfnLDIvtZ271TGZy50OanvqpefDOhji4mK6BEZ+pGe/IQEBYUwz9W11W3nOSOtek+jvOWKbc0PZ3cWSAVXtNK1xPu4O90nVEcxxTCyzWiZb27XHeZIv9U4KrwxDkmLCRIBeEDq8Z6MTm2ZUEbQw6OoDxKF30W2bPKClzLybwD8f/WGop0m+5St9lGB8kmDjQ3eP+dvIB5GW6RCd+DuosG8L/SN8YaKvCeFOmuwr2fa2aWLmnqh3Wq4G/mnHZPIneZRbR2UO7UYtLb2gGHWYSE3U0JA4LXQSPD2mSFogZVgIynxcFHfAHnOTT1+aCZycmgU3uNaPd9TjhVIGZ/pbTeeXBOihDk5EZUVEqBBoKssUbut3r5xfSGckc4Onn23NYYiqT8UnZRkAbzgYMWYy/TfwPlgC/hz3rOLnYEnqRhu7c15uuPuhUGTR6sfVjFGGMBm1MxNBEdgX0ZbyfTKoIokSWcck0oAralWQmV9+5y+rPPIjnJg9rdAvce1ON0946K324j+Do6BEf1zJY3ZcMWW2v+aNpJQKnS9gz9azzoQhGMAMkMUJpi1KCHtmYJggYVtlUKdCxmaCF/tK5D89djlkKgCT1ptyUcxESZUnoe9W+iK4fuTzmzQh+RPHLRqMcie9VNOy50FsG9R7qJ8ohFg5Gc25OGflGx3oJWTOxS8rnW5jJEFGj4sTC+MvflmtPlQrSSMomeif/AToHNeXSA/eQ4adWQTh9R1uNpJ+P3rFRo90T09aeDusy
+ JKRCJ69/
+ WpccR5WcyXcqINSy9jGo4qkwbedQFQPUtbtHD85P7emyEZ83trh3+Ng3qb3hlgdjwZJ2+QhDvFSAE96qXXn8m42u8yCnAsVklu1vDcswuT1x+vMxLldHvLBJXGmVKmaHxYQmuH5mGyPvB3VR4ojd7rPL7U4PwIR1kDa+WNHknohqCGbCHJUBZJ/JIqsSAipJ0BIQlusEdMZ3nL7W1N6N1Q0RkJkKbv2UU47lytOO3c+uInclVNLAAqq0GLs5b+m2zjJlcVHPgi9Ll1aCTibY0GOVTb6QyoO6XwyaIwbSIu87W72Z2vsJO3TyG7/iksr4KcOSlB8ZGloTPVHUy8W/NXPmgUkCiNZkd/UGpwuz3WBcOtME=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,92 +95,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 05:45:04PM +0000, Yosry Ahmed wrote:
-> On Tue, Jun 09, 2026 at 01:19:13PM +0900, YoungJun Park wrote:
-> > On Mon, Jun 08, 2026 at 03:27:07PM -0700, Yosry Ahmed wrote:
-> > 
-> > +Chris +Kairui +Baoquan
-> > 
-> > Hello
-> > 
-> > Thanks for inviting me to the discussion, Shakeel.
-> > 
-> > > > > > Youngjun is working on swap tiers. At the moment he is more interested in
-> > > > > > allowing a specific swap device to a memcg or not. I can imagine in future there
-> > > > > > will be use-cases where there will be a need to demote data on higher tier swap
-> > > > > > to lower tier swap. What would be the appropriate interface?
-> > 
-> > Speaking of my work on swap tiers, I recently submitted a patch and am
-> > currently considering memcg integration:
-> > https://lore.kernel.org/linux-mm/20260527062247.3440692-1-youngjun.park@lge.com/
-> > 
-> > The future use-cases imagined above seem to align with this
-> > direction. (BTW, I am currently waiting for reviews/feedback from the memcg
-> > folks on this patch. Any reviews would be highly appreciated!)
-> > 
-> > We could potentially assign a target tier
-> > for writeback within the existing memory.zswap.writeback interface. 
-> > 
-> > For instance, '0' could mean disabled, while non-zero values could represent
-> > specific tiers, which would maintain backward compatibility with the current
-> > version. Alternatively, if zswap is treated as the default top tier, 
-> > the `memory.swap.tiers` interface could potentially replace `memory.zswap.writeback`.
-> > 
-> > Furthermore, this could be expanded so that each swap tier can demote data
-> > user-triggered demotion between swap tiers.
-> > 
-> > Based on the current patch's ideas combined with my swap tiers concept:
-> > 
-> > Assuming a hierarchy like:
-> > zswap -> tier1 (SSD swap) -> tier2 (HDD swap) -> tier3 (Network swap)
-> > 
-> > We could configure the active tiers via a setting like `memory.swap.tiers`
-> > (tier2 enabled, tier3 enabled).
-> > 
-> > For example, the concept of `echo "100M zswap_writeback_only > memory.reclaim"`
-> > could be extended. A user could run `echo "100M tier2 > memory.reclaim"`
-> > to explicitly trigger demotion from tier2 to tier3.
-> > (BTW, if we combine these features, my personal preference for the keyword
-> > format would be `<size> <demote_prefix><tier_name>`. I think it would be
-> > better to explicitly indicate that it is a swap demotion by using a specific
-> > prefix followed by the tier name. 
-> > Or make demote prefix another key is also possible)
-> 
-> I am not sure if proactive demotion between swap tiers would be driven
-> by memory.reclaim, I am guessing a new interface might be more suitable.
-> But yes, you are right that it's very possible that
-> 'zswap_writeback_only' with memory.reclaim will become obsolete once
-> swap tiering matures and starts supporting things like proactive
-> demotion.
-> 
-> Part of me wants to wait until the swap tiering interfaces are figured
-> out so that we don't end up with redundant interfaces, but I also don't
-> want to hold Hao's work since it doesn't directly depend on swap
-> tiering.
-> 
-> Shakeel, how do you want to handle this? I think there's a few options:
-> 
-> 1. Add zswap_writeback_only now, and when we have swap tiering demotion
-> it becomes a redundant interface, like memory.zswap.writeback -- or
-> maybe we try to deprecate both of them at that point. It's difficult to
-> remove interfaces tho, but maybe easier to stop supporting
-> zswap_writeback_only.
-> 
-> 2. Add zswap_writeback_only behind an experimental config option, to
-> unblock development but have a line of sight to dropping support once we
-> have a swap tiering interface.
-> 
-> 3. Wait until we figure out the swap tiering interfaces and then add
-> the proactive zswap writeback as part of it.
-> 
-> WDYT?
+On Wed, Jun 10, 2026 at 05:35:42AM +0100, Anshuman Khandual wrote:
+> Printing page table entries has been a common requirement both in generic
+> and platform memory management for various purposes. Hence let's create a
+> dedicated printk format for such entries which will also help standardize
+> pgtable printing across different platforms.
 
-Is Hao's work needed for some followup work/development? The earliest Hao's
-work can is 7.3, so if we aim to figure out swap tiering interfaces in next
-couple of weeks then option 3 is the way to go. If swap tiers take more time
-then we can discuss other options as well.
+You didn't address my objection here:
 
-However I would need zswap folks (Yosry & Nhat) help in figuring out swap tiers
-interfaces. Zswap is the current top tier swap usage in real world. I want
-zswap users to eaily (and hopefully transparently) migrate to swap tiers.
+https://lore.kernel.org/linux-mm/aFQP8LzVMctf6XH5@casper.infradead.org/
+
+ie there is now no typechecking possible.  So you've made it more
+dangerous.  I reiterate my NACK to the concept, not to the implementation.
 
