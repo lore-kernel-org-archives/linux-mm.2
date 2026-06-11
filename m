@@ -4,111 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA06CCD98C5
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11DB4CD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 441FE6B008C; Wed, 10 Jun 2026 23:16:35 -0400 (EDT)
+	id 5F16D6B008C; Wed, 10 Jun 2026 23:17:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F2E56B0092; Wed, 10 Jun 2026 23:16:35 -0400 (EDT)
+	id 5A21F6B0092; Wed, 10 Jun 2026 23:17:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1FD6B0093; Wed, 10 Jun 2026 23:16:35 -0400 (EDT)
+	id 490C76B0093; Wed, 10 Jun 2026 23:17:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1953E6B008C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:16:35 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B26BE1C28CD
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:16:34 +0000 (UTC)
-X-FDA: 84866169108.05.900E40F
-Received: from outbound.qs.icloud.com (qs-2003f-snip4-11.eps.apple.com [57.103.86.63])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DB5374000B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:16:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=wOctC8bb;
-	spf=pass (imf07.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.86.63 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 392196B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:17:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFCFB164BE3
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:17:39 +0000 (UTC)
+X-FDA: 84866171838.06.B8115F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 040861C0002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:17:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ociBo8my;
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781147858;
+	b=io/gJQ7AJ2o0s7Puwyac//wJJuu1HlIyV+Iueq05UzgkQ9/dj/A3VlTLMrvQdxNhRQiDcp
+	duBrLFS8nr+cAa6TManuqh+LdEof2nWDJuxV7vK7iPJttElF1VpJCDJpmqvDSz5E2ZVUwF
+	W2UklpYO5jji2BI59zX/ifcnFhDzBZA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ociBo8my;
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781147792;
+	s=arc-20220608; t=1781147858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cx5WsLzy5EMop1LAYacetf6b3lNRD+oGL1mjgLaY/us=;
-	b=fkjDdOckaltsq6Gexl2JZpMf1hFxDA3Qm2WhhH9b6XPjTtTXb3vcszP1+CVTGBmlYgp3dD
-	GJ0y+Ue46pohIHNhwiG4WKO6HuQKnS2rMg6e298DuSGY2q89jC6Fo3rpPi9Qi55MypX/ph
-	j7IyxSqHRBdLSA70ruqeqAUTZBzfW8Q=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=wOctC8bb;
-	spf=pass (imf07.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.86.63 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781147792;
-	b=sjtAtm3Bpvq9hcwWrUGfgtj4YyBMWR5te3YX7b/Yj04kDC6vp3V5KIf9eggUjiFcoq2sra
-	OBUDrFQJLoOd9gge1Lt1K0Vr5g0xylwczi5KWs6XWi97Na3Gry+O9+IbKZDDWrNkS7PfRj
-	M1SP2RdAnGZkSeZLDpTrasLhsE2W/SU=
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPS id 9639818000B0;
-	Thu, 11 Jun 2026 03:16:29 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1LHVwEWRxBDUkdXwdLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9CAVhbCFsEDx9MDFECQgVWXkgLHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQUZWgJYAnwJdzwBPA5dUERTOH84fCpwMXBVfi4GVRIEQAhWUF4IXh9MHA==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781147792; x=1783739792; bh=cx5WsLzy5EMop1LAYacetf6b3lNRD+oGL1mjgLaY/us=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=wOctC8bbl2IalnPoB+hZO6LmlxEnlUSui8CDAdSCXG6pAX/0JVEUWP4J7UM8Ihob1LcA91MJamQXIqIBd9Z7HNBqLK5Gk7g8A4G8FDH7QoGsqJUTRTJ2y7gtaoxEDTX/i4oLNSb1wg6GrzyLUG0tH3pE3KzEGCf4TzeE8mTho8W6mduv8M2uxEwOcXhwqeHbZfotwHfDtVB3z+FeUgW0TtpK9e/Enr7WPCNCiyRIaNXZEmekW3yqdikaFHXK9z3ipTwdcU/gixmOFQrkXTThWhKOMV1eT8oWv9GEJ0/Qqar/PNUfaosnGIyfbESHpjzUjX1zwo/iS/R/UquyV3r9iA==
-Received: from localhost (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-100-percent-10 (Postfix) with ESMTPSA id A2EA1180058C;
-	Thu, 11 Jun 2026 03:16:28 +0000 (UTC)
-Date: Thu, 11 Jun 2026 11:16:24 +0800
-From: Luka Bai <lukafocus@icloud.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
-Subject: Re: [PATCH 2/5] mm/khugepaged: use slab cache instead of normal
- kmalloc
-Message-ID: <aiooiNyND2Q96b4j@LUKABAI-MC1>
-References: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
- <20260531-thp_collapse_hint-v1-2-e7f8c2035621@tencent.com>
- <d4636be2-d9fe-4464-99d7-b0b9902e6b52@kernel.org>
+	bh=FLooqN0yndNNSOMAEv1OhI/neTi7ZUfo9M9dFDLWUXk=;
+	b=3WrKzPIAkoa7G9bE1cOCn1TX/ccgZDMvU+A3xCsi0boUDkZ47jamwO/FoKy3xYqS3UfxtB
+	BD6+xOHQFDtYOXtE2tP4bkorYrPBoLKuyRf7wVVgJdEpp82T4BKg+SUaMAwrNdt7zQ5ycr
+	ghVy2vojs0CyixawuOGEywo81031RH4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 365AA6020C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:17:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23491F0089C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781147856;
+	bh=FLooqN0yndNNSOMAEv1OhI/neTi7ZUfo9M9dFDLWUXk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ociBo8myi7nMA486WCJzTn9Ba+l0h3FmAOM+NUMm7gfUh7e6tTolanB0q1Ny0TeFX
+	 Lo5t5AeDsneWeLLNICX9fdslBly5TkGNtLDKKI2y9x7aS9QaGcaDkXCzJunaRyDesO
+	 wMRnNTwlX9xWklDReE7Qn8q3rFTkhUdKoBEKJke7VjWb5+PyU5dA8bMpaUsDr8DD7e
+	 jHZ/6nnxvVWE5KFaOjNe61/BzaG1xkMnEOoJ5Gz7VL+R6+KX1UPSjv8amr73M4S73l
+	 GpDzNwZCKSkzKvvFn09eZEjUieAb+C8aVXm8spcE/EoYQZEJEdJZ/zrAyOAI3T42cv
+	 2EH3S7cPGM5MA==
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6606d5900dbso2895450d50.2
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:17:36 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yyn/VpLH/NrHQwLPnkyQe+X5/lZRIdYagBrepLZFhMEopKdRokN
+	kPJRmgboO42A80PdHa5T/mkk4hUSkU0vVlWamPBO/gDSLXl/vHln3CdlezCU6y5DHldV5T8IZoE
+	OAVq7B7pbloQlUFAOp7eJTvXtfm6b4nrWZdKHN8fpwA==
+X-Received: by 2002:a05:690e:1555:20b0:660:5a88:6445 with SMTP id
+ 956f58d0204a3-66269a1c8d5mr623151d50.63.1781147856233; Wed, 10 Jun 2026
+ 20:17:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d4636be2-d9fe-4464-99d7-b0b9902e6b52@kernel.org>
-X-Proofpoint-ORIG-GUID: t5BKz75ZnySRwTvBBiKMnByvzccKJ5w6
-X-Authority-Info-Out: v=2.4 cv=EKwLElZC c=1 sm=1 tr=0 ts=6a2a288f
- cx=c_apl:c_pps:t_out a=bsP7O+dXZ5uKcj+dsLqiMw==:117
- a=bsP7O+dXZ5uKcj+dsLqiMw==:17 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=GvQkQWPkAAAA:8 a=m7Ui_3NsPc4YXKPq_aYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDAyOSBTYWx0ZWRfX4l+a9oFbl2ox
- b88Qc2+ZGmKn++3zFz882O+a9KPxBFQ3YHYIW46q+0JhG5h8r6Cx4c4h+SI6IZZdxv/+q3g+SeO
- wv2x6YY9/NY2v+vQqPborxdmenjriyGjiocUi5Zxr+9TwwASzEM7VZ9S+MCiELPuXRgG+jESZQN
- TEDibLodPu3OcTE3eXqkm6g948PJrjS+LD3Hzmv8alpc+qN86XQjW8Q1qAbP5PlE/p2W1O+dV0P
- Qf+zUZsMtD0GuzpQmoaOMsE3ljscNkv3IVl7TdUeIAZXee/MG+iQmxktBk3EjGPjS0gA44vmOhv
- hr7Qmd04d43M164WJ89sTL0Mlg6bFR9IuYBxsdwsySpR/Qiheq2RvXwxkAA1Ww=
-X-Proofpoint-GUID: t5BKz75ZnySRwTvBBiKMnByvzccKJ5w6
-X-Rspamd-Queue-Id: DB5374000B
-X-Stat-Signature: o1mwsk3b8zsdssdgiaey83rgksecryy5
+References: <cover.1781000840.git.ritesh.list@gmail.com> <68591daf0d679e5a0072d63751f187d14613e2b0.1781000840.git.ritesh.list@gmail.com>
+In-Reply-To: <68591daf0d679e5a0072d63751f187d14613e2b0.1781000840.git.ritesh.list@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 10 Jun 2026 20:17:24 -0700
+X-Gmail-Original-Message-ID: <CACePvbXDW-euoxVta8SL8gWG1L9WRVdid0PeenQsMzuBZbLb1w@mail.gmail.com>
+X-Gm-Features: AVVi8CeRjfh7lIAOBd_MgIZBBjqz3E5dbnm1fw9CUyM3Tu5c7QEaUgnKV4cNBlY
+Message-ID: <CACePvbXDW-euoxVta8SL8gWG1L9WRVdid0PeenQsMzuBZbLb1w@mail.gmail.com>
+Subject: Re: [RFC 1/4] include/linux/swap.h: Remove unused leftovers
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 040861C0002
+X-Stat-Signature: zrn76keyqyjp7asbgknmtxnyytem64yc
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781147792-998890
-X-HE-Meta: U2FsdGVkX18WNZlDlxfz5BfWF2ki4Bomqtwqz/Upr3sqQr9ZkvfiolzQhds+OLFeLt2CJHLNX4Y57pnHtPlrBV4jkGUpPToD3gCHL0IdJuC4kHskpVN/rdOvKJgRb03T3/vdi35Wbtf3Hmekst8E+e6XLO2wjWyan1tsDc7eMH54Fi/C6fPOXM5qBRA4T5dB8F9R/T63Kq04J5oQkATLlN8e1SHCwFOnFDe59Jbi37PCVsyx4076LeSOT98uochyx88zSgbiW/xSMSX8hDYle4xHiJ2VsfxqYYjFuKOn4vjl/ChTz5dpAbJTJFw/fwi6iMpefYhHegCYLZgKKpeAp79hfaj2Gs6HNmDiLijunxQ0j53TlM47wJyCCIKvz2UMBxV8FAkxcT9aqHfiFTP/xnmbS8JfaB/uMoFb7ygFzZdEmHiR9M3i0p9y56WQVyDYo8aDVY1uzDBbP5ZIodQkOfnKvqZ2qOTFrwzNLqw7G71Jn1xryFNnExyJ9Rt28NWVLUUpvHjOO1RtbYyQsP4fOzDRkgBPbleyTexfnXHkv6gBWLQxioM4jWrRASBpMysUUZplZo2B/GNb6ZcPPd3Hq1zGHABEGFMJSrUHjhyQpRro6WQZX+v8I6rJS27iZ2LrJTTWVN4dNM8U2+Pwy/RXZsX3smHZ20YMWrQRH38Q9EODFVbnHBVljmX37FSzDo9s8cOhL31iFF35KXlpPCqHeOEqZSQWWRFUowYTLqcutxcXBm8aFfpQXw5BF9G4XlkIln25hVwMlwZmyCyjQK55w30rsvTfqYWweCDo6SOYnfm5tsDjial7ik7jcTm1RxoiUZQ6BhBBy9G+a/7U83RSd8SJLHUeBvS+uKAFnIlY9t/MthVLJQjKlMkmAJ4C7H+pxLtGWlSAuq0dR/mG3R/o3AgVLC4gWvTzLcUcdYFt/A+pjaL5TZ7se8oggXheBqVDxiblD3f/R41mPthVpyY
- UOG15+BT
- 1qOH9dVtjclpgqF2GNSL9Inbaq+hDjaSxIaFsHzWHMAQxhkNIzEn8Xa5Ei2wefdvQ4YubnDe2B/7/Fqkxhwi/81tnjpI9LU1k1ctoOdt/HsqQgLTsdOUbvkaQNWyOwB3ners4q/LriR556kabBcOdfBYPicH6EtIrPayNWYgZI3Y1vDKXV7K3ZMJu8qzskknnYm+eRnHq76gP6Gsoh8MEbikenj+4jCLofT1scJiuDVyvwGX/GobDUki+NoDDKqpNkAmlGPpYRS1ZiyJHpRg7AZvfcmkxYEkvyX4gBgGI/y0kqD5TlE5Pkm4YMumK0qEhibMgkYoV+xDFKvVn+wIVDMw7o5kEPoVauDG0nCtLxABV/snjU3C2RuvdOlkIxcfe4rbTWKZNkTV6BkH+GKQnrmaWmTDYYmGuXbKyJKv5EWmdYkObPUCkJSUs7w==
+X-HE-Tag: 1781147857-874466
+X-HE-Meta: U2FsdGVkX18RB1GyPX3R6NZ0sxs6WoOWNSC10I3FJ6Y9BOZih+MLV+Lxhzh5wjvJtG0vdCJJNokmZisVU4AOfuE159BRogZIFMWwNSOxhTIxCcG/8wsgDSiiOV+RekvvMIV17TSl7UO8GnZACtaL1B43VjZ+wY55V+wwEQ1QzM401m5nrWizKQ9RVEh1MLwjJwblZciK0Kbt1w6oCx6o+RKzDs49xp36+9k+U7svMVR3NnAjRdPWOM5Q9inmscEDl+0EFVwQBuOrQlPU1pvaEM2mvAyRItRF4Jkk4LHAEp/5MAWbRkqH8P4ZjE9VqwxNqkpsqr78h9JxJDcbzCmleMmpPBuSp8qIbinwFTDG0/lyj4ASuoribBVPcYhSlWP1AHRSEKOFMXqvqVvgU0/WOM4AXcmIbtPJAHjVkRgs9NhKYJDqAsVe3KLaE6OxrTSs7uL73FXhY1J8gWwpFjNkklRDInQKAM0B0COf/d35VZzEZSjikYEbAD3axtLyA9GcNqj4O6J4WvOP1607mNgHPaRXLZJUTYUpWaC4zUKUd03DxeNy8xYnGFWnE90Dd3jMLHGZFxla3s+8kxm7NL3NUo96xnpOVcsmNoTuKMQA5Se+XrSVY+mUUsyF9mQ9cjKrCK2cIUFOzdNB0cuG/ZC0DXZIP5b0DYyoMWhA/1/Eu2ov0ZBu2yBaYiHxktQLZwrU2ioXvFvQzq9nYsbmIONHJIdteJkv2B5+rmlhy2X+h8p6Kv0o69qlNm9yOVXGVH9taZPD0VXgMFUpp6xIWqiyqd5yPeYvMzzFhgdXf21hoaaMz/iXc8vswKkZiZNp9g1z7FVtkJm6mCKtkweKJpAikmEtIckLJxyjiUz1KQjnuk80RDPlw960mhkP7Od256e4ObXvtiIhCZ64z7/g+uTPMeBdKP5V95b8loIki7dtfalQjWNijeyZ9IwnkFnHCgJai1XxoX3HYGSibnEvS6s
+ /oS/7u5Z
+ ySM0NeK8nEuZJnLb466zsE02ICbFkwE7TlRV+rQ8nbtyVGu5E8IiIsutX/CQiPW8axGJdH1CU3nGmw6ZMhR8HV80m8HsmNZ4OIG1juhCbv7+Dgl9YdsV8FUnyRrop3HAxuNXBX+Onlvso8q4imDjgETLBOBjhyt5qJ128FVQB6S1MZACPs4dxg93nCQpHDAP7yspDhH6oSg+P8s12ZvaizGd1Y3iCoo0lKHefLJnZMVSQvIjxBzrEi2+seDSejqENJVhyqVYsA8+ZNlgQ9d7C+8xknFxnu2Egj26Q+2bDDoz9T5/uQJ21sA417Gv8AOcnG3ZW7PU8OgzVGbMUWVXqodzZzwTnyLsjRVi/j5qQc+TpoQYBVGidDNfJ8kywT7Z+Xru4m3pq0seedmh0oOxhEcJf0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,29 +106,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 Tue, Jun 09, 2026 at 12:26:18PM +0200，Vlastimil Babka (SUSE) 写道：
-> On 5/31/26 06:23, Luka Bai wrote:
-> > From: Luka Bai <lukabai@tencent.com>
-> > 
-> > We added a kmem slab cached called collapse_hint_cache for
-> > khugepaged collapse hint, to improve the performance in allocation
-> > and freeing for the hint structs.
-> > 
-> > Signed-off-by: Luka Bai <lukabai@tencent.com>
-> 
-> Khugepaged isn't exactly a hotpath? Adding own cache comes with memory
-> overhead, so this doesn't seem like a sufficient reason to do that.
+On Tue, Jun 9, 2026 at 6:20=E2=80=AFAM Ritesh Harjani (IBM)
+<ritesh.list@gmail.com> wrote:
 >
-Hi Vlastimil,
+> This removed unused leftovers most of them are forward structure
+> declarations. Also removes SWAP_BATCH macro which isn't used any
+> where in the code.
+>
+> Found these during manual code review.
 
-Thanks for the review :).
+Thanks for the patch.
 
-Yeah Khugepaged is not a hotpath. But in my implementation we will allocate
-those khugepaged collapse hint structs in other paths like walk_mm() and
-lru_gen_look_around(), which may be called more frequently under memory
-pressure. I'm a little afraid that directly using kmalloc may compromise
-the performance of reclaimation... What do you think? Thanks. :)
+Obvious correct.
 
-Best regards,
-Luka
+Acked-by: Chris Li <chrisl@kernel.org>
+
+Chris
+
+>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+>  include/linux/swap.h | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 8f0f68e245ba..46c25523d7b8 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -16,10 +16,6 @@
+>  #include <uapi/linux/mempolicy.h>
+>  #include <asm/page.h>
+>
+> -struct notifier_block;
+> -
+> -struct bio;
+> -
+>  #define SWAP_FLAG_PREFER       0x8000  /* set if swap priority specified=
+ */
+>  #define SWAP_FLAG_PRIO_MASK    0x7fff
+>  #define SWAP_FLAG_DISCARD      0x10000 /* enable discard for swap */
+> @@ -29,7 +25,6 @@ struct bio;
+>  #define SWAP_FLAGS_VALID       (SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER |=
+ \
+>                                  SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ON=
+CE | \
+>                                  SWAP_FLAG_DISCARD_PAGES)
+> -#define SWAP_BATCH 64
+>
+>  static inline int current_is_kswapd(void)
+>  {
+> @@ -175,7 +170,6 @@ static inline void mm_account_reclaimed_pages(unsigne=
+d long pages)
+>
+>  struct address_space;
+>  struct sysinfo;
+> -struct writeback_control;
+>  struct zone;
+>
+>  /*
+> @@ -442,7 +436,6 @@ extern sector_t swapdev_block(int, pgoff_t);
+>  extern int __swap_count(swp_entry_t entry);
+>  extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t =
+entry);
+>  extern int swp_swapcount(swp_entry_t entry);
+> -struct backing_dev_info;
+>  extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
+>  sector_t swap_folio_sector(struct folio *folio);
+>
+> --
+> 2.39.5
+>
 
