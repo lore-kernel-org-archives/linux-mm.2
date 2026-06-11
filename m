@@ -4,135 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DA5CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:35:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428FCCD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 971966B0096; Thu, 11 Jun 2026 10:35:45 -0400 (EDT)
+	id 563B06B0005; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9227B6B0098; Thu, 11 Jun 2026 10:35:45 -0400 (EDT)
+	id 514676B0088; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 838CD6B0099; Thu, 11 Jun 2026 10:35:45 -0400 (EDT)
+	id 4027D6B008C; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 756D96B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:35:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C0271C27CF
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:35:45 +0000 (UTC)
-X-FDA: 84867880650.10.13C7979
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E294A1A000E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:35:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eqdvS1CX;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781188543;
-	b=1DpuV4XhRbhPqD31DCz2nZpE9BofdWok6lHUYZIMkc1cbDAWpucM2edgmM42j/lrYEha0F
-	JWtMQO+iK3vsSgETneqJo5FjCZZxppRpIRhBWtfDDL7/iP549eQMDqiDbLo6vAndFtPNen
-	02W4B6d0uRVhAC3Wb5XRYZCS+ouu1xw=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eqdvS1CX;
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781188543;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B97C6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B27C01A064C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:46:39 +0000 (UTC)
+X-FDA: 84867908118.11.2E3B59B
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 52B98A0010
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:46:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ef4txsff;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781189198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sUi88M8OfN2nhAGtLyoxPLBw+xuAxEnmxBQ02BQEW0M=;
-	b=3p/a9sQvFmjPFPn3HbS7N4BnttM4MF/vm81c04RP9jCROJy001dtWz6phk6Eq3bG7r5bKx
-	uPCkd9lBgTO2kIPxvuK3NoPcuNuSffxMZfcvbllC5ZGvXqh09czryizOj/PX7nCAfdfI+Y
-	h1pCJ2L7ChN0sitVK1ulr46nr3iRLJI=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-46015dc517aso6532506f8f.2
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:35:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781188541; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FOprwpVsG+dp04ndj1h86ZY2/bjMycVnH/yKBe/aKi2ICodiptFxtRt7lkTK6Rcijs
-         LTzGkV3YhOSIeM7CV/xFGD5lsJNArRrAWl3PgR2YDgpC7MWppjFsYTEwdYOs10YcUc3H
-         l4ZmTbBoZaO5e68Wl9UE81OxzsT7X48cHZTdwiPvwKfopxJAWqKMRQ7W6z3UeFXOZDuk
-         mtNRm5PROOK+2G8zyAl6tgC2pHiMjD6FXuypcnKyzkIuwoX7D07cHGV2Cuoh1m5/b6qF
-         DyNZAUJOgby3RT1pkNIX+5RBz042/z88+YPbaXjQCZPZzz/AYqnvYEVVmBR6oO0ZjUDo
-         Xpyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sUi88M8OfN2nhAGtLyoxPLBw+xuAxEnmxBQ02BQEW0M=;
-        fh=5H3CL/iVCNAesxaZW2Xj47pHPXS3EycE8sk4j4XVJh0=;
-        b=h+m3VOM83EHoq+bFi5DVzBtYN569sCtvgFwAiuqIlKHPG5yfjejrd6KDzSpPn9eF5H
-         iVnftZk5/1Cro6QqLRTEMMshsHfxoYQSliQNVwf+l27xWWKeoehHlSWEX5oxsmEHOu3R
-         D+VytPVWeRoANWC1jUZQEXf/MQsITnzcni9FAAps3BBWSAd4T67NEzfN5KptJN0Qy/+b
-         elhW+y48e1NgYW02UsL/Y9zG2mRJLWD7gihqkSF4V2Vv+R8jIEflXKCJnIzaNUDCw+mQ
-         bLByYkJgMylDW+8D+lowbr3N/AvCFS/jx8ixSgWoPwvwFDq402r4yx3hEQTHkucLqwKv
-         yi+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781188541; x=1781793341; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sUi88M8OfN2nhAGtLyoxPLBw+xuAxEnmxBQ02BQEW0M=;
-        b=eqdvS1CXg0K81eSZS+iCAULSoBjE1xX83Xlzx4LTptofBkzns2BHb+I8oqvbQovMNr
-         eiBmhgpnYeGf6xf7URJuDhQa+sZniHGDSgAPdWfNq6RokLz0C6OsriZQ6Gzwa3sNMWfh
-         Y+eKVv12mm7lTRHwJaxeUpvekTnj73VctAJ0gjuPKh/2o4DxUsnAW+tVUE5sevh8zmRk
-         F1cVQuUDYW0ybbPmY2jh0YV3TGKiK5/Lxg8m23QZTMbcZH+QUhE7XrS0HQqURAJw19xi
-         IblZkOFHlqT4M60I5oWbIo9yxk9LEe0kzMwiZiM/0lrX3Ps0a7FOysd+r+Hh9CxfhXXM
-         mzAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781188541; x=1781793341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sUi88M8OfN2nhAGtLyoxPLBw+xuAxEnmxBQ02BQEW0M=;
-        b=V71AGbganlH9Xh1oD/IyXJea1CG5SXoPIiDDwdCwuwmLaWDLIAbaTSnbDcjTetsxCD
-         YiXTKqfP+7VnCxEHhSaVz5ijzYtILHUvP1ia55C0XBaWp7yCzvFLo3a9jRfwJUwG9xNR
-         am31ulpqT1YHEaFVx75kVV9dIdPqtdRt8C1w5qQ1LIzwdwpjtfldqC30E8+lUZozIVVj
-         qgMBYiCUZ1U7K15AKh0532uyIIv1wA12/pt6MV8olnx0ABncbiT8ISPZgr5ZS10W4RfC
-         Mzsz+Yo2T/6JB744mmCUUM/mYiO3fP3LQ1Lb1NOxEMCmyKz6CcngxE7tXOpx9YZ9Q0tZ
-         GiHw==
-X-Forwarded-Encrypted: i=1; AFNElJ/NlY3g9XdrFiu86RxxDsSK0ImK9Y6vzQlmunHRhrNMRITpXpDv7NCnK3rgQik0dAtI8/o7a2GqhA==@kvack.org
-X-Gm-Message-State: AOJu0YyT0bgGcXl/HBkAb2S5WgUHdW2dB8iUh0FMyjDw/Y2gXm1D2u5+
-	gnERKm8pDwNIWg9gZz4qByBAtU0R6jSQtpvQ0oqSomawMH32dJ0BEhtlB1fHOua3wIW32BsipeC
-	rz9wr4GSpFQRhbaXZazlIkyT3OHOcTrg=
-X-Gm-Gg: Acq92OE5O+eBnogMbSFf4/OMx2E2zqzvvmJjleTU0GJCQ5supeaofISvYWvRV3mukAF
-	Ry++elT/Dn80u1jjmvR7mwlKXiXHteL7JotO2hQuIm9cxWRqymDD/asbx1qKDpFpQ3GNV4XESCH
-	3m47Fx15CXncE1BTimVH1WnAC+zHOw0QcS3cyPVSGqNCAqemMsBhCznU6EW5H52jwdiB9ualrQO
-	g+IQUazyG4o+Kfb3C/JxnreKs5tWELc8mEyJOoVnOCAs5VKLYR9hxoH6KyIH8ZCN2NtiNt59x0Q
-	KBksfzgy41Zx4bOVZhJxp2VTb61YLYdmFLGqGduxLaTJAtzR78WQj+tMxF23dRSpAw==
-X-Received: by 2002:adf:ef42:0:b0:45e:73b4:85cc with SMTP id
- ffacd0b85a97d-460677b5fefmr3775796f8f.35.1781188541341; Thu, 11 Jun 2026
- 07:35:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260610232048.62930-1-shakeel.butt@linux.dev>
-In-Reply-To: <20260610232048.62930-1-shakeel.butt@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 11 Jun 2026 07:35:29 -0700
-X-Gm-Features: AVVi8CfWU9wIuMHeCAJ7I4nBsHfRFhYVyjvgKe-WEnxkiEU3lY46a3vY0cfR3yk
-Message-ID: <CAKEwX=OBzRjixTXNmUF79Ej-HkhuBCX5mjnyfqh=SHwKcntKAg@mail.gmail.com>
-Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in shrinker_debugfs_count_show()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Zenghui Yu <zenghui.yu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+	bh=G0yiQSirVK4gO+uFpLKC5e3Ko/lqIewVS97P9f8jq9I=;
+	b=6SDfpZvZldlaotqErL/GST4MwbwrRC0H4Ul5KhaDdBDo0DgVIIhom0kgd6DD7iNpDsKBHd
+	Z7nIf+OuD4Ls4Oi3SlDmw3rUkhxbFvX66XLk/WeIl8rvdzdP4pH1RCTwT3ro+DGmAFP5Uq
+	komCJZAVW66FO5Il22PlXfYkQzt+u40=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ef4txsff;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781189198;
+	b=XFIie9rbyo859LmOtW1uSOuURl6Y1eMyw/639E+gS+GIndoHpaarWplkvjsKGc8gV/HIvV
+	qsVcgfO/zmCEO1bp+SgnrSitMqalZZg42zRsPqBwTqlKkl4lnJzIsRGTI0oV3pzNtKOU0g
+	qyY0VbZz3D0FX9L8VYvU9g/5TrLQ6HQ=
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781189192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G0yiQSirVK4gO+uFpLKC5e3Ko/lqIewVS97P9f8jq9I=;
+	b=Ef4txsffxUT11EdWmmTGYv/ixEh1Vpo7jhf9b5jdVjiEacVbJXULiYdGHk7dQ2RSazPMeu
+	IGz7j9FetbVY9ASafCOgyaOAUs5qScnG9j6qjssZnEwIpygZ8jLFriBTLBLP0fsiISGNKz
+	DsBHcVRax27hx8EINn2yWki5eCpQmrs=
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E294A1A000E
-X-Stat-Signature: df3oo6hi6ymeczgcgesb9qic8cj56ua9
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Jun 2026 14:46:23 +0000
+Message-Id: <DJ6AVARSAAQX.MK0WG9C2K84P@linux.dev>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ <rppt@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>,
+ <derkling@google.com>, <reijiw@google.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
+ <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
+ <yosry@kernel.org>
+Subject: Re: [PATCH v2 19/22] mm/page_alloc: implement __GFP_UNMAPPED
+ allocations
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Brendan Jackman" <jackmanb@google.com>,
+ "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-19-28bf1bd54f41@google.com>
+ <7bfda0d8-2a7a-4337-8b55-d0c158df7839@kernel.org>
+ <DIJEIELZ5DJU.26LYHOT4WR7A2@google.com>
+ <DIV92L7AZOHG.1FKDUXLPZEUK4@linux.dev>
+ <adaca36e-5896-407b-9f46-601ed5686575@kernel.org>
+In-Reply-To: <adaca36e-5896-407b-9f46-601ed5686575@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 52B98A0010
 X-Rspam-User: 
-X-HE-Tag: 1781188542-450248
-X-HE-Meta: U2FsdGVkX1/fjww9joo761zbZerx6xnjpTKENTKXzn+EgJR/SQnMp+Uiy0jk5AAwQSDCBremKYvdL9K2sTExLm5OLLniM6OZ1ipP+X1NZTOqSzrQXPxhSGcImajOhz0UPXP/9wrRroUn8UMtzahWZmstTosXlr0ZTiQCyvnzBIBBNcpVBaC1yvzNKipFiFHJoP45lKPdJYJvuPqNMgUjRmfuL7KikoogqPxpav5bG/JKJ1IGnRehNZc4kOmz9wWKzlZp6qMMW8bzGIKBwz6r0k/FEy+lPr1iefjUb7jL5P1hqVQewXkaqhbTclwzeG3TE0N4IEBjeYv6qtTnPslKgYG3UVWlf7UK/4YOFNli83tiRpPzfaAUGVvowKytt9/peOTXWSQGOIU+pK3tuv30ld9moenCDSILG7dGwelCGSKLt8S7HPMq+zLfpyUnivxIiJUTzuToCBFGl9tZQYTtwmwGtTdTAXssfn8/q46VM8wE3VDQyoxLwB3OUOzZPfEqHdKHataRm9Q6o/NYCY2stjTeQAxaaDlA2mL5AGnJm8Jo9KZNpM9zmlNqIhTNDZBdc/ygL8pMsVLw2jhtXb/4fMmLvHSmONOLLQsw1J063ar06BRZLSrnakyBdnQBytYKkCc6NyCnlqF6IHYSJRb+DBSXB0yMdCWO9EtlLuRil4U/vVPIRXSugLFQIDQixCebqgJJ4BTcxX9IBnypnJ0tj2A7w+dKTNKqZJP/nhYPJUQ8MFhF4sdfySIhIbWRzWqDyGtE3OJ9v0tS4OEkHAq5QJ4NGok6Kdm8AQKmbAJTuhvprbFJ7UXHegA+6DCeSMwxKtRktTsZVDSw6xvoK0m0hCOyWhmP0GKWCilBUPfFlgmhAeANp6MfATG+7pmov/ZTyysz5HnC5p8kcQN4WAQEEmdqxO7ytEz8Uh6H9iZ1u500mQpvSpvwFKdw9bFbJKikv6pPqGX5VQvquQB5UZg
- 1o1/0cMm
- jpM8Ai4VEUMVJU2xfSmcDKwCN6cw0UYg9gtyN+WHF+ZxeOiSNOFxs36gvB3kjNeoJQbvTupQJKpSl8G0nzL7sSUT+vofrSuao+P30W7Fqa21CQYgW/dSHkgiM/QhO+izv11bpGdcuew3sKHitFOVsJDcW8tD34U7ME2vgzgfenKz+d3IzLcS3LFxE3IfeyY4wTtb58r3OsHr7YseMAjsx/w4N1cV9vp2HZueako+MV9xN5GDqsYl4RsNkeZU4Nj1ys6HPOBntVOPpkX0JN77feUtvUQb7mlLdBkt9m6YzTbDY960p5LiERcQG931NkZEBBbbS6Ijg9BD1EcLIwfdPc+t7SDf+fHwy3GwVVTcJKGIVFIHiowxuqIN48+atiGhsCFNXk+LSV4itTFAf6qGMEaWyY5tl4KCKJS4bHW9WHQ+cSacQUiztwdbAijD+n7zWIgCzHnnV579ahvGOSJrxOH2wSrxRSOB9UXXY3naHDgMtEcrak3MRVO9KwA==
+X-Stat-Signature: uanx9f6zgbhjcb6txj4nhdruky7h9o9r
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781189196-125458
+X-HE-Meta: U2FsdGVkX1+VpqZY98oov1tY5vCXdYHvANDnLQiZ32bclLP//LHh7IRnngfsT44bFa/sgHLrhzO4ctjvBGd+XqwpgkaQ9a3+dRiDwtI/m/Qu2Yc3tmLp3iXnlfxWevDCyoATbXhM0zbCfIJSY1Rj/cPkC/8dIbMVnEq4Dcyiez5dhJ2cp5K+OB3VyEu68Yjh/PmYdEtBEy9LR2KU2D6a3rcTKtmvle5EqhaxepzxT+ltJfRim0jEkOqJrNwOdUxfRiQsf45D8CMPWgN+J28ddG9CPevWqmkfCnO7HnL8EKziIiDT4GmCXeHS/oOHzPhv/5IoEms597uG27f1wRaIywjGFg0wzDf/c9CpO8Ecxtif5XIR/IH5zoBzI36Ev3LJ8Dsn8L/Bkq2Hd82z3h0GLwQx78kFSdVLsvxmAv3vwqUMvoRaMqqbBHPoMq8amK+ZpDfxseokbQyzRUq4Qd3RFZFSIxlIJL6yqqDlStitIMfZwTIVilcicXEw6ZsQqfGdF+f/P7K91L7WwyD64kWeyC6ykQWpR9BTei3+HQbUMLQOkjD3IE8IRdXlBdRu+4GjJ7WcG4ANIPU0A9fm1XTbXIwvYzwW9l+4qjG7/GmnJUffg1HNrWuq6NX64om7QS71jsjvrYAwMDGwXFAxZ0t04/NmNBP0+k1Aopg32PMrrR6hAlvZLlDZpvAtjONCH1sdfZ8d8TrHYbfsoRVz1M4Cs/EYc8qCP7I3inOvncjyrAEG5zREYBXpYVMiuMExxG+/SaSM4CenTUi5dXjnIhEwDzn5ecglU2H8Ip5nkEIQhqYFQuY4OrtL1qEp7VSiX9mC2CN/BruMSRcvMRK+3V6ROJgKcChZbjoZrOPZXrFyyii34h7VId5PZn/omxfFl6rQ1oixv1hIeyuPNvguYX+OjqjnjxF5Um+7jgitOA46q2GAaF1rwymmHSd8dpppPS2QzldhDS3kWiEt10nbuqN
+ Md/ioxwU
+ 7kYyYS76mrkMazZRvNVLusfm2o/EJloTgPOxvtxIMkjx96PCuS3WqP+kvTYVxLUYXOKCIRFHjD3xsNOlAflnSmbPSlTmmDfXZIzKMJqMEm6uuVZTUNLzvrshMmmaLwdKTJvYQJatrb/8ILlm1S0kxbypDMK334UuGCBLoYbNxC91LifAbLCe2MfXef2dWJECKFYkR5nO8STbwMLQT3DYqxV5DMH0KCFZuuziq7A9t75F1dW0dQY7s9Nh2Cy3gJuIzQuQ2ZvXa6oEuoRL8YkkSP2yIYGK26c149NldsgC7AGksLamGitr5S6gwTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,45 +107,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 4:21=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
+On Mon Jun 1, 2026 at 8:50 AM UTC, Vlastimil Babka (SUSE) wrote:
+> On 5/29/26 17:02, Brendan Jackman wrote:
+>> On Fri May 15, 2026 at 4:46 PM UTC, Brendan Jackman wrote:
+>>> On Wed May 13, 2026 at 3:43 PM UTC, Vlastimil Babka (SUSE) wrote:
+>> [...]
+>>>> Uhh, speaking of compaction and reclaim... we rely on finding a whole =
+free
+>>>> pageblock in order to flip it. If that doesn't exist, the whole
+>>>> get_page_from_freelist() will fail, and we might enter the
+>>>> reclaim/compaction cycle in __allow_pages_slowpath(). But since we mig=
+ht
+>>>> ultimately want an order-0 allocation, there won't be any compaction
+>>>> attempted, because that code won't know we failed to flip a pageblock.=
+ And
+>>>> the watermarks might look good and prevent reclaim as well I think? We
+>>>> should somehow indicate this, and handle accordingly. Might not be tri=
+vial.
+>>>> Or maybe reuse pageblock isolation code to do the migrations directly =
+in
+>>>> __rmqueue_direct_map?
+>>>
+>>> Ah, thanks, I suspect you are right.
+>>>
+>>> I did fear there would be some sort of case where this "not-quite
+>>> reclaim" interacted badly with the actual reclaim, and I tried to test
+>>> it by running some stuff in parallel with stress-ng (allocating
+>>> __GFP_UNMAPPED via secretmem), and I didn't see a difference in the
+>>> effective availability of memory. However, I suspect testing this is
+>>> quite a deep art my "run these two commands that I copy pasted from an
+>>> LLM suggestion" test was just crap.
+>>>
+>>> Do you have any workloads you can suggest for evaluating this kinda
+>>> thing? We would definitely see it in Google prod (I think we see this
+>>> kind of issue with our shrinker-based internal version of ASI distortin=
+g
+>>> reclaim behaviour in ways even more subtle than this) but that is not a
+>>> very practical experimental cycle...
+>>=20
+>> I slop-coded a benchmark:
+>>=20
+>> https://github.com/bjackman/kernel-benchmarks-nix/tree/master/packages/b=
+enchmarks/secretmem-vs-frag
+>>=20
+>> It does some mmap/munmap patterns to try and generate fragmentation,
+>> then spams secretmem allocations until it gets OOM-killed.
+>>=20
+>> With this series, I see the OOM-kills happening noticeably sooner on a
+>> 1GiB VM:
+>>=20
+>> metric: secretmem_allocated_bytes (B)   |  test: secretmem-vs-frag
+>> +---------------------------------------------+---------+-------------+-=
+------------+-----------------+-------------+-------+
+>> | kernel_release                              | samples |        mean | =
+        min | histogram       |         max | =CE=94=CE=BC    |
+>> +---------------------------------------------+---------+-------------+-=
+------------+-----------------+-------------+-------+
+>> | 7.0.0-rc4-next-20260319                     |       4 | 683,147,264 | =
+643,825,664 |               =E2=96=88 | 715,128,832 |       |
+>> | 7.0.0-rc4-next-20260319-00028-gf00246eb72cd |       3 | 623,553,195 | =
+551,550,976 |            =E2=96=88=E2=96=88=E2=96=88  | 692,060,160 | -8.7%=
+ |
+>> +---------------------------------------------+---------+-------------+-=
+------------+-----------------+-------------+-------+
+>>=20
+>> So... I think maybe I've reproduced the issue you pointed out? I will
+>> try and fix it and see if this degradation goes away.
 >
-> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
-> inside an RCU read-side critical section:
->
->   BUG: sleeping function called from invalid context at kernel/cgroup/rst=
-at.c:421
->   RCU nest depth: 1, expected: 0
->    css_rstat_flush
->    mem_cgroup_flush_stats
->    zswap_shrinker_count
->    shrinker_debugfs_count_show
->
-> shrinker_debugfs_count_show() invokes the ->count_objects() callback
-> under rcu_read_lock(). The zswap callback flushes memcg stats via
-> css_rstat_flush(), which may sleep, so it must not run under RCU.
->
-> The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
-> and returns a memcg holding a css reference (dropped on the next
-> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
-> without it. The shrinker is kept alive by the open debugfs file:
-> shrinker_free() removes the debugfs entries via
-> debugfs_remove_recursive(), which waits for in-flight readers to drain,
-> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
-> already invokes the sleeping ->scan_objects() callback with no RCU
-> section.
->
-> Drop the rcu_read_lock()/rcu_read_unlock().
->
-> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memo=
-ry shrinkers")
-> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@=
-linux.dev/
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Since I assume the fragmentating allocations are movable allocations, it
+> might be the case, yeah.
 
-Too fast :)
+Alright, so I tried splitting NR_FREE_PAGES_BLOCKS into two counters to
+track mapped vs unmapped blocks. Then I gave
+compaction_suit_allocation_order() an 'unmapped' flag:
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+
+@@ -2510,19 +2510,39 @@ bool compaction_zonelist_suitable(struct alloc_cont=
+ext *ac, int order,
+ static enum compact_result
+ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
+                                 int highest_zoneidx, unsigned int alloc_fl=
+ags,
+-                                bool async, bool kcompactd)
++                                bool unmapped, bool async, bool kcompactd)
+ {
+        unsigned long free_pages;
+        unsigned long watermark;
+
+-       if (kcompactd && defrag_mode)
++       /*
++        * Might need to generate a whole free block regardless of the actu=
+al
++        * allocation order:
++        *
++        * - When allocating an unmapped page, because the allocator only u=
+nmaps
++        *   whole blocks at a time.
++        *
++        *   Why doesn't this apply to the other way around too? (Mightn't =
+we
++        *   need to _map_ a whole block?) This is a temporary simplificati=
+on:
++        *   currently, unmapped blocks don't contain movable pages, so
++        *   compaction isn't going to free up one of those.
++        *
++        * - In defrag_mode, because the allocator is unwilling to "steal" =
+pages
++        *   from the "wrong" block.
++        *
++        *   Why is this only under kcompactd?
++        *
++        * Temporary simplification: unmapped pageblocks are currently
++        * nonmovable. So if the compactor is trying to service a
++        */
++       if (unmapped)
++               free_pages =3D zone_page_state(zone, NR_FREE_PAGES_BLOCKS_M=
+APPED);
++       else if (kcompactd && defrag_mode)
+                free_pages =3D zone_free_pages_blocks(zone);
+        else
+                free_pages =3D zone_page_state(zone, NR_FREE_PAGES);
+
+
+... Then, I changed __alloc_pages_direct_compact() to try to try to
+compact for a whole block whenever we are trying to allocate an unmapped
+page (note I think there's an orthogonal bug here where it leaks memory
+when there's a "captured" compaction):
+
+
+index 4f04e897c5374..7eed22f3b26eb 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -824,6 +824,9 @@ compaction_capture(struct capture_control *capc, struct=
+ page *page,
+            capc_mt !=3D MIGRATE_MOVABLE)
+                return false;
+
++       if (freetype_flags(freetype) !=3D freetype_flags(capc->cc->freetype=
+))
++               return false;
++
+        if (migratetype !=3D capc_mt)
+                trace_mm_page_alloc_extfrag(page, capc->cc->order, order,
+                                            capc_mt, migratetype);
+@@ -4469,20 +4472,27 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsign=
+ed int order,
+        struct page *page =3D NULL;
+        unsigned long pflags;
+        unsigned int noreclaim_flag;
++       unsigned int compact_order =3D order;
+
+-       if (!order)
++       // TODO: Is it OK to always run compaction like this?
++       /*
++        * Unmapped allocations benefit from compaction even at order 0, be=
+cause the
++        * allocator will actually grab a whole block.
++        */
++       if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED)
++               compact_order =3D pageblock_order;
++
++       if (!compact_order)
+                return NULL;
+
+        psi_memstall_enter(&pflags);
+        delayacct_compact_start();
+        noreclaim_flag =3D memalloc_noreclaim_save();
+
+-       *compact_result =3D try_to_compact_pages(gfp_mask, order, alloc_fla=
+gs, ac,
+-                                                               prio, &page=
+);
++       // TODO: deal with captured page, if we changed the order it will h=
+ave the
++       // wrong order. Also check it respects the freetype flags.
++       *compact_result =3D try_to_compact_pages(gfp_mask, compact_order,
++                                              alloc_flags, ac, prio, &page=
+);
+
+        memalloc_noreclaim_restore(noreclaim_flag);
+        psi_memstall_leave(&pflags);
+
+Full code:
+https://github.com/bjackman/linux/tree/page_alloc-unmapped-2026-06-11
+
+This makes the regression above (faster OOMs) go away, but it seems like
+a pretty blunt approach. But then I'm realising I don't really know why it
+matters? The main thing is presumably that we are more likely to
+pointlessly attempt compaction or compact more than we need. But in that
+case, aren't we already in a desperately slow path? Does a little bit of
+extra work in __alloc_pages_direct_compact() really matter? I couldn't
+measure it in a benchmark (kernel compilation alongside stress-ng
+--secretmem).
 
