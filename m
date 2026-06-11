@@ -4,131 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D739CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12B2CD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6BC6B00A0; Thu, 11 Jun 2026 07:37:10 -0400 (EDT)
+	id D5A1C6B0096; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CADF96B00A1; Thu, 11 Jun 2026 07:37:10 -0400 (EDT)
+	id D0AE76B0098; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC36D6B00A2; Thu, 11 Jun 2026 07:37:10 -0400 (EDT)
+	id C20F66B0099; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB6606B00A0
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:37:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6ADB2405F5
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:37:10 +0000 (UTC)
-X-FDA: 84867430620.06.8BA9BDF
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 294FE4000D
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:37:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b="Mbdsb/s3";
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781177828;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ACDDF6B0096
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B7EC16546D
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:47:05 +0000 (UTC)
+X-FDA: 84867455610.18.308A3DB
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3677E40017
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:47:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x5DTgfgw;
+	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781178423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Krbn+MYg+M809YBLBqA3HPhCu/oACb+iPAXWhxNcpGc=;
-	b=hiToSq7DbzGk+HNkbtmWqrJUg8eiOP3XCeaBe/zQdFrmyuanUZ9tYN8Qzvh2/3YpVx4Oa0
-	yO0coq9t+AgNut6dhE5M2CxPWKT6+DY+XLoFMEVhs9e6Oo/gwUUZkjevQFBPg5KgY9STNN
-	fQ0ghkQ/0esdtvWt1s7Pt5n1XHRFtXk=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b="Mbdsb/s3";
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu;
-	spf=pass (imf17.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.160.173 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781177828;
-	b=Eg/UuNldvM/EefS3ac/ITGDONiAgjnBuxO2XEPX+kmGJ6pwTyYz2/NoOJOLrThefuljlun
-	6a9lcvcQVmsPfmhbSdmF5PVCNg0oQ8u3IIUFFTLlfRmDN4gZfkE3ZX7xqtmwNJYFozl7AP
-	a6gLpbMxEeAllYRpylel3bQL4tFAId0=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51780bbc560so7565491cf.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:37:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781177827; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QFER/Fe9JQQI6PZcGteOsebjis9S2vPe8EH5ybLuXmJEJbja0pHtGSEoZgsDibDuQc
-         0izYqqo3uf/VlGRCqlMCl2X8D+6Hlu7Aodd6HsRpG1UKZJY69YyTX1I7clhXNelQ/4BF
-         Ic6aDqj/sbMqrvdMVDwKcj+LUb+WtBFwKvEc1JTUlsiTxAz3pSpZ36/cOygTN1b4+KqC
-         nMUuxR/p88f6nUUg0ST2gJAgQH2c6Aql/fDr6rTT/77hx70GI1d9Zv5nPdhpA0RdSkki
-         NdWIOZtRGQhePxPwLU90Ezoql3WwsWUxJmF2Ynqie9pGsNcyRyVuxIzwBzbGMCrPKW0v
-         I87g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Krbn+MYg+M809YBLBqA3HPhCu/oACb+iPAXWhxNcpGc=;
-        fh=Hsbp9RYDxXKznV5kkZz/oa/iQhKoQlFKrInbnuVLG9s=;
-        b=EcxkTTFmAyfWXoTKJEzLeqDqYxvv9sjGtmD/4lSEhCOxBMey8/QGSpvZ6ttXCcRoNG
-         B+oiNCM3wnM/BvOAHLwRQ/4mgcBkLHb3vW5IDiHPtauELgbGfSHNyifSwWS+6HQNgfCZ
-         FrL6rVCXcW8WpFU75Vr76laPe9qNRpAcuOA7q4BYukxxS5aOkXL3mXbYeJ4a948M+SUz
-         mLcwIsV9a+fW3W2CrxqhA8s9GuvQDg78b3611mUH7nwbug41YUyfIJ60OunA4v/pR1kx
-         nAJibINYL+KHrwZaPnr9yJngMH5w4noQKLRF7aCdH+sa0qFN0K+CQ+hXoci8VMcSpo7a
-         fgnA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1781177827; x=1781782627; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Krbn+MYg+M809YBLBqA3HPhCu/oACb+iPAXWhxNcpGc=;
-        b=Mbdsb/s3lWjzYKqGXXYTyBztjR4bl3xGvCWWuC7NBpN/nkHq2PvO9bBot5nGOkrJeh
-         LtXVPo05NqcN41XdC7FP2rz8b4xDhy4UcybFozk3TgtfTjbiSQ9hZFTJ62yYLAcRGcIc
-         n38v/1k7c1kIrYy52GFTD4H6Xe/qMK1wQ0OwU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781177827; x=1781782627;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Krbn+MYg+M809YBLBqA3HPhCu/oACb+iPAXWhxNcpGc=;
-        b=IA5EPuoIYOjolb6wEh2HOeJuH2N7n3p8ZTL9Yf9nUUHhyMuwCqk5XD7tKrnq3Ao3bh
-         98t7QeIQbBBwAFYUPcUta/soJYqtRLUnAQhZG/hUGsoSikZ/1fmH6r6YrMuyQXP66BbH
-         EgU5DlNFEBC1btP50vm0Ou23clrtrdYcDzT3NiRBFOoh9esEkoGxuX+X4YO9iFmQpWs0
-         wgpOaLCSboqgJvheZfLaprjpsevOYPqXTLKD+P2/AqP1hWsxNik07qRQV/AIa7FkcWz/
-         HGDZCpBmfyZ3DUYdVk1rlABghMDlscx/AJdfMyDNubY+7GGGXuRvw/9g+0DPhbIxyUcC
-         8GPw==
-X-Forwarded-Encrypted: i=1; AFNElJ82hNSewmMXX5+5W7M0hSqiLlxcWP8hZFfLxcOzKtv43nVEeiHGD9ErFcJNIbZ6EXq/AdzNFva1Vg==@kvack.org
-X-Gm-Message-State: AOJu0YwXr0h+zLT5/64Xky1zSXwy138voR2Q2hPP2AV2RrpvWM17DNGf
-	FV3dTkaWiPjQZyXiD7n5oyy0TJDV5REl/LkydBv9sXsfTUVZt71m+MafFBw+xXgDK10Rj6SO19v
-	laPyDJguRg33T8N71ZrpUTgM8e9jRaMMCicE6Fvkg8gGmGRNv1I03VP8zNA==
-X-Gm-Gg: Acq92OFgowaMJ1fyg8ZK5N3nRdDoYXvFjTBMhdBBlU0Av7bTTscqD7j7PHu60i02RUv
-	9SfGGd9tOcZu85efHGxL25F1KGr8bweGkhvEyaI3Fuh35YGPl0a4lVHiKYlMIU3hkSbLyg+q4cr
-	Yk+M5HNhBAx2qi0CijE2yWskZvGU7Wlv36uEnJClSyxoAywLvCIcp8Fw7rfa24FhpDHF6+EyXR7
-	EuT1Z43KmQrr3hFd2Ujyd807xuh9qfEeVOnxKeSErj4b+Z7CBsN2DN5Cv7oMF+rqWRpTUJxaMBE
-	U8IK2JmqOTetHM/N9Qg3++7FIZDiSWvTFghgn9B6GjB2FnC5hv60Lv2owG4LCQ==
-X-Received: by 2002:a05:622a:2c3:b0:50e:600a:638c with SMTP id
- d75a77b69052e-517ef5e438bmr24070671cf.17.1781177827196; Thu, 11 Jun 2026
- 04:37:07 -0700 (PDT)
+	bh=SkCGrWKzCfTn3xVMps93ytdggiT1d+I4EJDhk4sAvA4=;
+	b=mWQnkFNxTuG/455KKmzBHoRzhhk+KPUTKLstzCpQctvLR4chmRWibKvDVt75eD6gg+TEY8
+	DeWF6hZec/uNuylo1J3/95ld71TGePg3z4ntlVHs9zrJ33preHketZwtNGhxu3b6irLR9o
+	tMTlSRMQg1M91XmLt9htAAw6GDTQsto=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x5DTgfgw;
+	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781178423;
+	b=Ccx196AGI25eDKpwpfPBTzkIv8xu06LNb38EnoFc9lL/uXq0A65c0VFnVvd4avKdUmWmFd
+	VZYqi4tYXCzK3BJAf4/N8CQ1eEvyC5uBaOiQbxz1pDl7EoTwUoGya0bmlTTgDnoAVa5qcs
+	xQ0sX27FgXNr7s6PkqL3IM6PQy9pj6Q=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781178418; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=SkCGrWKzCfTn3xVMps93ytdggiT1d+I4EJDhk4sAvA4=;
+	b=x5DTgfgwOVeAIdghOG/38uy2UNGYsogTVhz0s+zkWp4nQHEj45zNprchhbXrTACHZ54+i/0jqWKB2TYPLsJiPyapo3BUqGVp+N4MovinhwJ3RUE/SgkSGODZqewlYK5zdvaA2xr6W/8GHAqRz9L0WFg/2ioRjUxCrtug0aI7eb0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4dY2QC_1781178416;
+Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4dY2QC_1781178416 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 11 Jun 2026 19:46:57 +0800
+Message-ID: <47f472ac-0b07-4ffa-a3d4-04fba621252f@linux.alibaba.com>
+Date: Thu, 11 Jun 2026 19:46:55 +0800
 MIME-Version: 1.0
-References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me> <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
- <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
- <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me> <aeFuarTL7xBbut0F@casper.infradead.org>
- <CAJfpegtAeyMRENdneJkJrMKu8Uwnyk9LYBThjvTrFjHmPr6O_g@mail.gmail.com> <9fe5ff50-4c1c-49ee-a8c2-4cacc3c6781d@fmap.me>
-In-Reply-To: <9fe5ff50-4c1c-49ee-a8c2-4cacc3c6781d@fmap.me>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Thu, 11 Jun 2026 13:36:56 +0200
-X-Gm-Features: AVVi8CeK6Z2zBhavJJXwn1vbtJS7ePzzglnt_f4GGpdHii0ALfHsK0WKEmVT6b0
-Message-ID: <CAJfpegum=LJTCGqMUfLHehQE19kgdZbE2eXS_002fdpX_sd6jw@mail.gmail.com>
-Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
-To: Nikolay Amiantov <ab@fmap.me>
-Cc: Matthew Wilcox <willy@infradead.org>, fuse-devel@lists.sourceforge.net, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	fuse-devel@lists.linux.dev, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 294FE4000D
-X-Stat-Signature: qh79iunqt7bmoa6cd69rrh5rxk5xi4y7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 00/11] add shmem mTHP collapse support
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com,
+ willy@infradead.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
+ <aipSe9Snx5x0esQx@lucifer>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <aipSe9Snx5x0esQx@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3677E40017
+X-Stat-Signature: zb9rwpe5rip9pgym5o1pd5ha9ox3ggpa
 X-Rspam-User: 
-X-HE-Tag: 1781177827-989986
-X-HE-Meta: U2FsdGVkX1898pc1wFAqqkfJ7Mec6GRHRhNOZPvf/IRAw6zs0E28i3hnRCSGPYdN3HrqIc94vjEiUxMcYRn2KHRqv03fKcPQ7ANLSBSF8XJlzNnHaSeAxlBAOs6wLJkoiMXftAOUPn1C4dLZ2+oDVKzc1BywVX/XXIiQSFk0hPDd0CWmTvgQXXQK0VjoXZwhnucQfSoQ5pmebOCFKQPr6YeF+3AZJ5KITg4rIQ1jV1h705B3pv5HEE48/biewM2LeVCi8Eg2hOp93vZ005yJBuRXyg6+p2G2ZwoT/bVf+0hFp2xoD5TMkw836JRouU53T5NRFLosa3Hw+rOS57rX66B5ehzkfam1aIdEh0chJNzlaczDLBi0KWLGDLgVS6nC8dTgTr7PBL1s501lt46hweoMYLhm4KRmjrer6c9aFUQSXuhe7IL4MLZMZTTmdTWEGDsQCWVHrQo2Ayz7p+jGbcmkj4FzGc/93BrhW2+j1DLj/nkDav9G8wHa4nHT4O9Sh0zyxOVQqnV+N8viiNDBlSfbuYnKC8xPONF0r5HUsQDL2/j0prwqKovRxjWYJr3dbeBxvSDKAz9mgtgaFnaEffpQAQzjz578OJnd9qUf1tLpZ8nux/YYL/+YgEmS4dUu76kOB03uBjxfwq4HjK/8IFglZPIypeiXkkFauNJtphSeo4qYedYGSeXwtrnYo19w0ZlsggfLB0B5DMpqYrJMPqTul+BaTmmVhkTrDfhMhBc7XA4UpKl9EDQMI3BGdUSu1zpVOwNvOmFTdYTO5Ut3Be/676oyzed2URpfNR70U0YrVJ/MN/CMd9cziPHeIOI/yOqJ7QwNTVeYG4izAd0blr6IocKm0Ye1YgQPlodwi+DHuhIfV98+AyQzZcW5zII9fSyVs23rdrNssVpVe1RJQfYlXvO0QHzsrmJ717xdaPb1ZwOJoyPEDeeEIyw7hLp3Vq1b8ODfTcDGKMIhjvR
- FDx8bk2s
- buTQPvtYwx4RmCvrzsDBT8GuigK3jKoMQJE8XcvYFmepjjQLi2JX0NDtrDXG2qEcquKJz3Nw/+Ovt+hwOJ0Js5H8Ij4I2qsR8S2MIIRdEjaI3y2Ld6Vr3sBZWSzcyTC646GUMd6UkeaNHEQHu9FIypNVGm3LY1flozoh+D9iwp2N76vazupKAwQmknW2mIDf928Ab0ANdvxYEo9UG+ghxd0JXiA1lVNQNs7/h495UwpKvirY=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781178421-198722
+X-HE-Meta: U2FsdGVkX1918KH5gQuHE1ThMdNZmOntuA415iwzOc7QkU/HWwn45hkgIMqzrgHs7huQqX+PUBS1vkiJ/nd3K6Q6yMBpX13aTJHkGJjwdFI1KgqdTyVC0jUJsx0LoMCWtrgZh5CKTkJAssCmpnMm53cOvLQzEWkNS6S3CjQ0Grcy4J708/I5Dmueb6Atq7j/cVYiJxxouiuvDN0f5HSQ8l3ksTfJERPlLtl8aBOLLeB/ijTkarxMakKfpFwfoj/9jtTcfTb/rm6ak1cmRXsu4OyDi9g+VUUqIC+fpq2LFCiZQJmAxPieMpcDFfJ68gFww5u7xzaMsR40rrovl78fslCY9AHJQawux3eXdk7Z79aNLdcq7MojL4/RbEcHbRIZrISY21Z+NaiTDzfZ2fCsgKullIYCeZQYOj+Js+Im0i/SW6p7DfdxPOGJTUWXo1Ci7TbLvNLdqYJcexEf+GZj/7rvS1xMtvm0alIbqyFu4e6dcUlVHmvqU7QNhB8eJfEi2/nrDXwVthLC1C092cZY+De5Ps/bvsoGEgnEyWjIxAnJ/FVMwL4eheQT/Sfx4XgmFbDotazepKoK92QPWLenTIdXrcDLNCpYB4E47r8bhrWQf5WmshVXyxGVm9HCdKFm6BRp0PKocC47piG9OPZIpmGfihoq4pN0wsgD8jdBBMfI7lvTx9M5O1HVgXXuuOG1do1iHMUixeWMcacTADyApRL2dIaMRPvwdPJ2lH499u9xCB6H3ciqxfe8SuFsddOETnxUl+56vqIRVw+fCh0A5J+esU3oz+3nNGiHJa4fUrgLXrlxqxaXD9fPUzz76rH1p6Uymh349KFYlrKCBN/S9QMAcsr1FNGjGCvy6aL7zKlui0a11ZE69s1NxLP4xccwqWNZ18t4lY/F1kGzln8Q90DWu1jgaq3fdnyOstU5RpPD0sfol4dxkE1uGrGCALy9DHhLz8Sh7voAbT65KDB
+ XLlC71hH
+ pNoMOTM8y5jmwnhX6NYwv1/AsBE1NjE0m5atAsQEjIQl1s42eWLsMdV9s1JHtoKU81QbDy6735UAEpOJfMqDpAUPQAklYAWR0ClSI82lUgPxL2SPC0391+mdgy3n6arGMYjuQcPrKPlMsxXQIg7vhFcyNP+pP9khEKfWKO8jZayYiuPwZ9bQInRL6n4Gk09ZBtd4dcC4E66BjqQ9bb1rKmVhCUljESPKuzdORkqRXcVUIyYrmnLerOglJKQ1p/p9B+0lR6hEFwE5wojvfR1iFsrGh1zC0YqFOKDr0vVXEt8wYPE+kwkuhDBn/bK55VPjzYlySZgbNMmmXy1Kd1X0heAP8jQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,46 +90,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 4 May 2026 at 18:49, Nikolay Amiantov <ab@fmap.me> wrote:
->
-> Kindly bringing this discussion up.
->
-> On 4/17/26 20:48, Miklos Szeredi wrote:
-> > Should that code check for a truncated page and retry?
->
-> If I understand you correctly, this can be accomplished with a new page
-> flag because there's no other way to find out the truncation happened;
-> would you say this is the right way forward?
->
-> Sadly I didn't have time to try and make a PoC fix yet, but I want to
-> try tackle it this weekend; meanwhile, any guidance is appreciated!
+Hi Lorenzo,
 
-Sorry, this got lost in the noise.
+On 6/11/26 2:18 PM, Lorenzo Stoakes wrote:
+> On Wed, Jun 10, 2026 at 06:29:08PM +0800, Baolin Wang wrote:
+>> (Note: this patchset is not targeting v7.2, but posted for early feedback.)
+> 
+> Hi Baolin,
+> 
+> Speaking broadly, and to repeat what I said to Nico - I'd like to
+> re-emphasise my _strong_ desire for us to pay down technical debt in THP
+> code before adding any further major features.
+> 
+> Really I'd have liked to see us do this _before_ khugepaged mTHP, but I
+> didn't want to put Nico through more than he already endured with that
+> series :)
+> 
+> So I'd really like to see some action on that before we embark on any
+> further significant changes.
+> 
+> This is no comment on your changes, just something that we really need to
+> address in THP generally.
+> 
+> Will try to give some detailed commentary on the actual changes when I have
+> time also :)
 
-I was thinking of something like the below for fixing the invalidation
-race (untested, whitespace damaged):
+I fully understand the current state of THP maintenance, which is why 
+this is an RFC. I’m not expecting it to be merged into mainline quickly 
+(but thanks to Lance for the comments).
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4e636647100c..c9ab0eb35afb 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2856,6 +2856,14 @@ ssize_t filemap_read(struct kiocb *iocb, struct
-iov_iter *iter,
-
-                        copied = copy_folio_to_iter(folio, offset, bytes, iter);
-
-+                       /*
-+                        * Has the folio been truncated?  In that case we could
-+                        * have been copying stale info (including zeroes after
-+                        * EOF) for a distributed fs.
-+                        */
-+                       if (folio->mapping != mapping)
-+                               break;
-+
-                        already_read += copied;
-                        iocb->ki_pos += copied;
-                        last_pos = iocb->ki_pos;
-
-Thanks,
-Miklos
+Also, as Nico noted, it might be worth reviewing the mTHP collapse 
+selftests in this series firstly? as they can help validate the 
+anonymous mTHP collapse path for future changes.
 
