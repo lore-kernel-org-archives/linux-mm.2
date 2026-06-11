@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12403CD98D6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A943DCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:01:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677676B0005; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 90F3F6B008C; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 627976B008C; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 8E7016B0092; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53DB66B0092; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 7FC876B0093; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 424DE6B0005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 704E66B0092
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2A3E40675
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:52 +0000 (UTC)
-X-FDA: 84867644064.12.459FF07
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 14CBB10001B
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EE89C23DF
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:53 +0000 (UTC)
+X-FDA: 84867644106.01.0AA09D1
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3388540019
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=omEp8GTX;
-	spf=pass (imf14.hostedemail.com: domain of 3vLEqagcKCCM9A9QM9RFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abarnas.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3vLEqagcKCCM9A9QM9RFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abarnas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iTuqVWDl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781182911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=BD4ZiLw2q2GCJI2/AVfMMRUM2DNcD4XHKmAqREpv/88=;
-	b=JERVbU1a52HkN939+FME88Z/wD98moZltDborQ6tgEUzOaOmjhZMY9Xvp+gM6Hs8NceR1V
-	Clr0ZHxhJXtueYl5GuA1+1gJWhDsG5+T6X+Ersp3CUco0NR1blfly8kFXLvCITYGagx4UH
-	66hVbSxMmLIt6Nt1QnY27fRRG38dXAo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
+	b=qBhLSGN4eZQ7qSapJV2V1ZPYBCqCkqvP73z/E6zL/HYVk7cDhYge6MO8ko0KWKNsXqSVdh
+	yesdFdhtxtJj6myzv7cATvUJDty20HiNVqoPA8F9/8yuB82G3WHQ+g3h69vf9vbx+TWLBU
+	KubExLG4wii8SvRVABEuEGlm9Z/T39o=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=omEp8GTX;
-	spf=pass (imf14.hostedemail.com: domain of 3vLEqagcKCCM9A9QM9RFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abarnas.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3vLEqagcKCCM9A9QM9RFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--abarnas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iTuqVWDl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1781182911;
-	b=vCRHA3GWkNGkV5GPbqU/EmjfdQoDzZVmJZZ9sF8YQLkxcveujQOAt8/dX4hCHL08sz9t3Q
-	ploDp1a+GnbdbCFeGaGI9U5aNEtaydbC8lxxrYnG+aEpZvRt9QzePvwqNYh3J+uuORrn5F
-	pUvbNyicoiWPH3P5UebVVR6Dj+SKYC0=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-68d233bf9easo10481661a12.1
+	b=HL3jaWLkcv7lCdlQ3dmRu9EqA+e1dfS7S1E/0ZmOSw1RARYYVRtNbQIHa9FcoOPvddnMRs
+	Hmgb0Xp1Bo03A8CeTM7qO3LN1UIXpVO6Z+cygQzqvxCP7BoPIowp5/MaL5z3c/3tC/+HRN
+	epwv8ply2DlIAF6M8I5n0m1kZRan6f4=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490ae0167ceso37958995e9.1
         for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1781182909; x=1781787709; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BD4ZiLw2q2GCJI2/AVfMMRUM2DNcD4XHKmAqREpv/88=;
-        b=omEp8GTXXeM24+s9WwcYLkwvKjSzdwLD7S4tcd2kMTiKM/MH+GGC0/6zwkzTjpRx/X
-         auJMhVAQB4sZ0gjA7li6frsLIHNbM4j9stoNL/uqQoDzd6gyZqLtVzS0PtA0gRxiS3qt
-         65DhOMvR1My8lT61+VTrfDlEzcMDnm8GyB95ktUhQnCPNhPUrwJUScMEhpaU4LLhhvSt
-         eE7KLkV1CCGTa/4SH3FXJuzLQ1hxACB2zlm+OcSU2/PekZlcD9B9pRpshGG7pQnS95vg
-         iGxyG3UdH0lFYRpH+K81JMMxfnQKfhBowmrLQduZw1+2JrxHhT/Tz+w4IRVxRVo5HS+9
-         kF5A==
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
+        b=iTuqVWDlLTTs1fTU16219cmuDrrFcx8Bvx7I4bNSsCgFZUxVyBLYsggWfOKC4W9JVV
+         AcLLaFozWiapZ1od5ZdVawKJdV3CYigFq7FDvBsTs1diHUztg1y6aXxtvz+Z9U9L41l0
+         kfXEdeSDEnITdHYoXX/YjeiulmgaycclTahuHu9pXWq1d+mtTwd6zB/5GYn4PNOwi1tJ
+         D7DiluBT9YTae/WNp1nz1TWpwDDvFV32f/egNmqXxEmdlIkq11r/CiJPdk30Nyd1LFft
+         cqi+fd6s7gXOOaJdl9A33/4w4EZUnAuvwVSl3u0LJd3z3cLUvl16TWfaEyhN6yAE/0K2
+         ii5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1781182909; x=1781787709;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BD4ZiLw2q2GCJI2/AVfMMRUM2DNcD4XHKmAqREpv/88=;
-        b=HkJGISQoX7Z+FJXpX5VczrWVkmgUK/6Y0I6GMNCtLBGCUHnvdgZRUj/Ob9m6EPyVO4
-         pkxbugYuPQ3HSXf2A7cXNihxtmnbKbcX0gKvfpfQSnVjqUwloq5kbIvHbAwLHkdNVlPy
-         MceLltG8IpN1/sLZ834ubW7GcrGvmB/A8TI7xISnvqFNanqb2AQdHN51x3L6XjAxHZRG
-         TYvhDnUnfHt6O9HbA1DB9bUR1mfw6quHFB/k1PymfU674LLwH7u8LloXHtBmLJbeR9bc
-         ChFqwjeMDT88I/yPi2peXreT2RQ0i6wB7fZUpa1qqfEwZi/eAd64mTEvpFc95c2FwuNc
-         19+Q==
-X-Gm-Message-State: AOJu0YywORXq9f1gvUSLEP0Ig7KiGKH5sSK5yHD8jmzUQvDt6jMigNc/
-	o8R78F0audKVaD/HHajfqhDV5/cxzlnDw2jRSX1bbDsqglfO16a7FySh9bWhE5u6D4MFRRy65Pl
-	buQvNQOnj1w==
-X-Received: from edqo12.prod.google.com ([2002:aa7:c50c:0:b0:680:6e15:ab62])
- (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:1ed4:b0:692:4759:ac57
- with SMTP id 4fb4d7f45d1cf-6930e26599dmr1393742a12.2.1781182908431; Thu, 11
- Jun 2026 06:01:48 -0700 (PDT)
-Date: Thu, 11 Jun 2026 13:01:38 +0000
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
+        b=sroFBIB/Ie/1ZIZ71Knbq60lasF9AysVdtDdFOKM1gEOzeYprfFwIDllTvI4hIR/FF
+         r/Md+zxBt8/M5LnPz6jVa28pxHVh86oKg5QtTGy7qg8vaMBngrhhQ7WGCMvwM9SqZhsK
+         WYk+j3zBheJDjo1l66tI3tD2v48uqMaqkAYlONUl2lWD0Qgq00xeaWgI8/plJNdS5seN
+         hmrFzKEzhs0toD56RZDbVpknChwPQEUGc5oRefpvsx1cUZt6LVFffWb7ZW+JX1I0kG13
+         tfDnK/q5BFiqhNe60C/DE4Ch+ycCiziCJe0LZSbPHMq/e8tsOrCsFJJ8tarOZUMcYXUo
+         g/HQ==
+X-Gm-Message-State: AOJu0Yzj/uMcbJnolrE+VX2XWwEhKYfJlg2xESFmf/w0B1etU7vAu37E
+	kErgh8cCSGX9A3uRS0I7sXbCSjk0bPt74/6Snx4egj7av7HnXwiCeRZOCnh6MKoyMURs2f4q3ml
+	ny/dP5Oe94g==
+X-Received: from wmpd18.prod.google.com ([2002:a05:600c:4c12:b0:48e:6f63:7624])
+ (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d04:b0:490:b58a:dcc1
+ with SMTP id 5b1f17b1804b1-490e5614165mr34126615e9.29.1781182909448; Thu, 11
+ Jun 2026 06:01:49 -0700 (PDT)
+Date: Thu, 11 Jun 2026 13:01:39 +0000
+In-Reply-To: <20260611130144.1385343-1-abarnas@google.com>
 Mime-Version: 1.0
+References: <20260611130144.1385343-1-abarnas@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611130144.1385343-1-abarnas@google.com>
-Subject: [RFC PATCH 0/6] arm64: mm: Introducing ROX CACHE to ARM64 systems
- with bbml2 no abort
+Message-ID: <20260611130144.1385343-2-abarnas@google.com>
+Subject: [RFC PATCH 1/6] arm64: mm: explicitly declare module and ftrace
+ execmem regions
 From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
@@ -95,14 +99,14 @@ Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>,
 	Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 14CBB10001B
-X-Stat-Signature: d11rbth6d7sekxn4963rybwoayi7cbzy
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3388540019
+X-Stat-Signature: yzemx8af1qiwqiouxh45ops1qta63kwt
 X-Rspam-User: 
-X-HE-Tag: 1781182910-458336
-X-HE-Meta: U2FsdGVkX18lWXz21E5CRQITJwGSC9ZAC869KjExOeCuloIjL/kfZegclKu1vWMGOslfHeFBOxKgJf4x6zP2s6PXoX/XwCMejcfiZpCdbKVkDzTcj/ugpIXejyMYyFmwOEcv+xTvVFbQxhz9tZCIXpMOTGLnPPP4vy4Nu7bBPBioTrly3Y600KnA+JaiztlECvCM6AKDt81AfJhTCn1j8O594Ry7gMTXsCZZZ3Djw0F/0xqdMM9S3m3NR1JycgDOsg/i3l+rbWDc4bBa7ZgAVxNZhr0FTibZeMNo9zDxW/k3ZkKUsWad0oBvIcweDKaNB9IOGkDvQud+pdrutpssOAVfw+5OA3Yhn0oSr35btKLgNwM/oGflZhCXTBKO6QjZ/vFwyFF+a5YmXDq33Z2uUXrAP7Agy1pU5RuI1MjwAW99eHmN/X8mwhpcRLYkv2RaSEfGUF/3XVJ7fmE6v5uRHZ9VheeMo6wX1sGGaPtR4zVAVijZOi+tPLyYa3+9+vnv1aqhuS1RBYljUq8IbDKi/16sTjJkRpqTwfVP/ulR8aUXiJam3pkyLpfz3raBq1CJVmknXrSXnY6ijBkvCWwFju/m5i0m6vjGklBBhrZQgsxmbQRe3ocQAKFbsw8eomkVXPKeEzrVe/LfsG0t1J6Cx2QCDyJdwcoO9BuzOdnPyHXx2sK3ZhsQNCvqBhOEVPLn684lEOC5l3Bu5OGjEajyyVcIRyPRZX5SLQIQ4VXQ2FgiE2VdgZshJGyzzx6ZEtx3wZyLbbis7GlAnwRLweK4+G2qNwwkEZVCAJUEgr3R+Zidjc6wSOJVmZM3wiFquvXf3WXeqvSQQWGHOnPbvYzgRTzicM9uUos+sKIPfJoQCJsxtmf6OnNqP2uL83bNcNI68dX6PLVimzNjzkfLNV05XoSbdFcZvR/cGesB0JfHow5qXm45edNUhYT6Rp3hgw9KZ2UqBPlKTEQTZKeiSEY
- IjjqQK0q
- MCI2qNQ/xz9lvvPC70bCZB6ZFrXblxtnYpnSBw94DJbSoVQJX3OXixGUCeMoOpub08N46iV+yqumeaVVUZJT17KGYBv65O7zW2s9gNAXsQgHJPZ5HnSTfBLcsMs/WSscmrDHBpOxm83c/GcQoZQ3F068PitzXCg8OnN2zf25I4p0RBIhJNUShM6i5bEy97kCdn/Aknt5GAWtpunWOtdM4orEnwoz6wC56sYqWWOkHNUlTgtDo/ym5woN3xtVK3pkjKv9373y1pdm4OHw+6RG7pljMXAGS76eAMwysbpmrSkDOtq0h4v9E4YjKUTBmy0zjQn6YgbvnfYSd95w7TdW5895q6ADniCdFDj1spozH6SnX46mScJo+O+JfnYF6TDPEZvcUEeLaKgaRsoQUPnULu8NqhIvlV0GGGGwRTvvElPw8y+MJmp+B+0+jYxlEoNiKzZ6RYsHl6kVR/HDOOJMVEfH1ktJ3Xt1WfyDBbFJO2xu7F+ur0XcPJbIEoTqf6nXGqzVGV0SmXrrNCoeHrP+I4NrR+uKRPypx5g6tdkahGvocL3d8iG0xeWgMcmpp9KY+c+614TPP+qTfMj2gCeMHgBwAUjLQ9GbT691ItKQ+TCgKf5iWqi2MtXJgkLzVUtA+PGseHPIrbWl/28+GbbOcbltvZzjayXALHPwI23uybsr2paEOD3DNVKGotsIvsP0t8Zlx+ppo4L8fGZhK8k1KveL7N+HQj8/m9Y6Z7PIoxAajL4Lt9tfKrIu5zHiGRqJM8jBj88Jgqir5hMAvvA7tV1dj5Q==
+X-HE-Tag: 1781182910-690646
+X-HE-Meta: U2FsdGVkX1/v5xbEjHGlt4aiyDnCeC32wLHaIpHLtyST/vrRrMloS0jPMeofvASeDbkVIcu/e01mwO3vA8QAaUlhkVKO+2zWrNuh2bXl2XvvotXD0TbWaAtS4T94oYHNxkqmFxJ9+d58ySmSvIDzD3BWRnhQ2+9QfphTq/Ss8eNtdkPfBLI6qeTcodKMwHp6NVT3UWD42Mjisw+ZWFb9kS0L5LmItS4jk/R8eq46ajWTnShSfwPbNCwPn6sBRQj8dwXThMQFvsU91PGfMTjp85SzZDQrNPUOxtJ0OxkWZcxIv2ubHixkOnsaGZQaHULH3W4B6J8xQENg0Y6naU6c7fAAAzoVaXMM5Vnbs+AswHd9UHQcfbNvSNWMuHE4M38ery3Br5SMvTc86TOhWC5hB6Ad4I5Kccj+hTh2lOe7M4Utd/D74VmQCCsryDFYBw2XR5sZr4vuEY0+cIYojV/T1S1k28AM1WzudooqL8qEc7usBIVrbjvroMWrRUqQvfcqPbVtwflFmmVW73CkqDabNabfGmg1IEL6iqzBHceXdaXoPz71eivvRAfBu2/7pZpIw/kTLs/4A9XfyhsVp6iCTchDeTAgI/QWdJuEQT53j1Q2aEUEvLkiTS51u/94UizuveCYU5efg7UXvtZ1rNkBI6pwtwJLLsxWOfIvPoJvQjN5DVPF2DY2FMEvZ9d1m/0aWV2YuXYDKbIC3/Nkna3N1cPXRhBAJIfh463J1nrFLAERo/yn9TyionIeTNQD+QlxwNh6bxYJmtLnbNZ/LHaeNLdEUJbNcisuGo6Q0FE9K+bkBiob27C/ULblxLYHs1ldnc0IYFODO6nrL4xEMDmfe+tt25l//pvjp6wgkM3evT6RZPC3Y9nLPvKhxfH8bXlGkgl5QqbVvhiJU2cICK0jO1rzW8rzttLijITeJ/mgAPNAoxMSMFGQ14Pyhrx3XnF56b0pRRHb/1iFQYOO8zU
+ b08lwTWt
+ FRN4IrgxOEl1CTVQt9OY4TNlkGDPbKkObOYK3e+1gncBJ4cHbVY2R3cvAhw6taFq3xu7ASY6NNP/emLy050TtwYYRX2JaC4xiebUDJGfHOrLK5BPTcEl/dfXtS3IaqPdByIWWF/BcaSQM+ndyXsKRqvlqX6kRc6hcGQ5OgHUxibbB1Qn94FQNtqfALyrpCKx+HCMsQEl9Eofq29PKKqKZSktvKwA4GP6vwuGuf7wHnOmN3PJvkk5cB0blgstVQj9Fd8sh9SpMbhSg6YA0j9DYVB7p/yzoTHbhE8VKkvwzxyFD/QaJN3UMfrbvKd+xjRnhVQgNpvVdojhOcAG+zNLLJ1OcFh4WicN88gHnD3IqmYf3AYBETM56u8wDgmeeZVNqg/Sr7r+cdD62Zpd1CeiVjokYqCwvSn0pET9QF+/uQtsDK4cFWcVdb0h2I2HxH6bpAOxxsBQBYV+ofj8dfPm25Jjt0nWvJYRlGmn+Ri4b1cDKTmzMuei61KlqERKelLN+e8ayQ75si05W6MWz8qa3FQLAhPrNroJgnpbT+59Hg537ppWGcUhmExdEgmqAf52SvxNF6WFwKWmZLD4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,99 +114,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi All,
+Replace the reliance on the EXECMEM_DEFAULT fallback by explicitly defining
+the execution memory (execmem) regions for MODULE_TEXT, MODULE_DATA, and
+FTRACE in execmem_arch_setup().
 
-I would like to propose the introduction of the EXECMEM_ROX_CACHE feature
-for ARM64.
+Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
+---
+ arch/arm64/mm/init.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-When the `rodata=3Don` kernel parameter is set, all executable and read-onl=
-y
-aliases in the linear map are forced to be read-only. Originally, this
-forced PTE-level mappings across the entire linear map, causing a
-significant performance regression (greater than 10%) for some workloads
-due to increased TLB miss rates and deeper page table walk.
-
-The `feat_bbml2_no_abort` (FEAT_BBML3 in ARMv9.7) feature can be
-utilized to mitigate this regression. Because we can split memory
-mappings without triggering TLB conflict aborts, kernel memory permission
-adjustments become possible after early boot without forcing PTE-level
-mappings across the entire linear map.
-
-However, when applying read-only permissions to kernel module section the
-linear map can still became fragmented due to the scattered physical layout
-of the underlying pages. To address this, EXECMEM_ROX_CACHE, which was
-initially enabled on the x86 architecture [1] for this purpose, can be
-used on ARM64 as well.
-
-EXECMEM_ROX_CACHE works by preallocating PMD-sized contiguous blocks to
-act as a cache for .module.text memory. These blocks are initially
-poisoned and made read-only-execute (which simultaneously makes the
-linear alias of this region read-only). When loading a .module.text
-section into memory, the requested cache region is made RW, the bytes
-are copied, and ROX permissions are restored.
-
-To take full advantage of this approach, after restoring RO permissions
-on the PMD-sized linear alias block, the PTE mappings are coalesced back
-into a single PMD entry.
-
-Testing on an Android device running 6.18 based kernel with rodata=3Don
-shows an average 20% reduction of level 3 page table entries for the
-linear mapping.
-
-This implementation currently works around some limitations of the
-`set_memory_xx` API, which might be relevant when considering the
-refactoring proposed here [2]:
-
-* Because the execmem_cache operates outside the linear map, its
-  permissions could theoretically remain untouched (poisoned and RO)
-  until the cache block is fully emptied and freed. However, we currently
-  lack an API to interact exclusively with the vmalloc area (e.g., setting
-  it to RW) without simultaneously setting the linear alias to RW.
-
-* Additionally, set_direct_map_valid() has somewhat confusing semantics.
-  It is used while "cleaning" a cache block (after confirming it is
-  entirely empty). The linear map region should be returned to its default
-  state to restore writability, but set_valid might just set the "valid"
-  attribute (as is the case for ARM64, which I have temporarily addressed
-  here with a workaround).
-
-I would be glad to hear your feedback on these changes.
-
-Best regards,
-Adrian
-
-[1]: https://lore.kernel.org/all/20241023162711.2579610-1-rppt@kernel.org/
-[2]: https://lore.kernel.org/all/20260219175113.618562-1-jackmanb@google.co=
-m/
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-
---->8
-
-Adrian Barna=C5=9B (6):
-  arm64: mm: explicitly declare module and ftrace execmem regions
-  arm64: mm: allow huge vmap permission adjustments with bbml2_no_abort
-  arm64: mm: fix restoring linear map permissions on execmem cache clean
-  arm64: mm: add helper to fill execmem with trapping instructions
-  arm64: execmem: enable EXECMEM_ROX_CACHE on supported CPUs
-  arm64: mm: support PMD page coalescing in the linear map
-
- arch/arm64/Kconfig           |  1 +
- arch/arm64/include/asm/mmu.h |  1 +
- arch/arm64/mm/init.c         | 54 +++++++++++++++++++-
- arch/arm64/mm/mmu.c          | 95 ++++++++++++++++++++++++++++++++++++
- arch/arm64/mm/pageattr.c     | 46 +++++++++++++----
- 5 files changed, 186 insertions(+), 11 deletions(-)
-
---
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 96711b8578fd..c673a9a839dd 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -519,7 +519,7 @@ struct execmem_info __init *execmem_arch_setup(void)
+=20
+ 	execmem_info =3D (struct execmem_info){
+ 		.ranges =3D {
+-			[EXECMEM_DEFAULT] =3D {
++			[EXECMEM_MODULE_TEXT] =3D {
+ 				.start	=3D start,
+ 				.end	=3D end,
+ 				.pgprot	=3D PAGE_KERNEL,
+@@ -533,12 +533,28 @@ struct execmem_info __init *execmem_arch_setup(void)
+ 				.pgprot	=3D PAGE_KERNEL_ROX,
+ 				.alignment =3D 1,
+ 			},
++			[EXECMEM_FTRACE] =3D {
++				.start	=3D VMALLOC_START,
++				.end	=3D VMALLOC_END,
++				.pgprot	=3D PAGE_KERNEL,
++				.alignment =3D 1,
++				.fallback_start	=3D fallback_start,
++				.fallback_end	=3D fallback_end,
++			},
+ 			[EXECMEM_BPF] =3D {
+ 				.start	=3D VMALLOC_START,
+ 				.end	=3D VMALLOC_END,
+ 				.pgprot	=3D PAGE_KERNEL,
+ 				.alignment =3D 1,
+ 			},
++			[EXECMEM_MODULE_DATA] =3D {
++				.start  =3D start,
++				.end    =3D end,
++				.pgprot =3D PAGE_KERNEL,
++				.alignment =3D 1,
++				.fallback_start	=3D fallback_start,
++				.fallback_end	=3D fallback_end,
++			},
+ 		},
+ 	};
+=20
+--=20
 2.54.0.1136.gdb2ca164c4-goog
 
 
