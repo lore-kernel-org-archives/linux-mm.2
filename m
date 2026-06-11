@@ -4,123 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C2ACD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:23:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7FFCD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E206B0099; Thu, 11 Jun 2026 13:23:53 -0400 (EDT)
+	id C26E06B00A2; Thu, 11 Jun 2026 13:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C44FE6B00AC; Thu, 11 Jun 2026 13:23:53 -0400 (EDT)
+	id BFE146B00A3; Thu, 11 Jun 2026 13:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B0F6B00AD; Thu, 11 Jun 2026 13:23:53 -0400 (EDT)
+	id B145D6B00A4; Thu, 11 Jun 2026 13:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A69AD6B0099
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:23:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53CE2C20F1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:23:53 +0000 (UTC)
-X-FDA: 84868304346.20.F0306C5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0CB99100015
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:23:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KkvNm6Z1;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A19906B00A2
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:28:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E3F09110A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:28:52 +0000 (UTC)
+X-FDA: 84868316904.10.4080DF0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 61D89160011
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:28:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvfxdP+r;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781198631;
+	s=arc-20220608; t=1781198930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6i8jLVdQ9iH7gHU8yzBEQmG3u/XRRqWxD3Id53UKfb4=;
-	b=i6pHGgP/0ncVkpNHhqdZDdw4RS8EMIi8XyFKA/du7jWyuFQzSgso3lrhFrbSgEiOHGZP3h
-	dc54jhhk7Kn34QTTg0S2q5b0aDJo081SJJ8Snikk1xbjfmzXsCJL78w04bXIE112MQI2jv
-	gOn5VVdy6DdxcmtlC/3Km2GkSVEyeW4=
+	bh=HWs4bm/rOcWxeVbBEoGSUteHdOSPrbhiev/2SBxgXus=;
+	b=wB5JLuyqZp9fvtxxDko0UvUa9ig91+377zrOsdSM8iRdsaeGKZ61RXtXqCPPEdTo7tuPsZ
+	JO0FtyJhML0cVD6i4jR8EE2vwW+9O5432HV/QCzDpeu5ZLS0dN6yvdLwYXqNSFQwSHh0g2
+	XxAaNn9AdVypyv0eqxHiPTLpH/T70lQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781198631;
-	b=i5Smhu0RcSYLmIX/6Ie7xF0f/VWtfBLDxclDQ69CYTDxMVBQPsQ0xkVLSLdmWJtc9m/yDf
-	jTCZtW40yJZCvEdokSK0m9Cv46gBfAtAINYhpFdP0hSZKxQSVE/glMLuLFN0Qa8m+ZEcjx
-	HgvIAIZL0BCqbqyevPSPg7aRvKuseGY=
+	t=1781198930;
+	b=p/6xn/2Ujnxm0rpZjon8fH/9W2lgkgpKa6hHV8G0KCmwG1hre/DxIpFXIMbI6qTVYno68W
+	lsxmABjzcirzcN6g9eUl28ouJ5jT+ixGwITg1AHe3pC/6TRbi1TdfcMXzNzSUBGhI7oRFG
+	NvAL1o5Dfum+PdZnJSodEA17sIBFgeg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KkvNm6Z1;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781198630;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6i8jLVdQ9iH7gHU8yzBEQmG3u/XRRqWxD3Id53UKfb4=;
-	b=KkvNm6Z11ybdrl0st+1xRzs1NbFpbWKLtQTKBAZFyfT4/n49k1/aGYIofZokL6eZ9G+u6G
-	hqqWnV7hZ3l6UozvW2D0m5snWdjWByr3LLQ7eq4Nf4Se+fDTylMfJ7rb5kS9KN0kJlMtbl
-	Xqw7RYxiguujzje1h1NfSec3wvPrLVs=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-09XUk00GPAO72cmsAC1AOw-1; Thu, 11 Jun 2026 13:23:49 -0400
-X-MC-Unique: 09XUk00GPAO72cmsAC1AOw-1
-X-Mimecast-MFC-AGG-ID: 09XUk00GPAO72cmsAC1AOw_1781198629
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-6607988ca90so170000d50.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:23:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781198629; x=1781803429;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6i8jLVdQ9iH7gHU8yzBEQmG3u/XRRqWxD3Id53UKfb4=;
-        b=bBwAz438DjqWZ1ceAwx/tx1rzF2PBJ8xO0GjaN2I4sIxS8FJ5ekLsQO8Jsi+VRPvxd
-         CnOqJrOmEbO4rYxenbZs+nOvDhxGpVziIyfmlST1UQH55GmlEtpGxWNGm/H6Ev50JBa0
-         Sf8NozlqmuaVXbxvUcHCwpQDLDw7CnJ/CG2hRar6p8I8ZU4em90RldRUHyDA5EAHRRb/
-         ifHasi6Niag2Ha1JjjGHoYDHiJa7iKeNvXDeqPfLqhoGJcusvo4Wb8HNMzJU+emJPfgw
-         r+F5+KBK6cbflsIRiWWDgwCihbtVgIy17qzerLrFbyUewXUhKOrNGktel4zTymYQz4XF
-         8SQA==
-X-Gm-Message-State: AOJu0Yz6qnmR+F55ocpxvO6IMbVC/Ww2jeUCOv+A2Thsibm+TZdSxP5K
-	bkkqSl9dXmUcypOtv9/QBtBeokpgu4Yf/+jpESSVlBoWaEbtk7lCLdwyy4Is4hG/+P66wcu4ca6
-	5gmcGvSMLz9sTQDIHtA3JA82T0gYxKmYI1YsKGoUQhLOEs3vFmBiU/orNXLIhifRIKcATrMQYjN
-	EG+1wCwdIx8TMPepbF7eznmrFFqhc=
-X-Gm-Gg: Acq92OFH9v/RfB3gZwhhkmAXsZpnKMUtn5j+JbORhUVz0SaiSTVJLx7PjQE28Lpe9bN
-	1sbfRssk8hyxgPaOSSre56RdX4YR2Q2HYMotBHVhCzpTg0sISl6JK+7wtXrE8oSvz007xVozuRw
-	U7Giq2rHHc1CKBuBQ6L2ktcDtTs2tamkKQ9HS8HF2nwtlaLRFuGwpIARtTHuHk8uAzx07alBH2i
-	cZX
-X-Received: by 2002:a05:690e:12c8:b0:662:5ec2:8e3c with SMTP id 956f58d0204a3-6626960d510mr2985920d50.4.1781198628583;
-        Thu, 11 Jun 2026 10:23:48 -0700 (PDT)
-X-Received: by 2002:a05:690e:12c8:b0:662:5ec2:8e3c with SMTP id
- 956f58d0204a3-6626960d510mr2985896d50.4.1781198628052; Thu, 11 Jun 2026
- 10:23:48 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvfxdP+r;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 405884382A;
+	Thu, 11 Jun 2026 17:28:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49561F00893;
+	Thu, 11 Jun 2026 17:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781198929;
+	bh=HWs4bm/rOcWxeVbBEoGSUteHdOSPrbhiev/2SBxgXus=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=DvfxdP+rbImPjs+2h+C21lPzXuRX4C0yT6SLl7vKFldC1J+Q/me6bzhPFwbna8XY3
+	 Wyci5XeHeNNTOqp6paVMm2A+/IWjG/m9w+csAwluBo8fpx+SNHtDJKR+y/S8tFk7pS
+	 /RfvimMU8vZZVGlXjNHJmA2dqEnmb5/ID0t0v3/37aRvZWaPcKjvg6nni2EPlYvp1c
+	 9TBhr7JZVOx1x8epKau7hI9/P/nOz6FIGDskte+RRiFig/yM6H5XLE/zuLf1GZ7PUf
+	 6MC9uRz0Fp6s1QQce7hF+NayIFQCsGE4KIcXAPy+jxg2LK1CLwWHruYPM8zwdihy/t
+	 Eirz2CaOmdZrw==
+Message-ID: <55b1b674-6487-4585-8a0d-919373e66d3a@kernel.org>
+Date: Thu, 11 Jun 2026 19:28:43 +0200
 MIME-Version: 1.0
-References: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com> <aireq_jrgKH0zsNy@lucifer>
-In-Reply-To: <aireq_jrgKH0zsNy@lucifer>
-From: Nico Pache <npache@redhat.com>
-Date: Thu, 11 Jun 2026 11:24:36 -0600
-X-Gm-Features: AVVi8Cc9AyMT0x4hZewByKSnvCI7sNJtuPeLPz0ZADonrkvnlD7gQM_HjWEylw0
-Message-ID: <CAA1CXcDbynmd=otyCFdM3W9gV7HseQ2qREMXGU2ngwbHwofwcQ@mail.gmail.com>
-Subject: Re: [Bug Report] Elevated PMD nr_anon after running selftests
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, linux-cxl@vger.kernel.org, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iwYQn3GbtM6XyMi0XF10gS51lgA32ShEAjnJi9LDx4Y_1781198629
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0CB99100015
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
+Content-Language: en-US
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uq333p6ba1askowjcy89pwgtw33zktfz
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781198630-786652
-X-HE-Meta: U2FsdGVkX1+44v5obbZ7YoPiQVUafeNa/EewAWWsek3I2kMI9wD4hXAtFDOTWhiFDvcVL3vkxNvGFEulU2ATWZguVHhhsQMxz0MK1BXgxfunzCbGJ5sX4Mww6YmOdI2eKPKvXuRKfuG14imMJcTvsJqnkll44R7cWa/YonLI7x9gwcSzpaAoon7ZJsBLMpi2TdbL/bMBtTTPc+94NkizzJmc1ZJ+4PKHzsincsqvpatPk1rWy0UsG0DEtsbEHcfP8jo5CpXdXkiwh7MAeJegFGdfrgB3vvqsYuzEXMvLSlUoHT1H/VrVhRcpf7khfn2fFdnK0iyDWXZg0HzpcFZ7u6UcLkBTOH+UlJEAY3mwyosFlTWP/ZvnvkZ9Z2fZYlqt0C90AbjA2sUvlJR5xmYfTRmEl5IyDqqvua7mAbsQfUudRDBN5EJKXtlvIK6LbsG9aNs9UDFkU8i7tBmH7BWeGyB0YKeiEoHfLF0OUiCxm+CDoTPvIv21xeP7y47qtA6CuejX3wKLxJzNIG/tBk5EqlQkedBg0MSpo+FhTZzS5iLz9ngcZYFFvKlcw0/wdbipvzJLDdtIbIYDwIEh7IsOtAgFvAx4I2eUyN71gh6VysDGRdNL1XXjkyyeqqgYLwO83j0mN0XVlQv2g+SwZAC0XVUo2ZH82wOtwXDauSfLW6l1Tqj7k/CPatKLlw/GP1MkwHAYNJEHPp7EMPzRU4gREwmKS8vLoyDjAnc2HX2HuRQot4ysaWbTpebziL3nrNpDbtC91JImEpfry2YgL2ldrRWbVmcJwFaHenZnAlZbUGTi+mFsXkQ4HmYkRlhR0S5M1FmoAfei0JTKK6ZHlsGB3R1c0jAeCAkrn/0jny0Chj8I2D5YjNo/SLih9h9yb/aEIHFh4bHdVZbDEOsSOpEsca8o8KwTMzt21gP6Ze+9asul90oeOVVYyiW4MThQUMXwAL/S41PwJvcXd1z1Zbk
- r/bzhk9x
- M94svWtHBocyIwqeZUU8SjVig1e/yN93XcxkT95y6jUpEcr5gPWae5Nvhap6y30yHn4wiDD7jbv5nag8X2t8XhtAr59jt6sEmZILL911bnm/T2QX5zMh4thklKtIdyHLnxsTa4BWYYnPU+OJyj/9+5izXNCP7nm0jHVv7R9N8gheTU5OVPDZuabcd4TReUVnwV7vRnv6C2vA5h+3QtjHnDth3658nOHd/59B5M6RmH4M45NGsneygk2lh+VkiH75uXsEgsMHM0uRAz4HePPyVfzAz/4nGiuJLy8rVRps1HvY8V2hY0rbKUOeT6fSBYAmooKXf7DUe3O/sRC+SQ8ihuHn8EdBM5p9tgJcMM2iXq2udNuEqVqpU7UpaBvXZBv2WeuIqpv6Ly+HwqD6GKrXDxCnr4mTklbpsGQ6Q/YpZCv+3riQr3GLtgDXobpm0cVeYkDpG
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 61D89160011
+X-Stat-Signature: m81tf9nj1edg33u3cui4rohzgjus5ne5
+X-HE-Tag: 1781198930-195490
+X-HE-Meta: U2FsdGVkX18cDj+DhMUl7EWJTq10YrU+toVxWh6uhtG+r5JfgXSrky4boCORF6sNpataJHyDUI66MYJRiYz7HG82JXZS9ejywdibRqaf/X4J9OXxshrc0xIbrajXtm6xsy75Ay+mfqrH7FG9Wg0LZiGa6rWlhvSUIYMvHSsL7YFcLBhNla2BgAxagjMWa7fyWNvSpi5Q+nyBNDjIwajKI7kaW5Ebl5JLbKTZKf+9i053VpQ/2dcIIFhrH+r/HiEumNe1rCSXHxipQLKeIV2XOA/Xag2HmyHpJ0X27Cuiq1EykX4jpWJrRKEtciFLb0rm+7g2n3P2vz+xfh2rhketvMsYkyLtPeETaXXZnfZ8hEG320xrMTFG7Jiayeg3KMvvz80NGXu0WM/66PRZ/45/yo/jeUE2OtyL+m5/4q79fQrvSLzN1ViW5Uf88zy/PQQtvqmqDbYQiGAOj0CkCMbJuWhpI0Jp3hgo9bDgbwKI0D9Wyl+YQjhZ4X0gRCUqvvHqVj89rEVssIVXyWY1YKrS5mOPuNZu4WFoep2Jia+ZLkBgpkXSSMoIpntwrfybhO8gw/Rq4x5/vLv9azuuueTMLxbAz3r4GyxNvc1ID2huJ1HCdTM2gIWsM4++gERi62ijcB0ZCxkWFqn9scOmfDQqm7EXyob/ih2T6OoaSA5oDSLV5ZF7qyWjjsu5UyMKo9BwnAm3Gavp+0+qcf16phuddXPV/oYtGYHhwjKQInloVMUPGSUb5rwLk0RezK4tTmnx56Kq7AoGITIDDEMW4kgp7iCgt8EzOcoup+x2NIrEGQMib2qhhUYNtHZKzILKyWnESEsM99XtjPmcwr4LMr4sgWfuOw49W0ZH9g5laWfsva9gLr143zob+srBDS4PJsSKN33oNDoDmA2RjVT2yDZ1p5Sugti4sm+ejkht4PQDL71iuqg/3ufnpZ1Rb2ZsMoQ31L0LSwpjrW6t1P5Wyc3
+ pE2lWG0u
+ HwsA7c7Ub+iFx9NfYaPY/6biHD0cGVC8CKiZ0gS0aXjEtJA6sW40UYsYEaOCFsGSQRPg4X8XuuJaa4aDj1c2sy5rppXm5KJ0cwOhjw9TBmFoWn+LX87O/dtWSmoT5NSrFNc/Q9yntBRGnKYSfw7BAxoBsSsTzqDKj4FFxMkpA8LAmaEsFW3oZRcLbIlZYztcww9PMx0p5rInkyz7HpWSRUGwKG1A9MfkAdU2PD4o5AQZmxZ4IQDOffoCcsxuji8tyK23N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,166 +139,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 10:39=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> w=
-rote:
->
-> On Thu, Jun 11, 2026 at 09:58:55AM -0600, Nico Pache wrote:
-> > Hi,
-> >
-> > While testing my mTHP code I noticed that mm selftests caused an accoun=
-ting error in
-> > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
->
-> You're not giving any details? how does this manifest? How did you detect=
-?
-> Output? Etc.
+On 6/11/26 08:39, Pengpeng Hou wrote:
+> SLAB_STORE_USER currently stores one allocation track and one free track
+> for an object. This is useful, but it loses part of the previous lifetime
+> when the object is reused: the new allocation overwrites the allocation
+> track, and a later stale free can overwrite the free track.
+> 
+> For free-after-reuse bugs, the report can therefore contain the victim
+> allocation and the stale free, while the earlier alloc/free pair that
+> explains where the stale pointer came from is no longer available.
+> 
+> This RFC adds an opt-in SLUB debug option to keep one previous completed
+> object lifetime. The option is disabled by default, is not part of the
+> default debug flags, and only takes effect when user tracking is already
+> enabled:
 
-When running my mTHP tests, I always have a terminal with
-watch grep . /sys/kernel/mm/transparent_hugepage/hugepages-*/stats/nr_anon
+Sounds useful!
 
-I noticed that when I ran selftests the 2MB count remained elevated
-even after the tests finished and the system memory was returned.
+>   slab_debug=UH,kmalloc-128
+> 
+> The series intentionally does not attempt to infer semantic ownership or
+> identify the root cause of a use-after-free. It only preserves and prints
+> additional track records that SLUB already knows how to collect.
 
-e.g)
-/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon:34831
+Indeed, it would be generally impossible to infer I think.
 
->
-> >
-> > At first I thought I might have caused a regression, but when retesting=
- with 7.1-rc5 (without my code), the issue was still present.
->
-> Seems to be a regression in your editor's line wrapping... ;)
+> This is sent as RFC because the user-visible interface and the cost/benefit
+> tradeoff should be agreed on before this becomes a normal patch series.
+> In particular, feedback would be useful on:
+> 
+> - whether a separate H option is preferable to extending U directly
 
-Haha yeah still figuring that one out :) The guide on setting up
-Thunderbird recommends wrapping at 0 which seems wrong...
+I think before we converted U to stackdepot, the memory overhead of the
+stacks was higher than U+H with stackdepot. So I think it would be
+acceptable to extend directly. If a user is willing to pay the current U
+overhead to debug something in production, the addition of U+H shouldn't
+make it suddenly unacceptable.
 
-Hopefully I have it working correctly now.
+> - whether H should require U, as implemented here, or imply U
+> - whether the extra per-object metadata is useful enough for this debug path
 
->
-> >
-> > This issue occurs in two mm selftests:
-> > 1) hmm test
-> > 2) migration - private_anon_htlb test
->
-> OK that's useful, but what exactly happened? Any test output?
+One could think of scenarios where even longer object history would be
+needed to find the culprit. But adding one extra lifetime probably has the
+biggest impact.
 
-Tests seem to be ok (although the HMM tests fails, but that's not new)
+> Not included yet:
+> 
+> - KUnit coverage or a standalone reproducer
 
->
-> >
-> > I spoke to David about this and he suggested the following diff which s=
-eems to have solved both issues.
->
-> Whilst speaking to people off-list/elsewhere etc. is totally fine, I'd su=
-ggest
-> engaging with the community as the first course of action is often a good=
- way of
-> resolving things.
->
-> Even if things arise from private discussions, which is also totally fine=
-,
-> please do give sufficient context so that the community can engage with i=
-t.
+That would be nice.
 
-That was my goal here :) Perhaps I fell short...
+> - object-size/order comparison data for representative caches
 
->
-> And I would suggest that ideally you phrase things such that you are aski=
-ng the
-> community as a whole :)
->
-> >
-> > David would you like to send a formal patch or patches?
->
-> So on that point, I understand you're asking David specifically because h=
-e
-> suggested the patch, but I feel that you'd get better results making it c=
-lear
-> that you want community input :)
+Could be useful too.
 
-Yeah I didn't want to just send a fix that wasn't authored by me, and
-I didn't fully understand it. When I brought this up to David (during
-a separate off-list conversation), he suggested fixes within minutes,
-and asked me to test. This was the formal follow up.
+> - runtime benchmark data for slab_debug=U vs slab_debug=UH
 
->
-> As one might misread this, and perhaps other such occasions, as you feeli=
-ng THP
-> =3D=3D 1 person, which I am absolutely sure is not how you feel, but phra=
-sing things
-> a little differently would help underline that :)
->
-> Kernel review and maintainership can be rather a thankless task, so detai=
-ls like
-> this matter I feel! [and I realise I probably screw up on this regularly =
-too so
-> we're all constantly learning :)]
+This is probably not necessary as we do expect debugging has a performance
+cost, and this is not doing anything extra slow, only copying the previous
+tracking info? In practice the overhead depends on the workload anyway.
 
-Yep! Still learning (and often failing :))
+Thanks!
 
-Cheers,
--- Nico
-
->
-> >
-> > Cheers,
-> > -- Nico
->
-> Thanks, Lorenzo
->
-> >
-> > Diff for (1)
-> >
-> > diff --git a/mm/memremap.c b/mm/memremap.c
-> > index 053842d45cb1..683a77dd679d 100644
-> > --- a/mm/memremap.c
-> > +++ b/mm/memremap.c
-> > @@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
-> >         mem_cgroup_uncharge(folio);
-> >
-> >         if (folio_test_anon(folio)) {
-> > +               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1=
-);
-> >                 for (i =3D 0; i < nr; i++)
-> >                         __ClearPageAnonExclusive(folio_page(folio, i));
-> >         }
-> > --
-> > 2.54.0
-> >
-> > For (2) he suggested
-> >
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index d9b23909d716..9fd50ea25d2d 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_s=
-pace *mapping,
-> >                 /* No turning back from here */
-> >                 newfolio->index =3D folio->index;
-> >                 newfolio->mapping =3D folio->mapping;
-> > -               if (folio_test_anon(folio) && folio_test_large(folio))
-> > +               if (folio_test_anon(folio) && folio_test_large(folio) &=
-&
-> > +                   !folio_test_hugetlb(folio))
-> >                         mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_=
-ANON, 1);
-> >                 if (folio_test_swapbacked(folio))
-> >                         __folio_set_swapbacked(newfolio);
-> > @@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_s=
-pace *mapping,
-> >          */
-> >         newfolio->index =3D folio->index;
-> >         newfolio->mapping =3D folio->mapping;
-> > -       if (folio_test_anon(folio) && folio_test_large(folio))
-> > +       if (folio_test_anon(folio) && folio_test_large(folio) &&
-> > +           !folio_test_hugetlb(folio))
-> >                 mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1)=
-;
-> >         folio_ref_add(newfolio, nr); /* add cache reference */
-> >         if (folio_test_swapbacked(folio))
-> > --
-> > 2.54.0
-> >
->
+> Those should be added before a non-RFC submission if the direction looks
+> acceptable.
+> 
+> Pengpeng Hou (5):
+>   mm/slub: factor user tracking metadata size calculation
+>   mm/slub: add optional previous lifetime user tracking
+>   mm/slub: print previous object lifetime in debug reports
+>   Documentation/mm: document SLUB previous lifetime tracking
+>   mm/slub: sanitize previous lifetime tracking flags
+> 
+>  Documentation/admin-guide/mm/slab.rst |  22 ++++-
+>  include/linux/slab.h                  |   3 +
+>  mm/slab.h                             |   3 +-
+>  mm/slub.c                             | 118 ++++++++++++++++++++++----
+>  4 files changed, 128 insertions(+), 18 deletions(-)
+> 
 
 
