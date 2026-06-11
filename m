@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C22CCD98D4
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0193CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:48:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCDF66B008C; Thu, 11 Jun 2026 05:48:13 -0400 (EDT)
+	id 505976B0093; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7E1C6B0092; Thu, 11 Jun 2026 05:48:13 -0400 (EDT)
+	id 4DD6C6B0095; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6CC06B0093; Thu, 11 Jun 2026 05:48:13 -0400 (EDT)
+	id 3F30C6B0096; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A511F6B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:48:13 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E60DC1E83
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:13 +0000 (UTC)
-X-FDA: 84867156066.27.48387B6
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 81867180002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnRp+4rV;
-	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781171291;
-	b=y3D0PnvmKCLheFmSoZceb4FBdBYHDn+PK5OQx8bRE8i5x7GHDDs0ckQiLku0IY+u7JmLpk
-	/TyoyEMxqhyB202Iy7XoIGHyFXESaUR5kQLlHZHT5uuifUYCJxXLRYORpx2+gR8+cGzmly
-	lEUMv6C/q1LsP0hXaa0Tb+uLt5ztUd4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cnRp+4rV;
-	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4DF6B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BECCC140517
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:19 +0000 (UTC)
+X-FDA: 84867156318.14.8BEB004
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E2B58140006
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c+m38Ro6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781171291;
+	s=arc-20220608; t=1781171297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RgDnCy/Lqt4KlSBPy89Hrdxm/Zy1/HrZbOMvwPuOqc8=;
-	b=WzFmthJe3Z2mvNg9OhAjyFTmWc7jiJ6A50Yp8hj+0APrsR3VG8+bKgb0ZFgIVcAQD2WC6P
-	4KfvTX+uaZBjs0E1ulQAFMjV+Y8aJ5flwYQy0VtYuHZ8YDo66wx1mPBhNDfcuW8bG/XYqc
-	SuGvw6K427xEFqC0e7KRB1tM3XJpJ8A=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf1f074a12so79142635ad.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:48:11 -0700 (PDT)
+	bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
+	b=7shxWo2oVXqgoG89XtlsPqHdM/2nm9ANk6xwmetNkU/mYIr+qJCDTXxykxhPdZ6WonWPIB
+	yfPjNOzMMkXTDNhglx2Y705DTfK75dEseqxyVGX5cclOM1Ld7CHEntNmJqNvy5n9+Bveyz
+	dRd7xylzM8TIEv/v32AW7q13M50U7Hk=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c+m38Ro6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781171298;
+	b=VMyJvJ+S+40Oa2gps+pZSEtQxWz2L21d/19j5/WXhm0FeFT5NiXSwcjjymqy05uFUamI7J
+	R2iWtdALq2jwmwG2VSPJDTdhwj9YFoAVyeG1pHk7sb3muT4kSwtgNtuvJH9xCzYvgEIYlF
+	ArnqE3zIScADQlHG3w85io8F1X88wz8=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-37474afe908so2000847a91.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781171290; x=1781776090; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781171297; x=1781776097; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RgDnCy/Lqt4KlSBPy89Hrdxm/Zy1/HrZbOMvwPuOqc8=;
-        b=cnRp+4rVMpiSaaIMlYZLsj6yca1PsPNcTV9TLceVGUopNWxM26vFm4KT0/Mlq4JJDN
-         cuzVPg40/VLptZAGRumwZIGXrNxmaVx43xPCePSdI/Iyo+TUqBtAjisn4YPvMI/RjBAO
-         5l20iFrH36kvI8gqDLrN9eUG4RRgz3MrAicFm8Ef/EIO1uqOkO7RQCPLpBCdo/LSZyOf
-         pFGgwbDOACqkt7Oc96MrQupA3UW1rLZV4kq8+x0od1f3wRhNdsTy47EbQ0rHeVMhSE0h
-         WEpFxZmGNLAqc6BEkqfJD1pxeOn091oo/WRmqIsc1N3ekEaEDkn/xdbnV2e+bjA5P2Y0
-         E73A==
+        bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
+        b=c+m38Ro6cmalnm1xzxE+JPr6dtVRoXX2yCwqc4v0HRuNqgbd0/i63YXR1GHeqCfIzB
+         3lDkZbWzCaxSl5KzQDKveT6Gc0tTgeTR9AQL3qp8X67M0ggZ2iz80tJQP6f5ib5Bo8NI
+         BmyGXnZvU7LRBoQDumrNuybJwD9AF0hVbpVME2Y6O+Lc1fiSN9gSoSrONvgJl4p3FqzJ
+         ZTeLxosz2uQcS/WdKRLpHgN9WrY6fd8VbQf46jAPwKjBexRaBqlhqiqwSW/N3R2lS7Tb
+         Ho8lgXN3xTsCs2Jn/9w1Fer138uKqycOVNBqqyx8Qorrm5c/30OzmpYzMF+eMIU4QDQX
+         hPmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781171290; x=1781776090;
+        d=1e100.net; s=20251104; t=1781171297; x=1781776097;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RgDnCy/Lqt4KlSBPy89Hrdxm/Zy1/HrZbOMvwPuOqc8=;
-        b=D2Ovylya5WtRkLhkONRTdQpkEnAC1YQzQhWfa+UxWZNdyS/Ny9OzJtbjYrzIQgk+fI
-         hOXpUKXs51JD4E8U1wPlCe0lyiqex7jLnYmnavCcLE8cmhLrJRYf5dk5nVAQXRd/COOp
-         AVHd44ioAqTnAmLNKlLxVJUKzL+X9qaahBDYCFHQReAYmSdL6JM8+eBrhuuwWFKkAcxI
-         jZ2gDiyGMX3l8zdA584U0dVK5usVwwus3J2z4TwVbMyl9r0Nx8Ca8bDCwLWs2XsdYP9N
-         4kEvSkEzIrPmZmFob5Dtjo694jHJRl6+/0r3gJmORD4utwo4vPR9T0Km5zVX+eV8k+zy
-         CZBg==
-X-Gm-Message-State: AOJu0YzPbS++2WrMkIm5KwAnLM/5qLS1wdHEfjoCvs1EN1wiJ4r42JLk
-	5wmqeJpZ0LatI1cGkw529aiSoejm7EKTtoutpmibp+cU4Ou9rwYserDAbGTSNTzD
-X-Gm-Gg: Acq92OFlhupO7m3nrx74zarnTpu5sP4CiuB2iG+o8aEPn56VQy7SjfJjkujy6afEVbA
-	C1E+f5TmBjU7PIWzrB3+hcteow1qAiLakrXPRAZqU58WzWA6By7mvZ4St2Sg6tY76xko4wz0tau
-	yfvSgkfpoqaG3pALXNbs+Ts7jKtEHYWTYUlybKaWI4qVq/dTaIlZ4FKMpRldadOkjfBYiWVXri5
-	3TtZiIzeMkKydPqg+eBcR+Z6wZT2m69ZlqqT8md3rCKwQIDDJalFzra8KZ0O/QSJ62KrfKX5AHP
-	dPtlsuCzh0Thnrmfc3eGpbH7iD9R+oy8tmvEmEaXzSuPMfv45xL3kpbCFgDZRtoZkyoHK/Tap4Q
-	EnNuBnfEt6e3Pi9uUvbffdUAYe8yzaJXWIv2iDfKCrVgiPUrotYr7J8zByPGKBXvheRCjXSiyJt
-	Oc3Du75aNmryPQW4/KNkR3N8OBGZTbMAXvvSeAU2Echt8=
-X-Received: by 2002:a17:903:38c4:b0:2ba:4e84:966 with SMTP id d9443c01a7336-2c2f2a77a19mr24838595ad.36.1781171290236;
-        Thu, 11 Jun 2026 02:48:10 -0700 (PDT)
+        bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
+        b=IQz+WssHxnEqt5+Avug9MWj+4uOdToC7Eb5mQ4eDZ6wIO8s1ncg1fbhnPqCt5mfYC7
+         D0WIpoIllOuyL37vPZpKbBwZpR1P+psw7AJSc2I3FANnWZdoDUttZMELeJ7eb2sCpuYu
+         qa/eUQ6SL6Vu2znNwAFknNYRYxlBNwU4Nw4DG4HDenCaAGy2c+taSKa5V8VOFq2TytR9
+         MiiVjN1cZK+fXw+wrNK4LxSFHmViJcXvU7ExG0/IKzYjXaRh24RqcOD+WwiTuKww3U/z
+         a+J5LmJumBTvTT1MYkP93emdcGPMHGIj/Nim66jeu2t+mzTByzB2A5S/FTFhDRaoLyAZ
+         vYGg==
+X-Gm-Message-State: AOJu0YyzszChaLOniMzrpo511+06dBraB1D7Xtf1G615oehUQth6GbWm
+	pYLfTGQbKqFXfd2ceskjXIJ2WI+qJP+bwNEf9ORPYT7GESXVY9I8GKgo1FgAIPoR
+X-Gm-Gg: Acq92OFKPpun9IqGzZivhneoeMmS/78j33nSLCmMQL8+AAiBlVY/lKGOMea6BE0xaDC
+	cu4gN7b3ecD8T8dXdEa4vy/zLlDMgB4dDLWrKbpPphf106cbyIx6p2zvNF9YmJ0wGUdu6GG9C0t
+	HX4GymwvjxbGdRJXbxyC/alPAhWL5TdrLeTV4p09void1HU2Y1rsF2fmj8OP36JU8Oz4YMzDV2v
+	/9v0kifHqoznlUSDpZzRw29+aADNKZfsymGcQcl3yS1RgKj4dq/bTRxQe+VMvaiBPbi88yw3RMv
+	R3kvSdYdnleqdkW6MNSAf9h2Z/QWcy236p752lQMRFGDGUU9dmf1l6Q3G0hlAdL+AEL1ujyxSso
+	BFwaHPCWFW9NyYrMEymW/6Dsfar3SAnhuXeKZh3P8qepdd/U/fLdJeSAxNZLE0BdBczAgTCi2Mr
+	dSu8DA/cLeyFP2qWuGlGkdLQ9pxMbshfLRtXpvDitXCuE=
+X-Received: by 2002:a17:903:247:b0:2c2:bd05:dacc with SMTP id d9443c01a7336-2c2f0f11c2bmr23663225ad.16.1781171296415;
+        Thu, 11 Jun 2026 02:48:16 -0700 (PDT)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm283324905ad.60.2026.06.11.02.48.04
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm283324905ad.60.2026.06.11.02.48.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 02:48:09 -0700 (PDT)
+        Thu, 11 Jun 2026 02:48:15 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linux-mm@kvack.org
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -108,22 +108,22 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
 	Sayali Patil <sayalip@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v2 1/3] mm, swap: make SWAPFILE_CLUSTER runtime
-Date: Thu, 11 Jun 2026 15:17:51 +0530
-Message-Id: <442a71907f1dddf12c55a74c0aa24fb70e3fb412.1781170904.git.ritesh.list@gmail.com>
+Subject: [PATCH v2 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS via ARCH_MAX_PMD_ORDER
+Date: Thu, 11 Jun 2026 15:17:52 +0530
+Message-Id: <4821927908f81632fb2a3724d4ff99fe2a946506.1781170904.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1781170904.git.ritesh.list@gmail.com>
 References: <cover.1781170904.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 81867180002
-X-Stat-Signature: ohn4qxh1c5geob66fyciazcgwbiejdo9
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781171291-678527
-X-HE-Meta: U2FsdGVkX18HsDzEyLkNPmcGdSX/FutrkXO6G+Xpbqg+PHHkEcedYhQQDY+Wh2trWtJJJ5kka2TZBIpaXOoU8lARMOqx6zPFwI4VrHTyCaI6+MxK3GKd7Y1CyxRjopEOoMTHtBdFNUBHPzEwM3OyN3dUik4WiXC/XbAUpTQXRSxdszeEhw3yXcSDOAbtSu2Dwtw9/OUGb0aHa9F/Q55As+4gcXLMupUAH781rK2l8rfMexsQAVN0f0xD48YUiucnMUhTtjI0cbPhDM77cO6zFw4UcFChxsCZLhx2lmJC1F1bRUOoGz3+tgb9ikwt+sI22vJ1IBaVAQcxduD2UXQak005/lmrlwpchD5t6jeVEMb5bUOSLirH9wdLjdjX9d+Y1hukDAZncM7LSPkzIWwOqiImCjKUyjjK5DJwvfsXr8+tUSF07ZmoXRBQey1/A2acbgqk/itoCjHLM6lbWNgM4y9K2vL9HDLcC3gafZ4m0Im0+VSq/NFX9Aa4JpKNN1FgjdCRdmTw908vMUBYYWJQpMdiCQFmw+zq5pNCJnKxozKyj25EuIBuHBonwROK1RRE68/CS3LLxN+2gikMEA8Wgf1/8Zj1+zrKmA608JwHTfbT3XN1HpP144zU9ZdI8jFDogJiNVrQbxJGntcH/zAXaYbYQT5wjfB5Hu8EK+/vt5h98ty4QNzWNRw8yPUiarbB5Y0Hk/OcYHfcySjhpwbw8BbePfNJ/UGSpStRSmgTs9fxbIK1Dvb/M71x/vUhQTlez09p7rsd0YkFqVicpq0fuC8ffc0fUDiCXaNwgIhMT0FyDWB5NIk02i0cTzGZHeSKoCA3M341kUXNTXYOQDnvxEPPDnzgYsd+zZhk8sAIBPWgNe9upVoox/jTzJ/b5MsXGx4DrosmyNmilCXTeRzfnD++CddsoL3ltd2myzK/X2XO7ysoB9yn8AvoxFAGI+4URUplz93N1HSvI6Ja6Nq
- 4iwS3VsK
- fVy2Y787xMfo7QQyQuq0VL95wm9AMyP4sUFeW1FABvvLDcrB3vWK7DEHvVR55JvqsAW5mqByKcNdQwym16Ta3XOwt3mkxnsusbaLu8F1S3wZsMnkWl3aNikbhuaKk6ESuaKUc7uPXJ44ahl37uLeVCRrt+i6OQl1Y9ahCbSCCyCa4gwm/SiY0wh15P0B1tAMTKU1DloqC4uYpyQuxEPdeYLQE4p9fOKw8SipnJTlnPyo3pVtJ1apgD0Sw+J2UTeNCCwEDHY2f8FvfB2iD0yKf2g+8o+SOYBSuAiKi2HkNwLyuu49Ls49oeExN3evLozo4goFGPp14vNBAI5vahTinAULpiD+ioAQ9eBMt1+Hk3JJxT20X5zHipL2FvxfhYu8u3g+W+rNnKNkJMt+nOyOHoy1w8RqwpFTJfI+jVpOE8RdKFiJgwUuaiBGhOunuclX8qGER+DuhGsC07BdQVxD9ENEVjBa+RFC/QKuD/seBuRZ6BPbf2XJuDXsqup3ltp4K+KzBF4Ac4ksBmKAyuqMcjwYTH75BTsLn9bGZ
+X-Stat-Signature: t8nwethu7zr8wugg3rwyxb1orq6ppj3u
+X-Rspamd-Queue-Id: E2B58140006
+X-HE-Tag: 1781171297-721942
+X-HE-Meta: U2FsdGVkX18f7gXV5OSWmTzDKAT/gE8dHOw08/W2L7lBI2dqM65iRtIHiXnd655weR8aO2c4MrmIy6I6vu9Nnn8ASMH5YcrQifMt+ULMg3HCOACC0D6fnM2NyqHqaXqPpDuOZOjcu0RX/TEhzhH+qDttv6EwlSPedeHc4hIx95SRsq5ESkaxGekJmMYAyAYZH344ojsCwr/GfjN7QCHIHo55GjJ/2bM/1vWJgcp1Fa2AYEn1siul881QLcRwQQZuYA/V3+E9zK81oL7/fBwPOdxAAPPdzfk8R0IuQSU4mKWwdkj7nEPKnvvj5djSF2cR9zacA7QQg41Aztkg85ht8/Vh+Lde0vJPzEw5GyG5DFZR5ygIpfeHhsBox0z3VZVwAq7qCR4y0TjXbUwGpzk++Ruz+6vCRLaDSMB6B7rBbBrDtqoK+hrftBwzU/N89bNS8439lF7ChbCIHo3V8BMWEtfwgBYaLcv89UwsGyTnhkfUTXMFnU1j+ybdQ/owoYZOAuLkRIk9V3r1aSldfp3t+/6v/wcbcZ7j8fqi+CNuCJ5x0FJxlvJ+d+/JsNm9Hs0C1CpKGfD20vzKo9EJl7nDzILYbTb6ViDSqusRNcEnwQ0fUoR+2lDnyaqq1+GafbOEF3Dd3ocD+0wDrh6EDcaJuyPpFCpBfFKiQxBWGHn2hNTZ/r9GQRPwLjDEUySfo1MGynZkECZRahwhKsdIT6iazBR7Fse5glcfqQveu2Bk2pDXtJMnm/+4fkCqcPw6w0I3bia6+6HZgD0sMaoZnnplocBKVkMtbeKjrasgMZzhxYQN9gGg2jPUBBz987Z1mczrGt/Ad2D3xrxIuNpGEqYDmOyMIpAuqRevPxhR0Ii7tAOUFlJAMBCwQ8JcHKXUOWHbJBBcWpPZLyb0dzZxyFtqFzoCyk9FGXBbb/a5L8XZkEcc3yK7x5wgp8/+DHwkiwtwJzXBeEVHogA3GY1aiAe
+ mYaed2q7
+ 246wJ71ROyRVN9zQYcx075qLjVd7MMu2S62ftb9rgTyl0TAKMnFTqUW9tmllcBC9sPefCHBmjUiZFrKfFZq9QV7LBJZqNaTO9TmPa4XOEC6fLkQSCNgG+odSJ/R2njzsz2BxxTWQffCi7p0kwbkp5aN4tbTWuY/qKsGoUW6cdaxTzMQ1whtSwyzYEd/TjA2qdiQMTdubPLbZkm1Pcvex9waCQOKW+z6sN8zfS3QaGo1KA0291NHJ0u9bU21LscuH16/GI3BlW8oqoQkheR1/Vp4bOaanlH5p2L4qgubjC46foHgxPUHBlSITmRmKoM4zpAG7wSmM57HT/PZwFWfE/3eBxCA3h1zegXtssxduTzSm8Ew0Wz3uiyJxUXNYkuzuOVU/7xweySMzzCnLolzJWVkSRkLWsYh8cEbqkWosqdcvhmqW2dHlxHS6cnDhE8WOMaMS5RQQ57mnvcSLryoTIhnLJUxZRMiBG1pNZD+yf1+womhw1yC05/xDSAcKItLaHBkF1TomvTIeRrXUG5/w9ickst7dyhWHhI7C5JrU4+UZ35cE/+4drSNDnJQ5hla8CBhY4PNXv8jIs+ZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,136 +131,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On PowerPC Book3S64, MMU is selected at runtime, so macros like
-PMD_SHIFT are effectively runtime variables in the Book3S64 code. THP
-swap code uses these macros to size some of its array data structures
-based on PMD_ORDER e.g. SWAPFILE_CLUSTER macro is used for this very
-purpose.
-Hence this patch initializes SWAPFILE_CLUSTER at runtime and also
-modifies swap_table and swap_memcg_table which were earlier using this
-macro for defining the number of table entries.
+SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
+allocator code (nofull/frag cluster lists, percpu_swap_cluster's
+si/offset arrays, next array for rotational device). This currently
+expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
+time constant.
 
+However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
+variable which depends upon which MMU is selected (Radix / Hash), so in
+that case, PMD_ORDER cannot be used to size the static arrays.
+
+This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
+override for such architectures. The memory overhead on enabling this
+override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
+default slab padding could cause some memory waste. Also we lose the
+per-cpu cacheline benefits (for percpu_swap_cluster) because it might
+cost an extra cacheline indirection overhead in swap_alloc_fast() for
+fetching si[order]/offset[order]. Note that a fully runtime
+SWAP_NR_ORDERS was considered in previous version but was dropped for
+this reason [1]
+
+[1]: https://lore.kernel.org/linuxppc-dev/pl1zdksc.ritesh.list@gmail.com/
+
+Suggested-by: YoungJun Park <youngjun.park@lge.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- mm/swap.h       |  5 +++--
- mm/swap_table.h |  6 ++----
- mm/swapfile.c   | 27 ++++++++++++++++++++++-----
- 3 files changed, 27 insertions(+), 11 deletions(-)
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++++++
+ include/linux/swap.h                         | 12 +++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index 77d2d14eda42..956879a69ddd 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -26,11 +26,12 @@ extern int page_cluster;
- #define SWAP_TABLE_HAS_ZEROFLAG		((BITS_PER_LONG - SWAP_CACHE_PFN_MARK_BITS - \
- 					  SWAP_CACHE_PFN_BITS) > SWAP_COUNT_MIN_BITS)
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index e67e64ac6e8c..7f22d5d5fbdf 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -204,6 +204,13 @@ extern unsigned long __pmd_frag_size_shift;
+ #define MAX_PTRS_PER_PGD	(1 << (H_PGD_INDEX_SIZE > RADIX_PGD_INDEX_SIZE ? \
+ 				       H_PGD_INDEX_SIZE : RADIX_PGD_INDEX_SIZE))
  
-+extern unsigned int swap_slots_in_cluster __read_mostly;
-+#define SWAPFILE_CLUSTER	swap_slots_in_cluster
++/*
++ * Compile-time upper bound on PMD_ORDER across hash and radix MMUs.
++ * Used by THP SWAP code. Check include/linux/swap.h
++ */
++#define ARCH_MAX_PMD_ORDER ((H_PTE_INDEX_SIZE > RADIX_PTE_INDEX_SIZE) ? \
++				H_PTE_INDEX_SIZE : RADIX_PTE_INDEX_SIZE)
 +
+ /* PMD_SHIFT determines what a second-level page table entry can map */
+ #define PMD_SHIFT	(PAGE_SHIFT + PTE_INDEX_SIZE)
+ #define PMD_SIZE	(1UL << PMD_SHIFT)
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 46c25523d7b8..4e1701b4a565 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -223,11 +223,21 @@ enum {
+  */
+ #define SWAP_ENTRY_INVALID	0
+ 
++/*
++ * ARCH_MAX_PMD_ORDER is an optional arch hook: a compile-time upper bound for
++ * PMD_ORDER across all possible MMU configurations of that arch. It is used to
++ * size SWAP_NR_ORDERS on architectures (e.g. powerpc book3s64) where PMD_ORDER
++ * is selected at boot rather than at compile time.
++ */
  #ifdef CONFIG_THP_SWAP
--#define SWAPFILE_CLUSTER	HPAGE_PMD_NR
- #define swap_entry_order(order)	(order)
++#ifdef ARCH_MAX_PMD_ORDER
++#define SWAP_NR_ORDERS		(ARCH_MAX_PMD_ORDER + 1)
++#else
+ #define SWAP_NR_ORDERS		(PMD_ORDER + 1)
++#endif /* ARCH_MAX_PMD_ORDER */
  #else
--#define SWAPFILE_CLUSTER	256
- #define swap_entry_order(order)	0
- #endif
+ #define SWAP_NR_ORDERS		1
+-#endif
++#endif /* CONFIG_THP_SWAP */
  
-diff --git a/mm/swap_table.h b/mm/swap_table.h
-index e6613e62f8d0..90e2a7852300 100644
---- a/mm/swap_table.h
-+++ b/mm/swap_table.h
-@@ -8,16 +8,14 @@
- 
- /* A typical flat array in each cluster as swap table */
- struct swap_table {
--	atomic_long_t entries[SWAPFILE_CLUSTER];
-+	DECLARE_FLEX_ARRAY(atomic_long_t, entries);
- };
- 
- /* For storing memcg private id */
- struct swap_memcg_table {
--	unsigned short id[SWAPFILE_CLUSTER];
-+	DECLARE_FLEX_ARRAY(unsigned short, id);
- };
- 
--#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
--
  /*
-  * A swap table entry represents the status of a swap slot on a swap
-  * (physical or virtual) device. The swap table in each cluster is a
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 78b49b0658ad..016a5aa0cb93 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -129,6 +129,17 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
- 	.lock = INIT_LOCAL_LOCK(),
- };
- 
-+unsigned int swap_slots_in_cluster __read_mostly;
-+bool swap_table_use_page __read_mostly;
-+
-+static unsigned int generic_swap_slots_in_clusters(void)
-+{
-+	if (IS_ENABLED(CONFIG_THP_SWAP))
-+		return HPAGE_PMD_NR;
-+	else
-+		return 256;
-+}
-+
- /* May return NULL on invalid type, caller must check for NULL return */
- static struct swap_info_struct *swap_type_to_info(int type)
- {
-@@ -437,7 +448,7 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
- 		return;
- 
- 	rcu_assign_pointer(ci->table, NULL);
--	if (!SWP_TABLE_USE_PAGE) {
-+	if (!swap_table_use_page) {
- 		kmem_cache_free(swap_table_cachep, table);
- 		return;
- 	}
-@@ -456,7 +467,7 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- 	if (rcu_access_pointer(ci->table))
- 		return 0;
- 
--	if (SWP_TABLE_USE_PAGE) {
-+	if (swap_table_use_page) {
- 		folio = folio_alloc(gfp | __GFP_ZERO, 0);
- 		if (folio)
- 			table = folio_address(folio);
-@@ -471,7 +482,8 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- #ifdef CONFIG_MEMCG
- 	if (!mem_cgroup_disabled()) {
- 		VM_WARN_ON_ONCE(ci->memcg_table);
--		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
-+		ci->memcg_table = kzalloc_flex(*ci->memcg_table, id,
-+					       SWAPFILE_CLUSTER, gfp);
- 		if (!ci->memcg_table) {
- 			swap_cluster_free_table(ci);
- 			return -ENOMEM;
-@@ -3912,14 +3924,19 @@ static int __init swapfile_init(void)
- {
- 	swapfile_maximum_size = arch_max_swapfile_size();
- 
-+	swap_slots_in_cluster = generic_swap_slots_in_clusters();
-+	swap_table_use_page =
-+		(swap_slots_in_cluster * sizeof(atomic_long_t) == PAGE_SIZE);
-+
- 	/*
- 	 * Once a cluster is freed, it's swap table content is read
- 	 * only, and all swap cache readers (swap_cache_*) verifies
- 	 * the content before use. So it's safe to use RCU slab here.
- 	 */
--	if (!SWP_TABLE_USE_PAGE)
-+	if (!swap_table_use_page)
- 		swap_table_cachep = kmem_cache_create("swap_table",
--				    sizeof(struct swap_table),
-+				    struct_size_t(struct swap_table, entries,
-+					    SWAPFILE_CLUSTER),
- 				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
- 
- #ifdef CONFIG_MIGRATION
+  * We keep using same cluster for rotational device so IO will be sequential.
 -- 
 2.39.5
 
