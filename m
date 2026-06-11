@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D60CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49CDCD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF11A6B0092; Thu, 11 Jun 2026 09:54:30 -0400 (EDT)
+	id 149736B0005; Thu, 11 Jun 2026 09:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC9B36B0093; Thu, 11 Jun 2026 09:54:30 -0400 (EDT)
+	id 0FAB76B0092; Thu, 11 Jun 2026 09:56:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06496B0095; Thu, 11 Jun 2026 09:54:30 -0400 (EDT)
+	id 010536B0093; Thu, 11 Jun 2026 09:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BFC346B0092
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:54:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 628958FF9C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:54:30 +0000 (UTC)
-X-FDA: 84867776700.16.6CD151A
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 31DE140004
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:54:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="A3e/grzA";
-	spf=pass (imf12.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E2B046B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:56:19 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 79EB5120603
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:56:19 +0000 (UTC)
+X-FDA: 84867781278.02.A380B30
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CE2C314000F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:56:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmGsUd95;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781186068;
+	s=arc-20220608; t=1781186177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8sI4JQyYAzVqiBIia2rY6sk/3gfVLhjVcCP3+jTSxNY=;
-	b=i9b/pL3JJAAHRziWeTjcVxa/TKf9SXKOyNDMMBoQWPl8Yqbtvi/CRqZD6KEdqNwQGPoft0
-	5EQMmJ+WbiZCKAk8QwJx8l9L0DSXI+2xeoZ74CAsKIdDaH9yGSHle1zSFcVqgWbmHQe/j8
-	RwbU9frVixNoEl5bynUMf3mJ1V60ioU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781186068;
-	b=bAMFuJjXxQw3TnPeSPtSIcTWAu8r1rGS7MeTp3yl0J6Uxz5reZdVh4NFZ1GYp77rp/mB+O
-	TIN7faDGZCkvMsYY0e5kvDMM31E4PKQYTyqOxp6tqKQBHG9cKx/Ha/FV8UO8GZSFmcTgBg
-	4+ILV6DSTqWev7BKmuvEyvZiOIVc6O4=
+	bh=SUOuPf9VgztfwpD31VQB2QF3LLKSgcQvoPRCqkRWmAA=;
+	b=h8zFRiSpA68/N5JdQX2TgQ/u11gnR6LXN4jvXWgfHOLNpfcD5D9QkFJb3q/pkyOg+woGHC
+	tFCUI3yOVOJ7Xv7slAEJVncZifMr2jAg0QW0JeNC4g0pcjsXOclhudCyMzETFd/PkOE8RB
+	ke0rGhKdD0HA1wUcjXrBQFWtl2bS78A=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="A3e/grzA";
-	spf=pass (imf12.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781186056;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8sI4JQyYAzVqiBIia2rY6sk/3gfVLhjVcCP3+jTSxNY=;
-	b=A3e/grzAHb/uzD8WFwwuASnBnW79ffERfX4DyUk1lpKuO+kjGP/3Ks9ZTEDEa1yBP0yWno
-	btblvrCoLDnqsx/dNHjTkfDUIKd+3oaEY47+d8YJ6lrjYn7zgTbdvlbYHpCaExm5AJ8+Ho
-	83oDlw2fYDR5jNr+dTQUUsfsxf/EAKI=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Jun 2026 13:54:13 +0000
-Message-Id: <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
-To: =?utf-8?q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- <linux-arm-kernel@lists.infradead.org>
-Cc: <linux-mm@kvack.org>, "Catalin Marinas" <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, "Ryan Roberts" <ryan.roberts@arm.com>, "David
- Hildenbrand" <david@kernel.org>, "Mike Rapoport (Microsoft)"
- <rppt@kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>, "Christoph Lameter"
- <cl@gentwo.org>, "Yang Shi" <yang@os.amperecomputing.com>, "Brendan
- Jackman" <jackmanb@google.com>, <owner-linux-mm@kvack.org>
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
-In-Reply-To: <20260611130144.1385343-4-abarnas@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 31DE140004
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmGsUd95;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781186177;
+	b=stkitoU9AIMxkxvcgv3iIirGRruYgnCX9e7cgulLMvn6aanpZbdrGjnJthnvvzWEmo6o2u
+	ebQU6khFHSD0Vplsum04IUg/bslrvuqyFsi4hCO+501ls8aSgxZtLXZS3O6dBvKUOOZSaq
+	BAgxq1yH4B6UJqbRtpW+3dsVZf1QsfE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C480600AA;
+	Thu, 11 Jun 2026 13:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 956071F00893;
+	Thu, 11 Jun 2026 13:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781186177;
+	bh=SUOuPf9VgztfwpD31VQB2QF3LLKSgcQvoPRCqkRWmAA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hmGsUd958piwIRs1z4CkCvr45U9dM9GKsRx053NCzGhO87m2uum70Tmti9TDd2C/u
+	 UWU5s6LmQDCq5SW9RA3KwSgGilAcFn79urvlf9Qj1qH2HvmB8KP5/3Iswa0HC6/J0Q
+	 Ymk/VYZeknMXO58bZER6SO03OxTvegn56iBnBtjxb0+3X2L6ngmV3xzAkjjt3eK7or
+	 xn9QPsEaGnkqx10xvocBuGsFz3tVtEDohDu9Ap1GTQGDyUBHCj2dtpygmuyNqf3+/T
+	 9GepEGD0Ra0mbtkAne1Otn8CslsfgypJrmFP2eci7hyNiw8Hfv+hHdHIjxlMKqoLQ6
+	 gnG46iMDsp5Rw==
+From: SeongJae Park <sj@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH] mm/damon/core: reduce kernel stack usage
+Date: Thu, 11 Jun 2026 06:56:07 -0700
+Message-ID: <20260611135608.66888-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260611125704.3386176-1-arnd@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: duhuhiym5i747mrpfoduonbawkyyj4pw
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781186068-641161
-X-HE-Meta: U2FsdGVkX1/E7GZXZhkoH+FqqnPHoHtfxrme01WoDqUJBGhk5/r+umdwjq2U0lhgnW5Ux+FaPHH6vrLAYEMH967rKRdKPbU7xuPSJWMvd9mRV0RjzXkCCiWG+JGFFTEyK2GR3Tk1Hi9C0FEzWtgLfTNmptsc4xYRU1gchC33FHjZkf4h9ueUT0gAN31Wju+cYKpdBEX938Xlx8lQHsAL5uddQFMVQaKNTk2FYXxWJJvBTnWcUw3A06ngKNxxoV+l9dnf5tZBS5oSNwz/KhfszLoOzlNdXBaMuI/qmLrqZnUE679sU2hasFllw8GQZo3D2chxjFbx50jumpTg14Mj3EvtNbaETgAjyGnBfcXTO321G4JUTfIbvYXkqg4Ykz1nG8sC1jUZ/lVVPnKEqSI4jUkNmM0Z0faqmezzyLex5jvWlNWxldqrdwuHjEmTDLNzIP+oDwfd+DqO/MnQnI3TzGpMIawnSVNYLULLBzE68AdCphyR1x6dHl7T2Ccb4pJAJ4K0Ojf49jVd6QuyXvelLvWQacfbKDTG2shwVnZ1xHBVZxPPxnNafNv1K+Wj8U3RomQxt10JlBl5QNDdHIwcr4UCt7d25bbEqgOpmFOIcoz4bD7gGV+bLJPkgCpFA7v/g8yLvBYWs3+pz3J3nb0TKtil2/sMo7mDilN/ReWxdfDKReZmd2p+4XsO7sA7W9wdRL/k2VZ5AB+j0nR9/hZKfwpLnYlITWQD5BIi1MCQlRyvZQui7hp1KujQRi6jU9vDNneVeofTjug5oMoGgsI05muz/Wr7D2bdERgTCUC6SN25iitoBGPjKA/vopGzZbzdsP79cp1TPKenv3cOb4g+Nf416DqcSxXQqaR6n5XUcpZLXxr1s/e18gwqTy59V60aNTtYT1XKvfGcSdKkvYz04753zyPxR3j60YRZBoV2KVG3vCGruNVtl3WdfUwUhySOdzVhWEVwo+lkCwwfwpn
- Gy2KVF9p
- z+mF9vClUXu2dyjdJ9qjN1u0mTr97/uLE5NG9ElFxvJGj4FMgOiMqBg4jTBwRKoCi6MzxaQf0P8h0ynj6cFdzHdfuY2EkZDCX1rniXTdnbDiQC7p2GplqhTZXhsgB0qRDlGYoReosqdLPRWXULXhebhtiiDJLdCSv77ovPSP44A2lLf0zkBm6+YIvGTIl7B9ts3NU9Lqkjnq1txUPX2ZbdGYDw5pcKwDDzcEOwTvFtJXrWBnTtqYLOmCOK7yyOlOl5kFT
+X-Stat-Signature: nmufeg7mfms3j5nf6sk6n1aq3a7diyn6
+X-Rspamd-Queue-Id: CE2C314000F
+X-HE-Tag: 1781186177-366492
+X-HE-Meta: U2FsdGVkX1/ltU1U07ZO6MXeUQSKSS24iTEdD2yO0oWHU9doVsCGvZhS/Yezg7gwGc5tYtS46CYDpIr4/R1ZEnpdoFkfTRVprwajV64dDgLAvqkSmMOd8A0HEhvXOd1TEjY2P6Ok1nxrtWWx6Wc1K1ek0uD7OlIqr+3uINxUQQZ3heqTNjXEVqCdJ9czqpTeKDgP8tIDDfG3YDETLr0noK5Z73jL+WFpUwnWG1cM/45zyTHXgXQcqYQlhpniOp/y3E7BJse/vjRhB0UCOdXVWd4cwPZY18k+A/+Mu6wwTC+uIKOTJetEuXY61peVoXCidYHE84S0nEh8sBhiJw2MuBTtbJXHgMYeIJzVyk0pC0k1Vzp4YRsm/1SR1xCtUmzVDBMwF3Des0Ugif8SNVirQNoLZmcvS5189bEKZ4nVyoQuAhe+nKsE+cWLu4Tq8HfwQp/tmEHgZJ00IyIggW/9/Zh+6ckJCJ/0T3ZEQYaJk820QrdtwJ/Hnpm6SqH6Ojf9TzFQcDlhu72xpZ5RSONUuqDDs2UGvwdayQVmOArJRJnJFOL20pfvpphA97Oc6WL5UKCJ2bMGKl9ZoxvU/BDJiMETYj6Ag7vbbGjNrMMNjVro9NiYIpBWF0/DTbpYg3UBpxpuchVpufl6rl7uE0GCTG6vSd/V9d8IGUMd9PweyOc+wCycB2YILbg0Rin640E2qVgQbxOqqN1TnwlnQdAt1cOdjY4GzTO/7RhBcH5Nbhe5wHr/Bc+n8If5XZ24tSjvGOLsy1JbVdeYBcFTEgVDJbY/+JdsxFhL3+2rXOFPLGueYUMqQc4buKwrSHXlo+mUegBE3ekEM+FQY+o52w0Enf1Qy/t+xzJxvYN1IBsdnN9CAiG2gJ/8/g7j/dYowSuiXn/DrIfllgCoYbMyCuAaDIngr5f6CwqjF1BdfY/QY9of3Nd4LCHoKId3J1VTRbRcPRfKIVDLhjV76mB+leh
+ qSx0ntPK
+ Gg8kpIYjuz7XnXtrXgMThv1tT65gVQyhN8/xRVx+A8n7vU2cF6GROVWVrlkB5Z78TzrjCin3J2y5vMunDeXTdpNIte09rck6SW2d6qM+FTcgrXoCFF/w464PycbHzbxdEeafXkxLQcPMZ6INDYqDev3TmgnuUIazD1DHPHy2gJtHY8CB1TAqVhcoWrKjM0lBYSm8uQr3Z1Q3PrqC/NcfjOr+jDHiPZZOK35VOwiD4BJ1Jak9/ozcdhRSv+/xYESMes3OTYDCQlyxq6udoiO8MOQSIvgcHrsOgU0FYqbikIjjmBSQUyEDwBScMG3uMLZjPwKo2CPSKqTiE5pCiSmONtY0im87EmTlxw/qO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,76 +101,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jun 11, 2026 at 1:01 PM UTC, =3D?UTF-8?q?Adrian=3D20Barna=3DC5=3D9B?=
-=3D wrote:
-> Strip the read-only attribute from the selected memory range when
-> restoring the linear map after an execmem cache clean.
->
-> An execmem cache clean is performed when a cache block becomes empty
-> after unloading a module. When making the memory valid again, the linear
-> memory alias must also have its read-only attribute cleared.
->
-> Without this change, the linear memory alias remains read-only even
-> after the execmem cache block itself is freed, which prevents subsequent
-> allocations from writing to that memory.
->
-> Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
-> ---
->  arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index 88720bbba892..eaefdf90b0d5 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
->  					__pgprot(PTE_PXN));
->  }
-> =20
-> +static int set_memory_default(unsigned long addr, int numpages)
-> +{
-> +	return __change_memory_common(addr, PAGE_SIZE * numpages,
-> +				      __pgprot(PTE_VALID),
-> +				      __pgprot(PTE_RDONLY));
-> +}
-> +
->  int set_memory_valid(unsigned long addr, int numpages, int enable)
->  {
->  	if (enable)
-> @@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, =
-unsigned nr, bool valid)
->  	if (!can_set_direct_map())
->  		return 0;
-> =20
-> -	return set_memory_valid(addr, nr, valid);
-> +	/*
-> +	 * Execmem cache uses this function to reset permissions on linear mapp=
-ing
-> +	 * when freeing unused cache block. On x86 it makes memory RW which is
-> +	 * desirable.=20
+On Thu, 11 Jun 2026 14:56:57 +0200 Arnd Bergmann <arnd@kernel.org> wrote:
 
-Hm, maybe desirable for execmem but that doesn't really mean the x86
-behaviour is correct. Maybe it makes more sense to change the x86
-to align with the arm64 behaviour here?
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The main thread function has recently grown to the point of
+> exceeding stack frame size warning limits in some configurations.
+> This is what I hit on s390 with clang and CONFIG_KASAN:
+> 
+> mm/damon/core.c:3440:31: error: stack frame size (1352) exceeds limit (1280) in 'kdamond_fn' [-Werror,-Wframe-larger-than]
+>  3440 | static int kdamond_fn(struct damon_ctx *ctx)
+> 
+> The largest stack usage here is inside of the kdamond_tune_intervals(),
+> so by marking that one as noinline_for_stack, the functions individually
+> stay below the warning limit, though kdamond_fn() itself still uses
+> hundreds of kilobytes for some reason.
 
-BTW we should probably document this API a little bit, I never thought
-abut what "valid" actually means until now. I had thought of it as "I
-can access this memory" but that's an unclear concept and now I realise
-"valid" is a technical concept in Arm that's confusing. And it's extra
-confusing if the kernel API uses "valid" to mean a _different_ thing.
+Thank you for this fix, Arnd!  I will also take a look in kdamond_fn() to see
+if there are more things to reduce.
 
-Also, shouldn't execmem be using set_memory_default_noflush() before
-freeing anyway? I guess that shoudl even be documented as "if you change
-anything you need to call this before you free the page".
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> On ARM64 set_memory_valid() just change valid bit which
-> +	 * leave direct mapping read-only so use set_memory_default instead.
-> +	 */
-> +
-> +	return valid ? set_memory_default(addr, nr) :
-> +		       set_memory_valid(addr, nr, false);
->  }
-> =20
->  #ifdef CONFIG_DEBUG_PAGEALLOC
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
+Should we add Fixes: and Cc: stable@ too?  This function was introduced by
+commit f04b0fedbe71 ("mm/damon/core: implement intervals auto-tuning") which
+was merged into 6.15.
+
+
+Thanks,
+SJ
+
+[...]
 
