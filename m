@@ -4,93 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC6FCCD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8379ACD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E38E06B009B; Thu, 11 Jun 2026 11:10:24 -0400 (EDT)
+	id DC4286B0005; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE8CC6B009D; Thu, 11 Jun 2026 11:10:24 -0400 (EDT)
+	id D9B9A6B009D; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE9A6B009E; Thu, 11 Jun 2026 11:10:24 -0400 (EDT)
+	id CD9556B009E; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C198B6B009B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:10:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A35BC213B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:10:24 +0000 (UTC)
-X-FDA: 84867967968.02.373B545
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 22E3D40015
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:10:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h0YRGmiU;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BECD56B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D46240687
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:11:16 +0000 (UTC)
+X-FDA: 84867970152.16.34E7EDC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 55F5118000A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:11:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9ic+r2W;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781190622;
+	s=arc-20220608; t=1781190674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3HxeAVNS/UOxAsIyrZo4OUMh7E2TC38v0xDmizeD57U=;
-	b=DIko0NAwccKoT7MEbdaNEdXIsy31YLJ5bieKYDE4EWR73Z2+xYNFDMP9Mb3D3yw6dhPT4f
-	Ctj8mX64YQGdZdkXTwrxVi6YEfQ4wdI/3RJ8Hq+wvle7wnzOALwe3WRyBxN74QH1tOJO8o
-	qcLo9TuC/UhiwLIb7pmS+GGaZpC2J/Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781190622;
-	b=nuPqS3lBKoY0HolQarVtWmbHS4MYWXxoysA9NgtRh2Gr0+WtFgpVzPPiPSi0sSLpNAj1WW
-	gOy2WUrnbreZOEkT03Wyi3+Kl/GTWH8i+mOh5ux2P8veVaCG3yL5jS4zziUy2m1W+GvsnB
-	ePqv9Lc4phyZCJx7cxHO9yHdKTlAWRA=
+	bh=a00kAyBp1nYhmRNrUiqyLY0i6xIPDg05ArjKISlux/k=;
+	b=m9SFBQemlA5cNTCYkuQlt8goxQSQI1ylhrSAZGFIABwb0uz3v5S+QJ74bH510SOhAzP37P
+	xHxPpX/illD1XMOtUM1qfr/a237o+R52hj/qas4om7BEeC66ip+mm/XlO3U3iOUNwVqFgU
+	B9PDXhXVZeBqDaknCvqS4djnr+TeWXs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h0YRGmiU;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3HxeAVNS/UOxAsIyrZo4OUMh7E2TC38v0xDmizeD57U=; b=h0YRGmiU0nMFVgeJF612l0xWmr
-	56qRbqJVEvjmESKxg2obet4KEItoYlDQT3fzZwtx0udB+3OnAnZIDm9/9Q2aKXRMYUE3GKA45paTW
-	S79a40768cpnscmGks123yWlU1EGpvgcX3W+a9alFL4l5nz5GXooCe67Agi8MdNJ9GCLSLD+VvSx1
-	Jlc3D00KOZf9yQ3CGChYAHrUXU46ypU8lsl506EIPgWdW7d4oQCCYHxCnruc4ivNNqM5gYS6YX28Z
-	wAtIcLBOdaHEMapWera8mTm91G0Zc+Gyk8kAVX0DIv2CBFiOVMIrF4YfAZrjW+aphjtopmZf80+D9
-	QMUWZOtQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXh2w-0000000284F-1uLI;
-	Thu, 11 Jun 2026 15:10:18 +0000
-Date: Thu, 11 Jun 2026 16:10:18 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Nikolay Amiantov <ab@fmap.me>, fuse-devel@lists.sourceforge.net,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>, fuse-devel@lists.linux.dev,
-	linux-mm <linux-mm@kvack.org>
-Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
-Message-ID: <airP2mGxFu8yw6Ho@casper.infradead.org>
-References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me>
- <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
- <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
- <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me>
- <aeFuarTL7xBbut0F@casper.infradead.org>
- <CAJfpegtAeyMRENdneJkJrMKu8Uwnyk9LYBThjvTrFjHmPr6O_g@mail.gmail.com>
- <9fe5ff50-4c1c-49ee-a8c2-4cacc3c6781d@fmap.me>
- <CAJfpegum=LJTCGqMUfLHehQE19kgdZbE2eXS_002fdpX_sd6jw@mail.gmail.com>
- <aiq_W6PD7dZhTYPL@casper.infradead.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9ic+r2W;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781190674;
+	b=hghVvKa+v7MSFpeQ3iHvjZYrJvVoxx1g1eNVGkr6utYvzs07DrhiqT7mJQnz5b1iYh3hcu
+	K2zpivetK7XzmUYWIBPCAbSEUTbcBHLk8Ye9251ZHV3FfRvwlXAinpD+AWgIAkuw/3i+SJ
+	7X3/cg7XJBqHFXmvgzVu9X22sy8gWwY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3263843A33;
+	Thu, 11 Jun 2026 15:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1AF1F00893;
+	Thu, 11 Jun 2026 15:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781190673;
+	bh=a00kAyBp1nYhmRNrUiqyLY0i6xIPDg05ArjKISlux/k=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=i9ic+r2WO59KlmKWcwj+C6Tbc5ykvmdS5lgQIfjY1Vnf7aLDclXnPLPzQ5svBe3h9
+	 w80fB1RVlc2eJn+xdmt6N9owW8SBnErKj19XsYd5YK4GvjWFfC6o/34VSKisJWqgIq
+	 KEoDdLuBskCrYfc2qvesrqDJNPwUvY8skHfSsfwKgMESBdHejQzHs2LXeIbnOYOtUF
+	 3RG00lTP0hZCkjUJ09Hzr/1G58+Ba9YAMThIGr29qZk5iK0DQOCK6bRx9vwolAyj+a
+	 FUc89Tp7joOwnuAO9L/yS4REhX9UbiM4q53iBtK4zGikdTJh/dxrkWgy8LHZMzfr1I
+	 oA88zb2mGDO1A==
+Message-ID: <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
+Date: Fri, 12 Jun 2026 00:11:07 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiq_W6PD7dZhTYPL@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+From: Harry Yoo <harry@kernel.org>
+Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
+ allocation
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
+ <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
+ <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
+ <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
+Content-Language: en-US
+In-Reply-To: <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 55F5118000A
+X-Stat-Signature: 4nqer3micd67b4um8dy7wrq3o653776u
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 22E3D40015
-X-Stat-Signature: p6j1xs9b45un64t6u8nbqsmat1z8dci9
-X-HE-Tag: 1781190621-228724
-X-HE-Meta: U2FsdGVkX18HQavKGCIkKoq9tRvpWKK+0WnslcRLmsKYNGrpMB8Hy3U/7yOSvxzVQXwD4ZBKbpGgSpWcXHF6+m8JD1BA5b0iL3ByKZ+PSoAy4EhjoZMa6ufFVH1ZQsi/nNbvERE4DrRwngPx7nmuAFSEUAQAq8e36MfZK7vxfTDgyY+g1lGX+cJijpRTCP26gStX08HIehWPR++T8rzLdDRIRS31fQKuL3UJSNH2ttjzMwJaIdMxNZTAdSbMs5LkeeWcA6LvDQCWl8B+QRA33tYQMLCB81XNJkb6ralwPhCR+gFGyY4TjOg1CQaTTBbfdXL7uWw2MhNcHT7B6fKBQAiQ1gnbVFmCm7BN2gbE+LfNpHSNgYHDgRwlsqm702ZyeVNFGklvEVeo6xWPJln4pgitHz4ri+VDyswSXGwdrgEKwB5fU/wAXtF+bb2muaK4dLcZHP6ynam/CtBJ4fOcHB/dlSSKAPNFgVM1CSNgmG6QCsnFniM5EckS2DGPPoobndlSml6X9/DqDkBcyBzXTj4qaFZcNBFnzJ6OB0Tx6040/TqQZ/sLkurgGeeu4iDvFqT1oG8857Y+M/jXW2NIdiMdUeqVZQ7oPb2cqZRapJxfOQfNMgmdi1338id1XOpuNvCcvtO4Y+bmloJK2UrHJOcws1bpxKqj1VCAGy/Vi+BrsJH6GT4gsUO3zWczXmh8u2ZqkoJyIrK+vr54zZCZegnzvp7O1s8UAN89CbzTbBdfoNstijEdI0yI7hYgwb7Ox1li28ZoIRTD49Gl82Es5rWGgBMOE2dqFVCdVG6iCQqwJaS9AmcKiGzTSEbz8c8wjlEtj2fhEktnF6TcN5tH9XpY2Qjxolnzn3UDJhqbbZ9UnOqZ2d19tYBTtvUB0gCCNliWwICZYrAdyRMeuszwFEzZQpD+kw8reUS2+5rOwWlS8oI9ZAdZvbne2l7Vkpi00TO6KM1AcIuDdvUJZr7
- eeKHP3np
- JWidHE9Mz4+w9ua3xUV6oO00isTEf00RE3MVMBDZLjMvbpaa4S5YR4PPLCJjXmUew36J4vN+uBCyMq4MvMRvJ0otDOQh1h92LVsrYnlo5B2HjBkXR9jzdkOzKgYu4zh8R4EeQwt4yGakfjfg95NeR2Pq3Rwp9K186Ef7S+xjT6C4THdMxsbCvP2L92PlqpTjO/hcHkwafXHUbs3i/JdJJjzibxAf3NotTcFuro9CSSJ0gqbxfHxrrHVH6yLlT90SN/jdd8BlEigDSMCo=
+X-HE-Tag: 1781190674-201149
+X-HE-Meta: U2FsdGVkX1+jCztYbOg073r9YobWVG2jZ6vUEnfLSKRTcjgaNe4wE1UIeKzgvVXK6HjuYtBZC07mkNUIi4377+kGLbUSHHvszp3vcl3g2F3WM1l+MFlC99MvfKxa/vBxG749J+U9DTpuRIbMGU8HwCqtGAffr74x0MurG7N0bhZ1oOZIl2zmD7oZjrK/gwhVsF1C68whWvmUzZMK2ke5KSkV0bzEDC1VZ9kmOhQT+dYJUv5hnbnvt48KWYoDv3T99WShfun9Nin4QjdAZ2TQypkJOY8noDyBY6AbHS3UZemBxLSbd5hqOkAcSfuAuEIDH/C01XhZTl16JRGCIfgzPhb4vNFwLmA4+zFEmxxhI3knwGFYjLBTeE3MSbIY/3FpZWzyIvzw2u7T2bq1O0GS3BhxDTNglbY1YhET4KamAT+MdpmlXnnObIOFflbNmb0q5T41hlth7RGs7ghX+IW1F+POEyWakNOTOG3oC3o3BzPQRX5P8GifdemsBhE+Wo6F/1ZvB7U4xAahNPrnTo9ijFlSG8nDGEuKN1FnkdWWaYAOfhCINKGWgyKDkKORLcsUYKwLt4F0sb9QMmXvc3PcLjga8WHBjbWheIgF/3n7uywKezilz4yD4kjmJMOJ/tkggIMQ2SqPt9JFzwI9f7t1x9AdSokOeDgymsQ4o7k0DU5Ur5Ac/02CzTsBC/Wf3LRsCmFWtLUviD2Cc6xliG1i2ObGfOnNJk5M0kzuBpVjMhhvu/Ib97N97Wr+ApGCL0PuNHmWeJXyNLPXsW9PDFyrfvJdceMClGuEpH/OfQzXl9rAz2MTLETaHOF3PxuUY4jz807X9TsUW8HpcDvCWhARtGyRFUPt9ZHXCGnQCpiJqXfW3Rj4uO/QJuEofbZQTOwEXB7g1p7Byr7c9rLGbCuuuHQ30cUpkmycBA9PxIMsKotoH7uMJQQWHi5owZFo4Qizb5c8jusdJoTwd4LZo+K
+ gqcE5v3Z
+ LYn6N6GFIwODvGZX3aT5X+iP+jLUwYzffrUm2a+mhiLVPLXCEc+g/50Jam03gMhUgNqqsXGPoKHyjcVLT5mTaYMRPI96ntmEiqeRX9Cufp3hdRWwAL6eHmA3GYUpQii6cE+VAgNXIKhstF1Ee8VIaMEK3oWObtn++xq2WOoDLBxxNt6CBS2nUi34gDRc7RVnITiYL2ITeyDLU3L1JCk46thef30U7dteT7cT+07uPXuG0ZYHp8syZhUrLAB3j9G3LudHCG+2SP1FN5Rsh96lPb9oVNBCVFvLNL9amshnZUXELggFrBJ1303T3EkAQRuwBKHFPGzGODTiJtzXtCOhCKO4b/Ta5Maap4l1px+raKlfSBnXvCwhGZiZf5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,26 +107,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 02:59:55PM +0100, Matthew Wilcox wrote:
-> >                         copied = copy_folio_to_iter(folio, offset, bytes, iter);
-> > 
-> > +                       /*
-> > +                        * Has the folio been truncated?  In that case we could
-> > +                        * have been copying stale info (including zeroes after
-> > +                        * EOF) for a distributed fs.
-> > +                        */
-> > +                       if (folio->mapping != mapping)
-> > +                               break;
-> 
-> But we've already advanced the iter, so we need to rewind it too.
-> 
-> 			/*
-> 			 * A truncated folio may contain stale data
-> 			 * from a distributed filesystem
-> 			 */
-> 			if (!folio->mapping) {
-> 				iov_iter_revert(iter, bytes);
 
-s/bytes/copied/ of course.  sorry.
 
+On 6/11/26 11:47 PM, Vlastimil Babka (SUSE) wrote:
+> On 6/11/26 10:34, Vlastimil Babka (SUSE) wrote:
+>> On 6/11/26 05:19, Harry Yoo wrote:
+>>>
+>>>> This potentially adds overhead of the is_kfence_address() check to
+>>>> allocation hotpath, but that one is designed to be as small as possi=
+ble,
+>>>> and it's only evaluated if zeroing is about to happen. This means (a=
+side
+>>>> from init_on_alloc hardening) only for __GFP_ZERO allocations, and t=
+he
+>>>> zeroing itself comes with an overhead likely larger than the added
+>>>> check.
+>>>>
+>>>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>>> ---
+>>>>  mm/kfence/core.c |  2 +-
+>>>>  mm/slub.c        | 23 ++++++++---------------
+>>>>  2 files changed, 9 insertions(+), 16 deletions(-)
+>>>>
+>>>> diff --git a/mm/slub.c b/mm/slub.c
+>>>> index e2ee8f1aaccf..8e5264d3ddbf 100644
+>>>> --- a/mm/slub.c
+>>>> +++ b/mm/slub.c
+>>>> @@ -4565,9 +4565,10 @@ struct kmem_cache *slab_pre_alloc_hook(struct=
+ kmem_cache *s, gfp_t flags)
+>>>> =20
+>>>>  static __fastpath_inline
+>>>>  bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lr=
+u,
+>>>> -			  gfp_t flags, size_t size, void **p, bool init,
+>>>> +			  gfp_t flags, size_t size, void **p,
+>>>>  			  unsigned int orig_size)
+>>>>  {
+>>>> +	bool init =3D slab_want_init_on_alloc(flags, s);
+>>>>  	unsigned int zero_size =3D s->object_size;
+>>>>  	bool kasan_init =3D init;
+>>>>  	size_t i;
+>>>> @@ -4608,7 +4609,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s=
+, struct list_lru *lru,
+>>>>  	for (i =3D 0; i < size; i++) {
+>>>>  		p[i] =3D kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+>>>>  		if (p[i] && init && (!kasan_init ||
+>>>> -				     !kasan_has_integrated_init()))
+>>>> +				     !kasan_has_integrated_init())
+>>>> +				 && !is_kfence_address(p[i]))
+>>>
+>>> I hope we could make it bit more verbose and straightforward,
+>>> something like:
+>>>
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index 5d7ea72ebebd..29cf4590f9d9 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4573,7 +4573,6 @@ bool slab_post_alloc_hook(struct kmem_cache *s,=
+
+>>> gfp_t flags, size_t size,
+>>>  {
+>>>  	bool init =3D slab_want_init_on_alloc(flags, s);
+>>>  	unsigned int zero_size =3D s->object_size;
+>>> -	bool kasan_init =3D init;
+>>>  	size_t i;
+>>>  	gfp_t init_flags =3D flags & gfp_allowed_mask;
+>>>
+>>> @@ -4591,29 +4590,37 @@ bool slab_post_alloc_hook(struct kmem_cache *=
+s,
+>>> gfp_t flags, size_t size,
+>>>  	if (slub_debug_orig_size(s))
+>>>  		zero_size =3D ac->orig_size;
+>>>
+>>> -	/*
+>>> -	 * When slab_debug is enabled, avoid memory initialization integrat=
+ed
+>>> -	 * into KASAN and instead zero out the memory via the memset below =
+with
+>>> -	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones =
+and
+>>> -	 * cause false-positive reports. This does not lead to a performanc=
+e
+>>> -	 * penalty on production builds, as slab_debug is not intended to b=
+e
+>>> -	 * enabled there.
+>>> -	 */
+>>> -	if (__slub_debug_enabled())
+>>> -		kasan_init =3D false;
+>>> -
+>>> -	/*
+>>> -	 * As memory initialization might be integrated into KASAN,
+>>> -	 * kasan_slab_alloc and initialization memset must be
+>>> -	 * kept together to avoid discrepancies in behavior.
+>>> -	 *
+>>> -	 * As p[i] might get tagged, memset and kmemleak hook come after KA=
+SAN.
+>>> -	 */
+>>>  	for (i =3D 0; i < size; i++) {
+>>> -		p[i] =3D kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+>>> -		if (p[i] && init && (!kasan_init ||
+>>> -				     !kasan_has_integrated_init())
+>>> -				 && !is_kfence_address(p[i]))
+>>> +		bool skip_init =3D false;
+>>> +
+>>> +		if (is_kfence_address(p[i])) {
+>>> +			/*
+>>> +			 * kfence zeroes the object instead of SLUB to avoid
+>>> +			 * overwriting its own redzone, and zeroing of
+>>> +			 * s->object_size will corrupt it.
+>>> +			 */
+>>> +			skip_init =3D true;
+>>
+>> But now we perform this check even if init is false, making it more ho=
+t.
+>>
+>>> +		} else if (__slub_debug_enabled()) {
+>>> +			/*
+>>> +			 * KASAN never zeroes memory when slab_debug is enabled
+>>> +			 * to avoid overwriting SLUB redzones. This does not
+>>> +			 * lead to a performance penalty on production builds,
+>>> +			 * as slab_debug is not intended to be enabled there.
+>>> +			 */
+>>> +			skip_init =3D false;
+>>> +		} else if (kasan_has_integrated_init()) {
+>>> +			/*
+>>> +			 * ARM64 can set memory tags and zero the memory using
+>>> +			 * a single instruction. Since HW_TAGS KASAN uses that
+>>> +			 * while tagging the object, a separate zeroing is
+>>> +			 * unnecessary unless slab_debug is enabled.
+>>> +			 */
+>>
+>> (I like the new/updated comments)
+>>
+>>> +			skip_init =3D true;
+>>> +		}>
+>>
+>> And these two are now done in every loop iteration even though they do=
+n't
+>> depend on the object. Yeah it's a static key and build-time constant b=
+ut still.
+>>
+>> But maybe there's some middle ground?
+>>
+>> Above the loop do (with your comments).
+>=20
+> OK, not so simple, we still need the kasan_init variable too.
+
+Ouch, right.
+
+> I've ended up with this, thoughts?
+
+Much better!
+
+> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
+> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> Date: Wed, 10 Jun 2026 17:40:04 +0200
+> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
+>=20
+> When init (zeroing) on allocation is requested, for kmalloc() we
+> generally have to zero the full object size even if a smaller size is
+> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
+>=20
+> When we end up allocating a kfence object, kfence perfoms the zeroing o=
+n
+
+nit: perfoms -> performs
+
+> its own because has its own redzone beyond the requested size. Thus
+> slab_post_alloc_hook() has an 'init' parameter which has to be evaluate=
+d
+> in all callers (via slab_want_init_on_alloc()) and should be false for
+> kfence allocations.
+>=20
+> For kfence allocations in slab_alloc_node() this is achieved by subtly
+> skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
+> kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally eve=
+n
+> if they do end up with a kfence allocation. This is only subtly not a
+> problem, as those are not kmalloc allocations and thus the "requested
+> size" equals s->object_size and thus it cannot interfere with kfence's
+> redzone. There's just a unnecessary double zeroing (in both kfence and
+> slab_post_alloc_hook()), but it's all very fragile and contradicts the
+> comment in kfence_guarded_alloc().
+>=20
+> Remove this subtlety and simplify the code by eliminating the init
+> parameter from slab_post_alloc_hook() and make it call
+> slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
+> check before performing the memset, which will start doing the right
+> thing for all callers of slab_post_alloc_hook().
+>=20
+> This potentially adds overhead of the is_kfence_address() check to
+> allocation hotpath, but that one is designed to be as small as possible=
+,
+> and it's only evaluated if zeroing is about to happen. This means (asid=
+e
+> from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
+> zeroing itself comes with an overhead likely larger than the added
+> check.
+
+> While at it, refactor the handling of evaluating when KASAN does the
+> init instead of SLUB, with no intended functional changes. A
+> non-functional change is that we don't pass kasan_init as true to
+> kasan_slab_alloc() if kasan has no integrated init, but then the value
+> is ignored anyway, so it's theoretically more correct.
+
+Right.
+
+> Thanks to Harry Yoo for the initial refactoring attempt, and for update=
+d
+> comments that are used here.
+
+No problem ;)
+
+> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-2-7190909db=
+118@kernel.org
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+Thanks!
+
+--=20
+Cheers,
+Harry / Hyeonggon
 
