@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67774CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076D0CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60E36B0095; Thu, 11 Jun 2026 10:00:01 -0400 (EDT)
+	id 598936B0096; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B115A6B0096; Thu, 11 Jun 2026 10:00:01 -0400 (EDT)
+	id 56FE56B0098; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A27B96B0098; Thu, 11 Jun 2026 10:00:01 -0400 (EDT)
+	id 4AC8A6B0099; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 95A056B0095
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:00:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46FBD140633
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:00:01 +0000 (UTC)
-X-FDA: 84867790602.05.F76878C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E497A20003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:59:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PjKu1KWB;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C3796B0096
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6841C2525
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:02:15 +0000 (UTC)
+X-FDA: 84867796230.08.101E4E4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 005D51C0017
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:02:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLFrWxBs;
+	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781186534;
+	b=NibmhJM0uPflu8aiEUikGxuKj1MXk+A0sPvQnj0EDraAFcCt3+Ym3txwEeRNG/u1rv8GIz
+	2zkAqTKEUapJ3B8dekJa32jMhnnKgZ5IfSEA2ET99J3xkHUOvNCvYHVWmLonCWC5ZMjlwL
+	drL9HB3k4Jfm+jAhYIyYq3p5JnyB/Ng=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLFrWxBs;
+	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781186399;
+	s=arc-20220608; t=1781186534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUxPEqooOCnvy8vKSlOOoS0NIVVGGJbXo27C3roXzDQ=;
-	b=x7bUp7xCxOryzN+Od1jKF3raBxQ5Li0iaB0vZYLGEt7LumdkcwPjZ8N4Ht6ws/Km2BB5CR
-	qLrERSMxXf7p0a9TcTLSa4nXfnk+AZqGYR278abzWFyFMUMGHl3oSvG3zj8GQikShIEAAw
-	pV/Xfoe/fWi0Uj5Q5sW62pnl9qZrXCo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781186399;
-	b=IeV0DqGGQ1Qu8pYhkJ/4SRtRqCwfkd2Lo7AlrGhwcLd7kQGCI6UqEcGQD+rkKzsyXjIxIe
-	sOFai7z6oDmzC6JMnwZJoiVzn1dPNjCjho1cc1jf3uEQRqXiaR+uZwvdjzouygyq2YDraO
-	fo2wEqXLEYO5kNyT22NiEWMirH6EOUg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=PjKu1KWB;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CUxPEqooOCnvy8vKSlOOoS0NIVVGGJbXo27C3roXzDQ=; b=PjKu1KWBNt2xwOToKxdQY7e+Ez
-	M8XDwHokFUZ+SfiCkxoQjF1AJYhYZSZCfOaPl3zBnPPjbS/ALDUI/JUeBB5FTEkfrWy1HZFPCGZZV
-	RsSBm+kgrRC7qQcGqMxIoZNlEvXHD3ro/K+NByZptmx3D4gn+V/OiUYlaaY2ZwY3eS/E9wXTaENwa
-	CoZVcQuhtbroSFD9KXKlLvp9mfP4p1PsaICVR5MDRQjtslxA1D4LheA1BmCrbcQfIVDpkk46q68/2
-	qsfSxLeUJ8+Yunvq1mY+ZsHgrvPuJTV3GgfAjwc7tOdWvSVBJr/rNSNlEaHd4R/J1jutv5CJGmPys
-	224BouNw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXfwp-00000001zqQ-1E1q;
-	Thu, 11 Jun 2026 13:59:55 +0000
-Date: Thu, 11 Jun 2026 14:59:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Nikolay Amiantov <ab@fmap.me>, fuse-devel@lists.sourceforge.net,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>, fuse-devel@lists.linux.dev,
-	linux-mm <linux-mm@kvack.org>
-Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
-Message-ID: <aiq_W6PD7dZhTYPL@casper.infradead.org>
-References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me>
- <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
- <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
- <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me>
- <aeFuarTL7xBbut0F@casper.infradead.org>
- <CAJfpegtAeyMRENdneJkJrMKu8Uwnyk9LYBThjvTrFjHmPr6O_g@mail.gmail.com>
- <9fe5ff50-4c1c-49ee-a8c2-4cacc3c6781d@fmap.me>
- <CAJfpegum=LJTCGqMUfLHehQE19kgdZbE2eXS_002fdpX_sd6jw@mail.gmail.com>
+	bh=TGx263XN3d4QK7OHcwdkEuuULCXh8jD+R0LCjmF4YNE=;
+	b=Ho/GLd4HLeP4bmt6owHrANEtCCxClYuRQQ9+JaCcGyb8qKs4yT676REg1Io1tYplxfWcWG
+	3YTgGpQAGPmSbgDkS1EDXF76PNh1nquhN7m8EVsEKI8thwCC6jG/9YjMpuAKOPuoZrTqmi
+	6DgWKDUdHmNLGbQiB1tsCshwVhQHDF0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B3D6600AA;
+	Thu, 11 Jun 2026 14:02:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857AB1F00893;
+	Thu, 11 Jun 2026 14:02:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781186533;
+	bh=TGx263XN3d4QK7OHcwdkEuuULCXh8jD+R0LCjmF4YNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kLFrWxBsFlBrI6vfhEMMxjaZZXc+1g4bsxZ8G+G+yDP/93GCUruzLJyFRNYzs1LZ8
+	 26OquQsl8XSVmbfD37l+a6HG4oqJz8rU7XfNfBFZpkObBxiw5RlnWq8vq4V0uq7ZLv
+	 2wvqO5INdyP6rbh8df+Hqdb/0wxsoa1kqNRVbpcsAUNm/D73SfkIcSUZGszwKhCOx3
+	 vZIAfaBVUNMGvobJMK39Ob0jNf/rOofkeN6f3FxzmWA4DefcuC3gd76G60C6TdKFhY
+	 7vB38WLYHDWLg1+8+EAROgw1JQKZ72fkHesso7wkGkN7rQVt7RKEVYncCQTGOyVen8
+	 tBANP7uoOD8sw==
+Date: Thu, 11 Jun 2026 16:02:06 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Peter Zijlstra <peterz@infradead.org>, sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 3/3] mm: cleanup clear_not_present_full_ptes() and rename
+ to clear_non_present_ptes()
+Message-ID: <aiq_3rp9fwFHyLwl@localhost.localdomain>
+References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
+ <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJfpegum=LJTCGqMUfLHehQE19kgdZbE2eXS_002fdpX_sd6jw@mail.gmail.com>
+In-Reply-To: <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 005D51C0017
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E497A20003
-X-Stat-Signature: xu3h4856f97nnewdtiyk9kk5b4nmor39
-X-HE-Tag: 1781186398-358983
-X-HE-Meta: U2FsdGVkX183VSNrTdEqC9Jt6kRvHJVTTHZgkHlcqxTHXwOlnkSaKbcdVTSCdJ5qhT5JsagyY1+dt6RF1XttcDAfcxRgz+JojEZw++WXL698DvFUTLbHiSOqVk6RSsifcC3LCaxm24xUvpdZXb76PRWss8GNTQcvxoFMMcU6cLhmQPpWwkoHKrmx7wWbodkVlfRzKQqKURJT3AwiQR6avSVzcwpt96WfGplnTZ6XqQcA6FjAd786DtkGXCfIfIri6LQ0B4UKoGZQvBEkUbmkghp1dOEMA6vewqz78y7syUxlhcCvNWhEWBpoBQHO8UJE7bdimO6MYwtHOPpFW9BqbV7EVrnjtjKWMxsQC/mHlWUvCjwAY7OX57wy3EatBHx0/93bGGi0/+Kpue20jyKN5ZERg+XkGSvzDRExeQV56V01u8N9i17EuP6bfRKQj2z/3R/LAJ1Xt3Hb7MugHXr27ThOcAUhDwCgQaV1s/iIamMlU0uvKuPpJsE4/w4pc8DkjtNluos37ymwW9cX57/yIUpehhncKQ0WQGDF3Kk1fc/b7FrDIZu5KCI/t+w+eMQTPyvhaLAWlMLuZWimVXZ/AnPfnDdPUsNv8jJxZt5LdpSrKIamr+NK83nHHCZjeIl8E34Xm3o2a/wFVsUFyiUFomLUX/oMGU7MzR2wzlDNLoBfMVSGUKF/5sPiyTRtIbjgytnCSp0yHMSMi8Tu8ik0UvcNNuizPri8/5GyWR3ab911oMi7FE4ErNji++4Vk4G73Kk2iJwRDl5YgjYri6waIjDC9wmDY8AN33NfO9saC2yvgl2Djiy7uZ1U6xTnS9y1w/s9dxIh6DPax+MbIxDTYS11LYh2jvWEUs41LuPKcKrxoTkpYCYFOqs7GdA0ARmp5oYFU5M/KkKpVUEXTK7c97YhFbFRqmkW0vxnSPYqi2zqguhP/iUyeGDSYUipIAs7J0EPCfTiFp6lMTG+Lpp
- Aicn8Lev
- RfeBAq1GNEwbPaZvOlkkvm0xvQ6A3GMmn4mPajuCmGpPZRBD7OfbVC4cEojHUqqs7oIfQ6eFy2LCyZ19EoZojbsrr8rBRSdWr0niZLkJNnAMgTrsdpqsK4ENOYTs16BFNjK5C4uGV4WRTQWucMSRonMaSOdHypIJKgFY9PyCcjeR/WEXU6huJc/JAtQchLLcgE9g4ta8WGOXXYGUqDzf+cO7YH1HN7nU7ELdkNVSlF6UQTXJkLYIT0Z112Q==
+X-Stat-Signature: 1i6zwsdefynrbqnzp46gs39k88s7hrre
+X-HE-Tag: 1781186533-853412
+X-HE-Meta: U2FsdGVkX19woPidUFgtnxraXRkoISEGmxKrV/Zmu+mSFwE6rpRGRN9mQzA2UxkUV1rQtmWjBgfoiB5RuLwVkVwOsekj9aGc29S0mA94PlhUk1bZ+sgIxl7VYmzMvTyIVICLy1sS4rtmJvErTBfZJUZHySarkzVR5vVY2sHw7Oz2J2RMURXjKm7Ojfihwd5ZJiuAbDwhZgMTm8soXyR2b4/efSB1YagNPVCnyGNqadmy4D+GJepTHTo1XFMSOmW5EqwDQRi25E9J0aqVFVLMiUIn117w/dYxKfVDGBAgVD0dGwfDe3iaR/VmjI+Tjzx+BotYoglxe8IQNEJunsRPOcRCY02gYuohfUr32zFue3yzsCM0jdMSybQfrtoFLyuv2NAThnYeyJOpKTir77HUXwKk3Z7oxOC+mghUFuzIDJnQjyCMnNQ/aBIkmBejf+TFn172rbg6WrFCCkmNFeto/gOLYdDRr7MyZDGNzXFtj+OqyNB0MAnCeB3FMYSGW6BT93WLzcZRtHs+TNkuzaxruhw1a1S0Y26Ov06+vIAbNuIZDEPPDOmzvshf2128Xg3drY/dkNMl8YNmxjsOdkYpJ045XzFKBCWuXnKzshU7pgNPeQCsuJhaH3VFPHETYE8YOJK6zyES0YJnaLbgasRXRQgy+kja/70IfgVEdDnbodFPzbfPhHj/nAdTEfe94pZzoNdM+ElfajksWQfZ3Og2dgsAMMj6h5WniWcr8bNyA9LZ/NhiyXi/cu+6aHVTwl1BuKWjysdysa4mK/JtNz67Nw5WtXDf53tCxjs6ivZNLCOi+KRIMAGHlLTl8FTBubuYSxY1aMD4mHM7RtdD9k7MJgxN72sX4AhCyEEw5fYVHnRliUIREfryGu29zciXYrEfQkppm6BVdpIv3R8Y9z+l4cmEyAsqDOpPuidHNjxsXdfvYVvcLGJPNjqj0rTpXUOeUhotP90JubZG86DyajQ
+ p7iNZ89x
+ JwHcJQq3dmDhZbx2JRZ0TBd834hHIFyURW7TiL2QxG2VCWkHwUrNQJm+Jp4mypuH7vguKL7d/xxnXmy/iQuzRwzhtGMVEMLUOi43xLTj+csrOvjROaEZECFNe8vVd0dr6aRxXx9w7s0jr9wDoPbtOICq8A2QyShfQlMU+F/EMun/gPN4mx1QcsJjyAXVVXGI/pPbDzDi5HDFgajT1C4waOh4KvzDaJy9rg/RnilqBc70OczU/ytJg8Vd4j7qlylRkr51M5fNT/xU+F7uNAFUCvAjnwSGLflpgEqTr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +101,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 01:36:56PM +0200, Miklos Szeredi wrote:
-> Sorry, this got lost in the noise.
-
-Uh, yeah, mea culpa.
-
-> I was thinking of something like the below for fixing the invalidation
-> race (untested, whitespace damaged):
+On Thu, Jun 11, 2026 at 01:50:49PM +0200, David Hildenbrand (Arm) wrote:
+> Let's clean it up a bit:
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 4e636647100c..c9ab0eb35afb 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2856,6 +2856,14 @@ ssize_t filemap_read(struct kiocb *iocb, struct
-> iov_iter *iter,
+> (1) There is no need to pass "full" anymore.
 > 
->                         copied = copy_folio_to_iter(folio, offset, bytes, iter);
+> (2) No architecture overwrites it, and there isn't really a good reason
+>     to do so when dealing with non-resent PTEs.
 > 
-> +                       /*
-> +                        * Has the folio been truncated?  In that case we could
-> +                        * have been copying stale info (including zeroes after
-> +                        * EOF) for a distributed fs.
-> +                        */
-> +                       if (folio->mapping != mapping)
-> +                               break;
+> (3) While at it, call it "non-present", similar to copy_nonpresent_pte()
+>     and zap_nonpresent_ptes().
+> 
+> It's a shame that we have clear_non_present_ptes() correspond to
+> pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
+> 
+> Likely we should rename pte_clear() to pte_clear_nonpresent() or sth.
+> like that, to make it clearer that it is usually the wrong interface
+> for dealing with present PTEs.
 
-But we've already advanced the iter, so we need to rewind it too.
+Is that always the case, that pte_clear() is only used on non-present
+entries? Or there maybe users that do not care about the current value
+and just want it to nuke?
 
-			/*
-			 * A truncated folio may contain stale data
-			 * from a distributed filesystem
-			 */
-			if (!folio->mapping) {
-				iov_iter_revert(iter, bytes);
-				break;
-			}
+I guess that such a renaming would have to first audit that all current
+users obey that? Othen than that, is there anything else stopping us
+from doing so?
 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
