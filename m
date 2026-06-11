@@ -4,80 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA90CD8C9D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 19:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E08DCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 19:37:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABDAA6B0005; Thu, 11 Jun 2026 15:33:45 -0400 (EDT)
+	id 805176B0005; Thu, 11 Jun 2026 15:37:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E206B0088; Thu, 11 Jun 2026 15:33:45 -0400 (EDT)
+	id 78F416B0088; Thu, 11 Jun 2026 15:37:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB1B6B008C; Thu, 11 Jun 2026 15:33:45 -0400 (EDT)
+	id 657486B008C; Thu, 11 Jun 2026 15:37:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BD096B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:33:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31538A07BB
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:33:45 +0000 (UTC)
-X-FDA: 84868631610.26.C70DBBB
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3F4BB40013
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:33:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bju5tjRq;
-	spf=pass (imf07.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 51BE26B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:37:53 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F9D1A07BE
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:37:53 +0000 (UTC)
+X-FDA: 84868642026.28.B212978
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 07B99A0012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:37:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="n3/FtI6B";
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781206423;
-	b=uzbi+FU6CoXo0WaQcQC8NMy1TyoXrDI5cney8Ab5vwNKHo6ZvftLhAl6po4hAw8VGnFgEY
-	i6e5GuG0IO0LAU3q4QqVbXB76qd6SJrJTKwjgcel3YfzuEQRFU1C/ro8wZvc/gluSI71CZ
-	PP3By7pw9VlycN4IpOBQS2IEz7u0POU=
+	t=1781206671;
+	b=2ZLt3RK3MAnXwD7MOVpcojz2XmdjRivLSiNadGuDqdwaN8lLUlysMbekDjE/LfkqPXOB+M
+	NOzRMEYDwOqYtlLb1WvB6VhyVXf+lVjBgKdHn/h1/kwlfpmfV9A45kvmDGuusJ3T3TAd9w
+	nceSuDMzuORYWIM9THjGOnd0sm5v5PY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bju5tjRq;
-	spf=pass (imf07.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="n3/FtI6B";
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781206423;
+	s=arc-20220608; t=1781206671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TEHeKAthRBT2wnuyZ5QT1BNTuvGWUokrW9aqbOUkBG4=;
-	b=si6Cw7p9C1ZKOKlUy+5rLZSCbCR4j5vG7+jB2vA3t6tAU6Q6lZ/EPHVD4cNKzhxZxRBuqD
-	krvrIMClUuESSiU9foFOUcxle+Vt0GX2RIrhVopXw81zSzWr1lR9levIS1C4F8EPgqEIj6
-	7Nl8Xv/rVJ5VmiAWleuKzzANrhTZxoE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781206422; x=1812742422;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NIR3HYw2JEH9d+Wwq9mB8fwmfiQAFUYzbs2IS3Faf5A=;
-  b=Bju5tjRqwClXHpWEhMSr755dmdxpEFX1/9V9n5bKgIEXiVdka9P58MnB
-   CaxIPqmp/3kTTuqvYTbykhdgdIoT4Ok6Ea8w23PUgqjQo3xqCW2zeBGsH
-   zm2+UF/abr+GA10Nom83FgYD5S9030zexIZ8j+9v6WEbRcwpypV9ngLf7
-   kfABfkfIpaJkFqyD2Amrvms5LTSB4fcj5PiaiffDtCOaFhudjRMkehQgY
-   RGhMI4K8GmMvc5AUfYDlquc16usH6tFf1RN0RFPxfvqYUZGji6xrukbli
-   wZHe0KjiNcfHJ+YxMLB0wlNepSw6o34BjTBLvAgPDplIJVGve8lI7PC08
-   Q==;
-X-CSE-ConnectionGUID: v4QPVjflTWePY1oKiRnCLg==
-X-CSE-MsgGUID: IcWB5nxQRzutyoqyZq1NDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93423637"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="93423637"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:33:40 -0700
-X-CSE-ConnectionGUID: 0wSjZKvyRlKvpIUqpBVZeg==
-X-CSE-MsgGUID: 1y256R2mT72GQJAJDpkyFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="270614781"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.123])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:33:37 -0700
-Date: Thu, 11 Jun 2026 22:33:35 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matthew Wilcox <willy@infradead.org>
+	bh=NJitvU5xfaKwDhhPD4oSV3hFuyqY6F2GIa31aftsKS4=;
+	b=7VeCGs4Za2HxWQvOWlVo4eq4OW7kLqKUkWEoalpT/Lka5F4cVNkDeSjg8Egrgqq2ZMjc1Y
+	caU+WSBbx5yqSndbYzPBXneTIaYzbRq0miNEb/8dnkFOE1JrMLL3w+CfgIqDyfXGmsOnbg
+	kIINwG3UI7QwrP1VHkBpU1Zu3kytRfg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NJitvU5xfaKwDhhPD4oSV3hFuyqY6F2GIa31aftsKS4=; b=n3/FtI6B9mXYdppI5R3zmw5ap7
+	jvLiYCJtM9oYjMUjAOdi7kp3HOeb/++TZtR0i8Wr0Mh5j85EHp4M0GkEWsDRnK8dRrrgLAeSnV5HX
+	wV7fCdImAG5OE9VLs4UAK+HLDTmuKlYCuiNR3RqDfOVu9udnajiEsvSQFZjEIESq84v39tDS07N1+
+	44FzneOz80kU6DpmKtpkf06ZU5CjmhEWqHWkl7bZx2wLILo4og/M8rypZ7w1FCFCkx9o1oSR6C5A0
+	i3+GprQBMByaBZxC3hOn3ap7haf9umae+iwti97Og9isscyfIilViOxiVXvEjXwoFfuZnaSXtFFpb
+	di1bWy5Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wXlDn-00000002TdH-3YiK;
+	Thu, 11 Jun 2026 19:37:48 +0000
+Date: Thu, 11 Jun 2026 20:37:47 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>,
@@ -88,23 +74,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
 	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org
 Subject: Re: [RFC V2 0/3] lib/vsprintf: Add support for pgtable entries
-Message-ID: <aisNjxHW369cbKiq@ashevche-desk.local>
+Message-ID: <aisOi1B0o5KYyaQo@casper.infradead.org>
 References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
  <aisJbeVVxxNuYxQ6@casper.infradead.org>
+ <aisNjxHW369cbKiq@ashevche-desk.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aisJbeVVxxNuYxQ6@casper.infradead.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 3F4BB40013
-X-Stat-Signature: n71mirg1isxnewqbad3pcqtoarxyq9rm
+In-Reply-To: <aisNjxHW369cbKiq@ashevche-desk.local>
+X-Rspamd-Queue-Id: 07B99A0012
+X-Stat-Signature: 3cghmsm97ssm1kgff5ij3q1hkpgc1k4g
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781206422-135958
-X-HE-Meta: U2FsdGVkX19eRnHI2T/tg6wgu4FBNCwduV2sQC7iYewa9bkEJkIrCG2aaXnaWnM0sYZ7jP/vdZQTRRVbkuzFVHAHuTdFGhKwYnoQ7zNF7uDdgVkFu4bdKiv9FGWOZVq2cHvHWHrfFqJRZMVcMGsBAaaZrBPyGFAdKj/FcAlz+Xv6rpL4Ov0XbwQA0MvLdqwf3gPO+ES1HJW+ojMwH9GU9otCpMvnsn7U/i8uG8V7sMywyoI2pS/d0m1Z+ZoGqnEK3g3HmRDIu8ayyzJC74dEXo1uFNQ5PTpSqeMUhUBbAEnMegj7rmDcnTTKiEyppubdciqRT11vTMeQfmzWfpPF6o2XzRHVhJCRHuqp48wZ37uotzMomYtaMEHmYK/aOTpvv80eYtubkEGm7KyV1/LfNDGuO2AUAJoK/UwbU/+7IxoHCIow1PvssMuSzHMhtzvMLVyysDBWWK8Ja1vBUfNEwAOmwtR1QiToZ/MyzGxbPb6Ue9ed6PTqWgUqmv03uj9iu9OgH/hve2nHb4kENLM4b1D4Vi/O9RCmdP0Ew/pTpmQ/wHdAJX1BM+56/OkxFrjZV1qO+EfmfzWke1debMGfgefUrTwx5DDQnRCi5NHL0m9wSHWXF2/RCUSbb0JJC3DyQhOlNcO35XNGE1ukzOLyiEBA9T+XPY+PQ4lnN1x2z+xk1UKOboQ2zBUtrjb5ve3eZ5+NSbV0royTItUzgHjqWuUE262IrWLyCPoEQwcUzH+60Z9ml0a7TMuyV7E62HZNqNiSNi0FGPLjoHovYVk+njeERGhOumWT/moSdCKRHmhqz3zmmId7rn+7rFHtnMMUzC6t8lfkBKxcWIm1dPO7EQ7x8lBhI8f/UJM0YSkHrXssOweonKNvLudFhfG08vh0y4TRw7z+askgkTL8T+ZkcKOiY+eX8uD/0dYp6ISoQQc6Pi1F3wUQxca82tYSCdfOTyQ8cHJEsDIK/vXBVSC
- PDDel4Yf
- sdJ6FIMlaGq4NM5Sl7aJDiTw+662kRkWw5TpeR3AU61mVmC/x8qjMJW5q7JitYbyBM+HNiZMpM70yg2jWWSuWLAOj0jobF+JX7weDS5ZjVbOqMO4S98b70L+6OehO8PaC2c5OHe54Ng53stQebZ3VV61uGwPNv3vzfKFQO7fTKOJTsZiAW2LBGV3sW92oZ54r3zSUrlAXuNb3jrq6iIAGOPBTey/kYoZzBBCyE5JU0SZnmLwhHOQGtsXZXanXRBml1MiTQypvjstVpxpWyyBrZwpniA==
+X-HE-Tag: 1781206670-980009
+X-HE-Meta: U2FsdGVkX19McfVhb3kAQ7U/sbaa1emdweItmbtEheMovYav3NDew6FLpTQxQ1OfExLliT+UwiZO9qJIBUUEAnwRryzDgJlKwkeZizB+Nw9s8VfJkA8feuJO6YzOnVXkTlw5dhK63r5GaiNzp7EdMDTiFrbB5pylwkWwdKUOZLhIRJA1qjtTjAkhOK7Q+SgB3SvAoKVYYdn3DPaiCCgAsZcWm7Bh9O56JJOZxfAHIMlLRC4KBRSD3utvY5H1ZP55dRPSQIVDYMVla5aPVxHUtAueHZQoOhYosElQ4zcrMAAfjQRAqejdgaIbKMl8zPi3gpB0TbI6yRVuTI/nxf7z39k1sk78j5n/wxnH3eplF/SBHEED0zwsMuo46sboS7XV+jUYbc7PWkNOAeSEqYBUqhdHoosI3FA8yqJWa8KHdawEdLvdUXD6RvPIdN09YNgSIiuG3eZxUKtOaaABzE6zCvKY32e6pHpJK73/Fk4SDTg1gAaUnzp2gUo7zYt1nRTnVXqO3Yad8AYslL23m5wPOuXmUc9KaazQI3+ATSOrmteNbryEJPyqMk7UTFz0NJQVYVt2CLszbC7AnA2RZlXIolpqdeBYjmmexv8bpuXuDcEg9ml9jip+0FJsSFpqnePfzDHWbZ7W10zUsCvBA894ERvkXtm/Td7sV/QgUEStpNBAnSGmmauKwN95BvJndRSJSQyKtSZGeKvbN8/5O4R5gC358eoEZ9Q/JxiPMEej6JQqOmfC53YZfX+/2tJgpIuJ3zc31VyV0I4pWdVCTRaRBUCKuq8slxqKHxzF7liQy1ixfEVx5NuAPiuyiYfA/Po0T84RzChynSr64ioxWyeHO8a7WLH9Gg3MFekJi+WRliquZSlssT9cvojkVWnsoQUzxEdKfAsWuah/6HpMhIoAUUyNawdCfr3aDJd6TWiq2e3PUtKpNovAx7LkgpuOao/mxS6NjhTWR1mM1sHrA+f
+ 2aH5aJSh
+ ioQG2Jfmf0n6bPZnJy1Ca4gZJmr4tnqXHXvVvezQ6ZKlZ4E1L5dh9zw21abk3cEq4b8XTqcsQrE5BPDuVsBbzeCQ4AkfSTMtggsPuKLHtYyGuCtSlK3Pw/ZzfbERwSAwIKODelumT9QaPVpovvvF3L7JxQK6NYTm4oBC7rOYKd7jasLoSLLKO3uNzut8DDNyujoR1GaMfxFQhjKEjpNV5ADFW7Sd6PsdvZgtFWrHWz2/ZtzKD1A+W4xmD/V8mUR6h0LBDtbIfJsJcbHHoZdOkjVK8x6nSWk1lV4WkWtUQoi+eWjmkRN/1B110/InRUoiqMC+9mjXyGbufCaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,27 +97,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 08:15:57PM +0100, Matthew Wilcox wrote:
-> On Wed, Jun 10, 2026 at 05:35:42AM +0100, Anshuman Khandual wrote:
-> > Printing page table entries has been a common requirement both in generic
-> > and platform memory management for various purposes. Hence let's create a
-> > dedicated printk format for such entries which will also help standardize
-> > pgtable printing across different platforms.
+On Thu, Jun 11, 2026 at 10:33:35PM +0300, Andy Shevchenko wrote:
+> On Thu, Jun 11, 2026 at 08:15:57PM +0100, Matthew Wilcox wrote:
+> > On Wed, Jun 10, 2026 at 05:35:42AM +0100, Anshuman Khandual wrote:
+> > > Printing page table entries has been a common requirement both in generic
+> > > and platform memory management for various purposes. Hence let's create a
+> > > dedicated printk format for such entries which will also help standardize
+> > > pgtable printing across different platforms.
+> > 
+> > You didn't address my objection here:
+> > 
+> > https://lore.kernel.org/linux-mm/aFQP8LzVMctf6XH5@casper.infradead.org/
+> > 
+> > ie there is now no typechecking possible.  So you've made it more
+> > dangerous.  I reiterate my NACK to the concept, not to the implementation.
 > 
-> You didn't address my objection here:
-> 
-> https://lore.kernel.org/linux-mm/aFQP8LzVMctf6XH5@casper.infradead.org/
-> 
-> ie there is now no typechecking possible.  So you've made it more
-> dangerous.  I reiterate my NACK to the concept, not to the implementation.
+> But this is more of a global question, how do we check the validity of
+> the parameters of pointer extensions in the kernel? Does anybody go to
+> commit into GCC plugin or so for this job?
 
-But this is more of a global question, how do we check the validity of
-the parameters of pointer extensions in the kernel? Does anybody go to
-commit into GCC plugin or so for this job?
+I agree that it's a global question that it would be great for somebody
+to answer.  But it's specifically a problem for this patchset because:
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+ - It's really easy to get confused about which page table level you're
+   working on.  And hugetlbfs deliberately increases that confusion.
+ - Different levels of the page tables actually do have different sizes
+   on some architectures, so if you think you're looking at a pointer to a
+   64-bit quantity when it's really a pointer to a 32-bit quantity, things
+   Will Go Wrong (or vice-versa.  And some architctures are big-endian)
+ - But on x86-64, Everything Is Fine because all levels of the page table
+   are basically identical, so you'll never notice there's a problem.
 
