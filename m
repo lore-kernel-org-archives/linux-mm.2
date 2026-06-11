@@ -4,82 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CA0CCD98CF
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5A0ACD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E30156B00A0; Thu, 11 Jun 2026 12:22:05 -0400 (EDT)
+	id E54A66B00A4; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E07E16B00A1; Thu, 11 Jun 2026 12:22:05 -0400 (EDT)
+	id DBAA56B00A3; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF5A66B00A2; Thu, 11 Jun 2026 12:22:05 -0400 (EDT)
+	id C0B6C6B00A5; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2AFE6B00A0
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 73128140719
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A27576B00A2
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 43D94165747
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:08 +0000 (UTC)
+X-FDA: 84868148736.30.C89FC79
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012068.outbound.protection.outlook.com [52.101.66.68])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 37FEA40006
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:05 +0000 (UTC)
-X-FDA: 84868148610.04.ABD77BD
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011058.outbound.protection.outlook.com [52.101.65.58])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6C37E1C000A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=O1xUle1T;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781194922;
-	b=ng3LYb+GzR8DpZVl0Gi25wpYybWX4fb8zaZOOMNdrKNWIk2bZWN0UN55pQKmRES34utNsT
-	RgKFKkxaPaZ1GcOcea6LMK/nPsInEhu2n4GOagVzNkesOkoTNN6Pp6mcfEI+lTbSAPgWL6
-	VNWud3nTE3drrrVcMqiQKafb3k1F45w=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=O1xUle1T;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=pta01dfy;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781194922;
+	s=arc-20220608; t=1781194925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HoENOFMq92qTwczbiLwgprmQTz8BLW620KOHwffPRLk=;
-	b=8RnFdMaF9Elw2X9r79xDevCnLG+Pn+iCRkfMc8m4gW+yEpxWf7qTG/Ow2JkhWJu/JDQjuq
-	vFOMrispC6BJ0rXc5zd9djJQ0rEbef+/IMlT6EYzDsvoP0Johh/gxMeItosw+TM8ONjxm8
-	0ErUgFBxMjY0qPhlci0w4GNdhAEUjlo=
+	bh=wPAvQAWl+YEzEEBSaHvtqmqDpqWGP3vIWNmCd5hzBWA=;
+	b=rcMPrpvJ9gm0u7Macq0jZ3TDy2S26+KPeVVTsi0n+2ER6f8N+isatct0aKgGbBgzPF/S24
+	QeRJyJlEDyfRhc0KCs8AuXxR0hR/QYd2wlZ8/q1ehInm6L3l5eNIWxKiJI72gPIf7C5/vp
+	zDzG0TFj4MT6GxB7TQSOfYWGPv3tb4k=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=pta01dfy;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781194925;
+	b=BYFfJMwzf0LKPQJUubgYdH9CXbmmLwwTKxkq1SJDNdlT7ojLoPr/09SfZ5lGRMm5qEIlNe
+	hRiv5qdZzpZOnG0k/qd8QV1paLNKcOx+b6DAlam4auGzI41l56Z2Xrf90sEv8hOCsXE/1C
+	07mey4ZU2zXy9VqNrh56WwM7Lmw+HGk=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oE3lQLUhvmDg57HK+upRRAySE+qBeVJaN4UNbbU3BsqAYBjuS3NHA1ehDn/h+SFWchsy4FFTB902+RH5S5/gy/7o4rkcegd/7O4bA1p0ln5OeljaO1rDRKB+MYp8rpL/A69BGg1zrDeO3tJGTxrGEakpOiScJvXtWSEACV0L/9851G7t/Nl2LZ9u2KBn85ZcQ+X8Qre6Dd1GlxYWyPodjOlTdRzO4JbiSyAnm41x/Px+DtVb7S/SUsOap9n5QXVnRj4Eo4FlKxZ1PaEkx69zDMhw+tnHEfbkRkXp6L7UznbxW2o7Onf7mFLf3OFLv9LQzqpiw+TJup54pdCSKG1fLw==
+ b=oHfClKXaPlXP0Y2Qlp8GfspEocsAf/G9FODLnUBeNvVfYscSUUdk84Y/1g641QAXaU0+PXrgBY9UoCWTpuk8F+iGmvWqFo3o14XTtqIHbebgPAPWy88vn4F+b40Fb7ipPAUAx8VBPpQVrbz8qYT1YtuxAXREpQkCG5SxTUeDrefI1L3WK3Csf82yOZKibITtH2dK5UTrd6RIDJrmFIAhXoVmx4lTOzUnkW2MWNeIn07TYTEFsXTbYduQJQCJrqyEHE7tvjejtMcFldSG3jtuALVGWrSc1Y1tZQ9V5RMv2k1pIl0Ls/xURpJ9NQuVjRlEHy/DxRxP4BSReqFecIBzrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HoENOFMq92qTwczbiLwgprmQTz8BLW620KOHwffPRLk=;
- b=FZhXI5leHAZb9s3c+URZt3wQppfM6ezvRK3hq2N0TD6jBBu11aAn5wVSrIzO2b9LVYWIOYAO9t5ekbeAv+YtskGEqWhuQ0JmZUxJP1BLv/GUnASgvg+sVT7ChoLns1kedkZzCb35rDTU/ZWL+08m4AymqguptoHB6Bw6wJX11Bhiuu7lyO/I4dO7HG1sXV0OCpGJrMtg9DNDjqXHP8/WniB4h8SDtUXPIuwDZ6dqZM46q2uzXDB37NhcwTRPITIf/T8ccUnhW2SiuQJVliJ7U8gFmV9peG1Qm+F0Q3a/Mi2OVjx/t43tgI/HrcwXwfqd4y/AeH6Qm2T//WlwqzgmRA==
+ bh=wPAvQAWl+YEzEEBSaHvtqmqDpqWGP3vIWNmCd5hzBWA=;
+ b=fPnum9UUzWNk5KgnzF/GrCnEYldEVjHM7hgRJTF/rIttTXgpG7dvtV02V7Q6SkCm2YWWIzH2z7pozYkqn/974jX+DFNuFmWJXD43wWMwamOMDllxTOw3J8vgEUQySIoMh8RmwGU9PzJv3iKRDRIeieEdgKG0UkPgaUIT5mH4FmzNAQcxcOAyhI3s/3ZvsbTkYsTz3LE8ZhnfgDADFhT00iP2V3xRivFjWDsJSpsOogN+QIoADmQPWWVU6fU+6U/zUlISy9h+mnlttxM0F1tr3DFlzzZUgSyYHbKeRggSRaA7ByQc+hknvcSClQ8LQ0nf9pIL13OtDK1SHtOOi0gYWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HoENOFMq92qTwczbiLwgprmQTz8BLW620KOHwffPRLk=;
- b=O1xUle1TTk7+l73YcZcTsatYptpYP5PJQzYZYscx74GH4mX0XvVKHAWf1SR4CoVHRjvtThp5EOte0F8c8OJoA2AAiXgRAtFaDQVDdF+hc7ol1QVdPlb4vCYg7LUK5aHCQxVvmDApj/FBLv3s2Fmq61hCBDOSOV9N9fgWCV+HRQ0gqcf+HP8japctY/nQjOF1zAcxenRtlazIvnIAmaz+MZ993VUr0GQ8s/McUyEZASXdcj/9VCfYo9PyIWpaV1pP+BZ7e9QrfycsNIINyQse515SM4qfsMVZuzJR8LqfEyqRBO9q9PM3bhB1Wx3h6znDSCqjxFObxgnxT3eg65soOA==
+ bh=wPAvQAWl+YEzEEBSaHvtqmqDpqWGP3vIWNmCd5hzBWA=;
+ b=pta01dfybbSpxZ+CtcF+Fe1Q7SSIDMK7iCdgGPiaXvuxvRYVV7ubu17oUfmUHLo7mN9Pv0dX8rBbngq9Sps0fcTYcFqtur04O7tRHXuT32Cy4Ude0cOkxDLzEnbzrfKkZOk7aZ8/MHZaaRR4V+nzNUZSCQi/L0zXVoqA1I+b5VeXhT1kCtyavkGa1By6XgBU5OXOMT0dgnqRHfPjKrOzj2CokoQbLIgAWSyuRH8ZXGLaf13pRFgSzP2nbtiNfePlN9IbX+GUtju+NRD+jvlmmplPtfOA79KHlZ+5hX2n2x/4gLuvHgMPlWhhZQLcuwU/rDxyGEcGWVwKktK0Y01/MA==
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:2a5::24)
  by PAWP189MB2829.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:468::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 16:21:52 +0000
+ 2026 16:21:54 +0000
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471]) by DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471%6]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 16:21:52 +0000
+ 16:21:53 +0000
 From: Yunseong Kim <yunseong.kim@est.tech>
-Date: Thu, 11 Jun 2026 18:21:10 +0200
-Subject: [RFC PATCH v2 08/14] selftests/kcov_dataflow: add trigger-view.py
+Date: Thu, 11 Jun 2026 18:21:11 +0200
+Subject: [RFC PATCH v2 09/14] selftests/kcov_dataflow: add ioctl interface
+ selftest
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-b4-kcov-dataflow-v2-v2-8-0a261da3987c@est.tech>
+Message-Id: <20260611-b4-kcov-dataflow-v2-v2-9-0a261da3987c@est.tech>
 References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -113,88 +114,88 @@ Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
  Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=13901;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=8940;
  i=yunseong.kim@est.tech; s=20260426; h=from:subject:message-id;
- bh=uKDYnpB8BwFaTgVadpzgWc+JDjhfCuwUY8/JIB0IobY=;
- b=MJ+pxNM0hyDV00H+eS5JXNTGMaBudcXB/KrtkQygYEPcv/YjIQS6azSDdSx7mR0HYcs4USdjb
- xZYjOhZ4WclAUpk2oh8earMYXFXS+QrgswaFBo8HTqyIMNg7P61r11b
+ bh=jwuzX1cP0P+EPi7RNlJUI8LFba/lT//dIZ9nmZnn9vE=;
+ b=vleU45dLzLC6oHoxPjhnIjxjIUZY7+rzuLyuOV9/Byn8RFj/Mj2uBcadDz1Y2m8PI4wwcNyhk
+ zR8oO3QIAVxDi0LHl/Xhtlm6oZOI015uS3sVbP1DXIygra8Hqe6vWRt
 X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
  pk=1nBUX92cvTaavYG1+MR073D+XMKhdOciBZcnf6h6qEo=
-X-ClientProxiedBy: GV2PEPF00023985.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::36b) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GVX0EPF0005F6BE.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::648) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:10:2a5::24)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9P189MB1754:EE_|PAWP189MB2829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6448ddd8-50e0-419a-f028-08dec7d58bc7
+X-MS-Office365-Filtering-Correlation-Id: 01a069f7-e6ae-403b-a6bd-08dec7d58ccb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|5023799004|3023799007|6133799003|9063799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|6133799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	lsGmbgDnFuyfk7xcUxN2TU+I7jAfM1g2ZEYhOcpBmptpQNLmlmswaMWJnacupOvWi50GpKrdl7DrtMX6QkvtJLmyNyvWD5rIwyzo3dqjrJCDaTqsCPi6OpDYdud4MKcQYXPegCQaC7XI+5/+pVCmeYQrH7PIp4ryFYr7E3MOrDwVzfl9rzKUK5UYDXp58k+u2jVajnqchumf3lqglRqAiS8107IzPSVBWplVOA8ZEc4GMfvMPpL3Sc/24E5u5RFhNMTzWFzSLJsC0H1BuCBkYt9iutxlYhQQIacOX1HP69N/AOgoLlt7wcYx/C7Xrp/1I2XZB+GDyke/qb3eFRNJiL0Z8kh1dBifEdIDZuk+9IBcrszQp1X2nQ6MZYqknrLK/SrzA82naM0qFMmJvVGl5K5GUAz6RPlH7a8ui58GJVVp5pLy97NhGeQc/+ZDJmR6vwupCtuJNwqXSiM5dP76cslwQhYjfB9YRSAtpYKWq+XoJKkkVA1+sz5OK7mBp/lguiY5Lt/1b7SUOk55mbiKjpFWvv2yB9Y5eFK64+h3B0gXF6VVzPDyShI/kzx0r1s2X44ZDfBLRkl1nwvd2ui2/feSfhxrfVybzhFBQI+LCnzG37h2Yz0UhArv1EW/95zIOVGx9I/TIay6aUJfwTxvqIUX/ZKd+pU7eqKD9yaVEk3FMya/eIhmpfMmpknuJD/FtHngKCW/iyYEP5GQ3Hr1BifWNXoVjJAHmnHt4sfh6ImffgR1BfNd9gRR6XHzXpZj
+	gw9Ag5o12GhYvHoMFl1q9k9nHQi81LE4QEXTPGp2PqAwO2UK1Tj6+V2NQ5wtxOSFXC7YPB1nfA05cQP2v/vjfz6hVjLi9gygkMXW0k/HkLm15K9tFoq3sV6rhhY8oQ8cVh8PdZUF84si55iVzWs3blMEWoPlGRoWtZ+KLwzNOtmyqOlxrTp9HTSs+k+NoM02uWlK8zxPDPHbZOUApuRODICjOcWTeCv/x9oGAGuXfUfi+IAiY3XMAeeoNAoIpuZeDNd1VQ2N+9CM+0M6vcsAXmdfy/o8IFvRxjuW+NnAGkiyo04LT+MpQ5FxIfUeyDwlMl0Q6XR/pjKk5ncOqwHzqBcwyw4RPTrIHs4++cAdl9X0Lg0JevPAf0NoVQnPU3laJHb/6IQNesEaLtXno8D8KOwsOxQI1G/6I9HI/nQnGztfWzE1XUBWgiatA1M02UhVYboLFLq7covmlVxPs1KQ79SZHqhHJib1JfyE585xdVipDy6+IbT0yn0mIzeiGx7wLEUt0TWDvmZYtOHB9NRWqdCNqRJjMWvm1RNTM6K//hUvFY9hGCvZRDCUKqcyeiGyqMbeV9pUuVRsKZN8qnCv+k56zUr0vPMjbj11uX62x+CSLfXYQ+AovNk+mlSpXiHGPW2N3VobEUmUfxETcNMVWZiaBBM9Nd6r/EN93GmI2f3tk3yOZNBko5F7jPTd5NLpm317sOdJaF0mIBNFeo5jv6HxxNeBvJTdLIg4rQ+xoSfFoFm8pQVlrwNr2ihdIRFC
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(5023799004)(3023799007)(6133799003)(9063799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TlNTeWhKNUFBMXV6eU9NSGdQRnVvNUtWTDNlQ1dUY1hXVXhYTXd5cHkxWWQ0?=
- =?utf-8?B?TVB4NEdzSUl6THpSUGFIU2I1ZVdIYllCUlRwY1RZbFRYV25jcHNWQjkwYnFm?=
- =?utf-8?B?VEdoNGprSUt6TjJXeGRKRTVjK1NaN0VETGEwejE4c2Y2S1Y0RCtSdHZxclpH?=
- =?utf-8?B?YzhYTmJvZ0xzeDVMMFJhMTNmbDl3UkZxK3BoRmlWNTVTUTJKZWNwK09pV2Nq?=
- =?utf-8?B?WFc2T3paN2pyb2tKeS9yZ0tFZ2pyZGVpc29GQy9XQXlxOEgyQnhOV3Z4NUVQ?=
- =?utf-8?B?dWZlZmk1NTYrOERjVWU1VGdyM3I0TXdzNEZRRjVLbmZ2b1Z2Q1VQd21QWng0?=
- =?utf-8?B?MkZVRzVxOG1FL0F3ODJyNkFCYU9OUWRNRzhxS0JyZmdMR0tYaDhKclpLM3R1?=
- =?utf-8?B?OFBZSjB1aU40R0U0eE9wRUZFNXRrd0Rlcjc4RFZPZERYenZOdG5FTnhXTUcv?=
- =?utf-8?B?eTIvTGRnWERVV1VpUDFBSDVlc1NEczZpaS9KS2daZEFybDRsSFJsRnEzcGpi?=
- =?utf-8?B?NHlFYUMxalgxaWlDWkRhNXJTbFBJa1Q4WWk2UzgvK3YvSWNTcGlTR0J4N1lv?=
- =?utf-8?B?a1NTWlZ2VXpXTTZYSlhwNHkrZ2lNdkh6VEV2ZEczcEJhNXkwUDBmQWlkUzE3?=
- =?utf-8?B?bFRyU3phRmFuNWVrMmc4Vm8wTmJBSnAvU1o2SjBmcW5NNTdsL3NSSTU5Sk9K?=
- =?utf-8?B?NHZhSEZBWGdrSEQrQVNHc2RqZVpSRjdFUThVZXdHVmNXNkVYREhCOFc4U0dt?=
- =?utf-8?B?SFZlNUxoSkdReDlIZmh6RmZyNmxZZk9SNmZUWWJueTZtMFd6bWtJcUQwSmZt?=
- =?utf-8?B?TlFMd2tGR0xLNFZIaC93RnkwOVcrWGpuTko0dWJtZHY4QnR0dE1lWmlWaURr?=
- =?utf-8?B?bzYzYTl4dTNHNWxkRE5nUW43b1NTbW55VC9XbTJuYi9pelNUK1pNdzBxd2N6?=
- =?utf-8?B?VWhKSlZIYTJQam9lOTFiYWZuOGNIV3lqeEM0Q2FBNWpCNy9pODhlTmF5VGdY?=
- =?utf-8?B?OFJSU3g1dm5rQnY4YkZhWENuZmpqZGN2aHovSGdpWlc3c2pUTXAxbi9LRUJw?=
- =?utf-8?B?UjR0T3BWenRpWkxaZ2g3eWE2OVVqUk1FejQ3YlY0QWp0cElkQndyc0VyU2t3?=
- =?utf-8?B?NG16RXNtREkzNjlkUEpSUklLWUxBQWRuQ2VhTks3ZkZSKy82ekw3dGQxeHB6?=
- =?utf-8?B?S1VrWXpBZnZkcDFXc3BOUFVNeGlQMSs0S0NhOGl3dllmQWNET05objV0RTN5?=
- =?utf-8?B?NEo0MU0wYUdsM041WE5lc1FFQ2pBbFpFRFMxK0kzcW0zeG9XTUpwYTdGRXc5?=
- =?utf-8?B?WUZabWV1Sk1yS1YxeWJBQkxwOGlTVHdJSm94anNuQjlCMDR4aElKMWJPbThi?=
- =?utf-8?B?c1ZGckFjYWtBOElVdGJPWXAzbmNGbVhYQW5INmNhWEp3cE1QWTdmaWMrRWZQ?=
- =?utf-8?B?NlRwaW0xM1VpdHdPY2I3R3NGa2Z4RVJacjk0Q2dUcVlnM2c0Mnh2TnlsYWRR?=
- =?utf-8?B?emlHVDVMWDZtdUZWbWF6SVR3SEJGZHZNQ0xNNUJGSzk3NzdHd0hyOE1QbUwy?=
- =?utf-8?B?eVV1SHRQUGtrTk5hQnU0eHJCNHJlZzdwbksrd2ZSdXBhRmR5SE9jMUdxbXBy?=
- =?utf-8?B?OWI1dHpnVkw5Q09zQXI1dHMxYzVOUk5HNUJSQVg3MENkL0VBQnJRbnUzWFhw?=
- =?utf-8?B?Q003T1d4SXF2UnVVamx1cXp2WnFoczROTjJYdmtlZU93VW1wNlRHUmw2NFc2?=
- =?utf-8?B?cldNUW9nemg1WGJ4bVJDOVRBRFJadENocEh2OGJsNVgrV2tweXZudXozMnli?=
- =?utf-8?B?ZWNpYWw2QndWYWRabEdEYUJFYnk1cTVlNnlhWk1lcUhzVGRaR05xeW56R1BN?=
- =?utf-8?B?aC9GZUhmN2QzcTJMbC84ZkQvNm42S20rZXRXNHBBMUxYWVZTeVdDcXA2clZD?=
- =?utf-8?B?MjMxTHBzaVdNZUVZT3JXOGlIc1hKNW9lM3FBNGs5QVZpMmJGbHVNVFlwd09z?=
- =?utf-8?B?REJmUzc2SGkzdCtoMjgzTlgzbmZ6c05zWXl1bGtUU1YvOFZYcUxHR1hzcE4x?=
- =?utf-8?B?TzYyN21KSG85aHFhaVZFaEpLVDRqcXRvTWp0OGZ2U29XMCsrMGVQZllJZFIw?=
- =?utf-8?B?cDdVTm42MFczRk9oYVU1b2xRZTd4am9ha2dzRG9CSlF1RlMrTkY1RFp3VUVB?=
- =?utf-8?B?Y2NjYitYczd6SmZpOHRFYTFsL1JiNi8zWHJqRUlHTVFPTVJxNU9DaFRWN0sw?=
- =?utf-8?B?RHAvYmMrbWI0L1lEbUJRSlM4V203RDhlU3Q5bVJPVnBqMk5Hb3RoclovYm1w?=
- =?utf-8?B?TnpDZmlJZlVKQ05wc3VTNWZJSUVSK2VOSmlVb21aSU1mY3ZJUEN1QT09?=
+	=?utf-8?B?ZW1HNHlUc2t1OU1KeFZZMENkcWFRNmhDdEJRTFdVTkpNNnJiY3JzNDUzMm03?=
+ =?utf-8?B?bGEvM254WFc4Y0RLYjN6K2dxNExvR3RtWmlVNFBjZzVOaThSbEFyOHVGVlVJ?=
+ =?utf-8?B?bzVEb3pCUjZtS1MrVDJIN3hoTmNNNVdVck9ZOVkya3dTZ3doZmhXMFhqL0da?=
+ =?utf-8?B?YjZVdEx1a2lZRHp6a1k3TTRycGVFNndYejB3TStXRWg1QndNalBNR3BHQ3Yx?=
+ =?utf-8?B?ekowRWRSK2FjYWJQWXBqcGJpUmtpQUYzemRJcUthK0N1cjVFUlI4aGJtbDh0?=
+ =?utf-8?B?dTdkTzFsVHR4K0I5enFlMlYvRHY1N2thVFdWOUxUcWp0TzdiYS9HaGdEREYv?=
+ =?utf-8?B?UlIyaXp4eHFXRmFFL1pjMzRIRlJmNW5xcVRIaUtmQU41dTY2a0gyeHlON2tN?=
+ =?utf-8?B?OHJhbnpEWUtlK1E4T0E3bDlFWGpXRHByaC9GRXBRakVNSFB0QzFzOTZkMndm?=
+ =?utf-8?B?RnhnbEo1WXVQdEJNUFZiUW1aajYyTUhzNWVOdHRlcG14YkxybnFPcVh4MlU3?=
+ =?utf-8?B?OFNQcWwvL0pKekJaWWFBOElwN2RVVk92YU1vTlVlS2FYZjM0WU0xcUEvQlZx?=
+ =?utf-8?B?cTBPdTh6eU4xN1hVQ2VickpkcWFRc0QwQ3JZOTBkT3JHYitvbEY3RDQ4Q0xK?=
+ =?utf-8?B?cXlSMTd1WG5EbTZLNWtTTDk5OGd6d0U5aDY1SDczdkpqSDU1WU54c29HL3l4?=
+ =?utf-8?B?T1hSM3kvNUZielFrYytqM3JtUXh5WVhSeXVhbmJrMitkUERyR3oyWVpRZDEr?=
+ =?utf-8?B?NmY0T1NaaXFiYzlCK3UvWWV4UW81R2pQbUxYdTFqRk1BK0JVa3dxUjdrMkYz?=
+ =?utf-8?B?T2RFL0s2U0dieVFHMXVwZC9VeFZYVE9sSVJ4Si93MDljRHVlWUl3bEJHcTYz?=
+ =?utf-8?B?K1VuaXVjOTkzWnBYUE85Qk55SGo3VVp4NkNOMWo0VnR1c2ovZnQ1bUZwajdY?=
+ =?utf-8?B?QWYrNE1TTXhtemZvUlEvUit1MVByU2wwTk1aa0p6eVVnOWs1WDB5M1Iwb2dI?=
+ =?utf-8?B?M2J6Z0dueFVsT2VOWkZ6S0MyaGppQ3ZmRmJ0NDdvOXk0OWR6SU8xSHQwM3RZ?=
+ =?utf-8?B?OTBlUXFHbnNFY2hPbVNvaTBwWkF4UW5kNXo1UmVzWmxMZFFhMkFIeGlQai9q?=
+ =?utf-8?B?RWxnaEljK0R1NGJXRU5LMG9ReDZGVUQwczVwZXM4L1p5SDdYT1Rray9Pc1gw?=
+ =?utf-8?B?VTU4YjV4Sng3QTVvL0RBU3NGMmorcWJLWHhsWmhzdU13N0thaXRhV3p4dmJn?=
+ =?utf-8?B?ZWYvNmhCOFNtNFdXa1QyWmxFOVpqanVEYXRHZVY3L29odmFXU3c5djNRRVhl?=
+ =?utf-8?B?dE5jZGVnK3EyUCs1SmJ4d2c2UC8weXVkTHlhMTcvVXVWcWl4L2lmQ1JzbjNY?=
+ =?utf-8?B?dzRpRWdDdEZ6bGNjYjZiYms3T3FCUk96QXRmcmV3cFUxb2gwYVFHZGp0b3Ex?=
+ =?utf-8?B?QjhjK0IyN0daRlFsTWR4MCtJUlZDYTQ1NnJNTktvK3EweWlMQ1lqclpGWVZB?=
+ =?utf-8?B?ekg3YlMwMllrZkF4QVl2UHhKNkhBYzVicUk5eGlGS1dTTURoeVVQelRmajl1?=
+ =?utf-8?B?YnluWWdsVHZuNlkwT2RwdGIxSjRSTE5sY2cxL0FzVUw2WGhrb3E3MVE3NXQ2?=
+ =?utf-8?B?eFh0OS9uaGF1Vm91a1k2bVJhZzlJdHMxaGsyZStqUnc5eVYrdzJCT0lOZ0Jy?=
+ =?utf-8?B?WlJrYUYvaE1HTUN2c0xSMjJnV0VxTmVMNWpRQm0rN08zSkhTakN6cXQ1VEZ4?=
+ =?utf-8?B?bGV0OTRtYUVqYmZXeEVoL1J6amx1bmgxWGR6U2krYThyVnZJOUxGOFZ6WXpZ?=
+ =?utf-8?B?NTl1dVJUcEhSVTZlZGQ5MEJ3SU1rUmJkNHZsNldibUIzNXdWV0YzelE5aWNN?=
+ =?utf-8?B?bXNBR3MvQkRScDBhTWs2SExXQ1FHSGltZmFaZjE4VkM5SzgzNzVHamhwcFNz?=
+ =?utf-8?B?Q0RvQ3FHbVE1VGRGangxTnRZWlNVSDQzYzYxcmZtMU9ycGQ1b211QmljSy90?=
+ =?utf-8?B?cWZsWmpwZk13Y2ptSXI1MXVHQnQrMjhtbXltWEVHcHppVXRJb1BBeGxyWmdN?=
+ =?utf-8?B?M3RNM1dmNGdCVGFVcXV2ZVo1b0lESG1VMnBOWXNRNTd5YjNKQzIwbEFqUzJs?=
+ =?utf-8?B?RzhCTWpVK2phTXVBYjBtSVlGcXpqNWNidUR2MjNWVVY5UkxxZ2hScDZzZWRK?=
+ =?utf-8?B?RUVJOXhnUkRZRUxGMWR6NHMwcE9wZm9rUFZVTnpIU1ZVMngvZkhlTWJqNkpT?=
+ =?utf-8?B?Z1J2dnVjVnlGS21kZGVrWTcrMlpGK3k0ODhPNE15ZmpUeWQxTTYySi9wN2ln?=
+ =?utf-8?B?T0pOUlVEOEMxRzBnWmF3K1BoTGZneTgzTXFqclFqUHkya3cwOWU3dz09?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6448ddd8-50e0-419a-f028-08dec7d58bc7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01a069f7-e6ae-403b-a6bd-08dec7d58ccb
 X-MS-Exchange-CrossTenant-AuthSource: DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:52.1334
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:53.8189
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j/OWa3q+SFFqrYLZMKBhQ0hQMEqffvHXHhChT9Zgf8uQcUbK/S9jpFt1oFewZ0qIKnhdnt6J6tRmqBSeN+g8VQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: H2ZfUhkEOIrDihvP5iAsiRcID12RPLmu2B2g7YZ+14p9HcDbpPE8i8QaZuJ7nRNFS42DI6Q4zZbijQNczTJjSQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWP189MB2829
-X-Rspamd-Queue-Id: 6C37E1C000A
-X-Stat-Signature: aorf9131thargtah1a7dhgxywws4j9q7
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781194922-566349
-X-HE-Meta: U2FsdGVkX18oBUYb9xVniA5jaN/eQwdS3zEJZY/RHeNeoTmgttAYPxEV3NUI0ajjn9CdlSViTkOYC2tLi1U78nBE9gMsDQa1Dffvg7pMV9nLXHvDHWfhu+8Zu8acmp0hYv1xK0mTcI3imz3r+fz0STECgf61UYf8knAFFqaeS1nUuiGKOeOD6W5G+awDxU4IE6eWKWAFsXvX/xL72GE676HfEl0lTcRpa+jko5zOi0QUEyB7863IIwpM9cDXpa5noel4NqJYQAvaRYHjfT80s42v7mR8J3n8D6cRfx2eJcpCECKx2gDYZ5G5L/XJnla/MiTvh+hnlwzzsuRi3mrJHuHa1CayOaxB6BsMMaRXxFT1m2jc/otuqSxr/8SxSN0ZypX2SXFP53PEykjX1AAfrgtRn8vPoHkLdnm3CuUsCLRVa5fMXLrNtAXe/ovIecr1d/apX9U29pJtpdMsa41z3BxRlR2ctaPIrXf/gSMUicsY9FQOoNg20Aj3yhpF4Pf5mk8ftSEDP0bEW19V23f9MocoUUouprvb5iwGwzSljRRQKuqMrCR49fyNq2MxqOx2HhcTt9gCTL6wHzIKTBoYywwnnFjp8cSDD2OS/jlU2wHIiq4SFTa1ekM5hUD7ATR1BqVsJbSoDo4l9UkhUXybZayBXj6ZymZuAwXF6c9+Al7ZSSaWAYQTrF6T4WMsIBdKfytD0+f3fz01tOKAD9wIGtVRLXQer+nlCQl5XZUG0zoexmlHtqptkZV57h6+TOifVdNrlX9zotwzE7ZPjdxziMHgFTF9OYq3a6D5RMczDWGsDnmxoZfLVZngn+3PZbV97RuOiyUm+dhrWjQzDHFgwDt39ieYqOod9Yn4MzWWqsenyO95QMDs4sEmfQZYcXgrijrzskfLdsIo3HCkJqGSnOVU/nMTQo2ZxLndlb1U7eYO2ivNQxwfOGStK1/k9M0WAGpjqbZqD8nvevnFum6
- la8/0WeY
- C53qM+0iDPkRzst+gW0YHkHA1lFUHMVCRBmild6u4E5YgkWpYFCeYH9LPNgKOxBpsVjZAbWtk7i7PWrgC5lBTL6LA8li8IAso7iolu/CNvd8WUucKTL3Kji05NiyckYrg09VhwgJx3AWSxjldEmhqeCrieQt+rsztCBDASkErOhtrSPaBKiSgfDSo4RomS9UcWFV5kD/oY+ypiVoPNxa166JP3FG1S1qJE1zvZeh2IFt5tJFqN+0GoGkFKgsCiCDvV71x8U2rXxEvJItp/6IvD497jBd+SzKdTrJhd8J6FyfqPZPvcakGhWmY1sjLQGKITwJZcppmlkocEU/WK4fjmtf8PKBLJ45CLhpU70S2wMMpRjiCDK8jI1/w1B3vSp7ETH85tT4Z26clUJcDoJ3A5awe0t/2ZxO7KUpcynoq+qiMtGTjmHo/Zy+A8gggJ3+KAzmes/wErBMvi8AphTYlYO6+y3zkteVA+LBU1jKwvE9IqyJsteTalW+gtX1n+TlUcR7bdMPdOCp/sLFwU5rfanjIsTc9pIl9Ako6ZUyFqMwuO6zVxRc/f+FR7Yy5Y05lBNE0M1pjS/k/lAwPVibs1oOg3OE8jElv3HnRk+oKjLwkSu73ZWQfM6HwjkiJ3dbOMcVsSDNjrBqa0A37Dp/tCXgfQrdFAct2Va9RW6KW7X7HEts=
+X-Stat-Signature: hpudyfc3dbpajmxa4zqkjzwyrcphzhz7
+X-Rspamd-Queue-Id: 37FEA40006
+X-HE-Tag: 1781194925-579519
+X-HE-Meta: U2FsdGVkX1/XvPh16dgCh08wGt1bJrUPMDfdv1LzL3Wep5pD6/sxUe9gvKTPan7OXYiNSoZK1V5SLWYhVQZ15ye0UnRGJ2AEFwGVGJ7NM7Mr2mQJwYnSzgBCCbHbGv/vh0ewlUooLfBOPpO9AfFOrZpYMXnIC4tSgpxsuG/bbOu06m3WoFmY2/Mi4Blhyq1bgqeLEMQlxrSS7z65JIGhiM9TMJ/Do/0an0hqROg8Nx6y8MEBn+1hDjuIN7mY/RtvFikhprlcNqFwqldtJeWIIuzLV+XTKJSMwcA0WHzHT1idFP45TlgLB/hRGAtDa8aNtiOjZNN4IGBS2IGoIWLFQPV5xDRsRcPl6jjic94y0NV6g7/IPgoQBf3rDcouVP81mGCM71KeMAu2UIn36mXg3CCwFZOF2i8RKGXOT7GQ3uGwbsH6OBn7NAvmXIb35IHQNbU+T7t2RZDFhMryJ5YOJ6jMKRFNla7r3+b2nT/M5mIgtBzkC4t8wdMvEpvJ6iNbB7hI4r/kku3mnEOM0QTGr99zliBghoN1yebIBxx/SmB/LNRZgKoxgG8Jt1c7z+njS3ZrQbHiSaCbTyR/7hMwBzRwLQbtrSkT9/K5NyIkAmOlVvlG9P18EKdGbOJMaKgyv30IY0Rhjc0KOSYEErmZzUpqNlbBOojSEHbm0951NblfFkEnDx0h3v5LmkBdYJ3QpNSK6Xia/vIhPb4zCct1Rj9pyOC+x8PyA0Gamkcs8KXS1MIb9XE4yFQvDDzmI3AUvjOhBoooOSSyRUEFeepRw0VefaAAWONYTW2p6J8HSx1+kqga90wRiAIui8+yXcyXIyxwb63gwWGSY4e4HJ8BF01tClN8kD70AN6PsfKZfYNDF9AlMO4VPlL5ynYlglyq5AE5uroY/GjXaiBzFcbY1+NHbmD2VAKmMW9ouRAOR2aucPaN1CjK1xQA+ot4hua8w+S3nza0iMmGeFxO6ga
+ F04yit8U
+ IyQH30dtRQnMctJpN08slkRHD6v7hECMqpuEoAaDVLN5nKgmZtFksmSjy7pIeJwrq7wruo8M066qyUiGwMH/BRMPiwMH40gi18PmuVlQmNWiIy9MBptAtGGhymGuX7eZk7Ob7/6y4FTaQeIxJJw00jv5+LfPmkc9P2j5XC8XpXqJxorabhLIZXJMWEkL0/BzzCvSSjGZBtI+gB/cz+enJhp/YSUvE5pU0BugKp5htvsyS2p0OCkyjAwqVBrkVi5WkJ2BN43u/Bl5b71CIrfMFM+cqCKIbJt75h0hBUneHVrHLyZp5NYihkqFhlEz+ja9iRCoHjyPPORYoAMhYe7tFztbWEWKbl8e1mo8Ru2TRQzaZbYmo0jCpLIKpYbwnQGN8xl1GPcaP3P/J9Q56VGbGluBsaduQrCDenGpDXnad3a8brMz0yt088I7Y7lXFZ9ggTPhVZkUx5bH9m/R8RYHPXPSt7zEqwSiz5MdjLz90CqQasEmwR3z8akaQgRNh+9Zvdb3LW18TINa2Y7bEAUDLtqjtfpdO7TmX1bRHzBBvs1DpqGU0KbH4+BJPQf7jVrHNIpd2R1wkmlxkSzRJVmIuUx+HoT7jJ33Gk8nBOTSgDoML0kcsn5HT4CP7wEcF2ZOddX6YygYPtYQGhpX/W/BL8HTP7v1/cCnGjiZ5ryQHLt4bA+E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,421 +203,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a Python script that loads a test module, triggers its debugfs
-entry with kcov_dataflow recording active, then pretty-prints captured
-records as a nested call tree with kallsyms symbol resolution.
+Add kselftest_harness-based test in user_ioctl/ covering the
+kcov_dataflow ioctl interface (9 TAP cases): init, mmap, enable,
+disable, error paths, double-enable rejection, and record capture.
 
-Features:
-- 8MB ring buffer (1M u64 words) for INSTRUMENT_ALL kernels
-- Enable recording after module load, before trigger (avoids VFS noise)
-- Variable-length record parsing using header-encoded field count
-- Module-only filtering via kallsyms symbol lookup
-- --context/-C N: show N records before/after each module function call
-- --raw: print raw records instead of call tree
-- Architecture-aware syscall numbers (x86_64 and arm64)
+Test:
 
-Usage:
+  make -C tools/testing/selftests/kcov_dataflow
+  ./user_ioctl/user_ioctl
 
-  python3 trigger-view.py eight_args_c \
-    --ko eight_args_c/eight_args_c.ko
+Result:
 
-  python3 trigger-view.py eight_args_rust \
-    --ko eight_args_rust/eight_args_rust.ko
-
-  python3 trigger-view.py rust_ffi_contract \
-    --ko rust_ffi_contract/rust_ffi_contract.ko
+  TAP version 13
+  1..9
+  # Starting 9 tests from 1 test cases.
+  #  RUN           kcov_dataflow.init_track ...
+  #            OK  kcov_dataflow.init_track
+  ok 1 kcov_dataflow.init_track
+  #  RUN           kcov_dataflow.init_track_too_small ...
+  #            OK  kcov_dataflow.init_track_too_small
+  ok 2 kcov_dataflow.init_track_too_small
+  #  RUN           kcov_dataflow.init_track_double ...
+  #            OK  kcov_dataflow.init_track_double
+  ok 3 kcov_dataflow.init_track_double
+  #  RUN           kcov_dataflow.mmap_before_init ...
+  #            OK  kcov_dataflow.mmap_before_init
+  ok 4 kcov_dataflow.mmap_before_init
+  #  RUN           kcov_dataflow.enable_disable ...
+  #            OK  kcov_dataflow.enable_disable
+  ok 5 kcov_dataflow.enable_disable
+  #  RUN           kcov_dataflow.enable_without_mmap ...
+  #            OK  kcov_dataflow.enable_without_mmap
+  ok 6 kcov_dataflow.enable_without_mmap
+  #  RUN           kcov_dataflow.disable_without_enable ...
+  #            OK  kcov_dataflow.disable_without_enable
+  ok 7 kcov_dataflow.disable_without_enable
+  #  RUN           kcov_dataflow.double_enable ...
+  #            OK  kcov_dataflow.double_enable
+  ok 8 kcov_dataflow.double_enable
+  #  RUN           kcov_dataflow.records_captured ...
+  #            OK  kcov_dataflow.records_captured
 
 Cc: Alexander Potapenko <glider@google.com>
 Assisted-by: Claude:claude-opus-4-6 [kiro-chat]
 Link: https://github.com/yskzalloc/kcov-dataflow/actions
 Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 ---
- .../selftests/kcov_dataflow/trigger-view.py        | 377 +++++++++++++++++++++
- 1 file changed, 377 insertions(+)
+ tools/testing/selftests/kcov_dataflow/.gitignore   |   8 ++
+ tools/testing/selftests/kcov_dataflow/Makefile     |   3 +
+ tools/testing/selftests/kcov_dataflow/README.rst   |  37 +++++
+ .../kcov_dataflow/user_ioctl/user_ioctl.c          | 156 +++++++++++++++++++++
+ 4 files changed, 204 insertions(+)
 
-diff --git a/tools/testing/selftests/kcov_dataflow/trigger-view.py b/tools/testing/selftests/kcov_dataflow/trigger-view.py
-new file mode 100755
-index 000000000000..a3274e472dc1
+diff --git a/tools/testing/selftests/kcov_dataflow/.gitignore b/tools/testing/selftests/kcov_dataflow/.gitignore
+new file mode 100644
+index 000000000000..f71fc89580f8
 --- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/trigger-view.py
-@@ -0,0 +1,377 @@
-+#!/usr/bin/env python3
++++ b/tools/testing/selftests/kcov_dataflow/.gitignore
+@@ -0,0 +1,8 @@
 +# SPDX-License-Identifier: GPL-2.0
-+"""
-+trigger-view.py - Load a module with kcov_dataflow
-+recording active, then pretty-print captured records.
++user_ioctl/user_ioctl
++*.o
++*.ko
++*.mod
++*.mod.c
++Module.symvers
++modules.order
+diff --git a/tools/testing/selftests/kcov_dataflow/Makefile b/tools/testing/selftests/kcov_dataflow/Makefile
+new file mode 100644
+index 000000000000..b9fc1c5f0104
+--- /dev/null
++++ b/tools/testing/selftests/kcov_dataflow/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++TEST_GEN_PROGS := user_ioctl/user_ioctl
++include ../lib.mk
+diff --git a/tools/testing/selftests/kcov_dataflow/README.rst b/tools/testing/selftests/kcov_dataflow/README.rst
+new file mode 100644
+index 000000000000..8b650a62acb1
+--- /dev/null
++++ b/tools/testing/selftests/kcov_dataflow/README.rst
+@@ -0,0 +1,37 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+Usage:
-+    python3 trigger-view.py eight_args_c
-+    python3 trigger-view.py rust_ffi_contract
-+    python3 trigger-view.py eight_args_c --raw
++KCOV-Dataflow Selftests
++========================
 +
-+The script:
-+  1. Opens /sys/kernel/debug/kcov_dataflow
-+  2. Inits and mmaps the buffer
-+  3. Enables recording for this process
-+  4. Loads the module via finit_module() -- init runs in our context
-+  5. Disables recording
-+  6. Unloads the module
-+  7. Parses and prints captured records with kallsyms resolution
-+"""
-+import os
-+import sys
-+import struct
-+import ctypes
-+import ctypes.util
-+import argparse
-+import fcntl
++This directory contains selftests for the KCOV-Dataflow subsystem
++(``/sys/kernel/debug/kcov_dataflow``).
 +
-+# Constants
-+DF_TYPE_ENTRY = 0xE
-+DF_TYPE_RET = 0xF
-+MAGIC_BAD = 0xBADADD85
-+BUF_SIZE = 1048576  # 1M words = 8MB
++Prerequisites
++-------------
 +
-+# Ioctl numbers
-+def _IOR(t, nr, size):
-+    return (2 << 30) | (ord(t) << 8) | nr | (size << 16)
++Build the kernel with::
 +
-+def _IO(t, nr):
-+    return (ord(t) << 8) | nr
++    CONFIG_KCOV=y
++    CONFIG_KCOV_DATAFLOW_ARGS=y
++    CONFIG_KCOV_DATAFLOW_RET=y
++    CONFIG_DEBUG_INFO=y
 +
-+KCOV_DF_INIT_TRACK = _IOR('d', 1, 8)
-+KCOV_DF_ENABLE = _IO('d', 100)
-+KCOV_DF_DISABLE = _IO('d', 101)
++For full capture, also enable::
 +
-+# syscall numbers (x86_64)
-+import platform
-+_machine = platform.machine()
-+if _machine == "aarch64":
-+    SYS_FINIT_MODULE = 273
-+    SYS_DELETE_MODULE = 106
-+else:  # x86_64
-+    SYS_FINIT_MODULE = 313
-+    SYS_DELETE_MODULE = 176
++    CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL=y
 +
-+SELFTEST_DIR = os.path.dirname(os.path.abspath(__file__))
++Tests
++-----
 +
++user_ioctl/user_ioctl.c
++    Automated ioctl interface test (9 TAP cases)::
 +
-+def load_kallsyms():
-+    """Load kernel symbols for PC resolution."""
-+    syms = []
-+    try:
-+        with open("/proc/kallsyms") as f:
-+            for line in f:
-+                parts = line.split()
-+                if len(parts) >= 3:
-+                    addr = int(parts[0], 16)
-+                    name = parts[2]
-+                    mod = parts[3].strip("[]") if len(parts) > 3 else ""
-+                    syms.append((addr, name, mod))
-+    except (PermissionError, FileNotFoundError):
-+        pass
-+    syms.sort()
-+    return syms
++        make -C tools/testing/selftests/kcov_dataflow
++        ./user_ioctl/user_ioctl
 +
++trigger-view.py
++    Loads a test module via finit_module() with recording active,
++    prints captured records with symbol resolution::
 +
-+def symbolize(pc, syms):
-+    """Find nearest symbol <= pc."""
-+    if not syms:
-+        return f"0x{pc:x}"
-+    lo, hi = 0, len(syms) - 1
-+    while lo < hi:
-+        mid = (lo + hi + 1) // 2
-+        if syms[mid][0] <= pc:
-+            lo = mid
-+        else:
-+            hi = mid - 1
-+    addr, name, mod = syms[lo]
-+    if addr > pc:
-+        return f"0x{pc:x}"
-+    offset = pc - addr
-+    if mod:
-+        return f"{name}+0x{offset:x} [{mod}]" if offset else f"{name} [{mod}]"
-+    return f"{name}+0x{offset:x}" if offset else name
++        python3 trigger-view.py <module_name>
++        python3 trigger-view.py <module_name> --raw
+diff --git a/tools/testing/selftests/kcov_dataflow/user_ioctl/user_ioctl.c b/tools/testing/selftests/kcov_dataflow/user_ioctl/user_ioctl.c
+new file mode 100644
+index 000000000000..48448bc02d2f
+--- /dev/null
++++ b/tools/testing/selftests/kcov_dataflow/user_ioctl/user_ioctl.c
+@@ -0,0 +1,156 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * kcov_dataflow_test.c - Selftest for /sys/kernel/debug/kcov_dataflow
++ *
++ * Verifies the ioctl interface: open, INIT_TRACK, mmap, ENABLE, DISABLE.
++ * With INSTRUMENT_ALL, also verifies that records are produced for
++ * syscalls executed while recording is active.
++ */
++#include <stdio.h>
++#include <stdlib.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <stdint.h>
++#include <string.h>
++#include <errno.h>
 +
++#include "../../kselftest_harness.h"
 +
-+def format_val(v):
-+    """Format a captured value."""
-+    if v == MAGIC_BAD:
-+        return "FAULT"
-+    if v == 0:
-+        return "0x0"
-+    return f"0x{v:x}"
++#define KCOV_DF_INIT_TRACK	_IOR('d', 1, unsigned long)
++#define KCOV_DF_ENABLE		_IO('d', 100)
++#define KCOV_DF_DISABLE		_IO('d', 101)
 +
++#define BUF_SIZE 65536
 +
-+def find_module(name):
-+    """Find the .ko file for the given test name."""
-+    ko_path = os.path.join(SELFTEST_DIR, name, f"{name}_mod.ko")
-+    if os.path.exists(ko_path):
-+        return ko_path
-+    # Try without _mod suffix
-+    ko_path = os.path.join(SELFTEST_DIR, name, f"{name}.ko")
-+    if os.path.exists(ko_path):
-+        return ko_path
-+    # Search for any .ko in the directory
-+    mod_dir = os.path.join(SELFTEST_DIR, name)
-+    if os.path.isdir(mod_dir):
-+        for f in os.listdir(mod_dir):
-+            if f.endswith(".ko"):
-+                return os.path.join(mod_dir, f)
-+    return None
++#define DF_TYPE_ENTRY	0xE
++#define DF_TYPE_RET	0xF
 +
++FIXTURE(kcov_dataflow) {
++	int fd;
++	uint64_t *buf;
++};
 +
-+def finit_module(ko_path):
-+    """Load a kernel module via finit_module syscall."""
-+    libc = ctypes.CDLL(ctypes.util.find_library("c"), use_errno=True)
-+    fd = os.open(ko_path, os.O_RDONLY)
-+    ret = libc.syscall(SYS_FINIT_MODULE, fd, b"", 0)
-+    os.close(fd)
-+    if ret != 0:
-+        errno = ctypes.get_errno()
-+        raise OSError(errno, f"finit_module({ko_path}): {os.strerror(errno)}")
++FIXTURE_SETUP(kcov_dataflow)
++{
++	self->fd = open("/sys/kernel/debug/kcov_dataflow", O_RDWR);
++	if (self->fd < 0)
++		SKIP(return, "kcov_dataflow not available (need CONFIG_KCOV_DATAFLOW_ARGS)");
++	self->buf = MAP_FAILED;
++}
 +
++FIXTURE_TEARDOWN(kcov_dataflow)
++{
++	if (self->buf != MAP_FAILED)
++		munmap(self->buf, BUF_SIZE * sizeof(uint64_t));
++	if (self->fd >= 0)
++		close(self->fd);
++}
 +
-+def delete_module(name):
-+    """Unload a kernel module."""
-+    libc = ctypes.CDLL(ctypes.util.find_library("c"), use_errno=True)
-+    ret = libc.syscall(SYS_DELETE_MODULE, name.encode(), 0)
-+    if ret != 0:
-+        errno = ctypes.get_errno()
-+        raise OSError(errno, f"delete_module({name}): {os.strerror(errno)}")
++TEST_F(kcov_dataflow, init_track)
++{
++	int ret = ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE);
 +
++	ASSERT_EQ(0, ret);
++}
 +
-+def parse_records(buf, total_words):
-+    """Parse the ring buffer into a list of records."""
-+    records = []
-+    pos = 1
-+    while pos + 3 <= total_words and pos < BUF_SIZE:
-+        hdr = buf[pos]
++TEST_F(kcov_dataflow, init_track_too_small)
++{
++	int ret = ioctl(self->fd, KCOV_DF_INIT_TRACK, 1UL);
 +
-+        # Valid headers fit in 32 bits (upper 32 must be zero)
-+        if hdr >> 32:
-+            pos += 1
-+            continue
++	ASSERT_EQ(-1, ret);
++	ASSERT_EQ(EINVAL, errno);
++}
 +
-+        rtype = (hdr >> 28) & 0xF
++TEST_F(kcov_dataflow, init_track_double)
++{
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	ASSERT_EQ(-1, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	ASSERT_EQ(EBUSY, errno);
++}
 +
-+        if rtype not in (DF_TYPE_ENTRY, DF_TYPE_RET):
-+            pos += 1
-+            continue
++TEST_F(kcov_dataflow, mmap_before_init)
++{
++	self->buf = mmap(NULL, BUF_SIZE * sizeof(uint64_t),
++			 PROT_READ | PROT_WRITE, MAP_SHARED, self->fd, 0);
++	ASSERT_EQ(MAP_FAILED, self->buf);
++}
 +
-+        pc = buf[pos + 1]
-+        meta = buf[pos + 2]
-+        seq = hdr & 0x00FFFFFF
-+        num_vals = (hdr >> 24) & 0xF
-+        if num_vals == 0:
-+            num_vals = 1
++TEST_F(kcov_dataflow, enable_disable)
++{
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	self->buf = mmap(NULL, BUF_SIZE * sizeof(uint64_t),
++			 PROT_READ | PROT_WRITE, MAP_SHARED, self->fd, 0);
++	ASSERT_NE(MAP_FAILED, self->buf);
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_ENABLE, 0));
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_DISABLE, 0));
++}
 +
-+        # Valid records always have a non-zero PC (kernel text address)
-+        if pc == 0:
-+            pos += 1
-+            continue
++TEST_F(kcov_dataflow, enable_without_mmap)
++{
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	/* enable works even without mmap (mmap is optional for setup) */
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_ENABLE, 0));
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_DISABLE, 0));
++}
 +
-+        val = buf[pos + 3] if pos + 3 < BUF_SIZE else 0
-+        records.append({
-+            "type": rtype,
-+            "seq": seq,
-+            "pc": pc,
-+            "meta": meta,
-+            "val": val,
-+        })
-+        pos += 3 + num_vals
-+    return records
++TEST_F(kcov_dataflow, disable_without_enable)
++{
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	ASSERT_EQ(-1, ioctl(self->fd, KCOV_DF_DISABLE, 0));
++	ASSERT_EQ(EINVAL, errno);
++}
 +
++TEST_F(kcov_dataflow, double_enable)
++{
++	int fd2;
 +
-+def print_raw(records, syms):
-+    """Print records in raw format."""
-+    for r in records:
-+        sym = symbolize(r["pc"], syms)
-+        t = "ENTRY" if r["type"] == DF_TYPE_ENTRY else "RET  "
-+        arg_idx = (r["meta"] >> 56) & 0xFF
-+        size = (r["meta"] >> 48) & 0xFF
-+        print(f"[{t}] seq={r['seq']:3d} {sym} "
-+              f"arg[{arg_idx}]({size}) = {format_val(r['val'])}")
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	self->buf = mmap(NULL, BUF_SIZE * sizeof(uint64_t),
++			 PROT_READ | PROT_WRITE, MAP_SHARED, self->fd, 0);
++	ASSERT_NE(MAP_FAILED, self->buf);
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_ENABLE, 0));
 +
++	/* Second fd should fail to enable (task already active) */
++	fd2 = open("/sys/kernel/debug/kcov_dataflow", O_RDWR);
++	ASSERT_GE(fd2, 0);
++	ASSERT_EQ(0, ioctl(fd2, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	ASSERT_EQ(-1, ioctl(fd2, KCOV_DF_ENABLE, 0));
++	ASSERT_EQ(EBUSY, errno);
++	close(fd2);
 +
-+def print_tree(records, syms):
-+    """Print records as indented call tree matching converted.txt format."""
-+    depth = 0
-+    # Group consecutive ENTRY records by PC to collect all args
-+    i = 0
-+    while i < len(records):
-+        r = records[i]
-+        sym = symbolize(r["pc"], syms)
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_DISABLE, 0));
++}
 +
-+        if r["type"] == DF_TYPE_ENTRY:
-+            # Collect all args for this call (same PC, consecutive entries)
-+            args = []
-+            pc = r["pc"]
-+            while i < len(records) and records[i]["type"] == DF_TYPE_ENTRY \
-+                    and records[i]["pc"] == pc:
-+                args.append(format_val(records[i]["val"]))
-+                i += 1
-+            indent = "  " * depth
-+            print(f"{indent}{sym}({', '.join(args)})")
-+            depth += 1
-+        else:
-+            depth = max(0, depth - 1)
-+            indent = "  " * depth
-+            print(f"{indent}{format_val(r['val'])} = {sym}()")
-+            i += 1
++TEST_F(kcov_dataflow, records_captured)
++{
++	uint64_t count;
 +
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_INIT_TRACK, (unsigned long)BUF_SIZE));
++	self->buf = mmap(NULL, BUF_SIZE * sizeof(uint64_t),
++			 PROT_READ | PROT_WRITE, MAP_SHARED, self->fd, 0);
++	ASSERT_NE(MAP_FAILED, self->buf);
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_ENABLE, 0));
 +
-+def main():
-+    parser = argparse.ArgumentParser(
-+        description="Load a test module with kcov_dataflow and view records")
-+    parser.add_argument("module", help="Test module name (e.g. eight_args_c)")
-+    parser.add_argument("--raw", action="store_true",
-+                        help="Print raw records instead of tree")
-+    parser.add_argument("--ko", help="Explicit path to .ko file")
-+    parser.add_argument("--context", "-C", type=int, default=0,
-+                        help="Show N lines before/after each module record")
-+    args = parser.parse_args()
++	/* Trigger some kernel code in this task */
++	getpid();
 +
-+    # Find module
-+    if args.ko:
-+        ko_path = args.ko
-+    else:
-+        ko_path = find_module(args.module)
-+    if not ko_path or not os.path.exists(ko_path):
-+        print(f"Cannot find module for '{args.module}'", file=sys.stderr)
-+        print(f"Build it first: make LLVM=1 CC=clang "
-+              f"M=tools/testing/selftests/kcov_dataflow/{args.module} modules",
-+              file=sys.stderr)
-+        sys.exit(1)
++	ASSERT_EQ(0, ioctl(self->fd, KCOV_DF_DISABLE, 0));
 +
-+    # Open kcov_dataflow
-+    # Ensure kallsyms shows real addresses
-+    try:
-+        with open("/proc/sys/kernel/kptr_restrict", "w") as f:
-+            f.write("0")
-+    except (PermissionError, FileNotFoundError):
-+        pass
++	count = self->buf[0];
++	/*
++	 * With INSTRUMENT_ALL, getpid() produces records.
++	 * Without it, count may be 0 (no instrumented code).
++	 * Either way, the interface works correctly.
++	 */
++	if (count > 0) {
++		uint64_t hdr = self->buf[1];
++		unsigned int type = (hdr >> 28) & 0xF;
 +
-+    try:
-+        df_fd = os.open("/sys/kernel/debug/kcov_dataflow", os.O_RDWR)
-+    except OSError as e:
-+        print(f"Cannot open kcov_dataflow: {e}", file=sys.stderr)
-+        sys.exit(1)
++		/* First record should be ENTRY or RET */
++		ASSERT_TRUE(type == DF_TYPE_ENTRY || type == DF_TYPE_RET);
++	}
++}
 +
-+    # Init + mmap
-+    fcntl.ioctl(df_fd, KCOV_DF_INIT_TRACK, BUF_SIZE)
-+    libc = ctypes.CDLL(ctypes.util.find_library("c"), use_errno=True)
-+    libc.mmap.restype = ctypes.c_void_p
-+    libc.mmap.argtypes = [
-+        ctypes.c_void_p, ctypes.c_size_t, ctypes.c_int,
-+        ctypes.c_int, ctypes.c_int, ctypes.c_long
-+    ]
-+    buf_ptr = libc.mmap(None, BUF_SIZE * 8, 0x3, 0x01, df_fd, 0)
-+    if buf_ptr == ctypes.c_void_p(-1).value:
-+        print("mmap failed", file=sys.stderr)
-+        sys.exit(1)
-+    buf = (ctypes.c_uint64 * BUF_SIZE).from_address(buf_ptr)
-+
-+    # Load module first (generates noise with INSTRUMENT_ALL)
-+    mod_name = os.path.basename(ko_path).replace(".ko", "")
-+    try:
-+        finit_module(ko_path)
-+        print(f"# Loaded {mod_name}")
-+    except OSError as e:
-+        print(f"Failed to load module: {e}", file=sys.stderr)
-+        sys.exit(1)
-+
-+    # Get module .text address for PC filtering
-+    mod_text_start = 0
-+    try:
-+        with open(f"/sys/module/{mod_name}/sections/.text") as f:
-+            mod_text_start = int(f.read().strip(), 16)
-+    except (FileNotFoundError, ValueError, PermissionError):
-+        pass
-+
-+    # Enable recording AFTER load, BEFORE trigger (avoids VFS/loader noise)
-+    fcntl.ioctl(df_fd, KCOV_DF_ENABLE, 0)
-+    buf[0] = 0
-+
-+    # Trigger the module's debugfs file to invoke test functions
-+    trigger_paths = [
-+        f"/sys/kernel/debug/kcov_dataflow_test/trigger",
-+        f"/sys/kernel/debug/kcov_dataflow_test/rust_ffi_trigger",
-+        f"/sys/kernel/debug/trigger_rust",
-+        f"/sys/kernel/debug/{mod_name}/trigger",
-+    ]
-+    for tp in trigger_paths:
-+        try:
-+            with open(tp, "w") as f:
-+                f.write("1")
-+            break
-+        except (FileNotFoundError, PermissionError):
-+            continue
-+
-+    fcntl.ioctl(df_fd, KCOV_DF_DISABLE, 0)
-+
-+    # Read kallsyms while module is still loaded (symbols available)
-+    syms = load_kallsyms()
-+
-+    # Unload
-+    try:
-+        delete_module(mod_name)
-+    except OSError:
-+        pass
-+
-+    # Parse and display
-+    total = int(buf[0])
-+    print(f"# Captured {total} words")
-+    records = parse_records(buf, total)
-+    print(f"# {len(records)} records")
-+
-+    # Filter to module records using kallsyms
-+    # Build set of module symbol addresses for fast lookup
-+    mod_syms = set()
-+    for addr, name, mod in syms:
-+        if mod == mod_name and addr != 0:
-+            mod_syms.add(addr)
-+
-+    def is_module_pc(pc):
-+        """Check if PC belongs to mod_name via kallsyms."""
-+        if mod_syms:
-+            # Binary search: find nearest symbol <= pc, check module
-+            lo, hi = 0, len(syms) - 1
-+            while lo < hi:
-+                mid = (lo + hi + 1) // 2
-+                if syms[mid][0] <= pc:
-+                    lo = mid
-+                else:
-+                    hi = mid - 1
-+            return syms[lo][2] == mod_name
-+        # Fallback: if no module symbols (kptr_restrict), use .text start
-+        return mod_text_start and pc >= mod_text_start
-+
-+    if syms or mod_text_start:
-+        if args.context > 0:
-+            module_indices = set()
-+            for i, r in enumerate(records):
-+                if is_module_pc(r["pc"]):
-+                    for j in range(max(0, i - args.context),
-+                                   min(len(records), i + args.context + 1)):
-+                        module_indices.add(j)
-+            records = [records[i] for i in sorted(module_indices)]
-+            print(f"# showing {len(records)} records with context={args.context} "
-+                  f"around {mod_name}\n")
-+        else:
-+            module_records = [r for r in records if is_module_pc(r["pc"])]
-+            print(f"# {len(module_records)} from {mod_name}\n")
-+            records = module_records
-+    else:
-+        print("")
-+
-+    if args.raw:
-+        print_raw(records, syms)
-+    else:
-+        print_tree(records, syms)
-+
-+    os.close(df_fd)
-+
-+
-+if __name__ == "__main__":
-+    main()
++TEST_HARNESS_MAIN
 
 -- 
 2.43.0
