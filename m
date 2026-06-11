@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFC1CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D14B4CD98D6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:02:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6AC66B0095; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
+	id DA75B6B0098; Thu, 11 Jun 2026 09:01:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCFD36B009B; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
+	id D2DA56B0099; Thu, 11 Jun 2026 09:01:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1FFB6B0098; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
+	id C44156B009B; Thu, 11 Jun 2026 09:01:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A8536B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51B431A0651
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:58 +0000 (UTC)
-X-FDA: 84867644316.23.279B682
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4CD5E18001B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SUlctvwU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3wrEqagcKCCkFGFWSFXLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--abarnas.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3wrEqagcKCCkFGFWSFXLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--abarnas.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A924B6B0098
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E4BCA04D8
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:59 +0000 (UTC)
+X-FDA: 84867644358.29.9783468
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8E7494000D
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hERLDBDb;
+	spf=pass (imf04.hostedemail.com: domain of 3w7EqagcKCCoGHGXTGYMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--abarnas.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3w7EqagcKCCoGHGXTGYMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781182917;
+	b=73w6uNk6WzoeHmWQDeCSrD8kHPqFLcY05+ApdvJfDIFh5BBoUT522JKBBIHDLBtw5gSWHJ
+	zqXvyYTx4qMTvVsYuljJxiWU8GhCLUDljBybL8DRlJgCLtjWsV2wJPxutmZWEnLXYW7eUT
+	I0PN+80aeoe/UtI3BGcPTxfV9JwmRFo=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hERLDBDb;
+	spf=pass (imf04.hostedemail.com: domain of 3w7EqagcKCCoGHGXTGYMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--abarnas.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3w7EqagcKCCoGHGXTGYMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781182916;
+	s=arc-20220608; t=1781182917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UUGCjfh6EUmYtCCfKGjZNWokb6MJPrpnpmuE3FfsWTU=;
-	b=3WlAB81ZAIS3XxptZtxOxWFMen/3pIa29tsoNPBcfJk1hDNQxSIkEpEM73ek5YbFOvNeIw
-	tTn9IKMHrMNjPgGdpFzzJsLopr084uAaesvkzj/nlj4RLVTNNzfbKrqwLomk4vGAeexvys
-	GJCl+OifeXk8dxUBX5dFh588mBMG5Wg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SUlctvwU;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3wrEqagcKCCkFGFWSFXLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--abarnas.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3wrEqagcKCCkFGFWSFXLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--abarnas.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781182916;
-	b=Xg6YTr1phX+3ODWPp+Vf8ELY1kSGcUGCfMU5orKdREVV6oeYCUeI4ZYDFC2irobPCDA/xG
-	4RQWIvr5i4BW0N+WAhCAEnZlgOE6nbv7m8X3tgtgoq51JQpeSqnlTJWnuRkIJqHYhSw7QJ
-	5UDlzwULEhcxnJVBMZI65EqNO8qCLLU=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490abeb7298so82660665e9.2
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:55 -0700 (PDT)
+	bh=g5h5bvBN14eW3fvu0tVxTv7/VrbeBwl0cY8Ur130Yko=;
+	b=0QJtsYA5eTUOYL2PGbv72uOttJ0eTLo5jJin8hyK3sTgTdD3QCBUfUZdeVte63B+MCX/U9
+	HOh3BrtBJqZdHfVoxLs0DphB/94FjA9uWeyj1K96L8Ds/BfYVqfaHLfYGlfhRBt3aopQv+
+	PzEerV5wMak7e0j7ZpvHVczKzBWbreY=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef6b407b4so3473511f8f.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781182915; x=1781787715; darn=kvack.org;
+        d=google.com; s=20251104; t=1781182916; x=1781787716; darn=kvack.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UUGCjfh6EUmYtCCfKGjZNWokb6MJPrpnpmuE3FfsWTU=;
-        b=SUlctvwUvMY2uET8VF2bwilBaEZ3Z7kOE2LTOQxXkU6QMIsd6jko/uxBykxaKcrqin
-         aP01IhUPl2oYMgyQ7rH1Nnq8PIuPj2v0jcLMeCDXvmpT+RlwpW9nLmrQPOmVM7rxKWxz
-         V09TOCWcofJ0lhvmiEEOjpdzR6QL4UEkz6E0DDe3tCN8QQ2FBkqvfErpGxlH+oJ/Y5LK
-         uJCuYDStOC56xLQmFvK9q0V/NUIDTTwy/LmXOaio5I9TGpayXCEcWubUU+ADfXZlJAlC
-         z8dLWP3MYm6sERoZ6ff9Wx5zO4maYCACVWmFw1pbSGrGS0gfoG62LD0DkL/H7djPpWwz
-         kWuw==
+        bh=g5h5bvBN14eW3fvu0tVxTv7/VrbeBwl0cY8Ur130Yko=;
+        b=hERLDBDbXq4jmWfAwHiHJ7vovhQWoeAOv6bCX/NINpVD9IXQuIEDIfLmCvz78Euusd
+         2IVDL4VNrXoDXeJbg3YxXNv+29QSLD4Bp9l98/ipEWuf1iHObsFuUrZNsairGjLTlg3O
+         4kU+n2C2qehiu4IHihsNdPB7/hntdMiJx4y8a+KoywFdNs3dfy8szaW3sgv8RAmhUU/x
+         xUutWlFTSv1Eh2Y2p3793Tj1I9MvC1XeEaPtHjuHt29K+nJenLIgtRuCoJbiZTteZEJn
+         pBQmoYUmOK4eexC0i8hXW5zT3bhth9OrQg3HJaqgFdDbuLlQNwEoIIUN305JRXz/Ree9
+         uimw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781182915; x=1781787715;
+        d=1e100.net; s=20251104; t=1781182916; x=1781787716;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=UUGCjfh6EUmYtCCfKGjZNWokb6MJPrpnpmuE3FfsWTU=;
-        b=RhgK7vvbpjY7XJ2pEU69lEJrezw31HE1FnHVty7i1vptjAnf6WseipMU20KfhPijPi
-         9v+VMFt5vSw+PQSnJh6wENxhdStYDDOzEuPFfTckZfQMvHdOJK8k/nFaox7x0KGnzJSN
-         Ktlp6BBT5mfKgXiEW22Tk/pv119uYSJjwHA+MOANk1kfl3E/z0tCoEkeSot2+pFe0izI
-         rQXwJJA3VnrU+TJ65CgaFxgxHxEdk+AotFR7GHqztOQ/1pChPKZULZ18soutUPwa7L0O
-         097xW+7R3Q2JWwLYw+n2iGmBbArsomhvptf0uoht2BH+oNTtouGuoRNQqpFauj86mAYp
-         jEJA==
-X-Gm-Message-State: AOJu0Yx8E83+qDqhDBoWh5itT+xqZsbyEfOOgHN/+zTqrx41XoU9cYy8
-	wjOrLobSjD78djvuNBbHB4QS/qqynnKwu4liDq0AsRhVk07rHfl6zkqdRAW9g7G9KsXdAszQIqS
-	f8cbg+DvjUw==
-X-Received: from wmlu18.prod.google.com ([2002:a05:600c:2112:b0:490:b58a:2c9b])
- (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d2a:b0:490:bbc1:d508
- with SMTP id 5b1f17b1804b1-490e55d0f77mr36764525e9.1.1781182914565; Thu, 11
- Jun 2026 06:01:54 -0700 (PDT)
-Date: Thu, 11 Jun 2026 13:01:43 +0000
+        bh=g5h5bvBN14eW3fvu0tVxTv7/VrbeBwl0cY8Ur130Yko=;
+        b=hmeYAym4HTcwGvfUlcjVatcduXt0l9qtOjBFtaFzlNnEIcJnGmEJ5KgUTNaILQ//VO
+         dRKCdfnVYpaTIcWdMv7E5ZH1yZHln4a9cPQI5IMj4FoPEgu1F20A8JAPR3F3s2TYzXnr
+         rnzwtiSarHcouzeGsKhw8jVBBHh0/f+gSajW9BWm9NTMM2YpPX8AbX0umC97k3GftD3/
+         tiKyxFsFRa5S2DySc5dEgsGeom3mLU6OhgS/8zSMg2X8PBMVHg5IFOb8Rt0kTvtIizPV
+         oSBKAWDDJ10h6X2emFwTtOW09SbdQ9DwWRTdUuHjUdCJ/UxkbBT98cHplQzEfSwKpxGm
+         pDTg==
+X-Gm-Message-State: AOJu0YxoqqQkRgv64MGRFDfLKy8blIPSutHAsSh94ogJvsZB+2CqcUDo
+	wQWcQUGTlXtRBJpUdazDWHQVqIGbrSs9VHLKRKrwjDsY7ytHtQUp8+G/jGzmGCNF3yHKAsjWxUP
+	/7kPipsnr8g==
+X-Received: from wmbjw14.prod.google.com ([2002:a05:600c:574e:b0:490:e190:39cb])
+ (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c0cb:b0:490:b9c3:6c69
+ with SMTP id 5b1f17b1804b1-490e561edd9mr24134875e9.30.1781182915837; Thu, 11
+ Jun 2026 06:01:55 -0700 (PDT)
+Date: Thu, 11 Jun 2026 13:01:44 +0000
 In-Reply-To: <20260611130144.1385343-1-abarnas@google.com>
 Mime-Version: 1.0
 References: <20260611130144.1385343-1-abarnas@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611130144.1385343-6-abarnas@google.com>
-Subject: [RFC PATCH 5/6] arm64: execmem: enable EXECMEM_ROX_CACHE on supported CPUs
+Message-ID: <20260611130144.1385343-7-abarnas@google.com>
+Subject: [RFC PATCH 6/6] arm64: mm: support PMD page coalescing in the linear map
 From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
@@ -98,14 +98,14 @@ Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>,
 	Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4CD5E18001B
-X-Stat-Signature: 78ex1tephg4879uydx9mkiwb5nc6koub
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8E7494000D
 X-Rspam-User: 
-X-HE-Tag: 1781182915-540867
-X-HE-Meta: U2FsdGVkX1+wC2vDjq9+CilBtxHiqX6IH/Im0bYPaoLaH7wtzeZcfCA0ldQ910+orWoJKbk/CB8PP+HFidVl+tOEdWPqYctVAypZS7/iok9gH8yXIhSoYe8zj1wZ37jNL/UIHF9CYwKJxc+8xR3P0cxfoEdJpUixoHoy8jxVAN8EkIQN2QNzL64DWUTyWW6bCzu2HZgUZ0hA3/UuvWF0zNU0KulUUiju+ykUxILxKvnHN1t5kNxQE8fFsNg0E4g1reZtxtLmsezUlaPrWqVNFd5CXVD4q/tUGnSeV0tIg4nA1LT74F7lzA11UyyXDlkvluJFU0UsgE5AgMML/IAzScxl06rbR3BQhungeWSDH6o6FFy5O9Q3aFjvjFKNBt82d3/Xa0VZblneWNe+vQgMdcUyBYzETqDSS3gLhSnjxGrYwveo5CpZePdeo2FpaeIEwXpRc/6/Axq2aeDXErUWYpIqxBqF3OWrhjBsUTZQBS1r2mJ1Cu1LX06ZZVdEiJk2BM/ZZzv6O2qrktmziiY7nR5CkPDWarH5XXIofIXk/RY7a/JZW6KYJBsyIuzNfq0V+JCmD8o7HkukbxFZQV8OeGJUyRJg8/WD2lY0NftfCmLW5celG/0ONm3DBPRpa3TliC997i5hDFhReTQFoP/w2uxYTCMMf0CJthrfkVq/1lmxlDCPlhykoERNTgAxhzLg+mx3SndoJIoaiNUQZJu+YED8HHVQNw7NUoz6g27FqjYle4hXo1oz1R+LIQ11z6iWPXMgO+eT30HQZGx73qs2kskj1Wix5vKv0eHE6ccyawXR83WmUASYTMdzajzNkN1qSaz2u8BRQX85dEyw9QuI4ExHeSvHCBCSxAftJqHsIfjuASQDqX+gjgueX1DS1DuU+CVuZUrI03cDHtfT1FiBaD8VrJBCwsJzaQP0ZCbwWIiCCp2yfvnOuA+OLBcVqW9NgYi3fValE2uN1qh52c7
- XKSTd064
- yyByCxggH5qZKXH1ytLTNhGMkTt8okEqhvWtM4KZJcVgtZtBBFL6TiXanVR9XmVETWZ7yZdv3CgvSlCYqqAQGC/oiGN94XPp/9xhOux1h+pJv2JGYzVwbt3RhBb4eBZL0gAX0nDSr8PAh9JOoVww0X60hZBLZFAdne4Jt3kG4rHZGMEExhEtZUWntu0yfbl2WSduU06NujzTVmAdrBX/hAhY0bcTFNZW3Zxgdlbk2zOQAHhX243b76nZtPZhg6sbE3jQ9VI+MR3+51MQ0vum94CJpNnyUMjrvA0GBAvaTaxs0nDZxWweSGmMcKHxsrPtNCTiNQ6bcykhMzf68pLNHyIiRgJSMovpkftxcDt9V2yQ4SmlqTjyjVxHRj1h5rxAaJ6Clobky4Mu7GWN76widU/jwq6tdK4UYCglINRt5Wk7hgwRTR0qxYyhXcL59ca4OxJdmGa3ioZAfTUvb+CggGF7bxj7BV8DaSoqzMtTVamkd3FHzhyycaKnwkIjKmPG71wRpH3Z1Igw3AMn0OxER2GwItAglrNfD8JfmEgRPkrAsDDb4+ivwoeblv6w7hdm0qTIQVQAuTyN9BLR8OVQtrkkr/JNI56D4ox74KlCIP2fzybgHGyJcEO3zmg==
+X-Stat-Signature: j1qz3zjrkybrfjp4t7ian9iq6xacfp95
+X-HE-Tag: 1781182917-972617
+X-HE-Meta: U2FsdGVkX18kvnUDhS6u0utrxwx7KtXyjEF55OniT1U9pvv94X98gQVDa6kNixAjMNxRMCfOWRFIDxOnY1+rq2TjhMqg6fPdavWKedylz5D9rTQmS/v6OXpmn2MLdKygyR8cWlc24JnB3qXIxx7VUlXj9hjpyAoW7BWiynyDol+PH9Gi0So0rhshficOQDlyIuPUSaOofLvZ7ulSD+jkdjF+D73f5yCybHOt4vWvjPP4PftLI0ncCxhjvwmrTDZ3sS/HawR08upXI6pDGMoDhxBNm/nB3GnthoyIumPtY8hdaEHrm+9/Be2EBOuh+4bI5n+7zNoNuWs0KB9imLr4PeVTsROF3gdCwkB28MpBaJHqIHT2yitBCRksyBiiKquodDzSs7Nyh11PH23DD1QVxcyp5cptwAvEuBj5tRV9SeTf2zXhcQ0SJMW9Yv+J0+IrBd2Y+JepNP4TsTL+2+2R8YVfQzeNhY47uA1b/pEr+1hTN80I+4LVdo/TSk7WHDrRfOl5Fdru7jFd+53GwmCClAMFrp0n1qZyVIKLwRm6E2GoasqEs7b2qkAnEhHK7CrHSN5+XgEr7uV5I0kUaAh9mBDIGyr7Go1bAa62BXhWi7G6teeAkwSImT+AqNZqG+3GajJdlbLe2eFPqNl+5i4AM/tczLFOdNr2XaOsUkn4J9iEjl/QDq0c9HNMKo+0wgeeYF30/43a/pne4QC5XCTGtyL4asI8/Z51ch6oE4sB8ObSeBW1h979QNVBgKreFRMH0hddkyyNqK8V4uXaR4TjH/FLt8HpvwhHqAg2u89UGaLWCc/XNq4daLIz5VXr932p+EwhHI+9Qbd8ROkNOwmwGHw4v/wKt1oBySzB6CCDl5DUo71PEie61sEoXH7N/chDj+ZNEouvaVU6prlHPqGLrnc5VfMdYVIwstYbWkPKFJ7nGb9bCbHyopxmf5r7rpHNj1lISTLqohTIEKLD8GA
+ w4LpsRFC
+ l0vgRe+BfddTr5SO+EfIyD2oxUPGvHKLT2rSbMrtTyYJZwM+E6Z8ZIiuEbTmYE5kMr4CbUt4d60sbuKrJyKm8wIydY+DpzDhD/30eJUYSiifXcEp+7VUEgQJhvYMx7juU/tg6MdNguL6022U/DG9LutYGeccywibnzfPYXP+jdpdizJdeHOIAkJ0v901Sgzwqt1zzciLvNhOCfrvC3oKgaJ81mefl+0C5p8QXeCoF+yUGdqmcPyFo5zFecgpeAhsSL3pHRlCM+7NGaVBKbHzHw0LiPiGcq8LAf8upcSgm84sTy3Xo8eDyU9x+HnHBtrPehY2bet3ZybFyEP0QE3F161z9rYijsd/gifIrm5Uj7PgPIahfNfHi2mXM4FR7MGax4le5CsqWpYeGFJNpXB+hdbtB6cXSDlOfyoF9bYzvIWWZ3RKWg1dLj3Ej9yzwpY9w5gHRQg84A9GiLzCpoePCg0/oOh0PtQMLqUWAQDhEkOhR4VlIs8TCjQMHP5cNHThCjiw2CFKta8tfWj1Ukqun9U5k7WOWhiTQjlYJMujstAk8Ppbj5cxIg7JG9qcXHvakeQOOc+mZkzIoDTI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,89 +113,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable EXECMEM_ROX_CACHE support for ARM64 systems that implement
-the bbml2_no_abort CPU feature.
+Implement PMD block coalescing to merge fragmented linear mapping regions
+back into huge pages when restoring the read-only attribute.
 
-Using the ROX cache brings a performance boost by reducing linear region
-fragmentation caused by strict memory permissions (e.g., W^X enforcement).
-Grouping executable code (which is read-only in the linear region alias)
-into PMD-sized block mappings reduces TLB pressure and page table size.
-
-This is only enabled on systems with bbml2_no_abort, as splitting
-these large blocks to make pages writable during module loading would
-otherwise risk triggering TLB Conflict Aborts.
+When memory allocated with VM_ALLOW_HUGE_VMAP (such as for the execmem
+ROX cache) has its permissions modified, the PMD block mapping is split
+into individual PTEs. Without this change, when that memory have its RO
+attribute subsequently cleared and set the mapping remains permanently
+fragmented into 4K pages.
 
 Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
 ---
- arch/arm64/Kconfig   |  1 +
- arch/arm64/mm/init.c | 22 +++++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/mmu.h |  1 +
+ arch/arm64/mm/mmu.c          | 95 ++++++++++++++++++++++++++++++++++++
+ arch/arm64/mm/pageattr.c     |  7 +++
+ 3 files changed, 103 insertions(+)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 38dba5f7e4d2..79c347ab841e 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -285,6 +285,7 @@ config ARM64
- 	select USER_STACKTRACE_SUPPORT
- 	select VDSO_GETRANDOM
- 	select VMAP_STACK
-+	select ARCH_HAS_EXECMEM_ROX
- 	help
- 	  ARM 64-bit (AArch64) Linux support.
+diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
+index 137a173df1ff..19158bacb2df 100644
+--- a/arch/arm64/include/asm/mmu.h
++++ b/arch/arm64/include/asm/mmu.h
+@@ -80,6 +80,7 @@ extern void *fixmap_remap_fdt(phys_addr_t dt_phys, int *s=
+ize, pgprot_t prot);
+ extern void mark_linear_text_alias_ro(void);
+ extern int split_kernel_leaf_mapping(unsigned long start, unsigned long en=
+d);
+ extern void linear_map_maybe_split_to_ptes(void);
++void try_collapse_kernel_pmd(unsigned long addr);
 =20
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 71aa745e0bef..8269d7747b84 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -420,6 +420,12 @@ void execmem_fill_trapping_insns(void *ptr, size_t siz=
-e)
+ /*
+  * This check is triggered during the early boot before the cpufeature
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index a6a00accf4f9..d74226fa1c9b 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -769,6 +769,101 @@ static inline bool force_pte_mapping(void)
 =20
- 	flush_icache_range((unsigned long)ptr, (unsigned long)ptr + size);
- }
+ static DEFINE_MUTEX(pgtable_split_lock);
+=20
++static inline bool __pte_can_be_collapsed(pte_t pte, unsigned long pfn, pg=
+prot_t prot)
++{
++	if (!pte_valid(pte))
++		return false;
++	if (pte_pfn(pte) !=3D pfn)
++		return false;
++	if ((pgprot_val(pte_pgprot(pte)) & ~PTE_CONT) !=3D pgprot_val(prot))
++		return false;
 +
-+#define MODULE_TEXT_FLAG	EXECMEM_ROX_CACHE
-+#define MODULE_TEXT_PGPROT	PAGE_KERNEL_ROX
-+#else
-+#define MODULE_TEXT_FLAG	(0)
-+#define MODULE_TEXT_PGPROT	PAGE_KERNEL
- #endif
-=20
- static u64 module_direct_base __ro_after_init =3D 0;
-@@ -511,6 +517,8 @@ struct execmem_info __init *execmem_arch_setup(void)
- {
- 	unsigned long fallback_start =3D 0, fallback_end =3D 0;
- 	unsigned long start =3D 0, end =3D 0;
-+	enum execmem_range_flags module_text_flags =3D 0;
-+	pgprot_t module_text_pgprot =3D PAGE_KERNEL;
-=20
- 	module_init_limits();
-=20
-@@ -531,12 +539,24 @@ struct execmem_info __init *execmem_arch_setup(void)
- 		end =3D module_plt_base + SZ_2G;
- 	}
-=20
-+	/*
-+	 * The ROX Cache requires bbml2_no_abort because it uses large block
-+	 * mappings. On systems without this guarantee, splitting these blocks
-+	 * to make pages writable for module loading can trigger TLB Conflict
-+	 * Aborts.
-+	 */
-+	if (system_supports_bbml2_noabort()) {
-+		module_text_flags =3D MODULE_TEXT_FLAG;
-+		module_text_pgprot =3D MODULE_TEXT_PGPROT;
++	return true;
++}
++
++static void __try_collapse_pmd(pmd_t *pmdp, pmd_t pmd, unsigned long addr)
++{
++	pte_t *ptep;
++	pte_t first_pte;
++	unsigned long pfn;
++	pgprot_t prot;
++	int i;
++
++	ptep =3D (pte_t *)pmd_page_vaddr(pmd);
++	first_pte =3D __ptep_get(ptep);
++
++	if (!pte_valid(first_pte))
++		return;
++
++	prot =3D pte_pgprot(first_pte);
++	prot =3D __pgprot(pgprot_val(prot) & ~PTE_CONT);
++	pfn =3D pte_pfn(first_pte);
++
++	if (!IS_ALIGNED(pfn, PMD_SIZE >> PAGE_SHIFT))
++		return;
++
++	for (i =3D 1; i < PTRS_PER_PTE; i++) {
++		if (!__pte_can_be_collapsed(__ptep_get(ptep + i), pfn + i, prot))
++			return;
 +	}
 +
- 	execmem_info =3D (struct execmem_info){
- 		.ranges =3D {
- 			[EXECMEM_MODULE_TEXT] =3D {
- 				.start	=3D start,
- 				.end	=3D end,
--				.pgprot	=3D PAGE_KERNEL,
-+				.flags =3D module_text_flags,
-+				.pgprot	=3D module_text_pgprot,
- 				.alignment =3D 1,
- 				.fallback_start	=3D fallback_start,
- 				.fallback_end	=3D fallback_end,
++	set_pmd(pmdp, pmd_mkhuge(pfn_pmd(pfn, prot)));
++
++	__flush_tlb_kernel_pgtable(addr);
++
++	if (static_branch_unlikely(&arm64_ptdump_lock_key)) {
++		mmap_read_lock(&init_mm);
++		mmap_read_unlock(&init_mm);
++	}
++
++	pte_free_kernel(NULL, ptep);
++}
++
++void try_collapse_kernel_pmd(unsigned long addr)
++{
++	pgd_t *pgdp;
++	p4d_t *p4dp;
++	pud_t *pudp;
++	pmd_t *pmdp;
++	pmd_t pmd;
++
++	/*
++	 * collapse_pmd expects exact address of block to be collapsed
++	 */
++	if (WARN_ON(ALIGN_DOWN(addr, PMD_SIZE) !=3D addr))
++		return;
++
++	mutex_lock(&pgtable_split_lock);
++
++	pgdp =3D pgd_offset_k(addr);
++	if (pgd_none(READ_ONCE(*pgdp)))
++		goto out;
++
++	p4dp =3D p4d_offset(pgdp, addr);
++	if (p4d_none(READ_ONCE(*p4dp)))
++		goto out;
++
++	pudp =3D pud_offset(p4dp, addr);
++	if (pud_none(READ_ONCE(*pudp)))
++		goto out;
++
++	if (pud_leaf(READ_ONCE(*pudp)))
++		goto out;
++
++	pmdp =3D pmd_offset(pudp, addr);
++	pmd =3D pmdp_get(pmdp);
++
++	if (!pmd_table(pmd))
++		goto out;
++
++	lazy_mmu_mode_enable();
++	__try_collapse_pmd(pmdp, pmd, addr);
++	lazy_mmu_mode_disable();
++
++out:
++	mutex_unlock(&pgtable_split_lock);
++}
++
+ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+ {
+ 	int ret;
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index eaefdf90b0d5..11e0b60264c3 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -200,6 +200,13 @@ static int change_memory_common(unsigned long addr, in=
+t numpages,
+ 			if (ret)
+ 				return ret;
+ 		}
++		/*
++		 * When setting a read-only flag on the linear region, the memory
++		 * may have been backed by a PMD before being split. Try to
++		 * collapse it back into a PMD to restore huge page performance.
++		 */
++		if (pgprot_val(set_mask) =3D=3D PTE_RDONLY && area->flags & VM_ALLOW_HUG=
+E_VMAP)
++			try_collapse_kernel_pmd((u64)page_address(area->pages[0]));
+ 	}
+=20
+ 	/*
 --=20
 2.54.0.1136.gdb2ca164c4-goog
 
