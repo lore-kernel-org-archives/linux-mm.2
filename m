@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98842CD98CF
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:14:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDA1CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AEC26B00A6; Thu, 11 Jun 2026 13:14:30 -0400 (EDT)
+	id 92E916B00A5; Thu, 11 Jun 2026 13:14:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E24F6B00AC; Thu, 11 Jun 2026 13:14:30 -0400 (EDT)
+	id 8DC9A6B00AE; Thu, 11 Jun 2026 13:14:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70856B00AE; Thu, 11 Jun 2026 13:14:29 -0400 (EDT)
+	id 028E96B00A5; Thu, 11 Jun 2026 13:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 929126B009D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF386B00A9
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:14:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5439EA0757
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68F459117D
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:14:29 +0000 (UTC)
-X-FDA: 84868280658.14.17C65E0
+X-FDA: 84868280658.01.DD5EC67
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A3F0A40008
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:14:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oe1NSfZ3;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1172240015
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:14:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oBGxjT9C;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781198067;
+	b=7tfgooS3bwguvVbvg19fB2CCDJcNtC8yQvSV/je7Qgu0faAOi2mHdo4C5Z98kBOD8gJORT
+	04jFsPlPikkT9tNcZgP6Hab86NtY5n0l92LZLgs03eZkp0WaXcMQLMoRSJQFRJTn5ZbdjZ
+	S28Nz5/W9L6zsTVDayOrrMVA0TSO65Y=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oBGxjT9C;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781198067;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PgiBt+cXBNmLBpECoGiXITUCwoLXcLuCPMDzB/akGTA=;
-	b=ALm+iZA2u+LXgXw6oVBbTUGqCTuG8xoxfZSPCYkt2do5hgkF0QsUpc9sKxrK4KWZX4+k7F
-	5ZvEnvVq+wjzRSiScYEomGls/OY6vavM5wlpuYceVirr/dZstFmFyC6LyYFG8phEXr/cpI
-	nvZDXq9G7F3E2/v/opJoY40/0DOIj88=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=oe1NSfZ3;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781198067;
-	b=pER9o8V6Ln59RLJcgWiB5OXpJy9nBgDwaDzAFGkABySXatmmXt0Rtca59PDAPZgeE3JH+B
-	PX6Iq47zRmj//7p1LvceaBTnc34qpLD5EWia4ML/ODKo5uBZE/nU3uxnn1tY6zDylabnuX
-	nWBDqusgqdXt6VB2r33+iSe7pfcAIaU=
+	bh=MxJht1/v+tMh9CkAooJgN+z3AWBrmdU8Oh7WKsy29Bw=;
+	b=nn5TixvbsYUmR3T5CnIjIj5Gu27AvlmWKdsK8x/ssUVfNKav4xtMwVLxSz5yFjmJ2b/2ZN
+	R4onx124C39RnsTEB+L/jhH0Mxha0eHt5a1ng+68SnhkgL4Mp4qDpVLYaVJsLy4OZo2AQz
+	rj/lvAum/Ysz1YD0FdkI88gCXXagTok=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=PgiBt+cXBNmLBpECoGiXITUCwoLXcLuCPMDzB/akGTA=; b=oe1NSfZ3c+G4ykkyxz2q+gOtZc
-	vb/b/uKDXQgCp0dGzusCJoNwZgPAvMdA6+W9CnUC2vTANwymVYxEikEDm0E7NWESmqd7U1zHNRIJt
-	WEnFxbN4JAxpYxZPq4LqJyBWI7Py51m0JBZU3/obNvVx9QokJwHen0fd1Tkx/RX4PQFnFXF2vlX6+
-	iuYed1t8EdabPHm93Am5IUmHZOOI7zJsMLhRTltgoa1GSF11TztSdTVUYCzoDb8mi+ENSaInlz2Pz
-	jLSx8LWhX4/nK5zH619TKsnEL+LZG8BmcSLVsRYFLzLsalwXps9281pF/YhLN/v/qidNlQji87Emu
-	n//s+QpA==;
+	bh=MxJht1/v+tMh9CkAooJgN+z3AWBrmdU8Oh7WKsy29Bw=; b=oBGxjT9CzjTGO3icATLcjH4W27
+	OMCnPArujlVOXEqdjagI5lHfnFsDwf+4/GXk89SKh9+atRFb8BVjzBC55ljshrPY4MvZ7mccWLhvN
+	cnrbQ0SC6NhPK/lf4H+nB7++DqxDQHflS9vPW1JtZK0SjY97ZKlID07Q2wj5IimmDQ0TV1puQSh3w
+	EDHg5j4Q6yG5WXeHoSKRE5MVSAPEu01K164tATk4e2Pa61Ai5K6Fqi8jCWdEy0C9PUVNrMobAwp5i
+	xt/i59Qe7k6avXXLBpQQNLdO0jp0nwWfB8vcPmeVUvRau7zD5LsUBsMIId+ELksn+UBSBxqHd+2Pl
+	oEDrcvLw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wXiz4-000000070nH-2ftQ;
-	Thu, 11 Jun 2026 17:14:26 +0000
+	id 1wXiz3-000000070mE-3Pge;
+	Thu, 11 Jun 2026 17:14:25 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
 Cc: Vlastimil Babka <vbabka@suse.cz>,
@@ -71,23 +71,23 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mjguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 8/9] make thread component caches (fs_cachep, files_cachep, etc.) statically allocated
-Date: Thu, 11 Jun 2026 18:14:23 +0100
-Message-ID: <20260611171425.1671254-9-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 2/9] allow static-duration kmem_cache in modules
+Date: Thu, 11 Jun 2026 18:14:17 +0100
+Message-ID: <20260611171425.1671254-3-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
 References: <20260611171309.GN2636677@ZenIV>
  <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1172240015
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A3F0A40008
-X-Stat-Signature: 41fey97qwsghqqm5u39xexcqonifbbxz
-X-HE-Tag: 1781198067-606689
-X-HE-Meta: U2FsdGVkX1+YKIQeK4Kl67GvKAZXUAowV8RhpnNydA7QJ3OmJLbBNd6OaP8OQ9JWqcLlWVFDPFQo+3T44JlOzRTi+AxcaaO+A8PtJW1WjlMbFa3bwldFF9h7xSvveQM6i4tFBe+7qlZ5kaql1Du97HQIrWy8Q7UNx8npJvMb5ZCe3YHOp+d/MbK28zKHPRYzg5mzPYJ/9tWLvHFEh4bSILGrY0mtazQmkWigjNpfX1xUb786m4LAUWw5p5RymzEa2lGdGCd+cqZCS5YtXKCo+72B7Cco7KuhaimKqHePwF262OyKOl9bBS4FvwmTG3ZmjvT2oGGML1miuSZ28Y4kq1zrAYUPpcxwJ6KILsWozpzZotd77+DDqD127q3G6qMExNrNQpXbo67PwUyMMYIVubimksop1ME3f/oxzC8T1p8TqPK6eQY6HR8kKkxxxn07g19I71Jtuo8BR5Wkfn9OUSHjfS/OdRO3yVwk/D72AEXL3ZPEiiufIhndF2Vm38vI2RtaFrqNxTOjv7WLCbbVxi2xoaJ72PUGPiHF0t07fp1lBY0ZpOX88YZkV4UA/KOc0r+wiUzRR8WEJebavm+wxQUONuf+kayNb+N5258GlzJwOzflM+S2v44r+Ed2tQAkl7CYoITX0CcaqJKYO2ryG6wrvusCRgOgfKBCp3fvXIDA0fIEh9KTm9yt2CDK76y3k5oGCOBfv3WGgvSeos/IOoigd6ZWNbdkFs9zBUEgOeVJWTtKEJi4BnOtMi9PiaM/cZEms9/E7ajCUtvrioW42MyiHPaiGGBLRDpVDs6QhP7kqLzy/AaPA/0k98UyAt6nq2b9qoY8Yjc344TDlrYlFyO5cPKHC/IJ69ZCCR7exHG9mAZRyLAz9/E3y2sJfOqxQLeYEaeItvO5KnYt7+DzOLUMzer6eZKAAAcQxirclvj/cvY/+AiuM4W+BT4e8aiPE5t3eWDU5f2/IHRS/Vx
- Uab9j9IL
- 6eTBs8XCIGbwMaH+RQ/mWesW7OfKshSSyXjYccGjOkXfg7lp7X211GjxepqQbOuLHR8Fv2XvGHhTbaEJz8LNr42BG6uzm1vkdGf+tx9HXeLm1GmiV/PxKn5ODIz1WP/Ko7hqAmOsKXA9+c2TE/Mrw/w4v0/+oXchqNVS47cHRboR43+M5i12hSEoR71pkuX44GdnNL/IbFTK5EAsVNL5sar8rzvo7VTPiTwhyq4KfMY72+/NQXuYyBkuZHO7tLhjztxr2V5c068Sgx/i2bdoxbXNxd7enXtr2z7xiM8uaWdTthIkaMqOuKvvRKZXNEDLkeI03PE5xhMIyB9qipMxf3J58YDK8Kme60qLVbwR2LrGH4Ubu8PC6l2z/miNtoZRlnkwF3Pjoc7wcbCYLVF7z9KNiy2tDyQrGLXGkODAtK3cW7KHEni1ou24D2L1/c7rnkPqvvTYQiAUGQRzcBhgxezUw/dbAIbIMjRbLDx7ty0sjzbF9xyqZXiOEkA==
+X-Stat-Signature: 7rkn6m95wcaq6tybngbo9wp7yb36ob43
+X-HE-Tag: 1781198066-940305
+X-HE-Meta: U2FsdGVkX1/4TGKmrJ+4bKOdyTQ5jdSdAOLcdqeYxDRC6aizYsw1QyM8rw061crCfHn63jDpM6b2Cz3giGA27o3oT0hHng4Qidps6/IR0MeqRlGuM6VAitBy0uR+IjABGVIbgJl4aLTdXpUdcR6C3fxl1tLHvhQC2NBCA/abEb0uaKy6vqNtvwZ9wJKAIOG4ejKOPoP4MRp001/epP77cAcn5Tlp5g9W5r79hj6jXdSB5OKhtRXdHe/sX5TRiFnNwA/53mAltmEgkeJa1YncYngTUpEr8YE6xxVe+sQU6qFLI3WWvKt4g/LNYO9lyWB02vi+spD2xh5lgcC9BnBItGk3V/T3e2fMFK8wkVo72oXcBkhkhFhtE+mOzflV37L1dlwjvYRJB4Wix9v025uwEbWnSougsFfwxqmdxOYwRYJjq503OjqWO8D8eRnZieSTJBLD2xr6mcOfaJGjdVcghct5/WNZ2aNcOd88ZF0eTjdUHI1bYTG20UpuI3o/rNJ+yZOQGYpZv/P9aL2PqLXN43mfmjOL4S1tvHCr5/fdZKBpFkxKHdCVA3/NkncK4ZetybOvlSmJUCse6hq0C+767X0unkYnyB5qtOV/q5RjhMHERdmcJmD1UdI3N28AZHjxPpH7Byx9zuSrk6cx82mwa/2pICky6DOB2MSNnnxALaIF5EjJVTWcGlUSLZbG//oMM2RAFbWKHSxlRmgkNyrTDw/pLatxlJxjl/Mb2waUpff1turPLZYJ7Bk8oIa1tOf/rMhsm70fTyuZkgKZiVEXhCle9ejHzuFfhVq29maD/SNxeBQEm52a2ubwJZ+k9wwCo5DwqiRvuAcclQERLzoKOgNI7GEHK7v3R8owNpfHWnU9diMtruBJG7yQqXnx81jeq9Le05la9TGjj/RDgNHfvnYmPYt1LHmnHZom+JutSUPbEhGMhoppjCmCd0scpGQv2QkleX5EohYh3ErmSMo
+ f1orT2K3
+ tLn9LS6gYe72vmTEOXOUvxqHz4oWECm7LYJb34kc5o2teMAH3nhhbGV+3gR/3At+kDLxxiHZwQ0jDts8/YvU09uqQ+Boeo8hHYidaAtjk55GmKN2WTG/yjxg6fKL1aXs7+78brfvlIE8mXC0q8llzoA4DB3caDeezJT6vvaIegF8AFatlNkD4d5j9swcFFPJrbjF5/98oa1ej2Ce2jINeB9R5FdhuEEy42oQC5y0VXNB1F4/hujVnYmD8yzpGqYvLuY+EyGINoXrG0KYvFLSjEeRcWS7vumwheC/GmblFNXOmDflq11iNasH5tmGN0orIL7V+W6LHQnEoX2imd+sVAopIa+iVX9+fdcWMlGR+oIEUD/N6GnWsKsUTTO/0/ZQZFR/G3UAeaLtRoo+tCF3lRC4DnAlyFOGx1Nj1loPaIiUf7JSW2XdIj3SqvCKr5XRQSJE3nsHfpHqfixT+BKdQXqse0Ucu+3zwMeDcpYWrosNyEyjrkr14En1SUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,172 +95,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All of them are created in kernel/fork.c, might as well convert all
-at once...
+	We need to make sure that instance in a module will get to
+slab_kmem_cache_release() before the module data gets freed.  That's only
+a problem on sysfs setups - otherwise it'll definitely be finished before
+kmem_cache_destroy() returns.
+
+	Note that modules themselves have sysfs-exposed attributes,
+so a similar problem already exists there.  That's dealt with by
+having mod_sysfs_teardown() wait for refcount of module->mkobj.kobj
+reaching zero.  Let's make use of that - have static-duration-in-module
+kmem_cache instances grab a reference to that kobject upon setup and
+drop it in the end of slab_kmem_cache_release().
+
+	Let setup helpers store the kobjetct to be pinned in
+kmem_cache_args->owner (for preallocated; if somebody manually sets it
+for non-preallocated case, it'll be ignored).  That would be
+&THIS_MODULE->mkobj.kobj for a module and NULL in built-in.
+
+	If sysfs is enabled and we are dealing with preallocated instance,
+let create_cache() grab and stash that reference in kmem_cache->owner
+and let slab_kmem_cache_release() drop it instead of freeing kmem_cache
+instance.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- include/linux/fdtable.h   |  3 ++-
- include/linux/fs_struct.h |  3 ++-
- include/linux/signal.h    |  3 ++-
- kernel/fork.c             | 37 +++++++++++++++++++++----------------
- 4 files changed, 27 insertions(+), 19 deletions(-)
+ include/linux/slab-static.h | 12 ++++++++----
+ include/linux/slab.h        |  4 ++++
+ mm/slab.h                   |  1 +
+ mm/slab_common.c            | 25 ++++++++++++++++++++-----
+ 4 files changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/fdtable.h b/include/linux/fdtable.h
-index c45306a9f007..f2d553f99c58 100644
---- a/include/linux/fdtable.h
-+++ b/include/linux/fdtable.h
-@@ -113,6 +113,7 @@ int iterate_fd(struct files_struct *, unsigned,
- extern int close_fd(unsigned int fd);
- extern struct file *file_close_fd(unsigned int fd);
+diff --git a/include/linux/slab-static.h b/include/linux/slab-static.h
+index 47b2220b4988..16d1564b4a4b 100644
+--- a/include/linux/slab-static.h
++++ b/include/linux/slab-static.h
+@@ -2,10 +2,7 @@
+ #ifndef _LINUX_SLAB_STATIC_H
+ #define _LINUX_SLAB_STATIC_H
  
--extern struct kmem_cache *files_cachep;
-+extern struct kmem_cache_opaque files_cache;
-+#define files_cachep to_kmem_cache(&files_cache)
+-#ifdef MODULE
+-#error "can't use that in modules"
+-#endif
+-
++#include <linux/init.h>
+ #include <generated/kmem_cache_size.h>
  
- #endif /* __LINUX_FDTABLE_H */
-diff --git a/include/linux/fs_struct.h b/include/linux/fs_struct.h
-index 0070764b790a..e8c9fac5b7b7 100644
---- a/include/linux/fs_struct.h
-+++ b/include/linux/fs_struct.h
-@@ -15,7 +15,8 @@ struct fs_struct {
- 	struct path root, pwd;
- } __randomize_layout;
+ /* same size and alignment as struct kmem_cache: */
+@@ -13,9 +10,16 @@ struct kmem_cache_opaque {
+ 	unsigned char opaque[KMEM_CACHE_SIZE];
+ } __aligned(KMEM_CACHE_ALIGN);
  
--extern struct kmem_cache *fs_cachep;
-+extern struct kmem_cache_opaque fs_struct_cache;
-+#define fs_cachep to_kmem_cache(&fs_struct_cache)
++#ifdef MODULE
++#define THIS_MODULE_KOBJ &THIS_MODULE->mkobj.kobj
++#else
++#define THIS_MODULE_KOBJ NULL
++#endif
++
+ #define __KMEM_CACHE_SETUP(cache, name, size, flags, ...)	\
+ 		__kmem_cache_create_args((name), (size),	\
+ 			&(struct kmem_cache_args) {		\
++				.owner = THIS_MODULE_KOBJ,	\
+ 				.preallocated = (cache),	\
+ 				__VA_ARGS__}, (flags))
  
- extern void exit_fs(struct task_struct *);
- extern void set_fs_root(struct fs_struct *, const struct path *);
-diff --git a/include/linux/signal.h b/include/linux/signal.h
-index f19816832f05..a0c7fee8b22a 100644
---- a/include/linux/signal.h
-+++ b/include/linux/signal.h
-@@ -323,7 +323,8 @@ static inline void disallow_signal(int sig)
- 	kernel_sigaction(sig, SIG_IGN);
- }
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index f63657d3cf81..c95ad771ece2 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -62,6 +62,7 @@ enum _slab_flag_bits {
+ #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+ 	_SLAB_OBJ_EXT_IN_OBJ,
+ #endif
++	_SLAB_PREALLOCATED,
+ 	_SLAB_FLAGS_LAST_BIT
+ };
  
--extern struct kmem_cache *sighand_cachep;
-+extern struct kmem_cache_opaque sighand_cache;
-+#define sighand_cachep to_kmem_cache(&sighand_cache)
+@@ -248,6 +249,8 @@ enum _slab_flag_bits {
+ #define SLAB_OBJ_EXT_IN_OBJ	__SLAB_FLAG_UNUSED
+ #endif
  
- extern bool unhandled_signal(struct task_struct *tsk, int sig);
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 8ac38beae360..618f19bb482a 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -111,6 +111,7 @@
- #include <linux/unwind_deferred.h>
- #include <linux/pgalloc.h>
- #include <linux/uaccess.h>
-+#include <linux/slab-static.h>
- 
- #include <asm/mmu_context.h>
- #include <asm/cacheflush.h>
-@@ -180,7 +181,8 @@ void __weak arch_release_task_struct(struct task_struct *tsk)
- {
- }
- 
--static struct kmem_cache *task_struct_cachep;
-+static struct kmem_cache_opaque task_struct_cache;
-+#define task_struct_cachep to_kmem_cache(&task_struct_cache)
- 
- static inline struct task_struct *alloc_task_struct_node(int node)
- {
-@@ -425,7 +427,8 @@ static void free_thread_stack(struct task_struct *tsk)
- 
- #else /* !(THREAD_SIZE >= PAGE_SIZE) */
- 
--static struct kmem_cache *thread_stack_cache;
-+static struct kmem_cache_opaque __thread_stack_cache;
-+#define thread_stack_cache to_kmem_cache(&__thread_stack_cache)
- 
- static void thread_stack_free_rcu(struct rcu_head *rh)
- {
-@@ -456,29 +459,31 @@ static void free_thread_stack(struct task_struct *tsk)
- 
- void thread_stack_cache_init(void)
- {
--	thread_stack_cache = kmem_cache_create_usercopy("thread_stack",
--					THREAD_SIZE, THREAD_SIZE, 0, 0,
-+	kmem_cache_setup_usercopy(thread_stack_cache, "thread_stack",
-+					THREAD_SIZE, THREAD_SIZE,
-+					SLAB_PANIC, 0,
- 					THREAD_SIZE, NULL);
--	BUG_ON(thread_stack_cache == NULL);
- }
- 
- #endif /* THREAD_SIZE >= PAGE_SIZE */
- #endif /* CONFIG_VMAP_STACK */
- 
- /* SLAB cache for signal_struct structures (tsk->signal) */
--static struct kmem_cache *signal_cachep;
-+static struct kmem_cache_opaque signal_cache;
-+#define signal_cachep to_kmem_cache(&signal_cache)
- 
- /* SLAB cache for sighand_struct structures (tsk->sighand) */
--struct kmem_cache *sighand_cachep;
-+struct kmem_cache_opaque sighand_cache;
- 
- /* SLAB cache for files_struct structures (tsk->files) */
--struct kmem_cache *files_cachep;
-+struct kmem_cache_opaque files_cache;
- 
- /* SLAB cache for fs_struct structures (tsk->fs) */
--struct kmem_cache *fs_cachep;
-+struct kmem_cache_opaque fs_struct_cache;
- 
- /* SLAB cache for mm_struct structures (tsk->mm) */
--static struct kmem_cache *mm_cachep;
-+static struct kmem_cache_opaque mm_cache;
-+#define mm_cachep to_kmem_cache(&mm_cache)
- 
- static void account_kernel_stack(struct task_struct *tsk, int account)
- {
-@@ -859,7 +864,7 @@ void __init fork_init(void)
- 
- 	/* create a slab on which task_structs can be allocated */
- 	task_struct_whitelist(&useroffset, &usersize);
--	task_struct_cachep = kmem_cache_create_usercopy("task_struct",
-+	kmem_cache_setup_usercopy(task_struct_cachep, "task_struct",
- 			arch_task_struct_size, align,
- 			SLAB_PANIC|SLAB_ACCOUNT,
- 			useroffset, usersize, NULL);
-@@ -3079,7 +3084,7 @@ void __init mm_cache_init(void)
++#define SLAB_PREALLOCATED	__SLAB_FLAG_BIT(_SLAB_PREALLOCATED)
++
+ /*
+  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+  *
+@@ -379,6 +382,7 @@ struct kmem_cache_args {
  	 */
- 	mm_size = sizeof(struct mm_struct) + cpumask_size() + mm_cid_size();
+ 	unsigned int sheaf_capacity;
+ 	struct kmem_cache *preallocated;
++	struct kobject *owner;
+ };
  
--	mm_cachep = kmem_cache_create_usercopy("mm_struct",
-+	kmem_cache_setup_usercopy(mm_cachep, "mm_struct",
- 			mm_size, ARCH_MIN_MMSTRUCT_ALIGN,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			offsetof(struct mm_struct, saved_auxv),
-@@ -3089,19 +3094,19 @@ void __init mm_cache_init(void)
+ struct kmem_cache *__kmem_cache_create_args(const char *name,
+diff --git a/mm/slab.h b/mm/slab.h
+index bf2f87acf5e3..8b1db0d03226 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -219,6 +219,7 @@ struct kmem_cache {
+ 	struct list_head list;		/* List of slab caches */
+ #ifdef CONFIG_SYSFS
+ 	struct kobject kobj;		/* For sysfs */
++	struct kobject *owner;		/* keep that pinned while alive */
+ #endif
+ #ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 	unsigned long random;
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 57de41c7f1aa..2567c1c19847 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -182,13 +182,10 @@ bool slab_args_unmergeable(struct kmem_cache_args *args, slab_flags_t flags)
+ 	if (args->ctor)
+ 		return true;
  
- void __init proc_caches_init(void)
+-	if (args->preallocated)
+-		return true;
+-
+ 	if (IS_ENABLED(CONFIG_HARDENED_USERCOPY) && args->usersize)
+ 		return true;
+ 
+-	if (flags & SLAB_NEVER_MERGE)
++	if (flags & (SLAB_PREALLOCATED | SLAB_NEVER_MERGE))
+ 		return true;
+ 
+ 	return false;
+@@ -258,6 +255,12 @@ static struct kmem_cache *create_cache(const char *name,
+ 			kmem_cache_free(kmem_cache, s);
+ 		return ERR_PTR(err);
+ 	}
++#ifdef CONFIG_SYSFS
++	if (flags & SLAB_PREALLOCATED) {
++		s->owner = args->owner;
++		kobject_get(s->owner);
++	}
++#endif
+ 	s->refcount = 1;
+ 	list_add(&s->list, &slab_caches);
+ 	return s;
+@@ -366,6 +369,12 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 		    object_size - args->usersize < args->useroffset))
+ 		args->usersize = args->useroffset = 0;
+ 
++	if (args->preallocated) {
++		flags |= SLAB_PREALLOCATED;
++		if (args->owner)
++			flags |= SLAB_NO_MERGE;
++	}
++
+ 	s = __kmem_cache_alias(name, object_size, flags, args);
+ 	if (s)
+ 		goto out_unlock;
+@@ -521,7 +530,13 @@ void slab_kmem_cache_release(struct kmem_cache *s)
  {
--	sighand_cachep = kmem_cache_create("sighand_cache",
-+	kmem_cache_setup(sighand_cachep, "sighand_cache",
- 			sizeof(struct sighand_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_TYPESAFE_BY_RCU|
- 			SLAB_ACCOUNT, sighand_ctor);
--	signal_cachep = kmem_cache_create("signal_cache",
-+	kmem_cache_setup(signal_cachep, "signal_cache",
- 			sizeof(struct signal_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			NULL);
--	files_cachep = kmem_cache_create("files_cache",
-+	kmem_cache_setup(files_cachep, "files_cache",
- 			sizeof(struct files_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			NULL);
--	fs_cachep = kmem_cache_create("fs_cache",
-+	kmem_cache_setup(fs_cachep, "fs_cache",
- 			sizeof(struct fs_struct), 0,
- 			SLAB_HWCACHE_ALIGN|SLAB_PANIC|SLAB_ACCOUNT,
- 			NULL);
+ 	__kmem_cache_release(s);
+ 	kfree_const(s->name);
+-	kmem_cache_free(kmem_cache, s);
++	if (!(s->flags & SLAB_PREALLOCATED)) {
++		kmem_cache_free(kmem_cache, s);
++		return;
++	}
++#ifdef CONFIG_SYSFS
++	kobject_put(s->owner);
++#endif
+ }
+ 
+ void kmem_cache_destroy(struct kmem_cache *s)
 -- 
 2.47.3
 
