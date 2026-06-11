@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9D7CD98D6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF48CD98D7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31D2F6B0093; Thu, 11 Jun 2026 09:01:56 -0400 (EDT)
+	id ABD9E6B0096; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CD076B0095; Thu, 11 Jun 2026 09:01:56 -0400 (EDT)
+	id A94746B0095; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E3826B0096; Thu, 11 Jun 2026 09:01:56 -0400 (EDT)
+	id 9AAA16B0099; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 04A6C6B0093
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:56 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD64BA060A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:55 +0000 (UTC)
-X-FDA: 84867644190.09.2A439E6
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E4EFA14000F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eJoURkkc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3v7EqagcKCCYCDCTPCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--abarnas.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3v7EqagcKCCYCDCTPCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--abarnas.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 88F8C6B0095
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C8B01C35D5
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:57 +0000 (UTC)
+X-FDA: 84867644274.25.3182050
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E88E840016
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=udezktQm;
+	spf=pass (imf11.hostedemail.com: domain of 3wbEqagcKCCgEFEVREWKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3wbEqagcKCCgEFEVREWKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781182914;
+	s=arc-20220608; t=1781182915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0wyflRGzl20RCEe+VjdyZF4sSVExnxs7YpSWyT2xMI0=;
-	b=tBQZk0rnu7b5P6VRLwmvzvPPbiinkoAdUN3lPSqZaT046tBftAm22YvqeO5zyIo2YZercQ
-	5yryLZI1kTu0OmXhdwiS0XfMZioZ4C4mp48nQ+eniWulKP0C6TM5sAzlCyjSC7YPHQqJo+
-	/HWf+m881wzdr7de4oOSV5NW8ng0TqE=
+	bh=XfzQDEt1pCJotSzJosKxmaJLh3FzpNGs30nqV1AQIaw=;
+	b=q4bj+EsqSvVsgw4wRL4tggco5fPgU8pJaIMOeM8NJh42LWe4loncLJaJfbcitquYGsdmXd
+	36BSC+f+A7+OiZtbT5etrveTiHPfWPq4RKLcOWEbUostKhpiwlbBRpUuvt2UlJ7x38Ibvo
+	sw0q+leppUgZgegUJJ3KoZGqTtzE13c=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eJoURkkc;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3v7EqagcKCCYCDCTPCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--abarnas.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3v7EqagcKCCYCDCTPCUIQQING.EQONKPWZ-OOMXCEM.QTI@flex--abarnas.bounces.google.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=udezktQm;
+	spf=pass (imf11.hostedemail.com: domain of 3wbEqagcKCCgEFEVREWKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3wbEqagcKCCgEFEVREWKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781182914;
-	b=Mlg2O9XCeUEObQ82LRW/0OGviN9JmH1jOm7IxyQYAxwY51IWDyAl0yMiPk89jTgQ8DMrWP
-	2GeSy6Gh4qeg7de5xjza8TzA778/PNIG8I3chfWlQbI3lHN/kYnWu8cpdphXBXIBDe/NdC
-	Xs6/cFXt+vzAI7TjCTxufDXTsnCsbyY=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-68b6f4f3c06so8106102a12.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:53 -0700 (PDT)
+	t=1781182915;
+	b=o4HeSLwMIOW6o7WwAUru2ID1fNW77gkKPY6oPSdf9aPbn6lEa5Ob/hRkyc2B4PyVj0xVar
+	aZl2vgN0eHk06PZFnL2Uu/DTyU+9uBseHl5oz51qwrDWTqa06y8XGr1fV3Y+CledLf68Y0
+	wI2iMS0HWHq1K97JGiP7ZZDDCYLszCw=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490bfd70b0fso79983525e9.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781182912; x=1781787712; darn=kvack.org;
+        d=google.com; s=20251104; t=1781182913; x=1781787713; darn=kvack.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0wyflRGzl20RCEe+VjdyZF4sSVExnxs7YpSWyT2xMI0=;
-        b=eJoURkkcXgZ2UOtdVt30rhR1/I14vFd/w65FDXGS9At6sptPrDNoytubkiYnlG1kmG
-         Rv2AHc2xywURRk0dv0x4WTAT0ydfxm5IfErZVtfnl6tAZEgFMnmuvxhjiRZPr5BiU8c8
-         elvkTtmaPBMmk0x8luHXj1JppGILAHDiDygSeVE5ze0egZdI/BsfqMw7Sl1kOCiQczpo
-         X2xIIe0snrL58dVDr9/nKhwQMXzBgo7K36g5V+pB8oYrBFCaplGX2mci5HUnK8MHgKH4
-         nVbXKcOxxhne86knZArEINOkjzIqJichNHFH4FNH4tJC7JARf54JmsPeZ540LoYu4PNE
-         LPyw==
+        bh=XfzQDEt1pCJotSzJosKxmaJLh3FzpNGs30nqV1AQIaw=;
+        b=udezktQmlfMFcLxg9GFXq/o5oYZGK1bfyiDmg10ynrp3UJIMqqgfnXX4lAYbeN5vzm
+         hNvx+SLNc5uJU1QMwD3O/d2lbx9w6oqbAzw1qWroF7LKSYs9bTLBSfjD8ycbuWgNZXSq
+         MT557AQjeTymD/VZnCXuZekjQCwyJjqbj8PbP94jSH15rCtlOeW79gV3vXPIf6bmTMRS
+         5NvfeOXJinySyZnuHJ9a9r0HG2ESDx1jlGmU50Z27wf96EzU9VFGE8dul3xvwLH1v2fG
+         3JBvatQDDEzkcQ8qNz094CT0OYYo/QHg4GaLahV1rMOuR5x3srWjVo58PY50OIK48AQr
+         hj2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781182912; x=1781787712;
+        d=1e100.net; s=20251104; t=1781182913; x=1781787713;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=0wyflRGzl20RCEe+VjdyZF4sSVExnxs7YpSWyT2xMI0=;
-        b=eCpxNlowx+kHIX17NkM9ktVElngnbcdJOD/f5uRZ+Uu0NYHdPBlBHtk8pHYYDVQDcQ
-         dh/ntYxVt0Hvl4H8ujvkkEtKj/pTIgDNQeCWByGE/s5xvPq/9y6wXzoMMo+JzZloLv3Y
-         HXLpzc2/fCzVFD7zDzXjiQzfgwBrvZ5r0dPy+x80KJynvnIE5bqVOpF0047eu5bqreFg
-         OhEThgv7BjEcqgllddphI/SPDqwaIFEGE1IO26lsbFrjMORk1b7+DhYy68K6VP4NVjM4
-         3P19YyXBjHi+IeoPZcBjalB4ZNKUVo0ssehTEib751pP3vqSgroI2BK5RyLeuExPzYbe
-         qlbw==
-X-Gm-Message-State: AOJu0YweBkZOeApWm3Lw8sRc9tnZv9jLm8MwO/onXaSuMY8EJDoZqvXN
-	fTrwSfn+Cwak5QibC3mUDRWvTIHTHPi6Gpw4zDeJrM+bD/TIS4+ThY4znodsPJwurKlWD96smyL
-	O8vKBW5jM8g==
-X-Received: from edrs20.prod.google.com ([2002:aa7:c554:0:b0:67d:8c66:91])
- (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:4307:b0:691:b5aa:5a5c
- with SMTP id 4fb4d7f45d1cf-6930e2d10d3mr1376617a12.20.1781182911975; Thu, 11
- Jun 2026 06:01:51 -0700 (PDT)
-Date: Thu, 11 Jun 2026 13:01:41 +0000
+        bh=XfzQDEt1pCJotSzJosKxmaJLh3FzpNGs30nqV1AQIaw=;
+        b=gd3u8ImcxkhHuaEhh+xMl6+oYExVXFgHZ109jhsClWXln0dIss1Drar/uc/keci1mk
+         K0AKEGwvlGGOglvDznbQ9GZvguoM/sWfcpjn4nj+a1mI5HnJLRbeHRI3BcfZgDkCCVf+
+         l3QPsYlNFLc8SVW0H55v3a8BZYLRgYOf9INwaZA0HkqvfMDxv0C3rnfm0naNRWvjjBFu
+         6X44hxvZxaHC6IwOxvDo86S/By5RKKWivAyqINWI9ES/Mf/zVgIVF/BNFcfEWIT3I9bF
+         snWjiJZ4A+kTzew80QjX/P4NWcWV/ZUj8z1Ghp6/YxkgJ8Awl9TQkcR3oyY0arl1g9bz
+         ZHFg==
+X-Gm-Message-State: AOJu0YwNNDfknxt/VKqKF1LbZFbvpT0HHxNBe9o5Wles+4bhZxYeWjdY
+	a4GSa6KbxaIMF/yUTiVLDAwz7jTP2rEIU6nebWbaUio9ZqKnblP8IhRKmrraW1717OCKaEUQ96t
+	WOzO1gLvgCw==
+X-Received: from wmbev16.prod.google.com ([2002:a05:600c:8010:b0:490:48f7:e94])
+ (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:e547:20b0:490:b58b:a8ca
+ with SMTP id 5b1f17b1804b1-490e5639e96mr25676555e9.27.1781182913390; Thu, 11
+ Jun 2026 06:01:53 -0700 (PDT)
+Date: Thu, 11 Jun 2026 13:01:42 +0000
 In-Reply-To: <20260611130144.1385343-1-abarnas@google.com>
 Mime-Version: 1.0
 References: <20260611130144.1385343-1-abarnas@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611130144.1385343-4-abarnas@google.com>
-Subject: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions on
- execmem cache clean
+Message-ID: <20260611130144.1385343-5-abarnas@google.com>
+Subject: [RFC PATCH 4/6] arm64: mm: add helper to fill execmem with trapping instructions
 From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
@@ -99,14 +98,14 @@ Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>,
 	Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E88E840016
+X-Stat-Signature: hdzdezwecmsqu8phfzgij1yyr8zua1us
 X-Rspam-User: 
-X-Stat-Signature: b7gr361kxokruerf8y94tpphjutrt8wz
-X-Rspamd-Queue-Id: E4EFA14000F
-X-HE-Tag: 1781182913-465585
-X-HE-Meta: U2FsdGVkX1/kDJ3K+1h6K0VTQpq9bBbuLnxlU2PWA01tiWYcM1+hS8Fu5WvSmdjQz50igMmk09bQDfEdpUVdNe4vzB9WJWDX8eljOeznANLyvvesuQbpxTv0MN0DlUjw8UVwxsS4P24QpjW8tLGbcOv4fRRQjAxMfHr9hOsnPcjsxDPYBZYBb35CG4fUEOGwIWR/RyxjIzyGR6Q23ifBQyfBINF3ltAbnx66chmy2ca9NF9OPGVBLmSEaS10V+XYrGovr4hFpKlVYhwPYqvkMvnDGdlFTpgbl6Y+MAVN+iEbXTUupVlSqaQ8RmBS1OXzzee1UhH2v47byBh5L75pihCR0KaSoR/ZSPo+BufH46deWYTlfTk6+onygGDjl2r30jrKN1HTENi//QGk3+hIqX+sE70g+mxvx2CrZr9/LPgw1+3YTx6ON3yaHeY2n/a2FXkmBfKNBa9IXeCzl6dX26gxPaVkjxms20YLGKRGBGhY6wVfinNAX2hZcyMTsWsN1yAAdU97whsXkCYvmYjodkpdZd85BKOqnip9Cs0MvrhGLJ+K7p9CsnHtQZ0L5DNLFkPnM6Vh6wyozxD8MDXI4MoYufwNgx+MUEG4cJ0joGViCSFBV3KB5Qcah/v2xlmtx4zW9P05WokMB1r2TH4199XGYXcm7ixxnFNgs8CLNhUPUP7yPrnJhV26XnRrhVVkOvaMWv+mACKyT+sGLir7DC8EmLKQAyYHa+9AMoeRLO3vAvCFOXs8j/LH81uDci3OExE8onxxkk1Z672ivJJuGSTKKIN9zO3ACq00TzuT+sZtSXwbshSGF3qzPLHcTqwzP3sIJJ68gF6mu0M1G/avcr7ueFKnSurG23R4F0WDmgpbdIpb9Gv7F1eaLLEUdCVfadyFMHb5UpeQLpU4hzKmFhAw1u0sGTRSaElfIyOxpG8konzAL0KicO62yNVk6Lj9z/TmmgjVdwwsllQJHb0
- +qMiAxrC
- os2ysTJMKEmPR3AlDgjXiYSIpnTx5pkIXUidRnt0yZSrgC49q+kD61AlEXE0mn65HkUNkz7m6N76TmPztd2j28BL2nB5OYVT8RP8LgR1TN5KG+GxIdjAy4BF2+6e8IMIHoyxNAyNp0qon5rTcDKPh2Xv3HA7CK97fw5zo5xUe2EZpJqSHVJcnkRLaewKkmac0HW4pEnY4bicLQmhsuJ7e+rMF36Qr+CbbcdCelRFajCddf+fEnTymwkV8zGrVu0Rd8ixxI0WbOLMJN2X6wsHR5Znf6kQorIbhPWycigqQNxyZdE8KtT6a/u2+NO2HtCt+gGpm6tpuJJrRV3Hnz8k+cr+ed/8g+m9lEeMvaHFFFjcewCSaVzH38dLWJLlQ4Grn5g06S0ZvIV3d0Bz3IxAu6q1eckZQ2AlKVhYuE/HWX79ihswIQp96NpkQZy1R9Z2C9/9LB6+wLcOQKOm84zhTD/nSyn6l+lTzy9ugY/oLUb4HU2o1mKfDo0o819gUwtbGBMCcpQ8tw/I0bHlFLqDC1fdAaNoSYHH6hF+YOPsNbgZgh7vJcqOIb3C/oh9oTHrEZpM0Iaw6E1wd3Dc=
+X-HE-Tag: 1781182914-29503
+X-HE-Meta: U2FsdGVkX1/zzfXmn1LY6Nb11puffocSB153de7+PzOKDEUVF4evpf4r4Xm0xbnBgERRj/yWGc10UrnrQNeVJFNhvQWtg8XA9YqzcMePhpIB8PySTreQWZqASRlWnTBrvJBwaqrz5AAMbV1tP/LmzdCcHbPT1AYzlVQXI77xOYAC7XBsX6HVUnuGh7++bL1KzxboorvEIuworyEKqHlvYwmBLLI4fNtHYX7VQbnJTQZmwUaStAzvtxN7NW3soxoM3L73EGVNUws7feLGKPFjCSBaCmCThc3KP0WcUjJckjyEcF0V1blBa9NYjzCWhIBynH+x+znAyskJofX4KWqsukYesUrkIqYjj9iFt+iNBAfibiq42aG0/+3gX6HCEapBaouAoWy6SPj92Netuy8kZ1gV5Y7uWdlCxdqGSpdzzbqlV/T1I2MzQ6A9bEpBrC7Q25Ziz7WRLM7wrKFO1sEdPid6vx/ZyaMzmVKr+lta7BlgX1TbClVL//D8Y9gLGK90/aulFScI+IL4mEatwh2jM4OgP6svEnFL3vl1KzspFtqt4E6w9AnOaSN+AUqJGMsG4Dn8znZ9xnhNvf0GjK8VpWQFTDm38hKhyJzRaSsVjf+KANOUZ4WQ8zywPwAogqbO9o2KTlyfh7L2jhRzD4qu2WFVegNElnlMsHMx7lcVScopQsvYh6CQRI41Exstpw28Y0lUtAjfNRn3u762PbbkQGeaT/pqzRD9O1Lq1SJ7DSAqYnqR/BjX+bB7O6R3kzp2lnEoCrWldZqQj258nfr/nnP4ShKlA4Pzsl2CZkISZ+WaKcZSCU9RMoVyRmxVkOU6o6LfUxO9GtFDnl4fvpQzQxQKff+I+I4JhyE1BSySpY16e+PwsA5Y/hj5X5uwbE8H3dyWrBpj5GoBaqbUUzpRWZB1GvIRcWSv0Dvyo1VdnXJctJ4qWUe9aF+q9+A7ic7jY+X57YuVbGLShbDH9Me
+ hd6fNtk5
+ lXelbnOpR4GFxzpG0MmNkDp2tpb/dMuMhrPsG1YSTkeyCKsStX2wlDN7zp46MYagVDHmnR8vGOd8i/7Bk8m6yRXddo7tM6pWwZHzNr2akpBymzU+ULOu/yb3BoyVwDzR0TjciHnZMP92pvXeeNnnMD0I5Bjcius42dRcGfG2XlZ0JGRzQyUCUqKmz8YZsW1md/LTgTc+WSOjDSO9GyWKS4ZvD9n6l9t74n+9jWFoUtZg3ZMPK3w+lOv622oQ4eQH4krjSN6G2bx9atmKo1P6e1NeBGQ39Cvrd6Cm9E6TSMcN+40/T1j7zbdrL3UBoc/dOGhCxgaVxeLVQDxdFLnvAwdc4HKF6dg29xoaETrxzWYAhge+vgoolHi0cjo974hrPCsJ2TeM8GHpdsn97p9SVtJqNB+ZBqWlfJ+TgXJ6B54BLjnzODTn/u08ILJQ7sU9clfbaBbxozlxGU6W3UvsMUcOgPCrtd3l504hN/j+s8T7+NgG0PHMBckINn+K17oDspnIP35coF6rFi1Zk+VgyLAdgNcBd276949HdPFbyHDHxtdZkO/cAamck9t3lfwLx+58JYYt+uTZtWsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,59 +113,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Strip the read-only attribute from the selected memory range when
-restoring the linear map after an execmem cache clean.
+Implement the architecture-specific execmem_fill_trapping_insns() helper
+to poison executable memory regions.
 
-An execmem cache clean is performed when a cache block becomes empty
-after unloading a module. When making the memory valid again, the linear
-memory alias must also have its read-only attribute cleared.
-
-Without this change, the linear memory alias remains read-only even
-after the execmem cache block itself is freed, which prevents subsequent
-allocations from writing to that memory.
+When CONFIG_ARCH_HAS_EXECMEM_ROX is enabled, the execmem subsystem
+requires a way to fill unused or freed executable memory with
+architecture-specific trapping instructions. This implementation fills
+the specified region with AARCH64_BREAK_FAULT instructions and flushes
+the icache to ensure the traps are immediately visible to execution.
 
 Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
 ---
- arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/arm64/mm/init.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 88720bbba892..eaefdf90b0d5 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
- 					__pgprot(PTE_PXN));
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index c673a9a839dd..71aa745e0bef 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -408,6 +408,20 @@ void dump_mem_limit(void)
  }
 =20
-+static int set_memory_default(unsigned long addr, int numpages)
+ #ifdef CONFIG_EXECMEM
++
++#ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
++void execmem_fill_trapping_insns(void *ptr, size_t size)
 +{
-+	return __change_memory_common(addr, PAGE_SIZE * numpages,
-+				      __pgprot(PTE_VALID),
-+				      __pgprot(PTE_RDONLY));
++	int nr_inst =3D size / AARCH64_INSN_SIZE;
++	__le32 *updptr =3D ptr;
++
++	for (int i =3D 0; i < nr_inst; i++)
++		updptr[i] =3D cpu_to_le32(AARCH64_BREAK_FAULT);
++
++	flush_icache_range((unsigned long)ptr, (unsigned long)ptr + size);
 +}
++#endif
 +
- int set_memory_valid(unsigned long addr, int numpages, int enable)
- {
- 	if (enable)
-@@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, un=
-signed nr, bool valid)
- 	if (!can_set_direct_map())
- 		return 0;
+ static u64 module_direct_base __ro_after_init =3D 0;
+ static u64 module_plt_base __ro_after_init =3D 0;
 =20
--	return set_memory_valid(addr, nr, valid);
-+	/*
-+	 * Execmem cache uses this function to reset permissions on linear mappin=
-g
-+	 * when freeing unused cache block. On x86 it makes memory RW which is
-+	 * desirable. On ARM64 set_memory_valid() just change valid bit which
-+	 * leave direct mapping read-only so use set_memory_default instead.
-+	 */
-+
-+	return valid ? set_memory_default(addr, nr) :
-+		       set_memory_valid(addr, nr, false);
- }
-=20
- #ifdef CONFIG_DEBUG_PAGEALLOC
 --=20
 2.54.0.1136.gdb2ca164c4-goog
 
