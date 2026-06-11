@@ -4,90 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF16FCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89668CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C749D6B0005; Thu, 11 Jun 2026 10:29:00 -0400 (EDT)
+	id CEEB46B008C; Thu, 11 Jun 2026 10:31:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C25846B0088; Thu, 11 Jun 2026 10:29:00 -0400 (EDT)
+	id CA05F6B0092; Thu, 11 Jun 2026 10:31:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3B696B008C; Thu, 11 Jun 2026 10:29:00 -0400 (EDT)
+	id B8DEC6B0093; Thu, 11 Jun 2026 10:31:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A28A26B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:29:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49D971A0688
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:29:00 +0000 (UTC)
-X-FDA: 84867863640.20.7184886
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B667D20003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:28:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IisiybxO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781188138;
+	by kanga.kvack.org (Postfix) with ESMTP id A72816B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:31:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7588D1A069B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:31:58 +0000 (UTC)
+X-FDA: 84867871116.05.C26144E
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 60910A0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:31:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YY4EyAa6;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781188316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vilZoDQISoe1jlePuvDDEKBItD7TBlXWXWHI2v7ALUU=;
-	b=FSzOkGO9tfQApWv1t6R+ERL0rUkmERn/HJ5k3EoaMPlGF5ytnN4pidUUPcpT35IhcZE0YJ
-	eYl0daGkFe8vama/YZjPDWz2jJQclZOQRSVjpQx3v5G8K9tk712Q/UayQxmoL46UDNbC8M
-	IObFzdEmxAed1VDGFI/kEcB/Y/a3sU0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IisiybxO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781188138;
-	b=tLzKz9pzfHLiwp92M8BZ2G4eKgy8eovLTCRNsYuLrOF9m/1VwPoFvI9x+vm8r8qdZt7/wF
-	Wg8u+B8Trkflx5e/lMgP3Hqxu2E+G91WGq4jmEcdpgJ17DxoRjs7WgEVIHCfc2AuuaTJ6Z
-	cx5IX1wrPJsDzerfejRxRxYDyEW4fv8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2C8DB600AA;
-	Thu, 11 Jun 2026 14:28:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754091F00893;
-	Thu, 11 Jun 2026 14:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781188137;
-	bh=vilZoDQISoe1jlePuvDDEKBItD7TBlXWXWHI2v7ALUU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IisiybxOoGQs9Wo+hB/KOZUyBLt+NgYjVM4mvhXQBQC17BlI3E/2ywsHXeARxYD+I
-	 HWseCM+NPPqlBpteLd+pE9e7Ak2d62iN48+RojGh3QpXhwSQKUPhcqezEgseYge7XX
-	 qeoDRsE/9l0+RR+v2C+nekuULwqCcaegZ8eY6+pGTgjUnpl9bQmK/1Ww9qWmwmfVVq
-	 ucfNUNGAzSxoxg61LYDYvnFBlylzrwx/zPNBbaS7lzxz1ojen3wJw+jZvJndhAB8ol
-	 iDWjS5h3d56vh6cgBswDE7dfXZ2aBkH7eqhtXiQXZx3JS/2niwrFYf+9+8uJ8NCLdT
-	 aQ3EUajXXtwZg==
-Date: Thu, 11 Jun 2026 17:28:50 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Tarun Sahu <tarunsahu@google.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/memfd_luo: validate serialized_data before conversion
-Message-ID: <airGIioUmTtU9326@kernel.org>
-References: <c2478f79207b10a13282d917c961261d17b86a15.1781173768.git.tarunsahu@google.com>
- <aiqso7rkpX6oMer7@kernel.org>
- <2vxzmrx1qjuf.fsf@kernel.org>
+	bh=i+Dh9+uTJXNYOF5i1HD2hzM+xlcOTe+fE0MlRXz0TIc=;
+	b=ONTBrB+mhqUh1f1Sxsp4SLxayIl4iRwVRjUU4zPixe+s5zYwzmlmEGjjHqg1x4Ks332ncv
+	wZkhxU8SJJHGE/08x2OeyToOteVKgfq0wl2kcvzGFu4gbJfFN3frgLtGXIu7Y13UiCNmA6
+	QDaSRzJ3l88QRJljauaZEroz2PrDCOA=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YY4EyAa6;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781188316;
+	b=tR5ANbwg2UAzdGOyLkHYvHEi9gaknhWc+kXubjV4XqY+ncX6UzrXsjQssbr9kdjbxg/dQr
+	ix2+TALa63HErRwzLZqryGyfyfmWKRNbwU7a4poTImqg+K+6HVtyvmz1qtlI32Cqg4RWjb
+	5/KeYIc7TOF9aysaSQ5s7lEN83r6J2E=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45ee5cdbd28so669708f8f.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:31:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781188315; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Kc+i31PzPaR5BeaceL/EeIUV91lCU9CM3AL8x9/jdg+EO9DMfm8be+DDlrfLUVxdKF
+         nRHle8QNE/GGBsA2glyILUWUY1BiXXueKXipJndvG6RqyYQIZWkMyh2JGWY0L0a9Uju9
+         saum88eNBvabE1OA242Dj0mOvb9WoM6GD6sFSec2EReH1KPJ6/1NpTakxjYoJD8oQ0Xm
+         gMSTlbvEqvtwvA5F2dF5lcLb1X8fm9kOjAtQ8XIYAnmm3933FtppjX1wLH9ldYO88ELk
+         w7Y/zeuaqzfm4e8HPHHAn0mYw+TXXZoYD2W6HEJVI7Ot1eeBqDtqdGeHriX6JHe2oOUX
+         CXYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i+Dh9+uTJXNYOF5i1HD2hzM+xlcOTe+fE0MlRXz0TIc=;
+        fh=f2Xny+bAGJuhPkHCFlfpj+1jLHXmeIFyRnwGoxiXDgo=;
+        b=lK+ejOTzl0sPl9TvJcYmUpiIEX08wJsoL9fM1Hjr0yVP6YEjIxQJEqkXAenPP6j2o9
+         vCGzZ+n4ODbPBDTU66Zb2ohlwkf2zQgTaUTpWOFpjOntGhLrZoI6Vy+/nuA/4d1jj2St
+         Cmiqfs1PU27PfWQq3nez0LU4NE/8cwpVLtN6rsXmbmJks57onMiGJhhXXcVoezb7dWdc
+         XsqbQQP73ORzpZ+JWjqUaFDm6BfmBFSUCSKPr/o8/EMWu73jXTIV00PTUEVg7mdI4GrJ
+         JD65Z70TGBQbDnDm8pxE5OwxZ8icllWzBfnWdueiVh2GBEO26liL982o3PLE0r0rv6Z1
+         eEZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781188315; x=1781793115; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i+Dh9+uTJXNYOF5i1HD2hzM+xlcOTe+fE0MlRXz0TIc=;
+        b=YY4EyAa6VOboxxhOgSZ7GXU4zLIoLA2q7T0RG6j0TaWUpBsG2BjJieZNk8Fpu1Fobh
+         RbD1HoiKzAYkYJkGd2nCj8yOZiqtIbLGBNxmu4fe66Qys/Y5Ob/Vch+Q0J53vzZM2Qdr
+         ZzpQcvvF7myjgT5kdbJWWDkWJHhSO4mTb/1GNEYXzo/N0BygTnvaR+mO+j6yBrHbGVbn
+         k2mkA5xelCshpOKqtD9RgBVBo0P/t8ySFM0CbTeRgV5acf4HOWTGuNVp8fyp3yF220Gl
+         wCf2gQfoLGkeDpEqPoYFcnj5GOiOAPCSCddCs6bBy8MrA64258jsErtX2TlRarCSKpYZ
+         DCkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781188315; x=1781793115;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=i+Dh9+uTJXNYOF5i1HD2hzM+xlcOTe+fE0MlRXz0TIc=;
+        b=tCRJKR2NO4XTU/f8Li0FpA25LQIwJp7+JehzZFxMhNv4IpTWfMxgexa1t+zNw1oWRY
+         Qvt098hnHyNvtqR71UfysCFkCh8t/Pzab+MCzX2CrGS4sYFQjdUE3xU4HVrXATv2q8V3
+         7yro/L7mrifdqBM+be1rlcOXhjEVotoGxu1D4F8FBqUORRR+5v/LGRRrd4Nh+3G0+4w1
+         EmABwzRB/54qWAiMOOcG91L8C5U8xRD0D4ZwBpq+13RT8ixbBho7CLTxksZAocoT+W3a
+         J42aKtuVtMqF+ZC3mXKugSPdKYj74dNePfRwW6+umP0Ek7+rKMs/tKXsfu/CCP/IqHql
+         37Jw==
+X-Forwarded-Encrypted: i=1; AFNElJ8kBZH37Nht+NpAEwp4AHSbsPjXv08QVQJs9WexsnDFgfIIJ1G+CtWTBtAP8ver71+00Lq6QUZZEA==@kvack.org
+X-Gm-Message-State: AOJu0YzdQNjL0YVz6zvUhfD2VJdN7E7v+QVARbvVdXhQbuqpZrOUQuoR
+	MGVzoHkfc1omdQ8RtDswYwectfvTWRjUiJsr1HZXODok5TOSORFRGqkZtR8vOFRSFk27MZxqdD9
+	waTj+ZhL17/ql+V8NBXeFoeXpYbCiH8A=
+X-Gm-Gg: Acq92OEIrNHTUlUP4It2eKqodmObNbwGay0TPu2RTuhHXyoyrmL12+OsdUVaSYD+usj
+	SpcMojCD4iwSD2jD2kISNbYqT60DRNL8bvQWkKTirIgke9wG6Yyea1hSbCwbG5B01d4UujOriXD
+	BA1BAlNf2bK8Lep/3VO5Oj8QpL7r1/azdL8CK4hGhemn9QmYusJwMjO8hkz8RLwSo2ICCEavGkY
+	ZVu4UPJcy4VAw3Ut8Sjc1kn5aCKbZfDaWIi0FW6pkL70O7ZtcOH1wmzDJipFYEoQuavkmYLMQsh
+	W5iWdO/mYXQ5XQM7taR1At1hxtPCOCFOk7d91etPohrDrdpN9lkR7bnj9otzqkr+Fg==
+X-Received: by 2002:a05:6000:1868:b0:457:ff13:b2a4 with SMTP id
+ ffacd0b85a97d-46067dfb1ccmr4199861f8f.3.1781188314452; Thu, 11 Jun 2026
+ 07:31:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzmrx1qjuf.fsf@kernel.org>
-X-Rspamd-Server: rspam07
+References: <20260609113520.3507783-1-haowenchao22@gmail.com>
+ <20260609113520.3507783-2-haowenchao22@gmail.com> <CAKEwX=NoNXqk6koBYMSjaQaiMfq-dRaBxuFpYdrZyByxs1g0xw@mail.gmail.com>
+ <CAOptpSOHcbOrukxx_u73jhNyHcFNAg+BYKNqWxDcHqTM+k55_g@mail.gmail.com>
+ <CAGsJ_4w+3RYwGqmNvrF9ragiFNW+_mHfooQ5pOwGDLTzLUNomQ@mail.gmail.com> <CAOptpSPseFH14dyyVQrvfLxqjSXFUyhoVg3GXsQh=7qktJ85Nw@mail.gmail.com>
+In-Reply-To: <CAOptpSPseFH14dyyVQrvfLxqjSXFUyhoVg3GXsQh=7qktJ85Nw@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 11 Jun 2026 07:31:42 -0700
+X-Gm-Features: AVVi8CfUEFgpg_T9bZIVNwDbe3PuXNIpDiBfssczEOroQagK9g8LgUhvOBtA4zc
+Message-ID: <CAKEwX=MjWMTV3KLUDtfmGDM7LiRXNO5au85==SwFqpSBAQ6Wzg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/zsmalloc: encode class index in obj value for
+ lockless class lookup
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 60910A0005
+X-Stat-Signature: 9m3i5w944krinq9yscbfgrzy9zbzjm4b
 X-Rspam-User: 
-X-Stat-Signature: rdwzynqpq9uzgjhgztdfnaj93dfk1yym
-X-Rspamd-Queue-Id: B667D20003
-X-HE-Tag: 1781188138-222557
-X-HE-Meta: U2FsdGVkX18OyuHweSxkblMSyH6lxWbPG91Jp8+s+60pkxNO1gACxdpx8isaO8cB2/Q20qwzGB13zKbOW6OxByGVP3WwUQEdkkrdyP9zH4mRqSwJjTyf4XbUy1C3pLFmavA3FJVkbJZFYQZeetTj7u0W+7tNk6S7h768UchwGfE9fBlX9G24eLXfrNvJHoD3f4r5+83OJmNJE5d4al3B5byJV8x18yne5xtbR/UV1IGbeY2dM5NMEKYzx1FJBqBq2ag286eWsdqjDQHM6kUih455M2xs22lG2BnBZqQt/eVrlPzTM9h/vi6yFOKCON43ciGzO50MvWrvM0BjjNwBhuYqd+C5kEhuRf8ncC4afFCT+mJiBulYnS41u+3YX+LY7NRmcniNUGLwvliVNg/26U+zBo7SQON0RhWHOW09PxUJKhw9UsgGCMX1ySzxmhO4Et34PB3yrH2I1+uwatDRi7rnbLXGJiCvCBGf3/57cZC6UBeva8/BnEid2v0eInn7nugRC2JZVNhVS/CdYPMbseQyWnLJwNcHs4ZhT3boyfikNRTVGo65QRcUmg2fQqj8xWncNEuOGNrbYu7GizFl4xOX+2oJcfqlFrn4ECGFjDqJodXVytHrXphMW0mlxO8QU8SCdE0AJ7NmZYowRPEMq/tPtPL8R5YgjQS51+r+NHk+vgAY9jbOLDMEKE+deIR2BMoNxrkU90vJKZ0GP4iszvz8+ZiR+SPFdcyZytMfqElkgYlfmYdrA00xOG1OvL2PXhAQQd5Ux1LOmXE8t5yueGXYw2omJSglCI015f/9Y0hyZuB5IAPwsKnneCyQcPpL9D/MA07uWWaC/QJUYVXzrPy5AYQwHFRyPBQiz1I7S5hy8I+oLm/HjOUKA+AjAx8b0R4bvQd8bgEyEe9FI8Gvhdt4R+JjXUysimon2iFIOUGG8m6BaBPewOG45uJbSeKYzhHnibmLewdH9uL0ubt
- kU9qTXgW
- DCDnPWPOO/UcJeyBVUir1rgvi6CurQLDE+0suodO10yfLv3vzqSbY1rM61rjNhfksHQ12gCxaSQfcxjYE/e2W5EAS2uF2J32txerRUwdovfKAstEEBnmfW8xV2FuIrmQq+5kDa+mWoBYSBPShIsnaXg4ox03zLJKr6grcYZNiMHV6fDPuMNc0t4oz+/nZsfQFD11OG6P08iWtIenFFRHLChd9alS85vBD1wPKXCMulBCZSnYcgaM9sqj+pDmog87p0I6NRhGSp668xVdzwYgfZDsbbLMwwNsDNiU1yPLGOp9ZDZVB2rJZ1je0sKM+YYOTgAbF
+X-HE-Tag: 1781188316-948172
+X-HE-Meta: U2FsdGVkX18HA8I+RJzOw1JKBeiAjjyxu9e3ZvNda7c9+CpTFFSupsvNQYAPo9mZhtqg33e8zXcirP3EGTYInWqT8p7sRTJNZAqbeOEj2e54JAaK07sLHvwqZCBcbqMjg+XJ2aclEkedl8AWMORAJspt4HxtCuj74DHCdiHsWSG19iULseTyAZ0RfyvDh6w26XuvmnyGja54dCTWFzm+Swi3HzeRVaxLF6PZ4b33XtCBfuB2RsGRTPsqNyH1eyQY1smdZx7As9W8sGi7lZ/7gjtUHG8kygIvocEmWVsa21FVseZAL1LR0O55V5LVoTYg1D2aA2oxOf3O8aKHCWBhkfGgQpmtyfJY6yNeWgdJ7Sm95UlW5vxXEPQB2DvVbSUC/piIZap88Vb/PSnY0I93SkHNzykJLIrlJc9R96xJTer/O53nmo0KOqj3rfw2GYG6zY5IlgQxgpFeff4ozUfHyysRgaHB+UlxR5T5/xB578U356wwtWUIGbFGiZk4kwcgzN4qXuSZ6BBKWjYBvvukksJsDyMDAWfHEvGuewpn5Q9/PjgJ2RNj553rmTpgqcRIl1LzTtw1n7hd0nu+3U54/WFiNjsXCPJIFcYiQQgPkkfgONYTQxglx2svQzzndTsFkNH3PJn845V3zZrP+8HviUJP/Dd9le079BC1V1bC8ECGlcKryRle3ICBVZ3C61rT8QwEN5jEDnq7VLmBLIEB9EMw72xM4YPexvQEKXLXLSMUtvn7Cgg80EJ5eULGiFD18DOw9WYlwvssv1auVkh53vzvaCWMIoE1pdjGyry0QCyLYwR8pBpHzjZ8yvoH9TU33Lensn2CRSyaP32OcMV2Qbe9xLfe4Uxx4Ezpeihl/WD/LSaCGvspmy4gSas6SlFs1d6q0SdFYES9zXTqf65+LTVjMS1N4xMH4JqLc3SThXOracV0VxnLWIHyVKqxCWJCAYd/Uefsy0j891Vmsac
+ lzyp8Rq/
+ F12JxJ/6H3Yjrg6jTAFsIv4ZBLguGwvZbBiEdYD8kxZ5ATV0ZWMVqdr/m2ikWTXcPPqBASUFfHetq0UKApBDGelz2UVFz8HBcn78awb7WUXU31OE7axvYVJOILNC93f7lG74voiBuhuoMiVtgwdrMeQpJAspQTA10x7E07fwmfzV/Dr+CXkiIGs2UITZP8w90BOMI02BWDlt1+uquZy8LD0H3ypXoL9Qmp+CSMTftR1UXUjKc2NWoMTRF+OW1uYKPYg0EQ4yotIfX5PR23aqtTWX+X/gAXAB6RXLZZTx1pEJa72DuIGrxpjFjgaXRJUNSwRdr80nMES5iHiHjXECyIuf66aLUhRnkVehKQY26W9uElHxsdryGgtGrz+zxd8fqaFK699Pd10npwCMKbdTcgQ8lX3YiDU/lVkmHRpn4tgyt8oYdI7Cy7tu1y8vuJpm3xcfbOcXNRHQuqVefeIgAiX5QcWPvRzpcYuOcdNgs4QTh06Cyg092SWwMoBGXCH49b0a+LNGfDOsDIV4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,49 +144,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 03:37:12PM +0200, Pratyush Yadav wrote:
-> On Thu, Jun 11 2026, Mike Rapoport wrote:
-> 
-> > On Thu, Jun 11, 2026 at 10:30:03AM +0000, Tarun Sahu wrote:
-> >> In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
-> >> on args->serialized_data before checking if the physical address is valid.
-> >> Since physical address 0 does not map to virtual NULL (due to direct
-> >> mapping offsets), the subsequent check 'if (!ser)' was ineffective at
-> >> catching a missing serialized_data, leading to unsafe dereferences later.
-> >> 
-> >> Validate that args->serialized_data is non-zero before calling
-> >> phys_to_virt().
-> >> 
-> >> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-> >> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> >> ---
-> >>  mm/memfd_luo.c | 10 ++++++----
-> >>  1 file changed, 6 insertions(+), 4 deletions(-)
-> >> 
-> >> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> >> index 59de210bee5f..10f3983b0060 100644
-> >> --- a/mm/memfd_luo.c
-> >> +++ b/mm/memfd_luo.c
-> >> @@ -397,10 +397,11 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-> >>  	if (args->retrieve_status)
-> >>  		return;
-> >>  
-> >> -	ser = phys_to_virt(args->serialized_data);
-> >> -	if (!ser)
-> >> +	if (!args->serialized_data)
-> >
-> > We really should make args->serialized_data a KHOSER_PTR
-> 
-> Hmm, that would also be a good idea. I suppose then it would be a better
-> to directly convert to using KHOSER_PTR() instead of this patch?
+On Wed, Jun 10, 2026 at 8:15=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.com=
+> wrote:
+>
+> On Thu, Jun 11, 2026 at 5:28=E2=80=AFAM Barry Song <baohua@kernel.org> wr=
+ote:
+>
+> Agreed, will follow the convention and drop MAX_:
+>
+>   ZS_CHAIN_LOG2            -> ZS_PAGES_PER_ZSPAGE_BITS
+>   ZS_MAX_OBJ_PER_PAGE_LOG2 -> ZS_OBJS_PER_PAGE_BITS
+>   ZS_OBJ_IDX_DENSE_BITS    -> ZS_OBJS_PER_ZSPAGE_BITS
+>
+> Nhat -- sorry for the churn; this supersedes the names I proposed
+> earlier.  Let me know if the new naming still reads well to you.
 
-Makes sense.
- 
-> -- 
-> Regards,
-> Pratyush Yadav
-
--- 
-Sincerely yours,
-Mike.
+No worries at all. I like this a lot :)
 
