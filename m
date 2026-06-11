@@ -4,119 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D656CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A92CDCD98C5
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:15:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E97C16B008C; Wed, 10 Jun 2026 23:09:46 -0400 (EDT)
+	id E04E66B0005; Wed, 10 Jun 2026 23:15:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E486C6B0092; Wed, 10 Jun 2026 23:09:46 -0400 (EDT)
+	id D8E9D6B0088; Wed, 10 Jun 2026 23:15:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D37AA6B0093; Wed, 10 Jun 2026 23:09:46 -0400 (EDT)
+	id C562E6B008C; Wed, 10 Jun 2026 23:15:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C365D6B008C
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:09:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51CC51C1D11
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:09:46 +0000 (UTC)
-X-FDA: 84866151972.21.D39D055
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8DA5B140008
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:09:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=S8uSY9vM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781147384;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B104C6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:15:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E1C1120463
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:15:50 +0000 (UTC)
+X-FDA: 84866167260.24.437095B
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 596591A000C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:15:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nXnHmwVZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781147748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WT95mZHoPykr2tWUu0TCr6QJxaYWH5/rFPVhZTId5OQ=;
-	b=R2bbqCaWmeCtjP3V2AlqgRyTgkJLmKDx7u8kR6XEHlJPu19WpkZCJ0oARyTMnrGWzu2AJI
-	P3ddxYuwF2Abb88NPaxIPcAm4hDWWlUqQSeHgYkX/PjYXU8WiVKTEYWzF4plyMweiAsVuS
-	o42k8HSAiBf5X376JpVF3FphMWG6d10=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=S8uSY9vM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781147384;
-	b=5kMSOkqO0PFAn9BBFXnVOpd8UYgKCSM1Zlxm83FwEo1hiwmrLlCq3QHatMbfixASboyUIA
-	vsopFKnBywhJDedYhjDzdfLE5ug7zCB/UHaS+v3ItUv4eekuFadZx2se4zq0DX4LGsn0Hl
-	0up5GfaIRLQSJKk3TXDVuH/i75c2WSc=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-842273a2c4dso5098411b3a.3
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:09:44 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=976JrbpQALIk05gyI3/5emKaKS9j6BQxODoElYmG4Dg=;
+	b=GsbZAkcbHubbXuSVIcDxBgygUdtpeXKoVs13Jleh5XkPSgPJra4JoQKY4pu4LtbMY48MKH
+	65a3NAAdBmyozAkTIpSpFQf9yF0uLTqt2H1D0QcFjWSRAq3t/Ck0ABF0w8qJ9NhshYGxHj
+	ZktJA/76x8Qcfhuhp9evjvu88j515h8=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nXnHmwVZ;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781147748;
+	b=wHIGtxUWBECHe85VO8enJKAHhkR6IKuhuB6Fm0i88JA8QfS3ASlv7Wk5KIAZjBeRFDyD7e
+	qQZC0r2XwZw7vgCMVrrv6GlT8chAX8AX98igVDvOdSrJVvAivN2ZaYo22L3pTkyaUu6o0K
+	2oOQWn5Hamu+3WslyIc6BrZbiXZ11FQ=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7e266714bd3so85835637b3.2
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:15:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781147747; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fgdm+RXA1eE/cmaRhvdP7ptytIgQ/yy2x9AXRfSk8f0B8+QEw4FqXCRmFSkCft+Vqe
+         EBHosSHcazlfxWw3y45Ws0vidoj3PAqFnbbw87w/hUk0lEz7QgOut9iffn6LyXGo6pPV
+         Vw8fuZzc/TfAAYxxFW+Hg15JEvgglV8fnwPRsJDjHWS4dflBW0TuDtxCjzUTddtxWo1N
+         nXSYR6gaedzXJ9kqCIscXXRNl+iSmPRm8KoJaDJ8emFShw/k5rtCnxC5jiKZ1SsuYmaR
+         tNZTfCQUBI7qfmy486/OnIdevZpSjY8eLiHsdQS0xiXcq7tz86bN4sWi/1evONurBIjL
+         bBtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=976JrbpQALIk05gyI3/5emKaKS9j6BQxODoElYmG4Dg=;
+        fh=ZD+CpMQoL3EvCbF9RMwKlv/J7fi8tiCh94qimpP1+lg=;
+        b=GaBDVhkRVTpJg8L3s3ESSo6OUE8K3O5htj3F2Nw+UCYGWLOvk6SU8fImOJXkSSfyAZ
+         BkX9cBnAZn+vG3WbKzVhv+9or1zAAZI9EetJyfSm1eY2VPOBTvRa1kMFF19sCGOvVtPj
+         hy/w3e98d+MLuS3M9wmfXLK5NvG5qZD/XJIvmd+RkyzmeoraIPs+azye9SE8aW3SMObZ
+         Z/s36b7HxUcf9DemlHX+Vql+fcgbAqEF2b7OiL4a4TCCLhsIbdjkePDrgUbh9nFOCAff
+         M177h6vNf0MFCC4kLlfMcTsXokpj8ggNBMwxaBQ59igCcDOhUDQwxmCxn13p2DLtuFWA
+         sxyw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781147383; x=1781752183; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WT95mZHoPykr2tWUu0TCr6QJxaYWH5/rFPVhZTId5OQ=;
-        b=S8uSY9vMNss9BghfawS7em3xWCrBR4uNyoJcPe5RUMMqbZgnKCAhXoJlicBRk8L6tu
-         pwlk1PT//TeHQzQF8+UAw1k67UXUl9nVdFghvw1IGnqWjUxxHWux6P20hemrbhLMOBID
-         77xuhSatDhDx2k1kFxFE3FcP1hNX0oSttjYnyx2eVWLzK7uXLtjyrzWr3dFPUeJ4+fmi
-         W/e3uIKYsPuOuSQhosfnloSsdNN+qSyOAnGE8FDybW1UgfR5WiNjDGYws5n2x3zexq/b
-         x/WPckwIgyz8LyccgS5KnEbTnvzMA4OrQPVbRS05KP1L8+Nc0OIMgQh5aGV9TyEzjfV9
-         O/mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781147383; x=1781752183;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781147747; x=1781752547; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WT95mZHoPykr2tWUu0TCr6QJxaYWH5/rFPVhZTId5OQ=;
-        b=U6JPiA/kS0pNHuvikKJ+cR0K1gYHO/uXmKCTKH9jP0gf6zHMTuxy9cc23AD3zup6+0
-         Wo0TveNAGiXGJ+Yx9FNCPWYslqCeAWeG/fMrJf4D99QalWqKhtHBRZBajWBJUZ6dcgdn
-         OtYRBqHJPAwhOlDw92GrcZ7x1XrQq+Gl7ZqCw2VJnnVuMYx61FrnUkJW3k9LLkVwMGAM
-         QWD/T48mFkKvwUHvNLs/LklR6DDbl7yQAvzaXojl0UPwd0m69zdRZwaUq1r6y/wfu4p5
-         nUtgTc07Ty6MowGEEM+6RErZt+53vC7mblQDgPnU28tgkEucsH1gePEO/fatgBEk60Kb
-         pnkQ==
-X-Gm-Message-State: AOJu0Yy9u2UCStsw2c8DFVR+bNd6YSvYzFLogC8Cj7tdP82prBhojs/V
-	MGQOM/IWKnhhIGcniA06Kon7pKCuP1KdJHRyHdc+soKtKLVGKAnsaIQPTRFwFHYG
-X-Gm-Gg: Acq92OFWKdLLv4/C2S0EpiLHMFTIYqj+GJC9NypEO9aFiIWRNFLTzxjVnYIcoFjDjKk
-	rFK1wdtl4GGQkqsdhSTR2B7z1bF0jM1mMT67CbN8KY9NVM4tYQjIgxB+JC0x3/3/w2LOzM3GzCz
-	aVr3ED/9TvLmTm0/MqlNuj+bFtkjIrStI2O5aAT5rfg3lHJOf85PycfvGADky6A6aI2b5hovF6Q
-	a3aDyZ4oViwkmjnDYRZJpd8RbGkqELIPv040OxNBR65eboaF3p7sP0YWoryfI41sdYZ+9hzbyu/
-	0mV25y0ft27NtnlKnG+drBQ3f7PEHilC9guUNBZUxMA4Z4w/eEpf/Y665qJNkoTmVLWLCZ3AT4h
-	lJqsUBXC3J79zv3dBh9MTK6qzSFJ5pUjKCpYzka3mRw/zg/K+McfuDrfaOx4QmMlKox9yma3del
-	nAEiMqvFJCL4CFzM2AM1kZ8gi1nNH2BF0CCEZcyvI=
-X-Received: by 2002:a05:6a00:12cb:b0:841:d7f6:7297 with SMTP id d2e1a72fcca58-84336e0cc4amr784300b3a.40.1781147383427;
-        Wed, 10 Jun 2026 20:09:43 -0700 (PDT)
-Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84337bb6ccasm289180b3a.16.2026.06.10.20.09.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 20:09:42 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v2] include/linux/swap.h: Remove unused leftovers
-Date: Thu, 11 Jun 2026 08:39:32 +0530
-Message-Id: <68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        bh=976JrbpQALIk05gyI3/5emKaKS9j6BQxODoElYmG4Dg=;
+        b=nXnHmwVZNzLVzXxxVXoa0n523nuOv/O48qxjmTD00VBrKZZLbEuFe3iu0SNPw0l0Sq
+         lqIkWgvwYyonsCFMxSzm7/fKPccFgm3ICZ+hQhVnPqcdqCBthpqtQVUK0REF7dw4hxlm
+         15Z++GU4hAtgN/TTkPXD+8Xv8I4rWptsS46oDu/qcvY5vLsd7xw1RU2DodlHKLMbSDDz
+         N0t8hSNjd3RMISJA+sOo/pf+V3WThIrskNuAzikuFc/cx0XsvMiaC9JgfYcIiSi1g84F
+         lnXXTnDt4t2SBaeM39d0UOGRsERzKWoc+oyUvlSczvcnox8LZdLHbLzBf4nRuho6xxHa
+         KhpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781147747; x=1781752547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=976JrbpQALIk05gyI3/5emKaKS9j6BQxODoElYmG4Dg=;
+        b=lv2Vk1sUEewlTt2ZhsvgvLsD/5F51Wlz/AKCGFfjoEA353tF31pyPKPTAR3eSmQAck
+         F6E0JIwZ8QS4T4YbDAjY5LBkq5qc0w4CYhpuFd/PXSBEJI5DNDx9Xj9j52j6JJKDK1rq
+         evp4E3ph5JlOVDqQ8JiIRPXzp/XKf5NGTpfJnIRqVG16UKxx3GnOEMXIawTp1v1LqoJK
+         EO4opVHgOD12bJSp8wHE7+q9BXREbqYq7RnMgbOvQuIlR0pOg8vumok0unlHKTWfobwq
+         ojS6aOmzymA8uBW5Vsb5mKXB9QDY61wW5K+EqjPc66L1I0KFcR8AWfx94zan/XJpw4RP
+         +g9A==
+X-Forwarded-Encrypted: i=1; AFNElJ/QIUz3ocDqLOkat7Ze//TYNDWP8Dtss7YRj8v9ZUkY3+IPYhdNGxCkKLNhxsBHiY/tFPIwzcpRRA==@kvack.org
+X-Gm-Message-State: AOJu0Yx7tMTIl/omLoxHcuFqKHE2N3yD+AckJqu8nI0ZfQKLvwZTPKq3
+	Iw0i6vX+XrVY4qoQUxdcwyWgKHANOwdrTjYv2PN0gSnAAiFpJaVvqTM58IfricMGPm2EXsbQTWB
+	pSXCTAsO4o0tNVe01mk8fbtmiSGL82dc=
+X-Gm-Gg: Acq92OGggR2pZSrpwhBuHhrglil/04oLYgc53SAxs+maabdG7l95NgzdN3FSUDPvy3q
+	VoOGiX3i3GmVhTB+mZUjHak7tmyouOvqPJ1Eq0zwkvTPXGRU49ZznMAY0bUyptiBy26qzhFGXjP
+	lVbjjRcxYDOpDKyvJaSYIy59+FGZGUvFWVOgVwEgdC3t4TXkexfoRiOvH16VMb3c7kdzQ/iFOYM
+	+vjARBCPDaGoPTr4j7MopcMlV4xinl5A1HA0eGGEnT1MFc4QqYTYaICHZ8QFgPt9c3u1Sakdb+Q
+	rAxfRTorc/9bddwlL2CxfAfb6p2bGw==
+X-Received: by 2002:a05:690c:4a06:b0:7bd:5c9d:dc6f with SMTP id
+ 00721157ae682-7f6558e8693mr11476977b3.1.1781147747258; Wed, 10 Jun 2026
+ 20:15:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+References: <20260609113520.3507783-1-haowenchao22@gmail.com>
+ <20260609113520.3507783-2-haowenchao22@gmail.com> <CAKEwX=NoNXqk6koBYMSjaQaiMfq-dRaBxuFpYdrZyByxs1g0xw@mail.gmail.com>
+ <CAOptpSOHcbOrukxx_u73jhNyHcFNAg+BYKNqWxDcHqTM+k55_g@mail.gmail.com> <CAGsJ_4w+3RYwGqmNvrF9ragiFNW+_mHfooQ5pOwGDLTzLUNomQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4w+3RYwGqmNvrF9ragiFNW+_mHfooQ5pOwGDLTzLUNomQ@mail.gmail.com>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Thu, 11 Jun 2026 11:15:34 +0800
+X-Gm-Features: AVVi8CdSC97ax-MdYlena4tH0Zu1Iyw_xqWRMo6c1DNX6wVWPb5cZ2XM2US3LIw
+Message-ID: <CAOptpSPseFH14dyyVQrvfLxqjSXFUyhoVg3GXsQh=7qktJ85Nw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/zsmalloc: encode class index in obj value for
+ lockless class lookup
+To: Barry Song <baohua@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 596591A000C
+X-Stat-Signature: qzjp4nh1mchkj6hao7ttf3aqpefz6xye
 X-Rspam-User: 
-X-Stat-Signature: t5fqg3qe5qyka438zh89ih3aaisgd7no
-X-Rspamd-Queue-Id: 8DA5B140008
-X-HE-Tag: 1781147384-792848
-X-HE-Meta: U2FsdGVkX1/H9xe6s1LhQyaeftbdXkGvbQgO7kJ2i9u6ysTkJXxV+MOBtehvXhAQidXdExe4gbXXLf8m1X0ZQ0dTz/b9HzsHRApx/pW0FmD8XXPPExvkkgQtTKkXFH4Pb99VjJx4AHYMGcvUTst8LFkETfqqVjje53zsbPACAITvmuopc9ttWk5ur0qzdyvUjInLcJ2qqfqNNMjNRWD5oRDLI+B1g0dNiARXNO1U+mMjMzG5ieN8qTkrIcGwnQJyePzAY7CStxb0n9rRL1fFwm1yH5q8BkFduu5N2FDv+Jfy96jaFN8kHvjrT2shlGOAHsW/4kPUpGoJUThtjeXGQ+WeMVHDzF/1fAsU9+yfydATMpJixgmgebg54/xTNAXQ86L5y1PrSORhpPG4jnzk/4ra2m3+rZvZG2H8qhtnStdzkz0M7N/XAgUWw5tO5mqvfio2fdo575Cuto5Fl0mNOtIwDAfQ6KoncZGRRhD7FqCzIHyn9dNoVw0OzJB2mOnhR6Nif8sEOusYdETA4QAnwi1PxMaP+42Oj+W2ONrmHXs1TG65ymiHynPzgfwMyhEBp9b5sjIPD5tUz6XX90cC69doKAEyK0BOVOE1ZWTeZKd/JxL0pEShKdaaVMOS5ADcynXKgN89X/vAohjzM/pkRUdPxyeKXWrApOv97fheSHvLsbEe2G0+BzCjgbHB+UVdalHWB5XqWi34qyGb90+4sGBTDfhJ0b0/PJrFamBsxywh6whwC1xMzdeA0j3NUPEdfP7gDpmlPWI/Dz1CdoLkRsLImg5396KCm/C8PLPqrlIjAk8AgVPcC1foeGXyWFoHbSdUTSK02CvpD0WQ57dOlH/Cx0u0zX90MVsoaBfV707RNDL1w0j9Z8fPpqlPr4Q+Ta6oIRMYwXAaMRTCGsI1b5SkmmhOqN+852AsRYf8OMj4GQt8e7Ney2DFXw2uPQOuO3z/W5wMcNu1jMNOTQs
- smWHTJ5Z
- iAmhezcsJGrEFgemmrV7ChjE+GZIA4UlLSAfIbXEVcxwLfB7SGOejlmpQ1VHfSj6hY5NrCPcD52PBxaBTx8QwSlHCK2srL38yuAwRdp8mfEsQHN7k2NUJKdRiQNms77j+iVkZ3DgfB8zzOT6/VE89UNUVXfPDBVLiPIaxNMr6w97YF6uB4B9DvI5oMJF8cNZ1DY5mEI6j91vtE2nqL1ohcahf1n4+9foLDmuon/Fu+kJz95PxqNmyh5ZdqSNLs+Cx8dHzvTpSkh72nwi791klMzJ4VbrAjysjp/Akth/ruE1wLh3ZAZUtP8dV1Hp2uDwucid4716bZesDHQcL2Oyjr9t+BjFg2emVeAdaUwNh9aNekaA5efWIx17nFEWcZagX9sldL6NobHsAa38u2DlPwxnowSx3RdG4UeU8+2GCBIDC5+V/dcsLNbNyZJV3VQTi5zKp8cuZvdZaotuD5vWgDt3AIWgCUSZCqQgeai06c45f/pqtHtl6OvEk1rbexSkRjz7DsV6t8irj/B8=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781147748-247815
+X-HE-Meta: U2FsdGVkX1889Ik1vgQDz1I90AtoKxt3WzGziJ167Udo0kQVBYux5u2Nn6/p0ewyWFCf06yD9CkOJ862mfUZ1idNo2r5EbcC+EGQi9yELgx+hhx0pbs3pcPe8mR27IncBUrDnpjcnT4CH24yXwIEDjuCpvGDk7iyWI4+Ln3DY2lchdnaJQlgq7AXJM1Tan5Y4cUaPqbbpOBybfbPaFqxNlSHRsrtRrD73kvaRCE56ErC0AXw36JB+e9k3YzaPLEb2qcO/2t1Ym2zmYWcifxvU8HXkW+egxyGH4DwxapEUUpaVQIrHdXs+jEOrwP4g+RdhRa4zkeO10xbtX1B+u511BOIUhk95o3z9PPFRLBvCf4YALnpVGY+qUTRshFsEa/Th+fT7OtgqZphD/VGn43+9Ap0VdDrCeFnZRhO0FjiHl3fZN1U4W31S/t3Tm1mI4+x9TKEYZ2tZJsX5SqGUKPYXh+gKvSXygAKz4VDj9jcokVZkeKjHTq9nDsMUlfSR1/tskCeQcXTtN0pKEBByYEFXQyWV3TkhuON+mDRCD10/sQdGAqqMDFkk/ObORvXLh4RoDHI3TQjScO9JtjjMhM1zzLaCcP1gkvztyQPZ/+P6bxjefgzwNVtazLP4aC+TtcJ+LAqpuXPIMXD77YCFaCOHceR8gSSrpnS7N6pXprBOsLYQTUADH8Kf+rWbgAyEZWaWtSPh8hvrkP8iW+sdquqXG5sEu3rshMuh5nRAVjG+rvR+2hIRFmIvp8paK+GZonsNkrNKI32haWxbes/rCqbYdWSgN+qkAQhV2z0sDandWnuZKJh5VlOQjT2Gc8SOKLt2+BNzyzbQzJBjsegF+z2SKMhlLmuXXEuHXabiNqUh0gsevzN3XtGg/TBxQ1Ae6YtyTkyhc9/VxIB7gNEqRTKnVBVEJcjMb/l3VaDTIp5C92EBNrIMzbTK+n91DBzhKxZfBjceUfPm22gn3uMEti
+ AJuhw6zf
+ LKyYdi5/5U7RPj24c5owKcm06OH3sMUS3MxRJn/ITafIqTpJgVYkJJ6Pg/z6Yw1+Te7p1mrW5Omwq7Idt//++hqcuHqEB/CIfVilRK+QGv6MR37XSv7cRj4Is+uelkjmpKLLovzQoTFpaV+7F41BciC8EiJhHN/J9PZ18EBsEXgbQC0J9shUovE1yabnVuO+F/CXp6FI4YC3PJtqiC4F6JsqgRpl/F9BRpzdSfHqGL4mrdDcw7LKDnrVjPizi9TfnqObmlNODqhLa7yhiBqirtJz9fX46gbkgmtSGmiNF3O4PtdOSB4EiNMLcDRJv7C1fj4RfAvd1B8hsRwygABZRnwMg/htEcmLIzs8g6ZW0Dos68T0vvhTByW3pdaHPnjuizH+6C5TF4mNyB2qvdQNkd/2pouFSH2UjcgC6NTYhRMQ956s9SpsWIbFDbJjvA29GQUr03G2EWXKvOOtCjgVTlkjPfpmtM/BCcHvgA5eP1OhAbn4mMJxX0FTww/Jg3Y0463tpwIg8eYEHqKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,63 +143,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This removed unused leftovers, most of them are forward structure
-declarations. Also removes SWAP_BATCH macro which isn't used any
-where in the code.
+On Thu, Jun 11, 2026 at 5:28=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
+>
+> On Wed, Jun 10, 2026 at 11:18=E2=80=AFAM Wenchao Hao <haowenchao22@gmail.=
+com> wrote:
+> [...]
+> >
+> > The "_LOG2" suffix names the math but hides the intent.  How about
+> > renaming them as:
+> >
+> >   ZS_CHAIN_LOG2            -> ZS_MAX_BITS_PAGES_PER_ZSPAGE
+> >   ZS_MAX_OBJ_PER_PAGE_LOG2 -> ZS_MAX_BITS_OBJS_PER_PAGE
+> >   ZS_OBJ_IDX_DENSE_BITS    -> ZS_MAX_BITS_OBJS_PER_ZSPAGE
+> >
+>
+> Do we need MAX_ while everybody just uses _BITS? e.g.
+>
+> #if defined(MAX_POSSIBLE_PHYSMEM_BITS)
+> #define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
+> #elif defined(MAX_PHYSMEM_BITS)
+> #define SWAP_CACHE_PFN_BITS (MAX_PHYSMEM_BITS - PAGE_SHIFT)
+> #else
+> #define SWAP_CACHE_PFN_BITS (BITS_PER_LONG - PAGE_SHIFT)
+> #endif
+>
 
-Found these during manual code review.
+Agreed, will follow the convention and drop MAX_:
 
-Reviewed-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
-RFC -> v2:
-- separated from the rest of the series (enable thp swap on PowerPC Book3s64)
-- RB from Barry
-[RFC]: https://lore.kernel.org/linuxppc-dev/cover.1781000840.git.ritesh.list@gmail.com/
+  ZS_CHAIN_LOG2            -> ZS_PAGES_PER_ZSPAGE_BITS
+  ZS_MAX_OBJ_PER_PAGE_LOG2 -> ZS_OBJS_PER_PAGE_BITS
+  ZS_OBJ_IDX_DENSE_BITS    -> ZS_OBJS_PER_ZSPAGE_BITS
 
- include/linux/swap.h | 7 -------
- 1 file changed, 7 deletions(-)
+Nhat -- sorry for the churn; this supersedes the names I proposed
+earlier.  Let me know if the new naming still reads well to you.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 8f0f68e245ba..46c25523d7b8 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -16,10 +16,6 @@
- #include <uapi/linux/mempolicy.h>
- #include <asm/page.h>
+Wenchao
 
--struct notifier_block;
--
--struct bio;
--
- #define SWAP_FLAG_PREFER	0x8000	/* set if swap priority specified */
- #define SWAP_FLAG_PRIO_MASK	0x7fff
- #define SWAP_FLAG_DISCARD	0x10000 /* enable discard for swap */
-@@ -29,7 +25,6 @@ struct bio;
- #define SWAP_FLAGS_VALID	(SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER | \
- 				 SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE | \
- 				 SWAP_FLAG_DISCARD_PAGES)
--#define SWAP_BATCH 64
-
- static inline int current_is_kswapd(void)
- {
-@@ -175,7 +170,6 @@ static inline void mm_account_reclaimed_pages(unsigned long pages)
-
- struct address_space;
- struct sysinfo;
--struct writeback_control;
- struct zone;
-
- /*
-@@ -442,7 +436,6 @@ extern sector_t swapdev_block(int, pgoff_t);
- extern int __swap_count(swp_entry_t entry);
- extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
- extern int swp_swapcount(swp_entry_t entry);
--struct backing_dev_info;
- extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
- sector_t swap_folio_sector(struct folio *folio);
-
---
-2.39.5
-
+> Best Regards
+> Barry
 
