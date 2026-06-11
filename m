@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E94ACD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:07:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1303DCD98C5
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:22:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D9A46B0005; Wed, 10 Jun 2026 20:07:01 -0400 (EDT)
+	id BA3AD6B0005; Wed, 10 Jun 2026 20:22:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0ED6B0088; Wed, 10 Jun 2026 20:07:01 -0400 (EDT)
+	id B7C496B0088; Wed, 10 Jun 2026 20:22:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE086B008C; Wed, 10 Jun 2026 20:07:01 -0400 (EDT)
+	id AB9136B008C; Wed, 10 Jun 2026 20:22:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09EBE6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:07:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 993661C2DB1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:07:00 +0000 (UTC)
-X-FDA: 84865691400.17.D93858F
+	by kanga.kvack.org (Postfix) with ESMTP id 9B63D6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:22:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1DEE1C2EE3
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:22:53 +0000 (UTC)
+X-FDA: 84865731426.22.BEDDF81
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 18183C0007
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:06:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nK13vhrB;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 62AAE2000B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:22:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lxbh7HPQ;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781137372;
+	b=Wqfcox8tQMbYhb3plN0hoLaKvf4NsaxOZ24VPvshMwUAHtwmywjfW55G58ZRGlex/M/ckt
+	xJ8PO1svgSGVDGsFWhTNhvxnfBb3yGKSszi3i3oMdWqFY+ccnjx2ZjX3s8dvlFrjXcJxn6
+	VVYCpRj7xyJZqtKOcoAeP7JSKQpxvQo=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lxbh7HPQ;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781136419;
+	s=arc-20220608; t=1781137372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ZiqRq+M7qmIk1c5q+OVo0ETrzZ8J3PZC8bJm21Xrmw=;
-	b=pMhb/jbo++mQQtP/nBOQ16K9Akzb6/djTAtoowlmoHgILZ0MSVYWrp+kpRgwH/Rqqei5nc
-	b1Hcqu1crqdV2ABMDAKa89gFiImiXjKqlbr+DEqvmwcUKIl1baLaHGevet3Cc3rIdJkM7c
-	v3lhJsfHj1hrbxwTbllK7d4rdsfX6dc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781136419;
-	b=PoogbIhJTznGeOU7Ha4ycX896p8jq7xR+wIJQfhbT8rIEIjLbig0SmRPgoyl2bQXQADgnq
-	5PuqJk3xkbzGI0wgOKhYHCnMA0Alca2ThOSOpqwNdGiaUO8lM+6Ln/WyqsVc8a+KoYlZQI
-	askrQkdj+kyVrRPo2x5Y0+ZnJ7f4SdQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nK13vhrB;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2SvRs21mGVxCJSkrSt9EaDORfooGulFSzr+iBZ0ww28=;
+	b=sPqxpoKlx4FVUMvdTJfJ/A/tMCcdJkPfOr2gTuTej17N03ZkaIUj6CSX2Bogvzt+yuYzOQ
+	dOAxgUcp57Pu/J/tQJVuqQ78flgWIi4O+HKWJp1WTuOQJnzb7+XL5u49DJ2CLjvqWAEFKZ
+	cuYLJJxhZEgU0cw4CEx/yM4MowZUSCE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6923460204;
-	Thu, 11 Jun 2026 00:06:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95581F00893;
-	Thu, 11 Jun 2026 00:06:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D514F60204;
+	Thu, 11 Jun 2026 00:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B281F00893;
+	Thu, 11 Jun 2026 00:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781136418;
-	bh=6ZiqRq+M7qmIk1c5q+OVo0ETrzZ8J3PZC8bJm21Xrmw=;
+	s=k20260515; t=1781137371;
+	bh=2SvRs21mGVxCJSkrSt9EaDORfooGulFSzr+iBZ0ww28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nK13vhrBbVYUK3fkIigBoyZRmWr3HNoCWYLMmEinbOXYrfWmN49FxDfGBMrXf579D
-	 UVNQD1X2HKXOqycminDynETvnmfGL96Jvo8Eh8MtMgrpnk01Dr2i6+5/ifOdypM8gn
-	 ov923rhoVIr0KBLcylMaataHU/0yi7vhpZXEdLDHhYPmYscQgrQIawaDtY8tKL1gX+
-	 sjQuyQkd27ub0DAeRcF+ys8E4DLlWHoPiFxiYwOeZk92kVEwwi9Kt34dH92ZwNfljM
-	 K5S8jqnMFA7PDFqEInmlIxRA6N3zv7WeaYvGhgojZb1Uq9BiPY7l8GU+SwoGGjzmUG
-	 FxgVS3Q+0UMjw==
+	b=Lxbh7HPQ7YCt/Q+bwgr4myrYnjUXT7Vo/3fMu/0XWpHdBnxLX3Dc45N+I1GmceUWp
+	 7/7xSwT4hduI8gyQ4Y9aQ6+/VOpTM6qwz+mePKALM6yp31yBR3a7EFOjr1ojweFHOR
+	 NfrkaKUvcLGw/Quz1KS1SlLE8yDMtoGstP4K/kKcalN9kKHzOyMmjaaTiHl2IS6Avj
+	 GtA0r49DlModp3BIHRRYqyK+r0uDE9Ri9UL8KO+nROhXXi+Sv34OkStKqPC+PD6r4w
+	 G/Xc9Sl4IzGHM4RZ91PEYA65f4eJX+mIl2V16z7lpDcMhFMcEOeieXhtSEKmgVuWQE
+	 GVdaq8jEQ4Hvg==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v4 0/6] samples/damon: handle damon_{start,stop}() failures
-Date: Wed, 10 Jun 2026 17:06:45 -0700
-Message-ID: <20260611000646.68793-1-sj@kernel.org>
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>
+Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in shrinker_debugfs_count_show()
+Date: Wed, 10 Jun 2026 17:22:35 -0700
+Message-ID: <20260611002236.69207-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260610135546.64943-1-sj@kernel.org>
+In-Reply-To: <20260610232048.62930-1-shakeel.butt@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 62AAE2000B
+X-Stat-Signature: i5snc9k5rxhe7er9gf4fmsi3iw1o15mq
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18183C0007
-X-Stat-Signature: 86y3x8bo35966hcq4bpaq5j7ioco3xw9
-X-HE-Tag: 1781136418-448591
-X-HE-Meta: U2FsdGVkX18Vpc/G4FoRVie4aBKw6nnotguOB10dlowdBKYicIuKSFc+OF9FiJtIROArwKJVa3PEmdMHvAHia+XThXJhVPSU6nvch99s9c8TOmaH7owZ3wCD1O2xPUJRmYH80RIo37vuRak4aCnWRwc5zvoRSJn4gnV9tdl3EcWOH7DxnzMtW/7unU8/SOrRlK2Jizy8MIoq1HW15VzFDOwXRSN5hAqktccst9Q80iq2HpmT7LlEdUe0AcjBqMQeVz0JiU6PJuyg8aecxHi+95JGDFWFHMO9dxWJdI6gNZa5f1qZdXbzI8YcX6x/unAViJ2UBnTOcRBCwgJXddpPSTY6nT7SrfSL1Aly4vfnVqOuGqhLGnHTg7K+KX3+F9TZbOEDJtCOHjGVHr2Mss4CHvJvR0F1kW3fDjFhYDJoas1QJuh2ZlwYfyy7KtAXTjkNFOiCumBfS8pvDoRy/h/1VxNBF4sFdmevmo27HcNh7ASaa/B2GUagH7VWTIUHw7YTc8b75/sNG2APzgdH7T30fT0zhgm2ER8wxhtbS5Q/gcnXdSnBNvYoKe/690JiRYPbagQF4WDQMprbvcCfORCWwYlkbSGJJLXR2k0mJkDQnJAoRqnWBwLq8xQU7CgsWIPvEBGDdjtYQdFGgloVu6wubQeU7qn311SdLoVIZpU9OpOmsAegnxXU4foRcxbNWiQEpEeIXKZBlrxm+rrHbi8yd0ouUwNF4XlosE/3QZa0ro9SQ2brkFtGukEMLo+294+58SNDfwm9tOWH0P+SPRTqhaz05mPHEUqLB8FiNkLSpwSOh+UPVp04IJDa/EQ1nJ628tSZU/84VBTBvwZki7TSALQDqXPyTVZSGIPU6SPbRsU7OWJrHzxXE6YvF1JbHAThjfdT+fIHgjKmYHoXy533+z5StAAV/z/i0XI9d4iQWtige0mqd7FZVO0XH0b83sQOHMNNdiKMQjao0IrlROI
- DlG4qpsK
- 9lpFE3WD35jeMQ0n7zv418M70K5t4e2FOWpY0IYG+n7qP0GJQpLp0hZfGVF5+YY6sgLJuBwCYuDUaYQ5h1nmAFt+/t8oBpIh2bPP0sU9CF88G5KGS4YEIkqczbIPXQ9Cl3sIABRjAyT31WooSnYd6sAJqiuowhPe6d5UEJzwusKB3eDiLXO3/f2VpZzPxiDZvrjX/fYgT0FpyFHbcOGjuc2SJhQxpAGCKeJ5Tr7cuCaizwvKL0A5+EWxzM5XXwpSZnwkVkso5zU/Hi0tBJoplt7FFfPppKA67J0txkTWGtkglSaA8wgzNTmcihNwhzdk7MW/Ty60oHFFN5DM=
+X-HE-Tag: 1781137372-950993
+X-HE-Meta: U2FsdGVkX1/mrSJU3wccBLfxxVOHZRKzUuyCUbOHtggDv9UVWSaq0CUeF5mpmm07+q1MmqPu9WayLGn+jO+aB50qcUJl4IA8C3/mqpk6Y/Kc6xyQTpN3ajS5nccUg6+CS6X/4NBvB3HcROVGubuQsP7EqulOpVzRQy7BlOn/I3BtjfM1pnzTATwmr0YD4I7EqOJfODJfFxRnkxOwjbTt/rrK7fzqLetOl/Eh6Yy0UtGWGvsiftW04NAsG2i4Q0jq+clu98GCRC2NGy6CQijSmoX8JvM4jXVh/zf1XonoAmAq2J9mdV0UbDF+5gG8qEq1TLBOCBI3bwuzQYOnE1tNxzd6GnWpPpRkTAaUvKQ40e0IKxlMwtnONRg2Q5nx1f43td894OZA0JmwV8EYS/rcyw3YfNDXMK/fwfFo9W/erZ87EbWTNom9gQ0pjtVO2XjofB2bTWSrdxwSuHHSRTo/ha/izZqdTGz0trqg7g11ga4TXQzZ2s2arNbsIzPGFuqb94UDG96NQrLF8STW/bg7SAJ4L9PI00nrnGhe9+ST7VOHSWRcCDT/rTFZHdDOV6UL1qz52vZXJwQ7Pjaizg0Hsn6kriTuYmgsxK0ewgoVuDTCxWjpRuluzeA92BFf7OsqSoUKkaOfign5QJyoHr19jTpcWa9GVHYpPT8GDlivfPnDhCNvttfDGIAzxPAKYzKXx9YkJkfAkxUl6FMBPzBaidZ0cpzVskGrkncRwcmpETtmOR+ue+MBoM1rhI7y66dNBOn3xECky/Q3s22WCDtui+3oGf7rOgLsYU5BSQ6UvSzQlRmmaFM5nJ4isBMLNH/vdVzPlVgS0KtaBrpLzmf7ALJWEor3tU9l+GgEyIIxKDvAt6Xenc9GAcY+iuJEMxRvTcl62ZnrM3xOwnuHrPSjXJLeLADUGZ4/VcaD/Xmf4WFLtgVKufIDDHouQbiRiUMJsubdxDzZBUDdyvM+AP+
+ xNTUcOoI
+ tHoRl4qUgAG4ne9cGbD0FW+K08ZB3YU1QTarSRYPCuYK03oFwaO7ap6/qoFo2o0Ll7JoJuzjMSpba6jo9ZT6YeKbduCUmEun+T1pTdhlciZUO6YRBLyPsMZzkNZ888PbMXkom/YhFo6QKbEW31ITF38HdWo9sEagUQZ9jH/FWe4K2+Z+hU+5ywcMavHgKCPv6+cbM0EGv6/8HDx9MO5z5pqXDi5m8K67nmeyoEbTDJ2FTsedgdSnCk3suVxPTILfSVA/oYuDdjXJUSkeB4d53JxSKfTvGglBn+MD3Vhnihs1ZrS2nkuw789nACA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +99,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Jun 2026 06:55:38 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Wed, 10 Jun 2026 16:20:48 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-> All DAMON sample modules are not correctly handling failures from
-> damon_start().  Among those, mtier also has an additional problem for
-> handling of damon_stop() failures.  wsse and prcl also have a problem in
-> their damon_call() failure handling.  As a result, memory leaks, next
-> DAMON operation disruptions, and use-after-free can happen.  Fix those.
+> Reading the debugfs "count" file of a memcg-aware shrinker can sleep
+> inside an RCU read-side critical section:
 > 
-> Note that only the damon_start() failure caused issues can reliably be
-> reproduced.  Reproducing those issues require the admin permission,
-> though.
+>   BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
+>   RCU nest depth: 1, expected: 0
+>    css_rstat_flush
+>    mem_cgroup_flush_stats
+>    zswap_shrinker_count
+>    shrinker_debugfs_count_show
+> 
+> shrinker_debugfs_count_show() invokes the ->count_objects() callback
+> under rcu_read_lock(). The zswap callback flushes memcg stats via
+> css_rstat_flush(), which may sleep, so it must not run under RCU.
+> 
+> The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
+> and returns a memcg holding a css reference (dropped on the next
+> iteration or by mem_cgroup_iter_break()), so the memcg stays alive
+> without it. The shrinker is kept alive by the open debugfs file:
+> shrinker_free() removes the debugfs entries via
+> debugfs_remove_recursive(), which waits for in-flight readers to drain,
+> before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
+> already invokes the sleeping ->scan_objects() callback with no RCU
+> section.
+> 
+> Drop the rcu_read_lock()/rcu_read_unlock().
 
-Finally this series passed the Sashiko review [1].  I initially aimed to drop
-RFC of this patch series as soon as passing Sashiko review.  But, the size of
-this series has been 3x compared to the initial one, because Sashiko was
-finding more pre-existing issues for every review round, and I added fixes for
-those in this series.
+All make sense to me, thank you for the nice description and the fix!
 
-Due to the size and short remaining time until the next merge window, I'm now
-hesitatng.i  The last three fixes might not deserve to rush, because they are
-relatively difficult to intentionally be reproduced.  The first three fixes
-might be better to be merged as soon as possible, since the issues can reliably
-and repetitively triggered.  But, still those are sample modules, and the bug
-was introduced with 6.14, which was released in Mar 2025.
+> 
+> Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
+> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+> Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-So I think it is better to give Andrew and Linus more time for the merge
-window.  I will hold dropping RFC tag of this series until it seems Andrew
-finished the next merge window works.  Let me know if any of you have different
-opinions, though!
-
-[1] https://sashiko.dev/#/patchset/20260610135546.64943-1-sj%40kernel.org
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
