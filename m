@@ -4,97 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A088CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7457ACD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9C506B0093; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
+	id C24116B0093; Thu, 11 Jun 2026 03:53:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A735E6B0096; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
+	id BD47A6B0095; Thu, 11 Jun 2026 03:53:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B5ED6B0093; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
+	id B127A6B0096; Thu, 11 Jun 2026 03:53:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 893416B0093
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A32056B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:53:46 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C46840360
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:46 +0000 (UTC)
-X-FDA: 84866865132.07.561D911
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4BF7BA0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuHWA9uR;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45ED28EAAB
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:53:46 +0000 (UTC)
+X-FDA: 84866867652.07.D40A93B
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 629B1140003
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:53:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jic7N4e3;
+	spf=pass (imf26.hostedemail.com: domain of 3hmkqagkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3hmkqagkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781164364;
+	s=arc-20220608; t=1781164424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xijNDdKPHv1jokABJ/KJ4UCI30y34c5TQzlLjkdoZMU=;
-	b=n+GeM5l02BfOGNFH1KiHAqBlsxHzk57Fn/dawj6d9XPa4WZ1EU6Oa8JNqaFZlFbv6fjhYl
-	KDWli69DhVwnVa4H7GEdDo7cHR+aMRA9lhqyRvzNX2b6hu5sjRReXbi/hUXE/wTf+W0y+E
-	7CLuyzGn+iY0YN74Y0IT+UPtn+keccU=
+	bh=1JSnnESFuG4rV7GM7o/iJXwkWustj1ziUDEWbZsW2C4=;
+	b=FN4QacYjPt6MkG5i7cmG/HT6H35qT9oK6yNqovUpJXxBOEFeLXz7GVk9MZuZVLGQNd4txw
+	FuJoQAp6/ofMneWxI0NTS7G/otfvhdREII7d4h99OJXeu8/Qx4rsy4fdsWJ0ZApga87uBI
+	cvONwm0BcDzSlVP1+PtxIoQGhvY96Lg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781164364;
-	b=jutpXi3cm/xBXO6Jsk1d7e78U/0ru0vun+mnYREGlLvCFFQF75O0+Fd2MJRXBqvJOBTZ8E
-	NN1wX8BQ3uC/rT6xRWwMFLXW7vy4BqKqMUWEHX0tkm0TbxBWnvd5e5l6segh959tDIDMib
-	SsRf7pgaZSOVfn6nH+NQio8o3GPz81A=
+	t=1781164424;
+	b=ZuqoWyTZhZe7kATjMYl/qmJh2ZF4DxzS13MuA8hokUu4ZSKoRBz3klQhFJK5GQx246+Eq9
+	jrKKi9T/H3BZ2kvIowfuHuvVqSFImmAZ9k4209AEFMUwBlLcz/A93vxZau/OL0Z2tJlOA3
+	dGk/zCT+dChw7Iq/pS6bjAbTIpG2HFg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuHWA9uR;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57A7A40ABE;
-	Thu, 11 Jun 2026 07:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5D21F00893;
-	Thu, 11 Jun 2026 07:52:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781164363;
-	bh=xijNDdKPHv1jokABJ/KJ4UCI30y34c5TQzlLjkdoZMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cuHWA9uRu0xicoIbUbVAW5BaFPsqNLc/45roEzdVUouxzUOPf5BBWNRR+7WBZmwNX
-	 WN5xVEkq3jOWwSHFNktNsKOCsvvgQJKzhB+Azy/snZxkFydWBlqOhofwJI+84TQ1ui
-	 BPK6xXyy42L1bIagjFwuQH2g+t5W8FcFXnGaW/D7CvgtmyRHXix8PY+bBVTkbSMcYm
-	 i1NQpit5I8a4LCLppcGOd76APYY1/dgsFjD+ySBztXkLDZuX9qGDo/pV6q3yfHpfwF
-	 +Mq5PqIZJpXV5+bTLyUdBEP8k2/uF+bacz1+6xU1BDwV1MGvr0JnPxiS7MdSWcJ8zd
-	 ozRnuwapIYjEw==
-Message-ID: <49ca905a-0303-4fad-8257-485b0ed47c8d@kernel.org>
-Date: Thu, 11 Jun 2026 16:52:38 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/16] mm/slab: pass alloc_flags to new slab allocation
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------YrjDV9X0pifSc8pX0GjzraWe"
-X-Rspamd-Queue-Id: 4BF7BA0005
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jic7N4e3;
+	spf=pass (imf26.hostedemail.com: domain of 3hmkqagkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3hmkqagkKCFs3EB57KRAE9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490b37e1f47so65252875e9.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781164422; x=1781769222; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1JSnnESFuG4rV7GM7o/iJXwkWustj1ziUDEWbZsW2C4=;
+        b=jic7N4e3+kLpd1zPACkjHUrk7ZRMDa/gPs9e59a02F+/gUzcrbuAvwB89stvfu+gYO
+         cq3PKYxz9PA1yRUfVT0ZHc9KkdVoTEPJEA1itoRb52L+Z61mJ92LPqmrf3aaGUAUp8BO
+         wHXMnsvEwGuMpUjJaSiIY6U/x7euGyVM7VUQJI0CQDP6hOTFX+gOzTd+BU0R4uRFNH+j
+         pEbvLRgMCBv2TzF4sNLmOvV0eme+csX1PDwbmVsEvNjWM9C1l45m8VJ/2BuRQo/W4JKo
+         +T3L4hwdwOed/oLejSee42/ewOkeK/inDhYy3lSHApU3PwcixCAJCgziAXTMiNklYvSb
+         xAQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781164422; x=1781769222;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1JSnnESFuG4rV7GM7o/iJXwkWustj1ziUDEWbZsW2C4=;
+        b=TzeMKB4IVN7euPUJiUUUvzYmS5mHQMHRCEGn2iXAqO3qZF3iVTS10au1Eopc/7MleQ
+         q0HpB0TZwhquNsuwuPVz68yLgjgNgueZGg5Hb55vXoZ5F6fiCUMPlzp8RlUCybBOT6th
+         +SvUIrYxTElk9dA3+x2r8RfxpR8w4ejNRe2h8ng/g6IEEctA8PSzRcKpmSvz4n/pdnyF
+         bNuEA+AqunHBzAsPqPENEF7rlGaC5uj6AkB8fKNjtemnEd+sFGgLVUkeEd4uWmuBzUg8
+         otmqrHGasYJawrXtfEmTJmCDjM/u5IapW878w/xupVOlz35iw5H6wfKzPZ4lNrxXbSDZ
+         LUtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+MKqZmt7Iy1mt2SQ5h/JpQkkW5Cl4xeRM4cC9f90W8rhPSYLd7jQaFjWhzyRVM9pvRCQ4ECa39Xw==@kvack.org
+X-Gm-Message-State: AOJu0Ywjk7wu0V/yMAvSNxPZbAqpnR1ImVIN8IX7b/fVF5n5xw7czsjf
+	OWW9uEzlXb09MyaoimGeOXXE1eH3Wuc5Ps6kE1xMx6yNPT1tZ5FDYxQakRlYS9ZWN13jvCvwhWZ
+	rfyeoxhaTMJhBD5926g==
+X-Received: from wrbdw5.prod.google.com ([2002:a05:6000:dc5:b0:45e:7588:ecd9])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b07:b0:490:bb45:79ef with SMTP id 5b1f17b1804b1-490e534a723mr19329395e9.0.1781164422412;
+ Thu, 11 Jun 2026 00:53:42 -0700 (PDT)
+Date: Thu, 11 Jun 2026 07:53:41 +0000
+In-Reply-To: <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
+Mime-Version: 1.0
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com> <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
+Message-ID: <aipphZ5iCnbXVNSR@google.com>
+Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Carlos Llamas <cmllamas@google.com>, 
+	Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
+	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	Todd Kjos <tkjos@android.com>, Vlastimil Babka <vbabka@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: r9cku1j87z58w15fem6ky5nd7jxsx1xr
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781164364-320898
-X-HE-Meta: U2FsdGVkX1/j+iu7ZkduZbYaG8THOBMVE5Rjhza/tFB9FKqW68De/tfjK0a5PYn8jXjFrbQ0HEof/O8YmB5d5gNV/jn6C/hL+odlacJ7MouVNxn/quxiLRGwl+yQBmNGho1bMBEFGMDKNz6IOpJ6z0OWD8lvpOVjuzMHpbqO5TwbUvem1Xs2eS8E0d2Ei5QkXSVm/8VfKuMK9+jMBentDd8pJ6f9C3dzLw5JMkdQiM5dK+tj0/NYu8qvGhjrpTpZkILi5fI+yNKFGtkb7vvqPmHFJUmJ+47rKkXzWbtwd1fxikxs4YkhkM5qEOiwCMnduAma7Bnls6AN+XCGct3xHUd+FOOGjWp0GwHwuX/cDuhqYArX8Fep2nxwolC+J7yECv+1EBUSIQhQ+MJpbE4LpPlZ29pV3sEpWdbveYLrstHYlxo0CSXhcq0qy3H73+ClybQu4KZ80tMx2wr8MYmzOsl/Q3tHEFSJHnVWF1vNaeQpcrmBn836RMV1dGf5b4mW59WeZL6ci/pKCJ5AByTJpKMoj3qWDrXGh0v41DOii9Udz2QUCQTg8Qtxr07mEbpgQU45cdHtZ/wsB5NwBh22c+5HGHS449baO5tR2T/lvhHmHwN3Z86jilKKVWDtH+W3eZ+iK6wvm3PRg8q89lfQicaxCToIWOE3XJISxfXkuBTIjEpR4kjVU7FMwBTeVzOZiUnqmmTRI+VWY632WIi7oKExS2WwHHCmuhR3G4XSEfBqxwA/MTjS39a36DaORLqofCNVolmcQ4vTp+teBAFmhMFIAyjGcVdWy9qT2+uN7rc18K/yrZl78MTCIr2GNws/HrECZAKKB4ODSEu1Jit5NvjNKmuyl7FIw7anboKh8BidZfkAXhJ29sk504JgxOtd75dEDE4Dgw+/ARKBFeSENnB/Q062s3M6wy332JpePMv5etS6M3o9j9Xr2SBky9lB+RJ7T31+ricdDVKUGNd
- SL8ZaS2g
- Io+s38tSeiIohFFT/xMYvXG6M0zKGQ7vMCOnrpIOBSG4yCQqRL9rESLwfRvbmdmuKCALkCNiR0I4jwBKRvcTdXXRTw69OlWLyEW2fQzxKxH/yegcxrgrYsMbURD3TXIi7cpprh/MdGeC5MA6PbaSjZ7Aap9Z94AZ9TTQDZ8aBHnDaOpmWOSMx6yOOzpXypP5RN5fmX3pZ3yF3ql1lKvZjAekg7opFEebADANNQMpt3utTsJoQbW6t9io/ucuhGHfxiR+KaKEIvUPybM12M0LR0/hC3JH7N/IbGBpZEJNVVZsalZzgkZPujio5/RRz4TdkGA9GsXZpVtZXVg7vxOlZk8LhpoFH37Jao+8ASKvZhcwt/tiCn5FOKnIC3Lfe7wZ4FVwkNtW0Hdmr+vB0baLB7Sm2yopv7Beu+c/bDYEfQiPRJC3UIgGBfJvWXYgvOkm4s3k9ZuZUBATOmm9EFCaHc/nO7ksQoU52iYKOFqidkesBzX4pd4/5zJJHoSoIRdBpKkfc/7MiMh++XW0X/Th8I/IBKQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 629B1140003
+X-Stat-Signature: kozefjhdgicqw4bcgkotsfx7k3r5t1fw
+X-HE-Tag: 1781164424-394783
+X-HE-Meta: U2FsdGVkX190sspUSnn2T+Zw9kZ7Sgm/91Z1sVuEnfrPNpUK/9lv+Q6EWiPwC8JtwtTNvIn6vu/F30fG1RwHkX9cCLGXAC+KRKpiiyzYyi1h2Nh+vcypXn47VSr8qm9fD9O0kp0VVaL+PqZs0FyczjMfeWihgcpmIKQUvO0V0Jv313xSNxbfVw/sm8sNjPv1QMF5Tbi9fRiBzki2U/jnRRaA5E1jwhSVi+feIH6wm4+lCkWLcpzh5WIn0J8wH5O9x/JvRWoms/S+hZUak1RBEU28z7fhPL95jKfUYM7pijQzxloHFSb9AApaqcsz6+YrEZoIdV1agpTkByP9wLIx+EEbFPpOqFh0cdgZDpTEUHirBt/OLxRfsuwYz6wLJe9f4JswfJ9qLPJDRIHX3BL1IJgQGGv2Ks+yIP+qSOxF8uR+m74IUfRJSepZ8rqZ91FRuyxAvFp2FEHejQIDN0jkXPge4dfd8NUphpo4QXJ5Sg9/Gy/6mBLMkEmJopp9+xb/883kntVGhXqpBhVvFF6Mn/aSn3R/eKaQ54cxfNHh/7l+Nkl4uyDlMrb56qUinFqShwu4JCIWdw6gzVrvxfrl2xCTfob7qPgTxz0f13IBYunr9M4ztLySREfQQ1yA2kdKFHBhVm5PF48fkVJyeacD3a7bug/mbxGWTWq+grBVXIgUm6QF5Oj+fsy8LiAQHIUL//idO4pqkmNRNx+xkrkAEctd9V6K7HuJP2SC++2RilDySWiA1bBF/LiYYhWCci8yGf2nJKIvz1g1KDjwTeFRzYOiJpkVyOofQCt4S8uGdh3nUQpvujWyFgDysyhaLh2WAWdeSbBM3STz1rlQHHrRQwajN3tjZA/GhPTEzDWnUonTxsrYQST2j5flzpyhVhGLeh5bcS4IdESieJgbKsaLsebNrkOAMbhNyOsdpvQgSGBMXRqV7lCbkqujfN2Vx5dnSmHT0F3ekexiaJYKwh9
+ KPWsEp4j
+ Olx5VYAWguvdMLnPFwBGX9yiuMGg3dULYB+yn/UyjDx5m7J3UYLg2tqj50FnDcl+tpUkswxUQuNeantWV0hfuu+rT2ohDgBawyiS8mjHpaEAl4aHi/DADUFlE13ZBdGIrYct7F5BJM9FcQxXgHZYuJJDP6mf+sjoSuCCIn6pl4c0J5h4KvIwOqZHVrK4jit3Hb2RyZA2iy1bP2SAHK9QVJMin7/1+ZZe9PEi41trbEvePMvqz+HeFII8VqCvqwAUTgPG+JX9nN/6K+SwsLOWny7sGhAj1Q49nPFBBCwjdk/J6xVPWXaKgEQYWLinnSvq9hWUoTlBwZIWeB26iLm216pGMI8isgv00P8rpT0XK9vx9ejWO/axFdqY99D3DKaRat8q/JUQs+ZUviVT0+/VLkYVgq7FMinowXRGEYiR6NsYz1EkjHunH0bxTmRqqwxe9cxZ3yTh+GbIIUqVW3y58yXNVJFvOPzn5ZKw2dVo36UCmTV5FO2wDCYJp9oT/7EQZz9Suv9OmtpjfmM4gweepFnSPEPDdQrwputcQcKUgx9ChnIMPInUK7rxC0vugxZylB7nq/YC4QOlXnCkNvg68e3i/SVsZuN2yvu77qyHHur60XPdDtqGRCreWkqKrPBpFU3UCHfhHmc2IkY1w9sEFfSNKis5t7i2ds+3NRW0mV2IgTNB/fU5pGe+wO40LCW/J8GURW7cbiXqU735IwekmEtW49LmqflrU/VN11u98fIoxM87fO1eCFT3pFBFlImfGeFVqRXfcThyfRieV+R7IpD6ir3+BE4xdYOjtMnX3u4qJUpcFb61oD3VW1TTSVScT1Yl2XKfWD89jD+RkVWW07XfppiS49UeCaiFCeVf3zaM2LXSN1IyLzDlnLOFbWwP7BRGDeYEdBZbYAGEtWfXTZRBRJEbw9DmCBGTZU7jfLVV6Vdw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,109 +116,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------YrjDV9X0pifSc8pX0GjzraWe
-Content-Type: multipart/mixed; boundary="------------6OoaCLw56CPWa63NRnaF50aC";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <49ca905a-0303-4fad-8257-485b0ed47c8d@kernel.org>
-Subject: Re: [PATCH v2 08/16] mm/slab: pass alloc_flags to new slab allocation
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
-
---------------6OoaCLw56CPWa63NRnaF50aC
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
-> Add the alloc_flags parameter to allocate_slab() and new_slab()
-> so it can be used to determine if spinning is allowed, independently
-> from gfp flags.
+On Wed, Jun 10, 2026 at 04:04:13PM -0700, Dave Hansen wrote:
 >=20
-> refill_objects() passes SLAB_ALLOC_DEFAULT because it can only be
-> reached from contexts that allow spinning.
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 >=20
-> Also change how trynode_flags are constructed in ___slab_alloc() to
-> achieve the same "do not upgrade to GFP_NOWAIT" by using masking instea=
-d
-> of a branch. It will now also not upgrade in cases where gfp is weaker
-> than GFP_NOWAIT (i.e. lacks __GFP_KSWAPD_RECLAIM) but doesn't come from=
-
-> kmalloc_nolock() - which is more correct anyway.
-
-Wait, debugobjects intentionally avoids __GFP_KSWAPD_RECLAIM,
-but we have been upgrading it to GFP_NOWAIT?
-
-> During the masking keep also existing __GFP_NOMEMALLOC (pointed out by
-> Sashiko) and __GFP_ACCOUNT. Previously the hardcoded GFP_NOWAIT would
-> eliminate them, but it's not a big problem that would need a separate
-> fix.
-
-Ack.
-
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
+>=20
+> Long Version:
+>=20
+> =3D=3D Background =3D=3D
+>=20
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+>=20
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+>=20
+> =3D=3D Problem =3D=3D
+>=20
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+>=20
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+>=20
+> =3D=3D Solution =3D=3D
+>=20
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+>=20
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+>=20
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+>=20
+> --
+>=20
+> Changes from v1:
+>  * Move forward even if 'vma' is NULL in binder_alloc_free_page().
+>    This can happen if the VMA is unmapped (Sashiko).
+>  * Rename goto label to be more accurate for new lock scheme
+>=20
+>=20
 > ---
->  mm/slub.c | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
+
+This seems to include the list of changes in the commit message instead
+of under the --- line.
+
+>  b/drivers/android/binder_alloc.c |   26 +++++++++-----------------
+>  1 file changed, 9 insertions(+), 17 deletions(-)
 >=20
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 98b79e5e7679..8f6ca3d5fdfa 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -4467,25 +4470,22 @@ static void *___slab_alloc(struct kmem_cache *s=
-, gfp_t gfpflags, int node,
->  	 * 1) try to get a partial slab from target node only by having
->  	 *    __GFP_THISNODE in pc.flags for get_from_partial()
->  	 * 2) if 1) failed, try to allocate a new slab from target node with
-> -	 *    GPF_NOWAIT | __GFP_THISNODE opportunistically
-> +	 *    (at most) GFP_NOWAIT | __GFP_THISNODE opportunistically
->  	 * 3) if 2) failed, retry with original gfpflags which will allow
->  	 *    get_from_partial() try partial lists of other nodes before
->  	 *    potentially allocating new page from other nodes
->  	 */
->  	if (unlikely(node !=3D NUMA_NO_NODE && !(gfpflags & __GFP_THISNODE)
->  		     && try_thisnode)) {
-> -		if (unlikely(!allow_spin))
-> -			/* Do not upgrade gfp to NOWAIT from more restrictive mode */
-> -			trynode_flags =3D gfpflags | __GFP_THISNODE;
-> -		else
-> -			trynode_flags =3D GFP_NOWAIT | __GFP_THISNODE;
-> +		trynode_flags &=3D GFP_NOWAIT | __GFP_NOMEMALLOC | __GFP_ACCOUNT;
-> +		trynode_flags |=3D __GFP_NOWARN | __GFP_THISNODE;
+> diff -puN drivers/android/binder_alloc.c~binder-try-vma-lock drivers/andr=
+oid/binder_alloc.c
+> --- a/drivers/android/binder_alloc.c~binder-try-vma-lock	2026-06-10 15:57=
+:55.274412018 -0700
+> +++ b/drivers/android/binder_alloc.c	2026-06-10 15:57:55.277412124 -0700
+> @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(s
+>  	struct vm_area_struct *vma;
+>  	struct page *page_to_free;
+>  	unsigned long page_addr;
+> -	int mm_locked =3D 0;
+>  	size_t index;
+> =20
+>  	if (!mmget_not_zero(mm))
+> @@ -1151,15 +1150,12 @@ enum lru_status binder_alloc_free_page(s
+>  	index =3D mdata->page_index;
+>  	page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+> =20
+> -	/* attempt per-vma lock first */
+> +	/*
+> +	 * Attempt per-vma lock. This is essentially a
+> +	 * "trylock". It can fail even if the VMA exists
+> +	 * for 'page_addr'.
+> +	 */
+>  	vma =3D lock_vma_under_rcu(mm, page_addr);
+> -	if (!vma) {
+> -		/* fall back to mmap_lock */
+> -		if (!mmap_read_trylock(mm))
+> -			goto err_mmap_read_lock_failed;
+> -		mm_locked =3D 1;
+> -		vma =3D vma_lookup(mm, page_addr);
+> -	}
+> =20
+>  	if (!mutex_trylock(&alloc->mutex))
+>  		goto err_get_alloc_mutex_failed;
+> @@ -1188,13 +1184,11 @@ enum lru_status binder_alloc_free_page(s
+>  		zap_vma_range(vma, page_addr, PAGE_SIZE);
+> =20
+>  		trace_binder_unmap_user_end(alloc, index);
+> +
+> +		vma_end_read(vma);
 >  	}
+> =20
+>  	mutex_unlock(&alloc->mutex);
+> -	if (mm_locked)
+> -		mmap_read_unlock(mm);
+> -	else
+> -		vma_end_read(vma);
+>  	mmput_async(mm);
+>  	binder_free_page(page_to_free);
+> =20
+> @@ -1203,11 +1197,9 @@ enum lru_status binder_alloc_free_page(s
+>  err_invalid_vma:
+>  	mutex_unlock(&alloc->mutex);
+>  err_get_alloc_mutex_failed:
+> -	if (mm_locked)
+> -		mmap_read_unlock(mm);
+> -	else
+> +	if (vma)
+>  		vma_end_read(vma);
+> -err_mmap_read_lock_failed:
+> +err_vma_lock_failed:
+>  	mmput_async(mm);
 
---=20
-Cheers,
-Harry / Hyeonggon
+If the vma lookup fails because the mmap write lock is held, but the vma
+actually exists (has not been unmapped), then this code might "successfully=
+"
+remove the page without invoking zap_vma_range(). This means that the
+page does not actually get freed and will just hang around forever until
+the process owning the vma exits or Binder needs this page and maps a
+new page on top of the page.
 
---------------6OoaCLw56CPWa63NRnaF50aC--
-
---------------YrjDV9X0pifSc8pX0GjzraWe
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaippRgAKCRCGXBN6rc5S
-1mN5AP4tMVF5FXhfn3M1bOH0zcppauyBP0EZheCoVRoD/P0knwD/S22l7s4G+UN+
-i+T+KAlgVhbzLZ9juSKgV6kPwZV7/wY=
-=x6rW
------END PGP SIGNATURE-----
-
---------------YrjDV9X0pifSc8pX0GjzraWe--
+Alice
 
