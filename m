@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70073CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3863CD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:14:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 765996B008C; Thu, 11 Jun 2026 12:09:50 -0400 (EDT)
+	id E237D6B0093; Thu, 11 Jun 2026 12:14:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715E96B0092; Thu, 11 Jun 2026 12:09:50 -0400 (EDT)
+	id DD4496B0095; Thu, 11 Jun 2026 12:14:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 605196B0093; Thu, 11 Jun 2026 12:09:50 -0400 (EDT)
+	id CC2DB6B0096; Thu, 11 Jun 2026 12:14:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 500A56B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:09:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE4F614070C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:09:49 +0000 (UTC)
-X-FDA: 84868117698.28.BA62FDA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F1B2BC000F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:09:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fgcmbJ0M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BB38B6B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:14:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3BEDF1C288F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:14:42 +0000 (UTC)
+X-FDA: 84868130004.18.EDB82F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 749724001C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:14:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WFYZ4g3c;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781194188;
+	s=arc-20220608; t=1781194480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YjaHrluNbQcW3RW6hKc6GUqxEBJ52tD5SdhNClOzEbQ=;
-	b=CchmeuG4fwFZ3QvTsYpLHnBFn1mywlivYQsbrQttH0/FYNeo4SoxnwdQ/esb/vszhsWV/L
-	WlI+76SEJ+KyQ4wv8mXgEWeK+0yTV0aKzttvSnWvfCvjQH8y7AZXa4k0gDnFURUTnBGAwt
-	TeoeKzqTtOXZ062D8GyCAJVzgelH7QU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fgcmbJ0M;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=4ZPJ8VpwizTlbeh4MnEjVeW3YDzCQKUKA/8eV3uJMXY=;
+	b=XxopZXBjkbm7tWHogc583fxBuhvqMYOiTtS1WWoAuzSznvVte1QtUQYuUBjVlkjD77nlHr
+	oAI2zfIucck2UnTUgDynB1HselktCJphnHVBKck6Au73f9/p6UtH0C9u+8YLFSSeT/AXvp
+	T/odccMMFsXDeujq5WRHobhLfU+Sps0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781194188;
-	b=mQNTt1J8YOubeUnzjugKWA9XZ95vH4XupYzxPFNzCYA0Cq1VoZsuz8NgfoUUJ81cxZpXdb
-	1nfpSriV3AdskPIbn4NmgvFK545Iq8AZCaVIw45S3WddcrKmV+QiekOM96AesZOp+y9OSH
-	JPiEJHkNP1UV1Rb0+sus5iss0P9/WTA=
+	t=1781194480;
+	b=Aetyc5MyB9B8PgAy7KhTFezWuinuRnAf+imFYZ/xP7oWuoj0bBRwjNBbF/lBvKj2ToNqPZ
+	s+yxvwym13sWzqRWUCHLe2f3HNtePf2oc6BR9x9yZ29gc+KaX4viIVSRf6wqXcUZCJtUy+
+	7UOaf3FPpVST+gHvymwUealtJ8+3+rA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WFYZ4g3c;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EDD2C40996;
-	Thu, 11 Jun 2026 16:09:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846571F00893;
-	Thu, 11 Jun 2026 16:09:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 081F1600AF;
+	Thu, 11 Jun 2026 16:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C7D1F00893;
+	Thu, 11 Jun 2026 16:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781194186;
-	bh=YjaHrluNbQcW3RW6hKc6GUqxEBJ52tD5SdhNClOzEbQ=;
+	s=k20260515; t=1781194479;
+	bh=4ZPJ8VpwizTlbeh4MnEjVeW3YDzCQKUKA/8eV3uJMXY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fgcmbJ0MetdVZUeVJ5A0HVyULJLaT6nRpg6uRYKgl+y/jCCS3ZgEwRFS5Y/faTQZX
-	 0970T4XqaBsfe1KKzmeFLFAJhtd3sobbsAKgQUm1TALq/7qwQkhHWYUkbgZa6kAXFL
-	 Qyg7kPuR299i+5v0MI+apcqqpSOpCWMb7bdYdzD82tdZWz6qQSrNaicxedQD4HAyyx
-	 H0eeLfmNt/y9IQ1UXn6HoGzFKSvwyBYS7RpMSVXI3Fv71cTnwAXMRXjbYq6ttB42uC
-	 JxFC/iksGp81nWha0cQlVSNSSl6hCFnlb6aNpgkFKsZ+J3IWHWON3F/VJCPXbQxaO4
-	 mqkGyRBzXShbQ==
-Message-ID: <7e7cbc60-e9c7-4a63-9d4b-4e8fcad7bfc0@kernel.org>
-Date: Thu, 11 Jun 2026 18:09:40 +0200
+	b=WFYZ4g3cimuTsAvhb4VQ5dsYIpyDMS9pJEsBFt2vFir53tbLfjvB4NfymH9AsUK3v
+	 YGSjur1wcJo2Ydm9JVvvxrllso1YaR8yqIN6EKfWbwpV78dR5/UX+St9WYcmu151Pz
+	 /Jjrf3KoFhKylUvsgvfIJyXXb9Fn3WyeX2HzxCypd82u8L1OeiJkZ344SFn3johBM2
+	 qJ3I51ty1X8PmfGpjrwZNgBSsmqTbpJmkBrN9INVr7s1VFaq4ADO0si3idzsO6GWwR
+	 qWfauHPhKPHABQLcuhjhDDO0UtBW1qok1TPhFtaMS/s3KqjAo2PLpdZNW3/+D9PY1w
+	 r9g7WLUZfafEw==
+Message-ID: <e9412b6c-ed3c-4c0c-977f-fc019297d875@kernel.org>
+Date: Thu, 11 Jun 2026 18:14:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug Report] Elevated PMD nr_anon after running selftests
-To: Nico Pache <npache@redhat.com>, Linux MM <linux-mm@kvack.org>,
- linux-kselftest@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- linux-cxl@vger.kernel.org
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Oscar Salvador <osalvador@suse.de>, Andrew Morton
- <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>
-References: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com>
+Subject: Re: [PATCH 3/3] mm: cleanup clear_not_present_full_ptes() and rename
+ to clear_non_present_ptes()
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Peter Zijlstra <peterz@infradead.org>, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
+ <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
+ <aiq_3rp9fwFHyLwl@localhost.localdomain>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com>
+In-Reply-To: <aiq_3rp9fwFHyLwl@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 749724001C
 X-Rspam-User: 
-X-Stat-Signature: emjx9ippnz1uhtkreyka4s8k6xegm368
-X-Rspamd-Queue-Id: F1B2BC000F
-X-HE-Tag: 1781194187-153992
-X-HE-Meta: U2FsdGVkX19OKdpkk0qHpPonQeOadQyLbLuOsqinyprD+wzDVUHY1l+qWPwx7hNksRgf1bQh2wc370N0p8lzmqxMaYRNFNLK+9HhPHa2N4ve4L9n6vkq2NH8nmwpKNae5ku0+KyIzAGnAs3oJfGv9DeJl9Aygzv2P7KDVXVge0wtNb7YQAz8+dQozProZw3WlC5XcIS+/fcJy+XrLCrKScG6MQFSU9HErwKxxS2muB0MnCMqaGBbNfS8A8xSZSkilojUxc6QJnCa3d7qPIlQWjTQiQfoa3SfbE0IBFxT8OWCPbVcdFUzvkkArjNxkpdDGHeeDGGCq6wkt4vkGe6TxNxQ6qSFnlIddLknAhx0HwS3ZIbUAvx7xQ2eW+izwFFoLFJbPqt30TsPIoHRZ9VZmtqaRJOsHDF4OTpOhZpZ2Blex5IAnmUvjd/zwVgEBJarWhxcB5qC0C6Z7HTjEt7eMiW1A9lTCvQ87TvXPoF2u7Egz+vyOm2RebhKtutj3SOxEkQZvxEaMiV95GfkvuTjHxMtgMHPYj7AwIKdAtMjer8R74Gzs8sLI+Sy1Urte0iPRhAf7mWvmFZtnaSNTMC/zSw9eVhZzd68tXNyfkXu7Ig4N3cY2aB0XbcP9B/hZ6oBS+Ksi/nxx4W8gg1d594K7T//SDcWOISxwL4D45BQ5eYzzlQxeZXJIYQZB90LpFzJTAy0w4xumJvTStZcXWhDh9kWPzBfJsYhcVGMnbjzcttlRQe2Q0O+FSlL14vINchcvYIHpogwfn+8Uf1afKQN8bZFKpx1YmE4nGsjo+CrEC99uzlIwRk+0fqeTyywz25+w7bYdNoY0I8BPB+DibOwhaq69FssVjmwCiSU+RILHYIWwb1Awu29U4N7STgj4aR7gqQP2rgQ8++gypEEREndLhHiKLoUjPSrr3mIyObfb6fiALbRovw/3VMx4nVfKcfu1R9iRLQD9n5ykkjh+un
- DpGKD7Et
- rEUqELqEti26b7ilFlaR7/Wst4jWAnHxCvU7HQnE3g0rNtAijGJijfvEUqjv/0Z04GKWpvPProS0vJf3/NwV995Qwj7lv9ftGXc0zQgQ09gDn4MzG4Y8A/fV3Ugb+0DHysVxkN1Dl0xpcWIAKhlFWWeBFWrMmgv1WEL4R3lkwhJN5Tm+0VEtmmHdj0DF0L9sFeRswpLcBIIdXjmEyJSrAW7CIZdp7AEtH+OVon4lBXo96LEwZw3uTGeHL5KUiWfH2GnkSO9IGfqC2IVPKmj3H+fKy//RVgkNom8L/Gr39AyrsEmHSCTZHlIVsITWd+7skrgDUepE4t9YuJbdKB4Y25ZBKCTeQkDOWgJSATDFWReeYw4JmToox8TyOtPrY9rfFB5iQ
+X-Stat-Signature: p66ddmz6jz4kky6t3jjo5q9zwasu3jii
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781194480-390421
+X-HE-Meta: U2FsdGVkX1/SQSq98lz2XPqqB74+3E3Dn3DybK8BeEGQx+eXupsVIiSgjlcUjbvp/NM9g1yqoE/8Mg4SvjozaPk5AB4isVUAETk61Ls7knVJl8DzDe8BtSvztFwxBPM0FPM8jkkI0SrHhHDe6YyQvgLZ5fnxTPd/vUMIp7FoVwlH5rXbHQ1Y72jAalfVdvAY60XylxrzCGDpP9/dC5j9JnrFnkLd8eZt8rONtK1kMZpbGZ0AUezXTra8pDtrRXPvejJ2OlieoAqhUvxBh4pvuIL6yBRf7PJAPkJTKsFCAvxAU14c5DU7qr6KYiUnvubHFFM6j1thQlefl+nDx4mZVXgRgBMIMvWmsbgl39+d61udJeAHcq8wH/KpQR2ysVKkSS0fGcIshLL1o13bl54I4fbN5KbfsB9+I5I+VeHxgFvm3VCmM7o3mcD6aBsoGhYN4Z3tVVWYHvLDLQsBfEAhTS3thr/Ss7IPHHYSLNSyJrl2I4qDbxNsE9veo55+v0ZbMh2q412kxcgY4hksvtPJ1tq30LmmWd4P0NA3MTNusl/Piyo7U56m3/r+cT9Qs0mwVH5hkUmyMb4CQp5kMapEwzyPE27vCcrYcP9uo3P7EFXIzsuTmaGA8jHWhmOsNwpjaFNH/hQ3TBlv7TKmSPZZWu6yXKuQA51Op3BCTKEkm0+5z51ClyTuiin1MECKQHD39P4WDtalonkjSsd8gBRs/kFQz1U0h24yeq5XT3ZTpb32nNtbI3XDaq9j4oUxSYnkc8in2V3H7HlnGPKwW/58BA0yAc+EBOuLD+ChzCw171RlpH1a/fdqSCjBb/FmDpZMRtxxna+Ael1ysl2MGHdoTIdQXi9aTJiJcczFINa0IRWc2HqhryefZUEDjIDon+e67enfWqg+8stePVcGyCoyMla3vlBBJN4eJf77t2xriJrl7ay6ZtAlcSSjxLurwc+gu6AkiJoseMVOr77lvHj
+ bOn1rSTY
+ xlY0qtebbg78NMoSoHSoXFkNJ3OUuQXTKtKx9tcFQ9EhSGPKLvZxzSKur59Vnfi2XuGitSSMKkyMdZ8ML+u28WgSHzAbTBTa5VMEwfihMVl/cXn3JNHCM0yXlhenLYt6+hSUGtvvk7GWsvOa5gKCUui0five+ug1fBmHdb4r+8K+DklfSWzDQmR6WRaWdA8+qOF263BAJQPt6XhAXGKwW4lCip2hx+UX8cRwbDuJm2R2s64xPE3Ih8h84cwyKIAxOEYgxkKXbjwILtF2offeZt35CTNTes93LO+9JsMMkDRVpDXRSeo8PelJCDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,72 +146,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 17:58, Nico Pache wrote:
-> Hi,
+On 6/11/26 16:02, Oscar Salvador (SUSE) wrote:
+> On Thu, Jun 11, 2026 at 01:50:49PM +0200, David Hildenbrand (Arm) wrote:
+>> Let's clean it up a bit:
+>>
+>> (1) There is no need to pass "full" anymore.
+>>
+>> (2) No architecture overwrites it, and there isn't really a good reason
+>>     to do so when dealing with non-resent PTEs.
+>>
+>> (3) While at it, call it "non-present", similar to copy_nonpresent_pte()
+>>     and zap_nonpresent_ptes().
+>>
+>> It's a shame that we have clear_non_present_ptes() correspond to
+>> pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
+>>
+>> Likely we should rename pte_clear() to pte_clear_nonpresent() or sth.
+>> like that, to make it clearer that it is usually the wrong interface
+>> for dealing with present PTEs.
 > 
-> While testing my mTHP code I noticed that mm selftests caused an accounting error in
-> /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
-> 
-> At first I thought I might have caused a regression, but when retesting with 7.1-rc5 (without my code), the issue was still present.
-> 
-> This issue occurs in two mm selftests:
-> 1) hmm test
-> 2) migration - private_anon_htlb test
-> 
-> I spoke to David about this and he suggested the following diff which seems to have solved both issues.
-> 
-> David would you like to send a formal patch or patches?
-> 
-> Cheers,
-> -- Nico
-> 
-> Diff for (1)
-> 
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 053842d45cb1..683a77dd679d 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
->         mem_cgroup_uncharge(folio);
-> 
->         if (folio_test_anon(folio)) {
-> +               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1);
->                 for (i = 0; i < nr; i++)
->                         __ClearPageAnonExclusive(folio_page(folio, i));
->         }
+> Is that always the case, that pte_clear() is only used on non-present
+> entries? Or there maybe users that do not care about the current value
+> and just want it to nuke?
 
-Wasn't there another issue with hugetlb?
+Usually, you want to get access and dirty bits, and that requires get_and_clear
+semantics. I suspect there are some more details to the low-level helpers.
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 8a64291ab5b4..0aec894266f2 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_space
-*mapping,
-                /* No turning back from here */
-                newfolio->index = folio->index;
-                newfolio->mapping = folio->mapping;
--               if (folio_test_anon(folio) && folio_test_large(folio))
-+               if (folio_test_anon(folio) && folio_test_large(folio) &&
-+                   !folio_test_hugetlb(folio))
-                        mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
-                if (folio_test_swapbacked(folio))
-                        __folio_set_swapbacked(newfolio);
-@@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_space
-*mapping,
-         */
-        newfolio->index = folio->index;
-        newfolio->mapping = folio->mapping;
--       if (folio_test_anon(folio) && folio_test_large(folio))
-+       if (folio_test_anon(folio) && folio_test_large(folio) &&
-+           !folio_test_hugetlb(folio))
-                mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
-        folio_ref_add(newfolio, nr); /* add cache reference */
-        if (folio_test_swapbacked(folio))
+> 
+> I guess that such a renaming would have to first audit that all current
+> users obey that? Othen than that, is there anything else stopping us
+> from doing so?
 
+When I last skimmed over some users, they were all dealing with non-present
+entries. (mremap.c, rmap.c, mpreotect.c, memory.c, madvise.c)
 
-Yeah, if you have some capacity, please send patches (and figure out Fixes:) :)
-
+But yes, we would have to audit and make sure that's the case.
 
 -- 
 Cheers,
