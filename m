@@ -4,143 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22628CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:13:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7B3ECD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:15:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81E5E6B008C; Thu, 11 Jun 2026 07:13:38 -0400 (EDT)
+	id A1D2E6B0005; Thu, 11 Jun 2026 07:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A8476B0092; Thu, 11 Jun 2026 07:13:38 -0400 (EDT)
+	id 9CE3A6B0088; Thu, 11 Jun 2026 07:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F706B0093; Thu, 11 Jun 2026 07:13:38 -0400 (EDT)
+	id 8E3C46B0092; Thu, 11 Jun 2026 07:15:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51CDD6B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:13:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 162A91C2427
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:13:38 +0000 (UTC)
-X-FDA: 84867371316.08.56FFB49
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3C8F180009
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:13:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h7gGhUHC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oX5UDZz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h7gGhUHC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oX5UDZz;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BE216B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:15:43 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12FEC1205AF
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:15:43 +0000 (UTC)
+X-FDA: 84867376566.24.BDE4282
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D6498140015
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:15:39 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uvrm35v8;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781176416;
+	s=arc-20220608; t=1781176540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uTPmKDC2++fFuX1IGIaCfTosGFLn7J/XiVm22BhhlKY=;
-	b=1OAXFybvKhQLu0LbHV8qjYJtVPG38qA+uvCyY7hvSywHsCzoRChrZ3alksO2NAbAGWYYpA
-	4JEcJAaNxSTeWxcjsvv3cAumcHlQNF9xhepPGVfVDjI6A0NybUHOHjehaxlac3wcACvbbR
-	xvCgV7v8jZt6c3Y2jG93WI9jKkVSEik=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781176416;
-	b=N2JQhOy50Y4acmJRppuDIW6fyztxfrY2yc0W7O4jP6b1pfJ1gIBoW6iGIeUZZmKWqfJn3r
-	ioM86jy4C87u05a9sgqh5A0RrT92hAZIrPJXJ0iDF74BpvI4SAa/3xqaSKeum32sUEm0Rx
-	D43bpXUetyqexs28zncAv6sYmd9Q7Zo=
+	bh=yVOs9G7BhFCl2zXLY/E4s+NW4ToSbs9i+XEVCpRkH/s=;
+	b=SK8jEU9A38ArHCyUAAIm4n9UXKcrk9w0v0p9OsEzdKDPN81dQb8xfIf2TiUUnbsPR6xzAs
+	SAGXhKn7Ch+ZITEUAbrqQ3lrQMRKoGpOctGU4xpLShTk9qi1keDlOpUGPcbV88hAQz9rkw
+	aDSTCBpv3d4aXcTwk86mH5osIN4mSlk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h7gGhUHC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oX5UDZz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h7gGhUHC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3oX5UDZz;
-	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D4517595F;
-	Thu, 11 Jun 2026 11:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781176414; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uTPmKDC2++fFuX1IGIaCfTosGFLn7J/XiVm22BhhlKY=;
-	b=h7gGhUHCMWHR9qmMcGC0AoT1CAbC0qDA+DovzA8zAz7H7fQv0PFs7CPOjJnxhCdFaDcGUu
-	vyvAK0DfyY1RdmfXFklPCJyPNhMzAuw2CP1s6N7qwcEYWiR5mxL9DG/5BysO6PhZMxKoKD
-	ISZg6RTIwJecj6GxaQYPdfgUtqJTzRk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781176414;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uTPmKDC2++fFuX1IGIaCfTosGFLn7J/XiVm22BhhlKY=;
-	b=3oX5UDZz+h4XTy4ey9XkDARLpL0LSp4+oHtkq9J8VDyjYLcXPfbAOHxVyfqg6po5L3jIcS
-	rP2TI5nu7gaMawCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781176414; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uTPmKDC2++fFuX1IGIaCfTosGFLn7J/XiVm22BhhlKY=;
-	b=h7gGhUHCMWHR9qmMcGC0AoT1CAbC0qDA+DovzA8zAz7H7fQv0PFs7CPOjJnxhCdFaDcGUu
-	vyvAK0DfyY1RdmfXFklPCJyPNhMzAuw2CP1s6N7qwcEYWiR5mxL9DG/5BysO6PhZMxKoKD
-	ISZg6RTIwJecj6GxaQYPdfgUtqJTzRk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781176414;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uTPmKDC2++fFuX1IGIaCfTosGFLn7J/XiVm22BhhlKY=;
-	b=3oX5UDZz+h4XTy4ey9XkDARLpL0LSp4+oHtkq9J8VDyjYLcXPfbAOHxVyfqg6po5L3jIcS
-	rP2TI5nu7gaMawCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0CEF1779A7;
-	Thu, 11 Jun 2026 11:13:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wxlKO1mYKmqmDQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 11 Jun 2026 11:13:29 +0000
-Date: Thu, 11 Jun 2026 12:13:28 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Huang Shijie <huangsj@hygon.cn>
-Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
-	surenb@google.com, mjguzik@gmail.com, liam@infradead.org, ljs@kernel.org, 
-	vbabka@kernel.org, shakeel.butt@linux.dev, rppt@kernel.org, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, linux@armlinux.org.uk, 
-	dinguyen@kernel.org, schuster.simon@siemens-energy.com, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, djbw@kernel.org, willy@infradead.org, 
-	peterz@infradead.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
-	mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@kernel.org, 
-	irogers@google.com, adrian.hunter@intel.com, james.clark@linaro.org, 
-	mhiramat@kernel.org, oleg@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, linmiaohe@huawei.com, nao.horiguchi@gmail.com, jannh@google.com, 
-	riel@surriel.com, harry@kernel.org, will@kernel.org, brian.ruley@gehealthcare.com, 
-	rmk+kernel@armlinux.org.uk, dave.anglin@bell.net, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn
-Subject: Re: [PATCH v2 1/4] mm: use mapping_mapped to simplify the code
-Message-ID: <aiqYJTJFIHHk_IOt@pedro-suse.lan>
-References: <20260611061915.2354307-1-huangsj@hygon.cn>
- <20260611061915.2354307-2-huangsj@hygon.cn>
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uvrm35v8;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781176540;
+	b=ijL0++aZXho40c4SoBAitbMOP4yYr76MH9cxw4/LWKncXGpYDrzYxlWu62mywFhlW0uRrk
+	W7CLV0wa/tlpRj57o/35K29zWSMKnNs/CG1QMvcqQnshzPHhl51JCAJDBcM6erNJuu5j/g
+	2B7WK3rJtweROpl3tlRHuxdg6XpAijk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781176537; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=yVOs9G7BhFCl2zXLY/E4s+NW4ToSbs9i+XEVCpRkH/s=;
+	b=uvrm35v8wZ04KuyY5Bsxk5oi2AcLI/b3k0YI6zZqIQrVj42j0o3LzJGMEx4+voHWlgjr+S7dU/hr9kmAVk5HDzrZEXwl7MjJfbREbRK23bEkky/QOAuPTifNMWiQm/jMMYwNZHE10OtDz9zTE0iuht0BRJdLS4wRyCqYCFrjhOQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4dXY1r_1781176535;
+Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4dXY1r_1781176535 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 11 Jun 2026 19:15:35 +0800
+Message-ID: <4292a25b-5707-401c-9c8d-2210a165ea7c@linux.alibaba.com>
+Date: Thu, 11 Jun 2026 19:15:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611061915.2354307-2-huangsj@hygon.cn>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: E3C8F180009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
+ support
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <0e431c06-b80e-4b4b-aeca-b9a0eacb6252@linux.alibaba.com>
+ <20260611024706.95748-1-lance.yang@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260611024706.95748-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D6498140015
+X-Stat-Signature: oofddki6yzorfd3g8pqsz1q53wswpne1
 X-Rspam-User: 
-X-Stat-Signature: hbfg1h55myuwa8z39y8kaumjmm4tn1um
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781176415-452152
-X-HE-Meta: U2FsdGVkX18yHv1XGbU/wYo76j8d/DEtTbILdHMlCLTONMdg7Vp92bQtum+j+Vj95J/ce/hbLtkpknGTw8uholwZvGqREIaqhsg3YHY+wrBsVxwXgnHLs2bNnBbOB5XZF/sv16xVqUpeRKJzF711pKf2CMyJ+4vPDLs8JOyzXYhLHk0QoDayEUmCtiFRvJ1+PhbM9Z03U12Z5emYxn+EU3PuzwIZun5gGm0b9BUf6k9EVnjt4loaadYhddb+Y90MwycVNgOkFwg//rDxkRysPc5bU8XYlTBqw3gN9eMvFCINXfAdYFkWosjDtdysc0kFp4BmpdzUJ3TIdSNebvGWqueEHdBTfXVljbyuVe68lvyQUvaIwsHUZK0eSM308f0ym+4sLgK4yC6pY777+JvffVFVagalak3OITi58R5bycU3F7Sc0/TeCwyuxfBW8hWnIML2UMJxAPipSdLaPW8tk8pzSWbwDJyOgmWr68itXk7gjgd56cTDrUMRovOnQg1TCrtgUn/nqG2sSjXOsjNoNIcG3RNBQnswOwiaAE5HTfeTQgM9vaHVJBKH861Za+3y6fVeAxyj2yyVoSZAzkDlAE8o6buWr9+mTIw19NcFTBiobKkHJk1EVDHiuCYYCM3ZJTMPemUV4mECBXISNsqbXdI0MQ0ndO0hp1msNaVFOBaddPDdv0Huo+6Y6Y506K0scr27Q050L8G51il893jY5qLWE9897pw0Nm9QAja4sfwPQIURYbqKvygxMxyJrsO0NA5WDFTVeDEWSS7FvS2LfpTUSVXA4IsWDE2G/Ztxr8G898uqbUD5fHH6/LsORaSNBPvdzFDwMaPHospMyttg+J/73mMSRNOeZXNWjSWWLdnaGfczTnJcUoGEdvh2tg9rJ7fll0Fin56fhu3l7nuJZbvzure5bUR/6m7tRA1KVfR2BYwjEdIBnCW9az/ll3ALfHc+TL4TvWumbZCrCJ2
- 0HIMNwQX
- PdNzxSbMn/g2iCShbKDqMXDTZ2WeRfIwY1baDFtfVqIexgtVEddAUsz9P8pyL4k9S+o8BtXiWuO5vg5mtAIT2rXR0Nv2Uye+z3o1/FgIwjTETyDcog3QBPJdxsdScuUCD32ZIJ664dTorBAezh/7gdC+UOG1F4wZ0IpNMcH2dHFBgaSJPI6CBq5qzVO/lQi9SNkChyND5oAZ9maykIoDvjJdJ/SS79//qxP+Lw2UZXzeT79XoInrwAUUT7b3HE729bE2qma27Rh0i0uez9FTrFHNVGV15i3zsljny0BVwS7DYucQtJd6qKHS99V/ntylznMlWKhz1K7HBv7E6TPyBB5+vPoZnF1gZih0CtIOnMueT+yugVgWF9wSCY2tXDrqDNtPQdHJDpiv/pYx3k7ToWxxsBTXsRqIrVJUL0fpxp1hU0hLuNcQiFWSwAyCVp1mlg0Ku/UC4w0MHnpl6eHFhBwK7hwjGnXfO4We3PRWeLEphfTFoMN/Rc/ctMQ==
+X-HE-Tag: 1781176539-719797
+X-HE-Meta: U2FsdGVkX19dTVOKkl7FPzsZXYm/rvQaVWzv76kx2dXJjEw8KIWvKB3tfHu9TR6YPSEcHr0iy8wqRzLpQ42V8m4Zr6UK/Zgi7Nl5IOhJs8Wy2xfTZydnh9/yXcdnUfu6vmAJn5bPgwZV1rEak59OVT9sIJ2OihPTLX9nDP3Z61jmQZdmSW1l98YcBDjnTA3GWkWx9C+1f2oUIfLnDmxZ3VK1f257sLrtRSahQ/+4H2m6WVVTo/iBQhaR9rTqF2gdVUf+gSEpnZWeSk2Xeyq7BXdI/poIUzjb8jKwVPhESukDQsOVnmk3cS0fuOCdJA/ThJWM0lcht+gYQDmtgC0wdp1Bh2kvGOAoVa1t9fkK7zcJvRVY1u6NcS2NLBh193lOoa9L11DN+pwNgFkoWtkw//PAtrpiPpUcY+wEEgO9bnCnY1FbFqzWU4YOfBcYUaSMb2mHGD3HrreF38Q/S/LdBrA8NohyrtzZCqKZjFcfOtsaTpHdd3kT8m9/2xv70cd192bzuy7Zp2bxCOOSbqtI+VXEN7ETO/sH8M4VbL3Po75/aqUJIC6aQ46P0z4+cxCu8UScbF1NWqb1Wn0QYadu/m0ddiHOc840txNljLHBKRTn6hjZXJOiCmiMpzyqhWvToxbjqbGLnJtz3bTZ7v/aq1n6fXwp8UfjCliGZD3fwN9P4tguJqmWv5nWeM1iIzFoT40NgVP1MDA+RhwuAQ/38BRLpKff55c/w4EwD52Y5ls2D9nMaDfogKgHHzKRhlInrcKJ8d861wIc4iUsYOtBfrsQRxixbnkMThX7GhXvqzvRYj8OuNt/pbL64RZI1CvJPjrQBvXytVvA9hwjDhHr8sX7kw3pQHjDg2ICuA0ZDdvaVusYzkioLt+iKcgNLDdRFFBb4jMskrt0MBbxmcXecUAZQzOYYQ2NqS+a+AH3KkqV5HtL0Gu3NJIQgTfqeWvr4+lbtue8VmjdoeJexXd
+ BLn+V8nl
+ LgrpphyRF2TtfkizOOQ2Oy29MRSUaqD5IfadHwk/qJoxUUmLMViNIbTyWw+puB301j4ENxDlbE9Zpr5MpHNIF5iK70pxl96VlB3WL1+R/911B3wLhzwPjO4UJ1ziViBuACG+WV0BN7pAUQaNZj05o0iQVLv7fLRsxnWBGot/+CyWebHfEPjnbeA9sc6hqjKoI99bIqT9FZfcOjc9HVXOLTPOVxGi7qb+XkxhcbRDu2bP2sWGtGtdIbXA3DRfIkOUU4imRFsOaZeDB8Axj9Q3Gh7ee8CrRCQb3zWrRspBO11Xi9yRA/mTIqlZr6LqrnBAF4DKu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,17 +91,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 02:18:57PM +0800, Huang Shijie wrote:
-> Use mapping_mapped() to simplify the code, make
-> the code tidy and clean.
+
+
+On 6/11/26 10:47 AM, Lance Yang wrote:
 > 
-> Signed-off-by: Huang Shijie <huangsj@hygon.cn>
+> On Thu, Jun 11, 2026 at 08:42:28AM +0800, Baolin Wang wrote:
+>>
+>>
+>> On 6/10/26 8:44 PM, Lance Yang wrote:
+>>>
+>>> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
+>>> [...]
+>>>> @@ -1512,8 +1517,12 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>>>> 			enum scan_result ret;
+>>>>
+>>>> 			collapse_address = address + offset * PAGE_SIZE;
+>>>> -			ret = collapse_huge_page(mm, collapse_address, referenced,
+>>>> -						 unmapped, cc, order);
+>>>> +			if (file)
+>>>> +				ret = collapse_file(mm, collapse_address, file,
+>>>> +						start + offset, cc, order);
+>>>> +			else
+>>>> +				ret = collapse_huge_page(mm, collapse_address,
+>>>> +						referenced, unmapped, cc, order);
+>>>>
+>>>> 			switch (ret) {
+>>>> 			/* Cases where we continue to next collapse candidate */
+>>>> @@ -1521,6 +1530,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>>>> 				collapsed += nr_ptes;
+>>>> 				fallthrough;
+>>>> 			case SCAN_PTE_MAPPED_HUGEPAGE:
+>>>
+>>> Looks like SCAN_PTE_MAPPED_HUGEPAGE from collapse_file() get lost for
+>>> the PMD-order case.
+>>>
+>>> Previously, collapse_file() returned it straight back to
+>>> collapse_single_pmd(), so we would run try_collapse_pte_mapped_thp().
+>>>
+>>> Now it hits mthp_collapse() fitst, and that case just goes to
+>>> next_offset ...
+>>
+>> This is the expected behavior. SCAN_PTE_MAPPED_HUGEPAGE is only returned
+>> when the MADV_COLLAPSE collapse succeeds. In this case, if
+>> collapse_file() still returns SCAN_PTE_MAPPED_HUGEPAGE, then
+>> mthp_collapse() will ultimately return SCAN_FAIL (because collapsed ==
+>> 0), even though the MADV_COLLAPSE collapse has already succeeded.
+>>
+>> Additionally, the SCAN_PTE_MAPPED_HUGEPAGE logic is already handled in
+>> collapse_scan_file(), see:
+>>
+>> result = mthp_collapse(mm, file, start, addr, 0, 0, cc, enabled_orders);
+>> if (result == SCAN_SUCCEED && !cc->is_khugepaged) {
+>>          /* If MADV_COLLAPSE, adjust result to call
+>> collapse_pte_mapped_thp(). */
+>>          result = SCAN_PTE_MAPPED_HUGEPAGE;
+>> }
+> 
+> Right, I agree for that case. The one I meant is a bit different.
+> 
+> I was looking at this earlier return from collapse_file():
+> 
+> 		if (is_pmd_order(folio_order(folio))) {
+> 			result = SCAN_PTE_MAPPED_HUGEPAGE;
+> 			goto out_unlock;
+> 		}
+> 
+> Old code let it bubble back up:
+> 
+> collapse_single_pmd()
+>    -> collapse_scan_file()
+>      -> collapse_file()
+>        -> SCAN_PTE_MAPPED_HUGEPAGE
+>      -> SCAN_PTE_MAPPED_HUGEPAGE
+>    -> try_collapse_pte_mapped_thp()
+> 
+> Not limited to !is_khugepaged. collapse_single_pmd() only checked the
+> result, then passed !cc->is_khugepaged as install_pmd.
+> 
+> Now the same return goes through mthp_collapse() first:
+> 
+> collapse_single_pmd()
+>    -> collapse_scan_file()
+>      -> mthp_collapse()
+>        -> collapse_file()
+>          -> SCAN_PTE_MAPPED_HUGEPAGE
+>        -> goto next_offset
+> 
+> So collapse_single_pmd() never sees SCAN_PTE_MAPPED_HUGEPAGE for this
+> case anymore. Hopefully Im not missing something here :)
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-LGTM, thanks! Super uncontroversial so perhaps
-could be picked up separately.
-
--- 
-Pedro
+Yes, you are right. I missed this case. Will fix. Thanks.
 
