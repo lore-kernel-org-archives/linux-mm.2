@@ -4,126 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D205BCD98D4
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C86BCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:50:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F3BC6B0095; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
+	id CD1496B0099; Thu, 11 Jun 2026 05:50:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CBAE6B0096; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
+	id CA8ED6B009B; Thu, 11 Jun 2026 05:50:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E1DF6B0098; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
+	id BE5BD6B009D; Thu, 11 Jun 2026 05:50:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FB346B0095
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B93FEA0544
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:25 +0000 (UTC)
-X-FDA: 84867156570.10.7B7AE19
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D50BF140006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B43ChF8X;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B04A56B0099
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:50:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 765C3A053B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:50:41 +0000 (UTC)
+X-FDA: 84867162282.05.EC235CF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0212A1C0003
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:50:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZaTrMu8m;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781171303;
+	s=arc-20220608; t=1781171439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-	b=w9wQqupN3zHCjHgd3X2r/qcBBXN3/nr6Sc8lUcl04J3C5ud7TeQtNjUCenmZP8pFEHUyhB
-	uhJBP40EF/fD3ixOLs0MtEECt+aSkys88QJaB07OoEG1lyFU8+pm0HM4jI3vOVBVhDyECz
-	zmikSstlpbMFYD4WZ5JGG7zJlnv9QPQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781171303;
-	b=t0kPk+AXQzj9d2Dolae8+gMmkYSuLwp2PNKdggR6nRGUF/Q4BserInWndnXuLBI0MEUH3u
-	KJku7aiN23nDebYoKIqnPnKEgFw/TX2jNVr7v2/ads7YGbZSyaa38ACs+C9awr/F0NSsTI
-	49w8F3qsB7W61fJU5HNbwXI4p/2OTGw=
+	bh=2AjvXPjIQ9ysfVHC0LLu+0IzCvg+oy+OgHJtnOXBPLg=;
+	b=Rd5EzY5uLqjiHLPMop4RTt4V0rRpw/mKDAxAUf3iD/qRqhus0PjrSoZe3YHWtspDG9PJ79
+	FogXw3JwzcyzJezRk5/XRNFIcWzpRi3qCd6oLtkiZ058v/gMXFzwgrFq+jzDuPhOtXcZY4
+	YtJak2zBCcO5nIjpysYWpY/vCc1tlBQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=B43ChF8X;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bf125989f2so58376835ad.3
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781171303; x=1781776103; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-        b=B43ChF8Xu75gmSsoMfcBvubg/ahmHfhZ871OaoqELf35WXy0tpxAc5febR8yEUfNl5
-         G/LKPBrgJKB8LAzktZnzRSimbwzQADDeJrZ3VinZOw5McQe+Ci0MRdIGtClKry54sbYc
-         tLmLI0eLs4r02FA2Y75YZCukHNZAO/tLtbhmNRf7E9zqiBcqEgqrgt6IyvoQexyPlPDF
-         ycYh8MvWdROoifdosGqQ9AdzM0uYZrb5MB8P9EnAagGjlAsb3EITvYM1BchTxWtn9qxQ
-         hL/dllnobazKyuUVN78Gn8TnNM2zU2AW9MVUlyrjuImH7RQS5rst8fk6VwU9Z0lrUFXF
-         eqig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781171303; x=1781776103;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-        b=KYz7ntCSGbwlBa4rpeEXYI17OTcqkz0cxlkHLRqYnZwMaIQwffPddCYidRCWGvI7W/
-         SvoAO9v6/g9GjITObPdfLc2ebBpM3uuY7AcVKJIyODjWJXOQrYZpeYgC4UU4TaRm02hp
-         PDpaJEe17/sFspDITAeeXOdLx/h08MFolgI2IVXxlu+AyHlyEevySOYt7FF5NTw6ZLZf
-         xJqa1j21gu0EPngG3iHwuTnri58Qm8ODUN59yUAAynnSWTljXNU/1n18yVsQjTjcCyV6
-         NlYfJN8Hlwo9bfSiNuNNK7AwLTC9UJKZM3WXt3HdeBjpPxXtRknDZvA7n6ch3je1+9sp
-         4xLA==
-X-Gm-Message-State: AOJu0YwDdTglhfqLEJWY5y6pqlKW+BucoH2lYp4/L2xGa9iS0xGLPMcJ
-	SELI3S7Ejl9iNPHgdYgVrqg2eT4kPuwSl4VCCRgtUQq1w6XeO3XdUo9zU1KT/nwP
-X-Gm-Gg: Acq92OHjvq0WKCS3Ui41cUunao0LNhg86h6LaaKL18CbcovfgBJ5xCdqBdjzdXTZ1F8
-	uaOfZQkodIMVUcoQ6pD3iRmKxLYjRkA9rtpYthfCH97WZ04WyUvd7ZHxcmP6wP50iq8ZlG1NPKL
-	1fNRTdvibrEZ7/ZsgR5rjIjwHqRACORsFOX++eNhLGyucsa12MxXg9Hyq87wv1BYJh5fwBeiYtO
-	ctGG1k+b+uI/Fkdx+irAEbPePrfxC2Md/5Q/lCwcOnA2it/utfx4cDj+YBU3ekmiQg4kvF6CRFS
-	HUfcMmCAtm2c5OvTcGwX48U/1O6WDfkf/RVMbF4Rp3b532LCSqpYvBdeZHuPSyt3PXpDYsL56r/
-	NADDbnuI2u9phV55n8XfjsCgCKPc308Mr5y6lE5FwGX2wOVea25smEltu4bGybjKmr0pbtIq5Z0
-	neF6JlYopls7AR/mjO2f/kUlobZRBnggCkeP8SPJQtlu4=
-X-Received: by 2002:a17:902:d581:b0:2c0:b9a1:6493 with SMTP id d9443c01a7336-2c2f072df8dmr24320965ad.10.1781171302591;
-        Thu, 11 Jun 2026 02:48:22 -0700 (PDT)
-Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm283324905ad.60.2026.06.11.02.48.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 02:48:21 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-mm@kvack.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
-Date: Thu, 11 Jun 2026 15:17:53 +0530
-Message-Id: <3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1781170904.git.ritesh.list@gmail.com>
-References: <cover.1781170904.git.ritesh.list@gmail.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ZaTrMu8m;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781171439;
+	b=6tHN8gwzfMFbnVO78RCHp7G7difijdPa9fUr1npRMF2b47YhtEsrn9IefeolpAgLhngRmU
+	ZejJJ0eNzquFwBnncbswAJslsvDhXdrr4FgGSUl3RCPLyAbAcx1U8YJ7HsLCaedG1TY8VR
+	LOEDWxx6mi/M2Frw51qu1je+DXkNwR8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB5BA1E5E;
+	Thu, 11 Jun 2026 02:50:32 -0700 (PDT)
+Received: from [10.174.41.206] (unknown [10.174.41.206])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 723DF3F99C;
+	Thu, 11 Jun 2026 02:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781171437; bh=giW2ha6I059T0G+qHAhzVhjSsPjt0+qNu14U4xR5Kok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZaTrMu8mAWfzsBKisoH3fnQkGfn0yNj/TxIkV+zx2PNNtyQQXWrVHo0eThpQs16p4
+	 VZaQ43d6LxXNzSq/wlTpvMWRbR3Tpjk7i1y9adDunaSF+7+4u2qsv34+d3e3SBuTCS
+	 jjxnQdSKzFNLvwdBFzq8OxGGg5ZmRV/TISIw9O6A=
+Message-ID: <d41a24c1-592e-495f-8adf-dd538b769904@arm.com>
+Date: Thu, 11 Jun 2026 15:20:13 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D50BF140006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 1/3] lib/vsprintf: Add support for pgtable entries
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Petr Mladek
+ <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Andy Whitcroft <apw@canonical.com>
+References: <20260610111339.2465922-1-usama.arif@linux.dev>
+ <919d334b-16a3-4412-82f4-b4cd6a35be0d@arm.com>
+ <aiphHAkLnG_L2kY2@ashevche-desk.local>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <aiphHAkLnG_L2kY2@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0212A1C0003
+X-Stat-Signature: c713p3w4oizt1hwko14jbs9ucjucyzp8
 X-Rspam-User: 
-X-Stat-Signature: dgeoitk4r9m6ez3xeptum1i6rk1hg6fb
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781171303-887713
-X-HE-Meta: U2FsdGVkX1/VTf0RRHEKb7tHA4cMdP+CEjAcjVTURRGRuviRCz8wj/zosB806LGjy/ay0koh1dzEWOZ00cbm2obxDmX6NVMAI52OupP1cS3Qed2oxM3AEQGm83QxRkvpL/gKtPnLR+GMy5f4iiw6nVrV3DDZz23deOzVvOqRYvYS5Uas0iLUeM/c7YSMzHFR5unSTE0jYL3O4/R5B5eTYCFe2sPUsuPoYdEv2jZk1bRXw0tqnETbKdFBScKHBBCAE/nlgBQBlRbgRApbLwRRT63+hHvWlhd9s6sN4PYzR75NJ4TZSLgGBV51xav/HKBiQhVyYOjBLLXmDkla/o25aoImv8LjL6n/vnZb2MjvOmJKrkjAaZUaLIrS1cNwtyJ1PDeSYho52MlLqFGyYdv5h+RWs1ewKkVva2+9MQMx7nmai6ApdXNAH1mBLHLOmgbXUrtAHLx8MkQ2bWR8Ik6oa84YgO45ihhm4NzyuKElWPLMUiHohm57kj9vv5QCFp+AFk+8qb7FyaG9d0W6buHhbxP4nhdGQ9opO4JfPkYOLX6b75VZfixeQblBvINCDQW5Q7PjOrUv3HFEGBLcRV1ODw+fgwFA/XB248862/l2Lrs8HUuQi6hPX31xgjZeC/0UIrCtQ8HX0rVKgbQuwwGO8+M7KJAe+j5SobJtBp+HLN23Em1OsV4Sa3s0H/Y/l/PJ/QNtwkMGVQTX5LXvGyrDzpJboadTPBYtGPsT/MsawT7C1yUocMbx5KV6lelt5B/grRJsKlcWYSY/PeasZ/IeVS834nx23CJ1Teshxr9uT0l+JAcgknqUSfrKYioOh/lLPXqdGueGAiVHUfRB/4tqb/iF74JkP6s8AKpro7FE0NO8J8ru+x9kl6h8Zcd3tJLk2CkdWHVkz6RPYzFuOlwKU6Ei+hSGhGYimQBKahws+BxjT4PkUFoBax9SCdFZjLTIIqE03vB/YCEfZpZP4Hb
- 9cHMyce7
- Xmwovlc+kyeCyVzn3SoHhsWaH7d5GOFcvBuexul0h32PbrOCAD7Uj/HeavFXjqjewvpgWn0I22LO/zjWUhsznIYHE9ept2g1GSCfLDyXvi+GTzVgyeQTCWfcbV/8AzuOgWNtlnI+ePnzuSMEgieZjZujoE7NudJsgoNSGp06MoUtfylh2cpTkfIiKPUIBQKI887xgNQXat7LtiWrdbist18IKbLB7n6QispzUZkU9HZd3YohM44FnWb46NgtgibxMA/DN6yq0ao4YJO775QS1pGRLBl4PBVIW8e5pGPXvcE5HpRbQgIetkAz2eKq9Vowz0bTmG2S1UcTh+zjAsrwaLcSi6MicZ1lr7Zw1Tkr/ZiQv5ZmTyAvWnzLZ5Y69pfh+YsIUqFKT7+kIOHtYy64n8mnKb5ibF83iMQs+MsCqFvgBfFMSeehG80tNoRdT3wx+ARzlhZKJ1IIE7AWgWPcq1AzUihnRj/2LCKoM9GcHiOsOtGzWEfuVNRryo+PI1CfJpIyAfk99XhFtYDyjQ/N/24f2j0cc+9SXvu8u4TgFd+RscYPXuHzwqXlKj7ZaJnSzLIph73KPox4jWAtduyiCd9jgLdRxOAwM0J7A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781171438-205992
+X-HE-Meta: U2FsdGVkX1/MiJTeBj80fai3RddLKdriRVNpkhBiZy+vYgTH0BPKqkSCFn8Seg2DdfXB24po/kBy90MWM08bal/e4PiEbTu9cMaOthzuRvffXE4AuTAmxlpM9spNScvdXcR7FsFYV1tiOXlUxa6hrgzl9Xersv9f7U8yl9Hd6zaiokfciPyuEx+hm5ybMZ2iwBgHxol6f6C7lG0IU1CbZ/SCKOXMl579TB0Rzdu/1gAqt4830Kl5r5DRs3swOkDvwg9Cq1wQv31nG1zfUCn2Pm3f5MIYSWIm/zqDhxB7N65oKsaG5ThWw2h5hMMXaNRAj+thlQi+Jkl+nIMwSjTVnc6gnMfp6MEzex0+BjuAO9fHOzGUrSQYjH9Z/3wygRC5/hJNkSDigg9CCxy/umIMZ3D9ti/2AE7DuHC1SJFQUnYlMMFPRLT/GYb/jRCxjj92g4p/zmZKMmPkfCo0NFZal7XnLm0xThYf8KcCiIORwBLl7h30dnyV0e6mNXkgRnJZLSKUW2awEs25FzI9Ccm6JSfxjYU7+2eipZ3xL64thyZ9O5G/D1yrpDoZeuniw01KemFzgeCvkfuBh4RajWeTnKdNSEpSy3PXnUv/JqB1QlYoAX3vp4xUrAQ2aoXVqyIwT86Cvd+eTmJDnM7+K+wlWeN5BYgZF5Q0/ylgyV00Cj57JxnhsrjfCZ2YMTmdq7E8KSe7S7jFxmxGwvX8avT+fI1VgKNVjc3xu7e8Uo8gAqKJf9chY6sDke/erPdn6YR8VHKEItWIYztn3uJhKJ8fghaeS8MElw7gMmlBQ2l8JHmwZrdiwvgZBrj4RhbSGcV8yAuV5wGEMZ8wh2HZX4bJh87EoR63Cc9EldU5wlgcpfmuCgfoLDHCNroR7ujH+r/aEUWlw0naQ4c+cIjGwKRLaZvaFss3FjUlAl+E3tUPvRgbyQtRj34JtqiiaL9LfoRFxXDOZMX6Xge5pNzEGgG
+ 2/FvKFK2
+ NNgJ0cO89cBMJ7dNGcNz+hVJVMWH51k9GXfuI+Wed/j7/3QjYe6kai0w0nNGrhLBvf+Ty0+o1lh46VymhzF0xq+DP8mFJpdmFxLc3mvMBI3v41YdkVqrOTwnDD0u+Q18xrpMAnmAfONz7KJUk16Y6wdvlW2xfdAdKmyW8nrGT+Z/k68q0FELkdE0shVqKJ/+3r1xJAvApgxu2t8fIA4IlGUBBwSPmdSsrvRXg7QIGv6wIjeAm4mLUMjawMgZe0NXDKLdwVYUUiCetSCQw6z9MisYnabbIIagLK8Cm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,42 +98,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
-64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folios
-(Hash-64K pagesize / 16M PMD), during swapout. This improves the
-swapping performance since all the bookking & I/O submission happens
-once per large folio. More details at [1].
 
-PowerPC Book3S64 could not enable this before because PMD_ORDER is
-selected at runtime depending upon the chosen MMU. The earlier patches
-in this series turn SWAPFILE_CLUSTER into a runtime value and introduce
-an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With those
-changes, we can now enable THP SWAP for Book3S64.
 
-This increases bandwidth throughput with zram backend for swapout by
-40-50% with Radix and 100-130% with Hash (Tested by Sayali)
+On 11/06/26 12:47 PM, Andy Shevchenko wrote:
+> On Thu, Jun 11, 2026 at 10:45:01AM +0530, Anshuman Khandual wrote:
+>> On 10/06/26 4:43 PM, Usama Arif wrote:
+>>> On Wed, 10 Jun 2026 05:35:43 +0100 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+> ...
+> 
+>>>> +		static_assert(sizeof(pte_t) == 4 ||
+>>>> +			      sizeof(pte_t) == 8,
+>>>> +			      "pte_t size must be 4 or 8 bytes");
+> 
+> Besides occupying too many lines, why are these static asserts hidden here and
+> not declared in the global space? More wide Q is why they are needed at all?
 
-[1]: https://lore.kernel.org/all/20170515112522.32457-2-ying.huang@intel.com/
+Sure, will move these static_assert just above pxd_pointer()
+These asserts ensure
 
-Tested-by: Sayali Patil <sayalip@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/platforms/Kconfig.cputype | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index bac02c83bb3e..48f74bd22343 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -113,6 +113,7 @@ config PPC_THP
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-        select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-+       select ARCH_WANTS_THP_SWAP	if TRANSPARENT_HUGEPAGE
-
- choice
- 	prompt "CPU selection"
---
-2.39.5
+- Platforms have either 32 bit or 64 bit pgtable descriptors
+- special_hex_number() can be used to print such descriptors
 
 
