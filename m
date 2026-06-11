@@ -4,130 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A36CD98C5
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50A55CD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:39:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2894C6B0005; Wed, 10 Jun 2026 23:35:50 -0400 (EDT)
+	id 662566B0005; Wed, 10 Jun 2026 23:39:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 212FE6B0088; Wed, 10 Jun 2026 23:35:50 -0400 (EDT)
+	id 611946B0088; Wed, 10 Jun 2026 23:39:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DB3A6B008C; Wed, 10 Jun 2026 23:35:50 -0400 (EDT)
+	id 501886B008C; Wed, 10 Jun 2026 23:39:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ECCAE6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:35:49 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7029340367
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:35:49 +0000 (UTC)
-X-FDA: 84866217618.29.CE1ACBF
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8DC9C180005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:35:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s2c+zISf;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B7AA6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:39:40 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6DDD4C1A79
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:39:39 +0000 (UTC)
+X-FDA: 84866227278.22.9F9D063
+Received: from outbound.ci.icloud.com (ci-2003a-snip4-2.eps.apple.com [57.103.91.133])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5990A4000C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:39:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=rIsKZwI5;
+	spf=pass (imf01.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.91.133 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781148947;
+	s=arc-20220608; t=1781149177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=udMeqyjo/ojhmjQo8mZa5UnxqjBW6Epo1JZrcj9cKSA=;
-	b=cVOmISod7td96XQ3kbywQ9lbEJXJUekE/OSQpHW5fIZwC+rKV/WqVEdJb8NsJtlqgajH/z
-	qKFLFGiqdcw/fFfnZ0138+9PBRw04i79bcYicSjlIXMaD/LgfCx1n1Ve2q3x/upZXkdBW5
-	wlTzrGiWNOHkGJtb6HB2r7f23rW5Tmg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s2c+zISf;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	bh=o6caUXppn7wd8ZpqomzcgxxZjM0QFD+AX38QGp9TRNQ=;
+	b=C68uKciCas0YLk6hWn5xHofKGmke5coNR0EMxf5ftXzpwCHYfUCq7sg4itgPNznkawk1Qy
+	ylMjuFrqWCkHHLHZlg5NDqsoQNHQ4N5+0hdva7t4sPKjgWMnmNvj9WUgi0CEJUbPUV+ZdQ
+	fg3+PQPJzW8+sXGF5oNrvBGFHHStj7c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781148947;
-	b=6LZOIlpFf9cTlimP9qm4w0fbQQbmeD9zK3OiyUwU/uismFWu+HOiwxyt2ljompyrxsoAG3
-	wcE89RlI5JTMhqvr9XTc9OEiB77dfY7LVYf9y7u9X7Xgha7wRZEOzRCON+Vl3bUcOOHo3o
-	7IybO/PKj4m7DHnnoIYELqG704PWvGs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=udMeqyjo/ojhmjQo8mZa5UnxqjBW6Epo1JZrcj9cKSA=;
-	b=s2c+zISfurUf+7wHGhsy/XXdBPiaMlR76c5w9vuixp2j4ufSD7YkhbbMqmcA6nYSWqiVEZgCX
-	7cilsr4IvqF9dZLLKRrzXrHlOVa1pb7agG1XD3kT0IpQg+CmRSPXLMOYDY1ipE5+t6CjtiVeV1e
-	6pOdEuOY+qXKfiy7xjmEpLE=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gbSkk71zszcb1Y;
-	Thu, 11 Jun 2026 11:27:26 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4BF6140577;
-	Thu, 11 Jun 2026 11:35:40 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 11 Jun 2026 11:35:40 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 11 Jun 2026 11:35:37 +0800
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, Muchun Song
-	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes
-	<ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
-	<vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins
-	<hughd@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
-	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
-	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
-	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	<virtualization@lists.linux.dev>, <linux-mm@kvack.org>, Andrea Arcangeli
-	<aarcange@redhat.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>
-References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
- <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
- <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
- <20260609162437-mutt-send-email-mst@kernel.org>
- <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
- <20260609165829-mutt-send-email-mst@kernel.org>
- <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
- <20260610171646-mutt-send-email-mst@kernel.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
-Date: Thu, 11 Jun 2026 11:35:36 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1781149177;
+	b=S4RWCnfurqbby//9iJ59ziosXCEO2+PfZeNgoq+1sEbLAkKYkoHRW0XDc4jllX5YgQaW52
+	o8BCheiz3MRMSs+ZELz7lmJQI75GwOlRALo/9vlQS1NkrDRE9qVifYmAmFVw3+jOOBqq4j
+	G+706YFZEOgJ7CoSfsNeqOwqT+Q9UQ8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=rIsKZwI5;
+	spf=pass (imf01.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.91.133 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-100-percent-2 (Postfix) with ESMTPS id C50261800190;
+	Thu, 11 Jun 2026 03:39:32 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1LHVwEWRxBDUkdXwdLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9CAVhbCFsEDx9MDFECQgVWXloRHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQUZWgJDXEo6fhZFWlhacBRjOH84fCpwMXBVfi4GVRIEQAhWUF4IXh9MHA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781149176; x=1783741176; bh=o6caUXppn7wd8ZpqomzcgxxZjM0QFD+AX38QGp9TRNQ=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=rIsKZwI5x1YgPWneDJXTJCiGWwQNmJnGNSRzijcLjcLidikUpaF/eoeNai7KsQn9xCPnVYXR0T5iocmEXIqpwJCJoar9QzR3FFiXscCmJW9u4z/qYHdqxnf08fe4o1u2BMe6KaJKKUvsxuSBXo/G+SGe+SrlamleIpB2jgIbLjUr+HQG+YxzjOa28HP47nzSrxcz5hUlihJZodjqUuYldesQOa0Brgp20qk03TAKqzsH7QmzcYXlwaQBnGd0uzHe7EnlEAwRjEeddf0ZZnwdA8HKL2Wllt4JWru5OJ1vMQmuULbJxzHCcVhXSdTUnmbWAW/mQnVD00PAATuWKAGfHA==
+Received: from localhost (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-100-percent-2 (Postfix) with ESMTPSA id 9E70918005E5;
+	Thu, 11 Jun 2026 03:39:31 +0000 (UTC)
+Date: Thu, 11 Jun 2026 11:39:27 +0800
+From: Luka Bai <lukafocus@icloud.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
+Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
+ khugepaged and use in mglru
+Message-ID: <aiot7xJGnv7o1BdZ@LUKABAI-MC1>
+References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
+ <aigm-6ykF91FtZBx@lucifer>
 MIME-Version: 1.0
-In-Reply-To: <20260610171646-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 8DC9C180005
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aigm-6ykF91FtZBx@lucifer>
+X-Authority-Info-Out: v=2.4 cv=fJg0HJae c=1 sm=1 tr=0 ts=6a2a2df7
+ cx=c_apl:c_pps:t_out a=2G65uMN5HjSv0sBfM2Yj2w==:117
+ a=2G65uMN5HjSv0sBfM2Yj2w==:17 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=GvQkQWPkAAAA:8 a=N5UaLuuoV0N6cSTO2EUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: tRwV-_ZufEtNfyIgIgg95W4JdqwJe7Hs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDAzMiBTYWx0ZWRfX3uxySk8LF+rZ
+ 82G5I7GswJACO49TzY/IjCga2UkO1hEjQOUNqByN9VWFayY3EHyNo+TDZZCPqQqPaPXcr4bNy8K
+ wNN4iJZjqF4DLAjVDSxIadM0s4QEFk57Tvs1+sfMTvs8ppC733tq+jPdIum3EHCJOrPcjK5mDBr
+ a72GVtMz+0lRUVf/F4R79FF01uUGyCcJNxpETtwzKlFWv14cDd075NZP4TsM+gG1bpVmEde+4k3
+ 1C9ReP0ySnkmhMpGxTAoClInhFny5Rg1brPXhioxNd7ew8A4k6JHW1hEetlm8ZOD/5RpKZRXqM4
+ J6GANbDM3LJyor1Z4womn9OHgrfKkZXQbTSuXLEOzawmBTMw5CKagbncfeecEA=
+X-Proofpoint-ORIG-GUID: tRwV-_ZufEtNfyIgIgg95W4JdqwJe7Hs
 X-Rspam-User: 
-X-Stat-Signature: tpkctwcoityjb595733ejp196zdw1oto
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781148945-201394
-X-HE-Meta: U2FsdGVkX19Aw6EG/4kY6qa3vYPOh5eQ8zzgGzeA1Y0G9y0cGlk/MspBgV/DE1jqE6T8z8hSgazRHzrGU13O5lH3849I6fiuNNjAc/d7Ms9lpGzlFRFCLYI3ixHafDGrc4eWkMoGDoaaGq2WEKDHAdD+dUQy6C1V0UBdOmpf0XCdCzN4WDHdypL35AaOwHkHs/J7nHveDNFr6Pow558vrSHXQaAkOEnWTw55gfZ8Adza+PQrJ60CwUFilJM499RU/oy7qsZquOVXVPQu+S7vlStWiLsviK09+M5d2JBmO/C6ZBl5m4OXm0ZUz6MrlK80ANE9nAu/eBdVaJWXz764NPiRRgYXLIDemHuPcba0iDkVdCQv5vkDW0QZLEHbomkoxkmeXk7/Kr0kdETVlf6xXUUrbP9smbzCzljp+17jWuaonIWiUlA4knceSO5GJWu7HMY5yopj8BhGyvfT5GAoioI1KmQRMr8GtZe4Ou8vVSkLqGWK32PXnFIXCzYQmsMW2KM9MyqssFh3PEIAiSEVy5SZiNM6crFfDfaqIgeTQKOL3lPpWuPT4bpYDEo0EW+eeXeNlHMQsgEpaVRF5Z0qP9Ee3RDtt3aLU+AT+zCWT4Rw4qvckuVZx5fMs5PDQzma/h4oRv3Vasr21sZ+0/KV0xN4IeNWqiak+C1eIR6PZjjvsp2/xhMx3CvTP7dUwzGViQUPsV6BrO6uh2i8SvpOFuOpvzo5EtFi5wzfAxNvIsOVdAs6/WqNZmb37FFLmz+pG5VdZ9L+4wSOYCCKzTa1l8jQHbOQg69IyVeHvnFyWK8zcvcXRUk9J0FGEz3QjWxEJfSv7ZHJur9HYqiPZP9noF6NDdQAHRb3zuWe5YT4YF4fIXql3OuVnjQjTcX/bVZ5jjby3+ptVI9a/M9WPlKXk/0nDFvyoLZ2s++vqjNiuz6nqyAtNLcUt8C6X4aAi39HeB2LHbR8TKkf6+pYgHF
- aTAgpZvx
- mE3JSxN7XuTMBriIH/ji39kYFV9WiF7vRVSBpOMK+lJGd5+NSFwI/KlysO5yPDPVtfSX0oLbzP8sXXeS4OMCyWuuyp2lA4lUXZObNdC3/+zjURYC1LEY51+3L+Yc800oj7iuxHM2D1t8JcZ1N2ZnWGzq5bKIEO3CpkTf95h9ImDjnEo8ISoEghU8aMQkDGvKGb5maaYBiuK3yOVOHsd64t+6//DqGLKV1JpwzvcyO0xhyamuxa4kfDAMJwlMq6NZ3Bs2m0weUw9oct6FOzv4ngaS08XSnwtpm3sbFYTbHzYy4g3LOGhbru1d0UHzf3k+rygVnKDYuIhcnlu1xf0JgA4Dk4FceAVPrPBKOVouoymN8YOD0OUMPhrhLH6at73S0VGZ4McpHVoO4ZKx0FJWBrg3Ph1wlzaM26etSsU0ti4qODfBYyoyDOeaF2A==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5990A4000C
+X-Stat-Signature: a8gdark9n5mpdwc7eytxjyotrxgyric8
+X-HE-Tag: 1781149177-114906
+X-HE-Meta: U2FsdGVkX19nOZyipq/ZRF/HgE5PK6PC0c5RBLBEzXZupNWk1KDUYFNJoj0jwhnOZJPwJHRPXo3KAs7pz2c5AJUhiczUoVVX1qZBzLtERciUYjJnLKaKNCPSEZzQb1Q8eCWcfMLHHZp93bQn6IkCmIn5O+WiiMauOwgYDb+E/SLMoa1FiuhNPJ1lMvdi6QaBcLeAQV8cD3XZrrmFv4ZJUa1VV4KwtKgGx5thyZQCza6Ck3IZwZOLptS11zLXBwJl2W+NJ0vF9uujUVOx3iuNue59wd12ELSLqymdWO+TNa+RLjdna0Kpuvgnk7LzFS8vL5kIfOPH8xKc3o5SOcn/+8mP5PYwHNXQuN9ONlB9O2n4TIyqs79vtWXM9Fl6+rbDIsKDQBjCqmFs+9fX6QyX0HYNkVB7l8Gh0YQOJkLAM0Pyhuke5t+M3vn+XiNUTI+kpzghe2Na7fm/mZOb3NYCY+1U8oL3TF+yLbmwTD+OGC49ZlLZRnakaI3R8TbOYwFuL81X7QaIMnjrIp3SSWrsPitwI+cF6lwIxDSGu+7S/GcTeiXY6mbm+aoElCZFTNmmNAEFyl7RarD7nTPTPnW/qGQvgjYGSZEnmnii3CleFnx9okDXV32qmlJp+0/uOYaqrPpW3fIrvjZ5ZWhtgEoJnxZew6Juf5Y7tDAvFdoYAr+A2cqVH9Q9PlgOq20nhqygfxPfSJMFBDHT6bZdlawImQjsmeCZ1dQwsaPOubC0V7c2SkcPci/FJ39I5hDOHC1KRbStBJRdxDYBMTC/o53VjgvAvopTAY8eVluW7v7tG26w/8MYuJRD2QZxcA8LXhZsJrZf1JYBN9ShItRijs2qMWrgsGCmnCAnv5u4aot2ZfaH9YEXEiwaxKvnSVfB/WipO0N4qTtJlGnExe/twF45iO8yYs1zLeizAmsw6yxcHKQagKBlRktLze42qrhXNKY1nrkW0yNruETsQTQN2Cy
+ buWwXBwT
+ v+RsY7kq7PGiX2EwW4EoeAr019zdB+6KcaCVe8Bkq6a1XHy4XCu/C5n08IEnabAccW3uz1G9qob8FxnLXNgQmYfdzD43tOvyKpHRmGLhtDtfPt99seymjg4/g8oAWwvoLF1yzJ2B2lEDqufESEZqBMRSMc809SN4CtVWKdUPS6kMKh4rqYOVThq4hG7aPiMzt1GJkiQYEEHMFmBrt9fxxRLQsE19xwuFKlDnyqtj91rCN8KLKzK5X+QRfQcfO6WAHgdoowTzH7F/qZKVTkIf/SbDEJeTq2j6VkQMYbEVaiEbyv570kc9xmNvtzC5czLTW30UjaLXKNCEvduZnLEcF5hQc9VUJ1k4pYAtN6+XL9RoYM9T1Id+ohGdl9fK8tHBBhT2lHjY7EAMDE65YB47U7MyNtKJmOr+2WgnuQh8Js2C8FoBlX8xoI00eqSsKc8KEE8IJhlcw0KPsVdo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,113 +117,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/11 5:18, Michael S. Tsirkin wrote:
-> On Wed, Jun 10, 2026 at 03:24:30PM +0800, Miaohe Lin wrote:
->> On 2026/6/10 5:00, Michael S. Tsirkin wrote:
->>> On Tue, Jun 09, 2026 at 04:54:01PM -0400, Zi Yan wrote:
->>>> On 9 Jun 2026, at 16:34, Michael S. Tsirkin wrote:
->>>>
->>>>> On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
->>>>>> On 9 Jun 2026, at 14:39, Zi Yan wrote:
->>>>>>
->>>>>>> On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
->>>>>>>
->>>>>>>> On 6/9/26 20:10, Andrew Morton wrote:
->>>>>>>>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
->>>>>>>>>
->>>>>>>>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
->>>>>>>>>> update to page->flags can race with non-atomic flag operations
->>>>>>>>>> that run under zone->lock in the buddy allocator.
->>>>>>>>>>
->>>>>>>>>> In particular, __free_pages_prepare() does:
->>>>>>>>>>
->>>>>>>>>>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
->>>>>>>>>>
->>>>>>>>>> This non-atomic read-modify-write, while correctly excluding
->>>>>>>>>> __PG_HWPOISON from the mask, can still lose a concurrent
->>>>>>>>>> TestSetPageHWPoison if the read happens before the poison bit
->>>>>>>>>> is set and the write happens after.  Will only get worse if/when
->>>>>>>>>> we add more non-atomic flag operations.
->>>>>>>>>>
->>>>>>>>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
->>>>>>>>>> around ClearPageHWPoison in the retry path.  This
->>>>>>>>>> serializes with all buddy flag manipulation.  The cost is
->>>>>>>>>> negligible: one lock/unlock in an extremely rare path
->>>>>>>>>> (hardware memory errors).
->>>>>>>>>>
->>>>>>>>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
->>>>>>>>>> in this file operate on pages already removed from the buddy
->>>>>>>>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
->>>>>>>>>> need zone->lock protection.
->>>>>>>>>
->>>>>>>>> Sashiko is saying this doesn't do anything "Because
->>>>>>>>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
->>>>>>>>>
->>>>>>>>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
->>>>>>>>
->>>>>>>> Battle of the bots: it's right.
->>>>>>>
->>>>>>> Yep, __free_pages_prepare() changes the page flag without holding
->>>>>>> zone->lock.
->>>>>>
->>>>>> __free_pages_prepare() works on frozen pages and assumes no one else
->>>>>> touches the input page. To avoid this race, memory_failure() might
->>>>>> want to try_get_page() before TestClearPageHWPoison(), but I am not
->>>>>> sure if that works along with memory failure flow.
->>>>>>
->>>>>> Best Regards,
->>>>>> Yan, Zi
->>>>>
->>>>>
->>>>>
->>>>> Actually memory failure already plays with this down the road no?
->>>>>
->>>>> So maybe it's enough to just SetPageHWPoison afterwards again?
->>>>>
->>>>>
->>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>>>> index ee42d4361309..4758fea94a96 100644
->>>>> --- a/mm/memory-failure.c
->>>>> +++ b/mm/memory-failure.c
->>>>> @@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
->>>>>  	if (!res) {
->>>>>  		if (is_free_buddy_page(p)) {
->>>>>  			if (take_page_off_buddy(p)) {
->>>>> +				SetPageHWPoison(p);
->>>>>  				page_ref_inc(p);
->>>>>  				res = MF_RECOVERED;
->>>>>  			} else {
->>>>>
->>>>>
->>>>> and maybe in a bunch of other places in there?
->>>>
->>>> You mean for fear of losing HWPoison flag in the earlier TestSetPageHWPoison(),
->>>> just set it again here?
->>>
->>> Yea.
->>>
->>>> Why not do it after get_hwpoison_page(), since that
->>>> is the expected page flag?
->>>
->>> It's still in the buddy at that point right? I'm worried buddy might
->>> poke at flags.
->>
->> Since __free_pages_prepare() executes entirely locklessly, the only way to ensure
->> HWPoison flag won't be lost might be only set hwpoison flag iff we can make sure
->> pages are not on the way to buddy...
->>
->> Thanks.
->> .
+在 Tue, Jun 09, 2026 at 05:06:39PM +0100，Lorenzo Stoakes 写道：
+
+Hi Lorenzo,
+
+Thanks for the reply. :)
+
+> Hi Luka,
 > 
+> This should have been an RFC (equally, your other recent THP submission, [0]).
+>
+
+Sorry for the mistake on the type of submission. I didn't know the difference
+between an RFC and a normal submission...:) I've searched for it and will use
+the correct type since today, thanks for the reminding!
+
+> THP maintainer resource is highly constrained right now and we simply lack the
+> bandwidth for larger work at the moment.
 > 
-> To clarify do you not agree repeating SetPageHWPoison is enough for
-> this? And if not, do you have suggestions on how to fix this race?
+> In addition, I don't think we want to see any further major changes to THP
+> without without significant work first being done to rework and improve
+> the existing code base.
+> 
+> We have a lot of technical debt and adding more on top is building on sand,
+> really.
+> 
+> In general, we expect newcomers to the community to become familiar to the code
+> base through smaller changes (and also be useful to help with review) first, prior to
+> submitting larger changes.
+> 
+> So we currently don't really have the resource to review this series at the
+> moment, so I suggest you focus firstly on finding ways to refactor and improve
+> the khugepaged code.
+> 
+> Thanks, Lorenzo
+> 
 
-Do you mean repeating SetPageHWPoison on every branch? Is it possible
-to make __free_pages_prepare changes page->flags atomically or this race
-is specified to memory_failure?
+Thanks for the suggestions! I'd love to join the community to refactor and improve
+the THP code :). I'll try to do more reviews and make smaller changes on THP to
+get more familiar with the THP codes. 
 
-Thanks.
-.
+And for this revision, should we consider doing THP hinting (or any other naming
+that has the similar goal like THP=auto as mentioned by Nico) after the
+reconstruction? From my perspective it could make some help to the overall
+performance of THP. Or maybe we can directly include that semantics in our THP
+reconstruction? Thanks. :)
 
+Best regards,
+Luka
+
+> [0]:https://lore.kernel.org/all/20260501-thp_cow-v1-0-005377483738@tencent.com/
+> 
+> On Sun, May 31, 2026 at 12:27:16PM +0800, Luka Bai wrote:
+> > Khugepaged is a background daemon for collapsing feasible pages together
+> > into a transparent hugepage in all sorts of orders up to PMD_ORDER. However,
+> > it doesn't have any preference in its collapsing and just iterate through
+> > all the qualified mm_struct, and scan their page tables from the beginning
+> > to the end. It is quite inefficient especially for large address spaces
+> > considering how slow the khugepaged can be, and may waste many hugepage
+> > resources collapsing memory areas that are seldomly accessed.
+> >
+> > We would like to give khugepaged some preference hints when we found
+> > certain areas are good condidates for collapsing. For example, if some memory
+> > areas are frequently accessed, then we know that it's valuable to merge
+> > them into a bigger folio since it will reduce many tlb misses.
+> >
+> > For example, MGLRU has walk_mm() and lru_gen_look_around() that are used to
+> > scan frequently accessed areas to save some works on rmap walking and
+> > generation elevation. By the same time, they are able to find those
+> > hot memory areas, it should be valuable to merge these areas into folios.
+> > MADV_COLLAPSE can be used, but that will cost too much time and will
+> > harm the performance of reclaimation and slow down the process that may
+> > enter the slow path of memory allocation. So the better choice shoule be to
+> > tell khugepaged to asynchronously do it.
+> >
+> > We add a khugepaged collapse hint framework in this patchset. The caller can
+> > call khugepaged_add_collapse_hint() to add hints for khugepaged to make it
+> > prioritize collapsing these specific address we found before doing Round-Robin
+> > scanning. Each mm_slot which belongs to a mm_struct in the previous
+> > mm_slots_hash is now a khugepaged_mm_slot, it comprises the old mm_slot
+> > struct and a number of NR_KHUGEPAGED_PRIORITY_LEVEL struct
+> > khugepaged_collapse_requests. The request struct for each mm_struct will
+> > be put in the global struct khugepaged_priority_queue with respect to its
+> > priority when __khugepaged_enter() is called on this mm (we give each mm request
+> > structs for hint dispersion and balancing across all the mm_structs that will
+> > be added in the future patches), and all the hints will be put in these request
+> > structs. Each hint will have the target address and the target vma struct. An
+> > example of the framework is like below:
+> >
+> > global collapse hints queues:
+> > prio 0 ------()----------------------------------()---------------
+> >             mm_slot0(process A)                mm_slot1(process B)
+> >                |                                               |
+> >            hint0---hint1---hint2---hint3       hint4---hint5---hint6
+> >
+> > prio 1 ------()----------------------------------()---------------
+> >             mm_slot0(process A)                mm_slot1(process B)
+> >                |                                               |
+> >              -------                                       hint7---hint8
+> >
+> > The khugepaged will try to scan queues from highest priority (which is prio 0 in
+> > the graph above) to the lowest priority (which is prio 1 in the graph), then go
+> > through the list, and check out all the struct khugepaged_mm_slot (which are the
+> > mm_slot0 and mm_slot1 in the graph above), so it will start from mm_slot0 in queue
+> > of priority 0. Then khugepaged will scan all the hints listed in the slot (hint0 ~
+> > hint3 in the above graph). After handling one hint (no mater success or fail on
+> > collapsing), the hint will be deleted. If one khugepaged_mm_slot doesn't have any
+> > hints in it, khugepaged will skip it and scan the next mm_slot in the same priority;
+> > if there is no hint in the queue of prio 0 anymore, khugepaged will scan the ones
+> > of prio 1; if there is no hint in any prio queues, it will fallback to do Round-Robin
+> > scanning like before.
+> >
+> > khugepaged_add_collapse_hint() is for adding hints, and it only gets called
+> > by walk_mm() and lru_gen_look_around() right now. In the future we may
+> > call it in more scenorios when we found hot memory areas. For example: in damon.
+> >
+> > We tested the performance by using valkey-server (based on redis) together with
+> > memtier_benchmark to simulate a gauss distribution on the get/set operations on
+> > a 160G, 64core x86 VM. The dataset is about 3G. After preloading db, the testing
+> > parameter was like below:
+> > memtier_benchmark -s 127.0.0.1 -p 6379 \
+> >       --ratio=1:1 \
+> >       --key-pattern=G:G \
+> >       --key-minimum=1 --key-maximum=3000000 \
+> >       --key-median=2000000 \
+> >       --key-stddev=150000 \
+> >       -d 1024 \
+> >       -t 1 -c 10 \
+> >       -n 2500000 \
+> >       --pipeline=32 \
+> >       --hide-histogram
+> >
+> > Since we wanted to see the influence of khugepaged collapse hints on the reduction of
+> > tlb misses, we made khugepaged do scanning every 1 second, and used the userspace
+> > interface to do walk_mm() for the cgroup which valkey-server was set into every 2 seconds.
+> > We made sure the server was all 4k pages before we run test, and only khugepaged could
+> > collapse them into large folios. We enable the anonymous THP of order 9, which is pmd
+> > size in most setup. We used perf stat to monitor the tlb misses statistics.
+> >
+> > After repeated tests, we could see dTLB-load-misses with a 13.50% reduction, and saw
+> > dTLB-store-misses with a 5% reduction compared to the setup without any collapse
+> > hint. The final throughput for the memtier_benchmark was about 2% to 5% improvement
+> > on average, which was not that obvious compared to the tlb miss reduction. We believed
+> > that was because there were too many factors to influence the final result of a random
+> > redis test, so the influence of tlb misses to the final throughput were compromised by
+> > other factors.
+> >
+> > Patch Details:
+> > ========
+> > * Patch 1 is to add the basic khugepaged hint framework like we introduced
+> >   above. Details can be seen in the commit itself and the comments in the
+> >   codes.
+> > * Patch 2 is to add a slab_cache for khugepaged_collapse_hint which can
+> >   improve the performance of allocating and freeing the hints.
+> > * Patch 3 is to add a deduplication machanism for the hints so that we will
+> >   not add a hint that points to a repeated address.
+> > * Patch 4 is to add the accounting for successful collapses initiated by
+> >   hint or non-hint.
+> > * Patch 5 is to add the collapse hint in lru_gen_look_around() and walk_mm()
+> >   of mglru.
+> >
+> > Thanks for reading. Comments and suggestions are very welcome!
+> >
+> > Signed-off-by: Luka Bai <lukabai@tencent.com>
+> > ---
+> > Luka Bai (5):
+> >       mm/khugepaged: add framework for khugepaged collapse hint
+> >       mm/khugepaged: use slab cache instead of normal kmalloc
+> >       mm/khugepaged: add deduplication when adding new collapse hint
+> >       mm/khugepaged: add accounting for successful hint or non-hint collapse
+> >       mm/khugepaged: add khugepaged collapse hint in mglru reference checking
+> >
+> >  include/linux/huge_mm.h    |   2 +
+> >  include/linux/khugepaged.h |  20 ++
+> >  include/linux/mmzone.h     |  17 +-
+> >  mm/huge_memory.c           |   4 +
+> >  mm/khugepaged.c            | 460 ++++++++++++++++++++++++++++++++++++++++++++-
+> >  mm/rmap.c                  |  27 ++-
+> >  mm/vmscan.c                |  33 +++-
+> >  7 files changed, 549 insertions(+), 14 deletions(-)
+> > ---
+> > base-commit: e1af79f3291a268adf4e149e1faba3052743e898
+> > change-id: 20260530-thp_collapse_hint-ec92bd943797
+> >
+> > Best regards,
+> > --
+> > Luka Bai <lukabai@tencent.com>
+> >
 
