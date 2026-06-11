@@ -4,111 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3E4CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE82CCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 19:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3386F6B0005; Thu, 11 Jun 2026 14:59:15 -0400 (EDT)
+	id EE46C6B0005; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E9466B0088; Thu, 11 Jun 2026 14:59:15 -0400 (EDT)
+	id E95B76B0088; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FEC86B008C; Thu, 11 Jun 2026 14:59:15 -0400 (EDT)
+	id DAB196B008C; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 11DF96B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:59:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9119C1207F2
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:59:14 +0000 (UTC)
-X-FDA: 84868544628.08.AC7F919
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 83A6D1C0006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:59:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OJW1yV5a;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C8C906B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:12:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0E9101407C5
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:12:54 +0000 (UTC)
+X-FDA: 84868579068.04.1735B59
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 17879A0002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:12:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uc8i2xo0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781204352;
+	s=arc-20220608; t=1781205172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8dBWt/oGoh1Xn/oZrlXmV4fcwbv9YIOMebY2O4eJ6Y=;
-	b=1RhFNK4l//b3n5TlVmjp73fB9bjlCFWrGAHO6TpIa4faMS5YH/0/ILKPCOiHO2ckxVj6ko
-	ZE1kjv7V4WU3UfHrmEg5OU5HI7Jzk8Ks8NetcaTxgI7lBiDEAKjCn5b2LMxiZeP2aVnna5
-	8pRbFV1Dy0/ABaM3qmzFKnelxE51b9E=
+	bh=W/dpbNb5biEC/ytKDW9uZGewAoGZBA0EolTNHIvaZZk=;
+	b=AqqMQ81omtUdMdLe7qVuukcWJkl18BzXpVbmO9BjwUOffFF/I8mJEVhyTeNZlVSrcSYGxC
+	l9BxyV6ZhBfeOX212Th5vR6kVJPd0Hd1Uw7irXAQBYsIOg9gGxzY6oUVoyGLqZeEW+FdP5
+	riguD+t1+Tt3veYuTzm09vY5+D0R1ew=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OJW1yV5a;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf21.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uc8i2xo0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781204352;
-	b=c2Lzh7wTYMdGT5ljPDMK2grLDCEvxar2ejndZ7U2lBgnv1CYYQQx9mpSReiUb0Pdk5BPrO
-	T7aO9dNTBAnxqbCOuB/Xv0l916yvlbdHETez2xtmgeZkjdcaJ7auovLjSIrms/rySWHx0D
-	OrhlZhT9Ukz4Cf6ZDbzt1wwsMLSYxNU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781204352; x=1812740352;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ped3/J9XwuIr0qZ0sei087J5PdhotBQSVWgj2CMhKfw=;
-  b=OJW1yV5aBdMA9LGPm/SoutvKPyL1JWNv2OrpVnqR2rBktT9DqHTlIc36
-   PWa2SEnlAf5Eqw1j5axxmsHrU/SFGQK0pThTqnva0O9yalUf5pSGpIaS6
-   rfcbWTN4UXB5LaKt6tjFFbHkoYhPdI7D751tsZOc+FLc2j2F2d8aeyg6c
-   R3SYIaD5Mmj6m2m8HTCa9lkVSNw4L92thsZdOM65cKHmgFKqwH6s6EYqo
-   7yFgFCAv6OwpN9WBBZL9TnfTQumaHw43wdoiPuracxDGB3secrTOKTbuS
-   FEM1VtXO3N6HWhB67AIKe9ekoWL7WGkCLX35zFA/GFyGk/qggay2IRwQ2
-   g==;
-X-CSE-ConnectionGUID: 1RgS18UBT3GLYGIg2FKpng==
-X-CSE-MsgGUID: lYg7/pI6Qimc4qC5AaDknw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="82035074"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="82035074"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 11:59:11 -0700
-X-CSE-ConnectionGUID: ZSAxKem5QyWfGsJvA+FU3g==
-X-CSE-MsgGUID: viKcMwSuTOW4jm/PUd5eaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="250515081"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.123])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 11:59:06 -0700
-Date: Thu, 11 Jun 2026 21:59:04 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andy Whitcroft <apw@canonical.com>
-Subject: Re: [RFC V2 1/3] lib/vsprintf: Add support for pgtable entries
-Message-ID: <aisFeD-VXF7JIpG-@ashevche-desk.local>
-References: <20260610111339.2465922-1-usama.arif@linux.dev>
- <919d334b-16a3-4412-82f4-b4cd6a35be0d@arm.com>
- <aiphHAkLnG_L2kY2@ashevche-desk.local>
- <d41a24c1-592e-495f-8adf-dd538b769904@arm.com>
+	t=1781205172;
+	b=4UoJ4qEEodpudGPRK60FOlrIqQQefo3HvdVv/H9M/7VcmeMO7RyHCQ3kq/jYheeZhLRjHP
+	QZ259Q2gXB4tDQW6oZnAAgP1a2bk7NXWwRgPyRZzjduEWPuyQFoHqNF8QMGPH3CliVJP0d
+	uXnnHehmR9LjdnKWbUhgiQQ5HmawXBE=
+Date: Thu, 11 Jun 2026 12:12:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781205169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/dpbNb5biEC/ytKDW9uZGewAoGZBA0EolTNHIvaZZk=;
+	b=Uc8i2xo0DpuSALr6ftYCaW+0Z/S4F6T6le8Fv3+0J0wM8ZOvUTo604t7eekw5yBWEE74rT
+	1XToLGi4nkYSHnJ80iLFsNqN3yK320JIhhs0M1Kby8elC+hHeVYnHdf+3YGO5abK9j1c0Z
+	i7Yrj0r9Y69Sjt0cQrqNNPoUtcAyeyM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: YoungJun Park <youngjun.park@lge.com>, 
+	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, 
+	chrisl@kernel.org, kasong@tencent.com, baoquan.he@linux.dev
+Subject: Re: [PATCH v3 2/4] mm/zswap: Implement proactive writeback
+Message-ID: <aisEWnb3pzmVC4dl@linux.dev>
+References: <CAKEwX=OhxUxRCEfvZMnWzXy=Fa4jgzL3DuP-RmaVzdK65m4bew@mail.gmail.com>
+ <6db27a22-cc7a-9a94-db3f-c912fd39aa32@gmail.com>
+ <CAO9r8zM4SDdTgz9L2s1VfXL8K2VBjMD9ej2BTDxaGge1t2+quA@mail.gmail.com>
+ <aicJBVT4pBvmyooT@linux.dev>
+ <aicZ-5GX9De3MAU7@linux.dev>
+ <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
+ <aictKA0XWMWbxFdN@linux.dev>
+ <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+ <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330>
+ <airzE7jD9UtyR17J@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d41a24c1-592e-495f-8adf-dd538b769904@arm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <airzE7jD9UtyR17J@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 83A6D1C0006
-X-Stat-Signature: mqji68hdc95bu5wgimdw8jsf14y6ocd8
-X-HE-Tag: 1781204351-427241
-X-HE-Meta: U2FsdGVkX1+0Ktq7EOXmXtIaT2oMj0vjuGiN+V2ye91ZsRV5Igenn18qMi1pDQ4xLvzwoBjl2oDw8+/Ol2aq+DZ4qoofw9cTytaBht5Ei5PxTsMfzGc3/8NIF+Klt6z+/i6iR5E4xYcN9rvn1TbJfBExxnl68t7j/gc8CosnjFpc3nZEPpRl/D2K6UBUnHlYdSL0IHdKSezDnb8EpNte32Qe9lAopPsv47U1gy3D1fOjFxV7bXqCkkn0qOBIX6VMbtxLN+sNE87gV1Bbaaw3lGkCsn32a8MRGCZrWaG0ZAsuRg7jhy6odc9FNu3imU9uHNqQkDvn5GEo/0vFeCKLacYwLFbPbQ/HL+3mGB9v9+V5hGuqA2Yhz9iJ4fn6JFjgqBnWaQjOr3vGFMtG5hixnSxiMqKWXLT1m7Ulu+mS0IG2vJkZ+Uy/m3o7FSNYr2J7PTdBdmk48PqMn/qgX7UZSooVuFNPUqXKJ5LdarJppCdo/Jm+Mvs/8S+lDDUbYPkp8nCiw1wLckdaUU9P2TB3OLz0Eg0KplqhrcdFdt5FbLa1+L+WTiMM3Wqm2u78c8yMj7Ws4H2E0UjlPw5rd3E7pacqZkyRay0dkBZQ9PnychvJMISdDnwOPgEQIr1Z3SoubKGM7X0NoQPI29lG68upl7OrPaRHxRGwU9uhE+mzJiziUXrEKuI9UVJpOOM2KgE8IvsHPGrCXJITTvVI3fb7e1jW4Z/wJ3EArMYaBKEm9NE8IbOTZDBVLA/oN6+bXF12nSvf5BpBh9eUAqkacudRZhPoTehvTdVjBDM58DE3cybU+5eI1f+oC+LaelTAh1YT6H0BAaqml2L6/laGGg8udVUqmXdU2eEkMVQFHKaWWdkzYNtu8HDfLNQmXCkvLs1r57AmEwwYIS81awdyFhvhWv89fliBgMsiu329jdBflGgR0hKpTEmONQDpitjn+qn45kXsDEZqD2RZfG2nsYQ
- Fc/YtuN0
- pTa99wI6bvlVY9J5RpC80wpwtelFELjsXuwCok+hIntjBPrksH9H+mfprUCUffvi0/4KP5FlZNsH/cHaoG4CKmcCNUZgIXZO8d53G0YgN61nJzotyRbCoPNxuILf4yViEEpzijuwr8I+vSO/1vA19O5n9uI3ZoDCj4yE0kEhSCpGPU032syxHz+4VPlpAJ37nPE0JEi3KDx8jYt4Npf85sCkXCZ4rHYd1AdhUqdEJ5PvcqNP+xpmwwDuI9Pucvn8aNr7T
+X-Rspamd-Queue-Id: 17879A0002
+X-Stat-Signature: 9qzxgjy54gk7fwe8pohhoe1eznjbw3oq
+X-HE-Tag: 1781205171-438927
+X-HE-Meta: U2FsdGVkX19aFO4efkqy7Tt5cHDXzVfM/ECDGR08iSLXgmH2nDr+fmeDDXETbNR1DGpXwNep00Knh9Yd7oeEFW3XMDBJK9f9WxYEhvRuDMceYJurlDIYD34KHKnTwhsCMh05Ot5UxIO9UU4dtVhiWuskeq+ch57Ut31SCt2esomtWRFX+nTPzsmgNuYbuKUahaNoF1lpoxrqv+3HdhhmgS9EefRO7nWRgQIOG1AdVekqLgr07I43DO+htD+omc0rP3zYoZtJiOo97CmjdjNo/3kGPs94kYvLxIgjF9jJ7w4TFAVh2KhCeM5rsCAZ127VWmlZHLngvM8h4fcpnpijQ06ha4dgjJDkQLN75zd0o5zWu/NCg9ZGDj5xCaesR1fDBWmA+xARQVeyX7U0B+xz0qtpjrWBI/J6ZVFx3cp0vimvqvRqjka8WLU74Aojgbfk0quWI052wJoHkmnxMe88gNfdA9Ha6yvAWqth4bxFb/Q5BnBNt1IDYPUV19Nk4Yb12xG0YyAukB5o6BOQTSk+PR35msU2McPWGk1br+fS6C4SsalARHaradkpdW9EPoIzUNVXjGgpexfWcUZMTPZx4Vp+02Vl8mrPbjfEAZ5/x97PdZ5wFwZhTqjxwpYKbBZCJmHgJtTq7Lr0JLHZBQyl7/XtZ6zr2QYqqWppJVCAmVrbt5KX6f+wbpBwYALoe6zmI//C0So5LbsL6dIP2mvuz7x4+Ex9K+UiMFrtD+VKNX/MTywJNKLX2hIA8OIV9fCHDYKont7WnZB3g5oTz6y4rDKbqqF3EWLluUD6agh9vuUXpF28fg03Df7Yn7BibdqlhNnSwAeatsg6JtNBdtO00KBKvMtlUipuYGE5RQjc/UyBm6OFm+ZozMiMKDc8m6ymMhsP8OLoez6n7114YzgEVKtC4OkH0qiM/jUmkKMDOjZBuS/wAy977YGkTxsJ1cFGP8yoGG8Hscjq5zA0i8R
+ xrjtPMt5
+ p8/OJ/t+xl+d8nTwFHpWYWQvUMMtQwXOLHH6to1/SZ2pbGr0kdyP1djfVgh9bxxuPAerWUgTadK/JVY9brkWeJK+x7BwmJAmfDNAzyeRNrDtbjeJmrKdJFX2JmkfISfM31GrFqOJbjs56rntqfvo05lsxYvwizIhXl4bVS8+yRWgMMhgS7goP5Ykbnngc4z8w8oezASg1inOX4iglr/KRroidfBBHSkMWSZPB2nqzNgil/GD6MYwawySumjO9uDfr3PBYKJYk20ox1TBmLj/v7phghw/m3Vi1vCn7RNtht4PPhxdAKSQxMa64L5VF8RmOZuej98/yYBsefUI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,33 +100,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 03:20:13PM +0530, Anshuman Khandual wrote:
-> On 11/06/26 12:47 PM, Andy Shevchenko wrote:
-> > On Thu, Jun 11, 2026 at 10:45:01AM +0530, Anshuman Khandual wrote:
-> >> On 10/06/26 4:43 PM, Usama Arif wrote:
-> >>> On Wed, 10 Jun 2026 05:35:43 +0100 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-
-...
-
-> >>>> +		static_assert(sizeof(pte_t) == 4 ||
-> >>>> +			      sizeof(pte_t) == 8,
-> >>>> +			      "pte_t size must be 4 or 8 bytes");
+On Thu, Jun 11, 2026 at 05:45:04PM +0000, Yosry Ahmed wrote:
+> On Tue, Jun 09, 2026 at 01:19:13PM +0900, YoungJun Park wrote:
+> > On Mon, Jun 08, 2026 at 03:27:07PM -0700, Yosry Ahmed wrote:
 > > 
-> > Besides occupying too many lines, why are these static asserts hidden here and
-> > not declared in the global space? More wide Q is why they are needed at all?
+> > +Chris +Kairui +Baoquan
+> > 
+> > Hello
+> > 
+> > Thanks for inviting me to the discussion, Shakeel.
+> > 
+> > > > > > Youngjun is working on swap tiers. At the moment he is more interested in
+> > > > > > allowing a specific swap device to a memcg or not. I can imagine in future there
+> > > > > > will be use-cases where there will be a need to demote data on higher tier swap
+> > > > > > to lower tier swap. What would be the appropriate interface?
+> > 
+> > Speaking of my work on swap tiers, I recently submitted a patch and am
+> > currently considering memcg integration:
+> > https://lore.kernel.org/linux-mm/20260527062247.3440692-1-youngjun.park@lge.com/
+> > 
+> > The future use-cases imagined above seem to align with this
+> > direction. (BTW, I am currently waiting for reviews/feedback from the memcg
+> > folks on this patch. Any reviews would be highly appreciated!)
+> > 
+> > We could potentially assign a target tier
+> > for writeback within the existing memory.zswap.writeback interface. 
+> > 
+> > For instance, '0' could mean disabled, while non-zero values could represent
+> > specific tiers, which would maintain backward compatibility with the current
+> > version. Alternatively, if zswap is treated as the default top tier, 
+> > the `memory.swap.tiers` interface could potentially replace `memory.zswap.writeback`.
+> > 
+> > Furthermore, this could be expanded so that each swap tier can demote data
+> > user-triggered demotion between swap tiers.
+> > 
+> > Based on the current patch's ideas combined with my swap tiers concept:
+> > 
+> > Assuming a hierarchy like:
+> > zswap -> tier1 (SSD swap) -> tier2 (HDD swap) -> tier3 (Network swap)
+> > 
+> > We could configure the active tiers via a setting like `memory.swap.tiers`
+> > (tier2 enabled, tier3 enabled).
+> > 
+> > For example, the concept of `echo "100M zswap_writeback_only > memory.reclaim"`
+> > could be extended. A user could run `echo "100M tier2 > memory.reclaim"`
+> > to explicitly trigger demotion from tier2 to tier3.
+> > (BTW, if we combine these features, my personal preference for the keyword
+> > format would be `<size> <demote_prefix><tier_name>`. I think it would be
+> > better to explicitly indicate that it is a swap demotion by using a specific
+> > prefix followed by the tier name. 
+> > Or make demote prefix another key is also possible)
 > 
-> Sure, will move these static_assert just above pxd_pointer()
-> These asserts ensure
+> I am not sure if proactive demotion between swap tiers would be driven
+> by memory.reclaim, I am guessing a new interface might be more suitable.
+> But yes, you are right that it's very possible that
+> 'zswap_writeback_only' with memory.reclaim will become obsolete once
+> swap tiering matures and starts supporting things like proactive
+> demotion.
 > 
-> - Platforms have either 32 bit or 64 bit pgtable descriptors
-> - special_hex_number() can be used to print such descriptors
+> Part of me wants to wait until the swap tiering interfaces are figured
+> out so that we don't end up with redundant interfaces, but I also don't
+> want to hold Hao's work since it doesn't directly depend on swap
+> tiering.
+> 
+> Shakeel, how do you want to handle this? I think there's a few options:
+> 
+> 1. Add zswap_writeback_only now, and when we have swap tiering demotion
+> it becomes a redundant interface, like memory.zswap.writeback -- or
+> maybe we try to deprecate both of them at that point. It's difficult to
+> remove interfaces tho, but maybe easier to stop supporting
+> zswap_writeback_only.
+> 
+> 2. Add zswap_writeback_only behind an experimental config option, to
+> unblock development but have a line of sight to dropping support once we
+> have a swap tiering interface.
+> 
+> 3. Wait until we figure out the swap tiering interfaces and then add
+> the proactive zswap writeback as part of it.
+> 
+> WDYT?
 
-I understand that. My question is do we actually _need_ them? In other words
-when this may be not satisfied? Any real (non-theoretical) example?
+Is Hao's work needed for some followup work/development? The earliest Hao's
+work can is 7.3, so if we aim to figure out swap tiering interfaces in next
+couple of weeks then option 3 is the way to go. If swap tiers take more time
+then we can discuss other options as well.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+However I would need zswap folks (Yosry & Nhat) help in figuring out swap tiers
+interfaces. Zswap is the current top tier swap usage in real world. I want
+zswap users to eaily (and hopefully transparently) migrate to swap tiers.
 
