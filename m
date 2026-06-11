@@ -4,64 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC68CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:21:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B160CD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F8A36B009D; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
+	id 9EC466B0096; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A1166B009B; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
+	id 9C4806B0099; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68F0D6B0099; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
+	id 7EEEB6B0098; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5516B6B0096
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D7EA6B0096
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:21:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D854C1404B5
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:21:51 +0000 (UTC)
-X-FDA: 84866636022.19.F4C788B
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 216DCC0976
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:21:52 +0000 (UTC)
+X-FDA: 84866636064.07.DD3F959
 Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 552B218000D
+	by imf26.hostedemail.com (Postfix) with ESMTP id 05585140005
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:21:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf26.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781158910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kdHy4eP3so8s4kqwMKPF2sqeivAtp8KE8R4aJsH6LH8=;
-	b=5ljb7K21fPd0yM4Q0vyJ0cXLg04LNDaxjD2hcslBTEQJjL3mAZq/ge/g53a+Y4S51ZfaSF
-	0n1Vzkhs7cp3GfIhNvIyRjK9G/ljZhhNBhIyxHOTGpCcdjvuHWEEJuuL62DhdI23jObrIX
-	A4v/MMw0QvL3KsaHnPsGlzeyTVZiBZ4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=CU8613RlYmnkdZDHeZnsOukBHa8J6Mb7aXq0IUHVgHw=;
+	b=1lRivg1l4MaLn5FZUlrASPxVa8yLa29KP7n5p/H6wVHLm25xVikWr2CGJ6O4ueNWs8Oor6
+	SzHdHUGtBs53RhYVZP3uSxqi9QR8iwVvr//QYbUEPLCdJZZ0cM8u72DUYgJ6lcsK3bb6Sv
+	rdQmpMlJRHLwi1bbngQ56F5OInFNXwE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf26.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1781158910;
-	b=OPeJ5cDubfuGa8Rq1+CCGV5Cn28KzjhqzeKTb3D3AwdyKEfmHLRzQVZTMHGqq04IXlsmnL
-	eE7TRFp+RE5W5TGHhfnNSvihmrMA03oDmGH1JfbtdfXhZhxk0WXZPu1MaY6xfQBi/gN1dB
-	d+fLohZdOTFdnCvl9/pb2bbPpb7wUEg=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gbXbn74Ckz12NXN;
-	Thu, 11 Jun 2026 14:21:41 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gbXbn6tJgz12NXN;
-	Thu, 11 Jun 2026 14:21:41 +0800 (CST)
+	b=N10zSOgdrnE+rxN1/8VWpkgQWzSk87okpx//CbmVXUEygzAbBYvG2U3fSho8GHuXqPqReW
+	qgL3DA1ql7NDUvuGyTG/S62H68ziNblUL1RF08H/PPX4ykfCFSuLLcNJ4O6mqPBj0yv6ay
+	5rFd2xp8mwEnrQ+uxiwIuW88UZ//14A=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gbXbk745pz1dd8Y;
+	Thu, 11 Jun 2026 14:21:38 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gbXbh5hZnz1dd8Y;
+	Thu, 11 Jun 2026 14:21:36 +0800 (CST)
 Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id D585816CF;
-	Thu, 11 Jun 2026 14:21:23 +0800 (CST)
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 7FE3430004DB;
+	Thu, 11 Jun 2026 14:20:11 +0800 (CST)
 Received: from hsj-2U-Workstation.hygon.cn (172.19.20.61) by
  cncheex04.Hygon.cn (172.23.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 11 Jun 2026 14:21:36 +0800
+ 15.2.1544.36; Thu, 11 Jun 2026 14:21:31 +0800
 From: Huang Shijie <huangsj@hygon.cn>
 To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
 	<brauner@kernel.org>, <jack@suse.cz>, <muchun.song@linux.dev>,
@@ -89,26 +88,24 @@ CC: <surenb@google.com>, <mjguzik@gmail.com>, <liam@infradead.org>,
 	<linux-perf-users@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
 	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>, Huang
  Shijie <huangsj@hygon.cn>
-Subject: [PATCH v2 1/4] mm: use mapping_mapped to simplify the code
-Date: Thu, 11 Jun 2026 14:18:57 +0800
-Message-ID: <20260611061915.2354307-2-huangsj@hygon.cn>
+Subject: [PATCH v2 0/4] mm: split the file's i_mmap tree for NUMA
+Date: Thu, 11 Jun 2026 14:18:56 +0800
+Message-ID: <20260611061915.2354307-1-huangsj@hygon.cn>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260611061915.2354307-1-huangsj@hygon.cn>
-References: <20260611061915.2354307-1-huangsj@hygon.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.20.61]
 X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
  (172.23.18.114)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 552B218000D
-X-Stat-Signature: 41yrpgefabi8ont8tod1n8n5dmd6a81m
 X-Rspam-User: 
-X-HE-Tag: 1781158906-496849
-X-HE-Meta: U2FsdGVkX1/5KGIeVcDT67kcFs/KvQca6E4DMRzGx0kinR0qbm+JxqNpN68NhAZIgA8Vp3v4jyDRv1VEe/hXAYJBra8ajToJX6d9bVwPS1OoMayVNTldjLCruAJzOXTzBW1G2JjbKUTgSEYvVN8IcGSFkk/bw0yNKtWJP/ou9OTSayxItY6+Et7Ulyi31vusaWyYM0WZG94Xp1ixhyfasMUUMxpNzJgYBQjr0SrpYeVpxHTfPV4628xjsuVDWVHbyWPUXX5EBvoKTG/Xb+UHHeq8TdtL9tOsLaNzAP3J9x9BtyEy9yBqVOFNQ9lggigygf2xAEi0FEZJy1u7aAMJFE7KdwIzvmjW55V5w9XNBO4Y+QDMFL56x+xakIYTM8N/tZYq25shQ3sPcHqCBnEAsk5ieEqjdZtwU9NrouaV4t33ky96ugOsq+meNVs7xTFIef2Y/wI57tfyvE9FY7z9EygchOYxYbbwgHnckyXoG7EZrOHU7DRKnBcQyMzsEXD9AU2p9yROWlvmaSKtDx2i5Xvpd0SR8+s1jGvPTGjaFOvKveoJuROPO2RXH1c3PHyc6bEKyLRx0Rii4vPZaXrg8PyJkI8fQwBOFSBE4KWQbleTMIDEtQl6Ucr5rt7p0Nfra7dAbXQE6eHIIgFQm5DvsNZHDnl0ucRiDQF9N9fErQoRVLrQc6OA/MeedAp9/W4AyxeUKPpwrXj5ug/aiVjn+xVVqpokbhADH77OgsvQ2C4eRk/Qut4T1rzJXHTJdGwPzcnGrbDvs9HvRavqql40NmexsmUaTix7wU1sfwI9JVuhn7DYvgR/DWjWAb0MWSRDYPXD4EREDK2BI6e2zSqIbuipwSWxn2iuJawn2+xvG57V5uHwncC16g4UGzuulws0afY6bpdi+ORJEf3imRc3AP5DoFPRIW53pYn1vOI5Nru9vByAW3wAjbU/c35RgsPgdKIBnqUmXt0LEYcBPYu
- tBRiSwQx
- +KQBJoCN8O8YL1Cbl7AfrSHiwSyHtqb7o1BrSVPwxLiav0ePpPcmFz1Hp0WC+LPRdzfkKEPM7JWF1MG98Kv/OYhpJfq6GdIRoj0ZpfbDAzLaUk6u1bWkcoQkjuQdyDmIabzvGw2gfgOGMCHSscQ1Shjpwxkyphi7BABe30imeqXlaJJgTrAS1XbkYpJgdcMH4kLwNgiYHT0z6fsOxZ92JAQypd/IB69jeyxFAl4CNiEZDCcJKEz8Y1vOxVg2H3XTiNc8JEU/ms9+/148JrdXT/SugnW7W8Rw/6i4WBXaQxPHGGif03+XhrUT6F9lu3Eike507fJ3t/uy6huRPI9YoOejqCF4K57gYpNyHqymzMdX2UnGb8CBZQlycKkfBksbt2EYGZKDuLkpOIU/pAzZvtpKDw4ZBR24AZdKtK1sno79mkqo6jPu7HtgQvWo9zveBtB20
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 05585140005
+X-Stat-Signature: mwmagapehn4xjkx53s1dkxu37fb385kn
+X-HE-Tag: 1781158906-682958
+X-HE-Meta: U2FsdGVkX192XQAA2OYKVLYhyvSEfrjgeadsc8uL8jKbNBRn9lY0ZXsbo3HwITkudL5V2ub8YJbdq6o1se/iBMoHJowfCOZWVDHQVf5nnnUq3oG2NdicxrzLilWsdCy8K/W+rxBIP4QwW9bPaBeNeC17ZZyY8++lYyUPKddC78uF/38peq0R2o9a7B7gtvPMNQzkFoasrEFHjBRUD4WvU4PaiKSaPP3gIafHf+LiuAfxROP7SGezX2W4K2C+nNWk33uMjwByAuOgOTpjcvV3S8sG3xduJvlC3hf+70Q4P1FGAWmuAM/e/1qocqnbiiJRujg3vyJkhQFLrasTPVRQvL7DOrvjzKWA0nfO3Qpe8N0mfKgEu2g2wMqeMNMbWAYF/az0sFvvo1Jmog+LkHViGlX8cYBO2Nrb21Y86GFwwZl3kakUVoUmgyc61AjVSmd0IQaWiqywJPct0jndgx7jUSQWNEXQWAf8uh7ozV6M2HUxKDvNwVsQZp/vCvACbxEY+6CMhAnzl/s71PsD4HJbQOcRzQMINhpSx/qe65Rzo+W3FlGhoSoaXuCt4jWSpJYRpYQjz+L3hsjG90y4aIkyXujMGODkxHk5J4dBtDMUt7VZLQxxyzZFlhdQOScauWOmYsD+XFQ5MzlyVdXAvG0eWn41LbrJ/nvRr9PTcR94ZndfESvuD8yBDu/0taSd21b9MJQrS2dtzVN6hJC1wCDnk71c5YD8bHAh8yzQBFuulSZGPFp8ZVh2Y+j9AIC0BhoTGnIRfi/AeObaRliTPCI2bCLJ5LJW7FKpRvzmekG4QlxPRv1UY/5XflTiWgNnwMdR8kLIgtRiA9TSm7CJVzzsNKdEWqxWLK0zFRUsaZYffXI0oPDZQ5d7mgRW4mas4jvwhO9BhFOwLADBIvQr0cvhZHC9pGrjRmxmTq042aVDXQo1qB9iebDytQLgpQqw4/pc9Dh0Nz/V6VigjpyBANf
+ 8our/rEL
+ G8m8fIGnwd10t1V6ndDz40c6l/3NtDZm5RA4fQTUSO9SNsS6tZ3SAbM2jW1xjuWjPo8oBxPLlu0ntXpiPGw0gekYRAj64px11p5Ao+OpY4mgo2xV5DGBsZWM+WcAnk2z7UKVkEu16dKBqMIV4swCMoAest1W3uje5qggm9XILHijIBn0LCkiFTAvKk8cCQkLlJEKT0MBD8OAYiogSma4X13xIwkfHmlAK3LzyVhABfSQHJyxfvdWFTmzperPfGhMvq0pWzlJjgcen8wWur4I/SUbAuVfYjJ44d15nBvb/KJfkVPzxcUOj9YNNvrgEDCi0caBcl4pNlVX7CDtIGldyXZru1dAeMLP+6HowMsvjd3fSlCIfXqV93U6SpjQOeUdcM6i/kNgdGUl3Zg0CH0Z6rc85FL+4BcQjSjxNnWOnONGu6xWhqDh23SB4EykjqWSpzcEvuipxCIx0i3kOZdtKKv0ZhZJHzPYIEqQh3d2fnixSMpE0Mf8Nk/Tl6gXx0QIe3B08
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,59 +113,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use mapping_mapped() to simplify the code, make
-the code tidy and clean.
+  In NUMA, there are maybe many NUMA nodes and many CPUs.
+For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+In the UnixBench tests, there is a test "execl" which tests
+the execve system call.
 
-Signed-off-by: Huang Shijie <huangsj@hygon.cn>
----
- fs/hugetlbfs/inode.c | 4 ++--
- mm/memory.c          | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+  When we test our server with "./Run -c 384 execl",
+the test result is not good enough. The i_mmap locks contended heavily on
+"libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have 
+over 6000 VMAs, all the VMAs can be in different NUMA mode.
+The insert/remove operations do not run quickly enough.
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 78d61bf2bd9b..216e1a0dd0b2 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -614,7 +614,7 @@ static void hugetlb_vmtruncate(struct inode *inode, loff_t offset)
- 
- 	i_size_write(inode, offset);
- 	i_mmap_lock_write(mapping);
--	if (!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root))
-+	if (mapping_mapped(mapping))
- 		hugetlb_vmdelete_list(&mapping->i_mmap, pgoff, 0,
- 				      ZAP_FLAG_DROP_MARKER);
- 	i_mmap_unlock_write(mapping);
-@@ -675,7 +675,7 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 
- 	/* Unmap users of full pages in the hole. */
- 	if (hole_end > hole_start) {
--		if (!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root))
-+		if (mapping_mapped(mapping))
- 			hugetlb_vmdelete_list(&mapping->i_mmap,
- 					      hole_start >> PAGE_SHIFT,
- 					      hole_end >> PAGE_SHIFT, 0);
-diff --git a/mm/memory.c b/mm/memory.c
-index 86a973119bd4..5335077765e2 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4386,7 +4386,7 @@ void unmap_mapping_folio(struct folio *folio)
- 	details.zap_flags = ZAP_FLAG_DROP_MARKER;
- 
- 	i_mmap_lock_read(mapping);
--	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-+	if (unlikely(mapping_mapped(mapping)))
- 		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
- 					 last_index, &details);
- 	i_mmap_unlock_read(mapping);
-@@ -4416,7 +4416,7 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
- 		last_index = ULONG_MAX;
- 
- 	i_mmap_lock_read(mapping);
--	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-+	if (unlikely(mapping_mapped(mapping)))
- 		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
- 					 last_index, &details);
- 	i_mmap_unlock_read(mapping);
+patch 1 & patch 2 are try to hide the direct access of i_mmap.
+patch 3 splits the i_mmap into sibling trees, each tree has separate lock,
+and we can get better performance with this patch set in our NUMA server:
+    we can get over 400% performance improvement.
+
+I did not test the non-NUMA case, since I do not have such server.    
+    
+v1 --> v2:
+	Not only split the immap tree, but also split the lock.
+	v1 : https://lkml.org/lkml/2026/4/13/199
+
+Huang Shijie (4):
+  mm: use mapping_mapped to simplify the code
+  mm: use get_i_mmap_root to access the file's i_mmap
+  mm/fs: split the file's i_mmap tree
+  docs/mm: update document for split i_mmap tree
+
+ Documentation/mm/process_addrs.rst |  63 +++++++---
+ arch/arm/mm/fault-armv.c           |   3 +-
+ arch/arm/mm/flush.c                |   3 +-
+ arch/nios2/mm/cacheflush.c         |   3 +-
+ arch/parisc/kernel/cache.c         |   4 +-
+ fs/Kconfig                         |   8 ++
+ fs/dax.c                           |   3 +-
+ fs/hugetlbfs/inode.c               |  30 +++--
+ fs/inode.c                         |  75 +++++++++++-
+ include/linux/fs.h                 | 179 ++++++++++++++++++++++++++++-
+ include/linux/mm.h                 |  81 +++++++++++++
+ include/linux/mm_types.h           |   3 +
+ kernel/events/uprobes.c            |   3 +-
+ mm/hugetlb.c                       |   7 +-
+ mm/internal.h                      |   3 +-
+ mm/khugepaged.c                    |   6 +-
+ mm/memory-failure.c                |   8 +-
+ mm/memory.c                        |   8 +-
+ mm/mmap.c                          |  11 +-
+ mm/nommu.c                         |  28 +++--
+ mm/pagewalk.c                      |   4 +-
+ mm/rmap.c                          |   2 +-
+ mm/vma.c                           |  74 +++++++++---
+ mm/vma_init.c                      |   3 +
+ 24 files changed, 534 insertions(+), 78 deletions(-)
+
 -- 
 2.53.0
 
