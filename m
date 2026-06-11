@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E18ECD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A45DDCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3686B0088; Thu, 11 Jun 2026 12:29:04 -0400 (EDT)
+	id DFA2C6B00A9; Thu, 11 Jun 2026 12:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BB276B0095; Thu, 11 Jun 2026 12:29:04 -0400 (EDT)
+	id DD1996B00AB; Thu, 11 Jun 2026 12:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1626B0098; Thu, 11 Jun 2026 12:29:04 -0400 (EDT)
+	id CE88A6B00AC; Thu, 11 Jun 2026 12:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DF476B0088
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:29:04 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1068A14074C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:29:04 +0000 (UTC)
-X-FDA: 84868166208.22.4E3D930
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF4C06B00A9
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:37:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A02B120783
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:37:25 +0000 (UTC)
+X-FDA: 84868187250.30.F880F8C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 35F732000F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:29:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jOReuXIR;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781195342;
-	b=EXdyi95pdc5jfDRvCKTXg4q1M6dWR9DwEuPSAR+vgxx9K0UuXQzQaeokDHdgO7xSlA0w3d
-	GKalDVxgSobEQ0XIB3Q3xqT3r5fI3Zj2hMJOX5LsLZAakpu100dpSm4oYR4Ta6Y5igjX8N
-	EUsziuPDR5YswEEjUVUUH8Tkd/TUSE0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jOReuXIR;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6B99040004
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:37:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPqKVI7T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781195342;
+	s=arc-20220608; t=1781195843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zFO9PrlKWUdZ371SSeOwADUsueEbVUBHL0tzrlGjCbQ=;
-	b=P5u/lehY7Jtvwky0G/z4iEiogMgO363tOKyFUkXwJE51+lfRj7o33Tdf6MresNynDeAVkP
-	KWRqxE+lDyUTDwObQ3Zk/5FZ0iS39jBUCjZDEjNNy9rhRaoy8jmCNq6utIZDjugSIBIC+w
-	Ef3ZN2Be9KKUJ6ooplftCm41XbnDorA=
+	bh=KQBib1VsAzlYorWOyjFbpOR4CJ/YC0cjrLSbb74DjF0=;
+	b=PJbtrqpGDOSvYnUGe8J4i/5/q8CCf7epqn10gWx2VA6iK0NkX/NeCW+xA97d8So134BMCM
+	+d9cPZ5D+Nwv+oiJmu1/gxmUDqOjMX/TiyBo2+eS0SmigFhsh3HeoyU6bz3Q7+yBWawkd9
+	YDWbALtk4p0AFZQoLM+x+T/hYMGxfM0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPqKVI7T;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781195843;
+	b=njYAZdSKR8UvOV/VWNgUqFuHaMJLarigMEouKnJElyPdLf7xmXhkFKsCI+t1vdNX/tJqRy
+	/zHVix3u8jqRhgZmrg0yknDD3V9bO8Zf2ygDaWTJCaEGIW2sm+BVnpjUHfDN/QMuePWexK
+	wYoUEX0WS4YitHiDlqKaP4TasMjW9ww=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 42033437EB;
-	Thu, 11 Jun 2026 16:29:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F0F1F00893;
-	Thu, 11 Jun 2026 16:28:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A7A74353A;
+	Thu, 11 Jun 2026 16:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C081F00893;
+	Thu, 11 Jun 2026 16:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781195341;
-	bh=zFO9PrlKWUdZ371SSeOwADUsueEbVUBHL0tzrlGjCbQ=;
+	s=k20260515; t=1781195842;
+	bh=KQBib1VsAzlYorWOyjFbpOR4CJ/YC0cjrLSbb74DjF0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jOReuXIRmEjh18yo6hQMRXe3pzeKqJHWt7xU7PmsWG5/BDmspraKVXqznLoLzzGK8
-	 kYIhBBwoaHRcIvuIzfeUpmvHE2cVgUaxbs235Es3prqRn8SEHcXaYYaX+A/LdpSSqQ
-	 7vVkklTqsBmfbtAUt7m78KWuK/g++bohtCxmcpLwqpP0eLRp6mQMl0SRPl+GoLA4cx
-	 ojuVNc8XepIq0+dbLYw4PtirEV1hjWW3bDtv4F/RA1BtlOqgX+7XgZqJowIIce6JJY
-	 BekMe54d/ts5wsxHQK5fgeWvXr6YHmSBPd2g7Y6v/zHOGOPudsbkTJpiL0lCeUjcbv
-	 cJmOKxN7E9KcQ==
-Message-ID: <ccc244cc-19ef-4cf8-b8d3-c4f55ed58748@kernel.org>
-Date: Thu, 11 Jun 2026 18:28:55 +0200
+	b=YPqKVI7T54I7X0z7db2P0pkwgtlgSotue8EuNyxIeEdfPbnmla2HXzb9/l6g8uTKI
+	 A+BUzA5ep4mCpPRN3mCkJyae3Dr4ZalAPFtE9g91OpmYbCQrioVqHkDSf7hAOklG/2
+	 /WgJmupLkZRfQRuNua4Mohi6MkfVQu4f8A/gtWLiPxOGGTJjwZFlCy0w2Vdk0b8PAG
+	 bDJWYiiRne0yFSxex7rZ9fIoCauSch327g7pm4GCcjaATjbgHH+ShhHfX8ywBG8vZs
+	 5C9S/ZSrld0RQWr2R8ECgNOf3Duz1FUwbMmZ+++Bggc3Vh+sT6krASx8cptrrl6BMD
+	 f2jkavqmju5cA==
+Message-ID: <4cf98483-ae35-4ad0-8f77-5a46194eb65f@kernel.org>
+Date: Thu, 11 Jun 2026 18:37:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/16] mm/slab: remove __GFP_NO_OBJ_EXT usage from
- alloc_slab_obj_exts()
+Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
+ allocation
 Content-Language: en-US
 To: Harry Yoo <harry@kernel.org>
 Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
@@ -79,11 +79,16 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
  Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-15-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
+ <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
+ <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
+ <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
+ <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -124,17 +129,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260610-slab_alloc_flags-v2-15-7190909db118@kernel.org>
+In-Reply-To: <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35F732000F
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6B99040004
+X-Stat-Signature: 6bkbaucbnnt1huoxof9azdcjoci4kq4p
 X-Rspam-User: 
-X-Stat-Signature: p41uzo7cwmdr8j1yujnpmkxoditwzq51
-X-HE-Tag: 1781195342-679971
-X-HE-Meta: U2FsdGVkX1+RFzLPbXetSN/KBYNpvyiarc8ftVuYkbX37b+J/fgeKrPkWPajjh8pLmUdAiBJfzc4nP8QfIG6NsTwJfn3GO+SFlhd7dkzYVHiXjEo8ZQKvbvMSqZY+qtVGpT0mRkAdTzyEWRTSlyqyMftHJVLCodP4sUlQ0UUn3dtS7xjGJq4iwzwwjSh44GM3wWZYFVblO8XTHaMuYuK71hrmgl4q98BWfBDQM0m55EA39nGkgEYD5X3ERme4MBXZ56dW1JL/EJzz7w4uW5h6cmqCGz9GhEUxaUTiOBNph2ko7+omGCYTjziU6y+Kbi6gPgoE08zblIMYRSnXs/YZ/fbKctHRqIGzxhc3bBU9PDkULLVqSqO+OYDqlbBfNO/7Ps+bnevyy3+jF9k3GIlHHB1FyHk6YSHzp/OH10sU4OlFwWc9WPdAMDMQCW0JZ9aMlRWsUzgeaQkhvuDmnnV17KhJTTfgjZ8NGCmh6nI2EX4fZZm+ccSQ+bQNIrg3/2iXha+8BsoQrp3V9+4htQQqUF3U/+g5aD8NVVqxR5KuJ9W0ZdZ4mgGJARwYml425PSXVlsqD/Eb7AksoIglg/PJi7dP6/2VL0gPOdWKxAtuSRlFJ24TsL3VXaMPKgPobdiLvpNsmXMv+lPo1j8rpe/HYt6XvEQy+CskX6VZDnpLMgZwbTUSEr7ovgF+WsSBBfAtQeR9jl143begZCdkN2yzcMNn0nv1XijAuh+r6ivLgA5QLtOwp9KhvZ0b58QXOvT9PiGCYGOFcLCmG98mKzzi/FCi0qgtWqDId97qLDOQyUis/Q07zJmEuTpRsc0lb8jhTZGFM6EXsQ1Ac7ZCaTZ31yHZ89xmWsXDSAkKqIduWHP0EiH0ZDv4PGv16UtMWEpR+NiaxDLNolsE1xiGTJvFI5gbyBsevie33Vgqu+xE2hPwS0ssDkH2gDXNdMlsFEj2DB/p0yLWlaZEPKojQK
- v1cZam5n
- wd/QoMyzePh8C+CFWl/Yn1DGmSQpa5vpmr0i1DxFqxm6UmwxZH0BAPB8l4Eqx9PULhqjOklSHZ1BCCdjpigUMEA33KHobyuPmkPd/slu+JzaWl1CWvYX2slo0silyNKitIlOlLia7xDzQHUrEY3duKrifNV9pMFDz8Fjz6J8B0iso3NWObkru58AuzRXi0qzaBgNhIOlA+kaf8gjf/axEPQxjIsn42s4IFmsiYM8d5ABuV0abrsYZv3UjwB2/L9yJrPxASa0PjF5FCjEKo8EZSy3Qym5e7/z9x3QIICir8ttrJzvvUaUNZDhBZQUfEgyoq+GuM/oKX3GY3pQ=
+X-HE-Tag: 1781195843-475758
+X-HE-Meta: U2FsdGVkX1+jALM1iIKPPweVDLr8t9SFE/heZ+hHtm8U3mFPKDyHsTNKKPaFkgU/UczVqPT29u/VLWb0GPEGrSNvyAUh+mdjZ91MNLZxaeuBLjttp9Lmirk58KrA04gbHb4VVb/DcMI1SIIzyTl1YEm2Ey+D7fsUUsGiVTDG7XvhnvNKVPI2hUWouETo6F9FjLVAEXFAzIWxmE+hU81FwXc9vLvhyqZi0XGYhFced9ku4jWvYRCpZWy0M/wHuDVurSMCT65cYlzKbKyzy6jjYZzhU+p51jNyRrgicm0DjZga4mjVEDxKNE+kdQHatvyCX9Gcu5X3WkBr4TQnCihzLIGUc710uiWmz2jHUkqQisbuoXcbJMwr3WYsmPRM5e3tZd2p2ehAG7JJMDdzp33DpqqyHbhFUqx4dT38E68bIt6ZmrqDt5OzmXgNOHsyYJdWUjTsyC4qDV8+OQ75CUPFwHyhBsbRvVeDiOJYOqd9wEp4Ci+EpvFsgCbWrqpYeTa2N8Aqoejwadu4aijeIawEb8y3JyHwGF1SUROp4PSsObDka5+DLOkglrGOIRbrVevHWZBIegzDS3+eCygls2rADBtIT5rwS1qOD8zSL+sm/MO5jmgbtWT+fSfAjsxaDjKUre5mPktTxHCp2wp5uEkTOuUVtXuKOOm2viK9zUkMVYJvDHXUl8Osm4e39EkS0urGYVefcN4C/n9CkR6+kN9oiT09rklupbVcSGhj1tTVmRnth3dJzOSJoIfQoLHe4gUSiRoS6gFobMXxD9h39JYQp1bhzXTUztpmUn78wBZAosAmFbUzFe1hE8m8h6Pi372k+nnZYTRqnaV4Po95jSBYf+xrnPpVNuixJv1WRvoNanA5k3ggqCgJHwDSbOeJ+j6UUzhU2/4hBYHC24MEgO5DCHGl3/fC2WqqkXyC8935icyB6MCURayiKe/bg1P9cWO36TMWr6z2QmuJrAD/rzU
+ Q7J43u5I
+ hgrBQdRo1CZ3x7IsAag1Hg1DP091CNttHqxwnptFisoZ96BFDCAmDFLu+5242FZuiLnCtish7fFHNr9LpKoIU/g2QNgVjdJZb1ni2APoAVRn3JuK9EeBmUh6xDib43y5Cdufw2weCEQ7PMjAl7puVMF8u8YLtHUWhFBy+UmK1bbcrftaxKKasQ1qAJI7MD7oaTDhD4iuztPs4baC+wme2TxgJUtefi0Dm67pvcZ3UlVBc1AjaF5SWkVj+451m6ZnN4ZPMVftFhydTKuowu3EkY54Qak6NO0hnX/7QawL6jmq0nkKYhRwI5Kk2DbvBmZpQjNJyHsdThrjJRjJ5VR1+PPyQypfBpNVRhtJ/qm9Vytk6MCwb8sS9pxeELg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,55 +147,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/10/26 17:40, Vlastimil Babka (SUSE) wrote:
-> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and
-> gfp flags are a scarce resource, unlike slab's alloc_flags.
+On 6/11/26 17:11, Harry Yoo wrote:
 > 
-> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
-> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
-> family function should not recurse into another kmalloc*() for the
-> purposes of allocating auxiliary structures (obj_ext arrays or sheaves).
+>> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
+>> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+>> Date: Wed, 10 Jun 2026 17:40:04 +0200
+>> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
+>> 
+>> When init (zeroing) on allocation is requested, for kmalloc() we
+>> generally have to zero the full object size even if a smaller size is
+>> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
+>> 
+>> When we end up allocating a kfence object, kfence perfoms the zeroing on
 > 
-> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
-> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
-> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
-> added. This will also pass through SLAB_ALLOC_TRYLOCK so we don't need
-> to special case kmalloc_nolock() anymore.
-> 
-> Note that until now the kmalloc_nolock() ignored the incoming gfp flags
-> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass on
-> the incoming gfp flags (only augmented with __GFP_ZERO), because if
-> alloc_flags contain SLAB_ALLOC_TRYLOCK, the incoming gfp flags have to
-> be also compatible with it.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> nit: perfoms -> performs
 
-As pointed out by Sashiko, this piecemeal approach creates a bisection
-hazard where sheaves -> obj_ext -> sheaves -> ... recursion can happen.
-So I'll changes this as follows to make obj_ext accept and pass both the
-gfp and alloc_flags preventing recursion, and change the next patch
-to revert that temporary change again.
+Fixed.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index a81f1f6bad67..c60f3a252ae5 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2167,6 +2167,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 
- 	gfp &= ~OBJCGS_CLEAR_MASK;
- 	/* Prevent recursive extension vector allocation */
-+	gfp |= __GFP_NO_OBJ_EXT;
- 	alloc_flags |= SLAB_ALLOC_NO_RECURSE;
- 
- 	sz = obj_exts_alloc_size(s, slab, gfp);
-@@ -2371,7 +2372,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags,
- 	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
- 		return;
- 
--	if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
-+	if (alloc_flags & SLAB_ALLOC_NO_RECURSE || flags & __GFP_NO_OBJ_EXT)
- 		return;
- 
- 	slab = virt_to_slab(object);
+>> its own because has its own redzone beyond the requested size. Thus
+>> slab_post_alloc_hook() has an 'init' parameter which has to be evaluated
+>> in all callers (via slab_want_init_on_alloc()) and should be false for
+>> kfence allocations.
+>> 
+>> For kfence allocations in slab_alloc_node() this is achieved by subtly
+>> skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
+>> kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally even
+>> if they do end up with a kfence allocation. This is only subtly not a
+>> problem, as those are not kmalloc allocations and thus the "requested
+>> size" equals s->object_size and thus it cannot interfere with kfence's
+>> redzone. There's just a unnecessary double zeroing (in both kfence and
+>> slab_post_alloc_hook()), but it's all very fragile and contradicts the
+>> comment in kfence_guarded_alloc().
+>> 
+>> Remove this subtlety and simplify the code by eliminating the init
+>> parameter from slab_post_alloc_hook() and make it call
+>> slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
+>> check before performing the memset, which will start doing the right
+>> thing for all callers of slab_post_alloc_hook().
+>> 
+>> This potentially adds overhead of the is_kfence_address() check to
+>> allocation hotpath, but that one is designed to be as small as possible,
+>> and it's only evaluated if zeroing is about to happen. This means (aside
+>> from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
+>> zeroing itself comes with an overhead likely larger than the added
+>> check.
+> 
+>> While at it, refactor the handling of evaluating when KASAN does the
+>> init instead of SLUB, with no intended functional changes. A
+>> non-functional change is that we don't pass kasan_init as true to
+>> kasan_slab_alloc() if kasan has no integrated init, but then the value
+>> is ignored anyway, so it's theoretically more correct.
+> 
+> Right.
+> 
+>> Thanks to Harry Yoo for the initial refactoring attempt, and for updated
+>> comments that are used here.
+> 
+> No problem ;)
+> 
+>> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+> 
+> Looks good to me,
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+Thanks!
+
+> Thanks!
+> 
 
 
