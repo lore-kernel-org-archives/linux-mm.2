@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C187CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:06:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0215CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08ABD6B009F; Thu, 11 Jun 2026 09:06:29 -0400 (EDT)
+	id 4A9A96B00A0; Thu, 11 Jun 2026 09:06:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0622E6B00A0; Thu, 11 Jun 2026 09:06:29 -0400 (EDT)
+	id 481006B00A1; Thu, 11 Jun 2026 09:06:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93C96B00A1; Thu, 11 Jun 2026 09:06:28 -0400 (EDT)
+	id 370A16B00A2; Thu, 11 Jun 2026 09:06:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6A2C6B009F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:06:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3DA7140603
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:06:28 +0000 (UTC)
-X-FDA: 84867655656.20.DD6E3DC
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 765FF20012
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:06:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=GMLgGNHe;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 40.93.195.49 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
+	by kanga.kvack.org (Postfix) with ESMTP id 28A846B00A0
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:06:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E29DF1C34DF
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:06:32 +0000 (UTC)
+X-FDA: 84867655824.10.79EAFB7
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010021.outbound.protection.outlook.com [52.101.56.21])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7D92C160019
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:06:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NXLHaqB2;
+	spf=pass (imf08.hostedemail.com: domain of shivankg@amd.com designates 52.101.56.21 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781183185;
+	s=arc-20220608; t=1781183189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zJB722PaypzRvTXm5hm48EyoMXKjFx1PJFLvryrUZto=;
-	b=gUQaEiE2dULqLf+9VPbxKUaYC5ITkl/z+yGzbgNdm/KhKNRqcZMBShasUNO3TrUA/bQLGt
-	Pulgj7sRmVEipPOsW2LFhVw5AMr+U0fCx4Zq7Im+wXkZ53JQGSrbV7yEfADMVba7v/r/D5
-	6dtX4+50D4sbINgL2YtYVZS5Z4BOlx0=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=GMLgGNHe;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 40.93.195.49 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
+	bh=EfbkZXmmFzTTcMljeslZnR+zbaNpTdlfJkd0sm9M0fc=;
+	b=HBmvOT28SUseqRWNd8JAm+1/IiKR1CrI8iSwRJLdWP3112zi50LERFYHfKEtahIMKp1O+e
+	VN/yqmUmS/OExVxDxfs3BuDTKj9CC/ldvM7+SirRzoRImKelAAhsUqbouL7/V50euh5RJO
+	HzXRK6Psd/HbcQ/H6NTtW3TsKlP2rY4=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781183185;
-	b=u5xkf7slDjd2QorXl6UGmTQB1CSsKKw/8vsXavmK8IW/1m/GrZn/q8kwTC3Jgxnoe9Yg3O
-	DM1M0Sd7bRQya6qxAAdUGdcGCXqDwl8EXuIgSyDmealiZFNiofgq4JV9ToCYKfGI3ylnWy
-	SRIJZm67KLy+gPddCsHUeIVD8ViMbZE=
+	t=1781183189;
+	b=xGYMlrrJVNNyWun4oTPHkKK0Smz0tMqeHCANL11+NRKRgldWXFjfQYr9gmttuxeTa3J9QV
+	zIb+zXz8X2g28+lxPD3VwO6MLCieS/OFtMZSYcJpCKBrWBOL1pbIdU8eh5SW1qRbOlrAtg
+	cPtReF0n8z1ZCutgsCOEmGr9wr7amXk=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NXLHaqB2;
+	spf=pass (imf08.hostedemail.com: domain of shivankg@amd.com designates 52.101.56.21 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Uq+nrUXvEUpq5/Je93G8OlF23ArfQOmUHB4qRLyozlyW5tcbmggWTotIMVdbJyr/5Khz2bybe5cRt9da/yNaGH0Hyheb5J0n3WKHFIAggjUblfe1MvRtfmjN9zTP+R/PyaznrsNgFFpj5MACcA3ecf2kIOhyFLLsdCB+da3IqwnBr2fPOlKAsvlZOu3XlrhN50Br6++og79G3iqyxwtKjbuyPUOJD8yZMQ6BW3i8AAkOyAb3+K8tUXGFQMnKPOjO8R5/gyrZ38D6rHDaRt416n0rkAX5ZggXinW92UD0tiep/koYG6KMMVyqyASpEySLIYfRu5QvLoFHXgH59UMOPg==
+ b=eMnhtHJAbgMOzYMrg8Fld1hyeQDnY7y7P96pnnRPP8QvXIIZ6xkBKVCViO7I0ciCT4lcbMZw7O0JRGlCosXpkWwHiKgF9/xazTyVJiN369Ufs+0B3vW4p21uaGYMbpJoO+N7V5VoGW1bu5IGFGmfQkU+OtEMBeGy6EuPZU8FLpYWjUROSfcV17He9AnlIxaV+La/7yyiFXKeAT4GWk2dINi0RenqRdGSULBOlHuTjxi2e/ttc4Z5dAqDJOTQ8XwagsF+0Awmxk2ZmIFobF+PUNoWsr/dS0zxHGKs+IrjFKEDPln7F+tykQfzHGi1+I5nXmS3BEI+UWmw7QGL0wFVQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zJB722PaypzRvTXm5hm48EyoMXKjFx1PJFLvryrUZto=;
- b=ri+3k8+PeiwGc5K4pFRxIPYIcxPAUBIoHjKjjw5oWI7WxH+y6eNqRGeNlGeifAZQW+qq7jFve4T8RLhsg7Ka1fxbFJa1K40/EtOL1KCySojNV06rSl5oL2OmABh2qv3FNwGnC6Wj2MuObgCfZSpAWNfqt4nBQTtryufs8GLTubnyw+Ox7/r/OEM1R/w/h9t+4BJ5IMZBJKvQxsAFTa4wDwldGsK4sEwb8zLeSme2Q2X0MBeEGsPZ/wnw1g9GqgHhEob3Ux+tN1iDjadnuUL+xjW7oBGNwRo0VVKlxs30LNElQCE/1+p8XaMy72Mkit0Di7lUJGYFswimIO9vXYsMLA==
+ bh=EfbkZXmmFzTTcMljeslZnR+zbaNpTdlfJkd0sm9M0fc=;
+ b=OoxVEZ2lNJce2st/IkwgS50fG80eLtyfCLdwxb7jKdUGdaf9NkSi4WoskD7AsIMd35BhLfkYcThUalf+RsBiRDACZbDENtvzSX1cLComFtHk8MiCkwiabu8HcQffrSIcZwfadFzl5plnH19BBXa236f/Wta+rkGQNec/xUIN+kcK2lfzlFLgBl0l/CFClQANSnrL5yfhcsci4EBRhhxUtqWT8lSmKBHZHCwIYLDgDgEzIbquoq1vFukPfFv13nPsa3hYQ2H8+9mo8/6bvgidoGfUXtyTtCxQ5LiGCKHNFnvRHA5R1hdBOpb2bc7Qp/5arSUXN1r4ldT2E52CMnM1lw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zJB722PaypzRvTXm5hm48EyoMXKjFx1PJFLvryrUZto=;
- b=GMLgGNHetTzY7ucfi1Q7WocfwPBLWmHreZ4jQeSAswPhKafNN+LAbOabdgtMOKUJGJ56+FMFVTLFAtbNRmoOL5OAV4lNUu63gTn3PNjvgkdY3Qcmg2UprAUGHXe7S27gKKCySxKU04TvlJi/NR6hNaqeQyCrPqUcAg1ibRY2Rgk=
-Received: from SJ0PR03CA0296.namprd03.prod.outlook.com (2603:10b6:a03:39e::31)
- by PH8PR12MB8605.namprd12.prod.outlook.com (2603:10b6:510:1cc::6) with
+ bh=EfbkZXmmFzTTcMljeslZnR+zbaNpTdlfJkd0sm9M0fc=;
+ b=NXLHaqB2zH1RvLIYPLmbtk5hPWQyUTx8Qgh/zhMN7zfChZpjJXTL6OHRvLudrbPB5199aOpJF05r3rfhWhu5M8wcQk17oSZJznlLPJ3AgrUh6BSa9tU4MElglzq9n6ImPzG60lYbImrdxyVQBxZ+qJBrpqYquld1JdQSA1Kw5M8=
+Received: from BY3PR03CA0019.namprd03.prod.outlook.com (2603:10b6:a03:39a::24)
+ by IA1PR12MB9064.namprd12.prod.outlook.com (2603:10b6:208:3a8::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 13:06:15 +0000
-Received: from SJ5PEPF000001CA.namprd05.prod.outlook.com
- (2603:10b6:a03:39e:cafe::9e) by SJ0PR03CA0296.outlook.office365.com
- (2603:10b6:a03:39e::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.13 via Frontend Transport; Thu,
- 11 Jun 2026 13:06:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Thu, 11 Jun
+ 2026 13:06:25 +0000
+Received: from SJ5PEPF000001CC.namprd05.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::8) by BY3PR03CA0019.outlook.office365.com
+ (2603:10b6:a03:39a::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.14 via Frontend Transport; Thu,
+ 11 Jun 2026 13:06:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,24 +83,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001CA.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SJ5PEPF000001CC.mail.protection.outlook.com (10.167.242.41) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 13:06:15 +0000
+ 15.21.113.7 via Frontend Transport; Thu, 11 Jun 2026 13:06:24 +0000
 Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 08:06:15 -0500
+ 2026 08:06:23 -0500
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 11 Jun
- 2026 06:06:06 -0700
+ 2026 06:06:15 -0700
 From: Shivank Garg <shivankg@amd.com>
-Date: Thu, 11 Jun 2026 13:05:08 +0000
-Subject: [PATCH RFC 1/3] mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+Date: Thu, 11 Jun 2026 13:05:09 +0000
+Subject: [PATCH RFC 2/3] KVM: guest_memfd: support folio migration for
+ non-confidential VMs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260611-shivank-gmem-migrate-v1-1-2d266bfc6f95@amd.com>
+Message-ID: <20260611-shivank-gmem-migrate-v1-2-2d266bfc6f95@amd.com>
 References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
 In-Reply-To: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
@@ -124,11 +125,11 @@ CC: <linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781183157; l=6346;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781183157; l=3567;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=2ltH2VfmfecXarnyIZ1h7eQNXMTYMXLNz0JRmU1moAA=;
- b=eqEoVL1LBPcb978R7d7shJhAdTmsmHaQr7Z4KaeJNxk8rQlICSxriWLaRb26almAeYQhX14cC
- 64T4aPVHTa7BHQ5mWDfZ0bV5NZPtdJupNAhq3yRTV7r71P4/MgrzawN
+ bh=0vEf8TcJYj/jra3f7/gl1PJYMpUia9Tb4gpiYZ1ToPU=;
+ b=v793qmU10vx9OQOPZ5kJ4GneAizF1RxE+2QmnGpF5lHUGUFQYZC8PT6apxiv10xlnBbjhpCpE
+ 0hNueh7rmCuAq3sn1Svsd9acaYISnjzvkft1JArWqxZIVQjOTIi0efa
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-Originating-IP: [10.180.168.240]
@@ -136,38 +137,38 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
  (10.181.42.218)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CA:EE_|PH8PR12MB8605:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bc8170b-f296-471e-2b2d-08dec7ba3836
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CC:EE_|IA1PR12MB9064:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b52ceb6-4f0a-4452-ca58-08dec7ba3d72
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|82310400026|1800799024|36860700016|921020|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|7416014|921020|18002099003|22082099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	1CeEF1l7CVXVHhkVEyWWq21kIViFLCaRderjD/pJu/L7qwT5PF3l0swIPzTfqKyJXs++UpVF/mj2grB2qrREam9y5LP7XLWkD0Qjl3NOU3bz3hjVYzksVikr4TSZ1fnZWCEmDOPrv/ZGFE+Z2R0sCTAcjnNL7+iv0GNKOdjZs2Lln5Z6IDcD0Qh+MNDaNobGdxdpZu3lLvUZU/gNFsAFMO1nzSZKhLcvdSn1h5u8hKTm+j8EEej6g4U6uXwBgnbQ0OuckwMoGVke30mo2VTnCm8IUFb1cco78XClnqylZUp11x+8TkqStyU0HBPsLtgqzZVuhcuyXKH0a+81bIZQ8/KlUlO9fxV6L0OWU6gH4sOILFu4LbbTNwf9GVq+XHq16xsx0QIDxl7MHz3Ha8rR+z2EjKb6pEorgRTKA2a2xju9qFm3Z7PLUZh9r27P34S5X4RnOi5nugZnzD+2CSdIVfrer1gBMf8QbdEiFBPUzuZKMX3mOQKJDPvMvQ/Eu8Z/oZ+qHxwETANcgt6gpZA62jhd7iHhDe5FkbEWlm5ZmodVwwav+JMsnWY+IsbE5n1mRCpzVdfD2jZcQoh69fp0gRpv6mKm8/fDqxA6Gw52xyZuZzabHjepmk6nWexEIl4g/kIitU1vCzDOQ4zpdckdzd1wsII2vKPRHWHPXAosK7LVfPnH3W5gy7KoVH2GklESI6EhNa8xo2lZ/6rCcR41IdbD5eM11T68D/ivcNgHs1kpqLKwoDRj4xN5usSSpd7vAnAjV7iA2mLFneopTfSukw==
+	ttF8yth1YCBvNdGCvGEocW8V0qFHg9u3xlKhiGoBn6kMBGTroMfOkcOVBmdhcORbRZMzRruQvWnQw2PZiFsVtWXGh5ocJTfJsl6+s4yt8/qPFkQseDcFv0TwnkEcRuAFjGGMUiNRbVHSp41xpY2xNFTVkGfHerRS/BpupjPsqeY9gwDdkHEfFzPmbI1LN1DfwatapY7eGd2URtOBkWeXVX/dOD5n9UMBIZiIAY7JtHd9cLHyQj1yO+Bim3GZEdAMUST5fJxD/4818uaf2q5OfiNGB+60Me+536rNmGGbCGUXkVB9mXXfrv6OD/BVYrw34TpyJe3l4Ft7Y4Fxa6aU/vrgCqI4kxf16pso7Hl5Kk01ZZFf7MQkKPftIX3oJ9+DzTsv8T5SiyzKjQVahReyKIQZrazP0NrsOp+SZCk2hshZCCwImN5Gh2PNmWKmeL8qn8w9QjQayITQePgIRT7U9vwDFX2K5Mr370WJC3GGPIj4trbBkoicCWWHp5pscyuKaKDp3dc+g3EjjpicPRVYRVyx4USZCC852GmeDh4MZtQvcdKV6ChsiB4/PcpiWOOQSGYcRsn2jd0hc+27yH/HhIA2vE+Vk8oiJtfMt9b1NBV9jEBOfqxZiSjHIlkR8jb9nLpekhbRnxunBNvGgsWEvVJ09z1bAosyA7uXJcuAkDbCkGT04cIhIMpTgpH7ieFCUJCChh8qVWBUx92QY/TApXmm7UdWQDTgM5ObxiNgkG9RawaPFbX7XVIauBTnSUFtOkCRHWeIcuQ1I1tg5GIRDEM/WQYq+SavNCAaJpjDcLM=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(82310400026)(1800799024)(36860700016)(921020)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(7416014)(921020)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	wly1TKdTbVlwGFwOTzJZQFjQaZkCF6NLchRkqTku29XBoNt2tXhchRnXolLn0/7SGqCIMvN2KxhDsAnzaBhTN/ue4wU9SH+3J3sNaKRdoWNtz22O/JoDfcyOFqtSU3w5oeIxYuiaBWcnXGCdxDxPAliKTG6HBoWSNkQGkWyUIkYafg1jobBSdLSdlCUcKijrXPzeKp/B/Kk9FDglHrQgaIQkm2oJqMy+epBlT1TYsQNNteAV1blY5pPzkj/GCuIBVhffIBL5umoTiBEXtBqEW/BUQV/lMPg7y7d21V8ea+CM0Dig8rpPFOlL7jwFg/fUoPe7TU7bRfP9tO3P+M2HcS09BYLWa8eUCSVvBQDlg1KA0e6V2NeP1OpXvJA6LzAf0H3WEfIml7eFvWfnCUGkjuUN0FjwA99m40gHjoxaSYKDxKmnFh0jxfIg6BLMyf5W
+	dVn25/scKOpTAiq9Lkr/WkcH/U1GYQz4pMBadKEK0/93zmnadT/JQOYCjIRONe+YWCSlabHyadVEl69+x41VnjdfZcqEyvwjP9o/pdwPB6nLrO+aG4QoTcQStdkf5KP0aTnWBwFpDW32hZuRGPAcOyX5/MAfbdvyUBQwnHO0hosmwtlpqBkpTKX+Z+8ujQxRCz66EVt9CUuxReHkHz2mEmQlI30iWdVC0lL1dgFBvvxXaphGEUFi1h9UkcUk780jAs53cVqigyFHlAqyV/BfXmuOZ5XBcbxXjfeTrN+VP4CkEZfCFPvAqYIgHx8Ow8elcrhYho8SQ+QAgBglfTKzAvT7iV91Yw+QZ0F6W+gKl4xNRHsbnzo4bXc2HGTQgwuW8Lo1tWivQ9P5/0KWwQg7+/xmlP5Tonrw96/mh9cCNu7uGfrAffEdnohCLO+iHrNG
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 13:06:15.2994
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 13:06:24.0874
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bc8170b-f296-471e-2b2d-08dec7ba3836
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b52ceb6-4f0a-4452-ca58-08dec7ba3d72
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001CA.namprd05.prod.outlook.com
+	SJ5PEPF000001CC.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8605
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 765FF20012
-X-Stat-Signature: b5kg19p8h9nx5goqsspimiyti3ghi3cz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9064
 X-Rspam-User: 
-X-HE-Tag: 1781183185-363270
-X-HE-Meta: U2FsdGVkX193NR614U5rgwkSNGb53K4Zhx3FY1NycP4trRgNrZQr0+AQMNFDmfdZeyz4vOZ6oY9NjlzwTFc7P8svHhmpEMPI6SVznPn5viXPZH6mZYMLJ1GTjBcrfzmPJbcILeazsOEVaZ1TWUHvkn2/ZY/N3lxqNOukkyZYv/9q+7xft2LrEAcNui2eZoWmGy7S36ZCmipLLUYUv13i3H6AFqCd2EePuzOp7mvf3CFJncDBK9yBNUenHPOZ5MFEU1CKz4cWP+9Q2xolykxgu6p+N9WK/LuTPz5Qb+qM57CJYPG+LxIvKxRty6J8Hd+yrQTnd0YoSyTQu0q5NrmqEGjMNC7SztG8Lm+0yJEi1+jGnDFbY+ePSIutMARoNP+YNjDImVnpMN+qT6yY3UeymRo9dH1IKmXXT5+rJpnPCIxUmicIBIewvM3mNU7snY2uo5FzUgXcpOSpV9wrzb451G14IzxGDOs2g+NsZxst0PHGXTC0pnHBZn4LVB/n7RUkpAs4rLhFC0iAPW9Sbl2ICXvCWs27kHTIRGXDo4oGyfKWYIe9DwsWfHYpBD5ntZQHqt6aVfTJOG2tALcBmgsL2qKhQuDz5Rw4PbbdmbjhkXBPdHdjSfyr16K+G3R4V6Ukp8OgSipGup4Lzvb8rQ+eefjfk6l/ogrX6ITsnVMumizAHoxFnrtrhaa/DlB8dc/HLV+mealfEf0bChC24uqk1ogWg7G9ZDLm4YkY8GJ7QvCPz/WyNy55GJcB3iEiCufyphRRFAKPD93T4t+Qjzu/jRcH9xqWW7IiX9Vp/ZKc6KF7Me7GtY/Tc5JzhVV8CBuKKzXw3JxXEz8B4PLk8azNoDUhKTVsPyJMdJVWFtLxDz4OUtWIu0bspD2U483Ljk69THWziTPHlJ+CHCp4YDY56+EWtfo9VfzOdntS2ZsBmB6Z09azPc+FOpY8401oHcJcMgV5DK54K7MMLyUXAzz
- 5rRhUtpr
- e4s1CBukG/C2ojNpA+URs6jrL7G3dZXxCveEYpYrVndDLpUxiq5EskyF0utgs81zuJWyMM/sRNWfCQyRA4/tD6Gal6ajCYQnGZxPLYQK/ltRRq0CKWP4leVtH/eHcfLv10CB0br9bxQv4w47QCRfKU/5tHMJndR2BvQ79j3HlBgRBAIfL52zdyg/UExKKSQc1wGwhXasJ/L6WEKScQSA99PGFZaRtd3/I9SNnaX5778pZYFD7CZpDTBI2FdIO3LDgxuv6OFdqTe9dPzA1yYaHxsZ5mG9cf48u29Y3cEQcM3Yu54NAZlXqX2ZGlEiwJYPF4+oVGYW3rRQFIODDpDVMM0MaCjnvkaa+iXgKhKMht2ERFcfgNU5iE2rbXZu2b19NVyK6jCxWeca4DxoU+/5Q30NPN5is7ZEGaH7fUjY6XQHafA6FLOgFjxM0z97n0sAwRV1MrOtXUGtr5OFzRvfa8aJtEkmwM5LEY8m/tdqsVEJBm+CfnpltduvVeSC6Dpd3lvViiR4/AjNFHg8wlFqIM0ZslGpckndvj41TnIguc8taV7x6MpaaH4QMGg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7D92C160019
+X-Stat-Signature: 9bmw6kfcycqwqimqinrgrxpa56i3pix7
+X-HE-Tag: 1781183189-632821
+X-HE-Meta: U2FsdGVkX1+DGE2t6iPcqF4IaKuyuAC8sfYwLgZNEZ3u3Y6f9KJX+bsh7MunvxL1+FnlpKcJYkzj3doSqi3+HSi5nYFhnEKhH4VCBaQli+3sRqkyiZn9AZDuGn8NEBblryiqK5tiR7UWQeQo8zJ7FnB+Wk7MMOikxTMi6nCxXruET+ov8EL8uRe2eJg51SK4u3kNjDr4TNddOhY8gbWRGFYlZb37XsuNjX9IB1HwZcYGrHlMS7WNTRVht8NOUY/AFTjctF5GTeJV0m5M5NoDJyjrm+XRqpmQ4ZKBKL8Fz7bDL09A8j1mQTev5E3xWAnWCMFOdLjuoHXmJqT/8+TBpWyt/ShdWUNCWIgnAFK9l+lQur2D3bwhPWL4GHu4B2XUTTeBolb6Pe+TiUeOIouJUZYE9F3eYqam0veGyuZP0da5ORDHxC5IzwB4GV+GryKfM9E5jiOItIE/A0ubhQZYwjBI6G1ZWUneSGpLpMjHa7EixonnAAXzFqJAq7T5AjTL04e+FdoO8bJNMx0RaWzxBIhMvD09bfYdCZUdOKDZLxzeWOznT+6KN37uJQb8Y7OAUGsbahuFCdDbt9h4nMxtPnSWrmz8ONDqFg1rl7bz8bn2AzJ9+U+AV9JLRZhF4Ynm9my53mIk6kn/FHeIDd+Jos9x8k2Mi8XN5kbefczS5tUPOzwusvmZtwnnx5RHNUP/1uFdC/amLzjVLsIqNens7qRxCLjmEHwvqXU64sVq2byuoxRssFoVIutYsPdyhlHgQ95MupMqldseulfnn0ATbIlNwFvkch5OtnhKDHYz3pGr8zUXMuOJ31jT2D4+rxZj3fNfdk+3U3IjcHT03KAfRJ7YWd5gzQT5wHPBvf0zdYO8WiJbNWce93iuRro+Pcc05nwgK0vG1EIGGH+ZzI0VSTQA8AaYNVt6qKVnlNZjxBchI+wTH3IQ1j8XoFidHoPcNOfRGhFtEHufRce850m
+ pgchuLhc
+ n1rhJeF/EwWuVFX37j0Xj9uwJgtt5QuNLw11zir4WJg8L+5UO8FQSLTiCLf3bA5VFk/uGUwboiETzVPSbYoKNo4NSd8cJ8yoMki+xGNcL2UqkxcvjqLRtzzTqBnGNJblCrw5B1fLJ3TV+TCRAbKJuYAapCSBvx/8qxrxwGMuH1z0cmpxC6xDdxbBjxHNNBFtm0AcKJP4nda+vTnh3zahCF21T0JjcASkfseYfQEB1dKe136j99kHcuHql0vNu8n8hEqPR8W2QD5VIVLf+w2mZ+Ocq2LzJjOJa/IddwMJlbZFZhpmfyFxcHDDTD5wTc5qv0rDQOMfWndUe/iqv+RRZ2oH95D112ompMAw1Mat/MrrAJK7nLXSJ79gy1zRL08ss0u66u4V9iq1HtDr7L8ei7qePqwMuHBhyWhfDg63KN9TINgaHAGmPaytbpRFIb1NmivV+E+QbPUUx4Dlu7D7vYKvyp/JLlHJPNQT5e8SKef+lTLi+WGgkyctFXeYOg2tXCtjQxIfgo3VfXbmbeIm+pWwS6KqMbs1b5YLFLJaUXWeOjBcqZDOaX2/31xKYuIz4HdN8NTVi8RHzC1Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,155 +176,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 27e6a24a4cf3 ("mm, virt: merge AS_UNMOVABLE and AS_INACCESSIBLE")
-folded the two flags into one, on the grounds that guest_memfd was the
-only user and always set both. But the two flags were added for
-different reasons and guard different things:
+guest_memfd folios are currently marked unmmovable, so the kernel
+cannot perform NUMA-balancing, memory compaction, etc.
+This is unavoidable for confidential VMs (SEV-SNP, TDX),
+since memory is encrypted and copying it need firmware assistance.
+However, for non-cofidential VMs (like firecracker), we can migrate
+the folios.
 
-  AS_UNMOVABLE (0003e2a41468) marks a mapping whose folios cannot be
-  migrated.
+Mark non-confidential VMs as movable and implement
+kvm_gmem_migrate_folio() using filemap_migrate_folio().
 
-  AS_INACCESSIBLE (c72ceafbd12c) marks a mapping whose contents must
-  not be directly R/W accessed. Its only job is to stop
-  truncate_inode_partial_folio() from zeroing the folio.
-
-The merge assumed unmovable and inaccessible were the same thing.
-This cannot express a mapping that is inaccessible yet still movable,
-which is exactly what guest_memfd wants.
-
-Reintroduce AS_UNMOVABLE and restore the original split: truncate keeps
-checking AS_INACCESSIBLE, while migration and compaction go back to
-checking AS_UNMOVABLE.
-
-Currently guest_memfd sets both, so the resulting flags and behaviour
-are unchanged. Preparatory change to support folio migration for
-non-confidential guest_memfd VMs.
+This lays the ground work for migrating cofidential guest_memfd
+later. Once the firmware-assisted copying support is available,
+those VMs can be made movable. The confidential folio content can
+be copied separately, and the destination folio can be marked with
+FOLIO_CONTENT_COPIED so __migrate_folio() skips the host-side
+folio_mc_copy().
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- include/linux/pagemap.h | 24 ++++++++++++++++++++----
- mm/compaction.c         | 12 ++++++------
- mm/migrate.c            |  2 +-
- virt/kvm/guest_memfd.c  |  1 +
- 4 files changed, 28 insertions(+), 11 deletions(-)
+ virt/kvm/guest_memfd.c | 50 +++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9d9850d37185418349b89e6efe420..17f5abfa6e7be97c0dcb634346f21ce076798495 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_UNMOVABLE = 11,	/* The mapping cannot be moved, ever */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -322,11 +323,10 @@ static inline void mapping_clear_stable_writes(struct address_space *mapping)
- static inline void mapping_set_inaccessible(struct address_space *mapping)
- {
- 	/*
--	 * It's expected inaccessible mappings are also unevictable. Compaction
--	 * migrate scanner (isolate_migratepages_block()) relies on this to
--	 * reduce page locking.
-+	 * The mapping's contents must not be accessed by the CPU through
-+	 * the kernel direct map or other internal paths (e.g. zeroing of
-+	 * pages during truncation).
- 	 */
--	set_bit(AS_UNEVICTABLE, &mapping->flags);
- 	set_bit(AS_INACCESSIBLE, &mapping->flags);
- }
- 
-@@ -335,6 +335,22 @@ static inline bool mapping_inaccessible(const struct address_space *mapping)
- 	return test_bit(AS_INACCESSIBLE, &mapping->flags);
- }
- 
-+static inline void mapping_set_unmovable(struct address_space *mapping)
-+{
-+	/*
-+	 * It's expected unmovable mappings are also unevictable. Compaction
-+	 * migrate scanner (isolate_migratepages_block()) relies on this to
-+	 * reduce page locking.
-+	 */
-+	set_bit(AS_UNEVICTABLE, &mapping->flags);
-+	set_bit(AS_UNMOVABLE, &mapping->flags);
-+}
-+
-+static inline bool mapping_unmovable(const struct address_space *mapping)
-+{
-+	return test_bit(AS_UNMOVABLE, &mapping->flags);
-+}
-+
- static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
- {
- 	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 3648ce22c80728b894cffce502d8caa3e4532406..8262f08c01ff407eff8732ffe1d0eb4de469eaf2 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1133,22 +1133,22 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) ||
- 		    (mapping && is_unevictable)) {
- 			bool migrate_dirty = true;
--			bool is_inaccessible;
-+			bool is_unmovable;
- 
- 			/*
- 			 * Only folios without mappings or that have
- 			 * a ->migrate_folio callback are possible to migrate
- 			 * without blocking.
- 			 *
--			 * Folios from inaccessible mappings are not migratable.
-+			 * Folios from unmovable mappings are not migratable.
- 			 *
- 			 * However, we can be racing with truncation, which can
- 			 * free the mapping that we need to check. Truncation
- 			 * holds the folio lock until after the folio is removed
- 			 * from the page so holding it ourselves is sufficient.
- 			 *
--			 * To avoid locking the folio just to check inaccessible,
--			 * assume every inaccessible folio is also unevictable,
-+			 * To avoid locking the folio just to check unmovable,
-+			 * assume every unmovable folio is also unevictable,
- 			 * which is a cheaper test.  If our assumption goes
- 			 * wrong, it's not a correctness bug, just potentially
- 			 * wasted cycles.
-@@ -1161,9 +1161,9 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 				migrate_dirty = !mapping ||
- 						mapping->a_ops->migrate_folio;
- 			}
--			is_inaccessible = mapping && mapping_inaccessible(mapping);
-+			is_unmovable = mapping && mapping_unmovable(mapping);
- 			folio_unlock(folio);
--			if (!migrate_dirty || is_inaccessible)
-+			if (!migrate_dirty || is_unmovable)
- 				goto isolate_fail_put;
- 		}
- 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 8a64291ab5b44c401e1e0356bf39588e7b5d7b0d..c81b3900b5afd150681d973484e71982a8936221 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1100,7 +1100,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
- 
- 	if (!mapping)
- 		rc = migrate_folio(mapping, dst, src, mode);
--	else if (mapping_inaccessible(mapping))
-+	else if (mapping_unmovable(mapping))
- 		rc = -EOPNOTSUPP;
- 	else if (mapping->a_ops->migrate_folio)
- 		/*
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 69c9d6d546b287b4f75ef69868259c082ca50933..806a42f0e031a1c7729f53c786316d2502532553 100644
+index 806a42f0e031a1c7729f53c786316d2502532553..e4470106fc7792f328bce5275419683328c8b4ab 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -592,6 +592,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+@@ -487,13 +487,45 @@ static struct file_operations kvm_gmem_fops = {
+ 	.fallocate	= kvm_gmem_fallocate,
+ };
+ 
++#ifdef CONFIG_MIGRATION
+ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+ 				  struct folio *dst, struct folio *src,
+ 				  enum migrate_mode mode)
+ {
+-	WARN_ON_ONCE(1);
+-	return -EINVAL;
++	struct inode *inode = mapping->host;
++	pgoff_t start, end;
++	int ret;
++
++	if (!filemap_invalidate_trylock_shared(mapping))
++		return -EAGAIN;
++
++	start = src->index;
++	end = start + folio_nr_pages(src);
++
++	kvm_gmem_invalidate_begin(inode, start, end);
++
++	/*
++	 * For non-confidential guest_memfd the folio is host-readable,
++	 * so filemap_migrate_folio() can copy the contents itself via
++	 * folio_mc_copy().
++	 *
++	 * This is also the hook point for confidential VMs (SEV-SNP, TDX) once
++	 * they are made movable: the host cannot copy encrypted/private memory,
++	 * so a firmware-assisted copy would run here.
++	 * Idea: https://lore.kernel.org/r/20260428155043.39251-8-shivankg@amd.com
++	 * Mark the @dst->migrate_info field with FOLIO_CONTENT_COPIED, so
++	 * __migrate_folio() skip folio_mc_copy() for confidential VMs.
++	 */
++	ret = filemap_migrate_folio(mapping, dst, src, mode);
++
++	kvm_gmem_invalidate_end(inode, start, end);
++
++	filemap_invalidate_unlock_shared(mapping);
++	return ret;
+ }
++#else
++#define kvm_gmem_migrate_folio NULL
++#endif
+ 
+ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
+ {
+@@ -592,9 +624,17 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
  	inode->i_size = size;
  	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
  	mapping_set_inaccessible(inode->i_mapping);
-+	mapping_set_unmovable(inode->i_mapping);
- 	/* Unmovable mappings are supposed to be marked unevictable as well. */
- 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+-	mapping_set_unmovable(inode->i_mapping);
+-	/* Unmovable mappings are supposed to be marked unevictable as well. */
+-	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
++
++	/*
++	 * Confidential VMs (SEV-SNP, TDX) bind encryption to the physical
++	 * address and require firmware assisted copy, so their folios cannot
++	 * be migrated yet.
++	 */
++	if (kvm_arch_has_private_mem(kvm)) {
++		mapping_set_unmovable(inode->i_mapping);
++		/* Unmovable mappings are supposed to be marked unevictable as well. */
++		WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
++	}
+ 
+ 	GMEM_I(inode)->flags = flags;
  
 
 -- 
