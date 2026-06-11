@@ -4,132 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C3BCCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 20:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B902CD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 20:24:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CC566B0005; Thu, 11 Jun 2026 16:20:26 -0400 (EDT)
+	id D072A6B0005; Thu, 11 Jun 2026 16:24:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97D456B0088; Thu, 11 Jun 2026 16:20:26 -0400 (EDT)
+	id CB6E16B0088; Thu, 11 Jun 2026 16:24:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86BB56B008C; Thu, 11 Jun 2026 16:20:26 -0400 (EDT)
+	id BCCCD6B008C; Thu, 11 Jun 2026 16:24:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 743526B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:20:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 815971407BC
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:20:25 +0000 (UTC)
-X-FDA: 84868749210.04.EDA9235
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 96E4620002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:20:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dwo3JVfB;
-	spf=pass (imf03.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.222.53 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781209223;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD1BD6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:24:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 305731A0834
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:24:12 +0000 (UTC)
+X-FDA: 84868758744.23.AA7D35F
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 601881A0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:24:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3aRkragkbAKASYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3aRkragkbAKASYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781209450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jTgZz9d/5AySShYbNQVJQTTJ8f/ObprCMIpsP2JIlMU=;
-	b=gM6GdBmWWi5Y8xh/LBrEyR3QE6iYk70Pr73PoMyEgNqjdOa5W71+2ARt2BxMSKIp/yRmU/
-	yHWDk4vq3bbUDDu78hwIXIGXf1y0t0rM/LQ9hNsVRxgTKNQQvHV+SbpEo0nozOhw1mUhhM
-	VIgj0YIsNqAWYABmQSt97EEFa0EeEt0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781209223;
-	b=bdjscFYi0XcHAjqJjMVO2fcEswhfaM0DOKq1hovTGHotPOt3bDbDx0qTMF23fP+tnUDZLw
-	MhnhnXltZi2pG5F5PQdY+MrvP2czLiBMY62JN7rbaKBCia+S6pJw1RofodCZoOupxtmw8B
-	o0YPGryKLnTBkEsfQykty0Bx3504s7Y=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dwo3JVfB;
-	spf=pass (imf03.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.222.53 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-9642106b291so5402241.3
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:20:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781209222; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kJF0jna58YFASBQ+WmlZfeF1dh9b+6qIOBaEa0Hv4/uD5VggwLycsfmFp5tM5jh6E1
-         EVJd52jQUkKi0A2r2Lp4w8btQm6WXh1dAkLh2Y5oQ2y6ynp3VrkZeBVCebQlvvun5hJ2
-         zdCNFZu/3scZZHO3PjsmdX8P2VGUhQOugJGfzSW50PwfL9T3oJw931H/X6ybdnG+xrLa
-         +I8lYNpYM+7M9+zKnqLzYhYvE5d99feRsQc3GsHk+cAczHB2ckVDhVjUV1tQ2zFqKZXB
-         oIBGzJ6+KtNT4kXKLI/HjHSHT3HxfwmB/oD5NLf8HdyuQnnJwCuBNxYARWBiq7/6eKlU
-         Q3Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=jTgZz9d/5AySShYbNQVJQTTJ8f/ObprCMIpsP2JIlMU=;
-        fh=eVgcngH0xjKZ2iqctvIA8VQO/8S7gFov18t11dw+jgY=;
-        b=Vh80s5/4v/gJD0oxAvw1EG8GElmKM+ueRY0wilhkbJh5ytDhtLQ2AScqTzoRCNX3Rg
-         SwTn+SkEqSUOFIJ+8NEbcIUAePX3+ODoqFQqkrBGnVLU4Mf8iW3oziEMH0VftwDemo7/
-         EkPvcQ25rzxDWg1TOt78F1UcR29a8sDrDpyky4LmdqZKiShqksqbyYrcUoT734+E8jaG
-         j5rEA5kVs5ZgpaPtRI2IfHMp7oudwqIMG8e4TqkNySaQEOBSKgXUYBy+4LlqopqlKolT
-         jI7WWxFa/Z0na4GSVSBRqmXcrjj5e3zpm/UCepUGFVoQnFfjK6oeqr2Bcac1/DBFMC41
-         zI3Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781209222; x=1781814022; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jTgZz9d/5AySShYbNQVJQTTJ8f/ObprCMIpsP2JIlMU=;
-        b=Dwo3JVfBAWTWlsSzAWerMqBt1msvpcJIM6kgslRU5REBma7i/UtTiyiAOPRiFW3O2h
-         D8V4/podD1WJJh7Ud6nRaaJ7pOFVe636zSWgGq7UoiKc1dvHsi1tNQL7lm2Mlw/PNivQ
-         7VL5NrEf1DRmJHV765KXmtSe8oMmd2/ogztQ9AV2YIDQcVjniZs0tRpPGHi6YzkBiDX0
-         pxCMl4fv8N4tggjv6h35HRawaBrcv50PmaHPUcUHxP7d5AVMvZ8/Bqy2Gnc6w1WV0mGb
-         jfQNF07NjjWHeEfNFCfwRM6cV5EVSMabBggJiw+2shddDzzStB2p+PB9aLmKLBKBToTl
-         8rcw==
+	 in-reply-to:in-reply-to:references;
+	bh=9grvKRD1snOVoU/w8AWVaOix9sWh6XIsSpdq1MW8cvg=;
+	b=sjtamxjsSwpCFafSnMiAsoRFe0sCBDwa2OvTaeyEuUjdb0JPSU9rmX/xivtlgOidocXfv5
+	NmkDUjlNNruHYDI6djy8PdN4lG0JUVb4KlKGOzrOsd5rR1Fhgi6eX4yWTbWRnMhS0NDgyP
+	10nbR7b0kNKa22U66MJjR28jn0ddGjM=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf19.hostedemail.com: domain of 3aRkragkbAKASYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.197 as permitted sender) smtp.mailfrom=3aRkragkbAKASYZKALLERAPPID.GOOGLEUSERCONTENT.COM@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781209450;
+	b=X+z/Xj2dOio0ecRf4kvwPVV4N91re9KoisfBp8VK7TbLWkiy8oGSZX6S0NMFtb8zl20XA+
+	GMl2t6lfGZpDtYaTu7WvufOrICTwGoCHucnuuH0Qo4UqUfvXDTA8RGBj8/BCJpowA4NJAY
+	NxM7uU8ebQokkgxMHjFOLZKiUp65oE0=
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-486e64c8edeso386981b6e.2
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:24:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781209222; x=1781814022;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTgZz9d/5AySShYbNQVJQTTJ8f/ObprCMIpsP2JIlMU=;
-        b=cdvI7oFyHtm6osBHOsqeNyH1mxudgo/dUHDUA8CnwAQ0MOBuzhOeb1ui725j9CYImo
-         xSD2cKPjzepUNM+mXO7hGB2ob1vuRwqlIdSvcToB8sT9PNbK1paTiPvtVtSi0qxjqK5o
-         RGMyVp360CJ881YzVO1dzU+chYd9j4FgaTVJhto1F/u+dTp+KX/qKYMTRnDLH0kKFTdy
-         jE0S57enSOLJmRGDQ7t+vhOhPmFrxowOCuRbk1X7C+EoH+tqY/85fbe45dTDDJM+cb4F
-         uLHgaBieS1zHjzHrWJGSf1vMkA1SEs4iPj+q7IkoVcFmTMg+ZNe/0MKXP/J9C0MoaUBx
-         jzgA==
-X-Forwarded-Encrypted: i=1; AFNElJ+Ggl2JFQUYKE0qsluvjZoW2KzXAQWr9ou5TCchHgkcXwrZmGNfoT8m7aXDPLfZVpdJS5kiPtXAxg==@kvack.org
-X-Gm-Message-State: AOJu0Yw5oEl/3/4b+ug3weMCiwWf0Zs9mZzMmkUR4NiOlsGuEjsolgJm
-	Zi1Cj46DAXfpQdoqxDEAC2ldyWUz+NjC6mfJULBaHbT51oXddRGDhiIXtfWVoj/NGxG4bXru1UB
-	Lgtae+eyIeTDJ1IZJFKRQ3HoNuMzPV9g=
-X-Gm-Gg: Acq92OGbax/eG/GLYVhPG6rNsOUl1XA41SI6tMOly+iXumnAd5W+cENxB9tbmh8iSuF
-	QXz4oSR5dMmZWR+J5Y6/y4p9A3IDkEt75V5QhM5Mb/AEpz5JF9Wuae1xWodY8nlh59mgutz45+Z
-	hLWK6pFALKqfm3yTS2z6AhAVmWSUCkayu/ZN2WJcylTvuz1kseg24gEeBnEVQJq6Zntj6plQe8y
-	t/8NV2mGBF/bkQfNMD0rXsBQZADTEL/h++QiB2DrM1crc5BUHb0f311tJ/yU2XmQZvhGckXx+Hx
-	sruQ5eyH58zyAeG8VpLc
-X-Received: by 2002:a05:6102:160a:b0:631:bcfa:39d2 with SMTP id
- ada2fe7eead31-71d5d79f815mr1061435137.6.1781209222498; Thu, 11 Jun 2026
- 13:20:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781209449; x=1781814249;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9grvKRD1snOVoU/w8AWVaOix9sWh6XIsSpdq1MW8cvg=;
+        b=NaDq0+8pSCi7WHRk8fnqq6WgytpCJR66ZPpXcOXBzwmS5CQ44Ni5zS/raHxS7ZEfJ7
+         M0A/2jgYkax4GkIkueIHVwM2BYnsZRshzDkuWmE3l3+8Uz0vk7saLIWGF+Frsc6FFPcG
+         2acxbRpQOFNoh7PvqU0YPccrPGeboHIOwFMnRWZpfk4eDFlPXI1v8+JuCRXWGS2i4zKz
+         FPMEzSIat199irAjVuS/uW2hQ1HidNWG5fDPWB5HreA//EtnVWX4d/D3yKvtt7qb/KMt
+         xQW5cFJTf6D1nqrQWjBR3I3ZHyNWXPvBoUDcnjL9bl9BHXOscldSt58kJYWIBmvPQHE7
+         xoXA==
+X-Forwarded-Encrypted: i=1; AFNElJ8NEJdSZdOjkXg1q9jMYEhDIyx1UqWBZiM1MqALf92+Q/cKuZ7Pj6Lya7tyhVeqXKraiUdGJsnXZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw1Jl0gQ5ovaLShUFir3rmkuZwiiyveM9Pbu5vKeU458Pz/26F1
+	2Wlvfyw/3p+DyAekgvcgRRrYNVPYpV2WL/UDTEiZuwhOZBtHqkMIg+BAvAvQ8Q9GUPdKVr2n0G7
+	d1Aq51giD1k6B9prCLr/k+OG6nt39Yk5Qiqig0Ek6Z+ePPoXOaDYOBCftAjU=
 MIME-Version: 1.0
-References: <CAF+TLO0TOKr3nef9RnbBuZ8A-jNpV1po26t1BO6JbSqMhfABvw@mail.gmail.com>
- <20260606003627.88973-1-sj@kernel.org>
-In-Reply-To: <20260606003627.88973-1-sj@kernel.org>
-From: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Date: Fri, 12 Jun 2026 01:50:14 +0530
-X-Gm-Features: AVVi8CfXgkt3MDA0yGcGzW10j5Rf1FJusMcuou_cvpTTN3oskE_6uf75VOmvzn4
-Message-ID: <CAF+TLO3a2MBVp3-7jm3BPjuT8jhx4yzdWxuA_QPQ9YPVEj0XZw@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests/damon: add regression test for damos_walk()
- vs kdamond exit race
-To: SeongJae Park <sj@kernel.org>
-Cc: shuah@kernel.org, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000fa4edc0654001686"
-X-Rspamd-Queue-Id: 96E4620002
+X-Received: by 2002:a05:6820:81c5:b0:69e:3dde:869d with SMTP id
+ 006d021491bc7-69ecae5274emr3358153eaf.23.1781209449321; Thu, 11 Jun 2026
+ 13:24:09 -0700 (PDT)
+Date: Thu, 11 Jun 2026 13:24:09 -0700
+In-Reply-To: <20260611061915.2354307-1-huangsj@hygon.cn>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2b1969.5d79d3ce.e8697.0000.GAE@google.com>
+Subject: [syzbot ci] Re: mm: split the file's i_mmap tree for NUMA
+From: syzbot ci <syzbot+ci1ee4d53eb174bb4c@syzkaller.appspotmail.com>
+To: acme@kernel.org, adrian.hunter@intel.com, akpm@linux-foundation.org, 
+	alexander.shishkin@linux.intel.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, brauner@kernel.org, 
+	brian.ruley@gehealthcare.com, corbet@lwn.net, dave.anglin@bell.net, 
+	david@kernel.org, deller@gmx.de, dev.jain@arm.com, dinguyen@kernel.org, 
+	djbw@kernel.org, fangbaoshun@hygon.cn, harry@kernel.org, huangsj@hygon.cn, 
+	irogers@google.com, jack@suse.cz, james.bottomley@hansenpartnership.com, 
+	james.clark@linaro.org, jannh@google.com, jolsa@kernel.org, 
+	lance.yang@linux.dev, liam@infradead.org, linmiaohe@huawei.com, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux@armlinux.org.uk, ljs@kernel.org, mark.rutland@arm.com, 
+	mhiramat@kernel.org, mhocko@suse.com, mingo@redhat.com, mjguzik@gmail.com, 
+	muchun.song@linux.dev, namhyung@kernel.org, nao.horiguchi@gmail.com, 
+	npache@redhat.com, nvdimm@lists.linux.dev, oleg@redhat.com, osalvador@suse.de, 
+	peterz@infradead.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: zeigoptmf1ohsa488j51wkbn3g8pa3be
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781209223-859146
-X-HE-Meta: U2FsdGVkX1+36WoESTRdiShq/s2YYmdGDDmmr0GWNXzo6mU/DtWMOZ1VGlELqBLGLg6ei9bOH0fAcvkGjSIkEXndHi+6FTFct37fOenhlUByNASY0QQD45JExy3X1WxXHeObZk0zsvv/OMS38Jo5qmdvnj8mXm//ptVOn6xFz4uZ8A5w0jksdLIrglBgqtogT0AACR0EPLVDcPTu+POGTcSHQsD4ncEOBdXO67/GLC0HrnpBa6e0mphRzULL6LaykRUXcSc9ylpjTAe3jvsyuSUmD42GPVHoH4urOQPWFo2FzKnBIJnis6glHsIle4+OA9MkePRx+lEg6rpKEGDyoo8gvXDJP+rdvDhMbuTDzKZXG8rmHdeUdXTiMNx4p7QQQXfYhS8iccmps8TnomsRhn0h4VjYu5gPDPoGU5ezxl8FawAkiACAMPlQoUvs7Crt8YKt0HbyFynvDDwDLg/yVZTZX8AcbdYuyUn+8a7q3/8fRtY4bNsesoJLFa2HWNTJ7mcDgbn99nvEvV5LKe91ps2hzeFUCwqqBSL/vr1GAk67t5m/RXghZiHGBfgHQZ/lIcl8GeJcJFlvcIF4wVoCx4yXwLsYg2sT0PlrEfjsCx2UQYdvqgNWRJX9co8sejZ+JXdztVARfPwAHKaEOKJjLxhiDMuJbCxnmvU6f8t5SD9EyEYtR3OrgePgGx1ijiz6isi08/HmSqLMqwk/IFM/zPfMmlOSGQz5qqLqYozAULWaGeRXxaZl0VxtntOudjgA6OU4ltzYNQGwSC7fUhYdJAS+b1Sw3VRD+NqfGAymCpgJiTYnEsUW/CYWvFDlfDwsnYmPyOsIQiG6oZwpSSczPV5oZvo0ZPNAi6eBCaQvR4s723KoRhWl90tfD3+i6vu1qDaq1WU5xlqfRzz53z3lCvtmsbNwLGHRW2ON/SgRli0pUnxBrg1SwyfHGizvDmfsvNWYY/zkullyFf4YsVR
- ZJOptxQ/
- MK6jmtRFr+Sh6yr1qL1R8uKoRcMhtrv3HmvpI2A/b+KaVKkUUAGLGReQ7Ce+3LN+tsfzbONOXdJxy/A8fdkFN1XvpGXkW53SxdC/eRjdu8Sj1fbrWsRPG2d/XM9RosQtXPxylBhoxItPiVp7MCRsnrLTLNqNdzZv3gxG8v9gpc4XOdKmg2P7+epVMo0QPkAx0HpkkeVGg65TCPnGPaf6Xwkf3SktP271se1oG96wlaMfl3RstpiuSRwWUtx9ORQDLTgAHfZb0pGqC5clW/hL8YghIbo8B34ICMVQCXoE0OC+hkch/sN+Vz4cU+GbciPbn+j8TZox2XFeXJGZQNZ1v67ACHT+YWe320fteQcrk4mjInD/nUtLktJZuOH65biyCuWi8B16s0YJQfsDXmpUh9ak2IeW4v5u3/yktBpbC9yyjGFw/bGajFHoYMdBn0dde0rpVSq0Snxd19zbNFfoQFLe2zj60JoActIhP9vYsJGm+EWpx5awPnx4oajLkApZd5UfowiucjiuIwfpDumpQI7E2N/4QpP08P2UJIGNuWnenQUE5frBpNARWe5ZTfiHlIKaSOyGvefNsIlU=
+X-Stat-Signature: bahp1tfjeybobkpkwdmb88148xbe5cog
+X-Rspamd-Queue-Id: 601881A0005
+X-HE-Tag: 1781209450-741196
+X-HE-Meta: U2FsdGVkX19WaUksqhzLDLRx/UrDr8FdIpGcNibX6p80YmSBLP42mYy9qzOwSiJSArhZvE8bZt8OplnQdDdLfLfd34LW117FHnVcQlatY966DmSJM0of5WuZu9my/nF1eU79yiVAlsTn7FI2x9DBiEUJirPX3l8gHWspmNfFFI7rjjLDtUZdFT61X9u2p2PmgasZPuAPvoIlFL4ykVF2ONIElD8oe0qCLtVMGR3gynMj4M6OYuN9ku3tAyuIB5mBQrYLa2UtMhWdImf+WO+7pK1P994+6AR7S6CLd9vf709fnfUQdX32Hyb1tP8z2o2SD6iCrDl/jIsgNa4yMJgXanIyB5Xl/YQXqLC2Q+PowT8mOSxGICccSZXzIJp69qfRZaCWPdsRahvorrmT1EJe1gyTnyv/PLufnJaRcqaQhUtnROB2sAZurj+6jVTpob2iX/38n3cr6Pn1gr6VS+705U+2I6Gjpv1SpCV4FGFcepjY9jjRANvWI/ZtQepgq+6suEWHhrbzh05Pagy/8QVoBxHenIoI3/k84KFvFJwjbGl3c3hCu2bO+ezs2LxivtsjZeowEl1nZcJLrbZc0CdWftHJQ0FLJ/uORoYOpp5YHXtuYf4tPnHGIUTU8smPleWah6skmkWsKyi5TRNeMmstcSWXZLpLEr76QpxEfyz4SghlI4s4j+Mwm2S85LVBC1YXUxUju4Uu2ragdqQHmYXHnzeUcPWxJzZaoiFTkZDGutWZqOh/YTglPmgQ2PzDptECrp1e09MyQ3Jn4pcc2UVPaFYRnQ3eAZyg4mCbGPgtx6lWgN3uBtsq+0agxkAZzHwtgOvYudSCaIYSyjD8xOT78hBZI/ZE3uzcghYdU82oISgXMCktnIHng0UnFdqAieFzkO1JjjRNgafMo5sLScvDccNmVtUUpd8xGv14O70d4JXmTTQySoPWjolhZ1LKM8vacndISc6AzI8mzlKiu8R
+ 5Zj+nNUA
+ ya3iWJJ9L3eAifnJUIAxv0vowbD2yNcpwLWz3ilFNd8bTPHBPhbF681BFBLaREdSeTH2/zJ54YUoMGK2SpOjtuiS/jpJsfkhDj7DmtPmzR0y2tbi1BnMk1cVF9tuCGCurNiFicP1j4YtBF06ave9yrBp0iwjbKJmuTDpR49qCyyMre1uFB1dVXX85Mu+iVIgr/1lmVtBXyUBKxa9sIxQLLu8nXqRP1741G7P4B8NZjXr8Q4oktm4UNSUzDUY9xCo9/kw8tfzOETQhX4jfLoYJLop5jvlqzdSe6n1hJca4I/0HoTCvYuP8SxJ8+EmdY060fdqJPgPMAPqJxMdXDQKHPOshM1fxTUHQx1L4ErgimEU17PfyyWLL2zKke4X6gPoZwBatm0q+W2WuGkP2XcrntQ4S6H2ObAjzPxWPOcr8EgxOhTRT94oWbGip2+azarWSRGaMtcfa1aTiHKyKeqbjT0GBd7sJLM3yVsUb8a6HYhIAiLSFAErW5RiCvgIyj3uyaofB7Rwe4PrBf2Fp2nrPdRBjYMWacxRJgucluRvUBX0D6AsoWmQZfB1O5rUa86R5qHr3AAYcw50UsYB8CkMR/e3p0KcQQvXhzYGPLBKdt/IWvJYRtY5MymEzhUEa7iTIamIS+t6T6JjpOOarIXM5ib58l0FOX2LtVL4+Y6cbxxU1uFttte74tqj4VbKo2RwvFI6ovZhlgiXDpAVrE485I+9HeHjR5PQDn0x0Zs/NlfOujtqcELcsW33vNnKv5Yca/YPawAzI9/FB1ILxMz4jDqdYxS9YrpQNNELOy6GcQNPfTFRazDyK6XwKq7OS93MOft8es9RhSwHzun5EkGxXysNPbuSBZCMLdV+2K6xF2b0u1jBV0LG9reW49MqCPygwQgl6Z5AyZZpcsPUXO/1Lyq5RdE0CUjzcW4usNaUBl5GsDnSvrGjgIk0Qvjqm/j2qzynbo0+HM6cey73id507PrSpbsjs
+ 0sk4rr6a
+ SMUmuF5Neg9FKniFOheD6UgCEYDYuBMtjVpUL5dQY7dQkicTK8vltqSqWsW3Rajod1h8Iwzi47QQt4NtH546627E61Hvj8XNOwAfB33qO8tqNrjJINDaQqBdl7q5TOovvta31HO8M0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,188 +113,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000fa4edc0654001686
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+syzbot ci has tested the following series
 
-Hello SeongJae,
+[v2] mm: split the file's i_mmap tree for NUMA
+https://lore.kernel.org/all/20260611061915.2354307-1-huangsj@hygon.cn
+* [PATCH v2 1/4] mm: use mapping_mapped to simplify the code
+* [PATCH v2 2/4] mm: use get_i_mmap_root to access the file's i_mmap
+* [PATCH v2 3/4] mm/fs: split the file's i_mmap tree
+* [PATCH v2 4/4] docs/mm: update document for split i_mmap tree
 
-Noted on inline replies - I'll follow that format from the next response.
+and found the following issue:
+INFO: trying to register non-static key in do_one_initcall
 
-Following up on this thread with progress.
+Full report is available here:
+https://ci.syzbot.org/series/a9bada61-06e7-40d5-b423-5f2d69a60209
 
-As discussed, I dropped the userspace selftest approach since it cannot
-reliably trigger the microsecond-wide race window.
+***
 
-I wrote a KUnit test instead, added to mm/damon/tests/core-kunit.h:
+INFO: trying to register non-static key in do_one_initcall
 
-- Creates a damon_ctx
-- Sets ctx->walk_control_obsolete =3D true under walk_control_lock,
-simulating the state just before kdamond_fn() exits
-- Calls damos_walk() and verifies it returns -ECANCELED immediately
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      14546c7bef6c1036fc82e36c1a200b0caccd339a
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/2f92f704-660a-4108-9172-7e620e10ce46/config
 
-I built and ran this on a kernel with commit 33c3f6c2b48c ("mm/damon/core:
-fix damos_walk() vs kdamond_fn() exit race") present, and the test passes
-along with all other 28 existing damon KUnit tests:
+acpi PNP0A08:00: _OSC: platform does not support [PCIeHotplug LTR]
+acpi PNP0A08:00: _OSC: OS now controls [PME AER PCIeCapability]
+PCI host bridge to bus 0000:00
+pci_bus 0000:00: Unknown NUMA node; performance will be reduced
+pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+pci_bus 0000:00: root bus resource [mem 0x80000000-0xafffffff window]
+pci_bus 0000:00: root bus resource [mem 0xc0000000-0xfebfffff window]
+pci_bus 0000:00: root bus resource [mem 0x240000000-0xa3fffffff window]
+pci_bus 0000:00: root bus resource [bus 00-ff]
+pci 0000:00:00.0: [8086:29c0] type 00 class 0x060000 conventional PCI endpoint
+pci 0000:00:01.0: [1234:1111] type 00 class 0x030000 conventional PCI endpoint
+pci 0000:00:01.0: BAR 0 [mem 0xfd000000-0xfdffffff pref]
+pci 0000:00:01.0: BAR 2 [mem 0xfebf0000-0xfebf0fff]
+pci 0000:00:01.0: ROM [mem 0xfebe0000-0xfebeffff pref]
+pci 0000:00:01.0: Video device with shadowed ROM at [mem 0x000c0000-0x000dffff]
+pci 0000:00:02.0: [1af4:1005] type 00 class 0x00ff00 conventional PCI endpoint
+pci 0000:00:02.0: BAR 0 [io  0xc080-0xc09f]
+pci 0000:00:02.0: BAR 1 [mem 0xfebf1000-0xfebf1fff]
+pci 0000:00:02.0: BAR 4 [mem 0xfe000000-0xfe003fff 64bit pref]
+pci 0000:00:03.0: [8086:100e] type 00 class 0x020000 conventional PCI endpoint
+pci 0000:00:03.0: BAR 0 [mem 0xfebc0000-0xfebdffff]
+pci 0000:00:03.0: BAR 1 [io  0xc000-0xc03f]
+pci 0000:00:03.0: ROM [mem 0xfeb80000-0xfebbffff pref]
+pci 0000:00:1f.0: [8086:2918] type 00 class 0x060100 conventional PCI endpoint
+pci 0000:00:1f.0: quirk: [io  0x0600-0x067f] claimed by ICH6 ACPI/GPIO/TCO
+pci 0000:00:1f.2: [8086:2922] type 00 class 0x010601 conventional PCI endpoint
+pci 0000:00:1f.2: BAR 4 [io  0xc0a0-0xc0bf]
+pci 0000:00:1f.2: BAR 5 [mem 0xfebf2000-0xfebf2fff]
+pci 0000:00:1f.3: [8086:2930] type 00 class 0x0c0500 conventional PCI endpoint
+pci 0000:00:1f.3: BAR 4 [io  0x0700-0x073f]
+ACPI: PCI: Interrupt link LNKA configured for IRQ 10
+ACPI: PCI: Interrupt link LNKB configured for IRQ 10
+ACPI: PCI: Interrupt link LNKC configured for IRQ 11
+ACPI: PCI: Interrupt link LNKD configured for IRQ 11
+ACPI: PCI: Interrupt link LNKE configured for IRQ 10
+ACPI: PCI: Interrupt link LNKF configured for IRQ 10
+ACPI: PCI: Interrupt link LNKG configured for IRQ 11
+ACPI: PCI: Interrupt link LNKH configured for IRQ 11
+ACPI: PCI: Interrupt link GSIA configured for IRQ 16
+ACPI: PCI: Interrupt link GSIB configured for IRQ 17
+ACPI: PCI: Interrupt link GSIC configured for IRQ 18
+ACPI: PCI: Interrupt link GSID configured for IRQ 19
+ACPI: PCI: Interrupt link GSIE configured for IRQ 20
+ACPI: PCI: Interrupt link GSIF configured for IRQ 21
+ACPI: PCI: Interrupt link GSIG configured for IRQ 22
+ACPI: PCI: Interrupt link GSIH configured for IRQ 23
+iommu: Default domain type: Translated
+iommu: DMA domain TLB invalidation policy: lazy mode
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150
+ assign_lock_key+0x133/0x150
+ register_lock_class+0xcc/0x2e0
+ __lock_acquire+0xad/0x2cf0
+ lock_acquire+0x106/0x350
+ down_write+0x96/0x200
+ dma_resv_lockdep+0x39c/0x660
+ do_one_initcall+0x250/0x870
+ do_initcall_level+0x104/0x190
+ do_initcalls+0x59/0xa0
+ kernel_init_freeable+0x2a6/0x3e0
+ kernel_init+0x1d/0x1d0
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+------------[ cut here ]------------
+DEBUG_RWSEMS_WARN_ON(sem->magic != sem): count = 0x1, magic = 0x0, owner = 0xffff888102a95940, curr 0xffff888102a95940, list not empty
+WARNING: kernel/locking/rwsem.c:1405 at up_write+0x1e2/0x410, CPU#0: swapper/0/1
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:up_write+0x2b1/0x410
+Code: c0 c0 e6 cc 8b 49 c7 c2 a0 e6 cc 8b 4c 0f 44 d0 48 8b 7c 24 10 48 c7 c6 40 e8 cc 8b 48 8b 54 24 08 48 8b 0c 24 4d 89 f9 41 52 <67> 48 0f b9 3a 48 83 c4 08 e8 21 1f 0d 03 e9 b2 fd ff ff 90 0f 0b
+RSP: 0000:ffffc90000067480 EFLAGS: 00010246
+RAX: ffffffff8bcce6c0 RBX: ffffc900000677d0 RCX: 0000000000000000
+RDX: 0000000000000001 RSI: ffffffff8bcce840 RDI: ffffffff90338290
+RBP: ffffc90000067830 R08: ffff888102a95940 R09: ffff888102a95940
+R10: ffffffff8bcce6c0 R11: fffff5200000cefc R12: ffffc90000067828
+R13: dffffc0000000000 R14: 1ffff9200000cf06 R15: ffff888102a95940
+FS:  0000000000000000(0000) GS:ffff88818dc9e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88823ffff000 CR3: 000000000e74a000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ dma_resv_lockdep+0x3a4/0x660
+ do_one_initcall+0x250/0x870
+ do_initcall_level+0x104/0x190
+ do_initcalls+0x59/0xa0
+ kernel_init_freeable+0x2a6/0x3e0
+ kernel_init+0x1d/0x1d0
+ ret_from_fork+0x514/0xb70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-  ok 29 damon_test_walk_control_obsolete
-  # damon: pass:29 fail:0 skip:0 total:29
 
-Since walk_control_obsolete is a field introduced by this fix, a kernel
-with the fix reverted would not compile this test (the field would not
-exist). So the usual "fails before fix, passes after fix" verification does
-not apply the same way here - the test directly validates the new
-field/behavior introduced by the fix.
+***
 
-If this approach looks reasonable, I plan to send v3 with this KUnit test
-(replacing the userspace selftest from v1/v2), along with the commit
-message format and other minor fixes from your earlier review.
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Please let me know if you'd like any changes before I send v3.
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-Thanks,
-Sailesh
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
-On Sat, Jun 6, 2026 at 6:06=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote:
-
-> On Fri, 5 Jun 2026 12:44:50 +0530 Sailesh Nandanavanam <
-> saileshnandanavanam@gmail.com> wrote:
->
-> > Hi SeongJae,
-> >
-> > Apologies for the delayed response.
->
-> No worry!
->
-> [...]
-> > I agree that a KUnit test is the right approach since it runs inside th=
-e
-> > kernel and can directly set walk_control_obsolete to simulate the race
-> > condition reliably without timing dependencies.
-> >
-> > I will drop the userspace selftest approach and write a KUnit test for
-> > damos_walk() functionality including walk_control_obsolete. I will veri=
-fy
-> > it fails on a kernel with commit 33c3f6c2b48c ("mm/damon/core: fix
-> > damos_walk() vs kdamond_fn() exit race") reverted and passes with the f=
-ix
-> > present before sending v3.
-> >
-> > Regarding other feedback:
-> > - Will use correct commit description format with subject in brackets
-> > - Will remove the Fixes: tag
-> > - Will add blank line before _damon_sysfs import
-> > - Will add changelog and link previous versions
-> > - Will share revision plan and wait at least one day
-> >   before sending new version
->
-> Sounds good.  Please consider using in-line reply [1] from the next time,
-> though!
->
-> >
-> > Please give me some time to study mm/damon/tests/core-kunit.h and
-> implement
-> > this properly.
->
-> No rush, take your time.
->
-> [1]
-> https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying
->
->
-> Thanks,
-> SJ
->
-> [...]
->
-
---000000000000fa4edc0654001686
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello SeongJae,<br><br>Noted on inline replies - I&#39;ll =
-follow that format from the next response.<br><br><div>Following up on this=
- thread with progress.<br><br>As discussed, I dropped the userspace selftes=
-t approach since it cannot reliably trigger the microsecond-wide race windo=
-w.<br><br>I wrote a KUnit test instead, added to mm/damon/tests/core-kunit.=
-h:<br><br>- Creates a damon_ctx<br>- Sets ctx-&gt;walk_control_obsolete =3D=
- true under walk_control_lock, simulating the state just before kdamond_fn(=
-) exits<br>- Calls damos_walk() and verifies it returns -ECANCELED immediat=
-ely<br><br>I built and ran this on a kernel with commit 33c3f6c2b48c (&quot=
-;mm/damon/core: fix damos_walk() vs kdamond_fn() exit race&quot;) present, =
-and the test passes along with all other 28 existing damon KUnit tests:<br>=
-<br>=C2=A0 ok 29 damon_test_walk_control_obsolete<br>=C2=A0 # damon: pass:2=
-9 fail:0 skip:0 total:29<br><br>Since walk_control_obsolete is a field intr=
-oduced by this fix, a kernel with the fix reverted would not compile this t=
-est (the field would not exist). So the usual &quot;fails before fix, passe=
-s after fix&quot; verification does not apply the same way here - the test =
-directly validates the new field/behavior introduced by the fix.<br><br>If =
-this approach looks reasonable, I plan to send v3 with this KUnit test (rep=
-lacing the userspace selftest from v1/v2), along with the commit message fo=
-rmat and other minor fixes from your earlier review.<br><br>Please let me k=
-now if you&#39;d like any changes before I send v3.<br><br>Thanks,<br>Saile=
-sh</div></div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Sat, Jun 6, 2026 at 6:06=E2=80=AFAM SeongJ=
-ae Park &lt;<a href=3D"mailto:sj@kernel.org">sj@kernel.org</a>&gt; wrote:<b=
-r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri, 5 Jun 202=
-6 12:44:50 +0530 Sailesh Nandanavanam &lt;<a href=3D"mailto:saileshnandanav=
-anam@gmail.com" target=3D"_blank">saileshnandanavanam@gmail.com</a>&gt; wro=
-te:<br>
-<br>
-&gt; Hi SeongJae,<br>
-&gt; <br>
-&gt; Apologies for the delayed response.<br>
-<br>
-No worry!<br>
-<br>
-[...]<br>
-&gt; I agree that a KUnit test is the right approach since it runs inside t=
-he<br>
-&gt; kernel and can directly set walk_control_obsolete to simulate the race=
-<br>
-&gt; condition reliably without timing dependencies.<br>
-&gt; <br>
-&gt; I will drop the userspace selftest approach and write a KUnit test for=
-<br>
-&gt; damos_walk() functionality including walk_control_obsolete. I will ver=
-ify<br>
-&gt; it fails on a kernel with commit 33c3f6c2b48c (&quot;mm/damon/core: fi=
-x<br>
-&gt; damos_walk() vs kdamond_fn() exit race&quot;) reverted and passes with=
- the fix<br>
-&gt; present before sending v3.<br>
-&gt; <br>
-&gt; Regarding other feedback:<br>
-&gt; - Will use correct commit description format with subject in brackets<=
-br>
-&gt; - Will remove the Fixes: tag<br>
-&gt; - Will add blank line before _damon_sysfs import<br>
-&gt; - Will add changelog and link previous versions<br>
-&gt; - Will share revision plan and wait at least one day<br>
-&gt;=C2=A0 =C2=A0before sending new version<br>
-<br>
-Sounds good.=C2=A0 Please consider using in-line reply [1] from the next ti=
-me,<br>
-though!<br>
-<br>
-&gt; <br>
-&gt; Please give me some time to study mm/damon/tests/core-kunit.h and impl=
-ement<br>
-&gt; this properly.<br>
-<br>
-No rush, take your time.<br>
-<br>
-[1] <a href=3D"https://subspace.kernel.org/etiquette.html#do-not-top-post-w=
-hen-replying" rel=3D"noreferrer" target=3D"_blank">https://subspace.kernel.=
-org/etiquette.html#do-not-top-post-when-replying</a><br>
-<br>
-<br>
-Thanks,<br>
-SJ<br>
-<br>
-[...]<br>
-</blockquote></div>
-
---000000000000fa4edc0654001686--
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
