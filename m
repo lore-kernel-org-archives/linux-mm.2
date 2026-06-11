@@ -4,103 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCD2CD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:33:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F6ACD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D5446B009E; Thu, 11 Jun 2026 07:33:51 -0400 (EDT)
+	id C38276B009D; Thu, 11 Jun 2026 07:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AC776B009F; Thu, 11 Jun 2026 07:33:51 -0400 (EDT)
+	id BE80D6B009F; Thu, 11 Jun 2026 07:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C2736B00A0; Thu, 11 Jun 2026 07:33:51 -0400 (EDT)
+	id AFDF36B00A0; Thu, 11 Jun 2026 07:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EFEC66B009E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:33:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC1F11205B7
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:33:50 +0000 (UTC)
-X-FDA: 84867422220.17.E155451
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id F0ECB160011
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:33:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kkm8cpTB;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0BF46B009D
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:35:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5098F1C3472
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:35:23 +0000 (UTC)
+X-FDA: 84867426126.08.77E59D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6491B140005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:35:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0ALYO+c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781177628;
+	s=arc-20220608; t=1781177721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=usVktg4Ep0pJ6k124plZbdxXdTrNHQJx7GVt+EoeuAg=;
-	b=4p3ZQlx3PmAYG597wp6L/Wxpj6gmAK9a3sdgRLbGau3bRbxTEJfHTj3MyPSvH5Bzb88ZFd
-	NHAVEodgf46ZeTW9kw8LZ1E8SnFcE2G2Bqn7B+W/mOlInHjAYuaI38MPz+7schr+Cr/bOP
-	y6NxklcV2rKLNOg3dIi8C35/D4ptpz0=
+	bh=M1dIK9h9F6B8P6ZX2JnxaAmWQ2iiYkZNoF+WtZ1ufdw=;
+	b=EX/mABHKqbeZCLQD+KOR7WpyyUHocUIg76ZUnE1I2LFT0Wrlw+SdDlwjZtIL+DAmQqA+yy
+	ii85PAIiHyS1dkyxV8TxmscSIH2+ySKklHXnDnFwL5QRKKOnGrld2tFnDvzxvCyAzvCQcd
+	R/NHsVpXwEzlufwBhWXuQJPITrdn8LM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kkm8cpTB;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0ALYO+c;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781177629;
-	b=jvB+8w2Q3d2SzuNdSuGLhPPP4wpO+GixNm67APHORLgJ9yIkhw3kzEQALvtJvWmooZja4g
-	r7aiyza+wx9EJSfKlTceJ34tPxRqpgEkR59QA7/7HUSP2RDmZBsktTp8uVqhjvcCyG7EQ0
-	+/MDPYbM6ojr4WF8GS5xpxftoLUgWQU=
+	t=1781177721;
+	b=61zYQkeQ3+un99T+0s5VcJamWamuEZ7ROF2jhXZTI0oQcQXlphv4Dwm9R4yllXkiGX5Ct7
+	g9j71mFz7jmcY8RxkcjEZd/icXqqGzkrdnOCo+ss8iFkgxQJAZ+DE57A625BDaznitl84e
+	2MjmlBnRvsAz+iN3p8arJF4vqkTRDw4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52BD960052;
-	Thu, 11 Jun 2026 11:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED641F00893;
-	Thu, 11 Jun 2026 11:33:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5408E40DFB;
+	Thu, 11 Jun 2026 11:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EDD1F00893;
+	Thu, 11 Jun 2026 11:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781177628;
-	bh=usVktg4Ep0pJ6k124plZbdxXdTrNHQJx7GVt+EoeuAg=;
+	s=k20260515; t=1781177720;
+	bh=M1dIK9h9F6B8P6ZX2JnxaAmWQ2iiYkZNoF+WtZ1ufdw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kkm8cpTB1A5RwccPz6eytGdyoqWrVvmW3GYxi3VnUyEfj48yvlQo55r9KF3GMSYAw
-	 yjtQRlqRyUU/aRq7QI1mOvqUV2hGZIr5168a2Wxrqwjhq5RcJ9T8FUvAM97JWRqLrZ
-	 /z5pVmoVRsAUBoc32R3nE/Gg3BGFRcBVehbbe8AMbVgS6SRVIjioTmbNJdeRRNud9N
-	 3gVLPhgvW7HxXV3YMF2hTGXE8i3MdcTGGzlWliXWvgBMDQoal/vsMjl1st3ixk6l7k
-	 Fj7Z3SclRDrVdqP4Py2cnD613sLFVpw4v1pbvSCJ5apoo6DfXl7zKq2g1SK1ZNkO6Q
-	 XXyx0BXs0Jt8g==
-Message-ID: <4dbbfedf-f575-47ba-91bc-3c0998845c63@kernel.org>
-Date: Thu, 11 Jun 2026 13:33:33 +0200
+	b=j0ALYO+cihXouwnl9RlcxbW7fllqBCjrCwcZErhIN0bfaGBRL0YmxYlVYuRYuO04q
+	 8GQLKZ/RokYGc00ft/MTqoAFCVr+dhfUNUn3kB4uuXDPco+dVj7dKAiJYY5jXS5TK3
+	 mLxsauYdIbmMFkw/hJ7tLRld3I/om5FqlhlZOn20zL9t5ruKAULsZxF8jqRP0TZfoz
+	 lNYX2zjQx4/pij6lpt8mdehMD2f9iD9C13rCZD3awXD8V4Dp/MOYuOfQBgT2BCyLwz
+	 ol9/4VltxlAota3ZBfgMLtr/cDxM5NMb9Q6d7HIaSghu3OsYHf6mhP6sAOoxh3I71B
+	 z43yyz6W/Ir9g==
+Message-ID: <7c9f0524-edff-4186-9e28-866e00136543@kernel.org>
+Date: Thu, 11 Jun 2026 13:35:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Miaohe Lin <linmiaohe@huawei.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+Subject: Re: [PATCH v2] include/linux/swap.h: Remove unused leftovers
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
- <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <20260611023208-mutt-send-email-mst@kernel.org>
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Sayali Patil <sayalip@linux.ibm.com>
+References: <68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260611023208-mutt-send-email-mst@kernel.org>
+In-Reply-To: <68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F0ECB160011
-X-Stat-Signature: wp3g8itciwy6ddyzb8s8eirs31jqffnn
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781177628-388379
-X-HE-Meta: U2FsdGVkX1+rVQ2glV/8DQMW1qmGYYUns/+vP7DvjbvG2inXFS9/uQzXP4T+5kxX0a926XuvBC88IaHEBWseYVcsD49Uw+Hb/lRfw+6LpgZ6hQgwzJp/OBcl14fzHCq8ieJoyAAifxbN3hzRBC5yonWB+CYgAAxggHcqN6BeQ+vTX04GhijkfU7hvDvG+eSiNohMb8Yj3q5Q1Eb7NkuCUChW8WXo+5nGuJtZm4+8U2RMg75DmBrrWnlBqbulkZ7+4nm+92oxG8w2mqIan7PejO4+KD3Sd8EwiYFFc9xJxKdJLkt2h3Tq7kc1jRsuMJX17HcZlUg3fL/rMwsmatMBATxoIe3XWSVotY/W5Dk8zDwx0sRF7N3X7tqeFY84CDkr+IIi+IZi2vKOKvyo6gd3Z2/HPE0ym43eR1+amyQHoIDMbo1b/0QZhIExDPwc7kEaZJx8hwX9Isx/MplaRMo+X+C/teSCFkSs4/0qd3DCYkBsYQl/arnWl0BUqxmkD36M7rgdPnJVymoebGv9X63pQLELZeUWHJcIrn3cBQ/irRHv01eRy970k0ouFR7vlC7Igf/EjMulgalnT7dSo79BkppMfhNGZRpfpiymyc1q2Ab4x2cO+wErnopTVIltsiyKtENwNeW/s5WmbGm/REUtcBrtV2UPS4vL5MFLUPHSzO2EGHPomrC3eJQhuMDrd+kUsT5rdyxElublrlja5is2y3e5AnptTuvKF5wZdTpd3clDSu3EEHDRTdhAsTNvK+3WWDt3Rks3hoWI47TzLbxMchjk9Q2McIroqDmjiX8FEdKDrgNzk181yEpGfYkwAynos1LSwc6ztoE82TKEUroPaIv0sHr+OvzK4eJOHNz82JvH1izORKbwHQkPhrEVtUe5g5rKNdkF6L6hZGX7eLS5BA9P9gPnDeXG0yq6TgqmvWHfbM40ywfSLtr1KPEq5Jju8JhgsnCaSaLoVXGL1bH
- zk5Xz1ew
- RCPfvA3SbA1zyCA9eaENrIz6eF8ELKUkYrXEMrXfEuBpq5MYnJJDw9/mertO8Hx0oCRdwcYKyjWvLUTIH8dWLbDrBeeTCejH3fHFuP5p9EwdzyEGzK+2xeKytxeRBIN4tzOPgNb5OpbinPFvkoPLlLpAnpBp8FzAkzJyiTH2wvoOOF7xCG1FG96qS12fF4gAjp/4KGbKvOCwxwG3jMAsLCohcOPbRuutGdLTkH0qyW+ATdsRAZeSg3xngCMC/FE3c+If2RBczQ5FtDEyW9EbgcJ71RJfx6Q8/lHe35Wq5a0Y9RsX+nZGbgZ4ZBlGhimRWU99TImm/mwUJNUKp8vaINZmo6QrOGRjSGvrHF9qv+c2fQ7SIk7bUv5OQkYHaaPvf8/qIu+OIiWwD6fFC60dfj+JH2da0TWf5tUDO
+X-Stat-Signature: wsitz6pnp8haikniptgipxtj3pohwa3h
+X-Rspamd-Queue-Id: 6491B140005
+X-HE-Tag: 1781177721-930109
+X-HE-Meta: U2FsdGVkX18UD2CLZWIZfRVdtBfhzegIzcI99Zv+O6vJsDZ73fEbq/xUWxpy58cGgx1vOfBMmcubxK/eL2SoKptWDezDCja6IS8y8AuDXL00p9CZqhMwqYhi7TsttSflijHiTIIwPPTC5iDL8IgJ4Uw25neiO6s1Ts5znEPRVy1RVWBVNJLFT1r2yV9sIV4QG/5Kg/rWt4G1V0mtbmOHc/xipvDf6tX/jqg/AkFcdpGA1IxoZOXu4UHd8Thc0K6hFHLdivkiqXP8C67KcsuOVWl7hN61EyOoCnByKkekjK5XuzEqff0z22+elMLWO+d8qk61kqoH6RCP3Chdv3POl41ZESpxue8sstO1D3EmRd3zhFIbwjGbGxvOgwYnnG1qCxpn7YKFENOg88BpUg6k5jlQZkQ0ifM7d/ruzu7Wbuk/XoO7unLP4hDMj9Okli1mErmPMq8YNKbaBaVEtJhOlv4PX/gEL59itYrtYvZk+XWXw8Lht1NOQVC7N8tDqaFx2m+HbD1Kfc6bvzzwqhdrRV4PpCqNYXJIfj883zRiBnP0Wb7DMqkW7CBQ3nEtb21rOy6bI+UHNpdo0IPxiRsP/3Aas0QIm0iwlB2DzXnkuN3uIVAhL6zGXXWYdJv8z/VrTOrf3izFFKFkSRGSbQArgU7US1rtZas4b87vOtRhT5ec13StWMx03Xkc4Lnp85/Vl6wqwRjPVPbIlgAc5fKOMNu14OW9swEe0I1IXHGJOzVpH8vx7hpgoWwK0bqOXPmeRHyw1cffniA1q+uabR0ArP63pAyG4bMK2EyawCTSXzvHd0Ixettsjn3BHkr+gK7qurEm7WBvTgMq4uqzd+7X5/SbB+9ZNY76XP4Lpxgn2m9lZdrLdgJJ8iAtQ80GTds6vwce1rUZbEx/JPrCShU2Bta9PQv8Z211tHmIaq6K3jsIdplpeU+W1eBVz7p0ecHkvFP2VV05xFtVqfaLm1K
+ W1Gpk+Gb
+ pRDzdRFZpvbGzXLljxvO4OHXJHFoui9n8exuIOyFLqv5OWPRgvzBZjsKhTYP65l4ItuaGoo4VcUeDYMfh1GQYkOPEVX/C/my3RKuyZQ7gqjuTgCkZ5qwI4NZTZp5OsSJciMawQxBaOihZr1yvudQleiv+82LAadqmvH9P2D8yo/okcPbajWQieLGN1DxsJ6D5G7BLjWnVVhlgWqtHvxn3qzHwe3mqCak5HrXAJ7UTmUhgiP6uLEeJ/HWfUPVz49V9LkcXOnTwqpzt4ZGiAP5PW3iivgFYKMNQEkmfF/xB7ZKp1KAYciWbm75cLvUluWHw9lU1HmsqazObrTonkDHhW1O6UeqKQElfXb5SV8lXAdgoIWjBvEfesZVRr7u0+KrZyK+r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,24 +141,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 08:33, Michael S. Tsirkin wrote:
-> On Tue, Jun 09, 2026 at 08:38:09PM +0200, David Hildenbrand (Arm) wrote:
->> On 6/9/26 20:10, Andrew Morton wrote:
->>>
->>>
->>> Sashiko is saying this doesn't do anything "Because
->>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
->>>
->>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
->>
->> Battle of the bots: it's right.
+On 6/11/26 05:09, Ritesh Harjani (IBM) wrote:
+> This removed unused leftovers, most of them are forward structure
+> declarations. Also removes SWAP_BATCH macro which isn't used any
+> where in the code.
 > 
-> Ugh it's bot against human - I remembered we have zone lock
-> normally in alloc and thought it helps and didn't double check we don't
-> have it here . The bot wins (
+> Found these during manual code review.
+> 
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
 
-Heh, I was primarily looking whether taking the lock would be harmful, not if it
-would be useful. :)
+If it compiles we're good :)
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
