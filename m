@@ -4,157 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63EF6CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F73ECD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:39:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 913906B0005; Thu, 11 Jun 2026 02:33:35 -0400 (EDT)
+	id A10EB6B0005; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C4B46B0088; Thu, 11 Jun 2026 02:33:35 -0400 (EDT)
+	id 9B74B6B0098; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78C706B008C; Thu, 11 Jun 2026 02:33:35 -0400 (EDT)
+	id 87F166B0096; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 65A0B6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:33:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03CA21204D3
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:33:34 +0000 (UTC)
-X-FDA: 84866665590.17.B358A66
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 72D1B8000D
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:33:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FGX4EkZT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E29C6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C0DCA04A3
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:41 +0000 (UTC)
+X-FDA: 84866680962.09.9C61CB9
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D9FD41C000E
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781159612;
+	s=arc-20220608; t=1781159979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nUXcCYB3mg7pVgqNjbUYn7VXuJDevAzArkzYyGeIlRQ=;
-	b=JAr3yNid9fbvvHvt+vXfOJM4/uhUH4YcpmQ9zUrtSsmbp6PKWjPu8+WdNealIM21VKiouj
-	QiANZ0isij+u1F5HVj3vlusy7poid0WjXcHerzeAplUHRRUEGQFzjXqCMdiCaIkA7iQEai
-	UpiakB3jkb4pKBHvwlxD7auHxRgKL9w=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FGX4EkZT;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781159612;
-	b=mgqUZxYlb+jmvr4jLOk8I7fgGahTAYWvKOy5Cr7m7eHzTnCDbLiCtVImuCbMC5OKrAEFjx
-	H7O/SrCj2piSN2aqKTx7DxyzdudQe3taa4ak4iqW3fVX3NKJfe8l+4iiw3jlyxcxbOOR8i
-	NkxB5JFmCGk56xn72aNEuBn6+atPo8w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781159611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nUXcCYB3mg7pVgqNjbUYn7VXuJDevAzArkzYyGeIlRQ=;
-	b=FGX4EkZTaI3Y9zNCNKkm6xVUq4YtNOgRJuMEk0aDKm1V/fMESUwY+g1mNpTh2r4rk7Huyi
-	8JWIuB4MLsqKGaMxjRVhqo+OxNqJ3F8jZFnAWcPqKgc15hQPiaUw6pkDvg8DwClJY55UNS
-	3rr9RxmJB5cgC8hd7eEgW0c1CWfq3sA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-4qOIbFdqM6uo9L-as6yKNw-1; Thu, 11 Jun 2026 02:33:30 -0400
-X-MC-Unique: 4qOIbFdqM6uo9L-as6yKNw-1
-X-Mimecast-MFC-AGG-ID: 4qOIbFdqM6uo9L-as6yKNw_1781159609
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490c840efe6so4551195e9.1
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:33:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781159609; x=1781764409;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nUXcCYB3mg7pVgqNjbUYn7VXuJDevAzArkzYyGeIlRQ=;
-        b=KBLVeXqq7NRO1b1ZVX1FuvLOsqp1JrmFuzPb5zXglpRLFnavk9HYQVIKDo1tCbk8UP
-         PNTJgdvhsICl56+tZIogtXD0Mtshi1m13m3GWoIVzF8Ct7Zd7ZB0ZnDMF0Ty+SL4bK38
-         Kk5dnym9orPD9ohtwE95bzaoOLZs2mSMCcFFwOZ3AbxCuHf9ZXnJb8QGJLSf812BItVI
-         DieUIZSpONBA7VItvcTsQ2XjU/ONjUeAUKt7EFStC3mxicKgwAamzPVHOEz8ydreiz73
-         ZTvOQsLsuWHoGWvR831OFJLd6pQaAG7zZMzvAMs4+TnPseSs765dsUxcg5ZwMmaGg1dS
-         ayMA==
-X-Forwarded-Encrypted: i=1; AFNElJ+JPzUFBG50rVEAA08lCnq/SK9jdbPJ2kSeU1G4UkWKL7h8g9NijWmaFjpx/GMGMKUhJYzQXiN9jA==@kvack.org
-X-Gm-Message-State: AOJu0YxF2QfkaZmEewiLkRqT/ismGlQZV8rU7JeZBzfzAHBaVnylIdab
-	2PeggZ5BgkBH3SulUw4xcfKN7HbNAG0UjZFh7Do/LOQgLlR3ahIc6hACV+lFGbfAV/8TxbfL1/i
-	cyse5N3OR2rP5cQN3l2LlnKqiLsFefnLR/Xapc+mr1iFj5f2qeUJ/
-X-Gm-Gg: Acq92OHT3ppCQ2mj+i8YcZ4qUkny7RiQ2956qNVy0UJTbfmTVGU+7KfLPSYMDNDrFDw
-	oS1MxAoL8AwF95gIrVvTUuRWy7y1xv7lF+rj4OhOxecBnUcF81olA60N355TUBJDgbCEUX6dYeg
-	cq+pXAxdi5550iUXbOQYUn54MAcSoeZRwNUWHktoQ263bBnEyJiio7E5fph57C/2ojCsLddhZ7k
-	NLt6mMjjf9oh3lfaWsjCElTywy6DpUevco8iOs7GQPyWcYcPk5eU1SA0FxdLTeozw0pJaKav6+K
-	teDZU9m+9ZjwjedzxYMTOszKU8EgL7mIAelEGvEH5PRvC59U45+cwEnAVpBTexuVJZknLZ61GVg
-	oWyzRSdbr2b8GLi+/aj8tn+06WKtIseDQZo0EbmrvMBdUPK0HJjRxZg==
-X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr12572615e9.2.1781159608684;
-        Wed, 10 Jun 2026 23:33:28 -0700 (PDT)
-X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr12571975e9.2.1781159608179;
-        Wed, 10 Jun 2026 23:33:28 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e52ac9aasm23585695e9.4.2026.06.10.23.33.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 23:33:27 -0700 (PDT)
-Date: Thu, 11 Jun 2026 02:33:21 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	Miaohe Lin <linmiaohe@huawei.com>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	bh=ziYrbCc0tttSm3dVgSOuHm58V6NUOSlJOb5IeQ9InMk=;
+	b=zm+H5f2nrdEdFhleBg6CF3Smb07hADNT2e7K8WaqW7YLg9gGqY45z8zs79fuERRsNlTpDj
+	nTnbPfulB5najzVBOdqY4p2kfs4EGgbmaJXHWWysUQfID0SGbk4SfLMedpzih6DZMg8dTp
+	iLKuMhSne/feHB3XCxhu2dc7o85sLvI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781159979;
+	b=O+l4eCT4dcRhE258aDOXASs7Zo4pWg2k1l4+vJFaKfd4rQFEcLPLIHsQEx0R8dwbiKiUJc
+	ASr9TKrzPW9sQ8dCvu2Hw+/yH5ksGCw2tOthxzl1apu2tI/xetFboyh6Hbs6GfH6lAzN6s
+	1z3ctCPETqokwmKnJ58b8aRUyoMQUm0=
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-01 (Coremail) with SMTP id qwCowADHbdYgWCpqYOJFAQ--.1790S3;
+	Thu, 11 Jun 2026 14:39:28 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>,
 	Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <20260611023208-mutt-send-email-mst@kernel.org>
-References: <df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com>
- <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	liam@infradead.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>
+Subject: [RFC PATCH 1/5] mm/slub: factor user tracking metadata size calculation
+Date: Thu, 11 Jun 2026 14:39:22 +0800
+Message-ID: <20260611063926.38111-2-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
 MIME-Version: 1.0
-In-Reply-To: <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PTfqOt72njZoj8cDkOzacS2ojFCxUZISabBvpI5cwNM_1781159609
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 72D1B8000D
-X-Stat-Signature: w31kxfo9zebq9135y81j1cihnm5g6zqu
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHbdYgWCpqYOJFAQ--.1790S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxZFWxXr15CryDKFWrWF1UGFg_yoW5urWfpF
+	W7K3W7AF4UJrW2kw4rJ348uryfZrZayryxXFW3Ka4FvF98tF15ZFWIyFyjvFW8Ar97u34a
+	yrZ0kF15WrsFyw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQYb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
+	8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF
+	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcV
+	CY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv
+	6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
+	02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE
+	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4
+	IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8aiiDUUUUU==
+X-Originating-IP: [111.196.245.140]
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Rspamd-Queue-Id: D9FD41C000E
+X-Stat-Signature: a6kbxtjg9tccchc4p5o4tnpbpm5pthio
 X-Rspam-User: 
-X-HE-Tag: 1781159612-334653
-X-HE-Meta: U2FsdGVkX18hfnvvrNOkUBXuEyqgTI9wNdQfeHFF+8d2YrbjZaLKCzsnpOToshcP2eqrdnAdmyrmXr/SRPhfOWE4/Xc/lAu4dEB1RbIty3BCOYs8qmBYLqkzeRow3+9LVcPLnzhLpTqgb8lYKhEp/OGGgqnTTY4HSrsynDqHV6h+inEpcZp8zRfUs8kavF4qgaGKfOekOGJVk6ebHjOHviMiqXGrbS1qENCy7pt3QsBwumis6QB/VEyEdyYVzOL8bNqwoC4PdfcRfsstzX7757ush5e/vIqBWVJgY78Dn3niCUI330hSzExiGanupSVxZyz3piicFq7dV7R3IQUWyXt9+vMGH6BBDBeBk5k6Byallw9fAIe2LrLiPjhl/RzfPXJlo9crNEkahnaqInFvhbeBNAGM3vHuynABkZYaDkTPG0TCda+l/zktzgeY7UM392xbMrbZI7su4zFDMuA4+P3H1omsyRASRrOwRPk3COA69/1JfezNIsBVUZzyqBJiUsB4w0cHkbIwlPiBjzPHIF4ACMwriwEwoKdXOVKLaelfwMKlzE58Gz7Ap5UaPKiK+jpsuwSYSXSAeYgwcoGv++lZzzKXPQc3tbvp/AyDdLy3muDwAjluPMKf4C0PAlr0vNJdS3/sdiYLYgQwluPRh0jl3n+WONC+US3YebZbsjuT/Sq3jCcme7mgeyfiYyGyDf57M0cZ0bjn1fdJE0uOyJP319n6eg+lLpT9GSGAqbkpR5WMwsp61GIackqezJmJUALvZYVpLQGdY+EDWErpg7nM8Ls1o4tMxa61z1eTjo63xemAtFwxWcqkyEfD9Y2H/YI/i4BVYszqrw0obZU//0HqNGfdTXNOOYnm/1jdfjuBo5Yqzd0HP5cRL87O4+78J7F+KJyBymCvSr+r1UO8ra1fmCEhACRJbIRnRVgH6VwAJmhQLocTi3OjHdx6EoavJW79hN2M/KEqXARrvQC
- scBnJYMT
- XUG0vRC9sSEaD+nnBJXzoiAatpU2rucdbZRQB53y8A3AYfg1ws/+rWGZcii48ygLHx0YQ+h9tmeICjXwmg5lkDHlOK3zRAN47wQ0JXGGC2S+zwJjTFHDBj/gXe7w8d2wGM/x4L/p3R5Su5LRR1Svp3o/7NCdPqFwQ34+l3D6lV0Broj+G2N32HLYJIi5xLldFBkJnecI5vMOCPXFAnsQgLr7SpydbnqshB9uTMqG84D5zaRFv26I71NewmhYOPaiIXF1TmvbJcc439ZFOnnuxQSzlHPV3cnV2ZRe+0bLqa0JJlWEnXwH2VXM980WZkrNMjK4gMrHJu/GDE+ICgqfzkWRJhi2//gSsQ59yEU+iV31K+IXFIC9qP+9r+Qy4PEqeO05Gx6pG3zPFW3KKTWFtkCOKX2d4vCtOJkmX2E8EGbhttfan3XXTfi0e4XCx2wBCZzkNRLHcrRo5ncJG5XsvCKOlz++7maXjiwE3MjFSdHl8XS/Q1r6zGgN8YvNkpQQrVdJW9rLpY57uN2yNpOEaE4k5C52mK6xsEGmRMMEMUShHBCeSD5lDhw1xAkFu2S0D65sGEklr0iyD/qQ=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781159977-926409
+X-HE-Meta: U2FsdGVkX18TIPdi7nzlT3Vmfn6h3dkOZq5ZfaAjlKrqYaQNi3KqRZqHJhAKElSOLMtVuI1JKGF951gYqUhhBNSibwGANWC+i37BVbaiFjU+59HDKVIhdGVGmgCtzwxKGsFJAllhzNnBJERDbXOLYGvqs4xs3zWE/SULWqk/KViXCZFSrdPS7f+bWwA8kYeY+/Szt+yICxsX4dzShcMeXgDiwN0tg1oPNY4kit3M7XaKAyisOVWklubJGTA3NLCzKwzq4j9/NU5cfKJuNAW0WN+u+/HzCRowAGskXyMAGyxfB7hgEQJQ0p0j2c5siL5bL9IdZr3HuOxOFzaUgoQkwjSJO6TMt1ZgsD2fm0qgCed1O0bpi+Lbj9HzBxxkOqMrafjGM2j1+7UePhZ3vln+2cP9Eva+CInA4rbZ8UsKHvnOG0qhtjLR3J9nF/TVh0WWUOmKK7LNZxUZO7VgdA6BMUMjSHMXfsS4v/7DFFOjAJf1JXHrV+yg1U9sYduqkzwNkh0PGsfma3wV3Pgdh3ih+RU34lhk/6d7Id+8CARvyMTLhDqp760L3PjKcbMU1yneBE4MoHTeUUFIe+2ZJUjdVtLVgmPO92vpPCYd9oUA1JYhH746FsLRP2hDgcnCpBlkPTTiuD8rwNhQ3ibIcYwiVts6phEcZ4GeCgcYn9WBog9EMmb2ea7Lr1g3Hrxm0XRHnp/OWMJqK5El+oTCFrBB8gzYbnYEbZbEL0K1tjViMr3laA4i7Z8+uHnrNs0qPnHrbtkpSfmUQSjSXSIjYJHxwLiWt4EpoN7nMgtwDY9TH8kgerJsMozWt5tDs0MhdHcXSHqu9SifgtuVnBCzXLB63WbkrEwnF/NrBD/vVGSFkTP7/QLgzke2XqMYV5nuUXN/Cw18YAw5PTZMoqZcUB+dRjrpgBV8PpTMoGp+2TVqc9J2yLuPRfeCopISdx6VIc1JrcPAVy2a2s/OmUtqINx
+ MODjS92t
+ R75S+fnRnlx2aWq5AyFeJ4xU1vyVu5QO6q2IWH1keiE23oI3dYpVIbPhlhc8O0/UxnW5XUs4Swzn1MbGJUnco6pn3+2u34XVVTGTS/ZnrOpmiJU0J/t9be1QTE7y0haFb1Yz4dLeuodO60hKhEM/kt07BEKADaW+OrOqt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,49 +112,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 08:38:09PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/9/26 20:10, Andrew Morton wrote:
-> > On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > 
-> >> TestSetPageHWPoison() is called without zone->lock, so its atomic
-> >> update to page->flags can race with non-atomic flag operations
-> >> that run under zone->lock in the buddy allocator.
-> >>
-> >> In particular, __free_pages_prepare() does:
-> >>
-> >>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> >>
-> >> This non-atomic read-modify-write, while correctly excluding
-> >> __PG_HWPOISON from the mask, can still lose a concurrent
-> >> TestSetPageHWPoison if the read happens before the poison bit
-> >> is set and the write happens after.  Will only get worse if/when
-> >> we add more non-atomic flag operations.
-> >>
-> >> Fix by acquiring zone->lock around TestSetPageHWPoison and
-> >> around ClearPageHWPoison in the retry path.  This
-> >> serializes with all buddy flag manipulation.  The cost is
-> >> negligible: one lock/unlock in an extremely rare path
-> >> (hardware memory errors).
-> >>
-> >> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> >> in this file operate on pages already removed from the buddy
-> >> allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> >> need zone->lock protection.
-> > 
-> > Sashiko is saying this doesn't do anything "Because
-> > __free_pages_prepare() executes entirely locklessly".  Did it goof?
-> > 
-> > https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
-> 
-> Battle of the bots: it's right.
+SLAB_STORE_USER stores one allocation track and one free track after the
+object. Several offset and size calculations open-code that as
+2 * sizeof(struct track).
 
-Ugh it's bot against human - I remembered we have zone lock
-normally in alloc and thought it helps and didn't double check we don't
-have it here . The bot wins (
+Introduce helpers for the number and size of user tracking records, and
+use them for the existing metadata layout calculations. This is a
+preparatory cleanup for adding optional extra user tracking records
+without changing the current layout or behavior.
 
-> -- 
-> Cheers,
-> 
-> Davidc
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ mm/slub.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index a2bf3756ca7d..a9114dddc976 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -316,7 +316,20 @@ struct track {
+ 	unsigned long when;	/* When did the operation occur */
+ };
+ 
+-enum track_item { TRACK_ALLOC, TRACK_FREE };
++enum track_item { TRACK_ALLOC, TRACK_FREE, TRACK_NR };
++
++static inline unsigned int nr_user_tracks(struct kmem_cache *s)
++{
++	if (!(s->flags & SLAB_STORE_USER))
++		return 0;
++
++	return TRACK_NR;
++}
++
++static inline unsigned int user_tracking_size(struct kmem_cache *s)
++{
++	return nr_user_tracks(s) * sizeof(struct track);
++}
+ 
+ #ifdef SLAB_SUPPORTS_SYSFS
+ static int sysfs_slab_add(struct kmem_cache *);
+@@ -740,7 +753,7 @@ static inline void set_orig_size(struct kmem_cache *s,
+ 		return;
+ 
+ 	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
++	p += user_tracking_size(s);
+ 
+ 	*(unsigned long *)p = orig_size;
+ }
+@@ -756,7 +769,7 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+ 		return s->object_size;
+ 
+ 	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
++	p += user_tracking_size(s);
+ 
+ 	return *(unsigned long *)p;
+ }
+@@ -873,8 +886,7 @@ static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+ {
+ 	unsigned int offset = get_info_end(s);
+ 
+-	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+-		offset += sizeof(struct track) * 2;
++	offset += user_tracking_size(s);
+ 
+ 	if (slub_debug_orig_size(s))
+ 		offset += sizeof(unsigned long);
+@@ -1077,7 +1089,7 @@ static void init_tracking(struct kmem_cache *s, void *object)
+ 		return;
+ 
+ 	p = get_track(s, object, TRACK_ALLOC);
+-	memset(p, 0, 2*sizeof(struct track));
++	memset(p, 0, user_tracking_size(s));
+ }
+ 
+ static void print_track(const char *s, struct track *t, unsigned long pr_time)
+@@ -1185,8 +1197,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 
+ 	off = get_info_end(s);
+ 
+-	if (s->flags & SLAB_STORE_USER)
+-		off += 2 * sizeof(struct track);
++	off += user_tracking_size(s);
+ 
+ 	if (slub_debug_orig_size(s))
+ 		off += sizeof(unsigned long);
+@@ -1390,7 +1401,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 
+ 	if (s->flags & SLAB_STORE_USER) {
+ 		/* We also have user information there */
+-		off += 2 * sizeof(struct track);
++		off += user_tracking_size(s);
+ 
+ 		if (s->flags & SLAB_KMALLOC)
+ 			off += sizeof(unsigned long);
+@@ -7845,7 +7856,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 		 * Need to store information about allocs and frees after
+ 		 * the object.
+ 		 */
+-		size += 2 * sizeof(struct track);
++		size += user_tracking_size(s);
+ 
+ 		/* Save the original kmalloc request size */
+ 		if (flags & SLAB_KMALLOC)
+-- 
+2.50.1 (Apple Git-155)
 
 
