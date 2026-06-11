@@ -4,97 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 855F0CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D4DFCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 972EA6B0005; Thu, 11 Jun 2026 11:29:59 -0400 (EDT)
+	id B12C46B0005; Thu, 11 Jun 2026 11:46:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 923DE6B0088; Thu, 11 Jun 2026 11:29:59 -0400 (EDT)
+	id AEA956B0088; Thu, 11 Jun 2026 11:46:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83F6C6B008C; Thu, 11 Jun 2026 11:29:59 -0400 (EDT)
+	id A00306B008C; Thu, 11 Jun 2026 11:46:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 721A66B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:29:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B6541206D9
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:29:59 +0000 (UTC)
-X-FDA: 84868017318.27.ECD722F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CD878180009
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:29:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=J6Bof3Q4;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 926886B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:46:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E2601406DA
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:46:35 +0000 (UTC)
+X-FDA: 84868059150.14.B65F67D
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 58C7C4000C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:46:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dB5SH20L;
+	spf=pass (imf01.hostedemail.com: domain of 3V9gqagYKCAw4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3V9gqagYKCAw4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781191797;
+	s=arc-20220608; t=1781192793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=UL399tAXUy/yz9wTcGG0E2fauqMYGLmE3R7E5ec7p/o=;
-	b=mmwWqGWYdw3i3gwWim0tWbUsmH2WsIgC53g96zQtb4zzMJLVrwWAI990Z9KZX0MZ4kTCnk
-	krmstwmVl6U0DR+Pv6nOE9gm556YX7vYcJMBM9CF67Go6tA8igZeBkOx7mkuFukqoKQyeI
-	D+Vu8M/oqo/qvrw2jNVeCo2hdUvONhE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=J6Bof3Q4;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
+	b=LManc8jnIP8wDM6IA/GNiBzwHKqZU0HYuZHb+FLV6zDUpmsvY9Mj9lDBkhAqZiXCcynVOy
+	aL1Rx8q1zSWpExVUOjmvIfJtTRPOsBb1aUlCl7eTJado1213Fv2UikizrI3+vz0gNdmKV2
+	u0HhF2y9fdVEzKOYgXRz39WuEXLPCdU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781191797;
-	b=1igJWwvMxNRCurDSD3B435i78M6ABRRtW2fbXNDSb6CIZQIP+vXXAqO2md9dU+2CZipm3M
-	++CQUfYgJIdumxs7hsIsB90AZbVWtuji6/TPdHUC4gxdzbLnVoGQCoy3VSzCYP6tVSVdlJ
-	YaEXuq4/kAGstbm0iY6AJTq4kjImEB4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781191797; x=1812727797;
-  h=date:from:to:cc:subject:message-id;
-  bh=r/lgubdyb8HYf/OqAGkJEfFBVHt/7MAg62LHlvRX9mw=;
-  b=J6Bof3Q4rHmmqOQxjEcErGyt7tYJ5Yoxxg+qpKsT9x/pvcgMNUqYDyf0
-   8IHwTf8IEZuJrQImEIC7ZKy9Wg9av6hwE6MMJbAhRWJyJpM9IXk/M0ZfQ
-   1fV4DZMy80JuybwYDRQjVVHOdjuqwEdpxseCLsY0vheAWfIG/SXm0f80a
-   co16uBH55VbVQM8BJ0G09nr46BVJbapDYzPYcBePDVA0r6GQ+9xXft/XB
-   myIxcLcIkMtTXg9RLU+yfhAtOj9YPcEedxzPcibMAHDbCbUTS6VVRlVHJ
-   8aXS21ksjldviwf1qPe7dzg7V70Gc9sAOqs6giEU/6esK1NHEzSQ9R9bi
-   g==;
-X-CSE-ConnectionGUID: qh+7aNBVR6ayYMHVQEi8pg==
-X-CSE-MsgGUID: wvKhnFiqReKeAQEZgoaVWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81143538"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="81143538"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 08:29:55 -0700
-X-CSE-ConnectionGUID: pW1YX8IdRHSJ+v6A4KpMsQ==
-X-CSE-MsgGUID: 5VmkSIZcR4CWJwTi31Hjjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="248388871"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 11 Jun 2026 08:29:53 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wXhLq-00000000NLC-44AW;
-	Thu, 11 Jun 2026 15:29:50 +0000
-Date: Thu, 11 Jun 2026 23:28:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 801c5efa788952095586d076fed1ea4902facff8
-Message-ID: <202606112343.XCw5UUJt-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CD878180009
-X-Stat-Signature: o7h8cadcfehrwb9scjrg1dk7wnjwy69n
+	t=1781192793;
+	b=ukdrvLxqe9tBppFh67xs6Y1Z816vhZRVJFs4+W3C1GzV2ojWUknHDEYGejTsqunmjySSCS
+	2/f2S5K7aBY3LMqgndMfaFoazwe5PpNmnLBavjnQ4trcjDELoK+Ri4U9OE9yTMtxAixcg2
+	pY0w5PtFg6DquxMBCi+cBq7MqAz32xM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dB5SH20L;
+	spf=pass (imf01.hostedemail.com: domain of 3V9gqagYKCAw4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3V9gqagYKCAw4qmzvos00sxq.o0yxuz69-yyw7mow.03s@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf3636d6c0so85382235ad.2
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781192792; x=1781797592; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
+        b=dB5SH20LnrHtzO9EQ+wB/axitYSPZLNxzXjj/nEclzvMeG/v6N4v5x2EaOfTYw/tmy
+         18yymARClnLAU+q6dwGVlBeDFXSMaObUKNqJHOvW2CndQsiFTfqrNX2HCdPbxYZQTFEm
+         s1wmn4VTCnJkSX4oE3uL+LTzn9MHx4fDlwcJKJCqPjSRVJFouMHxuWU3N8tbBYqFoUPk
+         wpZkLJN3q0BQJcc7M6KpKgf42KQcRCb4X4DooIVOSkoM0ksWRFPJsnLXg7F11tzdGoFc
+         /7QvMPsE2C58/1S/4ChY6lrwKPlCR69ppG7gX1o8+8g1GKgUSgGtNJTBaDfo5GEMYtHt
+         Y66w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781192792; x=1781797592;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkYI56ab44R+CGvXUlfI3ycHykGEF+9O0JMidioFwIA=;
+        b=FLc5COmaFsLwDAffg/wX9RmExU559wR7M6B/WzQnxsLpimiwQWHdAx1z7LL8w2mLtw
+         YLGeNzq77ZDjm5JoMKR40GsyFvvOIn22IPO3qTU28Z/gjwXr7abTL44Ii0aTXMrpcgRu
+         DRIRx4EGK68l10F+em8j/Xa9M7bc2cCRw18nYO+mGLwgShbcgaKrA4c2Rbm3GKTci7eU
+         1rKzCHYMgBRkfBxVDmwDO1fjKoOGvZy4rn0W5Qj51Z6vqiAwBDpkyuHrSxm1LHCP20Oi
+         x2A5a55zsGUUFGqTnPZ50V280y2bl0UnNo6gK795WurpKtQL650cXP2IR0zNe4c5vttx
+         zgOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9pMtUnBypdOdZXbiNTNopITmd8VceeHO5on844NcqU8WPVi9lZa1yhfburacfFPTmjPMtTC9Pumw==@kvack.org
+X-Gm-Message-State: AOJu0Yw3zIGqsYfT45laRhHp6DaP+Bpg/X4amW0mfy0TaiiMjh8YfhsO
+	A1QR8nv6dHzUDyz/4ejogw/xjrfdv4358DJVemf3UyHx9hRPm/yX9FjpW2Ouj1k/9zVk/QxVWd3
+	iam0CYA==
+X-Received: from plbbb1.prod.google.com ([2002:a17:902:bc81:b0:2bf:17b5:30c9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:947:b0:2c2:245a:3366
+ with SMTP id d9443c01a7336-2c2f305aff9mr45838065ad.27.1781192791738; Thu, 11
+ Jun 2026 08:46:31 -0700 (PDT)
+Date: Thu, 11 Jun 2026 08:46:31 -0700
+In-Reply-To: <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+ <CAEvNRgGpaggjd3=ooyzv7iEbmA-x1mWJHgjLSjPi8=5CPrk-yQ@mail.gmail.com>
+ <aiHeDZEPkAcWcSkn@google.com> <CAEvNRgHz5GDjq0GqRmpQdHc-X45gCNr39VYWZH-T7XhPEtN5CQ@mail.gmail.com>
+ <aiMVLtblIKu1DQWJ@google.com> <CAEvNRgF31BzyFyVUa7tDJ=qJ-8ws2kxfNjLxmV=OxKSqhaOiPw@mail.gmail.com>
+Message-ID: <airYV9lcIM4xdA60@google.com>
+Subject: Re: [PATCH v7 00/42] guest_memfd: In-place conversion support
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 58C7C4000C
 X-Rspam-User: 
-X-HE-Tag: 1781191796-866993
-X-HE-Meta: U2FsdGVkX1/3Vmey0ov2+huCEppC50XBXi/qmV/3JWLlRerWMluarRxNnksBP8/wJXO6xX8rVnhvVry6liEp58VjonNHZSnb/v03EVkZKTv3dadsdu1vQiHb9jrRKzn5QwztKNXLS/ewysU2EV5iI2PJSPS5MpMH3l4YAA0OuItKPObg92BW+ekFJBYax+7JebTBsQms2htQ2bETxEHyTnKiDNhnBsCeUN8FtG77uhUk6pvpBo9eR384OVUPIVjSWHNvX/3qwHDiwBfnJYj1XaY53JijcIqQdr5CbGQEbHEMXbQFIYxh5+1ffXgFDgBq7FnEqmbHAsMhBvtHPhcwZrnwhymhMsFiMnsBRQoSf0O0FMUYE/JKG6zwi79UFbkpNkbL3j/gYGJnEAohuPeimid/pHzqIRyy5ELmD08dJbD6eQgB/csSnDLnBCAyDrxfjLA75INulrCGqiXTrpe7L4imt5UeE2BZhNDBUwwOssTGVZ+M1/BSq5CcMUfzaQERIXCpO3sI+j5UghgPiUScp03PUxyiQbJZDIC9+5oPik/XZ9SvIcPt/SiMuSavR62JWg0ZRqck7mJVnnPxEONBK7BzJA3XWpT7BGVfu3PoIvhcqyyabPGM1WI5GMkL+lYhdoBODrHmqTsmHQ298PZaEDAYhgtjfJ55mJaUnExsAYglx8REbOikahkWr8LkvuSKprbD3LalCIDEo9x0rbpkh/CdkDxt+sIjuGseurZGNS/W+CdQQiBNtT/RaUA7+Ac0B/SY/cfxYS+ORZasQ25PP/IwacYubERmlbThlYzOy9TY/MW/JORGYake5iaTLbjvorvcco/9mCR8ZLXIVq78f56h93+ONQjnaF8C4iYA1yZVxPGcQI7oF2uN6Z/QZNXjTCxYIN7FnlwiDfQ00lPRnK0ywsI+AJH6XxXBgb6rrYgpmq3qZlt/hkmwUB79cc7FsqKBFvQuBdNFuF9wLSp
- MjkG6L3H
- xiVbljlm8WkM8RE7mVbgCPnA+bmBLK9t/MbVB77NHnn+leOo6MKa7PObh6WICAXuz/7ONg7Ni4uXtpDNDq8UXYQzq2CkeXgv/KjZG0eV0E2KCk0P364B+FO9hJI5JY/tKgilsgVBzX+5QO+m5XCc/d+TWavCM8oqPU/uJm7SmvBIZkgW+Q8dD1TIQc4GjJza7SvH93ioWV+t/mEU=
+X-Stat-Signature: rxt5o8pd8ei3ptxs7dbk8nbcfw35xj6j
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781192793-509740
+X-HE-Meta: U2FsdGVkX1+c40EptfzXBPzc1UkVkfGfAxbnWqsB6Ccq1llN4GqdeQEAe38tlIuRIwwsDyuOiEL+9tplFzzHxj+1bABsP3710RtcWERjCyIQD0DllC0zbmwibhQgVX0T+BzBnYr/Lf9x/d8kb5dGxKERa3fn+TYPlgAvr8Gu+3eEJYzWvW+rSrWOiK0F8FIbyrV3PdiY3njJ4Nfhcsrsn7cMVGEmRyRFf9H4Dxy3jvQd3Ukoj+Jn/NlUOOyp060uonn3/etPQ2qNA1RpxDWXKcYzUmKA6/txqaDDxTtVwwok2fzAvY2PRx2o24zI9CXKQvsa9B4refjehjHxpfvhIPykGShRdnxr2hNKTG5yHhhpzrzvVh9osuJlPsUhf/a9jp0sQAWQwlejv0P0fxSrGbv9Qhac2mCe44LxaYOyxxOpy3s/1h8/9M3snDTT7+DzaBIXhIFATgD1kemvjdEj8tZQmRRmRQPEKGfVIOfRDe3iVhglvs6o6ll4BT2+Zu0HUjxavQTTkAhBONvMfPluwu0KAWZD8J84vnO9pB64P3RldJnnqPmdaYkHHn9LBuYhBAT//QQMNNNVZuS2hsQNYNnNqDuFG8873jTSeh6wBhZC5HkVqVsIPS1h50DkMgzIM3otmXExkLeo6ZcTaT2kXvo6z7shFxaOCWSfLhD1qX0AqjX/C7kY1CMT4XAUE6B2Y3lScL+WCn/a5I1FdZAYvDlVyDuBHXlIyM2o8xH6/XAmbjvOpxwAD+PqG6JMIzPh8yg+ZpVmSOx6SkJYSA3nepqwWtXVwSSKS/joMOIkDidJmmI7o/buP7lk24QUFZHh1xRReGfpE8707UmJ2RygxnzpHDF6WsZ5ADEDjdUX+DPx9JyV6v8RF0ME9kxkzlrQi/jhSpatiDLSAKZN4JW1B0oUbkZ80CjDrwYFKAyCFABAsUdLSOoUEDoAVPg63hAooyDuji0AkCo/0zYeLd9
+ 1eh/6+k0
+ EZUqSpwrmFcEGdtaLT6aWFwtHiNbwwu7YCbD0d0InAzm6yodUw6N04fUrweK21RPM6qR9rEVNKX44rjDO6J6xGUIFc/75D12GdHCNjV4oMSS4q4WJhf8FLEzsIJkD21L9EcFMmCEL1d5Ky9RZIeaBLiGg+zMCIU6VLupRhfOVaJjiUK9t/pvuozYlosFZXUpZsDwCpAgaDPfIODLaCIsMyen+LZbf3CmJ4TLsb37SUGhH2xn7FjHf4YhVf2F0DzwIg9Xgit+ZSgzmuO83Sq9M3XcZD6R1LGggvbQGvEIV4u1k2Y6u3GqhmneNyxYE/qaR9s0pFVvPl4dA4wOUc8pFmXgGX4OzklXcw48ipBUmVCHIPW9sL/Rm8/hlbPtaa/hZViK+O5OAS2w5jKjb1sEG+anvjLzYoKvUxOJUsH8e1olbQBkDe0jIkZpxOYDcPSgJBpxr+Wzv5G4J1PKqGhk3QA6A6v2ah5nlA0dMCasQfHJA1d++aYQLzw57kfG9oM114YGc/Isee5qW1/q2VnNVXon9/vx3YZXgiy+dWFMEK3mkksQHRGuXEhvCCecaZqpawZUte+3BBUf2OTzzebyzyns5eb1cE6d6hWKJ72224AF6WWasQRIFyKeZBSRerXNebX1e2UTg54CoYhbFAi69lGZDMi7L4BrUMo8rAtprqEF2mwvoDNbJFYNVvn0eoewfFnjC10hJSsIwPfe28hdHEpBQ6LH/Y8qgSmsnj6kklZKWfpo69v/A1/faxVoe0BMHsRH1gc1RtrKYcr9wSecYLdXr7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,265 +133,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 801c5efa788952095586d076fed1ea4902facff8  mm/swap, PM: hibernate: atomically replace hibernation pin
+On Wed, Jun 10, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Thu, Jun 04, 2026, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> >> + KVM: selftests: Test conversion with elevated page refcount
+> >> >>     + Askar pointed out that soon vmsplice may not pin pages. Should I
+> >> >>       pin pages through CONFIG_GUP_TEST like in [2]? I prefer not to
+> >> >>       take a dependency on CONFIG_GUP_TEST.
+> >> >
+> >> > I'm not exactly excited about taking a dependency on CONFIG_GUP_TEST either, but
+> >> > it probably is the least awful choice.  E.g. KVM also pins pages is certain flows,
+> >> > but we're _also_ actively working to remove the need to pin.
+> >> >
+> >> > Hmm, maybe IORING_REGISTER_PBUF_RING?  AFAICT, it's almost literally a "pin user
+> >> > memory" syscall.
+> >> >
+> >>
+> >> Hmm that takes a dependency on io_uring, which isn't always compiled
+> >> in. Between CONFIG_IO_URING and CONFIG_GUP_TEST, I'd rather
+> >> CONFIG_GUP_TEST.
+> >
+> > Or try both?  If it's not a ridiculous amount of work.
+> 
+> CONFIG_GUP_TEST was tried in [1]
+> 
+> [1] https://lore.kernel.org/all/baa8838f623102931e755cf34c86314b305af49c.1747264138.git.ackerleytng@google.com/
+> 
+> It looks like this
+> 
+>   static void pin_pages(void *vaddr, uint64_t size)
+>   {
+>   	const struct pin_longterm_test args = {
+>   		.addr = (uint64_t)vaddr,
+>   		.size = size,
+>   		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
+>   	};
+> 
+>   	gup_test_fd = open("/sys/kernel/debug/gup_test", O_RDWR);
+>   	TEST_REQUIRE(gup_test_fd > 0);
 
-elapsed time: 822m
+Use __open_path_or_exit().  I also think it makes sent to make these available
+to all KVM selftests, there are probably other testcases that could utilize page
+pinning.
 
-configs tested: 245
-configs skipped: 16
+>   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
+>   }
+> 
+>   static void unpin_pages(void)
+>   {
+>   	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
+>   }
+> 
+> So in the test I'll call pin_pages(), then try to convert, see that it
+> fails with EAGAIN and reports the expected error_offset, then I call
+> unpin_pages(), then I convert again and expect success.
+> 
+> Are you uncomfortable with the CONFIG_GUP_TEST interface?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+No, my concern is/was the potential for leaking pages if the test fails/crashes,
+but it looks gup_test_release() ensures all pins are dropped when the file is
+released, so that should be a non-issue.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                        nsim_700_defconfig    gcc-16.1.0
-arc                   randconfig-001-20260611    gcc-14.3.0
-arc                   randconfig-002-20260611    gcc-14.3.0
-arc                   randconfig-002-20260611    gcc-8.5.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-16.1.0
-arm                              allyesconfig    gcc-16.1.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-16.1.0
-arm                          pxa910_defconfig    gcc-16.1.0
-arm                   randconfig-001-20260611    clang-16
-arm                   randconfig-001-20260611    gcc-14.3.0
-arm                   randconfig-002-20260611    gcc-10.5.0
-arm                   randconfig-002-20260611    gcc-14.3.0
-arm                   randconfig-003-20260611    gcc-12.5.0
-arm                   randconfig-003-20260611    gcc-14.3.0
-arm                   randconfig-004-20260611    clang-17
-arm                   randconfig-004-20260611    gcc-14.3.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                 randconfig-002-20260611    clang-23
-arm64                 randconfig-003-20260611    gcc-10.5.0
-arm64                 randconfig-004-20260611    clang-22
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                  randconfig-001-20260611    gcc-16.1.0
-csky                  randconfig-002-20260611    gcc-14.3.0
-hexagon                          allmodconfig    gcc-16.1.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-16.1.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-16.1.0
-hexagon               randconfig-001-20260611    clang-16
-hexagon               randconfig-001-20260611    clang-23
-hexagon               randconfig-002-20260611    clang-16
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-16.1.0
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20260611    clang-22
-i386        buildonly-randconfig-002-20260611    clang-22
-i386        buildonly-randconfig-003-20260611    clang-22
-i386        buildonly-randconfig-004-20260611    clang-22
-i386        buildonly-randconfig-005-20260611    clang-22
-i386        buildonly-randconfig-005-20260611    gcc-14
-i386        buildonly-randconfig-006-20260611    clang-22
-i386        buildonly-randconfig-006-20260611    gcc-14
-i386                                defconfig    clang-22
-i386                                defconfig    gcc-16.1.0
-i386                  randconfig-001-20260611    clang-22
-i386                  randconfig-001-20260611    gcc-14
-i386                  randconfig-002-20260611    gcc-14
-i386                  randconfig-003-20260611    gcc-13
-i386                  randconfig-003-20260611    gcc-14
-i386                  randconfig-004-20260611    clang-22
-i386                  randconfig-004-20260611    gcc-14
-i386                  randconfig-005-20260611    gcc-14
-i386                  randconfig-006-20260611    clang-22
-i386                  randconfig-006-20260611    gcc-14
-i386                  randconfig-007-20260611    gcc-14
-i386                  randconfig-011-20260611    gcc-14
-i386                  randconfig-012-20260611    gcc-14
-i386                  randconfig-013-20260611    gcc-14
-i386                  randconfig-014-20260611    gcc-12
-i386                  randconfig-015-20260611    clang-22
-i386                  randconfig-016-20260611    gcc-14
-i386                  randconfig-017-20260611    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-20
-loongarch                         allnoconfig    gcc-16.1.0
-loongarch                           defconfig    clang-23
-loongarch             randconfig-001-20260611    clang-16
-loongarch             randconfig-001-20260611    clang-18
-loongarch             randconfig-002-20260611    clang-16
-loongarch             randconfig-002-20260611    clang-18
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    clang-23
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    clang-23
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-nios2                            allmodconfig    clang-20
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-23
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260611    clang-16
-nios2                 randconfig-001-20260611    gcc-11.5.0
-nios2                 randconfig-002-20260611    clang-16
-nios2                 randconfig-002-20260611    gcc-11.5.0
-openrisc                         allmodconfig    clang-20
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    clang-23
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                randconfig-001-20260611    gcc-8.5.0
-parisc                randconfig-002-20260611    gcc-13.4.0
-parisc64                            defconfig    clang-23
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc               randconfig-002-20260611    gcc-8.5.0
-powerpc                     taishan_defconfig    clang-21
-powerpc64             randconfig-001-20260611    gcc-8.5.0
-powerpc64             randconfig-002-20260611    gcc-12.5.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-23
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-16.1.0
-riscv                 randconfig-001-20260611    gcc-12.5.0
-riscv                 randconfig-001-20260611    gcc-8.5.0
-riscv                 randconfig-002-20260611    clang-23
-riscv                 randconfig-002-20260611    gcc-12.5.0
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                                defconfig    gcc-16.1.0
-s390                  randconfig-001-20260611    gcc-11.5.0
-s390                  randconfig-001-20260611    gcc-12.5.0
-s390                  randconfig-002-20260611    clang-23
-s390                  randconfig-002-20260611    gcc-12.5.0
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    clang-23
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-16.1.0
-sh                    randconfig-001-20260611    gcc-12.5.0
-sh                    randconfig-002-20260611    gcc-10.5.0
-sh                    randconfig-002-20260611    gcc-12.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260611    gcc-15.2.0
-sparc                 randconfig-001-20260611    gcc-16.1.0
-sparc                 randconfig-002-20260611    gcc-15.2.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260611    clang-23
-sparc64               randconfig-001-20260611    gcc-15.2.0
-sparc64               randconfig-002-20260611    gcc-11.5.0
-sparc64               randconfig-002-20260611    gcc-15.2.0
-um                               allmodconfig    clang-23
-um                                allnoconfig    clang-16
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-16.1.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260611    clang-23
-um                    randconfig-001-20260611    gcc-15.2.0
-um                    randconfig-002-20260611    clang-23
-um                    randconfig-002-20260611    gcc-15.2.0
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                            allnoconfig    clang-22
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-22
-x86_64      buildonly-randconfig-001-20260611    gcc-14
-x86_64      buildonly-randconfig-002-20260611    clang-22
-x86_64      buildonly-randconfig-002-20260611    gcc-14
-x86_64      buildonly-randconfig-003-20260611    clang-22
-x86_64      buildonly-randconfig-003-20260611    gcc-14
-x86_64      buildonly-randconfig-004-20260611    gcc-14
-x86_64      buildonly-randconfig-005-20260611    clang-22
-x86_64      buildonly-randconfig-005-20260611    gcc-14
-x86_64      buildonly-randconfig-006-20260611    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-22
-x86_64                         randconfig-001    gcc-14
-x86_64                randconfig-001-20260611    clang-22
-x86_64                         randconfig-002    gcc-14
-x86_64                randconfig-002-20260611    clang-22
-x86_64                         randconfig-003    clang-22
-x86_64                randconfig-003-20260611    gcc-12
-x86_64                         randconfig-004    clang-22
-x86_64                randconfig-004-20260611    clang-22
-x86_64                         randconfig-005    gcc-14
-x86_64                randconfig-005-20260611    gcc-14
-x86_64                         randconfig-006    clang-22
-x86_64                randconfig-006-20260611    gcc-14
-x86_64                         randconfig-011    gcc-14
-x86_64                randconfig-011-20260611    clang-22
-x86_64                randconfig-011-20260611    gcc-14
-x86_64                         randconfig-012    gcc-14
-x86_64                randconfig-012-20260611    gcc-14
-x86_64                         randconfig-013    clang-22
-x86_64                randconfig-013-20260611    gcc-14
-x86_64                         randconfig-014    gcc-14
-x86_64                randconfig-014-20260611    gcc-14
-x86_64                         randconfig-015    gcc-14
-x86_64                randconfig-015-20260611    gcc-14
-x86_64                         randconfig-016    clang-22
-x86_64                randconfig-016-20260611    clang-22
-x86_64                randconfig-016-20260611    gcc-14
-x86_64                randconfig-071-20260611    clang-22
-x86_64                randconfig-072-20260611    clang-22
-x86_64                randconfig-073-20260611    clang-22
-x86_64                randconfig-073-20260611    gcc-14
-x86_64                randconfig-074-20260611    clang-22
-x86_64                randconfig-075-20260611    clang-22
-x86_64                randconfig-076-20260611    clang-22
-x86_64                               rhel-9.4    clang-22
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-22
-x86_64                    rhel-9.4-kselftests    clang-22
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    clang-20
-xtensa                randconfig-001-20260611    gcc-15.2.0
-xtensa                randconfig-001-20260611    gcc-8.5.0
-xtensa                randconfig-002-20260611    gcc-15.2.0
-xtensa                randconfig-002-20260611    gcc-8.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> What would you like me to try with CONFIG_IO_URING? I'm thinking that the
+> main difference between the two is just down to which non-default CONFIG
+> option we want to take for guest_memfd tests.
 
