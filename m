@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED25CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2429CCD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C8CC6B0093; Thu, 11 Jun 2026 02:39:42 -0400 (EDT)
+	id 80D926B009D; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B59A6B0092; Thu, 11 Jun 2026 02:39:42 -0400 (EDT)
+	id 7E4F06B009E; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 090086B008C; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
+	id 7217B6B009F; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 94DE16B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46BF814032C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:41 +0000 (UTC)
-X-FDA: 84866680962.22.F992571
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BAC6FC000F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 614536B009D
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:40:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34C361C2FD7
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:40:56 +0000 (UTC)
+X-FDA: 84866684112.11.9E744BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6322840002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:40:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny6YH0ag;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781159979;
+	s=arc-20220608; t=1781160054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tyoBKek67GCOLF32gFXw0uKrBXtUnKrGFDmzr7cdOBU=;
-	b=TsD+NYRsWtjBNDDLo5lB6jet2CuxgM2ytyAGKLi5u3AYyZXZMheqrp453RtEGpTZ/gyR4W
-	RQkkyMBTIxrm5IY6bV7CdBX8UO/y1qUBjDFzklqsrOGzcLcfNd218rbZMQgrdQ4vEAoVP7
-	solplb74oRMw/evh0i6GiWT5Hcw+ZH0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yi9ckVtDtphA7eMJncvdNkgvdgfwVN/oHKstajaBnTM=;
+	b=EjCXeOWSYw3D7zjN+MAFTM0MhRPlzbvCmz7isdoYxGYLfzRGpU/ArkKJBUJnE9YjGdwOHd
+	afJ3zDD0cP484z3JjwKRX3/JyENl9E9oG3yytOMZQ/XbRHfwJ90gF+3nikUhmAzEdwLnms
+	aK/yJX4AS+TZKX+Bm1jpgY++JTpaAU4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny6YH0ag;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781159979;
-	b=bamD62hn9Yfecb29vZhVGdat9ZF9sEjCTX63ugi1bgQRPAmYHE8KtzDkF3djrZA4YtKGdU
-	J9rNAqxiYbJ0qzu6EIERP9/74nJXqkKYMCNsXv+/KLyTJnjq5V4O/c562xc+goF/V+oziq
-	LMnKOYbkQESAYB96uCuaWCxxlLbFNL0=
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-01 (Coremail) with SMTP id qwCowADHbdYgWCpqYOJFAQ--.1790S4;
-	Thu, 11 Jun 2026 14:39:29 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	liam@infradead.org,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [RFC PATCH 2/5] mm/slub: add optional previous lifetime user tracking
-Date: Thu, 11 Jun 2026 14:39:23 +0800
-Message-ID: <20260611063926.38111-3-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
-References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+	t=1781160054;
+	b=5HhToxWq55Zd2qdtdD/wCs3wDF/FKpsjANZbg47OKgtQG6lHL8hKr+o0FbsBRZkBxADSIA
+	Gn9aSuCgQdygoW4zj0lSQr1iIKf8p8/sWqV0h8llRt2PF1/kfbM526lNZyo8ZxjtdPZQGH
+	8pkLX1VMFa1SS92uB7aZihETWq7ULqA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 37AD0403DB;
+	Thu, 11 Jun 2026 06:40:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD181F00893;
+	Thu, 11 Jun 2026 06:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781160053;
+	bh=yi9ckVtDtphA7eMJncvdNkgvdgfwVN/oHKstajaBnTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ny6YH0agPhJrgPlTnLMxDnStHWnM4CN6azBueRu5KlTzXqgWrnXqCaxFDweGkL/aO
+	 Ivlbxesvv27d8fnL5f/gdFXAjaF3tMorYBLWKMojHQVEKzeVIv1LFgYTtJaA03N3UU
+	 T8O1eb2OUfiN0X/fDnGd1cdT6sjp1v3H95MDXqCAvXm68z4XVRmepW28tbE6k5jr8j
+	 p2n3azySbjTwdJ8a0EPBOzxdMNnnIcB3I8Q36ec8Mog6EDsxi3Xd8zjKS6YwMv9nRA
+	 u08TDIFox4+LWNfl0R0vgIb7vu11g9aqOWvqTvQ5bv/DRiSpNZSUO/KVOMJpcEPj1C
+	 9DTc4fov9V1dw==
+Message-ID: <7064a90e-4bf5-4be7-8b7f-a5a11dcee66f@kernel.org>
+Date: Thu, 11 Jun 2026 15:40:47 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADHbdYgWCpqYOJFAQ--.1790S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxtFy7Gr4fWr4kZw4DGF1UGFg_yoW7XF4Dp3
-	y8GF1Dtr4Iqr1xC397Jr4UC393Xa1v9r4jk398Xw1S9a48Jw1Yvry0kFyjqryrGFyjk34U
-	ZrnYv34Y9FWUZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
-	A2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1l
-	e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-	8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
-	kIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
-	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2
-	KfnxnUUI43ZEXa7sRipB-tUUUUU==
-X-Originating-IP: [111.196.245.140]
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
+ SLAB_ALLOC_TRYLOCK
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------cLKhUE1LS3RNZ8H0WJkZPja5"
+X-Rspamd-Queue-Id: 6322840002
 X-Rspam-User: 
-X-Stat-Signature: nm9iug7hrckwcizsqe7ecconjr5b7cpp
-X-Rspamd-Queue-Id: BAC6FC000F
-X-HE-Tag: 1781159977-565778
-X-HE-Meta: U2FsdGVkX1/AWvp+cMcgpNm33VtPXvU/nHYHVMXZeyhZjlIR2L9AhDYzirHDneB9i5REuh/vvj0L32mLh6ldxg2jKtjE27TAtpV1tgl1HO46nPJAuVva+SKLGyXhneUHCWkp0efDgTdJAkg0ZG+9Ziw1NnUvDyW4Fo4WUUQroTb4LD60imrs+o1TRBuVy6sfumUM9yZuZjrNq4ScXZ1ckzBA9eg2NiWQ+lyMDEvq19gXnMUBqYV8veRX8wnL6m6yRQKIh+C1ffe8yc2BVgImsXdDRfYws43xIGqOgLRie1PoD53VwCmGGxA0PvJxvvxn9l5enA5EE2w1fBmeEnazTOpcfeXuV8UNj9VljdhQi4ZrRSDvRVsP0Wo5QOmXKs5Y6bzgh00nPRNCFjQSw6DniJh/rc0iBWwBxmWjX1Bk+Ss9SVlcHwVqSQoKMVeenzslL29kwsJIXi2ZrwUsvgn8uwzbw5CCl3ijzuu3P5SMbbY0WI/XR6YguSRf8JgioCEkuQM92RmrEfWiXnXPjdn1akcKnUld6vAlUDEIPQkFnoF071ZNp0zz4C7ig30awEwwdaVnxA7T408E1sa2i7jZ6x0HuGfa0FWIYkLDIZyul7cn8pVN8IQKjEucY8r2QAxRXniQcH60iiWY/GE9aEFy9ZFi1JIrqE1Wz7RiA+h2wtIA1dcC3ceu/fbiDG4rS1pwUmJ26MJimCJ6PxRIWxywB8KemGyg4g4ghOlX8L+5SEGrJtUK8gcVUAd/NWlMnDMLWPyuVetTGr7lHSqcNS3osZI5mjOUJlulvCAiqk3aP9hlSJSK9UdU4/Hpj3Ay53bVAqBkBkXfMHsi2Ea+U8TAJdQUU6vlGXmk5hcVNOlReJnSdSIAXZhKcNoCKhDPzhPz6BvHQ8xAvYoqn+utlYxCG5o4DgGKZ3sBgrn+1TFKqzof8OcGckkjm0YY1KYVXCR4byW5UYw2ivLDJDfjSNJ
- h9cO6Jb0
- IUbU5BM8mtnJ8lj2xwGbCbE+/My7Mr9M5PnOZGDtIPHb3MDinT+NDQmdQKdtnLuzrifcXo3ToCqQp0DBkF23rloo6CHdtSYsmNZMBGqht7Ijlxw41Xb0qmpiUYAjTKKDhfJDQxSVnFI3H9I0hN+gmnImW3L/tuNd1obIu
+X-Stat-Signature: wr4odgcbft3ieyupkaxagoxrq81q967g
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781160054-83489
+X-HE-Meta: U2FsdGVkX1+gatq8Kb2584nQnr5mbyFkuAxIL046PYkcBgLLh0DbsM4XPR9D6xDH71Z6Ki2pO79YQKvTN97zRTR9JiTZFPmSKPvF0BGWynY3nLZGOeRxdLD47N4rs8XzdivX2S/N5czD3t+znIZ5xxBAwyugliPy5U3nY2KC8K2A7fIUxhg3dzH5Ddx7ZJtuqERBEPS/PK40a2kTsauS00YbvU/peQkd1+CCWoDBBmxKzY5VRZfg14JF4RNDgYxTDnHlpZBfQqb4IZzCicz9JCRBT6cCMni3FRFt5EDW/mH2UzD5Rmy4FbMlLvgeWczgiFdhOz7jMFVZefm8b00CWRI9Of0Jv/hdr88Qm7e0YmGlnE/vcXWUbrbmkSE8KhPmt9rLIbyyAleHxvCJwVyuKJBr/Fl88SMmtC1JbV0PMn/xHkf+vN+6EPKgdS3JgEcVyz7Ilz0YKmFoiibo2I4OjTF4QizF1TyKX3wjKP9NeuplqxzMzRb5TghJ47o0KxJJnEDhtwrkvWpkoH0WseHNYDJQeYX7+6O/Uo0eLerqI3m85r4V3TH6im1fGZbYxbfaQb8OPh7UaVz3wRWtA7LFFkXM1IjHLwcle3nyBg67fxJSL//unRK7/A29WauT0fD4iLblVrBVhGwIzDaJTYkBor6v5dnc3zOSKMo3fm0csjv6ewjgLA7nZOAlzNif6VmxHiYw1R99+6FgrXBXhwwT7nktPFQN/ilQwfkr4FeZxsuNIWt6e4+NTlYQz5FdEmT6YiEvV0vNVrQ9DrIfvAVfhcEM39MIfiHqASj4DGxf9cjFTvrhyOlK2VvvkZmqSHiRCnbQfUsezIIxhB/S01IIDp7RY/S3TqUUilq3fZ0qjhARp3tn6x6u8twmY95xauK+rAlzFgZRO9VqOnUArtzkEUtwSMGHMAfnF9ph1nKgzCi0vVNfkir5hHxM09f7g3WRIOX+NKBXbEVodJZ6pJz
+ SJp/A3G6
+ 6TH0Tsw3dnvRHrM33nsbkt48mqcLqPBJi3b7M0PZjnMgKj01qGKF0aJouLFYdqqZOfDIG7ilo5aoAZpIETwNuPhWYDtAUOzRjXtjf+8vYA6mxE5rO6rhFapCgKUq9IYc3D323qdpExLsWkfxmQHqXoZjP3b1BEXD2aGypwUJUx72gz0l9UQjgqR60Fn/hs1dJfIwiGCaUl1/3Y8lWojKuvj9T7wvCylYusCMg7ciLlYrzITIK1sxMppYvuZlxmybb2Ou0G1pBAniOSous6jEkv0FhSVGgQgsr6MSWy0Rt/nEoSHCaayf9B546fYxSQPR03jdtOjOiZhwsLdo3TIECLey2MGSzUOQyXOWFkHK2VYOJb4MFw78Qlo5UoW+S6BeCzDu+4SeTtSxWx/stwnVMRZtQ5OF/6PGTZZ1QvSrk0JNtL9tFTWjfYuVpqTwSg2XNsFdqRhTVkLsLkmkPdLzUQhz+aAumTmRVY1nGGFnSpcfZbJsv1L+IOn800gDagG8W0JPbT+6EURby5koWqBIfJs58E9xyHB2mAz8G4xDKC0zA+D1y1ilGaZfCUM73H69cxpDGYd6V0Ft0pww=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,164 +103,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SLAB_STORE_USER currently reserves two per-object tracks, one for the
-allocation and one for the free. Add an opt-in SLAB_STORE_HISTORY flag
-that extends the user tracking area to hold one previous completed
-lifetime.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------cLKhUE1LS3RNZ8H0WJkZPja5
+Content-Type: multipart/mixed; boundary="------------cnCTg083TbHZKFbOy4OWEa5Q";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <7064a90e-4bf5-4be7-8b7f-a5a11dcee66f@kernel.org>
+Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
+ SLAB_ALLOC_TRYLOCK
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
 
-Expose the option as slab_debug=H, but require it to be used together
-with U. This avoids silently enabling user tracking and its stack depot
-cost when a user only requested H. The option is not part of the default
-debug flags.
+--------------cnCTg083TbHZKFbOy4OWEa5Q
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-No history is recorded or printed yet; this only adds the flag, the
-object metadata layout, and the sysfs state file.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- include/linux/slab.h |  3 +++
- mm/slab.h            |  3 ++-
- mm/slub.c            | 36 +++++++++++++++++++++++++++++++-----
- 3 files changed, 36 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 2b5ab488e96b..78b9ec5bc17a 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -32,6 +32,7 @@ enum _slab_flag_bits {
- 	_SLAB_CACHE_DMA,
- 	_SLAB_CACHE_DMA32,
- 	_SLAB_STORE_USER,
-+	_SLAB_STORE_HISTORY,
- 	_SLAB_PANIC,
- 	_SLAB_TYPESAFE_BY_RCU,
- 	_SLAB_TRACE,
-@@ -98,6 +99,8 @@ enum _slab_flag_bits {
- #define SLAB_CACHE_DMA32	__SLAB_FLAG_BIT(_SLAB_CACHE_DMA32)
- /* DEBUG: Store the last owner for bug hunting */
- #define SLAB_STORE_USER		__SLAB_FLAG_BIT(_SLAB_STORE_USER)
-+/* DEBUG: Store the previous object lifetime for bug hunting */
-+#define SLAB_STORE_HISTORY	__SLAB_FLAG_BIT(_SLAB_STORE_HISTORY)
- /* Panic if kmem_cache_create() fails */
- #define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
- /**
-diff --git a/mm/slab.h b/mm/slab.h
-index bf2f87acf5e3..a6af35829f79 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -417,7 +417,8 @@ void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 			 SLAB_NO_USER_FLAGS | SLAB_KMALLOC | SLAB_NO_MERGE)
- 
- #define SLAB_DEBUG_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER | \
--			  SLAB_TRACE | SLAB_CONSISTENCY_CHECKS)
-+			  SLAB_STORE_HISTORY | SLAB_TRACE | \
-+			  SLAB_CONSISTENCY_CHECKS)
- 
- #define SLAB_FLAGS_PERMITTED (SLAB_CORE_FLAGS | SLAB_DEBUG_FLAGS)
- 
-diff --git a/mm/slub.c b/mm/slub.c
-index a9114dddc976..803c597351ce 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -277,7 +277,7 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
-  * issues when checking or reading debug information
-  */
- #define SLAB_NO_CMPXCHG (SLAB_CONSISTENCY_CHECKS | SLAB_STORE_USER | \
--				SLAB_TRACE)
-+				SLAB_STORE_HISTORY | SLAB_TRACE)
- 
- 
- /*
-@@ -285,7 +285,8 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
-  * disabled when slab_debug=O is used and a cache's min order increases with
-  * metadata.
-  */
--#define DEBUG_METADATA_FLAGS (SLAB_RED_ZONE | SLAB_POISON | SLAB_STORE_USER)
-+#define DEBUG_METADATA_FLAGS (SLAB_RED_ZONE | SLAB_POISON | \
-+			      SLAB_STORE_USER | SLAB_STORE_HISTORY)
- 
- #define OO_SHIFT	16
- #define OO_MASK		((1 << OO_SHIFT) - 1)
-@@ -316,14 +317,23 @@ struct track {
- 	unsigned long when;	/* When did the operation occur */
- };
- 
--enum track_item { TRACK_ALLOC, TRACK_FREE, TRACK_NR };
-+enum track_item {
-+	TRACK_ALLOC,
-+	TRACK_FREE,
-+	TRACK_PREV_ALLOC,
-+	TRACK_PREV_FREE,
-+	TRACK_NR,
-+};
- 
- static inline unsigned int nr_user_tracks(struct kmem_cache *s)
- {
- 	if (!(s->flags & SLAB_STORE_USER))
- 		return 0;
- 
--	return TRACK_NR;
-+	if (s->flags & SLAB_STORE_HISTORY)
-+		return TRACK_NR;
-+
-+	return TRACK_PREV_ALLOC;
- }
- 
- static inline unsigned int user_tracking_size(struct kmem_cache *s)
-@@ -1837,6 +1847,9 @@ parse_slub_debug_flags(const char *str, slab_flags_t *flags, const char **slabs,
- 		case 'u':
- 			*flags |= SLAB_STORE_USER;
- 			break;
-+		case 'h':
-+			*flags |= SLAB_STORE_HISTORY;
-+			break;
- 		case 't':
- 			*flags |= SLAB_TRACE;
- 			break;
-@@ -1855,6 +1868,11 @@ parse_slub_debug_flags(const char *str, slab_flags_t *flags, const char **slabs,
- 				pr_err("slab_debug option '%c' unknown. skipped\n", *str);
- 		}
- 	}
-+	if ((*flags & SLAB_STORE_HISTORY) && !(*flags & SLAB_STORE_USER)) {
-+		if (init)
-+			pr_err("slab_debug option 'H' requires 'U'. skipped\n");
-+		*flags &= ~SLAB_STORE_HISTORY;
-+	}
- check_slabs:
- 	if (*str == ',')
- 		*slabs = ++str;
-@@ -1969,7 +1987,7 @@ slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name)
- 	 * but let the user enable it via the command line below.
- 	 */
- 	if (flags & SLAB_NOLEAKTRACE)
--		slub_debug_local &= ~SLAB_STORE_USER;
-+		slub_debug_local &= ~(SLAB_STORE_USER | SLAB_STORE_HISTORY);
- 
- 	len = strlen(name);
- 	next_block = slub_debug_string;
-@@ -9223,6 +9241,13 @@ static ssize_t store_user_show(struct kmem_cache *s, char *buf)
- 
- SLAB_ATTR_RO(store_user);
- 
-+static ssize_t store_history_show(struct kmem_cache *s, char *buf)
-+{
-+	return sysfs_emit(buf, "%d\n", !!(s->flags & SLAB_STORE_HISTORY));
-+}
-+
-+SLAB_ATTR_RO(store_history);
-+
- static ssize_t validate_show(struct kmem_cache *s, char *buf)
- {
- 	return 0;
-@@ -9442,6 +9467,7 @@ static const struct attribute *const slab_attrs[] = {
- 	&red_zone_attr.attr,
- 	&poison_attr.attr,
- 	&store_user_attr.attr,
-+	&store_history_attr.attr,
- 	&validate_attr.attr,
- #endif
- #ifdef CONFIG_ZONE_DMA
--- 
-2.50.1 (Apple Git-155)
+On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
+> Similarly to the page allocators, introduce slab-allocator specific
+> alloc flags that internally control allocation behavior in addition to
+> gfp_flags, without occupying the limited gfp flags space.
+>=20
+> Introduce the first flag SLAB_ALLOC_TRYLOCK that behaves similarly to
+> page allocator's ALLOC_TRYLOCK and will be used to reimplement
+> kmalloc_nolock()'s "!allow_spin" behavior. That currently relies on
+> gfpflags_allow_spinning() and thus the lack of both __GFP_RECLAIM flags=
+,
+> importantly __GFP_KSWAPD_RECLAIM. This can give false-positive results
+> e.g. in early boot with a restricted gfp_allowed_mask.
+>=20
+> Also introduce alloc_flags_allow_spinning() to replace the usage of
+> gfpflags_allow_spinning().
+>=20
+> Start using alloc_flags and the new check first in alloc_from_pcs() and=
 
+> __pcs_replace_empty_main(). This means some slab allocations that were
+> falsely treated as kmalloc_nolock() due to their gfp flags will now hav=
+e
+> higher chances of succeed, and this will further increase with followup=
+
+> changes.
+>=20
+> Remove a WARN_ON_ONCE() from refill_objects() as it's now legitimate to=
+
+> reach it from a slab allocation that's not _nolock() and yet lacks
+> __GFP_KSWAPD_RECLAIM for other reasons.
+>=20
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  mm/slab.h |  9 +++++++++
+>  mm/slub.c | 17 ++++++++---------
+>  2 files changed, 17 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 1bf9c3021ae3..96f65b625600 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -4664,7 +4665,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, st=
+ruct slub_percpu_sheaves *pcs,
+>  		return NULL;
+>  	}
+> =20
+> -	allow_spin =3D gfpflags_allow_spinning(gfp);
+> +	allow_spin =3D alloc_flags_allow_spinning(alloc_flags);
+
+Sashiko wrote [1]:
+> Does this bypass the caller's gfp constraints for standard allocations?=
+
+> Looking at slab_alloc_node(), standard allocations now pass
+> SLAB_ALLOC_DEFAULT into alloc_from_pcs():
+> -	object =3D alloc_from_pcs(s, gfpflags, node);
+> +	object =3D alloc_from_pcs(s, gfpflags, SLAB_ALLOC_DEFAULT, node);
+> This default flag means alloc_flags_allow_spinning() will unconditional=
+ly
+> return true regardless of the gfp flags provided.
+
+Yes, but that's not used in _nolock path
+as mentioned in patch 6 description :)
+
+> If a caller allocating under a raw spinlock intentionally strips
+> __GFP_KSWAPD_RECLAIM (for example, by using __GFP_NOWARN) to prevent
+> sleeping,
+
+That's a horrible hack (and hypothetical. Nobody should be stripping
+__GFP_KSWAP_RECLAIM instead of using kmalloc_nolock(). That's purely
+broken).
+
+> won't this allow the allocator to execute spin_lock_irqsave()
+> on barn->lock or n->list_lock?
+>
+> On systems with preempt-rt enabled, a standard spinlock maps to a sleep=
+ing
+> lock, so taking these locks in an atomic context could cause a scheduli=
+ng
+> while atomic panic.
+>
+> Since there is no nolock variant available for custom caches, do caller=
+s
+> currently have any alternative mitigation?
+
+Well, RT kernels are not supposed to allocate meomry under a raw
+spinlock (at least w/ allow_spin =3D true)
+
+[1]
+https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db11=
+8%40kernel.org
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------cnCTg083TbHZKFbOy4OWEa5Q--
+
+--------------cLKhUE1LS3RNZ8H0WJkZPja5
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaipYcAAKCRCGXBN6rc5S
+1vlSAP4uA7Ju8txQ+1RRIq0JRTyegK+jlhzzSR1685TnFW2XJwEAqBjZc2iaQWqe
+2tkPuBbObSXUfMAJjlbXtRikXRNiPA8=
+=tLgu
+-----END PGP SIGNATURE-----
+
+--------------cLKhUE1LS3RNZ8H0WJkZPja5--
 
