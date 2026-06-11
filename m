@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE760CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE230CD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:27:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B84C6B0096; Thu, 11 Jun 2026 07:26:13 -0400 (EDT)
+	id 0E0286B0098; Thu, 11 Jun 2026 07:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08F056B0098; Thu, 11 Jun 2026 07:26:13 -0400 (EDT)
+	id 090636B0099; Thu, 11 Jun 2026 07:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0E006B0099; Thu, 11 Jun 2026 07:26:12 -0400 (EDT)
+	id EC2646B009B; Thu, 11 Jun 2026 07:27:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E49226B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:26:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DCE846B0098
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:27:07 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74A6BA04B9
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:26:12 +0000 (UTC)
-X-FDA: 84867402984.05.2892064
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 841061C0009
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:26:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gPcbs4uT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6FFB5C1FCC
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:27:07 +0000 (UTC)
+X-FDA: 84867405294.05.B0D8769
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B0EB8100012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:27:05 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHELn24G;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781177225;
+	b=MUezXNrF7Xwd5H0tjfErPPWYtQ/qewxgxlmvH08RSCWWy88wPv2NTyIFsj7bdRSZnJ3dCz
+	ALRDaH9gdYo2bwCZ9e7tyYl3VQsKaWgSCREc2f2pa6edXb0BkXKhOq0yflzx2F5drDkbJ/
+	GgRQ+R2YirWM5dIkGM+fjX9ZdJga4/0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mHELn24G;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781177170;
+	s=arc-20220608; t=1781177225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RqjjulDH3Tmftd6bFVSbdFoziLNVvT1hh+/KsytHjBY=;
-	b=qMa3LlZN6oEyzgttZutyLrUssqBi5g/NEV2mcHJWAS4VsHn+japNZC8EUkD5NcAEiUThMw
-	gHBBAsK2WEPDpQ57Homi9RxkCUWzuE1TcTj0ELsKgVmMFS1GKfGzrIddAUq9ISifM0P2dX
-	PLmmxzvI4KUwN83xyAAQgoUS9azjjM0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gPcbs4uT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781177170;
-	b=X5RjVFimsTIt4HI48VEnk2C/aJxP16wCyltij7x5RxI9zRfX2NycYtn14c3NcrPRKNwv7D
-	CpEipP3rL3lgiPdSVX6JQW3+F/bwMPROr1WoOLXRGzooR54i7Uny/xOTUsfUjjJbvSYqTN
-	8TbW1T8f9mQsF+nHuguuxuJNUm/29hU=
+	bh=WYYnd4Zz9q84LFFeACONzdQ+ixiXpHspWS7cUg4EYiE=;
+	b=Rl5LIs0jHrBA6TC8UCCi0+m2zDPZ3l76aCXSPDNvD+0afsswJUZwxCXAtUs6ATZzJdODaN
+	ZWpWtYSRAsQhitZ0c4XsHGbx3KWmz6y4AbwsZkB3NEeiUEpGyBYksSXqbDUQ+31Q7XIHVc
+	r5TMNfnwK/JraLIHhJHqcBYEdyag/qw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4827242D61;
-	Thu, 11 Jun 2026 11:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF801F00893;
-	Thu, 11 Jun 2026 11:26:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 14E3C60052;
+	Thu, 11 Jun 2026 11:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F417B1F00893;
+	Thu, 11 Jun 2026 11:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781177169;
-	bh=RqjjulDH3Tmftd6bFVSbdFoziLNVvT1hh+/KsytHjBY=;
+	s=k20260515; t=1781177224;
+	bh=WYYnd4Zz9q84LFFeACONzdQ+ixiXpHspWS7cUg4EYiE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gPcbs4uT270KLUxvFhf5PCccdxHi/jLrUP1GCYzWkfed2AQJ0aIXEJerDVk1SewrM
-	 iwkK/knNdRs72Hnzn39mz4J7gzeRD0m/9CirgWfe58HkzsuBsFPxqCND58xg29q7Dn
-	 heSQJFFKwSpPD/qLff3aRio8TKObX7qPJcLifGpCxbaUsFjY8ozikSPq5guEPa9uLA
-	 Z3B+s4NJKMZvnqhnZgWRyH0mngisLaQ2NzMjKXGGQ/AMj0BwXrBc78WboBjQnYU8SQ
-	 zvn2gjy0GBqJ9nrrVd1MygWWkvKkng/A86V2P9hVqB0Kp0djUE6UKWbMzHJARvfE4u
-	 eKf6c2GHq4Czg==
-Message-ID: <bc29b740-8f1c-4e2b-9b01-c8c4a4183b3a@kernel.org>
-Date: Thu, 11 Jun 2026 13:26:02 +0200
+	b=mHELn24Ghek242AaTXZbG30vsyn9jDmkH/4NMRTti3KqfkLj3DGa2pKzVH4PgAG3l
+	 4WZPsUXWERDGoLepQ6KpKiD2UA11nMo6VPcBQynsVw7Omhg73HEx8maS5mrrUzhoNu
+	 gr3wqR/T62gnkpLcFx7JF/L/a2Fw7lZ0kYN+1oDYYL/h3NWrkkyAm+pRwLijpm+uHy
+	 VBkojXh/ct5QEo81vqn+lbMpstNla8N+qYetTNnq0TSAL3BtuZ0ykvR1EdM6ZU7d5E
+	 iEN04lHZxU8at85xyWHyvfzam69VH0TDekgmcjx42svs5P4G/wBrQwNRW1Glhsq/46
+	 27W0P01CwkkVw==
+Message-ID: <b2e63557-a0fa-409f-8a75-12d43257efb5@kernel.org>
+Date: Thu, 11 Jun 2026 13:26:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] selftests: mm: fix and speedup "droppable" test
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Anthony Yznaga <anthony.yznaga@oracle.com>, Mark Brown <broonie@kernel.org>,
- Sarthak Sharma <sarthak.sharma@arm.com>
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Anthony Yznaga <anthony.yznaga@oracle.com>, Mark Brown <broonie@kernel.org>
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, Aishwarya TCV <Aishwarya.TCV@arm.com>
 References: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
- <bd9d1353-3053-4665-8f35-ae3f6e379237@arm.com>
+ <9afa4ff1-9749-4efa-8112-73fca1f25e8b@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <bd9d1353-3053-4665-8f35-ae3f6e379237@arm.com>
+In-Reply-To: <9afa4ff1-9749-4efa-8112-73fca1f25e8b@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 841061C0009
-X-Stat-Signature: r4fk64ekuqchheybitcgisnofgx3c3op
+X-Rspamd-Queue-Id: B0EB8100012
+X-Stat-Signature: kqfpq5dw5cuignrxjkyj7tkqk4s8pfir
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781177170-195817
-X-HE-Meta: U2FsdGVkX18vCN9Lt/0DKpHp8FI51DH//a57FedDE+ImOZOiVOatRZhIsJn4XihPCGh8T0jLgqjChnePXCT08VuHKAOZu7F/KqcTTGxu44ywzsp2Vzph96SPoLDCSFm3gHa6aTY4ZJb7TnEUEzNPmE0f73cSPDCneNjYNsTZGImjdwWJYtr9kXBKKOFKKJoRhy92N24q7wc+9EGLimaSbFfeohCF5Z6bqnG0wY7E/4NhKRHmfeFOmRWs9kr2gCAsm8OEZIKJDZ1zxzbB2fFz5ndibv+1x7PvdRvN/Lp0bMvwQKbHsQNN1FJd3EGgftlK+uE6kW2R8dkBYXLj+PIP8DQq5pderXWxTbH5Kv0KpPMFfbAUXt5dwtQo9bV2Cz1dUhdH5skszlCkk/BeimXp5khSyvlNY+VqxJ/AXpyQRzfBLr1oU0a0Kv7Lyr7d8bG0hujYZVKJvRIxTEtViGHdlai2112TXafrEmbhMK8pZhOHcMsgjKWSSl2fHPKDmUvBTFEaVQFScb1Us725Lsh7Vv4xKuuaXj1li59SFpIvsehse/J/COc/BHnPlhwZPntVBh99bNmZh//wGhTUjgHCIMhjTvTkL0n0LjmSS5k1nOqx57jx7yR4c5fCIOA98kc9bd+eUszfSJ/lrR+eXcSLccCn4uW0gv47pkFXO7VnJgCfBLGOjj5zv6xlRHs3Vjjup2aALhqofKWYCWQpZ8Ii4WVlJFdcSP9H7GiSHSQohGX/T4L8aUfyj0ZSKsQETHnV82/9EE9zbwcEiUTkUBl8BgcspP8+WIvQ/o8APrC/tzBgIo/qxg8Pzu+UJXfo9oc7or3Gc++UMj7aooiTdQOGNKi/BvqxxWlAAtDgttLYfVkXb6FYcPSR2dMwFd7k646M1i7d5rjiQueF7ANWCLs4ST6ppERXBumW3jkfC+fjuDwXqnmsjo2gaUFUP2QXLAQRE0LUa8fUeWObM4Dovo/
- dD6hE7JW
- 7Qx3OmwhSCQTPEeXKnVuyl/CWB+jjCL+YfqREeei6nauSeupNhEpNPJq+VK1vkmHrOQ2+FOya9+N5Vji14LcBo0yznqp3KIj9GPsp7UFfEtlv2FaSt6l2qpJqXx9/NR/5vcFfDnCGS87btl4CC24KYZjx1joTfbpNlQdoxjyPrOSHT59CD+n7TBxjwzF1IUXt9NRJAu/Hu2Nl4MAaj3IeiLcwptJKme/HnzujdyLyjAjso1t5KTQX2OGbvceN5xKGpQjo
+X-HE-Tag: 1781177225-229968
+X-HE-Meta: U2FsdGVkX19Y0GvLg1vNFO3xBgbH9T9AXsYdaxjDaCKxDyd8vlAYvMma0Sv0lWwAeaNbI0NFuL+KEjzoyLtX9+l/6Ps4+A5LVUPsZUhOC1PG4XOHyNPe80d56rQSk232fA8cPxmRUnHpPnEjyGLL0+YV3sl+AWljnFeDcIAklsbONMVuc4c+D77yrfSkXj74uYu3Xu7YJZ+RO/d0TTBmphm6LrYDlUXOIDiHNARJq0iJntuhUjCorVXDuPbtoHYJAmWWwp4sMsg/tlGJDet+iuubsJlGbrtIZVxKUoiyt8F9KAckZf/DsFX+zz77O5IBCvmyYaEbuB1448Wb4h9FJKOs7t7HzK9x+qOv0f7J0hNdO9iNdTtoSz8nDCcLd2fAyu5WKsakdrxO/DEkS1xn8cYb3ByrY/5iJhMu4Dxw9OCdNTjXcBXwGNLW1MatEMhi3sZHiZzj+rtT+oaXA+5z1Yp5969hT69LLX+CQ3sUpz2ZXuzCUJNZOCMa284ayu7K/pN/BoWKumshpHJfx2Cswc5LBUB3LFOMgmCjsaYSseaI/4hMhogOVcFxIKOquFdYt0lGDyhRX/g3bB4S+n+gEj7WTIe4m/ygGdNMuMkMWcqL2U/qcYzqfAPdBhoYz0ptu2mMLdZUA2U5fOTA80YjQhhbUgN6cytHNZNGGq3WgWb9nOIerBt6mhRaxxdWX3+SoFjGWDaYNVE5zEphtxzWyzJU2yZ3Q3gMsIfVKFPvXDk2WGD0zpTCwrQ5S+ZJRCR5G/SWaXC4G8AJKCFFhdmNZjiFtGyR5jXp9i3xjB8+Z6s+ckz761Lzq6H/i8L1Ithw/cgNyVzZ0iQ9R/Vq/aFvxfv7m0UWmygMb5Xj0zL4+6C8LhoNhd+I27kcaOqAe+pyZSh4155kp3xZK7+v9jR3ttgQnTDTxOKnJYkiywtSUlXVkTA3bTX7/Lk8G4rSuo4EjBubhDecVPLUPoPFeDs
+ n1T2Rsy0
+ AfngOOWKrkY5KDNAZGB4B7EZYA86dznsuRZhTk4rfgjD9m7DIoOJZtUNDau6nJznUhZr6dcmjAod/CZ2KzJvgNmk2Gk1I3koVvpQB4NVm3vlMUEthSFW4Gfr4iWJztXBJOVOq3/+BuJre3qyVYBpP2jKwrJ+PswA8Psn4hyE7soC6P5HFOHM8J7x7pl6V0/ksnAT9guAujIeB6+Qn0TkSaV6TWohYD+os4PHi7o1zEzFzw0Iolmi/cUs2JcjrJYyHIK4RJWZOgtHt518J0b6neu2/53yLSoMteF+mvhPZIwPcjHDjlXvgHksAOPLo/XaIzYWLCLxqarEaMXJSxqxszhtRsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,31 +144,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> +		/*
->> +		 * Speculative reference can temporarily prevent some
->> +		 * pages from getting dropped. So sleep and retry.
->> +		 *
->> +		 * If a page is not droppable for 10s, something
->> +		 * is seriously messed up and we want to fail.
->> +		 */
->> +		if (dropped)
->> +			break;
->> +		sleep(1);
->>  	}
->> -	kill(child, SIGTERM);
->>  
->> -	ksft_test_result_pass("MAP_DROPPABLE: PASS\n");
->> -	exit(KSFT_PASS);
->> +	ksft_test_result(dropped, "madvise(MADV_PAGEOUT) behavior\n");
+On 6/11/26 13:07, Sarthak Sharma wrote:
 > 
-> You meant "MAP_DROPPABLE" behaviour? Perhaps that can be folded in.
-
-No, I did mean "madvise(MADV_PAGEOUT)" behaves as expected with droppable pages.
-
-Reasoning being that we might want to add some other tests in the future that
-trigger reclaim differently.
+> 
+> On 6/11/26 3:31 PM, David Hildenbrand (Arm) wrote:
+>> The droppable test currently relies on creating memory pressure in a
+>> child process to trigger dropping the droppable pages.
+>>
+>> That not only takes a long time on some machines (allocating and filling
+>> all that memory), on large machines this will not work as we hardcode the
+>> area size to 134217728 bytes.
+>>
+>> ... further, we rely on timeouts to detect that memory was not dropped,
+>> which is really suboptimal.
+>>
+>> Instead, let's just use MADV_PAGEOUT on a 2 MiB region. MADV_PAGEOUT works
+>> with droppable memory even without swap.
+>>
+>> There is the low chance of MADV_PAGEOUT failing to drop a page because
+>> of speculative references. We'll wait 1s and retry 10 times to
+>> rule that unlikely case out as best as we can.
+>>
+>> On a machine without swap:
+>>
+>> 	$ ./droppable
+>> 	TAP version 13
+>> 	1..1
+>> 	ok 1 madvise(MADV_PAGEOUT) behavior
+>> 	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>>
+>> Reported-by: Aishwarya TCV <Aishwarya.TCV@arm.com>
+>> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+> 
+> I ran this test before and after applying the patch and recorded the
+> execution time over 5 runs on an Orion O6 board.
+> 
 
 Thanks!
+
+> Before the patch, average execution time = 3.87 s
+
+Out of interest, how much memory did your machine have?
+
+I ran into this myself on a 200gig machine, and there was essentially no
+progress ...
 
 -- 
 Cheers,
