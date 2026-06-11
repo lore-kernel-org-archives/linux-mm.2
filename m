@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6A2BCD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 04:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89266CD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 04:35:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B7396B0005; Thu, 11 Jun 2026 00:28:26 -0400 (EDT)
+	id 750DE6B008C; Thu, 11 Jun 2026 00:35:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967306B0088; Thu, 11 Jun 2026 00:28:26 -0400 (EDT)
+	id 728206B0092; Thu, 11 Jun 2026 00:35:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 856376B008C; Thu, 11 Jun 2026 00:28:26 -0400 (EDT)
+	id 665BB6B0093; Thu, 11 Jun 2026 00:35:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 716096B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:28:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6ABA1A04A1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:28:25 +0000 (UTC)
-X-FDA: 84866350170.04.4121438
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 557806B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:35:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE316140471
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:35:56 +0000 (UTC)
+X-FDA: 84866369112.30.6610739
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 322421C0008
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:28:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R8PazR6j;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781152104;
-	b=5OCCWizhnwCbEyZjTsbBgIFm8zgMaWMpT4JuhmiG2+I71rM54+kcW+i2KbjQ/zw6MWFb7W
-	m1YorxLjB7o/cUHYJfKo+dZaE88LhUY7/LD4VLZiIbv3Q6JgYSQARaVv8/EiBUldc8exTq
-	Vg8wnc6SbZPx1r5UtpfAg/bdI4J4gVY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R8PazR6j;
-	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 16AB7160002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:35:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKw6Or8P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781152104;
+	s=arc-20220608; t=1781152555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ebuoNn8zdrqOpxqpNoXGy+JFde83KobHja3rzwz4bg=;
-	b=vmZlVAU1bLg4ipShOWklk9LfULU9VPYrUjPwMQvuvGJlbYBAFmw0WyqMwIp8jgnb4xZeTQ
-	ttVjUnxu9bZfttsZA/6/CNwx/P0nTlue2WpF/yIwH52oQP+cYO1W0QwaAEySzX8mSf4pGQ
-	uP0u/WHCfpG0RPNzEGauWk4gpuXwB7Q=
+	bh=RBtM2K5HAboXGskkkhCTAIlRz7iBBSjZG1WoOi7K0cE=;
+	b=efGVXPG3QE2Oyv6qDFbPYsn4N+HvAx64b1okfCArTNpNbYbuKJGrA8YhiZIRqceryCM+M+
+	KmI6pFjMJASwLBTORI8CPD1oGAa8c9m/NmRBdkgN9JD5lCFtnxlV3M0RISY/AZjzXEIPt8
+	qi0kqBqs8nYdY07BUNTSWSkrTV8m8kc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKw6Or8P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781152555;
+	b=8iqhIhwBXCK3rw8bFoVDPBUxTJeWB68uGBF+Rs8CkS9j9HkQGL4QsWU9gf6fVyWO8SeQ7M
+	Xqr1F0di1/mJeJcwhzKKFDpntYY275tnVAc7zz2vSKMb5+913pk93oivxcOSwQ5s01Xghx
+	5mjJy82Ats4J3ci6j6m2XxtpNLCwiuQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E00E44300;
-	Thu, 11 Jun 2026 04:28:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E2C1F00893;
-	Thu, 11 Jun 2026 04:28:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EF49640328;
+	Thu, 11 Jun 2026 04:35:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FB31F00893;
+	Thu, 11 Jun 2026 04:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781152102;
-	bh=8ebuoNn8zdrqOpxqpNoXGy+JFde83KobHja3rzwz4bg=;
+	s=k20260515; t=1781152553;
+	bh=RBtM2K5HAboXGskkkhCTAIlRz7iBBSjZG1WoOi7K0cE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R8PazR6jVPYyf7+wFXw1X07UgYA1ez4bgnqAF61ddxjFVJS5h8D5QtzyK7zw/G971
-	 HaMTOwnjh77Cw9Kkonln4915X4fMjR0tiz4JUB5RktFGKTL2tPSgjyGh489k+u440R
-	 n4QyqIY04sQHH9r6jYfgBlwWA1vRoxQko/hAAQ6ploD/y+5C2sL3MhyFynIq38j5+9
-	 G59bUR+8i6BF9unVvOi20zvvkAJfKf8CnktZPj8hXtTPkygc2A1Tg3hA8c5nwjMEyR
-	 Qa+sf2ZxBY1DFLzcn5h21YblZCGXDCAFAvCf+iuvEJsSChwcpHDcC9Co/U+opZZBak
-	 p9Ul/D30pCdeA==
-Message-ID: <df75999f-e96e-4a9b-8930-1b6c6c7c17cb@kernel.org>
-Date: Thu, 11 Jun 2026 13:28:14 +0900
+	b=jKw6Or8PUn8mM8QSyoHKukGjtNmlEqJLvHQXxCKMjvgSAlvbSPoDtHTLOYjUPSQMX
+	 NUGcsOnXvnSQEF/D4RZYRH72AtZFetepAJKnJFaN1FEZ7g7HCyUnLnMtcm6u9tXYPQ
+	 J2txDzG1CviQKZVz4dEtzlCb2+gdfMWMpgzsAVtrBe3kSoI0sc44MW4S+ABd2tYW2b
+	 W2HW+2LV+fu86k7mBZNf0HAtKphWM17UmDjwWB7Km+tLcDq2sBDTdF+hpHZE1+55C9
+	 B4Q2y19JfLFCQfy9+KiN88LL7a4COOlpBWE8DaGGgb8+3iCH1aCWlZyZmF671FzsPS
+	 gmIH6I0Fm7TzQ==
+Message-ID: <bdce3c32-54de-4f07-9321-986f49e47767@kernel.org>
+Date: Thu, 11 Jun 2026 13:35:46 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
+Subject: Re: [PATCH 2/5] mm/khugepaged: use slab cache instead of normal
+ kmalloc
+To: Luka Bai <lukafocus@icloud.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
+References: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
+ <20260531-thp_collapse_hint-v1-2-e7f8c2035621@tencent.com>
+ <d4636be2-d9fe-4464-99d7-b0b9902e6b52@kernel.org>
+ <aiooiNyND2Q96b4j@LUKABAI-MC1>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
+In-Reply-To: <aiooiNyND2Q96b4j@LUKABAI-MC1>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------9nrmmelZmALRVRtPX4TWPfgk"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 322421C0008
+ boundary="------------s0FuOZXCRkHyas8wwz3tzD0p"
+X-Rspamd-Queue-Id: 16AB7160002
 X-Rspam-User: 
-X-Stat-Signature: kxij5czajbk9n3ff5edbr9qpddzwowpo
-X-HE-Tag: 1781152104-206135
-X-HE-Meta: U2FsdGVkX1/Q9dT3ajZ3SWcvzxZHjd+9CW5NBLEpLN61ayoWqqqwoCMcKWqhezz9f8LlbFqWH2HAMV7u/2Zu+p3DZexVkxidgz0F7z2r2BTgWo5+f1ORqkcN0qOlDq06Ju6JD7Vrcs1N/3s6EadKP57XHce066y2ifuBbX3hP/PZxdRnekmuTvmbqaBGCiCD05Bty2ylhDORerJPpRKXtum8xMku9ohkicIz8zq8XmjXZ2YvEIz+bPz1wXDVADZryVj2P3JjlVF9QFLtEvwGZh5y74D+cqIW8CAzrx9L8FyjEvoQIlR4j0J4sySbBtm7sLBUzzg8fr06CzZSdjS3HTIqS1yrrdiw3UnDhF9IfsI0p0+Zt9spcT97H5hvNgdehi9U+ZAhsCDci3E0GQq23vdJcqAZztE8SmmnoyCiVPkbpwtVvnidc6queULkHQIDyaSztW92r2ti2K3iebO+tg57VT02cRTKxMA3D18bzNTnnZAXazeoK+ZtX+DtXbSCdpZJ8EiwugguvelQLBFTr32HD1CKnRoZtUKOec1riAII0njJFsD2aguT1NOHSSQ20IoC/g74/VZ9d/oi9hnO1ey2wdCbgHAl3M88a7nblvqLkDQkLFG2TSJdmm5X4gB5oT2cDZ49GBhMh+AVqOR310CCp4UxwAYrWkSn27AM5Xnt4tkJ6IDFVKS/oMXI4RV8TG5aNbTo0QiqREwqJ1pOtFe598XF+ciylfM0m6okYamZVA82UyRh6EjfNgoGD5giOl3zxkhvQ/YOWiRiHVqMZSuPdVTqAcqymaKM5Hp2YqB8RxA5gH5gFheMIlOCsqiuahRQ+/pKdrrX5LWsFc/6fYMwNMBgGRfiHg4kPNo0WruPmy/7Dm4Guz77sYnFHpTcWjoScKGcqi9yylFDh3JqoAU2DN5YhjZa457PCQ6mzTjX8fY06AY45VWNFk3G0NuxDY9EvUrwO1+k6J4hu5M
- ZL9qbIrR
- JXI/I8DjBu5+k9OZkpapFCUHBp2br9zknP0SZZ+WDTEfbob0MwpdbN76tm3DzWcPmxrjvHnOSorfpBML7nhlyXRSDbbglTP3yeJVJh5IDrD0WhQ2T7UsPcRt7LrMbx8QdlvrB3ZHTPpYlD0MgSGqJapGRLb1xB1jpxfDM1aLXo/UbFoW1GCYFobBNA/Dp4+KBkd7qJcurk1dd0UtNd54XoqyKP1vBtdrKg0l24bhDFT4lV90b++U7qugNgaNaX9w7v7ox9Rjy0KFPES7qxhvjM+8n5fXKF+AQoTboJqASVvjjGBmU0N9wsApcbw6TRpcVFXnZxPweoXaPerRi95Yq7lAAHwdeiLSID3LA1mDQvK7On3LIoRyKru1tcASHMF9rszqi7xIUNcZlO+8eIyEfL7kJ5Aozd8APbdqZQ50ZXbZVKxVfkIroz0Bshx7P7uxOPp/JulB1KtmQeukI7mRIWjbrwl1Yg8K22hYjrOrWFw/0Clc7DIEsM+0SWDz/N2xkSty4cvz8H45rEuvoVPXPOyXDvZeDtI4xzdG4HQsUmcz06KM=
+X-Stat-Signature: rk1fenx5xy9i8xhpskhwmyr1aot6muj1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781152554-288371
+X-HE-Meta: U2FsdGVkX1/UvPb6PPdTRuGwTUoj1Sov7JVV1U5etCufV+K5IHo3TJUNjVgw/LlvPME/PCaPvgHspimlsWc6TIht2uLcRo/u/aZS/okcePaDRiRRdLZFK/z6cZ0QPJhk8MUG9d8i/iZMp99BfFjyl6eLaev7EYLYVdzbFBe8JPIx6QvS00YAROVOxbYRGR2Ps51OcyXe6X3mqB/ar9ffPOIBARkP9PiBSLmiNHZiF0dWreTo4heguHabKl8HCTHM4tLDbj913l2UuzGAqjxtS8ugjAMxLSV8J8ZMmzzedD0h2CM2WCFMhYnAohuhCiKxBDHpw5l7igz5KufeQtSDglD8HrjG9oRF24lRF+xan/hmC2bij9MrfIx+rLO8876PUnhfpkYPPVKNFrmgQpkcFcjz+8J8MdoCJGmOA7z2RrOZb7DViYRsglUqNixibKET71WIHG+MbYZjF3mBcjbKLRJVlMfDvWMeBJtizdHinO6G9iWXKuzlNCJ2UO2c3DT/gt9G41pQs+PDpL6tM0m0vjdyseJ700AMvaTJFaYYDv7wSpW7hsNkWpJ8tzIJva9XMUuuCZEdBbP5povaWIVlYOdkXAZm9dhXwii+gMATwzmD/QjOqbHJnBo9G8apVL7tuoGjMAnILiFJuCLNDgJPNT4eL7vUDMpdkSguq9q6+lPpbvT1rC6PnxvWNrmR8IgVKrxiHrRUJzVWvuFt9q6BSDNQOYvqkEBxHhGy7rNW5Kh+q26r0+tLOLGTcqU6pwyPwb/IhTaYEz/Tga+MnVQb6GGrYgiNg9TNb2VHhF/RlId4gfOLwp4esp5D/QHBSHnG/mD/u67giAwtJMxkpnReIX17wYIBbXVZX/qgtGznwwBxqwGTO/iL1DVzEe554j0OsclvdLLXXHhOBs4XPPxPhTDb86hjhJd2tqL7OfOkLzfAnw/lmeP5J9RL/gOO6O7+scIW+P8QL9fqMLBVt7Z
+ BAVfYH44
+ a4wi7jXZEI6mqw7dAKnSDdO6u03TR8ouaMjpQpAxipV23IcWaAgzB5d3GcIKKWGqk2Ct7v8XJ9/cHGCcy0qrOk6iOxeAwNCi2khJTf2IVVW1jQ8uk7O8XMOaY1WMQf2D4se7AUcWyOp4VnhnQ0Yo0NSf01duN3CEYZdStmvGLKSOO9UsAUOIVJois382C/2GFsRMVEFe8moNpg3F6owVrV9Fjcmf1UZX3FT7+hVJSOXu8ijDqtWPik9xEAMrGD8rPXDdO4co5wg0jIzP3CSvcflUSwJAOEWTfXI3xDhBv+6fWVtqYukZsG1Q3ZrGkxzkORimJug9w3xEUtF2DJ32qJKwPTeNL9g15c/OnMTVd6WhN4+cvfaJLB/Ig+Njw3Bz9Sa6yBPe0rOEVgc4GqDxlHLQDQnuXJ8skEEJJpqCxsszuhSY/8kWjszoUxrTMEdKQt5AU7vMHmJFIK28a8hNKzNg5lOLpID33xw/k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,80 +110,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------9nrmmelZmALRVRtPX4TWPfgk
-Content-Type: multipart/mixed; boundary="------------ErL0jxv071rjUQMi0aMrpEeW";
+--------------s0FuOZXCRkHyas8wwz3tzD0p
+Content-Type: multipart/mixed; boundary="------------JMw89MqN6K3e0LGsnFwEl6z0";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- stable@vger.kernel.org
-Message-ID: <df75999f-e96e-4a9b-8930-1b6c6c7c17cb@kernel.org>
-Subject: Re: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
+To: Luka Bai <lukafocus@icloud.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
+Message-ID: <bdce3c32-54de-4f07-9321-986f49e47767@kernel.org>
+Subject: Re: [PATCH 2/5] mm/khugepaged: use slab cache instead of normal
+ kmalloc
+References: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
+ <20260531-thp_collapse_hint-v1-2-e7f8c2035621@tencent.com>
+ <d4636be2-d9fe-4464-99d7-b0b9902e6b52@kernel.org>
+ <aiooiNyND2Q96b4j@LUKABAI-MC1>
+In-Reply-To: <aiooiNyND2Q96b4j@LUKABAI-MC1>
 
---------------ErL0jxv071rjUQMi0aMrpEeW
+--------------JMw89MqN6K3e0LGsnFwEl6z0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
-> When init (zeroing) on allocation is requested, for kmalloc() we
-> generally have to zero the full object size even if a smaller size is
-> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
->=20
-> But if we track the requested size, krealloc() uses that information to=
+On 6/11/26 12:16 PM, Luka Bai wrote:
+> =E5=9C=A8 Tue, Jun 09, 2026 at 12:26:18PM +0200=EF=BC=8CVlastimil Babka=
+ (SUSE) =E5=86=99=E9=81=93=EF=BC=9A
+>> On 5/31/26 06:23, Luka Bai wrote:
+>>> From: Luka Bai <lukabai@tencent.com>
+>>>
+>>> We added a kmem slab cached called collapse_hint_cache for
+>>> khugepaged collapse hint, to improve the performance in allocation
+>>> and freeing for the hint structs.
+>>>
+>>> Signed-off-by: Luka Bai <lukabai@tencent.com>
+>>
+>> Khugepaged isn't exactly a hotpath? Adding own cache comes with memory=
 
-> do the right thing. With red zoning also enabled, any unused size
-> became part of the red zone, so it must not be zeroed.
+>> overhead, so this doesn't seem like a sufficient reason to do that.
+>>
+> Hi Vlastimil,
 >=20
-> However the check is imprecise, and will trigger also when only
-> SLAB_RED_ZONE is enabled without SLAB_STORE_USER. This means enabling
-> red zoning alone can compromise krealloc()'s __GFP_ZERO contract.
+> Thanks for the review :).
 >=20
-> Fix this by using slub_debug_orig_size() instead, which is the exact
-> check for whether the requested size is tracked. We don't need to care
-> if red zoning is also enabled or not. Also update and expand the
-> comment accordingly.
->=20
-> Fixes: 9ce67395f5a0 ("mm/slub: only zero requested size of buffer for k=
-zalloc when debug enabled")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+> Yeah Khugepaged is not a hotpath. But in my implementation we will allo=
+cate
+> those khugepaged collapse hint structs in other paths like walk_mm() an=
+d
+> lru_gen_look_around(), which may be called more frequently under memory=
 
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> pressure. I'm a little afraid that directly using kmalloc may compromis=
+e
+> the performance of reclaimation... What do you think? Thanks. :)
+
+What makes you think using kmalloc compromises the performance under
+memory pressure?
+
+> Best regards,
+> Luka
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------ErL0jxv071rjUQMi0aMrpEeW--
+--------------JMw89MqN6K3e0LGsnFwEl6z0--
 
---------------9nrmmelZmALRVRtPX4TWPfgk
+--------------s0FuOZXCRkHyas8wwz3tzD0p
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaio5XgAKCRCGXBN6rc5S
-1sfjAQDJjxqdD8sQENhgXIPO4U/wPF/HiD82CcmCL/ATkiFhdwEA10COEVT9AbpI
-m0HnlYsxgxDFh2+UgTL2jf7cbIWfNwo=
-=AcAR
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaio7IgAKCRCGXBN6rc5S
+1iGEAQCcjg+KNn4s7QndYuB9qY/SnSuBzaTEp6GosQ8dG2oEhQD9Gf4bo4jevpE4
+1qR5mrl3EDcwM1nWunUMATpFPfo4vwU=
+=7p8w
 -----END PGP SIGNATURE-----
 
---------------9nrmmelZmALRVRtPX4TWPfgk--
+--------------s0FuOZXCRkHyas8wwz3tzD0p--
 
