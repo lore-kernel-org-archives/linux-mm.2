@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E0CCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 20:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B3BCD8C9D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 20:45:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 495DB6B0005; Thu, 11 Jun 2026 16:40:49 -0400 (EDT)
+	id BF0D26B0005; Thu, 11 Jun 2026 16:44:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46BBC6B0088; Thu, 11 Jun 2026 16:40:49 -0400 (EDT)
+	id B9DF26B0088; Thu, 11 Jun 2026 16:44:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 381246B008C; Thu, 11 Jun 2026 16:40:49 -0400 (EDT)
+	id A8D8D6B008C; Thu, 11 Jun 2026 16:44:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 277216B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:40:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0A30C27C1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:40:48 +0000 (UTC)
-X-FDA: 84868800576.27.D9EE579
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CCCCB180003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:40:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eU5tmWxr;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9609D6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:44:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33F534085F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:44:59 +0000 (UTC)
+X-FDA: 84868811118.24.1DBB481
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3552318000E
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:44:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wndcYd6G;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781210446;
+	s=arc-20220608; t=1781210697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a67OUTXkhjPmGT9xbEw7aC5sM6vpNtps3UHtPFQcUpU=;
-	b=yf257M+olaIDD0xshRhO9wNXQGHHbT2S9G1tInZ6oQ0TkuHY3MtVkj6LGSsu55LZ/W8OvP
-	CnDrK326eax7b5A48jer3yfK+WKUMlJU7RqWD6P6Kv+w6tOnHOyP+b2IZ+YEKgKBCV/wQK
-	ziYdU7lv1Pehvnd1xEPqH+1rD73wSqM=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eU5tmWxr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com
+	bh=R25VakW0RBUev3UiF4u6b7DOEi2czhIVwldQzjdZNDA=;
+	b=tAfoUIyiq54KI0u71tfzZUfWwljWs0sIzNYnGXoPYwsb/q5JJxS1Rt1tGBS8+lP1qrtQLA
+	v0UULyrBx6tfNy3eZhXcZE7uPlEPivbnjKihWOPJEeTFoUYnRSvnrXxqRQbdDgPvvDGWsB
+	CwogC3r1qdn3HeUq6/+vM+N6g2rHPKA=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781210446;
-	b=rI7J2w87ztVY27u7n3a07eat3wsQU6PkEvEVfR+qGdEFoyDeKiVsx4vNNv5gUceD0M/C7r
-	S16U7J9JYbduH15f6k3CD6uJDdwkG1orisGBGuq1CV4rH3Z2wlMQx8tK4e5jhyobpYg3Hr
-	FDu4p1xmEYt/7b9JAA6wV6piuTkkJWM=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51765331535so36901cf.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:40:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781210446; cv=none;
+	t=1781210697;
+	b=hIixN/7be+oFMHmQ6WARDBTeOjwT3S/+lBlbvbdwUKFIgQIv1SlIWEbhlZylfn9GNlW8bJ
+	VDXh9R5PKjaWoGGA8IbUyifetbwsT5opQL2MHh4ZBbcGem+TDzGgZpajFvBlSRxJgWZi0a
+	+5VG3dcLpytbPqP6tOsasFJxS5USXxs=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wndcYd6G;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5177d1ff061so42231cf.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:44:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781210696; cv=none;
         d=google.com; s=arc-20240605;
-        b=FcETlsU2sa1iSqiFhRy3yJXYu4470hBnCQXJbXpJl1XXek3qC6gJfPD+zRvercDJiA
-         QHrm5AS5zfhgyG/Jbw42FdWWsuG3Mu2bqmMurLfuEeYmYqQs0LOketh2t70URODQEIav
-         9Chb+wmqtDLdgiuRpmX1Tw/qFMIPDZCTUeSViC4yJ3EYY6dfKr4AJNUM/pK7tijI4sUa
-         RbNtYZ7L57SAjrQlTpqQEDXlYrLriRuz70H2+QHYr6OpPSgrCzbBc4ot4WNdyrL7FIDv
-         astaDfExQj5IwAC8PzR4mUX6UReJofhaGs0S1KuLHXII1OMTSQiPupA3BLzFM7JRfdFl
-         BMtg==
+        b=jqaizvDAadYt9X0JGeogMK4OE+GDmKL8DfVZhITWt8BV6Mhytk8LKsF7kODcdS5k3I
+         mA6lduI423VjihxG5+RuZTM83xzFHZA0jBGIFJC23SBPcP9NzZRIM44IgHeN+YfIQzFi
+         TvSxIIqWiTVMVzhIfGiBTaHKCtl04DlGHlfIzUPlYBqDUpTF2mJAzaAjjHHRCm3fCDDh
+         PnU3LPHe71FkTWSV3fMpHTAB9zP2pXGZfCfXZea5thhnt8GMP6/irS3QERM3NfJ4dSdN
+         lw+By43RRA/+dTy30JHa/dz+awB/nXCF84q5GbfvqP2yT6w/f2xYnr30VIY426SAsAE9
+         bQ0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=a67OUTXkhjPmGT9xbEw7aC5sM6vpNtps3UHtPFQcUpU=;
-        fh=Uml+DoVFbD90oOOL4H7UMeAb9sNWjwwOgSNQtV7WtTE=;
-        b=C76w/RJVy8uF3kkvjM5l3h2b3RLUNg9Z+rJFnysPqk9gX3bTqstICcFZBG26pvAi+G
-         MdKJFNRoQGsZnRI8OY3lLh0NCoDK41GFLs+KHq3MjGlKl51KytPhE8nJwLs31NF9ms5K
-         Zyi4EjSgcrQXHvZCTvCM00KiXFRBVHbEDTq6gQnah3E3nzlmtIhQy+B9ar/CUYE/iNV1
-         EZsD7wTbE/1Ncsh/AsdOnUe3wELvasiRoUEtpxrUSEp5KKLOtRlOHnBes1DLVC006Kfv
-         XVZLvE03rcRcb08WaF0QWa72WGOjpcnbNmXYYgm+x7IWL4BvPE0ubbZFUyKbFj2sc4p1
-         09hg==;
+        bh=R25VakW0RBUev3UiF4u6b7DOEi2czhIVwldQzjdZNDA=;
+        fh=ssqs4MCY5wh49ZMSK2e2b4/q0hwmSe9SGDS0fMtfRxI=;
+        b=hGb6SxFxqcwXPCAVa+tZpC91v2Hdi94McHC4MZOdRUnsd7RzgZ9KnCkkT8dBUYeOBD
+         TcAKP7+5syiIOZGJAQeMTXuEElY/cwSIMzyVx4Ei2dSneVoXeU+sX8Y4lnMt3zFwdavh
+         /nCSJZpMCL3OfIhkVegeAn08LeL5Gf2/Jnq2OVUM59VI55JJ5VZc+JmE5GsAzHFXbPNT
+         qUdgRmYHKpOzz596xuNeAWiA44A3v+n64mceviIDI480161TSKsOyckfxG6TLHqAOYiI
+         yROrhX/+z0zqUSd5qNdyQBGcTYDZUOWzMu+F/5bOKrxZtgsYeE28nNMnpSP4aWg2jrOu
+         Ex8A==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781210446; x=1781815246; darn=kvack.org;
+        d=google.com; s=20251104; t=1781210696; x=1781815496; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=a67OUTXkhjPmGT9xbEw7aC5sM6vpNtps3UHtPFQcUpU=;
-        b=eU5tmWxrz+8lmybuo360aUZOq9hA6o3SZIU3LN3O/5a0OoZnIiRi+8VgZ644SjWo4O
-         A5g3FFfhI5Llr6VcfUuM7IVn9uovLZpEnwBT6YFqobTUUFuDTTGJMvCru7YjNAsnfm2o
-         u3DyQDBb5ulzWbWvdSy+XfXahENJmVLD28qh95awr1Vh65S0iDDfadt5pPHy6aXEhw/e
-         xU8k57cV1dCMxQWlI1A2FN0VVBJ5XgGN+rzFcNM7CemBw3rg1gPEzD6TCoSRHb1D/eTA
-         JXRpbHKBDO/xrEfb7SRr+BlaTWI+R3ou5oK4sSEZM7pEZeXtIJhhHy897neJ1h+MR1q6
-         eO2Q==
+        bh=R25VakW0RBUev3UiF4u6b7DOEi2czhIVwldQzjdZNDA=;
+        b=wndcYd6G05vnEcmQxMAoBXT7Ik7R9dbV3oPtjUjB6TaRusYUeYTNhl+e+Zj/+sn/Kt
+         BZY+1rnfr3fGwoz8Zqv+PNdGRlAHkzmvPGqJZZ+J2vvn1E/CJmCPtTaDZtVlhneEoiuP
+         d7n/QvnNIcV+gY3xrrdMRPLSVg9g6S/gFnVkP5SknItrx4ZS5iYvhumpEdXblOjqnity
+         6UiuOc/sG+d/McZ28GjRsb2Q9i8fD1ws+cI+jR+l5KVvR8/k2ilBEtSDwr3aH9J6j+Dq
+         VRNxQn/PwM6vKAHVllLL1Kvp23V/U+mSXswomzWOoavKqMEDkrj04c4aKnzDx10E66Ro
+         6kYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781210446; x=1781815246;
+        d=1e100.net; s=20251104; t=1781210696; x=1781815496;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=a67OUTXkhjPmGT9xbEw7aC5sM6vpNtps3UHtPFQcUpU=;
-        b=IWebJojKarSCHyEXFI+wj3ctmtBybesM/fZecBF6bakyXuSqUpNAQMsifgny2rHnIm
-         1OZnc2Sk/55tEcAR10Y68SQnRJ+X1urQYWvPd/DLpCSS2WbjSdJqt1o4VilI39SOtgDa
-         b7piAgO1QqLeDL4NBmzmC1EgzzuO1P08OF1sx0LXIPAaWoZh0S/rSTJmBEVFgyh49bcG
-         lnX2938ZqGbML3q+XBdbSe2NykQdg/AkkSdnAwz0rAecAhJpoOV0GzY5VlHRrby0GeQV
-         Xm4TVVJ7mqy6JWud1mIJCHdhsRYpAOWipT+7PbCg22X6Aq1SSCSGZ76zunBP0kilTc0U
-         o1Wg==
-X-Forwarded-Encrypted: i=1; AFNElJ/dU/5I6s/OppAXEkzhr33xyl0Y26zw+M4RyXQlXHw+TaAXEE8VuWTQPlFAJFM/3Iw0qVUeFNN+LA==@kvack.org
-X-Gm-Message-State: AOJu0YyFprjrvCyQNSs/25YYGVxR7OvboriBFp8IlV6gZggFxP9uTVl/
-	mTNsJxx8mGyLGyPpwMB1kFR0FF938moFv7hFbUoW3m2fsGNdTRbOkgezZQRococ8ETfsVsUjT3b
-	1heRIXPKdYNYgQbIT86ESZHMoetW59j4QK3kLsKgT
-X-Gm-Gg: Acq92OGfj+X04Byw5UFVtRpnUAGvXEJhgd8M2rZHnz/8671PWm8z9M1pd5eMPA/AcX6
-	/k7BjPLwrCc3V+BGF1tsinW3v+SnYOrlNMqgYBPlDIo2JWcQdNx2pSdHExsoWiss2DN5CBXMEeW
-	bfE11cz6NRNiZgqeABna7GBqlm/cqZL9MFr0MM/sKUHWGOP1SGHQx5R6AqqoLkq4R1oPUCLdEs4
-	tA3qFT6RJeZEQ981g40KvAPcXe3YRpeTV7KIyXFg1V4szSXuPxD9EH2RWqz0h+cERKIF0o6RvTu
-	ytLrcmH1MybDIpbD0F9ibstG528sGf/xyD2y
-X-Received: by 2002:ac8:7d0a:0:b0:516:4f62:85ef with SMTP id
- d75a77b69052e-517fb16d601mr2052891cf.20.1781210444924; Thu, 11 Jun 2026
- 13:40:44 -0700 (PDT)
+        bh=R25VakW0RBUev3UiF4u6b7DOEi2czhIVwldQzjdZNDA=;
+        b=gK9RUJQ8c0QbB1q1cISoaMRenKVcQdKRM24gPBUICoK8CsBlwoZVFpzjwunY3PpmmW
+         1NhEv/nIhNhL0/BP9sHC9Z3hxoolS11uK8FGEs8XDySF9lT3sh4X6MHgdFPvMxx5XKOv
+         0rt85a4JzS8o6ibuW28GW76rfXqmB84T2ijVgw5IzdS3AIQ9jv2Koh/00QHFvCoU6uZi
+         lsGWcan3o8IAiU7lX+2rULn5OyvBuTFJj1Ezf5lmLDgGvOHJP0VKTfH7LiKC1vgHrQRf
+         /8Xjj77BYKXTHig5Tc9aAhMzUlKPM8sqxGbpd6PCoAHnSfO52YGkInEgSC2lrukPBbfE
+         NUrw==
+X-Forwarded-Encrypted: i=1; AFNElJ+PU80xDa1C5nvs6M4+HHsCLs39XzCoQVSbKf4nC0myRCIpGfgdVPZZU57KBqir1YoJIjTi48papA==@kvack.org
+X-Gm-Message-State: AOJu0YwE+hqTXqbJ3GyIt3kE14Io+pTIu4KXUSaHk6XTCjltKFkJNA/V
+	ibVe77Y0nS6IvzkI7FruhTzCCfooau7UzcwWvKPhYL3lFc0elrIAJ0PNoI6MV4BCrcNVMKvWvlQ
+	7jXtlyXXi8qEEyuVj4929ksRL2v4+Q7sDu4iovitJ
+X-Gm-Gg: Acq92OGVqzQbqbHlNwpQ4qFsrK/ZdYsR952Ju2bKn7BvVHDPv5jnDeXtliJ3+zI+wRa
+	GYq1WcRuJsLAeIBQ7qev5L4RsDMYyJKCgmno/F1pJ7hRpnclS2B5YxNzXd5rQxLxsZedgfNdJLB
+	f8irriHm+13kVGUUynNpvl41aKHTBCsBu7n5yMLIilMprGLrhPnHuB++1jwrjYcVNLh2CEG8HzJ
+	QlmRi1d5NIyvKpOORImh6HOMKGP/uWsNTsKedniH0bqo82TnWcBXWW8kK0gTQkhRXqElNAEFklN
+	dhnmO7jYxIfbzd+GXjfYNzpy527cWUQbE3jKJscUrxT9W9Y=
+X-Received: by 2002:ac8:5ccc:0:b0:517:99ea:ab79 with SMTP id
+ d75a77b69052e-517fc55fcb0mr654001cf.25.1781210695733; Thu, 11 Jun 2026
+ 13:44:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com> <20260610230417.77D64DBB@davehans-spike.ostc.intel.com>
-In-Reply-To: <20260610230417.77D64DBB@davehans-spike.ostc.intel.com>
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com> <20260610230419.F746395F@davehans-spike.ostc.intel.com>
+In-Reply-To: <20260610230419.F746395F@davehans-spike.ostc.intel.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 11 Jun 2026 13:40:32 -0700
-X-Gm-Features: AVVi8Cew8aBPn6x6_sXyc7lWo3YXmdpq0raUK5xFBrEewhgPTGQ_KDM8NSP7OKA
-Message-ID: <CAJuCfpE8VsYTfHA2Qbv-KXBKOV-e4e1MDNJdDYgMCEPjtosgOg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] binder: Remove mmap_lock fallback
+Date: Thu, 11 Jun 2026 13:44:44 -0700
+X-Gm-Features: AVVi8Ce6L-9b-YJ4eJTdZgAldSAMooh3Z7_4xrsEdTCFqBgSe6VDwSOKn0GixX0
+Message-ID: <CAJuCfpHhTnJRoQJ_V5qLbeccKL6wKWy1z9Ri6aVkrhxir3i8pg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] tcp: Remove mmap_lock fallback path
 To: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
@@ -129,14 +129,14 @@ Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 99s84k8i7en7cnxkq9734ieardfjof5b
-X-Rspamd-Queue-Id: CCCCB180003
-X-HE-Tag: 1781210446-809941
-X-HE-Meta: U2FsdGVkX1+0RKTp8J+yr8G6PIwBcE/dCkdvmaDlrbhbQBPNX1C3BsZlvV1Q0hc/Dk7CgP7yMSMItgunEtmCY1TwvGLBk2kHZlabHpJ0ZyD1NRtDhAwLAGD+c57DfvK6RN93xDQ0KO9AIevmUUI5ZpY51f27L/9bzzBoxVMn66y++dURPxkXcz2bzuJP4zQM2gB/BTcwKhuk228a8cll/g57AjGOWMFZkFOCSuH1xBpN3bnlsp1yUfxruoYHTAtwEu+gA0+LbUH6y4WPKkuHiUTt5xmaMafWBuCY1WtiFJLUxDqnB9saE/ilY6Dv+tPlonrdeCq9bBnMjk3J+SQq9kKN2DCoGY8xhZ/YQZoaqS42q7p6nDg6GPwPTyioGrIBCMGoFyCJepORqxtFxJa6EXoLQOgJnvYcPPLex7ieGRuWIeW0YlDxCBvhRpOdbEMXhbnPwDV0pyPX2jKmxwO7TQVFUe3quOu8HKWeaiPDi/S8PxWmmayxCVGrI2Pa01tl9PI0V4vh8ELLeafJ3SALWIJvIkGCg7Bac/LhbhzMPAfyCfbwYCpeebPD4NLR9dNncfoSPggKinFJAnDI6j+NQQt8tBtpvJIvYgelAx6XETdjrCsUZSiUZezkzkx++AVzKRTEE9tHlSxlAd6mCw8o/8E6Y/RA4wMRUnHY7VK8zotgutEE9xMvo7zOs6k9p+OfnOCFpc5ig1CwK+meDT4+k0637489xFQCZyZoVAXbthNHojq+7odIJze2cdiM3uKJ81/aw1ifLXBfjZe1vudPsucIFNTGlDpccIh5vDRnkHo8aAsj6zHc4HhZXA9iwaI4TuR+uQs8+zuUVIO7anmiKsh/n2ucMXdTJ/Uh67BvtmBUFC96+sn9I/aXhxk0zwLgQJKGNM1kdba/6qkubLgAJVJd1hVoq2VghbpIVjuIsdfHF7xONvDkJ2fxruaSi3m5Wbk4qXC1lca58xvKveK
- vgVuPcoU
- s66Kt3VDUJUZPiyi8jD2TRF+Mkaewgeg8TSf8SWxJz+DR49MsItROS7h+c0jl9rAmYPaRXtj1QlLGXwq/RBgViCGI+aEpMuQCOe4G2wsLuw8UopU49QcqLsqNZ9JuMSUKxn7HAuouTV7DHiwrOMk6XTb4hOYdAM66bo9GuNVdZ8llskTbtbvIH+T2Nvgva2lKl37kJFCVl3BnOTw8mc1sRao+niDPk2lIjNYTtmTGlwGKj4A51gdyQC8YDcAZeiVPzunIJP9aLuF7OtRlBb/0vsZlnSuh0Q26umMraeOP7FvN4Wy8t+BK7hjopKP5fhDgD7J/khICt5dI7vhKgQxrVNFDAwDKPwTbGDJjNhZK0pJlsklkESLp//+0khBuF2ysEsfdvDbvv6QkJu3SKfAmRFjh5u/FoZUoR2ERs6pfQrlFaz/EuAKCXjwFV48WDJ177PSM32dgAKM+0ag4HrS3tEZ6BlWMCwF0HBy51uWIeG4ZBCXja8HN/sIv4Ax5XbIuCBofrNBOtj5XzV6JAFZOSDil2NbWGOd6RSUm+r976Cc5R0dKkW0AUzCtxqGeYCMxUAghwel9JGlc0ZAlJRBoRiSBug5SuwnR4lLHyTCgIVxyRURrfgvJh23lAur/zmFf8fx4
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3552318000E
+X-Stat-Signature: 37sxnsa4cwy4rdppg4pfjntyrks85jfq
+X-HE-Tag: 1781210697-861318
+X-HE-Meta: U2FsdGVkX1+ny3aN91jFQygqgl16nTN6PlWYwLNpmZoMkdvzkPYsF25vSH8QzOxDO1EZu4TZRGe5aLskMaB+28N0QY3ivud0hn/ljAyvPIgmVytKQEGsDh8xXnZpr59TBGV7NsaFbc3bjEXHwgh42ZclXx0dQWZ8h3Jd0u330soySrY1AFk0gzPWeHg9NsBdDbf1zJjR9YjMY5QaWPfWzPHUXbohdARD0UHw1ZcpNOVW7naWLyMy35nR9vtQ/aJCPyuJTIujbXKgIg0ocJSDMyihjxfGuP6nkrzIMEKXPwjrcn9f0uHTaD9OOjJxGp8W2hN4rR6F2WXIWJ78kwqN4Mg48YFt6cYOSyzAUXRJ7Iic1feCoeZdzSJ3bCGlpagtCyJuTa2arvpLxqFFYOwU4/8VNvNfi302shZgvVz9occIeYNTG3JTV6Ub2N2pVRrlkBW3GgDCq5BbQd3gUVzjzrox2QFQRdaq1gVZswwuf8mjdIwA5AlYuZm9tY+vO/f67tPLURib6EvcINpvbZ4BRHSuTuUwygzeNz9gA/BbbVl0bY9G+WBNUCb/iRJjSCpowKNaxLonnWSRq4rn8uqSd04i1LLiJ0V0enxzfpAPDEQcLoeZ5JvlbbQpESG1+KC/9e2fApg6i+G3X+CRO3PlisiJMpifBy45QAVqRDrC341hBJWTMCeOA6SYLmNN7KEQNKYlDN10LPHsGHr1QuAMNida7oSDDa5+yOZJLGHAU2mw6qy7FCwxt9tyW+RAUVmFOBewaBi5Csw17CqQuhUiMERRy0kARs3JdOnsFYRKYrh0zjLW+tvOCfhafZXYYxI/avfUBPoJMwcqKQens8dYWQ5/pYMt4BnE9TcFiXpmJ1Dn2YwaFRxabxqdM1Sqt8jnAMlaDifsViWbJBfTb86W0jP/YNeiPzBp29Ov3WsnOfRqzOzIrqOKfEt1ejFpIgXPTzwFIaQmhQ+1eq9aD1M
+ XaWjJI3L
+ /ujqYGaw4m8MjQxIYqSdhPxSMrhDz33CTCOmDWCswFYgcV45GP1wXBrr67O6toJaKF1oD4e+njp9zmPE2hCFY1bm8qsNzBvYoKoZjPt/dY2vxpLMDntV/XV/6ppVz2A4DfXW4hE3YccNtCwP+6bOax32u/1F2joM0s1xVEpE29j6wWwMYfCo6qVP9Nasdm/UTxGmg7AsRE/ZYyzRTAtGT//tsmfBW6hqfeMY4HlWQW2Mi4Y6uscx23PKxdaGsH78pn1nSyuWC1Xl2Z6lu5F/rP2N4r0/v/O/I/AhUFKl7iEzS0MqlUyWQAExFghpE01DGxZ7zJZuYwLBdN4OrMDoT7T9LKlplSygne0tLbTiXmAKmXMkPcG2EOHsT+hvsjLWqmBWfwN8C1mpuZ0/PHPbZtsbiMUyBlYNssIC6Yb07xtRlDRIWFUFJBRwfleASDNT0FTnw+xPPTu6s8AFrT9qfso16RTGFBTXGEW13BxhA7J/jArETkTsVPBpEmeT+3OlwN5vagKRRb7M7QuOCa18DTkG+hR946KW5spMUWAHrwe2C5+lmHMw6uSPfmLavAiiE3M/r4w26ncWHBUAE3sMgpWMK88WlnZgAsGVMSfXtVx5pDLNaNwkMVd0uwdCTXJpir4b4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,12 +151,15 @@ l.com> wrote:
 > From: Dave Hansen <dave.hansen@linux.intel.com>
 >
 > Previously, the per-VMA locking could fail in the face of writers
-> which necessitate a fallback to mmap_lock. The new
-> vma_start_read_unlocked() will wait for writers instead of failing.
+> which necessitates a fallback to mmap_lock. The new
+> lock_vma_under_rcu_wait() will wait for writers instead of failing.
 >
 > Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+>
+> This really is a nice cleanup. It removes the need to pass the lock
+> state back and forth to find_tcp_vma().
 
-Nice!
+LGTM. As in the previous patch, you already have my Reviewed-by.
 
 >
 > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -176,44 +179,81 @@ Nice!
 > Cc: "David S. Miller" <davem@davemloft.net>
 > Cc: David Ahern <dsahern@kernel.org>
 > Cc: netdev@vger.kernel.org
->
 > ---
 >
->  b/drivers/android/binder_alloc.c |   17 +++++------------
->  1 file changed, 5 insertions(+), 12 deletions(-)
+>  b/net/ipv4/tcp.c |   31 +++++++++----------------------
+>  1 file changed, 9 insertions(+), 22 deletions(-)
 >
-> diff -puN drivers/android/binder_alloc.c~binder-vma-waiter drivers/androi=
-d/binder_alloc.c
-> --- a/drivers/android/binder_alloc.c~binder-vma-waiter  2026-06-10 15:57:=
-56.419452721 -0700
-> +++ b/drivers/android/binder_alloc.c    2026-06-10 15:57:56.423452863 -07=
-00
-> @@ -259,21 +259,14 @@ static int binder_page_insert(struct bin
->         struct vm_area_struct *vma;
->         int ret =3D -ESRCH;
->
-> -       /* attempt per-vma lock first */
-> -       vma =3D lock_vma_under_rcu(mm, addr);
-> -       if (vma) {
-> -               if (binder_alloc_is_mapped(alloc))
-> -                       ret =3D vm_insert_page(vma, addr, page);
-> -               vma_end_read(vma);
-> +       vma =3D vma_start_read_unlocked(mm, addr);
-> +       if (!vma)
->                 return ret;
-> -       }
->
-> -       /* fall back to mmap_lock */
-> -       mmap_read_lock(mm);
-> -       vma =3D vma_lookup(mm, addr);
-> -       if (vma && binder_alloc_is_mapped(alloc))
-> +       if (binder_alloc_is_mapped(alloc))
->                 ret =3D vm_insert_page(vma, addr, page);
-> -       mmap_read_unlock(mm);
-> +
-> +       vma_end_read(vma);
->
->         return ret;
+> diff -puN net/ipv4/tcp.c~ipv4-tcp-vma-waiter net/ipv4/tcp.c
+> --- a/net/ipv4/tcp.c~ipv4-tcp-vma-waiter        2026-06-10 15:57:56.97247=
+2379 -0700
+> +++ b/net/ipv4/tcp.c    2026-06-10 15:57:56.976472521 -0700
+> @@ -2171,27 +2171,18 @@ static void tcp_zc_finalize_rx_tstamp(st
 >  }
+>
+>  static struct vm_area_struct *find_tcp_vma(struct mm_struct *mm,
+> -                                          unsigned long address,
+> -                                          bool *mmap_locked)
+> +                                          unsigned long address)
+>  {
+> -       struct vm_area_struct *vma =3D lock_vma_under_rcu(mm, address);
+> +       struct vm_area_struct *vma =3D vma_start_read_unlocked(mm, addres=
+s);
+>
+> -       if (vma) {
+> -               if (vma->vm_ops !=3D &tcp_vm_ops) {
+> -                       vma_end_read(vma);
+> -                       return NULL;
+> -               }
+> -               *mmap_locked =3D false;
+> -               return vma;
+> -       }
+> +       if (!vma)
+> +               return NULL;
+>
+> -       mmap_read_lock(mm);
+> -       vma =3D vma_lookup(mm, address);
+> -       if (!vma || vma->vm_ops !=3D &tcp_vm_ops) {
+> -               mmap_read_unlock(mm);
+> +       if (vma->vm_ops !=3D &tcp_vm_ops) {
+> +               vma_end_read(vma);
+>                 return NULL;
+>         }
+> -       *mmap_locked =3D true;
+> +
+>         return vma;
+>  }
+>
+> @@ -2212,7 +2203,6 @@ static int tcp_zerocopy_receive(struct s
+>         u32 seq =3D tp->copied_seq;
+>         u32 total_bytes_to_map;
+>         int inq =3D tcp_inq(sk);
+> -       bool mmap_locked;
+>         int ret;
+>
+>         zc->copybuf_len =3D 0;
+> @@ -2237,7 +2227,7 @@ static int tcp_zerocopy_receive(struct s
+>                 return 0;
+>         }
+>
+> -       vma =3D find_tcp_vma(current->mm, address, &mmap_locked);
+> +       vma =3D find_tcp_vma(current->mm, address);
+>         if (!vma)
+>                 return -EINVAL;
+>
+> @@ -2319,10 +2309,7 @@ static int tcp_zerocopy_receive(struct s
+>                                                    zc, total_bytes_to_map=
+);
+>         }
+>  out:
+> -       if (mmap_locked)
+> -               mmap_read_unlock(current->mm);
+> -       else
+> -               vma_end_read(vma);
+> +       vma_end_read(vma);
+>         /* Try to copy straggler data. */
+>         if (!ret)
+>                 copylen =3D tcp_zc_handle_leftover(zc, sk, skb, &seq, cop=
+ybuf_len, tss);
 > _
 
