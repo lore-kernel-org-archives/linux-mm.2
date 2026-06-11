@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F019CD98C5
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9E5CD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:42:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83AE86B0005; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
+	id 30D4A6B008C; Wed, 10 Jun 2026 20:42:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EBE96B0088; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
+	id 2BE136B0092; Wed, 10 Jun 2026 20:42:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FFE16B008C; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
+	id 1FB266B0093; Wed, 10 Jun 2026 20:42:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CBD16B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B6378DBF1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:40:12 +0000 (UTC)
-X-FDA: 84865775064.18.B0DB174
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7519BC0010
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:40:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViWw2HPw;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F1816B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:42:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A8A471C12FE
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:42:38 +0000 (UTC)
+X-FDA: 84865781196.22.65FCF88
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 62EB5A0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:42:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bEibuqF8;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781138557;
+	b=yiWDjAnvgLsytrYXZp7LQVefhunYn28KdFZusP+DYmz2iFPRiXS7+vn+0xroHp9JzdSDV6
+	qP813H+lrZ02XPmQe/KVh8WOopyeX2/+H62437JCnUWkzosYvunGJARk0PORXT1ZO4IWeo
+	+47cMIPrPnRyk6IkAA5vHSFrPtkfURs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bEibuqF8;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781138410;
+	s=arc-20220608; t=1781138557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ud3DdjG6jP1kOYJPRGFo2ygHKx4avNMyuqxqmFs1iYY=;
-	b=aLfZYw0NMGWxdc2HW66KaHoSZ/m5DL3syLS/uR+1T8bKEcfE7IjapOeUarU2iWxdl5FIej
-	G5dxB68biYmQtCIIZ2DYjeNl7kI8CWr54g3BwumHn3Y/wbIyMaW+qwrxJKiIqk+Cj3SPc3
-	C+Ruk2iMU4e3Axh0NFNr2VlgutXss98=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViWw2HPw;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781138410;
-	b=MASLo9JtmWxh92Jubh3q+nZ8Y95DvYJY6wkjBPZKuIXS7noUnwGh41prI9aOGKIJsm94nu
-	df1Aa4fnT7Rh4IYJkfOwtF/mHNmY9Jo19v6yDijMw2CO5alwqG7I3WwDSluJWVKPfeK363
-	b7+vyvvcQeC84c2nJMv7e/aHXwLci5w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F73541600;
-	Thu, 11 Jun 2026 00:40:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CAD1F00893;
-	Thu, 11 Jun 2026 00:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781138409;
-	bh=Ud3DdjG6jP1kOYJPRGFo2ygHKx4avNMyuqxqmFs1iYY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ViWw2HPw2UHb/1kd73XPK59Jg5pHZFiBBxf0T4w52tacMsCXWl7pY8opv1AFfnZcr
-	 kAAacPwAxsR/bORVqtBDaLOZQxSKdEyh0kVSIRaQvcJx/jkWogIGyrCHk3CiIpKaq8
-	 e376C8/RtXMvjrW1EwWD4lwDNO+9N/DDlLtRbMnqap2hLR6Vo9K00LjWM70jNYDrg8
-	 fyteb5dzvjmFGqqkixj66vu4mYjXjvV3xBBq95ok5YHYqos/ayF7W7eFE0o6B3xWZ/
-	 o+qoJWNx/8SJKQqfEeW10end0YJLskwhF+Mw3Jt/IhQRvv960M3J4/M35AcVY3N7nc
-	 s93TRjn1F24PQ==
-From: SeongJae Park <sj@kernel.org>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH] maple_tree: remove undocumented CONFIG_MAPLE_RCU_DISABLED macro
-Date: Wed, 10 Jun 2026 17:40:01 -0700
-Message-ID: <20260611004001.69726-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260610220905.99860-1-enelsonmoore@gmail.com>
-References: 
+	bh=HPg16XQYQxUB6l1l5BG3Hl3GFHniv7jaa+CBSQKftD4=;
+	b=hgegZh5P94XOIm2kYZ2Wx7ATP7tlBcSNNuYxZgpFgusD3WScoKdemJlrfBrWKzVkDdfrzl
+	/OuTbffKxUS4rt8MAESAd2hXuXRDGe9g9/IwmoLlYrRN3Rih1LYWU5d+GDWn8Pkrbe+iPr
+	muwMre99xA26ITtP9aMnbBrqNq6KhLA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781138552; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=HPg16XQYQxUB6l1l5BG3Hl3GFHniv7jaa+CBSQKftD4=;
+	b=bEibuqF8ceRNvZcUyQ8n4oqOm4sa8Bd0N/GJm8ys5Jpkqj/f+CjBghOfDqLC0QaZBjKmklNq404RqPOkzPnRZfYbj2G+wVjaT0d9dFygfaa7JRXVpC4Czh+v7t4GSrK+JrnwV3Y6kEiwZiCn6dz1TPa3k1B6T6zgFOcBwMSfAMo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4bqKN2_1781138549;
+Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4bqKN2_1781138549 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 11 Jun 2026 08:42:30 +0800
+Message-ID: <0e431c06-b80e-4b4b-aeca-b9a0eacb6252@linux.alibaba.com>
+Date: Thu, 11 Jun 2026 08:42:28 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7519BC0010
-X-Stat-Signature: 1ciatswiny9ny64m8qg7kyt4uyghbcx6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
+ support
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
+ <20260610124416.46522-1-lance.yang@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260610124416.46522-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 62EB5A0005
+X-Stat-Signature: d5ftwthnhwemo1pnnkh5zd65e3dq3c94
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781138410-409869
-X-HE-Meta: U2FsdGVkX1+VzKWswSk3rDYPEvzK8mj2qDWIAyE7omJb6GhGlurCV4lxBOtl2yOlfH4BrUHtZXIWa/NqipQCIKMaElnulkdL6bEBwbAk8H+yHrsFFIIJQUzRyMKo+YUIcOAzBtOO7i+8A+IqCxMdbW3NWJOxkr7jtW3+HYr6oX/tMv0YNe2uW8zftPgWPkCxoANBiktWsHOiyL+YaWJ57RA8tUwk+dbkWXAqLJ4Df0SPHQyiskRvPtP0hT2MDzKoycd3CW3FooOk42C7xoOJffLlA3R/Mi/i1PdTOf8Yp+yLHLrJaDlP4edKJpCCGB+x7UklMuv3Y1hdOkpqz5HHfqarpiAuQGpmxUHaITGsqHRLTAPoWhRl13EOETobTs0A38537Q68isOcA3T5LqRzBJkuNPhbRclrMoUH1yWH1vFuUbjtPxOxg9r4pUcFc+ROVykXyDVgBZ5xz04FOn5GqqpbDyQzKmrpDP155eRZX0Qc7W7grZqCm3dGCgtH5orkfA4VrcQfgxHS5HRtcAR6Pw7qYbOXqbDO0Reedfxv8nlpTuD9+82XfPcvgYrjRv88QcmXJ19UIb7E3Oe1i77uJCeLKDxOKfnWr2/xzhW0SQQCWyjC22DS6msWrc4PRMJkELX8Gh5OwrLZF+n6glnS3njGIHhfN6Z6nwltoVtRLOvDJjovQv+wAEi030NkY2gkRmzLlPhYmyTInJTz6w6/2UZugCu72QvjjBJoq3crjr9bI1iz3Jo4+DgYksSvxs05I68rWewlEFqwZikbAFoQQcTO/EsmzKfq3RetgL7Aj7ohlOHCrMIwm2H7oYIbymnkToIc7ap4ASd021qangj+LNK+2H7ZgrtcXyaXy1edkn7mEYx29rABYLRXeE5+CnRrgj6MIY6Sr2feko47yogmb/TaNi9zSeWl0ivfvbOT5/TJ57d1iKw8TxL9V1cDEMp4V51csuylo8B8Gk+yqPi
- JGGW1eoL
- WtgRPsjgteW6pBCO+G6cWE3sH54gcOdbS4fHkRqJHJ5bdKFjE/ODVj/usnghySVc5/TyoTwcdr4eeo1IAxqxca2kbhFENwu504KLj3fmYG6zxCET0zUcNbThu/fsWi9Sc4l5w+q2KQmh+akjUUeujxjISHPScQXwJU14XFU5uzbv83yQVp1j7FtEFpMRn5tVm7TvdZznj22gwAc4U79wSlkiwQ5drHtAKLyiLUQLJzDKRhzoomH6wpvJuysH+zl7UkkHp0FeXbjQZjOxMWXsfHg1JBSa73RtVnucBqvgX1e8VZ5Ra6riLSmmRcz1AfKGXbJ+5zAqUdD0ydTvGSrrHW7jeo+OCVOxrUR1q
+X-HE-Tag: 1781138554-667703
+X-HE-Meta: U2FsdGVkX19NXzq876aFxR8PPS1q80EqZlOHiFF2477QLlE5UTxHOC0g8vEbD9uwyrq9QfSekefFaraok86kU7QYiTnxG0RfGmNWO/1EDPIQjqboE3xbyBJAyKkkn2iD89fCeWwBIivXEwBG8bvKLp82PpG3RrNy8AFKtgv0wEM+kuqcPP1NoQ1Eg8NgdTZxZHulGaPFA7eDN61QgSdol31V13IXrZJ3brQx9rPlmsc3hBx0zxTfEkpACQ+DGHYme8fWIUxnKsKsKSS9GPqh0kHd7yuqMFtvzxUWoNgSqb+3E3JKVX2rlkKKlKeO3U/1bt1jrP1wE7aWTXszFavuJQvuDrrweUsfCG30aGTfyZDuyxUAsLuympkzsK/vB3GlEyocNDIzDdahNjxcLLkmK4UREFefx24WHm59q2VWNkx1ZwyXtWQaxWL5B50yoEjybpdKNgZpX0erJsJeOZIfgKP7LKW3YKijOtI2W6QSre0uh/xvsG4CRNkUziyTaxPvBuZ9ZFQEjZpZrxk+Vd/FXHPtMbe7SOxHNCmW/RFpm9hTH54ufT60AyLQA5RszhtzoHqO/ZskNvEwKPWTYzvMDa7Mu3ntiKdLCFmaLvXp/k3tdiHnYQveFFOTu29PN59Ny1SQ64zhLK2aG7BbUOXoLZOsl2mNcd2tXneN7IFdDoGSJKQsownhfTqfcSOdstkc/YCJJmGJV3fEKGqXG5tUtFsTM1MyjmFHAXY57LZo/hRgiR21ZEPahyX1DuBGO7crC9UDEp9nZrOxnrT/xf+ojyKM9PolHPDftbhcAfmUWJTtzwVwLatkEb1NdUxagkjD7DVAHGjR3WPblES53tkl+acRhr7S0uGXTQSrwBDmgv4GoE3wprENl3GoSBzGGtTDykTNIuk6J2iFxXysORTtRi97ix9jZBuCfv2DwfeudICqnSiDnhSkBoBWuVlxCGYVM0cLu2XOuKbG6kY1n+g
+ uUjrrfmx
+ ssnCNTGVTIefDEe8f6C9mKZPBprEQ4Cr/wnovHwr4ZXC9iP8fke50XFgasdhIQQWEeV86qGZ2vJ4jB77KKUQfBf34009RLFQvWxXLOnhr2SqRie2qLcB8oIeIyyi3XFYFtNVCOzZr0SbntluBbn3K/pUt2KOzMpOLdvAsmwFPdhzktz7N5oYzSDSaWLfAvXIkW98LSQwnAR355TpcYmbdMDV1yo601E6RYxg6A0YU1fTYPlMn8AtpX5HO2XoWONpqI8H7j8QZt2JAxGBFDRQsjXIPt8O0tHQ4k7ZMc/CwzozPdOlFsV1jmw6zyZ+tYoOzd8L/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Jun 2026 15:09:04 -0700 Ethan Nelson-Moore <enelsonmoore@gmail.com> wrote:
 
-> <linux/maple_tree.h> consults the macro CONFIG_MAPLE_RCU_DISABLED to
-> determine whether to disable the mt_in_rcu() function (by making it
-> always return false). This macro is not reachable via Kconfig, despite
-> its name, and is not documented anywhere. Remove it to avoid polluting
-> the CONFIG_* namespace.
+
+On 6/10/26 8:44 PM, Lance Yang wrote:
 > 
-> Discovered while searching for CONFIG_* symbols referenced in code but
-> not defined in any Kconfig file.
-
-Seems this was also found in the past [1], and apparently this is not
-intended to be as is.
-
-I also think it is better to be removed or renamed.
-
-[1] https://lore.kernel.org/20230906152325.dblzauybyoq5kd35@revolver
-
+> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
+> [...]
+>> @@ -1512,8 +1517,12 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>> 			enum scan_result ret;
+>>
+>> 			collapse_address = address + offset * PAGE_SIZE;
+>> -			ret = collapse_huge_page(mm, collapse_address, referenced,
+>> -						 unmapped, cc, order);
+>> +			if (file)
+>> +				ret = collapse_file(mm, collapse_address, file,
+>> +						start + offset, cc, order);
+>> +			else
+>> +				ret = collapse_huge_page(mm, collapse_address,
+>> +						referenced, unmapped, cc, order);
+>>
+>> 			switch (ret) {
+>> 			/* Cases where we continue to next collapse candidate */
+>> @@ -1521,6 +1530,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>> 				collapsed += nr_ptes;
+>> 				fallthrough;
+>> 			case SCAN_PTE_MAPPED_HUGEPAGE:
 > 
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> Looks like SCAN_PTE_MAPPED_HUGEPAGE from collapse_file() get lost for
+> the PMD-order case.
+> 
+> Previously, collapse_file() returned it straight back to
+> collapse_single_pmd(), so we would run try_collapse_pte_mapped_thp().
+> 
+> Now it hits mthp_collapse() fitst, and that case just goes to
+> next_offset ...
 
-Acked-by: SeongJae Park <sj@kernel.org>
+This is the expected behavior. SCAN_PTE_MAPPED_HUGEPAGE is only returned 
+when the MADV_COLLAPSE collapse succeeds. In this case, if 
+collapse_file() still returns SCAN_PTE_MAPPED_HUGEPAGE, then 
+mthp_collapse() will ultimately return SCAN_FAIL (because collapsed == 
+0), even though the MADV_COLLAPSE collapse has already succeeded.
 
+Additionally, the SCAN_PTE_MAPPED_HUGEPAGE logic is already handled in 
+collapse_scan_file(), see:
 
-Thanks,
-SJ
-
-[...]
+result = mthp_collapse(mm, file, start, addr, 0, 0, cc, enabled_orders);
+if (result == SCAN_SUCCEED && !cc->is_khugepaged) {
+         /* If MADV_COLLAPSE, adjust result to call 
+collapse_pte_mapped_thp(). */
+         result = SCAN_PTE_MAPPED_HUGEPAGE;
+}
 
