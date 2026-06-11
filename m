@@ -4,112 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F5ECCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 10:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFEC9CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 10:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B09A6B0005; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
+	id B7F1D6B0005; Thu, 11 Jun 2026 06:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43A116B0088; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
+	id B08BF6B0088; Thu, 11 Jun 2026 06:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 301BA6B008C; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
+	id 9D0B76B008C; Thu, 11 Jun 2026 06:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C4B06B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAA35405B2
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:35:47 +0000 (UTC)
-X-FDA: 84867275934.08.EB95830
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 08F88120009
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:35:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KFy8/n/U";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8873C6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:51:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30D8F1C2286
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:51:37 +0000 (UTC)
+X-FDA: 84867315834.06.BC82BAA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B2EE4C000A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:51:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DFJYVtwB;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781175095;
+	b=G9fILzCNnxzVtFi7goS3AxmP3wOfxcW8s22EYmYeLRd0/7nixZIHGlOU5s+wJ/VBfC/lnG
+	RDU5nIAgampiJslDEmPCP7JSBH5P67lANrcCMmFR03FAPz25QebIAOEQxPM2PBXiVUMlgU
+	Yj1Z5XizlJMV3qtKoR85kHc0vHWbekg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DFJYVtwB;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781174146;
+	s=arc-20220608; t=1781175095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JcsQscn35Hn+B3P9DzOAGAp7XTk6vMF6bXs5BZWRQI4=;
-	b=Fq4+s1atl8s0uJ9ZFWDnsN3hP1uJgm8rgb29CZ7c11fYqVUeh1GjcRofpcJkFJ5nNYlxHD
-	3ifXe/5puR6QGwTU6iXcokYbX6tndgIUU56HaeUntwfpT0XJcSYm2hdGIQ5Rf+wUVXQ1+I
-	OFVJNFZxRoJ0v0qUrKWQ59ezM1E4Vdw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KFy8/n/U";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781174146;
-	b=t/HoM2Kyg81RS33ro/ujH2gAo0YNcjBbak06GDmziXWEW51O9qTn6UJvdNhR8qsXh/Z8lH
-	Y9aWCqca1TlPjN64SxqbI7GoS98s1VvfefyAu2pGQSTpEECcV7m9cGWDNlt5qIxQWYbegT
-	v8EThLwOQ6hFWCsvAP638bjGPpEWEqM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781174139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JcsQscn35Hn+B3P9DzOAGAp7XTk6vMF6bXs5BZWRQI4=;
-	b=KFy8/n/U/fMnO10jGMsAygH4UuAAi21IOhBjFo7Xzu7zVu4XCvEjkoJ8LarfwYpOklSdRa
-	kWeT9p74fCYbUZZMIJscQ118mwSlcgHEyJ71iwi/tBAUUtGcxMEmP6dGbNqb+yMd49Y/LP
-	6NH3XiQ/KrwvwidiAoww7440ILnsNRI=
-From: Lance Yang <lance.yang@linux.dev>
-To: rppt@kernel.org
-Cc: lance.yang@linux.dev,
-	dave.hansen@intel.com,
-	xueyuan.chen21@gmail.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	hpa@zytor.com,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rp4x1W2aaSXSOWAvb1ECGK7Mj6f2q5dWywK0jlX3R/0=;
+	b=gL4hA5etMwl3BmmdNx4FHZGM65+057evQfRzGUBnAzUjx14e0qtlODj1PSEhU7SejojGX5
+	h42z6ZS/bB6MHot/W+2Megh4T2urqY5rPM4GZ+MUhZGZMPHGXdaOUaqu6BptbgnD44A61W
+	RiGJj6TXSDXP5U6ZtD/WOFaqnjYIPVE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 435646020D;
+	Thu, 11 Jun 2026 10:51:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8251F00893;
+	Thu, 11 Jun 2026 10:51:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781175095;
+	bh=rp4x1W2aaSXSOWAvb1ECGK7Mj6f2q5dWywK0jlX3R/0=;
+	h=From:To:Cc:Subject:Date;
+	b=DFJYVtwBXfYe9uyg/0bHusYw5TtKQ5QnASLgQG1otjGAy3ixDyXm8aH+KBUruvYS1
+	 3D3XJaHo9Qj4L1Si3WEzsDmxNMfaOt1ug0KhYQdaCQhOLLP89D9jiTDO9Pd88grZzu
+	 kMRUljzHrqtJa2CMDnbX1+m9Lja67RzDVpYsQspPTIftgrqJlnrndp/ZYpnvZ2ZhiY
+	 1yJaIZ4wxtWT0jhBi6t6t7ydLRTKTC7p8k5l+Zd3t7HSHNw2OYsqoQGCglpr2jceX/
+	 G21sbsxvhQrHmNIdvMXzE0WXGZk6sufS0HU1I/o1knq1R6qa5/DgIY9pm2uI1meAym
+	 wnLCMvmKunxRw==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
 	david@kernel.org,
 	ljs@kernel.org,
 	liam@infradead.org,
 	vbabka@kernel.org,
+	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	yang@os.amperecomputing.com,
-	jannh@google.com
-Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero folio read-only
-Date: Thu, 11 Jun 2026 18:35:12 +0800
-Message-Id: <20260611103512.46955-1-lance.yang@linux.dev>
-In-Reply-To: <aipacpSZrO1DKooO@kernel.org>
-References: <aipacpSZrO1DKooO@kernel.org>
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	jp.kobryn@linux.dev,
+	usama.arif@linux.dev,
+	shakeel.butt@linux.dev,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>
+Subject: [RFC PATCH 0/3] mm: drop redundant lru_add_drain in anon folio reuse paths
+Date: Thu, 11 Jun 2026 18:51:21 +0800
+Message-Id: <20260611105124.98668-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B2EE4C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 08F88120009
-X-Stat-Signature: d4k99843xw3xwrf95qd1meunp9xrt4j1
-X-HE-Tag: 1781174143-159487
-X-HE-Meta: U2FsdGVkX1/usmWkUQ3KzSQSu0piujWI+pUSEmxLVJ0XwgGv2kK4h91NScl2ZcIN89o+9iHD4wZItQB4ThPj2gUK2TXkrrD+z7TAQ66aXfa75FTmkgVkEW/oP/PenL3uk2cnY6QskYOgrI/WGYcjzxtEIphVga6XHUjv8FRpsVvPGOPj8qqFTAPZsxgi8lq1n91EuRRQZ3eXTBy/lALGPcVGtzyd3CXA5+bKUMTbzKT1a5qL55vEVLloMOt//OYIDW3y/F4N1fWiU7kyL1hhpL+jZmyG4V7bRPUdFnSH6A8dtotwySNKAKOaFUOgKJt72q58lq3Mxerkix0Pk4P5KbH0WZ5cHRmRy4EOFxQmttPTY2WfZNFaWNWus5Ye2tI1cZe8vKD4y0GRnDZtrZLXM4VYFRkdQLRsPjEWaJobPNiNMwEL18BvOsXpE9jDnWVE4SqHjP1yv2bSNe0PcFrEf16FU+T1/3/rC06RhZAE8evyq7jBr9U9IUImt9rsw1FBJCS1XSeZMawDAb2HXqEBdFTCicoD9NdPnvOeQR3gesQv/HtTXYvQn56O8YLglkjR/QYa6NOS8LEr7nBN0JsPz7emruzbmwuO0I+bloR00iHSkHy9dxHdpnrsaVS3qpOotqT9SXrzXoBw44lDfTJU9DCAVJYK5xDQPTnnfGhI7qqnfL0V4hNGVpUhN3Phiu5E/PDsg1QA7x9L1HyM1kHWpLm9wq7HM9HReHYduCf6S4dvjt93WL6iRKmDTkasSHqIAzUA+hLI2S3IJysvoDUJkpiHdDbZ2RaTIv8D/jdLpywdx7ZXxGnQCQrFmLuwQxGsUVEJwQRhxxZyP7Fll5mdxepyrg6NA+v5//GNJm47EW/WPZuksx+va9cJ6P13Orvrvf2Ba2YoSEn9e0QBJsgEwyCfIwhaIVjb4y3BloqeErDsc3Dw1afm0StliFnlUFqJ1UUEuE+FpyM2F6Iukbf
- wrfIg+d/
- e3bOWtJLkUBe78FtXqSebK7BCW3lVBPgnTkwp0PML/1gheMvFyPsT/XB+rdg+GOA6QkDL718E58ihFeMsNI1CkwiHQq2M4d61+6CpO5lF4M3iPKvHHtCdYjVBnShKioe4stEe1HoBxRD00cyTGcLpeCONBDwqJq7FO7SNEuuSLdCdwETuRr5hLWt0rlIzBf+y479R1z7qtkeqGhn6FbEeitepOOkw+Dd+ToY9sbMIj4brVcIjoWXivP3pmExiMQTW0p3ng41NChLxf56R+RbKWWmRQPWGVO4kSGHeGMA2y/fNAWIUQ7DM75XZcYeaZwzvwpLpnowLkXwbhUk=
+X-Stat-Signature: n4teo3udnuioqcekbxrm573ghen7aiht
+X-HE-Tag: 1781175095-205147
+X-HE-Meta: U2FsdGVkX1/SF4flmgdM7zBc1Thqf3GsHqvyMVttS8ImQHjyQnsRGrBEyayvtk+JlT+BAStCfuN3YekOj+vbxPEgVhiktODb4tYSzp2jh0T48WA11dRZvRBEMaJ4NEUVrHVKXXtbr+e36QZML5bQzDToGMalI24izMzW8gkxwQE8LePVaKNEl+R9JSyxzKltFWFlYbRiyw20DisMHltdBUZDvMBZAGiPGoFVBuFxIJEijMRfhxjSJj2i+jSMXBx1WkdDviBi/ux9X9Ttg4FMRF6WUo7JJtDomnNWcNdpwpb0TUc+kmwsXzJOiacTUBN4UwtJTMymLAjDyxY5O/PZkidSzc9OIUyPW74kq3aoF8BnrPioaBdTRvzw2TpqFXeVrlDl/lX3TeeCt0u+KXNAQaYHvWTcjXoX1mfPqsgMVIIPEob8hY0Pwm+XAWjd17UuFoiGUflMxGJFhuViDI0ChUtnCRg00G5THFjOJsSW2W9m81FsqWkMNtULUgIdMRk4JNJKquQL8r7ah6fw7dy4/p4NKxyFz8RzIjrUut7KxXShP4BtAggWBnwIzNtuba9gxXxna1JQpixbZgbfZ3crGBzpqAuinMADLKKp4+yxmC2L7Oryub8FYAuVNU75eKIAgsW24QrIdL3s54EjWQKrgJzsSzp2pQKtKijsydxD353BXPM2nJkrgIRvSfVtIgmXH8zbGpkSacvAEgo1w0MqOvpKJPDdix52MkhvHmGsKwY2qtZYWmnIpHvHOo9zKUn3o93N5/iRe618fheP0jXOjBow7W72DkUl+Hwzeqz3c0Ja/Xrd4PHt+A1DkPbVW5njcZ+fRBWJ3DdW9q11rJH7a2ctGgcC8RnateZWd1KRpelkyTsPAFv78CUbuvfd7e057335PC+6iRdE28j2oUdyIVczW9/jqXvRp1L/T8N35w4FKnPxiaebbnKVyps2+lTK7yl1GNr02t7ZS85zRLN
+ LFc+Xdii
+ S/h7gw8UmJ+N9bpuiQ46gEN/r7/1if3T+LGMaP4pZFlWfZEFYdWaVqlmnHALzYNeIqK2uxAWRjg7+z4Wj0Bow5XFVWB3kJ1dPtoPpIKY2p10fbk1q+YHeoko7d0EXMB1iOm1hIHiiuXYksL3rS4MTROiT3YMJubsnCZkpxPFdcqhUdKm1j1dHQ5vaq/5iEn7HQWo0LQGk1pO4scOcVNVDk3pdtR8XKZJKm1EyX+laGIWRaq9ddkn24wCNf4dQNHrGwfy6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,103 +105,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+We are doing a large number of redundant lru_add_drain() calls in
+both wp_can_reuse_anon_folio() and do_swap_page(), leading to LRU
+lock contention and unnecessary overhead.
 
-On Thu, Jun 11, 2026 at 09:49:22AM +0300, Mike Rapoport wrote:
->Hi,
+In wp_can_reuse_anon_folio(), we can check the refcount against the
+lru_cache before deciding to drain. In do_swap_page(), the drain is
+now entirely redundant after Kairui's work to route SYNC I/O through
+the swapcache in the same way as ASYNC I/O.
 
-Hi,
+Build the kernel within a 1GB memcg using 20 threads with zRAM swap.
+The number of lru_add_drain() calls is reduced from 276,787 to
+230,283, while sys time decreases slightly from 3m40.125s to
+3m37.128s.
 
->
->On Wed, Jun 10, 2026 at 11:20:22AM +0800, Lance Yang wrote:
->> Hi Dave,
->> 
->> Thanks for taking the time to review.
->> 
->> On Tue, Jun 09, 2026 at 12:33:36PM -0700, Dave Hansen wrote:
->> >On 6/9/26 07:37, Xueyuan Chen wrote:
->> >> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
->> >> +{
->> >> +	return false;
->> >> +}
->> >
->> >This is a rather wonky function. It's going to cause all kinds of fun if
->> >it is used like this:
->> >
->> >	arch_make_pages_readonly(syscall_table, 1);
->> 
->> Ouch, yeah, it is ...
->
->We already have set_direct_map* APIs, why don't you add a new one there?
->set_direct_map_ro() for example.
+Build the kernel within an 800MB memcg using 20 threads with zRAM
+swap. The number of lru_add_drain() calls is reduced from 796,661 to
+537,262, while sys time decreases slightly from 6m25.981s to
+6m22.678s.
 
-Good point. I was trying to make this generic, but that's a bit too cute.
-This is really a direct-map thing, so adding a set_direct_map_ro() helper
-there makes more sense.
+Barry Song (Xiaomi) (3):
+  mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+  mm: drop stale folio_ref_count()==1 check in do_swap_page reuse logic
+  mm: entirely remove lru_add_drain in do_swap_page
 
-> 
->> >It's also kinda weird to have it return a bool, and not check that bool
->> >at the single call site. Some things come to mind:
->> >
->> >1. This function needs commenting. It needs to say what it does, when
->> >   architectures should override it and what their implementations
->> >   should look like. It needs to be clear that this can't be used for
->> >   anything really important. What should architectures do with alias
->> >   mappings? Are they allowed to touch non-direct map aliases? Are they
->> >   required to?
->> 
->> Agreed. Needs a real comment ...
->> 
->> Just meant as a best-effort direct/linear-map permission chang, nothing
->> stronger than that. I should spell out what happens, or does not happen,
->> to non-direct-map aliases, if anything, and make clear callers cannot
->> treat this as a hard guarantee :D
->
->It's not only about highmem, anything that changes the direct map might
->fail to allocate memory when splitting larger mappings.
+ mm/memory.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-Yes, exactly.
+-- 
+2.39.3 (Apple Git-146)
 
-> 
->> >2. The return type needs to be reconsidered. Is 'bool' even acceptable?
->> >   Should it just be 'void' if callers can't do anything when it fails?
->> 
->> Maybe ignoring it is OK now, but someone may need the return value later?
->> 
->> >3. What should the naming be? "readonly" vs "ro". Should it have a
->> >   "maybe" since it's kinda optional?
->> 
->> Fair point. "make" may be overstating it a bit ...
->> 
->> With a return value, arch_try_make_pages_readonly() sounds about right
->> to me. If we end up with void and pure best-effort semantics, maybe
->> arch_maybe_make_pages_readonly() fits better :)
->
->Realistically, I wouldn't expect 32-bit configs to enable
->PERSISTENT_HUGE_ZERO_FOLIO or even THP, so naming this function to reflect
->32-bit behaviour seems odd going forward.
-
-Cool with that, if no one objects. No need to bake that into the name I
-guess. int return plus a comment should be enough, just like
-set_direct_map_*() family already does :)
-
->> >4. Should this new API be folio or page-based in the first place?
->> 
->> For page vs folio, I was mostly following David's RFC v1 suggestion.
->> 
->> Current caller is a folio, sure, but the page-range helper leaves room
->> for non-folio users later. Happy to add a simple folio wrapper if that
->> reads better ;)
->> 
->> >5. Is mm/huge_memory.c the right place to define a generic mm function,
->> >   even a stub?
->> 
->> Ah, you're right! My bad, wrong place for a generic stub. Will move it
->> out for RFC v3.
->
->We have include/linux/set_memory.h for such function declarations and their
->stubs.
-
-Yep, will move it there :)
-
-Thanks, Lance
 
