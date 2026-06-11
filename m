@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D873BCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51844CD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 18:54:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06B956B0005; Thu, 11 Jun 2026 14:50:44 -0400 (EDT)
+	id 7C5826B0005; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01C556B0088; Thu, 11 Jun 2026 14:50:43 -0400 (EDT)
+	id 79CED6B0088; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4D0F6B008C; Thu, 11 Jun 2026 14:50:43 -0400 (EDT)
+	id 6DA696B008C; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D31E76B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:50:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7223AC2964
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:50:43 +0000 (UTC)
-X-FDA: 84868523166.07.45CB28A
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7D7B7100016
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:50:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IHpEHczE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5EC656B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:54:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CA76C280B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:54:38 +0000 (UTC)
+X-FDA: 84868533036.02.F72B601
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5693340015
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:54:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NlkBtcSH;
+	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781203841;
+	s=arc-20220608; t=1781204076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUxfWJt8IGWDlV52x/Qd1ZFtz3KlHMm4m7NO0v4ch/g=;
-	b=rknEms9vzd1m0MlxO43MAmjggqX3NKURTV7oWWHpqOrzi/SPG6bcYGGUEi3jFmNrByiFa9
-	b12IMz2o038aRu8HZi8dqxUb8hHIWhtrUTZiW8DrCJcBJkAWvTRm3+g4i5DIX3cnZLHE+R
-	zKgaQGAzYEQs8QyqkRYfNFXhoujez3k=
+	bh=bTVMqhjCGD00iChQYZ7sxVESMAqPZGe11o/lWoojvhg=;
+	b=MKLYGTZfGkluV1u4tw4RCOCqFhhMcclUsLrjePqfTycpBjeAFmGXs9P8AWhyH6N2LThawi
+	SzH/0z2QjNtX92RCQEXKPtrpDLEnilumEJ2y/zyFGFMRS5MrmCxlyUQu6xdBwfYYz6Nkkv
+	QgF/O8/atk9iKyNm+JDD5SC4vF9edNk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IHpEHczE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NlkBtcSH;
+	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781203841;
-	b=VT7yfUYEInwCTgDNvWVHAQsnbovNCJRzPdB5aqMr9r6l/jnr/2ctvHaToLfuIwvyZWID+h
-	4dZfhijWLCBDF7T+Dra3Npk3q/COnLedWkqLyFyOZaKjlJCg0Hqj5tA0rLgalxaoI8NnHo
-	fRDLPwg7qrq4aI1VNRv5liVEFVIva4g=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490cdae130cso852595e9.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:50:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781203840; x=1781808640; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUxfWJt8IGWDlV52x/Qd1ZFtz3KlHMm4m7NO0v4ch/g=;
-        b=IHpEHczE37DJZsE6/UC7AXw3hkUFKT6YgbuvbcbH2suDFGPG2Gby7GzdozeLRKlQWg
-         B4JyTBqEDFrb0RfFmSfto8gUcBX7mchBUxg+jJK+qYptkBXVL/tUOTey6Qt8wdPGPgwN
-         r/82tH9V183M2TkR+83L3F9mV9HVPH51ShdQR7/9tsn6Dxkmh0+0OsuFeW2uoamVVt0U
-         HaGdAD2M93L66WmJQzyPMvHkFqhYYHMqt652xpdTl7s3GAwVTkelPMejEqzuU8FgIyC3
-         UwzBZmq2GFLmte8sDJJ8BzieUjCBLkeHhY0pWb15Hm7LZu9MgbpGywXBCLVp5P7JuiJ8
-         jKhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781203840; x=1781808640;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aUxfWJt8IGWDlV52x/Qd1ZFtz3KlHMm4m7NO0v4ch/g=;
-        b=Z4qPSt0cLwsw8H8EbRmjt3uvLARoZ8teTXNQ1Dny4FG9OGoMvkV1hHiZyLB4JS9Zp5
-         WXlh/gwUXtEfwf1wxTHi4lFpXBd5e45xA71ryNvahl/MC0v2HdOx6qsTXYRQtsOOB8UN
-         5yi/AK885SSP3Exqar+M1feYuj0vzdzTP0BMU88DdFn3tp2aiuYtMKE362KsBKV3AiMh
-         77z6tJkqcNzoLzx+HL3UGDqt+uAtO+GQ6PuafghIiBmidyuTXn+lX4fW+KkbaFY4WqKq
-         wZ5Fol3WKXG6XR7XuP0v1ZDw+nTYHLRWNXhtK4FkwT3wfHfNKP17qgGT3FmtSFrdgAD2
-         xTbA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Howm2s9mD8HzbI3LBOwPx28n1eXvGP2LvVHMIEbJB8ChgaOKrbtv+3RnqMaeccA9cFRB1dTLd3Q==@kvack.org
-X-Gm-Message-State: AOJu0YwOeJIaQdWCZz4I0YiaMBooJzT1DRp6QrSQgaOG02MKnMNnYm2g
-	zt9ejZ0n9pHMdAGUsXuGytwbr0kkJjJGrCuqm+yYEBdMbp0d3j0v5oGm
-X-Gm-Gg: Acq92OGepABe5iJ76yoPLzz+ZcbSJ65qKuiNA4cfU6ulF0QxNzoZmY9YThN9qMIUvg2
-	qbIYaGNlJxKQ0moIbVXBGHWXxo1dkMZ5m+X8dGqgkj2NH8NMbZ5yBDfyIlFeQsLmgZar3OiQj4x
-	nz2nbn/uaxvwaUtByZK3jKZ2vvZUgb+4EJ3MdgCpsBe0KchQE/pJiJ7qwYIOjhAFelc4hX2yXIQ
-	qrJSJ6tcy8o9XA3Eeu6n4C4uYp1cYiPLUCa64o3A2DQKI7cL8LpzZAnhKt0LmL/nS5DeoBkyjgA
-	bhGeSEYxuMAxgQbl5TguAi69ITsjTageajK9TThiD0Kw6yn16BJBhrIYULctMR5W+5XDqepjNHN
-	itOINAvKDPHHG0/9Zo1/uelFGMz04M4eV1fGdt/vfXZrcsUftOa6egqtJjoWWMPEjZT/Z6RYkU4
-	v1FWvxCavmSdN+EKE9q5aSjeIsWWe4V+fxRlmuZ0Dow0wEYkhdokxSbm84170Y
-X-Received: by 2002:a05:600c:8b31:b0:485:9a50:3370 with SMTP id 5b1f17b1804b1-490e55c3ca2mr57651865e9.8.1781203839529;
-        Thu, 11 Jun 2026 11:50:39 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea7c09bcsm3579135e9.2.2026.06.11.11.50.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 11:50:39 -0700 (PDT)
-Date: Thu, 11 Jun 2026 19:50:37 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Ravi Jonnalagadda
- <ravis.opensrc@gmail.com>, Quanmin Yan <yanquanmin1@huawei.com>,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH] mm/damon/core: reduce kernel stack usage
-Message-ID: <20260611195037.1adec04d@pumpkin>
-In-Reply-To: <20260611125704.3386176-1-arnd@kernel.org>
-References: <20260611125704.3386176-1-arnd@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	t=1781204076;
+	b=tDfC4pTpYQ6oYBTmYltFJhfYOf/5h+V8SOs1rgBjlX1GAT8YjIcHWQ1j8FqEkQC8EpKvi0
+	ZTEhiiOYPiEw4qkJpfYQI67HWKnQdFhel8yqYo/1MqzEZquplzz/mPZU3O+Xe1v/V6hu3w
+	HsM1TQOGrOi6Nkla5Lj3ARXYhXvR+5Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781204069;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bTVMqhjCGD00iChQYZ7sxVESMAqPZGe11o/lWoojvhg=;
+	b=NlkBtcSHZ1zMzDysnEETRQ7OA/pXouAUtcel+hS5pavQcNanoQ6lWlKDq8ZYtl/ZsxkryN
+	HfiKWFVGQ9lgMLrTn+J8QnqLfV24vgS+a8pmwIEsYm+cRCYPclj0QwR7O6nss2AdIpwTKr
+	qh79uZRZHAAEVcq3X9YmXkuzUiTugLk=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Nhat Pham <nphamcs@gmail.com>,  Zenghui Yu <zenghui.yu@linux.dev>,
+  linux-mm@kvack.org,  hannes@cmpxchg.org,  yosry@kernel.org,
+  chengming.zhou@linux.dev,  qi.zheng@linux.dev
+Subject: Re: [zswap?] BUG: sleeping function called from invalid context at
+ kernel/cgroup/rstat.c:421
+In-Reply-To: <aisAd7IGVtCCEbF4@linux.dev> (Shakeel Butt's message of "Thu, 11
+	Jun 2026 11:38:28 -0700")
+References: <c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev>
+	<CAKEwX=Me_WHU-oVF=rab7-5e=QTaYQJj0adi7xjejm-MyoDxyA@mail.gmail.com>
+	<aimbPCBloe0Dqk7t@linux.dev>
+	<CAKEwX=PyHr+9wiuohixv4PHEtyvt8uD2j45JGQdN8dzn7UgkXA@mail.gmail.com>
+	<ainb3W_-i5ish_K6@linux.dev> <7ia4tsr9lye0.fsf@castle.c.googlers.com>
+	<aisAd7IGVtCCEbF4@linux.dev>
+Date: Thu, 11 Jun 2026 18:53:59 +0000
+Message-ID: <7ia4tsr89ad4.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5693340015
+X-Stat-Signature: zg3fedggraaitqg8hmo3rio4hhwxd7sx
 X-Rspam-User: 
-X-Stat-Signature: ff7fo5rehu1oro3bgs4yd1ipu454bi4e
-X-Rspamd-Queue-Id: 7D7B7100016
-X-HE-Tag: 1781203841-463263
-X-HE-Meta: U2FsdGVkX19VPR/7YTCY8iJE4hVoBcBmkdPGEC/E97VQUegOwLGBvVa0P2vem5/ispSn/CITN18dT0GqfgnzR8TalVu22tDIQtseaoUlaBTOgPu5vQUNVSeWZCX9JVENj7ui89XVLSVvQ5zxOOfhSv+QihaN9KQRdg1AeYeXrqooEXrzuKBVgMwgqoMlWGPg4Wlz2KcAEV9r+rsANJ5CHo+VrsAf/vFXXr+HWHQSpehJej/BXvtACpR6a4jiOwf7N73xbOJFIr9fMLK24YOlbs2sfbYNBnIfakeU0NFW+MUQMR5m5/E47Sqoob3SpiyKBW9NOWNCok/BDh6XwOb3OvTr2dhzxh7jzi2SR5YwsRM1NZRhBozTLsD2t2YNiPSD3G8muWYhVTRvd56E7u0uaUcWSnG1DysZYiHwZQ8l4jR3Oqlcw7icIx4q4Xf4SS/p8g17weSQew6lAR6SRsVtpNdRQixf9PxjdiR2iLY/CUs64x+y+4SlX9Idz2R5kLxnrZwKaLPhRpawbMXxFnEfQhvwFyuVUaFvH4Nci9ILMvqyImgZUwdfecmWrUVH2GBmqeQSzvQ8AaN5qB8Rc/nY8MNcUeYxadFjhHs0durFLjzk3dLgYr3drPNe6W7MdGs2ZQYxpECZdsTtk7qW1daFCjmnNcL5vM0KMo9RTFpx4zIjBolepSKRrBsoyawrWP2709GrgBZz+kEdEd8EH4ALdBJ/DHb5X+2C/tanGq2wP3CC1qj/drcphN+vw3dhkOIs/8AsjPN1He6HR9zsDZeoXGYNjQU8xMFfa/sHg00RZuO1zEqf0y4EcklPA4GnywatR6Hxnd5YV87Gtx9YM12pGbIN/ymFEQeKrafHeu3jvWmu+Fniv8zIcTgDVGIj6x2AxuuJHFQ66KpRTDDgSPcObPjco4FkbSVTWnONkTw+g4M32H1wVoKNfBkVCYR4Kpgsw8rrBr13xUs1J7AUKYJ
- CXIcpIeg
- sxEmR68mPtc5j7wfGbDBRBG8BzoGEumekkC9p8D/39J8KyqLWJq+0AKBTTyl/GQcp4p914YiU7KR563WxB4TZFuONNsUaM7laNShrna1wP9CSFdIGh5Vwi4l2vSWr2L2n0wCtaHBcd+MYTp9eoD0Qdn4X9ml65Xoo9lsNBqj2YyEr4KkrVoFswV2b6ZCuiCALbyaHBhkkUzqGXFNf+QwxptgQ9gT0JiuHQwY4/bnhVqWWb8HuMO9V7InmOSU6Cc3/JhRw/ROpGu6abUY2lljIryhOtRjkBd6Z6m2lB7+PvvsquQIs1pYNyMl19ZpxpNaY3Xys2nMG685Ji7FtwEtUKe0mmvpPkTiqLs05PVxaqwiGj1JgEbqFl/O2TecCGz0RG3rk+rbFDcdZAcf8FjUrFq0TM3VCzFc0Fp2ry6g7b7hTnJev3x0tzlVcqigAZpQkiheLjmSTyuXx9/+CIE/sZdYHTAFWLHNV+++2a7yzqbILQoxP0geQLER1l6OTQPQJHGJRrNU1O8mrNuoojx8V5qAZ38m0Xqbkxcci
+X-HE-Tag: 1781204073-79575
+X-HE-Meta: U2FsdGVkX19IpSDRKfzvvoAhdlCxE5SB3QGSN6tMyRWNolzfF3WuQsPMqolx9HQ4zAsQoOIUE7AgRs+oYqyThXhiJJ/dzkO9VZFdILgWlrIhOGIrVeZFRcjMS/ab2qq9LaA69k5IrRvXKbp7XxQBOjBnulbpv6Up6ZnRbugWRB7iUeDjC5n5tIrzFE3Iop66CAdDMGqle1VtyfXmJXUfdR65sCMVKzBy9V+U456sHVjdo18G5PG8ofkEm6qKGlS0be1n7zUj5l0+hHtn/MoVqCbLMgBwikBrK7IcTvHb/nIskaUiMFVc6mycfqz52vxHdA4z7U9CfEWBZEKr5z/Qw4uRibTIaZmqdCjsOD5uT59ydC06pdSMUXFrIkXK7ha5jAgPMXnKp4KAorWRIhqEloQ2hdpn8W1sMKNJ9t6SoSgJQJEjGjRl4+9zn4EEkTpwDmo+8MguGoMvCQR3fg4ZXfpqfD0hv5dVnVSMud1ZH+cGB2C6YtCL6j4y8ZcBvs0F6v6XKdrexZRY9JAGSTsfjKsRtvmAyXUW5UtL63MvYiXK2tJSzn4BdF4N/KvcjrI2yhf+uTQDi3enCMAn/J9Y4XaY97cEF5ceq2eioYATZI3CrXN5EF90jW1nGzPrrsv9+HOrWURo3xPCe5XgBxQYjX4elzNCMRkJbCeSE2Vsw9MSPCehEEn26/GCjxOSbMughQimxyKCHCV3LNTlowydhJ5VLO2BK2KpZL8XSwU3zXkiKH8/4mJq7uf8nijbyWfy97z1wC7VQtGVGCH/VK5Bx04oxnwscKOguOMtkNAjwrcBi5DDnCIDZEB49zyRfR4VwRUi3LH+eo0q0QVxTUKzwpgmQ5D/0aH01hbf0zA5UN2cFvEOX0h1N89ACsy+o0x9mVNc1MRfVupGm+jzFOkfo1umrks5Ydwz97xvS+fmwHUOf7KLw49phqa9YxnT/XVS3p9OtH0w5R4SrFfX867
+ /ngoHqn2
+ TlJWCUDGjyUbUeE3w2r7LckXu+vj9+2B/pfKsqkidrrJnJVk6BCroaxinNbz1f6JF/VfR6dn3KGC+c1LmjcO0pPthPOEvLQPeCiwjTCa/vjwVOM9eZkWOs7GZhtA/Ext/p0PwxwmY34JkXTwIe+lSErGaOY5PXcTV/EBEvsI2Fxs41XjNy2vZyL0lknfQ/1cEoAfdM8TbCQL7qvaJBdt2pvE1aDjx9I++BnFClPxDhXsLyuQWVMg3+/FF0h5UdLfWExcXBC7pgmYQIvRBvOH8ZlKHkX8aPRfjo5Uls1QlDas6IAk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,62 +96,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Jun 2026 14:56:57 +0200
-Arnd Bergmann <arnd@kernel.org> wrote:
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The main thread function has recently grown to the point of
-> exceeding stack frame size warning limits in some configurations.
-> This is what I hit on s390 with clang and CONFIG_KASAN:
-> 
-> mm/damon/core.c:3440:31: error: stack frame size (1352) exceeds limit (1280) in 'kdamond_fn' [-Werror,-Wframe-larger-than]
->  3440 | static int kdamond_fn(struct damon_ctx *ctx)
-> 
-> The largest stack usage here is inside of the kdamond_tune_intervals(),
-> so by marking that one as noinline_for_stack, the functions individually
-> stay below the warning limit, though kdamond_fn() itself still uses
-> hundreds of kilobytes for some reason.
+> On Thu, Jun 11, 2026 at 06:34:15PM +0000, Roman Gushchin wrote:
+>> Shakeel Butt <shakeel.butt@linux.dev> writes:
+>>=20
+>> > On Wed, Jun 10, 2026 at 11:38:29AM -0700, Nhat Pham wrote:
+>> >> On Wed, Jun 10, 2026 at 10:31=E2=80=AFAM Shakeel Butt <shakeel.butt@l=
+inux.dev> wrote:
+>> >> >
+>> >> > +Roman, Qi
+>> >> >
+>> >> > On Wed, Jun 10, 2026 at 09:38:03AM -0700, Nhat Pham wrote:
+>> >> > > On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Zenghui Yu <zenghui.yu@li=
+nux.dev> wrote:
+>> >> > >
+>> >> > > Thanks for reporting, Zenghui.
+>> >> > >
+>> >> > >
+>> >> > > >
+>> >> > > > Hi all,
+>> >> > > >
+>> >> > > > The following splat was triggered on the mainline kernel:
+>> >> > > >
+>> >> > > >  BUG: sleeping function called from invalid context at kernel/c=
+group/rstat.c:421
+>> >> > > >  in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1126, n=
+ame: cat
+>> >> > > >  preempt_count: 0, expected: 0
+>> >> > > >  RCU nest depth: 1, expected: 0
+>> >> > > >  CPU: 7 UID: 0 PID: 1126 Comm: cat Kdump: loaded Not tainted 7.=
+1.0-rc7-00056-gacb7500801e9-dirty #304 PREEMPT
+>> >> > > >  Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable2024=
+08-prebuilt.qemu.org 08/13/2024
+>> >> > > >  Call trace:
+>> >> > > >   show_stack+0x18/0x24 (C)
+>> >> > > >   dump_stack_lvl+0x78/0x90
+>> >> > > >   dump_stack+0x18/0x24
+>> >> > > >   __might_resched+0x114/0x170
+>> >> > > >   __might_sleep+0x48/0x98
+>> >> > > >   css_rstat_flush+0x54/0x564
+>> >> > > >   mem_cgroup_flush_stats+0x9c/0xb0
+>> >> > > >   zswap_shrinker_count+0xe4/0x1e4
+>> >> > > >   shrinker_debugfs_count_show+0xd8/0x268
+>> >> > >
+>> >> > > Ah, this seems a bit tricky.
+>> >> > >
+>> >> > > Seems like shrinker_debugfs_count_show() is invoking
+>> >> > > zswap_shrinker_count() in rcu_read_section(). zswap_shrinker_coun=
+t()
+>> >> > > triggers a stats flushing, which might sleep. Not ideal.
+>> >> > >
+>> >> > > Is the rcu_read_section() here to protect memcg or shrinker? For
+>> >> > > memcg, i dont think it's necessary, no? mem_cgroup_iter() pins the
+>> >> > > memcg before returning.
+>> >> > >
+>> >> > > (memcg maintainers please fact check me).
+>> >> >
+>> >> > mem_cgroup_iter() handles the lifetime of memcg, so there is no nee=
+d for rcu
+>> >> > read section for memcg.
+>> >> >
+>> >> > >
+>> >> > > If this is for the shrinker think this needs to follow shrink_sla=
+b()'s pattern.:
+>> >> > >
+>> >> > > rcu_read_lock();
+>> >> > > list_for_each_entry_rcu(shrinker, &shrinker_list, list)
+>> >> > > {
+>> >> > >     if (!shrinker_try_get(shrinker))
+>> >> > >         continue;
+>> >> > >     rcu_read_unlock();
+>> >> > > }
+>> >> > >
+>> >> > > But OTOH, doesn't seem like rcu_read_section() is what keeping it=
+ safe:
+>> >> >
+>> >> > Shouldn't the caller already holds the reference to the shrinker wh=
+ich it is
+>> >> > giving to this function? Does debugfs file entry holds a reference =
+to the
+>> >> > shrinker which it is giving.
+>> >> >
+>> >> > After looking at shrinker_free(), it has call_rcu(&shrinker->rcu,
+>> >> > shrinker_free_rcu_cb), so this rcu read section is against that.
+>> >> >
+>> >> > I think we can simply use shrinker_try_get() here as Nhat said.
+>> >>=20
+>> >> Hmm, so is this unsafe even with the current rcu shennanigans? What's
+>> >> stopping shrinker to be freed by that callback before we enter
+>> >> rcu_read_section()?
+>> >>=20
+>> >> Seems like this is just implicitly correct - shrinker_debugfs_detach()
+>> >> and shrinker_debugfs_remove() happens before call_rcu(&shrinker->rcu,
+>> >> shrinker_free_rcu_cb);, so if you're reading this file, then it's
+>> >> before shrinker_free_rcu_cb() is even registered?
+>> >>=20
+>> >> Do we still need rcu or shrinker_try_get() here?
+>> >
+>> > I think you are right that we don't need rcu or shrinker_try_get() but=
+ it is
+>> > more about an active debugfs file reader. Suppose we are sleeping with=
+in rstat
+>> > flush from shrinker_debugfs_count_show() and there is a parallel
+>> > shrinker_debugfs_remove() call.
+>> >
+>> > shrinker_debugfs_remove calls debugfs_remove_recursive and deep in the=
+ stack
+>> > there is a call wait_for_completion(&fsd->active_users_drained) which =
+will wait
+>> > for active users, one of which is sleeping within rstat flush.
+>> >
+>> > So, let's simply remove rcu read here.
+>>=20
+>> +1 to this. How about this version?
+>>=20
+>
+> Thanks, Andrew already picked up
+> https://lore.kernel.org/all/20260610232048.62930-1-shakeel.butt@linux.dev/
 
-Does that actually reduce the stack use if the functions are called?
-Or just stop the compiler bleating and running the code is still likely
-to overflow the stack.
-
-I keep thinking it should be possible to get (say) objtool to output
-the stack offsets of every call.
-With (I think it is) fine-ibt the hashes can be used so separate all the
-indirect calls (although you might need a 'salt' to separate the different
-'void (*)(void *)' functions - that probably ought to be done anyway).
-Then it is a SMOP to generate a maximal stack depth for each function and
-to detect the recursive loops.
-
-I did that many many years ago for an embedded system (no indirect calls),
-the outcome was that we didn't have enough memory to allow for the worst
-case stack use!
-The deep places were all (the equivalent of) printk() in pretty
-impossible error paths.
-
--- David
-
-
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  mm/damon/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 265d51ade25b..69f38c48ac08 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2002,7 +2002,7 @@ static unsigned long damon_get_intervals_adaptation_bp(struct damon_ctx *c)
->  	return adaptation_bp;
->  }
->  
-> -static void kdamond_tune_intervals(struct damon_ctx *c)
-> +static noinline_for_stack void kdamond_tune_intervals(struct damon_ctx *c)
->  {
->  	unsigned long adaptation_bp;
->  	struct damon_attrs new_attrs;
-
+Awesome, thanks!
 
