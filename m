@@ -4,90 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99012CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F7ECD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 17:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFF246B00A4; Thu, 11 Jun 2026 13:31:23 -0400 (EDT)
+	id 88C736B009D; Thu, 11 Jun 2026 13:39:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAF2A6B00A8; Thu, 11 Jun 2026 13:31:23 -0400 (EDT)
+	id 83CEA6B009E; Thu, 11 Jun 2026 13:39:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5276B00AB; Thu, 11 Jun 2026 13:31:23 -0400 (EDT)
+	id 779A56B009F; Thu, 11 Jun 2026 13:39:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BAE236B00A4
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:31:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64421165643
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:31:23 +0000 (UTC)
-X-FDA: 84868323246.12.3D8F3D6
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D5630120003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:31:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJK6qiV0;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781199081;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtXmcCiq3eJia7JzFxANPEPogqTgQiMYpvOYfxZs+RI=;
-	b=kUCyYMXw0cX6QkXyYwRAfXB9u3LC+bN3r4MUaYvlq1yl+4jSiV4HMbEPrgaRHYQjZ2VH/v
-	RA2G9zzxoHR2UYDRvuL4tW0uCQbvbac+QZi/MjRXf0eBy4z8Q6FTUXU0e4xLmMMMn5NmEp
-	ITJr0DWM6UKGiK8wr9wo0c8tEha4y2Y=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KJK6qiV0;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 63DD46B009D
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:39:22 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1427BA073A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:39:22 +0000 (UTC)
+X-FDA: 84868343364.18.E7E8681
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1AFCE4000F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 17:39:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BHbkmLxC;
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781199081;
-	b=WPUmQTwZX0UbwCPYbp0W2HV3FE8bjFb5KYpaAbvYZkJOQ1XGBxdbF2j0ZKvC8v9FqP/4nx
-	O1JYwcCiuod8yqSE5q/7LcVz+3zBbXrgGXvo0BtshwQbMsvoXgb7C8Ek6fypmJGiBUbG+h
-	SrDcaCbTlQsHMzmCc8QQHDyazlCnH4U=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=XtXmcCiq3eJia7JzFxANPEPogqTgQiMYpvOYfxZs+RI=; b=KJK6qiV0e0G8WoQlcK2JqYtaui
-	8miztq7wA6yYYX/f4HajFclZu8p1SKefoIT0q58+ZY6NpFablzxRG59VFh/+xfPLt5AbvsLlPmvmk
-	X4RzoemUbpYOzr4K2d/WDoNwo4ic3kK5bFwC+K4IrLm/I4yKp6GwWbIjMpFvQu03zBhK+7hYbstEJ
-	9qO2lQEVeBqiwYx4SO7xzIQcQQN3iMOXx3QdjKcJpuBngCbXGtPVH6rMtiOjDaRNXvH3GDaDjUyvT
-	2nx2yo9mReMaNcG5Rn7kfRC63u+ihLXXxGgXthaboOXA1qvCcfuHDwWnGCrlcUYFNjH6xOvo0sN47
-	hC09ZUeA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wXiz4-000000070nS-36xx;
-	Thu, 11 Jun 2026 17:14:26 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 9/9] make ufs_inode_cache statically allocated
-Date: Thu, 11 Jun 2026 18:14:24 +0100
-Message-ID: <20260611171425.1671254-10-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
-References: <20260611171309.GN2636677@ZenIV>
- <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
+	t=1781199560;
+	b=K/7fDun2k94rmLhPs0mQLZqLIf197FCHwcPBm0q1JWfc12VX8pB32TMaei6vny1ajCKwOP
+	TD7nH31E37dlNzPH6hXvW8UjYPWyM/1GZt318aY5cy36WwighLScXSgpkBxCpY+mHfQFp1
+	oaBvNwjzYnqP+fEnJx94hTcBy9EYGZM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BHbkmLxC;
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781199560;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EDVNXhL2Pfk2NWjHVmUzJTm6IqAYDANPcobDFgmKGWg=;
+	b=fS8/PnT667tayBfZPOQ4hdx1rwAK71eY+O7HUiiinL4AxpuQ9Qetl5m5ODig1Sgz+9zk9A
+	dCCWjCCIzPgMSfwCewUGLgxj6gCp/XBSeMzGZF+2WZZyAOWtxYBAx2hUshXepojLkVyjtS
+	iu0dKC2Yjmfu7Ln4B6NsHSkwcpe8tBY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0543344576;
+	Thu, 11 Jun 2026 17:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484E51F00893;
+	Thu, 11 Jun 2026 17:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781199558;
+	bh=EDVNXhL2Pfk2NWjHVmUzJTm6IqAYDANPcobDFgmKGWg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BHbkmLxC9oZUeSXsvuN7EeETvKhppZNCiJLffMi5U8/+iNueDNzhoRtOta14y3//J
+	 si5BbetblwiOz15awvoRP9Q0yltQG9G4PJ0ow1o29o1wuxWPQQh8Xn0cMwpVmEfkGQ
+	 1ImvBKSBZ7yIN7KNE9CGBNku0v4iZEjDtovmr7034CX8KGq+wWpKT5LyXiOreR7CWD
+	 DXhq+ZhzvjFsXdY8P08EpFWi3ZmjZSz15DX/bwmLQVlv1rbYnQQ05uCgwnSisfgWnv
+	 ZCfVo9utox81XMowyQqzQUOKl+KTB9gHzbYRj0UmHvXBI1s6FNwNUwyCXw87KcBLn8
+	 oxsgp/LWYbXFQ==
+Date: Thu, 11 Jun 2026 17:39:16 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
+ per-memcg
+Message-ID: <airypNnKrJJ54k_0@google.com>
+References: <aiBpibRNi0BcM1Zu@google.com>
+ <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
+ <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
+ <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com>
+ <CAKEwX=MQ3xXBAY-2H8vA+XSX5GHNBubJ2GCYAXGD+Hra++ZM7A@mail.gmail.com>
+ <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com>
+ <CAKEwX=PF9hfERC_QMq+rjkSc-BsJyawMgTe+EhwR_86HiQKm=Q@mail.gmail.com>
+ <CAO9r8zN6VVZz7dpjNrh8n7wbLkqcrsROPm70MQQxO49HJSmMFw@mail.gmail.com>
+ <CAKEwX=MCFbsh9ndBtR0-bGRr_=v-6bBwTo=muzd9ZSD-LAK1nQ@mail.gmail.com>
+ <1c25650e-bf98-2863-d505-9b94c385668b@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D5630120003
-X-Stat-Signature: 35awsme9ac94tmtn3oyw1fkz7x3tyyt6
+In-Reply-To: <1c25650e-bf98-2863-d505-9b94c385668b@gmail.com>
+X-Rspamd-Queue-Id: 1AFCE4000F
+X-Stat-Signature: eb11wnwqfzw15rn563uht9ckuyraoqqy
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781199081-342782
-X-HE-Meta: U2FsdGVkX19n+JJXTP0/RM9Q6kbie3bEdd36VNnnbXbCJizNZsM/YYRIUXL2KwifMzQ7U3V6cokfM+dEF8XQnsV10rNRJklENb53+5RxBHD2jFtACpOzMigW9DmihkEro/qBi+hqEfBTZ6/QrKgguuWskRZo/XNQhLQjkrF7mO3lurUtl3bAgl4c9tPOMMP1Wfg6eS3voMNVfp2vgnYmLQFsLP0TZ4BvflPOtdz00z+LleNcumO5tCrRgkvNd3+ObHAC3G66eFK0EdUUhvuGXwP1E6Pbhw/XqSeNPIyfzxuAv4jojJ6bGHVyVna3wcPNmjldflCgoaSGeUS1pd+kuKfpI0loPbmuh6iKP9fuPwwLpXZLrI0qFURDVSSlTL8FOA9N+U4tTfZAIu03DAeX8n8vCUa/PcRnI35Pe7+M0zFA2b0xgaBqkSx/+Oc0I6XJKhWHuR6SR62lkzMHCRTselOC5OGugd81B9nEaJ/AJFRh5BRsVusPpMcwd0VEB8QpeIfc0prXcUbiDizbemM/99nMCNaNE66/UVDMa0XllR0N4UrJjZepzzKZUHh7hn8SQmZRQiY+NxusVcyRT3nP9JFliI+Bd4RpVigNZvh6bce6tCf842psK6vVfHNA9m66tgAQ2TfpspMIZbC2f1xW7LI+dfYhMDDmdLoEYkC9rHBUnE9dXEhEM3JRIXCot9kLNLzmUSYNeGDopuG3R+xql+P9+DXcymUE26xGqiUac4grE+9rAGyTL/lwGeOYrsdXZyeGdW2rmSvk2Nvh+86zIyFRbWsXbq9hmvUtU4idmUkbJuZvR4MW/wXwHTRhdejLXawFBeQugWBUo5aG0LE2u1CVjd72kea/NvSr5aJ4U2vctjMTN/iK54l5UZa4jVY0UJk3LWkFojEF/lsE3FAKfQzkFqs23/QrYhELirMFfDrSMfgcN6NRMZecu/QvS5T6t2g24REQqZscCxUh597
- vDS6IK5L
- 0qAb0Q9aDZpNIODPyaIgrB38ScLPgySEEs/4ADFYszk4hQb1ZqFgsIXACbWwguvIxaQ3zXbGgGzc64oVEH/lfutFA+S5AchXfwFCZCDNyM4eevx3cuOAP42ItsJ9qidIVEJZHrGPe0HCNSDZbR1dcgdaPLXFGhHNiOtkx55oeWVfZbG1wTQZSYu8DmpOrVgFZzBrQdf9T5NVsbYiQZYSVnh4UmQUoB6eDl08BTcqYX/ASOg04kwC9YXk76Ex4m2vUttHKjb+/ckKvg3zGNyRnV0baY0bJmc2hvPQKKrdcF8if+LjZXEAk86ij4i6cWGkbHSODWjHbeYlaQHr4DZOmwQTaQhMeUvuRY8bQXBgUJ19oAVOHSQeGvukwGS1/VWi6CYK3wBAxQ+IXKEEywANiE1f47HC/r63BsZsVigjyPg42Llk/iG1u8thBE6r28pPsgjjR6WYhR9A2tMPZ595omuGqDg==
+X-HE-Tag: 1781199559-781120
+X-HE-Meta: U2FsdGVkX1/iB9XULCV7XGGFpvmW3o260e/XQxyRBoZIZe0c/9kl90JDeeBLSPJ5ezrajh7GwWtj1c297WWJoHYphY3fmWygvjEny1nc//c74P6x6UPXCEABs1GsP6x/SK+G70iobQcG4ZQK05LMdwVBAIZuKAXbeLDDLweMy+DoW8KRml0PWDWwdwB++IogyY0l/wruuG3v2+qGLBlr4HE+oifsul9h6qB7Dj8sUiSY1PugDinKf3J1NJZIxL8Qa2B1D4uJwfvBFrKfb7ZUOHdkBRO4hRYwl/0JSvcsgXHOJTdjeiEd2Cf206ezYQ+GV7udSL5NQpK6GgW5lDzCjQU2KRgvO9n+mx+AMZbZhiGjCjg3EVFUfWklSOwerDtycZ/9zLhMdo/dEEImeB2kIp+zTJwfBJxSQiqwkPapSh5RzX26xqMc2aDbxlhwpjQb7zMqpy33eo8n8R2ckU3AcblPq/BoPoQrcoA9J64EAUzIcsSEzUYXasFnbb0DOYyLnZYx91m0E8pIsqHGMCDaQmN2WKegAz8EuNkKxlqkFuXuSPEb+FdpgLqcm4EI1ujqGMa1E1DGp77LymzQcoJEpU7pB9JAunnlugnZ6oxOhp9JA1+jZVNnkLvfPjhKdg92TXwFZkUmO7EpHhda5JKbZ50FfHQSzD1DYgb66+OH6MsRNsBNAnyGNa0HSUVMop+bvSGWux/7Wb12wYASP9out349Udgd2Ky8c0LYVnIBAfz9eEodDDgWaAdcon5NvxOwLqEA/MNNgQiDKk7s3G9MQx1FVn18ijRGT/JlpaNBjSc0zjVkIIdxCFWzmevfYKqKVW4qkJqeePa2Dwmieiab/vkH9MQLdKvvgJwTvyWo7qzogBctgMjLp/Crmkwd46KBGbceB6a3EJ2o2irzXIBu+brKknM5YDHYLvcYmBkuJIM4ngssToTgj+sTat/vKgME+c7CRxVsms1Ppk5xYoH
+ Mbvjbs5G
+ 9KRDMLnzPG8MpaCh/ZzduC2XndrLmYOFfZD7ztb6eQlPaWVVjkh0TCqqoWn5885EQq/oTrqK8SZl9qenQ0G/VKDw7m1ZuZzZ11yDqut2qBIw5ZmQPU26M8XhbBo6kut1xUqhb/WCN116KsNzYIrbYzw0yAsx8st3S3UuoZPZipudx4Wus3rcD+b68Ip6IpLdi2IeQVEBLDMwADQ8SxJ27RvBRX9rwuny46qCooKH+4q4Y4MNJ9f55Vile31hPUmr1WmTWUl15WdK0XWbkTgF2q2aeFCtIDFKwUDTJqZVqx+f3lCuQSVV1RnpkuFTf7lewmViraRNRh53l+dZBRYaoSAFVujmTPmn4GvT+90JwyqRoQSZaa1RVDo6Ytq3y2FMyoeo83QDE9yhoP2feuiNB6jGXoUvhxC6zDGFVkCXinZZMhR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,54 +105,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A modular example I used for testing...
+On Tue, Jun 09, 2026 at 11:18:26AM +0800, Hao Jia wrote:
+> 
+> 
+> On 2026/6/9 02:01, Nhat Pham wrote:
+> > On Mon, Jun 8, 2026 at 9:48 AM Yosry Ahmed <yosry@kernel.org> wrote:
+> > > 
+> > > > But OTOH, this does seem like a recipe for inefficient reclaim. We
+> > > > might exhaust hotter memory of a cgroup while sparing colder memory of
+> > > > another cgroup... But maybe if they're all cold anyway, then who
+> > > > cares, and eventually you'll get to the cold stuff of other child?
+> > > 
+> > > Forgot to respond to this part, the unfairness is limited to the batch
+> > > size per-invocation, so it should be fine as long as you don't divide
+> > > the amount over 100 iterations for some reason. Also yes, all memory
+> > > in zswap is cold, the relative coldness is not that important (e.g.
+> > > compared to relative coldness during reclaim).
+> > 
+> > Ok then yeah, I think we should shelve per-memcg cursor for the next
+> > version. Down the line, if we have more data that unfairness is an
+> > issue, we can always fix it. One step at a time :)
+> 
+> Thanks a lot to Yosry, Nhat, and Shakeel for the great suggestions!
+> 
+> Let me summarize what I plan to do in the next version to make sure we are
+> on the same page:
+> 
+>  - Drop the per-memcg cursor and keep the root cgroup cursor
+> (zswap_next_shrink) logic intact.
+>  - Stick to using the zswap_writeback_only key, and change the proactive
+> writeback size to use the compressed size.
+>  - Consolidate and reuse the logic between shrink_worker() and
+> shrink_memcg(). Enable batch writeback in the shrink_worker() path, while
+> keeping the writeback behavior in the zswap_store() path unchanged.
+> 
+> Please let me know if I missed or misunderstood anything. Thanks again for
+> clearing things up!
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/ufs/super.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Sorry for the late response, yes I think this makes sense. However, I
+have some comment about how this interacts with swap tiering, let me
+reply to the other thread.
 
-diff --git a/fs/ufs/super.c b/fs/ufs/super.c
-index c4831a8b9b3f..72053bc9c8dc 100644
---- a/fs/ufs/super.c
-+++ b/fs/ufs/super.c
-@@ -90,6 +90,7 @@
- #include <linux/log2.h>
- #include <linux/seq_file.h>
- #include <linux/iversion.h>
-+#include <linux/slab-static.h>
- 
- #include "ufs_fs.h"
- #include "ufs.h"
-@@ -1353,7 +1354,8 @@ static int ufs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 	return 0;
- }
- 
--static struct kmem_cache * ufs_inode_cachep;
-+static struct kmem_cache_opaque ufs_inode_cache;
-+#define ufs_inode_cachep to_kmem_cache(&ufs_inode_cache)
- 
- static struct inode *ufs_alloc_inode(struct super_block *sb)
- {
-@@ -1383,16 +1385,13 @@ static void init_once(void *foo)
- 
- static int __init init_inodecache(void)
- {
--	ufs_inode_cachep = kmem_cache_create_usercopy("ufs_inode_cache",
-+	return kmem_cache_setup_usercopy(ufs_inode_cachep, "ufs_inode_cache",
- 				sizeof(struct ufs_inode_info), 0,
- 				(SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT),
- 				offsetof(struct ufs_inode_info, i_u1.i_symlink),
- 				sizeof_field(struct ufs_inode_info,
- 					i_u1.i_symlink),
- 				init_once);
--	if (ufs_inode_cachep == NULL)
--		return -ENOMEM;
--	return 0;
- }
- 
- static void destroy_inodecache(void)
--- 
-2.47.3
-
+> 
+> Thanks，
+> Hao
 
