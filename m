@@ -4,168 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28834CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A045FCD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F6D66B0095; Thu, 11 Jun 2026 09:20:17 -0400 (EDT)
+	id E36BC6B0099; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CE7E6B0099; Thu, 11 Jun 2026 09:20:17 -0400 (EDT)
+	id DE7316B009B; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BCDB6B009B; Thu, 11 Jun 2026 09:20:17 -0400 (EDT)
+	id D23F56B009D; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 396706B0095
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:20:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE17F1C35FC
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:20:16 +0000 (UTC)
-X-FDA: 84867690432.08.437429A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 136854001C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:20:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mZmXI4TC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C23E36B0099
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F0CF8EA85
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:21:47 +0000 (UTC)
+X-FDA: 84867694254.10.99F8E92
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DEA1D140006
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:21:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781184015;
+	s=arc-20220608; t=1781184105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DbAs11x6sdjRPCa1WwOoOtiOTXFWzk8XHr9nWsO7jas=;
-	b=nZQJ1hQd8P6JA8Fih8eKPvVwTu2gHaX/cO6Lb+pC4ZDU+EvM08kh8dcg/PPVpXlCcHz0qr
-	apXC+gGk5shrsO2Y9MXVmmkz0/punqgUZttC37Jhlkcv6Am9zT+3ppJOpWkmNgJY5Ko6Gt
-	XhyoLZTAHfC7tHOZWyZhACcGUQkqxj8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nb+leNmDuDT8F3/hr+jBl62ymHPLvbKegkssvnF8LGs=;
+	b=xX4fuOD7x/Sld26SiBm6dk0WCkLYK9FEulVxPkyQUueBfNOWDl2zHfr7QVmpHjh3Yv1HQA
+	OAsMVAefzaBr+5ylgXs2yOaLwDtoesMEnCmi9geOVpFKSsWsD+Mnfu5jBfBhgBcFy8cjcl
+	SkaBS3NeI2l0/YT2wF6dInRBsrMHfow=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mZmXI4TC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781184015;
-	b=0JOx4oBS0KvY/sQo4lwX87mln+GxJNwktIRhOWxrGht40Rp/ephn9tOnEYstQFJe158zW3
-	jmzIc5BlKlhew5KqPb9H6v05NcX4Mr1BANRQTCSSp71tP75HQrjjZ0mjpWxMFQfDZ2ODSg
-	Xl0doyfJoBwlvqDcILbmuxlgnLRWouM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 685FA6001A;
-	Thu, 11 Jun 2026 13:20:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A371F00893;
-	Thu, 11 Jun 2026 13:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781184014;
-	bh=DbAs11x6sdjRPCa1WwOoOtiOTXFWzk8XHr9nWsO7jas=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mZmXI4TCsyxa4sX5pM4DsRByQaaOs3d7C8Ljua/wvAKN9TPmcu2iaMcw9mgsddKo8
-	 dJ4w1P/oR1cXj+hgY/Ibtz3BqRn0ClHXphR+0hydZmdlRauhCf1o1OJ7ODS5JywLgl
-	 0vBVbGss6G3iP07870uUkV8E7U/nHrA/mbl+/7DrGlnxkgh/pwwLTjU35X8ci/C7MN
-	 KGxWrMnh2F5orJmyEBmsIhFS0coXBk5XYZD5Q01TrNkodmYflZXuratoNjUAKLgqfC
-	 aJTurNg7u2noGQsvfpB4MqpiRz0KI3NtZuWgHcDcG7aE2f3zQUB+W68+dmVZQvlYd/
-	 B6Kwbc72AqZRw==
-Message-ID: <cbffabdc-42bf-4e67-9d2b-ace9a1e09f29@kernel.org>
-Date: Thu, 11 Jun 2026 15:20:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-To: Miaohe Lin <linmiaohe@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>
-References: <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
- <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
- <20260609162437-mutt-send-email-mst@kernel.org>
- <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
- <20260609165829-mutt-send-email-mst@kernel.org>
- <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
- <20260610171646-mutt-send-email-mst@kernel.org>
- <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
- <20260611013644-mutt-send-email-mst@kernel.org>
- <1b5676ab-0dc5-ef33-9d79-a2bd6090a62d@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1b5676ab-0dc5-ef33-9d79-a2bd6090a62d@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	t=1781184105;
+	b=2w28fax6OMsXawdn1++iCJ42IfYGLN4JbWUBLAbLLiK1X75r2sz6Kg1MustuPlVoGvSRbK
+	2y2FoJPjk82vq9d6XhBFuJ9LOQzsaTr+3FP17YsC3Zyx8cXR0hOCCaLdU92a5YPOU8dM82
+	1FK+zYLiOFRGWe4w0tol0kX8uRH9mPs=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gbjwP20wJz8Xrrd;
+	Thu, 11 Jun 2026 21:21:41 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl2.zte.com.cn with SMTP id 65BDLZif054376;
+	Thu, 11 Jun 2026 21:21:35 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 11 Jun 2026 21:21:38 +0800 (CST)
+X-Zmail-TransId: 2afa6a2ab662fbb-95d91
+X-Mailer: Zmail v1.0
+Message-ID: <20260611212138619BRrXoKru-JeX9_5F1yX4l@zte.com.cn>
+In-Reply-To: <20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn>
+References: 20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn
+Date: Thu, 11 Jun 2026 21:21:38 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>
+Cc: <akpm@linux-foundation.org>, <david@kernel.org>,
+        <chengming.zhou@linux.dev>, <hughd@google.com>,
+        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
+        <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHY5IDIvM10ga3NtOiBPcHRpbWl6ZSBybWFwX3dhbGtfa3NtIGJ5IHBhc3NpbmcgYSBzdWl0YWJsZSBwYWdlwqBpbmRleA==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 65BDLZif054376
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 11 Jun 2026 21:21:41 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A2AB665.000/4gbjwP20wJz8Xrrd
 X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: c877559wf9yzfeikcbasuqdqycm7gcxy
-X-Rspamd-Queue-Id: 136854001C
-X-HE-Tag: 1781184014-436147
-X-HE-Meta: U2FsdGVkX1+aO3QhA4YbrCVy2kvzhN8dC3rYqditO65FgWQsxyUAnuUCK1VnTdG8a1Gd2/dF4RtNZt/Jqh1DD2wkc72ES3aKLsGRtc6ggYx61G07OeozahKu48XvWBDgWqaefowonvcdHtAn079QkZ2A4GGB5Qsw+rgvBeQ4P7pcGeliIpiDKE7RHbdR0pfG6C3G1JguCNDNiZQWNapPlHcgw+quxyEU3LV/57btWARfx5vObt6CtzTJjp6vJTRhRjx8tiCj1btn512STXYB9UrbRsEBJKL3AZ8U1lm87OVbnjmyUpZ4Q/87tPDp1OUKnTLgYMYK7yLUWZr+lD3JggOuRw5CBF0N95As1m/JrxvXIZV5GcerGT40sD3tMMRLf90dV7++yKF/2GaB0ra8eVIuwgjxSo4ft735+S/atDrH64Rv3gbuCL/NKezsJFTsBVkF+sKOIBnj2rYiWrz61PNWxTi+NQAuuw3e3G2y4Fk5CN7TE/HeFAWX0BL8nD/tOmxeQx1gtRLydD0slHPYA9lUNypzlCvmrH+0tBLjrUMMqQ9tFcsIevexkMwSRYAnhhr1Gh3gi/mTrSKpWe9QQLz9QzsDWc03JWmbQUdwWIaY3QU3N4UxgTNYXHu7pV3e8lrATkmdQAfDg/p8gjWmpzZlM1vPWR0yOa0JgNVJkPy3n1wntKJFldREb8l0JJV5iVDU28wL1KyRd0ls3mhS/jMDXVmxGC5GAfBB/sIuZ3poKOs3nWYGYxy3o3HQ8+exXGHBqpIdtlHOlIu2JOTTQydRkCFaQOpSnOJC/wsCK6jktLWbB7VIaEH5vXaEwpQbDy63ZjwXXEK+za5XOucFi+YvUk7YNpT7BlghqPPe/h2OJ1sS5RF0vqSGsecH+NlbonjC041ij3LyqJPCEdjEgsWvCqY3RsU73lc0cs/ObuWw5PB46VVT2l97PkAwEngvJGcl5A1U9ygIMqBGhY4
- ElI8xLg4
- VohGTedLugoUuvuhY+jaJkzPmlC5lrGhjv7eZGqKxXWfom5vTQGuK8O8kw9xmveWyoKDTU1E/GukN/KDJcINYvuwIAocbJgB/MA4Gby1hRqNOJBrYbY5IoX05rzCmH31KCYgX45LDbQ9cnhNI97L3zB5V9qwxhHTXImLxv7+5+Y6JvbyclMphefL9gvGdnYomh7E8//1YvWRoqEaN3AIIlkyGDzP2FqflFsjSD8GnhsB9VZIPUI6uoSsrMYqbpsnK0nvludC+sB64L04077PkHgwh+i1BsaKs0zuX3CKHpULwOQdw9J28DVkONx+vuIcS32x/6yB/TgzRqQI=
+X-Stat-Signature: bz6yeifa3awq9eidhje7odrwsfc6qr43
+X-Rspamd-Queue-Id: DEA1D140006
+X-HE-Tag: 1781184104-789989
+X-HE-Meta: U2FsdGVkX1/JkhP6iMHNPA0XxE9AEK3VU/lvbd3CDVCjGmVFWR97dcicZFCWzmbiXpFeKqfFveX2TxH3oT/xHCxxSVrez22t//9ndwg3WXo3EFq6U6n7EcBcpNyxxAS4GqifaZus5xlk6g0EhJXg9djg2YREs6ptzsf4UWWu2mduICaddmV7LJe2h/y+4wbOC4EUCuzs2O1ANPlSFOnVqfDWemv6/8X5hOB/ZSwJ9qPcA1KGbJ2+4rzUqPN/DAnfQkXMJoD6QVAEyweENoENnmhn3+7pCc9B1+39R1pt2af4wy/yN8cXMMSndoyuJIRuNUQdA1BNaPPbrzRDNKaZrtm8cWxPIOlAjvmTaxW6r7iXc0dOMjs7dW+exXB/rO+ns+tsvxP1NxQ7FjFWipBh20g4JU9hpRtDpl6DPp2WNZNYm7fUUYVyVXq+4K5bX2dCO/7m/LnbefCua9qIfrbXNQA5u5C36Bg47UzXW1kE0yv4Dl3FM5RXLuXAxaKfpLcrgC/B7h2m+C/5O10IM3MSXhD3oSoBqXCjlnNGvzcHeVDL9aeywdRJ3JyCrvsmRXvkoisw3eiHlpDJzkSUWn5MJD2B8EkyMLMlkXJe2vhkBlaiGs0+WtOQuwzNTJuh2bHTTRo3ONxT8O/GS+XiWV8dBFiZqRnIZFJxa8x1n6dz++UqMsZCWhqB4Wj2oWxSO2SzcTQ4vavzfXU2jiwNGZ04+DcIxQU2EjQqZ3vqZPaYjNTsC+TabP06P7t47itGF+iXQio6sJiXTAHXsxntVau+HW37YsN7hXBTkkjKjbEyl0c7GtpdNIKmow+50eBQAAxjliIjixwPyKP1M2xUECmWnG1YdX5KFhvNNGcvhcId7iBvLn+nPR3R9uFvSme1qyUFV9Gp4VDrm/lZaHFTKOg/EF8k/m0NgF2fP0Db3CCxOSsjrtcRerZAk3EGc2cvcqyet/6LSOVJXQhna0K+9Tk
+ f1Nn98RT
+ Jn6+8R1UQqP+/ZVDIgilI5TKh2F/dAO11pkvVGVd4xfKIeUicnMBT3DayazDsa5UtdOrU8kp0ysJ88NwAXnmJaYolGJ1ZcdkYxffUJCHyfqRrY3v9yDltXvnMveRLBirj23Cv99Gsqdv2mYecskZaxkPTNr88NoqGQ8RRg2ocwumYCTC7B6QDY9AN+DWbeDb54dJA9U9Cz2tW/2td7nEyScWog3IwzNHWxretzbwJCknCT8qy5xTURRZNg36VwSDWrs68KclwU/eJGnuO1JPLuRcHXk57OJrtuWHOwGa7di4ShmlFWiJElfMZrb77+ZGyLC3EWvWsvsyvvF8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,50 +100,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 09:36, Miaohe Lin wrote:
-> On 2026/6/11 13:43, Michael S. Tsirkin wrote:
->> On Thu, Jun 11, 2026 at 11:35:36AM +0800, Miaohe Lin wrote:
->>>
->>> Do you mean repeating SetPageHWPoison on every branch?
->>
->> Right.
->>
->>> Is it possible
->>> to make __free_pages_prepare changes page->flags atomically or this race
->>> is specified to memory_failure?
->>>
->>> Thanks.
->>> .
->>
->>
->> Adding an atomic op on every fast path page allocation is, I am
->> guessing, going to slow down Linux measureably.
->>
->> Doing it for the benefit of memory_failure, which is the slowest of
->> slow paths, seems unpalatable, to me.
-> 
-> Agree, it's not worth to do so.
-> 
->>
->> Neither am I sure it's the only racy place -
->> grep for __SetPage and __ClearPage - all these have the same issue, I
->> suspect.
->>
->> At the same time, I'm not an mm maintainer. If you disagree, try to
->> upstream a change converting all non atomics in mm to atomics, and see
->> what others say.
-> 
-> Since memory_failure might be the only place, this change would be unacceptable.
-> We should come up with a better solution. Maybe we can try repeating SetPageHWPoison
-> and ClearPageHWPoison at a first attempt though it looks somewhat weird to me and makes
-> code more complicated.
+From: xu xin <xu.xin16@zte.com.cn>
 
-And I am fairly sure we could still have some remaining races ... it's shaky.
+User impact / Why this matters to Linux users
+=============================================
+When a system runs with KSM enabled and memory becomes tight, KSM pages
+may be swapped out or migrated. The kernel then performs a reverse map
+walk by rmap_walk_ksm to locate all page table entries that reference
+these pages. If A large number of unrelated VMAs can attach to a single
+anon_vma related with this KSM page, then rmap_walk might be severe
+performance bottleneck.  In our embedded test environment, we observed
+~20,000 VMAs sharing one anon_vma without any fork – purely from VMA
+splits， which cause 200~700ms duration of rmap_walk_ksm.
 
-Hm ...
+When one of those VMAs mapped a KSM page, then this KSM page's rmapping
+will become bottleneck with hold its anon_vma lock for a long time. The
+anon_vma lock is not only used by KSM; it is a core lock protecting the
+VMA interval tree and is acquired by many critical memory operations:
 
+  • Page faults: do_anonymous_page(), do_wp_page() (during COW)
+  • Memory reclaim: try_to_unmap()
+  • Page migration & compaction: migrate_pages(), compact_zone()
+  • mlock / munlock: mlock_fixup()
+  • Process exit: exit_mmap() (tearing down VMAs)
+  • Cgroup memory accounting: mem_cgroup_move_charge()
+
+If one thread holds the anon_vma lock for hundreds of milliseconds
+because of an inefficient KSM rmap walk, any other thread that
+tries to acquire the same lock (e.g., an application taking a page
+fault, kswapd reclaiming pages, or a migration thread) will block.
+This leads to stalled application threads, increased latency
+spikes, and in extreme cases container timeouts or watchdog
+triggers.
+
+This patch reduces the worst-case anon_vma lock hold time during
+ksm_rmap_walk from >500 ms to <1 ms, thereby almost eliminating
+this source of lock contention and improving system responsiveness
+under memory pressure.
+
+Real-world examples:
+====================
+ - JVM / Go runtime: These use mmap for heap regions and later call
+mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+splitting the original VMA into thousands of small pieces over time.
+
+ - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+or anonymous mappings are managed with madvise(MADV_DONTNEED) to
+release specific pages, which also splits VMAs.
+
+Root Cause
+==========
+Through local debugging trace analysis, we found that most of the
+latency of rmap_walk_ksm occurs within anon_vma_interval_tree_foreach,
+leading to an excessively long hold time on the anon_vma lock (even
+reaching 500ms or more), which in turn causes upper-layer applications
+(waiting for the anon_vma lock) to be blocked for extended periods.
+
+Further investigation revealed that 99.9% of iterations inside the
+anon_vma_interval_tree_foreach loop are skipped due to the first check
+"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a
+large number of loop iterations are ineffective. This inefficiency
+arises because the start page index and the end page index parameters
+passed to anon_vma_interval_tree_foreach span the entire address space
+from 0 to ULONG_MAX, resulting in very poor loop efficiency.
+
+Solution
+========
+We cannot rely solely on anon_vma to locate all PTEs mapping this page
+but also need to have the original page's linear_page_index. Since the
+implementation of anon_vma_interval_tree_foreach — it essentially
+iterates to find a suitable VMA such that the provided page index
+falls within the candidate's vm_pgoff range.
+
+vm_pgoff <= original linear page offset <= (vm_pgoff + vma_pages(v) - 1)
+
+Fortunately, an earlier commit introduced the linear_page_index to struct
+ksm_rmap_item, allowing for optimizing the RMAP walk.
+
+Test results
+============
+A rmap testbench can be obtained with two Out-Of-Tree patches at [1][2].
+After applying the OOT patches and building rmap_benchmark from:
+tools/testing/rmap/rmap_benchmark.c, we can start the performance test.
+
+The testing result in QEMU is shown as follows:
+
+KSM rmapping	Maximum duration		Average duration
+
+Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
+After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
+
+The benchmark numbers are realistic, since we observed ~20,000 VMAs
+sharing one anon_vma on a production system running a Java application
+with KSM enabled. The lock hold time before the patch was measured at
+228 ms (max) during rmap walks triggered by memory compaction and page
+migration. The benchmark reproduces that VMA count and lock‑hold
+behavior in a controlled environment.
+
+[1] https://lore.kernel.org/all/202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn
+[2] https://lore.kernel.org/all/20260530170404509QpJmBtpSjn3uQHeVKA2iA@zte.com.cn/
+
+Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/ksm.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 60c6f959d81a..454ba2eb46e9 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3207,6 +3207,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+ 		/* Ignore the stable/unstable/sqnr flags */
+ 		const unsigned long addr = rmap_item->address & PAGE_MASK;
++		const unsigned long index = rmap_item->linear_page_index;
+ 		struct anon_vma *anon_vma = rmap_item->anon_vma;
+ 		struct anon_vma_chain *vmac;
+ 		struct vm_area_struct *vma;
+@@ -3220,8 +3221,18 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 			anon_vma_lock_read(anon_vma);
+ 		}
+
++		/*
++		 * Currently, KSM folios are always small folios, so it's
++		 * sufficient to search for a single page. We can simply use
++		 * the linear_page_index of the original de-duplicate
++		 * anonymous page that we remembered in the rmap_item while
++		 * de-duplicating. Note that mremap() always de-duplicates KSM
++		 * folios: so if there was mremap() in our parent or our child,
++		 * we wouldn't have the KSM folio mapped in these processes
++		 * anymore.
++		 */
+ 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+-					       0, ULONG_MAX) {
++					       index, index) {
+
+ 			cond_resched();
+ 			vma = vmac->vma;
 -- 
-Cheers,
-
-David
+2.25.1
 
