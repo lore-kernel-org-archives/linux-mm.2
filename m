@@ -4,103 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B46CFCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:53:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE754CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:57:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2AF26B008C; Thu, 11 Jun 2026 11:53:14 -0400 (EDT)
+	id 446296B0093; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDA726B0092; Thu, 11 Jun 2026 11:53:14 -0400 (EDT)
+	id 41D436B0095; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9F26B0093; Thu, 11 Jun 2026 11:53:14 -0400 (EDT)
+	id 3340A6B0096; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC3F26B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:53:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78A9E1406DC
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:53:14 +0000 (UTC)
-X-FDA: 84868075908.30.6AB2325
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AB98D40016
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:53:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iRtpZ5ki;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 245256B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D52941406F9
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:57:48 +0000 (UTC)
+X-FDA: 84868087416.14.1C79B2C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 75F801C0012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:57:46 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bkaPjTca;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781193192;
+	s=arc-20220608; t=1781193466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nWWQcnr5s3ZKYSOjuOdhQYovdi3ZfrWWs+mggmJcT0A=;
-	b=sR1xuC4WkFdPa1Hv1vtepJjWXM5dzdfLLjyMy+mLT5TNisMXFAbd2mf3QvKM9h5fqQcF2G
-	JsCI+roePXlultwQG3gp/8nbfwYB/7c0BudeUvE+K2unlpi0fDhQi7e2txmpOq33e7kJBq
-	NyEUR5NY1sfDeR1gYlmqjpdbz6/Drzg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iRtpZ5ki;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
+	b=lPOIAwQPBHViH7FVRaJTJsnmvo5O+16S3UAu9HXspKa90UgwoH30nALA2k27XfXwajwv9d
+	DG0WjQ7MbUhAHqy+I1AUGO5ZyDk2IjFUyCm3mRU/CGBedObV5nseceCvRWDGYNnwSLkzwD
+	r5IK+z33iS/g44kkbLgpOTnErTlWvhE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781193192;
-	b=lZysNj/AST6qExD0k9dUajqcpDeasYv0M4Uy+zkCkcje99CVD7DqePisJSCgsGPoMhIBiX
-	7G0MIgdxig/v/7DZ13AnAJQ1ITF0nVEdGSNhHQZft8KnOPeecP9fdU533otzEqTtK9hVgk
-	XIRCbQqfbXntIYyHkK91FJRQj4p8YZI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E079C6001A;
-	Thu, 11 Jun 2026 15:53:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472281F00893;
-	Thu, 11 Jun 2026 15:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781193191;
-	bh=nWWQcnr5s3ZKYSOjuOdhQYovdi3ZfrWWs+mggmJcT0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iRtpZ5kieFw5S9ITnjIH6j0aWcKNh5JeuF+zK4u3Gb5BHGjXDX+63qYpICXZOqKKf
-	 FMpn/eSPdZ3uUDY2hsCqbr+TZrG/QR3UZsXMiEpeUFOJx1TvgaWPpU2Sve9CrFxXl+
-	 FPqFy7tIGDmG52exo9PstHq6ST6VxUMQd8EOxUjVYsICVz7IejXX1Gsp7Nm89bi+jK
-	 mGw7lODaN60ngB2FLEwNaIgnCWslUjDqMZ+ZD+N8Eh+psAFgBJrySRm3icp1ZA6RjP
-	 0zyMAq/g3K9uC6d61CATLKH+E8nSZtrkkgmOOG/Fc7JJu4bfrSi9nkah1Wa+lwiqQ1
-	 d8kGPcHyRzcdA==
-Date: Thu, 11 Jun 2026 16:52:54 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Huang Shijie <huangsj@hygon.cn>
-Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
-	surenb@google.com, mjguzik@gmail.com, liam@infradead.org, vbabka@kernel.org, 
-	shakeel.butt@linux.dev, rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, linux@armlinux.org.uk, dinguyen@kernel.org, 
-	schuster.simon@siemens-energy.com, James.Bottomley@hansenpartnership.com, deller@gmx.de, 
-	djbw@kernel.org, willy@infradead.org, peterz@infradead.org, mingo@redhat.com, 
-	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, 
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
-	james.clark@linaro.org, mhiramat@kernel.org, oleg@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, linmiaohe@huawei.com, 
-	nao.horiguchi@gmail.com, jannh@google.com, pfalcato@suse.de, riel@surriel.com, 
-	harry@kernel.org, will@kernel.org, brian.ruley@gehealthcare.com, 
-	rmk+kernel@armlinux.org.uk, dave.anglin@bell.net, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn
-Subject: Re: [PATCH v2 1/4] mm: use mapping_mapped to simplify the code
-Message-ID: <airZn524Ip8VsWra@lucifer>
-References: <20260611061915.2354307-1-huangsj@hygon.cn>
- <20260611061915.2354307-2-huangsj@hygon.cn>
+	t=1781193466;
+	b=cx4sNyFGUpEM4/A5rOWEEox8xvHtuwTBMDaLxPrTA6UmwHVmQVI7VJ0BXXuyy8Z2A0O3GE
+	ZLauDUfNvBuhkeNlMTyPBkjZ/YK2NIuxeWITp+KBNKMTC1NR2JqdBP6tf3yav21/yYJqze
+	iLZVR+eAs9RTlIH2J5gyIY1+Cwem72Q=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bkaPjTca;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781193465;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
+	b=bkaPjTcaz/CuhGg3GJZmEtzdX3Ujn+UGGXbjrXNPaPgwlPbntr0DXoN+7YD4AowZ2t4wWh
+	sfe92c5JMuaL4nglrqMzVu+Ecc+J+0qKu/7hMBA60RsgCfHXjlqr/TPmQWAX0PDzo1szLR
+	pLBEBdUV60zqo0lMguTiBw9gGC3VxRw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-199-_3uaU3pPPX-8tz-6YCcP0A-1; Thu, 11 Jun 2026 11:57:44 -0400
+X-MC-Unique: _3uaU3pPPX-8tz-6YCcP0A-1
+X-Mimecast-MFC-AGG-ID: _3uaU3pPPX-8tz-6YCcP0A_1781193463
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490cc1ae292so158605e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:57:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781193463; x=1781798263;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
+        b=Fz2Hz4m4kBMZmaeg955Ag6QG9AQDO/v6gMd2fh4I6dWk8LmM/x7JItj4QtxKqwwboi
+         K+IdE2H/h0cxLUUoijndyNcBMOIpXfFRZa7lVu8lv1wMvO1xRjOuAIMAFUGTtoQNMnjd
+         xZpvvkLq3Zw659XpX5cBZWPZlqwQzVzI3nxDO9pb41lK3rSuaCJSr3s+1opCUbAJG0Rh
+         Ttjv2vKi/spvKb0PDyJUlxpcdyhN8TQvFCdXt+vsHkEuvGV0+rtO8c9t+Ls3vHhpXiI/
+         Wm8o1Bxi1WXDOqFzdVmCIEo2kIXix3hFnbDQle9St9LlL9Mk1kZxW3wiqupkcSLk5w4I
+         6Rgg==
+X-Gm-Message-State: AOJu0YzjmvbsSb+JFe83XmziOnQAx5CkGXOloP4srrH2nCV1YnC8y24i
+	WldQUQ4Y5ncxJmvNEGG9qPxhAAH1g2adWQrr2yC8PynwBYXqQNduDCNw1YurEzr+9SYFtoHbV/T
+	Qul0RQNZgS8Ea4VcHkchV7xzdyskQp/gjIRaWWgGhVepSQsLHYDUNAAHdpXyh62zltO80M4UI7B
+	1lWTCeBvLHc7AfZrAayiKaNqixXVInlzWzhQ==
+X-Gm-Gg: Acq92OHwLRLoKK0oLXKRlq0WmUT3Sz7XTiW9Ny8ZOraS4Tfgs+3WQLGahC970XfTnDg
+	FJBrfZ4hIpLkjcx4qhcy/m4scxcEQ5q4gdLvlnOqsolAS6LRsQbuZaNyvJwK9bl4h3dmk/7goDV
+	/QdCxUzV4Ini8rrZGv0xW1/I6I1gGAi/t0rSwdFLHB0BMTw/ehgwFZhWShiCZGurtstOF/hSxXo
+	GeIU6HbsJMmEuXjFGqHmeRThVT1frtYnglfE7K7Hc3DBMXA3jGbdRD6sIKInjhM3FkklqTHe7vQ
+	QCFHTEd80ZkjPyYStAnU9GnKf0ov1hm6r20MlstJcPfN5UgJEmprlmpicYNUwm5Eg6cV4GULbSs
+	xZ8vKEaLLgnn5V5hl7MY1VnXZ6FR3ZGP0Zbcqu34OA8qBPrMiOCgIgdT/D9bO8b1IDWik4P7HNf
+	Y=
+X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr42831665e9.2.1781193463255;
+        Thu, 11 Jun 2026 08:57:43 -0700 (PDT)
+X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr42830875e9.2.1781193462659;
+        Thu, 11 Jun 2026 08:57:42 -0700 (PDT)
+Received: from [172.31.99.182] (91.red-83-48-118.staticip.rima-tde.net. [83.48.118.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e2c7ead0sm84150385e9.3.2026.06.11.08.57.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jun 2026 08:57:42 -0700 (PDT)
+Message-ID: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com>
+Date: Thu, 11 Jun 2026 09:58:55 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611061915.2354307-2-huangsj@hygon.cn>
-X-Rspamd-Queue-Id: AB98D40016
-X-Stat-Signature: 14ty94jcnbqanob5ho69sjik6zjepyb9
+User-Agent: Mozilla Thunderbird
+From: Nico Pache <npache@redhat.com>
+Subject: [Bug Report] Elevated PMD nr_anon after running selftests
+To: Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-cxl@vger.kernel.org
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5iNQtTzFfXhjiWiT1bdnmxhebGbXAXyk3Ww0Aws3mZc_1781193463
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 75F801C0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781193192-20956
-X-HE-Meta: U2FsdGVkX1+KbTCddQ5A7BJ/PPf2e6TTvjxQpz5LLGnZK6VH8dH4R2ntcJWaW2scu63X2vy/+SKk4nGqj5VoeFrT1e3pOCHTZWIjfGoyGkJHQ9S4pmgN6SCu+lQxWd60N89SreJcExQAovrv/QAjXZYf0JMURX4Oc9j7xINZS1MNp5JTB0TBsacc3VXkE3+QJ+gCQq5MGYzpSU82c94UI3PYP+XpPkRFaZ3ZH9HvFpZJ9hhRlTeeDrPl5hOnbwCMIcOsfjX3RDAvbn7OsMpUDZOG3uZSLqhxaG+0GOTqmA9yGtPuqSwQ4If3UQCsthIPhnYWyfvnHF4gE7nxAIl3aJFV5yW/mPh3HNbgkhrfCWPs7Is+Xo/c6C6f2d4JViImiJ/G7reqlMDhoWLYd3arZvKz6yb3Uicg5LoLw2TC//Mx32srLEy76JQwfym1VGVGD+ix80Gy1qXOuKVmQ+LHMbsqVp+c1kPXuHDiOkPhZdL1+7dllS28GDdtC/U0UddL9tT3ON3jqfTEepdZKESN3kkhk6TnRyZBY3S5VbUVx6We2fn52pEzgj80OCk81xzjJyuQa/8wH5QzeEziBmCHswbfK6bo2aGA/mDo0TIOkoNyl/6iatPTYxHK9+q12H7WLJNhiLBtoAtvMY2YzMpJkWA6cIyUUQJ1Kn096VpBGZ1NnqUAcpPbknFrMqjkDoU2H6d9VPJgGHLTXhlOwp6PwtdGS2EL6RwevmqLl8Tke/E4lI71JLUpP9wxUZ3Rxp6ZMS0d0844uPqLUp3bvUF24jzdO1zq9qEyZ+uC+AQCCLC5497bPS6uWs97sf8winEa0vgxbGV1LijXtMZIT//MG8kH/eHP6v/kRxE9phIX1ZdputwrooOwDVIuE32HmQog0qOn/lssbC7k5cv/E5B4OulRqopGIPQ5q6huQLnTVyoG04+lHvaVCQApH/eMLjWgKh3zB/iYezjQC4KJgLl
- ULUKLdDQ
- OJJEA5x9yDa0C4fNbjUc96W9EiUEt3LctqjwTFXiwg0kprfa01r5XeFOUU1iSg/LwGWzXfjfj6p0wSEDiwZRmV5VWmhFoqCVZ3mz7VRlsnnMqX+itiJqoDfjJa/17x6xae+ldLABoB283snN9Vn1yRwA1iDJJiLZf/Egb+GSk1V+HhOW+7dYDDthTkxbH+M2yiH1UAbzo695vTUXrm7UJUDHoT62btgK09+e+DtrZ3N5k119lUdFrKiXrEdzJ9othZN1/mLybTtq/KGJBswcFpEw8EC8o4gH5WCx+iiQOMw76O8aDvuF47TM1ACDToUAd/PSYZUyXistLvgVxrmVN6up7oMDkjvJju4a4ssFRpAaKbJYNBevJ8d4JxvP91FsiS7eko2iRxTtCp1j2StvxLtxftKC2xDAiwRXMRO52p6M4KmCSAglmAD2CfQ==
+X-Stat-Signature: rbecow4ddzpbmq8r5dsj6qaehmdnudos
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781193466-771104
+X-HE-Meta: U2FsdGVkX1/t9KbItfh9yXwUjhk74PCdOVzotssaaV0MKiimlQpvH44DXUwCVQq/YkZcxKl99KwA66ZWO7AG6MDh0Ft6nf5udrtAfHEHsCqHp8dNLAu251Dzl2uS9/Lfu8KDlUiGPv0jVcb8RcbkQ07G4OUO1JnVTIVcZtYFcSer2Fb7eFKxABUDo2cuqzOEQNmK94Hr3/y+8R6MAdyOengk0swEh1SsCDVx6SKRboBNxdMgpmaGTAEMsI0zDikX0Kk4KrHOiIo4GbRaS0w2ulWAZrnCUaHZPuLAStV9yf3zV4YApr5H8NbFoOUIrpFF//P6OU9HeEEOVChBbxzd9z0tdDHyAWzjdlwbQppaBX2Lbi8gpgkYdEahSvLUYnxcTBZLWzcdlW/xIqp9PSoTQcly6tgDBih997KNUJZwWPmA3aO7hT0LoiY8tHtcDUh7dRu1cdxYCLprkw2Ap90k5RSfc9hcvx5Fx+majQxmhQ9ncrKzlcIpiXlQgIi9+rZw5njfmF83TodNLeMcj8GE4iixQGnsK4a8C1ZhQIMRopvp4gsjwl6WmC+KXf3hj43qxN2naQF8bUlyO3rTcifRrV9cj7NGV59ZuUFl+No16FW1fEoqu+wN++qrp3zJm2sqgSztqmdPw6Ay5eQ3DXsnEq8Dj5gOwKhvCA6cec49KFVt6vYkdjrTpMIJMBoHtKvt3xDI/5bq3Abyfp3AAXDZQGS/w6MULACqzSBQhv6SMmd/sE4D14V+vHWH5TochnDq4YbO2S1ZavWsyXmy0Z+L+a0NZHaimoqSDjfq0s2eCkW3pKAzk5BOjJO9jS1SK4WfCJGBKQqBIf5EGV4SQesFYWKoTrNskyBfv1/8aE/NTcDTjjscNWkSpJau/a7zmVmxvyExPDDg6VDFIMFdNPTu2lgcb0vcyV+o27y9bEIHN3WMkqwTm8wRgdK/JF12OeyMVQlPzfNDj9wEboEaEFi
+ XiVl24jb
+ iZbskkXUlcPYNbtownAUujWr2SAKpXqCBn4fVIueptfXEjyOMTc2eLpr7LkowsF2M9asVxCTLx6e060xxmus1y5ttNlFI/uss10i8vytXK1FEqRw2MbQ2gevDqrvTP1513uB7HgkEfCQG5hfK4RNXpsAFpIlQzswClgxyDETPxlfcQ9A57ZMWf4qZA6WL60ZewkK1mlY0dQjubrH8u5EXCGTR1zk5P22uomzI6/mQc0IekSy1K2MmlTYc+M/2PYxZ1ijWD2iLg+UmuzxvsNafCOCYBLDnVYTMp1y7O8NzXVt5+ZRde86gFEBBxIqH1CeF7IPmQUlfOUYe+5gACNPS26eQjasCOOSaKfcSuvESO4ZwolAqEBo7bXHgQm67wvKOvOaeKiE++yCAJaWl8O41D548U0kCMJl2A3ZosKm0LDzcvz8BjWQAsWLI+PMKQRB9Zw/kNl74eyA0VqDXJd+sSoe14e63HJotfXCifeaUdwb7wXyehYnG2lLmXj6i50G2p5NNqr6r3AFW+XzLybvKFAmnqz+AtFT3rBCg5U7JT1ffWy0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,70 +134,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 02:18:57PM +0800, Huang Shijie wrote:
-> Use mapping_mapped() to simplify the code, make
-> the code tidy and clean.
->
-> Signed-off-by: Huang Shijie <huangsj@hygon.cn>
+Hi,
 
-Yeah as Pedro said this one could just be sent separately, and I in fact
-suggest you do that :) So:
+While testing my mTHP code I noticed that mm selftests caused an accounting error in
+/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+At first I thought I might have caused a regression, but when retesting with 7.1-rc5 (without my code), the issue was still present.
 
-Cheers, Lorenzo
+This issue occurs in two mm selftests:
+1) hmm test
+2) migration - private_anon_htlb test
 
-> ---
->  fs/hugetlbfs/inode.c | 4 ++--
->  mm/memory.c          | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 78d61bf2bd9b..216e1a0dd0b2 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -614,7 +614,7 @@ static void hugetlb_vmtruncate(struct inode *inode, loff_t offset)
->
->  	i_size_write(inode, offset);
->  	i_mmap_lock_write(mapping);
-> -	if (!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root))
-> +	if (mapping_mapped(mapping))
->  		hugetlb_vmdelete_list(&mapping->i_mmap, pgoff, 0,
->  				      ZAP_FLAG_DROP_MARKER);
->  	i_mmap_unlock_write(mapping);
-> @@ -675,7 +675,7 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
->
->  	/* Unmap users of full pages in the hole. */
->  	if (hole_end > hole_start) {
-> -		if (!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root))
-> +		if (mapping_mapped(mapping))
->  			hugetlb_vmdelete_list(&mapping->i_mmap,
->  					      hole_start >> PAGE_SHIFT,
->  					      hole_end >> PAGE_SHIFT, 0);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 86a973119bd4..5335077765e2 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4386,7 +4386,7 @@ void unmap_mapping_folio(struct folio *folio)
->  	details.zap_flags = ZAP_FLAG_DROP_MARKER;
->
->  	i_mmap_lock_read(mapping);
-> -	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-> +	if (unlikely(mapping_mapped(mapping)))
->  		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
->  					 last_index, &details);
->  	i_mmap_unlock_read(mapping);
-> @@ -4416,7 +4416,7 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
->  		last_index = ULONG_MAX;
->
->  	i_mmap_lock_read(mapping);
-> -	if (unlikely(!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root)))
-> +	if (unlikely(mapping_mapped(mapping)))
->  		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
->  					 last_index, &details);
->  	i_mmap_unlock_read(mapping);
-> --
-> 2.53.0
->
->
+I spoke to David about this and he suggested the following diff which seems to have solved both issues.
+
+David would you like to send a formal patch or patches?
+
+Cheers,
+-- Nico
+
+Diff for (1)
+
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 053842d45cb1..683a77dd679d 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
+        mem_cgroup_uncharge(folio);
+
+        if (folio_test_anon(folio)) {
++               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1);
+                for (i = 0; i < nr; i++)
+                        __ClearPageAnonExclusive(folio_page(folio, i));
+        }
+-- 
+2.54.0
+
+For (2) he suggested
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d9b23909d716..9fd50ea25d2d 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+                /* No turning back from here */
+                newfolio->index = folio->index;
+                newfolio->mapping = folio->mapping;
+-               if (folio_test_anon(folio) && folio_test_large(folio))
++               if (folio_test_anon(folio) && folio_test_large(folio) &&
++                   !folio_test_hugetlb(folio))
+                        mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+                if (folio_test_swapbacked(folio))
+                        __folio_set_swapbacked(newfolio);
+@@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+         */
+        newfolio->index = folio->index;
+        newfolio->mapping = folio->mapping;
+-       if (folio_test_anon(folio) && folio_test_large(folio))
++       if (folio_test_anon(folio) && folio_test_large(folio) &&
++           !folio_test_hugetlb(folio))
+                mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+        folio_ref_add(newfolio, nr); /* add cache reference */
+        if (folio_test_swapbacked(folio))
+-- 
+2.54.0
+
 
