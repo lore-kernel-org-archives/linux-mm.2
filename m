@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5404CD98C5
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEDBCD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:31:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E0ED6B0005; Wed, 10 Jun 2026 20:27:04 -0400 (EDT)
+	id 3C0A16B0005; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 391F46B0088; Wed, 10 Jun 2026 20:27:04 -0400 (EDT)
+	id 371266B0088; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A7EC6B008C; Wed, 10 Jun 2026 20:27:04 -0400 (EDT)
+	id 2873F6B008C; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1496B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:27:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 97990120411
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:27:03 +0000 (UTC)
-X-FDA: 84865741926.07.F0D4C70
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E9D6620003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:27:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2pAqV9z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 17FDE6B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C74A21A041E
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:31:34 +0000 (UTC)
+X-FDA: 84865753308.29.8440A20
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B082D20002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:31:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H9UG4kZE;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781137893;
+	b=m3ABEHGW5JJdO11dqt1RVefxyMDhHtLMzmyE5vcwo+EdMdm3YLQ/FJGEGC1CwqFAC9z3XS
+	oDgxmJU3azO26KdOBs/DnOjqGbefimaT5N4PHBalItmDBKwb5+yUfDc0nS3ssISOUvQmKb
+	p3lW0WBUWn+fSHq/9e36Tmxd03Olzrc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H9UG4kZE;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781137622;
+	s=arc-20220608; t=1781137893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sWl60uBMj2xbDWQfoHVwCjMYGBGOuR1rbjq8PkUIT3g=;
-	b=qgiSwCjeyy8+0EQD9N6Cx61kIdiypAjjY085eiwug53SfBcm4hKIKe38Mojzaw+MCIGeQv
-	zPvfzi1FGJY2St6s9aCDed4w2tMdoMLQ3ukVxDdOy6OwG/J23762xZ/9/tDgwPr3CG3XaX
-	J1RUQ3pFEDUkbFML+WkQliHL1YEShUk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2pAqV9z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781137622;
-	b=zoJH9sWNUuYxoDitOVEBevtDXt1J4qsRht8lvFxAQshyyEEvRyDN3pU+fO3bhflTD58j/5
-	8FzOIVHwt3t9+f+iuf0/dOZ904mMXrjc3pnhDcnG8WtBnCjcajosbrIUAAafXg0zJo7P2o
-	njyQDYgWoYVJbSmyLvhY0hj4bryIMjc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA23741844;
-	Thu, 11 Jun 2026 00:27:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469051F00898;
-	Thu, 11 Jun 2026 00:27:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781137620;
-	bh=sWl60uBMj2xbDWQfoHVwCjMYGBGOuR1rbjq8PkUIT3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P2pAqV9zNsybjktSvwbLvyRzqDcg64Whh6aePSx2mVgbHQscgHImYvCPhQUwvV9L9
-	 jHffcv+bzo2ODhAbTKUXJJemL5ZepdW0ViWlAK2Cw/bazdz4P+GBz/9zWpF67vFr6S
-	 YHjTC6xuz6j474PcFeHwSo9v5ITmlej+z3MYz+KsHBaTfSKp08Sv/jjSQTb7zAYC7p
-	 NSSZNXZMn88nz25aNc454UX8QnvyTF9CS1h3VHdGRCVRw0YjhxRt7DXxGhLxeOdvcD
-	 hgKacUH+e6i1aboK6FOLu4DVGGfaPjAvMeiNmQFpY9Zmy6pQxJgibd0uG4ijlU3HxC
-	 bbZHkWG1e0BMA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zenghui Yu <zenghui.yu@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>
-Subject: Re: [PATCH] mm/shrinker: do not hold RCU lock in shrinker_debugfs_count_show()
-Date: Wed, 10 Jun 2026 17:26:47 -0700
-Message-ID: <20260611002651.69383-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260611002236.69207-1-sj@kernel.org>
-References: 
+	bh=ywJrNS3ktC+YWc1uDS3O/pb8kB6tZ108acphkKPJlRc=;
+	b=mVjtIDVClJ0pCbnGnpxu1f7EXaXy9QgPU0+EzBu5hJ1iRyNC30h3xHRlrg2fUV9EhPrflc
+	rzjRlfj2by05tp3pqGhx01oD+M4bly1vX/F8Kkg0R8XBUR9pyfEY+JhV13OJZp8GMgqrPu
+	rRptVl1XP+ABnagLFh6NlwtZRJ6lG7U=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781137889; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ywJrNS3ktC+YWc1uDS3O/pb8kB6tZ108acphkKPJlRc=;
+	b=H9UG4kZE+RPX3OTs8hE6YYNztd40gJ2PjYmCvQhykbzv5Fqv/oGEKHdaKn2Td5JxrjvxPJSBjMHy7XDST9du8pp/gl/XGrjtznqg4T4b9QxP9AkohEQ9ihsscGkLjffEnZEuxiQZqmZTXe3ZPSvz1UJvxySPml+669TvgBFXFBI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4bpvFL_1781137886;
+Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4bpvFL_1781137886 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 11 Jun 2026 08:31:27 +0800
+Message-ID: <b191a1dd-ae98-4066-8d0a-d0992761db0d@linux.alibaba.com>
+Date: Thu, 11 Jun 2026 08:31:25 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
+ support
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
+ <20260610121331.83926-1-lance.yang@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260610121331.83926-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B082D20002
 X-Rspam-User: 
-X-Stat-Signature: a4d1n5uijz1mjk3krc9z8ddsbbqt1w57
-X-Rspamd-Queue-Id: E9D6620003
-X-HE-Tag: 1781137621-373798
-X-HE-Meta: U2FsdGVkX19mVvexAu4XSV53i0Jd1g3626nhFyL6efSNcT9HudlGF0aCQTNoWBcJK0ytMaQdjE5INXR+Rc3TLysoPAgmjd8HlrYmsIi5WAG5Yjpj0gW7x70+luDMKg5w4dH+OzSoJsu/xOABKEDqjJ4j6giz0hTq73TlgLW/cf5Nb+4P6U1uhQWYO2B2V8kf+OZVI4Wn8l3sIBkEOZIKhE/2KU+0OzbZmrQTJvtFwu6IQFpVq0Hy8w8swtqdrBdFJFTrsEgDQTFxbImdKYbyJJQ8BsHnBPe0JLhSKo3lQ5/2gvax/JR0HZ0/hetatLEufKYsyyDcxi0SydASAX5vZoin6iBvjPBsf7vyXzmrO++uxlX5neu+jE+kn9RIAn6w1Ipfy0lcOgVQaNZFoTX1YecUH4E0Ru3fC+mMyggGbfmgLasPOzuREu7Thst7V8JFBC+/LOCvoCz+SSnOUIzLb3/LShXkBpu8SB+MTb7Mn9DONexx4Rr92D0HVrH9YLkuCJ2T0HzRdpFv2JBCKh2aVHprpjBQcuvKAJXeF1X6idBKdvyTsMMfRY+d90Q7ieqAeaFVNDtmrjl8+iBAv4i5tgm4vetoubQIsCO5HPD4tGn7JSdA9yXdX0Dzd56pjD3OJu91hNgvgGWERQ6V3zN+PU3kSaC03ZqJgef3VWSffyt8VKsS1S51UOxfV8nndzoVySr56zyOvEimdgd6AvmiWMssgLLzRbiII5UAU9WrIQS3GTxVWud1HgMoU4fGcjZOM5Cf3pdm6+cdTVxJ5MI0XcbeKKJ1Te76HrD9qVmarXQlLoxkUKD/lLaM9NPOxqh8tgTaa0KhQNfkT0Se9OD9zghqR/jWlRo3ugBNtC1rlMTtM4STcYKsSEB3JJd4U/iq/RjyPoMiT77PtJbeEQHgWXOVv1TOz6sUmiYrn5/Yi9If84z0+LQfmOMVZrlOB2moyZaWcQiUTQNR7F+x9rn
- N5Rtm6Ce
- YySXDrVdzMULgZ3HLabah10851/o4IuE9hhHlkCKcnuu/P00fdoWBboy0DupB/dnucb1wZOnekVHRX8XkceE+DE3mLOXJ/noebYkSGYjp8S5D/t6EB7js9jzxEEufoF/ley6epB6Ooswng6ZoT841IOtMYPVWb4qxygLyrDUEVJ/Tbyhl12iuopKC8YFFPawy6Q9iJ48cF95+FtvWK7QmzxT+nAY3VBFPfgOgt29SnZgifjOD23I4+s67PS5DDSjL7dGdfo7eTbfYSl8akaSmoOIakC5Z11cqqLLEEgOmCK1bw6wnj5IQoEArTg==
+X-Stat-Signature: igqzgaaz5fhssex1e4brpystxywfj3cc
+X-HE-Tag: 1781137891-569590
+X-HE-Meta: U2FsdGVkX1/LlY8nkZF6Dy0f0VfQF/EoUpu9tc9iaWNqqluep8MTAnJFLkjSr2LvF4rcFkSEP5Z9gOlZzQ7L+qYvsVCGvkd1f7mOsztp41HjkzdfwiVbhgmtxGo3z+IcfUCF2kcaxLiue/99w7UR0oBkgYzhqgHfrIja0OkVSM92U6UZmWEGx4idf4NXqInyKPcyuC7W/sQrbqHC0MAcZeaKhJ0EDPWf22YDiZa3ZPYWijsCyZ3gRqC3t2CwLYcq7ICvSnQLAvFbRBSqFFeHWti3T4CNH/u0JmnFwxNXB7V4Uwu/+Hr0b2tFIOexMM4X0vaf14l4269xPbUa4M7j0mpV4rBsUkktyTr319316lHD92gQ6W8SQZO1bPsNXQ2Y7/yy+RfE/NguAXNtrCeLrPeWSmY4aFbqMijlR1/cFgR2fA6jLqRGWvqMVb3JE07LVV+yxV0JGiR15nAKgM8+5UCeRlQACDpKdnjC/iUoMdr4AzNUUSiqK5pFJeOhjPjX6vx2R/CNVuizBmEZpNhB6aVysk+bjQ9r7YCXE4mk062J/bS7VWT2Rt9SbPSA4c3twYkfsj3E9ra1Am6liUjfqRBAUUyqCp0joi6rJlYNV9ueft0iC9l9VW1EtcagbzYQXCsi8lrP2tsnyC4bT5kqJCfaBqR3/mXrLVykeHbbK/d6lbWlwSe/+GHqQMr7S2XZ6ZkxRJkF1tcWycBIQDI1wvEU0+mCfhfkWJDE2IlMT51MjVlmgpY/Hw2qXm2PUcQsww/5X2Fr4t430rgjSUNO8izXo+slgKpWjVTLyIe1Hbr2Kq1fpUYvmpS5Mq5Homcgq4wyI4FQs+TslKPgV9Cj0x4V9DdgOeCZaCMXQHfq4Nd6hLin9cfdLozIvVVngcC4pouzyM5w/Z9S32iROqT+5cxPnseUX7GXCT7B3nSnGWWpDS//KkSEo3HEosyc+6iwDhXg8zJfjbKP9UnYbew
+ Q17VQo56
+ GeDL3mSw3x4iYLH0x16Bngphx6bsWk9rbrqsiZZh8scJ5MG0Kp+A8zR4u8iqnQrNDwAB/SPfLZyf9rjtA/dq/gV3sisHvwFizbhq2c/8k3t2unWAhvfF0MufxmJ13vqD+3SzLko4F52Wb7Jb+NtYCkzkXAUKJ7uLECCgNoyhuVEIl7ChECOi4HvnX3TvNxbyAess0rSIVB+qkw8y8REJFaWp+4DryJWjt/HhYSQnbDcwUxPzueOvLts9nAfDpLe//zBbTYStZlDoyX2+I/4FBUGWatAW7wVFa9HsVmkmc5qO/+w5QLMyZxTP1/wKST2o63ySG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,55 +91,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Jun 2026 17:22:51 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> On Wed, 10 Jun 2026 16:20:48 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+
+On 6/10/26 8:13 PM, Lance Yang wrote:
 > 
-> > Reading the debugfs "count" file of a memcg-aware shrinker can sleep
-> > inside an RCU read-side critical section:
-> > 
-> >   BUG: sleeping function called from invalid context at kernel/cgroup/rstat.c:421
-> >   RCU nest depth: 1, expected: 0
-> >    css_rstat_flush
-> >    mem_cgroup_flush_stats
-> >    zswap_shrinker_count
-> >    shrinker_debugfs_count_show
-> > 
-> > shrinker_debugfs_count_show() invokes the ->count_objects() callback
-> > under rcu_read_lock(). The zswap callback flushes memcg stats via
-> > css_rstat_flush(), which may sleep, so it must not run under RCU.
-> > 
-> > The RCU lock is not needed here. mem_cgroup_iter() takes RCU internally
-> > and returns a memcg holding a css reference (dropped on the next
-> > iteration or by mem_cgroup_iter_break()), so the memcg stays alive
-> > without it. The shrinker is kept alive by the open debugfs file:
-> > shrinker_free() removes the debugfs entries via
-> > debugfs_remove_recursive(), which waits for in-flight readers to drain,
-> > before call_rcu(..., shrinker_free_rcu_cb). The sibling "scan" handler
-> > already invokes the sleeping ->scan_objects() callback with no RCU
-> > section.
-> > 
-> > Drop the rcu_read_lock()/rcu_read_unlock().
+> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
+> [...]
+>> @@ -2808,7 +2875,7 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
+>> 	mmap_read_unlock(mm);
+>> 	*lock_dropped = true;
+>> retry:
+>> -	result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>> +	result = collapse_scan_file(mm, vma, addr, file, pgoff, cc);
 > 
-> All make sense to me, thank you for the nice description and the fix!
+> Looks unsafe to pass "vma" down here, since we have already dropped
+> mmap_read_unlock(mm) ...
 > 
-> > 
-> > Fixes: 5035ebc644ae ("mm: shrinkers: introduce debugfs interface for memory shrinkers")
+> A racing munmap() could leave it stale before collapse_scan_file() use
+> it, no?
 
-Forgot asking this, sorry.  Are you intentionally not adding Cc: stable@ here?
-I think the user impact is arguably minor enough to not Cc-ing stable@, but
-just thought it would be good to make the intention clear.
-
-> > Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-> > Closes: https://lore.kernel.org/all/c052a064-cddb-494f-a0d8-f8a10b4b1c4d@linux.dev/
-> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+Good catch. Sashiko also complained about this issue. Will fix.
 
