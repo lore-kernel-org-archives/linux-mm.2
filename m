@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD24FCD8CB9
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 779BECD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:17:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C11286B0093; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
+	id 5D38F6B0005; Thu, 11 Jun 2026 03:17:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC2106B0095; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
+	id 584286B0088; Thu, 11 Jun 2026 03:17:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD8256B0096; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
+	id 49A086B008C; Thu, 11 Jun 2026 03:17:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 99C0A6B0093
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:49:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CF03C1DA4
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:49:38 +0000 (UTC)
-X-FDA: 84866706036.26.16D9BE8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7BCB440006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:49:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6SKi/fi";
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 38CC86B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:17:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC4A51C3237
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:17:49 +0000 (UTC)
+X-FDA: 84866777058.29.10067BE
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DEBB1100009
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:17:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=sy5dx0+f;
+	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781160576;
+	s=arc-20220608; t=1781162268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lC8ycInTVWa80ivQlmiFJsfkdHS3LZShZCSRnJHPAlA=;
-	b=eyeW7d0HlsgDGi04ZjeY4cvmSSA3u2jC39SC1LcBahPwDh+wZ0907apCTuNpMQJJTQNRck
-	O//+Kv6Jdo7Itfu24vpYljiujCP34Z3E2sqBElxZpU+26gzae3fsQq71kR8faQz4IvdwsT
-	DDxTY6ZgMtyEmrGQkDvYKQUtWMpc5RA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6SKi/fi";
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SQhvUZ/DbKf6/FrlFmNBUBTYC4OnQ9SUq8CAmtvtmpA=;
+	b=Wcj64pKh1HxUcGLkk3VQ45Vjv1gtLxUoumJW9jowyWnDxEZgqrNSupaUGa9i/paS6tIZ6D
+	zgtkNBQwdxNwdV/TTEjuPmjcAPaS0N3LkdB8v32kbh8eJLG2z1q6aR/5sQYLBLQBLY1+Jr
+	TUM/Hk9eoiOT+DE3XSOVVA1LTcdhs08=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781160576;
-	b=UVfAAAQkFpGrfesWc0Q2ZcDRAiKStZ7KakoV8QCs9h5WMuvq41pmoaVZEbncqDl0EoW5TK
-	8NFg7gHwHm+u7tqxcskA/HUBlP0HW5eNNOrwTMQf6qEBhRm5yTBE6htC5L55eAJToAq/WH
-	r7mqugYRSHjMGI7mRAhVw8j9k2NgEUY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA789600AA;
-	Thu, 11 Jun 2026 06:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA841F00893;
-	Thu, 11 Jun 2026 06:49:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781160575;
-	bh=lC8ycInTVWa80ivQlmiFJsfkdHS3LZShZCSRnJHPAlA=;
+	t=1781162268;
+	b=kwIygnQW5StAcUqV/Kj8Jf88UiNLSqQl9weKdWNphmrzKQANcA8aSJSjaH2RA0UoJkUSyE
+	qfkymcJuPb6cFFD7jBPyx/i4V5CIXAfVt9CGqljJW36SkKguQJOZ35ExWja/0XDUtyIkRU
+	Xe8x735IY7fMpUscrrPBacTMVoZuCG4=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=sy5dx0+f;
+	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id B2D35D1438;
+	Thu, 11 Jun 2026 07:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1781162265;
+	bh=SQhvUZ/DbKf6/FrlFmNBUBTYC4OnQ9SUq8CAmtvtmpA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z6SKi/fiaA2C2wYajoTbWuUo44PjNAOAJTiPHw824PI9E6pXkIHtOqCt7sirQQmdh
-	 6n2RHUP8v0VHzxMFhjmcUXxCXeLWeg3HED/QenMFuJBVdQUZEmSXodSDhbXbjJxaA9
-	 Oz3cxcXVtSYJD5EIR1nsweD9YH1JlSEorvZD0QiXHnUcKyDTiTrvx7r9P8CL1n/d9z
-	 MSWLmlCyFlV1zXBx07Rf1aI652Yke4Gu3EhZ78CfM9cotPK/qjynEoF2P+k3bULQTF
-	 7gqOsaS30CxIboAq+j7qM8/f+sqKLryS1gk8iaSLLOGohIllpuC+sVZo/9nvdTSKEj
-	 xOhsMuJp8cUQA==
-Date: Thu, 11 Jun 2026 09:49:22 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: dave.hansen@intel.com, xueyuan.chen21@gmail.com,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	hpa@zytor.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	yang@os.amperecomputing.com, jannh@google.com
-Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero
- folio read-only
-Message-ID: <aipacpSZrO1DKooO@kernel.org>
-References: <930d9121-9176-4a7b-a2d7-8224f94000d3@intel.com>
- <20260610032022.23361-1-lance.yang@linux.dev>
+	b=sy5dx0+foJ2ScZ4tBYFnB4DhLS92V5pg+v0SGYTkem1nbyFd6xfJTyFf9OYEhfLwJ
+	 ZaAc/VbC7/EOornnQ7Y6s4ARfBsV0d9MxWFS+NCaBc1HINhdYGNHKpn29lf2DyNF1K
+	 8iW896swJPRi2QnuCHQ4br1eZusJ65henUh4DGAA=
+Date: Thu, 11 Jun 2026 07:17:41 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <aiphFXe_TPNPxZ_n@shell.ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+ <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+ <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+ <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
+ <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260610032022.23361-1-lance.yang@linux.dev>
-X-Rspamd-Queue-Id: 7BCB440006
-X-Stat-Signature: cf53fmzmt3nw1mazqixr6kksf8bsnc61
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
+X-Rspamd-Queue-Id: DEBB1100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781160576-271062
-X-HE-Meta: U2FsdGVkX19BKSdFHPnVHOr8Xm3AxlOIKIushlpD41jy2Fh6njKwT2HMw7e8hcP6pKeO7bjGiEuj93v3JnChUtl2qzoG93uUHjVDJdlrNxxFgNMmeuD7hPYHJw0z41rqTk4qGUyMajW9G0BzRC3VmlPrWIdYo7u6mNY/ZxaO0DB2d4EIV5kqal5BS09OvvadmTXCQWTqf+s7gbIQct97Z7AQws9rDHdpBknb++f+zrMZirAJ0QTXAqZjdBZS0TZ/yNvm+HjHtB/Lvrk4cx5mXYNhmJOSgcfIiBYtg3zhcoCa2EZ4Un2zKAE4aqJRSAu8mybNh0nRyJx5a2hWrQAhJrZDiTaSMMObtXTHX094p0/DCAiXFdSh1yl9AWFMltO5VRH5zFBl+UMqkRwoaPiQCLsdTMCYxnpoe6WgO7F+/h5uiP4SKtm27vbV5k51esk3YlXfL+lLcCvgObTPhTJgbfumAiCzwGlH5A4P3zcTn856FghaAW7rgeQ27Cw7OpIhSJ1pdP7hpLsfRSgypYItLlmnUTg8SRhm1rpSALlmkDjFdo+khNjZaYvc62NokXL4s/zI+HpUbkLK5hoNw/vATevrCNHNx2MSjhKZ8vRI5xU991Jszoi2bKCkFf0KUAph7L2oSJZ0cQ/WaWiw5tnYskiB9yuvkmGzeM6OERrxS6ikWSr9rTlj/IzmuqWZAhxu4R+jiuWXIqXc8SyvHfhBNBJjNLBsmY2BdRRa3jtOrtTWSux4CwGcrj2aLmJ5hR23hA7XNiSjnzZaKKjhR31f8OXz3XqedVZwps7AA6bLg5wB5YQj/uT+5wqKbhHQFpfEamfhRYOHqFfWnByWAiGd1gIbV6MK2wa6cjF46ieO2eyg4ZdsmiFLHFra/XvfqDHLYvdXDgEH3aoytqYGEHyzFT79f1URNefxD76/38dm23QXN6EqfBbirO1VMxr8DUm1sTVBRT4N5QIdrV5WglL
- t+Vbp18O
- Cm7NQQZnmTV5Y3hYLOI1RuIMetefccEdl+YZvRv4xGd+DNtLxrBQilYAuzQ4k28K+6V0dMI598Cd/Mnl0awm2LYPOS8jbj5UjwdcQ0yOJiSi0KWUUnZ6saDQ54uSDJosqlrVkzz72ZEcTEhWTWGH48KMEcqDixltsKXjpX/41FxcygAnFoHeUong6TTHJNIT9ldzMGrPSSIO3VNybGZISTug22BXgVWqhE9liFzi4ZEx/MnUBp9N6D6ul6/0BnGEQZGP77x3qAYwgtGW1+lrE2Yvkmji6wIDAcfpnEjO6XdOmCN1dg4CAjMAWx2vxIWpXdVSoEAIO0J72gvk9PSIcaFrQ7QFQf3gd2vitzN9nndTgyF++ldA+DsLHk2Aufbd38u3X
+X-Stat-Signature: cq4w5wdkztfgrecaex8dh1d3gmpu6r8r
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781162267-982167
+X-HE-Meta: U2FsdGVkX18IUahntZxHb76q3JoDa7bhkTM34mxYdVhJDsKo7S6xiyC1oSPd9PAFOo/E5NB5Tqc5E8/kIczu+3T8vQ1GYLRCXWEnYTvMbr+ZKQwda95rNyI1XR98xsdPxaGdOT8iChq5SXIdSOOLd1v6ZlDaehlQSBJng87sh2RNQRhjq/GEtejREQ6u9+gsgbeOXokTDTyaaWcXS6RhUvFPpPWblyKbp+59bwrE7GwJWfQujPO0adYkUtGFd2MHJ2D0I8OnWgC3t7cI9igEFH9z4qx++TgSilMHjtmZ5/n72wML3MsvjmZu+Bp1vX7xU7Bp4lcyp6Rs8HDsVBCE2ltCIT2IFUnjAoIKyoqVWjUwGAOvUQdVxqp9qYqMdorp3eJ1U2PM4OT9ihYG8IMxJMK5lEHGhZsarYCbaHOryr8RdPNRmm2iEM77abc0k1eTb97AR0mqV8TnmNaqvzy8wL+TDQ8p86taPNKcWCggq5nwPtPlbFwMrH8UhCFRKzY0XT6F6+esIpWLh7V1kqW0sPoXnvrz26Y8iGpynOPGQR6LRK1V6VdX1A/50Mmy94eBAGpXowitsM+9murh7Wfz+NeVnWX29HnpfcVlVWE/YVzjxPtz0nKEXuPY0MNb4veDLqmn8CvoHJWI4QG/DRmHwhK3LYmAKc94WuD1XcbesWju183Ve7QrtiM1r1sx5wzxmiWY4TsW4lcvr6RQ5iAuza/GbhQdsNC0hs/c4HzoPZ/icgTr2f9OTnkQMCEM+PZiSn2D18wll33mScP6rdBhDsoGArECwVQ3EGqk2tE6Qyj4x4gxzgPKBckpH6RDnP2G8nysXGBRBzwJcQeY4A78XqzBwwM1DuRrNoXDiLCbog2njiOO0nqbxbvpg3fs1PDGCP0ymuS+sthJUiksJBXQECSX1wNMlUyZEXfIRcCk/fu0sss0wuOM+gSqz+plpX02Q3QS/GYSRcTCoYo0M2u
+ JZ4H2u19
+ t0ZHcbTQGSBMsZMu9IeyiUKeYYXhVW13I/ecGpJQXixj4ztgWEXPPrGiv8TcwlmPL1IupnZeFbiVRReTzSsKJEKfz6Ajs1WXTJ/8KlZfPouOYPEVlIr4G+lBg99ibKRJYKliSn/E3GfDhq3K1kkSp4L9IrOOM9NWP3e7pGoVoHN0Lr/4oQY4qdmrM06PXbVDFzivD6uELCAktqa8gqryBP88LwXp7DDNBf2Q7m718DkliGzyX7t4m7pKjTi5qmZkF1eVEYF5E9EgyoPKij/9xQC8a/gNKo1J+wp7jfUthXw5/6xIJVSi8yEB3/Bk5ne4TNSuYVxWPdjDGxBmBJRdHHNcn4hCkGGAL0FTtUe/Mt23mebnfup3pmenCrhqiNFCTXfU39zzF3VS0+b6j17FqiioNxe8qbbfxoMy3ykLHWONRiE3IaEl6U33yO+dPIwNrq7tqmKQpilj/rJMMzukUNV/1RkMo11xrWiTml3H6why8/LWo+KZkZ/PKeCXWLTyOUzi8DmEAubp/dWbwjNcDwcW4Uw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,89 +110,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Jun 03, 2026 at 02:08:11PM +0200, Peter Zijlstra wrote:
+> Also, I think someone should go do some performance runs with
+> ARCH_INLINE_SPIN_* set for x86 just like for s390.
 
-On Wed, Jun 10, 2026 at 11:20:22AM +0800, Lance Yang wrote:
-> Hi Dave,
-> 
-> Thanks for taking the time to review.
-> 
-> On Tue, Jun 09, 2026 at 12:33:36PM -0700, Dave Hansen wrote:
-> >On 6/9/26 07:37, Xueyuan Chen wrote:
-> >> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
-> >> +{
-> >> +	return false;
-> >> +}
-> >
-> >This is a rather wonky function. It's going to cause all kinds of fun if
-> >it is used like this:
-> >
-> >	arch_make_pages_readonly(syscall_table, 1);
-> 
-> Ouch, yeah, it is ...
+As promised, I set ARCH_INLINE_SPIN_UNLOCK{,_BH,_IRQ,_IRQRESTORE} for
+x86 and measured the effect on a few real workloads.
 
-We already have set_direct_map* APIs, why don't you add a new one there?
-set_direct_map_ro() for example.
- 
-> >It's also kinda weird to have it return a bool, and not check that bool
-> >at the single call site. Some things come to mind:
-> >
-> >1. This function needs commenting. It needs to say what it does, when
-> >   architectures should override it and what their implementations
-> >   should look like. It needs to be clear that this can't be used for
-> >   anything really important. What should architectures do with alias
-> >   mappings? Are they allowed to touch non-direct map aliases? Are they
-> >   required to?
-> 
-> Agreed. Needs a real comment ...
-> 
-> Just meant as a best-effort direct/linear-map permission chang, nothing
-> stronger than that. I should spell out what happens, or does not happen,
-> to non-direct-map aliases, if anything, and make clear callers cannot
-> treat this as a hard guarantee :D
+Short version: inlining of _raw_spin_unlock() adds measurable kernel
+i-cache pressure on every workload I tried, and on a
+kernel-i-cache-bound one (nginx connection churn) it costs ~1.27%
+throughput. I did not find a workload where it helps.
 
-It's not only about highmem, anything that changes the direct map might
-fail to allocate memory when splitting larger mappings.
- 
-> >2. The return type needs to be reconsidered. Is 'bool' even acceptable?
-> >   Should it just be 'void' if callers can't do anything when it fails?
-> 
-> Maybe ignoring it is OK now, but someone may need the return value later?
-> 
-> >3. What should the naming be? "readonly" vs "ro". Should it have a
-> >   "maybe" since it's kinda optional?
-> 
-> Fair point. "make" may be overstating it a bit ...
-> 
-> With a return value, arch_try_make_pages_readonly() sounds about right
-> to me. If we end up with void and pure best-effort semantics, maybe
-> arch_maybe_make_pages_readonly() fits better :)
+HOW BENCHMARKS WERE CHOSEN
 
-Realistically, I wouldn't expect 32-bit configs to enable
-PERSISTENT_HUGE_ZERO_FOLIO or even THP, so naming this function to reflect
-32-bit behaviour seems odd going forward.
- 
-> >4. Should this new API be folio or page-based in the first place?
-> 
-> For page vs folio, I was mostly following David's RFC v1 suggestion.
-> 
-> Current caller is a folio, sure, but the page-range helper leaves room
-> for non-folio users later. Happy to add a simple folio wrapper if that
-> reads better ;)
-> 
-> >5. Is mm/huge_memory.c the right place to define a generic mm function,
-> >   even a stub?
-> 
-> Ah, you're right! My bad, wrong place for a generic stub. Will move it
-> out for RFC v3.
+The cost of inlining unlock is text footprint increase. Every unlock
+site grows, and the extra bytes compete for the shared L1i. The bill is
+paid by unrelated code, in both kernel and userspace.
 
-We have include/linux/set_memory.h for such function declarations and their
-stubs.
- 
-> Thanks, Lance
-> 
+Locktorture and similar microbenchmarks can't see this, because they
+usually hammer a tiny loop that stays L1i-resident, so they measure
+fast-path cycles, where inlining (fewer instructions per unlock) looks
+neutral-to-good.
 
+To make the cost visible, the workload has to have real instruction
+cache pressure. To achieve that, it has to touch a lot of code.
+
+A good way to screen benchmarks: look for high tma_frontend_bound
+fraction from 'perf stat -M TopdownL1' and simultaneously require it to
+spend non-trivial time in the kernel (be syscall-heavy).
+
+SETUP
+
+Hardware: 2x Intel Xeon Gold 6138 (Skylake-SP), 20 cores/socket, 40C/80T
+with kernel built from locking/core branch. Baseline _raw_spin_unlock()
+is out-of-line via UNINLINE_SPIN_UNLOCK=y. Experiment adds the four
+selects above (exact patch is at the end of this message). Cache
+geometry (lscpu -C):
+
+NAME ONE-SIZE ALL-SIZE WAYS TYPE        LEVEL  SETS PHY-LINE COHERENCY-SIZE
+L1d       32K     1.3M    8 Data            1    64        1             64
+L1i       32K     1.3M    8 Instruction     1    64        1             64
+L2         1M      40M   16 Unified         2  1024        1             64
+L3      27.5M      55M   11 Unified         3 40960        1             64
+
+Per run I collected cycles, instructions and L1i-misses. To stay within
+the available PMU counters, each run used only 3 events: cycles,
+instructions and one L1i filter (:u or :k). The NMI watchdog was off and
+every run reported 100% counter enablement (no multiplexing). Userspace
+and kernel misses therefore come from separate runs. Each benchmark was
+run 20x per side: 10 with the :u counter, 10 with :k.  Cycles,
+instructions and throughput are pooled across all 20, each L1i split
+comes from its 10.
+
+KERNEL IMAGE SIZE
+
+To give a sense of the code-footprint increase, scripts/bloat-o-meter on
+vmlinux, GCC 11, x86_64, defconfig + CONFIG_PARAVIRT_SPINLOCKS=y:
+
+    Total: Before=23838694, After=23977159, chg +0.58%
+
+ROCKSDB (DELETESEQ)
+
+    db_bench -benchmarks=deleteseq
+
+Metric                       Baseline      Experiment     Delta   Sig
+----------------------------------------------------------------------
+Instructions (total)    9,574,476,543   9,573,602,441    -0.01%   flat
+L1i-miss :k (kernel)      198,588,165     216,672,536    +9.11%   **
+L1i-miss :u (userspace)   593,276,235     616,433,813    +3.90%   **
+Throughput ops/s            431,398         432,897      +0.35%   ns
+Cycles (total)          4,681,002,302   4,665,106,876    -0.34%   ns
+IPC                          2.045           2.052       +0.33%   ns
+Time elapsed (s)            2.4012          2.3865       -0.62%   ns
+----------------------------------------------------------------------
+L1i-miss: higher = worse. Throughput: higher = better.
+** = beyond per-run noise (+-0.1..0.36%), ns = within noise.
+
+At constant instructions, inlining raises L1i misses +9.11% (kernel) and
++3.90% (userspace), both well beyond noise. Throughput, cycles, IPC and
+wall-time all stay within run-to-run noise. So the i-cache cost is real,
+but at IPC ~2 db_bench isn't fetch-bound at the app level, so it doesn't
+surface.
+
+No benefit from _raw_spin_unlock() inlining.
+
+KERNEL BUILD
+
+Building locking/core (defconfig), GCC 11.
+
+    make -j80
+
+Metric              Baseline      Experiment     Delta   Sig
+-------------------------------------------------------------
+L1i-miss :k          36.72G        37.51G       +2.16%   **
+L1i-miss :u         246.99G       246.06G       -0.38%   **
+Sys (s)             478.250       482.420       +0.87%   **
+Time elapsed (s)    105.221       105.373       +0.14%   ns
+User (s)           4022.046      4024.012       +0.05%   flat
+Cycles            8,894.10G     8,902.12G       +0.09%   flat
+Instructions      8,424.28G     8,426.48G       +0.03%   flat
+IPC                   0.947         0.947       -0.06%   flat
+-------------------------------------------------------------
+L1i-miss/Sys: higher = worse.
+** = beyond per-run noise, ns = within noise.
+
+Kernel i-cache misses (+2.16%) and sys time (+0.87%) both rise and are
+significant. Wall-time and userspace L1i are flat. Kernel build is
+GCC/userspace-bound (User 4022s vs Sys 478s), so the added kernel fetch
+cost is real but appears to sit off the critical path.
+
+No benefit from _raw_spin_unlock() inlining.
+
+NGINX
+
+I ran nginx with taskset -c 2.
+
+    perf stat -C 2 ... -- ab -n 100000 -c 80 http://127.0.0.1:8080/
+
+Config for nginx was the following.
+
+  worker_processes 1;
+  error_log /tmp/ngx/error.log;
+  pid       /tmp/ngx/nginx.pid;
+  events { worker_connections 16384; }
+  http {
+      access_log off;
+      server { listen 8080 reuseport; location / { return 200 "ok\n"; } }
+  }
+
+
+I used nginx version 1.20.1 (prebuilt, from CentOS repo).
+
+Metric              Baseline      Experiment     Delta   Sig
+------------------------------------------------------------
+req/s (ab)           25,113        24,795       -1.27%   **
+L1i MPKI :k          70.06         72.10        +2.92%   **
+L1i MPKI :u          20.16         20.66        +2.50%   **
+instructions          5.86G         5.83G       -0.50%   **
+L1i-miss :k           0.41G         0.42G       +2.44%   **
+L1i-miss :u           0.12G         0.12G       +1.95%   **
+cycles                4.82G         4.81G       -0.28%   ns
+IPC                   1.215         1.213       -0.22%   ns
+perf time (s)         4.077         4.129       +1.26%   **
+failed reqs              0             0          -      valid
+------------------------------------------------------------
+req/s: higher=better. MPKI: higher=worse.
+** = beyond per-run noise, ns = within noise.
+
+nginx connection-churn is the one workload that is genuinely
+kernel-fetch-bound: MPKI:k ~70 and IPC ~1.2 (vs db_bench's 2.05). Here
+the cost surfaces: req/s −1.27%. Misses rise in both domains (+2.9%
+MPKI:k, +2.5% MPKI:u). Unlike kernel build, userspace is hit too,
+because nginx runs user and kernel hot on the same core and the kernel
+bloat pollutes the shared L1i.
+
+And the kicker: instructions fell 0.5% (inlining removed the call/ret)
+yet throughput dropped.
+
+Caveat: ab is single-threaded, so it seems the worker core is
+under-saturated: cycles is flat (−0.28%, ns) while wall-time rose
+(+1.26%).
+
+Measurable throughput regression from _raw_spin_unlock() inlining.
+
+CONCLUSION
+
+Inlining _raw_spin_unlock() raises kernel L1i misses on every workload.
+It's an unconditional cost. Whether it costs the application throughput
+depends on how kernel-fetch-bound the workload is.
+  
+The cost is real everywhere. It only surfaces as throughput regression
+where the kernel is on the fetch critical path. And inlining did not
+help in any workload I measured. The one micro-effect inlining produced
+(-0.5% instructions on nginx) was erased by the added i-cache pressure.
+
+
+From 99502328caed3c195e20cf194a1e8aa1563f3896 Mon Sep 17 00:00:00 2001
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+Date: Thu, 4 Jun 2026 07:43:00 -0700
+Subject: [PATCH] x86/locking: Inline the spin_unlock()
+
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ arch/x86/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index fdaef60b46d6..c9a0638225fd 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -113,6 +113,10 @@ config X86
+ 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_HAVE_EXTRA_ELF_NOTES
++	select ARCH_INLINE_SPIN_UNLOCK
++	select ARCH_INLINE_SPIN_UNLOCK_BH
++	select ARCH_INLINE_SPIN_UNLOCK_IRQ
++	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE
+ 	select ARCH_MEMORY_ORDER_TSO
+ 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+ 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
 -- 
-Sincerely yours,
-Mike.
+2.53.0-Meta
+
 
