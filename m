@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07ECCCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2532CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:32:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E9316B009D; Thu, 11 Jun 2026 09:22:49 -0400 (EDT)
+	id 03C946B0005; Thu, 11 Jun 2026 09:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1156B009E; Thu, 11 Jun 2026 09:22:49 -0400 (EDT)
+	id 014036B0088; Thu, 11 Jun 2026 09:32:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FEDB6B009F; Thu, 11 Jun 2026 09:22:49 -0400 (EDT)
+	id E6C236B008C; Thu, 11 Jun 2026 09:32:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 310CD6B009D
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:22:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D1A636B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:32:18 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E29431C35EE
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:22:48 +0000 (UTC)
-X-FDA: 84867696816.25.89900C6
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 69C6A140007
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:22:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf26.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781184166;
-	b=0F52yseR2pWR1gpIo7+OJxGDiLd8WfUNKhKfp1AJQBRpiiHdeKyBnVrFGH9TuZJCLcvCoU
-	wjCnh3ix9URpjrxFy6nuLc4Qp42IqCF9YbY+ZoxgoXNLidHBotdNtKUbeJWmFgVhDigVjs
-	dxYnLQx/iLxlAQ4mMCPFZIkQWb/3Dek=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf26.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77C051A064C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:32:18 +0000 (UTC)
+X-FDA: 84867720756.25.9EBB958
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8012E40014
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:32:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i5si0gMg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781184166;
+	s=arc-20220608; t=1781184736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KmY6JJ9shmdNsxLIXtxp1sgq1LMJvFzLbcrV86myDn4=;
-	b=B72LGIi9dr/G2pgm8v29Ze3Xdrik311dhj0wLlX2hztp2cjWI6vTUy+/bGyLzXIcsyjt06
-	k5BHI0zuKbrSIc8iotUZA3ifyVfnN8Yjjs8ZxVPdrXOrXuQwzVRaYmH4mooKy8idGe/n/j
-	tKFSWyrcJT5Zj5QF4vacAa2t4f0XFSs=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gbjxS1wR1z4x69t;
-	Thu, 11 Jun 2026 21:22:36 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 65BDMWrc002095;
-	Thu, 11 Jun 2026 21:22:32 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 11 Jun 2026 21:22:35 +0800 (CST)
-X-Zmail-TransId: 2afc6a2ab69b5c4-823ad
-X-Mailer: Zmail v1.0
-Message-ID: <202606112122356956c-u4WhFlRWs4-OJ4TAsu@zte.com.cn>
-In-Reply-To: <20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn>
-References: 20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn
-Date: Thu, 11 Jun 2026 21:22:35 +0800 (CST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OuV61uJXJ0l52LWb45Ax18tS2nrRIOXXxla2pXzq8v4=;
+	b=Mgfbm1BUM+GTITSwrDN9ZMaG36OsuRfZ56mLH55QLjfmhzvhMAfPR6zkOW0PotJxFe6On4
+	tAjZF3exw1//NaDRdEYQCMMI0APLfYokwuxaIoD1SDPBy9rq5GBbNhv+7xvYJ9H2ikODc1
+	R6UDT5VT2lqcEjcx99TXB33x27/s3Yw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=i5si0gMg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781184736;
+	b=hz3aTDCsEm1gwVAiOxx67keKxjjSRAcPQ4lJOyZ5mY8oRHMxlXoCV8TGwNeMs9vcB6L2z+
+	uHTRnlFOImH+pjhkX6U6294l6sW5MCkPGKnOdIqWdg+4PTOzwFVNOQTtKRuox5WVgLTtA4
+	ocJEjrCHasEGwg526BbKJzLmuslEY0I=
 Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>
-Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
-        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
-        <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHY5IDMvM10ga3NtOiBhZGQgbXJlbWFwIHNlbGZ0ZXN0cyBmb3Iga3NtX3JtYXBfd2Fsaw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 65BDMWrc002095
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Thu, 11 Jun 2026 21:22:36 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A2AB69C.000/4gbjxS1wR1z4x69t
-X-Rspamd-Queue-Id: 69C6A140007
-X-Stat-Signature: 6otut3u8bprbqtg3hyox5g4e7j1xga7u
-X-Rspamd-Server: rspam03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781184734;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OuV61uJXJ0l52LWb45Ax18tS2nrRIOXXxla2pXzq8v4=;
+	b=i5si0gMgCTHy3hfsP5aiUh4vUDvjaZoA/rcYZvHfTKESJKjMj788WnYkJGHQ9UNUmbBstK
+	6kekJ9p9edxr+gmaynixI62jL+4AeN8b+UsnRur9f2utRd+BuKcwVRW00iKqyEtSZN7Ac5
+	LqoU+FUtYHxtPOI9alvyzZnY20odt+c=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Jun 2026 13:32:04 +0000
+Message-Id: <DJ69AE1CHPJC.3H4BPJUL9YYOV@linux.dev>
+Cc: "Brendan Jackman" <jackmanb@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] mm: remove NODE_RECLAIM_xxx macros
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Petr Tesarik" <ptesarik@suse.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ <linux-mm@kvack.org>
+References: <20260611124501.1465806-1-ptesarik@suse.com>
+In-Reply-To: <20260611124501.1465806-1-ptesarik@suse.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1781184165-86811
-X-HE-Meta: U2FsdGVkX18viig3qJ/9EP65zAiaeVi3XBsqepTdO0LGYmRfGPGJ+S1GSCLJzPyixoPaBmDuS62gILICgziV2o7IB8siuMUovGcmQWG2hIbaV2nyfuMjA6VqqwWR8kuWGPADJP3EIw+TqwlcgmdWMZxQ095zVvm7vuEZb2ufjGX1Z+oTHCHyxDbmxpw2TLiupo31R/SITIHnwxMOUAZLYrQFNn3KcHBVYMwyl2GUmK1XOpyLCDnqeOugme1A5xVcRn4nGasluucqajvqQpmW0eAXRGBK4hhRT4iXCUxTL3oCScR+4jHh5nDW0bj3MOJQph/3QdWIC1onjbbRUfGssx9RnQwKXhPTKI3StnUruIBAp/ADFkm3yS5ejH8lBLd8bIIbDqP3YaOtS8FIDWhfd1BZzmiuiewViqRlQsYDDdnKkQPMuQHj0vuqRocKvUiDBxJKLiZ/49J+1CsUbDRxAarboSTf6ugsdC/RZm6fB/foz9GaOe8YPsbsCVrceHuqD9hq5n/o26m97vnadg7raNA36OfidWz3ZGzjAIH7lF2JnODGIT5O1Rs10twZfenEqmaYnBhYe3IuZ2BCxqoU/FqzRv+zAOc8LaQOTtBzKIOFE1V0WmXiNONny7ez1vBDj5NLWmQ9UQ+rf6Zo2ZZ68NUoNTxw2fvRCZtgfibzoaJrY9WhF3CestpsCXBwNDnWTW7JMTRoKyvD1joPTHmx77AKcKDiA1eVzBHczi6RZOwj6BI5ovpq+BqfoIxm7usPPQ5Y4ZFg2+E+JBouTySz1zDXM7sf98HDEwd+WNH4cqy64yFXOwAVa+GDlCYXa19br6lsLBO692SlUEHI8VwgCkbrhA79XunrYmNBhB+6ALvUX3Q7+/U/XFdB5dgV9RR8W0Ff2cdpRvKY7epTLFj8NCLEd0FzChvj2DCLLzBhwqKBuAGJSWMsO8iDABVtqb/HqbKcUZFLqwjmJg8OwwD
- JxlEFETd
- xbl1rZRrVaC7pXGYTkII4YIijfiZjbRkUaUkql4XvWhkuljDkzn6PzhvG8FyhImiWPj87Kj6bZ8PL+RRjR7e6HdPss0cpLRfZV1fFAoWi0qJ1l/NZNnMIQ7S0ZM4KFLa+wnfuMiHJx7pI2cOkmzaZz/zWEbTodmYxnH6k4QI315XptaYTzqkh/uTvKI/bCGSuKrCCqDyeHeB1DgSzPF5MLitjKg9aaGHxmrwJ1cLkC8+ShsPmNG3kP0gWY6FXRl1I2dsK1zLLraDUyJPWZ9u1aORQZgZnWx9cwQzhhylEFaFdjDPXOKlxkgHDKA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8012E40014
+X-Stat-Signature: ygfiimdikefs33nu7b4w6b94jzxsq9ej
+X-HE-Tag: 1781184736-58104
+X-HE-Meta: U2FsdGVkX1+aJgzgSrFh8zg8BaIekOrAaki6KJlLcC05ykYeIjlWbjMfwf5cAXUpK7Pcq8dGEh0s+FWNzvaJp9++toy2IphAF4np5DhLVR2RqdIDPthEZk8T/E6wc+EKOHnOrdcvXq9HTk1YVRZY27X1kGx8UjLIKsQL/XjBvvfArKGS521vEfIM7kurtDr59l5Knd+7ha6JA0i1po3k+B/9sZ44L8v/IhO2D+IdGjkyIhsA+jFIDqpRUtAUphSa5OO2uCa9l/tGES/TCbThh/qbhWgr1X3P/14rCGREbk8OQev8JpWgktpvsRCbqwuuG5ltNgz+zFnX2uN8toIr7QGM1Qi53Z6IzdjJx4adHF8YmRHEJwXq5G1lHquJUvTCwR9dTiXPTO4e9xelZqCm4SLYw8vX/MB4NdcLT8SUMoLIbHvqlA3/82x0Q4JfBHa1Hq9O76kSFkUS14nRdCHWt0tXbBEL2njG3fVHX4QnBFkl8zgjsEQC6gsreCwYGHbThEsKXRly3p+zL/F30P39WP7u/a+Tjl/t1cAbM9Urjrd6keAUSh8BN8ePjr6LgA/um0aNBV2azwr/9jDBVaR4S/hK2u3JoThoqWtY1+mMumMBNEXgGb9IAoUL7CuNb4tDbKKuP3mIdKO8jVMGy+RRkkwN5YIsRMDDJHjUqbJQQeZ3heij0wfL1OwLVWtGg9JQJUGwhLkjERlx3wt2S0Nzop5pCWzHa2LreJ5n3I0AsHD+rUA+8zzxn6lk8oR45x9Ck9qyoG3RglONtDYJ5yA3YhNurUbnXyUn7/GGBv6Ku6+o+6u7VI97XcEwEOizCkMEn05CGMOWEieQftaXDN0i/hufEBh2J9nsZJjtrN4WxEeeB9qF/S9HNhShuOz/JkenpuPv2qGajjehTNz/bKl/Z83ttmccrBAT0nWchBXRxjp5ggr/fUqXOvpJMT+aeb7ABVRuRTE5IDKSgSvIeUV
+ eNyNky/I
+ 5B0nCGvLcGLXGnWYN33jj2a/tR+2A2sxDafoAVbGcjpm29WZUdyDVQGkEE67Us/HgL+xJOQkQB4PnApJehczuOtGUBU+JH0quMarnDamXUVfOZwS/hJkEfteyiA5eM5glMD5mM7jzf2QEyE/g2OC/QP+Nf1Dju6sUmymFQgjn+SR5HXBiD+JcTfU3i7gUM2VyEuDBUvem5ROkRfL4I3xOMg8FJsJs3ken2Bxiri6yMJuuzJt1qq4fKYEfmdTHTKP+u5eHXInw9qV5AwxL/I34rXywirhM6ZzjGXDH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,125 +94,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Thu Jun 11, 2026 at 12:45 PM UTC, Petr Tesarik wrote:
+> Change node_reclaim() to return a bool indicating whether any
+> pages have been reclaimed, because that's the only information
+> needed by the only caller, get_page_from_freelist().
+>
+> Originally, I wanted to convert the preprocessor macros to an
+> enum, but I couldn't find any explicit use of NODE_RECLAIM_SOME
+> and NODE_RECLAIM_SUCCESS. That's because they are typecast from
+> a bool.=20
 
-The existing tools/testing/selftests/mm/rmap.c has already one testcase
-for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
-of page from one NUMA node to another NUMA node. However, it just lacks
-the scenario of mremapped VMAs.
+I'm slightly confused by the "typecast from a bool" thing - nr_reclaim
+returns nr_reclaimed and then node_reclaim()'s caller gets that value
+directly - is that what you're referring to?
 
-We add the calling of mremap() and then trigger KSM to merge pages before
-migrating, which is specifically to test an optimization which is
-introduced by this patch ("ksm: Optimize rmap_walk_ksm by passing a
-suitable address pgoff").
+> This seemed a bit fragile,=20
 
-This test can reproduce the issue that Hugh points out at
-https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+.. Which, yeah, is awkward, thanks for fixing it.
 
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- tools/testing/selftests/mm/rmap.c | 90 +++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 3f3ff25e561ac..64f6b649eeac1 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7786,9 +7786,9 @@ static unsigned long __node_reclaim(struct pglist_d=
+ata *pgdat, gfp_t gfp_mask,
+>  	return sc->nr_reclaimed;
+>  }
+> =20
+> -int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int=
+ order)
+> +bool node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned in=
+t order)
 
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-index 53f2058b0ef2..375bcb1fe1ab 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,94 @@ TEST_F(migrate, ksm)
- 	propagate_children(_metadata, data);
- }
+I really dislike returning bools with no obvious polarity. Personally I
+would keep NODE_RECLAIM_*, (optionally convert to an enum), move the
+comments to the definition of the NODE_RECLAIM_ thingies instead of
+get_page_from_freelist(), and fix node_reclaim() to return
+NODE_RECLAIM_{SUCCESS,SOME} expliticly.
 
-+static int mremap_merge_and_migrate(struct global_data *data)
-+{
-+	int ret, i, pagemap_fd;
-+	void *old_region;
-+	void *new_region;
-+	int nr_pages = 32;
-+	int page_size = getpagesize();
-+	unsigned long old_pfn;
-+
-+	/* Allocate exactly pages for the test */
-+	data->mapsize = nr_pages * page_size;
-+	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-+			    MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (data->region == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap failed");
-+	memset(data->region, 0x77, data->mapsize);
-+
-+	old_region = data->region;
-+	/*
-+	 * Mremap the second half region to the first half location (FIXED).
-+	 */
-+	new_region = mremap(old_region + data->mapsize / 2, data->mapsize / 2,
-+			    data->mapsize / 2, MREMAP_MAYMOVE | MREMAP_FIXED,
-+			    old_region);
-+	if (new_region == MAP_FAILED) {
-+		ksft_print_msg("mremap failed: %s\n", strerror(errno));
-+		return FAIL_ON_CHECK;
-+	}
-+	data->region = new_region;
-+	data->mapsize /= 2;
-+
-+	/* Trigger KSM to merge these pages */
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd == -1)
-+		return FAIL_ON_WORK;
-+
-+	/* Before migrating, check if All pages's PFN are the same */
-+	*data->expected_pfn = pagemap_get_pfn(pagemap_fd, data->region);
-+	for (i = 1; i < nr_pages / 2; i++) {
-+		if (pagemap_get_pfn(pagemap_fd, data->region + i * page_size)
-+			!= *data->expected_pfn) {
-+			ksft_print_msg("PFN is not expected\n");
-+			return FAIL_ON_CHECK;
-+		}
-+	}
-+	old_pfn = *data->expected_pfn;
-+
-+	/* Attempt to migrate the merged KSM page */
-+	ret = try_to_move_page(data->region);
-+	if (ret != 0) {
-+		ksft_print_msg("migration of KSM page after mremap failed\n");
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	/* After migrating, check if all PFN aren't the old */
-+	for (i = 1; i < nr_pages / 2; i++) {
-+		if (pagemap_get_pfn(pagemap_fd, data->region + i * page_size)
-+			== old_pfn) {
-+			ksft_print_msg("Bug migration: still old PFN\n");
-+			return FAIL_ON_CHECK;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+
-+TEST_F(migrate, ksm_and_mremap)
-+{
-+	struct global_data *data = &self->data;
-+	int ret;
-+
-+	/* Skip if KSM is not available */
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-+
-+	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-+	if (ret < 0 && errno == EINVAL)
-+		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-+	else if (ret)
-+		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-+
-+	ASSERT_EQ(mremap_merge_and_migrate(data), 0);
-+}
-+
- TEST_HARNESS_MAIN
--- 
-2.25.1
+I realise this philosophy is not favourable to concision though, I won't
+die on that hill but could we at least get a comment on node_reclaim()'s
+defintion...
+
+
+> -			ret =3D node_reclaim(zone->zone_pgdat, gfp_mask, order);
+> -			switch (ret) {
+> -			case NODE_RECLAIM_NOSCAN:
+> -				/* did not scan */
+> -				continue;
+> -			case NODE_RECLAIM_FULL:
+> -				/* scanned but unreclaimable */
+> +			if (!node_reclaim(zone->zone_pgdat, gfp_mask, order))
+>  				continue;
+> -			default:
+> -				/* did we reclaim enough */
+> -				if (zone_watermark_ok(zone, order, mark,
+> -					ac->highest_zoneidx, alloc_flags))
+> -					goto try_this_zone;
+> =20
+> +			/* did we reclaim enough */
+> +			if (!zone_watermark_ok(zone, order, mark,
+> +					       ac->highest_zoneidx, alloc_flags))
+>  				continue;
+> -			}
+>  		}
+
+... or keep the intermediate variable and do:
+
+	bool reclaimed_some =3D node_reclaim(...):
+
+Since then the variable name at least tells you what you're looking at
+without needing to jump into the function implementation.
 
