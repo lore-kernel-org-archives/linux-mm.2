@@ -4,94 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D24CCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D408CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D87CC6B00A1; Thu, 11 Jun 2026 07:51:15 -0400 (EDT)
+	id 703D86B008C; Thu, 11 Jun 2026 07:58:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D38656B00A2; Thu, 11 Jun 2026 07:51:15 -0400 (EDT)
+	id 6DB016B0095; Thu, 11 Jun 2026 07:58:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4EA96B00A3; Thu, 11 Jun 2026 07:51:15 -0400 (EDT)
+	id 617ED6B0099; Thu, 11 Jun 2026 07:58:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B63C26B00A1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:51:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 790B41205C8
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:51:15 +0000 (UTC)
-X-FDA: 84867466110.23.7EDDC7F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A98771C0009
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:51:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5496B6B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:58:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EF13F1A05D4
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:58:39 +0000 (UTC)
+X-FDA: 84867484758.14.EC1BF08
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 176071C0007
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:58:37 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqNu915E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iIHiRXWY;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781178673;
+	s=arc-20220608; t=1781179118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cd6HE8o5qRluRnnVl/c2b6fi85KlAR03bwglw7I39Yc=;
-	b=zsuOffA+R0NgB6mWd5oPsj8Er25HRruub8vW6d+dJylQYLckIHGkFuN5PuMJdVcABrYdO8
-	5/YpDSpSGQuzQDHB7IC8vncU9m1ALLNzuZ6LmiKItsb6gaP0QN/IoBGsm7Y2wTy1GxlEO2
-	C1XEOY8HiKDa9kCx5LAdd+Ir2y/EUqU=
+	bh=cRjngGChT72OdyfI+6mmhcUVkfKxErUrhBdzRmYMjJY=;
+	b=nNt3kWElIfbHlKi6kBvYHpKXMtZ94qDziDGkkFwq9vZDUtEJiBJ/EJCCCVfu5LHLZ8FB+G
+	VCiOemG95TJd8K6v58M+FG3g/rB5aXx7yJdIR48s7Si+qchzTKYs6dnu9SOyjbUShUWGoB
+	TayCy4vxQ6MYj5kNThBNoZ3z62nBpRs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781179118;
+	b=Dk5/e2l8KomlP3toki9l2Z5LqpXK2Fnk7vREHiW5ulkDwhqZvkTUlV6e71Z3L+Tp/83hXc
+	JXNnKJ8uKBuq4SRSJBFRPyQWVNgOt5qrq5rgA0A9NzTr8AOpbXjE6lEabz+H4a/LL6a+RN
+	8eux/VBKz9Lo60flAxHdXBjaFAvImLY=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RqNu915E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781178673;
-	b=a970H++moVJukkomdeNtW49/30a5FKtKKBbLjbqfuQabQg1PQAxTK/DnnQRTE1auk/6kHY
-	JmjnOInig3W+aQW16gbpqtug5fzkCG/Ckb5dXoncatDoik9eOpJQQADA8T1QOg9vNBxCff
-	dU2RtfmKJfbZdE1KDPJltcH1TipdnHQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB8784324F;
-	Thu, 11 Jun 2026 11:51:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8271F00893;
-	Thu, 11 Jun 2026 11:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781178672;
-	bh=Cd6HE8o5qRluRnnVl/c2b6fi85KlAR03bwglw7I39Yc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RqNu915EgPPafxbXg6CAenB9vC152Hg1JweYucDclKCQHRI3hwgNdfvTBXHr3FF1s
-	 RHb1G33OPFNwf2trCId6SrER1UFYtYRrl6zeiu963tO4B7Tpz1/ycN3svbCiGu7GUB
-	 UHlByfN85czSp6hFKrX1wFutee6czGd7WayLNFXE7tEHI2+F0LkSrDFPrIMyycjYyB
-	 g/SA+o+EH6gimPQi2sqDW35LfHyUd0TlA2ljRVq5gbFNbo17ATBpeFZwJuKr3XbEXp
-	 nOTyz9ysmOgmMhg99vCgyWiIWnM/Mk3M+rRBmqkCP7ickGBkyBHQKHnyqHKw84CA4p
-	 QEd3X/zgqlmtA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Thu, 11 Jun 2026 13:50:49 +0200
-Subject: [PATCH 3/3] mm: cleanup clear_not_present_full_ptes() and rename
- to clear_non_present_ptes()
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iIHiRXWY;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781179115;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cRjngGChT72OdyfI+6mmhcUVkfKxErUrhBdzRmYMjJY=;
+	b=iIHiRXWYOhkM76qqJ9NisfEY53PmcKcHbWDyAMpH5wWbBTNYdSqIzaeRLlrN4krVp50OP2
+	755dQym1KT2Pw5aIBAYR1d/urcLO1QWd316sODKCu21CC2S6CM6GD4YRL+g7+XaZ1/bl1X
+	7ykplj8gDBkU3rW5EXse1dcgY0A8G1E=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: lance.yang@linux.dev,
+	akpm@linux-foundation.org,
+	xueyuan.chen21@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	yang@os.amperecomputing.com,
+	jannh@google.com,
+	dave.hansen@intel.com
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero folio read-only
+Date: Thu, 11 Jun 2026 19:58:17 +0800
+Message-Id: <20260611115817.59353-1-lance.yang@linux.dev>
+In-Reply-To: <8c36a91d-288f-4ffb-b2ec-41e3ef789d72@kernel.org>
+References: <8c36a91d-288f-4ffb-b2ec-41e3ef789d72@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
-References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
-In-Reply-To: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
- Peter Zijlstra <peterz@infradead.org>
-Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 176071C0007
 X-Rspam-User: 
-X-Stat-Signature: f3us36dekxwhaw7hjszuxbj9meneds6h
-X-Rspamd-Queue-Id: A98771C0009
-X-HE-Tag: 1781178673-721472
-X-HE-Meta: U2FsdGVkX18TGJZTSk3fEC2gD58JVD6ad5gEFq9kV50YO65kJEWSd0uD+K93zsS9NuXEXRrbjUjOg0ngroTbG/J/n+srkWCuHQT5llSxRB6FAyoXvOu0PqiA30yynhpQvcGsC8hYRllH9USyFZlC9h6CQ1Z8qzVCWZ6HvCEX61fcM6RwUJ9r7QIXFt909UFlBqTjpn8TNeY6NPNc8YsKu/7fYkFkNjPdqvcds5T1Ot+ThGQv2DMgvkQOudxbKh9TbcukumNxZoX2yztxj8gQEe/v+9SsLKYY7/rae+Zh/G/O50s2+qTHLhVpADY3o1KPNVF9I2Kvfwesleb0+r7feWE9Ok9Pl75s0ihMhlDV5wqvqAvq3IPbSobGOn3x5QrxB610PS58x7qTCAtCB1Xv6oahu/irV0gSuY24U1A2daD9KJtX4yyW9UqiKfX6ur7Mx3IjFBFkMMmjHCDDVw9jitOfa90YpY2SdQybZbDs6s0XqiwGMUgg3j6VmV1jbHLcUULuWQGOiDVfBNLGIP2SSVqpSB6mEXNjJLqDvcwSvMtQTE65ZfkMEnnT61eVws/wQiHVKBWd4ER4wJ6N/0ZRHR+uwLDiHDkEmSe2fmayXHg9xZE12Ckt8F7s7IIAtQ80bvJ/2yqSjR5D1GRN89znd/NuuCh8IO4D2zkTzZhvTb1M/I1aEJ8AB/JZgARaRcdNQPldIJ21HOIywuxSG5opuJ8Pd1SKxZYILSKTcKJjDXfOSKIh84EP+TROCIG4Y5ZMkGDNuBTQEbUeiiqhFkQPcdMlz+9YxrnaJ5vldR/BdOTH4dY5i93pP682/vhfJODZ2KlgDMwnOuTYdzZ59Cyi1pDLm/o4apLzCMhzXuxT0MwmA87nyTnE2M8Tmt5CGM1ma8J7Vx64U4VFDDdu+5nTgeXjX53S1Em7pDjRUld70JwzDFGX9m+s2ipjNgn4fUIAsfvS6+4kaywiqO6/05f
- hsRojpTC
- UhuB/yF0Hd/YAUlll2Zc++banIoLqcKox0avGmeVPswNECSXvy8eKadJfCX7gR9uA9B+8UOUh0SuMQJIAG3dLsK2pgPs9A9SCDMApQN2oYLxRzt1nlx6GMlL1LLP/4Pa5gitEBZrEXr+Suezi1pZK6SndSVoXeoetT7bEzKdvtkOaKcj0HJ7gmtpPWsNMx0q+PPa5mPLk4nIlKEmfgEgZnMXDMe7Knj5Wq7lxjRUeYlR4aDrt/YTwYJAQPQRroljhfUnXkhe6MJSL16fKsQK8AF4haJ79J6X+a1mj
+X-Stat-Signature: hpgp5dseyn83ghzss7jaxcdmjexfzanw
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781179117-188673
+X-HE-Meta: U2FsdGVkX19OkkKKRisH+48cnlnAYNhdWuzvrbSQ7Nq09aV1nGU0cKCsein6DB7qFxwTdL9gZT3Ap/GsV6d6JaVo+QJu6WHp0/VbNztA03Dxy2PMhYZMl30tCwtrXKYvP6fi20zPPOJKBRa/WBbrEavGmnlcsMEb4Biza0F1316/sLOyOtW7BDwI75Kx4/hRSOLJWLNs8EEvqVf8NeLm99GnH1bwt4oHoxdzaDNwgp0hzTb2WFR30GbDnC+TnRs2Dqt3b39flrWjq4O1eth6govXIapc12fm1YURLbvl0SWA3nUH1lZSPcqoNDse89RyV9io860xYyzJp//Da3XovzW+7cP+KalaVnxN3WmTugFBITLLUlGypjp2FL6xxmM0M1/8GAuykz84mpHJNkRTVFscTHQt1alO+xZR0E5u0W+FZ/4olTn6m6ZXyfG/I5v7UVz7C2TBmeFk5VO3wC6gdhiwYsM5npV1XlNuqR+y3kdgLpQFPY0ZkBEg9FwLKNFnvZvDWxrC/oUcTdQe2lT6eYdP2qRTYJ4sOFjixgGkkIrN3n6opxw5EtgG0kEsJNWVY3FEd13rPMvS1/jZnwMCpZME8AvfyxZohhXsyfZPl11Kvu8Uj58NBzzoBind4bQF3ZCpxCLsjzIQfaRau5NRzULwG+rE2vVJRq4ZUfBNbQyS1bEAs2ErUfNhev2/MSOVopEfrEdPHmEYxwWN1OQeSSOPEPxIIe7gEP19ayj9qLsEdP//mYoqJdVaJbth5oih8yxZdaWFmFluttbzxnO+8g+a8F5X5CbvxWfBhLWYVvBZERuwgWWJOF9OFxYbzp3ZvupXJ09svNs2jQ3PZ+BFwlH5HO9IMVD+ip9iGJP7hWHS+79Ou8ldEOvHkSJmJsvKr34mu9gQUw5FRM83pWu7mTAmrsD3iJRNeQswPNSDJu9NUYNUqaYZNiYTGh8a96iDL7yyKwLn+F6NzMMMs/a
+ yJmY9yWZ
+ BAoSxd848s6PRRgG9uQU43rAC/ENCp9myAIxFjoUh1rT7oqyxaIfDAwolsYboE2V6fXetWFw1hOdnWjSId4rkMltYcQst9CvgrpW4kXY7Krr06cXQIBPog4MknY0jwZQdDyF2/FZkQWp3qM2arxQG8Hv5NXKHogspjxlEZ5Fwc8Zg2c8hetBx9M+nFVPmE0IqUKmhT3BUi7xcFYZpSprsDjci7KVMBb42tFh3xQxxlSOABWbyru/6/A5mHidK7d3+A5bH2JoLqmuOZxKKkY1IupvRbOCLpPzQRotMai1YSQ7TDXHwui9GgJMqens1OdMkUIs6XWRjUGRtkk5FbThYO+9g+ZHBHBPEJ/trZwsUGoI+wPUA5n3z3087jd9yJ/8JbQVUlD8VBU7cN+kg+tP6+SzGqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,99 +117,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's clean it up a bit:
 
-(1) There is no need to pass "full" anymore.
+On Thu, Jun 11, 2026 at 01:28:58PM +0200, David Hildenbrand (Arm) wrote:
+>On 6/10/26 04:15, Lance Yang wrote:
+>> 
+>> On Tue, Jun 09, 2026 at 12:45:49PM -0700, Andrew Morton wrote:
+>>> On Tue,  9 Jun 2026 22:37:59 +0800 Xueyuan Chen <xueyuan.chen21@gmail.com> wrote:
+>>>
+>>>> The huge zero folio is shared globally, and its contents should never
+>>>> change after initialization. As Jann Horn pointed out[1], the kernel has
+>>>> had bugs, including security bugs, where read-only pages were later written
+>>>> to. If the persistent huge zero folio is read-only in the direct map, such
+>>>> writes fault instead of silently corrupting the shared zero contents.
+>>>>
+>>>> Add arch_make_pages_readonly() so mm code can request read-only direct-map
+>>>> protection for a page range. Direct-map protection is
+>>>> architecture-specific, so the generic weak implementation does nothing.
+>>>>
+>>>> This was inspired by Jann Horn's read-only zero page work[1] and follow-up
+>>>> discussion[2] with Yang Shi.
+>>>>
+>>>> [1] https://lore.kernel.org/linux-mm/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/
+>>>> [2] https://lore.kernel.org/linux-mm/CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com/
+>>>>
+>>>> ...
+>>>>
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -308,6 +308,11 @@ static unsigned long shrink_huge_zero_folio_scan(struct shrinker *shrink,
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
+>>>> +{
+>>>> +	return false;
+>>>> +}
+>>>> +
+>>>>  static struct shrinker *huge_zero_folio_shrinker;
+>>>>  
+>>>>  #ifdef CONFIG_SYSFS
+>>>> @@ -982,8 +987,14 @@ static int __init thp_shrinker_init(void)
+>>>>  		 * that get_huge_zero_folio() will most likely not fail as
+>>>>  		 * thp_shrinker_init() is invoked early on during boot.
+>>>>  		 */
+>>>> -		if (!get_huge_zero_folio())
+>>>> +		if (!get_huge_zero_folio()) {
+>>>>  			pr_warn("Allocating persistent huge zero folio failed\n");
+>>>> +			return 0;
+>>>> +		}
+>>>> +
+>>>> +		arch_make_pages_readonly(folio_page(huge_zero_folio, 0),
+>>>> +					HPAGE_PMD_NR);
+>>>
+>>> Can it simply pass the folio?
+>> 
+>> Right, this came from the RFC v1 discussion[1]. David preferred a page-
+>> range helper for possible future non-folio callers, not something folio-
+>> only.
+>> 
+>> Of course, we could also add a folio wrapper on top of that if needed :)
+>
+>Best to document that as part of the patch description: we don't really expect
+>to have a lot of read-only folios in the near future (zero page is rather
+>special; maybe it won't even be a folio in the future).
 
-(2) No architecture overwrites it, and there isn't really a good reason
-    to do so when dealing with non-resent PTEs.
+Ah, good to know, thanks. Will spell that out in RFC v3.
 
-(3) While at it, call it "non-present", similar to copy_nonpresent_pte()
-    and zap_nonpresent_ptes().
+Maybe something like this?
 
-It's a shame that we have clear_non_present_ptes() correspond to
-pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
-
-Likely we should rename pte_clear() to pte_clear_nonpresent() or sth.
-like that, to make it clearer that it is usually the wrong interface
-for dealing with present PTEs.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/pgtable.h | 14 ++++----------
- mm/madvise.c            |  2 +-
- mm/memory.c             |  2 +-
- 3 files changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index cf328f4d1e12..a72c40708461 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -954,24 +954,19 @@ static inline void update_mmu_tlb(struct vm_area_struct *vma,
- 	update_mmu_tlb_range(vma, address, ptep, 1);
- }
- 
--#ifndef clear_not_present_full_ptes
- /**
-- * clear_not_present_full_ptes - Clear multiple not present PTEs which are
-- *				 consecutive in the pgtable.
-+ * clear_nonpresent_ptes - Clear multiple non-present PTEs which are
-+ *			    consecutive in the pgtable.
-  * @mm: Address space the ptes represent.
-  * @addr: Address of the first pte.
-  * @ptep: Page table pointer for the first entry.
-  * @nr: Number of entries to clear.
-- * @full: Whether we are clearing a full mm.
-- *
-- * May be overridden by the architecture; otherwise, implemented as a simple
-- * loop over pte_clear().
-  *
-  * Context: The caller holds the page table lock.  The PTEs are all not present.
-  * The PTEs are all in the same PMD.
-  */
--static inline void clear_not_present_full_ptes(struct mm_struct *mm,
--		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
-+static inline void clear_nonpresent_ptes(struct mm_struct *mm,
-+		unsigned long addr, pte_t *ptep, unsigned int nr)
- {
- 	for (;;) {
- 		pte_clear(mm, addr, ptep);
-@@ -981,7 +976,6 @@ static inline void clear_not_present_full_ptes(struct mm_struct *mm,
- 		addr += PAGE_SIZE;
- 	}
- }
--#endif
- 
- #ifndef __HAVE_ARCH_PTEP_CLEAR_FLUSH
- extern pte_t ptep_clear_flush(struct vm_area_struct *vma,
-diff --git a/mm/madvise.c b/mm/madvise.c
-index f3cda54c1d6a..3db143c442ea 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -695,7 +695,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 				nr = swap_pte_batch(pte, max_nr, ptent);
- 				nr_swap -= nr;
- 				swap_put_entries_direct(entry, nr);
--				clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
-+				clear_nonpresent_ptes(mm, addr, pte, nr);
- 			} else if (softleaf_is_hwpoison(entry) ||
- 				   softleaf_is_poison_marker(entry)) {
- 				pte_clear(mm, addr, pte);
-diff --git a/mm/memory.c b/mm/memory.c
-index 56be920c56d7..d4b3540ae659 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1797,7 +1797,7 @@ static inline int zap_nonpresent_ptes(struct mmu_gather *tlb,
- 		pr_alert("unrecognized swap entry 0x%lx\n", entry.val);
- 		WARN_ON_ONCE(1);
- 	}
--	clear_not_present_full_ptes(vma->vm_mm, addr, pte, nr, tlb->fullmm);
-+	clear_nonpresent_ptes(vma->vm_mm, addr, pte, nr);
- 	*any_skipped = zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
- 
- 	return nr;
-
--- 
-2.43.0
-
+The huge zero page is pretty special case, and maybe it won't even be a
+folio in the future. Since read-only folios are unlikely to become a
+common thing, a page-range helper is the cleaner fit.
 
