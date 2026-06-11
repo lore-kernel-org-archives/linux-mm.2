@@ -4,110 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9060DCD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 12:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050CFCD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 12:51:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3DF16B0098; Thu, 11 Jun 2026 08:47:00 -0400 (EDT)
+	id 381586B0005; Thu, 11 Jun 2026 08:51:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEE6F6B0099; Thu, 11 Jun 2026 08:47:00 -0400 (EDT)
+	id 3321A6B0088; Thu, 11 Jun 2026 08:51:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2BD86B009B; Thu, 11 Jun 2026 08:47:00 -0400 (EDT)
+	id 248206B008C; Thu, 11 Jun 2026 08:51:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B40276B0098
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:47:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A948C234A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:47:00 +0000 (UTC)
-X-FDA: 84867606600.20.DAFF531
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6F42A40003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:46:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1760C6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:51:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B1474064A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:51:40 +0000 (UTC)
+X-FDA: 84867618360.06.8D22EC0
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CB2CF160012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:51:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eesZ0NDn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781182018;
+	s=arc-20220608; t=1781182298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sSca1lk+4IHszXL76rB4WMDi08SP8mFDHFZVnXSlj3o=;
-	b=6Jra/0IuXQfR0qvI9mv8Q+5RzB5X+hM5I+lBPzw1Vea+tqIgBxXyikUqdGLlm6gXbtDq3q
-	+4ChY74G+TqSLwh3Awa7slzCy20+uhb8/UAs9IBmossR8yK8/xgM5o8yuCJgBAJq3yyIuO
-	GV0qQ2VgCUv2kmDMH2FW9yWIU8pLWD0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9S9SdGtbm1JyTfljX6WLjQs95rf1oKktzDq3rIIBuu0=;
+	b=XIXqirXhRPe3d+5WII+ugKZ5VVoYpKXSYubbipr+3fe5fvRlMd2H6Qt246zhzm2Us7fHqr
+	uaE6+dTCd0VimaitXI6p05ZxnT1T4DuWnjUeYUyu31Jy9V0MRfai4sNJAYopus5HR8j60c
+	nmx9p248yzJfRx/i3qJBy61hmalU53Y=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eesZ0NDn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781182018;
-	b=xtcoUTgrBhV4cFDYJINK1KQD3Mqf98sFhrhO5SNFWgA0jqVsCzm8YHwHQoJpPBej18GfOW
-	Spcl+PDD4aA0hDJrV8TbqyjLtf8DT4gurs6elmHrcAWXCMA4+e3Wyu0OM23wb5q5WKnLzw
-	1jH8d3LhiLBCFwTc1Kf56pcqZkia7WA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F1606AF07;
-	Thu, 11 Jun 2026 12:46:49 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB34E779A7;
-	Thu, 11 Jun 2026 12:46:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SF0TLjeuKmpaagAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 11 Jun 2026 12:46:47 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-hardening@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH net-next v2 2/2] net: skb: isolate skb data area allocations into a separate bucket
-Date: Thu, 11 Jun 2026 13:46:42 +0100
-Message-ID: <20260611124642.345400-3-pfalcato@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260611124642.345400-1-pfalcato@suse.de>
-References: <20260611124642.345400-1-pfalcato@suse.de>
+	t=1781182298;
+	b=6ZXuOmZBTxuJ4X16skMSzOH811Uce9lAYV5HsZRCW5uUBrT6xzwALY89lcKBupvAxutm+P
+	8yNuvU9o3YtlSZ2QfxVrg2llyv4sMc7ZnbL88FJWvpMUMO4a1q5V2/83r9R6YZY8eJ5yCz
+	cgD0K51wsabwj2VOUmr8WZecfLcglkE=
+Message-ID: <1a547b9b-dd6a-40fb-8669-3bb307eb05e2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781182291;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9S9SdGtbm1JyTfljX6WLjQs95rf1oKktzDq3rIIBuu0=;
+	b=eesZ0NDn4arZq1eS4Me+sKBxmY7/1zh2Xohy+gcqQwOvoaQoEOYaxTNVbuV3UrqYxOYMgS
+	+wiEuiiDOgD4QpWz/uuqRw3jEL3Lso9r4Qc9VpX9LdZmf0E7EYh7LcKERuNt/hVveKmu5R
+	QXn3GY34ZpXtYuPfbBLNl5hnkucIye0=
+Date: Thu, 11 Jun 2026 20:50:04 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero
+ folio read-only
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, xueyuan.chen21@gmail.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, hpa@zytor.com, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, yang@os.amperecomputing.com, jannh@google.com,
+ dave.hansen@intel.com
+References: <8c36a91d-288f-4ffb-b2ec-41e3ef789d72@kernel.org>
+ <20260611115817.59353-1-lance.yang@linux.dev>
+ <d943a03e-bf28-4086-8907-5a24665fb2f5@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <d943a03e-bf28-4086-8907-5a24665fb2f5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: CB2CF160012
 X-Rspam-User: 
-X-Stat-Signature: hrhogyxaxd3h1w9bhz3mgbwtwedgr4b8
-X-Rspamd-Queue-Id: 6F42A40003
-X-HE-Tag: 1781182018-775675
-X-HE-Meta: U2FsdGVkX19E4OhD2J/0fidzVCTQCaD4Yc8BZ8sY8owow6UvRaTbrbMb34cAWAcJeUzSYMaDwPjsXch/heQLaEXqPLeVkwSjjlpWokaNtHWN5ZaywhC4FBpIwXoSYY9XzWbdg2zPM1AaehbUr9gINeWov4wot3pM9QKP1c1zMOTrqUAe31OCvF7K9ZWrZgBYeoChAAWkS+Fh1jF2bMX/iTVZ2AgXjqKg9l2XrAxrfsEv8SHhRBSi9oB/SxpLryZ8u9mE9pvvfk+EIFQkDZFxs+UC35PJSM5QAeQaMG+ao/QSbgYUhrv4Cs69DPxu/HH8dW07ngsMUompxlL9xceEjklzAVQKxr5QrYZJArDJiGkkqbpCOwLx6PHdKE5gpkkLf7IjAjflByW/hNIA7I1MOYAVGt8r/GULseGPaoHhG00SAKEROVRXpwpeTWihyQ3o96Z64uWomo0NUwU4BapdgZPfoMPOA6kreF4PdmXT+nQvlApcexibDlFj6o3mNYvDpwSCbChAp8jhiZOVofsi45/71UGKD76qr35uNdYSmQCCSobDZo1VSGs0NV1DCKmNj4iu4cVm822GeZJK2/OszNVgIaeNr3jdDhVg8fvHUMQmbvbZGP1Af5Razki0ONsF1UyPCRVPnQnf+3/LjrS5Z1Ldx6sIqzT4b704KhOtvEk7nko1ZH6wlWNjBW+1itCJNCyOC1d4/A2YZuT9wa2ON9yg2XodmAX0aYvJXzSOQjzO2+pWg7sR09C8GbBgvIlw3+pEYm2whrHziblgglsju/AbL+ApvFRJ55wTtVfyMdDdawKvyRPTdPYEMPIgMiZtJ82bbZLRCNAjMwAszza2o06EmYY8xQWEKcrz64xjDN/wR6KJ+OqW2iDr0Gr/Oyt3iE1pcyezTu452fWEeUz4C6thh5P5A6NsZwNvcfaFadORL2Dk5eKM5l39loWS+fJ6av5sNzxTOe7/BsAuSD4
- uJjmSVsw
- 3XnA92GOsNTBRlWj0/DpmqNNFI9VKooTxU1itenMCnmeMaOI/WIUVipYw0bF9uti7nFrJQe0PBFJUx1iSFpUkXujUklSL26TBRjYdLGBUYEOlXOF/PDBp3mJHWTC1+oWD7eVwNX3AvYPzdwntWNQW8VRuZp12CSoj0maafO90lQuwiiomgPlbHhg1ZS6gPccq871Iw/fuOcOGkY0=
+X-Stat-Signature: xy19hiaaprzbjx636qgygi4xu3491djp
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781182297-803509
+X-HE-Meta: U2FsdGVkX1/jP4z5ugr9HGKhDv7QreJ1gnQKvpYjyNLqnc3btqE09d0tTZxBShTy0+atZdk7ZKizfmmtt7OzoYlUyzgMMcxq7e1sKh+/kroe27EDwM/0wlxDLK3HL0KSN+5AmH1glzgE6qUiReva23h62AkgHXMM/O8twlnBIbTfTa269Gh8921ekJaLRrklsRuwfWcddk58Sf4OEn31NfPhhHacbccpwR8vQte9jF9PzEDhUOMU0PYlkE+qnEYCLfbhE4mjOq85Xx+Ezvn5FdIIVBCGY+LXtVgEiHDXBAYtQb4U4q18uS3vLMGtixKTPe6+WofHXgdSSJTZfZFQoliQ0i7HK5LIj5tS7LfqvzzJsOlh2L88/hqP+LEWzwG8rJLBDc37P10PxkWxq1QaqOmunhEGGo17G0a6PJHRknWXdjcZFEX+3BdUMcT7hqVA4RrhXuukGWdlwkeLdrfA60SwVaafb7xdSgfeSxj6UEQGj2tQwTUzR4iJnpTPOt1DINaf5ev8V6ZlcupUl+HmAYCU9DPKh8J2d8J2wkzV0QJFaExb/V2TCfV66M6NngAVdIzm0KCGGIFBePWO3R9S6o46fOHPEUzusMrBADpty9lizROAtW+QKjzaqam47/Ki8jINGg86msF8HF+DYNLoBTx364RzjWDqOAy0bzV7uKeTowqA9UafR0G+M+fOAimLHnKEdrYcHRIDSUKQs2T9sqvBf1gLnFqvMDdooWz3Hwrx5HmActwLhFqWqWDjzZwDiMSZRoEp0G551HOj1+sByx7UyjX4uoo8bI5mNMwtxQPmUk/vIPD5NNlesFIMntYol335EbFXlZNSkRiYOwrrYSZ3Q7EYtcQGTK8kkjxQDb6rvDHJdG2XzWpew2YC9oVXpkf2he0emjkrUu4jHNSRvUnTJhmE8s0tM4lv9nTVgxGzLtbiQRuU8/nFSVrdJ4kAglpX4kLbBqacBxP/9BU
+ srxJOIK7
+ wtdHUwkqwxPStE+Dtmt1hFx7+r2fW7biRyJIPENErp6C440CIonAKVC4n5FGwChC9zzkG2NJYecwjvkEPfRBSuAGQaLdu0LEaWapSEIjDewBiu/zZrXB29Q4ZA/ydycwPsCmCe1emp6rQQ/iB/cGNpCpe7niH4sgOJk9h6CtlK1IMvw5B5PTEPzxg2+3jCv5OQUrmK+Sggkn4bwXeWj4nsnd8xoePym46/f0achZ4eVb8ymC7LXTlmjlkcMfefO3+6UqE2HnfKawU0mx1/8Q6lWu/6CLpNjtEcxjse8OaeXZ5GI8JxmPhdciQFB5ARVm09UQ6RjZbHwzMihU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,67 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SKB data area allocations (as done from alloc_skb()) use kmalloc().
-These allocations can be variably sized and their contents can be more
-or less controlled from userspace, which makes them useful for attackers
-that want to overwrite a use-after-free'd object from the same kmalloc slab
-(which often just requires the sizes to roughly match into the same kmalloc
-bucket). [0] is an easy example of an exploit that uses netlink skb
-allocation to target another similarly-sized accidentally freed object.
 
-While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-probabilistic. Use the existing kmem buckets API to further isolate these
-allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
 
-Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
----
- net/core/skbuff.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On 2026/6/11 20:21, David Hildenbrand (Arm) wrote:
+> On 6/11/26 13:58, Lance Yang wrote:
+>>
+>> On Thu, Jun 11, 2026 at 01:28:58PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 6/10/26 04:15, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Right, this came from the RFC v1 discussion[1]. David preferred a page-
+>>>> range helper for possible future non-folio callers, not something folio-
+>>>> only.
+>>>>
+>>>> Of course, we could also add a folio wrapper on top of that if needed :)
+>>>
+>>> Best to document that as part of the patch description: we don't really expect
+>>> to have a lot of read-only folios in the near future (zero page is rather
+>>> special; maybe it won't even be a folio in the future).
+>>
+>> Ah, good to know, thanks. Will spell that out in RFC v3.
+>>
+>> Maybe something like this?
+>>
+>> The huge zero page is pretty special case, and maybe it won't even be a
+>> folio in the future. Since read-only folios are unlikely to become a
+>> common thing, a page-range helper is the cleaner fit.
+> 
+> Right. And if read-only folios in FSes become a real thing, we can always add
+> infrastructure for that.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 44a7f8401468..ac9fed7461ba 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -584,6 +584,8 @@ struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
- }
- EXPORT_SYMBOL(napi_build_skb);
- 
-+static kmem_buckets *skb_data_buckets __ro_after_init;
-+
- static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- {
- 	if (!gfp_pfmemalloc_allowed(flags))
-@@ -591,7 +593,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- 	if (!obj_size)
- 		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
- 					     flags, node);
--	return kmalloc_node_track_caller(obj_size, flags, node);
-+	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-+						    flags, node);
- }
- 
- /*
-@@ -632,7 +635,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 	 * Try a regular allocation, when that fails and we're not entitled
- 	 * to the reserves, fail.
- 	 */
--	obj = kmalloc_node_track_caller(obj_size,
-+	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
- 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 					node);
- 	if (likely(obj))
-@@ -5213,6 +5216,7 @@ void __init skb_init(void)
- 						0,
- 						SKB_SMALL_HEAD_HEADROOM,
- 						NULL);
-+	skb_data_buckets = kmem_buckets_create("skb_data", SLAB_PANIC, 0, INT_MAX, NULL);
- 	skb_extensions_init();
- }
- 
--- 
-2.54.0
-
+Got it, that draws the line nicely :P
 
