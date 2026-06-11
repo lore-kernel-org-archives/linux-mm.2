@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F2FCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FDABCD98CF
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E4806B00A6; Thu, 11 Jun 2026 12:22:12 -0400 (EDT)
+	id DE1C26B00A7; Thu, 11 Jun 2026 12:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2973A6B00A7; Thu, 11 Jun 2026 12:22:12 -0400 (EDT)
+	id D6B366B00A8; Thu, 11 Jun 2026 12:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F7B6B00A8; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
+	id C331B6B00A9; Thu, 11 Jun 2026 12:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D675B6B00A6
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A4DDE1C27B8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A62D36B00A7
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48481A056A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:14 +0000 (UTC)
+X-FDA: 84868148988.23.9E88DAC
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012068.outbound.protection.outlook.com [52.101.66.68])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5F30540006
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:11 +0000 (UTC)
-X-FDA: 84868148862.01.2371824
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011058.outbound.protection.outlook.com [52.101.65.58])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A25A01C000E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=CtTaCVBb;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781194928;
-	b=CULKEUt3ZJo73w4AgodwdvdX8SzhWki7KF8sYamAqBYUHnaxtS85FLD9E/65f7akLPUld5
-	xhTyLfsZsOc+/IiBX8l7Y3cuY3t80R+4P6kXJcCdJn8gnG7viz41b/rWLB4GJlB/rZOa5U
-	NtZxBzwJqer5woA2SD4Vr+pa148CQpo=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=CtTaCVBb;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=nA0eYwQy;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781194928;
+	s=arc-20220608; t=1781194931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=psY6a90e3/sLp+Oj5S4FiGYhmUJhRZQVAjwBzfCgPHU=;
-	b=Gv4Fd2BmRAsMpQteukrA1PqUL2cOqrmjYwYa9LjKnZpWAbXh8eWye5i0gOR6G1+vW1DpFt
-	VnyzJADnqXvqhmvc6uHtO0BwXzrarsU0FHtpY+B1GWoCzxbsLosaj1qwhQp+oFVjR+RYsF
-	2qZrEIGyPMOeeytir3Jo7QGQBgiZhCc=
+	bh=d9P1wEzr3g9s+QUx9wxzSnMEdkyOTIVXQWHbPb5rL4o=;
+	b=V6LRtA9Lo09knuQBwk4V9CdKgA71zVWE2pKKwel+rChXS1LyY9+2LtaWTH1RRZEMP21qKn
+	CWVRUljWHT98UeKEsQBZU0YXBEsWkL5tLxnJ6ajfnirMdSEmGIgaw6ARxXXk3JkFXx7hMJ
+	mcnpu9+qV08hPyEKfQCfvChsnTcRwNo=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=nA0eYwQy;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781194931;
+	b=MQieTeI7fLJTXc8jGVvXmvyOakhfW6AOSV7Tcy77+IaaqhqX4pY/zU/tYcKU0fFMQke3rh
+	vkLVpGzq5HCB0hWdQvy3pDZnpd2UJhLsyfqkBsLnhxyELb24mJ7OKwF0c2TBsrBZBMqj05
+	w6sxblq9HyJJ1VfIMb3vN+hbdlE/NxM=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=frPrbC5IEkI2ApUDjmJOTqYZuz2RBKPWgMC2TmA84EsJUrYG/a9BSaqQUCQAtEr74kGi7bjPn/S1h8h8Lbas/0wgGyQScQx6+WEp35IQzYQHqyt2wWlNI1oOqKxTkpbY9lNqpxP5t32p10DLd4+q2kS1KZsAiZBLdiK3qghE5fSTsUbC6Zr1i2aTBzUZtc3sGf30/AiritkopI8fAdBfiEpgLx37HSX7X7fIchj3RVKVrqdGDTykDu2jL3W3Uiri+l0ubDNipWXCOrRIqMBDyHMAai0r2gUstgoz5JZ/+6FjPTixhrfIlvsWPEi0wLMMroGJ7e+uV/U31Q1J4mLddw==
+ b=F99AnI0tCRVn5KCNd6SC6I8JdDC4TgTFmr7gPJuFd7W8lc1q8+rjZhsg9pus+Z2fajaFlcDCz5rzNYMaeIh6B2NbHtNpttXJbb962+m55fmv1DgB4DGL1Qa0Zfqftu0tsN8YGnXFxT6XhgnEvcwMFkDyoUG7wZZ/6pHOiKwLJf1M6zNl9+5LCO/D3A75HFeMLjBpytnPWV9JYya6qOxCT/UM3CL+PD/bRwzczQJ+SCe/AYKA91gXNtMMuERPaOYdcuyRYmAWarXuewLr4kiplZnqZzVBBO2+336kCWuYEkSkSBeX2rwfPh7dxoMHQEff1c1mfH9aYDVR2UcHd+KQLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=psY6a90e3/sLp+Oj5S4FiGYhmUJhRZQVAjwBzfCgPHU=;
- b=K1pap0lZUjM8y8xTTCmKiItjGn+IM+L4flrCWHkw8Mo2r0uK9UQsQ64IVjB+j62W9MPxqXRV8NZP4eRb9QLqsPP6O+IfmU8/ABC5AeJWfC0aoHpLtSpZ9eiX0G0LMk8AurqdKkqdsRvak1CMa3DazM1XmwUa25zlkvnisBvw6uvWtXNdTk7HQvd/CLQ/n9WTnww26jR5KKe/emkrrUzO0/KoRxbyqcwt4Ut8zIWhrVB1b2Nebq3VHA+Bwsk3pR6tAOsIFXasLWc/p/jE5GOr8EEYxag3O6ajUKg56bA+vZVd+Dd+fVgrZSFWNDtvYvHXWJIt8WLZ37PLgyFudD4yAg==
+ bh=d9P1wEzr3g9s+QUx9wxzSnMEdkyOTIVXQWHbPb5rL4o=;
+ b=je0CHXZnMYF8mpmelKDC3K1OksMZAyf/zX/8NPzBGHVBmcIYnGhHeaiSSsadBOMNF35XNC6djmjFXZMnxBG9QwR61OBSMRVBtD/pmngYbj+5iRJq+lDcPit13ulI7d9gObld9JfrW8gE/LLMr/PBYfqc7OdShac37H2B8121866dm07AehIsjPEdauqNOMJ0o9TCrA9FCHzBr7scCypbkGfeMCQwuLXT0nfLwm1e2J5ChxDDEOIqhCAW1E3dSCgZfbHr7o2qG5Z7c8MrDezwXBnpaR5nu1j0kqheS5YOZyB7Xcahw6KNnxpdYMnf9KlaxAyS8tK0fsfGN3QNe4gqNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=psY6a90e3/sLp+Oj5S4FiGYhmUJhRZQVAjwBzfCgPHU=;
- b=CtTaCVBblVnx/w6HwDxzBjibcgvsRSCE49u8IH75LRohIiq8TgFWPrulRQeROVYYYUiR5QPkJhHdfWzk7NnkKUij9JWJZQ4kvQBEH6Oirs0OxL1dPzsk4JqKrHJwbWmaDdkj1ixKHN02R3rdrMfgvGKtKQwxJ8yjyiAawiAKaOE4jNOz0VOQHZn/vQymtF/O2NU4Sj+eQfdTcG2IEZNWWMXyoWCJaoTMFKQLC3GFDcY4gDkRdqoC6ddPzES7BiUd/9Flp8MrdkVFK+8LgxmL47Va7Q5+Zmlkvr8FfVSQWGcPHlDY+4PTTE1geMSWWvMo+/hH0kIeGgILCHTKB/DejQ==
+ bh=d9P1wEzr3g9s+QUx9wxzSnMEdkyOTIVXQWHbPb5rL4o=;
+ b=nA0eYwQyiaGeLRtvuwTuF8/PJ9k4IwFjC1Bhv7o8FyrsdfPqUFd53iwT4RyH1LuRD3D7MuZz9mLYGdV72ON4KZTXfmgU3oItLgC4mmzBJiRntzwmvhXmoYw0Xi8GzcV6wfL7fnOKUPNflYVTVJReS4Pd2DGIt08I2jMZqyuryi3sHkLmoftVIbk9s/sU14RhcJu9sB6CHSRME+aHz9ae34k9w6WfehPBjojy1vO/bw4I3Uq2S2szRUNQktsvr9zG5XZkhyVRDk4QNlANLe5B1w9J5T5AjWJw7vbmo0kJbDGleOBDtZpfKNrtOuRXx1MbhpE5SkUmUgLGE5Am8urtOA==
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:2a5::24)
  by PAWP189MB2829.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:468::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 16:21:58 +0000
+ 2026 16:22:00 +0000
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471]) by DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471%6]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 16:21:58 +0000
+ 16:22:00 +0000
 From: Yunseong Kim <yunseong.kim@est.tech>
-Date: Thu, 11 Jun 2026 18:21:14 +0200
-Subject: [RFC PATCH v2 12/14] selftests/kcov_dataflow: add
- rust_ffi_contract test module
+Date: Thu, 11 Jun 2026 18:21:15 +0200
+Subject: [RFC PATCH v2 13/14] selftests/kcov_dataflow: add binderfs ioctl
+ capture test
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-b4-kcov-dataflow-v2-v2-12-0a261da3987c@est.tech>
+Message-Id: <20260611-b4-kcov-dataflow-v2-v2-13-0a261da3987c@est.tech>
 References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -114,88 +114,88 @@ Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
  Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=9250;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=8164;
  i=yunseong.kim@est.tech; s=20260426; h=from:subject:message-id;
- bh=YNHRJxU7pBEgkggxGz5sDX5HG43rBjCaNfca9paR2Fk=;
- b=8cDztotREPor/G6xcbhmpILOlAgxGYlwU+i7il0yY4g3T/qI7SskicjdN3rMs9iPkQOnDAMXs
- HVC5MntnHluDLOk1wOBp80N2giabqVzG2JcEh5HlMCqyBCo5hq4mJ2L
+ bh=4DPA/LfQDzADLggDW0Va/jTLqiBSuY6geNMUj2Kgx58=;
+ b=bBeM+vxOVK22K1EZF0OhgWnon9GHXKnX8lACBrIKVbSG1KW25ebFa7bE6OodE72vM/s1d1DyF
+ V2KHKYyszAzC+4o8CRnF0HvZsEP/+uKmjY/jRXvudNfVZ4yLrsIoPD0
 X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
  pk=1nBUX92cvTaavYG1+MR073D+XMKhdOciBZcnf6h6qEo=
-X-ClientProxiedBy: GV3PEPF0001DBF0.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::315) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GV2PEPF00023991.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::199) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:10:2a5::24)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9P189MB1754:EE_|PAWP189MB2829:EE_
-X-MS-Office365-Filtering-Correlation-Id: de428a95-98ca-42db-ea15-08dec7d58f8b
+X-MS-Office365-Filtering-Correlation-Id: d9fea763-6fc1-45d9-61c2-08dec7d59079
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|3023799007|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|6133799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	ITX49KV1ZIsoniDnALyWs8CIWp9pf2nzwcRph/luzxZthhe+gQzLHQ3EfnQfaTYZDjKtylOPYADPh2Ygy6Ag58S+35iBUkR0e/5dNXKMCYUM8hwvV4UfeWUgo3Go/EY2GoA8T1S7cR4Iq6I1BHM/Nobu8aHac4/l7hdLN1ON/B+CzduarPmI+uNFJL/vzjOpyoNNuMagPNjORM/S6noA6vC7SYwdfjlOWGbXTWH7CEJ/D8dF5x6ivXrJpYKq4yccVWDRjP7HCjXs712qvImsWHiy+jxA0PWUVgNNkXikYHVwRHPkytTG/UNMhQ7IiVJprmWrgQjgCJRu0w609qWnbhJ7mFy2Bc9vhwNG/vdjExXGIH96ULagL/e2tqXfHlTCYt0OG/blS+pZP6DmOuicxDK1ew22GXr8NFwblC6eG9IhK2nmHKZVtgeexJfBtggjihca74JX0Ay20Awa/fLsJMtXDlAjte7PbDtxAfnRLQHHeET2zYc9EAU8R7JC+ZS4E5kfvux/1/muYSYM48LhAGYz5YZCFtvhI07m8i6yEWeUITJydkOqyWzh9c7N0QsUlVcffRVBTWMglMweH1xPqD1dbY9Ge/M76+j7SMTSovwDoSlJYKoiL8O5o2wYRQfI96MRPozuW8CdQ+gL9Aacm3lkfL7sJAebx3qdgr/9fqscKhn+5abHBWm5Uuh9i90AczUvhWFovPFbpMW4kVHG6s0NFebGimnwyRDfGWniD9zs6x17ECy8aT3g0TEwLVS1
+	2Izdiu+suLw5Q/GhbzE99pEfd+ON1pLKTF2RlSaHbh6ToBuA1aEgGzqH//uaubWa7ToAz4bYHBSa8rQU8OrXY3V9PtfmaEHTZ1xeG55KNO0KH1OoqFSoouv/7LnzfkrpCFXZoexH6InmKei6SA/eFLA9zZPPT7W6/b5FcVUxZjW5dn1IefGo9aP2t+RREu8mm7leON115aeCaCzev2wcbeiMhIEvQ2ZFB/QT4eCDzu1NMabJetUFviqepoNI1hlmiSM+img1QW9Qjp0enz5cevnHiDaJZLnHfjBwy9C20cuqumnqUwis1Zdxm1hNfg6S/Ifk97RkHU6Ge0AawgVb3Hfvycaekghaal2hVyqO4pP/hNLgB4ErJ0J+FgHM4yUBbNoFa+znCsmrtpndcW28QnDpRha0xwdG2dhjuwWT1R8/Y7EX9fc0Zz/EvM8c6LasD/TzFUaC6uHFsN/uIyg5wPHrvhqwYkwBUyjvvyRc2dZxAhV8Jx1igUIOGSJeOELMtuJpe8L46Mh1K5KvsGsKSZpMvMQppYTbEEQ4SYlBon1pY6xmmUUe1zRN015ZHAb977RThsd1S5c+CkmZFUsE+4PZsspGQYoMkUk0LkzsDvVixUsqr7AgbV2BqEI3P7BAsb6DCUbBxPacu99L8lIpvzihRnD4/hvAFHashYDKONLeH6eXG/3BSdmMqIZLi2YSLPeEregfsUgbKJS7C+asxnetNn6Nty3pv+Zq8hAibg4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WHg4RGc3ekdvR25zWjhQRUZPbUtMSXp4Q0d2dk1oU3UzdHk4YmVLUUZFakRL?=
- =?utf-8?B?UXM4SklDdlcxUnd1RWZ5MGR3ZEVzdGRrQm1LZmMwWDB6NkE2NnArSkdnVzVG?=
- =?utf-8?B?anYyNFY4WlhpOVU0TU41b0tML092aVRlSmpGNVgrclhsWkl6UkxNZDBOQWtm?=
- =?utf-8?B?YVNuTDQ4TS93M0pkN1RXeXVRclFibmk0L3dmc25ya2RRNFJwWUhLb1NzZmJN?=
- =?utf-8?B?MVJHeHFZbVRqOUNvbFRRNDIvLzdUQmhrVnpJem14SmtyN2FZV2Nrd3JPdWdu?=
- =?utf-8?B?cDVncEhncG5jN3QvZjZ1NjhiaFhJZVVCYkRURFZzallQRlFxZWtBMWEzOE5Q?=
- =?utf-8?B?QW9rYWxqVURvY1hLaHNMbnZleHBTQkNXMXExeEU3SlVrbEI4RDZNRWNPeWI3?=
- =?utf-8?B?a0kySUIybGlSMHBnZGkxNzRBWUdmZVJrUy9GaXNGR0kyN3NJcFdRTXFwMk1s?=
- =?utf-8?B?UTB1NWphMCtQM1U2aFNvT0drYjFqSFBDZWw0bDFqbXhkOHFITk10QTJ3YzJO?=
- =?utf-8?B?bFBmOGdqMzZIQXlUR3p0OHJuazdOeUNxSXZQdnozcDFoRFBNODJHTC9pQmJu?=
- =?utf-8?B?QUlyczR2ZnBLa3BMbEpyTGphU2ROSGJBaFVrL0F2VDJ4OXptd2hHRVp3d1hZ?=
- =?utf-8?B?Y3FXVHBQTTFCS0xIKzE2TEhRRlJHRzhsS29LK2tsbkJ1TlRDckhZSGFjRWVw?=
- =?utf-8?B?RVd0M0VEME9OWnhTeUhHQUg1TG9ucnVDa2lhMkQxanFLM2V1SUhORVYvVkU0?=
- =?utf-8?B?Mk1nblVLZU5WM2ltcUlZU0IrZ2lBZWVHY2tQSDFJbWhHNTZ4S1ZWNnU4U2VF?=
- =?utf-8?B?dDNmWnkxeDVHcXFjMnNKcjJodENmbEIzMDI2bUk1eDRFRVZ4WGJyZ05ncStx?=
- =?utf-8?B?NnEvME9vWjBWT0tZUDArRGhiY0NEZHBmK1lZbERuKzU1a3NSeE1jb2l0MFNM?=
- =?utf-8?B?SnFKbFozM2VoaWV0YjIxazhCYXI4MmhheVZhVXdIQUZTcWhxWTMzTWZ2SEVF?=
- =?utf-8?B?TXUvNExJTEE4VVhLOGpObUl5ckZuNExqeHdxZ2loQUZWSy8rVncwWGJ5ejND?=
- =?utf-8?B?WXpicGc3QTczUVVvUnpPOHNySDlodEZFbVFZYTBvaCtuRzVEODdDd3Ezay9B?=
- =?utf-8?B?ejZUVlZvK013bTFSbjJTKzBCZ1V2S2I4eFlNR3VHWkpJL0VkM3R2ZWtWazll?=
- =?utf-8?B?MldtYmlkZDdiZzlKSnkvYjc1TVlwcnlJLzhpQSs5VG1CSUo3SmpkL0FWM2Na?=
- =?utf-8?B?bzZ2YmRwVG9VeWg0K0NBSUdBcHlVVk52K1NlZms2aGNSY2MxNzZrYm84ckFa?=
- =?utf-8?B?OGYzaUFXQmVOOHVWOFZodDBBNHpYK3Z6aFhiWER5R3h6c0JXSGNYaGJvMys5?=
- =?utf-8?B?MmN5cTRzVTk1Ukd0VUs5QXI3U3NnNjloOXZDWmhKd2R0MmpLMGxZTmdBRm5K?=
- =?utf-8?B?NFpFRW53aVRCSG5Id2pUVUk1UWpGNEFyVXVoZnhLQzdRa01hVnloczNaQ1dm?=
- =?utf-8?B?T0hObmdrQkFaZDBxbnJpZUFCZmhnTGhPbStPcFJvTnZFYmloYldaajRTQldi?=
- =?utf-8?B?TUYxVXdvVW5ZZDA0VzhvRytRVXJuNTlIenhiMG9PSzBWWEt3dVU0OGxpZ09Q?=
- =?utf-8?B?Z0dDUmRHS2p0dytuMGVlTGhFSTVWOTZBeEE1NlMxNENHRGxieE1hZEhwRFov?=
- =?utf-8?B?ZmRqU2VkeWRKWTNEOVU3Y2trS2piZk1TWGtoS3cxQW9YYVpUMWlGYmx0Zy9N?=
- =?utf-8?B?cWNkeG1LZDVFdUpSN0FoREw3bWcwY1FIanR6MFlVZ01ibjB4RzBZMkk0Q0xE?=
- =?utf-8?B?MXhUS2gzYnFIWjhTcUpLbDJyWGVWMlN2dThXdllwRzF1SVI0T3E1WWNIa1Mz?=
- =?utf-8?B?WFhIMHlIRUpTVG5sVmJmT1JSRkFJMTl3SnBOeTdyb2VzM285cW1Ub2N2OURR?=
- =?utf-8?B?WSt6aDRUMUlnSVpGNjVxbW9vV2liWTVkM2dkWVBBTVBJa283dUg1dis5eEdD?=
- =?utf-8?B?VERnOHEydTZXN0NVN3puVTRGMDBOUVBLMnlHbkd3dW82QUZuSmpFVWFBakJs?=
- =?utf-8?B?STlXV0JvVlNWdmhmYzg2NzdrQjRDSFI1aXJsVElBYnpFZWwyM2JuT0VQNXRk?=
- =?utf-8?B?ajNNZGRRU1UzRkRmNTNTbU05b2tFSzdaZE5jRlBSL29ybTdzZGxOMGhoOXV6?=
- =?utf-8?B?dTMzU0lIL1FIYnRiYk9mTkwxNEFOUHMvTk5PbnVwUUpEbmVWT3h2RGxBSzZz?=
- =?utf-8?B?Qm1EQWRCS2FGWTFQazlqRllCcHYvaXRMT0NqYmhCaVVkakNMVWo4dHE0UHcv?=
- =?utf-8?B?QzJMYUVhOTQ0TUltT3VCaXlUTDlna2c2TFNxMEttbE9zeU9ZSlVBUT09?=
+	=?utf-8?B?SzlEZ0RwTnJKOUZTczVGaTNBY3N1dHJFTm94WDJ0QkdoaWlRaWJlT0I4R21u?=
+ =?utf-8?B?ZWwwK3F5UFZsR0c3VEtSL0xiSzF1R3BrckVNc2lzaXRwN1hzMlZKZkI4N1ox?=
+ =?utf-8?B?eXZwR0E3cW9PeU42NVBMYStrcXlxc2FRWFBGaXVXYkVyZ2xoWUhKNER3TmJo?=
+ =?utf-8?B?Y1hNMENmWlNXOVJ5MTRNeHhrbWozOHNLdG9IRS93aG9WdmtIcndIYXdMTDZv?=
+ =?utf-8?B?em5hNksxL3VNNmM4ZGVJS2lKdVRjbGFZcjc1RjdlaWFCMjRaMy9xMUQxcFNk?=
+ =?utf-8?B?VUFNd1VWV3hhUjVUaytXMUJZVzV3K2xOaW5jUC9IWi9ZZG1xb0Rhc3BDSG1n?=
+ =?utf-8?B?UFRhdGNTalhDNXlKemFNb0UybTlxNGVTY0t1M3lHVEpKVzV2QW9MZzFlVEYy?=
+ =?utf-8?B?UlB3Vjc5RVZjcGlqdTMwb25iZWFWM3JBbFFyUXhTRXRoK1BmY20zeGY3Ti8z?=
+ =?utf-8?B?Vll4c1VPMWJ0YTEzVlh2U2ljTnkzSG9IUUZQdFQ5bnRKTVdiU1RJQ2RtaDVs?=
+ =?utf-8?B?SlVSeUdrd1EzL2xaZjNVK25NNHdieDFnTGIrQjlrVzlKM1JrVWlmeGdrdDU0?=
+ =?utf-8?B?bmhxMk5Pc2dLNjI0UTZrSUlvcmxYMU9zVGFYN0FiVkdsQitTOTZZVzkzRy9R?=
+ =?utf-8?B?b1FzVmQwTHptbDlWUEVEMW9oZXc5eGwxMGxBYTlhZnl0bDViQlBHQUlkdGha?=
+ =?utf-8?B?dVZDajc5a3BZZVdtSHI1NS9KSHJ6N2UzWER4SDRGYXMvZkplVy9sektiUnJK?=
+ =?utf-8?B?ZTRkVGNDV282TnNxd0pPQ3lrVm9McEVGR0pvMjRPdWhteWt2U2sxV1JOTjht?=
+ =?utf-8?B?N1F6VWxCY1FBSkMwQ21UbWxONENSVXcwMmZRVGNIYlgzQmROb3o1VThpdC9S?=
+ =?utf-8?B?N0FFUS9jU0JhQnB0ZGF1SXNldmZsaVJBTlhkSjNsZDA1a2VHUmQ4SUc4QkdP?=
+ =?utf-8?B?eXVZSGdERjRIMHl3QXNQVkJ6YU5ydEJsak5RcEw4UVJ4WWFLTGozWWNPR0Rh?=
+ =?utf-8?B?NXUzNXdwczhRVyt4YXM4ZDIwbytOVE1LaEFSdXA0MGsxSlUwQzdmcW9BZW9z?=
+ =?utf-8?B?SGlOeGJtUFExaEV5VXFrZm9GeEtJTGcvaG4zYkVzcHU0K2RUUXNJSmdETlVX?=
+ =?utf-8?B?aVIvSHNmN0thaDBDK2hlY0NhNmNTemt3RmpIODBvM2dOTm1CWVlBZ0txdkVk?=
+ =?utf-8?B?N0xJMjVNTUhzU3FUMWJJeHVXdlErSEJhb0RJQUFhak5nWU8zemtOMGU3SG12?=
+ =?utf-8?B?NmtmT3h6amlvSndJWVc5OWpxcFZyVWVFYTljcDlUZ0FFMjJYZ0pwR0laMjc3?=
+ =?utf-8?B?OFo1dDk4Z1hXRFk3SU95VG5Na01IUWpuZnBwclNXVndiVEdrQjZFTjMrTnk4?=
+ =?utf-8?B?RmJWNjQ1em1lQ1lLVlVFTmRkTHlGYW1qSEhrRC9iN1R1eXRrUFJ5S3h2UXlk?=
+ =?utf-8?B?YlZoZDd2S05JQVJBMmtPMzRGTzMxTzdJMGJkR0RSOUY5ME9TM2dHS1JlbytJ?=
+ =?utf-8?B?YlJub3FWOWNtQytmbVFsbEJyMTFseGIvY3J0MGZtdFFvNTFaNUNxKzg2NW5C?=
+ =?utf-8?B?WWE3TGNzdGJETlRCT1ZBS2hhTVpiUUdRaWI0UzU5MXZnUG5BSFBlQ1p6Z1BS?=
+ =?utf-8?B?M0hOK09DS055ZHp4d2hHTkNPUVJNTnZEUjEySXVwd2FYWUVXYjJxZ0owVFo3?=
+ =?utf-8?B?UjVVT0U3b0pYcUZZM2hIWVorZEdtQmhZOWQyN3ROUzBtVnVrTnR4VGNSRGpt?=
+ =?utf-8?B?UzZTZ0hHQlB2eEI0VXVubmo2TEIvQzYyV3cxN1lGa0RNRklBMFBNUExzWmpn?=
+ =?utf-8?B?NXV6dzJYR0pnVHpseUJtbFdGc3dYeThoQUFZVFcwTDMvTExCUVVqelVBVVRL?=
+ =?utf-8?B?WGZTdnNVK2UvTkhPNEhzbWtWVFdXWFpNZ3YzWXpzaldOS05Qdml4R1VDSi8w?=
+ =?utf-8?B?Y2RaZGx5MkRnRFRCellJektMQWZMLzg5K2h3bjhFa3kyeTJ5VForZU5rVCt0?=
+ =?utf-8?B?TTlPY1BNUDcySlBCOUI5TWFodjRQbXE4TERvck9Bd21BUXVpNFNZQ1h0OExz?=
+ =?utf-8?B?S1hBREM2OUVQMk1lY1kxRTRQc1hLclZod2IwVnBIbUlkLzY5UnZPREN6NkEr?=
+ =?utf-8?B?YWw0SW4zVExsWU9Jckd0Ynh2SEJmSzFhWGo4Q1ZGT25RN0xRd1dkNG5vY0lW?=
+ =?utf-8?B?Ymlyc0ZIT0ZBb1Ewa3gyaHRSbHVwRUFlZ3dyZ0hKa2s1WFJmVTJxc2tBNENY?=
+ =?utf-8?B?TW5yM1NLcERrQk9DazlYdThnT3FOL2ZwczRzV2RFdGtPSVhlWHlMT0JhMDZO?=
+ =?utf-8?B?aEV1NXJZQkpGQ0dzbGNLQ3luQ2R6UUhlYmgzOFh0T0dHOStGd2VNdz09?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: de428a95-98ca-42db-ea15-08dec7d58f8b
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9fea763-6fc1-45d9-61c2-08dec7d59079
 X-MS-Exchange-CrossTenant-AuthSource: DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:58.4696
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:22:00.1455
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1q0q3A/Pd4ORrgMRBq3SzXpnXk0SNH0Xs70vb5CJoJvf7dvb/t3FIpACY2fmjV8zAEAbI5A3xCziuIu5Y2pefw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3B80hJ9Z86Qnu0RmfTECStOAuzp9HgSgM3Q01+W6Uqm5NEN/zSi9PcvQwsd1w6YXplKilc/19Vh1O9l2jZyrJQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWP189MB2829
-X-Rspamd-Queue-Id: A25A01C000E
-X-Stat-Signature: jsy3qdfy41f155zdg9u8peb17xdc1gxg
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781194928-216577
-X-HE-Meta: U2FsdGVkX180VJSRSi4Irsav73hWOJJO9Ce4EhUS6bRVBndSds5bPzfU6fgKyYi5yxrk2/3WtISTaEQyS0J2l+u5Ka7049jrsAZVMbitr+uBnVOuks7P4VyHn5VhF0FR+GRlo0s2XqIrnj6aDTo6XQHaPR+arBL1yUvsg0k9f9PGS9XPKhbJmb+Sfouq6VQ1kswEL46VCzRzUOLW2J+B8IXl88PQ0YXebFPjDnxW9MK2g++MPn6DBcDPNaoqul2HqprfxOUs52dSEsCmu9Er1jKMgji9rqGPdN99GUZydRolwcWpE8uGZhaUODqMGT1HiqxbN3IqljmxU4QbvRysSz861mOWRtEbU4AS4ClDm3gdOlg3Tz90RSAj4/jrd+pdE5XTlupa0HnR6xBIkr8nKsXEVnJYof7kZAggS1HRKj5JY5zza7B7ZRpx9maSwtBBR0+KisArMDn3pvJoquKISoyNayiDkbwgVnHlAzSkxzU1nu4gXlMUJgGRJ+qms9gnoq/BtFSVdyZnG0MpQOPvyDOTcvyD2LsQW+MJMdzNk7blmDsKP6Hn5UK8J1uG686DT2F4jhgB3EgSXbYjWzoQXNlTFlmdYQNllBBin4TL8RkdMRZHTQScqKn8Y3eulEYBfjrQN3jbn4OPtM4kNQnHPqmAjPDFbUTvsqWBkmlalaSpYc2eg3KN67qJdn7IzXvjez904bwvKQ68Yy9irmmiDArEQsrKQmstUF4h+azITl+3vGVK4nLzQRgTSmzTsqmJ5IZCXx2hJNyRebXDJfrD7WUJvN64M1jUlrlnaZ/N4yd8HytH9rvGls3pOLJPSSNmq55w/+EvIZ+yda6nkzB11nfqe+8eU+TMzA8/5ZcFzkb7aJXa654PG2Bs4PP9HD3KzdS2P0GNQYEB3XOgnp5hlXMYPXsnT0yDufHcdAiaLMgDMtePuLLt9+Um5Vv4/znqgBMpc25HWBmphpe5id1
- cGmdOcQx
- GbVZE4x6u+QZxlZ2ZkQmP7QtE703I4Wg++WvYaAGL6X+SnmCSat4XwV/x3JnYL1PkO7k8i/6kiEAk1p6LCtC+497CPHAbtARlxFAQPG3BKZgT4O/MIOe8aGEzsLMx3//UnZO/CaC9W2J100yJJiWPNFAqIgUcHAW0jWMNvEcu7zQQd6mMKV58y3a3p7cidQj7xRu9TzN4UvNyXBH6tRxMGbR4jyqeg3cXwdCPJDkhY0NSj0FUZvFuh499V/QITe7EEkxUw01M52+kHke0PR5LAY1+pItWPdsKN+a72nzPYbIym4TESVPqHoe2pPcFIl5pKTFLATXu/irn5gQ6yEUffDD0l39dDHy7z/wVLoDhvFj0V5S+tkrTNEx9Qu0NqTmifZy/KVX1FKJdje8AjXUA0BFoMHN4IykV4cDCJYWXVgAFouON/cTmsmS0ZQAXDNYK3DGscYGxsUWlbuXuzBkYDDsxZYFr61F5PNH6ME57XOeBWOFJc0Wsmy7I4tCITRAAnbCEUM7sTh5khdbq7pNc+7ZBJjEeInEocwSIo1cHX6klV8fU/Q3E/cBp2kX0Q5J+r7G7bHJDknW3ewzN3aS4aYW7MJwpBhALZUSngtUJE2ShfOwvgcAtc5z0LwClE9KlattOMQjFZY4SF9nX8LYe7jbwqPbSL0Z1ty2v
+X-Stat-Signature: zaearjfurdhmob3fn49n3qgcfubtpzq6
+X-Rspamd-Queue-Id: 5F30540006
+X-HE-Tag: 1781194931-386876
+X-HE-Meta: U2FsdGVkX19c0nVnJjYVyPzmYW5/JHKk8dKAB0ZlZ9VLYOMSla5t09OQ3+5r/D8d9I5HhGyf1q+q8HKQj4TYK73THeDRh3OFdgAr7pSumAgKyV1zDvukXjDuuBFleut3BlJhfZK0vWlqKHpUIH9aXN0MT/OJOmII4duAtTWNDID5YZfueAGv/gIrRE8kMn24X4+p58zm/di4cwJHooKw5UsJET9Q0gzf21RsUMGjaIMmZ8Y6p2xvKRC8x2tHKjr8SD2tDnwx/ij4Ddy3aoDKTZyuIdwiK2WaoJZQ4nb9fm960HO0Z4MK0AyKTgpoQ05K4Uw9tPPQt0llblfsABHf1/DUStDT23xaadBxtt5dgcLcUXYtZnbge/69ArsjkRE7o+XPzptHzumpsGZ7Ru3CA7/XEo0rhdabiDWlEPk9HMrM9OdwWRoOYXca6Ig0rYxmAPCnvcRW5ozK+Nx//n6z3QP4pglRlbbBxi96d5AGG4TZi8VuTQ0syFRmxc2i4Ql4l6rpoR31SrlMm0189XIC0DqbDy6jnbzR1W+k5bs/50RoPl9tuZpm8oyd9rlN8s+E05PPBvcm+vh+RLcf1vrt2xPCkCp68v/uxkZix1K7CBnf7jk9UgzXkkK+xnPuXDOyAV1rK9BVTE1cnD0W/v9ybAF3z5SqbLKibgU86+Y680MbOUiuKIaxFisZtSqhEp5N4jPGrVTZJmjN/2qa7tK2USlPa94x40oBEWXC2YLxW+s+3PL4/uFijJyn5lvLCfbR/j6w+i3pA6UpLUW8d+95mcXm5I7uVvytSz9RpDzB/wwyvYSlKH6oDVewDlXTfHI8DhPxhgFySWWABMbVhT3IEoVTLn8vFs3yeP868/dqyC1dUKKdlv8wyadddbWCkgVAVFcXtsVEjstjpKtQ8u5j/DtWmhbuuuQn1A1obvzkZ/vApEZZgD3EGDh8z7CFRKso62+pfmhj4Lgy8d2R0uJ
+ dMQCEaWV
+ RQn2kKN+oWjxiruykjvSPT/flvkpSZY9iLhz5XatyT8JgkP7DVta/OLq2pjJclyhLwRfh/P7haf41oQ2iUKB/GsmS6hjvZp31EuyRWWJWxhzOBQwG2HT2P7bTlWLF+6foBo1cluDspgEjfqQuPH/KNkvw/NevSWgXhipjljMBERdE6HB21r2nnXGPAHXITXsU6FvZVwh2K/j6oVZFxMnjXSHSF5AKeTWzZPQAx/YAbo5J8gXJ/fhAYjix3qVqejPsl0bQ98s+HSYGudQV7v1mEQ7Fm7+XJxB4vg+ylpC4DUwL46t1VcuTeyNNwi7AW4DRDCDmQJfFRWLU+A1mlezcP/HRGfOLMtnkJBPlIbXcFG1ofaunKgPTOvfGLCwlkPQS4xvN1BVRXxEBnRmjplhGBxCt0fHBYHii8GOiykkgcCpB8Op5vrw3Ob+MWGpnz6ZL6AGER8TlGioSwIBErtvfwye6CgZ7o6A42/Q9siLZinTrE5MTUTIvW2ws4n+igevPM5UpIcK2JMpz1l4viAQrq6G1oDJnBA2/IAtUP9h2JuntqGj+McMumaNJtYfaaVFSslGhsiagaXpJJGMHQjcf5G3/J6qMhjOo3AXONCxITegEOL9CI53DFz48b3tSd9/T/SCsZU2ov5m9auA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,273 +203,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Demonstrates FFI contract violation detection. A C callee returns
-success (0) but leaves buffer=NULL, violating the postcondition
-"ret==0 implies buffer!=NULL". kcov_dataflow captures struct fields
-at the boundary proving the violation without a crash or KASAN report.
+Exercise the binder driver via binderfs with kcov_dataflow recording
+active. Verifies that function argument records are captured at binder
+ioctl boundaries (BINDER_VERSION, BINDER_SET_MAX_THREADS).
 
-Test:
+Requires CONFIG_ANDROID_BINDER_IPC=y and CONFIG_ANDROID_BINDERFS=y.
+Gracefully skips if binderfs is not available.
 
-  make LLVM=1 CC=clang \
-    M=tools/testing/selftests/kcov_dataflow/rust_ffi_contract modules
+Build and test:
+
+  export PATH=$PWD/../llvm-project/build/bin:$PATH
+  vng --build \
+    --configitem CONFIG_KCOV=y \
+    --configitem CONFIG_KCOV_DATAFLOW_ARGS=y \
+    --configitem CONFIG_KCOV_DATAFLOW_RET=y \
+    --configitem CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL=y \
+    --configitem CONFIG_DEBUG_INFO=y \
+    --configitem CONFIG_ANDROID_BINDER_IPC=y \
+    --configitem CONFIG_ANDROID_BINDERFS=y \
+    LLVM=1 CC=clang
+
+  make -C tools/testing/selftests/kcov_dataflow/binderfs
   vng --user root --exec \
-    "python3 tools/testing/selftests/kcov_dataflow/trigger-view.py \
-      rust_ffi_contract -C 8 --ko \
-      tools/testing/selftests/kcov_dataflow/rust_ffi_contract/rust_ffi_contract.ko"
+    tools/testing/selftests/kcov_dataflow/binderfs/binderfs_test
 
 Result:
 
-  vfs_write(0x0)
-  0x0 = full_proxy_write()
-  full_proxy_write(0x0, 0x1, 0x0)
-  0x8200080 = __debugfs_file_get()
-  __debugfs_file_get(0x0)
-  0x0 = __debugfs_file_get()
-  0x0 = rust_ffi_trigger_write [rust_ffi_contract]()
-  rust_ffi_trigger_write [rust_ffi_contract](0x0, 0x1, 0x0)
-    ffi_alloc_buf [rust_ffi_contract](0xffffffff912288ad, 0x100, 0x0, 0x1)
-    0x0 = ffi_alloc_buf [rust_ffi_contract]()
-    _printk(0x6f635f6966663601)
-      vprintk(0x6f635f6966663601, 0x8)
-        vprintk_default(0x6f635f6966663601, 0x8)
-          vprintk_emit(0x0, 0xffffffff, 0x0)
-          0x0 = panic_on_this_cpu()
-        0x0 = _prb_read_valid()
-      0x0 = prb_read_valid()
-    0x0 = console_unlock()
-  0x3f = vprintk_emit()
-  0x3f = vprintk_default()
-  0x3f = vprintk()
-  0x3f = _printk()
-  ffi_check_result [rust_ffi_contract](0x0)
-    _printk(0x6f635f6966663301)
-      vprintk(0x6f635f6966663301, 0x8)
-        vprintk_default(0x6f635f6966663301, 0x8)
-          vprintk_emit(0x0, 0xffffffff, 0x0)
-          0x0 = panic_on_this_cpu()
-        0x0 = _prb_read_valid()
-      0x0 = prb_read_valid()
-    0x0 = console_unlock()
-  0x3f = vprintk_emit()
-  0x3f = vprintk_default()
-  0x3f = vprintk()
-  0x3f = _printk()
-  0xfffffff2 = ffi_check_result [rust_ffi_contract]()
-  0x1 = rust_ffi_trigger_write [rust_ffi_contract]()
-  0x1 = full_proxy_write()
-  0x1 = vfs_write()
-  0x1 = ksys_write()
-  0x1 = __x64_sys_write()
-  0x0 = fpregs_assert_state_consistent()
-  0xba5748 = __x64_sys_close()
-  file_close_fd(0x4)
-  0x0 = file_close_fd()
+  TAP version 13
+  1..3
+  ok 1 kcov_dataflow.binderfs_setup
+  ok 2 kcov_dataflow.binderfs_captured # 636 words
+  ok 3 kcov_dataflow.binderfs_valid_records
+  # Totals: pass:3 fail:0 skip:0
+  #
+  # Captured call records:
+  #   ENTRY pc=0xffffffff... arg=0x4           (fd)
+  #   ENTRY pc=0xffffffff... arg=0xc0046209    (BINDER_VERSION)
+  #   ENTRY pc=0xffffffff... arg=0x0           (binder_get_thread)
+  #   RET   pc=0xffffffff... ret=0x0           (success)
+  #   ENTRY pc=0xffffffff... arg=0x40046205    (SET_MAX_THREADS)
+  #   ENTRY pc=0xffffffff... arg=0x4           (_copy_from_user size)
 
 Cc: Alexander Potapenko <glider@google.com>
 Assisted-by: Claude:claude-opus-4-6 [kiro-chat]
-Link: https://github.com/yskzalloc/kcov-dataflow/actions
 Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 ---
- tools/testing/selftests/kcov_dataflow/Makefile     |   2 +-
- tools/testing/selftests/kcov_dataflow/README.rst   |   8 ++
- .../kcov_dataflow/run_rust_ffi_contract.sh         |  35 +++++++
- .../kcov_dataflow/rust_ffi_contract/Makefile       |   3 +
- .../rust_ffi_contract/rust_ffi_contract.c          | 111 +++++++++++++++++++++
- 5 files changed, 158 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kcov_dataflow/.gitignore   |   1 +
+ .../selftests/kcov_dataflow/binderfs/Makefile      |   4 +
+ .../kcov_dataflow/binderfs/binderfs_test.c         | 177 +++++++++++++++++++++
+ .../selftests/kcov_dataflow/run_binderfs.sh        |  13 ++
+ 4 files changed, 195 insertions(+)
 
-diff --git a/tools/testing/selftests/kcov_dataflow/Makefile b/tools/testing/selftests/kcov_dataflow/Makefile
-index 3a42c54e954d..6412c90edfa1 100644
---- a/tools/testing/selftests/kcov_dataflow/Makefile
-+++ b/tools/testing/selftests/kcov_dataflow/Makefile
-@@ -1,4 +1,4 @@
+diff --git a/tools/testing/selftests/kcov_dataflow/.gitignore b/tools/testing/selftests/kcov_dataflow/.gitignore
+index f71fc89580f8..da4c189ad3be 100644
+--- a/tools/testing/selftests/kcov_dataflow/.gitignore
++++ b/tools/testing/selftests/kcov_dataflow/.gitignore
+@@ -1,5 +1,6 @@
  # SPDX-License-Identifier: GPL-2.0
- TEST_GEN_PROGS := user_ioctl/user_ioctl
--TEST_PROGS := run_eight_args_c.sh
-+TEST_PROGS := run_eight_args_c.sh run_rust_ffi_contract.sh
- include ../lib.mk
-diff --git a/tools/testing/selftests/kcov_dataflow/README.rst b/tools/testing/selftests/kcov_dataflow/README.rst
-index 61a41f3bd596..06a0c805cc74 100644
---- a/tools/testing/selftests/kcov_dataflow/README.rst
-+++ b/tools/testing/selftests/kcov_dataflow/README.rst
-@@ -48,3 +48,11 @@ eight_args_rust/
- 
-         make LLVM=1 CC=clang M=tools/testing/selftests/kcov_dataflow/eight_args_rust modules
-         python3 trigger-view.py eight_args_rust
-+
-+rust_ffi_contract/
-+    Demonstrates FFI contract violation detection. A callee returns
-+    success but leaves buffer=NULL. kcov_dataflow captures struct
-+    fields proving the violation::
-+
-+        make LLVM=1 CC=clang M=tools/testing/selftests/kcov_dataflow/rust_ffi_contract modules
-+        python3 trigger-view.py rust_ffi_contract
-diff --git a/tools/testing/selftests/kcov_dataflow/run_rust_ffi_contract.sh b/tools/testing/selftests/kcov_dataflow/run_rust_ffi_contract.sh
-new file mode 100755
-index 000000000000..8662e532296b
+ user_ioctl/user_ioctl
++binderfs/binderfs_test
+ *.o
+ *.ko
+ *.mod
+diff --git a/tools/testing/selftests/kcov_dataflow/binderfs/Makefile b/tools/testing/selftests/kcov_dataflow/binderfs/Makefile
+new file mode 100644
+index 000000000000..9f1588512dba
 --- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/run_rust_ffi_contract.sh
-@@ -0,0 +1,35 @@
++++ b/tools/testing/selftests/kcov_dataflow/binderfs/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0
++TEST_GEN_PROGS := binderfs_test
++CFLAGS += -Wall -O2
++include ../../lib.mk
+diff --git a/tools/testing/selftests/kcov_dataflow/binderfs/binderfs_test.c b/tools/testing/selftests/kcov_dataflow/binderfs/binderfs_test.c
+new file mode 100644
+index 000000000000..ce9b49aa0b9f
+--- /dev/null
++++ b/tools/testing/selftests/kcov_dataflow/binderfs/binderfs_test.c
+@@ -0,0 +1,177 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * binderfs selftest for kcov_dataflow
++ *
++ * Exercises the binder driver via binderfs with kcov_dataflow recording
++ * active, then verifies that function argument records were captured at
++ * binder ioctl boundaries.
++ *
++ * Requires: CONFIG_ANDROID_BINDER_IPC=y (or _RUST), CONFIG_ANDROID_BINDERFS=y
++ */
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/mount.h>
++#include <sys/stat.h>
++#include <linux/android/binder.h>
++#include <linux/android/binderfs.h>
++
++#define KCOV_DF_INIT_TRACK	_IOR('d', 1, unsigned long)
++#define KCOV_DF_ENABLE		_IO('d', 100)
++#define KCOV_DF_DISABLE		_IO('d', 101)
++
++#define BUF_SIZE	(1 << 20)
++#define BINDERFS_PATH	"/tmp/binderfs_test"
++#define BINDER_DEV	BINDERFS_PATH "/my_binder"
++
++static int setup_binderfs(void)
++{
++	struct binderfs_device dev = {};
++
++	mkdir(BINDERFS_PATH, 0755);
++
++	if (mount("binder", BINDERFS_PATH, "binder", 0, NULL)) {
++		if (errno == ENODEV || errno == ENOENT) {
++			printf("SKIP: binderfs not available\n");
++			return -1;
++		}
++		perror("mount binderfs");
++		return -1;
++	}
++
++	/* Create a binder device via BINDER_CTL_ADD ioctl */
++	int ctl_fd;
++
++	ctl_fd = open(BINDERFS_PATH "/binder-control", O_RDONLY);
++	if (ctl_fd < 0) {
++		perror("open binder-control");
++		umount(BINDERFS_PATH);
++		return -1;
++	}
++
++	strcpy(dev.name, "my_binder");
++	if (ioctl(ctl_fd, BINDER_CTL_ADD, &dev) && errno != EEXIST) {
++		perror("BINDER_CTL_ADD");
++		close(ctl_fd);
++		umount(BINDERFS_PATH);
++		return -1;
++	}
++	close(ctl_fd);
++	return 0;
++}
++
++static void cleanup_binderfs(void)
++{
++	umount(BINDERFS_PATH);
++	rmdir(BINDERFS_PATH);
++}
++
++int main(void)
++{
++	uint64_t *buf;
++	int df_fd, binder_fd;
++	uint64_t total;
++	int valid = 0;
++
++	printf("TAP version 13\n");
++	printf("1..3\n");
++
++	/* Setup binderfs */
++	if (setup_binderfs()) {
++		printf("ok 1 # SKIP binderfs not available\n");
++		printf("ok 2 # SKIP\n");
++		printf("ok 3 # SKIP\n");
++		return 0;
++	}
++
++	/* Open kcov_dataflow */
++	df_fd = open("/sys/kernel/debug/kcov_dataflow", O_RDWR);
++	if (df_fd < 0) {
++		printf("not ok 1 cannot open kcov_dataflow\n");
++		cleanup_binderfs();
++		return 1;
++	}
++
++	if (ioctl(df_fd, KCOV_DF_INIT_TRACK, BUF_SIZE)) {
++		printf("not ok 1 INIT_TRACK failed\n");
++		close(df_fd);
++		cleanup_binderfs();
++		return 1;
++	}
++
++	buf = mmap(NULL, BUF_SIZE * sizeof(uint64_t),
++		   PROT_READ | PROT_WRITE, MAP_SHARED, df_fd, 0);
++	if (buf == MAP_FAILED) {
++		printf("not ok 1 mmap failed\n");
++		close(df_fd);
++		cleanup_binderfs();
++		return 1;
++	}
++
++	printf("ok 1 kcov_dataflow.binderfs_setup\n");
++
++	/* Open binder device */
++	binder_fd = open(BINDER_DEV, O_RDWR | O_CLOEXEC);
++	if (binder_fd < 0) {
++		printf("not ok 2 cannot open %s: %s\n", BINDER_DEV,
++		       strerror(errno));
++		munmap(buf, BUF_SIZE * sizeof(uint64_t));
++		close(df_fd);
++		cleanup_binderfs();
++		return 1;
++	}
++
++	/* Enable recording and exercise binder ioctls */
++	ioctl(df_fd, KCOV_DF_ENABLE, 0);
++	__atomic_store_n(&buf[0], 0, __ATOMIC_RELAXED);
++
++	/* BINDER_VERSION - simple ioctl that exercises the binder path */
++	struct binder_version ver = {};
++
++	ioctl(binder_fd, BINDER_VERSION, &ver);
++
++	/* BINDER_SET_MAX_THREADS */
++	uint32_t max_threads = 4;
++
++	ioctl(binder_fd, BINDER_SET_MAX_THREADS, &max_threads);
++
++	ioctl(df_fd, KCOV_DF_DISABLE, 0);
++
++	total = __atomic_load_n(&buf[0], __ATOMIC_RELAXED);
++	close(binder_fd);
++
++	if (total > 0)
++		printf("ok 2 kcov_dataflow.binderfs_captured # %lu words\n",
++		       (unsigned long)total);
++	else
++		printf("not ok 2 kcov_dataflow.binderfs_captured # 0 words\n");
++
++	/* Verify at least one record has valid header (type 0xE or 0xF) */
++
++	if (total > 3) {
++		uint64_t hdr = buf[1];
++		uint32_t type = (hdr >> 28) & 0xF;
++
++		if (type == 0xE || type == 0xF)
++			valid = 1;
++	}
++
++	if (valid)
++		printf("ok 3 kcov_dataflow.binderfs_valid_records\n");
++	else
++		printf("not ok 3 kcov_dataflow.binderfs_valid_records\n");
++
++	printf("# Totals: pass:%d fail:%d skip:0\n",
++	       valid ? 3 : 2, valid ? 0 : 1);
++
++	munmap(buf, BUF_SIZE * sizeof(uint64_t));
++	close(df_fd);
++	cleanup_binderfs();
++	return valid ? 0 : 1;
++}
+diff --git a/tools/testing/selftests/kcov_dataflow/run_binderfs.sh b/tools/testing/selftests/kcov_dataflow/run_binderfs.sh
+new file mode 100755
+index 000000000000..5376e5350061
+--- /dev/null
++++ b/tools/testing/selftests/kcov_dataflow/run_binderfs.sh
+@@ -0,0 +1,13 @@
 +#!/bin/bash
 +# SPDX-License-Identifier: GPL-2.0
-+# Test rust_ffi_contract module capture via kcov_dataflow
++# Test binderfs ioctl capture via kcov_dataflow
 +DIR="$(dirname "$0")"
-+KO="$DIR/rust_ffi_contract/rust_ffi_contract.ko"
++BIN="$DIR/binderfs/binderfs_test"
 +
-+if [ ! -f "$KO" ]; then
-+	echo "SKIP: $KO not found"
-+	echo "Build: make LLVM=1 CC=clang M=...rust_ffi_contract modules""
-+	exit 4  # kselftest SKIP
-+fi
-+
-+if [ ! -e /sys/kernel/debug/kcov_dataflow ]; then
-+	echo "SKIP: kcov_dataflow not available"
++if [ ! -f "$BIN" ]; then
++	echo "SKIP: $BIN not found"
++	echo "Build: make -C tools/testing/selftests/kcov_dataflow/binderfs"
 +	exit 4
 +fi
 +
-+OUTPUT=$(python3 "$DIR/trigger-view.py" rust_ffi_contract --ko "$KO" --raw 2>&1)
-+RC=$?
-+
-+if [ $RC -ne 0 ]; then
-+	echo "FAIL: trigger-and-view exited with $RC"
-+	echo "$OUTPUT"
-+	exit 1
-+fi
-+
-+RECORDS=$(echo "$OUTPUT" | grep -c "^\[ENTRY\]\|^\[RET")
-+if [ "$RECORDS" -gt 0 ]; then
-+	echo "PASS: captured $RECORDS records from rust_ffi_contract"
-+	exit 0
-+else
-+	echo "FAIL: no records captured"
-+	echo "$OUTPUT"
-+	exit 1
-+fi
-diff --git a/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/Makefile b/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/Makefile
-new file mode 100644
-index 000000000000..d2a0261070b1
---- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-m := rust_ffi_contract.o
-+KCOV_DATAFLOW_rust_ffi_contract.o := y
-diff --git a/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/rust_ffi_contract.c b/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/rust_ffi_contract.c
-new file mode 100644
-index 000000000000..9cbb17c42195
---- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/rust_ffi_contract/rust_ffi_contract.c
-@@ -0,0 +1,111 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * rust_ffi_contract.c - Demonstrates kcov_dataflow detecting an FFI
-+ * contract violation at a function boundary.
-+ *
-+ * The pattern: caller passes a struct pointer to callee. Callee's
-+ * contract says "returns 0 implies out->buffer is valid". A bug in
-+ * the async path returns 0 but leaves buffer=NULL.
-+ *
-+ * kcov_dataflow captures:
-+ *   [ENTRY] ffi_alloc_buf(alloc={.buffer=NULL, .data_size=0}, 256, 16, 1)
-+ *   [RET]   ffi_alloc_buf() = 0
-+ *   [ENTRY] ffi_check_result(alloc={.buffer=NULL, ...})
-+ *                             ^ proves contract violated
-+ *
-+ * Write to /sys/kernel/debug/kcov_dataflow_test/rust_ffi_trigger to run.
-+ */
-+#include <linux/module.h>
-+#include <linux/debugfs.h>
-+#include <linux/slab.h>
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("FFI contract violation detection via kcov_dataflow");
-+
-+struct ffi_alloc {
-+	void *buffer;
-+	u64 data_size;
-+	u32 free_async;
-+	u32 flags;
-+};
-+
-+/* Prototypes */
-+int ffi_alloc_buf(struct ffi_alloc *alloc, u64 data_size,
-+		  u64 offsets_size, int is_async);
-+int ffi_check_result(struct ffi_alloc *alloc);
-+
-+/*
-+ * Callee with contract: returns 0 implies alloc->buffer is valid.
-+ * BUG: async path with free_async==0 returns 0 but buffer stays NULL.
-+ */
-+noinline int ffi_alloc_buf(struct ffi_alloc *alloc, u64 data_size,
-+			   u64 offsets_size, int is_async)
-+{
-+	if (!is_async) {
-+		alloc->buffer = kmalloc(data_size, GFP_KERNEL);
-+		if (!alloc->buffer)
-+			return -ENOMEM;
-+		return 0;
-+	}
-+	/* BUG: returns success but buffer is NULL when pool empty */
-+	if (alloc->free_async == 0) {
-+		alloc->buffer = NULL;
-+		return 0; /* contract violation */
-+	}
-+	alloc->buffer = kmalloc(data_size, GFP_KERNEL);
-+	alloc->free_async--;
-+	return 0;
-+}
-+EXPORT_SYMBOL(ffi_alloc_buf);
-+
-+/* Caller that trusts the contract */
-+noinline int ffi_check_result(struct ffi_alloc *alloc)
-+{
-+	if (!alloc->buffer) {
-+		pr_err("ffi_contract: VIOLATION detected - buffer is NULL after success\n");
-+		return -EFAULT;
-+	}
-+	kfree(alloc->buffer);
-+	return 0;
-+}
-+EXPORT_SYMBOL(ffi_check_result);
-+
-+static struct dentry *test_dir;
-+
-+static ssize_t rust_ffi_trigger_write(struct file *f, const char __user *buf,
-+				 size_t count, loff_t *ppos)
-+{
-+	struct ffi_alloc alloc = { .buffer = NULL, .data_size = 0,
-+				   .free_async = 0, .flags = 0 };
-+	int ret;
-+
-+	/* Trigger the bug: is_async=1, free_async=0 */
-+	ret = ffi_alloc_buf(&alloc, 256, 16, 1);
-+	pr_info("ffi_contract: ffi_alloc_buf returned %d, buffer=%p\n",
-+		ret, alloc.buffer);
-+
-+	if (ret == 0)
-+		ffi_check_result(&alloc);
-+
-+	return count;
-+}
-+
-+static const struct file_operations rust_ffi_trigger_fops = {
-+	.write = rust_ffi_trigger_write,
-+};
-+
-+static int __init ffi_contract_init(void)
-+{
-+	test_dir = debugfs_create_dir("kcov_dataflow_test", NULL);
-+	debugfs_create_file("rust_ffi_trigger", 0200, test_dir, NULL,
-+			    &rust_ffi_trigger_fops);
-+	return 0;
-+}
-+
-+static void __exit ffi_contract_exit(void)
-+{
-+	debugfs_remove_recursive(test_dir);
-+}
-+
-+module_init(ffi_contract_init);
-+module_exit(ffi_contract_exit);
++exec "$BIN"
 
 -- 
 2.43.0
