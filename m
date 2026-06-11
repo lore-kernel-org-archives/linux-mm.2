@@ -4,86 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC2FCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7EBCD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:21:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A36BE6B0005; Thu, 11 Jun 2026 12:21:47 -0400 (EDT)
+	id 618CE6B0092; Thu, 11 Jun 2026 12:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E7946B0088; Thu, 11 Jun 2026 12:21:47 -0400 (EDT)
+	id 5C99D6B0096; Thu, 11 Jun 2026 12:21:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AF016B008C; Thu, 11 Jun 2026 12:21:47 -0400 (EDT)
+	id 4B7F56B0098; Thu, 11 Jun 2026 12:21:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 782EE6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:21:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E258AC27C1
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:21:46 +0000 (UTC)
-X-FDA: 84868147812.22.2683366
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 32CD26B0092
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:21:53 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0638F1C37BD
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:21:53 +0000 (UTC)
+X-FDA: 84868148106.15.5D7524F
 Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012068.outbound.protection.outlook.com [52.101.66.68])
-	by imf01.hostedemail.com (Postfix) with ESMTP id ADB6140002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:21:43 +0000 (UTC)
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1FCE740002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:21:50 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=aL+FTJak;
+	dkim=pass header.d=est.tech header.s=selector1 header.b="zsOEsUl/";
 	dmarc=none;
 	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781194904;
+	s=arc-20220608; t=1781194910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LE8fucAFZUwmO8QVIHJBuiN2oOkUwEcB8ensrxDjswA=;
-	b=1NIGEXSKkit01PoCzwWzRGcVIotpukjjwfig3o6oN8cFc/cMDKnnQsL6YO1noK4vr8wrp1
-	3acH4VTbLkBLM0dZbSvYmfvqJxV6KN8dE/qRzlxhjMCEML5sTe/lON9ByEC1LHfHaID79H
-	ll+l1cAd1MbuLi5CDgZ5f6iMM/wLjLs=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xgCQ7Hx/oHrJLsXa+bC+Kt0ZCr/xp8G5B/LjY4Sh7ng=;
+	b=VuDRUOAD+BABzqkC7P5+gFoUcoGT2h8d3Q8u7DwDIDCSVhJa3FCfnTVJv6jGzSfFC/5WDT
+	3ZregmcO6vwKGhYUSJgRqTslEgIBH1wyfrOGRnv70aOpohLUd1TXyWlIFbti9R9b+fROFa
+	WnltdmY0dFgXc0imhLyfoyD/TN7TCu8=
 ARC-Authentication-Results: i=2;
 	imf01.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=aL+FTJak;
+	dkim=pass header.d=est.tech header.s=selector1 header.b="zsOEsUl/";
 	dmarc=none;
 	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781194904;
-	b=6W7O8WW8BKP3AeYb+O+DjRCpzhHO+bR2t0o0ouCVeRIFilD7dwN4aeUP1qHilNhOtWw3gK
-	FP3E+ju+Es6D51lOYkbpjg8rqjYTeIb6b/j3N8P9/Q/ikuMqrSE8b7jrPon5ba37NrxUkD
-	kifsNN4/Hp0j0WTj1Fzx3jYNTPOqucU=
+	t=1781194910;
+	b=UaiQr3FKrSNJlPvkgC8aKJPaH/bR3tJoFD3dE25m7bpBN4ZMJf4sS4lisQk/DG7xZFNEAn
+	6iw4AHZhAW+3q63b8sBgLDSmT8x3BX1Rude+cXVqroTV15TnJM0fIgTdFNi+QD/Pzn1k7r
+	4sdNnQoPuWLW4uVfnSEzsBbcZkfWb8I=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gr7LshFW9RfBEQ+UJbqyCSv5mkWqQMBCjUttBghhSc3xDmqODSeeip51E2atcA8WHVT/zSySxRY4zPjSzOzMA+yCIXCgNd6epqZDc4dxWQsQ7Txrtztl1PMdBASxK3EYgrRVFTiu0Z55e+8T8JtJLy7W0kpplN4xt1EAXyrzDQopcUXRellYRKofG1cLjBWV5MmoWEUa7l748DaA+iBQ87LoyCaDonpblIvGlu+WBMS1RLLGXT3mV3VNziPbusUlCeWCzODHh4UFfvYKjHQ0km+Zcx9BHU5SV3ARIuoW9tXscIaSP3Vt6kAvhElBhOlvSwDPOL1z9CTjIX8CmaG2fA==
+ b=Px0BfZlXqGS2xsEfz3ACqWvDNoDPvvqbgsF1PNrBTdcco6xc551suMmTHi5CkufhkgCPONqT1Uw1bZx9PIPvWSZV3HORIqUWWaPzhAJGI0G5ZMSmOzTI45odZs2v7yOW8ZnH9TjXVFRaEdlNNWpQBDKw8ecEK4EqkfusRo+z5/xKNwzIlJ5Tgro+x6pZsWxcEJhPptXBgKFCWry7oWdpJIGL2jbt5Ed4lOLAUV0ZvrLpksDrjtJawsS/lZnlwKNltk3c1fiwoCf6mnlh1O7eB9wjAB7Ppox9FS4gWfzOXoWSvucPqo6pq0N3ylTwfQ9k7Y4YXbWF35ff6pRWJ2iQ4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LE8fucAFZUwmO8QVIHJBuiN2oOkUwEcB8ensrxDjswA=;
- b=KSwg3NzCmkgXC3P9qJPxvqCiYrYz8x+aF6DvK0figi8to931PLjK9FeVXMik6Er4bzGgUe8bajHRk6xgcV3CQtesG88kh8BVSAWOkC7aeFFc5u5Ybg+Ka3fqG+/InMESi8XJ8FZNaajtOK4EwMLH4yBeALimPXgHAYzh4hDp0lgYtIdyxy0BOCyxnw85bx/Qc+ckJzH0O1SNdBoSm+AFysmHK2/yULbnvtTwiQXeCjtfV7Fg8aveF/aMqBdeHfBoFOQhyC2X7eAorJ32b35h4fCo220n9Fu/qTG4avE1zfPtbis4dzV3afyd9W2/b0M42oMIvvy8N75i+6uHw+jmTA==
+ bh=xgCQ7Hx/oHrJLsXa+bC+Kt0ZCr/xp8G5B/LjY4Sh7ng=;
+ b=YhZ7314XouqH3xSYNG+MThQDQsjWL8eLbppUT27CNfqJEd6YyKQKCpkkjS5Ebtn/d7M0DpQ5RHKeaKTms1SM2KIr7fOsd+Ty4Fl21SNHSO+dZK2Kgs7XBPa8GU68Hg7WSOIwIqD9LmVcIwY281i22WxXsOLUfLO0HfvPtODsv4isn7l3Kf2ea/ikmF08My0nWrsobPR+rQHwyKMaDLJH3HSSiWJN7BPEyZm+ph06fadBTnN2ZDaQ+re+QApB4XfaFUMGhRrjiBW5odTRkMNhZG6HD3Y193eOFsmZXOvM5VScK1bz5rd1U4Ba9ikZ6WjiwAfuNlHtu66bL1e9uQhCDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LE8fucAFZUwmO8QVIHJBuiN2oOkUwEcB8ensrxDjswA=;
- b=aL+FTJakNPdMKhJDkxVjgfkifm7XBeaNMiRUCepQamqgKvLtqy1g/6rbD4hCmWep5iILbixD1skSBMStM7zFcVgNqD5L53y8jdgqDebCLTgbZACOxl3v3Cs97LB1F5opRnK5aFRVcwCpHFMzZ2aOHTzqGWkqXwokvj7jGP76w4L9TbkDUIho1rGr96ZKp4QqZBDib9SHmh8FuqGJURZpir77NYGgnzHGUfXV17QOjJcEZsIB1/HI6pyqai4nElNf++wND+BuqiYjJIBw/3pZgiLlsE6OWwKQy4OK36GSe/XX8VnUUW4whMA7k0YagU7jU68lFrdIyJGV647Bipaf8Q==
+ bh=xgCQ7Hx/oHrJLsXa+bC+Kt0ZCr/xp8G5B/LjY4Sh7ng=;
+ b=zsOEsUl//2CPpd3oce1qMjs0aEAPtlsq496X388UfwsH+Y++1GZVj2S/R1HVQLTapmAj47xhsCu1jpPoLjjTNMvAz/lf9QWEAYGZ566zn4m40Ga1OnDXLKXd1fM05wob9BUATXDBXBx5HUra3bLhPwAYoW3Za+CpSMT6bktwEecjy18ohm3iCf4TvkCN1Zx0WuhnOTPvt3Q6AVB/JH6BvXW+x2iZImIAXDwbsAqNndAv8Yd+lGdMy5Oj54FebBbkqp73Rg7AC2zHGX8godSZ2HHDtgAW5Ijdgg1+LMJ7fmFdWqqRoFwmiKkMboeSmsuxQTRPaomEHP09a/R0nez0/g==
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:2a5::24)
  by PAWP189MB2829.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:468::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 16:21:39 +0000
+ 2026 16:21:42 +0000
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471]) by DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471%6]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 16:21:39 +0000
+ 16:21:42 +0000
 From: Yunseong Kim <yunseong.kim@est.tech>
-Subject: [RFC PATCH v2 00/14] kcov: add per-task dataflow tracking for
- function arguments/return values
-Date: Thu, 11 Jun 2026 18:21:02 +0200
-Message-Id: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
+Date: Thu, 11 Jun 2026 18:21:04 +0200
+Subject: [RFC PATCH v2 02/14] kcov: fix INIT_TRACK race in kcov_dataflow
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAG/gKmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDIzMDM0ND3SQT3ezk/DLdlMSSxLSc/HLdMiNd4+TktDQLI4vUJGNDJaDOgqL
- UtMwKsKnRSkFuzkqxtbUA+ffaD2oAAAA=
-X-Change-ID: 20260611-b4-kcov-dataflow-v2-3ccff828eb31
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260611-b4-kcov-dataflow-v2-v2-2-0a261da3987c@est.tech>
+References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
+In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
  Juri Lelli <juri.lelli@redhat.com>, 
  Vincent Guittot <vincent.guittot@linaro.org>, 
@@ -115,90 +113,88 @@ Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
  Yeoreum Yun <yeoreum.yun@arm.com>, sashiko-bot <sashiko-bot@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194894; l=14087;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=1551;
  i=yunseong.kim@est.tech; s=20260426; h=from:subject:message-id;
- bh=U/vDvf/RqInQrKwCNTqXW5TxrDE1O1VtzITHyk86JTw=;
- b=zOhXe84rhNa/yDhRbbYSGu5nQiCwfZNW/GME967sDdQORFM9dhOieWJXkpAeGxgT7ip6hJ7J3
- HA3fj1QuanIBDbptQpaCmfs6ltAyIex96zM+taopTyZ+2cHyjSSBTtV
+ bh=5j3WkQtjfH2boFmRsdHhDZ28sX+tub4KphkwIkiFKHY=;
+ b=K3sNsCZBJ31RVNtWUeY1VmAAs6Af9PvIE2lKEoaab3Cgs2puCiy1U/hkb+oUec3zR5f/ovCFh
+ Q53yF0OL4iHCgFnNXzMw2rN6Yygcu07coBV8uy/QgNcEgr9c2oBw3jj
 X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
  pk=1nBUX92cvTaavYG1+MR073D+XMKhdOciBZcnf6h6qEo=
-X-ClientProxiedBy: GVX0EPF0005F693.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::13c) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GV3PEPF0001DBAC.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::6ec) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:10:2a5::24)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9P189MB1754:EE_|PAWP189MB2829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4edaa4a1-998d-431e-56be-08dec7d583d7
+X-MS-Office365-Filtering-Correlation-Id: c1a145ed-2cbd-4725-1e8f-08dec7d58609
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|3023799007|6133799003|18002099003;
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	zBgW47YBTrH/VHw4J9c/bBTfcbYwTsJqADfptSMiEUTWDq5/MTWqNBt3yEU8twec5ycA9QGuLHqixVB0l9+zAIyq0I8Nw+b53hdiUEwVj7j9r9fLM2l0wXzlD66CYm5Eh7Wk0kgORpw0plNdB/3LTD7b4liZ2jGy++8/B2TatMMTjhP1iAJaQEmlLlpSdZNIV7IpxIwKn28aLrRDjioj+nYywyjLAe0yJhTK7yP+6Gk61pwVftcJaizaxbJUZz/UapYXu1LAXqtLXJDdXqWlOn0XxpgbpjZ1/dSjiNdPQqtPa6QyZd4KH+1mzHTQu1QLsvHWO0vucGZ8ThOUqWtnDpl6iE18ptQGPsdHkceVDVU/cgkg5X4eANHIxkO3Vny9a2njRCyIfGmXFYAmM1uq7LxKvpSMF2fZyYv13B5NKjbHs5A8FbXfDf9XDQ8jolTJm/Itu/1H8KYu/2n77ZNi/6nFli46q+BC1Ga7uQDIXNFTEFJvtDZoLC+8ynCj3s/gGUJ1mqA0+2ch4nH5HXnBWaOG1kdiQgs5jHD62Olm9FvGBsCY5EQfW6xrgXuW6xcoYaxeX3Q0g4P3m89zQxufE7/9ixgYY9VoxjWjNluxDq9KlsdlI0X6Tmrh0d1ciQAFSNhiO+Rz4fkUodrpX6/gLZUPX1NLRJuM9hudCBDMdRCoUOZMYG0WB/Hy9SZ8lqTfjQ3phqekn6qI2uxTtPF1TS1NdWFglJrWUsea7gL9LHB6tQY45VVOeksC88s9s1i5
+	mCFcPEBiu7/N+E3e/JhS4CGh5bO1fjxFQI/8gvtv24EubWFuOg5w62gdlKdPgor4iDpzdGV4glf3iHb2HBGA3KjQov9KdchLF93o1lyQnjIw5O0E8OmVAmIdCQ67kr0rPk/dABwNS1gEfAjioEdVIpferpyysQqUPZqtEolnWL7ilhkHKmSfNJe6FiUjDzAuKBc/k+BRtJ28vNoCKe6awD7gryqCd3lB4IHVdj6uHoFg1kxmEHSZoRDnLyP5gNzF3RAbSzHctam5+4faQcA7vIKHZqysfivo2uSHwOhJCPX0Uvsbx3w8V7Ghddgqfqzs55435EyzXYH84UxMZPj69zCr3ZMKF5nDbLFUPvaQXHxCPNQ8ukKk4daICUJnOn9x6TwNH+c8V4R9Bj9QpNKrqHkM5mt+yl/FPUd9hB0/3ICWg6M0LNzVO72im+1MyKMA5nLw/jECv7fwZ5uPQJFe2LCSsit4Kk4jwN+JXFOKWfwnChkFPl9Bg/2VQa5kHKUkk3Czy9cVVgnXyKS+hZTE9uf9HpEL4SGp/gq/SK3yxU5wYhw1j/VUiAGP9pCelsVTKt9C5f6z2EqHbqhdqXGfkH7B88kYQjwU8LQmahOVYyGOLM+mFTWTFLgqx8cA2YdDhgEGqCk2aF4oCdYBF9glJ5uw15kW789pYP/PS8J5l/0m3Tt9WnmFxX469J/oYVnD
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(3023799007)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c2ZoakhsR1NhQzk1RnZlQnlHeHRHUzgycmI2Ymp4QlZxNGlqOHRLTFNDNk1a?=
- =?utf-8?B?Rm5WODZpbEllMTE3VkVhNE1VV1ludkFtZWE4OUE2enN5TDhhbDAwMW1ZUzFU?=
- =?utf-8?B?QzFLeTZxcmFISkxNZi9JR2N2bXNnT0kxQUVIaGh6MkRKanNsZENNWTFabjBO?=
- =?utf-8?B?SlFRb1RkYzc1WXl6YVdZcCtIOEpZZllhaXFEbFRTcUVkMGs0eXNIZTNDZTFJ?=
- =?utf-8?B?b3FDZld3YnJhRGNudy9aVHdOWXFNRUt3Z3JWd0pHS2tVU1diMDlwckFLNTJj?=
- =?utf-8?B?YVV3bnBHblBPQjViQ05GU2hIWDI5dTJjQ2xuNDFCZ0RpYm5Jb3lGeEpvcmVu?=
- =?utf-8?B?eFo1VjZUYnVBaktUcDQ5NG96dWVKYmZHS1h5VzRkRE9RVlVTcy9jTGlJZzI1?=
- =?utf-8?B?WkdabXJnRUo1LzlobjdMRmtPLzVpQW1CRVVDZGlNaTBtYXEyWUl2aWNYLzhh?=
- =?utf-8?B?TFIvSDJoSEludmZYOEErU3hqQUZQLzBvQWo2SEdxNlhFYmhNcUxzbndaYTY3?=
- =?utf-8?B?SXZsL1UreVNLbkVaSTJFaFlaMXFoblZLMklweDlPLzMxaE5lZ2lvVENhTVhi?=
- =?utf-8?B?YXZEcHFPVTdGNUR5MlAxcHZkTHJvMis3VVhHSTZvQ2RlQmQ5dE8zRzMvNXhW?=
- =?utf-8?B?Q3BqVmlLa1MwNjdWUFo4d1RrYmtlUEtUbmIzWmJtVlBqR1R3MnBDeEdkRG84?=
- =?utf-8?B?eGNOcUJSZlNPd0lPLzJtZldBbi9DUTZrZlc3YnZCNHpkTVVzOW10cEFzY29u?=
- =?utf-8?B?d3pQWTFKcDA1Z1l2MVpyQWFPVzFVZGJHZDhLaGs5UnNaSEw3N0xSa3ZkQzRl?=
- =?utf-8?B?cjdHY3JqUGh5RXNpRmZlU2FZZlM5cGNYWWlramNRd0ZPZWdqK2Q5d0xxVlNM?=
- =?utf-8?B?Y3Z6SmVCdFQ0bjVweUtJdUV6U0o4SkJQOWFnNFdaNkVQZHlOTlVwaDlSVEZ0?=
- =?utf-8?B?T245ZFdETXh5REdvclRPVklxMXpSRTZ4cURpdkVDekg0eG5mUFBtS0t3aFRF?=
- =?utf-8?B?YmhaelBqMmtHQnpZSENmTnlmNU45cjhhY0V2ZFBxRE9VWjVsYkRrZCtRZzFm?=
- =?utf-8?B?cDZqUDQ4L0Zmc1FYRm83RE5zSmRxdWZqVDBnNFJtMWhjd3VYS2RlbzQ0eVRN?=
- =?utf-8?B?ZFNFa1F3OVRWVGRRMHZlNnkvcHFMajJGcDRXcGdCckd3Qkw4aktKZ2J2Qi9j?=
- =?utf-8?B?M2ZJcU8yRVZIZkVtWE95KzFDc2M1RStXQVpzYUp2cmZnUHJtUnh3b3JxVGQ2?=
- =?utf-8?B?RTlUU0NFcTBEaC9jVFE1YWlMK1lWQlo5QjBQRGpzZDNCVitVOTV4d0VWTkpJ?=
- =?utf-8?B?V0drOEViYlN5bkdNVlZxQjY2RWEzRkNZNklNMVYvUHY1L1JPa3hBcStDcUw0?=
- =?utf-8?B?aFp5U2tKOWZ5c1lDMnpNbmZteC9KQmt2M0tiR0N3YmtSWSswN3VkcGExU1Rz?=
- =?utf-8?B?YytNMFNpN0pEb2c0ZjU1dVNiRXd3V3FsM1NNQjBZSGs3YnBQMW9qZ3RsMERG?=
- =?utf-8?B?b0Nkdk11Y0Ryb0R4ZlR1blZFVm9MclFROFBsUi9GQjF4Y0ZNVyt6bnlWZWdE?=
- =?utf-8?B?dGYya281dFRqZkFVQmlRSjZuQjd3YTlldUlRcVRSOXJzV3gwQStxWVpvaHJO?=
- =?utf-8?B?WXFDMExKeVVwVzlCaVJiUW9EZFI0WlNaUWdiK2N6T25WbUhHSzJxeHRzU3gr?=
- =?utf-8?B?d1o2UG5UaXgycWhPSmJjU05TcENoZG5MS3ZXcUF0akhoeDM1NWU4T2lkb0tQ?=
- =?utf-8?B?SGVEY3dNY25KaktnYXI5c1lNSG9ZQmxUMDdUM2FnY052NUFKK3Myak5rQnEw?=
- =?utf-8?B?RmFCWVJvVE5jd0kwUFNJM1M3WEJtN0x4YXBnY1FYYzYzS3ZuV0FqZER5R1BM?=
- =?utf-8?B?dk1iTkxjL1VYQ2Y3emloTm12bHJPQ0h2blpZUmV4VXZMYlRZS2dLZXJXQXNC?=
- =?utf-8?B?ZmYxL0RhMmI5UzFFQXJzQXpoTUtCRTk4aGhGNjJxajA1dzlOUkFBUTBSSVdn?=
- =?utf-8?B?ZDI2SzIwLzhIM2dPNUZEUlI1M0czVG1ad3Q3ZEdjWHVFWkU0VHQ0dHV0OWgz?=
- =?utf-8?B?Y2E2ODhReXlaZGZ2NmRBdXN4MnF4cW84WVhCMXNyUXlRVFJrc0s4eTlCNHpi?=
- =?utf-8?B?UEpFTnA1VndCVldId3JKOU1GYUVwUlB1TnRHYS9WNXZVWWhKaVpjdzBnVFQv?=
- =?utf-8?B?ZlhPN0w0TFN5K0RVVGduUCsycTkrdmVnZFFTRWlTMzhOK0R6eit0YkhHc2pj?=
- =?utf-8?B?UWl5VkNoWHVKaFdSY2lEWldVY2w5YTVhME5adk1pT3U0K2dJZG1rWTFUWlUw?=
- =?utf-8?B?N0E1VStRallzRURLdlhXeTFmUXJGdWZoUDJHaTdhV3dFVFhNb2R5dz09?=
+	=?utf-8?B?NEE4R1lZTkZOd2V5b1lCTmJzZm5FNm1COFc1QjloWFFnbEc3b0doWExrUzRV?=
+ =?utf-8?B?UnJFbG9BMUwya3FHdWZNZGhYaUd5MVBOdDFJSVVYaFl6WkZyOUN4R0tWSklH?=
+ =?utf-8?B?bUc4dTVYM1ZKY0pXU0F1bitiMDJNSXRnc0hSbHdtVWxybHZ0Q2hwVUxqTk02?=
+ =?utf-8?B?Q1FDOHdndTlyb1ZNU0ova3RvNG81TlA0UGhjbVc1QW1kRUVnU3N5N2VneGJl?=
+ =?utf-8?B?YlhOeHZvNHNQcjZJUDB2Zlh4c091NFpnaFJYc3pZS1M2dFhydkhqU1VKSHJl?=
+ =?utf-8?B?ZEFMVllYendmOGc5dUt2eXcyZnlFV043WkRIb1Z0NzFoajMyc3dRUjdNMHJq?=
+ =?utf-8?B?YmQzSXZTZWNUNCtFUHc0TEpmODA3UUdzU1B2U3d5eEFQTkhmdDVCOExlOFdJ?=
+ =?utf-8?B?U2lIaVUrS0U0NWRWanYvc2c4TlJnU2RGeVRzZGMyZHI3WkpnRitTSENiYmNn?=
+ =?utf-8?B?WGs4QlhCZy9yWEd1cmlSYmpwQUJ6dVE3WW5BcWs5eUJwZFllcmp4bThwNVdW?=
+ =?utf-8?B?TkN4Rk9DNEtRYnhSeTd4bHJSdDgzaVZwODFFdlBIblpLWndSMEdYakJvdjlP?=
+ =?utf-8?B?dTQ0N3JTOThrdjVuZHRuamphRHB2ek1xOGQrNFFteHcySXdNb3UyY2svS2dZ?=
+ =?utf-8?B?eHlyZlk5d1VPOHUwdEc4WTU3Q01GUS9ZUTRUVVprbDRlUVBQUndVaGVBUmVs?=
+ =?utf-8?B?cXJyamtSTHRybk5LMjRtYy9YWnExTjVwSHVacElvazFhd1JDV3l4UEN3dlMr?=
+ =?utf-8?B?Si9EUlp5U0RLa1V4TXV6YkxFKzY3TWVJSTNJaGZhUXBpdWh5UHJmaVlFcG1h?=
+ =?utf-8?B?dHp6NHB2NUJjK1ZWYXZobTBPM0dQcm0wK2ZvTFhzNjY5aE9uOWFUWjZMR0dk?=
+ =?utf-8?B?ZkdrZkNpNTMyWCt5d3B4dCtwUndyREl0VC9EMkdESTl6QTRHeW03djBYVjRJ?=
+ =?utf-8?B?c0o1Z0ZqbkQvS0UxWmtJMlFERTNOZ3pqc2dkNWxxdlc2YWRoeVJ6UWZJQ3NU?=
+ =?utf-8?B?RmVKcktnTmFUQTd6NlV2SjRQek1xNjI0UFlvcm8wUlFhbzFuUGpVbUg1R1FN?=
+ =?utf-8?B?eE10eEdiZWRJdElRdVhnWlVvUmdVb29OUm1GZFJoTU1oM0o0QVhQK3ZiQ3BZ?=
+ =?utf-8?B?VlZ6VktheExQMkptRlZkNGlQUW9nN3BvNjJGR2dOd2FBNklEVmZ5R3ZoOFkr?=
+ =?utf-8?B?aTVIc3NyVmtkNmVxa2FhNFpYeDkyNHFkT1hGWnNzamhjUkZGQlBvUHc3U2lp?=
+ =?utf-8?B?eGtBQWpVNDY5VkliQTFwZjRGVzVGenZ5N0o4RmZrM2VEa1IwbEtHSDF2OUxx?=
+ =?utf-8?B?dXluMjg4T2lmbW1XSlRpU0xhVUt0Skt1WUNiUjFkYXZkWTJlRFQwbVBNK0x0?=
+ =?utf-8?B?bFltb0ZlSVRjenh0YjE2Nlk2Sm5ZZVNhYmhoM2d6akhsWHJZaVIvRmdtV3Er?=
+ =?utf-8?B?K0hWQ1ZETDlGM0xDZnBFR3ZhSHlDbkx6U3NOd2JwdXpaSzFQQmp5V2E0NEdU?=
+ =?utf-8?B?VURIc0g5V1dneVdIZXQyeStLOGh4T1lPUzhoRHZnYTFBbitFVFh3ZjY2VmtC?=
+ =?utf-8?B?YUJ0SFJqNFdhek1FdzlqQkFIaU5mOXVOOFpRQWw5VHBMbjFvYmN6NytCYXYy?=
+ =?utf-8?B?UVIxd2ZkQTk2VWc2TTJSdThpVDQwMCtDNU5sTUdNMThnYTE0eWk4Qy9rTnBp?=
+ =?utf-8?B?UGhEQVplVm9hcUxLNUoydll0MGtvUDBiRk1PZURFcHcybWt0cEMyMC9qa21R?=
+ =?utf-8?B?VnJLcXdGYStiYWcrcThuN2RKKzNOS2twMGNkZDB2ZzZXTlVnVVF5Snl2dENh?=
+ =?utf-8?B?UlBMWXpDVDVONVRFVkljWVMwbXBvWVdwVE5tNnJTQUNQOCt5U2dGSkpmd1Yw?=
+ =?utf-8?B?K0tiSEFSd3Q4ZU5IazlMci9rdDlWd1EvNUd3bFlzRytVODZ5aTVySnl2akh6?=
+ =?utf-8?B?NHpVUzZmYTZxZ0lNZmQyczNEc2hBekZxSXE3R2c2ODZqUDFoNWpRUGdEQUlD?=
+ =?utf-8?B?TGRIYmVweWpjZ09ZNXVXNk0zQ2F1Q3B3bDNRdGZWRzVYbnRnaVdPNEpYOGd6?=
+ =?utf-8?B?UkNZVHJtUXpFU2Mra202YUdPVWFUM29hL0llWVN2MXFqT2dZT25tV0JhK1dP?=
+ =?utf-8?B?bXRIK2cvWWlsVitUWUdrQklKKy9ETUNwdUJlNVlVT3ZHTENWMDhXS1NRWkRz?=
+ =?utf-8?B?Q2JJQnU0Q2phS1RwWlhmei9kK3VyZVdkZ2lIRmlZc0JaSzJjSnovV1I4ZllR?=
+ =?utf-8?B?TGhYMTlDQ1FvR1ovTHVHakczemR0Vjkya2FxbGZJWDk1RVc0bVY2VE02cGtE?=
+ =?utf-8?B?TVowNWNUV1Bnbmo4MG1ZbnAyNUo4a0FvTXlJMTJPYkdVN2FQeFNuQT09?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4edaa4a1-998d-431e-56be-08dec7d583d7
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1a145ed-2cbd-4725-1e8f-08dec7d58609
 X-MS-Exchange-CrossTenant-AuthSource: DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:38.9634
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:42.5120
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xYfBvj1kByuauOrs+AMF64jcie+QbFlmVkpL6lry9spvj3OojjeyQ5cOnOVrFA8fyJZwgNQNDVmnWibzbEAdNQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: GkJBVpX0xY2+k6lUxLx9Tz69Mf7M1iNCmB2VstpZeVAFYzVszLidAi9tgDkgMNxbNbG1j3N+quiiWKtjQv6Zsw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWP189MB2829
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: iqpmz9b6js9i3t1skeatkcz79ga1n6ox
-X-Rspamd-Queue-Id: ADB6140002
-X-HE-Tag: 1781194903-494827
-X-HE-Meta: U2FsdGVkX1+bzxy3WAf41/DuEN0WIk/WNXrzWbnMif7SJ1vWORIeCUD1+tZIDh1k1dztvsR7XWAcEbdlhjbI+oZmV/It9IPlD+L/73ioSt6MY/rAlf+hRPJvOLTTJ5O/8ZAURLfgp8tvQUySekCWbjd4i6nBqAj7nzKE9kHnH29X9DI83laIx+HwjB6NktDoZ/PgycxlKz/NbrMFns+WCdkre13O68e0yJJDyn4az2K8SmsUsFb84WPAIpnEDXxuixEHL56VPwJ1acRTQiR5oAIcamsDiN9/vnXFrCFhPo/7t9pam038hXvnzShzAznR2uJQR+G8NnzgmmTv7h6a8aLgVBLhpBhcAEc1+d0O4KWkGW+NqpFqBLRnhqQhd7HGOZcTQmQ0cK9CVr+208sE56IQV3pErNJlYBwMWoQmBkZ13ReCEewMpgfK/LVoHi+JYLaSLMSlg8pyGYJVOIlZMm5VxN+4o7Lvd1g9v6Yll9R+54zWNTRcbE2c4HMN5vbcsXl4BOVL6B+tibF10dBEHGM6Hy8wRDH2pkF8ytgRUYyTZE7B30XDkNr+QJlveA3lK5n8Yk7ZKImTWzFyZ11woe6xjO1BSLG8LxPd5cjL6An5eM9FGWrHqK6aK96FrI+i6j5mxtKkdyCjeeVDHZrvQAEJqdgm0OkfVP2hhl5o0E92bLnengiK9Wel5SptBCZmiO06LOEHDXWtkGC1dQrtg9JCdcZM1HTxr8Z00+XnyUmIoN1GrYDtbgUMzOz7xfgCWyoAeOLmeB2ASuebkrnn2y+RWSJ71/hRQh0f9Qe0tMymNsl92lL3SQBXhTN817i1Bn+dpmgcv2Wjf/Q72SmmUGknQBRDg1XHV1cw/+p7e8lpsohq3igbzu7tLBRXgaYw0GIFlxIKTgLLVbwG94somXp6Eg7hk9gWqp6q6tjwOG6UOvH1gt964WNMU9yu/MVsZuEFhnQ3Q9Xdjx/P55b
- IiG2xSo2
- 8BChOoo36mAUMk5tLtFYpbg9ScFQ4pEOKMDQu+06ko4L39/1YTSua/SBqn7UKFoEJ87IUhMOYpuRufa3jrzCSUg6KOL12/eyWAV/L2kCfTPXfgUYeIkPoHbb6/N6Aeks+6Hffa4uxbKaZ3J1rjCGmNxS4fOi42Gw1wehOM7c4sk0m8IqFql05RzbPpV0/eb/mzi8VDo8/UjFtV/DU1oV+MRdScfFWLITyudzlSEX8aIaifwffP8wN8vr8iz+ty9daXVWZKfVmXn462uxvlW7SobHia16ip3EyuhvlLkWalvWCkEajaRYBJOZ18hgdUE40u5I7AldYG7/EEjSqpxB7OBV10aIvR8tnOXP/+lN01kJ7alTd+KxNVrgGh/LE4ixziHOFBifuEARNrq/ilsgYtlH9EqJp/FO8dYo3n4KVDkChdho9j1L+AXKmB6g6gXoSW+HdGOLezsQZbxFpn42dWY7sTYbYCNArOF2eAh/8b1C/dcfDL0cu8kUfcHdrdX7jsNmD/E0T8zLVGvJ2uXkCrYn9m8o9P2SUNQYWH2nU2OyeU/Bkmzz9IJMDK4PYg/ZWYr77I/il6pktvjbiObZnknDbgHEnbRGP0aVyKUDWPMPHpBTnot11rnn4PmadygtwAGu+WOuBDvEysufB2p7ueWws3cLWBCottD9xaOY6vhSylQIMxY7KqO8qCrEeJ44piv993yCA1QdrwLSerGv/Qw29fbgwLhorwbK+7w2cU6vaCT8R0z1US8ut/kgrT1f/BDvZBHUhBNJ533OqMTcCD7hTinBTpKjBze8KMAyaZc0yg070f6xzFpXF8YfiyMUGmtC95Ns5C6BvO6CCPgy0VtVjzWeRUvg+DkaaUVw6tI2EAGQPZ6cA1uatnoiXBfJc0uovB3RkEXjRhSb6LNUCLpvjDdDvGdVsaX54FABO8KM//yWnaAmbked9dqJxQrlTnBwC4F9SDeo5huJzrCjX4hlJHvek
- 7GvRFB1f
- 3hSGlsDE8NAEMn97UyiJCDMgyjTYU0EaAY+0rfQYJjalVrhKt1RSSlSDfQnhMizd+TQaZPJ4TTJUwN1IHvV1btvA15HMWTqeooWuiu1YnYQysuREIZxNdo37kzYogPHJrxMiwjPP3acmGn7XMI5gVyRA1Lsf/FzDXVp8OxpXfitN4Am441GLlworTRW0wYpjPEHNqIvYxg0AYHeCEJ32fg2QJwzP8JE/0moo8FAGvmCjm3sJZh4fC956IEVZ2hilEtHEC8TX7UzmaNKABM2bgiVCptOYlSGmPyGl3Gd9fcC5OGNwFr7eXqvGdUrj59JSTVnrGMqTO2Ra6+qaQxOu+8n6LThxxViVWSoYDYG8f11gd7E3qokbknDpOEoZVfWies8+ylCz5Q6JHbM+ucP5aHz1by6KDpTgMtoXydT4Jbn+983o6Bn1Khegloi1L/8HcY5hMK3fUxem3LG6q8MgU8TQAkF4W1XjnS9fML7q7PekllfzDWdYduwHoaEI3xSl1hquSO+Wi01aHpk+bNUxmVoAp5V5psu5vfW8lQST7JILJO/qgwnj/w==
+X-Stat-Signature: unne4imx5ura7hm1xe6iye7qx3zpe14s
+X-Rspamd-Queue-Id: 1FCE740002
+X-HE-Tag: 1781194910-946086
+X-HE-Meta: U2FsdGVkX1/ncoWp9VabeyDZOjD/mEF4aYdfDO/nKrz9I+AF4k589O15V9bKVX8+LdNMA+IrEkadztr2F1w24B7WmqYKpaTj2eJMG5xkeRWITVvVRavuBgAdnsnN/zzXtRv+aZM1edYhrCHuMGJzVmKq9sN0/kh2b6voAcm6gd/+qzKszS/B0soborpbrgt+aFWP0Sal2XJdlGIEvtDDz0mdP1Z/Za8RGWfLYJHRU91nfOudZ8gOy1OS3MTU2rQAbNm6IdayGGuhkhXmZ3QzW0I0HhXOX3nwmLSIJYgs5hb/PY4O8WRi1BMx3KLVPqvzLQ/EXFk4a3PWDcABF4QCmdCzaR97W3HC/Rm3EymnB8/2DUhhhlOZs3v37KmGonYjFSuWoHzzJoM3xbXxeg+4fHnu497Jwm/nTinUrZJsZ9y7ctGIPDyulZJZO+cYMAeRV/e9d1xJNaafAHZxRqQrnEEFvm2yXsN1xkWT5/HzCnWLHiZwQ2leWgvVn06QX8yVWadyK7qGM52yIXfRJwquNWZzefnaIS2zI8GWmjnv8/VKxAZ1VVpQYRYjDXQhA7y0BzjqsSl/61hnf1CjPyUGs3aL0tG++BOftmAWH0w3q0UvYAXRZh5kwY/l1jNJJ0kHs1u2t+A2rnMH0Vm0l+70/nwdu5pCZSsPWRNABli+laqTv5zSN4fwPFSHr65qDMDq+gnY45VxTcWJnnTqC9/M746yGhsM2YwUbXiNl6wHNQT3afJ1oI1op29iolhbmvQuMOP5UNW64Eax63e3JYX5o2ryFCB4CfoWm64jetBOSiSSlHphcsmNyhus10R+qCHMBs3C+PkTHZf4N0FIJsQvpVSnaJewkJHArJ+0qV1JAf1TPOCbzKHhgBaqkVQCjZtaSH12FREBnvWjUhyM2t3P4NvH4qvKnlFr+1PdzkOutWfu7/bybGB/nm6aLIqa/mLiRwftI386U81iqFm1Nr+
+ CzaCcZqF
+ gx9gpKgBFfMlF6D5C071F+5MvjQZv2DBHN69EA3IiS1A6yuTTj6SSm1r6QgpJP8gGpmq/xMxUI9UIM+qDznm5CHg3aHelKihp/WviUM3ICtf4WWS5iYUU9KfPnhJUPGiOIoOk1ainz4rLioMVbnPbFSJJOWBFHayd9ELCYz8lsTcSunMoTTF6sCIv3cPf/T8V816bQXlNl0U8SzsPN2hI/EyG5UqeVPpkwzXn9OIYmaCG3h2Cj/A5vxUmu3rte/pbTzjXfOUMEn5CUhwyspaNwq9i9c+8ycvzYPPKIbY8w2a3QRLj3r1HReuW2w/Xsr3OO+8EI++SodS7XMP8D+E9kNt3Hwc0obzCI/IFh/H/h6ZYim4gXNLlPx4yxoI8irCh02YjYobs+BGCtEmo+JBR2N4Rb9E4iO6uVj+qEHBUZddjDBEuOT2t5ku4YJWuOlWFwwZOs2vvERxqByCeKTPKkAEMOlJTFWhKeYB+lrabAg9x82l5PbIgqpTN+PBesEoLPdHx3kcyfD2xiF7sKR/4XCkV68JevWTx7+77KwcJm+iXM8EOjwm7sIvihY+I8jXI9+Tjn23tzv/KOpGfbWHP6KpA7FMPW1vWDWShzgGWZD67pwxOC1QPisdUFHz6Tx1kSL4xe11JkSK71K3ABSndrva821ieBbmndMjsMW4WfbWgHA1LTi5qackwH/x2Rs7JbprXiSQIXAocD7A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -206,345 +202,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce kcov_dataflow, a per-task dataflow tracking mechanism for function
-arguments/return values at instrumented function boundaries.
+Two threads calling KCOV_DF_INIT_TRACK concurrently could both observe
+df->area == NULL, drop the lock to allocate, and then both assign their
+allocation to df->area, leaking one buffer.
 
-Motivation
-==========
+Fix by rechecking df->area after re-acquiring the lock. If another
+thread won the race, free the allocation and return -EBUSY. This
+matches the pattern used by KCOV_INIT_TRACE in kernel/kcov.c.
 
-First, Coverage-guided kernel fuzzers use KCOV edge coverage as their
-sole feedback signal. This cannot distinguish two executions of the same
-function with different argument values. Fuzzers plateau on stateful
-subsystems where security-critical behavior depends on runtime values
-rather than control-flow topology.
-
-Second, Existing tracing tools address parts of this challenge:
-
- 1. Per-Task Wide-Scale Tracing Contexts (ftrace / kprobes / eBPF)
-
- Break point instruction and redirection: Hooks physically patch global kernel
- text. The kernel cannot selectively hook functions per task; every CPU core
- triggers the hook, deferring PID filtering to post-trigger logic.
-
- 2. Rust for Linux Tracing Status
-
- rustc correctly emits -mfentry code stubs via its LLVM backend, enabling
- native integration with ftrace, function_graph, and eBPF trampolines
- (fentry/fexit). Metadata & Signature Analysis: funcgraph-args parses Rust
- via pahole BTF generation. However, idiomatic types like generics or slices
- are difficult to represent cleanly compared to standard repr(C) structs.
-
- 3. Inline Function Tracing Limitations
-
- Tracing Visibility: Inlined code cannot be targeted via tracefs. Its runtime
- footprint is absorbed by the caller. Debugging requires explicit noinline (C)
- or #[inline(never)] (Rust) markers.
-
-Approach
-========
-
-An LLVM SanitizerCoverage [1] pass inserts callbacks at function entry/exit
-that record argument values into a per-task mmap'd ring buffer. Kernel
-backend reads struct fields via copy_from_kernel_nofault(). When not enabled
-for a task, the cost is a single boolean check.
-
-The system captures:
-- Function argument values at entry (with automatic struct field expansion)
-- Return values at exit
-- Per-task isolation (no interference between processes)
-- Both C and Rust kernel modules
-- Instument even inline(default n)
-
-For C based kernel module example, eight_args_c:
-
-  vfs_write(0x0)
-  0x0 = full_proxy_write()
-  full_proxy_write(0x0, 0x1, 0x0)
-  0x8200080 = __debugfs_file_get()
-  __debugfs_file_get(0x0)
-  0x0 = __debugfs_file_get()
-  0x0 = trigger_write [eight_args_c]()
-  trigger_write [eight_args_c](0x0, 0x1, 0x0)
-    df_func2 [eight_args_c](0x11, 0x22)
-    0x33 = df_func2 [eight_args_c]()
-    df_func3 [eight_args_c](0x11, 0x22, 0x33)
-    0x66 = df_func3 [eight_args_c]()
-    df_func4 [eight_args_c](0x11, 0x22, 0x33, 0x44)
-    0xaa = df_func4 [eight_args_c]()
-    df_func5 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55)
-    0xff = df_func5 [eight_args_c]()
-    df_func6 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66)
-    0x165 = df_func6 [eight_args_c]()
-    df_func7 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77)
-    0x1dc = df_func7 [eight_args_c]()
-    df_func8 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88)
-    0x264 = df_func8 [eight_args_c]()
-    df_func_struct [eight_args_c](0xaaaa)
-    0x16665 = df_func_struct [eight_args_c]()
-  0x1 = trigger_write [eight_args_c]()
-  0x1 = full_proxy_write()
-  0x1 = vfs_write()
-  0x1 = ksys_write()
-  0x1 = __x64_sys_write()
-  0x0 = fpregs_assert_state_consistent()
-  0xba5748 = __x64_sys_close()
-  file_close_fd(0x4)
-  0x0 = file_close_fd()
-
-For corresponding rust kernel example, eight_args_rust:
-
-  ksys_write(0x0, 0x1)
-    fdget_pos(0x4)
-    0xffff891481d2bc00 = fdget_pos()
-  0x0 = vfs_write()
-  vfs_write(0x0, 0x1, 0x0)
-  0x0 = _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust]()
-  _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust](0x0, 0x1, 0x0)
-    rdf_func2 [eight_args_rust](0x11, 0x22)
-    0x33 = rdf_func2 [eight_args_rust]()
-    rdf_func3 [eight_args_rust](0x11, 0x22, 0x33)
-    0x66 = rdf_func3 [eight_args_rust]()
-    rdf_func4 [eight_args_rust](0x11, 0x22, 0x33, 0x44)
-    0xaa = rdf_func4 [eight_args_rust]()
-    rdf_func5 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55)
-    0xff = rdf_func5 [eight_args_rust]()
-    rdf_func6 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66)
-    0x165 = rdf_func6 [eight_args_rust]()
-    rdf_func7 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77)
-    0x1dc = rdf_func7 [eight_args_rust]()
-    rdf_func8 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88)
-    0x264 = rdf_func8 [eight_args_rust]()
-    rdf_func_struct [eight_args_rust](0xaaaa)
-    0x16665 = rdf_func_struct [eight_args_rust]()
-  0x1 = _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust]()
-  0x1 = vfs_write()
-  0x1 = ksys_write()
-  0x1 = __x64_sys_write()
-  0x0 = fpregs_assert_state_consistent()
-  0xba5748 = __x64_sys_close()
-  file_close_fd(0x4)
-  0x0 = file_close_fd()
-  0x0 = filp_flush()
-
-Design
-======
-
-- Independent from existing /sys/kernel/debug/kcov
-- Separate device: /sys/kernel/debug/kcov_dataflow
-- Separate ioctl namespace ('d'), separate per-task buffer
-- Lock-free write path: READ_ONCE/WRITE_ONCE (Tested on x86_64/arm64)
-- Safe pointer reads: copy_from_kernel_nofault()
-- in_task() guard rejects interrupt/NMI context
-- Per-module opt-in: KCOV_DATAFLOW_file.o := y
-- Optional global: CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL
-- Compiler flags: -fsanitize-coverage=trace-args,trace-ret
-  (Kconfig uses cc-option to verify compiler support)
-
-CI results:
-
-  https://github.com/yskzalloc/kcov-dataflow/actions
-
-Performance
-===========
-
-Per-module instrumentation (recording active):
-  +8.3% on instrumented paths, ~27ns per callback
-
-Global instrumentation (INSTRUMENT_ALL, recording disabled):
-  .text: +9.5%, .data: +44%, boot: +71%, syscall latency: +133%
-
-Prerequisites
-=============
-
-Requires custom LLVM/Clang with trace-args/trace-ret passes:
-
-  git clone --recursive --depth 1 --shallow-submodules \
-    --jobs $(nproc) https://github.com/yskzalloc/kcov-dataflow.git
-  cd kcov-dataflow
-
-  cd llvm-project
-  cmake -S llvm -B build -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_CXX_COMPILER=clang++ \
-    -DLLVM_ENABLE_LLD=ON \
-    -DLLVM_ENABLE_PROJECTS="clang;lld" \
-    -DLLVM_TARGETS_TO_BUILD="X86;AArch64"
-  ninja -C build
-  cd ..
-
-Build and boot kernel (using virtme-ng):
-
-  export PATH=$PWD/llvm-project/build/bin:$PATH
-  export RUSTC=$PWD/rust/build/x86_64-unknown-linux-gnu/stage1/bin/rustc
-  export RUST_LIB_SRC=$PWD/rust/library
-  cd linux
-  vng --build \
-    --configitem CONFIG_KCOV=y \
-    --configitem CONFIG_KCOV_DATAFLOW_ARGS=y \
-    --configitem CONFIG_KCOV_DATAFLOW_RET=y \
-    --configitem CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL=y \
-    --configitem CONFIG_DEBUG_INFO=y \
-    --configitem CONFIG_RUST=y \ # For rust kernel tracking
-    LLVM=1 CC=clang RUSTC=$RUSTC RUST_LIB_SRC=$RUST_LIB_SRC
-
-Or without virtme-ng:
-
-  cd linux
-  make LLVM=1 CC=clang defconfig
-  scripts/config --enable KCOV \
-                 --enable KCOV_DATAFLOW_ARGS \
-                 --enable KCOV_DATAFLOW_RET \
-                 --enable KCOV_DATAFLOW_INSTRUMENT_ALL \
-                 --enable DEBUG_INFO
-  make LLVM=1 CC=clang olddefconfig
-  make LLVM=1 CC=clang -j$(nproc)
-
-For Rust module support, build rustc against the custom LLVM:
-
-  https://github.com/yskzalloc/rust
-
-Testing
-=======
-
-Tested on linux-next 7.1.0-rc6 (next-20260608) with custom clang/LLVM 23
-and rustc 1.98-nightly. Verified on both x86_64 and arm64:
-
-- user_ioctl: 9/9 tests pass (ioctl interface correctness: init, mmap,
-  enable/disable, double-enable rejection, buffer capture verification)
-- eight_args_c: nested call tree with df_func2..8 + struct (65 context records)
-- eight_args_rust: nested call tree with rdf_func2..8 + struct (65 context records)
-- rust_ffi_contract: detects FFI contract violation where callee returns
-  success (0) but leaves buffer=NULL - captured without crash or KASAN
-- binderfs: exercises binder driver via binderfs ioctls (BINDER_VERSION,
-  BINDER_SET_MAX_THREADS) with kcov_dataflow recording active, verifies
-  argument records captured at binder ioctl boundaries
-
-Links
-=====
-
-[1] LLVM RFC: https://discourse.llvm.org/t/rfc-sanitizercoverage-add-fsanitize-coverage-trace-args-trace-ret/91026
-[2] LLVM PR: https://github.com/llvm/llvm-project/pull/201410
-[3] Repository: https://github.com/yskzalloc/kcov-dataflow
-[4] Paper: https://arxiv.org/pdf/2606.00455
-
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4%40est.tech
+Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 ---
-Change log:
+ kernel/kcov_dataflow.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-Changes since v1 (https://lore.kernel.org/all/20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech/):
-- Separate from /sys/kernel/debug/kcov (own device, own ioctl namespace)
-- Rename internal symbols to avoid collision with existing kcov
-- Add CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL for whole-kernel capture
-- Fix INIT_TRACK race, fork cleanup, task exit cleanup
-- Add recursion guard barriers
-- Reject concurrent enable on multiple fds
-- Move from tools to kselftest adding:
-  user_ioctl, eight_args_c, eight_args_rust, rust_ffi_contract, binderfs_test
-- Separate patch regarding kcov-dataflow Documentation
+diff --git a/kernel/kcov_dataflow.c b/kernel/kcov_dataflow.c
+index 721f742cbfe5..df7e8bf70bfa 100644
+--- a/kernel/kcov_dataflow.c
++++ b/kernel/kcov_dataflow.c
+@@ -268,11 +268,20 @@ static long kcov_df_ioctl(struct file *filep, unsigned int cmd, unsigned long ar
+ 			break;
+ 		}
+ 		spin_unlock_irqrestore(&df->lock, flags);
+-		df->area = vmalloc_user(size * sizeof(u64));
+-		if (!df->area)
+-			return -ENOMEM;
+-		spin_lock_irqsave(&df->lock, flags);
+-		df->size = size;
++		{
++			void *area = vmalloc_user(size * sizeof(u64));
++
++			if (!area)
++				return -ENOMEM;
++			spin_lock_irqsave(&df->lock, flags);
++			if (df->area) {
++				spin_unlock_irqrestore(&df->lock, flags);
++				vfree(area);
++				return -EBUSY;
++			}
++			df->area = area;
++			df->size = size;
++		}
+ 		break;
+ 
+ 	case KCOV_DF_ENABLE:
 
-To: Ingo Molnar <mingo@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-To: Juri Lelli <juri.lelli@redhat.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-To: Dietmar Eggemann <dietmar.eggemann@arm.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-To: Ben Segall <bsegall@google.com>
-To: Mel Gorman <mgorman@suse.de>
-To: Valentin Schneider <vschneid@redhat.com>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-To: Alexander Potapenko <glider@google.com>
-To: Dmitry Vyukov <dvyukov@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-To: Nicolas Schier <nsc@kernel.org>
-To: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
-To: Bill Wendling <morbo@google.com>
-To: Justin Stitt <justinstitt@google.com>
-To: Kees Cook <kees@kernel.org>
-To: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: Shuah Khan <shuah@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: kasan-dev@googlegroups.com
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kbuild@vger.kernel.org
-Cc: llvm@lists.linux.dev
-Cc: linux-mm@kvack.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: workflows@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-
----
-Yunseong Kim (14):
-      kcov: add per-task dataflow tracking for function arguments/return values
-      kcov: fix INIT_TRACK race in kcov_dataflow
-      kcov: add barriers to recursion guard in kcov_df_write
-      kcov: reject enable on multiple dataflow fds simultaneously
-      kcov: clear dataflow fields on fork
-      kcov: clean up dataflow state on task exit
-      kcov: exclude kcov_dataflow.o from sanitizer instrumentation
-      selftests/kcov_dataflow: add trigger-view.py
-      selftests/kcov_dataflow: add ioctl interface selftest
-      selftests/kcov_dataflow: add eight_args_c test module
-      selftests/kcov_dataflow: add eight_args_rust test module
-      selftests/kcov_dataflow: add rust_ffi_contract test module
-      selftests/kcov_dataflow: add binderfs ioctl capture test
-      Documentation: add kcov-dataflow.rst
-
- Documentation/dev-tools/index.rst                  |   1 +
- Documentation/dev-tools/kcov-dataflow.rst          | 321 ++++++++++++++++++
- include/linux/kcov.h                               |   8 +
- include/linux/sched.h                              |  10 +
- kernel/Makefile                                    |   9 +
- kernel/exit.c                                      |   1 +
- kernel/fork.c                                      |   1 +
- kernel/kcov.c                                      |   2 +
- kernel/kcov_dataflow.c                             | 356 +++++++++++++++++++
- lib/Kconfig.debug                                  |  43 +++
- rust/kernel/str.rs                                 |   2 +-
- scripts/Makefile.kcov                              |  12 +
- scripts/Makefile.lib                               |   9 +
- tools/testing/selftests/kcov_dataflow/.gitignore   |   9 +
- tools/testing/selftests/kcov_dataflow/Makefile     |   4 +
- tools/testing/selftests/kcov_dataflow/README.rst   |  58 ++++
- .../selftests/kcov_dataflow/binderfs/Makefile      |   4 +
- .../kcov_dataflow/binderfs/binderfs_test.c         | 177 ++++++++++
- .../selftests/kcov_dataflow/eight_args_c/Makefile  |   3 +
- .../kcov_dataflow/eight_args_c/eight_args_c.c      |  95 ++++++
- .../kcov_dataflow/eight_args_rust/Makefile         |   3 +
- .../eight_args_rust/eight_args_rust.rs             | 143 ++++++++
- .../selftests/kcov_dataflow/run_binderfs.sh        |  13 +
- .../selftests/kcov_dataflow/run_eight_args_c.sh    |  35 ++
- .../selftests/kcov_dataflow/run_eight_args_rust.sh |  35 ++
- .../kcov_dataflow/run_rust_ffi_contract.sh         |  35 ++
- .../kcov_dataflow/rust_ffi_contract/Makefile       |   3 +
- .../rust_ffi_contract/rust_ffi_contract.c          | 111 ++++++
- .../selftests/kcov_dataflow/trigger-view.py        | 377 +++++++++++++++++++++
- .../kcov_dataflow/user_ioctl/user_ioctl.c          | 156 +++++++++
- 30 files changed, 2035 insertions(+), 1 deletion(-)
----
-base-commit: a87737435cfa134f9cdcc696ba3080759d04cf72
-change-id: 20260611-b4-kcov-dataflow-v2-3ccff828eb31
-
-Best regards,
---  
-Yunseong Kim <yunseong.kim@est.tech>
+-- 
+2.43.0
 
 
