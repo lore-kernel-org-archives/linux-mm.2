@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0CDCD98D5
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D79CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:22:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15E156B00A2; Thu, 11 Jun 2026 12:22:09 -0400 (EDT)
+	id B72336B00A5; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1396F6B00A5; Thu, 11 Jun 2026 12:22:09 -0400 (EDT)
+	id B1EA46B00A6; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2DEB6B00A2; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
+	id 8D7066B00A6; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BC8DC6B00A4
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E8091A073F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C3A36B00A3
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:22:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 466111C27B8
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:11 +0000 (UTC)
+X-FDA: 84868148862.26.0B18477
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012068.outbound.protection.outlook.com [52.101.66.68])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 572A640006
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:08 +0000 (UTC)
-X-FDA: 84868148736.27.5CBA982
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011058.outbound.protection.outlook.com [52.101.65.58])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 799B81C000E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:22:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=TqfICdAv;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781194925;
-	b=u7xIOIdjhE/FxQM8duzQHVTpAv/ML46UUKjcUbRhsZ50BSoz1RWUpAuUPAJpPzPsWPUBhh
-	clZarZIDPVGazeEvuljNFwwS6a1gP1FvDqQDS1x1OcuhkXsMmNqYkLdvqFS5y0VZWPh/1h
-	bUA3J2WMGkpHp4lst8FT9Heit/EkWFY=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=est.tech header.s=selector1 header.b=TqfICdAv;
-	spf=pass (imf18.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.65.58 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=none
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=z6nIDQJJ;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781194925;
+	s=arc-20220608; t=1781194928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kagR7UfO41iF3RqDVYf2P79DXvuzmMWy/Ts1AZzTCW0=;
-	b=Hx/kWImNsi6OIddVjx/HXxTqD1zJpFDpfJ131APvW4JuBi7sLJpY6GHNLAw5U5cMuUwVrX
-	RHETe/nSvI65+Lee67HZE/UqC97J78dRMnqdt9S1mCzLLoK+3TKWPiBFSyfC/jVDujtfj8
-	qJYSUILzWb7gTJo7ZRiuTDLbMgxL3MY=
+	bh=mXxDoiqFPBn7Gh8AwleiDDC8ndob1oNAc/f88nP72Uw=;
+	b=lENw0TW7/kEfXO/BJw5yT6xLYgGfgYbjybGW1xGf3Cl/VQWXJonH+U4RHFGdIQHgSiTBnw
+	mgKrt4jNIk4acUcObzZWMj3ivWS6SPWKGgFlPE7Lz0oSR127ej0LWsK6cMUMSFLpmu6/hc
+	d3MZGz/48TVs2bRyG3XBFPdlXrHUqXI=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=z6nIDQJJ;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.66.68 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781194928;
+	b=YO9QbY9H2Ph7b8T9dct35r79W+ZlK1BR3i7aJpZRwttT/z6PrM9lWAG2W3QTBEErnEAYFt
+	JBLVvGgEh7RpUNXeHj4TNAtXvlbXbX0uwFxKxVyiSx7JNU1VV81473th2k89vsrTjGmqqK
+	LrdsY6qrro1MZ1NFz18NPD5z2eeau6U=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j5tiErPcGonDgUXfwP0FFElZPN9GLSG6fU4ifxuDh0EV2gi9DcoP1UUmAENeKOVFX9qy65y+3JwhUTNWZDpa0Qo+4o33m3xfLil0b/fMgdSDvgedn86ZIRpYsV5IokpxvJrYAwide/NReG5nHEpq/FIHfEK7J32jYmVzZPdpqjGN7cSKSTk+grYmrpgNa/8sh7AnCsI2AwG78Ml/H5PP11HoKKDSKhZBYJRw527HSu5PWYV6ralCrUraDEBoPbADzUsHo6jxORAjm+Fa/TxyJPRefGKMPGpRqtJyLTyzgFOVBV2Lz6ovG8JlpCvqlLaY/FldHh4jp12zy/qmtjOYIw==
+ b=ImbpPvCvG3XRJv2KTuLQyU6cXnz/bfaOXhM8BkG3i67HHUUQ0+SI9GPO7q2Nv+2yLi6OLY9oZg318QTicPJwtpONtSJkmRC5acG2GnnxeGJvkhRrWMIHY+oGdL2H2apthjA29XSpMggjNj3ZabEOF/pdCGcskzxqRkvYl/hOlKsVK1MJQBIeC9hDZ0XC3C60GYrb6rVv3S0RbFs92mvjdRSJvs9cNlq7a49+L3Cxy1kjcKraFAT0Che94TAQ5qc0NWwwE7+Ari2brN2NegcfSNTvsC0AUwcVmkC8k/3NHVM6n/w4VRXDrAKdvwGRfsslVGNDA5Gc1jnRSub0Cbt//Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kagR7UfO41iF3RqDVYf2P79DXvuzmMWy/Ts1AZzTCW0=;
- b=H1ofMIpOxtXuwUDcKOBmUUbF8hMDdLuWXDSq+Qs2MBbjKggW5X7RYdzZ/AYaxxVcVmfn/tGs45WFIuAbr21v7g1NoFDw5XGJN+Tu5ZGzn1g6ikxCnage8fHzjg9gNgR53/fa+iT/+ktsIs+11ffjRFcQdifzf5af1QpjZzd94c2D2M26Hw9cv65ewR0YPA8fv3yD84SuxUIRuCPo3W+mowIqY/Nycgukc0JI/6m/GWwG+GhP7+W/fvlFSQ1kI2NGgMGr2UKKAWEgtZxks6rhuJIZ6ltiL85yn/XZkioID1zXxz6cGLPRVylY6PGUtsp3/oNR1vbMleqT2blFTdtU7Q==
+ bh=mXxDoiqFPBn7Gh8AwleiDDC8ndob1oNAc/f88nP72Uw=;
+ b=SNodKEq1mu/oGpLcX7vgVeAlYCR1bt3Jtxz21iKxWMExgavo2iRYlBJvSDSjbA4KYZD5OK3Pr8Vz1kp+mOn3l6YH981ffnaUrVt8Z9Yi6sOze71l0IN3UUsNvgCFwt2bT1oQr5rYzXEAnXbgZ/eABCMzikflZBaGd7jEgY2Zi/6e7ur8AhdN37kL/zWH5ZFBUr73wZV9C9skjyzYZvr75tWT72xpM0yAkcdQxO1elw78AuoYj5+HwlnWJKapCe8/3kZeeJboPObqlKl8I6O9uu+YteBMxto9Witm/v/j34GxyqtjzvW2DHZ/XNCV9HM/qq8U/xfUpanyILPhsm0MOQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kagR7UfO41iF3RqDVYf2P79DXvuzmMWy/Ts1AZzTCW0=;
- b=TqfICdAvbB2hfL5C6UctJTH9KoUr4G5K5Z/S/jr52zWLdMAGWL3jeK2/VZ5d39Cr56V3EZlgCtU1sO4pFkohlpZ9/1xyY9Q3ush6xiVb8FIbnIWQKOsS2sCxwxVXDko3mFnnsaS4osjz+VMqLfEwU+H51U9mhkV/5o1OruUnd12Wy4TM3xQrVaSSFHq1EXD48lvahgsHqqmuLP4gO+bKnFTVXDjMZZ2MZygzQ5QbSETmU7G7E6T7qrsgBhn8wGj6aAY2TIBxDYqeieTTYwPQX82e5lt0JiBk+SqtClORVn64RUVOueEsU/NRerWRVVSEYvdB5BpVxrhpKyudVuUoeA==
+ bh=mXxDoiqFPBn7Gh8AwleiDDC8ndob1oNAc/f88nP72Uw=;
+ b=z6nIDQJJ6ZfusYVwyBvGjumkJ5UQvyJCmNeHdIvXB2ZK3P0WkJMxF+J3v6ci/WT+NkH+3NXA6PHNDfjUR1siYRl0/EVV8R5SBnl0tO9zq5rxoJtiJdQMMgH0UOuth7Z6bZBiiEPf72pYbdnNu7kbjV33OzxJ6dzH7ZmnNw326JlWeJZLZ5tk6Gwu1muRg8y9SYcUOO/nwVkai89ZXOJWAqmUo3drtgj1Q/CB4R7Tb4bszxC2CfWUDHLfiAATXbtBNxbd+5fLBVagQ2ZaI76tup53dEdCCMUfKkIhed7v4NtT440hB4PZgMM29cCCKQaF2eKc4oaNL5MKNAp7j5pvQw==
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:2a5::24)
  by PAWP189MB2829.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:468::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
- 2026 16:21:55 +0000
+ 2026 16:21:57 +0000
 Received: from DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471]) by DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  ([fe80::2af4:a981:db81:d471%6]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
- 16:21:55 +0000
+ 16:21:57 +0000
 From: Yunseong Kim <yunseong.kim@est.tech>
-Date: Thu, 11 Jun 2026 18:21:12 +0200
-Subject: [RFC PATCH v2 10/14] selftests/kcov_dataflow: add eight_args_c
+Date: Thu, 11 Jun 2026 18:21:13 +0200
+Subject: [RFC PATCH v2 11/14] selftests/kcov_dataflow: add eight_args_rust
  test module
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-b4-kcov-dataflow-v2-v2-10-0a261da3987c@est.tech>
+Message-Id: <20260611-b4-kcov-dataflow-v2-v2-11-0a261da3987c@est.tech>
 References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -114,88 +114,88 @@ Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
  Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=8533;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781194895; l=9294;
  i=yunseong.kim@est.tech; s=20260426; h=from:subject:message-id;
- bh=jZKeC0Has3ofQqUTkW5vtr3NRu/MvfbrqTtH9SDaq7s=;
- b=XIQYYhybnI3x412KoJNkPQudKdN34PzqhMFenKUAFhpqA9X9DJXPZf2W4b7ZSM4ZkDawoso6Z
- 4X/tjHZWcmzCZXVRv+KrASFcrZaexfsMKZz0Kcz/bvsiGqeiB2J3JMs
+ bh=++Ocp69V2+ssWb+8fcntzlFH2d9U7HbUzkJAMdwtirc=;
+ b=XFUAXMnfJ4atgczymD9v9L2GOcegffbVHv196KyruS1AeYxDKaWBg+VY2XLLsstyTjLNOrzDP
+ xhYNsOsroEdDKOA5rN6R4wpZNeLmfX/LnKXlkP8T4mTHcOJ/S+dPY9k
 X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
  pk=1nBUX92cvTaavYG1+MR073D+XMKhdOciBZcnf6h6qEo=
-X-ClientProxiedBy: GV3PEPF0001DBFF.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::31a) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: GV3PEPF0001DBEF.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::31c) To DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:10:2a5::24)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9P189MB1754:EE_|PAWP189MB2829:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb96c94a-4b23-434a-0d85-08dec7d58db7
+X-MS-Office365-Filtering-Correlation-Id: cb125fa1-66cd-4f61-59fc-08dec7d58ea4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|56012099006|11063799006|5023799004|3023799007|6133799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	dJwd1AdMrQ9dvlhONfc81x6Kf2g158M+a1c6jePabjsjoppYqq/XuH8c8Yjs2KoC5+cJGuzm51di9IBfqZRxUgRu4QXlOlxNVVPusHkI8FchLMCcq+TwMHeOSQXGeuxO6rYFANKyX91HHCpr35jCOSd7kMyl0T0M7v676HmVCvmCSRpl5ElTRZziAhXzo2K8PydbVZOu+aY+uJYMeI3lxw/McTLQnVLnMdf3vMLs/67XW/be0zM0ggLbA7UZvxGAWTVhpQaOZtv9mwLp/70fphmu5Y93ibp8UWzjWetF51rXGyGIJKxX/1baOXtAGlQuEzAthqc7ZU7gJSEhcRSpzOMoMZnYTFRu70zGrxAiL/83WO2+S8A9RqLOLZXiP+ELoKgY+vPn7pTmpb1s+GWaXrALXEAmfq6CBpec9/R2bVb2FYG62z+TrQehb49QbJOjA0NCyMW4JNiBFFmrvSDTTXSRbElJSPYg4mySrs821ljZP9RaTfWEmzP4bquNvpcCwkibxn2r1GNSTvIG38MGTeGqBiQ9VLFPtJUrcz6/hEwh5pyGV1cl5ZXaFQYVibl5D1PvJL6Up5onDp/EPR1EsoCcWqthGDJLMIdPAnuFcHNCylnsdCjtQJpm/m670WvuUmjcp///OOuEmovk/M/b3ahBcdkaWp1wlxbOsl9EFIk9kbFHuhfObJ8A7s6FT7MHFyU8oSkzOObRGAb/UKgM0rBfIGChIdY2/PrUJ6VooHa7TUYHxphhADq+rY4cuxvZ
+	8eR2uqVI0e1ZUCI+OSN9Qqgv7FklNAl4e7fZoioOI07xny7OLmw21AK3veRJq+Ow9apZYCGMiY0cbUfAFWH8AJWEkGCZC2JB224fW9Kvdbm6CU4uSEkpbk3Pf1N9X8T6Yw19h9XbJeR+qYulv1NSza3wT6pZnCJgGca330qJqH4XjsHT3h3/oIpwjeErPGcBRMqo3k7WptQG3v4dcMH2LakuUSB4rEdOI703RCHVKiNr/gouCF8oSlbp/fZ5KC8E6mHLvN08bPA1dkNJDCh1B4n7TJxAO6dTh0GB4cAmFZ8vaLWNf/85nkeik0AVKZ7mIjeg4xgXsQjqNfdpBJjQi/hYRgg50VreZa68lPDdddrZiGLvwYp+sZpUOgWVfSipDls5uC3Ou5j68TikW4uolsP+Ti5YQk6zj0uaeejJKV0j+oFpBl/s+IznX4JocOP0Edp/iSJ6oSIgYLPShL1Wd2283kAb7Pd9TqPsrbVgBRjx/6f7xo5cd87h+jwsbaJxfyru9j3T81TpEWQ0VZuIJNu5yl7Nlf50fu9yzHVfp/UgqENzrij1vABs9uBM1vBZ+/Yb3YNEdL3pGNI4bStOpB0rp58Pae391Cv7WtmKMHDBDG0X/HRZCSrAyFs9V3pDeMU5p3CuxRAJJYMDNFh0dwqqYAdRhbWkYUwCYjMtXDL2IrOALiRihd6dxP9NQf5F6talMfmQRABtIGMzDpoezrfuM/Q+EOzwuRFmnriDx5vibjIxPqWtafPJ23HI/WAo
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P189MB1754.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(56012099006)(11063799006)(5023799004)(3023799007)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ei95RmtCMzdoLytVa3pzL0FnaUI3ZzM3SDJ5ekpPVy9tTmh5WVdhSkdOTTc0?=
- =?utf-8?B?ZmN1emVUK2N4NFE5OVdYbTZ3VGJqVE93VWdZNUR4ZmFSdzQ3MzJVWmk4ZXlY?=
- =?utf-8?B?c3dqa2p1encwdk5zVU9jV3p3WlRNRGY2cExxYUdid0Y1MllmRjJkY25mWG01?=
- =?utf-8?B?WlpicjVVWkNzeENjQ1NiQ2luRXlwdS8rR0kyU3VLY1paSndvbXd2Q1BoMDNr?=
- =?utf-8?B?eHk5OUlnSENFWnFPSkpXYWE3VGxPZFhTYVFzUG4zYjVkU0FYT2FoSzIvaWVS?=
- =?utf-8?B?bmY1cTVkbFA0NGtnS1dHaXViWjN3YWFBWDN3c2dsUnRJdGpRQjF2RHkwWGd1?=
- =?utf-8?B?ekR3dVhlblhEV1E2SEZFaEJjM0ZiVjlRRDUvSUYzbnZVbU9FUkxrWE5kL2N1?=
- =?utf-8?B?NWpUZTN0YVV3UnZHRTFodXptV1pqb2lPc2Nva3ZjSjNSWm5COVFUb1QyK3Y0?=
- =?utf-8?B?c2w3d01ONnMrcGh2YUpYTkI4VHRnRXBCSEU0bVlGV21TMm9kMC9SSUJFZTJF?=
- =?utf-8?B?MUIvK0lNVU9QWlgxM0VtTHBnVEQzaTk5OWlTVGlwclZmZEJVMnhzOGpZeUlT?=
- =?utf-8?B?QlBmbU9aVHhiMS9zY2UwanlNcDNvYk5zYWQrWXlCS3lWNElWS3k0aldiZ0Vq?=
- =?utf-8?B?Qk1CWXJmRzltanZiSWlsVk1Kb1pBMEdmUkdOUUdMdUl0ekVjazNod1haZ0NV?=
- =?utf-8?B?WnVaYk83ZXAxN1ZqZEFvVGVENmdQUGhpUVVwdkNsc1puUi85dm0wN0MvWUFP?=
- =?utf-8?B?K0Q3bHcySy9QcUxLNm05aTJQQlpXM2xXczJuSTJuOHgxckxLVVZOb0JlSFJy?=
- =?utf-8?B?MXlwZ0VxTktWb2NCSTZhMUJFOEpVK3hkZUt0alJvM1FtWG9qdW8vVUNyWXBY?=
- =?utf-8?B?c2NzWmpvVHo5UUVHOHZHRHNMdWhoV05tTWhaQ29kbG1VMGpmVXlxbzAwNnN6?=
- =?utf-8?B?dmtyNHN5RVFQbFp1U0JPeVcvUnB2dUxuSmFtTHcydjdWcVRpMVkvSGlxY1J5?=
- =?utf-8?B?YlZsb0tFdWpzODl1ait5blc0N1F0TkVDam03bmI1U1g2Q29EamRoZXRIYkla?=
- =?utf-8?B?RzdzYXQxOE9iQ0ZZUlNqSUZLSU1NQnRMNlNWYW9sVk5PRzd5aWE2L20zUUV1?=
- =?utf-8?B?ZHpLZmNZcHdhdzVWVHhvMllSa05BcTNKMCtRYVd1bU5OdExoL1VobmY0Q1N6?=
- =?utf-8?B?YlBYWU9tU1NoOVNyRi9ncG95cWJrQVlnY2xMcGI5enpxcUVyOElvTW5WSE5a?=
- =?utf-8?B?cUk5MlJmS2pDdFE0dTdUalVnbEwwM2p6Q1JFa2ZtWnFjNkNCZS9uZEkxS1lz?=
- =?utf-8?B?WVRzdFhwYWlJSGRkbysyeTE5M0t4OTJWVjNEN3JjdTV5Zm1lejNDNGtMRHl2?=
- =?utf-8?B?c3NJd1B0N1ROMjdNOFNXQUNHMldCVFduQTh4aWhaWVNFcUZXbjNiZEIrcHFr?=
- =?utf-8?B?c25GdXRZOVFwRUNOSnVLVXFzR3ZNV0djZXRWZHhaMVhGMFJYRTlHV3Y1U2tK?=
- =?utf-8?B?emtBM0NLNHJwMXcrcUp6azBicWVyK2RzZmxYdzZWdzhQOEU2bVFPMGkyaW1S?=
- =?utf-8?B?SkNyb3l5dCs5UjVJak51VFFFa2lhWGFsU0NnWUczbGRkQjZoNWhuTmJWRkFj?=
- =?utf-8?B?cGk3UG94TVJXV3FSYzlZYk5WdE1IZTNhMGUzMG03SE9ZUE9iQkdxNkFxczNL?=
- =?utf-8?B?VVo2dHB2anJlbEpUYTZoSUNjb0NlODJHcDZHTE9sUUxMWG5jUzZZVE9JR3Nr?=
- =?utf-8?B?VGVCcTdYcUUzT2MxdDdBUEV4U0xzaGNUK1pxZHF3Tk42NGdGaHU1WHJwdEMr?=
- =?utf-8?B?Z3BqZUc3ZW5pRmFkMStHeU40VGgvM1pYMXRqRFM5dThjeWRIZHNlU2tIUmNh?=
- =?utf-8?B?L3pKNmVYZERreE8wbFM3SjY0Y1NaK29EN3Y4QkROWVNNUmsrTDNHVW1jNE1X?=
- =?utf-8?B?c2VwQkx6cjMzMzJ5dm5uTjlTd2U3YzhLWDJZN2hvWVlXZGx2aXFGbkl5NmdH?=
- =?utf-8?B?eERSQ0c5WUNLc1RxdlloMHhRTk9DY2JJTVJINGdYYXZZRFl0LzQ3K2thbTJo?=
- =?utf-8?B?Qk1rTUw4VmYraktBODJnVzZySzRJSmcrYXRURXFuYVltSnh3cWlSUUN4NzRH?=
- =?utf-8?B?bnkwdGlGc1Y1SHNVbVYzYlJLWmh1MTR3SFBkbWhVWjVXYm9qS0dCNnJoQ3dj?=
- =?utf-8?B?VmEwSkkzL1JRY2hkTGtWbGdFeDBzQWd6TmlOQ3hWTGlrbkFOazFpR0I4eGZ1?=
- =?utf-8?B?czI0NHZaZWJPRFlYR2xmQityVkFUc3dpVXMya2xLdEgzTzNvV1V5VVBnSnho?=
- =?utf-8?B?QytKTUF5ZUtwUlBZQjlqSkNjWWxpckwrUGtkY05DSElNSTJDSmgrQT09?=
+	=?utf-8?B?SXdhWUIrMHExRkZtWE45RFpYdFJCT1lnOEh3WlAwZUZ3Znhwbm1DRDJNWDUw?=
+ =?utf-8?B?Sk1Fai9kOG1DUG1lMXhCSE5aM0lqL01mSjQ4U1VTbG4zRjlCblhEdGlyeG5L?=
+ =?utf-8?B?amdkWUM0L092RGVqK0pKOWQrdE54MmVUVnpTWXpCS3lPS1ZQVDZ4Wlcza2Z1?=
+ =?utf-8?B?UkZ5eENWelY0d0Y0bkJTUG1oSGVJa1U3ZHRrSzdtS2NjdXVRSjNsMFFKb2Rn?=
+ =?utf-8?B?R1dtdks2QWJUMldJeFQzOC9TQzZBWXlEVTl2ZWdINHV6U3hPbWZQRGdRTHhQ?=
+ =?utf-8?B?YTRjemFRL0N2MUxOOWFSdS9lNWtVYi8xd0lYZFlBV0luMUlFRkIvYTlVTm5Y?=
+ =?utf-8?B?aU9DVyt3alI4bWE5NDBqdmhMWUpDUUN6WHk4bFlKbG1EajFiYjcrS3hvY1A1?=
+ =?utf-8?B?ZmdLa1Bnb1Eycy9YZHZvMG1wZi9NR3ovUW5Md0NudW1zc1Z6YUw5alNCWVFh?=
+ =?utf-8?B?YWlRT3pHNWlYRVZoWFVNTUxFL0ZxVmM1enVvZklERmNTYm5RZGIrTmtwV1NO?=
+ =?utf-8?B?eHEyQ1FubVVPZDF3QXpkcDNjaEVsbWloZ3hmWElzUHJXcFkwY3VzekpIMFYw?=
+ =?utf-8?B?RHVQR0tTZTF0bDFFcWJtOERESzlLd0JpU0hrOXIvSXV3Z1RYREdiNnFkZkM1?=
+ =?utf-8?B?d2xKeXdlS1IyZzVKUk15NE51cDE4T0o0MHBJZWhjT2tJWU1oRmhBODFrMU1z?=
+ =?utf-8?B?eTFhUTBRWldlQUl5L3hpSlRKbzBQZ0M1TzRSSHQ0eUlrMk9PNUprQ1FaL2Vz?=
+ =?utf-8?B?K3dCejlVWXMra0FRalVnRE5GSVBSWWRBZEtud01pYnNhZEJ4UDVnTHl6b0VF?=
+ =?utf-8?B?WTlCNVd4aGtkakNJc0xvMHd1QmFGdzc3dENyZnF6QXBGdU80SGE0UkUzQ2Rr?=
+ =?utf-8?B?ZEVyajJpaGpRUVBhUk1YeHBRU3ZuY2tlQStJZGo1TWJuK3RLRlUxWUFIMzJs?=
+ =?utf-8?B?MHFxWm9CWnZ2Z0JiR29IQ3JrNURLZ2w0cnFFQ0Mya3p2MW04WVowL2pJQitC?=
+ =?utf-8?B?dnNJMWJqR0pFUHdlZ0dYTU9rbXdKSVY3WDFDUk53ZjdWK3JKaklMMFJEM0VC?=
+ =?utf-8?B?dWRzQWRTdlpoM0NINklzK1dmK2o2SVNQTlBqVTBQTnNIV2JrbkhtM1JydGJG?=
+ =?utf-8?B?RGNrcllweCticzBnRVNLck4zVkZRbUZzT0dTWVFFNjNWWmRaVExra1JXNHJE?=
+ =?utf-8?B?Q0RrbGduOXNaNlZydmNzcVFlUG51M2pZaXdmSDRSQjYzMDN4WExDRlc5Y2RG?=
+ =?utf-8?B?Ykd3d1hvOHp2S3hMYnE5cnluMHJxamltdlZ5QzVDN01OcU50YmdwSmR4Z1hz?=
+ =?utf-8?B?bVdoa0RrYmY1a1RsWVloWXN1azJBTFQxMFNiN1ZhcjN0TS82UXIxcUpheXky?=
+ =?utf-8?B?cmZ6bDNraEZad2ttZkYyeWZkMzcycFlQQW4wcE9XQ0QzNnpFSG5mUFhDSERu?=
+ =?utf-8?B?MmNoK2tQTGdSSFhqREthbE9lbG12MzlDMVVNSWl3YmxjeVE0TkdtSWM2NkpT?=
+ =?utf-8?B?ckhXZFBkZC9ZZWNUNXlqQzQvS2FsMEo0cFNyTkZMSjBxaThqQjErdG4zWnVY?=
+ =?utf-8?B?eEVCZXJEUitIMTNKb2tnR1A5ZlRZbDkwZnhiV0JPQ1dLalZ2NUR3YkN5Nmpa?=
+ =?utf-8?B?R0NVWE5vSnJTcFFPNmp5emhJOG9oM2VtbnM2dytxaHFBa0VFR2dRR1RUTWk0?=
+ =?utf-8?B?M05YWkpTUlVoSkpEUkF1NHpyR3I1MEhXbVliYUpienhlb1hhaTdCckcrMk41?=
+ =?utf-8?B?emU2M1VxK3ZPdHkvMjcrZHp6Q1A2M0tDZmIwVXVnWGF1cGdMaVI1UTlRdmZN?=
+ =?utf-8?B?b0grbXhUQVNwSitUL3ZUMTlDemVnbFIvR05kbmJpd1pJaVZ2N1JadE50WFE5?=
+ =?utf-8?B?QzZiK053b2FNRGZUd3pyY0xlRTY3bGh4bTZGNERpc01pVjhvUGZpL1Y0MDV5?=
+ =?utf-8?B?NUpYTDZCK2oxOWR2cDZUR1htcSt1cXo3R1FIb09BZlVrejRQYkVlakYyTUly?=
+ =?utf-8?B?dWtTd1kvbVpNa0RiOHFMSEQ5ekhVZzcrblk5S284SEN0Q1ordFhqbUZQQWox?=
+ =?utf-8?B?THFLclRTNUo0eFBIMkNQNEcvVjZYZGZRbjZiekVuZWRkQlhhUjRVdjlPYXl1?=
+ =?utf-8?B?Y09aS0dtTndVSE1yWUMrN3RVWW0zOHpySllwNlNKYWxqKzhtenp4aFlpNU5I?=
+ =?utf-8?B?TXJtWGtQeXpkTGtZYlRqN3JSd1BIU1FzR1VRMS9qcmZJZEtNdXF3SEdyUmxq?=
+ =?utf-8?B?aExFcnFZWEthZGdvQ1BiNzVrOWlDTkU5NHJOZnpLdFFqZnJSMUFDTHR2bk15?=
+ =?utf-8?B?VUpiL09pSWhnUnpsc3N2YzkvTTNsaGJjWDVTSE8rd0pYSEMvTWZhdz09?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb96c94a-4b23-434a-0d85-08dec7d58db7
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb125fa1-66cd-4f61-59fc-08dec7d58ea4
 X-MS-Exchange-CrossTenant-AuthSource: DB9P189MB1754.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:55.5390
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 16:21:57.0034
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KeJJnYhZAezz/nHYAyhK0rlZSZtSUbhr9SH/gttirIE5MGODHoBL/aCKG3L5ebkV276Aw0HOGVX2BQOMMZ9vJg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8ORcy8baJS9d+Btne4efmhzSCMbEV98QyTNuOKFYcIJlq4hGRpaicwreC6LCgPhZu8I7Pc6mzvdMw+JgtuEwbw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWP189MB2829
-X-Rspamd-Queue-Id: 799B81C000E
-X-Stat-Signature: wut4qtgzbcjomw5ik4qytikk3ypt4pm1
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781194925-867103
-X-HE-Meta: U2FsdGVkX1/tmagXv2XcpYcAdktKfSLUXr2LvNsVd6s4sGblILKfLukxDBB+ZiXQ/eIyUGlAuLdZYuvRqDzAAVGwKhlVew4v14j6HUl3zyrXhgsLV4wSzLOMdBtm6t5YTBwbG9Nmx1JWRXHtmby25X4n3gG6P9sTZqLnAeIsoVVJBxz3hiyJHD/aGGkzXUobsaG0NmayZisJ4USPcSQ2tkNR7YQ+6CA0JwCavSTbIVFWTTSEtiumbwd71gq98Z9sa/gvEFXGKVmeUDMjyRGYCsr0KyPFFViYKCwO0UWurXlGbiu/5csuGxQaAXOVIqlRHwJOkcTCiZsmcXIIefyEqckOq1kLYTmzFRKudtpT7Xg9bYq8fuhOHdCHpS5xDbZC0cIJU1qnAJ9/EtiUZ03H/HOm/6+E3HMMuq2IdlqA195nGPNX1kcvKLE2nB4NFVI1gjPQGxLh8SXZD+PlYH+wiqX6+YaRW2AVAaAF+jzhkWYkok7v6O9Peoc0+degqG+oZT0OhQcIeSYEW71MMpFt00ro5YKug7Z5DRogE/ISXjPvATyTi0GG1DwLlyV96nR8lVxJAleLqjeBZuEiEgaUtwHbjJaiDNSCeiED9UKiPknrg0SLABbI+x/NMu7k1F5K0k5BjHSEUhYj1pRcPgy7QQgpZmtn9uo59YsfYPhPJEdJl4zMz3EM4EcX9cZiV+Ti9wd54rbuLKwEWV0caBseBC0cNj+pXu2zJjf5VF9uOq2gTCYcfpC6Gr6X0dLFiVP6waUwsEhKrNZy+JV7w2ESIBBxXaDFDWQZIij8U8QnCic7oypYef4eiZZ6sdYxY2lsUlT1SHDt+ZEKdiTBEyZBu3QcO5l/u9DHT+xbBov5TxROIOvCw1tPYPmJ8D9C21UJ3GRLyKLFBlGZ8EEw8XQD3v/CGx9Cr2AkDtLqVyA4LfzKF5JBqoSp23+ev7kxl1dsOTyLDEot42noNxpJo5V
- cqHZQ17Q
- yCiu64omtvFKrQMxYdIxC3kYypvKKgOsQSmlBEmDdRSUkdZTZJDjf0Mjs1z5WZ6J3DFKhfJdIdcjJNSa2yILDMiSvNJzSAj6Kpk1UNx/WjmAnJbo6/pnM176rcCtsFDgmBatQMFL11X5GBPeHU2EKho/jXDhlb70565JQy4XfA0ZQXNed3j41LCkqMsWLMkO2xVDd/IpxqbiDwhfs4lLMe5jJkKdf0lEidTOwK+zczg4CDY5u8EDIFVf2ihj+oxIaPaNaPrmX3WJA5H4w+D3eZSCC8Jp82v+mmqWzV0xD4pKjd9/LTkyExQgGdJtXHja/YAclLzkqZWZOkM60qGxXL+BUxcHvjvdyAKJ2+2QMYIlA61EWiYiHKdRVyTBmVZh2q9mypN1T0qJA9Ih3QQ3Iff3fE4JKWxQkP/Knw500dGc+W3NX3E3aLDrRcvnZSj+IpbBTK6YLFm7SLLWOwktBw3Ho2u2WjnQTKWC5jQ1x4EiLppopfpynfeGbz1CaU4MjIJa5FiL3NUOfWuqzahGv7HXq3v/i9kwkQWlMdUDeYCjcRMG9vXwrks2qQKO40p8L+PmFBwb2OTNFLqTxcjCYedXEcYFvUhbeTwoPdGUf0sVnChtsl24KmhH+XSk7EueZ1X84n7ROAGZq2accphPLOvLfgOqoboYK0Z607Et5UX9lr00=
+X-Stat-Signature: q3kd9t55tg411psxabkac9qyg5j5w4tg
+X-Rspamd-Queue-Id: 572A640006
+X-HE-Tag: 1781194928-160601
+X-HE-Meta: U2FsdGVkX1/7bxl53VV6DbOCIh0NQ550+1ErDUxDAv7ZNrJvat2aDka9NifAIKoImj9qGGG0fdRnkSk8inVy15lJ7UFWhAez2XQRWZMu+t1CNT8xZLC+ifqdzmUqfslWRRtUwS/2oO4iReAQIkGgH0TdZKQnDtCWexcI0rRahsIOg2HjS4GbXdMlKMapWhHF8L2mN1mGfPfxhmC29q7llRa6RHJVlQlVFe6Emh+oxkHJS+UH+Cj9peXaKaifMYuPDPvMSyzPDxDLITRor/+Mk5nsgmkAEH9iJk/dWsEWQVKP/MGm+h3lpfgzeMoA9PnPcpHsUd4IryU+1Sl+cXF81Zso4EkAPEzrElUaG5kNegCAVdcdOaMVJS8dBQyJ+dgLuMp5OyZrWltDKQqWpswv5VJnVfyA9tPw9dnkDvDdOo6jEGAkkFltQPp/aj7PUVryFkPvcmfZJ48CFv/cuZlNlzzZ9gqOqkO8CHfW0r3RDrwc3WRXOXNZif9a2Lk6Dhs9svX3jtrbb4EejAZ6LiO+It55f7FwK7GEbpQ9Daeru/j/e3Wjwa+4vzXTClP3MMEMrWdfXCQLG2Qz4mVk1kjfIFa4Muyu7lAdiYZ+Z0jBU/VWpFYed79VqYwXN3y00aCYwENdgsdEnm0nbC8/NryYf7q5KohLyL0QqYfExM4vFcGOPBXceblVE0hkKp/yXVg9Zvk4XTu9LdHLifd8whpsqMbKvAnAlrEJELKRu0tClcfL7U6OeUH1FqC46jBvOhzAFydNfJ2qx3+2qvUa+as9lP5vbSxnrAV7hBEMFLrMP7WpQWY7HkWs4EOaEZzA7j92mmqz/hvYM8ISckBDN0TtP/1Khp5ViYt1RIW4BeSePIA/5gLlyAJnZYE9imxA2haazL7byV1RCDylM1NZ6i11nwwkJwNaoAcIIbRHoQUe2IlCUw+h/fo4XVRJavKNEqBzU+zMzMMfN/v1TGuhtic
+ Wgm8GvPG
+ tBZ7ojjK39Bynrt7cOGdtyyH/oSsRuzMN3TnDQPeHFIXHEXxJbJa3omExOxXGDKUeyUCpsmihfRXKs+7Apq31gPRzNP3hkPnjkJRsAS1VO7P+RTb+aSwlrS7unFendNJrrRQ9eY2D2wmzdsjpSF8DCNSke2M3LGj5lxSwUdBAczDPq/0DgCKILtpMAsCuVY8Ajz9yz5bBAdIJBqB9dJm0QbGB1BwZDroAffNHj74I9Ct0I081f9n2Hx2WxWEm0EJS5x2cAKosFHvnQpp4AwwtevKg+LHQPhK9ZvPAd67hbzHEYD62IqlcOfjBiQz+LuzvVwsgxG955Z8M/32AMGnlQA3xlB+K1gpQ1JFPU7RGgwMAYlUhYu9AmqFtAMqaEkFcXWJUQXPGVXKY2EIK9XJlM273xtKpR8ZtwAHCorj4R4uUXIr8B/CFbR42DKXn/Os4ULR4IwCxp4e+s5g5FFwaA5M6M/pDpKe7/ulvVUSro0Of/iXixYvJPNypHS4UMyA6WHewj28omwx7n+PRYKQKttHdSX9nvBdpNuu0SAI96TJS/iJ8hLJmpdDvTX+FKYiiaRlLYs2Qn6/TO6ZohwCO3tMSfMb8Ujv6mh6zmj1g2xB/JW7Fu6JnGgiRcrwWoPT60LWeE8u481z0+6pDkOH8dvXlW17DKldRXlRM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,51 +203,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-C module exercising 1-8 argument functions plus struct pointer.
+Rust module exercising 1-8 argument functions plus struct pointer.
 Verifies register-passed (1-6) and stack-passed (7-8) arguments.
 
 Test:
 
-  make LLVM=1 CC=clang \
-    M=tools/testing/selftests/kcov_dataflow/eight_args_c modules
+  make LLVM=1 CC=clang RUSTC=$RUSTC RUST_LIB_SRC=$RUST_LIB_SRC \
+    M=tools/testing/selftests/kcov_dataflow/eight_args_rust modules
   vng --user root --exec \
     "python3 tools/testing/selftests/kcov_dataflow/trigger-view.py \
-      eight_args_c -C 8 --ko \
-      tools/testing/selftests/kcov_dataflow/eight_args_c/eight_args_c.ko"
+      eight_args_rust -C 8 --ko \
+      tools/testing/selftests/kcov_dataflow/eight_args_rust/eight_args_rust.ko"
 
 Result:
 
-  # Loaded eight_args_c
-  # Captured 6195 words
-  # 578 records
-  # showing 65 records with context=8 around eight_args_c
-
-  vfs_write(0x0)
-  0x0 = full_proxy_write()
-  full_proxy_write(0x0, 0x1, 0x0)
-  0x8200080 = __debugfs_file_get()
-  __debugfs_file_get(0x0)
-  0x0 = __debugfs_file_get()
-  0x0 = trigger_write [eight_args_c]()
-  trigger_write [eight_args_c](0x0, 0x1, 0x0)
-    df_func2 [eight_args_c](0x11, 0x22)
-    0x33 = df_func2 [eight_args_c]()
-    df_func3 [eight_args_c](0x11, 0x22, 0x33)
-    0x66 = df_func3 [eight_args_c]()
-    df_func4 [eight_args_c](0x11, 0x22, 0x33, 0x44)
-    0xaa = df_func4 [eight_args_c]()
-    df_func5 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55)
-    0xff = df_func5 [eight_args_c]()
-    df_func6 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66)
-    0x165 = df_func6 [eight_args_c]()
-    df_func7 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77)
-    0x1dc = df_func7 [eight_args_c]()
-    df_func8 [eight_args_c](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88)
-    0x264 = df_func8 [eight_args_c]()
-    df_func_struct [eight_args_c](0xaaaa)
-    0x16665 = df_func_struct [eight_args_c]()
-  0x1 = trigger_write [eight_args_c]()
-  0x1 = full_proxy_write()
+  ksys_write(0x0, 0x1)
+    fdget_pos(0x4)
+    0xffff891481d2bc00 = fdget_pos()
+  0x0 = vfs_write()
+  vfs_write(0x0, 0x1, 0x0)
+  0x0 = _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust]()
+  _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust](0x0, 0x1, 0x0)
+    rdf_func2 [eight_args_rust](0x11, 0x22)
+    0x33 = rdf_func2 [eight_args_rust]()
+    rdf_func3 [eight_args_rust](0x11, 0x22, 0x33)
+    0x66 = rdf_func3 [eight_args_rust]()
+    rdf_func4 [eight_args_rust](0x11, 0x22, 0x33, 0x44)
+    0xaa = rdf_func4 [eight_args_rust]()
+    rdf_func5 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55)
+    0xff = rdf_func5 [eight_args_rust]()
+    rdf_func6 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66)
+    0x165 = rdf_func6 [eight_args_rust]()
+    rdf_func7 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77)
+    0x1dc = rdf_func7 [eight_args_rust]()
+    rdf_func8 [eight_args_rust](0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88)
+    0x264 = rdf_func8 [eight_args_rust]()
+    rdf_func_struct [eight_args_rust](0xaaaa)
+    0x16665 = rdf_func_struct [eight_args_rust]()
+  0x1 = _RNvCs3p16QzTwthP_15eight_args_rust13write_handler [eight_args_rust]()
   0x1 = vfs_write()
   0x1 = ksys_write()
   0x1 = __x64_sys_write()
@@ -255,167 +248,207 @@ Result:
   0xba5748 = __x64_sys_close()
   file_close_fd(0x4)
   0x0 = file_close_fd()
+  0x0 = filp_flush()
 
 Cc: Alexander Potapenko <glider@google.com>
 Assisted-by: Claude:claude-opus-4-6 [kiro-chat]
 Link: https://github.com/yskzalloc/kcov-dataflow/actions
 Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 ---
- tools/testing/selftests/kcov_dataflow/Makefile     |  1 +
- tools/testing/selftests/kcov_dataflow/README.rst   |  6 ++
- .../selftests/kcov_dataflow/eight_args_c/Makefile  |  3 +
- .../kcov_dataflow/eight_args_c/eight_args_c.c      | 95 ++++++++++++++++++++++
- .../selftests/kcov_dataflow/run_eight_args_c.sh    | 35 ++++++++
- 5 files changed, 140 insertions(+)
+ tools/testing/selftests/kcov_dataflow/README.rst   |   7 +
+ .../kcov_dataflow/eight_args_rust/Makefile         |   3 +
+ .../eight_args_rust/eight_args_rust.rs             | 143 +++++++++++++++++++++
+ .../selftests/kcov_dataflow/run_eight_args_rust.sh |  35 +++++
+ 4 files changed, 188 insertions(+)
 
-diff --git a/tools/testing/selftests/kcov_dataflow/Makefile b/tools/testing/selftests/kcov_dataflow/Makefile
-index b9fc1c5f0104..3a42c54e954d 100644
---- a/tools/testing/selftests/kcov_dataflow/Makefile
-+++ b/tools/testing/selftests/kcov_dataflow/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- TEST_GEN_PROGS := user_ioctl/user_ioctl
-+TEST_PROGS := run_eight_args_c.sh
- include ../lib.mk
 diff --git a/tools/testing/selftests/kcov_dataflow/README.rst b/tools/testing/selftests/kcov_dataflow/README.rst
-index 8b650a62acb1..e93b4e573504 100644
+index e93b4e573504..61a41f3bd596 100644
 --- a/tools/testing/selftests/kcov_dataflow/README.rst
 +++ b/tools/testing/selftests/kcov_dataflow/README.rst
-@@ -35,3 +35,9 @@ trigger-view.py
+@@ -41,3 +41,10 @@ eight_args_c/
  
-         python3 trigger-view.py <module_name>
-         python3 trigger-view.py <module_name> --raw
+         make LLVM=1 CC=clang M=tools/testing/selftests/kcov_dataflow/eight_args_c modules
+         python3 trigger-view.py eight_args_c
 +
-+eight_args_c/
-+    C module with 1-8 argument functions + struct pointer::
++eight_args_rust/
++    Rust equivalent of eight_args_c. Captures arguments at -O2 where
++    drgn/vmcore cannot. Requires CONFIG_RUST::
 +
-+        make LLVM=1 CC=clang M=tools/testing/selftests/kcov_dataflow/eight_args_c modules
-+        python3 trigger-view.py eight_args_c
-diff --git a/tools/testing/selftests/kcov_dataflow/eight_args_c/Makefile b/tools/testing/selftests/kcov_dataflow/eight_args_c/Makefile
++        make LLVM=1 CC=clang M=tools/testing/selftests/kcov_dataflow/eight_args_rust modules
++        python3 trigger-view.py eight_args_rust
+diff --git a/tools/testing/selftests/kcov_dataflow/eight_args_rust/Makefile b/tools/testing/selftests/kcov_dataflow/eight_args_rust/Makefile
 new file mode 100644
-index 000000000000..aad45c7e3863
+index 000000000000..c1e9ea2c5622
 --- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/eight_args_c/Makefile
++++ b/tools/testing/selftests/kcov_dataflow/eight_args_rust/Makefile
 @@ -0,0 +1,3 @@
 +# SPDX-License-Identifier: GPL-2.0
-+obj-m := eight_args_c.o
-+KCOV_DATAFLOW_eight_args_c.o := y
-diff --git a/tools/testing/selftests/kcov_dataflow/eight_args_c/eight_args_c.c b/tools/testing/selftests/kcov_dataflow/eight_args_c/eight_args_c.c
++obj-m := eight_args_rust.o
++KCOV_DATAFLOW_eight_args_rust.o := y
+diff --git a/tools/testing/selftests/kcov_dataflow/eight_args_rust/eight_args_rust.rs b/tools/testing/selftests/kcov_dataflow/eight_args_rust/eight_args_rust.rs
 new file mode 100644
-index 000000000000..09fbbbf8d14b
+index 000000000000..3026265cda97
 --- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/eight_args_c/eight_args_c.c
-@@ -0,0 +1,95 @@
++++ b/tools/testing/selftests/kcov_dataflow/eight_args_rust/eight_args_rust.rs
+@@ -0,0 +1,143 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * eight_args_c.c - Verify kcov_dataflow captures 1-8 argument functions.
-+ *
-+ * Write to /sys/kernel/debug/kcov_dataflow_test/trigger to invoke all
-+ * eight functions and a struct-pointer function. Use with the
-+ * kcov_dataflow selftest to verify correct capture of register-passed
-+ * (1-6) and stack-passed (7-8) arguments on x86_64.
-+ */
-+#include <linux/module.h>
-+#include <linux/debugfs.h>
++//! Verify kcov_dataflow captures 1-8 argument Rust functions at -O2.
++//!
++//! This is the Rust equivalent of eight_args_c. Since rustc elides DWARF
++//! variable locations at -O2, drgn/vmcore cannot observe these arguments.
++//! kcov_dataflow captures them via the post-compilation pipeline.
++//!
++//! Write to /sys/kernel/debug/kcov_dataflow_test/trigger_rust to invoke.
 +
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("KCOV dataflow 8-argument stress test");
++#![allow(missing_docs)]
 +
-+struct pair {
-+	u32 x;
-+	u32 y;
-+};
++use kernel::prelude::*;
++use kernel::c_str;
 +
-+/* Prototypes */
-+u64 df_func1(u64 a1);
-+u64 df_func2(u64 a1, u64 a2);
-+u64 df_func3(u64 a1, u64 a2, u64 a3);
-+u64 df_func4(u64 a1, u64 a2, u64 a3, u64 a4);
-+u64 df_func5(u64 a1, u64 a2, u64 a3, u64 a4, u64 a5);
-+u64 df_func6(u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6);
-+u64 df_func7(u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6, u64 a7);
-+u64 df_func8(u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6, u64 a7,
-+	     u64 a8);
-+u64 df_func_struct(struct pair *p);
-+
-+/* Implementations - noinline ensures trace callbacks are emitted */
-+#define DEF_FUNC(name, ret_expr, ...)				\
-+noinline u64 name(__VA_ARGS__) { return (ret_expr); }		\
-+EXPORT_SYMBOL(name)
-+
-+DEF_FUNC(df_func1, a1, u64 a1);
-+DEF_FUNC(df_func2, a1 + a2, u64 a1, u64 a2);
-+DEF_FUNC(df_func3, a1 + a2 + a3, u64 a1, u64 a2, u64 a3);
-+DEF_FUNC(df_func4, a1 + a2 + a3 + a4, u64 a1, u64 a2, u64 a3, u64 a4);
-+DEF_FUNC(df_func5, a1 + a2 + a3 + a4 + a5,
-+	 u64 a1, u64 a2, u64 a3, u64 a4, u64 a5);
-+DEF_FUNC(df_func6, a1 + a2 + a3 + a4 + a5 + a6,
-+	 u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6);
-+DEF_FUNC(df_func7, a1 + a2 + a3 + a4 + a5 + a6 + a7,
-+	 u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6, u64 a7);
-+DEF_FUNC(df_func8, a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8,
-+	 u64 a1, u64 a2, u64 a3, u64 a4, u64 a5, u64 a6, u64 a7, u64 a8);
-+
-+noinline u64 df_func_struct(struct pair *p)
-+{
-+	return (u64)p->x + (u64)p->y;
-+}
-+EXPORT_SYMBOL(df_func_struct);
-+
-+static struct dentry *test_dir;
-+
-+static ssize_t trigger_write(struct file *f, const char __user *buf,
-+			     size_t count, loff_t *ppos)
-+{
-+	struct pair p = { .x = 0xAAAA, .y = 0xBBBB };
-+	volatile u64 sum = 0;
-+
-+	sum += df_func1(0x11);
-+	sum += df_func2(0x11, 0x22);
-+	sum += df_func3(0x11, 0x22, 0x33);
-+	sum += df_func4(0x11, 0x22, 0x33, 0x44);
-+	sum += df_func5(0x11, 0x22, 0x33, 0x44, 0x55);
-+	sum += df_func6(0x11, 0x22, 0x33, 0x44, 0x55, 0x66);
-+	sum += df_func7(0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77);
-+	sum += df_func8(0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88);
-+	sum += df_func_struct(&p);
-+
-+	return count;
++module! {
++    type: EightArgsRust,
++    name: "eight_args_rust",
++    authors: ["kcov-dataflow"],
++    description: "1-8 arg Rust verification for kcov_dataflow",
++    license: "GPL",
 +}
 +
-+static const struct file_operations trigger_fops = {
-+	.write = trigger_write,
-+};
-+
-+static int __init eight_args_init(void)
-+{
-+	test_dir = debugfs_create_dir("kcov_dataflow_test", NULL);
-+	debugfs_create_file("trigger", 0200, test_dir, NULL, &trigger_fops);
-+	return 0;
++#[repr(C)]
++pub struct Pair {
++    pub x: u32,
++    pub y: u32,
 +}
 +
-+static void __exit eight_args_exit(void)
-+{
-+	debugfs_remove_recursive(test_dir);
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func1(a1: u64) -> u64 { a1 }
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func2(a1: u64, a2: u64) -> u64 { a1 + a2 }
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func3(a1: u64, a2: u64, a3: u64) -> u64 {
++    a1 + a2 + a3
 +}
 +
-+module_init(eight_args_init);
-+module_exit(eight_args_exit);
-diff --git a/tools/testing/selftests/kcov_dataflow/run_eight_args_c.sh b/tools/testing/selftests/kcov_dataflow/run_eight_args_c.sh
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func4(a1: u64, a2: u64, a3: u64, a4: u64) -> u64 {
++    a1 + a2 + a3 + a4
++}
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func5(a1: u64, a2: u64, a3: u64, a4: u64, a5: u64) -> u64 {
++    a1 + a2 + a3 + a4 + a5
++}
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func6(
++    a1: u64, a2: u64, a3: u64, a4: u64, a5: u64, a6: u64,
++) -> u64 {
++    a1 + a2 + a3 + a4 + a5 + a6
++}
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func7(
++    a1: u64, a2: u64, a3: u64, a4: u64, a5: u64, a6: u64, a7: u64,
++) -> u64 {
++    a1 + a2 + a3 + a4 + a5 + a6 + a7
++}
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func8(
++    a1: u64, a2: u64, a3: u64, a4: u64, a5: u64, a6: u64, a7: u64, a8: u64,
++) -> u64 {
++    a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8
++}
++
++#[no_mangle]
++#[inline(never)]
++pub extern "C" fn rdf_func_struct(p: *const Pair) -> u64 {
++    unsafe { (*p).x as u64 + (*p).y as u64 }
++}
++
++unsafe extern "C" fn write_handler(
++    _file: *mut kernel::bindings::file,
++    _buf: *const core::ffi::c_char,
++    count: usize,
++    _ppos: *mut kernel::bindings::loff_t,
++) -> kernel::ffi::c_long {
++    let p = Pair { x: 0xAAAA, y: 0xBBBB };
++
++    let mut sum: u64 = 0;
++    sum = sum.wrapping_add(rdf_func1(0x11));
++    sum = sum.wrapping_add(rdf_func2(0x11, 0x22));
++    sum = sum.wrapping_add(rdf_func3(0x11, 0x22, 0x33));
++    sum = sum.wrapping_add(rdf_func4(0x11, 0x22, 0x33, 0x44));
++    sum = sum.wrapping_add(rdf_func5(0x11, 0x22, 0x33, 0x44, 0x55));
++    sum = sum.wrapping_add(rdf_func6(0x11, 0x22, 0x33, 0x44, 0x55, 0x66));
++    sum = sum.wrapping_add(rdf_func7(0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77));
++    sum = sum.wrapping_add(rdf_func8(0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88));
++    sum = sum.wrapping_add(rdf_func_struct(&p as *const Pair));
++    core::hint::black_box(sum);
++
++    count as kernel::ffi::c_long
++}
++
++#[repr(transparent)]
++struct SyncFops(kernel::bindings::file_operations);
++unsafe impl Sync for SyncFops {}
++
++static FOPS: SyncFops = SyncFops(kernel::bindings::file_operations {
++    write: Some(unsafe { core::mem::transmute(write_handler as *const ()) }),
++    ..unsafe { core::mem::zeroed() }
++});
++
++struct EightArgsRust {
++    d: *mut kernel::bindings::dentry,
++}
++
++impl kernel::Module for EightArgsRust {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        let d = unsafe {
++            kernel::bindings::debugfs_create_file_unsafe(
++                c_str!("trigger_rust").as_char_ptr(),
++                0o222,
++                core::ptr::null_mut(),
++                core::ptr::null_mut(),
++                &FOPS.0,
++            )
++        };
++        Ok(Self { d })
++    }
++}
++
++impl Drop for EightArgsRust {
++    fn drop(&mut self) {
++        unsafe { kernel::bindings::debugfs_remove(self.d) };
++    }
++}
++
++unsafe impl Send for EightArgsRust {}
++unsafe impl Sync for EightArgsRust {}
+diff --git a/tools/testing/selftests/kcov_dataflow/run_eight_args_rust.sh b/tools/testing/selftests/kcov_dataflow/run_eight_args_rust.sh
 new file mode 100755
-index 000000000000..d24092e920ff
+index 000000000000..c5f11866e19d
 --- /dev/null
-+++ b/tools/testing/selftests/kcov_dataflow/run_eight_args_c.sh
++++ b/tools/testing/selftests/kcov_dataflow/run_eight_args_rust.sh
 @@ -0,0 +1,35 @@
 +#!/bin/bash
 +# SPDX-License-Identifier: GPL-2.0
-+# Test eight_args_c module capture via kcov_dataflow
++# Test eight_args_rust module capture via kcov_dataflow
 +DIR="$(dirname "$0")"
-+KO="$DIR/eight_args_c/eight_args_c.ko"
++KO="$DIR/eight_args_rust/eight_args_rust.ko"
 +
 +if [ ! -f "$KO" ]; then
 +	echo "SKIP: $KO not found"
-+	echo "Build: make LLVM=1 CC=clang M=...eight_args_c modules"
++	echo "Build: make LLVM=1 CC=clang RUSTC=\$RUSTC M=...eight_args_rust modules""
 +	exit 4  # kselftest SKIP
 +fi
 +
@@ -424,7 +457,7 @@ index 000000000000..d24092e920ff
 +	exit 4
 +fi
 +
-+OUTPUT=$(python3 "$DIR/trigger-view.py" eight_args_c --ko "$KO" --raw 2>&1)
++OUTPUT=$(python3 "$DIR/trigger-view.py" eight_args_rust --ko "$KO" --raw 2>&1)
 +RC=$?
 +
 +if [ $RC -ne 0 ]; then
@@ -435,7 +468,7 @@ index 000000000000..d24092e920ff
 +
 +RECORDS=$(echo "$OUTPUT" | grep -c "^\[ENTRY\]\|^\[RET")
 +if [ "$RECORDS" -gt 0 ]; then
-+	echo "PASS: captured $RECORDS records from eight_args_c"
++	echo "PASS: captured $RECORDS records from eight_args_rust"
 +	exit 0
 +else
 +	echo "FAIL: no records captured"
