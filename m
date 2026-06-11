@@ -4,132 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF6DCD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F2C8CD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5F036B0005; Thu, 11 Jun 2026 05:23:22 -0400 (EDT)
+	id B721C6B008C; Thu, 11 Jun 2026 05:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E8BE6B0088; Thu, 11 Jun 2026 05:23:22 -0400 (EDT)
+	id B22A86B0092; Thu, 11 Jun 2026 05:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FEC56B008C; Thu, 11 Jun 2026 05:23:22 -0400 (EDT)
+	id A118B6B0093; Thu, 11 Jun 2026 05:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F476B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:23:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EF62F4055E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:23:21 +0000 (UTC)
-X-FDA: 84867093402.15.D75DC13
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8568E4000C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:23:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZV4swvd0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8C76F6B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:24:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AED840590
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:24:03 +0000 (UTC)
+X-FDA: 84867095166.22.76E7B3C
+Received: from outbound.st.icloud.com (p-east2-cluster4-host3-snip4-7.eps.apple.com [57.103.78.138])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 686F520003
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:24:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=BLK+9v4l;
+	spf=pass (imf03.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.78.138 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781169797;
+	s=arc-20220608; t=1781169841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7UWn+/o1z8vjqgLMtj+iGKcEAIf/D00Y5lREVjVXChc=;
-	b=lwquCZSu8BaIn2naFJ61dE33KzeVqs+dV2l5sms1IqIY+zw69xq8Fc+eoupRAcSWs3GlNp
-	bBUh7nrhV2vRxFTB3LF6I6bP7fipt+/p5H8ArmMJOe5/02TK4VVtp0UuS/BTNTUmcNJ7/O
-	y2cBIppld9Xl5KCxW+Mxdg4OGlFsato=
+	bh=Yruy+uDSwynGDVg5p2NykKBJLXswuax2VIEq8rPzrwE=;
+	b=CJG7DSMklb/ANDZ9B63I9ha9/TxkXh+kBtWXe//KdQpIQDm8MiWTE0U6yys2lgzPCMC3Dr
+	d6rD0uwXaX3OKYFXiW1q6YTLb1TU+4r3uRx9dkh3Ncn6O6DlVzLd4Oib/DdBy25Q4YDmdB
+	KHA17LfA+sdfdYOxfi0RtCmEIiLHtFU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZV4swvd0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=BLK+9v4l;
+	spf=pass (imf03.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.78.138 as permitted sender) smtp.mailfrom=lukafocus@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781169797;
-	b=6eU3UBFc8QqZDttRpSvZxQ5BP1+qY1TzbmyH0O6Eum6q2MVLsu4vzef8yrKEKRr8tTgoBv
-	w8hvq1rYa+FAQVRZvgkQSQHYUdgQNOggVICPoqO9MCrNYfEi3DEFs7mP+p8tAj0OXNxdvD
-	Z1k1kS7UEkoYlVBiPrfLqRakO8Rq7EQ=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-68f36e1663cso13887115a12.3
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781169796; x=1781774596; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7UWn+/o1z8vjqgLMtj+iGKcEAIf/D00Y5lREVjVXChc=;
-        b=ZV4swvd0q7+aW2tusVpepGzxFJMAyV0OF6TF+TncP8SEeoec9STtNVtyQXsemyo2IL
-         vHNYNyETT+Cwue5lecBXayjPQtNpbwACDGUyQF34Q/3my8radYE89PTXAfdL3s55sDKl
-         GS5IcfUzXJiFO+RH5Isezln4F0ivW0GfSm6OUC9g+so3KkQIGRLUDJidfMJAGy3UggDP
-         JsSuqtaeA7GWdcQFstFtAVh4bDmPrzZ2J21ZlwARZ0LU7b9H261Jz3+cjdSYRck3xQAD
-         Sxdwrz0faf+VAQvtScx3GgUaDG9nOT7YqYusVJf+sJaCOb0DPu+HCMy6sc9Jm1TuAfNE
-         RysQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781169796; x=1781774596;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7UWn+/o1z8vjqgLMtj+iGKcEAIf/D00Y5lREVjVXChc=;
-        b=aDIU5fmP/UC9MhU8lEw+EQKk4/AKXx8jqi4fixUxCeactnJtL1XUybFRljcaYwq7mp
-         s9G11BunMS28RzKOuEzpr/mr7qk4pp6hq5NOpMgrEtEcwCuO+69Zli/D48CIvaLvqUrd
-         gyxoqKkioJaN2uoE/stiZFiQaa6qqfptPecwUijmqHyTqZfV8EPjNytpOr+oPkufLh0b
-         /6wh0KP8QEBgTpkYccY96hulvGp+Ev9xE5tYrTVmAlRk9WGUiwt2U+L72lHFEnXl6Lb6
-         9OH2QalEVWl0yCu4ROnLPIMIXATht1GvMXN1x6s9eKY+hmeNJIMgLjj7BejfaOfVtUzK
-         mM+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9h2m4tbg4uAOFUz0UOIA2lfstPBJaMwXyZb9mDSHy8wTHR9WkFHXYgfUvWZxlTCGOzKElJM0qLYQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxv6N8NixvUPOuq/g41kEnMhqs68q7BJtqIGu7csnwsTXcfW8uA
-	7WcxkRQupLOky/woGOzK6w21tWQiv8X9e4vYXyWKYc7vee0eWqP/r9/3
-X-Gm-Gg: Acq92OFXtLyM/hBM946Lvw/BqWzJ9ItmxjykZuyhlubyHnLup8zFFdI++C3pz4++r8F
-	M89418cdcFlRT8IQTRvD7ZDc69R8rLcHOSpJtBZ43Mx5UzSqvce8QN87Hvgs3HnPXhUEIQDIIQE
-	jOSQEs7QMRe8zUNMKYv7dTPqhhNK4JJ2iJYCZKMigLdsxbHM8eTelMdQQWHIOdtV8LnPAhN2Pfo
-	PvZ9TE1nD4ZyGtC2KpF68+kCt9yJSeRb9EJJnhgo2EPv94vkzvdS0oY8LlJW4oaGcI0ZvOiggfm
-	kKVuCxV6FxpXTm8dFUKdI+uXjU/ebnaXNKY1+mzCvVeGVv0RUXvzE3lnIkV63cmiwdSWxuy2UWF
-	3UfaqFWQQwQwDaLiZfyD8wEd01PTXLwhH3Smwdoe8EthdB8qxq/je5iIpJ7m8wayKqDJ8tEJzeQ
-	VUp6jw0HyZH9l/FGL1HVbDVnKVSq/ssFnnsj6bdRvM1OFvW75zylFx4s3rYEPV4Oz2g/xZMpvpX
-	tm8B5xPr4QLkzchryH0jI9oVcYqurBmVzI=
-X-Received: by 2002:a17:907:d048:b0:bfa:6dc1:3c64 with SMTP id a640c23a62f3a-bfc85c82bbbmr78034866b.13.1781169795458;
-        Thu, 11 Jun 2026 02:23:15 -0700 (PDT)
-Received: from localhost (pat-125-253.wlan.net.ed.ac.uk. [192.41.125.253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfcb53ca055sm36691266b.38.2026.06.11.02.23.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 02:23:14 -0700 (PDT)
-Date: Thu, 11 Jun 2026 10:23:13 +0100
-From: Karim Manaouil <kmanaouil.dev@gmail.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, Luka Bai <lukafocus@icloud.com>,
+	t=1781169841;
+	b=m1plB+q8jkt7jd4kGEZLr2MRAGdzR643encJUTmcr1v3im4rXJuYimhto8KdbPW4J96olX
+	YvAjlzCOcwvt8k9yqnzky/ndekw9zIVJ7L5r+M9THMQLs/bGvy3Kbc2h5eBAKkqG5E4vLz
+	crx4VE2h03NerSTZV7stgPcjsSpG9v8=
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-4 (Postfix) with ESMTPS id 73ED4180026B;
+	Thu, 11 Jun 2026 09:23:56 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1LHVwEWRxBDUkdXwdLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9CAVhbCFsEDx9MDFECQgVWXkoMHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQUZWh0aG1k/UiEeLkADcDZeOH84fCpwMXBVfi4GVRIEQAhWUF4IXh9MHA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781169840; x=1783761840; bh=Yruy+uDSwynGDVg5p2NykKBJLXswuax2VIEq8rPzrwE=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=BLK+9v4lXZLgJl0JsJ6MpHx39olx+zw4FQL/tmQNPy2jRLxxpQ4DuspOXV2kYzWM7Y494lfNEytXzx0fi0lZjtRArjT/8Ks1QlKUcb0Q7r8kxr3Eo4x1DQAaNfw7mAxBAXfOOEQjCby5KNKROFXhMtJDesvxMVFNiaJzTWxBuZM+07mCu8lMjF2Ngo1a0vRwuuOZCqVgsXnZbVVVKGMpWllBPfbi2BLsx5+QwOhZQICaDu6nWGJxx5Mus+1v9rQcqdvXOMQnRBm7bEm3Y6934kuzAu9IFOxbNp/LQGPihAvrXlq2hQeFIOC682wm9BefHKeKb3MyRzFCyYuWWLwiOg==
+Received: from localhost (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-4 (Postfix) with ESMTPSA id 351E3180024A;
+	Thu, 11 Jun 2026 09:23:55 +0000 (UTC)
+Date: Thu, 11 Jun 2026 17:23:50 +0800
+From: Luka Bai <lukafocus@icloud.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
 	Qi Zheng <qi.zheng@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
-Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
- khugepaged and use in mglru
-Message-ID: <20260611092313.7d4knb2irt2rtswu@wrangler>
-References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
- <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
- <aigktfOjYwxhzEhb@lucifer>
+	Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org,
+	Luka Bai <lukabai@tencent.com>
+Subject: Re: [PATCH 2/5] mm/khugepaged: use slab cache instead of normal
+ kmalloc
+Message-ID: <aip-pkOkY-CwhBFg@LUKABAI-MC1>
+References: <20260531-thp_collapse_hint-v1-0-e7f8c2035621@tencent.com>
+ <20260531-thp_collapse_hint-v1-2-e7f8c2035621@tencent.com>
+ <d4636be2-d9fe-4464-99d7-b0b9902e6b52@kernel.org>
+ <aiooiNyND2Q96b4j@LUKABAI-MC1>
+ <bdce3c32-54de-4f07-9321-986f49e47767@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aigktfOjYwxhzEhb@lucifer>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bdce3c32-54de-4f07-9321-986f49e47767@kernel.org>
+X-Proofpoint-GUID: vWiI5DfDlKo9d_pTiAL8bLxbN4XYVEVa
+X-Authority-Info-Out: v=2.4 cv=ZKPaWH7b c=1 sm=1 tr=0 ts=6a2a7eaf
+ cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
+ a=YrL12D//S6tul8v/L+6tKg==:17 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=x7bEGLp0ZPQA:10 a=UaoJkeuwEpQA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=GvQkQWPkAAAA:8 a=kZerjp_4y9AqR4350q8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDA5MyBTYWx0ZWRfXz55/QVcYLGVo
+ fjA+rDUkbTg/5s3fdTTH1xBnati0BBf1LZoUEsKBt14uXCMw/vrzGlxIByX69y/kGDVdoEZgPJT
+ utU+tR0kWEZE4aA4l9ufhHpnO/tM+iRLcylnUlBI0Q2IBuvhWJeSMbe7izIRfOaZtXQ5bHyowUW
+ rJiBq7POXSC0z8dutLIKQ/1wfyYABlBD4xqBSRSTbTC+Ktc17/B8uza24ZZaF7RaK16i2rzzdgE
+ XuiD3OzV4+7oPuwzuJa5IaptGSvM2TGLwcsysIODMQ1VroSu4B1QIl2z1JRHN+YcMPo6/K3ce48
+ IBNc7yUyXr4ZEYmxKHuOgR0Sbb7RKlZ9Zq5nxLztbd7z97wYhF1qf4DtoVWe2k=
+X-Proofpoint-ORIG-GUID: vWiI5DfDlKo9d_pTiAL8bLxbN4XYVEVa
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 686F520003
+X-Stat-Signature: 33r6iqso4uktke7yui5uop784etxcjjh
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8568E4000C
-X-Stat-Signature: xug3mrh1xp4o4jo8w5c6fxk6yerd4j7i
-X-HE-Tag: 1781169797-399768
-X-HE-Meta: U2FsdGVkX1/+LNnGsv+iI5y/JsDM8mE5C9VeBOUcK+gYPnSt5jMWHM/O9C9pj+nsWhfX9TeKdBdEZn3Dj38lHo+jhDIyBVpAsYiL71PN5PykYB+EMJFkaIX9jfyGf6ikIJwlOzNUmmL/1tVoC+FzjOMOLGXO2E5f4GTvsHQCs/26j4fgqteVbhXUMyOBGasA6VbmwGJPYvTj13hRdyEpPz6Si6T+HmqFydWnO6XHbLeOUCZGgzPolVovk0pU8zCWBrhEq4DOVSsW2Z+2MMe+KHX0tcnmlES78zPqhWeuIgYAjlEn796LV2InRcu8F4O3FQU5rTthpAdJCA3o3rNke0cztqcrsRCca7WYNMWUIl9AFwHwBI7DyRd3Btm9sAGaP5bxRV4aWMJ6iWiz0FrQKtXzJT2Ncpdzy76iYp9gH/FQk9KbkAHwPOFg3OCqVx5IEsoHxnz+x9Z2BjyhrdWv4eMtwONcd5yUm2Vo36HCNCzZDc+BG/WQL31bqAgJouTZL1lulJj8fVGgfJsytvWdd39Pi3rGOco3uy+OBwEq3yCOLUs4m+END2RtKzGYeVi1CE/4TsjzMTY7Cq157/gQ/f7K/yoDlb63l967BbrqC3cPuF/Ku/ekenCURIm/3djrKDB1LrpNqhsgZE+qq2VHlB/gPJlWWZwzLrU7jjnVRH3ToKsv7fCn3TIB5PBA1JP4P8bMra0wJnJ3bjb3v0ghmUGd5xPUmTA4VCRSJO6/eLD+DEYBbIsGG9n0+8KlqJTZniTPa3SEaNtdTVF6ddTJzbnZ6mS6JHGfHb6ZsSu9QYDIqMAqjo8s8ArpaP7oH+vMgahzdEf9tmBT6/voqGi8Kk/DLkJ2SPSsngxfH4gJDYd02xsAnGxTg9HzZxlyKxoHnrCR3lS9Os+BXd4td5RB4AL5yADgnCyQBXx622AXAdQuV6/vV8uK1hMWhjusjbTFHXiZMENwUc9dzHIT927
- U4zoI4PT
- UmziQUzm9bqEc0dksrk6KHZ5SpmGv14t9qADLtW+QrSrIcM6xDRWMfhJlLYLaxgoKqu4m6+u92m2p4gadM/Es6HVC1i/lE7kPVxh4uhe6ELKTap4rnS6AguEpyd9X3Gif7SGpHEN/Rljh3oJM+XRTrtCPc/6EEiR21c24E8fwNpp8jwVL+gZWI1JqdzcBFwt8GCR3sNLslJ4y3ONI4K6FvlCAm6FFnItHWzavL8VbdHtoWh3wzc7UrSyCbfTpxSSgSJ007gqAlq2PHWz8Y8b1stZ2kHFoKacWB6aI9ZfcGiu2+JSI/4+S+QZspACCVhXI1mFbtd4n8+G6TDTyiQly/f+pA5P4c17JEoLMzfZznaqTmuoWyPELQwKCOtXQ/+1PIVDpiOMzKUU/Wo9B+LKlNQHGfaYvkmDcbdlxGLeAp+lMgLLSO4ha2Mf/yhT4nKmfxyIVq3/NCP99+Kj3+ukaEhthKhDDe9sjKF0rrkJKpRlaIezj/OTmBtHk9RONRf0OivZH0Qf7rxm9w3Y=
+X-HE-Tag: 1781169841-247255
+X-HE-Meta: U2FsdGVkX1/bGfVPiU5fBA94UZhMqev8FAYCveoxAiZaoC14HkSgR0AUN9KloKNt7EOfst/SdglQui7ewps5TU0JcI8jhDLaEOa3Bvhn0eqS0DjkrcwjB3ftR6WKfnB9JaEwheewMJf5m1z8IqMfcs0PsFosvk7Cmd5bpHIPPPye+hNBJoNVAtr/Pi+azTnawnLBAQVaBFv1iU91XrwW3su5cO8sjc1QkoDrqTwndPfJj3b30LDjREbb+CzeSoPZCK1GHDP9IenRvwQtnVDSnFWHNUIc07Rh7m1ZPDI5h0ubHNR64yvczy6ag+naqgFIMNJfuqF824JHfQQNjvPtVzrNLQVxPBvysf7l2RungvREQUGdLRIW9WbkQ93LX4pTUu+Wjk513cQBKMbv75Q+KoQho3Fplh7zvYGG1NRP9xYLbioOOLrTKJM6h4q6p1vFm71CaaXPaR4B92zvwzfv5S1JpUBlaO1N9y9NcGcn2KLQl1skon8cXw3m3h3ms47uUeX1yusZlmjPt9TP+NlchhlknUgl3aBXRWlTLuBCIWhxnTzC4WVpzWDLJ1zhIpi+/Tz+Gkho26XYPg/SWrelsLFdbu6Jv68nVO7X7hak8i1ULvJwI+MR3u7GTOs8N+ZKQXBPdeMk11dmW4xdMam7HR7Q5zO8cFP+Rjerl3Xi4e24F+g+li+3Z+L1/zOmz9Qd3tADokKlhGt0dlWUqz6BVldyoTKyEcDgpnuBBTXOhvvXEZ9zrp2c67uhutFWna15t19PAH9Un9UqeQpGByPZtk2lIeu3AlYlqEgolLeYjo6REDuzQtSI1nURs8ezlfRahP9uZYNJMgue2+1PPaQCvXBvtQtIT1auTyiswQHHcV0DUm+Dv+b2HA1vTafr5l9F6QRmIwFPdITHXwf3KAIQTgx8aQGWIbDkh5mrDJolaT15lvRsfsmnkuRXK49r/Fjbvb17CO7pH5kob7ojJ96
+ KF/OhTcM
+ O2K5TYp1HgNbD8tWa4i4vbopDj4aW8mQzhKEYGcYHcL/5asDYIHhHGUhKZrlWT5m52lChBGtmi7kBatu3undQUHvPXNO28nNK4fSVRsgf+Ya5T0fHKz4Jx2BfJi0euGSpvArIbLmetdpCzlcPUPS7kvmiLmvoxxhbsoy+C6UhUeEgAbtEZvIUebmlC0sYK1RQviQRXRHp5MWjx7dqmUq+BYdMG2X2WF5GwW8/hyxcFaYXKvlctM6XTKm+H0bCQZZOOcFSQoq7sb0Jjy834Pp0X+56OkGgbqLWh5SPC8eS3hE9BFFRFc4ezWyJdcLORsvjLPr/J8EFVCMX8DcYC1izTedsTT1FXfFdx5XYVvN8lrSFvglVSnLsW+Bt+H57W41mQs2U2sJQw9NEYqBVmsqfmjywQ8Xqa/Wl2l/FILvCLaZVYLJUnBHvQaexuIC5WlaP7vNPqay6q8W399/mYD9hearFBPX0ZvqemdKvlcxn9HTCEriSfTlyhEeo/zVZoeT6I3pOebAeKvAMpWWNv0qNHyfhJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,51 +119,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 09, 2026 at 03:44:21PM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jun 09, 2026 at 04:17:45AM -0600, Nico Pache wrote:
-> > I had future plans for something similar as part of the thp=auto work;
-> > however that requires significant thought and investigation into how
-> > we can properly gather hints for collapse/split THP candidates. From
-> > my perspective we'd want a more global structure/system outside of
-> > khugepaged, that would directly call khugepaged (and others like
-> > split, etc). It would also tie into the allocator so that at fault
-> > time it could leverage the hints to make better decisions. My fear
-> > with this series is that making a decision now might complicate future
-> > work by adding complexity we may eventually want to remove for a
-> > better solution.
-> 
-> I know this is future planning stuff, but I want to point out that we need
-> to see significant rework of the THP code base before accepting any further
-> major changes.
-> 
-> >
-> > If you have the chance perhaps you can lead a discussion on your
-> > proposal at the biweekly MM alignment session.
-> >
-> > +David Rientjes as he leads those discussions. We could use that time
-> > to layout a plan for what needs to be done for this work, and for the
-> > work surrounding thp=auto as I beleive they will be interdependent :)
-> 
-> We prefer to discuss THP topics in the THP cabal meeting, which both THP
-> maintainers regularly attend :) having separate sessions we might not be aware
-> of isn't really helpful.
+在 Thu, Jun 11, 2026 at 01:35:46PM +0900，Harry Yoo 写道：
 
-Hi Lorenzo,
+Hi Harry,
 
-How to participate in the THP cabal meetings? Is there any public link
-to join? I'm working recently on anti-fragmentation, which is kind of relevant...
+Thanks for the review.
 
-Thanks
-> And 'THP auto' is a broad topic rather than a new feature. I don't think it
-> should be seen as a topic 'owned' by anybody, but rather something that we
-> as a community should discuss.
 > 
-> Series that appear from nowhere trying to implement significant changes
-> along those lines without community disucssion will not be hugely
-> appreciated :)
 > 
-> Thanks, Lorenzo
+> On 6/11/26 12:16 PM, Luka Bai wrote:
+> > 在 Tue, Jun 09, 2026 at 12:26:18PM +0200，Vlastimil Babka (SUSE) 写道：
+> >> On 5/31/26 06:23, Luka Bai wrote:
+> >>> From: Luka Bai <lukabai@tencent.com>
+> >>>
+> >>> We added a kmem slab cached called collapse_hint_cache for
+> >>> khugepaged collapse hint, to improve the performance in allocation
+> >>> and freeing for the hint structs.
+> >>>
+> >>> Signed-off-by: Luka Bai <lukabai@tencent.com>
+> >>
+> >> Khugepaged isn't exactly a hotpath? Adding own cache comes with memory
+> >> overhead, so this doesn't seem like a sufficient reason to do that.
+> >>
+> > Hi Vlastimil,
+> > 
+> > Thanks for the review :).
+> > 
+> > Yeah Khugepaged is not a hotpath. But in my implementation we will allocate
+> > those khugepaged collapse hint structs in other paths like walk_mm() and
+> > lru_gen_look_around(), which may be called more frequently under memory
+> > pressure. I'm a little afraid that directly using kmalloc may compromise
+> > the performance of reclaimation... What do you think? Thanks. :)
+> 
+> What makes you think using kmalloc compromises the performance under
+> memory pressure?
+> 
 
--- 
-~karim
+Sorry, I didn't do a comparison test for slab_cache against kmalloc to be honest so
+this conclusion may be not very rigorous :). I just analyzed from the implementation.
+Since khugepaged collapse hint is just a "best-effort" implementation so I don't want
+it to influence other more important procedures and that's why I wanted to use the
+fastest way for it.
+
+1. Using individual slab_cache can help it use its own locks and slab caches from
+what I see. So maybe we can improve performance by reducing the lock contention?
+And I found that mm_slot used by khugepaged is also using its own slab_cache. My hint
+struct should be allocated much more frequently than mm_slot during mglru scanning.
+So that's why I said that "using kmalloc for khugepaged hint struct may compromise
+the performance compared to using slab_cache", still, that's just a guess. :)
+
+2. We can also save the fraction since kmalloc only has caches for sizes in a power
+of 2 if I remember it correctly, while khugepaged collapse hint struct has a size of
+48 bytes. So maybe using a individual slab cache could be helpful to the fraction.
+Of course this reason is not as important as the first one.
+
+I didn't realize using individual slab cache can have that much negative influence :)
+Maybe I should actually do a comparison test for these two machanisms. Thanks.
+
+> > Best regards,
+> > Luka
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
+
+Best regards,
+Luka
+
+
 
