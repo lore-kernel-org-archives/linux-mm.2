@@ -4,99 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84DC7CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77CCACD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 03:20:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E08D16B0092; Wed, 10 Jun 2026 23:18:20 -0400 (EDT)
+	id D47C96B008C; Wed, 10 Jun 2026 23:20:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE04C6B0093; Wed, 10 Jun 2026 23:18:20 -0400 (EDT)
+	id D1F766B0095; Wed, 10 Jun 2026 23:20:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF61F6B0095; Wed, 10 Jun 2026 23:18:20 -0400 (EDT)
+	id C357D6B0096; Wed, 10 Jun 2026 23:20:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BC9406B0092
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:18:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89107164FCD
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:18:20 +0000 (UTC)
-X-FDA: 84866173560.23.7C8BEB1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B25C8160002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:18:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8536B008C
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 23:20:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B81840468
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:20:01 +0000 (UTC)
+X-FDA: 84866177802.17.DA5A49B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6BC18160002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:19:59 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FBgBeVv7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nicAYYUw;
+	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781147898;
+	s=arc-20220608; t=1781147999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/x68ABRg379J30fMcenonWGwnmir0RuQ5ej/rkgPavY=;
-	b=Dyv1fbJZRlBgifG++2dtuYm2SKd0ICW6vF1mbrLSTzKFhkB30VtlnSOoPvF4DOYLFf/wRt
-	mcyiciob4tHczsFjAIBQFt85SbK0pFCvxC+ak+jxuHft5ibhcQLjSpT8X2sxL+cGA6z63n
-	J8dc00GdDp8GrQsk2ZqCqZ6I6fHx19E=
+	bh=HfR+7RqO5pf/6TMxfeDgb+hxnKTwl+gKyahhAXFJyao=;
+	b=G5hQjCkYRtSQ6ji/PGSAkFjjhhqbpo7EUouwaIiUdgBr98+SJ/smwiPzEKHqJ6orNOjYdU
+	XesxKJLhbBBWkNryMVPIyqFeNgQC8/0Q4bSSDZ3UHSCQGRsiaBNePTtUwb6x0l58jpwp6Y
+	OZnebDA5tWHEjsDyWAXwlhX0k4puMG4=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FBgBeVv7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nicAYYUw;
+	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781147898;
-	b=HeRgBO7KXDSp+6a3vuOl/oPbqnLuwvsFYUW+HdinSeE9eAizvtW3n6vBNNUAelJZu2pQS5
-	kqFt9LuN6y/Rtbc8LJExwVQOhnmQyg3wGFcRjfHKOGTUQkzlsbmIsZISjiW7RkUDc5IQ3M
-	/HvuIPH7ceg7a7KwQGQ6a0Q1pFooBMc=
+	t=1781147999;
+	b=x2A1ZC8c8H9FtRE3F83I8jwHrxAh8o9RpY1ENSi9hp995+8pkb++JNcuH+fBuMvU+cHZkQ
+	yNe6wOn6/CvtSp7iYKNauirA6m5JMdh+EzFigucv4PYvRvO814Hp8pAz7bYRfJf0c8/GpM
+	LROFsUrFx34WsU6uw/Lhslh9g3i5EOc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 494576020F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:18:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EE01F0089F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:18:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C02140BB8
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509411F00899
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781147898;
-	bh=/x68ABRg379J30fMcenonWGwnmir0RuQ5ej/rkgPavY=;
+	s=k20260515; t=1781147998;
+	bh=HfR+7RqO5pf/6TMxfeDgb+hxnKTwl+gKyahhAXFJyao=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FBgBeVv7dBjKkNGP2yJxVgW8+TNt1tgecCDspEgeQ5f000BfZ3laEFc4Hvw4QOgLq
-	 FnjuZhv1BRpYCJHz89pyrhXtSDC+T822iqjvZidyWJYWaIlhdKqiNdH+NGlzQTFb2i
-	 3oTK4vXAVc+RrE15wvfNbiI97oryyLJVDLnsocpnE67KXbk6MLXe/rF1k1hAyABr/K
-	 8dmTOPQ+jySwCzm1P7kO8LklHDeT+D3HKRNUefkK2iCQAC069+PvuPiH/zKdQ1PX52
-	 g05+ZlS7xGnEqzp16MI3Glnc33nhKig06y/QlikGDhiasapoDbgvmtKcCrwPMZ8Pzq
-	 K64TFoLmy6QKg==
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-660ea43107fso7201198d50.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:18:17 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yxx6dZ7T+sDPDlsg/iSeVl6FUiLdhh8yC5hRRklNxdoKXv0dnUD
-	qmkQrceChFYqF5DsK33X9sW8xifhYpMOmdXHnL8GZxaTY3zAgzhvrPUWDR+9ruNr1/jr1k7Jbkn
-	7sOqRzcPfw8rPbip8Nz0NuoLdas17MpVuNgwf7vZZcw==
-X-Received: by 2002:a05:690e:4087:b0:660:651a:26e2 with SMTP id
- 956f58d0204a3-662696264aemr832644d50.13.1781147897429; Wed, 10 Jun 2026
- 20:18:17 -0700 (PDT)
+	b=nicAYYUwVDdQjj4oIETPxekiJV714+jEoGXAA1shKElivHE4ps9dFlzfSBnuQ8bQX
+	 jUpLZeUrVh7e4FEh0irFpjN68U3lG0GXYE7MptJTHIfwYgTPGTiAEB47jvGqNAgBTZ
+	 VLsMipl4xoUuUqXQCjrd+yKN3w75lMSDP14srS6z4J/Dx3U4nnYiiTc1FlccFbR6iC
+	 al29Zpnq5RHwj8kcbu2cR/gaiWNRg32DzJC5fEoBLGDdrJ4kYb47NR/nRkDpkZdwM3
+	 ekDY7Nqa2DQ/lYySX31hANMXIDin5HQVwFabOLo7T+0rvpQijLEFhUGLqMHXLU+5vc
+	 IisFITgBm4nYg==
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-6611689dc10so4980483d50.1
+        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:19:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ81OU2S4kITY8AfV6IxIqrm1GxrRnXZ6lZkSl3ZYfQKVM3bSlj+rSRrPzNpkQ2+14e0cPrliAT9fA==@kvack.org
+X-Gm-Message-State: AOJu0YyDg2C6nh6B6u2k03fdxFhTBtB/5k0PsJIzyxleM84W5GQQ+Bin
+	EXN1p2gruDsPcCGa1uDfUaYfRCPXvqmrmSwEpNyCwdmIYDr/1ShYH2oUGLMh0elKXT8Hb7hS5iq
+	Pl/93eaAHYzcNTF68ESyTr3nvhpjIdNKdLbd7Kkg9kg==
+X-Received: by 2002:a05:690e:134a:b0:65d:7db3:5587 with SMTP id
+ 956f58d0204a3-662695f4460mr788219d50.4.1781147997590; Wed, 10 Jun 2026
+ 20:19:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com>
-In-Reply-To: <68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com>
+References: <20260601113449.3464734-1-hch@lst.de> <20260601113449.3464734-2-hch@lst.de>
+In-Reply-To: <20260601113449.3464734-2-hch@lst.de>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 10 Jun 2026 20:18:06 -0700
-X-Gmail-Original-Message-ID: <CACePvbV5StK2W47UsoVBM9V_XPoFfd1UMfS+QS_j3jfLvrk9vQ@mail.gmail.com>
-X-Gm-Features: AVVi8CdqmWc_pAJZ1j0CGRdRempowIcbT1sudR1BZVzbc-u16prEzm_YyQdKOVY
-Message-ID: <CACePvbV5StK2W47UsoVBM9V_XPoFfd1UMfS+QS_j3jfLvrk9vQ@mail.gmail.com>
-Subject: Re: [PATCH v2] include/linux/swap.h: Remove unused leftovers
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Date: Wed, 10 Jun 2026 20:19:45 -0700
+X-Gmail-Original-Message-ID: <CACePvbV3ZSpfKAiP+oafcreEB3avCRp8i6oCkSVzcW4rWWXeMg@mail.gmail.com>
+X-Gm-Features: AVVi8CdSWr0z4Is3M0zrGqPxIr8w7xpJzyaA5pQ60hGYDIjh20VpXKEEFdQSS3Y
+Message-ID: <CACePvbV3ZSpfKAiP+oafcreEB3avCRp8i6oCkSVzcW4rWWXeMg@mail.gmail.com>
+Subject: Re: [PATCH 1/8] shmem: provide a shmem_write_folio wrapper
+To: Christoph Hellwig <hch@lst.de>
+Cc: baoquan.he@linux.dev, akpm@linux-foundation.org, usama.arif@linux.dev, 
+	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	youngjun.park@lge.com, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6BC18160002
+X-Stat-Signature: uqzncutwsutjk3heet1zozzdqmcgti5f
 X-Rspam-User: 
-X-Stat-Signature: xee9duwin1s6dbkzgio94aazur3rb39i
-X-Rspamd-Queue-Id: B25C8160002
-X-HE-Tag: 1781147898-327945
-X-HE-Meta: U2FsdGVkX1/6t86D5XqRjVLw1lZ7mZR6flareCR1Iy7PDu++LgSiNKFamgcnmOpUXDPjLpxFj5HH/pDtz//ON31R+v7RMFpTHr/deu2ChpdOuQIO7x+X9VjtEo6/Cv54t161q6vf0sMlXMcrDjpy0m/jiSrkeaqOkktJ22T5rsP9KDtKyk2o352RGEcb2gX8daszaKBeN0w9JjlbRwB1+ql44SHrq2lZsi6ExlCTX23ZGd2xQkwBdfiuD2Wd8bqTrZkxoPUnCu/ebZ4yF04lXjHDxU6xQVFntzi26wJyejjiB4dkz7boWdgRkqGfuxOB1n0+9WTHWTs7ak+HZ89zOoySA4RKkRmfXF8W9jkWfdodSA3TMrklT52zK1ZEDJCAP+33nHgvI3SfKwexmTqTIEFZsX2NP4lGrmSwf6tuBjBc4NIjhqhqUh8p6ZSl0aWAO5OGXzF1OUYmwoScJ+ajcuRSeA18+91Dctjz8nGosuWewpBcFmOmY81aOQjSPhJ6rKHsPCsDvfz7An8cLie829W1R8xlvBIy6EFdLiFBxxio6/QhJDkXIErLI2kYzobjWkwKd/9NIEWjf99+Kr35cNOgq+ybGaFny2xv8dIqC51/SJvMAWQsAP5SY7MlAOgVhFKCaD4gfcCEFJxpi0vZci4n8lCl9VVkHH05ntQo3fq8bHDr7MdycG+eZLF8hxCmiC6boQEjFoWFAY/MKIxDIIh4dl2euunZgVDwIKt2DD4LOBTw0mIZswDski3HyfnXDiopAqFCWYL5Sf+GbH58S9JPkEBm2M5Y4z/WgmdJmZaRbGmgIKfm74c3Y/B+HA6MQ/Ac+M1kO8L/FAIWlIeXnSMR+gQdlw9V6rzm2sJxiQSqyv3uZBC/nIGC5oiMR/uX432rjzZy1SDBg89zmCfOSrtvKogmqfD3AIQkkhMKesEImyWImWgTnVyrfp/w4ihufdRoK7s2N+7z+qPGvkz
- vu+3gLtF
- g9vG08eS8XFMmrOptnz9wVHukp8AfYquQXj8ca5gT8CwFA9Ob2YXa3PQ0WPZJdiTqE/EB0523WgGABC/jlbrS5ejgV1YcI821eFiWklLiRVQcIMLW8pswfpP1gY1TW+5rZD/wsBSsf1kB8IMbl2rLy5HPLgyeiCf/gLuYaVRZD82ytyP0nd9y9jeHgCX+fB0LUswsW1OEXL314CSYGSLSnAidS77rgXratRTEEXvbaoTa4O4U4yQFljKqoESfbijr3i5PGAGCH/7oiiskG2MzWgnvQML4/CHbg/QLBH+0vxMTNWZV0JwCJbjTfu5ED99lcmHt0VwsLMiWqZbeT8oY6qCXDDvOgD1m2qC/gczJR76wd4O6xN0xsImgMlnUUEv+iMJgy39Uafi/+tCwpRdbS2n1nw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781147999-945608
+X-HE-Meta: U2FsdGVkX1/QKaZDBSNXCFQZ4+lKJ+3ysD7R8Oq3OPPg0soKuHX/5vUlKokMLcmyIqxyhvhdW7tpGMx8ViOEDOZ3uGZbn+dFn1ZdKFOI/OMGuvrEN9B9VUtSuxiDeYumNhUyO6DWgv4VndfMnwdfBnM5SA+9oDn0YhbYsLRq33WmuEevquSnk0sAb+fQGCT9PAIvOCHeia6OzEGH/4qboNX1LI7q49IPuBKTbHQjilIBWHUc0kVsub8rlsyurPzmaEKE/mUy7XeYnZFfFDrrWHVox2cLFVEaXkcIgdnT6/fi/MtUN/MDpGHsH2NZupREqqfBZl+t0yF0n4RZZ9XKryS2hj9sFWZwjf8e5mHpUvcWucQp/GVK6mw6h5KPQlKSdf0JXDklJaTZ+fXS6ux5ICYtZ5P+H6vNGfSwL12DSHW8+JDxTrX3NeTIkx7Bt0v57OHNDSojqRA+xegfEkZVjXuXgvAIBpW9RCij/LsE3a1wC8wg0jpA0wKpskqedKq0bRFIf+5Z7J29Ae70ujdRhxV1kzgeAAn/ucbiHV1WRQgPRaN1/0ClC7gQhH+CfZgY/kYd5NBIojmJgyi0Ucx9IPspd1KkPsTUXDcjKqNk9gedvK8az+M1dDm8s9VoHuUTmul5haVvR99RdKmk0shPUqSF7UlE50QEaaQ8WLS0GEggLq9674X7aYFKCGhNJE7zfMZ3J2bwRaABi20SOQGgaA4P6Dohdysagvk6sVADKwzvhUfT6ZHg5WJ78X5aJkoUZELU9Pm71PnapXHerMI5xUBFsSd24JR1rGfnQUKlXMQYWRQwSlodxg+MIEDNIFk1QkX4GTnd3qslo99W6nvmwx7opNg2i3iZZMbbYPuYHqe3SNllpCONSXwBy6y/svJV749LgRjwP3t/G8JWm9k9OBIqYEthcRtejleXmArtg3heb6tXcTezbzF6oa+MgUc9VyaZ7MLCBJ44YhChf4A
+ Yfxn9+Qp
+ CFzcxGmWVl1bK1VPI0Tc4dMAFqEFOG1Zp/LYP1zQW0DGz0Ax46So19wxmTBAVFgorda8xsKoq7froLKWNNLyOy/L78f4Gc3L4nuyhTAeQmjw7u9nW6grFWKqBXz7hsFoW/GpwQpvLaAXzEp2MLvQ+hBWy6IJ/hjdxVCvu5hwsQ38DFvqtGIAMnon2D+sZ2Ysht0waA83scqOTU2R/88E5QJ+yUorlD2AmWeLP/A/irPR5+mynK6qRjYboOIIbOige2DySDKQjJjBzYIIiUhnsmw/VTBwrVbLZqyT6UJQY+vZL6jZ96ED0swpDae4TTVt7tQBJW1p7YkOwpCv6qOTfiRlm84wAs1pnd76tv0TiI/sB/pJLg6EIpUgMmcssFuK2B2fe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,78 +103,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 8:09=E2=80=AFPM Ritesh Harjani (IBM)
-<ritesh.list@gmail.com> wrote:
+On Mon, Jun 1, 2026 at 4:35=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
+:
 >
-> This removed unused leftovers, most of them are forward structure
-> declarations. Also removes SWAP_BATCH macro which isn't used any
-> where in the code.
+> Provide a wrapper for the shmem abuses in drm to preparare for swap I/O
+> refactoring by keepin swap_iocb handling entirely contained in mm/.
 >
-> Found these during manual code review.
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
 Acked-by: Chris Li <chrisl@kernel.org>
 
 Chris
 
 > ---
-> RFC -> v2:
-> - separated from the rest of the series (enable thp swap on PowerPC Book3=
-s64)
-> - RB from Barry
-> [RFC]: https://lore.kernel.org/linuxppc-dev/cover.1781000840.git.ritesh.l=
-ist@gmail.com/
+>  drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
+>  drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
+>  include/linux/shmem_fs.h                  | 5 +----
+>  mm/shmem.c                                | 7 ++++++-
+>  mm/swap.h                                 | 4 ++++
+>  5 files changed, 13 insertions(+), 7 deletions(-)
 >
->  include/linux/swap.h | 7 -------
->  1 file changed, 7 deletions(-)
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/=
+i915/gem/i915_gem_shmem.c
+> index 06543ae60706..ef9440166295 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> @@ -325,7 +325,7 @@ void __shmem_writeback(size_t size, struct address_sp=
+ace *mapping)
+>                 if (folio_mapped(folio))
+>                         folio_redirty_for_writepage(&wbc, folio);
+>                 else
+> -                       error =3D shmem_writeout(folio, NULL, NULL);
+> +                       error =3D shmem_write_folio(folio);
+>         }
+>  }
 >
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 8f0f68e245ba..46c25523d7b8 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -16,10 +16,6 @@
->  #include <uapi/linux/mempolicy.h>
->  #include <asm/page.h>
+> diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_b=
+ackup.c
+> index 81df4cb5606b..c5b813a563e7 100644
+> --- a/drivers/gpu/drm/ttm/ttm_backup.c
+> +++ b/drivers/gpu/drm/ttm/ttm_backup.c
+> @@ -117,7 +117,7 @@ ttm_backup_backup_page(struct file *backup, struct pa=
+ge *page,
+>         if (writeback && !folio_mapped(to_folio) &&
+>             folio_clear_dirty_for_io(to_folio)) {
+>                 folio_set_reclaim(to_folio);
+> -               ret =3D shmem_writeout(to_folio, NULL, NULL);
+> +               ret =3D shmem_write_folio(to_folio);
+>                 if (!folio_test_writeback(to_folio))
+>                         folio_clear_reclaim(to_folio);
+>                 /*
+> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> index acb8dd961b45..f35c752f27af 100644
+> --- a/include/linux/shmem_fs.h
+> +++ b/include/linux/shmem_fs.h
+> @@ -12,8 +12,6 @@
+>  #include <linux/userfaultfd_k.h>
+>  #include <linux/bits.h>
 >
-> -struct notifier_block;
+> -struct swap_iocb;
 > -
-> -struct bio;
-> -
->  #define SWAP_FLAG_PREFER       0x8000  /* set if swap priority specified=
- */
->  #define SWAP_FLAG_PRIO_MASK    0x7fff
->  #define SWAP_FLAG_DISCARD      0x10000 /* enable discard for swap */
-> @@ -29,7 +25,6 @@ struct bio;
->  #define SWAP_FLAGS_VALID       (SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER |=
- \
->                                  SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ON=
-CE | \
->                                  SWAP_FLAG_DISCARD_PAGES)
-> -#define SWAP_BATCH 64
+>  /* inode in-kernel data */
 >
->  static inline int current_is_kswapd(void)
->  {
-> @@ -175,7 +170,6 @@ static inline void mm_account_reclaimed_pages(unsigne=
-d long pages)
+>  #ifdef CONFIG_TMPFS_QUOTA
+> @@ -122,8 +120,7 @@ static inline bool shmem_mapping(const struct address=
+_space *mapping)
+>  void shmem_unlock_mapping(struct address_space *mapping);
+>  struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
+>                                         pgoff_t index, gfp_t gfp_mask);
+> -int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> -               struct list_head *folio_list);
+> +int shmem_write_folio(struct folio *folio);
+>  void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end)=
+;
+>  int shmem_unuse(unsigned int type);
 >
->  struct address_space;
->  struct sysinfo;
-> -struct writeback_control;
->  struct zone;
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 56c23a7b15c7..d10735e49b25 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1738,7 +1738,12 @@ int shmem_writeout(struct folio *folio, struct swa=
+p_iocb **plug,
+>         folio_mark_dirty(folio);
+>         return AOP_WRITEPAGE_ACTIVATE;  /* Return with folio locked */
+>  }
+> -EXPORT_SYMBOL_GPL(shmem_writeout);
+> +
+> +int shmem_write_folio(struct folio *folio)
+> +{
+> +       return shmem_writeout(folio, NULL, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(shmem_write_folio);
 >
->  /*
-> @@ -442,7 +436,6 @@ extern sector_t swapdev_block(int, pgoff_t);
->  extern int __swap_count(swp_entry_t entry);
->  extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t =
-entry);
->  extern int swp_swapcount(swp_entry_t entry);
-> -struct backing_dev_info;
->  extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
->  sector_t swap_folio_sector(struct folio *folio);
+>  #if defined(CONFIG_NUMA) && defined(CONFIG_TMPFS)
+>  static void shmem_show_mpol(struct seq_file *seq, struct mempolicy *mpol=
+)
+> diff --git a/mm/swap.h b/mm/swap.h
+> index 77d2d14eda42..4f86ef338a60 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -473,4 +473,8 @@ static inline unsigned int folio_swap_flags(struct fo=
+lio *folio)
+>  }
 >
+>  #endif /* CONFIG_SWAP */
+> +
+> +int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+> +               struct list_head *folio_list);
+> +
+>  #endif /* _MM_SWAP_H */
 > --
-> 2.39.5
+> 2.53.0
 >
 
