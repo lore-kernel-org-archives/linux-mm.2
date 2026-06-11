@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FEDBCD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F019CD98C5
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 00:40:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C0A16B0005; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
+	id 83AE86B0005; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 371266B0088; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
+	id 7EBE96B0088; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2873F6B008C; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
+	id 6FFE16B008C; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17FDE6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:31:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C74A21A041E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:31:34 +0000 (UTC)
-X-FDA: 84865753308.29.8440A20
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B082D20002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:31:31 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H9UG4kZE;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781137893;
-	b=m3ABEHGW5JJdO11dqt1RVefxyMDhHtLMzmyE5vcwo+EdMdm3YLQ/FJGEGC1CwqFAC9z3XS
-	oDgxmJU3azO26KdOBs/DnOjqGbefimaT5N4PHBalItmDBKwb5+yUfDc0nS3ssISOUvQmKb
-	p3lW0WBUWn+fSHq/9e36Tmxd03Olzrc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=H9UG4kZE;
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CBD16B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 20:40:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B6378DBF1
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:40:12 +0000 (UTC)
+X-FDA: 84865775064.18.B0DB174
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7519BC0010
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 00:40:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViWw2HPw;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781137893;
+	s=arc-20220608; t=1781138410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ywJrNS3ktC+YWc1uDS3O/pb8kB6tZ108acphkKPJlRc=;
-	b=mVjtIDVClJ0pCbnGnpxu1f7EXaXy9QgPU0+EzBu5hJ1iRyNC30h3xHRlrg2fUV9EhPrflc
-	rzjRlfj2by05tp3pqGhx01oD+M4bly1vX/F8Kkg0R8XBUR9pyfEY+JhV13OJZp8GMgqrPu
-	rRptVl1XP+ABnagLFh6NlwtZRJ6lG7U=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781137889; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ywJrNS3ktC+YWc1uDS3O/pb8kB6tZ108acphkKPJlRc=;
-	b=H9UG4kZE+RPX3OTs8hE6YYNztd40gJ2PjYmCvQhykbzv5Fqv/oGEKHdaKn2Td5JxrjvxPJSBjMHy7XDST9du8pp/gl/XGrjtznqg4T4b9QxP9AkohEQ9ihsscGkLjffEnZEuxiQZqmZTXe3ZPSvz1UJvxySPml+669TvgBFXFBI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4bpvFL_1781137886;
-Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4bpvFL_1781137886 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Jun 2026 08:31:27 +0800
-Message-ID: <b191a1dd-ae98-4066-8d0a-d0992761db0d@linux.alibaba.com>
-Date: Thu, 11 Jun 2026 08:31:25 +0800
+	bh=Ud3DdjG6jP1kOYJPRGFo2ygHKx4avNMyuqxqmFs1iYY=;
+	b=aLfZYw0NMGWxdc2HW66KaHoSZ/m5DL3syLS/uR+1T8bKEcfE7IjapOeUarU2iWxdl5FIej
+	G5dxB68biYmQtCIIZ2DYjeNl7kI8CWr54g3BwumHn3Y/wbIyMaW+qwrxJKiIqk+Cj3SPc3
+	C+Ruk2iMU4e3Axh0NFNr2VlgutXss98=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViWw2HPw;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781138410;
+	b=MASLo9JtmWxh92Jubh3q+nZ8Y95DvYJY6wkjBPZKuIXS7noUnwGh41prI9aOGKIJsm94nu
+	df1Aa4fnT7Rh4IYJkfOwtF/mHNmY9Jo19v6yDijMw2CO5alwqG7I3WwDSluJWVKPfeK363
+	b7+vyvvcQeC84c2nJMv7e/aHXwLci5w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F73541600;
+	Thu, 11 Jun 2026 00:40:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CAD1F00893;
+	Thu, 11 Jun 2026 00:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781138409;
+	bh=Ud3DdjG6jP1kOYJPRGFo2ygHKx4avNMyuqxqmFs1iYY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ViWw2HPw2UHb/1kd73XPK59Jg5pHZFiBBxf0T4w52tacMsCXWl7pY8opv1AFfnZcr
+	 kAAacPwAxsR/bORVqtBDaLOZQxSKdEyh0kVSIRaQvcJx/jkWogIGyrCHk3CiIpKaq8
+	 e376C8/RtXMvjrW1EwWD4lwDNO+9N/DDlLtRbMnqap2hLR6Vo9K00LjWM70jNYDrg8
+	 fyteb5dzvjmFGqqkixj66vu4mYjXjvV3xBBq95ok5YHYqos/ayF7W7eFE0o6B3xWZ/
+	 o+qoJWNx/8SJKQqfEeW10end0YJLskwhF+Mw3Jt/IhQRvv960M3J4/M35AcVY3N7nc
+	 s93TRjn1F24PQ==
+From: SeongJae Park <sj@kernel.org>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH] maple_tree: remove undocumented CONFIG_MAPLE_RCU_DISABLED macro
+Date: Wed, 10 Jun 2026 17:40:01 -0700
+Message-ID: <20260611004001.69726-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260610220905.99860-1-enelsonmoore@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
- support
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
- <20260610121331.83926-1-lance.yang@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260610121331.83926-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B082D20002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7519BC0010
+X-Stat-Signature: 1ciatswiny9ny64m8qg7kyt4uyghbcx6
 X-Rspam-User: 
-X-Stat-Signature: igqzgaaz5fhssex1e4brpystxywfj3cc
-X-HE-Tag: 1781137891-569590
-X-HE-Meta: U2FsdGVkX1/LlY8nkZF6Dy0f0VfQF/EoUpu9tc9iaWNqqluep8MTAnJFLkjSr2LvF4rcFkSEP5Z9gOlZzQ7L+qYvsVCGvkd1f7mOsztp41HjkzdfwiVbhgmtxGo3z+IcfUCF2kcaxLiue/99w7UR0oBkgYzhqgHfrIja0OkVSM92U6UZmWEGx4idf4NXqInyKPcyuC7W/sQrbqHC0MAcZeaKhJ0EDPWf22YDiZa3ZPYWijsCyZ3gRqC3t2CwLYcq7ICvSnQLAvFbRBSqFFeHWti3T4CNH/u0JmnFwxNXB7V4Uwu/+Hr0b2tFIOexMM4X0vaf14l4269xPbUa4M7j0mpV4rBsUkktyTr319316lHD92gQ6W8SQZO1bPsNXQ2Y7/yy+RfE/NguAXNtrCeLrPeWSmY4aFbqMijlR1/cFgR2fA6jLqRGWvqMVb3JE07LVV+yxV0JGiR15nAKgM8+5UCeRlQACDpKdnjC/iUoMdr4AzNUUSiqK5pFJeOhjPjX6vx2R/CNVuizBmEZpNhB6aVysk+bjQ9r7YCXE4mk062J/bS7VWT2Rt9SbPSA4c3twYkfsj3E9ra1Am6liUjfqRBAUUyqCp0joi6rJlYNV9ueft0iC9l9VW1EtcagbzYQXCsi8lrP2tsnyC4bT5kqJCfaBqR3/mXrLVykeHbbK/d6lbWlwSe/+GHqQMr7S2XZ6ZkxRJkF1tcWycBIQDI1wvEU0+mCfhfkWJDE2IlMT51MjVlmgpY/Hw2qXm2PUcQsww/5X2Fr4t430rgjSUNO8izXo+slgKpWjVTLyIe1Hbr2Kq1fpUYvmpS5Mq5Homcgq4wyI4FQs+TslKPgV9Cj0x4V9DdgOeCZaCMXQHfq4Nd6hLin9cfdLozIvVVngcC4pouzyM5w/Z9S32iROqT+5cxPnseUX7GXCT7B3nSnGWWpDS//KkSEo3HEosyc+6iwDhXg8zJfjbKP9UnYbew
- Q17VQo56
- GeDL3mSw3x4iYLH0x16Bngphx6bsWk9rbrqsiZZh8scJ5MG0Kp+A8zR4u8iqnQrNDwAB/SPfLZyf9rjtA/dq/gV3sisHvwFizbhq2c/8k3t2unWAhvfF0MufxmJ13vqD+3SzLko4F52Wb7Jb+NtYCkzkXAUKJ7uLECCgNoyhuVEIl7ChECOi4HvnX3TvNxbyAess0rSIVB+qkw8y8REJFaWp+4DryJWjt/HhYSQnbDcwUxPzueOvLts9nAfDpLe//zBbTYStZlDoyX2+I/4FBUGWatAW7wVFa9HsVmkmc5qO/+w5QLMyZxTP1/wKST2o63ySG
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781138410-409869
+X-HE-Meta: U2FsdGVkX1+VzKWswSk3rDYPEvzK8mj2qDWIAyE7omJb6GhGlurCV4lxBOtl2yOlfH4BrUHtZXIWa/NqipQCIKMaElnulkdL6bEBwbAk8H+yHrsFFIIJQUzRyMKo+YUIcOAzBtOO7i+8A+IqCxMdbW3NWJOxkr7jtW3+HYr6oX/tMv0YNe2uW8zftPgWPkCxoANBiktWsHOiyL+YaWJ57RA8tUwk+dbkWXAqLJ4Df0SPHQyiskRvPtP0hT2MDzKoycd3CW3FooOk42C7xoOJffLlA3R/Mi/i1PdTOf8Yp+yLHLrJaDlP4edKJpCCGB+x7UklMuv3Y1hdOkpqz5HHfqarpiAuQGpmxUHaITGsqHRLTAPoWhRl13EOETobTs0A38537Q68isOcA3T5LqRzBJkuNPhbRclrMoUH1yWH1vFuUbjtPxOxg9r4pUcFc+ROVykXyDVgBZ5xz04FOn5GqqpbDyQzKmrpDP155eRZX0Qc7W7grZqCm3dGCgtH5orkfA4VrcQfgxHS5HRtcAR6Pw7qYbOXqbDO0Reedfxv8nlpTuD9+82XfPcvgYrjRv88QcmXJ19UIb7E3Oe1i77uJCeLKDxOKfnWr2/xzhW0SQQCWyjC22DS6msWrc4PRMJkELX8Gh5OwrLZF+n6glnS3njGIHhfN6Z6nwltoVtRLOvDJjovQv+wAEi030NkY2gkRmzLlPhYmyTInJTz6w6/2UZugCu72QvjjBJoq3crjr9bI1iz3Jo4+DgYksSvxs05I68rWewlEFqwZikbAFoQQcTO/EsmzKfq3RetgL7Aj7ohlOHCrMIwm2H7oYIbymnkToIc7ap4ASd021qangj+LNK+2H7ZgrtcXyaXy1edkn7mEYx29rABYLRXeE5+CnRrgj6MIY6Sr2feko47yogmb/TaNi9zSeWl0ivfvbOT5/TJ57d1iKw8TxL9V1cDEMp4V51csuylo8B8Gk+yqPi
+ JGGW1eoL
+ WtgRPsjgteW6pBCO+G6cWE3sH54gcOdbS4fHkRqJHJ5bdKFjE/ODVj/usnghySVc5/TyoTwcdr4eeo1IAxqxca2kbhFENwu504KLj3fmYG6zxCET0zUcNbThu/fsWi9Sc4l5w+q2KQmh+akjUUeujxjISHPScQXwJU14XFU5uzbv83yQVp1j7FtEFpMRn5tVm7TvdZznj22gwAc4U79wSlkiwQ5drHtAKLyiLUQLJzDKRhzoomH6wpvJuysH+zl7UkkHp0FeXbjQZjOxMWXsfHg1JBSa73RtVnucBqvgX1e8VZ5Ra6riLSmmRcz1AfKGXbJ+5zAqUdD0ydTvGSrrHW7jeo+OCVOxrUR1q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,24 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 10 Jun 2026 15:09:04 -0700 Ethan Nelson-Moore <enelsonmoore@gmail.com> wrote:
+
+> <linux/maple_tree.h> consults the macro CONFIG_MAPLE_RCU_DISABLED to
+> determine whether to disable the mt_in_rcu() function (by making it
+> always return false). This macro is not reachable via Kconfig, despite
+> its name, and is not documented anywhere. Remove it to avoid polluting
+> the CONFIG_* namespace.
+> 
+> Discovered while searching for CONFIG_* symbols referenced in code but
+> not defined in any Kconfig file.
+
+Seems this was also found in the past [1], and apparently this is not
+intended to be as is.
+
+I also think it is better to be removed or renamed.
+
+[1] https://lore.kernel.org/20230906152325.dblzauybyoq5kd35@revolver
+
+> 
+> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+
+Acked-by: SeongJae Park <sj@kernel.org>
 
 
-On 6/10/26 8:13 PM, Lance Yang wrote:
-> 
-> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
-> [...]
->> @@ -2808,7 +2875,7 @@ static enum scan_result collapse_single_pmd(unsigned long addr,
->> 	mmap_read_unlock(mm);
->> 	*lock_dropped = true;
->> retry:
->> -	result = collapse_scan_file(mm, addr, file, pgoff, cc);
->> +	result = collapse_scan_file(mm, vma, addr, file, pgoff, cc);
-> 
-> Looks unsafe to pass "vma" down here, since we have already dropped
-> mmap_read_unlock(mm) ...
-> 
-> A racing munmap() could leave it stale before collapse_scan_file() use
-> it, no?
+Thanks,
+SJ
 
-Good catch. Sashiko also complained about this issue. Will fix.
+[...]
 
