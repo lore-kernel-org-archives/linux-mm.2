@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3962CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC80CD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:38:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CDAE6B0005; Thu, 11 Jun 2026 05:30:51 -0400 (EDT)
+	id 4CFB36B0005; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97E5E6B0088; Thu, 11 Jun 2026 05:30:51 -0400 (EDT)
+	id 4807B6B0088; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8944E6B008C; Thu, 11 Jun 2026 05:30:51 -0400 (EDT)
+	id 396556B008C; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 788B86B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:30:51 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 2B4856B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08A8F120575
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:30:51 +0000 (UTC)
-X-FDA: 84867112302.16.04D43DD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3A41716000F
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:30:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP06ksPc;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B220112052A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:38:36 +0000 (UTC)
+X-FDA: 84867131832.16.B0B65E0
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E139018000A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:38:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JceRipBg;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781170249;
-	b=T9DHbL2oilwkxTSNc4bZKzjcB/0JukgakUAPFsZP9ls6Yy7z762OGIGQc7TAG+hsnClcLo
-	Uesltv8le9FMzBgvayB+XiDCho4yCX7ZCbZOPQYcP9Y2bjoHeNhTLP/mJaQ4l2M0+CkahP
-	C/0TS43niPw9NjvzbTGPhbIKDoQVxmY=
+	t=1781170715;
+	b=mg45YnXoAGGiWzRrSGQXfSh5PqzBebmZ6TrCYkdwiLOGVjT9gUVcYDkJL7Hjtg6YT5eTPM
+	ZjtavmlAQdQJiA8Km5LTrQco3triSXBMhxu6ZGDuk21B6ScdJt1cUyl0abOszKVFTbkG0l
+	W1ProlzJpJCcO1kH9NXtf+q1ov0atp8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KP06ksPc;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JceRipBg;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781170249;
+	s=arc-20220608; t=1781170715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3TiskwG1r+H2pShbZblB2rVkIIcz1z9RL0De25h/YHE=;
-	b=kyLMiovJqLYd6QI7W9HRCqMB0H66e4ZhbAlxJkuFHqGXPAkJDMU4R5sPQpFD+5LDVii6YT
-	7rUssfp7NM81C8JrzuKa77NldCIPDif6m1YSeIFgzxXCeU+FxYretK6OfU6+uqZ39DYdII
-	/kGOEwVST6i3dt7V0ifw7qnLr1l1yrQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5BC5600AA;
-	Thu, 11 Jun 2026 09:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7E51F00893;
-	Thu, 11 Jun 2026 09:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781170248;
-	bh=3TiskwG1r+H2pShbZblB2rVkIIcz1z9RL0De25h/YHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KP06ksPcr3JUeDqGcu53z++1ysqWhocUnip/fixKFfZn6UdOA6JJKVqdTUjm5v3lX
-	 WbtL7hP8UOE6a4fVIYqfhIQLafFA+xIcDuUiIX0+ZiKLZPpQIbwCLi+dVIKZ7hIkUK
-	 6EtS6meM4ch0mv12aRGk6OsBjWg2VWbrXE+Fy40FJ05jIHPpNQimtYEJh2IWlNg9ka
-	 FwpJWWd7qxzRPlOfaIBBtZ+WvMX8G6pZGs+PZSXKpsBTvCH22FUGTyz2n7uKm7mUdV
-	 GjcwmPB3l+7oDdjhbIhJMxXY25ENf47CMycbBEya3slDNUexh5cmiw/Ycq4mmfNCdp
-	 1QJ+qfx2Y8PLQ==
-Date: Thu, 11 Jun 2026 10:30:45 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Lance Yang <lance.yang@linux.dev>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Subject: Re: [RFC PATCH] mm/huge_memory: do not add dropped split tail folios
- to LRU
-Message-ID: <aip_e0RIrSnhdxuF@lucifer>
-References: <20260610120535.2370844-1-zhaoyang.huang@unisoc.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610120535.2370844-1-zhaoyang.huang@unisoc.com>
+	bh=c9l8T6vuQd8ofYyGxx3NB8W3+1YzVxoYB7Bmx+2O71A=;
+	b=S8qrZ8z9r3CDPCrNtD4cM00ddvqwhcweXflzkEJBGbtPIJSL9ubWkIaHvTIahyaeyhCWsZ
+	JJkE2YiMAnmixdQ79Bxi08ydD2jlNCZ6i2oVEo+MvEeD0nVfXWsG6NZgIwTRnjJixJftrL
+	fG4Of7rqGBthAUmUnbLzlLoshmFq8wQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1781170705; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=c9l8T6vuQd8ofYyGxx3NB8W3+1YzVxoYB7Bmx+2O71A=;
+ b=JceRipBgMnyCRSncb1gLxnjk1tDDIUwYUSfCVm6p3SAF8MkXhHndETHQk+4e5cLPnD93C5
+ GsPld2iGj6XCVhEn3+0+/gmsYTxLA5lOMKiNMbLyadk4zCp6Mi+sjHxHqr4vi6AcCEcyzu
+ ACqFI1bvgsb03URfC02v/4u0frmXndutq+ep7SXNtP3tLodBI3f9y8DcFlCSdiSre2e09L
+ CWkEtxFe2tpwk8OODH2NH1WsOJ1vWCmEGeSfWQ+S1KzcFW87OMay3NOcTNpTRo9MlyDJEs
+ BdarHub4dXuqDyVMdWu3RHxT6j4PvnmAIJD4fpudFlrpIbroi1i1hv8lQ+OX/g==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20260610191920.GBaim4uMX3z6OqJwHr@fat_crate.local>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Message-Id: <20260611093802.74707-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+To: <bp@alien8.de>
+Date: Thu, 11 Jun 2026 17:38:02 +0800
+Content-Transfer-Encoding: 7bit
+X-Lms-Return-Path: <lba+26a2a820f+7870c8+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v4 6/8] string: introduce memcpy_streaming() helpers
+In-Reply-To: <20260610191920.GBaim4uMX3z6OqJwHr@fat_crate.local>
+X-Mailer: git-send-email 2.45.2
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A41716000F
+X-Rspamd-Queue-Id: E139018000A
 X-Rspam-User: 
-X-Stat-Signature: uhjx8zmps5bezwfqzxk3axjj7bnd8dt8
-X-HE-Tag: 1781170249-912651
-X-HE-Meta: U2FsdGVkX1/FoZ9vnS0oRiHsFFttnQf4bht7yQ/6XpXzhLVcNjDJWYQrCvYQgfgyufqzonXI6DPZ4mEumLdwHuuxbKxP3hpdfE/mRZw6dbO5oDk1++/7Enbiy66KhYViTxN4cmr7CmDqQ/4AiRYe+ppFb61PJ490lVX99lBbdTmY6hCgZh+WaZhSOpAeqkqCAVGmVJmpTxkll1IsxUGUw75kcguSKep8Acq3BAkgtZtjW0q7W0V8JhTPY2VWBL0QkQL9UYXR1o1GifSJWkNhSgyYa6FdxheQ5gNehhREPXNiuhCa7jvYHEIJI0Qn3oMNFa0eCQxzlpJkI3/KTzBaeX0xTSmOO3FdOR2L1BApkSrMpgmvgKdzEU/pIk1cue3PKo+kJUq0Wv/sA++HT0A6kFieSpD8fteqMkFqF/QEJuBGYVjzVJyrylTCFcSa4PkF+1t5FmEMLvi/9iBAZb6WfAJ3lNJ4LRal5U71MIbhucWDs7MczyzyOgl+ccOo2/14Pa4Dr/pJ1B/9V0Jh6xKMahI/MS6cGYoDr72fMP7l5CR2H/oWwWutKr9qChdooN0i8TEYjm871ibvmh+eQZvlRYU4BVlF2BYRVlucDCWy1rrTaOgBi3VBQfe/7Q3vq2RwCq+prIrTLwbuvaGFKBVuNDnHoqhEI9fvUyNCC72Ia4qm2ohWtsNx8wAOvp57NKM+b/zrPO/sZ7s6vui7+XSdi+IPxAOmrC7FDedz8klcrcogCzsjNzHSP0L5Rko5cQ5pwuL97GfuJFQA3T0HOuJ7ORuCrIgGiK8OQ3JROvy1oVxd4z5rQG03HLqFitO9EnvkqTn7XOEprzfVPIrdNWCFdC3TQH6skyjbv/TqKh0gLRFYR9FsUtj8AuR8+pNKoVpaDmKmBmwRqGQmzXDzudejfRVqYdPzZzy7b1DNOZ0A4yjK2QuG8tDT+VJ41Tr1+uz2+20cN3VBlSoObD/OAhW
- nLvCfEQW
- X1Uc8wZRnrQPqY6nbL9KunrzDUc5osgdwgGqn0QRowEVSPMyKM6CAexEbxhJrZKfkRGWIXI8YkT139nZE7YquehH6o/JPPU0nOycSK8Xh1ogV/CIHnntowZqE+0RBiRxux/L2tgVPEZ6+5TTmsBSxd3pxthHpszb2Bce7qSuSoeYrlim2sPQ3hYEBFgzlnndZ1kdfNyopCVCAVQJ6WCjXdH/ThkJYx5t9YQIq2GnmwsDawIPTJ3FT7Ibe4A+U1YiKh5K5Kg5ywFF5ZQt23sEzEH4pOK3AnfRcqOzWB9K/mHmKHvq+SjqCWCK7t2MFCRb0N1ZcFHnvRsE1rqZwrygixxCELkN9En5ayCUAA3HWXJrPaiV6CR0Q/3s7IdwoDNjV8uvuiGf0JSth40OFG2jKfqfgPDw69XsB2tWrMp0NLGcRM7TdTVYBtBrzvmd1ZX4piCo0Mk2q8PacYDFMbQS6oTadC8Wq8ZI4+G2Kzdb1SlbUR03M5weWJLPcfADRNegeeAPB9u6Cw8t/wq+P3IrIBEb02tBH/3dg2ZNe69VqK4vgUNTKaxr5nb+wmHxOXa3j4SafvJagwqm1XoTlXnHEeuY784iwphBjpwyrJsWHkJnBY/W73k0nFwfn+w==
+X-Stat-Signature: jt67jjzy7cugzn5c7cta7yyipb844g8b
+X-HE-Tag: 1781170712-705371
+X-HE-Meta: U2FsdGVkX1/I8W47GU1lSH1yTFItPaxAklJQ1oYEXvL8WFQidozfsjLNqqRer15zAz5v+L9ySoVxNDf9wysjCaMLgd4vY3S/w/znSXEV+ZYR18LfOALbxnaP0ONQlvijn+Bl1jGv8pe6njQI2CCjxLFhRvhkxqn5cfht7bTZAGpyA/fFD5vhqQG3/BLWXXJ8WsdqP33ohPVjBy1gF/KmhFdjZZMcQO47ixVP2dMBbOOF9Gyt16ALXZlcvA1MTBJEcrEZM8QTKD/bq8WUqLCP85vtvM2yW6CrrEL/xhL4C6QDSlSVELSwtD6UPsW5ght6j+QyPROTKs2Tphbz7aAHV0bUrrBi6aGyFAfTtJcmsSK3B3D1M7U8x7Tmjwg+i20m76lrrfB0NchRuSaQWVQjOtwE72CKNYcNl77BctJBQLpvEo/Dqu5KaK9IzDBKPhDrhckyrRhG938A6ZRTFhbBsn1Ws7N2BXq80H8j9UztbgNajcX7446uTbJesArdHKIt1FONLfL3UUWo84cgBcjiJH7RmEqUu2wp4PQj0oH86owr4q/p7v2mfi+v0IT7woz8KvI/+mdyXATWwdN4zfFsI+pgOCY4xXlBqTPWDpcp+zmQM+RwondPB5vCPx8C1+8z5pWVqkRVPEUoJggtadwaleRM44LUNfz6Wpzd4PPu3LVtSJuTAr7wQ8LJ2ZM/MUVmWgLC2e/FFHffg40W8d9YK1Q1OQfPvy2G/JSl/oblmnABfvKjlTJZeYikQ+2e7NvDX6eDL0NJaz/z1uq0NXeWvzPJcNNWXJTa2l/NVsOoIw3CHDk2oKg6lL9fsAeesOBHD/DAstr8PW+NFUqYBrKbvCu6pZYTVxmtGytkWR5oPuWlYErkCAmwOZk2HZFtsyn2IkKN8SPggXJt3/fICLm3VNi3MbnwBOpCfs9uZu0fe1cDV/utPSI0Joo1anWpbqgddngzsPUlxOw2F5QyV68
+ HkjzlPxM
+ 7SY28VvvG/5hnHleDichCFSxyBE3hPyXAuhc3d/shcA/R6EXUytGgpMk1r7EVrW7SQGV5b5cE3G59hIHEEVkfoLGNuXzZbOziRo3OZ8H1gupFaqmEgcsGw3T+deB7CYzqO9dqIuSPaC0u0Bg8hSjyBH/Rs4zQCVFnBP18QYBN1HDquwZq2aAi2eylxShYYqWnjp8gUBzWdqoYU9DMiGQTkmMK/YIxduREwDF2RJRJnpNpC98GAhdVKBb2JQ8rcVEAAzl5Yk3gxqB4rVx1Z6WVxDAKwcd+KnTXBSzZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,29 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc incorrect email addresses
-+cc correct ones
+On Wed, Jun 10, 2026 at 12:19:20 -0700, bp@alien8.de wrote:
 
-$ scripts/get_maintainer.pl --no-git mm/huge_memory.c
-Andrew Morton <akpm@linux-foundation.org> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-David Hildenbrand <david@kernel.org> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Lorenzo Stoakes <ljs@kernel.org> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-                 ^
-                 |----- Please use the correct email address.
+> On Tue, Jun 09, 2026 at 08:01:32PM +0800, Li Zhe wrote:
+> > That said, I see your layering point. If arch/x86/include/asm/string.h
+> > is the preferred place for the arch-visible wrapper, I can move the
+> > wrapper there in the next revision while keeping the x86_64-specific
+> > implementation details in string_64.h.
+> 
+> No, 64-bit only's fine. We don't put any new features into 32-bit already
+> anyway but that wasn't clear from the commit message what your goal is.
 
-Zi Yan <ziy@nvidia.com> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Baolin Wang <baolin.wang@linux.alibaba.com> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-"Liam R. Howlett" <liam@infradead.org> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-                   ^
-                   |--- Please use the correct email address.
+Thanks, that makes sense.
 
-Nico Pache <npache@redhat.com> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Ryan Roberts <ryan.roberts@arm.com> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Dev Jain <dev.jain@arm.com> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Barry Song <baohua@kernel.org> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-Lance Yang <lance.yang@linux.dev> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-linux-mm@kvack.org (open list:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-linux-kernel@vger.kernel.org (open list)
+> > Thinking about it more, I agree that this is hard to justify for a
+> > generic helper. For this series, what really matters is that the
+> > struct page copies in patch 8 can use the existing x86
+> > memcpy_flushcache() fastpaths where that is beneficial; I do not need
+> > patch 6 to impose extra selection policy on unrelated callers.
+> 
+> What I am asking is, you need to show numbers why those helpers exist.
+> 
+> Your 0th message is talking about measuring this in VMs. If this workload is
+> not VM-specific, then those numbers don't matter. They're just handwaving.
+> 
+> So I'd need a good justification why we need the changes before we go any
+> further.
 
-Thanks, Lorenzo
+Understood.
+
+I do not currently have access to physical PMEM hardware on my side, so
+the numbers I posted so far were all from a VM-based setup. I agree that
+this is not sufficient justification for introducing the helper / x86 nt
+part of the series.
+
+For the next resend, I will first split out and resend the mm-only
+subset, and drop the helper / x86 nt part for now.
+
+If anyone  has access to real PMEM hardware and is willing to test
+whether that part shows a measurable benefit there, I would greatly
+appreciate it.
+
+Otherwise, is there a preferred way to justify or validate that part
+without physical PMEM measurements, or is the right approach simply to
+keep it out of the series until such data is available?
+
+Thanks,
+Zhe
 
