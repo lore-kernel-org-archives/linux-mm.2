@@ -4,102 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8379ACD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D10FCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC4286B0005; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
+	id B30716B0093; Thu, 11 Jun 2026 11:14:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9B9A6B009D; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
+	id B08216B0098; Thu, 11 Jun 2026 11:14:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9556B009E; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
+	id A1EE46B0099; Thu, 11 Jun 2026 11:14:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BECD56B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:11:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D46240687
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:11:16 +0000 (UTC)
-X-FDA: 84867970152.16.34E7EDC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 55F5118000A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:11:14 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9ic+r2W;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781190674;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 969D06B0098
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:14:20 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D3E21C36DA
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:14:20 +0000 (UTC)
+X-FDA: 84867977880.03.E4FED68
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013051.outbound.protection.outlook.com [40.107.201.51])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3DFD440018
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:14:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="jdyE4G2/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781190857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a00kAyBp1nYhmRNrUiqyLY0i6xIPDg05ArjKISlux/k=;
-	b=m9SFBQemlA5cNTCYkuQlt8goxQSQI1ylhrSAZGFIABwb0uz3v5S+QJ74bH510SOhAzP37P
-	xHxPpX/illD1XMOtUM1qfr/a237o+R52hj/qas4om7BEeC66ip+mm/XlO3U3iOUNwVqFgU
-	B9PDXhXVZeBqDaknCvqS4djnr+TeWXs=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i9ic+r2W;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781190674;
-	b=hghVvKa+v7MSFpeQ3iHvjZYrJvVoxx1g1eNVGkr6utYvzs07DrhiqT7mJQnz5b1iYh3hcu
-	K2zpivetK7XzmUYWIBPCAbSEUTbcBHLk8Ye9251ZHV3FfRvwlXAinpD+AWgIAkuw/3i+SJ
-	7X3/cg7XJBqHFXmvgzVu9X22sy8gWwY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3263843A33;
-	Thu, 11 Jun 2026 15:11:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1AF1F00893;
-	Thu, 11 Jun 2026 15:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781190673;
-	bh=a00kAyBp1nYhmRNrUiqyLY0i6xIPDg05ArjKISlux/k=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=i9ic+r2WO59KlmKWcwj+C6Tbc5ykvmdS5lgQIfjY1Vnf7aLDclXnPLPzQ5svBe3h9
-	 w80fB1RVlc2eJn+xdmt6N9owW8SBnErKj19XsYd5YK4GvjWFfC6o/34VSKisJWqgIq
-	 KEoDdLuBskCrYfc2qvesrqDJNPwUvY8skHfSsfwKgMESBdHejQzHs2LXeIbnOYOtUF
-	 3RG00lTP0hZCkjUJ09Hzr/1G58+Ba9YAMThIGr29qZk5iK0DQOCK6bRx9vwolAyj+a
-	 FUc89Tp7joOwnuAO9L/yS4REhX9UbiM4q53iBtK4zGikdTJh/dxrkWgy8LHZMzfr1I
-	 oA88zb2mGDO1A==
-Message-ID: <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
-Date: Fri, 12 Jun 2026 00:11:07 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
- allocation
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+	bh=LlBUea1nb7Lnjf5ezViQA+tQzekJPY6PGtl6z+ZTNhw=;
+	b=2UNHBpBM4KVRxrnTx7whTBwZAC6d6d62ebPLwPKHXvczSw5TJitlBRyH1VpDP2IGwtiiX2
+	iuY2dXluB+6Z4hTuG5+LVOX7jiemEcdh5IW9lwi5XWtz3FPfzVY72gT9BJwWeCaKjUHFcL
+	hKURX5mco3GZUHkIvy771GCbpNhEodw=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="jdyE4G2/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781190857;
+	b=e/FoAN1Qsq4+jmst5N1vsfAtrNYpdKG/ytOTvMYUnIlXoInb+iBpbP1dB0FjcRGanMR0vp
+	4CvZkZTtxNt2PLlHZYluUAFQ9DCij487HLew521902IkU9NXQLiAErR+gUcdwnGBTgegwr
+	DwX0N3QzaSYLXJXN46fZZ+GR8q0pkTc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qeJB5b9ZS8p6Ke5HN8cHCtAb3E2tuQkUjIv53fBXw3itc9cIoH/osKu9vdH2U2s7z82p3MMuiEXSPLF5bKKbpp8NawPji5V2voazei05ZU9toQggeYbyfgrcjyfoVT0k8KWlKFglV87tzbLLuRGvHdrh9FQDKhf5aQCVSqh8EbDEnN55IZzWpbog6n5vCOJSfG68YtY4yS2UcNu9e6ricPIlzAdsB/2vSaQrnVyIcrbodIsIIcoul1q64rMtpnWPbW4iNGoTpwFrzwari6IkS++EjNmEeJ1uYaMT832BYJEc+U3+wwxJYlPH7EXwNz7GwR/IS3DggKXpdMqZemYwdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LlBUea1nb7Lnjf5ezViQA+tQzekJPY6PGtl6z+ZTNhw=;
+ b=baNT9nUw8IZ0w8+hvWFNjEluD8q21bhhEzzDXcQn6alJdsWzgU0Q1tnIzRTYpm8Lu1N7LhwAQ20RfU/iiXx/K4AfIVIVz7Uk4CQX3uAQLY18xOZ09+POlg0TMkxcy44mTaX2UjoVxKInsoL8tEyPnreb9xTCLnPYDwgc0kQoivnDxvxvUBPNmkBvO4ygyfRolQI9XVJEQvpdWTMs6vmuyxa/tYXtOxA2p3PsS4xCaBZ009iq10VbENaiNFnhMxDyz+zrJurNSUFiNye1kV4maGnQqr/DPU3FH8ayZ32is1X7GmVZH4Wx8S+a/uWuU6xwIjTXy+3BmFvkU5m4p1UgtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LlBUea1nb7Lnjf5ezViQA+tQzekJPY6PGtl6z+ZTNhw=;
+ b=jdyE4G2/8pO5SZWnSD1BfZwzmfx0kTxxdePY4fDX1m0MxUF6xa6+3CyedJEJ/3U93mcujRreOu9eYJU+cz9dsJApTIODazoLK8E1ZjfXRUULSwYNOelxoFUk+KuRPVfxJORAAxMTQ8v56eRde7j2vRfCADQ2GT4S3uG2OmYdqgJNttatFPFV75+qgW9k0EZmLUHHvXLNJtbY8Nh72AzSwMSTY85OAfOWhQqE5MtepwwHInegfOKjqPVSKXLFWgrlAmqPViheUyHSqgHREqoRUyLQHgxM+UD2fpobAI6JxBMZqDI+hzjdH5P//XoZ6cXK2GSU2Q+O2luJnCj56UrINw==
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
+ by PH7PR12MB6884.namprd12.prod.outlook.com (2603:10b6:510:1ba::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
+ 2026 15:14:09 +0000
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::4d08:451e:a51e:33a1]) by BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::4d08:451e:a51e:33a1%6]) with mapi id 15.21.0113.013; Thu, 11 Jun 2026
+ 15:14:09 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Karim Manaouil <kmanaouil.dev@gmail.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Nico Pache <npache@redhat.com>,
+ Luka Bai <lukafocus@icloud.com>, David Hildenbrand <david@kernel.org>,
+ David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
  Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
- <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
- <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
- <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
-Content-Language: en-US
-In-Reply-To: <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 55F5118000A
-X-Stat-Signature: 4nqer3micd67b4um8dy7wrq3o653776u
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-kernel@vger.kernel.org,
+ Luka Bai <lukabai@tencent.com>
+Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
+ khugepaged and use in mglru
+Date: Thu, 11 Jun 2026 11:14:06 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <BC930D36-A35E-4D68-9DA1-914E4223FB6B@nvidia.com>
+In-Reply-To: <20260611092313.7d4knb2irt2rtswu@wrangler>
+References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
+ <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
+ <aigktfOjYwxhzEhb@lucifer> <20260611092313.7d4knb2irt2rtswu@wrangler>
+Content-Type: text/plain
+X-ClientProxiedBy: BN9PR03CA0338.namprd03.prod.outlook.com
+ (2603:10b6:408:f6::13) To BL4PR12MB9478.namprd12.prod.outlook.com
+ (2603:10b6:208:58e::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|PH7PR12MB6884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fe005b7-3cb7-4d06-1921-08dec7cc1630
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|22082099003|18002099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	TuQertveGEH8YUL/Zfg8Ph3LeMph5PNS7NxMPBwBMo/lsq0OYDP7U+B+ujlgq8HolvgiarqPZsifrvO/NdHLheVDn+GLncbOqopjQDNJGb4yTY1182Z4Q+XOYVxq0wwVKMeXdboNSVdz4pwBw5hTlwUaRARQEABlJIM4tIrEzyZSG2/IM0P4WZeW3gCFPoiz6z/bwkDRxvpqKAVcDVgi/sw27sY9rxXlETwnyc/MD2UR2WZUCnvUPwr5CfCpN6lycPrCAkNfZ84qyJk1MflbJp5SnqmC6jEtziF1ZdSdZGINjToIeWchEvGDgWNvxy3P5SvJb+C6Iw0FKvLkS0q5zPzUFZI1zqIYZLYY6tY9di1qw3RJz6nIaI72/ZhnKZ0ISbZ4JDZY8d7hIke71P0SRonmaWHfEUamUvmfGo3D/BsrBXcaebJnShUlHUf4Zxk9EG0y20zBPtkWGeocHTqyj5tbxv7X72jda2IidtNlB49mwYafdEfihkioUZpX2nFoSzsNOrJeu0jGupIHyNF7kQY1ktM271PjsCo50qEkk9xu/MLbN33qkuPUoAYov5ny/1I4apsHLREKLJRnd8UaCg1RZeQYT7OnIzN3e+1wau1H13U7b7zc/DzZTCYwKG3skLgG0CFCMyVvxZsTDfSmejRzR3ie9cRPVel2IGemVccIWFEdSAD2zyEJ1V5YTMgY
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/Kc1Nk8d61ElJ8wK9OVq5SXsOVMnhlqCWfGXdFy80akugMG7wL5Pn0mOxMfx?=
+ =?us-ascii?Q?Zl7Yi3hiXwxvxbWYodCxI+XBlmO7fPQILuO0WT18yIBJIZrbrblDEi8mD8jY?=
+ =?us-ascii?Q?NGza8yToSGCNzyxqY/NiqaNwZp3WI1HU7xdGPMpVCZr32h7FpV+p0Fb9iQNV?=
+ =?us-ascii?Q?hiHgbgvNavEKgGSR6mJEvkzE+EYkvGU3KP4zii/D13LIoYSiMU8Ydkf7rhF2?=
+ =?us-ascii?Q?aKqE0IPxRM5JPFWFP4UYEJS6W6q0r/xICcFpPnvNifUfR1/9VLCzuih5yBr+?=
+ =?us-ascii?Q?ZEIBTavYWo4yjKJsuLWFP8IJJx01zDagkTm26+HSoN1xRndRNZeR5sUZkyBR?=
+ =?us-ascii?Q?sA0Bggii9OqjAtBJd48IDrEiFSEltxCxJR1lbMnRrHMBMa4KnD4+mEOlBKjl?=
+ =?us-ascii?Q?qX+nl7ZmvWWemO36R3QWwMqx0fCNoK7KZcBkWazdbb59zHMXxOV3FsbszauL?=
+ =?us-ascii?Q?H65Y+WR4p6zrDDB7VDT05R5wY6uSRWf/5uGA5Ha8i/839iTGGwnF/zhOsKW/?=
+ =?us-ascii?Q?jXHdWHbQzqbZcM7OQ8it6dwXgEhOjvK+8xwfvADL+xdhHe8MvX/qqqAdnyJJ?=
+ =?us-ascii?Q?p4M7hfRHWzjtw9drtkCcjC2GZ+Y9Wb4gMSfsNhNsy+42iyRON8+5Mxx1+kBn?=
+ =?us-ascii?Q?VgdVQw0NPdRQlyhDiYsjSCgFclQlxrsRsR6YLbDV0uUhqiGIt/PUgU/quzUH?=
+ =?us-ascii?Q?V+EJ+oQhR5VTU7ACkRmyX3sR5WdsHTYJhvIMVXjTpNvElyUIC4Pn9Zd2DiPG?=
+ =?us-ascii?Q?dckLsvFGOrNfb9uLLSdwtkUo76GRyJLFI8yvZHRfkzQF9V1lAEPXq076+TS8?=
+ =?us-ascii?Q?g6sAnT2XnKw5DdAC247AILx7hMt3+1Mdw6QEv3B9dWL1qqx+p6ywTKlNZ+Fw?=
+ =?us-ascii?Q?vM2sc5Jf+gDQndUCb8zWhS2i2e0msra7ciOTwiY6qEo4pdNy8jtXXo1la5gh?=
+ =?us-ascii?Q?iKygDRpmmcr/JvqT441iW0nhBsq+o9SaZsQjd1Om/CYujnXhWZAntALjPR9T?=
+ =?us-ascii?Q?bZoBtictV9FL7LGAZz4uZv7gMjUq/t7xEWXZGsCI2yFP3TqtuZ9wIM9uJsQb?=
+ =?us-ascii?Q?shF1alwWDPOadf3F5mVW/KvonevSjI0If1l7TN7mdUjOiLcmfZi+9g2+cWL8?=
+ =?us-ascii?Q?tV+5IEi/1Q90lx8XooxcVnCpfguJxAnMPnPLxDnJo9FhK1PA3y6DXe0pDrTN?=
+ =?us-ascii?Q?UgVWUtCv9bzb1mJQ4BH+U030DhLRsC+u7vWgpjHR2KCrleEZ9BTlw8LEUXIT?=
+ =?us-ascii?Q?afJ8OsA0KELoCvjFueUl3jHn4uqmo5JW3S+P0Am6sRusUY9mtTJtzVj6m6bQ?=
+ =?us-ascii?Q?HWn4ffyloI2IzA8k/LyF0BnV85HDMnhI3bXQvkqeV5Ml7a5OcydC1DLKx1j4?=
+ =?us-ascii?Q?l6iBiVqYSE3snJ86pjBrhF6lK5CBtx7752LS/g/IDHCyLOCi2GAfu4Za8O9P?=
+ =?us-ascii?Q?IKYkQVyRPlNSWRMLeU+yQOe2INRGnwbfqkROI/EtL2LeGSWvCFp4I5axYxHn?=
+ =?us-ascii?Q?GW5jOS39GZZhZnVP9zaSePJsBxvnGlHDDWjE8fS1nV3a0l6mhztK5v3EGW0g?=
+ =?us-ascii?Q?eqNxZVdEsdNoOOLcsyk5Zi18X42fLFWH1KMjE/W0LwHOBD523MJED+0l/WWO?=
+ =?us-ascii?Q?SQ7YuALTfeAO6xksaebQLxjiNE5W+H1JBdRKgvN7iyUCMZsbuACeahNeZzRK?=
+ =?us-ascii?Q?GlB2BaUfnB4f3PYU8gIHWOBJWDKESuWcTk9lHiHsrlxgoDMc?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fe005b7-3cb7-4d06-1921-08dec7cc1630
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 15:14:09.4891
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y1ggBixCW1xHMpbTTLOaANMAowIVdQUU/iKfPw5DDxyxwNS8M6GVbgvy9syEQYEl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6884
+X-Rspamd-Queue-Id: 3DFD440018
 X-Rspam-User: 
-X-HE-Tag: 1781190674-201149
-X-HE-Meta: U2FsdGVkX1+jCztYbOg073r9YobWVG2jZ6vUEnfLSKRTcjgaNe4wE1UIeKzgvVXK6HjuYtBZC07mkNUIi4377+kGLbUSHHvszp3vcl3g2F3WM1l+MFlC99MvfKxa/vBxG749J+U9DTpuRIbMGU8HwCqtGAffr74x0MurG7N0bhZ1oOZIl2zmD7oZjrK/gwhVsF1C68whWvmUzZMK2ke5KSkV0bzEDC1VZ9kmOhQT+dYJUv5hnbnvt48KWYoDv3T99WShfun9Nin4QjdAZ2TQypkJOY8noDyBY6AbHS3UZemBxLSbd5hqOkAcSfuAuEIDH/C01XhZTl16JRGCIfgzPhb4vNFwLmA4+zFEmxxhI3knwGFYjLBTeE3MSbIY/3FpZWzyIvzw2u7T2bq1O0GS3BhxDTNglbY1YhET4KamAT+MdpmlXnnObIOFflbNmb0q5T41hlth7RGs7ghX+IW1F+POEyWakNOTOG3oC3o3BzPQRX5P8GifdemsBhE+Wo6F/1ZvB7U4xAahNPrnTo9ijFlSG8nDGEuKN1FnkdWWaYAOfhCINKGWgyKDkKORLcsUYKwLt4F0sb9QMmXvc3PcLjga8WHBjbWheIgF/3n7uywKezilz4yD4kjmJMOJ/tkggIMQ2SqPt9JFzwI9f7t1x9AdSokOeDgymsQ4o7k0DU5Ur5Ac/02CzTsBC/Wf3LRsCmFWtLUviD2Cc6xliG1i2ObGfOnNJk5M0kzuBpVjMhhvu/Ib97N97Wr+ApGCL0PuNHmWeJXyNLPXsW9PDFyrfvJdceMClGuEpH/OfQzXl9rAz2MTLETaHOF3PxuUY4jz807X9TsUW8HpcDvCWhARtGyRFUPt9ZHXCGnQCpiJqXfW3Rj4uO/QJuEofbZQTOwEXB7g1p7Byr7c9rLGbCuuuHQ30cUpkmycBA9PxIMsKotoH7uMJQQWHi5owZFo4Qizb5c8jusdJoTwd4LZo+K
- gqcE5v3Z
- LYn6N6GFIwODvGZX3aT5X+iP+jLUwYzffrUm2a+mhiLVPLXCEc+g/50Jam03gMhUgNqqsXGPoKHyjcVLT5mTaYMRPI96ntmEiqeRX9Cufp3hdRWwAL6eHmA3GYUpQii6cE+VAgNXIKhstF1Ee8VIaMEK3oWObtn++xq2WOoDLBxxNt6CBS2nUi34gDRc7RVnITiYL2ITeyDLU3L1JCk46thef30U7dteT7cT+07uPXuG0ZYHp8syZhUrLAB3j9G3LudHCG+2SP1FN5Rsh96lPb9oVNBCVFvLNL9amshnZUXELggFrBJ1303T3EkAQRuwBKHFPGzGODTiJtzXtCOhCKO4b/Ta5Maap4l1px+raKlfSBnXvCwhGZiZf5w==
+X-Stat-Signature: 7fxtc9psknmkwmbmb8wercqouzfht1ic
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781190857-619774
+X-HE-Meta: U2FsdGVkX19Q0oEHwpqDIxj4HTjlzCv+udz9rUAZUVfEmdi6JImnMmupwhzzW11f5CrLz+v9INymjR7NaMqb6eSyjMrYETuG/SNMkwSehTKjcI5aMyNajL6xYxuGNseckLgsNkXPrleteAooWTV60AlyjjixTJcadKgQceMclc6ato/Fi6xJPRgpxsnktl0CBGqQMjFmJYP/BudhRWJXPB9QKjcyYysfxCI1USbGWuKiEWJOqLpvsE6qDSuTiSWEbgZXdiqLEf4yCkxo+IcU5Y0Iu+kTPuESWGhjobI2u+hpLGS9ypbWFPtUCqzBNJR1bo+yyEehQFE4NCwTwKPT1X5k+ge2kQcE6A9F4RW86YN9dGFcXrW/Ny68UkMHlLikrrDQxw+jnSsGIG4zXWWiVtiWMgX34EahrXyBZyG+UGGHdLGigNCbhwlq9bhmv6eZxAg0lhLmxeCXSA03SOKf8tBANTQC/ohxCMnOC7gtPGhCx9jITcdn5kPEBSbQEEZJGeNJxJITUpTeYhCvL/BEYmJuUGDtKWfpNOtSQfVcxmmlAY5DB+IMsZ0vAvKngPTQtjdJMrzMeBBCQ0DGregxQUGZzEmKdsaf8kpvoMJx0V2TlUEXXAXtMioxhly9bPXGB/z9mAwm4JsUuagWG8jievNL8X73bfZCXDRiFXefI5G7TUrv8Fj9mQbPirVI7pqcGQxVvaifz40BcOUupXZVl0Np/ruZ6LIzdM1MkZKdtZa96LNMoP5RB6g7Fy3LOP7+yyu7qlLA3gSR8TJP84YZ+rwABnu17IdaKagRNoXFbGi6YA+v7r1yZEtrY7T6SpUtfO2OFHAs781WeZxpSHS+35nBeZanpr+Tx+MtE9usk0BAZowAxdaurAHW8nKvGmSpO+EnL0kGQe8vwIE231Ng+WB3zzDOLgnjaB6YHVFZ6X7oDIgAwe+9dNfLEW8pVx3C8mp5p88f1TbXzEybCy6
+ Rf9LoSof
+ bLB4+PFlwdiUm34ocrOYWRQzbseyFL4b1AScMYRCaBXhT3Z4drEn/2EX2apLU8ZQYjsyFL7HYf0DyXKMthE/ie8FFt7b+FPBWv+aD9o1rXPRvRgPjz+EfcLFmQIUh6TLAG/W2CVxmK+I8XBfvd5kO69Koh1POvBcDxWFt8IWqjRx4lwdgc5HGTpat1irBpnHDh3u1QzQtzDX4b8Xwk/4sl+aR+5n2tyJgKAyObD6i+SxftQadt91LzYv54dqNUQv0fagrB9Xc1g7ogGGC62IdNG6qyfly4+UH+Kccboy+IoMdSmy6IzompfPbEK9BCbw6s37cIdLz0zIEVfEMwA9Y1FqM9vZRHZh0krq+Qe+wdogIse3Zi18InB4soVKqSR3qq/8yCfAB2lsJ0rfb6ZWrtl7MJovtCbP6NYUSPQA0UgtAApFt/bQaDRAsJT4auO2McdKs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,229 +175,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 11 Jun 2026, at 5:23, Karim Manaouil wrote:
 
-
-On 6/11/26 11:47 PM, Vlastimil Babka (SUSE) wrote:
-> On 6/11/26 10:34, Vlastimil Babka (SUSE) wrote:
->> On 6/11/26 05:19, Harry Yoo wrote:
+> On Tue, Jun 09, 2026 at 03:44:21PM +0100, Lorenzo Stoakes wrote:
+>> On Tue, Jun 09, 2026 at 04:17:45AM -0600, Nico Pache wrote:
+>>> I had future plans for something similar as part of the thp=auto work;
+>>> however that requires significant thought and investigation into how
+>>> we can properly gather hints for collapse/split THP candidates. From
+>>> my perspective we'd want a more global structure/system outside of
+>>> khugepaged, that would directly call khugepaged (and others like
+>>> split, etc). It would also tie into the allocator so that at fault
+>>> time it could leverage the hints to make better decisions. My fear
+>>> with this series is that making a decision now might complicate future
+>>> work by adding complexity we may eventually want to remove for a
+>>> better solution.
+>>
+>> I know this is future planning stuff, but I want to point out that we need
+>> to see significant rework of the THP code base before accepting any further
+>> major changes.
+>>
 >>>
->>>> This potentially adds overhead of the is_kfence_address() check to
->>>> allocation hotpath, but that one is designed to be as small as possi=
-ble,
->>>> and it's only evaluated if zeroing is about to happen. This means (a=
-side
->>>> from init_on_alloc hardening) only for __GFP_ZERO allocations, and t=
-he
->>>> zeroing itself comes with an overhead likely larger than the added
->>>> check.
->>>>
->>>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>>> ---
->>>>  mm/kfence/core.c |  2 +-
->>>>  mm/slub.c        | 23 ++++++++---------------
->>>>  2 files changed, 9 insertions(+), 16 deletions(-)
->>>>
->>>> diff --git a/mm/slub.c b/mm/slub.c
->>>> index e2ee8f1aaccf..8e5264d3ddbf 100644
->>>> --- a/mm/slub.c
->>>> +++ b/mm/slub.c
->>>> @@ -4565,9 +4565,10 @@ struct kmem_cache *slab_pre_alloc_hook(struct=
- kmem_cache *s, gfp_t flags)
->>>> =20
->>>>  static __fastpath_inline
->>>>  bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lr=
-u,
->>>> -			  gfp_t flags, size_t size, void **p, bool init,
->>>> +			  gfp_t flags, size_t size, void **p,
->>>>  			  unsigned int orig_size)
->>>>  {
->>>> +	bool init =3D slab_want_init_on_alloc(flags, s);
->>>>  	unsigned int zero_size =3D s->object_size;
->>>>  	bool kasan_init =3D init;
->>>>  	size_t i;
->>>> @@ -4608,7 +4609,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s=
-, struct list_lru *lru,
->>>>  	for (i =3D 0; i < size; i++) {
->>>>  		p[i] =3D kasan_slab_alloc(s, p[i], init_flags, kasan_init);
->>>>  		if (p[i] && init && (!kasan_init ||
->>>> -				     !kasan_has_integrated_init()))
->>>> +				     !kasan_has_integrated_init())
->>>> +				 && !is_kfence_address(p[i]))
+>>> If you have the chance perhaps you can lead a discussion on your
+>>> proposal at the biweekly MM alignment session.
 >>>
->>> I hope we could make it bit more verbose and straightforward,
->>> something like:
->>>
->>> diff --git a/mm/slub.c b/mm/slub.c
->>> index 5d7ea72ebebd..29cf4590f9d9 100644
->>> --- a/mm/slub.c
->>> +++ b/mm/slub.c
->>> @@ -4573,7 +4573,6 @@ bool slab_post_alloc_hook(struct kmem_cache *s,=
-
->>> gfp_t flags, size_t size,
->>>  {
->>>  	bool init =3D slab_want_init_on_alloc(flags, s);
->>>  	unsigned int zero_size =3D s->object_size;
->>> -	bool kasan_init =3D init;
->>>  	size_t i;
->>>  	gfp_t init_flags =3D flags & gfp_allowed_mask;
->>>
->>> @@ -4591,29 +4590,37 @@ bool slab_post_alloc_hook(struct kmem_cache *=
-s,
->>> gfp_t flags, size_t size,
->>>  	if (slub_debug_orig_size(s))
->>>  		zero_size =3D ac->orig_size;
->>>
->>> -	/*
->>> -	 * When slab_debug is enabled, avoid memory initialization integrat=
-ed
->>> -	 * into KASAN and instead zero out the memory via the memset below =
-with
->>> -	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones =
-and
->>> -	 * cause false-positive reports. This does not lead to a performanc=
-e
->>> -	 * penalty on production builds, as slab_debug is not intended to b=
-e
->>> -	 * enabled there.
->>> -	 */
->>> -	if (__slub_debug_enabled())
->>> -		kasan_init =3D false;
->>> -
->>> -	/*
->>> -	 * As memory initialization might be integrated into KASAN,
->>> -	 * kasan_slab_alloc and initialization memset must be
->>> -	 * kept together to avoid discrepancies in behavior.
->>> -	 *
->>> -	 * As p[i] might get tagged, memset and kmemleak hook come after KA=
-SAN.
->>> -	 */
->>>  	for (i =3D 0; i < size; i++) {
->>> -		p[i] =3D kasan_slab_alloc(s, p[i], init_flags, kasan_init);
->>> -		if (p[i] && init && (!kasan_init ||
->>> -				     !kasan_has_integrated_init())
->>> -				 && !is_kfence_address(p[i]))
->>> +		bool skip_init =3D false;
->>> +
->>> +		if (is_kfence_address(p[i])) {
->>> +			/*
->>> +			 * kfence zeroes the object instead of SLUB to avoid
->>> +			 * overwriting its own redzone, and zeroing of
->>> +			 * s->object_size will corrupt it.
->>> +			 */
->>> +			skip_init =3D true;
+>>> +David Rientjes as he leads those discussions. We could use that time
+>>> to layout a plan for what needs to be done for this work, and for the
+>>> work surrounding thp=auto as I beleive they will be interdependent :)
 >>
->> But now we perform this check even if init is false, making it more ho=
-t.
+>> We prefer to discuss THP topics in the THP cabal meeting, which both THP
+>> maintainers regularly attend :) having separate sessions we might not be aware
+>> of isn't really helpful.
+>
+> Hi Lorenzo,
+>
+> How to participate in the THP cabal meetings? Is there any public link
+> to join? I'm working recently on anti-fragmentation, which is kind of relevant...
+
+Matthew is hosting the meeting. You can ask him to send you an invite.
+
+>
+> Thanks
+>> And 'THP auto' is a broad topic rather than a new feature. I don't think it
+>> should be seen as a topic 'owned' by anybody, but rather something that we
+>> as a community should discuss.
 >>
->>> +		} else if (__slub_debug_enabled()) {
->>> +			/*
->>> +			 * KASAN never zeroes memory when slab_debug is enabled
->>> +			 * to avoid overwriting SLUB redzones. This does not
->>> +			 * lead to a performance penalty on production builds,
->>> +			 * as slab_debug is not intended to be enabled there.
->>> +			 */
->>> +			skip_init =3D false;
->>> +		} else if (kasan_has_integrated_init()) {
->>> +			/*
->>> +			 * ARM64 can set memory tags and zero the memory using
->>> +			 * a single instruction. Since HW_TAGS KASAN uses that
->>> +			 * while tagging the object, a separate zeroing is
->>> +			 * unnecessary unless slab_debug is enabled.
->>> +			 */
+>> Series that appear from nowhere trying to implement significant changes
+>> along those lines without community disucssion will not be hugely
+>> appreciated :)
 >>
->> (I like the new/updated comments)
->>
->>> +			skip_init =3D true;
->>> +		}>
->>
->> And these two are now done in every loop iteration even though they do=
-n't
->> depend on the object. Yeah it's a static key and build-time constant b=
-ut still.
->>
->> But maybe there's some middle ground?
->>
->> Above the loop do (with your comments).
->=20
-> OK, not so simple, we still need the kasan_init variable too.
+>> Thanks, Lorenzo
+>
+> -- 
+> ~karim
 
-Ouch, right.
 
-> I've ended up with this, thoughts?
-
-Much better!
-
-> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
-> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> Date: Wed, 10 Jun 2026 17:40:04 +0200
-> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
->=20
-> When init (zeroing) on allocation is requested, for kmalloc() we
-> generally have to zero the full object size even if a smaller size is
-> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
->=20
-> When we end up allocating a kfence object, kfence perfoms the zeroing o=
-n
-
-nit: perfoms -> performs
-
-> its own because has its own redzone beyond the requested size. Thus
-> slab_post_alloc_hook() has an 'init' parameter which has to be evaluate=
-d
-> in all callers (via slab_want_init_on_alloc()) and should be false for
-> kfence allocations.
->=20
-> For kfence allocations in slab_alloc_node() this is achieved by subtly
-> skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
-> kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally eve=
-n
-> if they do end up with a kfence allocation. This is only subtly not a
-> problem, as those are not kmalloc allocations and thus the "requested
-> size" equals s->object_size and thus it cannot interfere with kfence's
-> redzone. There's just a unnecessary double zeroing (in both kfence and
-> slab_post_alloc_hook()), but it's all very fragile and contradicts the
-> comment in kfence_guarded_alloc().
->=20
-> Remove this subtlety and simplify the code by eliminating the init
-> parameter from slab_post_alloc_hook() and make it call
-> slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
-> check before performing the memset, which will start doing the right
-> thing for all callers of slab_post_alloc_hook().
->=20
-> This potentially adds overhead of the is_kfence_address() check to
-> allocation hotpath, but that one is designed to be as small as possible=
-,
-> and it's only evaluated if zeroing is about to happen. This means (asid=
-e
-> from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
-> zeroing itself comes with an overhead likely larger than the added
-> check.
-
-> While at it, refactor the handling of evaluating when KASAN does the
-> init instead of SLUB, with no intended functional changes. A
-> non-functional change is that we don't pass kasan_init as true to
-> kasan_slab_alloc() if kasan has no integrated init, but then the value
-> is ignored anyway, so it's theoretically more correct.
-
-Right.
-
-> Thanks to Harry Yoo for the initial refactoring attempt, and for update=
-d
-> comments that are used here.
-
-No problem ;)
-
-> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-2-7190909db=
-118@kernel.org
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Thanks!
-
---=20
-Cheers,
-Harry / Hyeonggon
+Best Regards,
+Yan, Zi
 
