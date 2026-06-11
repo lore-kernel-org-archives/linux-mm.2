@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC80CD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E22CD98D2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:44:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CFB36B0005; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
+	id 8D1286B008C; Thu, 11 Jun 2026 05:44:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4807B6B0088; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
+	id 8810B6B0092; Thu, 11 Jun 2026 05:44:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 396556B008C; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
+	id 797666B0093; Thu, 11 Jun 2026 05:44:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B4856B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:38:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B220112052A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:38:36 +0000 (UTC)
-X-FDA: 84867131832.16.B0B65E0
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E139018000A
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:38:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JceRipBg;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781170715;
-	b=mg45YnXoAGGiWzRrSGQXfSh5PqzBebmZ6TrCYkdwiLOGVjT9gUVcYDkJL7Hjtg6YT5eTPM
-	ZjtavmlAQdQJiA8Km5LTrQco3triSXBMhxu6ZGDuk21B6ScdJt1cUyl0abOszKVFTbkG0l
-	W1ProlzJpJCcO1kH9NXtf+q1ov0atp8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=JceRipBg;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 65FAF6B008C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:44:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F151812057A
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:44:42 +0000 (UTC)
+X-FDA: 84867147204.01.024CBCD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4D91B180008
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:44:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DETy5PZf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781170715;
+	s=arc-20220608; t=1781171081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c9l8T6vuQd8ofYyGxx3NB8W3+1YzVxoYB7Bmx+2O71A=;
-	b=S8qrZ8z9r3CDPCrNtD4cM00ddvqwhcweXflzkEJBGbtPIJSL9ubWkIaHvTIahyaeyhCWsZ
-	JJkE2YiMAnmixdQ79Bxi08ydD2jlNCZ6i2oVEo+MvEeD0nVfXWsG6NZgIwTRnjJixJftrL
-	fG4Of7rqGBthAUmUnbLzlLoshmFq8wQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1781170705; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=c9l8T6vuQd8ofYyGxx3NB8W3+1YzVxoYB7Bmx+2O71A=;
- b=JceRipBgMnyCRSncb1gLxnjk1tDDIUwYUSfCVm6p3SAF8MkXhHndETHQk+4e5cLPnD93C5
- GsPld2iGj6XCVhEn3+0+/gmsYTxLA5lOMKiNMbLyadk4zCp6Mi+sjHxHqr4vi6AcCEcyzu
- ACqFI1bvgsb03URfC02v/4u0frmXndutq+ep7SXNtP3tLodBI3f9y8DcFlCSdiSre2e09L
- CWkEtxFe2tpwk8OODH2NH1WsOJ1vWCmEGeSfWQ+S1KzcFW87OMay3NOcTNpTRo9MlyDJEs
- BdarHub4dXuqDyVMdWu3RHxT6j4PvnmAIJD4fpudFlrpIbroi1i1hv8lQ+OX/g==
-From: "Li Zhe" <lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-References: <20260610191920.GBaim4uMX3z6OqJwHr@fat_crate.local>
-Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
-	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-Message-Id: <20260611093802.74707-1-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-To: <bp@alien8.de>
-Date: Thu, 11 Jun 2026 17:38:02 +0800
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26a2a820f+7870c8+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v4 6/8] string: introduce memcpy_streaming() helpers
-In-Reply-To: <20260610191920.GBaim4uMX3z6OqJwHr@fat_crate.local>
-X-Mailer: git-send-email 2.45.2
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E139018000A
+	bh=GDi+IlU7odqCU3b6/NqPii4xRsY6tCi0zw2in+d4kpI=;
+	b=gmNy6981/sTQSk+Fck0OjN1rTxRJtjcYqaZhWYai3k+IIWe0qDz7mf+XQq5sQW0AqsjNUw
+	vfiUacijNRrT3YvKPNPLx1rpKJELGQSf5eVoYBDxuTZf+kNrJMZj5Iognv4AAtpWDMsbxw
+	rvJS34I8Ig4aW4srgifQhpc/asbDeik=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DETy5PZf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781171081;
+	b=X8iXC/P0VuPvhNUuUIhs0h9SbGYKHdqWRkuRSZoII6h8Rg2U4W3fv0YjTvepigUVqr+4t7
+	cMwgA+c7fUwTPIIAjkncQT7tgpCNN1I3DYj1J84xc6Nc+n3afm1D67MWxvJ4d3/roXX6/4
+	ckZLJcAKi4nJl5pKK9b3rVhZvbLtaFM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C36C41905;
+	Thu, 11 Jun 2026 09:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87081F00893;
+	Thu, 11 Jun 2026 09:44:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781171080;
+	bh=GDi+IlU7odqCU3b6/NqPii4xRsY6tCi0zw2in+d4kpI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DETy5PZfXYGzapPs7W3ysg8WksQLVm4wbK3V4tyCuDz2DsJziOB74H9yxhSw23vsf
+	 LMiYqsUWWzLHFg/5YNab5HEts4ZmRZce+Y75DSjnDN8/IgSeTCc+sIfx/ICSwJHEfS
+	 w6XOrpH9EBGuu0xs6OIjPbfQIVlSF05ntEbdH9DpcHbzwvCI7yVY7qwfqsh5WwQnAu
+	 aoucjQWTxgJNGfNacGus7yeldVBeSOatDzy5cDQp/6IYZky0Iji4qpOfnD5vOGGd4R
+	 8nOPK3qURixRO50u0Y79DftYV4eNlzTJDGHGeEce7+WIVGpLO9IiPH8h/Vm2nOWzTu
+	 bT3s0skcQMWWg==
+Date: Thu, 11 Jun 2026 10:44:33 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 2/3] mm/vma: remove mmap_action->success_hook
+Message-ID: <aiqDUBVRGay_6P3n@lucifer>
+References: <cover.1780397980.git.ljs@kernel.org>
+ <f79434e6d30af6d92999be6b76e197f1847105fa.1780397980.git.ljs@kernel.org>
+ <aiprMy4_XyNt2CYO@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiprMy4_XyNt2CYO@localhost.localdomain>
 X-Rspam-User: 
-X-Stat-Signature: jt67jjzy7cugzn5c7cta7yyipb844g8b
-X-HE-Tag: 1781170712-705371
-X-HE-Meta: U2FsdGVkX1/I8W47GU1lSH1yTFItPaxAklJQ1oYEXvL8WFQidozfsjLNqqRer15zAz5v+L9ySoVxNDf9wysjCaMLgd4vY3S/w/znSXEV+ZYR18LfOALbxnaP0ONQlvijn+Bl1jGv8pe6njQI2CCjxLFhRvhkxqn5cfht7bTZAGpyA/fFD5vhqQG3/BLWXXJ8WsdqP33ohPVjBy1gF/KmhFdjZZMcQO47ixVP2dMBbOOF9Gyt16ALXZlcvA1MTBJEcrEZM8QTKD/bq8WUqLCP85vtvM2yW6CrrEL/xhL4C6QDSlSVELSwtD6UPsW5ght6j+QyPROTKs2Tphbz7aAHV0bUrrBi6aGyFAfTtJcmsSK3B3D1M7U8x7Tmjwg+i20m76lrrfB0NchRuSaQWVQjOtwE72CKNYcNl77BctJBQLpvEo/Dqu5KaK9IzDBKPhDrhckyrRhG938A6ZRTFhbBsn1Ws7N2BXq80H8j9UztbgNajcX7446uTbJesArdHKIt1FONLfL3UUWo84cgBcjiJH7RmEqUu2wp4PQj0oH86owr4q/p7v2mfi+v0IT7woz8KvI/+mdyXATWwdN4zfFsI+pgOCY4xXlBqTPWDpcp+zmQM+RwondPB5vCPx8C1+8z5pWVqkRVPEUoJggtadwaleRM44LUNfz6Wpzd4PPu3LVtSJuTAr7wQ8LJ2ZM/MUVmWgLC2e/FFHffg40W8d9YK1Q1OQfPvy2G/JSl/oblmnABfvKjlTJZeYikQ+2e7NvDX6eDL0NJaz/z1uq0NXeWvzPJcNNWXJTa2l/NVsOoIw3CHDk2oKg6lL9fsAeesOBHD/DAstr8PW+NFUqYBrKbvCu6pZYTVxmtGytkWR5oPuWlYErkCAmwOZk2HZFtsyn2IkKN8SPggXJt3/fICLm3VNi3MbnwBOpCfs9uZu0fe1cDV/utPSI0Joo1anWpbqgddngzsPUlxOw2F5QyV68
- HkjzlPxM
- 7SY28VvvG/5hnHleDichCFSxyBE3hPyXAuhc3d/shcA/R6EXUytGgpMk1r7EVrW7SQGV5b5cE3G59hIHEEVkfoLGNuXzZbOziRo3OZ8H1gupFaqmEgcsGw3T+deB7CYzqO9dqIuSPaC0u0Bg8hSjyBH/Rs4zQCVFnBP18QYBN1HDquwZq2aAi2eylxShYYqWnjp8gUBzWdqoYU9DMiGQTkmMK/YIxduREwDF2RJRJnpNpC98GAhdVKBb2JQ8rcVEAAzl5Yk3gxqB4rVx1Z6WVxDAKwcd+KnTXBSzZ
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4D91B180008
+X-Stat-Signature: he7p65bjcmwwney5p1xdeqbehq8hogry
+X-HE-Tag: 1781171081-96513
+X-HE-Meta: U2FsdGVkX18b/7wrnQJn5GM+1EaToFkpuxRYysaHcIV0T0G3JOjnao/C1Ht/a+D1hJOI/o0ZoUCYjXFOJB1t7rkPHL4/0+6cQIzUqw4koklGjxU10mf7jujuYUIwasUltAVuPrmeP+hfLEW3mko+u92QQrmke9dHgD08SA0m7d75+1TdduoHFXjpOFV9ceWGm6DV6QkCYDofpgP2rZ9KvhCjyPJBX6/hlcz0Pj/23hMMsHRFaG80Bn/QM5ZtYG1kpyu12+jxVw7YOB8qs/BAEoade7nQJm/+jL1bPDuUvWh5YRwvDcJ7uSETZyp9YOJCjOVHF7BRGxClbRpHagkjqKa8wR5UN8s8p5iiGgEyMJaw/c3dREL+q9MzItawOrUphuALXx6x15T13zYIcfb3gklHow8x7SSoSlGHp7gv0cVldLTMY2604vF83DPvur/1AF/hW04wXh8cW/SX9EpwVD+4SOysoWpJct9fj7UDJMc8RfjOIqcza07uwklWZeAUMnN1ddXI2ukJ3cz67c5REjwObjDT8r9QFgzftqYHr0d4jk8amdmWNCtM/AwWt1RysEVIOaPfSu4RcfdynBaQiBY19ABN/FXB3rahN/4GIqBRZJpDh7tMwVvYjp6PWQkZ/3OdijchOYz9Qmmpb07sXFVRIEbOemad9sqejWNyp1CLZuqiTVLmsrszb5tIuaFif9xxQQSjs7+mGp3P42Lky/+UZ7pzKtbLLvjdrclEp2bLk/dZotB3rFdr4b4e17Bz7HzkEY/qAUOsfW+OjomU7TueSxbLTq+jvbNhg1DrkrUcfQwq7rvHT/XEOZkpXnUnvziMMjS4HavGbWrW08IvxE7VpYPQ5FBrHpjS56nptwKszFUZjqSVAJWnlXb/2bDwcY1vT2KKWNnwlgdo0vQxbPaGkF8vHGfkECKf3ze5JWLgc7loAYQCu5PagjOQ1+n7nO/6x+qi8uubj/Vj4Ac
+ aVfOo48f
+ oyUgpYhqjaTrn8Y1l0Ikt3RWmT4k56KvmrP4QCLMMb4ET78PIpu7GNVI5+QPTA1y1mlcgzBZOaRITxELNjSbSl9BCQ3bO87hh1jydJK1WTHDft6Q0QksXpGNWyJd6xfFp1jVdd8YRWsC1/D0KJOmoIAwRuE0wOIz3BeH4UuPUN5iBzHxWyeAWNFs0Nhtgt4bVRjsrxmuBghAUZLi+LDDiJQrBQAwFc/u08xf1piPH+KVm4xCpDGRf86DPGpluIrZb5t7eItO8eRh0FKN7kpVt+IxFwxP9iKF4EHhTqegbYNAJQh6nfGa37vs2Dwh4oe/EZ5M5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,51 +96,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 12:19:20 -0700, bp@alien8.de wrote:
+On Thu, Jun 11, 2026 at 10:00:51AM +0200, Oscar Salvador (SUSE) wrote:
+> On Tue, Jun 02, 2026 at 12:06:26PM +0100, Lorenzo Stoakes wrote:
+> > This hook was introduced to work around code that seemed to absolutely
+> > require access to a VMA pointer upon mmap().
+> >
+> > However, providing this hook leaves a backdoor to drivers getting access
+> > to the very thing mmap_prepare eliminates - a pointer to the VMA.
+> >
+> > Let's solve this contradiction by removing it.  The key intended user was
+> > hugetlb, however it seems that the best course now is to avoid allowing
+> > all drivers the ability to work around mmap_prepare, and find a different
+> > solution there.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>
+> Reach out if I can be of any help with the hugetlb thing :-)
 
-> On Tue, Jun 09, 2026 at 08:01:32PM +0800, Li Zhe wrote:
-> > That said, I see your layering point. If arch/x86/include/asm/string.h
-> > is the preferred place for the arch-visible wrapper, I can move the
-> > wrapper there in the next revision while keeping the x86_64-specific
-> > implementation details in string_64.h.
-> 
-> No, 64-bit only's fine. We don't put any new features into 32-bit already
-> anyway but that wasn't clear from the commit message what your goal is.
+Thanks :)
 
-Thanks, that makes sense.
+I will probably have a quick go at it at some point and just see what I can
+do, hopefully I can figure something out quick, otherwise might very well
+take you up on that :))
 
-> > Thinking about it more, I agree that this is hard to justify for a
-> > generic helper. For this series, what really matters is that the
-> > struct page copies in patch 8 can use the existing x86
-> > memcpy_flushcache() fastpaths where that is beneficial; I do not need
-> > patch 6 to impose extra selection policy on unrelated callers.
-> 
-> What I am asking is, you need to show numbers why those helpers exist.
-> 
-> Your 0th message is talking about measuring this in VMs. If this workload is
-> not VM-specific, then those numbers don't matter. They're just handwaving.
-> 
-> So I'd need a good justification why we need the changes before we go any
-> further.
+>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Understood.
+Thanks!
 
-I do not currently have access to physical PMEM hardware on my side, so
-the numbers I posted so far were all from a VM-based setup. I agree that
-this is not sufficient justification for introducing the helper / x86 nt
-part of the series.
+>
+>
+>
+> --
+> Oscar Salvador
+> SUSE Labs
 
-For the next resend, I will first split out and resend the mm-only
-subset, and drop the helper / x86 nt part for now.
-
-If anyone  has access to real PMEM hardware and is willing to test
-whether that part shows a measurable benefit there, I would greatly
-appreciate it.
-
-Otherwise, is there a preferred way to justify or validate that part
-without physical PMEM measurements, or is the right approach simply to
-keep it out of the series until such data is available?
-
-Thanks,
-Zhe
+Cheers, Lorenzo
 
