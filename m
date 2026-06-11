@@ -4,165 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88A55CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 05:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ADE0CD8CB2
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:05:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A64E6B0005; Thu, 11 Jun 2026 01:44:08 -0400 (EDT)
+	id 566396B0005; Thu, 11 Jun 2026 02:05:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656296B0088; Thu, 11 Jun 2026 01:44:08 -0400 (EDT)
+	id 517756B0088; Thu, 11 Jun 2026 02:05:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51DA76B008C; Thu, 11 Jun 2026 01:44:08 -0400 (EDT)
+	id 42CEF6B008C; Thu, 11 Jun 2026 02:05:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F59E6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:44:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50DAF1650C6
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:44:07 +0000 (UTC)
-X-FDA: 84866540934.23.2CECC76
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C5EC5180006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:44:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MlYWLT3D;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 346AE6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:05:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B48A1A048C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:05:39 +0000 (UTC)
+X-FDA: 84866595198.08.AAB9D36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E562320005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:05:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2XT4r8o;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781156645;
+	s=arc-20220608; t=1781157938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J4nnNFS8Cjiou/AxpB5/aNpa5nrhgheHR12Lh4z+m4I=;
-	b=y1UoW0o580WOndbzYT1xyDZH23pNJ6Wl+krfczHkHfRK7kvByMYAriaQxxi9Z87ffAN0hN
-	wDCu0Q9N/oAh6eg6tlECnhhw5GYwCa3xWSYsInicdeaIOkB27EsE1ERj1ZSD2d0Tkg7DTl
-	uczV8AjLZi4LxQ+gaDax3JHb1nK7C0Q=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MlYWLT3D;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=KCobAk1v9fNVAoJf0iITbOT1BGY69Eo1RWAE+L3IdP0=;
+	b=8Afvxuu1M4yU9zSU+Cr8UhLGRENpPGmn8DhOo6CSThPyaGgyi5dyB2FCwFedgWJDn7t6Pe
+	z2bkt1FJIKXA7Ol02J/jCPHVZWFRKMEf6cPjYnD2FQCPw3gCjaI+ChmI5KFyVhjlkmTTCh
+	A6A7ObMwHUpyBGfm2h0TZgu7HNOoGVM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781156645;
-	b=rkJDgWXHeZZ+/TP37PtU7565itLh4RzH29eg90yR29vyt1ai+Ri73BpKLa8Y+rMGcIkGL2
-	zUUpDsmKWtBEFspO2X5/HO9LMR4tkCEhVKS0Kt85d2SQE4B+znVNz8ws0ezGb+Csdgcwcj
-	BYDcMfy/+e+JJVyl8W2+32YMEzNZaEM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781156644;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J4nnNFS8Cjiou/AxpB5/aNpa5nrhgheHR12Lh4z+m4I=;
-	b=MlYWLT3DJT70Zb6FavvJMarQews6mjwIgcv58cziK6AunaKI7/F7MLJZOS/IkzKxfHoniB
-	fjqaD3v+Semn4I6+KCJy9nu4DNtLKBL8gSn+OKPK5/659vr0rznx01xD3iUm6kBDjUMl2r
-	tkF1TqwZOdwZzr8kcts6asdJjWhoVVc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-IG2qwJO_P5eRT_NwBIeWqQ-1; Thu, 11 Jun 2026 01:44:02 -0400
-X-MC-Unique: IG2qwJO_P5eRT_NwBIeWqQ-1
-X-Mimecast-MFC-AGG-ID: IG2qwJO_P5eRT_NwBIeWqQ_1781156642
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-460153ce644so5640581f8f.0
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 22:44:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781156642; x=1781761442;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J4nnNFS8Cjiou/AxpB5/aNpa5nrhgheHR12Lh4z+m4I=;
-        b=Bu12/H7A5o8Q67efOXa9Y/L6V6QjsaTRAim29B4fzf/SkYBdOL36L8srt1ykDRADpW
-         uNtCRdM6AWlbePG+KEjm9kOp5vnvlpycle0u3CarQzimHKrr4thjl9sUXet/8y9Wgn2L
-         dfVSOTihHvuqy18TcDR4LchHxbz4rVAtBf7LY2wP2Jh+QIEfz2ma4Rh6evKFeTkJqEcd
-         hg67f3L1jXO2/PkzLumJij6L57eaO8fkOWF2ZIp3ZMbLwhBV98hPeuDvVtL54RI5kcOP
-         Ljv7vEMCRgAqIQjVW8GZfdZIgMVyRo+hQ357f+XM/9WGoxWlbmSWxKmTjVvoUsNYXWL5
-         9NJQ==
-X-Forwarded-Encrypted: i=1; AFNElJ84evO28nbmqFIMnc1Q5HvAU5nAc99vdbR6jWof9HOAUM/JS3mdfcG7VemD3ZYtrfHO+76xAXdQWQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw1ZeP3XcVNckAOZo8PZdEJruVaM3fi1rRd0REpRha+SIuvuMId
-	WW+vP05rHdjdDSLCBBVRKF8+VTnAyLUGYTO3Bxa0NfqiZhvUZlqeX4kNTdbgksOQxKc1Ri+rF6D
-	rZDHVTnGpG3oscamxG2hoF6YulDV+85vTtbSU1N9zWGDJjqPkooUy
-X-Gm-Gg: Acq92OGUBEEMKkW8XD0ZuSnfyaRG+5ER7ESGd8z7sIRVjNnck6VM3VPmp18/XqNHPk3
-	DkNHtoRQwZI9VOmkLfpfTAulT6sPt9ovK1Yz0sgx2reYCg/PCwDmuInxkSfQ7xq9VPbpRmiwbDI
-	8zh4KuqXty+yosWPSY7iS3Cm3WKXJPRKPjknD6mNQ7la/TC32kXOEdxecefn3MnBNaKj962Ndoy
-	RMJy41dPHzipzLieeh0uZB03ww84dE9zk4o861jmnsl2aVCoROJAVU+kvk9BA7EOwgLzX69TmlA
-	JXV6+luE1Du52UZeDQyyXQzXa9vYa4Eu5Ei1B+2dr1xvw5/HYuUDsC6MJ8kQ38Ypbmjje3jBs0w
-	QY4kX9edsQS6PJm5CCH2k0CuBIrRmo9eEcFzvGR5LiQ7MthSyvZ8/+g==
-X-Received: by 2002:a05:600c:8b44:b0:48f:e3e7:3d39 with SMTP id 5b1f17b1804b1-490e55b5511mr10517455e9.11.1781156641505;
-        Wed, 10 Jun 2026 22:44:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b44:b0:48f:e3e7:3d39 with SMTP id 5b1f17b1804b1-490e55b5511mr10517005e9.11.1781156640945;
-        Wed, 10 Jun 2026 22:44:00 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e532c778sm19957795e9.14.2026.06.10.22.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 22:44:00 -0700 (PDT)
-Date: Thu, 11 Jun 2026 01:43:53 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>
-Subject: Re: [PATCH splitout] mm: memory-failure: serialize
- TestSetPageHWPoison with zone->lock
-Message-ID: <20260611013644-mutt-send-email-mst@kernel.org>
-References: <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
- <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
- <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
- <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
- <20260609162437-mutt-send-email-mst@kernel.org>
- <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
- <20260609165829-mutt-send-email-mst@kernel.org>
- <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
- <20260610171646-mutt-send-email-mst@kernel.org>
- <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
+	t=1781157938;
+	b=YocXKljlQ1EVzb44FXHDN/v5BRXl8wxUW5mZLPQnkU6+wCmSr9AgSVjV2A/9dhm/UV1iyT
+	3NN0jz/1uuVSHq9HJDkT47NTTzPsupLZDAFyIy3mJ62dJeK+LzRyHk3H9+QYc8WXXI9HrI
+	RaD4JY51Ij87w8gOnXl7bw0+IT1mriU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2XT4r8o;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C1C4244519;
+	Thu, 11 Jun 2026 06:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9681F00893;
+	Thu, 11 Jun 2026 06:05:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781157936;
+	bh=KCobAk1v9fNVAoJf0iITbOT1BGY69Eo1RWAE+L3IdP0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a2XT4r8oIoL31aBcHxAtMHleb4Gc/zG6F4q9xprFGdnrduVq98kVvFMSv+Npbmeru
+	 lCjdn1z/FvGPf+yMUK4O8Lu8LO6kx/7IJIIBHN3nh+OFgTif71AH35fhp8ToKRDWzi
+	 lT0nQXzfLinRd3g9h+96+JvJuSiyomGpXiDDqi8Jjln1E57A1aUyHcmGqX5q8EH7W8
+	 PWldc39RNmMOi6agX9cx2SjouHHEYZatOyJB9jusa1Rt99Hav1l4dlNPLS+wD83DAB
+	 +S6AOkwLbizkluJanjzk6P+cMVRoUgW09PPbD0iTzWTzAgih1pk1eQDJJAWhzEuaQq
+	 Ltyl3flw0ND7Q==
+Message-ID: <f9b7935c-f5f0-496c-b55e-1f3feee5c87a@kernel.org>
+Date: Thu, 11 Jun 2026 15:05:31 +0900
 MIME-Version: 1.0
-In-Reply-To: <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PO-e9rmn_ext7FK8FIjdUTfL1Q-dH7RoxWqNqxjghB0_1781156642
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C5EC5180006
-X-Stat-Signature: w5wicgtm3kyzjzf9ifjy4onbos1u5x37
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/16] mm/slab: replace struct partial_context with
+ slab_alloc_context
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------1O40a5juCIbpxLZ5dsBsgvqk"
+X-Rspamd-Queue-Id: E562320005
 X-Rspam-User: 
-X-HE-Tag: 1781156644-79025
-X-HE-Meta: U2FsdGVkX1+1S3y/A9k0UY1BbgMZ7GlJXXt8JsF//cjwLg5dUWlPG7gIq/5iY2UAaNRmOZPiC90ZBcDLo1/YqWgETt3ItZNA9Hx/FQAYBe7GkhLtObjJFQZMmxc11xRmIs7E8LhfUhRpCnf3pijKT9gkj1QMUAouT5Vdvj2ha4YsEc9EucHSgM7KxJRdNMFdiclPx2q1q6smPa0yWQgz8nKH2ivHTbBKT/PrDQX2DlqTRj7rjTbvrT7UstE8waZmfNqea9YO7g1nG+AuJO0E9JGdH5rwgyDOdGUcGDWQsdwAqqrjvL2ZSlSvK6lG0nUwkTHVBTMCshDRyitrYJD9K5M11YO/GrsURqhmItBDCRYXZL4Pnce5jqua4esVbOhr9eLidSDyqOgUCEaj73dpqitUqLLtrZQa1UNMgF3UhkArKA5HxkqTQxweQg4pHfmmZI2N8YvzcKPvVHhF6EGhA0XusnIGlXKZU5vCsT05lSkKMJ2BF/y+UWLHcXED5mvQf7Z2PA9ogY0koWtGTRjmwl81WBmE10hGTUpn1zyADQvkj4veuXNJwOyB8I0lUxk0ydlaDmW1ps3O/wqIl1RqkNJajQcE/OdWl020qkQo5UNdTNmV4FUHNnYYh7O9JJcCPDKJitucLnKOHPFu1Bs2w+R/tlUzoASB5Ir7MHQrB+fX60TjNR/NM142bqcJr9PE7wfqxDhLnYOElIm5VbXHC/tsfmcYTkKxF7s/74gMr0/4Nn/lrZOUssIxxd1gHRueDqYlt9lUzdoH4+sAgKor0nz2PBhhlFauiNSWHOSxVRzgJ9fUwDmbIxyqXTulelHF8MxhI8xIFkrbwVwji3I98P9cbtANtwczRer0wDhrSsb4HWWdVvFhFcE2ct/RYVDBtWa1w9fIj9yqubn5vJrKpRuYQhD0HGv91p1g9zhHFw56np9hJIEY4PSStNNdplhlGjsgwT4/N8WXN9iMAWl
- Mteithsv
- Rd4GDlh+bvO42ljYUfCVZ79shofCWvTRsBPcUKqucPzEbATWWlcNHXMPdUq8Xjer6fmopzJTI7saclORgD1KoSC4h4Ya/yr+ggFtL0bW/vyXZE2UPjd6Yq8fM2+RpPcV9B/Y76WjRaGLRm+TULTh0D4bW/wXmpkbPysQJqbb++mlwNVAs7eJF2mFHlKoUvlLEfRmUcv2vybYBJJoJTqL54IxFfJ5FlK3wak9WcaZPkLPlBoS1LadxLqc/Y5CHmU8KXbG+M5KlhEu/F5mVrDThUhM95wCEztVllb4XXEU+aY9hDotwFOPOxGdxClufUdjn5NLxO0sWaqR9Hdk3Xrdru4gnzQ1WVfFSN2jJLQQ1E0rdzzJB41lEXnkGGd8tQWYZwshyC0aanJmWPKXbT9++uiT2+BRJGlFgcK7Xv8i0tQCIA1SDrb8g7tQrV7ysDG3dD/wJhQvZPVoT63g=
+X-Stat-Signature: fyzi7wbc7ac8qr4eb874tbhn4peiqbi6
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781157937-163782
+X-HE-Meta: U2FsdGVkX19fUuvgKjF1rGjlD6ho3Fb11Tei8isf4AyyUGZDi2JFnruqMaAdJRf9hKsqTmDBffWZA8WTYkwqKPhYrZOe1SyWRgcoLC0+n8JtvWZgkykGd6Hn5mStbXXrDFkQ2UViYpGF7x96+Xd2KPxjqvQR6n/R7XEtUAUVr7QqUEEM6nUbITp8tQxRXC5UWY3SHSlMtxJJ6uF6pj1v5MD3rjZp8S2s4X22PBGHVyL3bYt9R6dkPzBAJ2w5wK0lTjPta11HPv622bSN0eyeDmVVR+rM1WDMyH0eMrpY80Ccx8BxIJUREs7S/ARMINueoXFZWf3PxiC4GdtGhoFu1CZptAUw+y0XZa8GSDF27pxIf9W4X0oJc1xnkY8a8vB8z9G++uNZT4oQKz1HAyO6RQnaMaeDIlI3YbjxN4Ds3ZUfV0MhFBEqD0adR2IkX8ZGMNWxQkMu7SX2T4NbbAfZwVkb4hTEsR2xcaOX53LdR0RJj8WGAf85VpQLUe1KwaiqlWjpwYApaZRgJinDSunMnjpN3ZLVo7ROclhQGFsjEafoiQMuNk3IhTkR61JY76hx/xMLN/O1459IaSCwfDuKlVw6mKPFgmkgGoAyz0qFV1bEu617AatHAs+upRYoWD6XF+AgyeJxgd/Lbu4tQcOJyfFwmsHj2FiUq6Ns/r98EX+8CyC1YPqQXr1+dIl0cLGKYvjVHAPt0AaJyZIMHFQGbPEUshhmJC8yXILOQ5VjHa8ClLP/LNfi2i0EBShzUVDr2PCA74PrYtlDdX6PtMk8sW2Z7CXbAIEbg7lAneHgple6dTZYyD+yaDfvasnSJi1cOc3NI8uxkzYKAHwYwUWA9ZbRPC7L8NChZ4l+4neg/gJJKpDQmlaAzjsd3zi56W6AUZLGxPz2poQftIAHJsHAS4Cq4znOm6wwqZDG4tUtNd1bhBcJkX42m9u7ZTq6Y6Ph5IJJ4wdzK4BsmRVDNXv
+ mf7oC6+i
+ NafwOAXKYIXJ4fhFa9eWQxsv7Y/ZxbRUBedmB7Ki3qo6xFg6xk2ZwCZWKD0ESgqabucgnedjMDwF53hClbjAn5TDS21ePf8vuR37WE08VpVRsI9FkmSJiPQBCRzL1L2Tzhj5vKjsvzv2Jietr3Ah+QGlDdljUK0/c4b8v2j/y/l9piKCleOQwQoEOGk8X2JXG6YJQF3E8TIqTd0Ywjd83L+31RwV+o6CA1Oj/fErtn8qjfe5H2rKhneXvRv4dndn9ZfRzSn9+f7kKeCvOx22VkeGcdL7m8GgdANVbvIwdKmqz4YbWslHbdVSEkWfTCgWAqJHEYZAMrQhsasI8IQMSm/2klineFNF+2YDRK6/DyMi8DRFwoFyELCILVYYuWSQOmutk3sig2tZhUlm3htFEKcEv2XIW5/SJEKPlDWCaXCx7T3NAo0dk8jqw9n+qnJdZ63gcKozL9r2zBm4r//MJjvstPYMREC/qyQE1w+tK0pdj1pNC3J8m/9ICIQbnjJHgCYl11j0JSzl+3faDcDbW25ePOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,136 +103,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 11:35:36AM +0800, Miaohe Lin wrote:
-> On 2026/6/11 5:18, Michael S. Tsirkin wrote:
-> > On Wed, Jun 10, 2026 at 03:24:30PM +0800, Miaohe Lin wrote:
-> >> On 2026/6/10 5:00, Michael S. Tsirkin wrote:
-> >>> On Tue, Jun 09, 2026 at 04:54:01PM -0400, Zi Yan wrote:
-> >>>> On 9 Jun 2026, at 16:34, Michael S. Tsirkin wrote:
-> >>>>
-> >>>>> On Tue, Jun 09, 2026 at 02:52:47PM -0400, Zi Yan wrote:
-> >>>>>> On 9 Jun 2026, at 14:39, Zi Yan wrote:
-> >>>>>>
-> >>>>>>> On 9 Jun 2026, at 14:38, David Hildenbrand (Arm) wrote:
-> >>>>>>>
-> >>>>>>>> On 6/9/26 20:10, Andrew Morton wrote:
-> >>>>>>>>> On Tue, 9 Jun 2026 06:12:49 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >>>>>>>>>
-> >>>>>>>>>> TestSetPageHWPoison() is called without zone->lock, so its atomic
-> >>>>>>>>>> update to page->flags can race with non-atomic flag operations
-> >>>>>>>>>> that run under zone->lock in the buddy allocator.
-> >>>>>>>>>>
-> >>>>>>>>>> In particular, __free_pages_prepare() does:
-> >>>>>>>>>>
-> >>>>>>>>>>     page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> >>>>>>>>>>
-> >>>>>>>>>> This non-atomic read-modify-write, while correctly excluding
-> >>>>>>>>>> __PG_HWPOISON from the mask, can still lose a concurrent
-> >>>>>>>>>> TestSetPageHWPoison if the read happens before the poison bit
-> >>>>>>>>>> is set and the write happens after.  Will only get worse if/when
-> >>>>>>>>>> we add more non-atomic flag operations.
-> >>>>>>>>>>
-> >>>>>>>>>> Fix by acquiring zone->lock around TestSetPageHWPoison and
-> >>>>>>>>>> around ClearPageHWPoison in the retry path.  This
-> >>>>>>>>>> serializes with all buddy flag manipulation.  The cost is
-> >>>>>>>>>> negligible: one lock/unlock in an extremely rare path
-> >>>>>>>>>> (hardware memory errors).
-> >>>>>>>>>>
-> >>>>>>>>>> Note: SetPageHWPoison and TestClearPageHWPoison calls elsewhere
-> >>>>>>>>>> in this file operate on pages already removed from the buddy
-> >>>>>>>>>> allocator or on non-buddy pages (DAX, hugetlb), so they do not
-> >>>>>>>>>> need zone->lock protection.
-> >>>>>>>>>
-> >>>>>>>>> Sashiko is saying this doesn't do anything "Because
-> >>>>>>>>> __free_pages_prepare() executes entirely locklessly".  Did it goof?
-> >>>>>>>>>
-> >>>>>>>>> https://sashiko.dev/#/patchset/df06b66fe4ff8e925ee0714955abc2183a727b90.1780998980.git.mst@redhat.com
-> >>>>>>>>
-> >>>>>>>> Battle of the bots: it's right.
-> >>>>>>>
-> >>>>>>> Yep, __free_pages_prepare() changes the page flag without holding
-> >>>>>>> zone->lock.
-> >>>>>>
-> >>>>>> __free_pages_prepare() works on frozen pages and assumes no one else
-> >>>>>> touches the input page. To avoid this race, memory_failure() might
-> >>>>>> want to try_get_page() before TestClearPageHWPoison(), but I am not
-> >>>>>> sure if that works along with memory failure flow.
-> >>>>>>
-> >>>>>> Best Regards,
-> >>>>>> Yan, Zi
-> >>>>>
-> >>>>>
-> >>>>>
-> >>>>> Actually memory failure already plays with this down the road no?
-> >>>>>
-> >>>>> So maybe it's enough to just SetPageHWPoison afterwards again?
-> >>>>>
-> >>>>>
-> >>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> >>>>> index ee42d4361309..4758fea94a96 100644
-> >>>>> --- a/mm/memory-failure.c
-> >>>>> +++ b/mm/memory-failure.c
-> >>>>> @@ -2415,6 +2415,7 @@ int memory_failure(unsigned long pfn, int flags)
-> >>>>>  	if (!res) {
-> >>>>>  		if (is_free_buddy_page(p)) {
-> >>>>>  			if (take_page_off_buddy(p)) {
-> >>>>> +				SetPageHWPoison(p);
-> >>>>>  				page_ref_inc(p);
-> >>>>>  				res = MF_RECOVERED;
-> >>>>>  			} else {
-> >>>>>
-> >>>>>
-> >>>>> and maybe in a bunch of other places in there?
-> >>>>
-> >>>> You mean for fear of losing HWPoison flag in the earlier TestSetPageHWPoison(),
-> >>>> just set it again here?
-> >>>
-> >>> Yea.
-> >>>
-> >>>> Why not do it after get_hwpoison_page(), since that
-> >>>> is the expected page flag?
-> >>>
-> >>> It's still in the buddy at that point right? I'm worried buddy might
-> >>> poke at flags.
-> >>
-> >> Since __free_pages_prepare() executes entirely locklessly, the only way to ensure
-> >> HWPoison flag won't be lost might be only set hwpoison flag iff we can make sure
-> >> pages are not on the way to buddy...
-> >>
-> >> Thanks.
-> >> .
-> > 
-> > 
-> > To clarify do you not agree repeating SetPageHWPoison is enough for
-> > this? And if not, do you have suggestions on how to fix this race?
-> 
-> Do you mean repeating SetPageHWPoison on every branch?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------1O40a5juCIbpxLZ5dsBsgvqk
+Content-Type: multipart/mixed; boundary="------------7WEiTOn02pyYbf3OU7fSBKOd";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <f9b7935c-f5f0-496c-b55e-1f3feee5c87a@kernel.org>
+Subject: Re: [PATCH v2 07/16] mm/slab: replace struct partial_context with
+ slab_alloc_context
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
 
-Right.
-
-> Is it possible
-> to make __free_pages_prepare changes page->flags atomically or this race
-> is specified to memory_failure?
-> 
-> Thanks.
-> .
+--------------7WEiTOn02pyYbf3OU7fSBKOd
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-Adding an atomic op on every fast path page allocation is, I am
-guessing, going to slow down Linux measureably.
 
-Doing it for the benefit of memory_failure, which is the slowest of
-slow paths, seems unpalatable, to me.
+On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
+> Refactor get_from_partial_node(), get_from_any_partial(),
+> get_from_partial() and ___slab_alloc().
+>=20
+> Remove struct partial_context, which used to be more substantial but
+> shrank as part of the sheaves conversion. Instead pass gfp_flags and
+> pointer to the new slab_alloc_context, which together is a superset of
+> partial_context.
+>=20
+> This means alloc_flags are now available and we can use them to
+> determine if spinning is allowed, further reducing false positive "not
+> allowed" in the slow path due to gfp flags lacking __GFP_RECLAIM.
+>=20
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
-Neither am I sure it's the only racy place -
-grep for __SetPage and __ClearPage - all these have the same issue, I
-suspect.
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-At the same time, I'm not an mm maintainer. If you disagree, try to
-upstream a change converting all non atomics in mm to atomics, and see
-what others say.
+--=20
+Cheers,
+Harry / Hyeonggon
 
--- 
-MST
+--------------7WEiTOn02pyYbf3OU7fSBKOd--
 
+--------------1O40a5juCIbpxLZ5dsBsgvqk
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaipQKwAKCRCGXBN6rc5S
+1hN2AQDWJkWZRiTjIEVAqbOLRNnR7yDNdfBWX6DI98H+AvJzHQEAqj6jWeaKqi19
+xu+cPt/SkA9DOj9yVbTLCWbf+IbJeQA=
+=a3Ad
+-----END PGP SIGNATURE-----
+
+--------------1O40a5juCIbpxLZ5dsBsgvqk--
 
