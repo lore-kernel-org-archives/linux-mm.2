@@ -4,100 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D62FCD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 10:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F5ECCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 10:35:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F24F6B0005; Thu, 11 Jun 2026 06:30:10 -0400 (EDT)
+	id 4B09A6B0005; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2D56B0088; Thu, 11 Jun 2026 06:30:10 -0400 (EDT)
+	id 43A116B0088; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7F06B008C; Thu, 11 Jun 2026 06:30:10 -0400 (EDT)
+	id 301BA6B008C; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DE3D6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:30:10 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B6EF140370
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:30:09 +0000 (UTC)
-X-FDA: 84867261738.15.BC29CB6
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DBB191C000C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:30:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EvgEx0fb;
-	spf=pass (imf18.hostedemail.com: domain of 3LY4qagkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3LY4qagkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781173808;
-	b=wudG641+VY7i043/N+bKbQMNtBz64NMbwE5dH/ARUAM9+82edeIRM44sxBAY532SxwjhNq
-	57jJI1D/TTPRcpqbZfDkCBKFFtCb95uhy1tjUXWliwOnREl6MOu6G5HLsNZyX3Uo6JJBJs
-	MF3Mxdo+4yWEgsRfx0u1YXX1Ff0CI8U=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EvgEx0fb;
-	spf=pass (imf18.hostedemail.com: domain of 3LY4qagkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3LY4qagkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1C4B06B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:35:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAA35405B2
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:35:47 +0000 (UTC)
+X-FDA: 84867275934.08.EB95830
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 08F88120009
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:35:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KFy8/n/U";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781173808;
+	s=arc-20220608; t=1781174146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8qeOP9gDnHU3nT685H+Q/iHqCKFCSLfAQAt+As3buPc=;
-	b=OeqlHy0RtG4oXIzonCK4VBg7BgbyLHoIn4HoCr2pUjnV40VH4GJyWpwwZquRmCVyb3Ptkd
-	t8BPXF/WMtUFFvGhArPiTIBx7FEGXYZWN9wPW1DHm0QXui/IVh+3URYb/m4/pNgER2hL8u
-	lu3o60nh4e3vdhZoWDrDEuKQyXpYC58=
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-beb1f622263so807018466b.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781173806; x=1781778606; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8qeOP9gDnHU3nT685H+Q/iHqCKFCSLfAQAt+As3buPc=;
-        b=EvgEx0fbHqqYQSfyoadjnRF87d4evZDv8IbvvqODvM2U+c2ks5k6gSz4aZ+5caq8bj
-         eRaP83O11TQ1F6oVwUW/YmM2MIiGPGmddwcNq4H7g224kbGkNklbGPDT4MPnU1XXlaja
-         EaumSiSKYz/mfQTEB2UKDDgFzXWh7IHcgF3uSHCn8vSURNVl5C8w2OsWUAcMAqCl6Fak
-         f/d/2z1m21wm8VDbUwMcxzkyUQVI6WS3MBpqGTUQ55WaM6/gPyVnvUwLu0O5S7Bl45NG
-         AwErkO8tDpfKZtsEuMFcSa6iFGMAwppB6MUja1TpSPND9D4+9IjpS/oiPeMZN04tIFBQ
-         YkIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781173806; x=1781778606;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8qeOP9gDnHU3nT685H+Q/iHqCKFCSLfAQAt+As3buPc=;
-        b=JxzLPpSvCXIpXsKUQ47tYfVLfmBT6dlWmSCvComOhnwzs8AQpL63qSDhBcryiECBvy
-         YcIMty+27Mcy4k3bUBUD1uzZbMZIhN9SlrYHl8vi+lCr+VAopDcz8p7prwzhDfLWRshF
-         vxGHEyu7eFh3O8hlvdKBCwXarIIus6FGtykTTfHq4lNgtEAGKdSMp9QxQxQIqqQkskVT
-         DAEYHdesrmyrergUYF4OzcOPm+FqA4+cC3hCX72BnBoUfQzPde5xy6QI6vHvhZyeela2
-         BUC6GeKAUvavCDb9VYA4o399V7jyeN3JONYIPg3eawFWsYEztf3MUU5mELKcNo0RaieC
-         vm2A==
-X-Forwarded-Encrypted: i=1; AFNElJ92nFES5Zmkc6etNVEpyfpXK50pDE/F7cNv5U2IXHpPDjegIT4pOpA6pGu3evWhvYXEl33MF8phuA==@kvack.org
-X-Gm-Message-State: AOJu0YxSVY6u3TMJ9TZmfsDD/OOApzd1gZPJB4tQ0MhtxX5Q9n5DEpOs
-	bUsJk5Suvu+9wGBQitl2khUEIu3zMUBjTvhmZguPU3AUiICFE5an8emlmU3sU7bAbEZTXdE5sQD
-	oMQUvEl1DEfeyqYm+FQ==
-X-Received: from ejdbe10.prod.google.com ([2002:a17:906:f40a:b0:bec:3aa5:9928])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:2e0d:b0:be2:cf3b:acb0 with SMTP id a640c23a62f3a-bfc8595c7fbmr65138666b.12.1781173805724;
- Thu, 11 Jun 2026 03:30:05 -0700 (PDT)
-Date: Thu, 11 Jun 2026 10:30:03 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <c2478f79207b10a13282d917c961261d17b86a15.1781173768.git.tarunsahu@google.com>
-Subject: [PATCH] mm/memfd_luo: validate serialized_data before conversion
-From: Tarun Sahu <tarunsahu@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: DBB191C000C
-X-Stat-Signature: tzjr3pajj3agxhds4ff7p9waiwtx9ddj
-X-Rspamd-Server: rspam03
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JcsQscn35Hn+B3P9DzOAGAp7XTk6vMF6bXs5BZWRQI4=;
+	b=Fq4+s1atl8s0uJ9ZFWDnsN3hP1uJgm8rgb29CZ7c11fYqVUeh1GjcRofpcJkFJ5nNYlxHD
+	3ifXe/5puR6QGwTU6iXcokYbX6tndgIUU56HaeUntwfpT0XJcSYm2hdGIQ5Rf+wUVXQ1+I
+	OFVJNFZxRoJ0v0qUrKWQ59ezM1E4Vdw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KFy8/n/U";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781174146;
+	b=t/HoM2Kyg81RS33ro/ujH2gAo0YNcjBbak06GDmziXWEW51O9qTn6UJvdNhR8qsXh/Z8lH
+	Y9aWCqca1TlPjN64SxqbI7GoS98s1VvfefyAu2pGQSTpEECcV7m9cGWDNlt5qIxQWYbegT
+	v8EThLwOQ6hFWCsvAP638bjGPpEWEqM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781174139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JcsQscn35Hn+B3P9DzOAGAp7XTk6vMF6bXs5BZWRQI4=;
+	b=KFy8/n/U/fMnO10jGMsAygH4UuAAi21IOhBjFo7Xzu7zVu4XCvEjkoJ8LarfwYpOklSdRa
+	kWeT9p74fCYbUZZMIJscQ118mwSlcgHEyJ71iwi/tBAUUtGcxMEmP6dGbNqb+yMd49Y/LP
+	6NH3XiQ/KrwvwidiAoww7440ILnsNRI=
+From: Lance Yang <lance.yang@linux.dev>
+To: rppt@kernel.org
+Cc: lance.yang@linux.dev,
+	dave.hansen@intel.com,
+	xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	yang@os.amperecomputing.com,
+	jannh@google.com
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero folio read-only
+Date: Thu, 11 Jun 2026 18:35:12 +0800
+Message-Id: <20260611103512.46955-1-lance.yang@linux.dev>
+In-Reply-To: <aipacpSZrO1DKooO@kernel.org>
+References: <aipacpSZrO1DKooO@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1781173807-502465
-X-HE-Meta: U2FsdGVkX19pVvRcFoCa3yCcr9myVC74gcQPem80+qPW0EjYJBbBLwgwMAH6ldnHI9t9OyGaW0stUbXahk8kgrr3u4KlM+MCERq7pD7Y6za3LEkOS8nod370Cx9A+VNBoL/WsEyydVK8kpESoWZxkA4fOuzUyvTUDSZaZOK2rTeOLOEQb70l3tBm2a6X0nNWn1hzMXJydjpvJvVUVqOYdrJHrhQsVBS/guRPbS1dg2k9itkXHf6sQIaHVhmOKDfrvyHXjHhmIY1S0x409qsVHEIjgNEKNN5scMlhCtc8c6HYQxIdsdEOBKvIFmRLLk9c8tOnkuoPNJEgaG8t1Nb/vdSxHaDq3VPuk5VJx1UrKy6C5vHo7APFA8iq1upuqadBzaepMzQ+3GMwagbyMlRTTSFvzd9mqkwZAjNoptVcZ2QwedsrMLnY7tDvEEaLFdiKKo7POjlsyu2apWOY6UXj9+7G5l3O+qXuh3ovEXWdZRKbv6t76Sb3rbotK37RX0jd1H5L2y03YoSpmxh2PboPJy26CEW9f3TORwE7k0BBCb1RmFyloKaYUWxxvMij9/Qj87ATO9zLVURAg2AZ1lW8yfECcT6FiMr51BR//irn87Y8V/2S+BEaWniR1xluQnQSTnABprt9+vOS8laT6DbBcO2/dO5hK/t4ZuOqsou+rwgly49joeUnVT+MU79/id4m5il6GpQmIsTuAXu+09mmtpLxCSTlroYCTXyD1lVvKFJZZSjr+4mvBYSv3qVFWIymcEe4UsdRfw8wj2rHeuElllm8Ihm7w2GJNCU7S4lxtIsxja30PHnQx0Le3aQBowzjLvhwAMXYbt7Ui2Z7Ba6OWPcp2lwJljJGGIekUtydeiqy5VCBhSz6SEi4AyXzEG0m+dXtYcTzN+lkKmn0Oj4l7F4Mz84wbi2eFTMRRTqo6q8kR7U2aZsrhc2BMciRxYc8uz91bDIhvOCH+kl58iG
- xUzEfM8m
- wz7RMKp1X50WV8sYbKJ4z+WzDNdNBr4YtxGi7wWkXkooCYea1rbn3U23kTtO7lqBJi2Jn2Qe8/v2eUaE2E/kV+m7236Ne9z7RsLUN0hi7xqdFr3eb+mLIvIK+VeJISwyi7vYfjmq6NAm4Kls6PanjVBe/JVg7FxWxdL9e3apbQ+DK/s4RTk5wqvSnCM0ziuu5WNLiCIQt6Hr5lWNQBoCKvzVXQ50eZyWmsXwhEARhWlksNihY0WjnqAARzoscVXIvyEmIaAKeN0SG7TyCluMx/3AX15wx//IRNM0XZST+Oe9dKgRKTd6Bc4EKspp7Lir7bZcvcPZd5thUII0bTk3J/tSD8VEAlaCTMFpPz4lHlaY70QTxBlv/1/Np621+cVxkLaoWNMD0AQO6umCvo6aSHfrV3q+598Opkw5W/BvR1bZEnWTrjDkOsvP+GP8nczHFnQ9aQkw+MkeDh/K/J0zeLVA35lBA7NnJfAUVtYf5V14IhGtY4EJbXVbVKrqjqD4j0WA6X737x3P5RmtgV3hArafnap4vNlPHat0wW9h7BGyRUm0eWojgXRv4k9JtQkVNjWhpPR7+l/EkmfnHY7jeBmnjULIA5EIS0gNs9+KfsP0CRSo=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 08F88120009
+X-Stat-Signature: d4k99843xw3xwrf95qd1meunp9xrt4j1
+X-HE-Tag: 1781174143-159487
+X-HE-Meta: U2FsdGVkX1/usmWkUQ3KzSQSu0piujWI+pUSEmxLVJ0XwgGv2kK4h91NScl2ZcIN89o+9iHD4wZItQB4ThPj2gUK2TXkrrD+z7TAQ66aXfa75FTmkgVkEW/oP/PenL3uk2cnY6QskYOgrI/WGYcjzxtEIphVga6XHUjv8FRpsVvPGOPj8qqFTAPZsxgi8lq1n91EuRRQZ3eXTBy/lALGPcVGtzyd3CXA5+bKUMTbzKT1a5qL55vEVLloMOt//OYIDW3y/F4N1fWiU7kyL1hhpL+jZmyG4V7bRPUdFnSH6A8dtotwySNKAKOaFUOgKJt72q58lq3Mxerkix0Pk4P5KbH0WZ5cHRmRy4EOFxQmttPTY2WfZNFaWNWus5Ye2tI1cZe8vKD4y0GRnDZtrZLXM4VYFRkdQLRsPjEWaJobPNiNMwEL18BvOsXpE9jDnWVE4SqHjP1yv2bSNe0PcFrEf16FU+T1/3/rC06RhZAE8evyq7jBr9U9IUImt9rsw1FBJCS1XSeZMawDAb2HXqEBdFTCicoD9NdPnvOeQR3gesQv/HtTXYvQn56O8YLglkjR/QYa6NOS8LEr7nBN0JsPz7emruzbmwuO0I+bloR00iHSkHy9dxHdpnrsaVS3qpOotqT9SXrzXoBw44lDfTJU9DCAVJYK5xDQPTnnfGhI7qqnfL0V4hNGVpUhN3Phiu5E/PDsg1QA7x9L1HyM1kHWpLm9wq7HM9HReHYduCf6S4dvjt93WL6iRKmDTkasSHqIAzUA+hLI2S3IJysvoDUJkpiHdDbZ2RaTIv8D/jdLpywdx7ZXxGnQCQrFmLuwQxGsUVEJwQRhxxZyP7Fll5mdxepyrg6NA+v5//GNJm47EW/WPZuksx+va9cJ6P13Orvrvf2Ba2YoSEn9e0QBJsgEwyCfIwhaIVjb4y3BloqeErDsc3Dw1afm0StliFnlUFqJ1UUEuE+FpyM2F6Iukbf
+ wrfIg+d/
+ e3bOWtJLkUBe78FtXqSebK7BCW3lVBPgnTkwp0PML/1gheMvFyPsT/XB+rdg+GOA6QkDL718E58ihFeMsNI1CkwiHQq2M4d61+6CpO5lF4M3iPKvHHtCdYjVBnShKioe4stEe1HoBxRD00cyTGcLpeCONBDwqJq7FO7SNEuuSLdCdwETuRr5hLWt0rlIzBf+y479R1z7qtkeqGhn6FbEeitepOOkw+Dd+ToY9sbMIj4brVcIjoWXivP3pmExiMQTW0p3ng41NChLxf56R+RbKWWmRQPWGVO4kSGHeGMA2y/fNAWIUQ7DM75XZcYeaZwzvwpLpnowLkXwbhUk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,56 +117,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
-on args->serialized_data before checking if the physical address is valid.
-Since physical address 0 does not map to virtual NULL (due to direct
-mapping offsets), the subsequent check 'if (!ser)' was ineffective at
-catching a missing serialized_data, leading to unsafe dereferences later.
 
-Validate that args->serialized_data is non-zero before calling
-phys_to_virt().
+On Thu, Jun 11, 2026 at 09:49:22AM +0300, Mike Rapoport wrote:
+>Hi,
 
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- mm/memfd_luo.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Hi,
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 59de210bee5f..10f3983b0060 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -397,10 +397,11 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (args->retrieve_status)
- 		return;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (!args->serialized_data)
- 		return;
- 
-+	ser = phys_to_virt(args->serialized_data);
-+
- 	if (ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(&ser->folios);
- 		if (!folios_ser)
-@@ -522,10 +523,11 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	struct file *file;
- 	int err;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (!args->serialized_data)
- 		return -EINVAL;
- 
-+	ser = phys_to_virt(args->serialized_data);
-+
- 	/* Make sure the file only has seals supported by this version. */
- 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
- 		err = -EOPNOTSUPP;
+>
+>On Wed, Jun 10, 2026 at 11:20:22AM +0800, Lance Yang wrote:
+>> Hi Dave,
+>> 
+>> Thanks for taking the time to review.
+>> 
+>> On Tue, Jun 09, 2026 at 12:33:36PM -0700, Dave Hansen wrote:
+>> >On 6/9/26 07:37, Xueyuan Chen wrote:
+>> >> +bool __weak arch_make_pages_readonly(struct page *page, int nr_pages)
+>> >> +{
+>> >> +	return false;
+>> >> +}
+>> >
+>> >This is a rather wonky function. It's going to cause all kinds of fun if
+>> >it is used like this:
+>> >
+>> >	arch_make_pages_readonly(syscall_table, 1);
+>> 
+>> Ouch, yeah, it is ...
+>
+>We already have set_direct_map* APIs, why don't you add a new one there?
+>set_direct_map_ro() for example.
 
-base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
--- 
-2.54.0.1099.g489fc7bff1-goog
+Good point. I was trying to make this generic, but that's a bit too cute.
+This is really a direct-map thing, so adding a set_direct_map_ro() helper
+there makes more sense.
 
+> 
+>> >It's also kinda weird to have it return a bool, and not check that bool
+>> >at the single call site. Some things come to mind:
+>> >
+>> >1. This function needs commenting. It needs to say what it does, when
+>> >   architectures should override it and what their implementations
+>> >   should look like. It needs to be clear that this can't be used for
+>> >   anything really important. What should architectures do with alias
+>> >   mappings? Are they allowed to touch non-direct map aliases? Are they
+>> >   required to?
+>> 
+>> Agreed. Needs a real comment ...
+>> 
+>> Just meant as a best-effort direct/linear-map permission chang, nothing
+>> stronger than that. I should spell out what happens, or does not happen,
+>> to non-direct-map aliases, if anything, and make clear callers cannot
+>> treat this as a hard guarantee :D
+>
+>It's not only about highmem, anything that changes the direct map might
+>fail to allocate memory when splitting larger mappings.
+
+Yes, exactly.
+
+> 
+>> >2. The return type needs to be reconsidered. Is 'bool' even acceptable?
+>> >   Should it just be 'void' if callers can't do anything when it fails?
+>> 
+>> Maybe ignoring it is OK now, but someone may need the return value later?
+>> 
+>> >3. What should the naming be? "readonly" vs "ro". Should it have a
+>> >   "maybe" since it's kinda optional?
+>> 
+>> Fair point. "make" may be overstating it a bit ...
+>> 
+>> With a return value, arch_try_make_pages_readonly() sounds about right
+>> to me. If we end up with void and pure best-effort semantics, maybe
+>> arch_maybe_make_pages_readonly() fits better :)
+>
+>Realistically, I wouldn't expect 32-bit configs to enable
+>PERSISTENT_HUGE_ZERO_FOLIO or even THP, so naming this function to reflect
+>32-bit behaviour seems odd going forward.
+
+Cool with that, if no one objects. No need to bake that into the name I
+guess. int return plus a comment should be enough, just like
+set_direct_map_*() family already does :)
+
+>> >4. Should this new API be folio or page-based in the first place?
+>> 
+>> For page vs folio, I was mostly following David's RFC v1 suggestion.
+>> 
+>> Current caller is a folio, sure, but the page-range helper leaves room
+>> for non-folio users later. Happy to add a simple folio wrapper if that
+>> reads better ;)
+>> 
+>> >5. Is mm/huge_memory.c the right place to define a generic mm function,
+>> >   even a stub?
+>> 
+>> Ah, you're right! My bad, wrong place for a generic stub. Will move it
+>> out for RFC v3.
+>
+>We have include/linux/set_memory.h for such function declarations and their
+>stubs.
+
+Yep, will move it there :)
+
+Thanks, Lance
 
