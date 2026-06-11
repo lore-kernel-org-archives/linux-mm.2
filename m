@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF1ECD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 08:01:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA974CD98D4
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 08:01:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BD086B008C; Thu, 11 Jun 2026 04:01:02 -0400 (EDT)
+	id 440A86B0096; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094926B0092; Thu, 11 Jun 2026 04:01:01 -0400 (EDT)
+	id 3F1606B0098; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC5F96B0096; Thu, 11 Jun 2026 04:01:01 -0400 (EDT)
+	id 32EC76B0099; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBB456B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:01:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 701E01C20EF
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:01:01 +0000 (UTC)
-X-FDA: 84866885922.10.C935952
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 227716B0096
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6C4012050B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:01:57 +0000 (UTC)
+X-FDA: 84866888274.30.31ACCFD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BCA23140004
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:00:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mUr23X7P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0E97840011
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:01:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsbYHwWC;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781164859;
+	s=arc-20220608; t=1781164916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tgObY0uopxiKfi0MZaI8nGe2B46L7H/AW6iBLbSxpLk=;
-	b=cZC0nRHdMU1MFFEe88w//D1rQaUYzTMvQDIt2r7GS1PgqR7iKChRtI9ZvCX4gYejSJeDbu
-	EnFGybXUC0jgR+Y0QQ6lU1U1qHfBMPVC1s80xz4xl3yYrPu0LCeuFot58bC8ewXIpa9hmX
-	k8naNzjSonGgIAuNyZL9hcIxm8g/0MI=
+	bh=7dD4/CQnNeeyrkkOYOUO1mj3STEaisPLiFqjfCgk+JU=;
+	b=z4O4R0FM8A9LM7pSaNjj1FKV1MezfMXLZ3z3yPa3DPTNFzS4HrKXj/nJJjD0HfrXM2o+IL
+	AcN6zCh5/4ztCc3IrBQRCch8oKpI+Da70afwsxFE0T9dPyRjvlO6IEQRpWlyfgQgBjpmBr
+	vOVROcJQCfxGRYLSABq/2q/PoRVckyk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mUr23X7P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsbYHwWC;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781164859;
-	b=mqebS/xx9lgfIT9R76Bu3yA8R8t+aotL0OJznpExzadSDvJ7Va+IDF1e3/rT3pIXC42j+y
-	7lPjWmJxuF3tLC1K3x3YwBdw1pquotCrjHIfgcEnXVBI34ylzAjkZNqxivuHu4uBfzjfVJ
-	VNET47uYCKoJtVJL7r+p5AZXEP9s2po=
+	t=1781164916;
+	b=d2cR5W8xx2CWQeUIjehQkwNKof+EpLyoH9urj2QXFo3EgT9bm72TmdH6r0UBXpF9udz15I
+	iheS7/JU21pNA0TG++6GZaLGa/5Ogl9aJ6t1R+9Gj9THIY29t02P6zWVnl6N0fZtm5BxcP
+	DuJEfmTJVbKdVR29qVVAfxK/KLupla8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1BBB4444C;
-	Thu, 11 Jun 2026 08:00:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688601F00893;
-	Thu, 11 Jun 2026 08:00:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1930D40D68;
+	Thu, 11 Jun 2026 08:01:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDE81F00893;
+	Thu, 11 Jun 2026 08:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781164858;
-	bh=tgObY0uopxiKfi0MZaI8nGe2B46L7H/AW6iBLbSxpLk=;
+	s=k20260515; t=1781164915;
+	bh=7dD4/CQnNeeyrkkOYOUO1mj3STEaisPLiFqjfCgk+JU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mUr23X7PvT0So80MyuDxiJBlv4VRZKIHoQBDfbIiGtLbXYY8sRxVWUOCDhaV6HlN+
-	 yQ0jaaXOLOOJ+jdHtdb+VPLpoQdupbswtYgliT9+C/VC7On0IXt44FryJ7YEWONApg
-	 fMbJGIgbzwDvMpzCg3ewXe0U+o7ZRRGiKrXHx/dFJY93FgB75WMAIstDgs5+mQdeB3
-	 DXh2beeMv7nLL/lbqOSaZNWZzaCZere8wpWbB4/2oPY+3NTyDb5XIqZ8314MZM2Zsw
-	 Hgbixm2Cyo3E2dy+zE2E8uMJYcMorrSCFtSAK9NGPrZvadwfx1t+N7uGEzax4/fEwS
-	 cojp+HDHhvt2g==
-Date: Thu, 11 Jun 2026 10:00:51 +0200
+	b=bsbYHwWCImv67tbIFfumvMYPTQMPVJc9B3XM2fOGxPEjlnUB+K4WQ9QG3o2NQgESI
+	 S3mJJCx7sB4kxjBR8Xq6WeTFztqOZ5pKDfXAZ2XC/oxUNFL9s/ORvUGAsDY0Po1wSL
+	 hi98GUJnxp2ohZBQvHHfc91d9R+dcHsCwXHangO9vzQQiORIWO38cO2ZXpLTFiSmzz
+	 eqqdP2AAWx77dUNV3PXKsTNuZLpJueU3U9f+kYMngrNOvDfdvVqy8Nam2hlKwzK06r
+	 gXdGzGy2Cp6eZudu8zMb2EALFYVG1jEjIJ8qHdYpT9AqcjbKw1aPFg947/4XnfjPZT
+	 QFBWEtJ+B4WJw==
+Date: Thu, 11 Jun 2026 10:01:47 +0200
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -77,22 +77,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
 	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/3] mm/vma: remove mmap_action->success_hook
-Message-ID: <aiprMy4_XyNt2CYO@localhost.localdomain>
+Subject: Re: [PATCH v3 3/3] mm/vma: eliminate mmap_action->error_hook,
+ introduce error_override
+Message-ID: <aipra0klNhB7SG2w@localhost.localdomain>
 References: <cover.1780397980.git.ljs@kernel.org>
- <f79434e6d30af6d92999be6b76e197f1847105fa.1780397980.git.ljs@kernel.org>
+ <55d13f7d016b827c459946d46a56105635be111c.1780397980.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f79434e6d30af6d92999be6b76e197f1847105fa.1780397980.git.ljs@kernel.org>
+In-Reply-To: <55d13f7d016b827c459946d46a56105635be111c.1780397980.git.ljs@kernel.org>
+X-Rspamd-Queue-Id: 0E97840011
+X-Stat-Signature: ej3mzowpce1fma6fwq14kcreawrjszkb
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BCA23140004
-X-Stat-Signature: abmym7naxunkqgag3irmsjqo1c5faxr7
-X-HE-Tag: 1781164859-109538
-X-HE-Meta: U2FsdGVkX19go5PWthMreBOPqgqrrwO7u1SyKtO3QhQJigjcOlJBJnmbHsXi/lX4nT8t1u5XdsLlN9oVyqDkw9tGIFpD7eRjqfnv94qSCv3o6No1oM8SGu4LrilOvDmxZyeeXTA2J3RgfmTb5hQGaSAI3A9caWCqNem050RvXgba75R8nrvoD5pXpmOUICkXbVQc98O1O8iPjztD2GA8q8Ga84TYiui+f+o2EmH3pCvSZYAOJr8cVHajtmVucCkPYLYw4YYWGnBvm92P4TWgDZCTq8yADZ55OxEFSD7DqZhuSSwMvb2GADLAz6aIKSn3ZPEjHxFXyyb6LD937vdn6uumQFHpqTOZEJEZ7JZVkPR2RSEuL6RxOWM8Ew6x0rBnVYNQEln9maJ1emNMdBUOe4HaombG9B/20ApWw3qrsxYGeXGzTt6TBDnKfK7ux/VpTHt/rr7oOJIIiwSWJtlzb9+Vk5bEVVsn8LOmx61olojaPv2RlAVQc1+cmkqYLriWVXPrREfMC6uMqJ6y1A4+bowVUdYN3NKSfNxpDxUeoo7m6GJDe4Tvr3y32UASScDkL2mdiRiwiuvfT2WkMz2IN0t2smgweIo5omfD3ZT56nH+8ep4Hka/lZZRJeDZFkcGEYUSSlfpD7xqDN9hCR0X/zVzPZ3QWu6m/kEt/Ux7WaHkv7LabsTGV1TGawVtXR1u3/ecWQ8kse6qn+kgbFlVVp2WQjwZpElpVJ/CiCjcsFDvkRayxIsJT01fGCLBa9nMWl9pWz0+yGbit47svQjDh01NqJPK7BBQy0PfIC+6kdcswtaP1NRv0n0AXGwInWpTZMrLHqAq7475JNvG97bGgNx2wzfglGDVnnIyZtteRdPJQM1SJS3VaC7bZZmbgB4ixj8+ypBTB0c8XlM/XGIus0ensph34Q1B7xBCuxoTNk3Dqvnqn2BZGe00PmUHostGEx1ipaiisKjq2fyu4+t
- dPVmrYRU
- bpDM734cTHAODDI3vfWsQ2lNuFHMHuJqTkZUasAzPUIazBMEyUzTl1bMMJhGGgAmfPAmyEYHyzPye9/EiOYzn7FuaEFL2tv48QrU7bMt1/SyLGa+tbxIy/an2B28pe/EaXcWEHM40/lsZQ44reCAMlxlbY2Vq+7QDwc4ODx75JirRi9G1GqQk5CeQybE/lm2FLNaH7UtqdhajPEneYAJyCwENcFTXTz/xs6HhWzxup2JKM15BUu+S2Qh8o3Wd/hCXsfteUb0pQvf3LwV2hqa/OllX5f/iYmutOimWbscqtrlfe51FmC1sllLvcA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781164915-516107
+X-HE-Meta: U2FsdGVkX1/FE3EyyxNUSTsLHuwWBuDPWKVoLR/WxahlXbkIY183afCA0yKb4k9vGjOErOHzqOD3lN9e5BOz/xAuFRxhSHXkNzvugmwn5+n6MPdkl4E6aEswdLctt42/fjQqYCP3Z36FUVuWWTOqiPwcFX+ABewgcp0UJt4LQNFRRkXhBP2JkK2y82TplKv+1ZkPGRx5nqpgyiAzvOfxde3CBXMWjP6fHBMk/qoZXlSlQ1lALQOkX0QXpb56cZ7qeerlG6flVPsyA1uAafsq4omkDvHeFEFQ4E/eRxSN9QtsY0AqHfqvXTOkMPibRiJZ5zdL+dKMgGztN8FeETZZuJmH8LjJXCGKcvN1TQaqeB1ae+221HecS1PK2SnJIT76KyWl0SIoAh8/uuhvwnAkFhM9Wcies/FDyTkAOyaerKqwngxcv7g6zn/yHAq8gTY6nfQWoylCUSCevShQZmg0JWnMw88vIVjJ1zpFmZZDtKdzCpODuZmos44jNUmIgoEF6I2errpGhQkrD29hypHDj1/kQLXKOtJCgOVgoXeU9PymVGOxrZDk0tBzDU4xsLDZdzUhtApjYbYAGfIc8AryOcz6lJHHunSECZzMQY9jOuhqzOPP/g4XRGneBEAfVkxopV2vIMehoEm3aEX6mabAyGT+R3prs/Q4Z8ASgxn0RxN1KVJ+E1YvfeBenRy3lEq3yccEW3HptASskFOWb+iAzuguCC0N55Cm117IpGzT8aF/4QH3yMQZVwdK94mZKTLmZjOauGFvFxjrQMfPVnCNyarIWGkLoMpcUGz6SMizivVeKlljHUSOFIzCp89jltUckyicvFWzFT/rfldaV7Y3bGOWtefkAG68yW/L6jWYnQIh3vA2DO03HT8ewLLoERxh0hFFOXuRmMTdzjuPFTwZEbvkr5LmqodNe/hJVTyRz7Iqz7OzEvlEMLHJVBzH54S27IIXgziqpeO3MbEvN0f
+ zlDfFoIB
+ 30jH7gRxlzS5f5aY6k5H+FM7mRfAF+toyxYvEAZDru+Wb4sN4WHFoHb3bTyczsiWwlzMTexxxPWeSV7UFSN4Zz36at+JffjiYVJWFQsQ3CztyhBmdc1D2OEL6g2gYW/yaAGRfHibiqeuv8rfeodgsBY9mKt7X747W80JKFp34/8Sp6IDh8M7nkrWV/LMaND+5QiRl5SSE5MX909Zln8s8WbgYqiIqbZAwhyomkhLZnpBIJvcXWvnWDaRxYa6jutDNDFR1n004/wEPCCs5bM2znXR18se1OSyvq2Bm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,24 +101,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 12:06:26PM +0100, Lorenzo Stoakes wrote:
-> This hook was introduced to work around code that seemed to absolutely
-> require access to a VMA pointer upon mmap().
+On Tue, Jun 02, 2026 at 12:06:27PM +0100, Lorenzo Stoakes wrote:
+> Rather than providing a hook, simplify things by providing the ability to
+> override mmap action errors.  This allows us to more carefully validate the
+> value provided and thus ensure only a valid error code is specified, and
+> simplifies the interface.
 > 
-> However, providing this hook leaves a backdoor to drivers getting access
-> to the very thing mmap_prepare eliminates - a pointer to the VMA.
+> This way, we eliminate all hooks but mmap_prepare and allow only mmap
+> actions to be specified (which core mm controls).
 > 
-> Let's solve this contradiction by removing it.  The key intended user was
-> hugetlb, however it seems that the best course now is to avoid allowing
-> all drivers the ability to work around mmap_prepare, and find a different
-> solution there.
+> This significantly improves robustness and eliminates any unnecessary code
+> duplication in driver mmap hooks.
+> 
+> We also update the /dev/mem logic (the only user) to use
+> mmap_action->error_override instead.
 > 
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reach out if I can be of any help with the hugetlb thing :-)
-
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 
  
 
