@@ -4,85 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12B2CD98D2
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EA52CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 11:50:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5A1C6B0096; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
+	id 4D3336B0092; Thu, 11 Jun 2026 07:50:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0AE76B0098; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
+	id 483D96B0095; Thu, 11 Jun 2026 07:50:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C20F66B0099; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
+	id 372E56B0099; Thu, 11 Jun 2026 07:50:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACDDF6B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:47:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B7EC16546D
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:47:05 +0000 (UTC)
-X-FDA: 84867455610.18.308A3DB
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3677E40017
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:47:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x5DTgfgw;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 269B76B0092
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:50:00 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B54D68F6A3
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:49:59 +0000 (UTC)
+X-FDA: 84867462918.17.AE16C59
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AEBC8140006
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:49:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=dqWs9NKu;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.178 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781178423;
+	s=arc-20220608; t=1781178597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SkCGrWKzCfTn3xVMps93ytdggiT1d+I4EJDhk4sAvA4=;
-	b=mWQnkFNxTuG/455KKmzBHoRzhhk+KPUTKLstzCpQctvLR4chmRWibKvDVt75eD6gg+TEY8
-	DeWF6hZec/uNuylo1J3/95ld71TGePg3z4ntlVHs9zrJ33preHketZwtNGhxu3b6irLR9o
-	tMTlSRMQg1M91XmLt9htAAw6GDTQsto=
+	bh=dNgsH2tvtJn5m59hVAt9rmEgOo4VHkNi7fOm5lsoIhI=;
+	b=XcpGK3NN0NF33YakzVxizyKAzpmX8LZ5LL8zpFHx05lm3lWZgqMw4Jo8oh/7XVwx+Spuxx
+	sa867w6+unb1myqHsMnNnrNaO12rmhCXkvfrzaVDbMug9Qq/9MTmN+HQEcRiDHw1+oQS6A
+	XKL9bhiVJp2RydmMGQC7t9H8b6yj584=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x5DTgfgw;
-	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=dqWs9NKu;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.178 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781178423;
-	b=Ccx196AGI25eDKpwpfPBTzkIv8xu06LNb38EnoFc9lL/uXq0A65c0VFnVvd4avKdUmWmFd
-	VZYqi4tYXCzK3BJAf4/N8CQ1eEvyC5uBaOiQbxz1pDl7EoTwUoGya0bmlTTgDnoAVa5qcs
-	xQ0sX27FgXNr7s6PkqL3IM6PQy9pj6Q=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781178418; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=SkCGrWKzCfTn3xVMps93ytdggiT1d+I4EJDhk4sAvA4=;
-	b=x5DTgfgwOVeAIdghOG/38uy2UNGYsogTVhz0s+zkWp4nQHEj45zNprchhbXrTACHZ54+i/0jqWKB2TYPLsJiPyapo3BUqGVp+N4MovinhwJ3RUE/SgkSGODZqewlYK5zdvaA2xr6W/8GHAqRz9L0WFg/2ioRjUxCrtug0aI7eb0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4dY2QC_1781178416;
-Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4dY2QC_1781178416 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Jun 2026 19:46:57 +0800
-Message-ID: <47f472ac-0b07-4ffa-a3d4-04fba621252f@linux.alibaba.com>
-Date: Thu, 11 Jun 2026 19:46:55 +0800
+	t=1781178597;
+	b=3iw1CggyCRp9RYhqsMemYI7KGwkqhfe3XRgMQ/d5eOTx7TTeR4z16OD+ABoA5QiGemv0YN
+	fKea1vndCaTv/eFPUsZycid2M7xxt1ey9z9qQuPdEdHaj9KAPncUyvpfAPsnv0WoePTp3/
+	2AElbxMq2orIe+InXmRUz96T1RdRBls=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9159da9bba5so571499085a.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1781178597; x=1781783397; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dNgsH2tvtJn5m59hVAt9rmEgOo4VHkNi7fOm5lsoIhI=;
+        b=dqWs9NKuvZb/BlXCycMAwLQgeRlZSK61NI47zvEA+tEXkWqV2oSonlgeGcLXY+HQlU
+         Bm5xIQ9RTU2W3X7LtpqsCqvfH8Zx9d3RWdBnSk+kWKpyJjfJ8gDJQYGwpnN2hpS4bUtw
+         0FHI/fLF7YxgQV3nKrmKXsnvJtQR4FQAiO/7Sqyo5OlGmGijGhjIJrdVpveepoqzkh0y
+         hUlUC6asbAiV27wmEwKdvH1xBU+8jBofKpAvE/5bPhr19UJBR0snW+1LNiApY6B31Z4P
+         98TzDJTRJPEkVnzdtN0Fxbn7i7fYzw7/R9OC153yKZyK6j9sBoCIoI4HBXopqtUxP6Aj
+         1QUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781178597; x=1781783397;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dNgsH2tvtJn5m59hVAt9rmEgOo4VHkNi7fOm5lsoIhI=;
+        b=FXs2UIiV28JQdRm/W7HOEZqV58Pqc2O1M2QRtc7R0niAFAkx9bVM7BfYJOWKsK9woY
+         OTkRrfq2hQ9KSN/ZpojJVY94CqdRhMSBZHAVUMwKVWuJDwN5xtcCyHlIZSRzbXrmH12R
+         74+PQrMhOjtNHahPiZohahTSxOpSWeUDWICzcrxhfjaSGQelxFJJQPkD0pKDIj6ssNTS
+         py9FvDiuKbrgiChiEer4xbox5Cd+VLt2ZT+sOXTcHNWDLCI5t+nvITPzIFXm3m+8RFNG
+         Q5Vxo+hOZAvl9ACoOnglz4AXH5Haxabaex6aQ3/6yQz9fTPuTt2QHxCJeeeMB09KAqcm
+         Dr4w==
+X-Forwarded-Encrypted: i=1; AFNElJ8Gi+6v7PtF8bFqnD//9LprjN34UQHg+32uuNgmIks8adgkKoJWCVu4OgFfxifjFyE5GSk0NHDhbA==@kvack.org
+X-Gm-Message-State: AOJu0Yz1E70jmVJCDuTstlQh7zFeYIK0LX0Asrrc5stkxZaPC4IIEipx
+	Zv/JD/36yCQ85IAKjF8iZvbg6z4SUPtPyDwCsYcB7Jcq7d7GzvWEbxtUH1q8NwSF2mQ=
+X-Gm-Gg: Acq92OHSvVgm5IyNEsDSO31TDBkzkGWpXekfmmCMh2lu5t9SqdJ504xghYJlydkOhXS
+	uiMIy6+S0wZMle2jf4+tOvshHMjEVMk7uan+an5DQABdFhp9CoPkvGObkouJVejZ7saw3uvU4br
+	J6DOcrEwTKVcud6WqF5s8Zzj0k32yfH5ynuOvPtj5bHySb9Sn9X+faSIca1dHfAwHj2L5ie4rwV
+	IJlUo8X5q26oYW2yvRkSySMKbLJaJVqaQD9MX9GB3OEFc1LKsCUebqw7dWHP9JlTRhf6pN0WTcv
+	fMjGzTtEyAz0pA0WD482sNzJybIrIWiF9kpw3tRzlxLzsHwIIyXtCYGUNvgg5+k1sVzmXExXqmV
+	urH6Naz2RQbx3vp9NoaGvyVAFKoG/gHl234OCv+cZNyE8NCrq4i1dDzMQoTiKgTSSUyufzuHyEw
+	4ctUJbJKTrShNs7pHe0fQaY2dsCRt2wq72wWDe62EOq6xPS6o8n1/xEgQU+Xu0XwmIQA0/CxrXb
+	qTL0qQ3Ayls2oGV4KaDF2J+P3I=
+X-Received: by 2002:a05:620a:1a12:b0:915:87ad:d5b1 with SMTP id af79cd13be357-9160ab34661mr372192085a.15.1781178596642;
+        Thu, 11 Jun 2026 04:49:56 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9160acab48csm167602085a.16.2026.06.11.04.49.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 04:49:55 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wXdv0-00000005gTA-3lYL;
+	Thu, 11 Jun 2026 08:49:54 -0300
+Date: Thu, 11 Jun 2026 08:49:54 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Kameron Carr <kameroncarr@linux.microsoft.com>,
+	akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
+	linux-coco@lists.linux.dev,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <20260611114954.GC1066031@ziepe.ca>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+ <aibhnnDFQTHWMEFe@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/11] add shmem mTHP collapse support
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com,
- willy@infradead.org, ziy@nvidia.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
- <aipSe9Snx5x0esQx@lucifer>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aipSe9Snx5x0esQx@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3677E40017
-X-Stat-Signature: zb9rwpe5rip9pgym5o1pd5ha9ox3ggpa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aibhnnDFQTHWMEFe@arm.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AEBC8140006
+X-Stat-Signature: fkzxzd69zbjrrdssa5ziw7srnwgdd447
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781178421-198722
-X-HE-Meta: U2FsdGVkX1918KH5gQuHE1ThMdNZmOntuA415iwzOc7QkU/HWwn45hkgIMqzrgHs7huQqX+PUBS1vkiJ/nd3K6Q6yMBpX13aTJHkGJjwdFI1KgqdTyVC0jUJsx0LoMCWtrgZh5CKTkJAssCmpnMm53cOvLQzEWkNS6S3CjQ0Grcy4J708/I5Dmueb6Atq7j/cVYiJxxouiuvDN0f5HSQ8l3ksTfJERPlLtl8aBOLLeB/ijTkarxMakKfpFwfoj/9jtTcfTb/rm6ak1cmRXsu4OyDi9g+VUUqIC+fpq2LFCiZQJmAxPieMpcDFfJ68gFww5u7xzaMsR40rrovl78fslCY9AHJQawux3eXdk7Z79aNLdcq7MojL4/RbEcHbRIZrISY21Z+NaiTDzfZ2fCsgKullIYCeZQYOj+Js+Im0i/SW6p7DfdxPOGJTUWXo1Ci7TbLvNLdqYJcexEf+GZj/7rvS1xMtvm0alIbqyFu4e6dcUlVHmvqU7QNhB8eJfEi2/nrDXwVthLC1C092cZY+De5Ps/bvsoGEgnEyWjIxAnJ/FVMwL4eheQT/Sfx4XgmFbDotazepKoK92QPWLenTIdXrcDLNCpYB4E47r8bhrWQf5WmshVXyxGVm9HCdKFm6BRp0PKocC47piG9OPZIpmGfihoq4pN0wsgD8jdBBMfI7lvTx9M5O1HVgXXuuOG1do1iHMUixeWMcacTADyApRL2dIaMRPvwdPJ2lH499u9xCB6H3ciqxfe8SuFsddOETnxUl+56vqIRVw+fCh0A5J+esU3oz+3nNGiHJa4fUrgLXrlxqxaXD9fPUzz76rH1p6Uymh349KFYlrKCBN/S9QMAcsr1FNGjGCvy6aL7zKlui0a11ZE69s1NxLP4xccwqWNZ18t4lY/F1kGzln8Q90DWu1jgaq3fdnyOstU5RpPD0sfol4dxkE1uGrGCALy9DHhLz8Sh7voAbT65KDB
- XLlC71hH
- pNoMOTM8y5jmwnhX6NYwv1/AsBE1NjE0m5atAsQEjIQl1s42eWLsMdV9s1JHtoKU81QbDy6735UAEpOJfMqDpAUPQAklYAWR0ClSI82lUgPxL2SPC0391+mdgy3n6arGMYjuQcPrKPlMsxXQIg7vhFcyNP+pP9khEKfWKO8jZayYiuPwZ9bQInRL6n4Gk09ZBtd4dcC4E66BjqQ9bb1rKmVhCUljESPKuzdORkqRXcVUIyYrmnLerOglJKQ1p/p9B+0lR6hEFwE5wojvfR1iFsrGh1zC0YqFOKDr0vVXEt8wYPE+kwkuhDBn/bK55VPjzYlySZgbNMmmXy1Kd1X0heAP8jQ==
+X-HE-Tag: 1781178597-495897
+X-HE-Meta: U2FsdGVkX19IAd5ntfBITlqIpUig0+RCqG4/KPVQQlDFWt7y8qSXWQ2Dioein/9wKQzl17l8dpiIZC8EfzIc3+9AX/wlKW0XI6eja54R+QxCu+G6Kvca89f/6PK42aSMGm0F+nnPPOb/KzhzqoliJPs0thVIXHuxCmoH4Hqn5d7zPNF6DLfCPCcUIUHQL77iFg6D14GBMYdJ3QB7MMUkuzfZA8qbkp6MN3BGC6ViFts/odmd3zuW2kqbmy+NnCHH7Fg30DIQZgyTpV9rNI/pMKnRqPdpRbb20purUKe2Nj4MS9INmSDBOEfp2hQ8FPmO9QWHXLwwSnWc7+t083x9mXBhPpKas3iCM9PF2kQlOpYU/vsaqp7f5oXxabDzauWvPfFxpnT7HHnO/gP6ytrCxdQvDnJS16FyKbMvcyIItsIM1B23GyaErPAiFbpCb/iMgKUKoSYZDShcoHDqSI5ulGIAJ8lh8ceaPAHgiz7Mk/XKN5bYqZ7azdYqQMaq4Ql5FNKcLfdNhEMAaDIWVLyevO/w82XM6id6ACZNu7s4cUzMGHxu6rVvWoTo/WsC2EPWDo2LnAy4S2Xtjp2gfl8qvNyXxxvKFlhm6rk42yLnlpmIenvkOlnL9oUomGk1acbLH8bw40MnyZDpl10EdYsObFy+RgDP/vjrHh9xjHVqG2lX8UzRP+AtbjvdX/FFWqBRMgUYVBL9cCLy6qgyLjjQGyMVm9x959qR2YF9frUvSDBT6KSC2Cs0WUR0/nh0Vjw7SlEG+wcKwyalVh/jSbKyDItFwYZwv1PQ0E4kcgvT15WD7FAPts4v2oipgZgS4HZCGNNF3xaeGNo4tXHfS7CyESdixbvf5Yu8Knn89P68PS3OpDfcdc0ulFLkJpdW2rRF3Xr4XA32r5sfRek847SprzgAvegTg34FUdQWp7pVCWx3M6WIlw8oZSuNcKxIAsDxEg3jij2DDdnC/IDkg6y
+ qwUrDkuL
+ hfma9hzEwOSGlQOLesB6WgObgKxJGi/0uDBZjNvAPVM+GXBTS5KaFsxZv4ZD/EBvV+uW4m7lWd/DJtURDp80j6PBGCPrGvUjJ+pw2D9E9nDLHZPZ1/fK5WLuuEPGGS/FU4SxrB9hVrCwPu6fEfAnKZWMyyKEkdqlV2p2+hqm0ljlUIHoxn/4sPv0ZlJ961qA2CRipGUJe1U70owVNH1Nq/wfjUsqTXnz2cniwu4ZlGzhRLh82wKSmabrC8BOzTT6Ek5GKQ+4SxSa3BMXF+C7l85GBg+I6AM2+G0O8IE/c9U5DV/AOZR7pC7ELz10dlDbaXSqKJs+yoE7wORA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,36 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On Mon, Jun 08, 2026 at 04:37:02PM +0100, Catalin Marinas wrote:
+> > +/**
+> > + * vzalloc_decrypted - allocate zeroed virtually contiguous decrypted memory
+> > + * @size:    allocation size
+> > + *
+> > + * Like vmalloc_decrypted(), but the memory is set to zero.
+> > + *
+> > + * Return: pointer to the allocated memory or %NULL on error
+> > + */
+> > +void *vzalloc_decrypted_noprof(unsigned long size)
+> > +{
+> > +	void *addr;
+> > +
+> > +	addr = __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
+> > +					   GFP_KERNEL,
+> > +					   pgprot_decrypted(PAGE_KERNEL),
+> > +					   VM_DECRYPTED, NUMA_NO_NODE,
+> > +					   __builtin_return_address(0));
+> > +	if (addr)
+> > +		memset(addr, 0, size);
+> 
+> Talking to Suzuki, the small window between set_memory_decrypted() and
+> memset() potentially exposing stale data is safe, at least for Arm CCA
+> as the memory would be scrubbed (there are other places in the kernel
+> where we do something similar). I assume that's also the case for other
+> architectures, although not sure what pKVM does.
 
-On 6/11/26 2:18 PM, Lorenzo Stoakes wrote:
-> On Wed, Jun 10, 2026 at 06:29:08PM +0800, Baolin Wang wrote:
->> (Note: this patchset is not targeting v7.2, but posted for early feedback.)
-> 
-> Hi Baolin,
-> 
-> Speaking broadly, and to repeat what I said to Nico - I'd like to
-> re-emphasise my _strong_ desire for us to pay down technical debt in THP
-> code before adding any further major features.
-> 
-> Really I'd have liked to see us do this _before_ khugepaged mTHP, but I
-> didn't want to put Nico through more than he already endured with that
-> series :)
-> 
-> So I'd really like to see some action on that before we embark on any
-> further significant changes.
-> 
-> This is no comment on your changes, just something that we really need to
-> address in THP generally.
-> 
-> Will try to give some detailed commentary on the actual changes when I have
-> time also :)
+It seems like a poor practice though, this should probably be
+re-organized to use __GFP_ZERO so things are ordered sensibly.
 
-I fully understand the current state of THP maintenance, which is why 
-this is an RFC. I’m not expecting it to be merged into mainline quickly 
-(but thanks to Lance for the comments).
+But what is the purpose of this? I guess some hyperv thing - but
+shouldn't we have a more structured way to "DMA map" things for the
+hypervisor instead of stuff like this? Why can't you use
+dma_alloc_coherent() which actually gives you an address that is
+sensible to pass to the hypervisor?
 
-Also, as Nico noted, it might be worth reviewing the mTHP collapse 
-selftests in this series firstly? as they can help validate the 
-anonymous mTHP collapse path for future changes.
+Jason
 
