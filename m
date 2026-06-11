@@ -4,129 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE754CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 15:57:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B08CD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 16:01:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 446296B0093; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
+	id E83B56B0005; Thu, 11 Jun 2026 12:01:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41D436B0095; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
+	id E5BAB6B0088; Thu, 11 Jun 2026 12:01:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3340A6B0096; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
+	id D71926B0093; Thu, 11 Jun 2026 12:01:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 245256B0093
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 11:57:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D52941406F9
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:57:48 +0000 (UTC)
-X-FDA: 84868087416.14.1C79B2C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 75F801C0012
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 15:57:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bkaPjTca;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2446B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 12:01:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C6FF40742
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:01:11 +0000 (UTC)
+X-FDA: 84868095942.16.C60C106
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 24C2420004
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:01:08 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Agon439w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781193466;
+	s=arc-20220608; t=1781193669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
-	b=lPOIAwQPBHViH7FVRaJTJsnmvo5O+16S3UAu9HXspKa90UgwoH30nALA2k27XfXwajwv9d
-	DG0WjQ7MbUhAHqy+I1AUGO5ZyDk2IjFUyCm3mRU/CGBedObV5nseceCvRWDGYNnwSLkzwD
-	r5IK+z33iS/g44kkbLgpOTnErTlWvhE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781193466;
-	b=cx4sNyFGUpEM4/A5rOWEEox8xvHtuwTBMDaLxPrTA6UmwHVmQVI7VJ0BXXuyy8Z2A0O3GE
-	ZLauDUfNvBuhkeNlMTyPBkjZ/YK2NIuxeWITp+KBNKMTC1NR2JqdBP6tf3yav21/yYJqze
-	iLZVR+eAs9RTlIH2J5gyIY1+Cwem72Q=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OwWE4lbKK0T3ZfG4RSM1mqAP2yW+nfdYO3kCAr+3V9g=;
+	b=dRLwhGlB9UVItN1phjrCNAm62HufoTNVWJP05+iVO+Wrc97rq54fhDG7CyQIWFLPU1eRXW
+	Uunj1500JVzcsfbDLS36TCOo0g6iwCUsiKmeJyU41lgv3JKzumKJhaTl1QWqrvP6+ImI10
+	O5wfSPZSxam0Po6JFLnml9FDu2YsgsY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bkaPjTca;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781193465;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
-	b=bkaPjTcaz/CuhGg3GJZmEtzdX3Ujn+UGGXbjrXNPaPgwlPbntr0DXoN+7YD4AowZ2t4wWh
-	sfe92c5JMuaL4nglrqMzVu+Ecc+J+0qKu/7hMBA60RsgCfHXjlqr/TPmQWAX0PDzo1szLR
-	pLBEBdUV60zqo0lMguTiBw9gGC3VxRw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-_3uaU3pPPX-8tz-6YCcP0A-1; Thu, 11 Jun 2026 11:57:44 -0400
-X-MC-Unique: _3uaU3pPPX-8tz-6YCcP0A-1
-X-Mimecast-MFC-AGG-ID: _3uaU3pPPX-8tz-6YCcP0A_1781193463
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490cc1ae292so158605e9.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:57:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781193463; x=1781798263;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CaTVBIrexKm22hRMB++bwqNcNQ1H7GPFCEOimwy1d5I=;
-        b=Fz2Hz4m4kBMZmaeg955Ag6QG9AQDO/v6gMd2fh4I6dWk8LmM/x7JItj4QtxKqwwboi
-         K+IdE2H/h0cxLUUoijndyNcBMOIpXfFRZa7lVu8lv1wMvO1xRjOuAIMAFUGTtoQNMnjd
-         xZpvvkLq3Zw659XpX5cBZWPZlqwQzVzI3nxDO9pb41lK3rSuaCJSr3s+1opCUbAJG0Rh
-         Ttjv2vKi/spvKb0PDyJUlxpcdyhN8TQvFCdXt+vsHkEuvGV0+rtO8c9t+Ls3vHhpXiI/
-         Wm8o1Bxi1WXDOqFzdVmCIEo2kIXix3hFnbDQle9St9LlL9Mk1kZxW3wiqupkcSLk5w4I
-         6Rgg==
-X-Gm-Message-State: AOJu0YzjmvbsSb+JFe83XmziOnQAx5CkGXOloP4srrH2nCV1YnC8y24i
-	WldQUQ4Y5ncxJmvNEGG9qPxhAAH1g2adWQrr2yC8PynwBYXqQNduDCNw1YurEzr+9SYFtoHbV/T
-	Qul0RQNZgS8Ea4VcHkchV7xzdyskQp/gjIRaWWgGhVepSQsLHYDUNAAHdpXyh62zltO80M4UI7B
-	1lWTCeBvLHc7AfZrAayiKaNqixXVInlzWzhQ==
-X-Gm-Gg: Acq92OHwLRLoKK0oLXKRlq0WmUT3Sz7XTiW9Ny8ZOraS4Tfgs+3WQLGahC970XfTnDg
-	FJBrfZ4hIpLkjcx4qhcy/m4scxcEQ5q4gdLvlnOqsolAS6LRsQbuZaNyvJwK9bl4h3dmk/7goDV
-	/QdCxUzV4Ini8rrZGv0xW1/I6I1gGAi/t0rSwdFLHB0BMTw/ehgwFZhWShiCZGurtstOF/hSxXo
-	GeIU6HbsJMmEuXjFGqHmeRThVT1frtYnglfE7K7Hc3DBMXA3jGbdRD6sIKInjhM3FkklqTHe7vQ
-	QCFHTEd80ZkjPyYStAnU9GnKf0ov1hm6r20MlstJcPfN5UgJEmprlmpicYNUwm5Eg6cV4GULbSs
-	xZ8vKEaLLgnn5V5hl7MY1VnXZ6FR3ZGP0Zbcqu34OA8qBPrMiOCgIgdT/D9bO8b1IDWik4P7HNf
-	Y=
-X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr42831665e9.2.1781193463255;
-        Thu, 11 Jun 2026 08:57:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:3ba7:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-490e52cad04mr42830875e9.2.1781193462659;
-        Thu, 11 Jun 2026 08:57:42 -0700 (PDT)
-Received: from [172.31.99.182] (91.red-83-48-118.staticip.rima-tde.net. [83.48.118.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e2c7ead0sm84150385e9.3.2026.06.11.08.57.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 08:57:42 -0700 (PDT)
-Message-ID: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com>
-Date: Thu, 11 Jun 2026 09:58:55 -0600
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Agon439w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781193669;
+	b=6eEjQH2Quz44URLQQhy6XF6oOL8wVHLLBgLNYGdg21ejl4bGEKrvTmpAmRCoO690J+icR8
+	6cw0qgC5nIAzd5GbBK94Edt9AFd/3+617Zhg2k3ySKnCD6R9rag6IEsC1ZLFamXoAfzFU5
+	4Ruc4Vs5o/YvjSBAQb65dGctGJjrAu0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B8CD943F51;
+	Thu, 11 Jun 2026 16:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7491F00893;
+	Thu, 11 Jun 2026 16:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781193667;
+	bh=OwWE4lbKK0T3ZfG4RSM1mqAP2yW+nfdYO3kCAr+3V9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Agon439wUBrQ/uonepv6QEQHD/Z6m9RS5Xb1WWxv0Q0wtFCqyeaUMDuH0YQ8F7h0k
+	 poSBPrZ26U6e7yClapl80sHwPywpSo1ut24RqLlXqmKw9hqFEnVKp4lveByc+2vqB3
+	 EclGyTzkzaf/JuT0Y3YBNKGWeKbjVkE7GFozcXEUaXdNNGcdC3plff9fkmEzUEr8SF
+	 yLRHAf/w30nkrr5M5sh+jsu8VOfRlN45yDsLJie0TAMYvIFEMuSK4TFwnyZ712ahH2
+	 NhS25Ts0oai4t03guxudm8WtA2u3sbx6tJpv0YIWL+aZL2eWXqKdHCQGfxrg1QzJzC
+	 +XiDkTpLLoHog==
+Date: Thu, 11 Jun 2026 17:00:49 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Huang Shijie <huangsj@hygon.cn>
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
+	surenb@google.com, mjguzik@gmail.com, liam@infradead.org, vbabka@kernel.org, 
+	shakeel.butt@linux.dev, rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, linux@armlinux.org.uk, dinguyen@kernel.org, 
+	schuster.simon@siemens-energy.com, James.Bottomley@hansenpartnership.com, deller@gmx.de, 
+	djbw@kernel.org, willy@infradead.org, peterz@infradead.org, mingo@redhat.com, 
+	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, 
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+	james.clark@linaro.org, mhiramat@kernel.org, oleg@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, linmiaohe@huawei.com, 
+	nao.horiguchi@gmail.com, jannh@google.com, pfalcato@suse.de, riel@surriel.com, 
+	harry@kernel.org, will@kernel.org, brian.ruley@gehealthcare.com, 
+	rmk+kernel@armlinux.org.uk, dave.anglin@bell.net, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn
+Subject: Re: [PATCH v2 0/4] mm: split the file's i_mmap tree for NUMA
+Message-ID: <airY5q_SspdbQDbi@lucifer>
+References: <20260611061915.2354307-1-huangsj@hygon.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Nico Pache <npache@redhat.com>
-Subject: [Bug Report] Elevated PMD nr_anon after running selftests
-To: Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, linux-cxl@vger.kernel.org
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Oscar Salvador <osalvador@suse.de>, Andrew Morton
- <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5iNQtTzFfXhjiWiT1bdnmxhebGbXAXyk3Ww0Aws3mZc_1781193463
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 75F801C0012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611061915.2354307-1-huangsj@hygon.cn>
+X-Rspamd-Queue-Id: 24C2420004
 X-Rspam-User: 
-X-Stat-Signature: rbecow4ddzpbmq8r5dsj6qaehmdnudos
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781193466-771104
-X-HE-Meta: U2FsdGVkX1/t9KbItfh9yXwUjhk74PCdOVzotssaaV0MKiimlQpvH44DXUwCVQq/YkZcxKl99KwA66ZWO7AG6MDh0Ft6nf5udrtAfHEHsCqHp8dNLAu251Dzl2uS9/Lfu8KDlUiGPv0jVcb8RcbkQ07G4OUO1JnVTIVcZtYFcSer2Fb7eFKxABUDo2cuqzOEQNmK94Hr3/y+8R6MAdyOengk0swEh1SsCDVx6SKRboBNxdMgpmaGTAEMsI0zDikX0Kk4KrHOiIo4GbRaS0w2ulWAZrnCUaHZPuLAStV9yf3zV4YApr5H8NbFoOUIrpFF//P6OU9HeEEOVChBbxzd9z0tdDHyAWzjdlwbQppaBX2Lbi8gpgkYdEahSvLUYnxcTBZLWzcdlW/xIqp9PSoTQcly6tgDBih997KNUJZwWPmA3aO7hT0LoiY8tHtcDUh7dRu1cdxYCLprkw2Ap90k5RSfc9hcvx5Fx+majQxmhQ9ncrKzlcIpiXlQgIi9+rZw5njfmF83TodNLeMcj8GE4iixQGnsK4a8C1ZhQIMRopvp4gsjwl6WmC+KXf3hj43qxN2naQF8bUlyO3rTcifRrV9cj7NGV59ZuUFl+No16FW1fEoqu+wN++qrp3zJm2sqgSztqmdPw6Ay5eQ3DXsnEq8Dj5gOwKhvCA6cec49KFVt6vYkdjrTpMIJMBoHtKvt3xDI/5bq3Abyfp3AAXDZQGS/w6MULACqzSBQhv6SMmd/sE4D14V+vHWH5TochnDq4YbO2S1ZavWsyXmy0Z+L+a0NZHaimoqSDjfq0s2eCkW3pKAzk5BOjJO9jS1SK4WfCJGBKQqBIf5EGV4SQesFYWKoTrNskyBfv1/8aE/NTcDTjjscNWkSpJau/a7zmVmxvyExPDDg6VDFIMFdNPTu2lgcb0vcyV+o27y9bEIHN3WMkqwTm8wRgdK/JF12OeyMVQlPzfNDj9wEboEaEFi
- XiVl24jb
- iZbskkXUlcPYNbtownAUujWr2SAKpXqCBn4fVIueptfXEjyOMTc2eLpr7LkowsF2M9asVxCTLx6e060xxmus1y5ttNlFI/uss10i8vytXK1FEqRw2MbQ2gevDqrvTP1513uB7HgkEfCQG5hfK4RNXpsAFpIlQzswClgxyDETPxlfcQ9A57ZMWf4qZA6WL60ZewkK1mlY0dQjubrH8u5EXCGTR1zk5P22uomzI6/mQc0IekSy1K2MmlTYc+M/2PYxZ1ijWD2iLg+UmuzxvsNafCOCYBLDnVYTMp1y7O8NzXVt5+ZRde86gFEBBxIqH1CeF7IPmQUlfOUYe+5gACNPS26eQjasCOOSaKfcSuvESO4ZwolAqEBo7bXHgQm67wvKOvOaeKiE++yCAJaWl8O41D548U0kCMJl2A3ZosKm0LDzcvz8BjWQAsWLI+PMKQRB9Zw/kNl74eyA0VqDXJd+sSoe14e63HJotfXCifeaUdwb7wXyehYnG2lLmXj6i50G2p5NNqr6r3AFW+XzLybvKFAmnqz+AtFT3rBCg5U7JT1ffWy0=
+X-Stat-Signature: 93nz6ortwa131tnysptfdt6uhhpb1cog
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781193668-687032
+X-HE-Meta: U2FsdGVkX193OU7bKgaF9djs9rJxokmFOSiFP7pL35jMIfAwIYhh2jDU+aIvX9CBg9hutlzdDZ4vTGsHzgyVP9U7Gv9iHXPGhKZe6iZaZtZWkkhP6B2qJl/ENBVTV4zUUjpObJhD6hB+G+Z4SsPo1LXVoDpC+3AJO2ks+/utVUURR0/KdF9H4+PcMsR5gVKI8aQstZmwQcZsheCBnmq/gHnTk4w3JwIxN8s0qhmxT8LuM/Hgjrhbwv4Rbm/7PRzi5J7d1LUCnUe4hNd2pPO3yguQzsFpyr6rVhCYkz5Gs/KQR4H5LBisNgDF0nYaCQQ8ZTYEjy0S9CktaSJOX6FmcMBhLMs/DWqQut6pleB6+lYoPzUCcVlLZztyqJ2Hcj7v3yuk15bHN8MbRreQD0TPp1HtstanC05uu7ZUx5+TaWNJ/ywgApQtO3Wr3pkm35P+vixOW5GUhcI+k29pmmTX6AcD+liPlH7rx3FcWM/NXNvhUURFjOnsb5v5djJRYuR4crrh4tLzGDX2qMTEDGmjZAji1+RNSA621maWNXxz1eBtSeJVyIrqLFCSOmW/1YhiluRv6eVUube9E4mHwLezSM0/f5s2HS4nhdTn3tEF7i6LoUfniRRXu0tPFCZ6MKJEx+N14AOETVolZOA/mRkqUl4i0gMcwwkUF7xuoQ8hl/11Po062Ilc+fmGT5g5SH6TxmwPTGJ8koFgJ+twjRGXgfEZma0QzIK/5pUOqB8ewefMb/3LjdLE/avI51v1g7TYeS2EoCWgshij+3Gq+MHjtfk6OWcT+WsP924bsZpdRsNmWacQBZAF7/fFPsg2w+gZg38o6U7HEuL3uQ8jo8S/4wMzzTDNwWDDPknQgfRVgYTY80IzNVR4pJ2P9BUiFTmLcRSbT/sBfsEEe2cwijQpzQSGUpcMQH83sFY4jhYkCNhilRl4rCVbLSB8W/i28y00DhBjKTOicwynXog/Mt+
+ hjAyHNhd
+ T5WCS31dlmlsz5Ethhrg8+2EtDOYSqZY/nmRANC1HiepDEIboZJaW7uUvTAsnbUq4hSR8DzI5mQzzbs9TJdrS3HXFxHZMI+xEuhA4dU/eCLJDj9gSGZ6rOgmnKlKBg6Sy9sIlzq0QV4Xs+90Vw6lFRWxKPQbbwpARgq5Xn/fnjezKFAM3ohG7lag9gF2V9YypJ2Q0rNYvSosY9bJSBdJoeqDLwrHa1o0qpcwMTGO7y2MJt0sRMCCota3/VgN3PmCFtpOxk/pHJn6wIcB6xmnGO2D7hRuAm/T9ug8JJXCWz4UK80Pje94OFgoikIZ5+wbZc0R/S4ehRfPlGR9xARbpnUZctfT2e7YzRSLFBmVFRKoG82tYosiacxOxoaGi/mFIEG5qjMcX93WhOg8CxB7wFDzY7Qja2vKSrQvDF3MQwJ8HHjNGo206m2JPsCU75LJjd1M1xQ9Vd8hk13heXp57i+8dwPxZ5Wd+ADNG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,68 +107,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hi Huang,
 
-While testing my mTHP code I noticed that mm selftests caused an accounting error in
-/sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
+You seem to be replacing the file rmap altogether here, so you really ought
+to have sent this as an RFC so we could discuss it as a community first.
 
-At first I thought I might have caused a regression, but when retesting with 7.1-rc5 (without my code), the issue was still present.
+Especially so as Pedro had publicly mentioned his plans to implement
+something similar here, so coordination would have been appreciated.
 
-This issue occurs in two mm selftests:
-1) hmm test
-2) migration - private_anon_htlb test
+Anyway, as Pedro has pointed out, the code is overly complicated, it's far
+too configurable (not always a good thing), and the locking implementation
+is questionable.
 
-I spoke to David about this and he suggested the following diff which seems to have solved both issues.
+You seem to be adding a whole bunch of open-coded complexity too, which is
+not something we want. Abstraction is key for the rmap.
 
-David would you like to send a formal patch or patches?
+You're also not adding any kdoc comments or really many comments at all,
+and you've not added any tests (though perhaps it's difficult given how
+core this is).
 
-Cheers,
--- Nico
+So I would suggest that perhaps any respin should be sent as an RFC so we
+can engage in that conversation and ensure we're all on the same page?
 
-Diff for (1)
+Especially since Pedro plans to send an alternative, simpler, solution I
+believe.
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 053842d45cb1..683a77dd679d 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
-        mem_cgroup_uncharge(folio);
+It's also not helpful that you haven't examined the non-NUMA case :)
+perhaps your particular server behaves a certain way that this approach
+aids, but regresses other NUMA configurations?
 
-        if (folio_test_anon(folio)) {
-+               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1);
-                for (i = 0; i < nr; i++)
-                        __ClearPageAnonExclusive(folio_page(folio, i));
-        }
--- 
-2.54.0
+We'd really need to be sure of this before accepting invasive changes like
+this.
 
-For (2) he suggested
+Thanks, Lorenzo
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index d9b23909d716..9fd50ea25d2d 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
-                /* No turning back from here */
-                newfolio->index = folio->index;
-                newfolio->mapping = folio->mapping;
--               if (folio_test_anon(folio) && folio_test_large(folio))
-+               if (folio_test_anon(folio) && folio_test_large(folio) &&
-+                   !folio_test_hugetlb(folio))
-                        mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
-                if (folio_test_swapbacked(folio))
-                        __folio_set_swapbacked(newfolio);
-@@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
-         */
-        newfolio->index = folio->index;
-        newfolio->mapping = folio->mapping;
--       if (folio_test_anon(folio) && folio_test_large(folio))
-+       if (folio_test_anon(folio) && folio_test_large(folio) &&
-+           !folio_test_hugetlb(folio))
-                mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
-        folio_ref_add(newfolio, nr); /* add cache reference */
-        if (folio_test_swapbacked(folio))
--- 
-2.54.0
+On Thu, Jun 11, 2026 at 02:18:56PM +0800, Huang Shijie wrote:
+>   In NUMA, there are maybe many NUMA nodes and many CPUs.
+> For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+> In the UnixBench tests, there is a test "execl" which tests
+> the execve system call.
+>
+>   When we test our server with "./Run -c 384 execl",
+> the test result is not good enough. The i_mmap locks contended heavily on
+> "libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have
+> over 6000 VMAs, all the VMAs can be in different NUMA mode.
+> The insert/remove operations do not run quickly enough.
 
+You really need to send detailed, statistically valid numbers across
+different NUMA configurations for changes like this to be considered.
+
+>
+> patch 1 & patch 2 are try to hide the direct access of i_mmap.
+> patch 3 splits the i_mmap into sibling trees, each tree has separate lock,
+> and we can get better performance with this patch set in our NUMA server:
+>     we can get over 400% performance improvement.
+>
+> I did not test the non-NUMA case, since I do not have such server.
+
+Yeah this isn't a great thing to hear :) you need to demonstrate this
+doesn't regress non-NUMA machines or NUMA machines of a different
+configuration.
+
+>
+> v1 --> v2:
+> 	Not only split the immap tree, but also split the lock.
+> 	v1 : https://lkml.org/lkml/2026/4/13/199
+>
+> Huang Shijie (4):
+>   mm: use mapping_mapped to simplify the code
+>   mm: use get_i_mmap_root to access the file's i_mmap
+>   mm/fs: split the file's i_mmap tree
+>   docs/mm: update document for split i_mmap tree
+>
+>  Documentation/mm/process_addrs.rst |  63 +++++++---
+>  arch/arm/mm/fault-armv.c           |   3 +-
+>  arch/arm/mm/flush.c                |   3 +-
+>  arch/nios2/mm/cacheflush.c         |   3 +-
+>  arch/parisc/kernel/cache.c         |   4 +-
+>  fs/Kconfig                         |   8 ++
+>  fs/dax.c                           |   3 +-
+>  fs/hugetlbfs/inode.c               |  30 +++--
+>  fs/inode.c                         |  75 +++++++++++-
+>  include/linux/fs.h                 | 179 ++++++++++++++++++++++++++++-
+>  include/linux/mm.h                 |  81 +++++++++++++
+>  include/linux/mm_types.h           |   3 +
+>  kernel/events/uprobes.c            |   3 +-
+>  mm/hugetlb.c                       |   7 +-
+>  mm/internal.h                      |   3 +-
+>  mm/khugepaged.c                    |   6 +-
+>  mm/memory-failure.c                |   8 +-
+>  mm/memory.c                        |   8 +-
+>  mm/mmap.c                          |  11 +-
+>  mm/nommu.c                         |  28 +++--
+>  mm/pagewalk.c                      |   4 +-
+>  mm/rmap.c                          |   2 +-
+>  mm/vma.c                           |  74 +++++++++---
+>  mm/vma_init.c                      |   3 +
+>  24 files changed, 534 insertions(+), 78 deletions(-)
+
+This is a _lot_ of changes you're making here. It therefore feels like the
+abstraction is broken somewhat?
+
+>
+> --
+> 2.53.0
+>
+>
+
+Thanks, Lorenzo
 
