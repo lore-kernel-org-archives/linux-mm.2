@@ -4,102 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 428FCCD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB242CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:47:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 563B06B0005; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
+	id 16CAC6B0088; Thu, 11 Jun 2026 10:47:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 514676B0088; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
+	id 144416B008C; Thu, 11 Jun 2026 10:47:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4027D6B008C; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
+	id 05B3D6B0092; Thu, 11 Jun 2026 10:47:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B97C6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:46:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B27C01A064C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:46:39 +0000 (UTC)
-X-FDA: 84867908118.11.2E3B59B
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 52B98A0010
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:46:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ef4txsff;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E82BA6B0088
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:47:28 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1081E1C3640
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:47:28 +0000 (UTC)
+X-FDA: 84867910176.21.C307DF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4FAD020014
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:47:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnK7LTc8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781189198;
+	s=arc-20220608; t=1781189246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G0yiQSirVK4gO+uFpLKC5e3Ko/lqIewVS97P9f8jq9I=;
-	b=6SDfpZvZldlaotqErL/GST4MwbwrRC0H4Ul5KhaDdBDo0DgVIIhom0kgd6DD7iNpDsKBHd
-	Z7nIf+OuD4Ls4Oi3SlDmw3rUkhxbFvX66XLk/WeIl8rvdzdP4pH1RCTwT3ro+DGmAFP5Uq
-	komCJZAVW66FO5Il22PlXfYkQzt+u40=
+	bh=/3JFb1sbaEUTIauG/U36iS6yAHjicqrq7RLpzLEMWoU=;
+	b=QvU3vuGpPa1vXWTt57db8ffGm5hSwfnSh4ZS6g2/OU3CAR9/kZ62rje5ZpFlN7cgaY/rru
+	0a8/3PjC8EMNh+G7OuIDxW4itsPElzk61Ec5DA/4qI2a7far1Tg8rlMYgS7CnXTqKiHPIK
+	zPvB542BwivWv2BIMHUZNvUVc0b/ek4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ef4txsff;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lnK7LTc8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781189198;
-	b=XFIie9rbyo859LmOtW1uSOuURl6Y1eMyw/639E+gS+GIndoHpaarWplkvjsKGc8gV/HIvV
-	qsVcgfO/zmCEO1bp+SgnrSitMqalZZg42zRsPqBwTqlKkl4lnJzIsRGTI0oV3pzNtKOU0g
-	qyY0VbZz3D0FX9L8VYvU9g/5TrLQ6HQ=
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781189192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G0yiQSirVK4gO+uFpLKC5e3Ko/lqIewVS97P9f8jq9I=;
-	b=Ef4txsffxUT11EdWmmTGYv/ixEh1Vpo7jhf9b5jdVjiEacVbJXULiYdGHk7dQ2RSazPMeu
-	IGz7j9FetbVY9ASafCOgyaOAUs5qScnG9j6qjssZnEwIpygZ8jLFriBTLBLP0fsiISGNKz
-	DsBHcVRax27hx8EINn2yWki5eCpQmrs=
-Content-Transfer-Encoding: quoted-printable
+	t=1781189246;
+	b=1mTSAHrfv2zJh5Mcf8Cjbsd4GZDL/Th3gCSj3wWq2FRCIQsptEbXXW+nzuYt+tfz5raIMJ
+	nFLN8j0jSplKum00Eft4dQCUa7e3vTN0/asnzQkGTXJUwk7cDr+rLgQ6b+gEsk00BkK9Ww
+	nVIt2Z+6Dmv3G1v9+w7HUkjRHFrV0ns=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9110600AA;
+	Thu, 11 Jun 2026 14:47:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1B01F00893;
+	Thu, 11 Jun 2026 14:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781189245;
+	bh=/3JFb1sbaEUTIauG/U36iS6yAHjicqrq7RLpzLEMWoU=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=lnK7LTc8Ghirv4b0x4eT1JlORRSRij4PLr2iZEhXF+tTAKU9Ntjps9dqM0W+MPXwA
+	 2/sekzCrrk9rSjtOqHM7VDTKY4UdLpR+uufWwOVWb0dwokkJVkplYz6cm9eNf/kkO3
+	 e13eDfcEVJasY0gFmsriC/eSR3mxNaqcUS/uN93YyhSshmKjd33kExgGwKfDOFOgvg
+	 7H3HWRfRAEhUMGdA52Ycp8/lnTC2XKYBxj2Muh65nu3oSM1ElUlnYwjVXngbzA+DWY
+	 8hMN8rRQHOkYDJ9ua8MqWBBmZFa6YMxMvxaBXN7zohS1W1sYp46zG2Ebbz3jw/OxES
+	 eHfhzSMNuiekw==
+Message-ID: <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
+Date: Thu, 11 Jun 2026 16:47:19 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
+ allocation
+Content-Language: en-US
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
+ <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
+ <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Jun 2026 14:46:23 +0000
-Message-Id: <DJ6AVARSAAQX.MK0WG9C2K84P@linux.dev>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
- <rppt@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>,
- <derkling@google.com>, <reijiw@google.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
- <yosry@kernel.org>
-Subject: Re: [PATCH v2 19/22] mm/page_alloc: implement __GFP_UNMAPPED
- allocations
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Brendan Jackman"
- <brendan.jackman@linux.dev>, "Brendan Jackman" <jackmanb@google.com>,
- "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
- <ljs@kernel.org>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-19-28bf1bd54f41@google.com>
- <7bfda0d8-2a7a-4337-8b55-d0c158df7839@kernel.org>
- <DIJEIELZ5DJU.26LYHOT4WR7A2@google.com>
- <DIV92L7AZOHG.1FKDUXLPZEUK4@linux.dev>
- <adaca36e-5896-407b-9f46-601ed5686575@kernel.org>
-In-Reply-To: <adaca36e-5896-407b-9f46-601ed5686575@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 52B98A0010
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4FAD020014
 X-Rspam-User: 
-X-Stat-Signature: uanx9f6zgbhjcb6txj4nhdruky7h9o9r
+X-Stat-Signature: wo15mrz33yjz8xxxjztw5qqiythjz9c1
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1781189196-125458
-X-HE-Meta: U2FsdGVkX1+VpqZY98oov1tY5vCXdYHvANDnLQiZ32bclLP//LHh7IRnngfsT44bFa/sgHLrhzO4ctjvBGd+XqwpgkaQ9a3+dRiDwtI/m/Qu2Yc3tmLp3iXnlfxWevDCyoATbXhM0zbCfIJSY1Rj/cPkC/8dIbMVnEq4Dcyiez5dhJ2cp5K+OB3VyEu68Yjh/PmYdEtBEy9LR2KU2D6a3rcTKtmvle5EqhaxepzxT+ltJfRim0jEkOqJrNwOdUxfRiQsf45D8CMPWgN+J28ddG9CPevWqmkfCnO7HnL8EKziIiDT4GmCXeHS/oOHzPhv/5IoEms597uG27f1wRaIywjGFg0wzDf/c9CpO8Ecxtif5XIR/IH5zoBzI36Ev3LJ8Dsn8L/Bkq2Hd82z3h0GLwQx78kFSdVLsvxmAv3vwqUMvoRaMqqbBHPoMq8amK+ZpDfxseokbQyzRUq4Qd3RFZFSIxlIJL6yqqDlStitIMfZwTIVilcicXEw6ZsQqfGdF+f/P7K91L7WwyD64kWeyC6ykQWpR9BTei3+HQbUMLQOkjD3IE8IRdXlBdRu+4GjJ7WcG4ANIPU0A9fm1XTbXIwvYzwW9l+4qjG7/GmnJUffg1HNrWuq6NX64om7QS71jsjvrYAwMDGwXFAxZ0t04/NmNBP0+k1Aopg32PMrrR6hAlvZLlDZpvAtjONCH1sdfZ8d8TrHYbfsoRVz1M4Cs/EYc8qCP7I3inOvncjyrAEG5zREYBXpYVMiuMExxG+/SaSM4CenTUi5dXjnIhEwDzn5ecglU2H8Ip5nkEIQhqYFQuY4OrtL1qEp7VSiX9mC2CN/BruMSRcvMRK+3V6ROJgKcChZbjoZrOPZXrFyyii34h7VId5PZn/omxfFl6rQ1oixv1hIeyuPNvguYX+OjqjnjxF5Um+7jgitOA46q2GAaF1rwymmHSd8dpppPS2QzldhDS3kWiEt10nbuqN
- Md/ioxwU
- 7kYyYS76mrkMazZRvNVLusfm2o/EJloTgPOxvtxIMkjx96PCuS3WqP+kvTYVxLUYXOKCIRFHjD3xsNOlAflnSmbPSlTmmDfXZIzKMJqMEm6uuVZTUNLzvrshMmmaLwdKTJvYQJatrb/8ILlm1S0kxbypDMK334UuGCBLoYbNxC91LifAbLCe2MfXef2dWJECKFYkR5nO8STbwMLQT3DYqxV5DMH0KCFZuuziq7A9t75F1dW0dQY7s9Nh2Cy3gJuIzQuQ2ZvXa6oEuoRL8YkkSP2yIYGK26c149NldsgC7AGksLamGitr5S6gwTg==
+X-HE-Tag: 1781189246-919605
+X-HE-Meta: U2FsdGVkX18OvwR7zBWxKVD9XuvtKKp1aQpTvAQEBiF7SK+nNswiLb1lbgniAO1NP8MynkIlWeyqaVf1WSk5cCOsCr7xqze/qX+wDLMN5d/X5GJo4m1Q3wJg7PZXqag6aA6FnDUJsA0oXdJCoDmKGrruiUObkDQP2vgmOqcJFqmLBWzodJ9sXST1MOnCN1tgnH3LZ9wKFgz//KL8NxbIQtuYeFeHCDoSEmcpGokwCvaKazm9Ry21wNQJLactKtGotcwD83NCYrcFkkOt/DVE9rQHFlF3hNscdYSK4s4J2MmV94JKF5x6q7IjRq5wjWXLR/CyD5ir91BvlDCQn+ly9GjM9SmMFlRfL8+xkDlIsbLuSxK57IBFLmZ3RYt3iqnaqCGShif+859RfiH8cAGNfXMdomhW6MP/hbdGTrgpgR9B0xyCKQuF8evWbdyPt7tsKoU2F9NrJM0C9kEvERbGvqo1Qo9t68TorgiMRBO1ccs81KglUJoyudI6yyQgMNXQDIrgC2BgXrAxgihB+oUNj9JAQ1YEGCbgeT0buynTRGRq4rlpWjaKRtVnhH24L1Rn65xkuIhbVB8bS37fdzZy13Ir77B/NlR73Tyw6pN5Bfunf9E/JFxFIwaxklBQ9LXt721tUeDuiy0/8UDyhOcniOu6SFO2aDlaVrmdK/XimcGFzVkpCW1ppLqomCizYBpIfPwfVgUUQbB2AdTe4xz22HXkxt/yspEMN+BUaIYBGEgzZQzz/Q9Z7SWIb9YabJdn83PDMBCr6VrbcF6Hm2NF9TBqlaaPbDcmxffGjNefKPm9nrkO8E4y0d/tizAFRXixG+cwwkwRTAnT+g0mpv+XwT99yLxly7kOOz8LLGWhVyqLPWnnTBScLuu4FQLsM9/GsiGUepqUJ6FmDlDsfDSJ+ub7I+3v1Y1xXBxajNntWdxiLAyWUhe5rl42BWTA4OxSdNJbAL+kxbkzt3OOn6+
+ LaAB0ht1
+ KWuEksW59tp1b15d0ESk/4OFs4XcqscAvmMBVqe6o+sLfVlQ8847i9JDVU4vtSBvdkUiMjHGXQl6iIFlgpOfF9btdrfadVecsm8a+qw+Oct+IpxA1Hal8ezC4M0hmt4ZOIS1BCKp+VDILD6rM/ZIXfpVGuCMJ+hI2sD0sNoPjdbXUXoJ7lCiwKOzwnMnJf2AofZdhvHyqh0CHfW9cNFZAVf0ap9rLs0t6ZXIoobZooPBPyAianE+LjBNrOPxG8Fj2zk+bc4oG0GSj/b8WN3X8VBx9ltycO/j85XHvVpivNDG55TIFs7TkYD6ewVjkoUfKXldcNhi2tz5GCCe1AaxKY6rd4UmH/9G83e61kiNn0txBhH0pnzL67kUjpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,196 +145,339 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Jun 1, 2026 at 8:50 AM UTC, Vlastimil Babka (SUSE) wrote:
-> On 5/29/26 17:02, Brendan Jackman wrote:
->> On Fri May 15, 2026 at 4:46 PM UTC, Brendan Jackman wrote:
->>> On Wed May 13, 2026 at 3:43 PM UTC, Vlastimil Babka (SUSE) wrote:
->> [...]
->>>> Uhh, speaking of compaction and reclaim... we rely on finding a whole =
-free
->>>> pageblock in order to flip it. If that doesn't exist, the whole
->>>> get_page_from_freelist() will fail, and we might enter the
->>>> reclaim/compaction cycle in __allow_pages_slowpath(). But since we mig=
-ht
->>>> ultimately want an order-0 allocation, there won't be any compaction
->>>> attempted, because that code won't know we failed to flip a pageblock.=
- And
->>>> the watermarks might look good and prevent reclaim as well I think? We
->>>> should somehow indicate this, and handle accordingly. Might not be tri=
-vial.
->>>> Or maybe reuse pageblock isolation code to do the migrations directly =
-in
->>>> __rmqueue_direct_map?
->>>
->>> Ah, thanks, I suspect you are right.
->>>
->>> I did fear there would be some sort of case where this "not-quite
->>> reclaim" interacted badly with the actual reclaim, and I tried to test
->>> it by running some stuff in parallel with stress-ng (allocating
->>> __GFP_UNMAPPED via secretmem), and I didn't see a difference in the
->>> effective availability of memory. However, I suspect testing this is
->>> quite a deep art my "run these two commands that I copy pasted from an
->>> LLM suggestion" test was just crap.
->>>
->>> Do you have any workloads you can suggest for evaluating this kinda
->>> thing? We would definitely see it in Google prod (I think we see this
->>> kind of issue with our shrinker-based internal version of ASI distortin=
-g
->>> reclaim behaviour in ways even more subtle than this) but that is not a
->>> very practical experimental cycle...
->>=20
->> I slop-coded a benchmark:
->>=20
->> https://github.com/bjackman/kernel-benchmarks-nix/tree/master/packages/b=
-enchmarks/secretmem-vs-frag
->>=20
->> It does some mmap/munmap patterns to try and generate fragmentation,
->> then spams secretmem allocations until it gets OOM-killed.
->>=20
->> With this series, I see the OOM-kills happening noticeably sooner on a
->> 1GiB VM:
->>=20
->> metric: secretmem_allocated_bytes (B)   |  test: secretmem-vs-frag
->> +---------------------------------------------+---------+-------------+-=
-------------+-----------------+-------------+-------+
->> | kernel_release                              | samples |        mean | =
-        min | histogram       |         max | =CE=94=CE=BC    |
->> +---------------------------------------------+---------+-------------+-=
-------------+-----------------+-------------+-------+
->> | 7.0.0-rc4-next-20260319                     |       4 | 683,147,264 | =
-643,825,664 |               =E2=96=88 | 715,128,832 |       |
->> | 7.0.0-rc4-next-20260319-00028-gf00246eb72cd |       3 | 623,553,195 | =
-551,550,976 |            =E2=96=88=E2=96=88=E2=96=88  | 692,060,160 | -8.7%=
- |
->> +---------------------------------------------+---------+-------------+-=
-------------+-----------------+-------------+-------+
->>=20
->> So... I think maybe I've reproduced the issue you pointed out? I will
->> try and fix it and see if this degradation goes away.
->
-> Since I assume the fragmentating allocations are movable allocations, it
-> might be the case, yeah.
+On 6/11/26 10:34, Vlastimil Babka (SUSE) wrote:
+> On 6/11/26 05:19, Harry Yoo wrote:
+>> 
+>>> This potentially adds overhead of the is_kfence_address() check to
+>>> allocation hotpath, but that one is designed to be as small as possible,
+>>> and it's only evaluated if zeroing is about to happen. This means (aside
+>>> from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
+>>> zeroing itself comes with an overhead likely larger than the added
+>>> check.
+>>> 
+>>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>> ---
+>>>  mm/kfence/core.c |  2 +-
+>>>  mm/slub.c        | 23 ++++++++---------------
+>>>  2 files changed, 9 insertions(+), 16 deletions(-)
+>>> 
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index e2ee8f1aaccf..8e5264d3ddbf 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4565,9 +4565,10 @@ struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s, gfp_t flags)
+>>>  
+>>>  static __fastpath_inline
+>>>  bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>> -			  gfp_t flags, size_t size, void **p, bool init,
+>>> +			  gfp_t flags, size_t size, void **p,
+>>>  			  unsigned int orig_size)
+>>>  {
+>>> +	bool init = slab_want_init_on_alloc(flags, s);
+>>>  	unsigned int zero_size = s->object_size;
+>>>  	bool kasan_init = init;
+>>>  	size_t i;
+>>> @@ -4608,7 +4609,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>>  	for (i = 0; i < size; i++) {
+>>>  		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+>>>  		if (p[i] && init && (!kasan_init ||
+>>> -				     !kasan_has_integrated_init()))
+>>> +				     !kasan_has_integrated_init())
+>>> +				 && !is_kfence_address(p[i]))
+>> 
+>> I hope we could make it bit more verbose and straightforward,
+>> something like:
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 5d7ea72ebebd..29cf4590f9d9 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -4573,7 +4573,6 @@ bool slab_post_alloc_hook(struct kmem_cache *s,
+>> gfp_t flags, size_t size,
+>>  {
+>>  	bool init = slab_want_init_on_alloc(flags, s);
+>>  	unsigned int zero_size = s->object_size;
+>> -	bool kasan_init = init;
+>>  	size_t i;
+>>  	gfp_t init_flags = flags & gfp_allowed_mask;
+>> 
+>> @@ -4591,29 +4590,37 @@ bool slab_post_alloc_hook(struct kmem_cache *s,
+>> gfp_t flags, size_t size,
+>>  	if (slub_debug_orig_size(s))
+>>  		zero_size = ac->orig_size;
+>> 
+>> -	/*
+>> -	 * When slab_debug is enabled, avoid memory initialization integrated
+>> -	 * into KASAN and instead zero out the memory via the memset below with
+>> -	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones and
+>> -	 * cause false-positive reports. This does not lead to a performance
+>> -	 * penalty on production builds, as slab_debug is not intended to be
+>> -	 * enabled there.
+>> -	 */
+>> -	if (__slub_debug_enabled())
+>> -		kasan_init = false;
+>> -
+>> -	/*
+>> -	 * As memory initialization might be integrated into KASAN,
+>> -	 * kasan_slab_alloc and initialization memset must be
+>> -	 * kept together to avoid discrepancies in behavior.
+>> -	 *
+>> -	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
+>> -	 */
+>>  	for (i = 0; i < size; i++) {
+>> -		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+>> -		if (p[i] && init && (!kasan_init ||
+>> -				     !kasan_has_integrated_init())
+>> -				 && !is_kfence_address(p[i]))
+>> +		bool skip_init = false;
+>> +
+>> +		if (is_kfence_address(p[i])) {
+>> +			/*
+>> +			 * kfence zeroes the object instead of SLUB to avoid
+>> +			 * overwriting its own redzone, and zeroing of
+>> +			 * s->object_size will corrupt it.
+>> +			 */
+>> +			skip_init = true;
+> 
+> But now we perform this check even if init is false, making it more hot.
+> 
+>> +		} else if (__slub_debug_enabled()) {
+>> +			/*
+>> +			 * KASAN never zeroes memory when slab_debug is enabled
+>> +			 * to avoid overwriting SLUB redzones. This does not
+>> +			 * lead to a performance penalty on production builds,
+>> +			 * as slab_debug is not intended to be enabled there.
+>> +			 */
+>> +			skip_init = false;
+>> +		} else if (kasan_has_integrated_init()) {
+>> +			/*
+>> +			 * ARM64 can set memory tags and zero the memory using
+>> +			 * a single instruction. Since HW_TAGS KASAN uses that
+>> +			 * while tagging the object, a separate zeroing is
+>> +			 * unnecessary unless slab_debug is enabled.
+>> +			 */
+> 
+> (I like the new/updated comments)
+> 
+>> +			skip_init = true;
+>> +		}>
+> 
+> And these two are now done in every loop iteration even though they don't
+> depend on the object. Yeah it's a static key and build-time constant but still.
+> 
+> But maybe there's some middle ground?
+> 
+> Above the loop do (with your comments).
 
-Alright, so I tried splitting NR_FREE_PAGES_BLOCKS into two counters to
-track mapped vs unmapped blocks. Then I gave
-compaction_suit_allocation_order() an 'unmapped' flag:
+OK, not so simple, we still need the kasan_init variable too.
+I've ended up with this, thoughts?
 
+From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Wed, 10 Jun 2026 17:40:04 +0200
+Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
 
-@@ -2510,19 +2510,39 @@ bool compaction_zonelist_suitable(struct alloc_cont=
-ext *ac, int order,
- static enum compact_result
- compaction_suit_allocation_order(struct zone *zone, unsigned int order,
-                                 int highest_zoneidx, unsigned int alloc_fl=
-ags,
--                                bool async, bool kcompactd)
-+                                bool unmapped, bool async, bool kcompactd)
+When init (zeroing) on allocation is requested, for kmalloc() we
+generally have to zero the full object size even if a smaller size is
+requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
+
+When we end up allocating a kfence object, kfence perfoms the zeroing on
+its own because has its own redzone beyond the requested size. Thus
+slab_post_alloc_hook() has an 'init' parameter which has to be evaluated
+in all callers (via slab_want_init_on_alloc()) and should be false for
+kfence allocations.
+
+For kfence allocations in slab_alloc_node() this is achieved by subtly
+skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
+kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally even
+if they do end up with a kfence allocation. This is only subtly not a
+problem, as those are not kmalloc allocations and thus the "requested
+size" equals s->object_size and thus it cannot interfere with kfence's
+redzone. There's just a unnecessary double zeroing (in both kfence and
+slab_post_alloc_hook()), but it's all very fragile and contradicts the
+comment in kfence_guarded_alloc().
+
+Remove this subtlety and simplify the code by eliminating the init
+parameter from slab_post_alloc_hook() and make it call
+slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
+check before performing the memset, which will start doing the right
+thing for all callers of slab_post_alloc_hook().
+
+This potentially adds overhead of the is_kfence_address() check to
+allocation hotpath, but that one is designed to be as small as possible,
+and it's only evaluated if zeroing is about to happen. This means (aside
+from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
+zeroing itself comes with an overhead likely larger than the added
+check.
+
+While at it, refactor the handling of evaluating when KASAN does the
+init instead of SLUB, with no intended functional changes. A
+non-functional change is that we don't pass kasan_init as true to
+kasan_slab_alloc() if kasan has no integrated init, but then the value
+is ignored anyway, so it's theoretically more correct.
+
+Thanks to Harry Yoo for the initial refactoring attempt, and for updated
+comments that are used here.
+
+Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+ mm/kfence/core.c |  2 +-
+ mm/slub.c        | 60 ++++++++++++++++++++++--------------------------
+ 2 files changed, 29 insertions(+), 33 deletions(-)
+
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 655dc5ce3240..5e0b406924e9 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -500,7 +500,7 @@ static void *kfence_guarded_alloc(struct kmem_cache *cache, size_t size, gfp_t g
+ 
+ 	/*
+ 	 * We check slab_want_init_on_alloc() ourselves, rather than letting
+-	 * SL*B do the initialization, as otherwise we might overwrite KFENCE's
++	 * slab do the initialization, as otherwise it might overwrite KFENCE's
+ 	 * redzone.
+ 	 */
+ 	if (unlikely(slab_want_init_on_alloc(gfp, cache)))
+diff --git a/mm/slub.c b/mm/slub.c
+index e2ee8f1aaccf..d762cbe5d040 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4565,13 +4565,13 @@ struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s, gfp_t flags)
+ 
+ static __fastpath_inline
+ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+-			  gfp_t flags, size_t size, void **p, bool init,
++			  gfp_t flags, size_t size, void **p,
+ 			  unsigned int orig_size)
  {
-        unsigned long free_pages;
-        unsigned long watermark;
-
--       if (kcompactd && defrag_mode)
-+       /*
-+        * Might need to generate a whole free block regardless of the actu=
-al
-+        * allocation order:
-+        *
-+        * - When allocating an unmapped page, because the allocator only u=
-nmaps
-+        *   whole blocks at a time.
-+        *
-+        *   Why doesn't this apply to the other way around too? (Mightn't =
-we
-+        *   need to _map_ a whole block?) This is a temporary simplificati=
-on:
-+        *   currently, unmapped blocks don't contain movable pages, so
-+        *   compaction isn't going to free up one of those.
-+        *
-+        * - In defrag_mode, because the allocator is unwilling to "steal" =
-pages
-+        *   from the "wrong" block.
-+        *
-+        *   Why is this only under kcompactd?
-+        *
-+        * Temporary simplification: unmapped pageblocks are currently
-+        * nonmovable. So if the compactor is trying to service a
-+        */
-+       if (unmapped)
-+               free_pages =3D zone_page_state(zone, NR_FREE_PAGES_BLOCKS_M=
-APPED);
-+       else if (kcompactd && defrag_mode)
-                free_pages =3D zone_free_pages_blocks(zone);
-        else
-                free_pages =3D zone_page_state(zone, NR_FREE_PAGES);
-
-
-... Then, I changed __alloc_pages_direct_compact() to try to try to
-compact for a whole block whenever we are trying to allocate an unmapped
-page (note I think there's an orthogonal bug here where it leaks memory
-when there's a "captured" compaction):
-
-
-index 4f04e897c5374..7eed22f3b26eb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -824,6 +824,9 @@ compaction_capture(struct capture_control *capc, struct=
- page *page,
-            capc_mt !=3D MIGRATE_MOVABLE)
-                return false;
-
-+       if (freetype_flags(freetype) !=3D freetype_flags(capc->cc->freetype=
-))
-+               return false;
++	bool init = slab_want_init_on_alloc(flags, s);
+ 	unsigned int zero_size = s->object_size;
+-	bool kasan_init = init;
+-	size_t i;
+ 	gfp_t init_flags = flags & gfp_allowed_mask;
++	bool kasan_init = false;
+ 
+ 	/*
+ 	 * For kmalloc object, the allocated size (object_size) can be larger
+@@ -4588,28 +4588,33 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 		zero_size = orig_size;
+ 
+ 	/*
+-	 * When slab_debug is enabled, avoid memory initialization integrated
+-	 * into KASAN and instead zero out the memory via the memset below with
+-	 * the proper size. Otherwise, KASAN might overwrite SLUB redzones and
+-	 * cause false-positive reports. This does not lead to a performance
++	 * ARM64 can set memory tags and zero the memory using a single
++	 * instruction. Since HW_TAGS KASAN uses that while tagging the object,
++	 * separate zeroing is unnecessary.
++	 *
++	 * However, KASAN never zeroes memory when slab_debug is enabled to
++	 * avoid overwriting SLUB redzones. This does not lead to a performance
+ 	 * penalty on production builds, as slab_debug is not intended to be
+ 	 * enabled there.
+ 	 */
+-	if (__slub_debug_enabled())
+-		kasan_init = false;
++	if (kasan_has_integrated_init() && !__slub_debug_enabled()) {
++		kasan_init = init;
++		init = false;
++	}
+ 
+-	/*
+-	 * As memory initialization might be integrated into KASAN,
+-	 * kasan_slab_alloc and initialization memset must be
+-	 * kept together to avoid discrepancies in behavior.
+-	 *
+-	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
+-	 */
+-	for (i = 0; i < size; i++) {
++	for (size_t i = 0; i < size; i++) {
+ 		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
+-		if (p[i] && init && (!kasan_init ||
+-				     !kasan_has_integrated_init()))
 +
-        if (migratetype !=3D capc_mt)
-                trace_mm_page_alloc_extfrag(page, capc->cc->order, order,
-                                            capc_mt, migratetype);
-@@ -4469,20 +4472,27 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsign=
-ed int order,
-        struct page *page =3D NULL;
-        unsigned long pflags;
-        unsigned int noreclaim_flag;
-+       unsigned int compact_order =3D order;
-
--       if (!order)
-+       // TODO: Is it OK to always run compaction like this?
-+       /*
-+        * Unmapped allocations benefit from compaction even at order 0, be=
-cause the
-+        * allocator will actually grab a whole block.
-+        */
-+       if (freetype_flags(ac->freetype) & FREETYPE_UNMAPPED)
-+               compact_order =3D pageblock_order;
++		/*
++		 * memset and hooks come after KASAN as p[i] might get tagged
++		 *
++		 * kfence zeroes the object instead of SLUB to avoid overwriting
++		 * its own redzone starting at orig_size, which could happen
++		 * with SLUB zeroing full s->object_size
++		 */
++		if (init && p[i] && !is_kfence_address(p[i]))
+ 			memset(p[i], 0, zero_size);
 +
-+       if (!compact_order)
-                return NULL;
+ 		if (gfpflags_allow_spinning(flags))
+ 			kmemleak_alloc_recursive(p[i], s->object_size, 1,
+ 						 s->flags, init_flags);
+@@ -4910,7 +4915,6 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+ 		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
+ {
+ 	void *object;
+-	bool init = false;
+ 
+ 	s = slab_pre_alloc_hook(s, gfpflags);
+ 	if (unlikely(!s))
+@@ -4926,16 +4930,13 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+ 		object = __slab_alloc_node(s, gfpflags, node, addr, orig_size);
+ 
+ 	maybe_wipe_obj_freeptr(s, object);
+-	init = slab_want_init_on_alloc(gfpflags, s);
+ 
+ out:
+ 	/*
+-	 * When init equals 'true', like for kzalloc() family, only
+-	 * @orig_size bytes might be zeroed instead of s->object_size
+ 	 * In case this fails due to memcg_slab_post_alloc_hook(),
+ 	 * object is set to NULL
+ 	 */
+-	slab_post_alloc_hook(s, lru, gfpflags, 1, &object, init, orig_size);
++	slab_post_alloc_hook(s, lru, gfpflags, 1, &object, orig_size);
+ 
+ 	return object;
+ }
+@@ -5230,7 +5231,6 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
+ 				   struct slab_sheaf *sheaf)
+ {
+ 	void *ret = NULL;
+-	bool init;
+ 
+ 	if (sheaf->size == 0)
+ 		goto out;
+@@ -5240,10 +5240,8 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
+ 	if (likely(!ret))
+ 		ret = sheaf->objects[--sheaf->size];
+ 
+-	init = slab_want_init_on_alloc(gfp, s);
+-
+ 	/* add __GFP_NOFAIL to force successful memcg charging */
+-	slab_post_alloc_hook(s, NULL, gfp | __GFP_NOFAIL, 1, &ret, init, s->object_size);
++	slab_post_alloc_hook(s, NULL, gfp | __GFP_NOFAIL, 1, &ret, s->object_size);
+ out:
+ 	trace_kmem_cache_alloc(_RET_IP_, ret, s, gfp, NUMA_NO_NODE);
+ 
+@@ -5423,8 +5421,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+ 
+ success:
+ 	maybe_wipe_obj_freeptr(s, ret);
+-	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret,
+-			     slab_want_init_on_alloc(alloc_gfp, s), orig_size);
++	slab_post_alloc_hook(s, NULL, alloc_gfp, 1, &ret, orig_size);
+ 
+ 	ret = kasan_kmalloc(s, ret, orig_size, alloc_gfp);
+ 	return ret;
+@@ -7339,8 +7336,7 @@ bool kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags,
+ 
+ out:
+ 	/* memcg and kmem_cache debug support and memory initialization */
+-	return likely(slab_post_alloc_hook(s, NULL, flags, size, p,
+-			slab_want_init_on_alloc(flags, s), s->object_size));
++	return likely(slab_post_alloc_hook(s, NULL, flags, size, p, s->object_size));
+ }
+ EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
+ 
+-- 
+2.54.0
 
-        psi_memstall_enter(&pflags);
-        delayacct_compact_start();
-        noreclaim_flag =3D memalloc_noreclaim_save();
 
--       *compact_result =3D try_to_compact_pages(gfp_mask, order, alloc_fla=
-gs, ac,
--                                                               prio, &page=
-);
-+       // TODO: deal with captured page, if we changed the order it will h=
-ave the
-+       // wrong order. Also check it respects the freetype flags.
-+       *compact_result =3D try_to_compact_pages(gfp_mask, compact_order,
-+                                              alloc_flags, ac, prio, &page=
-);
-
-        memalloc_noreclaim_restore(noreclaim_flag);
-        psi_memstall_leave(&pflags);
-
-Full code:
-https://github.com/bjackman/linux/tree/page_alloc-unmapped-2026-06-11
-
-This makes the regression above (faster OOMs) go away, but it seems like
-a pretty blunt approach. But then I'm realising I don't really know why it
-matters? The main thing is presumably that we are more likely to
-pointlessly attempt compaction or compact more than we need. But in that
-case, aren't we already in a desperately slow path? Does a little bit of
-extra work in __alloc_pages_direct_compact() really matter? I couldn't
-measure it in a benchmark (kernel compilation alongside stress-ng
---secretmem).
 
