@@ -4,96 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA974CD98D4
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 08:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A3E3CD98C7
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 08:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 440A86B0096; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
+	id 954176B0005; Thu, 11 Jun 2026 04:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F1606B0098; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
+	id 904B76B0088; Thu, 11 Jun 2026 04:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32EC76B0099; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
+	id 81C046B008C; Thu, 11 Jun 2026 04:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 227716B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:01:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B6C4012050B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:01:57 +0000 (UTC)
-X-FDA: 84866888274.30.31ACCFD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0E97840011
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:01:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsbYHwWC;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F6486B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 04:34:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F028C1F39
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:34:53 +0000 (UTC)
+X-FDA: 84866971266.27.DDA9EDE
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2952720002
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 08:34:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iqi//V99";
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781164916;
+	s=arc-20220608; t=1781166891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7dD4/CQnNeeyrkkOYOUO1mj3STEaisPLiFqjfCgk+JU=;
-	b=z4O4R0FM8A9LM7pSaNjj1FKV1MezfMXLZ3z3yPa3DPTNFzS4HrKXj/nJJjD0HfrXM2o+IL
-	AcN6zCh5/4ztCc3IrBQRCch8oKpI+Da70afwsxFE0T9dPyRjvlO6IEQRpWlyfgQgBjpmBr
-	vOVROcJQCfxGRYLSABq/2q/PoRVckyk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsbYHwWC;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2UMrzR2+SVHqKWgSYoVZBjp/ERVOIsPlQNqX6CP0Vdo=;
+	b=35FFRNwnmsWpReVibSIjEb10XQ8KuSPh8NrXVacO4YbxaMr1wtrwIl1zE7x7/sOJ3Q6GqC
+	/OtyhSf13UQXRC8Nqip6tIKqwFOm/H4lqTokFVXbNNMrmjmGN+1ty2QBIYJpglVFmaE9Jr
+	1X8EszwJZ74NG/Uft7bBgoTB1U4F04M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781164916;
-	b=d2cR5W8xx2CWQeUIjehQkwNKof+EpLyoH9urj2QXFo3EgT9bm72TmdH6r0UBXpF9udz15I
-	iheS7/JU21pNA0TG++6GZaLGa/5Ogl9aJ6t1R+9Gj9THIY29t02P6zWVnl6N0fZtm5BxcP
-	DuJEfmTJVbKdVR29qVVAfxK/KLupla8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1930D40D68;
-	Thu, 11 Jun 2026 08:01:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDE81F00893;
-	Thu, 11 Jun 2026 08:01:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781164915;
-	bh=7dD4/CQnNeeyrkkOYOUO1mj3STEaisPLiFqjfCgk+JU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bsbYHwWCImv67tbIFfumvMYPTQMPVJc9B3XM2fOGxPEjlnUB+K4WQ9QG3o2NQgESI
-	 S3mJJCx7sB4kxjBR8Xq6WeTFztqOZ5pKDfXAZ2XC/oxUNFL9s/ORvUGAsDY0Po1wSL
-	 hi98GUJnxp2ohZBQvHHfc91d9R+dcHsCwXHangO9vzQQiORIWO38cO2ZXpLTFiSmzz
-	 eqqdP2AAWx77dUNV3PXKsTNuZLpJueU3U9f+kYMngrNOvDfdvVqy8Nam2hlKwzK06r
-	 gXdGzGy2Cp6eZudu8zMb2EALFYVG1jEjIJ8qHdYpT9AqcjbKw1aPFg947/4XnfjPZT
-	 QFBWEtJ+B4WJw==
-Date: Thu, 11 Jun 2026 10:01:47 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+	t=1781166891;
+	b=mpZjXM/jaIWyQgesArJs7xEIVX9vr7ckwQGmYfsUw+jlG434kv9Rpea5qGPO7DgfVVC0qK
+	nTTOdcZUgnKayj8xbNwQL8snPAEu77q/ak/iOl+CVh7zjSpPyQQ27GCozQS9EMPoGngj1G
+	uLdBban7+40ZZAevRs5/pObqQNlap5k=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="iqi//V99";
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490cf3000f0so50925275e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781166890; x=1781771690; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2UMrzR2+SVHqKWgSYoVZBjp/ERVOIsPlQNqX6CP0Vdo=;
+        b=iqi//V99nxBaRUxZjuymO3NW9yvGna9n2FJYk1AtenDDXBFnHLkoqT7xIe7+Ylc/fQ
+         Hus6a53gB9ELmsihxC88XMvG7DvhHj93X0q0JRb0ImWvq5rsbLe8ikoYVe1Ln6/FAX11
+         hIRA5kseUTjUBYy3rhuDrArjFyw8Zc5/eCXnGsVBkYfH4NlY9FYojgWvfaXWNVcEgxwg
+         PLOwbzcT6S3OnXpn9uWtEMu/nGsAZgN/4tc076VXLX7NIh2stlFBUf9xYfuXsDBQ33N4
+         pXjGs4Ib2TOxGNZNInKO1AKlO1hs+Ti3aECRj+/v3ViDg6hJfww/2VMDEKvlCx98pGWO
+         kz8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781166890; x=1781771690;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2UMrzR2+SVHqKWgSYoVZBjp/ERVOIsPlQNqX6CP0Vdo=;
+        b=pe76XKh0RU2nYCP6wQS75dpRkR24cdvFyVE/r3Whoo2NUCtrh12eRePKBx1wosoo5B
+         mp7YYDF6kMgaVuXIstB+papgDVCnE3+JNHeeTKiJPlP/XeoWIz+H7uDjjgbxihVG+lvR
+         kNYEXRlc2JXUvUbWXgwosgzOHeVAzKmCJrv4I8cO/XeqPZXmbkm3Jdx4r6yqhvMF76q0
+         QIzdiToIQwtLgj6xJwqbnjIHYg8oqrtCd28ccf7HVhEe1gbREUhTOGzNFQ2Le6G3VqnJ
+         FIP2IXa+JSJbf5pTRcrOwkGp70OxBe83uYGH6VteYrTrYK1xMPaSG9V5ssYgm0DJrLgc
+         A8rw==
+X-Forwarded-Encrypted: i=1; AFNElJ+uDbMCcfr+q7ZNursQ+D0r87MuwmXnTvTN2zoqBN3ZxNgwF1h85f2rXJMgDUCgC6gutvwesidB4A==@kvack.org
+X-Gm-Message-State: AOJu0YzjLEbVz3Je6zrUa3xG2MrDOGE0MiAounOurIgJ/mJ0h0+blrgh
+	OFQEzGyUwYNq45hekrtjQOq7I2IxksF6kzVXgOAIJOepicNFbF2zFTgNq+SI4A==
+X-Gm-Gg: Acq92OHdP/Pq+HVczbuKRcDKNwQ3UDKih8apt74Ahz/+G/5c/RSRRPu93qSqneOpT33
+	ytyA2oSP+nQfbJhkf6YvErTJWsNNrKwmSDHUdlScXMXu+sY121KlvAwU3/bWMSxttlE88DdPpAh
+	nEVqfT8sjjMgXQ6JLj7g9XblnBIEGMTPLOCehZcxjp8OKFdTtjkD2yapPRzFmufx7q2TOsICsvQ
+	5uFbJvzJahXqd0d/I2BZq0F4f8+9q+u4k10C2m022mAjwJJqV77pnuFVpQec3H06cdoQO6ZMnny
+	Ih68BEaYsI3g3ITt6vofHifooO/AayfxFT3fkvumH2VgtjCbrjjwzy3V/m+yZ0fFHy7/5KHJQpa
+	H+HpOSHvFKoz02fEOE+sUXwx4WqsPSi/GJsRlfFFDZeRh/YRvwHXhc9dN5+Zzrnefgpv/OX6meC
+	ZZOJuBDV1Fr3xETZhxoQYWZXgQ+wELkhLUerNeFnJdL5UvCt4H5TuUXQVBqyXvZof6bAtqG93CR
+	v8kqq60BqYujO3AXQn8Q6iUmpXI9gzOaYkt3QJXaqCS
+X-Received: by 2002:a05:600c:4e0c:b0:490:bb45:79ee with SMTP id 5b1f17b1804b1-490e5379dbbmr24840205e9.0.1781166889422;
+        Thu, 11 Jun 2026 01:34:49 -0700 (PDT)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2e4004sm79045230f8f.9.2026.06.11.01.34.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 01:34:47 -0700 (PDT)
+Date: Thu, 11 Jun 2026 09:34:45 +0100
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Yichong Chen <chenyichong@uniontech.com>
+Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 3/3] mm/vma: eliminate mmap_action->error_hook,
- introduce error_override
-Message-ID: <aipra0klNhB7SG2w@localhost.localdomain>
-References: <cover.1780397980.git.ljs@kernel.org>
- <55d13f7d016b827c459946d46a56105635be111c.1780397980.git.ljs@kernel.org>
+Subject: Re: [PATCH v2] tools/mm/page_owner_sort: free per-record allocations
+Message-ID: <aipzJR0KnO76crLy@fedora>
+References: <ailAiIKTNSDHkUl6@fedora>
+ <440C4C1E0D13E6D1+20260611023411.379986-1-chenyichong@uniontech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <55d13f7d016b827c459946d46a56105635be111c.1780397980.git.ljs@kernel.org>
-X-Rspamd-Queue-Id: 0E97840011
-X-Stat-Signature: ej3mzowpce1fma6fwq14kcreawrjszkb
+In-Reply-To: <440C4C1E0D13E6D1+20260611023411.379986-1-chenyichong@uniontech.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781164915-516107
-X-HE-Meta: U2FsdGVkX1/FE3EyyxNUSTsLHuwWBuDPWKVoLR/WxahlXbkIY183afCA0yKb4k9vGjOErOHzqOD3lN9e5BOz/xAuFRxhSHXkNzvugmwn5+n6MPdkl4E6aEswdLctt42/fjQqYCP3Z36FUVuWWTOqiPwcFX+ABewgcp0UJt4LQNFRRkXhBP2JkK2y82TplKv+1ZkPGRx5nqpgyiAzvOfxde3CBXMWjP6fHBMk/qoZXlSlQ1lALQOkX0QXpb56cZ7qeerlG6flVPsyA1uAafsq4omkDvHeFEFQ4E/eRxSN9QtsY0AqHfqvXTOkMPibRiJZ5zdL+dKMgGztN8FeETZZuJmH8LjJXCGKcvN1TQaqeB1ae+221HecS1PK2SnJIT76KyWl0SIoAh8/uuhvwnAkFhM9Wcies/FDyTkAOyaerKqwngxcv7g6zn/yHAq8gTY6nfQWoylCUSCevShQZmg0JWnMw88vIVjJ1zpFmZZDtKdzCpODuZmos44jNUmIgoEF6I2errpGhQkrD29hypHDj1/kQLXKOtJCgOVgoXeU9PymVGOxrZDk0tBzDU4xsLDZdzUhtApjYbYAGfIc8AryOcz6lJHHunSECZzMQY9jOuhqzOPP/g4XRGneBEAfVkxopV2vIMehoEm3aEX6mabAyGT+R3prs/Q4Z8ASgxn0RxN1KVJ+E1YvfeBenRy3lEq3yccEW3HptASskFOWb+iAzuguCC0N55Cm117IpGzT8aF/4QH3yMQZVwdK94mZKTLmZjOauGFvFxjrQMfPVnCNyarIWGkLoMpcUGz6SMizivVeKlljHUSOFIzCp89jltUckyicvFWzFT/rfldaV7Y3bGOWtefkAG68yW/L6jWYnQIh3vA2DO03HT8ewLLoERxh0hFFOXuRmMTdzjuPFTwZEbvkr5LmqodNe/hJVTyRz7Iqz7OzEvlEMLHJVBzH54S27IIXgziqpeO3MbEvN0f
- zlDfFoIB
- 30jH7gRxlzS5f5aY6k5H+FM7mRfAF+toyxYvEAZDru+Wb4sN4WHFoHb3bTyczsiWwlzMTexxxPWeSV7UFSN4Zz36at+JffjiYVJWFQsQ3CztyhBmdc1D2OEL6g2gYW/yaAGRfHibiqeuv8rfeodgsBY9mKt7X747W80JKFp34/8Sp6IDh8M7nkrWV/LMaND+5QiRl5SSE5MX909Zln8s8WbgYqiIqbZAwhyomkhLZnpBIJvcXWvnWDaRxYa6jutDNDFR1n004/wEPCCs5bM2znXR18se1OSyvq2Bm
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2952720002
+X-Stat-Signature: faad38uzn59t13mj4pibodwkbtbcri5z
+X-HE-Tag: 1781166890-558260
+X-HE-Meta: U2FsdGVkX1/hby6Ss2iQe2m/AJgcBw64V5oN/mAzNg30tddkyg1c5D5kdyJ1lLNX5YRAk5mzthU8ommKbwN/JP/EAN64MPHyC8GTHcvxHZ+g5uLPoQTxe3+UCM8KlU1zstYAPHEGm6z9z4ixMevto5eH2cNkoWEzhQvWcg+Z745WeOdtfKKJQg4NQSqlCa/LwMsVAbCybP2ubHGyyYZV8EFfyWy9FYYMjKJZ/jgHiU2vHRUCv4o/Y0MPFHAzjiJ0J8EN3ya4+dLACY8JLhjCDWoGlglJPGkboRnPjqGbpQjjpgrticYv/lB3XJZwBwwScNkAkb7TmBNSYsySlVfIHeLVAIOzSMSpKG+zOKxtvYxCxewxdpuKQCUlgZsuXNgHZJJHtit0ugTLLS4Lg2kGyvnSXTr85Dhrdc6/R9wXTPtv1GGM5ILfcd+CwsyAXAmN1WSZ7Xqs52YKEXzMYEur411buXP96LgH4no3aGJT4OU/gVRuoG8BzxWlg4NJe0hfb5Z+qNZdZKL93blUqvNANkqM5145HZycWi9Rq3/EY6vqMSZc8GxmyY6YMwrd1n51hFkWu7rzDBHlG9ZMQJQ0GsE+1OvDkFEqCrg3wO1ppKaP5TmbZmPD/MX5fzqQyUpB/I/xe7ZTfrQxlGKiWmVAo0KH62BVz6xryYEhIP7ikP9/kOPbDndB4oaMUvXYOM8/5ctMyp489f+dODply32i17syPT7wxsTpN/dwW8zEBSd7erhLhigr3Z48Bb2CcedWebBbbLY/NtTvGUI0Zilh0RYEKhJ30Mjb5a4br54JjpYNqXzwDRCPYEhFvIjoqTjW6cksH3G6xgiiiEqo8Nml8JtXklfuArR0fxNPOCoaNWc8C7y3GTn/0DflFOdXMeB/uOlO7ybJMKiQmjr+no1o+Ij+H218VPjP3jZMxwZ1AIx8j/UVJDYDtuZbmuRdOIBtMTehcwPL0X/iS8gf3VJ
+ 7Dj9cP2q
+ dWsPhIDBzlvS6gk4AmaNlVh8geqTJKskzm2f21DNFJdJW+F+rJkV7SESaJL5juNxTaqek51H0TIlCgqeScuGkipaZhrucPO20+9BxCH91qj1eQJkFh/8c755QZLhoqKjgKYVyRnvmXN4oNl6Vv4XxAOZIEB9UB6cGFIEnIFZ2aSKkOjPvjavrh2htJYHh1RE3WVbDmXAZ3l+X/y/3agPlNunI9MfkK7NxRdhMuhTLAeuzph07THk+oj2QBrNl0wJtHG2zKCgfD7T0opTXyeethN/BakVsdUx7lRJHs4ofB4/nyobl6jN1Bm6LOkqSwoZ+P0hoc9hosaP5NJlB/p47b78v8rmDFYhL17OQZ9oH7cbImzFhIKygiOF8x+j2p2SP9+cnHXSdEJ1LCRgYcL6aGW0FQcHR3crOZ42Exbptg4gf0jxhNy3QdjwAepCqOI/qrhh0r5hB5jH2TZt7176CNDJwAAxGKvQ2mvEeJsTzo4WGjYQMWLQKlrNFb0HbBpAu2B/Wi8GZZ9A6NXdHdQCYg3B9ez/mWBJXJivslJpXOcARwIBs6qozoEqB0HuXAH8ebeoa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,28 +118,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 12:06:27PM +0100, Lorenzo Stoakes wrote:
-> Rather than providing a hook, simplify things by providing the ability to
-> override mmap action errors.  This allows us to more carefully validate the
-> value provided and thus ensure only a valid error code is specified, and
-> simplifies the interface.
+On Thu, Jun 11, 2026 at 10:34:11AM +0800, Yichong Chen wrote:
+> add_list() allocates comm and txt for each page owner record, but the
+> cleanup path only frees the outer list array. This leaks both buffers for
+> every retained record.
 > 
-> This way, we eliminate all hooks but mmap_prepare and allow only mmap
-> actions to be specified (which core mm controls).
+> Free discarded records during culling and free the retained records on
+> exit. Also unwind comm when allocating txt fails.
 > 
-> This significantly improves robustness and eliminates any unnecessary code
-> duplication in driver mmap hooks.
-> 
-> We also update the /dev/mem logic (the only user) to use
-> mmap_action->error_override instead.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+> ---
+> Changes in v2:
+> - Wrap commit message lines to approximately 75 columns.
+> - Use "Yichong Chen" as the author name.
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Thanks. Also, in the future send new versions as new threads :)
 
- 
+The patch looks fine, just see below for my comment you might have
+missed last time.
 
--- 
-Oscar Salvador
-SUSE Labs
+> @@ -480,9 +489,15 @@ static bool add_list(char *buf, int len, char *ext_buf)
+>  	list[list_size].pid = get_pid(buf);
+>  	list[list_size].tgid = get_tgid(buf);
+>  	list[list_size].comm = get_comm(buf);
+> +	if (!list[list_size].comm) {
+> +		fprintf(stderr, "Out of memory\n");
+> +		return false;
+> +	}
+>  	list[list_size].txt = malloc(len+1);
+>  	if (!list[list_size].txt) {
+>  		fprintf(stderr, "Out of memory\n");
+> +		free(list[list_size].comm);
+> +		list[list_size].comm = NULL;
+>  		return false;
+
+Returning false here sends us back to the error handling path in main()
+where you end up calling your free_block_list() anyway. So we don't need
+this here, right?
+
+>  	}
+>  	memcpy(list[list_size].txt, buf, len);
+
 
