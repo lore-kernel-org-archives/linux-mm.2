@@ -4,109 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 180ACCD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:45:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B632CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 187326B0005; Thu, 11 Jun 2026 09:45:00 -0400 (EDT)
+	id 92EE06B0005; Thu, 11 Jun 2026 09:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1385C6B0092; Thu, 11 Jun 2026 09:45:00 -0400 (EDT)
+	id 8DF596B0088; Thu, 11 Jun 2026 09:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04CEA6B0093; Thu, 11 Jun 2026 09:44:59 -0400 (EDT)
+	id 7F51B6B008C; Thu, 11 Jun 2026 09:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3A46B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:44:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 45A26120689
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:44:59 +0000 (UTC)
-X-FDA: 84867752718.24.581AC71
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7CC48140013
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:44:56 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ibs/lTWy";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B3446B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:49:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 176A54069C
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:49:42 +0000 (UTC)
+X-FDA: 84867764604.14.E2E18D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5829F4000F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:49:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkKy257r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781185497;
+	s=arc-20220608; t=1781185780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m0fD9KCk/6I6qo6Wg6wfui77ADSGp/LJkYfEAup3lwY=;
-	b=zkvFQafVptMNWNu+0+lpaGkr9XVdhjXNUAiRNmDmUBDCeozArUwqqI5yoPQE3ve6YBr15X
-	+U9jcObXkLoCQ4I2TwgLr+isQ/kswSA34QVaKCqodw0spiwKomHOtOp56+uBbbtzeS3VbL
-	dMpu6rvhNaezKZyATQfh6MFwWm0rc2k=
+	bh=TEvuJlQ7/byK5XxsbYYwUbRy15W0fhVCxzo1M/PBXMQ=;
+	b=Lr2FxaaXZ7oXsvjNhI3PfTO/3gYJYrXBkefHWQ1uT4OGmoLFTtFkQBXrWiwMQsmmliy90x
+	IKGxCFzXVBSUgY2XaPksWpCxh2hU/U3Ighy5mpkufWAoxDCPHYe7TxjFbFTL+PhOTC4ETe
+	0dmUxtjuLhw2FnnViSwsa2bTJbPk7y8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ibs/lTWy";
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf23.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkKy257r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781185497;
-	b=IkJeZqXBAwrtZEjMdHnCvqHhXyGp+dxkBMwTUm0cXvtKOrXdZM4lWuHtN+X6i60N7jxynb
-	5X7tI1SjmYWsq43NcBDYhd50uL5HJpompseEDYrrkGORdRsZPLVbXQzZJwoXd87a7Fzfiz
-	mJ4Fum9ljMtG+EsHgdVt6ZjtBG3tKOc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=m0fD9KCk/6I6qo6Wg6wfui77ADSGp/LJkYfEAup3lwY=; b=ibs/lTWyAjLVWXS3n4wPjA79OS
-	ITb//Iv1CxtQUrx/67IL+hYSamUfqJOQPft+Dglj3UFpe6AehWYKHnyrdmyQlnLCCHnR37eSF04YY
-	BV8xlmAh95887QUefrFHmh4w0rqaGST435zBbQpMYZ8US3gRQg+HjRI0XuAaxBi7gclydQf69ZDM5
-	k61d3A3iRRXuQJHaZacf+KNxVaTzU7pWHtqGjdFKnziZBtLLfi6vKmz1i2qN9G7/mZEKcluKIADZP
-	arbxTyUtAa9KswEQnkGYCnK7u+EJaXbbI3n2nupMq3G+mbNR2VmbwbcZlBXNHkE7grhJz1GNpvuDh
-	FnJVAQdw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXfi7-00000001ydR-0GUg;
-	Thu, 11 Jun 2026 13:44:43 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0B6CD3002F0; Thu, 11 Jun 2026 15:44:42 +0200 (CEST)
-Date: Thu, 11 Jun 2026 15:44:42 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
- qspinlock
-Message-ID: <20260611134442.GJ48970@noisy.programming.kicks-ass.net>
-References: <cover.1777999826.git.d@ilvokhin.com>
- <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
- <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
- <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
- <20260603120811.GW3493090@noisy.programming.kicks-ass.net>
- <aiphFXe_TPNPxZ_n@shell.ilvokhin.com>
+	t=1781185780;
+	b=wuE11hI49lPxRorpTuGLqTlGcQ0QWoFtB/hFS/u9FnDlpx6WuWhuTM2qMJxDjFuRazwwYw
+	HLG+ifrvP4GCt2R/CwOVpyU1OTGTBUblSihWyTuqR2vt3HByzK06UFmJxEhGHiiJl1PcpD
+	5lkKZeXuLqbjwWidN85/VKPj+eOziVE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 22CC14330D;
+	Thu, 11 Jun 2026 13:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C96F1F00899;
+	Thu, 11 Jun 2026 13:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781185779;
+	bh=TEvuJlQ7/byK5XxsbYYwUbRy15W0fhVCxzo1M/PBXMQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IkKy257r9V3Y4dqrKhFosnHxl/O+VSLLwvZhs9NCu0ZnacHR2U0oyhquj+b8cv0Nb
+	 pN963rM/ZsmLuBz25lQwn8W1cFTDW0tXfOgaHa7kzli1wOKRvnvNCTh96COOtxiXG0
+	 3cHIpfTPwZCXaGVmAXBlmKSVqWZKNJ+FnGPA8/EUc7c9DTeY1SkK5Egf+aFYwJZPDS
+	 Y2wsSrp1m/yOhR2z6j30HHuV4uSZ8zCMZj+zsUrE4l/i0LsP22XJYCJhreCnA3Myx9
+	 jCs6fnM1yjp/CY0nf2hAOEmqV6H2FiVq6Xlj3SRfbUDZAvLQzvu4SwkSNqlp9mBl+N
+	 TFFJU68m2/qxQ==
+Date: Thu, 11 Jun 2026 15:49:31 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Peter Zijlstra <peterz@infradead.org>, sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] mm: drop pte_clear_not_present_full()
+Message-ID: <aiq86-eKAeDi-CQd@localhost.localdomain>
+References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
+ <20260611-clear_not_present_full_ptes-v1-2-49865fc82629@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aiphFXe_TPNPxZ_n@shell.ilvokhin.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7CC48140013
-X-Stat-Signature: cka3y49n1xniniqafiqw4f9kyduu5bi5
+In-Reply-To: <20260611-clear_not_present_full_ptes-v1-2-49865fc82629@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1781185496-134698
-X-HE-Meta: U2FsdGVkX19K0rK1AmhHWRXUxEPQ7Tlz29+x4rhBniOxLxYs5KZFbUizglzPIVm6WL653cmM0NuVZ+SzgbhguZYDmHtKkuGeG7HU6z1dpLon3eUwW/v11xxpFIkgtB7Euyvwr5MnSG1kkrM7rg5sVYOo2k88llRf9PB3mBsMQ02Y9QBryojcjia7JSl0dk0YR61daV+1gM4IPUdy0rjbTXxpOCbhaflJDjCmlXsbqwuR7C2g6hdha6K956k8b1tCuMq5WPEw1pXgyd1OlJTI+suAcS895P+ayrLceGmf/ybCKvBiylVYiOtq903Kppgrea5uCsuB+kjzmmjRHzxGaosvKZvF6KABkNXdzfwYlhkkcj7QIOoclAd4Gut14AYHwnvSj3ZqNdzvil6YunoGB4S2aO2BsKA8eUiMiq3hxcpBnyOwK16XDyQExotIa2fUOnlWNJHuV4biWY6UVZM+Yu7+DxY53ftsebN2bm3X/PIS+gHedtWAj6JKIDsTEhx5tEWNr+TwpMMC+5Rb2QbE0eoyyIAFWJPZZ6Fy9zzsTb/LfpF1tRwzwgRpkSMRWxwGzhv+QPnsrM+HRXDzkckPUKVCwhgeKn1ZWw0z8BguFrh83d/i38SRlAZb0efV1TLCNbYi1aJYp8UYu8HGP0O3I1/qv5uAPbyfkdT2Hf6KGu3+aEtQDY820LXO9akKIiqasTsf+DBpcur+XB80lJDvg0ag4ehPGkzeR/rB7r/Fwskrkz1VzcAw3mEZMcHVid4ZUdv7evrsnIM/Z2+nnEQwLhS43mQ0giQtSmIIye9XkT/det9Gf+OEqBhYSIH8HpqSx+xElIm2pFyBu31emjAk1A3hJ0LfzoclRS7MkiHKl2qz8MHYw6MK2XiRvOcDg8nVUfe3HmMd1hz6ARKm3N89v4UzjwBpKXj5coYN6qr6FWoO+KILlXfEUK0OeIYHgRjZ3ghX5QTzUUE9hGuTRI1
- Ou1DRxb5
- wCalGkPS+2B+1wMYjJ6/YtTdZKoKJwmMB1VrDpWOZENn3gxu4SSlB3xZh1CmDGjg9KSdT4Nv8spjhZY/B2J+oX2IsQY6vknuZAyt9t23SAZq69MhmS05L3Dy+CKjIeYHke7TsPaxqZzhtPpVav4h0MLqQJ6TJfM/VUiCZNZDAGMS0enIGcbFRGm2poG0cT61K3Cke8PH3f2oqYSXT2bMhITnHsaBGL6Etncl5JBLowSlT3MndT5LvaaDXYyJXkN43jivPnie3LQXH29pHBrx74PxrJECaZ1LNT2Q3WXYb/3tew0k2krc6DcoQzg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5829F4000F
+X-Stat-Signature: je57xfjsrn1sy19p8o8z91s7iu73stbx
+X-HE-Tag: 1781185780-544192
+X-HE-Meta: U2FsdGVkX18qHQ/t+XqyET8J19rpvCpA2an3uWwMp1F6KEHFi0SF+hhmUckQnoaSp0zi9y4TMUZNlBb+qhLyRV9Z0Nh1eVU8TRaNmTZxIq57oLdSexKe8Xi4YxcdMQNDCkbkhoWA3uqgDXHPsW0ofSXCJzdd5NX/948I+h1Cgp2ofqdR3puKteG2+QhoxKUwlU6SDnBFhiK5ij5FrhlgYspCGrdhh8CPgta9RbiH1BzIdQ73SB9JnwlEEHzRW7cmcbHDRIvHrRJwY5i0UNkTHUEEselv82iRka7QK2RQbqDX3jLlfJqj7PGtYmEmxB5fy84cQTeIuJraGuCIAUknPsrmdeWNcjOrsGZ5bENA4T5lh+QSkGgs/5ahyeXTiv+FxgB+4BDsjCYJRTTrTaxQL6yLf52P+FLT9zWYRtiv5Dy9Ui3Ln1osYSbzExrybA3bYzO5slZ3t08B8womWKs7M1JfNpqRtH4tb/25QLPhkp1s8+463SyRrbKtA6s+lT+z2gaRp+UFZuaC1LNtMbI3IwLhLptfxRrTWAJthL1XSS75LACReWiBpL1Ovm4EuGCPEwLJu8t2k42exVWbI8AEEIY8lihqgUF/SuXmLYaAlyNf99E31O3OQrJAxfvXdyMd6JILBxWBu2QAPjFozfWQkQYv/Zw4vKlbS/LUvz4kgPbI/DVP5xAOoi7rVVfuIuLahuyQOtSWppcSn0nabv/rtSyCxxzRwRrCWEq5pOkSeuo8ekZCSRM5BIrMghXbTSm0ViQ5JlvhKpc+lGW6pk5Kx4HFAMvXQVz9Ofbg8Rm8iMavqjrmWmPCEei0jN6f6jpdqfEHBPEX/UHT1Dsf7amokihQJxbqi+d/Pg3Pic0bCoCuk+TFUQuPIMrW0tY+Kvgf2dptV2vUClBAM6sszSMzSe2fi+ofV+W9wAlUwefF7TrfSX2LoGq7k4Bs01Y7dV5nc0s5k6OKWIZBPKwYv3N
+ 1K+GvlUL
+ p7pK37kIvkWIP1ibvy6CE1QaZqiqzKqg4PvjOieRm/huXitbH6HLZasNr19h0DMFlBjrBPHCwi+lUQSE3mT/BTvodeR3mGRsuruYhBwPysRwszaFlwVo0mgHNLqnBZGreSeVo3w91oBOr9HPfaMMUPM0MmKdPt43jGJ3P+fiGJMUarUh49lDbFLdqWRKy+f9XCjIQKEy0mGTH0QVjA7REYyV6e0D4wdS3Jo1fVnM6Vd+Ne30AMVTvqj1zL9fxuWjFjXfh5srtPnls6+CNem2CuQQfcvYEhMbV57kb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,18 +100,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 07:17:41AM +0000, Dmitry Ilvokhin wrote:
-> On Wed, Jun 03, 2026 at 02:08:11PM +0200, Peter Zijlstra wrote:
-> > Also, I think someone should go do some performance runs with
-> > ARCH_INLINE_SPIN_* set for x86 just like for s390.
+On Thu, Jun 11, 2026 at 01:50:48PM +0200, David Hildenbrand (Arm) wrote:
+> In general, there is no good reason to do anything special when clearing
+> non-present PTEs.
 > 
-> As promised, I set ARCH_INLINE_SPIN_UNLOCK{,_BH,_IRQ,_IRQRESTORE} for
-> x86 and measured the effect on a few real workloads.
-> 
-> Short version: inlining of _raw_spin_unlock() adds measurable kernel
-> i-cache pressure on every workload I tried, and on a
-> kernel-i-cache-bound one (nginx connection churn) it costs ~1.27%
-> throughput. I did not find a workload where it helps.
+> In theory, HW that does have to invalidate TLBs for non-present PTEs could
+> benefit from a "full" parameter, but fortunately
 
-Thanks for checking!
+That would be on arches like arm64 where it can cache non-present
+entries, right?
+Then, we could signal a global invalidation instead of doing per page.
+
+> pte_clear_not_present_full() is not wired up anymore ... and there would
+> have to be something very convincing for us to care about that to re-add
+> it.
+> 
+> So, let's just use pte_clear() directly now.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
