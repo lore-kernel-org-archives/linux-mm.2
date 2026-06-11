@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D65CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A088CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:52:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284D56B008C; Thu, 11 Jun 2026 03:52:26 -0400 (EDT)
+	id A9C506B0093; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235A96B0092; Thu, 11 Jun 2026 03:52:26 -0400 (EDT)
+	id A735E6B0096; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14BB16B0093; Thu, 11 Jun 2026 03:52:26 -0400 (EDT)
+	id 9B5ED6B0093; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 06E286B008C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:52:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83FFB120501
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:25 +0000 (UTC)
-X-FDA: 84866864250.20.FEDFBD4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DA1A440002
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pw7BVdtV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 893416B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:52:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C46840360
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:46 +0000 (UTC)
+X-FDA: 84866865132.07.561D911
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4BF7BA0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:52:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuHWA9uR;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781164343;
+	s=arc-20220608; t=1781164364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gy0fOwvIMH4EuNtEbs497c1jGFk+9kN0Zl6QDcA1oSs=;
-	b=IBGpVP0A9+soOATYeJWP2o1BsWhnjqsDM8cw06J76cQl29TRwQ+shciVIH8Ndv54sgzvL8
-	Em87G5NA9QdeRRjr8H1/4Qu14ZIDAYFk8agPvxGyrf4cZYQVYlPpq9/F/1tX9BFY8G5c/U
-	cEQT0o9OF7x/FLUMi9EUuuwRWN8mqu4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pw7BVdtV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	bh=xijNDdKPHv1jokABJ/KJ4UCI30y34c5TQzlLjkdoZMU=;
+	b=n+GeM5l02BfOGNFH1KiHAqBlsxHzk57Fn/dawj6d9XPa4WZ1EU6Oa8JNqaFZlFbv6fjhYl
+	KDWli69DhVwnVa4H7GEdDo7cHR+aMRA9lhqyRvzNX2b6hu5sjRReXbi/hUXE/wTf+W0y+E
+	7CLuyzGn+iY0YN74Y0IT+UPtn+keccU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781164343;
-	b=V5gqdbul5mnKVMFM361OaT3eaJ5xE4KjL74yIHwVOBVxJl2Plxv3n/Mh3sFJu9BN/bUTZZ
-	YCBRRCwQ9BJtkDH+6K7vGh4kz949EdK9Em5VQof9jpVRBCN4X+Ocu0OSRkeLuA1DNAofjL
-	ukp+TQ19EFqRz6SdXkGZyoqct/x7LJw=
+	t=1781164364;
+	b=jutpXi3cm/xBXO6Jsk1d7e78U/0ru0vun+mnYREGlLvCFFQF75O0+Fd2MJRXBqvJOBTZ8E
+	NN1wX8BQ3uC/rT6xRWwMFLXW7vy4BqKqMUWEHX0tkm0TbxBWnvd5e5l6segh959tDIDMib
+	SsRf7pgaZSOVfn6nH+NQio8o3GPz81A=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuHWA9uR;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 451CA60052;
-	Thu, 11 Jun 2026 07:52:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0901F00893;
-	Thu, 11 Jun 2026 07:52:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57A7A40ABE;
+	Thu, 11 Jun 2026 07:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5D21F00893;
+	Thu, 11 Jun 2026 07:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781164343;
-	bh=Gy0fOwvIMH4EuNtEbs497c1jGFk+9kN0Zl6QDcA1oSs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Pw7BVdtV9nJb2vVo/Ix5ymbdE6e+nicMi2ufCJNiA6K1Lue934jVv9/5L8lXkcO0m
-	 2UBvFQES+wq6L24tK2B59XMB8NPE9Fpx92KlDOqnfP6eUzBgFMOjwhNJCfYg+ejkMY
-	 LGBCMRYQhGSjGjFGfGtR2O5QCR5vFGisu7Vr71TDIG/m8Bnokjel7ReskvLrSndeOw
-	 B3MFG3DYMPrp+AoIyEt1yCYUIOlR/A2AH20Z8s/Y52h+lqPnZVzDuce3w4Tb/QbS7j
-	 29GwXAaBqo/L542gTyeNxfXiqdQKZTpr6+GGPCbYrxbdC6w+buZi3wsWl8sYUg6U1W
-	 NDPm3lVE1z5IQ==
-Date: Thu, 11 Jun 2026 09:52:14 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, muchun.song@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v2] mm: page_isolation: avoid unsafe folio reads while
- scanning compound pages
-Message-ID: <aippLofoK3VJIQzO@localhost.localdomain>
-References: <20260602130755.38794-1-kaitao.cheng@linux.dev>
+	s=k20260515; t=1781164363;
+	bh=xijNDdKPHv1jokABJ/KJ4UCI30y34c5TQzlLjkdoZMU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cuHWA9uRu0xicoIbUbVAW5BaFPsqNLc/45roEzdVUouxzUOPf5BBWNRR+7WBZmwNX
+	 WN5xVEkq3jOWwSHFNktNsKOCsvvgQJKzhB+Azy/snZxkFydWBlqOhofwJI+84TQ1ui
+	 BPK6xXyy42L1bIagjFwuQH2g+t5W8FcFXnGaW/D7CvgtmyRHXix8PY+bBVTkbSMcYm
+	 i1NQpit5I8a4LCLppcGOd76APYY1/dgsFjD+ySBztXkLDZuX9qGDo/pV6q3yfHpfwF
+	 +Mq5PqIZJpXV5+bTLyUdBEP8k2/uF+bacz1+6xU1BDwV1MGvr0JnPxiS7MdSWcJ8zd
+	 ozRnuwapIYjEw==
+Message-ID: <49ca905a-0303-4fad-8257-485b0ed47c8d@kernel.org>
+Date: Thu, 11 Jun 2026 16:52:38 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602130755.38794-1-kaitao.cheng@linux.dev>
-X-Rspamd-Queue-Id: DA1A440002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/16] mm/slab: pass alloc_flags to new slab allocation
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------YrjDV9X0pifSc8pX0GjzraWe"
+X-Rspamd-Queue-Id: 4BF7BA0005
 X-Rspam-User: 
-X-Stat-Signature: 8ruim314mmfif5qxcui61ycyz379gtyo
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781164343-480657
-X-HE-Meta: U2FsdGVkX1+D2YxlxiGPuhRSuFVkatoGQRtCBDOTwGHnPOP16S6kNBnL+iPXD77LGbB8TJfrTNIjhz+AqNOWgbxYDbBYFka1bVIOlM6XN0I3arGQpemY+XtlVF5a/6XyjGv0qnfwLgnqfYyNy2G24SIw4k6HqZiRrWWUxr3MRlMm1N5ZOv568MJvRVcEx9OzNMHmGW0eyzfB8gr0QpJTkrnab1zhmg7kPUEvx2QsRdUnQ2058xifWmI/52/ynN4frRqgQ9MWyQdGL5RbvfblyUZvPrAB/+v73TcZe7tTvQWjNkceF+plMjSA99mLBGxrH4DdhdPd8HooTiONKg/NGbvH2W9ADi8GyUKtSQTOTqFrWh9zypVPlBduxUaqrrrfIkpTuJ9dgQQNxsMCttE9As2huex9+ZlqNuiFh27L6EKhrhZNw6rY8AfFpCAfiSyOvA3vOkfiVYY3Y9qc4KPNlufGDZ6+I2Y1VGKhmISjXTVa6ssAMAM9sld9KAeeUVseCebeuc3f5kv8HuyugV3SjrOs3sJoV1UL7yNgRrzrdCaL0ab69l9mdYv40lK81Tpiiv0SZMCn/sVvl094cPCrRvIHRXY50jKl6GMZyiItmXbV3I9at0XUzIN+ES76L6BzeWebT/mpn8GjQ+HHmqLTdU1R+LMFpS6T49ZqF2BEC7HAPl9v//x18iW1NOQ/oyWUAeJpj9R9GlBTmpvwqTfLnuzOHMewBKCVSB3pqicCDpzVKyx8URuBSK+gMFiNIjpnagGaaaR7vgbedWzE05UGPs2BuHFyZfMFNoXkFdokVDL+wKZVptaiI7u8AJNp4f/P3GDITzhSrxvb2lse+aLcprRC9OS6sF7FPjbMv0bsL6ytrs6ZXilSZ2QNjsr3ucKnpMZENnW6YG5ljdoI/NBBp6BvXjxBRcjk8RhSSsPqNKshJG6GYFtETcuNeFJsoaxWsnKVgLZA9Z6kH89gu7H
- dmlPT2Bq
- lEjPvgGhlYTgvZBzsixpae2woRWTxk/aJtmpuPeiO+0j/8NzHFO1DuIPymRwBN60WMyStT8WyHf8yoQ6mZrhA0j5ZN5nnFNnByDxAPlHPo76l1LkACCa5de0XQZmyWJ41mrdzXqvRNFEr5ceFk5jjQ4vO4MJtxX8whHNa66OGqhd81rrFUdM8cWyv1GI9+MiL63RW6EGH1tEOF2YTYeSNojeBajFzmifPPRJGzRMBtiofvUEILNIyqanEcopR3jxQGu+vCiy9FjUA8AM4GGNqmYflMNf23jNaE0/E
+X-Stat-Signature: r9cku1j87z58w15fem6ky5nd7jxsx1xr
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781164364-320898
+X-HE-Meta: U2FsdGVkX1/j+iu7ZkduZbYaG8THOBMVE5Rjhza/tFB9FKqW68De/tfjK0a5PYn8jXjFrbQ0HEof/O8YmB5d5gNV/jn6C/hL+odlacJ7MouVNxn/quxiLRGwl+yQBmNGho1bMBEFGMDKNz6IOpJ6z0OWD8lvpOVjuzMHpbqO5TwbUvem1Xs2eS8E0d2Ei5QkXSVm/8VfKuMK9+jMBentDd8pJ6f9C3dzLw5JMkdQiM5dK+tj0/NYu8qvGhjrpTpZkILi5fI+yNKFGtkb7vvqPmHFJUmJ+47rKkXzWbtwd1fxikxs4YkhkM5qEOiwCMnduAma7Bnls6AN+XCGct3xHUd+FOOGjWp0GwHwuX/cDuhqYArX8Fep2nxwolC+J7yECv+1EBUSIQhQ+MJpbE4LpPlZ29pV3sEpWdbveYLrstHYlxo0CSXhcq0qy3H73+ClybQu4KZ80tMx2wr8MYmzOsl/Q3tHEFSJHnVWF1vNaeQpcrmBn836RMV1dGf5b4mW59WeZL6ci/pKCJ5AByTJpKMoj3qWDrXGh0v41DOii9Udz2QUCQTg8Qtxr07mEbpgQU45cdHtZ/wsB5NwBh22c+5HGHS449baO5tR2T/lvhHmHwN3Z86jilKKVWDtH+W3eZ+iK6wvm3PRg8q89lfQicaxCToIWOE3XJISxfXkuBTIjEpR4kjVU7FMwBTeVzOZiUnqmmTRI+VWY632WIi7oKExS2WwHHCmuhR3G4XSEfBqxwA/MTjS39a36DaORLqofCNVolmcQ4vTp+teBAFmhMFIAyjGcVdWy9qT2+uN7rc18K/yrZl78MTCIr2GNws/HrECZAKKB4ODSEu1Jit5NvjNKmuyl7FIw7anboKh8BidZfkAXhJ29sk504JgxOtd75dEDE4Dgw+/ARKBFeSENnB/Q062s3M6wy332JpePMv5etS6M3o9j9Xr2SBky9lB+RJ7T31+ricdDVKUGNd
+ SL8ZaS2g
+ Io+s38tSeiIohFFT/xMYvXG6M0zKGQ7vMCOnrpIOBSG4yCQqRL9rESLwfRvbmdmuKCALkCNiR0I4jwBKRvcTdXXRTw69OlWLyEW2fQzxKxH/yegcxrgrYsMbURD3TXIi7cpprh/MdGeC5MA6PbaSjZ7Aap9Z94AZ9TTQDZ8aBHnDaOpmWOSMx6yOOzpXypP5RN5fmX3pZ3yF3ql1lKvZjAekg7opFEebADANNQMpt3utTsJoQbW6t9io/ucuhGHfxiR+KaKEIvUPybM12M0LR0/hC3JH7N/IbGBpZEJNVVZsalZzgkZPujio5/RRz4TdkGA9GsXZpVtZXVg7vxOlZk8LhpoFH37Jao+8ASKvZhcwt/tiCn5FOKnIC3Lfe7wZ4FVwkNtW0Hdmr+vB0baLB7Sm2yopv7Beu+c/bDYEfQiPRJC3UIgGBfJvWXYgvOkm4s3k9ZuZUBATOmm9EFCaHc/nO7ksQoU52iYKOFqidkesBzX4pd4/5zJJHoSoIRdBpKkfc/7MiMh++XW0X/Th8I/IBKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,56 +102,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 02, 2026 at 09:07:55PM +0800, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> page_is_unmovable() can inspect compound pages without holding a folio
-> reference or any lock. The folio can therefore be freed, split or reused
-> while the scanner is still looking at it.
-> 
-> The existing HugeTLB handling already avoids folio_hstate() for this
-> reason, but it still derives the hstate from folio_size() and later
-> derives the scan step from folio_nr_pages() and folio_page_idx().
-> These helpers rely on the folio still being a valid folio head. If
-> the folio changed concurrently, the scanner can read inconsistent folio
-> metadata and compute a wrong step. In the worst case, folio_nr_pages()
-> can return 1 for what used to be a tail page and the subtraction from
-> folio_page_idx() can underflow.
-> 
-> There is a similar issue for non-Hugetlb compound pages: folio_test_lru()
-> expects a valid folio. If the previously observed head page has been
-> reused as a tail page of another compound page, the folio flag checks
-> can trigger VM_BUG_ON_PGFLAGS().
-> 
-> Read the compound order once with compound_order(), reject obviously
-> bogus orders, and derive the hstate and scan step from that order
-> instead of querying folio size information again. Also use PageLRU(page),
-> which is safe for the page being scanned, instead of folio_test_lru()
-> on a potentially stale folio pointer.
-> 
-> Treat an unknown HugeTLB hstate as unmovable so the scanner does not try
-> to skip over an unstable HugeTLB folio.
-> 
-> Fixes: a0a9f2180b90 ("mm: page_isolation: avoid calling folio_hstate() without hugetlb_lock")
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------YrjDV9X0pifSc8pX0GjzraWe
+Content-Type: multipart/mixed; boundary="------------6OoaCLw56CPWa63NRnaF50aC";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <49ca905a-0303-4fad-8257-485b0ed47c8d@kernel.org>
+Subject: Re: [PATCH v2 08/16] mm/slab: pass alloc_flags to new slab allocation
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
+In-Reply-To: <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
+
+--------------6OoaCLw56CPWa63NRnaF50aC
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
+> Add the alloc_flags parameter to allocate_slab() and new_slab()
+> so it can be used to determine if spinning is allowed, independently
+> from gfp flags.
+>=20
+> refill_objects() passes SLAB_ALLOC_DEFAULT because it can only be
+> reached from contexts that allow spinning.
+>=20
+> Also change how trynode_flags are constructed in ___slab_alloc() to
+> achieve the same "do not upgrade to GFP_NOWAIT" by using masking instea=
+d
+> of a branch. It will now also not upgrade in cases where gfp is weaker
+> than GFP_NOWAIT (i.e. lacks __GFP_KSWAPD_RECLAIM) but doesn't come from=
+
+> kmalloc_nolock() - which is more correct anyway.
+
+Wait, debugobjects intentionally avoids __GFP_KSWAPD_RECLAIM,
+but we have been upgrading it to GFP_NOWAIT?
+
+> During the masking keep also existing __GFP_NOMEMALLOC (pointed out by
+> Sashiko) and __GFP_ACCOUNT. Previously the hardcoded GFP_NOWAIT would
+> eliminate them, but it's not a big problem that would need a separate
+> fix.
+
+Ack.
+
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
-> Changes in v2:
-> - Avoid unsafe folio metadata reads in the unlocked scanner by deriving
->   the hstate and scan step from compound_order(). (David Hildenbrand,
->   Andrew Morton)
-> - Treat invalid compound orders or unknown HugeTLB hstates as unmovable.
-> - Use PageLRU(page) instead of folio_test_lru(folio) to avoid folio flag
->   checks on a stale folio pointer. ()
-> - Update the commit log (David Hildenbrand)
-> 
-> Link to v1:
-> https://lore.kernel.org/all/20260519121646.40833-1-kaitao.cheng@linux.dev/
+>  mm/slub.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 98b79e5e7679..8f6ca3d5fdfa 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4467,25 +4470,22 @@ static void *___slab_alloc(struct kmem_cache *s=
+, gfp_t gfpflags, int node,
+>  	 * 1) try to get a partial slab from target node only by having
+>  	 *    __GFP_THISNODE in pc.flags for get_from_partial()
+>  	 * 2) if 1) failed, try to allocate a new slab from target node with
+> -	 *    GPF_NOWAIT | __GFP_THISNODE opportunistically
+> +	 *    (at most) GFP_NOWAIT | __GFP_THISNODE opportunistically
+>  	 * 3) if 2) failed, retry with original gfpflags which will allow
+>  	 *    get_from_partial() try partial lists of other nodes before
+>  	 *    potentially allocating new page from other nodes
+>  	 */
+>  	if (unlikely(node !=3D NUMA_NO_NODE && !(gfpflags & __GFP_THISNODE)
+>  		     && try_thisnode)) {
+> -		if (unlikely(!allow_spin))
+> -			/* Do not upgrade gfp to NOWAIT from more restrictive mode */
+> -			trynode_flags =3D gfpflags | __GFP_THISNODE;
+> -		else
+> -			trynode_flags =3D GFP_NOWAIT | __GFP_THISNODE;
+> +		trynode_flags &=3D GFP_NOWAIT | __GFP_NOMEMALLOC | __GFP_ACCOUNT;
+> +		trynode_flags |=3D __GFP_NOWARN | __GFP_THISNODE;
+>  	}
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+--=20
+Cheers,
+Harry / Hyeonggon
 
- 
+--------------6OoaCLw56CPWa63NRnaF50aC--
 
--- 
-Oscar Salvador
-SUSE Labs
+--------------YrjDV9X0pifSc8pX0GjzraWe
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaippRgAKCRCGXBN6rc5S
+1mN5AP4tMVF5FXhfn3M1bOH0zcppauyBP0EZheCoVRoD/P0knwD/S22l7s4G+UN+
+i+T+KAlgVhbzLZ9juSKgV6kPwZV7/wY=
+=x6rW
+-----END PGP SIGNATURE-----
+
+--------------YrjDV9X0pifSc8pX0GjzraWe--
 
