@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A045FCD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E4B5CD98CE
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E36BC6B0099; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
+	id A66316B009B; Thu, 11 Jun 2026 09:22:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7316B009B; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
+	id A3D7B6B009D; Thu, 11 Jun 2026 09:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D23F56B009D; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
+	id 97B0F6B009E; Thu, 11 Jun 2026 09:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C23E36B0099
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:21:47 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F0CF8EA85
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:21:47 +0000 (UTC)
-X-FDA: 84867694254.10.99F8E92
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DEA1D140006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:21:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8951D6B009B
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:22:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 500571A064F
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:22:15 +0000 (UTC)
+X-FDA: 84867695430.12.0B265BF
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8EE2E20003
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:22:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf03.hostedemail.com: domain of 3hLYqagkbAPMntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3hLYqagkbAPMntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781184105;
+	s=arc-20220608; t=1781184133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nb+leNmDuDT8F3/hr+jBl62ymHPLvbKegkssvnF8LGs=;
-	b=xX4fuOD7x/Sld26SiBm6dk0WCkLYK9FEulVxPkyQUueBfNOWDl2zHfr7QVmpHjh3Yv1HQA
-	OAsMVAefzaBr+5ylgXs2yOaLwDtoesMEnCmi9geOVpFKSsWsD+Mnfu5jBfBhgBcFy8cjcl
-	SkaBS3NeI2l0/YT2wF6dInRBsrMHfow=
+	 in-reply-to:in-reply-to:references;
+	bh=i84R0YalEnzYEwHeGRYpdEjQGHZvkMpM/hRBWXDcl24=;
+	b=kYvB1Dn3vvEEC+C02VHIvwttOclFf41YGA2E0r42t3A7HzSKaAJ7h11aAwJKBY2EQtpt40
+	fdgJB9dnST1tjH0Z5cfGwabkXwVZjfCush21MN6zxFElpka/IXfs7QCWlE6AXpJnbg8Wpj
+	KKEJzy22nqW5gImpm29VNzp1XoYW5vM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
+	imf03.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf23.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf03.hostedemail.com: domain of 3hLYqagkbAPMntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.70 as permitted sender) smtp.mailfrom=3hLYqagkbAPMntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781184105;
-	b=2w28fax6OMsXawdn1++iCJ42IfYGLN4JbWUBLAbLLiK1X75r2sz6Kg1MustuPlVoGvSRbK
-	2y2FoJPjk82vq9d6XhBFuJ9LOQzsaTr+3FP17YsC3Zyx8cXR0hOCCaLdU92a5YPOU8dM82
-	1FK+zYLiOFRGWe4w0tol0kX8uRH9mPs=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gbjwP20wJz8Xrrd;
-	Thu, 11 Jun 2026 21:21:41 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 65BDLZif054376;
-	Thu, 11 Jun 2026 21:21:35 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 11 Jun 2026 21:21:38 +0800 (CST)
-X-Zmail-TransId: 2afa6a2ab662fbb-95d91
-X-Mailer: Zmail v1.0
-Message-ID: <20260611212138619BRrXoKru-JeX9_5F1yX4l@zte.com.cn>
-In-Reply-To: <20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn>
-References: 20260611211311025VA1q1gTA-X5NMF0aZjnvh@zte.com.cn
-Date: Thu, 11 Jun 2026 21:21:38 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>
-Cc: <akpm@linux-foundation.org>, <david@kernel.org>,
-        <chengming.zhou@linux.dev>, <hughd@google.com>,
-        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
-        <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHY5IDIvM10ga3NtOiBPcHRpbWl6ZSBybWFwX3dhbGtfa3NtIGJ5IHBhc3NpbmcgYSBzdWl0YWJsZSBwYWdlwqBpbmRleA==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 65BDLZif054376
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 11 Jun 2026 21:21:41 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A2AB665.000/4gbjwP20wJz8Xrrd
-X-Rspamd-Server: rspam07
+	t=1781184133;
+	b=SEFRI2rPsrDerBPG0d651ZvRj58lGis0kf+Dmu1V/xIN9Jg2kvsgJuRx2vpEvtvY80BzDR
+	4O0Osmi3MnCyL845Tb4S6S9/sqsNLoLpKWa1eVdxFBt98GJ/eBZ6f719f1rhy5A2DX7QjA
+	XDixA6RJdj0wjPPqUmWhXKZs1AsnQBQ=
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-69dac65fd9bso7336635eaf.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:22:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781184132; x=1781788932;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i84R0YalEnzYEwHeGRYpdEjQGHZvkMpM/hRBWXDcl24=;
+        b=Y+i5eekhTcVG5tQhm0XHGCfVsS83/ViO8M0iu64DW3TIO3qnvqy+xd308Oc6QwkI0t
+         IdErijpTcUOtJyghMLt5tPQ4SbgWSp3Av8aznr+1M+APYjV3k8vP1PDrMs6Bfa99iwkK
+         l7vt4y1yAZ/9BpO4m+VE9o+DnvVnA9PYfVKgvcfRZ975h9F1tfSKBc6AtyuOHMcbcSSr
+         o8ZdgzNwXx6KTA/r+S4JM+UYZaGASZ8DsoyEtRALNa1qGOg0yM6w6I+Bz/sEcWu28h08
+         MuGtBIPbtckKoyh7VhLsPPKt0g64GlfqYId92FYtBDx56wyO1DT4B//kUfYhsdIc18Sy
+         EIAQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+k+AXTdzBYkBDdBRyhJcxr4WDdF27l2PuLYA0y+icVPMMYpd6wameDoWuPBpU+lrT1feaX46LlMg==@kvack.org
+X-Gm-Message-State: AOJu0Yy6J4JXzPk7V22Sm5Fk5IiItz4L20hKyc61qF0/8pyA4AJ88xnA
+	vlaF4UyJ6UYndoF2hthD3Rg+HlzcWpHyEW+QmkxEhjmfzfYOfonoa5YMVqdYDNjtfi3gz3ttI6p
+	tM45U3NjjZQn1z1QpCcP9RiQxYIOuJ3nT7LndqRKDxJMth2alRemaLHe+ZTk=
+MIME-Version: 1.0
+X-Received: by 2002:a05:6820:824:b0:69e:3563:4424 with SMTP id
+ 006d021491bc7-69ecae66c19mr1786786eaf.24.1781184132771; Thu, 11 Jun 2026
+ 06:22:12 -0700 (PDT)
+Date: Thu, 11 Jun 2026 06:22:12 -0700
+In-Reply-To: <aiqjnj613Ut2bK1n@localhost.localdomain>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2ab684.3b0a2d4e.8c8d1.0011.GAE@google.com>
+Subject: [syzbot ci] Re: Implement a new generic pagewalk API
+From: syzbot ci <syzbot+cie2febc77f154bb22@syzkaller.appspotmail.com>
+To: osalvador@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	david@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev, 
+	osalvador@suse.de, syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: bz6yeifa3awq9eidhje7odrwsfc6qr43
-X-Rspamd-Queue-Id: DEA1D140006
-X-HE-Tag: 1781184104-789989
-X-HE-Meta: U2FsdGVkX1/JkhP6iMHNPA0XxE9AEK3VU/lvbd3CDVCjGmVFWR97dcicZFCWzmbiXpFeKqfFveX2TxH3oT/xHCxxSVrez22t//9ndwg3WXo3EFq6U6n7EcBcpNyxxAS4GqifaZus5xlk6g0EhJXg9djg2YREs6ptzsf4UWWu2mduICaddmV7LJe2h/y+4wbOC4EUCuzs2O1ANPlSFOnVqfDWemv6/8X5hOB/ZSwJ9qPcA1KGbJ2+4rzUqPN/DAnfQkXMJoD6QVAEyweENoENnmhn3+7pCc9B1+39R1pt2af4wy/yN8cXMMSndoyuJIRuNUQdA1BNaPPbrzRDNKaZrtm8cWxPIOlAjvmTaxW6r7iXc0dOMjs7dW+exXB/rO+ns+tsvxP1NxQ7FjFWipBh20g4JU9hpRtDpl6DPp2WNZNYm7fUUYVyVXq+4K5bX2dCO/7m/LnbefCua9qIfrbXNQA5u5C36Bg47UzXW1kE0yv4Dl3FM5RXLuXAxaKfpLcrgC/B7h2m+C/5O10IM3MSXhD3oSoBqXCjlnNGvzcHeVDL9aeywdRJ3JyCrvsmRXvkoisw3eiHlpDJzkSUWn5MJD2B8EkyMLMlkXJe2vhkBlaiGs0+WtOQuwzNTJuh2bHTTRo3ONxT8O/GS+XiWV8dBFiZqRnIZFJxa8x1n6dz++UqMsZCWhqB4Wj2oWxSO2SzcTQ4vavzfXU2jiwNGZ04+DcIxQU2EjQqZ3vqZPaYjNTsC+TabP06P7t47itGF+iXQio6sJiXTAHXsxntVau+HW37YsN7hXBTkkjKjbEyl0c7GtpdNIKmow+50eBQAAxjliIjixwPyKP1M2xUECmWnG1YdX5KFhvNNGcvhcId7iBvLn+nPR3R9uFvSme1qyUFV9Gp4VDrm/lZaHFTKOg/EF8k/m0NgF2fP0Db3CCxOSsjrtcRerZAk3EGc2cvcqyet/6LSOVJXQhna0K+9Tk
- f1Nn98RT
- Jn6+8R1UQqP+/ZVDIgilI5TKh2F/dAO11pkvVGVd4xfKIeUicnMBT3DayazDsa5UtdOrU8kp0ysJ88NwAXnmJaYolGJ1ZcdkYxffUJCHyfqRrY3v9yDltXvnMveRLBirj23Cv99Gsqdv2mYecskZaxkPTNr88NoqGQ8RRg2ocwumYCTC7B6QDY9AN+DWbeDb54dJA9U9Cz2tW/2td7nEyScWog3IwzNHWxretzbwJCknCT8qy5xTURRZNg36VwSDWrs68KclwU/eJGnuO1JPLuRcHXk57OJrtuWHOwGa7di4ShmlFWiJElfMZrb77+ZGyLC3EWvWsvsyvvF8=
+X-Stat-Signature: 3djcmutwi6p7ct13y4x14i3aeybhsfck
+X-Rspamd-Queue-Id: 8EE2E20003
+X-HE-Tag: 1781184133-324486
+X-HE-Meta: U2FsdGVkX1+TAHWOedrw3MfR4USCwPf06svkyt5nw2M4WaSJFaNe/4OZHgJQzvH6FLNBsCRS7HOwiaXg/GMasC8dHWcJqJtGjybzarVSOga8CWBiJb8C9iTknm8ufAsi64wli1olPEbz4B1nW2/IWIvpbYLACSFnsd6i3J0t/xXoWHNPEEdaqYMDmvE0EHdPsSm+1ZJHfRCDU9Qc9HejR5Wfwow/g4ShVXyduwxtKcNQ0yUw416EA4VBg2dv6zKxT2K/Mzl0T9hf5o1rRorn3G8KWTkXLPosVH5Js+ehjGcd8kOo4PujYuJtozliErNHkI9S+HUzDEga5wARGqfsZs1r3KskZ9Zx3s+zw3XG//afNKRtoxbEInfS+T4eXU//BuVjn8XvBzsAMmFhxV4QDrpEpGrEm2B5GoUnwQSRE5nvfpTtsI1oaenQbFtXxp7lF9hh6CyX5E8DLCv9KsI77icMbgeoQjv6dO8BkAI699oGvfpjY582fhKvnDlqc111dMiAUU83YLwV+iApjEWRMc7AgIRSya0R271DOXSh1RqJHKOtxlzKs5m70nsMjViVmfCer+2ohK7MBKJI/a8sHs6o1mjnW21qDh2VN5DiIeh9rj8ex/C0YeJhTprpzlokRG1e//01/8Xz3nrE0fq4NXSCJ/rsIM90u/BJ40KMzTQG6CS2vsIPQiWgSv6cj7ERbQx/8jD1UCES68VMV37mFEiPHPMAzITcMhDV4lPK8ixY4BX/Uc48z0Jd141bh54vtsDc7Hj61fd7xOYzI+eOIHLw2maG4QYJr+2j65lHUb5yMx81/nDcOFvkl54VCqOK0W0cs+Ory/EVBuVxov98o7O7Ey9Wvd2S6X8VZpmHpysKAdlKsAX9YkSLb77z6dIbuuwETTuoCBeyc/68vNs01i6u3zM9Q+DPjtNCGPuLY1cLE/Kf3Atts6A/E+/xHakeCNHDPnb1g8ReusuLwhF
+ sYa6OPKe
+ FQOQHoTeHc+FfYNpCzMypFXGj2xe28W+wvQRBMBfKuQVy5DJjbuU01q6IirFc73eaVeZQHDReZyjN3KbGxjDpZetE+OH6YXVj2Hk5hTelFxtGUMajBO1RqkHhPHvmYld7/fPKj0qdFLK7064tXxhq1jajveMpKzKWrLMB1+zR1s65sBURWPptdXTlW7+1CXi9EjZCKiBTtAc98VVzyWQbOKYZqPbrf5/87ClZlW7TttV00tI6liFIes9OMkTvFtuat8rIik0b9PJ0zq4rRYaGu2lIXR5fSr2N6VWAB5Hn6dzI2jHa8CHTClvIH3EDrSScH7Lciz0XsaGj33r/8+C2ecgcIZE02BSK+jkpOuInMHwAr78g83toShvBGHsGbCZCNFLaKlhzvYfPiJnjhb1XDFo65Vw9rRut+0p+QnfLwQdK5AFqB18HDT/mQFfEx9sLfCoaBrPsW+NrLba704YtIr4iDC5TrbGKfMRxDK7TstF7UBoJONWAseGg8SF+DJuhoHBTERakHRl/6c3gbTLP/qfcM1lnX4dxJ9ZE+u9eX+w1ljgGYhL9qeSnCTH9q+WqcB7kqnnr1cTQ5d7oSZXmH3OM/dnkWrOKjg+pBzoOECI1mgIiaHbHVkAG6Yg4jrJ0LinQf5ZNaYp+aBnHhXTtwSo7Af+Tplet3RarMBzcC7im6i/poj3dDIZ70DHPkqFSRgFyVgys0TjjK/0OeqKheJBN7DAesfrIxdJoXtJpnHX+pOyJRvnrh5nDFlmeoGlApkl8SrZzvNcGK/sXqxzDgKK1pJmDHgG4O5KcbfQuS/MLlVq6M5wbNfBsseYyORI1LaUNboNakq0UtvgUoYEUYhBIzHRYXtaX5QDN2tK3+vv1VW2Y6XC+hcyk2hIBeLhJjAJDVY+rU7HF+4FPoWMD0IQ+HZaRNtfTAsRsonJYg9PwevaCj6PXkVqFBiSnOQqxMLtYyg5teGWWW30DzUzd6GrRSgsT
+ 4If9q4RP
+ ZC026fVbFTFZYHATSKs+3yzP6RS9S4GObgp2JrnL4MHSqokqffRoPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,146 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+syzbot ci has tested the suggested fix patch on top of the following series:
 
-User impact / Why this matters to Linux users
-=============================================
-When a system runs with KSM enabled and memory becomes tight, KSM pages
-may be swapped out or migrated. The kernel then performs a reverse map
-walk by rmap_walk_ksm to locate all page table entries that reference
-these pages. If A large number of unrelated VMAs can attach to a single
-anon_vma related with this KSM page, then rmap_walk might be severe
-performance bottleneck.  In our embedded test environment, we observed
-~20,000 VMAs sharing one anon_vma without any fork – purely from VMA
-splits， which cause 200~700ms duration of rmap_walk_ksm.
+[v3] Implement a new generic pagewalk API
+https://lore.kernel.org/all/20260525165528.184397-1-osalvador@suse.de
 
-When one of those VMAs mapped a KSM page, then this KSM page's rmapping
-will become bottleneck with hold its anon_vma lock for a long time. The
-anon_vma lock is not only used by KSM; it is a core lock protecting the
-VMA interval tree and is acquired by many critical memory operations:
+Patch: https://ci.syzbot.org/jobs/ef5ed4ec-3733-48d9-af67-b53dff1c8b20/patch
+Testing results:
+* [build 0] Build Patched: failed
 
-  • Page faults: do_anonymous_page(), do_wp_page() (during COW)
-  • Memory reclaim: try_to_unmap()
-  • Page migration & compaction: migrate_pages(), compact_zone()
-  • mlock / munlock: mlock_fixup()
-  • Process exit: exit_mmap() (tearing down VMAs)
-  • Cgroup memory accounting: mem_cgroup_move_charge()
+The following issues were found:
+* kernel build error
 
-If one thread holds the anon_vma lock for hundreds of milliseconds
-because of an inefficient KSM rmap walk, any other thread that
-tries to acquire the same lock (e.g., an application taking a page
-fault, kswapd reclaiming pages, or a migration thread) will block.
-This leads to stalled application threads, increased latency
-spikes, and in extreme cases container timeouts or watchdog
-triggers.
+Full report is available here:
+https://ci.syzbot.org/session/90e7add4-2247-4f1b-9ca6-89dc339fdf98
 
-This patch reduces the worst-case anon_vma lock hold time during
-ksm_rmap_walk from >500 ms to <1 ms, thereby almost eliminating
-this source of lock contention and improving system responsiveness
-under memory pressure.
+***
 
-Real-world examples:
-====================
- - JVM / Go runtime: These use mmap for heap regions and later call
-mprotect(PROT_NONE) for garbage collection barriers or guard pages,
-splitting the original VMA into thousands of small pieces over time.
+kernel build error
 
- - Database engines (MySQL, PostgreSQL): Large shared memory buffers
-or anonymous mappings are managed with madvise(MADV_DONTNEED) to
-release specific pages, which also splits VMAs.
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      5200f5f493f79f14bbdc349e402a40dfb32f23c8
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/f29ebb48-eb43-476c-8d44-aa077ea8eca3/config
 
-Root Cause
-==========
-Through local debugging trace analysis, we found that most of the
-latency of rmap_walk_ksm occurs within anon_vma_interval_tree_foreach,
-leading to an excessively long hold time on the anon_vma lock (even
-reaching 500ms or more), which in turn causes upper-layer applications
-(waiting for the anon_vma lock) to be blocked for extended periods.
+fs/proc/task_mmu.c:1713:26: error: expected ';' after expression
 
-Further investigation revealed that 99.9% of iterations inside the
-anon_vma_interval_tree_foreach loop are skipped due to the first check
-"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a
-large number of loop iterations are ineffective. This inefficiency
-arises because the start page index and the end page index parameters
-passed to anon_vma_interval_tree_foreach span the entire address space
-from 0 to ULONG_MAX, resulting in very poor loop efficiency.
-
-Solution
-========
-We cannot rely solely on anon_vma to locate all PTEs mapping this page
-but also need to have the original page's linear_page_index. Since the
-implementation of anon_vma_interval_tree_foreach — it essentially
-iterates to find a suitable VMA such that the provided page index
-falls within the candidate's vm_pgoff range.
-
-vm_pgoff <= original linear page offset <= (vm_pgoff + vma_pages(v) - 1)
-
-Fortunately, an earlier commit introduced the linear_page_index to struct
-ksm_rmap_item, allowing for optimizing the RMAP walk.
-
-Test results
-============
-A rmap testbench can be obtained with two Out-Of-Tree patches at [1][2].
-After applying the OOT patches and building rmap_benchmark from:
-tools/testing/rmap/rmap_benchmark.c, we can start the performance test.
-
-The testing result in QEMU is shown as follows:
-
-KSM rmapping	Maximum duration		Average duration
-
-Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
-After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
-
-The benchmark numbers are realistic, since we observed ~20,000 VMAs
-sharing one anon_vma on a production system running a Java application
-with KSM enabled. The lock hold time before the patch was measured at
-228 ms (max) during rmap walks triggered by memory compaction and page
-migration. The benchmark reproduces that VMA count and lock‑hold
-behavior in a controlled environment.
-
-[1] https://lore.kernel.org/all/202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn
-[2] https://lore.kernel.org/all/20260530170404509QpJmBtpSjn3uQHeVKA2iA@zte.com.cn/
-
-Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
-Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/ksm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 60c6f959d81a..454ba2eb46e9 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -3207,6 +3207,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
- 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
- 		/* Ignore the stable/unstable/sqnr flags */
- 		const unsigned long addr = rmap_item->address & PAGE_MASK;
-+		const unsigned long index = rmap_item->linear_page_index;
- 		struct anon_vma *anon_vma = rmap_item->anon_vma;
- 		struct anon_vma_chain *vmac;
- 		struct vm_area_struct *vma;
-@@ -3220,8 +3221,18 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
- 			anon_vma_lock_read(anon_vma);
- 		}
-
-+		/*
-+		 * Currently, KSM folios are always small folios, so it's
-+		 * sufficient to search for a single page. We can simply use
-+		 * the linear_page_index of the original de-duplicate
-+		 * anonymous page that we remembered in the rmap_item while
-+		 * de-duplicating. Note that mremap() always de-duplicates KSM
-+		 * folios: so if there was mremap() in our parent or our child,
-+		 * we wouldn't have the KSM folio mapped in these processes
-+		 * anymore.
-+		 */
- 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
--					       0, ULONG_MAX) {
-+					       index, index) {
-
- 			cond_resched();
- 			vma = vmac->vma;
--- 
-2.25.1
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
