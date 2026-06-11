@@ -4,96 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076D0CD98CE
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29397CD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 14:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 598936B0096; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
+	id 350686B0093; Thu, 11 Jun 2026 10:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56FE56B0098; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
+	id 3016A6B0099; Thu, 11 Jun 2026 10:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AC8A6B0099; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
+	id 217BC6B009B; Thu, 11 Jun 2026 10:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3796B0096
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:02:16 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6841C2525
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:02:15 +0000 (UTC)
-X-FDA: 84867796230.08.101E4E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 005D51C0017
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:02:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLFrWxBs;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781186534;
-	b=NibmhJM0uPflu8aiEUikGxuKj1MXk+A0sPvQnj0EDraAFcCt3+Ym3txwEeRNG/u1rv8GIz
-	2zkAqTKEUapJ3B8dekJa32jMhnnKgZ5IfSEA2ET99J3xkHUOvNCvYHVWmLonCWC5ZMjlwL
-	drL9HB3k4Jfm+jAhYIyYq3p5JnyB/Ng=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLFrWxBs;
-	spf=pass (imf18.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12E3C6B0093
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 10:04:08 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83D7D1A0678
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:04:07 +0000 (UTC)
+X-FDA: 84867800934.18.0E2AAAA
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7529F140012
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 14:04:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NkRgaMU4;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781186534;
+	s=arc-20220608; t=1781186645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TGx263XN3d4QK7OHcwdkEuuULCXh8jD+R0LCjmF4YNE=;
-	b=Ho/GLd4HLeP4bmt6owHrANEtCCxClYuRQQ9+JaCcGyb8qKs4yT676REg1Io1tYplxfWcWG
-	3YTgGpQAGPmSbgDkS1EDXF76PNh1nquhN7m8EVsEKI8thwCC6jG/9YjMpuAKOPuoZrTqmi
-	6DgWKDUdHmNLGbQiB1tsCshwVhQHDF0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7B3D6600AA;
-	Thu, 11 Jun 2026 14:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857AB1F00893;
-	Thu, 11 Jun 2026 14:02:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781186533;
-	bh=TGx263XN3d4QK7OHcwdkEuuULCXh8jD+R0LCjmF4YNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kLFrWxBsFlBrI6vfhEMMxjaZZXc+1g4bsxZ8G+G+yDP/93GCUruzLJyFRNYzs1LZ8
-	 26OquQsl8XSVmbfD37l+a6HG4oqJz8rU7XfNfBFZpkObBxiw5RlnWq8vq4V0uq7ZLv
-	 2wvqO5INdyP6rbh8df+Hqdb/0wxsoa1kqNRVbpcsAUNm/D73SfkIcSUZGszwKhCOx3
-	 vZIAfaBVUNMGvobJMK39Ob0jNf/rOofkeN6f3FxzmWA4DefcuC3gd76G60C6TdKFhY
-	 7vB38WLYHDWLg1+8+EAROgw1JQKZ72fkHesso7wkGkN7rQVt7RKEVYncCQTGOyVen8
-	 tBANP7uoOD8sw==
-Date: Thu, 11 Jun 2026 16:02:06 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Peter Zijlstra <peterz@infradead.org>, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] mm: cleanup clear_not_present_full_ptes() and rename
- to clear_non_present_ptes()
-Message-ID: <aiq_3rp9fwFHyLwl@localhost.localdomain>
-References: <20260611-clear_not_present_full_ptes-v1-0-49865fc82629@kernel.org>
- <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
+	bh=ENvnRZyJjnEps3yiVgsX7HBb3e0UX6vr9hqD2coNcvo=;
+	b=aZF7Cq9hpE9ADpODZrakYwkXNSgLuEIgHz8183cyKwcCxXiAhoX0DgLKZ4lHXSLRftx7Ot
+	RzhZVFF3WZdv9zbj8NiiZFCDiMx887MTVDQPwlT0rdfn7oTai8jvt1KmLy/4+rL7S8FAV4
+	YCSXpQwd6Eu+H0Z0sO3MR6x78/gbt1Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781186645;
+	b=xJUPbn1DgUP+QbZwcxW22Ja+8ipmSCSA8uiCiv3xg6XYm9hzUg0gkQSukdwBnHjfVF0WE0
+	t/SyWCyNqDihaOkKkaRORa15yesnGyxupe+ooHCeOuSqzKEadfSRyipYhqTW0AsOJHQWFu
+	jXG+XljkNwL3OaYNz7e7/0B5ChYEfbw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NkRgaMU4;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-915aa0a9293so110684285a.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781186644; x=1781791444; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ENvnRZyJjnEps3yiVgsX7HBb3e0UX6vr9hqD2coNcvo=;
+        b=NkRgaMU4EW+XvNPHHXfcJRHJPxHmh9b4Lrdf7Xheb38I/Pe7HiPXMxV80pHmauL4Cy
+         cgFmhmitWO1iOoApjoGyqjxP8X20rCTcROdCSc5X1ktFoDSXBkFCCSe2JCRZelS20kqf
+         RJcI/s+LZnPbuaIDmb0BVyVl8lNzx01aHVIP85Zr+mUpJy9uEVJt7IXe3fNLOk/xP/dT
+         P0A35eY1sMLWSDCoRXAZ9mjO+v8BaX7KYRAm3rxb4oscnGP+Zkk++7aS3f7O06v1OutS
+         ndR7VigwD1eze5bIbts33a1CVM8HZb/+U+ghY9HwOa7yTznbE60iv/QKqvp809YOBzWo
+         962Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781186644; x=1781791444;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ENvnRZyJjnEps3yiVgsX7HBb3e0UX6vr9hqD2coNcvo=;
+        b=XNPyBqEZN/PQ1N3adulS1KDOmu7ALdnyowIumeYQ6J+vDNIf+rudaRqgBc+Lg99rCM
+         ZcQ8hjxGcFajSxxyu9Wa2S2ciA79nba+R+YmA5nkMKM1uVHYmT0YmEYIiWV5T+d+x2Mu
+         FITHicSJYYyboRT9BHripvymxO95YwwMWUcZsk89DBZNRmfw05DCsgRzHRoOXFqHtO6v
+         oQ+Ke2dmpdDSE+r8sYjYoIejaPIW26AE3SyvZUHl4vG1oMPLlTtRJqf+8ShJ22eZilai
+         HKy39ty8qd1zJXE0kX3w3FbwnFaodedwMiAdr5yP8o4hAWMm4bM9wh8Z/LXQBWr2js5j
+         wRtw==
+X-Gm-Message-State: AOJu0YwF4BxJ98S38zNmp4R8pIjiG8JzREllGUegQapOg3s/9XkoabhY
+	sftiSZ/VzeWKvk/UHrfeG2nQwZjHwe7rA+gT6hO+mnAVB4vYIQjff81t/dovEAWjxN8=
+X-Gm-Gg: Acq92OHRt/fBWg43hOmfYgzwzR0VWtIKyOhrPyTz6Z1bXCBVgrkUQmHcgHiUAEId4Pw
+	F7IqelOo88B+0/dVhHFf3WAMnJNCOfgMuM/VkHBclPWRytw/vyCAFE9C2vsTvYFdDvLlWl4twbO
+	bSjJA+ZdawAPlSmE2CRIM+k76QRg8xFIrbalG0xmh+tsq+RXAaGjS7ThHItb24ZGzuVQEpCct+v
+	rUan6a19Hkjj0mkXH9r45uy+rP/nRoeC9ycBCEpYBzR0UACnTuOdnjoXV4VsnwTKJuM0LcU1Vmk
+	Ix+UpjtEk+0hBadQT7lt8eHF630FnQFm4UQ/d28GImkQ2PuPSCK9RiYyHFhkpyO19MC0jPJU+ME
+	KRpr5VsBzxhYke06ftLQGCSBe4dg5hy3ivbVLNQRol6gjPZENrMPMG7wU450nLiQBow4p/yrHd8
+	zkHPtnyLiowkaSa+/melhK9/wiYSfiYo+51oijgsgPSl7MAT8R9ZLbFD3Qap/542NxvFZF4tH22
+	3QzwATLdkb0czzg0w==
+X-Received: by 2002:a05:620a:2728:b0:915:9fde:9da3 with SMTP id af79cd13be357-9160ade2a98mr334272485a.27.1781186644129;
+        Thu, 11 Jun 2026 07:04:04 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9160aca4293sm196905585a.14.2026.06.11.07.04.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 07:04:03 -0700 (PDT)
+Date: Thu, 11 Jun 2026 10:04:01 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, x86@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	driver-core@lists.linux.dev, kernel-team@meta.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
+	lenb@kernel.org, gregkh@linuxfoundation.org, dakr@kernel.org,
+	akpm@linux-foundation.org, rdunlap@infradead.org,
+	feng.tang@linux.alibaba.com, dapeng1.mi@linux.intel.com,
+	elver@google.com, kuba@kernel.org, ebiggers@kernel.org,
+	lirongqing@baidu.com, paulmck@kernel.org, dave.jiang@intel.com,
+	jic23@kernel.org, xueshuai@linux.alibaba.com, kai.huang@intel.com
+Subject: Re: [RFC PATCH 1/3] mm/numa: add exclusive node pool and
+ numa=standby boot parameter
+Message-ID: <airAUSrNjbSEwuti@gourry-fedora-PF4VCD3F>
+References: <20260610014517.253609-1-gourry@gourry.net>
+ <20260610014517.253609-2-gourry@gourry.net>
+ <aip5IWmxg9CWg8hQ@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260611-clear_not_present_full_ptes-v1-3-49865fc82629@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 005D51C0017
+In-Reply-To: <aip5IWmxg9CWg8hQ@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 1i6zwsdefynrbqnzp46gs39k88s7hrre
-X-HE-Tag: 1781186533-853412
-X-HE-Meta: U2FsdGVkX19woPidUFgtnxraXRkoISEGmxKrV/Zmu+mSFwE6rpRGRN9mQzA2UxkUV1rQtmWjBgfoiB5RuLwVkVwOsekj9aGc29S0mA94PlhUk1bZ+sgIxl7VYmzMvTyIVICLy1sS4rtmJvErTBfZJUZHySarkzVR5vVY2sHw7Oz2J2RMURXjKm7Ojfihwd5ZJiuAbDwhZgMTm8soXyR2b4/efSB1YagNPVCnyGNqadmy4D+GJepTHTo1XFMSOmW5EqwDQRi25E9J0aqVFVLMiUIn117w/dYxKfVDGBAgVD0dGwfDe3iaR/VmjI+Tjzx+BotYoglxe8IQNEJunsRPOcRCY02gYuohfUr32zFue3yzsCM0jdMSybQfrtoFLyuv2NAThnYeyJOpKTir77HUXwKk3Z7oxOC+mghUFuzIDJnQjyCMnNQ/aBIkmBejf+TFn172rbg6WrFCCkmNFeto/gOLYdDRr7MyZDGNzXFtj+OqyNB0MAnCeB3FMYSGW6BT93WLzcZRtHs+TNkuzaxruhw1a1S0Y26Ov06+vIAbNuIZDEPPDOmzvshf2128Xg3drY/dkNMl8YNmxjsOdkYpJ045XzFKBCWuXnKzshU7pgNPeQCsuJhaH3VFPHETYE8YOJK6zyES0YJnaLbgasRXRQgy+kja/70IfgVEdDnbodFPzbfPhHj/nAdTEfe94pZzoNdM+ElfajksWQfZ3Og2dgsAMMj6h5WniWcr8bNyA9LZ/NhiyXi/cu+6aHVTwl1BuKWjysdysa4mK/JtNz67Nw5WtXDf53tCxjs6ivZNLCOi+KRIMAGHlLTl8FTBubuYSxY1aMD4mHM7RtdD9k7MJgxN72sX4AhCyEEw5fYVHnRliUIREfryGu29zciXYrEfQkppm6BVdpIv3R8Y9z+l4cmEyAsqDOpPuidHNjxsXdfvYVvcLGJPNjqj0rTpXUOeUhotP90JubZG86DyajQ
- p7iNZ89x
- JwHcJQq3dmDhZbx2JRZ0TBd834hHIFyURW7TiL2QxG2VCWkHwUrNQJm+Jp4mypuH7vguKL7d/xxnXmy/iQuzRwzhtGMVEMLUOi43xLTj+csrOvjROaEZECFNe8vVd0dr6aRxXx9w7s0jr9wDoPbtOICq8A2QyShfQlMU+F/EMun/gPN4mx1QcsJjyAXVVXGI/pPbDzDi5HDFgajT1C4waOh4KvzDaJy9rg/RnilqBc70OczU/ytJg8Vd4j7qlylRkr51M5fNT/xU+F7uNAFUCvAjnwSGLflpgEqTr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7529F140012
+X-Stat-Signature: kd8jyga5ynoouyztr81r1bitkbnec1qs
+X-HE-Tag: 1781186645-625417
+X-HE-Meta: U2FsdGVkX18fUvvo16m87qHLojWZHGdFkevjJ0HAUIBMPkRo/AO/cxFltghMaLJpJLGYwUv4gHshIauZVlTA2ilOBfKiXWjMQdmp+4E0LBjorRiEduTyHDgQU4IlPceiFRO5motBbihVHehsE8GdQ1xQV7JH2f99SJJXwWZk7+RbUBAEEY0MDVqb4t0geZrq4ltV7b/RbILOrmlEEHoPxBhjAX1HPVwSmwtd1Drve1NmL6EprwKRbJkbU66aF3G31xkN/z2apDT4X4Z3Y6BTn0WW14tCOp78WrDZ2nqNS+vog2o8LIaE6z3xDz9bkDs0q8phyBr/uRV3dSKmkz7/X4q5zpKJI5TmIVzEAzSzIBAt4oRDIMDBECrFjtdPWqgpANuebqhZarbERTu+VPwjC+321/kMGZ5GrxBpyet/5SbEZMi/hLcdGKsfdG+JKwptqJBB/e7hCmIHq8beEGjL2/JO/usxSM5iZRFx0W0IU4nDeYPGMQG//dohRxWRqGuUIn59TAgL5fMc3GWrJJwcIIT1bYMWBmO792pL1LJ8HSgUPFKMg+JUUY4UlArsyVlKK7/vaDOWvsaJgkY+EAz6Hl3z5Bae3uyJv11SDuWXU0UPxU7kHkbYfV0M4YirGy8nhpi2qcqrd4hL9tT/P2FukvlYMwpp8hMOWQfnsS4a8eZBLooDICcLPSaGXVPthLZdBc5G4P0CKz++VN+l0bqHfF4i/e/cWg76ClOGFUWK6tSrjb2/7BiCe17aO4/E1IDrop/md/ZTcJmGevNDWfggGAHydqQxaRFlxHj40h583INWNLiXaU0uSE9uNQ0AqX3WR2QmjUrKH8w+s5Wpf65+dH4YGyECZ/v7ZgpecCx9UKyDlmwIKnJyCHwxWM6n9UYmLzEM6QwmBn9MC7nNw3pbQyi3ni6w1fKO9NJgb17hInlI1KqAmE+jAWp6ztIzCAERj69NHaGhLyj4h1WuGHS
+ btxSDsHy
+ Y9rWZ6H1So4rDMiM7/e53DioFUpH88JrxPmxYCu9atcyBegNmXssu1RIRJSXwDpJw9AiT/dqVj0s9/yG4lbI5XOSUYXVISS0nqszQ1TSMWgdPDJD2PcKcGTksSshEl1fB9xCTwm5HSk1hV+WWVzOJfD1741/2urL/2U7oG/7nxcRliUQC/Cgfh+O8/j1qEYc+O16N1TEoSC2Kj/a86xqUiuO4xBxO7jp5LyE8FM8V7EC4pehU81sxmTZmaKBM0e3WzSAOUaXgX7lWRM/9AjEJUaY8YU87ZnuvIg3xp4jl6WWb2FhHNB8+7gUQAGg9NcW2yr+pu66BnxrLUcOgefWAGYnPhatyBlZ8n8ehdjUl7KgvlTVW6cebSPtk0wMTm+2cgRzHwAx/QQG1kv1ufHFstCSfJJ4D+6ycEv7i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,39 +129,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 01:50:49PM +0200, David Hildenbrand (Arm) wrote:
-> Let's clean it up a bit:
+On Thu, Jun 11, 2026 at 12:00:17PM +0300, Mike Rapoport wrote:
+> > 1) Can we do dynamic addition of nodes?
+> > 
+> >    Not Trivially
+> > 
+> >    Some services utilize num_possible_nodes() as a static value to
+> >    calculate the amount of resources to use at runtime (bpf, md/raid5).
+> > 
+> >    Example: futex_init uses num_possible_nodes() as part of its
+> >             hashsize calculation during __init.
 > 
-> (1) There is no need to pass "full" anymore.
+> AFAIU, we don't add the additional nodes for generic hotplug memory but
+> rather for exclusive use of by drivers/applications that are aware of these
+> nodes.
+
+The intent is to use for "non-generic" hotplug (see the whole private
+node series [1]), which would eventually still use the hotplug mechanism
+just not for generic memory.
+
+[1] https://lore.kernel.org/linux-mm/20260222084842.1824063-1-gourry@gourry.net/
+
+> Wouldn't adding them to possible nodes actually skew the calculation of the
+> resources by the services utilizing num_possible_nodes()?
 > 
-> (2) No architecture overwrites it, and there isn't really a good reason
->     to do so when dealing with non-resent PTEs.
-> 
-> (3) While at it, call it "non-present", similar to copy_nonpresent_pte()
->     and zap_nonpresent_ptes().
-> 
-> It's a shame that we have clear_non_present_ptes() correspond to
-> pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
-> 
-> Likely we should rename pte_clear() to pte_clear_nonpresent() or sth.
-> like that, to make it clearer that it is usually the wrong interface
-> for dealing with present PTEs.
+> With the futex_init() example, won't be hashsize scaled down two much
+> because we've added these special nodes to the possible mask?
+>
 
-Is that always the case, that pte_clear() is only used on non-present
-entries? Or there maybe users that do not care about the current value
-and just want it to nuke?
+The result is the same as BIOS reserving nodes with PXM entries that
+don't get used.  The CXL ACPI Tables do this for CXL Fixed Memory
+Windows that may never be hotplugged.
 
-I guess that such a renaming would have to first audit that all current
-users obey that? Othen than that, is there anything else stopping us
-from doing so?
+So really i think you're pointing out that futex_init() here probably
+shouldn't be using num_possible_nodes?
 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+~Gregory
 
