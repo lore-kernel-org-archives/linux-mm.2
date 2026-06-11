@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B3EFCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33B6BCD98C6
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 06:39:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C55AD6B0098; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
+	id EC3466B0099; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDDDB6B0096; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
+	id E4B186B0096; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF09B6B0099; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
+	id D3B256B0099; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA6C6B0088
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BA806B0092
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:39:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CEBC164FCC
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32BCEC1CCA
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:41 +0000 (UTC)
-X-FDA: 84866680962.16.F072824
+X-FDA: 84866680962.15.6D25BA3
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B325C120005
+	by imf18.hostedemail.com (Postfix) with ESMTP id D26D21C000D
 	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:39:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
+Authentication-Results: imf18.hostedemail.com;
+	spf=pass (imf18.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781159979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=3hsms+uwiBM0YtXvLTanLWxtOe636bEMJOHovnVcTRw=;
-	b=b04JmXwi4U5Cd0UhvUAtr2PhJhuCttutBu17DuyOMQ+1ZgT4ZlSG2DpnOwu/8e/1CzDceI
-	MXwecwuylMwU/wX5myj4+hVgVtxrxoHUqxauPm6vJ28CJLMUmL+g2GQgR+TSJKDFhTs7R9
-	h7P2p0ChuGe2/JiqKUZalyWGCfn7WyQ=
+	 in-reply-to:in-reply-to:references:references;
+	bh=n22iy8awGTVFhn1UXQ5tpUWRLxU5GhyR+kS6DNw8kS8=;
+	b=2Th8drHPbCXuRreaCJIfvT1EzHRI6Z3O1S5GYa0RgI0DV3Iw2Rbn8trG2urmiR3hTUweFa
+	5Rf9Y60FRgbuciOvNTyocnGZod7yy9nuaKcT54NHa5FC6N8S39dMdNNjBdSDifcXiB/plm
+	iZ3vYJ8ZDVM0Kwcbg55EycoRBbMnEbg=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1781159979;
-	b=Qt8+QaL8YGBPt82paHNWGC6oNk3gEO0O3RhJhCN4DC9k8yi1UAvY3YWpaNMUcFctaBREpg
-	I9CxkSns59VduGgJ5PtvQYOD1cYx6IQo5yjKlId2O4XA9WOcFFCyHRw/nCTipJIUMczVdh
-	kaaHigNU8Yu5w2rbwwiyJs9sx4e0hvk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of pengpeng@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=pengpeng@iscas.ac.cn;
-	dmarc=none
+	b=F5RnnJs0KYH6iiIsqXbH6xRqUG8cTtX6bvQG9gZ49zz4ufpsfGFpQRuI3iEIwaJGZnNu6L
+	1Jtfwbmubu5Oh7K96VV3jXVmTgyYN5xrGmtpQUlwxcPLpusL6JksJI2+hViTFrTMhy3Hh0
+	HsxFwvDA4c5qkzydtYNhsfviSSN8s38=
 Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-01 (Coremail) with SMTP id qwCowADHbdYgWCpqYOJFAQ--.1790S2;
-	Thu, 11 Jun 2026 14:39:28 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowADHbdYgWCpqYOJFAQ--.1790S6;
+	Thu, 11 Jun 2026 14:39:29 +0800 (CST)
 From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 To: Vlastimil Babka <vbabka@kernel.org>,
 	Harry Yoo <harry@kernel.org>,
@@ -68,39 +69,42 @@ Cc: Hao Li <hao.li@linux.dev>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
-Date: Thu, 11 Jun 2026 14:39:21 +0800
-Message-ID: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+Subject: [RFC PATCH 4/5] Documentation/mm: document SLUB previous lifetime tracking
+Date: Thu, 11 Jun 2026 14:39:25 +0800
+Message-ID: <20260611063926.38111-5-pengpeng@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADHbdYgWCpqYOJFAQ--.1790S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFy3WFWxuFy8ZF4rGFW3Wrg_yoW8tr13pr
-	43Kr4ftFnrJrWSkwsxC34kXrn5Zw4rW3y8WFyagr4Uur4rWr1FyFn7KFWYv3Wxury7CFy2
-	vrZYgasxCryDZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjTRNJ5oDUUUU
+X-CM-TRANSID:qwCowADHbdYgWCpqYOJFAQ--.1790S6
+X-Coremail-Antispam: 1UD129KBjvJXoWxGFyUZw43Cw18WFWxArW8Zwb_yoW5Aw4kpa
+	n3Kw1xt348Xrn3Cr93Aws7G3Z3W395uFW7GasFgw48uwn8Jw1q9rn3Krs8Z3W8ZFy8CFZF
+	vFWqy3Wa9r1qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
+	3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2I
+	x0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8
+	JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
+	ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
+	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
+	AF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
+	IxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
+	daVFxhVjvjDU0xZFpf9x0pRQJ5wUUUUU=
 X-Originating-IP: [111.196.245.140]
 X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Rspamd-Queue-Id: B325C120005
+X-Rspamd-Queue-Id: D26D21C000D
 X-Rspam-User: 
-X-Stat-Signature: 8jk44hjjxpnyoeypaz1dod4ugq6oacxc
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781159977-596670
-X-HE-Meta: U2FsdGVkX1+x8suWTZUObr5dZ16lLpAhI1mpTNXGIFp9NPtvdpOxjx3z5RoJAEPqCVZ2ukBsQkPRx+s1QX3tD3vS5/fba5yN8GYsELnVLYJ6myLo3jv7RvWZLTTZECB8+njID38FyM3eeyrz2eS/pAMWdomOpfS6dt1GlFVekqJIAmwUZH6EcDeVaSfTOJCrs85NVLRc0tsnY+UgLLUlmDeNpVtisUqrpR3WEZBaMY85HyRt65HaHKUnrxf+8OhudRwAywKoRlml49xuJN1LXVeswAMa2LUHQqz3Pa4ujNWXF8jo3ptmHMAjuMasvgnVrwvpSVYC2RBGFV3jmrynbA+C3X2ZWDNPOxIEyru9bOdQztLiJSesdegAYjZ4oGR0VueZBJswHD+iHsy6PdHAisii1sEXiX02YUv2ZcZ7dZVNlCxyFqnYqLbk8ru4j29FDQMmcB9rc1jl22P3F1cp6UwuLFeU6uNKlNhyyvjbAb97Bs36XIC+Lp+QeHWeKv19V+IPAamOGB2G7ExBms3wLjljyFcAeKcbq1bCciSJgt+xqUrmhV6Hzuy0upJjtxGaSUcAKCufRksGPgR0Ai/IueiLZPM087MSxp1Bu2qgYlL8Yxgtsd4bEqwicllSQgL1Rc7ScIIe+eIuNQRgtc3ltDzeGgmQRS+E7zJH1rj0/YddjZ2AY7yvvqD0/IJGFGxHiK3tjowq4CGTBVscMo9/8GZ/BWbN/RlZ+G38/RAw+hZEa5RdZcD6xM2tvavrzgcUtbRII8rzRlCjVQS618crmZWcrOaPqqfelus/S58bz1iLE9FnqzFlGbWXZEJvpo1QcfzmSL4/CfRI4CtQpCYy9rsYGnLlZZdPxrAWunkkUV24oDYLj1q4a/I1PLE+1zqonm0J//bhiGHSsyvz3XdGMZ7muy4e/3qcv4gksz8QvgxcUPQ8u3xIUrZ5eY5G0pNyh0rcY73farK6YfZWYJh
- SvByEWK3
- ZvtOBZhnh6DG+CNBinXZJSqme4PPHR8Vl+WLcuKwCmSrUMHsvyqVSkyDUIrTT05eCw3+HxznkEnaKxVsjJfcjRn+0ytp8Dtgmbz644kZsRoG5gddIABwnm9jJCw/sccFxBr6Myt4CjHtRgjljPha7GE1elzHoq5Iw452E
+X-Stat-Signature: jfrtpsqdosqfg31gyee65dcooiptym1k
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781159977-24668
+X-HE-Meta: U2FsdGVkX1/MH43DlQMOTsPdgrcorgf/sDFh9wvgPhFv4aYnzd77YT7/gtEu6ENWwn+WUh86/Kpncero+WTTX1sx/9yViL7ORv+gpg1eSJWersszr5mg79qIusrPCrnFuTok2FtHghcOt+ath/c1CTBLX1OY4kvMkgWbOlXnp14H1QT8K3wXnJN/HDhvMwo3NE6LLcBqPXY2lpca+hleTui80P2gLZGgCoKMsXWMNWZichMszfbm8bW7JL0kWd4n/SCnUKSpVTZqVXTk3+DOB0sQ1+RwXXhCQweLxiMSWV5jMW0Ziqd4mXkjhk4LZPRmfza5gsvFctSYAI73nU4UhMFa1E+vtohmxzUqEJxR2ehuHJEtPCKg+XiPFKDe796hUr8qpjyd8M8I7kv8PWJK0WU2/dobEcn2sqKF+NoEGFwx7WUuUhcHfqA7dswUgTJIOlY0toz4BGi2gqJqOPC/zrJHgjLTWrsdKcLqjh61o388yAW5fdGuC2/M74YAaKMyPwlvgnFNBQ7uIcW0A0G/7pwT3U1Mga06NGX5O4KZCe36pXAqG1GT0fGQa1VTiSoqYGJrGReW9u+zGALPWn+4aFxFRLwYh8TOYHsuVxs45C0ZuyesEI0epbQ1xHfZkvf0aqDAXdjrpgsOJWAOe8TpmJ0S6CYbEX8kLDtz73U0m/7M0istYI2NZNq6jMQ4vi1rgsKOAV9LpryMik5V53fSgUC3+JvMLSwIHGGnJQZWLUMKU54XQoI8+Ji6RdYWyjCZK4ATW50Ptgv/P8C/YRcHOj2kM0BmKlopbYsAQhP6PVTBdsJvs4/ALqbsPhqW+YVqeFwovEeyyK6JwIlBhXVr3YfilzFW/UjbQzNHJbnmX0CpfX8/647tZUQczRGAJvr0oHfZuss9E8UsCMs7o8xXQ4TyGmDUtcMjIctcCXCdgp14KI02B1o5YfWK17rv5V+1wirqbZztqkzoC6REKu+
+ tissn4En
+ va5yCWfPLeby6oq4wvKSRpqsrh7nLTj76MlpG3EwRRCHH9P8Ucna2TyugiEKyror5/A3ew/gVRGrx51YoJ1cZMaAfovdelVWswqUgI7xg0CyAS1w6NcTCS+Zqe7nSiiKDrlwj8rgxXbKKgt36ZxCGJdiAtrn+/Eo+cOpS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,56 +112,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SLAB_STORE_USER currently stores one allocation track and one free track
-for an object. This is useful, but it loses part of the previous lifetime
-when the object is reused: the new allocation overwrites the allocation
-track, and a later stale free can overwrite the free track.
+Document the new slab_debug=H option, its store_history sysfs state file,
+and the additional previous-lifetime lines in SLUB reports.
 
-For free-after-reuse bugs, the report can therefore contain the victim
-allocation and the stale free, while the earlier alloc/free pair that
-explains where the stale pointer came from is no longer available.
+Spell out that the previous lifetime is diagnostic information only. It
+can help with stale-pointer reports after object reuse, but it does not
+identify semantic ownership or the root cause of a use-after-free.
 
-This RFC adds an opt-in SLUB debug option to keep one previous completed
-object lifetime. The option is disabled by default, is not part of the
-default debug flags, and only takes effect when user tracking is already
-enabled:
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ Documentation/admin-guide/mm/slab.rst | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-  slab_debug=UH,kmalloc-128
-
-The series intentionally does not attempt to infer semantic ownership or
-identify the root cause of a use-after-free. It only preserves and prints
-additional track records that SLUB already knows how to collect.
-
-This is sent as RFC because the user-visible interface and the cost/benefit
-tradeoff should be agreed on before this becomes a normal patch series.
-In particular, feedback would be useful on:
-
-- whether a separate H option is preferable to extending U directly
-- whether H should require U, as implemented here, or imply U
-- whether the extra per-object metadata is useful enough for this debug path
-
-Not included yet:
-
-- KUnit coverage or a standalone reproducer
-- object-size/order comparison data for representative caches
-- runtime benchmark data for slab_debug=U vs slab_debug=UH
-
-Those should be added before a non-RFC submission if the direction looks
-acceptable.
-
-Pengpeng Hou (5):
-  mm/slub: factor user tracking metadata size calculation
-  mm/slub: add optional previous lifetime user tracking
-  mm/slub: print previous object lifetime in debug reports
-  Documentation/mm: document SLUB previous lifetime tracking
-  mm/slub: sanitize previous lifetime tracking flags
-
- Documentation/admin-guide/mm/slab.rst |  22 ++++-
- include/linux/slab.h                  |   3 +
- mm/slab.h                             |   3 +-
- mm/slub.c                             | 118 ++++++++++++++++++++++----
- 4 files changed, 128 insertions(+), 18 deletions(-)
-
+diff --git a/Documentation/admin-guide/mm/slab.rst b/Documentation/admin-guide/mm/slab.rst
+index 14429ab90611..4f644c4e1baa 100644
+--- a/Documentation/admin-guide/mm/slab.rst
++++ b/Documentation/admin-guide/mm/slab.rst
+@@ -50,6 +50,8 @@ Possible debug options are::
+ 	Z		Red zoning
+ 	P		Poisoning (object and padding)
+ 	U		User tracking (free and alloc)
++	H		Previous lifetime tracking. Requires U and preserves one
++			previous completed alloc/free lifetime for each object.
+ 	T		Trace (please only use on single slabs)
+ 	A		Enable failslab filter mark for the cache
+ 	O		Switch debugging off for caches that would have
+@@ -91,6 +93,17 @@ kmalloc. All other slabs will not get any debugging enabled::
+ 
+ 	slab_debug=Z,dentry;U,kmalloc-*
+ 
++Previous lifetime tracking can be enabled together with user tracking for
++selected caches. This keeps one previous completed alloc/free lifetime in
++addition to the normal user tracking records::
++
++	slab_debug=UH,kmalloc-128
++
++This can help debug reports where an object was freed, reallocated, and later
++accessed or freed again through a stale pointer. The previous lifetime is
++diagnostic information only; it does not identify semantic ownership or the
++root cause of a use-after-free.
++
+ You can also enable options (e.g. sanity checks and poisoning) for all caches
+ except some that are deemed too performance critical and don't need to be
+ debugged by specifying global debug options followed by a list of slab names
+@@ -110,6 +123,7 @@ options from the ``slab_debug`` parameter translate to the following files::
+ 	Z	red_zone
+ 	P	poison
+ 	U	store_user
++	H	store_history
+ 	T	trace
+ 	A	failslab
+ 
+@@ -245,9 +259,15 @@ into the syslog:
+ 	cpu> pid=<pid of the process>
+      INFO: Freed in <kernel function> age=<jiffies since free> cpu=<freed by cpu>
+ 	pid=<pid of the process>
++     INFO: Previous object lifetime:
++     INFO: Previous allocated in <kernel function> age=<jiffies since alloc> cpu=<allocated by
++	cpu> pid=<pid of the process>
++     INFO: Previous freed in <kernel function> age=<jiffies since free> cpu=<freed by cpu>
++	pid=<pid of the process>
+ 
+    (Object allocation / free information is only available if SLAB_STORE_USER is
+-   set for the slab. slab_debug sets that option)
++   set for the slab. slab_debug sets that option. Previous lifetime information
++   is only available if both SLAB_STORE_USER and SLAB_STORE_HISTORY are set.)
+ 
+ 2. The object contents if an object was involved.
+ 
 -- 
 2.50.1 (Apple Git-155)
 
