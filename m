@@ -4,118 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E6A4CD98C6
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 01:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 946DACD98C5
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 01:36:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 397776B0005; Wed, 10 Jun 2026 21:23:16 -0400 (EDT)
+	id BC2CD6B0005; Wed, 10 Jun 2026 21:36:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 348906B0088; Wed, 10 Jun 2026 21:23:16 -0400 (EDT)
+	id B73696B0088; Wed, 10 Jun 2026 21:36:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25E7D6B008C; Wed, 10 Jun 2026 21:23:16 -0400 (EDT)
+	id A89D86B008C; Wed, 10 Jun 2026 21:36:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 140706B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 21:23:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CF358DCB5
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:23:15 +0000 (UTC)
-X-FDA: 84865883550.23.73FE38F
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 78033140003
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:23:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AZLz19S0;
-	spf=pass (imf26.hostedemail.com: domain of enelsonmoore@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=enelsonmoore@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 976A36B0005
+	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 21:36:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45AFF1C11EF
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:36:58 +0000 (UTC)
+X-FDA: 84865918116.26.BC0576B
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C97904000E
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 01:36:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=abgBlKoZ;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781140993;
+	s=arc-20220608; t=1781141816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8WT+fivEx36NO5awPOrGIa04kuZ3OK/PwrNjHMoyylI=;
-	b=VIW18UowNMwakCjCXnWROLal3TH4QBUrLUZa2Ogpfw5ZxumF0RtbbK4vnTEt0FJ08hSe7R
-	uCQ49ZC22Zqbmo9COgg4ME0xGBJTfsmq0X5hLNdJEAEIHJ96oTusUYWo1eYxrBGYa1uaeQ
-	YqBZF0BIttCBxPleEhOgNWO5pnQeVdk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oMIRrh+qQia1RzMW2pfyqYI6BiXhyEOuqFiFA/0GGvE=;
+	b=VUwtn1gy9QTlMiEn7Sxkdj5te76r/hQiiXEaA9ELkyQ+n3173+ItLZL1rMY9K8j5wW05F6
+	TIcJsKbNAGjHSXdQgEEnqkveKpvKJTlRhkysg5xajy5FYaCiXwF9IdQG+5mrbH0I/eti++
+	XAt3JEl+JnRj4iEVZbbWoM85tiVILkQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AZLz19S0;
-	spf=pass (imf26.hostedemail.com: domain of enelsonmoore@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=enelsonmoore@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=abgBlKoZ;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781140993;
-	b=W77KkLBJiBf9pUIWgAymc6TTpn5i7FlBHuocSq0YCD874nN8/3DYDVIrzNOQa8AjYEVUsj
-	iCarYOL1uIc9KxPVJe8k3eVC9S/7o5oASLmd2ZqnekwVCFEp39QS2Hfh6HjtDSdA179Jr8
-	3P4mKmsBXq9m9d35YZIEVprYGP3D0UM=
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-13809223fd4so7283504c88.1
-        for <linux-mm@kvack.org>; Wed, 10 Jun 2026 18:23:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781140992; x=1781745792; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8WT+fivEx36NO5awPOrGIa04kuZ3OK/PwrNjHMoyylI=;
-        b=AZLz19S02ySgnGkLYACWwM4Jtg18ZZup46OjLslh9Z6enzFpKymf6eBuOKy3AU4s0s
-         rXw3EMZe5CfO9vo9+/8lpcvk4eAtsyxCjzRcmqMLFtQvh/m/pTypgyH7UVyadpRINeP2
-         3irozAL3EZeYpMHImv7C7BXmO9iwcvYhnD8GfOhfm8W4CUADFw87J3R72Z6Oh5MC0IC0
-         AEgR2b96khfVxWMAnmJf0P4deNw54vNHYivoMSrzn2CrF9VeN3YoRIYqEjuCTz5mhR3X
-         RyyiqONLps/NiSPnbQzKsjLRlSVIZkqa6XUFw21V9zXq4xVBaeudAjGZ6MjLXmqpc1go
-         WBCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781140992; x=1781745792;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8WT+fivEx36NO5awPOrGIa04kuZ3OK/PwrNjHMoyylI=;
-        b=oE+c3G4+f7mDA9J9EFT62dWe+Ofbb2N+FvNsOCQjilfUj348PH9CTrweQwio037hTe
-         WDp7rUvUOZoIAl509mrCAseo9Ldd0ZI72afHYfUY9rw5EV2y8PV2COWVMMRyhQTmjIiS
-         VPZnZruvw0sZc4vIqOexoZRgAVLlc9PQNxA/TwuGYuivf1TJk0kctQnUh446NcZnSMTU
-         6abSXNhjG714yO4j8Y6J5MsEBlviM151pKOxD8YM0pyRlYbFwhSpgQBuVr0b/UUVUqjQ
-         MmpL7brfUOTVzrfOnuH9MQ7i9USqskInzjK7cltab/sXbhij/s361wNhhyP6rVnZtwkb
-         Cwtg==
-X-Forwarded-Encrypted: i=1; AFNElJ9reLC/tATrGmjHkzNFbBNKyMtfXLby5TlHVM3sDGeSBxJ5UQzZhM2a7/KSAQEPikRNUfSmLzqrkA==@kvack.org
-X-Gm-Message-State: AOJu0YyeeSvtdJM3+gAa5w+rIYP9wdanxZ6DGDZOGp11Ldebfns/NRx9
-	3VPOLKBkqQE4DHBLzfoEm5Fuoyn3EPLlj+5BNt9k3aZe10+90kdethN/
-X-Gm-Gg: Acq92OEnylThuxdu3CHr/d5S7XBp76ew8u1X3RIyKaJO+M4vZqHbsZgLVLT+8kOURbz
-	wJVW37SiDZ0boObJtBcVoT2dnUtEtzMjRjyQgMMDBSHRRdaIjkTs5AV+2cNih8cItq7wwsjHY4S
-	CH+iAkF0+OM8FDaZTRNba8crKI7aNWLKdv6loJqEPgi0Br8AuxAV5jFsxu5igAzi1/s4Axfb0Zj
-	cL8a9gVouZgeQ7PUnCzygK7DBg8C1GfhOyzy0sPRiHtMj1/b0uuXXiprWUdiJi3nCEvTiu2eCf+
-	F2kzWJswaIlyw5n4nc+pk+zrFl1pLeTQ3TEj/0CPl4oTLmrHEGBzZTz5mG2z0Uzkhfp9m7CLXep
-	s2TDriKwqaWI8cS6TZxaPg9yi0mLSC09BPVW4RusGywNGpVFnh3e4db83FijBdF/yD/JxgfMW12
-	nKvhUI4c1W5AmxinCluzmy60Zr9MsONyB17/J78U0m0u+BMnpb+atv6d122ODS64sfgBE0xSAXo
-	rrmdvIS3aJcu9sY234qcWtPlODfXbkR3le5dsf9jHuj4CCj24qvtL+vxQxfOBpGoI13mlEj/kUC
-	PQr1mFVDrjNYUuB2fp2uHLGkYE/x
-X-Received: by 2002:a05:7022:4a1:b0:138:42:96eb with SMTP id a92af1059eb24-138422cb8e2mr382496c88.17.1781140992031;
-        Wed, 10 Jun 2026 18:23:12 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13842f81b4bsm290810c88.1.2026.06.10.18.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 18:23:11 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-mm@kvack.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: fix CONFIG_STACK_GROWSUP typo in tools/testing/vma/include/dup.h
-Date: Wed, 10 Jun 2026 18:22:44 -0700
-Message-ID: <20260611012258.432043-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	t=1781141816;
+	b=NZJxMSIyNkV2Xw6mPXnMb9pIbWHfRWz9sUtjHRcq/C9YCaVDadJJIC9vaAXfOaxKlkT9+4
+	puaEwugNdNtTDOFf9grWn29wCi5fbdx0fWWnl9gSOaPcvsSzOKlgrQTi9N8LdeIUHtFMwj
+	TGsuk4eXrMRD0jZJjzOFsnoiAizV+ps=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781141811; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=oMIRrh+qQia1RzMW2pfyqYI6BiXhyEOuqFiFA/0GGvE=;
+	b=abgBlKoZXpn+uMTKhLQc6twVFyhKwA5DjTq2gdk3KpcLIyt4p90grDFeQdHwjM34sr/rZBmyFexNXGrodbgHEBgt0WW+0FG8ybPf9dy3ClU+07T0SfK1S5lzEC9NCtBP1H9AxYPlDezbctll4Gi2cGzqhyr4s3AuVQoIpDWSkFs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R411e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X4c2kGc_1781141809;
+Received: from 30.120.38.205(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4c2kGc_1781141809 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 11 Jun 2026 09:36:50 +0800
+Message-ID: <7b05bd27-2152-40c7-a777-390ded5defd9@linux.alibaba.com>
+Date: Thu, 11 Jun 2026 09:36:49 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] mm: memfd with write notifications
+To: Mattias Nissler <mnissler@meta.com>, linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>, mattias.nissler@gmail.com,
+ "david@kernel.org >> David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+References: <20260603125521.1468362-1-mnissler@meta.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260603125521.1468362-1-mnissler@meta.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 78033140003
-X-Stat-Signature: cwhyauaqjqkarrgdqwdjxz1oo73sgzhh
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C97904000E
+X-Stat-Signature: at85s16nrh6pybk3yzxhnkz98qi84ouz
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781140993-77495
-X-HE-Meta: U2FsdGVkX19fcMgnHBG1eKnfG84GAo2MTfbSBv9nHxv2wA0mj/2S+vmDzCIgr54WXsDMd6HkhlT890wvmRL0dd5yyD/bSw5im0CEy2e3vBjBCeQ/W3T8NaMbYL7NfMKBf0qRzVtqc659hy1CqOjS4DlakLx6recNbGgvK7eW9ITWUs9Qh8lMYS4wJP30QpI/60W735akHxkuU+8UW/XD2MJ/eqJ8iOy/POhK1u2mKzWD2jnWFXSz9pls34NMG77c/ZIM2RXdxpEr5r/5/UkgVOZU5Rwn8oW+OmpUwmb1nXpC/JIjZS7+av/expa7lawLl71hHlhIhkpUYq4gsF6QTItGQajhHE4rNyiPyZU18fafwAkpiYkh5tGMMA+NOML4uix54bj9AW/t/a/U36Bqqwlq447qsz9pFvxJM1BCXln2L2L0KCrw5oNBQSChSSB0za8bkSiW3U8y12sxFdXYnjqOP7WyOidyrwIS+biNyLRqD3IU8NPzipQAaL3O8EM54sqxSIiYqzeByN5dyJVBDI/xLJBMHxw2eIr2sLe5uNzcTkxL44lRSz9Wr4Yp2jtvp/1ufV6dkp6XYL6UiC8NwoBAIhYaOPITWIrCO593zQfRvYj9c04BPKUs+85M5c3pTWt9K8prJ6WhJue++9lBFbTi1dBStlUOR8fT0klymIULfnshl0gERETMIPBqR4eSRBlFZzoOEBJLXE5SIt7FoEApea//4fmCJo3GTDtYMHw7UzVj5TwLTEPsSOq/Ri1zuBrr22a1lsvvAJuGLoAcrGPakuMcMfUGF84es8ARtQbgptydYVY6oItZ7oB+H/m56114pe3S3vuLJ7hHZQtqJVq8kUguZj1pLMMMzdvWi/9kT8oLRjaRq3Ku5kUaSoQgOkgeRqOXzs6tk9nzGonZAc74FM7f0JNRLUN+4NjtZgoDX2OGF7J+29rb7mPmRwGpXgyWy37wuRShKnEheQo
- UCQ7DKR4
- /f9p9SnfZ6p8mo5O9QQ7hg505IwqSJERL2hq+QGp73Vp7ZlycZIql6HtUX6Bxk/OrhV/VpqMW/ZOXSHu+cklLzpgKb8aBobMIPVi22s1bGBEXiVk38PzdlbgO3G0Lofek2VsX3UHBnhQMw/FU+br9TbD/vvlFFulwGcK5mwOO8X3s/Ne/Ut/QvktmK4p4wmf/4Ao9yZkn+eLLoD3+Hs3LqxjEuX0dukc2osYT5f0HqjkhUToybZTr9rqzzWGixjuF6LoUo0DMsQTqsH2/yjkIWzv48iHLZDSyTUzv6LSACHGtfLmZAq3bzK/a5AFRTgfwrhSpynwudBNdzdi4M2D8UJel7sJmKVpS2bf4XhZ5F1vgPogpQWSzzFeAD5U6EkM5GhzaKFZrA/dwCRqwXDBEjjZ8QUowp6TVSHCr1qcIIm7QsGiilQca2dm0yZrprnYSMO/kNTeHoxLToI8MfkXTmyv04C2gBjBFJjp4az41I/tSLOiw2mubngwo6kWu7Yv8Na6e2IZIsTA5Zked9vuHbFIn0rN7bFjP/vdzOtL/ZCGj2XoMNC2e7Z+1ZyHserEYJnw+
+X-HE-Tag: 1781141814-136659
+X-HE-Meta: U2FsdGVkX1/MrooY7P6iy2KEV4tIykIn4Ckn7rSWIntrkepJSPQgCNmI//65PcqD4ejTdmYjqiXBBgdqBGbWQtugz7WT+8a5gLvtJJLSqp5GixDevnxFQMqHIJiXqkC053ZBU/rcidE50FJYa909KfUcPGkh9eTPbmC5YWhKQmujH/g2olHOWap/4FLVo9kMH2OrTUs9eK4AKbuLowwFnNrr4xTc3xwF/nn4WIRaA8Q4yY4zSpdclBL6Pze3gSGiWEL5fYU+jTcVdNYJ94FoEs/BEHLGCplY/hxwouy0sOhsq4UyXRy7w0Kvxj2EaSUho2waTUu7qM5MX9G1ENGxGYLMHZlcLEHZaw67DOGEFQ9HYD5zacGr7lIpvCGedOnxBLTZyPLC+2ZqiKVn4pzhkcXJXRSJff3UNZ/YxGFyuQJtE1QF7oVJbcy4lK/Mvi4JGaAerSQiimTfvhP5gRwuOGjONgl5D6SY62eE3d8vw/lU0SQ9DTz7HMqvv/0X7WelBJdyumWCNfQTVqpuZDOm/O+UVoUPjrYT3QPIn9C+7cALGWQ3EDyKEuNYxZI8O+X4/cOWoRwcJYk6JJNqVPvkQNOI5skE2/9uRMLLJF692MHJroMwL/BgTl5vywybx8spQm48siiuf+BDR8T0XMBywliWeEa08iSh2fp1KCED1poXFPGY2fBAu+HcKfMPI+9BFpO2GK9zzIn+FQkk1konceit8sNr06at94Hg38mh2up+T4WoY3gTMcw7+vrh14FHft2dU1bAgnP8wVo8ed68+Yczrykbt9h0U+mPqP1bB2ZrYTI/Wk6gDajfQE4/79fUz01fQGPRV5G8HlLXdWMisjMsfqDvM5mK07HI9sE/51Z9nNizgS86HxmN3wgxKO1sXbMgccd1xhl0skyGXfMLWGyNMyMiB6siSUt71tc/lKr7FdP7cKh2jibhv9nIeyrQngv/uHsi4yb6Uyd3z94
+ KCvA0ehv
+ UuFR5z+z2fGuh74DMzVnu2Errtb82ZERJ9mos4MdbYHCkooNcezN3F/9nXqjYZyuwFZptG28Dhv5X1RQkpHP0rZzA5LrORJh8gUenKwhwPcxtgErF6BER3I2JDyyvkLN7CTyPGNHO7p0dEnxGe/5tsc+iZPRdJbBhJe0O9tezRWHGri/EB7dsIrXUk7OQvzXlDaRA6qisARsD2U/+oodpLoyVHpDX+v4cpzCHcbMidv6pWzYa7b3KHvZntSg15DOYztqJvW7izkoaw9ZhGE1oIpaCtrSLMMQfnuVcUDtzrlSZ4tSiNU6aFTlcpBSLBT2CCvfyXkp6ez8hZ6XngNOSwTsU3xFtM+NYgLG0qIkalkPtA9zyhGochx8hQsAKMQ5Y9A+HaVpcJY0TDZP6k+pxymr0h/1AnovdOUjN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,38 +90,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly
-refactored the header file include/linux/mm.h.  In that step, it introduced
-a typo in an ifdef, referring to a non-existing config option
-STACK_GROWS_UP, whereas the actual config option is called STACK_GROWSUP.
+Add more MM core maintainers.
 
-Commit 40a4af52e047 ("mm: fix CONFIG_STACK_GROWSUP typo in mm.h") fixed
-this typo in the mm.h header file, but did not update the copy of the
-code in tools/testing/vma/include/dup.h. Update this copy as well.
+On 6/3/26 8:55 PM, Mattias Nissler wrote:
+> I want to propose a kernel facility to have user space create memory
+> regions that can generate notifications on write access. This is useful
+> as a cross-process communication mechanism, where a producer writes to
+> the memory, and a consumer polls for new data to be available.
+> 
+> I'm including a minimalistic proof-of-concept implementation meant as a
+> vehicle to demonstrate the idea and clarify semantics. It works by
+> mapping the memory region read-only, so write accesses will generate
+> page faults. The `page_mkwrite` handler can thus trigger notifications.
+> It also allows the mappings to become writable temporarily until the
+> mechanism gets rearmed.
+> 
+> Intended usage looks as follows (cf. selftest code included):
+>    1.  Call `memfd_tripwire` to create an instance, `ftruncate` to
+>        configure its size.
+>    2.  Pass the file descriptor for `mmap()`ing to the producer and
+>        consumer (potentially across process boundaries).
+>    3a. The producer writes to the memory region whenever there is new
+>        data to publish to the consumer.
+>    3b. The consumer runs a poll loop:
+>          * Wait for `POLLIN` event.
+>          * `ioctl(MEMFD_TRIPWIRE_ACK)` to (1) re-arm for subsequent
+>            notifications and (2) make sure prior writes are visible.
+>          * Examine the memory region to collect and process the data
+>            provided by the producer.
+> 
+> The intention is to guarantee that no change to the memory region can
+> slip through undetected by the consumer. The ACK semantics are
+> instrumental in achieving that. When the ACK returns, we assure the
+> consumer that (possibly concurrent) writes to the region are either
+> visible, or if not they will trigger a subsequent `POLLIN` event. Note
+> that there is no guarantee that each write will generate an individual
+> event. Neither are any details on the triggering write provided
+> (address, value). The consumer is expected to inspect the memory to find
+> out what has changed. The details of this depend on the communication
+> protocol producer and consumer are following.
+> 
+> A direct consequence of the above semantics is that for a write to be
+> detectable by the consumer, the write must change data in the memory
+> region. Re-writing an already-present value would generally not be
+> detectable. Sequences where a location is written briefly with a changed
+> value and then restored to the previous value can't be reliably detected
+> by the consumer either. I'm calling this out as a noteworthy restriction
+> that will prevent certain usage patterns.
+> 
+> I also want to call attention to an inherent race condition. Page faults
+> signal that a write is being attempted, but obviously they fire before
+> the actual write happens. Thus, write notifications are generated before
+> the write, and race with the write actually taking place. If the
+> consumer wins the race and gets their ACK through before the write
+> manages to land, the consumer could see unchanged memory, and the
+> producer would fault again. This is perfectly compatible with the
+> desired semantics, but creates the risk of a lifelock situation. In
+> practice, it is hopefully exceedingly unlikely for the consumer to win
+> the race consistently so that this can be ignored.
+> 
+> Switching to motivation: Producer / consumer communication can be
+> implemented in many different ways. Pairing shared memory with a
+> notification mechanism such as `eventfd` gets the job done nicely, but
+> requires the producer to operate an `eventfd`. This can be undesirable
+> or impractical for cases where the producer is designed to talk to a
+> hardware interface in which a register write also conveys a "doorbell"
+> to trigger hardware processing. The proposed mechanism allows software
+> implementations of the consumer side that behave functionally equivalent
+> to the popular ring buffer + doorbell consumer implementation in
+> hardware. This is particularly useful in contexts where hardware is
+> simulated, for example in VFIO-user server implementations. The tripwire
+> mechanism isn't restricted to that use case though and is generic enough
+> to be useful for other purposes as well.
 
-Commit message adapted from the above-referenced fix to mm.h.
+ From your earlier requirements description, my first thought was also 
+the shmem + eventfd approach. It seems straightforward and avoids 
+introducing a heavy new system call to reimplement functionality that 
+already exists.
 
-Fixes: 2b6a3f061f11 ("mm: declare VMA flags by bit")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- tools/testing/vma/include/dup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Moreover, I haven’t fully understood what hardware constraints you’re 
+referring to here.
 
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 9e0dfd3a85b0..adbc3179085d 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -243,7 +243,7 @@ enum {
- #define VM_NOHUGEPAGE	INIT_VM_FLAG(NOHUGEPAGE)
- #define VM_MERGEABLE	INIT_VM_FLAG(MERGEABLE)
- #define VM_STACK	INIT_VM_FLAG(STACK)
--#ifdef CONFIG_STACK_GROWS_UP
-+#ifdef CONFIG_STACK_GROWSUP
- #define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
- #else
- #define VM_STACK_EARLY	VM_NONE
--- 
-2.43.0
+Anyway, let’s also see what others think.
+
+> In terms of related technology, there is some overlap with both
+> `userfaultfd` and KVM's `ioeventfd`. `userfaultfd` has a write protect
+> mode that will generate notifications upon write access. This can be
+> used to construct a similar notification mechanism to the one proposed.
+> However, the producer will be blocked until the consumer resolves the
+> fault and provides a writable page. The consumer will then have to give
+> the producer time to carry out the write before re-arming write
+> protection. Furthermore, `userfaultfd` is scoped by design to a process
+> / `mm`, whereas the proposed tripwire mechanism makes the fault handling
+> and notification mechanism a property of the memory region represented
+> by the file descriptor. The latter is simpler to integrate with existing
+> IPC protocols that already exchange file descriptors (such as
+> VFIO-user), avoiding the need for additional setup code in the producer
+> to instantiate a `userfaultfd` and pass it to the consumer. Also, the
+> tripwire mechanism doesn't make an attempt at providing a generic fault
+> handling framework, which sidesteps the access control complications of
+> `userfaultfd` when it comes to handling faults generated in kernel
+> context. In contrast to `ioeventfd`, `memfd_tripwire` does provide
+> regular memory semantics, whereas `ioeventfd` discards written values.
+> 
+> There are also a number of design choices / alternatives that warrant
+> consideration. For simplicity, the proof-of-concept implementation
+> generates `POLLIN` events on the file descriptor representing the memory
+> region. That's somewhat unconventional given that `POLLIN` is originally
+> meant to indicate a file descriptor's readiness to be read, which is
+> always the case for memory-backed files. An alternative design might
+> associate a separate `eventfd` at setup time to deliver events to. If we
+> were to deliver events via an `eventfd`, we could possibly also fold the
+> ACK operation into the `read()` that clears the `eventfd`, which might
+> be considered a cleaner API.
+> 
+> Finally, I acknowledge that the proof-of-concept implementation has a
+> number of gaps that would need to be filled in for a production
+> implementation. This includes read and write `file_operations`, support
+> for sealing and THP, etc. These features are already implemented in
+> `shmem`, so a production version would likely make most sense as a new
+> `shmem` feature. I wanted to get high-level feedback on the concept
+> before starting work on that though.
+> 
+> Mattias Nissler (2):
+>    mm: `memfd_tripwire` proof-of-concept
+>    selftests: `memfd_tripwire` selftest
+> 
+>   arch/x86/entry/syscalls/syscall_64.tbl      |   1 +
+>   include/linux/syscalls.h                    |   1 +
+>   include/uapi/asm-generic/unistd.h           |   5 +-
+>   include/uapi/linux/memfd_tripwire.h         |  19 +
+>   kernel/sys_ni.c                             |   3 +
+>   mm/Kconfig                                  |   9 +
+>   mm/Makefile                                 |   1 +
+>   mm/memfd_tripwire.c                         | 246 +++++++
+>   scripts/syscall.tbl                         |   1 +
+>   tools/testing/selftests/mm/Makefile         |   1 +
+>   tools/testing/selftests/mm/memfd_tripwire.c | 695 ++++++++++++++++++++
+>   11 files changed, 981 insertions(+), 1 deletion(-)
+>   create mode 100644 include/uapi/linux/memfd_tripwire.h
+>   create mode 100644 mm/memfd_tripwire.c
+>   create mode 100644 tools/testing/selftests/mm/memfd_tripwire.c
+> 
 
 
