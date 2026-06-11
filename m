@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A943DCD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:01:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F40BCD98CC
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 13:01:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90F3F6B008C; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 7620A6B0092; Thu, 11 Jun 2026 09:01:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E7016B0092; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 6ECA36B0093; Thu, 11 Jun 2026 09:01:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FC876B0093; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
+	id 5D96B6B0095; Thu, 11 Jun 2026 09:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 704E66B0092
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EE89C23DF
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:53 +0000 (UTC)
-X-FDA: 84867644106.01.0AA09D1
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3388540019
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F716B0092
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:01:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F37BEA05FA
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:54 +0000 (UTC)
+X-FDA: 84867644148.14.54C8283
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B7F6140010
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 13:01:52 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iTuqVWDl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=p3ZsXKS+;
+	spf=pass (imf17.hostedemail.com: domain of 3vrEqagcKCCUBCBSOBTHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--abarnas.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3vrEqagcKCCUBCBSOBTHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781182911;
+	s=arc-20220608; t=1781182912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
-	b=qBhLSGN4eZQ7qSapJV2V1ZPYBCqCkqvP73z/E6zL/HYVk7cDhYge6MO8ko0KWKNsXqSVdh
-	yesdFdhtxtJj6myzv7cATvUJDty20HiNVqoPA8F9/8yuB82G3WHQ+g3h69vf9vbx+TWLBU
-	KubExLG4wii8SvRVABEuEGlm9Z/T39o=
+	bh=iN7hrd6qn67T2t3j/i98eZyOA4V4M70JMbuUd8RCBF0=;
+	b=cUWZJxFEnSqRB3pQSIkcEEychxrqhKS4T8bFcSnJZkXrZRTjjeDdo+gZcM4MHCeqj56OPX
+	lvNVdWGloJEL+yIcQILgNrfT9YmXGYUL/azwZtEU5OZ8FdCubw7KH1kIusroSnviJT/i1w
+	Pz6LzFHon6TXqh9qz9vIsA+8BDFgLbo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781182912;
+	b=dZySP6WP1qmfIWZRbbe4Geb9vQLrA++XeeXCR+d6bbz5f20OTGAgCbjBxqcBw5S/P8yHQD
+	gBs0j+gkPmGXt1D+NhJ1TLO4IvClu1VeosKeFJXzBMc0Me5Jtbp5u5nSwDkJB06z+zEb2U
+	DRV0cSWtxc3bNV8lJmgDpV2ReSD47lg=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iTuqVWDl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3vbEqagcKCCQABARNASGOOGLE.COMLINUX-MMKVACK.ORG@flex--abarnas.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781182911;
-	b=HL3jaWLkcv7lCdlQ3dmRu9EqA+e1dfS7S1E/0ZmOSw1RARYYVRtNbQIHa9FcoOPvddnMRs
-	Hmgb0Xp1Bo03A8CeTM7qO3LN1UIXpVO6Z+cygQzqvxCP7BoPIowp5/MaL5z3c/3tC/+HRN
-	epwv8ply2DlIAF6M8I5n0m1kZRan6f4=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490ae0167ceso37958995e9.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:50 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=p3ZsXKS+;
+	spf=pass (imf17.hostedemail.com: domain of 3vrEqagcKCCUBCBSOBTHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--abarnas.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3vrEqagcKCCUBCBSOBTHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--abarnas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45efb6e60e4so6764087f8f.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 06:01:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781182909; x=1781787709; darn=kvack.org;
+        d=google.com; s=20251104; t=1781182911; x=1781787711; darn=kvack.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
-        b=iTuqVWDlLTTs1fTU16219cmuDrrFcx8Bvx7I4bNSsCgFZUxVyBLYsggWfOKC4W9JVV
-         AcLLaFozWiapZ1od5ZdVawKJdV3CYigFq7FDvBsTs1diHUztg1y6aXxtvz+Z9U9L41l0
-         kfXEdeSDEnITdHYoXX/YjeiulmgaycclTahuHu9pXWq1d+mtTwd6zB/5GYn4PNOwi1tJ
-         D7DiluBT9YTae/WNp1nz1TWpwDDvFV32f/egNmqXxEmdlIkq11r/CiJPdk30Nyd1LFft
-         cqi+fd6s7gXOOaJdl9A33/4w4EZUnAuvwVSl3u0LJd3z3cLUvl16TWfaEyhN6yAE/0K2
-         ii5A==
+        bh=iN7hrd6qn67T2t3j/i98eZyOA4V4M70JMbuUd8RCBF0=;
+        b=p3ZsXKS+RRFpkodFzinz3Dii1drFpqUvSTAC+oh4OEVmlg4QxQhMu2JChwhcPkRg73
+         a8ah/R9lt/o8RDrBKLrGs4OVJV+IV34ovaBjPhyjfzTc0AxYPVo1eiH0schMZsuu3oKb
+         C83j++tkoVovcptFiP1dfDrgOnt3419ntGj/Sn1d2bfrKb6X0RNZYkCzHgHW+ibFWsHU
+         n2pXTwXI2mdxfP8SzqgKCxyckHSywtlwGEydUMzg6ZOiNsfnq3aSrXTvoYiFW/vXh6C3
+         eeRnhyzkESRTERbSB8vU0iE/s+RHvm8+rJyaUn7h8hmKRqxlRp7CG29qIo+jM12ATRxr
+         qEeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781182909; x=1781787709;
+        d=1e100.net; s=20251104; t=1781182911; x=1781787711;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vpVm5xmGC/R2ADzdtCLJ8S55VXRKmTwz2appu9MAZsM=;
-        b=sroFBIB/Ie/1ZIZ71Knbq60lasF9AysVdtDdFOKM1gEOzeYprfFwIDllTvI4hIR/FF
-         r/Md+zxBt8/M5LnPz6jVa28pxHVh86oKg5QtTGy7qg8vaMBngrhhQ7WGCMvwM9SqZhsK
-         WYk+j3zBheJDjo1l66tI3tD2v48uqMaqkAYlONUl2lWD0Qgq00xeaWgI8/plJNdS5seN
-         hmrFzKEzhs0toD56RZDbVpknChwPQEUGc5oRefpvsx1cUZt6LVFffWb7ZW+JX1I0kG13
-         tfDnK/q5BFiqhNe60C/DE4Ch+ycCiziCJe0LZSbPHMq/e8tsOrCsFJJ8tarOZUMcYXUo
-         g/HQ==
-X-Gm-Message-State: AOJu0Yzj/uMcbJnolrE+VX2XWwEhKYfJlg2xESFmf/w0B1etU7vAu37E
-	kErgh8cCSGX9A3uRS0I7sXbCSjk0bPt74/6Snx4egj7av7HnXwiCeRZOCnh6MKoyMURs2f4q3ml
-	ny/dP5Oe94g==
-X-Received: from wmpd18.prod.google.com ([2002:a05:600c:4c12:b0:48e:6f63:7624])
- (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d04:b0:490:b58a:dcc1
- with SMTP id 5b1f17b1804b1-490e5614165mr34126615e9.29.1781182909448; Thu, 11
- Jun 2026 06:01:49 -0700 (PDT)
-Date: Thu, 11 Jun 2026 13:01:39 +0000
+        bh=iN7hrd6qn67T2t3j/i98eZyOA4V4M70JMbuUd8RCBF0=;
+        b=Qrzpcw27BLhKKT+9jQlQwCubrMgPEf+OkLm+nan29PcyoIh9GHoSXKF9Nlpx0w9wc4
+         8mhtMRWdr1aJ1BYhGwhHaYK5xWmkUskcAAaidW8qiMj9mxEdokCloKf9wPj0A6Qvj2p7
+         RYkvZ5HDpsfW5tge5LdOegOGbHt3jG8fB5ZBTnQDA+Fjrh6dujiIzbQFmqxGEpFI1hpE
+         mImoJFEIhezv0emnMrLfeUH5+8/DyrgvMu7LoPcex0qonxH8OJ2uoXukCdzGdU2jfD+2
+         k9hWArq2jjZpX8ubdnnaEaUxVeSt3p143k8Et876QQ2ALaZmo4en/Jf6w0xNhs9YTB4G
+         5c3g==
+X-Gm-Message-State: AOJu0YxdAz5nZ2P8vny00888b6W33+iyy8Ertto3G3fbKjCJ3R7OaVEK
+	iiFyhS7eMOR34RyyVKUptHhP87lAxjGfLtRwhLhpCSzJJXOQyU4V3KUfqNOP/1nj6Ey5DeKoGZi
+	YarVAYB4AlQ==
+X-Received: from wrqd14.prod.google.com ([2002:adf:f84e:0:b0:449:a1ea:d14f])
+ (user=abarnas job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5f83:0:b0:45e:f4f7:7cad
+ with SMTP id ffacd0b85a97d-460677f3340mr4265866f8f.39.1781182910754; Thu, 11
+ Jun 2026 06:01:50 -0700 (PDT)
+Date: Thu, 11 Jun 2026 13:01:40 +0000
 In-Reply-To: <20260611130144.1385343-1-abarnas@google.com>
 Mime-Version: 1.0
 References: <20260611130144.1385343-1-abarnas@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611130144.1385343-2-abarnas@google.com>
-Subject: [RFC PATCH 1/6] arm64: mm: explicitly declare module and ftrace
- execmem regions
+Message-ID: <20260611130144.1385343-3-abarnas@google.com>
+Subject: [RFC PATCH 2/6] arm64: mm: allow huge vmap permission adjustments
+ with bbml2_no_abort
 From: "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>, 
@@ -99,14 +99,14 @@ Cc: linux-mm@kvack.org, "=?UTF-8?q?Adrian=20Barna=C5=9B?=" <abarnas@google.com>,
 	Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3388540019
-X-Stat-Signature: yzemx8af1qiwqiouxh45ops1qta63kwt
 X-Rspam-User: 
-X-HE-Tag: 1781182910-690646
-X-HE-Meta: U2FsdGVkX1/v5xbEjHGlt4aiyDnCeC32wLHaIpHLtyST/vrRrMloS0jPMeofvASeDbkVIcu/e01mwO3vA8QAaUlhkVKO+2zWrNuh2bXl2XvvotXD0TbWaAtS4T94oYHNxkqmFxJ9+d58ySmSvIDzD3BWRnhQ2+9QfphTq/Ss8eNtdkPfBLI6qeTcodKMwHp6NVT3UWD42Mjisw+ZWFb9kS0L5LmItS4jk/R8eq46ajWTnShSfwPbNCwPn6sBRQj8dwXThMQFvsU91PGfMTjp85SzZDQrNPUOxtJ0OxkWZcxIv2ubHixkOnsaGZQaHULH3W4B6J8xQENg0Y6naU6c7fAAAzoVaXMM5Vnbs+AswHd9UHQcfbNvSNWMuHE4M38ery3Br5SMvTc86TOhWC5hB6Ad4I5Kccj+hTh2lOe7M4Utd/D74VmQCCsryDFYBw2XR5sZr4vuEY0+cIYojV/T1S1k28AM1WzudooqL8qEc7usBIVrbjvroMWrRUqQvfcqPbVtwflFmmVW73CkqDabNabfGmg1IEL6iqzBHceXdaXoPz71eivvRAfBu2/7pZpIw/kTLs/4A9XfyhsVp6iCTchDeTAgI/QWdJuEQT53j1Q2aEUEvLkiTS51u/94UizuveCYU5efg7UXvtZ1rNkBI6pwtwJLLsxWOfIvPoJvQjN5DVPF2DY2FMEvZ9d1m/0aWV2YuXYDKbIC3/Nkna3N1cPXRhBAJIfh463J1nrFLAERo/yn9TyionIeTNQD+QlxwNh6bxYJmtLnbNZ/LHaeNLdEUJbNcisuGo6Q0FE9K+bkBiob27C/ULblxLYHs1ldnc0IYFODO6nrL4xEMDmfe+tt25l//pvjp6wgkM3evT6RZPC3Y9nLPvKhxfH8bXlGkgl5QqbVvhiJU2cICK0jO1rzW8rzttLijITeJ/mgAPNAoxMSMFGQ14Pyhrx3XnF56b0pRRHb/1iFQYOO8zU
- b08lwTWt
- FRN4IrgxOEl1CTVQt9OY4TNlkGDPbKkObOYK3e+1gncBJ4cHbVY2R3cvAhw6taFq3xu7ASY6NNP/emLy050TtwYYRX2JaC4xiebUDJGfHOrLK5BPTcEl/dfXtS3IaqPdByIWWF/BcaSQM+ndyXsKRqvlqX6kRc6hcGQ5OgHUxibbB1Qn94FQNtqfALyrpCKx+HCMsQEl9Eofq29PKKqKZSktvKwA4GP6vwuGuf7wHnOmN3PJvkk5cB0blgstVQj9Fd8sh9SpMbhSg6YA0j9DYVB7p/yzoTHbhE8VKkvwzxyFD/QaJN3UMfrbvKd+xjRnhVQgNpvVdojhOcAG+zNLLJ1OcFh4WicN88gHnD3IqmYf3AYBETM56u8wDgmeeZVNqg/Sr7r+cdD62Zpd1CeiVjokYqCwvSn0pET9QF+/uQtsDK4cFWcVdb0h2I2HxH6bpAOxxsBQBYV+ofj8dfPm25Jjt0nWvJYRlGmn+Ri4b1cDKTmzMuei61KlqERKelLN+e8ayQ75si05W6MWz8qa3FQLAhPrNroJgnpbT+59Hg537ppWGcUhmExdEgmqAf52SvxNF6WFwKWmZLD4=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B7F6140010
+X-Stat-Signature: cof96eakfmnk31byjufnj5q6izcaogfn
+X-HE-Tag: 1781182912-863028
+X-HE-Meta: U2FsdGVkX193oOMMWoTC16nZBzRHsKSI8rWkFZXY5ZvKgAZsJkvKEago0BbuaXNTwRtQlCtWeHrj35XHGgOWo7mcoRDd5HWKdtYT8wKKASp+ZZcVi0vmHJx1+tCfTcvstIf2agOlcODNsey9NVUwtFxOfs70ZcnEi40cSK9ekI4+avSFJNh5bvbzR/0JLC2ZAJC7vmuwEoelWCQZIpBT4P21KyMivttt3UTC+8OKKSv96VkKMs5o5b1YelbI64p10YtR6zFLmmWqqc3NNRhVuri2ahLbZj7russHr8TowjUdafu7iWGgfcgrsjU6YAoSrKIqNfHSHxOYoyOE3TgBILO9re6ficFrb7KFMdRFoK1vvofJ+4Zp0oZbrFwAxyRB11rPLYTtYerG1FiiqtNBHLmAdm1oZTUrmrmO6GAqXeEA/TE01HNHJGo0A4VmPkgpLCcQhBUiwRDoIYbX3n4Z/1xasDbwQ4cMrHXuSh5cfdwlNhKFmDq1InKHboBToffN2iru3JnGff2wE9Skv/F/nyMTbT6thvCV7qBAIVY2Hu7QrqvTNlAvVdwFX8aZQC1DLYxoZSVkx3q1Vj6tyHBvcNp2/mZvyCDGoh+A7FFPXaGeQyawV1pJjDIcLkGpBXoxpSh4x1fpGN/eTpD176CtmkQxKsj3X9Dp39Tc9xhFuNrib1z0cdQQPVTfq+HhBDFq1KcqPVwmeD4SCX1Q3FAMK9XDDZQcNe/3E5tMn4J0ChtMAHgkpfAaW8EKgeoauh8cWDjI5ZFQlY11iy3j0h80LrKRef/UENIGJ4LXExnwXcO9DHao+rtv5/hfg47obX2sIi2Y60c06MLfagQr9FvowLATxiCmviSqZ8aFtpe4s2YowhQaOTzs0Gpy5TxawciFVHtBNNH21HeP/B3uyPos94n45GS9cB6zBm9cwYqHzTbb37xxTOe7DEngXetEvgZmYr2cqI0ISdLlA+HIF2n
+ u1I2Xv8H
+ sP5JywikKJQdUcypVE8kFLhciHIf4AX1AJrRqPHkkIYfHj8Pwk3EDSnWv2QLQgFl3SdyC00hcIMb+fOc+QBXssNi+PugGBZ5FaufM/aNWBSl+YT+CW5557WYuGeTIDRoDaBbujsa43J7g54QYfQtSaCAF3PNGJqPQ5kxMAkpbN4dA4NhoPqsD96nrOGPPHSlKpye/TqOvqHevRc/8aQUucw35+KbXCTvLwQXAzI+8L0ZhBE2uQ+kkP0th14BmOZ91ojM/4imR5cSIlgBLO3BOzAya8S/pyuIdBFHJxTXhzPAEScx7+xxoLXWa/Zijkp0SZfrPanTFa5QM3arpi+e81HdT0WhU7YnLN5kAKJPi4B8j4mRL5Nc45HVm7Wge8RN3aLa4ifjzXLRUp7M6VYp+9ygZytzNoWrWQ3DYlEKfELBjXLeMOJ0N9jNkMZvaCZX9GeHlVdt+GDdG1j4Fi6hkMQ9Yw/Z/75kjU54x9Yy8iTTP2SOeJ4ZlwSU6e401VOUEfHZdfKu/Q3yjhPI+doKrWcko+BkuR5CE4Bn83XDjgvnlFZRJ6qBUiFC6SHvp5zgQqTs5eoI9+5WSGRMeJWPKFayRMj75SCj22Ml4fJQb6VOYFWq/q1VIwHePXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,57 +114,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the reliance on the EXECMEM_DEFAULT fallback by explicitly defining
-the execution memory (execmem) regions for MODULE_TEXT, MODULE_DATA, and
-FTRACE in execmem_arch_setup().
+Remove the protection against huge vmap permission adjustments on
+systems that support the bbml2_no_abort CPU feature.
+
+Splitting live kernel VA section mappings into page mappings was
+restricted because it could cause TLB Conflict Aborts. This forced
+permission adjustments on memory allocated with VM_ALLOW_HUGE_VMAP to be
+rejected, resulting in performance drops (e.g., when enforcing rodata=3Don
+disables huge mappings).
+
+The bbml2_no_abort feature (which mirrors the architectural guarantees of
+FEAT_BBML3) ensures that changing between table and block sizes without
+following a break-before-make sequence will not generate a TLB Conflict
+Abort. This hardware guarantee makes it safe to allow dynamic permission
+adjustments on huge vmap regions.
 
 Signed-off-by: Adrian Barna=C5=9B <abarnas@google.com>
 ---
- arch/arm64/mm/init.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/arm64/mm/pageattr.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 96711b8578fd..c673a9a839dd 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -519,7 +519,7 @@ struct execmem_info __init *execmem_arch_setup(void)
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index 358d1dc9a576..88720bbba892 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -157,23 +157,29 @@ static int change_memory_common(unsigned long addr, i=
+nt numpages,
+ 	}
 =20
- 	execmem_info =3D (struct execmem_info){
- 		.ranges =3D {
--			[EXECMEM_DEFAULT] =3D {
-+			[EXECMEM_MODULE_TEXT] =3D {
- 				.start	=3D start,
- 				.end	=3D end,
- 				.pgprot	=3D PAGE_KERNEL,
-@@ -533,12 +533,28 @@ struct execmem_info __init *execmem_arch_setup(void)
- 				.pgprot	=3D PAGE_KERNEL_ROX,
- 				.alignment =3D 1,
- 			},
-+			[EXECMEM_FTRACE] =3D {
-+				.start	=3D VMALLOC_START,
-+				.end	=3D VMALLOC_END,
-+				.pgprot	=3D PAGE_KERNEL,
-+				.alignment =3D 1,
-+				.fallback_start	=3D fallback_start,
-+				.fallback_end	=3D fallback_end,
-+			},
- 			[EXECMEM_BPF] =3D {
- 				.start	=3D VMALLOC_START,
- 				.end	=3D VMALLOC_END,
- 				.pgprot	=3D PAGE_KERNEL,
- 				.alignment =3D 1,
- 			},
-+			[EXECMEM_MODULE_DATA] =3D {
-+				.start  =3D start,
-+				.end    =3D end,
-+				.pgprot =3D PAGE_KERNEL,
-+				.alignment =3D 1,
-+				.fallback_start	=3D fallback_start,
-+				.fallback_end	=3D fallback_end,
-+			},
- 		},
- 	};
+ 	/*
+-	 * Kernel VA mappings are always live, and splitting live section
+-	 * mappings into page mappings may cause TLB conflicts. This means
+-	 * we have to ensure that changing the permission bits of the range
+-	 * we are operating on does not result in such splitting.
+-	 *
+ 	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
+-	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
+-	 * mappings are updated and splitting is never needed.
+ 	 *
+ 	 * So check whether the [addr, addr + size) interval is entirely
+ 	 * covered by precisely one VM area that has the VM_ALLOC flag set.
+ 	 */
+ 	area =3D find_vm_area((void *)addr);
++
+ 	if (!area ||
+ 	    ((unsigned long)kasan_reset_tag((void *)end) >
+ 	     (unsigned long)kasan_reset_tag(area->addr) + area->size) ||
+-	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) !=3D VM_ALLOC))
++	    !(area->flags & VM_ALLOC))
++		return -EINVAL;
++
++	/*
++	 * Kernel VA mappings are always live, and splitting live section
++	 * mappings into page mappings may cause TLB conflicts if bbml2_noabort
++	 * is not present.
++	 *
++	 * While bbml2_noabort is not present disallow VM_ALLOW_HUGE_VMAP mapping=
+s
++	 * to guarantee that only page mappings are updated and splitting is not
++	 * needed.
++	 */
++	if (!system_supports_bbml2_noabort() && (area->flags & (VM_ALLOW_HUGE_VMA=
+P)))
+ 		return -EINVAL;
 =20
+ 	if (!numpages)
 --=20
 2.54.0.1136.gdb2ca164c4-goog
 
