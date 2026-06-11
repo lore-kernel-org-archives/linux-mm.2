@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0193CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D205BCD98D4
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 09:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 505976B0093; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
+	id 3F3BC6B0095; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DD6C6B0095; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
+	id 3CBAE6B0096; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F30C6B0096; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
+	id 2E1DF6B0098; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4DF6B0093
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:48:20 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BECCC140517
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:19 +0000 (UTC)
-X-FDA: 84867156318.14.8BEB004
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E2B58140006
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FB346B0095
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 05:48:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B93FEA0544
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:25 +0000 (UTC)
+X-FDA: 84867156570.10.7B7AE19
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D50BF140006
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 09:48:23 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c+m38Ro6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B43ChF8X;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781171297;
+	s=arc-20220608; t=1781171303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
-	b=7shxWo2oVXqgoG89XtlsPqHdM/2nm9ANk6xwmetNkU/mYIr+qJCDTXxykxhPdZ6WonWPIB
-	yfPjNOzMMkXTDNhglx2Y705DTfK75dEseqxyVGX5cclOM1Ld7CHEntNmJqNvy5n9+Bveyz
-	dRd7xylzM8TIEv/v32AW7q13M50U7Hk=
+	bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
+	b=w9wQqupN3zHCjHgd3X2r/qcBBXN3/nr6Sc8lUcl04J3C5ud7TeQtNjUCenmZP8pFEHUyhB
+	uhJBP40EF/fD3ixOLs0MtEECt+aSkys88QJaB07OoEG1lyFU8+pm0HM4jI3vOVBVhDyECz
+	zmikSstlpbMFYD4WZ5JGG7zJlnv9QPQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781171303;
+	b=t0kPk+AXQzj9d2Dolae8+gMmkYSuLwp2PNKdggR6nRGUF/Q4BserInWndnXuLBI0MEUH3u
+	KJku7aiN23nDebYoKIqnPnKEgFw/TX2jNVr7v2/ads7YGbZSyaa38ACs+C9awr/F0NSsTI
+	49w8F3qsB7W61fJU5HNbwXI4p/2OTGw=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c+m38Ro6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781171298;
-	b=VMyJvJ+S+40Oa2gps+pZSEtQxWz2L21d/19j5/WXhm0FeFT5NiXSwcjjymqy05uFUamI7J
-	R2iWtdALq2jwmwG2VSPJDTdhwj9YFoAVyeG1pHk7sb3muT4kSwtgNtuvJH9xCzYvgEIYlF
-	ArnqE3zIScADQlHG3w85io8F1X88wz8=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-37474afe908so2000847a91.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:48:17 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B43ChF8X;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bf125989f2so58376835ad.3
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 02:48:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781171297; x=1781776097; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781171303; x=1781776103; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
-        b=c+m38Ro6cmalnm1xzxE+JPr6dtVRoXX2yCwqc4v0HRuNqgbd0/i63YXR1GHeqCfIzB
-         3lDkZbWzCaxSl5KzQDKveT6Gc0tTgeTR9AQL3qp8X67M0ggZ2iz80tJQP6f5ib5Bo8NI
-         BmyGXnZvU7LRBoQDumrNuybJwD9AF0hVbpVME2Y6O+Lc1fiSN9gSoSrONvgJl4p3FqzJ
-         ZTeLxosz2uQcS/WdKRLpHgN9WrY6fd8VbQf46jAPwKjBexRaBqlhqiqwSW/N3R2lS7Tb
-         Ho8lgXN3xTsCs2Jn/9w1Fer138uKqycOVNBqqyx8Qorrm5c/30OzmpYzMF+eMIU4QDQX
-         hPmQ==
+        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
+        b=B43ChF8Xu75gmSsoMfcBvubg/ahmHfhZ871OaoqELf35WXy0tpxAc5febR8yEUfNl5
+         G/LKPBrgJKB8LAzktZnzRSimbwzQADDeJrZ3VinZOw5McQe+Ci0MRdIGtClKry54sbYc
+         tLmLI0eLs4r02FA2Y75YZCukHNZAO/tLtbhmNRf7E9zqiBcqEgqrgt6IyvoQexyPlPDF
+         ycYh8MvWdROoifdosGqQ9AdzM0uYZrb5MB8P9EnAagGjlAsb3EITvYM1BchTxWtn9qxQ
+         hL/dllnobazKyuUVN78Gn8TnNM2zU2AW9MVUlyrjuImH7RQS5rst8fk6VwU9Z0lrUFXF
+         eqig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781171297; x=1781776097;
+        d=1e100.net; s=20251104; t=1781171303; x=1781776103;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0kbz74MU7QErdxN5+g1e14+NsDJyyX6Cj5o0sAgDfuo=;
-        b=IQz+WssHxnEqt5+Avug9MWj+4uOdToC7Eb5mQ4eDZ6wIO8s1ncg1fbhnPqCt5mfYC7
-         D0WIpoIllOuyL37vPZpKbBwZpR1P+psw7AJSc2I3FANnWZdoDUttZMELeJ7eb2sCpuYu
-         qa/eUQ6SL6Vu2znNwAFknNYRYxlBNwU4Nw4DG4HDenCaAGy2c+taSKa5V8VOFq2TytR9
-         MiiVjN1cZK+fXw+wrNK4LxSFHmViJcXvU7ExG0/IKzYjXaRh24RqcOD+WwiTuKww3U/z
-         a+J5LmJumBTvTT1MYkP93emdcGPMHGIj/Nim66jeu2t+mzTByzB2A5S/FTFhDRaoLyAZ
-         vYGg==
-X-Gm-Message-State: AOJu0YyzszChaLOniMzrpo511+06dBraB1D7Xtf1G615oehUQth6GbWm
-	pYLfTGQbKqFXfd2ceskjXIJ2WI+qJP+bwNEf9ORPYT7GESXVY9I8GKgo1FgAIPoR
-X-Gm-Gg: Acq92OFKPpun9IqGzZivhneoeMmS/78j33nSLCmMQL8+AAiBlVY/lKGOMea6BE0xaDC
-	cu4gN7b3ecD8T8dXdEa4vy/zLlDMgB4dDLWrKbpPphf106cbyIx6p2zvNF9YmJ0wGUdu6GG9C0t
-	HX4GymwvjxbGdRJXbxyC/alPAhWL5TdrLeTV4p09void1HU2Y1rsF2fmj8OP36JU8Oz4YMzDV2v
-	/9v0kifHqoznlUSDpZzRw29+aADNKZfsymGcQcl3yS1RgKj4dq/bTRxQe+VMvaiBPbi88yw3RMv
-	R3kvSdYdnleqdkW6MNSAf9h2Z/QWcy236p752lQMRFGDGUU9dmf1l6Q3G0hlAdL+AEL1ujyxSso
-	BFwaHPCWFW9NyYrMEymW/6Dsfar3SAnhuXeKZh3P8qepdd/U/fLdJeSAxNZLE0BdBczAgTCi2Mr
-	dSu8DA/cLeyFP2qWuGlGkdLQ9pxMbshfLRtXpvDitXCuE=
-X-Received: by 2002:a17:903:247:b0:2c2:bd05:dacc with SMTP id d9443c01a7336-2c2f0f11c2bmr23663225ad.16.1781171296415;
-        Thu, 11 Jun 2026 02:48:16 -0700 (PDT)
+        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
+        b=KYz7ntCSGbwlBa4rpeEXYI17OTcqkz0cxlkHLRqYnZwMaIQwffPddCYidRCWGvI7W/
+         SvoAO9v6/g9GjITObPdfLc2ebBpM3uuY7AcVKJIyODjWJXOQrYZpeYgC4UU4TaRm02hp
+         PDpaJEe17/sFspDITAeeXOdLx/h08MFolgI2IVXxlu+AyHlyEevySOYt7FF5NTw6ZLZf
+         xJqa1j21gu0EPngG3iHwuTnri58Qm8ODUN59yUAAynnSWTljXNU/1n18yVsQjTjcCyV6
+         NlYfJN8Hlwo9bfSiNuNNK7AwLTC9UJKZM3WXt3HdeBjpPxXtRknDZvA7n6ch3je1+9sp
+         4xLA==
+X-Gm-Message-State: AOJu0YwDdTglhfqLEJWY5y6pqlKW+BucoH2lYp4/L2xGa9iS0xGLPMcJ
+	SELI3S7Ejl9iNPHgdYgVrqg2eT4kPuwSl4VCCRgtUQq1w6XeO3XdUo9zU1KT/nwP
+X-Gm-Gg: Acq92OHjvq0WKCS3Ui41cUunao0LNhg86h6LaaKL18CbcovfgBJ5xCdqBdjzdXTZ1F8
+	uaOfZQkodIMVUcoQ6pD3iRmKxLYjRkA9rtpYthfCH97WZ04WyUvd7ZHxcmP6wP50iq8ZlG1NPKL
+	1fNRTdvibrEZ7/ZsgR5rjIjwHqRACORsFOX++eNhLGyucsa12MxXg9Hyq87wv1BYJh5fwBeiYtO
+	ctGG1k+b+uI/Fkdx+irAEbPePrfxC2Md/5Q/lCwcOnA2it/utfx4cDj+YBU3ekmiQg4kvF6CRFS
+	HUfcMmCAtm2c5OvTcGwX48U/1O6WDfkf/RVMbF4Rp3b532LCSqpYvBdeZHuPSyt3PXpDYsL56r/
+	NADDbnuI2u9phV55n8XfjsCgCKPc308Mr5y6lE5FwGX2wOVea25smEltu4bGybjKmr0pbtIq5Z0
+	neF6JlYopls7AR/mjO2f/kUlobZRBnggCkeP8SPJQtlu4=
+X-Received: by 2002:a17:902:d581:b0:2c0:b9a1:6493 with SMTP id d9443c01a7336-2c2f072df8dmr24320965ad.10.1781171302591;
+        Thu, 11 Jun 2026 02:48:22 -0700 (PDT)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm283324905ad.60.2026.06.11.02.48.10
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm283324905ad.60.2026.06.11.02.48.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 02:48:15 -0700 (PDT)
+        Thu, 11 Jun 2026 02:48:21 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linux-mm@kvack.org
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -108,22 +108,22 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
 	Sayali Patil <sayalip@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v2 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS via ARCH_MAX_PMD_ORDER
-Date: Thu, 11 Jun 2026 15:17:52 +0530
-Message-Id: <4821927908f81632fb2a3724d4ff99fe2a946506.1781170904.git.ritesh.list@gmail.com>
+Subject: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
+Date: Thu, 11 Jun 2026 15:17:53 +0530
+Message-Id: <3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1781170904.git.ritesh.list@gmail.com>
 References: <cover.1781170904.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D50BF140006
 X-Rspam-User: 
-X-Stat-Signature: t8nwethu7zr8wugg3rwyxb1orq6ppj3u
-X-Rspamd-Queue-Id: E2B58140006
-X-HE-Tag: 1781171297-721942
-X-HE-Meta: U2FsdGVkX18f7gXV5OSWmTzDKAT/gE8dHOw08/W2L7lBI2dqM65iRtIHiXnd655weR8aO2c4MrmIy6I6vu9Nnn8ASMH5YcrQifMt+ULMg3HCOACC0D6fnM2NyqHqaXqPpDuOZOjcu0RX/TEhzhH+qDttv6EwlSPedeHc4hIx95SRsq5ESkaxGekJmMYAyAYZH344ojsCwr/GfjN7QCHIHo55GjJ/2bM/1vWJgcp1Fa2AYEn1siul881QLcRwQQZuYA/V3+E9zK81oL7/fBwPOdxAAPPdzfk8R0IuQSU4mKWwdkj7nEPKnvvj5djSF2cR9zacA7QQg41Aztkg85ht8/Vh+Lde0vJPzEw5GyG5DFZR5ygIpfeHhsBox0z3VZVwAq7qCR4y0TjXbUwGpzk++Ruz+6vCRLaDSMB6B7rBbBrDtqoK+hrftBwzU/N89bNS8439lF7ChbCIHo3V8BMWEtfwgBYaLcv89UwsGyTnhkfUTXMFnU1j+ybdQ/owoYZOAuLkRIk9V3r1aSldfp3t+/6v/wcbcZ7j8fqi+CNuCJ5x0FJxlvJ+d+/JsNm9Hs0C1CpKGfD20vzKo9EJl7nDzILYbTb6ViDSqusRNcEnwQ0fUoR+2lDnyaqq1+GafbOEF3Dd3ocD+0wDrh6EDcaJuyPpFCpBfFKiQxBWGHn2hNTZ/r9GQRPwLjDEUySfo1MGynZkECZRahwhKsdIT6iazBR7Fse5glcfqQveu2Bk2pDXtJMnm/+4fkCqcPw6w0I3bia6+6HZgD0sMaoZnnplocBKVkMtbeKjrasgMZzhxYQN9gGg2jPUBBz987Z1mczrGt/Ad2D3xrxIuNpGEqYDmOyMIpAuqRevPxhR0Ii7tAOUFlJAMBCwQ8JcHKXUOWHbJBBcWpPZLyb0dzZxyFtqFzoCyk9FGXBbb/a5L8XZkEcc3yK7x5wgp8/+DHwkiwtwJzXBeEVHogA3GY1aiAe
- mYaed2q7
- 246wJ71ROyRVN9zQYcx075qLjVd7MMu2S62ftb9rgTyl0TAKMnFTqUW9tmllcBC9sPefCHBmjUiZFrKfFZq9QV7LBJZqNaTO9TmPa4XOEC6fLkQSCNgG+odSJ/R2njzsz2BxxTWQffCi7p0kwbkp5aN4tbTWuY/qKsGoUW6cdaxTzMQ1whtSwyzYEd/TjA2qdiQMTdubPLbZkm1Pcvex9waCQOKW+z6sN8zfS3QaGo1KA0291NHJ0u9bU21LscuH16/GI3BlW8oqoQkheR1/Vp4bOaanlH5p2L4qgubjC46foHgxPUHBlSITmRmKoM4zpAG7wSmM57HT/PZwFWfE/3eBxCA3h1zegXtssxduTzSm8Ew0Wz3uiyJxUXNYkuzuOVU/7xweySMzzCnLolzJWVkSRkLWsYh8cEbqkWosqdcvhmqW2dHlxHS6cnDhE8WOMaMS5RQQ57mnvcSLryoTIhnLJUxZRMiBG1pNZD+yf1+womhw1yC05/xDSAcKItLaHBkF1TomvTIeRrXUG5/w9ickst7dyhWHhI7C5JrU4+UZ35cE/+4drSNDnJQ5hla8CBhY4PNXv8jIs+ZM=
+X-Stat-Signature: dgeoitk4r9m6ez3xeptum1i6rk1hg6fb
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781171303-887713
+X-HE-Meta: U2FsdGVkX1/VTf0RRHEKb7tHA4cMdP+CEjAcjVTURRGRuviRCz8wj/zosB806LGjy/ay0koh1dzEWOZ00cbm2obxDmX6NVMAI52OupP1cS3Qed2oxM3AEQGm83QxRkvpL/gKtPnLR+GMy5f4iiw6nVrV3DDZz23deOzVvOqRYvYS5Uas0iLUeM/c7YSMzHFR5unSTE0jYL3O4/R5B5eTYCFe2sPUsuPoYdEv2jZk1bRXw0tqnETbKdFBScKHBBCAE/nlgBQBlRbgRApbLwRRT63+hHvWlhd9s6sN4PYzR75NJ4TZSLgGBV51xav/HKBiQhVyYOjBLLXmDkla/o25aoImv8LjL6n/vnZb2MjvOmJKrkjAaZUaLIrS1cNwtyJ1PDeSYho52MlLqFGyYdv5h+RWs1ewKkVva2+9MQMx7nmai6ApdXNAH1mBLHLOmgbXUrtAHLx8MkQ2bWR8Ik6oa84YgO45ihhm4NzyuKElWPLMUiHohm57kj9vv5QCFp+AFk+8qb7FyaG9d0W6buHhbxP4nhdGQ9opO4JfPkYOLX6b75VZfixeQblBvINCDQW5Q7PjOrUv3HFEGBLcRV1ODw+fgwFA/XB248862/l2Lrs8HUuQi6hPX31xgjZeC/0UIrCtQ8HX0rVKgbQuwwGO8+M7KJAe+j5SobJtBp+HLN23Em1OsV4Sa3s0H/Y/l/PJ/QNtwkMGVQTX5LXvGyrDzpJboadTPBYtGPsT/MsawT7C1yUocMbx5KV6lelt5B/grRJsKlcWYSY/PeasZ/IeVS834nx23CJ1Teshxr9uT0l+JAcgknqUSfrKYioOh/lLPXqdGueGAiVHUfRB/4tqb/iF74JkP6s8AKpro7FE0NO8J8ru+x9kl6h8Zcd3tJLk2CkdWHVkz6RPYzFuOlwKU6Ei+hSGhGYimQBKahws+BxjT4PkUFoBax9SCdFZjLTIIqE03vB/YCEfZpZP4Hb
+ 9cHMyce7
+ Xmwovlc+kyeCyVzn3SoHhsWaH7d5GOFcvBuexul0h32PbrOCAD7Uj/HeavFXjqjewvpgWn0I22LO/zjWUhsznIYHE9ept2g1GSCfLDyXvi+GTzVgyeQTCWfcbV/8AzuOgWNtlnI+ePnzuSMEgieZjZujoE7NudJsgoNSGp06MoUtfylh2cpTkfIiKPUIBQKI887xgNQXat7LtiWrdbist18IKbLB7n6QispzUZkU9HZd3YohM44FnWb46NgtgibxMA/DN6yq0ao4YJO775QS1pGRLBl4PBVIW8e5pGPXvcE5HpRbQgIetkAz2eKq9Vowz0bTmG2S1UcTh+zjAsrwaLcSi6MicZ1lr7Zw1Tkr/ZiQv5ZmTyAvWnzLZ5Y69pfh+YsIUqFKT7+kIOHtYy64n8mnKb5ibF83iMQs+MsCqFvgBfFMSeehG80tNoRdT3wx+ARzlhZKJ1IIE7AWgWPcq1AzUihnRj/2LCKoM9GcHiOsOtGzWEfuVNRryo+PI1CfJpIyAfk99XhFtYDyjQ/N/24f2j0cc+9SXvu8u4TgFd+RscYPXuHzwqXlKj7ZaJnSzLIph73KPox4jWAtduyiCd9jgLdRxOAwM0J7A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,81 +131,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
-allocator code (nofull/frag cluster lists, percpu_swap_cluster's
-si/offset arrays, next array for rotational device). This currently
-expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
-time constant.
+THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
+64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folios
+(Hash-64K pagesize / 16M PMD), during swapout. This improves the
+swapping performance since all the bookking & I/O submission happens
+once per large folio. More details at [1].
 
-However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
-variable which depends upon which MMU is selected (Radix / Hash), so in
-that case, PMD_ORDER cannot be used to size the static arrays.
+PowerPC Book3S64 could not enable this before because PMD_ORDER is
+selected at runtime depending upon the chosen MMU. The earlier patches
+in this series turn SWAPFILE_CLUSTER into a runtime value and introduce
+an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With those
+changes, we can now enable THP SWAP for Book3S64.
 
-This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
-override for such architectures. The memory overhead on enabling this
-override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
-default slab padding could cause some memory waste. Also we lose the
-per-cpu cacheline benefits (for percpu_swap_cluster) because it might
-cost an extra cacheline indirection overhead in swap_alloc_fast() for
-fetching si[order]/offset[order]. Note that a fully runtime
-SWAP_NR_ORDERS was considered in previous version but was dropped for
-this reason [1]
+This increases bandwidth throughput with zram backend for swapout by
+40-50% with Radix and 100-130% with Hash (Tested by Sayali)
 
-[1]: https://lore.kernel.org/linuxppc-dev/pl1zdksc.ritesh.list@gmail.com/
+[1]: https://lore.kernel.org/all/20170515112522.32457-2-ying.huang@intel.com/
 
-Suggested-by: YoungJun Park <youngjun.park@lge.com>
+Tested-by: Sayali Patil <sayalip@linux.ibm.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++++++
- include/linux/swap.h                         | 12 +++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/Kconfig.cputype | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index e67e64ac6e8c..7f22d5d5fbdf 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -204,6 +204,13 @@ extern unsigned long __pmd_frag_size_shift;
- #define MAX_PTRS_PER_PGD	(1 << (H_PGD_INDEX_SIZE > RADIX_PGD_INDEX_SIZE ? \
- 				       H_PGD_INDEX_SIZE : RADIX_PGD_INDEX_SIZE))
- 
-+/*
-+ * Compile-time upper bound on PMD_ORDER across hash and radix MMUs.
-+ * Used by THP SWAP code. Check include/linux/swap.h
-+ */
-+#define ARCH_MAX_PMD_ORDER ((H_PTE_INDEX_SIZE > RADIX_PTE_INDEX_SIZE) ? \
-+				H_PTE_INDEX_SIZE : RADIX_PTE_INDEX_SIZE)
-+
- /* PMD_SHIFT determines what a second-level page table entry can map */
- #define PMD_SHIFT	(PAGE_SHIFT + PTE_INDEX_SIZE)
- #define PMD_SIZE	(1UL << PMD_SHIFT)
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 46c25523d7b8..4e1701b4a565 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -223,11 +223,21 @@ enum {
-  */
- #define SWAP_ENTRY_INVALID	0
- 
-+/*
-+ * ARCH_MAX_PMD_ORDER is an optional arch hook: a compile-time upper bound for
-+ * PMD_ORDER across all possible MMU configurations of that arch. It is used to
-+ * size SWAP_NR_ORDERS on architectures (e.g. powerpc book3s64) where PMD_ORDER
-+ * is selected at boot rather than at compile time.
-+ */
- #ifdef CONFIG_THP_SWAP
-+#ifdef ARCH_MAX_PMD_ORDER
-+#define SWAP_NR_ORDERS		(ARCH_MAX_PMD_ORDER + 1)
-+#else
- #define SWAP_NR_ORDERS		(PMD_ORDER + 1)
-+#endif /* ARCH_MAX_PMD_ORDER */
- #else
- #define SWAP_NR_ORDERS		1
--#endif
-+#endif /* CONFIG_THP_SWAP */
- 
- /*
-  * We keep using same cluster for rotational device so IO will be sequential.
--- 
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index bac02c83bb3e..48f74bd22343 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -113,6 +113,7 @@ config PPC_THP
+        select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+        select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
++       select ARCH_WANTS_THP_SWAP	if TRANSPARENT_HUGEPAGE
+
+ choice
+ 	prompt "CPU selection"
+--
 2.39.5
 
 
