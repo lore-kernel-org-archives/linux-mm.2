@@ -4,109 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4250CD98CC
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F261BCD8CB9
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 07:19:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFC6B6B0088; Thu, 11 Jun 2026 03:18:08 -0400 (EDT)
+	id 3DB956B0005; Thu, 11 Jun 2026 03:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAC036B008C; Thu, 11 Jun 2026 03:18:08 -0400 (EDT)
+	id 3B2BB6B0088; Thu, 11 Jun 2026 03:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEA016B0092; Thu, 11 Jun 2026 03:18:08 -0400 (EDT)
+	id 2F03A6B008C; Thu, 11 Jun 2026 03:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3B6E6B0088
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:18:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0CC51C321C
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:18:08 +0000 (UTC)
-X-FDA: 84866777856.28.A0BEFCC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 010D48000B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:18:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KZ5Vpfrz;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 23AE46B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 03:19:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACD111204E9
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:19:47 +0000 (UTC)
+X-FDA: 84866782014.20.3697597
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 15713140011
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 07:19:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8lcB+cy;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781162286;
+	s=arc-20220608; t=1781162386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9xoXkR3+ToFz7IhDpRWpfOeWmUWRBN7wUMPHcqf/6FM=;
-	b=L/KluDXM0rqPzrsBUQntFKquMLajXwIWTzFvC5OtIMse7NrXF2uGr1k0kPsEO/dskwUHTQ
-	DgLHGiqgQgiyb/H8wAzwTG22w5RSBm2r7ZFUGdRLOzBwTtLric0oGYEYzvJ1BRLIlX25/r
-	YisGlh1RfTUvR1srH/hBpCPCo2wOb34=
+	bh=ztIz45hab0AvLP/gnjehgcjg/V46iqjqRkXzJ26PE+c=;
+	b=P+TVcdXLRKUu6M9aokyN+Fsk1MzXBQgSt5KDhbsS7MBPYVTw+kpFqis5O9u9/3mrrKSekg
+	LC0UGkY/+GPtKsRPLVqRpCEAJ5SzkaKuHBh9kTgzNTH/1kBwl2Wtl9eVDjgIn6IlFW+UX+
+	uSzBYv6fJXve0mkDujXAvcr0T6tJZJc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KZ5Vpfrz;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8lcB+cy;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781162286;
-	b=mSZN3tU9WgjgXh6tMTm+vIUQW1t5Irrfbt7TFfwa5Psp1ibO2fQ4+oTZ8aLxoCQ4bRWHoX
-	68OHN9WigoxbzPAmhHkPcWgfu+zpwSNIS+dR7tJqKDFlZwjxX3UCmg+KN/f2mH3BreWQZp
-	gkfWWEkhSKG8+SRF54LC6sjJs1gEuS0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781162286; x=1812698286;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fiVJwTu9CK0mToLiHPUfmG+jQ0/gNkGEoV4Z9N/y9xY=;
-  b=KZ5VpfrzxVAdHwtgWnuYXt9LbafT+ly7oMVuUjBHEA63vslaUKi/rOoy
-   TTsChVglUnH0jSlggTTTIFLr4EmuCsSWWa3XeK1O6ihCIgM9hMnSTei64
-   QRPB9GLjf08HJGy9kokTHI8an5g348m7RSPLovk5tRz4/ICMqU8AfA0T1
-   5x6WlaMNRP9em0tkSxVH7a/MEwh+VWHJtTqnTbwMbSz4FmPOA3deTKdO0
-   N+2JcP4u32DSOR9GZiop3FS1IrpyFuh4vPtEw/3GYCzIpYehS4vLux1og
-   I++6Ixj1kG/X3zKlOHKNRz+VqpXQnj0V/zrELQZWp+rhA1hJ2ZtlplWmB
-   Q==;
-X-CSE-ConnectionGUID: LvgiJp6WTNigtvEnDlFRFg==
-X-CSE-MsgGUID: JuLUBhtoRh6dtGCd0PDAmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="92645303"
-X-IronPort-AV: E=Sophos;i="6.24,198,1774335600"; 
-   d="scan'208";a="92645303"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 00:17:55 -0700
-X-CSE-ConnectionGUID: j3EipKBDSdOgy4NEcbSzHg==
-X-CSE-MsgGUID: YE83BYEYQ8iyqxgnDcNDiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,198,1774335600"; 
-   d="scan'208";a="284485829"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.123])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 00:17:51 -0700
-Date: Thu, 11 Jun 2026 10:17:48 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andy Whitcroft <apw@canonical.com>
-Subject: Re: [RFC V2 1/3] lib/vsprintf: Add support for pgtable entries
-Message-ID: <aiphHAkLnG_L2kY2@ashevche-desk.local>
-References: <20260610111339.2465922-1-usama.arif@linux.dev>
- <919d334b-16a3-4412-82f4-b4cd6a35be0d@arm.com>
+	t=1781162386;
+	b=SlyiIdXZRuQz0jtJ9EVMePWB919soTzTDGivc72FNR91IKuhLmZCk3X+dru91o9VDIX+Nx
+	frwN2NR7W6HD5aii87/iZiZ0YZxWBWeBcEevjc8cTQVEwNPJ6BdklOU+Tdq0SX0uGNv7uc
+	phiZigOznM49xnhN1+QMOtQywydgpDI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F9F4600AA;
+	Thu, 11 Jun 2026 07:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CD01F00893;
+	Thu, 11 Jun 2026 07:19:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781162385;
+	bh=ztIz45hab0AvLP/gnjehgcjg/V46iqjqRkXzJ26PE+c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=V8lcB+cykIyGjOy2dxrUzVV/Q3lA3bzfQKE0EKEaizxsQXtCLMAczPlwLgp7xGqQt
+	 u+Tv9KNbobe9s7mJxUh7I484+2aw3LoRmftl+hLQBDqVe9Lcuk7KCvhbIFHDowJaTU
+	 5qoD06COfhUXCd3IxkyNNS+lamaR0DJC1PLgzvRDaDCs4U/HKd2UExROWuQ94ik22t
+	 dbG6cloH+VyTLbJyHTBOkIpew5Q+MQD9qkDen+aLF+6OpvtJeuCjrdmvOqPChWH2sp
+	 FllECbyKhd6qro9ysbxGFJZYXs260Qxg9YO/M385HIqqKf0UuVpdCBmE7TvPRobA2f
+	 9gr5N/WB/0Fhg==
+Message-ID: <2b5577b0-d81a-4dee-b4e2-acadcf7f7db2@kernel.org>
+Date: Thu, 11 Jun 2026 16:19:40 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <919d334b-16a3-4412-82f4-b4cd6a35be0d@arm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------63UUg0QDpUJ3o0cdIUnrfdpH"
+X-Rspamd-Queue-Id: 15713140011
+X-Stat-Signature: n5rmkhn5rwtuiue1b1ruwdacpc9nt6e9
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 010D48000B
-X-Stat-Signature: mo5u8hu8xykfwcj6314siop37t6adgmh
-X-HE-Tag: 1781162285-26223
-X-HE-Meta: U2FsdGVkX18fSyv/lnKMSbTIyIMXxY4EMtlcWDAMGU0TcD0uq7okbuBmLOcYWvB7oZLNpYFduBVhgroL0/QvW7m/JASYitns6VdMSsqvvcPrrrSPmOpCZmi9Qxdvsi3fWxAiNlbiyQmTIiE51fPjmsrMnYrYHBkTDM0lteIRUwT7UR2DUVrEhzucQGhQZ8iZxPq/r/FOHDxustpsZWdimvYlgsgnzNhNZ95QE+x7824E/Ff2yOceG5ZAuAmiAAopcNuZO6KA3ECmaxHSCi+Tjj+DLFRBA7OUsRXeV/kGIh5jLTX6D68tqnrFbDvyI/VsK1R9Y2TLeB1A86dnTx/g68DnnSz5MBIy+volKIEkazpx7qcfXicBK+5WdJQohnT6azShj9rC6HHUEqjsQPNnZk9bE9JVBnuzphMGzKRArhsx8H/q6I7N9P64AgD7Pq1khOPDB+t0v+KHkPrOkvj0Qvc1YNXzSgcBpzcuo7HeBsVmrS5u59LceN0qPm2RUSQWLVGfq8dXhffuezSQe83mjIU3xCSWJ1gGJttCR8eFoTpsFI8GIDjkiFIO9c88WIltBf6/+MYTGZtuI0DbxI+f9Er3tA0jbdRBxKFP2+zKoasv/H8As51P6REAGZNyz3JNwLpoG51W9bcbV5jN+SPVYRzffxI0xc9luaisr0y60M12hSJCjCgZRgk5Fby4I0OTLISYVNvner/JeYuCiK0jFz3WOr3IQPIDZ+O72bovta5kGQpoE9GWMZeXb+kTalH2d8Pm592N7NnKuXNs74JwrGp4FsWxH7AzkWOFaJz0NWNDdgIH4V0ZQcF/nJiMiEoCH5LSTTaETOD7KBjgLNyX/SyK3R1VE+IqKestkBKsKPagmAFh+3Nd7FcUxfpIeFlwz7QPOmH9CsI5UabvMKYE+4GprXF4WhnGcEvEwwJlKh5d73iiyNWAx6mp/qpmeX+fSPp1im6BtGLvgn92Lk8
- pe0hnlXf
- QvrmHvhgVkkalNY2Bk2U1SmZwXFZmvau2/6N1JvIwfkoypztqKYGqBJUlhZMX81bqKOqqPI7DTrMYU9QifRnSsxnT+JkcDnkMX8aqyCq+iBRkKlhW6g9z4yL98H3nEOWuGhAnyQwplzQUugyKB49TWvZdr749mN/kkVJyw5+8zfBRuSGd0Er6WtAptMzUZLJ3ybHTvWGEIjChbjqDOIJbF/GfWR3Z3pRqHZuKHmpeJWAijEQ91x/S29qqfHwEKKWUM4Ze
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781162385-411965
+X-HE-Meta: U2FsdGVkX18O2gCIYLpXXTEux25KGsmNZeyGNOOKDlRsttiEx8qsZETwBl8vx0WSjNNiWmvBRRpc7yOvVTEzsjneD0PzFoCeltxExyZ03ppYXnbdJjza30E8yzHplcaMYPPFQR7JS/auM3VpAtpL8z4Ak1vsz0Vb9uMtjHGldub0fYkIoIaPNHS1kYtWdq4P6evRDepsAX87uPAjhCvFFoXRP/JfVhMdwhRhzOZ+oxwvRUnUTS5dmQaKA5pKMd55XVNHEfaiNfMN8+aFwKH5pPbrj/2MovfL+9yG9BbUkicGj+oKzuWREuvP7nenu4p09K0Dwu59xP2SUIho0a995bgYUpP+tzdSv4JYiIkMViHdnfBZ6VwWXho94oCKqSL4U5mutz5uMzc3ydh1ZdRQPbgC+tqffk/RSPUh0VC+hQKEfdPgUq/dy0xXIHfGHevioqQMcD1Ye8kvcTdN2EWB/QPMmAXfjrgxCGwLLXExtIBiC8YEur+gCczaWTaTSybftc93jmx5Hiw0g6+aeNqzoD86CXzstPJDU55TW8mg0pEHZ+vBu1UaGJfwKKFW2BhalzCl0WYwdXBFQp2INtbc1oZuftF10fhXDh9bod+/1ZYixT7aUT8I6yjHw7qizUxrSyDEX4VI7efG1V2R1TZ1jmBrY5T16VgMgrOKtI8b6JVgTorzxCroiaFfhTJY4yTqPYoYpNymWGla8J+LL19BZSwa4QlPDSg0dkqJc62hn9NG4mTHaD+if98JA+9MHTA+XDkSUiQ8fLJuPrzGl3FXU3inAEizZ9HG0gC5gyofZkaVih2fo7OSAghFjtVENklj5HKXD6VieaplmgoFEvS3Dq2m5tOL7xKwPe4Hv1I8lWKGJnQ2ZrR+MJlH99LiSOhgLmmrsvTV67m/JdHpcLH2bR/QuuAaJlWX1GQRD/P/kJCg2xiJK38le6jVb0UDor0kv5n+vbh5bJfvM1kqsGb
+ 8BY8Lp3G
+ EcbJJAj/X03HTQnoa2nl2uCBpf6wP/w7BRiAH8yayxRqjNjcGJS0Shmjr+OYCPPlWCmB2fi2a4fGmm0xFqcNZWqBu/gyvefyEW0UHWmNh43lJCiErIceHcjwDltWcNcpo63aKauajm/weaEqUM6vcZt3G7GmwKSzRIMoJ8mt4uxW4h9HgG3mAxYa7GZ1h+aB8nZ3fKq81UZCbOuapKx0FnWfe8/+Hoen+J774etc3WHb+EjJrh5ky8AaZaLU/ST9FM7IL2/sUykMTbTdnoXOvAzbj9WF5sPCJCs7u6qO6kItBLmHIPUykq/B8fFIITy0RJpOpgUMBee7MrMTxd1KPfpCo09ewynHCE9owl2ff4HjENxoj4Y9QKiR5dGt+j5wnIoHF2nHPuRAuMRY+yP6MpUVXgiERklGT4WZw7KjYMvzZwUhKc5VwAbAP6vwvwZAtV5pY9ug9M3yvZis=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,22 +100,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 10:45:01AM +0530, Anshuman Khandual wrote:
-> On 10/06/26 4:43 PM, Usama Arif wrote:
-> > On Wed, 10 Jun 2026 05:35:43 +0100 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------63UUg0QDpUJ3o0cdIUnrfdpH
+Content-Type: multipart/mixed; boundary="------------RjLOUOXpcNn5GjJVTPq8Q6Ve";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <2b5577b0-d81a-4dee-b4e2-acadcf7f7db2@kernel.org>
+Subject: Re: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+In-Reply-To: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
 
-...
+--------------RjLOUOXpcNn5GjJVTPq8Q6Ve
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> >> +		static_assert(sizeof(pte_t) == 4 ||
-> >> +			      sizeof(pte_t) == 8,
-> >> +			      "pte_t size must be 4 or 8 bytes");
+Hi Pengpeng,
 
-Besides occupying too many lines, why are these static asserts hidden here and
-not declared in the global space? More wide Q is why they are needed at all?
+On 6/11/26 3:39 PM, Pengpeng Hou wrote:
+> SLAB_STORE_USER currently stores one allocation track and one free trac=
+k
+> for an object. This is useful, but it loses part of the previous lifeti=
+me
+> when the object is reused: the new allocation overwrites the allocation=
 
--- 
-With Best Regards,
-Andy Shevchenko
+> track, and a later stale free can overwrite the free track.
 
+I'm not sure what you meant by "stale free", UAF is accessing object
+that are freed. What makes the free "stale"?
 
+In general, I don't think slab_debug=3DUP is the right tool to debug
+use-after-frees, because slab will never know _when_ the object was
+overwritten. It can only tell that somebody has overwritten freed
+objects by checking if the object content is POISON_FREE or POISON_END.
+
+KASAN is a better tool to debug use-after-frees, because it can
+tell you which kernel code is accessing memory it shouldn't. (It also
+quarantines slab objects to avoid immediately reusing the object for
+better coverage).
+
+So I have to ask, "Why not use KASAN instead?" before enhancing
+slab_debug (neither is intended for production anyway).
+
+> For free-after-reuse bugs, the report can therefore contain the victim
+> allocation and the stale free, while the earlier alloc/free pair that
+> explains where the stale pointer came from is no longer available.
+
+Again, I'm confused. I have no idea what "free-after-reuse" means.
+Objects cannot be reused until they are not freed, no?
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------RjLOUOXpcNn5GjJVTPq8Q6Ve--
+
+--------------63UUg0QDpUJ3o0cdIUnrfdpH
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiphjAAKCRCGXBN6rc5S
+1gaOAQChyWUETqFeUG2gvr9ZMZ3Il7reXckMo4X8MOCt7Rc7AAD/Qfkcf8YbQo18
+ItCpaSmOiByXdnbuV93+suelFfGbgQg=
+=kmYS
+-----END PGP SIGNATURE-----
+
+--------------63UUg0QDpUJ3o0cdIUnrfdpH--
 
