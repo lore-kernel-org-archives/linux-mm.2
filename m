@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF12FCD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7713BCD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9315B6B0096; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
+	id E139D6B0098; Fri, 12 Jun 2026 12:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9089D6B0098; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
+	id DEBAC6B0099; Fri, 12 Jun 2026 12:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A9DF6B0099; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
+	id D28F96B009B; Fri, 12 Jun 2026 12:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D8F86B0096
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09A03401A8
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:08 +0000 (UTC)
-X-FDA: 84871775016.22.63A19F8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C369E6B0098
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9128AA01A9
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:15 +0000 (UTC)
+X-FDA: 84871775310.05.C091E9C
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5580B2000D
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=TfMOnipb;
-	spf=pass (imf03.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id DFF98140005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=b+FGMirv;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781281266;
+	s=arc-20220608; t=1781281273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VSSjA1e2ihuYKKvGbBvJZXau5qhO8MXM5c+dt4k1Oiw=;
-	b=0gNFEHlUytA9VXm6SfG52XwLUYyjBKAzFm3QjRzpGSb0VRQa9j2fGl3XOR8AUnFISUTb3h
-	zdurK3OXa/Xhui78Njih5ok+T6Wx/UAYR1zhea877CS8uHQDxEEqnWjnxjlMxOe4qQUzb+
-	1P6uCvHemRPjUrZgTMz77Ar3fnDBxBk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=TfMOnipb;
-	spf=pass (imf03.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+	bh=2P29qc+6UPDY7W0A1wdk8G93G2x2BCG+qxADi0fmd1k=;
+	b=xZ9+ZlgxeWljaHJtkWseNgmoU+WEPtJLO/yruLKb1SAiCSRJw+SMlRtDXa495QTXkbWmip
+	p54y7IsBrTC5a1i8PSJvmA1tXSV6RVKFis+EGK4TXDojshdRsUN6rkeozI104ie1ehh3Yb
+	dnsZ+jlw8oaRC70S9mBxu8Z/NxgdoH0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781281266;
-	b=w3hT0MmCEe/E48cSoxsd1vDIbGrtjKh1EmTQkcw95dOsQQA3XPqDX7P1sN0iYMg+c008Lj
-	+YjfLhzc17ATow06qxRnsD0igurtcBa1Wlibk939zthUVllkSzQxFxjd9ef6YEYq+ge0yT
-	846lB4jurpwwQpt6tWBGl2wr+/Sq+DM=
+	t=1781281273;
+	b=oj5lsKz4C3K0Rm776+zgk+IHSE36jMDwagCr60wben/vGbXtR+njTGfIUfOsJsUCOOJT5W
+	5QSY52c0lPUOn+zcZcPpx1RH3vm1UwOFvKiDe7XaPd4HWdkeipwH34dNjQQ2iJfhrsTCly
+	s9vfTlLq5egjmnzEVLPxKlezinHNf6c=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=b+FGMirv;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=VSSjA1e2ihuYKKvGbBvJZXau5qhO8MXM5c+dt4k1Oiw=; b=TfMOnipbCra0jF35oiuYAIqHpy
-	p3uA4YddgEQ5DegPf9CIbAKUYUM5EhCsX6+0EhUHola45xVsdavV+j/SbuzzfRYVBIczV42RpVMMl
-	b8Ifa2UbayeeGCtqbCB0Xq1V5bvF2XMz6HP7+RssAb0diXIyluYS54UspI3bIXqKUKRz5e/fM1DBl
-	5MQB+pJqjbGUUYYlHcKQPPJQnMIkD5SpbK/FcA+QaD7JagxMMD3AB2V78cmKWC3WqvI+X+Wmn2j4C
-	JmEsWq1EFIU3cw4BBERtTjd1+kNT+Ji5h0pYC4ncTizHYR041zOjXwfyn/Dg8cuRLhSVbMz/Akk/K
-	92cT2O9Q==;
+	bh=2P29qc+6UPDY7W0A1wdk8G93G2x2BCG+qxADi0fmd1k=; b=b+FGMirvnScizBjA5g1/q6jNlK
+	lU74NYQq6p4zvp57oHXMebImcwOfBpVNfBGiTCEEQPY4naav1k8rPeVGz43k1sXGo6KlV37f6Fpc6
+	R1CByTE7g+iIi6Ui3rpYGpKgXYm9UaUOIt8pq58mFshwXaK+mUxTV0gqBSj3Zf3sjVFAvVAOTtUeP
+	CPQbu5//AKReZ6hA4jHBCQj90QbHonkcwHa2U41uC7AACCU0ODAggKpKzy4dxZmmtmZUziXkNqUyr
+	SMz6anwcmdP1SW6Z9IpuB5qh+cJkTpzCVhq+NxWNhW9QnLHoI/H3bxPl1ezwFxsT1dziMhPEYHZuP
+	sKyqfIeQ==;
 Received: from [189.78.222.70] (helo=[192.168.15.100])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wY4cq-00GgP4-OX; Fri, 12 Jun 2026 18:20:56 +0200
+	id 1wY4cw-00GgP4-3P; Fri, 12 Jun 2026 18:21:02 +0200
 From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 12 Jun 2026 13:20:17 -0300
-Subject: [PATCH v3 4/7] lib/string_kunit: Add test for copy_task_comm()
+Date: Fri, 12 Jun 2026 13:20:18 -0300
+Subject: [PATCH v3 5/7] sched: Extend task command name with
+ TASK_COMM_EXT_LEN
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260612-tonyk-long_name-v3-4-7989b66e8a99@igalia.com>
+Message-Id: <20260612-tonyk-long_name-v3-5-7989b66e8a99@igalia.com>
 References: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
 In-Reply-To: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
 To: Peter Zijlstra <peterz@infradead.org>, 
@@ -88,14 +89,14 @@ Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
  linux-api@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
 X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 5580B2000D
-X-Stat-Signature: 7o84fd4cgxur5fun7fs1knnj53bgw9kz
+X-Rspamd-Queue-Id: DFF98140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781281266-482865
-X-HE-Meta: U2FsdGVkX1/2WzSjDI5kk4pBUjiNlOddy85prEftEqIkgr4IXjZJ37H3s4UwEgevWDIcTN5MoqJ2Lz+gNW7QKTVRLBaB7qal1rUSX3YO0IIT70KCNwLpOW5qXANKrwGnLI9a80DSbNUYalPuq7VerC8gmY5xN3C4vlfc9JSbVB4mdJT4QFy1Fh09dAKYWd7yZKf1D8/ztOJgHTkyHT1kwZP6pBnRM7cw1F6rmANmTanYIzTUPEvGC9a3m7I5szzhWtOmYgbVRhKlFqpKGU1rHbO8TvRT5JPn9fo1T6PE/IeEWdGoBMP12WyfThm1z3Lkb/1E4GVlhaaA4GDFdNnXb2CT30VIIXJwEua527unFgL7sxW9Lecr5Dy5oa4PtWHOvKCOY3kYTPaIs3NEKWGloNUpPIS1Wz57LU0fhKG0S6owtg1V1/ExOY9wLBt8wiMCr7/HoedNw/WpqHgFUNs7clhJ6qz6yLlaKN4ku3kOh4fYNxHCZKdgD39KYERm5hZVR48ECslABhk6V/Bu0rsXAqoq6Rk0gAJIIw5ax/3dpJFHa9GuSCtp+SQejkMf0uSyNNq90HqeaRs2KdDWgAYb5M790BZ/tXQR6HD8chb5W9XJXhsqcT8sy6gVXsAiSYokN5fhlh7OC7DpktekOaINWSSIjErw2p/qQNz74RE61PcwW9ZStLLmtBe9XIE27W487ScS9M9rZGJNUNcmllVsE46EfbLBC6mS95ov+XjsXREWrgSVT5NGhzXzdActjR7dYtC7HZPdso+fHumoQO/VGuRe8QA2SUWpjSbvMNPbh3LoOnKMzGwihuHzxWplNqHzSMjOiVU0VNwzHc3zB/fPF91vwLK4Kws6+bws8yRzoYC8Rqwb2QFNVmd0hs29aj5HscndW4rZ1WqdMtWkwcQZqFbdhk5GgSwDvbqL9rgSqENdflVXECV4gm1bLpWJbu02ZPr1MhNzwCeSQAvfpoI
- 8zn+UCOu
- ODSCvw7o00a0E6ofhvgYW3A3nu6Dagl2OwSEXAtUz8X4HjXFK02IyRmHJ78qK7mfH8uarV/5s7AYYHP0Ke2E/60EggrQ80LJxI7li3P3JoLAeeSwbtztYKtxwn0k1WmHAUYa925MlIyhkzcBynEoc7Tc/n4imPR4R9FZv7jUiuGpQprgTEx5WE3pY6TPc5f2j7AqpI+VxGaNW3Jw617VlbZ1Iv1esH3v+pHo94kzcKDxR0KgYBxyIExX07/bEWKMBCRBmwN9J9A6lIh8P/njsjlxONK3PEWQEnTPmDjDvB9S/JAzKmiFMJO+8XUeS1fwIPrFUlyz7rpP5j5zKwHeCbg0kAc1HfL5RolboRZLF5rebT6vv3oku92SmIU23ztHg4g13zFzT7NAcQ67355hcChcGcMr7NJvTCzaRXj2HV3yOBcZPk8Y0cVSN5+jE1Q+f2Y73qTobONBsow4=
+X-Stat-Signature: 6f55igbp3i6cfqzhwbew69ab4aehqx5j
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781281273-637412
+X-HE-Meta: U2FsdGVkX19bsJ4gX0MkA0t7HkZZDGCJNbaR7bBMaIRTWH4zRAdmHeztgDgtyKGbAXl9OeEuihSLFvyQF8v6YaRyx5MaVXE1co2KnWyEXfYOidUDvrrHWGK2V6NuVqlwZ9pmA/9OD2pSEg3WJNMOLPLHnaprqiMZjjhNWg3gywktORgzyPn96C73yMaT4mv2IILv3xCifN9qTldBns6ucV02WvxLkMj5+3c1AdofzZqHALe3OMJLSfQyOCH3cQtdEa5myYSMpIzdmDOIxDTbLPnwWOt97hy1dLkNS8MSYTV/Gb/LdrEnkIT9ZqPaHV/dlbQx1lbRYjJ1o2ABjc0WyUwOzd+Zkh+Z4gUSh5gu81RqN52ZOd7cHnBOoFXjq0HMeE30TMcY/NkiaJb3eaocMIZQAwHd/KxwgJ7JX8J4RHV24axUEZ+JHJz7mIJgA9vH4TUK3dcrfUb1knMxe4lbQQHIS+1t7VR/nERWQkII6IJ0WNKWqZJysSHAVtoPAK/mWBa3A0ydMLh4dUqaRdNq9ccmbbG9gt7p4n7SgmX+JmIqAsBNXRCG6tylkK5IVfRqUmd/5+IQjkm4lWp5MhBTjW/2f8uFp7WMUt00K/EQ87BZ0nvKFzd7mL6O9QkHaruUi+nXpXIfFpOggpsPk5kU5DYSm5zVacnfhznWFsA5kLaw0fJ7UVkwHBjijByt++N8u5Z4b3oyK3Mv1f3E1SXu/hf5Tdm86v5jZ7TcnmfivrtX3ndNOIBEh8y9uPx3pLwksUlj576H95yOJEA4dVEdjyYOAp8sEI9Ef9EYNOVfa44GEGo/H7h02IGZTTAh+T4Noz4D0tcinOCXf4dWBQU9e6m3XcEfWGfLCNU4666ou9kmE7mbtCkojjCdqxmt9gH15/r4ARwj6z+yl0DG0a3r/1w+goCnW+uiCZCxFHCg0IvUWgsBT4ZvX3ZbhcDFE5KXsmImPtS4vKdy98yFQ/R
+ /sLvXBX+
+ XTtN+i4vzx92aW3DqdFFXFdhQhAf3tEyvraGAWiCP74XlBAOHBu9kC45sSxJ2tgJRL5dRJCH/ZoKzlbEZ2MLWrZSHxtR7VKpt2IeJBu0pDlKEvZrKWJxqZY+6cQml4DJutGkJoMoI3eZA6h7zcJfLLuth04UPjrD1cZ675udgDkSxFRWZ5QW0HcOVBJEtIb7LsY3w7wVgd7y9QY+o+Dse8flUS1emSPsDhAM8Fqz015yWA5XE/YM/oE7bgNz/w9Qh1GSza/asISk1RNrOkM318VeREOAmYYnJAV46AmERpGQfrMTSmqf5DAsceKzsUJHTnZ6nIV6VdJhVmNvRINjEyOKnvDYWOjCGIe0DLYgIMbqB32zxgez4SDY4m/cFqrPecdHhfiOal8TIjHVL9NpVWQLY0gj+BrflzvxHkF0ycpa6hcIwaPrFFUixA149Sb1op0KzcQzcwbzqQpc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,70 +104,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new test for copy_task_comm(). Check if a copy from a task_struct
-works, and special cases when the size of source and destination buffer
-mismatches.
+Command name has been restrict to only 16 bytes, which is too limiting,
+specially when debugging and tracing complex software with thousands of
+threads and the need to differentiate them.
+
+Just as it was done with kthreads in commit 6b59808bfe48 ("workqueue:
+Show the latest workqueue name in /proc/PID/{comm,stat,status}"), support
+long names for userspace threads as well.
+
+To avoid buffer overflows, cap all existing userspace APIs to
+TASK_COMM_LEN, and leave the full extended name for a new interface.
 
 Signed-off-by: André Almeida <andrealmeid@igalia.com>
 ---
- lib/tests/string_kunit.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ fs/proc/array.c          |  2 +-
+ include/linux/sched.h    |  3 ++-
+ kernel/sys.c             | 10 +++++-----
+ lib/tests/string_kunit.c |  2 +-
+ 4 files changed, 9 insertions(+), 8 deletions(-)
 
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index c8c3fbd9bfa9..312371eddc7f 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -110,7 +110,7 @@ void proc_task_name(struct seq_file *m, struct task_struct *p, bool escape)
+ 	else if (p->flags & PF_KTHREAD)
+ 		get_kthread_comm(tcomm, sizeof(tcomm), p);
+ 	else
+-		strscpy_pad(tcomm, p->comm);
++		strscpy_pad(tcomm, p->comm, TASK_COMM_LEN);
+ 
+ 	if (escape)
+ 		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 6b9408128fef..a5dc0f4e7975 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -323,6 +323,7 @@ struct user_event_mm;
+  */
+ enum {
+ 	TASK_COMM_LEN = 16,
++	TASK_COMM_EXT_LEN = 64,
+ };
+ 
+ extern void sched_tick(void);
+@@ -1167,7 +1168,7 @@ struct task_struct {
+ 	 * - set it with set_task_comm() to ensure it is always
+ 	 *   NUL-terminated and zero-padded
+ 	 */
+-	char				comm[TASK_COMM_LEN];
++	char				comm[TASK_COMM_EXT_LEN];
+ 
+ 	struct nameidata		*nameidata;
+ 
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 1d5152d2395e..76d77218ab19 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2535,7 +2535,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 		unsigned long, arg4, unsigned long, arg5)
+ {
+ 	struct task_struct *me = current;
+-	unsigned char comm[sizeof(me->comm)];
++	unsigned char comm[TASK_COMM_LEN];
+ 	long error;
+ 
+ 	error = security_task_prctl(option, arg2, arg3, arg4, arg5);
+@@ -2601,16 +2601,16 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 			error = -EINVAL;
+ 		break;
+ 	case PR_SET_NAME:
+-		comm[sizeof(me->comm) - 1] = 0;
++		comm[TASK_COMM_LEN - 1] = 0;
+ 		if (strncpy_from_user(comm, (char __user *)arg2,
+-				      sizeof(me->comm) - 1) < 0)
++				      TASK_COMM_LEN - 1) < 0)
+ 			return -EFAULT;
+ 		set_task_comm(me, comm);
+ 		proc_comm_connector(me);
+ 		break;
+ 	case PR_GET_NAME:
+-		strscpy_pad(comm, me->comm);
+-		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
++		strscpy_pad(comm, me->comm, TASK_COMM_LEN);
++		if (copy_to_user((char __user *)arg2, comm, TASK_COMM_LEN))
+ 			return -EFAULT;
+ 		break;
+ 	case PR_GET_ENDIAN:
 diff --git a/lib/tests/string_kunit.c b/lib/tests/string_kunit.c
-index 0819ace5b027..b64d7f0e54a3 100644
+index b64d7f0e54a3..5d26029d2d01 100644
 --- a/lib/tests/string_kunit.c
 +++ b/lib/tests/string_kunit.c
-@@ -881,6 +881,43 @@ static void string_bench_strrchr(struct kunit *test)
- 	STRING_BENCH_BUF(test, buf, len, strrchr, buf, '\0');
- }
+@@ -883,7 +883,7 @@ static void string_bench_strrchr(struct kunit *test)
  
-+#define TASK_NAME "task_name"
-+#define TASK_NAME_LEN 9
-+#define TASK_MAX_LEN TASK_COMM_LEN
-+#define SMALLER_LEN TASK_NAME_LEN - 3
-+#define BIGGER_LEN TASK_MAX_LEN + 3
-+
-+static void string_copy_task_comm(struct kunit *test)
-+{
-+	char str[TASK_MAX_LEN] = TASK_NAME, copy[TASK_MAX_LEN],
-+	     smaller_buf[SMALLER_LEN], bigger_buf[BIGGER_LEN];
-+	static struct task_struct task, *tsk = &task;
-+	int len1, len2, i;
-+
-+	/* set and get task name */
-+	set_task_comm(tsk, str);
-+	copy_task_comm(copy, tsk, TASK_COMM_LEN);
-+
-+	len1 = strlen(str);
-+	len2 = strlen(copy);
-+
-+	KUNIT_ASSERT_EQ(test, len1, len2);
-+	KUNIT_ASSERT_EQ(test, len2, TASK_NAME_LEN);
-+	KUNIT_ASSERT_EQ(test, copy[len2], '\0');
-+	KUNIT_ASSERT_TRUE(test, !strcmp(str, copy));
-+
-+	/* copy to a smaller dst buffer */
-+	copy_task_comm(smaller_buf, tsk, sizeof(smaller_buf));
-+	KUNIT_ASSERT_TRUE(test, !strncmp(str, smaller_buf, SMALLER_LEN - 1));
-+	KUNIT_ASSERT_EQ(test, smaller_buf[SMALLER_LEN - 1], '\0');
-+
-+	/* copy to a bigger dst buffer */
-+	copy_task_comm(bigger_buf, tsk, sizeof(bigger_buf));
-+	KUNIT_ASSERT_TRUE(test, !strncmp(str, bigger_buf, TASK_NAME_LEN));
-+	for (i = TASK_NAME_LEN; i < BIGGER_LEN; i++)
-+		KUNIT_ASSERT_EQ(test, bigger_buf[i], '\0');
-+}
-+
- static struct kunit_case string_test_cases[] = {
- 	KUNIT_CASE(string_test_memset16),
- 	KUNIT_CASE(string_test_memset32),
-@@ -910,6 +947,7 @@ static struct kunit_case string_test_cases[] = {
- 	KUNIT_CASE(string_bench_strnlen),
- 	KUNIT_CASE(string_bench_strchr),
- 	KUNIT_CASE(string_bench_strrchr),
-+	KUNIT_CASE(string_copy_task_comm),
- 	{}
- };
+ #define TASK_NAME "task_name"
+ #define TASK_NAME_LEN 9
+-#define TASK_MAX_LEN TASK_COMM_LEN
++#define TASK_MAX_LEN TASK_COMM_EXT_LEN
+ #define SMALLER_LEN TASK_NAME_LEN - 3
+ #define BIGGER_LEN TASK_MAX_LEN + 3
  
 
 -- 
