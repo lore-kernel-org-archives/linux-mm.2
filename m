@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 433C8CD98D2
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBD5CD98CC
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:48:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A03316B00A8; Fri, 12 Jun 2026 00:45:09 -0400 (EDT)
+	id 2196C6B0092; Fri, 12 Jun 2026 00:48:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DBEA6B00AA; Fri, 12 Jun 2026 00:45:09 -0400 (EDT)
+	id 1CA0D6B0093; Fri, 12 Jun 2026 00:48:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CACB6B00AB; Fri, 12 Jun 2026 00:45:09 -0400 (EDT)
+	id 0E0B06B0096; Fri, 12 Jun 2026 00:48:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 79B6A6B00A8
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:45:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E61B407A6
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:45:09 +0000 (UTC)
-X-FDA: 84870021138.03.72D6A09
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1BD2F140007
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:45:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dyprqNRX;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F059A6B0092
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:48:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3263C28AD
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:48:34 +0000 (UTC)
+X-FDA: 84870029748.12.5BAC8B7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B16EAA000E
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:48:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=llH8WmKT;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781239507;
+	s=arc-20220608; t=1781239712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jaKJ4a3hvN1JQ5ZyWHns6rbJ1fTSdq6LuK2dwO81y2A=;
-	b=jaXeS829PnWJ0EqGHtoHXeJvcUdDei1MGF+XCfujG5lhyGJVxUPfJm0eJXwn1e9JmpDyb+
-	by9ith/m3SefJdWN94yZScSagYJXqPE7LC2/raiqliGnIdOe/Ik4+IHuIMams4Rl1MWeSu
-	ogGlx0vUjViRsCTL/Tz5+4vv0cq8f+8=
+	bh=WPEmMa3Dv5Ej20J6k8sFcuOzkcc2oCt3G4gIZGmy8o0=;
+	b=mWTmMjS2gzfGbx5hLxQ54/KkLh1QPDQl9A3cQpyjnRz2rKQZtubt3bwF263iFEw5PtHHvS
+	9U2OxxSWKgmkvhsZRjbyt8kQMV+dALRdTHqtAfVOk4fhl9fOxV20Hx0ScWoPKfVanyftx4
+	GvDOiCujWumWGSHANLN43V05CC+zIWc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781239507;
-	b=VsnP9M/fOik39QfMMb8qo/TgB6dUhqhrBG6NBIqGxqzG+qiRFd+nzh7NsMv3pEs8Ojw7rr
-	zcUQseCnZ+ilwQkJ+4WcPJJ7F4iVULFt79LLYwlGJ3/T7JY9ZRsE5+fRzvtsU45TN3DnJW
-	4qno8n6Skc6l483GyiVZi4lg7TQU0ug=
+	t=1781239712;
+	b=KbPD/wtEbwpkgy1P7BhZRRd3vHt5r/9ZV1kGhCp19pqgCb6jCf3EkBnbjVpRxltkpeJXUc
+	qAiFs3iRjIx8gHdtsQ/z1D0Nraztmy9UJbhIXSVQ6f0TVH1GvmI+NmUQaiMBgYSpSs9Fr5
+	hJPpxNV7KZFDxuol15pMRxUw7E+gSiA=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dyprqNRX;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5263B2E91;
-	Thu, 11 Jun 2026 21:45:01 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6A98E3FAF5;
-	Thu, 11 Jun 2026 21:45:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781239506; bh=adMGJ7PXZloqurqObpZQmC4xZiFQ3So5xjocDZ6UB6w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyprqNRXfh9wVKf2O2t0oY3N9NZr2vJGqiN+CzR4ogevyLghQcFeqWH+CH6APm3GX
-	 ZX6ZCMglBYa+Nsi28vNnVLgYd7ZSS3Yymcm7FvevGna/IiGmKmLZKE1D/XZ92HG1ZO
-	 R4nwE7x14jL8zdcxhGbU84hVARQ1ZI5lZut0W+Qw=
-From: Dev Jain <dev.jain@arm.com>
-To: ryabinin.a.a@gmail.com,
-	akpm@linux-foundation.org,
-	corbet@lwn.net
-Cc: Dev Jain <dev.jain@arm.com>,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	kaleshsingh@google.com,
-	21cnbao@gmail.com,
-	david@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com
-Subject: [RFC PATCH 2/2] kasan: hw_tags: Add boot option to elide free time poisoning
-Date: Fri, 12 Jun 2026 04:44:24 +0000
-Message-ID: <20260612044425.763060-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260612044425.763060-1-dev.jain@arm.com>
-References: <20260612044425.763060-1-dev.jain@arm.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=llH8WmKT;
+	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A6FE44600
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:48:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1021F01559
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781239711;
+	bh=WPEmMa3Dv5Ej20J6k8sFcuOzkcc2oCt3G4gIZGmy8o0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=llH8WmKTCTRGQsPfLLTgmaYephweLGTeJ0N3Ke3jX/ml9f0EE+658sPzkdXDGAR4x
+	 EIHI4UjIo98ItMqFvaw4K2maCX8OzljWDuxxWDzeP3R7YKzwmUSQqDSa3nn55EoGqJ
+	 oBOyY991FAhdsq3CMosbaHlRVrMQYR2Lz/TOfH1YuucbtHYbnSlKI+2/P4MP9rpHzR
+	 qX1nHkeodo2HuKWUUkIjR0vNJP1sUVZODOR/s7tufsDLkOo7yqfi5xNO9SeJE7Jf55
+	 CiiAps2Rpfx8Br5kUu+kgM9vK80coRUfEQ/QfnRQ2HhnkQ4wrkve580RmWxOzEClQk
+	 zgotztdnu6fiw==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-91591f19c30so82691685a.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:48:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8NO84swuYsJb3qlv1xY51P/CHJq2f8nw8TnjZtkWYfx+6PDH2a8dOBiRTuGTId7gZeTk3WrdxphQ==@kvack.org
+X-Gm-Message-State: AOJu0YzvlqA6I3M9Ll3fwdKR5vxhCC17lY4b5w4FxB4GDmVqb1X/CsTy
+	bbwT+A8BNAsQBIwfUT2LLbHLiEPQDJ7eLELQIjCxobltUdofcBMldk9+FJYJwwrVen/ZfytpssS
+	xL74O90OYYS7diD+4/6SldZNE6X8TOSs=
+X-Received: by 2002:a05:620a:3198:b0:8cf:e0fe:f217 with SMTP id
+ af79cd13be357-9161bc59762mr162308885a.20.1781239710722; Thu, 11 Jun 2026
+ 21:48:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260611105124.98668-1-baohua@kernel.org> <20260611105124.98668-2-baohua@kernel.org>
+ <air47cqcLUwI4D9X@linux.dev>
+In-Reply-To: <air47cqcLUwI4D9X@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 12 Jun 2026 12:48:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yCeAmpfo_8ef4MrRyRD_UtV-xGm6F4GpSjvLVPQsbiEg@mail.gmail.com>
+X-Gm-Features: AVVi8Cf5OfwTVZizFhNRcFh925vCY0A09IKkonR3dpG77uFAry5JN5O8eLju2dc
+Message-ID: <CAGsJ_4yCeAmpfo_8ef4MrRyRD_UtV-xGm6F4GpSjvLVPQsbiEg@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, jp.kobryn@linux.dev, usama.arif@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B16EAA000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1BD2F140007
-X-Stat-Signature: t6c9yis59wgy1d71zn45411xwufsw1x8
-X-HE-Tag: 1781239506-849543
-X-HE-Meta: U2FsdGVkX1/WRKWwZXJ97EjaVjTh8hg+tZmv736GKcNbKjdxQUJ52XvDUORzFf1dPOu6/4UIBltlXspfVT1AUoPnSvWRZtnmFOPag0vKtSmXOr6+s8KK0xq1kTbdQU2wtHjmWkKdiKJlfkfVD/h72W0clEDyuFNQFszzscfZf5U4sAB32GtA2I6uX9u2d7bvwNmE2rPZnF0Fyk2kRLwIMjdByOnL5bcfrTpMoWtHzzfg5JEXQjMJHEoXxVId0zzodjFMROBHPjo1VgbnS0pRGngdTEhLVLDHZUcjlIZ5m27Uj7mx1WeueVRHMgVk7iLA1io6ii6Gezcovx074ln+t+UUnbj8FuRKOdBP2nZUa+hNWubF4W2GbFh5m3joTFQRoQsHfp61VaaopJQMz+FlmShcPakQmdmbHaKTcCkQTXMzDX5M0y6sdTRdJUQw3I+g1Z9Ww+qc5m7f4C9QmDRWgUUybYo235komE/tZFFH7Z+8vYW06MwGFykFIr1/JqK7qUgQNg02am7sCl+Fu4/jnyGQXrzY1vnST6Ut66CPmdZsu4oCFcDsnpi0aeNt8OFBx7ec0ssHmzwuEz/3ZeNIqmA6+2jM8hl2Eg1vEBqCn5CcFuEYTc/N221AmfpAyY1b7ThzZjWYcAffluky6Wx906QmcJ5LmvxjCPIYRwpfY4RJrI+7NpBT4yH/WAMoFPHIoVzWOO6vlQ5D2iVoxNyrFTOTVMPutaODwsyouDw2RKyVsnFNihkspIvXZbckHloiAeDRn+IkLj61W3Tvrn2foLwn0I8I5jgFsXt0Pkt688WGhXtWowZolg0kWCgHysQFiVVzthQ7q3U5IGmj4ridjLDiGMS7vZpS0crA9OlqaWNDhW6EvDH9FfucionGBeLSG4iu2XKDrZYF1dcXWunxyUDgU6hWnK2dNgrLKg31yz7T+slaGj48Bxu6kIs44TLg2FbLT9F7kDee+4KHHhg
- CUzoRrHP
- Ex6GIGlLB/seRDInr/dykZtkw0fkzvKjk0DPLH8VpmY6ULK88U2Pf0mJysouiZeMmPip2EQjJjzkfNv2zgMZulbZO9+IjwMXZw+4yf7lTxVaJqhFci6Ki6KS3lj06ch4PGQ/Vq89xxzwvXqrAI/0tm4LOEGUjpNC2yw6tugcI5X0873UrBYgWEa2Ewvy/elhDcob34ZnAJaPBlv/zuvFrwbbkR/Wc5CU9xmjaxd3g7Xmn2v3IBg8svh7b/aY5WI9AwBOPx+xHjGA/02SlypP4O6pNQsB/znXTx1swu1oukWi9xR/en4dg+xKp+yjvws6r//nyrELR+yNvF1vCmHxizPOJrpVHG8eR73GeOyeWt+ZNlcc=
+X-Stat-Signature: sif8tyuwdscikmkttumgkima5z8krhu8
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781239712-652531
+X-HE-Meta: U2FsdGVkX1/kS2uStAZ3YtN67TWaDJKYeZpWX8e3fu/76UdnMj19R+h6yoOBvQSu6DYyyW6z8qGak0qWpcvPF9/ckHZswbn3BbniF70p4H5RQ7u3Efm+kVs25CgxWr9XJ9I560bKjDEAOOzA3Z+1enOY0dEkbRY6oUUE7qH2SFoYtIEbb40fHcSBcmVrwYzmYB5vbUCjijhUQpVdl6bPS6NNjflwXr1sWgFF233PnkW6xe409k5D2tlFdiRpc1l4lx1JAbSOvCcWpwpu3l76fvPZoSHssMIPBmly5RCbR8KjEcGCd+w/GCLRnhpEP5NrvDDxkH82yr6CQKe8+BI1E22o3alaVQyGegZnZPnSvLSBiI9bltmG5GA0tdjIgks+EJHuxl7YdIO51DkT+P89bIo57u9H3KXCosRy2oqBd1oViLXSqqT+gVPyPgoaEJ6YqTv7ut/+02ngmTj1NDahSxaGBQmPeaUzwvCLveDH4MQXCAMcWQlai6u9NYuFgFKYNP7wwcBVTY1an2Ekv07BadyWxN5rXgUMs5ZKrxxZms3Vc/QOCGPc0HTC+2bgcWhrS9qw+3bJJH2HkNDaN/dvmvliWeR2H4sr/zHcaiJi4ov/2Je/8yi9xJWY9EguXnmCUDz+SDMtP/HFTsSgTTABaO8NTBLTheLkeocs0zVKXasadCPJFTFkHJMiPTd2J/R1CM9M32tZJTi9J4X0XdYF709WybSNqwdI3kH1qoa7+9hfi2db6SUxV4aMiWmdSXqakvh46cPrNlE0BtGmLjp0zzmEVIbp8HSRfP1uSjKzb13XMlx3cTAdomfsf/zBFdG2JinxQeRew9hq38f2HngaOU/CjyDMw1Q7f+kkpWvcedh/3Y9Fr1EjCTJNqFM3ayq7QTVztityCbans72qUqlp3lHmeQLn3hdZNdWEx4vqPQLVCsMdbYf5Ai9b9nLT4P6kra+F/xkmj+Fz/M7xgOn
+ Bi7KUrXI
+ +aI8IpbZ3fhNOsaZcuj2fRQb1Ov00xwehffItfChqkNxktkgI18yNClCMa13Vsx6oA3D/Oaf6XygDdLYVRVR5KB4BEZDgxSr2CG9sVFEIkvs6VakVVxhTmWIzL4X2Rct+whdAawqMb8zmzQ3I7AmP9OOiymVjn66k37CUd50jXfre7HT1IrUXdXF3BCs+iWa816Ym5V0PyxespKLMQKAIXZWSa6JEN2f1NNiI0KFZy05Sayl04yyB9IEbJU9UBDNe8T5WWXHKQWUiDUaHRs5AftTnnDAC/lUwD4Tfy8V3Pwx6obFOxfaykiOaJmtg7H4M20mO0bixR2O20Ljv3nsXEK+sUg8O7Su/gOoI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,199 +107,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a boot option to tag only at allocation time of the objects. This
-reduces KASAN MTE overhead, the tradeoff being reduced ability
-of catching bugs.
+On Fri, Jun 12, 2026 at 2:10=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Thu, Jun 11, 2026 at 06:51:22PM +0800, Barry Song (Xiaomi) wrote:
+> > We always unconditionally drain the LRU before retrying anon folio
+> > reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
+> > are in lru_cache, and use the refcount to avoid many unnecessary LRU
+> > drains.
+> >
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  mm/memory.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 56be920c56d7..487a34377a7b 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct foli=
+o *folio,
+> >        */
+> >       if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> >               return false;
+> > -     if (!folio_test_lru(folio))
+> > +     if (!folio_test_lru(folio)) {
+> > +             /*
+> > +              * Assume folio is on lru_cache and holds a cache referen=
+ce.
+> > +              */
+> > +             if (folio_ref_count(folio) > 2 + folio_test_swapcache(fol=
+io))
+> > +                     return false;
+>
+> In your experiments, how much amount of drains were reduced due to this s=
+pecific
+> check?
 
-Now, when a memory object will be freed, it will retain the random tag it
-had at allocation time. This compromises on catching UAF bugs, till the
-time the object is not reallocated.
+This is a very good question. I booted the system into Ubuntu, and after
+boot completed I observed:
 
-Hence, not catching "use-after-free-before-reallocation" and not catching
-"double-free" will be the compromise for reduced KASAN overhead.
+wp_reuse_skipped_drain: 5542
+do_swap_skipped_drain: 0
 
-Keep this as a boot time feature to prevent building two kernel images.
+Then I built the kernel in a 1GB memcg using zRAM swap, and observed:
 
-To implement the feature, we need to effectively render kasan_poison()
-redundant for hw tags case, but keep it working in the case where it is
-used not in an object-freeing code path, but the redzoning path (which
-means, poisoning the tail end of a vmalloc or kmalloc allocation).
+wp_reuse_skipped_drain: 25017
+do_swap_skipped_drain: 43595
 
-We achieve this by overloading the poison values for the hw tags case: we
-define the four poison values as 0x0E, 0x1E, 0x2E, 0x3E. In kasan_poison(),
-if we arrive with KASAN_SLAB_REDZONE or KASAN_PAGE_REDZONE, do a bitwise
-OR on the value of the tag to make it equal to KASAN_TAG_INVALID.
+So in summary, even without swap-in we can save a significant number of
+drains in wp_can_reuse_anon_folio(). With heavy swap-in workloads, most
+of the savings come from avoiding drains in do_swap_page(), while we
+still see a substantial number of skipped drains in wp_can_reuse_anon_folio=
+().
 
-If not, then, if init is true, zero out the memory and bail out.
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- Documentation/dev-tools/kasan.rst |  4 +++
- mm/kasan/hw_tags.c                | 43 ++++++++++++++++++++++++++++++-
- mm/kasan/kasan.h                  | 23 ++++++++++++++++-
- 3 files changed, 68 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
-index 4968b2aa60c80..b0c30584b5062 100644
---- a/Documentation/dev-tools/kasan.rst
-+++ b/Documentation/dev-tools/kasan.rst
-@@ -146,6 +146,10 @@ disabling KASAN altogether or controlling its features:
- - ``kasan.vmalloc=off`` or ``=on`` disables or enables tagging of vmalloc
-   allocations (default: ``on``).
- 
-+- ``kasan.tag_only_on_alloc=off`` or ``=on`` disables or enables skipping
-+  free-time tagging (poisoning) while keeping allocation-time tagging enabled
-+  (default: ``off``).
-+
- - ``kasan.page_alloc.sample=<sampling interval>`` makes KASAN tag only every
-   Nth page_alloc allocation with the order equal or greater than
-   ``kasan.page_alloc.sample.order``, where N is the value of the ``sample``
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index c1a2b48808ed7..a392e34d11e3a 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
- 	KASAN_ARG_VMALLOC_ON,
- };
- 
-+enum kasan_arg_tag_only_on_alloc {
-+	KASAN_ARG_TAG_ONLY_ON_ALLOC_DEFAULT,
-+	KASAN_ARG_TAG_ONLY_ON_ALLOC_OFF,
-+	KASAN_ARG_TAG_ONLY_ON_ALLOC_ON,
-+};
-+
- static enum kasan_arg kasan_arg __ro_after_init;
- static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
- static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
-+static enum kasan_arg_tag_only_on_alloc kasan_arg_tag_only_on_alloc __initdata;
- 
- /*
-  * Whether the selected mode is synchronous, asynchronous, or asymmetric.
-@@ -63,6 +70,10 @@ EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
- /* Whether to check write accesses only. */
- static bool kasan_flag_write_only = false;
- 
-+/* Whether to skip free-time tagging. */
-+DEFINE_STATIC_KEY_FALSE(kasan_flag_tag_only_on_alloc);
-+EXPORT_SYMBOL_GPL(kasan_flag_tag_only_on_alloc);
-+
- #define PAGE_ALLOC_SAMPLE_DEFAULT	1
- #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
- 
-@@ -154,6 +165,23 @@ static int __init early_kasan_flag_write_only(char *arg)
- }
- early_param("kasan.write_only", early_kasan_flag_write_only);
- 
-+/* kasan.tag_only_on_alloc=off/on */
-+static int __init early_kasan_flag_tag_only_on_alloc(char *arg)
-+{
-+	if (!arg)
-+		return -EINVAL;
-+
-+	if (!strcmp(arg, "off"))
-+		kasan_arg_tag_only_on_alloc = KASAN_ARG_TAG_ONLY_ON_ALLOC_OFF;
-+	else if (!strcmp(arg, "on"))
-+		kasan_arg_tag_only_on_alloc = KASAN_ARG_TAG_ONLY_ON_ALLOC_ON;
-+	else
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+early_param("kasan.tag_only_on_alloc", early_kasan_flag_tag_only_on_alloc);
-+
- static inline const char *kasan_mode_info(void)
- {
- 	if (kasan_mode == KASAN_MODE_ASYNC)
-@@ -270,14 +298,27 @@ void __init kasan_init_hw_tags(void)
- 		break;
- 	}
- 
-+	switch (kasan_arg_tag_only_on_alloc) {
-+	case KASAN_ARG_TAG_ONLY_ON_ALLOC_DEFAULT:
-+		/* Default is specified by kasan_flag_tag_only_on_alloc. */
-+		break;
-+	case KASAN_ARG_TAG_ONLY_ON_ALLOC_OFF:
-+		static_branch_disable(&kasan_flag_tag_only_on_alloc);
-+		break;
-+	case KASAN_ARG_TAG_ONLY_ON_ALLOC_ON:
-+		static_branch_enable(&kasan_flag_tag_only_on_alloc);
-+		break;
-+	}
-+
- 	kasan_init_tags();
- 
- 	/* KASAN is now initialized, enable it. */
- 	kasan_enable();
- 
--	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s)\n",
-+	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, tag_only_on_alloc=%s, stacktrace=%s, write_only=%s)\n",
- 		kasan_mode_info(),
- 		str_on_off(kasan_vmalloc_enabled()),
-+		str_on_off(kasan_tag_only_on_alloc_enabled()),
- 		str_on_off(kasan_stack_collection_enabled()),
- 		str_on_off(kasan_flag_write_only));
- }
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a547662..4fa8abb312faa 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -33,6 +33,7 @@ static inline bool kasan_stack_collection_enabled(void)
- #include "../slab.h"
- 
- DECLARE_STATIC_KEY_TRUE(kasan_flag_vmalloc);
-+DECLARE_STATIC_KEY_FALSE(kasan_flag_tag_only_on_alloc);
- 
- enum kasan_mode {
- 	KASAN_MODE_SYNC,
-@@ -52,6 +53,11 @@ static inline bool kasan_vmalloc_enabled(void)
- 	return static_branch_likely(&kasan_flag_vmalloc);
- }
- 
-+static inline bool kasan_tag_only_on_alloc_enabled(void)
-+{
-+	return static_branch_unlikely(&kasan_flag_tag_only_on_alloc);
-+}
-+
- static inline bool kasan_async_fault_possible(void)
- {
- 	return kasan_mode == KASAN_MODE_ASYNC || kasan_mode == KASAN_MODE_ASYMM;
-@@ -145,12 +151,17 @@ static inline bool kasan_requires_meta(void)
- #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
- #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
- #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area */
-+#elif defined(CONFIG_KASAN_HW_TAGS)
-+#define KASAN_PAGE_FREE		0x0E
-+#define KASAN_PAGE_REDZONE	0x1E
-+#define KASAN_SLAB_REDZONE	0x2E
-+#define KASAN_SLAB_FREE		0x3E
- #else
- #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
- #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
--#define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS */
-+#define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID
- #endif
- 
- #ifdef CONFIG_KASAN_GENERIC
-@@ -478,6 +489,16 @@ static inline u8 kasan_random_tag(void) { return 0; }
- 
- static inline void kasan_poison(const void *addr, size_t size, u8 value, bool init)
- {
-+	if (kasan_tag_only_on_alloc_enabled()) {
-+		if ((value != KASAN_SLAB_REDZONE) && (value != KASAN_PAGE_REDZONE)) {
-+			if (init)
-+				memset((void *)kasan_reset_tag(addr), 0, size);
-+			return;
-+		}
-+	}
-+
-+	value |= 0xF0;
-+
- 	if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
- 		return;
- 	if (WARN_ON(size & KASAN_GRANULE_MASK))
--- 
-2.43.0
-
+Best Regards
+Barry
 
