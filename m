@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 821BDCD8C9D
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D578CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E065B6B00AD; Fri, 12 Jun 2026 00:00:20 -0400 (EDT)
+	id 7C4DE6B00AF; Fri, 12 Jun 2026 00:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDDF66B00AF; Fri, 12 Jun 2026 00:00:20 -0400 (EDT)
+	id 79CFE6B00B1; Fri, 12 Jun 2026 00:00:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF34F6B00B0; Fri, 12 Jun 2026 00:00:20 -0400 (EDT)
+	id 6B28E6B00B2; Fri, 12 Jun 2026 00:00:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB6F86B00AD
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:00:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7EC141C3AEC
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:00:20 +0000 (UTC)
-X-FDA: 84869908200.02.690C740
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 90A1BA0015
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:00:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="GnERo1w/";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 57EF66B00AF
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:00:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D6E41C3AEC
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:00:25 +0000 (UTC)
+X-FDA: 84869908410.10.D8FEFCF
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 52B9F40008
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:00:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=YuRnZQG1;
+	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781236823;
+	b=j0hysp+Cz7IltULj4+8Qar5r/IvBm16LjPDRkLGJ6qWocR1xzUeu4cjERRpjSi6m2DHsDH
+	Hn25w0bsbHHGE6B9lwBCpNLxjCzYBAZQgaX0UGQxhINsHoi42eCJNT26g+pTdKsUNLO87Z
+	ktJ8xaeNsWZq8bZmfBlThUJSf5mY7dQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=YuRnZQG1;
+	spf=pass (imf12.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781236818;
+	s=arc-20220608; t=1781236823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K17o2xzrKCCnQsTBiihj6xsLYHSl3LYnDWpfyCRPu3g=;
-	b=wVj7RXgdSpkkqQQwc978QgnwDOJ7J9xn6Y+o/6XYGEghlKkQp6QFOpIU0IGrjPoIFXTNoD
-	4guSpUZczkUPbvaw3bn2sCsAz1YHSrVYjMYpheNtNDJjIZ/VvBRTHtc9uHgzmhNXkEVt30
-	OiW5bBDMuvRQQzyq4nxXJGlq1FgrQ+M=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="GnERo1w/";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781236818;
-	b=ojn5LflrbTcjQLFUewbZh+/nMBtOqaWcUb/GQJNj3289AWR3VgFPPtPQ0ZtMJ+MelPTV7a
-	knQ6GvqIX4JaeuFc1aKHrNNrzBtXmfYzP3aVg6HQ4Ho5DILKQ3MDQQ8Wnr/RaowEwAAVFH
-	R/A1VJLnaHeWjGFRrosJX5BN8Oh88NM=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8423efad617so393989b3a.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:00:18 -0700 (PDT)
+	bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
+	b=PwwVw2xV9Z0wWfE2lVGaYzA/tq7XH1zQjthZFxa2cKW2gSWLVruES0wGsPYEoSPC3scLUS
+	E7Uk1GzqF/z4XM9YKkN1hxgo0jBcae+1larWZnWeUNEgLcYTIy/6KL8a/FVcb9WW3GE2H9
+	Z36T81c1CkQniPLO8hnccy1NpCDWIUM=
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-842319576d5so348409b3a.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1781236817; x=1781841617; darn=kvack.org;
+        d=bytedance.com; s=google; t=1781236822; x=1781841622; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K17o2xzrKCCnQsTBiihj6xsLYHSl3LYnDWpfyCRPu3g=;
-        b=GnERo1w/3SiCfXYYN6AFGYqBvo1k3kffj/QAgeHeiJ+mahQd8DaC+wE7tfJdmB0gIo
-         CrXleY78kcNhibniIc9xUHO5YRGCdk7xR4LAGSgyK4Xt9rCbzrZKVJcOWUecBQ6+I+6f
-         XGzzbtqu/T0ObCpuxm0JhzZqblmcwR4GnW+58fo9Vz2rcfOJSkipOtFz7GspH1zY8KM+
-         oxwJuNUSGnkh2a1GHM5YP5VzSoD5ZuvRgH+ER0gf3JWsYldKa5tYe7mjsg1nbwAM2FL5
-         bNcT4eBOepTIj+yxf9N7EQMd8BzQE8nMetup5JPITKrVeF6wTnlDlOuvBnK6ITLVn5le
-         pavQ==
+        bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
+        b=YuRnZQG1SERJCzZZ+ZCM6JF41Ya7MGwGT1MCAtblyHEgJXN6gf6brYRFgtBSdFtJEA
+         RkoASfpIT7gmcNH+Qm1xfE7LFf8CqvY8HiXhjFFK5/YQj6qxksTWZCBrsKSRS7GfXZ58
+         ZPb6i4RwgkoPFtZkwTXBQmsCwT6gs7Iqk6wVNBwKJfHWo1Vj8DAfmJ/E+ecGD/lPn4oO
+         aKVCCk8U2C+csPE85E7J+rVc3yz7nZmMUlqXAQiXLqiu38by+SyDWw26U917npgzePfU
+         R/fpvEdjquZKNpjo9ydt1PPnz7udvWiFT9i6X7x+6W7TCv66rOB/FSafMEHkYBg5ts2n
+         WsOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781236817; x=1781841617;
+        d=1e100.net; s=20251104; t=1781236822; x=1781841622;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=K17o2xzrKCCnQsTBiihj6xsLYHSl3LYnDWpfyCRPu3g=;
-        b=oz/DWwlG/cfRXLW8LbQ/C1zzky3qZ1lPgb3iDFd31p4j/9MCRUFh/eZJwdkaPEY4ZC
-         DQlRx5aGNY6vdNwZ80tHtqqByCnTvElFze9819jt5TKd89NTvqSPBpdQzoLnjt56rm5m
-         tWAN2cGNDgZeLO0LHyuniCwdg5xo5nXkiJ1PtTVLH6d3q6+fkbLbM/XqDbJx6vPMi/sS
-         4FFqKjN+JgampE9QzIehxUlxz6d569lLA/D1VRUDsc80stvLXNo84lbsSY61k4Sy6sra
-         BUz5z0x3S/FWQbrV4aZHxEZKYMX6C5Epw0WkG2dT3LsrOuUecCDLQAo9OaHkyH1P0kdk
-         bWPg==
-X-Forwarded-Encrypted: i=1; AFNElJ+ti5+DH/WVBLS443MpFJ9bcQhXIYbfCcCpon4d8zAqSyk62LDFHw0UMjTI/Kaywiqr1nLwT8dcLw==@kvack.org
-X-Gm-Message-State: AOJu0Yx9iNVq8A+8rM/Rnr9D/kbH3Z0pepj7zPIzr7GdX7ltacjFcFp7
-	wi7Goght5NRHMTloHVsdNdmKah1Xcfmbybne65Y8mKJo/P7v92QPw/Tscl7pE8Qi5p0=
-X-Gm-Gg: Acq92OGaSrH9XNj/MST/dtmc+Ho1DYKKYWHaadLF4uPhmy38lGkRFvp98E8ICQpfpTn
-	o/iC3vtWjH0Pb70HqabJOCCFlCtVHqR6u3Xrpu0o+4h3DTE4rAUpt3OcbaqTnG9RGA/XHkHu7Ih
-	dMKygg6KlNnLJuVY12pQ0koqWgC4hyXY2Yr8rjxMh/8YE5P0hPpQoHGyRMjtx2o85jPrY9/c8hd
-	kLrTMVPsOQhE+lA7FePYSnihYei7TRrYziZbEzmGNwyrW/TmecIiGXJDP5lHIw8Svk1eEleoUVI
-	IqApiDQ8G9wEtpOw2iR8xWSg1+H5n5bh6ck6VYgN8QJ4iLHjDF0vKRnZKHG6On6RLoF/L6B9jLL
-	xH9O9u1unFFbiTLloPaBw/0/HD2mRT6rmmxJWwpp+U3hJsThsPxLrcpwKBKbQWCN85I4HpH3Zzt
-	aQ8h2BRpqBUyZQca77rRbHOez29GQ3Xq3bA5LOmUOQpbk=
-X-Received: by 2002:a05:6a00:2e13:b0:835:3949:3c22 with SMTP id d2e1a72fcca58-8434cf17aabmr1096032b3a.27.1781236817042;
-        Thu, 11 Jun 2026 21:00:17 -0700 (PDT)
+        bh=E/u6lKC7hQ/GhzoNdcnEA7gND1myfeYXkd1NgoaUr0Y=;
+        b=WruJ0xU4phb5eNnm+XHud4psL6sz7W7MpmLcGErI4EuT63Go31Ea6dOCE80Fn8xXf6
+         /CqvS62aTMawspkBg667/FbPbx+v1X/YH6r5jwm3d6dHBYWif9LjGkKWy7c9685kbACB
+         alwv10OENVKdGzx7DTiGJ06MGF3RYqHK8Kwd41r+tH39lxsQVb8E6vZ48pQey/tmiQfL
+         St2tF0dKsFUiZ8IWZidgnW89CqQTiUfJMH9NAwOE7tHW9DnEi8FnEQ0Mahxopf//6Bzw
+         wc8DRdczH0ym/ysRWdmG+XJnSgYmcuIYxhARn6M5L6Fe2kOzpUpGZeHub4EwMdbss8WG
+         u40A==
+X-Forwarded-Encrypted: i=1; AFNElJ8tY/52GCM6lqNDZxmWgaGWxG1dMDK9WdRQ2V0MZRKhTaclUltKzd3ldPYnOTAFuMtwkPUDa2wROg==@kvack.org
+X-Gm-Message-State: AOJu0Yz+ypryWte9wnWtJfYw8kEOEt64OUgUmJeDj5HqKp5R5oVnCjtt
+	3yKpbNk+7XaqmpCsYcQ/mD4tbAjuH+QgLUSaMsU1PsmLJzY+AAgAcTeXdwHFZZgXAu8=
+X-Gm-Gg: Acq92OHYZvGf76umjAUyEdQoKlAaMFQ1Wr8KGvu8Y04zYV0C30rDwdLWP+jZDVfjalh
+	M2zVon+iR2lr2Yz5VMOFqWoDpdUCRzBFu5ZoCSzXamEECSYlGOQPxl6AKy+9veMJz4bGyJ49P64
+	3UH/xu/k2HoC5nYcXdXW5VPUavgC79RFNfH/+yJIqB/odIGpArK3Y8Wfyrx4m+xGwSwSXY9elLO
+	kMKnKLUPHi2YaceSgZc+JBB29hmMGB+gveFTP0dHe4aeq2mUCQLvqUP9yBAXLWQ+gc+njWwupSw
+	VnJB9wP+OMbRZBeZf+J6JY5B7VxIZFGsquq0u9wdbzVlWgbCQv5fO4V35tQSpOrm1+qI1HWV+pu
+	/nCrbq/w92hntmHxijSqHeDp6J6NNK+G/qUh7SLt+L2lW33x9nMMMsH18dq005hHbsjT+sVonYp
+	5wi7yBJCeKIqMO1ezHNJFJSVtU2arWQNE4HMRUAPZcTag=
+X-Received: by 2002:a05:6a00:114c:b0:842:4b88:20ee with SMTP id d2e1a72fcca58-8434d103dbemr974121b3a.44.1781236821951;
+        Thu, 11 Jun 2026 21:00:21 -0700 (PDT)
 Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ad03fdcsm643352b3a.24.2026.06.11.21.00.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ad03fdcsm643352b3a.24.2026.06.11.21.00.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 21:00:16 -0700 (PDT)
+        Thu, 11 Jun 2026 21:00:21 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
@@ -110,22 +110,22 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	linuxppc-dev@lists.ozlabs.org,
 	Mike Kravetz <mike.kravetz@oracle.com>,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v4 13/19] mm/hugetlb: Refactor early boot gigantic hugepage allocation
-Date: Fri, 12 Jun 2026 11:58:57 +0800
-Message-ID: <20260612035903.2468601-14-songmuchun@bytedance.com>
+Subject: [PATCH v4 14/19] mm/hugetlb: Free cross-zone bootmem gigantic pages after allocation
+Date: Fri, 12 Jun 2026 11:58:58 +0800
+Message-ID: <20260612035903.2468601-15-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260612035903.2468601-1-songmuchun@bytedance.com>
 References: <20260612035903.2468601-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 52B9F40008
+X-Stat-Signature: r6y3hio6xr83zk9jrp64jcosbcye4o7i
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 90A1BA0015
-X-Stat-Signature: jeet9m9ohh7zho5kn5tzp1zm5r4bff67
-X-HE-Tag: 1781236818-139793
-X-HE-Meta: U2FsdGVkX1/zhS32qEFF7l2CxpKzJCR+hOAm5z5t+U21g8JTXAS0cMsGkMDj71fkb531V/FEWcjDC7u3gdrymqaqoQDHlqCZrEN6sqTHWBZ8vAuy4NEDhIYaBW8cFqC6ZMi5YeikiiyR11OBwUYx7iNsarKmnJ0ewihKRVfOvUBEhsivflJEW3Y9nHFHZXDbaeIQFNKDXKf7LT3ws/yaP86oIpM4FTIopNLwNyJ/tO1Ou15eiHDBMWJE5jdJ2O7Th+B9fJc0NsPqC4ZIAehasGlNwM097aMPUKXFinjmeSP4aRBdX+oCRGzZmqdZ8yPs8GuOr3h/WMsMW7F+aU1bXnw5jgW3sopuv7Fzt5/0PAn06CTLLdPis/wpKrNnbm2gjuxOkpq+WQWhqx9uZDKcB4JrJbdbEs8nxr05BJFvpCsGRx/L5ckBdjcqv4NFbZH+nz3beXa7uRu+xRjl+wqKMC1sETd8T1YlaEDf2PkjBAB8iVDHUZbSFLUtKMNuqIsCkxrSbIe02bEyhxYtDawYfy6HXmTif/w2PumOf4hDhceD5c4DoIDcEbgm7oyvxzfesqjCPwnw2S22Cd22y3hquGsKCRcVknKGOHLgiV43ZmxLIgNAsSPGSqZLbT/zqCbe1tnGLllYvINprum8QNW4j+tQ21dSfG+7byR5bsKqjpRhA7oGIauCVKcVbrQ2EsrGM7GXf68+77czzAHssXnR7OF8csrrwIAuM9VUpMHh/qVkMNREs8cLMmOCRS52XYpYJU4EwxaYzpspRayTxXmDFJ/o5Ip2IC3AIK7FNPLFVKD/2VOWYm1ooXE55gF9kxGsOeguc7s/j+UYm7fRwAdaG1yLQfXYoLHB+uGLP7nMYzuKq53OPOk9e2v0EzNFONDG5kNtqJRZLsSrM5EbBDOWTFPI1JnBtfnxmI2V4UwmniczZvH18R+tKsT7ROlYv7futNRrBwhKi27Bi2nLJDu
- TXDqJgZn
- 1T+rzQpfBkam8Eo3dxsoYJIzFnSmjn0cdor4e7cUqobE/rJi9A7xWJSS1Md9K78t4YbUYWZGESVoN6373GxGlknmGoqsUwaO6YNHknEwsbT/IAg03Pt9vIoom63LOLVvJUtavy0NCzvIBJlDNrJyfYGb1Fq6sDtoqQ6JB33Yxg4ZgndhqOebsSiHAgmlZcILUPW5HcH0NIC9beUbIxci3xwQNBErkj4XAdBR6Sj4lLkhNpm8t6pEzCmfdT6X9/G2QCKsiswGZqWwGxF2MPqfdkoPZi8iV6ItUj4FRmmmlksoCmBa59FRTPear2upJ1KY+FLQat0VzAo6H+8oPlcfcO7tt+H4ZvIdPnZmCH4aF4/2XbYi0o5R5cDwLjpaoIbYMAPi15XVjaKc2WCXdnqOqVbeRHfb1iod4Rr1s
+X-HE-Tag: 1781236823-464158
+X-HE-Meta: U2FsdGVkX1+SF2UqpDFp5xv0pzonXCLj1TOH+GPziRIcTsBWH7sc4TJJ6s+7m2kdaESOo8uMaguA+oDJnuHxsT088Hge04Ky6gmPch7pcrxDbqUefHrXAO1GMmfJU1CqMXdhLSlwiHCPi9TQ/tJ3A8Km3WmcHQI6wvJ/oPmGAk+wjfdiTEl0qeaQRKakoDU+gTGVfPaFUVlOC9juaTMdauSIm9zcnE9NnqZIZVtn4IGWkmKrVDz6Lym3yKh0mO5FiZPDGMgEYvedQAsRBw1xdZcJyl5yN7+QLWKplpHuvb9Wqd27GO/rNL5UhZXURWNnQHH2TPEm8e0nqPGBrjscyx7tlbMPQuM8tA/vlowY2wLSzlOLb+htNilszxW7ZpBp8SAo4DiSOR9tirPSeuTF+mmfC3jtqjbuzt9RZkpJE5PdIAgVTyPP2fFE+TRUEBr0vuzR6+qYP3fFjmEjpkDapwDf8qLtBGZxKMS8uHwMqMLwi71W0lssDSlKdhFWDTndQimz/yC+/w7zfIsAaM/yAj+b40tIuZK3/9tnG7C9ACK169xsLDEZ0FbIuB4y0bp9bWORECe6l3LcEKweByHUur88pdXRJSopyWZyiLExtLo1kHxlk3xfx0Uni3xWJ1Ki9aJpf9TXQkPpE1tObs8WN4ILPVwdXZwKoVe8MpZxjR7cjzxKuJp0cAHKuC/+HabQ9YbvXe/N0ND7F0Dnypo8oxN25sVmIieCrQAOUdfn6ArkoiIQHVJOZuI08BNNuHxu71BXX/4EieGiz62gycbHXk3sJEc0/t5cQX/C2Yyr6RY36LEQ/IAxBj/4MBabR23F6y3Jav/6X9FOY1EngNm1mLT5fcR6j4yzopiHeoyl60xAqON/vQTDd/4on0dtm9aGcENg/rANcDE5SHRMRKruAfoVY9PN7PaLeoEuApevHIrCOJQA3l7eo6eWsC7UgWPLAFp5T9+MiJo7NucUHoJ
+ iOtXkD68
+ 2tvydjXU+omRZN/hMyc/9BElla7jO8BiaQJts83faG5Ie8Usk3ShRIM1rOSEUJRq/NVHkxHToYogHV/IcHg7EEj26j1UMECnjJArE002NFlUtiZfMpqYsE9R4P6zSQ5im2oY6UG9bjBRbokSltJvqXWr/b31cs6LWuMj368hLQgf/HJf0+MMjvJCVkIa32RbOz/tSFkP02E84JJ/6OA3irzrR6y43E1ADppA3fu5APaJeQUeJpp6YEoD7ts+ehBk28JwhMBtwMMvcEqga6YhSbndRXwQme9OnMSeC/JexYLSL1gCsdz77JeB/DtOUxYmHlCsnMV07JkK5Ro+Gz/PGFo1MylLcPaldMtFiDUWuJCwGdY6CDG3Wtelkh0XesAa7a/efbVknaV8uxjtlH6UZOvzLHN7YzaZVnZC7gFzkd/NvNjQsBn7v+YjWXfFYZaAHiS5UHHHS7gtf60keSAKN0HIDegBy33iKRHCe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,332 +133,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The early boot gigantic hugepage allocation helpers currently mix
-allocation with huge_bootmem_page setup, and leave part of the
-initialization flow in architecture code.
+Now that hugetlb reservation runs after zone initialization, bootmem
+gigantic page allocation can detect pages that span multiple zones.
 
-Refactor the interface to return the allocated huge page pointer and
-move the huge_bootmem_page setup into the generic hugetlb code. This
-makes the architecture-specific paths focus only on finding memory,
-while the common code handles node placement and early page metadata
-setup in one place.
+Keep those cross-zone pages separate during allocation and free them
+after allocation completes, so later hugetlb initialization only sees
+zone-valid gigantic pages.
 
-This also lets powerpc benefit from memblock_reserved_mark_noinit(),
-which it did not enable before.
-
-In addition, upcoming cross-zone validation for boot-time gigantic
-hugetlb reservation is common logic. With this refactoring, that logic
-can stay in the generic code instead of being duplicated in
-architecture-specific paths.
+This chooses to free cross-zone gigantic pages directly instead of
+retrying allocation. In practice, such cross-zone cases are expected to
+be very rare, so adding retry logic does not seem justified at this
+point. Keeping the handling simple also preserves the previous behavior.
+If similar real-world reports show up later, retry support can be
+reconsidered then.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@suse.de>
 ---
- arch/powerpc/mm/hugetlbpage.c | 13 ++---
- include/linux/hugetlb.h       | 18 ++-----
- mm/hugetlb.c                  | 95 ++++++++++++++---------------------
- mm/hugetlb_cma.c              | 13 ++---
- mm/hugetlb_cma.h              |  8 ++-
- mm/internal.h                 |  9 ++++
- 6 files changed, 64 insertions(+), 92 deletions(-)
+ mm/hugetlb.c | 75 ++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 64 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 558fafb82b8a..a298746dc143 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -104,17 +104,14 @@ void __init pseries_add_gpage(u64 addr, u64 page_size, unsigned long number_of_p
- 	}
- }
- 
--static int __init pseries_alloc_bootmem_huge_page(struct hstate *hstate)
-+static __init void *pseries_alloc_bootmem_huge_page(struct hstate *hstate)
- {
--	struct huge_bootmem_page *m;
-+	void *m;
- 	if (nr_gpages == 0)
--		return 0;
-+		return NULL;
- 	m = phys_to_virt(gpage_freearray[--nr_gpages]);
- 	gpage_freearray[nr_gpages] = 0;
--	list_add(&m->list, &huge_boot_pages[0]);
--	m->hstate = hstate;
--	m->flags = 0;
--	return 1;
-+	return m;
- }
- 
- bool __init hugetlb_node_alloc_supported(void)
-@@ -124,7 +121,7 @@ bool __init hugetlb_node_alloc_supported(void)
- #endif
- 
- 
--int __init alloc_bootmem_huge_page(struct hstate *h, int nid)
-+void *__init arch_alloc_bootmem_huge_page(struct hstate *h, int nid)
- {
- 
- #ifdef CONFIG_PPC_BOOK3S_64
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 3700c0a1f6ff..09f28dd773b7 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -674,19 +674,11 @@ struct hstate {
- 	char name[HSTATE_NAME_LEN];
- };
- 
--struct cma;
--
--struct huge_bootmem_page {
--	struct list_head list;
--	struct hstate *hstate;
--	unsigned long flags;
--	struct cma *cma;
--};
--
- #define HUGE_BOOTMEM_HVO		0x0001
- #define HUGE_BOOTMEM_ZONES_VALID	0x0002
- #define HUGE_BOOTMEM_CMA		0x0004
- 
-+struct huge_bootmem_page;
- bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
- 
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
-@@ -706,8 +698,8 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
- 				unsigned long address, struct folio *folio);
- 
- /* arch callback */
--int __init __alloc_bootmem_huge_page(struct hstate *h, int nid);
--int __init alloc_bootmem_huge_page(struct hstate *h, int nid);
-+void *__init __alloc_bootmem_huge_page(struct hstate *h, int nid);
-+void *__init arch_alloc_bootmem_huge_page(struct hstate *h, int nid);
- bool __init hugetlb_node_alloc_supported(void);
- 
- void __init hugetlb_add_hstate(unsigned order);
-@@ -1138,9 +1130,9 @@ alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
- 	return NULL;
- }
- 
--static inline int __alloc_bootmem_huge_page(struct hstate *h)
-+static inline void *__alloc_bootmem_huge_page(struct hstate *h, int nid)
- {
--	return 0;
-+	return NULL;
- }
- 
- static inline struct hstate *hstate_file(struct file *f)
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 2bf9fe16abb9..5e557c05d80a 100644
+index 5e557c05d80a..218fb1ca45f4 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -3027,79 +3027,58 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+@@ -3060,12 +3060,15 @@ void *__init __alloc_bootmem_huge_page(struct hstate *h, int nid)
  
- static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
  {
--	struct huge_bootmem_page *m;
--	int listnode = nid;
--
- 	if (hugetlb_early_cma(h))
--		m = hugetlb_cma_alloc_bootmem(h, &listnode, node_exact);
--	else {
--		if (node_exact)
--			m = memblock_alloc_exact_nid_raw(huge_page_size(h),
-+		return hugetlb_cma_alloc_bootmem(h, nid, node_exact);
-+
-+	if (node_exact)
-+		return memblock_alloc_exact_nid_raw(huge_page_size(h),
- 				huge_page_size(h), 0,
- 				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
--		else {
--			m = memblock_alloc_try_nid_raw(huge_page_size(h),
-+
-+	return memblock_alloc_try_nid_raw(huge_page_size(h),
- 				huge_page_size(h), 0,
- 				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
--			/*
--			 * For pre-HVO to work correctly, pages need to be on
--			 * the list for the node they were actually allocated
--			 * from. That node may be different in the case of
--			 * fallback by memblock_alloc_try_nid_raw. So,
--			 * extract the actual node first.
--			 */
--			if (m)
--				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
--		}
--
--		if (m) {
--			m->flags = 0;
--			m->cma = NULL;
--		}
--	}
--
--	if (m) {
--		/*
--		 * Use the beginning of the huge page to store the
--		 * huge_bootmem_page struct (until gather_bootmem
--		 * puts them into the mem_map).
--		 *
--		 * Put them into a private list first because mem_map
--		 * is not up yet.
--		 */
--		INIT_LIST_HEAD(&m->list);
--		list_add(&m->list, &huge_boot_pages[listnode]);
--		m->hstate = h;
--	}
--
--	return m;
- }
++	unsigned long pfn;
++	unsigned int nid_request = nid;
+ 	struct huge_bootmem_page *m = arch_alloc_bootmem_huge_page(h, nid);
  
--int alloc_bootmem_huge_page(struct hstate *h, int nid)
-+void *__init arch_alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	__attribute__ ((weak, alias("__alloc_bootmem_huge_page")));
--int __alloc_bootmem_huge_page(struct hstate *h, int nid)
-+void *__init __alloc_bootmem_huge_page(struct hstate *h, int nid)
- {
--	struct huge_bootmem_page *m = NULL; /* initialize for clang */
- 	int nr_nodes, node = nid;
+ 	if (!m)
+ 		return false;
  
- 	/* do node specific alloc */
--	if (nid != NUMA_NO_NODE) {
--		m = alloc_bootmem(h, node, true);
--		if (!m)
--			return 0;
--		goto found;
--	}
-+	if (nid != NUMA_NO_NODE)
-+		return alloc_bootmem(h, node, true);
- 
- 	/* allocate from next node when distributing huge pages */
- 	for_each_node_mask_to_alloc(&h->next_nid_to_alloc, nr_nodes, node,
--				    &hugetlb_bootmem_nodes) {
--		m = alloc_bootmem(h, node, false);
--		if (!m)
--			return 0;
--		goto found;
--	}
-+				    &hugetlb_bootmem_nodes)
-+		return alloc_bootmem(h, node, false);
- 
--found:
-+	return NULL;
-+}
-+
-+static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
-+{
-+	struct huge_bootmem_page *m = arch_alloc_bootmem_huge_page(h, nid);
-+
-+	if (!m)
-+		return false;
-+
-+	nid = early_pfn_to_nid(PHYS_PFN(__pa(m)));
-+	/*
-+	 * Use the beginning of the huge page to store the huge_bootmem_page
-+	 * struct (until gather_bootmem puts them into the mem_map).
-+	 *
-+	 * Put them into a private list first because mem_map is not up yet.
-+	 */
-+	INIT_LIST_HEAD(&m->list);
-+	list_add(&m->list, &huge_boot_pages[nid]);
-+	m->hstate = h;
-+	if (!hugetlb_early_cma(h)) {
-+		m->cma = NULL;
-+		m->flags = 0;
-+	}
- 
+-	nid = early_pfn_to_nid(PHYS_PFN(__pa(m)));
++	pfn = PHYS_PFN(__pa(m));
++	nid = early_pfn_to_nid(pfn);
  	/*
- 	 * Only initialize the head struct page in memmap_init_reserved_pages,
-@@ -3111,7 +3090,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
- 		huge_page_size(h) - PAGE_SIZE);
- 
--	return 1;
-+	return true;
- }
- 
- /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index ce999391cc14..e487d0ffffc0 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -56,14 +56,13 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
- 	return folio;
- }
- 
--struct huge_bootmem_page * __init
--hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid, bool node_exact)
-+void * __init hugetlb_cma_alloc_bootmem(struct hstate *h, int nid, bool node_exact)
- {
- 	struct cma *cma;
- 	struct huge_bootmem_page *m;
--	int node = *nid;
-+	int node;
- 
--	cma = hugetlb_cma[*nid];
-+	cma = hugetlb_cma[nid];
- 	m = cma_reserve_early(cma, huge_page_size(h));
- 	if (!m) {
- 		if (node_exact)
-@@ -71,13 +70,11 @@ hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid, bool node_exact)
- 
- 		for_each_node_mask(node, hugetlb_bootmem_nodes) {
- 			cma = hugetlb_cma[node];
--			if (!cma || node == *nid)
-+			if (!cma || node == nid)
- 				continue;
- 			m = cma_reserve_early(cma, huge_page_size(h));
--			if (m) {
--				*nid = node;
-+			if (m)
- 				break;
--			}
- 		}
+ 	 * Use the beginning of the huge page to store the huge_bootmem_page
+ 	 * struct (until gather_bootmem puts them into the mem_map).
+@@ -3073,22 +3076,38 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
+ 	 * Put them into a private list first because mem_map is not up yet.
+ 	 */
+ 	INIT_LIST_HEAD(&m->list);
+-	list_add(&m->list, &huge_boot_pages[nid]);
+ 	m->hstate = h;
+ 	if (!hugetlb_early_cma(h)) {
+ 		m->cma = NULL;
+ 		m->flags = 0;
  	}
  
-diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
-index c619c394b1ae..3aa483573d17 100644
---- a/mm/hugetlb_cma.h
-+++ b/mm/hugetlb_cma.h
-@@ -6,8 +6,7 @@
- void hugetlb_cma_free_frozen_folio(struct folio *folio);
- struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
- 				      int nid, nodemask_t *nodemask);
--struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
--						    bool node_exact);
-+void *hugetlb_cma_alloc_bootmem(struct hstate *h, int nid, bool node_exact);
- bool hugetlb_cma_exclusive_alloc(void);
- unsigned long hugetlb_cma_total_size(void);
- void hugetlb_cma_validate_params(void);
-@@ -23,9 +22,8 @@ static inline struct folio *hugetlb_cma_alloc_frozen_folio(int order,
- 	return NULL;
+-	/*
+-	 * Only initialize the head struct page in memmap_init_reserved_pages,
+-	 * rest of the struct pages will be initialized by the HugeTLB
+-	 * subsystem itself.
+-	 * The head struct page is used to get folio information by the HugeTLB
+-	 * subsystem like zone id and node id.
+-	 */
+-	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
+-		huge_page_size(h) - PAGE_SIZE);
++	/* CMA pages: zone-crossing is validated in hugetlb_cma_reserve(). */
++	if (!hugetlb_early_cma(h) &&
++	    pfn_range_intersects_zones(nid, pfn, pages_per_huge_page(h))) {
++		/*
++		 * If the allocated page is on a different node than requested
++		 * (e.g., on PowerPC LPARs), put it on the requested node's list,
++		 * because hugetlb_free_cross_zone_pages() only frees cross-zone
++		 * pages belonging to the requested node.
++		 */
++		if (WARN_ON_ONCE(nid_request != NUMA_NO_NODE && nid != nid_request))
++			list_add(&m->list, &huge_boot_pages[nid_request]);
++		else
++			list_add(&m->list, &huge_boot_pages[nid]);
++	} else {
++		list_add_tail(&m->list, &huge_boot_pages[nid]);
++		m->flags |= HUGE_BOOTMEM_ZONES_VALID;
++		/*
++		 * Only initialize the head struct page in memmap_init_reserved_pages,
++		 * rest of the struct pages will be initialized by the HugeTLB
++		 * subsystem itself.
++		 * The head struct page is used to get folio information by the HugeTLB
++		 * subsystem like zone id and node id.
++		 */
++		memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
++				huge_page_size(h) - PAGE_SIZE);
++	}
+ 
+ 	return true;
+ }
+@@ -3373,6 +3392,34 @@ void __init hugetlb_bootmem_struct_page_init(void)
+ 	padata_do_multithreaded(&job);
  }
  
--static inline
--struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
--						    bool node_exact)
-+static inline void *hugetlb_cma_alloc_bootmem(struct hstate *h, int nid,
-+					      bool node_exact)
- {
- 	return NULL;
- }
-diff --git a/mm/internal.h b/mm/internal.h
-index 09efb9f4d126..3401759924d9 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -23,6 +23,15 @@
- #include "vma.h"
- 
- struct folio_batch;
-+struct hstate;
-+struct cma;
++static unsigned long __init hugetlb_free_cross_zone_pages(struct hstate *h, int nid)
++{
++	unsigned long freed = 0;
++	struct huge_bootmem_page *m, *tmp;
 +
-+struct huge_bootmem_page {
-+	struct list_head list;
-+	struct hstate *hstate;
-+	unsigned long flags;
-+	struct cma *cma;
-+};
++	if (!hstate_is_gigantic(h))
++		return freed;
++
++	list_for_each_entry_safe(m, tmp, &huge_boot_pages[nid], list) {
++		if (m->flags & HUGE_BOOTMEM_ZONES_VALID)
++			break;
++
++		list_del(&m->list);
++		memblock_free(m, huge_page_size(h));
++		freed++;
++	}
++
++	if (freed) {
++		char buf[32];
++
++		string_get_size(huge_page_size(h), 1, STRING_UNITS_2, buf, sizeof(buf));
++		pr_warn("HugeTLB: freed %lu cross-zone hugepages of size %s on node %d.\n",
++			freed, buf, nid);
++	}
++
++	return freed;
++}
++
+ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+ {
+ 	unsigned long i;
+@@ -3403,6 +3450,8 @@ static void __init hugetlb_hstate_alloc_pages_onenode(struct hstate *h, int nid)
+ 		cond_resched();
+ 	}
  
- /*
-  * Maintains state across a page table move. The operation assumes both source
++	i -= hugetlb_free_cross_zone_pages(h, nid);
++
+ 	if (!list_empty(&folio_list))
+ 		prep_and_add_allocated_folios(h, &folio_list);
+ 
+@@ -3476,6 +3525,7 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
+ 
+ static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
+ {
++	int nid;
+ 	unsigned long i;
+ 
+ 	for (i = 0; i < h->max_huge_pages; ++i) {
+@@ -3484,6 +3534,9 @@ static unsigned long __init hugetlb_gigantic_pages_alloc_boot(struct hstate *h)
+ 		cond_resched();
+ 	}
+ 
++	for_each_node(nid)
++		i -= hugetlb_free_cross_zone_pages(h, nid);
++
+ 	return i;
+ }
+ 
 -- 
 2.54.0
 
