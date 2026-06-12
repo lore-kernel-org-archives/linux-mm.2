@@ -4,81 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADAD3CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 509EECD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C68D26B0005; Fri, 12 Jun 2026 07:08:12 -0400 (EDT)
+	id 08B416B0005; Fri, 12 Jun 2026 07:14:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C197E6B0088; Fri, 12 Jun 2026 07:08:12 -0400 (EDT)
+	id 03B8C6B0088; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1646B008C; Fri, 12 Jun 2026 07:08:12 -0400 (EDT)
+	id DF7BF6B008C; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DD506B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:08:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38C9D40145
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:08:12 +0000 (UTC)
-X-FDA: 84870986424.30.6EFEFC9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 79EE720002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:08:10 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKJ4XRDm;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781262490;
-	b=aX9hDiV4owwyy7+N1QqDKSgr7sJwaYO6H++Yp1ir1VTWpRdLOsewDeAC6i509Jwv0JM4/h
-	1O5lZBG3QIrdAf00Bhivw6HoiEYj9nAl9dq5IZxnapHOqDSOzyCzVFWNBpE9r/lE71Rtes
-	TS0jfY9A6ZgHOUjxD9Szs2XKwKOdBAU=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKJ4XRDm;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2EC6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 659D4165810
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:14:19 +0000 (UTC)
+X-FDA: 84871001838.10.20A872B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 89DA0160015
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:14:17 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n+h/dgKk";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781262490;
+	s=arc-20220608; t=1781262857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UPM+ofoDT7OwP6EPF9T/WLKHhKdWs1UI7b0Z8Ec18eA=;
-	b=fWmnkP63oT7flcOF5lISueGxFY2zxt0WItsEa73aEWKWeW6yQPYDv6ryttTpV+XD0gj3bC
-	8UeSLUS8FXwFvbFN4MLPqKoZ2fkVA5fp9hktHWEZ+gpCH6a9lRZ/q7gC00Utqrok1BcS2X
-	7PIuGulLxdlXkT9aWu6sOHiaaebQsxU=
+	bh=dP7e3JEtOPtC6CVM3VUIPHIKZe0OVbKMvYxoe2ZHRtY=;
+	b=piTFZeCMDencFoA/shjFGlKOMlc0xkmgrSjXQPuCOEeRMmN3ylRWIgJo2w4sfokylxYuC0
+	l15jbOBoGAkOGJCIU5QVaZ6+IOafgiu1nFEMkMKOl7HhNTf8NrWQNQ+7CXbowLq93iMB9I
+	k+KKG+/8oKrIUh2sXFRwEXVDlt3cYAE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n+h/dgKk";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781262857;
+	b=bAEEofGCFOEtvEvDTlN6FQA2pSq0ZX3nS4hzywgAMiEJMrK+Ux815VSDmEMeyVIfhy/LAl
+	rI81KT05IOzCP6duhxZsatc8YtAqlJTUM5PlO1WjUlsgtH9s3X6DCyjvHvA6LgP/WvJVzr
+	Qh535cvI2/BoLQvQMmIUUqGJ9iJpTio=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A81496001D;
-	Fri, 12 Jun 2026 11:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF4D1F00A3A;
-	Fri, 12 Jun 2026 11:08:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AB3DC43A95;
+	Fri, 12 Jun 2026 11:14:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E07F1F000E9;
+	Fri, 12 Jun 2026 11:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781262489;
-	bh=UPM+ofoDT7OwP6EPF9T/WLKHhKdWs1UI7b0Z8Ec18eA=;
+	s=k20260515; t=1781262856;
+	bh=dP7e3JEtOPtC6CVM3VUIPHIKZe0OVbKMvYxoe2ZHRtY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SKJ4XRDmQILjWaI8kvfTb0FVmvLRTBOaOQWepscAkVlk5PsAB+W7Rn0IbRTsuKghc
-	 E7Q2HYYBLar5Wrvpav3lmSaDLwkCfIHsgYH2KKXw4qqr0U1YmJpCC/RTaVBPvhK30T
-	 EI0VRspNpKBRddZTRCUGCHBWeVLGikp1d3HRNMt2ieyyW16Syr29mBZSW3OChCebD/
-	 B6RSHNqQcAAtdDTMxuoZ0/fezuRqa3he8ArOWgV4BRyXcJph+Ae5OOctJ8CAoaBQVm
-	 8TMFgfVLJF1MKGNNnBS5M3y/RbUSGDlKleDYomJGhzxPFpPf90yRXY/RBVEhx+MqyB
-	 bSFd82RlFp7sw==
-Message-ID: <fc57bb9a-4564-489e-8da4-65068b5283ae@kernel.org>
-Date: Fri, 12 Jun 2026 13:08:04 +0200
+	b=n+h/dgKkcBlo/dGQjj1ub3s9bjOa0M2la6urtdxD0te37aVSmCofz0hyWaifbPk20
+	 mS8IHjwYOyPvqcGFKrUnRefPCHeAQFySphnvGxKPQLj4KzCYeGzPYq+BCR3cj4vCA6
+	 viFy8LB1SAvbHyu/PXVcxGxXFGzLV4lIpsWxWktEtHo8/sTXJB2/0K71s+fSdPIhB3
+	 nX9RflZcxKhiUeUSMoVeyVE4jZT8zOB7eNZFF7cKPGRJ0xB0z3EYGyPa61BN7W9knN
+	 4GxyBMUDop4P3Sk7/axoqTQA3bJ8OeJqcVc3VI47d8arWIzRyxwP4RvDi6JVUKjcj3
+	 qAM2UyRRNtqIg==
+Message-ID: <3603c37b-95b1-4d29-ab6f-fa3360dc17db@kernel.org>
+Date: Fri, 12 Jun 2026 13:14:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 3/3] mm: Replace pgtable entry prints with new format
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Subject: Re: [RFC V2 0/3] lib/vsprintf: Add support for pgtable entries
+To: Matthew Wilcox <willy@infradead.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  Sergey Senozhatsky <senozhatsky@chromium.org>, Petr Mladek
  <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
  Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
- <20260610043545.3725735-4-anshuman.khandual@arm.com>
+ <aisJbeVVxxNuYxQ6@casper.infradead.org>
+ <aisNjxHW369cbKiq@ashevche-desk.local>
+ <aisOi1B0o5KYyaQo@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260610043545.3725735-4-anshuman.khandual@arm.com>
+In-Reply-To: <aisOi1B0o5KYyaQo@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 79EE720002
-X-Stat-Signature: zu78gniqprs1jma3ss54qagbr9qbx6ix
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 89DA0160015
+X-Stat-Signature: ngub1jmjgd869faaj1une88bapaw49hn
 X-Rspam-User: 
-X-HE-Tag: 1781262490-77837
-X-HE-Meta: U2FsdGVkX18l09jwFUR3pASbKKyJiyx69PEaRJ+phVsNoNjXatZ40gv6IpdtW7oSIi2A0QrN0f2LJeAxOJUhKu1bLiX+l++isrkBniIrkLiAzQ3mIuYwPY0Arw2+UIkYYbAOMQePbODStMJhVH6AoblU3RWq8sAXt+6mAIsS6vlPPAeWQsv7kDHm+1D41AxzXGOSSFqb+NRbxic1oKOmQLPbiiVKejlzKvn0e5liEhgQQpFfn3QO4dVBQb7KsmiXsZTJahQ/4APvBlxKaxi+6XiwZNrwjmo0lu+I3p5dDC59vyWhIU3Z0ml/6GlKHZprMWA5SjyBgrBW2A9wsaynaYdYbJTSLfnJp7rC0iUUA/W1IOZ1dnWPxHd9oy3WRfH0cgA/0ZIBdSEvf2LaPP9xTVDXHlyFqk2Imyc22H/eAmHsv/vBqlW6AKVUxnKDc/714xz/fi/E25qPLhKk12AhHMGiBrfZyvXP0a5bYHNwBZru/n/uJpbZ0DaqwOmF9E615N3xdHlf95TjVR4Uca+skwk+9EjIP224nCEeUdyeURGaiqntoquHAqaib3k40RO7KgprR4VKxmK1QeTc2u4ghq/KaL1Ue01C+AzfWLT4zvRuvQL/OJhF0wOjgbc0NnaTGuDJyj0U2A7v6A3OToGKE/o4lqUDPbjix3+hbqRymmVaMjt6fR9J58rlnriHgEX4WnLHzxVvpIRxC5UX82oy90HrG0RRzMCOdg2niVVPbDvpT0I+8VUu6D85d6m2ReOvtH4VKgyf7Q8pnvbLING/oWwJgdgyhtSkgBKajhRZHBJt2YVuyfIwukPXhduufnY12rOifnPX2EHwCi4BKhk3xqS5HAgTzeWyVnl32ych13behM/9woygEoOhvQIdNlg6wGkClfyEx5MNCe537VBDTLv9nCm/AlyiqloMYU31bR39Wf+2MZj8COv2VXQal0GPUbX7OppkqrOVsB5oi88
- vtX+3uyl
- KdolkX9SJOOh5gjHX1lmDK0hHcLVm3MMWv2vF06/aygu2UNMw8Y6CbSYNvnCGSlnj2Q7BEazvjLm3zIknFIAAsHlk1yUFBO2BF7ROb8DrLoVOcQIJqbdrU8avXNXARrPshffFnq6DdgsJqk2VH4WmOpDQs4l8ELRg203iR+HpE/vIw3qUovcc4v8v+WTdsxSf5TlfnrusoE8a+0IH0M3lzgD/MhB7aKi3aY+hWPo+Fi0o6936CXl0O4LJt5gpoCcES9cN+JxClaZwT6Lmn2xlwYg0s7jYmylX6kwSbr8mN5KW93KD4emo/59Rg/OHgFsBwRAmNRSCVy5Y0qC68pyidUY6JZg+uTmWcio0S0FYx/WLFuRmG58I5P7qmE0mAZHEnXoq6KFGVmcXdz8fL+Ic1/RG2B9GY3W8EmE7Ch4VKsg9cJjzbGKkOi1VnhKqx7fDuIzY/BFZm4AdFIw=
+X-HE-Tag: 1781262857-172078
+X-HE-Meta: U2FsdGVkX18GfqHxecGZVzHmroW7S4SC89Up0eQTaKzlunpAUD/Fz9ixH1chOLdJuBr9QUI72Q4u+uiIzLmXO1W0GfKttaYC1af1q2H5AGVWFtpn0xqyChYsfbkI811qTVbsqZW+1sPfpClIhWKnMQcqYJfnPDjDQr9wlvOJc6WmqnZr+FBsSrUZpEZFGfEyUUQQr1t5Md70gB9dBoxlp2aqtZ2Inu1e4D2uDeuNQsIuJbiu0scDwjauUYbTLuDe1zOhzXLcZ0DC4Jn33/jcL6WkpkuclYxAMhycDif257HO8vFRrOfkzv3ZRZtMiuPQ96EfM1+4RLCbah+tstquyF98hrf3CkXi3kB7cDedf7ZFvLrCpTHuDnDOelkLFbKQFJn5OVLSWs6mtB/pN7+GIVvpRXkN3ngxO/BLmZG+2OHd+KI0Xmk93WNEQqgMbN6ott2sSEVV39wL3NnSSe1CRizWwGCmplQO1PGlO9lrEhbyyKPDS27XC3W8SVQLLH2dzNta7Qyp1qZ0dcNrSeJOVBpk2r5UgOKHqasaz1ernbC8+695jVd9/BimJDdYhpb51sai0kLgFS+q0RO7SF9T6FM/fJCPV/U3Mgrx+cV0MRgVA7rlcpAAispHLytbhU9sgrSPFnUm8CJaAQaQGtSjY13SE8cAFKqsD70wDYQAk3YM7ZhjhsfN5b+r39QbcPFHE23NnP+UkyqrFWBvDQJqJi6X9/d8prUWrVZLh0ScgTaDLNAyywvgae+kA1RmGbzD4OqH0EJsXUxWGATL53YN0iozA/prTWKnlm5Ugf59+frMwAKxtv59wK3MF8zvEOS4GNkd+1yP7iDXTSFrlTMGJQgBBJQDks8AfrWp4912dMAZDuVTp+TZ0LcD5YoAdveEEYh9/mGFlUOPKJ7z3kn3QlSaSrCdJ6DxszZKc6PWoLq+zyGHI4q472zrRbbLn67Nr+ziHDOSwmu7CkBqT0g
+ rUalJQXo
+ 7FjfNLQXQzwT50bI6KtyGUNOUNhNZfL480FAGscvCi2uFLtqVrF/i9WK7FCBN19289LYtEm5zOGZIUhEyYA09y3A/NFNxvegK9+khcaVd2pyikyjzbRloOBtl4y+7W+w0ZrPP+eFrtBJGXR+eBgtwo8gYD7gVOFv1ftCwDyzwzkafywmjjwsKxFFEEtakWIuRxoavoYEURF5be0prUuAnvvPfUS59LpwiDyzjbHMAl+anWJvJtTGXo9kXGjpI/3Aknkd6IzJYW8K7J8mIsYmEHaXr2GVLdUCNtqCxw/hkct8TcTRbHnbAjrY201d4f/HPwtWcimg4Z4XhcnVpBllQ8GZj9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,286 +145,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/10/26 06:35, Anshuman Khandual wrote:
-> Replace all existing pgtable entry prints with recently added new format in
-> __print_bad_page_map_pgtable().
+On 6/11/26 21:37, Matthew Wilcox wrote:
+> On Thu, Jun 11, 2026 at 10:33:35PM +0300, Andy Shevchenko wrote:
+>> On Thu, Jun 11, 2026 at 08:15:57PM +0100, Matthew Wilcox wrote:
+>>>
+>>> You didn't address my objection here:
+>>>
+>>> https://lore.kernel.org/linux-mm/aFQP8LzVMctf6XH5@casper.infradead.org/
+>>>
+>>> ie there is now no typechecking possible.  So you've made it more
+>>> dangerous.  I reiterate my NACK to the concept, not to the implementation.
+>>
+>> But this is more of a global question, how do we check the validity of
+>> the parameters of pointer extensions in the kernel? Does anybody go to
+>> commit into GCC plugin or so for this job?
 > 
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
+> I agree that it's a global question that it would be great for somebody
+> to answer.  But it's specifically a problem for this patchset because:
 > 
->  mm/memory.c | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 86a973119bd4..8a25790f7c24 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -521,7 +521,6 @@ static bool is_bad_page_map_ratelimited(void)
->  
->  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
->  {
-> -	unsigned long long pgdv, p4dv, pudv, pmdv;
->  	p4d_t p4d, *p4dp;
->  	pud_t pud, *pudp;
->  	pmd_t pmd, *pmdp;
-> @@ -532,34 +531,30 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	 * see locking requirements for print_bad_page_map().
->  	 */
->  	pgdp = pgd_offset(mm, addr);
-> -	pgdv = pgd_val(*pgdp);
->  
->  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
-> -		pr_alert("pgd:%08llx\n", pgdv);
-> +		pr_alert("pgd:%ppgd\n", pgdp);
->  		return;
->  	}
->  
->  	p4dp = p4d_offset(pgdp, addr);
->  	p4d = p4dp_get(p4dp);
-> -	p4dv = p4d_val(p4d);
->  
->  	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
-> -		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
-> +		pr_alert("pgd:%ppgd p4d:%pp4d\n", pgdp, p4dp);
->  		return;
->  	}
->  
->  	pudp = pud_offset(p4dp, addr);
->  	pud = pudp_get(pudp);
-> -	pudv = pud_val(pud);
->  
->  	if (!pud_present(pud) || pud_leaf(pud)) {
-> -		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
-> +		pr_alert("pgd:%ppgd p4d:%pp4d pud:%ppud\n", pgdp, p4dp, pudp);
->  		return;
->  	}
->  
->  	pmdp = pmd_offset(pudp, addr);
->  	pmd = pmdp_get(pmdp);
-> -	pmdv = pmd_val(pmd);
->  
->  	/*
->  	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
-> @@ -567,8 +562,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
->  	 * doing another map would be bad. print_bad_page_map() should
->  	 * already take care of printing the PTE.
->  	 */
-> -	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
-> -		 p4dv, pudv, pmdv);
-> +	pr_alert("pgd:%ppgd p4d:%pp4d pud:%ppud pmd:%ppmd\n", pgdp,
-> +		 p4dp, pudp, pmdp);
->  }
->  
->  /*
+>  - It's really easy to get confused about which page table level you're
+>    working on.  And hugetlbfs deliberately increases that confusion.
+
+Yeah ... so far I was assuming that for hugetlb, all relevant entries (what we
+call a PTE although it isn't ....) would have to be the same size. I mean, at
+least in the callers they are the same size (pte_t)
+
+>  - Different levels of the page tables actually do have different sizes
+>    on some architectures, so if you think you're looking at a pointer to a
+>    64-bit quantity when it's really a pointer to a 32-bit quantity, things
+>    Will Go Wrong (or vice-versa.  And some architctures are big-endian)
+
+I see your point with the pass-by-pointer.
+
+>  - But on x86-64, Everything Is Fine because all levels of the page table
+>    are basically identical, so you'll never notice there's a problem.
+
+I assume on most architectures.
 
 
-After some off-list discussion, I wonder if we can make our life easier.
-
-I think, even with your patch, there is still the case:
-
-pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
-	 pgtable_level_to_str(level), entry);
-
-Where we cast all entries to an "unsigned long" in the callers. We'd have to rework all
-that for 128bit entries either way (passing them in some struct instead).
-
-I really just extended what we used to do here in print_bad_pte() before commit ec63a44011d.
-
-Maybe we should just drop the "print the involved page table entries" thing?
-
-I mean, we do have the actual page, and we do have the address in the address space, which
-we all print.
-
-Not sure if the actual page table entries are that relevant? Would clean up nicely:
-
-
-From a1673198f9687b307496903b3f516a3c00f76199 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 12 Jun 2026 13:06:00 +0200
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/memory.c | 80 +++++++++--------------------------------------------
- 1 file changed, 13 insertions(+), 67 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index d4b3540ae659..989f7d6b280d 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -519,58 +519,6 @@ static bool is_bad_page_map_ratelimited(void)
- 	return false;
- }
- 
--static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
--{
--	unsigned long long pgdv, p4dv, pudv, pmdv;
--	p4d_t p4d, *p4dp;
--	pud_t pud, *pudp;
--	pmd_t pmd, *pmdp;
--	pgd_t *pgdp;
--
--	/*
--	 * Although this looks like a fully lockless pgtable walk, it is not:
--	 * see locking requirements for print_bad_page_map().
--	 */
--	pgdp = pgd_offset(mm, addr);
--	pgdv = pgd_val(*pgdp);
--
--	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
--		pr_alert("pgd:%08llx\n", pgdv);
--		return;
--	}
--
--	p4dp = p4d_offset(pgdp, addr);
--	p4d = p4dp_get(p4dp);
--	p4dv = p4d_val(p4d);
--
--	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
--		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
--		return;
--	}
--
--	pudp = pud_offset(p4dp, addr);
--	pud = pudp_get(pudp);
--	pudv = pud_val(pud);
--
--	if (!pud_present(pud) || pud_leaf(pud)) {
--		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
--		return;
--	}
--
--	pmdp = pmd_offset(pudp, addr);
--	pmd = pmdp_get(pmdp);
--	pmdv = pmd_val(pmd);
--
--	/*
--	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
--	 * because the table should already be mapped by the caller and
--	 * doing another map would be bad. print_bad_page_map() should
--	 * already take care of printing the PTE.
--	 */
--	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
--		 p4dv, pudv, pmdv);
--}
--
- /*
-  * This function is called to print an error when a bad page table entry (e.g.,
-  * corrupted page table entry) is found. For example, we might have a
-@@ -584,8 +532,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
-  * page table lock.
-  */
- static void print_bad_page_map(struct vm_area_struct *vma,
--		unsigned long addr, unsigned long long entry, struct page *page,
--		enum pgtable_level level)
-+		unsigned long addr, struct page *page, enum pgtable_level level)
- {
- 	struct address_space *mapping;
- 	pgoff_t index;
-@@ -596,9 +543,8 @@ static void print_bad_page_map(struct vm_area_struct *vma,
- 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
- 	index = linear_page_index(vma, addr);
- 
--	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
--		 pgtable_level_to_str(level), entry);
--	__print_bad_page_map_pgtable(vma->vm_mm, addr);
-+	pr_alert("BUG: Bad page map in process %s on %s level", current->comm,
-+		 pgtable_level_to_str(level));
- 	if (page)
- 		dump_page(page, "bad page map");
- 	pr_alert("addr:%px vm_flags:%08lx anon_vma:%px mapping:%px index:%lx\n",
-@@ -627,8 +573,8 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
- 	}
- }
- 
--#define print_bad_pte(vma, addr, pte, page) \
--	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
-+#define print_bad_pte(vma, addr, page) \
-+	print_bad_page_map(vma, addr, page, PGTABLE_LEVEL_PTE)
- 
- /**
-  * __vm_normal_page() - Get the "struct page" associated with a page table entry.
-@@ -697,7 +643,7 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
-  */
- static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long pfn, bool special,
--		unsigned long long entry, enum pgtable_level level)
-+		enum pgtable_level level)
- {
- 	if (pgtable_level_has_pxx_special(level)) {
- 		if (unlikely(special)) {
-@@ -710,7 +656,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
- 				return NULL;
- 
--			print_bad_page_map(vma, addr, entry, NULL, level);
-+			print_bad_page_map(vma, addr, NULL, level);
- 			return NULL;
- 		}
- 		/*
-@@ -741,7 +687,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 
- 	if (unlikely(pfn > highest_memmap_pfn)) {
- 		/* Corrupted page table entry. */
--		print_bad_page_map(vma, addr, entry, NULL, level);
-+		print_bad_page_map(vma, addr, NULL, level);
- 		return NULL;
- 	}
- 	/*
-@@ -768,7 +714,7 @@ struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
- 			    pte_t pte)
- {
- 	return __vm_normal_page(vma, addr, pte_pfn(pte), pte_special(pte),
--				pte_val(pte), PGTABLE_LEVEL_PTE);
-+				PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -810,7 +756,7 @@ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
- 				pmd_t pmd)
- {
- 	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
--				pmd_val(pmd), PGTABLE_LEVEL_PMD);
-+				PGTABLE_LEVEL_PMD);
- }
- 
- /**
-@@ -851,7 +797,7 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma,
- 		unsigned long addr, pud_t pud)
- {
- 	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
--				pud_val(pud), PGTABLE_LEVEL_PUD);
-+				PGTABLE_LEVEL_PUD);
- }
- #endif
- 
-@@ -1672,7 +1618,7 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
- 		folio_remove_rmap_ptes(folio, page, nr, vma);
- 
- 		if (unlikely(folio_mapcount(folio) < 0))
--			print_bad_pte(vma, addr, ptent, page);
-+			print_bad_pte(vma, addr, page);
- 	}
- 	if (unlikely(__tlb_remove_folio_pages(tlb, page, nr, delay_rmap))) {
- 		*force_flush = true;
-@@ -4812,7 +4758,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		} else if (softleaf_is_marker(entry)) {
- 			ret = handle_pte_marker(vmf);
- 		} else {
--			print_bad_pte(vma, vmf->address, vmf->orig_pte, NULL);
-+			print_bad_pte(vma, vmf->address, NULL);
- 			ret = VM_FAULT_SIGBUS;
- 		}
- 		goto out;
--- 
-2.43.0
-
-
+Let's see if we can stop printing that information completely, so we can avoid
+messing with this at all.
 
 -- 
 Cheers,
