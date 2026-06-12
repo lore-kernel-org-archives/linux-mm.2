@@ -4,100 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D33BCD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:24:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BACACD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:25:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94A586B0095; Fri, 12 Jun 2026 10:24:57 -0400 (EDT)
+	id E05506B0005; Fri, 12 Jun 2026 10:25:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 921D76B0096; Fri, 12 Jun 2026 10:24:57 -0400 (EDT)
+	id DB66A6B008C; Fri, 12 Jun 2026 10:25:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 837CB6B0098; Fri, 12 Jun 2026 10:24:57 -0400 (EDT)
+	id CCC206B0096; Fri, 12 Jun 2026 10:25:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FEA76B0095
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:24:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9868C02BE
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:24:56 +0000 (UTC)
-X-FDA: 84871482192.28.A83CFDA
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1102F40009
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:24:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=yN++Ar4U;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="Fw/CS40E";
-	spf=pass (imf04.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781274295;
-	b=kEVqDOLriI0aReLOMD3cqxmlkZLDf5eov+6atFVc8MoRWm9ehfh+QgLPAQhNO8ERsM3DJs
-	4fqhbTZ1wBmfEQ1yX0pjYjHMAERLj658FRNCFcSm976za2s6STk/gcq43wsoLbXX0nqWiG
-	I5/XFfg89AOsYGX+jGfwM1fQy5uunmU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=yN++Ar4U;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="Fw/CS40E";
-	spf=pass (imf04.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDA426B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:25:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F5D51C00AF
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:25:01 +0000 (UTC)
+X-FDA: 84871482402.11.BC4BA79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8AC602000D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:24:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmXV9GHE;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781274295;
+	s=arc-20220608; t=1781274299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rwVtWQfu240VJ6rqsKtn7HxHk2R31SZbP2CkXTGyVBw=;
-	b=RE3DcsmhSO4pQT7Y2UpyiBnx23k/6ceYsC4iFWzRyk6KNOiXGQZtQ1EANQ4ipRPEUOHajF
-	KTQC2aGDfSv/S1Fx0UOYD4YgOLY6Z07u1ePN5jiBnBDRBEShYQ9kTGwQ5zSuqPwDVR0RPM
-	2ZA+oXu7anbX5ATM6nvXM0+unAXQXy4=
-Date: Fri, 12 Jun 2026 16:24:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1781274291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rwVtWQfu240VJ6rqsKtn7HxHk2R31SZbP2CkXTGyVBw=;
-	b=yN++Ar4UPeFVObgPptrM588vgWIw15P7N4oXqSzIGyFQOf7x7CuItiHn6bBlXUdRbH+axN
-	cxeXNn9myH56N2/BOTWRv5I7U8xz2ahAuqxtOjs44Y3LN3KzmtViijfT3xmoFWC3fYywgC
-	kdA5dD3bEqw8r/tQcN3waQH5d3f78ixh5AeNCpzcyxsKx5QLrYM81+yA6PadxpruigX+2y
-	yMHPec+j0IT3CFCARpo6yNoAGFxdEHrOCyXSCcbTlK8229Y/u0vIU868LvZkG1isqj5X/s
-	shtQSjoIxeiw44nTiY3N4xwJaXBVysKjTYpH81IBW6iV1cOjhGLr9CIDNM9lEg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1781274291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rwVtWQfu240VJ6rqsKtn7HxHk2R31SZbP2CkXTGyVBw=;
-	b=Fw/CS40Emarj/k0CM4lLjf3k6omNTZJE0zu0chda+lYYSWq7q5sblGyvvDa0yVi5lfqMRN
-	8BnlkiroEJEQ0CAQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Andrey Smirnov <andrey.smirnov@siderolabs.com>
-Cc: pasha.tatashin@soleen.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com, Thomas Gleixner <tglx@linutronix.de>, 
-	Andrei Vagin <avagin@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_table_check: do not track special (PFN-mapped)
- PTEs
-Message-ID: <20260612162031-b4731d21-b293-4d36-8582-26394bd55a1f@linutronix.de>
-References: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
+	bh=x6Ya9QYj0XFq7gyk+7qpbpXHofjdcXC20XPazYbg+ns=;
+	b=XSWvv0cJ6aC8Ruwxc+50QLulQpdxFsDYWQROcgRqNNdP/NVsw/Hok6PrHVfYXmCuMFkuZc
+	I5J7WZAwpP3a+dz4AgbNgxH4FsP//OcdEQwZiETuaGg4IXxt8N1QdizogN97SFwounsDng
+	WXs5Y7M1lH0F8zWgeXVVNq397wAL4qA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781274299;
+	b=iLVxXdLouTmrEvPsLXkiU+pJPlHx7fBxangLtrUjC7QdVp03V6EtmTPYxhUNWt4ia5EMTw
+	Zmf0VA7amNkrgAx3DRSYStAa3YeVZzE9bvYIdwKP1XXnnD/yHtPB/nDOoht75sBI3YtfDw
+	s0Y9g/aOtpYHVnvX8FLDl6lEaAAyp3g=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BmXV9GHE;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18CD96008A;
+	Fri, 12 Jun 2026 14:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2B71F000E9;
+	Fri, 12 Jun 2026 14:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781274298;
+	bh=x6Ya9QYj0XFq7gyk+7qpbpXHofjdcXC20XPazYbg+ns=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BmXV9GHEYRrExHCEy4rRQ9NVeIIfANNm8fdnohNfi3LqhcEsqiCgBPCpAHyW83C0X
+	 JbLp6+tiWoS86I2ljesOhQIKPjMe6YoOY5uzPsym0dQKF/oDu3qK0Wc9mhURPN1F6P
+	 yh5s54niXCzItUe+nqBrj3ZqRtJtflQmClW5A/83s/G1LzqOPloSrEXa76rZ/AKp0p
+	 gv+ZJdXMakjEB86tXICzGIBZFWl+1jt3SEwFQZVt0u8thwBN3raQ0Gs9JyMAcRiPtE
+	 ZQK8DDczVgSpxWAfRYUj9KJIMpOKxFGeytO7lu6yq6Njm1X9drZ7TDlOP2b70Qqz4b
+	 GQLTptAxLJ/IQ==
+Message-ID: <9ee74fad-9426-4bab-a64c-024a3c9959b0@kernel.org>
+Date: Fri, 12 Jun 2026 16:24:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
-X-Rspamd-Queue-Id: 1102F40009
-X-Stat-Signature: f4d69173o16tbn1hkhfg85tes7384jyw
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: drop flag-conversion "optimisation"
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8AC602000D
 X-Rspam-User: 
-X-HE-Tag: 1781274294-787144
-X-HE-Meta: U2FsdGVkX18KBPKUoEZnx8icZ2R6s3ym14n46qKsr+FTkS2uXqnOJbRxHDvd/x1E9x4goIJvOubvN1Jx+JDNcmxWsb/M+bThqUjPf+PwsR2OO2KWmWAhoGHfc+P6OtpGJRgDoYhKSwhie9BZAoJ33YEZ8GNdpTDsSkSUxxMLO4OjpcItQ8MAFyF89SeGQEl2BMC8AN4SO75WZ6Mxn/g0mi7CmPodq8IKqi9Itdn7gMKyrg0v7DSAbZ4755l5RJdlCfivd/8cl1xpJpMC6VSGCNmhVzWxZ42V25n4FdHJqtDZri3WgmJG4YQ1ki0MRkM7oHgPP7tJyouIZjCwsB+D3AwrKJAHOlTB8fJW4gVdD7rfNnhC1zHwgJZak1npRUts2NWDWPOa2yC5RVUuC0T7oDXEreaWgg/lpqgLI5O+Spi0L5PaAb1Z0cfEoBqAdoaQxFQzCcsEdz0t1QT8ELgndRE7M198IvQLb9JQkm8Idu/mElKJrOZ0Z8XXPFZZ/DIFP/m1omhSmmhOKwpgvIDJpSYE4V/J7chQ3+zMLy1OuhsUNbhnJ9QIr0COHdF/8BZCUuVM7rUxRJP6bZhV1dp+HuEVQYCy9RWDAuVc3I4680aojTCyECvS8RinpoRmThJg/0vAIs3Og52zutRBzzYek+sCjWR3IGg4sbTgTGylPjt49id+syDUToNwk08nIHvFSz70BxVropDI03XY7scQ7EqlavxBycQ9QhrmlvAwow1JLKizwX3gmrN1iDbB/NWh3ZBm6N6xmplb7oxZJMptculxytjWelaQ/30WFh0IK1LpPrm8giB31O5BDCdvW/M7nT/FuQpPjhxwJyWc1cvgW6z/HWs65CizfU8ouciZrXfy09oRiGosA5XYB3otZnGocy0l2hdfAgdtLD9X5bunmW7kEWpA8V04FOR+z1cYI6MlDQM4ZryVwZDpHxv16jlLVqP1ETaZQwRUSMUzjAL
- EhaqSn0r
- hAls1jJz4sTi9njqtPXdQ5HmIAt/x3Pw1NASRyBMQ0DDgu5iHfVkK2E8sAK3zROjaBpHOQ40Wb1mG7OAFwYT/aCQH1UY+Jqt5Ol4Bn+E/Bc22loLnn/MwHCn7rTMFyWXKxnFTKFwpt8HQZMaWnRvX2WtWa6s5ZqIL+eEctbxx85F8ncOqMMIdg+8yrGMFrs6j168oEIO1jmxat0M1/Wvp7jhXD7xkfIucJkCHI0ElXKKJVbSOrWYWJJvq2KglS6h/ErQKyqh9p2oVZZp4tubXUuLfTeXUeW+EUVKDSLHj8zhyxy30hhSO4VridAjpAenkigMiWKHex+vhwB12kW3vSKPJLgoJbBS13SN8/Mns9k1GziGCEA2s4kwwYJP46bICr44vZvbLbSg15smyZ7g9z3+/Zmk6vTL8kcobfaF+dpq+gCQCNednwia7DVXdOthyo3x8feeH3qqcfIpoTBPxDhLr/1cWaZQVFpRDo9b13ZehADWHUnoNe9e1q2qSO0agkUTn5vT9T3l9+Pchg5NDkSHMUhl0Ndwl0sIZGx/GO9R06or6S6YoHyoIEbPykTBtIt4UxEpq89hzLHJ4zrP3eW5WTF05iYVWLLiiLHsYVojFZM0QbUAFbdi7U7UkJjnnzRmZ8EQaWZj5UClWe1xE1fDA8y0xVvSOHnMc2Mz4Z9IxoBFuPfauPJ/KbnPWvE8CyX8QchWhHpF1Rsm6FzUYB7Xbn7DVZniEkm+32V3lalH3n+rE0aFHxM035+Yis/YzBgmJXhtssAG3vIVd59gWtlOAbG0RE85w4tORQqJJD59Q03IyNKhXn3I6lsc5SGcJe4QP941v8qyvKGZptGpZeqzzwnIRmkqmnXjRgtpQlZO9AHQ=
+X-Stat-Signature: 37c98w9adfeg75ap6egw96pahg9d36ho
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781274299-3598
+X-HE-Meta: U2FsdGVkX1+N0PYdecIXvjU5smgqvuztlYCMvb0R6+4ngPPnduTy+jN3ekQOb9lpn59ATunL93+gePiskeGCmdwLNH8HE3ePtAMUu9Ar32vhvBIa1nWiedqjSVSl2c3ZFEfgRgUQ9CbtIWVau27MVXde55/+OVqiqYP6gZqT+eCinm3RecugeJL3wk6u9Z4yxofKiOffi1imwgiPwdksgxNDo77H1MPYY6kN95SletcnCilraOSKCgu5LsrmXlN4z98bdAJhTTh3d2m6grmYvkZ+aM4NYXWiNYT+BGw+uDPNmNg5220xqaRrW5UXDcMDIAKTt70bVAdKGWntjYrF+iJSNCoHq3R5XChfWVWnV5hOSBBsw/WGkDp0cxICxrFIgQW346nX2HZ6vyXmcM3XKZah097efcDUFxGlGftQF3HQxISOhID24hu1+yebAhNF6ylSl0X1yCotbJfvu7M1XzKClgCEKaBog2DlY7pqR4Jx6CTJLjEaQ9o19SxR/zfkzNpe0rgGftQUrFEC5ukpmwp0xeU7Rl7xe3sO67vCY1y5K0AZwCPyKce73PaS2WtVTrdCcJYsRoxvbI6mecONewJZyBf7Wt5XgsUOsqCmxb25Y4PHp6CBDnJY7QTtQpNKy965LaZihKq0mVRKnEQ0DBXejLs6a0JPxYv/cJDhA/47JNxbEu5/MFCYRaiZ99TZvwBJrjlTLEtu6/+jfx9H523AcvQm2gLMaXIQ6FOQrAVlyzvI6FiyiJW3j7drtT45fx0hI6VYjA8I9kO0vux83gBD1NZixrrIF9nuy6xvlj8coAsxH+zDeBu2YqvTl1YRZJRcZRwQO841sl4qIHiXRw/rXwkyw3jrpZAgKkx/wuRHDWh5hjGtUPIJ5PFeoUrhj9BcdLGxlD6Wyvio4mNXMYY/H3h8od3w0eaQxxZonKrL9zRuSgNcSmN4qG+sde8QuFfJ9FYmKiM0t6cWJuI
+ GYVwNCSG
+ BTkbKo1l9fCjLmo1beHNdbGTgBTv56LX9akOEh6umaborYmwa8mveCyQiAKSN1JxSVf/UxYHW9ND8JyRgMX95l2qh89HBng5FKyzXCCsBpA5yfPre+ZxOosLXwa11k9uADU4SlDvbkVJ2yptWIf/KvLno3mIWyE4Z9rac6HSIC2oaO654fApIzYQyZ1F5PnvFlP40qgWln8/fu5EkxMbHIjoQidMMUQRY2OoDLdSNkXnMCiBqh4KQjCBv2REP64eBTwNqzFNcKW9+2F0UKdfuLi35NloQM582mtnQVyYhTaog3t7J/C9/oBmLkCAH2v4BJYzckkjmuzSaUxITSHcR/gQtsLbn6krd/pXWUT2YndbQ5aisc2v4Ie2WYEWpPM4XtGqS3YdXPWtcX599BF8QUCW7/KzX7/OvXBf5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,102 +135,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 07:57:58PM +0400, Andrey Smirnov wrote:
-> The vDSO data store ("[vvar]") special mapping is created as a VM_PFNMAP
-> mapping and its pages are installed into userspace with vmf_insert_pfn(),
-> which produces special PTEs (pte_special()). On x86 and arm64 (and riscv)
-> pte_user_accessible_page() only tests the PRESENT/USER bits and does not
-> exclude special PTEs, so page_table_check accounts these PFN mappings in
-> the per-page anon/file map counters even though they are not rmap-managed
-> pages (vm_normal_page() returns NULL for them).
+On 6/12/26 16:15, Brendan Jackman wrote:
+> This code uses flag equivalences to try to optimise conversion from
+> GFP_ to ALLOC_ but there's no clear reason to believe it makes things
+> faster. Even if it gets rid of conditional branches, it just trades them
+> for a data dependency.
 > 
-> Most of these data pages live in the kernel image and are never freed, so
-> the stray accounting is invisible. The time-namespace VVAR page is the
-> exception: it is a real alloc_page() page that is released with
-> __free_page() in free_time_ns() when the last task of a time namespace
-> exits. Across the map / unmap / vdso_join_timens() zap transitions the
-> special-PTE accounting is not balanced for this page, so a non-zero
-> file_map_count survives to the free path and trips:
+> CPUs are pretty good at conditional branches. But, in my GCC x86 build
+> it doesn't look like there are any branches anyway, the compiler found
+> some conditional instruction tricks. (Caveat: This was extracted &
+> annotated by Gemini AI, I did not actually read the disasm myself)
 > 
->   kernel BUG at mm/page_table_check.c:143!
->   __page_table_check_zero+0xfb/0x130
->   __free_frozen_pages+0x52f/0x650
->   free_time_ns+0x85/0xc0
->   free_nsproxy+0x7f/0x130
->   do_exit+0x313/0xa60
->   do_group_exit+0x77/0x90
+> Old code:
 > 
-> This is reliably reproducible on x86_64 and arm64 under heavy container/CI
-> churn that rapidly creates and destroys time namespaces (CLONE_NEWTIME via
-> runc / docker-init / tini), and was independently reported by syzbot on
-> riscv. It only manifests when CONFIG_PAGE_TABLE_CHECK is active.
+>         ae50:    8b 04 24                 mov    (%rsp),%eax           # Load gfp_mask
+>         ...
+>         ae5d:    41 89 c4                 mov    %eax,%r12d
+>         ae64:    41 81 e4 20 08 00 00     and    $0x820,%r12d          # Mask both flags at once
+>         ...
+>         ae6f:    44 89 e1                 mov    %r12d,%ecx
+>         ae77:    83 c9 40                 or     $0x40,%ecx            # OR with ALLOC_CPUSET (0x40)
+>         ae7a:    89 4c 24 60              mov    %ecx,0x60(%rsp)       # Store to alloc_flags
 > 
-> Special PTEs have no struct-page rmap semantics and must never have been
-> tracked by page table check. Skip them in both the set and clear paths so
-> the counters stay balanced (always zero) for PFN-mapped pages, regardless
-> of how the architecture defines pte_user_accessible_page(). pte_special()
-> is available generically (it is a no-op returning false on architectures
-> without ARCH_HAS_PTE_SPECIAL), so this is a single, arch-independent fix.
+> New code:
 > 
-> Note that the v7.0 generic vDSO datastore rework in commit 05988dba1179
-> ("vdso/datastore: Allocate data pages dynamically") incidentally avoids
-> the problem by switching the mapping to VM_MIXEDMAP + vmf_insert_page()
-> with balanced struct-page accounting. This patch fixes the still-affected
-> VM_PFNMAP path used by 6.18.y and earlier, and additionally makes
-> page_table_check robust against any future PFN-mapped user pages.
+>   For  __GFP_HIGH  ( 0x20 ):
+>   It uses the Carry Flag (via  sbb ) to conditionally add  0x20  to the base  0x40  ( ALLOC_CPUSET ) flag:
 > 
-> Fixes: df4e817b7108 ("mm: page table check")
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> Cc: Andrei Vagin <avagin@gmail.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-> Reported-by: syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com
-> Closes: https://github.com/siderolabs/talos/issues/13496
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrey Smirnov <andrey.smirnov@siderolabs.com>
+>         ae63:    83 e0 20                 and    $0x20,%eax            # Test __GFP_HIGH
+>         ...
+>         ae6a:    83 f8 01                 cmp    $0x1,%eax             # Set carry flag if 0
+>         ae6f:    45 19 e4                 sbb    %r12d,%r12d           # %r12d = (gfp & 0x20) ? 0 : -1
+>         ae80:    41 83 e4 e0              and    $0xffffffe0,%r12d     # %r12d = (gfp & 0x20) ? 0 : -32
+>         ae87:    41 83 c4 60              add    $0x60,%r12d           # %r12d = (gfp & 0x20) ? 0x60 : 0x40
+> 
+>   For  __GFP_KSWAPD_RECLAIM  ( 0x800 ):
+>   It uses a conditional move ( cmov ) later in the function to set the  ALLOC_KSWAPD  ( 0x800 ) bit:
+> 
+>         ae72:    25 00 08 00 00           and    $0x800,%eax           # Test __GFP_KSWAPD_RECLAIM
+>         ae77:    89 44 24 30              mov    %eax,0x30(%rsp)       # Store result
+>         ...
+>         af2c:    80 cf 08                 or     $0x8,%bh              # Set ALLOC_KSWAPD (0x800) in temp reg
+>         af2f:    45 85 c9                 test   %r9d,%r9d             # Check if __GFP_KSWAPD_RECLAIM was set
+>         af32:    0f 44 d8                 cmove  %eax,%ebx             # If not, revert to flags without it
+> 
+> Testing with a modified version[0] of lib/free_pages_test.c (adding
+> printks with timing)...
+> 
+> [0] https://github.com/bjackman/aethelred/blob/2ccdc84ef087c2a631914f58e106e99e19bd3b98/page-alloc-test/page-alloc-test.c
+> 
+> Old results from a Sapphire Rapids consumer CPU:
+> 
+> [   67.157118] page_alloc_test: Testing with GFP_KERNEL
+> [   67.157122] page_alloc_test: Starting 1,000,000 allocations...
+> [   70.704446] page_alloc_test: Completed. Time: 3543002 us (Avg: 3543.00 ns per alloc+free loop)
+> [   70.704456] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+> [   70.704460] page_alloc_test: Starting 1,000,000 allocations...
+> [   70.944672] page_alloc_test: Completed. Time: 239980 us (Avg: 239.98 ns per alloc+free loop)
+> [   70.944675] page_alloc_test: Test completed
+> 
+> New results:
+> 
+> [   70.079015] page_alloc_test: Testing with GFP_KERNEL
+> [   70.079020] page_alloc_test: Starting 1,000,000 allocations...
+> [   73.669396] page_alloc_test: Completed. Time: 3586954 us (Avg: 3586.95 ns per alloc+free loop)
+> [   73.669402] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+> [   73.669405] page_alloc_test: Starting 1,000,000 allocations...
+> [   73.905084] page_alloc_test: Completed. Time: 235496 us (Avg: 235.49 ns per alloc+free loop)
+> [   73.905086] page_alloc_test: Test completed
+> 
+> Seems like a wash.
+> 
+> So, drop the flag value coupling here and let the compiler and CPU do
+> their job. Superscalar CPUs are pretty neat after all.
+
+True
+
+> (Used AI for the disasm but the rest is all manual).
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+Thanks.
+
 > ---
->  mm/page_table_check.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  mm/page_alloc.c | 14 ++++----------
+>  1 file changed, 4 insertions(+), 10 deletions(-)
 > 
-> diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-> index 4eeca782b888..ee492d5389b9 100644
-> --- a/mm/page_table_check.c
-> +++ b/mm/page_table_check.c
-> @@ -150,9 +150,16 @@ void __page_table_check_pte_clear(struct mm_struct *mm, pte_t pte)
->  	if (&init_mm == mm)
->  		return;
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ee902a468c2f5..9e1949ea13a6d 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4478,22 +4478,16 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+>  {
+>  	unsigned int alloc_flags = ALLOC_WMARK_MIN | ALLOC_CPUSET;
 >  
-> -	if (pte_user_accessible_page(pte)) {
-> +	/*
-> +	 * PFN-mapped (special) PTEs - e.g. the vDSO/time-namespace "[vvar]"
-> +	 * mapping installed via vmf_insert_pfn() - are not rmap-managed and
-> +	 * must not be tracked here. Tracking them can leave a non-zero map
-> +	 * count on a struct page that is later freed (the time namespace VVAR
-> +	 * page in free_time_ns()), tripping the BUG_ON() in
-> +	 * __page_table_check_zero().
-
-As this comment mentioning the [vvar] pages is already stale, IMO this should
-not be mentioned specifically. It is also not clear to me why this only happens
-now and where the non-zero map count comes from.
-
-> +	 */
-> +	if (pte_user_accessible_page(pte) && !pte_special(pte))
->  		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
-> -	}
->  }
->  EXPORT_SYMBOL(__page_table_check_pte_clear);
+> -	/*
+> -	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
+> -	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+> -	 * to save two branches.
+> -	 */
+> -	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_MIN_RESERVE);
+> -	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM != (__force gfp_t) ALLOC_KSWAPD);
+> -
+>  	/*
+>  	 * The caller may dip into page reserves a bit more if the caller
+>  	 * cannot run direct reclaim, or if the caller has realtime scheduling
+>  	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+>  	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
+>  	 */
+> -	alloc_flags |= (__force int)
+> -		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
+> +	if (gfp_mask & __GFP_HIGH)
+> +		alloc_flags |= ALLOC_MIN_RESERVE;
+> +	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
+> +		alloc_flags |= ALLOC_KSWAPD;
 >  
-> @@ -205,7 +212,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm, pte_t *ptep, pte_t pte,
->  
->  	for (i = 0; i < nr; i++)
->  		__page_table_check_pte_clear(mm, ptep_get(ptep + i));
-> -	if (pte_user_accessible_page(pte))
-> +	if (pte_user_accessible_page(pte) && !pte_special(pte))
->  		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
->  }
->  EXPORT_SYMBOL(__page_table_check_ptes_set);
-> -- 
-> 2.53.0
+>  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+>  		/*
 > 
+> ---
+> base-commit: ca2351ac6da277a470d4fcf122b53267e02b2716
+> change-id: 20260612-gfp-pessimisation-b258a4bb5ebd
+> 
+> Best regards,
+
 
