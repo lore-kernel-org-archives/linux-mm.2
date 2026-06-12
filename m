@@ -4,121 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE59CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62318CD98DA
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:37:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3E456B008C; Fri, 12 Jun 2026 07:32:03 -0400 (EDT)
+	id 8C3FE6B0092; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF0206B0092; Fri, 12 Jun 2026 07:32:03 -0400 (EDT)
+	id 875AA6B0093; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE126B0093; Fri, 12 Jun 2026 07:32:03 -0400 (EDT)
+	id 763C36B0095; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B5146B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:32:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6688A6B0092
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35D9F406B5
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:32:03 +0000 (UTC)
-X-FDA: 84871046526.24.E235A25
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0B1ECC0003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:32:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YnTxt42v;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf28.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7DF3120349
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:37:18 +0000 (UTC)
+X-FDA: 84871059756.24.EC94A0C
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C363140007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:37:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kPUbTjBd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781263921;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781264236;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bUqRGLNUM4V63GjZAblduHBjaNOc+aWkkWYnK1OoipA=;
-	b=L30LIrbqkRYHITi9wyEERX1IMwm6ktwMjZKU1a/WJ+n2XG8u+j5zhTyoctnOWOGOTxHoP0
-	r2qQjqNzNmrEabXMrSKjZ+Og7Kru+T+BKF8JWwz3k2nw5xQMuKJSzKyME0at7QkDJ8rQgq
-	/sQOQyLx7lfjZTv8odqfXM9VQeOtlT4=
+	bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
+	b=5CGDm7+QKEzQZ3SHpIj5U4/SR/gc2h5uC2AzRR8bd1xwjOp7ULhbjomvHmqSdPehiKLJcT
+	DKqJ+EOlq51WQrF+Bo2VdTooev/y+O8AK264gvs17rp/G/PnHMfB5uoRHBQIjVUgihI82t
+	DUyQpYS03BE4RyQJRGFzlye/QZTvifg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=YnTxt42v;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf28.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kPUbTjBd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781263921;
-	b=i5ByZDES72WCZkLH/msK8Gytkpb3tOCsaaMvhXflMruJ0qky/x/yLwh+Xrr86hvKpRfUWS
-	wv83mDNXzVndsDPgzh1exmk6fQpzNRsRprTY9WTRK5PajVTeqyd+a85lE+xemjUgOVnRrR
-	oF72IycXW9cbzRvqJJryUKYY15LPLuk=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490a78fbd7bso1001925e9.2
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:32:00 -0700 (PDT)
+	t=1781264236;
+	b=uF9bYKpkMmRB/lsFJWzU4VolC0o03h23ijk6BlzbykrQNsa9JhvLMI0pJMdNMvVF8mGoPJ
+	J4uUwbh71SrKltMGzjXRZr84N1Sl1HswJesk6skMnHqmflMFojpNowqJsgbf8irvUwM7wk
+	I1voYvePD9Scj0pQFFrennRtDI342mQ=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-491b390f9e9so1927905e9.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781263919; x=1781868719; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bUqRGLNUM4V63GjZAblduHBjaNOc+aWkkWYnK1OoipA=;
-        b=YnTxt42vQa7ViSuCcaRlILBglSsVasWEgUGtXb50HyVMPv4KFwm1RrFOVFLxTnZu72
-         NXJWmxX/ra064lto3ES68wXExCpx/Wt+CRg5jNh+u2JH+qE+MfelclKGSG8dl5PbQKnq
-         vKRLp/+VUo+0LsLglnf3PPUI6umvBDI7HzCfgsDVBOcELknJJ/OnypsT1K+vq9VhVsHt
-         Aj+ms/lPvubs9U1VBfV64xXxpnrweBDM0YvBNPJH9q4rF5ChacndQxD4sQ/VNE4E4VLb
-         udbyDZebKR+PIeMAKN8USErStbgQDue40NxuJhp9gLNV01Vm73YY18xHhwqek8/TWZ2X
-         VYtA==
+        d=gmail.com; s=20251104; t=1781264235; x=1781869035; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
+        b=kPUbTjBd75KchMOhamSWqZJ9c2A6yBEENLy54vQ/FTB3jTmYnjA4TbMe2eMTfKRViB
+         548v7ypfPPjqJnHGSwXA2XE3KD0uUbyoUc1NaOJTQxZyLFTHzTG84HYIkcoVQF8n1cV5
+         QpVB3/Xm+jLl33wKUqBy3KRdWlcrzF9F6m59LXe3X+68i/I3KDBcP8HcYC5Gqu2dmVtQ
+         A6zWCrn/s6lS5PxUhRgXvuCsEKrBBfxqLjfXlbm9m7StrH8AVgOEZQ52LM0raWf+8IfH
+         7YhvLSf8cHPNBQHPDmNTQV0RlLFWZ25uhVa+hTjIHYEoCi/YlQC46phUmm55GfOEwIXO
+         fwqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781263919; x=1781868719;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bUqRGLNUM4V63GjZAblduHBjaNOc+aWkkWYnK1OoipA=;
-        b=ew3/UC3/XxI2074BvSqFxjf1cKjuX1JUOeQX45PqDRX9XSI1YF+AEir0k+QDy4+7OX
-         bRvOicmnQgEKSCCIGRd4GD6mIOJPxxTddxLEaWfu2kWUOkSRy+0asRIRnQSLNl0BJCoK
-         oOBxhEk8WYB39wm3XanaOexGuzpN1w5MUOXtMUYGsyYmPnd/4ts+dv4OuMsh/HD3jRzZ
-         P6Ly1Yz9KUH+rVMxEoJOAd6eF1Tr5G6wOepUFIuHSS6uCgg6CU8rHT7NYUQvoDh1XeNN
-         T2HBIx4TWnf4+3B3A8jrHcJq+oQFd1PKYlmxHAa+UjZjVa/8xujUYWa3r8Iv0sV9hp0w
-         zZAw==
-X-Forwarded-Encrypted: i=1; AFNElJ/RGFfq8mldjaRO85q1Cz4gowF80CuCLzxViuJRk0UoqU9mKMyWDSXdcm8SO+Mr6EX0FhMtKC5B6A==@kvack.org
-X-Gm-Message-State: AOJu0YxJ0+hrGodD6wKjD2CxdVKfDqJKegqUYx+eEWVzCg3HX5+mLZ7j
-	ngl0jr+eXWgMZzqzs9SLGsQI06SCMBIeuNg2MNRppUenVeRQhLujRN/AAykFa5+YkSU=
-X-Gm-Gg: Acq92OEKpBYeZ0QXQbP8Tp1ZiFX83YY3HuSDTbKsVCz7/90Es1ONYPqW/dcLHnQznyT
-	p/7IGnMiOHacPn4iAg3NlKTBtCmb7DXpZTN8AUzhj36KjiKtEN3k1sXYdEvCAZW8sT5wT9wgcva
-	26UfEKEzpxw7AjiVeE7ipmD/5uiTKgHIisNMdMJIukVxoTmaQnIabwrJcLhyYV+b6BICyurfEE8
-	lyjTCiLTg24tuZ9eyVH1RugmO89qYw7OMLcjQcSGquMgLaDogkiHvaI6MfTO3qs+acY3NZ66eEI
-	SYKsjmE+kauaqupfn4fWWtgpZ87mT4JdUKsLYPEAoYtmVCTGVODFk69Bs8vAchhMG/4VriEAOmb
-	3kxq77QI3x6gc9pFtjR+apWRT3ylnWe0wKno1CDJcpJ4Gzyrj4ucD7ASPUuTm1NiBGnZiZmziOU
-	XnlXg8MJtwpUp0PvJRDxeKIzwoI8ouNDTYYAnT1c4vq0YMemfIkQVgE1H3VD95FRkQ7VvXpWSw+
-	S0jhtSdOdER3L7U
-X-Received: by 2002:a05:600c:4745:b0:488:7e7b:dbc2 with SMTP id 5b1f17b1804b1-490ec4fd3e4mr15690515e9.3.1781263919318;
-        Fri, 12 Jun 2026 04:31:59 -0700 (PDT)
-Received: from mordecai (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f20e77asm5427094f8f.0.2026.06.12.04.31.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 04:31:58 -0700 (PDT)
-Date: Fri, 12 Jun 2026 13:31:55 +0200
-From: Petr Tesarik <ptesarik@suse.com>
-To: "Brendan Jackman" <brendan.jackman@linux.dev>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, <linux-mm@kvack.org>, "Brendan Jackman"
- <jackmanb@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/1] mm: reduce NODE_RECLAIM_xxx and change to enum
-Message-ID: <20260612133155.71958e80@mordecai>
-In-Reply-To: <DJ6ZMH9VU0BE.6Q8EHJIL65DW@linux.dev>
-References: <20260612085052.59291-1-ptesarik@suse.com>
-	<DJ6ZMH9VU0BE.6Q8EHJIL65DW@linux.dev>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-suse-linux-gnu)
+        d=1e100.net; s=20251104; t=1781264235; x=1781869035;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
+        b=ZZeH7O6vDg7z3HwcFtZ8XyahHdWeJW6UrImDQmJ06dEPjzTtt+Ik6CIBoEh47Ly6US
+         C6c6QJ+KJK3AbJhud9cYzPeOgBPR0mIBpDYujd8iQWES0RlzmvwHWLXYvvC7bmqTjbfi
+         GxZiZLUUbxxabojLu3unDh10j8BLeCvIvkFNfN4TqmM7TLv8MEApOzwvBH1nhGz1xLUk
+         Me30eufSdfb7jCjsz33KVGX2KyhUMSKZSDJqU4mTMa1awEYSrTHTRkmn8oCjgoIL4KDl
+         7Q3tblhRtDYdOy8jQ5Eta/cOddcnYsLan7/1ZiOfRxpGSky37usLsJSLPWxIieiuvDaj
+         6sGw==
+X-Forwarded-Encrypted: i=1; AFNElJ++rj0Vdp+BftnJZEOR6I/aIeGBTm3/8vlS3EZXbbDZFqfuBCOhDHcZcbX+kLETQDpSB8K3/qa1Lg==@kvack.org
+X-Gm-Message-State: AOJu0Yz4GBKHkiOxQRjFwSgZ7uQZapo59DuI+nMVobfVNLqWv36EBdKa
+	L46FypD3LiRRyo/4VBG8Fio7xv7zvHhjiefphp8e/1uf7YJxlINiYojx
+X-Gm-Gg: Acq92OH/+O8+zXX573qkgZUtGHGvfXYFd9gbMs2HfGqw0Qsj0nECoSXDoT8UOETZWbP
+	OeWP9HQkTQR7Go0ZuIkmYmpJNjgb+KsUPtlOKm2lrVc5KbOOru0SO3uMrXkCQRmbejyvT9gJ8UD
+	vXZEG4nVfcgbsnkZqQu3y9JNTk/N/qlbGNhjyT4jmaWklu6Fi8wD4B6EvaTRZTE4ciq3INn+2MG
+	PN0Da3dSt7CfhmXMuFNTGQmR2SomR19t4IcNhDi2TH2gE4CEl9p39r7C6R34yj9fEk8RK98LFLi
+	akTz3BhWhLvpBwz471n7Zs5A9C44wumHQiqypwvgC3FyXgcAfBAI7Ufzj/xnlOuHXaZd3cIlBwF
+	Qqn69vuErOGplBsrf0/FN72pHNtQNyowhJFTbdDG+q1XDO3gOXOFymJn2dtFkEPFPHwCSghz3qc
+	1E5kPpzD4VpnCkPKyDV50rr4m7f7hBxe2lopzets6KcL2c4Rj0TwmIuAEXay1GjIttIOAkDWau6
+	Xvjp28A8MuB4mak+9k=
+X-Received: by 2002:a05:600c:8486:b0:490:a298:acf7 with SMTP id 5b1f17b1804b1-490ec4ee700mr36638215e9.17.1781264235050;
+        Fri, 12 Jun 2026 04:37:15 -0700 (PDT)
+Received: from [10.128.10.215] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2637ccsm4885808f8f.6.2026.06.12.04.37.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jun 2026 04:37:14 -0700 (PDT)
+Message-ID: <2e528372-aba4-4621-a9a3-7ce23571ef37@gmail.com>
+Date: Fri, 12 Jun 2026 12:37:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 01/14] kcov: add per-task dataflow tracking for
+ function arguments/return values
+To: Yunseong Kim <yunseong.kim@est.tech>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>,
+ Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ llvm@lists.linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ Yeoreum Yun <yeoreum.yun@arm.com>
+References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
+ <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: gb4ps1ci7qk4bb888qdcuzemd7d95u7r
-X-Rspamd-Queue-Id: 0B1ECC0003
-X-HE-Tag: 1781263920-681803
-X-HE-Meta: U2FsdGVkX1/Jif5WecHkB7GhQJ1Fzc008UW4zDqT0+6QnP8Akem17fqEkIfk8wEr8NtiS0gnOGBsfE0hfXHVtBRZK4qs8Kej/RQHHWsbpxZ7x0jPTuxQ30L8uhHLUAvlEbbQMvUapM9SKorxz+UyqHbHrdFfRPY5VRpwrtEpqr7k+4V03qgAEZj65W89Oe3OjTu8PVEcQLdIi3o+RAGFejol7tmOXqHZCWtz8pMRBwRdD+M3rx4Kqf8p3njQRIsNWg/WP/LoIzcurj9VaDhiTLJWj9Lo+B3L/LeZIj8vptZoDBX7VzuNJWwfczpuT8IbHJ45nXyq5hHiGoK1aTPtATd/VsVtqJa6RsumT25xS7mx2ooZi6Hh/O7pdtgJdmdlNXYPIBYh/bxZxCFUc74gcgLqVlAgl+EnndtR2Ixt6x6rByXjdtHRSrPNWzjFg63qejEaXQBxhQM0dICJP8HAZay2tFo9SxpKdP0n+kNr7MzLODxb/LMUP8FbZsORbq7IKB/ZuZGM2Ja9sKGAPi9nfhEuaXiMYJQQ/3JEBoihQvGUg7gDfZ/ymbvTUK4RB9FOhPqZpEmqa+tSUmKt08xQU5Ir4jObPD7VF/wavVAFbQ4RfI/HkCcv+77469arB912bSb6S4xEaiX3gdiKEuZ23ErG9ATaA+UH8NcZODcMFZDHP/9t0uuIZ9H6QEhJxMq6jDB533Ma0dR2+hjcUtv1p+wX6oCESYZAe0dw3r8wF/PUw7h1gvm23Ki2tcC4MxtuHnH4e0768vr2yrP6R2ewHUwYL5hdua+n+dzBTIWCjFKOvx07SJkDYsAoQOaZa6xxDCPaHIOi+Fl2Hrwr/+e5755B61nhvXtET8NnGa1pUVbfhiFwMvmhtXGqnu/JWWsBNCY0HKZRpOk/W7sEDmNBb3G95/2qax9XdFxkqgI0PIliCuLavROgjgJlQsLcmLVfAHfg39JmjqZeRsS6IBN
- uTr63CRL
- J9Nld3g7Z+Mb4OVqh0jW56RESZLaFUDiC7eWznB1ckrHoLYXPtEKI12V5PRhq8W5Pha0aGt1kePCNrBHpq/K+69wmoA/jheOzOQaZAfecUKvfJXuGkKnScYztk+JXP7kAtkQeYVbMvgSbxYNkXOObTfpM1oHXvHpG+AWnwBI134d/dQz72/AgTkTaNpqYoJORLx7IOayW1W5Iey+pPuI9grkfuVTvVzLte35wx/U0MrLUIbPVaWGz9V6YkcsRO3U2Kz9vj2Fp7ELZwaVbb3GeG0YtdjleLHgMuJDhfBCGQG3zUkKFApglRVTNd790MH38fzGLD9ojWHk3SPL0y4fVdXLIUTGCTwsqB2qH6JQEgiY1i7BTiqwnC6DVUQLzZoR0yUAthYQ4Hm3vaLk=
+X-Stat-Signature: ipth9j13f5jtrkcb4i4pwm8f1f7d7u68
+X-Rspamd-Queue-Id: C363140007
+X-HE-Tag: 1781264236-310140
+X-HE-Meta: U2FsdGVkX1+yl3uwruOQIW3JdkVPNwIhQ1krz/dbsjsMIiZ9yC5rNdv7K3Rfjb52UPrRJ2tBQKN462qzTx4Vv10r4bEicb4GC0x39/+qYzswsAtiUmPD+gUGFQK/NTyc4CPCA10CP/mMNZdsIAu6M8MUgpdnk6i3ShPmlfmhsPHxdtWHenbQeQ/Ox9cYxqEa6v0IvHjtV42DGx4On+wnUR4ks68A8FkLrB+y2qc+hyXPkf+jkswIUwT1NDOhPOylo9JoMh+oYqsALVdT0aAPOCeO1XX4UmC40mIx1qsEQKGZAl523OwYeA+c6me6sSVadKcVMZq0pW2JZk88wj8+GU95iSVNkjlJM/VGfGQfwW/YhAQfBoEy+SMplWEu9W063PcguHzYJOxpTBWEKWDICoOpFh6NE5kYDnDJZ39PDThjx/VdwttSDhQ+T1c/+RnWoYuWP0XEzhLJEJ6pzsia6t3TFMsXhdI3NfKm9k0/Ifp+WvHFUPV6jOMV9llXizfQXklBq7ocfhOeGtOk0vb9656cDVv7LW8P1dxzfxZXPksiu/VhIZWG7ba4YT78O1ILeLJ4v9d4R410Brk4C1LgQCPLojTuqJ5p9vhd+0EAvWP4WvVOrbSWcVsZ8Va3SvNPIromrL83C9U3VDmjbY4I90hQeea9iVZfVRt70ebSZfaJyADbbHt9kmaAdw/JmLO1l0Th0JTM1jAhwRC12JompOgFZs2gwqQuDEOApI4T1XE1xNW7ngEv7gwlGbkVNrOneOmO7K+HslPPCguMBf9kBaPKWoqioKkIh1/6xh0Co0klpgG9JZ1aGUECIGmMqm573v7XNDVNaO959/VDRIdUX7XwFAJ/piY9f2hvEAE8a4zVou5ywS19MPlyYAqzrokTf5EvG6f44XjqYGkOjGAqkwWN97jfwExvkbkz1P4i9YMXNWWWHB17XBIGjvTcRReJF2WQC0dEKmsOcZlC2Dj
+ 133cZGOP
+ uyw6ZsRGEsIpnpCo4v+33DbnBshrLFXrS3mavJbN3D4GO/gARqHY4OzpZ22Sdz5t6OuuaNa5+r2Rxf/WzkaP+mc7IAMcLaVIkTLvVYr7wG/j4g9+Y6wlu1HIounbAFppflrXxhG/dVUVJpHVu7bje71InbJbdpiB03NOnrJKp9MywJSyhy+o2KSNa8UWh0HM2nmzSmPDEWtqbKHRtvJvc9Ic4xPuc9u2Kkcc67Dl6s1etEUgunzNFxRR6dNFx9X0lmYR0OhtQRR0bGYgQ2f/M02cgsEH45JEm/gmgHMjJVBzOUMy0mrAVtRpG8ZcxcblruTlkrT7S9xwBIHdL4PywWVEXC6hVMeGklLPF3umC7h/rcJpYTSLJZc4Dt8JM8AnoS7NMYHyR53/0VagwJQe6AeG+Gk+1Oen7uhmDaL2vGBMg6oD96rtBPiGbkWyXjM3VHyhJFP+CeELweqvQ7GUKwl9e8z7tPY/4GAUUdMP6UmMZ6yqrIao1nRnsigfFMhudS+bjLD+gVpg6cX51hrduE/MAKEHM8Ve36fpTu0sh2Nhn+sg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,180 +150,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 10:10:20 +0000
-"Brendan Jackman" <brendan.jackman@linux.dev> wrote:
+On 6/11/26 17:21, Yunseong Kim wrote:
+> +config KCOV_DATAFLOW_RET
+> +	bool "Enable KCOV dataflow: return value capture"
+> +	depends on KCOV
+> +	depends on DEBUG_INFO
+> +	depends on $(cc-option,-fsanitize-coverage=trace-ret)
+> +	help
+> +	  Captures function return values via /sys/kernel/debug/kcov_dataflow.
+> +	  Struct pointer returns are auto-expanded using compiler DebugInfo
+> +	  metadata, recording individual field values at runtime.
+> +	  Enable per-module with: KCOV_DATAFLOW_file.o := y in the Makefile.
+> +	  Requires clang with -fsanitize-coverage=trace-ret support.
+> +
+> +config KCOV_DATAFLOW_NO_INLINE
+> +	bool "Disable inlining for dataflow-instrumented files"
+> +	default n
+In Kconfig, when you don't specify any default explicitly, it's
+implicitly 'default n'.
 
-> On Fri Jun 12, 2026 at 8:50 AM UTC, Petr Tesarik wrote:
-> > Change node_reclaim() to return an enum indicating whether any
-> > pages have been reclaimed, because that's all the information
-> > needed by the only caller, get_page_from_freelist().
-> >
-> > This leads to the following translation of the old macro
-> > identifiers to the new enum values:
-> >
-> > - NODE_RECLAIM_NOSCAN  -> NODE_RECLAIM_NONE
-> > - NODE_RECLAIM_FULL    -> NODE_RECLAIM_NONE
-> > - NODE_RECLAIM_SOME    -> NODE_RECLAIM_SUCCESS
-> > - NODE_RECLAIM_SUCCESS -> NODE_RECLAIM_SUCCESS
-> >
-> > Originally, I was looking for occurences of NODE_RECLAIM_SOME
-> > and NODE_RECLAIM_SUCCESS, but I couldn't find any. That's because
-> > they are typecast from the result of a relational operator. This
-> > seemed a bit fragile, so I dug a bit deeper and came up with this
-> > proposed cleanup.
-> >
-> > Signed-off-by: Petr Tesarik <ptesarik@suse.com>
-> >
-> > --
-> >
-> > Changes from v1:
-> > - use an enum instead of a bool
-> > ---
-> >  mm/internal.h   | 17 +++++++++--------
-> >  mm/page_alloc.c | 19 ++++---------------
-> >  mm/vmscan.c     | 18 +++++++++---------
-> >  3 files changed, 22 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 181e79f1d6a20..89b0ea28051c1 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -1373,23 +1373,24 @@ static inline void mminit_verify_zonelist(void)
-> >  }
-> >  #endif /* CONFIG_DEBUG_MEMORY_INIT */
-> >  
-> > -#define NODE_RECLAIM_NOSCAN	-2
-> > -#define NODE_RECLAIM_FULL	-1
-> > -#define NODE_RECLAIM_SOME	0
-> > -#define NODE_RECLAIM_SUCCESS	1
-> > +enum node_reclaim {
-> > +	NODE_RECLAIM_NONE,
-> > +	NODE_RECLAIM_SUCCESS,
-> > +};
-> >  
-> >  #ifdef CONFIG_NUMA
-> >  extern int node_reclaim_mode;
-> >  
-> > -extern int node_reclaim(struct pglist_data *, gfp_t, unsigned int);
-> > +extern enum node_reclaim node_reclaim(struct pglist_data *pgdat,
-> > +				      gfp_t gfp_mask, unsigned int order);
-> >  extern int find_next_best_node(int node, nodemask_t *used_node_mask);
-> >  #else
-> >  #define node_reclaim_mode 0
-> >  
-> > -static inline int node_reclaim(struct pglist_data *pgdat, gfp_t mask,
-> > -				unsigned int order)
-> > +static inline enum node_reclaim node_reclaim(struct pglist_data *pgdat,
-> > +					     gfp_t mask, unsigned int order)
-> >  {
-> > -	return NODE_RECLAIM_NOSCAN;
-> > +	return NODE_RECLAIM_NONE;
-> >  }
-> >  static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
-> >  {
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index f7db8f049bd23..83a1caac5ac9c 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -3899,8 +3899,6 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
-> >  		if (!zone_watermark_fast(zone, order, mark,
-> >  				       ac->highest_zoneidx, alloc_flags,
-> >  				       gfp_mask)) {
-> > -			int ret;
-> > -
-> >  			if (cond_accept_memory(zone, order, alloc_flags))
-> >  				goto try_this_zone;
-> >  
-> > @@ -3921,22 +3919,13 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
-> >  			    !zone_allows_reclaim(zonelist_zone(ac->preferred_zoneref), zone))
-> >  				continue;
-> >  
-> > -			ret = node_reclaim(zone->zone_pgdat, gfp_mask, order);
-> > -			switch (ret) {
-> > -			case NODE_RECLAIM_NOSCAN:
-> > -				/* did not scan */
-> > -				continue;
-> > -			case NODE_RECLAIM_FULL:
-> > -				/* scanned but unreclaimable */
-> > +			if (node_reclaim(zone->zone_pgdat, gfp_mask, order) == NODE_RECLAIM_NONE)
-> >  				continue;
-> > -			default:
-> > -				/* did we reclaim enough */
-> > -				if (zone_watermark_ok(zone, order, mark,
-> > -					ac->highest_zoneidx, alloc_flags))
-> > -					goto try_this_zone;
-> >  
-> > +			/* did we reclaim enough */
-> > +			if (!zone_watermark_ok(zone, order, mark,
-> > +					       ac->highest_zoneidx, alloc_flags))
-> >  				continue;
-> > -			}
-> >  		}
-> >  
-> >  try_this_zone:
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 3f3ff25e561ac..d5bd55620ee9a 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -7786,9 +7786,9 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
-> >  	return sc->nr_reclaimed;
-> >  }
-> >  
-> > -int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
-> > +enum node_reclaim node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
-> >  {
-> > -	int ret;
-> > +	unsigned long nr_reclaimed;
-> >  	/* Minimum pages needed in order to stay on node */
-> >  	const unsigned long nr_pages = 1 << order;
-> >  	struct scan_control sc = {
-> > @@ -7815,13 +7815,13 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
-> >  	if (node_pagecache_reclaimable(pgdat) <= pgdat->min_unmapped_pages &&
-> >  	    node_page_state_pages(pgdat, NR_SLAB_RECLAIMABLE_B) <=
-> >  	    pgdat->min_slab_pages)
-> > -		return NODE_RECLAIM_FULL;
-> > +		return NODE_RECLAIM_NONE;
-> >  
-> >  	/*
-> >  	 * Do not scan if the allocation should not be delayed.
-> >  	 */
-> >  	if (!gfpflags_allow_blocking(gfp_mask) || (current->flags & PF_MEMALLOC))
-> > -		return NODE_RECLAIM_NOSCAN;
-> > +		return NODE_RECLAIM_NONE;
-> >  
-> >  	/*
-> >  	 * Only run node reclaim on the local node or on nodes that do not
-> > @@ -7830,20 +7830,20 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
-> >  	 * as wide as possible.
-> >  	 */
-> >  	if (node_state(pgdat->node_id, N_CPU) && pgdat->node_id != numa_node_id())
-> > -		return NODE_RECLAIM_NOSCAN;
-> > +		return NODE_RECLAIM_NONE;
-> >  
-> >  	if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED, &pgdat->flags))
-> > -		return NODE_RECLAIM_NOSCAN;
-> > +		return NODE_RECLAIM_NONE;
-> >  
-> > -	ret = __node_reclaim(pgdat, gfp_mask, nr_pages, &sc) >= nr_pages;
-> > +	nr_reclaimed = __node_reclaim(pgdat, gfp_mask, nr_pages, &sc);
-> >  	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
-> >  
-> > -	if (ret)
-> > +	if (nr_reclaimed >= nr_pages)
-> >  		count_vm_event(PGSCAN_ZONE_RECLAIM_SUCCESS);
-> >  	else
-> >  		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
-> >  
-> > -	return ret;
-> > +	return NODE_RECLAIM_SUCCESS;  
-> 
-> Should that be returning NODE_RECLAIM_NONE when !ret?
+I think either style (implicit or explicit) is fine and both are used
+throughout the kernel, but is there any reason to make it explicit only
+for KCOV_DATAFLOW_NO_INLINE, and implicit for the others?
 
-No. That's the thing. Before my patch, the return value here was either
-NODE_RECLAIM_SUCCESS (when at least nr_pages were reclaimed), or
-NODE_RECLAIM_SOME (if less than nr_pages were reclaimed), but the caller
-makes no distinction, handling both cases in the default label of a
-switch statement.
-
-Petr T
+- Julian Braha
 
