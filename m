@@ -4,106 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67E6CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BFCACD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:52:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9DF26B009B; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
+	id 9CB736B009D; Fri, 12 Jun 2026 01:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4F416B009D; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
+	id 9558A6B00A1; Fri, 12 Jun 2026 01:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64826B00A0; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
+	id 81D576B00A2; Fri, 12 Jun 2026 01:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 991E16B009B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C633EA037D
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:50:55 +0000 (UTC)
-X-FDA: 84870186870.28.FC75832
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 835D3C0002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:50:49 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=iNl0Typ7;
-	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781243453;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1906B009D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:52:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F17981A060C
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:52:36 +0000 (UTC)
+X-FDA: 84870191112.05.5B46165
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D91868000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:52:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j3hebN37;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781243555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UXsDAguAyBgeg3+F4QvJ8USj9F0HBLvBTFNZsh/PP0k=;
-	b=rkzlIOKKuqDQK0JhOPCsolDDj/iPxMxxh37R02Af/vRq0NDyyl1p4WVT2Bl1X0ya9xbImx
-	oUU6m+UQzx1G40Txa1ojaJzdPs2hN2pOfnEb1jGiQJDU1UXTkW+c/KQm7NhMAcmamNoKrt
-	nCANFcv3WA/wz6b9K0shGxOKZsiTYGE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781243453;
-	b=j9LQQFA/Rs+0XvNKjrry0RSk7TceaNIJ5XMy2bTwVnjrPMXsIMT2PYN/S/dFvuPxMmdkj5
-	/zVVh7+yrcQKFN61w+51UX6yOu8in1yBIhr1CJMy7hvmPde9OYRQ6TY+uxzl09V3BmZr8v
-	ISIAkFxbDLY4LHZ0L69EdrW1ZeNKVPw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=iNl0Typ7;
-	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781243436;
-	bh=UXsDAguAyBgeg3+F4QvJ8USj9F0HBLvBTFNZsh/PP0k=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=iNl0Typ7LhI1PZKVYeMmiJJi25HdKjmIVbfh/oCLt4foItgh9YIpdDShed2R2fx9L
-	 EfWSozOLh/p2FUKjfRjeJq6MvBMbQT4Jig+S6AYE+5iCu+RqfSyeHIdJsh6Szh9dGB
-	 4KSiKLOSmcxVPMZWgggJnGW+7gDzPUJSS7G82iCA=
-X-QQ-mid: zesmtpgz8t1781243421tac6764af
-X-QQ-Originating-IP: FApgVDL1b1jWqlq8N4ADiOegDmeSMLv93XAxv6OoqqA=
-Received: from Shurima ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 12 Jun 2026 13:50:19 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9411472435998616496
-EX-QQ-RecipientCnt: 5
-From: Yichong Chen <chenyichong@uniontech.com>
-To: vishal.moola@gmail.com
-Cc: akpm@linux-foundation.org,
-	chenyichong@uniontech.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3] tools/mm/page_owner_sort: free per-record allocations
-Date: Fri, 12 Jun 2026 13:50:17 +0800
-Message-ID: <610C3A89A09303F8+20260612055017.632263-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GS6ChxPYregKQzQhinCjFXuklagH+TzXqSce0NU3YLc=;
+	b=hl7tHoO45f76hBKG9I146AxPALEU7o5jigmW0WmUtMlozBGZ5PQjkPB8r4aUbfc8zNV1P1
+	OhQN+0pJhg7Ivgp9T/5A0e7vEy9ZdZ6L90yvp22JHtcKSbtllgLlLrNrWGJNarWCFuzWmS
+	pKjyQrAcx82IhL0hfZjHdU2NssVlSYs=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j3hebN37;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781243555;
+	b=b1Rq9alOPq0mbXeO+UQl5pK14vklfXyheFtIhGvwN4rKMB0CPehDwzILNxHvuw9Flw/R2k
+	WICvgAy71tjIthnN0P2OrNd4QvDt/Uqtx6QF0B6dh12BGlwJywvNLwbswCe4znY3X1QeVL
+	46pX2Ji8WpnBWiTxv8op12OdDO3A4l4=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aa6b0f369fso39587e87.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 22:52:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781243553; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FMo4hN9HOntQ3HvgaE9aEMoUUWwft+MRSudh91BFjdkWzhd/C7ZMJGIRNR+DiiEiol
+         17w6c5F9y+pC0/YJTk480KUQYZnyCsxIhD64cDifeI3g/45YgAYRzvq2oZVh7ZwYaRVz
+         orRK+Kceo2uEXe3Ht9iMfYF0z1fK/8HOrypW9cX9Kwn7pPl9IylTVlxtj/LhZ5XAkFCl
+         yryCPtkC9goYJ59P3qHjZjdFkwUgspB3t2j8pg/fKWGbT092Rz4IriyQbpgAAYVTBxID
+         eCJ8oXdl8fvPGoPvXuY3v4lZ4yjC4rlp3WItJ8ii04uoe5Q2FCbBnIFhN9xFWqmR9HZo
+         7Odg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GS6ChxPYregKQzQhinCjFXuklagH+TzXqSce0NU3YLc=;
+        fh=xheJFUubd0iFVgerEFLts2nB6Gz1XMmLTRyb2v5w/F0=;
+        b=NSrSRaBnLrGBn/HPVVCqcaEllZV9oeiNRBLpOTR66QsGzS28IYTOfu9NZiW3N7t7OR
+         UafJHhShcuhynhOZjbAjlPdfSeco3uHo6UUphRMILt7mW4wBHNMxr2fR5kkocl978d0i
+         iN7F8DtXJoS7HOd7HfMyLauGXDbnr0d729G7PUgPB4C7wN94pc9pAduMrZ1zDAvVk7bo
+         bqEZuVPIsLQCG5Tn7LQohEHu/RdR2YWk2bzvZmsf3hViHJkPReV3b5gKqOMQn39RqW3k
+         RCL9EiPcJAjuNbj9t7TfzekpncdiHupu0M77+J8lGnTdrtbISvJgelkq86/VxQPlD5tO
+         PyhQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781243553; x=1781848353; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GS6ChxPYregKQzQhinCjFXuklagH+TzXqSce0NU3YLc=;
+        b=j3hebN37yRQnC7RNjvWUFzqMmWpKTheCIF38wDRfSvJMXQF2WV+UVWXFjbEekB3UyI
+         VMaUuHel2vWLczlFvv2tH4Yp8NocLEUSvYRTfma3t4RPJ52Z3P033NWe8ReVlVvgP8Cb
+         lnRbqJFLCPVOrB4pHbgim73GVClWweej76+wt7IglgUE9wwEl8eQnsjoFnXz0auzhbYK
+         sxePEQWFjtPWrS23iBuqkUzQv5yRet/N5lY14WiIyUGxjbo8d0hmweF0eln//ZWzWWFV
+         8ypGC04Lu4wNaQTZR0RYtNcJYExlS7PP4hbSJhHtYH1YR1/vcT784tG64CXJzLDKJRR5
+         tFsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781243553; x=1781848353;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GS6ChxPYregKQzQhinCjFXuklagH+TzXqSce0NU3YLc=;
+        b=pdHOpytJGrbuT8H4lVV605ZLgiliCesVFcwBZIpwKwohLpsByHPFZBMnO+sBmrGQIg
+         4S89BwZEYSdAz61Uqekzp/Y8eI8MJpSOhvSkbS1RQG7a8u0OBYwZXx/ZbhOb8MtH3hQ3
+         XPhLKTlVwjl//VmUqBwnQ1/MS/TT0DTvp4kJ9kdQUJM9dWAuCPAwvWGe/y77qXw4a7kq
+         GflZy3UdVicy2t6DGLSXGP6tOQootQ7sJOlDz71M9hfCJp5nW3NpyWrVGJu/Fu1v5bwE
+         NMGkYmIHWyF9saCAOEJHdusrDBVaZzG+FCoQDjymRZmZ5RuVEB38CBFVjpPQ05HwSj0W
+         VD8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/fe5UfIh7mTou9sfR2Uc3JB70Z+Svb22sFDf/O1rtkh9Pw00jKquZkzypHioityYW1BCgNBC96Jw==@kvack.org
+X-Gm-Message-State: AOJu0Yy4RfMwSWqGbTNtZb8IlNdvdPF9HgeVpAdUoeAdCuQmuRRUZtdt
+	KWNvSZA9CIrxDzqFwDZP/jEtGD8XNnSvBWZ3VV1LXEMOuqg1h6s7TKgJBoeU+JTXAGQxq8sU83r
+	gEUcctvkWvAAKNLFQtWbCPO9FgldTEug=
+X-Gm-Gg: Acq92OG1u3OTRkufv8Jwoe+WdC97QsMU8LbZZXfOXr/5SrTHOhlBJ3q3vqPBGwY0aRH
+	wgDeOJpNDOiRDOuzD4yeSRh0OOnqzfNkwLKhTJsP6Aw7tT92nGEChBx6NL2t8BxjO3hxwDygKCD
+	yaAKR9EDEzGYZaHrHgEEVds7wHZo3LQ9emWACAMKSjsMwXb4/18x3vdTsV90t1TW+GetSdruVEV
+	w7EAPYgsWQYOC7Bvd/49s0GokEwN+gJGkWSdu7ht/BjnzK+pQLhcSZigNIzE/PKO+DXueHAeVqh
+	u9fxnAdVY+cQCOc+gTM=
+X-Received: by 2002:a2e:a90d:0:b0:393:c17d:9cfa with SMTP id
+ 38308e7fff4ca-3992b25e16emr1604331fa.5.1781243552481; Thu, 11 Jun 2026
+ 22:52:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MwQdfXoP8nuz5tnB7GNZQmaGclwCxYPJzWaEza+Rc9zFLegehe0bsHo7
-	WsyJULohh4e3lpkgPUpsPcU5Z3VGGIHz60dRJJs4FVhckMwWK+YgdTRGeDTdcoXTHk5tEGW
-	QIc5ONqxoChacuK4N7OHyLm/RByLHViNdRTSW3buzswUGaYMvAK7Uq2/HJ0sQaEMvd7MY1r
-	rmg5YIoUnThpQsVATvejW3Tp/LFlpiPz7C/uFjyQJB/9yOChzVi34/5kaGC+nHYGYd2ifuG
-	EMY3v8AzovjQOnSe1dwvRdvsHf7YrYaqqcX5AzM+ddbMUspJJYNgt1DrSXgsSb+5cYVbgLe
-	3t0ojJuqR+1uFgYC10wIW1eT7WG0TExycgWWRmh6fn4qBp33PyADvydxMtHfASOoz/9CEG+
-	sIY8Fl8YyJDk5e8LGNP+TqyxEUeWLX4MYApiH0IMPgwjGZs1OtEejjXO42lEx5S1oaJ7Tnw
-	0P7Jx+1R6eRTw3RD2R+81P9YRcxuxft5kyHDCRD18VUTjrLj15g6zh7nhYxg6SwyhbknIK+
-	hNcMnjWpmUZStd0oImZfcXqUnSafSaEvJUPX0DHdBmCyzGkavXdGO1aUSDjvLmPkrC4/sjr
-	ZJ4qTPvG0xOc9F49DlymenQfMYV4A7HKF0nsmXvOoW8mookJpkQgGQb2WByrUaKL86ECuNr
-	73hn4GYiZllchJoND2936B97TihI/zLXmTE3vdx8jMDor6D1JvwPEl4o6UTcDaHdMiEBW/R
-	7jl/GOYRzsHZfVj/cJ3eyxiFgcGc83C3FyOCLPDisiJrpT/Wv2WFIjhTh3HKOijQBgQqMAg
-	l0iTZFU/6NILgafTIKl63b7w7S6Vl631uZ/TCtNFZQ7LO0jQIhvdxnFNAK15tBErj2aRxvq
-	J+Rgyy9gO2adDZfon/VvDBKuAJqQeciFD0pAHwswbuK0pqNMhpVMhbd7qg0SOiPtsbaVsVk
-	QY8MdFSk5Eb5Vj4h1gTSWbM3a9lh9cvbSpqw3W7aLkYzqwFCrnY7ydSPm5EhePY9k++Brqx
-	8s00TBV39XY7bFg/6Q
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: 835D3C0002
+References: <20260612023456.2424044-1-zhaoyang.huang@unisoc.com> <aiuWPKy0ncsMIXgW@casper.infradead.org>
+In-Reply-To: <aiuWPKy0ncsMIXgW@casper.infradead.org>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Fri, 12 Jun 2026 13:52:20 +0800
+X-Gm-Features: AVVi8Ce59hWhhoF9H3fqpDrhhQ741QKKQXo9OJES32cLoj-4quAiReodERMUTY0
+Message-ID: <CAGWkznFeSxurq27eYzRPN72j90EZx-Qwg1xWnfhApquDCtBQYA@mail.gmail.com>
+Subject: Re: [PATCHv2] mm/huge_memory: do not add dropped split tail folios to LRU
+To: Matthew Wilcox <willy@infradead.org>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Lance Yang <lance.yang@linux.dev>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com, xiuhong.wang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: a76u6a1snnp75opde4itacss5rqk5zj1
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781243449-798687
-X-HE-Meta: U2FsdGVkX1/VbjQEX0JTSraDTjH8L+BvMrOwTpc/RgjkaXt6+Z9tT0Mnq3esCLhAYZq0SBLlKXWlG2ZgcZM3a4FdBfmQfb4r77mAp4ESTSAM0Nc7B9xdxY4+cGstZVJTTx4YYsfe2KhO+6wDVaKTaTKPciBn8HAAmSA/B5jk+jSocKsK1uRn1Vjf2crmrWCv4dRpXJj6870lnWXkTkLPv2PWFCDvXfDsznj9XCel9sbl5NM1FZb6CIXu3+qF0J8Xt1LZ8RDDQEda4lTnY702MeetCoxTJT2h21KIChO0VBv9g36INQnwajUmEvJuGhkfKCgbLSlQRWTmUItOkryK+vT3k3Ny8fcVHGo1/gXyk9qvNLJ7bIrOB6KwgZ+cQU2vz+FqtQEYBPyXi50IF5bF2QfLLIFMysG0AzHce4KTLMHbQgm2HTXKiyzTa2tfcTFpkz6Yl3BL6MkwXbh9xORE2U8nSMA3/aa4n3WxLKvKeI2VpDT2gawpJtvhOOHvNa2/uX7bHd3tSS8uhGcq6QtuRYqUepf4E65ly5CVTFHrDh8atc6hWbmZxfNSCjEAu8dytO5Q0hoSbq8xTiPlEQZCQWPvXXRgbIa4WEaP84SsKNnJWQ4JuYZXc9yuIz0GmYxujfLEfvSgJFlk6ZckJPVIDi5QDUW7LylA6z1+qxhn0dYXQ0a6z30wAjrEu32Kdmtnl3om6P+L+7PxOGrbCMo53X83WwwoC3KWzQyGpLGydMSDKYmM6iuw+FMu7JhRJfTd+jElztFknZUGkVVp3957OUP7TKidsH8QHL6AszR0p6m/DHpEnl9KtVaTPEd2YhTh/rVxQA/NIb1HQax8A9GwNAacJwMIdk0lccpBnQkB6gfGcsfMKLy5wA2YVITqBmhCK55fHbeeO87+TdA3Y9FyTn7/2Zi+l+gcndJykr4OVHs2S5gBYq8cvgrBjUUNkPebMwE8b4phEsWGZUqtxqa
- X8wFP/7V
- /SSCfg7/1CZ5XoAhOQbRCE3n5yl+4SpdI2E4bg5E1A9FeqO+vbE4UB/DWxIEiEkwJywXfJikXSFrjTIXUiTPXrW5dGRSnCpdyQd2jeqQIsyPpuhojpPT24/xuhNyKNbgCCOWfzHCvbGA1xLaiIV8VOJoUAkyjvdUSuDpLtgTvFT2wB7uQcF2798EOkJBCL/ZpyCfPFX4CWccCKzpoLPAgg6yqeixhncIgk6r2UQ8MmUx6cgzwdjuJG1lPX44Fewbf9Ty702BexUmj3wKwWEUqkSUsQYUKk9GR/VhH6SjNzHIpr64RcetdLTAj0b/V994YHsPjObCJemqCeealRE1Bj5BkSCC7M+IKFj15Occ9cADGwJBaqzIaIIZMZoifolBSeK+F6gX1G/eTOJ5k05lS67AIWCiy14RnbdMsoiTEotHUhVk69JE6fJAssP67uRcjheo3a5SR4enWVcWsQvbj1d4Ogg==
+X-Stat-Signature: bcasqgntwt38sdt4bt6abrqts7dzw3ps
+X-Rspamd-Queue-Id: D91868000A
+X-HE-Tag: 1781243554-555500
+X-HE-Meta: U2FsdGVkX19U9MJ+Hh6hNjHMDI2I1svAsm2VDg5U2v910CskyEMC0IYtRr8hIFQmpq/7SZPIXUSPtCqyrfV0S9r30kMw9Ag3j3z8nCs48bZ//kqWCWOc54bsCHKJ8r5HLTPcBb6m9PXbIU+9iBY3STtCTd3uUB4z9fpznQM2r0vAcMDUNc1Q2cgXgJIjZ1TQ6mkpATe8l9/wKzChO1LxSB/7smbvPUhDm6Vsg+EscvvcFIdFxPwESTrvy2xbQz8KZJ37bEZXjIM6rjfBd4SSdVLa/QgmokxFLZi1pon1RZrlf0f39qrV1rQmTmnhoDVPmftzbk1khgcU5QyYIMqYvvmGn1Ewa787dPw/EgXKwHQsyDsGqpMeonxFLBPTVZJ89fmYjAx2w1kQ7wHqaN72MbkObMjlK5VgrqZqlonPbV+SlQnOj8RagH6Ax56RdxfECFh7BtF/xE6VYqccH8CXLYP23PsB+PXuJDHga+WWAjaLsiagjaAipSaP/qstbKq4FBgm+RVrs+rLZWmGTvxzrN+z98QnCD3OVnWnPDSw431mqhhSCCe8Y86o1i68zkK5j5PCoFzMjQUv7QJJBfwlFTZyZv/KFQslYOF08GUNdGHWcZ/6/d66+v5EiXx3Q8jPy1Kfd1cgTtj4TonWCKork18k7UgEKP5BMAUKyIZYgMp1ufmrlEDMaRXSMLqs8X81vXX9M8QB+SdKllUSSYYlfNIzvO3ePO6NHTo9yWbCnAX1H5PrhlqsyAnZgG53wUh4So5l6QtxyRcAfyWVnk09HKDdcrE3wtGjUU7zv+y8QPgyz0sV4Znilc621ue3vkxberDhTdgiP96uuO7IeDuOM//9eYSH6r2Q0d4cQpuJadNlX5ulRzaBSwpGkd7Sh2jeY+Wz9evdar1schoFlmIkW+AzXuNOftSjKh7VFWHfrkarK7cIkkEC+DSJBy/eP88H6MdYupCXVjIL2KvWYtq
+ J6brVC1h
+ OfyxEqSHmuQ5h0FJEWphWG//ctUuy8d727auPUlQbDoYponMMq8yDP3DQYEhjawHKpzAdyCw21O6O/UJ2XzpW5JygAZI1qZaWmFIWIjnt5xlvPYWTG5yqJgEO3D9gsRyE8VZPYHU7YPmWU2/CoKxZ9pX0KVHPvAE+IcDhphdDipB+Tt/cv45QQphLu6vcPnXb3TiWoTZVLhFw5d4dIZqP9XBzC+9poRr4/JSsj6q0BlOFIzQQEWNtpt4um80GayzMUk3MUJFfl+zEolyJQ284uMU9iBF0L28ffT5qmPP43yM3iYPvvqGfIuHpAG5Wusx+/hs8LGopXbiPR+5XDimBto+oM3Iyenj/RuapeJynrEDBTrD8huXqkDpjJcC17c4GJ/uhVVSePRTcG2GJ8L6F8kJcqXjn77SeOckVDeW+RheiRGfl0fhoeIr4f/VV4lQznKPXx74TGCBn4OxWKcwIRmKFXJlb4QlzHv4vf3HWpvBeGFebavCLyIY7qKwwPHfDdEfo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,162 +143,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-add_list() allocates comm and txt for each page owner record, but the
-cleanup path only frees the outer list array. This leaks both buffers for
-every retained record.
-
-Free partial allocations in add_list(), discarded records during
-culling, and retained records on exit. Return explicit error, skip, and
-match results from filter_record() to handle get_comm() failures.
-
-Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
----
-Changes in v3:
-- Keep the free in add_list(), since incomplete records are not included in
-  list_size and cannot be reached by the common cleanup path.
-- Return explicit error, skip, and match results from filter_record() to
-  handle a NULL return from get_comm().
-
-Changes in v2:
-- Wrap commit message lines to approximately 75 columns.
-- Use "Yichong Chen" as the author name.
-
- tools/mm/page_owner_sort.c | 61 +++++++++++++++++++++++++++++++-------
- 1 file changed, 50 insertions(+), 11 deletions(-)
-
-diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index e6954909401c..cdf31985287c 100644
---- a/tools/mm/page_owner_sort.c
-+++ b/tools/mm/page_owner_sort.c
-@@ -43,6 +43,13 @@ enum FILTER_BIT {
- 	FILTER_TGID = 1<<2,
- 	FILTER_COMM = 1<<3
- };
-+
-+enum FILTER_RESULT {
-+	FILTER_ERROR,
-+	FILTER_SKIP,
-+	FILTER_MATCH
-+};
-+
- enum CULL_BIT {
- 	CULL_PID = 1<<1,
- 	CULL_TGID = 1<<2,
-@@ -372,6 +379,9 @@ static char *get_comm(char *buf)
- {
- 	char *comm_str = malloc(TASK_COMM_LEN);
- 
-+	if (!comm_str)
-+		return NULL;
-+
- 	memset(comm_str, 0, TASK_COMM_LEN);
- 
- 	search_pattern(&comm_pattern, comm_str, buf);
-@@ -386,6 +396,12 @@ static char *get_comm(char *buf)
- 	return comm_str;
- }
- 
-+static void free_block_list(struct block_list *block)
-+{
-+	free(block->comm);
-+	free(block->txt);
-+}
-+
- static int get_arg_type(const char *arg)
- {
- 	if (!strcmp(arg, "pid") || !strcmp(arg, "p"))
-@@ -450,39 +466,57 @@ static bool match_str_list(const char *str, char **list, int list_size)
- 	return false;
- }
- 
--static bool is_need(char *buf)
-+static enum FILTER_RESULT filter_record(char *buf)
- {
-+	char *comm;
-+
- 	if ((filter & FILTER_PID) && !match_num_list(get_pid(buf), fc.pids, fc.pids_size))
--		return false;
-+		return FILTER_SKIP;
- 	if ((filter & FILTER_TGID) &&
- 		!match_num_list(get_tgid(buf), fc.tgids, fc.tgids_size))
--		return false;
-+		return FILTER_SKIP;
-+	if (!(filter & FILTER_COMM))
-+		return FILTER_MATCH;
- 
--	char *comm = get_comm(buf);
-+	comm = get_comm(buf);
-+	if (!comm)
-+		return FILTER_ERROR;
- 
--	if ((filter & FILTER_COMM) &&
--	!match_str_list(comm, fc.comms, fc.comms_size)) {
-+	if (!match_str_list(comm, fc.comms, fc.comms_size)) {
- 		free(comm);
--		return false;
-+		return FILTER_SKIP;
- 	}
- 	free(comm);
--	return true;
-+	return FILTER_MATCH;
- }
- 
- static bool add_list(char *buf, int len, char *ext_buf)
- {
-+	enum FILTER_RESULT filter_result;
-+
- 	if (list_size == max_size) {
- 		fprintf(stderr, "max_size too small??\n");
- 		return false;
- 	}
--	if (!is_need(buf))
-+	filter_result = filter_record(buf);
-+	if (filter_result == FILTER_ERROR) {
-+		fprintf(stderr, "Out of memory\n");
-+		return false;
-+	}
-+	if (filter_result == FILTER_SKIP)
- 		return true;
-+
- 	list[list_size].pid = get_pid(buf);
- 	list[list_size].tgid = get_tgid(buf);
- 	list[list_size].comm = get_comm(buf);
--	list[list_size].txt = malloc(len+1);
-+	if (!list[list_size].comm) {
-+		fprintf(stderr, "Out of memory\n");
-+		return false;
-+	}
-+	list[list_size].txt = malloc(len + 1);
- 	if (!list[list_size].txt) {
- 		fprintf(stderr, "Out of memory\n");
-+		free(list[list_size].comm);
- 		return false;
- 	}
- 	memcpy(list[list_size].txt, buf, len);
-@@ -841,8 +875,10 @@ int main(int argc, char **argv)
- 		} else {
- 			list[count-1].num += list[i].num;
- 			list[count-1].page_num += list[i].page_num;
-+			free_block_list(&list[i]);
- 		}
- 	}
-+	list_size = count;
- 
- 	qsort(list, count, sizeof(list[0]), compare_sort_condition);
- 
-@@ -876,8 +912,11 @@ int main(int argc, char **argv)
- 		free(ext_buf);
- 	if (buf)
- 		free(buf);
--	if (list)
-+	if (list) {
-+		for (i = 0; i < list_size; i++)
-+			free_block_list(&list[i]);
- 		free(list);
-+	}
- out_ts:
- 	regfree(&ts_nsec_pattern);
- out_comm:
--- 
-2.51.0
+On Fri, Jun 12, 2026 at 1:17=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Fri, Jun 12, 2026 at 10:34:56AM +0800, zhaoyang.huang wrote:
+> > [2]
+> > *F: big folio before split
+> > *T: tail folio after split
+> > CPU0 (f2fs GC)              CPU1 (split_folio_to_order)          CPU2 (=
+folio_isolate_lru)
+> > *F: pagecache refs =3D n
+> > *F: extra refs =3D split
+> > *F: PG_lru set, mapping !=3D NULL
+> >                             split_folio_to_order(F)
+> >                               folio_ref_freeze(F, 1)
+>
+> I'll stop you right there.  folio_ref_freeze() is called with
+> folio_cache_ref_count(folio) + 1.  That's defined as:
+yes, it is a typo. The right one is folio_ref_freeze(F, n+1). The
+folio could be split successfully by __folio_freeze_and_split_unmapped
+and have all pages added to LRU then. The race window is the later
+free_folio_and_swap_cache->folio_put_textzero vs
+folio_isolate_lru->folio_clear_lru which lack synchronization between
+and left a folio in LRU but !PG_lru.
+>
+> static unsigned int folio_cache_ref_count(const struct folio *folio)
+> {
+>         if (folio_test_anon(folio) && !folio_test_swapcache(folio))
+>                 return 0;
+>         return folio_nr_pages(folio);
+> }
+>
+> so you'd have to freeze it with 2^order + 1.  The 2^order is the number o=
+f
+> references the page cache takes on it and the 1 is the reference held by
+> the caller of split_folio_to_order().  If anybody else has a reference
+> to it at this point, the call to freeze will fail.
+>
 
