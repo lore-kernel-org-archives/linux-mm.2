@@ -4,97 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22EE7CD98D6
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 17:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72808CD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 17:08:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B0066B0088; Fri, 12 Jun 2026 13:04:39 -0400 (EDT)
+	id C0FEA6B008C; Fri, 12 Jun 2026 13:08:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860916B008C; Fri, 12 Jun 2026 13:04:39 -0400 (EDT)
+	id BE89D6B0092; Fri, 12 Jun 2026 13:08:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79E1D6B0092; Fri, 12 Jun 2026 13:04:39 -0400 (EDT)
+	id AFD926B0095; Fri, 12 Jun 2026 13:08:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 691616B0088
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 13:04:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 197BD161B2C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:04:39 +0000 (UTC)
-X-FDA: 84871884678.13.D8D3291
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0ED59C000F
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:04:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=zx2c4.com header.s=20210105 header.b=SkCA5wn7;
-	dmarc=pass (policy=quarantine) header.from=zx2c4.com;
-	spf=pass (imf10.hostedemail.com: domain of "SRS0=FHmU=EI=zx2c4.com=Jason@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=FHmU=EI=zx2c4.com=Jason@kernel.org"
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EEBB6B008C
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 13:08:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 48B291C233A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:08:06 +0000 (UTC)
+X-FDA: 84871893372.14.044F514
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 70AAF160007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:08:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=idWB42RH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=cmllamas@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781283877;
+	s=arc-20220608; t=1781284084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtNLc2MCDhGhm4G2cttMK4Gp2TnrnlYCYBd7sz+n4j0=;
-	b=LDX0Q92ot9zctuEvhOM8jSIxv3xtMytN15zzK+tnx9rjessavhYTclYRmuWMqd+mlkETP1
-	rYOzGNEOKs7l3ycrhCoLGRAnfC53APjp7Nih54NSH/oo2PXyGRjGjXqRt1TnXaktyYpRi4
-	OueMvgM1lKedpw9Ya3IAqMrETsx9eHs=
+	bh=HPeZaPzs0udTqN8U0AOdGBgcRR2p1XdQkPuDGe3FfyI=;
+	b=aan+I1AUNxggsmQPPsIuSY9TCwM3jLXr/3jz77c9AKpFeY6oeSZBmZJmfwdDNLDWQq4FBX
+	aDwoTv2j/I9XCohhPg/1a6TM2SxwhkDAH4rQl/u8ifOYEtveBI0QVWIJ0Y4ch3Uq60/1NP
+	pkCbntKWp6zxT8HdgPY4Ox5UZ8PNGgc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=zx2c4.com header.s=20210105 header.b=SkCA5wn7;
-	dmarc=pass (policy=quarantine) header.from=zx2c4.com;
-	spf=pass (imf10.hostedemail.com: domain of "SRS0=FHmU=EI=zx2c4.com=Jason@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=FHmU=EI=zx2c4.com=Jason@kernel.org"
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=idWB42RH;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=cmllamas@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781283877;
-	b=5hvW/EFoHktgIOruws1hfoFXbeRRoMuo07i9ffr7rV1cvySRdYvev61b25W/9rX3P6BQKj
-	G+rkq5/GwbX63K21TngEoy/zyrIwzUonMemqkOV+WjKc16TsfqvWAe28iei5LPWInhj8q0
-	pKZI1niNbqbqzKvEFawl6Q+N0I6UoUQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0919141817;
-	Fri, 12 Jun 2026 17:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5804A1F000E9;
-	Fri, 12 Jun 2026 17:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1781283873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XtNLc2MCDhGhm4G2cttMK4Gp2TnrnlYCYBd7sz+n4j0=;
-	b=SkCA5wn7FcRWHDB77LQw/14w6pahdvrLSr51m2na5mZ8EuON9aLbb518bl6CR8GAANx6mK
-	SGq+vTqROsfdrCd3B9T5y65W+G44LUgYXBqEJdYQOYbQ9hu8BLYYCMClpn6Z+GAQPdwOEa
-	sSVSCCza0bG+SmaPxIoVMrprCygE3V0=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 3a28b952 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 12 Jun 2026 17:04:32 +0000 (UTC)
-Date: Fri, 12 Jun 2026 19:04:15 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Aishwarya TCV <Aishwarya.TCV@arm.com>
-Subject: Re: [PATCH] selftests: mm: fix and speedup "droppable" test
-Message-ID: <aiw8D_tdKYYNGyN_@zx2c4.com>
-References: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
+	t=1781284084;
+	b=0nMXFo/txtvPzj2WUNFDITdgqolQJl7QpBCYjdpR0Mm8u4zpHlMzcOVPs1RRyZdFtezeig
+	mjyHllczQJ65i2KreMFrjsXWvObCeeYGvGQZ8pXyg2NxLjR0UCscb8g28AbeiK3gnqPdEw
+	vNop86spbfeMI9CBL4r9uxHFe1+7rKY=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c0b1a48855so3425ad.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781284083; x=1781888883; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HPeZaPzs0udTqN8U0AOdGBgcRR2p1XdQkPuDGe3FfyI=;
+        b=idWB42RHZOqqiLXHNXT6pdKy0IIG9rF3VwcODjomSs3WHRE3l6zpTzI5FV8u16GvzQ
+         yHDUQEDcUqV1gq+Mt3FFX00Ff/BWGiH3SvI9GpE/mDxYmcuGHSguer3bP/ayrGbLWpzW
+         PNYSThd5HSIXBo3lVLhN1rjlpAhWtiCH+eyxG166DB0tYDfkqUQmAPW8wR9B7h+n3XjF
+         9l4xZWMAqxINP+A9hAeIE7C0hrubA02OtCqsODpd0n/YdxxlM7LCd5cVILeBqgcG4CJh
+         +MN4IVj5z0enXmjJ0SRRi3rYIo88FQO7jpaTqGMv9lmqaF9PL7jeevTv/H9coKQqkoI7
+         2CRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781284083; x=1781888883;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HPeZaPzs0udTqN8U0AOdGBgcRR2p1XdQkPuDGe3FfyI=;
+        b=MCcUrlSkDNF/MEEKUSaDwrmTySrneQKFoBb/q6NNdZec8P7o2WV/2XNQcyBtEFPNXI
+         E302RszjKA7v22CWlLdpzBFQ/1hJncpf/8NansraOi2RQ1ZphDOPArnlA5BRRkt7nsH4
+         agm2DgRkVFtCVkIiUJS8Mj0EN/6LS8H/ktY/TVctnCFWeyh9X8kyjSFA9KgMLkBisnTb
+         VPowp/ty6sb2HJblQlNOuaPRqkccK63TtSCU+q5HQXVPyEtt8tsCClCDQdlgSwhERVO+
+         I81dITkDSLWAPRtvdP9hDpaotnqtcv3FHyMvvufIhxlAcKAC7Iz1qPjLzLl/kws6Vduz
+         TSfA==
+X-Forwarded-Encrypted: i=1; AFNElJ/mgpN+DhuyQQ+5DLV646i8ELWuQwP3TNkCKBhwCGHa5qAxHwfjg+uOQU/+TExx0rlvhRlmpxRTHA==@kvack.org
+X-Gm-Message-State: AOJu0Yxkoft15Dwjeh2eQAPqaPyl/4lGcDk8E0+aExJ6dTGCRknAUPgi
+	8UBCxGe4Vr32HPOQh/Rs8K7W2kHtvJow3rjWwPVEqLdHfj2nAEH5Dyp5ZS/IppxkKg==
+X-Gm-Gg: Acq92OFhYLSG/jBGhcYR4sf5cGU91KuUppcIjT0Otxerjjr7imMc7zESzZW1bLTHo7s
+	Sz6/pYoIG141TvN/cJBOZsLDzMSsCkIuM7Z21YQKJrT0Ps9AByQftrgutPlOVmlwxraMkTIkULZ
+	EjNKSMlkQ54gyu/xt2gHCR5HOY04f6aMIvgdk9oEx3pGO0pJoNaif7SlEiNQfJuAO3ARizkxWP4
+	GXZP3GQo7xAdfQuBTOiSJfsWo7QR0qylDy5EppdZzdRN8hfrdLwbUUNRB0461N6WMaYdT0r/B5D
+	6g4OOzOXQIyPYk1twQ0ep4FkM7uNusSs0rcl0BEo74tjwULvfAtUfPRP+/BeWLg/tKOTjOZIBno
+	HgO7kMG3ENWjzVQIE24gq0+M/iaYcuAxC0rez8MKJ+Z0NF3d+BIOEwxUPzrgBfsodTF1CsKg3O3
+	r3/DU0PVqReEQhwOaeYruGDZX+J1uFzBZTueP4WyjwjRYzEg5ALcgb60EJhlhvLSVJQqgFn3nDE
+	Nm/ACj/UNhiNz1abqAFmUdT72hPEnA2SKkQgoibaXNVTQ==
+X-Received: by 2002:a17:903:4407:b0:2bf:1153:54a0 with SMTP id d9443c01a7336-2c6651871abmr15805ad.23.1781284082627;
+        Fri, 12 Jun 2026 10:08:02 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb5b79sm25331385ad.36.2026.06.12.10.08.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 10:08:01 -0700 (PDT)
+Date: Fri, 12 Jun 2026 17:07:56 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Todd Kjos <tkjos@android.com>
+Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <aiw87FbaIvYrSYDQ@google.com>
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
+ <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
+ <aipphZ5iCnbXVNSR@google.com>
+ <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
+ <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org>
+ <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
+ <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
+ <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
-X-Rspamd-Server: rspam07
+In-Reply-To: <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com>
 X-Rspam-User: 
-X-Stat-Signature: 9ee5adzshenif34by8isqj3ptsarr69e
-X-Rspamd-Queue-Id: 0ED59C000F
-X-HE-Tag: 1781283876-228406
-X-HE-Meta: U2FsdGVkX19XhrKaC0C3BGyJuhApVsTtVvFgpK/weWq0MCtxOtubLR7OKPLke/clg2pSkN2f6NUqaq36vhbGkfKScGBce/N9MWKq+9SpiKPh5dAQKfYgQMbszUDy1UQelrjaqsXecHTL49PfaBhLBz8f1tlSlgX7mTy9EbjcnOUWCnCNkig+TctfVxhmotl+AK9f20esbjUOZ+Rc4nAQhmacgycczc1WskpeM4kQD3565dd7vXTIPdEtmK6Ak1qzCvehGrJq1+nxlkjMbE0Rj9fbppPd3rhGATLbNSdOfvNbwm0mUA3hkbrVumQURAV6kJEB4Z0b6d/5tlIJQumQQNdOc1d5y41IttPctBIw5NIwPysRxp+FCUMD+/sj93pVRNxsv14MxpiNIpc93uXDyIILVLCr8W7W9xWtSN/bVu15/Y5Vwqfj6AFSzls0/aVNSypR0ateV83u6OC4I3BitP3cRju3sX2RhmFYnhVocqmlORtcHwLAiy/KNKnnN08eD0x3deV1ZGm5ixDvMVGPZtgk/JWlAK3LhtXRN3UEVBPXDB5ixEMX8RQ/dWkf5uJORXHATReRqCLKxga4z2PvWvVozE9qZaRAjpSkEK0JXx6M3FuySCiVuCaBcY8LonkowvUFeGuZc/uinzcRUXOwu/nO9nBAIPxu6T/TnAFf/wgZKpYyNLQASx5BQ1ywIyp+2EOV9iBKRp537noqzO3x8V/GTZIHVo66Mn+mV3nKIwDR8AEPRrnjM3xTa5WNIGmp0VBnbcG18OgIupm3jUY0fYQL20+v4hklLbcmu0Eg90XU3w60tqmZqhVbHHFY745GPKAxkuvnWB2LnIsJQ6tQF6Sn/iawBdlmXpbM639PDoSKkkVXKN8oV1MpQklfHVeyPomBmD1l88/GF2Eu3OxsxJHp8Q1nitT9zun96Wpa+6wg+ug0ggwwgDgr2zFZbnEBXrFmEt1us4QXcVfxP8O
- 1zI3jdAr
- XbXcy7bWTYiDRVDqBXXiNDmucPTBePk/r9CIEjpnsKf/xozE2SalVUUfNwMQxEQDNoE78Yq9AIoUnwwGeLnfkYqSHAfrYSNgaGrdxANXBXC1d7xRYePZ/SFN4W17Z8E+WJHZ4udM/FkQvr/53PmE6/BrJaOs1ex8zJU0wO4xaWTJ0vTesoFgcxFfaQdlM9DDuF5T9xdQBt0CqnU+IA5xpbY9TgHdRvG7Qnu7SKV6D83uGcIi3ce3zXOw3poSlOi1lhrrC6q8soe9CWhjHIVuo7pJDQme81UU8WokMTv9xG4m8+gLOWGZ3k74Cg2H5nKCnN0PnrLVd2Vrw+9HxTpIR3x0GrcfVUhwPsEXDuSO608ec6kWKrvpYkAushYf4MIecTlAXJYWlZVb9TnQZX9TCVVS8zlHxtFn2kqp0cmxip7tEcSI1/x3nGrHZ6Dt5qRB3JavQL2dSTwvCNMQyXtk/OQ3BhDFToEvabMk8thC/CiWncgw=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 70AAF160007
+X-Stat-Signature: eczdg1omj6aeusubawrf9g4nffpz7319
+X-HE-Tag: 1781284084-332999
+X-HE-Meta: U2FsdGVkX1/3t1JrLYnOHsmYyom8s9kLnWDGSRQxmRweHWNVtUh4JVjJvw5UID81qwDa1OntZ5bzCjfRaL5pnPJfpjR3ut1fNNo6OjOMTE3D5XaCq1OAa/g7CfnEQ2VjQ1MpbLaN8O3yMPfV88/OBq6+pE54daMumfnbCIBXpzMAgaLDxHPy00ODieUtu78aEOXYOFn8h5Zme+iTKBPPSKZa80Tv27chuGWft5D5MxH7a0GJRY2jevKGika/i4/IVWLc/5huAGPi3XHTjVo4jgQAO2NFO06X8m/revM5iP4oy2hNDQq/pvHVEOPdJ9dr0XuQ51+iYev9q3wwEc5FBqXM+HoWAYAGFp7Z3obV5dImOkS0c6B2DkXbTzaeE0IcxH0cP72TUTcyzSXUJOvTWdCZ8uOURT3u2Bp9ZuI4dFZSYnfFf++3BSskI67apSFtQogUy6VVVdrFhxW5uSL2VkNWHKEBuHUEprVI8dKO2UslKLeFk8tw7h8PkkkutN8XEyCXRps3YUrIjEa11pKOLUTieg7VLc4E+EVl0y7+MErLQ3ZUDgLlSGd/xXX+H9TnBW0GHACtq2RrIGuiqDQSIgRyx+J2TV3zW8I70AyYZ0q5a3viEDg/d+6k9U1zozdlX1MWnoNPfrVcsTpz4KS36iaLqBI2bLjLEG4Yz31bxFyohkoiGf2mGkVKNW8ZdeSCWJPBoYB3wUdXXTnhDVmsHQgfhsoT8f2R3mY/nKyroXkdjE7gShdY/kO1C6uIZkGO0Z7Jid3P7eqOPMkwayaXeLRGgaBIAPjl8ziC1yWrjHBfFZQu0b5Rxppd90VqYSDv6h55123Iqym0WI9kQTYPW+tDs/RJkZ+W48XBINcDH7lKQyqDwlHUxp3XStRnL8phzedRaUbRCLVR8guMCt/PGWiEWOQWxiv+Rb5GUdsBARPTNHukjaa0AAyE0VvyY3diq7i2raSWBNc8DGJO2RG
+ M+F4WV+Z
+ uprsPJkNSJwon38qIN8YeWaf5mNByYkaALCQZEoNBJMzF5akPk5anll+KW17gMVPtC33pLJcpXzpi+usdcu48X6QPcbn+MC7ec+q79JmTJdwcBrkFhl5uapk0Xivujjr5k0Q6jbboSo/RAKpyDvNyIuKsoTWv5InlMmsxXSZ24B1ZjZxpguEcNFJjFWKhY73Xckx101bqDZtFjkrCNI/JyZHdYrDG0RncwScujNSvzRZUJshyoO5WaXCE18D68Lq4pPkvnclgj8jcnOjnhc9HJ+KkUubf48yCye1eA5EEKekzipIblCXcQqam2aonvCS6w2wSKya9i/hn9eF7cI+qgVNrgGLErrjh6WJ8ZjViYjKSwva3PwHlVdf4qu6yBSEYLI/u3JcjJe132hKyeUhuNai5SNI3ZVuTsLlgxdFcimui93m5344T+7W+pps0lklIVaML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,31 +137,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 12:01:55PM +0200, David Hildenbrand (Arm) wrote:
-> The droppable test currently relies on creating memory pressure in a
-> child process to trigger dropping the droppable pages.
+On Fri, Jun 12, 2026 at 09:54:58AM -0700, Dave Hansen wrote:
+> On 6/12/26 09:41, Suren Baghdasaryan wrote:
+> >> I think the key to distinguishing between:
+> >>
+> >>         vma==NULL because there's no VMA
+> >> and
+> >>         vma==NULL because of a trylock failure
+> >>
+> >> is binder_alloc_is_mapped(). It won't return false until vm_ops->close()
+> >> finishes. vm_ops->close() shouldn't be able to happen while
+> >> lock_vma_under_rcu() is held. So if you've got a non-NULL VMA, you've
+> >> also got a stable is binder_alloc_is_mapped().
+> > By "stable binder_alloc_is_mapped()" do you mean it would always be
+> > true?
 > 
-> That not only takes a long time on some machines (allocating and filling
-> all that memory), on large machines this will not work as we hardcode the
-> area size to 134217728 bytes.
+> By stable, I meant that it can't change.
 > 
-> ... further, we rely on timeouts to detect that memory was not dropped,
-> which is really suboptimal.
+> 	vma = lock_vma_under_rcu()
+> 	mapped = binder_alloc_is_mapped();
+> 	<window>
+> 	vma_end_read(vma);
 > 
-> Instead, let's just use MADV_PAGEOUT on a 2 MiB region. MADV_PAGEOUT works
-> with droppable memory even without swap.
+> During <window> it can't go from true=>false or false=>true.
 > 
-> There is the low chance of MADV_PAGEOUT failing to drop a page because
-> of speculative references. We'll wait 1s and retry 10 times to
-> rule that unlikely case out as best as we can.
- 
-Wow, thanks! I wish I had realized the MADV_PAGEOUT behavior while developing
-VM_DROPPABLE in the first place. That would have made development a lot easier.
-I wound up just running this in a memory limited VM to test out the different
-behaviors, which worked decent enough for verifying things. It would be
-interesting to me to now experiment with vgetrandom behavior over intentionally
-MADV_PAGEOUT'd droppable mappings, to fuzz that the careful bookchecking of
-that works as intended against droppable mappings. Anyway, thanks and:
+> false=>true never happens from what I can tell. It's just plain
+> impossible given the current code.
+> 
+> true=>false is locked out because when lock_vma_under_rcu() is held.
+> 
+> > Asking because in your patch you removed this condition:
+> > 
+> > -         if (vma && !binder_alloc_is_mapped(alloc))
+> > -                  goto err_invalid_vma;
+> > 
+> > So, previously if we found the VMA but binder_alloc_is_mapped()==false
+> > we would bail out and now we don't. Are you reasoning that this
+> > combination is impossible?
+> 
+> It's not impossible, but I do think it is irrelevant. Or at least that
+> the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
+> means that the binder VMA is gone. It's not in the maple tree, and it's
+> not coming back. If a VMA is found, it's an impostor.
+> 
+> That's why I did:
+> 
+> -        if (vma) {
+> +        if (mapped) {
+> 
+> The question isn't whether a VMA was found. The question is whether the
+> binder VMA is still mapped at page_addr. *That* is best inferred from
+> binder_alloc_is_mapped(), not the VMA lookup.
+> 
+> At least that's what I decided after staring at it for far too long.
 
-Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Yes, I _think_ binder_alloc_is_mapped() can help distinguish between the
+two scenarios (contention vs vma-close). However, I think it would be
+simpler and safe to do an early exit:
+
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index 88c3e1667d5b..9dd7d927249d 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1149,6 +1149,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+ 	 * for 'page_addr'.
+ 	 */
+ 	vma = lock_vma_under_rcu(mm, page_addr);
++	if (!vma && binder_alloc_is_mapped(alloc))
++		goto err_vma_lock_failed;
+ 
+ 	if (!mutex_trylock(&alloc->mutex))
+ 		goto err_get_alloc_mutex_failed;
 
