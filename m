@@ -4,102 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3B2ACD98C7
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D50B9CD98C7
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 02:00:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7305B6B0005; Thu, 11 Jun 2026 21:57:57 -0400 (EDT)
+	id 2799B6B0005; Thu, 11 Jun 2026 22:00:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 708626B0088; Thu, 11 Jun 2026 21:57:57 -0400 (EDT)
+	id 22A8B6B0088; Thu, 11 Jun 2026 22:00:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6448B6B008C; Thu, 11 Jun 2026 21:57:57 -0400 (EDT)
+	id 1199A6B008C; Thu, 11 Jun 2026 22:00:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 53A7F6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:57:57 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D80721C2D92
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:57:56 +0000 (UTC)
-X-FDA: 84869599752.28.BF8C961
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E26501C000F
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:57:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eLN28x5A;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781229475;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 036AE6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 22:00:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BE7612042F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:00:58 +0000 (UTC)
+X-FDA: 84869607396.29.C3A8D0B
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9B00F12000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:00:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D+LbsuFy;
+	spf=pass (imf29.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781229656;
+	b=7eEHyi4ZtmG+xX5m3Sgh9w6bBTfB2NvIwu7ix/7aJuTS22tgZmYzRxwyeZId7ugnm2PCwT
+	aTsMAwW/Wrk2GbFMqlGBRGDsJzSVEkEK3B3O+3o5KRWBsXTcGLCIkWTQyf5vDj8+J7VFCB
+	pk3A9QzaPyqFrTXpghFAOzVcZDEuk60=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D+LbsuFy;
+	spf=pass (imf29.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781229656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/skfuVKSxbkG2SDfb0qNhS3YER2w4ultlVQGZi0Tbus=;
-	b=uPb4rXrPlbSNveQWM9TyNpj0nWJiDFVF+PIBqBCjshKIjV+VrHNaZxOi2pn/zNC2p6HIPX
-	v/wMmr8pNHUW9yVCy+W3goZX6dUHZ9N5O4r23jIB5FWzAQakkLrcs+9hgczUypyJvHQvPH
-	ASBbbH8GST2p7HqVx6euvT7ReiXCggk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eLN28x5A;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781229475;
-	b=GSxIcF8CHmF3xZHHPMeXgf7flzGcijjJo01ZstGsyyr4Glv5ka58QzFfKGgdBBRNg6wPnO
-	S0h0ZsHA2pWtdGLMgKFsD3HmzMonNGXeRTOJBsq0HXkKiIxspM7ZSCSbkopu7XCNWqUnXm
-	q5rsUK7n36Yk8SQWFGLaaEKHDM5Ask4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B6BD43EA6
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63021F0155B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:57:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781229473;
-	bh=/skfuVKSxbkG2SDfb0qNhS3YER2w4ultlVQGZi0Tbus=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eLN28x5AoDg4tuwsQWArwOFMO/MSSEgvVqK6JPQlRWYaZqf5T9IcfTLJrrDPXmqAC
-	 I4DJBZAIRDEHWfJ3BYGFUD2Bw5z7yJWEP5PSA2Qogk2jONh0+6dVuOMK59VW1Q463r
-	 xKu53SDG9DmiIeEY6R8wvikw3OMPOassAvmL6BAI68RiPQa6LhrQZfMXgktFOTANyA
-	 CENU4y6xsrBkr0I7iKerhcKoBkjxE4Ck9g+aAxe+FC1jO/TpIf+pHT22e8JHFWw/q5
-	 dkN0Mdn2o1bV57eVRAujpg1McpiRo2zbTxipt7lPq8LTL6sfq/bAHfkGijMpE3cSXL
-	 chAy4Q0K2L0PA==
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9157b94a07aso48809585a.0
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:57:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8vFuW3XpWTaOJvfZwLcHq4ziU8Byrp9CUZkpaU3EW2Wg7MIG8aBmJ/yLsNC0NWdmVy4JKAGGDstQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz1oXxBeS2Pd1tEQNmIS052wdciOUXT1ZZczzskKTttMhcVvoEV
-	RufzF4vk5JBuaVwNPNxWxSR0A4M23PNxmqja2dUOwirwhx8W5bJQRJgoR/trhF4zMcqm9pCH5uB
-	vExD42IkwJzJSZPbypJEn+o6QV9CtfSo=
-X-Received: by 2002:a05:620a:371a:b0:914:7e9a:2716 with SMTP id
- af79cd13be357-9161bd15d74mr94748485a.38.1781229473239; Thu, 11 Jun 2026
- 18:57:53 -0700 (PDT)
+	bh=49dakZ/sUlpfjJixZWoB9+lqTB48qur6TP/qBiR1Cfg=;
+	b=x+AjI4+LPfRXRn/e+5fYjJ7AGWMo4Vj3l9yVsoAdLNCuL+GOoOciNbRGuN91AOFLbsEnDz
+	G+u85Xi5qk2YZrXX1hZInQ43c34WqOdP7F4QqyYDGOR012XHgujRts6N3lbCSFBbr9wXCf
+	zg5q6CyUqSO6rOoFQrBcZpnVZAqhqFA=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-7defee656dcso3790347b3.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:00:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781229655; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Tjc2TR0SBZeHsn9pyJY3uuoPxxvIZcdh8o+/fPGscL9coD+2EblLLCasxJa1O3P6q6
+         o/YoSrrK5qBLBapqlaKB1+qSgoLNdoc4oTv2c+z2eaq+sC7wimgJR2wN821KwULYgBHm
+         t877JPqOJCpY1PzhNLP6UVevX+hz1oB3JyLcrrAmwaVCBqGUlb9/m9nMlTrgXBaRYCbF
+         IL19IE1H8/KIswX9vGntaq9s78ANxWmmbv4q+61EwI3DNue8SjT7lmX8q+HI7LZ8vwWp
+         EC5+xoR+pv61Nz95yn1J5uOre7QCD0kiszV9YjiTd2H1ZeT8A/o+9Ygc73Vl6eJSeKGr
+         YVPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=49dakZ/sUlpfjJixZWoB9+lqTB48qur6TP/qBiR1Cfg=;
+        fh=FI1nKi+O3vLp7/LG1l7JRMlgdu4O7iDQQwuH6xMj3HQ=;
+        b=FLvqbmGok4TkjDcS/it3hMs9n+D+JnkchFDLKOKyABQYdK0rFGFxLWuHuVK8icmOmP
+         T/IVUZPDr+k9/Yin4hscYDYpMyqYoCIC6CagZKou1l31y//ebd/mFA44u2ju8MHhox/j
+         w3BkoZv0VbkdE1t6+hEEyGw2sHi3EDt+rxFo2FjelNPTPfz1tPOrCh6xKETvlNfUVLeb
+         ceU1JFe2jQgQD21vnWAujWQYO7NQd5N4d+m4cilH+qqEeiOyVoFKuKg8ndqhvf0bLW8o
+         nzLpqCy8rCMYF0AWqSvO+Qq4nGL2M95GxBqPzY6XYlgN6jAURq+5fBiz9Kb+wNI1DAtQ
+         h78A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781229655; x=1781834455; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=49dakZ/sUlpfjJixZWoB9+lqTB48qur6TP/qBiR1Cfg=;
+        b=D+LbsuFygXbNTO+1QljqZrANK41xwjvYyhGf1MD1QFaL8z+qYiHpi/n39Xx9d378k9
+         I/mXOWjRQJX1sP61Im/UpeLdUScNqWKdAKOuQMZ68Tjg7BifaktHm2WKHmfi2LotqBJN
+         eyAPvi4RlILPpCdMCs9g8yyGxwEhhYzkUaMEZ1KLy4tl/gf6k8q3Pvhdd2Mm8qL6Iwik
+         tC92TgjctHp30XWhZ/O1srhzYo9MGZTqUsbc+dlB+vw2fI2U2K6vyAQxrkI71qGxbJoB
+         TlN1yYJ3bD5a1+M88Sc2ker0y3KOm8nQYftTuzLx1wiMcdeWT+JbhH2vAmp6EeRKCJ0G
+         nOmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781229655; x=1781834455;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=49dakZ/sUlpfjJixZWoB9+lqTB48qur6TP/qBiR1Cfg=;
+        b=R1xQrUCDDBxOdXAfkAo40KSOtOX/NHkbZUifkJEbc4GRxKzzWFB9CqGdC9APs3JVGr
+         8xqxOCmcMOXU9JfnM3IZxpE4DQUhi/QYJYPWsxiVE/dU6qE7OTVYU/JsP9kxVa5TRdYK
+         04XkPZW4YTd0+ZaYQWbEKYQR/Ib23YT7KM0fVerDF8DHGbcUma4dwaXlhT65g3EZHJP5
+         B9a7usC83DVoBvRTlZmp4MKu2MzL2pTASPlB8h5A1176vxwzDDTatv6bweprYJabxYaG
+         4dsIAbXcwLSJmeKmctlRynnfX5Cu+hfvXYAt308F3GGIl0XER0I10Je3f7l+8ynO41MY
+         6jZA==
+X-Forwarded-Encrypted: i=1; AFNElJ9Y85gEzdPG/pFBu1z8IJRYniWs29CF7FbnisD/9SJm6OQlVpOGLJCAOQehaKQkIdWPpJmE9LDSoA==@kvack.org
+X-Gm-Message-State: AOJu0Yzoh5wGX6eD5UYxkMxKPlDlq6JDeAFHC6LAhmZ4gG+cSqu04FC7
+	J4x9wDzoATlcd0Jhe0P8lHMBV18jX/JFLoI0Xdaevv0SgQrXo8Dh4SqknPr7WLdabnBy4jRZ1tv
+	jFmZUvk16WX63uHvZpMDDI29Fj5c99KQ=
+X-Gm-Gg: Acq92OFUbsiSHapcR5/+xzI9rEM8nOFFAcueXSqPYGGIVllx3z/wmpqmITgs0Ug2WN0
+	B4MMSeXpyLgcyErRCdgjRjAelZkUBPD3xXkjb59VHY2HzzC3WmXNfvzKO9S+5YbOPJ8JFm+wmq5
+	4p5LsWskb9veGWFjg00JQVce2HpALKrxYG/tZF/unChGCEVf+0wPzKy8hpi7hKkCLhb+/rs2lL4
+	nkPAqsbheuB+vuIRG7fE5IcTTHdb2N4DkUPMftLtNKlCkNvu8bzrec2ohx603ukWjDxJorML5cl
+	cqrhRW6ogcuFolaOsKg=
+X-Received: by 2002:a05:690c:e3d3:b0:7dd:6034:b465 with SMTP id
+ 00721157ae682-7f7b5c55031mr8423667b3.8.1781229655584; Thu, 11 Jun 2026
+ 19:00:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260611105124.98668-1-baohua@kernel.org> <20260611105124.98668-2-baohua@kernel.org>
- <air47cqcLUwI4D9X@linux.dev> <air7FCRQneIPiJ5l@linux.dev> <aitb-XwJ0gRiOqPW@MiWiFi-R3L-srv>
-In-Reply-To: <aitb-XwJ0gRiOqPW@MiWiFi-R3L-srv>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 12 Jun 2026 09:57:42 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yFgcvpTAZ_YV73+U=BEnOiSxaFtGNFpbf0DWBkVcOQ3Q@mail.gmail.com>
-X-Gm-Features: AVVi8Ccf85LDVHORUp3k3w4g8LmEQLGA-zF2jAliVwzkNRmZ5VToIb8FUCN1_Iw
-Message-ID: <CAGsJ_4yFgcvpTAZ_YV73+U=BEnOiSxaFtGNFpbf0DWBkVcOQ3Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, youngjun.park@lge.com, 
-	jp.kobryn@linux.dev, usama.arif@linux.dev
+References: <20260609113520.3507783-1-haowenchao22@gmail.com>
+ <20260609113520.3507783-2-haowenchao22@gmail.com> <CAKEwX=NoNXqk6koBYMSjaQaiMfq-dRaBxuFpYdrZyByxs1g0xw@mail.gmail.com>
+ <CAOptpSOHcbOrukxx_u73jhNyHcFNAg+BYKNqWxDcHqTM+k55_g@mail.gmail.com>
+ <CAGsJ_4w+3RYwGqmNvrF9ragiFNW+_mHfooQ5pOwGDLTzLUNomQ@mail.gmail.com>
+ <CAOptpSPseFH14dyyVQrvfLxqjSXFUyhoVg3GXsQh=7qktJ85Nw@mail.gmail.com> <CAKEwX=MjWMTV3KLUDtfmGDM7LiRXNO5au85==SwFqpSBAQ6Wzg@mail.gmail.com>
+In-Reply-To: <CAKEwX=MjWMTV3KLUDtfmGDM7LiRXNO5au85==SwFqpSBAQ6Wzg@mail.gmail.com>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Fri, 12 Jun 2026 10:00:44 +0800
+X-Gm-Features: AVVi8CdgpzAaBDYJRAST7SixLJg9RPkuoLQtYKxFQ_LxM7JE7ehV59Z7Hu9VDjU
+Message-ID: <CAOptpSOHNA-wSqfCsB2-RhM6AzJpn4bzDf4dXPcQrSO9g1tx6Q@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/zsmalloc: encode class index in obj value for
+ lockless class lookup
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E26501C000F
-X-Stat-Signature: r3k4dxgyws338jb9jcdn6bjkqtcj9ch5
+X-Rspamd-Queue-Id: 9B00F12000A
+X-Stat-Signature: s7b9epkiwt55d91br75t8chq795bhpwt
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781229474-207050
-X-HE-Meta: U2FsdGVkX1+k+Y9e69Lmgf1jW044mwcKzftJavjevXENzozMwKhr7uVI1649T6YTx09yoTZOQ97pEdRCExm6Jl6Pl8oE5SvyN/AQHGvGNgiul6rSWW9ua1AuyminsnPmwhHg2qtkz6Qe0RD9EBsemxkAReI0ZcFaXBYYoIkIZc19G19TvNulFv2tGAoymWaN9JSYdtMoTxvjLIzW8hOV80Bzjl9xr9IFl2qwDWxrl38hxo49rI8SimIe8p81BsEnL/+19GGjWZ/I33a4URCzGc/rxjVQYFgHuKMdXzZVExALvCfBrxBiIwCelaD3LNxBjBjA77Mglntn4TC3+4eqfr2edClsto1IEppEucB1/nhFzXftnwQ0mQ/OaGh5XDBYMp1U3RoU44hewVdYVrTGJQYkF7pjmHKLZIYNXXkMxMXxhN7cNNI3gFv651qJyhS02AI5qOg1c4P/vXwQXd/hJtsHDVdw0sD4+zIhYVOdQkD2j5JwSJI+vKgrA+7kyZL1cap1XfygbKzU4JirXaQHXSscSuaKvs7U3yblrR+WhR/WV3c3E9hdGjIz8cmKfJK1iI+OYU0qg8oUkOlb54aypwLz4fX0bND1Ac0ZoS7UFU/p7xTDsmQjfiAijGLs9NWoyao/I7xSRI9iOzk8deEYGst1mtUoo0BIZxQTWxyvSfacOUMVZIJawJPIrCKXo144HvHrXwsjaVXXAfpQa4OkkTazjjzsV+s9NuLuscTP7YSBSqHqDpugd7EJOwaM46jD2Den4RwD/VASamuuih4bT10nGyIxzYZ+J3G9TuVNN6KSfkarwpiAw0t+JVZ+pl/T5lnkZZ51g9jmGLySBXNVX6175x/R2YGGhwXD6k+12h3j1urbbVh7r3cWNAcDXJ0C3ixGDKpejmPXof9H9LL2magF+N+4veWDK9nSlQB5mhYbWWHPSd21tRcSbK61siyrg/y3UyjrR1uV5SYZtky
- n+DtEl04
- InLS+okFOHGalQ3SG7qK+cFnCrS8RaZIJUjQj9ra3sv0/lFS0GGAsdHlfVLvez9r7SDySLxsvNIXmvWgtAZZB1x8LVb4DWgNe0BbzDXc882P7+TqeVcaZZxj8lIcroWrl3xApyh+gFgN1C33eFNhJOn131o3RqCsUyMay+QBnXgosAI9pWZKhA9NMAgGJq6xkGbC7FXAKFsa5Cs3MpsmL9waFas6Zi/Vp69qpx3hBrOkeZWrXm3NbYFOOa5jOI0y3iw5RRwE3HmIumlDbmkBAB6iuEbHvgqj99v3OMSEAQEB5O/WmMhNKosaG4F2z0VHWyy+ArDoXtRUCwAsdwF8y5g5+nbBHE7AcddD8
+X-HE-Tag: 1781229656-358404
+X-HE-Meta: U2FsdGVkX1+C6lSnS7h05NWWAmvnwfZPBAJjjrLR3d4VUgt7ErfiP4GO8vWUNIHn/QdIuynCv/dVdaCJV7XkW/5ZgYg0nrSnbI8i1QBK8vqzKn5KjccsDmUmnmcbuC1/MlXiqATf49BIpRwWo59G5jzusi/AuJLp3rW8vm2QEr3e4zCqgzr/gUYuA7bQTSmiwLda3VSbtxF8gOwtLT0uRV2eBqMpS88/GNBBtkuonUSXoZp1qbCqBpgLMPkLsqYTfa0ANM933zolSYbk03G7aYBIJ4UKlpxmB/g8pSGoeg6TvFaOcTwKRLELTRvrYizc2xBauTn+hxdbkOA8b3a/21xIj+xozN76IJnUUDj3cx+NRg8/WkvFwtVmHTEON33rBBVkfqcb8EYCtRmlLDoVt8utOXI9s8QKSoRgaXMGsZKBCN7VYuCoGSgwC0Mtil35p9j/TNmACEJM60leiPdSm8jbh+eY/t7UcsuK0P9WBHIXZwki59aOjMQIdujiHxg9SaR870Vkj/5itPJnp7LuGknEyOCgchvY46beiO76KyhPDkc816/02AoD+srgSHsjNvRocI/ZbY7cHnd6zdX42wo4vfiovPDCE5OshB1H/kSxAGKgOJaAX7moUQRpJlh2Xa2SnOQWeEqZBIORK9MSIhIeeii4ydMNyqyfYjbG6xn0CdugZhjXL/P6ySJ/6uC3bt8SXk6uDN7Z+iR4O1biln5KNC9BmkMsFYZ0AcmahB4TWg4F/UFDjdNrUwslom7XYVC/LieuTKfOd+X0J08LZuwUky2OhQwLogmIXKtoraFGnr0tNhZNsLNi0vlQYDprJej4a/TucF9paebxN9w1k963ouNqifu0RLVOzo1FIFkgDSc03Z67VpQ2GKxnEnqGVk4UR1SDf2+WpuMCWXeEQQydgQh10eE5MO22obZgNNNaOSaWL441rsAM4SXoZqGGKvCUALqUWp7f4BbJlGI
+ eSn3ll70
+ V3GLZV2NDLbxDX61Aln3xY9s09R0qYM7ghQPsS4DOhcznAJFm/eo77qdZOWpCqeqP7i3U54JE6jL91TDb0su15lLitN0l0xsGfHc8J0IU7Fsr6rJmTfAvLyLPt6AmQZOvLOIuvHoWNSTQWS9dWkAe2mhuPiz49SBSSdYSwOLS/T/uCgmPCJ/u4Op0MY0Qh7HJr+o9sS+KmpSPojqZPR5Pg5uiG9i4mx2K49LN0MueoIUVT0cJEexUPyptXNBLXkGF4HAVAsJIsASOMx+C/OpkywpkcTkBWBUelIYtuDDETyXmVXtCxj5h0Xjoo0QLAsDsH1hG3yR6jsYp4kTrAbMnFX9KmE8jwF0X+/E/erklU+lHV0vSulLy+xuIMBjYgRnjpfcOUhD+YZKTGGJk9Exm0oXmjx7GaEJCXnzbxIH9jQ5bRdqBdSgsToHRtI2S8dS6A957FvMj7cv3E3uKwkznPiwebostTyWakDGgy6pKUCl1J6ixoCWe7DfgRQiiAr5y0VJddp4eyW73y1M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,82 +145,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 9:08=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
-rote:
+On Thu, Jun 11, 2026 at 10:31=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
 >
-> On 06/11/26 at 11:17am, Shakeel Butt wrote:
-> > On Thu, Jun 11, 2026 at 11:09:43AM -0700, Shakeel Butt wrote:
-> > > On Thu, Jun 11, 2026 at 06:51:22PM +0800, Barry Song (Xiaomi) wrote:
-> > > > We always unconditionally drain the LRU before retrying anon folio
-> > > > reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folio=
-s
-> > > > are in lru_cache, and use the refcount to avoid many unnecessary LR=
-U
-> > > > drains.
-> > > >
-> > > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > > > ---
-> > > >  mm/memory.c | 8 +++++++-
-> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > index 56be920c56d7..487a34377a7b 100644
-> > > > --- a/mm/memory.c
-> > > > +++ b/mm/memory.c
-> > > > @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct =
-folio *folio,
-> > > >    */
-> > > >   if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
-> > > >           return false;
-> > > > - if (!folio_test_lru(folio))
-> > > > + if (!folio_test_lru(folio)) {
-> > > > +         /*
-> > > > +          * Assume folio is on lru_cache and holds a cache referen=
-ce.
-> > > > +          */
-> > > > +         if (folio_ref_count(folio) > 2 + folio_test_swapcache(fol=
-io))
-> > > > +                 return false;
-> > >
-> > > In your experiments, how much amount of drains were reduced due to th=
-is specific
-> > > check?
-> > >
-> > > I wonder if that data can motivate to introduce lru_add_drain_folio(f=
-olio) which
-> > > only drains if the given folio is in the local lru_add cache.
+> On Wed, Jun 10, 2026 at 8:15=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.c=
+om> wrote:
 > >
-> > Actually if we can peek into lru_add cache and folio_ref_count(folio) i=
-s exactly
-> > equal to (2 + folio_test_swapcache(folio)) and folio is not on LRU then=
- we can
-> > just reuse folio if it is in lru_add cache without draining, right?
+> > On Thu, Jun 11, 2026 at 5:28=E2=80=AFAM Barry Song <baohua@kernel.org> =
+wrote:
+> >
+> > Agreed, will follow the convention and drop MAX_:
+> >
+> >   ZS_CHAIN_LOG2            -> ZS_PAGES_PER_ZSPAGE_BITS
+> >   ZS_MAX_OBJ_PER_PAGE_LOG2 -> ZS_OBJS_PER_PAGE_BITS
+> >   ZS_OBJ_IDX_DENSE_BITS    -> ZS_OBJS_PER_ZSPAGE_BITS
+> >
+> > Nhat -- sorry for the churn; this supersedes the names I proposed
+> > earlier.  Let me know if the new naming still reads well to you.
 >
-> Sounds more reasonable if we can only touch the wanted folio if it
-> exists in pvec. Believe it can improve efficiency more than the
-> current patch.
->
+> No worries at all. I like this a lot :)
 
-Technically yes, but in practice it seems quite hard. As I explained
-to Shakeel, we don't have an easy way to determine whether a folio is
-sitting in the lru_cache. !folio_test_lru(folio) only tells us that
-the folio may either have been removed from the LRU or still be
-sitting in the lru_cache; it does not distinguish between the two.
-Unless we want to scan the lru_cache to look up the folio, we may need
-a dedicated folio flag, similar to PG_lru, to indicate lru_cache
-membership -
-I guess people would be quite unhappy about adding a new flag?
+Thanks!  Since the rest of 1/4 is unchanged from v4 apart from the
+rename, would you be open to re-applying your Reviewed-by on the
+next spin?
 
-On the other hand, the folio may be sitting in the lru_cache of
-another CPU, which the current drain cannot flush. As things stand
-today, the drain only succeeds if the folio happens to be queued on
-the current CPU's lru_cache, giving it roughly a 1/nr_cpus chance of
-working. drain_all would clearly be too expensive to avoid.
-
-So another possibility is to drop this drain as well. The folio can
-be released later, at the cost of missing some opportunities for
-reuse.
-
-Best Regards
-Barry
+Wenchao
 
