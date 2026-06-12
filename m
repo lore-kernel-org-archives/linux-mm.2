@@ -4,136 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD68CD98D8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE859CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 234C46B0092; Fri, 12 Jun 2026 10:12:26 -0400 (EDT)
+	id F09156B0096; Fri, 12 Jun 2026 10:15:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20BFB6B0093; Fri, 12 Jun 2026 10:12:26 -0400 (EDT)
+	id EB9976B0098; Fri, 12 Jun 2026 10:15:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4E36B0095; Fri, 12 Jun 2026 10:12:25 -0400 (EDT)
+	id DCF706B0099; Fri, 12 Jun 2026 10:15:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D83916B0092
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:12:25 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D0FE1C012B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:12:25 +0000 (UTC)
-X-FDA: 84871450650.16.ED1E2AC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BCB344000E
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:12:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGbU4S6z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CE13D6B0096
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:15:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 589CDA0128
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:15:54 +0000 (UTC)
+X-FDA: 84871459428.08.3CF6E7D
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7385180004
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:15:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TsOrCF7G;
+	spf=pass (imf30.hostedemail.com: domain of 3lRQsaggKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lRQsaggKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781273543;
+	s=arc-20220608; t=1781273752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eoeOR964OeNWGZmPS/w3uwI/mwySqgJZ/w7oZHK5+9Y=;
-	b=OlagF5MKuf3NlKPA3IZxIRwO/DkLXPrnj4KEpxeXcQOg0Lt9H3kPQGhDn8xJ6Bjsvifnvn
-	0OohcQCRNn8NzWC8SI4Ksr0rrcGDudeylYRd3VbJxGhPdJbQDiV2fUKlHQo2nZwTEwPq6r
-	EZHPVhoD06/jhJEHCZBLvpTgUpGBpZQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fGbU4S6z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3aqjAT0fRHYdS66UFRNsM8EkSHwMJb62tgtmp8RP6ZI=;
+	b=B3Pn7UPl9QIfDtYzNkAJTTtmXfIKRZUZl6lDKyhXK3sRBYYO/POL2+7flyGF1vwN4mw1rC
+	ioBr8LuSivKtG9qPWMz18Jwt3QaJZAPXIUvClf/0JabxkIRsuHSBtIQ9QtWaFHPQtmVkpl
+	cgoCIrul/EOc/LLKETQL2pGYXM1d0/M=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781273543;
-	b=kJ6a+KwIkDBhfEaflOcOr1e0UegJ2CeG6rFczPuVmD0RpmZ7HrcUFvYlpcfN/rk648zHvc
-	7KTyujG1PTAxkGrAOuErpmlDakjyXxK4KPs0qfZ+cgilYFfIeMjwEto1n+FRRMGRzZYreG
-	6BAWEaAipjJvQe86lTy7lpPSlEF6xXw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 20089600B0;
-	Fri, 12 Jun 2026 14:12:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8818E1F000E9;
-	Fri, 12 Jun 2026 14:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781273542;
-	bh=eoeOR964OeNWGZmPS/w3uwI/mwySqgJZ/w7oZHK5+9Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fGbU4S6zVHiGSBYdoEEFM08WYTSoXrhzVg+2DZjT3EdRQU1Heb8fhc++pWYTKF8CH
-	 KvejKFzNfUDqnK7msxQWG6I0VY6VVVvpIBEP9CwWg8vay6PILfAQjKllOVwKEl8wVP
-	 2/ei2DzQTaLYL/4WqjbTsjJnkQiRmOOLQJs0UDHRSeAwCnsLcwwi2YKm75w+YAjaqw
-	 oZXDA/6/SuJORPsZbX4l3ecep187pdo8GHlr9LNiVrH/BbhBtKxVzHIigrBl8H0Lx0
-	 rcpTaXp75BCwlqMLNVtMYyCtZ2JKSJDPABhqUSUrsQlG3KuQwOlkRzWnoP1WLlMWfL
-	 SS7OEJF4obD8g==
-Message-ID: <e32c4ac6-ec26-47c1-a046-99583d054420@kernel.org>
-Date: Fri, 12 Jun 2026 16:12:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: Make per-VMA locks available universally
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOl?=
- =?UTF-8?Q?g?= <arve@android.com>, Carlos Llamas <cmllamas@google.com>,
- Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
- Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
- <surenb@google.com>, Todd Kjos <tkjos@android.com>
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
- <20260610230411.617DD5E7@davehans-spike.ostc.intel.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260610230411.617DD5E7@davehans-spike.ostc.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BCB344000E
+	t=1781273752;
+	b=umEcS/dWe7wQsB4rmdMtRTTtFAQS9UJg3VDyT4EskqFSS2y8VqTeYwtQ9/W97VhyDRGW57
+	ewubb0TYhQck/61lhKNvJ01falq8JMH/Gi+Vt5d56u4vcL/OJ7MZB2i4nnP8dXE+gJxyC4
+	RPcjwCkM60PwxLZCCv5ARCG/Z+YslQo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TsOrCF7G;
+	spf=pass (imf30.hostedemail.com: domain of 3lRQsaggKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lRQsaggKCMYvmowymzns00sxq.o0yxuz69-yyw7mow.03s@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef616db45so815159f8f.2
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:15:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781273751; x=1781878551; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3aqjAT0fRHYdS66UFRNsM8EkSHwMJb62tgtmp8RP6ZI=;
+        b=TsOrCF7Gg3NCMVAino21MhyxMTgkT2ZQAK9BK9CGs0LEgdrAU2NS6iyhdTX7E3iNvl
+         1/tG0qLchOugQ38ii08BOdObObBX7HznWp8kCx/bSOHj7X28I9wpB2Qe5zF/hm8/rEzq
+         D4S4DYllrFmnL4YNQQMQISosMl8FD+g8xlvHKnZibXpb7h75e9UL3Lg6IgK53D/JyyQC
+         6IbZyryNkBl/Upq+IhgiphwAG3tJ5Hba9/DNTp4lEN017lnlFAt9PJOuDbJuTVxdRabp
+         xUMyb1TcZZe9oYzBr/+H9aUV5JEDFkbWO7z3f4tbiMM0zs6Z2O+DH/o8jni2gZemQnlx
+         JpJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781273751; x=1781878551;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3aqjAT0fRHYdS66UFRNsM8EkSHwMJb62tgtmp8RP6ZI=;
+        b=bfwBzgVsJIvbGXoWHjFqRp3yVu9NjgdFgJxUYrtabcvHxXyNDVRgtwT84RnHHBsiqz
+         iqdwMMxEOHfzCFQZBmJJpdXxMxOBS/dYBdSOfRRM+qMM5iTOo1meVqNTrfvpG9NubFy1
+         H6He4Tr/RIjhJ2eAD+t5rgpQSHxdEgmPjfx/KzfSFLGZBmNUaxn75VhLVqog97iyUZZA
+         HZtUIhDadT83/ASa6aXLBwnxO1Lw3wk7ehbf21BXPurvDTH3n+tRtH+hrkW/02jtN2ph
+         RAN5kh71t6N29LsG6mX72M8NUs0KiL3KGsbIYa2Qn7JegzXqb8/yVL9HIbBNl+6urxBl
+         9UDw==
+X-Forwarded-Encrypted: i=1; AFNElJ/8NJGpE2eRRS24qlZIm9eqHXkxVjkNfkLz9LS1yOySrB661WRK/TiXjFo4Ne9toYuSTEcKkVnhiA==@kvack.org
+X-Gm-Message-State: AOJu0Yx3I3VtZNuRmrClAhujglTOc7daedAuBGcq21O1qpWWUnsEWIqg
+	vqYzcB5uUhFS96uD3ipRnk4NhGUjiHlYy8+4OXsO349NIhZMX8ttSF5VuA5pltav4yNsarlF7zS
+	NZ31DhwWEZE+Fcw==
+X-Received: from wmpe36.prod.google.com ([2002:a05:600c:4ba4:b0:490:1b6b:9818])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3586:b0:490:c024:2ec8 with SMTP id 5b1f17b1804b1-490ec339ec0mr48700225e9.0.1781273749232;
+ Fri, 12 Jun 2026 07:15:49 -0700 (PDT)
+Date: Fri, 12 Jun 2026 14:15:44 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJAULGoC/x2MQQqAMAzAviI9O3BFRfyKeFi1ag/qWEUE2d8tH
+ gNJXlBOwgp98ULiW1TOw8CXBUxbOFZ2MhsDVthWrUe3LtFFVpVdNFxmO8KmCzVRwzSDdTHxIs/ /HMacP0vTMpljAAAA
+X-Change-Id: 20260612-gfp-pessimisation-b258a4bb5ebd
+X-Mailer: b4 0.14.3
+Message-ID: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
+Subject: [PATCH] mm/page_alloc: drop flag-conversion "optimisation"
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 7385180004
 X-Rspam-User: 
-X-Stat-Signature: tarqhypxroyyg97dieyoxfnmos1tje1w
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781273543-259530
-X-HE-Meta: U2FsdGVkX189hineKOcpz/5BYZpbDQ4UK5Vx7Lr3BKx5/tD5wlYTZGj5+FDp1Xwu1tVADqdgMpJrrVTCn3Yem8tx0Oj28nIlml+lPYaLSxptqesHBjf/I0rziIHXuqsrBXYdCtSOLZpedfCWw9MklYz11Ol6eA4knibURyl+5yW0saBj97Aa3IA49IdWr4aXArjJJbvpPlgcj6sE7fyPnElepKJ2XazRjaMIJd3kZK9fohUOBChR8hP3D9+UgW5M5ifEZJrjZtCm/vpeztPwDYiBphElz/YotVfaktRb5XlsJtVrqUjN5+1/vVPW+Kx1HY2lkXnp8zNqTam6HipLqToa2+Q9lkLODa6A9MYKHsDtlV0wOK2UmfPXNWN/8TLnXCLTz2+HPvPPGRrRRivu//RQNxDDg8VHZu6IoWnyXn3/ZTvtKd+yu36wrnf+zMJ/Arom72gtyciB7JWWJvbqKd7VDzsU/7DnP/zbS7Qph+TFwAccsntbRs3nbHiBbsdeQpy0AJZDxXcb04dVbtUI0jG/EBC1RVviEpW4XIO8Qkjb+WE/2/X6Y0GpLSfxPCy0wB10Z30VdUXSbauC4fVPPztyXrVSgIGjjkNqN+rVtA8ZAYQIfs2j6NG3TkYnPpeNdNxQo3+neSQr5mrmq2XX0n4OfFwz2mWi5WA85xwvfOfp6desW1r7A06soNOyCzEoym1rC6U/N/KHDluFKoi6um/aERm0/Xy2Uav22ekwpTeAP4QwBX8O4ntBIlxw30XKrvEztVk/Z2gqipHMCvNNCCJYlNfi8fb8ISrU6eUFqL5Mlplh3YPYxKCcUsQRRFsNUSnbkHUeJFwwmulyNwlea3lOkXe/dUQyWuZS+q7qlJTITTRtG7Ec9ejBn9Tmc3HORhM2EYaiWhI1DY+BF6DleuQpgTcQ4dsGWIn4CDdqcg8Gb9vk1dq7UorxZJTEGullwWyrd0yGFfQmOuDp5B1
- YLUSrTR1
- fbGbpiVakonpnZYRfgzgYfOfrkmDuLm4FC41G5qbWFm4ubuQNjn3++mRp0brHKTqYx26vuHoR4G2KkWthya9IbNIj23pS3KweOGH5cTmXcl9Rz91ss0BYCZMvTG9Lu4ldc7vZ4LKm/PY2iB0MR8fRCN1EoioFRpWfVNyQ2d89nhEANcyohUj+UztUTSutIRfmoY0r71M2RpqxxCROV4zEuh/nYTnfpVzikRSESK3/+/gJ2Vfm7y8q8z8AfO+lCUcXBkmR
+X-Stat-Signature: 3zkn16hhpcebjgfhhpmrrp65cit4hnq1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781273752-435181
+X-HE-Meta: U2FsdGVkX19FYkTPQkugbX3a6jHLEttjSTD+3yG9O400kPdQvB048NNoeQFokmy5uIGsmWgX1eoVlRsRjw/76cHEzFldsHQfMQG0PzjolzRghidY+pI+ojlM6mAmuKBWTTdtHZwvVXo/ImOR7vD+2nJ1jNcbgDl27QA/HyzBzJwEqj2x5/iMez6sdou7b8nVO5lBGcjTk2kxEeOHI43y5nBTQ3LQyEi+qlczPpWjuLUdc4D6Z0Po0JoZOMrleMC80ZrYJB0mXeffTSkZeP/Fig2DxdwAaHePLG8gyWzFlioRKM1sF7k5ECBPMoIlDtzNd0+QB9y9pjv9Zvt4xGB6xZbyYmkF8UuG0F5B70fLG5uMuEY0h5UV3OCNKp0EoOjUu7Py3mqoGQQlFw/tz+wdbjN603QaaVLwQQ9NsjAEJcW1BBUNDtAN6UHdq80ryU6GRZPX1UsZYWp1Vc3ml8dsu4RiIIsp5Hfo2I2eaCV31ucUVp8oVjBDvUUKojv8elwZpVTaxQ5MuAxTmJJfCWLnsKP+eKI54i+6PtJb1Ze/CzxpYommb7jzZ2bW34c62yx1hJguBBhRjWP1vbRIONdR4vTHvyKmywMvSkw9QZ8EdJs62wZKBUnmTvQWM3eJB1VJlyBinPMUAr6q9LanX3AjMKcaqQJqrQk3FT5n6vvvSwX0joaDlC28a+CaI2JKMiRGiBcQAwrQjV/YXoA4XJ+Tety2Sx/uzgh/HmDCBm66YCOJZysKRtrF/RoIF/qKnSfPZ8XD7Z2cdmkfc8WmjTXic0Wn4B7UR3lk0gDMjFYqui1erRsPi3bKcoO9Sw+d1HXiGjUOOF/0+yQgaCk2pHIdYTZ7SDe8A5dgmAtU72cDcT6XckoP7SgzB2/iaPG2SOMCApyJUvRoR1mxs2hyXy3EX0i3SE+hRCS+31k4zVYaFxLU31O48BzBcYV4Q1bvVoLSy2EPr2SFVj+2tvmq+Rn
+ bGUL98Av
+ KA25D9NAT60LBWLJ0/Ftdq5Hoqe+p3BlfvhqVTPim6RJECu89qHP21JGuwwP/sgTOH2ymnpTFdtitGrce1sTQ44zh+3CV4deUZr91KCJxjfqqk8E+cbDSIkYN4jf01vKZHn6uO6KvPY9mnLynmMvRea6rfd7E7/f8TcWccCYqnv7379850EyIvTSTB3N5bqvsxArfXY7t4E15Qlf8JaY2WHkZLPl+yw+T05UMg8Z5dEKpttV1NTf7zzlmRLCnQUlY1UdezPxjMnXqvieRxR+1D5lccpYGKRGNvfVA3qgnFBjSjrPw7xTTNSG4CEjK/7uEoQvMYCeLBTy/TuN8eOWSJLc9OY/Ur8qhwF2s3nqHe6l/SZUsa3y1bb2c70z3Uh1uoPx72owhf4iCcGxESsD2zpDWyiHaZ2jYcVUAgeSTPaqArJPUuH1OZXorzTaK4VCyXG8VtRwNf7asiG6uoVO72z829jmlLrIiVxoFfwBgaSYcfYmqSXfWdryD/R/g1Oj4xIAfPUAC//5JJAW+6HLJcBqKbhCZjyiMMJ6UNfAxlNV34T1ZDPlFAdOPLJMqmDt99r/6j1S0Ybx+oWrvfwHoFBiTdwsTmO23AfELp0Ei+UqKVg79QD0lwPgqtjJ2kIXXuVyiCBtk1bvkFm7gIpNWOQC3j8qTjjQdJyIf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,42 +109,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 01:04, Dave Hansen wrote:
+This code uses flag equivalences to try to optimise conversion from
+GFP_ to ALLOC_ but there's no clear reason to believe it makes things
+faster. Even if it gets rid of conditional branches, it just trades them
+for a data dependency.
 
-Not a Rust expert but...
+CPUs are pretty good at conditional branches. But, in my GCC x86 build
+it doesn't look like there are any branches anyway, the compiler found
+some conditional instruction tricks. (Caveat: This was extracted &
+annotated by Gemini AI, I did not actually read the disasm myself)
 
-> --- a/rust/kernel/mm.rs~unconditional-vma-locks	2026-06-10 15:57:54.051368539 -0700
-> +++ b/rust/kernel/mm.rs	2026-06-10 15:57:54.078369499 -0700
-> @@ -174,7 +174,6 @@ impl MmWithUser {
->      /// When per-vma locks are disabled, this always returns `None`.
->      #[inline]
->      pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaReadGuard<'_>> {
-> -        #[cfg(CONFIG_PER_VMA_LOCK)]
->          {
->              // SAFETY: Calling `bindings::lock_vma_under_rcu` is always okay given an mm where
->              // `mm_users` is non-zero.
-> @@ -188,12 +187,6 @@ impl MmWithUser {
->                  });
->              }
->          }
+Old code:
 
-Think you can remove the { } as well (as that was the scope of #[cfg] and
-reduce indentation of what's inside.
+        ae50:    8b 04 24                 mov    (%rsp),%eax           # Load gfp_mask
+        ...
+        ae5d:    41 89 c4                 mov    %eax,%r12d
+        ae64:    41 81 e4 20 08 00 00     and    $0x820,%r12d          # Mask both flags at once
+        ...
+        ae6f:    44 89 e1                 mov    %r12d,%ecx
+        ae77:    83 c9 40                 or     $0x40,%ecx            # OR with ALLOC_CPUSET (0x40)
+        ae7a:    89 4c 24 60              mov    %ecx,0x60(%rsp)       # Store to alloc_flags
 
-> -
-> -        // Silence warnings about unused variables.
-> -        #[cfg(not(CONFIG_PER_VMA_LOCK))]
-> -        let _ = vma_addr;
-> -
-> -        None
+New code:
 
-And here you should leave the 'None' as the #[cfg] only applied to the one
-line below.
+  For  __GFP_HIGH  ( 0x20 ):
+  It uses the Carry Flag (via  sbb ) to conditionally add  0x20  to the base  0x40  ( ALLOC_CPUSET ) flag:
 
->      }
->  
->      /// Lock the mmap read lock.
-> diff -puN tools/testing/vma/include/dup.h~unconditional-vma-locks tools/testing/vma/include/dup.h
+        ae63:    83 e0 20                 and    $0x20,%eax            # Test __GFP_HIGH
+        ...
+        ae6a:    83 f8 01                 cmp    $0x1,%eax             # Set carry flag if 0
+        ae6f:    45 19 e4                 sbb    %r12d,%r12d           # %r12d = (gfp & 0x20) ? 0 : -1
+        ae80:    41 83 e4 e0              and    $0xffffffe0,%r12d     # %r12d = (gfp & 0x20) ? 0 : -32
+        ae87:    41 83 c4 60              add    $0x60,%r12d           # %r12d = (gfp & 0x20) ? 0x60 : 0x40
 
+  For  __GFP_KSWAPD_RECLAIM  ( 0x800 ):
+  It uses a conditional move ( cmov ) later in the function to set the  ALLOC_KSWAPD  ( 0x800 ) bit:
+
+        ae72:    25 00 08 00 00           and    $0x800,%eax           # Test __GFP_KSWAPD_RECLAIM
+        ae77:    89 44 24 30              mov    %eax,0x30(%rsp)       # Store result
+        ...
+        af2c:    80 cf 08                 or     $0x8,%bh              # Set ALLOC_KSWAPD (0x800) in temp reg
+        af2f:    45 85 c9                 test   %r9d,%r9d             # Check if __GFP_KSWAPD_RECLAIM was set
+        af32:    0f 44 d8                 cmove  %eax,%ebx             # If not, revert to flags without it
+
+Testing with a modified version[0] of lib/free_pages_test.c (adding
+printks with timing)...
+
+[0] https://github.com/bjackman/aethelred/blob/2ccdc84ef087c2a631914f58e106e99e19bd3b98/page-alloc-test/page-alloc-test.c
+
+Old results from a Sapphire Rapids consumer CPU:
+
+[   67.157118] page_alloc_test: Testing with GFP_KERNEL
+[   67.157122] page_alloc_test: Starting 1,000,000 allocations...
+[   70.704446] page_alloc_test: Completed. Time: 3543002 us (Avg: 3543.00 ns per alloc+free loop)
+[   70.704456] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+[   70.704460] page_alloc_test: Starting 1,000,000 allocations...
+[   70.944672] page_alloc_test: Completed. Time: 239980 us (Avg: 239.98 ns per alloc+free loop)
+[   70.944675] page_alloc_test: Test completed
+
+New results:
+
+[   70.079015] page_alloc_test: Testing with GFP_KERNEL
+[   70.079020] page_alloc_test: Starting 1,000,000 allocations...
+[   73.669396] page_alloc_test: Completed. Time: 3586954 us (Avg: 3586.95 ns per alloc+free loop)
+[   73.669402] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+[   73.669405] page_alloc_test: Starting 1,000,000 allocations...
+[   73.905084] page_alloc_test: Completed. Time: 235496 us (Avg: 235.49 ns per alloc+free loop)
+[   73.905086] page_alloc_test: Test completed
+
+Seems like a wash.
+
+So, drop the flag value coupling here and let the compiler and CPU do
+their job. Superscalar CPUs are pretty neat after all.
+
+(Used AI for the disasm but the rest is all manual).
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+ mm/page_alloc.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f5..9e1949ea13a6d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4478,22 +4478,16 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ {
+ 	unsigned int alloc_flags = ALLOC_WMARK_MIN | ALLOC_CPUSET;
+ 
+-	/*
+-	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
+-	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+-	 * to save two branches.
+-	 */
+-	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_MIN_RESERVE);
+-	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM != (__force gfp_t) ALLOC_KSWAPD);
+-
+ 	/*
+ 	 * The caller may dip into page reserves a bit more if the caller
+ 	 * cannot run direct reclaim, or if the caller has realtime scheduling
+ 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+ 	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
+ 	 */
+-	alloc_flags |= (__force int)
+-		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
++	if (gfp_mask & __GFP_HIGH)
++		alloc_flags |= ALLOC_MIN_RESERVE;
++	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
++		alloc_flags |= ALLOC_KSWAPD;
+ 
+ 	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 		/*
+
+---
+base-commit: ca2351ac6da277a470d4fcf122b53267e02b2716
+change-id: 20260612-gfp-pessimisation-b258a4bb5ebd
+
+Best regards,
+-- 
+Brendan Jackman <jackmanb@google.com>
 
 
