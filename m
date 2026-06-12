@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C489CD98C7
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Jun 2026 23:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C0F1CD98C7
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 00:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FDD76B0005; Thu, 11 Jun 2026 19:00:57 -0400 (EDT)
+	id 499536B0005; Thu, 11 Jun 2026 20:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D6076B0088; Thu, 11 Jun 2026 19:00:57 -0400 (EDT)
+	id 44A986B0088; Thu, 11 Jun 2026 20:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 712376B008C; Thu, 11 Jun 2026 19:00:57 -0400 (EDT)
+	id 360786B008C; Thu, 11 Jun 2026 20:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6320F6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:00:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 243726B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:11:27 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDC3DC2C0B
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 23:00:56 +0000 (UTC)
-X-FDA: 84869153712.15.8A47F8A
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 055BB1C000E
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 23:00:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y+WxwI3i;
-	spf=pass (imf21.hostedemail.com: domain of 3JD4ragkKCKUFQNHJWdMQLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3JD4ragkKCKUFQNHJWdMQLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B5D9165AA8
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:11:26 +0000 (UTC)
+X-FDA: 84869331372.15.4297C71
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0F656C0004
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:11:24 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBQATIv3;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781218855;
-	b=u0YVCT4CdmlfJrwX5s7NZKkgqtaHt6Y5vm48o19HB+PfiehPBeUWA6+JXffN/1f+KRwcKB
-	YQs6T3Q++3XKk+sD751bg6Yjb9/4vL2kn50Ze/I8FF48ToQvwQ2uMWKs1q543sW9Fp5U5J
-	fopWPGAvx5Uwk4kGLZ7DUw5NJ4UwxAo=
+	t=1781223085;
+	b=Dr/f1Z/pX/uSLsP20Mvi8KJittqI1peQiXniOlvpzMqtctGaGERpR2cZ0pgKcRYYHnh/OB
+	avMpQN0kCPpud2f9wW89sZZ3IUpBdXcr8hagI5e4HXDuiG54biooeAhCFSrx0lbGpJKZoK
+	xlxeeqvjeIYlb7D7U8paEoE6jV7rQJ4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y+WxwI3i;
-	spf=pass (imf21.hostedemail.com: domain of 3JD4ragkKCKUFQNHJWdMQLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--aliceryhl.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3JD4ragkKCKUFQNHJWdMQLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iBQATIv3;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781218855;
+	s=arc-20220608; t=1781223085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nb1Ioaj4F6x+XQyVE0Qd1l+h3NgQ/NDHANFncCV/m9A=;
-	b=DG7NECUXtF5VUgtRhALC+FN5696brzZjzR7iBWHXE/8nERuOU0FNMqOmDc/w9Z3hUWuyGM
-	TwpaIwSZN98q/cLEhgBlTFNDf9hG1jt/zfFnsAehv7lYra/YwdQVrIEICEqQB0kQOQgAsA
-	QGxUV/VGuIicsC5ntNgwN2O/bOUCroc=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-68fa01a88f8so252158a12.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 16:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781218853; x=1781823653; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nb1Ioaj4F6x+XQyVE0Qd1l+h3NgQ/NDHANFncCV/m9A=;
-        b=Y+WxwI3ir5Nq+J3URbnrbPhBj7ctbcxI7f3vEstj/lCJsmMU2OV0JQ0F+yEUhO80XH
-         pkeQN6wZUntRwsgKSscoCKLbqxOir2iuGWs80o5OldgilMlZXThmvmS65IA8sxIhyan3
-         9cvum9mqkKY+AONEPCdmAZayStvGjwU3n1oeho6pSJnKmd9NpSJMDRKAt+gSQefSPj3F
-         vVEQeKEQoAsi+PA6Tbcg4Ayyh4ZDvsKgwquxMEgXpGKYNtn1SezevZtcR6EGQl4Bqmq/
-         MSCRMj7tJRiB2zgPjntRAM5aRXNYWss9lg198Av8NbNpXlDLmmPhQ2XEzQkXV8Ab5qKV
-         UHrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781218853; x=1781823653;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nb1Ioaj4F6x+XQyVE0Qd1l+h3NgQ/NDHANFncCV/m9A=;
-        b=PTRraFALPP5XAASD3QzvN/clYg5HBo7vBsEiE6HFmhujRm+N08ytFWrgy+rLaYC4fJ
-         bFWyn43QyeRo72BPlHZgHZXOff2Uz8jsms9IXupUmUHF4TIgd3O+stM2/LjhiVsBYfJX
-         TxQbuIhnZQhxkjAV4At7pjDhUTJfUf3lPVNertVS0rgwGZHbgu55Wi599hnQ9RZ+IPqt
-         ei6L6h0yZRvgIeCvkifZ94FMeVWcaWOJjQsV7CwJ1tCP/hCXcGu7jdbM4JSjQqsTYIZy
-         gO6zw/bKke9Ml/c6RJj87MYxy4ZiC7AT+ZPQu3bFa3QbJc6sgZ53KNPj9pcdsDppRl7O
-         jtig==
-X-Forwarded-Encrypted: i=1; AFNElJ8M2156pMu+ZMpW9oJEghvN87U9ajAuok5+zFSYH6/vA+Q6aJVKJSrWFwpkiqjTcvk6A3Q2LoWxRQ==@kvack.org
-X-Gm-Message-State: AOJu0YxzhPsDmxmoHaP6gVM4EFZ8gdRfbE12rmbJqdXCLvSzKK1AGkiq
-	YCsJMzjxWqJjpTJipFYme8yZTpr9fep2NE1U/0VU50pLZNC3tQqXW3ATBqA5plb1P1q0RdixpGC
-	o/ARFl+jnWNgFWr3/rg==
-X-Received: from edup20.prod.google.com ([2002:a05:6402:10d4:b0:68d:af88:b33b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3222:b0:68b:a17a:f368 with SMTP id 4fb4d7f45d1cf-69377c11e90mr87675a12.0.1781218852922;
- Thu, 11 Jun 2026 16:00:52 -0700 (PDT)
-Date: Thu, 11 Jun 2026 23:00:51 +0000
-In-Reply-To: <20260610220905.99860-1-enelsonmoore@gmail.com>
-Mime-Version: 1.0
-References: <20260610220905.99860-1-enelsonmoore@gmail.com>
-Message-ID: <ais-I1P55RoHwG6h@google.com>
-Subject: Re: [PATCH] maple_tree: remove undocumented CONFIG_MAPLE_RCU_DISABLED macro
-From: Alice Ryhl <aliceryhl@google.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 055BB1C000E
-X-Stat-Signature: upsx5dpy8baqads8ggkzspkb4mzuw33a
-X-Rspamd-Server: rspam03
+	bh=9FQuoOP0H6GOvfWs9acfWr7SdBLQ4JX5Rqqd4VQi5Lw=;
+	b=QeyXTkUKyHLcDVjwGgaLyrCqD3KZ36CxF6rmHJ3BhhaWsIweJ8GMMPx+0OQOpCRWv/env1
+	IuKwsYZxTnB2fyzI+w0SCP7nfFvXeu2rEbLoPUBVCeWhZO2p3LRSchO/3N1cz9A2YMoECE
+	UJdydZ/LU+6j1ZAZHplmePmaGrYhw2M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5EB296020C;
+	Fri, 12 Jun 2026 00:11:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF5E1F000E9;
+	Fri, 12 Jun 2026 00:11:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781223084;
+	bh=9FQuoOP0H6GOvfWs9acfWr7SdBLQ4JX5Rqqd4VQi5Lw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iBQATIv3vlXRihKYdfldGfgFMv3KTGZQDg+cVNsHCAPkt8/QhNCK3Kvz8PSt1DZS/
+	 pvgyAe0YYxih/Z0qD1iT5pEvMwTYrVSwSS/7+2G1jbktuxBixbp72f0LNCiaIaEVVT
+	 hf+NlFKBtKU4p7ETcRjV5APBRdQ3IT8oVGnEwYROsf+bVc1D9AUjLSkSCHE/WqSkYW
+	 /UrvwvCN3+/sPFgt9JHri3oNwSMGfrKvyQdhsrK0qRFEy+xW9VOe7ObgKhEgdZ2jPP
+	 mthIZENeGtmTWkVjQzG8yf3t/xLQZk7iyHin4XOp5J/TX399Yg29NHKvxefRK8orl0
+	 2ouiAUXN5i70g==
+From: SeongJae Park <sj@kernel.org>
+To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] selftests/damon: add regression test for damos_walk() vs kdamond exit race
+Date: Thu, 11 Jun 2026 17:11:21 -0700
+Message-ID: <20260612001122.27512-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CAF+TLO2PX71_-9nKBEAJ50+NpjNkgipig6=9OLsvbgZtqF2yew@mail.gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0F656C0004
 X-Rspam-User: 
-X-HE-Tag: 1781218854-261906
-X-HE-Meta: U2FsdGVkX18nkNz4UaOHnH5yEnNfB/IEtkyfW3v/W7DN7kfYLFxKCT6GRDOJKfsmftw4vKWdk5462d4nv/M7Y658h970/p5xf9uWFXMePgaEJihRQiuH/XoVXXG3EvAVIO1JNXOdAFwMdvEriMBtD8aXSyK0EjJ2tk50zrqluOhtdpWj0mF+98A3oY7MCzmi8ZSS+C3THtrn+wRHUPJHWw6EL6Gvkkf7FnK5idNUL35K8E7PkU3U16TIn4u6CgSIrSXaApP/GcSP03+ryWhf+GCsA3sViI3aWhkjn94gIaDZHx3lVW86OPZ6gcEclChL+JWRP7oi0B+2DTwWGqCJSAnbDUD7Nvs4blf3v0o3kCyc+HB45uGn5gKTxyoKTK3HwN6RlKkAgG4lO48lWy0/FOCbWVEIGPSZ+aAI69/IZO+QJkj3m3rLc+mUlSaTAOH4te+QFgZNIEgRBu549scg4dMDiTwOnsfg5Ze0B7PIVHtbn0RbRphmhAve1nSNHHpqO//vjZDo7qlmqUocDaoZtEZgjhdrfR5WLVfCHACJpq/ejNVjwc6GRAgJuiohc/sKNvfpFhrI4D4MyvPcBDg7+5g5d7g9lb4u+SNsDnGCbGZY3u/E98GhCKY8Z6VzaKMLpDKTJsjyEcoDVdXsn1BW7WZbI8eRDE65434HQhfN+I4YK+VBkw2NmPK9Zcpv5ONXRP7l0fNg56jI3sBeM/eObzhyVd0M7BZa47RBSmGK2gZbGwdYZ/MX4HFmd17nv7m3Ve+A7wHxNx4PXirhd8EQ7cyMyDQ5KQBLy6Fr7r5/f/KPoEal4V8qQjj2myr4CVrEMKVC8ZRVThqxOHJR4P7sGxTm4NBexOUPrCZwygdeHy9d/GFFjfJC9+UJhhVk/FgbFfD0iIkv4c3NQO/4ey4LHrfDhfPAbqnu9Xf7PFEQ6pjF5apX40E9j1zm264Wyfu9kA22bt1XmBQLTjv3SQw
- pjO6W3pu
- aA40kasyyhzEH9AIXWHsvCUh+AVDO0h6SsuhdqgP9cJ1I+S5QgnrEmf+X36Lr5DHwik+wDfNG0tghHyVl2rJKQ63z0H08XtvXhm/pp7qsp1qdXlE8b/ki25PCMovXGiCim3SqEjvhKjU5WgvR2yiUg4uHOWQcyB6PuYMt8fGN1wKODNTsJ/Bf4iOl0Rha0QxPoVmd4l36w0G5OYN+Dz22W5PhkXkq4EHqY+sPX4qfvsLwm3nsej7gsiJ9FOVp+/jC31Br6LOPf2SVSGMVY5q6pSRnM103upcbj8aVNLMiA8cvENCZ6mYELS0ht6ar4d0Ufuvs8b1xUo/o+ZjqA8BCVEtrGI8/b/ERWNOsDpHXG8VgiybM+HCPL4XuwXHybfrB7ZNPsWMjZFjrgRqjdalJgJRcsIrWuu4IJKldNejnzPwEsLvnn0ZGTN6cYeWo1aU/FBu9fO/nrLFGwuV6OQM3ou+4Sb5HoaKXpz2k72NPCXD6CVtTsxkJdq9GetBv3rxU3a0sdTjfXpm2YyqxM5zyGfcdu2yDfOxVJ8esbLKU2oT3vy+y0Zj0hGKNNEEOCuI+OA4lnI+fQ+Ccu6rWFwNVXwBF0nwZULNUwFVWKQQAJR/nOP7PpCm4OLtQN1dbdthIHt6vJejEjgpbJ6hI+Are1Ggb9RLFWnqIU7qp1OVjgJCklHgSOUrM/jQwgVi0MVcvc9DPlpBNDH0Gpv9SZBSDQKiH6X8mir7UipjDPWmRASrgoPZ2fp4nR5W0Kwwoyk9D8e8OiEyLmXcnsgAZ9cX5VOxCIqK68BU7D6OZpgogCtKzpSo=
+X-Stat-Signature: bdgqtshduxki53zx16fstnkrgu5mif85
+X-HE-Tag: 1781223084-326277
+X-HE-Meta: U2FsdGVkX19buAdF2Ud3uZWbYFIMYfzXmCuTWUA0ikwqXby6WBJdCnb6i22SMUJABThmzN8+sLzyq1eODL64OoONvvv/XZwv7TsFszUsTj6jo6Jyfd4ccc1CAbqw37boV9lJ46P5IS6uNPw8I3DmVtR8Ns4nFb6Q9ddYY2qQ0+BmEC9h/NImF/C/1U+iREpUNENO+DZzdbCUYToMGY+zFOR7gyRdaz2hFWAPFZzIBbrBrNoZ6dtBWn515h0fclGThbugLaB4gTjJCQsDOAmKozIoEYKcpglLgsTRGCGy+n/6T/NyH2W3iVAF3t+E2CrHhC30GdO1tFS5SljumcnW0r3P3EpFjPGgWx8IyQgVi73a07mhOFGSY0rP2yFOqMBTZ+fXPVCzAAfEy3f8fBnKYGUo/iefh5ftIHndsXXhW0QvcA0cy2eC9/4EBhWo06la5mJg/yuhaDFdusfQtErRV+YR4qmgudsLHmUMmXNL0pAXA5NNQhdmGr/t6UZKcyE/Qiw2oGysBxrLp3ZRJpiOXt/VUZ3R3KdlEwBSCcf+4roNH5wgUbX7lD3AEj6r4xrQgrJ8Zmb1BvAxulQN+5iRf0jK4WFIpF47dQsy3sD0vnlNdwNpJuydSAyTz6E/0vvMPjxPFPwOCAkEyzk656PT0j6A8iVCcFc/0ADLFuUCsudEOZ12GUCZg3V9C64BBSO1O0Ul/VABwa0W4CArH2DpxitavzZUH19mX3XEiXkH5RaMiHYNmi/Elbl7gXrQoykrzsGPtotG/74C/K07s5f38CBS3OoMtT8J6tqjlyAJk8NvhJkq7HfbM36wmDEtV+FA44W0LanTTFMfOK3+o3RGkxe7W8wDLjrnvtPcKDoNPWrWBH3V/HROOIzqGcoE5d/3wLkh7eLW5c5NyyzZDmV6w/srvKAf92CEH/udSh44bp0Dj8ndme0iL+XASpxkObKnAj6IXJQtMI35afHBjps
+ SMBlGMNO
+ naLWEBRZE4DAgubOvac2IhyL7QqV8AAv2P6+g6GIQIDrOldpGvWXaxgppuZoKhx9DylORUenpspG2R6Pj8lFC3MPtdfEt9ZiGhl1We8n6z1uOQBx2PD9uM9UVYhSZJrG3ohcLKEujGN3smTGWB/S43i/N1BJZLGweZMpLjcxxkrco9OtkRrYUSg+0YWIGf4+LV1Nqlu3iE+WhA2KmSke6yTwTBrMH7osnrnrMXfNGlawuqvMvkMTMOCFT4OpdbcqmoX6n/CH/21KrsUh0G0K0Ka6voA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,17 +94,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 03:09:04PM -0700, Ethan Nelson-Moore wrote:
-> <linux/maple_tree.h> consults the macro CONFIG_MAPLE_RCU_DISABLED to
-> determine whether to disable the mt_in_rcu() function (by making it
-> always return false). This macro is not reachable via Kconfig, despite
-> its name, and is not documented anywhere. Remove it to avoid polluting
-> the CONFIG_* namespace.
-> 
-> Discovered while searching for CONFIG_* symbols referenced in code but
-> not defined in any Kconfig file.
-> 
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+On Fri, 12 Jun 2026 02:06:51 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Hello SeongJae,
+> 
+> Noted on inline replies - I'll follow that format from the next response.
+> 
+> Following up on this thread with progress.
+> 
+> As discussed, I dropped the userspace selftest approach since it
+> cannot reliably trigger the microsecond-wide race window.
+> 
+> I wrote a KUnit test instead, added to mm/damon/tests/core-kunit.h:
+> 
+> - Creates a damon_ctx
+> - Sets ctx->walk_control_obsolete = true under walk_control_lock,
+> simulating the state just before kdamond_fn() exits
+
+I don't think you don't need to hold the lock, since this is just a unit test
+and there should be no race for the test.
+
+> - Calls damos_walk() and verifies it returns -ECANCELED immediately
+> 
+> I built and ran this on a kernel with commit 33c3f6c2b48c
+> ("mm/damon/core: fix damos_walk() vs kdamond_fn() exit race") present,
+> and the test passes along with all other 28 existing damon KUnit
+> tests:
+> 
+>   ok 29 damon_test_walk_control_obsolete
+>   # damon: pass:29 fail:0 skip:0 total:29
+> 
+> Since walk_control_obsolete is a field introduced by this fix, a
+> kernel with the fix reverted would not compile this test (the field
+> would not exist). So the usual "fails before fix, passes after fix"
+> verification does not apply the same way here - the test directly
+> validates the new field/behavior introduced by the fix.
+> 
+> If this approach looks reasonable, I plan to send v3 with this KUnit
+> test (replacing the userspace selftest from v1/v2), along with the
+> commit message format and other minor fixes from your earlier review.
+
+Other than the trivial comment about locking, your plan soudns reasonable to
+me.  Looking forward to your next patch!
+
+
+Thanks,
+SJ
+
+[...]
 
