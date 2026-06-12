@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12973CD98D2
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E8FCD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:36:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DBDA6B0005; Fri, 12 Jun 2026 15:08:29 -0400 (EDT)
+	id E76ED6B0005; Fri, 12 Jun 2026 15:36:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4466B0088; Fri, 12 Jun 2026 15:08:29 -0400 (EDT)
+	id DDAD16B0088; Fri, 12 Jun 2026 15:36:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C97A6B008C; Fri, 12 Jun 2026 15:08:29 -0400 (EDT)
+	id CCA466B008C; Fri, 12 Jun 2026 15:36:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 080456B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:08:29 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C8FAA01E5
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:08:28 +0000 (UTC)
-X-FDA: 84872196696.20.6EE7EFC
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AD82B40010
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:08:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Y6r7ytzO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7E2C6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:36:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3810E40235
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:36:20 +0000 (UTC)
+X-FDA: 84872266920.19.F5ADF39
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 219951C000F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:36:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781292977;
+	b=YmHfIJnIl/3qMlzSclgfidactJuZECgvHi7hYAc6XRh+SGlrzB9f9wsiumDM6XWR3UAwXi
+	mJiH2lxUlYIBn7I6GgZiVuJ/+fDkex70Yd7fwu5BqeypynHoF2d0wZDciiZQQER/SI8BlU
+	orZS1PNIY2t462RiGkB2unLZ2NxYvNA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781291306;
+	s=arc-20220608; t=1781292977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s08faKqvDPkMJtxJMkDBvBUzs4ZbUBDPlDmo4vFtWCY=;
-	b=qIRdO1IDWZ1K5dXbTzhqlWNiVDxS2i9eLR6bAE+DstwJ6ldZCMDizUa3Y46UygmGyG2LtX
-	4D2LABXlucsbeoDEMPCQshJeSP3LBca+hwtEZjWiYyLZbR7bwSQ9MeBtmi+1uMwVr94FPl
-	FWwEDaht8L4bkmzw1prbx5K1xDUUpro=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Y6r7ytzO;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781291306;
-	b=NWam8BI5J7Ov4zsgq3R1/IXuSLj7hma9MgXpYCbN2Ay0BkaG5wf2WZ+m4+nt6RzjLX7qOB
-	4WB9XDRCAqFwwpILClecHlfNizg8MZeumckWA4nsU9bt3N2WOhuhpCyO4aL0UtleP8TYpw
-	piZByUm2Smn5mIpY1OS9BeXFVIroA64=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-91587626ae1so151269785a.3
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:08:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1781291306; x=1781896106; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=s08faKqvDPkMJtxJMkDBvBUzs4ZbUBDPlDmo4vFtWCY=;
-        b=Y6r7ytzOPrpOnvUGQiPFTOjI1IubpdGBhknGceKRu8HEXGgzUhbWll8sfcmzMgCFfS
-         UzCiBN9qt/mwtajq6XycrStBp+z5tBaNpFAuyDBqO+d7DKJP5IOlhQa0jBlUm3vvbzmK
-         WFj8lkWU/7KUD7X2NxsYlWBIJ66M+Tn+ojlfZyFwRTfgedhzryERdO35SqyDR9w8JnZP
-         hhgW8w8bKiVyJMLgjTYekA1TLh1wfEtYAMZbtbH5ttrRJLsIbmFjyXQ5KUUVgF8UWvT7
-         htTZxGDdQmROLK6wEN2K7jsrOgYRricvHqNpGw4q7eDaL3LdROn9SiK9nksOlsA8RlpM
-         rSng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781291306; x=1781896106;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s08faKqvDPkMJtxJMkDBvBUzs4ZbUBDPlDmo4vFtWCY=;
-        b=ka58frYJJrOpTvc2zcDzcNlymOD4QbU2x7/4cteZNFGTca9bLhUtBhLFpu3ycZ/9oj
-         rZJGvkbAVG9qp1rwNABP0bOeRoYYLa5GOi8edex4YpVMfRv6l5ROcYL5bL7o69tHOXt5
-         Ecc7q2RAVLWEs/oyr0e3/8zFc/CWEifJTWnNSGzYNZm21qAEIkNXlfw2xXj++jiXewYf
-         DKKtFGbqORHztAE7hzYU65ofAr/sUcmHJeYKEmo67LxKJ/nagFbmS2YVCpUxC50oEGP7
-         zJOhPJx0+26m+Lyj9p4Eigd71PWmFiyHWjxcC74ZK2p86bLZLTMMGjK3kywdGhU/l9qL
-         HV4w==
-X-Forwarded-Encrypted: i=1; AFNElJ8+zrDZtfSA4+OzBJCcf2Eo/kOHyaRj0HLBFGm5Gob5GorPkg43Y6RyQ816aPpwU2kI24dobOTf2Q==@kvack.org
-X-Gm-Message-State: AOJu0YxZvOICBmAXO12pciMUW2bxqWUTgmpp+lgQsj1FWHYv9jLe22XJ
-	VAlgAw5dqm6rQZ3jWPhGnT9VcljWCghJu0Y+oYSQoIZI4qwyUnXH5V1UYYzGeuzbMK0=
-X-Gm-Gg: Acq92OHHZbzGEroinYH49Jqi9FUzQPIByv1yANVgmyGSdTACNLrUWZab360qqsBczBw
-	QzNwNsa66kNGYP8c6Rod73hdvMp11Tc6vEoIKWrOje2NdOGHawh60dcC229+bLrvnhj5UcDWT+h
-	Kv6dQWvoSUIQ1fGjmooLNlijSTEPSVzTzgBDOzJomydwxTGt7WKqCrm0Z6rpfmMhlDpI1lO+X+c
-	oB/IWpWwn0+950e6lxcDC/jRr2UkdNp7TAO8EvBdj13l9JpVlYmrdw8wW+cxMYRggI1RxyoRsjt
-	uNXu9I7LEPfAmyZlQOyngNPEsEsTl7oPQwCN1hxeBo/eICCpRfNcWDvgrQ0Gk0ANE6j4sT39iNv
-	I6zo8vK5eogkxnpnf4uUTOBUfPb2gNN6UuBnX73tB+UobiOkEgQm6BIt6wkNxYaKTYPEfbd2DAb
-	gxbS6HJfw/E10DdmBaTAnjY6iXuDkIADAOmKw+MhJUcxHY5ltY7hE=
-X-Received: by 2002:a05:620a:c45:b0:915:c858:7d42 with SMTP id af79cd13be357-9161bae70eamr627465485a.18.1781291305692;
-        Fri, 12 Jun 2026 12:08:25 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f2d6a5sm291127785a.20.2026.06.12.12.08.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 12:08:25 -0700 (PDT)
-Date: Fri, 12 Jun 2026 19:08:23 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, linux-kselftest@vger.kernel.org, shuah@kernel.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, skhan@linuxfoundation.org, 
-	linux-doc@vger.kernel.org, jasonmiu@google.com, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, ran.xiaokai@zte.com.cn, kexec@lists.infradead.org, 
-	graf@amazon.com, Logan Odell <loganodell@google.com>
-Subject: Re: [RFC v1 0/9] kho: granular compatibility and header decoupling
-Message-ID: <aixXuoCOCZZcBDci@plex>
-References: <20260605033235.717351-1-pasha.tatashin@soleen.com>
- <178083348872.1648214.17778188633648887952.b4-review@b4>
- <aiVp5RlbWRz5VnPB@plex>
- <178091437240.1648214.10761111570005003901.b4-reply@b4>
- <aibYJvzQQnpoN6YW@plex>
- <2vxzo6hjss8z.fsf@kernel.org>
+	 in-reply-to:in-reply-to:references:references;
+	bh=+F2Gklg2ZRHy8aUk5HYnw2ytH0vlpfWGRE0mbWgRvyY=;
+	b=7YVXnaZXDQdc52euOHNlLlK6u6HsPQFL3icvm3fuPl0i8DGAXtf6ITdHFgtd7jjaDAmNqJ
+	FzlO7pNCtFzmm0EkslzrgCt3Ij/jv8BLB6wTf4uxwwB9sCVGybGMhUdxK52qLwyt04Klnr
+	sOJKR7T/5NQ5nybD4x8UoivfFGG4eTA=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gcV9l70Z2zJ4678;
+	Sat, 13 Jun 2026 03:35:55 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 31BFB40570;
+	Sat, 13 Jun 2026 03:36:13 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 12 Jun 2026 22:36:12 +0300
+Message-ID: <abc8acca-5145-4c16-aeb7-4127da234a62@huawei-partners.com>
+Date: Fri, 12 Jun 2026 22:36:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2vxzo6hjss8z.fsf@kernel.org>
-X-Rspamd-Queue-Id: AD82B40010
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 0/4] mm/damon: Introduce a huge page collapsing
+ mechanism using auto tuning
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260612005631.83964-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260612005631.83964-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 219951C000F
+X-Stat-Signature: g6g9g8igsx79g4cu53oo7xm7b18xswi5
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: x6q58y6qo46cq3apdacjhzzq9nj1ga54
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781291306-93049
-X-HE-Meta: U2FsdGVkX18ufd9Rbj8MPlmhz6ycZYKQ8ReyZ5zMushAh6KC6cM64kW1Xz/XZpCDTI7hwJrMwLx1goTkLXOgT1hIEudnk+8NnLNIawzBAEclte2lP5VQ749l6whP8eGjUHwaDAB4R20d/uddOVawV0BcH9m5mJ6gN91ChxGEZ5KSaTMWLXdxhJvjMJ7JY1C2DCWNGgs7a7oOH+d+qK8W7ZWXOUJG12jdh/QcpKYGKZ0tH5AIGGyWigLmMcNi7XXL44Fj2cUuzqX0Tr91QQl/qkF/XX4kpQD+nQOfAiW4bBgPKaJmcrnas1s+z5v0e2gO94qzAdYCtEgUvsB+9EHVFfMXeo2L3h9DTtXbeeiNqG72HkntoI+H7RSw6QxSLkocFJ6vlWgw8LT5tR9awmo1YoJylQVn2SdyokRHRvPnYtHpiuTT6Hc2YmHhlx++sskRvfgDBqbB/C3aSq2bCXp+6rWsf38pC1gjqMfucKQfja/BhKP+zWhR3YX0L28IhcrWPyV/fOJGN/GmPbafJriOjdY9i2n22N29UAytaFqkzdIrwelSUoi9ywmWnDkYUxL3jS9Jz/LK236eJqPUb0y0UHd2tMDzdPH7f8FqHnmR3ECyXuAukGpWwQY5Ff5XeN7UO38RmYfhco1whVD3N3RIN2UKtYE9K52Y8IRhD3UJpf50eyAwferwa4zOVBazNpbVtkOWljW/SIcZlilXP22J7X5u8zi2LMPfr+PLHmGuBTpqIBLYEqCCFig/dQ+Iflz9BUKkJ/satLfZBc0QWsM8FQQGaoM7fNHxgdI+S6xW4kTqPBzU8/H/23oENeORMUxNYcRM1xqjLBXl+xSPsPjnNj2PVEVCOTx0NKJQGcelCD4qigGSBF/AeMqgrg7E8q38ofBvVK/70bwJDKvXQY628VnxQm3I8RnjBaTxkkSD3iBlO/kbAeGvZM//lNVQz7tyVvfW8mRJXrm3vMR4LKR
- OUulm5t/
- yEQ36Q8ofoqCrGb/+2MMAtwegYJ7ha2bcO8Zt7pTP0jB1cDY2UvpdChaa8EBrJxvWC1WFQfxIN4EisEB6f2gN+OUOtjrRKPSNvTfdCzI4+SVQbt8DuSEP7p+Bh4MpHVs5l3SPYFLqBBJTTWmyMobBCVw2zRGoUV3T8rTN8uk0vnnaixamJMgYfxrNJkcSQEMgg0v6N4pZMWpsb10VGK+I+yj15f/pBICyPrzuAO1mpyzZyk1AG9H1qT/IEooLnH2L7T/NlitR132QTwrrLwHz1f2Ug4KRdIygAY9jz+GKGMFBFeD4ry7E3fd2zJHXwsnedb40EEOp6ofISQYLM/VpscmeIqcB/Fhz0uSnyvlkLPS+GHLvQC9njAuHkADMAsAI32WFNcYHg/kd9IUKqETLb7hLgQ==
+X-HE-Tag: 1781292976-583380
+X-HE-Meta: U2FsdGVkX1/eaoFPBYyPn9aoGVHB0A0PDdx05G0c6DhCHEXmUiF68/1a0t/suqUUFe5V8Po3RjHaL2VHWasvvyhnr5fjLj8kGLtfHZglpvCty0XGJIdlLZMHD4sc24DFng4sWM3Lrcd64B2bYvS2yCqBkhuGiWEMNhLnecc9EiUbgBYtibtJ2w0QfBfLwzYXBDJVng8KrbahpVkocteGhdYKoT9xLPwQgusDxpOoB/G68W4/dMP8w2dUyTliMX+NOOweaUsJ0mOXvnghD1xszs3FPr3nbrn3zNU93X1Ql43CwTn8VgGljKmykajbG2P9zl57GD3eWMaaqY1hdEalGQZY+8tBmpdsdEl4iBCkAcsPO34PQGWCoTyxYNxDUdt10uVyjbA7gri1LTwG0IvP3AQtmS0JidbtrUF0hCONIbu16Rkd1mYhCjhq71jFO4uaNZJb1xu1j45x24dmZ1JAg+phTIENJvGm/TOqZSXJkNdkgsBAQ4umzHA2f7Ijsce9tYRIhpqfaTBVZFJhbDq9pTXjIPrCmpNVwWp24Ake2Jdhgm37CUfFJEZDvW2+dxoXCUwqZQ7pd2ie8z2efbsM9KJ7LuGpzfO2m65fBt1KyyBv6JTNBFKPMN9Kb4fBiETZ99NbMm8gqRbenAY7sXGOqRMETg5+lYltCzSiv9rApeNMbbgL/PONB2YeplgHsfnk3R5Wr3tZwh3p/Vek3QFksokKFtVFIet3ee0NYIxLWFzaxxLDBd2Pj8QOIQbcGRiozqBIXwehHd+dBflHWJ8Czj/U8WaL0yK/Uj2E5aS5lrfiyssEbXo/kGHAZTJIdT5LUiRkcIKPlXJyF3w6GV74vf8xmfViaxb3Jd0YRc/lpZ+bYEHRifjM8mdNNctVOAR76W7O0UR3DvZrVM9u4tkXrGFD280B6t+0zX+dL/ow+dcotresYq2jfsoPCMotisrz40JRrlWHBxIJ+kECzLc
+ hDscEo42
+ WIV4xkjawwyOfSnAJ9jewM8MG8W7tEASxUzLRt0zxzWEACbP18NU+doZSEPPmr+P7E+sBhZOaLcAc/vCrCvM8XpSw20hSWvtiYTd7Nvn4h6XojBLzbX1puRTm+APnY4XYkFDZbnDVgg1OEUfGAcBYzT2ALSKR6WFWx5cI5Y9e6pn/n1Wzj+FS7+UxDSLCupxVU00jK6Y+AChZ9p61DJuvvfeaX96QUKYiL6xIrunv7LCfq5ZlyfkLLl0LnHn+O6aPuk2uDbbnpakzQol8KOn/D26jkkf8XxF2dKRo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,155 +94,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06-09 16:28, Pratyush Yadav wrote:
-> On Mon, Jun 08 2026, Pasha Tatashin wrote:
-> 
-> > On 06-08 13:26, Mike Rapoport wrote:
-> >> On 2026-06-07 13:43:09+00:00, Pasha Tatashin wrote:
-> >> > On 06-07 14:58, Mike Rapoport wrote:
-> >> > 
-> >> > > On Fri, 05 Jun 2026 03:32:26 +0000, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
-> [...]
-> >> > External users only need to include the headers they actually use. For
-> >> > example, LUO shouldn't have to pull vmalloc or radix tree KHO
-> >> > declarations, and memfd does not need block.
-> >> > 
-> >> > From a maintenance point of view, it is much easier to catch ABI
-> >> > changes when the file with the appropriate version has been changed,
-> >> > and most likely the version of that file should be updated. If a single
-> >> > header contains compatibility versions for several different data
-> >> > structures, it is easier to miss the correct version update.
-> >> 
-> >> No matter in what files the definition lives, someone can forget to
-> >> update version and we may miss it during review.
-> 
-> Perhaps we should have some tests (maybe with kunit?) that can catch
-> this? If you change the format, the test fails. So you'd have to go and
-> update the test, and at that point it should be more obvious that ABI
-> version needs bumping.
-> 
-> [...]
-> >> 
-> >> Sorry I wasn't clear. I agree that kho_vmalloc, block and radix tree
-> >> should have their own versioning rather than rely on global KHO version.
-> >> 
-> >> What I don't like in your proposal is mixing versioning of a component
-> >> with its dependencies.
-> >> 
-> >> I think that versioning should be completely local to each component.
-> >> LUO should not care about kho_block "on wire" layout. This should be
-> >> encapsulated in kho_block.
-> >
-> > That is a fair point.
-> >
-> > As I mentioned in my previous reply, we can definitely look into making 
-> > the version checking more modular. For example, each component could 
-> > implement a standard compatibility-checking interface.
-> >
-> > These checks could run early in boot to determine whether each component 
-> > is capable of accepting the incoming preserved data format.
-> >
-> > Whenever the component is later used by LUO, memfd, etc., we can query 
-> > that cached status. This achieves four key benefits:
-> >
-> > 1. It avoids delaying the compatibility check to the actual time of data 
-> > retrieval, which is too late to safely abort.
-> >
-> > 2. It prevents a local incompatibility from triggering a global kernel 
-> > panic, allowing us to handle failures gracefully for just that specific 
-> > component or session.
-> 
-> I think the right time to do the compatibility check is _before_ kexec.
+Hi SJ,
 
-Absolutely agree; however, that is a bigger effort than what I am 
-attempting to do here. So, let's remove composite version strings and 
-integer strings from this series altogether, and simply make it more 
-granular. The versioning will be solved later once we are ready to 
-address the pre-kexec compatibility checking.
+On 6/12/2026 3:56 AM, SeongJae Park wrote:
+> Hello Asier,
+> 
+> On Thu, 11 Jun 2026 15:02:40 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> Overview
+>> ========
+>>
+>> This patch set introduces a new autotuning which allows to collapse
+>> hot regions into hugepages.
+>>
+>> Motivation
+>> ==========
+>>
+>> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
+>> misses (or hits) is to use huge pages. Unfortunately, using "always"
+>> in THP leads to memory fragmentation and memory waste. For this reason,
+>> most application guides and system administrators suggest to disable THP.
+>>
+>> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
+>> However, there is no way to tune the settings. It will collapse all the
+>> hot regions that meet the access pattern. If the server is a bare metal
+>> database or big data server, this will also lead to eventual fragmentation.
+>>
+>> Additionally, currently THP is set globally. Ideally, there should be a
+>> way to control which tasks can use huge pages.
+>>
+>> Solution
+>> ========
+>>
+>> DAMON has now a way to autotune some of the variables and adjust quotas
+>> automatically, so that DAMON is fired only under the right circumstances.
+>> It would be nice to have something similar, but for huge pages.
+>>
+>> A new autotuning quota goal[2], damos_hugepage_mem_bp, is introduced,
+>> which checks the huge page consumption to total memory consumption. This
+>> new quota mechanism reuses current autotuning architecture.
+>>
+>> A new module is introduced to demonstrate the use of huge pages
+>> collapse autotuning. The goal is to collapse hot regions of a given
+>> process into huge pages. The module launches a kdamond thread for a
+>> certain task provided by the user through monitored_pid module argument.
+>> Hugepage goal autotuning will automatically adjust the aggressiveness
+>> of hot region collapses.
+>>
+>> This module also has a user autotuning knob which allows the user to
+>> adjust the aggressiveness of page collapsing.
+>>
+>> Benchmarks
+>> ==========
+>>
+>> Huge page collapse autotuning was tested in a physicial machine with
+>> MariaDB 10.5.29 and sysbench as the benchmark framework.
+>>
+>> The hugepage module was set up in the following way:
+>>
+>> # echo 1000 > min_age
+>> # echo 1000 > quota_percentage_hugepage
+>> # echo $(pidof mariadbd) > monitored_pid
+>> # echo on > enabled
+>>
+>> The goal was to achieve 5% of the total memory used as hugepage.
+>> Since the database was not very big, we may not be able to achieve
+>> high amount of huge pages per total memory consumption ratio.
+>>
+>> The table below shows the memory consumption over time. Gaps in the
+>> timestamp means that no changes in the hugepage consumption happened
+>> over that period of time in MB.
+>>
+>> +-----------+----------------+----------------+----------------------+
+>> | timestamp | total mem used | huge page used | percentage hugepage  |
+>> +-----------+----------------+----------------+----------------------+
+>> | 0         | 3044.988281    | 0              | 0%                   |
+>> | 22        | 3160.207031    | 2              | 0.06%                |
+>> | 30        | 3250.90625     | 4              | 0.12%                |
+>> | 69        | 3781.238281    | 6              | 0.16%                |
+>> | 71        | 3822.226563    | 8              | 0.21%                |
+>> | 72        | 3846.578125    | 10             | 0.26%                |
+>> | 73        | 3852.402344    | 12             | 0.31%                |
+>> | 74        | 3868           | 14             | 0.36%                |
+>> | 75        | 3881.84375     | 104            | 2.68%                |
+>> | 275       | 4194.175781    | 106            | 2.52%                |
+>> +-----------+----------------+----------------+----------------------+
+>>
+>> After second 275, no more pages are collapsed into hugepages
+>>
+>> Performance:
+>> Baseline -> 18,124.1 transactions per second
+>> Hugepage autotune -> 18,163.64 transactions per second
+>>
+>> TODO
+>> ====
+>> - Support page splitting for cold hugepages.
+>>
+>> Patches Sequence
+>> ================
+>> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
+>> Patch 2 -> Module that demonstrates how to use
+>>            DAMOS_QUOTA_HUGEPAGE_MEM_BP and DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
+>> Patch 3 -> Support for DAMOS_QUOTA_HUGEPAGE_MEM_BP in sysfs-schemes
+>> Patch 4 -> Documentation
+>>
+>> Changes from previous versions
+>> ==============================
+>> RFC 3[3] -> RFC 4
+>>   - Simplified the module
+>>   - Removed unnecessary parameters
+>>   - Renamed DAMOS_QUOTA_HUGEPAGE_MEM_BP to unify the
+>>     naming style
+>>   - Switched to DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
+>>   - Updated the documentation
+>>   - Removed new interface for context creation with
+>>     DAMON_OPS_VADDR
+> 
+> Thank you for keep revisioning this patch series!
+> 
+> I think now we are aligned on the overall direction of this series.  Let's add
+> the new metrics with the sample module.  The sample module's overall shape and
+> size looks reasonable to me.
+> 
+> So I think now is the time to start making this series be more seriously get
+> ready for the landing.  I find some parts in commit messages and cover letter
+> that not correctly updated for my feedbacks on last revision.  Particularly
+> tests and future work parts,  and sample module name are not addressing my
+> previous feedback.  I therefore skipping review of quite details in this
+> revision instead of adding same comments again.  That could be ok for early
+> stage RFC series, but let's move to the next stage.
+> 
+> From the next revision, could you please take more time on addressing all my
+> previous comments and updating everythings including comments be consistent?
+> If you have a reason to keep some of my previous comments not yet addressed for
+> the next revision, it is toally fine but please clarify.
+> 
+> Also, I'm not sure if I asked this same question before, but ...  Could you
+> please share your future plans for this specific series?  What change you want
+> to further make before dropping RFC?
+I will review once again all your comments.
 
-> That is the only point where you can safely abort. Once you boot into
-> the new kernel and discover you can't understand the passed data, you
-> are in a bad spot already and should reboot. I don't think think you
-> really can gracefully handle these failures.
+Since we are aligned, I plan to drop the RFC tag for the next revision.
+
+In the future, once this patch set lands in upstream, I plan to submit a new
+patch set to add cold page split in the sample module, so that we can have a
+full THP support.
+
+Thanks a lot for your patience!
+
 > 
-> For example, say you fail to understand the incoming PCI data. So you
-> have no idea which devices are participating in live update and cannot
-> correctly probe any of them. Which effectively means you cannot resume
-> any of your guests since you have no idea how to restore their device
-> state. The only path you are left with is to reboot. I haven't read the
-> IOMMU series, but I imagine the same story applies there.
+> Thanks,
+> SJ
 > 
-> For a more benign example, let's assume one of your memfds that back VM
-> memory fail to restore.
-> 
-> In this case, you can safely leak that memory and run the other guests,
-> but at that point the host is in impaired state. You don't want to keep
-> running it in this state. You likely either do a reboot, or if you feel
-> more adventurous, you do another live update.
-> 
-> In either case, there is no "safely abort" after the kexec happens.
-> 
-> So I think our energy is better spent solving the versioning story
-> _before_ kexec. After kexec I think it is perfectly fine to error out
-> and panic or expect a reboot. You can't salvage much at that point
-> anyway.
-> 
-> And I think how the versioning format looks also should be based on the
-> design of this pre-kexec check, not the other way round.
-> 
-> >
-> > 3. It keeps the local version local, as you suggested, so it is checked 
-> > only by the consumers of that specific component.
-> >
-> > 4. It provides a clean path for backward compatibility, as components 
-> > can individually decide whether they understand the incoming data 
-> > format.
-> >
-> [...]
-> >> 
-> >> Actually FDT "compatible" handles versioning nicer than composite strings
-> >> You can have
-> >> 
-> >> 	compatible="kho-v4", "vmalloc-v1", "radix-v1", "block-v2";
-> >> 
-> >> and check fdt_node_check_compatible("vmalloc-v1") for vmalloc and
-> >> fdt_node_check_compatible("block-v2") for block.
-> 
-> I agree. Even if we don't use FDT, something more structured than
-> composite strings would be nice to have.
-> 
-> >
-> > That is actually very similar to what I am proposing—individual version 
-> > tokens (which in my current series are concatenated into a composite 
-> > compatibility string separated by ';').
-> >
-> > But let's not get too fixated on the composite string formatting. I 
-> > actually really like what you are proposing: using integers for versions 
-> > and having each registered component carry its own "NAME" and version 
-> > number in the KHO FDT.
-> 
-> There is another nice thing about numbers that Logan (+cc) recently
-> pointed out. You can tell which one is bigger.
-> 
-> At some point I think we will support multiple versions of a data
-> structure to allow for upgrades. At that point, it will help to know
-> which one is "newer". So if both kernel versions support version 3 and
-> 4, you can use 4 to serialize.
-> 
-> This of course is harder to do with strings.
-> 
-> >
-> >> And we wouldn't need to reimplement string parsing ;-)
-> >> 
-> >> But yeah, I do see value of making components versioning and KHO global
-> >> versioning independent. I just don't like composite strings and I don't
-> >> like mixing versioning with dependencies.
-> >> 
-> >> Since we are moving from FDT for the most things, version should become
-> >> a number rather than a string and version compatibility should be
 > [...]
 > 
-> -- 
-> Regards,
-> Pratyush Yadav
+
+-- 
+Asier Gutierrez
+Huawei
+
 
