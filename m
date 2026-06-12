@@ -4,91 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1421ACD4F2C
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26335CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F0B76B0099; Fri, 12 Jun 2026 03:01:52 -0400 (EDT)
+	id 355ED6B009D; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A1486B009B; Fri, 12 Jun 2026 03:01:52 -0400 (EDT)
+	id 306A46B009E; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 290136B009D; Fri, 12 Jun 2026 03:01:52 -0400 (EDT)
+	id 1F54F6B009F; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 19E536B0099
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:01:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A49A1C2C10
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:01:51 +0000 (UTC)
-X-FDA: 84870365622.03.06CFCA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EEFAF1C0009
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:01:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k1E2EpB1;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 09E136B009D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96EE78F2EE
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:02:53 +0000 (UTC)
+X-FDA: 84870368226.22.643EBFA
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 85E4D40004
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:02:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781247710;
+	s=arc-20220608; t=1781247771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xNfxQa1vwlWCvaXRQjFfS1B0XulfLE64TNHTVCMhrdo=;
-	b=x+rQZW4s1WDF9sNJC5hOXUgeqxIhusZY02xD9jbE5cVuz//IWcCq9UcjRfCcFiuyjyudP4
-	0HT6W2Vy254y0iX/0G79Ug4xc3GB9uKzg96tEBu339WrpIblcWeYBGRRWygFjVA6b970mk
-	r3hEukdoVO7POrBu3UuHnTIYolUq3pA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781247710;
-	b=yqMtHvuqN5d1oEtxdwgqotbaEqdaUEWo7vbX5zqlv626BGSMeka94rBjeTE9vQfFchmuev
-	Okz79VIpVhTB2FuLz47ZhH7/ilaRUCeHCJwqmGBl19rJslUdiEkxdBUL9spOtxpYZ1Q8jA
-	7wQ6dlvCgdlXL8cq3hyiorIS4O+eJ+A=
+	 in-reply-to:in-reply-to:references:references;
+	bh=TzpoOsl2+zNb2bgkj6flpXtfYo8DBbSEoFEqqFljUyQ=;
+	b=O/ClBS/z6LNWU/0Htw9aB37nmb8ahikqfqPyOoFuHghKGDmRuctv6FcGqYv2MIpMhGEhAS
+	0hb/m5XZGb4Vl+1ADjnvZDPppBKsLUJG/oLbmCL0+R/dye8gdLoixp6f+FgWsmWB5vGkAS
+	oAxbGQvKmTMdVMIYZWTHabyoWg/qIkU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k1E2EpB1;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EA7643A4E;
-	Fri, 12 Jun 2026 07:01:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390011F000E9;
-	Fri, 12 Jun 2026 07:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781247708;
-	bh=xNfxQa1vwlWCvaXRQjFfS1B0XulfLE64TNHTVCMhrdo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k1E2EpB1k5J7CBcJb6cpSck/EYkFoXJ/XOO8TUkLoNokPwku9IASWmksUIjVGuaRH
-	 Sij34V1NILT409NuiOjlzlPDCOF6WV5EPJzJoL1kBnHa9F0FmprR92wqyJZDi09Ir7
-	 94eMUFLAmJRdhzNRpiPMevc2+a4sqlCWfkh0ad0B7H1CBFM7wbDYuOqlpb5+ciBe2a
-	 AL8VsQs40bUw6r7aiXBtZzfjX7RfbFq/dn4cfFzq/hXbtb9FbFDu5ZI92fvM3n5OMa
-	 OfpmLLwptq4WD9EWd9O/znlGB1UnsWh/GDlyLkYy5ehoDsF8692YWhg900C28x+Ya+
-	 YQ4V0+5oJNb5w==
-Date: Fri, 12 Jun 2026 10:01:41 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/memfd_luo: validate serialized_data before conversion
-Message-ID: <aiuu1QzAk_pkQKNV@kernel.org>
-References: <c2478f79207b10a13282d917c961261d17b86a15.1781173768.git.tarunsahu@google.com>
- <aiqso7rkpX6oMer7@kernel.org>
- <2vxzmrx1qjuf.fsf@kernel.org>
- <airGIioUmTtU9326@kernel.org>
- <air5ho0LOIEKVzRG@plex>
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781247771;
+	b=H9l1h6DCr43f6sJBkrSL8DW0FjbN6EL8Rk6XnBorUHITYTIiINwARD2/vUPVRLh1d0zvme
+	pmKsWfBNp7aHNIji1OAEFYM6f3syh/9OFoZSPpH2DvyF7H1FCauFrmf8ZL5ssQEbqto4iQ
+	PE8vJYpzDvlDyLGaVVL/WM9Ne94NPOA=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc9Sh1Mmtz1dd8V;
+	Fri, 12 Jun 2026 15:02:44 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc9Sd6rbMz1dd8V;
+	Fri, 12 Jun 2026 15:02:41 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id F286434C3EC5;
+	Fri, 12 Jun 2026 15:01:14 +0800 (CST)
+Received: from hsj-2U-Workstation (172.19.20.61) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 12 Jun
+ 2026 15:02:35 +0800
+Date: Fri, 12 Jun 2026 15:02:32 +0800
+From: Huang Shijie <huangsj@hygon.cn>
+To: Lorenzo Stoakes <ljs@kernel.org>
+CC: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <jack@suse.cz>, <muchun.song@linux.dev>,
+	<osalvador@suse.de>, <david@kernel.org>, <surenb@google.com>,
+	<mjguzik@gmail.com>, <liam@infradead.org>, <vbabka@kernel.org>,
+	<shakeel.butt@linux.dev>, <rppt@kernel.org>, <mhocko@suse.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <linux@armlinux.org.uk>,
+	<dinguyen@kernel.org>, <schuster.simon@siemens-energy.com>,
+	<James.Bottomley@hansenpartnership.com>, <deller@gmx.de>, <djbw@kernel.org>,
+	<willy@infradead.org>, <peterz@infradead.org>, <mingo@redhat.com>,
+	<acme@kernel.org>, <namhyung@kernel.org>, <mark.rutland@arm.com>,
+	<alexander.shishkin@linux.intel.com>, <jolsa@kernel.org>,
+	<irogers@google.com>, <adrian.hunter@intel.com>, <james.clark@linaro.org>,
+	<mhiramat@kernel.org>, <oleg@redhat.com>, <ziy@nvidia.com>,
+	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
+	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
+	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <riel@surriel.com>, <harry@kernel.org>,
+	<will@kernel.org>, <brian.ruley@gehealthcare.com>,
+	<rmk+kernel@armlinux.org.uk>, <dave.anglin@bell.net>, <linux-mm@kvack.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-parisc@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <nvdimm@lists.linux.dev>,
+	<linux-perf-users@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>
+Subject: Re: [PATCH v2 0/4] mm: split the file's i_mmap tree for NUMA
+Message-ID: <aiuvCHI32bfz6j20@hsj-2U-Workstation>
+References: <20260611061915.2354307-1-huangsj@hygon.cn>
+ <airY5q_SspdbQDbi@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <air5ho0LOIEKVzRG@plex>
+In-Reply-To: <airY5q_SspdbQDbi@lucifer>
+X-Originating-IP: [172.19.20.61]
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 85E4D40004
+X-Stat-Signature: jw39c3i9tm8zi5cyoexwy7irrjkxeego
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EEFAF1C0009
-X-Stat-Signature: kdh8owfnsmmopzbgrfk9eyjbf1ifij66
-X-HE-Tag: 1781247709-319070
-X-HE-Meta: U2FsdGVkX1/xk3kSlEQlF71FvDeboOFpfDv88MdKZMJ2ZAxn2kTnRiCtlTM0A4QUCfQoKXUmx7oAuimw5VsCSp+xslf5KmKY9fAuJQ6iFLF37tGohhZfVRsmIwxElR0W3zHLgu63tUJxfyGQNVtHkL/8Job5dANH7tCpDGWiIaYw9RM6KYxijJ+PmUY7GlRYKovIzNPj2gvCepSMwplJKiKueThBdeJAvvS1xC5ynQyqA9XLTI1AtycWW+oif2xPk4sGePIYOwJz0VSNEjiorFNNDbVoLr8764nfl5/hXGjBPleE5ZJiaponcfAeu2H0aKy/GMAxhR+iPPhA7ABhM7cUY2otCxd4N1cATSMZOr3m4Ejd0inOBsBtaQlBgpGx9HbsZcTnteYcoOrtcYL3hUVf/zXBifq4gs52ERmrhjQz4zL8CSuGnNcTptLgmEpQ6YJP7hhq1wYIMUfpKNJoKQoXGA/zCTAA48rQ7VxwuXcFREwlIjMaZRkGuWiWO6m9LKutmus8Iv6zSr48pNRAtvU0bBUpUUVOY+EWoFeOodibxQqbcOrxxKOibdOaU1lyHjXb40QGec2txz9KYd5FSvpLYsTLXq2H7IeSyIZiqJ+7FGoiPaRps6BoTb0CyTwWXF9YMjSJcbGMBHHfgqaPXdBi856YAi2oi0q3MwkoGoucUHwmBZkYF7PaqSM3kyni/sOqm7sUpyR8qy9re9Wv/S6TFNVtYg1rtjDoVjAMMRDdG6D/NIQlQr1kubaaWc+rB/RBZnSJ4avXoKw5tdwgytXscfgmX+34IfhlcxHVHrAbk2KozE7b0ue31Y93Ym+18qRWfnmYMzz4BBI91uerTFfn1plxbaBXgDdBupUTc3N+6NnyVqL+LwB5yCIr8tny+IYVsqEuFK6ofta8eUDxh1dbwpwhjhClJX3Csk9pya+8+SxXZTe2XxH1enAAvVUGNQDVtMLNDsvLiQnvQ2m
- naEHuPW8
- CfVeXD+2BQOEnB7Jbn30gNvuPDi1EZAtrNpFmPtdkKmSIPK9uDTLH36hTcXx80yYEMlKXeRvToP8mXRyQGB6ppTYdGCNlH7PsokzS8Vv5+/Zs8/UKpMmGkN0OO7bWqmF3jnOmqKrsZ+1K5d8qoIohwrBc5k99eAXnj/5IsfA/wEAEaqgjKfpkCuCvEbk6MNzVU3A4Ur2Q6xygT8y/l7ho1TPgGCW3C6BNNal7AiVAM4Xm8aq7sclHjEY5ois8jNO4zoavvoXWCek4jyB4if9wbKS46ItdImR+Ae03C2R1OCw+gDHPgIE4WfyZ/H6EM62cI3tx
+X-HE-Tag: 1781247768-625632
+X-HE-Meta: U2FsdGVkX18EBdHZot9RvcLwFjABQ8MwAIHaAVXkv2861YmBjKDPUwN5rnTWHu9ijGyiJ3PF3+jRJ7qsPKFob76d2UTJPlItSC0Gsiygkxgp7gS024W8Ircd1UFWhtJtS77ZuRRItDUC9mIiXPoHqyXzUt4tKHuJOzTNbAodxuTLNtFCI7IcLhcMadzjHg1BAeUEfRPOHsUFf4ytaPGOfx82yWtDVajcf64/dsont2j8bLZ1s/05S0QiF+CvTa2elLFFlD0XARRlcupm4Gd3N1z1vL3WFqeUHpyLg95rTuBxwDr275CT9I1k/LKK7KNowzEOacXtSbv+H2p6hgGVpM4LbRPL9RHa3l/o8vAD+PDrIPcuuhSOIhOLbD05J/Pf8B44dyss7icMRfrJQR0e9q32/ZfExXHHXwnA60RdeQtyF2LJhcolsxv0KXk9tjX87iKIbnT7a1svnMLd1GPZQ+l60JZ5wU7kHRUlTkma0SgGWA5f35l1L9TxFmmjEjkfZeu4lG2drV5SjouMMjLfJBYXokA1UFmgyvDojSeSJcNxERC7LHZpp20yozsYtPL0Uki+P8iMTVpSFIhkd8x4Kb4kD0eKEa5SRpa57LcInAhTELsAAgsZSXs1JjDRkGhzLlfqXT0uf3Ny5FnbUaW3LL7qVCsTJgzRKmq+DFpOhaLBt1UUso9nGpLJq5Xn5NHd5QpdeBgKm/YZRYibtf1jEv3Fg8aQtH/58F68aVJli+hEszD/pbglYY1wnfsS8xZPqFc8UmUNgBtIkUJWzqT8cYIA+jh4PKpBJKXlH8+mrqk2lZ1TwDQqtzi06SbAU15bzLuPLB3izmAJL3DhdRfrPpjI/eJ9RMlEMLhXoc3nhkBA4NWQDg+GRSWJGcqo9AoybMcCQ0G2pVjfzE4T/aitcle9/WgM15B1bPMg3BR/AQOekGAIxozOD0XwAwWvSE5jJ2Iw2Rs8R8tBJBvJsBD
+ e9iyF+Fy
+ obze5eZSpeXZUhxWGfak7Q+DJSUIiTf4S06d936hplmaYFpaKC+yNT7PWlIVfky0Aja0Ti3gKGMpGvEba0ob73xFe4ajNUfdwCKkx+iTRUk7JN6jtrx1ULrFrddj4m84HoXLpnkDlBgpjbBz3rRCM21lXPmpt0yIra3z1NUc9wTzJz1DlKZrZHdXqQOln2jOdHxMZOiOBq/suOcTQ+l0ft7sDD/vVXjM2eCucLwoSRWSCDiEQOFc3F9+JaxPUzoo5HdaIoBx08cRB2nNtj7nuWwRVpLD77d+rjCmtrbU/vcMRZ+hEaiuKEWE8pIO1Ysonst7bpaD7zES8tlqjhE1QQQWtOotCafmH8n4y1NGoejA3a8GBB8bDTEKCbSL+M7yOdDcs61L3U08Ji2fgVGhWlV7Kh1wsBnn9e+n9+3dA+JCahs2NqRTbwK29vILghUX7VC1mFiNXtUJGIJpVA/0l031uhz/vFNczuhm6i1BfJJyrGoidX/X4QRbR3Z7vf/XkkZCG7e2u5z64Jx4pWmzOH7kurQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,60 +114,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 06:11:13PM +0000, Pasha Tatashin wrote:
-> On 06-11 17:28, Mike Rapoport wrote:
-> > On Thu, Jun 11, 2026 at 03:37:12PM +0200, Pratyush Yadav wrote:
-> > > On Thu, Jun 11 2026, Mike Rapoport wrote:
-> > > 
-> > > > On Thu, Jun 11, 2026 at 10:30:03AM +0000, Tarun Sahu wrote:
-> > > >> In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
-> > > >> on args->serialized_data before checking if the physical address is valid.
-> > > >> Since physical address 0 does not map to virtual NULL (due to direct
-> > > >> mapping offsets), the subsequent check 'if (!ser)' was ineffective at
-> > > >> catching a missing serialized_data, leading to unsafe dereferences later.
-> > > >> 
-> > > >> Validate that args->serialized_data is non-zero before calling
-> > > >> phys_to_virt().
-> > > >> 
-> > > >> Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-> > > >> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-> > > >> ---
-> > > >>  mm/memfd_luo.c | 10 ++++++----
-> > > >>  1 file changed, 6 insertions(+), 4 deletions(-)
-> > > >> 
-> > > >> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> > > >> index 59de210bee5f..10f3983b0060 100644
-> > > >> --- a/mm/memfd_luo.c
-> > > >> +++ b/mm/memfd_luo.c
-> > > >> @@ -397,10 +397,11 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
-> > > >>  	if (args->retrieve_status)
-> > > >>  		return;
-> > > >>  
-> > > >> -	ser = phys_to_virt(args->serialized_data);
-> > > >> -	if (!ser)
-> > > >> +	if (!args->serialized_data)
-> > > >
-> > > > We really should make args->serialized_data a KHOSER_PTR
-> > > 
-> > > Hmm, that would also be a good idea. I suppose then it would be a better
-> > > to directly convert to using KHOSER_PTR() instead of this patch?
-> > 
-> > Makes sense.
+On Thu, Jun 11, 2026 at 05:00:49PM +0100, Lorenzo Stoakes wrote:
+> Hi Huang,
 > 
-> I think we should systematically cover all  phys_to_virt  conversions 
-> and add  KOSHER_PTR() , instead of an ad-hoc approach of adding it as we 
-> go. So, let's take this patch and do a series where we properly convert 
-> everything and provide guidance for others to use going forward.
+> You seem to be replacing the file rmap altogether here, so you really ought
+> to have sent this as an RFC so we could discuss it as a community first.
+No problem.
 
-It's too late for this patch for -rc1. So let's systematically convert all
-4 or 5 direct phys_to_virt() conversions in the next cycle and be done with
-it.
+> 
+> Especially so as Pedro had publicly mentioned his plans to implement
+> something similar here, so coordination would have been appreciated.
+Yes. I am very happy to work with Pedro.
 
-We have enough time to make it by -rc2.
- 
-> Pasha
+> 
+> Anyway, as Pedro has pointed out, the code is overly complicated, it's far
+> too configurable (not always a good thing), and the locking implementation
+> is questionable.
+I can make the code more simple. :)
 
--- 
-Sincerely yours,
-Mike.
+> 
+> You seem to be adding a whole bunch of open-coded complexity too, which is
+> not something we want. Abstraction is key for the rmap.
+> 
+> You're also not adding any kdoc comments or really many comments at all,
+> and you've not added any tests (though perhaps it's difficult given how
+> core this is).
+Got it.
+
+> 
+> So I would suggest that perhaps any respin should be sent as an RFC so we
+> can engage in that conversation and ensure we're all on the same page?
+> 
+> Especially since Pedro plans to send an alternative, simpler, solution I
+> believe.
+> 
+> It's also not helpful that you haven't examined the non-NUMA case :)
+> perhaps your particular server behaves a certain way that this approach
+> aids, but regresses other NUMA configurations?
+
+emm. I ever hoped someone can help me to test this patch set on the non-NUMA
+server.
+
+It seems I should find some non-NUMA server before I send out the patch set. :)
+
+> 
+> We'd really need to be sure of this before accepting invasive changes like
+> this.
+Okay.
+
+Thanks
+Huang Shijie
+
 
