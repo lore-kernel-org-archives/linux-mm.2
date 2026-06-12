@@ -4,91 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E15CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:12:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F9DCD98D6
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 098EB6B0005; Fri, 12 Jun 2026 12:12:21 -0400 (EDT)
+	id A1AF86B0088; Fri, 12 Jun 2026 12:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 070E16B0092; Fri, 12 Jun 2026 12:12:21 -0400 (EDT)
+	id 9CC136B008C; Fri, 12 Jun 2026 12:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFCD6B0093; Fri, 12 Jun 2026 12:12:20 -0400 (EDT)
+	id 8E1B16B0093; Fri, 12 Jun 2026 12:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF44D6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:12:20 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 811321401A3
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:12:20 +0000 (UTC)
-X-FDA: 84871752840.06.8468711
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2D1E61C000B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:12:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jZpBlWZy;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8064D6B0088
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E209A01B0
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:01 +0000 (UTC)
+X-FDA: 84871774722.21.3E48CC8
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3111EA000E
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:20:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=Kks4Atna;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf25.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781280738;
+	s=arc-20220608; t=1781281259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/sPiD+QHAE5SnG3mf+RwozqEbzxycx4/mCbYbChQOc8=;
-	b=7nRUuXQH9ksqiZeYOoeQjJ99ULyJ5qsF3S90eqA2fy8M2DyqzR7RjB8ZPMgZFekinK/oLS
-	tx+B7v+UobP3YPXqzXrcgRrhKl4byHBg2YBM0cDCw3kR23N6awDiCqoF0Kp9f46uI0u37R
-	oJA22NOqBs4R9Fr4lIz6J2ycbiARXtQ=
+	bh=zIYT/HNuvNJd7wtW3If1BoiCZk6EJ/pRukABWxJMOZ0=;
+	b=gMFIVxH4dht+j0WAOHLYIn6PoanEWHFLeNA3+BWFm20bPKXR5ZOPgnPtEe0sS+HN7fYu5h
+	//ohcnyoYautmXWZX5k+NfhZv57L3KRiZGT07eSqKWB0KUBGiTgurcjmE51e2X8gdNu0bM
+	U3tQkQpVvac9S7nG1sk4Nr288dKZhY8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jZpBlWZy;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=Kks4Atna;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf25.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781280738;
-	b=75SiiV2uebmEnxq8yQndHHeIkf0kziKOCI1bjIaRR0QDK8hFGD3qoaCo6eDiFdyzeuobkE
-	WS2sXICobVf44BytLXJ5SE61hebxXV7PuH6Ibqm91Jw9C/wSCIxCZxmrjFSTAeFhndY1jN
-	u8NnzLBl+8d8cMXyGb88t9l5++S+RNU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0DE4F41E5B;
-	Fri, 12 Jun 2026 16:12:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805291F000E9;
-	Fri, 12 Jun 2026 16:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1781280736;
-	bh=/sPiD+QHAE5SnG3mf+RwozqEbzxycx4/mCbYbChQOc8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=jZpBlWZyiTJBePPX3uSESMJtoiH8kYT9JooRHuu0lO1UDNgPQnnL5p0Zpgv5Zleqv
-	 pByhksc/sOnjgM9UVL79PRLmRnBLClOZ/tMZd8tx65Y4bG1rrItOSbtijIBrG5hJuH
-	 IkxtwFr7fonxu+of4lJ5DwdfESzjWMSTiHhfjWX0=
-Date: Fri, 12 Jun 2026 09:12:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Lu Baolu <baolu.lu@linux.intel.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: pgtable: protect lockless kernel page table
- walks with RCU
-Message-Id: <20260612091215.b06dc7dc9dc894a5bfc75429@linux-foundation.org>
-In-Reply-To: <20260612050540.31594-1-devnexen@gmail.com>
-References: <aiuQf99mqhQRVzC8@casper.infradead.org>
-	<20260612050540.31594-1-devnexen@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2D1E61C000B
-X-Stat-Signature: dheoh9a8k1psgktpj9xf9awkkzaq9uab
+	t=1781281259;
+	b=Ti77DA8laqY/5G0LoMKv2W4snOLpy3gBjdtXt3dJ4i+/lhJZR9NQT4qfGW7NknxMn5bL7S
+	yqqMAw053s8NC2BRO1QHvlqZls5VVnbiEHzCFidsONtf74r81zuTKVMvNRnLQ0xwnWvOj4
+	xhj/2CO78VbJkur+lEdH3B6isSa0AX0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=zIYT/HNuvNJd7wtW3If1BoiCZk6EJ/pRukABWxJMOZ0=; b=Kks4AtnaYNx5nZiKCxP06Gd/Da
+	Qf+VvfXREYGa3t5XvOfINjONUHMCCj9e2AE2gV5le9ZHaUyg1b9WY6XdCxGMO2iGdknHEo5SoPYZC
+	jhPJKC4XE0xxTwrGKstcKNvDNeJzVS4TsL4dlY7Al09sb6k1aIXwnjFbLFZdp8KFQwzcW2RAv2Yvy
+	QZovYPDtSm/XbnzJlaKTtWxUk5LyvBFubqs+99yIVAuj+WB6hT/QVkr+PHKMnXRtJnkpcsf0I7W9C
+	8TL8E3nW4CStXph3Ly9jbvtIep6a5eSaYr+B522k8ocAYNUEc5Z7QLDNF9zXK0hd6xpbHUfJzVLQB
+	ok+wvfrw==;
+Received: from [189.78.222.70] (helo=[192.168.15.100])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wY4ca-00GgP4-2B; Fri, 12 Jun 2026 18:20:40 +0200
+From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+Date: Fri, 12 Jun 2026 13:20:14 -0300
+Subject: [PATCH v3 1/7] sched: Update get_task_comm() comment
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260612-tonyk-long_name-v3-1-7989b66e8a99@igalia.com>
+References: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
+In-Reply-To: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
+To: Peter Zijlstra <peterz@infradead.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, willy@infradead.org, 
+ mathieu.desnoyers@efficios.com, David Laight <david.laight.linux@gmail.com>, 
+ Linus Torvalds <torvalds@linux-foundation.org>, akpm@linux-foundation.org, 
+ Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com, 
+ arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>
+Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org, 
+ linux-api@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-HE-Tag: 1781280737-908544
-X-HE-Meta: U2FsdGVkX1+N9Oxl/26/4QLEFgtvQ+h6M7GNKXL/SYoTSuekBIRmKSrevkfN2v6D1cZbfIIRLRQDdBMekXYH3yPgqakoTJnABGu9RUNtXRJQsZoMmJt9iy+sdKelL8qkZl/vWjQA31eFTGkyhoqN+ofH3PxB97JsPYpmn42gljzsMmWE91X8m8fHTm/8XSMapwcfXmeMSKnbr8sfdSAiSy47Oo1FYWL4T3xA8jx7e+tx7rjscavJ84sphJN6H/fsyfGC6CJ9en+iaV7dDKBgzpvxdm+imP+7ql95tjms+N7ovZX0rP0yh/8CoNegrg3ZShcokX+c9F6ztM2Z/AuTBZKgFS7S7qjv48NVvR5tw8IFcHbzeUqPEE6qSimxMhNq0tL858KxbcLU+f7CNtlCdbP6+hbmeuOn0rEQtWhfe3OoYem9dgMmt+PxnV0klQY4H+QzrSJgIjQlFByvrS0+LoW6Fto0xTUsliwcaW0m6MqT8spzSBpwZlIVZBU17QGzvihEYureR7GmgTqzrK2P/eVYj83vB085WKhy9yuWS53+rv1cqLG6vDBuDK2Lr18ooYvH/O1/SPj1vcloyu78DJW8UqChyOb20r2yQz5I2wGJXKgR94WsGzLKTXp67yWBOJlKxej68xwlGYhWjgVSi4spJn5CfWFi4B7hul4lWILkC2FxlacZAkJqG/gxW9EM2DLCGgwKtf+XNPiRMwx+1kmeXq7peq4hpF6pPOj5Yrul1Ay8whAU8UzuysAJggRqg1+Ud9YUi09xTwj7HZii1z2Arb+RGbYvVQeqkntH4Uc2CiljhZVt5pcKZ4DHBmh9hIlNqN+oMlap+k0YL2pDDYDVXLGVeYX6Lo1FQc0p0JaH+e/06kmXfOj3ILG+qss5J/pT+n7XT77Q41MY3/cyHJo+U/cGhZv45qGnjS6NcGZmK7tRz3+RNsMUbyeEwhyH71J/O7piwmOLqdayaL7
- NPPAgoRh
- lM+jUI/3CoxTxc0f6OQJp0jpj98VoaqgdezAe/uCoRqxSD7fD5jhWmLhJmEU4BffU9RvTpA3e/DmUQkmFgO4dyC5dXU4hagJaEbK7G0LI3H+CrDnCg4DNbexWmyb2jPYfZrPNgYMZpSLma0fG2EFX3IohpDEp0UjEjB+RUnV5Y9CX3R45QkzprtGRZGa6iTfkPWGS1faLYS7vgqA1611itGbOSAINSYm0ZWfwMKP94lcDnTA4h3+AENFr9U1Rl8KqkqWubzr+1ZY81x+mW3Huq6JtXAgU3q2XTDXiRGHhSalaZPw2fKuRe7ODoFEstXwMnkMgId6/+Qi1qzRAkekeLElo+jEK55JE5O2y1HNi7a+w3ot8rpb96gbPyFo6mnyDsjRscx8zUqECRcr95txOJZxLNWItCVLwsCh6OruJkd1okreIeg7RM97LhudLx1evPLb9pgAqgjdFDoVoLFmY0QfmCQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3111EA000E
+X-Stat-Signature: i5b5pdf5n6nncggkecrzbfc3qw8zonao
+X-HE-Tag: 1781281259-563579
+X-HE-Meta: U2FsdGVkX181ZlC37hJZ02S/f7ixokTtoZExQsBvve+FAIT+52mcSKcXiPpXsEN74oUbIan4jnYWBmNJzVhdvYlGANTC0C+pLKYIbvpdAUFIeFIg9OHNCcyyCA06FEMRoJqbc64NPqYIE7wNTtzplaUkJqGzUmOYwceveq1RJlkX6O47pwuhIZiYMBQVKFfAaDyNT+aUUvRU+p8rL7nosthZ+/qdQ/gamuDf4ZHzIckngzikF0RsQfelYbW6pVSBikwlvpFXtmZK2+iGnQXZk2pDFraeJRjCjtoaMI/TUxlfofT7IavjY6swXTKye8X5lWfFRqNhLTOGvp2Xhvkf+mX0RpXSeUIojwcT0x1+u86Ft84/20X4365kImGMvcuEONMJWzqxraIywwuxDzkM9dXStt84HSadj7QDYXdB1PozbfEqPfwyqYpd1W6e5LWwwEW5fM7fxDj9xQWnQJg9y5l5u+h9BXlmXGa0DSHGHVJHHdwNdlOGlCArGTOIf4tsNeE5o88PlIGyP+pAMQxiex41W2s5BA4Kz7KZOTnG/Su2D1bxBbxBAp3gbGJelSp+nm5onn3X10QoNmeUDADiKwnGS+LuxXWROZTMYM5fT1ambfJysg1l4JYBDeEbcOswB5+Za+Fkyv3Iq6zniCxoIQ+XDugWyrenESL2kdopXWFQuUWk5EHDdkpZQcyM7QWUqogYhle6TO9wvX40pFWUU900XVnZSWKw1BeMBApMAqzqh2KG3QzqTSa9yO3M6Z+FhJljQxPWwA/zv4X8ceqhNMgyeCGwnCVPr+nhhswBN+ZPY6T7V/t8fBb5C048UFMAAMzMFNrq8b7VnAN3u90K75tx9oDW8DRN3fEXBddc/df1g1h5sQVBO7sK9dDL65cfNe3frdwYDevejwsS+CzMNRypJyzrw9YE2kuzD0LHcL0vPVnIXqQds6YVss7KtD70JF6v5Vg+dHYlIT7pq/z
+ O9cPorjv
+ 3DsP5UCiCAy5D9qo8S6ITo87pvVYSHNKwo20r2rM1ItWY6uAM55ogvIF0IdxZCyX8500RC4lIIxyt/exDvGd4DZJRVF/JCynr3FoHlRgODoQ+ZGorea8eEylWKEjZtsKz/iYrRiAJbEMwnOrzA231nCWKHLPUMPuxB59IfVWeLQnrakEoQRqWwQV7xejgji4FubC/TPUL3EVYet6SAfcBc4lGkyPBDru1meg0sS66BUei9qW/H6821aHMGJLnMaNlcmYWTR/+G/7JmVPPRAPNYNhxEf8AZLLVhNHPYmdFNCBi7Kgh7AFTAUT1JNO7odoHnbktuA6ZpY9MBPT3fRBEf/HPRHoPXUYzWxkc1epxkhuH9OgZmgxf4+LzYOFxmaU19fBashKhHQ2q/p1zjmMyv45nEDlpyad0AUrnYaAXvq/xd8u3Ie82SjXQR42Ka1m1XA7UWcG76oLCyjo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,62 +103,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 06:05:40 +0100 David Carlier <devnexen@gmail.com> wrote:
+Since commit 3a3f61ce5e0b ("exec: Make sure task->comm is always
+NUL-terminated"), __set_task_comm() no longer uses strscpy_pad(). Update
+the stale comment accordingly.
 
-> ptdump walks the kernel page tables locklessly through
-> walk_kernel_page_table_range_lockless().  It only holds the init_mm
-> mmap lock and the memory hotplug lock, and neither excludes
-> vmalloc/ioremap teardown from freeing kernel PTE pages via
-> pmd_free_pte_page() -> pagetable_free_kernel().  syzbot hit a
-> use-after-free in ptdump_pte_entry() reading a PTE page that was freed
-> underneath the walk.
-> 
-> Deferring the kernel page table free only batches the TLB flush; it does
-> not wait for lockless walkers.  Mirror the user page table walk, where
-> pte_offset_map() already takes the RCU read lock: hold rcu_read_lock()
-> across the lockless kernel walk and rcu-free the page tables in the
-> kernel page table free worker, after the batched TLB flush.  A walker
-> then either observes the cleared PMD and skips the page, or keeps it
-> alive until it drops the RCU read lock.
-> 
-> ...
->
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -655,13 +655,26 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
->  		.private	= private,
->  		.no_vma		= true
->  	};
-> +	int err;
->  
->  	if (start >= end)
->  		return -EINVAL;
->  	if (!check_ops_safe(ops))
->  		return -EINVAL;
->  
-> -	return walk_pgd_range(start, end, &walk);
-> +	/*
-> +	 * Kernel intermediate page tables can be freed concurrently by
-> +	 * vmalloc/ioremap teardown (e.g. pmd_free_pte_page()), which routes
-> +	 * the freed pages through pagetable_free_kernel(). That path defers
-> +	 * the free past an RCU grace period, so hold the RCU read lock across
-> +	 * the lockless walk to prevent a page table from being freed while we
-> +	 * are still dereferencing it.
-> +	 */
-> +	rcu_read_lock();
-> +	err = walk_pgd_range(start, end, &walk);
-> +	rcu_read_unlock();
-> +
-> +	return err;
->  }
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+---
+ include/linux/sched.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Adding a lock to a function which is advertised to "walk the kernel
-page tables locklessly" is a bit of a head-spinner.
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 368c7b4d7cb5..60d004a49a27 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2005,7 +2005,7 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
+  *   User space can randomly change their names anyway, so locking for readers
+  *   doesn't make sense. For writers, locking is probably necessary, as a race
+  *   condition could lead to long-term mixed results.
+- *   The strscpy_pad() in __set_task_comm() can ensure that the task comm is
++ *   The logic inside __set_task_comm() ensures that the task comm is
+  *   always NUL-terminated and zero-padded. Therefore the race condition between
+  *   reader and writer is not an issue.
+  *
 
-Sashiko claims that some callback functions can perform sleeping
-allocations:
-
-	https://sashiko.dev/#/patchset/20260612050540.31594-1-devnexen@gmail.com
-
+-- 
+2.54.0
 
 
