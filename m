@@ -4,108 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B68F1CD4F2C
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C740ACD4F2C
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8A76B0005; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
+	id 0D41D6B008C; Fri, 12 Jun 2026 03:18:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E89686B0088; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
+	id 085BA6B0092; Fri, 12 Jun 2026 03:18:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9FD06B008C; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
+	id F09956B0093; Fri, 12 Jun 2026 03:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0946B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56A04C2B7B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:25 +0000 (UTC)
-X-FDA: 84870397290.23.4CD03BA
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9D8F7180003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=MlwyAvgW;
-	spf=pass (imf24.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E44EF6B008C
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:18:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E33B1C2BEC
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:18:05 +0000 (UTC)
+X-FDA: 84870406530.18.B41D299
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 90FDC1C0002;
+	Fri, 12 Jun 2026 07:18:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6MPI5gE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781248463;
+	s=arc-20220608; t=1781248683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0DH7CoZwm/L61lyISp16HVvqGBcx50fMetTeOW/xtCg=;
-	b=IqaoWJCEedl5C/zbna9Bwpgf5ZrUf4MB8B1+G1NsLfq29LR9IqVdbRBGZiPtte705Teuq8
-	XOhhs5sWppTOxoE0IOquFbYzOLouWJzrObMMDL6PrxbgxF0NgNPoDyxYNEfE73E8/7PI2o
-	sfazq6YfK8e7moXlJn2UBmc3q057h/k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781248463;
-	b=tcoY34uT6bgOekWdTK/XxbfanvkGsUPoMl0saUso0yj+wVmLdsOdesolDXuqCwAehfyBZl
-	zLv09hjx3EEcQ3HYZfT27MGPIpXQextU+O/88olrnDF0JxgEPTfDZQlNWwXF6kRnFgqlT6
-	msdgc1ZSktDq4gma6ypYQRyba4tYwu0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HRlI91H90jnEd6QVhakYzPZr1kG+YnVR7+LXyLJH35o=;
+	b=Ow31zqJve3v2Brto3YybxjjWhjujd2V0qsjTO7dGnH5m3vvNrrqXenOHPwAFRkYLR1CiWE
+	VT0nld/NCD0HGhmFW34NPrVMEMXdomgKNwp+pIRNB5ulNJbF4RvMVv2FwCQ69AFQURWcKl
+	Sv03fFuIdSQQSuw/OoRaFHb/bHJ/7f8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=MlwyAvgW;
-	spf=pass (imf24.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
-	dmarc=pass (policy=none) header.from=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781248449;
-	bh=0DH7CoZwm/L61lyISp16HVvqGBcx50fMetTeOW/xtCg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=MlwyAvgWqCe08Ms1kY4eu/JZ7vJS4LgbLUjZ/hKRYo+vJobneaw/kxDTDPgsomZsq
-	 5gavSFKUQhZU5CN87/yiRPf6FK7T+Xr0jV1mT0ouGy5ExCy8jWZQdOZ/xA/juDJ5J9
-	 GF5wG9842BuWUfwf1K/7w+OxZblYdSD5NDO80AL0=
-X-QQ-mid: zesmtpsz8t1781248444t1be742dc
-X-QQ-Originating-IP: N/oszSuHs83mENbsmXIoy+f3ADjb+RACc/Oy4wPXp20=
-Received: from Shurima ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 12 Jun 2026 15:14:02 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 3577815154405116248
-EX-QQ-RecipientCnt: 6
-From: Yichong Chen <chenyichong@uniontech.com>
-To: akpm@linux-foundation.org
-Cc: penberg@cs.helsinki.fi,
-	clameter@sgi.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yichong Chen <chenyichong@uniontech.com>
-Subject: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
-Date: Fri, 12 Jun 2026 15:13:59 +0800
-Message-ID: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6MPI5gE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781248683;
+	b=LtBHPhtNg90gNT1c8o6UwJx79aozCLDY/k9whAH0+aMMSllRowRbVfMJjmJ7vMIKldA90I
+	Xccaq4uMsVMhhPC4CjshthnqmVa9kDVKPk7qrRcaZkLm5nrSQvAFRbtYPtiTS2RdLfAdVm
+	z+mTH3Zssf3awBcVFfyO2wgssCH//v8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ABF5429E4;
+	Fri, 12 Jun 2026 07:18:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC341F000E9;
+	Fri, 12 Jun 2026 07:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781248682;
+	bh=HRlI91H90jnEd6QVhakYzPZr1kG+YnVR7+LXyLJH35o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L6MPI5gE1EdULfuqHX9FeI9o0O6WUcgtuZPpWMq+YYQz4NIsNDinQEUyjqduDtf8k
+	 l8gWpChVZWxKZ9IMjrvPCyDVpfk/zIqoonwcdK/KvKB29G9P9G+Ph0rCNIgppcmtbT
+	 tSZB3ZTQO2faTEcLNza0Ezw0v8mFkL7pakAFNDwxpgSbRIjwf3SDics+Oj8JVgm8OD
+	 ni90NHejNjBOTa51A+reb7rCNyc/4Lx5cgSbSeps9eNeHYj/8IMOVwZ6t1VqbCFYeU
+	 c/cKA30WUS016DLWHkU1ctyI28rhef6zPLtNPETvTY/tuZClh+qbft/3ltRMCc1ccj
+	 ti/5o46qveQ7A==
+Date: Fri, 12 Jun 2026 10:17:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
+Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
+ on execmem cache clean
+Message-ID: <aiuyoy8Kmr9yU4GM@kernel.org>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-4-abarnas@google.com>
+ <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MiI2pzLhVQ8nAttIPauINP73KdLpitr6JHSwVJmySOID0qBT51nKjSgB
-	ZRgDE/bnoOk/DqD11f3vTfVsJOrefFaGGM+QO8e5LfyhE+jUnLj4ZaZMDwZ9Hcx40lh66l1
-	teKrY98b6IHpJct4MGrsM/8BXfEITEi3AWtFP2WXyJ4y+1FF+x+7j6086G36yLgU2XNRVdu
-	/JE5s7YZZfICPQGYj4nDucsQy20Eu9G0wbd6KDY6jLSqDNaR3V7TJkgH7QUy+G+2zo0sHn6
-	C0tqsBtliRql6v48Ix7bk667qwKGwTS9vGECXhveN/XzgL/s4eyR2fDdwtSC9tR3C/kf6La
-	HGm0E9kiFDkKfJKuw67jiEU2lBzUbPT9r3PuTU3sSY/0ZU58mM/39U8rlAszA4EaI+7hyyc
-	CJReT4X/jRXPwJtWjpYvFG9ly1bg49M8GEAmqNcN4okyF8PRp1YLpGve8nPGrdjnobtbaEY
-	TFfYn3XaFdtHJc4SdVM4YlvZ1oorS9JcoJizU7p0bZPV+twIR7DgvD06F/XrHj9zAcHby+A
-	ot0XjTI1VowxHK/nsJqcU7xDj+lvOOkuohHh7zupOYLb4OTwmkYW672X1CMOZTnl9haHdPL
-	Qt/a+BpWPjsY2WU0FixQXPc5dVNCuFkGaLkCNBID1WO+q1zDLSaaHh0ww+NXgCmIx3abAfh
-	0QUkj8DPV/lMVXl5uUzcEwDBw+Ar5AD4fVFxys6RZJtcRDNjDlH7eoz6SDYffsd6yxP7WpU
-	qtoxcOT8z0TJP+tO+ZLRnv8i1Ivc26jR386cX3wsLUHxDqhfKmPqK8CAXHKwWMOVQxszrf4
-	JZ0qX2Jp8IVlkY8UWXs/SD+F0acPC6H4IyMojrGR2jgb8MCi7YyvqikY6D2Fi4aXRl/KUH8
-	eLDfiKs/DEC+wkNBeEV6ra2Pa4Di7XPYz+F1i/2btwZHxWE1w2FunJ+PVdm5tZQtsxGGnRB
-	YttTm3jcNXgUfNIkBDjmB4U8yMDyitnQQvj5Nwc//ihr6TGDQRG0Sq3PFJ1bqqDNPF3HQon
-	0z0wNbXatL0XUDnlbeAqCQwXYFbICkQamXLd5Fyob18BAMyQ7wyYT9Q8wxuTpddDdhcDBdW
-	Q==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
+In-Reply-To: <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
+X-Rspamd-Queue-Id: 90FDC1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9D8F7180003
-X-Stat-Signature: rez798fu9sdkr1ktff4b6obkzrse9tq5
-X-HE-Tag: 1781248460-936217
-X-HE-Meta: U2FsdGVkX18UZkKIQ6b/efkni2SNN6oyaAH6oMZZhkahBvz68Dh1lw2tX65jpoM/x8B18WiyCwqjunwGV2iy3YgT8Q3/kH6LEZG0NIo0zBo/Tv4vO8xUybiWCfvTngsb0RcLSLIHBPYmnm+O/S1UPwEnlXEnZ2ED9UYfblDchWC/TrMYYs9LbQjbDd3UUN0Odnt2YxVsGU8GexnLlMxK6isPjWcMIa/dHchRxMIFeF70yYr0YokY5RQOzxjkY51423PRbrSjxmyEzCTxv4dBu9qzafzKVtlU+EJLpmRFExusl9Sg+FKQRmISyWOf8UDsY9+zqA3L8yjPvOishmaaQHCQ3XkByHRylXOX0fNgezS9Q8htd4LIpf3+6U7NVNao0VXQLbF6NCuvHtnQvXoHUZIlb8QFS3XDg/ty5+8d2yGx9ZmlfTmnkQEJmoQIEMDd3xZfTdWI43FHJEjCvkfTMzHYIh6AZyzEqIvqNG/RT3Osh2tX6pLsBgmhGOEs0DHmS5dPHjZcKRTofToH8OriYdzsfp5OkUzp1nWINc017n0kFrboKCl5WE0PIEjc4MQpVJG2r+6WOwMf4ODRSXLHtFHf9FNS33gjLoPjtsIREmNt13MqD1CfeOn29TjMjHWpTUzF9WAZcdeykCCWqkyyNuNJY6TkRBvuT5tN+Jm7FY+EiBZqxeyhB0IJu2xappZOv38hFyazhMKNPYzAXtOf+QGWyU4n9GKp+dp4Nv3kGPMPA3XTBCwn2wpQGBC2UCGFWhz8KoUcaD4QPlWocn/G15EPWKbUInkc0pbo9WYiot2k7DfD/+3UrGDa+6QezPa2revIOYeQlkLaDb36aM1uQ6IqwjgIULemrVyKGntDVGYCLyGMW/md9+Reg5YeV+kltAGHuuMngMwR+6NtN3qGPH93UZhPThpmF6BYzYkIZ+7eGfekF94fnMmQx43fTIi3EoAaQYjIp/RQFkj5drj
- qEuAxpK7
- GYZqOqvyawLHLvcdQtR12V2NZkzYwivS6dJ0du+VMFllxfSbcc6nBOo23AFIDju7gjrXj2abVXmz5njNwgJEU/S2DSMgCytNqrLblc7e35TEBrNJDQ3UBi2aDNmc3kuHXCsh177i7eAFoJCVy4fcUa5A78O1qMjE2OEtkYkKx2sqcS34qEalP8aa575E1h1KmmhmRuPojQh8jqi0a30Cb4upSBDtiXC1S/e0qAjlpe3GAtpC6sq7oWgysq1wxX7W7s9knzcrW3lWLNKoB9zHkbZ6a9I7ymz8vYyHTefZzEGKvFX//JhCWcBE7lB4b8B4r+eBBKhnHO8l2G0vcSGOC43PM0OalDFUk/aRE49gdkCgV0fFcGw83PolyZlW9437HIWaLfWmnVJ0d4Bc=
+X-Stat-Signature: 6w1auegyyfxh9da5un4e47btyys8c1gi
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781248683-970649
+X-HE-Meta: U2FsdGVkX198yLq4rtO0Az3hV2zUgULnlSJEyoZvNBF+qqzBA06IWS7NUMgnCFNLawMOqT3cQfu2W6w2VBRq7e2w7gHgUjD5q2xsX7x6WnILKOOWPUx99tJNqVXmUiqd454z9t2XuGZPRoNTqBy4NnIaWtE1JImhbRkhhWvQohGJR6MLrVuS8GdtdfTdnhMsvchVfQjYu93X6hw9bzBzi6IMNBSSOoxD1bUZ8cKwCI7EY7INozGQI3wnAiiKHK5s4aC7WaqRs1bSq1ibUrJHz97MA0x73FUtbUxCRISGdbriU6u1JiV1a6zxgUXthDam/EhqHvqmyGP7qbgrsqmPKi/lDQJoFeEcEAJLiAc3OX/MzMqUgQLdCSsk0s60eiloGLK4rL+/iJL/n9CHq1tlYxdcxCYR6PXVSA2iNL6v45gqhg2B8LN73fQD3PqXR/I/7UmN74jeanAk1iRVIm99nwoVjBsHuoUGkZJADyz9TafmcXrD2iAmWEvTlD9Kw8MJ+70cWJO9p+URnOAkNu/upXogstGrM1JZ3ujCYIBSUjImnKgTUQ49yGM8TwICX1kfG8biSFDd3a1AuVM0zxPOUvOgQHdeZCEXSVTktgFWEwKNbqI+HZ+h+JBlTioRWQTwc0YfEFBkcaVIZ2PKRgsAd4NmRfdT7z6+1HLI/HSGCdZ95yrg7B5hBRtohewrQqvEGSheuSPkiTHJlzcoBB/wWIxOVel7uLCtGBKQMlczsmpljiFloJXgtjUxffdnlDOgjg4D3ZeXI/e9MVpSPpDSehp3RWuDfu+o5qgyhaTMJuRMa7QO4rwJHuiCEfShNnl64vOIm/EpJJ7rbDCR4bZaNhU0QMRdvfHezEfBdcx2y152QtqK+M4LyngrgiaoImjXWPBx7gBo/PVu373a5NsN2AYkinH5OWPDkT6jzwwJwvbn/VsNaE6XmQBuAEPZgBg/sjUQuMklwWt3Z5UkrUK
+ NPH0ARXf
+ JzOqYbC85uK6xK9YQ+tJFKvQT+XLhJrxomagOUTPtyYnsuXVRUuUUMt9O8RykinxbXMeioOAqGMFfbrjXTYEZZMd5ZRnaoUhmmnNxVLcsH//CW0lJzcBIsWYqamWXQcFPcDM2khvrL+eC1irOt9kZEFN+k01hR24o+IEWL3QNiKnJo7ZMVpnuL/SOVA+RsmYQ3cVgcqQg4jIYqdFV6i4Cf0xXSJGwN/Em5UoMzVD1+E7FarzLAWq+0kimmBJRZO+58hRjP0NtIwJSIchB/mT9HoRQF5NXAD5zl0T8Huf9EmmDKPs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,41 +101,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SLUB exports the total_objects sysfs attribute, but slabinfo tries to read
-objects_total. As a result, the lookup fails and the field remains zero.
+On Thu, Jun 11, 2026 at 01:54:13PM +0000, Brendan Jackman wrote:
+> On Thu Jun 11, 2026 at 1:01 PM UTC, =?UTF-8?q?Adrian=20Barna=C5=9B?= wrote:
+> > Strip the read-only attribute from the selected memory range when
+> > restoring the linear map after an execmem cache clean.
+> >
+> > An execmem cache clean is performed when a cache block becomes empty
+> > after unloading a module. When making the memory valid again, the linear
+> > memory alias must also have its read-only attribute cleared.
+> >
+> > Without this change, the linear memory alias remains read-only even
+> > after the execmem cache block itself is freed, which prevents subsequent
+> > allocations from writing to that memory.
+> >
+> > Signed-off-by: Adrian Barnaś <abarnas@google.com>
+> > ---
+> >  arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
+> >  1 file changed, 16 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> > index 88720bbba892..eaefdf90b0d5 100644
+> > --- a/arch/arm64/mm/pageattr.c
+> > +++ b/arch/arm64/mm/pageattr.c
+> > @@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
+> >  					__pgprot(PTE_PXN));
+> >  }
+> >  
+> > +static int set_memory_default(unsigned long addr, int numpages)
+> > +{
+> > +	return __change_memory_common(addr, PAGE_SIZE * numpages,
+> > +				      __pgprot(PTE_VALID),
+> > +				      __pgprot(PTE_RDONLY));
+> > +}
+> > +
+> >  int set_memory_valid(unsigned long addr, int numpages, int enable)
+> >  {
+> >  	if (enable)
+> > @@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
+> >  	if (!can_set_direct_map())
+> >  		return 0;
+> >  
+> > -	return set_memory_valid(addr, nr, valid);
+> > +	/*
+> > +	 * Execmem cache uses this function to reset permissions on linear mapping
+> > +	 * when freeing unused cache block. On x86 it makes memory RW which is
+> > +	 * desirable. 
+> 
+> Hm, maybe desirable for execmem but that doesn't really mean the x86
+> behaviour is correct. Maybe it makes more sense to change the x86
+> to align with the arm64 behaviour here?
+> 
+> BTW we should probably document this API a little bit, I never thought
+> abut what "valid" actually means until now. I had thought of it as "I
+> can access this memory" but that's an unclear concept and now I realise
+> "valid" is a technical concept in Arm that's confusing. And it's extra
+> confusing if the kernel API uses "valid" to mean a _different_ thing.
 
-Use the correct attribute name and rename the corresponding structure
-member to match.
+I've got confused too and that's how set_direct_map_valid() got into x86
+with a different semantics than on arm64. 
 
-Fixes: 205ab99dd103 ("slub: Update statistics handling for variable order slabs")
-Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
----
- tools/mm/slabinfo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+What execmem really needs is set_direct_map_default() variant that gets
+nr_pages.
 
-diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
-index 54c7265ab52d..f4077746d6df 100644
---- a/tools/mm/slabinfo.c
-+++ b/tools/mm/slabinfo.c
-@@ -33,7 +33,7 @@ struct slabinfo {
- 	unsigned int hwcache_align, object_size, objs_per_slab;
- 	unsigned int sanity_checks, slab_size, store_user, trace;
- 	int order, poison, reclaim_account, red_zone;
--	unsigned long partial, objects, slabs, objects_partial, objects_total;
-+	unsigned long partial, objects, slabs, objects_partial, total_objects;
- 	unsigned long alloc_fastpath, alloc_slowpath;
- 	unsigned long free_fastpath, free_slowpath;
- 	unsigned long free_frozen, free_add_partial, free_remove_partial;
-@@ -1263,7 +1263,7 @@ static void read_slab_dir(void)
- 			slab->object_size = get_obj("object_size");
- 			slab->objects = get_obj("objects");
- 			slab->objects_partial = get_obj("objects_partial");
--			slab->objects_total = get_obj("objects_total");
-+			slab->total_objects = get_obj("total_objects");
- 			slab->objs_per_slab = get_obj("objs_per_slab");
- 			slab->order = get_obj("order");
- 			slab->partial = get_obj("partial");
+AFAIR, set_direct_map_default() has a single 'page' parameter because it
+was added to reset permissions for the direct map alias for vmalloc()'ed
+pages before there was VMALLOC_HUGE and each page had to be reset
+independently anyway.
+
+Maybe it's time to add nr_pages to set_direct_map_valid().
+ 
+> Also, shouldn't execmem be using set_memory_default_noflush() before
+> freeing anyway? I guess that shoudl even be documented as "if you change
+> anything you need to call this before you free the page".
+
+It does on x86 because there set_direct_map_valid() is the same as
+set_direct_map_default().
+ 
+> > On ARM64 set_memory_valid() just change valid bit which
+> > +	 * leave direct mapping read-only so use set_memory_default instead.
+> > +	 */
+> > +
+> > +	return valid ? set_memory_default(addr, nr) :
+> > +		       set_memory_valid(addr, nr, false);
+> >  }
+> >  
+> >  #ifdef CONFIG_DEBUG_PAGEALLOC
+> 
+> 
+
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
