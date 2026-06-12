@@ -4,109 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DC60CD4F2C
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 08:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D233FCD4F2C
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:09:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A79B6B008C; Fri, 12 Jun 2026 04:51:16 -0400 (EDT)
+	id D8BC66B0005; Fri, 12 Jun 2026 05:09:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F1A6B0092; Fri, 12 Jun 2026 04:51:16 -0400 (EDT)
+	id D3D4A6B0088; Fri, 12 Jun 2026 05:09:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 495936B0093; Fri, 12 Jun 2026 04:51:16 -0400 (EDT)
+	id C52566B008C; Fri, 12 Jun 2026 05:09:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 37A6B6B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:51:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA2A8A037B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 08:51:15 +0000 (UTC)
-X-FDA: 84870641310.30.752A9C1
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 055F7180006
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 08:51:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LNeUche+;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781254274;
-	b=D9W118L9TZftpPEJLxPiWgsHvnzdb8KGSMs9/l4cIpc6Vn+bK7eVITvbp/sATUvLO1e4mV
-	uopwXE2ZXjLJJvVkCUdRVKXgY0P2E0l+SH6ZxlFQzCgMIeVboM21SXOm49+RPtClrQPtHK
-	hztuX6YDY4SNXpvPhLve1jLWA+LKdcs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LNeUche+;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFC936B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:09:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 552C58CDB6
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:09:37 +0000 (UTC)
+X-FDA: 84870687594.23.C6D2413
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A330F1C0003
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:09:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Zb2BqOhx;
+	spf=pass (imf20.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781254274;
+	s=arc-20220608; t=1781255375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMRz2y+ODLJ6wKlv3rNNMZU4weQYTIAWYxB0lbs16Jk=;
-	b=bXoEDqpWS1hzBiAv/5BgtJfoJQhRwXjrrozix68Eh3Lk03qxz4Kvq2Q9sY20Qm9A37R7Jw
-	ZlrGe5cxz5f3kq34fjPzSKNEjaL1TDkfEFjyJj6BEHHbhuN1xUUDhSyU1bVcjDFcKs6DsE
-	KML4wAc0PhXnF3tXk5zcuPHHMGX5kyY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781254270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lMRz2y+ODLJ6wKlv3rNNMZU4weQYTIAWYxB0lbs16Jk=;
-	b=LNeUche+JRlDEZ07XeGplyh7cjJDtU4S4rjfet3lcLu2WF8hArOXKYGDIKX/5KtZ1yJwo0
-	P0EsaS8CzW1uD/5F05mWujwaFAKutRKA3KqAtKGptztP9H9iw5aLrUmRP+B+anpHulaYJx
-	cuyBrm5lk/TgrSvvubaf9jMjjeHa+nY=
-From: Lance Yang <lance.yang@linux.dev>
-To: usama.arif@linux.dev
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	ying.huang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	vbabka@kernel.org,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	kernel-team@meta.com,
-	linux-mm@kvack.org
-Subject: Re: [v2 13/16] mm: handle PMD swap entries in UFFDIO_MOVE
-Date: Fri, 12 Jun 2026 16:50:27 +0800
-Message-Id: <20260612085027.5401-1-lance.yang@linux.dev>
-In-Reply-To: <20260602142537.198755-14-usama.arif@linux.dev>
-References: <20260602142537.198755-14-usama.arif@linux.dev>
+	bh=ov4AVDFRF37D/+G11b2iCMEU1PIeF4rFLNtUdtH3Z3A=;
+	b=e/5FNwAOk+q4bG+CWPzGi6t9AVKCrzOP1mv7TIoGu95aE/T1pWkF+vgeXAE0Bi6RiTIXdE
+	SJUZgIqb0tTo2TcdlNKERUwaeMnCsBntcru8U0aKobceeFkvlQ07eBsnPMjIxsCusMl8uP
+	jFhQu/zU1Y0ZzrnSeomN9yXmUftBjv8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781255375;
+	b=SoOUP4fL594gbsW7E8yRG0WgFCh4WuawyZ297Yb8B9vFUMTpXM1g4bqvSm9zEl7UPUPUvc
+	KhKK3bwqSQehLYoRLYS9n9JOpLhQ1QSNjWKnBoUyPigETwryDO2M0uR9bBzXw2K9h2xD6C
+	wxaDcqibDECrRkqyxyVOqVD+21Pls3E=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Zb2BqOhx;
+	spf=pass (imf20.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ov4AVDFRF37D/+G11b2iCMEU1PIeF4rFLNtUdtH3Z3A=; b=Zb2BqOhxIN4tIQojHy3lR9eOto
+	cC/wZDHAnH2v5rs3qReuPzaRaYDBpz77V+2NVG+q7tPa8DKdY2/45mpgCudFob3QLViDtpJk/QaUJ
+	4kkkvgSLXr8GD2R50aZgOR3EZC1H+FniE+5HtNxXH9VWvQnKRg+CSOrbIbyIRqH6MArtnjJO/P8iG
+	dhhBdOcqEGWZab0qG/hDUamNVbUv2syb29BDAh36QaoOMbqWugggQLjlUkueSPprrUR6BG2V+840W
+	iz2cdg3VMLT4HJLAbAxNuYstr6wN5bQU3ylkO2Nlnu2/of0Oh3S5FHT7zcmdxnesyz5N4lDDp5sDB
+	gueAJOAA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wXxtH-00Acrr-2J;
+	Fri, 12 Jun 2026 09:09:28 +0000
+Date: Fri, 12 Jun 2026 02:09:23 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org
+Subject: Re: [PATCH RFC] mm/kmemleak: avoid soft lockup when scanning task
+ stacks
+Message-ID: <aivJ5Dv0hAQ1sJu1@gmail.com>
+References: <20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org>
+ <20260612031605.58235-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 055F7180006
-X-Stat-Signature: huotr8mrmfn9rwdd4fqrsfs3fqfsaqrk
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260612031605.58235-1-lance.yang@linux.dev>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1781254273-997509
-X-HE-Meta: U2FsdGVkX19QrjqbICp4J3NvBrkTAEhkhQdd8qaP8VYi3NATU6d4Fg51QLeP34552hPe3LhuDmfdfTOgyHsNTsU1vITX57xjZrLOO/ouGcDsSOxxlXxtl+CdGm6uwEZQbE6VmzRqVs0RbQ7LKrQZcuX823KJh4OJt5iJ2xOwfOO8Svy5OwVBwSwZ5Nk/P3BS2wq4VJdprOzy0MkLS8IwePdvHz3gl0Se9+ZxLQIK5CXGCe953LZaPN9cOhsPCAX3QUIjXov9LByxN241aqLiVALJNaynOr4FCPDsliWm4RtfeOXS+4hm22HydUUKLzJwV8UoGgwxfjYNh8yRSRvvlrbm8NFH/wIi0a0B6BaihMNUUccz1AwJi5BLdUZmWeTktS+qP0oVhYJrsvGaWMKMa636F7yBfCoaWWietphE+0iqwM+JUwslXjASrk19XapkA8cig2XsU7ve3NdP/pb9DJIA5wR8FABETMezqQUPY2GgMAg8eguGYwZt0UPxVcqleD+0f+nb6+ViUOEk+lP0G++Ne7cfZiRDTPPB+Y0/H0vZl6b9GGlB6fy7ttIF7kL8rIhq8OrVnDCoS9G5e2teIrJ3L93kzFfPC8evXqgGgP/z2kYDEQfDgP/Xa0ddNbPY7EVxa4x+c1at5KqVVIIibjUouVmEiPEDlMwIbGd6df9MQBG/y9XP9wROpZ/MPVYfbbJInm0OL6N+t/SzT2XbyrR9iRdx2fbKW1jUVdxnNg7i/+Q1nfBRWDvpBSAxuLGC4zojlH2vuhhfN9atdMf7HNDK35iDZxGRpVvj8gEm9kidh4bUi6q2j3AWQoSpGUgKSmySsBaaQ4KOOYqUxqDKoX1ONxP5qTdr6EDVRRAKSO8BHuR6+/SxxVoZ2VpB/Khx5JU3SYkPFt/CSSvOvHJF02VPtvpBnzYxoXs5jLR1wOnXAJUzFLU5rPRvhViV0XfVUfM2I0Svrs+VcmQt64E
- O8ZS6ibU
- 96mUYRK1mvvTRO82U+wjDtKxB42cAc3JzYr4uMFc1jSKzaBbcbXzuN9/O2jeIXARrgEL4gJwYZw/faFQGu7toP87jycLH6Q+AGF4OKzZkqmdhbcveCJGb/l64EHa8kVJqIaTDI11KXakVY1UwaD1HrRHr5EnEPig3JLBDageyikPkwteCWurJ9u8V6nu/o6c5UcAKG/Q3J9oq1VO/5q74xpyOwrKuPnkxiw2YbgyKaVuTeIOHX4nBQcal3/AxLmQWZ9IG
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A330F1C0003
+X-Stat-Signature: anzapqashypp8weysrs9kzdn55b3u648
+X-HE-Tag: 1781255375-788363
+X-HE-Meta: U2FsdGVkX18/buvEhNz3yHlCI7m1lkiUsTB03O6yLZsbM7ApmLAYWwY0h7D64C0hRua10SAYgUbBqRmNW4SKC69C+8h54Kl/LJxgctZa1aAUm6PBd5vO4g2N636PuPVoBnUAUit6lSwCQTQik4SUUnNi+dPleDC60qDUav2Pv0fS9DqkF3RONOelsbO0RnPLwmad1kiAeGTELva4HwrlevIfK1cB9b6GzhbGs0tADDkM61m1m96LABHzYsiaSGYroCO0ZRjj3MIK6Hl5eRjBlYofRGWw+/g4dzwyZPpBi8YeVfTT2aCJZuRHS2OS/huq5jS0u1gPBa6I+YUsjfzGeECwxZ3WXsIyw/DX7by4vFgD6eGfSQ0jlIzwLpVF9h8zUYxcHHI9pyULLdcW0vsQIYx1ekUV4fOEfaAXzgUjO0Nv3OiygRW91WbPkdRdqG0xohmB8XtLh0mYE9iRf6sl4gP+TAWufNFytl7rh9wxi2YZ0f8cV39q6ZREgqBiC4EEg2DMU9Pk9zFXfmHRnOl+e2VFIlCgAZeDoSOAsvAmJofrNEUw5OZVgNkgwjxBrb9x6X6wIoECfj5nspgOowE7afH3WsraGkWueHv6RMg/5IsFhZUmscfjhAGJQZU9dS104GtVbvyTLDTVO1Z0iS8HFc5F66Q7y75v5sm4299vBoUxPrF+HWoUof0UVtpfuy0ak2raf3QFc8KdsrX8wFv7H23jF/wwn+IqBqafJDr5TKYXxTAef9AaAT6r8AghdXMU0EWQSy/209TGkBTjrz5MeYLm5LqcJquekBbK0LGyGEwVHmstyLwqUlIJLjt3mqUz3XWno4i1kZ60BYYFoHWq6Vks7Rx/mebYfdt5V8uUbc1W4bLhU/+gMlsZdjxdtp7iPNczkBfckRbHhzUzC2lgm5fWp2MdPOJqGII/DkMaj9b0J15V8O4FjQnwmyBdz+N1ERkfI56fxhq0RLIhxCw
+ rQU4qHyz
+ scbeRKdqum9Y3EtH0CZTO7haZuQi0PSNbG9UAKzJmNP0yJEUt7Ot7F8XqvmDqmJD5SkpCA/gRgQPKJZtRS1CMALQf+txQLbpiyrGw/Llf224PrSML7RskEcJCdsC+HCkyseJS2E+Q4vxdJ28cbtgqkQMXGiNBIl5J6fc7MmQAY8Zil79pYIsaCwlvnYY1uizMX0ItEPI9eI9PfMK1zNwwqd33DG+pyRFHIdOqiCKmLSaMUthsSL2gFrVALtmBZnm3Idvd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,135 +94,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc linux-mm
+Hello Lance,
 
-On Tue, Jun 02, 2026 at 07:24:21AM -0700, Usama Arif wrote:
-[...]
->@@ -2846,11 +2902,66 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
-> 	}
+First of all, thanks for ther review, really awesome!
+
+On Fri, Jun 12, 2026 at 11:16:05AM +0800, Lance Yang wrote:
+> On Thu, Jun 11, 2026 at 05:45:00AM -0700, Breno Leitao wrote:
+> >kmemleak_scan() walks every thread and scans its kernel stack under a
+> >single rcu_read_lock() with no reschedule point. On a host with very
+> >many threads -- amplified by KASAN/lockdep in debug builds -- this loop
+> >can hog a CPU long enough to trip the soft lockup watchdog:
+> >
+> >  watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
+> >   scan_block
+> >   kmemleak_scan
+> >   kmemleak_scan_thread
+> >   kthread
 > 
-> 	if (!pmd_trans_huge(src_pmdval)) {
->-		spin_unlock(src_ptl);
-> 		if (pmd_is_migration_entry(src_pmdval)) {
->+			spin_unlock(src_ptl);
-> 			pmd_migration_entry_wait(mm, &src_pmdval);
-> 			return -EAGAIN;
-> 		}
->+		if (pmd_is_swap_entry(src_pmdval)) {
-
-Looks buggy ... unless I missed something ...
-
->+			swp_entry_t entry;
->+			struct swap_info_struct *si;
->+
->+			/*
->+			 * UFFDIO_MOVE on anon mappings requires single-owner
->+			 * semantics; refuse to move a shared swap entry.
->+			 */
->+			if (!pmd_swp_exclusive(src_pmdval)) {
->+				spin_unlock(src_ptl);
->+				return -EBUSY;
->+			}
->+
->+			entry = softleaf_from_pmd(src_pmdval);
->+			spin_unlock(src_ptl);
->+
->+			/* Pin the swap device against a racing swapoff. */
->+			si = get_swap_device(entry);
->+			if (unlikely(!si))
->+				return -EAGAIN;
->+
->+			src_folio = swap_cache_get_folio(entry);
-
-We only check the first swap slot. Imagine we have something like this
-after the PMD-sized swapcache folio was split while the PMD swap entry
-was installed:
-
-page table:
-  src PMD -> swap entry S
-
-swap cache:
-  S + 0   -> no folio
-  S + 1   -> order-0 folio in the swap cache
-  S + 2   -> no folio
-  S + 3   -> order-0 folio in the swap cache
-  ...
-
->+
->+			mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0,
->+						mm, src_addr,
->+						src_addr + HPAGE_PMD_SIZE);
->+			mmu_notifier_invalidate_range_start(&range);
->+
->+			if (src_folio) {
->+				folio_lock(src_folio);
->+				if (folio_nr_pages(src_folio) != HPAGE_PMD_NR) {
-
-If S has a non-PMD-sized folio, this returns -EBUSY.
-
->+					err = -EBUSY;
->+					folio_unlock(src_folio);
->+					folio_put(src_folio);
->+					mmu_notifier_invalidate_range_end(&range);
->+					put_swap_device(si);
->+					return err;
->+				}
->+			}
->+
->+			dst_ptl = pmd_lockptr(mm, dst_pmd);
-
-But if S has no folio, the initial lookup passes src_folio == NULL to
-move_swap_pmd(), , which only rechecks S:
-
-	if (src_folio) {
-[...]
-	} else if (swap_cache_has_folio(entry)) {
-		double_pt_unlock(dst_ptl, src_ptl);
-		return -EAGAIN;
-	}
-
-So if S is empty, the move can still go ahead even if S + 1 ... S + 511
-contain folios in the swap cache.
-
->+			err = move_swap_pmd(mm, dst_vma, dst_addr, src_addr,
->+					    dst_pmd, src_pmd, dst_pmdval,
->+					    src_pmdval, dst_ptl, src_ptl,
->+					    src_folio, entry);
->+
-
-In that case, checking only S misses the order-0 folios in later slots.
-move_swap_pmd() can then move the PMD swap entry whole without calling
-folio_move_anon_rmap() or updating folio->index for those later folios.
-
-Note that move_swap_pte() already does this for PTE-mapped swap entries,
-because a folio in the swap cache needs its index and mapping updated to
-align with dst_vma.
-
-If those folios are later faulted in at dst, their rmap metadata still
-points at the old anon_vma/index. Later rmap users derive the virtual
-address from folio->mapping and folio->index, so they can look at the
-wrong VMA/address ...
-
-Should check the whole PMD swap range before deciding there is no folio
-in the swap cache to update?
-
-Am I reading that code right?
-
->+			mmu_notifier_invalidate_range_end(&range);
->+			if (src_folio) {
->+				folio_unlock(src_folio);
->+				folio_put(src_folio);
->+			}
->+			put_swap_device(si);
->+			return err;
->+		}
->+		spin_unlock(src_ptl);
-> 		return -ENOENT;
-> 	}
+> Neat, good catch!
 > 
->-- 
->2.52.0
->
+> >A cond_resched() cannot be added directly: the loop runs inside an RCU
+> >read-side critical section.
+> >
+> >Split the scan in two parts:
+> >
+> >1) get the list of tasks (with RCU read lock) in an array
+> >2) run scan_block() for the tasks (with cond_reschd()).
+> >
+> >Is it a sane approach?
+> 
+> Why not use the kernel/hung_task.c pattern here? Seems simpler, with no
+> extra task-array allocation ;)
 
-Cheers, Lance
+I've looked at it, but I am not sure we want to break the loop mid-air,
+that seems to increase the false positives, given we did a half-baked
+scan, right?
+
+> Could break RCU only when resched is needed. Pin the current cursors,
+> drop RCU, cond_resched(), take RCU again, and continue only if the
+> cursors are still alive ;)
+> 
+> If either cursor died while RCU was droped, stopping this scan round
+> should be fine, IMHO.
+
+I am not sure, this is not the same as the existing kmemleak_cond_resched()
+raciness in the object_list loops. Those iterate the marked set, where a miss
+only means "this object isn't reported until the next scan" -- under-reporting,
+self-healing, and the in-tree comment says exactly that.
+
+Dropping a *root* mid-scan is the opposite: it makes *other* objects get
+falsely reported. So the "it's already racy, bailing is fine" reasoning doesn't
+carry over from the object loop to the stack loop.
+
+If we go this route, the aborted round has to suppress reporting, reusing
+kmemleak's existing "scan was interrupted -> don't report" path:
+
+      if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
+              aborted = true;
+              goto unlock;
+      }
+      ...
+      if (scan_should_stop() || aborted)
+              return;
+
+Then an abort means "this round reports nothing; the next full scan
+reports the real leaks" instead of a false-positive flood.
+
+On boxes with very many threads, where the stack walk is long and
+need_resched() fires constantly, so the break helper runs a lot -- which makes
+aborts (and thus fully-suppressed, non-reporting rounds) plausibly more than
+"rare".
+
+Since each round restarts from the head, the tail of the thread list is the
+most likely to be perpetually skipped, on exactly the workload this is meant to
+fix.
+
+The snapshot avoids that by scanning a complete, similar to what we have today. 
+
+Anyway, I would love to get rid of the array, but, I am not convinced that
+dropping the scan mid-air will not cause false positives.
+
+Thanks for the review,
+--breno
 
