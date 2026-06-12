@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5094CCD4F2C
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5473FCD4F2C
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:58:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DE976B0099; Fri, 12 Jun 2026 03:36:07 -0400 (EDT)
+	id 2BEE66B0005; Fri, 12 Jun 2026 03:58:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88F046B009B; Fri, 12 Jun 2026 03:36:07 -0400 (EDT)
+	id 26F776B0088; Fri, 12 Jun 2026 03:58:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A52E6B009D; Fri, 12 Jun 2026 03:36:07 -0400 (EDT)
+	id 15E3D6B008C; Fri, 12 Jun 2026 03:58:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6C06B0099
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:36:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73E911A05EE
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:36:06 +0000 (UTC)
-X-FDA: 84870451932.09.D3AE7F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B589B180003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:36:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YpHb8phY;
+	by kanga.kvack.org (Postfix) with ESMTP id 00E4E6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:58:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DD881A076F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:58:31 +0000 (UTC)
+X-FDA: 84870508422.01.056A8DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 04243100002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:58:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YtiyHqub;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781249764;
+	s=arc-20220608; t=1781251110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kOX08Qpl3nLj8+/bGT7gMI+71ks0J39RDfqBI01e/bs=;
-	b=ohyd2zDzlKbjYl/VHDCmd6bTg7tmf0K7KkkdX5eFEcjhUYMpda8NOq+QFHbFBe+5jTkunG
-	IefecuyAzHbegXTODvNYpO0TTnowqYRiyUlvKJP70VwRXBenEXFE3qw2RK81TreLHY4Zpc
-	URiwm5j+ms1Y5fk8ukRF1rKYNHniOak=
+	bh=hWFHiurMTHuYqHLktC6SCqnT++u/8QxqggEqlCoSYYA=;
+	b=Mtw1DObN6CF0e756FH/JzoOejOs34nk+4EnBo5jgOzNuCiBG+lonNyKNTd/ePSOheX3vmp
+	d7WcNc2dEeOXfVH9sLg3v8lF+TZSTCuNngrR+q0Q/becAOea3rEuKgu00BL6dsE0SCINp9
+	PipiY0KXMMJbfHgtK6ZODGVCkHYhiPs=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YpHb8phY;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YtiyHqub;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781249764;
-	b=ui0CHK0aNponE+7bPjqvY2chVCh9eyOjjRYFAgG16mMm2aIdwnIuRcYK5Skiq8iXolrcSY
-	b+LtoUx99A+m9fCff6dwvKdPaR4ofq0RoqiWfvRyv2XHIM7/rcRLd8Yw7yXzwqOHCCLE42
-	vqHT1EKvHIAHAJsN94/dmUePN8eEr2Y=
+	t=1781251110;
+	b=ddW5ALv2C7ZDY94eI85b7abH2A3q1VXTV7gZTGapl3uT4gcYEqmRr/7hJUV9Xdy71IVtbg
+	Lv/Xtn4ZWE7guUtSiXMsugriei9IMlGjSllyMQZZIC0TrqAUOMIR0O5VxF/AvvC03+/jmJ
+	M++MQHFjMtUf54tg+Zy+iMpfAnJN5yk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 191556008A;
-	Fri, 12 Jun 2026 07:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1AF1F000E9;
-	Fri, 12 Jun 2026 07:36:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C9824171E;
+	Fri, 12 Jun 2026 07:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2F71F000E9;
+	Fri, 12 Jun 2026 07:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781249763;
-	bh=kOX08Qpl3nLj8+/bGT7gMI+71ks0J39RDfqBI01e/bs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YpHb8phYvCXL//PMNv6jJibMmIvbuZmFBd81SZPjBSMR8ToRShtN3aXcZQR5xRGOF
-	 5D1aoLZGabiAlDqIpuffzOCx97pcxQ9zSS0/JgxMXO0J1HfPqTEC0I21xlyTI22bSc
-	 rD+sjQ6+hPGHfZzV1cRQjhR1zP4JNTPuaZ+xJ/FAeHV1xlSYiVsoxlMVjMqbpvaDCn
-	 qXB2IXqiuMyKCLM/AHpVj7C5sVFvpbcSlfU8SBPVkLFWPROv5ffLzAAo4FsdEkp6Vv
-	 GDjbVyismAzQ8Yj41kuEmLVoZ66puCR7NZaY5e7pk5iSCZXrGdKNdkltMZnHJIkraK
-	 nd5WalUl+cWLw==
-Message-ID: <09ee2ea0-c93f-406c-b5af-1fe3a50c8989@kernel.org>
-Date: Fri, 12 Jun 2026 09:36:00 +0200
+	s=k20260515; t=1781251109;
+	bh=hWFHiurMTHuYqHLktC6SCqnT++u/8QxqggEqlCoSYYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YtiyHqub1j1tf7e3p1QglJ+3DU3OjVCX4eFuAdDWGmLkPxq590WOqLCq60Y172ipQ
+	 cGPSiw8ZPOwDBs/un0i7EDEy2vPldO/p6Q9gj6b1asnOrKV9nV1AtzJsGMMVdbKKtc
+	 yurOZcj7lEayinzZlrLVSML2Hj6sh7PPvM6wj5+3wwtpzc84cKV7ojPtOfSQy5HUqn
+	 /Ql1oYlggGpNEXvvGcYp1GJsjyAAvvx60jMgPNZc5R8sVxl7E5z5Iv2V6E9drjhTp8
+	 yYsh/+Q92xs8Mqty4l0K17JgYr7jcmtCAyJq7rBcaVsHV5uV/vyvTSIww5WWthRpkU
+	 Sv5MGgh/roXSQ==
+Date: Fri, 12 Jun 2026 08:58:19 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>, Anthony Yznaga <anthony.yznaga@oracle.com>, 
+	Mark Brown <broonie@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Aishwarya TCV <Aishwarya.TCV@arm.com>
+Subject: Re: [PATCH] selftests: mm: fix and speedup "droppable" test
+Message-ID: <aiu39cOX1w9ICe_U@lucifer>
+References: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup_test: fix race with PIN_LONGTERM_TEST ioctls
-To: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org,
- jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
- yang.lee@linux.alibaba.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260608025043.88087-1-cuiyunhui@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260608025043.88087-1-cuiyunhui@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B589B180003
-X-Stat-Signature: 7zmkg9hahh3nsc1s5mwybgbg3fcc4ztn
-X-HE-Tag: 1781249764-589687
-X-HE-Meta: U2FsdGVkX195IT81KcNwQcft6F9Dvc2F840zaEJkQsj3ZRFCuO9b5w20Rt41TYCvlHmUxKWLUII49UkAQVRrc3bAOCo0qZah03dLr5Y4nZl1jyRw3Y91NGtCInBGn6pIsbxEqfBMsBW0MGp8XsI86R5PoqowhCapikNahPUzDFB9lUOkOFKoLnxwO3ERit7zLvHsB53lP47M6zg578b8ho4IaiEdhB+qU5Dtu4vnz1CxNy0P3KIHYEeknQKEhQLzqX8iKUt5f3Xp2w2XLAEovw7QuOAMsxunvg8n2HBRkzjZykYQ2BZwFd7FmI9bDftrMtg/KiHlxEavD1mzlDkIlzkpgJO9t7SYoe/ghbMhu6kpky/vaBZMWmBzbHrSEdTm/Ip+CllwuLcGPA7C+t7qaSvv7WkxMt+AeteNtsmP6qluSuQ4W375EvP6xrrjRs3WFR/Ps7CPzv0JkT4JFUI0nk37z1jlPIXfnnRRdXCuX6ue53G7u7SbEZKC0pWlJc5RuB0chNUn1sZkKXW6CKEJZPTfK6ZtAG23c4nPPaZE5va7diUFCdM5DnXwuxBVnBoZEANUNjfVqgjm2UAp+7Oe/5yfsY9th1jrHwDIdB+c/AjTdR7cezugG9lWlZIRy+y/8i14QZNy7HTFw0+vZeXPtgY6yg4wmQNVKGhiPRqoSLAWamzO2IZtMfQ1pNQm0jterZo/JtdoX641SryyPJSP+6gyuMunYwEX6guujYICHR3w3xMG3+Ol6vP1RjL8yDQ2SO0G3ja/hNCsP0MVa/zDMCMzJ0lh5/R5Qhwbk5DKGj4rdy9kCj1mgCrUk0UF6bj4wQ53IknDk8ZcUUpeQJQCTQnK/LSofK+6vLbdDkn/l0Qh8nHEovddKE3wvQzaPEZBKOVgQ+97BZZRop3nVaw2CyEa8sPD0oczUWct3Ywc7C0ZHE2+Hp27mzBwcPidObpIHNUOHKQfJeDVnrt4RdN
- aX2ualMd
- dqsWRRysaMZ3InUJ+uYvI88CLKxxJ6KJJgTfE/aWslXkK3aLxBG9mA2NJp1LdQt2URsweUXej8WmjtKvolAIyJOOjyWEo8P5/dZCzbbs3wNb+T6Y+Kc3km36IL1tQPECNAZx0n8uYCR99QsvV/CVTSIru1U+FP34VqpO0AW21IVoqpHxztsG4Wg56EuNreYpr/8wzM2kd2uNZAftPCLj7uuPZ4beV2EudpgQY45TEBPjmUW5VZUd156BGIIhfHq/z0qYDYR7lPNqP7jrkMVmGRMtR2/8q2A3K74clLGTfkuJtgSlQLzVD1lICF09urTmLw8Vq+iPb0csOtok=
+X-Stat-Signature: kk7r1njh5gdsox6iffxjjooygt7k3xob
+X-Rspamd-Queue-Id: 04243100002
+X-HE-Tag: 1781251109-748210
+X-HE-Meta: U2FsdGVkX19R2SfmMvmfO5al6seenLxoUvs7pi+botyfH5Yy6CuC8iKuZqH7HnOb5KwVV7k3z4CLhfI20mY5lNRaroYkfMlVkHlNiNagSSnnD41/r6wRe3UvgBUwDxEMpTPRI/567h2FrfovWxGg4bxXztbhl+Gmb68DrMPd9NbOKMXznKXf3wfIIwYTdPR0jdol5wgTuRfBKOi6uIX4aOzrskc1+4mofFJTDALAVwRn6DKu5GmnG/3EdCE3AE2tmQ7bbbmOwkL5sQGGpABCdp/pde/iBfGeB+obFn5RT2NYMosQSPuftt7h+yFDNVtmSDI4E9xMiGJyYSKehquSXRfMTfyaGcSopTRY3zUj+oUYCujYjt17aCMGVRIrLo1gP3QZY2FDklaXaXFEdbm9BZg4SWCatwKO/KUrlpoGpjOpzppghzJ7RHH/oQukmgi5QOez4q/46og+CrJCY1GZ+W0o4/mzSmw2pwrh6uisH3d3nfF1eiexQTyiod6VQHbblWsCe/rcPPp8f5X7y0IpEiqFR07wEscKK142ETkNik7ZFDQwNRXiAKiu3EHF5j5HHqFZTa1Nuw/DHiBUC23uBCxWPiwG6cvTbH3b13CIVCkQ30Vv7O1qjuypbtDHt49AHsYijQCpjVxIfLsTY4UrEMT8QO76IlkvwKmcO59OpfW1Q7UXPa6VSUGYlMbUmWErbft9V2GtYh/RHSRe3aA4CWoAM6ZQH2djN+248tEoY8Ayv04qUn49sNm/6iQ1H7vMRfPBD6VMKSsGtpNxwcSJRbvVUcykwgdfZEbQ+nkhbN69kiFTp78jL1FNAIn4s31IuGK9ik9X6FHj4HBmG/a4ShhsE7Z3pCqD1M9pViN2XMzy9Z4xzGxyFQ9Co9hfpNZ21yg5RlXUBYOSSt0PfQG1m6w0bRT6cYcNedDvW+HxGudsTcdtI3J+QOxp/7BqlR/jYkPZcvP1BT+Ub6OxX7c
+ Swbn027A
+ NC6oLfcnl7s+ohWVjkHwO8JiNuVtQP+AIWhqs7n5eLr60K7RfIiNtqvmLA32cTX1kCEZxM5Al6Xs+Vqc0J3cDwINAM8Q+fdYl6JuwjN2ZfasTJNeL4DLW+wo7xO6TIHJWPgAh2LGlb7SATqXhPDRxAUHyhvCLz40BCuD33L55Wy6D98iJ8Q5VmVUGjnbFmfepssoD1LBy459SdaPxSPXm3TGSz4NAsC1f4NWufoVCoGUjemsXoIzNbtIUuuxm3yvkgoSHcYotnIWkcWlC85eeXE8zE0t+42+pVaex1nPUny8HF+nvk6iX26vVPUXSVAeYLY1+xkfzUUfmo4Ee0JX9reIGJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,269 +96,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 04:50, Yunhui Cui wrote:
-> The PIN_LONGTERM_TEST helpers keep their state in global variables that
-> are protected by pin_longterm_test_mutex when accessed from ioctl().
-> However, gup_test_release() calls pin_longterm_test_stop() without
-> holding that mutex.
-> 
-> This can race with PIN_LONGTERM_TEST_STOP and let two callers operate on
-> the same pages array concurrently, corrupting the test state and possibly
-> freeing it twice:
-> 
->  CPU 0                              CPU 1
->  -----                              -----
->  ioctl(PIN_LONGTERM_TEST_STOP)
->    mutex_lock(&pin_longterm_test_mutex)
->    pin_longterm_test_stop()
->      if (pin_longterm_test_pages)
->        kvfree(pin_longterm_test_pages)
-> 
->                                     close()
->                                       gup_test_release()
->                                         pin_longterm_test_stop()
->                                           if (pin_longterm_test_pages)
->                                             kvfree(pin_longterm_test_pages)
-> 
->      pin_longterm_test_pages = NULL
->    mutex_unlock(&pin_longterm_test_mutex)
+On Thu, Jun 11, 2026 at 12:01:55PM +0200, David Hildenbrand (Arm) wrote:
+> The droppable test currently relies on creating memory pressure in a
+> child process to trigger dropping the droppable pages.
 
-Okay, thinking about this some more ...
+Good lord.
 
-I think what's really required here is that we have two separate "struct file",
-because otherwise release() cannot race with unlocked_ioctl().
+>
+> That not only takes a long time on some machines (allocating and filling
+> all that memory), on large machines this will not work as we hardcode the
+> area size to 134217728 bytes.
 
-Which is something we didn't expect when we added this functionality.
+:)
 
-I think the proper way to handle this is by moving the state to the
-"struct file", to actually cleanly allow concurrent usage.
+>
+> ... further, we rely on timeouts to detect that memory was not dropped,
+> which is really suboptimal.
 
-So instead, I think we should do the following (untested):
+:))
 
-From 29e3d6fe00c4bd843d11bb548efa89bca478436c Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 12 Jun 2026 09:22:25 +0200
-Subject: [PATCH] mm/gup_test: keep longterm pin state per file
+>
+> Instead, let's just use MADV_PAGEOUT on a 2 MiB region. MADV_PAGEOUT works
+> with droppable memory even without swap.
 
-The pin longterm test currently stores its data globally, shared among
-multiple concurrent users of the interface (multiple open file
-descriptors -> multiple "struct file"'s). That makes
-the gup_test interface problematic to use concurrently: two users, such
-as concurrent selftest runs, can interfere with the same longterm
-pin state.
+Good idea.
 
-While this has not been observed as a problem so far in practice, let's
-just handle it cleanly. There could be a way to trigger selftest
-failures by e.g., running the cow.c and gup_longerm.c selftests
-concurrently, but we usually run them sequentially. Let's add a "Fixes"
-tag to be safe.
+>
+> There is the low chance of MADV_PAGEOUT failing to drop a page because
+> of speculative references. We'll wait 1s and retry 10 times to
+> rule that unlikely case out as best as we can.
+>
+> On a machine without swap:
+>
+> 	$ ./droppable
+> 	TAP version 13
+> 	1..1
+> 	ok 1 madvise(MADV_PAGEOUT) behavior
+> 	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Fixes: c77369b437f9 ("mm/gup_test: start/stop/read functionality for PIN LONGTERM test")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/gup_test.c | 93 +++++++++++++++++++++++++++++++++------------------
- 1 file changed, 61 insertions(+), 32 deletions(-)
+On my box, before:
 
-diff --git a/mm/gup_test.c b/mm/gup_test.c
-index 9dd48db897b9..16916056677e 100644
---- a/mm/gup_test.c
-+++ b/mm/gup_test.c
-@@ -8,6 +8,12 @@
- #include <linux/highmem.h>
- #include "gup_test.h"
- 
-+struct gup_test_data {
-+	struct mutex longterm_mutex;
-+	struct page **longterm_pages;
-+	unsigned long longterm_nr_pages;
-+};
-+
- static void put_back_pages(unsigned int cmd, struct page **pages,
- 			   unsigned long nr_pages, unsigned int gup_test_flags)
- {
-@@ -204,23 +210,20 @@ static int __gup_test_ioctl(unsigned int cmd,
- 	return ret;
- }
- 
--static DEFINE_MUTEX(pin_longterm_test_mutex);
--static struct page **pin_longterm_test_pages;
--static unsigned long pin_longterm_test_nr_pages;
--
--static inline void pin_longterm_test_stop(void)
-+static inline void pin_longterm_test_stop(struct gup_test_data *data)
- {
--	if (pin_longterm_test_pages) {
--		if (pin_longterm_test_nr_pages)
--			unpin_user_pages(pin_longterm_test_pages,
--					 pin_longterm_test_nr_pages);
--		kvfree(pin_longterm_test_pages);
--		pin_longterm_test_pages = NULL;
--		pin_longterm_test_nr_pages = 0;
-+	if (data->longterm_pages) {
-+		if (data->longterm_nr_pages)
-+			unpin_user_pages(data->longterm_pages,
-+					 data->longterm_nr_pages);
-+		kvfree(data->longterm_pages);
-+		data->longterm_pages = NULL;
-+		data->longterm_nr_pages = 0;
- 	}
- }
- 
--static inline int pin_longterm_test_start(unsigned long arg)
-+static inline int pin_longterm_test_start(struct gup_test_data *data,
-+		unsigned long arg)
- {
- 	long nr_pages, cur_pages, addr, remaining_pages;
- 	int gup_flags = FOLL_LONGTERM;
-@@ -229,7 +232,7 @@ static inline int pin_longterm_test_start(unsigned long arg)
- 	int ret = 0;
- 	bool fast;
- 
--	if (pin_longterm_test_pages)
-+	if (data->longterm_pages)
- 		return -EINVAL;
- 
- 	if (copy_from_user(&args, (void __user *)arg, sizeof(args)))
-@@ -259,12 +262,12 @@ static inline int pin_longterm_test_start(unsigned long arg)
- 		return -EINTR;
- 	}
- 
--	pin_longterm_test_pages = pages;
--	pin_longterm_test_nr_pages = 0;
-+	data->longterm_pages = pages;
-+	data->longterm_nr_pages = 0;
- 
--	while (nr_pages - pin_longterm_test_nr_pages) {
--		remaining_pages = nr_pages - pin_longterm_test_nr_pages;
--		addr = args.addr + pin_longterm_test_nr_pages * PAGE_SIZE;
-+	while (nr_pages - data->longterm_nr_pages) {
-+		remaining_pages = nr_pages - data->longterm_nr_pages;
-+		addr = args.addr + data->longterm_nr_pages * PAGE_SIZE;
- 
- 		if (fast)
- 			cur_pages = pin_user_pages_fast(addr, remaining_pages,
-@@ -273,11 +276,11 @@ static inline int pin_longterm_test_start(unsigned long arg)
- 			cur_pages = pin_user_pages(addr, remaining_pages,
- 						   gup_flags, pages);
- 		if (cur_pages < 0) {
--			pin_longterm_test_stop();
-+			pin_longterm_test_stop(data);
- 			ret = cur_pages;
- 			break;
- 		}
--		pin_longterm_test_nr_pages += cur_pages;
-+		data->longterm_nr_pages += cur_pages;
- 		pages += cur_pages;
- 	}
- 
-@@ -286,19 +289,20 @@ static inline int pin_longterm_test_start(unsigned long arg)
- 	return ret;
- }
- 
--static inline int pin_longterm_test_read(unsigned long arg)
-+static inline int pin_longterm_test_read(struct gup_test_data *data,
-+		unsigned long arg)
- {
- 	__u64 user_addr;
- 	unsigned long i;
- 
--	if (!pin_longterm_test_pages)
-+	if (!data->longterm_pages)
- 		return -EINVAL;
- 
- 	if (copy_from_user(&user_addr, (void __user *)arg, sizeof(user_addr)))
- 		return -EFAULT;
- 
--	for (i = 0; i < pin_longterm_test_nr_pages; i++) {
--		void *addr = kmap_local_page(pin_longterm_test_pages[i]);
-+	for (i = 0; i < data->longterm_nr_pages; i++) {
-+		void *addr = kmap_local_page(data->longterm_pages[i]);
- 		unsigned long ret;
- 
- 		ret = copy_to_user((void __user *)(unsigned long)user_addr, addr,
-@@ -314,25 +318,26 @@ static inline int pin_longterm_test_read(unsigned long arg)
- static long pin_longterm_test_ioctl(struct file *filep, unsigned int cmd,
- 				    unsigned long arg)
- {
-+	struct gup_test_data *data = filep->private_data;
- 	int ret = -EINVAL;
- 
--	if (mutex_lock_killable(&pin_longterm_test_mutex))
-+	if (mutex_lock_killable(&data->longterm_mutex))
- 		return -EINTR;
- 
- 	switch (cmd) {
- 	case PIN_LONGTERM_TEST_START:
--		ret = pin_longterm_test_start(arg);
-+		ret = pin_longterm_test_start(data, arg);
- 		break;
- 	case PIN_LONGTERM_TEST_STOP:
--		pin_longterm_test_stop();
-+		pin_longterm_test_stop(data);
- 		ret = 0;
- 		break;
- 	case PIN_LONGTERM_TEST_READ:
--		ret = pin_longterm_test_read(arg);
-+		ret = pin_longterm_test_read(data, arg);
- 		break;
- 	}
- 
--	mutex_unlock(&pin_longterm_test_mutex);
-+	mutex_unlock(&data->longterm_mutex);
- 	return ret;
- }
- 
-@@ -371,15 +376,39 @@ static long gup_test_ioctl(struct file *filep, unsigned int cmd,
- 	return 0;
- }
- 
-+static int gup_test_open(struct inode *inode, struct file *file)
-+{
-+	struct gup_test_data *data;
-+	int ret;
-+
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	ret = nonseekable_open(inode, file);
-+	if (ret) {
-+		kfree(data);
-+		return ret;
-+	}
-+
-+	mutex_init(&data->longterm_mutex);
-+	file->private_data = data;
-+	return 0;
-+}
-+
- static int gup_test_release(struct inode *inode, struct file *file)
- {
--	pin_longterm_test_stop();
-+	struct gup_test_data *data = file->private_data;
-+
-+	pin_longterm_test_stop(data);
-+	kfree(data);
-+	file->private_data = NULL;
- 
- 	return 0;
- }
- 
- static const struct file_operations gup_test_fops = {
--	.open = nonseekable_open,
-+	.open = gup_test_open,
- 	.unlocked_ioctl = gup_test_ioctl,
- 	.compat_ioctl = compat_ptr_ioctl,
- 	.release = gup_test_release,
--- 
-2.43.0
+$ time ./droppable
+TAP version 13
+1..1
+ok 1 MAP_DROPPABLE: PASS
+./droppable  5.89s user 0.01s system 99% cpu 5.921 total
 
+After:
 
+$ time ./droppable
+TAP version 13
+1..1
+ok 1 madvise(MADV_PAGEOUT) behavior
+# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+./droppable  0.00s user 0.00s system 87% cpu 0.001 total
 
-Can you review+test that change? Thanks!
+That's um. That's quite a difference.
 
--- 
-Cheers,
+It's good that we're doing something about slower tests :)
 
-David
+>
+> Reported-by: Aishwarya TCV <Aishwarya.TCV@arm.com>
+> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Big improvement, thanks :)
+
+Feel free to add:
+
+Tested-by: Lorenzo Stoakes <ljs@kernel.org>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+> ---
+>  tools/testing/selftests/mm/droppable.c | 46 +++++++++++++++++++---------------
+>  1 file changed, 26 insertions(+), 20 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/droppable.c b/tools/testing/selftests/mm/droppable.c
+> index 30c8be37fcb9..57e1b6fc5569 100644
+> --- a/tools/testing/selftests/mm/droppable.c
+> +++ b/tools/testing/selftests/mm/droppable.c
+> @@ -17,10 +17,10 @@
+>
+>  int main(int argc, char *argv[])
+>  {
+> -	size_t alloc_size = 134217728;
+> -	size_t page_size = getpagesize();
+> +	const size_t alloc_size = 2 * 1024 * 1024;
+
+I guess regardless of page size this suffices as an arbitrary range over which
+to check things work.
+
+> +	int retry_count = 10;
+> +	bool dropped;
+>  	void *alloc;
+> -	pid_t child;
+>
+>  	ksft_print_header();
+>  	ksft_set_plan(1);
+> @@ -35,26 +35,32 @@ int main(int argc, char *argv[])
+>  		exit(KSFT_FAIL);
+>  	}
+>  	memset(alloc, 'A', alloc_size);
+> -	for (size_t i = 0; i < alloc_size; i += page_size)
+> -		assert(*(uint8_t *)(alloc + i));
+> -
+> -	child = fork();
+> -	assert(child >= 0);
+> -	if (!child) {
+> -		for (;;)
+> -			*(char *)malloc(page_size) = 'B';
+> -	}
+>
+> -	for (bool done = false; !done;) {
+> -		for (size_t i = 0; i < alloc_size; i += page_size) {
+> -			if (!*(uint8_t *)(alloc + i)) {
+> -				done = true;
+> -				break;
+> +	while (retry_count--) {
+> +		if (madvise(alloc, alloc_size, MADV_PAGEOUT)) {
+> +			if (errno == EINVAL) {
+> +				ksft_test_result_skip("madvise(MADV_PAGEOUT) not supported\n");
+> +				exit(KSFT_SKIP);
+>  			}
+> +			ksft_test_result_fail("madvise(MADV_PAGEOUT) error: %s\n", strerror(errno));
+> +			exit(KSFT_FAIL);
+>  		}
+> +
+> +		dropped = memchr(alloc, 'A', alloc_size) == NULL;
+> +
+> +		/*
+> +		 * Speculative reference can temporarily prevent some
+> +		 * pages from getting dropped. So sleep and retry.
+> +		 *
+> +		 * If a page is not droppable for 10s, something
+> +		 * is seriously messed up and we want to fail.
+> +		 */
+> +		if (dropped)
+> +			break;
+> +		sleep(1);
+>  	}
+> -	kill(child, SIGTERM);
+>
+> -	ksft_test_result_pass("MAP_DROPPABLE: PASS\n");
+> -	exit(KSFT_PASS);
+> +	ksft_test_result(dropped, "madvise(MADV_PAGEOUT) behavior\n");
+> +
+> +	ksft_finished();
+>  }
+>
+> ---
+>
+> base-commit: d401506a8ee8ac6bc4a7767c17da036e9434a4a3
+>
+> change-id: 20260611-droppable_test-3737bd791dfb
+>
+> --
+>
+> Cheers,
+>
+> David
+>
+
+Thanks, Lorenzo
 
