@@ -4,100 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B3FBCD98CC
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C145BCD98CC
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB04E6B0005; Thu, 11 Jun 2026 21:29:22 -0400 (EDT)
+	id C8E046B0005; Thu, 11 Jun 2026 21:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60C76B0088; Thu, 11 Jun 2026 21:29:22 -0400 (EDT)
+	id C651E6B0088; Thu, 11 Jun 2026 21:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94F896B008C; Thu, 11 Jun 2026 21:29:22 -0400 (EDT)
+	id BA2486B008C; Thu, 11 Jun 2026 21:35:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8576E6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:29:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BF4F1C3AB1
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:29:22 +0000 (UTC)
-X-FDA: 84869527764.27.698189B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 87831180006
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:29:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=grxHbF0e;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A95916B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:35:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60FE0A02D2
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:35:20 +0000 (UTC)
+X-FDA: 84869542800.10.DA316D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6B99920002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:35:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMPTXrt3;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781228118;
+	b=uulfyz4UCzkz8lhM/wKqEftHOCOaUSFC9j7YjwmcVKui1SLNuF+V8juXmcCKV9riBmAktd
+	vYLpc5GKrfGCfYBj6KSrj+37B8dmRvA/sNGwv1RiQTbJFKPHhLyTaUTus0RlDI5frWvZOW
+	9ifmg+6p28NMHS0ezTSW4pmmbuLi0eQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMPTXrt3;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781227760;
+	s=arc-20220608; t=1781228118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G0Ukr9E3YsTm9qpFFIq19VgZAopP2k8wxVggfBm4mvc=;
-	b=ZwrQLtuanVJVoJ2ULX8A9cCydf1LGwKvaM7C3vtmKBaBRQNQQMsVPwf0ajnrTQb3IjIJTb
-	BhCadB/iGb+Dj/ZHy/uw67bGanQrgjVrvkmTwgVc9wS5tGBIncWdE4uB4KS5yZQzYJOTXO
-	LMBwlghtn0h6ZLLXCG0bKm6Gk/kuU3Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781227760;
-	b=s9k+9Tx+TMf/UnJzq2gbu79nWJGcfDlE1tGSXgqRRvrHVtpF1dxByjD5bc1aVV+C1XOcpU
-	Ag7DBPnhFFg9hKFv/KBT8H07BdGu6Leyk61jwo/gSo6DZ7trWclD0uo4olOTbPdjQPvA3E
-	E37jv8MDFDEZO/N5y/Tv5w299MFezns=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=grxHbF0e;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2Ajp+XQQf+oTx8UEvEyFI7f4v5iEtZ4B/TtXbdryHCY=;
+	b=ps7AV4zsvvhzn4j+HnajeIpKaOXGOy19S1za03ChDVV7d6mp0NY3oC8GQpmRZy6yFCgSHO
+	/UKSz6F31OjltJ1G2UfEW6mo9JL/R1m8nQpicBGB9xzBV8RbfcP+8XUsV1CsjUchYftTTY
+	PRFcDfvRSRNwwi1CreNkM3nTmD57XQo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06D69600AF;
-	Fri, 12 Jun 2026 01:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234581F000E9;
-	Fri, 12 Jun 2026 01:29:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 518F7441D9
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:35:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DBC1F000E9
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781227759;
-	bh=G0Ukr9E3YsTm9qpFFIq19VgZAopP2k8wxVggfBm4mvc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=grxHbF0eSRjcBvSvvQmbBkz3m8sdTwPRZG8B5goZX0ewQ2G2Q8wCybIAHRdV5WHs0
-	 QvxraqcF7zbXJCLBtkqorc8UDpLcoyKG76J2qlFlubPc4yPEGn1M+62oP3lGXmF3ne
-	 pd/4WKR04Cs2TgJtlb5teGqWpJhihYWhudzVSoo3skyVafgF6hT11chyO+SI4x1SxJ
-	 CvFCOL+gTegi+2yON//+hsIqdc3VRFsyvCx7XsVZfK0ymSEmfqjEzqAzAjG7279T8G
-	 zmbsUeSpR3ylJQ/Yk3dePGLnA1W167EopCngM3FIUM7TSPMIFWt3rnBI6Rcmiguu69
-	 KB0XqoM/k6Ozg==
-From: SeongJae Park <sj@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Anthony Yznaga <anthony.yznaga@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aishwarya TCV <Aishwarya.TCV@arm.com>
-Subject: Re: [PATCH] selftests: mm: fix and speedup "droppable" test
-Date: Thu, 11 Jun 2026 18:29:10 -0700
-Message-ID: <20260612012910.84424-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260611-droppable_test-v1-1-b6a73d99f658@kernel.org>
-References: 
+	s=k20260515; t=1781228117;
+	bh=2Ajp+XQQf+oTx8UEvEyFI7f4v5iEtZ4B/TtXbdryHCY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NMPTXrt3OBa6MIunrNYoSON9J9XKfZbp2EwHKe6KmQ9LQyCmIWfa2CEwpjSJkYaRS
+	 VsDHyasqaNVqosJ1eh0Oqx0uC25whJuuVOGHdY5Pf1i25P1Kc7lNotz2lZUfjU6nTf
+	 EBhB30+PVtLR4TH2O6fJACEqM/GxZOzC5ILghrU/Gf3P/Kw0jurMW6+0Xag2XTPgdr
+	 eOUpt+owxo2XGLgAbnrgkCBXoJl/9KqYzw0aNAbizY4WVwT+sXVGuYTshKrinags1q
+	 EHmJogPvQAybAq5fOBYVvXcq5RE+Dyhz3fIiZCMb8VVEBOi+dVNUOZwIosE09JNoao
+	 C2fK/bwc1G2YA==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-9157b949fc7so43811385a.3
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 18:35:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+mbU1JS4pmGgy7zIxE840RFh/oDJF5+d3y9HVefJepmeZUqJ9finvjyNzZ1pMb8eJf3OHJwm5fkQ==@kvack.org
+X-Gm-Message-State: AOJu0YxRNEBInuzT5QuvO/wzhon94AHggN5Kb2KOyCJOp2hD1XOsZDmR
+	ymGeIeEw+9L5N/0usrAyrJoQJ3632q4J4WsXR82LFGOJ1zyb2O9/YTq+Y0X4/gB7KQpYLxnsU/1
+	lB6NklR81Rygj7MonrQNIMbjlJ44yUts=
+X-Received: by 2002:a05:620a:2718:b0:915:a217:a96a with SMTP id
+ af79cd13be357-9161bd37f9cmr82348085a.53.1781228116584; Thu, 11 Jun 2026
+ 18:35:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87831180006
+References: <20260611105124.98668-1-baohua@kernel.org> <20260611105124.98668-2-baohua@kernel.org>
+ <air47cqcLUwI4D9X@linux.dev> <air7FCRQneIPiJ5l@linux.dev>
+In-Reply-To: <air7FCRQneIPiJ5l@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 12 Jun 2026 09:35:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zU=UYOA6MaM6Wsx=yB9r4rta810SUDChO3OcF_EKeW2g@mail.gmail.com>
+X-Gm-Features: AVVi8CeUWluT1JIEy-UvHfyHjCL2C-cM5WlZPsTQXONUplECePle5aUy77eEa-U
+Message-ID: <CAGsJ_4zU=UYOA6MaM6Wsx=yB9r4rta810SUDChO3OcF_EKeW2g@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, jp.kobryn@linux.dev, usama.arif@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6B99920002
 X-Rspam-User: 
-X-Stat-Signature: gzc3h7qhiqe4336neitcjz8zrmm1xo5t
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781227760-846245
-X-HE-Meta: U2FsdGVkX19vJRUl9OC6eQcj9w9P4j6+/2FgQRWnzi4TlnBnXuhdIOH5UYg6SqqH9J/L6Hlisk+ejdV/wmbu23ozzI+RJ26Dkg/WL11or2DQDfhC7e0i4CpS0Qkb3MbRhuo4CuD6Mc4imGVCcluC6WZeul2/Mm6DD3mLe4BrM95/frYglzhe4eV4EM88aPhh9hyMsRmErk2WxXiXkTu8bPxyHnGgTthRONQs7VAPn1GUnXNDH6iglkgUgK/Bxa5MesnYwBEGtvujzMuNKYih1Xx61CEl9ASoHLlGFU1XzggnNci+sKIeNSrJzWHBv+2n7Q6r1O6LGgxp1aa9FrggxBzeB7SrNO7KByqx7MZ5QcQON8Of9uWvd5bJguyea61f5hneBw7wjbQUC4dI/wOWByhXxHzIRDUOx/WCe9Xw5b6K2j+MB66n+VGIbtPcYF4EhbwMpCF77eGpzCsQQMopYpQPu9OA0Cn6N9RnQPo21o37ctvryzwU5GrXYFyIe+IW8F/cgaa50+/51VrSxutnim+wdv8VzTrsMMsC1hCD/4TMc4HzVUKO/n4qkBcXtAmBPOc8+TKYE53te5J7hNkDB5NxFfngYF08otiYtTh1JAXUTkZmGPuSpL4XyOBqNkMwyWWyI+g5b6J8E+B5EoATuVTNRAq5OGgzWAFRO5nJC4SQAhUX+h2YXY2Dk/8O05gziL1i+tHKUcvXDWWLZWjwlZW3GmKJGE25bB4XeWOXcXwDKmT24tVaU9HyYtGQcohqevB6oZW0jxh0xv7CTKETUrZ2mhICx9n0baNWL8EAv6gYZTMns9A9o0wBNPKkdbNqprNcwO79lxnQnM0L8ikeR2Y1v0H+uLm0nioyZJkm8TJTz5XPHWfsE5vrGKOb2lQTWxuBXU/WH+uTZk5VvFFofv2tGpa6FRmQ2ofg7dlX6FyGgdvVzgNYPiVMn0ieIe64RhiuhcOsODrfy9q+GAo
- AhARtW1s
- TEmcTuVADt7f5nLjnNyv2jsGTs6HW4vgfw8mwcYsrWg0X4rHjjSrOTZSXv2LxT9HPUAqgHJfxMsIcjjcqpCkQBkOAPvdo09qVV/473n/NUiNe8hHdo90PdYnS1DXbRqaF8D2RM8ab5Izfmuzb1ZqgZoDJjqKhFN1/znNM1x+L7J0nBiJJnKqoAInkrzg57/pVY0x/GI/msNNWMNSmunWZd0Wr4nexuXwXsHleDPaw3TzO7YnM7vICbyZb1vd6If1rjhg82fDup7Bh7sM/RscjvsI+4cM0djy64qut
+X-Stat-Signature: e3frckudn6ska8a94iday684p76how7u
+X-HE-Tag: 1781228118-816266
+X-HE-Meta: U2FsdGVkX1/xUT60MPQGM98xFau1GG7DVoQphOEtURETLukQyaSucNFKeizXxIHLycopUvcZ/g5SzAhmNjp4ESrieKtKBfAZlWRAX6lB5TL3dLNgqR5AN5x+L/yObk9z88A3K1j2QZeG05nz7nzwPATVZEPRkX6+gDX+nU/+/tCZA2nJIVo6ySSP9M7DM8HKneX2LbvRlkdLcx3rBRxjqe+KzaI2O3qcPMZjp2WicQY+NJaxo4J/hyoeLZ3g8SVHyuoEH8KwfHSFzf8+s4RT0Q5yzFXEWBxDJ7/gqqlTxpYLG9z8vZH3KafkKWVBh5uYbAgl3j2QZtcDoL44Bp74BOz7/6aQpZmirYUM+/Q9p07H5i/VQOIslO6k3FCUtjVleNCBqZ3KqW60niZmnZ1UbiFanY1wBnu94vP3f6U75y9QgCQ1kwP4riDnkD35m/3jxxIEpzt05giPcOmlYQIn7bNi1NUlmcRmro2lKeZK60BvaQ5PFB2ApXIz7mZQ3xIHIbRTApGIhGpDwzmvNbuD1A5mTLW1n147f/z/ZCb60iY1D7OyeWEnFmC6hnk9CWZdfSXVn6vA4VfpMxQvXZ4jzXLwLTP/8YZ7W7abrBo3UxRIkFUgOgLC/Scq8TV07uEwzKRKSAaGlBsjBsD1HtKN80qX4r+pqsFleoFCbo0I6IyHLBj7L1EbfmNL9KnGjBSj891i5FOF3roSOKvaDubMXoFtMuBh411keZwdz855ZlZ3V6cLw8rJ+GjNmW9EO8Tic4kOrm2e5EsYQb32WJxKLcpyqly7YSQVWOdL5YA6YmEzJBN8h6Mm0g6zhxC/Eyka/sToURAVYv9sTqnfD6Nk2tGKOmM8aOl6ujm5j/gCnbTJ38ACNSKA4JMsD2v85M1ztmtBeV20ETRHxucLYap/bV1iZyj4yYmqCvdcElUUo8hdMxlQJnN1QBrDfF2jBkoYTsLn/+RZQ4iAapcIEDx
+ OGu2tnYq
+ hWWziKOksEhsoIIgpbsWgzFMwoxqvXBFYh/WrdrKQ/PNUIwPLQXkldbsNDvSueqQBW3qcvlH6/o/uzvkBEAIthcsBPcmtAq+xptAchuP03lW0mMVyyl9g0I2lmFhlOPD/lQ7x+OrtHo9iCtvSDyLxfaDPCwpILWoyWA7O8Z1NuF43ps5hhYX/10idCtmk2dtIPRMkcxDMW+SFFw11qW0c9nFXqqzbrwGtPpI1RL0T9xI49cVuYHwk+TAxD/fqZdq26ADXWdwf2dCSGTegCNGeC7tP4qt7zeEg11y+SCy7onnt2iD8hcw/AJTsEDXcPcMrJhEj3+qoFCMHTO6+3yhaPolee2EzKBWeaztm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,104 +107,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Jun 2026 12:01:55 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Fri, Jun 12, 2026 at 2:18=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Thu, Jun 11, 2026 at 11:09:43AM -0700, Shakeel Butt wrote:
+> > On Thu, Jun 11, 2026 at 06:51:22PM +0800, Barry Song (Xiaomi) wrote:
+> > > We always unconditionally drain the LRU before retrying anon folio
+> > > reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
+> > > are in lru_cache, and use the refcount to avoid many unnecessary LRU
+> > > drains.
+> > >
+> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > ---
+> > >  mm/memory.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 56be920c56d7..487a34377a7b 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct fo=
+lio *folio,
+> > >      */
+> > >     if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> > >             return false;
+> > > -   if (!folio_test_lru(folio))
+> > > +   if (!folio_test_lru(folio)) {
+> > > +           /*
+> > > +            * Assume folio is on lru_cache and holds a cache referen=
+ce.
+> > > +            */
+> > > +           if (folio_ref_count(folio) > 2 + folio_test_swapcache(fol=
+io))
+> > > +                   return false;
+> >
+> > In your experiments, how much amount of drains were reduced due to this=
+ specific
+> > check?
+> >
+> > I wonder if that data can motivate to introduce lru_add_drain_folio(fol=
+io) which
+> > only drains if the given folio is in the local lru_add cache.
+>
+> Actually if we can peek into lru_add cache and folio_ref_count(folio) is =
+exactly
+> equal to (2 + folio_test_swapcache(folio)) and folio is not on LRU then w=
+e can
+> just reuse folio if it is in lru_add cache without draining, right?
+>
 
-> The droppable test currently relies on creating memory pressure in a
-> child process to trigger dropping the droppable pages.
-> 
-> That not only takes a long time on some machines (allocating and filling
-> all that memory), on large machines this will not work as we hardcode the
-> area size to 134217728 bytes.
-> 
-> ... further, we rely on timeouts to detect that memory was not dropped,
-> which is really suboptimal.
-> 
-> Instead, let's just use MADV_PAGEOUT on a 2 MiB region. MADV_PAGEOUT works
-> with droppable memory even without swap.
-> 
-> There is the low chance of MADV_PAGEOUT failing to drop a page because
-> of speculative references. We'll wait 1s and retry 10 times to
-> rule that unlikely case out as best as we can.
-> 
-> On a machine without swap:
-> 
-> 	$ ./droppable
-> 	TAP version 13
-> 	1..1
-> 	ok 1 madvise(MADV_PAGEOUT) behavior
-> 	# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> Reported-by: Aishwarya TCV <Aishwarya.TCV@arm.com>
-> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+The real problem is that !folio_test_lru(folio) does not tell us
+whether the folio is still sitting in lru_cache, and determining that
+is unlikely to be cheap. We could either scan the lru_cache or add a
+separate flag to indicate lru_cache membership, but neither option
+sounds particularly appealing.
 
-Because this is a fix for a test, I think not Cc-ing stable@ is ok.  Further,
-arguably this is not a fix but an improvement?  No strong opinion, just
-thinking loud.
-
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
->  tools/testing/selftests/mm/droppable.c | 46 +++++++++++++++++++---------------
->  1 file changed, 26 insertions(+), 20 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/droppable.c b/tools/testing/selftests/mm/droppable.c
-> index 30c8be37fcb9..57e1b6fc5569 100644
-> --- a/tools/testing/selftests/mm/droppable.c
-> +++ b/tools/testing/selftests/mm/droppable.c
-> @@ -17,10 +17,10 @@
->  
->  int main(int argc, char *argv[])
->  {
-> -	size_t alloc_size = 134217728;
-> -	size_t page_size = getpagesize();
-> +	const size_t alloc_size = 2 * 1024 * 1024;
-> +	int retry_count = 10;
-> +	bool dropped;
->  	void *alloc;
-> -	pid_t child;
->  
->  	ksft_print_header();
->  	ksft_set_plan(1);
-> @@ -35,26 +35,32 @@ int main(int argc, char *argv[])
->  		exit(KSFT_FAIL);
->  	}
->  	memset(alloc, 'A', alloc_size);
-> -	for (size_t i = 0; i < alloc_size; i += page_size)
-> -		assert(*(uint8_t *)(alloc + i));
-> -
-> -	child = fork();
-> -	assert(child >= 0);
-> -	if (!child) {
-> -		for (;;)
-> -			*(char *)malloc(page_size) = 'B';
-> -	}
->  
-> -	for (bool done = false; !done;) {
-> -		for (size_t i = 0; i < alloc_size; i += page_size) {
-> -			if (!*(uint8_t *)(alloc + i)) {
-> -				done = true;
-> -				break;
-> +	while (retry_count--) {
-> +		if (madvise(alloc, alloc_size, MADV_PAGEOUT)) {
-> +			if (errno == EINVAL) {
-> +				ksft_test_result_skip("madvise(MADV_PAGEOUT) not supported\n");
-> +				exit(KSFT_SKIP);
-
-This check is for a case that this test is running against an old kernel that
-doesn't have MADV_PAGEOUT?
-
-Assuming so, I was first thinking this check might not really needed, assuming
-the test runner would pick the kselftest code from the running kernel's source
-code.  But I recalled some people do get kselftest code from random place.  So
-this check seems nice to me.
-
-Just thinking loud.
-
-
-Thanks,
-SJ
-
-[...]
+Thanks
+Barry
 
