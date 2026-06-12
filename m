@@ -4,124 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0394CD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82322CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:10:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDCDE6B00A5; Fri, 12 Jun 2026 01:05:47 -0400 (EDT)
+	id D83946B00A6; Fri, 12 Jun 2026 01:10:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8E686B00A6; Fri, 12 Jun 2026 01:05:47 -0400 (EDT)
+	id D34636B00A8; Fri, 12 Jun 2026 01:10:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7CA16B00A9; Fri, 12 Jun 2026 01:05:47 -0400 (EDT)
+	id C4A456B00A9; Fri, 12 Jun 2026 01:10:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C57766B00A5
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:05:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5517CA04C3
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:05:47 +0000 (UTC)
-X-FDA: 84870073134.26.D2E898F
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 72E318000B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:05:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUlwgmAf;
-	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B347B6B00A6
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:10:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49AE31C280A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:10:00 +0000 (UTC)
+X-FDA: 84870083760.22.A0FB603
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D0B5A1C000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:09:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="ef+nsQ/X";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781240745;
+	s=arc-20220608; t=1781240998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DvzRkhttZNjitpCo77djJBtuvCtyFBax/t/zfhSNDLo=;
-	b=htNUCq5Zn2EJWgefodURGr2pGeDvc+kts8AgCx6jxJ52yiUEugORYOUzalTbIXIha0EKSi
-	3WUCNbaUgnn6E+ZjkS0IxOKGIc6As7itmrZYi84IBmShKRiQBhiLzuyTZoeI0xE9UQCj0K
-	H0PwaL/Q5O4kiQxLrPpLuP8YoW7QH5U=
+	bh=sJ9mGuDBF51iJQl66AOPfs77n4Wa4tXYXGQQduefnAg=;
+	b=nuHeKjAyOXpoCY8MDgHIhFOsH1YUjynicYTDnlzaPTb1kN6tf0kCqF9ugYG3nhmrYbtyud
+	CEDoGd+PozIH0OyE0qsSmk15eK0lsiffq1S96D5pBMJBrJTvLMc/VhGB5Sc3m9GmRDH/JO
+	kSsWCxe5zirm3JHyLY65GVtQ76UbzQs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LUlwgmAf;
-	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="ef+nsQ/X";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781240745;
-	b=vhFxBiav/FNqlX7DzMbqf1Aj30cjkEtKtv3YsxXVx8RcXZluDA043e3LlL1VTyemi3OvsU
-	QC2CPW9ocnGWd7+jTh4gfWvFllwTUeu/mxWVPE0UIggCZaredrMqflpFcwv8k0uWk5EMPR
-	4OGykusO7DzMv9TQbi24VFY7HrLX0Ks=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45e9f4a3510so277301f8f.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 22:05:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781240744; x=1781845544; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DvzRkhttZNjitpCo77djJBtuvCtyFBax/t/zfhSNDLo=;
-        b=LUlwgmAfLGT31oVXOyBnS2XYppfmsek23HPXTcEq8Hwfduc6pJio3KoNtumYMFp8WG
-         pUIq4CR742/Col61lDap2dCkIepIreVHO2sAzRdfY+ZofuXWbAiglNptFFytiW4TSd0x
-         n9k8ze45rwyl8M21Hrsg1V6Ry5T0Htqz5A58AKgcVhxWhK/4KGuIJ99923E7q0KUZ41y
-         Wy6ZJAzKbx1qwk9kDE9CKXMtF4egPDwq8s7L9KarbeBZTr9gFLJGIgChluIsbB1CgCgg
-         JFL0rIDa2lUCXkggZP3tkT0w+kxAeapL9wtk0HsNOaIKntSvDSFduKvnmjq7BX1wKoqu
-         YjNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781240744; x=1781845544;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DvzRkhttZNjitpCo77djJBtuvCtyFBax/t/zfhSNDLo=;
-        b=eRNkU1WO2ps1P+J2Q6omaPSnJ1z/y1Etn4r6yQsGvZ7tk6HZhnvljtADltVjZeUBvo
-         vCzhHG4gaQpzkHU/0K0p4+i9iM1lBMEgzFir3vAhYLF5dmliMfhn6cC6Of1YHxwtsoL3
-         F+nBNSLUQSSrnwWsJ5Lu3JYqrdYEyfqcfN6WAsc+iP1b9RtTUqnJLm9cCpneEcryMg2K
-         fLWscKzUnWBILfynO7xnIilGuYNz3VOw284c+VlOT4i7pq2HECotQOEOo8XgEwFsT9UA
-         ceKTFwN0V13CVHUhUb8ffplFCFcETGuFKmL42g3dSsCOzvSBd+aac2DBBVoANXtI1IXU
-         Zb8g==
-X-Forwarded-Encrypted: i=1; AFNElJ+pRZrpxgLPaXqlEoA3aXc65t6kiUiFdyozCxPXga8gkd+3NFpuEG30NfDdJBZuapmQNPvCyamasA==@kvack.org
-X-Gm-Message-State: AOJu0Yz4zBzMOfwJzBmjTt8KPyAVJA6zkPJjIF0jwYOJoCEbKrZcKhFQ
-	GmaU2gjZc4g8pOzBxy2+9uN+SKz2rFeXyS0i0uFs+mh+uJEfYQYjJ3QH
-X-Gm-Gg: Acq92OGHqJpiCVUMKHHq2CfT/PIpcnDfRUgUld1kpYn+X2PBwsoxefQmZewhzMKN7Mc
-	DH5I5wij4XcNu9StXoG0TlNN3doZ/0drRlvBgeVnqMC5nOV8KRcU1E+EPKqX1ZFGoq/fZmSoBIK
-	MgxT1Qusm4QrvMPVqIw7luzh7paAIwhIolj9AEDZfOhM2Vo8mL36yn4jNRsOMLWHhVn3oeFv7Py
-	1DYHYqxg/oNL5S9Alakg3Tgg417IXj0S3OlNSee7LVMjoL6idO0P8bEkK3lg8HgqrRBsJGdp1Wr
-	dMMrnAz6c9KowT+zGIgmej0xHH0mpMN0/MaLoj1Ev64m+fzdEO9Ti6rnq/CZD4yj1vHKAC3tV9R
-	X8XEheVAklCXgLUg8nEtFLUnq4EtagFOkwzRrikqD2gR2RTLSXIRpZ9AppKOWRIoao2RSCtL89/
-	bBDoQkDRAAith1mu6JOhrqWsQ7NyJlOkgOHv1/iojuiSOOHOndaaOmkQg8//uRpDOn8g53fcecz
-	xewgABEN2s=
-X-Received: by 2002:a05:6000:2002:b0:452:65d:e108 with SMTP id ffacd0b85a97d-4606da5beedmr1558160f8f.3.1781240743610;
-        Thu, 11 Jun 2026 22:05:43 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2e6a8fsm2184809f8f.37.2026.06.11.22.05.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 22:05:43 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: akpm@linux-foundation.org
-Cc: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,
-	David Carlier <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm: pgtable: protect lockless kernel page table walks with RCU
-Date: Fri, 12 Jun 2026 06:05:40 +0100
-Message-ID: <20260612050540.31594-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aiuQf99mqhQRVzC8@casper.infradead.org>
-References: <aiuQf99mqhQRVzC8@casper.infradead.org>
+	t=1781240998;
+	b=XrKbt1aVv1DwyC1jOpmy8EpyEwuQz6jLhGJqaCKfZ8zCFdeY/8iWQxYfWFLE8UGVKNo/9o
+	G3ys9YD8zcKc2GP75aQVM9CEG7+zonBbzOzOZp/2fqAxkXBY3lsqAbzB9NWjM5sFyQLIIs
+	Ew5g2bXhpC/wTIb0gJ0BjM3GYQJK8JY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=sJ9mGuDBF51iJQl66AOPfs77n4Wa4tXYXGQQduefnAg=;
+	b=ef+nsQ/XrcfexLUEHiICyPLwQk+xnqc9nwUMTJjMozeIHx0AM6piZSgmen1h+o6J93E9ZYv7D
+	8oUU5WfLkIYm8BtLqpT/1Tf9/KH9I6r/FbixiKbkZ2Za1rSy2ue++uIoYKPXNsLfXvfu382hBqP
+	BCJrtnM7SnhC2Z0nIJvouUA=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gc6nK66PXzLlSD;
+	Fri, 12 Jun 2026 13:01:57 +0800 (CST)
+Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
+	by mail.maildlp.com (Postfix) with ESMTPS id CAE3840538;
+	Fri, 12 Jun 2026 13:09:52 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 12 Jun 2026 13:09:51 +0800
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+To: Gregory Price <gourry@gourry.net>
+CC: <lsf-pc@lists.linux-foundation.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-trace-kernel@vger.kernel.org>, <damon@lists.linux.dev>,
+	<kernel-team@meta.com>, <guanhao.wang@huawei.com>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <ag6XyvxR-NU5rGn-@parvat> <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
+ <ah47NNhuiClgGCdn@parvat> <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
+ <ah-0CyZurn5D1ezY@parvat> <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+ <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
+ <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
+ <d01fb1ed-2418-42ee-aea2-37f9a5c5729c@kernel.org>
+ <ainFROZ3WrGioyuY@gourry-fedora-PF4VCD3F>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <8b998e9f-1d91-6dfd-8065-cfa7a3b19028@huawei.com>
+Date: Fri, 12 Jun 2026 13:09:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 72E318000B
-X-Stat-Signature: mikpunrb3dt73srkhd4w91xpkahen16g
+In-Reply-To: <ainFROZ3WrGioyuY@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.219]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk200017.china.huawei.com (7.202.194.83)
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781240745-906381
-X-HE-Meta: U2FsdGVkX18845neDWV6TmTMjLudG2wCXdjI6USCO4D8CNndA6Nt+qYl5IUnCmR4RtJ0OtljVu3AvO0r9GQTHz26xl6LKa/ZiIJKsnnmjqajYLXxfu6LkY7C7oZNAVcj5Ywt4zbYDd3PyOoceU3hgp8aP6SbevvUeL4VWX4tAa8HmCrYHKwvDUl0s9BVH8H9uXD7qkzq7XeiFoL76OUmvABNM1JlYvbbucC+X0EItAWCbbH5QODZaLfm0tzvI6yxflXKBHMHQ+RBD/ubZFAJQ1TjuZ9WoGC5MkZzKyi2CEruLA+Qntpnkmr4nXgdSwEORNro3qtOMQ4/yuqalnV1clSNbhKp3Xayk7kekmHW7bE7d2tHCo87lSlYFenpY9xv0YjBs+htU9gYqK60+JsdRmaZYMe+EIYjoTZWb93UJO0cFFW5eX3+BvXwWb+0pwnWvTeG+iQPMH9VZ7a6cVxhQCDqp/k7VgOdUA9rwj3pE3Va22iY5zzg7iMoSHtSsV4+b0SzCiCDHlw9XG+QTBh7lPBhO0stRKOkiDnC9w3igSQteYxqfbJhQD2gxc2s+vnixSqZBUnXKqWQElHOmgbvEcIqVZICcvhpuf1zGy32QEfs3ZQ+8Emosob1/Rgd/NsB0bJ3TwQ/uEo6QvGFxdM2YFdcAzvXFY4mZdCBnJPdUvZ7CbYB0BhTcYQ/g2aQfCk7nLNMfvcn/gB5RBU9Ps1m2NVRHHYlaLp/LboPDkLU1F9T+zJ7bmMTlG05tfbyPZHdr+9aLnNROqVMSXwM0YyszYviPP9M3e3PsPmmfmIPe/c2DcGZP0RXOHghBLXd7a2PU7lPU+lYZDEh8L2FoyU+36+sGrE1ZpBWxgZKWo5p/8yMbYU0RNx8RkXQ9ucQyQYboqOv6jY/Uv8C5NkIIw6NW0YzxrlSMjJ2RNAJBRJJ9BLU63I/X6Hvs82xickXf7VGSMQnH2j2RCwYlZJCmG/
- grH4DZm7
- /f8fY+hiPJuWW6iWnsrVsHZv/7BUkScPnTOJ9kXD+H4wjBEcQRZeyD/AkmnIxYCtcLj46urZND08sQ7VELPDrhq1KIPn63Kar/w5fxHHvic4gyJqjntSCvOUmnLRoUfkuiriHV9/LqguhZdlQEoCP8YXhgugkPX6JIFUWhRf7g2Psyf0szbfZLLawjX4kWOsXB+Fb/l82syNSnSMJwP6fzDdRiZQ0Z8OMmngUgtx5Wws6ajTlGXZ977NcOY+BNb0iEK6G7NPZcDGiOTaHbs1WBF56XsNpUmffDNG/GyE9tIPE6fUnOKKBSJ0t9ZXVC5tYpS2SRKzQjM23dFjASMs8KD2lYoZ0F3nHHbFN2XohXwivGEFPT6BeBOhdQ/6RcmYHWH/tYuWWJq4TEfDihAodv2k2Ahef94wwNJL9z90Zc6X36XcKSoUHmBWWpzsMzndT9OoDz8hF//VtDvbD6l/famQK1up3I3+VBMWmCQuA1HK259l5GJYK/TCR7+9tCeCPPvyGnyrNh95thMOIlNOv1g3ggy3bJpeIbUsgtF1vjwWnQuRHJzg//YAf2lCcoCjw8A4p1HAcJe19yEl8D+/T5vKppjwqxG2bSkTAXf/rRHbc9YbEU6LWIbVD6vdQaB8+r5CIEX2lo/2uzg7kcwblMrpjNA==
+X-Stat-Signature: wc9niu3ut3phxq3ignwksd5xqhpwdatg
+X-Rspamd-Queue-Id: D0B5A1C000A
+X-HE-Tag: 1781240996-851618
+X-HE-Meta: U2FsdGVkX191QAKJKmNbCU9B73l/lZ2sHkfgodjjW47TOeBA5mdEMFvKGYrwgLrw4IIxyah+PuA+qe7Py/07doGTQRK235GIrumpXhZrq80JSRl4t0tGRm3UhA3pL1vlQLmTB7/2G73fr7Y73d8Z2am8ygN24bBblCmuNcDb3eJoAG8qW/01VieyqtRNdRr/At59L7Vmev35BUarUSM+Qr5Q2xvJRLtzSIaeWoL65v2gSA0D4YSH53vGQPABsVLMLhWf7lIOpVzCPo+q5Vh/SSlCa47CWUtgm3v9vqKDmemEYbcUERa9QokNvd6I18uZfM3cMYplpUXDQ84Nenp6mQyMC0grPWPEBGlaGCHV0c74ryYLeLe4/Z0sicQKDC1ee6RZqNkPL6LCmqmREqcsW56mSjGcxMqhpya4thDNoKWcJcz19TKTKMBUekDZFcRFlD92qkKV2hI79FpXXekfFK8H4BeOv/RXDTxumhflvOr+Q9NtywPRRKQMbOXbYEnNlqW3I1M3fLQLCw0aCTTBtKRMVJtYjfgKRV7HpcBC8+OtiG2R3Lkh47VzY7O1kip+RdWaYDrEkKpCXvDjdTn3NreRtUWMmXOpknhggulEpD+nJDRA0p1a2ihlQfDkRNiSJf/qzR2FROtB28W2fmuJ85IoMpVDcCxt2uMT93kLUwS7SaojrV3x/QuZZrul0jo6jntaNpBuvOiLa0QAvOMsTzjpodXeZCfLlv3r1fi+rC63gDa9fdGzJyAn2kKdiM0Ojleab6d9Ovb0RnKZE2ld8EwhE1ZvBnn4vmDRm5cdD1qHDYVYBXFT0xBJeC4oFnt0G4M4HLBKUSvxyiCQxKhqjyXP6J55Dx7aquWjcWpPFRHHgJajKTc29y6gU15J+eDpLlqtoLaCvTFHr6Nlx7xQf07fPHfGKZy5pZAkX5v/ED7GgO6SFJC7rzThQ7qCLJwxklnYyHkel6GdBDHYbKN
+ VQsBOXe2
+ keSvaM1HO7cpysbUGB/gGFnzRz02eBAuQ5kQljUNAmGA5iadkZlHyNIIr4I4/MF20YEu/ar8eFYJVtqfrS8W3pegDQx3X1jKiNcsU2n0n1elTvfqbnxeobJlJ/gntQWBxu4o/SSV7kPctWQjYwr+wkkgiV4GQW7h1wmZqXI7pHE67QiUeQ+mXrqbrNls/KmvvW9qc6hDYyEScYUfbCEnsXHGgI4MotNTD3yJNOl7SJanomrzDXQs4bJ5IT9tRHFGijT9st0bjeBIGaECqj5izd+7s+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,100 +109,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ptdump walks the kernel page tables locklessly through
-walk_kernel_page_table_range_lockless().  It only holds the init_mm
-mmap lock and the memory hotplug lock, and neither excludes
-vmalloc/ioremap teardown from freeing kernel PTE pages via
-pmd_free_pte_page() -> pagetable_free_kernel().  syzbot hit a
-use-after-free in ptdump_pte_entry() reading a PTE page that was freed
-underneath the walk.
+[ trim the Cc list ]
 
-Deferring the kernel page table free only batches the TLB flush; it does
-not wait for lockless walkers.  Mirror the user page table walk, where
-pte_offset_map() already takes the RCU read lock: hold rcu_read_lock()
-across the lockless kernel walk and rcu-free the page tables in the
-kernel page table free worker, after the batched TLB flush.  A walker
-then either observes the cleared PMD and skips the page, or keeps it
-alive until it drops the RCU read lock.
+Hi Gregory,
 
-Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
-Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/pagewalk.c        | 15 ++++++++++++++-
- mm/pgtable-generic.c | 16 +++++++++++++++-
- 2 files changed, 29 insertions(+), 2 deletions(-)
+On 2026/6/11 4:12, Gregory Price wrote:
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 3ae2586ff45b..6d9f14f86784 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -655,13 +655,26 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
- 		.private	= private,
- 		.no_vma		= true
- 	};
-+	int err;
- 
- 	if (start >= end)
- 		return -EINVAL;
- 	if (!check_ops_safe(ops))
- 		return -EINVAL;
- 
--	return walk_pgd_range(start, end, &walk);
-+	/*
-+	 * Kernel intermediate page tables can be freed concurrently by
-+	 * vmalloc/ioremap teardown (e.g. pmd_free_pte_page()), which routes
-+	 * the freed pages through pagetable_free_kernel(). That path defers
-+	 * the free past an RCU grace period, so hold the RCU read lock across
-+	 * the lockless walk to prevent a page table from being freed while we
-+	 * are still dereferencing it.
-+	 */
-+	rcu_read_lock();
-+	err = walk_pgd_range(start, end, &walk);
-+	rcu_read_unlock();
-+
-+	return err;
- }
- 
- /**
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index b91b1a98029c..5b53e9a5b7f8 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -424,6 +424,13 @@ static struct {
- 	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, kernel_pgtable_work_func),
- };
- 
-+static void kernel_pgtable_free_rcu(struct rcu_head *head)
-+{
-+	struct ptdesc *pt = container_of(head, struct ptdesc, pt_rcu_head);
-+
-+	__pagetable_free(pt);
-+}
-+
- static void kernel_pgtable_work_func(struct work_struct *work)
- {
- 	struct ptdesc *pt, *next;
-@@ -434,8 +441,15 @@ static void kernel_pgtable_work_func(struct work_struct *work)
- 	spin_unlock(&kernel_pgtable_work.lock);
- 
- 	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
-+
-+	/*
-+	 * Lockless kernel page table walkers (ptdump, and any other user of
-+	 * walk_kernel_page_table_range_lockless()) dereference these pages
-+	 * under rcu_read_lock(). Free them after a grace period so a walker
-+	 * cannot still be reading a page we release.
-+	 */
- 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
--		__pagetable_free(pt);
-+		call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
- }
- 
- void pagetable_free_kernel(struct ptdesc *pt)
--- 
-2.53.0
+> I will still probably send the next RFC version tomorrow or friday,
+> as I want to get some eyes on the __GFP_PRIVATE-less pattern.
 
+Could you please Cc me in the next version? I appreciate that and would be
+happy to follow this work.
+
+Thanks,
+Zenghui
 
