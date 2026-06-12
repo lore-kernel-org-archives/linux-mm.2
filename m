@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10301CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:21:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F740CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 242EB6B0005; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
+	id 74EFB6B008C; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CD076B0088; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
+	id 726A16B0092; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E2D86B008C; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
+	id 664196B0093; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F30FD6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:21:17 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 801338D606
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:21:17 +0000 (UTC)
-X-FDA: 84871019394.24.324F178
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BB34F140010
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:21:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FYPAsJ35;
-	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5876F6B008C
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFA1BC200B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:22:51 +0000 (UTC)
+X-FDA: 84871023342.20.3592FEB
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DA5FA16000B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:22:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rK/4qiQ+";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781263275;
+	s=arc-20220608; t=1781263370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
-	b=ezp4U5moQNp4E/WlLdN1agCv2fV3AEut2Rd6lVmC8WibrTfGpQ3xNFTVkQjKbPqPvBxtR2
-	KNM3PNVCPeOUiGz9BxsZPDi0KUENCNwZFO/CoEiObK76M/8RYkFatTpF+vqKKwbAI0qy7k
-	U22EBqbspgvyP6k5TUXx1zIPqzd6jUQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781263275;
-	b=c3blPwEHBeLKO71Ngl2SbwqDHqYYB0vYvO7Kwo3I3WwF2ZNbTYBA5MdLYs/vnLLqM7H0Vn
-	l/wUm8T5hTEFo+i1h+IZEeiepJzjGfGxDIpbdu5g9io1mlzAqCXCz5Tmr/DvBZS7iYs//H
-	p6Xt+XJ+GrcxLiYV6R+LONbNf0XU+Oo=
+	bh=S9H34KM0CzvAdGWJO94iGmMoL4Jxl0Cg8wXuvqWR/cE=;
+	b=L1j9GaDXxFznSb/vOrQhtxT5+kOOleUXDgCQQ3VLIpTwLQqFQISuQcyvanaA/gIOG5jT0q
+	1vpTSi6jqPd5/+XBiBitJLHYiZFwIMbG94kiOrid2R1qIGuDTh40l2Ph3PHGz5z0jdbR+E
+	v6oUEAwBL5Hhgwq2qw1uJHVlQxDymyI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FYPAsJ35;
-	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781263274;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rK/4qiQ+";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781263370;
+	b=T4aFTVNzG5HM2IOhVoXDSPukmolk3WO/2ZlE8TYkw9aDzmXjZHBq9yUGI3DSj60e9tqAQG
+	elbcK5uBD3xmZfVCPcixM6Nqrx9lYym3vPP/IKN+6JwJeTICtHBvVaK9p3U0GSpCULC50l
+	/UtEB6UkfUoYlaTx/R3rzBE+HM5gw5E=
+Message-ID: <086712c1-18bc-414a-9a7a-723b9498847a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781263366;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
-	b=FYPAsJ35VVzLRQfNBEBVKa6sLYo6TO2yPWUxb3RexhxygsmTcmkRw+xkkj0b4+b35zKgV5
-	xOZer9B1vgdJQ0q/+IH4P/d81tBixVOEhfM1igU8qTfWeFMQKKxuyagDgE4d0W87sbRhDO
-	lK1E4kOXIJn94KmRBUs26ApZpWzZXsU=
-Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
- [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-398i-0KKOUm9t97l3i76Rg-1; Fri, 12 Jun 2026 07:21:13 -0400
-X-MC-Unique: 398i-0KKOUm9t97l3i76Rg-1
-X-Mimecast-MFC-AGG-ID: 398i-0KKOUm9t97l3i76Rg_1781263272
-Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-6603cfb9d71so1250807d50.2
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:21:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781263272; x=1781868072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
-        b=shF/M+mv0fa6X1lkPEEXA4M2jBQenrxzdnevYK+DPAua70u/NC8WjSRYXis1IlF2jM
-         qIq5keSAKLYbzqdVYAOttwQAmm2M14xy018kQDKxfUR4luQvCk908k7TFv6D0vnha17m
-         ufMJMjtAejDwLFKAgbkqSNkYbEyfnfiDQjM+E/+shtx4FO59M9uUOxSADnkXFiH3VeE1
-         W5gcV1CVRUfeAQYWuFzmTebYhDO2lEizAQqnBBNZLSpelJBANQ307gjw2mzsDxGxP1lb
-         nA43sCjI1DD7DnZ11CE2xUWy5HYazTym67mim2lPiUYdfObGZja9LGcZUKLfE2gIAWBe
-         y86A==
-X-Gm-Message-State: AOJu0Yx6YWsXlZbWcOztcILSiEhh+oSXJ80KDjFTqkAVh3q5+NV4Sx1/
-	qoyKYVIUlw/XUiqmaeavCYTlRX+UeemkA133SYKbW/0UMlfKMwL7LowJ1VekBN1YOQKFZ156MSU
-	S25Tp0xfzEwjVeNBuzCUDpWYheE+feCohmB4nxQjzEwU+dSKXl/ah3ATtLoRxjcD0WQuBrgrv5G
-	2LIjF3Bl35locfRNPoRek94f6txl8=
-X-Gm-Gg: Acq92OF2WRtxsfC/W3s5Se4Ey2Cr74g4o+fNJcm3T+bw5mo/XUfDb+6QzfUj2PA/I/E
-	24MHyVz8qzOmc4nvo2I3bUGANTZzoRwSZu4oXLIzct9YBugb8zwjC7V+OVFqD4J3X8Qjyza1lvT
-	D0wJHwiMuvY6+p2hI8yLLePhqjY44dvHPejvTF+iI3lCXjlYnoWrkKE8Y9VbItoTm0OoTJq1TDU
-	mN4
-X-Received: by 2002:a05:690e:e86:b0:660:7a4f:9fe2 with SMTP id 956f58d0204a3-66278468075mr1653903d50.57.1781263272483;
-        Fri, 12 Jun 2026 04:21:12 -0700 (PDT)
-X-Received: by 2002:a05:690e:e86:b0:660:7a4f:9fe2 with SMTP id
- 956f58d0204a3-66278468075mr1653865d50.57.1781263272001; Fri, 12 Jun 2026
- 04:21:12 -0700 (PDT)
+	bh=S9H34KM0CzvAdGWJO94iGmMoL4Jxl0Cg8wXuvqWR/cE=;
+	b=rK/4qiQ+XLdBkl7Okeesu87wgP7Mgh4oBmRzUCGOvu9pPnd/ic3ah3cJ1CMoHgTrwmpFB0
+	6y/jI8vDt5GSR3cvaWWyDuMzebjA53ulL17K67G2IctToNkmbf54/mk/DoFVTbWYGFzsd7
+	+2xGjRK/NZ3gtwU2fM9n44tcvY8FWXg=
+Date: Fri, 12 Jun 2026 19:22:38 +0800
 MIME-Version: 1.0
-References: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com> <7e7cbc60-e9c7-4a63-9d4b-4e8fcad7bfc0@kernel.org>
-In-Reply-To: <7e7cbc60-e9c7-4a63-9d4b-4e8fcad7bfc0@kernel.org>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 12 Jun 2026 05:22:01 -0600
-X-Gm-Features: AVVi8CdNLha-RR1qN40JSwbbQIn5r6XpUlj26RldKCxPkjYT8VOZtB96P7x2nAw
-Message-ID: <CAA1CXcDmE3G2K-V0VrzWy=xHUjOwnMcXDJjY+hBV1hxBZUGh+g@mail.gmail.com>
-Subject: Re: [Bug Report] Elevated PMD nr_anon after running selftests
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, linux-cxl@vger.kernel.org, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: M-K3G0e6qNgZHbojpoCZ_CWKgdfwJSEyJW5cz5wpVmk_1781263272
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RFC] mm/kmemleak: avoid soft lockup when scanning task
+ stacks
+Content-Language: en-US
+To: Breno Leitao <leitao@debian.org>
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org
+References: <20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org>
+ <20260612031605.58235-1-lance.yang@linux.dev> <aivJ5Dv0hAQ1sJu1@gmail.com>
+ <6bc446b7-8e25-4add-9d72-a3c9e9191533@linux.dev> <aivhX7RtLVwBkNj6@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aivhX7RtLVwBkNj6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BB34F140010
-X-Stat-Signature: iugorzzqe4p1ma11g6a5aw5yj8x9e9ju
-X-HE-Tag: 1781263274-39658
-X-HE-Meta: U2FsdGVkX1/98woirKKwz2NPyKRBJ9flBgS6xUuASo0lXLyIXAw3MYfl+C0L/c+QVPRWi9YlK24xK461uCvhBUrbINcsgvYkoDONacdmp67f5GoCpI0sM3mDn2KjJxlz6E8Su2wlvD5bOS4FHAAIoCMFf5WXmhiy9454TIh2ngrDo44VIGtUbRbEPK6awN+sO3KYE2lPTyj4MyL/jqH3gC7s5d62oDlW6SfhWDAEDE9gsK9rT72vl/8mZapvg4KmYOojqHh8HMnP9LLWyZbB2/4o9NupW1HtkxJC8KgE/IqtYf2/AcNUABJcd9n+N5xq13EeFXmUn+o4uIXjOz1X8yLuxDaAjnEGYmQ8ZX4KRFk5THybGufDb/8wOAkKddjytLk7WF+gKMtfbwznKEILdk35oalepEctWWsprLQjJdfaJYexghs5u/Nb60/PvEuHkyE5tTr7US4fukT0bVKLdMBXJmqH7MC4j1Ok9/pUFnBBTUimETbj8KvErOreIb29+2RA+gsYcMZ28sDyp7uI9H4iJxmmRMh6cEs6fqhGClDnMfU3TOz9R7KUjBTyvONbYxA9mXWnzrpgbxTcubP0BazTXiRhFNF0jm6cghGSqR8NcRwe58wrdLpJmL8NTodibLQ8YNbPBP/hsi1fKehMO4cd9OK+Mk587Cyn9c22MCUZd98MLc4T5KEWmfN4lx+8FF9luBMgCg+ppdIVh9nMSCEHxA5TtEfAD1/rN5Fl0DGXiEPiLp/d+jzo4ayaJgcMPwdKjpvFUInM5y8s7g3+BKoDZW519EopFTL82qICUViYdAh7qQC7lmgSg2xcu2CqTep7RC4kJgyxvSxvYQ8qZi5fJeyDcliWnHsbbGSo3GXBT1wRXtyVU9cyJx8ab4Q6dTHzYzPcNVrO5EMGfn0Tzb+q6GmnRxRKy8/V7l5fbVNksKHRMS0miEzpi+2CirDujrkn5W/bXibuze+jKKC
- d2OkDQb0
- 6xVNPFLKAqBtleX22uwlTuizZDrU9kt/zoN8hft5Z9uTXz3t8EMlwozZmwJAJhT77S5JMoz3DNuRfPPVR4MXexezzwz5ytwTMtNZrnplMDYXqjxT3Pi1k++VQwE+wnS4pLCdjZnzjGTCuleFjhhB4McYkGD7vYC8Xqd1fEhcUXofQrK7B4VFb7Z1FowVok0YXxCKkm5FQ3O4DE+nzpEnr0NSGgiyhQoAQN0SIZhjusLy4cOJxvlcxyMFJx8CD4soo6Se/uCgluhaR/8zze/13IXFryP1TgCrhzBY0EDx+S90XgHsXSY3uyjrIsJT4vjN3n0bkgxVMQXM8Uj3jFUZpMCD/7BL4fNNeCNcnpbklzSGeFNj2gKyv/K8jyFEOf415dQfSyfD6Qf1VsPh+xZdsPMzjp0ijyjbjy2RdU6yziLbqCZPI5yUU0rJkwe12miDsD3rX
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DA5FA16000B
+X-Stat-Signature: xmhsn8tbotbc1ob7f5rdoxoiu8zdgc66
+X-HE-Tag: 1781263369-256972
+X-HE-Meta: U2FsdGVkX18ZeHn4ZGqClCM3ukwOBOMbWExWW6FT7v/m5FM9DU6QumWa2dc9rbH+YmrcDf36lVYXTVps3Kdl3Bq5750Vgyu3yRGAqnCgrhM02EOiiuppo8NNV0FwBpnslorakcsC5VGpof9Jd9de0ZpBYTQHpUUyqGwqHDWtSsJKQcyV3aGTtTrVvbMif0ezSsUiYMst/Xpwv3Wqs2x6ZaLWzh8+ERnT2UEguNKrdRVrlTA4W0p1MrvFIqZPCKNpiRAGkfJMTmjiUsSO6IpiJAdYXPJySyNyCP+BjX+q4Cy1EGtydcxQcaQmCp0m1d07mp6frsxc1P0M1sN6oanAF+LUq8BllenWp2BrJYvxdqU4U9yuL+QAQ1MdsTey90zqm0a6swrZfagtBPwUv6njffLnt/R3SneP2GuTOu4X6yBNQC8f/xriREz6EiMNbP1DATZ1b3FQypL9LBZyC9AhFcOXKQOvGlej++xoUi/vyyeRTcN7RyZBlV2NHR4z9cSF35oEerbZtkgk2vm7xe+vKEEkmKMDZ+GzTraJgiwPV/mS4ezOJAkiGk9zb59tNjOKGxltGwFMym/AmaNnoAlSuezKgoaBsWOGO86id/XBeTM5D3RqGNxG8QVtb/M0/Kh+H065VMya/0qTONf9OIeoDT+MMjPTLHqbSmQ3Z1oRdWrpsmTLA8KPfNUkSiZCkKnyOS5PKlnaMPtq3r2xM/JMK5aHw4C3OAo6ndg0WlWvYK3Z7o4Ns5/FTiCBi5IoZVRGUhlZmXiLH8s5vVqu4o9SInemwaVH42V1HaZuiy0sWnrmH4QoMuLkWL1xYjsXjuTh97oHXr+PN2QGigAFIyOQ9/Nx4a7C0MfWkecy3Uvd457kxJl9bFznVOplxIUY0RAREXiFqlIE9s/PJr3HPWJyxO5QHiTpLnjEetiaj5ik917zWof2hWDRH+9bI3RTD3LtPWQZ8+JLkuGHI9T3ggM
+ dkFArYGK
+ hE/k8zYlcPdmeNnossMxue0xO/rUsePdl/VnmflEEyfAkscY8iucHnJibxXfRAB8rI1ubJP/ZjbLXh5ceRzuATZXRAEQRySYVf9D3DpKLAIT2knWXjofEYniF5ok4ud/iWCxIXKVEyylvbACTBjZYv7Iyoxi30WE5c9O6m1KIGNtc9f725TaZ7p63MTloZQB1nyy7WIj0mrHWfsFxKEcZYTKHRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,92 +92,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 10:09=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 6/11/26 17:58, Nico Pache wrote:
-> > Hi,
-> >
-> > While testing my mTHP code I noticed that mm selftests caused an accoun=
-ting error in
-> > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
-> >
-> > At first I thought I might have caused a regression, but when retesting=
- with 7.1-rc5 (without my code), the issue was still present.
-> >
-> > This issue occurs in two mm selftests:
-> > 1) hmm test
-> > 2) migration - private_anon_htlb test
-> >
-> > I spoke to David about this and he suggested the following diff which s=
-eems to have solved both issues.
-> >
-> > David would you like to send a formal patch or patches?
-> >
-> > Cheers,
-> > -- Nico
-> >
-> > Diff for (1)
-> >
-> > diff --git a/mm/memremap.c b/mm/memremap.c
-> > index 053842d45cb1..683a77dd679d 100644
-> > --- a/mm/memremap.c
-> > +++ b/mm/memremap.c
-> > @@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
-> >         mem_cgroup_uncharge(folio);
-> >
-> >         if (folio_test_anon(folio)) {
-> > +               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1=
-);
-> >                 for (i =3D 0; i < nr; i++)
-> >                         __ClearPageAnonExclusive(folio_page(folio, i));
-> >         }
->
-> Wasn't there another issue with hugetlb?
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 8a64291ab5b4..0aec894266f2 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_spa=
-ce
-> *mapping,
->                 /* No turning back from here */
->                 newfolio->index =3D folio->index;
->                 newfolio->mapping =3D folio->mapping;
-> -               if (folio_test_anon(folio) && folio_test_large(folio))
-> +               if (folio_test_anon(folio) && folio_test_large(folio) &&
-> +                   !folio_test_hugetlb(folio))
->                         mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_AN=
-ON, 1);
->                 if (folio_test_swapbacked(folio))
->                         __folio_set_swapbacked(newfolio);
-> @@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_spa=
-ce
-> *mapping,
->          */
->         newfolio->index =3D folio->index;
->         newfolio->mapping =3D folio->mapping;
-> -       if (folio_test_anon(folio) && folio_test_large(folio))
-> +       if (folio_test_anon(folio) && folio_test_large(folio) &&
-> +           !folio_test_hugetlb(folio))
->                 mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
->         folio_ref_add(newfolio, nr); /* add cache reference */
->         if (folio_test_swapbacked(folio))
->
->
-> Yeah, if you have some capacity, please send patches (and figure out Fixe=
-s:) :)
 
-Yeah ill spend some time next week trying to understand why these are
-happening and produce patches :)
 
->
->
-> --
-> Cheers,
->
-> David
->
+On 2026/6/12 18:39, Breno Leitao wrote:
+> On Fri, Jun 12, 2026 at 05:57:12PM +0800, Lance Yang wrote:
+> 
+>>> If we go this route, the aborted round has to suppress reporting, reusing
+>>> kmemleak's existing "scan was interrupted -> don't report" path:
+>>>
+>>>         if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
+>>>                 aborted = true;
+>>>                 goto unlock;
+>>>         }
+>>
+>> I'd expect the normal case to just drop RCU, cond_resched(), take RCU
+>> again, see both cursors still alive, and keep walking :)
+>>
+>>>         ...
+>>>         if (scan_should_stop() || aborted)
+>>>                 return;
+>>
+>> And yeah, you're right. If we do lost a cursor, bailing out and
+>> skipping reporting fot that incomplete root scan should be the
+>> right thing, I guess :D
+> 
+> Thanks! Under what circumstances would the cursor actually be lost?
 
+It should be race, but possible, that we happen to stop on g/p,
+drop RCU, and one of them is gone by the time we come back.
 
