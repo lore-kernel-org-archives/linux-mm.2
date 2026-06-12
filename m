@@ -4,123 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0BD5CD98CC
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 02:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF97CD98C7
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 03:10:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBE2F6B0005; Thu, 11 Jun 2026 22:48:47 -0400 (EDT)
+	id 247796B0005; Thu, 11 Jun 2026 23:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6F046B0088; Thu, 11 Jun 2026 22:48:47 -0400 (EDT)
+	id 1F8096B0088; Thu, 11 Jun 2026 23:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5DD76B008C; Thu, 11 Jun 2026 22:48:47 -0400 (EDT)
+	id 10DB66B008C; Thu, 11 Jun 2026 23:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E0C6B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 22:48:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7705A1C3B03
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:48:47 +0000 (UTC)
-X-FDA: 84869727894.01.C273DD6
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 822D340009
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:48:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mvJjVKRP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 039FF6B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 23:10:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97A271C363B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:10:14 +0000 (UTC)
+X-FDA: 84869781948.16.6E9AA2F
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C5C41100002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:10:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RIJ2yqw7;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781232525;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781233813;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mW5LTHcSdOfeWakS3C16seYcAzTrZg2/iKaqqksQyEk=;
-	b=j9+k2HUmjP2cA4/P1aUkwDIlhwlPfA7r94p7/3RH4GERD58xtsB0anByBrKj61ECC0lOhW
-	iQF82i38IhWX2VlG+Mp6c8n0uU1r354yqxmxrk3+VcDHQ1Z7b5+4YF9AUF3dJQhE3ddx/u
-	zL/e32bEH6A+/11NHsOHsgZf6CkY31Q=
+	bh=IMkiUvF10XGtojfJrLDBnh6aQ1RB3YPypzDrMb4ByLo=;
+	b=XEJuYy2SDZaRBVM1KHs9e7EtZ8wP/k86dOqNXQNl3KHvCLjuXcxH4WSmlwWgNtK/T5VjDz
+	8R0wkMQ3uOvH+ivcTjwvfKWEULzMrS9o6zzPLSTU6p0z2I7SJ0GI+VTWTu3WxgFsfkla8c
+	zrxlhznBIGpFKr5hzllz9zHKset4p5Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mvJjVKRP;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RIJ2yqw7;
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781232525;
-	b=3UUPyO5AyZeGAz7eidpu0dAogwQ2+ef8fshwneMyLeKY4KOuyiuTqOXWxrWZw/PT5PkcQC
-	87E4es97/r60v+dP6U8SSMql97MnbSP0vYhOW8mmywxcbNFeDe0vTXER2NK6fRG+IZD+/N
-	USKPV6tKzVMUiC70Es55C7EyuOUaQHE=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6912f4acca4so872817a12.1
-        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 19:48:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781232524; x=1781837324; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mW5LTHcSdOfeWakS3C16seYcAzTrZg2/iKaqqksQyEk=;
-        b=mvJjVKRP1ITsB0tN/xDx/9YKRJL8+dy4MMRujbrpmckE2kmhX6nmvCypPfce+agxYz
-         3W5wg2KuXXfKMrLrxd5KaKXyTjfXZ6hj4oOteP2UFs1OZ6GzKPFihxPT4vvGUl2Bf16k
-         g+4RH/r4q+sOc5eVA0dF+7yzj9lrnnGA4N7YyfUX0AfZt98TyO8sjDcoqXcMwwtl45cM
-         VLqysgyrpw2czRv/bQ3BKYICDEobm0ljwbdSuacafvaj2TLnk5B6YxepBKMviWGV9z5k
-         KctGvGteAUtMb3d/wnwfkhB9eCSmyzPOMO5nz90ZZZBh28PpcmLo2oj7DXLqpacbKpVi
-         BlXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781232524; x=1781837324;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mW5LTHcSdOfeWakS3C16seYcAzTrZg2/iKaqqksQyEk=;
-        b=T0sASYLZth8CrYMBSGynCLvX+ox1gbC9QkvoWw0pXQAggae4P8V52vXhNlZDEPvHZL
-         m/KqSg7IDabZoN5jUHJvyPd5+G8lNTL1+kRfz9vJJoH/wNQKSREFUzoUZ8D78c/PRmix
-         MgGFwai1CHu1SPJvAwZYVKMdXJXmXPWudSF3QXTxtgB88PMkIxFgfBrCNdEkXaspcj80
-         jveit2AUAMV4jbcb5LV85LC4F5sy4hHX5nx509ayDrHgO9yG0AUkcwzqnCf4YLNTvkDj
-         6v8Tr1XqKm5BsHrg3NLMYAMAAcSxTaQE51zeDZNxpkudCb7SEE0VsqAk0DlWSuuWGIyO
-         l2Yg==
-X-Forwarded-Encrypted: i=1; AFNElJ/tCBM1ihD3nrTKTgiIwr4Vf4MZvClEN9ZiyLQ+n2UdmAAc0Mlqexg7eCoildzekyZXX64dMxcx5g==@kvack.org
-X-Gm-Message-State: AOJu0Yzxz/a7jZi66+be41xFlnGc7uyDe6hTVAxoGL9zUqfrW94I3ScF
-	6OHlkhOVibdbRw7fjYp+SXZct+Tkooq6Ll/izSVVcxOYJ2ZeHtkKRk8o
-X-Gm-Gg: Acq92OGQu0aJGMTaIaeqc6nB0teLyADlH8WF7/hSLF+hF0LhlW925NM7jDrzh7IWo1t
-	3z0e0w5itXlqIcNfNGdAnogfKsx77eys7AOZEMhBZPJ/yETKFRJOEHkjBn42q0qJjJ/B78wB6Do
-	+ZhGK/qSIPb4TS0ejQ1p/S3jgyJuVQ726i5zXg6WFMXvqG5XnL30MoLn4Y8C383MTK21ulsnEPE
-	2WeOCHtZZ3drnENWQRbcwhSWrMv5bc0S5e5GCSPDrmyj79H91F+4Xj4sPl15cmhsL90JkwFKzXB
-	ry9upEduS2nSKj7AG56pYSPVTgS3Z5xaX+eHciXCscW2neBlWexOsqjdopRZcNrg0d+vV3YjHLx
-	pn4Bz8TH96pxql79buwcwj5VdgeUVU5VwQZslYgRb0YAYEZqUySg5TRWtrWBfR05ybisOJS58ZN
-	OKsEbU3l+WQRovmVM4RY9kQA==
-X-Received: by 2002:a05:6402:51c8:b0:68a:5107:4f6f with SMTP id 4fb4d7f45d1cf-693788fd509mr309343a12.12.1781232523794;
-        Thu, 11 Jun 2026 19:48:43 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6937919a009sm108066a12.2.2026.06.11.19.48.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 11 Jun 2026 19:48:42 -0700 (PDT)
-Date: Fri, 12 Jun 2026 02:48:40 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Balbir Singh <balbirs@nvidia.com>,
-	akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
-	jannh@google.com, sj@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260612024840.qdw76serbgj67yrv@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
- <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
- <20260512143542.izpp3gu4iqxttw3f@master>
- <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
+	t=1781233813;
+	b=j0XDGq0RIGRhwGwt2RQSXM+PeSHWvbXxSSnMmLleU30ieuZP80BTLT1jcz0t1v/JBK1pt4
+	Pka/2S/rz1guJ+kIyWbvC+eZvA0UQbpp3NfM4FDs1+9bC/aJfTrVUYwgMbsFLmXxU+P+4r
+	QYSNaYLFoq8gbSQi03hTOakA3zgY5Is=
+Date: Fri, 12 Jun 2026 11:10:01 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781233810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IMkiUvF10XGtojfJrLDBnh6aQ1RB3YPypzDrMb4ByLo=;
+	b=RIJ2yqw7C7JmCfkoCrm+79dXdzarL0gHVRsSeKdkHVY50yMmJXibLzdraXpjNnt1T1MD/Q
+	3DsdrWIOGKAHBLsFlhF86W3POJqa9ri2gSvT8aLm8k4Gl6IU05wpVLHaaKY6kSft1JvQ0A
+	BRwDmFSFA41k3I49MPYpyvGMEz43n6Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 04/16] mm/slab: introduce slab_alloc_context
+Message-ID: <ait21B7kqfT9XhOs@fedora>
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-4-7190909db118@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
+In-Reply-To: <20260610-slab_alloc_flags-v2-4-7190909db118@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C5C41100002
+X-Stat-Signature: z8sg9wzy77opuw35ty48rxr85iddsthd
 X-Rspam-User: 
-X-Stat-Signature: orkuntce6d14pywfuu58qmn8s1j86nbo
-X-Rspamd-Queue-Id: 822D340009
-X-HE-Tag: 1781232525-517829
-X-HE-Meta: U2FsdGVkX1/p1na8lj925T1RSa8gp4nLoXAd8f/6M5JbxTmqWKBJvVtwfE96TGEse6hHNOIFueLeCPEqLn8pTL6rwt00gL229AU3nhw5a97AS/LGIIJAoGlqM+9XcvzwAwgEBPZhBdFdCAolfoK9/exZBibyeAnCjDcOQRUcdjfvmePhfoIxsByvns6F43ZY8t/64ArUyAawIJO8jAB3FUN1EuJ5I/7WwB5vpJLIzvcshMNyzWBtMda/AfouFQ9LGGk7PnVhOKnOvnEI6J9EJrIJ71hCYfa+rmi+EnkzToo+QI8gGlyKGXJz1kAiCre+03w1Q3kyAbQBcWBLotNGtuRd2y40fJDXuR2KbMLP9ragCDij+VGp2DhLzO3KjXLkOll1pz7c1qikHctkCRyLnY8RosQlFClcT03rLzBVQMP+4dNbOzE23ui/4WjYbbUVeRIrNIkgj5qDA+Tifo72aDMx256Dc7SRESU9Kap2ZIK7pKkZ2ki9ONxNDwOz9ZpzfnmBjep2iQCo7RaUiTSGaWpUgr2hOJ5BXsml5N4lZN+h7QTkrkr+3HJiUzIKQXFxFhyZSKmJsl0cDPDiXKE59KKCZGKv6P00Yw/iTec2ZHxo1dYT86/SDeXiB7o/XZpFsNVOdbDTm7gnivPFFIfxBZ1NjCsV6iS1Df09cM7J2kFCJHVqCdnTps54PAyjWaa/cx2kzIx1tYtAKir78lsGAlqopx1ikoHomQDt/AF1sYV0ST6sAS0vDp/lJiAQMqMir2MpvsvOYN8d3tfuA/zMPUL+IC1pRlvxhXkhKTws+3zeN9aH58nuhtY7NsXWZ+M0BfQh+oVC+fvVnzocIMTJviu0wq58K2+y/0W2rbF/YEQBT+00JpMUuELN5/8ZLOWPe3iwA1MP8Iw6oH6NydkGq0sZGbU/u3WRyrMDXCZ+r2cO/t2RyGrTQ/6fXXjGpsYuswUmRj0ZYuGoZX7EHC2
- hU1lilyF
- BoYULPzu1poy4Q5myIGoPtxXC/dwnw8pDA+dKUpJPF08MbanfLSlWR+PJIIwAXFZQuG2I4bqO9OZA8b6WH3n+dlBifpUlZv51jhe5iOcMvM4cFtvgnnZkOEv7xozjmhd5adNtfQETesddag2u1vVa2EyB2/kZ1wdPsJQnKFNmtq2yXfXmrouymB9sLjg02sUSPi26GbDPvMEvmdvE30D+RsYbbh9zIL9pivIhgF7c1f8BF2s+faipbBOZ5dr+vi1W2N9e+wMS32ZAXo3AbeonKOMoN6oqSRdg1JaFfc8D+QB0isRyZePrmmunPvN/AJtT0W10Y3Xjk1YbOZ92xKqUT2SUFLVescaXGtjgwJtZLOrMz9SwJTz8gwxMkrJ8ckKgf6bWQpH3jeCguN2zf93OAlLSoTZSita2XUgm0XZY2oT6tvYK/uUdv01SxMjeXRlAftdCy0NiV8IPq8AtQfxkp7XM7hu5xZqTSzYqpELOaSZrFEACy7uN3qDWb7ZAZGbdeR7fmhF9boKTXavBe/bx6P8VvrDMvqVKrsLSsQmtFMdSpEo0EbGhODbAwwL+fuJhsYQsgiHJeQSnnIW76RM9WWHa3HxneuK7giAeWmFjW69iVlysok7DjhKXgoYk/X/tOamtJF5XAxOpXm0lF1Dij+XbRUcZayqnok3v3+Oso03qvOCUlnfsgI6wMOM1VqzJBy1hhbtboD9dccpGsAuxDCZAoHNtAZZR7I5U
+X-HE-Tag: 1781233812-315587
+X-HE-Meta: U2FsdGVkX1/tcCJmiLjO8+XW0lI8XdpquqlZUNYYz7/JqgyAJq4hilukg6N38q7Qu9sGOjAIAOQkKNAGrI9Ao27q83xkkkHmmHEPhb0CwvmqlUaru0ewrMCxiGFMbjT2qiaDik+TakjlRrGuykw4Bj1aLis/OoOXTzVectYsKE2nxEt9j2WnQ1QscELhUA0hA9iwDzxlR8M7Cv3ofB+jOzz3SmHp/jh1q+TUAexx1F6ZKc/HpRoBvoXA0X6BCO8mEhkTkb1Twx23T5Xcqx8/9M8teNlBq9Dsu4TC5vnmH8rRxuJqSofLgEz7nz9QE9wb4yTpKFBrYxQkVBP8xeagkzbel1yicc/4H1EvbX3IIbswPEcnpGXa0Gr9MEYAo9A+yy26PB4GGNsmuKAQsBd0TwLDD9TbUXhWZVtCgZklVZAUQLrTA1sx+P07BZSe7YByW3v8GunaOLG3ffSDIj2TlQQ9+KC4DPYCwpYarxrQDLpTntO1VU0nzRcIS885CJQcBepGRBCSHWE/VLAvrcGTlUu11vJl1DFvOr2ye3hCAJajUUp99fWInoC5R7PFCcOpq0lq6qmKWJRT4kPknr9rR4PbuwrKv8fQK8SG1uJg4CeKBsHeicObMNyT9G8AkYCNMwL2+lBnOZv6HKYJLK5k4aDoojnO0BuOrS9OMWFNCMYiK8Ov56ukS5ZEW96KFZxO7NbW07R7orXpxg67Sguma6Ay6twoKcQg70sl5hv1tmdADNo7MBQfjU2ay9AipOsaMlQuTYC9qwEhwgrI/p9ytpR2LsBdBS34SRpPoevluwRGvYXOPbxOAeKoFf5VhJND1UnZGKChC1hRCFzUzv1rUGSlcx90n6V3XldMVpt7oeYtze+wuk+lS0f/EkEykfBNiIIHTzhAuGjpBFl9tX2MJFLqfxrX7SrXDQcCuck2O4M9WiU1Kn+M8dYOQaAI72yWb36gFQE3X2dcUy3GZts
+ qysBnZOK
+ VMyIek0L6TUuiLkKIL93vr519XcNPj8yFgXm1bTELo177pt0AmhKB/MaFrhpAFNS1widjMVwEDlS1QsOHP5DOyzS/UrA+0qNs5Urf4LN1ie5vYSOKsZEtuonzc3r/GNnWNd6BXXLhmdf4c/wI1dU10/cYkUvuB1PBmyiM4KI7Jlbnq1vOyR1cnnCCzoCLi59VGXIKiYvtIOBBtVZnGSI5tB/iSCwpV8xNDV2fZNPZcfUHG3KMHBijlMlW8osX0Azy/o63+eENEW+Q2PubeOtWPrTN+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,153 +93,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 08:55:47PM +0200, David Hildenbrand (Arm) wrote:
->On 5/12/26 16:35, Wei Yang wrote:
->> On Tue, May 12, 2026 at 02:43:54PM +0200, David Hildenbrand (Arm) wrote:
->>> On 5/9/26 00:48, Balbir Singh wrote:
->>>>
->>>> Could you elaborate a more on the improper situation?
->>>>
->>>>
->>>> Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
->>>> lock and check once?
->>>
->>> I think what we try to do here is, is to only grab the lock if we verified that there is something of interest in there.
->>>
->>> I wonder if we should rewrite that whole thing to just do a pmd_same() check after grabbing the lock.
->>>
->>> Something a lot cleaner like:
->>>
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index a4d52fdb3056..de6a255cc847 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>                 */
->>>                pmde = pmdp_get_lockless(pvmw->pmd);
->>>
->>> -               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>> -                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> -                       pmde = *pvmw->pmd;
->>> -                       if (!pmd_present(pmde)) {
->>> -                               softleaf_t entry;
->>> -
->>> -                               if (!thp_migration_supported() ||
->>> -                                   !(pvmw->flags & PVMW_MIGRATION))
->>> -                                       return not_found(pvmw);
->>> -                               entry = softleaf_from_pmd(pmde);
->>> -
->>> -                               if (!softleaf_is_migration(entry) ||
->>> -                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
->>> -                                       return not_found(pvmw);
->>> -                               return true;
->>> -                       }
->>> -                       if (likely(pmd_trans_huge(pmde))) {
->>> -                               if (pvmw->flags & PVMW_MIGRATION)
->>> -                                       return not_found(pvmw);
->>> -                               if (!check_pmd(pmd_pfn(pmde), pvmw))
->>> -                                       return not_found(pvmw);
->>> -                               return true;
->>> -                       }
->>> -                       /* THP pmd was split under us: handle on pte level */
->>> -                       spin_unlock(pvmw->ptl);
->>> -                       pvmw->ptl = NULL;
->>> -               } else if (!pmd_present(pmde)) {
->>> -                       const softleaf_t entry = softleaf_from_pmd(pmde);
->>> -
->>> -                       if (softleaf_is_device_private(entry)) {
->>> -                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> -                               return true;
->>> -                       }
->>> +               if (pmd_present(pmde)) {
->>> +                       if (!pmd_leaf(pmde))
->>> +                               goto pte_table;
->>> +                       if (pvmw->flags & PVMW_MIGRATION)
->>> +                               return not_found(pvmw);
->>> +                       if (!check_pmd(pmd_pfn(pmde), pvmw))
->>> +                               return not_found(pvmw);
->>> +               } else if (pmd_is_migration_entry(pmde)) {
->>> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->>> +
->>> +                       if (!(pvmw->flags & PVMW_MIGRATION))
->>> +                               return not_found(pvmw);
->>> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->>> +                               return not_found(pvmw);
->>> +               } else if (pmd_is_device_private_entry(pmde)) {
->>> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->>>
->>> +                       if (pvmw->flags & PVMW_MIGRATION)
->>> +                               return not_found(pvmw);
->>> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->>> +                               return not_found(pvmw);
->>> +               } else {
->>>                        if ((pvmw->flags & PVMW_SYNC) &&
->>>                            thp_vma_suitable_order(vma, pvmw->address,
->>>                                                   PMD_ORDER) &&
->>> @@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>                        step_forward(pvmw, PMD_SIZE);
->>>                        continue;
->>>                }
->>> +
->>> +               /* Double-check under PTL that the PMD didn't change. */
->>> +               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> +               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->>> +                       return true;
->>> +               spin_unlock(pvmw->ptl);
->>> +               pvmw->ptl = NULL;
->>> +               goto restart;
->>> +pte_table:
->>>                if (!map_pte(pvmw, &pmde, &ptl)) {
->>>                        if (!pvmw->pte)
->>>
->>>
->>>
->>>
->>> There is likely room to clean this up / compress it further.
->> 
->> I tried to compress above logic like this, hope it could look cleaner.
->> 
->> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
->> 		unsigned long pfn;
->> 		bool is_migration = pmd_is_migration_entry(pmde);
->> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
->> 
->> 		if (is_migration != for_migration)
->> 			return not_found(pvmw);
->> 
->> 		if (pmd_trans_huge(pmde))
->> 			pfn = pmd_pfn(pmde);
->> 		else
->> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
->> 
->> 		if (!check_pmd(pfn, pvmw))
->> 			return not_found(pvmw);
->> 	} else if (!pmd_present(pmde)) {
->
->It's more compact, but not necessarily cleaner. In particular, I detest
->pmd_trans_huge(), we should phase it out.
->
->if (pmd_present(pmde) && !pmd_leaf(pmde)) {
->	goto pte_table;
->} else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
->
->...
->
->Might work as well. But once we add support for other softleaf types, we'll have
->to touch it again. So I'd rather just list what we actually expect.
->
+On Wed, Jun 10, 2026 at 05:40:06PM +0200, Vlastimil Babka (SUSE) wrote:
+> Similarly to page allocator's struct alloc_context, introduce a helper
+> struct to hold a part of the allocation arguments. This will allow
+> reducing the number of parameters in many functions of the
+> implementation, and extend them easily if needed.
+> 
+> For now, make it hold the caller address and the originally requested
+> allocation size.
+> 
+> Convert alloc_single_from_new_slab(), __slab_alloc_node() and
+> ___slab_alloc(). No functional change intended.
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  mm/slub.c | 46 +++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 33 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 7b48c0d38404..a3cac7281cc6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -213,6 +213,12 @@ DEFINE_STATIC_KEY_FALSE(slub_debug_enabled);
+>  static DEFINE_STATIC_KEY_FALSE(strict_numa);
+>  #endif
+>  
+> +/* Structure holding extra parameters for slab allocations */
+> +struct slab_alloc_context {
+> +	unsigned long caller_addr;
+> +	unsigned long orig_size;
+> +};
+> +
+>  /* Structure holding parameters for get_from_partial() call chain */
+>  struct partial_context {
+>  	gfp_t flags;
+> @@ -3687,7 +3693,8 @@ static inline void init_slab_obj_iter(struct kmem_cache *s, struct slab *slab,
+>   * and put the slab to the partial (or full) list.
+>   */
+>  static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+> -					int orig_size, bool allow_spin)
+> +					struct slab_alloc_context *ac,
+> +					bool allow_spin)
+>  {
+>  	struct kmem_cache_node *n;
+>  	struct slab_obj_iter iter;
+> @@ -3705,7 +3712,7 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  	/* alloc_debug_processing() always expects a valid freepointer */
+>  	set_freepointer(s, object, slab->freelist);
+>  
+> -	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+> +	if (!alloc_debug_processing(s, slab, object, ac->orig_size)) {
+>  		/*
+>  		 * It's not really expected that this would fail on a
+>  		 * freshly allocated slab, but a concurrent memory
+> @@ -4443,7 +4450,7 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>   * slab.
+>   */
+>  static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+> -			   unsigned long addr, unsigned int orig_size)
+> +			   struct slab_alloc_context *ac)
+>  {
+>  	bool allow_spin = gfpflags_allow_spinning(gfpflags);
+>  	void *object;
+> @@ -4476,7 +4483,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  			pc.flags = GFP_NOWAIT | __GFP_THISNODE;
+>  	}
+>  
+> -	pc.orig_size = orig_size;
+> +	pc.orig_size = ac->orig_size;
+>  	object = get_from_partial(s, node, &pc);
+>  	if (object)
+>  		goto success;
+> @@ -4496,7 +4503,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  	stat(s, ALLOC_SLAB);
+>  
+>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+> -		object = alloc_single_from_new_slab(s, slab, orig_size, allow_spin);
+> +		object = alloc_single_from_new_slab(s, slab, ac, allow_spin);
+>  
+>  		if (likely(object))
+>  			goto success;
+> @@ -4514,13 +4521,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  
+>  success:
+>  	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+> -		set_track(s, object, TRACK_ALLOC, addr, gfpflags);
+> +		set_track(s, object, TRACK_ALLOC, ac->caller_addr, gfpflags);
+>  
+>  	return object;
+>  }
+>  
+>  static void *__slab_alloc_node(struct kmem_cache *s, gfp_t gfpflags, int node,
+> -			       unsigned long addr, size_t orig_size)
+> +			       struct slab_alloc_context *ac)
+>  {
+>  	void *object;
+>  
+> @@ -4545,7 +4552,7 @@ static void *__slab_alloc_node(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  	}
+>  #endif
+>  
+> -	object = ___slab_alloc(s, gfpflags, node, addr, orig_size);
+> +	object = ___slab_alloc(s, gfpflags, node, ac);
+>  
+>  	return object;
+>  }
+> @@ -4923,8 +4930,13 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list
+>  
+>  	object = alloc_from_pcs(s, gfpflags, node);
+>  
+> -	if (unlikely(!object))
+> -		object = __slab_alloc_node(s, gfpflags, node, addr, orig_size);
+> +	if (unlikely(!object)) {
+> +		struct slab_alloc_context ac = {
+> +			.caller_addr = addr,
+> +			.orig_size = orig_size,
+> +		};
+> +		object = __slab_alloc_node(s, gfpflags, node, &ac);
+> +	}
+>  
+>  	maybe_wipe_obj_freeptr(s, object);
+>  
+> @@ -5389,13 +5401,18 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
+>  	if (ret)
+>  		goto success;
+>  
+> +	struct slab_alloc_context ac = {
+> +		.caller_addr = _RET_IP_,
+> +		.orig_size = orig_size,
+> +	};
 
-Hi, David
+It might be better to move this to the beginning of the function, to avoid
+patch09 jump to `success` before ac is initialized.
 
-I may not follow you. Just want to confirm whether you prefer this goes as a
-fix first, or you prefer it goes as what you suggested here as a cleanup?
-
->-- 
->Cheers,
->
->David
-
--- 
-Wei Yang
-Help you, Help me
+> +
+>  	/*
+>  	 * Do not call slab_alloc_node(), since trylock mode isn't
+>  	 * compatible with slab_pre_alloc_hook/should_failslab and
+>  	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
+>  	 * and slab_post_alloc_hook() directly.
+>  	 */
+> -	ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, orig_size);
+> +	ret = __slab_alloc_node(s, alloc_gfp, node, &ac);
+>  
+>  	/*
+>  	 * It's possible we failed due to trylock as we preempted someone with
+> @@ -7237,10 +7254,13 @@ static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+>  	int i;
+>  
+>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+> +		struct slab_alloc_context ac = {
+> +			.caller_addr = _RET_IP_,
+> +			.orig_size = s->object_size,
+> +		};
+>  		for (i = 0; i < size; i++) {
+>  
+> -			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
+> -					     s->object_size);
+> +			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, &ac);
+>  			if (unlikely(!p[i]))
+>  				goto error;
+>  
+> 
+> -- 
+> 2.54.0
+> 
 
