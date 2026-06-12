@@ -4,114 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64FECCD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:46:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67E6CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F68A6B0098; Fri, 12 Jun 2026 01:46:45 -0400 (EDT)
+	id B9DF26B009B; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CE886B009D; Fri, 12 Jun 2026 01:46:45 -0400 (EDT)
+	id B4F416B009D; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30C596B00A0; Fri, 12 Jun 2026 01:46:45 -0400 (EDT)
+	id A64826B00A0; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F9186B0098
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:46:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A54B2165A0C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:46:44 +0000 (UTC)
-X-FDA: 84870176328.26.C57556C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B9AE480006
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:46:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SpSzUCJL;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 991E16B009B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:50:56 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C633EA037D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:50:55 +0000 (UTC)
+X-FDA: 84870186870.28.FC75832
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 835D3C0002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:50:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=iNl0Typ7;
+	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781243202;
+	s=arc-20220608; t=1781243453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEYCBzKX2lEOvbEUmYJVEOAf7Iv5VMqw5VJMJRMHmGk=;
-	b=IWdaqJOAdAmk7uHWeDR6eRcs32lPKj1fvDhjHGEGbbLIekN7sLzhbU7SYsdSzBBtJMWQWS
-	iC2vjMHHt7o6g6djcxx3XBOXBckpaTEU2X5RldJynrsp9vnIMn9S+wZMOzTTDDa2oLGC9X
-	fA9aw8rDRHIgamkbi7Wq1m31ax3TzZs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SpSzUCJL;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UXsDAguAyBgeg3+F4QvJ8USj9F0HBLvBTFNZsh/PP0k=;
+	b=rkzlIOKKuqDQK0JhOPCsolDDj/iPxMxxh37R02Af/vRq0NDyyl1p4WVT2Bl1X0ya9xbImx
+	oUU6m+UQzx1G40Txa1ojaJzdPs2hN2pOfnEb1jGiQJDU1UXTkW+c/KQm7NhMAcmamNoKrt
+	nCANFcv3WA/wz6b9K0shGxOKZsiTYGE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781243202;
-	b=Q94poCxKBLT7zK+MdnjGzWxQQUHsMYf5DRXgwDMAdkCv6BHUnSNZcgDXKPL5KejCKtLxKl
-	Tgblp4nQVkwcwzqyLd/p2PkdtFD8M30k4EwOx4IwS1BW3y7GpW47jtBkC9nIODTIwpOoUv
-	ek2utOyra9hnKc31Buyfr79w0hPYr+8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781243202; x=1812779202;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KaA366UF8HyTXkjqDa9pvzv1rGq0sZL+FOYgv4qd85A=;
-  b=SpSzUCJLAHF5K8C7AV/mLR3BJB8IGdEp6Df6zABkijcn04cCIFde2dX1
-   OPZDN/iMR3baAtb5619/eq6M0qOF/oEC71fC1X2yyNun33KhhjWNWuOLU
-   cpv1PUwM2azn7T3nsyfaCFSjUQEOmzJBz4dRJgbq+sJOIU6PkpNL7dsY9
-   OlMedP4V6LV5ecixXzsQ9v7lWI0NFgxoRseQiNgbalq1CT+Nd9qJ+9cOL
-   UHlVAAce2kgIiZy6rGlgoTwkZNV6uJeL5S7VZwKU2nnYZ/1t8gZpGsxbS
-   o5lGfiifHg0/zFa2uSKlZAG50J9BXkRNoQ5vmkUpgOdVXbw5BonsXbVc7
-   A==;
-X-CSE-ConnectionGUID: x++2orjgSFe69tsbEWXcrQ==
-X-CSE-MsgGUID: wQYYWMsPTo60WC+NKDENMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="93179820"
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
-   d="scan'208";a="93179820"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 22:46:40 -0700
-X-CSE-ConnectionGUID: nEEdCaH7Q06wrOi5DlRThA==
-X-CSE-MsgGUID: brFEOOJOSAmRGMxHfJZsPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
-   d="scan'208";a="276925120"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 11 Jun 2026 22:46:35 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wXuiu-00000000ONd-0p3y;
-	Fri, 12 Jun 2026 05:46:32 +0000
-Date: Fri, 12 Jun 2026 13:46:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: Re: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
-Message-ID: <202606121305.h0cxjhP2-lkp@intel.com>
-References: <3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list@gmail.com>
+	t=1781243453;
+	b=j9LQQFA/Rs+0XvNKjrry0RSk7TceaNIJ5XMy2bTwVnjrPMXsIMT2PYN/S/dFvuPxMmdkj5
+	/zVVh7+yrcQKFN61w+51UX6yOu8in1yBIhr1CJMy7hvmPde9OYRQ6TY+uxzl09V3BmZr8v
+	ISIAkFxbDLY4LHZ0L69EdrW1ZeNKVPw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=iNl0Typ7;
+	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781243436;
+	bh=UXsDAguAyBgeg3+F4QvJ8USj9F0HBLvBTFNZsh/PP0k=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=iNl0Typ7LhI1PZKVYeMmiJJi25HdKjmIVbfh/oCLt4foItgh9YIpdDShed2R2fx9L
+	 EfWSozOLh/p2FUKjfRjeJq6MvBMbQT4Jig+S6AYE+5iCu+RqfSyeHIdJsh6Szh9dGB
+	 4KSiKLOSmcxVPMZWgggJnGW+7gDzPUJSS7G82iCA=
+X-QQ-mid: zesmtpgz8t1781243421tac6764af
+X-QQ-Originating-IP: FApgVDL1b1jWqlq8N4ADiOegDmeSMLv93XAxv6OoqqA=
+Received: from Shurima ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 12 Jun 2026 13:50:19 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9411472435998616496
+EX-QQ-RecipientCnt: 5
+From: Yichong Chen <chenyichong@uniontech.com>
+To: vishal.moola@gmail.com
+Cc: akpm@linux-foundation.org,
+	chenyichong@uniontech.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3] tools/mm/page_owner_sort: free per-record allocations
+Date: Fri, 12 Jun 2026 13:50:17 +0800
+Message-ID: <610C3A89A09303F8+20260612055017.632263-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list@gmail.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B9AE480006
-X-Stat-Signature: a9wcshz6hqthf5bjsbtobphfm8gjd6dz
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MwQdfXoP8nuz5tnB7GNZQmaGclwCxYPJzWaEza+Rc9zFLegehe0bsHo7
+	WsyJULohh4e3lpkgPUpsPcU5Z3VGGIHz60dRJJs4FVhckMwWK+YgdTRGeDTdcoXTHk5tEGW
+	QIc5ONqxoChacuK4N7OHyLm/RByLHViNdRTSW3buzswUGaYMvAK7Uq2/HJ0sQaEMvd7MY1r
+	rmg5YIoUnThpQsVATvejW3Tp/LFlpiPz7C/uFjyQJB/9yOChzVi34/5kaGC+nHYGYd2ifuG
+	EMY3v8AzovjQOnSe1dwvRdvsHf7YrYaqqcX5AzM+ddbMUspJJYNgt1DrSXgsSb+5cYVbgLe
+	3t0ojJuqR+1uFgYC10wIW1eT7WG0TExycgWWRmh6fn4qBp33PyADvydxMtHfASOoz/9CEG+
+	sIY8Fl8YyJDk5e8LGNP+TqyxEUeWLX4MYApiH0IMPgwjGZs1OtEejjXO42lEx5S1oaJ7Tnw
+	0P7Jx+1R6eRTw3RD2R+81P9YRcxuxft5kyHDCRD18VUTjrLj15g6zh7nhYxg6SwyhbknIK+
+	hNcMnjWpmUZStd0oImZfcXqUnSafSaEvJUPX0DHdBmCyzGkavXdGO1aUSDjvLmPkrC4/sjr
+	ZJ4qTPvG0xOc9F49DlymenQfMYV4A7HKF0nsmXvOoW8mookJpkQgGQb2WByrUaKL86ECuNr
+	73hn4GYiZllchJoND2936B97TihI/zLXmTE3vdx8jMDor6D1JvwPEl4o6UTcDaHdMiEBW/R
+	7jl/GOYRzsHZfVj/cJ3eyxiFgcGc83C3FyOCLPDisiJrpT/Wv2WFIjhTh3HKOijQBgQqMAg
+	l0iTZFU/6NILgafTIKl63b7w7S6Vl631uZ/TCtNFZQ7LO0jQIhvdxnFNAK15tBErj2aRxvq
+	J+Rgyy9gO2adDZfon/VvDBKuAJqQeciFD0pAHwswbuK0pqNMhpVMhbd7qg0SOiPtsbaVsVk
+	QY8MdFSk5Eb5Vj4h1gTSWbM3a9lh9cvbSpqw3W7aLkYzqwFCrnY7ydSPm5EhePY9k++Brqx
+	8s00TBV39XY7bFg/6Q
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 835D3C0002
 X-Rspam-User: 
-X-HE-Tag: 1781243201-420460
-X-HE-Meta: U2FsdGVkX1+tzf0CgxA/JSWtqp5/ot9NmekBUkKxiVLnBe3bwsJE3f6SpWNsNn43eR3EwCo72WkjPwxmR50+WCoT4wkzf3+Ryj4/P3fbYyDgwGYrPf6rWqUjy8dAsbmtU7HjcJIoQZz80VeVzpi0JDt7Z0h7OlUZvi7Et/zImQgYC6+4s1jWXWrdKEvh9CTJsVMbcUutDv5xjY/4inn7blvJ08L8SqW7+rVrWEysHRO2xcKbCFJuTp2GS7JBTclNdJNthzQ9fh/BjwpMe0WIC4SSSYAh6yoYCndaHqbxu+Z0apZUQQJJ9K0ub0h5voYI2w40SwT5gXIO86p9n27WFWGkpi9eU4nRVu55+yR/aL3y7EHq03wX/1wTvwirsYn1+3xm9bsNpi27qIIM079ONOA4l7Myj7MRMHaS8sBZoZH0YHTO+SkWzCnOreetvXHyWTrzpr47dAsz1vWKUfuvW9TYfUdvNhjAUD3xWPmXbWcom8Qc2lG3Q28Or8Hf1i48Dhh96EDytsJscnQe+PD7ipKqaXXJOD3LfTogd/X/i5jrMPDCaQvZQ3uHJnip2z5xTd/eTNZ+OyY9UckU/jwScWiKNQZ83Iyb5a0OYx/LElP84Wa149OAYclP/ydvCFdy0+Rs1HjwiZra81jUEVeqK/yHR/cXA94FqVHZZ+AXlQgrVKsgYvrfDxLh3IVSiE+TwmZSsmue3LqbSIC8SjQw9Bjy/o9Vi/xqBu+gWk3BMsf/as0VPNrFHy4ogCbqkoVBy63Y8wY1yrpKUsVepRoMAbZKWehmgBt49nOy5JSK52VfIHG6BmMQEZTR9nUItb9pY2byQCmMo9qVJxS4F9MO9dP+g13H8pK4v1Tg562C4wKA8bsQL4k6L4zxDM3jjphklNgc62/ezsYuTQUJbIUWiNnX8hjfYXQ/znW9Q5Kh82JqPOZaNkKja9yhMsMZEX5lZ7OTZpxfL/+DFzcqu6h
- zcrjRklW
- 5nBMkoP4ZdC8UJGUVN3xK1WEFbmijuVHaO9tARCw7UfD3VN0sIXtH4LekgpOF3CKeu4arucaiwHuFUj2blA0YGQ1l2gRJ8yUSuskiAw4UozORuf/N7lc6B+83Zb82jNvZDWTvuqGidt9YY7zy4pX3vPpuUZyVrsDjgjpV3H/ElleA8jYaOJk04dCjlbSzTHqi+W7aY5ZWFBPldQBZ4OZ/m2ZtNcAvSGV989mmpmWnRXJ/wV/GkFHWhevrLTztVmbyvfN03/k2/0ougTG69hcMtQxq2xrZikbpofASpgxzT/r+8u6UiJRnJv/OxDe0cj1lwahKBjOC0DDv1Mh2aQI/o2ssV8kfZcCCVMHFJts7JfDfglqvFv8Cbd/parQwvLGr+RhvWo1BtiMKeL3+Y2iUJwOrkSkDtH4cyN2ga5uUWWhhP8Jk95whcsmVJ4PG133YbbdZsUQFaBflcbHAYZzSTn5XgvxZDC91wqBz4FNKYSX6QsvIfiVSDiMqgw==
+X-Stat-Signature: a76u6a1snnp75opde4itacss5rqk5zj1
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781243449-798687
+X-HE-Meta: U2FsdGVkX1/VbjQEX0JTSraDTjH8L+BvMrOwTpc/RgjkaXt6+Z9tT0Mnq3esCLhAYZq0SBLlKXWlG2ZgcZM3a4FdBfmQfb4r77mAp4ESTSAM0Nc7B9xdxY4+cGstZVJTTx4YYsfe2KhO+6wDVaKTaTKPciBn8HAAmSA/B5jk+jSocKsK1uRn1Vjf2crmrWCv4dRpXJj6870lnWXkTkLPv2PWFCDvXfDsznj9XCel9sbl5NM1FZb6CIXu3+qF0J8Xt1LZ8RDDQEda4lTnY702MeetCoxTJT2h21KIChO0VBv9g36INQnwajUmEvJuGhkfKCgbLSlQRWTmUItOkryK+vT3k3Ny8fcVHGo1/gXyk9qvNLJ7bIrOB6KwgZ+cQU2vz+FqtQEYBPyXi50IF5bF2QfLLIFMysG0AzHce4KTLMHbQgm2HTXKiyzTa2tfcTFpkz6Yl3BL6MkwXbh9xORE2U8nSMA3/aa4n3WxLKvKeI2VpDT2gawpJtvhOOHvNa2/uX7bHd3tSS8uhGcq6QtuRYqUepf4E65ly5CVTFHrDh8atc6hWbmZxfNSCjEAu8dytO5Q0hoSbq8xTiPlEQZCQWPvXXRgbIa4WEaP84SsKNnJWQ4JuYZXc9yuIz0GmYxujfLEfvSgJFlk6ZckJPVIDi5QDUW7LylA6z1+qxhn0dYXQ0a6z30wAjrEu32Kdmtnl3om6P+L+7PxOGrbCMo53X83WwwoC3KWzQyGpLGydMSDKYmM6iuw+FMu7JhRJfTd+jElztFknZUGkVVp3957OUP7TKidsH8QHL6AszR0p6m/DHpEnl9KtVaTPEd2YhTh/rVxQA/NIb1HQax8A9GwNAacJwMIdk0lccpBnQkB6gfGcsfMKLy5wA2YVITqBmhCK55fHbeeO87+TdA3Y9FyTn7/2Zi+l+gcndJykr4OVHs2S5gBYq8cvgrBjUUNkPebMwE8b4phEsWGZUqtxqa
+ X8wFP/7V
+ /SSCfg7/1CZ5XoAhOQbRCE3n5yl+4SpdI2E4bg5E1A9FeqO+vbE4UB/DWxIEiEkwJywXfJikXSFrjTIXUiTPXrW5dGRSnCpdyQd2jeqQIsyPpuhojpPT24/xuhNyKNbgCCOWfzHCvbGA1xLaiIV8VOJoUAkyjvdUSuDpLtgTvFT2wB7uQcF2798EOkJBCL/ZpyCfPFX4CWccCKzpoLPAgg6yqeixhncIgk6r2UQ8MmUx6cgzwdjuJG1lPX44Fewbf9Ty702BexUmj3wKwWEUqkSUsQYUKk9GR/VhH6SjNzHIpr64RcetdLTAj0b/V994YHsPjObCJemqCeealRE1Bj5BkSCC7M+IKFj15Occ9cADGwJBaqzIaIIZMZoifolBSeK+F6gX1G/eTOJ5k05lS67AIWCiy14RnbdMsoiTEotHUhVk69JE6fJAssP67uRcjheo3a5SR4enWVcWsQvbj1d4Ogg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,42 +111,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ritesh,
+add_list() allocates comm and txt for each page owner record, but the
+cleanup path only frees the outer list array. This leaks both buffers for
+every retained record.
 
-kernel test robot noticed the following build warnings:
+Free partial allocations in add_list(), discarded records during
+culling, and retained records on exit. Return explicit error, skip, and
+match results from filter_record() to handle get_comm() failures.
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linux-review/Ritesh-Harjani-IBM/include-linux-swap-h-Remove-unused-leftovers/20260611-111124 next-20260611]
-[cannot apply to powerpc/next powerpc/fixes linus/master v7.1-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+---
+Changes in v3:
+- Keep the free in add_list(), since incomplete records are not included in
+  list_size and cannot be reached by the common cleanup path.
+- Return explicit error, skip, and match results from filter_record() to
+  handle a NULL return from get_comm().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ritesh-Harjani-IBM/mm-swap-make-SWAPFILE_CLUSTER-runtime/20260611-181121
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list%40gmail.com
-patch subject: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
-config: arm64-randconfig-r133-20260611 (https://download.01.org/0day-ci/archive/20260612/202606121305.h0cxjhP2-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260612/202606121305.h0cxjhP2-lkp@intel.com/reproduce)
+Changes in v2:
+- Wrap commit message lines to approximately 75 columns.
+- Use "Yichong Chen" as the author name.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606121305.h0cxjhP2-lkp@intel.com/
+ tools/mm/page_owner_sort.c | 61 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 50 insertions(+), 11 deletions(-)
 
-sparse warnings: (new ones prefixed by >>)
->> mm/swapfile.c:133:6: sparse: sparse: symbol 'swap_table_use_page' was not declared. Should it be static?
-
-vim +/swap_table_use_page +133 mm/swapfile.c
-
-   131	
-   132	unsigned int swap_slots_in_cluster __read_mostly;
- > 133	bool swap_table_use_page __read_mostly;
-   134	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+index e6954909401c..cdf31985287c 100644
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -43,6 +43,13 @@ enum FILTER_BIT {
+ 	FILTER_TGID = 1<<2,
+ 	FILTER_COMM = 1<<3
+ };
++
++enum FILTER_RESULT {
++	FILTER_ERROR,
++	FILTER_SKIP,
++	FILTER_MATCH
++};
++
+ enum CULL_BIT {
+ 	CULL_PID = 1<<1,
+ 	CULL_TGID = 1<<2,
+@@ -372,6 +379,9 @@ static char *get_comm(char *buf)
+ {
+ 	char *comm_str = malloc(TASK_COMM_LEN);
+ 
++	if (!comm_str)
++		return NULL;
++
+ 	memset(comm_str, 0, TASK_COMM_LEN);
+ 
+ 	search_pattern(&comm_pattern, comm_str, buf);
+@@ -386,6 +396,12 @@ static char *get_comm(char *buf)
+ 	return comm_str;
+ }
+ 
++static void free_block_list(struct block_list *block)
++{
++	free(block->comm);
++	free(block->txt);
++}
++
+ static int get_arg_type(const char *arg)
+ {
+ 	if (!strcmp(arg, "pid") || !strcmp(arg, "p"))
+@@ -450,39 +466,57 @@ static bool match_str_list(const char *str, char **list, int list_size)
+ 	return false;
+ }
+ 
+-static bool is_need(char *buf)
++static enum FILTER_RESULT filter_record(char *buf)
+ {
++	char *comm;
++
+ 	if ((filter & FILTER_PID) && !match_num_list(get_pid(buf), fc.pids, fc.pids_size))
+-		return false;
++		return FILTER_SKIP;
+ 	if ((filter & FILTER_TGID) &&
+ 		!match_num_list(get_tgid(buf), fc.tgids, fc.tgids_size))
+-		return false;
++		return FILTER_SKIP;
++	if (!(filter & FILTER_COMM))
++		return FILTER_MATCH;
+ 
+-	char *comm = get_comm(buf);
++	comm = get_comm(buf);
++	if (!comm)
++		return FILTER_ERROR;
+ 
+-	if ((filter & FILTER_COMM) &&
+-	!match_str_list(comm, fc.comms, fc.comms_size)) {
++	if (!match_str_list(comm, fc.comms, fc.comms_size)) {
+ 		free(comm);
+-		return false;
++		return FILTER_SKIP;
+ 	}
+ 	free(comm);
+-	return true;
++	return FILTER_MATCH;
+ }
+ 
+ static bool add_list(char *buf, int len, char *ext_buf)
+ {
++	enum FILTER_RESULT filter_result;
++
+ 	if (list_size == max_size) {
+ 		fprintf(stderr, "max_size too small??\n");
+ 		return false;
+ 	}
+-	if (!is_need(buf))
++	filter_result = filter_record(buf);
++	if (filter_result == FILTER_ERROR) {
++		fprintf(stderr, "Out of memory\n");
++		return false;
++	}
++	if (filter_result == FILTER_SKIP)
+ 		return true;
++
+ 	list[list_size].pid = get_pid(buf);
+ 	list[list_size].tgid = get_tgid(buf);
+ 	list[list_size].comm = get_comm(buf);
+-	list[list_size].txt = malloc(len+1);
++	if (!list[list_size].comm) {
++		fprintf(stderr, "Out of memory\n");
++		return false;
++	}
++	list[list_size].txt = malloc(len + 1);
+ 	if (!list[list_size].txt) {
+ 		fprintf(stderr, "Out of memory\n");
++		free(list[list_size].comm);
+ 		return false;
+ 	}
+ 	memcpy(list[list_size].txt, buf, len);
+@@ -841,8 +875,10 @@ int main(int argc, char **argv)
+ 		} else {
+ 			list[count-1].num += list[i].num;
+ 			list[count-1].page_num += list[i].page_num;
++			free_block_list(&list[i]);
+ 		}
+ 	}
++	list_size = count;
+ 
+ 	qsort(list, count, sizeof(list[0]), compare_sort_condition);
+ 
+@@ -876,8 +912,11 @@ int main(int argc, char **argv)
+ 		free(ext_buf);
+ 	if (buf)
+ 		free(buf);
+-	if (list)
++	if (list) {
++		for (i = 0; i < list_size; i++)
++			free_block_list(&list[i]);
+ 		free(list);
++	}
+ out_ts:
+ 	regfree(&ts_nsec_pattern);
+ out_comm:
+-- 
+2.51.0
 
