@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F64CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:50:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196D6CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 21:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B31226B0098; Fri, 12 Jun 2026 15:50:21 -0400 (EDT)
+	id E80836B0005; Fri, 12 Jun 2026 17:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B08A06B0099; Fri, 12 Jun 2026 15:50:21 -0400 (EDT)
+	id E31446B008A; Fri, 12 Jun 2026 17:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A459A6B009D; Fri, 12 Jun 2026 15:50:21 -0400 (EDT)
+	id D205B6B008C; Fri, 12 Jun 2026 17:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 978A86B0098
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:50:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 32BACA0223
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:50:21 +0000 (UTC)
-X-FDA: 84872302242.20.1A7887A
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 58599180003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:50:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CzqqOcEu;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDC356B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:26:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68FDE1C2F17
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 21:26:51 +0000 (UTC)
+X-FDA: 84872545422.01.3AE295A
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 96296A000E
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 21:26:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ssbXOJ/a";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3-WIsagkKCMgozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3-WIsagkKCMgozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781293819;
+	s=arc-20220608; t=1781299609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yJtaeor/RMdRA8pDnzGdMSIMMP892NMMkV6Jr1/bAH8=;
-	b=igeDX6zZqTL0lPuMUaDGXIjM+dcea/qVJ2gRz4yTDLGiZv8yuEik5+2G8MuayKnaOD3GmU
-	E3K978UQnTxsf1/Na3EZc+i7qGezYJ28ThOrtTuHDTbgnTpPtWWme5YPC9/ebfiaE4fX+H
-	s0qZc20crIkMQrSCIPYLtWviIk0oEjw=
+	bh=QoqQNxNPBqMismqzNgaeaEvZMlSF3o7CK1/OdEQIGC0=;
+	b=N32MJxMQ26rLuciVzks4eAoPR2oCgNfQGaEQBkB20oxjnSvxh+j5j6ojY2ikr85SuDw64U
+	thoArcQipHtD8GSbQ1oyNkKniKgJhE8M+dQ3r5+N18TfU8npp+T1YA6XQOrXF3uRhQq9lG
+	rrsabk39v84X6sgrzdjT1X0k8HJtyZc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CzqqOcEu;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="ssbXOJ/a";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3-WIsagkKCMgozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3-WIsagkKCMgozwqs5Cvzu22uzs.q20zw18B-00y9oqy.25u@flex--aliceryhl.bounces.google.com
+	spf=pass (imf25.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781293819;
-	b=Zte6zVUa1Mz0rdfwAYt1mvBltpSkeMQ4bEJfNxOC3DIgcw4VkMTi4s2VSqp0ggfOAYxsV3
-	lPmc3meZyii2PpDk6NbRcM6TJ3Lfyg8JFgwuGtBhYb0yNewAtruKkCX01gNFxmIuOI3+oH
-	lZR2RBPXaCrZm0A0Jrp042MoBH3csmA=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef5e38a18so632696f8f.1
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:50:18 -0700 (PDT)
+	t=1781299609;
+	b=rv0tCE583+YbyW4mG7bxhq38RyXQV2YE8Z5R4MtKB+BPAob98IkBhniaxmQXYVFjyxZl+r
+	aGHliC2HTbbm0Bbhukp5LMvmTCatcSuWq7GK+4ew5SPjq6+8YKurv3wtsQLrTHjVLgNQk9
+	AGb2d6wc1pSOx2b+aPdKD1eEJ4T+Gx8=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7f015f87fddso16476737b3.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781293818; x=1781898618; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+        d=google.com; s=20251104; t=1781299608; x=1781904408; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJtaeor/RMdRA8pDnzGdMSIMMP892NMMkV6Jr1/bAH8=;
-        b=CzqqOcEuZgsomzZL4dk7Ebys15m8b121s7yUfdFEQGecR+ASd5UHYrhGdZen97x7wu
-         eC1mV/chjrngeh5lx9qpREteYs/sbDxvJLnk2kbEeb3cvbkCi6U5IkngaEB70aTdjUMJ
-         XA+ksICU+82TcT5/MnaaE0TZB77F6sFYtNMfjjNT75y/qBhMFaAFiOaAAlNPGRmjXsy3
-         I2hjN2C8GLVMqEyflYiZby7s7MZSgy1K3V+o42yx9X8m+5a0BBpOp4a446TEa8UXQX5i
-         ukrKLU2Q5LWDzQ0A6bWnbVkWosqckfdLOFErhUBX6ZlqDxXStQsLzcteh1I9W2f2ElkM
-         aI7g==
+        bh=QoqQNxNPBqMismqzNgaeaEvZMlSF3o7CK1/OdEQIGC0=;
+        b=ssbXOJ/ap+exESQxmIUx4ymq3v1aWy855fggY7ZDz8hrx7E3XEKpU1UOTq8XP8w/rF
+         c2AVRlvAgi3tvQX2AIM21n6656GFItOL90/8xS4yp84J314OEYH4juOaGL7eDe7Q+9AT
+         sgXuJYG2P89CZC7qyfYlhI+I79tPqgBfr+RW2n8uk3BJPHsBqUDKZde23WQaCloI/22q
+         mIe+J7Bs/ojl8170tSfjmIMi6tz+VzwmZe6XBKk9u97na8KTFOT+zeDZREK3qSkBH66j
+         a38YrBjAyayh4F1dFOEpVIaiZWoDezKIhm9YiOWiSYXxYrQukveCHe/M5xZqygqb9gLQ
+         UYfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781293818; x=1781898618;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJtaeor/RMdRA8pDnzGdMSIMMP892NMMkV6Jr1/bAH8=;
-        b=Dd8lkhhKM/L5rHCw3D6/z88DSBbBQsYgYM3lbs0PVQXHp08Rlqp+Ky8h7EKtXV7OIV
-         3i65DZVxzCFchQr8zJpGPSPcVqXC1kuCtR1hw3Rhhrc6Adwb2awCuLwrmnId0OUTsCz1
-         Tq/xgMdNYk8naNHaTQKczAGUjF48zQFfCf7MuGtru8ZLJb0zUhWEZwYdaeUybwleb3e9
-         6UvTl8tXyy+6WQgAosdnl6zFqEvt77C2ed9B8ltqqH9ZLBcNddhiNbm2y1f6CbTQq4Vj
-         3fy1nfZNg5NbRDoJMtx90OSYGHZX9rNvuCx8CaDbGIdA4+4LwMPa92tHEf5fxZc3Dg0s
-         UC/A==
-X-Forwarded-Encrypted: i=1; AFNElJ9QaA2krieCwZ434g2xAPhna6zh9fCKUhyA9DfL8+qoNdEahRmOjk4SfWfSiToyanwS8Fqb6xWz6A==@kvack.org
-X-Gm-Message-State: AOJu0Yx5OniA0ha8EoF6+S4cT073B6gJJzT7tfEDf9++I5L0sWCKisf/
-	vWy+zBNsd48xDK6TbzM6ZdqUW8mPCRKdngqi1AAJ/wmPXicRAtOrFbkRUCciqFCgGDb04vouHKP
-	hV/YfzRnCxC7uM5c82A==
-X-Received: from wmsk6-n2.prod.google.com ([2002:a05:600d:8486:20b0:490:3fd8:77de])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1790:b0:48a:8b02:ae91 with SMTP id 5b1f17b1804b1-49220092ec4mr6888375e9.11.1781293817496;
- Fri, 12 Jun 2026 12:50:17 -0700 (PDT)
-Date: Fri, 12 Jun 2026 19:50:16 +0000
-In-Reply-To: <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
-Mime-Version: 1.0
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
- <20260610230413.D68967BC@davehans-spike.ostc.intel.com> <aipphZ5iCnbXVNSR@google.com>
- <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
- <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org> <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
- <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
- <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com> <CAJuCfpFo_avdhpOviX7EsPqLgDJ3DfeGpth+yu1-ahfawqaSzw@mail.gmail.com>
- <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
-Message-ID: <aixi-DxMuc0MiGeO@google.com>
-Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
-From: Alice Ryhl <aliceryhl@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Carlos Llamas <cmllamas@google.com>, 
-	Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Todd Kjos <tkjos@android.com>
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20251104; t=1781299608; x=1781904408;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QoqQNxNPBqMismqzNgaeaEvZMlSF3o7CK1/OdEQIGC0=;
+        b=iTHr5GnVj9hFY5XHv92QUetJqQYUtJXqovpnfILLICtRntfiwKi/D1B4CSFy3LECgT
+         YKjCT4l9ZnKFr4rCa2J4dx8vZY0lc1+2jHXGtaQ4vZlqX1RuY9/GwhU9YbZAHZ1pRaWy
+         0af7/SqiB4NiRhBuwICeMhF6I5AKPoOfYDaV8noJRLckBke0PdaT6h8EfXYlYAnDzeuX
+         wcr42pn+yhhKDOgm5am/AX9pjl7Q4aOV2UA3KwndxPNjCFovNbKXcbhjH6m4zXpSf10x
+         S1vwas0vstNqefK0kNj02eFYqnb0QfAnPTeGxCi80rHCfkY7RC4SIfmHmmz9gsGgeLLQ
+         h46w==
+X-Forwarded-Encrypted: i=1; AFNElJ9505jerLNifuPy+Da7PsFsJwglA/ElQDdQCIdFv+ogzMZhubpPROMFzGRQFTiTZHmI26wC4LmKqw==@kvack.org
+X-Gm-Message-State: AOJu0YzN58dD2abd3riS6hebwkFrSkeA4BtkU6ylDgbnp407aC+RuFlN
+	rWeE7afOYKuGJcyUuBwy1ijA6/Nq9tMaWxfpYWUnj/dL/So9008oVTdlc7sSBGpfcw==
+X-Gm-Gg: Acq92OFiM2/L3vanJRWC8yNmQhIMvILocrCZuxoP8y9OusBgAQQ5QVo1upcgrw83Ibd
+	5H6WGgy9UfFbdO4zHfbXf/JQqg0Au8eNaXew2ZnH0oq78Nm7VrGoA4/MT4zhg4jZtJGy2d35kg8
+	Q2VBkdrEZe8n7/eBvBhk8tT+rMnIXpKIMThYwym1GiiSem1kTxNhZJywN/IGLpvzA0x1chjdoIn
+	5/Aa7bSjNR92mio8dIH5cObUIjPUcD0Vvw+6ukxWrcwhQwRhY/FhWlAATHuyd7pEBBadpxJ//29
+	ii5NE0S0fTdcQyZ3cxj06rhxa7+MhcsGyBKIrI/fl98Z7pknTpa6EQjwBvJ9KAdE/lYLzDe0vPU
+	58n9M2SRPpyZY801zxWoNwltNCygWxKKe+lz7gDgLPwvbI6X++Pj60dxL7+5DgtZTSGeDiqNZ2+
+	k779n0TRF2U3+nTgT3goC8V8nolNNI6rqm+Tl6auQENonyey8e9W1vPr9Xi/rE5bzotxxR044QB
+	RDePGwUyw==
+X-Received: by 2002:a05:690c:3a0:b0:7db:d527:b8c5 with SMTP id 00721157ae682-7f797da207amr45590297b3.16.1781299608152;
+        Fri, 12 Jun 2026 14:26:48 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7f76e8991dcsm15341147b3.17.2026.06.12.14.26.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 14:26:47 -0700 (PDT)
+Date: Fri, 12 Jun 2026 14:26:34 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+    Sergey Senozhatsky <senozhatsky@chromium.org>, 
+    Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Jonathan Corbet <corbet@lwn.net>, 
+    Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+    linux-doc@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>
+Subject: Re: [RFC V2 3/3] mm: Replace pgtable entry prints with new format
+In-Reply-To: <fc57bb9a-4564-489e-8da4-65068b5283ae@kernel.org>
+Message-ID: <4a416383-62f5-1716-8e04-a2ee1f89a864@google.com>
+References: <20260610043545.3725735-1-anshuman.khandual@arm.com> <20260610043545.3725735-4-anshuman.khandual@arm.com> <fc57bb9a-4564-489e-8da4-65068b5283ae@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 58599180003
-X-Stat-Signature: d3sodxa961zg7fknqm5meq7bpcy3xmm9
-X-HE-Tag: 1781293819-893392
-X-HE-Meta: U2FsdGVkX1+BvH0cFa21RiXEFtO8n+miruxCF3PSylEUe4r5/AIkThYCPij1uDDUtNkjqvKxbfvhtNe+g7Vb9FlInq2M87xWjH+1Vq+aZsOz2qr5OjhJY0TAzfYhan1tpQ7/zQwg2rH4jj8cd211Q7H1i983ka/UlFFNtLWoAY1X32RSGYMTJjdMA9v9u3kK4uaAbejT8EvIK5sTFj5YFv+dw2X853fuzDvuRou46EzBLy0nrTFXcOAyhhqkPJtWIcezGwrZQUxa28vAiF24RXNmn5AKwng9eC3J1T/cAuDDlDvskFe6HN8LOwL4HVDOPHdsz0jeC250l17TRVKFTs2VrN+ABDxeBlS3+VrVnuI1eVsJCR9PDcNy/b4rjnT1MQ1lc231NxbdUqKYwGu4paEkf0UgBsi9RL34IEhi321nMG2cyQhw1FtU3V7aut5hSmQV+gsT26cjWbagQ0vbAvxnX2c3oXKllzF3I20JAKge/6ad8+NI9uLy9dq/t1+lMCl9Z9f/17uKGlRH0yqiBb8npQsEql3HsA2WB/MeWtLoPO230Ua0wcjGAupOuFil2i7P3/jq9AuwScQouSS2Q+hqsf8jvWtbZpTCjouIZaFYUDhjQRho65oSDrddbbfa9r8po7sYU9V889xHUOsyqXmw3qZGTiWE/wv9JqpgwQaFxAcWdw5bNgaGyqSZHDSxNA6YJHXUf1OelGsXSs7kv49ylj6CG3omaEkDUQqKyO5+nESII2lZ2jlqSD3ZCS+wIQ3oF6zXytkDXJhDml+ODTSN1PrZzXO6arf4UgUH0gqhbdGMZJ4HFdppplFCS3JmbY/SyfpzzfeXK5mzyl5ric9hQipC+ta8yqOEkGY8vmfxryeMtQ6j63DPcs77QYViWaAKg5lLzXnW26+KGTCDaECsCt5GUosZyAxKjtwtqaQunJSiQGjo8eJJrak18sSumsMkKSgOzO03q7ROm5C
- UgxCqycA
- 9VMHgbNRqOUQP9Y9HlkNA0OBvpMd87eifUISdsQPngRiiASnwXZuvbNJakM5NM7Q7U/lSlc3STon4MGxWyA4WR06EjAnnq74+dQMtpY8F/MCIU/nMnryzjcRYhVgWzN6wrfDTQQQysajvIYC/sRGK18uyAj7XLa26SmcjfF+go7p3kWhncSndRfl9NLqZXNJaRlVc0KlBrzGxowcize9KdoPx+HpLesg8yXJWeYAObYanCSzotXJX9UmHYoA5m+3zbJ2pv/fly9gCfnC6xoG0M0Nv4AZpUMg9im1pspr2zpCe9uXFjNHVgcQfdq7E/FrTFB2ckhOKsE9xpXQPf68xHg68CoJbAI0qMCGiucUTau+KfsVWJimIyD8mM6Ef8r6bV81vgVQbYYMuJFMxK8syYDb0+EDP0CIgpZuXhUl8mm3X5F0S5fCzqD4Oha0Jat3Cq5GCOFzoQLsJoE9JBPaJm2aPVSxSs1rqQZcxSGUDFgJrGgSCTLwtKIF0y8bEau517eSqMRJJNsFaOGcBsZf+Qz5qbbz7MNnRHTwth24yB1wDwV9C47Z9NUcCp4YXJuKoCPnLQrHX6WOsKwPATmEcRCtP+LL4MQh3r2OkNuDTcX93isY=
+X-Stat-Signature: m96ppjza1nzi5hh657846kjiqydzh6x9
+X-Rspamd-Queue-Id: 96296A000E
+X-HE-Tag: 1781299609-51942
+X-HE-Meta: U2FsdGVkX18YdoFNmNBel5t7ineBsZg7bkmwWFejswFtsevoh1l+6bsv0tTEfnP5JpESZuCcwxg0Z5LzTO5Z+zDNsw+uJFQRl9euEwlZSYI4LlveG1C5VuVwbU4OI+86xY4VGUyfDjyk/d6OW5wi3+0XYD7Eqgo1MI10qRVivhptN9SBU2n8zv/69noJMPeowr573u7lAkk+L+qM5Eo7loJBI6Bemr+aHCWWpgWYa+m6wmIPHVKJHlrBaoDseNvxKwTVBkXPRwINDW6f7OxwGJzNnCso/JKobnDnSPHGDXW9ze84Jaezlh79b5GCTjR+SSFKHQUzKzHxLk8WHx4ClmCTnNKov26nWWAore9vDhAJdCC5/NqjUyHPPJsb+bJXMH+tgSGqu+kZVFhscKqoG7rGIoKOSy5/Dr0Ps7LKHes79SRBh+XEIKCsO2I9+C4MMUqhgDtkHIcxtd3V38CZtYM/C77xpCy+FTA43OdzuwFc6gadWXnv1QQwVGowRxXUq0ZpQvoonUgziDBaKS+qJfHnXzSGCFXj5l10mQpIH3APjMDQBFBQJdsBErsVWHadUV3ZzMsshH6UiaolQ5qi+Du+QW7CL/IdW+FZWNVdaPSU4NNVHPthaFDe4K+KJ9c2emAohcHODJJXED3mPwkPPjCuIrvmauZxPCugHP+D5XVDgRSYTRFppo1diCyWVuBkupVMavq4uf7ej5DnsOVDWuo5gd/0voYizM6h6pxuS3+G/ZvhGvN+MimMaLUO4v6GNVtKUldTm2flwK14E3rzH4GNYcJE5+0poYx+72pVVnMsDHaAmN53QJcf2xoWgQn0xLIymnGtCx3rfsh00GnW9YiiQnFQ7EqjziFnMc9TNjulZHJDTVzLa9bNNPH11d0nDV10nyqxGVsd30l4SAEw5BhY6gGgVNre5jyZ7vct8aZTZdNr+d9Sai+SaZCgjQ2QX0r8f12yax6T7gUaCWN
+ m9YY+bKs
+ ylfs3JU6whjmtgvOXDtGdtvLjjAefcqo0ayak/u+fOqc9bO7L7TRVH7S8HYfzRFFd/56j7zwlCFcGncJ84dQnlToLf8Wsxe1Ad/P6LbroKHgC6BuTS5EwbGxTPBHZ1eAAzm6hWT4wgzKZmMZglcuQBjHuzGbs+2nmSFbCDeAon2mQvXNeW6YwLDQnNXM0TKiNBcZas8fnCLF5h0AQC7CYDmVP0pARqHqkoZ/QC4x0W56o+WOFXuo2O+WR2PKG1csYP9FL8TYILPU2AUKUMWQAeXBBJKVWBWuVaxx+Vm/nZ9IY5J10aEAZMYE6eNuSFgq5AIb38tjhuHBwDhUp6QZkA85U6ulLqyGywOuZILfwlIE76V8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,33 +122,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 11:47:59AM -0700, Dave Hansen wrote:
-> On 6/12/26 10:44, Suren Baghdasaryan wrote:
-> >> It's not impossible, but I do think it is irrelevant. Or at least that
-> >> the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
-> >> means that the binder VMA is gone. It's not in the maple tree, and it's
-> >> not coming back. If a VMA is found, it's an impostor.
-> > Right, but before your change we were bailing out early. With your
-> > change we would be generating the traces and freeing the page. I think
-> > that's a functional change. Was that your intention?
+On Fri, 12 Jun 2026, David Hildenbrand (Arm) wrote:
+...
 > 
-> Yeah, it was intentional.
+> After some off-list discussion, I wonder if we can make our life easier.
 > 
-> I think the existing behavior is buggy. It also complicates the goal of
-> removing the mmap lock fallback. I've broken that behavior change out
-> into a separate patch. (attached here)
+> I think, even with your patch, there is still the case:
+> 
+> pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+> 	 pgtable_level_to_str(level), entry);
+> 
+> Where we cast all entries to an "unsigned long" in the callers. We'd have to rework all
+> that for 128bit entries either way (passing them in some struct instead).
+> 
+> I really just extended what we used to do here in print_bad_pte() before commit ec63a44011d.
+> 
+> Maybe we should just drop the "print the involved page table entries" thing?
+> 
+> I mean, we do have the actual page, and we do have the address in the address space, which
+> we all print.
+> 
+> Not sure if the actual page table entries are that relevant?
 
-I think you can just:
+The page table entry is BUGgily Bad: we want to see what it looks like
+(sometimes, a sequence of bad page map entries may even show up as ASCII).
 
-1. do a lock_vma_under_rcu().
-2. if it fails, check binder_alloc_is_mapped().
-3. if still mapped, return LRU_SKIP, otherwise behave like a failed
-   vma_lookup() does today under the mmap read lock.
-
-Or you can even skip steps 2 and 3 and treat failed lock_vma_under_rcu()
-as LRU_SKIP because processes that unmap their Binder vma without
-immediately closing the fd (freeing all the pages) does not really exist
-in practice.
-
-Alice
+Hugh
 
