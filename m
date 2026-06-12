@@ -4,136 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAAC2CD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 17:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CCCDCD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 17:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2056B0095; Fri, 12 Jun 2026 13:21:29 -0400 (EDT)
+	id 8F2D26B0092; Fri, 12 Jun 2026 13:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0898D6B0096; Fri, 12 Jun 2026 13:21:29 -0400 (EDT)
+	id 8A3786B0095; Fri, 12 Jun 2026 13:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE1BE6B0099; Fri, 12 Jun 2026 13:21:28 -0400 (EDT)
+	id 792A86B0096; Fri, 12 Jun 2026 13:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD13A6B0095
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 13:21:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5CF2B401BE
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:21:28 +0000 (UTC)
-X-FDA: 84871927056.10.D0FB37B
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6DB44180003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:21:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Aa7uOq5B;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781284886;
+	by kanga.kvack.org (Postfix) with ESMTP id 657A36B0092
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 13:24:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21EE6401BE
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:24:03 +0000 (UTC)
+X-FDA: 84871933566.21.AEFA90E
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2DA4F100002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 17:24:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X+PyVo3d;
+	spf=pass (imf05.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781285041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zhP/S9DqQ18d48OmGp0Ib0nKLxcWLFREPLhCrh+2+fo=;
-	b=Kn0G2oyJaWktF3bAsuusPEgt6u39D08ztjXh8dhCx/0RV0ib1cdAe76Z8I2Y4PxPNzn5Z6
-	k+TAb7qgQyF4yr/c/uVmbBD7LkHcoCe+S8d1belhA3mEDsDjtwUwgTn6AY/bL9IEJwxkIy
-	mpZDTiyImCcUbaByC2On/m2rMefBNYE=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Aa7uOq5B;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781284886;
-	b=3Y2DnxWy68nhQhMeg+Nq+x8zcrWQsFk+P1DtvVAOnkQMR8pzrkdSIj6Q47kuRj0sFmeBJ0
-	IKiWOtsqFELVooM0Db+r4TAiCaM9Qzc9KXxatoTd5qmSLAjEnBdz7EnViL5klXNV7dBXlj
-	+rYfB0reJ7jO9U6esRkYot/c2IoeYvw=
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-69e59978deeso523952eaf.0
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:21:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781284885; cv=none;
-        d=google.com; s=arc-20240605;
-        b=k+mmzSgHizReuqGTrB1467HsSa7KRpCdCRsU8U1c3Jr4+ghdS8UuyjSvse4dZwkkrk
-         5YYqpkUsQH9D79ixtJ5YpH5m/IJlDxIEwIbdV2pHkXRPp6CTzRhOgTBg3ReKwr21cI50
-         uL4HMNJe4PsnGajJQqx6G3LrdqTX31w7Kf9exTEE2vTMWSI7VSsUgRyLz/XVFBaaUMvY
-         xm1qyfntP2bFZ2HLtmmctqW4TCceRwoLYwRE/jg0FmnzUcm86IT3wxJiwbsauHciWu0S
-         oDYi5cSRpR7R3HDIM4mV0rhL6Zf+rLF7i2MVZAGlnkQoU/vV86nEJKidjxbsnWW7aaU5
-         pLwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zhP/S9DqQ18d48OmGp0Ib0nKLxcWLFREPLhCrh+2+fo=;
-        fh=CwNNV2W4m592nf8iRi9C/XWtk+P0v2YQC+tw57e+UIE=;
-        b=XqohEunRQMHhLpkaXP+ca1O1q7I7iLzYPS9IptCO/YcyORrQTAYSAmXgCNt1W1g9hq
-         t4Y5m2uJv69zvosFZ1jlWDDJ1PlDY5zXRnkjXY411FFDeG3Wdc649GCOKO/EcY5DbetQ
-         N+wE0j6yuhLJKeU42KjE1DN5dMaQEol1wPqws5aJd4//kuyBoS5aqhJPdeAR8AWzVfQx
-         iUXGHR47w9vG/6HhepoG2QghAUghCIo8sZWdelEzqv59j1EnhigpupuOIPVM0lsyHfQt
-         HMeMJ/t9tdwip0yFYp/Nzcd4p8y4eLzsrSQpRxkR2f0GWvoSrf4IULHtdz/FUrdhHhFA
-         vdXg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=KMGHII74ZTHreA8zFAF4aBq+kvKQYj6uXVGGtKbtko4=;
+	b=F1YaJHedB9a02oryQqtNBt30VzcDWBpPn5pZ9uJoi73aBcgb8ymCUOm2VXcicT5SC4g65A
+	M+0NRofBp2he4sNr4ontfKlhjPZbgLiBaIkCwkfE7fzwNWkkHR3ael9xyp4Wg/GWnPROCP
+	zBDOtR1E8SJTjJK8jv14oLhcGYq5RFQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=X+PyVo3d;
+	spf=pass (imf05.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781285041;
+	b=KX6M7XYciOqDiPmLrCMJttqiT/7nMylWrCF96pd3loLu1JzhbmHwkCOJWi525tFCPtHLi6
+	riUaPfHk8dlhm7YQIVr5MIEaL/B1vm6P0Do9Vfk5pQ3xmJnfqUpsCjikKmOBMSnJC0/jwb
+	1TtjoXAEzTjWvA7U+4hBl5rPdRwjRUo=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b4a8e28bso9741515e9.1
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:24:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781284885; x=1781889685; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zhP/S9DqQ18d48OmGp0Ib0nKLxcWLFREPLhCrh+2+fo=;
-        b=Aa7uOq5Bjey5YlEnrgY4az3wWJQDtHKDFrQDMCTZbzaySr4EE21avkn8ZYovAB+ZD5
-         Z9C/3SbgmLvXqUz81rQm7dP4FxkpoTUo+7AsHKWCib92Cq5Fg0DGc3lmxG6OU9CsGFul
-         eYo/8M9xG0GBMt7Tt/AOkswm/5S39L378TyOKAMEEIFBVaFOt/0NXhoX57XnXzwy6LEA
-         w34zZ1F/qi9xYTwSRE/02SKzzbm7nFqvmaACSr7Ffcl92ujC960XHc6LEYOdZLaYML0P
-         2cEeHjQ0Da/7+//nbHke03akYNNfUt/2NvTPuI+boYhiO7EFrtLzI+5ltOaL8ZPUgbWb
-         DQ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781284885; x=1781889685;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781285039; x=1781889839; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zhP/S9DqQ18d48OmGp0Ib0nKLxcWLFREPLhCrh+2+fo=;
-        b=asw5CO7hJFcKfwMHvNmHNEMJ+C0RnkFSYqOZt3qfv0aZJG0liSUcgUSCA3yp8NXXvQ
-         43vT+1f4hUmL9MP81FfxNHqbXlzDMTK/ISEfnwjl4nBTzDMVcLmG0We1qWYGirCLozOj
-         dVOEyaqXAFL1mtXVDn60k6FAKEYBY8csWInB5HUFjQW7lGLmzaKbVRPQ3+QGhAKO9EYE
-         Uli8hcGtmJD8EoY+UEBh5uSRFc7ew9N0TLYtMrs0wqAHImqe32jBlZi9Vkkkzf3R8zSN
-         c9eJf8zS2sipULic6olu3Oyyf/+QGtB2LZBZiwf6MAyakZcp25MDY5eWdkDguB5Hl8Rt
-         ypfA==
-X-Forwarded-Encrypted: i=1; AFNElJ+NCU296+SjcWTVrx3wdOGq2rxdnkbvSvUhe9BX4mlDXIIuaJJmdw70Tuv33vWu+U2x5ESiyIwcWg==@kvack.org
-X-Gm-Message-State: AOJu0Yw96SpZNVX09Qui4Va8GfLZi+vZ5l1h15FZp+oEdCawnNsvvlY3
-	9DYAWIId3KldFauOV8x53BJqfhGnUiB3I9qUSzLzeR+erFb6DRDDLF/aX+Ojcw6rGrs45uHsyer
-	rbAeozBBHWQ3bpZmzNH+/0VAXTOQXV1U=
-X-Gm-Gg: Acq92OFUVheahhnP1Aashn6QRnZ2s6/tDzZLLz9d4sPVnt1h5sVa2TdrmbEgsfVYtFP
-	YI16kJsUkYlsFFuJ4Yd8cj+9hCF7irMc14du0ixNJ3UXjcX8K6EMk89i4dVbNjxj5onduK+ox6W
-	5U3p0SGGnHuXKp1DvM75W2unZrXLZFrelJ3uKCOlTPVYBc8DxH2e0NWqYMEvQqDnD5xWqYipfb2
-	Hbb5Nu2lJcRJXH/ZxuyMJSVhKm1352652Qv09g7JwncHcU8QMeSFULORuuDGmx6M/IZCdEXoBNd
-	5dsbx+mlJFaCjuCCplOm3de8rb/5DypZ6yR2SA==
-X-Received: by 2002:a05:6820:807:b0:69d:96c5:4e58 with SMTP id
- 006d021491bc7-69eec9d95d0mr237614eaf.28.1781284884201; Fri, 12 Jun 2026
- 10:21:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <aiuQf99mqhQRVzC8@casper.infradead.org> <20260612050540.31594-1-devnexen@gmail.com>
- <20260612091215.b06dc7dc9dc894a5bfc75429@linux-foundation.org>
-In-Reply-To: <20260612091215.b06dc7dc9dc894a5bfc75429@linux-foundation.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Fri, 12 Jun 2026 18:21:12 +0100
-X-Gm-Features: AVVi8CdzrBSXAF-0fRMhg4lACOh1-xuasev-SC5mNLUK6YZa7PHbb2rQvAqixfo
-Message-ID: <CA+XhMqyv1mUSwKTkooCiX0UmEod9oWy8288db2ox+3mLrPapMw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: pgtable: protect lockless kernel page table walks
- with RCU
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, 
+        bh=KMGHII74ZTHreA8zFAF4aBq+kvKQYj6uXVGGtKbtko4=;
+        b=X+PyVo3dn2IIsG+4JKAOwoYAWzfiEUy/43fw+DzxoW9W12PQL0YtC/QsxSLkjovI8v
+         3CU8BK6xvmBCiMd2ar7GVyMWIUPGefaEjq2jFfi1CzpU2ONU9OqTGyKaGJZhKPGljUKu
+         S1YGIVVMDo0p4kIIrOCQOkfCPHYy6zfXs4F1F/XwS1AdYLxA8g0I1DSUisBSqopa8+V9
+         5LbzURZZEUIHbvV0GgHLJR1GGsgSub8MnaQ573i2BOV6QqKb1ygF6BUsjKaQjW0dKnQY
+         TlZetQYCv3Fe09iLrxGWL4okeyEK+RqUZbk6EVxcM5ifRJT4pBCUpj5iLiUa67RyRr5J
+         MYHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781285039; x=1781889839;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KMGHII74ZTHreA8zFAF4aBq+kvKQYj6uXVGGtKbtko4=;
+        b=kHL85j3gItmD83SuBPDWpxSBX4i8YTDtUjsxrwUlsymCLlLUzhlMHiDYJnOTIIC1yT
+         lGPccEh2CqB3RkoONOGRpSlZxEyxGvj6ms69fzo0UHWwRvbLFsT52lwlcGybRQb5pSF+
+         WSX3vc/PdRRrg+21l95qAkhOE6NRCLX1s3zsO7SMC8/akDicXeyoKsMeLvU26HWPNogx
+         MwQZaWLSsg0ZL1MyneyccwDAX1SKM/5ZjUXp0DyZaddl23v/GCQQ+TGp1apTSJps3Rj6
+         FUJX8e+z0De0fSMmbHJd/41vAOgCxH0DztgT4lRuOXn7gjeOLe7v3enRY1JJHpzCP+sV
+         9/og==
+X-Forwarded-Encrypted: i=1; AFNElJ/cbJaPrAiYXbZVHxJmYub8eCH2cpeongDpwtoPU9mnU1jlssCARmJ6QeNRleBhIlitrOmPpqVt4w==@kvack.org
+X-Gm-Message-State: AOJu0YwjjT2NOnAFylRE66xsGW/IzWTaMEGo96yFbmwKIlmpil212h63
+	4Nbnfv/MzYef4fe2DDtZn97VR/zF8kQnAd32SQs5tMYBaYP31pWrcY9W
+X-Gm-Gg: Acq92OFViwATOyq0VV14jFZHcM4jjlKirAcsJuz3tTko1Oy41bGfXU2FI5bZ6iPLiYK
+	U1atv0y0jxQXz5CIWe8m2jkCEJejRoPkosp+260PtehmbFJ9dV9OzXZzPHcaPZ3wkodsSpP3/rn
+	2OJVf9heGrUrzEu03hWa3Ws6gcTjT6Yy0OcwfXeVzcRTjhEqoFZh5KC3Kyhwh1gyb453u9RkQ4+
+	UBZwROJCy/JS2YWVTG5R2S+TFSDMEf3WMhhv5aBIBNBL2V34i5YbeOU3x0NfSO1NBY9j5GJIv9c
+	GKio4NAqDHrGQb6Yg8QieySv/bF/G3WywqInBT+nWSV3+aiNdwMAwfFmwdcbyQw/DQV2Ue5DfBN
+	yBMI59wRT+eLILRzXrROB+FLilMG+Bz42RsZIvu1/WvZFm19jnGGoaKNO8FWXoV1j4smsiiLu5z
+	VwGnmP2+MeAwunEhNG/noHcyEzQ9thxVth6zg19A1nGf0w/qxd+NRc9033n5xpBV5p4aDcXNj+C
+	lhwPQ3euss=
+X-Received: by 2002:a05:600d:15a:20b0:490:bbc4:76a6 with SMTP id 5b1f17b1804b1-490ec4fb51fmr38439775e9.21.1781285039252;
+        Fri, 12 Jun 2026 10:23:59 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2ce361sm7009190f8f.31.2026.06.12.10.23.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 10:23:58 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: akpm@linux-foundation.org
+Cc: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,
+	David Carlier <devnexen@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6DB44180003
-X-Stat-Signature: o7habatdj9mjsr3w9stbji8qtam3widh
+Subject: [PATCH v3] mm: pgtable: protect lockless kernel page table walks with RCU
+Date: Fri, 12 Jun 2026 18:23:55 +0100
+Message-ID: <20260612172356.356894-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260612091215.b06dc7dc9dc894a5bfc75429@linux-foundation.org>
+References: <20260612091215.b06dc7dc9dc894a5bfc75429@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2DA4F100002
+X-Stat-Signature: wxoffht4ihmu981cre4ii9anz3xwnrm4
 X-Rspam-User: 
-X-HE-Tag: 1781284886-964533
-X-HE-Meta: U2FsdGVkX1/2eDA8Y+vBZ+VO0rNo9GFa47+uMHibSLJpuy1ps8yBivRR+AnALaGs6oQleOewg3M3h3c7SC+GyX6TGgm3OdO2ge2I0Sy0KO9hYl8O2wAjVl4GwlyOC0b0k16QKzOXWBWjoxwBbQajx586ESTzlQxx9/XTWh/SVY+YYiaN/ctVw0ADQMNkT016uz0gKlEmYBqwUVBQzpbCFaF+E3bYe2F3wSyy+5wySLQF4fJHsU3VstKBTEgecZWHZm+KOFbj+7MSejq4COpsIhjLZnj0Mk3SW1UHKRZyTDxMS2PiUnjojtHTQQ8T+SittJAccc9AyIMjvvmULVYEJjeuFIKUlTReTrrrpOP8GaZcWx6jxeJEkk14jE0SEBr3+tmtNH3I3AVkNlan7hDcbWnUDB8qWS41TXK6x6e+FsYNyzf9+Zd6vji+GIzM4RfVwNKvFjySTubEikxBVXJtfQ1Mlv1NQL59fY42PbPvMs0IRMeos4tVA3BJfaJUn5lMz89R8U1ZvgO0pS8BYm8gHr3sRJuvZra/gZQOlIvf2ZnKf1bCGlEwqqNH7I0fISZnGjYVXcgSnMsN8U+6YB1HfGR2bWVdy1rpWxm8WANuftCEOdM0KHgFHCxq5h75E8LGq3fLkUFWSZlNxrlCFQH0rYIoBB6lyUZyHLWjgfSL2xTpWG5byjwsv96Ioh8+9Pnx8QgRNgrqCwmiCWLoPbOT06gSwfS5hQr0okt7y4qsP1J6OSboRHZlJuKTAPoSGE9sQRt43HTOfoBaTCsZwbBCKTRr3JEGhIqN+GgGa7/ag/OiTf/s+gFnECo2rfJx2eion+nzstCxtHcdS337KL5vkeF7tMT0jAYtexQseAviODfcxeWRHXaXCg5wzdUBbFme7yMYyqfmS8WHERWsNnf1R9AHmIU+prGJbPiERBrrfphg/jzLxe0Ced5y7MS82HK8FevsYH5ez5kycHC2vB5
- h+FVkPqz
- KT7pk8HKU8bd1N0cY6ZsNnoHLqCXoAjqDa7dQbIpnmDsk+5vqaW6bcxQ6oEjYP9dU73lNfX5hSfYctLw83V6rNDomvR50p1csVyx6JdnMGtKZyKsTdFQxTQxrxnQXlaNmqzyivuQcETUli5NkVWsjHt/NdO+hUzzCS+78tWyO4A0GATSPaUbw1aLPv9rukMC8R1UJV8Zzrmgu+RDZ0pRoqg4u4oa+FLwhrxnPpwwcoBgGyjzT+41tu9a6niybLl7DvgTDT5yICPGkMGJY7toXvg8q5OGiI8kt4AedD06nZu2wKqtmDME6o3E73CV9IftlXSY19D7AmFNpMfXptgbYZ8aXX8mnskzdCSS4kEqz+RwhaUKI2aBxbQNSkANFsUrV2X0eU1qVhF2ZcVFpRFMx4OF73rwAI2xxnoAEKHXq9J891HOAnE0yFJhucHJmtJu30+L8uFcpIY7rdHcPJlKcjmPMoc1dWkpQtmHsw/R1BqQqruiNHc30RQrebHwE5iwTZCdmlaj7IX79rFHWF5/Lfl3JMf/2iGFVEgmxE7dW0dwput0Vd+prPTj6fBrqIJaGF9ALAISOhgX8a4smtvM+BTrfpmzKQ/NYQNu+kmCGCGJk+4Mcss14jE/riZO17TqCdDALfdG85ebmAYiiPKzZf9qCr8NETjX93iAELeKyVVrYcXs=
+X-HE-Tag: 1781285040-866754
+X-HE-Meta: U2FsdGVkX1/rySLzDr1Xen0IbYx+465oNAWqXGOPN7Aq64cJ6nU93fcPU/Bm8M2c3iXkYto1nJkfDI3LGgG03PWV7qiUg1/xsZJ0ld98gfWV8Lc35LT8PVfs8qOinLCKnibbHLe25Gbg5Dw6bfKBPsU9G7V8PVQn4LAep8ac5ow9PGu0Kqe+tkU6ID1SSXU6FQMykLZ6//b3FLP3RGZqxlsRUKV7XSu3QleDZKG4qOcZpSmNQMDWMLDgfb/iYR9C/0zxuG5foTVYzcvFCtbbOUskkIHijxe5N22cRxVK1ATg/G6xyc5EVwNdy515Lw0iX3gFcWBiiYVbHzCpxuiFQdANLZdSH1fFj+Oq7qPKNoLZaHdAYwKsdzjJUO7tl2NxltyS6gr/meShxs00yCw4OcyasjPzrMD3xoeQw7qzu+6bLq1KdGvrn73nxyZa7eN2jsA1ONQ+2Puk8ZaxbOHBG+V0rtDYrkhyNcYjm33R+UdPnb9H/RVwh6KqT9xut34sVmvB9dS0tvrhoxj080yaEH3kLb+dLWe1oC4hFlmUZ4WdvSv31+nyblAkFi2h0kBe2l3jYkjo27Qd2Tz5dNETMwV4S2/9j9N9aBI30vt/vWDkMLu+3P+XFhFtlAF1ooMsAeiX9z4n4GMIzIYZkQZiIvNqnLNWSM9CHK36ytfDLTkHgMlxql1cUZRkgQUKHKHWx3yPaP8/gmMJ2/6PZAsvvtd79cAT/B8jFgG/lK0czyoTK2DwVPvaGApRKzcPqLoMp2MB8rXwlWzZEF+czB2fk8I2gF7/10MX/aNDQ+ftrHh4PwyieaGU8AUjxXPyoYOm/2AJYxECd9KbnpnVDHCSfrRBjxJRCx4OU132KzjuCKzUjtwQdMNWSlhHwPDYVoFl6LGTIbALpFLN49uBe0gDjahCiadwjrbyQ6mVA+jmMXEAnzXOAiN7flP+bTsdSEsi4DJYVgvk58vVt6HEmKa
+ X054p2Lt
+ wiyATEtKPQSZOXmPCT1buirKnQBq6RO2nFf14AoqgZ4a6i+WB0qAPtL6LNDCAev4fTR6qHIImI73Zn8U2g9uzN8ZD6ELaXYRKBxYRFXRTHU0K+yHCFRspDnrImb2uSWpXegsQN7+OZA6JKc1XlqSnyyPWlhEh7xO23GNPjxmcwBU3caRqgyF2V5UzY7JXzW9DBGHMq+obGN4Yj0IRki66JHUdCM22d+FUewWkixE81AqvG+skvJhnztHVsduItGY9CfyhnjeJ+EC8ilECPB8LRk1IgK25+RsAx0/wI75FoMK/LEzydGUp576FQsGcp3y/8KB9hbG+nHBRsDjOtVzEEE8Zmu1V/ncHlVA9eL5ZJ39vtRjBF8X2tHMeoyOIY4Z3fX7EPRCfH++HimMpL2ROISezubbddd4dhK+WQh8b82B+NzmYlXAQyieTeAXmvNF8F7qdrrsyafaDt3MRumUkfpa4MnJdYDGfMiO0MNc9gwogHn8axAgAI60McqvfKnOsRcwwbCUrXZj4vhKDJirwTmS1abWeNshdDBKKVX89kNEf3eU5LxKdoxTn+HuCpgsRrsUw4WHj/BzevRjZ1ezi5O+kSuXQZOWDKC/b7ZSyB3/1yCxEA9sF3qrySKDCjngosmyb+pD+8hmu+d/nrQi/nFPs4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,79 +130,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 at 17:12, Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Fri, 12 Jun 2026 06:05:40 +0100 David Carlier <devnexen@gmail.com> wrote:
->
-> > ptdump walks the kernel page tables locklessly through
-> > walk_kernel_page_table_range_lockless().  It only holds the init_mm
-> > mmap lock and the memory hotplug lock, and neither excludes
-> > vmalloc/ioremap teardown from freeing kernel PTE pages via
-> > pmd_free_pte_page() -> pagetable_free_kernel().  syzbot hit a
-> > use-after-free in ptdump_pte_entry() reading a PTE page that was freed
-> > underneath the walk.
-> >
-> > Deferring the kernel page table free only batches the TLB flush; it does
-> > not wait for lockless walkers.  Mirror the user page table walk, where
-> > pte_offset_map() already takes the RCU read lock: hold rcu_read_lock()
-> > across the lockless kernel walk and rcu-free the page tables in the
-> > kernel page table free worker, after the batched TLB flush.  A walker
-> > then either observes the cleared PMD and skips the page, or keeps it
-> > alive until it drops the RCU read lock.
-> >
-> > ...
-> >
-> > --- a/mm/pagewalk.c
-> > +++ b/mm/pagewalk.c
-> > @@ -655,13 +655,26 @@ int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end
-> >               .private        = private,
-> >               .no_vma         = true
-> >       };
-> > +     int err;
-> >
-> >       if (start >= end)
-> >               return -EINVAL;
-> >       if (!check_ops_safe(ops))
-> >               return -EINVAL;
-> >
-> > -     return walk_pgd_range(start, end, &walk);
-> > +     /*
-> > +      * Kernel intermediate page tables can be freed concurrently by
-> > +      * vmalloc/ioremap teardown (e.g. pmd_free_pte_page()), which routes
-> > +      * the freed pages through pagetable_free_kernel(). That path defers
-> > +      * the free past an RCU grace period, so hold the RCU read lock across
-> > +      * the lockless walk to prevent a page table from being freed while we
-> > +      * are still dereferencing it.
-> > +      */
-> > +     rcu_read_lock();
-> > +     err = walk_pgd_range(start, end, &walk);
-> > +     rcu_read_unlock();
-> > +
-> > +     return err;
-> >  }
->
-> Adding a lock to a function which is advertised to "walk the kernel
-> page tables locklessly" is a bit of a head-spinner.
->
-> Sashiko claims that some callback functions can perform sleeping
-> allocations:
->
->         https://sashiko.dev/#/patchset/20260612050540.31594-1-devnexen@gmail.com
->
->
+ptdump walks the kernel page tables locklessly through
+walk_kernel_page_table_range_lockless().  It only holds the init_mm
+mmap lock and the memory hotplug lock, and neither excludes
+vmalloc/ioremap teardown from freeing kernel PTE pages via
+pmd_free_pte_page() -> pagetable_free_kernel().  syzbot hit a
+use-after-free in ptdump_pte_entry() reading a PTE page that was freed
+underneath the walk.
 
-Sashiko's right, and it's the same issue you flagged about the name.
-arm64's range_split_to_ptes() also goes through
-walk_kernel_page_table_range_lockless() and
-  passes GFP_PGTABLE_KERNEL into split_pmd()/split_pud(), which can
-sleep, so rcu_read_lock() inside the lockless helper is wrong on both
-counts.
+Deferring the kernel page table free only batches the TLB flush; it does
+not wait for lockless walkers.  Mirror the user page table walk, where
+pte_offset_map() already takes the RCU read lock: hold rcu_read_lock()
+across the kernel walk in the init_mm branch of walk_page_range_debug()
+and rcu-free the page tables in the kernel page table free worker, after
+the batched TLB flush.  ptdump is the only walker that races with these
+frees and its callbacks do not sleep, so the lockless walker itself stays
+lockless for its other, exclusive-access callers (e.g. the arm64 page
+table split paths, which allocate with GFP_PGTABLE_KERNEL and may sleep).
+A walker then either observes the cleared PMD and skips the page, or
+keeps it alive until it drops the RCU read lock.
 
-  v3 leaves that helper lockless and takes rcu_read_lock() only in the
-init_mm branch of walk_page_range_debug(), whose sole caller is
-ptdump. Its callbacks don't
-  sleep. The arm64 splitters keep relying on their existing exclusive
-access guarantee, untouched.
+Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
+Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+v3: take rcu_read_lock() only in the init_mm branch of
+    walk_page_range_debug() instead of inside
+    walk_kernel_page_table_range_lockless().  The lockless helper is also
+    reached by the arm64 split paths, which allocate page tables with
+    GFP_PGTABLE_KERNEL and can sleep, so it must stay lockless (Andrew,
+    Sashiko).
+v2: rcu-free the page tables with call_rcu() instead of synchronize_rcu()
+    (Matthew Wilcox).
+---
+ mm/pagewalk.c        | 21 ++++++++++++++++++---
+ mm/pgtable-generic.c | 16 +++++++++++++++-
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
-Cheers.
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index 3ae2586ff45b..dbb443c72353 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -692,9 +692,24 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+ 	};
+ 
+ 	/* For convenience, we allow traversal of kernel mappings. */
+-	if (mm == &init_mm)
+-		return walk_kernel_page_table_range(start, end, ops,
+-						    pgd, private);
++	if (mm == &init_mm) {
++		int err;
++
++		/*
++		 * Kernel intermediate page tables can be freed concurrently by
++		 * vmalloc/ioremap teardown (e.g. pmd_free_pte_page()), which
++		 * routes the freed pages through pagetable_free_kernel(). That
++		 * path defers the free past an RCU grace period, so hold the RCU
++		 * read lock across the walk to prevent a page table from being
++		 * freed while we are still dereferencing it. ptdump is the only
++		 * caller here and its callbacks do not sleep, so this is safe.
++		 */
++		rcu_read_lock();
++		err = walk_kernel_page_table_range(start, end, ops, pgd, private);
++		rcu_read_unlock();
++		return err;
++	}
++
+ 	if (start >= end || !walk.mm)
+ 		return -EINVAL;
+ 	if (!check_ops_safe(ops))
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index b91b1a98029c..5b53e9a5b7f8 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -424,6 +424,13 @@ static struct {
+ 	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, kernel_pgtable_work_func),
+ };
+ 
++static void kernel_pgtable_free_rcu(struct rcu_head *head)
++{
++	struct ptdesc *pt = container_of(head, struct ptdesc, pt_rcu_head);
++
++	__pagetable_free(pt);
++}
++
+ static void kernel_pgtable_work_func(struct work_struct *work)
+ {
+ 	struct ptdesc *pt, *next;
+@@ -434,8 +441,15 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+ 	spin_unlock(&kernel_pgtable_work.lock);
+ 
+ 	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
++
++	/*
++	 * Lockless kernel page table walkers (ptdump, and any other user of
++	 * walk_kernel_page_table_range_lockless()) dereference these pages
++	 * under rcu_read_lock(). Free them after a grace period so a walker
++	 * cannot still be reading a page we release.
++	 */
+ 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
+-		__pagetable_free(pt);
++		call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
+ }
+ 
+ void pagetable_free_kernel(struct ptdesc *pt)
+-- 
+2.53.0
+
 
