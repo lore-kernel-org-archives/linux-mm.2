@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 641EDCD98D6
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF12FCD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ABB86B0095; Fri, 12 Jun 2026 12:21:06 -0400 (EDT)
+	id 9315B6B0096; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75B3B6B0096; Fri, 12 Jun 2026 12:21:06 -0400 (EDT)
+	id 9089D6B0098; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698B36B0098; Fri, 12 Jun 2026 12:21:06 -0400 (EDT)
+	id 7A9DF6B0099; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D1B06B0095
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AD601C1905
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:06 +0000 (UTC)
-X-FDA: 84871774932.14.ECD909E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D8F86B0096
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09A03401A8
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:08 +0000 (UTC)
+X-FDA: 84871775016.22.63A19F8
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4F68A160002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=qq8NYvRO;
-	spf=pass (imf08.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5580B2000D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=TfMOnipb;
+	spf=pass (imf03.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781281264;
+	s=arc-20220608; t=1781281266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+tud+PRK04GneOoQ8FSSWs0Xo0QqAjl9WMBoushYkQE=;
-	b=JyKify9PJRsCazRrUUuwP2/xJ/usx/pEnodwz0YT691TijEgu2DD4CaHLKld7w/Q5u71R0
-	IYhSoCakROz/j9nWSCz3LP3Zd4iCuucNXNB/AxAYMMdSQl+fccOYFcuFWV22Xrh26YflWE
-	tKvPDSfdUaYWrOSft2yryhY3G5OlEbw=
+	bh=VSSjA1e2ihuYKKvGbBvJZXau5qhO8MXM5c+dt4k1Oiw=;
+	b=0gNFEHlUytA9VXm6SfG52XwLUYyjBKAzFm3QjRzpGSb0VRQa9j2fGl3XOR8AUnFISUTb3h
+	zdurK3OXa/Xhui78Njih5ok+T6Wx/UAYR1zhea877CS8uHQDxEEqnWjnxjlMxOe4qQUzb+
+	1P6uCvHemRPjUrZgTMz77Ar3fnDBxBk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=qq8NYvRO;
-	spf=pass (imf08.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=TfMOnipb;
+	spf=pass (imf03.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
 	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781281264;
-	b=6y4ru+K6Hfn/NBBJwP9NDaWHveVKVRmMj6K0M4HMeSzZyQAuv8c4Cnn+wSbizlf9hJI/sh
-	Y0yWyor0shcAcympVkLNe36SG+/bFoYG+3d6DspRIzgLXgw4vtGIOlUjht/whhn+ea1AyP
-	LHfro4XEnOoqRIza5u2KgWioEPT/43c=
+	t=1781281266;
+	b=w3hT0MmCEe/E48cSoxsd1vDIbGrtjKh1EmTQkcw95dOsQQA3XPqDX7P1sN0iYMg+c008Lj
+	+YjfLhzc17ATow06qxRnsD0igurtcBa1Wlibk939zthUVllkSzQxFxjd9ef6YEYq+ge0yT
+	846lB4jurpwwQpt6tWBGl2wr+/Sq+DM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+tud+PRK04GneOoQ8FSSWs0Xo0QqAjl9WMBoushYkQE=; b=qq8NYvROO7AcA6z7MsoF9bk28T
-	SzaYz2ga/qaCqD+ZYC4ivsgGOeL/o+pcY4Ik46Ux4KUGs1GjkRlTMk6guZGMtH1kQWqcAh/zP5WdM
-	egmxvOF9/CXAaPcIn8SdMqRKfMMlLoGoiPp02YW43Yu79SXGuLc8iq8cNGh0IiRhOHVZtZoJYqoKz
-	EPW2GT5Qvgb/pSaI6WqBUh4L3jzkXbkYwifNXY0lM5vra4IvGlKz/dizZJ+t2xJfQY2Kdhsx2jUvQ
-	clJiXrvLZqqJ+gik1ctKhLP5tblFd7eXbgALMPE3YQ+rM89bFfFzcYXzTxAb1Pi2zYnlLm+fmoiw5
-	ZvMnA7BQ==;
+	bh=VSSjA1e2ihuYKKvGbBvJZXau5qhO8MXM5c+dt4k1Oiw=; b=TfMOnipbCra0jF35oiuYAIqHpy
+	p3uA4YddgEQ5DegPf9CIbAKUYUM5EhCsX6+0EhUHola45xVsdavV+j/SbuzzfRYVBIczV42RpVMMl
+	b8Ifa2UbayeeGCtqbCB0Xq1V5bvF2XMz6HP7+RssAb0diXIyluYS54UspI3bIXqKUKRz5e/fM1DBl
+	5MQB+pJqjbGUUYYlHcKQPPJQnMIkD5SpbK/FcA+QaD7JagxMMD3AB2V78cmKWC3WqvI+X+Wmn2j4C
+	JmEsWq1EFIU3cw4BBERtTjd1+kNT+Ji5h0pYC4ncTizHYR041zOjXwfyn/Dg8cuRLhSVbMz/Akk/K
+	92cT2O9Q==;
 Received: from [189.78.222.70] (helo=[192.168.15.100])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wY4ck-00GgP4-VZ; Fri, 12 Jun 2026 18:20:51 +0200
+	id 1wY4cq-00GgP4-OX; Fri, 12 Jun 2026 18:20:56 +0200
 From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 12 Jun 2026 13:20:16 -0300
-Subject: [PATCH v3 3/7] treewide: Replace memcpy(..., current->comm) with
- copy_task_comm()
+Date: Fri, 12 Jun 2026 13:20:17 -0300
+Subject: [PATCH v3 4/7] lib/string_kunit: Add test for copy_task_comm()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260612-tonyk-long_name-v3-3-7989b66e8a99@igalia.com>
+Message-Id: <20260612-tonyk-long_name-v3-4-7989b66e8a99@igalia.com>
 References: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
 In-Reply-To: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
 To: Peter Zijlstra <peterz@infradead.org>, 
@@ -89,14 +88,14 @@ Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
  linux-api@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4F68A160002
-X-Stat-Signature: a7j7jsprgjm47dg5g1a46mrwgtqx9ty1
+X-Rspamd-Queue-Id: 5580B2000D
+X-Stat-Signature: 7o84fd4cgxur5fun7fs1knnj53bgw9kz
 X-Rspam-User: 
-X-HE-Tag: 1781281264-736209
-X-HE-Meta: U2FsdGVkX1/S1D/lPJYfZrj9LixiJ/nW1XQCv0OoQ9Slpk1xLql/aGFwNIjeAJTQdFqjo7r/GtMOsk0r28BY4Vob2+R9ou+BJG18GYVLCsLvLgAYSjJVOw0XkxrOEyBETw3S8MQzXUffLPnQZTRivHKoV0MuXbjPsG1suc7RrRe8K2DgBkRP/I+r4QeIEcXcnGnPzVRtb2vQrS0x1FZnlHsX7Lmwva/BlQ04CUfsU5vvbpvd1KB0u0oTVV+n31YDrEjkHYKngjQFSNPNqZCKxLTR6XOdPNNTs57bbIPEdQsdQDq93vZHuByV/B4kVVLxIAOVS3usUrpmzZBtv8ZbsyEBk0v62zQb4dsoTlEnwASJCF7aJdP6WKluGtYhKCYgbFpaTB5r/yrGaBRNCWnDosZgqg+te8h6jYw5ETGNFneUeQG7tww57EPHypSQ3c+2GtTPhcL0V26bygh30DtlbGLjaolkN0SjUDxeO5qVbTKSiyrpf8Gd9ARLSAjO33tc9AdPDOakU5Pqh9BzNXX0zAVyVEbRi42JfX3NmpFKgMUL99GSaFlRRN5qvFRcSLSL1XJp05kEdEXCb8QEUw2qr6cQC0Dr/I9DeOw8HKfUXMaHeV+UVLfnoxU6X2Ea2KbY5An7+mSgRoBzpW9f/dzUmiwpAdpT1O4LflDTsGYzIw/f4VKzBUufTjvDQ1Fd8EJltx3FYD2NJ97oUx3/5BHhNjLFkBTKXphhOGpg4eqF3igFEXxVzzgECQxzfPvYj46JWne4BLCj37J99Bvqi5PH3W5iS8JGN1Cda6jRbq+032jX5qcOPU6S880su61w5FLo1YhiXDK9jrDMPIrekCF9UHHA3BToI5sgyKjAduh16EgT/kHKkj7s+jDg4PVtg8AE3Cz6oJuFMEH1vDcIpLU+sIy9DL4viEdeS03VLCInwMsGTjkCDmz/cM+duf80ZNst5FdhxO34pGQ0GWIJQ8h
- 3S5ysSQM
- inLLvgLzQqKlv/4jSaZ1dIiCYZjrIvC3wyco8D2MF/ss4laUlEXi5+tRBqKLp0IxF+I2wyw/1aGn5uVwzEqUx2DWJw4xGOFvKJcemrxhNRi/qg5hFQWQU/v9FxQeijxKGFP1JTHQw8xroxsYwAXbZTrcxIgk+i9LFkVlU4cpX5TSD+TxDSkc3tJu7y0OAZ4M0RqynzjvbBZ+TZ999WvahWXI4Z6wFQjEeLUMGBre8zI33hjHf0iK0s229WpDmifCaf2+CyGhtuH+rKIHiVdfH5v5LCCIW6ocTvAp9wEoq1CaIA7+2NwbLiVZBGa+V/EQfXZ2ZNIrDC2PMVHEf70nR9bM2VxZ5fVCPssaLwPNa2b/pf6Cdg252k5O1b/AjOUijHSKAqF2bJPOQZqmq9hYi7QC26w3hYFPJ4TH9fQUfOfsyEyfQ1hekI2Vc+EfSFxYn5UU3rQPhQl85yW8=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781281266-482865
+X-HE-Meta: U2FsdGVkX1/2WzSjDI5kk4pBUjiNlOddy85prEftEqIkgr4IXjZJ37H3s4UwEgevWDIcTN5MoqJ2Lz+gNW7QKTVRLBaB7qal1rUSX3YO0IIT70KCNwLpOW5qXANKrwGnLI9a80DSbNUYalPuq7VerC8gmY5xN3C4vlfc9JSbVB4mdJT4QFy1Fh09dAKYWd7yZKf1D8/ztOJgHTkyHT1kwZP6pBnRM7cw1F6rmANmTanYIzTUPEvGC9a3m7I5szzhWtOmYgbVRhKlFqpKGU1rHbO8TvRT5JPn9fo1T6PE/IeEWdGoBMP12WyfThm1z3Lkb/1E4GVlhaaA4GDFdNnXb2CT30VIIXJwEua527unFgL7sxW9Lecr5Dy5oa4PtWHOvKCOY3kYTPaIs3NEKWGloNUpPIS1Wz57LU0fhKG0S6owtg1V1/ExOY9wLBt8wiMCr7/HoedNw/WpqHgFUNs7clhJ6qz6yLlaKN4ku3kOh4fYNxHCZKdgD39KYERm5hZVR48ECslABhk6V/Bu0rsXAqoq6Rk0gAJIIw5ax/3dpJFHa9GuSCtp+SQejkMf0uSyNNq90HqeaRs2KdDWgAYb5M790BZ/tXQR6HD8chb5W9XJXhsqcT8sy6gVXsAiSYokN5fhlh7OC7DpktekOaINWSSIjErw2p/qQNz74RE61PcwW9ZStLLmtBe9XIE27W487ScS9M9rZGJNUNcmllVsE46EfbLBC6mS95ov+XjsXREWrgSVT5NGhzXzdActjR7dYtC7HZPdso+fHumoQO/VGuRe8QA2SUWpjSbvMNPbh3LoOnKMzGwihuHzxWplNqHzSMjOiVU0VNwzHc3zB/fPF91vwLK4Kws6+bws8yRzoYC8Rqwb2QFNVmd0hs29aj5HscndW4rZ1WqdMtWkwcQZqFbdhk5GgSwDvbqL9rgSqENdflVXECV4gm1bLpWJbu02ZPr1MhNzwCeSQAvfpoI
+ 8zn+UCOu
+ ODSCvw7o00a0E6ofhvgYW3A3nu6Dagl2OwSEXAtUz8X4HjXFK02IyRmHJ78qK7mfH8uarV/5s7AYYHP0Ke2E/60EggrQ80LJxI7li3P3JoLAeeSwbtztYKtxwn0k1WmHAUYa925MlIyhkzcBynEoc7Tc/n4imPR4R9FZv7jUiuGpQprgTEx5WE3pY6TPc5f2j7AqpI+VxGaNW3Jw617VlbZ1Iv1esH3v+pHo94kzcKDxR0KgYBxyIExX07/bEWKMBCRBmwN9J9A6lIh8P/njsjlxONK3PEWQEnTPmDjDvB9S/JAzKmiFMJO+8XUeS1fwIPrFUlyz7rpP5j5zKwHeCbg0kAc1HfL5RolboRZLF5rebT6vv3oku92SmIU23ztHg4g13zFzT7NAcQ67355hcChcGcMr7NJvTCzaRXj2HV3yOBcZPk8Y0cVSN5+jE1Q+f2Y73qTobONBsow4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,312 +103,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to increase the size of current->comm[] and to avoid breaking any
-existing code, replace memcpy() with copy_task_comm(). This new function
-makes sure that the copy is NUL terminated. This is crucial given that the
-source buffer might be larger than the destination buffer and could
-truncate the NUL character out of it.
+Add a new test for copy_task_comm(). Check if a copy from a task_struct
+works, and special cases when the size of source and destination buffer
+mismatches.
 
 Signed-off-by: André Almeida <andrealmeid@igalia.com>
 ---
-Changes from v3:
- - Bring back custom function.
+ lib/tests/string_kunit.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-Changes from v2:
- - New patch, dropped strtostr() from last version
----
- include/linux/coredump.h        |  2 +-
- include/linux/sched.h           | 17 +++++++++++++++++
- include/linux/tracepoint.h      |  4 ++--
- include/trace/events/block.h    | 10 +++++-----
- include/trace/events/coredump.h |  2 +-
- include/trace/events/f2fs.h     |  4 ++--
- include/trace/events/oom.h      |  2 +-
- include/trace/events/osnoise.h  |  2 +-
- include/trace/events/sched.h    | 10 +++++-----
- include/trace/events/signal.h   |  2 +-
- include/trace/events/task.h     |  7 ++++---
- kernel/printk/nbcon.c           |  2 +-
- kernel/printk/printk.c          |  2 +-
- 13 files changed, 42 insertions(+), 24 deletions(-)
-
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index 68861da4cf7c..461254cd9ccc 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -54,7 +54,7 @@ extern void vfs_coredump(const kernel_siginfo_t *siginfo);
- 	do {	\
- 		char comm[TASK_COMM_LEN];	\
- 		/* This will always be NUL terminated. */ \
--		memcpy(comm, current->comm, sizeof(comm)); \
-+		copy_task_comm(comm, current, sizeof(comm)); \
- 		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
- 			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
- 	} while (0)	\
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index b6de742b1155..6b9408128fef 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2000,6 +2000,23 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
- 	__set_task_comm(tsk, from, false);		\
- })
+diff --git a/lib/tests/string_kunit.c b/lib/tests/string_kunit.c
+index 0819ace5b027..b64d7f0e54a3 100644
+--- a/lib/tests/string_kunit.c
++++ b/lib/tests/string_kunit.c
+@@ -881,6 +881,43 @@ static void string_bench_strrchr(struct kunit *test)
+ 	STRING_BENCH_BUF(test, buf, len, strrchr, buf, '\0');
+ }
  
-+/*
-+ * Copy task name to a buffer. Final result is always a NUL-terminated string.
-+ */
-+#define copy_task_comm(dst, tsk, len)						\
-+{										\
-+	const char *_src = (tsk)->comm;						\
-+	size_t _dst_len = len + __must_be_array(dst), _src_len = sizeof(_src);	\
-+	char *_dst = dst;							\
-+										\
-+	if (_dst_len <= _src_len) {						\
-+		memcpy(_dst, _src, _dst_len);					\
-+		dst[_dst_len - 1] = '\0';					\
-+	} else {								\
-+		strscpy_pad(_dst, _src, _dst_len);				\
-+	}									\
++#define TASK_NAME "task_name"
++#define TASK_NAME_LEN 9
++#define TASK_MAX_LEN TASK_COMM_LEN
++#define SMALLER_LEN TASK_NAME_LEN - 3
++#define BIGGER_LEN TASK_MAX_LEN + 3
++
++static void string_copy_task_comm(struct kunit *test)
++{
++	char str[TASK_MAX_LEN] = TASK_NAME, copy[TASK_MAX_LEN],
++	     smaller_buf[SMALLER_LEN], bigger_buf[BIGGER_LEN];
++	static struct task_struct task, *tsk = &task;
++	int len1, len2, i;
++
++	/* set and get task name */
++	set_task_comm(tsk, str);
++	copy_task_comm(copy, tsk, TASK_COMM_LEN);
++
++	len1 = strlen(str);
++	len2 = strlen(copy);
++
++	KUNIT_ASSERT_EQ(test, len1, len2);
++	KUNIT_ASSERT_EQ(test, len2, TASK_NAME_LEN);
++	KUNIT_ASSERT_EQ(test, copy[len2], '\0');
++	KUNIT_ASSERT_TRUE(test, !strcmp(str, copy));
++
++	/* copy to a smaller dst buffer */
++	copy_task_comm(smaller_buf, tsk, sizeof(smaller_buf));
++	KUNIT_ASSERT_TRUE(test, !strncmp(str, smaller_buf, SMALLER_LEN - 1));
++	KUNIT_ASSERT_EQ(test, smaller_buf[SMALLER_LEN - 1], '\0');
++
++	/* copy to a bigger dst buffer */
++	copy_task_comm(bigger_buf, tsk, sizeof(bigger_buf));
++	KUNIT_ASSERT_TRUE(test, !strncmp(str, bigger_buf, TASK_NAME_LEN));
++	for (i = TASK_NAME_LEN; i < BIGGER_LEN; i++)
++		KUNIT_ASSERT_EQ(test, bigger_buf[i], '\0');
 +}
 +
- static __always_inline void scheduler_ipi(void)
- {
- 	/*
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 763eea4d80d8..4bdb34f628a2 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -615,10 +615,10 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  *	*
-  *
-  *	TP_fast_assign(
-- *		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+ *		copy_task_comm(__entry->next_comm, next, TASK_COMM_LEN);
-  *		__entry->prev_pid	= prev->pid;
-  *		__entry->prev_prio	= prev->prio;
-- *		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+ *		copy_task_comm(__entry->prev_comm, prev, TASK_COMM_LEN);
-  *		__entry->next_pid	= next->pid;
-  *		__entry->next_prio	= next->prio;
-  *	),
-diff --git a/include/trace/events/block.h b/include/trace/events/block.h
-index 6aa79e2d799c..70d552b9347e 100644
---- a/include/trace/events/block.h
-+++ b/include/trace/events/block.h
-@@ -213,7 +213,7 @@ DECLARE_EVENT_CLASS(block_rq,
+ static struct kunit_case string_test_cases[] = {
+ 	KUNIT_CASE(string_test_memset16),
+ 	KUNIT_CASE(string_test_memset32),
+@@ -910,6 +947,7 @@ static struct kunit_case string_test_cases[] = {
+ 	KUNIT_CASE(string_bench_strnlen),
+ 	KUNIT_CASE(string_bench_strchr),
+ 	KUNIT_CASE(string_bench_strrchr),
++	KUNIT_CASE(string_copy_task_comm),
+ 	{}
+ };
  
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %u (%s) %llu + %u %s,%u,%u [%s]",
-@@ -351,7 +351,7 @@ DECLARE_EVENT_CLASS(block_bio,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->nr_sector	= bio_sectors(bio);
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %llu + %u [%s]",
-@@ -434,7 +434,7 @@ TRACE_EVENT(block_plug,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("[%s]", __entry->comm)
-@@ -453,7 +453,7 @@ DECLARE_EVENT_CLASS(block_unplug,
- 
- 	TP_fast_assign(
- 		__entry->nr_rq = depth;
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("[%s] %d", __entry->comm, __entry->nr_rq)
-@@ -504,7 +504,7 @@ TRACE_EVENT(block_split,
- 		__entry->sector		= bio->bi_iter.bi_sector;
- 		__entry->new_sector	= new_sector;
- 		blk_fill_rwbs(__entry->rwbs, bio->bi_opf);
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("%d,%d %s %llu / %llu [%s]",
-diff --git a/include/trace/events/coredump.h b/include/trace/events/coredump.h
-index c7b9c53fc498..fdd20bc46bb0 100644
---- a/include/trace/events/coredump.h
-+++ b/include/trace/events/coredump.h
-@@ -32,7 +32,7 @@ TRACE_EVENT(coredump,
- 
- 	TP_fast_assign(
- 		__entry->sig = sig;
--		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, current, TASK_COMM_LEN);
- 	),
- 
- 	TP_printk("sig=%d comm=%s",
-diff --git a/include/trace/events/f2fs.h b/include/trace/events/f2fs.h
-index b5188d2671d7..b02f6ccb6c3d 100644
---- a/include/trace/events/f2fs.h
-+++ b/include/trace/events/f2fs.h
-@@ -2505,7 +2505,7 @@ TRACE_EVENT(f2fs_lock_elapsed_time,
- 
- 	TP_fast_assign(
- 		__entry->dev		= sbi->sb->s_dev;
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio;
- 		__entry->ioprio_class	= IOPRIO_PRIO_CLASS(ioprio);
-@@ -2558,7 +2558,7 @@ DECLARE_EVENT_CLASS(f2fs_priority_update,
- 
- 	TP_fast_assign(
- 		__entry->dev		= sbi->sb->s_dev;
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->lock_name	= lock_name;
- 		__entry->is_write	= is_write;
-diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
-index 9f0a5d1482c4..8bcdc4ffc8d3 100644
---- a/include/trace/events/oom.h
-+++ b/include/trace/events/oom.h
-@@ -23,7 +23,7 @@ TRACE_EVENT(oom_score_adj_update,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
-diff --git a/include/trace/events/osnoise.h b/include/trace/events/osnoise.h
-index 3f4273623801..2cf047bb9fb7 100644
---- a/include/trace/events/osnoise.h
-+++ b/include/trace/events/osnoise.h
-@@ -116,7 +116,7 @@ TRACE_EVENT(thread_noise,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, t, TASK_COMM_LEN);
- 		__entry->pid = t->pid;
- 		__entry->start = start;
- 		__entry->duration = duration;
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 535860581f15..afb24e9dac91 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -152,7 +152,7 @@ DECLARE_EVENT_CLASS(sched_wakeup_template,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->target_cpu	= task_cpu(p);
-@@ -237,11 +237,11 @@ TRACE_EVENT(sched_switch,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->prev_comm, prev->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->prev_comm, prev, TASK_COMM_LEN);
- 		__entry->prev_pid	= prev->pid;
- 		__entry->prev_prio	= prev->prio;
- 		__entry->prev_state	= __trace_sched_switch_state(preempt, prev_state, prev);
--		memcpy(__entry->next_comm, next->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->next_comm, next, TASK_COMM_LEN);
- 		__entry->next_pid	= next->pid;
- 		__entry->next_prio	= next->prio;
- 		/* XXX SCHED_DEADLINE */
-@@ -346,7 +346,7 @@ TRACE_EVENT(sched_process_exit,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, p, TASK_COMM_LEN);
- 		__entry->pid		= p->pid;
- 		__entry->prio		= p->prio; /* XXX SCHED_DEADLINE */
- 		__entry->group_dead	= group_dead;
-@@ -787,7 +787,7 @@ TRACE_EVENT(sched_skip_cpuset_numa,
- 	),
- 
- 	TP_fast_assign(
--		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, tsk, TASK_COMM_LEN);
- 		__entry->pid		 = task_pid_nr(tsk);
- 		__entry->tgid		 = task_tgid_nr(tsk);
- 		__entry->ngid		 = task_numa_group_id(tsk);
-diff --git a/include/trace/events/signal.h b/include/trace/events/signal.h
-index 1db7e4b07c01..8fffe6d9bdcc 100644
---- a/include/trace/events/signal.h
-+++ b/include/trace/events/signal.h
-@@ -67,7 +67,7 @@ TRACE_EVENT(signal_generate,
- 	TP_fast_assign(
- 		__entry->sig	= sig;
- 		TP_STORE_SIGINFO(__entry, info);
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->pid	= task->pid;
- 		__entry->group	= group;
- 		__entry->result	= result;
-diff --git a/include/trace/events/task.h b/include/trace/events/task.h
-index b9a129eb54d9..62b7df4d22d0 100644
---- a/include/trace/events/task.h
-+++ b/include/trace/events/task.h
-@@ -21,7 +21,7 @@ TRACE_EVENT(task_newtask,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(__entry->comm, task->comm, TASK_COMM_LEN);
-+		copy_task_comm(__entry->comm, task, TASK_COMM_LEN);
- 		__entry->clone_flags = clone_flags;
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
-@@ -46,8 +46,9 @@ TRACE_EVENT(task_rename,
- 
- 	TP_fast_assign(
- 		__entry->pid = task->pid;
--		memcpy(entry->oldcomm, task->comm, TASK_COMM_LEN);
--		strscpy(entry->newcomm, comm, TASK_COMM_LEN);
-+		copy_task_comm(entry->oldcomm, task, TASK_COMM_LEN);
-+		memcpy(entry->newcomm, comm, TASK_COMM_LEN);
-+		entry->newcomm[TASK_COMM_LEN - 1] = '\0';
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
-diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index d7044a7a214b..6286286ac2bb 100644
---- a/kernel/printk/nbcon.c
-+++ b/kernel/printk/nbcon.c
-@@ -952,7 +952,7 @@ static void wctxt_load_execution_ctx(struct nbcon_write_context *wctxt,
- {
- 	wctxt->cpu = pmsg->cpu;
- 	wctxt->pid = pmsg->pid;
--	memcpy(wctxt->comm, pmsg->comm, sizeof(wctxt->comm));
-+	copy_task_comm(wctxt->comm, pmsg, sizeof(wctxt->comm));
- 	static_assert(sizeof(wctxt->comm) == sizeof(pmsg->comm));
- }
- #else
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 1f04e753ca02..58d58d024cc2 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2255,7 +2255,7 @@ static void pmsg_load_execution_ctx(struct printk_message *pmsg,
- {
- 	pmsg->cpu = printk_info_get_cpu(info);
- 	pmsg->pid = printk_info_get_pid(info);
--	memcpy(pmsg->comm, info->comm, sizeof(pmsg->comm));
-+	copy_task_comm(pmsg->comm, info, sizeof(pmsg->comm));
- 	static_assert(sizeof(pmsg->comm) == sizeof(info->comm));
- }
- #else
 
 -- 
 2.54.0
