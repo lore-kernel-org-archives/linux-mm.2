@@ -4,120 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61AE7CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:33:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F280CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7966B0093; Fri, 12 Jun 2026 03:33:26 -0400 (EDT)
+	id 708D56B008C; Fri, 12 Jun 2026 03:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98606B0095; Fri, 12 Jun 2026 03:33:26 -0400 (EDT)
+	id 6B92E6B0092; Fri, 12 Jun 2026 03:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A87AF6B0096; Fri, 12 Jun 2026 03:33:26 -0400 (EDT)
+	id 5A8606B0096; Fri, 12 Jun 2026 03:35:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A4AB6B0093
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:33:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C9D51C32B1
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:33:26 +0000 (UTC)
-X-FDA: 84870445212.10.57D17E3
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 491D5160015
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:33:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fCDtjwew;
-	spf=pass (imf08.hostedemail.com: domain of glider@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0D36B008C
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:35:20 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EBE721C2DF3
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:35:19 +0000 (UTC)
+X-FDA: 84870449958.27.4455795
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id ED98514000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:35:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ESlshKT7;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781249604;
+	s=arc-20220608; t=1781249718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=37yHv6yFdGH61lIGAgzgwqwgl+igTLCwlH4B//p5pEE=;
-	b=DgZCHCPg3riS4pztFVMiVW+C7aFFWk7rmBKyGbti0RDKTTHRBhxIRijx90nXqDPgKlkRA5
-	FBcyK4Jdga3yAV9/47AbAQ3ZMhYk2fLP0JAQ0McKCnLhTthO1sMlNCYEKL46Tq1KSXHXiH
-	xt8SVkY9cq2P2wOvsFTT+Gt5HMLFPf8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781249604;
-	b=CedYOdom4+9hXXIN8qfwH5lu8WlFaYTF2Y+KTmLGwGjp6braBIv0cHZESH2uvQS7+t3RnV
-	dBXq8gZKwJq+YG1PPPfCCZ1uaiaHnKFWU+QvPIqsYjUt5aDfsKgZLrZ7tF+PCh9pUhSFsi
-	70LBxHGQ/JD0TGQvCL1bdbbf3agF3bY=
+	bh=g1vLF6yuNSQgtVfJ+k2uIVqLmlvQ2f0shING6YSG4gg=;
+	b=cy/B8mqcNJAcEq9/0cBgDRbiBB5in6WEQwz1QSxbV7ziQtbKAJZUr8QSdOMsttlRiNraNy
+	VzknqWWVuLNSisgUXwho0BCzGOJSV5gqQSF72xO5s9x2Hymtsikl858chWA1gbuXFJIjsa
+	1v+CK6b8VUzF3ucTMHvjFlCtE+O3lV8=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fCDtjwew;
-	spf=pass (imf08.hostedemail.com: domain of glider@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7de68222e96so5154627b3.2
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:33:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781249603; cv=none;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ESlshKT7;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.128.171 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781249718;
+	b=f+SB4Mac7RRlR2/cTuYCOOfIl/c/S072oDe/hjoTUxWY+UIRHbP1vsU9eAI5XthWi9WzeZ
+	rfii7EQlmBNqD3neI8CCIOPd5KsirywhdYQ3Fnr6YHLzzAWOQc9I/JMPApky948WM9hT0y
+	uPO4tZr4cxuVO5y3ncNGeBuHs/V/DQA=
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7dc93d02916so6430987b3.3
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:35:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781249717; cv=none;
         d=google.com; s=arc-20240605;
-        b=V15BrW92Yp0a8bSOImJ36aNayBPcHdBP8rnXK+f0N3w1eytFEg9QA3BfPZjULwaZfz
-         T450jPw5yP6wvblikE2egKIKin6JQGQ3t/PX83FxC6gy4NUGl0AIciKFdyQp6KoQzzJv
-         5MoDUERzHWF1uYGM+OeqojEg4Jqw4ZJH5dSIy5pKrEizdg6QZE7nnkCsgRPFgpLNLKrI
-         el96a4cfXAqqxu/1wCrAaZxgkzG7mTdm7DnE7dQYQUmcP+XWBq1Ml+90+3weJSjHf0PT
-         Il1yAxKRpokqQcokbZ5x5PqAAPOTisv0jvAKcQExFUzJtxiNnwfUN4ab4BEqBulllgkf
-         CfCQ==
+        b=V2O0cmh/Lkw9tc8k9J/XCekfo74hVXnxQnCTZwPTwcANvjNco72ERgR7gCtACPnYqX
+         JFMkp5hwo2AdFYVuAFcWea4U2rZ/gOYrX8oHOPniVj38nqWfUI9k/cfHzb/isVCws3Um
+         RKOEZfKcLCVjdbIbRY8i2ZLdP8j1ngJgM5feDVAPm5hT2wN9qb/hS2+WIdtVgx2/ahKC
+         0TQjvMYk4cg55f3zgdHVRL8wVP0SlbcxTQHHFQK62xN0P4a6QGOh7WvQEgXv2V3qKNDp
+         JVUxNPMAm8autSuE0/vGXOx62Io7pewFvWBiam3vEEBd3K73+hRsGCfRpPU7wDeVHFuR
+         InTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=37yHv6yFdGH61lIGAgzgwqwgl+igTLCwlH4B//p5pEE=;
-        fh=9WKfJOCawOGypUxuNMgZoZUhv4BCdIcALzchRIiaugI=;
-        b=le60wojXmhTGym9aM5/vbgkkYCDE2t1EMfzBQi0M8ZsYbpfChbACbdhPAdntH9d024
-         JwvSxrllkhIDfpX//OYaRHWYs5e76JWldp1OER382NYPEI4T2S3l9HQmaXI5QhgUpoL3
-         P4lWWzD0Hz/iJznw4wKXSLH7Sx3vCpFmMTU5sUfThw8A4KMY4GH6F0+A618uSa7+LZYx
-         npo6a+j283xh2qfWQfwpVBxtcjAnSHyLPkJSufWeA//iy8VYmwgzoqyrClOHAO/1uAx1
-         V9t6S6Ady155iUXs7FTBkwE6pwky6Jr2KXfmmGQjwp893zUsw6tgfcArWSpkaK5LvOqJ
-         ragw==;
+        bh=g1vLF6yuNSQgtVfJ+k2uIVqLmlvQ2f0shING6YSG4gg=;
+        fh=RgkPv2pJy3UuUFwOF32E9c5HM50YY7ZKfvL2+uRz9OQ=;
+        b=X6umCw1xEs2EP2t6+iifhOrlvNaGQQnQaaqu7KtVWKc9kyvs0FszPLNeb4aCoJh9TR
+         WJX9b/LjK1hI+Xh74zVmojkAG/42UG4NvvCJMTMwPTmfl2b69iSu+ZOAFePso4jPwPq/
+         +5pKGapQhJhe4UUW91f+/F55o+mSEUCCNONQVeGrclLLaBLKpce7xuDvJ/QhFJTc2qRM
+         IBF2kid/xsCIXXP3PZqHfYdUbI0FlW1YjauTHMAlltq7zZlP1b64yZrRzlKtwuxvvW6w
+         6IZ8NVnmA4kWolyq5TqFYBFOdoGeKyFZ3ohEB8WgTDj72ZKKahSxwaEfPwjzQYMFAqFv
+         l5QQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781249603; x=1781854403; darn=kvack.org;
+        d=google.com; s=20251104; t=1781249717; x=1781854517; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=37yHv6yFdGH61lIGAgzgwqwgl+igTLCwlH4B//p5pEE=;
-        b=fCDtjwewJBDJz+iyHuzRPhO7z77J9sFsH8bY7iCwtnkV0HOntkx/mtJ2FLeBLuN5wp
-         CMW5rACP4IkWWyTjxg3vFxu1G8yY0FQVoQ0sa/Vf4hZsyAFuiXIGehDDQWf52/wvf/bc
-         z9LruZQt2ATOmNZ6npkZUjSvhpyb4tXvLDjul7KcvnXwoXf3v0lDVbfF3Ld+Ex4B30fN
-         eSRyyKGE1wNW2qlstrt3iq0YOKVRE0rqF1B1aurj+hczmtttXt/k1WQEVr6PWqMXrxgD
-         siYLIZCPWUoqiBw/SLXxBLheaXPpuja8tK4Svz+cp6lK4vNGGibzLdkkqpAE8qKdANfi
-         ze5g==
+        bh=g1vLF6yuNSQgtVfJ+k2uIVqLmlvQ2f0shING6YSG4gg=;
+        b=ESlshKT7gN/pYFS9LYBvOygyrj8720pmtLIguUql+DnxIBHBKOSZw4kOjj+VdfD8Qg
+         T3u/vz0lNk9tmf0c/2XxCDcv3m6dzHl8MtSge+o65lebMEWkzOkXhsUpvJHOVJCtxWVk
+         7T1NSJMHSw878xb77fuc3dm8FMQYlBD0m2ap34TCqZO4PkZE3hxvhX8590qkFU3oxmUP
+         bdvEmhi+CTO6mGIiZ7whEPeB0prOyjVM6ik7yLbBtIL4iGxkosrKMkXUxvbRy27CDJLd
+         JX3Uk+DqUYBIJBDDNfigta9d/qg3kKeJssCfkNYFZao7rLhr66MEwUJSNnf5vRKNfLfc
+         3fiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781249603; x=1781854403;
+        d=1e100.net; s=20251104; t=1781249717; x=1781854517;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=37yHv6yFdGH61lIGAgzgwqwgl+igTLCwlH4B//p5pEE=;
-        b=LaZ0BbJoduTSl4vniXaIYaWp8xCwt9jij/SYC3zhPFZ/N2rhSaHdYZwqTpAvFYGxXU
-         goCoJteu4v4JcvX0/+dqr5OCP/vJY96Y+la9eJzqVywENI/5P2kq1K70rgAJnhcmn0Cb
-         VhR239Vez/mIsJNwkJetLrOi/vJXPEa3I1+IiXF5g26Sl4DV5wndCUnV5dS7r1Cw42fc
-         CNYxK1+ELJpTkVqIa1D/F//cSKFbap7NzfwTN3OxktOVeZThW2aGKIWL6UJMb5zNNTxL
-         x1Sq6lu6z+i8xlE8S77FlYPzrb4vnQ6B5vIQcncvio6u0Ztpp4/WCkupgn25zzccE0Yx
-         zx6w==
-X-Forwarded-Encrypted: i=1; AFNElJ9EtilcGtI2g0h/fheJipEl7VFHSQ08yiqHWDlmMnYf4w2HSdkSSJLR3eMDL5DG0BI3+m7C/Lfteg==@kvack.org
-X-Gm-Message-State: AOJu0YwTMJhqmLELsAtxEvNQsawn+P66mvW8YhMgqmc6cdIZ53f14dHP
-	bQsHclCyFzMDytFkJAc43h/mps0peVSV3GjlMRxK6STV1f08A6xIUPMQMr8CI6PIhW+FkoleMgQ
-	tI2gzjISClE2EBtUpLIuuv29Tcxp0/uAoXH+0/EW4
-X-Gm-Gg: Acq92OHUbjrOfc4M2pTWy0NKcHArvOiSCfHh4sutGQNsQ1Lk93eunSjXWrBL9hmBkL7
-	LHwgbKjx7BhDN/PP7bmoACbGzUypCiYYU+a6BkrlX3lqFkD7il0U/TN05coISV6pkptcAU0eNyd
-	xqP+L1+5RdvDfwVi3PfFACxlY0rfwummkCTrJ8Ke/YbO9RKEVAG/ihmcAi2vlZnj4ALLe4x5GMS
-	L/qbtqsa4gbNWQ4lHPh1oSv+kxZAml+mhX4jVtmLn5m8zNC2EoDIHXdObMTTPCdAonhKaxPYkAp
-	UlHIWVD8KM4IRUnmup/4YQvjtAVjjSo+/dmLqQ==
-X-Received: by 2002:a05:690c:c502:b0:7bd:8752:cdbd with SMTP id
- 00721157ae682-7f7bdb01a78mr15009497b3.41.1781249602660; Fri, 12 Jun 2026
- 00:33:22 -0700 (PDT)
+        bh=g1vLF6yuNSQgtVfJ+k2uIVqLmlvQ2f0shING6YSG4gg=;
+        b=hmqoH+X5/g1GXe90aEpsbOYBlh5JaTkuAd7SsBYOAnMzR6rOa0BxnQdxue/m/Lku74
+         YfW72x3Co57pxdV+f/mRzNLCryZgZWw/ixByWGJdBKuzvB99QbOZafuBqh7SJ3CdwqmW
+         nOqQmke3XFSte5IN43z36eIQ6obVuiEhfTd5/YWo6vIonRsLc5n9G5PpIfdxLwnsXbPE
+         h2IHdBn/ObV/CAQjcEUM9kpWjk++pwW+qeN/3PNoLHOgD2jgObFcznWIcYtM6drROQh8
+         QdfYzACc2UiqMIxZ9feP6GAuKepgCQSwrV/Rmm1jRJdfPWr71ntUuSXc6kxb//gmEuze
+         braw==
+X-Forwarded-Encrypted: i=1; AFNElJ/VJy2BCURksemRr2L9HoUj1gQpWX02UlPqGCua26kXWxZyroyvaqEOqhUwEFCnHirj24NfYRYL9Q==@kvack.org
+X-Gm-Message-State: AOJu0YxN75rbWvB0JA5sQVkXxGBzzRmMYU+uXRdkeu9PnJrBlwSdPo0B
+	GAzy67mkAnLCZWRREM7cnG1u9P2J6VE1K3wbrQ8JQqTWTBLXdF4wW1Lt5TWGflTswQhXtFV1zmD
+	+cQBCD6yIUnAmnNjzBG5pIWYlBQ0F+j+0HQXhrzQJ
+X-Gm-Gg: Acq92OHVVvWKvdAL+eJMOziYJf/3XsGmrqtR2WnrE7QTNRFGcJxQCEWvC5Ac/MBp/ak
+	l/0T/uQX/OCYjiRvSj+R3wSq+hNXOfTJ/VceIZsBL3/WWEsNn0pckkZjoMhbkJ0oOzpnn2l1mtX
+	mdKwI84R1pKbgbMukT0PqB0xR0mu8p4M2sExHdkhMDMwEpLYbCFqyqbAh6IcCREafBwgX7uNzYE
+	6mACjbph2imd2EQABc7112MXEHXvFxgJCpe4e/nLcQPDCYIuyjjkROUJ95v961+gVOx6fGfUeCy
+	93uxTmk10Z/BWQHgjcAtquHAy95k2XX6IeJGdQ==
+X-Received: by 2002:a05:690c:4b0f:b0:7d1:c256:b5a8 with SMTP id
+ 00721157ae682-7f7b9020616mr15009847b3.40.1781249716383; Fri, 12 Jun 2026
+ 00:35:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech> <20260611-b4-kcov-dataflow-v2-v2-4-0a261da3987c@est.tech>
-In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-4-0a261da3987c@est.tech>
+References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech> <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
+In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
 From: Alexander Potapenko <glider@google.com>
-Date: Fri, 12 Jun 2026 09:32:43 +0200
-X-Gm-Features: AVVi8CfstzQNbiRE_Nzp0e98G9-7hbopDZWc7hVRExeHcpnRY99AeT5FguWPzQ8
-Message-ID: <CAG_fn=UJTVm+XVjq-wq1GsfFLvQuET7N1A6ZF_BWtYwmDab_TQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 04/14] kcov: reject enable on multiple dataflow fds simultaneously
+Date: Fri, 12 Jun 2026 09:34:31 +0200
+X-Gm-Features: AVVi8Cfm4phss8ao3422B1w1tp_vYDP5PJUsvm_ZDGjV7MhrtYD94WvUDwrEe3M
+Message-ID: <CAG_fn=WYdnX_09RNs3sTQWn+KZZaw+X9a=s1Uk1bqd3gW04h6Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 01/14] kcov: add per-task dataflow tracking for
+ function arguments/return values
 To: Yunseong Kim <yunseong.kim@est.tech>
 Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
 	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
@@ -140,18 +141,17 @@ Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	kasan-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
 	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
 	linux-kselftest@vger.kernel.org, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	sashiko-bot <sashiko-bot@kernel.org>
+	linux-doc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 491D5160015
+X-Rspamd-Queue-Id: ED98514000A
+X-Stat-Signature: hrg83fjp14b74uwzf7z5ijs6j998ibb3
 X-Rspam-User: 
-X-Stat-Signature: m3haehpxiwdm8oeze53r1fbc7bcg8dsa
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781249604-597866
-X-HE-Meta: U2FsdGVkX19YKPqElK4gXfMfPGFCamv/MnfzroEbaWEDVlXIBLqO8cwL2pZhHVntD4hYayDdqyu1fMGwwTeN5Ii+oKH2USVhxmT7Y/xxPmvmW3uCvrTufEi7BBqjtxIzWM/LIFAhog1BIAUtLBBlOq+DZKi+4fS/vdcjPEKDrWmPRRUoIMEc7JVd0I4S8/SDSbIMbb4SaEiCvKCQVb27B/YsoyFRrEkbZ0C/DGlhBQM+fTpNWUnJVaRYDwhgKH2mhrimi0VSgTQjw6ZUKZVxMoy6KI+AdESVK8+giNwvg6Whlzm3EsziGQxJozDzSvHRb/G8bzVHu6OpQML0Mmz6x5bX7vAJ1vg7YbUVayWQGf2MjSHF43Ww2zemq0hAeLidCBWElTpJvkVsIxZAfpU0P6oyzYpbRzdE4DC1hTfj3DkVOabtu8zWSvmHwfDX1LikLUjJ3KBeTHBe3Ye4fhO25OYf9jBTMyVe36vKAeVTK99zExCvlfvOECbdEq1GNuhYAlyJRn/kdKfGxkIPiBoFWF8THgy1yCrHN9MjT8oHCVrBs7eVXMvZI0TKciCMFbwWk8uhNurhrEqM+1IRHomuaDEGVchd/iVaGkZIjpv8mNb9SKsSEDaTf9fCLK8b9LOLG00QENB5cso8LBJBJ6rpjTzJdBbryQA3WrXZfcywvw00EbxMxK+9oUWuXpzaAEPdKZV3ZkWRD9vooA9I9Ey0qYLu3zqxLNWNji0YKaDSUSxzjR6yNXS7+D/B/EePjJBj/IGUBPttoshF8mcDDPGXkxdojCYy6tqKQTFAFgmGqLcw0mVvF1Bvb5uI5J6LY4P/K2Q54y/FJ1ZwzXz8JtCQAKtDoTmtLxSGr8rp5eWjkn5FKvr3jEcWrv3JwTXox9C9ecQ+TgfyL9YO9c6lkkUA5Gl2v/RTV7Blp1QHPHnwrP6RX/uuOqHazH3zs52c+L38FGm/EM6AdxWajZS6dyt
- f2rayPDL
- IOeoxVYLG+c26VblcjOGLZ7r07ogN46RXCmLTD02eOY78r9CynKi5NrCMhAEsu6xwf4PBYQxJseJ97mgSw7QCnQtf7H5CglVIVnMtuaeCHq7Wppwav5nng4YeLnVRbRhSu7dM0cTO1bMVpmpEqr0+HnqrfiNT/e7yBfsw4jkyGmYNMb9bkwjsLDWfJseXVje5jA7gQG4IXu+UN3XQAJoGRCYi8SdCtFc/r2i6Y1HA1G2tEY4Hcqdus+qMmyVfjirzIQV4O9FswCF8ME/4mRjAWAKDa+zND318To1pCv/t86BnoA2eDy1XB4+oZiZfG4pFkF3AJ62mc5bufbkLLMIF/b55fOfE1YVHkePlhBTseFjLIMwXc1Q/3+TX686KmvFqnvTBmiT5Liakw905MdmLrpEaYLLDLryf8E+yqfa48uzuCnUvtzpwVQ7X4g==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781249717-128879
+X-HE-Meta: U2FsdGVkX18d2gaGu7lHKtGRkAvU2AmzjyPByDyuPGcLm4dvyHu9GaOSmKzemM+iZB/t0/CZetf15aqwjv/N6ZKKpqBs8Gl9dNJOETduzK+vK0YvDgJILapMw16OI2c1TWV4bZeQbQeG4iaEF85Byo/CObWeOwdBUAxrNP2wWC+J9ToRoNHA8KyBPs3NZKYF94Cfb9q6tsH2bdCaLyqm13lBY/QpxFLXWMxMNw2mo6etjzXZxe+8KKPTScnvrUJ06hghNP26LrAB33DvsIJPRbOiWHCC7tNm4IMdAikXQD4yfgfQ+8XKKe3gs9LySAezUavsMDBjZcz6K1lCoxTcUnHdh0Oyxry1q72CvDmcMpvCGngKzWJXzJlJhFTlC2lrsKdMU3G9wjHkmhmFlnI5layXZ1Rx5/sQZR/65DFeFMMdrCMbqYqyKgv4SFFDzXRaqaaONpcnT8CUTdjI5+MrVG2UHFSFHkYn+UrU6gsc/Kv7t3L8erhv9t8vhws0W2PceSrzmX68MlCmBEvtED/j5Lg3dUzzi1kAhWQ+mVA2P8RbPmM2HR5RAbhyG89TXimDbnixLbvzbMLIXfe4uDef6ac2TDU+pDBo9ifV9z4hRt65k0FYoklEEHO/GAhGK9+EiH0ETBcBGMpkPbOSVqUtihvW2B3R7qc8ziNPTNXCfEmO5piqE+N3xx/URq5U4YdxgYDBgxTwtCo6bX1SdfiybgUcooQYbumDZToLfYB6Ih2b3k4oMec2SlmxCv1V/40x3Gf0vXfgrq0kOJHCE2FXTRa54ah7Xn2xz57BK3xt6KFaHXACpsdFBgAiyzb7tRGOClRagr7UgNquY3Xp4OGfF7ER4lnVP08wkdjVF8xwaVzy3zG3p52PQhUA473rpVdfahiIbMnNaBOwbECcOFJ9ydu7jhFzKbr/99/AzeIiGXeYcW/GDzKecn4SLB+ChFpkgyrIeElaO2LEhHxsYvP
+ /wj+8yjK
+ hn2uTu8b8/EQPYCFvL/PWDzlfbSzucDoUw5qG9iq7S0y9r2di2i9UcAIpD0Z0xWmlcw+ntt90OuEbIQpYhq0ed2dOpNpc0BHuAP03zdMwmgCsGdRpdNpRLndKMn4DE6ulLJ6wetNznJQsTgEF7mfKsWlcEqkWieWPR4iRs3JtgYdQEm9FgKfh+BTSYaQZYBa+SnAhXPUzeO9kVFcrmUzMkBwKIZBUtz6hZDMmL2oFV9WoBD0rKYJBOBOe1jGOyMbNfRAsR4d+0sSARuB7LMExmbKmXoL6dEJj48mZHSOo3YQ28m8ikjXOxKEOBCnS/doj5pR2DFQWGtTwhQuGR4nBFeKpafmBMJbjQzaueiI3PF+C1P5gIvuyGLGaXrUyrjSLvJJL0XfuailJMm6b8bva4gx/zoCQcWoPAM8BVVAc5Ggm1RwoBR7Xxt71V4DET4+QNEyk8NLxBSxssGgE0JBtGVsUtXgsaSTR7yQ9AZ1Xipc08MIWb064k4UXt8oyvSEcP6k9t2f4ZmBNwVCzcUYp8St36A8V2mgaySb5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,25 +162,96 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Thu, Jun 11, 2026 at 6:21=E2=80=AFPM Yunseong Kim <yunseong.kim@est.tech=
 > wrote:
 >
-> A task could enable tracing on multiple kcov_dataflow file descriptors,
-> corrupting the internal tracking state when one is subsequently closed.
+> Add a new tracking mechanism that captures function arguments/return
+> values at instrumented function boundaries via submitted as an LLVM
+> RFC SanitizerCoverage callbacks:
 >
-> Check current->kcov_df_enabled before allowing KCOV_DF_ENABLE and
-> return -EBUSY if already active. This matches kcov's check of
-> t->kcov !=3D NULL in the KCOV_ENABLE path.
+>   __sanitizer_cov_trace_args
+>   __sanitizer_cov_trace_ret
 >
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260603-kcov-dataflow-next-202606=
-03-v2-0-fee0939de2c4%40est.tech
+> This requires a custom LLVM/Clang build with the trace-args/ret passes:
+>
+> LLVM RFC:
+>
+>   https://discourse.llvm.org/t/rfc-sanitizercoverage-add-fsanitize-covera=
+ge-trace-args-trace-ret/91026
+>
+> LLVM PR:
+>
+>   https://github.com/llvm/llvm-project/pull/201410
+>
+> Clone and build toolchain:
+>
+>   git clone --recursive --depth 1 --shallow-submodules \
+>     --jobs `nproc` https://github.com/yskzalloc/kcov-dataflow.git
+>   cd kcov-dataflow
+>
+>   cd llvm-project
+>   cmake -S llvm -B build -G Ninja \
+>     -DCMAKE_BUILD_TYPE=3DRelease \
+>     -DCMAKE_C_COMPILER=3Dclang \
+>     -DCMAKE_CXX_COMPILER=3Dclang++ \
+>     -DLLVM_ENABLE_LLD=3DON \
+>     -DLLVM_ENABLE_PROJECTS=3D"clang;lld" \
+>     -DLLVM_TARGETS_TO_BUILD=3D"X86;AArch64"
+>   ninja -C build
+>   cd ..
+>
+> Build and boot kernel (using virtme-ng):
+>
+>   export PATH=3D$PWD/llvm-project/build/bin:$PATH
+>   cd linux
+>   vng --build \
+>     --configitem CONFIG_KCOV=3Dy \
+>     --configitem CONFIG_KCOV_DATAFLOW_ARGS=3Dy \
+>     --configitem CONFIG_KCOV_DATAFLOW_RET=3Dy \
+>     --configitem CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL=3Dy \
+>     --configitem CONFIG_DEBUG_INFO=3Dy \
+>     --configitem CONFIG_RUST=3Dy # for rust module kselftest
+>     LLVM=3D1 CC=3Dclang
+>
+> Core implementation in kernel/kcov_dataflow.c (separating from kcov.c
+> as Alexander's request):
+>   - Per-task lock-free ring buffer via debugfs kcov_dataflow device
+>   - READ_ONCE/WRITE_ONCE atomic pattern (tested on arm64)
+>   - copy_from_kernel_nofault() for safe struct field reads
+>   - in_task() guard rejects interrupt context
+>   - Bit-31 recursion guard prevents INSTRUMENT_ALL re-entry
+>
+> Build system (scripts/Makefile.kcov, scripts/Makefile.lib):
+>   - CFLAGS_KCOV_DATAFLOW: -fsanitize-coverage=3Dtrace-args,trace-ret
+>   - RUSTFLAGS_KCOV_DATAFLOW: -Cllvm-args=3D-sanitizer-coverage-trace-args=
+/ret
+>   - Per-file opt-in: KCOV_DATAFLOW_file.o :=3D y
+>   - Respects KCOV_INSTRUMENT :=3D n for noinstr exclusion
+>   - CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL for whole-kernel
+>
+> Kconfig (lib/Kconfig.debug):
+>   - CONFIG_KCOV_DATAFLOW_ARGS / CONFIG_KCOV_DATAFLOW_RET
+>   - Depends on CONFIG_KCOV and CONFIG_DEBUG_INFO
+>   - CONFIG_KCOV_DATAFLOW_NO_INLINE (default n)
+>   - CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL
+>
+> Also fix rust/kernel/str.rs unused import (flags::* -> flags::GFP_KERNEL)
+> which newer rustc (1.98-nightly) rejects as a hard error.
+>
+> Rust support requires rustc built against the custom LLVM with
+> trace-args/ret passes compiled in:
+>
+>   https://github.com/yskzalloc/rust
+>
+> Link: https://github.com/yskzalloc/kcov-dataflow/
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Nicolas Schier <nsc@kernel.org>
 > Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 > ---
->  kernel/kcov_dataflow.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/kernel/kcov_dataflow.c b/kernel/kcov_dataflow.c
-> index 5248293280d5..27587b8ceeab 100644
-> --- a/kernel/kcov_dataflow.c
-> +++ b/kernel/kcov_dataflow.c
+>  include/linux/sched.h  |  10 ++
+>  kernel/Makefile        |   3 +
+>  kernel/kcov.c          |   2 +
+>  kernel/kcov_dataflow.c | 324 +++++++++++++++++++++++++++++++++++++++++++=
+++++++
 
-Please merge this patch into the one introducing kcov_dataflow.c
+I think the total size of kcov_dataflow.c doesn't justify splitting it
+in multiple patches.
 
