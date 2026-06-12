@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC85CD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:44:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C42FCD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 14:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D5396B0005; Fri, 12 Jun 2026 10:44:45 -0400 (EDT)
+	id AAB556B0005; Fri, 12 Jun 2026 10:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 287B46B0088; Fri, 12 Jun 2026 10:44:45 -0400 (EDT)
+	id A5C226B0088; Fri, 12 Jun 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C3A86B008C; Fri, 12 Jun 2026 10:44:45 -0400 (EDT)
+	id 972286B008C; Fri, 12 Jun 2026 10:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BCD16B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:44:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A3C0F8ABF9
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:44:44 +0000 (UTC)
-X-FDA: 84871532088.29.7AA5353
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DA43040007
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:44:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K5b4np2E;
-	spf=pass (imf07.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E236B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:53:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26BCFC0152
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:53:41 +0000 (UTC)
+X-FDA: 84871554642.10.FC2AA98
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 515F38000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:53:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VNLb1aNa;
+	spf=pass (imf02.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781275483;
+	s=arc-20220608; t=1781276019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sm7LC9s3/U6zi4eNQM8LGi9/FBieRVF+Q1Y6/W1/d70=;
-	b=W1w9fX9vzrO2ZPPwjRSHuxpz501vPLWGQm29IDnjgfOwRVcxcP5errqwLpLdWX7jHjh8Nm
-	O6hgwn6sR+WweXRjLE7kWtpSLy4tjcXtX2PNfblwppksWLXeEeL/A6xvRyV+sXkYdMBIzI
-	0K+WMny1wYTVcn9Qw4CCigPgKmY0euA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K5b4np2E;
-	spf=pass (imf07.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=GNJC2lLL+Mfh/+Eic+aZuLdpYzJPqneDQv8WwZq+SCI=;
+	b=LLAbz7nmUshaoXDBFvx95WM22x0l4qdESYqavZ4pSo9+9rwtcNRfqAufZlirJ1xjr/NVvx
+	4nwIPA/EU+u9wNrhc3sPoWOTKr4BuhRJ32rYY/V6FrdiazrwidqR/vz1SzTJRcb6UGU3Lu
+	A2r5gXTzjBgeOaZUZdKlW1fgSmtYUEE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781275483;
-	b=1asfO9OPGqpZcvH1FZdM/UJxQD3foDw85cPEIUQHm9fvag9z7nEq8EIPxtuAHe6k5xvfAz
-	8JG9fSegr6Us/YUv+bCZsQ+JT/JauHtL/x6cYt/Dq8hL9FOx3Cu3WIYV3kqxt7GLO5nSDI
-	ivIIeu0Uv7eRLLDGj/qjJXsqv62W6Ds=
+	t=1781276019;
+	b=oxjmx4uBjFXWX55DDKW0DHCp1Xj2vZaCuAKHKg11MnQq2vmkkPnBSwqzbm7mdbq62+HEih
+	XELm24OpWvYAOd5bU62sLN4SSMU/ppw5OGQ2mN9/Qakj+cjBH8wdO1xuyrnSDDs8D4n6+7
+	FTcU3FC1BoMh/WlY6nbBvSgydDoYTjI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VNLb1aNa;
+	spf=pass (imf02.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781275479;
+	t=1781276017;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Sm7LC9s3/U6zi4eNQM8LGi9/FBieRVF+Q1Y6/W1/d70=;
-	b=K5b4np2EH2mufIv23N3XE8xiNCf4JF/aTU2vhFHxHQUYgQ1TVc0QJX4aSqWcZdPNSXg/iN
-	B9cjFzIIfc/nUsQ94SI/UuxPc3ghxQcnz7naL57jdlM0OMXIvvAWR/RpuW8EmuXwZ/BOWU
-	CuJYJLlNhIYY4fTEolZyYcrmhjpGM3M=
+	bh=GNJC2lLL+Mfh/+Eic+aZuLdpYzJPqneDQv8WwZq+SCI=;
+	b=VNLb1aNa9Hj3sTq0ZxGXe1rCXnudw19/YcDq9Go1CTfcnSmedKhKgU1WXzGWX2S/O3VBaV
+	PaaE8+mjNgr1fgbssyHTDIzJk8bTmggtZJ8ZTz5KVmJ42JPGDquZxlFzXZ1FWS5/ntV2pd
+	Ar5z07KkrZ8vxM6qkbwJd84Q3FRuRMs=
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Jun 2026 14:44:31 +0000
-Message-Id: <DJ75GER4WC9G.3PEDYJQ5T0EWL@linux.dev>
-Subject: Re: [PATCH v2 09/22] mm/page_alloc: don't overload migratetype in
- find_suitable_fallback()
+Date: Fri, 12 Jun 2026 14:53:28 +0000
+Message-Id: <DJ75N99GTI2T.3RLXWJLOISLH8@linux.dev>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
+ <gourry@gourry.net>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/page_alloc: drop flag-conversion "optimisation"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Gupta, Pankaj" <pankaj.gupta@amd.com>, "Brendan Jackman"
- <jackmanb@google.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Wei Xu"
- <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
- <rppt@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>,
- <derkling@google.com>, <reijiw@google.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
- <yosry@kernel.org>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-9-28bf1bd54f41@google.com>
- <646fd09b-0dfe-4646-997f-22e464bca024@amd.com>
-In-Reply-To: <646fd09b-0dfe-4646-997f-22e464bca024@amd.com>
+To: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>
+References: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
+In-Reply-To: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DA43040007
-X-Stat-Signature: ogi6udigcdhztjbwsbr5sghuc5kix7gz
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781275482-190595
-X-HE-Meta: U2FsdGVkX1+l0fjYyRNlWnsFgppTJ9VhsneySweQtthZfx8zXclVGbtyqM3eIOS7PRKyj9rcjNKrk8wTcSD6fy/nwy877BQmuW/PyhN63ydRcReWdcMbm808pw2Mmd7gNTfQlq+/JvcNi/Usw3CnxW5CDAuzBBxVhHzM4X1jge2VilNUmEt+3kFNYosBuHhkITVH92/O00jsTOP7MkQCUj5YLDV7d3PWmZYpiEw43A6y91KW3xjKcieMP0Gxd+FHT16huLKikzi8p5hdokcFcL8UZ4YiQMdhIC/qvMWshOep8YikQ9X5COEun7ajQdkJg1i1zNk5oLZHm21wGId2zvV363pF813Osc3x8lmDCPE6seJIKqjvyuFsmzK/HNNowJEcfnAMgGKnslnmSCuC+uJJdenEdN7PWOaeU7ptUAq9HU9DRsltcphNsaQsn1B5tijlsdHJP7I0C//UW4JNKLixShjYf+nPYmVu6N8DFsUYdN6i65slnhSbJnaKnRI9d2P4kDEzb+fhmA0dXMhD7Vz7citfqbNTOrhObLKm8vjb0HIgbir9vwvjS11PSlK8BPDsVxykz83RcfiicKQoxGUzzVmnJQS8ImM9Ms1Ekb2zcHhicz3l5c01ZgrZW4yMObzaLK0vBl/NCaErvLfM6xMV0ub1vnqivIaabu/bpr/kXkDJlx+3BFnaZWZFHsCMIZMFwofMY1RjZSi7T4jznjqNDp+6uzyFZXtndC54i7+LlmPnH5r0jEhHyDe6U3FyegfFWqEVNpE/d3nWT1rUtcLs954HPvXHdYPgrXPo4Bzk9XCACGJoVbt+n0KgQm6rEbdWz0jBh1F0h3u3lhetebp/5f2QNXkuZWCp1AfSQwcrJyCUd13yqoLAexpxEf1pU4Wq13JK7HmECpK6QQMFxuK1/Uz1vi/79B04wBU0ph8NHA9fVRMkCqjCIqag4z0ykuCIILQUJM6D9G0p5kK
- hbJryTaH
- bTwX1nos5pU37KJ2izz3/SHoP8NxYX4/1wccjWzdpuOYOexqQnfhoju4ekhZ0WbH401SdwqS35jwliInFtNnT08XBjaQ7WVcCSPI2QjNenwSVaRVTvoxYo9a8PXOtkJjwMAHGR1RpxngswYeU8qFjYoTORTn14bqmYpobSlr5UYGJ9o5qpQj0OVcTwLQed0s27fRKAISFaodZltncbSTUC9XXTHY4nCHgXdOZr6XPIWbS3LRWrmS3TNRI/uMCc5N1YS3j79s77c6aD32ibK537edqTIVPKcce/hiPXny37FOBczCeubrjThH16CSIj6AnddvEgGHFKuWjZ0i5EZHxTa3MsyoeXPpd3Pog
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 515F38000A
+X-Stat-Signature: 1itf7xg9j3aadp9scx599bmq3fbw9m4k
+X-HE-Tag: 1781276019-384932
+X-HE-Meta: U2FsdGVkX1+HAVVsp+C03jJR+EeiqQx0ptDK/3icPQYUhG/crI6tr2O9BE3qc28bP9+2/VBtHz7kQxME/ctAhD7AwGnheoP/MTZka9gvK38Otr+3IBYoM4aGyTo9e15OHFt4wx5cRz0GVJDalIH56kMzpj7Ybs4i4azpVdr/pjKdTXSK1VwdF2wQwT5LrFEPVArW8a1A9fGnmnxRb6zpBeRZw3r5V++REmaXDtIOgYpznhu9HidKKeUaO6jf3M5hOFGAQKsda5QyMOW8WssO9Mf0s9tpWelGUBRdWHWKgOkfAM3pDrc5hvITya8o7mdtAxg50zTKwP3ZIaqA/SE9OMX6JUP1mkL8OWEn3884IBk36QJbN/qxlLfa05vSiAyrhJx5ZWLAIvtEIPVSH9sm4iU3d8HO5v0bZiE5cDL9DGmUI6WxXPU5q1xv3CiYm6aREyndvoyzHqSMWmTB/MGw8LfkKRIpt3TGcC4lEgZSIYA8nH8UaMWtU0ay9bsjRLhn+jHnnXf9kWBS/9Nx0JcdQsDL78zgv4LLTfqx4tON3m1p7SMRRLOk19uXhEWBLKyKzR2Had0ez5c9TCJ/SToyHGthZc7bpBYv7ueW2ZFRIsF2grA+tl8KEQagO0Y/6gVx0KkeAk7qhi3utbePORDeBoCCRgXBTbt7UxvsYgEOsRPunbRvgckTdT1bHWPXyaba99MeojGGMRyJdH47IMsegdCIDKbGf7tVtsPKe0n6oP1HNSjeHoCrwkpmxIylKkA6ojh71n4XZ/a9iqVTYV0yrlFK7C9qC6y2nK+dcahCAyggU8h8HN453P2JaPG1CaTELlzqf3HskbbezOJvJtsByyA8klXxsx4FwHskvF+HrJRZTCtj8aY9OaK8zYnKixPI/wjQPeYGLGhd22fZ+19t4Nun9A/lMMFEH9FvWW5uYwXksPhZqf0tnFmRqZFmM72Qof5OT520RMWXWsIqGFT
+ ZzCdkDFB
+ zSFLb+FL8slgknUMM4lsz6Qtuv4AyXWwmP5PVxrJEHjiwhZjwaHE4afwlmNvXkxZ6/UObOALlxZOyTbYTTxVaYGl10oL4k3GNyf4l4ebSe8NgMqTdoXGwKaS9G65/+u4oI996Gl/qH2ltnN1yEX81c9xtpnuMAgCR9oStI0cKN3lHqvmK2rvlJXtj4++cnyfsYHLzEKsxo+xtM0Pi/bgPyNhlz6Rkpm9YE7XrRP1IsKjlT1MNjhemXmLkwcuf1u7yAUrz3f1/ebJ03zZmtauiE5vlwsTfvu3l8fi7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,30 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jun 12, 2026 at 1:24 PM UTC, Pankaj Gupta wrote:
->
->> This function currently returns a signed integer that encodes status
->> in-band, as negative numbers, along with a migratetype.
->>
->> This function is about to be updated to a mode where this in-band
->> signaling no longer makes sense. Therefore, switch to a more
->> explicit/verbose style that encodes the status and migratetype
->> separately.
->>
->> In the spirit of making things more explicit, also create an enum to
->> avoid using magic integer literals with special meanings. This enables
->> documenting the values at their definition instead of in one of the
->> callers.
->>
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->
-> Seems independent patch with no functional change.
->
-> Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+On Fri Jun 12, 2026 at 2:15 PM UTC, Brendan Jackman wrote:
+> -	/*
+> -	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
+> -	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+> -	 * to save two branches.
+> -	 */
+> -	BUILD_BUG_ON(__GFP_HIGH !=3D (__force gfp_t) ALLOC_MIN_RESERVE);
+> -	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM !=3D (__force gfp_t) ALLOC_KSWAPD);
 
-Thanks Pankaj - also BTW this and some other patches were already split
-out into a separate series and they are now in mm-unstable:
+Agh, alloc_flags_nofragment() needs to be updated too:
 
-https://lore.kernel.org/all/20260503-x86-init-cleanup-v2-0-bb690bd2477c@goo=
-gle.com/
+diff --git c/mm/page_alloc.c i/mm/page_alloc.c
+index 9e1949ea13a6d..0111cdbdb5321 100644
+--- c/mm/page_alloc.c
++++ i/mm/page_alloc.c
+@@ -3739,13 +3739,10 @@ static bool zone_allows_reclaim(struct zone *local_=
+zone, struct zone *zone)
+ static inline unsigned int
+ alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+ {
+-       unsigned int alloc_flags;
++       unsigned int alloc_flags =3D 0;
+
+-       /*
+-        * __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+-        * to save a branch.
+-        */
+-       alloc_flags =3D (__force int) (gfp_mask & __GFP_KSWAPD_RECLAIM);
++       if (gfp_mask & __GFP_KSWAPD_RECLAIM)
++               alloc_flags |=3D ALLOC_KSWAPD;
+
+        if (defrag_mode) {
+                alloc_flags |=3D ALLOC_NOFRAGMENT;
+
+I guess I will just send a v2 once I've tested since this is pretty easy
+to review anyway, any objections?
 
