@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 953FCCD98C7
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 00:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6E9CD98C7
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:01:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BF896B0005; Thu, 11 Jun 2026 20:56:41 -0400 (EDT)
+	id 83DFB6B0005; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 996DA6B0088; Thu, 11 Jun 2026 20:56:41 -0400 (EDT)
+	id 7EE446B0088; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ABBD6B008C; Thu, 11 Jun 2026 20:56:41 -0400 (EDT)
+	id 704386B008C; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C4006B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 20:56:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D09C9A05E7
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:56:40 +0000 (UTC)
-X-FDA: 84869445360.21.D40B381
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3FDB440004
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:56:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c0emxHqC;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ED556B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDAF7120983
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:01:27 +0000 (UTC)
+X-FDA: 84869457414.01.6B07E2D
+Received: from outbound.mr.icloud.com (mr-2005d-snip4-7.eps.apple.com [57.103.71.100])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1C4FC180006
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:01:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=ZifDkhrA;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf16.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.71.100 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781225799;
+	s=arc-20220608; t=1781226086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i3kfnuMEeb5/mrVusiQhac4POy1/ixgY7y13y7pSyz0=;
-	b=vpj41GL1BKTVLlimQ+LRXjhIARDQI7fNREugQLvTOeBe5vHBtjw8Fdtdluw54SXSXErqXD
-	Wb1H1bGcMqSVZFh1OmHGExavn8vLe+Bi6PcGEn5gGTsVW+gGsddVrOms2PJBi3UNod9U+w
-	4Cm/l7DiXcvhAc06h3cAqKbljXuHr20=
+	bh=ENJo5KFsEuvwMXawIGe/hJt8QXbS3rri3BHvidL5wZA=;
+	b=JtmHVSyCCmjPeamlAM0a7RxWMHGl6cneHiyxN4VWizMLte/FjsR6IqNfGL/SNjPxvwvSNk
+	mODKxA3eGogogWQ4SUcq5dIwjpxn98vEsiK7Jq9nzpvXKrJ/z1cuD5KzdWtGebC9HNAfKb
+	tecFNpANXXjGXyFQeqdDy1e4sz5hkug=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c0emxHqC;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=ZifDkhrA;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf16.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.71.100 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781225799;
-	b=OGcX/AZ32zrpj+Ev5u5VTweWCTiG2q8Xyvw/qdBlXHRn8vhcJMafMkG1M9cCz7Fd3oQmwv
-	Jc9koVwChinK5Xt8gpPYG4l4THdEITpAsY6N+8vQtm3rQZ0cGyYTlcYn+LZTuzxO+9TbIR
-	K4NnYrLclEOqeFBUvIudf/97bVcvE14=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC80E600AF;
-	Fri, 12 Jun 2026 00:56:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255171F000E9;
-	Fri, 12 Jun 2026 00:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781225798;
-	bh=i3kfnuMEeb5/mrVusiQhac4POy1/ixgY7y13y7pSyz0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c0emxHqCf+PaOSTWXWqIs3a9/OijNhQdir/3EJM0kQVueh+wBhWX0Cz4ZHdGm6qnB
-	 Nqfv+oRwDzBwJK0HnyJ7Jy6tJ6bz9M4jN7M/ecwuYVelQMbr2/hbiBtpIpDr3jLWG2
-	 7vHnTwhYLEFKXllJQl24hs3EAumcuYPAiPMsigqbiiEXvLFW5+gXcIn9lc+4fbbEE+
-	 1aY9ep78jQKjzmWpSItJCWqfGOhq08A7a69CyXfOxgC8darvDd45+W3veaPIBP1WAx
-	 AStwblsxQG5lyJcEmvPPptVMLKdh2FzAMxn8xIlGvPtGKcECwzbi1f8kNwXh+IB4gU
-	 4xACwnn3gAQCw==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v4 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Thu, 11 Jun 2026 17:56:30 -0700
-Message-ID: <20260612005631.83964-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260611150244.3454699-1-gutierrez.asier@huawei-partners.com>
-References: 
+	t=1781226086;
+	b=sjz6it9NLAvToOxI5r+TrBtHOyk2PWhV4VWpfX+86CQ5U68w/nb4xoeH5NjDbZKex1ysZs
+	+LCEdUaRiGiq/5F0k/c2msc/8Ns2CGKzZzzJpbHKezZeTTpnN/Ak2A2aiRPoLCCIp37wC+
+	ihebgz6CJB4KBPy4LXtVKXhYzzmdsKI=
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPS id 5970F180012E;
+	Fri, 12 Jun 2026 01:01:22 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhJB0MFXwteDUAdVAVLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9DCFhbCFsEDx9MDFECQgVWXlQKHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQUZWhlWM2ARcAp1AHINAUlwOH84fCpwMXBVfi4GVRIEQAhWUF4IXh9MHA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781226085; x=1783818085; bh=ENJo5KFsEuvwMXawIGe/hJt8QXbS3rri3BHvidL5wZA=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=ZifDkhrAjGGitA1tEP/oby2WQ0mBkLoERtFbQfaKKILVXHN+bkset1HCrEY5Esg5WONYh5aq/EhslNBaYUqyH65kbpvwFpDubOfU/kllgXHhw8/cmWLbhcMmpJbys80acKBgYIV5Y1FexETd/qiOnwQsAyQqq3z6zMCrLTOZVT7IcUiIhVufIu76boEb6VqtBRXjDwYqXdEnDDi1RSy7yfXFFMOXNUBacSzR6guhideNmFUvJPqym2MAiJYCbAqlHg4b3Qwk85q22e3ZYXHYMiyNWgJdSmTCG2COhZcah4/bGtiWoqhbohpIRIpr/b0Q3IeRGbkn19HKbU21QKiWTA==
+Received: from localhost (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPSA id 2F3B61800204;
+	Fri, 12 Jun 2026 01:01:21 +0000 (UTC)
+Date: Fri, 12 Jun 2026 09:01:17 +0800
+From: Luka Bai <lukafocus@icloud.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>, Karim Manaouil <kmanaouil.dev@gmail.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, Nico Pache <npache@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
+Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
+ khugepaged and use in mglru
+Message-ID: <aitaXRaIrFmEf39I@LUKABAI-MC1>
+References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
+ <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
+ <aigktfOjYwxhzEhb@lucifer>
+ <20260611092313.7d4knb2irt2rtswu@wrangler>
+ <BC930D36-A35E-4D68-9DA1-914E4223FB6B@nvidia.com>
+ <airtUk0t08o63me5@casper.infradead.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3FDB440004
-X-Stat-Signature: 88smgoofun4a68zfztdmeacwyk4wwaqh
+In-Reply-To: <airtUk0t08o63me5@casper.infradead.org>
+X-Proofpoint-ORIG-GUID: oZXojfgB9yzxZ6mJbAzK95pAkLJBcYAW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDAwNyBTYWx0ZWRfX1SozYRzGGL2m
+ e/An4T/1gpb2UlVu/lx3lIgDE427nPgIgF6qkLXwLGF0s0EH89iOglasGerPRyUIo61gn9QRK88
+ 2JP/VeHxeVV6eXZaVLtU6TFG8kxZqHQfxcReDQtZWqyyko0//BTNX+1DnhaddUqEG7UODAPac/E
+ WYbQdYddzJNcqPRvlWvC4pRqUKnioeKVgXnGigIpmdYiuDXqVaeSThMO8zhvyK1yi4/YM6kb5Tu
+ MFEzSPDJEsoZcwNhlmaSEGDYHWN6mWJ2sT6u44XIJmBclNgNp89LFpkZbaAGsNFak2n0jYwm8ag
+ QQfVAx47HZLl76vjR2f
+X-Proofpoint-GUID: oZXojfgB9yzxZ6mJbAzK95pAkLJBcYAW
+X-Rspamd-Queue-Id: 1C4FC180006
 X-Rspam-User: 
-X-HE-Tag: 1781225799-337141
-X-HE-Meta: U2FsdGVkX193GWhebOsqEH4sqCAINl1fQL8kXbD7Xudh4rrI0jHhl5cuWtJ6+P67tQRa2KaZXawtbgLOmQ7qTifBPcbaqIY2Hvw0yiV20qjyExe8OOMm8xQiFkEnTdF32rhydILAdfTRGxZRWwtLlIyIpdlH7aoicN9Mj642BLiP5FHyHlc8F8AdAXoFK6jhKLhPQThm73YLd+sZNsD/ERngBkvoRQFGsPmxe69SIPOWbzTELhV8cK876tNN5QTov6gWL0kP1lkIymbg69t7vOHhxgxr74pcfrBVG9VADGBh+siuR3qiURsgxJwWISmRMGSWVGpgmh2XYD3cUM72kDIJlQoZc59fMAlF7EUSUrc6+SzjXxlU2qUEk/RiLMSjYW5+ug4fzZtPWZl1igYF1ODd1SBIAJZgN2RXqWAzwrRf+NTbcREp1Wokjoy53PcV6zTltrWBU2Fog5v/yUS/7X6jd6qOK5K0lByQQFIW6pkTqjVpqs1xtNLUeuQkB8efdcQBSR7Q4IM1Xo+0UXmvgZPtUyVoxjqvA8LGBS3zsQyWG2WEOwwkz37qwCbYfdc0M+V77z86z8wY4rm/vEsz2VaHJTI9rwpZJu97LpS829txWeWfDYPJI0UTNvQos3oVFKcosyxltQTf2q0ryO70E6QIXtmV1xR7VEzqWiZdZ8eMMt899SylivVh/rTskapeI8z+CUSrptRRKsRXQPTjwcBo2J6wL0iP1rIHeudWcA+vX4PVoJS55tHpuR3lBRvbbhHie+n1ovQJqhhVnDpz3wGdQut7TpzxBcRktCg2J3OaLA6UBPb6I9nBF/G3wVIbmvdw/qc3CNDlzl8Plr+wyvx0r94wbXh5HCQYPKU9Uh2CVrHm00wKf5VY0r7ltQ9hCkdOSDrcsaYIIpBblYHrdPOLXxhLKIxi827alnqSdoWrSEO6AH+CdGRgWgGoS2VlmzyANPiD/YWvTMWsMU1
- DV6os5gT
- AHioZS/BMXUjtdq2v/HoACHPfYKnZSm2vDFUwl2D/rHlYBWHJWStPsGlByy00bfdf8UIBdB0pMJGq6u+pD47MyWh0SaezOccoD2WPfFa3fle1liay9TUDTsSkOVRCn6oIG2QDd7Eb8jgEq2LOqijzpPwQwuEnNYBG0h8GHfep97Uzk6TC0zVpjstKPVsj1qeyrYPvh5FejKpd2B0JuJOZKdZ4iofXbrFuNDa16uD3SmM/HfNCK7xkvTy7dUW74CBe3GiJ6QhFfVH30MI=
+X-Stat-Signature: xnpr3gpwucsx94i7cxdcfiwgo5p55k93
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781226085-520064
+X-HE-Meta: U2FsdGVkX18jFixpHo+MsPNVfHwam3Mjx4wBa/d3nNCqclWLSZihokkwC6IRww9pQC02cmIZ02ce1oGf9/w/vH9B7q6I9+npN+dxHqy3eFiFjwXiSeJLldNf0aMs4WOW1B250i2lhNlCpIukqo/eVD3fXe1U5BbtklJ8eyzm7HnXaf0hsnI8XBp3OmwcLmKhHdRxvX71016uoLM4rgMYU5WHC2LMYwAooOQnOCr49kJjYRjB7Z9cqA76g4nnz+tIXFQGJrNlefY9K3U4zOviG9+fqBRkoVB9yh85N11LI8qxNHqwongXz2xyDGtKHj7fbE8G1btvNtrD7XemGyuHwvL1AYgef2jAh+HkCMmzTfSKtQB4/feCZEAOSFV/E6v8XMYHt1j2LVl4GVIMxnzF6LG3zx+xeigDKQVZy+Xm5wk9Desj+SjcGtgMCfPbtE/Axbwuhr08lsvGEpiD0K6+x31eBdXIRTtjTAvPO5X7D9P02EYAkohO4H3VwAb7CUfNfXI/MPKLEEFgVeUesD+9/HvYyfitZ9cUyCVEClkiEYiOWGDsiE/wXHIhbZegx6zNHDOearWEhsEbMOZnkoKUycCkhphmugOidNEDn75AnCjOa8EarkR8KsDhZoyK9S/c9aYB82eXeKea3OT0k7BNzshlPqqCoL57DVIGQWDrKx+HKvQWJajR2/iTCARnrtguks170sFelaRxpzNoULmOkNVcQcSUgJywiGMHx4zpdLlyeQrjJD7glohwGZkZVyxxi5P5/zPEODf2cqlfQiCDa9ZlzPL1jVG2CdOrA8Fnrm1QPdkoAJ/PfYv99km2P3Tf/2nZswjLQgGxfComFc1XtcOwroZNNyrjJuaFt7n7mGBZ8dGPiXvC+PfxtEpn3mrS67Ce+bE95JpQpNhqkrlBm/TbzrOt9HiS6e54BjjhjweiBfFVqYYJucYLZp69cdQfbSeCpcPpSehBWfaq+01
+ 55hW55Fk
+ 20vanujRsKZrp7L+hDDHvPSHvMwrzpNi9y5EsNgvvLfohQAyxdD8ZPanVLumcy6VY8MFkDYDj3CI1TPR1EoLMBrKGpEFV8JanGO0tSkMloZkpv9ZgyYSM/663C0HIBtzEa/8oSciYejwsZqDzdWQV5avDbbFa0rJsPuUmNrBMMxCf8QggT1hwTZAjyfGl8fvebhcfEKxl98ZC9CgB1RMmnyxPsmpf04bqi7vGBbV1DJNrIoT0nnzTIEJ3hvGFRGYBVoj5icV+Xo0qyDDY1cSrxXjOon4BEE7Q+xq46+zhKWGaI5CQdXnjB46hnk6e8NkzBk8AWuHd7bVDWA/+J7Iz9+Nuh1NWc+K3t8Uaw4iNuZ6trOXUPGNJj6ZW/ysva60lhU0AIC2CFuB+gCJSEWpsBP3ChK1lQ/bRMM0zvu2US+jBAB0QdFAF8GzscjZ4RMX8p6FH5818U4x3FL4IjfdyVXG64rycsg2p44s022izTPjz9bBdOIaAzydcag50s+xQBOhFSpPXw0nB3JDOaGiCmKSYcxcnRGYXIG5+YwtmKQaELGpYKFaMMz8B35iU6xJkqKKKseKOMZMxkfo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,147 +117,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Asier,
+在 Thu, Jun 11, 2026 at 06:16:02PM +0100，Matthew Wilcox 写道：
+> On Thu, Jun 11, 2026 at 11:14:06AM -0400, Zi Yan wrote:
+> > On 11 Jun 2026, at 5:23, Karim Manaouil wrote:
+> > > How to participate in the THP cabal meetings? Is there any public link
+> > > to join? I'm working recently on anti-fragmentation, which is kind of relevant...
+> > 
+> > Matthew is hosting the meeting. You can ask him to send you an invite.
+> 
+> Sent.  Thanks for the heads-up.
 
-On Thu, 11 Jun 2026 15:02:40 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+Hi Matthew,
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Overview
-> ========
-> 
-> This patch set introduces a new autotuning which allows to collapse
-> hot regions into hugepages.
-> 
-> Motivation
-> ==========
-> 
-> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
-> misses (or hits) is to use huge pages. Unfortunately, using "always"
-> in THP leads to memory fragmentation and memory waste. For this reason,
-> most application guides and system administrators suggest to disable THP.
-> 
-> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
-> However, there is no way to tune the settings. It will collapse all the
-> hot regions that meet the access pattern. If the server is a bare metal
-> database or big data server, this will also lead to eventual fragmentation.
-> 
-> Additionally, currently THP is set globally. Ideally, there should be a
-> way to control which tasks can use huge pages.
-> 
-> Solution
-> ========
-> 
-> DAMON has now a way to autotune some of the variables and adjust quotas
-> automatically, so that DAMON is fired only under the right circumstances.
-> It would be nice to have something similar, but for huge pages.
-> 
-> A new autotuning quota goal[2], damos_hugepage_mem_bp, is introduced,
-> which checks the huge page consumption to total memory consumption. This
-> new quota mechanism reuses current autotuning architecture.
-> 
-> A new module is introduced to demonstrate the use of huge pages
-> collapse autotuning. The goal is to collapse hot regions of a given
-> process into huge pages. The module launches a kdamond thread for a
-> certain task provided by the user through monitored_pid module argument.
-> Hugepage goal autotuning will automatically adjust the aggressiveness
-> of hot region collapses.
-> 
-> This module also has a user autotuning knob which allows the user to
-> adjust the aggressiveness of page collapsing.
-> 
-> Benchmarks
-> ==========
-> 
-> Huge page collapse autotuning was tested in a physicial machine with
-> MariaDB 10.5.29 and sysbench as the benchmark framework.
-> 
-> The hugepage module was set up in the following way:
-> 
-> # echo 1000 > min_age
-> # echo 1000 > quota_percentage_hugepage
-> # echo $(pidof mariadbd) > monitored_pid
-> # echo on > enabled
-> 
-> The goal was to achieve 5% of the total memory used as hugepage.
-> Since the database was not very big, we may not be able to achieve
-> high amount of huge pages per total memory consumption ratio.
-> 
-> The table below shows the memory consumption over time. Gaps in the
-> timestamp means that no changes in the hugepage consumption happened
-> over that period of time in MB.
-> 
-> +-----------+----------------+----------------+----------------------+
-> | timestamp | total mem used | huge page used | percentage hugepage  |
-> +-----------+----------------+----------------+----------------------+
-> | 0         | 3044.988281    | 0              | 0%                   |
-> | 22        | 3160.207031    | 2              | 0.06%                |
-> | 30        | 3250.90625     | 4              | 0.12%                |
-> | 69        | 3781.238281    | 6              | 0.16%                |
-> | 71        | 3822.226563    | 8              | 0.21%                |
-> | 72        | 3846.578125    | 10             | 0.26%                |
-> | 73        | 3852.402344    | 12             | 0.31%                |
-> | 74        | 3868           | 14             | 0.36%                |
-> | 75        | 3881.84375     | 104            | 2.68%                |
-> | 275       | 4194.175781    | 106            | 2.52%                |
-> +-----------+----------------+----------------+----------------------+
-> 
-> After second 275, no more pages are collapsed into hugepages
-> 
-> Performance:
-> Baseline -> 18,124.1 transactions per second
-> Hugepage autotune -> 18,163.64 transactions per second
-> 
-> TODO
-> ====
-> - Support page splitting for cold hugepages.
-> 
-> Patches Sequence
-> ================
-> Patch 1 -> Introduce DAMOS_QUOTA_HUGEPAGE_MEM_BP and autotuning
-> Patch 2 -> Module that demonstrates how to use
->            DAMOS_QUOTA_HUGEPAGE_MEM_BP and DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
-> Patch 3 -> Support for DAMOS_QUOTA_HUGEPAGE_MEM_BP in sysfs-schemes
-> Patch 4 -> Documentation
-> 
-> Changes from previous versions
-> ==============================
-> RFC 3[3] -> RFC 4
->   - Simplified the module
->   - Removed unnecessary parameters
->   - Renamed DAMOS_QUOTA_HUGEPAGE_MEM_BP to unify the
->     naming style
->   - Switched to DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
->   - Updated the documentation
->   - Removed new interface for context creation with
->     DAMON_OPS_VADDR
+I just see this, can I participate the meetings, too? I'm working on THP currently and very interested in seeing how things go on for THP, thanks. :)
 
-Thank you for keep revisioning this patch series!
-
-I think now we are aligned on the overall direction of this series.  Let's add
-the new metrics with the sample module.  The sample module's overall shape and
-size looks reasonable to me.
-
-So I think now is the time to start making this series be more seriously get
-ready for the landing.  I find some parts in commit messages and cover letter
-that not correctly updated for my feedbacks on last revision.  Particularly
-tests and future work parts,  and sample module name are not addressing my
-previous feedback.  I therefore skipping review of quite details in this
-revision instead of adding same comments again.  That could be ok for early
-stage RFC series, but let's move to the next stage.
-
-From the next revision, could you please take more time on addressing all my
-previous comments and updating everythings including comments be consistent?
-If you have a reason to keep some of my previous comments not yet addressed for
-the next revision, it is toally fine but please clarify.
-
-Also, I'm not sure if I asked this same question before, but ...  Could you
-please share your future plans for this specific series?  What change you want
-to further make before dropping RFC?
-
-
-Thanks,
-SJ
-
-[...]
+Best regards,
+Luka
 
