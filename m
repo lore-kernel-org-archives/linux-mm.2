@@ -4,145 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62318CD98DA
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3DDACD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:39:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3FE6B0092; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
+	id 4597B6B0005; Fri, 12 Jun 2026 07:39:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 875AA6B0093; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
+	id 432706B0088; Fri, 12 Jun 2026 07:39:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763C36B0095; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
+	id 347646B0092; Fri, 12 Jun 2026 07:39:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6688A6B0092
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:37:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7DF3120349
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:37:18 +0000 (UTC)
-X-FDA: 84871059756.24.EC94A0C
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C363140007
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:37:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kPUbTjBd;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 259486B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:39:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4863140371
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:39:05 +0000 (UTC)
+X-FDA: 84871064250.22.DADFDE4
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C0AD81A0009
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:39:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ik1036KJ;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781264236;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781264343;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
-	b=5CGDm7+QKEzQZ3SHpIj5U4/SR/gc2h5uC2AzRR8bd1xwjOp7ULhbjomvHmqSdPehiKLJcT
-	DKqJ+EOlq51WQrF+Bo2VdTooev/y+O8AK264gvs17rp/G/PnHMfB5uoRHBQIjVUgihI82t
-	DUyQpYS03BE4RyQJRGFzlye/QZTvifg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kPUbTjBd;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
+	bh=jVXPrAHp/BWzZQhw02rB+3vghjeNf6PQdvQ4HyaXKb8=;
+	b=o83fpd4+YSsoba/wOVbDkEIpgVlrk7DRahJIQ+Jh6d7Jhwwn3zFor/PYCFfkjOz6LPfyT6
+	QaerG2tlhZI7i2k9c2HPp4LaNZkFR+G8t6eHw4g266XrXPLjseJMbSvmS2m4Rx/D9MY+w/
+	1LJU0SIDD4Y2ULMZHWD/J6aDP2Ibt5s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781264236;
-	b=uF9bYKpkMmRB/lsFJWzU4VolC0o03h23ijk6BlzbykrQNsa9JhvLMI0pJMdNMvVF8mGoPJ
-	J4uUwbh71SrKltMGzjXRZr84N1Sl1HswJesk6skMnHqmflMFojpNowqJsgbf8irvUwM7wk
-	I1voYvePD9Scj0pQFFrennRtDI342mQ=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-491b390f9e9so1927905e9.0
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:37:16 -0700 (PDT)
+	t=1781264343;
+	b=72GTKLXaKhjDoQCYZANv6U1kHrRP1onCAqGor/DU10xoTedXKenHnivvjfCELMwXk2A0Zv
+	0Oaat1pTdJO2SVjjcUr1r6IIIVqQUcHZQXIFjRB+/LDUhN1BoDJWcMMOVfEllDrlngf56F
+	nCo2wFb2ZAxuyDv2H2s2sefsro5Mdp4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ik1036KJ;
+	spf=pass (imf19.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8cce22e029cso25522186d6.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:39:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781264235; x=1781869035; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
-        b=kPUbTjBd75KchMOhamSWqZJ9c2A6yBEENLy54vQ/FTB3jTmYnjA4TbMe2eMTfKRViB
-         548v7ypfPPjqJnHGSwXA2XE3KD0uUbyoUc1NaOJTQxZyLFTHzTG84HYIkcoVQF8n1cV5
-         QpVB3/Xm+jLl33wKUqBy3KRdWlcrzF9F6m59LXe3X+68i/I3KDBcP8HcYC5Gqu2dmVtQ
-         A6zWCrn/s6lS5PxUhRgXvuCsEKrBBfxqLjfXlbm9m7StrH8AVgOEZQ52LM0raWf+8IfH
-         7YhvLSf8cHPNBQHPDmNTQV0RlLFWZ25uhVa+hTjIHYEoCi/YlQC46phUmm55GfOEwIXO
-         fwqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781264235; x=1781869035;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1781264343; x=1781869143; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j9dyxygjV/3RofubGPQY9xrYK9q7NJvG8u++ttMJ7jM=;
-        b=ZZeH7O6vDg7z3HwcFtZ8XyahHdWeJW6UrImDQmJ06dEPjzTtt+Ik6CIBoEh47Ly6US
-         C6c6QJ+KJK3AbJhud9cYzPeOgBPR0mIBpDYujd8iQWES0RlzmvwHWLXYvvC7bmqTjbfi
-         GxZiZLUUbxxabojLu3unDh10j8BLeCvIvkFNfN4TqmM7TLv8MEApOzwvBH1nhGz1xLUk
-         Me30eufSdfb7jCjsz33KVGX2KyhUMSKZSDJqU4mTMa1awEYSrTHTRkmn8oCjgoIL4KDl
-         7Q3tblhRtDYdOy8jQ5Eta/cOddcnYsLan7/1ZiOfRxpGSky37usLsJSLPWxIieiuvDaj
-         6sGw==
-X-Forwarded-Encrypted: i=1; AFNElJ++rj0Vdp+BftnJZEOR6I/aIeGBTm3/8vlS3EZXbbDZFqfuBCOhDHcZcbX+kLETQDpSB8K3/qa1Lg==@kvack.org
-X-Gm-Message-State: AOJu0Yz4GBKHkiOxQRjFwSgZ7uQZapo59DuI+nMVobfVNLqWv36EBdKa
-	L46FypD3LiRRyo/4VBG8Fio7xv7zvHhjiefphp8e/1uf7YJxlINiYojx
-X-Gm-Gg: Acq92OH/+O8+zXX573qkgZUtGHGvfXYFd9gbMs2HfGqw0Qsj0nECoSXDoT8UOETZWbP
-	OeWP9HQkTQR7Go0ZuIkmYmpJNjgb+KsUPtlOKm2lrVc5KbOOru0SO3uMrXkCQRmbejyvT9gJ8UD
-	vXZEG4nVfcgbsnkZqQu3y9JNTk/N/qlbGNhjyT4jmaWklu6Fi8wD4B6EvaTRZTE4ciq3INn+2MG
-	PN0Da3dSt7CfhmXMuFNTGQmR2SomR19t4IcNhDi2TH2gE4CEl9p39r7C6R34yj9fEk8RK98LFLi
-	akTz3BhWhLvpBwz471n7Zs5A9C44wumHQiqypwvgC3FyXgcAfBAI7Ufzj/xnlOuHXaZd3cIlBwF
-	Qqn69vuErOGplBsrf0/FN72pHNtQNyowhJFTbdDG+q1XDO3gOXOFymJn2dtFkEPFPHwCSghz3qc
-	1E5kPpzD4VpnCkPKyDV50rr4m7f7hBxe2lopzets6KcL2c4Rj0TwmIuAEXay1GjIttIOAkDWau6
-	Xvjp28A8MuB4mak+9k=
-X-Received: by 2002:a05:600c:8486:b0:490:a298:acf7 with SMTP id 5b1f17b1804b1-490ec4ee700mr36638215e9.17.1781264235050;
-        Fri, 12 Jun 2026 04:37:15 -0700 (PDT)
-Received: from [10.128.10.215] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2637ccsm4885808f8f.6.2026.06.12.04.37.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 04:37:14 -0700 (PDT)
-Message-ID: <2e528372-aba4-4621-a9a3-7ce23571ef37@gmail.com>
-Date: Fri, 12 Jun 2026 12:37:11 +0100
+        bh=jVXPrAHp/BWzZQhw02rB+3vghjeNf6PQdvQ4HyaXKb8=;
+        b=ik1036KJIrmPWK7c9UVn0IWpXJ96LhHwfRyU8sJ/1cYbngFYDTahjgbWSrxyg8dk1u
+         mO/LznuLIX3/IQ1KMuEqe0VtpwC9sMBdKOYUn/Q6AZcehbXJhJAStKs+YTD+ZNGPDBSe
+         j1mL0VNHypP4WB0x4dfCNTiFiyBeODzutnA2MZ8RPXPQItOAIvY+f+Bnmg5uXrtCQ/Fh
+         UIT8tshQDci09Tr/10r8giF+EtDBdHXSEncSM6P4EUMhrmfgEgwuoZ0l1zXtYOtYqlKu
+         keUzzpPjLd4zCgyE3BxsfSpwdOZEP/dYYzPGHnhj5oI0y3S9jKpcD1i4mI1NgiJ6OnIm
+         5eUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781264343; x=1781869143;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jVXPrAHp/BWzZQhw02rB+3vghjeNf6PQdvQ4HyaXKb8=;
+        b=rnj7g/b7egTjhLkweC/Gs7spklnXdLcOxJ+0wm6WaugDTte/LuwolvQC1Cvqvv2/aG
+         3B7p1WA4a2o9WDrHKWurGHJfkly7FsDUXGQxsMLuBrrcDHyVhrG3R6CrfZfNug1Os5Ap
+         Ycc7zR+nxg3RLJvF6/g/S8mXssgbYuizn3i7X5W8HXKZ8gaun8IS2og0KOuZmy4b4SfY
+         c9oAal7xxN1rOUuZlYe1p2pF4alljCg7qFTrqAy0oZiDlHaKTTFlkT2ch8PfeWQsEKrr
+         uDQ1rwoTdy8h/oylmgA+SnMGUUyeW2MMiOlF3/dqLqaXgWZroCm8CUWx8H2QSPpLwm6+
+         7pUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+43yyl0JlOPRR7/UyKMzlms4dsAzmUlAo92h+Q11/Va4U2YBGaL141zcFc/2PF+DA+LWBWN0xgwg==@kvack.org
+X-Gm-Message-State: AOJu0YzyPCzOjeLfXIPwXkLi78CMUgvzhn1XjsG4hAl/ZbpC20OqvgZD
+	gL0G5rivl3f7D9PVQNs8QhhJDIA7Uxs2ca30+6kk0uP/1hCDWgqia+uBzwwKBC5Q5agabZ1dC9p
+	C8XJO
+X-Gm-Gg: Acq92OH/ATNmd/Pe6T4vjWR4XP1c+P3tOLIr+3ydKngboHwTtR3AlvvVhy9uPDlfdZA
+	ozHIAvhbTuax3yZQKb6lRR7fdAmU9dI+yNuHhGsGkEzZiD7rWAylKH97kDFKlYKJjjqwf+kva6H
+	nWuuOnlnNzxUXS6xhZ2ikp3iq2xAFEuXUpHJkhShLGlRx9tmYTSvYzGruspNQ+sDLuVLo3y3jhU
+	VVy54MnCcBI0ID2DhPocw0qsjnnjbEM8wRETZizfE69jPeh7SDfYYj7oNA6aIjHn90EdQUyIAci
+	a7lmbXtQzWOR9XBpYzAu1GCeAqMgoC/wz+q2X450+xbIcbW7ZsceOpypiFOt7MAt6rps0R0DSwF
+	ZMfKtUuBltZLpMfNp+QrTtAd7ky9ZzvsWJDIvI8XM0iAANhWjq9dBSzWTX746nLWfuXfVK08ORd
+	338vxhY3f95AE7DsbzlzhmW64eFK7XyF7/YXea0iyXy7kj9E0N+BzJddJJz6RjSTvYVtz+4oo=
+X-Received: by 2002:a05:620a:7e2:b0:915:9931:3a3e with SMTP id af79cd13be357-91619f0170dmr269313085a.27.1781264342749;
+        Fri, 12 Jun 2026 04:39:02 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9161a073548sm182029585a.46.2026.06.12.04.39.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 04:39:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 01/14] kcov: add per-task dataflow tracking for
- function arguments/return values
-To: Yunseong Kim <yunseong.kim@est.tech>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- Andrey Konovalov <andreyknvl@gmail.com>,
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- Yeoreum Yun <yeoreum.yun@arm.com>
-References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
- <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260611-b4-kcov-dataflow-v2-v2-1-0a261da3987c@est.tech>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+Subject: Re: [PATCH v6 02/12] PCI: liveupdate: Track outgoing preserved PCI
+ devices
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+ Adithya Jayachandran <ajayachandra@nvidia.com>, 
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pranjal Shrivastava <praan@google.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20260522202410.3104264-3-dmatlack@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-3-dmatlack@google.com>
+Date: Fri, 12 Jun 2026 11:38:56 +0000
+Message-Id: <178126433616.1046400.532221910811070690.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1148;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=SX18arNH/qTxpgMw9xFDkGTsTcvB1jVfOazjLslA7NI=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqK+/U8DWh12WkUIvLfnzgjF1Th+7JSF+r0l0bC
+ ujbcT2VfT+JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaivv1AAKCRC7dyhM23N6
+ 3vNZD/0XZYuESCSVn19lFpaRZQiMEVxnc34vt0lwHhNqw9psTA8JmMZy5/0xcACkCF6DDLvnBIb
+ rPj7XNZFS2EWttEzuKEWmy1wSAzAN+xBV8sv3ggddpviYBAOEYw2v2gNMD2W0nkZvmJxMEYROTz
+ bd4Mk82xVHxraSEw4zTpmZiYjjTQXXWvUdUothtsU70yKAR9q7dlxiZHKm8xNM8hKggyyM09vZ6
+ AjZN6fA8YA8oHuHgoc4Df3aeZLh91hm9lCKoC3R0kISiHmo96sILH7Pezp+wCiIJNib4pOK5Nwt
+ Tm+wJRfpBQeRJzpD4M9wva96f+p9RJUfjfsy4L9CLjgD8KqF1dCLwjlgsh0KGjutoOOlUxHFWMs
+ 9wd1nVjmbaTJuk4JJF0s9e+17XKlD98vGhPSYUwaZXSXC3KRhxU9tZkUpBkPNiVKzWEBcVZCcQh
+ hFVrmlTqixTLle2wMo9MpJIngoeniVvSZpmvnTUXaBGvP4pKuF/jDQTK16DI0vEe9WA6tIBqiK4
+ 6ZlYtNJipb/KJg7a9YHxB1jSCaO2lSsBPzs7pzkUruWpddbrUjeCGn27IflPmg5p3xf8yv6AWZ8
+ R7zHIuQkdX1emMkBhhYohsL03LMG+Xk5QwOCWbAAUqTUXNyMwhtGdfvUgn8ntjx2PLYs02/yNJG
+ Pf1CsA12jXbPL8g==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
 X-Rspam-User: 
-X-Stat-Signature: ipth9j13f5jtrkcb4i4pwm8f1f7d7u68
-X-Rspamd-Queue-Id: C363140007
-X-HE-Tag: 1781264236-310140
-X-HE-Meta: U2FsdGVkX1+yl3uwruOQIW3JdkVPNwIhQ1krz/dbsjsMIiZ9yC5rNdv7K3Rfjb52UPrRJ2tBQKN462qzTx4Vv10r4bEicb4GC0x39/+qYzswsAtiUmPD+gUGFQK/NTyc4CPCA10CP/mMNZdsIAu6M8MUgpdnk6i3ShPmlfmhsPHxdtWHenbQeQ/Ox9cYxqEa6v0IvHjtV42DGx4On+wnUR4ks68A8FkLrB+y2qc+hyXPkf+jkswIUwT1NDOhPOylo9JoMh+oYqsALVdT0aAPOCeO1XX4UmC40mIx1qsEQKGZAl523OwYeA+c6me6sSVadKcVMZq0pW2JZk88wj8+GU95iSVNkjlJM/VGfGQfwW/YhAQfBoEy+SMplWEu9W063PcguHzYJOxpTBWEKWDICoOpFh6NE5kYDnDJZ39PDThjx/VdwttSDhQ+T1c/+RnWoYuWP0XEzhLJEJ6pzsia6t3TFMsXhdI3NfKm9k0/Ifp+WvHFUPV6jOMV9llXizfQXklBq7ocfhOeGtOk0vb9656cDVv7LW8P1dxzfxZXPksiu/VhIZWG7ba4YT78O1ILeLJ4v9d4R410Brk4C1LgQCPLojTuqJ5p9vhd+0EAvWP4WvVOrbSWcVsZ8Va3SvNPIromrL83C9U3VDmjbY4I90hQeea9iVZfVRt70ebSZfaJyADbbHt9kmaAdw/JmLO1l0Th0JTM1jAhwRC12JompOgFZs2gwqQuDEOApI4T1XE1xNW7ngEv7gwlGbkVNrOneOmO7K+HslPPCguMBf9kBaPKWoqioKkIh1/6xh0Co0klpgG9JZ1aGUECIGmMqm573v7XNDVNaO959/VDRIdUX7XwFAJ/piY9f2hvEAE8a4zVou5ywS19MPlyYAqzrokTf5EvG6f44XjqYGkOjGAqkwWN97jfwExvkbkz1P4i9YMXNWWWHB17XBIGjvTcRReJF2WQC0dEKmsOcZlC2Dj
- 133cZGOP
- uyw6ZsRGEsIpnpCo4v+33DbnBshrLFXrS3mavJbN3D4GO/gARqHY4OzpZ22Sdz5t6OuuaNa5+r2Rxf/WzkaP+mc7IAMcLaVIkTLvVYr7wG/j4g9+Y6wlu1HIounbAFppflrXxhG/dVUVJpHVu7bje71InbJbdpiB03NOnrJKp9MywJSyhy+o2KSNa8UWh0HM2nmzSmPDEWtqbKHRtvJvc9Ic4xPuc9u2Kkcc67Dl6s1etEUgunzNFxRR6dNFx9X0lmYR0OhtQRR0bGYgQ2f/M02cgsEH45JEm/gmgHMjJVBzOUMy0mrAVtRpG8ZcxcblruTlkrT7S9xwBIHdL4PywWVEXC6hVMeGklLPF3umC7h/rcJpYTSLJZc4Dt8JM8AnoS7NMYHyR53/0VagwJQe6AeG+Gk+1Oen7uhmDaL2vGBMg6oD96rtBPiGbkWyXjM3VHyhJFP+CeELweqvQ7GUKwl9e8z7tPY/4GAUUdMP6UmMZ6yqrIao1nRnsigfFMhudS+bjLD+gVpg6cX51hrduE/MAKEHM8Ve36fpTu0sh2Nhn+sg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C0AD81A0009
+X-Stat-Signature: w4dszbaabaoqagia3o4rwh7ktm9pttd6
+X-HE-Tag: 1781264343-938206
+X-HE-Meta: U2FsdGVkX1/5gKM2AK0FbIZH2Z8VVLcVwpf2udPkNZ5OTmRYHPAAQcGbA4UzXkiXNpEBM7nwcT1bH1EhVOjB3BNV8g5c12V+6+EUCnMKR2dVmfY7ZY90g7uGaivGWFQfYP5x24o41yP2k6KOY3dTZjSCd9BFxY8GSGK9mONP1nHrp3jihh9z2fzNF5cYyQTF92U4UzHm5Zg/ZYcby4j/gy0GyJTNdGSj04wTPvlP5/R3q6PrutrfN4xYEVH7hnQah7FPUriif5+cvocspbVWdHGghzcdH+Ur46Cv8nCM5VBRSRUuevll1h+in6UOwSBxDCV5wK800ubp1SFKNNwq/uYt+p97o8urTfP7ET0ZP91mjYG9ZsY2Bw9K/XleaFj0YGMPnS8JpKWj0aLtM2SjsSKC7WdvYr1t6WUIh46kcJXUA1T0jEX40m/YiFZd/VrF3Xty6qEp6gd7ksYVyTuajCVaaTrB3ips93rZVrIxHFyPgZgzkOHrWP/Zuj04Fz+I3kJjyRl4l0CPzxQCq0vTC2R2N0sodJyGU/pyqNYECdhLDGKDbsVoMWK3Q6noJmBtgGDerfyVrBWyuYcjTivLLRyEG/cnORx5CojcLD4aL0FqYtKZ7rp7Kily9DzXLTSo1q/fEEtphWOTyJCmBU0has1c6jbb25LJxwNaYT3JjgqaL8msgiR3ITCHW3oPpy/uAvA94nyjyR6tIVLUplwvQY7Pdy7GcWwABfYdVsD3rVgr5oQj4f+Ub+nCbkHbHFBjPArdn1St60doDjVj9peR0sH4z4UHvbCWUfHSKCCGqj9z2CXNPEBwEWFkDoeEIZ01RvFBkOZG3XpqscjqGyD1YGQiUixnipX+rpuIsaed1TbRImhLmkWTdfptsIKPdB4hzNYzWxOrp/NXpzHSHzUbQmVu9oEPHnNiOcMY0eMzOUe6b2R20k26W3+Hftd/bP+TlekrU83oU+XhP8DiiLy
+ WfaynLBo
+ qmbr0URUuEgAQPWj4OlslAv22dR30KzVeq4zx7WhLSpqgH7kJz0WPndFOWKvNgmRJozYgIb5Ep7nuc5wn0mPRDgB5G/NRc7pH8q9ilYCtn/zHxFOhHE+SVz7TK+iAItPh4SivTYOYrkkBpZ4l6PQ+iT3ndiqFY9K549hxejrdRdTnvHJyq7PU/gYFpADbti3PkS/wWxHGxjaAX3utqUqTU38tSdq5JtnCgoxTKhVrsFYcWxNOOe5GNbwNm0Hj29AM9zfBIBB5D2jGMePkHFWzA4eJXaZ1+d0VCkLlb3C0dpUBL/+6GUtpNsdYjV5DIw09Cuh0obrqVFeDYLrvUJJrPkqV5zcQtdripfGe0Z2gmz6u9Rw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,28 +153,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 17:21, Yunseong Kim wrote:
-> +config KCOV_DATAFLOW_RET
-> +	bool "Enable KCOV dataflow: return value capture"
-> +	depends on KCOV
-> +	depends on DEBUG_INFO
-> +	depends on $(cc-option,-fsanitize-coverage=trace-ret)
-> +	help
-> +	  Captures function return values via /sys/kernel/debug/kcov_dataflow.
-> +	  Struct pointer returns are auto-expanded using compiler DebugInfo
-> +	  metadata, recording individual field values at runtime.
-> +	  Enable per-module with: KCOV_DATAFLOW_file.o := y in the Makefile.
-> +	  Requires clang with -fsanitize-coverage=trace-ret support.
+On Fri, 22 May 2026 20:24:00 +0000, David Matlack <dmatlack@google.com> wrote:
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 737e7b9366db..065d5af822f7 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -115,6 +150,138 @@ static struct liveupdate_flb pci_liveupdate_flb = {
+> [ ... skip 59 lines ... ]
+> +		dev_ser->bdf = pci_dev_id(dev);
+> +		dev_ser->refcount = 1;
 > +
-> +config KCOV_DATAFLOW_NO_INLINE
-> +	bool "Disable inlining for dataflow-instrumented files"
-> +	default n
-In Kconfig, when you don't specify any default explicitly, it's
-implicitly 'default n'.
+> +		dev->liveupdate.outgoing = dev_ser;
+> +		return 0;
+> +	}
 
-I think either style (implicit or explicit) is fine and both are used
-throughout the kernel, but is there any reason to make it explicit only
-for KCOV_DATAFLOW_NO_INLINE, and implicit for the others?
+This loop is compatible with KHO block iterators, as mentioned in the 
+previous email. It should be straightforward to convert to them.
 
-- Julian Braha
+>
+> diff --git a/include/linux/kho/abi/pci.h b/include/linux/kho/abi/pci.h
+> index 6ebcf817fff4..85def616703d 100644
+> --- a/include/linux/kho/abi/pci.h
+> +++ b/include/linux/kho/abi/pci.h
+> @@ -23,19 +23,22 @@
+> [ ... skip 16 lines ... ]
+>   */
+>  struct pci_dev_ser {
+>  	u32 domain;
+>  	u16 bdf;
+> -	u16 padding;
+> +	u16 refcount;
+
+Just add refcount to the previous patch, to reduce changes to your own 
+code.
+
+Otherwise looks good
+
+-- 
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
