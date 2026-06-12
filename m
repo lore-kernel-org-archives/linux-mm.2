@@ -4,112 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6E9CD98C7
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E224CD98CC
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 01:08:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83DFB6B0005; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
+	id 75D2F6B0005; Thu, 11 Jun 2026 21:08:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE446B0088; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
+	id 70E3F6B0088; Thu, 11 Jun 2026 21:08:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704386B008C; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
+	id 64AEF6B008C; Thu, 11 Jun 2026 21:08:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ED556B0005
-	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:01:28 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDAF7120983
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:01:27 +0000 (UTC)
-X-FDA: 84869457414.01.6B07E2D
-Received: from outbound.mr.icloud.com (mr-2005d-snip4-7.eps.apple.com [57.103.71.100])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1C4FC180006
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:01:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=ZifDkhrA;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf16.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.71.100 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
+	by kanga.kvack.org (Postfix) with ESMTP id 55D346B0005
+	for <linux-mm@kvack.org>; Thu, 11 Jun 2026 21:08:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0469F12097F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:08:20 +0000 (UTC)
+X-FDA: 84869474802.07.DB1005F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 22BDD40005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:08:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l6fVwl9E;
+	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781226086;
+	s=arc-20220608; t=1781226499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ENJo5KFsEuvwMXawIGe/hJt8QXbS3rri3BHvidL5wZA=;
-	b=JtmHVSyCCmjPeamlAM0a7RxWMHGl6cneHiyxN4VWizMLte/FjsR6IqNfGL/SNjPxvwvSNk
-	mODKxA3eGogogWQ4SUcq5dIwjpxn98vEsiK7Jq9nzpvXKrJ/z1cuD5KzdWtGebC9HNAfKb
-	tecFNpANXXjGXyFQeqdDy1e4sz5hkug=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=ZifDkhrA;
-	dmarc=pass (policy=quarantine) header.from=icloud.com;
-	spf=pass (imf16.hostedemail.com: domain of lukafocus@icloud.com designates 57.103.71.100 as permitted sender) smtp.mailfrom=lukafocus@icloud.com
+	bh=ZGr2v2BJyY5UICB7KiBteFIFz1E2P9OucbubOQfFQm0=;
+	b=BmO0GFrqh7lcgWoQZE5KE66Xsd/nR+P4sxacwteZotzUSEowoPOvh8zebvSc7Q912g5y/R
+	m4fzrNsCt0zWN2CpKobM7L+WqW+0eGnJF37hxVKBBdIQJMGlQIE6WdXxI+ZBJ+Z3A+KUoj
+	gLf09IkHv5eGPtbZa+S7CraO5sftOjs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781226086;
-	b=sjz6it9NLAvToOxI5r+TrBtHOyk2PWhV4VWpfX+86CQ5U68w/nb4xoeH5NjDbZKex1ysZs
-	+LCEdUaRiGiq/5F0k/c2msc/8Ns2CGKzZzzJpbHKezZeTTpnN/Ak2A2aiRPoLCCIp37wC+
-	ihebgz6CJB4KBPy4LXtVKXhYzzmdsKI=
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPS id 5970F180012E;
-	Fri, 12 Jun 2026 01:01:22 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhJB0MFXwteDUAdVAVLVxQEFEYGVg1dE0wLcwRUB10FXVZQAlpLVBQEEVABWB5WXloXXk1FCA9DCFhbCFsEDx9MDFECQgVWXlQKHQRUB10FXVZQAlpLQgRLRWhcBVwcQBdIHV9qS1YUBBFQAVgeVl5aF15NWgJWTQUZWhlWM2ARcAp1AHINAUlwOH84fCpwMXBVfi4GVRIEQAhWUF4IXh9MHA==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781226085; x=1783818085; bh=ENJo5KFsEuvwMXawIGe/hJt8QXbS3rri3BHvidL5wZA=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=ZifDkhrAjGGitA1tEP/oby2WQ0mBkLoERtFbQfaKKILVXHN+bkset1HCrEY5Esg5WONYh5aq/EhslNBaYUqyH65kbpvwFpDubOfU/kllgXHhw8/cmWLbhcMmpJbys80acKBgYIV5Y1FexETd/qiOnwQsAyQqq3z6zMCrLTOZVT7IcUiIhVufIu76boEb6VqtBRXjDwYqXdEnDDi1RSy7yfXFFMOXNUBacSzR6guhideNmFUvJPqym2MAiJYCbAqlHg4b3Qwk85q22e3ZYXHYMiyNWgJdSmTCG2COhZcah4/bGtiWoqhbohpIRIpr/b0Q3IeRGbkn19HKbU21QKiWTA==
-Received: from localhost (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPSA id 2F3B61800204;
-	Fri, 12 Jun 2026 01:01:21 +0000 (UTC)
-Date: Fri, 12 Jun 2026 09:01:17 +0800
-From: Luka Bai <lukafocus@icloud.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Zi Yan <ziy@nvidia.com>, Karim Manaouil <kmanaouil.dev@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Nico Pache <npache@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	linux-kernel@vger.kernel.org, Luka Bai <lukabai@tencent.com>
-Subject: Re: [PATCH 0/5] mm/khugepaged: add collapse hint machanism for
- khugepaged and use in mglru
-Message-ID: <aitaXRaIrFmEf39I@LUKABAI-MC1>
-References: <20260531-thp_collapse_hint-v1-0-866339cd4c2a@tencent.com>
- <CAA1CXcCLwS=3CY48oFDMUsHEkBkJzLWQJke41PMQE65k2DdR-g@mail.gmail.com>
- <aigktfOjYwxhzEhb@lucifer>
- <20260611092313.7d4knb2irt2rtswu@wrangler>
- <BC930D36-A35E-4D68-9DA1-914E4223FB6B@nvidia.com>
- <airtUk0t08o63me5@casper.infradead.org>
+	t=1781226499;
+	b=zf/pd/QuhGhzEekvgcTZ8T4oPvep3yT3jQYt+i/rT0AiIjJ8RRNApJSl3cQnyIngPkIb/7
+	dEHnL2h1EVM1VA8nhB8WZP6WkTyrVBPphxzVYi/40rb3lVFyia51h6K2hYlSUsXlSgmg1P
+	unkB+KccZPD/k1iQ8JFpmPP7OKLJ47Y=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=l6fVwl9E;
+	spf=pass (imf07.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 12 Jun 2026 09:08:09 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781226496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZGr2v2BJyY5UICB7KiBteFIFz1E2P9OucbubOQfFQm0=;
+	b=l6fVwl9Ey051O4rVxfWBe+5o8epL5Px2k2IEkV9ILwV5bRkeWeue5g/nsNo6wq+3b9qbg8
+	KwoEnEdJR07eKzDr4iBOcZbRsywGRzi6f2LRJo1zTZ+Gaj0U5KDtao8VLtQ+Cc4ZBc6nHG
+	d8j1FORR+1dxgHgQgF7JC90AOB0T8II=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
+	nphamcs@gmail.com, youngjun.park@lge.com, jp.kobryn@linux.dev,
+	usama.arif@linux.dev
+Subject: Re: [RFC PATCH 1/3] mm: avoid unnecessary lru drain for
+ wp_can_reuse_anon_folio()
+Message-ID: <aitb-XwJ0gRiOqPW@MiWiFi-R3L-srv>
+References: <20260611105124.98668-1-baohua@kernel.org>
+ <20260611105124.98668-2-baohua@kernel.org>
+ <air47cqcLUwI4D9X@linux.dev>
+ <air7FCRQneIPiJ5l@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <airtUk0t08o63me5@casper.infradead.org>
-X-Proofpoint-ORIG-GUID: oZXojfgB9yzxZ6mJbAzK95pAkLJBcYAW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEyMDAwNyBTYWx0ZWRfX1SozYRzGGL2m
- e/An4T/1gpb2UlVu/lx3lIgDE427nPgIgF6qkLXwLGF0s0EH89iOglasGerPRyUIo61gn9QRK88
- 2JP/VeHxeVV6eXZaVLtU6TFG8kxZqHQfxcReDQtZWqyyko0//BTNX+1DnhaddUqEG7UODAPac/E
- WYbQdYddzJNcqPRvlWvC4pRqUKnioeKVgXnGigIpmdYiuDXqVaeSThMO8zhvyK1yi4/YM6kb5Tu
- MFEzSPDJEsoZcwNhlmaSEGDYHWN6mWJ2sT6u44XIJmBclNgNp89LFpkZbaAGsNFak2n0jYwm8ag
- QQfVAx47HZLl76vjR2f
-X-Proofpoint-GUID: oZXojfgB9yzxZ6mJbAzK95pAkLJBcYAW
-X-Rspamd-Queue-Id: 1C4FC180006
+In-Reply-To: <air7FCRQneIPiJ5l@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 22BDD40005
 X-Rspam-User: 
-X-Stat-Signature: xnpr3gpwucsx94i7cxdcfiwgo5p55k93
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781226085-520064
-X-HE-Meta: U2FsdGVkX18jFixpHo+MsPNVfHwam3Mjx4wBa/d3nNCqclWLSZihokkwC6IRww9pQC02cmIZ02ce1oGf9/w/vH9B7q6I9+npN+dxHqy3eFiFjwXiSeJLldNf0aMs4WOW1B250i2lhNlCpIukqo/eVD3fXe1U5BbtklJ8eyzm7HnXaf0hsnI8XBp3OmwcLmKhHdRxvX71016uoLM4rgMYU5WHC2LMYwAooOQnOCr49kJjYRjB7Z9cqA76g4nnz+tIXFQGJrNlefY9K3U4zOviG9+fqBRkoVB9yh85N11LI8qxNHqwongXz2xyDGtKHj7fbE8G1btvNtrD7XemGyuHwvL1AYgef2jAh+HkCMmzTfSKtQB4/feCZEAOSFV/E6v8XMYHt1j2LVl4GVIMxnzF6LG3zx+xeigDKQVZy+Xm5wk9Desj+SjcGtgMCfPbtE/Axbwuhr08lsvGEpiD0K6+x31eBdXIRTtjTAvPO5X7D9P02EYAkohO4H3VwAb7CUfNfXI/MPKLEEFgVeUesD+9/HvYyfitZ9cUyCVEClkiEYiOWGDsiE/wXHIhbZegx6zNHDOearWEhsEbMOZnkoKUycCkhphmugOidNEDn75AnCjOa8EarkR8KsDhZoyK9S/c9aYB82eXeKea3OT0k7BNzshlPqqCoL57DVIGQWDrKx+HKvQWJajR2/iTCARnrtguks170sFelaRxpzNoULmOkNVcQcSUgJywiGMHx4zpdLlyeQrjJD7glohwGZkZVyxxi5P5/zPEODf2cqlfQiCDa9ZlzPL1jVG2CdOrA8Fnrm1QPdkoAJ/PfYv99km2P3Tf/2nZswjLQgGxfComFc1XtcOwroZNNyrjJuaFt7n7mGBZ8dGPiXvC+PfxtEpn3mrS67Ce+bE95JpQpNhqkrlBm/TbzrOt9HiS6e54BjjhjweiBfFVqYYJucYLZp69cdQfbSeCpcPpSehBWfaq+01
- 55hW55Fk
- 20vanujRsKZrp7L+hDDHvPSHvMwrzpNi9y5EsNgvvLfohQAyxdD8ZPanVLumcy6VY8MFkDYDj3CI1TPR1EoLMBrKGpEFV8JanGO0tSkMloZkpv9ZgyYSM/663C0HIBtzEa/8oSciYejwsZqDzdWQV5avDbbFa0rJsPuUmNrBMMxCf8QggT1hwTZAjyfGl8fvebhcfEKxl98ZC9CgB1RMmnyxPsmpf04bqi7vGBbV1DJNrIoT0nnzTIEJ3hvGFRGYBVoj5icV+Xo0qyDDY1cSrxXjOon4BEE7Q+xq46+zhKWGaI5CQdXnjB46hnk6e8NkzBk8AWuHd7bVDWA/+J7Iz9+Nuh1NWc+K3t8Uaw4iNuZ6trOXUPGNJj6ZW/ysva60lhU0AIC2CFuB+gCJSEWpsBP3ChK1lQ/bRMM0zvu2US+jBAB0QdFAF8GzscjZ4RMX8p6FH5818U4x3FL4IjfdyVXG64rycsg2p44s022izTPjz9bBdOIaAzydcag50s+xQBOhFSpPXw0nB3JDOaGiCmKSYcxcnRGYXIG5+YwtmKQaELGpYKFaMMz8B35iU6xJkqKKKseKOMZMxkfo=
+X-Stat-Signature: n53t4nww3uwcfz7a4ccfkm1pjq8jw74g
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781226498-827323
+X-HE-Meta: U2FsdGVkX19UweN7x+FiV9uObidNKmUDQhapjjgFgPeeMbHAIitMMvb6rih9W9hlCzywocqmAILnEuoAG0fFTGFKueRpTf0D3eiu8kDwAExnAu0e6i5mZOZqgpEUMjUt5S/IGXOO12x7IlZuK+ooiydL7zjv4xzGc3ap1cjVujvQyvla2l8BTPF9DDra9Cbs6AWCDFUKIJsKfgM6/mDJCzUZIKtSyEYz93GqHr6clfXFvpYVPsv1tYFQ9026XUh4gnnevfHr2g2TkNZxe+fmGh617smm7kW0UDRQc3hqAlUbaezYT0uXc3gYbfmUv/dIcYzUwB0ytgUzNVqjKxiXpNd11mRfjf3+zAVu3xoREnJC6xZfSD6X4nXB1VSg7wBDYwjDrQ1C+lkuRTwKFYfdXfgJHXV5VoSoC+qhz87mDkauDE2Ilf/3V1Ck992gfkmtCJ7AecIV6EyV5lwUFAwpCpihnXT146HZsyqNj5J0XZEaOEbCnpgQqSpLWNRVjWufGIFsq4deOqd7GjGhOD9r0VJ7ie6TRWP03alksLXPs4sCVJPFXJWYOn3otBQDDt404ClZw0XeBRgSJAymI0CUZGz2btzk6EvPmDd40aYGoPZzfSKYimHDDuKy17p8mpmhgX/7onl1qTs860NoLzheSdhP9E/6T2D5mQraDbcuuIaEXGT/J+wdYv1LGiteR67bNLa0kHbTOopUOzcCPQArj1lC6ibq8yAZWb/0QQ+40WOwfyhTYRF/F9cnGs8zni/r3AvRkxVlZgSOtKbrZwG//a8XkA7p+BkHLUS/z2CltpesJry4qEgJKGh4jFtluxIOPTLy1Z95nQfXB4lLPUtbODthtUOXZc3ByDi6+OPeqJSc2mWBC/++KRyvAIaRFaGInT+sfYLRlNSy++VGr6kQrgjGAU7PjBwGUnrpVo1M03AcLVkLZjyrccZMjrLTFmsR1FZqIZ19BTK0BvkxClk
+ 2CFWuHDF
+ dnHDRF/AXR2WCbA8SYaYBjZpwTPdCkQFBrnXJQ7MekIQ/1yWM6FQyRvH955jpQ6G5Tay7s5I6I1Rx3G7j7MiH3jnZVfl0b0nZr8Yx9D+uy7ZuwHNGa4FbLmbfs7Y6LfOJcyGSspLsd2N2263/IzWh2xdLFtdvfAIYYiFfDujLwGTUpAFmBEbBxwWnEXTICef7qSUJFXVGVbky5ChnCVRgPTKoEPUcRJ6Y53rg2sv/GMTqBTPojERen3FGczH8FMZ5r1xZIsPJa1xqyDx6QLyi/UASeaR0ZKEXMB2qavJOhLofuSb4wzofY/Jid78SQ9tTQUoB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,20 +95,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 Thu, Jun 11, 2026 at 06:16:02PM +0100，Matthew Wilcox 写道：
-> On Thu, Jun 11, 2026 at 11:14:06AM -0400, Zi Yan wrote:
-> > On 11 Jun 2026, at 5:23, Karim Manaouil wrote:
-> > > How to participate in the THP cabal meetings? Is there any public link
-> > > to join? I'm working recently on anti-fragmentation, which is kind of relevant...
+On 06/11/26 at 11:17am, Shakeel Butt wrote:
+> On Thu, Jun 11, 2026 at 11:09:43AM -0700, Shakeel Butt wrote:
+> > On Thu, Jun 11, 2026 at 06:51:22PM +0800, Barry Song (Xiaomi) wrote:
+> > > We always unconditionally drain the LRU before retrying anon folio
+> > > reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
+> > > are in lru_cache, and use the refcount to avoid many unnecessary LRU
+> > > drains.
+> > > 
+> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > ---
+> > >  mm/memory.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 56be920c56d7..487a34377a7b 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+> > >  	 */
+> > >  	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> > >  		return false;
+> > > -	if (!folio_test_lru(folio))
+> > > +	if (!folio_test_lru(folio)) {
+> > > +		/*
+> > > +		 * Assume folio is on lru_cache and holds a cache reference.
+> > > +		 */
+> > > +		if (folio_ref_count(folio) > 2 + folio_test_swapcache(folio))
+> > > +			return false;
 > > 
-> > Matthew is hosting the meeting. You can ask him to send you an invite.
+> > In your experiments, how much amount of drains were reduced due to this specific
+> > check?
+> > 
+> > I wonder if that data can motivate to introduce lru_add_drain_folio(folio) which
+> > only drains if the given folio is in the local lru_add cache.
 > 
-> Sent.  Thanks for the heads-up.
+> Actually if we can peek into lru_add cache and folio_ref_count(folio) is exactly
+> equal to (2 + folio_test_swapcache(folio)) and folio is not on LRU then we can
+> just reuse folio if it is in lru_add cache without draining, right?
 
-Hi Matthew,
+Sounds more reasonable if we can only touch the wanted folio if it
+exists in pvec. Believe it can improve efficiency more than the
+current patch.
 
-I just see this, can I participate the meetings, too? I'm working on THP currently and very interested in seeing how things go on for THP, thanks. :)
-
-Best regards,
-Luka
+> 
+> > 
+> > >  		/*
+> > >  		 * We cannot easily detect+handle references from
+> > >  		 * remote LRU caches or references to LRU folios.
+> > >  		 */
+> > >  		lru_add_drain();
+> > > +	}
+> > >  	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
+> > >  		return false;
+> > >  	if (!folio_trylock(folio))
+> > > -- 
+> > > 2.39.3 (Apple Git-146)
+> > > 
 
