@@ -4,91 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6FBCCD98CF
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADCF9CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 198856B0096; Fri, 12 Jun 2026 12:52:27 -0400 (EDT)
+	id 1C3A16B0098; Fri, 12 Jun 2026 12:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150036B0098; Fri, 12 Jun 2026 12:52:27 -0400 (EDT)
+	id 19B346B0099; Fri, 12 Jun 2026 12:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05F726B0099; Fri, 12 Jun 2026 12:52:27 -0400 (EDT)
+	id 0B1186B009D; Fri, 12 Jun 2026 12:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA6F76B0096
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:52:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AD771C2081
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:52:26 +0000 (UTC)
-X-FDA: 84871853892.21.95C40EF
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ECCCE14000A
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:52:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BpA+YcXJ;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id F29796B0098
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:55:03 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B0F2B8BF98
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:55:03 +0000 (UTC)
+X-FDA: 84871860486.01.FD26C96
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BFDA4120009
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:55:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g+xyIQS8;
+	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781283144;
-	b=fcBUIF+JchORA1bdlIKHXb5Gmd/8x2K6nTN3KCQkgWjzM+EV/MGI4r1j+1VGH0FuXn4rUU
-	DMNVpDJt0GGs/rEJPLDxt54QK+HJg5MqOUEz1s+bDw8DXpV/GRQ73LwWuwHZpOSSvtz84a
-	+lAZGGfraFuvuRFLFZs4K/KpZ67gfbU=
+	t=1781283301;
+	b=KzI6X74P+2evKKA1xT1db7XJ0pgcGUieRd7aoRjUzgX2matISWZM1uOrmjAzY8VYiaZcdq
+	jtRvl5dsSSGSTM5WHeRr50hzZjE14A6K7I+jy7lkl9P6aRwKS9mzJMeHHtgn5+7HrIUW71
+	nlSYcn7NXzr4gO+NsrMhzWUD6PfVVlw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BpA+YcXJ;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=g+xyIQS8;
+	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781283144;
+	s=arc-20220608; t=1781283301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8j59LeUc679PfGBjvaEMUQyi2RrRwSDjgmSKKRYE6xQ=;
-	b=54oPMisC9+T0P1+hc35+jsVzefDXPfIBAdXgbVYb0J0Dk5ocz1LVPMzXrJiH3d1kxVDN8i
-	iR0muIzEsJI4aCUzdWp0JEPaqxdyNZx00Udv2ycFjH69ujn4ajnU1oXbrwxbeeAhT5JBc8
-	f/UUmBx9zdnyosQsVzWwhVlqbkc/trc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781283141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8j59LeUc679PfGBjvaEMUQyi2RrRwSDjgmSKKRYE6xQ=;
-	b=BpA+YcXJqpgshFc9SncDeldaMc6lxkT77ySVoMsNh1cOMS3vB9L6N5FkkbQ8TXVCubchDi
-	rWkDIV8dBTUJ6llMIyEjtO+CAqFA1Cj4UlCD1B4tF1SqUNMZyJhrny0bvv6gyLl2Oqmt5Q
-	1KR3eeXn/ROyMRquAeT5NawQ/oVH9/E=
-From: Lance Yang <lance.yang@linux.dev>
-To: leitao@debian.org
-Cc: catalin.marinas@arm.com,
-	akpm@linux-foundation.org,
-	lance.yang@linux.dev,
-	dave@stgolabs.net,
-	oleg@redhat.com,
-	cai@lca.pw,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task stacks
-Date: Sat, 13 Jun 2026 00:52:06 +0800
-Message-Id: <20260612165206.93126-1-lance.yang@linux.dev>
-In-Reply-To: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
-References: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
+	bh=GpenbBgdlmZ2ajTxCH9U4XWfF3aS9xJiwsU2Ue/VpZk=;
+	b=3zaAmR02KaGJHKc9KVFyE/aS2XM1Z2v0XsfhLPX/WzNaPYW2yYNidgrdO/QsJ7aafeHJ+b
+	EjvwupfudXpe9WecpWMokQLBarx33XxLgZnAwcDtX2mMHWfZOCidet7+jSaP2cuaQcW4di
+	CRo/QQJ1Ng+A6AQK7mSVt3iTxzWMlnk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781283301; x=1812819301;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=e6ixytDpLguoEakheN4Up3xdflDoM25R4uRWBtGH4OI=;
+  b=g+xyIQS8a8PezDGQA/RjgxAxUwjONH1hmYLJlS1dblFQlf+WmWzoHAHO
+   fD6sNq64CZajzStKBrn2T2Xn64OtKtdz/Pk+VvnYqs+RYyjzcO0qwPfvQ
+   +ZN6C+HIGcRSkql+K4Bnr0+cP8JsATYM2aRmm0nCJuakROcWPz/07s8gw
+   fApvWFKRegBtCVOUCq6jV5On9L4fl7W6CTm8wplvck/VuVlIm8dryDtZK
+   rGZBXexLR2lCJ608gsi7MyTC+xpF5v42XmlPxx0C0gcMtQaJTtiMUwmso
+   Jxc/BXmDxLdvNyc9ox4ud3XuIjjE5bovNo65qtSL/lXJprYUo0bG8wYNV
+   w==;
+X-CSE-ConnectionGUID: o/n0RIp/Tq+tFBD3EypiUQ==
+X-CSE-MsgGUID: 743/Jc1nTkm6XxykHkoThg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11815"; a="82179446"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="scan'208";a="82179446"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 09:55:00 -0700
+X-CSE-ConnectionGUID: jY8TTeikSn6Rb6V2QdPK+A==
+X-CSE-MsgGUID: slPvLSOfSHCA1ejaigTHAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="scan'208";a="277064747"
+Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.110.161]) ([10.125.110.161])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 09:54:59 -0700
+Message-ID: <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com>
+Date: Fri, 12 Jun 2026 09:54:58 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOl?=
+ =?UTF-8?Q?g?= <arve@android.com>, Carlos Llamas <cmllamas@google.com>,
+ Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
+ Shakeel Butt <shakeel.butt@linux.dev>, Todd Kjos <tkjos@android.com>
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
+ <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
+ <aipphZ5iCnbXVNSR@google.com>
+ <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
+ <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org>
+ <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
+ <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: ECCCE14000A
-X-Stat-Signature: fxqy6481ch6jf94na5ht9xu4ipiysxuh
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BFDA4120009
 X-Rspam-User: 
-X-HE-Tag: 1781283143-397355
-X-HE-Meta: U2FsdGVkX1/+23/i599dUqICs6LPv2nWrdcbpy3hw/BYXD0UjhQpoH9nH6t+9iaIvpRJMRvvwRDFSIUe5RHccrynvECBjeO2yzVeqQ0YcM+EZUlGI3vdPou0+OFlIxhgNCirCVeM4KXzvXPuT81Av4KDKr/1tzt6KD9iM4iFmC51Bkuiz5aMp/rJUD4SJV9nYf+S+2rzexxl25iWvR2Phbvcmu8C+fBO3QhtkSZyPos7AqEo3P51Il5OHHu3QVTID1VPPSAuiZpJMAYfQ8cncBd5Tn6UctJ0C9EZRveAMGvT+4Euqp2CVESD0pqnMckQzLHjCZ/e6de/aKCBNMLpV0u2kRUw/JX+gOgsTSGJuJWMk8mE0x5rQAMqKNHkFfD76Gxu/YO+VJDecg51h6x9+kbSa5ebXBYcGeYCkUZf8q4U+05o/nfjmfHVr/Xlaa/9PY1fSjCx4RNctjcoJa9oweuKtFIFAWQGeDkctlAVpvIunsXnosPrRLMdLQ4Z47AF8b+8qS/+ZjjaTxtI4AvEYYkHSKjXieKuoVGiwkIuNasf5JDpbxy+IIwTzeTZdELkZem5YaW/297/r/gHA2rooCv/Glz2cFMGYOeYmUlCkzjcORWrwtegwC9iRIP5DHPWvc/Uz5XhTB//avb2FPuXui6JVA8s6ZAbZnSDEujvIO7eAapcY1LkESGph7aji04+sBAAVXR1w3YuFIh8QHplTpFARrdcvPHFqicG1AaQezSL4gn/67Vn4Nu+1sKV0D4hk8w7oiEhmmd8166vj6dsHzmXmMSODEmlrMBlsIgg0E/wZHrzCZD8fOJTCSu8WpxmfLXU0d7aWFL1axsfftrsbuuzbVlhLUTLJyvKXNz5eeYoECSgNofBMGFT/XIz7Hk5fnuSId7Q21hrbOX3ZPAJHH4FHedtKzHsDwjURa4PMhXhDauF1Fd/dohiYVyEfGZmRj1HSrBcGDTGCf1KZfv
- 5bHTYTvR
- EiHbGF9lauGgZNqGpGeeaY0iRyRCC+kIvEsNGyEO7o5sMRQuzt+R8GqLYW7hmJFVOexKu1kht1p5rHhxBxa20h1YP4HX1Oj0DZHCNN6u8F5ItiKpfWAOPk737MU8ej7Lcs7ZmUArO2wkBZQZwNqVsfIetp0r3KZXX1OWmq+8Yb4BiIEeATNqrze/rTNigFW0I+KgRbm1HC+Dt8aDaBOk/kmOae+wxGJZwj29Bh3pFJN8vaQa+uB4Z5Lq5JVES4q2gJdIN
+X-Stat-Signature: 7jpc3qk3i1hhzz13cp7qgfzr13frhkyy
+X-HE-Tag: 1781283300-156667
+X-HE-Meta: U2FsdGVkX1/F63dubZPGEyGKkQAFpI5cFJHIZYrUacghifQafgG1N6Xng+Ob5jGiqXxI0f6FnmrtW4GSefvJAlurDiJDYW0Tj9JJr/CfOVNX7+0dzG0tPTqfFatuhDWILKdL7GiIrmin8GQ7TQhGmH+ZJE7oTAg3WlNTklKZglpICS6hHm0/U7MXKVVQKgOEX6MLgfL6tdL4DVaTv88pA0SCaTEiJu0zkQmspV1NALsP0HbF9vzjOZVPbiWF064quFWu/b5QFBhb2pda6Ej66c+78RcqqDw/QjJD1xqOeUkgogt347BO66IjJVmI0w9kcYHlFiwkUUeU70mICQlb+19a9dKv79OX0u8Mhrw/DFm26Xqj/cFscV6SpW3xmm9wl5YFyWrVdplJOmjGPlzgorMdNJr1Mivzg/eHtwGeIccqrX36dg73aFG/etu0bfZHbk1r0b5Y6T7wyOsVBm104tkA8NLFxKohI5RBtQhE/FwNQZz/DtCt3hSMyXDPKCg5mb+5nB6EIhCok2cv2m0e1Q1n85eP0/nIE+LAZAXJMz0ic5Le1BRoLQfRigVtEA3NxyVcWH7Ku8TOJz7hVuFO1ObTBJNltPZb6u1LG0pbx+MJ3KWeJbZWm7GqrjvI5odCKQcluNVAdf/J0yICjZep38VurtM6UvAf4XmOCClNB3yD4IbxuXZ9QJFrklBPVN3lHrtZylLQ6XdC1r0HWi3dyPMTO1gAVdNUiw8eWBLy5LRTAKci3KzTDHjUZtVKb0vCPn90Fl3cwIotg0vyfHxMH+thUIGncZ8RtIuSidmoLq256GVPT/ABtp2l2YqW1cOgOjmSRuLivv2ycv8qDMNG1FIHZ1ECUBOBK+VQUM9+efz4xslNlcKTHndZAOxWbaCzI79tbJ+iH9MydjJBptu16lVrbqPSBkFqn4QD2KJ2D+ippsGk5/OKfl6lGHpl9eO+fuRmx5qYZpS1UjH7AZT
+ T2mCgTZD
+ 1kDUZfMIyGhK6antUi0xo4VEBnSloeZTF47KE3tXr70XC5zSEHU7eLyt7NmzbEaqW/stBQMdkIQBJZtq1hV4Z2XzvZtwrUBiyBS4A2tG4dANoBdUnD9ZtdLRH6Eo1f5Vj8hGIErg3cWRpbP+TbTcrgCgnOG8jGBuG6tzTd8EPEp6enndd5CWiAw0qz9VLeSWWiUzmtIfEZDVw/AY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,158 +163,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 6/12/26 09:41, Suren Baghdasaryan wrote:
+>> I think the key to distinguishing between:
+>>
+>>         vma==NULL because there's no VMA
+>> and
+>>         vma==NULL because of a trylock failure
+>>
+>> is binder_alloc_is_mapped(). It won't return false until vm_ops->close()
+>> finishes. vm_ops->close() shouldn't be able to happen while
+>> lock_vma_under_rcu() is held. So if you've got a non-NULL VMA, you've
+>> also got a stable is binder_alloc_is_mapped().
+> By "stable binder_alloc_is_mapped()" do you mean it would always be
+> true?
 
-On Fri, Jun 12, 2026 at 08:16:07AM -0700, Breno Leitao wrote:
->kmemleak_scan() walks every thread and scans its kernel stack under a
->single rcu_read_lock() with no reschedule point. On a host with very
->many threads -- amplified by KASAN/lockdep in debug builds -- this loop
->can hog a CPU long enough to trip the soft lockup watchdog:
->
->  watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
->   scan_block
->   kmemleak_scan
->   kmemleak_scan_thread
->   kthread
->
->A cond_resched() cannot be added directly: the loop runs inside an RCU
->read-side critical section.
->
->Borrow the rcu_lock_break() pattern from kernel/hung_task.c: when a
->reschedule is needed, pin the two iteration cursors, drop the RCU read
->lock, cond_resched(), then re-acquire it and continue only if both
->cursors are still hashed.
->
->If a cursor was unhashed while the lock was dropped, the thread list
->cannot be walked further, so the round is aborted. Such a round scans
->only part of the task stacks, which would make live objects look
->unreferenced, so reuse the existing "scan interrupted" path to skip
->reporting; the next full scan reports the real leaks.
+By stable, I meant that it can't change.
 
-TBH, a bit dense to me as written ...
+	vma = lock_vma_under_rcu()
+	mapped = binder_alloc_is_mapped();
+	<window>
+	vma_end_read(vma);
 
->Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
->Cc: stable@vger.kernel.org
->Signed-off-by: Breno Leitao <leitao@debian.org>
->---
->Changes in v2:
->- Do not create the nasty array, but use the same pattern as
->  kernel/hung_task.c.
->- Link to v1: https://lore.kernel.org/r/20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org
->---
-> mm/kmemleak.c | 42 ++++++++++++++++++++++++++++++++++++++++--
-> 1 file changed, 40 insertions(+), 2 deletions(-)
->
->diff --git a/mm/kmemleak.c b/mm/kmemleak.c
->index 7c7ba17ce7af0..d88274dc0c605 100644
->--- a/mm/kmemleak.c
->+++ b/mm/kmemleak.c
->@@ -1695,6 +1695,32 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
-> 	put_object(object);
-> }
+During <window> it can't go from true=>false or false=>true.
+
+false=>true never happens from what I can tell. It's just plain
+impossible given the current code.
+
+true=>false is locked out because when lock_vma_under_rcu() is held.
+
+> Asking because in your patch you removed this condition:
 > 
->+/*
->+ * Briefly drop the RCU read lock to reschedule during the task stack scan.
->+ * Both cursors are pinned across the gap; return false if either one was
->+ * unhashed meanwhile, so the caller stops this round instead of walking a
->+ * stale list.
->+ */
-
-Personally, looks a bit clunky to me with "gap" and "unhashed" ...
-
-Maybe:
-
-"
-Drop RCU long enough to reschedule during task stack scanning. Keep both
-cursors alive while RCU is dropped; return false if either cursor can no
-longer continue the walk.
-"
-
->+static bool kmemleak_stack_scan_break(struct task_struct *g,
->+				      struct task_struct *p)
->+{
->+	bool can_cont;
->+
->+	get_task_struct(g);
->+	get_task_struct(p);
->+
->+	rcu_read_unlock();
->+	cond_resched();
->+	rcu_read_lock();
->+
->+	can_cont = pid_alive(g) && pid_alive(p);
->+
->+	put_task_struct(p);
->+	put_task_struct(g);
->+
->+	return can_cont;
->+}
->+
-> /*
->  * Print one leak inline. The hex dump is gated on OBJECT_ALLOCATED so it
->  * does not touch user memory that was freed concurrently; the rest of the
->@@ -1804,6 +1830,7 @@ static void kmemleak_scan(void)
-> 	int __maybe_unused i;
-> 	struct xarray dedup;
-> 	int new_leaks = 0;
->+	bool aborted = false;
+> -         if (vma && !binder_alloc_is_mapped(alloc))
+> -                  goto err_invalid_vma;
 > 
-> 	jiffies_last_scan = jiffies;
-> 
->@@ -1890,11 +1917,21 @@ static void kmemleak_scan(void)
-> 		rcu_read_lock();
-> 		for_each_process_thread(g, p) {
-> 			void *stack = try_get_task_stack(p);
->+
-> 			if (stack) {
-> 				scan_block(stack, stack + THREAD_SIZE, NULL);
-> 				put_task_stack(p);
-> 			}
->+			/*
->+			 * This is an expensive loop, we must to call the
->+			 * scheduler to avoid lockups
->+			 */
+> So, previously if we found the VMA but binder_alloc_is_mapped()==false
+> we would bail out and now we don't. Are you reasoning that this
+> combination is impossible?
 
-need_resched() plus the helper name already says most of it. Maybe just:
+It's not impossible, but I do think it is irrelevant. Or at least that
+the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
+means that the binder VMA is gone. It's not in the maple tree, and it's
+not coming back. If a VMA is found, it's an impostor.
 
-"
-Break the RCU read-side section before rescheduling.
-"
+That's why I did:
 
->+			if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
->+				aborted = true;
->+				goto unlock;
->+			}
-> 		}
->+unlock:
-> 		rcu_read_unlock();
-> 	}
-> 
->@@ -1937,9 +1974,10 @@ static void kmemleak_scan(void)
-> 	scan_gray_list();
-> 
-> 	/*
->-	 * If scanning was stopped do not report any new unreferenced objects.
->+	 * If scanning was stopped or a stack scan round was aborted, do not
->+	 * report any new unreferenced objects.
-> 	 */
+-        if (vma) {
++        if (mapped) {
 
-Maybe just say "stack root scan was incomplete" here? That's the actual
-reason we skip reporting.
+The question isn't whether a VMA was found. The question is whether the
+binder VMA is still mapped at page_addr. *That* is best inferred from
+binder_alloc_is_mapped(), not the VMA lookup.
 
-"
-If scanning was stopped or the stack root scan was incomplete, do not
-report any new unreferenced objects.
-"
-
->-	if (scan_should_stop())
->+	if (scan_should_stop() || aborted)
-> 		return;
-> 
-> 	/*
->
->---
-
-Apart from that, feel free to add:
-
-Acked-by: Lance Yang <lance.yang@linux.dev>
+At least that's what I decided after staring at it for far too long.
 
