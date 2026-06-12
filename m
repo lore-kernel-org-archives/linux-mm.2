@@ -4,91 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A6DCD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 12:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F21ECD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 12:56:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F8A26B008C; Fri, 12 Jun 2026 08:52:42 -0400 (EDT)
+	id 78AEF6B0092; Fri, 12 Jun 2026 08:56:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A77F6B0092; Fri, 12 Jun 2026 08:52:42 -0400 (EDT)
+	id 7144E6B0093; Fri, 12 Jun 2026 08:56:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BD196B0093; Fri, 12 Jun 2026 08:52:42 -0400 (EDT)
+	id 5B5466B0095; Fri, 12 Jun 2026 08:56:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B6936B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 08:52:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1924A40327
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:52:42 +0000 (UTC)
-X-FDA: 84871249764.12.389AE2A
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3834220004
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:52:39 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781268760;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 47B396B0092
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 08:56:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A5271C2D34
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:56:02 +0000 (UTC)
+X-FDA: 84871258164.25.6417FA7
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013048.outbound.protection.outlook.com [52.101.83.48])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2241E100007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:55:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=NNGEDVxb;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.83.48 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781268959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=62Z51I62WB8HEow+r0rzzy9TAJw/X9nvAnQsdZVbyxE=;
-	b=kQTM8CKxxeaeJaKVm6v+5caHEMjAXrZviG746TdZwgEF842NLG3Gp7oe5xW/qIgm5JdEVc
-	zGY+a0NUvsWQgT0GaJg6rcKi3Iv0IvsdDREZxd/A3TqaRWGXCDmB89+wSthUtfpfRNjMrN
-	R6EhE/iX/Gbtu3M5AhtsfQ9j9+ZakIY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781268760;
-	b=Ghfvp9eY7b+VfA1TcM35hM5wz1jEmkuSl3pcKkgyCYHddsgVDyIFHxi6HX7F+ah5KzgARC
-	txDkCB0Io3AzC1nhdtLgEmhkz4xcYjCTARC6K9j8IIwtdS27jqUna7yTFko4lLJP/MO5Hs
-	161Ov6+ejpj87hPqjxmUvQ2WYz5lNq8=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gcKDK6ZcVz8Xrrj;
-	Fri, 12 Jun 2026 20:52:33 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 65CCqTtD041610;
-	Fri, 12 Jun 2026 20:52:29 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 12 Jun 2026 20:52:30 +0800 (CST)
-X-Zmail-TransId: 2afb6a2c010e452-03bc0
-X-Mailer: Zmail v1.0
-Message-ID: <20260612205230395zeZ-tyvcj3PnuOeD0ppp3@zte.com.cn>
-Date: Fri, 12 Jun 2026 20:52:30 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <vbabka@kernel.org>
-Cc: <harry@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAxMy8xNl0gbW0vc2xhYjogYWxsb3cgX19HRlBfTk9NRU1BTExPQyBhbmQgX19HRlBfTk9XQVJOIGZvciBrbWFsbG9jX25vbG9jaygp?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 65CCqTtD041610
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 12 Jun 2026 20:52:33 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A2C0111.000/4gcKDK6ZcVz8Xrrj
-X-Rspamd-Queue-Id: 3834220004
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eO/6LqX1ou4Z3VRKAIDsM3acu8fUnJgiHoFfOZKSXGY=;
+	b=3K/fYHMrdaQpABOFgH+ZPx4eZOZA0USKtuxXHRqLoIHNQBw0bFi+kOgVKM6cidfIRnsFlz
+	0E6riaMkTVW8F/b2p1wiQJWV/mJ7ERjrU2vwMDzdhbvhdDD1WVDb9u7V3cHKKr+cSTutpo
+	+9TX6eZSySbliK1ksdHCdZUS7dK0A1A=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=est.tech header.s=selector1 header.b=NNGEDVxb;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of yunseong.kim@est.tech designates 52.101.83.48 as permitted sender) smtp.mailfrom=yunseong.kim@est.tech;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781268959;
+	b=12PdnkryqxE0CdecLglPRRrX1gXbgUx2bTKaL2PIQEXFDLhg/Et1BnpBzJddFt/fexKgSa
+	6KWPUn5JTGOedLfvbx+IR+GjjJm2Ya//hgq1BN7Qoa0CptA/ILzdPzCt+yU/yf/8A0Q1sf
+	JnblkzkSZ7c1RPseCS1596JuHDK6OTE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tDf5xsKvC5bzSBWImMZFlWpFsQZhddHtOgbRZ1shV7O75XAKrYEWNRacxff3tSJ3kchlkaYnS17wA5vxfXwM7UM8ir6PiYW4w4WMs8Yz7vR2kOV0hvOLb5MrerConRbT3I9oDlAfAcHT/IKdBJ1rqJKN2DWhu0WcqGlj+qJNQ5bJZwn1y2/CQAOiRq9xbyO7CuPGx4hKT9N1s5+ZzOLz47v2AJWmyTTbpV+XY2sYPoZ46OKgO8XY/N+T2BUTa9udIoL5FYFdvGGyqPb3mgZv6bqdAsfWFaZpOkQEHP3lVoTrwPE1JxB+igCjaTD1wr7BzfFqawycqKikYQIJYah3ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eO/6LqX1ou4Z3VRKAIDsM3acu8fUnJgiHoFfOZKSXGY=;
+ b=I4IfMNb3iO1UzmRpC6YJbF/6tDI0bcSWfDu0QYTiWnrKypsuA2+B0fIbLBCOq3J1r/lv9qhoYCq61sE7OPGYBb45w1yL9hW1aHlfrYRFEptTOUMCQZatqL9YpgvuArSac87ntz4hFMxUsrL6MnGMiyDnBnX+gkSS28DVlYWAbtZsvkm1wquaWcLPBM4e6n1ZYBwXSVHOH7xHDwmzrkHTEHm8K4pIHobpE4mOYLf4uxk3FxyDOlD5QmuP7hCJKMxS9gF8ElT782taujccEVbSGJGiMnfcIhF7AHXxGSbE8TLxAcWYhK+oz//DoEAlxQtBCBBQu4zC5gMo3VyoxWk/pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eO/6LqX1ou4Z3VRKAIDsM3acu8fUnJgiHoFfOZKSXGY=;
+ b=NNGEDVxb83KibfO2+9+QsrD+wUQ0Xto3ua0ky92PSloglX9CkQ+Cgl03FLKj71OGVO9t4fAK4K5u09bUMZ7a215Gxz66RrrrZneHdCq75Y0UCPalfdKYsQ4XsxsnmMPeToaDMznNQqu7RMS2ib8coSoXTok2VgsH6x6O3kqAXn9IHn2awm1GSvCsa3rJ9F3UCbMmuuj0TWNH3D8/Am66niXb+Yb5WEVHbiyr92u1mZe2F6TgK6ADNRi/uCRc1KYhAlpHL+GX7XGU6LzMBGjTBU/PmxesbbqwC8m3zaCK8MeRfflJpIaYNV0wPDbTPzOnkeuk+3XjpK8wgOUW4pyPMA==
+Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:39b::19)
+ by VI0P189MB3236.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:2b6::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Fri, 12 Jun
+ 2026 12:55:54 +0000
+Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
+ ([fe80::69fc:c4d4:200b:e4b4]) by AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
+ ([fe80::69fc:c4d4:200b:e4b4%7]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
+ 12:55:53 +0000
+Message-ID: <56f7bd56-db01-475e-83e6-65963974f613@est.tech>
+Date: Fri, 12 Jun 2026 14:55:50 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 03/14] kcov: add barriers to recursion guard in
+ kcov_df_write
+To: Alexander Potapenko <glider@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Kees Cook <kees@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>,
+ Yunseong Kim <ysk@kzalloc.com>, Yunseong Kim <yunseong.kim@ericsson.com>
+References: <20260611-b4-kcov-dataflow-v2-v2-0-0a261da3987c@est.tech>
+ <20260611-b4-kcov-dataflow-v2-v2-3-0a261da3987c@est.tech>
+ <CAG_fn=XRzSuFrxtFbz2t9jjY8HPUUhhnU3iWJiSV-X4+hg66cw@mail.gmail.com>
+From: Yunseong Kim <yunseong.kim@est.tech>
+Content-Language: en-US
+In-Reply-To: <CAG_fn=XRzSuFrxtFbz2t9jjY8HPUUhhnU3iWJiSV-X4+hg66cw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO2P123CA0082.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::15) To AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:39b::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P189MB1752:EE_|VI0P189MB3236:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21059141-36fb-4598-f95f-08dec881f026
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|6133799003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	mBaOhkZLAGjNnmH3Tu8rXvMAuxONazSJ0VCfMd6Q5qTheCXEt/ZTGFv8G2SStr+FYlDtC+U68Dt4CpRZ1NTjRN5atCx2ZZchnZ6MLlcgGut6e+GmbY6c0PizUc1fENSV5kymfxMiW2l071h2BMcV8ttbhwNZ17WbvrJocyOdIKD6Iq++v63jCggGSVxBDSSKQ9e3l/bJOyz2Lxx7MuSmGcrGf7jXXznppJZjCkKx1RKwTc+ggSRFezzobBBqhRlVfvzg4msMZR0Dsd1uCI644uQbCFnAGg2AdfX0zUxk5SMy8f7F7EwAuql+7S2cITir6+Q1/O7KTKQTuAQ07HK73Z/D0wkpSH7fgeoqrPfpwPQZSS1JD7aMw4P3F8OXpJn7zimB/G6FgZFCVvi6f7kZGPpjLNwMvSXYYeNYZ5U3wIFPXGIhhvegvppBsupQCZG+hTmtgD4rXgE+kl26sgsPkSjDeVRvWrUVn5Ar432+wDuadt0Sjekgq/elWGkqXkuE2lAIGaaB+KBm/1hVHPhqgapQn653io05WQOOpB3r6bcgOkMeRP05sQx+ZBX/Y4BmnwN2DLoVNeyotCWNSXQvOws8HB63gPL8ciDZhY0fDKHZtw45rlc6PGr2VyiQwFy4IY3/Wnj2EVyy9R/zGjcT60semWJ76LC3PR6stTzXdLJy5GU5UjpFGGYC0kiYsm/C
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P189MB1752.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(6133799003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ekpxcWVWU3J4dW96aHFETks4M3k0VGpuQzI5ZDFGeWxrL2l0M0NoUXQ5Wllr?=
+ =?utf-8?B?SWhYOTBXblMvV2RsalpmZkdZcjJkaEJPSTRYWjNGeFk0NExzOTFYeUtnQW9B?=
+ =?utf-8?B?Y3NvUS9UdU1Da1pJc0FtQkx1ZEhXUmthQTFXV01UaEtJZVJ6YVBGbk1NdVhP?=
+ =?utf-8?B?ZmFMOGdXTmd1N3dXeWJLcHFIU1l5V1NIeWpMVDJKUEk2ZlBhZVJBZForWVpV?=
+ =?utf-8?B?ZlBjQU5BdWgvbnAyZmRseGRGQTk1WWsvYXEyZzlpZmMxMzhkRGtaZUQwOWs5?=
+ =?utf-8?B?eDBCR1l0eGU5K1JzL3o0Zm5sTDErN2hZeXVscHNGdko5WmdMd010MVY5cXVp?=
+ =?utf-8?B?Z0cvMG1uQ041cmxMRExCU1NHZ203d1dRTllsaDBlYjA0Z1BrZ2FObXFvNTZu?=
+ =?utf-8?B?Slk1ak1mS1l2YzR2SDNmYzZEa2lmMDc4emRnR2lvY3dEL2lUeUhJZ3ZPVHdO?=
+ =?utf-8?B?YWc3STRwa3BRQ3Vpam1GU2xvN285SjZLMWdnZGFEQVg5MEZCK1hxeUdnVVRZ?=
+ =?utf-8?B?dTdSZTZzU3RYOEpIWEZsUVl1VSt2UktjQnV6VW5sdFRHY08rNlF5NnlBcThs?=
+ =?utf-8?B?SGY1eHJqbFI5bEhCd0tDUjdqUTRTTUM4NHRqU3dqVnJiOU1oZHVYZTZubDZl?=
+ =?utf-8?B?TFNGWCtZUG9iZDkzbXdyYy9JQWdyVDMyZkc5QkloaHdlZ29xZ2VhVkVMQThU?=
+ =?utf-8?B?QkNldzEyRmdZdjRSd1YreE8weVp3djVQTXVFV3FUZFlJU0dnMktJaGRKcnJX?=
+ =?utf-8?B?Q0VCZnE1NFM1ZVlGcUpUNXA0QXpkekRPRENCeVo5QWxTTmNSWU4rZkdIWXRN?=
+ =?utf-8?B?WVgyMWxGanhUQ1hIdWZMUE5Lb0dhWlcxaS9wQ2tnMUxkQW5sYWFKMlNETnhn?=
+ =?utf-8?B?bGRCcDRBdW1qNFMrckJRdkQzdVV3NWdLSnkyU2p6NU4ycjlXWlN5MzRsVG5l?=
+ =?utf-8?B?UEJBUkpPdlI2NDdYZCtOcFBvVk5va0svanI5bjkyb1NJR1RISVBMV3lBT3pM?=
+ =?utf-8?B?bGpjL0VKV2p4WWk2RVBsSG4xdG05K245NVRuRTlWN0F0ZjN1YWgydzRXOHpR?=
+ =?utf-8?B?NlhKb0NPcWtmUGh0Mnl3TXFKQXpxN0FzOHJ2TXNCR3VROVk3OVV0MnVudzQr?=
+ =?utf-8?B?MHFsbjF6aCtxcllsTjVGc20xQlhhWFo1N3locWpvK1BJRHhncUNndzg3UHh4?=
+ =?utf-8?B?WU12QURvNE9JbGZMSlkxOFFGOXJzZE9xd1FUd25Qdm5nZXpuUlBkRG9waXl2?=
+ =?utf-8?B?MGRGVDFjeUc0ZUFhODNNcGxFNWJ3WEMvZ1cxSVd4NGtLOUsxNVhUcFFkM3BM?=
+ =?utf-8?B?S2lEc3pYTWw3YXgzaUxYRlU1djlHVUR0eVpXRzRHVmdrRW55bTFodlNtWXVt?=
+ =?utf-8?B?VWs1aXFlamNLY2lJQm9WSFJMV3lqYmZxTFlid3hqT010TG1IYnZ5VjZta2xQ?=
+ =?utf-8?B?RzNiZEJTcnNBaTBPNGlHbUdQeVp5Rmpia3d4K2hTbnV1R1lxUFBoR2VvUUhk?=
+ =?utf-8?B?UXlOMnk5czdsejJCL2VBdjBpdkxaTXdsM24rWWtQZjU2Tzdib3pGY0VUWnRZ?=
+ =?utf-8?B?eCtSeDZUZ1M2ZjliZ21PbzNuRUVmeXpxTDlJdWpNRngrdWJvNEhsSyt5Uk9B?=
+ =?utf-8?B?QnE4ZjFybGlVRXRscWJ0eEIwekl0N3RxR2llQUpkaTV1WXQvUVVTUVhBOXM3?=
+ =?utf-8?B?eTdsc2ppVmsyTkZRUXNWRlUxTGxXWHZYelllVVFlcHhrT0pSekxhb251M1Fz?=
+ =?utf-8?B?VURHUitNQTVKOXNyNndWNUFJL2dSTUFWRFpqaStUclRieXBleVNQWDBlOWR1?=
+ =?utf-8?B?eXRKVCtRQUY3dUU0NHU1VkJvNi9TRGQyckNYY3lHYzM5cWtVdU1Vdm5XdElZ?=
+ =?utf-8?B?OHgwWU5wc0RQZnp2OWVaZndXcWQ5aG5ZMU93Y2pBMFU5d1lmTmoxdEpzaytT?=
+ =?utf-8?B?T2hBc0QwSlF6NkFEVDN5Rm1kZW5TVE56RjYxczc0Z3I3OTdyYTIrMUdnamJH?=
+ =?utf-8?B?OTl2b3pidzlnSkV4M1I3eDEwemVyNHl6NnNqSjB5VlQxUGpiZlBUNFFzc2Vr?=
+ =?utf-8?B?M0ZpeUF3dVFxMHdJSFdWa3czOTIyU1N2QXhZYU4vbFZjblp1QVZzQXc2KzFE?=
+ =?utf-8?B?RzZPZDVncVNOcWwzMW82dzB3WFdHOGdkTHBUVDFxUU1yR1BiMUFzcERnMnNC?=
+ =?utf-8?B?Z0ZoNks4UXFrc2JLenRVcnI1RFlIRnR3MjdvYU9SQXk3cDNmL3J5VXdBQzho?=
+ =?utf-8?B?Q2xPRS8wZWpYaGlFenBvbmJZaHVFU0dBZllwUFhsWkhmL3FhWDEwYStUNWtT?=
+ =?utf-8?B?K3k5dkF4byszRmhRZmZJVjlpVjhsV0c0NEEycjcxbFNsM0FQU2lqZz09?=
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21059141-36fb-4598-f95f-08dec881f026
+X-MS-Exchange-CrossTenant-AuthSource: AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 12:55:53.9566
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZL1jHNSJseZfzeNrUNcvuzkLiXvCzovV7SbsVJKhprtiKwUZ79sUjryNmA09XdqIpTjqFAvAOp3512qLqgKjdg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P189MB3236
 X-Rspam-User: 
-X-Stat-Signature: bztcp7c5weneymp7bfdhi7he7ko4twa3
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781268759-398016
-X-HE-Meta: U2FsdGVkX18f9f1N/9kdBYwzQ61uCPotiUXNOKxJkafw7PjOyQF9dzM/nPbgv/FkG1L87hTXt9Z9oeShy/0xVYWG0K7SXri/30KXCUKtL7NHXiPCcjxZDz1lTD9t1NHgDOlEFNIfOzasGQV3Q+ErGO80TCzIi3JzirjtCnf6CD1RqofSr5xsM6WHxDbP/QDCuPkFUTXHXCLRn6a4K3PNZtJR/XL+3zTLukMlO5bN/+Ey9LYPzRa1hogz+h8WncvYmPgKxzfNqTDg/5xj7YMpYAy+rSIsVfS5MhALt+7+DXRBrUGenQHQ1AfW1qDlI+Z3hyKVrSe4Vh6FCpl2C7ipLyBxRkNFHTL6rxvSgJJBPOpSTTjePLZyaw5xEiTrN6ZjMgDckUmAnf5HyWnhfH07cgrB+ZrvYAXClMnNYKDigjenzKltKBfyNa0PwYLfb42viu7oxEs3DmM8A5sUqyAYBLldrnqgXqjoF6r3LFlLvYpoyg1DzrBBAQ91w/VXkw+H5Rq5Iz5GS67poJvJ0mfeYS+jHJzMcxYIkpxaL5IAko9OtZy8kMqSQNNk0mqy6J49GZJ+qnh8cMhmkzfJvXXdJU2GlqeOvTp6oIrP3JUMya7hOR1TYg21A9fO4Hrib46whXumF0+nnl0tym6CjwyXPzZ9Tdaz7gfKXymdtxWZLVm6Y0W4TZHuKs6TLBEd20VINIe7HKMp/nMsHIwtmj2Eihz5IanN3Fd79QPExi3d5wsu+78rZXymMoJAXD3/XbjMA1abMpv7/+lSqHl8dgXzYheZxy48VBAGQvqmV6EDktzYonylrJP2Fmy+CQi0HPyL2i2l5DXQOSpJk7J5lFd1yNRz+RSDi99EhEbJFgfR9jpgk/EjjmpEtydf2BSapX9DlqqC85BUsWPvUPUrVa+SZd6lZS/wgch5OrOn8V4S/Q4wY88HUoSXDIhPMKxI/i0Cjkr+3ZEQkuvNEkPvrnc
- FXpxsSOC
- iCKKrtxoC7uNRBKK3igLCKvnQJT1jP6dmCVZh3J1VTjld/P/F1mw23C/iHjOSxl+3Y4VsF5GIhQdz/d3JPa4M97a9W93HjflAylrJNyV+s12yNqaDrhcXoTEXR0suIYBdxS/dT3cqxQBxfdZ/9odpQqic55EHkHixvRLnp2S+kihukuIBNCbj9Qm+/gVuPNMOy5aF6mfV9V5E4IQVHBwqZFfA8At+V0jxFMip8RGJgVGPRca10hE118JoWalHL7shBpx+71Ay6xXoJs0w2DijEuRc8n3MvjzaAYNGjLiqyNH+EmhdmIIwuwLBYKNQIeU/7FNL
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2241E100007
+X-Stat-Signature: z7p58wyby1cx5n8ymuu44zj5866wxbgy
+X-HE-Tag: 1781268958-963931
+X-HE-Meta: U2FsdGVkX18fg7ruJUmYVkWeVtZXPKTRg2mYHrzCSi7Ik39VdPkNuwW7l+CNo0bKVEXQvvBNWFncF5z5VNBD5yDJDLOss87cgPka7Rq5mRua8673qPsho7Kx/WcwfMzEC9QURMih3GN7xk7PVoP9FL1jc2IAJZiypEyaDQJ2IlBv1MaCH5TZcoPCsl4CQ/6w2ys2fyxFuvzv+GcYX1WzlkA/zbKQgYT64xc9IWPfVqNIpOu61GSeqI5LkV2iQnGlk7ddmqR+7sSMeyh7eSOHYptzXv4XtiJ9sh9XiMzTJV5xz7KjPUV93TARiCFV6JjdorDyIFkkXsFBdmWZ5eUIfX1pJINGRMU1rkligEabOYxcMR1+rM29RAooS4G4hcqL8RBKyxrdPPoBxuEvCl1T1Q2fN+wxVOMEW9WfghdCv8aJy2HxEflaTFErf4p8D2ZIEeGKD+3xnETrM1HuYf6/WXytcoIr/z0t1g3etZOsR6t36xlc5WTsZwIyAQWPTOb8gqSkYrsbgziET8yRCPXycN2e4Wvkkxcgggl0aKUWpBdJ5Iud3oeduHotohqJCgxNl9vqB1fuwZDnT99HAabwY6cGFpEyydIdrKkVrbke4rAVv84KIR8IwhVJTJlr31C55Nn49zmzkQHaftmQrVSlbwbGUG6JWsGH0z5MoIRtLt6On9+3exRQ7RvGfzefsa2bYoL/Vkx9JYr0XJ+S0u4Z7ikoozNeDWG9SGrQgilSl52OA+QrrMTs9RX1wAqz21g1SKSJgB4dDU+ri3Y0PYNgQVviKUxPJQ6l9guzehNshKU8I6qrM6X0V3LYAeKyfTmPp2TG7SUrlIVKzeShxEXBoS4L6BcxjkfmnxP00pdgjZi/DRFWeEEBrH8cufuBwJup8uyW4eMw+5PVK08dppbY15ck/V1YRloQ7Ts+Hhw5gDYXbVjLdHC7M6BIbU7V51l+R6TRmBrY1Q9du0r4jz5
+ uMJj4LUm
+ TXYuwZCCbtdKMdxteGS9dRUzsuTiB3Ow1S+UHYAinIlCVRYwRZDBganU0/uKgRIqH9oJqAj1A6t2SEqo+61NXOslU4YRhTjGhYHAAGIsnmvJ9FSo1FhJU5q1nVPA7fpvyFDXBGEyLVM/58ZOfTAaIaSdvq5Fw+bIgG9btMNOniNhQZFh2xrdazR1nfqRcG2E/6WBkOtbt1SfDPzshlrFTPZpFYDMjJrH8vlfsTDAENzUIwGeRQXRzwcUsTCT3HzxWPuZF5YLK9kAP/uGt9BcsTMuFhp3fOl76vymzzFea/RTMumSvNVAIIHgGZLo2MtHgI36BUSVWKfto96Bybopmdw4IxgUt6MtJ6yICRHWV8SWxMg0AulyymzkLDyCqxW9ESIndjKmYyjZcFzJPigtrtPKundbZureGKErZHTr0b9Bb+9K5AP05/OiDH/94lcl7HgFSaPQElAzUinh2ZaigEAJhUgMpuNiFXBSyaaxSkMn4+tTAzVzdrYtvDuOFZXHMjxYZij8mMqHopSZ9oOxOs2YeCFqV2Kyuu7uYihJjpUeyOknGyMv0AEgV5jQu42hyETeEfxPeUKmX0oyTPzVJs0u+XGk5mLVrW/E7Jz2gyQZad9+r9ysSQ7JtpxioR7UrBeg3k1fJC0AB2eCDiOeePtbaDE906eFqkXk9TlsyW7fw2xRGE8jIlMhancHQMi7qe3wYLJWenDRe8+oAW/7MZqJnTzibO1wQgq4+AcUHgR1SWkQfZW+e+JP9ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,213 +198,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Vlastimil Babka (SUSE) wrote:
-> The two flags are added internally so there's no point for warning if
-> they are passed by the caller as well, so allow them. This will allow
-> simplifying obj_ext allocation under kmalloc_nolock().
+Hi Alexander,
+
+> On Thu, Jun 11, 2026 at 6:21 PM Yunseong Kim <yunseong.kim@est.tech> wrote:
+>>
+>> The recursion guard (bit-31 of kcov_df_seq) prevents reentry when
+>> copy_from_kernel_nofault() or other called functions are instrumented
+>> with INSTRUMENT_ALL. Without compiler barriers, the guard set/clear
+>> can be reordered relative to the function body, making the protection
+>> ineffective under optimization.
+>>
+>> Add barrier() after setting the guard and before clearing it, ensuring
+>> the compiler does not move instrumented operations outside the guarded
+>> region.
+>>
+>> Cc: Peter Zijlstra <peterz@infradead.org>
+>> Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
+>> ---
+>>  kernel/kcov_dataflow.c | 2 ++
 > 
-> Also it's not necessary to have the extra alloc_gfp variable for adding
-> the two flags. The original gfp_flags parameter is not used anywhere
-> except for the warning. So remove alloc_gfp and directly modify and use
-> gfp_flags everywhere.
+> Please merge this patch into the one introducing kcov_dataflow.c
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  include/linux/slab.h |  3 ++-
->  mm/slub.c            | 19 ++++++++++---------
->  2 files changed, 12 insertions(+), 10 deletions(-)
+
+Understood. I'll merge them in v3.
+
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/kernel/kcov_dataflow.c b/kernel/kcov_dataflow.c
+>> index df7e8bf70bfa..5248293280d5 100644
+>> --- a/kernel/kcov_dataflow.c
+>> +++ b/kernel/kcov_dataflow.c
+>> @@ -86,6 +86,7 @@ kcov_df_write(u64 type_marker, u64 pc, u64 meta, void *ptr,
+>>         if (t->kcov_df_seq & (1U << 31))
+>>                 return;
+>>         t->kcov_df_seq |= (1U << 31);
+>> +       barrier();
 > 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index ce1c867dc0ba..b955f3cbb732 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -1040,7 +1040,8 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->   * kmalloc_nolock - Allocate an object of given size from any context.
->   * @size: size to allocate
->   * @gfp_flags: GFP flags. Only __GFP_ACCOUNT, __GFP_ZERO, __GFP_NO_OBJ_EXT
-> - * allowed.
-> + * allowed. Also __GFP_NOWARN and __GFP_NOMEMALLOC are allowed but added
-> + * internally thus not necessary.
->   * @node: node number of the target node.
->   *
->   * Return: pointer to the new object or NULL in case of error.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 6845e15c148a..847cad5203b2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5388,7 +5388,6 @@ EXPORT_SYMBOL(__kmalloc_noprof);
->  
->  void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, int node)
->  {
-> -	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_NOMEMALLOC | gfp_flags;
->  	size_t orig_size = size;
->  	unsigned int alloc_flags = SLAB_ALLOC_TRYLOCK;
->  	struct kmem_cache *s;
-> @@ -5396,7 +5395,9 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  	void *ret;
->  
->  	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO |
-> -				      __GFP_NO_OBJ_EXT));
-> +			__GFP_NO_OBJ_EXT | __GFP_NOWARN | __GFP_NOMEMALLOC));
-> +
-> +	gfp_flags |= __GFP_NOWARN | __GFP_NOMEMALLOC;
->  
+> Please make sure barriers have comments explaining which barriers they
+> pair with (see kernel/kcov.c)
 
-Hi Vlastimil,
+Thanks for the pointer. I see the existing implementation now and will align
+my changes with it.
 
-While reviewing your patch, I spotted a potential GFP flag mismatch along the kmalloc_flags()
--> __kmalloc_nolock_noprof() call path. I cloned the slab/for-next branch to verify this and
-successfully triggered a VM_WARN_ON_ONCE() in the __kmalloc_nolock_noprof() path.
-
-Here is the observed trace:
-
-[   57.283791] ------------[ cut here ]------------
-[   57.284226] WARNING: mm/slub.c:5407 at __kmalloc_nolock_noprof+0x3ec/0x450, CPU#6: insmod/379
-[   57.285060] Modules linked in: slub_nolock(O+)
-[   57.285494] CPU: 6 UID: 0 PID: 379 Comm: insmod Tainted: G           O        7.1.0-rc3-00036-g5ade53586fae-dirty #5 PREEMPT(lazy) 
-[   57.286608] Tainted: [O]=OOT_MODULE
-[   57.286941] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
-[   57.288018] RIP: 0010:__kmalloc_nolock_noprof+0x3ec/0x450
-[   57.288543] Code: 01 00 8b 4c 24 04 41 89 c2 e9 dd fc ff ff b8 10 00 00 00 e9 f9 fd ff ff 90 0f 0b 90 f7 04 24 ff de b7 ff 0f 84 54
-[   57.290252] RSP: 0018:ffffa82840c73b68 EFLAGS: 00010206
-[   57.290752] RAX: 0000000000000000 RBX: 0000000000000003 RCX: ffffa82840c73bc8
-[   57.291428] RDX: 0000000000000000 RSI: 00000000002c2100 RDI: 0000000000000100
-[   57.292124] RBP: 0000000000000000 R08: ffffffffb853c968 R09: 0000000000009ffb
-[   57.292821] R10: 00000000000001d7 R11: ffffffffb850c980 R12: 00000000002c2100
-[   57.293485] R13: 0000000000000000 R14: ffffa82840c73bc8 R15: 0000000000000003
-[   57.294159] FS:  0000000006fa8880(0000) GS:ffff8f4ef9d5a000(0000) knlGS:0000000000000000
-[   57.294914] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   57.295464] CR2: 0000000006fac528 CR3: 000000003f9b6003 CR4: 0000000000770ef0
-[   57.296124] PKRU: 55555554
-[   57.296443] Call Trace:
-[   57.296702]  <TASK>
-[   57.296914]  ? vprintk_emit+0x22e/0x280
-[   57.297295]  __kmalloc_flags_noprof+0x216/0x530
-[   57.297735]  ? _printk+0x56/0x70
-[   57.298053]  ? alloc_slab_obj_exts+0x89/0x1e0
-[   57.298474]  alloc_slab_obj_exts+0x89/0x1e0
-[   57.298876]  new_slab+0x2bc/0x660
-[   57.299200]  ___slab_alloc+0x2ae/0x660
-[   57.299603]  __kmalloc_nolock_noprof+0x151/0x450
-[   57.300050]  _kmalloc_nolock_noprof+0x47/0x70
-[   57.300490]  ? slub_nolock_init+0x127/0xff0 [slub_nolock]
-[   57.301013]  slub_nolock_init+0x127/0xff0 [slub_nolock]
-[   57.301566]  ? __pfx_slub_nolock_init+0x10/0x10 [slub_nolock]
-[   57.302197]  do_one_initcall+0x44/0x220
-[   57.302598]  ? do_init_module+0x1e/0x240
-[   57.302990]  do_init_module+0x5f/0x240
-[   57.303357]  __do_sys_init_module+0x162/0x190
-[   57.303783]  do_syscall_64+0xf7/0x550
-[   57.304159]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   57.304648] RIP: 0033:0x4b8839
-[   57.304954] Code: 00 f3 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 40
-[   57.306676] RSP: 002b:00007ffea38fdce8 EFLAGS: 00000246 ORIG_RAX: 00000000000000af
-[   57.307376] RAX: ffffffffffffffda RBX: 00007ffea38fe080 RCX: 00000000004b8839
-[   57.308044] RDX: 000000000062d4b5 RSI: 0000000000002790 RDI: 0000000006fa9d20
-[   57.308710] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000002790
-[   57.309366] R10: 0000000006fa9cc0 R11: 0000000000000246 R12: 00007ffea38fe088
-[   57.310040] R13: 000000000062d4b5 R14: 0000000000000000 R15: 0000000000000000
-[   57.310737]  </TASK>
-[   57.310963] ---[ end trace 0000000000000000 ]---
-
-With "# CONFIG_KMALLOC_PARTITION_CACHES is not set":
-RSI: 00000000002c2100 -> gfp_flags
-
-Decoding the GFP bits:
-
-  0x00000100 = __GFP_ZERO
-  0x00002000 = __GFP_NOWARN
-  0x00080000 = __GFP_NOMEMALLOC
-  0x00040000 = __GFP_COMP
-  0x00200000 = __GFP_THISNODE
-
-The root cause:
-
-Previously, the obj_ext allocation path(alloc_slab_obj_exts()) called kmalloc_nolock() with a
-fixed set of flags(__GFP_ZERO | __GFP_NO_OBJ_EXT). After switching to kmalloc_flags(), the
-full GFP mask from the upper allocation path propagates through the call chain.
-
-In detail, ___slab_alloc() may append __GFP_THISNODE, and allocate_slab() adds __GFP_COMP
-via s->allocflags. Both flags flow down unchanged into __kmalloc_nolock_noprof().
-
-This patch only permits four flags (__GFP_ACCOUNT, __GFP_ZERO, __GFP_NOWARN and __GFP_NOMEMALLOC).
-Since neither __GFP_THISNODE nor __GFP_COMP is in the allowed set, the warning is triggered.
-
-Would the following fix be acceptable?
-
-    +#define KMALLOC_NOLOCK_ALLOWED_GFP \
-    +       (__GFP_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_NOMEMALLOC)
-    +
-    /*
-    * The only version of kmalloc_node() that takes alloc_flags and thus can
-    * determine on its own whether to handle the allocation via kmalloc_nolock() or
-    @@ -5548,6 +5564,7 @@ void *__kmalloc_flags_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags,
-                    return __do_kmalloc_node(size, NULL, flags, node,
-                                    PASS_TOKEN_PARAM(token), &ac);
-            } else {
-    +               flags &= KMALLOC_NOLOCK_ALLOWED_GFP;
-                    return __kmalloc_nolock_noprof(PASS_TOKEN_PARAMS(size, token),
-                                                flags, node, &ac);
-            }
-
---
-With Best Regards,
-Shengming
-
->  	if (unlikely(!size))
->  		return ZERO_SIZE_PTR;
-> @@ -5415,7 +5416,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  retry:
->  	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
->  		return NULL;
-> -	s = kmalloc_slab(size, NULL, alloc_gfp, PASS_TOKEN_PARAM(token));
-> +	s = kmalloc_slab(size, NULL, gfp_flags, PASS_TOKEN_PARAM(token));
->  
->  	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
->  		/*
-> @@ -5429,7 +5430,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  		 */
->  		return NULL;
->  
-> -	ret = alloc_from_pcs(s, alloc_gfp, alloc_flags, node);
-> +	ret = alloc_from_pcs(s, gfp_flags, alloc_flags, node);
->  	if (ret)
->  		goto success;
->  
-> @@ -5445,7 +5446,7 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
->  	 * and slab_post_alloc_hook() directly.
->  	 */
-> -	ret = __slab_alloc_node(s, alloc_gfp, node, &ac);
-> +	ret = __slab_alloc_node(s, gfp_flags, node, &ac);
->  
->  	/*
->  	 * It's possible we failed due to trylock as we preempted someone with
-> @@ -5458,8 +5459,8 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  		size = s->object_size + 1;
->  		/*
->  		 * Another alternative is to
-> -		 * if (memcg) alloc_gfp &= ~__GFP_ACCOUNT;
-> -		 * else if (!memcg) alloc_gfp |= __GFP_ACCOUNT;
-> +		 * if (memcg) gfp_flags &= ~__GFP_ACCOUNT;
-> +		 * else if (!memcg) gfp_flags |= __GFP_ACCOUNT;
->  		 * to retry from bucket of the same size.
->  		 */
->  		can_retry = false;
-> @@ -5468,9 +5469,9 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->  
->  success:
->  	maybe_wipe_obj_freeptr(s, ret);
-> -	slab_post_alloc_hook(s, alloc_gfp, 1, &ret, &ac);
-> +	slab_post_alloc_hook(s, gfp_flags, 1, &ret, &ac);
->  
-> -	ret = kasan_kmalloc(s, ret, orig_size, alloc_gfp);
-> +	ret = kasan_kmalloc(s, ret, orig_size, gfp_flags);
->  	return ret;
->  }
->  EXPORT_SYMBOL_GPL(_kmalloc_nolock_noprof);
-> 
-> -- 
-> 2.54.0
->
+Best regards,
+Yunseong
 
