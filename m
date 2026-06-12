@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C657ACD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9875CD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 513D66B008C; Fri, 12 Jun 2026 12:21:02 -0400 (EDT)
+	id BA2B06B0093; Fri, 12 Jun 2026 12:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38B1C6B0093; Fri, 12 Jun 2026 12:21:02 -0400 (EDT)
+	id B795B6B0095; Fri, 12 Jun 2026 12:21:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A1016B0095; Fri, 12 Jun 2026 12:21:02 -0400 (EDT)
+	id A41876B0096; Fri, 12 Jun 2026 12:21:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 18A066B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D17E61C0D67
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:01 +0000 (UTC)
-X-FDA: 84871774722.23.1C96B42
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 937496B0093
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:21:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F2698B905
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:03 +0000 (UTC)
+X-FDA: 84871774806.13.D9C6CE0
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 886272000D
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:20:59 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=MXHGqo6r;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf13.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2C11A140011
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:21:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=fYXBXKlD;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781281260;
+	s=arc-20220608; t=1781281261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aheWjUAZS1tzsTu1B8IiNBFC5FmKdXTGcNGgaZL7FLI=;
-	b=dv3XtTE7Z3xln3Azzj9aUmz7Bcp/4BeEV4sVz97KDzh22V6GeFkWqL23Z5UBKQFfFtb1Nj
-	guX+qLI5fkuOLNDQAHYrqWwrTllT7fZa40eqLuJIa54GDJyX/DGwGxQ0vnkUZ7yZsMnyKy
-	COYC6qCg4vbYAzRI0JrsrQglh1c1dbM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=MXHGqo6r;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf13.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bOoYxWO9Y/+YHiT5OUdexIFUjhWnAvvkqrCAkrMTBJc=;
+	b=4NbrnEAu+iJUPX1WMAz1pFxTbFQeKdbIA5OmW5tC47sHVeGusevmbmreJVf11lINxG+/Pr
+	p3PdsReODRvYmB1w5ad7SANSUmVIumR8xdn4iBYz9FTSqq690h0aGYv4a/MKa4eeQhjI/Q
+	Zyi2At01GHa6EdpKmgjmOAYvk7taIrI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781281260;
-	b=hlXII4eblnYccb67Fmlpb4XTq4QeJI/dr3IjehlHQPLacSAoMh6dIa4T278ROCICRMumK2
-	P8bksc5mEzSpwFPaoKHlwhm81GFbZCD41ZvNv9/Gfg7yae01R+uvircVMrufvw+HlALhnm
-	SAkdZY6BM2CQpErlg8GyjxZ7x04FSCY=
+	t=1781281261;
+	b=Cp5ViSmDJE8qyYWTlrNNCBd+OKspJNGa4NSeuL6VGDytAzVpS02Q53/IBxQRZ0NE4LjwAG
+	UPdgZ0m1EFL6/DP/D/SmfKIP3k2lhQ2nGXyAYwc//s0YWbaDnm9o+5Bq8QLsuNgTsOpvjt
+	EBZP69cyPSfskzGZrnahRolS/8NdzmE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=fYXBXKlD;
+	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=aheWjUAZS1tzsTu1B8IiNBFC5FmKdXTGcNGgaZL7FLI=; b=MXHGqo6rMGhNmTklH1tywl7eq0
-	KrKaK0ntryTj8HIe0WhzR3PeCQ/4ihBh3vOngQWyGMEK0owSSw2Lf0N0ITth+MR0MuqV+RUDeN4t8
-	ciaRehkWAnHvMR/6Vs/TaU57vufdBDbTRllj1oEPB21eSHD6gTdWNn+wiV6jjBSt5U2/VSHtMqYPO
-	EQdEA8MgVzHTIgHIbA5QbLfsy/PBV8kGF4i+bwcculkFQC66GGbzKsT0FTdJWTxAwy8xUp/i9URK0
-	CT/jCHtPgMQgBrBucAidZriv7/T6caOQmHb/eS9B5FG9oXJp0AaJBBH5M9LRU1LSCG9mk2WAkXaM+
-	eoRaOd3g==;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bOoYxWO9Y/+YHiT5OUdexIFUjhWnAvvkqrCAkrMTBJc=; b=fYXBXKlDFX26r2yWhzPnm2Bnlb
+	0xZddDx20/fDCi+EhQ2LyL0x4te5Rh9iRrp7QTttFEc8ItkziOWZG0W3AkEr1xC55uMagjGgr1/tw
+	NPs1RBx2+Al9kmvbzEOgHGOjit1Zeuv4zYlbxeG5007wH3wGGax8+kTnMIwXgO664E5XuLANhBifc
+	q671SbZweaVwykRQKjHnGUNjxZep75FyEjeSE+e2uf/G9NBQ6piDtWudiG3ZJhCmR97b49pkdD93F
+	83y3I8WhdRSWi2aYgLUqI5GMomsdeXgxD1KndT6JcDHpuLRG99t/bGITzWqoz6hRaVYurxvCmYbfn
+	v64gfD4w==;
 Received: from [189.78.222.70] (helo=[192.168.15.100])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wY4cf-00GgP4-Cx; Fri, 12 Jun 2026 18:20:45 +0200
+	id 1wY4cU-00GgP4-Mv; Fri, 12 Jun 2026 18:20:34 +0200
 From: =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-Date: Fri, 12 Jun 2026 13:20:15 -0300
-Subject: [PATCH v3 2/7] treewide: Get rid of get_task_comm()
+Subject: [PATCH v3 0/7] sched: Add support for long task name
+Date: Fri, 12 Jun 2026 13:20:13 -0300
+Message-Id: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260612-tonyk-long_name-v3-2-7989b66e8a99@igalia.com>
-References: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
-In-Reply-To: <20260612-tonyk-long_name-v3-0-7989b66e8a99@igalia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XO0QqCMBQG4FeJXbfYztSyq94jIrZ51JVu4UwS8
+ d3bjKDw8of/fP+ZiMfOoCfHzUQ6HIw3zoYgthuia2krpKYImQCDjKU8o72z4502zlZXK1ukKi9
+ FkkpULOEkXD06LM1rEc+XT/ZPdUPdRyY2auN7143L5MBj76vvV/rAKaNCwwFQypwjnEwlGyN32
+ rUk8gP8AJCsAYiAgDJTRfhQJ3/APM9vg6TusQIBAAA=
+X-Change-ID: 20260516-tonyk-long_name-b9f345aeb041
 To: Peter Zijlstra <peterz@infradead.org>, 
  Juri Lelli <juri.lelli@redhat.com>, 
  Vincent Guittot <vincent.guittot@linaro.org>, 
@@ -88,14 +90,14 @@ Cc: linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
  linux-api@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
 X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: jhqpp9ekqmkfysamdiwzpt37adqennhx
-X-Rspamd-Queue-Id: 886272000D
-X-HE-Tag: 1781281259-99787
-X-HE-Meta: U2FsdGVkX1+LqGvwWeKl0Yjm3jSNxJYpfLRerN+LVoGXBfhFNd3fDvI9G4Qf9D3WXckBdsCfKD2lKcRQKEDQ5wLRXtboDIgaXDJl4Ba0eUE+FeAxX5at48cc5w/QyGfH9SrjSRYdfnA2HYgkrz4zDFtmK/bSBfBfYFjgVOIp8pzkpbJnxfaTt7qPxj0lTb2eDaUdMVX8sANWnxAMhX5rsiG/6JHAwBMoXV7Sm/78j31ztjnxWTvl08eLxr13YmS+BJZoQP0oE/73mxqfbVQPLCImBFlTrUXwIebZJnL0c0xvVtGcPBE1vwCcTESndgywMtJcAQ6Ulh0/ehJAROuMXkhQ37Sk+6ArhzV+WHN3Wsg2J/ch+7epk2PQxSF8rsCoDrRHqtr2Y819o03hKAEJuov3t51rwn/o5aLjZoHf/OQMwoYbcELRM3D57mo0cR0W3Qz6z4GncmixTlCynOzmeHxAL9u98z0KQWzALPe0oYZTFxEYAgHtcnhqmLHR77eDIETavmdyVLIiDfyBD/39X++7m7qxUl4E/bvhEScXBL6RPfbr/6v+AGlkKW1udQQGopQabys2g5nwPP8R1rcJ3qjynRF+q6pQXfPsW4fy2vWrzMUSOBEpxZX43fUPhalxkv3GedWcR2vIujnbU0Zptnh74drqwMWQobaNdFOhRRwTGW1/ticOymRjI3RwAS33NREj15eDMC0brEG1ZemOQ6X9jveMysUnCl6Ka6bgRWCo70do1Ht9cxYqZwnFpnIFCcOJfPC2jwrwWwWwlvlF+yZde6PlRhQXll+aXA4D8IMjAId69XQX+P/3ww2WxvsjxiQuab/nUGFfoZz+0oHNFrZxGF3yM70k3qZMVB0cxak7tuLWMxW+3APTUmAAjZDIASJJ4ErbsdgGQrZ6NWvFHT8MclvaNNHHPtYG4jXH2gEOSgh78CTWI7i9oBwOKroVaHS0yeZqW0PptzbdOxq
- DJ9AN5Al
- QITAhenzcqUGYbzT48rVZDu0J7WGwMEtMUdXj0o6WB+XK0gaf8f00xGzSl9+oz7ZV6XQK5P3qM8W3ATzzEMP9o2Ik6ClsErhnioNJqt0c2WlmcxoZX5WlVjAQefbzMeo/3PACtHHHEgbKdCR/Lpy+8YRV+BeyBfLy2cTmv8KH7hD+l1Ca9HQkW4VF+3k86cA/CUfE5j0RCRnVQgEMiW6b15ulbOFtuFg3CcOiZGCPNhitLzqqlI1/BS0J7iMzTVAsq7syYYO75KbKPbw42SBQhxrqSciIVZ8RSGsUjSj0AplkjlxutcHe/fr3ZpGIJeY74iZapX5Sjp2KyYGvXCsxYVEk/LJthHoS/o3jUObC0F/V1DsiJUiQQ4itWtEwbem5S1i0kDBJo9brh308uL+xXjnDlXHOXqAwjAgHPYOzVQrwaGXVPXQYq2AOUsh+l9BYiLUsdRISxCFIqjqMnuZE+n9x6EATTsz5Ldcoeb5vlo8vAPfyGkgrNx+6lQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C11A140011
+X-Stat-Signature: 6kz7q1ysqcnuncoo1exgxkgfym86mt1q
+X-HE-Tag: 1781281260-512591
+X-HE-Meta: U2FsdGVkX18B3x/wb8FO96b1fgglQ2NSz0hRSXgFgGvkcFskUGuq3P7oM7tiVhkYWVjkj2iqxuObP/9bQpiQgl+TxAHWfLiyNsrNtdNm8FWRx6J6Sw85h97Q7OiRTY2vNeTVdfFCYvtKtN8qNI2E7Xjd18xbNZIpjC2w4h/YPDQeZ88TX/cHcCOoY1SknSNB0NAjc20IKhqBIpXx4IiGNfQhNOkXqAZ2r/ZdPmrN8jn6qoIo9ZJUg7J5VgVjRKkXuqgsNYTNdx4ZYRASG46EpeDOR53U/sFdAQvk04lnMmIkijTzZuuIPIYHuwZZ11fpT0DoA5l8pOYa/qQIl0mZD8pBORETL66WZAYQCL2QNqIx6Wdtqzl88YBlgzZz3S5dpAA5origg9d6HfizWcT4HunUP2f74fxuMD+r50Ra7mNg9FWU6sDlX22W7ukw1nei3+0RdfqgMbhQ2PFZiC7Mywi3nsojB2bnaNsIzsT3VDX+hZsmwJlp8n+MuFXRfNciiCEJva91Kyy1TVIrkgu6i5KDEFPxSBCTetcjeQFanOBxz56mJofuEcyjNFMaWsoCIanFR4FN+ePCPpxvUoRDY3nuMGIFTUgqujyA+YTEagl3DMZxD3ZK1DOOgN2iimVUcjDQOkJyDzKq0otlM9xjPoxs8oSoSZhxk2m6vBfdEUZvtSqi50IY4XxcNj5fa/9oyXMHENOj28LyFH+lQ22MEbixlLhv/bqxYbqiZdfbLuw206UUb6LHcX53RcrHSemtLUIUljCCgO7Lr/jcjylZrbRSyeGgR/rRY+SiQNJvCFi0B8y76H92GcM2kyTaIa9vVDyAJB1wDU96j9WiFltKhXqEhqLe1Nf5n0SZmTL9BE/jyA1ssOX0hySmmRvmahUi641f4Ha/BF82rYyZDSNzstdqgyjo0cfS3p6RJUeX5w1uB0mqx7YXlge/sUbD1kq7kGE6RUxzq66tqbOlKd5
+ lNYbNQgr
+ cCma7andV7LWv3I8uwRMql58D0zNEoYsoF24g5Vst22FAULvIkbLh2RZnAxFXXBVfi+TOAkhK+Di4YIIH9ooSuZPEGKp4Sce/6oSg5ucifG2wZ6hhKtTmtWvJw0k8siXC5/k27E+b5ysBnxTR/Ac9vV/l8S2rkvySIHkoP3CL1JpEA5P74RAEVxjvTHOu57q4k56afPfsskvxlREIqEgWcmLicBuiaNnQSqrmQI8/yOKTaUsVhIQqzBO8GQzcX3wUL278vpAiDt2XXLeM69lAStLF4NxWp8mQnIA+nrVQVir8nGO2a2lIm275ChfrVb/bmUkKCpfl0glljPTy9K1uZddpif3xiGFhvBM82Hp+/2KDzaGEUIR9NS7MNsf9p4H0FVw3yquZpUarmvN4kzPLXa4Sg781QArcUu6zX4Gsncn3gr+bGY3j+ABZI+OTKI2qYfGBp/WJswY5wJZPEQdnBTzs9WpvIhYvzvGKO1UFKN9zAWiaNyxkAOMU35Walh7uwxYvn3gTGMgEEbI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,25 +105,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 4cc0473d7754 ("get rid of __get_task_comm()"),
-get_task_comm() does just a redundant check for the buffer size and call
-strscpy_pad(). Replace get_task_comm() calls with strscpy_pad(), that will
-do the right thing if the buffers sizes doesn't match: zero-pad if it's
-bigger, and truncate if it's smaller.
+* Use case
 
-Link: https://lore.kernel.org/lkml/CAHk-=wi5c=_-FBGo_88CowJd_F-Gi6Ud9d=TALm65ReN7YjrMw@mail.gmail.com/
-Signed-off-by: André Almeida <andrealmeid@igalia.com>
+When debugging and tracing complex programs with hundreds of threads, 16 bytes
+long thread names are not enough anymore. cmd_line can show a lot of
+characters, but it's not affected by pthread_setname_np() or
+prctl(PR_SET_NAME), so let's give the same love kthreads got with commit
+6b59808bfe48 ("workqueue: Show the latest workqueue name in 
+/proc/PID/{comm,stat,status}"). This work creates a new
+PR_{SET,GET}_EXT_NAME that supports 64 bytes long names.
+
+It also introduces a new function copy_task_comm() that ensures that the string
+is always NUL-terminated despite of mismatching sizes of buffers. We can't just
+use strscpy() because it proved to give some overhead[0] in tracing.
+
+* Patchset
+
+Patch 1 is just a minor comment update.
+
+Patch 2 and 3 do some prep work in order to avoid buffer overflows around
+the kernel, now that current->comm is bigger. It also make sure that if
+the destination buffer is smaller than TASK_COMM_EXT_LEN, it will
+be NUL-terminated.
+
+Patch 4 adds a KUnit for the new function copy_task_comm()
+
+Patch 5 sets current->comm length to TASK_COMM_EXT_LEN and take care of
+making sure that current userspace APIs gets only TASK_COMM_LEN.
+
+Patch 6 creates new prctl() to set and get all the TASK_COMM_EXT_LEN bytes.
+
+Patch 7 adapts the existing selftest for this new interface.
+
+* Testing
+
+selftests/prctl/set-process-name.c survives this patchset, and it was extended
+to the new interface. KUnit test was modified to support copy_task_comm().
+
+I ran the same benchmark as at [0], and the result shows a increase of 0.7% of
+overhead when running `perf stat -r 100 hackbench` with sched trace events
+enabled (`trace-cmd start -e sched`):
+
+Without this patchset:
+
+ 213,745,340 cycles:u # 0.119 GHz ( +-  0.33% )
+
+After:
+
+ 215,111,672 cycles:u # 0.119 GHz ( +-  0.36% )
+
+* Changes
+
+Since v2:
+ - Add a custom function copy_task_comm() that uses memcpy when possible and
+ fallback to strscpy(). It always ensures that the string in NUL-terminated
+ - Add KUnit test for the new function
+ - Link to v2: https://patch.msgid.link/20260524-tonyk-long_name-v2-0-332f6bd041c4@igalia.com
+
+Since v1:
+ - Replace new strtostr() with strscpy()
+ - Don't replace memcpy in tools/
+ - Link to v1: https://patch.msgid.link/20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com
+
+[0] https://lore.kernel.org/lkml/20260526190625.3f4aca0a@gandalf.local.home/
+
 ---
-Changes from v1:
- - Fix for security/ipe/audit.c and net/netfilter/nf_tables_api.c
----
+André Almeida (7):
+      sched: Update get_task_comm() comment
+      treewide: Get rid of get_task_comm()
+      treewide: Replace memcpy(..., current->comm) with copy_task_comm()
+      lib/string_kunit: Add test for copy_task_comm()
+      sched: Extend task command name with TASK_COMM_EXT_LEN
+      prctl: Add support for long user thread names
+      selftests: prctl: Add test for long thread names
+
  drivers/connector/cn_proc.c                        |  2 +-
  drivers/dma-buf/sw_sync.c                          |  2 +-
  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c   |  2 +-
  drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c |  2 +-
  drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c            |  2 +-
  drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c    |  2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |  4 ++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |  4 +--
  drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c       |  2 +-
  drivers/gpu/drm/lima/lima_ctx.c                    |  2 +-
  drivers/gpu/drm/panfrost/panfrost_gem.c            |  2 +-
@@ -133,459 +197,38 @@ Changes from v1:
  fs/binfmt_elf.c                                    |  2 +-
  fs/binfmt_elf_fdpic.c                              |  2 +-
  fs/proc/array.c                                    |  2 +-
- include/linux/sched.h                              | 19 -------------------
- kernel/audit.c                                     |  6 ++++--
- kernel/auditsc.c                                   |  6 ++++--
- kernel/printk/printk.c                             |  2 +-
- kernel/sys.c                                       |  2 +-
+ include/linux/coredump.h                           |  2 +-
+ include/linux/sched.h                              | 35 ++++++++++----------
+ include/linux/tracepoint.h                         |  4 +--
+ include/trace/events/block.h                       | 10 +++---
+ include/trace/events/coredump.h                    |  2 +-
+ include/trace/events/f2fs.h                        |  4 +--
+ include/trace/events/oom.h                         |  2 +-
+ include/trace/events/osnoise.h                     |  2 +-
+ include/trace/events/sched.h                       | 10 +++---
+ include/trace/events/signal.h                      |  2 +-
+ include/trace/events/task.h                        |  7 ++--
+ include/uapi/linux/prctl.h                         |  3 ++
+ kernel/audit.c                                     |  6 ++--
+ kernel/auditsc.c                                   |  6 ++--
+ kernel/printk/nbcon.c                              |  2 +-
+ kernel/printk/printk.c                             |  4 +--
+ kernel/sys.c                                       | 23 ++++++++++---
+ lib/tests/string_kunit.c                           | 38 ++++++++++++++++++++++
  net/bluetooth/hci_sock.c                           |  2 +-
- net/netfilter/nf_tables_api.c                      |  4 +++-
- security/integrity/integrity_audit.c               |  3 ++-
- security/ipe/audit.c                               |  3 ++-
+ net/netfilter/nf_tables_api.c                      |  4 ++-
+ security/integrity/integrity_audit.c               |  3 +-
+ security/ipe/audit.c                               |  3 +-
  security/landlock/domain.c                         |  2 +-
- security/lsm_audit.c                               |  7 ++++---
- 29 files changed, 42 insertions(+), 52 deletions(-)
+ security/lsm_audit.c                               |  7 ++--
+ tools/testing/selftests/prctl/set-process-name.c   | 36 ++++++++++++++++++++
+ 43 files changed, 178 insertions(+), 79 deletions(-)
+---
+base-commit: 5d6919055dec134de3c40167a490f33c74c12581
+change-id: 20260516-tonyk-long_name-b9f345aeb041
 
-diff --git a/drivers/connector/cn_proc.c b/drivers/connector/cn_proc.c
-index 0056ab81fbc3..c78243ed3c2a 100644
---- a/drivers/connector/cn_proc.c
-+++ b/drivers/connector/cn_proc.c
-@@ -278,7 +278,7 @@ void proc_comm_connector(struct task_struct *task)
- 	ev->what = PROC_EVENT_COMM;
- 	ev->event_data.comm.process_pid  = task->pid;
- 	ev->event_data.comm.process_tgid = task->tgid;
--	get_task_comm(ev->event_data.comm.comm, task);
-+	strscpy_pad(ev->event_data.comm.comm, task->comm);
- 
- 	memcpy(&msg->id, &cn_proc_event_id, sizeof(msg->id));
- 	msg->ack = 0; /* not used */
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index 8df20b0218a9..d501657ad801 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -312,7 +312,7 @@ static int sw_sync_debugfs_open(struct inode *inode, struct file *file)
- 	struct sync_timeline *obj;
- 	char task_comm[TASK_COMM_LEN];
- 
--	get_task_comm(task_comm, current);
-+	strscpy_pad(task_comm, current->comm);
- 
- 	obj = sync_timeline_create(task_comm);
- 	if (!obj)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-index 6a364357522b..13c8857e4ffb 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-@@ -74,7 +74,7 @@ struct amdgpu_amdkfd_fence *amdgpu_amdkfd_fence_create(u64 context,
- 	/* This reference gets released in amdkfd_fence_release */
- 	mmgrab(mm);
- 	fence->mm = mm;
--	get_task_comm(fence->timeline_name, current);
-+	strscpy_pad(fence->timeline_name, current->comm);
- 	spin_lock_init(&fence->lock);
- 	fence->svm_bo = svm_bo;
- 	fence->context_id = context_id;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
-index 4c5e38dea4c2..faf0f36d8328 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eviction_fence.c
-@@ -129,7 +129,7 @@ int amdgpu_evf_mgr_rearm(struct amdgpu_eviction_fence_mgr *evf_mgr,
- 		return -ENOMEM;
- 
- 	ev_fence->evf_mgr = evf_mgr;
--	get_task_comm(ev_fence->timeline_name, current);
-+	strscpy_pad(ev_fence->timeline_name, current->comm);
- 	spin_lock_init(&ev_fence->lock);
- 	dma_fence_init64(&ev_fence->base, &amdgpu_eviction_fence_ops,
- 			 &ev_fence->lock, evf_mgr->ev_fence_ctx,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 6c644cfe6695..c45630457155 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -4419,7 +4419,7 @@ int amdgpu_ras_init(struct amdgpu_device *adev)
- 	}
- 
- 	con->init_task_pid = task_pid_nr(current);
--	get_task_comm(con->init_task_comm, current);
-+	strscpy_pad(con->init_task_comm, current->comm);
- 
- 	mutex_init(&con->critical_region_lock);
- 	INIT_LIST_HEAD(&con->critical_region_head);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-index e2d5f04296e1..8fdc38d8d64d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
-@@ -85,7 +85,7 @@ int amdgpu_userq_fence_driver_alloc(struct amdgpu_device *adev,
- 
- 	fence_drv->adev = adev;
- 	fence_drv->context = dma_fence_context_alloc(1);
--	get_task_comm(fence_drv->timeline_name, current);
-+	strscpy_pad(fence_drv->timeline_name, current->comm);
- 
- 	*fence_drv_req = fence_drv;
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 9ba9de16a27a..de80d0ace905 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2571,10 +2571,10 @@ void amdgpu_vm_set_task_info(struct amdgpu_vm *vm)
- 		return;
- 
- 	vm->task_info->task.pid = current->pid;
--	get_task_comm(vm->task_info->task.comm, current);
-+	strscpy_pad(vm->task_info->task.comm, current->comm);
- 
- 	vm->task_info->tgid = current->tgid;
--	get_task_comm(vm->task_info->process_name, current->group_leader);
-+	strscpy_pad(vm->task_info->process_name, current->group_leader->comm);
- }
- 
- /**
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 2a241a5b12c4..f8ce59d8587a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -563,7 +563,7 @@ static int amdgpu_vram_mgr_new(struct ttm_resource_manager *man,
- 	}
- 
- 	vres->task.pid = task_pid_nr(current);
--	get_task_comm(vres->task.comm, current);
-+	strscpy_pad(vres->task.comm, current->comm);
- 	list_add_tail(&vres->vres_node, &mgr->allocated_vres_list);
- 
- 	if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS && adjust_dcc_size) {
-diff --git a/drivers/gpu/drm/lima/lima_ctx.c b/drivers/gpu/drm/lima/lima_ctx.c
-index 68ede7a725e2..e8c5c3601bf1 100644
---- a/drivers/gpu/drm/lima/lima_ctx.c
-+++ b/drivers/gpu/drm/lima/lima_ctx.c
-@@ -29,7 +29,7 @@ int lima_ctx_create(struct lima_device *dev, struct lima_ctx_mgr *mgr, u32 *id)
- 		goto err_out0;
- 
- 	ctx->pid = task_pid_nr(current);
--	get_task_comm(ctx->pname, current);
-+	strscpy_pad(ctx->pname, current->comm);
- 
- 	return 0;
- 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gem.c b/drivers/gpu/drm/panfrost/panfrost_gem.c
-index 3a7fce428898..11936c4d3573 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gem.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gem.c
-@@ -36,7 +36,7 @@ static void panfrost_gem_debugfs_bo_add(struct panfrost_device *pfdev,
- 					struct panfrost_gem_object *bo)
- {
- 	bo->debugfs.creator.tgid = current->tgid;
--	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
-+	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
- 
- 	mutex_lock(&pfdev->debugfs.gems_lock);
- 	list_add_tail(&bo->debugfs.node, &pfdev->debugfs.gems_list);
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index cd49859da89b..b44fd715c17e 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -46,7 +46,7 @@ static void panthor_gem_debugfs_bo_add(struct panthor_gem_object *bo)
- 						    struct panthor_device, base);
- 
- 	bo->debugfs.creator.tgid = current->tgid;
--	get_task_comm(bo->debugfs.creator.process_name, current->group_leader);
-+	strscpy_pad(bo->debugfs.creator.process_name, current->group_leader->comm);
- 
- 	mutex_lock(&ptdev->gems.lock);
- 	list_add_tail(&bo->debugfs.node, &ptdev->gems.node);
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 2fe04d0f0e3a..8ee9de96acf6 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -3603,7 +3603,7 @@ static void group_init_task_info(struct panthor_group *group)
- 	struct task_struct *task = current->group_leader;
- 
- 	group->task_info.pid = task->pid;
--	get_task_comm(group->task_info.comm, task);
-+	strscpy_pad(group->task_info.comm, task->comm);
- }
- 
- static void add_group_kbo_sizes(struct panthor_device *ptdev,
-diff --git a/drivers/gpu/drm/virtio/virtgpu_ioctl.c b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-index c33c057365f8..d2bf221e8f01 100644
---- a/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_ioctl.c
-@@ -50,7 +50,7 @@ static void virtio_gpu_create_context_locked(struct virtio_gpu_device *vgdev,
- 	} else {
- 		char dbgname[TASK_COMM_LEN];
- 
--		get_task_comm(dbgname, current);
-+		strscpy_pad(dbgname, current->comm);
- 		virtio_gpu_cmd_context_create(vgdev, vfpriv->ctx_id,
- 					      vfpriv->context_init, strlen(dbgname),
- 					      dbgname);
-diff --git a/drivers/hwtracing/stm/core.c b/drivers/hwtracing/stm/core.c
-index f48c6a8a0654..c7715439964e 100644
---- a/drivers/hwtracing/stm/core.c
-+++ b/drivers/hwtracing/stm/core.c
-@@ -634,7 +634,7 @@ static ssize_t stm_char_write(struct file *file, const char __user *buf,
- 		char comm[sizeof(current->comm)];
- 		char *ids[] = { comm, "default", NULL };
- 
--		get_task_comm(comm, current);
-+		strscpy_pad(comm, current->comm);
- 
- 		err = stm_assign_first_policy(stmf->stm, &stmf->output, ids, 1);
- 		/*
-diff --git a/drivers/tty/tty_audit.c b/drivers/tty/tty_audit.c
-index d014af6ab060..d514a81d0a5c 100644
---- a/drivers/tty/tty_audit.c
-+++ b/drivers/tty/tty_audit.c
-@@ -77,7 +77,7 @@ static void tty_audit_log(const char *description, dev_t dev,
- 	audit_log_format(ab, "%s pid=%u uid=%u auid=%u ses=%u major=%d minor=%d comm=",
- 			 description, pid, uid, loginuid, sessionid,
- 			 MAJOR(dev), MINOR(dev));
--	get_task_comm(name, current);
-+	strscpy_pad(name, current->comm);
- 	audit_log_untrustedstring(ab, name);
- 	audit_log_format(ab, " data=");
- 	audit_log_n_hex(ab, data, size);
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 16a56b6b3f6c..d25922460b63 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1557,7 +1557,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
- 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
- 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
- 	rcu_read_unlock();
--	get_task_comm(psinfo->pr_fname, p);
-+	strscpy_pad(psinfo->pr_fname, p->comm);
- 
- 	return 0;
- }
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 7e3108489c83..c4d4e59ff34d 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -1371,7 +1371,7 @@ static int fill_psinfo(struct elf_prpsinfo *psinfo, struct task_struct *p,
- 	SET_UID(psinfo->pr_uid, from_kuid_munged(cred->user_ns, cred->uid));
- 	SET_GID(psinfo->pr_gid, from_kgid_munged(cred->user_ns, cred->gid));
- 	rcu_read_unlock();
--	get_task_comm(psinfo->pr_fname, p);
-+	strscpy_pad(psinfo->pr_fname, p->comm);
- 
- 	return 0;
- }
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 90fb0c6b5f99..c8c3fbd9bfa9 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -110,7 +110,7 @@ void proc_task_name(struct seq_file *m, struct task_struct *p, bool escape)
- 	else if (p->flags & PF_KTHREAD)
- 		get_kthread_comm(tcomm, sizeof(tcomm), p);
- 	else
--		get_task_comm(tcomm, p);
-+		strscpy_pad(tcomm, p->comm);
- 
- 	if (escape)
- 		seq_escape_str(m, tcomm, ESCAPE_SPACE | ESCAPE_SPECIAL, "\n\\");
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 60d004a49a27..b6de742b1155 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2000,25 +2000,6 @@ extern void __set_task_comm(struct task_struct *tsk, const char *from, bool exec
- 	__set_task_comm(tsk, from, false);		\
- })
- 
--/*
-- * - Why not use task_lock()?
-- *   User space can randomly change their names anyway, so locking for readers
-- *   doesn't make sense. For writers, locking is probably necessary, as a race
-- *   condition could lead to long-term mixed results.
-- *   The logic inside __set_task_comm() ensures that the task comm is
-- *   always NUL-terminated and zero-padded. Therefore the race condition between
-- *   reader and writer is not an issue.
-- *
-- * - BUILD_BUG_ON() can help prevent the buf from being truncated.
-- *   Since the callers don't perform any return value checks, this safeguard is
-- *   necessary.
-- */
--#define get_task_comm(buf, tsk) ({			\
--	BUILD_BUG_ON(sizeof(buf) < TASK_COMM_LEN);	\
--	strscpy_pad(buf, (tsk)->comm);			\
--	buf;						\
--})
--
- static __always_inline void scheduler_ipi(void)
- {
- 	/*
-diff --git a/kernel/audit.c b/kernel/audit.c
-index e1d489bc2dff..6fc867adbf3d 100644
---- a/kernel/audit.c
-+++ b/kernel/audit.c
-@@ -1662,7 +1662,8 @@ static void audit_log_multicast(int group, const char *op, int err)
- 	audit_put_tty(tty);
- 	audit_log_task_context(ab); /* subj= */
- 	audit_log_format(ab, " comm=");
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 	audit_log_d_path_exe(ab, current->mm); /* exe= */
- 	audit_log_format(ab, " nl-mcgrp=%d op=%s res=%d", group, op, !err);
- 	audit_log_end(ab);
-@@ -2465,7 +2466,8 @@ void audit_log_task_info(struct audit_buffer *ab)
- 			 audit_get_sessionid(current));
- 	audit_put_tty(tty);
- 	audit_log_format(ab, " comm=");
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 	audit_log_d_path_exe(ab, current->mm);
- 	audit_log_task_context(ab);
- }
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index ab54fccba215..8e4f70105a13 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2877,7 +2877,8 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
- 	audit_log_format(ab, " pid=%u", task_tgid_nr(current));
- 	audit_log_task_context(ab); /* subj= */
- 	audit_log_format(ab, " comm=");
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 	audit_log_end(ab);
- }
- EXPORT_SYMBOL_GPL(__audit_log_nfcfg);
-@@ -2900,7 +2901,8 @@ static void audit_log_task(struct audit_buffer *ab)
- 			 sessionid);
- 	audit_log_task_context(ab);
- 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 	audit_log_d_path_exe(ab, current->mm);
- }
- 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 0323149548f6..1f04e753ca02 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2247,7 +2247,7 @@ static u16 printk_sprint(char *text, u16 size, int facility,
- static void printk_store_execution_ctx(struct printk_info *info)
- {
- 	info->caller_id2 = printk_caller_id2();
--	get_task_comm(info->comm, current);
-+	strscpy_pad(info->comm, current->comm);
- }
- 
- static void pmsg_load_execution_ctx(struct printk_message *pmsg,
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 62e842055cc9..1d5152d2395e 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2609,7 +2609,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 		proc_comm_connector(me);
- 		break;
- 	case PR_GET_NAME:
--		get_task_comm(comm, me);
-+		strscpy_pad(comm, me->comm);
- 		if (copy_to_user((char __user *)arg2, comm, sizeof(comm)))
- 			return -EFAULT;
- 		break;
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 0290dea081f6..38e16ba2de38 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -106,7 +106,7 @@ static bool hci_sock_gen_cookie(struct sock *sk)
- 			id = 0xffffffff;
- 
- 		hci_pi(sk)->cookie = id;
--		get_task_comm(hci_pi(sk)->comm, current);
-+		strscpy_pad(hci_pi(sk)->comm, current->comm);
- 		return true;
- 	}
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 87387adbca65..cd00d4da1316 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9709,9 +9709,11 @@ static int nf_tables_fill_gen_info(struct sk_buff *skb, struct net *net,
- 	if (!nlh)
- 		goto nla_put_failure;
- 
-+	strscpy_pad(buf, current->comm);
-+
- 	if (nla_put_be32(skb, NFTA_GEN_ID, htonl(nft_base_seq(net))) ||
- 	    nla_put_be32(skb, NFTA_GEN_PROC_PID, htonl(task_pid_nr(current))) ||
--	    nla_put_string(skb, NFTA_GEN_PROC_NAME, get_task_comm(buf, current)))
-+	    nla_put_string(skb, NFTA_GEN_PROC_NAME, buf))
- 		goto nla_put_failure;
- 
- 	nlmsg_end(skb, nlh);
-diff --git a/security/integrity/integrity_audit.c b/security/integrity/integrity_audit.c
-index d8d9e5ff1cd2..98060060929d 100644
---- a/security/integrity/integrity_audit.c
-+++ b/security/integrity/integrity_audit.c
-@@ -54,7 +54,8 @@ void integrity_audit_message(int audit_msgno, struct inode *inode,
- 			 audit_get_sessionid(current));
- 	audit_log_task_context(ab);
- 	audit_log_format(ab, " op=%s cause=%s comm=", op, cause);
--	audit_log_untrustedstring(ab, get_task_comm(name, current));
-+	strscpy_pad(name, current->comm);
-+	audit_log_untrustedstring(ab, name);
- 	if (fname) {
- 		audit_log_format(ab, " name=");
- 		audit_log_untrustedstring(ab, fname);
-diff --git a/security/ipe/audit.c b/security/ipe/audit.c
-index 93fb59fbddd6..90a6acfb7cdf 100644
---- a/security/ipe/audit.c
-+++ b/security/ipe/audit.c
-@@ -145,7 +145,8 @@ void ipe_audit_match(const struct ipe_eval_ctx *const ctx,
- 	audit_log_format(ab, "ipe_op=%s ipe_hook=%s enforcing=%d pid=%d comm=",
- 			 op, audit_hook_names[ctx->hook], READ_ONCE(enforce),
- 			 task_tgid_nr(current));
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 
- 	if (ctx->file) {
- 		audit_log_d_path(ab, " path=", &ctx->file->f_path);
-diff --git a/security/landlock/domain.c b/security/landlock/domain.c
-index 06b6bd845060..a35a27f523e6 100644
---- a/security/landlock/domain.c
-+++ b/security/landlock/domain.c
-@@ -101,7 +101,7 @@ static struct landlock_details *get_current_details(void)
- 	memcpy(details->exe_path, path_str, path_size);
- 	details->pid = get_pid(task_tgid(current));
- 	details->uid = from_kuid(&init_user_ns, current_uid());
--	get_task_comm(details->comm, current);
-+	strscpy_pad(details->comm, current->comm);
- 	return details;
- }
- 
-diff --git a/security/lsm_audit.c b/security/lsm_audit.c
-index 737f5a263a8f..a587ffecd985 100644
---- a/security/lsm_audit.c
-+++ b/security/lsm_audit.c
-@@ -276,8 +276,8 @@ void audit_log_lsm_data(struct audit_buffer *ab,
- 			if (pid) {
- 				char tskcomm[sizeof(tsk->comm)];
- 				audit_log_format(ab, " opid=%d ocomm=", pid);
--				audit_log_untrustedstring(ab,
--				    get_task_comm(tskcomm, tsk));
-+				strscpy_pad(tskcomm, tsk->comm);
-+				audit_log_untrustedstring(ab, tskcomm);
- 			}
- 		}
- 		break;
-@@ -417,7 +417,8 @@ static void dump_common_audit_data(struct audit_buffer *ab,
- 	char comm[sizeof(current->comm)];
- 
- 	audit_log_format(ab, " pid=%d comm=", task_tgid_nr(current));
--	audit_log_untrustedstring(ab, get_task_comm(comm, current));
-+	strscpy_pad(comm, current->comm);
-+	audit_log_untrustedstring(ab, comm);
- 	audit_log_lsm_data(ab, a);
- }
- 
-
--- 
-2.54.0
+Best regards,
+--  
+André Almeida <andrealmeid@igalia.com>
 
 
