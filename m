@@ -4,138 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A772CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE14CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:57:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F8DC6B0005; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
+	id 8A4276B0005; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A8A36B0088; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
+	id 8064E6B0088; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BF056B008C; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
+	id 6F56D6B008C; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E7EA6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE76990A28
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:56:16 +0000 (UTC)
-X-FDA: 84870805152.13.DA70A2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 202404000A
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:56:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTXgxiEE;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781258175;
-	b=veQDhv0DVOFbZK3AlwZy/oai8l7neoZ8H1XAcRh0yjhe0RccvjFl6rHd5iu/ZXDpk44hNl
-	Ay70lNf2JtEK2o9FrGda4I3k/93TEpbcLaYSd40UoC1YsMklNcsCUv6yYR+oQrCF9X7egQ
-	J4G4+D6lZR4ywdU9JJ/uJ7kLiZZQIMM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTXgxiEE;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EFBB6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 115B41201A9
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:57:25 +0000 (UTC)
+X-FDA: 84870808050.15.0DB1339
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3358D40002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:57:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZOah2sde;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781258175;
+	s=arc-20220608; t=1781258243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l6jlVZrTMp9LTygLVsRPuYIo4sYNTWWXIWJqAK8CgDc=;
-	b=owwr5CvGCwFEz7bmafFFWPdTeSHmyyKCZHwVbKYCbK7VTRNt5fZ80j676DuwvpsE9YNxe8
-	3HZXji+B/CO0PAEgjW+LReN4H9dpNFBL8aMhggwxRaaehq3IOB+1JLjtsB1EyhVCtLLHRG
-	C7W7FZD4fTYk7J1/W1H8d1UJZsgGdvo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 62C1860052;
-	Fri, 12 Jun 2026 09:56:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A11F000E9;
-	Fri, 12 Jun 2026 09:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781258174;
-	bh=l6jlVZrTMp9LTygLVsRPuYIo4sYNTWWXIWJqAK8CgDc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QTXgxiEEC9QGJWYpS0Z9cwaz1rtLdzbQ0fpUyZng1u68HugBNa2NEwfLuqiZnKGKZ
-	 cNl7io1VPRSEnsQkN9bp62xX7SXyBksBKi/w7N80y0U8MkD37s2QdZb8ppf/2yKFKQ
-	 nCfHUJgFDOIZWUZW6Ka4x1oAl+nPyn9/kvhGWfXCEF90qZLHBUUN8p5YA7qX/3cPO5
-	 p4OTjdbTz2i3b7fUplvPwFuWk8m0N9IOebB2kC3HfFK58eailvNao1AEb3ezWyxzM7
-	 UOcypfufLVWwA8QrH6/k7mroDWe0gf4YsgkYNHnAa2bxtDOZoQ8/K2RUVIW1eUomv6
-	 PI8tKy2MOyw0Q==
-Message-ID: <aca6aedd-d6dc-46fe-8d7f-7b5c1d7bad40@kernel.org>
-Date: Fri, 12 Jun 2026 11:56:09 +0200
+	bh=40ldlKf5NOiyVD+LSgw0DbXbrN4Mt4O2B8RW5UMcBu4=;
+	b=JJ54UhBAtnXo84mF1Qxd3bun+U3PS9CgDj1SfgPN8X5Fslc0+ZgFtBrLnlAdYSld6ARvV3
+	Sncxxs8IEuXtMxOKAX7vd6Dxe6UkD1NLwca1gz0R/8WYpEhDuUjAbBj1liy25BZ96GxOpe
+	pbsaNPj03KZ1BOdt7Nn7xfsVF81pImY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZOah2sde;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781258243;
+	b=qu97ukUAkvbHv77bxcRKgSBj9oM4vIj0t7Q8iStN5j7fAh4dGTukmJPo3j5Uc66lukovUx
+	Yu1NM9bvvEfmK9m9u2sHtr0bASxHt70U9oWm91L1zHlwh8usnhT0BHLDKS/SwtPB0W++7Q
+	qPBqvJwDQ6/NJFWtfF8G53imkLZ/cJg=
+Message-ID: <6bc446b7-8e25-4add-9d72-a3c9e9191533@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781258239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=40ldlKf5NOiyVD+LSgw0DbXbrN4Mt4O2B8RW5UMcBu4=;
+	b=ZOah2sdeCuUGurCIybhtURWxH+ixhU/M4kIZymHrTnh2TYnA+vn/hWbbamX9WGdrRoOPmJ
+	o1axy3sETPr0P5hOR2ShCEtWCvLO+HIgHTT8WummMAqttk0zCGfJazkYvXTou9ClxrSeZb
+	tVoYqx4oHxW9/Y2yvGuQTA4YT+eKUDw=
+Date: Fri, 12 Jun 2026 17:57:12 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/16] mm/slab: replace struct partial_context with
- slab_alloc_context
+Subject: Re: [PATCH RFC] mm/kmemleak: avoid soft lockup when scanning task
+ stacks
 Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
- <aiuCiXBBB64AfPjI@fedora>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <aiuCiXBBB64AfPjI@fedora>
-Content-Type: text/plain; charset=UTF-8
+To: Breno Leitao <leitao@debian.org>
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org
+References: <20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org>
+ <20260612031605.58235-1-lance.yang@linux.dev> <aivJ5Dv0hAQ1sJu1@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <aivJ5Dv0hAQ1sJu1@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 202404000A
-X-Stat-Signature: z6ucxjqpuzj88onm75ek5wj8yoocibu3
-X-Rspamd-Server: rspam03
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 3358D40002
+X-Stat-Signature: h3agmqfbojk8h1whj8fxsauw9cntm7sg
 X-Rspam-User: 
-X-HE-Tag: 1781258174-908816
-X-HE-Meta: U2FsdGVkX188ttpxvFIG1jZuHeQKiUeXGIXoBaKhHlGR8OpxeGlfGYvcr4yWtbJpYDujjJqDZh8wrBJhAnhknPAvTl0m7Ts9fpeiVxwSpHheCBQEzcsuO6HVjaOekY92wtM7sjRfws1JQL1MLEwKozhHmvcFlqolpq0UGUIAgUeGptUkvq1PDUNIh+Y7axnADsVg5rF7Fp9FU+rAUeXWAIfiRiUwAWzZaPmlDRLRy80JuWkwoRGXTnnvQvY7dk5Z7KbG0hHdTUSS2x01LT6zK4Mdb1VzEzsH4DvULpMUX+sz+N+A9n1j4PKdVFMPERlaf/UApPIVOw0gRy/0DdLtbvnaNK9hJQMiU61/4VEwd+YM7CGVf/6WnWhZxhbo9ILBjQYuvV5GBbQ7qqo+WmGEieImqsuzv/wH9VJNwoPrEJKyPsSRg5OJ1aZIXNZPNQOQEoHk+uOEwuef1oKWVu4130aYCHB/zZj1UHax5t0aGZsTbwQ1pCOqvKLyjgN5SlXoM1lfxLqtMRWHYCEar6X8TKgMwbQTGG7qWeg5tfee6pc0b4VMuhsA9JZ6zbbg0p1xCGHuY3L3S1K8gazXStsW7YDsOhH0FBwS38KmKIHL4PPk+33R/2YIfWr6jtaMrvCA6v1GfijOGntxaeUbeeL1J8ng55hdTSe7ZLowrphaENopELHBO92NRgWuu7QoyBov6nOGaCFK5xSOKMar+Ud8bCRu+Pi6IeRZHlKlcT1OjZn8TtXLJl/4Ded2kqpIChsAhx3R/zTpGFgVhlnu1aCyTNDHcC8IodSnrsXYmgRP+LhO/X6mAQtw4UJNgkb3WpNaiY2rXGc6STFRrBtN+6krW8qoxoBkv8z4HNJpLtWKzif3tjQzyxrw7O9I0lOV+SQ0oBN5ZhgysDMKyXd8dmGdFG1B1UFnmaQUJjw6p3GJmNbWfD3FDellOBsoB2AwRLV3+52gCgFUrx5Re8fz91m
- +r6Bp79r
- xk7AELu51UxoLIvStaatoByQIGXPLAqWx8sV1MimCD73oYdhMQkRmBxJX/tbiUk3KMCyKgaoPhzfK77XPZc/ia6O994TtaR0bU4QkbRAC1RP67MD5vkj09fkFBm9PWQKvpC0itqX296RUnMOXJZiQSyXxMpkeJGbrGwK29XSdDhyQmpwDdVirl/Cc8FiTsW8/zFQ+CkuW8PXZWP1Kc9RhYgpSsJAswhfu48ta345yeMhtWz+6iV4lWjQy+lEHb3k8KaY2h97h9nKLUgYfwPlSZ6/9qeDpc5snJqSOCGnuqJ8fboQGW0wIWWdhmlOA4UuFy1Hsn9F+XRkUt31TRE7dw5a4u0IqhuZWNahIQ6PPaPuqaCpdJQicDGN0yg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781258241-486695
+X-HE-Meta: U2FsdGVkX1+RFoyI4H94Qbxsjgi7JKrpQeu5vwuP50AyfDQdoBoI3j3IuPF+fKXfk8yvv389zmnynjmywkGCPjXWHQuG7Wv3JhYMMP54bWgUUsBDSxVMS6HWqajUYHQdQYJVDDTUk8ZmRglQWsxIwM80GVOlusKXKQZBEYeTFWrdDP5FaxOX+RCeT8CoRKQVs5+oQribEzrhy5JQMSf3cdEDUJKJLjszpeUk+p6tL7hL97Wr+IvU2+oQt3deowrHqMg8GaZ36fEqrRX0dawcY1hIdnMSy+aOJoivgSUXLvtIzKDBxLdUgQ4JZJbxIyo9vLn58yTePh+pMsZVPDOsCPYMl+LjBzywkN9KDvX4k7LgqOs78IFw+75wZ5pzgHle3PMFZK5N4yZtjXQOmhzi4FvboPzJDCPWcM4GlKUJ/AHqsvc8mdsC6XwCI9syLlhCyvEzXINgMAAPogv26SlFCOpZRkjG4dniR7okqN+iTKgzPsn/nldIi0GPMTGw3wBJjcLR9iMVfpEu42i3pfpSrXPGrVOTj645vb/FZm7h+/NXsy+viUlGO4XcKoKoVlHACxJtOd9J8DGqIRRmhURbEPcFn8tqsy/VePIPBPsHsscRXpaCTna9/UbDsx1cUcaiqCGQHD270kvo/OY253fqW9wwPxq/m03kJMkskwUCkHPrfyMLsTp+AVqSCOE2wGxu46kqAUxHtr+mX5I1TXlfkKy99+JcxV+lNiiUFm/zfE/5Y2a11W3ZR7Uzko4Jt2XRVxABoUq7yd/AXaTzPI12zxFuhrUUvQsx5bWj5NnNDQ2LZYM49ZV0iop+ITkYAAFSX1z9uI1B/uPJynRiw7wH/kYkQdiiYb34xKd6MMx1B/6S5HhUO3N7/2ijPgyZ4ujlqUk8by1+uCYaNCIq9XfaViGcdwziLjBfReW0eUnh7GOT9gddqAJgdy+2YIBlbG31rieMLlvSrXBYBMMZiDY
+ ucxcwyh7
+ DssVys2Qj/WAdumFA3HSzfRyNEXoP2K2/CbRrCUCR6bcXYv1Tl0THnoIBS6WN53v+XGgFvcWM5jTkyRKTdYPNCN3876nY9gjOLwos11IYxjAH5ThMzBeFQqOSJzkJbMne5kCdW88cSIz01b/FwM6C74CfujOlfRhnoH/WshIjvHWkvC69IY2xAZ62ioekZQn2ZjTnXv/mZRus5LoCZV0Oad5ZPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,15 +91,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/12/26 06:04, Hao Li wrote:
-> On Wed, Jun 10, 2026 at 05:40:09PM +0200, Vlastimil Babka (SUSE) wrote:
-> nit: the comment "__GFP_THISNODE in pc.flags" also needs to be updated to "trynode_flags"
 
-Done.
 
-> otherwise, looks good to me.
-> Reviewed-by: Hao Li <hao.li@linux.dev>
+On 2026/6/12 17:09, Breno Leitao wrote:
+> Hello Lance,
+> 
+> First of all, thanks for ther review, really awesome!
 
-Thanks!
+Cool!
+
+> On Fri, Jun 12, 2026 at 11:16:05AM +0800, Lance Yang wrote:
+>> On Thu, Jun 11, 2026 at 05:45:00AM -0700, Breno Leitao wrote:
+>>> kmemleak_scan() walks every thread and scans its kernel stack under a
+>>> single rcu_read_lock() with no reschedule point. On a host with very
+>>> many threads -- amplified by KASAN/lockdep in debug builds -- this loop
+>>> can hog a CPU long enough to trip the soft lockup watchdog:
+>>>
+>>>   watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
+>>>    scan_block
+>>>    kmemleak_scan
+>>>    kmemleak_scan_thread
+>>>    kthread
+>>
+>> Neat, good catch!
+>>
+>>> A cond_resched() cannot be added directly: the loop runs inside an RCU
+>>> read-side critical section.
+>>>
+>>> Split the scan in two parts:
+>>>
+>>> 1) get the list of tasks (with RCU read lock) in an array
+>>> 2) run scan_block() for the tasks (with cond_reschd()).
+>>>
+>>> Is it a sane approach?
+>>
+>> Why not use the kernel/hung_task.c pattern here? Seems simpler, with no
+>> extra task-array allocation ;)
+> 
+> I've looked at it, but I am not sure we want to break the loop mid-air,
+> that seems to increase the false positives, given we did a half-baked
+> scan, right?
+> 
+>> Could break RCU only when resched is needed. Pin the current cursors,
+>> drop RCU, cond_resched(), take RCU again, and continue only if the
+>> cursors are still alive ;)
+>>
+>> If either cursor died while RCU was droped, stopping this scan round
+>> should be fine, IMHO.
+> 
+> I am not sure, this is not the same as the existing kmemleak_cond_resched()
+> raciness in the object_list loops. Those iterate the marked set, where a miss
+> only means "this object isn't reported until the next scan" -- under-reporting,
+> self-healing, and the in-tree comment says exactly that.
+> 
+> Dropping a *root* mid-scan is the opposite: it makes *other* objects get
+> falsely reported. So the "it's already racy, bailing is fine" reasoning doesn't
+> carry over from the object loop to the stack loop.
+> 
+> If we go this route, the aborted round has to suppress reporting, reusing
+> kmemleak's existing "scan was interrupted -> don't report" path:
+> 
+>        if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
+>                aborted = true;
+>                goto unlock;
+>        }
+
+I'd expect the normal case to just drop RCU, cond_resched(), take RCU
+again, see both cursors still alive, and keep walking :)
+
+>        ...
+>        if (scan_should_stop() || aborted)
+>                return;
+
+And yeah, you're right. If we do lost a cursor, bailing out and
+skipping reporting fot that incomplete root scan should be the
+right thing, I guess :D
+
+> Then an abort means "this round reports nothing; the next full scan
+> reports the real leaks" instead of a false-positive flood.
+> 
+> On boxes with very many threads, where the stack walk is long and
+> need_resched() fires constantly, so the break helper runs a lot -- which makes
+> aborts (and thus fully-suppressed, non-reporting rounds) plausibly more than
+> "rare".
+> 
+> Since each round restarts from the head, the tail of the thread list is the
+> most likely to be perpetually skipped, on exactly the workload this is meant to
+> fix.
+> 
+> The snapshot avoids that by scanning a complete, similar to what we have today.
+> 
+> Anyway, I would love to get rid of the array, but, I am not convinced that
+> dropping the scan mid-air will not cause false positives.
+> 
+> Thanks for the review,
+
+Cheers!
 
 
