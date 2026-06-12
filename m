@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14544CD98CF
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 18:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F073CCD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 18:09:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BFBB6B008C; Fri, 12 Jun 2026 14:09:39 -0400 (EDT)
+	id 652DC6B0092; Fri, 12 Jun 2026 14:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 171316B0092; Fri, 12 Jun 2026 14:09:39 -0400 (EDT)
+	id 603B36B0093; Fri, 12 Jun 2026 14:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05EE56B0093; Fri, 12 Jun 2026 14:09:38 -0400 (EDT)
+	id 4CBCD6B0095; Fri, 12 Jun 2026 14:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EAEFA6B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:09:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 904B6A01A7
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 18:09:38 +0000 (UTC)
-X-FDA: 84872048436.02.74365BC
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CABEA12000B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 18:09:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rMfVFIrN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3DBE76B0092
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 14:09:45 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07F99A01DC
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 18:09:45 +0000 (UTC)
+X-FDA: 84872048730.25.BF83A54
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1173A180007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 18:09:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jg6nmnMd;
+	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781287776;
+	s=arc-20220608; t=1781287783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tIviRJIKLG37v3E4DnE8ZIX3XY+lQBK31eI/eTdPTgg=;
-	b=ep6h8uOme4kNkEXhDTx2JZi25KU1QGdehKC1W7qAwutlqCsWJZhHaM3pvTLeDK2KptXA/j
-	sr7VHrx6CemXS8FKeMY3hGFr46ckQjPPSNq9qycSBClfl4v4PLAAPTTL+/QDPiPfqzvApa
-	Ekg07H9rwvDCfmHCQU9wY1yUKTOrpNw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rMfVFIrN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sy5B4Hkkhz7VX1oSnZgSOogbp7pZpM+mVFfKtzTdJuA=;
+	b=HIbdaRxgS8FKaVqV63Z8z5t5/r3sGVgjtixlMWQhLxTf3QE1iF3XeLNP5Jz8lGuCxBU0SJ
+	C5q6+bg9eZTI0sqh0iBfzG/by8bYnc8WGoIe4A0hX4jYQV7+ZXznYZCiLvf2Eb1VIgeanU
+	mqrkdz8DOC70b5yFCajhnqabzwctlEM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781287776;
-	b=Vm/53u71WXz0qu39gLy7F14gSznvI4rAhv7XMXL/AEH0t9VjoowcRuAjc3SmrVNff5eD8f
-	yGL7pWdzwaNyrZaOUQXcwyl9OB3Dh9zObSEPt5YBsd3+xdqslw+JYD1Q72Su8scZ3OzkAw
-	1ESxT8fAeTlHbJTbVqedOklUmPV03Gs=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c86307c4e6bso546546a12.0
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:09:36 -0700 (PDT)
+	t=1781287783;
+	b=4wNzeXU+lf0eewZm5MIyjyQNYeXttqrp8oWsHbCeXjddiPoJzbPwJ6JmSUvXwwgXHjdbop
+	nbwHXsQYYhF6KmV9MtX8Y3bwTuvtnO+G73z0OjXgVrwSO96m4njeTxA4LnlRE79vMUa9d/
+	aDxpsOsDQFBZ0HHj8cDq2gvFNMkcx4g=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jg6nmnMd;
+	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf1f074a12so13550935ad.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:09:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781287776; x=1781892576; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tIviRJIKLG37v3E4DnE8ZIX3XY+lQBK31eI/eTdPTgg=;
-        b=rMfVFIrNYiq65+l7Ap8QJP3O2qi1QW0feBfIPmAbymxTYaXGifF1YbzdVcvOZ2OM1b
-         PZRIBfTPJb1I8ILlfwf8PGeFEgX5I8B3f+u4FmJF4eh1wzUEWx74j6vlzabPtAHliNxO
-         vfHR2KMx33EVk5lyaRf9bZFLk8lkrI/dLOKdFQRiMNjXx4EA3lsIKcrLpg31Age/AChq
-         S9Zd2bkzPEqO2QxPXMqBj6IgjZ6l/IwA1SR/dl2r+TcTMICyAoS6UOoFyc9uxBBBGk//
-         qWJA/4XSjI9bNZcDnJB6mxVIXy1j5KTdX718m9yNtheoepfN7QnZV3PuHXVfVJsoYaEp
-         rGtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781287776; x=1781892576;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781287782; x=1781892582; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tIviRJIKLG37v3E4DnE8ZIX3XY+lQBK31eI/eTdPTgg=;
-        b=AqZj7Xpi/avVDlqYQS3qF6zC7Cvu76UPwTIWkZm4t3WuON0mDTgTzk9nHfz9jYi+yX
-         dL6bmG5svKEIhUxJnToX2x61w8Uxg8jHK/zqULJ/X8Yr3ake1dneUoyQMjk8ygFyeVXX
-         IS3x4TQVSmagiJHRcxHtTOh1BMXXOa6vlPFyzbQPw/itb6QdOyy3efxsFP//hPjqQfX6
-         n0jEUkqzFuldBG2ny21fv1yqtE1WH5u0GDQukJiBz+LZh/ANoguMRkXUmuGndQqLUXdk
-         LqlMh1LQziS1YxpnrPr1/Ijq6QuO/CBkYxdAhDc6+fvQpfDwDhoP4PR105xFJC148wWd
-         XIxw==
-X-Gm-Message-State: AOJu0Ywvpob7AzQ8YRRb6IafJgKKRdBxQ6Zq+siUmcKc+jPKtZdVeIKY
-	V5eEReel/tJ6NNM4fzDlSIbpJj994G4e8BKE2GszfnypN184c7Tno2Om+Lbklcx0
-X-Gm-Gg: Acq92OGNCo1OcBB7X/YEOAUWakRJnl1osrxKDWO6CanN4ocTOyd9oEkDVoo1CPtU0+W
-	GiDnrgFlP/WckrWM7T2eWdoWO3cVHVltnVGCiHF9ZZ6gSgab3FIo8bcWronLocALPTsNb7kIWUJ
-	5veryw87Pou8Q1m4CjtzUKdV4MdetVKEtLMb1nQAuydiIIgn5k5HAIHldhwRjAtyQlYbZMa38Rz
-	3Po1HYQGdJTbAiXntyCupM1C44n+GGb1icEYU2SqwSwAeuZmgWZZbNZ51KhX9k2HQ8IbZKWILZk
-	IK57SauVPTu2DVRHFACzl1/sdSR23NKJLVQHAdKuWz7M116TjjGHbHgqXAZWEkySd/ooZZ3PUO2
-	6ZPVbJ2mk2mNRHRuffDiB2wXlDFIBaPauXpJ/826TAgogS5jiRRvk5Y1Ajka9iwGeLdoTY25u8y
-	jGlgvqvnmjGJar8h5ymSdt2y+FNxBlDs6U
-X-Received: by 2002:a17:902:cecd:b0:2c2:27be:39a5 with SMTP id d9443c01a7336-2c412749c19mr43103815ad.33.1781287775593;
-        Fri, 12 Jun 2026 11:09:35 -0700 (PDT)
+        bh=sy5B4Hkkhz7VX1oSnZgSOogbp7pZpM+mVFfKtzTdJuA=;
+        b=Jg6nmnMd4EDKgesjPl1Hj5zP4v7tW4cwHKpdNkmXikRnKLVTPLcEZ2tEJGDJ4OO6jL
+         07uptxYdPlIuil0V+zZ3+yEu08CxKdnevAKBwhVgR6d0APAb0neECheJ/xZqaHBoZtLp
+         lHRVB00uZW0RcmG028whAZISmXbsvu/cMzTKXn2tTNfqg/wbMWHf3Nel6AWD4voOZpzL
+         CtK0DSOja8YtXF09XCQsiiOoSeNAXTvdUnLQvzfQ1YbmZYk12P7UdG/YQ+w2dMymsI7N
+         uxtQ4SbUjCd561c/A097Y0JJBUMapxmUTmk2jERpmX24sYuGr7z6T7F/yASQtySvjri+
+         7PGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781287782; x=1781892582;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sy5B4Hkkhz7VX1oSnZgSOogbp7pZpM+mVFfKtzTdJuA=;
+        b=B7Woo/9MCA7deQGyn4YTynTXr5sKouiIknzzkzMG9f7eOGPCPRF6rTEIAt7q/Wt+/k
+         TMzS7Z9QJ0PGOtRlKd8rPoHFwWIdc0zQwGXu5hP+nCgtrREdQpWdgepG5bakq/CPRGuc
+         2oYvoXtWUaRj0Olr0ALZVoiybUH/sCs624qZ+vyIuqOwRaOvChVndE5uD8cGDO5LzgKp
+         NcSARKF5tmI8qRLV13b/GDrgzZJQSSy92Yb8g/rB5v7OSQ2X55zm+kbJ7dC1cZiDmTYc
+         F8hCq7adxZxJKOpDPFvQtCgGtqO3iMMEcoVO1khmOjl+WWAbySrcIrRvOMLwYBj08p3l
+         rWcQ==
+X-Gm-Message-State: AOJu0YyzcryuDrbCaLjK9XVNAGHK0MYIUBImZ7czZQmuLZ4PbI11BGaN
+	pXrWd9q1Mbp7NGZWjPY45S04rFILx1FuDN4KWVDF/CS1YGbwviLWisFNnjBYmmJ5
+X-Gm-Gg: Acq92OENsaaUH2rQSzuj5QXTVviPHQYhIlvfaC88z86Va6zRx2xZqymSPfS8Sa58YWb
+	+N+Z6U0MMxHk+OKr0r5r2we2PziwasKNKotQ44o+VGh/P0gxbIp/uovntfLd5n5zHAD33Ix3VeZ
+	bHVhFzPGqlfV5uwo9VEgB1QcH9WZUTEZmg6pGTAfe/mDL8E8i1TlXu/4fSRAYXZyrNMsPBKVR3a
+	6oCNc8NAilZ2TcQRhDZcUQXeMIYo/ADuAU97cDP13ORkzlgO3AZiJjmZt6E7fP/Kj1kFGkv3dbg
+	CrXFoMVmdrKx22+d+DJQc8Cd0Zb+dNX6xICcDWALpWIoB/XYNkWpI8jqxvJkZUzowG5gbV25Zxu
+	5x1PBRpEjVxY2bO9WjUqRKTOuy2aHWHlCHkw53yai3gxcM1/Y0S1ARmNjX8VHc9GjUzb0Ur/bb9
+	arHqbBSiWqbrL9BYdO2SMJO5jQb6M8rHcCCXmdpSXCVfA=
+X-Received: by 2002:a17:903:32c4:b0:2c0:b6c7:2271 with SMTP id d9443c01a7336-2c4109ed38amr47426415ad.4.1781287781888;
+        Fri, 12 Jun 2026 11:09:41 -0700 (PDT)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c70easm38956975ad.25.2026.06.12.11.09.29
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c70easm38956975ad.25.2026.06.12.11.09.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 11:09:34 -0700 (PDT)
+        Fri, 12 Jun 2026 11:09:41 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linux-mm@kvack.org
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -107,20 +108,22 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
 	Sayali Patil <sayalip@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v3 0/3] mm, swap: Enable THP SWAP for PowerPC Book3S64
-Date: Fri, 12 Jun 2026 23:39:14 +0530
-Message-Id: <cover.1781287297.git.ritesh.list@gmail.com>
+Subject: [PATCH v3 1/3] mm, swap: make SWAPFILE_CLUSTER runtime
+Date: Fri, 12 Jun 2026 23:39:15 +0530
+Message-Id: <1e8d7e4d0bb1377277ae8b6561d89fa0e048e7de.1781287297.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <cover.1781287297.git.ritesh.list@gmail.com>
+References: <cover.1781287297.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CABEA12000B
-X-Stat-Signature: cwewpofzxbqagqg35hbytm7xkokup84t
 X-Rspam-User: 
-X-HE-Tag: 1781287776-119111
-X-HE-Meta: U2FsdGVkX19oAgsCK2HvrggNAqDx6jvm5vF+X6JxucRX4Yts9sR8GBz6AfXTsdVej+94ZPXrE7J12ZvjwCB+Z2YDPz/7mGPz7yBMTU075dubxIgiU8/Gat54atIC2qFTDIwDLIC/lFE/9jFXe4uJZrrrZKgPvO6ogToXYvgD1Kwmf/+8v6qQlaz/NsGyhRWJWmp3DV/48VACIh2VSzZRp1L8XL0trx3el9AYDk/GnrDjmeiV2/jRcXxqV0sYo7Q8ppinDE1fahzDFf+K0oPVjAFt44VBNx0PkFl/+UB3gmmr2GP2OFb3OrKHyo9IT+MLxPrljxQElFVVcr71OYms3YZMqRt24spYZt+NqK4+TAIAU5Nf4hRrrw1npISckQeWVto2EYFMDSA6P4pFGRkl4D5XlZbVLcTv7pYGpYmpCbRfXcLfoPtmy97h34gv6JA7nRObJaZ/qBzRKY5vIjlJ/nGp8MIyd5A2sHBSELK+3FaoKTKZ1ub6RUL9cLxOs+HRdTjrl3M3ldyKEJAcMGZW/Tb+vhUdsrJrNDzDkKQkZADs8m0fnF6i+C9AZL4D6Fpfxb2g+CswXEm5Qb07MuwbUkaxapqTVVEFw5y8D2IPryfn/Y1YCppFWrROROdE/l7hXt7XdtO/aBVGVI3PBD3Kd9qR8efPN+UE9ufoorpQ84rrBPtXGperY3Pv5T6BRRw4GbYX4VUhYCpJxJ0Iw4Dp2FP4Wi1af3peUVkcVqayWx60zvDIMheO8qg7ppl2Hsqw5rZgK2va0vG/0tD4v3nn6eXsE76h/RxJbx4lwUUrphCKpjL4C9EhEQzLONTpuw1c75iMHUWpB35qcTGZw/F1bc37In+rHvdZ7/Wkd7JFcoNDKp3ZgbV/6fOtfBneRolwT5mPwjWYY2cSmpw5BoL2IKoxjrPi4jf3reTTLoSxc+TIEuNvy9kzYEIORJprUKxNFkIkWM1DBC+anpmc23o
- 2hv5j8OJ
- WQnOUTRfx0MvcVoRBU6I9lywcpIvg8xKqDouAjIW3da5xOZow25oRr7lfdWrtM9MtefETGzNMuSlUH4anMXIIyq+0t7bU4Dz/ymTgvQlUwaiTqBgXgV6YMEogEk3xIWm5ZUv7eRmTZpPBHk4OlBR/68MMuuIUUPXPpGRcCBrpJFFsrkzicxyOy66wVpzeJi9J612lrqgh1Sc5SKdRrWgIeHtiT6OertWlAIC4Wd5FiJ6rMBi+IHAq7JaNarMTxq/EwAGj2vyWoESSI/McKUFzhEbouN9xhbjjiYIHO4tSn07Q45ZwaKZr5szQpPCK8VQXxBkxBq8nwxXk/vsWrKMw5NbdQSGE6DavYGai49hqSFFNaYj8w8qo2znXeqUlVt3XXgbtgV9IrH2lweOPvS6WZ6ho+cbPxEHlxQduX9qd9PxwNcsV4szgLO49MVUeM/ZILrP8BT2t6bHGMRQ7eDoz8lRcvJIEfU9253M33Q6VVXct3UWQPa+HmD9SjZ2zD6R+26BtrRCzrwYKzlpiGtfb4VZaCZ4coZ7IHxBbSF3dvCjHr/rvkqrjOaMRQQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1173A180007
+X-Stat-Signature: fhpzdh18p4we18ippfunzzsteqwfimg6
+X-HE-Tag: 1781287782-714564
+X-HE-Meta: U2FsdGVkX19kLV0oIjcv5zCXVhcf+26O8PCLe3nwE0GHjAcmhVdlEaPG0ytylhrdmwPCMCMVCWzswecLliQwn4OkbMeZ/98nq+VHelay5Wt/4vI0NJLk3HSS9rQXTblyiHwdYIbMTME5eNsCs7vflORHzF94F/Z06vLsp7bU/XIYQ9o7tHbMHYKdHtAfhECaUFB2OMjaBy+l+0uKO3bDh8G6nzaU1ZtbIwL18pA8pMGBebdX3cKvuCSvIDdr9FHoCmajIJf+GoHoAlIa21XDenlfHCyLS94MZB2oIi4p9z8OojsoYmzHxU5zRJTcYNtK+T/4FtGQpZsLkzc8/UX63NrmqdbD4L8qujEBLRcUNkasR1HFKYKqjrXdsG+KTqPPJC7eeUGIoNx/mI/FA7r8Ti74gnz303XEsELOiaGrU3PrPy93ekchWdGPsrpTZtgk2qKOu+4eJUn4m9DkdZQnja8LA9UDD/5RAQx0wk4AZyRtTQKoVok8P7LGzrUSv8uaAOeKvzY/UJyZ/mVtu8eAjSPGcWHsMC64oQd0BfqckJJD3/UDaTQyXocD0PkxSiUwER8b3PrSzU9wsQrfnU9YLVclsVN59ndFoJA/gmXM810YMe4h2xVki5d6krPYHqATP5yv02pHtQaFbXLLUBGCb+8etSCnNx7gIeXOYjWHT3b09nf6j5cXLUljKhdPmg78QShGoHtpJlpyy3aGSwdmiMfbnjaNqqkYblJxCQWqTSadqMi3lteQnVQdI6LIayqSsS20L6VgypTsFvCb7d2LEmwpjpNImlGBX7urq1wQPrQm+7wOkJFh2JzUw7nQT5yQgmqQStoRlmFbIJHzuAkdW0VnA2+dgdUb796bpNFwthVTPLhKZ8wI7I63f4DbPikqYQl1boYBXrvn4ETeYr2gHnLzzxA7KuH6RPAugT2Sw9IPUuF1ONWR7NW0M7e+zTFJq1UKV1mahjkilZ0Bi9i
+ 7NDVIakv
+ o+rnvaIMa0C4ZA8mSESTspRE+XVteQJJV1ADEASYy5oXjH+eucTzyvoh2gjmdPOR1kz+8dXX06xmai76pCFUsILIsephpT3g8vRGrbsKRH0Exc/F4KleYuNoZwvZ6YmcDE7ARVw62Vy35yP4Dwan0WYg17zRyI25kxVCBYIdhRoS7IY4R7RdDJULmR2fVGRC6LckSgBpuwM1EGmcKARmRk1wN2qAIO38K8x/sAAsdDDl4oyEefvk1B8SW/kA1yfhZ63Yc8YUT1YAsTI1ji8F5K6of9NUnKuW6E4EZX0gbO7sADSg0gcLXTRaaoNIXdHZLOdYl/oSdColNQ2NetElud8zDpU7aY+6paa8WIObilzJIyU7FrvJxXWAfVqC8BoVQR1xzefspaUX4ACAsrl8L/jx734V8DZsQ/YwbikeFS+liOwg69ieJk6NHzJdyA8Rl/UxNeL955OuM92z+/d8dYVjcw0ICD4FFBg3zxL0YKzDhWaKc9YNkxEm7eGTHVN3qf5unnTCiaq7BOi6esXbuJusLKjXV/PvMpcST
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,46 +131,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On PowerPC Book3S64, MMU is selected at runtime, so macros like PMD_SHIFT
-are effectively runtime variables in the Book3S64 code. THP swap code uses
-these macros for e.g. to size some of its array data structures based on
-PMD_ORDER. This patch series makes that usage dependent on the runtime
-variable and provides an upper-bound architecture override for cases (e.g.
-SWAP_NR_ORDERS), where the runtime conversion is not considered beneficial.
+On PowerPC Book3S64, MMU is selected at runtime, so macros like
+PMD_SHIFT are effectively runtime variables in the Book3S64 code. THP
+swap code uses these macros to size some of its array data structures
+based on PMD_ORDER e.g. SWAPFILE_CLUSTER macro is used for this very
+purpose.
+Hence this patch initializes SWAPFILE_CLUSTER at runtime and also
+modifies swap_table and swap_memcg_table which were earlier using this
+macro for defining the number of table entries.
 
-This series increases bandwidth throughput with zram backend for swapout by
-around 40-50% with Radix and 100-130% with Hash (Tested by Sayali)
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+ mm/swap.h       |  5 +++--
+ mm/swap_table.h |  6 ++----
+ mm/swapfile.c   | 27 ++++++++++++++++++++++-----
+ 3 files changed, 27 insertions(+), 11 deletions(-)
 
-Note that this patch series is based out of linux-next (next-20260608).
+diff --git a/mm/swap.h b/mm/swap.h
+index 77d2d14eda42..956879a69ddd 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -26,11 +26,12 @@ extern int page_cluster;
+ #define SWAP_TABLE_HAS_ZEROFLAG		((BITS_PER_LONG - SWAP_CACHE_PFN_MARK_BITS - \
+ 					  SWAP_CACHE_PFN_BITS) > SWAP_COUNT_MIN_BITS)
 
-v2 -> v3:
-=========
-1. Fixed sparse warning for swap_table_use_page reported by lkp in patch-1
++extern unsigned int swap_slots_in_cluster __read_mostly;
++#define SWAPFILE_CLUSTER	swap_slots_in_cluster
++
+ #ifdef CONFIG_THP_SWAP
+-#define SWAPFILE_CLUSTER	HPAGE_PMD_NR
+ #define swap_entry_order(order)	(order)
+ #else
+-#define SWAPFILE_CLUSTER	256
+ #define swap_entry_order(order)	0
+ #endif
 
-RFC -> v2:
-==========
-1. Send the unused leftovers change in swap.h separately [1]
-2. Changed RFC Patch-3 design from runtime SWAP_NR_ORDERS to arch override
-   (ARCH_MAX_PMD_ORDER) - suggested by Youngjun
-3. Dropped RFC tag
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index e6613e62f8d0..90e2a7852300 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -8,16 +8,14 @@
 
-[1]: https://lore.kernel.org/linux-mm/68591daf0d679e5a0072d63751f187d14613e2b0.1781146877.git.ritesh.list@gmail.com/
-[RFC]: https://lore.kernel.org/linux-mm/cover.1781000840.git.ritesh.list@gmail.com/
-[v2]: https://lore.kernel.org/linuxppc-dev/cover.1781170904.git.ritesh.list@gmail.com/
+ /* A typical flat array in each cluster as swap table */
+ struct swap_table {
+-	atomic_long_t entries[SWAPFILE_CLUSTER];
++	DECLARE_FLEX_ARRAY(atomic_long_t, entries);
+ };
 
-Ritesh Harjani (IBM) (3):
-  mm, swap: make SWAPFILE_CLUSTER runtime
-  mm, swap: allow archs to override SWAP_NR_ORDERS via ARCH_MAX_PMD_ORDER
-  powerpc: Kconfig: Enable THP_SWAP on Book3S64
+ /* For storing memcg private id */
+ struct swap_memcg_table {
+-	unsigned short id[SWAPFILE_CLUSTER];
++	DECLARE_FLEX_ARRAY(unsigned short, id);
+ };
 
- arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++++
- arch/powerpc/platforms/Kconfig.cputype       |  1 +
- include/linux/swap.h                         | 12 ++++++++-
- mm/swap.h                                    |  5 ++--
- mm/swap_table.h                              |  6 ++---
- mm/swapfile.c                                | 27 ++++++++++++++++----
- 6 files changed, 46 insertions(+), 12 deletions(-)
+-#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
+-
+ /*
+  * A swap table entry represents the status of a swap slot on a swap
+  * (physical or virtual) device. The swap table in each cluster is a
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 78b49b0658ad..80846bfb5f76 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -129,6 +129,17 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
+ 	.lock = INIT_LOCAL_LOCK(),
+ };
 
++unsigned int swap_slots_in_cluster __read_mostly;
++static bool swap_table_use_page __read_mostly;
++
++static unsigned int generic_swap_slots_in_clusters(void)
++{
++	if (IS_ENABLED(CONFIG_THP_SWAP))
++		return HPAGE_PMD_NR;
++	else
++		return 256;
++}
++
+ /* May return NULL on invalid type, caller must check for NULL return */
+ static struct swap_info_struct *swap_type_to_info(int type)
+ {
+@@ -437,7 +448,7 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
+ 		return;
+
+ 	rcu_assign_pointer(ci->table, NULL);
+-	if (!SWP_TABLE_USE_PAGE) {
++	if (!swap_table_use_page) {
+ 		kmem_cache_free(swap_table_cachep, table);
+ 		return;
+ 	}
+@@ -456,7 +467,7 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+ 	if (rcu_access_pointer(ci->table))
+ 		return 0;
+
+-	if (SWP_TABLE_USE_PAGE) {
++	if (swap_table_use_page) {
+ 		folio = folio_alloc(gfp | __GFP_ZERO, 0);
+ 		if (folio)
+ 			table = folio_address(folio);
+@@ -471,7 +482,8 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+ #ifdef CONFIG_MEMCG
+ 	if (!mem_cgroup_disabled()) {
+ 		VM_WARN_ON_ONCE(ci->memcg_table);
+-		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
++		ci->memcg_table = kzalloc_flex(*ci->memcg_table, id,
++					       SWAPFILE_CLUSTER, gfp);
+ 		if (!ci->memcg_table) {
+ 			swap_cluster_free_table(ci);
+ 			return -ENOMEM;
+@@ -3912,14 +3924,19 @@ static int __init swapfile_init(void)
+ {
+ 	swapfile_maximum_size = arch_max_swapfile_size();
+
++	swap_slots_in_cluster = generic_swap_slots_in_clusters();
++	swap_table_use_page =
++		(swap_slots_in_cluster * sizeof(atomic_long_t) == PAGE_SIZE);
++
+ 	/*
+ 	 * Once a cluster is freed, it's swap table content is read
+ 	 * only, and all swap cache readers (swap_cache_*) verifies
+ 	 * the content before use. So it's safe to use RCU slab here.
+ 	 */
+-	if (!SWP_TABLE_USE_PAGE)
++	if (!swap_table_use_page)
+ 		swap_table_cachep = kmem_cache_create("swap_table",
+-				    sizeof(struct swap_table),
++				    struct_size_t(struct swap_table, entries,
++					    SWAPFILE_CLUSTER),
+ 				    0, SLAB_PANIC | SLAB_TYPESAFE_BY_RCU, NULL);
+
+ #ifdef CONFIG_MIGRATION
 --
 2.39.5
 
