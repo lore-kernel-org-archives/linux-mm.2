@@ -4,86 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE14CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FFE5CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:59:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A4276B0005; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
+	id DD6636B0005; Fri, 12 Jun 2026 05:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8064E6B0088; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
+	id D60576B0088; Fri, 12 Jun 2026 05:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F56D6B008C; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
+	id C282D6B008C; Fri, 12 Jun 2026 05:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EFBB6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:57:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 115B41201A9
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:57:25 +0000 (UTC)
-X-FDA: 84870808050.15.0DB1339
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3358D40002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:57:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZOah2sde;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF1A96B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:59:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B0DE1C2E01
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:59:29 +0000 (UTC)
+X-FDA: 84870813258.29.6D1716D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8083E1A000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:59:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STdivhBR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781258243;
+	s=arc-20220608; t=1781258367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=40ldlKf5NOiyVD+LSgw0DbXbrN4Mt4O2B8RW5UMcBu4=;
-	b=JJ54UhBAtnXo84mF1Qxd3bun+U3PS9CgDj1SfgPN8X5Fslc0+ZgFtBrLnlAdYSld6ARvV3
-	Sncxxs8IEuXtMxOKAX7vd6Dxe6UkD1NLwca1gz0R/8WYpEhDuUjAbBj1liy25BZ96GxOpe
-	pbsaNPj03KZ1BOdt7Nn7xfsVF81pImY=
+	bh=FyfQhJDr0ZUeHVCkGcfPOj7+bIdM3McE9qOrpu4jQqY=;
+	b=OJJxceJmnfU/tmJvkrxsbgjFQMXA9UKetSf2gKTBNNpExqW9MyRmGwLGu1hllrzhxPrDD2
+	qkOPD4LiZpduE2w+9/IzfeDxHiKzZMk8Chz1pbHWxTlVzn28BpkxMfeimFGJBYmlTKLsyw
+	MaoLYRnsYXp7wFNMTeZ1Q+I9d6HGi8U=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZOah2sde;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STdivhBR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781258243;
-	b=qu97ukUAkvbHv77bxcRKgSBj9oM4vIj0t7Q8iStN5j7fAh4dGTukmJPo3j5Uc66lukovUx
-	Yu1NM9bvvEfmK9m9u2sHtr0bASxHt70U9oWm91L1zHlwh8usnhT0BHLDKS/SwtPB0W++7Q
-	qPBqvJwDQ6/NJFWtfF8G53imkLZ/cJg=
-Message-ID: <6bc446b7-8e25-4add-9d72-a3c9e9191533@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781258239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=40ldlKf5NOiyVD+LSgw0DbXbrN4Mt4O2B8RW5UMcBu4=;
-	b=ZOah2sdeCuUGurCIybhtURWxH+ixhU/M4kIZymHrTnh2TYnA+vn/hWbbamX9WGdrRoOPmJ
-	o1axy3sETPr0P5hOR2ShCEtWCvLO+HIgHTT8WummMAqttk0zCGfJazkYvXTou9ClxrSeZb
-	tVoYqx4oHxW9/Y2yvGuQTA4YT+eKUDw=
-Date: Fri, 12 Jun 2026 17:57:12 +0800
+	t=1781258367;
+	b=kbkArNFXuJmt1Y+y67OdtF2CptnSHGOXSvYxw+TGGXoLvMlDk1CwODb62TsVGtaJWInPQH
+	Dc3xvB2PXIqOzFmdDDc+jDEHlnKj25V5itRDYZSRA7hbxkzwBW0pLepcqAy5yJbfBntoAx
+	ZGa/wAehIg34pQoJMx002iUCDyaUxdc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A5CF840533;
+	Fri, 12 Jun 2026 09:59:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162581F000E9;
+	Fri, 12 Jun 2026 09:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781258366;
+	bh=FyfQhJDr0ZUeHVCkGcfPOj7+bIdM3McE9qOrpu4jQqY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=STdivhBRretl36rmEOAV6Bqo7gg/u3Q9MHcGjma8Tt/VRgGPo5waxl/z1/QcjN4l4
+	 RqQGQVWHLcagbNQIBX46mdyK5M+3TPq7GnsAADq/XomCJ2smU7MTp1EP7/6YLMdcsv
+	 amxAVvF9tI5fifQeK+wB6LaYoGmP2K95gxavkts73LGK8f9n/gr+9h5m+m1fl/r8eE
+	 RguJ3C8I1pbTeplwHL0o3MLxXLnoDhTvRMEIs9JZSCFNwSJKJnXFkUPFSKldba6kBI
+	 A6YPaaw0fZALQ1vug6Y0Vv2RwN+TmWnS1rWz+z34PIkJu006/TEY6UE0HZOU3YG/Kr
+	 jpJ/s88dNz65g==
+Message-ID: <0546df1f-616c-44b5-8a1c-f96d5f33d8e6@kernel.org>
+Date: Fri, 12 Jun 2026 11:59:21 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH RFC] mm/kmemleak: avoid soft lockup when scanning task
- stacks
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/16] mm/slab: pass alloc_flags to new slab allocation
 Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org
-References: <20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org>
- <20260612031605.58235-1-lance.yang@linux.dev> <aivJ5Dv0hAQ1sJu1@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aivJ5Dv0hAQ1sJu1@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Hao Li <hao.li@linux.dev>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-8-7190909db118@kernel.org>
+ <aiuX6SRATJoaq-jH@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <aiuX6SRATJoaq-jH@fedora>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 3358D40002
-X-Stat-Signature: h3agmqfbojk8h1whj8fxsauw9cntm7sg
+X-Rspamd-Queue-Id: 8083E1A000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781258241-486695
-X-HE-Meta: U2FsdGVkX1+RFoyI4H94Qbxsjgi7JKrpQeu5vwuP50AyfDQdoBoI3j3IuPF+fKXfk8yvv389zmnynjmywkGCPjXWHQuG7Wv3JhYMMP54bWgUUsBDSxVMS6HWqajUYHQdQYJVDDTUk8ZmRglQWsxIwM80GVOlusKXKQZBEYeTFWrdDP5FaxOX+RCeT8CoRKQVs5+oQribEzrhy5JQMSf3cdEDUJKJLjszpeUk+p6tL7hL97Wr+IvU2+oQt3deowrHqMg8GaZ36fEqrRX0dawcY1hIdnMSy+aOJoivgSUXLvtIzKDBxLdUgQ4JZJbxIyo9vLn58yTePh+pMsZVPDOsCPYMl+LjBzywkN9KDvX4k7LgqOs78IFw+75wZ5pzgHle3PMFZK5N4yZtjXQOmhzi4FvboPzJDCPWcM4GlKUJ/AHqsvc8mdsC6XwCI9syLlhCyvEzXINgMAAPogv26SlFCOpZRkjG4dniR7okqN+iTKgzPsn/nldIi0GPMTGw3wBJjcLR9iMVfpEu42i3pfpSrXPGrVOTj645vb/FZm7h+/NXsy+viUlGO4XcKoKoVlHACxJtOd9J8DGqIRRmhURbEPcFn8tqsy/VePIPBPsHsscRXpaCTna9/UbDsx1cUcaiqCGQHD270kvo/OY253fqW9wwPxq/m03kJMkskwUCkHPrfyMLsTp+AVqSCOE2wGxu46kqAUxHtr+mX5I1TXlfkKy99+JcxV+lNiiUFm/zfE/5Y2a11W3ZR7Uzko4Jt2XRVxABoUq7yd/AXaTzPI12zxFuhrUUvQsx5bWj5NnNDQ2LZYM49ZV0iop+ITkYAAFSX1z9uI1B/uPJynRiw7wH/kYkQdiiYb34xKd6MMx1B/6S5HhUO3N7/2ijPgyZ4ujlqUk8by1+uCYaNCIq9XfaViGcdwziLjBfReW0eUnh7GOT9gddqAJgdy+2YIBlbG31rieMLlvSrXBYBMMZiDY
- ucxcwyh7
- DssVys2Qj/WAdumFA3HSzfRyNEXoP2K2/CbRrCUCR6bcXYv1Tl0THnoIBS6WN53v+XGgFvcWM5jTkyRKTdYPNCN3876nY9gjOLwos11IYxjAH5ThMzBeFQqOSJzkJbMne5kCdW88cSIz01b/FwM6C74CfujOlfRhnoH/WshIjvHWkvC69IY2xAZ62ioekZQn2ZjTnXv/mZRus5LoCZV0Oad5ZPw==
+X-Stat-Signature: 6ifpmgkcmfmt4wab9jim9rjfmbg3j51k
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781258367-562274
+X-HE-Meta: U2FsdGVkX1+/iFUYJT+cPSI34mRhS3eKoh703U/WwRhzksJWiKjj8oykqTWyvAMOYGcpSYmsJmZStF2u6spQM/epvK2mLVwVV3vd24GQ7TA37Zn974GvmVS5E7PO5mlPlmmqfRLK+ENj1BVX+4IMjq34rrJ/+QZGoZRqHGt0fj06H0wJ+b1GJ/ML9neqOF4pJSkvHlLq0r0pPiQXex1HMRNqOMeHAPMoJk45cto+aQhTJZ3n5AX7ovDrY4S5PwXEI0b/Xqmut0i9DJf67jrXSbBXmJwcLLajOazDonM4Fxvm4YUkBxhmYCYZ52c4j079SG29TOJdV133WXZmYOv9hiTMO1FzAyT72agUPw9cydsRU/Z8s9UmZTSrKKuFG+rzVfeUHwbniUaRmFo70qkc/jnE8IMnGotoCxbNibfwqED4g7bs4/O3A6JNJCsVPKmxiNAg8vJ91dqVBJ5C1ilXJAew8B1XuiLKDRTLVj9KTZpUauVAycJfAcz5tSo/1QbUbofkn92PwH8SX5PxwlABehjoa/BAtpKgMnkodhG+XaASZ1BjUYnW9Da4y3ttHxte0TlLtWkaQtfB7w07uscV7lTr5aouObZZXvJmW6CGtEbd0w64GpSBIxt0oSkZygyNpLBDOSf6xcYmRosvkrZDD1ICQlB2haZiJW6jFU4IC52dQSyYIDpYU5ynYyfVXrtVZEjfsHqHe/rWSnISS/kDfM2zvjstTF1gam4SF6KFx80oKyVQXSgI7p9v2Uxpw8oiP8woFumn7BcJfwcsPdAsLBLgFJVQIk9iFgc79sVofAF4ZykUPoB2jYym/1nLkFjAdZFL81vQ9aUVipbyCjiuRwG5Ab5vTIOdLEPjiM3lMEzcKzbkD0IlvJC+cDg6I0MbMwdIg7miXd7ZdSjgi+qcVMgc10SqTCIb5EJo9ounyW/iiBPNhA+RctSXZy4YpaBtt1mUKnbLh5kEpGAlJkM
+ J5rhkIv/
+ CPiLolEOCuSTJ2/pJt4XuyXCnL1peRYT8mu4yerMCEvw6tdORqcy94vrlCdhljv57cKljzgajN/V6ciE0OrTH7qtsN0YYgqxD7IC11n7VdBv9NSzIG6gUuBuX7B6uQkapp42WNBuTI4tOlJX4vtuk5X+7A/kPql5kuXwjL9xS8nS/Ar+Zq0YO91+1LXQlU9VPvt7GFbdTRfjklhh96+FC4BqlVNato8ImEVXDa6tObpc28h2r3LbDnVhvhxEZY57eV9+NetNAtSRcKT33BOw2Hyn4y3rPq6lGy+FD9SM4Cc5Z97k18b0o5WQJOGzr6i6Uz2mOfbGQHMIRyC/f6SQkkXS+Bre5vlvxhklANmp4qBwzjNg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,101 +142,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 6/12/26 07:26, Hao Li wrote:
+> On Wed, Jun 10, 2026 at 05:40:10PM +0200, Vlastimil Babka (SUSE) wrote:
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -3378,9 +3378,10 @@ static __always_inline void unaccount_slab(struct slab *slab, int order,
+>>  }
+>>  
+>>  /* Allocate and initialize a slab without building its freelist. */
+>> -static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>> +static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags,
+>> +				  unsigned int alloc_flags, int node)
+>>  {
+>> -	bool allow_spin = gfpflags_allow_spinning(flags);
+>> +	bool allow_spin = alloc_flags_allow_spinning(alloc_flags);
+> 
+> nit: allow_spin doesn't depend on `flags` now, so it seems we can delete the
+> comments:
+> 
+> /*
+>  * __GFP_RECLAIM could be cleared on the first allocation attempt,
+>  * so pass allow_spin flag directly.
+>  */
 
+Right, deleted.
 
-On 2026/6/12 17:09, Breno Leitao wrote:
-> Hello Lance,
-> 
-> First of all, thanks for ther review, really awesome!
+> Otherwise, looks good to me.
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
-Cool!
-
-> On Fri, Jun 12, 2026 at 11:16:05AM +0800, Lance Yang wrote:
->> On Thu, Jun 11, 2026 at 05:45:00AM -0700, Breno Leitao wrote:
->>> kmemleak_scan() walks every thread and scans its kernel stack under a
->>> single rcu_read_lock() with no reschedule point. On a host with very
->>> many threads -- amplified by KASAN/lockdep in debug builds -- this loop
->>> can hog a CPU long enough to trip the soft lockup watchdog:
->>>
->>>   watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
->>>    scan_block
->>>    kmemleak_scan
->>>    kmemleak_scan_thread
->>>    kthread
->>
->> Neat, good catch!
->>
->>> A cond_resched() cannot be added directly: the loop runs inside an RCU
->>> read-side critical section.
->>>
->>> Split the scan in two parts:
->>>
->>> 1) get the list of tasks (with RCU read lock) in an array
->>> 2) run scan_block() for the tasks (with cond_reschd()).
->>>
->>> Is it a sane approach?
->>
->> Why not use the kernel/hung_task.c pattern here? Seems simpler, with no
->> extra task-array allocation ;)
-> 
-> I've looked at it, but I am not sure we want to break the loop mid-air,
-> that seems to increase the false positives, given we did a half-baked
-> scan, right?
-> 
->> Could break RCU only when resched is needed. Pin the current cursors,
->> drop RCU, cond_resched(), take RCU again, and continue only if the
->> cursors are still alive ;)
->>
->> If either cursor died while RCU was droped, stopping this scan round
->> should be fine, IMHO.
-> 
-> I am not sure, this is not the same as the existing kmemleak_cond_resched()
-> raciness in the object_list loops. Those iterate the marked set, where a miss
-> only means "this object isn't reported until the next scan" -- under-reporting,
-> self-healing, and the in-tree comment says exactly that.
-> 
-> Dropping a *root* mid-scan is the opposite: it makes *other* objects get
-> falsely reported. So the "it's already racy, bailing is fine" reasoning doesn't
-> carry over from the object loop to the stack loop.
-> 
-> If we go this route, the aborted round has to suppress reporting, reusing
-> kmemleak's existing "scan was interrupted -> don't report" path:
-> 
->        if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
->                aborted = true;
->                goto unlock;
->        }
-
-I'd expect the normal case to just drop RCU, cond_resched(), take RCU
-again, see both cursors still alive, and keep walking :)
-
->        ...
->        if (scan_should_stop() || aborted)
->                return;
-
-And yeah, you're right. If we do lost a cursor, bailing out and
-skipping reporting fot that incomplete root scan should be the
-right thing, I guess :D
-
-> Then an abort means "this round reports nothing; the next full scan
-> reports the real leaks" instead of a false-positive flood.
-> 
-> On boxes with very many threads, where the stack walk is long and
-> need_resched() fires constantly, so the break helper runs a lot -- which makes
-> aborts (and thus fully-suppressed, non-reporting rounds) plausibly more than
-> "rare".
-> 
-> Since each round restarts from the head, the tail of the thread list is the
-> most likely to be perpetually skipped, on exactly the workload this is meant to
-> fix.
-> 
-> The snapshot avoids that by scanning a complete, similar to what we have today.
-> 
-> Anyway, I would love to get rid of the array, but, I am not convinced that
-> dropping the scan mid-air will not cause false positives.
-> 
-> Thanks for the review,
-
-Cheers!
+Thanks!
 
 
