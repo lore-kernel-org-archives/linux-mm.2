@@ -4,138 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D04CD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAC1CD98D9
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:21:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C94096B0088; Fri, 12 Jun 2026 06:17:53 -0400 (EDT)
+	id EE2076B0005; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43E86B008C; Fri, 12 Jun 2026 06:17:53 -0400 (EDT)
+	id E92746B0088; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B333C6B0092; Fri, 12 Jun 2026 06:17:53 -0400 (EDT)
+	id D81CE6B008C; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A2F166B0088
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:17:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C11FC2564
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:17:53 +0000 (UTC)
-X-FDA: 84870859626.29.FD9E896
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7D3DD1C0003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:17:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aa/uH/j8";
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781259471;
-	b=G8Ui6Nq1Mjqn2ES7mDu2r94ROHZf7K0lpNciMS4uSvBjo0psgx7yDyHcY0oXgUwE4RrV1l
-	0akXiOBV/Kv9xypzhj4769n9N1OM3wW2Axz5zWjOEjmxZCzo0VRIx4AgeKYpc5ovDp3SiJ
-	h3OJFosXOZHC8rZ04zT8YAcMfpL7kvU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aa/uH/j8";
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C62166B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6CD9B16577D
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:21:12 +0000 (UTC)
+X-FDA: 84870867984.30.591DFE4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CE4F640007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:21:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=disWk0I7;
+	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781259471;
+	s=arc-20220608; t=1781259670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UdZmqyMl3QrZhAhovfmaOPCU7HRmnWwDMXzjqRKD3Ng=;
-	b=yq/zhud+2U5KL8by/BqO2xAqTlmFKmaNf5Ba0vNxjs2RfmbfZx5HsoWCHaFASXUC3eBnfe
-	NklUusoGJBKp+gC6N77kSpWahu2zJ9vjO6X+dcr+nXqCyUi6Gyk60ZQB91iuG9Sva2h/lL
-	aDBc2gJMxVkVQVa1p9JoVIs2Lb4o47M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF1DC40573;
-	Fri, 12 Jun 2026 10:17:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0A61F000E9;
-	Fri, 12 Jun 2026 10:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781259470;
-	bh=UdZmqyMl3QrZhAhovfmaOPCU7HRmnWwDMXzjqRKD3Ng=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aa/uH/j8yoTA9QHwv89Cwnpv1fGtzSTdAeaOE2m9NXMfvE9J+bJsN9SMQMuVp7prn
-	 BMWOF9qOcsosAfn3gAwd3w6dsukfXwH2kLVgjNp3dpQsu1+/j2oXltPrumvH80aOO/
-	 1e0eaG4jvxqfJHpnCZWP/nUIL7yfjFIY2Z1C6OsIuUYx3TywhkQfKL0z7EpZzAi18q
-	 eVwrs2mbLfg1UWKFTqpxTyA2PLablNW1PHY0mTAEniXOpQSuPWtxzZLKfa6I4vQ1QB
-	 PgavmWaN+uZA6bAPY2JbXd0gaUcrKuvZo0cEqyc8oxjS9wO7+nYCAx15hZvcIE66h6
-	 NtAsSGfqmYIvA==
-Message-ID: <49f1bf1e-fcaf-48fa-a7b1-f8ee78b19762@kernel.org>
-Date: Fri, 12 Jun 2026 12:17:45 +0200
+	bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
+	b=kVD1wEUCm8eQG9JE9wrZQuj4blL2H0aExXWXeLQWPFmIEJWK5YPUKbEtZ2lNPJzW2kvQME
+	TEQ9ZYTm81BoEPpBUG5bROxpY0uWf+/i7UCc6N/ZO1N0TKgh4xXD0OVAhPBqM1M+ZKQH35
+	slmXy0kD3rVQMaruXOzB+jO01IFhqe0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=disWk0I7;
+	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781259670;
+	b=RuUna9X7nqo6XqU+WugYvNLqK+3ctfrWAoo08nMXyk/pZe7Rn569L1jb5nD9MLr326CEAe
+	Fjnj7lJwoxKhxF0EhhkW0UNE4cXw6TbZvK8ZOuLPJVwMjg1txT5lDN9JUYKbc3d4XM0Zoi
+	zvkxeJhoQwkYtTIOIKOKZlZq5+rqic0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781259669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
+	b=disWk0I7/FoRu0YM8hFj3tkiATBI7oOO5Xs+OCOpHXY7Ldes9aj4mUNgb9y659+xWmfoTW
+	yqPH/4Gfd7YtxOZ1inwO6DhuzUB9hIYknl4s4UcCNZJQhv3vws8SAM+eoxNmAtQqlrlRH0
+	bsgjgTHKkyy3gaQDlPBeC3L0q3fNShg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-295-xtOqfJXpMTqp6dJ9lnDU9A-1; Fri, 12 Jun 2026 06:21:08 -0400
+X-MC-Unique: xtOqfJXpMTqp6dJ9lnDU9A-1
+X-Mimecast-MFC-AGG-ID: xtOqfJXpMTqp6dJ9lnDU9A_1781259667
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4601c9b630fso408987f8f.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:21:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781259667; x=1781864467;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
+        b=Wxw3co/uqeJHm5sFSApYdAnUvhqtO2ujpL20biRULqjuTbrAbT9CZ3h2Mnpbu2Gq76
+         nxvwG2iIz208v53wQlVriDzFdzUFOa9UUEU/Y81wyaR5rxK9fzxaA1LyLCr+mLbsU7W3
+         4st2LL58zyovthZi3rtUkjRR7CV2srgPF3mfALqXftHRvtEgnVLhsvcvqIiJDCLdT+bH
+         xXqbXmtIb5QMy5xYQxte0WzIYcNyklWOlxcyS9HcBAJDckRzP6+0mAd3NNzI48tAA59t
+         aDTeCrSQjOLathT1hmjaGTz4V2E6WSWrMQQXiQVTLHXhmnx9/0fT8hzj7U5qUEmcpC+/
+         OgRA==
+X-Forwarded-Encrypted: i=1; AFNElJ+h93x9Fp1sc3qMEOIvtCIMp2+7F+CAzzPh7kYqVZq1D5fHiGWAZ5aS11unyNgngKl2dR3ulNLS/Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx1nNfGyab/pchr6yGpD3WAY6HKGexbenGNSafty8KcOvHSTPFD
+	0myz7KeKk2HNQQ0Wm3kRLD2vSPBb1jtoi954Ufq6arNDC13FI8n0tWFT4pHCiaCjjPiTFs/nwyB
+	qf0bl7qhK/ECu/Lwm0mGNeNzeIWQ9hc8zHfp74bmUN4yi+vFHhqRj
+X-Gm-Gg: Acq92OFm+sljPZJxMXJ8scToyIdTjPEt9vCaOPbgOhNNqzzI4KLjxOMGJmp8ux9pJ+b
+	EAclinJ7EFjAt08Wv+AW42/SdXkCHxXo47ZhsW6BC82d4XJmS5vh0fe9i7JxrtMmM2cgv0AEJIy
+	88CKsvUNJo2/qjXOlIArpF+LE8N7Dekt5RuBUmj9qwkZzcDrD+3Gn6TK6tFcfAp47I8uJ2szbku
+	XKatJyA1NjY1lUsAg/PbGngyfvw+2hrpMG3N877whFfCqrCLkQug7if0H3jkhppZbaEsyDixDqY
+	P7HTGWtEnd49T0RO7UZLfi/QcxfGpFHzfh/3qFMULoOnSE3pQx4FhPWDCcXrl4FnSWAlxrc6xx4
+	O4T0yya8kfyUrYVswPWpkAtDYePuDvmoPEdFoy6pm4Nyj0n3amrmEQXRWsuFSdJmV
+X-Received: by 2002:a05:600c:314a:b0:490:bcc1:4edb with SMTP id 5b1f17b1804b1-490ec504eb5mr24369595e9.27.1781259666859;
+        Fri, 12 Jun 2026 03:21:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:314a:b0:490:bcc1:4edb with SMTP id 5b1f17b1804b1-490ec504eb5mr24368835e9.27.1781259666305;
+        Fri, 12 Jun 2026 03:21:06 -0700 (PDT)
+Received: from [172.31.99.182] (91.red-83-48-118.staticip.rima-tde.net. [83.48.118.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea7c871dsm61873325e9.5.2026.06.12.03.21.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jun 2026 03:21:05 -0700 (PDT)
+Message-ID: <443feb66-94ab-458e-8cd8-0ad440d0d067@redhat.com>
+Date: Fri, 12 Jun 2026 04:22:20 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/16] mm/slab: remove __GFP_NO_OBJ_EXT usage from
- alloc_slab_obj_exts()
+Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
+ support
+To: Lance Yang <lance.yang@linux.dev>, baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
+ <20260610124416.46522-1-lance.yang@linux.dev>
+From: Nico Pache <npache@redhat.com>
+In-Reply-To: <20260610124416.46522-1-lance.yang@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7PCMdD_Qm0MjsBbqvjOIMhylBzEVaZh7noI_RwzeFGg_1781259667
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-15-7190909db118@kernel.org>
- <aiurbPx1SISBarBy@fedora>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <aiurbPx1SISBarBy@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D3DD1C0003
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CE4F640007
+X-Stat-Signature: do871k7y4dbwjxoxyd4x1ise67tos5b6
 X-Rspam-User: 
-X-Stat-Signature: tkaomerwrigexut4rkmrynroaekeummi
-X-HE-Tag: 1781259471-693950
-X-HE-Meta: U2FsdGVkX1+fMHcbpAFDGwvdaUBNaHGWm/8l7QEXdvYhKXbmNQPk1TALFqvw59+x380S42R6MziqiZVlZCS6jQvZuB8bfSnJ4hecfocnsZ3yCqmnquLINUKt5hmBnjGkErY9bZYc1gPE3vCdwsjyqKNIwnSoWd/EaSWnf92+h1hVGoZRQY9kcknsQ5ossht2LDOs9HnF/71/lLdVlCUbxA/917Kb7hbagdsntR+oVKFjEuSoVr3wFqCGPnuYuK1iOW+D++QRK3tlfdbgIQsyRV7gpGNaW/QubyBM/D2gLfs7Oj3WW8CLvh7F8WUkLabwiWBnOviA9PBHZABYJIAvyHXjrVoh1XQ66h9/yut81N59SQZFcQa0pau4ETZKtbshq3l8mmo9NYuFb3iFxoUKUfU1BRuApKy95xqMzBcj9iPspRGUzzkLPNCwuEKBlxA2bw8min2OSZVIKOaZGp46oAqB2E4SUSr42dDlp04e1foetucZymdfWMBTkecuZitZ+qH3fPRqa7YqRm+1Q7RU6vkIyEvSFjM3TtWhm+yEVjORDh0eqUS6kTe58uz9j42q2VEn8py8KOwEndreWLAdh7OSUCQD+YYSgnDSyeu6aXiQgkWxUCRXtJJd37mrbtlWlsHGlW4uFfq5k/VvzUPS5IwdKrjezilzadfJUNGq/d1J+CaQ713cv9BtR/yNMmBxpt5Zdb5d6JUqRLSJIc+6EBeakZpKkDEl7bVC1KeufteKgRd/hhKTV8X4qnp6QKNvuPFPTm9wkdVZ9BtA5TUulnkaqNLXTnDn/iWw1cN5uQc683wfMZLbc+7VBC+JdnSEWe46YtOaBLvlZ2RKSGlIM9LvFFRgw3onUgpnsUsYNOIyCoASDnFA8uKWxFc80IwqQzv1M726l12uuAit46L8dinQ/Ygiu6JtygWn6ot6efrGWOsoBjqUpnTAagHhfCs3ByGOP4JELd/h5WBPP9Q
- O/epS2yV
- ndOVhyxsizATraIpYJyf22eqISPMKQHHtC6nbjvWhVcr6GmzbKRdfdrzgqTX39N+ax8tIKtrySr1phOoe3iaodhX8n3aMGmWy3arzHP1SWSULFo9qS4HpTAhJ0wzkeFrqjETsUXJzsAOlF2SREpewID0iWxcEm/lAPmAN7/D6mB7ujw4/pOW/+Fw89+LY8CXWy38r8rhz22A8MThZKy7zWlj6E7GePL9BEEfw1g9DLLVgm0OCeUgzTAbKZbAdjOaO1GemAq1h3mRuq/DZCj5hsQvEFmG0mO9xmbBUVnSQhat+jE1InbG/R22hkAfALXOCQVj6d4H/sxp9u+0=
+X-HE-Tag: 1781259669-988000
+X-HE-Meta: U2FsdGVkX18ZSHySjvv2aaYDeaAAZ7ybsRaGEbcOz0rg+jjlZcDKnll8M/eHoJ3eQJc+cR9EsyE64pCuizDTC2dNSeRdjo86rPo+cEZuMCAjWuWdnWMjE4D047GfaKTlr1Sv5HizmyLi+4MakzhrjOaYZArMIhaMML0MUsAisBm3VIzqVGcjSRqmU832A2abRELfsRLQAVZSIzOAw/YfyGcyzeaPZfZQDxa3+5qPSgwAKpS20VIUo4BDHUN+ivCLnatnOGfS1GbNUeiYtNFop5dUV8QSd0ExnLLW4X82C7uEUGAa876TdW+oWYg3ySaWR7YDZpO2XKI9+y1iP13E0rurcCVTFry1JWpmhcoaUKnbOmU+D9I0MZhYsmGuaInDPO7SLHNepgo9NbZSZLtXVPpclWvN8tUoOhLd/S4uGRDfP0pMVj+UNqyXEhAxAQSQUIycUHWAMwFtNyTMq62F61GNBNK7fM17q6FsZE0lAc3CykwOmh+0l1OaGey+Kge5G/k9xbC5n0oZ/ZyZXndbPftA6z+oHrVF9Wx9u883Q/uznChwZ5se8GcCRaUSNwoXkSWb36fL2v1g98+CjBaH+v7Q2D60agKIgYdxAd8T0X1MydpH3wVNsBrMxRMIM/5TdT24fVz6t77k7I5tPKbVQcMINw1f7CSxwB9udsCAPqoZ7KqFwLQT8zNnLV/xs47nX6ZPwNwARfeVgL1V4PSzb/kHVLvo//zzk3W+xPPJLmt5AQYc7hlNizefQ3ZRCTKLkVM8jTiCwG1xGWer3vQ5JY0SUvfp2YcxNCnMqlI90W24n7lpOzipFFa8ifcjRMoBR64DpR2h7o+1coiS0JzNKaD+FNIxAiJ6LX3NGU8htnE8N2h2uayrx6I33HeJxN9PF5rNmbmoa6N7dVaE80WXRBuoTILgOvH0mTcD+NvA5N7tplaVybFJY0iqKPE8AkfnJ9X1PMz8qTW1TEWWokI
+ ZKEsJ2gE
+ L/jWXJ78+oAuHU1DNH/r6/6DmraP2wrWbsnhDViUp8X5QVs+DEY96mu/TW7QshT0tP047NxN3ul+W37ulBNUIPO/Zxa1buHKDIfcCOUcUxF0QR/POowu7NdpGbh+ntpca5NV9P+0ZkrNGcDhhVw8X7WWPn4FJjqWGAimm2MXnxQTKwXi2MBszAz7jjNk9811WbZOZkKY5MScYXJxxFVuWbatrDPZvLdJSOq4m+HL2ln1ZXLdyN+SST3avAC9psmsrqK5qQCk1w6mmWl//FwtDDhvDJuTWh+eyXfBZdvsY59CvfmTOVXv9Zaet0yf3v70X4/4nMxUCXLwa3t101o2/fG7fCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,109 +135,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/12/26 08:54, Hao Li wrote:
-> On Wed, Jun 10, 2026 at 05:40:17PM +0200, Vlastimil Babka (SUSE) wrote:
->> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and
->> gfp flags are a scarce resource, unlike slab's alloc_flags.
->> 
->> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
->> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
->> family function should not recurse into another kmalloc*() for the
->> purposes of allocating auxiliary structures (obj_ext arrays or sheaves).
->> 
->> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
->> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
->> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
->> added. This will also pass through SLAB_ALLOC_TRYLOCK so we don't need
->> to special case kmalloc_nolock() anymore.
->> 
->> Note that until now the kmalloc_nolock() ignored the incoming gfp flags
->> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass on
->> the incoming gfp flags (only augmented with __GFP_ZERO), because if
->> alloc_flags contain SLAB_ALLOC_TRYLOCK, the incoming gfp flags have to
->> be also compatible with it.
->> 
->> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> ---
->>  mm/slab.h |  1 +
->>  mm/slub.c | 13 +++++--------
->>  2 files changed, 6 insertions(+), 8 deletions(-)
->> 
->> diff --git a/mm/slab.h b/mm/slab.h
->> index 45bfcfb35a9c..509f330654b8 100644
->> --- a/mm/slab.h
->> +++ b/mm/slab.h
->> @@ -21,6 +21,7 @@
->>  #define SLAB_ALLOC_DEFAULT	0x00 /* no flags */
->>  #define SLAB_ALLOC_TRYLOCK	0x01 /* a kmalloc_nolock() allocation */
->>  #define SLAB_ALLOC_NEW_SLAB	0x02 /* a flag for alloc_slab_obj_exts() */
->> +#define SLAB_ALLOC_NO_RECURSE	0x04 /* prevent kmalloc() recursion */
->>  
->>  static inline bool alloc_flags_allow_spinning(const unsigned int alloc_flags)
->>  {
->> diff --git a/mm/slub.c b/mm/slub.c
->> index cbb38bd01e46..7dfbd0251aa2 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2167,15 +2167,12 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>  
->>  	gfp &= ~OBJCGS_CLEAR_MASK;
->>  	/* Prevent recursive extension vector allocation */
->> -	gfp |= __GFP_NO_OBJ_EXT;
->> +	alloc_flags |= SLAB_ALLOC_NO_RECURSE;
->>  
->>  	sz = obj_exts_alloc_size(s, slab, gfp);
->>  
-> 
-> For the original calls to kmalloc_nolock and kmalloc_node, I notice a difference:
-> 
->> -	if (unlikely(!allow_spin))
->> -		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
->> -				     slab_nid(slab));
-> 
-> kmalloc_nolock completely discarded `gfp` flags.
-> 
->> -	else
->> -		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
-> 
-> while kmalloc_node preserved and passed it along.
-> 
->> +	/* This will use kmalloc_nolock() if alloc_flags say so */
->> +	vec = kmalloc_flags(sz, gfp | __GFP_ZERO, alloc_flags, slab_nid(slab));
-> 
-> Now both paths are merged into kmalloc_flags, the gfp flags are
-> unconditionally carried through. It seems this might carry some unwanted flags.
-> 
-> I traced the call path and found that ___slab_alloc sets the __GFP_THISNODE
-> for trynode_flags. If this flag propagates all the way into
-> kmalloc_flags->...->__kmalloc_nolock_noprof, it will trigger the
-> VM_WARN_ON_ONCE warning. Maybe we need to strip the original gfp if
-> `!allow_spin`.
- 
-Thanks. This should do the job in a more generic way I hope?
 
-diff --git a/mm/slub.c b/mm/slub.c
-index f9b8dc56bb57..0bf53f70c9be 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2047,12 +2047,15 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
- #endif /* CONFIG_SLUB_DEBUG */
- 
- /*
-- * The allocated objcg pointers array is not accounted directly.
-+ * The allocated objcg pointers array or sheaf is not accounted directly.
-  * Moreover, it should not come from DMA buffer and is not readily
-- * reclaimable. So those GFP bits should be masked off.
-+ * reclaimable. Node restriction for the parent allocation also should
-+ * not apply to the slab's internal objects.
-+ * So those GFP bits should be masked off.
-  */
- #define OBJCGS_CLEAR_MASK      (__GFP_DMA | __GFP_RECLAIMABLE | \
--                               __GFP_ACCOUNT | __GFP_NOFAIL)
-+                               __GFP_ACCOUNT | __GFP_NOFAIL |
-+                               __GFP_THISNODE )
- 
- #ifdef CONFIG_SLAB_OBJ_EXT
- 
+
+On 6/10/26 6:44 AM, Lance Yang wrote:
+> 
+> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
+> [...]
+>> @@ -1512,8 +1517,12 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>> 			enum scan_result ret;
+>>
+>> 			collapse_address = address + offset * PAGE_SIZE;
+>> -			ret = collapse_huge_page(mm, collapse_address, referenced,
+>> -						 unmapped, cc, order);
+>> +			if (file)
+>> +				ret = collapse_file(mm, collapse_address, file,
+>> +						start + offset, cc, order);
+>> +			else
+>> +				ret = collapse_huge_page(mm, collapse_address,
+>> +						referenced, unmapped, cc, order);
+>>
+>> 			switch (ret) {
+>> 			/* Cases where we continue to next collapse candidate */
+>> @@ -1521,6 +1530,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
+>> 				collapsed += nr_ptes;
+>> 				fallthrough;
+>> 			case SCAN_PTE_MAPPED_HUGEPAGE:
+> 
+> Looks like SCAN_PTE_MAPPED_HUGEPAGE from collapse_file() get lost for
+> the PMD-order case.
+
+This is kinda my fault... I reused the enum PTE_MAPPED_HUGEPAGE (which was only
+really used in file collapse) when reporting that a collapse attempts is smaller
+or equal to the current order of the folio.
+
+if (!is_pmd_order(order) && folio_order(folio) >= order) {
+
+I will change that in my follow up to use its own (or a different enum).
+
+> 
+> Previously, collapse_file() returned it straight back to
+> collapse_single_pmd(), so we would run try_collapse_pte_mapped_thp().
+> 
+> Now it hits mthp_collapse() fitst, and that case just goes to
+> next_offset ...
+> 
+>> +			case SCAN_PAGE_COMPOUND:
+>> 				goto next_offset;
+>> 			/* Cases where lower orders might still succeed */
+>> 			case SCAN_ALLOC_HUGE_PAGE_FAIL:
+> [...]
+> 
+> Cheers, Lance
+> 
 
 
