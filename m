@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725BDCD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:38:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91CD2CD98D9
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3568D6B009B; Fri, 12 Jun 2026 15:37:55 -0400 (EDT)
+	id D8FDB6B009E; Fri, 12 Jun 2026 15:37:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E17B6B009D; Fri, 12 Jun 2026 15:37:55 -0400 (EDT)
+	id D3DC26B009F; Fri, 12 Jun 2026 15:37:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 095A66B009E; Fri, 12 Jun 2026 15:37:54 -0400 (EDT)
+	id B44396B00A0; Fri, 12 Jun 2026 15:37:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DDA9A6B009B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:37:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F3F88C52B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 96BF26B009E
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:37:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62E2AA01DF
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:56 +0000 (UTC)
+X-FDA: 84872270952.22.736B1F1
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7FF6A100007
 	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:54 +0000 (UTC)
-X-FDA: 84872270868.20.1EBF6BC
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CA04F1C0003
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mwPKsqI7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L0Kq1ljr;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781293072;
+	s=arc-20220608; t=1781293074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
-	b=S5ZhTpr9wwP98HBQgxf/fIsbW5qw362L9dTL8ymo8K4hGIIcom5nOFafNtpYCNImwCfYfm
-	7Er+lwWVST9hlwxFyTJ71weicfTfWK8xggu9qwbuBbpX3xyveoF5962aY77jSLxR0Uw421
-	MYBUrBY34brB73gvH6yzAM50PHYx0gc=
+	bh=PlWgO7yzJ7D4dSwTEw1DL0jwS6Qno5QzBy9pCRF+UlU=;
+	b=hzD6XlYB8TUKovAz5MO3VFf73kMUBEnqi+bieeKc1D+CzihKmYTayBkAGffoF6MMgOWjhO
+	7yHXvtE2wfwV8CxiGVDhskNQjEPt8EdRT+Fq8BN5Qv/DjVQUNrSWSQqq8ZMGWVwCVr4XuS
+	srP8Z98CF8ldsaron30pw1ynbGDQlds=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mwPKsqI7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L0Kq1ljr;
+	spf=pass (imf14.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781293072;
-	b=oLt5Jqm8qeJ7NrBeALy10c9EuSfjpPiAaJyOVP5UUQfvKznNhfyo0cIK7uFtqvy769QBkU
-	k9x6AjPoQHrE4TvOvN4X20UJ7LOcUwByI1Kfndk71KLuRHbPZVcpLpaAlsndFDqFxMd45e
-	avwhj24dtHACfG/10WhOjSy+wreuaqo=
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-43ccd4f6f6eso1000754fac.0
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:37:52 -0700 (PDT)
+	t=1781293074;
+	b=cp+d2xfkOnOuuQYpHZTYb/Coo8uZG/m/FmW/Oj4p3naoME55xHmwl/fMZupITKOzaBRDqQ
+	AptDK0wdSY81w48oOXxmAD9DZnkVNu0oRsq2I45R52BqCxJgXLn4s4XUC2MFfehXMF5q61
+	AEsDEp5wRcIwAwK/uwGhrAm4ddW4Ito=
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-43d3454f643so652060fac.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781293072; x=1781897872; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781293073; x=1781897873; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
-        b=mwPKsqI7EhaAjYEnrOVXTFrfxDczngjWuBLtZRX9Q9oTyReXJLtEqNAXGtBdXZMbUb
-         xeOjDSg37NG4AnLix/SzKKUmEGkRMwJrXxrOsKgOnc6w8utncOo/2BwOU3w9ROcje6bO
-         1GoGnJEFH11fOOdBTHyW8Cxs5SmaLz4RLVR6E4A6dNVqVBv77bzQxGnOvSGL8gaa2ksU
-         z53JxXks3QBpaWtpLvF2GRpc1nWJZXNYh57S54va9Hr8bkhbsJZs6iusNleseD4K/Y/K
-         dQXUc3z+27Zqqz7u4bs7hkC3COOSsrqsCkYz2OmdonFsAH6aPezJ+RuROiQj1EhNmMeS
-         0xIQ==
+        bh=PlWgO7yzJ7D4dSwTEw1DL0jwS6Qno5QzBy9pCRF+UlU=;
+        b=L0Kq1ljrVmDO+bRBFBH+IUdjk1mJA5p9UwJJZ9t6nA6EGIy8MrxMjOY6jNsdL6Sfvm
+         wC6iIEltnj/FHHBleI0/LZ8s8DOLTDtk1UDBgwNEdiPZA0BbhlIs2CK/BPS0GAc5uy8j
+         J+wAGXpe27Lv5KRngxPD5BIXu+PSKJUf6ZOlSJAIj1Qa8L5GQ4BDnjZnavE9bnaa50Pa
+         eFdmMCWWhQig9NmXYo9V/2CXzIIZl2oUyrv/41ohc3OoGvy5R/dz+qWT9ObiF5dtGORh
+         EvtWt2QIDcpmsRXUCYD17nf8DNsdXMH9c5GLpWS5ygd+MMmkOA//1HHLdMKWvfhxu8Cs
+         VlzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781293072; x=1781897872;
+        d=1e100.net; s=20251104; t=1781293073; x=1781897873;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
-        b=Ev1kMlXRpc/0wZIAMX8c6irHYvaL4HslHpjBuVcVCtuixY3gAFX89XgX+HzYtR74AO
-         mAN2juuMm2ieQp3BCqDuXfPZU6yvO2e+/MTPRomu5UR1ZJCZgNTGQu9Chn4+1u0hMZB1
-         E0JA4rr1BfYO6YAjvDuNr7zcOWPhJ64UKaWb50NhZaNISmmiU+JPU7h0VrIXzFw1do/U
-         /8Aad4owouwZfrrQvSqy2EizCPT1BEQIgrt/olfSs2QzQWsZYDaErmNJvN58BDYwiuT1
-         0cLgphhwhWQco+D3/rsaDhjxMOZzPVEKb6hZK06ijabH+vr8Wiyt+oIGwDrM9N26tItJ
-         Q1Mg==
-X-Forwarded-Encrypted: i=1; AFNElJ+6EdivI03Mz4OGvQ3yAFgeyfSzFo//cKUhbsat0mYupDDyDivRoniC2xP542FE+FFKYxfuFw1fyw==@kvack.org
-X-Gm-Message-State: AOJu0Yz7A17gYExk/Z6V5HMC0i5wRnH/T2fVUbE5sguLfK1/mTmxpUyt
-	OqTqNKhZjA3+bCcU+kK+XnBLFbacy7bLMQ4+9kQnP4mx/RMaOYt+5gK1
-X-Gm-Gg: Acq92OF98gy0cxTOPqV1heInNCR5HuP43NEfudkHLX9lxNHtthulWIxylzxRq2g2/uL
-	Ui4pPJTXdd2A6/TBpx5/9iQ8oslgIJofrpvDUlUy3YfVFHVQfz0p8Tqp+8zcAKFWCnD8OLyzk7q
-	JwmQBjUCu0vO+0PMPvsgp/GFnosriLPOPQ7uxRjpZHx1JAyjxyBZNDBacrXVRy27kenNogI3QkY
-	/WK7TVPHRnSEhZvdUPoBTLCKRzeZa4NnPno/AkuHhXWkwEBSwthswmAOHeINaQo2NeSPK4D9mlT
-	g0E69dP0/tzu9t5sLdkq0AoCiihNCkUdEdEhMhjaMJRCVm57xmRFUeXbjSJ+37FPZBfs0hdHUMJ
-	Qxr/5WoORFolUfn7HVEvomueJjNllqLVVZc5fG3Lpwi+JHkJIdi7TLAY/Vi1QttXt3eDKKewzkq
-	R19OIYotgipulxtHxJIc5Rsh43C3Cvei5jbPUsjs9SOv3UaA==
-X-Received: by 2002:a4a:ee88:0:b0:687:d4de:1f9d with SMTP id 006d021491bc7-69edc68d84cmr2637237eaf.24.1781293071874;
-        Fri, 12 Jun 2026 12:37:51 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:50::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4426b2f8a9csm2643507fac.13.2026.06.12.12.37.51
+        bh=PlWgO7yzJ7D4dSwTEw1DL0jwS6Qno5QzBy9pCRF+UlU=;
+        b=IvGXj5LzO4/PKQ0fWhR/8KWh9wXmN+J1zRLhlltRmTY5q4z18SYxecLJtdxTyQ8ObW
+         Z4hygqQhFL3tQOijTIi3xfS11m0BDkueWhBcxoIGUwRxcFlFC4AQFrOrRVsAQhrD9+7Z
+         +yqMhR6cz3Xj/TEwwcnuXeYVaMR46aDGxPNFtuJ8iUakZpPa2E27mrr9REV35GFOAYNg
+         8F0F2HLi+gWl2LtA8ofHBEooyj23ugTeXvfBBYNU4eolyPQ6Xw/byFyDxHej2/1wE+8I
+         7ok/6Yv/2G3mDCfKxkBpJ11vA+TBCIyx8STaXPGny+YlOE1Wf9Dkefxgf4Ba9V126Bep
+         oyhA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Zkvq6IjMT3D+TX9W/VwXZxt4P5SccVt5yBdFPozjOetUVfpWH4dvRfC46mcCI2VWY8BQau3Eylw==@kvack.org
+X-Gm-Message-State: AOJu0YxZyHqLXlf3+5jLKBv9lMGW0lfNh2WPhbdwVzrjR8MgTWnz+o6u
+	/RvnGPeZK753IqsKC8/04IZKjnmMSNiWBO2v/rN0fZHFngvhQg3VH4O3
+X-Gm-Gg: Acq92OE8ws8nTP6Mrbq5hLkDrxFBGr2cO6RLkKXQIdHr5J075ofArZzARV9tA1CBt2j
+	LxwPDxzub3EMkVcNSdzfJBJ5tUj1zBo06x9/ZQbQIh02pL2wIeLSbHcHw59D/tA2OuPfasJV4m6
+	Um+oWt2+siHL7s9IRWrl4Xp8vpVe1s9xvjhVrgedcb/L0rrI6kWvSGy19x7ureZgkMOWuvjmiCa
+	T3v0chD0oBRMJDvNRLQXGKCpi7AWhiG+TZ7qVoxhDXBpQx2yCtHWIcHjd6AhUN+EhIohjIpFi9z
+	r/lqY8h/7XXR54TjvW9F4AyJixlVGxqjdayjGBNJJiA6CDQGQinhAOfiuEnhDhS1BSH4jIWGqaz
+	nXcpKOzX1b8unHOsDHLhIbhTfh6f++g7cnmQBZZ4FV/vxshOhfVp6m7RodGzDtOtT9q0C2NnkBT
+	UK0CubPWbxVSxJRGQL+XdMRbu59qUSDnI+uLW0zup3tqBk5Q==
+X-Received: by 2002:a05:6820:198b:b0:69d:ffa3:f56c with SMTP id 006d021491bc7-69eec82234amr524964eaf.14.1781293073363;
+        Fri, 12 Jun 2026 12:37:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:47::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4426ab0f533sm2500220fac.3.2026.06.12.12.37.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 12:37:51 -0700 (PDT)
+        Fri, 12 Jun 2026 12:37:52 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: akpm@linux-foundation.org
 Cc: chrisl@kernel.org,
@@ -123,22 +123,22 @@ Cc: chrisl@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org
-Subject: [RFC PATCH v2 6/7] mm, swap: defer memcg_table allocation on physical clusters
-Date: Fri, 12 Jun 2026 12:37:37 -0700
-Message-ID: <20260612193738.2183968-7-nphamcs@gmail.com>
+Subject: [RFC PATCH v2 7/7] mm, swap: widen swap_info_struct max/pages to unsigned long
+Date: Fri, 12 Jun 2026 12:37:38 -0700
+Message-ID: <20260612193738.2183968-8-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260612193738.2183968-1-nphamcs@gmail.com>
 References: <20260612193738.2183968-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CA04F1C0003
-X-Stat-Signature: jspq4dxxki7rt5189kmkjj69zn677idc
+X-Rspamd-Queue-Id: 7FF6A100007
+X-Stat-Signature: mbrhr9qkdcnxioq47g97f9zoetqxqf4w
 X-Rspam-User: 
-X-HE-Tag: 1781293072-683712
-X-HE-Meta: U2FsdGVkX1+fcgcSY9mAwBLS50FLtiy2dIzKSPfsTlke//b/cJBfhnRHXZF2m1NFIG1K6t0jP/cNnE/t+uWclCm8kig6dbd8rJ8Tkd1nPPphCxyAS8WWcCo4rC6Z6BBmyDfCaGw7/ChDF4Z/O1cvY/zbrRD4wzOCsNWRWCz6D4ZGrAXJtygjEQaNVaeaJs4MZyNJP7/h3WbbSKIjICbjBkasndwdYn51jONtUnWx1SdrltZbJDf9Rrsq2utUCmGdUzDk8gMsDgYTCXKpXAY212547Wu/DHVktKPV9dXw8hyG93I3/q5mpPPm25UvRwkAyb/HKF2kus9NNHMjabwWxxT1FBNdtfInKvF2/qFSpKKInRgJXAW/mKSzcMv8xeJRmlPIVtggUxP01RdDAQtujEXJq2W3Mt1ApVKZN4vqIieqyFvLSM2eqe+niHRA7ArBsYY0uUQdDvRk9niNp9hXM6JaxHnIoGvU3DIDDrICAVzV6Vec1UpjX11DMAn/+O5Bl4oohyN0e22C7ssZOibUMVVDkdXP0wlZnkFQ6BWMccDTXZXgkSrFPtfLrLgvkCFzQVflrHT9wb2Sb8CHXCqWA+oKMjQG3xAATCkmkD+nSPnOqx3qVsv2qYkU1N0yr8LDts+VR421O5FrqFpWlvIM0P6co5Szilu0gv1xzR7f4OTrNPbELORbolK95B5ZgkLBX18DnCrWks+KX/swwAH4mmLIziR3WCxgYwa1V2p8Fi9CyxAVgLDCsIEPQgkIs6mmzHuOY/QqoM51GPd6dhxa5GvJdEtKKxn4+vZxtO7WRNVxSKD7UiH9d33NQN2m/dJaO/OQi4uSBpml5LAsM8OlIA/oXt6xrekcOpSZb+zS+/Rkx+QrvRK64z4pDMlBIZWuCvfHBT0yAz3Sr1VnWkYG+Ud1D0w/8seGJuBoNCjWd/o9ITtcFmbTvd6sSxEi3EaytUoGJCuXogyuK2L/U4J
- XJpwrgYk
- t13IICCkMx3wKxR//zAZrGyM0y6Ut6vjsJxkfRb98n3SawudG2jrFHjWKj8dIVYVlMGgVJhlG1zE/I/pqGRP2WAtFQOVE5TdpQElpmEu1Dj1x+ffzo/Y9sOvDGaRTtTQRE5mDpmBnp9TyqS1kjLsAaGxAubCPw+bHquFQoVkynj5/5LlUEXeXivUGOCCsAhiMrIPufK50kdqGJybCxNng1MKyf7uFd8hK4htLQmnFshVWNY4x4K2Y9b7ipvs6CQD7DGssq0yPu8/OnDkXTgOjRYPajU/wAnkEYmjzws6kr9yiSqq17ReqU/J7ARFzpKcqyhkbl0uxQy0UsbQGHFmM9jv3ilmeii8EpIK/eKwl6qqKG5yiwS9xUQZ7M2mIkgEoalBFxUsC18fgcDDHGNmE7Txc9hu/79BBw1iCvx4O+yXANiAuba45MECKBIbvRk4BU53XuuFJL1y3XIi3yq4R0tPviBp/JP2Zww5q6lie7lcvtAZfpWUXkthBbb6aQ2JuQBUt
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781293074-981133
+X-HE-Meta: U2FsdGVkX1+NdT3j0l/9syt0fMT60g/y32+xYe6WUnyc5YF5IEFjn2MfSr94Hm3KcdOmP5PnW62VIGd9/GDyZasB683xcdNaHum/Xz0YrOp+BtLWebHE3ifLO14zipeI8j99V4F3paWhgP3zt3te2Lk85E2F9z2DhSx9ucw+rUVurCsl/3/5Z0NEWSVVqoCvn4BSwASlGTBqA04xiNcVLRiRuPAxln28Ked9L2frwkyWyrC4ZAlfaBrPVygBt8OsUIoNZRVFVlgpXgR7oz6IXVvLDH1Zq10pN3VFRSRNqgJnChK5nYVSfZl7H41JZg+gmwX7GSdb/h2lN5GbcGjnGwNxdAUkRN5vxJ2U/9HxfIAyXqsa13VKQPRaPKg62IpkAJqV0m01NQhIHzjB3kpddgHlX8Qs+9fUxPHbsPxzzZnU/pQu073Bui3r3tl7CW+UZfZNQt4gRyH++UaB5eW09z0DDfLY7NnIgt0PDw2t8wyQEj6HZv2JmMAU94jJBsBlG+cqASbF6fPeQp7SUUhz7JNYi6PBATKeG7TErYxAVCY5HthDUTV+ZSs1XuPeAvHTAZbcrevYNFjY/32mNchqU8l09mm/tAkoHn6JH17aA07N4Xm/1Kv/OTmgzUSAamj/9bPwZ8hvy2oeO4ViXVDbaETQaeh8XflyI0Wv/IU4OM12+MDv/Z4B3QseJwz9kNJfqCsvzmcao+yKrVlBmO56GXaWQNE8189L7aNfGDoLvoflogqpED/hWp30WjvDtKdE15ad4rdK2zqYnCIyyatDrVKo5nNps+a/Tvwl+oVnEbQkh+/pJhKDtk8ywasjprzpa6p/Kt3xU/p1+drfG2YCTlUz3Sq1/B5HWK5YxFmMFwjx88S4wfCt13PI4Dd88a71Q/On0bxnSMRbYzTnliyam/EUfb94O67tU0GU+76Ulp5n8mvtvwgeZ1Y6qXWXrgRzB276XKKP1LKZE5ebZcn
+ /BB+HLpi
+ 73REYEXSHMtC9oHCp14YWjSrEgojGDQrHXyjef5OUVFM1RCKln5bETG7gA93HKHTvJoH4ElG/T8sVuwefKZDBxhp5P0Xl221sq/ggEWJqORIM7NZj4VvnxOSbhMS8STgkR00IfD4jkTx24ZeGPW1cj5Jl4z1/o9Q1jYZFkUbP10DQT98bxf+uODKw0xwfaIfmzsP+tND8hP/MuHiwfN82+Ro7IUlmlW3ltvzkFKofosA7ajAEtfYRKHL9zaDJ4w9VniHXwov5LibgNMzzpq7pPDOGckI2Z8ZjW2pUXLp5L3aIT1YfbPMkG5JuRYtuxZTdp3xvIExcbuzoDm5kapp71+l3Xy9hgUnbDd4Ev4d9bBHJLBS+g/WEdRkYWjjZK5IzGiO/D/gyVj3/QHkE4V/XybGnF0wewjPByYxePXH7wRRvbfIrbWBHxizR4e/tjBF3E68CrZ9Wrk5WfF0ZkcZG81ARoeJWfanzTWjy2iALgcjbU1yYozJ6U3CAtR9OQ7mT5OZTSgtDKznzFLg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,128 +146,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Physical swap clusters whose slots only serve as Pointer-tagged
-vswap backings never have their memcg_table read or written.
-Vswap-layer memcg charging records on the VSWAP cluster's table,
-not the physical cluster's. Allocating memcg_table eagerly for
-such clusters wastes SWAPFILE_CLUSTER * sizeof(unsigned short)
-bytes per cluster, which adds up on vswap-heavy workloads where
-zswap writeback is the only consumer of physical swap.
+Widen swap_info_struct->max and ->pages from unsigned int to
+unsigned long so the vswap device can exceed the current 16 TB
+cap (ALIGN_DOWN(UINT_MAX, SWAPFILE_CLUSTER) pages).
 
-Allocate eagerly only when the cluster is known to need a memcg
-table: any cluster in a !CONFIG_VSWAP build (all slots are direct
-use), or any vswap cluster (every vswap allocation records memcg).
-For physical clusters in CONFIG_VSWAP builds, defer the allocation
-to alloc_swap_scan_cluster, which lazy-allocates on the first
-direct-use slot and skips entirely when the cluster only holds
-Pointer-tagged vswap backings (folio in swap cache).
+Physical swap is unaffected; backing files/bdevs continue to bound
+it independently of the field width.
+
+The new vswap cap is the cluster_info_pool xarray's allocator
+limit. XA_FLAGS_ALLOC stores allocated IDs in u32, so
+max_pages = UINT_MAX * SWAPFILE_CLUSTER (~8 PB at the typical
+SWAPFILE_CLUSTER=512 layout).
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- mm/swapfile.c | 48 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
+ include/linux/swap.h |  4 +--
+ mm/swapfile.c        | 62 +++++++++++++++++++++++---------------------
+ 2 files changed, 34 insertions(+), 32 deletions(-)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 2d6bc4cb442f..b8fc2aa4539f 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -253,7 +253,7 @@ struct swap_info_struct {
+ 	signed short	prio;		/* swap priority of this type */
+ 	struct plist_node list;		/* entry in swap_active_head */
+ 	signed char	type;		/* strange name for an index */
+-	unsigned int	max;		/* size of this swap device */
++	unsigned long	max;		/* size of this swap device */
+ 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
+ 	struct list_head free_clusters; /* free clusters list */
+ 	struct list_head full_clusters; /* full clusters list */
+@@ -261,7 +261,7 @@ struct swap_info_struct {
+ 					/* list of cluster that contains at least one free slot */
+ 	struct list_head frag_clusters[SWAP_NR_ORDERS];
+ 					/* list of cluster that are fragmented or contented */
+-	unsigned int pages;		/* total of usable pages of swap */
++	unsigned long pages;		/* total of usable pages of swap */
+ 	atomic_long_t inuse_pages;	/* number of those currently in use */
+ 	struct swap_sequential_cluster *global_cluster; /* Use one global cluster for rotating device */
+ 	spinlock_t global_cluster_lock;	/* Serialize usage of global cluster */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index afb118ab8179..0d48240de345 100644
+index 0d48240de345..b03a81993a04 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -493,7 +493,8 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
- 		 swap_cluster_free_table_folio_rcu_cb);
+@@ -451,10 +451,10 @@ static inline unsigned int cluster_index(struct swap_info_struct *si,
+ 	return ci - si->cluster_info;
  }
  
--static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
-+static int swap_cluster_alloc_table(struct swap_info_struct *si,
-+				    struct swap_cluster_info *ci, gfp_t gfp)
+-static inline unsigned int cluster_offset(struct swap_info_struct *si,
+-					  struct swap_cluster_info *ci)
++static inline unsigned long cluster_offset(struct swap_info_struct *si,
++					   struct swap_cluster_info *ci)
  {
- 	struct swap_table *table = NULL;
- 	struct folio *folio;
-@@ -516,7 +517,16 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
- 	rcu_assign_pointer(ci->table, table);
+-	return cluster_index(si, ci) * SWAPFILE_CLUSTER;
++	return (unsigned long)cluster_index(si, ci) * SWAPFILE_CLUSTER;
+ }
  
- #ifdef CONFIG_MEMCG
--	if (!mem_cgroup_disabled()) {
-+	/*
-+	 * Allocate memcg_table eagerly only when we know it will be used:
-+	 * any cluster in a !CONFIG_VSWAP build (all slots are direct use),
-+	 * or any vswap cluster (every vswap alloc records memcg). Physical
-+	 * clusters in a CONFIG_VSWAP build defer to alloc_swap_scan_cluster,
-+	 * which allocates on the first direct-use slot and skips entirely
-+	 * when the cluster only holds Pointer-tagged vswap backings.
-+	 */
-+	if ((!IS_ENABLED(CONFIG_VSWAP) || swap_is_vswap(si)) &&
-+	    !mem_cgroup_disabled()) {
- 		VM_WARN_ON_ONCE(ci->memcg_table);
- 		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
- 		if (!ci->memcg_table) {
-@@ -590,8 +600,8 @@ swap_cluster_populate(struct swap_info_struct *si,
- 		lockdep_assert_held(&si->global_cluster_lock);
- 	lockdep_assert_held(&ci->lock);
+ static void swap_cluster_free_table_folio_rcu_cb(struct rcu_head *head)
+@@ -876,7 +876,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
  
--	if (!swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
--					  __GFP_NOWARN))
-+	if (!swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
-+					      __GFP_NOWARN))
- 		return ci;
- 
- 	/*
-@@ -609,8 +619,8 @@ swap_cluster_populate(struct swap_info_struct *si,
- 	if (!swap_is_vswap(si))
- 		local_unlock(&percpu_swap_cluster.lock);
- 
--	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
--					   GFP_KERNEL);
-+	ret = swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
-+					       GFP_KERNEL);
- 
- 	/*
- 	 * Back to atomic context. We might have migrated to a new CPU with a
-@@ -883,7 +893,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
- 
- 	ci = cluster_info + idx;
- 	/* Need to allocate swap table first for initial bad slot marking. */
--	if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
-+	if (!ci->count && swap_cluster_alloc_table(si, ci, GFP_KERNEL))
- 		return -ENOMEM;
- 	spin_lock(&ci->lock);
- 	/* Check for duplicated bad swap slots. */
-@@ -1175,6 +1185,28 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 			if (!ret)
- 				continue;
- 		}
-+#ifdef CONFIG_MEMCG
-+		/*
-+		 * Physical cluster in a CONFIG_VSWAP build: lazy alloc
-+		 * memcg_table on the first direct-use slot. Checked here
-+		 * (not above the loop) because cluster_reclaim_range may
-+		 * have dropped ci->lock and a concurrent vswap-backing
-+		 * alloc could have freed and re-populated the cluster
-+		 * without the lazy alloc firing (that path has
-+		 * folio_test_swapcache(folio) true and skips it). For
-+		 * vswap-backing allocs here, the lazy alloc is also
-+		 * skipped because vswap-backing slots never touch
-+		 * memcg_table on the physical cluster.
-+		 */
-+		if (IS_ENABLED(CONFIG_VSWAP) && folio &&
-+		    !folio_test_swapcache(folio) && !mem_cgroup_disabled() &&
-+		    !ci->memcg_table) {
-+			ci->memcg_table = kzalloc_obj(*ci->memcg_table,
-+						      GFP_ATOMIC | __GFP_NOWARN);
-+			if (!ci->memcg_table)
-+				goto out;
-+		}
-+#endif
- 		if (!__swap_cluster_alloc_entries(si, ci, folio, offset % SWAPFILE_CLUSTER))
- 			break;
- 		found = offset;
-@@ -1241,7 +1273,7 @@ static unsigned int alloc_swap_scan_dynamic(struct swap_info_struct *si,
- 	spin_lock_init(&ci_dyn->ci.lock);
- 	INIT_LIST_HEAD(&ci_dyn->ci.list);
- 
--	if (swap_cluster_alloc_table(&ci_dyn->ci, GFP_ATOMIC)) {
-+	if (swap_cluster_alloc_table(si, &ci_dyn->ci, GFP_ATOMIC)) {
- 		kfree(ci_dyn);
- 		return SWAP_ENTRY_INVALID;
+ 	/* si->max may got shrunk by swap swap_activate() */
+ 	if (offset >= si->max && !mask) {
+-		pr_debug("Ignoring bad slot %u (max: %u)\n", offset, si->max);
++		pr_debug("Ignoring bad slot %u (max: %lu)\n", offset, si->max);
+ 		return 0;
  	}
+ 	/*
+@@ -1152,12 +1152,12 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+ }
+ 
+ /* Try use a new cluster for current CPU and allocate from it. */
+-static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+-					    struct swap_cluster_info *ci,
+-					    struct folio *folio,
+-					    unsigned long offset)
++static unsigned long alloc_swap_scan_cluster(struct swap_info_struct *si,
++					     struct swap_cluster_info *ci,
++					     struct folio *folio,
++					     unsigned long offset)
+ {
+-	unsigned int next = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
++	unsigned long next = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
+ 	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+ 	unsigned int order = folio ? folio_order(folio) : 0;
+ 	unsigned long end = start + SWAPFILE_CLUSTER;
+@@ -1235,12 +1235,12 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 	return found;
+ }
+ 
+-static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+-					 struct list_head *list,
+-					 struct folio *folio,
+-					 bool scan_all)
++static unsigned long alloc_swap_scan_list(struct swap_info_struct *si,
++					  struct list_head *list,
++					  struct folio *folio,
++					  bool scan_all)
+ {
+-	unsigned int found = SWAP_ENTRY_INVALID;
++	unsigned long found = SWAP_ENTRY_INVALID;
+ 
+ 	do {
+ 		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
+@@ -1257,8 +1257,8 @@ static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+ 	return found;
+ }
+ 
+-static unsigned int alloc_swap_scan_dynamic(struct swap_info_struct *si,
+-					    struct folio *folio)
++static unsigned long alloc_swap_scan_dynamic(struct swap_info_struct *si,
++					     struct folio *folio)
+ {
+ 	struct swap_cluster_info_dynamic *ci_dyn;
+ 	struct swap_cluster_info *ci;
+@@ -1373,7 +1373,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
+ {
+ 	unsigned int order = folio ? folio_order(folio) : 0;
+ 	struct swap_cluster_info *ci;
+-	unsigned int offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
++	unsigned long offset = SWAP_ENTRY_INVALID, found = SWAP_ENTRY_INVALID;
+ 
+ 	/*
+ 	 * File-based swap can't do large contiguous IO. vswap has no IO
+@@ -3492,10 +3492,10 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
+  * Return 0 if there are no inuse entries after prev till end of
+  * the map.
+  */
+-static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+-					unsigned int prev)
++static unsigned long find_next_to_unuse(struct swap_info_struct *si,
++					unsigned long prev)
+ {
+-	unsigned int i;
++	unsigned long i;
+ 	unsigned long swp_tb;
+ 
+ 	/*
+@@ -3533,7 +3533,8 @@ static int try_to_unuse(unsigned int type)
+ 	struct folio *folio;
+ 	swp_entry_t entry, vswap_entry;
+ 	unsigned long swp_tb;
+-	unsigned int i, j, ci_off;
++	unsigned long i;
++	unsigned int j, ci_off;
+ 
+ 	if (!swap_usage_in_pages(si))
+ 		goto success;
+@@ -3970,7 +3971,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	struct file *swap_file, *victim;
+ 	struct address_space *mapping;
+ 	struct inode *inode;
+-	unsigned int maxpages;
++	unsigned long maxpages;
+ 	int err, found = 0;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+@@ -4404,12 +4405,8 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
+ 		pr_warn("Truncating oversized swap area, only using %luk out of %luk\n",
+ 			K(maxpages), K(last_page));
+ 	}
+-	if (maxpages > last_page) {
++	if (maxpages > last_page)
+ 		maxpages = last_page + 1;
+-		/* p->max is an unsigned int: don't overflow it */
+-		if ((unsigned int)maxpages == 0)
+-			maxpages = UINT_MAX;
+-	}
+ 
+ 	if (!maxpages)
+ 		return 0;
+@@ -4640,7 +4637,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap_unlock_inode;
+ 	}
+ 	if (si->pages != si->max - 1) {
+-		pr_err("swap:%u != (max:%u - 1)\n", si->pages, si->max);
++		pr_err("swap:%lu != (max:%lu - 1)\n", si->pages, si->max);
+ 		error = -EINVAL;
+ 		goto bad_swap_unlock_inode;
+ 	}
+@@ -4728,7 +4725,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
+ 	enable_swap_info(si);
+ 
+-	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
++	pr_info("Adding %luk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+ 		K(si->pages), name->name, si->prio, nr_extents,
+ 		K((unsigned long long)span),
+ 		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
+@@ -4900,8 +4897,13 @@ static int __init vswap_init(void)
+ 		return 0;
+ 	}
+ 
++	/*
++	 * Cap at the cluster_info_pool xarray's allocator limit
++	 * (XA_FLAGS_ALLOC stores IDs in u32, tops out at UINT_MAX).
++	 */
+ 	maxpages = min(swapfile_maximum_size,
+-		       ALIGN_DOWN((unsigned long)UINT_MAX, SWAPFILE_CLUSTER));
++		       ALIGN_DOWN((unsigned long)UINT_MAX * SWAPFILE_CLUSTER,
++				  SWAPFILE_CLUSTER));
+ 	si->flags |= SWP_VSWAP | SWP_SOLIDSTATE | SWP_WRITEOK;
+ 	si->bdev = NULL;
+ 	si->max = maxpages;
 -- 
 2.53.0-Meta
 
