@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F740CD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A46CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74EFB6B008C; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
+	id 3D7C86B0005; Fri, 12 Jun 2026 07:30:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 726A16B0092; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
+	id 3AFDC6B0088; Fri, 12 Jun 2026 07:30:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664196B0093; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
+	id 2EC3A6B008C; Fri, 12 Jun 2026 07:30:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5876F6B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:22:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFA1BC200B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:22:51 +0000 (UTC)
-X-FDA: 84871023342.20.3592FEB
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DA5FA16000B
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:22:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="rK/4qiQ+";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5A96B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:30:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C77F71C2966
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:30:15 +0000 (UTC)
+X-FDA: 84871041990.06.7591D6B
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CF9CE120007
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:30:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mQ6XTXPT;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781263370;
+	s=arc-20220608; t=1781263814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S9H34KM0CzvAdGWJO94iGmMoL4Jxl0Cg8wXuvqWR/cE=;
-	b=L1j9GaDXxFznSb/vOrQhtxT5+kOOleUXDgCQQ3VLIpTwLQqFQISuQcyvanaA/gIOG5jT0q
-	1vpTSi6jqPd5/+XBiBitJLHYiZFwIMbG94kiOrid2R1qIGuDTh40l2Ph3PHGz5z0jdbR+E
-	v6oUEAwBL5Hhgwq2qw1uJHVlQxDymyI=
+	bh=gnE76kx6sJHPObcY3xV2Cf2cd1QfYlcVg52Ay7ZMWeQ=;
+	b=wB3UySlv0E7stDwjQwLchPOtngYsPcFEuIZ7hSCc8KRckStwKRzF3Nv8H7OF0s19ZNkY48
+	p5XbiKhTbW/KNgUyKbQmZ+LQnT0APiEzhgmBHUmVpTOFqbpTKoovpf+TAlo+4A/MEWXQNc
+	lxtZpOXjKzApbeTSNhSC3eGWcH0C/Fk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="rK/4qiQ+";
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mQ6XTXPT;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	spf=pass (imf29.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781263370;
-	b=T4aFTVNzG5HM2IOhVoXDSPukmolk3WO/2ZlE8TYkw9aDzmXjZHBq9yUGI3DSj60e9tqAQG
-	elbcK5uBD3xmZfVCPcixM6Nqrx9lYym3vPP/IKN+6JwJeTICtHBvVaK9p3U0GSpCULC50l
-	/UtEB6UkfUoYlaTx/R3rzBE+HM5gw5E=
-Message-ID: <086712c1-18bc-414a-9a7a-723b9498847a@linux.dev>
+	t=1781263814;
+	b=ZlN8+62OZQBrTQyg8FZ+j32B0PC/YCJ0KXTX8YQgxhXrJ04+uKFUxL7JGhVr3/+oVf9OjH
+	O3OZxQGTX2OdH87mRF1Ll/5oF145g4kL1p38qjG8ysqR6PCRiYyqQoK36XK7dgFfuNw+iP
+	FueiWApurnrTnU6F0NJju7RrxHVRBbI=
+Date: Fri, 12 Jun 2026 19:29:43 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781263366;
+	t=1781263811;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S9H34KM0CzvAdGWJO94iGmMoL4Jxl0Cg8wXuvqWR/cE=;
-	b=rK/4qiQ+XLdBkl7Okeesu87wgP7Mgh4oBmRzUCGOvu9pPnd/ic3ah3cJ1CMoHgTrwmpFB0
-	6y/jI8vDt5GSR3cvaWWyDuMzebjA53ulL17K67G2IctToNkmbf54/mk/DoFVTbWYGFzsd7
-	+2xGjRK/NZ3gtwU2fM9n44tcvY8FWXg=
-Date: Fri, 12 Jun 2026 19:22:38 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH RFC] mm/kmemleak: avoid soft lockup when scanning task
- stacks
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, sj@kernel.org
-References: <20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org>
- <20260612031605.58235-1-lance.yang@linux.dev> <aivJ5Dv0hAQ1sJu1@gmail.com>
- <6bc446b7-8e25-4add-9d72-a3c9e9191533@linux.dev> <aivhX7RtLVwBkNj6@gmail.com>
+	bh=gnE76kx6sJHPObcY3xV2Cf2cd1QfYlcVg52Ay7ZMWeQ=;
+	b=mQ6XTXPTqyo8DYGRO17jNXO1oaUsaQbgvh7wgElYYAOLo1NPZdxySPHZBJj6gST26n8jhW
+	gKLRuBzRbgsGfenosc3DORszrEL7v8sUA02WF6feITnfb7RRTgkLEOndlUrsBSdP1IESFV
+	snHja/j4piC9f4rYT0PTzP4dBLJQ/Mc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aivhX7RtLVwBkNj6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH v2 15/16] mm/slab: remove __GFP_NO_OBJ_EXT usage from
+ alloc_slab_obj_exts()
+Message-ID: <aivpob0Zgnbc4AG4@fedora>
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-15-7190909db118@kernel.org>
+ <aiurbPx1SISBarBy@fedora>
+ <49f1bf1e-fcaf-48fa-a7b1-f8ee78b19762@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49f1bf1e-fcaf-48fa-a7b1-f8ee78b19762@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DA5FA16000B
-X-Stat-Signature: xmhsn8tbotbc1ob7f5rdoxoiu8zdgc66
-X-HE-Tag: 1781263369-256972
-X-HE-Meta: U2FsdGVkX18ZeHn4ZGqClCM3ukwOBOMbWExWW6FT7v/m5FM9DU6QumWa2dc9rbH+YmrcDf36lVYXTVps3Kdl3Bq5750Vgyu3yRGAqnCgrhM02EOiiuppo8NNV0FwBpnslorakcsC5VGpof9Jd9de0ZpBYTQHpUUyqGwqHDWtSsJKQcyV3aGTtTrVvbMif0ezSsUiYMst/Xpwv3Wqs2x6ZaLWzh8+ERnT2UEguNKrdRVrlTA4W0p1MrvFIqZPCKNpiRAGkfJMTmjiUsSO6IpiJAdYXPJySyNyCP+BjX+q4Cy1EGtydcxQcaQmCp0m1d07mp6frsxc1P0M1sN6oanAF+LUq8BllenWp2BrJYvxdqU4U9yuL+QAQ1MdsTey90zqm0a6swrZfagtBPwUv6njffLnt/R3SneP2GuTOu4X6yBNQC8f/xriREz6EiMNbP1DATZ1b3FQypL9LBZyC9AhFcOXKQOvGlej++xoUi/vyyeRTcN7RyZBlV2NHR4z9cSF35oEerbZtkgk2vm7xe+vKEEkmKMDZ+GzTraJgiwPV/mS4ezOJAkiGk9zb59tNjOKGxltGwFMym/AmaNnoAlSuezKgoaBsWOGO86id/XBeTM5D3RqGNxG8QVtb/M0/Kh+H065VMya/0qTONf9OIeoDT+MMjPTLHqbSmQ3Z1oRdWrpsmTLA8KPfNUkSiZCkKnyOS5PKlnaMPtq3r2xM/JMK5aHw4C3OAo6ndg0WlWvYK3Z7o4Ns5/FTiCBi5IoZVRGUhlZmXiLH8s5vVqu4o9SInemwaVH42V1HaZuiy0sWnrmH4QoMuLkWL1xYjsXjuTh97oHXr+PN2QGigAFIyOQ9/Nx4a7C0MfWkecy3Uvd457kxJl9bFznVOplxIUY0RAREXiFqlIE9s/PJr3HPWJyxO5QHiTpLnjEetiaj5ik917zWof2hWDRH+9bI3RTD3LtPWQZ8+JLkuGHI9T3ggM
- dkFArYGK
- hE/k8zYlcPdmeNnossMxue0xO/rUsePdl/VnmflEEyfAkscY8iucHnJibxXfRAB8rI1ubJP/ZjbLXh5ceRzuATZXRAEQRySYVf9D3DpKLAIT2knWXjofEYniF5ok4ud/iWCxIXKVEyylvbACTBjZYv7Iyoxi30WE5c9O6m1KIGNtc9f725TaZ7p63MTloZQB1nyy7WIj0mrHWfsFxKEcZYTKHRA==
+X-Stat-Signature: rxmhckkhg1tq9fig8pft6n6m89kb8mdx
+X-Rspamd-Queue-Id: CF9CE120007
+X-HE-Tag: 1781263813-750882
+X-HE-Meta: U2FsdGVkX1+1Z9LV0H+9RGHFYlLrKb7V7jaC9pCj2JmrwGVqYyeEABWon76C02XW7oalpdaO1VLpkS59Jw7z1kzb/RgP8y8sRx8DbdYwtay3YliXaLyf4Id1+GcjuK5YfO2ZpkmYzqzas6g/u5nPtFNvK4pCEhQ3qq6pH6BclCOlY+LgWugTR+CO6SeE5ya4vQUvBNUSRWs5dgUSEKsm1kEQxM/WXl7/C19JwPXZQwak/Zqx0F+VHYAQO+L5l813ThZTb+CzY5f8vIlILI0B99Bj0arSQ5siwffgXul46E0X792zQZT8rnId1XAHWJBe2czXjwVr3FWiVaGflBJbMlKefGCe1ElRPJ4Mtz+yfEkM2VEyQe3koce8mu+Waw1nwy+2W9jq1yx+edLRe8+4ejCcqMgOdB21ATdQjf3VgNLaMMrgIluWxM/JHDdpvRpQPZNS7te9PHTJvv9/ttFHXgzFn3t4l7kzxoeeB8vAXK1+jiEvgpNdPLihxHDpZlVlXDvM3xqMpvJYTXATmzFs9bL13nigyVRNbKWArDOH9dtL2cZz86v6XngmIJSNqq+i0pR6zIAR2WBdl5NVFT0/C0R3QoRDVsaOv8/BQfDPGUQ4PRTB5rrBpB8W1FvSSKPkJ13naDZi7nPOBFSwCkx4DISLqIxTVpoAkOHkKiLyRSakYji7pjr76NUUV7BSh0+iNjidez8Fhpkf1KWF/46Inb1S0Ug19Ry5N1Yj+a9mKu6jRUMNecp7Xkgi/l9ajv8Y+wKSq07VwF/QLYhs0nx+UX98OyWgRHNWMCwhwGpQ1jMvx8LWyml2uxyki+5v7M4Lfa5Y0Ff07IRej+4/CcB2QfmhrnDVKI2gvYoOknr4ReR5XVzzkWIpjsmGD//uL9rvkDyKzM388gP74DQ9BcMGutog09AK1VusFs0yekmmuOzWq9mA9WFjU3//JDmje1CeQ5BuJlXHwEWAsNScgWm
+ 84Ou5xq3
+ bcYo8vJiNtagk5R5gQ5199Ir3vGbOLruvT51UUy9EZm4bcMHwqOZ5NpUxZP0JHab4HM4qXvCkTZYsSfUw3vzREg9IzKNb2rBCaGrC1sMyRt/nt6sapRNJaq2zxTQMsxGkPWxBUgoo3Nisw+SoauO2z0izOwrFU0eXcsCVNJNRoPdGG9qj+qgLqD3pfoY8tdJLLto2LB/+sJKGef7P837jqkSi1o8bYyommaVQadk+KmKZyLWkVreeo+Zr8+0l5h0lbXQnou/WCNwVi7LrPY4B1aa7w7YYdAfGUypHdyYa/uDiReZueM8W2FnCKbClREL+pfoe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,32 +96,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/12 18:39, Breno Leitao wrote:
-> On Fri, Jun 12, 2026 at 05:57:12PM +0800, Lance Yang wrote:
+On Fri, Jun 12, 2026 at 12:17:45PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/12/26 08:54, Hao Li wrote:
+> > On Wed, Jun 10, 2026 at 05:40:17PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and
+> >> gfp flags are a scarce resource, unlike slab's alloc_flags.
+> >> 
+> >> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
+> >> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
+> >> family function should not recurse into another kmalloc*() for the
+> >> purposes of allocating auxiliary structures (obj_ext arrays or sheaves).
+> >> 
+> >> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
+> >> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
+> >> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
+> >> added. This will also pass through SLAB_ALLOC_TRYLOCK so we don't need
+> >> to special case kmalloc_nolock() anymore.
+> >> 
+> >> Note that until now the kmalloc_nolock() ignored the incoming gfp flags
+> >> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass on
+> >> the incoming gfp flags (only augmented with __GFP_ZERO), because if
+> >> alloc_flags contain SLAB_ALLOC_TRYLOCK, the incoming gfp flags have to
+> >> be also compatible with it.
+> >> 
+> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >> ---
+> >>  mm/slab.h |  1 +
+> >>  mm/slub.c | 13 +++++--------
+> >>  2 files changed, 6 insertions(+), 8 deletions(-)
+> >> 
+> >> diff --git a/mm/slab.h b/mm/slab.h
+> >> index 45bfcfb35a9c..509f330654b8 100644
+> >> --- a/mm/slab.h
+> >> +++ b/mm/slab.h
+> >> @@ -21,6 +21,7 @@
+> >>  #define SLAB_ALLOC_DEFAULT	0x00 /* no flags */
+> >>  #define SLAB_ALLOC_TRYLOCK	0x01 /* a kmalloc_nolock() allocation */
+> >>  #define SLAB_ALLOC_NEW_SLAB	0x02 /* a flag for alloc_slab_obj_exts() */
+> >> +#define SLAB_ALLOC_NO_RECURSE	0x04 /* prevent kmalloc() recursion */
+> >>  
+> >>  static inline bool alloc_flags_allow_spinning(const unsigned int alloc_flags)
+> >>  {
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index cbb38bd01e46..7dfbd0251aa2 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -2167,15 +2167,12 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+> >>  
+> >>  	gfp &= ~OBJCGS_CLEAR_MASK;
+> >>  	/* Prevent recursive extension vector allocation */
+> >> -	gfp |= __GFP_NO_OBJ_EXT;
+> >> +	alloc_flags |= SLAB_ALLOC_NO_RECURSE;
+> >>  
+> >>  	sz = obj_exts_alloc_size(s, slab, gfp);
+> >>  
+> > 
+> > For the original calls to kmalloc_nolock and kmalloc_node, I notice a difference:
+> > 
+> >> -	if (unlikely(!allow_spin))
+> >> -		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+> >> -				     slab_nid(slab));
+> > 
+> > kmalloc_nolock completely discarded `gfp` flags.
+> > 
+> >> -	else
+> >> -		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
+> > 
+> > while kmalloc_node preserved and passed it along.
+> > 
+> >> +	/* This will use kmalloc_nolock() if alloc_flags say so */
+> >> +	vec = kmalloc_flags(sz, gfp | __GFP_ZERO, alloc_flags, slab_nid(slab));
+> > 
+> > Now both paths are merged into kmalloc_flags, the gfp flags are
+> > unconditionally carried through. It seems this might carry some unwanted flags.
+> > 
+> > I traced the call path and found that ___slab_alloc sets the __GFP_THISNODE
+> > for trynode_flags. If this flag propagates all the way into
+> > kmalloc_flags->...->__kmalloc_nolock_noprof, it will trigger the
+> > VM_WARN_ON_ONCE warning. Maybe we need to strip the original gfp if
+> > `!allow_spin`.
+>  
+> Thanks. This should do the job in a more generic way I hope?
 > 
->>> If we go this route, the aborted round has to suppress reporting, reusing
->>> kmemleak's existing "scan was interrupted -> don't report" path:
->>>
->>>         if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
->>>                 aborted = true;
->>>                 goto unlock;
->>>         }
->>
->> I'd expect the normal case to just drop RCU, cond_resched(), take RCU
->> again, see both cursors still alive, and keep walking :)
->>
->>>         ...
->>>         if (scan_should_stop() || aborted)
->>>                 return;
->>
->> And yeah, you're right. If we do lost a cursor, bailing out and
->> skipping reporting fot that incomplete root scan should be the
->> right thing, I guess :D
-> 
-> Thanks! Under what circumstances would the cursor actually be lost?
 
-It should be race, but possible, that we happen to stop on g/p,
-drop RCU, and one of them is gone by the time we come back.
+Yeah, this is more elegant.
+
+> diff --git a/mm/slub.c b/mm/slub.c
+> index f9b8dc56bb57..0bf53f70c9be 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2047,12 +2047,15 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
+>  #endif /* CONFIG_SLUB_DEBUG */
+>  
+>  /*
+> - * The allocated objcg pointers array is not accounted directly.
+> + * The allocated objcg pointers array or sheaf is not accounted directly.
+>   * Moreover, it should not come from DMA buffer and is not readily
+> - * reclaimable. So those GFP bits should be masked off.
+> + * reclaimable. Node restriction for the parent allocation also should
+> + * not apply to the slab's internal objects.
+> + * So those GFP bits should be masked off.
+>   */
+>  #define OBJCGS_CLEAR_MASK      (__GFP_DMA | __GFP_RECLAIMABLE | \
+> -                               __GFP_ACCOUNT | __GFP_NOFAIL)
+> +                               __GFP_ACCOUNT | __GFP_NOFAIL |
+> +                               __GFP_THISNODE )
+
+Good idea! Both code and comments make sense to me.
+
+>  
+>  #ifdef CONFIG_SLAB_OBJ_EXT
+>  
+> 
+
+-- 
+Thanks,
+Hao
 
