@@ -4,109 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F05DDCD98D5
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 06:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB5CCD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 06:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B3386B0005; Fri, 12 Jun 2026 02:46:08 -0400 (EDT)
+	id AB9FE6B0088; Fri, 12 Jun 2026 02:48:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 363156B0088; Fri, 12 Jun 2026 02:46:08 -0400 (EDT)
+	id A6A296B008C; Fri, 12 Jun 2026 02:48:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 252A66B008C; Fri, 12 Jun 2026 02:46:08 -0400 (EDT)
+	id 9595F6B0092; Fri, 12 Jun 2026 02:48:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 14F3B6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:46:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBA681A03A5
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:46:07 +0000 (UTC)
-X-FDA: 84870325974.21.356462F
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E86494000E
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:46:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SzWq4ivU;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 8181D6B0088
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:48:03 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 34D591A0393
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:48:03 +0000 (UTC)
+X-FDA: 84870330846.24.E183A20
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 752AD20004
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:48:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYA1nWDv;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781246766;
+	s=arc-20220608; t=1781246881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tqDd7CCu46FQ8ONM7WEjZvNrKJQRgFQen8hVZWzw+EQ=;
-	b=UuS9r2DBW0KUnZnp65eSOBCSs/jpUE6fze2GMBfGcRy9TdwPjiuSsLQbevH5KUjJyCr2tR
-	YjMqi5Rv9zKBwlLFWECRv6BdbGnDp8nL/N91LkpZ3NYIzlTGDmNUyYtKI1Txg7DgVta2fq
-	KDArhI1OSW6QP+TA7m24O7VLKKENl5Y=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SzWq4ivU;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=PYKn3nqZTI2tONzA/mOunAmSCw2g+cgo26Rk9W8RKAY=;
+	b=yC4AgX7cxjeQXUipD9mzGaDwg26+YURfG4/Vq1X66ZYRRITQ8wDKyTGIlw6pBitWqqMArb
+	JNcIYTdlIgICmsiwh02/4HOxAjM/TOB9MGVWnpGUzUEftGk7neYSobO43l+2xssKmWOg5i
+	wDulGgW5VaQC/Ou3abMm+/DbpXWuDZI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781246766;
-	b=GBrG6Pq+RQ+j46ZkfoEerb+jtkrjESlDDy3Fd6zTcMV3FIvrcl+zl0cogCrdI2GXqCA6Yu
-	qcQzzuZcD4vrqOhdcdVfRQOWq7jwJjFgcooj4MxBpb5ZuskLIU/cQwC3z39gFyTRB3cuOG
-	BKkGyLEMzuckqoItNRWgmjVI1Ki1Img=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781246761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tqDd7CCu46FQ8ONM7WEjZvNrKJQRgFQen8hVZWzw+EQ=;
-	b=SzWq4ivUXVPN4pB1Cpf3WddSPQPx3UELf13mNC3wAxXbwawJZVYDDZDLu14G7G8JvHS8Lc
-	wZAh4erOzArQKan9EQ6jAcRPJ+0vZTAF4010mx6q08ZlHofVAmaxA+4BcnKo3jeKlnDtvY
-	higrliLn8LnqYupwpUOBVbAgVlYY28I=
-From: Lance Yang <lance.yang@linux.dev>
-To: usama.arif@linux.dev
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	ying.huang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	vbabka@kernel.org,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	kernel-team@meta.com,
-	linux-mm@kvack.org
-Subject: Re: [v2 11/16] mm: handle PMD swap entries in non-present PMD walkers
-Date: Fri, 12 Jun 2026 14:45:50 +0800
-Message-Id: <20260612064550.54968-1-lance.yang@linux.dev>
-In-Reply-To: <20260602142537.198755-12-usama.arif@linux.dev>
-References: <20260602142537.198755-12-usama.arif@linux.dev>
+	t=1781246881;
+	b=uS63XEk2/yYA2yhTwZmoDOAcBb0J7oKyFbOLpte0vhjtW4Y6ixqsFiT58zELGu8TfGlgS1
+	cQRNygJi3WC+jN30BrnytPTNfBSxFKPYd0qiTOL9v7LN0wf5cfsTPOfyynINRatvwtv9Jw
+	wQEB0wlTndZZHbjn6jkSSkckARcSRl0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYA1nWDv;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F1C4C6001D;
+	Fri, 12 Jun 2026 06:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797EA1F000E9;
+	Fri, 12 Jun 2026 06:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781246880;
+	bh=PYKn3nqZTI2tONzA/mOunAmSCw2g+cgo26Rk9W8RKAY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZYA1nWDv5Kwx1F24wjee8yzwFfyzxfMG+g8cWzvDB3bEUM+EMfkYHp6ABVQ9fRMRd
+	 T5YaKhfOZpYQjxQU55MBSKLYilBqhXMvNrhHHGQz0r5o04LvFzqj1rNcrziQdVjqP5
+	 mgtT8FWQIY1P31vj/uykTfWkQu0gBpfZw99wjX6jGNrUV2PDEYvnBtoqU3CySIrALy
+	 c0uK5vi5VyyvoR4M61Fey8iKtYLRqwIN9V4ezzbThVuHfPlSWKV9B5KcQUd5VfJtEf
+	 LhU0zo6Whc6grmxDSJ4nryzfJ1hJZmrVx0NeoenuHrCQEF05auuoCz8/cxxtl4d03M
+	 Q5Rw7oS+Las7Q==
+Message-ID: <884cf1df-2256-4eb9-a2cb-67377a3bd8f6@kernel.org>
+Date: Fri, 12 Jun 2026 08:47:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/gup_test: fix race with PIN_LONGTERM_TEST ioctls
+To: John Hubbard <jhubbard@nvidia.com>, Yunhui Cui <cuiyunhui@bytedance.com>,
+ akpm@linux-foundation.org, jgg@ziepe.ca, peterx@redhat.com,
+ yang.lee@linux.alibaba.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260608025043.88087-1-cuiyunhui@bytedance.com>
+ <932e1fa0-dd9e-47d2-9133-d3b2f78dcd97@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <932e1fa0-dd9e-47d2-9133-d3b2f78dcd97@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E86494000E
-X-Stat-Signature: nrpsc6msyzbu5panwka5gz9owc9skrpe
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 752AD20004
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781246765-808414
-X-HE-Meta: U2FsdGVkX19VZm/S9+eWKLkVnzaY/aefvCirBWXLV406lwjNPsa66gpVHN4XfSKz28ZxiOmi932Z+BPvlRhhvS6gC4OkJRKjt4krWOs3k+O6RrPdIi8ZnCuMDrLeHhbree3mvTW9BsZogQo+AGKe6kNJy3CVMMdO3yx2DZwe49rtBrDAsew3wvsngKHnag26UHMxERknOV2++Ii4RUxVpcH2AzMkd55mH+2YAkRB0GeMr38IFzzUQbUzlYL3tiBZLlcRewQOoR8KZoc4ZcXTr0spf/9zl64Vu4JHsGCbKcChbyncdkIEhQ5dYOQ1wUi/i2puGsQSYnDjVjkPnnrt4oYUmpyeCRUuuzZytDiOtVRR6wZ/dyK15XrmdPcs/vj/H2OEFTOOzn6BucErMs9bcR/NLicbU3hW/owajnMrb90IzQYAZkHYgxOjgumEz3sZCYMyu5JSKVnryQnjw3ma2QHtRZ8MiTk3Lvy5SC++1h4JqV8r7cWWI3brJj1dpuOP0DWoZ9N2P1Ynog8VvWOCU6bqjyiHlV5NwAcOEHcNJqQK428PzC6V3lWVp9tigFUTTgWQFPW//GnDzlT7mZzMqOf7e+VASGxv8MqaazaBIIYdXWRjkowu820LmodClQe+ptl9eXn4cZ+tN1YfgrerISDGObyYOj14ARh6m3O3/9/rsK6EDa/BVFReTwwRew4+MpANHJJFNzoTrdXypdEE/z9/X+oj5JhQbMi1J/hs+cVK2Ifj7n7ayysO47BtRZTemCfyCKdl4ATXRUjBKhjG5RVRwyJ5XQsNYARKACOfzxhHP4yGx6WpM4RR0HGq3mX2c9Edkm+1o119S4fs0F59BUyTRq3YepI4Py9NAB5ymlIW9lJNzMTNtz1oi9cW5QpcupXt1BawJDgHbFPgLxh+hP8ZAO9q5ckQuVjDW6FUJvgG1SG04C5u+km5w4RoOvoXTtQrO4U9pJQ58Hs83iw
- Zt7xUK2I
- 42b0j1ZlNNcsnk4KRlmn9CYz6rvAgNULsOxusgcFYs1xLGdPG/mLKM0To0Ewl8paG2AlFaZ6i/o+SYilrzHnx4bRdWnrV+M29Tb1o/kCRklbygWl7LijfqArUAUZBo1u+tgcVtxBpLOQEzVR7bM2r8CY9UI8g7PcvGc/k1XSbKgdWUib77CXFURhHB4dpuyXnoJqOurf3GMEvNUoLoPqINeMkbg==
+X-Stat-Signature: 17jbxfumknfxbwzzrnndef5zreatrn1x
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781246881-937973
+X-HE-Meta: U2FsdGVkX1+3JRtY4Rgl9/zgRk/YxQHADFwD6z4FoIfV73POJ0M5HCKC2XVSe8o2mBHtNesXZ9K8IoemGfX7HjbjnruehJogXESVGmAEGJiBYvWIJUq5UvyzEE4Bf8MxBE+EZpaOwh8jHzKYALGBAtPB2XLO5RZSY4+7b9vm3jhpr88UIINPJdD3cJhG9oIqC5gF39WZ3/LWIjiZraVbX4pb9D+rdwhrQsJFcpW2u4jwMT6+uBJLPpAxG1BuwhputSmSROpZD/kbVwCQw+bjpVgH38+dKT9gjsE8jVw5wgt7R5a1AG3xzepPUQ71S4E+9yhVGU0oLZJk6KXdF9XbTYyz9IP+fnjcSP//DxszVSVK3/i43IjOV1LOaAeyVBYhCTPG9uVmUe0fFsLLk3hxtFe/PZj797Wnw3Zo6oFbSdKrndZid2LHClS8g3WHgBbGSAZIS++mUBQOcBsJqkNqvjhBgl7WFDkX5vsWPpK1c9aIHcqheVL68a0iVoUwbbj2K1qH7a2SKqUVW7e/Uxb18dIRIDUNIkwrH4VcX5RbGqxLuoRmpx7HHAwPIq2u2J6kTlX71F3ruxWBO9b0CaOOgfUwOtYtuTUqSnVDUEcPfwHjNPH8fKhy77PTVBWdPPsxibc1XdjH7GvWDho0ARzSNhod3mMvdy8tY7s38HRcf99PFuEzJkcG2IvNybD82YdWjEE3Ds/PFqFQXZUxKIiEJpC75YN7iCElUUyHGqU6XXvsWq50+T/hTYVuWp2uFq2iIOD3lE2Ht6dsjc7BsJ5vl3e603pkg3ThQHdbdEYMMCyE4wuEvM3ugImujL/KfA91rBrTOYTTk8h4Gg1lu/5Wgpc+kuCt8iz5RK3xPZl21kXI5+RTo3T3EMSmgp3XUWCvTo+Z7+eKz3G3wOqnslk8Mw5Wr5T5DxHP1Q6NniQ+cjEAdvjeFvR2qTjUyLVh1A2VE3rWYow3HhQ9m+ucZaX
+ IojMKZRf
+ TN6oFmecXtH3GNQw6w8kLKmC0+Wri1cBKKUGBFV4BSwWSwAJ1P0ypJuMMBQkp0A8Dju/0x2fHT1fe1z1PboD5+4WaaUuPWZYgTktJHaU++zzcy5CEzGDN2b9n+fcC3LYH7rxdCRBNSQv15/0i6QFgIzKwp9yp06BWvAr/HNwZS/WlVnei2iFkJ9l/4j24Gv8aJtFAubO0Z5jSglVKb31jvUXkpNotcoxsS/wQbBJIMvGCAQ3kt74rw6hI5LkKCIeqX+LCH9GQk6IVR/XvaRZOKtrgvpetP+GOUi4bUYiB7SXw5nyJ8EhZcTl1PQZUpxwK48TwKTPIwFf3Yms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,70 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc linux-mm
-
-Please Cc linux-mm next time. Pretty clearly MM work ...
-
-On Tue, Jun 02, 2026 at 07:24:19AM -0700, Usama Arif wrote:
-[...]
->diff --git a/mm/mincore.c b/mm/mincore.c
->index e5d13eea9234..3fee8a7b9d9d 100644
->--- a/mm/mincore.c
->+++ b/mm/mincore.c
->@@ -172,7 +172,19 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+On 6/12/26 06:20, John Hubbard wrote:
+> On 6/7/26 7:50 PM, Yunhui Cui wrote:
+>> The PIN_LONGTERM_TEST helpers keep their state in global variables that
+>> are protected by pin_longterm_test_mutex when accessed from ioctl().
+>> However, gup_test_release() calls pin_longterm_test_stop() without
+>> holding that mutex.
+>>
+>> This can race with PIN_LONGTERM_TEST_STOP and let two callers operate on
+>> the same pages array concurrently, corrupting the test state and possibly
+>> freeing it twice:
 > 
-> 	ptl = pmd_trans_huge_lock(pmd, vma);
-> 	if (ptl) {
->-		memset(vec, 1, nr);
->+		if (pmd_present(*pmd)) {
->+			memset(vec, 1, nr);
->+		} else {
->+			/*
->+			 * Non-present PMD: migration, device-private, or PMD
->+			 * swap entry. Route through mincore_swap() the same way
->+			 * the PTE path does -- the swap entry covers all 512
->+			 * slots, so the whole vec gets the same answer.
->+			 */
->+			softleaf_t entry = softleaf_from_pmd(*pmd);
->+
->+			memset(vec, mincore_swap(entry, false), nr);
+> Let's add here that there are *no* such callers in the kernel, today.
+> 
+>>
+>>  CPU 0                              CPU 1
+>>  -----                              -----
+>>  ioctl(PIN_LONGTERM_TEST_STOP)
+>>    mutex_lock(&pin_longterm_test_mutex)
+>>    pin_longterm_test_stop()
+>>      if (pin_longterm_test_pages)
+>>        kvfree(pin_longterm_test_pages)
+>>
+>>                                     close()
+>>                                       gup_test_release()
+>>                                         pin_longterm_test_stop()
+>>                                           if (pin_longterm_test_pages)
+>>                                             kvfree(pin_longterm_test_pages)
+>>
+>>      pin_longterm_test_pages = NULL
+>>    mutex_unlock(&pin_longterm_test_mutex)
+>>
+>> Protect the release path with the same mutex so that stop and release
+>> cannot run pin_longterm_test_stop() concurrently.
+>>
+>> Fixes: c77369b437f9 ("mm/gup_test: start/stop/read functionality for PIN LONGTERM test")
+>> Cc: stable@vger.kernel.org
+> 
+> umm, no, to "Cc: stable". This is the sort of thing that gives AI
+> a bad name. Specifically:
+> 
+> * Nothing in tree can possibly hit this race condition.
+> 
+> * This fix is purely static code analysis hygiene: correcting
+>   a theoretical problem that does not actually provide any
+>   sort of vulnerability fix in the kernel.
+> 
 
-Looks buggy ...
+Yes, all rather useless churn that consumes our capacity.
 
-That assumes one swap-cache lookup is enough for whole PMD-sized range.
-I don't think that always holds ...
+-- 
+Cheers,
 
-See do_huge_pmd_swap_page():
-
----8<---
-	folio = swap_cache_get_folio(swp_entry);
-[...]
-	/*
-	 * Folio should be PMD-sized; if not (e.g. split in swap cache),
-	 * split the PMD swap entry and retry at PTE level.
-	 */
-	if (folio_nr_pages(folio) != HPAGE_PMD_NR) {
-		folio_unlock(folio);
-		folio_put(folio);
-		goto split_fallback;
-	}
----
-
-it handles the case where swap_cache_get_folio() returns a folio that
-is no longer PMD-sized. E.g. because it was split in the swap cache
-while the PMD swap entry was installed. Then it split the PMD swap entry
-and retries at PTE level :)
-
-unuse_pmd_entry() has the same fallback. Can mincore hit that case?
-
-Maybe the comment right above should say something like:
-
-"
-One lookup is enough for a PMD-sized swapcache folio. If the swapcache
-was split, check the per-page swap slots.
-"
-
-Hopefully, I'm not missing something here :D
-
-Cheers, Lance
+David
 
