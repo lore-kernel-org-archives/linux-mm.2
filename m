@@ -4,94 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74CACCD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F7BDCD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 05:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D18C76B00A7; Fri, 12 Jun 2026 01:17:00 -0400 (EDT)
+	id 0A1286B00A0; Fri, 12 Jun 2026 01:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA39A6B00A8; Fri, 12 Jun 2026 01:17:00 -0400 (EDT)
+	id 051C46B00A1; Fri, 12 Jun 2026 01:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44056B00A9; Fri, 12 Jun 2026 01:17:00 -0400 (EDT)
+	id EAA396B00A2; Fri, 12 Jun 2026 01:24:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EC4E6B00A7
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:17:00 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DEC3C165A58
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:16:59 +0000 (UTC)
-X-FDA: 84870101358.27.38AAFF3
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CD74540002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:16:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Lvf1anZ+;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781241418;
-	b=ujpoyXWs9/14DpJWFOgt76sgFi1PlpzpRp/VwHkhO/wGaUjlRBpY8R0oTtYdVD6iZTXxSK
-	Pb6zMiEJPFKMvp4qFd0HGxv5gP9gXjktNo7HsVq7xvhbYCSwwLl1X3n0vBByTlqXPKlcpn
-	6rrYCTl9joQfycO+v9j08vCDVcN9X1E=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Lvf1anZ+;
-	spf=pass (imf01.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D95B26B00A0
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 01:24:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A2791C3851
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:24:31 +0000 (UTC)
+X-FDA: 84870120342.29.EBDAAA6
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6186520003
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:24:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=DPM7ZoCv;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of wqu@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=wqu@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781241418;
+	s=arc-20220608; t=1781241869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8raZXv/J5rTvp9TGhy9Jw0/HHc7BoN0/jPQQy86iNe0=;
-	b=kbSP6t6/bcJHSHDnrVYCRUs+J/5WU6ih8aAvSX4qvMZggrpdkm266xxNR4s3FNBfuIKlr8
-	ZrNTHeIeednI5IFg7Ui7M8YNTlSi9+Rso4IdJXYlqhiDH3CD9SgGRTM6nIicPrq7fpxxfs
-	iy4CK1kl5TwvUYmpC76E3yzNCFi3Tok=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8raZXv/J5rTvp9TGhy9Jw0/HHc7BoN0/jPQQy86iNe0=; b=Lvf1anZ+ooIiKk0AdaKZIOQ/0J
-	aKIpJ9ep3MYz1mpNHisbDgpSlRFeaiRjwXdeEtSGgr2ZcRwOJXt7US29j6LWrZUyR5HR+w2aiTb9r
-	dABYdHqeOe0D188WNV1MnwrhfPlxWn5ri0IRjQhcJu4LYidXFiZotCsWLDqg0aO9EcPLikEPO/9u9
-	SZ7/UTEVuAJPTjV7j1JFYe27a3bGpTiBXJoFqifJjbc+pPbHuLzwLUOf1AOEXNT20ZpBc2dF9Aw9U
-	onqkgnEiEBRJocsyhJ9sbMcHKvhZHklDKvMZoaRZxJwBxeeIZgHcA3RJX4q/DA2a2pvUbs2gr2UD+
-	iAdNcqjw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXuG4-00000003Atb-1fgn;
-	Fri, 12 Jun 2026 05:16:44 +0000
-Date: Fri, 12 Jun 2026 06:16:44 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com,
-	xiuhong.wang@unisoc.com
-Subject: Re: [PATCHv2] mm/huge_memory: do not add dropped split tail folios
- to LRU
-Message-ID: <aiuWPKy0ncsMIXgW@casper.infradead.org>
-References: <20260612023456.2424044-1-zhaoyang.huang@unisoc.com>
+	bh=9mY8Ko1A+P6AJEypWSmExtdmu6Mefh9vM6dtIhppSYs=;
+	b=5DYNIY4fdEj+Yy6INGmF7ZjywDmSnoa2A/SXFdGsiQmGx3fINqjg39xQ2aAD3djZo+nA1a
+	hfRMv3ExDvfmp1G/fAkk0zUrp+Kva8LPKScWH+0l7Ghqowf+vuuEyf4HqkuSNa2EaMySsV
+	b3wM9fthRMDSyvajObDEKfIysH3EGWA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=DPM7ZoCv;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf03.hostedemail.com: domain of wqu@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=wqu@suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781241869;
+	b=7cfOHerh2bJ9fz3WWQAD1+L8Mzpdz2rlSO7cmd62l8EioxBYNAdidcU6C7Biqn7rLAQorV
+	VFO6LRD8J+6FBLG30SL97CgHR1oDpCW+3mEFqv0V997bcIRkUO9+2NCOPiHtogMKodW02K
+	YfcyepMGYY8VlirFyeeCqGTXfeLlS+c=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490d1e54b3bso6103795e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 22:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781241868; x=1781846668; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9mY8Ko1A+P6AJEypWSmExtdmu6Mefh9vM6dtIhppSYs=;
+        b=DPM7ZoCvL0YQkBVOSQmOSwZJDtAu4OKlBf8cy7uoSYdNwP2wBbNsu/A4OtZia693DR
+         sJZqhEwpN3/k/z9I6phZ7gEpRAkF7neR8I2zisdrNcr2yvsBoAGuCt59t3C2SA5ZUtk7
+         CWcCwUgw8yq/5dt4vZt2nsUp3BS0V0qTytXbibcRZ2gMw3pEXdTZ9F4Efm0k23ApvWEq
+         +cf8dN12ni4DyFDc6kSOPPykYdxFaUTIPdQMKR7qagCdvt8JS6SXSHrBOVOSifrXnfcd
+         uXNXwZ1ECUCoLqYF7cHh27Phht7Cy5IROe4b46mt5ZHuscNrb+iOZoZ0w9ZPVEUIkvtx
+         4kGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781241868; x=1781846668;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9mY8Ko1A+P6AJEypWSmExtdmu6Mefh9vM6dtIhppSYs=;
+        b=F21cZUhfGVyGT25sb+ys8MPSWuKOVFwD/LbX2HajLMJLS0VyFedOKOZMXFhCVDBt61
+         iVIg34pJ5p6aLFLgfjA1A8IpEtNHx9Rmmk92U808hymBiwPOdKz1wAj61KWXzsA30Oiq
+         a++jaAOCECRTt/qLf4RGHQjt6jJTVPdusjjW/bREUIjsq5KoSn7WbwAM2RlVx3+AvfsF
+         mSZ9PKdy7aiM04BoXfct1LaUR8Lh26wBLDq4e4Ir3euE9SbUzJ7TJ6VcAYZDQ7tThEL2
+         BiaCoLtx5ZIK0grPYL6sCEhiK0c23JlwgWmrzS7hBBEF7Xt7wzbV9CJjNn0HkqCEoK9W
+         Srgg==
+X-Forwarded-Encrypted: i=1; AFNElJ/bqQPXKJKbdXl8rDytNQDYHTILa52Cc77ttrYsBFs8XG0B8YhvwQ06UasTd2zabKZ7D5naVtT60w==@kvack.org
+X-Gm-Message-State: AOJu0Yxsh2o6iQAau+PVRkbzL1MEI4hbn+caim0aaw4f6cuJnQ1jfj6Q
+	Us9H3ADTu0Z52u8a1AdoikDWCLWBADMylLSkpaMIr7WX5JyDkXc8Z08Y/QD/S0ztthA=
+X-Gm-Gg: Acq92OHklqb2O61hZNjOn2moLLH8mQ4VdNikpdLhpZgajfbci0IugMgaSdRZyocOnaB
+	LlV69uJ1YZ/lcyHbi860vPHgrR8HgaOk3vEjZEBWzl2ALisYUL3BYDhDFllVpHGnljn1RqBu8BL
+	zNFVoxQV28JlRukTsbnepWp/P0VwrXiRkpdpoZd6FCPs9bfZ7qIKDxsmWb2XH9zLO07DkOWBudB
+	QCxuUCXJsQgNshKr9PL0/zPW6KuWkYB8x3mThljKh55z4QJpUH8AjqMfES/B6bGKfHecvUaLD+Y
+	YczO7Nz+DQU93VTFwUu0M83U2Z5JF9c25o/VPCe+f/2OfdWCMUJmR9l6Rw1V6GUxtFo4IY3yfSO
+	2x59u/iJCg/n7wRfxgHB0ERkInOlTx97FgBvSaVm5zgaiWPIHX5nNXDDu5bYTei2u7ypgyFY9UY
+	FMkSK3KSjXXu4vrn8LfBOMlfgmCD7HmFax35z4fwU4ueGVAZUFKuuVkoI/aqBHSan4+cOGGhMt8
+	gNvGZBhhiUgkKzEmijAGt8iz7VQufx0uXWrmUubPGRfZw==
+X-Received: by 2002:a05:600c:8b44:b0:490:b65f:8b1 with SMTP id 5b1f17b1804b1-490ec4992b5mr11700415e9.5.1781241867773;
+        Thu, 11 Jun 2026 22:24:27 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1:0:2bb5:f164:6e6a:38d8? (2403-580d-fda1-0-2bb5-f164-6e6a-38d8.ip6.aussiebb.net. [2403:580d:fda1:0:2bb5:f164:6e6a:38d8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c433557c47sm6928115ad.79.2026.06.11.22.24.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jun 2026 22:24:26 -0700 (PDT)
+Message-ID: <f1dbdcd6-4e6e-4304-8fa5-59c2c60252ad@suse.com>
+Date: Fri, 12 Jun 2026 14:54:22 +0930
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612023456.2424044-1-zhaoyang.huang@unisoc.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD74540002
+User-Agent: Mozilla Thunderbird
+Subject: Re: Direct IO page bouncing got some garbage?
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs <linux-btrfs@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+References: <b866b2e6-292f-4c5e-ae5a-d77e983cfefd@suse.com>
+Content-Language: en-US
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <b866b2e6-292f-4c5e-ae5a-d77e983cfefd@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6186520003
+X-Stat-Signature: 4riuf38jradjubu1s635pzmxnoqbe9ux
 X-Rspam-User: 
-X-Stat-Signature: 8p5p1jg8r1mqggysjzzw3m8311hsu815
-X-HE-Tag: 1781241417-454517
-X-HE-Meta: U2FsdGVkX1+UQX3hNpSepKQ6r3RZ5JShtocLH1T3+8XZXDTPqpf5ebZ9yh2AyFQRxeO9bIfI1yTEL1xGK7M8OOa8EyMAmpp7z2qp+y0Yvkc+MkYfSd4TFbqeiLSlQLR8CP5Amj53zt2RjNB7cWNP+5Ze9sJ2kgasF+yTJ03PzmIUK982lbHEAczj6Afibng7CiGjUR4AMS+w8la1n1atRLBBNlXYWVa+Bi+VgNhuvPlu08fooKZAn4I0EC5NKzZmNWjCNSVbONp2JmI3MoUT0BxyPTxD776KsnA1sZWipNp4J+7+SDUeFEtrAKUHhLXit+ennjl88ghbixg0sRQL4pCX3NMrUPVlgrMhjFySvA64s8A7a3HiR4PNL2/ztCF9NqYDud6gEHtDnrxIdeetxKNFo+DWPz641YoSgMMjg0A5QXeQ29dg0eO6cXtVFVptRKu7p0/cWONGAia/9SCuE3a66Yp9VH1PhxlsMAv43o3L7iO160dvfCOm/S4lCWNgip5RVGeR8732yZSMB6SAdwPkkd0ogaNr27tc+IWz4rKD4OySeH1bFdjtyfD4czKUyoPF+MW0RZuYCdUwMLSvb3Q0q1ToKBKbV0AzkT44kOUzvCJ7fzjje/ZeF8vSL5vephdZCAgpTs0CcoSOPDraLTTn5k6ZdfOAImkRvf2kuNBnTYnJOcxzrL0HK4pnwrsVrgnxLNQc2oJCAMGiuBlShA0NPE+P9/IcFhAUtkBLrVMiDAM9kqcYi91NFlpPYaQt1DzUuGoSWWRHBu5OWvRkST5JB/EwWdwfq+y1C9MeZ0gNn0M7m/A0UW/+4e0RzYbklxjMsHkhR+tzueVW+KFvUL5bgeIOstLNpi1sJMwVk2flmU8gfMvQgSxdsAlJwnCzIi+qJPcJ43eRWoCfjSEnG+zBe8dG7gA7rLzxgMNlPdLkJE6b0YX+8GRvUIdRL78FW6Wi1W07ZyIfruJ7ASD
- bt3n4RNp
- NjY5AirBXqzOw+FMEFukySL8rSVLZKHn7kU+YhUdwjZk0braU/vJ/KBa2cOVVWAf4/mQRZi7OTqs/qA3uBlg0ozYv4lycOpGGt12JlDlzr9o75UyO4e3OapGEY9bv/B/EfIkP8OwIRVAOVhyCkqIGWa8QchJ2qXQU0hifmmjJgATlMETP57OTYZ08B1YhTEJwUAMtbpfGCNEl9Xcm/C0kgJG1NW60z2OIuols/GHyqFXnj4GAD+OYFdJYnWXXg0ht25zeQwppGieMaWbNVaN0SEfEVCcz8UgLgQfdjq07amhipup/kiumJJ4Q4yP2wdRVYGD7
+X-HE-Tag: 1781241869-752199
+X-HE-Meta: U2FsdGVkX1+Co9fe4Uj3Xztd7lm4aymmxkXTWH3cHqy6P7gGy5YW1s8xIFkdPwwVUB6yWRiPQQGTy+emb0alZXn84SznIFBCBEQupHcvmoPGHhk6uiwCjjEGdF6tJfM5Wj50fb2CNliPtMic+NjEpPsrjGOuqFFMnxTq8PDA/BSrn+ZgYyLEzG4rQJyIiTEyBxWw78HddCjfTL+nKLBhrQy2X0FfNPmAKWs4/TbGERFC9gB/f9DZc3HljanaAoK9j9EsucAHH386djs7dn6nZJogm7GsHFxOURthd71CWgvztkkqgkl58rvnIzUApzAdd9ry20QHQFEZPleiTuf2JinJhlKVI8GCBTX/SHSKfM4LFiTbZzDF0EexSK1mCiqH6hE2+jpoGvtde7CnS+THbx794GRZSbFFj2eyJ6w7MKJoMVNUPbtc0gsJ4HW3LKFCKnoF01FkeTRa4viud5J4p0WUUHdrp8V0Y0Et+uJa9PqrwiVfzecOhcn3bDMPc5unQoiu8yTHgIT4P5WlU1Oo3GwNmRJNWMejp08ZR2LQM/wvzX2fPVQZ05DiMz8inT5loQk6HoA0RZdfzQkhVyeuwEAEK/EWPARekGo2Q4tx/awoEjaoSzczScZ1InXnvsE9dbAXtGNynzf9IKeCmad2yp3s3/kY9r8WUPsFUfw7Dl8lB0xb8MSRr8w3Ycpt3kBF84Pzmp0yv9JgNk134eDv0SAnwDZZT4p27J8HYtoDh5RoyvjYmWsQw3aYK1fkjSBBrwGYsf/R9cbM8x9qmeWz/yLyA0AYy4m4LY1xkTSweM0XCFtVj1kLEFSAr6iTb37Zzl5auVEKbTfMm75o0VcIwYM532sMHHwX+1ZuKz4l1kixazdwIt/BUgtB7W6dzluC3V8bricqdIEvU1Wj81OUFy59OQfcmIb0KZjU+XWH8GApjexKDWISBZzj+ZJ6ecAyYMv3lOmWmVM7pO2wXOh
+ Ti8HbTBB
+ lHolqIwp33SKAD3X2TXawLNjLdSddrHvus6Y1KuXh2YymJ2pPBBjwdkY5Epa8xLhBCUWqLRsNwmCkiLR5U6Jalk3bpL3U8GJ556PQmsOjOBHrIT/5Qtd+PJ43QHIlPZPm6wX9+/cWJRt8Do8y63yf/AxmbZZJMTMaFC1/DuXi4q1VG/G2I1FD5wPPfDO0843UyD9zSXzkxGT7ChxO6wmYuE5LU0ArWeCK95/aIo0DCBH4jwjWXxXIEmXlOk9EM3m/cYc0XmrcSLbB8TllWiK9IiWr9EEtXDrDvIu3/LJ4ubXouP1WtB8cLdkdq+yuI7jCilMPT2c7KX3H5Fy0XqNdJ5yMYGtA7JvZgQ3OhrWrd1izQ/bJ5QQZk875EAwR0WoQzXaKDTLMiTXPExis6Eg+jV1G8Fsj5Wk3opPJHzkT2pSxjGRz4x1e/N53l6kyhxecbPIF5L+qFoRsS33pk861h9Vx1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,30 +147,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 10:34:56AM +0800, zhaoyang.huang wrote:
-> [2]
-> *F: big folio before split
-> *T: tail folio after split
-> CPU0 (f2fs GC)              CPU1 (split_folio_to_order)          CPU2 (folio_isolate_lru)
-> *F: pagecache refs = n
-> *F: extra refs = split
-> *F: PG_lru set, mapping != NULL
->                             split_folio_to_order(F)
->                               folio_ref_freeze(F, 1)
 
-I'll stop you right there.  folio_ref_freeze() is called with
-folio_cache_ref_count(folio) + 1.  That's defined as:
 
-static unsigned int folio_cache_ref_count(const struct folio *folio)
-{
-        if (folio_test_anon(folio) && !folio_test_swapcache(folio))
-                return 0;
-        return folio_nr_pages(folio);
-}
+在 2026/6/12 11:11, Qu Wenruo 写道:
+> Hi,
+> 
+> Recently I'm trying to make btrfs utilize IOMAP_DIO_BOUNCE, however I'm 
+> experiencing weird data corruption.
+> 
+> During test case generic/708, I'm reliably hitting garbage pages at the 
+> last 64KiB, the garbage even contains an ELF header.
 
-so you'd have to freeze it with 2^order + 1.  The 2^order is the number of
-references the page cache takes on it and the 1 is the reference held by
-the caller of split_folio_to_order().  If anybody else has a reference
-to it at this point, the call to freeze will fail.
+Added ftrace shows that, since btrfs has to disable page fault to avoid 
+certain deadlock, bio_iov_iter_bounced() failed with a short copy.
+
+Initially bio_iov_iter_bounced() got a 1MiB page, but copy_iter_from() 
+only copied 64K then failed due to the disabled page fault.
+
+I don't think it's a coincident that the short 64K exactly matches where 
+the garbage is (the last 64K).
+
+I guess it's in the error path we didn't properly revert the iov iter?
+
+> 
+> In that test case, we mmap a 2MiB sized buffer from another file, and 
+> use that 2MiB mmapped memory as buffer for direct IO, write into a 
+> different file.
+> 
+> The source file has dirty page cache for that 2MiB range, and no 
+> writeback happened during that direct IO write.
+> 
+> So it means as long as we fault in all the pages of that 2MiB buffer, we 
+> should be able to copy them into the newly allocated folio, and submit a 
+> bio using the bounced pages.
+> 
+> But the last 64KiB is reliably corrupted with some ELF header.
+> 
+> I'm wondering where the corruption is from, especially it seems btrfs 
+> has very little to do, except calling fault_in_iov_readable() to fault 
+> in all the pages.
+> 
+> Thanks,
+> Qu
 
 
