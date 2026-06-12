@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72973CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A772CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 09:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D3276B0005; Fri, 12 Jun 2026 05:51:37 -0400 (EDT)
+	id 4F8DC6B0005; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 983F56B0088; Fri, 12 Jun 2026 05:51:37 -0400 (EDT)
+	id 4A8A36B0088; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 872AC6B008C; Fri, 12 Jun 2026 05:51:37 -0400 (EDT)
+	id 3BF056B008C; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7557D6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:51:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0B16140614
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:51:36 +0000 (UTC)
-X-FDA: 84870793392.26.1626E33
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 280B440002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:51:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PLzsp3J/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2E7EA6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 05:56:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE76990A28
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:56:16 +0000 (UTC)
+X-FDA: 84870805152.13.DA70A2F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 202404000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:56:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTXgxiEE;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781258175;
+	b=veQDhv0DVOFbZK3AlwZy/oai8l7neoZ8H1XAcRh0yjhe0RccvjFl6rHd5iu/ZXDpk44hNl
+	Ay70lNf2JtEK2o9FrGda4I3k/93TEpbcLaYSd40UoC1YsMklNcsCUv6yYR+oQrCF9X7egQ
+	J4G4+D6lZR4ywdU9JJ/uJ7kLiZZQIMM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QTXgxiEE;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781257895;
+	s=arc-20220608; t=1781258175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MR3Nw8sjwScRIdSTl9Z/KiQVTF3BEU9DliRE8cEHbyA=;
-	b=tVibKxs+5+GQ+JtSLHpGstpoDmWODyGKFjdrhoAYpUcYQ4YoDe8EltMqyfK5EFJmmo+7P3
-	xVKQYDwvmv/ZxHOsLexfcTigD4uD2kODnZykTdA0bsLfotw5yBysyat79xxie3diiThlsQ
-	D3r0f2lCPWXa3zuV9R4aN8VFzG8qIhg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PLzsp3J/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781257895;
-	b=l+4u8S3H/WlvlnkJzJvvZltP+HdnEEeeTU2FMc+pUQ96yVj86BYBugsS0ruZacVNbGZ0K9
-	Jw6VNTtsjD+aiKF79kRFPLy+6kaa/t0DRm2BYznTeUzp3Zg1Ioww4dO3cd7SfnaeQMZzAp
-	s/tG2pFoLW93FhX6V3Hylulbr2ihHdE=
+	bh=l6jlVZrTMp9LTygLVsRPuYIo4sYNTWWXIWJqAK8CgDc=;
+	b=owwr5CvGCwFEz7bmafFFWPdTeSHmyyKCZHwVbKYCbK7VTRNt5fZ80j676DuwvpsE9YNxe8
+	3HZXji+B/CO0PAEgjW+LReN4H9dpNFBL8aMhggwxRaaehq3IOB+1JLjtsB1EyhVCtLLHRG
+	C7W7FZD4fTYk7J1/W1H8d1UJZsgGdvo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54FC643296;
-	Fri, 12 Jun 2026 09:51:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E4D1F000E9;
-	Fri, 12 Jun 2026 09:51:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 62C1860052;
+	Fri, 12 Jun 2026 09:56:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A11F000E9;
+	Fri, 12 Jun 2026 09:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781257894;
-	bh=MR3Nw8sjwScRIdSTl9Z/KiQVTF3BEU9DliRE8cEHbyA=;
+	s=k20260515; t=1781258174;
+	bh=l6jlVZrTMp9LTygLVsRPuYIo4sYNTWWXIWJqAK8CgDc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PLzsp3J/jZEh7s1xzkHzNuZh73Vi+B+RWXOOMdRE+vnrjxJzJi0PBhL76SbhSsYzV
-	 kj/eyaTEJhqh6ZcV45gV/okAX5GnGhorSCFTLNKLRMQLc+4rBPydiA0Ajd02vPvfkv
-	 dAbq5IJUoJ2YZDHzyooImVsVgj8RZOFIfFWuXBhyrQjrWHxDv4rnBAZ1Z/BaBgSneH
-	 ff0PjhqswJ6SGyu+mzYCjhmr+bpvxvTZXO7N6zPfgXsSVrV4Xre7OLh2CsKgl0+CxS
-	 LMCHHhyj1EwHxA+tF8cmR630TXZLtFzBju2KJBod9zORxcrdMSmEZgOBzTQ2Q+B0Nf
-	 PpVhpgvVsruQg==
-Message-ID: <3914c31f-c97e-4943-9f4f-630b05785014@kernel.org>
-Date: Fri, 12 Jun 2026 11:51:28 +0200
+	b=QTXgxiEEC9QGJWYpS0Z9cwaz1rtLdzbQ0fpUyZng1u68HugBNa2NEwfLuqiZnKGKZ
+	 cNl7io1VPRSEnsQkN9bp62xX7SXyBksBKi/w7N80y0U8MkD37s2QdZb8ppf/2yKFKQ
+	 nCfHUJgFDOIZWUZW6Ka4x1oAl+nPyn9/kvhGWfXCEF90qZLHBUUN8p5YA7qX/3cPO5
+	 p4OTjdbTz2i3b7fUplvPwFuWk8m0N9IOebB2kC3HfFK58eailvNao1AEb3ezWyxzM7
+	 UOcypfufLVWwA8QrH6/k7mroDWe0gf4YsgkYNHnAa2bxtDOZoQ8/K2RUVIW1eUomv6
+	 PI8tKy2MOyw0Q==
+Message-ID: <aca6aedd-d6dc-46fe-8d7f-7b5c1d7bad40@kernel.org>
+Date: Fri, 12 Jun 2026 11:56:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/16] mm/slab: introduce slab_alloc_context
+Subject: Re: [PATCH v2 07/16] mm/slab: replace struct partial_context with
+ slab_alloc_context
 Content-Language: en-US
 To: Hao Li <hao.li@linux.dev>
 Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
@@ -82,8 +83,8 @@ Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
  Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-4-7190909db118@kernel.org>
- <ait21B7kqfT9XhOs@fedora>
+ <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
+ <aiuCiXBBB64AfPjI@fedora>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -124,17 +125,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <ait21B7kqfT9XhOs@fedora>
+In-Reply-To: <aiuCiXBBB64AfPjI@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 202404000A
+X-Stat-Signature: z6ucxjqpuzj88onm75ek5wj8yoocibu3
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 280B440002
-X-Stat-Signature: mtjjz57dbbf64wwao8bd9c1i5kq6dfz9
-X-HE-Tag: 1781257894-14734
-X-HE-Meta: U2FsdGVkX1+7P2Yzor1/2+p4N9JSNKPeMV7ytBH0+k8ncky85OE11K5/s423EO+NPHz0XNCGRDCAQtnaVbRh02F3dBVr+0W9V1f9UhYeFPHcjFD2Ii+m60FJyREXLEZmxosYQJLWvqn9SoOpqEN+5ZTWxH9yl0TC//Mu1WWUkR78NmrgasUUh3dLHN6QCT0QCh7UA6x8snAobaOF4P0ux4PWS7+YYS/pbIr0yBd87PiYMscWK/+bBcLxu2eUWewIFwEV1PkC+PNZNI0JRLp0Jh4zvXJ/z47QE6CKdLtCUCSmIlT46fVbQM1QKglBdTAIs+hVvEDqOexP8lzENo5Nxt86vLUP4qNkOh4/mPqs9gOIy/ZygsZboD0Gtp92Hv4fRgVLs1Cx/RduXFk/Ycu4bPoBaM1O4yAu6a0mQ/mCpKEwPxZlynLH/0DoZtFuJiqRPpZMJ1Jeda/QlzIHc/0zljUrQIQ0cK/v//kbzdvwu69cWJMQuiJZGyiyNs7n35umnDczueDiYlmzZ31+aWROPmY6CNFS+xH30tVhnArXm4vrwFj/KG36EoazIFHfEsnq+A5JvV5i/dwF4Ke/PkFGXDwpw4hcb4/mDb+8qpv9YqJ3VyByF39nG0CBxAhB4CtGxo94KH6BJV3zGPIMdfWWq3j2+mP6Nzp6ob3k/2tvV4FHnxyybAuK/IaGTteUjxvdo6oW5YN5DF2V4VtiUOgp5KeB9erz8bfwB8ojAfFgmIykYKoSvZAiuxCB0tXkqmeBJo9zxH+Plqn2fSNn1ednNQpXuOQdwoyipB9pHIW1/0rALoEZ6xTQOH2c/m4/Es2+zahgfw1xY9fao8ISI8W1z4lMTy49pU5TqpuyLNLWeShz4+Yb2QLqNmhYZZ0OqP+bywkVvuShd4N9Izwkn/guyRiyuND2vQXRmX3/CoEWO+NwvP/VdwQ4eNXNVjV7dwUpM146xH1VHY75Qyts5CC
- /59BV4HL
- cwM2AvQPy6sEsmCC7EDR8dWAAQx2ChfdYtQEN/2wuncuCnED1X3jx6l4UmMN5qB06t4Qns9q+/2Bio2w3l35NwjHAdbaMwhyLl8of3EK0crWnsyfZFcPcApeLneT6CWYze3aZT2jFKBHGzcyMbPTcO0wlg+H/rQqxp3rWdCfEaJ66qkZFDa1IX4t+PRLqO7z69PXOexwU9TGPC3lhMoePlxqWDYYl7vJT8gFjbWaqsSHXB3cvSjfbllF7evXVMjnrW0F8CtlWuc6iFyqtAfkZVA/hnAEFR3KwQvSl7Qm730lg0n1PtY87h7hGZw==
+X-HE-Tag: 1781258174-908816
+X-HE-Meta: U2FsdGVkX188ttpxvFIG1jZuHeQKiUeXGIXoBaKhHlGR8OpxeGlfGYvcr4yWtbJpYDujjJqDZh8wrBJhAnhknPAvTl0m7Ts9fpeiVxwSpHheCBQEzcsuO6HVjaOekY92wtM7sjRfws1JQL1MLEwKozhHmvcFlqolpq0UGUIAgUeGptUkvq1PDUNIh+Y7axnADsVg5rF7Fp9FU+rAUeXWAIfiRiUwAWzZaPmlDRLRy80JuWkwoRGXTnnvQvY7dk5Z7KbG0hHdTUSS2x01LT6zK4Mdb1VzEzsH4DvULpMUX+sz+N+A9n1j4PKdVFMPERlaf/UApPIVOw0gRy/0DdLtbvnaNK9hJQMiU61/4VEwd+YM7CGVf/6WnWhZxhbo9ILBjQYuvV5GBbQ7qqo+WmGEieImqsuzv/wH9VJNwoPrEJKyPsSRg5OJ1aZIXNZPNQOQEoHk+uOEwuef1oKWVu4130aYCHB/zZj1UHax5t0aGZsTbwQ1pCOqvKLyjgN5SlXoM1lfxLqtMRWHYCEar6X8TKgMwbQTGG7qWeg5tfee6pc0b4VMuhsA9JZ6zbbg0p1xCGHuY3L3S1K8gazXStsW7YDsOhH0FBwS38KmKIHL4PPk+33R/2YIfWr6jtaMrvCA6v1GfijOGntxaeUbeeL1J8ng55hdTSe7ZLowrphaENopELHBO92NRgWuu7QoyBov6nOGaCFK5xSOKMar+Ud8bCRu+Pi6IeRZHlKlcT1OjZn8TtXLJl/4Ded2kqpIChsAhx3R/zTpGFgVhlnu1aCyTNDHcC8IodSnrsXYmgRP+LhO/X6mAQtw4UJNgkb3WpNaiY2rXGc6STFRrBtN+6krW8qoxoBkv8z4HNJpLtWKzif3tjQzyxrw7O9I0lOV+SQ0oBN5ZhgysDMKyXd8dmGdFG1B1UFnmaQUJjw6p3GJmNbWfD3FDellOBsoB2AwRLV3+52gCgFUrx5Re8fz91m
+ +r6Bp79r
+ xk7AELu51UxoLIvStaatoByQIGXPLAqWx8sV1MimCD73oYdhMQkRmBxJX/tbiUk3KMCyKgaoPhzfK77XPZc/ia6O994TtaR0bU4QkbRAC1RP67MD5vkj09fkFBm9PWQKvpC0itqX296RUnMOXJZiQSyXxMpkeJGbrGwK29XSdDhyQmpwDdVirl/Cc8FiTsW8/zFQ+CkuW8PXZWP1Kc9RhYgpSsJAswhfu48ta345yeMhtWz+6iV4lWjQy+lEHb3k8KaY2h97h9nKLUgYfwPlSZ6/9qeDpc5snJqSOCGnuqJ8fboQGW0wIWWdhmlOA4UuFy1Hsn9F+XRkUt31TRE7dw5a4u0IqhuZWNahIQ6PPaPuqaCpdJQicDGN0yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +143,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/12/26 05:10, Hao Li wrote:
-> On Wed, Jun 10, 2026 at 05:40:06PM +0200, Vlastimil Babka (SUSE) wrote:
->> @@ -5389,13 +5401,18 @@ void *_kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_flags, in
->>  	if (ret)
->>  		goto success;
->>  
->> +	struct slab_alloc_context ac = {
->> +		.caller_addr = _RET_IP_,
->> +		.orig_size = orig_size,
->> +	};
-> 
-> It might be better to move this to the beginning of the function, to avoid
-> patch09 jump to `success` before ac is initialized.
+On 6/12/26 06:04, Hao Li wrote:
+> On Wed, Jun 10, 2026 at 05:40:09PM +0200, Vlastimil Babka (SUSE) wrote:
+> nit: the comment "__GFP_THISNODE in pc.flags" also needs to be updated to "trynode_flags"
 
-Hm right, didn't compilers actually complain about goto skipping over
-declarations? But neither gcc nor clang do for me, hm. Will move, thanks.
+Done.
 
->> +
->>  	/*
->>  	 * Do not call slab_alloc_node(), since trylock mode isn't
->>  	 * compatible with slab_pre_alloc_hook/should_failslab and
->>  	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
->>  	 * and slab_post_alloc_hook() directly.
->>  	 */
->> -	ret = __slab_alloc_node(s, alloc_gfp, node, _RET_IP_, orig_size);
->> +	ret = __slab_alloc_node(s, alloc_gfp, node, &ac);
->>  
->>  	/*
->>  	 * It's possible we failed due to trylock as we preempted someone with
->> @@ -7237,10 +7254,13 @@ static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
->>  	int i;
->>  
->>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
->> +		struct slab_alloc_context ac = {
->> +			.caller_addr = _RET_IP_,
->> +			.orig_size = s->object_size,
->> +		};
->>  		for (i = 0; i < size; i++) {
->>  
->> -			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
->> -					     s->object_size);
->> +			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, &ac);
->>  			if (unlikely(!p[i]))
->>  				goto error;
->>  
->> 
->> -- 
->> 2.54.0
->> 
+> otherwise, looks good to me.
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+
+Thanks!
 
 
