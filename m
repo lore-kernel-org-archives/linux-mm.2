@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C37CCD98CF
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 15:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2B4CD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 15:16:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4F386B0005; Fri, 12 Jun 2026 11:10:43 -0400 (EDT)
+	id EC39F6B0088; Fri, 12 Jun 2026 11:16:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A26CA6B0092; Fri, 12 Jun 2026 11:10:43 -0400 (EDT)
+	id E74E76B008C; Fri, 12 Jun 2026 11:16:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9637D6B0093; Fri, 12 Jun 2026 11:10:43 -0400 (EDT)
+	id D63796B0093; Fri, 12 Jun 2026 11:16:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B4916B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:10:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E19B140179
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:10:43 +0000 (UTC)
-X-FDA: 84871597566.05.B6F0DAC
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1B77C14000F
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:10:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RXwhgZpx;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of ptesarik@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id C1EF86B0088
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:16:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B6998A78E
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:16:25 +0000 (UTC)
+X-FDA: 84871611930.08.5C5AA18
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8FB4DA0017
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:16:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gzXerX05;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781277041;
+	s=arc-20220608; t=1781277383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+wHGQUoTaWREIUgxGSBFddc2d96JHLcrCAUtlqMtQg=;
-	b=x3CpGzogO+W3mTYw0BG86u6iLS74gB1XpFUBC7elgPyehV8rHmFYN+TY6gV4XEOk8FPxhk
-	KZuqs0u0gvulW+o407v3gK66Lt4HSfxsMB+95LRyLOYPoPUJk0QzQhWrt5uwO8MacQJW9T
-	NclAcpZoMfkZeYaKsrhZm1PPmaQok8o=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eq+a+KnqGzNi4HyIs0mxE4TbBTE8NXVHXZDMscDgWS0=;
+	b=wnnMUyb8hqFv4EwTteDdABFsfeemP1ww/kKQC1Yve5H+MdqvbncDsVVLeBIOyGGvmHgOFH
+	HgH2Q1iG7WYYYP6CPCtntM4oTPT6UnoRytHPXJSrNtiOt5kDaGSu2SWsauXKsOAnjhCI/k
+	QGJx+Q1Om6eCkwnp9K03W2u968Y/eRM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=RXwhgZpx;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of ptesarik@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gzXerX05;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781277041;
-	b=8ML8IUWwBs8wNyUwUrN1EzTlnXYZfmwznlh1c/AJqaQhjVtxv74Uwf46AvQF0sEhR3kHE9
-	OEwV3LjB1+h3tXqAPTJdqcM6GNBdho1GP55Ds5GOFVBhT+pFdOdRzLMGTK9rGsgZ3n+Qk4
-	6EA7VvWuX+AzmkUxNjhrCewJ9fPTgWI=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45ef7720385so122082f8f.3
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 08:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781277039; x=1781881839; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r+wHGQUoTaWREIUgxGSBFddc2d96JHLcrCAUtlqMtQg=;
-        b=RXwhgZpxKDgxmeS/RDthcwWexgoY2KxIq0HG/Nc1tkJ5bJyE5VAVz+0K4pkdFLlrAd
-         ovmo3s7+5SjBvIBYZg7rG1nzjzi74Mkl9mzPGuEfu/OWw1dTX0VlbOqznDDE6yaPhaDv
-         tgsQGs8EumdSjmZu+2052KDEV4jfmCaBTrdaH6SW4MYKbHmAGroc6rN6xinSVmSX+G0q
-         5OTaTxX+lHfzhqh26/X/XqrKYou6Yz4sXBXLRXH7r59U/ddP+cySqKKRmN0zMClqiX+l
-         nt+WW/4I+d7U6RfyQWO++TF86L6oUSlmf49VqNlSlhNpbK1lOePF7JmDnf9r0F8UhKY/
-         Ckpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781277039; x=1781881839;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r+wHGQUoTaWREIUgxGSBFddc2d96JHLcrCAUtlqMtQg=;
-        b=ZeljtsybCiNhgFsBdmO3y5+fVmn4LdEgbee5hmtLPpUBPJHFAnGjxy6u1HSnrgALMb
-         KrZIgq6awBhFIrk0Dys+h53XeIb8A7wDjRwxfYSJR9j3AiQhuiYrAFklR5no8f72nUuv
-         8EFAIOd8GH/bhNVXaVV0hlh0dsJpkCHOHEZiUgIZZrBi4wS/0FwdsLQSD/dcMbgyMjWt
-         /QNbiQum/rj669D+GAVgSu6auupOrGCTbB5TaPSmh4i1hn7a9HgtloQFwJwcFP4soMY7
-         0kRi7m/+87rxUp3EqTSy0T9u7HFqsVaBqcyCcE2cSrqZ2t9Oq5okb0PKgrBLSM8HZjAb
-         ZU1A==
-X-Forwarded-Encrypted: i=1; AFNElJ8WMybFHEvettgYOKxbR07s1jjzNRliV92HCaXfwk4v+IxLC6IFxY9z0+SaFGEtJuv3oIv59AKRXQ==@kvack.org
-X-Gm-Message-State: AOJu0YxHsxQPfLf9MOQ3Pwwi0VQTgk1KSIS2m9p+Muiebguca4GHa+ip
-	v1sGs6aUmQv9k2DFhFoGcuOygbjWNTzJZPWtAPOogDLTdnvPVC113/TN7qr21BrPr7Q=
-X-Gm-Gg: Acq92OFP9nX3v+RZBE4ujazKN6sbdbLwJIAWokoGf26P8hCd9eGnYUYuYHGDmtpR3+9
-	WV4O4BcsUu/9kzgGpAmVVSQvDLXs3mBgk7IOSmsavv55quXwP6YzhgV7NfJyRn9iybVoX+m5+fw
-	zAtogEZs/x/Fq5n4gIBCS93g6UJSO9dQI/+OTRbYJX9EVP6FZyNYytcVPZafT2PY9z5fMVilyiz
-	eIWsDJ0DR3/0RQOj3y2Dk5OVntytQX06u+OpPRYVWAJMlhPhg6Pdnz8FjqRPBV0Y9U65Ns4Lq2h
-	he94UAL9wJWAJCBR6Mdnqrh/THfDqobeM1ONb9Il2qAA3+nOqBUxxAAPU4GGN6hg5XA4Z0AeSoQ
-	6LAx4UFdU1Ftzib8yzdNpG2tUXUnoYUbo0IpSaf3ICSuuMDWtJdn4qFLLpubgaG9ork0/9I4mli
-	6j/9ZuZw/hG9OcQUnmXcwN1b8BED69Dy5SStRT0ki/hLUn9N8wsP2evwUBACxQSbXNV4/lypMBx
-	iCTDoLZ2Tnr+Q2OHj7RPf/mPmo=
-X-Received: by 2002:a05:6000:188e:b0:450:4980:b4fe with SMTP id ffacd0b85a97d-4606da5d5bemr2432538f8f.2.1781277039385;
-        Fri, 12 Jun 2026 08:10:39 -0700 (PDT)
-Received: from mordecai (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f23fsm6636334f8f.9.2026.06.12.08.10.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 08:10:38 -0700 (PDT)
-Date: Fri, 12 Jun 2026 17:10:36 +0200
-From: Petr Tesarik <ptesarik@suse.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm: reduce NODE_RECLAIM_xxx and change to enum
-Message-ID: <20260612171036.0bb6a2ed@mordecai>
-In-Reply-To: <fb652b0a-9c3e-48bf-a301-16d37f212aca@kernel.org>
-References: <20260612085052.59291-1-ptesarik@suse.com>
-	<fb652b0a-9c3e-48bf-a301-16d37f212aca@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-suse-linux-gnu)
+	t=1781277383;
+	b=4VV/9m8nK8vlv9C0TdBOkW0S4caArF7HL7gnVLsmlJTFQJM4hMQUBDG6j8f6sqMSaZKj5J
+	JF4B6lyzEUkQNQ05HwJHDzaSvMx1pUmNnlDtsL7Xf05cKWn937jKN8nek7TVr4o/ATt68l
+	UGEBP/uqbt+lQUnRO1+JTzWKML2XY1Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=eq+a+KnqGzNi4HyIs0mxE4TbBTE8NXVHXZDMscDgWS0=; b=gzXerX057qpBFVEofLLo2N9TMx
+	AdxIRdxLB+aZaMI6JoVrPCb4mZ+1Y0wC8YDS9iEYQBIMQUmxWncem72VsAS1QGgYUg7vwEApCl6a4
+	RUzDOMYtlXlbwr6ZRTsPkiMdr/gVaJDwJg8OoZ7k66cDt2iOgcXUgguYyfM0N9WoNcVe6jNZiRz41
+	pJyhlhq7Cz/oN3Ejz/ATxVYuVDSWuLTD+uLDMcNHGl/tv4+vGpJ+DNa0BsLO3eRqoPnuxVQv9Xjfm
+	7d6xNHDl54TfTk6t/Y5++QzKAWjNb5T5OI2ytZi1XviBvpjcpP8b9M0gRvWzjye/esBFU5LJMX/m0
+	Y9SCoCIA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wY3cI-00Ap9I-1u;
+	Fri, 12 Jun 2026 15:16:18 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 12 Jun 2026 08:16:07 -0700
+Subject: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task
+ stacks
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1B77C14000F
-X-Stat-Signature: yhytgh1gugmuuyn5ihdf33kg9kxrs49u
+Message-Id: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
+X-B4-Tracking: v=1; b=H4sIALYiLGoC/4XNSwqDMBCA4auEWTslCT6Cq96juJia0QypDxKRF
+ vHupV6g23/x/QdkTsIZWnVA4l2yLDO0yhYK+kDzyCgeWgVW21rXxmCceHoxRcwb9RET5z6wR23
+ YN9ZVjpoBCgVr4kHeF/zoCgVB8rakz/XZza/+JXeDBn1tS0eeq6Gku+en0Hxb0gjdeZ5fCn5UL
+ b0AAAA=
+X-Change-ID: 20260611-kmemleak-stack-resched-01ed72858a7f
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, lance.yang@linux.dev, 
+ Davidlohr Bueso <dave@stgolabs.net>, Oleg Nesterov <oleg@redhat.com>, 
+ Qian Cai <cai@lca.pw>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3856; i=leitao@debian.org;
+ h=from:subject:message-id; bh=YqdxA8lDwTZ30H8uk3yN+D0ArneX4WyXPA7uWMS+uas=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqLCK+KeZhZ/0czOX44dEskonjj0kdt7xN8EkyV
+ qM5CBZ/8c2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaiwivgAKCRA1o5Of/Hh3
+ baHnEACPH/Rjrg3dMQQCKefIg8nwHNE9e2mAk+oaWbU1PUyHR2IB9l/4EtJnhylA7yT8FP8JGwO
+ JFFIOEEE5bKMzcduTkvVnhDMHzbKN4XzOVOymLStVK6QFqt0JNo1QNe30ArPxrxoU8AVw5T2PgL
+ daRYarEOgN2jWGSAOubiNnILqVcBNO8unGk9UZgTM76YiMHZFIfRTDMvEoLj+O84DNa5YGJrYKc
+ k5I65y7B7iPwAwSCz/Rsryq9YzIV4Oeg0sUYGIxUM1/BSEir/F3G1PMWhLmVnfNx+0b5NAdRjRy
+ h4+vBvABVAhOb8xoThpRDtS8m1nRKUMLZMnzBiVAgSevly4dYAcYW9DXod01Yk4D8KAIZrCTmYy
+ bktn9FrdDIXmNy7DpaRZ3fWakbYpI7j7CBMQYhtAH9vlDXk8kc//xEdQo8S5E9VKWN9txjBPpir
+ wiVuTkoq3o5aNa5XCG+r2iZm4yJxJJATlWbqju4btTdqreOibO4F6Y9JGiX1a2nPAVruqFm1WrM
+ /GtnDyDk5r9AyU+PLjKmgsO+nzRWkhtAs6cn89h738woIY9ShP47rMsYcXve6LislFS/H8OOqUy
+ CaPnHAP4AXgY1fv74QaUd3fGdFywIZ9Og0Xcgfl7CePOk1cklS4uJ1pEI2eRKQwx4ORR252cYIm
+ 7JBXJPF+Ww9U4fw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1781277040-552127
-X-HE-Meta: U2FsdGVkX1+0xJmehAKT4mDQdeKf0BlSybaNm8iUtndYPDjZWYhsJvXCiIecGkQutFqpFK7cd+JUOQ5SUetnW7ex7BkP0s6W6rNDnailGbZ3s8BjPDK3ToPNISAEpp9W5Hw65ZPvsmCBYV4QTvEiufQk/yWYFyLLmwVFhvtJ32zL4yuY5ZjWHqu+fDKYyO+7BXGhJceoD0Q6BDDCI+vm9b4cYrv9ZmkCcMz53oHMsbe8Xs5/q+mFxwDF2iM3jjHi4DlrscRX2FE8yf1NNWzu16yrOl35yo1sKbMCzBb2PTfg2ZSbP6uIt9CglJmWiwRKx5YXt/mBV0E2/sOP5oewOBOhypxFl0jHVca/1NjCkQua9Ud0kzNJt4nX6Zvl2znHJGfxwCu9I7la3hoEMEZLws8UMPR9Xo+s4BB6Sl4ECrVbACcUhI3RHeJRyT59JKBfX439uHRQR/N1DCKqmXy43lWDJJg+JVC8SkSL8MUn3L/4OEHbfmlwwm/I1AW7f0MU7xWwrIiz1Ey5aZbEV1BPxgkYZd804RGhDK9059NiSPy1M37OLIe4HYLLCZhiv+xZgyNeZXM/crnonXj4hTUY8ITn5xkdWT8Bbh7SnkI8mgZfHG3a7VzE3m3kB1S2ey10corbnQwS+ynb1S/kbNdX8LARdPV/WSSIf/QNprXgpY8hbe2pUyM2sTSGTuM3jK2/Q+vLWEmUokX3hzHYkkGNd6oCUsBKWjvlftp7kcqWFRgbtTlHP1oIEqlR2mULGz6m2mWa0oh4nNh08nbVX1UJ3NczT5ecoEBlj/CcX5lRPE72a9FHdLZcKVixV7KkxFLmVcq9hUN8ry1cNgPl4C7zeH32TIoshgNdMgvBNK5sTX7yTRDXUBYdnZzQcPTlDhzc4GDStuQ8A15HAUaafJlF0f0C1c4a7hHr27qhCwcrmOrhT8ZAFVvPDQGiMv3OT9L4JDGi2tmGFO1VyZeNoCD
- 2RdtSF/G
- TwNb2t/MJ/CkBskxv/D0TVKgiO1ScHPOW6ok2Oa+8XtXAJ/+XEl1HRMoSeYZS5gL+/X5qKnZWn1FW/6bDXyFwxOcNAzdYd9Pkmrl4PeRgCNM/Lt2yiCtveYjRHHSd+J8Fw4316nu3OQbQ+FnmEd4aImAVFQj1vtZjWpnyaXrQheVwJtONvRANg8rjPXTwawD+lwECt0cfFjzxUcUYysAphyWmvg3zfp1ev899ccMsPVoIgpjiQtDMBCbFcoDXeXQNToR+wD9M+zJ2P0bO2ZlvOeX+6P5gVlam4YP3x9TR2AJw1Fl9kwPmxuqA15W/n6CRpdCqbYYu+FZ7NhO2OjCsYLooPTgXc/PLTQ5Ucx57/LnlJML+y47VdcIXPccO83GICwPf0CqJ28xGX6M=
+X-Stat-Signature: atbzsxxf5aayw46idjhepz1x79wixfd6
+X-Rspamd-Queue-Id: 8FB4DA0017
+X-HE-Tag: 1781277383-528173
+X-HE-Meta: U2FsdGVkX1/ujvb6mMZDu/7johDctEqS80Ehjan8GJb5voQrNXw7RYLkGHe/r4V3aLzVg/ARMAJqA2/+6j+dun9piK1yezZF8GJot6JpujKpSZkJDadWbZHQU21LbCrsCWsC0gX0cGuRmAMUTmWQF95m/SEqA1V2IBdzclTy/QboKZ1+yZdjO2fFsWT+lcM3T2Gy6LqZYGIaG6EGqM/ZaA4TOuuif3m5YfX9afC691e8SfO591DQUmSX0V0zU3JVmLtO9Vxpix6KkmcPAKw6ZmKxeoISyiiYhINS5vnZNwu+mLtRpxLAmXTWX6yvmP+x8+BM2bGgjo4Vv8+a/2oW9l0qyRtP0MU7OD7BvbHMvb6OpuIYmt8DZTN54uXthSRBHso3yOi3UH7fqF9X8HtTRrw5IvCg5cs+HRX1WVoK40JfWrqsaSOshksG4Kri17yIxkB+RlRaiLTK7UMePR44dprk15vDByL6IKYkc7+0LnsGNe9A6iiOgRstqgW4jPt8Umx7s8OCmtrX1+SYQmm3g3SeH2IDo9+vBgJXz9tRHfIUE10KuaP6LsyXVQcPAMy2eNwgYLf7b9xpjihPUYH1GpOt58in/9UUgCCK3+XThn8wIUmR0CDLN0+Ov2BUXvxC7bN32YnMGx6Vv0TZC6xHTkp/FpBDQ0VI+uQY469UkJpEdfqcojMtklsyHxVN77JusAIcHhzEdvUfAi2to7WnDOpiaLXil19jRR+1YaZtywg192+3M+ISH7IrJDGUg1n5cZvzzA+pgzljrHUmDerltd+4oUIk4Hb5r0J9hVIbDs8zPE5mZ1HAZZ9KAbJ3xRx8N9aaZCAQ/lzWZMgw9994jBkojG6JOVq0zJcbAlh+U/KTK6eor6kJKpLlfdAoxPnwaVQSy63kEf7lyHX+c+bySSR0igLrUnnlbcGjphtHrR3u8jDSnOZEGshS8PwQWDpLcGc9ElJCTz/uKaKQ7LY
+ LlL9nnPj
+ dvyq5xMSQ9yZaojx0hWYXM1u/jFrbnw78crfqWv1sQPsb6giWOgIympWU0S08kJhDB1y27KIMOb0Zfq5zTCQb920DNcJLsYRH/Cxo5gXG+aU38w/swhuwG+qqZ8553PruAbl6VWmvBqcb75Dj2hUALKb3cKdvFZPmhqH2cxWAHo/0cFJWsb40R9tfPRWfeW0tknKO8yDIqDFS83nvrB4FYRtwIjTVbigWyolHHHhWHMNBtGd0Vv2zW6X3+i7SqDzqdOFj2UTh19KAoq5S8ihg6Wv8QRxqs9vxdnKPA3e2S/Co2JGLKsiYHBlmfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,33 +116,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 16:57:08 +0200
-"David Hildenbrand (Arm)" <david@kernel.org> wrote:
+kmemleak_scan() walks every thread and scans its kernel stack under a
+single rcu_read_lock() with no reschedule point. On a host with very
+many threads -- amplified by KASAN/lockdep in debug builds -- this loop
+can hog a CPU long enough to trip the soft lockup watchdog:
 
-> On 6/12/26 10:50, Petr Tesarik wrote:
-> > Change node_reclaim() to return an enum indicating whether any
-> > pages have been reclaimed, because that's all the information
-> > needed by the only caller, get_page_from_freelist().
-> > 
-> > This leads to the following translation of the old macro
-> > identifiers to the new enum values:
-> > 
-> > - NODE_RECLAIM_NOSCAN  -> NODE_RECLAIM_NONE
-> > - NODE_RECLAIM_FULL    -> NODE_RECLAIM_NONE
-> > - NODE_RECLAIM_SOME    -> NODE_RECLAIM_SUCCESS
-> > - NODE_RECLAIM_SUCCESS -> NODE_RECLAIM_SUCCESS  
-> 
-> Why not simply return the number of reclaimed pages (0 vs > 0)? I agree that a
-> bool is not good.
-> 
-> Or if that is not good enough (for some reason) return 0 (success) vs. -ENOENT?
+  watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
+   scan_block
+   kmemleak_scan
+   kmemleak_scan_thread
+   kthread
 
-I don't have a strong opinion, except I hate the current code. ;-)
+A cond_resched() cannot be added directly: the loop runs inside an RCU
+read-side critical section.
 
-If we can agree that get_page_from_freelist() need not recheck with
-zone_watermark_ok() after __node_reclaim() returns zero, then I believe
-the cleanest option is to return the number of pages (zero if reclaim
-was not even attempted).
+Borrow the rcu_lock_break() pattern from kernel/hung_task.c: when a
+reschedule is needed, pin the two iteration cursors, drop the RCU read
+lock, cond_resched(), then re-acquire it and continue only if both
+cursors are still hashed.
 
-Petr T
+If a cursor was unhashed while the lock was dropped, the thread list
+cannot be walked further, so the round is aborted. Such a round scans
+only part of the task stacks, which would make live objects look
+unreferenced, so reuse the existing "scan interrupted" path to skip
+reporting; the next full scan reports the real leaks.
+
+Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v2:
+- Do not create the nasty array, but use the same pattern as
+  kernel/hung_task.c.
+- Link to v1: https://lore.kernel.org/r/20260611-kmemleak-stack-resched-v1-1-d6248ade5f4a@debian.org
+---
+ mm/kmemleak.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 7c7ba17ce7af0..d88274dc0c605 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1695,6 +1695,32 @@ static void kmemleak_cond_resched(struct kmemleak_object *object)
+ 	put_object(object);
+ }
+ 
++/*
++ * Briefly drop the RCU read lock to reschedule during the task stack scan.
++ * Both cursors are pinned across the gap; return false if either one was
++ * unhashed meanwhile, so the caller stops this round instead of walking a
++ * stale list.
++ */
++static bool kmemleak_stack_scan_break(struct task_struct *g,
++				      struct task_struct *p)
++{
++	bool can_cont;
++
++	get_task_struct(g);
++	get_task_struct(p);
++
++	rcu_read_unlock();
++	cond_resched();
++	rcu_read_lock();
++
++	can_cont = pid_alive(g) && pid_alive(p);
++
++	put_task_struct(p);
++	put_task_struct(g);
++
++	return can_cont;
++}
++
+ /*
+  * Print one leak inline. The hex dump is gated on OBJECT_ALLOCATED so it
+  * does not touch user memory that was freed concurrently; the rest of the
+@@ -1804,6 +1830,7 @@ static void kmemleak_scan(void)
+ 	int __maybe_unused i;
+ 	struct xarray dedup;
+ 	int new_leaks = 0;
++	bool aborted = false;
+ 
+ 	jiffies_last_scan = jiffies;
+ 
+@@ -1890,11 +1917,21 @@ static void kmemleak_scan(void)
+ 		rcu_read_lock();
+ 		for_each_process_thread(g, p) {
+ 			void *stack = try_get_task_stack(p);
++
+ 			if (stack) {
+ 				scan_block(stack, stack + THREAD_SIZE, NULL);
+ 				put_task_stack(p);
+ 			}
++			/*
++			 * This is an expensive loop, we must to call the
++			 * scheduler to avoid lockups
++			 */
++			if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
++				aborted = true;
++				goto unlock;
++			}
+ 		}
++unlock:
+ 		rcu_read_unlock();
+ 	}
+ 
+@@ -1937,9 +1974,10 @@ static void kmemleak_scan(void)
+ 	scan_gray_list();
+ 
+ 	/*
+-	 * If scanning was stopped do not report any new unreferenced objects.
++	 * If scanning was stopped or a stack scan round was aborted, do not
++	 * report any new unreferenced objects.
+ 	 */
+-	if (scan_should_stop())
++	if (scan_should_stop() || aborted)
+ 		return;
+ 
+ 	/*
+
+---
+base-commit: abe651837cb394f76d738a7a747322fca3bf17ba
+change-id: 20260611-kmemleak-stack-resched-01ed72858a7f
+
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
+
 
