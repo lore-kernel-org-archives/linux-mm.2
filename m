@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8DECD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 244BFCD98CC
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 04:45:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFF706B00A1; Fri, 12 Jun 2026 00:44:57 -0400 (EDT)
+	id 3C1B76B00A2; Fri, 12 Jun 2026 00:45:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD6F26B00A2; Fri, 12 Jun 2026 00:44:57 -0400 (EDT)
+	id 372806B00A8; Fri, 12 Jun 2026 00:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC5AE6B00A6; Fri, 12 Jun 2026 00:44:57 -0400 (EDT)
+	id 287EA6B00A9; Fri, 12 Jun 2026 00:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 992166B00A1
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:44:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF9F4A03D6
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:44:56 +0000 (UTC)
-X-FDA: 84870020592.15.F015D5B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 167F96B00A2
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 00:45:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A867BC1BDC
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:45:02 +0000 (UTC)
+X-FDA: 84870020844.05.2374EB2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CCEF140006
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:44:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="C5jJ/wIW";
+	by imf23.hostedemail.com (Postfix) with ESMTP id C2B42140006
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:45:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Q+ywobdJ;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781239495;
+	s=arc-20220608; t=1781239501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/go128rmErNISgmXs9cmoyd/VORO9f4PkvOsc4cy53U=;
-	b=oElK8CVTwyTUzmncYNX++lw0tUC3M4KyfohoTqrzqfccoriU1d57StxgnVwFRq8/rxOcsn
-	lO1LN4XVl57KnDmQFCmIeab1+SvomVUBXsZK9XsDlbh23Mo107eOY+cwzt7K4FrBhxsjDq
-	9fUiZYUulIjWGqQ/QzZia+9MSno+ZMo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NOOCtXcGKd5JxZcYNa0CCaNDWtbGtVPpAZnPySAOdUY=;
+	b=JwCVl4cq4xJcTQEn5dUvUA03OqZgyja/i5zeelRuHd72dXSIlUE0rIITlAfIEzQSHivPgp
+	RzJXbs2y7ZrYLhCGF709aXlXogaIp2q4S7naUc5ILzMRz3CSmVQIIDDGXsBSiab6DYgMJT
+	AjPU5SKae1t6Nn0OyKyfX23SXNSJIHM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="C5jJ/wIW";
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Q+ywobdJ;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781239495;
-	b=Jbtwzrrhk+PNFyE0+EQGzs09TZlZn0T32/bVpLZeCs+mhv+GvLsUhZKGZCKrlV/ZBRHj4i
-	3+myJxT0jdhym+LqbLuYQT6zzpvF9n8V6LHrqun2QljS3HiD0ZhH+gShqsqsQfvqIN/N4A
-	x1LyxPoUBRg1OKRVYZItwfvvR2wchaM=
+	t=1781239501;
+	b=2SWeoT7Xqy5N6PPhNULkGCKJ2xkit6mWrbVziXMbkNGDoD6vdqqTXIwSiT6rrrjgAQphFg
+	y8T43tjAm9q8vHzQaEklAvfMOHPX8/EUGTjJk42A01LgDAkwXia/Ty+5CR9qdV+EAar4qd
+	984x0PFF4c4K0V7cCnULISROcnh7Sxw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3C722E91;
-	Thu, 11 Jun 2026 21:44:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C26E2E91;
+	Thu, 11 Jun 2026 21:44:55 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E073D3FAF5;
-	Thu, 11 Jun 2026 21:44:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2BAF13FAF5;
+	Thu, 11 Jun 2026 21:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781239493; bh=SQA3Q3+/82oh45oJTME91UR/PdPgdrsuA9Fdpn4kolY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=C5jJ/wIWZzhIUGdGO9T1hGV6rroAbSN3pDV9MfJilf8tLHrAckiL0S/LKO41BXhZH
-	 TcYl95kWuiBGL2H9XMsb2TGyjHPdch3DNT1yTG9y+K52Dm55IzVzSy+Ru4qjMsWBbB
-	 MevnQMAJu19h7w8r6XSGIR3dzkoJ3W1yPt0WeTnE=
+	t=1781239499; bh=b00TklBGecqQHLra7PJTRi5mE5kXZpjh3sOy2Gf7YPQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q+ywobdJtIBtiIj1Lm87NJAvMg5U5ZyPO3GOiZE5j7oUMWa2LPjn5dzWP/UcvIfsR
+	 eAIppw1XHah98pdVj9WRrylHYixsfy899jM7BhUXauI0syxEiAplt27uUuk/UZ4Tct
+	 1rn0H7QLZBrriUcOjns9J7XKs7UrCuhBG1BRs4Wk=
 From: Dev Jain <dev.jain@arm.com>
 To: ryabinin.a.a@gmail.com,
 	akpm@linux-foundation.org,
@@ -83,20 +83,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	david@kernel.org,
 	will@kernel.org,
 	catalin.marinas@arm.com
-Subject: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at allocation time
-Date: Fri, 12 Jun 2026 04:44:22 +0000
-Message-ID: <20260612044425.763060-1-dev.jain@arm.com>
+Subject: [RFC PATCH 1/2] kasan: hw_tags: Use KASAN_PAGE_REDZONE for vmalloc redzoning
+Date: Fri, 12 Jun 2026 04:44:23 +0000
+Message-ID: <20260612044425.763060-2-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260612044425.763060-1-dev.jain@arm.com>
+References: <20260612044425.763060-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C2B42140006
+X-Stat-Signature: rora5iazebqgsuoahw95cpfe97gn3znj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CCEF140006
-X-Stat-Signature: k1nhzhrbwwnwdsmxs7fydqeessami3om
-X-HE-Tag: 1781239494-967116
-X-HE-Meta: U2FsdGVkX1/8rRtlQqsyLrTzkaNI5pKtDcmwW0gpm1tsAEfwrVC3OMRAPMiHUiMvQsJyIAd7h+O121IQaG0wHy7zgKy7lOAq3cllvzL48IIkQVZm08brg1cv3pRAzz7eCu0gS3E0Tk5oEy8H0Mk9U9jhvjQnEMwvOfDZErrpCqfNGYrxEoH/yqjEu/pawV/Uasy7i25Wman2cCbZjkJtKgV03ohZ3gCDUxQWDns7jqDVXonI6w1mAr9gkGfHoi8P5eNjZSUv+sKfe9OK6mTFUSj7xenXlrpYmbN1vdj1VHvxQUY/lXJwYVcugLgW6ni3Jvmb6Fc//dTvFmdPJoboweR1JPtdvVZdO+FCXCGEuEvRzuejqqkcL7nNS6ma4FPySnJNwOeClzVrH1VRGvlM3gCav9ryVeEhGoYbHWtTt9HUdzYtkDoB+VvN2t3D8dp3pP0H9DpPl/Klq2naYNgXt4sy1Yz34f+XXLGVSoa7x1li1UolFu4a1efslpUs/vw4Bko6ryX9HoVU7PqABFSgq58IR9sjmO0xO05piyPQ7wbGwxfETC7NyOEbOf95QtPTsCoFYcBgC2cmoO2iYnMI5X5tgeO7lWzJcVYD5pnYQTrLKHn0tVEKvIC8HV1YBKENKB2z0rU6eqgGJz9nhbOP6iZUeRgrLJgbdU2VylDXT/ZqUHsrJjRdl5hJro4mSKDqPfFOw8FVF7gFaUS36ctkpgRwkJXS2LdWwVlCCKrj6UVl6USvSLDeVdWhLYOStkQQQVHosxS5KG8Lu4xjn7WwOv5XN3n/7jaq2Q3nhEtzwMfJYu3dRt0hBizlw1zEI6blYwnHqCBucONR58wZ+U0bpg5xJxTrMS7Aagh7/9V5ivcQBgVX/fqR16DNTix+GdFw8kWiVV7ByYdxkLGSPxtOfIkA9J7K5tYn0EI5kEUFMItKYulLiR9CwP5Nfe2gaBodd8QSEo9HYVmPRsarqp3
- WAUImRxv
- ov22/5/D/XVkS0XzDYFum3odJfPIiMuT9Bn+B5cWhaIZj/G2tXOZOSEoTfvfeuvt+G4Gw7HNRuwKxkhAlschVM9H8Z4BBMszn+w0Uhc29VgNt9Ncxd8qPvUZ+434mXtHr8wnfq2NOILPNtlEcpxmRySfTLj4ERTVgUoJeJXEttNPcfAxDvW36UCGoezizeAaxLd2tjPaSP0kPIHrA2wArgJz7I/a0vZJ0+ECIdWlMgc71An9WY51V52Ox5L2nKyl+2iwGQwpRocZ3MBfPVTSuSzIYhtvlYhdFOAYxw8jgGC1srqFh2tfdK1upCg==
+X-HE-Tag: 1781239500-840396
+X-HE-Meta: U2FsdGVkX18df/5Pdl4D4xTfxv8b2+CQPx7JbrdQoTWmGY+mexGr38uSu169/gYF3SlLz0rEw7+Bih2bVq6tTLH169gnbwVDXqVFX8cDNADYsAwpoxCo4U2fPEesq+HFqbFdd5JRW6GjTfd9vHY8K+4TOB6iAiFUB65C2i3jRLwcnrGjLgFt+FphX+VrIc3hIXJvT+1unIycmYa356gFp5yNBBffhyHu/R9wJm4ECenLy2yMIJsdcEvF1yHb1g63T7ojmQU1JvBh4gmtnvcY1k9mSx93m6/OzQSoKL6w8FPVN4NzRBfmKGCOe0oL19f58+0Er4SedYpBBqrGc2qopuA8TWJLnB+O9dkYj8ig5aJtcJG3Gy3rTKBe5kJZMQ7xRmo8gPEZMxh5heQK5BBMOb1bi+pujQm/kf4bqBOtzU0U23enejWZKWjqYMsGoXZJlm5EJ3Aph/gN7aNcC8cK8MOnFFAWxaW+m9SGFMujnKzaEHBjRGqO6zaUnuYV1H7pxiXT0qx2+bIMwHKZQcPV5WKujAO5LpE0DGrqUt/NR/h21y7wZLcUw+v0V3vAIta/V4l5K9PaGtLAvhsPvtcPnlQSDzHZz8jyMC51VSBJQJ3et1NgYFSyWxO9DZ9ECNKb8SOdIldHfy2wBid3oAuBNJ9OUGkcReBCWXT4wd+WUND2P4YpXye1g76GggHWvtFkNIikX/nN6C4HW5XEL4u/WTAnZtcWCMSVJbQkTrB+RRu321zQOzJLg0UrvYdY253vHfvbj5pBD7YSHs3TBkGS/3wnugHmZmkJc6w/9d5jPJTyWfIEg+Vea32kmx3nPeXac9oTA1Ej0lbXwHaOPy0c58/L65S0T8efEgR78RuJMy+PsnoMcSKsgO0uKfPQM5c2h23pxk4H1DHBUxtPZvDrxts7sInrL9bPHlr/3yPFq5Ngg8wU2QRMAF/QzhY0EPzZYRVtCtCMDbAYENSfgwP
+ T4AwCPVv
+ UrfZN/IoFgjoMvkvVK0+ED1zghYHbdrNFgW9mVfH41638cHeZDTxciY7ZOca2WH9WEyjwk03Mxnp1zeYRBsOOkenGTCvUpli3c0OBUZvUUcQHauZ2NrwOOMwOm4d4SmUsDYr1U3OW4UFoZWjtJkUviyT0WSg5/2lBJbbH00iInLzrDijo83rJrcJm+6z+MDxhJX95P5qGLi7ySqZX64RADDcBOHa0OJ/IgnyVCf/lV9AvbVo44NsZvN7Zc2q8mWyZm3eOgbBSHQLDOgSJEW+PuQhwQAKDC1dPr90X17s8XQvf++wa5mLnQuOtmFcWs+awFzMk9b0dnjfOOYA082PfiPV3OBIamJb1wxqX79ec9wwZqRs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,34 +106,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a boot option to tag only at allocation time of the objects. This
-reduces KASAN MTE overhead, the tradeoff being reduced ability of
-catching bugs.
+In preparation for adding "tag only on alloc" boot time option, use
+KASAN_PAGE_REDZONE instead of KASAN_TAG_INVALID for poisoning the tail end
+of the vmalloc allocation.
 
-Now, when a memory object will be freed, it will retain the random tag it
-had at allocation time. This compromises on catching UAF bugs, till the
-time the object is not reallocated, at which point it will have a new
-random tag.
+Although both values are the same for hw tags, KASAN_SLAB_REDZONE is used
+for poisoning the tail end of a kmalloc object allocation, so maintain
+the pattern.
 
-Hence, not catching "use-after-free-before-reallocation" and not catching
-"double-free" will be the compromise for reduced KASAN overhead.
-
-This is an RFC because we are not clear about the performance benefit.
-
-Android folks, please help with testing!
-
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Applies on Linus master (9716c086c8e8).
+ mm/kasan/hw_tags.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Dev Jain (2):
-  kasan: hw_tags: Use KASAN_PAGE_REDZONE for vmalloc redzoning
-  kasan: hw_tags: Add boot option to elide free time poisoning
-
- Documentation/dev-tools/kasan.rst |  4 +++
- mm/kasan/hw_tags.c                | 45 +++++++++++++++++++++++++++++--
- mm/kasan/kasan.h                  | 23 +++++++++++++++-
- 3 files changed, 69 insertions(+), 3 deletions(-)
-
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index cbef5e450954e..c1a2b48808ed7 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -375,7 +375,7 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 	redzone_start = round_up((unsigned long)start + size,
+ 				 KASAN_GRANULE_SIZE);
+ 	redzone_size = round_up(redzone_start, PAGE_SIZE) - redzone_start;
+-	kasan_poison((void *)redzone_start, redzone_size, KASAN_TAG_INVALID,
++	kasan_poison((void *)redzone_start, redzone_size, KASAN_PAGE_REDZONE,
+ 		     flags & KASAN_VMALLOC_INIT);
+ 
+ 	/*
 -- 
 2.43.0
 
