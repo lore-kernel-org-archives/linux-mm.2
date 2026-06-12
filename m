@@ -4,129 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8912CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1921ACD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 16:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 129736B00A1; Fri, 12 Jun 2026 12:30:15 -0400 (EDT)
+	id 7E51C6B009F; Fri, 12 Jun 2026 12:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100BE6B00A2; Fri, 12 Jun 2026 12:30:15 -0400 (EDT)
+	id 795F36B00A0; Fri, 12 Jun 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 016886B00A3; Fri, 12 Jun 2026 12:30:14 -0400 (EDT)
+	id 6AD026B00A2; Fri, 12 Jun 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E44246B00A1
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:30:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90D691C0D1C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:30:14 +0000 (UTC)
-X-FDA: 84871797948.29.34E0DF3
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 44C8140017
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:30:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="C 83N6X9";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=kXVVRqdH;
-	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A8BA6B009F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:33:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF0DF8AB58
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:33:57 +0000 (UTC)
+X-FDA: 84871807314.19.41C20F7
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 84D3312000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 16:33:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lu2hz0Qa;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781281812;
+	s=arc-20220608; t=1781282036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPWIUmv7o85y77DNU8cNkhUSgD6pQKzFSK9Rh6/dB9M=;
-	b=bs4e6XgF7jC7ta0kIIIDkQS3p5WapTCZqCgnmFhuLXIUKYLHA0isWOprlxWIwdcsiu2kNU
-	JzKp7jBMqxDYDf8CvzKs/+fwn6UBRxcR1JGvYLVcpchmXhjIhkyUf3RSbxaza8ZoimHp5a
-	YXHXGzhaGAYUgMz0mA4GDtwODZgmCAw=
+	bh=gaALrUtMzS13T301LDMZjCtTFcOTia8kl+f7FBSPKoE=;
+	b=Wifd3Zkb8ZrkjEQbTNXqCR3fW7rwlhBBb0eiDiXtxiDZKjxKSo05koNoFR2osSOdmGFg5r
+	jAAKJ+BnREoUo7JEr2w3IsPxqVkT/u3akP2OWwXJmKsXLqZmmexEk0swRZplnmVPSSo0V0
+	FgEfD/IG9anHW3FE/rX55KY2edO5kF8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="C 83N6X9";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=kXVVRqdH;
-	spf=pass (imf12.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.143 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf29.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lu2hz0Qa;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781281812;
-	b=3WKQazFHEUM4y79yDK19Jl9Pk5WWuUmqhxKKzVelbQ6/GNjj0SCE/BgSIAl6S1xNVLiJv5
-	76ECRTbHbkXiLbqfd2In2z2NM4v2GDCbyvXAjuWXBFunnOGcDyEU760TJynyDrHwqS+en9
-	nR1c4ItccDQIcHx8KD20z9WWdbNDGQw=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id 8C4C91380117;
-	Fri, 12 Jun 2026 12:30:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 12 Jun 2026 12:30:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1781281811; x=
-	1781289011; bh=JPWIUmv7o85y77DNU8cNkhUSgD6pQKzFSK9Rh6/dB9M=; b=C
-	83N6X9YVBl5cOmSZUJ9pC7/NcHioDQkEIDEmefxCV83WSGiqh/zG75U49EB9gNhL
-	eQpdLKC50sfDjQ4PbF+RcylSPmYW5yqXjsADA5m+Jq6fFd2WjMJZA55Kwx9nqPyC
-	s7+aHctdevRwRuwAkavgBpQswSCu2I9VCNOISXpoZeNhgTZaYJEfzkUTnmj9zUpT
-	YHT+bldDdgWkEyedj9bOnubtID67wUBwk3B0hE8yFL7LFc5ZVtH++D60wklkWoKa
-	xVRjuBrHOfMeV5C/GSvl73VZ0bkw3aVDRgpVh5/PqHyIS4KhE1nu86Amh9A2g070
-	N2dKgqER2ir9ciEG7/SWg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781281811; x=1781289011; bh=JPWIUmv7o85y77DNU8cNkhUSgD6pQKzFSK9
-	Rh6/dB9M=; b=kXVVRqdH7NvGJXoomPyI6L1DzGjLvTGSK7GqXxbO8y6STXl5Cy8
-	FO12TsMfGrtscwVdx2I6SEESmPG6my7nx7Pi/COQT78eF0DepOXU+yc6teBVfKEz
-	Q53UbIxlDWxjzh3SH/BA/esBm7NuZDpgRmgW+rBK7DA4WFXf95grtkomaU6A+s9j
-	HzcWVDJY/GnMeOAoLLv4c1Tz09K3/p22w0XIpgAys7IU1oXs4w2kSsUyXCbObfGL
-	CaJC7Kjla63UwECAzQM6mbFvy1LJs5Gkl252AwMDKsX8dN4uhk7lfPircRMVNRPZ
-	ppqhj2mOeOZKg4vMHRAFfKK2wqWxgnqk3zQ==
-X-ME-Sender: <xms:ETQsah_K7dW98Y7oWvRFzjwl-EXYcJ85m4Z6fFaK78ow6-uglhnJ_g>
-    <xme:ETQsag1M1XeMtw0fS9WBkhBQApkqYi6eS3774AtIiGSmhsCZUHJmySkmcvvuSUw4k
-    RyXpBxMVeN7Jt4FvEKPT1Uj7r-o_fP-HnyYks3VZQW-4OP_VhUPQDo>
-X-ME-Received: <xmr:ETQsauZT-l7MZqAyxCUqmNjUGoCdvz8UwJyew_oLWjRjomajE6yeReV56bq97g>
-X-ME-Proxy-Cause: dmFkZTETIJWWZf8ko10xeT8E6KYd8EuVMIA0Cz31xlXx76CsNvlZ3aEUn7dUUu82qH57kj
-    f2RHsSsq+OSFmAT1A70MvbNlhjJU6JKSZ4oW1PC5b87cZH2YRQGUPuqTBi7c5zWzu2BTi8
-    1Y9gwX6IOu2TYJdFRacCRB2gCTH+AZAvbt3kMiMJ8pFUIikJM6Ltb60os/2XTy9AHUgqvg
-    58puxntgllAItlimqthqFv3/AIZJHUe5YEKQPXEQAVE+RLo6418I8sItQ0/B6/ggIpj+c4
-    FUJfO8C9CSTsYwkKmfBBbTLWCdzFN8hsWOk9I+5WcJO9zCIsY9nSYflQbQMCh3Jpc+0Wgr
-    GLqM/erXuyvNJftHPZTjsinHEcVMkhqjCBFAsUH6AWO6HUh5v8CgRKQCXFQkpYPzIgPK0h
-    Hypq56bGvBWafx3fie7CNXDMlxtDDLaXfJ72nz70XhumfvirXDwWwx/3iIbI5YZpROWJTM
-    Gj+eWGH+usWort9ZVE8kvc2SAQm6jXEkgAHvTmY0CY5NTuCMG4FsNfSl9rqzPKAg3xub3Z
-    yl0CpSRjxScDZx2J9epC9Bn8dGm7oa9h7iovTPUR6m4BR+sXOMylFJnMsgEkQsdwIIhKUM
-    /ZkwABCnDfq+K7P45sX42uD8BxHWFpGcASDaQ9x4HKuU/3ss9eE9+OWbSSBw
-X-ME-Proxy: <xmx:ETQsaktLkBo8-R-vi0ogXEisCQDRbozJSPTJqsStYKwiqyP5VMuq9A>
-    <xmx:ETQsatAacXQ-QWA8VdFLims196dSrzFIKwCDiVKO1qMhay_FJ11sMA>
-    <xmx:ETQsanCUzn4c11x6bRq2zYJEALigfkvbqOuT7MssNJSSlGq3cTfsVA>
-    <xmx:ETQsavkWZt5zXs3ROnobBNlkThMvcgjfbT92xbLC2piqVmgCVFa2-A>
-    <xmx:EzQsaktksHf3FF8v3WOEzbmdHkMnPkTQw8lNY5r6T56sCgVCCZlvyox5>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 12:30:07 -0400 (EDT)
-Date: Fri, 12 Jun 2026 17:30:02 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
- under 5-level paging
-Message-ID: <aiwxWk0gOV4ZlKcT@thinkstation>
-References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+	t=1781282036;
+	b=gsPiQHMOk6ZuAJZwWrp54DjsZjBeLBfCC3PHT661NGrUUUpyRYDkwM9hXq21j3GQGZfytP
+	Sz/T9Gp6BLnQPecsmixO+rD0k9XiT+24tqh28nnxHRMmJqg8blQA4YWx4VgI6QLe+KN8lf
+	xnrTl7ctZjaKWV9TpYrG/Bfu5rvluPo=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-517907feed0so23803071cf.1
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 09:33:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1781282034; x=1781886834; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gaALrUtMzS13T301LDMZjCtTFcOTia8kl+f7FBSPKoE=;
+        b=lu2hz0QaDr3JFF1alCSnSTtXPYYgATSEkeJoFxWHKaxmXzXYJBnciVr/igRk04Om7t
+         6NxzUtLl3gynPU1Dkv8kAEnXpohLhTsRgj/n9UVD0ljaFh1Gm/vAndi3kxlIReaR/6tF
+         KL0He900vfC3IGMvTaKZeb1as8TF3EMQNbVkXdW8PNnXSk3guuxHtZZlPlvoTaiAFEb6
+         NF1IjB8nG9dD6vKBzkLXGMj2ETg0aPdGrIjBwPjos01eSj2IL5GZEINZ786TLVb6BwWa
+         kGNaDc/1a10hrfB0Zy756BJ0FKROgrLH7+o+XTQnBHzYcgTvuops3Eue8yyY2swp4SKk
+         Zm3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781282034; x=1781886834;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gaALrUtMzS13T301LDMZjCtTFcOTia8kl+f7FBSPKoE=;
+        b=SJ1z9HruzxqbKK4DGOE+FxV3AG8VkTw4M84xQ4f9B+wqTRcqHvqvO8IdsGK87BtRwn
+         E8wLacA4UcDP334qV/hVc6Wl6BFt2R5WMS7FKJdB+FVovBj8wOZE88B1DD6UzAtX/xk/
+         1D3nM9rNFhbVYMauCReId8JmJrFuCI7PiDISaYru/G8tSEugp0PAZMKCxnTJP8dcPgF3
+         4siK6yMFi/fFxfY5lMATgQc/DWHNLyOMTfLtP3g58o6XayCIdGMPKxGU8reV1cFNQ5zc
+         YNKYlNweZPHsP+YXkWxIKvpnL2qvMNuUXap73tw+UvFj/9Bj0u9uF+/yi2U1tl9O0SPk
+         VHjQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8MP/zcTxCnz0VzbdlLhN25MCL046GL2QPr1xS4CJT2t6Q3lQiVGyoDExYD+k6rCTTNpc8IKJCmkQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx2MpP0jjjdslrIb+GWjfl7cqLtn9b7J4E7cx475AVnvDtpZViV
+	rTdTJ80+7BktfhS3mKb+r8iYMSHDKTeSX+XWfdgRapaIiU+VJX1DCEjwQGZqaGK2wmE=
+X-Gm-Gg: Acq92OFfrguJVeqQsQfRUxdtFWx3y7KwyujQr+jDkGl6DMGzWIUjFhtkckYQ1H/NxXg
+	V3Z1zmzUr7PIWNb5pX5IW6zl2ORqUOW8JnA2kf2JUB2wrXe1b2G7GtEV84k2/0sxb6k13mPnQh6
+	NMYgWch+pQn07g4YYc2oUneWXF0J4VE7Q+I6zFKOnVR4FZUgKhvclduYpKHn9f1T8CULpl0QqOq
+	duFN/+mxggfykcWO9/4/jzlNr6t1TBf/85cKkR+jmU+j2pUoHKyQVmXVxhBcYk1HVjgXbdRK04I
+	HKz4WPOsP/3mS48ARnYiLkRI6pVXT2QQfHmZXCs6Idt3MzBmT6MIcwzCm0E5qPUkzVVFgAM44SO
+	kAy2TLbXoiY07/cMvE4EwsGBX411TgsbIQgmwyeTE6Lsr1Xs19XKu5s34Yc6pKXqmq7YGhQdxI+
+	0lz/d3P1GdvF+lSEc6AuGIlA==
+X-Received: by 2002:a05:622a:60e:b0:517:74f2:e578 with SMTP id d75a77b69052e-517fbcb0132mr51491051cf.12.1781282034506;
+        Fri, 12 Jun 2026 09:33:54 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb642541sm25722601cf.10.2026.06.12.09.33.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 09:33:53 -0700 (PDT)
+Date: Fri, 12 Jun 2026 12:33:52 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: drop flag-conversion "optimisation"
+Message-ID: <aiw08Iy6BYCPX9am@cmpxchg.org>
+References: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260610175651.647515-1-ihor.solodrai@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 44C8140017
-X-Stat-Signature: yxb41ywrxy3i1k1bubjf7fteya9cukzi
+In-Reply-To: <20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1781281812-41872
-X-HE-Meta: U2FsdGVkX18/R4/02LCnwg6PdOOYK5L/bCsJPf1INpjharoBfvqBm5OYjA7zKW03VovUWDwt/D2NG+apEBPYHGDyCUG/aXGV/Ug3NFwzt31gOz0pj3Pn4IydwzznTtLUML35Wi5V8295pqHom3mj65I4Rxhii4L7y/bYsgY2n1jJA+0iQi4Gk96LOZHdHKkl7DVpn9onTQhibcIIO0bZ/ahONk1qunRtdrPJAfucZ04UhxT+MbBT5IUDjGrUERh628juw3avUIA1gyQFMSJBzB7cPi8BUVsQHmT4AQe8cJ77tU2CVUGJ2/+fTXmpDg2oWR0g4jS+ojWS4gAtBbVwY2cV9LLivlGLYd3tWR5itmPyEAMquV52gQA5t+bdby7pEOFvPiaF2KFjuWL+CmxFXfpFTigNsKpDS4bhIBP/do5V9s9Ym+7cobzLijDDve/q21DVyqgqNfxg+f53AXUnnXVLgoUUy4m8RbPNiaiNhClhXffwcgu75YQ9eYuL8TGRCwanpVbkhvyNO+NdHFxNzKf8+hQMkTByY3HReY02+wudsAD0Bkt+/rPwqWC+iD85v/2CdI1OrAsm4vewg161LLa8NWDugKjCMnAhXzZ1Cjompp+VR/hIIvDB7KCuSukFvHubOc/JZm6JNk7MXYweHOcezKCnpN/Ti+tJacq+GsmHo2amQryn8WbwVSvKKVoniip6iS2I8Y1ptsrfSgS+YpnuezzdIrxx6Beh4gS8HPtLEnWCzfzHN3oN3WFF+cI3HcBFu9Lzs5vJValQt3RZbBs/eC9osEYkMpR3h9t3RnNiK+Ak0YkdQDp49HEssOa0lBG5RhCGuL5nsRhlCb53xVdnHeyGhCuq49iWAvDwh1wsIidf4TP0sQCXLcEfwL+gKDLVshxxGZuzzoTk9+XtzvFFvHdC5rl8Hz7q8t1HnXD6jb6vfGeLcJ2p0p81f02bgSuB2wBecb5t4ablM2N
- XV8CpN7x
- nlCMrcvFHRx86vvY38+CD54cOUgz91veXPseYcpdUDDgvjQixLmP7TXUa0lL7xl/L14txrlBj1UhihrlHqqafF5gfRs3PhvQuVdrEdUjYN0Fzj/H3EWw+X2mRwTFsXqDtrKdKLjHbrcFud73W3bjeIfFMUSW8M7oQaZgDmv+NpR4dcszJaxVnqAj2ZfPYDx4tkNwFX7GVbEcKjP6mHyDlTSlRDCRdSam6RjKmQPd6NfX6E+N+mpUn7+7O3kDBncmWc8NzXOM6/P6WqyfzuEBzFRq0VP7d9B++N+OoOi8qC4opfU1rwxwpVUduazsRuoAnDXuK60h7sbegmJxUsIIGgFxW3uLV6qypYEnuLlIHQcEVlZ4XyxyZssuWbVjtdoY1/q6JkmY+9nlcZFvQRrg96Ih+3LBpbh8aDLqBbkv6Sp7p/bWFlnOJ9KQn9FThC/xyVLbchiiPtJk8l2Kg/CPjtVAbhJBLEngKFSEC5E004sSvt+cCbSl/spC/WxyjQzQSK4yOGQRljgwO8S4=
+X-Stat-Signature: hyx8t1q9mss1495fdb4ba1adxi8caqqq
+X-Rspamd-Queue-Id: 84D3312000A
+X-HE-Tag: 1781282035-351996
+X-HE-Meta: U2FsdGVkX18ABpQIu3Yljm7S38I3YeOkMrnIwktKMIWcH75qiTMhA/qvj33EYeg+PxaQU6oY76a0plmtkEHVZUBqtNoM7crd2vptg68fY6xdnlrbp6U1JOwI8W01wLT5VfIMEu1GeO6OPXLdSqENAEk6pg0t9yORtLNX6Md2e9Nz4URKpXJoWazoPs61/Oso/uMxccxo39uQzwbvupx3i0YV7dtPG7DMOD3hwOY8tDGl1EmdhqjC/xs79Fp4t6vjcVU/yD42YT0W6Wwe9YKUCMyVyo3pyyNeUKkIx6rMRkKXmxBAJ7n41PmycSEeasG5TYNEdMznaHZslVZJYEET0/lwoF6BJi5yWLZ0CqJPTTVWuRI9QP4ucu74AwuYpNoBCSZ5Q8CT7XGSZ+NtgU7vngqGaQcPiCi6OPbqi91Wh+tYtgUxgT+1/TKU9Ft0jNsaHeyT3uPVScLoN8n4yXlS4wh6QDQ4e7jyS7ECYb3CMRMXADMHp0R+W6bIkwjr/kG6jITP8zRUJc/DTsBpql7WrceK0C1QFveaAHaBkTPBOxGexYmgd3k8fNsMOxgGiMc+Jb0rpvL9yD6twnetIBSuWkKy9i2AAlpDep13QmDKX/FjHTKn2ncmuQwT1I0pjRFyJWYJ25uyEBSteZMJ8kRhMDlg5672C5optn26VHfRp7dJp88OLY28nKCE7mipHrVwG3JaFfHRBzIaI11vcogkFJ+FiXDCflphngh2dX4pnyHwSASJ94C2LYB+siVjZ0Os0ANL15dn62c0ki1f7T5k/b/5faOn0mPAW4Q4dm5x9zkC5OoSkNP4DLe+KjCNAhPZlk4nR1GNODsAPqCOIbVrpMqa+8SQa4fzYtaKk8WOHypL+jNiM2V0QRhWY9IVeODJBONi+TQ5ypoRU5NmRAMVOdUndZuoE6t5Idm+SZRLdgPcYe60jLh+LOtGUHnerYQxkk8lDV1TvHanAXjlCv5
+ gq5gDnLl
+ urrHI7v8N/0G3IMbpJtpGDfGUIOxMCwh46z8+o/7HYVtnBOrhErHUtrkvg6X/DBl+JxO64SbH/gyKiGZc12u5m3Z/d5WLAfvrl3sSAcav3crMABogXK9bUj6tYWRtkAHLrx6lp7xpw3L4tbyTfalGaG7lbHNhh9rYukPZGVGDOb8AEzlARmc95WkY16/t9lvUwgN17QBR6u93iSyWp5NLIUWacxz8E/5IY1VB+0jnqHwMeSPtvJmMl+9auMTFUhsaT0AqJgoOJfdo1aN+tAzOfm64UsIRsi8y7Wvc8ujjc2xUqd6mdAI0vDJb6GNCBRBdaMlKHd7OQlHNhtOXqpGtvGsnocSlUMmVJPdNR1VzkQrkvP87pB6hZN/T3jXikvEoW/d8/dNiuFODqNrHiE+0mtzAeC8t99/NAA7OjBRFU8YS8zfr6I5hqZdoVN3OACbamAIn9ZwPfOXGsWZSWmdHaFdxPX8FCEsQgMSIHczuYwT0mTzjXoeHaSPzw9LMMlyR3skqte7aiyy9CUxBNOdWLZ6ILpHBUbpkCXyFMIm2EHTaUhbV1jGG41p9vQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,121 +121,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 10:56:51AM -0700, Ihor Solodrai wrote:
-> On x86_64 with 5-level paging (LA57) and inline generic KASAN, the
-> following flaky splat may be observed on boot:
+On Fri, Jun 12, 2026 at 02:15:44PM +0000, Brendan Jackman wrote:
+> This code uses flag equivalences to try to optimise conversion from
+> GFP_ to ALLOC_ but there's no clear reason to believe it makes things
+> faster. Even if it gets rid of conditional branches, it just trades them
+> for a data dependency.
 > 
->     BUG: KASAN: wild-memory-access in do_raw_spin_lock+0xcf/0x260
->     Write of size 4 at addr ff110001000c90b8 by task swapper/0/0
+> CPUs are pretty good at conditional branches. But, in my GCC x86 build
+> it doesn't look like there are any branches anyway, the compiler found
+> some conditional instruction tricks. (Caveat: This was extracted &
+> annotated by Gemini AI, I did not actually read the disasm myself)
 > 
->     CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.1.0-rc5-gcba33e0b2907 #1 PREEMPT(full)
->     Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->     Call Trace:
->      <IRQ>
->      dump_stack_lvl+0x54/0x70
->      kasan_report+0x117/0x150
->      ? do_raw_spin_lock+0xcf/0x260
->      kasan_check_range+0x264/0x2c0
->      do_raw_spin_lock+0xcf/0x260
->      handle_edge_irq+0x35/0x770
->      ? do_raw_spin_unlock+0x51/0x2a0
->      __common_interrupt+0xae/0x120
->      common_interrupt+0x7c/0x90
->      </IRQ>
->      <TASK>
->      asm_common_interrupt+0x26/0x40
->     RIP: 0010:identify_cpu+0x2b2/0x3460
->     Code: 00 41 c7 07 00 00 00 00 4d 89 e6 49 c1 ee 03 43 0f b6 04 06 84 c0 0f 85 a3 1c 00 00 41 c7 04 24 00 00 00 00 31 c0 31 c9 0f a2 <89> c7 42 0f b6 44 05 00 84 c0 0f 85 ad 1c 00 00 41 89 3f 48 8b 44
->     RSP: 0000:ffffffff97807df0 EFLAGS: 00000246
->     RAX: 0000000000000020 RBX: 00000000756e6547 RCX: 000000006c65746e
->     RDX: 0000000049656e69 RSI: 0000000000000000 RDI: ffffffff98632fd8
->     RBP: 1ffffffff30c65fc R08: dffffc0000000000 R09: 0000000000000004
->     R10: ffffffff98632fc4 R11: fffffbfff30c65fb R12: ffffffff98633050
->     R13: ffffffff98633048 R14: 1ffffffff30c660a R15: ffffffff98632fe0
->      identify_boot_cpu+0xd/0xd0
->      arch_cpu_finalize_init+0x24/0x1f0
->      start_kernel+0x31e/0x3e0
->      x86_64_start_reservations+0x24/0x30
->      x86_64_start_kernel+0x13a/0x140
->      common_startup_64+0x12c/0x137
->      </TASK>
+> Old code:
 > 
-> It fires very early in boot. If kasan_multi_shot is set, the reports
-> are non-fatal and keep repeating, and the boot CPU wedges before
-> userspace is reached. The accessed addresses are valid 5-level kernel
-> pointers, so the report is a false positive.
+>         ae50:    8b 04 24                 mov    (%rsp),%eax           # Load gfp_mask
+>         ...
+>         ae5d:    41 89 c4                 mov    %eax,%r12d
+>         ae64:    41 81 e4 20 08 00 00     and    $0x820,%r12d          # Mask both flags at once
+>         ...
+>         ae6f:    44 89 e1                 mov    %r12d,%ecx
+>         ae77:    83 c9 40                 or     $0x40,%ecx            # OR with ALLOC_CPUSET (0x40)
+>         ae7a:    89 4c 24 60              mov    %ecx,0x60(%rsp)       # Store to alloc_flags
 > 
-> The root cause is in generic KASAN not seeing
-> cpu_feature_enabled(X86_FEATURE_LA57) set, because the bit is cleared
-> in identify_cpu() when the offending interrupt happens [1]:
+> New code:
 > 
->   memset(&c->x86_capability, 0, ...);   /* clears X86_FEATURE_LA57 */
->   ...
->   get_cpu_cap(c);                       /* re-reads CPUID, restores it */
+>   For  __GFP_HIGH  ( 0x20 ):
+>   It uses the Carry Flag (via  sbb ) to conditionally add  0x20  to the base  0x40  ( ALLOC_CPUSET ) flag:
 > 
-> addr_has_metadata() then uses the 4-level threshold, and 5-level
-> kernel addresses fall below it, so kasan_check_range() reports them as
-> wild-memory-access.
+>         ae63:    83 e0 20                 and    $0x20,%eax            # Test __GFP_HIGH
+>         ...
+>         ae6a:    83 f8 01                 cmp    $0x1,%eax             # Set carry flag if 0
+>         ae6f:    45 19 e4                 sbb    %r12d,%r12d           # %r12d = (gfp & 0x20) ? 0 : -1
+>         ae80:    41 83 e4 e0              and    $0xffffffe0,%r12d     # %r12d = (gfp & 0x20) ? 0 : -32
+>         ae87:    41 83 c4 60              add    $0x60,%r12d           # %r12d = (gfp & 0x20) ? 0x60 : 0x40
 > 
-> Define USE_EARLY_PGTABLE_L5 in mm/kasan/generic.c so
-> addr_has_metadata() uses the stable variable, as
-> arch/x86/mm/kasan_init_64.c already does.
+>   For  __GFP_KSWAPD_RECLAIM  ( 0x800 ):
+>   It uses a conditional move ( cmov ) later in the function to set the  ALLOC_KSWAPD  ( 0x800 ) bit:
 > 
+>         ae72:    25 00 08 00 00           and    $0x800,%eax           # Test __GFP_KSWAPD_RECLAIM
+>         ae77:    89 44 24 30              mov    %eax,0x30(%rsp)       # Store result
+>         ...
+>         af2c:    80 cf 08                 or     $0x8,%bh              # Set ALLOC_KSWAPD (0x800) in temp reg
+>         af2f:    45 85 c9                 test   %r9d,%r9d             # Check if __GFP_KSWAPD_RECLAIM was set
+>         af32:    0f 44 d8                 cmove  %eax,%ebx             # If not, revert to flags without it
+> 
+> Testing with a modified version[0] of lib/free_pages_test.c (adding
+> printks with timing)...
+> 
+> [0] https://github.com/bjackman/aethelred/blob/2ccdc84ef087c2a631914f58e106e99e19bd3b98/page-alloc-test/page-alloc-test.c
+> 
+> Old results from a Sapphire Rapids consumer CPU:
+> 
+> [   67.157118] page_alloc_test: Testing with GFP_KERNEL
+> [   67.157122] page_alloc_test: Starting 1,000,000 allocations...
+> [   70.704446] page_alloc_test: Completed. Time: 3543002 us (Avg: 3543.00 ns per alloc+free loop)
+> [   70.704456] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+> [   70.704460] page_alloc_test: Starting 1,000,000 allocations...
+> [   70.944672] page_alloc_test: Completed. Time: 239980 us (Avg: 239.98 ns per alloc+free loop)
+> [   70.944675] page_alloc_test: Test completed
+> 
+> New results:
+> 
+> [   70.079015] page_alloc_test: Testing with GFP_KERNEL
+> [   70.079020] page_alloc_test: Starting 1,000,000 allocations...
+> [   73.669396] page_alloc_test: Completed. Time: 3586954 us (Avg: 3586.95 ns per alloc+free loop)
+> [   73.669402] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+> [   73.669405] page_alloc_test: Starting 1,000,000 allocations...
+> [   73.905084] page_alloc_test: Completed. Time: 235496 us (Avg: 235.49 ns per alloc+free loop)
+> [   73.905086] page_alloc_test: Test completed
+> 
+> Seems like a wash.
+> 
+> So, drop the flag value coupling here and let the compiler and CPU do
+> their job. Superscalar CPUs are pretty neat after all.
+> 
+> (Used AI for the disasm but the rest is all manual).
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-I'd rather not push USE_EARLY_PGTABLE_L5 into generic KASAN code.
+Nice. With the _nofragment() bits folded:
 
-It's an x86 paging detail in arch-independent files. It's incomplete
-(report.c and report_generic.c also call addr_has_metadata()). And it's
-a permanent slowdown on the KASAN hot path -- pgtable_l5_enabled()
-becomes a runtime load of __pgtable_l5_enabled on every check, whereas
-cpu_feature_enabled() gets patched to a constant after alternatives.
-
-And it leaves the real bug in place: the window where
-boot_cpu_data.x86_capability reads back zero is visible to *any*
-cpu_feature_enabled() caller in interrupt context, not just KASAN.
-
-The window is opened by identify_cpu() itself, so fix it there:
-
-	diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-	--- a/arch/x86/kernel/cpu/common.c
-	+++ b/arch/x86/kernel/cpu/common.c
-	@@ -2003,6 +2003,7 @@ static void generic_identify(struct cpuinfo_x86 *c)
-	  */
-	 static void identify_cpu(struct cpuinfo_x86 *c)
-	 {
-	+	unsigned long flags;
-	 	int i;
-	@@ -2022,12 +2023,21 @@ static void identify_cpu(struct cpuinfo_x86 *c)
-	 	c->x86_cache_alignment = c->x86_clflush_size;
-	+
-	+	/*
-	+	 * x86_capability is cleared and repopulated from CPUID below. On
-	+	 * the boot CPU this runs with IRQs on and before alternatives are
-	+	 * patched, so cpu_feature_enabled() reads the live bits; an
-	+	 * interrupt in this window sees e.g. X86_FEATURE_LA57 as disabled.
-	+	 */
-	+	local_irq_save(flags);
-	 	memset(&c->x86_capability, 0, sizeof(c->x86_capability));
-	 #ifdef CONFIG_X86_VMX_FEATURE_NAMES
-	 	memset(&c->vmx_capability, 0, sizeof(c->vmx_capability));
-	 #endif
-	 	generic_identify(c);
-	+	local_irq_restore(flags);
-
-save/restore keeps it correct for the secondary-CPU callers that already run
-with IRQs off.
-
-I reproduced your splat with parallel TCG guests (-cpu max, kasan_multi_shot):
-~10% of boots hit it, 0/~200 with the above.
-
-I am not sure how wide the irq-off window suppose to be. I scoped it to
-memset() .. generic_identify(), where LA57 is restored. Later code
-(apply_forced_caps(), ->c_init(), setup_sm*p()) only refines bits.
-
-Widen it to be defensive, or keep it tight?
-
-Any better solution?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
