@@ -4,109 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26335CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B68F1CD4F2C
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 07:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 355ED6B009D; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
+	id ED8A76B0005; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306A46B009E; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
+	id E89686B0088; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F54F6B009F; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
+	id D9FD06B008C; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09E136B009D
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:02:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96EE78F2EE
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:02:53 +0000 (UTC)
-X-FDA: 84870368226.22.643EBFA
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 85E4D40004
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:02:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CB0946B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:14:25 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56A04C2B7B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:25 +0000 (UTC)
+X-FDA: 84870397290.23.4CD03BA
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9D8F7180003
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=MlwyAvgW;
+	spf=pass (imf24.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781247771;
+	s=arc-20220608; t=1781248463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TzpoOsl2+zNb2bgkj6flpXtfYo8DBbSEoFEqqFljUyQ=;
-	b=O/ClBS/z6LNWU/0Htw9aB37nmb8ahikqfqPyOoFuHghKGDmRuctv6FcGqYv2MIpMhGEhAS
-	0hb/m5XZGb4Vl+1ADjnvZDPppBKsLUJG/oLbmCL0+R/dye8gdLoixp6f+FgWsmWB5vGkAS
-	oAxbGQvKmTMdVMIYZWTHabyoWg/qIkU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0DH7CoZwm/L61lyISp16HVvqGBcx50fMetTeOW/xtCg=;
+	b=IqaoWJCEedl5C/zbna9Bwpgf5ZrUf4MB8B1+G1NsLfq29LR9IqVdbRBGZiPtte705Teuq8
+	XOhhs5sWppTOxoE0IOquFbYzOLouWJzrObMMDL6PrxbgxF0NgNPoDyxYNEfE73E8/7PI2o
+	sfazq6YfK8e7moXlJn2UBmc3q057h/k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781247771;
-	b=H9l1h6DCr43f6sJBkrSL8DW0FjbN6EL8Rk6XnBorUHITYTIiINwARD2/vUPVRLh1d0zvme
-	pmKsWfBNp7aHNIji1OAEFYM6f3syh/9OFoZSPpH2DvyF7H1FCauFrmf8ZL5ssQEbqto4iQ
-	PE8vJYpzDvlDyLGaVVL/WM9Ne94NPOA=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc9Sh1Mmtz1dd8V;
-	Fri, 12 Jun 2026 15:02:44 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc9Sd6rbMz1dd8V;
-	Fri, 12 Jun 2026 15:02:41 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id F286434C3EC5;
-	Fri, 12 Jun 2026 15:01:14 +0800 (CST)
-Received: from hsj-2U-Workstation (172.19.20.61) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 12 Jun
- 2026 15:02:35 +0800
-Date: Fri, 12 Jun 2026 15:02:32 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: Lorenzo Stoakes <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <muchun.song@linux.dev>,
-	<osalvador@suse.de>, <david@kernel.org>, <surenb@google.com>,
-	<mjguzik@gmail.com>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<shakeel.butt@linux.dev>, <rppt@kernel.org>, <mhocko@suse.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <linux@armlinux.org.uk>,
-	<dinguyen@kernel.org>, <schuster.simon@siemens-energy.com>,
-	<James.Bottomley@hansenpartnership.com>, <deller@gmx.de>, <djbw@kernel.org>,
-	<willy@infradead.org>, <peterz@infradead.org>, <mingo@redhat.com>,
-	<acme@kernel.org>, <namhyung@kernel.org>, <mark.rutland@arm.com>,
-	<alexander.shishkin@linux.intel.com>, <jolsa@kernel.org>,
-	<irogers@google.com>, <adrian.hunter@intel.com>, <james.clark@linaro.org>,
-	<mhiramat@kernel.org>, <oleg@redhat.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <jannh@google.com>,
-	<pfalcato@suse.de>, <riel@surriel.com>, <harry@kernel.org>,
-	<will@kernel.org>, <brian.ruley@gehealthcare.com>,
-	<rmk+kernel@armlinux.org.uk>, <dave.anglin@bell.net>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-parisc@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-perf-users@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>
-Subject: Re: [PATCH v2 0/4] mm: split the file's i_mmap tree for NUMA
-Message-ID: <aiuvCHI32bfz6j20@hsj-2U-Workstation>
-References: <20260611061915.2354307-1-huangsj@hygon.cn>
- <airY5q_SspdbQDbi@lucifer>
+	t=1781248463;
+	b=tcoY34uT6bgOekWdTK/XxbfanvkGsUPoMl0saUso0yj+wVmLdsOdesolDXuqCwAehfyBZl
+	zLv09hjx3EEcQ3HYZfT27MGPIpXQextU+O/88olrnDF0JxgEPTfDZQlNWwXF6kRnFgqlT6
+	msdgc1ZSktDq4gma6ypYQRyba4tYwu0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=MlwyAvgW;
+	spf=pass (imf24.hostedemail.com: domain of chenyichong@uniontech.com designates 54.207.19.206 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781248449;
+	bh=0DH7CoZwm/L61lyISp16HVvqGBcx50fMetTeOW/xtCg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=MlwyAvgWqCe08Ms1kY4eu/JZ7vJS4LgbLUjZ/hKRYo+vJobneaw/kxDTDPgsomZsq
+	 5gavSFKUQhZU5CN87/yiRPf6FK7T+Xr0jV1mT0ouGy5ExCy8jWZQdOZ/xA/juDJ5J9
+	 GF5wG9842BuWUfwf1K/7w+OxZblYdSD5NDO80AL0=
+X-QQ-mid: zesmtpsz8t1781248444t1be742dc
+X-QQ-Originating-IP: N/oszSuHs83mENbsmXIoy+f3ADjb+RACc/Oy4wPXp20=
+Received: from Shurima ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 12 Jun 2026 15:14:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 3577815154405116248
+EX-QQ-RecipientCnt: 6
+From: Yichong Chen <chenyichong@uniontech.com>
+To: akpm@linux-foundation.org
+Cc: penberg@cs.helsinki.fi,
+	clameter@sgi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yichong Chen <chenyichong@uniontech.com>
+Subject: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
+Date: Fri, 12 Jun 2026 15:13:59 +0800
+Message-ID: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <airY5q_SspdbQDbi@lucifer>
-X-Originating-IP: [172.19.20.61]
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 85E4D40004
-X-Stat-Signature: jw39c3i9tm8zi5cyoexwy7irrjkxeego
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MiI2pzLhVQ8nAttIPauINP73KdLpitr6JHSwVJmySOID0qBT51nKjSgB
+	ZRgDE/bnoOk/DqD11f3vTfVsJOrefFaGGM+QO8e5LfyhE+jUnLj4ZaZMDwZ9Hcx40lh66l1
+	teKrY98b6IHpJct4MGrsM/8BXfEITEi3AWtFP2WXyJ4y+1FF+x+7j6086G36yLgU2XNRVdu
+	/JE5s7YZZfICPQGYj4nDucsQy20Eu9G0wbd6KDY6jLSqDNaR3V7TJkgH7QUy+G+2zo0sHn6
+	C0tqsBtliRql6v48Ix7bk667qwKGwTS9vGECXhveN/XzgL/s4eyR2fDdwtSC9tR3C/kf6La
+	HGm0E9kiFDkKfJKuw67jiEU2lBzUbPT9r3PuTU3sSY/0ZU58mM/39U8rlAszA4EaI+7hyyc
+	CJReT4X/jRXPwJtWjpYvFG9ly1bg49M8GEAmqNcN4okyF8PRp1YLpGve8nPGrdjnobtbaEY
+	TFfYn3XaFdtHJc4SdVM4YlvZ1oorS9JcoJizU7p0bZPV+twIR7DgvD06F/XrHj9zAcHby+A
+	ot0XjTI1VowxHK/nsJqcU7xDj+lvOOkuohHh7zupOYLb4OTwmkYW672X1CMOZTnl9haHdPL
+	Qt/a+BpWPjsY2WU0FixQXPc5dVNCuFkGaLkCNBID1WO+q1zDLSaaHh0ww+NXgCmIx3abAfh
+	0QUkj8DPV/lMVXl5uUzcEwDBw+Ar5AD4fVFxys6RZJtcRDNjDlH7eoz6SDYffsd6yxP7WpU
+	qtoxcOT8z0TJP+tO+ZLRnv8i1Ivc26jR386cX3wsLUHxDqhfKmPqK8CAXHKwWMOVQxszrf4
+	JZ0qX2Jp8IVlkY8UWXs/SD+F0acPC6H4IyMojrGR2jgb8MCi7YyvqikY6D2Fi4aXRl/KUH8
+	eLDfiKs/DEC+wkNBeEV6ra2Pa4Di7XPYz+F1i/2btwZHxWE1w2FunJ+PVdm5tZQtsxGGnRB
+	YttTm3jcNXgUfNIkBDjmB4U8yMDyitnQQvj5Nwc//ihr6TGDQRG0Sq3PFJ1bqqDNPF3HQon
+	0z0wNbXatL0XUDnlbeAqCQwXYFbICkQamXLd5Fyob18BAMyQ7wyYT9Q8wxuTpddDdhcDBdW
+	Q==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 X-Rspam-User: 
-X-HE-Tag: 1781247768-625632
-X-HE-Meta: U2FsdGVkX18EBdHZot9RvcLwFjABQ8MwAIHaAVXkv2861YmBjKDPUwN5rnTWHu9ijGyiJ3PF3+jRJ7qsPKFob76d2UTJPlItSC0Gsiygkxgp7gS024W8Ircd1UFWhtJtS77ZuRRItDUC9mIiXPoHqyXzUt4tKHuJOzTNbAodxuTLNtFCI7IcLhcMadzjHg1BAeUEfRPOHsUFf4ytaPGOfx82yWtDVajcf64/dsont2j8bLZ1s/05S0QiF+CvTa2elLFFlD0XARRlcupm4Gd3N1z1vL3WFqeUHpyLg95rTuBxwDr275CT9I1k/LKK7KNowzEOacXtSbv+H2p6hgGVpM4LbRPL9RHa3l/o8vAD+PDrIPcuuhSOIhOLbD05J/Pf8B44dyss7icMRfrJQR0e9q32/ZfExXHHXwnA60RdeQtyF2LJhcolsxv0KXk9tjX87iKIbnT7a1svnMLd1GPZQ+l60JZ5wU7kHRUlTkma0SgGWA5f35l1L9TxFmmjEjkfZeu4lG2drV5SjouMMjLfJBYXokA1UFmgyvDojSeSJcNxERC7LHZpp20yozsYtPL0Uki+P8iMTVpSFIhkd8x4Kb4kD0eKEa5SRpa57LcInAhTELsAAgsZSXs1JjDRkGhzLlfqXT0uf3Ny5FnbUaW3LL7qVCsTJgzRKmq+DFpOhaLBt1UUso9nGpLJq5Xn5NHd5QpdeBgKm/YZRYibtf1jEv3Fg8aQtH/58F68aVJli+hEszD/pbglYY1wnfsS8xZPqFc8UmUNgBtIkUJWzqT8cYIA+jh4PKpBJKXlH8+mrqk2lZ1TwDQqtzi06SbAU15bzLuPLB3izmAJL3DhdRfrPpjI/eJ9RMlEMLhXoc3nhkBA4NWQDg+GRSWJGcqo9AoybMcCQ0G2pVjfzE4T/aitcle9/WgM15B1bPMg3BR/AQOekGAIxozOD0XwAwWvSE5jJ2Iw2Rs8R8tBJBvJsBD
- e9iyF+Fy
- obze5eZSpeXZUhxWGfak7Q+DJSUIiTf4S06d936hplmaYFpaKC+yNT7PWlIVfky0Aja0Ti3gKGMpGvEba0ob73xFe4ajNUfdwCKkx+iTRUk7JN6jtrx1ULrFrddj4m84HoXLpnkDlBgpjbBz3rRCM21lXPmpt0yIra3z1NUc9wTzJz1DlKZrZHdXqQOln2jOdHxMZOiOBq/suOcTQ+l0ft7sDD/vVXjM2eCucLwoSRWSCDiEQOFc3F9+JaxPUzoo5HdaIoBx08cRB2nNtj7nuWwRVpLD77d+rjCmtrbU/vcMRZ+hEaiuKEWE8pIO1Ysonst7bpaD7zES8tlqjhE1QQQWtOotCafmH8n4y1NGoejA3a8GBB8bDTEKCbSL+M7yOdDcs61L3U08Ji2fgVGhWlV7Kh1wsBnn9e+n9+3dA+JCahs2NqRTbwK29vILghUX7VC1mFiNXtUJGIJpVA/0l031uhz/vFNczuhm6i1BfJJyrGoidX/X4QRbR3Z7vf/XkkZCG7e2u5z64Jx4pWmzOH7kurQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9D8F7180003
+X-Stat-Signature: rez798fu9sdkr1ktff4b6obkzrse9tq5
+X-HE-Tag: 1781248460-936217
+X-HE-Meta: U2FsdGVkX18UZkKIQ6b/efkni2SNN6oyaAH6oMZZhkahBvz68Dh1lw2tX65jpoM/x8B18WiyCwqjunwGV2iy3YgT8Q3/kH6LEZG0NIo0zBo/Tv4vO8xUybiWCfvTngsb0RcLSLIHBPYmnm+O/S1UPwEnlXEnZ2ED9UYfblDchWC/TrMYYs9LbQjbDd3UUN0Odnt2YxVsGU8GexnLlMxK6isPjWcMIa/dHchRxMIFeF70yYr0YokY5RQOzxjkY51423PRbrSjxmyEzCTxv4dBu9qzafzKVtlU+EJLpmRFExusl9Sg+FKQRmISyWOf8UDsY9+zqA3L8yjPvOishmaaQHCQ3XkByHRylXOX0fNgezS9Q8htd4LIpf3+6U7NVNao0VXQLbF6NCuvHtnQvXoHUZIlb8QFS3XDg/ty5+8d2yGx9ZmlfTmnkQEJmoQIEMDd3xZfTdWI43FHJEjCvkfTMzHYIh6AZyzEqIvqNG/RT3Osh2tX6pLsBgmhGOEs0DHmS5dPHjZcKRTofToH8OriYdzsfp5OkUzp1nWINc017n0kFrboKCl5WE0PIEjc4MQpVJG2r+6WOwMf4ODRSXLHtFHf9FNS33gjLoPjtsIREmNt13MqD1CfeOn29TjMjHWpTUzF9WAZcdeykCCWqkyyNuNJY6TkRBvuT5tN+Jm7FY+EiBZqxeyhB0IJu2xappZOv38hFyazhMKNPYzAXtOf+QGWyU4n9GKp+dp4Nv3kGPMPA3XTBCwn2wpQGBC2UCGFWhz8KoUcaD4QPlWocn/G15EPWKbUInkc0pbo9WYiot2k7DfD/+3UrGDa+6QezPa2revIOYeQlkLaDb36aM1uQ6IqwjgIULemrVyKGntDVGYCLyGMW/md9+Reg5YeV+kltAGHuuMngMwR+6NtN3qGPH93UZhPThpmF6BYzYkIZ+7eGfekF94fnMmQx43fTIi3EoAaQYjIp/RQFkj5drj
+ qEuAxpK7
+ GYZqOqvyawLHLvcdQtR12V2NZkzYwivS6dJ0du+VMFllxfSbcc6nBOo23AFIDju7gjrXj2abVXmz5njNwgJEU/S2DSMgCytNqrLblc7e35TEBrNJDQ3UBi2aDNmc3kuHXCsh177i7eAFoJCVy4fcUa5A78O1qMjE2OEtkYkKx2sqcS34qEalP8aa575E1h1KmmhmRuPojQh8jqi0a30Cb4upSBDtiXC1S/e0qAjlpe3GAtpC6sq7oWgysq1wxX7W7s9knzcrW3lWLNKoB9zHkbZ6a9I7ymz8vYyHTefZzEGKvFX//JhCWcBE7lB4b8B4r+eBBKhnHO8l2G0vcSGOC43PM0OalDFUk/aRE49gdkCgV0fFcGw83PolyZlW9437HIWaLfWmnVJ0d4Bc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,55 +113,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 05:00:49PM +0100, Lorenzo Stoakes wrote:
-> Hi Huang,
-> 
-> You seem to be replacing the file rmap altogether here, so you really ought
-> to have sent this as an RFC so we could discuss it as a community first.
-No problem.
+SLUB exports the total_objects sysfs attribute, but slabinfo tries to read
+objects_total. As a result, the lookup fails and the field remains zero.
 
-> 
-> Especially so as Pedro had publicly mentioned his plans to implement
-> something similar here, so coordination would have been appreciated.
-Yes. I am very happy to work with Pedro.
+Use the correct attribute name and rename the corresponding structure
+member to match.
 
-> 
-> Anyway, as Pedro has pointed out, the code is overly complicated, it's far
-> too configurable (not always a good thing), and the locking implementation
-> is questionable.
-I can make the code more simple. :)
+Fixes: 205ab99dd103 ("slub: Update statistics handling for variable order slabs")
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+---
+ tools/mm/slabinfo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> You seem to be adding a whole bunch of open-coded complexity too, which is
-> not something we want. Abstraction is key for the rmap.
-> 
-> You're also not adding any kdoc comments or really many comments at all,
-> and you've not added any tests (though perhaps it's difficult given how
-> core this is).
-Got it.
-
-> 
-> So I would suggest that perhaps any respin should be sent as an RFC so we
-> can engage in that conversation and ensure we're all on the same page?
-> 
-> Especially since Pedro plans to send an alternative, simpler, solution I
-> believe.
-> 
-> It's also not helpful that you haven't examined the non-NUMA case :)
-> perhaps your particular server behaves a certain way that this approach
-> aids, but regresses other NUMA configurations?
-
-emm. I ever hoped someone can help me to test this patch set on the non-NUMA
-server.
-
-It seems I should find some non-NUMA server before I send out the patch set. :)
-
-> 
-> We'd really need to be sure of this before accepting invasive changes like
-> this.
-Okay.
-
-Thanks
-Huang Shijie
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 54c7265ab52d..f4077746d6df 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -33,7 +33,7 @@ struct slabinfo {
+ 	unsigned int hwcache_align, object_size, objs_per_slab;
+ 	unsigned int sanity_checks, slab_size, store_user, trace;
+ 	int order, poison, reclaim_account, red_zone;
+-	unsigned long partial, objects, slabs, objects_partial, objects_total;
++	unsigned long partial, objects, slabs, objects_partial, total_objects;
+ 	unsigned long alloc_fastpath, alloc_slowpath;
+ 	unsigned long free_fastpath, free_slowpath;
+ 	unsigned long free_frozen, free_add_partial, free_remove_partial;
+@@ -1263,7 +1263,7 @@ static void read_slab_dir(void)
+ 			slab->object_size = get_obj("object_size");
+ 			slab->objects = get_obj("objects");
+ 			slab->objects_partial = get_obj("objects_partial");
+-			slab->objects_total = get_obj("objects_total");
++			slab->total_objects = get_obj("total_objects");
+ 			slab->objs_per_slab = get_obj("objs_per_slab");
+ 			slab->order = get_obj("order");
+ 			slab->partial = get_obj("partial");
+-- 
+2.51.0
 
 
