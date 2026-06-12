@@ -4,110 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3609CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 06:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F851CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 06:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8AC16B0095; Fri, 12 Jun 2026 02:04:18 -0400 (EDT)
+	id 9D3C16B0005; Fri, 12 Jun 2026 02:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3B986B0096; Fri, 12 Jun 2026 02:04:18 -0400 (EDT)
+	id 984506B0088; Fri, 12 Jun 2026 02:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A51476B0098; Fri, 12 Jun 2026 02:04:18 -0400 (EDT)
+	id 89A3A6B008C; Fri, 12 Jun 2026 02:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 969A66B0095
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:04:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29FEF1C3AF7
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:04:18 +0000 (UTC)
-X-FDA: 84870220596.05.F30A639
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C0DB54000A
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:04:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf11.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BBB16B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 02:24:15 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8711C2280
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:24:14 +0000 (UTC)
+X-FDA: 84870270828.20.88E32E6
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0A65714000A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:24:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i8pVk5Eg;
+	spf=pass (imf09.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781244256;
+	s=arc-20220608; t=1781245453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g4ZENs7xcaxMJZjfFITnj/IGoQky4IzHedjNRXllLT0=;
-	b=nWPHAea57qMJvUc+LmndzixA9zht6GQIfrQwzwt1mmdimEQFKjSMQypKM8iJWyfAaNrrYX
-	4IY5xwy8UbjGTASJnoXHDe4HygEb0OkwMIzLvDiJWMNlYJL3WROWX2tTnfHiwY4kb9h+iC
-	TVBygOf/+Emqsti0KMjUqlVlxltcY9c=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=45sVfS/nx2nzBsCxkzCB9QiCoVHDr0etpbiBAxE4XQM=;
+	b=wy/W2ZZWBNoncLBc/4nHipHAQ/+QWKg6JQvwbnnt04VK4yUJLF3En941jinSGDrJEgl+kY
+	JQ2ApSkmJxndwcx1vkMyo8Jimmek0ivhotKH3GQYJ7Q7qSPjuvMAp4VPtsQ6uZEHbUNJUg
+	FcPzujdK/yhtJpIBJrMdVRDaaTO4gUo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf11.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i8pVk5Eg;
+	spf=pass (imf09.hostedemail.com: domain of saileshnandanavanam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=saileshnandanavanam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781244256;
-	b=NU9F0EOQQ04z/8+xQk/q8KtJictoZh2WvhYaONBbmGipk3dBZM9CUe0weneIXkiTaaYcNx
-	8FQpGiVae4Kj7HNFB1zpnXsunqCJonJEE9YbmMOGa1Gx4u/uz/jTnDVsI057/fYYdxe6LJ
-	6sggINVqhaN0TOB9W/ki0Vc0Z4yTtNs=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc89067rlz1dd8B;
-	Fri, 12 Jun 2026 14:04:04 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gc88x6nQCz1dd8B;
-	Fri, 12 Jun 2026 14:04:01 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 777DC7896;
-	Fri, 12 Jun 2026 14:03:43 +0800 (CST)
-Received: from hsj-2U-Workstation (172.19.20.61) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 12 Jun
- 2026 14:03:57 +0800
-Date: Fri, 12 Jun 2026 14:03:55 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: Lorenzo Stoakes <ljs@kernel.org>
-CC: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <muchun.song@linux.dev>,
-	<osalvador@suse.de>, <david@kernel.org>, <surenb@google.com>,
-	<mjguzik@gmail.com>, <liam@infradead.org>, <vbabka@kernel.org>,
-	<shakeel.butt@linux.dev>, <rppt@kernel.org>, <mhocko@suse.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <linux@armlinux.org.uk>,
-	<dinguyen@kernel.org>, <schuster.simon@siemens-energy.com>,
-	<James.Bottomley@hansenpartnership.com>, <deller@gmx.de>, <djbw@kernel.org>,
-	<willy@infradead.org>, <peterz@infradead.org>, <mingo@redhat.com>,
-	<acme@kernel.org>, <namhyung@kernel.org>, <mark.rutland@arm.com>,
-	<alexander.shishkin@linux.intel.com>, <jolsa@kernel.org>,
-	<irogers@google.com>, <adrian.hunter@intel.com>, <james.clark@linaro.org>,
-	<mhiramat@kernel.org>, <oleg@redhat.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <npache@redhat.com>, <ryan.roberts@arm.com>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <jannh@google.com>,
-	<pfalcato@suse.de>, <riel@surriel.com>, <harry@kernel.org>,
-	<will@kernel.org>, <brian.ruley@gehealthcare.com>,
-	<rmk+kernel@armlinux.org.uk>, <dave.anglin@bell.net>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-parisc@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-perf-users@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>
-Subject: Re: [PATCH v2 1/4] mm: use mapping_mapped to simplify the code
-Message-ID: <aiuhS4iyBxx6Kcag@hsj-2U-Workstation>
-References: <20260611061915.2354307-1-huangsj@hygon.cn>
- <20260611061915.2354307-2-huangsj@hygon.cn>
- <airZn524Ip8VsWra@lucifer>
+	t=1781245453;
+	b=IDQvJyCVfkWmGOll9Ef3uk2V6d9+3ELby43qzmMDI5uwdK2ktzvVIF0egvmhpzrBHgfY+X
+	xgi412y+YZHShseWOvhsrVckZ64BLl8xCcFHUJN5DXgrRqqiq8G2t/3VeGfqMHAK7647e6
+	UrxSgaIcpIDTEkZKx9WV4R68V5FFbsk=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf201b93c5so1067445ad.0
+        for <linux-mm@kvack.org>; Thu, 11 Jun 2026 23:24:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781245452; x=1781850252; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=45sVfS/nx2nzBsCxkzCB9QiCoVHDr0etpbiBAxE4XQM=;
+        b=i8pVk5Eg2YLEM23BClGR3LASJRMql9v1c1i3M6ux7MMr/SM/52oM5rPVYKleucRZfO
+         pOunpA5YFu5rZ0ApozobKJp2Ip05feHl0gRgLuMXHSJ9q1FkWbxYZLrvWcZAQF3WaTe+
+         iZqZpgawEVeawNHyzeTl+Milvmv6BtmcKXJ/T6F7nohO26KvARfeXefSVsAw+MtS/4zC
+         N3AID4dCCmy6noVR4xzez+7k35h3cG3YCvh19p/2lhPnUFCswYM6sv4HHm95D+4lvnYr
+         NJsIqEr1gZK3FPUddVlf5jSxz3w9sED4EW2QTca9JVxt9bWXWb4WGwTCy8qey1toSyyy
+         aEVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781245452; x=1781850252;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=45sVfS/nx2nzBsCxkzCB9QiCoVHDr0etpbiBAxE4XQM=;
+        b=mo6UFfHsWMutgNRgBHjm5+qeozAh0VGQaalYbzNyhwFkQemglInVIBLu2HyA51mCda
+         SsGa/eFpjTI8FMRQ4Wpzjnt/kYr04kBY6PkHo2tZT9lcQVS0TtibaQJtQJ6qYLaaGGbA
+         MDwGSkTbLrrsANQgsm25coTMtb5pTVEHFpm1kodTycPwFpaCM+E2BHhLxC7+9WrG1eL3
+         cyejM+/dT6F+iWMfaah+MOlZrmqZ1wXYxBV6d704OclwKc/ugBRq9KrdoXZ95ZaP2SQ5
+         /viHn8SrFzsyFJc4JshVOfaOvkPyQb2uvivHz7T20fjoAIPFN2oULjACf13Tu60rEpoD
+         pS0g==
+X-Forwarded-Encrypted: i=1; AFNElJ8BQWJe5h94ZAypiyVLqi2uP5SQROlcwYbFF8xG0jjcCEckivMM5I2aW0mKAKX3SYzEA//egL1sMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzi1VMF2YeEDqPOUTePvG8i4mlhv5pAeXf4cFz2nWT+EPlyoSL7
+	ej7z42v530xwnAN4BDg33mSpEjWfCw/PMbVpcGXy6+arJs+3i0aHkF8c
+X-Gm-Gg: Acq92OFX969/RowGBgspI4SRwzQmcdN+DoqKAgb86uw6+VHXBbShgQu0kuJT4Rd8cZY
+	QeKkFvMmkNdERuTP1FaprlJ8g+/u/acyrTwHO0UxF9qEhv868UOCAs7Dm0i769ujLRBfBv4JY7R
+	7StiSVwRfVzTZ+64uUh3crVbk2AP5q2HkMoJMXpDlL7gjIWQ7esQf+WwX7g39yn2cS37Q1wLRk1
+	LZUQ/mZi4/dmMpdlOZkKRCmQK98/HyOpB/F/NXXiW5ddBa0KOreyBcQ/zGCIh4wh5R4F/1qwAeF
+	Bq+7rRsQ69BDCtdyVE3fOBEtDmTeYynF00rxQlcGMc1l1CvvdQthEBZ2Z4y0UVzlwwpXzSAWGWR
+	j5wlFTIn0P+UmhyTD500ZJ4nl8V75uZSt/xcFGwpiOg8jYIq8Y3ADwS9nE8W1CPI10K6afde43T
+	unW1iBsOfaiQPB8Q4wHrczr238jneiE2BJ7A0nebCAYn2gVZI=
+X-Received: by 2002:a17:90b:2c84:b0:36b:9798:4f6c with SMTP id 98e67ed59e1d1-37a0468a571mr789060a91.7.1781245451640;
+        Thu, 11 Jun 2026 23:24:11 -0700 (PDT)
+Received: from localhost.localdomain ([106.195.67.13])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ac9cd8dsm1064680b3a.1.2026.06.11.23.24.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 23:24:11 -0700 (PDT)
+From: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+To: sj@kernel.org
+Cc: shuah@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+Subject: [PATCH v3] mm/damon: add KUnit test for walk_control_obsolete behavior
+Date: Fri, 12 Jun 2026 11:53:37 +0530
+Message-Id: <20260612062337.2459-1-saileshnandanavanam@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260524100258.36819-1-saileshnandanavanam@gmail.com>
+References: <20260524100258.36819-1-saileshnandanavanam@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <airZn524Ip8VsWra@lucifer>
-X-Originating-IP: [172.19.20.61]
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0A65714000A
+X-Stat-Signature: 55x7fohuqxq6tn6y3djpe3aw5dyhdr5s
 X-Rspam-User: 
-X-Stat-Signature: gic7bmx4iofiztcq4o6u1i7gptdruac9
-X-Rspamd-Queue-Id: C0DB54000A
-X-HE-Tag: 1781244251-674855
-X-HE-Meta: U2FsdGVkX1//joGKsHf8M4+VwGrF9qiFLmSDpTNGWRWKWCbR6ZvV4UtOkJyh8NKctpsAdf0DTXulcj43Cp61aq2LJBfifJh3w/24Qpli6bFXHfApGIF7uutkLk0/zDCvQTzLvWrEWYWuoq0447QrhZ709A0xmPDjrnpxWVakm+WzMgIL3p9sPfrBVrLIIOAxS+cvggUB9rzMyzd/D3R3XQnj0KPbPBFAIIWfJcdz1VY4YSfKRr12lsXEZsR9E0aIYejmCxzpM1AOLmbN0v/6WtrkD3JgzZ8Dr4ecam+Hfxd1SzKJqK1yIJ5jj8LYgXTTwFwSxHLjGxsvSt8ThSKXAOL61pYtHkHAQGb1Ysw3LfpYVCXLv+VwrtZHIUKDOMi6ens8v6ccfr64aLmceAMLf6AnSIzgqweT48EBTUpRx7X06oSLNjzgmca3QUb8bMbaWtLorlPcMjCdL4t0ElrPDZ3KiWh3sNQDageQOoySH8mUh2LTDyHGXKiuLGTU9CeVK8UUeUtYovK1cTpkErf1E29APGnRdmImrNCV0qLWhmHzX9HaBGc5bpWR2ZBWevNBjpOdpqEYmHOeVznTsYES14SKzHwEZWL8aM09I7rwLzqAr+Erq4BncAKaLY/uzhVD73UShkZrs1OKV0zIitThAHYA9Uj15ueYiiyFQwvyLxzduS53cp017VGxlCHP+kYQWypMyt6X0nGVksJBjgGiAj6QYG5Ji9kRvnLxHlQnvhzJ1HSsc1qFlgjahLucoNoCee7sZs1yuJYU4tgloDHEbf4EWeR1Iimli0ynvPCQWuNAx+V/wtLRDW385indnmEB3CxEFlm2HvVJsoVfZmbYsV+Mk43JWRZXDNuEdfgBG/7IAgTGObFYN8EL4AzcjLfEO3z1vpXp+aGc7EAJ9PKyl6ixL4HPDTh86/1P45pHoRyUgKwGhpVrs944sO5wQOkb/QPu52J+IW3Lur7Qbul
- KKUIJ9CF
- PE8TlsdhNAF5xp6qz4dN6RNzvaVEymbMbx4oQMkyuUnDD3DwSEfOj0pebu66WV2/EMH96oD0dKwCCnIoRW51+tZCU5lefAHomKS/MlyK8PaU3ODvj8SZe3W9wug71CsM1zAD+y0e80o/r70V3o84ec6P6tpBy7eG1WPNOeDm1Rq/DTyh1d/HNJRFqbNqG2Yc3U9fD9vEhZN4b/HGwNHZ4R64o8rfgcz11/i+1cisy4QeWEqzJsHcw+EZhmI3zvAI+s/daqHZdybLZdXlVUqryV/Z/dacyUtChaPmP34+nTy3i76i0WzW5cFumO6Tr+TVe19AorR5ttFZniLpKNIK8W05JXrBVgN0l/wBI+G4qH0njjF2+oFrgOEy4RpBhUwCZdmIChoFL4VKyBm2OK+ZKoIqE6TkYpu58CJ2J/LcbTQMzJHErCQ9Oijdfz3LLYsbN4Q/SeBHe6BbjtQBjGceQSrHVuJIEr0NuGBA54VKdsQSWTKyZ0Xs2GHn1ZjP13rFp/wiYU1z7mt/Sf9gOzD2wYlc3PA==
+X-HE-Tag: 1781245452-810330
+X-HE-Meta: U2FsdGVkX1/PvQBjV7QJkXKu5nKwZkXvs+HuJzgBcS/636h/uMm3jZrkcvJ6MWdCANo8RhMU6ZQ22AOMRds6k1/uSGle4wG8ll2thZqlA3RglBxFP/mqu7JgU1qPcm87EJXt0imNtnIqO9pgKFx3mxg0c8cYSOKylZ6m/HjQHlp3/uaHghMQZV3idQfqcJc5aAe6RVsub+5QoupMRDF7DaJaZ48yBQPdS9YoyBuwmM49L7vdbe024e102SBycfdJHhUrEKLJr3Vm/9XGBKEhzncY4XdUhtio5hhrDWAm0n/csysp3Sj9iNNweyP7OaGJI2Ny4FheraXEuz3uo35xZT9adSj8b53xSeZ9NdYMnD8ewllSdogZcDg5/dvxC3NeJM0CAvNgzzJB7VGlmX7XkbeqaOL9y5w9dcolYIm0VmJQWwWTYL/6XM9E7aso5ZTmN0LrVK9uFffwQeddGAGxkcjmkOmdjN8P/W5uKOFoFp3lGWP8C+hTEHkyjJ1EENEE1uZVx/86soDfkLl5zq/dIQJPpBdtrE1Ez80FdUG/qxhx1VK2+sMUu243SX9TBZCVnUG/RvniaY5ptJEQO1OLMlZm3VkTKMoXiSmbWQr/8ZWUh3d3Rthvg4EBEJHQk5/EZOas6Dv5pn2xh6c2IacKj9eNi926ot9GoCf1AqRcezJI5bkUOFds1skz2LKDkvDN3FuO67Z9o9qBvzEBa0tuQI4ONVh3rv4+pibK1GX9wgdzOk8rQ8zQGwkMvTcoh0UEizopcUpUILyUdcpICbDlW0HPlIYp/YrpcQsuF3zmaK6G0h+ChN4EaN3MNmn3UVT2D0mKWhJlwTquwGCheHzeElLE1LLr7epUjotaQ4A2JQH3gqFPnTq6sHU/I2jItVIErv5pyEeCOIUsBG1DL1LnZ6tcyTXOLvPLe0SLKzpIpyPV013ElMGTrReTVbk9lLC7L1lFxOlmRMgBBAHsLYD
+ fitmtubG
+ 9w0I3F7i0idrRPs5vSs832g1pTNcoFLdb2Cg8nFfQIFCEWyOlBbbLDZawOLV1SWp6i4m0SqH8xBuDauA8UVBMO9lq6NHMPQQdsQW1CjFXsN4RHNx997PKqajxPKAl2/OViw2vwgKId9q0QvD1YJG44T4l+Hjz3yzhNGvEALeuNyNtxsskxJU9Wr9TwqZfsHSaGeHDq+NhFvttPg8DUdQckpQ484SYJ+Vm2++g1ES5gXmgiuRt3DT4iXkmWqT7/ZIyiPtfwuT0CC2Ph4sM22VDI/8oEj22NGQ7X505EtTZeHbyGHEgePTrcNbVBRgcmqnHDOWI0jGg+XW87ILB48fOumlVV4UXFx+ZBaIOOIRXkwfZo8M6zXwwyNJx7Za4k/808JuYR1lDkAso1Q7fU47kShkPFWYdPoTgLSCbD8ZG+OkY39dNoL4qpyn6VUAMWsBqEnO9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,21 +121,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo & Pedro,
-On Thu, Jun 11, 2026 at 04:52:54PM +0100, Lorenzo Stoakes wrote:
-> On Thu, Jun 11, 2026 at 02:18:57PM +0800, Huang Shijie wrote:
-> > Use mapping_mapped() to simplify the code, make
-> > the code tidy and clean.
-> >
-> > Signed-off-by: Huang Shijie <huangsj@hygon.cn>
-> 
-> Yeah as Pedro said this one could just be sent separately, and I in fact
-> suggest you do that :) So:
-> 
-Thank you Pedro and Lorenzo.
-I can send a separate patch later.
+Add a KUnit test to verify that damos_walk() rejects
+new requests when walk_control_obsolete is set.
 
-Thanks
-Huang Shijie
+Commit 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs
+kdamond_fn() exit race") introduced walk_control_obsolete
+to prevent a race condition where new requests could be
+registered during kdamond shutdown and never handled.
+
+This test simulates the shutdown condition by setting
+walk_control_obsolete and verifies that damos_walk()
+returns -ECANCELED immediately.
+
+This validates the invariant introduced by the fix and
+helps prevent regressions.
+
+Suggested-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+---
+
+Changes since v2 (https://lore.kernel.org/20260524100258.36819-1-saileshnandanavanam@gmail.com):
+- Dropped the userspace selftest approach entirely. SeongJae tested
+  v2 100 times on a kernel with the fix reverted and it always
+  passed, confirming the microsecond-wide race window cannot be
+  reliably hit from userspace due to syscall overhead.
+- Added a KUnit test for damos_walk() + walk_control_obsolete
+  instead, as suggested by SeongJae. This directly sets the
+  obsolete flag and verifies damos_walk() returns -ECANCELED
+  immediately, without timing dependency.
+
+Changes since v1 (https://lore.kernel.org/20260524091812.35283-1-saileshnandanavanam@gmail.com):
+- Addressed sashiko bot review comments (execute bit, threading,
+  dynamic sysfs path, OSError handling) - superseded by the v3
+  approach above.
+
+ mm/damon/tests/core-kunit.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 9e5904c2beeb..599aac056b73 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1336,6 +1336,33 @@ static void damon_test_is_last_region(struct kunit *test)
+ 	damon_free_target(t);
+ }
+ 
++/*
++ * Verify that damos_walk() rejects new requests when
++ * walk_control_obsolete is set.
++ *
++ * This tests the invariant introduced by:
++ * commit 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs kdamond_fn() exit race")
++ */
++static void damon_test_walk_control_obsolete(struct kunit *test)
++{
++	struct damon_ctx *ctx;
++	struct damos_walk_control control = {};
++	int ret;
++
++	ctx = damon_new_ctx();
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
++
++	/* Simulate shutdown phase */
++	ctx->walk_control_obsolete = true;
++
++	ret = damos_walk(ctx, &control);
++
++	KUNIT_EXPECT_EQ(test, ret, -ECANCELED);
++
++	damon_destroy_ctx(ctx);
++}
++
+ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_target),
+ 	KUNIT_CASE(damon_test_regions),
+@@ -1365,6 +1392,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_set_filters_default_reject),
+ 	KUNIT_CASE(damon_test_apply_min_nr_regions),
+ 	KUNIT_CASE(damon_test_is_last_region),
++	KUNIT_CASE(damon_test_walk_control_obsolete),
+ 	{},
+ };
+ 
+-- 
+2.34.1
 
 
