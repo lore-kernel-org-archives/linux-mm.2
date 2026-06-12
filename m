@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50597CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 15:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD7CCD98CF
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 15:06:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B58AF6B0096; Fri, 12 Jun 2026 11:05:35 -0400 (EDT)
+	id E40E56B0088; Fri, 12 Jun 2026 11:06:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B308C6B0098; Fri, 12 Jun 2026 11:05:35 -0400 (EDT)
+	id E18DC6B008C; Fri, 12 Jun 2026 11:06:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6D636B0099; Fri, 12 Jun 2026 11:05:35 -0400 (EDT)
+	id D54B06B0099; Fri, 12 Jun 2026 11:06:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 98C6D6B0096
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:05:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 344F1140135
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:05:35 +0000 (UTC)
-X-FDA: 84871584630.25.53FA4C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 69E4B18000C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:05:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O3Bjk6Xc;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C3C476B0088
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:06:14 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 633F68B31F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:06:14 +0000 (UTC)
+X-FDA: 84871586268.28.E50F3BF
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3C4C0A002A
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:06:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K1DEFj4I;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781276733;
+	s=arc-20220608; t=1781276772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rdqySyIK765/5XAxZ3yDsSGj9IMPdHvPQEL66jI/4x8=;
-	b=n64EKROms2qm+I+rX4+6/LRxvc9UiOM7msNZuvtIRiS+Rls114ul02HrIUHHUW8ghRQ2Y0
-	69YqZ5pZTotagw2ibZHcwcW9nY2QjhPVqSBOfMz0rjIvj9KnVoHfQIhcXaPsfjSwssNiHE
-	f6UFe7WB1vLUrwFRa0k/Iyh9pcdBVz4=
+	bh=QYbxVxLJkPeVlJemR6VoxtOTsg3NPDGQmg7k2Z6F9O8=;
+	b=sYkz4mjneHuavZV1POpr/gZVohZgaHp4H5+j6ZOxy+TyqdLT9QABwpG35jglLxN8cB1+KE
+	CEM1hXt1Pjod1oWJP3ajV4DPVF2orvdA237xuUGr6LJBa3rsKpe/USp6qzQYWpxqYNQDK4
+	nar2xkPvDuVIhUmTz5oY2rEJdV8j3cE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O3Bjk6Xc;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K1DEFj4I;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781276733;
-	b=y3DRwL4mDzBBk1CAzCqJxtIJjl6yZx0CBonYiFWvuktj6IoIfh6/nX6tHHWVsqWss8h76w
-	VqmQEeJfmgNJhhTfIyXpPa8YSika7QmW6NSf3ZnUq8zbrXG+o5an2VjlDlpZZaVckVdLLD
-	SfA9O1bT3/IkV57upW5x2JyeVTZMY8c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A640E44333;
-	Fri, 12 Jun 2026 15:05:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5280F1F000E9;
-	Fri, 12 Jun 2026 15:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781276732;
-	bh=rdqySyIK765/5XAxZ3yDsSGj9IMPdHvPQEL66jI/4x8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O3Bjk6XcazGCZB0etMaC1lMSb67pMC2hUv0CHNXDxg4+idcDpgHjuAF8mdmL/lTrq
-	 420ll8cJEWP4T0UPWRG1XU7ZdLkWXksNNtFVokjx3POw5pHoVO2T8ckSq5zzhTT6EY
-	 jdsIXhNLCXNP35lnsoeJq+GbObjtmWC4/qj7YNXuixuubGCM1T+/5AsOPO/JOI26Rx
-	 CYR8LrWQbWwiklmjT2pga4kr440UTUocQISzMyAiEY7BO1m6iLVQg4nTQfZjL3kpeW
-	 ZqQ0hO/QL3SjtG22nS2LLwpWObTA/VVup0FZ7ir4DF+OZ7oKb4T1IGprjViB2A2SCZ
-	 e3QTw3/qyIuFA==
-From: SeongJae Park <sj@kernel.org>
-To: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/damon: add KUnit test for walk_control_obsolete behavior
-Date: Fri, 12 Jun 2026 08:05:23 -0700
-Message-ID: <20260612150524.95770-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260612062337.2459-1-saileshnandanavanam@gmail.com>
-References: 
+	t=1781276772;
+	b=Jgl/CV8EDSATF+vDvOfJSAjvYqk6je0uae/XN+hu0lWacf0Or9ACzcVC2y1oYM7SqJcJVe
+	0dXSKkkCuY1WH1vN08M2cGUmDcG/Ny4scdJbfd6MaYcNwQJOVTBCLXqfBTABaaWeJgs2+8
+	MOV8m8n7bwuUkaHSSinHFxywIkThCSU=
+Message-ID: <e99fcf49-c01b-45a1-aecd-c4406ffdf5dc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781276769;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QYbxVxLJkPeVlJemR6VoxtOTsg3NPDGQmg7k2Z6F9O8=;
+	b=K1DEFj4I8vun/tIJGxrSH1strQ/FHcGgv+bYplJ7fQHx1/imO6zavfvp5urYX2DRyM+yW/
+	AKGuWIk3u6++W+Eu7SJMHGk996Yv+qt4ZTK82bfqRs/B7yWOdDqPgxe5AuiSxm3ryjkjNR
+	i5SeaBHFvZnlU/AfzALkg32L1lbCgnM=
+Date: Fri, 12 Jun 2026 16:05:57 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 69E4B18000C
-X-Stat-Signature: potixbbifyhf5gaabsqjacqpwuxx1mbt
+Subject: Re: [v2 11/16] mm: handle PMD swap entries in non-present PMD walkers
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ ying.huang@linux.alibaba.com, baoquan.he@linux.dev, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ liam@infradead.org, ryan.roberts@arm.com, vbabka@kernel.org,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com, linux-mm@kvack.org
+References: <20260602142537.198755-12-usama.arif@linux.dev>
+ <20260612064550.54968-1-lance.yang@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260612064550.54968-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3C4C0A002A
+X-Stat-Signature: 65iaq79ebu783m51fh59q6m1js1wqcho
 X-Rspam-User: 
-X-HE-Tag: 1781276733-168482
-X-HE-Meta: U2FsdGVkX1/kyUvwDZ2lj/8WbNn6QwmuOC+VAqXIVBWH3zUpLXVI2h1mPFQYjb8K4PwAGafN+hZcghxl9VFTQZG9ooJWwXdpV17bbaJ2aSqnZBaxK3jqp58XYMduTNb5sJNJxSZi5Sbxvt2vdaBGCSuOu3QMpqJACiuw6MeNHlS9AmDKBhTEmB5hX7fJ2aAOv0XFTgx4H2XWe4QdGsT6aiyZS5ydtYqlqKrk1jE8rUN9nmYdt73etBJR8qLO6PXJUDh1ht6rzQV4n9bIfc4K9NyCOK1Ogvd/72UVyNUGhGFyV7Yguorlk0ima4sXm5T19MP20xKhiMNsIJx7ifUdGGeGirIK1+aw/GtnveTKoAs8OVR0ofSpcJFeQf3KQeSpdK+Tl+7v4XD3yUy5O+UR2QxE/EUsThQNhp6I7aIc6j9C5vWvWrhJ0BppTtVUWEPg77a0tzB/YzplDu9TGlJtQ/ecNJu9OU7UIKbmHE9G0FLqJq5W+lbN1CPhCoFLsxxoLYyYWsCJX0OnN+SPOlx/kxA97JIvi4/LtdS5AHGMDIVZXt7Fw+M14EGzWPyq9QpgMPohv+Us6ALoCx6n67aOaVnDfD0h2VzY72d1gSLv0wSa5nrJ4/2Mh9ecbdkSRh7gkteuWdkXkyZ6rlH3kh2WUK5V3AQRPnh0b6y0kLPtFGFcFwDc6JKNeDMw/vfC7a0g1e5CkcxCSIaQLHOYZ8w8Q7yq6wXSgamNCvyn1ybXz9xQDG0EI0b5pbfhdYqBP20R7mycfJ2+j1bAs6cc+DvLZytfwb6d7J6vFIcQFpjhNmhn4hfW6mToluOskp/y+vGD4pQhJyvk+YLxdEEpSL4WkL26Jt6ywEIjTI5NYcpr3NM1NB/oDHAt8GEz3f3f+JZsnKRMhEcCw0A4htMnVDAgYczhCK65SV7M7LkRD9F4Gr7tpU8P7bHzHrvvcLgxuINQfz43KtwxPmho2PuOD5C
- A2suQ4+W
- /vyP4uDtAM0i+tQ+fBnMQx7Rp1ArmY6cBcTHcrsTLZ/hetXZY8GSO9BJwUSmPW9vCIFNEjxl58UU0DCd0hw2K1GEGP5mYsE3j6COleA+sZ9sg/KPvXDnwLZUuNjYd8eUG0Z1trUF0tP+yeetzUOTozqQNZ4wcUwFDMe45sWUc9bfT2h2+QHJePBnVfvhqazeBH8nLrMs/xWCetqiP6tzja3CMStIbu3mhNH4aYKGOLCTSKvmNIgbRqLtXfL9v6EnvZdj62Gfa9e8xZMZvJ0FWl0HdWORxYZtOCJG0V7MV4Tq5zzwvlln+2S3M+qluNQwQRQlB0uhm5lEvuxQ=
+X-HE-Tag: 1781276772-913375
+X-HE-Meta: U2FsdGVkX18HpuUHMYfGM+QSIk33NDH+2K5PCGzD1+Qs0RmPdiQdihv7SjiG4aIe9xbSlKmNo2GIpHLqMJhv5p80wiFZhRqqjxswzOL3BBYdTeqI4aRFZ2/CmnBItxHS0x9UFSccMUShNeELq1HVKDHtwqiT8+QYmk+P3o3UuNua3+5K1j12JyBNkJrnz5RqMs8jw0X3SYXEOa+u8L2IZYzXmOO5FUIhTBeig4CdDzhkwZ1nmTIEtCUGmjFivX8wmBz55RYs/QYV4twV2jdCdmGEhglnBsnbNBhe0wtNEwAiN29SljCn1hoBOSWwePgKrH6urvXaUNxh5ytihHLRUgzKUwKbfeJh6jntqHL11Y5NPWjMf+GsmwmyfF8M0V94cQz1mDdvSs2dy81daoX/78Q36esFIz4MAW+OwQshiqbbhApkqik4U/Ayq5+HoiFMxSr03WUieEZmnnpkVa55nU2GoZEbjyO+YHDgqvoSEt8BpNVgvUqChZq3/KgJSQECnfAtMrNoodpdozmFOxuK66Sbfi2H2/TfTCF2wcHdbbpag1JeSZe8ADQ8Ux0A549HxmMl482+2Y2FVdjayrX9FpOaC828EgQxZEiqzk4uYqPOBXpiaxUcyIcY6j7cjeXuTKixqJDrqjB1WX9qT8KW6yZKrt8M9osq+Y2G3ghYzXhjmQHrR6Ti9PndVEDft4IFgqQ6pdtpXh4Dp/76ItvBb/mwk4fm3d4AlfLKNL6IyX0hact9FXwJsB4Ztij7RF6MIJVpuvYttCTQUDIEid+413XgsceM7YXzw5F4ZquezWTTnMH4E8EX25Ij4gX0O+jwYDP/1FQFSGboCVx/aQwM1S33BfWDEDBi0Rzq59GKdUmqc1aIdOmBcRE74YVcl/Xl4zJvxqonHu6KKixF/6o864F+6YX5nKGBzRBvQqruG3n5dSomcu9VfAFYcsL2zEJ5dXauVlTsxiUcwJ+F8pg
+ YL3wAAN9
+ br6D3/YwX+G3VdcNZa0f/2myiHF5FlmB6DJnbq2SxvRxufiEEO3hkSMzPQ6vuHBAbcMvdqF0V9OXHk6Fwo+ZsjruyiKd4rfXkld49aYakkWqH2JZfYHQqZ7vzfE1HyEgcHWUNkjc/VrnvReJlhLQ0naO9nloMVKxuP/Dj94LtMUnvtP1go2Tv9NtwDn+eMS4P6tRrf1tKC8JrbtgoUs0VXsGp9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,57 +97,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Sailesh,
 
 
-Thank you for this patch!
-
-From next time, please send a new version of a patch as a new thread, not as a
-reply to the previous version.
-
-For the subject, please use mm/damon/tests/core-kunit: as the prefix.
-
-On Fri, 12 Jun 2026 11:53:37 +0530 Sailesh Nandanavanam <saileshnandanavanam@gmail.com> wrote:
-
-> Add a KUnit test to verify that damos_walk() rejects
-> new requests when walk_control_obsolete is set.
+On 12/06/2026 07:45, Lance Yang wrote:
+> +Cc linux-mm
 > 
-> Commit 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs
-> kdamond_fn() exit race") introduced walk_control_obsolete
-> to prevent a race condition where new requests could be
-> registered during kdamond shutdown and never handled.
+> Please Cc linux-mm next time. Pretty clearly MM work ...
+
+Yes, thanks for this! I forgot, will be careful in v3.
+
 > 
-> This test simulates the shutdown condition by setting
-> walk_control_obsolete and verifies that damos_walk()
-> returns -ECANCELED immediately.
+> On Tue, Jun 02, 2026 at 07:24:19AM -0700, Usama Arif wrote:
+> [...]
+>> diff --git a/mm/mincore.c b/mm/mincore.c
+>> index e5d13eea9234..3fee8a7b9d9d 100644
+>> --- a/mm/mincore.c
+>> +++ b/mm/mincore.c
+>> @@ -172,7 +172,19 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>>
+>> 	ptl = pmd_trans_huge_lock(pmd, vma);
+>> 	if (ptl) {
+>> -		memset(vec, 1, nr);
+>> +		if (pmd_present(*pmd)) {
+>> +			memset(vec, 1, nr);
+>> +		} else {
+>> +			/*
+>> +			 * Non-present PMD: migration, device-private, or PMD
+>> +			 * swap entry. Route through mincore_swap() the same way
+>> +			 * the PTE path does -- the swap entry covers all 512
+>> +			 * slots, so the whole vec gets the same answer.
+>> +			 */
+>> +			softleaf_t entry = softleaf_from_pmd(*pmd);
+>> +
+>> +			memset(vec, mincore_swap(entry, false), nr);
 > 
-> This validates the invariant introduced by the fix and
-> helps prevent regressions.
+> Looks buggy ...
 > 
-> Suggested-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
+> That assumes one swap-cache lookup is enough for whole PMD-sized range.
+> I don't think that always holds ...
+> 
+> See do_huge_pmd_swap_page():
+> 
+> ---8<---
+> 	folio = swap_cache_get_folio(swp_entry);
+> [...]
+> 	/*
+> 	 * Folio should be PMD-sized; if not (e.g. split in swap cache),
+> 	 * split the PMD swap entry and retry at PTE level.
+> 	 */
+> 	if (folio_nr_pages(folio) != HPAGE_PMD_NR) {
+> 		folio_unlock(folio);
+> 		folio_put(folio);
+> 		goto split_fallback;
+> 	}
+> ---
+> 
+> it handles the case where swap_cache_get_folio() returns a folio that
+> is no longer PMD-sized. E.g. because it was split in the swap cache
+> while the PMD swap entry was installed. Then it split the PMD swap entry
+> and retries at PTE level :)
+> 
+> unuse_pmd_entry() has the same fallback. Can mincore hit that case?
+> 
+> Maybe the comment right above should say something like:
+> 
+> "
+> One lookup is enough for a PMD-sized swapcache folio. If the swapcache
+> was split, check the per-page swap slots.
+> "
+> 
+> Hopefully, I'm not missing something here :D
+> 
+> Cheers, Lance
 
-Other than the subject prefix, all looks good.
+Good catch! Thanks for pointing this out.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-I applied  this patch to damon/next [1] tree after modifying the subject prefix
-as I suggested, assuming you don't mind.  If you do mind that change, please
-let me know.
-
-We are now quite close to next merge window.  We (mm community) want
-to focus on making mm.git more stabilized and therefore ready for the next
-merge window, rather than adding more changes that are not really urgent.  I
-understand this patch is not really urgent.  Hence, Andrew might not add this
-patch until next -rc1 release.  In the case, I will request adding this to
-mm.git after next -rc1 release.  So, no action from your side is needed for
-now.
-
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+I think the below diff over this commit should be ok. I will add
+it to the next revision. Its slower, but it shouldn't be an issue
+as its just mincore:
 
 
-Thanks,
-SJ
+diff --git a/mm/mincore.c b/mm/mincore.c
+index 3fee8a7b9d9d..975513fff336 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -175,15 +175,42 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+                if (pmd_present(*pmd)) {
+                        memset(vec, 1, nr);
+                } else {
+-                       /*
+-                        * Non-present PMD: migration, device-private, or PMD
+-                        * swap entry. Route through mincore_swap() the same way
+-                        * the PTE path does -- the swap entry covers all 512
+-                        * slots, so the whole vec gets the same answer.
+-                        */
+                        softleaf_t entry = softleaf_from_pmd(*pmd);
+ 
+-                       memset(vec, mincore_swap(entry, false), nr);
++                       /*
++                        * Non-present PMD: migration, device-private, or
++                        * PMD swap entry. Migration / device-private cover
++                        * the whole PMD range with a single answer.
++                        */
++                       if (!softleaf_is_swap(entry)) {
++                               memset(vec, mincore_swap(entry, false), nr);
++                       } else {
++                               struct folio *folio = swap_cache_get_folio(entry);
++
++                               /*
++                                * One lookup is enough for a PMD-sized
++                                * swapcache folio. If the swapcache was split
++                                * (e.g. by deferred_split_scan() or
++                                * memory_failure()) while the PMD swap entry
++                                * was installed, check the per-page swap slots.
++                                */
++                               if (folio && folio_nr_pages(folio) == HPAGE_PMD_NR) {
++                                       memset(vec, folio_test_uptodate(folio), nr);
++                                       folio_put(folio);
++                               } else {
++                                       unsigned long haddr = addr & HPAGE_PMD_MASK;
++                                       pgoff_t off = swp_offset(entry) +
++                                               ((addr - haddr) >> PAGE_SHIFT);
++
++                                       if (folio)
++                                               folio_put(folio);
++                                       for (i = 0; i < nr; i++)
++                                               vec[i] = mincore_swap(
++                                                       swp_entry(swp_type(entry),
++                                                                 off + i),
++                                                       false);
++                               }
++                       }
+                }
+                spin_unlock(ptl);
+                goto out;
 
-[...]
 
