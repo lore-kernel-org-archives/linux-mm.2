@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28CF1CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 725BDCD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 19:38:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1F466B0098; Fri, 12 Jun 2026 15:37:53 -0400 (EDT)
+	id 3568D6B009B; Fri, 12 Jun 2026 15:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACF496B0099; Fri, 12 Jun 2026 15:37:53 -0400 (EDT)
+	id 2E17B6B009D; Fri, 12 Jun 2026 15:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9495C6B009B; Fri, 12 Jun 2026 15:37:53 -0400 (EDT)
+	id 095A66B009E; Fri, 12 Jun 2026 15:37:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E24B6B0098
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:37:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41ECC8C802
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:53 +0000 (UTC)
-X-FDA: 84872270826.16.48A5A4B
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 60D9FC0008
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KkXt+4NS;
+	by kanga.kvack.org (Postfix) with ESMTP id DDA9A6B009B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 15:37:54 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F3F88C52B
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:54 +0000 (UTC)
+X-FDA: 84872270868.20.1EBF6BC
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CA04F1C0003
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 19:37:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mwPKsqI7;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781293071;
+	s=arc-20220608; t=1781293072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=84IL4yIxjt9mfiZQCACEvBG+RvMClGpDo6n1a8FJs1k=;
-	b=RLxqbZfU2LxF9IQdhQYHHdneLW96v5HIkVbWgImi6NmO2F6PfwUxFzMQNHi2Dr1FMveO7C
-	8TUB0sSeDPAid7zYtUFPRUU08SeFTDD6ObJnDjCBFWiBFqukPQwNOydlP1q6i6zgbSc95r
-	wE6Hyfx/Lz8O+oXzBlhWW2PG36h24SI=
+	bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
+	b=S5ZhTpr9wwP98HBQgxf/fIsbW5qw362L9dTL8ymo8K4hGIIcom5nOFafNtpYCNImwCfYfm
+	7Er+lwWVST9hlwxFyTJ71weicfTfWK8xggu9qwbuBbpX3xyveoF5962aY77jSLxR0Uw421
+	MYBUrBY34brB73gvH6yzAM50PHYx0gc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KkXt+4NS;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mwPKsqI7;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781293071;
-	b=HqN+iCay+VAyc+b3TYHzRYZ6b9rYVOgb01oCVp/J7Peo5ZxBa6qMsrj0cP4zdL+KKBcDlk
-	gWBGTS3ZdZTcvM5VYfECi3jSBSKJC5BxEJhWwd6Tbw4cOHAqnX1SFZKnpxylMgrldB6eo1
-	suicc+ZfQ36A6QDWb8/6m9RAUunoX8s=
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-69e1f777bcaso1047453eaf.1
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:37:51 -0700 (PDT)
+	t=1781293072;
+	b=oLt5Jqm8qeJ7NrBeALy10c9EuSfjpPiAaJyOVP5UUQfvKznNhfyo0cIK7uFtqvy769QBkU
+	k9x6AjPoQHrE4TvOvN4X20UJ7LOcUwByI1Kfndk71KLuRHbPZVcpLpaAlsndFDqFxMd45e
+	avwhj24dtHACfG/10WhOjSy+wreuaqo=
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-43ccd4f6f6eso1000754fac.0
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 12:37:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781293070; x=1781897870; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781293072; x=1781897872; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=84IL4yIxjt9mfiZQCACEvBG+RvMClGpDo6n1a8FJs1k=;
-        b=KkXt+4NSj2TNp0+CvG9ONVnh3Xb/hpVvmei8MmnRLiQCNLwwrPmXzaWm8DgmGkS/KW
-         xT8qcOK06EtyLTaTkrjMT5Szs1KtAW6cVYclWerh612gBLJxKPbRX6u+Iz1zLfdarBhi
-         u0UyEehhZl4SMl3S0Yb3fcPYzZ7qZ/m7S97vLPZ0YlwtnwhM5cjLezllZ9DtMa+LX5nH
-         4bSBOFA1/jJaoSh+aUAOCC3IKNS86KfqmJwufLIW7+IIQW+9X+dzVVG8rYfHCHr2PjH8
-         ch8MbakaeKnEPG+SAv4swnaIOXJoHqyWWwGC9FVx8YSWRseUKqdaH0IO/4APzejzXZ71
-         vNZg==
+        bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
+        b=mwPKsqI7EhaAjYEnrOVXTFrfxDczngjWuBLtZRX9Q9oTyReXJLtEqNAXGtBdXZMbUb
+         xeOjDSg37NG4AnLix/SzKKUmEGkRMwJrXxrOsKgOnc6w8utncOo/2BwOU3w9ROcje6bO
+         1GoGnJEFH11fOOdBTHyW8Cxs5SmaLz4RLVR6E4A6dNVqVBv77bzQxGnOvSGL8gaa2ksU
+         z53JxXks3QBpaWtpLvF2GRpc1nWJZXNYh57S54va9Hr8bkhbsJZs6iusNleseD4K/Y/K
+         dQXUc3z+27Zqqz7u4bs7hkC3COOSsrqsCkYz2OmdonFsAH6aPezJ+RuROiQj1EhNmMeS
+         0xIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781293070; x=1781897870;
+        d=1e100.net; s=20251104; t=1781293072; x=1781897872;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=84IL4yIxjt9mfiZQCACEvBG+RvMClGpDo6n1a8FJs1k=;
-        b=gzCyg3Pg0sue7LPOB0qMxQ3KsBKhk/tW6IGs+vaMrR877rfFmy9zyq5Ee3k37ctrt5
-         vF0H4PhongCWQEZvL5lN8tfK1XHT0ezudtc2dD2LmcBDbWNZCIbDTngmYt/NTkWadVsm
-         iXh8iZWjy34nddQWnp16ChBaxWJnCABowvU4n8VwBxXH3apIrdwP7Ah304G9NuTHAQl/
-         vACbg0YboFO8ewYyPaBp27i22296DergXuNbuLvl5FzxadqhuVIHS8k67ZuVp95GcyyJ
-         SskYL8ABpgoDWQ8qQb1wzLuycYJIfVnHk0eXCNuW2taEVT5BwfMII+zDByU/ofdI02qY
-         TSug==
-X-Forwarded-Encrypted: i=1; AFNElJ+mkpjLzkdHNkF9OQ/SDgmM1D48JbGMLvWXsCE4gPlV+3+k9cfzfJBwLf0T49VU5VfuIF+Himofrw==@kvack.org
-X-Gm-Message-State: AOJu0YyX3NEjqpUMavZ7OCrvocbGPQNQm9BgKu58cDaIMoAqNbpULAO2
-	sSOhBVI1fscCL4nhhpbG67bMKd5TH5ntQzXcmkPTo3I9MpWL2v54O3sx
-X-Gm-Gg: Acq92OFolv84MtXptkpztgRa4cAVPNjVmDM/436+iKgoffD5zdSFwhfEE1IXGpMUj9P
-	OBuJnaz1QQ0o2/AgNpjotPf7/1KRFtqJnN+bj2pivlNj4v9TVDi4D4YB3zHiJKFMZ8aUT3jduqC
-	WWOMZUdo+Yq7zdDOXlGCZ+C/pboH1A5ZeUKLsfAXjFuOKZAbj8jx92DI2F76P8tJSTQ1sPk3V7K
-	iGXYVisiYbwBp1EXcjmZIbvFdLYyCtrNQ5HeQr5G4jW4tFc5RLlDqmS0ICPI0wDWhORlhsdUb6z
-	argJE7mlwEsZre8zEd2deihLs7Z8s5X4NGA7F8VMwFjyS3i/bu6l8xkuKOGjJPWVca31w36SrCl
-	CLQGi5Jbq5n4Jj+bXGkEUOIrvvGS6RP2xZssoAmprvMucH9vxG81Se0ZudRd44w8ySetq33MZsU
-	3BiFWJATQD3i2oOvGxsIrMN6P8uRRiQJN7W5iuljHRfKaV
-X-Received: by 2002:a05:6820:4b96:b0:69e:88f3:14ac with SMTP id 006d021491bc7-69eda882e3cmr2414315eaf.18.1781293070450;
-        Fri, 12 Jun 2026 12:37:50 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:1::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4426b278b13sm2579659fac.12.2026.06.12.12.37.49
+        bh=wF1YM3iIffsWq3aue3unk5VZq1rQajY4MddWtIHftpQ=;
+        b=Ev1kMlXRpc/0wZIAMX8c6irHYvaL4HslHpjBuVcVCtuixY3gAFX89XgX+HzYtR74AO
+         mAN2juuMm2ieQp3BCqDuXfPZU6yvO2e+/MTPRomu5UR1ZJCZgNTGQu9Chn4+1u0hMZB1
+         E0JA4rr1BfYO6YAjvDuNr7zcOWPhJ64UKaWb50NhZaNISmmiU+JPU7h0VrIXzFw1do/U
+         /8Aad4owouwZfrrQvSqy2EizCPT1BEQIgrt/olfSs2QzQWsZYDaErmNJvN58BDYwiuT1
+         0cLgphhwhWQco+D3/rsaDhjxMOZzPVEKb6hZK06ijabH+vr8Wiyt+oIGwDrM9N26tItJ
+         Q1Mg==
+X-Forwarded-Encrypted: i=1; AFNElJ+6EdivI03Mz4OGvQ3yAFgeyfSzFo//cKUhbsat0mYupDDyDivRoniC2xP542FE+FFKYxfuFw1fyw==@kvack.org
+X-Gm-Message-State: AOJu0Yz7A17gYExk/Z6V5HMC0i5wRnH/T2fVUbE5sguLfK1/mTmxpUyt
+	OqTqNKhZjA3+bCcU+kK+XnBLFbacy7bLMQ4+9kQnP4mx/RMaOYt+5gK1
+X-Gm-Gg: Acq92OF98gy0cxTOPqV1heInNCR5HuP43NEfudkHLX9lxNHtthulWIxylzxRq2g2/uL
+	Ui4pPJTXdd2A6/TBpx5/9iQ8oslgIJofrpvDUlUy3YfVFHVQfz0p8Tqp+8zcAKFWCnD8OLyzk7q
+	JwmQBjUCu0vO+0PMPvsgp/GFnosriLPOPQ7uxRjpZHx1JAyjxyBZNDBacrXVRy27kenNogI3QkY
+	/WK7TVPHRnSEhZvdUPoBTLCKRzeZa4NnPno/AkuHhXWkwEBSwthswmAOHeINaQo2NeSPK4D9mlT
+	g0E69dP0/tzu9t5sLdkq0AoCiihNCkUdEdEhMhjaMJRCVm57xmRFUeXbjSJ+37FPZBfs0hdHUMJ
+	Qxr/5WoORFolUfn7HVEvomueJjNllqLVVZc5fG3Lpwi+JHkJIdi7TLAY/Vi1QttXt3eDKKewzkq
+	R19OIYotgipulxtHxJIc5Rsh43C3Cvei5jbPUsjs9SOv3UaA==
+X-Received: by 2002:a4a:ee88:0:b0:687:d4de:1f9d with SMTP id 006d021491bc7-69edc68d84cmr2637237eaf.24.1781293071874;
+        Fri, 12 Jun 2026 12:37:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:50::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4426b2f8a9csm2643507fac.13.2026.06.12.12.37.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 12:37:49 -0700 (PDT)
+        Fri, 12 Jun 2026 12:37:51 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: akpm@linux-foundation.org
 Cc: chrisl@kernel.org,
@@ -123,22 +123,22 @@ Cc: chrisl@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org
-Subject: [RFC PATCH v2 5/7] mm, swap: add debugfs counters for vswap
-Date: Fri, 12 Jun 2026 12:37:36 -0700
-Message-ID: <20260612193738.2183968-6-nphamcs@gmail.com>
+Subject: [RFC PATCH v2 6/7] mm, swap: defer memcg_table allocation on physical clusters
+Date: Fri, 12 Jun 2026 12:37:37 -0700
+Message-ID: <20260612193738.2183968-7-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260612193738.2183968-1-nphamcs@gmail.com>
 References: <20260612193738.2183968-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CA04F1C0003
+X-Stat-Signature: jspq4dxxki7rt5189kmkjj69zn677idc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 60D9FC0008
-X-Stat-Signature: rarat93d45x4trj755r7dh9cqob7mstd
-X-HE-Tag: 1781293071-92853
-X-HE-Meta: U2FsdGVkX1+V97vVIoi6KVtghsSt73tGHx4SCOh/Z6/Ab5vwWr6pmtu3VQVNYLNRizMHkGS8E7yozy1gdmILav4Fecwf0XzGlaKtP2OcvVBw5AjFc7fIOXF5MYbQagSTGbgLnQNH1Jcf3AzuGvrXSGhS1iIgCBTun6WMmE2HCXre9Zkbac4+m0JHrrT8wCtbqc2T28VN4QawNqfmoXCKqKV4DI5nsEai2sS/T/buUde4AuJzX8Ts0aJaLkgnzR9XqFjPnz1+X6C5m0wjQe0LzZdlE1QpOtCO0pMX99xYeBJhvsKTVBzp1TuSow4EX4GoonFRJ8gaKDWjrrnTBKGSZhBGLxtKFhEEZIIcdSS4QkTpBU/LwCIMs1r60XlgJjCxqI0JpEOjebkxo4ehOzqFi5a6TSNd9pXq2tJB8sY2jzXUzTHIKZFyauqb3Hf5LaNQaoj4o4qFpr29LENcfphRt7bXzsojnbuUdAA59WuT5tMyQjaHoElO04pQJ7WnkaEi1c3TiIKqVVUXodWKs7hEYc/QIqIdkSdPRun7MaoEdmmhHEFI0eGCZU5IeuLQBe3gN68szvZxXNnQNuJakaClA6sB2/zKh5BJ99TxgWCSCKbH7kmizxfGCkIzQ6Pxr7UGgshql/tejJ4xbFvmMxsvhN3SA4eASysv7d7RuEPsjbRNFwkEbddNIXug1sl+WCGTvUQC4z/s/UsYWb5sh8rbTM821wWsuPTc4Xw/H81DSBz7GmBZ6soWqtA5fMN7p2LcQjgq45AADUOn49kOyWxCr3enC/it2mYtd8PR4el/Ngx6JwgK2vHYmycqOD/0jj4q25ymb2s33vwZjzWVdpSWxq4RG9brvtH973T/ZrTaPFtbOBkrd8svSE8EEp46Yg03djWja8vyVAFf0bEEkmq1kRvE8dQLtfYqCm8cp1YG+J11I9IYYP0uN6NULTIN8q0AdW1nOcYtdH+eU95BKLN
- PPE9Iz9M
- px2nYACgzNa2Hzh1fkRYxp7cOToFopVOmmc8SxERwcYEdgTyAW9nOm3CFkyerhvm+zUTXDAXaqIT19vPM2e9wWiqcIMIiTEs2zQQS8kKuzrddc7EWqTktjEjkSqLXvFIrJqDxesMXHjGlksJaB8ueJLQoQA8IOGy1IZ8Ly+1q2LgX9QBg3cFMfQoO1zr6PfI6w4HqVAX2V7Mr65s25sYTOMjP5hU7LBfsYlp72Vn1oEdAnDBYX2Nrb41yqAz5fpJU0RMT29l5Z3GcTuT1sRdNdh+XIvk4GluVlVkrM95aEpzXkyv7cbPjyD9cKBygCxosnnSpQQgyREItF019Ns8d1WixbTZ+45MKgIKscCh500DwIayI8CZfrkcHg61Cvz8xcy5qjN7uuj79Yj6YzJFspkMsxOG6L7uWSQGkEcP3XU2rqAtwB2c7WX58Cs166xKthZ7T48P4kbAGl1Qmnpx6LDH0iItvqjkmumBBs+4YUHCosyS7CtoCPjUcTVxZTVO0MLF3
+X-HE-Tag: 1781293072-683712
+X-HE-Meta: U2FsdGVkX1+fcgcSY9mAwBLS50FLtiy2dIzKSPfsTlke//b/cJBfhnRHXZF2m1NFIG1K6t0jP/cNnE/t+uWclCm8kig6dbd8rJ8Tkd1nPPphCxyAS8WWcCo4rC6Z6BBmyDfCaGw7/ChDF4Z/O1cvY/zbrRD4wzOCsNWRWCz6D4ZGrAXJtygjEQaNVaeaJs4MZyNJP7/h3WbbSKIjICbjBkasndwdYn51jONtUnWx1SdrltZbJDf9Rrsq2utUCmGdUzDk8gMsDgYTCXKpXAY212547Wu/DHVktKPV9dXw8hyG93I3/q5mpPPm25UvRwkAyb/HKF2kus9NNHMjabwWxxT1FBNdtfInKvF2/qFSpKKInRgJXAW/mKSzcMv8xeJRmlPIVtggUxP01RdDAQtujEXJq2W3Mt1ApVKZN4vqIieqyFvLSM2eqe+niHRA7ArBsYY0uUQdDvRk9niNp9hXM6JaxHnIoGvU3DIDDrICAVzV6Vec1UpjX11DMAn/+O5Bl4oohyN0e22C7ssZOibUMVVDkdXP0wlZnkFQ6BWMccDTXZXgkSrFPtfLrLgvkCFzQVflrHT9wb2Sb8CHXCqWA+oKMjQG3xAATCkmkD+nSPnOqx3qVsv2qYkU1N0yr8LDts+VR421O5FrqFpWlvIM0P6co5Szilu0gv1xzR7f4OTrNPbELORbolK95B5ZgkLBX18DnCrWks+KX/swwAH4mmLIziR3WCxgYwa1V2p8Fi9CyxAVgLDCsIEPQgkIs6mmzHuOY/QqoM51GPd6dhxa5GvJdEtKKxn4+vZxtO7WRNVxSKD7UiH9d33NQN2m/dJaO/OQi4uSBpml5LAsM8OlIA/oXt6xrekcOpSZb+zS+/Rkx+QrvRK64z4pDMlBIZWuCvfHBT0yAz3Sr1VnWkYG+Ud1D0w/8seGJuBoNCjWd/o9ITtcFmbTvd6sSxEi3EaytUoGJCuXogyuK2L/U4J
+ XJpwrgYk
+ t13IICCkMx3wKxR//zAZrGyM0y6Ut6vjsJxkfRb98n3SawudG2jrFHjWKj8dIVYVlMGgVJhlG1zE/I/pqGRP2WAtFQOVE5TdpQElpmEu1Dj1x+ffzo/Y9sOvDGaRTtTQRE5mDpmBnp9TyqS1kjLsAaGxAubCPw+bHquFQoVkynj5/5LlUEXeXivUGOCCsAhiMrIPufK50kdqGJybCxNng1MKyf7uFd8hK4htLQmnFshVWNY4x4K2Y9b7ipvs6CQD7DGssq0yPu8/OnDkXTgOjRYPajU/wAnkEYmjzws6kr9yiSqq17ReqU/J7ARFzpKcqyhkbl0uxQy0UsbQGHFmM9jv3ilmeii8EpIK/eKwl6qqKG5yiwS9xUQZ7M2mIkgEoalBFxUsC18fgcDDHGNmE7Txc9hu/79BBw1iCvx4O+yXANiAuba45MECKBIbvRk4BU53XuuFJL1y3XIi3yq4R0tPviBp/JP2Zww5q6lie7lcvtAZfpWUXkthBbb6aQ2JuQBUt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,84 +146,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add /sys/kernel/debug/vswap/ with two counters:
+Physical swap clusters whose slots only serve as Pointer-tagged
+vswap backings never have their memcg_table read or written.
+Vswap-layer memcg charging records on the VSWAP cluster's table,
+not the physical cluster's. Allocating memcg_table eagerly for
+such clusters wastes SWAPFILE_CLUSTER * sizeof(unsigned short)
+bytes per cluster, which adds up on vswap-heavy workloads where
+zswap writeback is the only consumer of physical swap.
 
-* used: number of virtual swap slots currently allocated
-* alloc_reject: cumulative count of failed vswap allocations
+Allocate eagerly only when the cluster is known to need a memcg
+table: any cluster in a !CONFIG_VSWAP build (all slots are direct
+use), or any vswap cluster (every vswap allocation records memcg).
+For physical clusters in CONFIG_VSWAP builds, defer the allocation
+to alloc_swap_scan_cluster, which lazy-allocates on the first
+direct-use slot and skips entirely when the cluster only holds
+Pointer-tagged vswap backings (folio in swap cache).
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- mm/swapfile.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ mm/swapfile.c | 48 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index abf6414c01c9..afb118ab8179 100644
+index afb118ab8179..0d48240de345 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/blkdev.h>
-+#include <linux/debugfs.h>
- #include <linux/mm.h>
- #include <linux/sched/mm.h>
- #include <linux/sched/task.h>
-@@ -132,6 +133,9 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
- 	.lock = INIT_LOCAL_LOCK(),
- };
- 
-+static atomic_t __maybe_unused vswap_used = ATOMIC_INIT(0);
-+static atomic_t __maybe_unused vswap_alloc_reject = ATOMIC_INIT(0);
-+
- #ifdef CONFIG_VSWAP
- struct percpu_vswap_cluster {
- 	unsigned long offset[SWAP_NR_ORDERS];
-@@ -2038,11 +2042,13 @@ static bool vswap_alloc(struct folio *folio)
- 	if (folio_test_swapcache(folio)) {
- 		/* alloc_swap_scan_cluster updated percpu offset already */
- 		local_unlock(&percpu_vswap_cluster.lock);
-+		atomic_add(folio_nr_pages(folio), &vswap_used);
- 		return true;
- 	}
- 
- 	this_cpu_write(percpu_vswap_cluster.offset[order], SWAP_ENTRY_INVALID);
- 	local_unlock(&percpu_vswap_cluster.lock);
-+	atomic_add(folio_nr_pages(folio), &vswap_alloc_reject);
- 	return false;
+@@ -493,7 +493,8 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
+ 		 swap_cluster_free_table_folio_rcu_cb);
  }
- #endif
-@@ -2666,8 +2672,10 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
  
- 	VM_WARN_ON(ci->count < nr_pages);
- 
--	if (is_vswap)
-+	if (is_vswap) {
- 		__vswap_release_backing(ci, ci_start, nr_pages);
-+		atomic_sub(nr_pages, &vswap_used);
-+	}
- 
- 	ci->count -= nr_pages;
- 	do {
-@@ -4849,6 +4857,7 @@ struct swap_info_struct *vswap_si;
- static int __init vswap_init(void)
+-static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
++static int swap_cluster_alloc_table(struct swap_info_struct *si,
++				    struct swap_cluster_info *ci, gfp_t gfp)
  {
- 	struct swap_info_struct *si;
-+	struct dentry *root;
- 	unsigned long maxpages;
- 	int err;
+ 	struct swap_table *table = NULL;
+ 	struct folio *folio;
+@@ -516,7 +517,16 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+ 	rcu_assign_pointer(ci->table, table);
  
-@@ -4878,6 +4887,11 @@ static int __init vswap_init(void)
- 	mutex_unlock(&swapon_mutex);
+ #ifdef CONFIG_MEMCG
+-	if (!mem_cgroup_disabled()) {
++	/*
++	 * Allocate memcg_table eagerly only when we know it will be used:
++	 * any cluster in a !CONFIG_VSWAP build (all slots are direct use),
++	 * or any vswap cluster (every vswap alloc records memcg). Physical
++	 * clusters in a CONFIG_VSWAP build defer to alloc_swap_scan_cluster,
++	 * which allocates on the first direct-use slot and skips entirely
++	 * when the cluster only holds Pointer-tagged vswap backings.
++	 */
++	if ((!IS_ENABLED(CONFIG_VSWAP) || swap_is_vswap(si)) &&
++	    !mem_cgroup_disabled()) {
+ 		VM_WARN_ON_ONCE(ci->memcg_table);
+ 		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
+ 		if (!ci->memcg_table) {
+@@ -590,8 +600,8 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 		lockdep_assert_held(&si->global_cluster_lock);
+ 	lockdep_assert_held(&ci->lock);
  
- 	vswap_si = si;
-+
-+	root = debugfs_create_dir("vswap", NULL);
-+	debugfs_create_atomic_t("used", 0444, root, &vswap_used);
-+	debugfs_create_atomic_t("alloc_reject", 0444, root, &vswap_alloc_reject);
-+
- 	pr_info("vswap: created virtual swap device (%lu pages)\n", maxpages);
- 	return 0;
+-	if (!swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+-					  __GFP_NOWARN))
++	if (!swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
++					      __GFP_NOWARN))
+ 		return ci;
  
+ 	/*
+@@ -609,8 +619,8 @@ swap_cluster_populate(struct swap_info_struct *si,
+ 	if (!swap_is_vswap(si))
+ 		local_unlock(&percpu_swap_cluster.lock);
+ 
+-	ret = swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
+-					   GFP_KERNEL);
++	ret = swap_cluster_alloc_table(si, ci, __GFP_HIGH | __GFP_NOMEMALLOC |
++					       GFP_KERNEL);
+ 
+ 	/*
+ 	 * Back to atomic context. We might have migrated to a new CPU with a
+@@ -883,7 +893,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+ 
+ 	ci = cluster_info + idx;
+ 	/* Need to allocate swap table first for initial bad slot marking. */
+-	if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
++	if (!ci->count && swap_cluster_alloc_table(si, ci, GFP_KERNEL))
+ 		return -ENOMEM;
+ 	spin_lock(&ci->lock);
+ 	/* Check for duplicated bad swap slots. */
+@@ -1175,6 +1185,28 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 			if (!ret)
+ 				continue;
+ 		}
++#ifdef CONFIG_MEMCG
++		/*
++		 * Physical cluster in a CONFIG_VSWAP build: lazy alloc
++		 * memcg_table on the first direct-use slot. Checked here
++		 * (not above the loop) because cluster_reclaim_range may
++		 * have dropped ci->lock and a concurrent vswap-backing
++		 * alloc could have freed and re-populated the cluster
++		 * without the lazy alloc firing (that path has
++		 * folio_test_swapcache(folio) true and skips it). For
++		 * vswap-backing allocs here, the lazy alloc is also
++		 * skipped because vswap-backing slots never touch
++		 * memcg_table on the physical cluster.
++		 */
++		if (IS_ENABLED(CONFIG_VSWAP) && folio &&
++		    !folio_test_swapcache(folio) && !mem_cgroup_disabled() &&
++		    !ci->memcg_table) {
++			ci->memcg_table = kzalloc_obj(*ci->memcg_table,
++						      GFP_ATOMIC | __GFP_NOWARN);
++			if (!ci->memcg_table)
++				goto out;
++		}
++#endif
+ 		if (!__swap_cluster_alloc_entries(si, ci, folio, offset % SWAPFILE_CLUSTER))
+ 			break;
+ 		found = offset;
+@@ -1241,7 +1273,7 @@ static unsigned int alloc_swap_scan_dynamic(struct swap_info_struct *si,
+ 	spin_lock_init(&ci_dyn->ci.lock);
+ 	INIT_LIST_HEAD(&ci_dyn->ci.list);
+ 
+-	if (swap_cluster_alloc_table(&ci_dyn->ci, GFP_ATOMIC)) {
++	if (swap_cluster_alloc_table(si, &ci_dyn->ci, GFP_ATOMIC)) {
+ 		kfree(ci_dyn);
+ 		return SWAP_ENTRY_INVALID;
+ 	}
 -- 
 2.53.0-Meta
 
