@@ -4,129 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048A1CD98CE
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:40:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61243CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:44:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C1216B008C; Fri, 12 Jun 2026 06:40:13 -0400 (EDT)
+	id A49AA6B0005; Fri, 12 Jun 2026 06:44:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 698C66B0092; Fri, 12 Jun 2026 06:40:13 -0400 (EDT)
+	id A20BC6B0088; Fri, 12 Jun 2026 06:44:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AEFE6B0093; Fri, 12 Jun 2026 06:40:13 -0400 (EDT)
+	id 936356B008C; Fri, 12 Jun 2026 06:44:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4750A6B008C
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:40:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 10E6F8F825
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:40:13 +0000 (UTC)
-X-FDA: 84870915906.01.713306F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3AC1F20002
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:40:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I8NwfTEu;
-	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781260810;
-	b=InBXG89L7gHYXalLEv3v0Kg7PQoDuzPj5reiF7acla+ovszahq4SMAhJwd5WiUa/3UJPm2
-	nTp+s1zLPGItLq7cMBWSQnqFnML/FJhCIMBG3/PAs4FFQoIVZbMQlV+Xz7eGyndEir9Dnp
-	QxsR5oxkxnowaMNkLU8AfIjDlbfdbXQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I8NwfTEu;
-	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8332A6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:44:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 358A41C255F
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:44:02 +0000 (UTC)
+X-FDA: 84870925524.07.F20BBC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6879E20002
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:44:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MTS1pZp+;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781260810;
+	s=arc-20220608; t=1781261040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbMHc9owEYeagDmLS6VGhSW9KveQRoz2Io2kiAEfmqw=;
-	b=pX7ZLavRSCoDTlFE2wOLcFcA836Gqn75Heg2PVKef1NlFHaS/CwBR220Yt/AiaNbe2Gyeb
-	2jq2pc/gTIfBeb5FrX7OV9fqb2044nRQAuUi0BWDnHY28wdbALmokZ0uLAjMPaX0o6Auuh
-	SQOVNtC60V0iXGDMg+y+KwgHk7jdtR0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781260809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wbMHc9owEYeagDmLS6VGhSW9KveQRoz2Io2kiAEfmqw=;
-	b=I8NwfTEuXwy9osWIvMLnnuX2366LGwzOxfxLHnQlgC4D1cf7XV17M/cpJWztronUGmA27S
-	rKh6mVZZi8/p4jTJmocKAggd0Dh5uSpJXjLo6hXkKbdDPdpY+EZHZyGnLFLhPmr6+iW5Cm
-	AgKNQyv4rixAvxiWv4rUzRmop40St6o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-8JcfYDDPOeeb041kP2Nvtw-1; Fri, 12 Jun 2026 06:40:06 -0400
-X-MC-Unique: 8JcfYDDPOeeb041kP2Nvtw-1
-X-Mimecast-MFC-AGG-ID: 8JcfYDDPOeeb041kP2Nvtw_1781260805
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490ae0167ceso4052815e9.1
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:40:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781260805; x=1781865605;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wbMHc9owEYeagDmLS6VGhSW9KveQRoz2Io2kiAEfmqw=;
-        b=nlzjvK5vpU0ZyGVUwkvL6YQTZcg914+G9niw3IdBYyi6k3NPA7XYv+Mqc+n9sKWMBf
-         zlNZFxRdtc4X7EV7H1/9NeAVCnfWX/EU6Pbi8PSuTY922TN5qkeOvZ1vF0kinRI8ij7w
-         wa9skZFmdjFP+bleVtU7W1vIUIiVUHkrzsWzpA7cQBFwwRdjqwUmjbwU9mY+J82WtyQ7
-         I5XfKRbdlBC49EkxOkMCNWtsD4IqR6vJaXP+IXurQ2+AafhfWDYpFdSGhob7tMv1WSuJ
-         HCTrUirW3ke3aII9UHmmhb7+I/9xU2BqpYKRfWTaaJeAEhNJ//vdAgXzjexPwyDW8nKe
-         3K0g==
-X-Forwarded-Encrypted: i=1; AFNElJ/1/2nZ1PkOXX7HtRwS/9C8SNO6PCFMEeeCwx9EUl0hR8kq1DfoweZ4xrE76KLQZrdxFf+4L2tNMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz/7cI84gtBGIr+HDiLgCOfXbc5IPIz9utU3Iz6zmHWNuKBaoAZ
-	d/ZFQFQqCboxBSwi4gGJsw755Ii9LqBXfBOcN6udJmG8w0kEGwbE/omltYEd8CS+43aJaLr0CVS
-	Fj+aWFrgswu3m0be9EgLG814DTjnMBdEYVdOk8lsfwDRXUo7147uU
-X-Gm-Gg: Acq92OFihDHEE0fMyHz7lb0kCZ1txxASVR+1sIA/8YDauRhCDwO9bBvT20XXhkFE9mQ
-	xbj/Q5HGAepor5WNV/RzSfnnUCNwT6ihfF3fsXqDTCHUeyGW0fcd94cU6LOm1KqU7lqrYBNWfzM
-	lgXraKoLtNZqoJLib0TRCM0wuglrsothtw3F3md4iyfLJD8g0TW8Q/Qz+kA2qcuiq33i4AqmVIG
-	iWpN4FYgYbjvGZxTRZYVAVF84fv2WOMHcNJ+zZQUscn4VRQ+Fqd5YAdhBeS/7WSLB76BogNaVOk
-	Dmrpn+OGVw9x1n2pgD2VtWQuANE9ScXwu0gDtwGjZIsyage2eSEPQch0b7emKaodRV2ypdFHZQE
-	nqsq8hlvKQS2TWF1msRmEvm3/NJ2l6pbl0YH2mQagGOXn8ZLZOLZp35Y0iLXB4dUb
-X-Received: by 2002:a05:600c:190b:b0:490:adb6:7957 with SMTP id 5b1f17b1804b1-490ec524ed1mr28332605e9.33.1781260805126;
-        Fri, 12 Jun 2026 03:40:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:190b:b0:490:adb6:7957 with SMTP id 5b1f17b1804b1-490ec524ed1mr28331945e9.33.1781260804631;
-        Fri, 12 Jun 2026 03:40:04 -0700 (PDT)
-Received: from [172.31.99.182] (91.red-83-48-118.staticip.rima-tde.net. [83.48.118.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea4a128csm68072655e9.0.2026.06.12.03.40.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 03:40:04 -0700 (PDT)
-Message-ID: <4406fdcf-098e-4523-a441-5343bb22e667@redhat.com>
-Date: Fri, 12 Jun 2026 04:41:18 -0600
+	bh=jQbMfs73vXY/1+2J2uFtoNyupZeXRCVPTMVFi6cnBn0=;
+	b=P+EspwEPW5qB4Y0lghfujwi3a/enqpa6TxB0M3OB/pzjgCfqRYvT/Y9j3daQe5AY1QIqUp
+	ufRK5FOta4w8sxXbwVfNS2DEs+aiF6qdkYdO9Vq6Ap660QRq2HgvO/W8wxhdtVTqLfrXQf
+	0ptIqpTlZh+BdV98w6NPqm2cArEobHE=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MTS1pZp+;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781261040;
+	b=ZszBVGqfLPcW+R2QlBMm42U2dPz9lUKWK6A5+7lUpjiw+40Ayzq6vJFYg4B+Ib8kDOISWh
+	dA5+Zk5K+biKqh8fUE0O/SLomLnuC0xoeYGN7JXQ4KsQTqeNVGqswx23jXghnMSyjCQUUt
+	djahNe5/uDbes0LQi0U4dr4x1k/dNL0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 79BD044217;
+	Fri, 12 Jun 2026 10:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4871F00A3A;
+	Fri, 12 Jun 2026 10:43:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781261039;
+	bh=jQbMfs73vXY/1+2J2uFtoNyupZeXRCVPTMVFi6cnBn0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MTS1pZp+MgtFarJjoaODYtqJTD6oynJhsyOMuc+MlcUGcmNU+M5S7ZybnIg+MOewt
+	 U8HZ2sxOv5kBe035B/q574gj3t2fnqqEVegQdPSmXnqOMjBw1bx2LEVTCXsxCg9BCV
+	 XV4r1Y4me1T8E9H492GZxHXDJO+xOmmW5YXsmGQHg5aN/fQgRFClzJGXzpCFVnmWDW
+	 CmlGrQiR3qFdkp9iLmTGISabOwkGbblLhQt2QI2CqYSRxqAm2wNpDzTYU6r5ob+HIX
+	 2p1H6uecUzD3WaORSYsCPqw1agz24LpYSgDJ7qRJTFHcv0enzoEAkjPHmvWztbgImt
+	 k23jfN2US+GZQ==
+Message-ID: <cc490279-9a28-4d94-b66a-d529af66cb20@kernel.org>
+Date: Fri, 12 Jun 2026 12:43:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 11/11] selftests: mm: add mTHP collapse test cases
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
- <fcf0fcc52aa6c4e18682fcb302fe9371a8d800c3.1781083630.git.baolin.wang@linux.alibaba.com>
-From: Nico Pache <npache@redhat.com>
-In-Reply-To: <fcf0fcc52aa6c4e18682fcb302fe9371a8d800c3.1781083630.git.baolin.wang@linux.alibaba.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: oDp9ukxAswu3nQlsBY9kjFUZ1zgam2R-yhUeGlyS08M_1781260805
-X-Mimecast-Originator: redhat.com
+Subject: =?UTF-8?B?UmU6IOetlOWkjTogW1BBVENIIHYzXSBtbS9tZW1wb29sOiBVbnRhbmds?=
+ =?UTF-8?Q?e_CONFIG=5FSLUB=5FDEBUG=5FON_abuse_and_switch_to_static_key?=
 Content-Language: en-US
+To: "Li,Rongqing" <lirongqing@baidu.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Usama Arif <usama.arif@linux.dev>
+References: <20260604110318.2089-1-lirongqing@baidu.com>
+ <d06d13c4aebe44a2abca4aee0083644f@baidu.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <d06d13c4aebe44a2abca4aee0083644f@baidu.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3AC1F20002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6879E20002
+X-Stat-Signature: 1h9hd4hyjdjgjx683ctpszxudwgio6i4
 X-Rspam-User: 
-X-Stat-Signature: j4sjoift7te5twro5sofxjwgabzyee6j
-X-HE-Tag: 1781260810-583381
-X-HE-Meta: U2FsdGVkX1+wWtfORtEEyEuaICdfzCFEHmhoB2YrdGsVa0t7ebgMokLOYXUIkCRep0LvSDIQxupIaIRufMRteVkJDHZ5KA8316eu835ISu/RdjJZxuXEBRMTKMehOoawT/yvdLXhu9LKXxSjKus25nLYeiPppEf1YI1nuysTtlQdpKj6cTvSkgrdVgM2Yr8VnpoUYbo0oB1O9sYvv7jEwiX1WqEo0sPRPlqCD+6zhv0yiFjmP9ZjHqdkaUHmeIriCboehZ0ImqWaCSZYfGV8nCfkiz24Q8mAJH6hAZAxmOH3UTZifBMPhRRRw5OUetZ9A3jm0eEFMTb7NKiGD9Oth9qYCjz2M3M5qwqc5nTuD6/wlRe+0gQJILwT1jmAklGs67GsrJMdmFcwIzSPMiaESfNw+s7bQOF/4kh2I3dST0WD8QWgS2l6dWkjRvztYyUeLAxvsJQ7j3OuVZ7mFu94/wOqTZCiUVF8AQ2/99cdhA6A0zTWZNAhbu6NBfRWAwcDUeemRA5/GYlnix1zp7cE8JPTvDWkNb8Kz3TGl+m3UEBHdNDAQL+Op4ML/Mk1zX/BE/Oe2gYQC+Ysv1DTzg7F6/mnRSs4hte0/NBEb2j13onqLoLc5jsK+pQPBEle+Kd5MAAD0T6MWaBgDEW2PrcW0o4JumudTkcFEa+KkBZoGO4tm4cJt7MB+KRUjwrZv0OUnSU2WS2SQ/CZMaeX++dbtvO1gQggTGROBs9eqRUJiBFYN41vMJxeZFrPPWFZuNvpmr8vYVJAoE7w4VSsrf9GoQmn4mVf2scjBL3jdls6iWVu0CHQGFZ77o6Qw21LW1wTDzExUzp7CYU273zMYJ/aTCQucfaoUXKXR2Z++tFx0j50kVPjOdLbyBzFYqCgGCZX1NIj/+hBRQ6Lt8w5FX8RZFT+bBVMy+0/SGIkkS6k8jGU/qawT7BFyulYp7AJ7rlv5a/+6e/sXZ05QDcaeeL
- DRvCinQq
- EOkHp0p122Ddgm5oZh0jXvsg8CduVwJ93En/7OOy8vHBt5ZiKADVB1eWi9kFmRC3mI0D4CayvCLfr4iuJqQsyHBZOKixJUzt7XNPZrntVCLrsbdmbHANlYzWzOH4pKbYsmYyd72+u3ZnoGhZvLdI5FJnUvIHWpBp1EU+/RAYZzktdxlRMVW5KL7o75VY6GzySv6FhfnjS91zb0yILKfISzWoVPwtZ88no/gDkIFfN6EFxfn5Kj+uiU+DY+4L1I3sbh51o3fLRmgs4mFWGa9e8om5GcLxF3LUhGT4AX2/CjVaRsjwdGrZdtcFPpKDwjg33rW8fbFmsxb/gV0ZLXq/rCzaKZx4hHTqtkYLIf7X2EVZmOa0u+YwROdhfNCCNrxurGrztZ/wP7d97jTBc09Ok0tSnEZp52t4DyTc5T2OD4qohAQ00xxeiHCjW1teBHJchExoEQrjvu1jQ1so=
+X-HE-Tag: 1781261040-81812
+X-HE-Meta: U2FsdGVkX1+9qPj7q4l5zqzuOzqT7kPuhNEkyzDfoqb74Q+G7UefGxEN2JJZx7zmrNcvD03z6tJwIMkygLwexgdLazpS0ohORblhjw+vAS6FYFrW6FWnY5iU3A3U+r6Xucvs4lPnYuC/iatupC/DAa3wJ3f0lgOG/JyNoCHMo6vFJXFEyUP25jzZcmFPt13tlRZzzYdmTIAQhjIY+l/nF9fNTUdc41dJqgUeuIrS/5mxkB7pnfYzPMORYTA+/ruMa+Ux99SI6hde2o1Y8JYlo5cWpIVVo70nc/INWUQF+MzYZxzoihw5Ikphy7WU+cuZbpdtWMKNQ8gNTQCkCEojPNRcZKB+2q0IHbAtCGy+YKI0TuR+UYclGWAVipc5rpNHLkfzTOe0M9ZWQs+wInJyDOFAYRduUruKWE1ShGtRgBICC9FoTiyVbyYsg2f/HN0vvY4q2/1dJoMeGtldToBp9caJZkhZySKV13clJcXMc9HEBndw02CXW1teR4ocofHUrD1ZFXsk8wdTTuN10HRgDh7xR5TNak4RwjyuWpFCJKB1TA6QNHmj4qZpt++EdUtuErhXBTOMWJqXEv/Mi9Np10N6bPkjT1k/gzRved6qyx/bbB4VIPSsUyl5erjmt+JaidDWFkVcHXCpl7GikvN0U5ZaYXPMQr0L1P0b5uH+8RcwXUTtmMfGOKhrhgpPXCO91nmdPuLnH89u869cKjpBS/jyQanKWxoLf31JppR7OcJMjPh6oUCrLHzLvDK6m6X4EBRgfWDo7h9hgrRQEC7uQ0i+3hFnSOTHs1L5xg4K/ZoGdGZZBsI/JRHEgkQfHgEW5Wke7F7lCRqgX0vOU6G47gMeA6OygUpf2cDReoXumMd9DszVWF171cD2jG6lQLMjl0B/O26Y0EyPmB7IoNFD86joGEKx3QttNBGkPYTWSQY3WIwVrXVpQ9kIzzKufJX7KAgz4nJNXy+XPNxCljF
+ Jx7YiOo1
+ fGLe4uhHlqmh1uezJzEguf7XKS4A8jgw8BAgLeBtG+77nOFmEZeVPmpo+pGPd+IUzZwpd9xPz9BM2zbnnD1sIbqxdPs62+/JDLlOE4E88NSwLxJBb49yxJvJIWRt1fsZoR3a9v87aup9dGfvhWt5JtL6WRWzzz/pD2TBpif06r3xQxU72XqhyR2z1vrXVIEZqjZNfPhS4lAVoLLKZKUkhdoJCOdsQcaUdTCzW+STldxQbQyqaXQTOHJjrL1tP3AV4XIYPjrdoZ33b+rjr7q0tjQC3Jp8E0iFxGU+kvf17kFHlmXFJFANgc8utMVOaxEardXn2t/QkJWT96+R6JP4XijUXpdQR8qpA82RysUUtMuCK/HbiPVjd+ujIgrs4Xt93k1ji8x4k2JDqjsEtlZuTCnVgKipErDkv0T4kTwE/ultxAqNwqRCIU7jvI6Jp1OqxNzk/JtjNs7hG+nGT3/gHjs8zgZ5Vr4dxyl5FXnCVDnKpJl+LSS+r2ZcF7vxzhNOaCLARXyRfBXGBLzpaghF0PuokWpnNQWO8edyg9tqqGAcJxAamuVgpFIwhEUh0LQccXa47G2sFMqKxAQhhe8L0BfP+tDu4/2bNdmAZQPoCOHp0LtLwyZaCAvP8aFx0RzIQ3duBtfi+L/+pAXo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,335 +140,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 6/10/26 4:29 AM, Baolin Wang wrote:
-> Added a new command 'mthp_khugepaged' for mTHP collapse, along with the '-c'
-> parameter to specify the collapse order. Additionally, added mTHP collapse
-> test cases for 'collapse_full', 'collapse_empty', and 'collapse_single_mthp'
-> for both anonymous pages and shmem. All khugepaged test cases passed.
+On 6/12/26 12:12, Li,Rongqing wrote:
+>> 主题: [PATCH v3] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse
+>> and switch to static key
+>> 
+>> From: Li RongQing <lirongqing@baidu.com>
+>> 
+>> The mempool subsystem historically wrapped its debugging logic inside an
+>> merely defines compile-time defaults for SLUB and caused two flaws:
+>> 
+>> 1. On production kernels where CONFIG_SLUB_DEBUG=y but
+>>    CONFIG_SLUB_DEBUG_ON=n, mempool debugging was completely
+>> compiled out
+>>    at compile time.
+>> 2. On kernels with CONFIG_SLUB_DEBUG_ON=y, mempool debugging stayed
+>> active
+>>    even if a user explicitly disabled slub debugging at boot time.
+>> 
+>> Clean up this mess by removing the #ifdef and switching to a runtime static
+>> key (mempool_debug_enabled), allowing mempool debugging to be toggled
+>> cleanly via its own boot parameter.
+>> 
+> Ping 
 > 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Thanks
 
-Will rip out the Shmem stuff and test these selftests on top of my mTHP stuff
-soon :)
+Sorry, missed this. Since it's just before merge window and it's not
+critical, will queue it after merge window for 7.3. Thanks!
 
-Ill provide the diff so its easier for you and if I come up with more cases ill
-add those too.
-
-Thanks for doing this!!!
--- Nico
-
-> ---
->  tools/testing/selftests/mm/khugepaged.c   | 135 +++++++++++++++++++---
->  tools/testing/selftests/mm/run_vmtests.sh |   4 +
->  2 files changed, 120 insertions(+), 19 deletions(-)
+> [Li,Rongqing] 
 > 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index f69be6be0ecd..8975be5b7b2f 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -26,9 +26,11 @@
->  
->  #define BASE_ADDR ((void *)(1UL << 30))
->  static unsigned long hpage_pmd_size;
-> +static int hpage_pmd_order;
->  static unsigned long page_size;
->  static int hpage_pmd_nr;
->  static int anon_order;
-> +static int collapse_order;
->  
->  #define PID_SMAPS "/proc/self/smaps"
->  #define TEST_FILE "collapse_test_file"
-> @@ -69,6 +71,7 @@ struct collapse_context {
->  };
->  
->  static struct collapse_context *khugepaged_context;
-> +static struct collapse_context *mthp_khugepaged_context;
->  static struct collapse_context *madvise_context;
->  
->  struct file_info {
-> @@ -554,25 +557,25 @@ static void madvise_collapse(const char *msg, char *p, int nr_hpages,
->  }
->  
->  #define TICK 500000
-> -static bool wait_for_scan(const char *msg, char *p, int nr_hpages,
-> -			  struct mem_ops *ops)
-> +static bool wait_for_scan(const char *msg, char *p, unsigned long size,
-> +		int nr_hpages, int collap_order, struct mem_ops *ops)
->  {
-> -	unsigned long size = nr_hpages * hpage_pmd_size;
-> +	unsigned long hpage_size = page_size << collap_order;
->  	int full_scans;
->  	int timeout = 6; /* 3 seconds */
->  
->  	/* Sanity check */
-> -	if (!ops->check_huge(p, size, 0, hpage_pmd_size))
-> +	if (!ops->check_huge(p, size, 0, hpage_size))
->  		ksft_exit_fail_msg("Unexpected huge page\n");
->  
-> -	madvise(p, nr_hpages * hpage_pmd_size, MADV_HUGEPAGE);
-> +	madvise(p, size, MADV_HUGEPAGE);
->  
->  	/* Wait until the second full_scan completed */
->  	full_scans = thp_read_num("khugepaged/full_scans") + 2;
->  
->  	ksft_print_msg("%s...", msg);
->  	while (timeout--) {
-> -		if (ops->check_huge(p, size, nr_hpages, hpage_pmd_size))
-> +		if (ops->check_huge(p, size, nr_hpages, hpage_size))
->  			break;
->  		if (thp_read_num("khugepaged/full_scans") >= full_scans)
->  			break;
-> @@ -595,7 +598,7 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
->  	if (!is_tmpfs(ops) && ops == &__read_write_file_write_ops)
->  		expect = false;
->  
-> -	if (wait_for_scan(msg, p, nr_hpages, ops)) {
-> +	if (wait_for_scan(msg, p, size, nr_hpages, hpage_pmd_order, ops)) {
->  		if (expect)
->  			fail("Timeout");
->  		else
-> @@ -617,12 +620,65 @@ static void khugepaged_collapse(const char *msg, char *p, int nr_hpages,
->  		fail("Fail");
->  }
->  
-> +static void mthp_khugepaged_collapse(const char *msg, char *p, int nr_hpages,
-> +				struct mem_ops *ops, bool expect)
-> +{
-> +	unsigned long hpage_size = page_size << collapse_order;
-> +	struct thp_settings settings = *thp_current_settings();
-> +	/* mTHP collpase only allocates PMD sized memory */
-> +	unsigned long size = hpage_pmd_size;
-> +
-> +	/* Set mTHP setting for mTHP collapse */
-> +	if (ops == &__anon_ops) {
-> +		settings.thp_enabled = THP_NEVER;
-> +		settings.hugepages[collapse_order].enabled = THP_ALWAYS;
-> +	} else if (ops == &__shmem_ops) {
-> +		settings.shmem_enabled = SHMEM_NEVER;
-> +		settings.shmem_hugepages[collapse_order].enabled = SHMEM_ALWAYS;
-> +	}
-> +
-> +	thp_push_settings(&settings);
-> +
-> +	if (wait_for_scan(msg, p, size, nr_hpages, collapse_order, ops)) {
-> +		if (expect)
-> +			fail("Timeout");
-> +		else
-> +			success("OK");
-> +
-> +		/* Restore THP settings for mTHP collapse. */
-> +		thp_pop_settings();
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * For file and shmem memory, khugepaged only retracts pte entries after
-> +	 * putting the new hugepage in the page cache. The hugepage must be
-> +	 * subsequently refaulted to install the pmd mapping for the mm.
-> +	 */
-> +	if (ops != &__anon_ops)
-> +		ops->fault(p, 0, nr_hpages * hpage_size);
-> +
-> +	if (ops->check_huge(p, size, expect ? nr_hpages : 0, hpage_size))
-> +		success("OK");
-> +	else
-> +		fail("Fail");
-> +
-> +	/* Restore THP settings for mTHP collapse. */
-> +	thp_pop_settings();
-> +}
-> +
->  static struct collapse_context __khugepaged_context = {
->  	.collapse = &khugepaged_collapse,
->  	.enforce_pte_scan_limits = true,
->  	.name = "khugepaged",
->  };
->  
-> +static struct collapse_context __mthp_khugepaged_context = {
-> +	.collapse = &mthp_khugepaged_collapse,
-> +	.enforce_pte_scan_limits = true,
-> +	.name = "mthp_khugepaged",
-> +};
-> +
->  static struct collapse_context __madvise_context = {
->  	.collapse = &madvise_collapse,
->  	.enforce_pte_scan_limits = false,
-> @@ -661,10 +717,17 @@ static void alloc_at_fault(void)
->  static void collapse_full(struct collapse_context *c, struct mem_ops *ops)
->  {
->  	void *p;
-> -	int nr_hpages = 4;
-> +	int nr_pmds = 4, nr_hpages = 4;
->  	unsigned long size = nr_hpages * hpage_pmd_size;
->  
-> -	p = ops->setup_area(nr_hpages);
-> +	/* Only try 1 PMD sized range for mTHP collapse. */
-> +	if (c == &__mthp_khugepaged_context) {
-> +		nr_pmds = 1;
-> +		nr_hpages = 1 << (hpage_pmd_order - collapse_order);
-> +		size = hpage_pmd_size;
-> +	}
-> +
-> +	p = ops->setup_area(nr_pmds);
->  	ops->fault(p, 0, size);
->  	c->collapse("Collapse multiple fully populated PTE table", p, nr_hpages,
->  		    ops, true);
-> @@ -676,10 +739,31 @@ static void collapse_full(struct collapse_context *c, struct mem_ops *ops)
->  
->  static void collapse_empty(struct collapse_context *c, struct mem_ops *ops)
->  {
-> +	int nr_hpages = 1;
-> +	void *p;
-> +
-> +	if (c == &__mthp_khugepaged_context)
-> +		nr_hpages = 1 << (hpage_pmd_order - collapse_order);
-> +
-> +	p = ops->setup_area(1);
-> +	c->collapse("Do not collapse empty PTE table", p, nr_hpages, ops, false);
-> +	ops->cleanup_area(p, hpage_pmd_size);
-> +	ksft_test_result_report(exit_status, "%s\n", __func__);
-> +}
-> +
-> +static void collapse_single_mthp(struct collapse_context *c, struct mem_ops *ops)
-> +{
-> +	unsigned long hpage_size = page_size << collapse_order;
->  	void *p;
->  
->  	p = ops->setup_area(1);
-> -	c->collapse("Do not collapse empty PTE table", p, 1, ops, false);
-> +	/*
-> +	 * Only fault collapse_order sized ranges, and only check 1
-> +	 * collapse_order sized huge page.
-> +	 */
-> +	ops->fault(p, 0, hpage_size);
-> +	c->collapse("Collapse PTE table with half PTE entries present",
-> +		p, 1, ops, true);
->  	ops->cleanup_area(p, hpage_pmd_size);
->  	ksft_test_result_report(exit_status, "%s\n", __func__);
->  }
-> @@ -1081,8 +1165,8 @@ static void madvise_retracted_page_tables(struct collapse_context *c,
->  	ops->fault(p, 0, size);
->  
->  	/* Let khugepaged collapse and leave pmd cleared */
-> -	if (wait_for_scan("Collapse and leave PMD cleared", p, nr_hpages,
-> -			  ops)) {
-> +	if (wait_for_scan("Collapse and leave PMD cleared", p, size, nr_hpages,
-> +			  hpage_pmd_order, ops)) {
->  		fail("Timeout");
->  		return;
->  	}
-> @@ -1098,7 +1182,7 @@ static void usage(void)
->  {
->  	fprintf(stderr, "\nUsage: ./khugepaged [OPTIONS] <test type> [dir]\n\n");
->  	fprintf(stderr, "\t<test type>\t: <context>:<mem_type>\n");
-> -	fprintf(stderr, "\t<context>\t: [all|khugepaged|madvise]\n");
-> +	fprintf(stderr, "\t<context>\t: [all|khugepaged|mthp_khugepaged|madvise]\n");
->  	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
->  	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n");
->  	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n");
-> @@ -1109,6 +1193,7 @@ static void usage(void)
->  	fprintf(stderr,	"\t\t-h: This help message.\n");
->  	fprintf(stderr,	"\t\t-s: mTHP size, expressed as page order.\n");
->  	fprintf(stderr,	"\t\t    Defaults to 0. Use this size for anon or shmem allocations.\n");
-> +	fprintf(stderr,	"\t\t-c: collapse order for mTHP collapse, expressed as page order.\n");
->  	exit(1);
->  }
->  
-> @@ -1118,11 +1203,14 @@ static void parse_test_type(int argc, char **argv)
->  	char *buf;
->  	const char *token;
->  
-> -	while ((opt = getopt(argc, argv, "s:h")) != -1) {
-> +	while ((opt = getopt(argc, argv, "s:c:h")) != -1) {
->  		switch (opt) {
->  		case 's':
->  			anon_order = atoi(optarg);
->  			break;
-> +		case 'c':
-> +			collapse_order = atoi(optarg);
-> +			break;
->  		case 'h':
->  		default:
->  			usage();
-> @@ -1148,6 +1236,10 @@ static void parse_test_type(int argc, char **argv)
->  		madvise_context =  &__madvise_context;
->  	} else if (!strcmp(token, "khugepaged")) {
->  		khugepaged_context =  &__khugepaged_context;
-> +	} else if (!strcmp(token, "mthp_khugepaged")) {
-> +		mthp_khugepaged_context =  &__mthp_khugepaged_context;
-> +		if (collapse_order == 0 || collapse_order >= hpage_pmd_order)
-> +			usage();
->  	} else if (!strcmp(token, "madvise")) {
->  		madvise_context =  &__madvise_context;
->  	} else {
-> @@ -1213,7 +1305,6 @@ static int nr_test_cases;
->  
->  int main(int argc, char **argv)
->  {
-> -	int hpage_pmd_order;
->  	struct thp_settings default_settings = {
->  		.thp_enabled = THP_MADVISE,
->  		.thp_defrag = THP_DEFRAG_ALWAYS,
-> @@ -1239,10 +1330,6 @@ int main(int argc, char **argv)
->  	if (!thp_is_enabled())
->  		ksft_exit_skip("Transparent Hugepages not available\n");
->  
-> -	parse_test_type(argc, argv);
-> -
-> -	setbuf(stdout, NULL);
-> -
->  	page_size = getpagesize();
->  	hpage_pmd_size = read_pmd_pagesize();
->  	if (!hpage_pmd_size)
-> @@ -1250,6 +1337,10 @@ int main(int argc, char **argv)
->  	hpage_pmd_nr = hpage_pmd_size / page_size;
->  	hpage_pmd_order = __builtin_ctz(hpage_pmd_nr);
->  
-> +	parse_test_type(argc, argv);
-> +
-> +	setbuf(stdout, NULL);
-> +
->  	default_settings.khugepaged.max_ptes_none = hpage_pmd_nr - 1;
->  	default_settings.khugepaged.max_ptes_swap = hpage_pmd_nr / 8;
->  	default_settings.khugepaged.max_ptes_shared = hpage_pmd_nr / 2;
-> @@ -1267,6 +1358,8 @@ int main(int argc, char **argv)
->  	TEST(collapse_full, khugepaged_context, read_write_file_read_ops);
->  	TEST(collapse_full, khugepaged_context, read_write_file_write_ops);
->  	TEST(collapse_full, khugepaged_context, shmem_ops);
-> +	TEST(collapse_full, mthp_khugepaged_context, anon_ops);
-> +	TEST(collapse_full, mthp_khugepaged_context, shmem_ops);
->  	TEST(collapse_full, madvise_context, anon_ops);
->  	TEST(collapse_full, madvise_context, read_only_file_ops);
->  	TEST(collapse_full, madvise_context, read_write_file_read_ops);
-> @@ -1274,8 +1367,12 @@ int main(int argc, char **argv)
->  	TEST(collapse_full, madvise_context, shmem_ops);
->  
->  	TEST(collapse_empty, khugepaged_context, anon_ops);
-> +	TEST(collapse_empty, mthp_khugepaged_context, anon_ops);
->  	TEST(collapse_empty, madvise_context, anon_ops);
->  
-> +	TEST(collapse_single_mthp, mthp_khugepaged_context, anon_ops);
-> +	TEST(collapse_single_mthp, mthp_khugepaged_context, shmem_ops);
-> +
->  	TEST(collapse_single_pte_entry, khugepaged_context, anon_ops);
->  	TEST(collapse_single_pte_entry, khugepaged_context, read_only_file_ops);
->  	TEST(collapse_single_pte_entry, khugepaged_context, read_write_file_read_ops);
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index 8c296dedf047..c0f4f3e5f1f1 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -411,6 +411,10 @@ CATEGORY="thp" run_test ./khugepaged all:shmem
->  
->  CATEGORY="thp" run_test ./khugepaged -s 4 all:shmem
->  
-> +CATEGORY="thp" run_test ./khugepaged -c 4 mthp_khugepaged:anon
-> +
-> +CATEGORY="thp" run_test ./khugepaged -c 4 mthp_khugepaged:shmem
-> +
->  # Try to create XFS if not provided
->  if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->      if test_selected "thp"; then
+> 
+> 
+>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>> Cc: Harry Yoo <harry@kernel.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Hao Li <hao.li@linux.dev>
+>> Cc: Christoph Lameter <cl@gentwo.org>
+>> Cc: David Rientjes <rientjes@google.com>
+>> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Usama Arif <usama.arif@linux.dev>
+>> ---
+>> Diff with v2: Move the check out of check_element/poison_element Diff with
+>> v1: Rewrite commit message, change early_param to __setup
+>> 
+>>  Documentation/admin-guide/kernel-parameters.txt |  5 ++++
+>>  mm/mempool.c                                    | 35
+>> +++++++++++++++++--------
+>>  2 files changed, 29 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/Documentation/admin-guide/kernel-parameters.txt
+>> b/Documentation/admin-guide/kernel-parameters.txt
+>> index 642659b..89b5994 100644
+>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>> @@ -3980,6 +3980,11 @@ Kernel parameters
+>>  			Note that even when enabled, there are a few cases where
+>>  			the feature is not effective.
+>> 
+>> +	mempool_debug	[MM]
+>> +			Enable mempool debugging. This enables element
+>> +			poison checking when freeing elements back to the
+>> +			pool. Useful for debugging mempool corruption.
+>> +
+>>  	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV,EARLY] Enable memtest
+>>  			Format: <integer>
+>>  			default : 0 <disable>
+>> diff --git a/mm/mempool.c b/mm/mempool.c index db23e0e..dabe05c
+>> 100644
+>> --- a/mm/mempool.c
+>> +++ b/mm/mempool.c
+>> @@ -16,11 +16,28 @@
+>>  #include <linux/export.h>
+>>  #include <linux/mempool.h>
+>>  #include <linux/writeback.h>
+>> +#include <linux/static_key.h>
+>> +#include <linux/init.h>
+>>  #include "slab.h"
+>> 
+>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc);
+>>  static DECLARE_FAULT_ATTR(fail_mempool_alloc_bulk);
+>> 
+>> +/*
+>> + * Debugging support for mempool using static key.
+>> + *
+>> + * This allows enabling mempool debug at boot time via:
+>> + *   mempool_debug
+>> + */
+>> +static DEFINE_STATIC_KEY_FALSE(mempool_debug_enabled);
+>> +
+>> +static int __init mempool_debug_setup(char *str) {
+>> +	static_branch_enable(&mempool_debug_enabled);
+>> +	return 1;
+>> +}
+>> +__setup("mempool_debug", mempool_debug_setup);
+>> +
+>>  static int __init mempool_faul_inject_init(void)  {
+>>  	int error;
+>> @@ -37,7 +54,6 @@ static int __init mempool_faul_inject_init(void)  }
+>> late_initcall(mempool_faul_inject_init);
+>> 
+>> -#ifdef CONFIG_SLUB_DEBUG_ON
+>>  static void poison_error(struct mempool *pool, void *element, size_t size,
+>>  			 size_t byte)
+>>  {
+>> @@ -140,14 +156,6 @@ static void poison_element(struct mempool *pool,
+>> void *element)  #endif
+>>  	}
+>>  }
+>> -#else /* CONFIG_SLUB_DEBUG_ON */
+>> -static inline void check_element(struct mempool *pool, void *element) -{ -}
+>> -static inline void poison_element(struct mempool *pool, void *element) -{ -}
+>> -#endif /* CONFIG_SLUB_DEBUG_ON */
+>> 
+>>  static __always_inline bool kasan_poison_element(struct mempool *pool,
+>>  		void *element)
+>> @@ -175,7 +183,10 @@ static void kasan_unpoison_element(struct
+>> mempool *pool, void *element)  static __always_inline void
+>> add_element(struct mempool *pool, void *element)  {
+>>  	BUG_ON(pool->min_nr != 0 && pool->curr_nr >= pool->min_nr);
+>> -	poison_element(pool, element);
+>> +
+>> +	if (static_branch_unlikely(&mempool_debug_enabled))
+>> +		poison_element(pool, element);
+>> +
+>>  	if (kasan_poison_element(pool, element))
+>>  		pool->elements[pool->curr_nr++] = element;  } @@ -186,7 +197,9
+>> @@ static void *remove_element(struct mempool *pool)
+>> 
+>>  	BUG_ON(pool->curr_nr < 0);
+>>  	kasan_unpoison_element(pool, element);
+>> -	check_element(pool, element);
+>> +
+>> +	if (static_branch_unlikely(&mempool_debug_enabled))
+>> +		check_element(pool, element);
+>>  	return element;
+>>  }
+>> 
+>> --
+>> 2.9.4
+> 
 
 
