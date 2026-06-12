@@ -4,130 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAC1CD98D9
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E644CD8CA8
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 10:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE2076B0005; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
+	id A5C9D6B0005; Fri, 12 Jun 2026 06:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E92746B0088; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
+	id A0D0C6B0088; Fri, 12 Jun 2026 06:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D81CE6B008C; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
+	id 923186B008C; Fri, 12 Jun 2026 06:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C62166B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:21:12 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6CD9B16577D
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:21:12 +0000 (UTC)
-X-FDA: 84870867984.30.591DFE4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CE4F640007
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:21:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=disWk0I7;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 855B26B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 06:30:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 144031405C0
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:30:49 +0000 (UTC)
+X-FDA: 84870892218.16.2CF908E
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4B1B5A0003
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 10:30:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CrMuqKYy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781259670;
+	s=arc-20220608; t=1781260247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
-	b=kVD1wEUCm8eQG9JE9wrZQuj4blL2H0aExXWXeLQWPFmIEJWK5YPUKbEtZ2lNPJzW2kvQME
-	TEQ9ZYTm81BoEPpBUG5bROxpY0uWf+/i7UCc6N/ZO1N0TKgh4xXD0OVAhPBqM1M+ZKQH35
-	slmXy0kD3rVQMaruXOzB+jO01IFhqe0=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=oARqs+T9JbWNb6W4wENAtGBSBaXfYyAinTQCHjHTX1s=;
+	b=dddim8OvlhCFAVYHraOmyUZy7jEUKQlwsu2b4pbEHWDrusmoG3d0Il9P1rLm0TX0Q8x1C4
+	jqjoaxj2/2GHWY3GBt1BF7b72L2g9OfMZTmOFgmeR1NrjJ1a+9FvbcstPYkSDRa8kAaPur
+	WPqeutBnTGAPUPBqoIYkpg3NVeRDhyA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=disWk0I7;
-	spf=pass (imf04.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CrMuqKYy;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781259670;
-	b=RuUna9X7nqo6XqU+WugYvNLqK+3ctfrWAoo08nMXyk/pZe7Rn569L1jb5nD9MLr326CEAe
-	Fjnj7lJwoxKhxF0EhhkW0UNE4cXw6TbZvK8ZOuLPJVwMjg1txT5lDN9JUYKbc3d4XM0Zoi
-	zvkxeJhoQwkYtTIOIKOKZlZq5+rqic0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781259669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
-	b=disWk0I7/FoRu0YM8hFj3tkiATBI7oOO5Xs+OCOpHXY7Ldes9aj4mUNgb9y659+xWmfoTW
-	yqPH/4Gfd7YtxOZ1inwO6DhuzUB9hIYknl4s4UcCNZJQhv3vws8SAM+eoxNmAtQqlrlRH0
-	bsgjgTHKkyy3gaQDlPBeC3L0q3fNShg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-xtOqfJXpMTqp6dJ9lnDU9A-1; Fri, 12 Jun 2026 06:21:08 -0400
-X-MC-Unique: xtOqfJXpMTqp6dJ9lnDU9A-1
-X-Mimecast-MFC-AGG-ID: xtOqfJXpMTqp6dJ9lnDU9A_1781259667
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4601c9b630fso408987f8f.0
-        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:21:08 -0700 (PDT)
+	t=1781260247;
+	b=xzseTdtqKFUviggccEkg5tWoin42ze5TDNMeY0aYdC7ODMjssDpcQdl1EvX/ZuugjQ8B1d
+	jMyTk8JllBdzp5RQ+bYM4qn5MOxsQqVVhXYHGMCigrew9WWQY92yUMuGaIzhh6d252kb/8
+	ATYDik400gAX7nX9Mm3Y75Bsex6sOEA=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c2da7fa321so3611965ad.1
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 03:30:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781260246; x=1781865046; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oARqs+T9JbWNb6W4wENAtGBSBaXfYyAinTQCHjHTX1s=;
+        b=CrMuqKYy9EPf4/wttwN9XdHguKVHDzY7KxlEExKxykkbfKKTAwl7/QUh/zUzs1cqhN
+         YPgjstyh28PQBWiJMhqFd91kpW4wUJdExCEpsb4jiWG7wO5ayXAR+8IcFX4/7Dqim7E/
+         SSIsbHIXSwMCOdpRe+PzZL65ISWqR+qSpNuf5Jnh5h469O2GfmBFeqTpDih8y1V+KnWq
+         JCeNrRqp4uLGiVwg6uDr+d9MzWpgAtPkXrrFWcksbTsvO9QrKtNcxwJmPPdm9fbSpHd3
+         cX8SSRaC0qH54mLPc/CkPI7EtBHUizdl8I1rd5PwFQR4prWBG7X3y1Do+aPAkh7jT9ly
+         wGeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781259667; x=1781864467;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JGyKIDivNLUz5KIM2/WPEeXj86ogPPDaiz1Q78T2QNk=;
-        b=Wxw3co/uqeJHm5sFSApYdAnUvhqtO2ujpL20biRULqjuTbrAbT9CZ3h2Mnpbu2Gq76
-         nxvwG2iIz208v53wQlVriDzFdzUFOa9UUEU/Y81wyaR5rxK9fzxaA1LyLCr+mLbsU7W3
-         4st2LL58zyovthZi3rtUkjRR7CV2srgPF3mfALqXftHRvtEgnVLhsvcvqIiJDCLdT+bH
-         xXqbXmtIb5QMy5xYQxte0WzIYcNyklWOlxcyS9HcBAJDckRzP6+0mAd3NNzI48tAA59t
-         aDTeCrSQjOLathT1hmjaGTz4V2E6WSWrMQQXiQVTLHXhmnx9/0fT8hzj7U5qUEmcpC+/
-         OgRA==
-X-Forwarded-Encrypted: i=1; AFNElJ+h93x9Fp1sc3qMEOIvtCIMp2+7F+CAzzPh7kYqVZq1D5fHiGWAZ5aS11unyNgngKl2dR3ulNLS/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx1nNfGyab/pchr6yGpD3WAY6HKGexbenGNSafty8KcOvHSTPFD
-	0myz7KeKk2HNQQ0Wm3kRLD2vSPBb1jtoi954Ufq6arNDC13FI8n0tWFT4pHCiaCjjPiTFs/nwyB
-	qf0bl7qhK/ECu/Lwm0mGNeNzeIWQ9hc8zHfp74bmUN4yi+vFHhqRj
-X-Gm-Gg: Acq92OFm+sljPZJxMXJ8scToyIdTjPEt9vCaOPbgOhNNqzzI4KLjxOMGJmp8ux9pJ+b
-	EAclinJ7EFjAt08Wv+AW42/SdXkCHxXo47ZhsW6BC82d4XJmS5vh0fe9i7JxrtMmM2cgv0AEJIy
-	88CKsvUNJo2/qjXOlIArpF+LE8N7Dekt5RuBUmj9qwkZzcDrD+3Gn6TK6tFcfAp47I8uJ2szbku
-	XKatJyA1NjY1lUsAg/PbGngyfvw+2hrpMG3N877whFfCqrCLkQug7if0H3jkhppZbaEsyDixDqY
-	P7HTGWtEnd49T0RO7UZLfi/QcxfGpFHzfh/3qFMULoOnSE3pQx4FhPWDCcXrl4FnSWAlxrc6xx4
-	O4T0yya8kfyUrYVswPWpkAtDYePuDvmoPEdFoy6pm4Nyj0n3amrmEQXRWsuFSdJmV
-X-Received: by 2002:a05:600c:314a:b0:490:bcc1:4edb with SMTP id 5b1f17b1804b1-490ec504eb5mr24369595e9.27.1781259666859;
-        Fri, 12 Jun 2026 03:21:06 -0700 (PDT)
-X-Received: by 2002:a05:600c:314a:b0:490:bcc1:4edb with SMTP id 5b1f17b1804b1-490ec504eb5mr24368835e9.27.1781259666305;
-        Fri, 12 Jun 2026 03:21:06 -0700 (PDT)
-Received: from [172.31.99.182] (91.red-83-48-118.staticip.rima-tde.net. [83.48.118.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea7c871dsm61873325e9.5.2026.06.12.03.21.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 03:21:05 -0700 (PDT)
-Message-ID: <443feb66-94ab-458e-8cd8-0ad440d0d067@redhat.com>
-Date: Fri, 12 Jun 2026 04:22:20 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 04/11] mm: khugepaged: add shmem mTHP collapse
- support
-To: Lance Yang <lance.yang@linux.dev>, baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <3895c09794739bbfae99d9e021ffacf8a51fb8e2.1781083630.git.baolin.wang@linux.alibaba.com>
- <20260610124416.46522-1-lance.yang@linux.dev>
-From: Nico Pache <npache@redhat.com>
-In-Reply-To: <20260610124416.46522-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7PCMdD_Qm0MjsBbqvjOIMhylBzEVaZh7noI_RwzeFGg_1781259667
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CE4F640007
-X-Stat-Signature: do871k7y4dbwjxoxyd4x1ise67tos5b6
+        d=1e100.net; s=20251104; t=1781260246; x=1781865046;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oARqs+T9JbWNb6W4wENAtGBSBaXfYyAinTQCHjHTX1s=;
+        b=ZpyCEuS4YkSAahcN8WyDLg9BU1n+NRwpUrKblPCWEDvFtfiVdgSSZmpTslkWx9tqMX
+         YtHqoX119uIbcyHOcljymbxFoMbhJNcim+OwmpjxRIAXOSRyyCzEPB4s/8sTi/E1UD2k
+         9KtBIUJfrGm/zVafCjm4G3UbIRRTiuL0OMSBnpTGQsmTSE4DmENcSB2CzFTcMCCL55qs
+         QZigpVvf4bBv48LpRJQx9+IBzT/gRGN2+ewSaEfGpsCV+tqagzw1ghn5G1oiWKQw7h+8
+         QZ93vF5LiKvhe+AX0/LNV5mX/ikZGfFO61pFSPOHoiY5w5hBVywrQAffXWDGTKSuF5bO
+         L9mg==
+X-Forwarded-Encrypted: i=1; AFNElJ/R6B2wExL08lA+Myo9xFHwejfE6/TfDa8nhvdgLG6P1kdOiqX/WfjDJyVsm139he93/gnca7KPJw==@kvack.org
+X-Gm-Message-State: AOJu0Yyqy8tTaxDyyXyNe0jxOZJyBu1G0fr1WJjLIBH8GQp12YAN42dW
+	7JimHpXjwbnPCWXZKPpNvSL+aqnf82VORx2MecKzGhJYclID1avgJlH/
+X-Gm-Gg: Acq92OGPyLtuiHIpDjp97Jdv2XVGqaE/vptNHtI/cF/iY5gpWEYNonlUxWH464cGFos
+	0EGw+OA+IEBMVZjvT5a0jqxIwTZuLsgCBm43JIMR5SuUXcW7synWPjlot5/ocNBrdy1barbAjMV
+	2HILGtNIlInVysIqWMvpsfdBeZWhrNbzlgie/Hai0m2W3qnoxv45kvfBnC0wtAhz1boe0Cs5dX3
+	W5huGawI1m/80fRrCKtThPphD7dZ0KvkhFyTyKb5lMt64s304khvfOWA/6dTYK6ao0VxP21afxv
+	m6o0pufhB76nY1vUd1TdWtQAY/P+yuMDv9T++TsuxTG5Z6BVz2GgGzxfSmoa8OAfUGDr6oyueRx
+	dYZ0IXUavXwtFTjclt3jmcedQHnPFmukFPzs4Kwh63tCA/M5M1uDbrFI+1wRtY5SF7TEmEgduw7
+	h1X81La5mv3KyQqJIzvbROt7GmFA==
+X-Received: by 2002:a17:903:3887:b0:2b2:4d36:7ba with SMTP id d9443c01a7336-2c40e0350d2mr27814135ad.0.1781260245979;
+        Fri, 12 Jun 2026 03:30:45 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb50e5sm17778985ad.35.2026.06.12.03.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 03:30:44 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: kernel test robot <lkp@intel.com>, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List <linux-mm@kvack.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
+In-Reply-To: <202606121305.h0cxjhP2-lkp@intel.com>
+Date: Fri, 12 Jun 2026 12:01:26 +0530
+Message-ID: <jys4e0ch.ritesh.list@gmail.com>
+References: <3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list@gmail.com> <202606121305.h0cxjhP2-lkp@intel.com>
 X-Rspam-User: 
-X-HE-Tag: 1781259669-988000
-X-HE-Meta: U2FsdGVkX18ZSHySjvv2aaYDeaAAZ7ybsRaGEbcOz0rg+jjlZcDKnll8M/eHoJ3eQJc+cR9EsyE64pCuizDTC2dNSeRdjo86rPo+cEZuMCAjWuWdnWMjE4D047GfaKTlr1Sv5HizmyLi+4MakzhrjOaYZArMIhaMML0MUsAisBm3VIzqVGcjSRqmU832A2abRELfsRLQAVZSIzOAw/YfyGcyzeaPZfZQDxa3+5qPSgwAKpS20VIUo4BDHUN+ivCLnatnOGfS1GbNUeiYtNFop5dUV8QSd0ExnLLW4X82C7uEUGAa876TdW+oWYg3ySaWR7YDZpO2XKI9+y1iP13E0rurcCVTFry1JWpmhcoaUKnbOmU+D9I0MZhYsmGuaInDPO7SLHNepgo9NbZSZLtXVPpclWvN8tUoOhLd/S4uGRDfP0pMVj+UNqyXEhAxAQSQUIycUHWAMwFtNyTMq62F61GNBNK7fM17q6FsZE0lAc3CykwOmh+0l1OaGey+Kge5G/k9xbC5n0oZ/ZyZXndbPftA6z+oHrVF9Wx9u883Q/uznChwZ5se8GcCRaUSNwoXkSWb36fL2v1g98+CjBaH+v7Q2D60agKIgYdxAd8T0X1MydpH3wVNsBrMxRMIM/5TdT24fVz6t77k7I5tPKbVQcMINw1f7CSxwB9udsCAPqoZ7KqFwLQT8zNnLV/xs47nX6ZPwNwARfeVgL1V4PSzb/kHVLvo//zzk3W+xPPJLmt5AQYc7hlNizefQ3ZRCTKLkVM8jTiCwG1xGWer3vQ5JY0SUvfp2YcxNCnMqlI90W24n7lpOzipFFa8ifcjRMoBR64DpR2h7o+1coiS0JzNKaD+FNIxAiJ6LX3NGU8htnE8N2h2uayrx6I33HeJxN9PF5rNmbmoa6N7dVaE80WXRBuoTILgOvH0mTcD+NvA5N7tplaVybFJY0iqKPE8AkfnJ9X1PMz8qTW1TEWWokI
- ZKEsJ2gE
- L/jWXJ78+oAuHU1DNH/r6/6DmraP2wrWbsnhDViUp8X5QVs+DEY96mu/TW7QshT0tP047NxN3ul+W37ulBNUIPO/Zxa1buHKDIfcCOUcUxF0QR/POowu7NdpGbh+ntpca5NV9P+0ZkrNGcDhhVw8X7WWPn4FJjqWGAimm2MXnxQTKwXi2MBszAz7jjNk9811WbZOZkKY5MScYXJxxFVuWbatrDPZvLdJSOq4m+HL2ln1ZXLdyN+SST3avAC9psmsrqK5qQCk1w6mmWl//FwtDDhvDJuTWh+eyXfBZdvsY59CvfmTOVXv9Zaet0yf3v70X4/4nMxUCXLwa3t101o2/fG7fCQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4B1B5A0003
+X-Stat-Signature: xss39n83d51ktgopz8pz7oxg6sog8p6f
+X-HE-Tag: 1781260247-129169
+X-HE-Meta: U2FsdGVkX18DHEK7N+5aaH8Bxp01yEnd4uIpzF8zx40nXQggMLpJ8A5JmvT7opvjx+45IlJWVXRgDWXa/pYJ3I8q6qpJNXBS14M78bDyPajZeMnGH+HR7TvT142bUc3w2ocZHi6Yp8TqHtYJZQJ3AB7vQK2PAJqh6Yl/dT7u/ZnP0/W8/+ynlS7vaZbkWD9vBpGQg6JEXLV5cE6WI9QtJJYOuFztvqG7gMhlbVByQYOzwPcGwpeGyiMEIJgSt3xKx4AEGNlr2kxFOBO4xdHEm/r+b4bnMFS32+E7weVaD3CEMt9EwY9SgctcpAqqstaMwZC0BQ4Lz0uOu0yhaRaawszs/tywRCR3o8PC7njdqAMNx83bDZzf0zooGBEvFRVN0nGKFLzbr1Rn3aSgbSWeXoM827dLtVL7y/VmaoKd3e1aeRzAMUL6d2xuG/m0KMkBM/XX7nUBChEIUGvLaWEi3gX1h+nrI34N08ZSIOAEq233bOXa5CrqcSPKt24UiDF2LCbajPr2V/iUHbn8IlBDcg9yhm9KWoJv1JdGiagpFctWAB1m/1US3cZA7Wj8d+LOZDkDWHSp2TefUjcqiWH8Bd9Bvxs/67J2Ag8/HdU4vafGz3wDi2nAk5aheiWkud/LNeGvhVFZwNM7n3E73JQU8v9t4FdtaaUDaL2dqo8Dy4qtpzOg4b6hGcorzRMpkSYnGC14RmoDECgifSFWYLSi8OnHAN5wQgZQg+pu1aw0IkVgKIZcGJ6Smugtarh1jvG07V+h7ufx1g7lbxxNhoxvWuNwOFua9JP9iDv+QmgXc+P2597/8NT6aiUQjUGZhjJVfzj6X93WS5cWwrnME0kg5S+RZR+GeylM0+uq75npIHWopQVFWBZHYiC9VUiH+gS/5Q93qrDv+WAfp0aC07wplrNaUtifFmU/Vg6jiFlK9CQPhDq43Le2cWh7j/kpL+cPPc4JLy/SQYuuolhOTa7
+ AcaWUBsl
+ iXDRvU4MsCFTK+N8xp5KqASOwOKXnKgLl2SNt5xzdCJ1SntIpraxHywCNj6pQw4+FzIqN6dnci2NdqfJ6zARi3rdTlcKvGogYz9v85D4ZinFyknfBYcJ2obBc6H4VA8YMq9XcpW0673lHC5NwChiKs4//ScXjKNxM4dkRnJnKc6+tewOGVn1bzA7RIN4mmDMAsDrSf3+PJC4VrFITpZgEdx4vCghZgCeSWb7oOUoWDzH88he9fnmjEjGeQszFG0GO16xt4vDKoi0Vxv+bhRQVc5p9mwih57wHL5Wsj3mlgz2RQHS/hAo5KgW0Yb+g0iTH5lZS6GqMyNdt9VPAkGfitLd/z21TLejniZlGysN+UlFvUp+KR9Qi/EvgomjOeml4zJbfeXcayC8SbaxinXW7dF03a8tAAFb8rUfqp7EBFzQdCmz4XogNJLYqGsXEQuyphJDn+QY7/tiBTIjBdlNDTpyafZ+Y0vOWhgHFhe5VhqzbhNLwl93GVMzrlsWFwUIIA39m6jW8wDLFSpJn0nOtptF+w4WW6kSvH7WJVgsb1Qt3xgXq4YiVKxyhPuOeUOLli753ryAnRAzRu+ZY2DoxoIWveeBUx74SJ+vWqiyJ61AKDDR8EaKbLwJo3TxzvBTlkkY1HKKJLPBZ+r4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,57 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+kernel test robot <lkp@intel.com> writes:
 
+> Hi Ritesh,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on akpm-mm/mm-everything]
+> [also build test WARNING on linux-review/Ritesh-Harjani-IBM/include-linux-swap-h-Remove-unused-leftovers/20260611-111124 next-20260611]
+> [cannot apply to powerpc/next powerpc/fixes linus/master v7.1-rc7]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Ritesh-Harjani-IBM/mm-swap-make-SWAPFILE_CLUSTER-runtime/20260611-181121
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/3abf510d24c8ef17bd5e324cccc5e03e548afade.1781170904.git.ritesh.list%40gmail.com
+> patch subject: [PATCH v2 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
+> config: arm64-randconfig-r133-20260611 (https://download.01.org/0day-ci/archive/20260612/202606121305.h0cxjhP2-lkp@intel.com/config)
+> compiler: aarch64-linux-gcc (GCC) 8.5.0
+> sparse: v0.6.5-rc1
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260612/202606121305.h0cxjhP2-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202606121305.h0cxjhP2-lkp@intel.com/
+>
+> sparse warnings: (new ones prefixed by >>)
+>>> mm/swapfile.c:133:6: sparse: sparse: symbol 'swap_table_use_page' was not declared. Should it be static?
+>
+> vim +/swap_table_use_page +133 mm/swapfile.c
+>
+>    131	
+>    132	unsigned int swap_slots_in_cluster __read_mostly;
+>  > 133	bool swap_table_use_page __read_mostly;
+>    134	
 
-On 6/10/26 6:44 AM, Lance Yang wrote:
-> 
-> On Wed, Jun 10, 2026 at 06:29:12PM +0800, Baolin Wang wrote:
-> [...]
->> @@ -1512,8 +1517,12 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
->> 			enum scan_result ret;
->>
->> 			collapse_address = address + offset * PAGE_SIZE;
->> -			ret = collapse_huge_page(mm, collapse_address, referenced,
->> -						 unmapped, cc, order);
->> +			if (file)
->> +				ret = collapse_file(mm, collapse_address, file,
->> +						start + offset, cc, order);
->> +			else
->> +				ret = collapse_huge_page(mm, collapse_address,
->> +						referenced, unmapped, cc, order);
->>
->> 			switch (ret) {
->> 			/* Cases where we continue to next collapse candidate */
->> @@ -1521,6 +1530,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
->> 				collapsed += nr_ptes;
->> 				fallthrough;
->> 			case SCAN_PTE_MAPPED_HUGEPAGE:
-> 
-> Looks like SCAN_PTE_MAPPED_HUGEPAGE from collapse_file() get lost for
-> the PMD-order case.
+I had noticed this after sending the v2. But by then it was late.
+Good that the sparse checker caught it.
 
-This is kinda my fault... I reused the enum PTE_MAPPED_HUGEPAGE (which was only
-really used in file collapse) when reporting that a collapse attempts is smaller
-or equal to the current order of the folio.
+So, I will declare this variable as static - that should fix the
+sparse warning. I will spin a v3 in sometime with this fixed.
 
-if (!is_pmd_order(order) && folio_order(folio) >= order) {
-
-I will change that in my follow up to use its own (or a different enum).
-
-> 
-> Previously, collapse_file() returned it straight back to
-> collapse_single_pmd(), so we would run try_collapse_pte_mapped_thp().
-> 
-> Now it hits mthp_collapse() fitst, and that case just goes to
-> next_offset ...
-> 
->> +			case SCAN_PAGE_COMPOUND:
->> 				goto next_offset;
->> 			/* Cases where lower orders might still succeed */
->> 			case SCAN_ALLOC_HUGE_PAGE_FAIL:
-> [...]
-> 
-> Cheers, Lance
-> 
-
+-ritesh
 
