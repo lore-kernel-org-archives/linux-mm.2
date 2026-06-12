@@ -4,140 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 509EECD8CA8
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:14:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10301CD98CE
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Jun 2026 11:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08B416B0005; Fri, 12 Jun 2026 07:14:20 -0400 (EDT)
+	id 242EB6B0005; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03B8C6B0088; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
+	id 1CD076B0088; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF7BF6B008C; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
+	id 0E2D86B008C; Fri, 12 Jun 2026 07:21:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CF2EC6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:14:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 659D4165810
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:14:19 +0000 (UTC)
-X-FDA: 84871001838.10.20A872B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 89DA0160015
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:14:17 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n+h/dgKk";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F30FD6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 07:21:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 801338D606
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:21:17 +0000 (UTC)
+X-FDA: 84871019394.24.324F178
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BB34F140010
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 11:21:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FYPAsJ35;
+	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781262857;
+	s=arc-20220608; t=1781263275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dP7e3JEtOPtC6CVM3VUIPHIKZe0OVbKMvYxoe2ZHRtY=;
-	b=piTFZeCMDencFoA/shjFGlKOMlc0xkmgrSjXQPuCOEeRMmN3ylRWIgJo2w4sfokylxYuC0
-	l15jbOBoGAkOGJCIU5QVaZ6+IOafgiu1nFEMkMKOl7HhNTf8NrWQNQ+7CXbowLq93iMB9I
-	k+KKG+/8oKrIUh2sXFRwEXVDlt3cYAE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n+h/dgKk";
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
+	b=ezp4U5moQNp4E/WlLdN1agCv2fV3AEut2Rd6lVmC8WibrTfGpQ3xNFTVkQjKbPqPvBxtR2
+	KNM3PNVCPeOUiGz9BxsZPDi0KUENCNwZFO/CoEiObK76M/8RYkFatTpF+vqKKwbAI0qy7k
+	U22EBqbspgvyP6k5TUXx1zIPqzd6jUQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781262857;
-	b=bAEEofGCFOEtvEvDTlN6FQA2pSq0ZX3nS4hzywgAMiEJMrK+Ux815VSDmEMeyVIfhy/LAl
-	rI81KT05IOzCP6duhxZsatc8YtAqlJTUM5PlO1WjUlsgtH9s3X6DCyjvHvA6LgP/WvJVzr
-	Qh535cvI2/BoLQvQMmIUUqGJ9iJpTio=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB3DC43A95;
-	Fri, 12 Jun 2026 11:14:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E07F1F000E9;
-	Fri, 12 Jun 2026 11:14:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781262856;
-	bh=dP7e3JEtOPtC6CVM3VUIPHIKZe0OVbKMvYxoe2ZHRtY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n+h/dgKkcBlo/dGQjj1ub3s9bjOa0M2la6urtdxD0te37aVSmCofz0hyWaifbPk20
-	 mS8IHjwYOyPvqcGFKrUnRefPCHeAQFySphnvGxKPQLj4KzCYeGzPYq+BCR3cj4vCA6
-	 viFy8LB1SAvbHyu/PXVcxGxXFGzLV4lIpsWxWktEtHo8/sTXJB2/0K71s+fSdPIhB3
-	 nX9RflZcxKhiUeUSMoVeyVE4jZT8zOB7eNZFF7cKPGRJ0xB0z3EYGyPa61BN7W9knN
-	 4GxyBMUDop4P3Sk7/axoqTQA3bJ8OeJqcVc3VI47d8arWIzRyxwP4RvDi6JVUKjcj3
-	 qAM2UyRRNtqIg==
-Message-ID: <3603c37b-95b1-4d29-ab6f-fa3360dc17db@kernel.org>
-Date: Fri, 12 Jun 2026 13:14:12 +0200
+	t=1781263275;
+	b=c3blPwEHBeLKO71Ngl2SbwqDHqYYB0vYvO7Kwo3I3WwF2ZNbTYBA5MdLYs/vnLLqM7H0Vn
+	l/wUm8T5hTEFo+i1h+IZEeiepJzjGfGxDIpbdu5g9io1mlzAqCXCz5Tmr/DvBZS7iYs//H
+	p6Xt+XJ+GrcxLiYV6R+LONbNf0XU+Oo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FYPAsJ35;
+	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781263274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
+	b=FYPAsJ35VVzLRQfNBEBVKa6sLYo6TO2yPWUxb3RexhxygsmTcmkRw+xkkj0b4+b35zKgV5
+	xOZer9B1vgdJQ0q/+IH4P/d81tBixVOEhfM1igU8qTfWeFMQKKxuyagDgE4d0W87sbRhDO
+	lK1E4kOXIJn94KmRBUs26ApZpWzZXsU=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-350-398i-0KKOUm9t97l3i76Rg-1; Fri, 12 Jun 2026 07:21:13 -0400
+X-MC-Unique: 398i-0KKOUm9t97l3i76Rg-1
+X-Mimecast-MFC-AGG-ID: 398i-0KKOUm9t97l3i76Rg_1781263272
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-6603cfb9d71so1250807d50.2
+        for <linux-mm@kvack.org>; Fri, 12 Jun 2026 04:21:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781263272; x=1781868072;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+9FlJSoQ1PrMv3NoMGU38Y/z2migVxYwYPcZc0DtbZI=;
+        b=shF/M+mv0fa6X1lkPEEXA4M2jBQenrxzdnevYK+DPAua70u/NC8WjSRYXis1IlF2jM
+         qIq5keSAKLYbzqdVYAOttwQAmm2M14xy018kQDKxfUR4luQvCk908k7TFv6D0vnha17m
+         ufMJMjtAejDwLFKAgbkqSNkYbEyfnfiDQjM+E/+shtx4FO59M9uUOxSADnkXFiH3VeE1
+         W5gcV1CVRUfeAQYWuFzmTebYhDO2lEizAQqnBBNZLSpelJBANQ307gjw2mzsDxGxP1lb
+         nA43sCjI1DD7DnZ11CE2xUWy5HYazTym67mim2lPiUYdfObGZja9LGcZUKLfE2gIAWBe
+         y86A==
+X-Gm-Message-State: AOJu0Yx6YWsXlZbWcOztcILSiEhh+oSXJ80KDjFTqkAVh3q5+NV4Sx1/
+	qoyKYVIUlw/XUiqmaeavCYTlRX+UeemkA133SYKbW/0UMlfKMwL7LowJ1VekBN1YOQKFZ156MSU
+	S25Tp0xfzEwjVeNBuzCUDpWYheE+feCohmB4nxQjzEwU+dSKXl/ah3ATtLoRxjcD0WQuBrgrv5G
+	2LIjF3Bl35locfRNPoRek94f6txl8=
+X-Gm-Gg: Acq92OF2WRtxsfC/W3s5Se4Ey2Cr74g4o+fNJcm3T+bw5mo/XUfDb+6QzfUj2PA/I/E
+	24MHyVz8qzOmc4nvo2I3bUGANTZzoRwSZu4oXLIzct9YBugb8zwjC7V+OVFqD4J3X8Qjyza1lvT
+	D0wJHwiMuvY6+p2hI8yLLePhqjY44dvHPejvTF+iI3lCXjlYnoWrkKE8Y9VbItoTm0OoTJq1TDU
+	mN4
+X-Received: by 2002:a05:690e:e86:b0:660:7a4f:9fe2 with SMTP id 956f58d0204a3-66278468075mr1653903d50.57.1781263272483;
+        Fri, 12 Jun 2026 04:21:12 -0700 (PDT)
+X-Received: by 2002:a05:690e:e86:b0:660:7a4f:9fe2 with SMTP id
+ 956f58d0204a3-66278468075mr1653865d50.57.1781263272001; Fri, 12 Jun 2026
+ 04:21:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 0/3] lib/vsprintf: Add support for pgtable entries
-To: Matthew Wilcox <willy@infradead.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, Petr Mladek
- <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
- <aisJbeVVxxNuYxQ6@casper.infradead.org>
- <aisNjxHW369cbKiq@ashevche-desk.local>
- <aisOi1B0o5KYyaQo@casper.infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aisOi1B0o5KYyaQo@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 89DA0160015
-X-Stat-Signature: ngub1jmjgd869faaj1une88bapaw49hn
+References: <c5401e8d-0b46-4cc0-88b3-f438d610e73b@redhat.com> <7e7cbc60-e9c7-4a63-9d4b-4e8fcad7bfc0@kernel.org>
+In-Reply-To: <7e7cbc60-e9c7-4a63-9d4b-4e8fcad7bfc0@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Fri, 12 Jun 2026 05:22:01 -0600
+X-Gm-Features: AVVi8CdNLha-RR1qN40JSwbbQIn5r6XpUlj26RldKCxPkjYT8VOZtB96P7x2nAw
+Message-ID: <CAA1CXcDmE3G2K-V0VrzWy=xHUjOwnMcXDJjY+hBV1hxBZUGh+g@mail.gmail.com>
+Subject: Re: [Bug Report] Elevated PMD nr_anon after running selftests
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Linux MM <linux-mm@kvack.org>, linux-kselftest@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, linux-cxl@vger.kernel.org, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: M-K3G0e6qNgZHbojpoCZ_CWKgdfwJSEyJW5cz5wpVmk_1781263272
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1781262857-172078
-X-HE-Meta: U2FsdGVkX18GfqHxecGZVzHmroW7S4SC89Up0eQTaKzlunpAUD/Fz9ixH1chOLdJuBr9QUI72Q4u+uiIzLmXO1W0GfKttaYC1af1q2H5AGVWFtpn0xqyChYsfbkI811qTVbsqZW+1sPfpClIhWKnMQcqYJfnPDjDQr9wlvOJc6WmqnZr+FBsSrUZpEZFGfEyUUQQr1t5Md70gB9dBoxlp2aqtZ2Inu1e4D2uDeuNQsIuJbiu0scDwjauUYbTLuDe1zOhzXLcZ0DC4Jn33/jcL6WkpkuclYxAMhycDif257HO8vFRrOfkzv3ZRZtMiuPQ96EfM1+4RLCbah+tstquyF98hrf3CkXi3kB7cDedf7ZFvLrCpTHuDnDOelkLFbKQFJn5OVLSWs6mtB/pN7+GIVvpRXkN3ngxO/BLmZG+2OHd+KI0Xmk93WNEQqgMbN6ott2sSEVV39wL3NnSSe1CRizWwGCmplQO1PGlO9lrEhbyyKPDS27XC3W8SVQLLH2dzNta7Qyp1qZ0dcNrSeJOVBpk2r5UgOKHqasaz1ernbC8+695jVd9/BimJDdYhpb51sai0kLgFS+q0RO7SF9T6FM/fJCPV/U3Mgrx+cV0MRgVA7rlcpAAispHLytbhU9sgrSPFnUm8CJaAQaQGtSjY13SE8cAFKqsD70wDYQAk3YM7ZhjhsfN5b+r39QbcPFHE23NnP+UkyqrFWBvDQJqJi6X9/d8prUWrVZLh0ScgTaDLNAyywvgae+kA1RmGbzD4OqH0EJsXUxWGATL53YN0iozA/prTWKnlm5Ugf59+frMwAKxtv59wK3MF8zvEOS4GNkd+1yP7iDXTSFrlTMGJQgBBJQDks8AfrWp4912dMAZDuVTp+TZ0LcD5YoAdveEEYh9/mGFlUOPKJ7z3kn3QlSaSrCdJ6DxszZKc6PWoLq+zyGHI4q472zrRbbLn67Nr+ziHDOSwmu7CkBqT0g
- rUalJQXo
- 7FjfNLQXQzwT50bI6KtyGUNOUNhNZfL480FAGscvCi2uFLtqVrF/i9WK7FCBN19289LYtEm5zOGZIUhEyYA09y3A/NFNxvegK9+khcaVd2pyikyjzbRloOBtl4y+7W+w0ZrPP+eFrtBJGXR+eBgtwo8gYD7gVOFv1ftCwDyzwzkafywmjjwsKxFFEEtakWIuRxoavoYEURF5be0prUuAnvvPfUS59LpwiDyzjbHMAl+anWJvJtTGXo9kXGjpI/3Aknkd6IzJYW8K7J8mIsYmEHaXr2GVLdUCNtqCxw/hkct8TcTRbHnbAjrY201d4f/HPwtWcimg4Z4XhcnVpBllQ8GZj9Q==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BB34F140010
+X-Stat-Signature: iugorzzqe4p1ma11g6a5aw5yj8x9e9ju
+X-HE-Tag: 1781263274-39658
+X-HE-Meta: U2FsdGVkX1/98woirKKwz2NPyKRBJ9flBgS6xUuASo0lXLyIXAw3MYfl+C0L/c+QVPRWi9YlK24xK461uCvhBUrbINcsgvYkoDONacdmp67f5GoCpI0sM3mDn2KjJxlz6E8Su2wlvD5bOS4FHAAIoCMFf5WXmhiy9454TIh2ngrDo44VIGtUbRbEPK6awN+sO3KYE2lPTyj4MyL/jqH3gC7s5d62oDlW6SfhWDAEDE9gsK9rT72vl/8mZapvg4KmYOojqHh8HMnP9LLWyZbB2/4o9NupW1HtkxJC8KgE/IqtYf2/AcNUABJcd9n+N5xq13EeFXmUn+o4uIXjOz1X8yLuxDaAjnEGYmQ8ZX4KRFk5THybGufDb/8wOAkKddjytLk7WF+gKMtfbwznKEILdk35oalepEctWWsprLQjJdfaJYexghs5u/Nb60/PvEuHkyE5tTr7US4fukT0bVKLdMBXJmqH7MC4j1Ok9/pUFnBBTUimETbj8KvErOreIb29+2RA+gsYcMZ28sDyp7uI9H4iJxmmRMh6cEs6fqhGClDnMfU3TOz9R7KUjBTyvONbYxA9mXWnzrpgbxTcubP0BazTXiRhFNF0jm6cghGSqR8NcRwe58wrdLpJmL8NTodibLQ8YNbPBP/hsi1fKehMO4cd9OK+Mk587Cyn9c22MCUZd98MLc4T5KEWmfN4lx+8FF9luBMgCg+ppdIVh9nMSCEHxA5TtEfAD1/rN5Fl0DGXiEPiLp/d+jzo4ayaJgcMPwdKjpvFUInM5y8s7g3+BKoDZW519EopFTL82qICUViYdAh7qQC7lmgSg2xcu2CqTep7RC4kJgyxvSxvYQ8qZi5fJeyDcliWnHsbbGSo3GXBT1wRXtyVU9cyJx8ab4Q6dTHzYzPcNVrO5EMGfn0Tzb+q6GmnRxRKy8/V7l5fbVNksKHRMS0miEzpi+2CirDujrkn5W/bXibuze+jKKC
+ d2OkDQb0
+ 6xVNPFLKAqBtleX22uwlTuizZDrU9kt/zoN8hft5Z9uTXz3t8EMlwozZmwJAJhT77S5JMoz3DNuRfPPVR4MXexezzwz5ytwTMtNZrnplMDYXqjxT3Pi1k++VQwE+wnS4pLCdjZnzjGTCuleFjhhB4McYkGD7vYC8Xqd1fEhcUXofQrK7B4VFb7Z1FowVok0YXxCKkm5FQ3O4DE+nzpEnr0NSGgiyhQoAQN0SIZhjusLy4cOJxvlcxyMFJx8CD4soo6Se/uCgluhaR/8zze/13IXFryP1TgCrhzBY0EDx+S90XgHsXSY3uyjrIsJT4vjN3n0bkgxVMQXM8Uj3jFUZpMCD/7BL4fNNeCNcnpbklzSGeFNj2gKyv/K8jyFEOf415dQfSyfD6Qf1VsPh+xZdsPMzjp0ijyjbjy2RdU6yziLbqCZPI5yUU0rJkwe12miDsD3rX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,49 +128,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 21:37, Matthew Wilcox wrote:
-> On Thu, Jun 11, 2026 at 10:33:35PM +0300, Andy Shevchenko wrote:
->> On Thu, Jun 11, 2026 at 08:15:57PM +0100, Matthew Wilcox wrote:
->>>
->>> You didn't address my objection here:
->>>
->>> https://lore.kernel.org/linux-mm/aFQP8LzVMctf6XH5@casper.infradead.org/
->>>
->>> ie there is now no typechecking possible.  So you've made it more
->>> dangerous.  I reiterate my NACK to the concept, not to the implementation.
->>
->> But this is more of a global question, how do we check the validity of
->> the parameters of pointer extensions in the kernel? Does anybody go to
->> commit into GCC plugin or so for this job?
-> 
-> I agree that it's a global question that it would be great for somebody
-> to answer.  But it's specifically a problem for this patchset because:
-> 
->  - It's really easy to get confused about which page table level you're
->    working on.  And hugetlbfs deliberately increases that confusion.
+On Thu, Jun 11, 2026 at 10:09=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 6/11/26 17:58, Nico Pache wrote:
+> > Hi,
+> >
+> > While testing my mTHP code I noticed that mm selftests caused an accoun=
+ting error in
+> > /sys/kernel/mm/transparent_hugepage/hugepages-2048kB/stats/nr_anon
+> >
+> > At first I thought I might have caused a regression, but when retesting=
+ with 7.1-rc5 (without my code), the issue was still present.
+> >
+> > This issue occurs in two mm selftests:
+> > 1) hmm test
+> > 2) migration - private_anon_htlb test
+> >
+> > I spoke to David about this and he suggested the following diff which s=
+eems to have solved both issues.
+> >
+> > David would you like to send a formal patch or patches?
+> >
+> > Cheers,
+> > -- Nico
+> >
+> > Diff for (1)
+> >
+> > diff --git a/mm/memremap.c b/mm/memremap.c
+> > index 053842d45cb1..683a77dd679d 100644
+> > --- a/mm/memremap.c
+> > +++ b/mm/memremap.c
+> > @@ -425,6 +425,7 @@ void free_zone_device_folio(struct folio *folio)
+> >         mem_cgroup_uncharge(folio);
+> >
+> >         if (folio_test_anon(folio)) {
+> > +               mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, -1=
+);
+> >                 for (i =3D 0; i < nr; i++)
+> >                         __ClearPageAnonExclusive(folio_page(folio, i));
+> >         }
+>
+> Wasn't there another issue with hugetlb?
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 8a64291ab5b4..0aec894266f2 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_spa=
+ce
+> *mapping,
+>                 /* No turning back from here */
+>                 newfolio->index =3D folio->index;
+>                 newfolio->mapping =3D folio->mapping;
+> -               if (folio_test_anon(folio) && folio_test_large(folio))
+> +               if (folio_test_anon(folio) && folio_test_large(folio) &&
+> +                   !folio_test_hugetlb(folio))
+>                         mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_AN=
+ON, 1);
+>                 if (folio_test_swapbacked(folio))
+>                         __folio_set_swapbacked(newfolio);
+> @@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_spa=
+ce
+> *mapping,
+>          */
+>         newfolio->index =3D folio->index;
+>         newfolio->mapping =3D folio->mapping;
+> -       if (folio_test_anon(folio) && folio_test_large(folio))
+> +       if (folio_test_anon(folio) && folio_test_large(folio) &&
+> +           !folio_test_hugetlb(folio))
+>                 mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+>         folio_ref_add(newfolio, nr); /* add cache reference */
+>         if (folio_test_swapbacked(folio))
+>
+>
+> Yeah, if you have some capacity, please send patches (and figure out Fixe=
+s:) :)
 
-Yeah ... so far I was assuming that for hugetlb, all relevant entries (what we
-call a PTE although it isn't ....) would have to be the same size. I mean, at
-least in the callers they are the same size (pte_t)
+Yeah ill spend some time next week trying to understand why these are
+happening and produce patches :)
 
->  - Different levels of the page tables actually do have different sizes
->    on some architectures, so if you think you're looking at a pointer to a
->    64-bit quantity when it's really a pointer to a 32-bit quantity, things
->    Will Go Wrong (or vice-versa.  And some architctures are big-endian)
+>
+>
+> --
+> Cheers,
+>
+> David
+>
 
-I see your point with the pass-by-pointer.
-
->  - But on x86-64, Everything Is Fine because all levels of the page table
->    are basically identical, so you'll never notice there's a problem.
-
-I assume on most architectures.
-
-
-Let's see if we can stop printing that information completely, so we can avoid
-messing with this at all.
-
--- 
-Cheers,
-
-David
 
