@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55D71CD98C5
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 05:10:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA29CD98CF
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 05:10:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E5776B0092; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
+	id B23126B008C; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 995DA6B008C; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
+	id AA5E66B00A0; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85BE06B009E; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
+	id 947266B009F; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F1D16B0095
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DD716B008C
 	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D327FC177E
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCE861651D9
 	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:09:58 +0000 (UTC)
-X-FDA: 84873712476.02.7632985
+X-FDA: 84873712476.12.3615DE2
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1ADC620005
+	by imf17.hostedemail.com (Postfix) with ESMTP id 14D4840005
 	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:09:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gDTlF0Jp;
-	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781327397;
-	b=lgMRKZulypPsO7KvLJfcNGln2+h9Q5K0AAuSSB0BpYSOfjwJ73NaxiHOwA/u/oo0yp3a6A
-	agmoB6YMrYVeiTf/uCIGvVU0Q12KNF0O9KeinOOOCQfxbelRhpSiZHqEWIbdSFYyPYVwgC
-	QR98e55edqs1Tge3PkTb3lm1iRgqDHM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=gDTlF0Jp;
-	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=is2Egeu6;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781327397;
@@ -44,22 +34,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6f3OoggzlPIzKQe/th8iqmFArhYwFRFyJgw+Gf2/5vg=;
-	b=EMWMkmlBqWlV0NNM7SLz+vwgCplcFKx6XhtwtmIt/XQCUVhrK9Ag1zFV13YpxidGh2HU5r
-	7Ysgkl6ZXljTN6zNQRVREy5J/Azc8HQwX15xOodtpVcKwplQXophKqyhKRvwcPnBAdf7LW
-	BXsCpPRqzlO7hvH8qT6NObgBNEu28Sw=
+	bh=XQVmtnuRTUVgN+XDKa4kk4jqSyJyiqHHhlvxjk0X6XI=;
+	b=jrzCs7mhUN1nNw9qAkaPAiDA9rksUHjLx7/HWhSStoPtj4OHeH9FxPwnNec9SyrKyD2Y7h
+	axSSthlcAnfx65Vh2EDZE4R1tPKF0bsg1OTRKbhQbCN8uxV1ZjCl1GsHmG/ifiLREVf8pK
+	B2Ww5UlEhRUc6aAMvLgUfzRI2YlwE5E=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=is2Egeu6;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781327397;
+	b=QKrci71qK4zq75BSu7lT6TavKVHn9O43iCrOWRdrb8Al4W8N35JbLJE7pVg/c+xkMVTMs/
+	GOqPfcZ0dLxT9SKy35AdV2z3YNmMF/HNJjylpShchZtAQfRCjFc/iZnY8oRz9HPxCDJ63E
+	gl5TuOLnTrk6LBiK0MTerw40YEfHu4U=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=6f3OoggzlPIzKQe/th8iqmFArhYwFRFyJgw+Gf2/5vg=; b=gDTlF0Jp7OiugKRzAwtDz8Jfwm
-	neDfrE+2AytAPJEGebM+9vkv8xGIEzPWzFLqaLdDuS+qGjNBPML5W4bYsKzqZQFruNy6Q2NHb2TQ+
-	cUxO+r8m3+1QTQfcSTteMRP5eI3oP4kikzh/m7pvN7NNTH7Q3x+VIR2oVSgGlVHhuakPNwbfeIJzK
-	Mg7DxKAChWsErdIaxYK4TGeXWjY5m8mHOw6eD+U6lIw1+rXMScNQ+Y0hbISppLVKdbU1jSfAPYPDR
-	4EXK3CI+dIusUiQmPK4CrOD/KDdnbtD59Qf10pLNBVIzvyq74rejZxZhUmSetIlA5zb8bxAUI6slN
-	jTboEJ9Q==;
+	bh=XQVmtnuRTUVgN+XDKa4kk4jqSyJyiqHHhlvxjk0X6XI=; b=is2Egeu6/E0Y59HwEGUchJIXbu
+	vvsTtdmBZVMK9LVkHzW5SRn8tRwn8haNo97Vx6NZxgxFEEPJVVOPdliXHTN9GexiGDWV/mqmXTcA8
+	vTfgF1nIfWZKBhfV5HkbwQ6FjA3hvM0e0PDElW34aUCUUTN+ozI8zgzNjOUP6Lb/LqJUxuoc/xZP4
+	j5XSX6SpMJjb8qlFtUdEq3mKuQhl7xoBTAm5BV08AzyNvC8aX13uRur90nerQGGkzCCQNHMpk1UTN
+	DUgSVtPIJpFiFqEU2bgsuvMk2CEw/NOUHFF5PORb/YmV3ERUzaGFz9D7j+DtVtdMwiNs+xBPPjOuu
+	tbCUcFWg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wYGcy-00000003aT9-2z85;
+	id 1wYGcy-00000003aTH-3jDL;
 	Sat, 13 Jun 2026 05:09:52 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-mm@kvack.org
@@ -71,23 +71,23 @@ Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Jan Kara <jack@suse.cz>,
 	Mateusz Guzik <mjguzik@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v3 05/10] make inode_cache statically allocated
-Date: Sat, 13 Jun 2026 06:09:46 +0100
-Message-ID: <20260613050951.855141-6-viro@zeniv.linux.org.uk>
+Subject: [RFC PATCH v3 07/10] make bh_cachep statically allocated
+Date: Sat, 13 Jun 2026 06:09:48 +0100
+Message-ID: <20260613050951.855141-8-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260613050951.855141-1-viro@zeniv.linux.org.uk>
 References: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
  <20260613050951.855141-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1ADC620005
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 14D4840005
+X-Stat-Signature: 769o6315g9g7zsukur8y5w3413ypedyu
 X-Rspam-User: 
-X-Stat-Signature: 4e5yfiujz6jje969ut97z68j1crmpb1p
-X-HE-Tag: 1781327396-163892
-X-HE-Meta: U2FsdGVkX1+SEDBaStu8uB/+NAvwCf9IfjgEnRuQz06PXFaQeOPODmK8yHT5dahrdHOETDu+acmDlOIhipLVSikDgVB1UH19yPQm+GKf0w73Hp1DMJn11gvqB/5m8hBpKivz1zGVnVtes4BZqZskfsS+Je8EDWSbnJBFdsSnKNS9hQX/d5eB73myq24b94rP2zsTrM40AI5opJ1DYWM9eCeGGoxjz85ClXWXfKC7K5xVUMCxv3NdR1OmXX54NwQPDZsoXFw7OqpBQmWze20v+UA1EqEFyCuxOO5jpfB2iqQZyB291HElUnMSx2hGmZxJI31q+WB0BKGC++req6vTKjCImNwwa55Lj4EJnFtwX/ZZzdPbF7wFPmvTU/79mDQfAIVXk9uq4u5HytB31HqsvMt+56mPZztDPZzfuMlBelCZV1+M0trLXyYbonQHGJh5cWSu67PHB3cNIDNnXsjN2oUADtxXcbObM8kHlM7IxdII9GRTOYZo/o+YeegdGLSQXa4QGom30ku70L6EHWu119QlrCPBFi7l7VcA7ZOWD/ujOtzAB9muJ4n9dNkIEpjLR3CjjPM70T9S761Xx8n3lpm5CHfi1v4165LOOnVRhpzbRGE2seIzOwxOk1d1qmsSlsfLYpr27OA08ifvDNYNaEdKCL0Z4O0f/O3PnKZTxW4HfQfiqz9XL1mjhhqZiZV5tTEW/GUgZhWFhAw8Jfo31wj2ffRUPg020r8eC4MpHBYuRQzzL5RKFCXmbmNPor57LqTIaSQOJvdFsMzBDKPuI5+05sXLtfk3e5Xg+ItzNa/5HJLozuzwpKERCGLXOQiUa3Xf8sdEbFG6gm0x4bcJrDcUz/LydusjLrZdlit/fyQKVR0Pc/zXbUwj+gxs2Iw1eLsocETbCPgfsQmEZuG35YAfT+yOabOK2e7ptgng+AtVN2BiSBJD4z6W6TxQuSk1B067tV3Cuy9AN/CSe+0
- uTDc8zkC
- q1HAnlKALB73qh+h0anAkd4VUN1URAGn05hEoOIHlFz4A8eTejI1XV7tqheEJ91JYKggbb3u3QxJcQ5HKuTJmNF0HZOsJcmagl1H5grYpopNIkx9KM4Jke+UygYYIs+e/mGrSoQWIkZHwpPtVPWIvSLLCPgMFNC3DQTD6I6z4S+8oOWNwBATu8tPtccyb33cHt2TR0hc/W6inX4SNZ3bwyKvpoLWMw8WH13LYc9okobggrvtnT5329aPwy9E00Bg9NCkVwzcMJNrAaLdCSsdDkMd7Jxp4wl0s01k8ioLV5r2oGerYVAanAgY+PxJy3qYdOxbbfeazJA1jX0qJTZWaPep6kFhZccHEihUMFOtkt8i5kZphytCNEswSBS3ZjAeGPxg/qzGYeBM0pa1HdfsaXw2/wk8lMmAPorG7cDAtplXEvZ0BMKqcDxuLu8Ou7ojXFP3VokI+0kIxbxoW2nbUTLzAGSs60XxQVf99xAIiwQ0nVqsfErz+q+aJfA==
+X-HE-Tag: 1781327396-202242
+X-HE-Meta: U2FsdGVkX18zHMrNbo3NJDh2I3Hzc46vrrQTClfuhbihDuhb857EZ/C18Ow8XrSyCYL7qEzGAT6JzywNEO7MV1N0TbhSBdyrQJhU79/PoUyZ20iOZCJivjldIzH4lLjTwZOkmqzYD06BnA1oWOXlDnYi2XcN7ACcgFQKxdgvWjjofnp4lwU3opCeZXb8N534qQJS5vpS5Ha9zF649vZsrIjPrBwZzpBgK6JgIitb/SGeyGKtqHTsPgm0nFZgBmmwnFVJ6AumHRpKqlnPjwGieD0saljMKWJx5LHGAqorO1tNw1a8DJ0II7GlPfnOxe9hevwOZBjlqjm1tHVCN7T2NM1a+3VDg3o8zcKO11C6RbjbsRIa69fuLy0iTpexsEK65SSmC51TeGBfcR4iRevo30dTFQ0bBMy/6bFDnpJ6/5p+KpMQqxxlpdieHG8G3L8N6DzmgghH6qVi8zJIMh27RlpEf9bfYCCK/J9d9++Vry5LmfbclyYsc7+6Gy9JZD2COe+W6vnbdh0M6HSpgnDFLvWqsE1yHtCYelVjrNjhg+h/XP3juQtZ9ItH1ircnLJ6B9eCgXBckN0UlnHIMVsvBJy6xLemFKIxhxyAgBs65T/oelhY64kHcLD03KY8J0CxkrS8WQJyRwlOJuVkCKGjeTFRb2tKRJrcVrwtIvcdZRdT68Z3Gsv5E25u1IEcsqhBluTxAyfUpR9eRnkDOuXBzu63oaFJYabjRgFzUpxbP8pB++RT1p4K5+V73Du13iA9M9/v/7v0PJQO/rT8nyaEWz2OfJoqxIVeE2obdp+diueCdCiOJyPSvoOoa/R74Mgr1fLDAhNaRx98yr5dwUxQC2lbkwFmgQAv8v7gWiptW6EdwO4odoG3Uxv+1EOBLGyTEBMPIRwrg+rNoCyvWJtF638j9vE4p2foooHbsKtBr1SgW26jgAHXPrQi+gQ8fB4T0JTnNHRvwu7iyS2Jjsk
+ GtVaMCWm
+ L2rqAgmszzD9YR3cH/ABSYDNxTn1kObcOb6n74mqqX3q8xF/kv8l7kA7kfnAO5gO9KqVdZgeSi3uH6OokMN/E2w1LXeQFahlVz+6v+3Kw9/md/UEGRSKVUsiyMba3qqqMnUxU5p4i0UUP4yjeAKzrbdI65g+Z+Lnp1CK/E98+h2iWhdc0g8do606UvAsGq1QuYC8MApyGm9mHcWs/B5DDeXc7UTr5f/tMK57Uj/pcnsSjGUpypSwhChhKwR9OrlWV10KRVvS+ZLLnrHs144QGmjPlqe2yKSgKr7VzcpepejdBztzCGNNf9zXqHnZijGCoRz1lZWfZtIVsEmBHMcfBGZul6HJMvUTI8EZgdAiGZVQoA43ZAvUJEr+orYi5/K4kIV92XJ2JAifPECPqpXk6rQSePH0SbtCGQPRJPV2mm4ucdz8TGAPPYX9ruo/lCeICYJ/4Nb2NbGqYceOPhkogdbs2bRhPeOzKilmHbJ51AWmYJqsMh2pwZTh2HA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +97,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/inode.c | 6 ++++--
+ fs/buffer.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 62c579a0cf7d..1c657ac99084 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -23,6 +23,7 @@
- #include <linux/rw_hint.h>
- #include <linux/seq_file.h>
- #include <linux/debugfs.h>
+diff --git a/fs/buffer.c b/fs/buffer.c
+index b0b3792b1496..e834f7091f51 100644
+--- a/fs/buffer.c
++++ b/fs/buffer.c
+@@ -51,6 +51,7 @@
+ #include <linux/fscrypt.h>
+ #include <linux/fsverity.h>
+ #include <linux/sched/isolation.h>
 +#include <linux/slab-static.h>
- #include <trace/events/writeback.h>
- #define CREATE_TRACE_POINTS
- #include <trace/events/timestamp.h>
-@@ -76,7 +77,8 @@ EXPORT_SYMBOL(empty_aops);
- static DEFINE_PER_CPU(unsigned long, nr_inodes);
- static DEFINE_PER_CPU(unsigned long, nr_unused);
  
--static struct kmem_cache *inode_cachep __ro_after_init;
-+static struct kmem_cache_opaque inode_cache;
-+#define inode_cachep to_kmem_cache(&inode_cache)
+ #include "internal.h"
  
- static long get_nr_inodes(void)
- {
-@@ -2598,7 +2600,7 @@ void __init inode_init_early(void)
- void __init inode_init(void)
- {
- 	/* inode slab cache */
--	inode_cachep = kmem_cache_create("inode_cache",
-+	kmem_cache_setup(inode_cachep, "inode_cache",
- 					 sizeof(struct inode),
- 					 0,
- 					 (SLAB_RECLAIM_ACCOUNT|SLAB_PANIC|
+@@ -2906,7 +2907,8 @@ EXPORT_SYMBOL(try_to_free_buffers);
+ /*
+  * Buffer-head allocation
+  */
+-static struct kmem_cache *bh_cachep __ro_after_init;
++static struct kmem_cache_opaque bh_cache;
++#define bh_cachep to_kmem_cache(&bh_cache)
+ 
+ /*
+  * Once the number of bh's in the machine exceeds this level, we start
+@@ -3065,7 +3067,7 @@ void __init buffer_init(void)
+ 	unsigned long nrpages;
+ 	int ret;
+ 
+-	bh_cachep = KMEM_CACHE(buffer_head,
++	KMEM_CACHE_SETUP(bh_cachep, buffer_head,
+ 				SLAB_RECLAIM_ACCOUNT|SLAB_PANIC);
+ 	/*
+ 	 * Limit the bh occupancy to 10% of ZONE_NORMAL
 -- 
 2.47.3
 
