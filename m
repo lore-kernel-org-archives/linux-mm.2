@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D25CD98D8
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4534CD98D8
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F486B00A2; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
+	id 155EF6B00A4; Sat, 13 Jun 2026 13:21:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 377516B00A3; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
+	id 12D576B00A5; Sat, 13 Jun 2026 13:21:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 265A56B00A4; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
+	id 01CC76B00A6; Sat, 13 Jun 2026 13:21:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 12A986B00A2
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8D968DD36
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:35 +0000 (UTC)
-X-FDA: 84875556150.22.19E6F0B
+	by kanga.kvack.org (Postfix) with ESMTP id E23CC6B00A4
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:43 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADD261C3608
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:43 +0000 (UTC)
+X-FDA: 84875556486.09.02D6689
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2931640003
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Hs6ygKrH;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="hRNKNa/a";
+	by imf31.hostedemail.com (Postfix) with ESMTP id 284D32000D
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:40 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=SvBF5DYb;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="idKE/vNx";
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf12.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
+	spf=pass (imf31.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781371293;
+	s=arc-20220608; t=1781371301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
-	b=oO4JnlTh8NzrPZgRpd+IWr2xgdPYNF/CidXENkPJveHQNqNb5Rw0a7+onZ62ftj+V2FuKh
-	Ptg0OkHvo47YFIAueaCsluFkGc3G11eVzrlQbMY0nmGzwNJb+oRtZ5mNxybZY0tfOF8QCw
-	257Ip60Giu9kIORKvCEW2XcrCJ8XTZY=
+	bh=WFBZitbymj18mEAzAGK9dmr1JcGda6wnYCfgwxi85K8=;
+	b=Q9LjTU93sq6eDE4I1hGyqXhfCi41sAfHyjmw7b2z/abSKucOCCKKn5Eqdb76DayDuUhabz
+	L0n7blH1rei8stvNctFFv1i0KrgYAbjkUGelQvGuFQrrD/QUo02PnDed7sFmdq4BVnEi/j
+	+9UTu9w+oydEgXCtA5T212j70MFL/Ro=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Hs6ygKrH;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="hRNKNa/a";
+	imf31.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=SvBF5DYb;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="idKE/vNx";
 	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf12.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
+	spf=pass (imf31.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781371293;
-	b=8KXrQ8VznkH5K3tT7XG+8cP0m09VZJrOOd/wZb+QqOefWv5y0ANo00FM6usmU7xtaMgjZP
-	MvRHduRXDPpQ9uCTSIuHJHJj77nPd1mU14JNl+SioaQwVY5XIqEQ41B7uxfS4uS2HLRqnp
-	7a7CBSzXwDO348sQt3I9vx6o/WKdC4s=
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DGaQIu2957435
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:32 GMT
+	t=1781371301;
+	b=WQvJsjOoe4SBvXuxyFSDrZPjgEcKNZL+8yD55UKX1cwNCxhtmhf4iI+ou4pc5rw8pLGKG+
+	Unq/a8iz/e/db0+FnAW/e2BSnFQJBBit8tZppessxYaUI375WgYiszkdzu1+7kCADR/cAo
+	tD23Y3TPzrx1cWRq2o7v2wD/eXVg5hw=
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DF9nPV2785801
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=; b=Hs6ygKrHsfqhLSA/
-	y3v+FTKnv6YyTHSt4kUez393vsyDxS9tMSuz7GJlMqGy9X1VFhqDtl+fYRVqU/UL
-	4oCC1wpP/zYPctUNGzpUo1WMQrRzlYQlYlkSgMdiEGYNR8cdDr+xiJXR2fRBCp/r
-	7EwC+PVQ28p+bs9+38ypxUawOxqMwe+KtoqTCtQ3nNnfwysj5V8iZz08/v/nfRvq
-	vZ/LAGISPOExJyT/FRXVXjLROgN1aVQmgY4MqlBOYgFBM1w2nUdykpLO0eYcOHb6
-	l1ISlJz08W1pRK78IR8smpIQF/fC0irKLZybRQfjq5LzjL1vnKzaUfBGo81Bm+4T
-	Z+MXTw==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4es0g81g5k-1
+	WFBZitbymj18mEAzAGK9dmr1JcGda6wnYCfgwxi85K8=; b=SvBF5DYbflsHrzFH
+	LzJ9fajfCViGVsueUX7G/m5reswGqPPsm42cLiDvPCNv9GePjUXBEenrHZ6QKLff
+	G4DzPycl+CeTCjOy6d45UjFY7+lHNFTORrRErZ9Y/MC6SIrTp8ZZGx2sNPa/kFWz
+	9kbcEpB/kmZmp3LHzy85tGeFTJEXwuCaqM87/pTIYM79ET8cju/1G1N+gEBmUK27
+	ieUADs4vmWASn9626/4wPj8c7RxvPqx33gJ5ubnQHEQFdBfhrdG+NtUJC9tNlvaF
+	iE/5a16R9KLtIAUZhqrxGTD25MO4ZJcWpk5nonzTWbVIS8+EjrxMMwRkDf6WCp8M
+	YR6Rcg==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4es0cghh2a-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:31 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8423f3e4728so1362104b3a.2
-        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:21:31 -0700 (PDT)
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:39 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c8584e80bfcso951115a12.3
+        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:21:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781371291; x=1781976091; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1781371299; x=1781976099; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
-        b=hRNKNa/aTDwb3ynZxd/h/PL44VaNv1p50KmroV7MsB0efjBoj4kUrWD0LeX4Av2+IM
-         KX3gAZSBXqTHGCiqBOUTD06Gaex3kOb8fzh4EW7zAzswKv5ERPxLqAMLXvPFlV3VPUgz
-         3ErrWfAlM7BaBTnGp1mxIbGN716RkKv8HEsR7kkJdqBRl6y4uaYYoIKtQnrwWCjf7yYL
-         p2FjPyVVHRStiaJ4Jo13R8qLyR26Z2zBWIL7pTGhjRbIIux5d0T7rhQS2JhjBcRJbuCb
-         a8/+AFZk5rDcxM5gKiGL+pC7UhZ5kAgSe/2xhaVyZaG9gwm/p+896lPDB77Rv7yG20iu
-         oA/Q==
+        bh=WFBZitbymj18mEAzAGK9dmr1JcGda6wnYCfgwxi85K8=;
+        b=idKE/vNxvISyMmvIlmzPB6YUsYpjt6mFcpKcA6ROo8ONX1yuoshXrbL5UE8atquD+c
+         EjA1SFTFO/xllFDotIMwfJuFG1gLYn5ehGXk7Z2SSSMcxj8ckaX8W2Sey3iO0EsYr62u
+         QBzrpBMbByqTolhnPPvJMBYRcNoQfFs3m1Wuj2iIe75e3Mf2L0HuT3IkP5o/dW5Pna6u
+         Mm/pznLMl9TeOPn3joqao4zXI08b2uDF/qUv7gJvdRonrjm4nn7v1lGNg3g021OYvS5v
+         OXqA2e689yzCEBjbnzebGYx4unuU8Lue3iSYryVUqg2dFT/4yxNW497BKzSgd0+fIKRh
+         LjYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781371291; x=1781976091;
+        d=1e100.net; s=20251104; t=1781371299; x=1781976099;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
-        b=TixLIlfs78dZ+tkie9j02nexCTaBpzT+/TA280mEPKOohHDi3qaYzc9jnN93nZcj4K
-         GZmX09sM8H4lywRau9yoJaq1TDwAeOV+KWa+y2jej4fu3hbJyY7yUab5BRWZ+4QFo6U4
-         Kgc3ajsN5VAjtGVuGc8P7ZmpJlUHPny5rBWD8t/NjUUxdLRdZbw8djTWCk7p1Y2DKM3c
-         AOHkV9W0rA38f15l43QZhgeI0dGyvkqmOuL+cJgZ7SwD93safguyZ6aa8YTMsxmxkeSE
-         P4byMYG9Y52WkEf74Q8ulSUcrYKi+aomqOX73XUbJQ9uN/OuThHpQQv0JGea6TFK2K8H
-         WiyA==
-X-Forwarded-Encrypted: i=1; AFNElJ/tRQlPd/6llhtn6UaKavOCqUgSgNFn7yu61Fnwy50jlgGZE7PxBqZ3FpJbgAJ0N5QvjSowKm+ysA==@kvack.org
-X-Gm-Message-State: AOJu0YzvDiStLRdNtS0e+7JaQznGnCyz4f7zud61/m4LEiF58qH9iRen
-	L04eXVByT1Db4iDSTs+ic++JaeGGxl1tv7dWEcG7FpLLH4HGr2vAcKEqbJbJ22Jf51GYuP0rGtp
-	lBi2unvlCDeIH6Xn7g6VLHTl/u5Kea1PDHqOeCRaBI3CeJEvp4WXpoQ==
-X-Gm-Gg: Acq92OHTBPbRvVPW+BMNcfouYGYrDDMk/nFIOntk9GTfLms9id+nphuBHMxhD1REi1J
-	zkjscr522CqJWF9GkSsfyhgIKxPNrlBE/LJ8XjTiRwfvkDIsS1rolfGH7lIlgC/IYnwdarGd01G
-	f2M4LbXWJc7ZP4CyKL0ydMRtfwN3hKmMH87Cba4X27ThMXA8pPzGqF19937+fNPNZ48ScKOK762
-	MAWSYaZCCnON+dfN9K0hm1mb9HOMLhhFAT4YE00Wp4AJHhvv3bYRLrwOIOcBXMmrMZhhaS0XPdH
-	wKUOJ6bh2zGNs32m7gp8Eo2zHrI7J4cYVEppk7TfCyA/3wYrACWEwNVqZTpNhipJOLpuSQGHcmY
-	fBQVvpFZFvrGYpizz8EJVw0Vx3wmiVH510q51oWeHrJDoddYsyj9jDg==
-X-Received: by 2002:a05:6a00:3d48:b0:842:3a98:b34d with SMTP id d2e1a72fcca58-8434ce83f17mr8390916b3a.31.1781371291160;
-        Sat, 13 Jun 2026 10:21:31 -0700 (PDT)
-X-Received: by 2002:a05:6a00:3d48:b0:842:3a98:b34d with SMTP id d2e1a72fcca58-8434ce83f17mr8390867b3a.31.1781371290674;
-        Sat, 13 Jun 2026 10:21:30 -0700 (PDT)
+        bh=WFBZitbymj18mEAzAGK9dmr1JcGda6wnYCfgwxi85K8=;
+        b=pPXQpLdXy41YnyttdbEJ5WjHhQWQ72vBGhRbSiL2oJnrNbIZLv2v2J37LT1NpyFM15
+         1I13dmM6bchbyGkoiVEWLxqTFxKPmSoY8PHYbaim1tV18dl7SwXBhlx0r59menNy7HpA
+         Ig4Ef9rfmxZg+FEx3iwI2Pi9vBGk0A3xWizhHSK4e5M3F3psZtQ34rcIxMbUmcxmNtcc
+         pTMu7DA/PpaS3s69YP85vpgW6XCVcIyHx6a8jePXWDR/sIx+INoWnlrnFLKWF6zUeV5B
+         ZBUHcGjCN2pAEMtZ86DGfA5uvMlFgOgPRfbQDtcIzETQZ9ixUYLxBSrOWI1K5zhiWKNS
+         Wolg==
+X-Forwarded-Encrypted: i=1; AFNElJ83Sn00z5iU6Faxy6tKP0UaKJtiDXssDiig5NDbg6Get1KC92QB7vSnOMQJUI6w8he2UKKeUDbz3g==@kvack.org
+X-Gm-Message-State: AOJu0YxqeYrctSYPs5BnNZxpvwZpKhhpWdPM/bsPwH9dcfnW3O0rZG3J
+	LNSdNMQeMOUD0iUpGu8gDnzMkPGOy8ZbYvhE8CTa++9pLAoGSsgnXxx5Q3rT/gD1KcDmfyueGiE
+	uHtLRsW/YmW8sSIqsKo7pNDEZ1jPB/EeFI1nReln/+cDmNi92Ru9+uQ==
+X-Gm-Gg: Acq92OEi//05SpHq7SQaK2cJcvvy14CNcCux47sbk6bk6b1f692pQajT9mkDOilqjAE
+	8JfM7WhBYcTThM8xBlo2rfJJX4vsEuUu5zmiThIjzyITPN7Vrz/mQolxedofjbKd1c+s3bABJrk
+	Qw4NzC7GgG/xpnN0vc2bGl3d5cEkW7ODhkKpVHEqFw8w25eBqyM77A1h3p5p6g4XuIoqvQuxfmn
+	xEdQsSeMEHIoc7UW5+J/1iXP15mcA6AiL7fPkDv5Z/xZEhYjTR0hRmx/c10pTOmvyDbSh3lp/Rc
+	f/PV5NLB3izxa6CXCRItGkXk+OHkwh98wY/gtqJJXKo+SiJheLqEdcdPSI8PlIR5JXf5B1bOPRo
+	TwTIQ6vH8yFJprovjXT2RPhkBqV/wekBJg8cQTl7n4QtNC9JGXPZa0w==
+X-Received: by 2002:a05:6300:218c:b0:3b4:8268:23e8 with SMTP id adf61e73a8af0-3b783f0a3f4mr9239537637.21.1781371299348;
+        Sat, 13 Jun 2026 10:21:39 -0700 (PDT)
+X-Received: by 2002:a05:6300:218c:b0:3b4:8268:23e8 with SMTP id adf61e73a8af0-3b783f0a3f4mr9239494637.21.1781371298918;
+        Sat, 13 Jun 2026 10:21:38 -0700 (PDT)
 Received: from hu-pranarya-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.21.22
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.21.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 10:21:30 -0700 (PDT)
+        Sat, 13 Jun 2026 10:21:38 -0700 (PDT)
 From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Date: Sat, 13 Jun 2026 22:49:50 +0530
-Subject: [PATCH RFC 08/12] mm/vmalloc: track lazy-purge queue as a
- list_head
+Date: Sat, 13 Jun 2026 22:49:51 +0530
+Subject: [PATCH RFC 09/12] mm/vmalloc: collapse busy-tree find-then-unlink
+ into a single mas_erase
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260613-vmalloc_maple-v1-8-0aa740bb944b@oss.qualcomm.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260613-vmalloc_maple-v1-9-0aa740bb944b@oss.qualcomm.com>
 References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 In-Reply-To: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -143,48 +143,48 @@ Cc: linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
         Pranjal Arya <pranjal.arya@oss.qualcomm.com>,
         Sudeep Holla <sudeep.holla@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=7702;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=1577;
  i=pranjal.arya@oss.qualcomm.com; s=20260516; h=from:subject:message-id;
- bh=JrEBDVSR2nkTeNdCYAhWPyaNXTAWBRV/Ax7hvp9FT5w=;
- b=HlA43z7W1BgFHiQdUCJ9NYyv6guSh8B+257WOVr1UNUmQ3utJWN5wVgMVBRX9p2ibCldFaTWa
- 7E0Iaid+Gw+AfDte7XbFrrnh/UdH/cFriQdiXtcPQ+ualCVfPKMbz1S
+ bh=1Wo2lxnikoSv9JichvG4ITxBxFpg2W31gcAukcfik7I=;
+ b=spWOO4QH0SPH6dKaihPuUAG1gV/jkwgr4CrTNhi9QWp9XeyW4iqebvtmBC0BAL7LESeXg0rG0
+ +AxtMJsVJytCUVtXjiAeMTCHd8dC34JkXXxIOXx0OtYDeVjqGqIvmGQ
 X-Developer-Key: i=pranjal.arya@oss.qualcomm.com; a=ed25519;
  pk=ymtcTlccEIDsi3ErhpjIoZZHKdPBYWGWW0Lchs5MsbE=
-X-Authority-Analysis: v=2.4 cv=OOoXGyaB c=1 sm=1 tr=0 ts=6a2d919b cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-ORIG-GUID: 6eHPdjoVc8zP6w7jTRLXZ4zDlkEKod5B
+X-Authority-Analysis: v=2.4 cv=NPLlPU6g c=1 sm=1 tr=0 ts=6a2d91a3 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=LbbEsUlp8jkdcCOz7_EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-GUID: AGrrlKI4bFik90XsNOv9BDtYk4rQJeDR
-X-Proofpoint-ORIG-GUID: AGrrlKI4bFik90XsNOv9BDtYk4rQJeDR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX+IDcQWDkN0Bx
- ruiI2TgOrl1Hm6vtG7FW28G/BUk9YesmKOy3JJy/DD/MyYbjFA8uF56KG+YHlcTWK3wCP0/8sva
- ArP3Rb6499NYoUWe/qdc8QHIa2LBtGiawbGtz5JCxK/JHp/mY3PltakCJ9krngPtFseEmuinKLc
- 5cLHRe+AgkrCiorbpeI7zKjQ8cwp0HJgbBrZOlMD65CBCw+qY2d1pfphUo67AmhxDvgooLyGZMW
- R/srA3gn6gUu4yW1IqmrVK7LINPId/s3EjZQVnzw87M5fX850Kw4cfRiagsaTR++sLC8K99r0Ka
- xSpI+3sIPAEJSxn2Q0bgSo1k0NUa3YCn6QDgfZGsAcC/6iM7Mo3YzkTs93QibT24Fmc0Y4otng8
- wcvgqlL1DbnlPiICMvs+ckKBCoLfLiWKPtZ7QCkXaL5G5+BIIkLQGzSL69MpAVw1FtVOLfOvq2f
- WZHdb2qLtZa+tqN3fYg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX3TwEV6Ef7eez
- n9tUnjjgR01p5m0AAVivsjQenTTBjHeOrLIU2ugCuTmBQeEzBoNzFA3XkPCdQgKIwLDQPrFKWlw
- ufShqYeNkN6vHOdvWJHzHaiX7qvjY+M=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=qy1EqpzxIlcnHA3QzDgA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-GUID: 6eHPdjoVc8zP6w7jTRLXZ4zDlkEKod5B
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX1a5yY44RkxGS
+ xucNjovYSVwVlfwZ9/L1K4V4Hu0qA0m0swAWFxdEPjdLqnw8BX5kHtTYJIUxmtUyI233TXaYdPW
+ V925ZB/AFzjgN+EFpVpTvJtfnzh9UrQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX76ZSF2kiiCOT
+ 6RUkqjbomvVGbJcFs+wWPT3wNwVhFGoG+UAOkPOvTRqg7lYQtpYUrbsw5c2JrV2qEoc4pQ+usJf
+ EQxynvT9S/Ynsc5Ot/9Kw/dfz8ilnXCPo5kz18Vcdgun6vedZ69XrWZuuJGPBFikF1kE5sOOwoF
+ lwi4gBEw1ZlvYbRygDQHNsYUtsqQ24ixaFYtQxkZOAiCSnTvmeOq28Fpm3yMdddcyNoXnxtm4c+
+ c5KkVQ/g76jlplQQ7WvsZKv7zoCBHAGBr8xM8Rm3EwhAfRcbl5zt+dtPunghNoSqC1DuV7W/qKj
+ lh0sDo2WORc2C9yDGi1RX9I4D6XNcYGpmB3zGlvQsrL4jLiOVIPHEFh1OB1QGuAfODwfDR6MKUI
+ FR/g8Mbfog9DVEuEvrhckV8RnIbGih8xe2YZGjYc+fvfKsofqNBo0m0f3lc0ExSbbVGet7rpjt5
+ MXr0RXVIdyeJ5mPmsxQ==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-13_03,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606130180
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: bqrna8ouczifac5ejnzudgomp3ufbcf3
-X-Rspamd-Queue-Id: 2931640003
-X-HE-Tag: 1781371292-764438
-X-HE-Meta: U2FsdGVkX1+7MtVPZWa6495F8hnfLFyvXi4asMoNw5G1hw+R9lcW1dRU1U1nB7/DKPRBzkzbGv6e9Bg2y2I4VzAsd99UDeBeBbewoL6Tvgmw6PhLm7R6inoD3A1x8G7+Zh2E/4VupYXQBaAtE80fxiRJmDunI6xprLF2pebiG3zHavO/T9EMnNu3RfPgl4KqkvokjMfh+KwFHAuOBpkmgcNHXdms7zBb1O7VqYLkBRGOKK5shZgKn/h57V/V6BOdayFnoX2gxUEzYy/H1uHCoPTxqtUAVzVHpLBgMMoVT1Ey8W6IYiTjjNYMZ+tfpS3qTUOgU+Ek79+tIMFvGWWw0yFSDJDlLQoymrRZ2g93/3WyFI+7yyyMdyEiefyoVrVAO54g7NmzzTtF4JVVQKudyuKVChCa2Ur1r8oCRTzEuHE6wxWb/P8IrhxiCxavpHORYpDJ/5FLdNk2p9W3LxeWZrs7NOP7ta57OQFfvcuwQ6LYIkWf4CiZDDBD+1Bg3IOq8dSzGH7PcSknPP8Pud/Zn4cDEH0G9ifQ9JqZJLQLV36t4o9onuYPjIgQJxgtwjo7dQUVXy00lzV+gWeRRGv36sOwqnA2AiF/o5VCHHYbET1f9oGjcXaj5Z3bXxE+FsIz70Hq0SFUUx7rIuFo1AFdHzQF0cWovuBiQ9rCjLBk38S+MTkyL8LVnWDqV7HQq9m3gaNdc4oE7p9NFqfEcStj8wedUbfDItlWFXxeHz74laT+pzGEqeRmuCkkMVJYOANmnF7RuojxUVXgOsZ7w43yxia0mkfSA25QKWEj+Iqr7FoHOWAwFY/01Bx0kFiOm3SxWl7TCZIxBxwIulChpXjpKZ4iuRwJY8xQpi4/mvtxU22KOitKx2i0kPurpqaBqFNe1PcRbw+m1JgHuZX38v/n6cw9Vbkbgjsq3a1mEG/5E7xH+4FW0D2c2hiaK7BF8puY8U1WukHDPnmkF+6oAWZ
- 01se/tcn
- 2t7DcH0dosvOznpf7spBllPP+oaUzZCdSWARDB+xAHeA7sGkhEgnHBNukkBXlsGZqesa+eyH0Z7OJ/Z42lWw5+m9yY3ka7LMkQQwMYzbSagszm6RyVOcHkD/DrluHjfmJaulMm6YpbAdVJol/SY2kRcMYxsH+aivccihNExVCPtYj5GNXXrumJo/bmfFuMt3C1Tc2GRV3vZnXK2d/m836turHGpiaPAb7WYxFDEbi9w8fGC5I+2ISeo6AAe89kJFFv8KBmdjeZpqvlseuWpEtD0hcP935UmAMVZXmoqHV3N7I0N46LU/uCJUMxqSalRXOITnuzkEsU0Krp25E21mosQIAGif3u0ZhFkhx5dlXnhhO8ILyg/E3tL2EHa2fPEiS9kfXlG/f44WuFQmX7NOVPsOBXtlraw9Lklykz1fk+MOO53GKTaP/fDqA7ncVU574492jydkrLMR8yGmNVyNiWAkkAluVWGrJWUvrpZLMD7w6pHLNaCB/gLykDFFPXQdn7E0Qcg6V3nNbHAJah5aYybBA5V/zWokNZcS2lQS+KRRYHStBA4xiMvRaFtT6wYBM715L1G64C+YkSWwDkGQ8I71OG9KjLPTX6vF8
+X-Stat-Signature: kdzgs5ru9rokzd7seuh3njupinjyk75z
+X-Rspamd-Queue-Id: 284D32000D
+X-HE-Tag: 1781371300-178685
+X-HE-Meta: U2FsdGVkX1+3zRY701+/QOCdTzDAqBphixgf5Diazjuj72iu5x9I2Imt8cpCNFhh4uL6SfZVilBDUL6W05aM6HDlwD9t0uDnYpzgMVOUsQvBpWbEe6nJgzThN86kY2e10s7bTP98a8PEe5Y+P0aIR74DHgJwLGKYoX4y3fRowRLjTVqcsyUFRTVjXOzNXbUlI5HztCX8UWvTCvHt1HDcD1+kbF5FZZhssTEwKX2KqTUjde1pEmhLqvCTqGHClWPrm85GPDel5rlFEiXJ2phN/1ayMkTUZnF8A2ovbtXYfeA0gJSRkd89yLr8D6DPTqYKPtUEsZWRiRxMH/UhCwFTh6Jj8mHj1b0ATil0M38+5zEZHNbey3TgmLJCHg410nDkjMCd1/6zdAhz7uDYBV4/ZyJyXqmV6zvrlkYktEgWH8DzQPDO4L6DENp0g5p9aU65+pvKPX3IN9EFIW9MLPJvuLmC5h4bOvf81V9Mu6weGq+OCt5d0ktlrLXO0HowMS8cpqjqXe50PhStqGMZw2UgpCytvTtIFZzA4hV8g3xWlHRoBdDjPiKy9+OI9X5ZmiU83CNM9p/gByJuePSvUgUW0P/BtxrD0mNmpmX1pINrKJ8en/w4Hicco5Z4TfZbl9IqDZBA+UEEPFMd+UdS23DOl5vyUPkfjA29T7eoKvexV26NRrl7PKgCAUahkqCYrW11V3KR1qS+dC7MSRgaAKMgbBpg6EvaRlQaMzw4D1GvJhu0N7cUmaenih5rkE2oXlUQsFFrYW5frqGra+8ZQY57YL6/dxeA/h3i0LU0hYeYWxiRYi6j2JenedpGedgeLCxXiYOVBaQjRY3k6drHuWX+2IiwUmGSJSPlrAsEXkqgqaBMrgW+VdjIpQkN9llCtQEMxwsLvbz8D3uUwwigvvz8Enlm266qJDRQFw1I0GFM1+iWz/RlhJc/LbOyDiAWgwaR8LdB1oUjNuWtLyptg2v
+ J5NgiFoJ
+ ebcsY2/qQKLFJJlsPSkJWv7O/+T+NarQNo6EqIoaF98Fa0GxGuvf4hHNgVe823xYAMPa83iUzyZ5fxntgVlRqmtuLD1maeskYofuV0J4oZq8yDLSf+nE4clNXWbcQjoM1a+giRo/yMgE3bfRBoWKvvjFMW58XlSRkdOsgudhqitl4u321lRxhW+93oirkd1y+p+4elWHpceBswwNIhbavM8jwSvzp+1mXrHmcLsPFN63OLwysHbX1RU4xJWkId/89YbZ/Gtq6DIB+mGcBqk6jv6tot5zyE61w1k7JHMImF5Iy91hY/Bb3rMc2ByvTkMFPheb93+3F1dBRQsaV6nJdu/JjjjgzYZzKQuoJX2rvGfKURKs/otH9KeolKvI7MdwrDpjMZQQdJju53J6NOedFAihf21gfn9xidwSsoaxAeO5i59DMGsJ5YGDjq1+g+Sf5W5Ahbe29E+R7X+F6vCSnhXV8ufXV20vj0U4fAdCvTwwuDARlWdq3sD8lvTxsnIsn9cLLHIH0+g0NhbxajBjxd3mGH0TDh3xeRRyvEunPlmyDq2J7r1cz6frQjC1xBmvUeqGKxO3ObmvAPJs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,238 +192,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The lazy queue is bulk-drained from the purge worker; nothing
-queries it by address.  publish_vmap_area_lazy() inserts into the
-queue and purge_vmap_areas_lazy() walks it linearly.
+find_unlink_vmap_area() previously walked the busy tree once (via
+find_vmap_area_busy_locked() / __find_vmap_area_mt) and then erased
+via a second walker (unlink_vmap_area_busy_locked).  Two independent
+maple-tree descents, one per call.
 
-A list_head expresses the actual usage and saves the per-publish
-maple insert.  Per-node vn->lazy.mt becomes vn->lazy_list.  The
-locking discipline (vn->lazy.lock still serialises inserts) is
-unchanged.
+maple_tree exposes mas_erase() which combines lookup and erase in
+one descent.  Replace the find+unlink pair with a single mas_erase()
+walker.
 
 Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 ---
- mm/vmalloc.c | 133 +++++++++++++++++++++++++----------------------------------
- 1 file changed, 57 insertions(+), 76 deletions(-)
+ mm/vmalloc.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 73a40a88dbf6..1b73001e197e 100644
+index 1b73001e197e..463127d5ce58 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -942,6 +942,16 @@ static struct vmap_node {
- 	struct mt_list busy;
- 	struct mt_list lazy;
+@@ -3122,10 +3122,24 @@ static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
+ 	do {
+ 		vn = &vmap_nodes[i];
  
-+	/*
-+	 * Lazy list. The lazy index is no longer queried by address on the
-+	 * hot path: free_vmap_area_noflush() pushes the VA via list_add and
-+	 * purge drains it via list_splice. Keeping a list head sidesteps a
-+	 * mas_store on every vfree and a mas_for_each + per-entry
-+	 * mas_store(NULL) during purge. lazy.mt is retained for the rare
-+	 * non-perf_mode rollback path inside publish_vmap_area_lazy().
-+	 */
-+	struct list_head lazy_list;
-+
- 	/*
- 	 * Ready-to-free areas.
- 	 */
-@@ -1510,52 +1520,37 @@ unlink_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
- static __always_inline bool
- insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
- {
--	int err;
--
- 	lockdep_assert_held(&vn->lazy.lock);
- 
--	try_init_lazy_mt_locked(vn);
--	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
--		return false;
--
--	if (!validate_vmap_area_range_insert_mt_locked(&vn->lazy.mt,
--						       va->va_start,
--						       va->va_end))
-+	/*
-+	 * The maple-tree lazy index is bypassed in the hot path: a simple
-+	 * list saves one mas_store per vfree and one mas_for_each + N
-+	 * mas_store(NULL) during purge. lazy.mt is left untouched here so
-+	 * the non-perf_mode publish_vmap_area_lazy() rollback can still
-+	 * unlink the VA via unlink_vmap_area_lazy_locked() if it inserted
-+	 * one — that path is unreachable in steady state with perf_mode on.
-+	 */
-+	if (WARN_ON_ONCE(!list_empty(&va->list)))
- 		return false;
- 
--	INIT_LIST_HEAD(&va->list);
--
--	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
--
--	err = mas_preallocate(&mas, va, GFP_NOWAIT | __GFP_NOWARN);
--	if (!err) {
--		mas_store_prealloc(&mas, va);
--		mas_destroy(&mas);
--		return true;
--	}
--
--	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--	return !WARN_ON_ONCE(err);
-+	list_add_tail(&va->list, &vn->lazy_list);
-+	return true;
- }
- 
- static __always_inline bool
- unlink_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
- {
--	int err;
--
- 	lockdep_assert_held(&vn->lazy.lock);
- 
--	try_init_lazy_mt_locked(vn);
--	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
--		return false;
--
--	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
--
--	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
--	if (WARN_ON_ONCE(err))
-+	/*
-+	 * Match insert_vmap_area_lazy_locked()'s list-based fast path. Used
-+	 * only by publish_vmap_area_lazy() rollback, which is unreachable in
-+	 * steady state but kept for the non-perf_mode early-boot window.
-+	 */
-+	if (list_empty(&va->list))
- 		return false;
- 
--	INIT_LIST_HEAD(&va->list);
-+	list_del_init(&va->list);
- 	return true;
- }
- 
-@@ -1610,48 +1605,22 @@ lazy_vmap_areas_empty_locked(struct vmap_node *vn)
- {
- 	lockdep_assert_held(&vn->lazy.lock);
- 
--	try_init_lazy_mt_locked(vn);
--	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
--		return true;
--
--	return mtree_empty(&vn->lazy.mt);
-+	return list_empty(&vn->lazy_list);
- }
- 
- static __always_inline void
- move_lazy_vmap_areas_to_purge_locked(struct vmap_node *vn)
- {
--	LIST_HEAD(move_list);
--	struct vmap_area *va, *n_va;
--	int err;
--
- 	lockdep_assert_held(&vn->lazy.lock);
- 
--	try_init_lazy_mt_locked(vn);
--	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
--		return;
--
--	MA_STATE(mas, &vn->lazy.mt, 0, 0);
--
--	mas_for_each(&mas, va, ULONG_MAX)
--		list_add_tail(&va->list, &move_list);
--
- 	/*
--	 * Erase ranges one-by-one and move only successfully erased entries to
--	 * purge_list. This avoids destroy/reinit churn and keeps lazy index
--	 * coherence if an erase operation fails under pressure.
-+	 * Move every queued VA to purge_list with a single splice. The
-+	 * sort-by-address property that the maple-tree lazy index used to
-+	 * provide is no longer used by purge_vmap_node(); kasan_release
-+	 * computes its own min/max over the resulting purge_list when
-+	 * needed.
- 	 */
--	list_for_each_entry_safe(va, n_va, &move_list, list) {
--		MA_STATE(mas_erase, &vn->lazy.mt, va->va_start, va->va_end - 1);
--
--		err = mas_store_gfp(&mas_erase, NULL, GFP_ATOMIC | __GFP_NOWARN);
--		if (unlikely(err)) {
--			WARN_ON_ONCE(err);
--			list_del_init(&va->list);
--			continue;
--		}
--
--		list_move_tail(&va->list, &vn->purge_list);
--	}
-+	list_splice_tail_init(&vn->lazy_list, &vn->purge_list);
- }
- 
- static __always_inline bool
-@@ -2806,13 +2775,18 @@ static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
- {
- 	struct vmap_area *va;
--	unsigned long start, end;
-+	unsigned long start = ULONG_MAX, end = 0;
- 	unsigned int batch_count = 0;
- 
--	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
--	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
--
-+	/*
-+	 * purge_list is no longer sorted by address (lazy_list is built in
-+	 * insertion order via list_add_tail). Compute the bounding range
-+	 * inline with the per-VA shadow-release loop to avoid a second walk.
-+	 */
- 	list_for_each_entry(va, &vn->purge_list, list) {
-+		start = min(start, va->va_start);
-+		end = max(end, va->va_end);
-+
- 		if (is_vmalloc_or_module_addr((void *) va->va_start))
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
-@@ -2824,7 +2798,9 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
- 		}
- 	}
- 
--	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
-+	if (start < end)
-+		kasan_release_vmalloc(start, end, start, end,
-+				      KASAN_VMALLOC_TLB_FLUSH);
- }
- 
- static void purge_vmap_node(struct work_struct *work)
-@@ -2938,6 +2914,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
- 	static cpumask_t purge_nodes;
- 	unsigned int nr_purge_nodes;
- 	struct vmap_node *vn;
-+	struct vmap_area *va;
- 	int i;
- 
- 	lockdep_assert_held(&vmap_purge_lock);
-@@ -2964,11 +2941,14 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
- 		move_lazy_vmap_areas_to_purge_locked(vn);
- 		spin_unlock(&vn->lazy.lock);
- 
--		start = min(start, list_first_entry(&vn->purge_list,
--			struct vmap_area, list)->va_start);
--
--		end = max(end, list_last_entry(&vn->purge_list,
--			struct vmap_area, list)->va_end);
 +		/*
-+		 * lazy_list (and therefore purge_list) is no longer sorted by
-+		 * address. Compute the bounding range by walking purge_list.
++		 * Combine the lookup and removal into a single maple-tree
++		 * descent. mas_erase() positions the state at @addr and clears
++		 * the slot in one pass, returning the previously stored VA.
++		 * This saves the second mas_store(NULL) the original
++		 * find_vmap_area_busy_locked + unlink_vmap_area_busy_locked
++		 * pair issued, halving the busy-tree maple work per vfree.
 +		 */
-+		list_for_each_entry(va, &vn->purge_list, list) {
-+			start = min(start, va->va_start);
-+			end = max(end, va->va_end);
+ 		spin_lock(&vn->busy.lock);
+-		va = find_vmap_area_busy_locked(addr, vn);
++		if (likely(vn->busy.mt_enabled)) {
++			MA_STATE(mas, &vn->busy.mt, addr, addr);
++
++			va = mas_erase(&mas);
++		} else {
++			va = NULL;
 +		}
+ 		if (va)
+-			unlink_vmap_area_busy_locked(va, vn);
++			INIT_LIST_HEAD(&va->list);
+ 		spin_unlock(&vn->busy.lock);
  
- 		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
- 	}
-@@ -6153,6 +6133,7 @@ static void vmap_init_nodes(void)
- 		mt_init_flags(&vn->lazy.mt, MT_FLAGS_LOCK_EXTERN);
- 		mt_set_external_lock(&vn->lazy.mt, &vn->lazy.lock);
- 		vn->lazy.mt_enabled = true;
-+		INIT_LIST_HEAD(&vn->lazy_list);
- 
- 		for (i = 0; i < MAX_VA_SIZE_PAGES; i++) {
- 			INIT_LIST_HEAD(&vn->pool[i].head);
+ 		if (va)
 
 -- 
 2.34.1
