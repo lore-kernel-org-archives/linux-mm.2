@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95603CD98D8
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D25CD98D8
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 092ED6B00A0; Sat, 13 Jun 2026 13:21:28 -0400 (EDT)
+	id 39F486B00A2; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042846B00A1; Sat, 13 Jun 2026 13:21:27 -0400 (EDT)
+	id 377516B00A3; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E73E96B00A2; Sat, 13 Jun 2026 13:21:27 -0400 (EDT)
+	id 265A56B00A4; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D42D56B00A0
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DBE840463
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:27 +0000 (UTC)
-X-FDA: 84875555814.08.9CBE25B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12A986B00A2
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:36 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8D968DD36
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:35 +0000 (UTC)
+X-FDA: 84875556150.22.19E6F0B
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F3589180007
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=GuMuwRMT;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=bM+Pzm0l;
-	spf=pass (imf24.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2931640003
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Hs6ygKrH;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="hRNKNa/a";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf12.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781371285;
+	s=arc-20220608; t=1781371293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l2jvLZ77aheSe+DZjMUpTRiQcTblxiXsbYokkj4oN64=;
-	b=lCY9eGAI8EczbOIbrrpBNW2qeBBbc5KM+QfDUsaEoVOLeXhj2pMR3IacKxO0H9q3MVfJLl
-	dQnPUGUvMS6N/f7EFBwrUzg0/u5WapnfZd+Rt4VH9HvbeW0T4n+ie9BbPaVCwZ1av8wwO4
-	XfYdJVkvOAFuaaYfDmGIfSg6+g4H3BU=
+	bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
+	b=oO4JnlTh8NzrPZgRpd+IWr2xgdPYNF/CidXENkPJveHQNqNb5Rw0a7+onZ62ftj+V2FuKh
+	Ptg0OkHvo47YFIAueaCsluFkGc3G11eVzrlQbMY0nmGzwNJb+oRtZ5mNxybZY0tfOF8QCw
+	257Ip60Giu9kIORKvCEW2XcrCJ8XTZY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=GuMuwRMT;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=bM+Pzm0l;
-	spf=pass (imf24.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Hs6ygKrH;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b="hRNKNa/a";
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf12.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781371285;
-	b=LuqwyLijG6SM4eYasz61rzaeSTch+MG8hAcKCyNilrOPG6GE3LfAE8FlEerMn/Qfv0+09p
-	Pc7zhXVIhWguOinx8h6/y8KwPaPVLC7mau5y0vUFKvAa5bAlZY7cvZ2Xk2DkA+8CiUQK+9
-	oiqAXcwE9eggNWfthRteykAIdzCXMVk=
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DF9Cj81235274
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:24 GMT
+	t=1781371293;
+	b=8KXrQ8VznkH5K3tT7XG+8cP0m09VZJrOOd/wZb+QqOefWv5y0ANo00FM6usmU7xtaMgjZP
+	MvRHduRXDPpQ9uCTSIuHJHJj77nPd1mU14JNl+SioaQwVY5XIqEQ41B7uxfS4uS2HLRqnp
+	7a7CBSzXwDO348sQt3I9vx6o/WKdC4s=
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DGaQIu2957435
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	l2jvLZ77aheSe+DZjMUpTRiQcTblxiXsbYokkj4oN64=; b=GuMuwRMT6fUnEqLr
-	pC213gqGmouhs21S7DrTYvBiPMsV4SEiEZb0oYQi4HhjH4Nl8ulsTRXX8qRcB+wk
-	KIoeVBFWaQxpwWXI6CAf/mOcKFNOYlZ88RdcxvVteMq7Xi81Rbtgo8ayvmOsr0NZ
-	6UdlO01TF5PYz9o/AH8c6cvQkS/wkyc+ob7rhawynYsLnbJVDMqhe8zlF4Y0RVS0
-	RT2GtsWwLvrwpl0vudoNb9FwNppSnZHeYbWHEbE1mlwBtMjQf7bOs/fV/sHZb0Ua
-	sQAo1RWI9DoIyF/PZK1ebUw3vbajZ6Rni1T83CoN29DayOeez+CW49qqrzLjqVnh
-	vQtgkg==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryffhkuv-1
+	gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=; b=Hs6ygKrHsfqhLSA/
+	y3v+FTKnv6YyTHSt4kUez393vsyDxS9tMSuz7GJlMqGy9X1VFhqDtl+fYRVqU/UL
+	4oCC1wpP/zYPctUNGzpUo1WMQrRzlYQlYlkSgMdiEGYNR8cdDr+xiJXR2fRBCp/r
+	7EwC+PVQ28p+bs9+38ypxUawOxqMwe+KtoqTCtQ3nNnfwysj5V8iZz08/v/nfRvq
+	vZ/LAGISPOExJyT/FRXVXjLROgN1aVQmgY4MqlBOYgFBM1w2nUdykpLO0eYcOHb6
+	l1ISlJz08W1pRK78IR8smpIQF/fC0irKLZybRQfjq5LzjL1vnKzaUfBGo81Bm+4T
+	Z+MXTw==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4es0g81g5k-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:23 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c8584e80bfcso950992a12.3
-        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:21:23 -0700 (PDT)
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:31 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8423f3e4728so1362104b3a.2
+        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:21:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781371283; x=1781976083; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1781371291; x=1781976091; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l2jvLZ77aheSe+DZjMUpTRiQcTblxiXsbYokkj4oN64=;
-        b=bM+Pzm0loC4NsSAXeS7Soiwetk8m00BLzGm5CSOxZyBw7fCaR+0WucpZCwxCZTssME
-         rBblGE/t+tfFvtyWJwljIZsOw73JxLpli5gtawqSiZRMic4x3DhPlr9NeZ3AYJxCdshU
-         lEcumZWtI/k0uW3UkKX9EfOGQ/FtTM5eCWHNqclZn74VvDR6drCjhxVWVThcxQHtjfnF
-         p+BJPkkQXi7BeH0yd3JpbLpUs+nPGK51a/mUSX7a0DXN21sGbMPmgnzAG8DV79xcMlV/
-         twPOiof/JcC6Wy2OB0sOipSxTgsSG77IQZYVMGIWIJfexLjAPEpC6s0rgOrYfxDB0339
-         2zgw==
+        bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
+        b=hRNKNa/aTDwb3ynZxd/h/PL44VaNv1p50KmroV7MsB0efjBoj4kUrWD0LeX4Av2+IM
+         KX3gAZSBXqTHGCiqBOUTD06Gaex3kOb8fzh4EW7zAzswKv5ERPxLqAMLXvPFlV3VPUgz
+         3ErrWfAlM7BaBTnGp1mxIbGN716RkKv8HEsR7kkJdqBRl6y4uaYYoIKtQnrwWCjf7yYL
+         p2FjPyVVHRStiaJ4Jo13R8qLyR26Z2zBWIL7pTGhjRbIIux5d0T7rhQS2JhjBcRJbuCb
+         a8/+AFZk5rDcxM5gKiGL+pC7UhZ5kAgSe/2xhaVyZaG9gwm/p+896lPDB77Rv7yG20iu
+         oA/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781371283; x=1781976083;
+        d=1e100.net; s=20251104; t=1781371291; x=1781976091;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=l2jvLZ77aheSe+DZjMUpTRiQcTblxiXsbYokkj4oN64=;
-        b=keDkv5oSYCpOEx9n+ImprKYEsSg2EOsneB8gjth380uORAkN99J+nkePsIDLXnXrO3
-         PSV8YFGfn3Ff9Z6IMyy8X8cW0nd7g/V/KtotMomhzppJPfCbFX8WtJTepoIkkSuBAowJ
-         ZBfxFlz9CuVFW2byrXzUBQ+M//z2kzI9IXcWdOZKaZgpPhMxv+mUs2CBR+ZYOzm/ZwRz
-         9t++5D2hNpGu20uwXCIxXAgpF6pm37KIDVZo1PZ+3cXTEE4iL3w7rbsdjCFslNy99ebR
-         G5/CLd1m3zow0bk2lLwpyamCfiDgkkPuhHzNp0p9KUPZwODb/t9pkpCewuFZz1UFCiSL
-         JqWw==
-X-Forwarded-Encrypted: i=1; AFNElJ894w5v4vFDKqYJYFX5Sc9HoYD8ueIPuXgJO+EZJLV11IS5medsG0OjJBgnPSdOI300NbdbkNBN5w==@kvack.org
-X-Gm-Message-State: AOJu0YwThYfI1C3iwdyPIsVnPnHb2wpwXUUVnhx4C5yjEJ166/EzJ8sq
-	H5Ene+6U/LgTKEmeCRpWqdvSTzDGYR2b6UXwWdZxToo2tEFNVHY27K8yVFCN4H1E96t9sZkRSGL
-	YS/a23fAeebGgMzJC9bbMgksAn4w8xfl4o9xsdriplzsfTKmKu5sGeA==
-X-Gm-Gg: Acq92OEBXJqeN3CIektVraof3UNmqIeZh9kMnGELqEmYnD/yVRUn3ygh6pI6NNkYlqh
-	tf+Z23KeZgSloXzwBipIkYFshEWMJ626wYPQlizZ0b8C4zu29zdJDdBll4/5LDWdhQLRuX+7Mb0
-	NHfKgqur/WBpW47Clb2i8cRGSDo+ZM0+1GFikklvYDIo7a0+iF0yBDa5HWGnLGqeYVuKeVSzP4D
-	TVBjFE7Sa/YqZtI2i7S1iX0EqeZzzNPeeEcc7RnQNX2XGuflJB6+40iHP68RNl+SCRvF0GDiv+H
-	ExltJu08pxkyiCf9LWpli4/KE7ksjQCqJOOgqmKN3GKrhKKQ9KKhP57JJn1WFX7420l/feOwmdj
-	I7fNh5Ns+NunKPDFEQKNF+OU/pLKRCu2elk+LBed5jkv6jNjs9ISkpQ==
-X-Received: by 2002:a05:6300:408d:b0:3b4:774f:d18e with SMTP id adf61e73a8af0-3b783fb3955mr9237972637.36.1781371282883;
-        Sat, 13 Jun 2026 10:21:22 -0700 (PDT)
-X-Received: by 2002:a05:6300:408d:b0:3b4:774f:d18e with SMTP id adf61e73a8af0-3b783fb3955mr9237939637.36.1781371282373;
-        Sat, 13 Jun 2026 10:21:22 -0700 (PDT)
+        bh=gmDg6wpviGfici5wFw4rRp3TOW9sHNaqJUgICxRvP6Q=;
+        b=TixLIlfs78dZ+tkie9j02nexCTaBpzT+/TA280mEPKOohHDi3qaYzc9jnN93nZcj4K
+         GZmX09sM8H4lywRau9yoJaq1TDwAeOV+KWa+y2jej4fu3hbJyY7yUab5BRWZ+4QFo6U4
+         Kgc3ajsN5VAjtGVuGc8P7ZmpJlUHPny5rBWD8t/NjUUxdLRdZbw8djTWCk7p1Y2DKM3c
+         AOHkV9W0rA38f15l43QZhgeI0dGyvkqmOuL+cJgZ7SwD93safguyZ6aa8YTMsxmxkeSE
+         P4byMYG9Y52WkEf74Q8ulSUcrYKi+aomqOX73XUbJQ9uN/OuThHpQQv0JGea6TFK2K8H
+         WiyA==
+X-Forwarded-Encrypted: i=1; AFNElJ/tRQlPd/6llhtn6UaKavOCqUgSgNFn7yu61Fnwy50jlgGZE7PxBqZ3FpJbgAJ0N5QvjSowKm+ysA==@kvack.org
+X-Gm-Message-State: AOJu0YzvDiStLRdNtS0e+7JaQznGnCyz4f7zud61/m4LEiF58qH9iRen
+	L04eXVByT1Db4iDSTs+ic++JaeGGxl1tv7dWEcG7FpLLH4HGr2vAcKEqbJbJ22Jf51GYuP0rGtp
+	lBi2unvlCDeIH6Xn7g6VLHTl/u5Kea1PDHqOeCRaBI3CeJEvp4WXpoQ==
+X-Gm-Gg: Acq92OHTBPbRvVPW+BMNcfouYGYrDDMk/nFIOntk9GTfLms9id+nphuBHMxhD1REi1J
+	zkjscr522CqJWF9GkSsfyhgIKxPNrlBE/LJ8XjTiRwfvkDIsS1rolfGH7lIlgC/IYnwdarGd01G
+	f2M4LbXWJc7ZP4CyKL0ydMRtfwN3hKmMH87Cba4X27ThMXA8pPzGqF19937+fNPNZ48ScKOK762
+	MAWSYaZCCnON+dfN9K0hm1mb9HOMLhhFAT4YE00Wp4AJHhvv3bYRLrwOIOcBXMmrMZhhaS0XPdH
+	wKUOJ6bh2zGNs32m7gp8Eo2zHrI7J4cYVEppk7TfCyA/3wYrACWEwNVqZTpNhipJOLpuSQGHcmY
+	fBQVvpFZFvrGYpizz8EJVw0Vx3wmiVH510q51oWeHrJDoddYsyj9jDg==
+X-Received: by 2002:a05:6a00:3d48:b0:842:3a98:b34d with SMTP id d2e1a72fcca58-8434ce83f17mr8390916b3a.31.1781371291160;
+        Sat, 13 Jun 2026 10:21:31 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3d48:b0:842:3a98:b34d with SMTP id d2e1a72fcca58-8434ce83f17mr8390867b3a.31.1781371290674;
+        Sat, 13 Jun 2026 10:21:30 -0700 (PDT)
 Received: from hu-pranarya-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.21.14
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.21.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 10:21:22 -0700 (PDT)
+        Sat, 13 Jun 2026 10:21:30 -0700 (PDT)
 From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Date: Sat, 13 Jun 2026 22:49:49 +0530
-Subject: [PATCH RFC 07/12] mm/vmalloc: consolidate occupied tree as
- authoritative index on hot path
+Date: Sat, 13 Jun 2026 22:49:50 +0530
+Subject: [PATCH RFC 08/12] mm/vmalloc: track lazy-purge queue as a
+ list_head
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260613-vmalloc_maple-v1-7-0aa740bb944b@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260613-vmalloc_maple-v1-8-0aa740bb944b@oss.qualcomm.com>
 References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 In-Reply-To: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -143,49 +143,48 @@ Cc: linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
         Pranjal Arya <pranjal.arya@oss.qualcomm.com>,
         Sudeep Holla <sudeep.holla@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=11442;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=7702;
  i=pranjal.arya@oss.qualcomm.com; s=20260516; h=from:subject:message-id;
- bh=3LvVzlcvTfxyqrRYasoLmm+6K2iynv8qA2cCL5g/TxM=;
- b=nqUV4Kw0eSIXuP8FCMkdgzDqt1rMN9t/16SjpKiMChJQMzFkHtSb1Hgy1AomHVYAHaBNoGEE6
- i18NaLje/ndC3qri/cczcfs/kygPhF23UV2KxUmTnbyFs28Fwq+DAUT
+ bh=JrEBDVSR2nkTeNdCYAhWPyaNXTAWBRV/Ax7hvp9FT5w=;
+ b=HlA43z7W1BgFHiQdUCJ9NYyv6guSh8B+257WOVr1UNUmQ3utJWN5wVgMVBRX9p2ibCldFaTWa
+ 7E0Iaid+Gw+AfDte7XbFrrnh/UdH/cFriQdiXtcPQ+ualCVfPKMbz1S
 X-Developer-Key: i=pranjal.arya@oss.qualcomm.com; a=ed25519;
  pk=ymtcTlccEIDsi3ErhpjIoZZHKdPBYWGWW0Lchs5MsbE=
-X-Authority-Analysis: v=2.4 cv=HuxG3UTS c=1 sm=1 tr=0 ts=6a2d9193 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Authority-Analysis: v=2.4 cv=OOoXGyaB c=1 sm=1 tr=0 ts=6a2d919b cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=EUspDBNiAAAA:8 a=dDmkakLwKiWj0oWmIz4A:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-ORIG-GUID: KAIOA3odSLOH-5KAXFyOfJuocDvGb6PV
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfXwPoG5enatGF6
- pz/FvWHQ+qe3NKVxJppN+TF/kzpZv0HniXLTdRQVIsyaIWVu/I/r+WIJ9nFNBJhBJaNDbwNEus1
- Qjcq45bxxZJ/Z91NOwMx0/KvPNe8Tu8=
-X-Proofpoint-GUID: KAIOA3odSLOH-5KAXFyOfJuocDvGb6PV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX/uNTnxbTTDn3
- Be7SBbMzwzzhhuPDeOs2OhpzM2IPAObFzwcYudfFeqUiAl15l4XBb0QsmlvJsBWnWaOLIPew7bn
- XDN1D7SEjA88RqG6HxJatgvdt3071C2/IU8co2zYDVyqQmRD16K/oZ6tnFzEc2F+H2RZQMKkHmZ
- WTCgjZcM+RtrxyqXPfe50mTmzeEZ1YnEVz1GEnATQupbcodXHZCgw8eLhKa291QWLc8DVoxLMgn
- k4uIrWb5enJxuMy/yGvZxTjDoPohjLt1cDAU/9NAZLD2dWlCmsgpIoREJCElxY4so/f9lVmZcrW
- pZR1h6w4Qq37JGkptQRLXeZJU9U614GBFAdvi5lAjh64+4ZcDW+9EIXGb8m3lwfVNMptdAB65+2
- VKVn2PZJw604XuyFfVnVSoMmmaXP9M9sJU+OLQPDNjYb3h9Rvc66CAuxLW98U8TSxRZWahZJM4r
- Ob4qf+b9/HwwbpQbuHg==
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=EUspDBNiAAAA:8 a=LbbEsUlp8jkdcCOz7_EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-GUID: AGrrlKI4bFik90XsNOv9BDtYk4rQJeDR
+X-Proofpoint-ORIG-GUID: AGrrlKI4bFik90XsNOv9BDtYk4rQJeDR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX+IDcQWDkN0Bx
+ ruiI2TgOrl1Hm6vtG7FW28G/BUk9YesmKOy3JJy/DD/MyYbjFA8uF56KG+YHlcTWK3wCP0/8sva
+ ArP3Rb6499NYoUWe/qdc8QHIa2LBtGiawbGtz5JCxK/JHp/mY3PltakCJ9krngPtFseEmuinKLc
+ 5cLHRe+AgkrCiorbpeI7zKjQ8cwp0HJgbBrZOlMD65CBCw+qY2d1pfphUo67AmhxDvgooLyGZMW
+ R/srA3gn6gUu4yW1IqmrVK7LINPId/s3EjZQVnzw87M5fX850Kw4cfRiagsaTR++sLC8K99r0Ka
+ xSpI+3sIPAEJSxn2Q0bgSo1k0NUa3YCn6QDgfZGsAcC/6iM7Mo3YzkTs93QibT24Fmc0Y4otng8
+ wcvgqlL1DbnlPiICMvs+ckKBCoLfLiWKPtZ7QCkXaL5G5+BIIkLQGzSL69MpAVw1FtVOLfOvq2f
+ WZHdb2qLtZa+tqN3fYg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX3TwEV6Ef7eez
+ n9tUnjjgR01p5m0AAVivsjQenTTBjHeOrLIU2ugCuTmBQeEzBoNzFA3XkPCdQgKIwLDQPrFKWlw
+ ufShqYeNkN6vHOdvWJHzHaiX7qvjY+M=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-13_03,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 spamscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606130180
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F3589180007
-X-Stat-Signature: nmbyqprqbkcjycom4ric9k7y3xrjqt9z
+ priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606130180
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1781371284-910361
-X-HE-Meta: U2FsdGVkX1/GXWMHKxvPdoDaLqwYtYBRWd7xvIGa/O4M7s7S6a0MyXk/I4JJrPicho4bTDkGsVCtyEkR1FFs3oCQwVQVWGgj53X9GXSLSCozXb8spd8R8U9U9Noy53eTKj8VdCQYb/1MGSnz+sC4s/0hRlc79fv8P+0B/rPIDWQ4ylN+B15m1At0lbNEiWXfmUbI8AF6aMCCPvvS40BN5bRnqQhhO3h6XrQ4+6eO9QqnmjFLOESj+NBc+TsPnpMpDy2RSQaHx2qn/4wj2kzKGdL/9uY/3DcYLeI3UyE5APQ1T8xoV4+OVtfR/FTOj800E/uLesfa7i3o0xDw22R7k138Bk1XpO6Wg1Dp9WTITfNTA3GUNVkcq3r3FCnJKHb221D1jiDNMaJ+JkFS9fBOFBltsN75XelwuMEvvKgKG31YrHsYFEE7GToSJpXY10lvWyja0M2F20LYOaw5aGFL/tjcTG815vH/fhvtR9CHrw7A8JS71LHv1WKijhYWpqsms3rY9v2Lf56B2jCLZmDiy8ukXhR5hC176BjsyYfKzXDbshTeUrmooekeWJjAcaG1ypPVoioEsCAxTyRgJiKl3wbfiFWFH47EhgW4fKUx5kAzh3MserA2WfelvLVFKu8mL5KVPGV36+bFRp7TdxCS8EhOuojQ9DmpK9jUPWcYK3CTJLyI3NquRSJAqMRF1hNpRG2VySXZc7iHbNeuAEQuaAOcHwhts+m/ychFGwJlQHJTtS/gLnGkb1TMnhC0FfYgky7GYobM26CfVfSb5K3r2Ea0c4hL9b5t2WtFtdOT2vYewvUIpue7t3PzP+zVlt7801vaXnSQGQ1yo10mAU5gjYj51tOZQHikrFB8sr/9hofV2Z62kyuMVy+b3kLHRoRfcyU+INmrvD+0wrnO5GxFxkjfS4A/mQam/nuSyGkuvTLMxoqLtF8zoAxSf0wvxS8X3AxiYKpYnC6XQT78VLk
- 4WNukEa4
- 0FJOAHERtwTjAZh44DYYbqDf8jLZPW/GnsJOAGPE5AJZAKOc6d4m5FO3iMTd97q2UpklES2hJ5yDQgAmV15JNmCkmyplSSap8/t/GLu14qlJqkEssVRdWIl3m0nLjuBW9OfDcc8GxlXgsDln54SN0Y6XjZrqow4Yb8Kra1geHQasTT+ksGFsbdZinZtfwPypfpKrIgTKDFFMuu5nbISebJ+GDY3cPrBXR/3jzhPj0V4Pr0Fsgbn/8NFWrIvEGcOjADp6pIyuZ0D767HaqpW+DqpgZduMcI+RRPT0OPayAvOLHOpNtGaDiWZDPPgbpxw9kZvVeAo5XoMIB4YngQANIKO8KMA5dh43Tkf6KTNqQklLIhPVx01v7KSVpSexB88yjxritpUzGTuKjaAyLaBV9J3uEtLNKlgQJIu7u5QVJdYzCsR+eL9AzrahuYXmG+jA7DbCe2aeLAgXghNoo7Bw7eqNvU+/yWrpBeqqjMHScufN00ie1MjO/ZlD6TfFGUakhSLS/zUO+cRB0MqH5tdM2GqlogA==
+X-Stat-Signature: bqrna8ouczifac5ejnzudgomp3ufbcf3
+X-Rspamd-Queue-Id: 2931640003
+X-HE-Tag: 1781371292-764438
+X-HE-Meta: U2FsdGVkX1+7MtVPZWa6495F8hnfLFyvXi4asMoNw5G1hw+R9lcW1dRU1U1nB7/DKPRBzkzbGv6e9Bg2y2I4VzAsd99UDeBeBbewoL6Tvgmw6PhLm7R6inoD3A1x8G7+Zh2E/4VupYXQBaAtE80fxiRJmDunI6xprLF2pebiG3zHavO/T9EMnNu3RfPgl4KqkvokjMfh+KwFHAuOBpkmgcNHXdms7zBb1O7VqYLkBRGOKK5shZgKn/h57V/V6BOdayFnoX2gxUEzYy/H1uHCoPTxqtUAVzVHpLBgMMoVT1Ey8W6IYiTjjNYMZ+tfpS3qTUOgU+Ek79+tIMFvGWWw0yFSDJDlLQoymrRZ2g93/3WyFI+7yyyMdyEiefyoVrVAO54g7NmzzTtF4JVVQKudyuKVChCa2Ur1r8oCRTzEuHE6wxWb/P8IrhxiCxavpHORYpDJ/5FLdNk2p9W3LxeWZrs7NOP7ta57OQFfvcuwQ6LYIkWf4CiZDDBD+1Bg3IOq8dSzGH7PcSknPP8Pud/Zn4cDEH0G9ifQ9JqZJLQLV36t4o9onuYPjIgQJxgtwjo7dQUVXy00lzV+gWeRRGv36sOwqnA2AiF/o5VCHHYbET1f9oGjcXaj5Z3bXxE+FsIz70Hq0SFUUx7rIuFo1AFdHzQF0cWovuBiQ9rCjLBk38S+MTkyL8LVnWDqV7HQq9m3gaNdc4oE7p9NFqfEcStj8wedUbfDItlWFXxeHz74laT+pzGEqeRmuCkkMVJYOANmnF7RuojxUVXgOsZ7w43yxia0mkfSA25QKWEj+Iqr7FoHOWAwFY/01Bx0kFiOm3SxWl7TCZIxBxwIulChpXjpKZ4iuRwJY8xQpi4/mvtxU22KOitKx2i0kPurpqaBqFNe1PcRbw+m1JgHuZX38v/n6cw9Vbkbgjsq3a1mEG/5E7xH+4FW0D2c2hiaK7BF8puY8U1WukHDPnmkF+6oAWZ
+ 01se/tcn
+ 2t7DcH0dosvOznpf7spBllPP+oaUzZCdSWARDB+xAHeA7sGkhEgnHBNukkBXlsGZqesa+eyH0Z7OJ/Z42lWw5+m9yY3ka7LMkQQwMYzbSagszm6RyVOcHkD/DrluHjfmJaulMm6YpbAdVJol/SY2kRcMYxsH+aivccihNExVCPtYj5GNXXrumJo/bmfFuMt3C1Tc2GRV3vZnXK2d/m836turHGpiaPAb7WYxFDEbi9w8fGC5I+2ISeo6AAe89kJFFv8KBmdjeZpqvlseuWpEtD0hcP935UmAMVZXmoqHV3N7I0N46LU/uCJUMxqSalRXOITnuzkEsU0Krp25E21mosQIAGif3u0ZhFkhx5dlXnhhO8ILyg/E3tL2EHa2fPEiS9kfXlG/f44WuFQmX7NOVPsOBXtlraw9Lklykz1fk+MOO53GKTaP/fDqA7ncVU574492jydkrLMR8yGmNVyNiWAkkAluVWGrJWUvrpZLMD7w6pHLNaCB/gLykDFFPXQdn7E0Qcg6V3nNbHAJah5aYybBA5V/zWokNZcS2lQS+KRRYHStBA4xiMvRaFtT6wYBM715L1G64C+YkSWwDkGQ8I71OG9KjLPTX6vF8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,323 +192,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The dual-tree design (free_vmap_area_mt + occupied_vmap_area_mt
-maintained in lock-step) costs roughly twice the maple operations
-per allocation lifecycle that the rb_tree path it replaced used.
-Strip the maintenance back to a single authoritative tree on the
-steady-state hot path.
+The lazy queue is bulk-drained from the purge worker; nothing
+queries it by address.  publish_vmap_area_lazy() inserts into the
+queue and purge_vmap_areas_lazy() walks it linearly.
 
-After this patch:
-
-  - The occupied tree is the source of truth for in-use ranges on
-    the alloc/free hot path.
-  - free_vmap_area_mt is still maintained on the slow paths
-    (vmap_init_free_space, pcpu_get_vm_areas's top-down walk,
-    decay_va_pool_node), but the steady-state alloc/free no longer
-    has to keep both trees in lock-step.
-  - This removes ~half of the maple operations a typical
-    vmalloc/vfree cycle performs.
-
-The pcpu top-down walk relies on the assumption that chunks consume
-addresses bottom-up, so stale free-tree entries at low addresses
-never collide with pcpu's chosen base.  This is documented at the
-relevant call site.
+A list_head expresses the actual usage and saves the per-publish
+maple insert.  Per-node vn->lazy.mt becomes vn->lazy_list.  The
+locking discipline (vn->lazy.lock still serialises inserts) is
+unchanged.
 
 Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 ---
- mm/vmalloc.c | 179 +++++++++++++++++++++++++++++++++--------------------------
- 1 file changed, 99 insertions(+), 80 deletions(-)
+ mm/vmalloc.c | 133 +++++++++++++++++++++++++----------------------------------
+ 1 file changed, 57 insertions(+), 76 deletions(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 5bc1e47c456a..73a40a88dbf6 100644
+index 73a40a88dbf6..1b73001e197e 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -1767,17 +1767,32 @@ occupied_mt_find_hole_window_locked(unsigned long min, unsigned long max,
- {
- 	MA_STATE(mas, &occupied_vmap_area_mt, 0, 0);
- 	unsigned long search = min;
-+	unsigned long search_len = size;
- 	unsigned long hole_end;
- 	bool retry_empty;
- 
- 	lockdep_assert_held(&free_vmap_area_lock);
- 	retry_empty = list_empty(&vmap_retry_list);
+@@ -942,6 +942,16 @@ static struct vmap_node {
+ 	struct mt_list busy;
+ 	struct mt_list lazy;
  
 +	/*
-+	 * Pad the gap-find by align-1 when align exceeds PAGE_SIZE so that
-+	 * any alignment slack inside the returned gap can be absorbed
-+	 * without an extra outer-loop iteration. Without this padding, the
-+	 * loop has to scan past every page-aligned gap that is large enough
-+	 * for @size but too small for the aligned start, which is O(K) in
-+	 * the number of such gaps and pathological for big alignments on a
-+	 * fragmented occupied tree.
++	 * Lazy list. The lazy index is no longer queried by address on the
++	 * hot path: free_vmap_area_noflush() pushes the VA via list_add and
++	 * purge drains it via list_splice. Keeping a list head sidesteps a
++	 * mas_store on every vfree and a mas_for_each + per-entry
++	 * mas_store(NULL) during purge. lazy.mt is retained for the rare
++	 * non-perf_mode rollback path inside publish_vmap_area_lazy().
 +	 */
-+	if (align > PAGE_SIZE) {
-+		if (check_add_overflow(size, align - 1, &search_len))
-+			return false;
-+	}
++	struct list_head lazy_list;
 +
- 	while (search <= max) {
- 		unsigned long candidate, candidate_end;
- 
- 		mas_set(&mas, search);
--		if (mas_empty_area(&mas, search, max, size))
-+		if (mas_empty_area(&mas, search, max, search_len))
- 			return false;
- 
- 		hole_end = min(mas.last, max);
-@@ -2182,39 +2197,35 @@ rollback_busy_insert_failed_alloc_locked(struct vmap_area *va)
- }
- 
- /*
-- * Reinsert @va into the free index after occupied erase. On failure, place the
-- * range on the non-index retry queue and best-effort restore occupied tracking.
-+ * Release @va after the caller has erased it from occupied_vmap_area_mt.
-+ * In the occupied-only design there is no free index to track free space
-+ * with vmap_area objects: the range becomes implicitly free as soon as
-+ * the occupied marker is gone. The struct itself is recycled to the slab.
-  *
-- * Return: free-tracked @va on success, NULL when queued for retry.
-+ * The signature returns @va on success (matching the pre-rewrite contract
-+ * used by the synchronous free_vmap_area() path) so the caller can decide
-+ * whether further bookkeeping is needed.
-  */
--static __always_inline struct vmap_area *
--reinsert_or_queue_vmap_area_locked(struct vmap_area *va)
-+static __always_inline void
-+release_drained_vmap_area_locked(struct vmap_area *va)
- {
--	struct vmap_area *tracked;
--
- 	lockdep_assert_held(&free_vmap_area_lock);
- 
--	tracked = merge_or_add_vmap_area_free_locked(va);
--	if (tracked)
--		return tracked;
--
--	if (insert_vmap_area_free_locked(va))
--		return va;
--
--	/*
--	 * Retry queue acts as allocation exclusion even if occupied restore
--	 * fails under pressure.
--	 */
--	if (WARN_ON_ONCE(!occupied_mt_store_va_locked(va)))
--		INIT_LIST_HEAD(&va->list);
--
--	retry_queue_add_va_locked(va);
--	return NULL;
-+	kmem_cache_free(vmap_area_cachep, va);
- }
- 
- /*
-  * Returns a start address of the newly allocated area, if success.
-  * Otherwise an error value is returned that indicates failure.
-+ *
-+ * Steady state (post late_initcall, occupied_mt perf_mode on) takes
-+ * the occupied-only fast path: find a gap with mas_empty_area on
-+ * @occupied_vmap_area_mt and store the consumed sub-range. This costs
-+ * two maple touches per allocation versus four to six in the legacy
-+ * path (which clipped a free vmap_area struct in @free_vmap_area_mt).
-+ *
-+ * Pre-perf_mode (early boot) and -ENOENT/-ERANGE retries fall back to
-+ * the legacy free_mt walk + va_clip path, which remains correct.
-  */
- static __always_inline unsigned long
- __alloc_vmap_area(unsigned long size, unsigned long align,
-@@ -2235,33 +2246,41 @@ __alloc_vmap_area(unsigned long size, unsigned long align,
- 		return -EINVAL;
- 	if (size > vend - vstart)
- 		return -ENOENT;
--	if (align > PAGE_SIZE && (vend - vstart) != size) {
--		if (check_add_overflow(size, align - 1, &search_len))
--			return -ERANGE;
--	}
- 
--	if (occupied_mt_supported() && align <= PAGE_SIZE) {
--		unsigned long candidate;
-+	/*
-+	 * Occupied-only fast path: skip both the free_mt validation
-+	 * (free_mt_find_enclose_range_locked) and the va_clip splitting.
-+	 * occupied_mt_find_hole_window_locked already pads the gap search by
-+	 * align-1 internally for align > PAGE_SIZE, so any alignment lands
-+	 * inside the returned gap; storing the consumed sub-range in
-+	 * occupied_mt makes the allocator visible to subsequent lookups. The
-+	 * legacy free_mt stays in sync only at coarse points (init, pre-
-+	 * perf_mode), which is harmless because the alloc and free hot paths
-+	 * no longer query it.
-+	 */
-+	if (occupied_mt_supported()) {
-+		if (!occupied_mt_find_hole_window_locked(vstart, vend - 1, size,
-+							 align, &nva_start_addr))
-+			return -ENOENT;
- 
--		if (occupied_mt_find_hole_window_locked(vstart, vend - 1, size,
--							align, &candidate)) {
--			if (check_add_overflow(candidate, size, &nva_end_addr))
--				return -ERANGE;
-+		if (check_add_overflow(nva_start_addr, size, &nva_end_addr))
-+			return -ERANGE;
- 
--			va = free_mt_find_enclose_range_locked(candidate, nva_end_addr);
--			if (likely(va)) {
--				nva_start_addr = candidate;
--				goto found;
--			}
-+		if (!occupied_mt_store_range_locked(nva_start_addr, nva_end_addr))
-+			return -ENOMEM;
- 
--			occupied_mt_cache_gap_miss_locked(candidate, vend);
--		}
-+		return nva_start_addr;
- 	}
- 
  	/*
--	 * Free maple index is authoritative for allocatable ranges; lazy and
--	 * retry entries are intentionally excluded from it.
-+	 * Pre-perf_mode early boot fallback: walk free_mt linearly and use
-+	 * va_clip to keep both indices coherent.
+ 	 * Ready-to-free areas.
  	 */
-+	if (align > PAGE_SIZE && (vend - vstart) != size) {
-+		if (check_add_overflow(size, align - 1, &search_len))
-+			return -ERANGE;
-+	}
-+
- 	mas_set(&mas, vstart);
- 	va = mas_find(&mas, vend - 1);
- 	while (va) {
-@@ -2295,7 +2314,6 @@ __alloc_vmap_area(unsigned long size, unsigned long align,
- 	if (!va)
- 		return -ENOENT;
- 
--found:
- 	ret = va_clip(va, nva_start_addr, size);
- 	if (WARN_ON_ONCE(ret))
- 		return ret;
-@@ -2340,8 +2358,7 @@ static void free_vmap_area(struct vmap_area *va)
- 		spin_unlock(&free_vmap_area_lock);
- 		goto out_schedule_retry;
- 	}
--	if (!reinsert_or_queue_vmap_area_locked(va))
--		queued_retry = true;
-+	release_drained_vmap_area_locked(va);
- 	spin_unlock(&free_vmap_area_lock);
- 
- out_schedule_retry:
-@@ -2692,15 +2709,13 @@ reclaim_list_global(struct list_head *head, bool erase_occupied,
+@@ -1510,52 +1520,37 @@ unlink_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
+ static __always_inline bool
+ insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
  {
- 	struct vmap_area *va, *n;
- 	bool ok = true;
--	bool queue_retry_work = false;
-+	LIST_HEAD(release);
- 
- 	if (list_empty(head))
- 		return true;
- 
- 	spin_lock(&free_vmap_area_lock);
- 	list_for_each_entry_safe(va, n, head, list) {
--		bool occupied_erased = false;
+-	int err;
 -
- 		list_del_init(&va->list);
- 		if (erase_occupied) {
- 			if (WARN_ON_ONCE(!occupied_mt_erase_va_locked(va))) {
-@@ -2708,24 +2723,21 @@ reclaim_list_global(struct list_head *head, bool erase_occupied,
- 				ok = false;
- 				continue;
- 			}
--
--			occupied_erased = true;
--		}
--			if (WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va))) {
--				if (occupied_erased &&
--				    WARN_ON_ONCE(!occupied_mt_store_va_locked(va))) {
--					retry_queue_add_va_locked(va);
--					queue_retry_work = true;
--					ok = false;
--					continue;
--				}
--				list_add_tail(&va->list, failed);
--				ok = false;
- 		}
-+		/*
-+		 * Occupied-only design: there are no free vmap_area objects
-+		 * any more. With the occupied marker erased, the range is
-+		 * implicitly free (a gap in occupied_vmap_area_mt). Just
-+		 * release the struct outside the lock.
-+		 */
-+		list_add_tail(&va->list, &release);
- 	}
- 	spin_unlock(&free_vmap_area_lock);
--	if (queue_retry_work)
--		schedule_work(&drain_vmap_work);
-+
-+	list_for_each_entry_safe(va, n, &release, list) {
-+		list_del_init(&va->list);
-+		kmem_cache_free(vmap_area_cachep, va);
-+	}
+ 	lockdep_assert_held(&vn->lazy.lock);
  
- 	return ok;
+-	try_init_lazy_mt_locked(vn);
+-	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
+-		return false;
+-
+-	if (!validate_vmap_area_range_insert_mt_locked(&vn->lazy.mt,
+-						       va->va_start,
+-						       va->va_end))
++	/*
++	 * The maple-tree lazy index is bypassed in the hot path: a simple
++	 * list saves one mas_store per vfree and one mas_for_each + N
++	 * mas_store(NULL) during purge. lazy.mt is left untouched here so
++	 * the non-perf_mode publish_vmap_area_lazy() rollback can still
++	 * unlink the VA via unlink_vmap_area_lazy_locked() if it inserted
++	 * one — that path is unreachable in steady state with perf_mode on.
++	 */
++	if (WARN_ON_ONCE(!list_empty(&va->list)))
+ 		return false;
+ 
+-	INIT_LIST_HEAD(&va->list);
+-
+-	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
+-
+-	err = mas_preallocate(&mas, va, GFP_NOWAIT | __GFP_NOWARN);
+-	if (!err) {
+-		mas_store_prealloc(&mas, va);
+-		mas_destroy(&mas);
+-		return true;
+-	}
+-
+-	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
+-	return !WARN_ON_ONCE(err);
++	list_add_tail(&va->list, &vn->lazy_list);
++	return true;
  }
-@@ -5747,14 +5759,16 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 		orig_start = vas[area]->va_start;
- 		orig_end = vas[area]->va_end;
- 		if (occupied_mt_erase_va_locked(vas[area])) {
--			va = reinsert_or_queue_vmap_area_locked(vas[area]);
--			if (va)
--				kasan_release_vmalloc(orig_start, orig_end,
--						      va->va_start, va->va_end,
--						      KASAN_VMALLOC_PAGE_RANGE |
--						      KASAN_VMALLOC_TLB_FLUSH);
--			else
--				queued_retry = true;
-+			/*
-+			 * Reinsert releases vas[area] in the occupied-only
-+			 * design; use orig_start/orig_end captured above for
-+			 * the kasan release call rather than va->va_start.
-+			 */
-+			release_drained_vmap_area_locked(vas[area]);
-+			kasan_release_vmalloc(orig_start, orig_end,
-+					      orig_start, orig_end,
-+					      KASAN_VMALLOC_PAGE_RANGE |
-+					      KASAN_VMALLOC_TLB_FLUSH);
- 		} else {
- 			retry_queue_add_va_locked(vas[area]);
- 			queued_retry = true;
-@@ -5820,14 +5834,11 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 		orig_start = vas[area]->va_start;
- 		orig_end = vas[area]->va_end;
- 		if (occupied_mt_erase_va_locked(vas[area])) {
--			va = reinsert_or_queue_vmap_area_locked(vas[area]);
--			if (va)
--				kasan_release_vmalloc(orig_start, orig_end,
--						      va->va_start, va->va_end,
--						      KASAN_VMALLOC_PAGE_RANGE |
--						      KASAN_VMALLOC_TLB_FLUSH);
--			else
--				queued_retry = true;
-+			release_drained_vmap_area_locked(vas[area]);
-+			kasan_release_vmalloc(orig_start, orig_end,
-+					      orig_start, orig_end,
-+					      KASAN_VMALLOC_PAGE_RANGE |
-+					      KASAN_VMALLOC_TLB_FLUSH);
- 		} else {
- 			retry_queue_add_va_locked(vas[area]);
- 			queued_retry = true;
-@@ -6045,6 +6056,14 @@ module_init(proc_vmalloc_init);
  
- #endif
- 
-+/*
-+ * Pre-occupied-only design seeded the free index with placeholder VAs
-+ * covering gaps between vmlist entries. This is preserved as the
-+ * boot-time path that populates the legacy free_vmap_area_mt for any
-+ * code that still queries it (notably pcpu_get_vm_areas). With
-+ * occupied_vmap_area_mt authoritative, allocators on the hot path
-+ * skip free_mt entirely.
-+ */
- static void __init vmap_init_free_space(void)
+ static __always_inline bool
+ unlink_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
  {
- 	unsigned long vmap_start = 1;
+-	int err;
+-
+ 	lockdep_assert_held(&vn->lazy.lock);
+ 
+-	try_init_lazy_mt_locked(vn);
+-	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
+-		return false;
+-
+-	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
+-
+-	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
+-	if (WARN_ON_ONCE(err))
++	/*
++	 * Match insert_vmap_area_lazy_locked()'s list-based fast path. Used
++	 * only by publish_vmap_area_lazy() rollback, which is unreachable in
++	 * steady state but kept for the non-perf_mode early-boot window.
++	 */
++	if (list_empty(&va->list))
+ 		return false;
+ 
+-	INIT_LIST_HEAD(&va->list);
++	list_del_init(&va->list);
+ 	return true;
+ }
+ 
+@@ -1610,48 +1605,22 @@ lazy_vmap_areas_empty_locked(struct vmap_node *vn)
+ {
+ 	lockdep_assert_held(&vn->lazy.lock);
+ 
+-	try_init_lazy_mt_locked(vn);
+-	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
+-		return true;
+-
+-	return mtree_empty(&vn->lazy.mt);
++	return list_empty(&vn->lazy_list);
+ }
+ 
+ static __always_inline void
+ move_lazy_vmap_areas_to_purge_locked(struct vmap_node *vn)
+ {
+-	LIST_HEAD(move_list);
+-	struct vmap_area *va, *n_va;
+-	int err;
+-
+ 	lockdep_assert_held(&vn->lazy.lock);
+ 
+-	try_init_lazy_mt_locked(vn);
+-	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
+-		return;
+-
+-	MA_STATE(mas, &vn->lazy.mt, 0, 0);
+-
+-	mas_for_each(&mas, va, ULONG_MAX)
+-		list_add_tail(&va->list, &move_list);
+-
+ 	/*
+-	 * Erase ranges one-by-one and move only successfully erased entries to
+-	 * purge_list. This avoids destroy/reinit churn and keeps lazy index
+-	 * coherence if an erase operation fails under pressure.
++	 * Move every queued VA to purge_list with a single splice. The
++	 * sort-by-address property that the maple-tree lazy index used to
++	 * provide is no longer used by purge_vmap_node(); kasan_release
++	 * computes its own min/max over the resulting purge_list when
++	 * needed.
+ 	 */
+-	list_for_each_entry_safe(va, n_va, &move_list, list) {
+-		MA_STATE(mas_erase, &vn->lazy.mt, va->va_start, va->va_end - 1);
+-
+-		err = mas_store_gfp(&mas_erase, NULL, GFP_ATOMIC | __GFP_NOWARN);
+-		if (unlikely(err)) {
+-			WARN_ON_ONCE(err);
+-			list_del_init(&va->list);
+-			continue;
+-		}
+-
+-		list_move_tail(&va->list, &vn->purge_list);
+-	}
++	list_splice_tail_init(&vn->lazy_list, &vn->purge_list);
+ }
+ 
+ static __always_inline bool
+@@ -2806,13 +2775,18 @@ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+-	unsigned long start, end;
++	unsigned long start = ULONG_MAX, end = 0;
+ 	unsigned int batch_count = 0;
+ 
+-	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+-	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+-
++	/*
++	 * purge_list is no longer sorted by address (lazy_list is built in
++	 * insertion order via list_add_tail). Compute the bounding range
++	 * inline with the per-VA shadow-release loop to avoid a second walk.
++	 */
+ 	list_for_each_entry(va, &vn->purge_list, list) {
++		start = min(start, va->va_start);
++		end = max(end, va->va_end);
++
+ 		if (is_vmalloc_or_module_addr((void *) va->va_start))
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+@@ -2824,7 +2798,9 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 		}
+ 	}
+ 
+-	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
++	if (start < end)
++		kasan_release_vmalloc(start, end, start, end,
++				      KASAN_VMALLOC_TLB_FLUSH);
+ }
+ 
+ static void purge_vmap_node(struct work_struct *work)
+@@ -2938,6 +2914,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 	static cpumask_t purge_nodes;
+ 	unsigned int nr_purge_nodes;
+ 	struct vmap_node *vn;
++	struct vmap_area *va;
+ 	int i;
+ 
+ 	lockdep_assert_held(&vmap_purge_lock);
+@@ -2964,11 +2941,14 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 		move_lazy_vmap_areas_to_purge_locked(vn);
+ 		spin_unlock(&vn->lazy.lock);
+ 
+-		start = min(start, list_first_entry(&vn->purge_list,
+-			struct vmap_area, list)->va_start);
+-
+-		end = max(end, list_last_entry(&vn->purge_list,
+-			struct vmap_area, list)->va_end);
++		/*
++		 * lazy_list (and therefore purge_list) is no longer sorted by
++		 * address. Compute the bounding range by walking purge_list.
++		 */
++		list_for_each_entry(va, &vn->purge_list, list) {
++			start = min(start, va->va_start);
++			end = max(end, va->va_end);
++		}
+ 
+ 		cpumask_set_cpu(node_to_id(vn), &purge_nodes);
+ 	}
+@@ -6153,6 +6133,7 @@ static void vmap_init_nodes(void)
+ 		mt_init_flags(&vn->lazy.mt, MT_FLAGS_LOCK_EXTERN);
+ 		mt_set_external_lock(&vn->lazy.mt, &vn->lazy.lock);
+ 		vn->lazy.mt_enabled = true;
++		INIT_LIST_HEAD(&vn->lazy_list);
+ 
+ 		for (i = 0; i < MAX_VA_SIZE_PAGES; i++) {
+ 			INIT_LIST_HEAD(&vn->pool[i].head);
 
 -- 
 2.34.1
