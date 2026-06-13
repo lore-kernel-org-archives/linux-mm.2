@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4273CD98CF
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 00:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFFCCD98CF
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 00:53:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5B206B0005; Fri, 12 Jun 2026 20:39:14 -0400 (EDT)
+	id 99DA16B0005; Fri, 12 Jun 2026 20:53:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32296B008A; Fri, 12 Jun 2026 20:39:14 -0400 (EDT)
+	id 927696B008A; Fri, 12 Jun 2026 20:53:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E546B008C; Fri, 12 Jun 2026 20:39:14 -0400 (EDT)
+	id 7EF086B008C; Fri, 12 Jun 2026 20:53:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B3A6A6B0005
-	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 20:39:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A90E1C312C
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:39:14 +0000 (UTC)
-X-FDA: 84873030228.07.36E4183
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1E56B0005
+	for <linux-mm@kvack.org>; Fri, 12 Jun 2026 20:53:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAC251A029B
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:53:19 +0000 (UTC)
+X-FDA: 84873065718.16.A002049
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 95D544000B
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:39:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaB3KHbD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 614D7A0006
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:53:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J51QmfVH;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781311152;
+	s=arc-20220608; t=1781311998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TEI/oYL96D6QPPjj82L55jjg/d8h3AkIL0OSLpC5t+Y=;
-	b=MwnnHbz0rhk65eDtbgXwpcJj4A+BoGoKr87NhB9imEJ4zaUxVxwxZNxiVjG6xoBaiy09uu
-	ur1IucVPANDWl9naDdl4J0J9rD3LVTe6MP+3D5y/c18qU3TccGN52Mr4hm9BT05pkG/Ydz
-	eqnBZP+BUisqCbqh7MmVT/Jyi9Hdo+E=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaB3KHbD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=nhowGWyw12bvZh9JeBeCLCL7/SYp3UQQwnsR0tQHv60=;
+	b=dR7I4D+4RizJkI22ZYMDr//xu5Oka6vt7y/bCvD2M776lelz1UMA/YaH0gIZ5puIZ2UR3d
+	jc+tpVCfaOolXT8H71d5xJ5ZX7Gurzk5jriLzw+FR92ARimx+VsJXd0HD81Zj8QeUefU2d
+	pWeMtdp8G+VGygoflY9WkRVUoVExsR8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781311152;
-	b=HgZ4xGpALCxTbZyd/rXAHfRLGvHEOuQotLH/5oEbytsCFLfmVItaLS0tx6B2sSWlamUbXH
-	uTD9v95NcmJgMqxSAo02pm5sQ+HJhN3qAcvR42q7V6B+rjjIwsAFs2orz24m5H4BQlq+7g
-	SSKXbFWuTfYAcBWxd5WQuDmb9836unk=
+	t=1781311998;
+	b=yjy7mpihKMLLnAYrMI3RjQSkkb17nI/6+pXvgr2kugpwn1+pnGfupmXY27lTLAsPmUgQ53
+	TyemsS2fOQumaFqMzPexJVnoOiRvC8FTc3tNrhBXE4YvTdO5v5FqFigMjbrxqYhw0T4NPb
+	KgwpXGkm/WMmvTpN+BsD7wezYp2N3vs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J51QmfVH;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27CF060008;
-	Sat, 13 Jun 2026 00:39:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDDD1F000E9;
-	Sat, 13 Jun 2026 00:39:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 01F4060008;
+	Sat, 13 Jun 2026 00:53:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352481F000E9;
+	Sat, 13 Jun 2026 00:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781311151;
-	bh=TEI/oYL96D6QPPjj82L55jjg/d8h3AkIL0OSLpC5t+Y=;
+	s=k20260515; t=1781311997;
+	bh=nhowGWyw12bvZh9JeBeCLCL7/SYp3UQQwnsR0tQHv60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RaB3KHbDYrCrCpghgRrcfM7xtPFx2sUsgqe6B4GoO9Avmo+oVZwHtErMBqQo/xzlT
-	 fXlAFyT7ds9gvCZd3bt/CtHxpMO/pPmRxD5Bxfn76NSFLlYNqSm1hDhilDWa21fTG5
-	 ydnr/01AKEnZSclCf+X98zMvV4QYODluKYjvmDJsj1nvvST/YfZJSHP/D1rdH2h+hh
-	 kNqLm5IVSfExkZpxpo9l7iY7CmCxejdfol/VwdRrm+GPTqYv2TtTqAd1v1qup8A1QY
-	 8VESK4htyjib9pYl30SpCwNQVgCsNRQ1REp1lOpLYAogCvm5J8LvnNSMYvsjYY+CUH
-	 hVmTmZCbIl4aQ==
+	b=J51QmfVHX75UM5QrzmUrUsWsKlvTnDo4hcc+W/tyuE5FmH6ZU5is9fRfnwE0sLGiE
+	 SFyvVpCbiFQrdwEFi2gflZ5z1XyQT/MZbmBDV/ie+Zb7PsRagrP1RGrvt65XyWLU/I
+	 VRq4KHbS9YQSL7tYaaTuZkfgD6qfW/R0npDo+NfCMrBcvydZEzoWGJmKTzGjYiXMEI
+	 ISUzCfHzWEf652McBgivQ0Sv2oJDojH+IP97pijy9k+vrlKUPhOVtpiYT1QGsbnGM7
+	 sSKyP/nk1SXjbGTjg1O3dvr14EaSAVIawAudOSA+bMo6r+GTIO/56rJLZKBLo4YOHI
+	 xEMO9MRE05Okg==
 From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+To: Breno Leitao <leitao@debian.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	lance.yang@linux.dev,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Qian Cai <cai@lca.pw>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v4 0/4] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Fri, 12 Jun 2026 17:39:04 -0700
-Message-ID: <20260613003904.1932-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task stacks
+Date: Fri, 12 Jun 2026 17:53:09 -0700
+Message-ID: <20260613005310.2120-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <abc8acca-5145-4c16-aeb7-4127da234a62@huawei-partners.com>
+In-Reply-To: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 95D544000B
 X-Rspam-User: 
-X-Stat-Signature: 6x9ftptb1fjiofr8gc4pkcbf8z8xwdei
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781311152-91420
-X-HE-Meta: U2FsdGVkX1/COyJlvlNTQCI7xmoq3UpkdotgaJ0CxvGGtrFLSqfQgb+hNikuJVcx9bpW2n5izIfnIBIXoe+mt1TIWOjXv6jZ5dk2b0BG4vzIxbu2gkmr4RLS5DraKx5IaKrLAh41PgBkf/1TGrvW9cQOldF+vFBoCHQRzgoxbH0l8Fp0LJRmhi86E9NxSt43Rvkp/gIHcy+FcLYsJiWROEowV6PJn1hR7OFs5jO8SzqMUH5Ltzz3MMP8YBCb+NvpZZSfpadjYbBTN4wdlfxd4sEtSc+HKkHJ+zRDU1kpadxyAa8LxmOP+QK7e3EaX+wn6CJZ6769ClzCtKPyPwhE9sQBUwJ0m2l33PzGFBrQkpMZThpcnIvGqCmaZf8KGDv0sA3paqqdgznuWEXAzzO5dsM5Cn4o+yaS6Vv5TRI2hiyDYYC92JvAxle8N7HGFp0I1L5xZ4MamchKRAslMhPFz0lUwRO02Zq9f7jIT1Siri9N+MofDHP9U5PinLI0idNVM+GGkl09bgbeL2nUJj/tEaVlfsXAIpxyt+kMgG2HOBWIzTF5tWS29kdgtPVvT0Q6PPV0uR68xUMfHNWgGaVu/fSu0HWaYtQH9oOErjihDKz6Iyh5sTFjTvyPy4g14lEyBOM6zZ7KDkbZbVQqP6VEI6ywGRuWcQHGEyYCr305B50yEBS8L0+dLpk6iXymv/snRdxSAr6ByeToUmNdl/8IZuz85KfSWGPXZmOJb2l/g8exVcWSYfQCVjVShGWVWRjxAaBN1PK6CnG+udIg31uBSHVEDBq+MSOa4uhJ2VrkhUa+UbRnzmS/CKzLlSsx55Z1dEFsibQhB0S+rIlnd+ZLkPu30QqzK7A6eSZeQ5xA86Gwx0C2PNKhshJaasB9cQNGiDXppayXyEWpJ3q32mWe6PuT79S8MDU0Aq8OUixnn3FCfOCtVvXN0vu0DRpsXn332GaA/Zuq3kbv2o/0l/x
- lSCxXYot
- VTb6isSN/jB35/ai6HfGy3/8Zdh8UoIiiKGQE1j1I/PxKrYMNlB3rvDKAbt44QwlopPCRn22+Tc58OTkJdOz80LHqeL0Ca4w+yAtYPNRzmpQywde1lZiLsCE2UiI1zypkXyEw98c/mwyRFN+0PZna3tc0GPVqTFzfbHxwu6aPEfPPMEA0VdwDQDdjgt/2O85eB4nwzCAjUhGluGl0GtFRAou63ScT7eaCnQeCqgH23MFQDpIRWUB+MfRcbzL8igyW+1BNg2vhBAZuvTH+HBf/K4XOqHVYUhBN7gLOpkoxQ4HNv2+dLpIXvvBn4A==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 614D7A0006
+X-Stat-Signature: ejeqbkmh4ericzjtpmrbq3jb15bmk5cm
+X-HE-Tag: 1781311998-987878
+X-HE-Meta: U2FsdGVkX19N+sEac753cjg5qTI+Vx6wAQ9JlZ57sgulc/LvbS5N0U0TgycrjbHJrW0ClH6vRQDLoWbAkJIQcB2crI6u0GA82KWVyffscbEDneJMTo5PhIMH5S7UmXWKDSKawxlJillBw52d4r5MPzCB5TaZxoGaKMECAX+4K9fRYg5ktpmIbSdQv1Su56f81R3xFNc+sAAj2ixDh9KZpY42QXy02Yx5+rP8ntKyoyrhsxcoJ5dX7IoPZDkrEckJyiTt3oCkJfi5rgNINXoOhXCPsfjmynvVwyl3OavzbWOP59z7AcqFCY7g2uW6m5e6O99YiZhfsyRKgprkofYAelwMisrcIdvBG24Q579KSuPRh2yLStrqaN58qqr5xN/nRW5mBEvorzJ3SCirnAY0tpX/SX42om9JVtbUWvRIBKiXSV/RZ+1Noq81ASBKCXF1EhoGOhaVsj9QdLjuqm+T2fe/d0Ig8Ty5cyAsxggtnGcbAJR5SYWy6eozz8Dz8rnP+2O2L0LwAFwxK/EzQMHNbKI+XIaKroC1Gyg3+SJwC9VWgjjML5MttbmE1QqN6FgIHaMpxPhmhfkUWMbUOh6DcFVxLMTArEC9003ZZaE2T8B/jJZVmaYk0HHDx428fqnFza9wmIzdGjUbTaccuxw6Q7c70Ayfca12hX4P1WQki+1KtjaxIYGzTP/cB0UnLH+lBs5HlpMeS9YAWCzM4X3Jz0pkb5amge74nG67/0d2Ig46DzR4XscEUYtvywc2ClMXdg8H1rsF5OYtIBuM9+gPGeEB+tOcDBORk6QVtOII54BbRQKrpPME8TH/cOaomQqGlSnz45DmyXVPfzpn25yZxHsqAfCo5u6LmziXvcKU+9hdiymaIQUrBmVpWfpYndMCB64OeehPNZI4aCl4eDuiAvvEF9D2Kh6EGAWGGNwxK3Ree+GmhuoDaX3JbaPUVFbvncFsYMl/4t8famQLmMF
+ DzLoGbGG
+ GJz8lU5I9ActlVJx4hOkTTXDBgxnvSYaU2EkMCh42Nfg+HxrS26w82x0XI9E0Ee2UUGY26V6Kqy9ot3wtq7T0xMpOhtKUjAxjditmyeoATMvGFiS5tIS1RMsJN5K5K2q/LJ/dSk6fWsb9/bpHbHOHvy5L899Dj2SI1bJTjKl7vJxdzMrLpLvbfgB8XDoarUgCj16EWAHg4R/w983JKOpuu16BxKGz+7sao/quvWE73f8P75/VyyH8+1LQAB+mP/lKmFQQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,43 +99,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 22:36:11 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Fri, 12 Jun 2026 08:16:07 -0700 Breno Leitao <leitao@debian.org> wrote:
 
-> Hi SJ,
+> kmemleak_scan() walks every thread and scans its kernel stack under a
+> single rcu_read_lock() with no reschedule point. On a host with very
+> many threads -- amplified by KASAN/lockdep in debug builds -- this loop
+> can hog a CPU long enough to trip the soft lockup watchdog:
 > 
-> On 6/12/2026 3:56 AM, SeongJae Park wrote:
-> > Hello Asier,
-> > 
-> > On Thu, 11 Jun 2026 15:02:40 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>
-> >> Overview
-> >> ========
-> >>
-> >> This patch set introduces a new autotuning which allows to collapse
-> >> hot regions into hugepages.
+>   watchdog: BUG: soft lockup - CPU#35 stuck for 22s! [kmemleak:537]
+>    scan_block
+>    kmemleak_scan
+>    kmemleak_scan_thread
+>    kthread
+> 
+> A cond_resched() cannot be added directly: the loop runs inside an RCU
+> read-side critical section.
+> 
+> Borrow the rcu_lock_break() pattern from kernel/hung_task.c: when a
+> reschedule is needed, pin the two iteration cursors, drop the RCU read
+> lock, cond_resched(), then re-acquire it and continue only if both
+> cursors are still hashed.
+> 
+> If a cursor was unhashed while the lock was dropped, the thread list
+> cannot be walked further, so the round is aborted. Such a round scans
+> only part of the task stacks, which would make live objects look
+> unreferenced, so reuse the existing "scan interrupted" path to skip
+> reporting; the next full scan reports the real leaks.
+> 
+> Fixes: c4b28963fd79 ("mm/kmemleak: rely on rcu for task stack scanning")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+
+Thank you for fixing this, Breno.  Nothing stood out to me while reading the
+patch, other than the below tiny and trivial nit.  Regardless of that, please
+feel free to add
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
 [...]
-> > Also, I'm not sure if I asked this same question before, but ...  Could you
-> > please share your future plans for this specific series?  What change you want
-> > to further make before dropping RFC?
-> I will review once again all your comments.
-> 
-> Since we are aligned, I plan to drop the RFC tag for the next revision.
+> @@ -1890,11 +1917,21 @@ static void kmemleak_scan(void)
+>  		rcu_read_lock();
+>  		for_each_process_thread(g, p) {
+>  			void *stack = try_get_task_stack(p);
+> +
+>  			if (stack) {
+>  				scan_block(stack, stack + THREAD_SIZE, NULL);
+>  				put_task_stack(p);
+>  			}
+> +			/*
+> +			 * This is an expensive loop, we must to call the
+> +			 * scheduler to avoid lockups
 
-Sounds good.
+s/must to call/must call/ ?
 
-> 
-> In the future, once this patch set lands in upstream, I plan to submit a new
-> patch set to add cold page split in the sample module, so that we can have a
-> full THP support.
-
-Cool, looking forward to that!
-
-> 
-> Thanks a lot for your patience!
-
-I'm glad to help!
+I saw Lance also provided a suggestion for making this comment better.  I think
+that's also good and maybe even better than my suggestion. :)
 
 
 Thanks,
