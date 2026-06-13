@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D805CD98D8
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E39BCD98D8
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:20:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76EA96B008C; Sat, 13 Jun 2026 13:20:38 -0400 (EDT)
+	id A07626B0092; Sat, 13 Jun 2026 13:20:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71F5E6B0092; Sat, 13 Jun 2026 13:20:38 -0400 (EDT)
+	id 9B8326B0093; Sat, 13 Jun 2026 13:20:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C0356B0093; Sat, 13 Jun 2026 13:20:38 -0400 (EDT)
+	id 80BC16B0095; Sat, 13 Jun 2026 13:20:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48C796B008C
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:20:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA17B1A04C7
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:37 +0000 (UTC)
-X-FDA: 84875553714.11.0EAEC36
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1CC6B0092
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:20:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 406DF1A04C1
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:46 +0000 (UTC)
+X-FDA: 84875554092.12.8F7DBA2
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C861C180002
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=EuZLRjQY;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=E88VwIVP;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf24.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7C3E84000B
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=ReVyqThP;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=FWZtDaLt;
+	spf=pass (imf01.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781371235;
+	s=arc-20220608; t=1781371243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARhAIfL/KUaU+OVkcGHklt1anwnixW8IFSbeLVy/MIA=;
-	b=nM0fKh0B40x7i9hcVcFOZOTQB4aTw7CTFqnEQXh/tBKk+OTWgEnFz/VTAb0apezPMQ7r4h
-	Wc5hIk072GjZmLuJsLG1FnQLt9YdTF6i//gRR5s6rf9qP7gS+qEmotjD01z+QtwInDjNVr
-	U9/vG2g+8uzjPHUxrKGVN9+6JQtQgQg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=EuZLRjQY;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=E88VwIVP;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf24.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com
+	bh=mMQ+LL7Rsw0V5Gp6IYVyB67DNDJRzawcpfiN2k23OTw=;
+	b=13W7couU5JmEGriSod4lkVWbYukrBSrZPTfhZGKLPc4PYE1NmKEFuN3/AKffR59gWd8Pnm
+	i2OCuPRdK5Tsa8ksVxq7zXcXTlbu4t+UM27i0I4YHTxO3ZgYFlnIvXHhr1Cwzq/ZclXibT
+	24JL4mz4F8lXbDVT1gX7/kHxArXNQgA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781371235;
-	b=EbLOdRPOIYKCMlAKzlqquyzhgBpChZeu6+nPfLkkzwA0P/GfzX1P2b72vLqBlU310JjadD
-	066CW7DX0IZdu3Ivsbep2ufvcym6GhSAbHj2jad2v8O/h6VPZCQj7FiBsVIaUDuM2R1tbu
-	iDZg58p3/2bjeaAR8QU9zj7LZQxdYeA=
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DF9fEU1236647
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:33 GMT
+	t=1781371243;
+	b=lZ14Obg7KdYlBQylKmsX37mfVloBEZJEUiV0wY4Dhbcxam+kTd5aZa6A6ST2AjiSqN9pFQ
+	H2TmgPkYTdjf+aeuH38q54MlYszZvvleD7TACS1EvDesS7IVyPHO0A8FRchJoLOwrZVANk
+	77CVxP/OQTcaFUQMkkMUO3M65KdXQUk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=ReVyqThP;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=FWZtDaLt;
+	spf=pass (imf01.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DFA0jO2690590
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ARhAIfL/KUaU+OVkcGHklt1anwnixW8IFSbeLVy/MIA=; b=EuZLRjQYIQQkQPVh
-	vrj0YIlJoIpkCzDtE6Bluk16l6bmPwBK8LvWIkZruM9BfSq/HGfh0/5UnKhFmTRt
-	TBdyTxxRG0mwqnf96T2jAeJfzujotQTHRitxCez5/acO8Wwfka6s0RwXLy91+sn/
-	spSemHGrJe+jZPWo3+JWYDBDEiUJyc5WaaVfb1NTqaNXDliJEVZIsnUYLiJW+awJ
-	4qczg8FaUZv9ilsnxvQpIvs/L/p0WqbFiXXe17wbMUK5gydtKp13JrpBu81crECt
-	39AsQffZ1Crv/lQTqGJ/PSoc2SVRRpvabxN2pYbcjsyMfoF51owgKBLZMOqI0jTb
-	2C7txQ==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryffhkr3-1
+	mMQ+LL7Rsw0V5Gp6IYVyB67DNDJRzawcpfiN2k23OTw=; b=ReVyqThPMiH8nkUc
+	cAeZlpJTYISvPRsLWrHlWxkj8kUDo61PFMSa/ly8poQqfNkmsQca5KZuKtn9zY6O
+	GKihXHTbnvpj6xhoMovSZBn54FITkoWsxf4q1x9k+8x/xGMZmB1P6brG13o+d22Z
+	BfVc3Xo+LzYD0bJ42StiAUlLtvPsvr77enIwTaAvNum9XhBqTXhalqt0Ow2EiAVx
+	gARBROt8CWn2M0hSjcuKDs/TNDVdHA641TXAXx58M2sEtjnRSERsuqxLo5EXpV69
+	TFWYaYuAYwO7+Ki8DqyqKOr8NUT+RLB6NI6z0JRpRvouf+Jf2CZuk/Ztn9utXSLQ
+	Sj560Q==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryybsj4n-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:33 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c858e0cbc89so1058652a12.0
-        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:20:33 -0700 (PDT)
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:42 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-842211d6e48so2366327b3a.0
+        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:20:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781371233; x=1781976033; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1781371241; x=1781976041; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ARhAIfL/KUaU+OVkcGHklt1anwnixW8IFSbeLVy/MIA=;
-        b=E88VwIVPktxOTxkNnx5GiC3wyWa8vvJdrd78kEfBvpxbC4IsLX/jlPx5WA/ABKcrV8
-         3oLER0gGqB+1rlI95b3vRyQZfRkBYPWfBa0K4YnYXMMfvwPLgpWasfoJy2lowUIstwNl
-         cI55pBMT/rYO+PhpNCHvztBrkDkLHgtV9GT74ClUQDjbcjorvfpl4hUuxmgkjLHeI105
-         hNVMW/kK/d7Fvw0oqwiOBzShESkXKcR/Q2uckSdHkmHod/Mdf/jnTY3KNOjFAYUFwofn
-         fXlUp6jzoqrg+uu6HnZwwZ+kiT01E12TJE/a6rEXrAEqMWxW4vn+xjrQusGgA5rCI9Lu
-         kRJg==
+        bh=mMQ+LL7Rsw0V5Gp6IYVyB67DNDJRzawcpfiN2k23OTw=;
+        b=FWZtDaLthOc180a1OeE9mWLO91MFRXn2X66/QlhuW+0P5PGWNDlDXO83PtegBRoahv
+         +jpJj3nAKSVTcn7KzSyyichtV7u0ozY40B4dnaDfPyQ7AzL8MomYrio5ccQpVDmVoMBV
+         85GvpMfmzC7YYOR/bsCsWQfJCwUoJO7WxW/P9FYEvNbpfB/R4+vaWY7/CWESspah4u35
+         gqh/bgsYgaPcV4Xu2eKqL1g48ZZ8j3ama/54nPTn9xfk52dnmDTbUDU0CPxsEDv6mCro
+         PSpcU8xFTHy8rRleeM6ZMVbN4ZbFqhS2nZ/2w3oU0R0ER0sVpz3ZQLnySS4MBsMaoDP1
+         48qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781371233; x=1781976033;
+        d=1e100.net; s=20251104; t=1781371241; x=1781976041;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ARhAIfL/KUaU+OVkcGHklt1anwnixW8IFSbeLVy/MIA=;
-        b=nGyJgwSwKtPeaWfm/LU7LgtRxlscq0cdFlkLB0mHEjPZNhflPM+mEtO0LDqe/y3cKP
-         h3wxgt7CVG6OmXwFRWwZqMooHLkK3Tqgq8b+ulb98TMI2s4EF71Po3g5kTKqMYz8qZrS
-         DI8pIOoJ+/VuLCH88079ijIXbu/KCSIFjBvBS1vZGDok6ROop0v5iLyeYAZt7r/EI3no
-         +GNb4hQ2SQf26XEwc/A1sVPLRsnipdHjEqHWHXwGr86s1mGU4KeNiK1rO7c+1vSZSYak
-         WA8ImWB+CNqlKiM/pXigTRCZ6QG27z4B0J3IzVkiVfXNiTee09JRzy3mTZZ2qYsVL8Ut
-         88eg==
-X-Forwarded-Encrypted: i=1; AFNElJ+eu5uvsfn6AzU1hQ+brsQh7t8z04ngI30hqybRWRAutRqJgr2qSFfquYOfjclIlg0896yOUzonHg==@kvack.org
-X-Gm-Message-State: AOJu0YyRXqZj2bKXHPjIjkxF8MmV1bZ1rSHRan0yo4vE6f9neUpdEVP/
-	dg2j2TrUPBY6YC3EUq2xID9SZwS7USAS7X/Eaf7lPJela3QCOPWb0j1ju1cHys/o9vSVVt9JhrV
-	/kjTHcbLiBQqWn4wLYqIHHhOCgQ0B1nYnelB4u/34U2BIi6/3natWoA==
-X-Gm-Gg: Acq92OGOILuL59pz8AR56VkZywBKHDJgfQWZMw0qMysvtZNF77p06iB0IaQ59iFROrW
-	cvbn3VCHhmK++FY5GzwJP70lg0AUNQ+9UWE6KwaRFbHwQ5ij7LrRrIED6Fq9D7dmBno88qAF/wG
-	2WCZr+WFzGDc0k9jFkZ8InihQQbMGMs9uKmccXnXUvRJq1iKOCZsBqCK1eMG67UVB1CUDQioESW
-	MXzy8bBfj3PYYqO5SvvYv/d4M3iXqGw4nLeBRQ7lc1/tIyAx6yapD+lCMzlYv+KByLSQylb/6c9
-	yfrdUOACUf+9j+ZJsPLTXY7Sjc7LuJaBKMJpMdeO+8AGFqk5TSAWmTFRCVqhWtc/yG6fHAyFxvW
-	CAaBlRQIB5gnQ+5CiUVqh3hrcNnwXxvtnO+1jdbB+rkieNFuXCFed4w==
-X-Received: by 2002:a05:6a21:6b0d:b0:398:c0ba:9ceb with SMTP id adf61e73a8af0-3b783b717e0mr8866448637.12.1781371232613;
-        Sat, 13 Jun 2026 10:20:32 -0700 (PDT)
-X-Received: by 2002:a05:6a21:6b0d:b0:398:c0ba:9ceb with SMTP id adf61e73a8af0-3b783b717e0mr8866398637.12.1781371232035;
-        Sat, 13 Jun 2026 10:20:32 -0700 (PDT)
+        bh=mMQ+LL7Rsw0V5Gp6IYVyB67DNDJRzawcpfiN2k23OTw=;
+        b=fwRo38IWyOgRAJip2pWUo0c2wYNBLSL85ryEJBdHNDsxCZyXp5sbnFpf7iTjdHd/NX
+         f1s+qGWhjBqeAokZXgyQJUtD4bEwIWyiV9wJRNzPfwJJeL/vuuGEIKUmi9bFsYoB1RzN
+         qX+w9zJkjeK+HAC8xi1Z0RAs367Vk47Tq2a8GUCIyGJt5sv4fTpoewJFprwPbpvsUVKb
+         iEVY8ZDDQx/v4ETZWv1/VhTFyc8eomiBt0GDM19YRzr7jCLl+AEbnhoLEvEs1oE5og9z
+         E+avpvaBW0/HnmMwVNlYaihM4DKgTsdNpwKGhs/EYprdOqOzgGvzGcYNkbbnBPcg7ido
+         2pZA==
+X-Forwarded-Encrypted: i=1; AFNElJ/HQvPCXjB7dYjbn21IV1kFn+4r+Obxuc8I13QQ0nYNJARXEYvWeb6wsUBmJHdqcteGIiL9cpCWkw==@kvack.org
+X-Gm-Message-State: AOJu0YxY/zGuodbXr01XiXrqV6vZPQT8kp2v/49hnmAZEFcXJPydRm/l
+	NeajcjC2HeqBB5yepV6O2lYjIZM/UBqQUuhke4raotz14ftBfBZRXEFOlx+pCCgAhVXQJwP1CBk
+	S5SbmjPvTJ1eQ5r/vm9ujcolVPkyqbzABbM2IVMAQjxN8TtD/2XVpbw==
+X-Gm-Gg: Acq92OGpJWX/ZabUTDBWsP6hkMPqOpXeitsyJfTs80VWhbIZfLxm7Ak+Iflaj/p4RCq
+	p+1cukvBuL+0mAQApk/6zJ1SPKOoxHJxu8DidJnERy3pyCm29CdGqg9X9lvlpMOMAgMnIczUwEa
+	sPZFbWZiwzl8QUsGGAEgyvQDsOgy90eVjE+y6/JK1awb5R7UXYGSDDeGHP3d7old55//jzmwF9v
+	WqnqA+xpaBkPA3ietJtYB8LOsCgsec97PX2d3ulGuUYgS1S6vKA4vcsF1geahrLxfgnI2Ra/A9Y
+	U/U5rPus/YoR1X4COapTpG8a0TGaDgIIKwhJPAH+90QkQz3Vh5WfUXz2k2UM4ioN4UyMdWzLO5Y
+	t7L3qKuKvLIco4bR4n4RCGaKdAFQigmIxTvbGG+BO3eXT42xBahwc2g==
+X-Received: by 2002:a05:6a00:22d0:b0:842:4907:d089 with SMTP id d2e1a72fcca58-8434ce2921cmr8490704b3a.34.1781371241170;
+        Sat, 13 Jun 2026 10:20:41 -0700 (PDT)
+X-Received: by 2002:a05:6a00:22d0:b0:842:4907:d089 with SMTP id d2e1a72fcca58-8434ce2921cmr8490658b3a.34.1781371240511;
+        Sat, 13 Jun 2026 10:20:40 -0700 (PDT)
 Received: from hu-pranarya-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.20.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.20.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 10:20:31 -0700 (PDT)
+        Sat, 13 Jun 2026 10:20:40 -0700 (PDT)
 From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Date: Sat, 13 Jun 2026 22:49:43 +0530
-Subject: [PATCH RFC 01/12] mm/vmalloc: introduce maple_tree-based indexing
- for vmap_area
+Date: Sat, 13 Jun 2026 22:49:44 +0530
+Subject: [PATCH RFC 02/12] mm/vmalloc: convert allocation-side gap finding
+ and insertion to maple_tree
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260613-vmalloc_maple-v1-1-0aa740bb944b@oss.qualcomm.com>
+Message-Id: <20260613-vmalloc_maple-v1-2-0aa740bb944b@oss.qualcomm.com>
 References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 In-Reply-To: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -143,49 +143,49 @@ Cc: linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
         Pranjal Arya <pranjal.arya@oss.qualcomm.com>,
         Sudeep Holla <sudeep.holla@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=15109;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=27873;
  i=pranjal.arya@oss.qualcomm.com; s=20260516; h=from:subject:message-id;
- bh=iVIE9NXQEoQrqSLoH90EvemMg/eTbDXpzD72a2nZZo4=;
- b=CPLygkLp+PKrllmdJ6bYk4qLeuLE3uYFh7TJXThjMqD+4hd7JpODplWi/WxJ57JnzWdWOdjE5
- 2LkNbUSIzcBAvQYDoloDlpDmAPeXc2xkX4RNTx9MUYxHKE8Xv1G/OE+
+ bh=mzShuQjsivGBwOJFNo2gMC1ZvtaDXX3KGiVDadnIc+k=;
+ b=mGVagTALUpXKoJTvjX1xzksAIiQDKkp7Jbp8u6A4xxsdoJVlQGaXoQ/FJc7kThKELh8l19Qem
+ Ry8mot6zxFWB+nAQpn7K6G1SqyJXpe4OMFQfBFKs+DcisWStadqPjbH
 X-Developer-Key: i=pranjal.arya@oss.qualcomm.com; a=ed25519;
  pk=ymtcTlccEIDsi3ErhpjIoZZHKdPBYWGWW0Lchs5MsbE=
-X-Authority-Analysis: v=2.4 cv=HuxG3UTS c=1 sm=1 tr=0 ts=6a2d9161 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-GUID: FH6Qb22g3IllIl90FL6YITqYCGCnce0z
+X-Proofpoint-ORIG-GUID: FH6Qb22g3IllIl90FL6YITqYCGCnce0z
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX6CtCCKifu989
+ FeRznlezTzsJwtHuBOXnHuevakgz+BuoBIynbz2u+pXIrZwJgvi2mqmP6R46je5xxTX1pbsDKQ6
+ 8QgIph7ENhoiypGt2l2xx5CMBWsPlLI=
+X-Authority-Analysis: v=2.4 cv=JLYLdcKb c=1 sm=1 tr=0 ts=6a2d916a cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=EUspDBNiAAAA:8 a=eoclzLbliDViwx4lJdQA:9 a=QEXdDO2ut3YA:10
- a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-ORIG-GUID: xjMDJFxScdG-gQXfkIK_P5Om4UstxR99
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX9VeipxrZ+AT4
- ROsZxIFDTjrRArGOach/TptU9zWIjmEsLTJmmOxfjxzMNbeKAYKXu6BgkJiySt7ewNjqeze6J0G
- 8T8IWy44bpL9gQYRPDxVL5VC1xBl3mg=
-X-Proofpoint-GUID: xjMDJFxScdG-gQXfkIK_P5Om4UstxR99
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfXxdoAhKIQJBH9
- SinNmVsxl8aUSiLwsZfE8Nicuqx2jjBw3H9b/W4U6vtRzpu9gGA8YzJwrbtbDMSsBdnlxIvYZLc
- HXKaPyDEdswRTsZi7RyIR+l5OPAqKAHxRO28r+YzrbOx5AQ3CgOZc+De2MVLw0f0PJdsiZf2Ldn
- R/DS85F1ET4onME9g6HYtbdHRDbXTc0iXdEk+MfiJ9pe0bjhqoxLimPCoLiGXrxkaWFNEoalajc
- HhxoZvx3YyCyNyVihZGMIy0FpPq9ctr3IIws4YIthR2UFCIWfz4+Y9IUk+BVcGYhoK84+6j0UHL
- /UjRzQkVULf9zoe3EMLxRgeq1GEA4hZfQm3vx/bx1GOevDF4xfaBmN4oWMfC8u5OPpgluP5YG02
- ArCmihdxXTIif93iDHNNn2vAPeefL3gX8NodC2YOp4tpROTCgv3PCkTQnatlwvaX3mW4SLsiPEK
- IzrKYGUwt9tjProUPMA==
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=iIov-Uo6zy7MBde1-YQA:9 a=QEXdDO2ut3YA:10
+ a=OpyuDcXvxspvyRM73sMx:22 a=yDLO8QUhx1Xh9DD4DYOy:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX0a5BbhxkFxWM
+ rLlcIc3U6uGvAd6cZrh/HvcxC/rY3uf7Zn4c8+RWR55Bl4F57YXUwe9tiPJ3PndUTDgdRGE8U6n
+ pp8k8YoiqtuNuVQV7XL9FQkrEyNSmUEc9w/I7ekVt85Qe6kl+kyaz73Xu5DXCUtsu2TvEot8Yfy
+ n1CqeCrl9vSVnAhxbHwp/Pqu0A9ZOF4uFvbK0TmFM7nrltZbi4fbkXO+IBjfDgHqoIqlxDNpP41
+ O2iPgZ80QyruuUzuJmdTZY8ozPehVGQBgRlzJva8ewJnBaxzumfea1Qm7SDl6dLPrRA2LS15884
+ f9LEbLEcjFeRg+OxAXTzgWDipBU26a+bwzOAtS7sKXplYchOrE8xHSABrIse6jHEyauToXiYH3R
+ mpH6N3zCZfXLdfz+2j05iKvbeup5IIvrJ4uRtRctfD+E7DPNmqGeX4Mf6SlaXJB44CBNTa9TNmj
+ B/tR30GCzdXxs5zkYgw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-13_03,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 spamscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
  definitions=main-2606130180
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7C3E84000B
 X-Rspam-User: 
-X-Stat-Signature: dtpshk6bqr5usdrcgw58kdxgb4gya3o9
-X-Rspamd-Queue-Id: C861C180002
-X-HE-Tag: 1781371234-48066
-X-HE-Meta: U2FsdGVkX1+dwqsiw2G1wDV5F3tNt+6utS+1n0Zotvr1EGSkEWwche5fESdRg00iR0ckT2T+SaCszk/uxj4jObg4t7t9yAUIqxlZPcIAYnWs9gTq4btnsUF5d8OxJVq1uBF4AYIHNx0hTlngfbeB3tVwFx4lmq/i0OioLb/WzknBiajR+DUsLHPUq5q4cHo2PksPRVN8F5lriV8cEkTT5oSviqcsZrMWGwQBSsE+tElpvCY3KS4o8x9/YezSA36e5cx2dQuhp5MlGK0zel2dIWze8BNgHCPsamI1lo5Xbhbt4Eisy0kSYcllLwqdpEndQrGSSfZlOLKK79CijHLWzHT1xhzmKAGNqCbTR3jZ3J0EZb25BzixlM0GH1JNTABQ1RrwU7sIwgXOO8n1J0HZ+uyaXe2ETcfM865JAmk8QA4E4Az5x+Pk8EC9EU8RU7BhS1eOYGNYdwMUB/63h027adPequ5RbtomCLkD3kPwGaWa0n/I7MsXAW7CpDo4vm2bkvLNUPlBgNKWQaQnrXVigyXqMzp+B/JYwucLcpB+VzBRrHx2Z1LUzDA0NsDXshVvTtNTxozvUScs9kekf+MO6kgNz8JNnbZ94sCuilUIODgZKTUAZngnwOj8ycoMYPynuJ4uwgHChE1/O6lD3bZAgi9vobwrdqSCQofvWTMsLGJag2/X/yghUVzVOHTkF9xBT/q7INNI4vMFEHiFpc87ovGb89joIZspNO0KBBBaiSwqm7XK1lzL0nSSBXAfXbrbmhH6glQOqo5q/+YrgiyBIkb29oB/rWJFlqL11rTmLYEWjgyXmNGriUVfPj5RPXhEpscO5g4imCGv05RVn1JU/bLBe45KPWxBy+twuEcqgHopWZoIKUYH0PUnSsOpSCzTa0CFfhR54Ao5KLyUc4i6MmLG73I/xh3PV8g0m7n001qUTTKGWU6Sy2JYxCWs0IwWrTo5Pr65du01OZyVjMq
- 3jj15pkv
- nJv01SfbBNXhDiCZJi7kpkrIHjGi4yN/BZP6S8pn0vAyqR+PL6S2ywn7lyd9eMz02CqPPwAWheIgrSF1ASpVHDMAqxEUNSMh7VgpXWdkvRHOXcgAWROi1Dfl+iucB9YR9T5ZpXgfbXZQOc+JxKjparC9qFx3q+n3tZ9rzkEb56SSlQxaNZAeD3Fc6MheiKZo0rYSCW5D8MRiTURG7+S48T8tCLv8TZKHSQmI4COCUjedsQNumGlfGHBpq2i7njRsAGnS7i6TgtgUPdEvNkXpM1EVJJr1La2xroAzfuZ46c3laFx+CW20RfXF4YPsZUhjrgOXQGl8IDFjeAVov1YbiR3VQQ903pTXYThzgWOGjd1irjUR4okh3t/rPmLwidOiKrB2gBtHm0L7o3NNFDsksOd6P138JAFFEP6VOICvcIzQe8B8xxLkyXUUF0+j4/eDdnwDA2tkc41MNyRcqTgbM2tGMuP+ERKxci2EH5ONEoXtzHaYnuOMrCRfunnDEzXbZSY2OnFKwRycq81qlCYIUG365Eenhz9OTnHngdtBC0lhzo3Y6NsgFKGq2Yy+AD1vv9L/lS8+1E0/3M9o=
+X-Stat-Signature: ij9tucafqhbcyk68fud6yd87wf3fj3i7
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781371243-831886
+X-HE-Meta: U2FsdGVkX1/eRn6nmn0xscqCRJrqCyHe9MhR6tOdYZUxGdPfcSggQl4+/1gRutt54X3K8b8CMKqgEfW5HYHoV2yRfh3HsQ6yfda+Z+umMxmvPf4GjtQEN5KfLQfP3JtFhTH/fvuoIRgAedJYFvnEydbnHFseCG4RT6oGd8rVosFeBSIyG3Kh1Y8IRMgiMGZsCFMt4LHYd3BLLJkGseFnEG5NQHKJ4N790eqdXo50KqepkgghPVI1+pnHy062tItCNTHtR4wjYCoj+Vlp+4mnoZQeGBQKPYkwTH3uyuvy0SgpfL9tfhg6X7NYtSPu0OY/+dTEAVXRXMIREfQyhlFcmfDgu3WG2v9ZjI9ZaRYhQupqYn97GycxpmLe5oqjwQmaFijjtplAcXQwE+lZn51jRW8SFKbvbLHHi43og5NKhVGLyEw+vAFbfIA7j8pwWCdPomtDGFg4MLHcAKUeYOD29ZyMQhsLMbC8mw3XcBspo+vCw8/IJlBYiAUlmTQZDvwqcZ1l2ojb8Z02dfoYV6g9ydvPRe6IssD4zo3zIpUICKwKJ70elBTxoC4Tc8AIYAcylhcQVEAe6ZxK+4c6hu6aXfDzJtrgLCy4zYzj5S0jl4bXe9ZywtukDM55GAE31HTwiMLplKJlCa/qIMkTUrUUOnePBaxYAk1N9xzXoQSTZtc1IKi2ums0bOgdJwDiq8jHsKnRG879jiNdas+7Udfm1ZhEKS091uQONPgP9YmX/Y/kEs5RW2khu0XJPS++2Md2b1bhfNtZ1Yt65rlGt1cgaKNeDMRg8jlrNCmRMZgis+1rIzLgT6fPWwDzsFjHoZpSYWirFgq971w6dmqGkMHFPOW3JaZkCDUUDpLH4JNd5COQsQVeKR+9i7Omq/mgWN5P17S9h/lx08JHsusYnCaYh9pBIs1HrtrJmavjVadlNbWm23EtLzilBcSdIDPP880/1RhF9eqLWNQZaTepNkt
+ oWSf1Lrz
+ M/7wfoGzyIrkkJhxhXpP1maTt5NH2hzWD6/ju/hMlNnoP7Mgj6ORRiQbmaWSuzYGPMT+MSwTtaxyjBKIb600ENrH+p/Q7gLnGuTI2xLktPNTUBnbcITlSi5aMGjdm7GgKHrjZdewUZ0G86ma7c2nxkn9aEYI3j9UG6Z5bkV7n350TyBqrGgfBzfrD3Qyfgu9VdWEUoXpsaW3rLm9t8goaO/eC2/LPsTXvYsY6u3VnlL36LSziKMglAF2n9eUUNhWf4FdspdvBNTottzKms8Aux59Y11ZOFboxDhtIrG+GkiuXl21nnB25GFUj7YY2WEvwpKEWyguQQnHQrYjH+no6LwU0YbGYdGTDWKf3qUqmpsSpcfGrUQVNlqT8WhcFsttMvpbeCi50UfdhNUd9zSog8GWDPT4J0xfakQ60eQTaSPPDfM9tvAD6VCvsb4UjkloxddPNb14HYcDGpI1Kq9XR0bQRIO580Ko14MMkUcM9MHvQA35ssPY1WwPjilFI6AlAHximod69wfpRw5nXUaTvgKNRjWGJvblUFG1vjCHO+o5NFodiQ2pFcdMsEhZ1FBba3hJNJPoTf4ISEisS1MA/4Sa2OuHkAGdA/Emo2BvF9SZpyIs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,554 +193,912 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the maple_tree data structures, helper API, and runtime readiness
-plumbing that this series uses to retire the augmented rb_tree
-indexing of vmalloc free and busy ranges.
+Switch __alloc_vmap_area, va_clip, classify_va_fit_type, and the
+insertion / merge helpers to drive the global free-area state through
+the maple_tree-backed helpers. The augmented rb_tree walk
+(find_vmap_lowest_match / find_va_links / augment_tree_propagate_*)
+becomes unreachable on the alloc path and is removed.
 
-Two new tree handles are added alongside the existing per-node lazy
-index:
+The alloc path retains a list-based next-fit walk over
+free_vmap_area_list driven by free_vmap_alloc_hint, but its
+insertion-point lookup, neighbour validation and free-area indexing
+run through the maple_tree helpers
+(find_vmap_area_insert_point_mt, free_mt_store_va_locked,
+free_mt_update_va_locked).
 
-  - free_vmap_area_mt    address-keyed gap query for the global
-                         free-area allocator
-  - vn->busy.mt          per-node address-keyed lookup for find/free
+va_clip handles the LE/RE/NE fit types via the new free_mt_*_locked
+helpers.
 
-Helpers follow a try_init_*_locked / *_store_*_locked / *_erase_*_locked
-naming convention so that the conversion call sites read uniformly.
-The try_init_* helpers fold one-shot allocation of the maple-tree
-backing state into the first hot-path access; this keeps vmalloc_init()
-free of the per-tree GFP_NOWAIT paths and lets the tree machinery
-start cold.
-
-No external vmalloc behaviour change in this step. free/busy/lazy
-operations still go through the rb_tree and per-node lazy.mt; the new
-helpers and globals are wired up by the conversion patches that
-follow.
+The pcpu and free paths still drive the rb_tree.
 
 Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 ---
- mm/vmalloc.c | 433 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 402 insertions(+), 31 deletions(-)
+ mm/vmalloc.c | 653 +++++++++++++++++++++++++++++------------------------------
+ 1 file changed, 323 insertions(+), 330 deletions(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 1afca3568b9b..67f753d04c96 100644
+index 67f753d04c96..c5f509f033e6 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -24,6 +24,7 @@
- #include <linux/list.h>
- #include <linux/notifier.h>
- #include <linux/rbtree.h>
-+#include <linux/maple_tree.h>
- #include <linux/xarray.h>
- #include <linux/io.h>
- #include <linux/rcupdate.h>
-@@ -880,22 +881,22 @@ static bool vmap_initialized __read_mostly;
- static struct kmem_cache *vmap_area_cachep;
- 
- /*
-- * This linked list is used in pair with free_vmap_area_root.
-- * It gives O(1) access to prev/next to perform fast coalescing.
-+ * This linked list stores free areas sorted by start address.
-+ * It gives O(1) access to neighbors for fast coalescing.
-  */
- static LIST_HEAD(free_vmap_area_list);
-+/* Next-fit hint to avoid scanning from list head on each allocation. */
-+static unsigned long free_vmap_alloc_hint __maybe_unused = 1;
- 
- /*
-- * This augment red-black tree represents the free vmap space.
-- * All vmap_area objects in this tree are sorted by va->va_start
-- * address. It is used for allocation and merging when a vmap
-- * object is released.
-- *
-- * Each vmap_area node contains a maximum available free block
-- * of its sub-tree, right or left. Therefore it is possible to
-- * find a lowest match of free area.
-+ * Maple tree shadow of free_vmap_area_list. It is used for
-+ * address lookups and first-fit scans.
-  */
- static struct rb_root free_vmap_area_root = RB_ROOT;
-+static struct maple_tree free_vmap_area_mt __maybe_unused =
-+	MTREE_INIT_EXT(free_vmap_area_mt, MT_FLAGS_LOCK_EXTERN, free_vmap_area_lock);
-+static bool free_vmap_area_mt_enabled __maybe_unused;
-+static bool free_vmap_area_mt_init_tried __maybe_unused;
- 
- /*
-  * Preload a CPU with one object for "no edge" split case. The
-@@ -906,14 +907,17 @@ static DEFINE_PER_CPU(struct vmap_area *, ne_fit_preload_node);
- 
- /*
-  * This structure defines a single, solid model where a list and
-- * rb-tree are part of one entity protected by the lock. Nodes are
-+ * maple tree are part of one entity protected by the lock. Nodes are
-  * sorted in ascending order, thus for O(1) access to left/right
-  * neighbors a list is used as well as for sequential traversal.
-  */
--struct rb_list {
-+struct mt_list {
- 	struct rb_root root;
-+	struct maple_tree mt;
- 	struct list_head head;
- 	spinlock_t lock;
-+	bool mt_enabled;
-+	bool mt_init_tried;
- };
- 
- /*
-@@ -940,8 +944,8 @@ static struct vmap_node {
- 	bool skip_populate;
- 
- 	/* Bookkeeping data of this node. */
--	struct rb_list busy;
--	struct rb_list lazy;
-+	struct mt_list busy;
-+	struct mt_list lazy;
- 
- 	/*
- 	 * Ready-to-free areas.
-@@ -1051,6 +1055,10 @@ va_size(struct vmap_area *va)
- 	return (va->va_end - va->va_start);
+@@ -1535,261 +1535,155 @@ find_vmap_area_exceed_addr_lock(unsigned long addr, struct vmap_area **va)
+ 	return NULL;
  }
  
-+/*
-+ * Transitional rb compatibility retained until all rb-only users are moved.
-+ * Follow-up patches in this RFC series remove these helpers.
-+ */
- static __always_inline unsigned long
- get_subtree_max_size(struct rb_node *node)
- {
-@@ -1070,6 +1078,130 @@ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+-/*
+- * This function returns back addresses of parent node
+- * and its left or right link for further processing.
+- *
+- * Otherwise NULL is returned. In that case all further
+- * steps regarding inserting of conflicting overlap range
+- * have to be declined and actually considered as a bug.
+- */
+-static __always_inline struct rb_node **
+-find_va_links(struct vmap_area *va,
+-	struct rb_root *root, struct rb_node *from,
+-	struct rb_node **parent)
+-{
+-	struct vmap_area *tmp_va;
+-	struct rb_node **link;
+-
+-	if (root) {
+-		link = &root->rb_node;
+-		if (unlikely(!*link)) {
+-			*parent = NULL;
+-			return link;
+-		}
+-	} else {
+-		link = &from;
+-	}
++static __always_inline void
++insert_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
++{
++	int err;
  
- static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+-	/*
+-	 * Go to the bottom of the tree. When we hit the last point
+-	 * we end up with parent rb_node and correct direction, i name
+-	 * it link, where the new va->rb_node will be attached to.
+-	 */
+-	do {
+-		tmp_va = rb_entry(*link, struct vmap_area, rb_node);
++	lockdep_assert_held(&vn->busy.lock);
  
-+/*
-+ * maple nodes are allocated from slab; defer tree population until
-+ * slab allocator is up to avoid early-boot failures.
-+ */
-+static __always_inline bool vmap_mt_runtime_ready(void)
-+{
-+	return READ_ONCE(vmap_initialized) && slab_is_available();
-+}
-+
-+static __always_inline bool free_mt_supported(void)
-+{
-+	return free_vmap_area_mt_enabled;
-+}
-+
-+static __always_inline void disable_free_mt_locked(void)
-+{
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	if (free_vmap_area_mt_enabled) {
-+		__mt_destroy(&free_vmap_area_mt);
-+		free_vmap_area_mt_enabled = false;
+-		/*
+-		 * During the traversal we also do some sanity check.
+-		 * Trigger the BUG() if there are sides(left/right)
+-		 * or full overlaps.
+-		 */
+-		if (va->va_end <= tmp_va->va_start)
+-			link = &(*link)->rb_left;
+-		else if (va->va_start >= tmp_va->va_end)
+-			link = &(*link)->rb_right;
+-		else {
+-			WARN(1, "vmalloc bug: 0x%lx-0x%lx overlaps with 0x%lx-0x%lx\n",
+-				va->va_start, va->va_end, tmp_va->va_start, tmp_va->va_end);
++	try_init_busy_mt_locked(vn);
+ 
+-			return NULL;
+-		}
+-	} while (*link);
++	if (likely(vn->busy.mt_enabled)) {
++		MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
+ 
+-	*parent = &tmp_va->rb_node;
+-	return link;
+-}
++		if (!insert_vmap_area_list_sorted_mt(va, &vn->busy.mt,
++						     &vn->busy.head))
++			return;
+ 
+-static __always_inline struct list_head *
+-get_va_next_sibling(struct rb_node *parent, struct rb_node **link)
+-{
+-	struct list_head *list;
++		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
++		if (WARN_ON_ONCE(err))
++			disable_busy_mt_locked(vn);
+ 
+-	if (unlikely(!parent))
+-		/*
+-		 * The red-black tree where we try to find VA neighbors
+-		 * before merging or inserting is empty, i.e. it means
+-		 * there is no free vmap space. Normally it does not
+-		 * happen but we handle this case anyway.
+-		 */
+-		return NULL;
++		return;
 +	}
-+}
-+
-+static __always_inline void free_mt_store_va_locked(struct vmap_area *va)
-+{
+ 
+-	list = &rb_entry(parent, struct vmap_area, rb_node)->list;
+-	return (&parent->rb_right == link ? list->next : list);
++	if (!insert_vmap_area_list_sorted(va, &vn->busy.head))
++		return;
+ }
+ 
+ static __always_inline void
+-__link_va(struct vmap_area *va, struct rb_root *root,
+-	struct rb_node *parent, struct rb_node **link,
+-	struct list_head *head, bool augment)
++unlink_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
+ {
+-	/*
+-	 * VA is still not in the list, but we can
+-	 * identify its future previous list_head node.
+-	 */
+-	if (likely(parent)) {
+-		head = &rb_entry(parent, struct vmap_area, rb_node)->list;
+-		if (&parent->rb_right != link)
+-			head = head->prev;
+-	}
 +	int err;
-+
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	MA_STATE(mas, &free_vmap_area_mt, va->va_start, va->va_end - 1);
-+
-+	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+	if (WARN_ON_ONCE(err))
-+		disable_free_mt_locked();
-+}
-+
-+static __always_inline void free_mt_erase_va_locked(struct vmap_area *va)
-+{
-+	int err;
-+
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	MA_STATE(mas, &free_vmap_area_mt, va->va_start, va->va_end - 1);
-+
+ 
+-	/* Insert to the rb-tree */
+-	rb_link_node(&va->rb_node, parent, link);
+-	if (augment) {
+-		/*
+-		 * Some explanation here. Just perform simple insertion
+-		 * to the tree. We do not set va->subtree_max_size to
+-		 * its current size before calling rb_insert_augmented().
+-		 * It is because we populate the tree from the bottom
+-		 * to parent levels when the node _is_ in the tree.
+-		 *
+-		 * Therefore we set subtree_max_size to zero after insertion,
+-		 * to let __augment_tree_propagate_from() puts everything to
+-		 * the correct order later on.
+-		 */
+-		rb_insert_augmented(&va->rb_node,
+-			root, &free_vmap_area_rb_augment_cb);
+-		va->subtree_max_size = 0;
+-	} else {
+-		rb_insert_color(&va->rb_node, root);
+-	}
++	lockdep_assert_held(&vn->busy.lock);
+ 
+-	/* Address-sort this list */
+-	list_add(&va->list, head);
+-}
++	MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
+ 
+-static __always_inline void
+-link_va(struct vmap_area *va, struct rb_root *root,
+-	struct rb_node *parent, struct rb_node **link,
+-	struct list_head *head)
+-{
+-	__link_va(va, root, parent, link, head, false);
+-}
++	list_del_init(&va->list);
+ 
+-static __always_inline void
+-link_va_augment(struct vmap_area *va, struct rb_root *root,
+-	struct rb_node *parent, struct rb_node **link,
+-	struct list_head *head)
+-{
+-	__link_va(va, root, parent, link, head, true);
+-}
++	try_init_busy_mt_locked(vn);
+ 
+-static __always_inline void
+-__unlink_va(struct vmap_area *va, struct rb_root *root, bool augment)
+-{
+-	if (WARN_ON(RB_EMPTY_NODE(&va->rb_node)))
++	if (unlikely(!vn->busy.mt_enabled))
+ 		return;
+ 
+-	if (augment)
+-		rb_erase_augmented(&va->rb_node,
+-			root, &free_vmap_area_rb_augment_cb);
+-	else
+-		rb_erase(&va->rb_node, root);
+-
+-	list_del_init(&va->list);
+-	RB_CLEAR_NODE(&va->rb_node);
 +	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
 +	if (WARN_ON_ONCE(err))
-+		disable_free_mt_locked();
-+}
-+
-+static __always_inline void
-+free_mt_update_va_locked(struct vmap_area *va, unsigned long old_start,
-+			 unsigned long old_end)
-+{
-+	int err;
-+
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	MA_STATE(mas_erase, &free_vmap_area_mt, old_start, old_end - 1);
-+	MA_STATE(mas_store, &free_vmap_area_mt, va->va_start, va->va_end - 1);
-+
-+	err = mas_store_gfp(&mas_erase, NULL, GFP_ATOMIC | __GFP_NOWARN);
-+	if (WARN_ON_ONCE(err)) {
-+		disable_free_mt_locked();
-+		return;
-+	}
-+
-+	err = mas_store_gfp(&mas_store, va, GFP_ATOMIC | __GFP_NOWARN);
-+	if (WARN_ON_ONCE(err))
-+		disable_free_mt_locked();
-+}
-+
-+static void free_mt_rebuild_locked(void)
-+{
-+	struct vmap_area *va;
-+	int err;
-+
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	__mt_destroy(&free_vmap_area_mt);
-+	free_vmap_area_mt_enabled = true;
-+
-+	list_for_each_entry(va, &free_vmap_area_list, list) {
-+		MA_STATE(mas, &free_vmap_area_mt, va->va_start, va->va_end - 1);
-+
-+		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+		if (WARN_ON_ONCE(err)) {
-+			disable_free_mt_locked();
-+			return;
-+		}
-+	}
-+}
-+
-+static __always_inline void try_init_free_mt_locked(void)
-+{
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
-+	if (free_vmap_area_mt_init_tried)
-+		return;
-+
-+	if (!vmap_mt_runtime_ready())
-+		return;
-+
-+	free_vmap_area_mt_init_tried = true;
-+	free_mt_rebuild_locked();
-+}
-+
-+static __always_inline struct vmap_area *
-+__find_vmap_area_list(unsigned long addr, struct list_head *head)
-+{
-+	struct vmap_area *va;
-+
-+	addr = (unsigned long)kasan_reset_tag((void *)addr);
-+
-+	list_for_each_entry(va, head, list) {
-+		if (addr < va->va_start)
-+			break;
-+		if (addr < va->va_end)
-+			return va;
-+	}
-+
-+	return NULL;
-+}
-+
- static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
- {
- 	struct rb_node *n = root->rb_node;
-@@ -1092,29 +1224,268 @@ static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *ro
++		disable_busy_mt_locked(vn);
  }
  
- /* Look up the first VA which satisfies addr < va_end, NULL if none. */
--static struct vmap_area *
--__find_vmap_area_exceed_addr(unsigned long addr, struct rb_root *root)
-+static __always_inline struct vmap_area *
-+__find_vmap_area_exceed_addr_list(unsigned long addr, struct list_head *head)
+ static __always_inline void
+-unlink_va(struct vmap_area *va, struct rb_root *root)
++insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
  {
--	struct vmap_area *va = NULL;
--	struct rb_node *n = root->rb_node;
-+	struct vmap_area *va;
+-	__unlink_va(va, root, false);
+-}
++	int err;
  
- 	addr = (unsigned long)kasan_reset_tag((void *)addr);
- 
--	while (n) {
--		struct vmap_area *tmp;
-+	list_for_each_entry(va, head, list) {
-+		if (va->va_end > addr)
-+			return va;
-+	}
- 
--		tmp = rb_entry(n, struct vmap_area, rb_node);
--		if (tmp->va_end > addr) {
--			va = tmp;
--			if (tmp->va_start <= addr)
--				break;
-+	return NULL;
-+}
- 
--			n = n->rb_left;
--		} else
--			n = n->rb_right;
-+static __always_inline struct list_head *
-+find_vmap_area_insert_point_list(struct vmap_area *va, struct list_head *head)
-+{
-+	struct vmap_area *tmp;
-+	struct list_head *next = head;
-+
-+	list_for_each_entry(tmp, head, list) {
-+		if (tmp->va_start > va->va_start) {
-+			next = &tmp->list;
-+			break;
-+		}
- 	}
- 
--	return va;
-+	if (next != head) {
-+		tmp = list_entry(next, struct vmap_area, list);
-+		if (WARN_ON_ONCE(va->va_end > tmp->va_start))
-+			return NULL;
-+	}
-+
-+	if (next->prev != head) {
-+		tmp = list_entry(next->prev, struct vmap_area, list);
-+		if (WARN_ON_ONCE(va->va_start < tmp->va_end))
-+			return NULL;
-+	}
-+
-+	return next;
-+}
-+
-+/*
-+ * Use maple-tree neighbour lookup to locate insertion point in O(log n),
-+ * while preserving sorted-list neighbour traversal.
-+ */
-+static __always_inline struct list_head *
-+find_vmap_area_insert_point_mt(struct vmap_area *va, struct maple_tree *tree,
-+			       struct list_head *head)
-+{
-+	struct vmap_area *prev, *next;
-+	struct list_head *next_link;
-+
-+	MA_STATE(mas, tree, va->va_start, va->va_start);
-+
-+	mas_set(&mas, va->va_start);
-+	next = mas_find(&mas, ULONG_MAX);
-+
-+	if (next) {
-+		if (WARN_ON_ONCE(next->va_start <= va->va_start))
-+			return NULL;
-+		if (WARN_ON_ONCE(va->va_end > next->va_start))
-+			return NULL;
-+		next_link = &next->list;
-+	} else {
-+		next_link = head;
-+	}
-+
-+	if (next_link->prev != head) {
-+		prev = list_entry(next_link->prev, struct vmap_area, list);
-+		if (WARN_ON_ONCE(va->va_start < prev->va_end))
-+			return NULL;
-+	}
-+
-+	return next_link;
-+}
-+
-+static __always_inline bool
-+insert_vmap_area_list_sorted(struct vmap_area *va, struct list_head *head)
-+{
-+	struct list_head *next;
-+
-+	next = find_vmap_area_insert_point_list(va, head);
-+	if (!next)
-+		return false;
-+
-+	list_add_tail(&va->list, next);
-+	return true;
-+}
-+
-+static __always_inline bool
-+insert_vmap_area_list_sorted_mt(struct vmap_area *va, struct maple_tree *tree,
-+				struct list_head *head)
-+{
-+	struct list_head *next;
-+
-+	next = find_vmap_area_insert_point_mt(va, tree, head);
-+	if (!next)
-+		return false;
-+
-+	list_add_tail(&va->list, next);
-+	return true;
-+}
-+
-+static __always_inline void
-+disable_busy_mt_locked(struct vmap_node *vn)
-+{
-+	lockdep_assert_held(&vn->busy.lock);
-+
-+	if (vn->busy.mt_enabled) {
-+		__mt_destroy(&vn->busy.mt);
-+		vn->busy.mt_enabled = false;
-+	}
-+
-+	vn->busy.mt_init_tried = true;
-+}
-+
-+static __always_inline void
-+disable_lazy_mt_locked(struct vmap_node *vn)
-+{
+-static __always_inline void
+-unlink_va_augment(struct vmap_area *va, struct rb_root *root)
+-{
+-	__unlink_va(va, root, true);
 +	lockdep_assert_held(&vn->lazy.lock);
 +
-+	if (vn->lazy.mt_enabled) {
-+		__mt_destroy(&vn->lazy.mt);
-+		vn->lazy.mt_enabled = false;
-+	}
++	try_init_lazy_mt_locked(vn);
 +
-+	vn->lazy.mt_init_tried = true;
-+}
-+
-+static void
-+busy_mt_rebuild_locked(struct vmap_node *vn)
-+{
-+	struct vmap_area *va;
-+	int err;
-+
-+	lockdep_assert_held(&vn->busy.lock);
-+
-+	__mt_destroy(&vn->busy.mt);
-+	vn->busy.mt_enabled = true;
-+
-+	list_for_each_entry(va, &vn->busy.head, list) {
-+		MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
-+
-+		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+		if (WARN_ON_ONCE(err)) {
-+			disable_busy_mt_locked(vn);
-+			return;
-+		}
-+	}
-+}
-+
-+static __always_inline void
-+try_init_busy_mt_locked(struct vmap_node *vn)
-+{
-+	lockdep_assert_held(&vn->busy.lock);
-+
-+	if (vn->busy.mt_init_tried)
-+		return;
-+
-+	if (!vmap_mt_runtime_ready())
-+		return;
-+
-+	vn->busy.mt_init_tried = true;
-+	busy_mt_rebuild_locked(vn);
-+}
-+
-+static void
-+lazy_mt_rebuild_locked(struct vmap_node *vn)
-+{
-+	struct vmap_area *va;
-+	int err;
-+
-+	lockdep_assert_held(&vn->lazy.lock);
-+
-+	__mt_destroy(&vn->lazy.mt);
-+	vn->lazy.mt_enabled = true;
-+
-+	list_for_each_entry(va, &vn->lazy.head, list) {
++	if (likely(vn->lazy.mt_enabled)) {
 +		MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
 +
-+		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+		if (WARN_ON_ONCE(err)) {
-+			disable_lazy_mt_locked(vn);
++		if (!insert_vmap_area_list_sorted_mt(va, &vn->lazy.mt,
++						     &vn->lazy.head))
 +			return;
-+		}
-+	}
-+}
 +
-+static __always_inline void
-+try_init_lazy_mt_locked(struct vmap_node *vn)
-+{
++		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
++		if (WARN_ON_ONCE(err))
++			disable_lazy_mt_locked(vn);
++
++		return;
++	}
++
++	if (!insert_vmap_area_list_sorted(va, &vn->lazy.head))
++		return;
+ }
+ 
+-#if DEBUG_AUGMENT_PROPAGATE_CHECK
+-/*
+- * Gets called when remove the node and rotate.
+- */
+-static __always_inline unsigned long
+-compute_subtree_max_size(struct vmap_area *va)
++static __always_inline bool
++lazy_vmap_areas_empty_locked(struct vmap_node *vn)
+ {
+-	return max3(va_size(va),
+-		get_subtree_max_size(va->rb_node.rb_left),
+-		get_subtree_max_size(va->rb_node.rb_right));
 +	lockdep_assert_held(&vn->lazy.lock);
 +
-+	if (vn->lazy.mt_init_tried)
++	try_init_lazy_mt_locked(vn);
++
++	if (likely(vn->lazy.mt_enabled))
++		return mtree_empty(&vn->lazy.mt);
++
++	return list_empty(&vn->lazy.head);
+ }
+ 
+-static void
+-augment_tree_propagate_check(void)
++static __always_inline void
++move_lazy_vmap_areas_to_purge_locked(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+-	unsigned long computed_size;
++	int err;
+ 
+-	list_for_each_entry(va, &free_vmap_area_list, list) {
+-		computed_size = compute_subtree_max_size(va);
+-		if (computed_size != va->subtree_max_size)
+-			pr_emerg("tree is corrupted: %lu, %lu\n",
+-				va_size(va), va->subtree_max_size);
++	lockdep_assert_held(&vn->lazy.lock);
++
++	try_init_lazy_mt_locked(vn);
++
++	if (likely(vn->lazy.mt_enabled)) {
++		list_for_each_entry(va, &vn->lazy.head, list) {
++			MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
++
++			err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
++			if (WARN_ON_ONCE(err)) {
++				disable_lazy_mt_locked(vn);
++				break;
++			}
++		}
++
++		if (vn->lazy.mt_enabled && WARN_ON_ONCE(!mtree_empty(&vn->lazy.mt)))
++			disable_lazy_mt_locked(vn);
+ 	}
++
++	list_replace_init(&vn->lazy.head, &vn->purge_list);
+ }
+-#endif
+ 
+-/*
+- * This function populates subtree_max_size from bottom to upper
+- * levels starting from VA point. The propagation must be done
+- * when VA size is modified by changing its va_start/va_end. Or
+- * in case of newly inserting of VA to the tree.
+- *
+- * It means that __augment_tree_propagate_from() must be called:
+- * - After VA has been inserted to the tree(free path);
+- * - After VA has been shrunk(allocation path);
+- * - After VA has been increased(merging path).
+- *
+- * Please note that, it does not mean that upper parent nodes
+- * and their subtree_max_size are recalculated all the time up
+- * to the root node.
+- *
+- *       4--8
+- *        /\
+- *       /  \
+- *      /    \
+- *    2--2  8--8
+- *
+- * For example if we modify the node 4, shrinking it to 2, then
+- * no any modification is required. If we shrink the node 2 to 1
+- * its subtree_max_size is updated only, and set to 1. If we shrink
+- * the node 8 to 6, then its subtree_max_size is set to 6 and parent
+- * node becomes 4--6.
+- */
+-static __always_inline void
+-augment_tree_propagate_from(struct vmap_area *va)
++static __always_inline bool
++insert_vmap_area_free_locked(struct vmap_area *va)
+ {
+-	/*
+-	 * Populate the tree from bottom towards the root until
+-	 * the calculated maximum available size of checked node
+-	 * is equal to its current one.
+-	 */
+-	free_vmap_area_rb_augment_cb_propagate(&va->rb_node, NULL);
++	lockdep_assert_held(&free_vmap_area_lock);
+ 
+-#if DEBUG_AUGMENT_PROPAGATE_CHECK
+-	augment_tree_propagate_check();
+-#endif
+-}
++	try_init_free_mt_locked();
+ 
+-static void
+-insert_vmap_area(struct vmap_area *va,
+-	struct rb_root *root, struct list_head *head)
+-{
+-	struct rb_node **link;
+-	struct rb_node *parent;
++	if (likely(free_mt_supported())) {
++		if (!insert_vmap_area_list_sorted_mt(va, &free_vmap_area_mt,
++						     &free_vmap_area_list))
++			return false;
+ 
+-	link = find_va_links(va, root, NULL, &parent);
+-	if (link)
+-		link_va(va, root, parent, link, head);
++		free_mt_store_va_locked(va);
++	} else {
++		if (!insert_vmap_area_list_sorted(va, &free_vmap_area_list))
++			return false;
++	}
++
++	return true;
+ }
+ 
+-static void
+-insert_vmap_area_augment(struct vmap_area *va,
+-	struct rb_node *from, struct rb_root *root,
+-	struct list_head *head)
++static __always_inline void
++unlink_vmap_area_free_locked(struct vmap_area *va)
+ {
+-	struct rb_node **link;
+-	struct rb_node *parent;
++	lockdep_assert_held(&free_vmap_area_lock);
+ 
+-	if (from)
+-		link = find_va_links(va, NULL, from, &parent);
+-	else
+-		link = find_va_links(va, root, NULL, &parent);
++	if (WARN_ON_ONCE(list_empty(&va->list)))
 +		return;
+ 
+-	if (link) {
+-		link_va_augment(va, root, parent, link, head);
+-		augment_tree_propagate_from(va);
+-	}
++	if (likely(free_mt_supported()))
++		free_mt_erase_va_locked(va);
 +
-+	if (!vmap_mt_runtime_ready())
-+		return;
-+
-+	vn->lazy.mt_init_tried = true;
-+	lazy_mt_rebuild_locked(vn);
-+}
-+
-+static __always_inline struct vmap_area *
-+__find_vmap_area_mt(unsigned long addr, struct maple_tree *tree)
-+{
-+	MA_STATE(mas, tree, addr, addr);
-+
-+	addr = (unsigned long)kasan_reset_tag((void *)addr);
-+	mas_set(&mas, addr);
-+
-+	return mas_walk(&mas);
-+}
-+
-+static __always_inline struct vmap_area *
-+__find_vmap_area_exceed_addr_mt(unsigned long addr, struct maple_tree *tree)
-+{
-+	MA_STATE(mas, tree, addr, addr);
-+
-+	addr = (unsigned long)kasan_reset_tag((void *)addr);
-+	mas_set(&mas, addr);
-+
-+	return mas_find(&mas, ULONG_MAX);
-+}
-+
-+static __always_inline struct vmap_area *
-+__find_vmap_area_enclose_addr_mt(unsigned long addr, struct maple_tree *tree)
-+{
-+	MA_STATE(mas, tree, addr, addr);
-+
-+	addr = (unsigned long)kasan_reset_tag((void *)addr);
-+	mas_set(&mas, addr);
-+
-+	return mas_find_rev(&mas, 0);
-+}
-+
-+static __always_inline struct vmap_area *
-+find_vmap_area_busy_locked(unsigned long addr, struct vmap_node *vn)
-+{
-+	lockdep_assert_held(&vn->busy.lock);
-+
-+	try_init_busy_mt_locked(vn);
-+
-+	if (likely(vn->busy.mt_enabled))
-+		return __find_vmap_area_mt(addr, &vn->busy.mt);
-+
-+	return __find_vmap_area_list(addr, &vn->busy.head);
-+}
-+
-+static __always_inline struct vmap_area *
-+find_vmap_area_exceed_addr_busy_locked(unsigned long addr, struct vmap_node *vn)
-+{
-+	lockdep_assert_held(&vn->busy.lock);
-+
-+	try_init_busy_mt_locked(vn);
-+
-+	if (likely(vn->busy.mt_enabled))
-+		return __find_vmap_area_exceed_addr_mt(addr, &vn->busy.mt);
-+
-+	return __find_vmap_area_exceed_addr_list(addr, &vn->busy.head);
++	list_del_init(&va->list);
  }
  
  /*
-@@ -1135,7 +1506,7 @@ find_vmap_area_exceed_addr_lock(unsigned long addr, struct vmap_area **va)
+@@ -1804,29 +1698,20 @@ insert_vmap_area_augment(struct vmap_area *va,
+  * ongoing.
+  */
+ static __always_inline struct vmap_area *
+-__merge_or_add_vmap_area(struct vmap_area *va,
+-	struct rb_root *root, struct list_head *head, bool augment)
++__merge_or_add_vmap_area(struct vmap_area *va, struct list_head *head, bool update_mt)
+ {
+ 	struct vmap_area *sibling;
+ 	struct list_head *next;
+-	struct rb_node **link;
+-	struct rb_node *parent;
++	unsigned long old_start, old_end;
+ 	bool merged = false;
  
- 	for_each_vmap_node(vn) {
- 		spin_lock(&vn->busy.lock);
--		*va = __find_vmap_area_exceed_addr(addr, &vn->busy.root);
-+		*va = find_vmap_area_exceed_addr_busy_locked(addr, vn);
+-	/*
+-	 * Find a place in the tree where VA potentially will be
+-	 * inserted, unless it is merged with its sibling/siblings.
+-	 */
+-	link = find_va_links(va, root, NULL, &parent);
+-	if (!link)
+-		return NULL;
++	if (update_mt && free_mt_supported())
++		next = find_vmap_area_insert_point_mt(va, &free_vmap_area_mt, head);
++	else
++		next = find_vmap_area_insert_point_list(va, head);
  
- 		if (*va)
- 			if (!va_start_lowest || (*va)->va_start < va_start_lowest)
-@@ -1152,7 +1523,7 @@ find_vmap_area_exceed_addr_lock(unsigned long addr, struct vmap_area **va)
- 		vn = addr_to_node(va_start_lowest);
+-	/*
+-	 * Get next node of VA to check if merging can be done.
+-	 */
+-	next = get_va_next_sibling(parent, link);
+-	if (unlikely(next == NULL))
+-		goto insert;
++	if (!next)
++		return NULL;
  
- 		spin_lock(&vn->busy.lock);
--		*va = __find_vmap_area(va_start_lowest, &vn->busy.root);
-+		*va = find_vmap_area_busy_locked(va_start_lowest, vn);
+ 	/*
+ 	 * start            end
+@@ -1838,7 +1723,11 @@ __merge_or_add_vmap_area(struct vmap_area *va,
+ 	if (next != head) {
+ 		sibling = list_entry(next, struct vmap_area, list);
+ 		if (sibling->va_start == va->va_end) {
++			old_start = sibling->va_start;
++			old_end = sibling->va_end;
+ 			sibling->va_start = va->va_start;
++			if (update_mt && free_mt_supported())
++				free_mt_update_va_locked(sibling, old_start, old_end);
  
- 		if (*va)
- 			return vn;
+ 			/* Free vmap_area object. */
+ 			kmem_cache_free(vmap_area_cachep, va);
+@@ -1862,14 +1751,20 @@ __merge_or_add_vmap_area(struct vmap_area *va,
+ 			/*
+ 			 * If both neighbors are coalesced, it is important
+ 			 * to unlink the "next" node first, followed by merging
+-			 * with "previous" one. Otherwise the tree might not be
+-			 * fully populated if a sibling's augmented value is
+-			 * "normalized" because of rotation operations.
++			 * with "previous" one.
+ 			 */
+-			if (merged)
+-				__unlink_va(va, root, augment);
++			if (merged) {
++				if (update_mt)
++					unlink_vmap_area_free_locked(va);
++				else
++					list_del_init(&va->list);
++			}
+ 
++			old_start = sibling->va_start;
++			old_end = sibling->va_end;
+ 			sibling->va_end = va->va_end;
++			if (update_mt && free_mt_supported())
++				free_mt_update_va_locked(sibling, old_start, old_end);
+ 
+ 			/* Free vmap_area object. */
+ 			kmem_cache_free(vmap_area_cachep, va);
+@@ -1880,31 +1775,97 @@ __merge_or_add_vmap_area(struct vmap_area *va,
+ 		}
+ 	}
+ 
+-insert:
+-	if (!merged)
+-		__link_va(va, root, parent, link, head, augment);
++	if (!merged) {
++		if (update_mt)
++			insert_vmap_area_free_locked(va);
++		else
++			list_add_tail(&va->list, next);
++	}
+ 
+ 	return va;
+ }
+ 
+ static __always_inline struct vmap_area *
+ merge_or_add_vmap_area(struct vmap_area *va,
+-	struct rb_root *root, struct list_head *head)
++	struct list_head *head)
+ {
+-	return __merge_or_add_vmap_area(va, root, head, false);
++	return __merge_or_add_vmap_area(va, head, false);
+ }
+ 
+ static __always_inline struct vmap_area *
+-merge_or_add_vmap_area_augment(struct vmap_area *va,
+-	struct rb_root *root, struct list_head *head)
++merge_or_add_vmap_area_free_locked(struct vmap_area *va)
+ {
+-	va = __merge_or_add_vmap_area(va, root, head, true);
+-	if (va)
+-		augment_tree_propagate_from(va);
++	lockdep_assert_held(&free_vmap_area_lock);
++
++	va = __merge_or_add_vmap_area(va, &free_vmap_area_list, true);
++	if (va && va->va_start < free_vmap_alloc_hint)
++		free_vmap_alloc_hint = va->va_start;
+ 
+ 	return va;
+ }
+ 
++/*
++ * Transitional wrappers retained until all legacy rb call sites are switched.
++ * Follow-up patches in this series remove these wrappers.
++ */
++static __always_inline void
++insert_vmap_area(struct vmap_area *va, struct rb_root *root,
++		 struct list_head *head)
++{
++	struct vmap_node *vn = addr_to_node(va->va_start);
++
++	if (head == &free_vmap_area_list) {
++		insert_vmap_area_free_locked(va);
++		return;
++	}
++
++	if (head == &vn->lazy.head) {
++		insert_vmap_area_lazy_locked(va, vn);
++		return;
++	}
++
++	insert_vmap_area_busy_locked(va, vn);
++}
++
++static __always_inline void
++insert_vmap_area_augment(struct vmap_area *va, struct rb_node *from,
++			 struct rb_root *root, struct list_head *head)
++{
++	insert_vmap_area(va, root, head);
++}
++
++static __always_inline void unlink_va(struct vmap_area *va, struct rb_root *root)
++{
++	struct vmap_node *vn = addr_to_node(va->va_start);
++
++	if (root == &free_vmap_area_root) {
++		unlink_vmap_area_free_locked(va);
++		return;
++	}
++
++	unlink_vmap_area_busy_locked(va, vn);
++}
++
++static __always_inline void
++unlink_va_augment(struct vmap_area *va, struct rb_root *root)
++{
++	unlink_va(va, root);
++}
++
++static __always_inline void augment_tree_propagate_from(struct vmap_area *va)
++{
++}
++
++static __always_inline struct vmap_area *
++merge_or_add_vmap_area_augment(struct vmap_area *va, struct rb_root *root,
++			       struct list_head *head)
++{
++	if (head == &free_vmap_area_list)
++		return merge_or_add_vmap_area_free_locked(va);
++
++	return merge_or_add_vmap_area(va, head);
++}
++
+ static __always_inline bool
+ is_within_this_va(struct vmap_area *va, unsigned long size,
+ 	unsigned long align, unsigned long vstart)
+@@ -1924,74 +1885,103 @@ is_within_this_va(struct vmap_area *va, unsigned long size,
+ 	return (nva_start_addr + size <= va->va_end);
+ }
+ 
+-/*
+- * Find the first free block(lowest start address) in the tree,
+- * that will accomplish the request corresponding to passing
+- * parameters. Please note, with an alignment bigger than PAGE_SIZE,
+- * a search length is adjusted to account for worst case alignment
+- * overhead.
+- */
+ static __always_inline struct vmap_area *
+-find_vmap_lowest_match(struct rb_root *root, unsigned long size,
+-	unsigned long align, unsigned long vstart, bool adjust_search_size)
++find_vmap_lowest_match_list(struct list_head *head, unsigned long size,
++			    unsigned long align, unsigned long vstart)
+ {
+ 	struct vmap_area *va;
+-	struct rb_node *node;
+-	unsigned long length;
+ 
+-	/* Start from the root. */
+-	node = root->rb_node;
++	list_for_each_entry(va, head, list) {
++		if (!is_within_this_va(va, size, align, vstart))
++			continue;
+ 
+-	/* Adjust the search size for alignment overhead. */
+-	length = adjust_search_size ? size + align - 1 : size;
++		return va;
++	}
+ 
+-	while (node) {
+-		va = rb_entry(node, struct vmap_area, rb_node);
++	return NULL;
++}
+ 
+-		if (get_subtree_max_size(node->rb_left) >= length &&
+-				vstart < va->va_start) {
+-			node = node->rb_left;
+-		} else {
+-			if (is_within_this_va(va, size, align, vstart))
+-				return va;
++static __always_inline unsigned long
++clamp_vmap_alloc_hint(unsigned long hint, unsigned long vstart,
++		      unsigned long vend)
++{
++	if (hint < vstart || hint >= vend)
++		return vstart;
+ 
+-			/*
+-			 * Does not make sense to go deeper towards the right
+-			 * sub-tree if it does not have a free block that is
+-			 * equal or bigger to the requested search length.
+-			 */
+-			if (get_subtree_max_size(node->rb_right) >= length) {
+-				node = node->rb_right;
+-				continue;
+-			}
++	return hint;
++}
+ 
+-			/*
+-			 * OK. We roll back and find the first right sub-tree,
+-			 * that will satisfy the search criteria. It can happen
+-			 * due to "vstart" restriction or an alignment overhead
+-			 * that is bigger then PAGE_SIZE.
+-			 */
+-			while ((node = rb_parent(node))) {
+-				va = rb_entry(node, struct vmap_area, rb_node);
+-				if (is_within_this_va(va, size, align, vstart))
++/*
++ * Next-fit scan with wrap-around. Use maple to jump to the first candidate
++ * around the hint in O(log n), then continue on the ordered list for cheap
++ * neighbour traversal and deterministic coalescing behaviour.
++ */
++static __always_inline struct vmap_area *
++find_vmap_match_list_next_fit(struct list_head *head, unsigned long size,
++			      unsigned long align, unsigned long vstart,
++			      unsigned long vend)
++{
++	struct vmap_area *va, *start = NULL;
++	unsigned long hint;
++	bool wrapped;
++
++	hint = clamp_vmap_alloc_hint(free_vmap_alloc_hint, vstart, vend);
++
++	if (hint != vstart) {
++		if (free_mt_supported())
++			start = __find_vmap_area_exceed_addr_mt(hint,
++								&free_vmap_area_mt);
++
++		if (start) {
++			va = start;
++			list_for_each_entry_from(va, head, list) {
++				if (is_within_this_va(va, size, align, hint))
+ 					return va;
++			}
++		} else {
++			list_for_each_entry(va, head, list) {
++				if (va->va_end <= hint)
++					continue;
+ 
+-				if (get_subtree_max_size(node->rb_right) >= length &&
+-						vstart <= va->va_start) {
+-					/*
+-					 * Shift the vstart forward. Please note, we update it with
+-					 * parent's start address adding "1" because we do not want
+-					 * to enter same sub-tree after it has already been checked
+-					 * and no suitable free block found there.
+-					 */
+-					vstart = va->va_start + 1;
+-					node = node->rb_right;
+-					break;
+-				}
++				if (is_within_this_va(va, size, align, hint))
++					return va;
+ 			}
+ 		}
+ 	}
+ 
++	wrapped = (hint != vstart);
++	list_for_each_entry(va, head, list) {
++		if (wrapped) {
++			if (start && va == start)
++				break;
++			if (!start && va->va_start >= hint)
++				break;
++		}
++
++		if (is_within_this_va(va, size, align, vstart))
++			return va;
++	}
++
++	return NULL;
++}
++
++static __always_inline struct vmap_area *
++find_vmap_lowest_match_mt(struct maple_tree *tree, unsigned long size,
++			  unsigned long align, unsigned long vstart)
++{
++	MA_STATE(mas, tree, vstart, vstart);
++	struct vmap_area *va;
++
++	mas_set(&mas, vstart);
++	va = mas_find(&mas, ULONG_MAX);
++
++	while (va) {
++		if (is_within_this_va(va, size, align, vstart))
++			return va;
++
++		va = mas_next(&mas, ULONG_MAX);
++	}
++
+ 	return NULL;
+ }
+ 
+@@ -2015,8 +2005,8 @@ find_vmap_lowest_linear_match(struct list_head *head, unsigned long size,
+ }
+ 
+ static void
+-find_vmap_lowest_match_check(struct rb_root *root, struct list_head *head,
+-			     unsigned long size, unsigned long align)
++find_vmap_lowest_match_check(struct list_head *head, unsigned long size,
++			     unsigned long align)
+ {
+ 	struct vmap_area *va_1, *va_2;
+ 	unsigned long vstart;
+@@ -2025,7 +2015,10 @@ find_vmap_lowest_match_check(struct rb_root *root, struct list_head *head,
+ 	get_random_bytes(&rnd, sizeof(rnd));
+ 	vstart = VMALLOC_START + rnd;
+ 
+-	va_1 = find_vmap_lowest_match(root, size, align, vstart, false);
++	if (free_mt_supported())
++		va_1 = find_vmap_lowest_match_mt(&free_vmap_area_mt, size, align, vstart);
++	else
++		va_1 = find_vmap_lowest_linear_match(head, size, align, vstart);
+ 	va_2 = find_vmap_lowest_linear_match(head, size, align, vstart);
+ 
+ 	if (va_1 != va_2)
+@@ -2069,11 +2062,12 @@ classify_va_fit_type(struct vmap_area *va,
+ }
+ 
+ static __always_inline int
+-va_clip(struct rb_root *root, struct list_head *head,
+-		struct vmap_area *va, unsigned long nva_start_addr,
+-		unsigned long size)
++va_clip(struct vmap_area *va, unsigned long nva_start_addr,
++	unsigned long size)
+ {
+ 	struct vmap_area *lva = NULL;
++	unsigned long old_start = va->va_start;
++	unsigned long old_end = va->va_end;
+ 	enum fit_type type = classify_va_fit_type(va, nva_start_addr, size);
+ 
+ 	if (type == FL_FIT_TYPE) {
+@@ -2084,7 +2078,7 @@ va_clip(struct rb_root *root, struct list_head *head,
+ 		 * V      NVA      V
+ 		 * |---------------|
+ 		 */
+-		unlink_va_augment(va, root);
++		unlink_vmap_area_free_locked(va);
+ 		kmem_cache_free(vmap_area_cachep, va);
+ 	} else if (type == LE_FIT_TYPE) {
+ 		/*
+@@ -2159,10 +2153,11 @@ va_clip(struct rb_root *root, struct list_head *head,
+ 	}
+ 
+ 	if (type != FL_FIT_TYPE) {
+-		augment_tree_propagate_from(va);
++		if (free_mt_supported())
++			free_mt_update_va_locked(va, old_start, old_end);
+ 
+ 		if (lva)	/* type == NE_FIT_TYPE */
+-			insert_vmap_area_augment(lva, &va->rb_node, root, head);
++			insert_vmap_area_free_locked(lva);
+ 	}
+ 
+ 	return 0;
+@@ -2170,7 +2165,6 @@ va_clip(struct rb_root *root, struct list_head *head,
+ 
+ static unsigned long
+ va_alloc(struct vmap_area *va,
+-		struct rb_root *root, struct list_head *head,
+ 		unsigned long size, unsigned long align,
+ 		unsigned long vstart, unsigned long vend)
+ {
+@@ -2187,7 +2181,7 @@ va_alloc(struct vmap_area *va,
+ 		return -ERANGE;
+ 
+ 	/* Update the free vmap_area. */
+-	ret = va_clip(root, head, va, nva_start_addr, size);
++	ret = va_clip(va, nva_start_addr, size);
+ 	if (WARN_ON_ONCE(ret))
+ 		return ret;
+ 
+@@ -2199,35 +2193,37 @@ va_alloc(struct vmap_area *va,
+  * Otherwise an error value is returned that indicates failure.
+  */
+ static __always_inline unsigned long
+-__alloc_vmap_area(struct rb_root *root, struct list_head *head,
+-	unsigned long size, unsigned long align,
+-	unsigned long vstart, unsigned long vend)
++__alloc_vmap_area(unsigned long size, unsigned long align,
++		  unsigned long vstart, unsigned long vend)
+ {
+-	bool adjust_search_size = true;
+ 	unsigned long nva_start_addr;
+ 	struct vmap_area *va;
+ 
++	lockdep_assert_held(&free_vmap_area_lock);
++
+ 	/*
+-	 * Do not adjust when:
+-	 *   a) align <= PAGE_SIZE, because it does not make any sense.
+-	 *      All blocks(their start addresses) are at least PAGE_SIZE
+-	 *      aligned anyway;
+-	 *   b) a short range where a requested size corresponds to exactly
+-	 *      specified [vstart:vend] interval and an alignment > PAGE_SIZE.
+-	 *      With adjusted search length an allocation would not succeed.
++	 * Next-fit with wrap-around lowers repeated list-head scans in
++	 * high-churn workloads.
+ 	 */
+-	if (align <= PAGE_SIZE || (align > PAGE_SIZE && (vend - vstart) == size))
+-		adjust_search_size = false;
++	va = find_vmap_match_list_next_fit(&free_vmap_area_list, size, align,
++					   vstart, vend);
+ 
+-	va = find_vmap_lowest_match(root, size, align, vstart, adjust_search_size);
+ 	if (unlikely(!va))
+ 		return -ENOENT;
+ 
+-	nva_start_addr = va_alloc(va, root, head, size, align, vstart, vend);
++	nva_start_addr = va_alloc(va, size, align, vstart, vend);
++	if (!IS_ERR_VALUE(nva_start_addr)) {
++		unsigned long next_hint;
++
++		if (check_add_overflow(nva_start_addr, size, &next_hint))
++			free_vmap_alloc_hint = vstart;
++		else
++			free_vmap_alloc_hint = next_hint;
++	}
+ 
+ #if DEBUG_AUGMENT_LOWEST_MATCH_CHECK
+ 	if (!IS_ERR_VALUE(nva_start_addr))
+-		find_vmap_lowest_match_check(root, head, size, align);
++		find_vmap_lowest_match_check(&free_vmap_area_list, size, align);
+ #endif
+ 
+ 	return nva_start_addr;
+@@ -2441,8 +2437,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ retry:
+ 	if (IS_ERR_VALUE(addr)) {
+ 		preload_this_cpu_lock(&free_vmap_area_lock, gfp_mask, node);
+-		addr = __alloc_vmap_area(&free_vmap_area_root, &free_vmap_area_list,
+-			size, align, vstart, vend);
++		addr = __alloc_vmap_area(size, align, vstart, vend);
+ 		spin_unlock(&free_vmap_area_lock);
+ 
+ 		/*
+@@ -2589,7 +2584,6 @@ static void
+ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ {
+ 	LIST_HEAD(decay_list);
+-	struct rb_root decay_root = RB_ROOT;
+ 	struct vmap_area *va, *nva;
+ 	unsigned long n_decay, pool_len;
+ 	int i;
+@@ -2618,7 +2612,7 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 				break;
+ 
+ 			list_del_init(&va->list);
+-			merge_or_add_vmap_area(va, &decay_root, &decay_list);
++			merge_or_add_vmap_area(va, &decay_list);
+ 		}
+ 
+ 		/*
+@@ -5456,8 +5450,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 			/* It is a BUG(), but trigger recovery instead. */
+ 			goto recovery;
+ 
+-		ret = va_clip(&free_vmap_area_root,
+-			&free_vmap_area_list, va, start, size);
++		ret = va_clip(va, start, size);
+ 		if (WARN_ON_ONCE(unlikely(ret)))
+ 			/* It is a BUG(), but trigger recovery instead. */
+ 			goto recovery;
 
 -- 
 2.34.1
