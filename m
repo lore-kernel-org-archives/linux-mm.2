@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E1EBCD98C5
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 04:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6982DCD98CF
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 05:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FE896B0005; Sat, 13 Jun 2026 00:55:27 -0400 (EDT)
+	id 799E96B0093; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AF1C6B008A; Sat, 13 Jun 2026 00:55:27 -0400 (EDT)
+	id 772676B009B; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4046B008C; Sat, 13 Jun 2026 00:55:27 -0400 (EDT)
+	id 6885D6B009D; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D6156B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:55:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDC49A02DF
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:55:26 +0000 (UTC)
-X-FDA: 84873675852.29.5D281E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 30DF120004
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:55:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpGWOA5O;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EB0F6B0093
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 01:09:59 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE8A51C32B8
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:09:58 +0000 (UTC)
+X-FDA: 84873712476.01.AB7A02E
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0DAD11C0007
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:09:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=r2gupMby;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781326525;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781327397;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=abm5AXw1uLIy2ex2jA1De6T0yo+csEjm+fB1Q1Ub6dM=;
-	b=GNytl7rLyAMKFiwSMoPCIU7MywBt6jCIOeUwmnwj5QlufVF306qrNvuY28V/PhC3f7lGNd
-	ek6hJe89WcQ2tD+F7bXW9sJ1rBOoSmiBO1fHfS1A21kjIeLTBSzyOFRZ6IvND5f/8S5f9B
-	bOArD/MpVVqZ8pJ9tCsXFT+6sGBFtnM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781326525;
-	b=ApWBQOibFg/BDKa5XEL1jCi18/xfDYuM225t47di53xDdxI2hZ4x+ryw+sxS5poQ1xWBIx
-	5YA4y/37F0QyOlyvvHz763P0GP1WBJEhp87knJfhXJGZs0EA2iSHkT4cjCyUr8s8OAhPME
-	sA6MIROUesAMFuAqJsUeftMnrC7LSwc=
+	bh=v5eFW2g7W1dcJNtE4gdFektrsMjBmaMLK4+5JsIr98U=;
+	b=tP8isfH552mJil+su3jw5HmKDMFi7qM9PJfO1Ns6QHUSg4CCxSEDUaHo4e2phR91VOEiw1
+	3hMckOHDW1qUjB5aCiEr87/iAW9AgaaS5R5Rp9MPuePxkxQ/Q5UIzzMsrK31f0tmKlXcqZ
+	mgBFBUau+dPuozFO91Ltscw1lSkLRN4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VpGWOA5O;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B20840D8A;
-	Sat, 13 Jun 2026 04:55:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724EB1F000E9;
-	Sat, 13 Jun 2026 04:55:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781326523;
-	bh=abm5AXw1uLIy2ex2jA1De6T0yo+csEjm+fB1Q1Ub6dM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VpGWOA5OmxKHHi1Nfiw4PrXtyO5qxnDqrcaKAmQBdzjsxd/qepovq00ZGAo0e6ai0
-	 rUx7DEJFj2Hh5+DJ/OxOn+v/9HYT3bmaAi6KD4SzKh9BAnUDNbBDDbmyaFB07PfjaO
-	 FMcFo2o5xqlmKAQDjczRccdrEoDoN9nTB4TkbGEZwxhxiZwbO0eHTTKJId4vc9Rc5d
-	 1r812sh5yBW5MRYlzmDixkS8dMNy9pI2gxZWxIYB11QHfbeHHbQOjYikzk2H63LnKU
-	 76d5+0o0gUz4PsaoyJFNoSFJdJr+LA9D4XlEziibL6DpGyB7k65pEs9DJl9A0iU0BS
-	 4lsc+M4c66a8Q==
-Message-ID: <25a57a12-0405-4469-8fe8-42554b98e523@kernel.org>
-Date: Sat, 13 Jun 2026 13:55:16 +0900
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=r2gupMby;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf18.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781327397;
+	b=D90SPQ/1rPu+5rKkZeIrrIGLPKp9gGLS9PkeZCsjUbewGTbgopFjoLtU7cLp8RXXU/lQLC
+	y1E6NXjsN2PmFuAgMAx3ELsruE+Z9LUF+WIOREB3ImeBiw1J9wDZeCQA+hk9BCyqZmL8fj
+	qI3tZV17G5F7LRwj9FXOE55MK4CAVXs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=v5eFW2g7W1dcJNtE4gdFektrsMjBmaMLK4+5JsIr98U=; b=r2gupMbySKmfWqHfZq5g0R3ZS2
+	7W+4ibTEhfYBwKj2I+ajAicV076fh4vivRZ+uZEH6YvFWmJZSjlu7DaV7W8C1RaSYia07QdF0zdYj
+	kLsgFib+h3Z67aodCxRYuO6EeZFXAwccbKa5jjt/1BnzCRTRO521+zppM73EuzLBJjATpifJl1GVZ
+	msdUMEIffQxNn8EcSjWY0VKAdaOpmo6Hiq+nxpKdc4e7d9aaZ3bmPvs8qE7CgQT79fGvupEzevxH8
+	oa2oae8BiJBuPf87hdGwp4HBHYYgIRQrOklBS39V///Q9ETpfA3DwUoTrE8eMdgzII1wAQTOFVJkq
+	2yrgLPmg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wYGcy-00000003aT0-1Lre;
+	Sat, 13 Jun 2026 05:09:52 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-mm@kvack.org
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v3 03/10] allow preallocated kmem_cache instances in modules
+Date: Sat, 13 Jun 2026 06:09:44 +0100
+Message-ID: <20260613050951.855141-4-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260613050951.855141-1-viro@zeniv.linux.org.uk>
+References: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
+ <20260613050951.855141-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and
- switch to static key
-To: lirongqing <lirongqing@baidu.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Matthew Wilcox <willy@infradead.org>, Usama Arif <usama.arif@linux.dev>
-References: <20260604110318.2089-1-lirongqing@baidu.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260604110318.2089-1-lirongqing@baidu.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------kBl0Fyz5hJPGyvSUKszm2dfA"
-X-Rspamd-Queue-Id: 30DF120004
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0DAD11C0007
 X-Rspam-User: 
-X-Stat-Signature: h1pbacow7ote74qa7sq1uutffoowpefi
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781326525-606485
-X-HE-Meta: U2FsdGVkX1/3mXee6CiW4kt/7Tai0Mtty2/E/7z4f+CUUFYJyu0Tv3gybVttPTx1cLEvpQLScSVBnGvRLdvwOkPT/Ocwyd1PqGpIHpw7CBNPVimtz2n4jc2xpOOIYFdI3ZXCta5n3+J1TCnk1jbRXVmZOISNuwjKCj2T5z0zqkqYVvltnXDRWy2xBYqtPuERHiO7RD74Sy3qOzf/V3SA0dAlSIn2IeRzTCI219rVKN957/fHBRzylyv8vpamdw7atnraVwGCBEXYugtb0GxXFPh1Mg1kC8HpbKtoJ9emM+54qCCAAlAQIdLgvRmP2U1/yAB6whUrk51dybeIU8DSXNXYHForSGgb7E1S0deDt0dm/cogkIikClesML3SwcPUJfRifjqg8EseMOh0upUNgMk2HSRYG+xXJEL36+HlsezIKV3SuGYQ1egv/Gtu1LkmOReCdfE82FU0JGdSuUoBxp4tnqkxjdf/zmLRGfWx7TCfUiidhQNY4GB3gDOXiKEtJfn7vPXzo7EOl0JwBOCKviLQsCEmJ733yJCedoCkX7/T7u54H5eRvbO0IfxAuhqk3H35xfdLQQVy3qNHKMwtKN2de0VFrG6jz5eNVBj6u/GWsoqR1b1Y9/9XrDHyAPQJeAfMbRGzmZVf/rBvCF08u2XmzQYg+wcJGs8KMfGQQf1UKykDn5f3NkeWkCAinQ+dX4la3p8XqUC4EngKlQ5LUxmSnjulkMENuV2T3JMm41os8vrZprHUf8kVmFe9fwrLA/9Cux9EjxCm5kBLzGBHE+4JwKx40OnbNl7pOM8mb+7e/CMYf5LSbuR08PoQdDJGwSI65cN7+D1GwZxhQ8qEQh8UWOPtbdpdRHWLUJs5aiab152TpSQqxI7tmNxpnsSZgNiVLdPRIib/9o+uWnUEwFspb2846NdqAkXs+sjhPg9fRX/frkDglhE5G3jAmCpaLbz4YKpAL7yOHIA/6Jc
- AF9tNQqt
- tZmuNKxp3MRtTC+FZvBRFdftBHickBZTvwn+lRyPwiZ+tG+NBc4hX0bc2EbIuyC5XExDIKDy0qdKd1RW3+c8NlQAUw8pZYZWQwrFwZ7NBv+11F1NVl1ST81A/0McA/OdVetnHqlgoKAUf8FV4cDjWf2IOu4jxGT8bsZCviYQBKojWXfnRzL3zDaLtrFzWF3si5MkTM8CgTYHnTLRV3zooXO9p3n8UBOjA/KngL8hevoPt6knJwBeFyPH/7DRlcjO6gLlO1HUngnfYbtyzehifV8TXSo2RBHbtOzNA/FXABE8Vv0+1p41KPZlB7Y5KKLwAPs5ZCOltuNyRhELj8LnioOQE95WuFHcOgF7l60PgeiTfhMeoI+JBvFsQl5RmQWPylaoMHrVGYQiMV8Siv3BBfEq9an0pu5W46UcUmXo+TzmSWPMwIGwGrh8MviuoZNTt699KuF4Nun+E2RjxjQdmAcDi1K/58uV450FDs3zgX3PJkACKtNjhm6TN8RFCTTFt8eINQM/nWjN2K7alJS0ABpFNy3wnSKLd+rO46r3cO2cxS/3u/YRJOhxZWlcMXC56SJ5mGlmHWPDSJaHZkEukp9+ZVUicaWgl1suN6hoYeDgHcLt5Db4+w3M4dTnjYjacIwi9mxwsDDN5rmZMdETzU54nLKhDqYPkSCKFSbutiDZbQu20nXskpDOM9/8dXBtEmBbCEkaK2wdlaUDtaaTz5YjXoN/MjekarjtKnFp4UnjAbu+A+1cjmEqS0w==
+X-Stat-Signature: fp43utdgfj83itswbumr6yhhys9yhoet
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781327396-602120
+X-HE-Meta: U2FsdGVkX19+980XJYWNpv5hKaAXchoU0z4A5ZJmZJea/At2RJhnkKKOrbmtfgUuvePPFFwLapj7saaUYVxhnrtub7Taxn7g1UNRPSmo2Ah6NCAYaHlQ0AbVkHEf9Ymyt2QTAier8Ky6mtiAiaMBb9VAhy3CqvR6/iqqJH0fohXBENKQeVNLjfYw2Tdt0TeV1sEYy0GFn/sOl2IY6iaFSrLHQ3ctxMsvTjppkVKuGo/SisJDDL2Gv2J5YwP66VWCCC8i1b+8/EnAVTgSkC3LGst+qu1LBdvLNntA7BXMb5dP6TX8XQanoQJoUr321YFVwrYAk13SI1QwywMtrOk3coeuCFfXJ022IjF2eJofjCH/+Frxyjy9M9RLniNbvUIEGe/N0AQSH0q4Wv12URVzeBfWpk7cMq1vHp6eTHfJyI/chc/aCq96lgDxza1xtMwlqUem7FJKXhHWmdiZY0GvBOAukof3RPTGtLe1tlBC9x1S/oNUqLol+oaQ/H83dUzm2ypnPensZ+LS8+bqStj2/9wbuPy1ixg2p91PQimHf/qAr0WkGCV6VHmRDVIwwisMIXHu0VsUIaNndpSf3kVy0ulBeBR7I4LZiSMFOaOBcxDA+Li0Sf7jVvqpBUFveyBaiE8BwWTJHDXAQ4djGYbTZ+WhWNDx46YzIXfA6JRscM23llGokewFJnYzzjwk4BQZepiFQ68DdDyt9Of+a3ONesWOfNa0KzIMp2P+WwOdaqsm5MW+qjUFraOXn5elbAFSARsZydGHIacsBETv5yUbm8ix40Ptl/P4sLwPrIdpWvM13eP0MmTNJSNrSTN/muaJF1gIyVG/6vsJj8pGm3pZMYqRvBzYgpjU9GbnuBrGiyVltWoxPAZOZe/FcRCfxSkB4o8zbKjR5bQhOVXSYbue+X44+haOAKSLtxVcE9IMZJbPjKtysWsE+q0GtBtbrpCNCsHSWUqVwHGEeikNz/s
+ JZh5Q/t+
+ tMylooYJDUb0427QF5MjQkffGRgXxm3cg2gKZFJUrEtENdGWWkTBNsXC7unF2BRNbXMBQMXB/ga96cnhliXh9ezKxcfw8JbJ99eFtQI7MQ5MKWQ1v8emLV/MndznPye8OX4KzOEJx8uPlENhZoACLuY1KINmAS9ddNqCXjVzbjIm1Ee8wyhE/DsJtiwm8QjuDrGIBGVUB1HQgxly0U8wDciK0JxE4wmOMmI4/lmRBWWdTTKzt2Tu7IkorhtyroS+BllFd+aIydO20rCLK1dUyMVrCHdsCwbHUQqvIKRbjWsKjIVhoS0QMQt+KiCOZBUg7J+Sk8wH0UCboN7OlLZ+9FxobWa/HAt6q6jg91jWBwnx1B1AZz7ZUBz12yf5STOsWQ2/ljrV/mZkkciVKswCWV/nS0cu20IZOkN0UOim32aWxAwKbzJik5oeWEi++c+Hz4ZevoA9jBwsgj4hqzQrUKvxU8v3RIniWazWSK7eDA2PpDffIe4Qzba9JuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,83 +95,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------kBl0Fyz5hJPGyvSUKszm2dfA
-Content-Type: multipart/mixed; boundary="------------Y3YSJpLruN4AtA10Yc7JjJuh";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: lirongqing <lirongqing@baidu.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Matthew Wilcox <willy@infradead.org>, Usama Arif <usama.arif@linux.dev>
-Message-ID: <25a57a12-0405-4469-8fe8-42554b98e523@kernel.org>
-Subject: Re: [PATCH v3] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and
- switch to static key
-References: <20260604110318.2089-1-lirongqing@baidu.com>
-In-Reply-To: <20260604110318.2089-1-lirongqing@baidu.com>
+	We need to make sure that instance in a module will get to
+slab_kmem_cache_release() before the module data gets freed.  That's only
+a problem on sysfs setups - otherwise it'll definitely be finished before
+kmem_cache_destroy() returns.
 
---------------Y3YSJpLruN4AtA10Yc7JjJuh
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+	Note that modules themselves have sysfs-exposed attributes,
+so a similar problem already exists there.  That's dealt with by
+having mod_sysfs_teardown() wait for refcount of module->mkobj.kobj
+reaching zero.  Let's make use of that - have static-duration-in-module
+kmem_cache instances grab a reference to that kobject upon setup and
+drop it in the end of slab_kmem_cache_release().
 
+	Let setup helpers store the kobject to be pinned in
+kmem_cache_args->owner (for preallocated; if somebody manually sets it
+for non-preallocated case, it'll be ignored).  That would be
+&THIS_MODULE->mkobj.kobj for a module and NULL in built-in.
 
+	If sysfs is enabled and we are dealing with preallocated instance,
+let create_cache() grab and stash that reference in kmem_cache->owner
+and let slab_kmem_cache_release() drop it instead of freeing kmem_cache
+instance.
 
-On 6/4/26 8:03 PM, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
->=20
-> The mempool subsystem historically wrapped its debugging logic inside a=
-n
-> merely defines compile-time defaults for SLUB and caused two flaws:
->=20
-> 1. On production kernels where CONFIG_SLUB_DEBUG=3Dy but
->    CONFIG_SLUB_DEBUG_ON=3Dn, mempool debugging was completely compiled =
-out
->    at compile time.
-> 2. On kernels with CONFIG_SLUB_DEBUG_ON=3Dy, mempool debugging stayed a=
-ctive
->    even if a user explicitly disabled slub debugging at boot time.
->=20
-> Clean up this mess by removing the #ifdef and switching to a runtime st=
-atic
-> key (mempool_debug_enabled), allowing mempool debugging to be toggled
-> cleanly via its own boot parameter.
->=20
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Harry Yoo <harry@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Hao Li <hao.li@linux.dev>
-> Cc: Christoph Lameter <cl@gentwo.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Usama Arif <usama.arif@linux.dev>
-> ---
+	Preallocated kmem_cache instances in modules are forcibly made
+non-mergable - any subsequent alias could outlive the module (and module's
+.data) by arbitrary long time.  If you really want your (modular) cache
+to be mergable, just have it dynamically allocated.
 
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ include/linux/slab-static.h | 11 +++++++----
+ include/linux/slab.h        |  1 +
+ mm/slab.h                   |  1 +
+ mm/slab_common.c            | 19 +++++++++++++++++--
+ 4 files changed, 26 insertions(+), 6 deletions(-)
 
---=20
-Cheers,
-Harry / Hyeonggon
+diff --git a/include/linux/slab-static.h b/include/linux/slab-static.h
+index 007fc0bd4e8c..16d1564b4a4b 100644
+--- a/include/linux/slab-static.h
++++ b/include/linux/slab-static.h
+@@ -5,18 +5,21 @@
+ #include <linux/init.h>
+ #include <generated/kmem_cache_size.h>
+ 
+-#ifdef MODULE
+-#error "can't use that in modules"
+-#endif
+-
+ /* same size and alignment as struct kmem_cache: */
+ struct kmem_cache_opaque {
+ 	unsigned char opaque[KMEM_CACHE_SIZE];
+ } __aligned(KMEM_CACHE_ALIGN);
+ 
++#ifdef MODULE
++#define THIS_MODULE_KOBJ &THIS_MODULE->mkobj.kobj
++#else
++#define THIS_MODULE_KOBJ NULL
++#endif
++
+ #define __KMEM_CACHE_SETUP(cache, name, size, flags, ...)	\
+ 		__kmem_cache_create_args((name), (size),	\
+ 			&(struct kmem_cache_args) {		\
++				.owner = THIS_MODULE_KOBJ,	\
+ 				.preallocated = (cache),	\
+ 				__VA_ARGS__}, (flags))
+ 
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index ec68aabf98df..c95ad771ece2 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -382,6 +382,7 @@ struct kmem_cache_args {
+ 	 */
+ 	unsigned int sheaf_capacity;
+ 	struct kmem_cache *preallocated;
++	struct kobject *owner;
+ };
+ 
+ struct kmem_cache *__kmem_cache_create_args(const char *name,
+diff --git a/mm/slab.h b/mm/slab.h
+index bf2f87acf5e3..8b1db0d03226 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -219,6 +219,7 @@ struct kmem_cache {
+ 	struct list_head list;		/* List of slab caches */
+ #ifdef CONFIG_SYSFS
+ 	struct kobject kobj;		/* For sysfs */
++	struct kobject *owner;		/* keep that pinned while alive */
+ #endif
+ #ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 	unsigned long random;
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index 5b6aaa96d68d..1717c79d92be 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -255,6 +255,12 @@ static struct kmem_cache *create_cache(const char *name,
+ 			kmem_cache_free(kmem_cache, s);
+ 		return ERR_PTR(err);
+ 	}
++#ifdef CONFIG_SYSFS
++	if (flags & SLAB_PREALLOCATED) {
++		s->owner = args->owner;
++		kobject_get(s->owner);
++	}
++#endif
+ 	s->refcount = 1;
+ 	list_add(&s->list, &slab_caches);
+ 	return s;
+@@ -366,8 +372,11 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+ 		    object_size - args->usersize < args->useroffset))
+ 		args->usersize = args->useroffset = 0;
+ 
+-	if (args->preallocated)
++	if (args->preallocated) {
+ 		flags |= SLAB_PREALLOCATED;
++		if (args->owner)
++			flags |= SLAB_NO_MERGE;
++	}
+ 
+ 	s = __kmem_cache_alias(name, object_size, flags, args);
+ 	if (s)
+@@ -524,7 +533,13 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+ {
+ 	__kmem_cache_release(s);
+ 	kfree_const(s->name);
+-	kmem_cache_free(kmem_cache, s);
++	if (!(s->flags & SLAB_PREALLOCATED)) {
++		kmem_cache_free(kmem_cache, s);
++		return;
++	}
++#ifdef CONFIG_SYSFS
++	kobject_put(s->owner);
++#endif
+ }
+ 
+ void kmem_cache_destroy(struct kmem_cache *s)
+-- 
+2.47.3
 
---------------Y3YSJpLruN4AtA10Yc7JjJuh--
-
---------------kBl0Fyz5hJPGyvSUKszm2dfA
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaizitAAKCRCGXBN6rc5S
-1ocAAP9Od01upxVUp6/B5+mytUB+pFRAu4iQyQVIsZWljSeLYwEA/xvWpFb8PAZk
-XY0hCl0hv/IQf7MZaAWjUV7fMEcNyAU=
-=yMi6
------END PGP SIGNATURE-----
-
---------------kBl0Fyz5hJPGyvSUKszm2dfA--
 
