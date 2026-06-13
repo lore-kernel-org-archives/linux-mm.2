@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6F71CD8CA8
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 11:42:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5884CD98C5
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 15:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE0A66B0005; Sat, 13 Jun 2026 07:42:57 -0400 (EDT)
+	id 6ADD26B0005; Sat, 13 Jun 2026 11:36:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BE16B008A; Sat, 13 Jun 2026 07:42:57 -0400 (EDT)
+	id 686946B008A; Sat, 13 Jun 2026 11:36:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A32E56B008C; Sat, 13 Jun 2026 07:42:57 -0400 (EDT)
+	id 5C2A86B008C; Sat, 13 Jun 2026 11:36:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DF866B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 07:42:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B765A03A9
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 11:42:57 +0000 (UTC)
-X-FDA: 84874702794.17.25624CA
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E4E1DC0008
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 11:42:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KBNfIV+v;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B5A36B0005
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 11:36:54 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF0E0140465
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 15:36:53 +0000 (UTC)
+X-FDA: 84875292306.16.572A609
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8C42340007
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 15:36:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N4MmU8ye;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781350975;
+	s=arc-20220608; t=1781365012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QTqTZlrXJGkzf6DKatFJDe6iI2I80SbiVoeN8MMMcZs=;
-	b=6zNzWFH2BfIrBgXgzKzxNb7mtVM3oDXIWRwozm5cs5VSRM/I7LoyMC12unl62wya1cR4Y4
-	1fJbNA+PTXh4QA7t8kFtkmRKYu57DlkJRfNlEquJ5MpgnZ0WdLUyPZ+/VuLZvkxrUGaRCR
-	NSbd/MJedELYIlw0v2gPTqA7ry9kWfY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781350975;
-	b=vgLP90QinZyYLnNsRGTtWXu5LWB3EP7M6m+i9a5xarZ842WbnDKtQ+AQe33gwcYbWAokzs
-	iJEnuSofDnmQ+dk4KEtXQutiw+GgKmTIja6LmRcZ+x6gqE3ETa8/8aFZHuXaYtOiNeqaJa
-	DDK3s+2rM/AySUCJ+WjnhoTiXoN6UBA=
+	bh=kAnta1paEwdFIQxih/xgWEJ4+KGJdhDjTjYkexN5zvo=;
+	b=2noBzUCqojBDSnCpWc14/0AZ1Z3HUMNUs+meMzFsen+jWGc4Ecmn4ZggDJcObZWZcuL2jG
+	VhWE1qJMfBEfsPo7lKGNsLtYlDPt614z96zIAqrKom6x45B2Cj2wRMBTsKohL/YS3xG9Bf
+	g2ovIPz5MM4rzroSawwJTe22iDTdbJ0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KBNfIV+v;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N4MmU8ye;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781365012;
+	b=B07n9xeJ0dB4/3qCxD7E58WI09IF25/xlZBxJODm4UiS2FHBFVKPKBdQtfEJHM1XJmtekq
+	v1RybJ1Rn5ZRjm8HHwtgDwyL2wd4LdLuYdVY/pxd6ZwXiJpY3Z0ntKKSS53a0kqK3CgMkg
+	w84mlOd9s2Nl4qM4j6Le3NyQePo2J3M=
+Message-ID: <683801c1-23a7-424c-ac8d-12a24961088d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781350972;
+	t=1781365009;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QTqTZlrXJGkzf6DKatFJDe6iI2I80SbiVoeN8MMMcZs=;
-	b=KBNfIV+ven/Hd5kC64cB1Q5mvlExwdROUuOqN0XZYN+fs9JzDcYq3NL4cJB3IoVKF5dur+
-	myZfGDawrF97O+d9K6sS1hTrqdaluLRn59/0+b1I6iJsRaCXPL1g0pjAE1PVbiaJgUlyl+
-	gA9m126aYTcFhQZyW1U6Oc9Y30LQbsI=
-From: Lance Yang <lance.yang@linux.dev>
-To: oleg@redhat.com
-Cc: leitao@debian.org,
-	catalin.marinas@arm.com,
-	akpm@linux-foundation.org,
-	lance.yang@linux.dev,
-	dave@stgolabs.net,
-	cai@lca.pw,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task stacks
-Date: Sat, 13 Jun 2026 19:42:37 +0800
-Message-Id: <20260613114237.6463-1-lance.yang@linux.dev>
-In-Reply-To: <ai00wD4ICs1nk4zf@redhat.com>
-References: <ai00wD4ICs1nk4zf@redhat.com>
+	bh=kAnta1paEwdFIQxih/xgWEJ4+KGJdhDjTjYkexN5zvo=;
+	b=N4MmU8yeOUrd20h8DE2N3CrJynJuhtfy2OdKynqokByRbOz2lu15GrpNB3K1dOvVaJUE+N
+	Z3cEr1BqUE2WZFHW+Wejet/iGlHgNbbc2zM60EMC7N9GfpAASmkSPZNWTVTRFoR4EeHDFJ
+	ukvsUWELv05KfVVr/HIcMUzLDaYttmQ=
+Date: Sat, 13 Jun 2026 23:33:30 +0800
 MIME-Version: 1.0
+Subject: Re: [RFC PATCH v4 0/6] samples/damon: handle damon_{start,stop}()
+ failures
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260610135546.64943-1-sj@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260610135546.64943-1-sj@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E4E1DC0008
-X-Stat-Signature: u4yjegoojm4foih8pf8qqh5oq1bisgjx
-X-HE-Tag: 1781350974-977439
-X-HE-Meta: U2FsdGVkX18li9r1hCkihR1XiQk4ofumOFAhSOP4it2bBO/TWX+oJ6wXkvdd2DG+xbfF4G8P5NQo2HSnLPqe+DMC6dPtaTdl6kD5y1JWmLNmspy29arf9eCNCHPyVcsHQslrbTJ//CNC23zh78d8cpcd2qFdBL3Gf5o/6NRNAcKHAMGiYx4swwEsa+iFYKKf1cJVllOc+KjwDmY097Ss/Qaqr4L2wsjt+U/VPtpG/DpHH308axAsz3CL/yPOTQc/k2Sb8sd4UHJTbeP3SOlGFtajB7ZptB7i/EakrgQA7SdvcQhWxChh6XcN628pnao61HLyr2bEF04UB49+m9feWlmnmWKiEO+gLwOVBm3tEa+s2E7CaW9sCJuZKgujgZwQoBx4+XmceLi7PRCwBIE9rgS34NDbcIqxGp/Im0NJ3qqOmqZvPEaukSiZlMyFrnl+m0lmGpJ0RNT0KK50jemUk0T4tdvQ7tz1rCzHcUh6+Uqopk7dx/EmyDklhU2g8n7cnYs1j38guze9O/HTx/6rNf1H8/biW5o0qEauigAT0hYarbqxXD2J0ki+TFI27szXDYB+5wLq5Ju5VU+ZP8nXV7XANr21ip/F7EpycKtGAUeVjYOqlkbkQmrNdaa+tZgW1rPcdO79TsCyLeAKlLJbIoKLqj7dFZagie/yBv39KRVwUVp16W6GinqVP7NRm+bMAaT9HzSTBUQ66IE4JfSZ4TMDq67sTvU6IcnHDHVR6DE1GR5bLeR0UXViJn2iYCgmAR4NgrlwVedLJvodMxEGj/Up0+Le6C3j+tvnO3j5zgH/QckjdwOToBx5ygfFvt5pI3/KPEo3+oxGJy5eBN5SBL/3K7EsU1teyhvLJdhvwbJjO9tw8yD0nFC404E8TxoXrwrKnD9DoWesRaLRkZD4WrSvEE+v4YQwgPWKTEdR/wusy9ww7AMC1r+7ihVa0l1SbNW6yTe0CduKyMVb0Bl
- rspx/68X
- 1mxCd5vohcKtbZhxJZ97BYnGHwyGuCQpk92x/7iy70P5E/MiYT80KkJYQyAjio1eYkS1bhlYoj1zArZva9ZdJyuQNZ4EMMDzTMYuh9SQaW6T+pURPmRDAzOFWzaSrzKD2oT0ViWUi4iU2xr9XJs+K2/lzrzLHYQw1NBn6shkcJyd3UWZMcyOtyqQfZAVmzY7HyGGp/vCXvOB7qDCJM8krrvqEfGJHqE5FvIq/3NuD2vCqu2lTwHCySWTUQdT3p7e8fBLL
+X-Stat-Signature: ysyw5e96sbby54e9b9jxh3k6ppyu38ht
+X-Rspamd-Queue-Id: 8C42340007
+X-HE-Tag: 1781365011-917580
+X-HE-Meta: U2FsdGVkX18DMyFX6T0FagvfvVQ5pGnQmp03FcNmxnt9fOV7G2Hhxj2ZBakoyaOwf/Hqdn5EaNOfILyiGE5HZk+Y5p3w7pLti7qKqIfriexNzT653hMEpIEgVcNwwuwkGIBvInAEoPf48WzE7Fkab2UpJxLfhTNl8nBBAMbR1wMfVlM+uVffX7rhcmKpVJcLejSa7rayhfTLrn3ZBVfdb/1K5ucOAMCY/NpoCGPPGd7qxH2sTqA9q9L4gIkLK5HOWXV+lslWL1uALu9lQECA7U6u49sV23dNPeIvnC0zEw+xhEl0SMHvE7wKehq1nmAos2Pwa2KKsDaYkEAyOdhQOzU0ljjm2iWHUapU8TAnjV4UPBHQN+gXZzlGUt+KgwWoN2uZAv5C7b0rG6M7bxO4GxEqoQndb1A4sp0+eaX0C/+vI5nU+VdyJd/54Jz8gBt6fo/NnBei4hJMEflj+6864wv8wQ5Ttoh1rJbV3EGqtYxta47/f2q6oe2c5YEis0kYoDUEirjd0WbRWHPsCgvjE6MJO2S+eU3h7vMxHIDq3eb++zpDckYaVFxZlNeQ0xNQqqy9OWE0t5bD30KXf+69KF5wn8XYYY8CXCHKOoxZl8k425Q5q+ltx0FBH1jmNMuTF29IQzfrcrJn/u8AYlirJCDDMf7wjK3d9yRcasm5Eux6i9ZbQ/W1gtORNZRLycIsN/5cvBmIKevZoFkQt7F2di5+kAdsp7yG6U1z4VPOjbWPWMwmy/saFDyhYrnST8XYUIq18l9iVTaj3wpNf/wT7V7NgDr4PpOg4+TdF+aLMhSlShAmMOx/Xtdil9EIjNcjdI/kLnmuSd+tQjPWBtjLGKFUQp32HedftsR6PakPnr5w4fl2gE4NbbgpuHLz9dR9KnEq6MCbOkcz1kFzoXcHdovoMGBYTF5Cgu9yju9NsQM/aIgHyzZhqMdUN2mLR283YCV++kUIo9xxf4TaKn2
+ nJodOsko
+ IKD7llBlB0hbFBK0vE1V1RrQ+5fwS0TYkzhBl6UFFMDz1zZloNocVQ14SXpT+3nqUINTVKY91nIyLdJs7ILShY831e8ydLj5VNNTbrtqHyPepJRxx5RLvZ/mubxSXrL37PFh7QWq7KxUffXv/Zipc4hgXUCluHI/rA672v3WdIlQZRpxGXKxO4Ezu7ytvG9VqX8116BR/oSEOaE+j62OdV0gXNC/jT1eFC2NP18r3XVQPgarr+7HVCdgvuyWxHby/137D3yN4MochXl4WoVgIuFX1Eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,82 +91,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 6/10/26 9:55 PM, SeongJae Park wrote:
+> All DAMON sample modules are not correctly handling failures from
+> damon_start().  Among those, mtier also has an additional problem for
+> handling of damon_stop() failures.  wsse and prcl also have a problem in
+> their damon_call() failure handling.  As a result, memory leaks, next
+> DAMON operation disruptions, and use-after-free can happen.  Fix those.
+> 
+> Note that only the damon_start() failure caused issues can reliably be
+> reproduced.  Reproducing those issues require the admin permission,
+> though.
+> 
+> Changes from RFC v3
+> - RFC v3: https://lore.kernel.org/20260610011420.3018-1-sj@kernel.org
+> - Add damon_Call() failure handling fixes for wsse and prcl.
+> Changes from RFC v2
+> - RFC v2: https://lore.kernel.org/20260609142119.68120-1-sj@kernel.org
+> - Add damon_start() failure handling fixes for wsse and prcl.
+> Changes from RFC v1
+> - RFC v1: https://lore.kernel.org/20260609005443.2122-1-sj@kernel.org
+> - Add damon_stop() failure handling fix to the series.
+> 
+> SeongJae Park (6):
+>   samples/damon/wsse: handle damon_start() failure
+>   samples/damon/prcl: handle damon_start() failure
+>   samples/damon/mtier: handle damon_start() failure
+>   samples/damon/mtier: handle damon_stop() failure
+>   samples/damon/wsse: stop and free damon ctx when damon_call() fails
+>   samples/damon/prcl: stop and free damon ctx when damon_call() fails
+> 
+>  samples/damon/mtier.c | 14 ++++++++++++--
+>  samples/damon/prcl.c  | 11 +++++++++--
+>  samples/damon/wsse.c  | 11 +++++++++--
+>  3 files changed, 30 insertions(+), 6 deletions(-)
 
-On Sat, Jun 13, 2026 at 12:45:20PM +0200, Oleg Nesterov wrote:
->To avoid the confusion, I see nothing wrong in this patch, but see
->the question at the end.
->
->On 06/12, Breno Leitao wrote:
->>
->> +/*
->> + * Briefly drop the RCU read lock to reschedule during the task stack scan.
->> + * Both cursors are pinned across the gap; return false if either one was
->> + * unhashed meanwhile, so the caller stops this round instead of walking a
->> + * stale list.
->> + */
->> +static bool kmemleak_stack_scan_break(struct task_struct *g,
->> +				      struct task_struct *p)
->> +{
->> +	bool can_cont;
->> +
->> +	get_task_struct(g);
->> +	get_task_struct(p);
->> +
->> +	rcu_read_unlock();
->> +	cond_resched();
->> +	rcu_read_lock();
->> +
->> +	can_cont = pid_alive(g) && pid_alive(p);
->> +
->> +	put_task_struct(p);
->> +	put_task_struct(g);
->> +
->> +	return can_cont;
->> +}
->
->Perhaps we can rename and export rcu_lock_break() to avoid the duplication...
->
->And, this is slightly off-topic, please ignore, but this reminds me about
->[PATCH 1/2] introduce for_each_process_thread_break() and for_each_process_thread_continue()
->https://lore.kernel.org/all/20180912163335.GA18748@redhat.com/
->
->> @@ -1890,11 +1917,21 @@ static void kmemleak_scan(void)
->>  		rcu_read_lock();
->>  		for_each_process_thread(g, p) {
->>  			void *stack = try_get_task_stack(p);
->> +
->>  			if (stack) {
->>  				scan_block(stack, stack + THREAD_SIZE, NULL);
->>  				put_task_stack(p);
->>  			}
->> +			/*
->> +			 * This is an expensive loop, we must to call the
->> +			 * scheduler to avoid lockups
->> +			 */
->> +			if (need_resched() && !kmemleak_stack_scan_break(g, p)) {
->> +				aborted = true;
->> +				goto unlock;
->
->Can this need_resched() check actually help if CONFIG_PREEMPTION &&
->CONFIG_PREEMPT_RCU ?
+Looks good,
 
-Well spotted.
+Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
 
->In this case (lets ignore PREEMPT_DYNAMIC to simplify) rcu_read_lock()
->doesn't disable preemption and cond_resched() is nop, need_resched() is
->(almost) never true. Right?
->
->I guess even in this case it makes sense to not abuse rcu_read_lock()
->"too much", but perhaps we need something more clever than need_resched() ?
->
->Note that check_hung_uninterruptible_tasks() uses time_after()...
-
-Ouch, right, I missed that ...
-
-Would be better trigger the break from time_after(), not need_resched().
-need_resched() may not buy much on PREEMPT_RCU ...
-
-So yeah, a time-based check should address your concern, right?
-
-Cheers, Lance
+Thanks,
+Zenghui
 
