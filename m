@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EB0CD98C5
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58848CD98C5
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 17:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 267076B0096; Sat, 13 Jun 2026 13:21:04 -0400 (EDT)
+	id C03136B009B; Sat, 13 Jun 2026 13:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23E916B0098; Sat, 13 Jun 2026 13:21:04 -0400 (EDT)
+	id BB3B76B009D; Sat, 13 Jun 2026 13:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DED96B0099; Sat, 13 Jun 2026 13:21:04 -0400 (EDT)
+	id A7C3F6B009E; Sat, 13 Jun 2026 13:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6C76B0096
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A97678DD36
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:03 +0000 (UTC)
-X-FDA: 84875554806.01.C20DB09
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 934B46B009B
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 13:21:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D7101C233B
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:11 +0000 (UTC)
+X-FDA: 84875555142.22.547A709
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 13FFD8000A
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Vtje02JL;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Oe1wR+qB;
-	spf=pass (imf02.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id BA0AF40006
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MZlaAldJ;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=dVxKXtFi;
+	spf=pass (imf07.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781371261;
+	s=arc-20220608; t=1781371268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fl9EcxsXrxxpFdLKsvvtWPk1tb6yf1Ba7ILpGjWgZTM=;
-	b=Nj8w2Pjc54iSClGa35fOZj+mzmhvQf/ssUsgNbghQn5JqM9dZhKAcIG/Y4X9zeH/mfQmgk
-	VfgJHV9jLgVUldTD5zm4RS2Hh+iTVwIMnb+/eA9Dt7CjSBaaYOdY3iAj0ehAs91rrC4Gzq
-	EroL1W/yrh9zqx00HyvsuS1MJ+65uPU=
+	bh=yByRTqcgr+Wmflbfnv6FJYfUST+aqgHU9xDBqMKtVHU=;
+	b=s2gZ1lddViQEKo6QFjRjz3BLrLbjSx+XiHiL9HTw4fAL0fPWmJ1WgSU9C1vDSy5F2LT1YN
+	x5P9olcOksc5XxMBP96teKf/j48lSxHpR3uPEDQKunrleq6Xs10MMrK/9mXRiL37CHjziT
+	28iyf6ZpmCHZJyCnEc3jeeKTBOJ2FC0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781371261;
-	b=Xd1geagx+kiSHMQVNvX/DnfyUSHrvH915mErM4JF/T6I2T9OOv0k9VB9eM5HGaA8Vxv6xN
-	6UE1HlCKONVfA7xh0BPoexmuJZ9BWOaNgs/sD1YH7cN/+vSTZX6y2Yr5O3lJieMele88Jj
-	/DGWZboKCNXbO8NOOwCzzrnh7FdaVC0=
+	t=1781371268;
+	b=iEHoqfyG0aYevPTglg1vUV5W801BCQ06O1dhqwAGIXVM5K6tyA8EaZR+gSlBSYdIPjJjJX
+	RaBGNzXwCQX8muPP3R1WAauqIzKaqSYOYKiet9OEiYoT7y7eDOzoW1MnZ6JVmbPcxgTVQW
+	9OsjnQxNVgHjvFHO4g08WixeLcnLd+8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Vtje02JL;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Oe1wR+qB;
-	spf=pass (imf02.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MZlaAldJ;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=dVxKXtFi;
+	spf=pass (imf07.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DFB4hu3228568
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:00 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65DFAP6M3318058
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fl9EcxsXrxxpFdLKsvvtWPk1tb6yf1Ba7ILpGjWgZTM=; b=Vtje02JLOCGs8ZDa
-	9Fp8D7O3MY4B1uv9kSYyndpXE0ZtVzkiWnz3K5/Gd4Uibh99WoiAlTkZOQe+YfGt
-	5aldTkaZTLOwFRo+lFJUa04S+Idivll1wMD0qXK2RfWAKv8hpV4gLjFxVzUBe8ml
-	WpSWNLBybnJg8Sh6DyL2fuKZlwflS7o5JXQBmMY1P7ePjKlSHmwmdU6djVVETr88
-	V+CTtHgG2aOQj0m/RSH9Dy9Yw60usBES99DHkwS4bYO7dpkDXaVh5kVwxCE8NnW3
-	FsY0pFMI0CLY9GHk5eAhMJ1zQvG5gu29KOq00K5LRFH5GFrjUGhM9oEVDez8TJSA
-	Gm4hig==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ery7u1mqs-1
+	yByRTqcgr+Wmflbfnv6FJYfUST+aqgHU9xDBqMKtVHU=; b=MZlaAldJLzVAYK1l
+	p0tS7zIIn+KuuOOBF24rcUDf3A/f+vnzj5jLpjqiS2X9Qr4zcEe3wmQDqzuicrSR
+	w+/7ceBEXQ9NySVojXFWjQFlFgN/WMVujKUQAcwmQT7Azeg36FTPVHU8+0rImlSX
+	7nUYkEL6vx59+qkd/D47M8CdBEsu1OUlVmLh2hf0yI9zd3IZOk+emYHZ2gKaEGlH
+	ND2+LcthBI/R2ikjP6Tkh4TZhnuiBsaTZd92V0jn9jy02ZCGPxxts1zTiekvv4qg
+	0bpUUcZtNMRdXV1CPb453q5PzyDOXPLVsBAQ48qNJPakvXcCDrWFMsdwrxxVZty6
+	Q5KIng==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryc6smqu-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:20:59 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8428419982eso1906180b3a.3
-        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:20:59 -0700 (PDT)
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 17:21:07 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84240b58211so1414519b3a.1
+        for <linux-mm@kvack.org>; Sat, 13 Jun 2026 10:21:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781371259; x=1781976059; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1781371267; x=1781976067; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fl9EcxsXrxxpFdLKsvvtWPk1tb6yf1Ba7ILpGjWgZTM=;
-        b=Oe1wR+qBAMpAT1nNepeloHn6Z6RkCuZd5VFnsw9pjkPuhkrmd45TXLasbb5hX9jIyu
-         RsS24qYkssK5l46ku8SsugAQyo6RX1Y/4IQdMKboIxuktw0MV34HDl/Z84AGR4wdSNeJ
-         4hN+kB3gWACwpE9//4OCsUGSFzXEl/7V9UJ8WTxw/r/G2hH2MNyyrwPfbtICh6s2834b
-         kAWr94OSORJInZhqTIY9aOA9CzVIxrPERgb9z3FQvBTOxLPAYZ4aoiFNWSa+CkIYU+P5
-         YBhSEvl8DpksJ1YKnV0ZhjuWdpkMiprfzUEGq8bsVn9rVrnAyAYnig3YR6jZ1+3M96e1
-         yciQ==
+        bh=yByRTqcgr+Wmflbfnv6FJYfUST+aqgHU9xDBqMKtVHU=;
+        b=dVxKXtFiV7V1VZGxo4El/I429mUYLsNcK/Cc3xw4w9nV88dt8OvVQPqZOQInzk0KHH
+         VfsxQVR1ksZMcSFJ85nhYTkWAMkuInzXRLjPJJ/oHwrYesiQlKDoGUCzcz8KJi0feGtF
+         KjzCL+42EpNg7gNTew8cukkqAwDluouqWm6YaRuvozqzaGj4fRHUgudxucPcfk9MEeem
+         BJWlafoNlGWIPJtyNbgaQUdt25aHBTqFnSkETxWdteq3p1DhM1+jvX5RlQXxpSPTCXA8
+         iNbMeeC4Rdo4zBlTxMKIE6HmS0tAHSxpen0zeSsMyACuKu0FbuPMo0IoJqIKC4LoATaE
+         zWRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781371259; x=1781976059;
+        d=1e100.net; s=20251104; t=1781371267; x=1781976067;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=fl9EcxsXrxxpFdLKsvvtWPk1tb6yf1Ba7ILpGjWgZTM=;
-        b=l4wvRuibFeZFholb/h2d0FKI5ZHoHrYNd29jDxJgQ/1PHModK06ZkzM8eesMTe8KtB
-         TMTjeXNCTZFiLZMRK3Wp3apDXoOHX6bGcO3TngCtuqiskuquo6lZ+23hZvjRzv/f5ONh
-         tnucoQcSJjbs3Frb/O0iVaEmR4OvCFxMD3+RIk1QZdCjB5AufJsf7IZsTFb91QE0Zt97
-         YLMSPVfQRMmVYD0iksWpgEMSXxB8gFlv2Mu2zPl/aLuSrseHfVJ+G0XdoLk3Xbh2cW3E
-         d9NAf7Ny6y6B/M3DhO18od4Lb+4bFlRJgSNCWFcOszQ3LJFiD5duVNEIQTyR5oBZ4tv5
-         3GDA==
-X-Forwarded-Encrypted: i=1; AFNElJ8cKlVhFZMlj3rgIqomvMRY+pIIyZCEIBLpX8LzzEDoIlV8/enxQpbpXQ63Oo+jF/9r6ZQ6+YL+Mw==@kvack.org
-X-Gm-Message-State: AOJu0YzOmwf+2LofGtqehW4MSZbiTYPWzHtDgZMIiPNkgNjkMzk9AdoF
-	YxnUOaX2EZ0FEGE1X60LZVyG01u7ijI5Ubn8hUfoFfa3GSn9cpwTrRgpm5sudcLQAZyjRehVWpe
-	yJpuRBmpXQPmxDvX06LvDH27P6bGetXTSngKVwBwKlfs3JN8g3uQUFg==
-X-Gm-Gg: Acq92OEeCJnvJpGnh51kJjRa1TvDrIQT80p4T+2TKP0bvBtO7ZBTpl/9iigx/KMAJ4j
-	EZoKUNBxTY0G75I2HzwIF3Azui4Zrgh9GHXQtkmO669T7kihKe95ry/JG250UoHEj8w6DaV2yLm
-	30s68cf5OgCqudFnSK2X4hKfg4aqNUnov4YjZa+4ivEfHVOPfUpDcuAb6lq93LQrO8ZAXXlgxjK
-	yL6KK0m7bLYItFKUSbJF/PLknSYHwEvBDhr29dX+jnAYTkLuU8NZOQ6ZJfjqp+ZB/h1+bAk7Rbb
-	M/dqs8LYBu2SIQP9zcclqen8kEFHCEwuJ7Cx5cDe72MHTtwC838pzq6lIvw+S+ZSEWljkN+FGbZ
-	J+EPbeOBFvjcVZW9MWOtFYYeIbv+EZcXHImSIVH37N9OTIjX+UnnQHw==
-X-Received: by 2002:a05:6a00:2d29:b0:842:6097:467d with SMTP id d2e1a72fcca58-844e196bc9amr4347652b3a.15.1781371258110;
-        Sat, 13 Jun 2026 10:20:58 -0700 (PDT)
-X-Received: by 2002:a05:6a00:2d29:b0:842:6097:467d with SMTP id d2e1a72fcca58-844e196bc9amr4347599b3a.15.1781371257350;
-        Sat, 13 Jun 2026 10:20:57 -0700 (PDT)
+        bh=yByRTqcgr+Wmflbfnv6FJYfUST+aqgHU9xDBqMKtVHU=;
+        b=H3jCXLPa7Nv8TPHJa8Q7BDUdnKFiToZtJsiS6EHNLkDQlNYuZQjABsHeojqvD5VLgL
+         R+kSS8yoX3LcanFmgsZkBqmEq65TcheUmKZ7CSf4ce7UnWgcK25XKOc0RNcNAC7jX2IF
+         SXBYZILfbYl/zMBVTrNpjRkbJcZgKnxOm9Bmmkij0XTkNQI1LhK07JjB/QtwK1e9Muz3
+         DRX7wzxGSLMXBXkSFBGgBR6Fu5koxydC9sQS//EWKvbpX0yTEufuKDlNYzz4On2XoQQf
+         umUKYdb0NF7zCDVKx9DA55HmfC8A4XLP513av7pmuewXM2Nx1Ads2FSLUA/FG4D35tcV
+         hXXg==
+X-Forwarded-Encrypted: i=1; AFNElJ+eP7tLMpkTI7wLSayBzjerEwJ3g9KxK5x50YX134UDEHnupMzcid+W+xGcUQQ3X0oWJ9iYDDmccQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy1CqMbSAjlXVZ/+0W9Xj5LIbmxxjSpqAwEjKi5iTucoSqFug0i
+	2ebN/l42S5ZV0URYS5GEmhF3jaCgS+Wf+NOz5gVCgaNPeBR2x/vxdcCeyeVs+991LTAdItXOLnI
+	bxW/j+Vnv0Jk6wuXP4KOQR6Ea7Fs5g/bJfySiDxecyLc/1c/p17oUww==
+X-Gm-Gg: Acq92OE/q4Reyt1m4aTT7fTpQ6Pf3fxvekNJOHv47CmLdInMmORY7JNcZfHwOr3XeO+
+	5Go/ePjE11M0850Su0/eAdpOmsGCsQtXYhrEudeNRJFxXMeZ9b2yNMEm2dBUTrMMHtfVr93iBHF
+	TNMy1Iet9xKF8lendh2CigMPaolOJGHk+OiMl8WTNHEtI2fHf9Uald02yjvTgBTlEX6CMCQmznv
+	fEv+EezstqRbn42nppgiQwuSBSUur6Itfp/HIT4np3RgUC4AvauTtXyRPLV6XBWDdJ8LNz1Uzot
+	UwriFkmB/QHWXIoyGON/OKO9w/2XxJqoeEb4VLXo7G9pJx4swMiWepi0kHvgxrLoj3DxviWnUco
+	CWfEWZWrewze5mI5HeNBDv9XUHmP/p0Awd7++r4Xg77DHRUmJUsiqUg==
+X-Received: by 2002:a05:6a00:950d:b0:842:2f3d:dff2 with SMTP id d2e1a72fcca58-8434ce81341mr7553839b3a.34.1781371266340;
+        Sat, 13 Jun 2026 10:21:06 -0700 (PDT)
+X-Received: by 2002:a05:6a00:950d:b0:842:2f3d:dff2 with SMTP id d2e1a72fcca58-8434ce81341mr7553803b3a.34.1781371265702;
+        Sat, 13 Jun 2026 10:21:05 -0700 (PDT)
 Received: from hu-pranarya-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.20.49
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accbec5sm5390913b3a.16.2026.06.13.10.20.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jun 2026 10:20:57 -0700 (PDT)
+        Sat, 13 Jun 2026 10:21:05 -0700 (PDT)
 From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Date: Sat, 13 Jun 2026 22:49:46 +0530
-Subject: [PATCH RFC 04/12] mm/vmalloc: finalize maple-only indexing and
- shrink struct vmap_area
+Date: Sat, 13 Jun 2026 22:49:47 +0530
+Subject: [PATCH RFC 05/12] mm/vmalloc: tighten failure handling under
+ memory pressure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260613-vmalloc_maple-v1-4-0aa740bb944b@oss.qualcomm.com>
+Message-Id: <20260613-vmalloc_maple-v1-5-0aa740bb944b@oss.qualcomm.com>
 References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 In-Reply-To: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -143,48 +143,49 @@ Cc: linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
         Pranjal Arya <pranjal.arya@oss.qualcomm.com>,
         Sudeep Holla <sudeep.holla@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=51713;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781371215; l=27712;
  i=pranjal.arya@oss.qualcomm.com; s=20260516; h=from:subject:message-id;
- bh=fO7p35yLhLCL7LmgBhMmEl7jA4eYMFRf0y923znTj5k=;
- b=H1CSHTXVzF1kuQm4TSu0l+okUiGeApvOIdH5wsh24YMSJ1FhzSDwjnXTYulZAR34r+3w4sSqk
- Al/LcKiAGAaAFev0P77H95e/dVdIhZPhsVCdbsQxGCmGHhW3MEa1Lkp
+ bh=93nd/fp0WT0lOBo8bTdnf+a1qmT1fxj8wsunRs1e6EU=;
+ b=u5NeW4Ud9Q3H5+3jTYofL7oc8m5kRtaEgxllCWom5Z0j0JW8ZN6Ht4QAizUAGKSg0IlzZP5gc
+ 14TKEq5dlwXDvGo3hbqVIVJiZ2SroiXTIFhM+jxPuhZStMZf5j4gbD4
 X-Developer-Key: i=pranjal.arya@oss.qualcomm.com; a=ed25519;
  pk=ymtcTlccEIDsi3ErhpjIoZZHKdPBYWGWW0Lchs5MsbE=
-X-Authority-Analysis: v=2.4 cv=F8BnsKhN c=1 sm=1 tr=0 ts=6a2d917b cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX/1yGXtenXrrG
+ 6+iaktuYzNJsiK5bR3r0Mf9N0PSmaEUBISAcpf+yrEWNGGj/rl5LPGdVfUs0MBCdFAdIkwjvB0Z
+ 1BXlA4c+cQptPO8KsBCMp0F6u8xs568=
+X-Authority-Analysis: v=2.4 cv=Oop/DS/t c=1 sm=1 tr=0 ts=6a2d9183 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=FKSjEIMCKi8Q58X1TJIA:9 a=QEXdDO2ut3YA:10
- a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-GUID: i8HQBnlltVJ_BLnhtz5pdANuhfEDdVi5
-X-Proofpoint-ORIG-GUID: i8HQBnlltVJ_BLnhtz5pdANuhfEDdVi5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfXx1Ak/C8v0nLJ
- awEmBlciXJEah4Jm+gjFjM6hUNHAk+6Iz5ScXrpJ72agw8LB0zF2Tf9f9+UC2kSOb+aM1m5bA5O
- nnT+B3ojhmEkxmKmsJ7zB9yZF8dGxQuUIXfqM7EN2dcRAy+zvERl9jmEGFwG1FKuVoPReCjLHdD
- ENb76j9f+p+XyHUak53hjUEkXx88TmssarbeywjO5dPiqpmZqLHHaW5Yc34o7BP695h7P0s28tU
- oocymHq6Lvy/zWdZk+/nwWKKmS7JjFej9ouS53LIVMJNg6dWU4cyv8XxTC2kgCTW+aC/tIyGP9O
- yPpagW5YQv26RbDXibbhaFBt90StPUbehbogxA8SbKMrtJ/3Gmxh8SBpWkR+1hTARyiaGTBDSB6
- APEDn6tzIp7CAj17N7/vC7strackxvy0TF790XBUKH98ooW+uK5UPesVnhfBaDGzR6Iu7VLPI8l
- EsPpGm+ncN8zDPtQdDg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX7f1wJMRHfjE8
- OO8atbyMLQYcfS9l9B7Yx8JeAVfrE4UuS+XNQRiM5v6An2tlNTUGWjH2NtK42Z2BAAh0OvgGj3u
- UjTGWU4TMeUsY/UFlsk75VmP7iel11w=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=EUspDBNiAAAA:8 a=o4zA9CgbANw9Vykgm7UA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-GUID: hwK3l1_iMWen6UQo37ELtA-suhxJ8lF0
+X-Proofpoint-ORIG-GUID: hwK3l1_iMWen6UQo37ELtA-suhxJ8lF0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEzMDE4MCBTYWx0ZWRfX8XH6/h+qH2+v
+ 8X3936l5vnHvbr0CeI2cC+O0RESLY7AYvztUJ5hb+9GyH5plkaZKVZmXT0zkR0Gm7s3J4jESSyH
+ K/QeitBn53za5huVgrcy/1HhJ0wCGxxgn9DrfMqMsR3zRjkEzfAzVBSijVX+wItqyNlmrWQ+CLC
+ 3LiPPaRwD+bZVzIDEFYWhHv3iOPsYiMPvipy8uVT15ZEivnZNZEbHuMjLeH4BGDhHPZkqRC1UQB
+ 0ZN1gFPpDed9c0m6TD/+f82kl9BqAAxgZPFFGD8ca74knpwEW1j4HC/vLV/vecvqOjtx95Yzr4N
+ inEn/31si0xJxRLxq3karbTD/Phaj3LyuawiP1aLO9OzjEfGckdwIKp/5Az5lJSbbMtY9qohzm0
+ nVZGx/WT1YOQKhPD7Hdk4+F5vDWSn4PO37z84F7evqUGhySpCtGky20v0bERImv/IVAet2bLmnH
+ hukP1SZ4V6BVRkXC6gw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-13_03,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0
- phishscore=0 impostorscore=0 spamscore=0 suspectscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606130180
-X-Rspamd-Queue-Id: 13FFD8000A
+ priorityscore=1501 phishscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606130180
+X-Rspamd-Queue-Id: BA0AF40006
 X-Rspam-User: 
-X-Stat-Signature: imfbq6ogxr5ffymfbxzbothsuu9sonks
+X-Stat-Signature: 5dtrr41o6ob5551oqogcas4bh5gjx7to
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1781371260-48155
-X-HE-Meta: U2FsdGVkX184YQ6vhwrYziBf7qHX468QDU9KpKL0ltLWhQUqEweDbeUGL0iOg4inNnk8L0fZd5gZMjU8UY4+bBG3wfc4X8FS2LcWZen9ChFrWaL3qGWHcC9bz+wFWITc0kdpoNqGdusQvsTBjjNeUulAI9mTmdpRoOSVvWiT0uI0Db3bizSzOxHZgmvwoIk2xF3lrYhvP7IEIcT3jeIooDs+pthEmQ6nrqfgx1CcUFMEw294D2rJ19imxvgV+uzKsEi4MQBoUug9U3GpcxFGb/WFV1lHQq4MkbTUM5O3pY3iVNgfhsZFfDycjsF+poK3pLX6GY0lR/7tbEr3te+FeUk30LggcQ8uYxV/qC+UH2/Zxp3QlLChAuA+c2w8ZYTNm/LIC+WFQgNzqG0EjMAZzOetB38FO6lKGyYsd4K02WA6ZKNXPdk/zVzKF+2z2C6XjSOZpgjBpbwq3woaD5AiIzdkZqyaPSXyYwBjjA/Ybf3h2dqhyO4WIKur6E5ZsKoa1PKN0tY5Ld2DF2X8UDt+ejkgmrayXFfQy9FQzTBZEd8a7lPN/tYe9RbIUmqdAzCQZKw+WSHKVd5IQ4Uka5SyXLg5z2Psw6E+fGR4GnuZG+9Mn5ujqg5Y2S/7Y2hheNV8rHaUOJ6P1a3yWbwoDPuAMpeL3LRzMufVtgIGuBhUE7gcc9czsof7iAqQCFKS72biOApfCpz9QojxZer0l2lb/cXhVXh4W3oJOwG89QIJbQnXXU8d7qzk3PyL+T6yORp5SLdUlOD3AHpXeBVwLWlN2LRmQiMlZq21tRaKWCNcQXeH09XNS3gJtxJhFDJbbZJ8Qgfv4yR3najuv0ETOeJa7OWwVSWbtMqaJ6ebDv2gHSVl9iorksIdi5B0vN5KExuCiuzd2G+xwsUBahMBsMholJxs3ajQpu9tH6/kzmoX9G0SAs+G6nFHYqe/ujLRNwbZ0+BNzwCPQOGEqZd2R5P
- 2LWx2/Uf
- 6HlD+drlItp8tK3NncuJHrTyPtbT+gimROquZhejJfKPZftBa/9YVksTXrU2jWLJOL4Fm9fbXcsV5wq44Z0T3TuOMkcIKc5yY6FR2pZigxIVqrDy2gA+Np6bO2j03dXh/4dSZEALCXqT5DWJr1MNNr/8Gb0DcbqdXw0HDIT5FEaLM4yoi2SsucmbGeKzvvHwSbTgVmDlKPU6UectkyTiRKsgIcYSS0zjfyrD5B2ek/B54rUsLera8/COgwu6Hl3uUc3thIAw58fGD9gsoyRiDbI26bIrX7crMzin6p+Tjnp8uyAttGSnIkrPDvnm05Ha7whbiSA0WX1ypmXe2iKY0YKiC0+ycYUCmkzV/vW1NtHmvaEbaqJogo6Yl7LlfJeYyZlZvx3Oa4ZOkVaFLaMQJhXr41mTO9juR122hhuCrLugFjYkq9HGStcRiFjUZudo2KvDP+n+do7hnX1dWw/tB45orWYiWXrBtwH48lBdk9CXvK9o1F7oYSlP+7j9CyQ3B1ZKPM9iMwwCL0DQd1vxY6nQrcc2jrQUXHdPfZNeLgVtLG6QtLWpoR3/b7DcMAGgHNU7GRCUl56iVhgk=
+X-HE-Tag: 1781371268-537940
+X-HE-Meta: U2FsdGVkX19Vy7MGQTF4NfSZL1LHcugvln/jq5q1rKq+7SRVoE9b09r2MpnVWfTsv4TevOMovq7BDD13YBSwthN0eZqRKQ9GDynde+uTpwERzgu+7awU7yLgaYT9xFGmHm9IoOFY/s04HI9osdrKQODXuK6SlWWv0Q0/+s5LGviBklZUWHhfju3mup/dMSYh8JuiixenwuWKio4G7HQK/rvyA8Jd4UbnDvTyTSJdwSKC+jeKXNm1oYwCTJEC7hg2ptBXwMZH6Xw6NwXk3cuCsybiFnFH1+l7PpCwosrty98+sj+Qo73FnqLdWxuGUrerORcrDvdkiyUfpDxnNfAGAUuJisfNShLu4/nJ8hHhxavX7XS6dF37No3E70Jmu29Hw33YbxOmI5ZJOFmHbYI6oMF15ct1nJCWlnVXsYo66DehHClvNpISb5jvYvM5BmSInrdvU4tghj4MQo4P5QbaFLKcr0Y1Wmt4vVFJ5Fp5guKlGu6WVmdiLZzqWXDtHI17dpQlw8CzUbGfMDtaiHK8AjUqBplL7KLN7gAHL8fh/g51gpA5UjaUtEzpv5w4t6dFEXl0rH9Igt/FVFp8ZaUjvf6c7aIGPrJItw0oRJihon9lCw92YOCpPqQV7t+cmOsIP0D1Jn1+SM+gz7gjjFgu4CMjWr/IKkM1aI4Xn1MvFuSs1O+hZ7HxpbjvBDDwBurGnDLah8H9+hhtUmIDjYzaj2Ky9jnqQZMzxDcy9Myi6+ECy2IyxPqL0mXLS73cHn8fsZEIE4S/2CROIxv4198335G1XAkXBJPNRuqvXwCioephTg83Z73LR7CuUUqkkIv11PpmWDr2ipcN8YFTWKEh2Wb8X+c4w/Ci35eDhmZe2dalibHV0faYWFydj3po+HpZfOo0kXLjq/mJniyBh/ofchUwmqVGl/2Ox+qNm/v20qy0KgqkKVwlE5Dg7P4smjt62O7Rw/8z5yPpw2vB6f9
+ i1gZL6n0
+ Orcy61iEebGA1S5Hb0D0GPPacM3IRBk4DHm1zcyDm08HYy/TxcXIOkY8R2HEzZ15k98rUZ/LHGMVtV4qeEaIl9d4yu+onf6qpgcBPxaZ7zqquVhfUsz2FmJwFIdGzw//NoZ7AFV5MNwYnFXnfQmOnEtqtOEpheP5lMKLg79a5WbH3CnZYDtjmD9pEuYARbc5j5fJFKJ6nKquRt3io30Uqdhq8IrF00pjT7rU2+bOjElnUu4ZJ1SWrN4wWFUJIpfUdgpghLgB+l4LycDAA5uyvFSmvtu6F6gVHTI86F9v/Kxzcwm7sINU7+11ToQD0rS/GVcGUV/LDlBvBuXczZ0i8uCXEgQiTomj+7+pfxqhxTxDksscYZIEHE79sy73hb1Yr6DaVjPAHzShB7wtHjAYGOua77bFekRp7G6i2pPGjEvg8WUkfzHpJXbNLZ/M68JTc01kbD0lDEZK4emNAW3XrsFKHBulfZu3rqxQ9z2Yd2cQbVsegqtSV9yLf9K7pW6AqzFRKXoRnmqxulhoOxVUe7n3hsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,1769 +193,915 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With every alloc/free/pcpu path now driven by maple_tree, retire the
-augmented rb_tree from struct vmap_area and from include/linux/vmalloc.h.
-The struct shrinks by 24 bytes on both x86_64 and arm64 (72 -> 48):
+Tighten failure handling on the two paths that publish into the
+maple_tree under a spinlock and have no caller-friendly way to return
+-ENOMEM:
 
-  -       struct rb_node rb_node;
-  -       struct list_head list;
-  -       union {
-  -               unsigned long subtree_max_size;
-  -               struct vm_struct *vm;
-  -       };
-  +       struct list_head list;
-  +       struct vm_struct *vm;
+  - free_vmap_area_noflush() falls back to vmap_retry_list when
+    publish_vmap_area_lazy() can't allocate maple slabs under
+    GFP_NOWAIT, and reschedules drain_vmap_work to retry.
 
-Also allow maple_tree_init() to be called twice: vmalloc_init() runs
-before start_kernel() reaches its own maple_tree_init() callsite,
-and the maple_tree machinery needs to be live for the early seeding
-done in vmap_init_free_space().  The second call becomes a no-op
-once maple_node_cache is set.
+  - the alloc path rolls the busy insert back onto the retry queue
+    if insert_vmap_area_busy_locked() fails, rather than leaking the
+    vmap_area or panicking.
+
+Add vmap_retry_list as a non-indexed retry queue scanned by the
+allocator as an exclusion set and drained from the purge worker,
+and wire the two publish-failure paths above through it.
 
 Signed-off-by: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 ---
- include/linux/vmalloc.h |   16 +-
- lib/maple_tree.c        |    7 +
- mm/vmalloc.c            | 1123 ++++++++++++++++++-----------------------------
- 3 files changed, 436 insertions(+), 710 deletions(-)
+ mm/vmalloc.c | 566 +++++++++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 474 insertions(+), 92 deletions(-)
 
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index d87dc7f77f4e..642bca92b804 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -9,7 +9,6 @@
- #include <linux/list.h>
- #include <linux/llist.h>
- #include <asm/page.h>		/* pgprot_t */
--#include <linux/rbtree.h>
- #include <linux/overflow.h>
- 
- #include <asm/vmalloc.h>
-@@ -72,19 +71,8 @@ struct vmap_area {
- 	unsigned long va_start;
- 	unsigned long va_end;
- 
--	struct rb_node rb_node;         /* address sorted rbtree */
--	struct list_head list;          /* address sorted list */
--
--	/*
--	 * The following two variables can be packed, because
--	 * a vmap_area object can be either:
--	 *    1) in "free" tree (root is free_vmap_area_root)
--	 *    2) or "busy" tree (root is vmap_area_root)
--	 */
--	union {
--		unsigned long subtree_max_size; /* in "free" tree */
--		struct vm_struct *vm;           /* in "busy" tree */
--	};
-+	struct list_head list;          /* auxiliary linkage (pool/purge/lazy) */
-+	struct vm_struct *vm;
- 	unsigned long flags; /* mark type of vm_map_ram area */
- };
- 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index e52876435b77..f3474a107372 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5634,6 +5634,13 @@ void __init maple_tree_init(void)
- 		.sheaf_capacity = 32,
- 	};
- 
-+	/*
-+	 * vmalloc_init() may need Maple allocations before start_kernel() reaches
-+	 * its own maple_tree_init() callsite. Keep initialization idempotent.
-+	 */
-+	if (maple_node_cache)
-+		return;
-+
- 	maple_node_cache = kmem_cache_create("maple_node",
- 			sizeof(struct maple_node), &args,
- 			SLAB_PANIC);
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index f2117eafa9cf..c908c1a0fcd4 100644
+index c908c1a0fcd4..7feb1b182cfa 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -23,7 +23,6 @@
- #include <linux/kallsyms.h>
- #include <linux/list.h>
- #include <linux/notifier.h>
--#include <linux/rbtree.h>
- #include <linux/maple_tree.h>
- #include <linux/xarray.h>
- #include <linux/io.h>
-@@ -36,7 +35,6 @@
- #include <linux/llist.h>
- #include <linux/uio.h>
- #include <linux/bitops.h>
--#include <linux/rbtree_augmented.h>
- #include <linux/overflow.h>
- #include <linux/pgtable.h>
- #include <linux/hugetlb.h>
-@@ -881,22 +879,20 @@ static bool vmap_initialized __read_mostly;
- static struct kmem_cache *vmap_area_cachep;
+@@ -869,6 +869,12 @@ EXPORT_SYMBOL(vmalloc_to_pfn);
+ 
+ static DEFINE_SPINLOCK(free_vmap_area_lock);
+ static bool vmap_initialized __read_mostly;
++/*
++ * Non-index retry queue for ranges that could not be transitioned to their
++ * target maple index state in constrained paths. This queue is scanned by the
++ * allocator as an exclusion set and drained by purge workers.
++ */
++static LIST_HEAD(vmap_retry_list);
  
  /*
-- * This linked list stores free areas sorted by start address.
-- * It gives O(1) access to neighbors for fast coalescing.
-+ * Maple tree of free ranges.
-  */
--static LIST_HEAD(free_vmap_area_list);
--/* Next-fit hint to avoid scanning from list head on each allocation. */
--static unsigned long free_vmap_alloc_hint __maybe_unused = 1;
--
--/*
-- * Maple tree shadow of free_vmap_area_list. It is used for
-- * address lookups and first-fit scans.
-- */
--static struct rb_root free_vmap_area_root = RB_ROOT;
--static struct maple_tree free_vmap_area_mt __maybe_unused =
--	MTREE_INIT_EXT(free_vmap_area_mt, MT_FLAGS_LOCK_EXTERN, free_vmap_area_lock);
--static bool free_vmap_area_mt_enabled __maybe_unused;
--static bool free_vmap_area_mt_init_tried __maybe_unused;
-+static struct maple_tree free_vmap_area_mt =
-+	MTREE_INIT_EXT(free_vmap_area_mt,
-+		       MT_FLAGS_LOCK_EXTERN | MT_FLAGS_ALLOC_RANGE,
-+		       free_vmap_area_lock);
-+static bool free_vmap_area_mt_enabled;
-+static bool free_vmap_area_mt_init_tried;
-+static struct maple_tree occupied_vmap_area_mt =
-+	MTREE_INIT_EXT(occupied_vmap_area_mt,
-+		       MT_FLAGS_LOCK_EXTERN | MT_FLAGS_ALLOC_RANGE,
-+		       free_vmap_area_lock);
-+static bool occupied_vmap_area_mt_enabled;
-+static bool occupied_vmap_area_mt_init_tried;
- 
- /*
-  * Preload a CPU with one object for "no edge" split case. The
-@@ -905,19 +901,11 @@ static bool free_vmap_area_mt_init_tried __maybe_unused;
-  */
- static DEFINE_PER_CPU(struct vmap_area *, ne_fit_preload_node);
- 
--/*
-- * This structure defines a single, solid model where a list and
-- * maple tree are part of one entity protected by the lock. Nodes are
-- * sorted in ascending order, thus for O(1) access to left/right
-- * neighbors a list is used as well as for sequential traversal.
-- */
-+/* Per-node ordered range index backed by Maple Tree. */
- struct mt_list {
--	struct rb_root root;
- 	struct maple_tree mt;
--	struct list_head head;
- 	spinlock_t lock;
- 	bool mt_enabled;
--	bool mt_init_tried;
- };
- 
- /*
-@@ -1055,22 +1043,6 @@ va_size(struct vmap_area *va)
- 	return (va->va_end - va->va_start);
+  * This kmem_cache is used for vmap_area objects. Instead of
+@@ -1113,6 +1119,47 @@ free_mt_update_va_locked(struct vmap_area *va, unsigned long old_start,
+ 	return true;
  }
  
--/*
-- * Transitional rb compatibility retained until all rb-only users are moved.
-- * Follow-up patches in this RFC series remove these helpers.
-- */
--static __always_inline unsigned long
--get_subtree_max_size(struct rb_node *node)
--{
--	struct vmap_area *va;
--
--	va = rb_entry_safe(node, struct vmap_area, rb_node);
--	return va ? va->subtree_max_size : 0;
--}
--
--RB_DECLARE_CALLBACKS_MAX(static, free_vmap_area_rb_augment_cb,
--	struct vmap_area, rb_node, unsigned long, subtree_max_size, va_size)
--
- static void reclaim_and_purge_vmap_areas(void);
- static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
- static void drain_vmap_area_work(struct work_struct *work);
-@@ -1078,31 +1050,12 @@ static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
- 
- static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
- 
--/*
-- * maple nodes are allocated from slab; defer tree population until
-- * slab allocator is up to avoid early-boot failures.
-- */
--static __always_inline bool vmap_mt_runtime_ready(void)
--{
--	return READ_ONCE(vmap_initialized) && slab_is_available();
--}
--
- static __always_inline bool free_mt_supported(void)
- {
- 	return free_vmap_area_mt_enabled;
- }
- 
--static __always_inline void disable_free_mt_locked(void)
--{
--	lockdep_assert_held(&free_vmap_area_lock);
--
--	if (free_vmap_area_mt_enabled) {
--		__mt_destroy(&free_vmap_area_mt);
--		free_vmap_area_mt_enabled = false;
--	}
--}
--
--static __always_inline void free_mt_store_va_locked(struct vmap_area *va)
-+static __always_inline bool free_mt_store_va_locked(struct vmap_area *va)
- {
- 	int err;
- 
-@@ -1110,12 +1063,20 @@ static __always_inline void free_mt_store_va_locked(struct vmap_area *va)
- 
- 	MA_STATE(mas, &free_vmap_area_mt, va->va_start, va->va_end - 1);
- 
--	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--	if (WARN_ON_ONCE(err))
--		disable_free_mt_locked();
-+	err = mas_preallocate(&mas, va, GFP_NOWAIT | __GFP_NOWARN);
-+	if (!err) {
-+		mas_store_prealloc(&mas, va);
-+		mas_destroy(&mas);
-+	} else {
-+		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+		if (WARN_ON_ONCE(err))
-+			return false;
-+	}
++static __always_inline void
++retry_queue_add_va_locked(struct vmap_area *va)
++{
++	lockdep_assert_held(&free_vmap_area_lock);
 +
-+	return true;
- }
- 
--static __always_inline void free_mt_erase_va_locked(struct vmap_area *va)
-+static __always_inline bool free_mt_erase_va_locked(struct vmap_area *va)
- {
- 	int err;
- 
-@@ -1125,10 +1086,12 @@ static __always_inline void free_mt_erase_va_locked(struct vmap_area *va)
- 
- 	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
- 	if (WARN_ON_ONCE(err))
--		disable_free_mt_locked();
++	/*
++	 * Keep a VA on one list at a time. Retry entries are detached from
++	 * all indexed containers before they are queued here.
++	 */
++	if (unlikely(!READ_ONCE(va->list.next) && !READ_ONCE(va->list.prev)))
++		INIT_LIST_HEAD(&va->list);
++	if (WARN_ON_ONCE(!list_empty(&va->list)))
++		return;
++	list_add_tail(&va->list, &vmap_retry_list);
++}
++
++static __always_inline bool
++retry_queue_overlap_locked(unsigned long start, unsigned long end,
++			   unsigned long *blocked_end)
++{
++	struct vmap_area *va;
++	bool overlap = false;
++
++	lockdep_assert_held(&free_vmap_area_lock);
++
++	if (list_empty(&vmap_retry_list))
 +		return false;
 +
-+	return true;
++	list_for_each_entry(va, &vmap_retry_list, list) {
++		unsigned long va_end = va->va_end - 1;
++
++		if (va->va_start > end || va_end < start)
++			continue;
++
++		overlap = true;
++		*blocked_end = max(*blocked_end, va_end);
++	}
++
++	return overlap;
++}
++
+ static __always_inline void try_init_free_mt_locked(void)
+ {
+ 	lockdep_assert_held(&free_vmap_area_lock);
+@@ -1169,6 +1216,14 @@ occupied_mt_store_range_locked(unsigned long start, unsigned long end)
+ 	return !WARN_ON_ONCE(err);
+ }
+ 
++static __always_inline bool
++occupied_mt_store_va_locked(struct vmap_area *va)
++{
++	lockdep_assert_held(&free_vmap_area_lock);
++
++	return occupied_mt_store_range_locked(va->va_start, va->va_end);
++}
++
+ static __always_inline bool
+ occupied_mt_erase_range_locked(unsigned long start, unsigned long end)
+ {
+@@ -1339,7 +1394,7 @@ find_vmap_area_exceed_addr_lock(unsigned long addr, struct vmap_area **va)
+ 	return NULL;
  }
  
 -static __always_inline void
 +static __always_inline bool
- free_mt_update_va_locked(struct vmap_area *va, unsigned long old_start,
- 			 unsigned long old_end)
+ insert_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
  {
-@@ -1140,35 +1103,14 @@ free_mt_update_va_locked(struct vmap_area *va, unsigned long old_start,
- 	MA_STATE(mas_store, &free_vmap_area_mt, va->va_start, va->va_end - 1);
+ 	int err;
+@@ -1349,12 +1404,12 @@ insert_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
+ 	try_init_busy_mt_locked(vn);
  
- 	err = mas_store_gfp(&mas_erase, NULL, GFP_ATOMIC | __GFP_NOWARN);
--	if (WARN_ON_ONCE(err)) {
--		disable_free_mt_locked();
+ 	if (WARN_ON_ONCE(!vn->busy.mt_enabled))
 -		return;
--	}
-+	if (WARN_ON_ONCE(err))
 +		return false;
  
- 	err = mas_store_gfp(&mas_store, va, GFP_ATOMIC | __GFP_NOWARN);
- 	if (WARN_ON_ONCE(err))
--		disable_free_mt_locked();
--}
--
--static void free_mt_rebuild_locked(void)
--{
--	struct vmap_area *va;
--	int err;
--
--	lockdep_assert_held(&free_vmap_area_lock);
--
--	__mt_destroy(&free_vmap_area_mt);
--	free_vmap_area_mt_enabled = true;
--
--	list_for_each_entry(va, &free_vmap_area_list, list) {
--		MA_STATE(mas, &free_vmap_area_mt, va->va_start, va->va_end - 1);
+ 	if (!validate_vmap_area_range_insert_mt_locked(&vn->busy.mt,
+ 						       va->va_start,
+ 						       va->va_end))
+-		return;
 +		return false;
  
--		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--		if (WARN_ON_ONCE(err)) {
--			disable_free_mt_locked();
--			return;
--		}
--	}
-+	return true;
- }
+ 	INIT_LIST_HEAD(&va->list);
  
- static __always_inline void try_init_free_mt_locked(void)
-@@ -1178,257 +1120,101 @@ static __always_inline void try_init_free_mt_locked(void)
- 	if (free_vmap_area_mt_init_tried)
- 		return;
- 
--	if (!vmap_mt_runtime_ready())
-+	if (!slab_is_available())
- 		return;
- 
- 	free_vmap_area_mt_init_tried = true;
--	free_mt_rebuild_locked();
--}
--
--static __always_inline struct vmap_area *
--__find_vmap_area_list(unsigned long addr, struct list_head *head)
--{
--	struct vmap_area *va;
--
--	addr = (unsigned long)kasan_reset_tag((void *)addr);
--
--	list_for_each_entry(va, head, list) {
--		if (addr < va->va_start)
--			break;
--		if (addr < va->va_end)
--			return va;
--	}
--
--	return NULL;
--}
--
--static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
--{
--	struct rb_node *n = root->rb_node;
--
--	addr = (unsigned long)kasan_reset_tag((void *)addr);
--
--	while (n) {
--		struct vmap_area *va;
--
--		va = rb_entry(n, struct vmap_area, rb_node);
--		if (addr < va->va_start)
--			n = n->rb_left;
--		else if (addr >= va->va_end)
--			n = n->rb_right;
--		else
--			return va;
--	}
--
--	return NULL;
-+	free_vmap_area_mt_enabled = true;
- }
- 
--/* Look up the first VA which satisfies addr < va_end, NULL if none. */
--static __always_inline struct vmap_area *
--__find_vmap_area_exceed_addr_list(unsigned long addr, struct list_head *head)
-+static __always_inline bool occupied_mt_supported(void)
- {
--	struct vmap_area *va;
--
--	addr = (unsigned long)kasan_reset_tag((void *)addr);
--
--	list_for_each_entry(va, head, list) {
--		if (va->va_end > addr)
--			return va;
--	}
--
--	return NULL;
-+	return occupied_vmap_area_mt_enabled;
- }
- 
--static __always_inline struct list_head *
--find_vmap_area_insert_point_list(struct vmap_area *va, struct list_head *head)
-+static __always_inline void try_init_occupied_mt_locked(void)
- {
--	struct vmap_area *tmp;
--	struct list_head *next = head;
--
--	list_for_each_entry(tmp, head, list) {
--		if (tmp->va_start > va->va_start) {
--			next = &tmp->list;
--			break;
--		}
--	}
-+	lockdep_assert_held(&free_vmap_area_lock);
- 
--	if (next != head) {
--		tmp = list_entry(next, struct vmap_area, list);
--		if (WARN_ON_ONCE(va->va_end > tmp->va_start))
--			return NULL;
--	}
-+	if (occupied_vmap_area_mt_init_tried)
-+		return;
- 
--	if (next->prev != head) {
--		tmp = list_entry(next->prev, struct vmap_area, list);
--		if (WARN_ON_ONCE(va->va_start < tmp->va_end))
--			return NULL;
--	}
-+	if (!slab_is_available())
-+		return;
- 
--	return next;
-+	occupied_vmap_area_mt_init_tried = true;
-+	occupied_vmap_area_mt_enabled = true;
- }
- 
--/*
-- * Use maple-tree neighbour lookup to locate insertion point in O(log n),
-- * while preserving sorted-list neighbour traversal.
-- */
--static __always_inline struct list_head *
--find_vmap_area_insert_point_mt(struct vmap_area *va, struct maple_tree *tree,
--			       struct list_head *head)
-+static __always_inline bool
-+occupied_mt_store_range_locked(unsigned long start, unsigned long end)
- {
--	struct vmap_area *prev, *next;
--	struct list_head *next_link;
-+	int err;
- 
--	MA_STATE(mas, tree, va->va_start, va->va_start);
-+	lockdep_assert_held(&free_vmap_area_lock);
- 
--	mas_set(&mas, va->va_start);
--	next = mas_find(&mas, ULONG_MAX);
-+	if (WARN_ON_ONCE(!occupied_mt_supported()))
-+		return false;
- 
--	if (next) {
--		if (WARN_ON_ONCE(next->va_start <= va->va_start))
--			return NULL;
--		if (WARN_ON_ONCE(va->va_end > next->va_start))
--			return NULL;
--		next_link = &next->list;
--	} else {
--		next_link = head;
--	}
-+	MA_STATE(mas, &occupied_vmap_area_mt, start, end - 1);
- 
--	if (next_link->prev != head) {
--		prev = list_entry(next_link->prev, struct vmap_area, list);
--		if (WARN_ON_ONCE(va->va_start < prev->va_end))
--			return NULL;
-+	err = mas_preallocate(&mas, XA_ZERO_ENTRY, GFP_NOWAIT | __GFP_NOWARN);
-+	if (!err) {
-+		mas_store_prealloc(&mas, XA_ZERO_ENTRY);
-+		mas_destroy(&mas);
+@@ -1364,11 +1419,11 @@ insert_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
+ 	if (!err) {
+ 		mas_store_prealloc(&mas, va);
+ 		mas_destroy(&mas);
+-		return;
 +		return true;
  	}
  
--	return next_link;
-+	err = mas_store_gfp(&mas, XA_ZERO_ENTRY, GFP_ATOMIC | __GFP_NOWARN);
+ 	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
+-	WARN_ON_ONCE(err);
 +	return !WARN_ON_ONCE(err);
  }
  
- static __always_inline bool
--insert_vmap_area_list_sorted(struct vmap_area *va, struct list_head *head)
-+occupied_mt_erase_range_locked(unsigned long start, unsigned long end)
- {
--	struct list_head *next;
--
--	next = find_vmap_area_insert_point_list(va, head);
--	if (!next)
--		return false;
--
--	list_add_tail(&va->list, next);
--	return true;
--}
-+	int err;
- 
--static __always_inline bool
--insert_vmap_area_list_sorted_mt(struct vmap_area *va, struct maple_tree *tree,
--				struct list_head *head)
--{
--	struct list_head *next;
-+	lockdep_assert_held(&free_vmap_area_lock);
- 
--	next = find_vmap_area_insert_point_mt(va, tree, head);
--	if (!next)
-+	if (WARN_ON_ONCE(!occupied_mt_supported()))
- 		return false;
- 
--	list_add_tail(&va->list, next);
--	return true;
--}
-+	MA_STATE(mas, &occupied_vmap_area_mt, start, end - 1);
- 
--static __always_inline void
--disable_busy_mt_locked(struct vmap_node *vn)
--{
--	lockdep_assert_held(&vn->busy.lock);
--
--	if (vn->busy.mt_enabled) {
--		__mt_destroy(&vn->busy.mt);
--		vn->busy.mt_enabled = false;
--	}
--
--	vn->busy.mt_init_tried = true;
--}
--
--static __always_inline void
--disable_lazy_mt_locked(struct vmap_node *vn)
--{
--	lockdep_assert_held(&vn->lazy.lock);
--
--	if (vn->lazy.mt_enabled) {
--		__mt_destroy(&vn->lazy.mt);
--		vn->lazy.mt_enabled = false;
--	}
--
--	vn->lazy.mt_init_tried = true;
-+	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
-+	return !WARN_ON_ONCE(err);
+ static __always_inline void
+@@ -1391,7 +1446,7 @@ unlink_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
+ 	INIT_LIST_HEAD(&va->list);
  }
  
--static void
--busy_mt_rebuild_locked(struct vmap_node *vn)
+-static __always_inline void
 +static __always_inline bool
-+occupied_mt_erase_va_locked(struct vmap_area *va)
+ insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
  {
--	struct vmap_area *va;
--	int err;
--
--	lockdep_assert_held(&vn->busy.lock);
--
--	__mt_destroy(&vn->busy.mt);
--	vn->busy.mt_enabled = true;
-+	lockdep_assert_held(&free_vmap_area_lock);
+ 	int err;
+@@ -1400,12 +1455,12 @@ insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
  
--	list_for_each_entry(va, &vn->busy.head, list) {
--		MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
-+	if (!occupied_mt_supported())
+ 	try_init_lazy_mt_locked(vn);
+ 	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
+-		return;
++		return false;
+ 
+ 	if (!validate_vmap_area_range_insert_mt_locked(&vn->lazy.mt,
+ 						       va->va_start,
+ 						       va->va_end))
+-		return;
++		return false;
+ 
+ 	INIT_LIST_HEAD(&va->list);
+ 
+@@ -1415,11 +1470,72 @@ insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
+ 	if (!err) {
+ 		mas_store_prealloc(&mas, va);
+ 		mas_destroy(&mas);
+-		return;
 +		return true;
+ 	}
  
--		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--		if (WARN_ON_ONCE(err)) {
--			disable_busy_mt_locked(vn);
--			return;
--		}
--	}
-+	return occupied_mt_erase_range_locked(va->va_start, va->va_end);
- }
- 
- static __always_inline void
- try_init_busy_mt_locked(struct vmap_node *vn)
- {
- 	lockdep_assert_held(&vn->busy.lock);
--
--	if (vn->busy.mt_init_tried)
--		return;
--
--	if (!vmap_mt_runtime_ready())
--		return;
--
--	vn->busy.mt_init_tried = true;
--	busy_mt_rebuild_locked(vn);
--}
--
--static void
--lazy_mt_rebuild_locked(struct vmap_node *vn)
--{
--	struct vmap_area *va;
--	int err;
--
--	lockdep_assert_held(&vn->lazy.lock);
--
--	__mt_destroy(&vn->lazy.mt);
--	vn->lazy.mt_enabled = true;
--
--	list_for_each_entry(va, &vn->lazy.head, list) {
--		MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
--
--		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--		if (WARN_ON_ONCE(err)) {
--			disable_lazy_mt_locked(vn);
--			return;
--		}
--	}
-+	WARN_ON_ONCE(!vn->busy.mt_enabled);
- }
- 
- static __always_inline void
- try_init_lazy_mt_locked(struct vmap_node *vn)
- {
- 	lockdep_assert_held(&vn->lazy.lock);
--
--	if (vn->lazy.mt_init_tried)
--		return;
--
--	if (!vmap_mt_runtime_ready())
--		return;
--
--	vn->lazy.mt_init_tried = true;
--	lazy_mt_rebuild_locked(vn);
-+	WARN_ON_ONCE(!vn->lazy.mt_enabled);
- }
- 
-+/*
-+ * Busy/lazy lookup paths remain lock-based to preserve pointer lifetime
-+ * semantics.
-+ */
+ 	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
+-	WARN_ON_ONCE(err);
++	return !WARN_ON_ONCE(err);
++}
 +
- static __always_inline struct vmap_area *
- __find_vmap_area_mt(unsigned long addr, struct maple_tree *tree)
- {
-@@ -1462,6 +1248,24 @@ __find_vmap_area_enclose_addr_mt(unsigned long addr, struct maple_tree *tree)
- 	return mas_find_rev(&mas, 0);
- }
- 
 +static __always_inline bool
-+validate_vmap_area_range_insert_mt_locked(struct maple_tree *tree,
-+					  unsigned long start,
-+					  unsigned long end)
++unlink_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
 +{
-+	struct vmap_area *left, *right;
++	int err;
 +
-+	left = __find_vmap_area_enclose_addr_mt(start, tree);
-+	if (left && WARN_ON_ONCE(left->va_end > start))
++	lockdep_assert_held(&vn->lazy.lock);
++
++	try_init_lazy_mt_locked(vn);
++	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
 +		return false;
 +
-+	right = __find_vmap_area_exceed_addr_mt(start, tree);
-+	if (right && WARN_ON_ONCE(right->va_start < end))
++	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
++
++	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
++	if (WARN_ON_ONCE(err))
 +		return false;
 +
++	INIT_LIST_HEAD(&va->list);
 +	return true;
 +}
 +
- static __always_inline struct vmap_area *
- find_vmap_area_busy_locked(unsigned long addr, struct vmap_node *vn)
- {
-@@ -1469,10 +1273,10 @@ find_vmap_area_busy_locked(unsigned long addr, struct vmap_node *vn)
- 
- 	try_init_busy_mt_locked(vn);
- 
--	if (likely(vn->busy.mt_enabled))
--		return __find_vmap_area_mt(addr, &vn->busy.mt);
-+	if (WARN_ON_ONCE(!vn->busy.mt_enabled))
-+		return NULL;
- 
--	return __find_vmap_area_list(addr, &vn->busy.head);
-+	return __find_vmap_area_mt(addr, &vn->busy.mt);
- }
- 
- static __always_inline struct vmap_area *
-@@ -1482,10 +1286,10 @@ find_vmap_area_exceed_addr_busy_locked(unsigned long addr, struct vmap_node *vn)
- 
- 	try_init_busy_mt_locked(vn);
- 
--	if (likely(vn->busy.mt_enabled))
--		return __find_vmap_area_exceed_addr_mt(addr, &vn->busy.mt);
-+	if (WARN_ON_ONCE(!vn->busy.mt_enabled))
-+		return NULL;
- 
--	return __find_vmap_area_exceed_addr_list(addr, &vn->busy.head);
-+	return __find_vmap_area_exceed_addr_mt(addr, &vn->busy.mt);
- }
- 
- /*
-@@ -1544,22 +1348,27 @@ insert_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
- 
- 	try_init_busy_mt_locked(vn);
- 
--	if (likely(vn->busy.mt_enabled)) {
--		MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
-+	if (WARN_ON_ONCE(!vn->busy.mt_enabled))
-+		return;
- 
--		if (!insert_vmap_area_list_sorted_mt(va, &vn->busy.mt,
--						     &vn->busy.head))
--			return;
-+	if (!validate_vmap_area_range_insert_mt_locked(&vn->busy.mt,
-+						       va->va_start,
-+						       va->va_end))
-+		return;
- 
--		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--		if (WARN_ON_ONCE(err))
--			disable_busy_mt_locked(vn);
-+	INIT_LIST_HEAD(&va->list);
++/*
++ * Transition a VA into the lazy index and drop occupied tracking. On occupied
++ * erase failure, attempt to roll back the lazy insertion; if rollback fails we
++ * keep the lazy entry and let purge-side erase_occupied handling repair stale
++ * occupied state.
++ *
++ * Returns true when the VA remains lazy-indexed; false when it should be
++ * retried via non-index queue.
++ */
++static __always_inline bool
++publish_vmap_area_lazy(struct vmap_area *va, struct vmap_node *vn)
++{
++	bool lazy_kept = false;
 +
-+	MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
- 
-+	err = mas_preallocate(&mas, va, GFP_NOWAIT | __GFP_NOWARN);
-+	if (!err) {
-+		mas_store_prealloc(&mas, va);
-+		mas_destroy(&mas);
- 		return;
- 	}
- 
--	if (!insert_vmap_area_list_sorted(va, &vn->busy.head))
--		return;
-+	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+	WARN_ON_ONCE(err);
- }
- 
- static __always_inline void
-@@ -1569,18 +1378,17 @@ unlink_vmap_area_busy_locked(struct vmap_area *va, struct vmap_node *vn)
- 
- 	lockdep_assert_held(&vn->busy.lock);
- 
--	MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
--
--	list_del_init(&va->list);
--
- 	try_init_busy_mt_locked(vn);
- 
--	if (unlikely(!vn->busy.mt_enabled))
-+	if (WARN_ON_ONCE(!vn->busy.mt_enabled))
- 		return;
- 
-+	MA_STATE(mas, &vn->busy.mt, va->va_start, va->va_end - 1);
++	spin_lock(&vn->lazy.lock);
++	if (unlikely(!insert_vmap_area_lazy_locked(va, vn))) {
++		spin_unlock(&vn->lazy.lock);
++		return false;
++	}
 +
- 	err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
--	if (WARN_ON_ONCE(err))
--		disable_busy_mt_locked(vn);
-+	WARN_ON_ONCE(err);
++	/*
++	 * Keep lazy.lock held while dropping occupied tracking so purge-side
++	 * lazy extraction cannot move @va to purge_list during rollback.
++	 */
++	spin_lock(&free_vmap_area_lock);
++	try_init_occupied_mt_locked();
++	if (likely(occupied_mt_erase_va_locked(va))) {
++		spin_unlock(&free_vmap_area_lock);
++		spin_unlock(&vn->lazy.lock);
++		return true;
++	}
++	spin_unlock(&free_vmap_area_lock);
 +
-+	INIT_LIST_HEAD(&va->list);
- }
- 
- static __always_inline void
-@@ -1591,23 +1399,27 @@ insert_vmap_area_lazy_locked(struct vmap_area *va, struct vmap_node *vn)
- 	lockdep_assert_held(&vn->lazy.lock);
- 
- 	try_init_lazy_mt_locked(vn);
-+	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
-+		return;
- 
--	if (likely(vn->lazy.mt_enabled)) {
--		MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
-+	if (!validate_vmap_area_range_insert_mt_locked(&vn->lazy.mt,
-+						       va->va_start,
-+						       va->va_end))
-+		return;
- 
--		if (!insert_vmap_area_list_sorted_mt(va, &vn->lazy.mt,
--						     &vn->lazy.head))
--			return;
-+	INIT_LIST_HEAD(&va->list);
- 
--		err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
--		if (WARN_ON_ONCE(err))
--			disable_lazy_mt_locked(vn);
-+	MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
- 
-+	err = mas_preallocate(&mas, va, GFP_NOWAIT | __GFP_NOWARN);
-+	if (!err) {
-+		mas_store_prealloc(&mas, va);
-+		mas_destroy(&mas);
- 		return;
- 	}
- 
--	if (!insert_vmap_area_list_sorted(va, &vn->lazy.head))
--		return;
-+	err = mas_store_gfp(&mas, va, GFP_ATOMIC | __GFP_NOWARN);
-+	WARN_ON_ONCE(err);
++	if (unlikely(!unlink_vmap_area_lazy_locked(va, vn)))
++		lazy_kept = true;
++	spin_unlock(&vn->lazy.lock);
++
++	return lazy_kept;
  }
  
  static __always_inline bool
-@@ -1616,60 +1428,56 @@ lazy_vmap_areas_empty_locked(struct vmap_node *vn)
- 	lockdep_assert_held(&vn->lazy.lock);
- 
- 	try_init_lazy_mt_locked(vn);
-+	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
-+		return true;
- 
--	if (likely(vn->lazy.mt_enabled))
--		return mtree_empty(&vn->lazy.mt);
--
--	return list_empty(&vn->lazy.head);
-+	return mtree_empty(&vn->lazy.mt);
- }
- 
+@@ -1437,7 +1553,9 @@ lazy_vmap_areas_empty_locked(struct vmap_node *vn)
  static __always_inline void
  move_lazy_vmap_areas_to_purge_locked(struct vmap_node *vn)
  {
- 	struct vmap_area *va;
--	int err;
+-	struct vmap_area *va;
++	LIST_HEAD(move_list);
++	struct vmap_area *va, *n_va;
++	int err;
  
  	lockdep_assert_held(&vn->lazy.lock);
  
- 	try_init_lazy_mt_locked(vn);
-+	if (WARN_ON_ONCE(!vn->lazy.mt_enabled))
-+		return;
+@@ -1448,12 +1566,25 @@ move_lazy_vmap_areas_to_purge_locked(struct vmap_node *vn)
+ 	MA_STATE(mas, &vn->lazy.mt, 0, 0);
  
--	if (likely(vn->lazy.mt_enabled)) {
--		list_for_each_entry(va, &vn->lazy.head, list) {
--			MA_STATE(mas, &vn->lazy.mt, va->va_start, va->va_end - 1);
--
--			err = mas_store_gfp(&mas, NULL, GFP_ATOMIC | __GFP_NOWARN);
--			if (WARN_ON_ONCE(err)) {
--				disable_lazy_mt_locked(vn);
--				break;
--			}
--		}
-+	MA_STATE(mas, &vn->lazy.mt, 0, 0);
+ 	mas_for_each(&mas, va, ULONG_MAX)
+-		list_add_tail(&va->list, &vn->purge_list);
++		list_add_tail(&va->list, &move_list);
++
++	/*
++	 * Erase ranges one-by-one and move only successfully erased entries to
++	 * purge_list. This avoids destroy/reinit churn and keeps lazy index
++	 * coherence if an erase operation fails under pressure.
++	 */
++	list_for_each_entry_safe(va, n_va, &move_list, list) {
++		MA_STATE(mas_erase, &vn->lazy.mt, va->va_start, va->va_end - 1);
++
++		err = mas_store_gfp(&mas_erase, NULL, GFP_ATOMIC | __GFP_NOWARN);
++		if (unlikely(err)) {
++			WARN_ON_ONCE(err);
++			list_del_init(&va->list);
++			continue;
++		}
  
--		if (vn->lazy.mt_enabled && WARN_ON_ONCE(!mtree_empty(&vn->lazy.mt)))
--			disable_lazy_mt_locked(vn);
--	}
-+	mas_for_each(&mas, va, ULONG_MAX)
-+		list_add_tail(&va->list, &vn->purge_list);
- 
--	list_replace_init(&vn->lazy.head, &vn->purge_list);
-+	__mt_destroy(&vn->lazy.mt);
-+	mt_init_flags(&vn->lazy.mt, MT_FLAGS_LOCK_EXTERN);
-+	mt_set_external_lock(&vn->lazy.mt, &vn->lazy.lock);
-+	vn->lazy.mt_enabled = true;
+-	__mt_destroy(&vn->lazy.mt);
+-	mt_init_flags(&vn->lazy.mt, MT_FLAGS_LOCK_EXTERN);
+-	mt_set_external_lock(&vn->lazy.mt, &vn->lazy.lock);
+-	vn->lazy.mt_enabled = true;
++		list_move_tail(&va->list, &vn->purge_list);
++	}
  }
  
  static __always_inline bool
- insert_vmap_area_free_locked(struct vmap_area *va)
- {
-+	struct vmap_area *prev, *next;
-+
+@@ -1463,11 +1594,6 @@ insert_vmap_area_free_locked(struct vmap_area *va)
+ 
  	lockdep_assert_held(&free_vmap_area_lock);
  
- 	try_init_free_mt_locked();
+-	try_init_free_mt_locked();
+-
+-	if (unlikely(!free_mt_supported()))
+-		return false;
+-
+ 	prev = __find_vmap_area_enclose_addr_mt(va->va_start, &free_vmap_area_mt);
+ 	if (prev && WARN_ON_ONCE(prev->va_end > va->va_start))
+ 		return false;
+@@ -1512,16 +1638,16 @@ merge_or_add_vmap_area_free_locked(struct vmap_area *va)
+ 	if (left && WARN_ON_ONCE(left->va_end > new_start))
+ 		return NULL;
  
--	if (likely(free_mt_supported())) {
--		if (!insert_vmap_area_list_sorted_mt(va, &free_vmap_area_mt,
--						     &free_vmap_area_list))
--			return false;
-+	if (unlikely(!free_mt_supported()))
-+		return false;
- 
--		free_mt_store_va_locked(va);
--	} else {
--		if (!insert_vmap_area_list_sorted(va, &free_vmap_area_list))
--			return false;
--	}
-+	prev = __find_vmap_area_enclose_addr_mt(va->va_start, &free_vmap_area_mt);
-+	if (prev && WARN_ON_ONCE(prev->va_end > va->va_start))
-+		return false;
- 
--	return true;
-+	next = __find_vmap_area_exceed_addr_mt(va->va_start, &free_vmap_area_mt);
-+	if (next && WARN_ON_ONCE(next->va_start < va->va_end))
-+		return false;
-+
-+	INIT_LIST_HEAD(&va->list);
-+	return free_mt_store_va_locked(va);
- }
- 
- static __always_inline void
-@@ -1677,193 +1485,56 @@ unlink_vmap_area_free_locked(struct vmap_area *va)
- {
- 	lockdep_assert_held(&free_vmap_area_lock);
- 
--	if (WARN_ON_ONCE(list_empty(&va->list)))
-+	if (unlikely(!free_mt_supported()))
- 		return;
- 
--	if (likely(free_mt_supported()))
--		free_mt_erase_va_locked(va);
--
--	list_del_init(&va->list);
--}
--
--/*
-- * Merge de-allocated chunk of VA memory with previous
-- * and next free blocks. If coalesce is not done a new
-- * free area is inserted. If VA has been merged, it is
-- * freed.
-- *
-- * Please note, it can return NULL in case of overlap
-- * ranges, followed by WARN() report. Despite it is a
-- * buggy behaviour, a system can be alive and keep
-- * ongoing.
-- */
--static __always_inline struct vmap_area *
--__merge_or_add_vmap_area(struct vmap_area *va, struct list_head *head, bool update_mt)
--{
--	struct vmap_area *sibling;
--	struct list_head *next;
--	unsigned long old_start, old_end;
--	bool merged = false;
--
--	if (update_mt && free_mt_supported())
--		next = find_vmap_area_insert_point_mt(va, &free_vmap_area_mt, head);
--	else
--		next = find_vmap_area_insert_point_list(va, head);
--
--	if (!next)
--		return NULL;
--
--	/*
--	 * start            end
--	 * |                |
--	 * |<------VA------>|<-----Next----->|
--	 *                  |                |
--	 *                  start            end
--	 */
--	if (next != head) {
--		sibling = list_entry(next, struct vmap_area, list);
--		if (sibling->va_start == va->va_end) {
--			old_start = sibling->va_start;
--			old_end = sibling->va_end;
--			sibling->va_start = va->va_start;
--			if (update_mt && free_mt_supported())
--				free_mt_update_va_locked(sibling, old_start, old_end);
--
--			/* Free vmap_area object. */
--			kmem_cache_free(vmap_area_cachep, va);
--
--			/* Point to the new merged area. */
--			va = sibling;
--			merged = true;
--		}
--	}
--
--	/*
--	 * start            end
--	 * |                |
--	 * |<-----Prev----->|<------VA------>|
--	 *                  |                |
--	 *                  start            end
--	 */
--	if (next->prev != head) {
--		sibling = list_entry(next->prev, struct vmap_area, list);
--		if (sibling->va_end == va->va_start) {
--			/*
--			 * If both neighbors are coalesced, it is important
--			 * to unlink the "next" node first, followed by merging
--			 * with "previous" one.
--			 */
--			if (merged) {
--				if (update_mt)
--					unlink_vmap_area_free_locked(va);
--				else
--					list_del_init(&va->list);
--			}
--
--			old_start = sibling->va_start;
--			old_end = sibling->va_end;
--			sibling->va_end = va->va_end;
--			if (update_mt && free_mt_supported())
--				free_mt_update_va_locked(sibling, old_start, old_end);
--
--			/* Free vmap_area object. */
--			kmem_cache_free(vmap_area_cachep, va);
--
--			/* Point to the new merged area. */
--			va = sibling;
--			merged = true;
--		}
--	}
--
--	if (!merged) {
--		if (update_mt)
--			insert_vmap_area_free_locked(va);
--		else
--			list_add_tail(&va->list, next);
--	}
-+	if (!free_mt_erase_va_locked(va))
-+		return;
- 
--	return va;
--}
--
--static __always_inline struct vmap_area *
--merge_or_add_vmap_area(struct vmap_area *va,
--	struct list_head *head)
--{
--	return __merge_or_add_vmap_area(va, head, false);
-+	INIT_LIST_HEAD(&va->list);
- }
- 
- static __always_inline struct vmap_area *
- merge_or_add_vmap_area_free_locked(struct vmap_area *va)
- {
-+	struct vmap_area *left, *right;
-+	unsigned long new_start, new_end;
-+
- 	lockdep_assert_held(&free_vmap_area_lock);
- 
--	va = __merge_or_add_vmap_area(va, &free_vmap_area_list, true);
--	if (va && va->va_start < free_vmap_alloc_hint)
--		free_vmap_alloc_hint = va->va_start;
-+	if (unlikely(!free_mt_supported()))
-+		return NULL;
- 
--	return va;
--}
-+	new_start = va->va_start;
-+	new_end = va->va_end;
- 
--/*
-- * Transitional wrappers retained until all legacy rb call sites are switched.
-- * Follow-up patches in this series remove these wrappers.
-- */
--static __always_inline void
--insert_vmap_area(struct vmap_area *va, struct rb_root *root,
--		 struct list_head *head)
--{
--	struct vmap_node *vn = addr_to_node(va->va_start);
-+	left = __find_vmap_area_enclose_addr_mt(new_start, &free_vmap_area_mt);
-+	if (left && WARN_ON_ONCE(left->va_end > new_start))
-+		return NULL;
- 
--	if (head == &free_vmap_area_list) {
--		insert_vmap_area_free_locked(va);
--		return;
-+	if (left && left->va_end == new_start) {
-+		new_start = left->va_start;
-+		unlink_vmap_area_free_locked(left);
-+		kmem_cache_free(vmap_area_cachep, left);
- 	}
- 
--	if (head == &vn->lazy.head) {
--		insert_vmap_area_lazy_locked(va, vn);
--		return;
--	}
--
--	insert_vmap_area_busy_locked(va, vn);
--}
--
--static __always_inline void
--insert_vmap_area_augment(struct vmap_area *va, struct rb_node *from,
--			 struct rb_root *root, struct list_head *head)
--{
--	insert_vmap_area(va, root, head);
--}
--
--static __always_inline void unlink_va(struct vmap_area *va, struct rb_root *root)
--{
--	struct vmap_node *vn = addr_to_node(va->va_start);
 +	right = __find_vmap_area_exceed_addr_mt(new_start, &free_vmap_area_mt);
 +	if (right && WARN_ON_ONCE(right->va_start < new_end))
 +		return NULL;
- 
--	if (root == &free_vmap_area_root) {
--		unlink_vmap_area_free_locked(va);
--		return;
-+	if (right && right->va_start == new_end) {
-+		new_end = right->va_end;
-+		unlink_vmap_area_free_locked(right);
-+		kmem_cache_free(vmap_area_cachep, right);
- 	}
- 
--	unlink_vmap_area_busy_locked(va, vn);
--}
-+	va->va_start = new_start;
-+	va->va_end = new_end;
- 
--static __always_inline void
--unlink_va_augment(struct vmap_area *va, struct rb_root *root)
--{
--	unlink_va(va, root);
--}
--
--static __always_inline void augment_tree_propagate_from(struct vmap_area *va)
--{
--}
--
--static __always_inline struct vmap_area *
--merge_or_add_vmap_area_augment(struct vmap_area *va, struct rb_root *root,
--			       struct list_head *head)
--{
--	if (head == &free_vmap_area_list)
--		return merge_or_add_vmap_area_free_locked(va);
-+	if (!insert_vmap_area_free_locked(va))
-+		return NULL;
- 
--	return merge_or_add_vmap_area(va, head);
-+	return va;
- }
- 
- static __always_inline bool
-@@ -1885,86 +1556,57 @@ is_within_this_va(struct vmap_area *va, unsigned long size,
- 	return (nva_start_addr + size <= va->va_end);
- }
- 
--static __always_inline struct vmap_area *
--find_vmap_lowest_match_list(struct list_head *head, unsigned long size,
--			    unsigned long align, unsigned long vstart)
-+static __always_inline bool
-+occupied_mt_find_hole_window_locked(unsigned long min, unsigned long max,
-+				    unsigned long size, unsigned long align,
-+				    unsigned long *addr)
- {
--	struct vmap_area *va;
-+	MA_STATE(mas, &occupied_vmap_area_mt, 0, 0);
-+	unsigned long search = min;
-+	unsigned long hole_end;
- 
--	list_for_each_entry(va, head, list) {
--		if (!is_within_this_va(va, size, align, vstart))
--			continue;
-+	while (search <= max) {
-+		unsigned long candidate, candidate_end;
- 
--		return va;
--	}
-+		mas_set(&mas, search);
-+		if (mas_empty_area(&mas, search, max, size))
-+			return false;
- 
--	return NULL;
--}
-+		hole_end = min(mas.last, max);
-+		candidate = ALIGN(mas.index, align);
-+		if (candidate < mas.index)
-+			return false;
- 
--static __always_inline unsigned long
--clamp_vmap_alloc_hint(unsigned long hint, unsigned long vstart,
--		      unsigned long vend)
--{
--	if (hint < vstart || hint >= vend)
--		return vstart;
-+		if (check_add_overflow(candidate, size - 1, &candidate_end))
-+			return false;
- 
--	return hint;
--}
-+		if (candidate >= search && candidate_end <= hole_end) {
-+			*addr = candidate;
-+			return true;
-+		}
- 
--/*
-- * Next-fit scan with wrap-around. Use maple to jump to the first candidate
-- * around the hint in O(log n), then continue on the ordered list for cheap
-- * neighbour traversal and deterministic coalescing behaviour.
-- */
--static __always_inline struct vmap_area *
--find_vmap_match_list_next_fit(struct list_head *head, unsigned long size,
--			      unsigned long align, unsigned long vstart,
--			      unsigned long vend)
--{
--	struct vmap_area *va, *start = NULL;
--	unsigned long hint;
--	bool wrapped;
--
--	hint = clamp_vmap_alloc_hint(free_vmap_alloc_hint, vstart, vend);
--
--	if (hint != vstart) {
--		if (free_mt_supported())
--			start = __find_vmap_area_exceed_addr_mt(hint,
--								&free_vmap_area_mt);
--
--		if (start) {
--			va = start;
--			list_for_each_entry_from(va, head, list) {
--				if (is_within_this_va(va, size, align, hint))
--					return va;
--			}
--		} else {
--			list_for_each_entry(va, head, list) {
--				if (va->va_end <= hint)
--					continue;
-+		if (hole_end == ULONG_MAX)
-+			return false;
- 
--				if (is_within_this_va(va, size, align, hint))
--					return va;
--			}
--		}
-+		search = hole_end + 1;
- 	}
- 
--	wrapped = (hint != vstart);
--	list_for_each_entry(va, head, list) {
--		if (wrapped) {
--			if (start && va == start)
--				break;
--			if (!start && va->va_start >= hint)
--				break;
--		}
-+	return false;
-+}
- 
--		if (is_within_this_va(va, size, align, vstart))
--			return va;
--	}
-+static __always_inline unsigned long
-+occupied_mt_find_hole_lowest_locked(unsigned long size, unsigned long align,
-+				    unsigned long vstart, unsigned long vend)
-+{
-+	unsigned long addr;
- 
--	return NULL;
-+	if (occupied_mt_find_hole_window_locked(vstart, vend - 1, size, align, &addr))
-+		return addr;
 +
-+	return -ENOENT;
- }
+ 	if (left && left->va_end == new_start) {
+ 		new_start = left->va_start;
+ 		unlink_vmap_area_free_locked(left);
+ 		kmem_cache_free(vmap_area_cachep, left);
+ 	}
  
-+/* Lowest-match scan directly on maple ordered traversal. */
- static __always_inline struct vmap_area *
- find_vmap_lowest_match_mt(struct maple_tree *tree, unsigned long size,
- 			  unsigned long align, unsigned long vstart)
-@@ -1989,24 +1631,26 @@ find_vmap_lowest_match_mt(struct maple_tree *tree, unsigned long size,
- #include <linux/random.h>
- 
- static struct vmap_area *
--find_vmap_lowest_linear_match(struct list_head *head, unsigned long size,
--	unsigned long align, unsigned long vstart)
-+find_vmap_lowest_linear_match(struct maple_tree *tree, unsigned long size,
-+			      unsigned long align, unsigned long vstart)
- {
-+	MA_STATE(mas, tree, vstart, vstart);
- 	struct vmap_area *va;
- 
--	list_for_each_entry(va, head, list) {
-+	mas_set(&mas, vstart);
-+	va = mas_find(&mas, ULONG_MAX);
-+	while (va) {
- 		if (!is_within_this_va(va, size, align, vstart))
--			continue;
+-	right = __find_vmap_area_exceed_addr_mt(new_start, &free_vmap_area_mt);
+-	if (right && WARN_ON_ONCE(right->va_start < new_end))
+-		return NULL;
 -
--		return va;
-+			va = mas_next(&mas, ULONG_MAX);
-+		else
-+			return va;
- 	}
+ 	if (right && right->va_start == new_end) {
+ 		new_end = right->va_end;
+ 		unlink_vmap_area_free_locked(right);
+@@ -1580,9 +1706,28 @@ occupied_mt_find_hole_window_locked(unsigned long min, unsigned long max,
+ 		if (check_add_overflow(candidate, size - 1, &candidate_end))
+ 			return false;
  
--	return NULL;
-+	return va;
+-		if (candidate >= search && candidate_end <= hole_end) {
+-			*addr = candidate;
+-			return true;
++		while (candidate >= search && candidate_end <= hole_end) {
++			unsigned long blocked_end = 0;
++
++			if (!retry_queue_overlap_locked(candidate, candidate_end,
++							&blocked_end)) {
++				*addr = candidate;
++				return true;
++			}
++
++			if (blocked_end >= hole_end)
++				break;
++
++			blocked_end++;
++			if (!blocked_end)
++				return false;
++
++			candidate = ALIGN(blocked_end, align);
++			if (candidate < blocked_end)
++				return false;
++
++			if (check_add_overflow(candidate, size - 1, &candidate_end))
++				return false;
+ 		}
+ 
+ 		if (hole_end == ULONG_MAX)
+@@ -1828,6 +1973,70 @@ restore_allocated_vmap_range_free_locked(unsigned long start, unsigned long end)
+ 	return true;
  }
  
- static void
--find_vmap_lowest_match_check(struct list_head *head, unsigned long size,
--			     unsigned long align)
-+find_vmap_lowest_match_check(unsigned long size, unsigned long align)
- {
- 	struct vmap_area *va_1, *va_2;
- 	unsigned long vstart;
-@@ -2015,11 +1659,8 @@ find_vmap_lowest_match_check(struct list_head *head, unsigned long size,
- 	get_random_bytes(&rnd, sizeof(rnd));
- 	vstart = VMALLOC_START + rnd;
- 
--	if (free_mt_supported())
--		va_1 = find_vmap_lowest_match_mt(&free_vmap_area_mt, size, align, vstart);
--	else
--		va_1 = find_vmap_lowest_linear_match(head, size, align, vstart);
--	va_2 = find_vmap_lowest_linear_match(head, size, align, vstart);
-+	va_1 = find_vmap_lowest_match_mt(&free_vmap_area_mt, size, align, vstart);
-+	va_2 = find_vmap_lowest_linear_match(&free_vmap_area_mt, size, align, vstart);
- 
- 	if (va_1 != va_2)
- 		pr_emerg("not lowest: t: 0x%p, l: 0x%p, v: 0x%lx\n",
-@@ -2153,39 +1794,38 @@ va_clip(struct vmap_area *va, unsigned long nva_start_addr,
- 	}
- 
- 	if (type != FL_FIT_TYPE) {
--		if (free_mt_supported())
--			free_mt_update_va_locked(va, old_start, old_end);
-+		if (free_mt_supported() &&
-+		    !free_mt_update_va_locked(va, old_start, old_end))
-+			return -ENOMEM;
- 
--		if (lva)	/* type == NE_FIT_TYPE */
--			insert_vmap_area_free_locked(lva);
-+		if (lva && !insert_vmap_area_free_locked(lva)) {
-+			kmem_cache_free(vmap_area_cachep, lva);
-+			return -ENOMEM;
-+		}
- 	}
- 
- 	return 0;
- }
- 
--static unsigned long
--va_alloc(struct vmap_area *va,
--		unsigned long size, unsigned long align,
--		unsigned long vstart, unsigned long vend)
++/*
++ * Roll back an allocated range when busy insertion fails. Prefer returning
++ * it to the free tree; if that is not possible, keep occupied tracking so
++ * the range stays reserved and allocator state remains coherent.
++ *
++ * Returns true when @va remains referenced by the free tree and must not be
++ * freed by the caller. Returns false when the caller owns @va.
++ */
 +static __always_inline bool
-+restore_allocated_vmap_range_free_locked(unsigned long start, unsigned long end)
- {
--	unsigned long nva_start_addr;
--	int ret;
-+	struct vmap_area *va;
- 
--	if (va->va_start > vstart)
--		nva_start_addr = ALIGN(va->va_start, align);
--	else
--		nva_start_addr = ALIGN(vstart, align);
++rollback_busy_insert_failed_alloc_locked(struct vmap_area *va)
++{
 +	lockdep_assert_held(&free_vmap_area_lock);
- 
--	/* Check the "vend" restriction. */
--	if (nva_start_addr + size > vend)
--		return -ERANGE;
-+	va = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
-+	if (!va)
-+		return false;
- 
--	/* Update the free vmap_area. */
--	ret = va_clip(va, nva_start_addr, size);
--	if (WARN_ON_ONCE(ret))
--		return ret;
-+	va->va_start = start;
-+	va->va_end = end;
++
 +	if (!insert_vmap_area_free_locked(va)) {
-+		kmem_cache_free(vmap_area_cachep, va);
-+		return false;
++		retry_queue_add_va_locked(va);
++		return true;
 +	}
- 
--	return nva_start_addr;
++
++	if (occupied_mt_erase_va_locked(va))
++		return true;
++
++	if (free_mt_erase_va_locked(va)) {
++		retry_queue_add_va_locked(va);
++		return true;
++	}
++
++	/*
++	 * Occupied erase failed and we could not remove the temporary free
++	 * insertion. Keep @va alive: both trees still reference this range.
++	 */
 +	return true;
- }
- 
++}
++
++/*
++ * Reinsert @va into the free index after occupied erase. On failure, place the
++ * range on the non-index retry queue and best-effort restore occupied tracking.
++ *
++ * Return: free-tracked @va on success, NULL when queued for retry.
++ */
++static __always_inline struct vmap_area *
++reinsert_or_queue_vmap_area_locked(struct vmap_area *va)
++{
++	struct vmap_area *tracked;
++
++	lockdep_assert_held(&free_vmap_area_lock);
++
++	tracked = merge_or_add_vmap_area_free_locked(va);
++	if (tracked)
++		return tracked;
++
++	if (insert_vmap_area_free_locked(va))
++		return va;
++
++	/*
++	 * Retry queue acts as allocation exclusion even if occupied restore
++	 * fails under pressure.
++	 */
++	if (WARN_ON_ONCE(!occupied_mt_store_va_locked(va)))
++		INIT_LIST_HEAD(&va->list);
++
++	retry_queue_add_va_locked(va);
++	return NULL;
++}
++
  /*
-@@ -2196,34 +1836,42 @@ static __always_inline unsigned long
- __alloc_vmap_area(unsigned long size, unsigned long align,
- 		  unsigned long vstart, unsigned long vend)
- {
-+	int ret;
+  * Returns a start address of the newly allocated area, if success.
+  * Otherwise an error value is returned that indicates failure.
+@@ -1840,22 +2049,42 @@ __alloc_vmap_area(unsigned long size, unsigned long align,
  	unsigned long nva_start_addr;
-+	unsigned long nva_end_addr;
+ 	unsigned long nva_end_addr;
  	struct vmap_area *va;
++	MA_STATE(mas, &free_vmap_area_mt, 0, 0);
  
  	lockdep_assert_held(&free_vmap_area_lock);
  
--	/*
--	 * Next-fit with wrap-around lowers repeated list-head scans in
--	 * high-churn workloads.
--	 */
--	va = find_vmap_match_list_next_fit(&free_vmap_area_list, size, align,
--					   vstart, vend);
-+	try_init_occupied_mt_locked();
+ 	try_init_occupied_mt_locked();
  
--	if (unlikely(!va))
-+	if (WARN_ON_ONCE(!occupied_mt_supported()))
+-	if (WARN_ON_ONCE(!occupied_mt_supported()))
++	if (WARN_ON_ONCE(!size || !align || vstart >= vend))
++		return -EINVAL;
++	if (size > vend - vstart)
  		return -ENOENT;
  
--	nva_start_addr = va_alloc(va, size, align, vstart, vend);
--	if (!IS_ERR_VALUE(nva_start_addr)) {
--		unsigned long next_hint;
-+	nva_start_addr = occupied_mt_find_hole_lowest_locked(size, align,
-+							     vstart, vend);
-+	if (IS_ERR_VALUE(nva_start_addr))
-+		return nva_start_addr;
-+	nva_end_addr = nva_start_addr + size;
- 
--		if (check_add_overflow(nva_start_addr, size, &next_hint))
--			free_vmap_alloc_hint = vstart;
--		else
--			free_vmap_alloc_hint = next_hint;
-+	va = __find_vmap_area_mt(nva_start_addr, &free_vmap_area_mt);
-+	if (WARN_ON_ONCE(!va))
-+		return -ENOENT;
+-	nva_start_addr = occupied_mt_find_hole_lowest_locked(size, align,
+-							     vstart, vend);
+-	if (IS_ERR_VALUE(nva_start_addr))
+-		return nva_start_addr;
+-	nva_end_addr = nva_start_addr + size;
++	/*
++	 * Free maple index is authoritative for allocatable ranges; lazy and
++	 * retry entries are intentionally excluded from it.
++	 */
++	mas_set(&mas, vstart);
++	va = mas_find(&mas, vend - 1);
++	while (va) {
++		unsigned long search_start = max(va->va_start, vstart);
++		unsigned long candidate_end;
 +
-+	ret = va_clip(va, nva_start_addr, size);
-+	if (WARN_ON_ONCE(ret))
-+		return ret;
-+
-+	if (!occupied_mt_store_range_locked(nva_start_addr, nva_end_addr)) {
-+		bool restored;
-+
-+		restored = restore_allocated_vmap_range_free_locked(nva_start_addr, nva_end_addr);
-+		WARN_ON_ONCE(!restored);
-+		return -ENOMEM;
- 	}
++		nva_start_addr = ALIGN(search_start, align);
++		if (nva_start_addr < search_start)
++			return -ERANGE;
  
- #if DEBUG_AUGMENT_LOWEST_MATCH_CHECK
--	if (!IS_ERR_VALUE(nva_start_addr))
--		find_vmap_lowest_match_check(&free_vmap_area_list, size, align);
-+	find_vmap_lowest_match_check(size, align);
- #endif
+-	va = __find_vmap_area_mt(nva_start_addr, &free_vmap_area_mt);
+-	if (WARN_ON_ONCE(!va))
++		if (check_add_overflow(nva_start_addr, size - 1, &candidate_end))
++			return -ERANGE;
++
++		if (candidate_end < vend && candidate_end < va->va_end) {
++			nva_end_addr = candidate_end + 1;
++			break;
++		}
++
++		va = mas_next(&mas, vend - 1);
++	}
++	if (!va)
+ 		return -ENOENT;
  
- 	return nva_start_addr;
-@@ -2247,7 +1895,8 @@ static void free_vmap_area(struct vmap_area *va)
+ 	ret = va_clip(va, nva_start_addr, size);
+@@ -1883,6 +2112,7 @@ __alloc_vmap_area(unsigned long size, unsigned long align,
+ static void free_vmap_area(struct vmap_area *va)
+ {
+ 	struct vmap_node *vn = addr_to_node(va->va_start);
++	bool queued_retry = false;
+ 
+ 	/*
+ 	 * Remove from the busy tree/list.
+@@ -1895,9 +2125,19 @@ static void free_vmap_area(struct vmap_area *va)
  	 * Insert/Merge it back to the free tree/list.
  	 */
  	spin_lock(&free_vmap_area_lock);
--	merge_or_add_vmap_area_free_locked(va);
-+	WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
-+	WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va));
- 	spin_unlock(&free_vmap_area_lock);
- }
- 
-@@ -2566,24 +2215,36 @@ static DEFINE_MUTEX(vmap_purge_lock);
- /* for per-CPU blocks */
- static void purge_fragmented_blocks_allcpus(void);
- 
--static void
--reclaim_list_global(struct list_head *head)
-+static bool
-+reclaim_list_global(struct list_head *head, bool erase_occupied,
-+		    struct list_head *failed)
- {
- 	struct vmap_area *va, *n;
-+	bool ok = true;
- 
- 	if (list_empty(head))
--		return;
-+		return true;
- 
- 	spin_lock(&free_vmap_area_lock);
--	list_for_each_entry_safe(va, n, head, list)
--		merge_or_add_vmap_area_free_locked(va);
-+	list_for_each_entry_safe(va, n, head, list) {
-+		list_del_init(&va->list);
-+		if (erase_occupied)
-+			WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
-+		if (WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va))) {
-+			list_add_tail(&va->list, failed);
-+			ok = false;
-+		}
+-	WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
+-	WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va));
++	if (unlikely(!occupied_mt_erase_va_locked(va))) {
++		retry_queue_add_va_locked(va);
++		queued_retry = true;
++		spin_unlock(&free_vmap_area_lock);
++		goto out_schedule_retry;
 +	}
++	if (!reinsert_or_queue_vmap_area_locked(va))
++		queued_retry = true;
  	spin_unlock(&free_vmap_area_lock);
 +
-+	return ok;
++out_schedule_retry:
++	if (queued_retry)
++		schedule_work(&drain_vmap_work);
  }
  
- static void
- decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ static inline void
+@@ -2119,6 +2359,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	va->va_end = addr + size;
+ 	va->vm = NULL;
+ 	va->flags = (va_flags | vn_id);
++	INIT_LIST_HEAD(&va->list);
+ 
+ 	if (vm) {
+ 		vm->addr = (void *)va->va_start;
+@@ -2129,8 +2370,29 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	vn = addr_to_node(va->va_start);
+ 
+ 	spin_lock(&vn->busy.lock);
+-	insert_vmap_area_busy_locked(va, vn);
++	ret = insert_vmap_area_busy_locked(va, vn) ? 0 : -ENOMEM;
+ 	spin_unlock(&vn->busy.lock);
++	if (ret) {
++		bool keep_va = false;
++
++		va->vm = NULL;
++		spin_lock(&free_vmap_area_lock);
++		keep_va = rollback_busy_insert_failed_alloc_locked(va);
++		spin_unlock(&free_vmap_area_lock);
++
++		if (!keep_va)
++			kmem_cache_free(vmap_area_cachep, va);
++		else
++			schedule_work(&drain_vmap_work);
++
++		if (vm) {
++			vm->addr = NULL;
++			vm->size = 0;
++			vm->requested_size = 0;
++		}
++
++		return ERR_PTR(ret);
++	}
+ 
+ 	BUG_ON(!IS_ALIGNED(va->va_start, align));
+ 	BUG_ON(va->va_start < vstart);
+@@ -2221,21 +2483,40 @@ reclaim_list_global(struct list_head *head, bool erase_occupied,
  {
- 	LIST_HEAD(decay_list);
-+	LIST_HEAD(decay_failed);
- 	struct vmap_area *va, *nva;
- 	unsigned long n_decay, pool_len;
- 	int i;
-@@ -2612,7 +2273,7 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 				break;
+ 	struct vmap_area *va, *n;
+ 	bool ok = true;
++	bool queue_retry_work = false;
  
- 			list_del_init(&va->list);
--			merge_or_add_vmap_area(va, &decay_list);
-+			list_add_tail(&va->list, &decay_list);
- 		}
+ 	if (list_empty(head))
+ 		return true;
  
- 		/*
-@@ -2629,7 +2290,11 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 	spin_lock(&free_vmap_area_lock);
+ 	list_for_each_entry_safe(va, n, head, list) {
++		bool occupied_erased = false;
++
+ 		list_del_init(&va->list);
+-		if (erase_occupied)
+-			WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
+-		if (WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va))) {
+-			list_add_tail(&va->list, failed);
+-			ok = false;
++		if (erase_occupied) {
++			if (WARN_ON_ONCE(!occupied_mt_erase_va_locked(va))) {
++				list_add_tail(&va->list, failed);
++				ok = false;
++				continue;
++			}
++
++			occupied_erased = true;
++		}
++			if (WARN_ON_ONCE(!merge_or_add_vmap_area_free_locked(va))) {
++				if (occupied_erased &&
++				    WARN_ON_ONCE(!occupied_mt_store_va_locked(va))) {
++					retry_queue_add_va_locked(va);
++					queue_retry_work = true;
++					ok = false;
++					continue;
++				}
++				list_add_tail(&va->list, failed);
++				ok = false;
  		}
  	}
+ 	spin_unlock(&free_vmap_area_lock);
++	if (queue_retry_work)
++		schedule_work(&drain_vmap_work);
  
--	reclaim_list_global(&decay_list);
-+	WARN_ON_ONCE(!reclaim_list_global(&decay_list, false, &decay_failed));
-+	list_for_each_entry_safe(va, nva, &decay_failed, list) {
-+		list_del_init(&va->list);
-+		WARN_ON_ONCE(!node_pool_add_va(vn, va));
-+	}
+ 	return ok;
  }
- 
- #define KASAN_RELEASE_BATCH_SIZE 32
-@@ -2664,8 +2329,10 @@ static void purge_vmap_node(struct work_struct *work)
- 	struct vmap_node *vn = container_of(work,
+@@ -2330,6 +2611,7 @@ static void purge_vmap_node(struct work_struct *work)
  		struct vmap_node, purge_work);
  	unsigned long nr_purged_pages = 0;
-+	unsigned long nr_failed_pages = 0;
+ 	unsigned long nr_failed_pages = 0;
++	bool queued_retry = false;
  	struct vmap_area *va, *n_va;
  	LIST_HEAD(local_list);
-+	LIST_HEAD(local_failed);
- 
- 	if (IS_ENABLED(CONFIG_KASAN_VMALLOC))
- 		kasan_release_vmalloc_node(vn);
-@@ -2691,7 +2358,23 @@ static void purge_vmap_node(struct work_struct *work)
+ 	LIST_HEAD(local_failed);
+@@ -2358,7 +2640,7 @@ static void purge_vmap_node(struct work_struct *work)
  
  	atomic_long_sub(nr_purged_pages, &vmap_lazy_nr);
  
--	reclaim_list_global(&local_list);
-+	WARN_ON_ONCE(!reclaim_list_global(&local_list, false, &local_failed));
-+	list_for_each_entry_safe(va, n_va, &local_failed, list) {
-+		unsigned int vn_id = decode_vn_id(va->flags);
-+		struct vmap_node *dst;
+-	WARN_ON_ONCE(!reclaim_list_global(&local_list, false, &local_failed));
++	WARN_ON_ONCE(!reclaim_list_global(&local_list, true, &local_failed));
+ 	list_for_each_entry_safe(va, n_va, &local_failed, list) {
+ 		unsigned int vn_id = decode_vn_id(va->flags);
+ 		struct vmap_node *dst;
+@@ -2367,14 +2649,60 @@ static void purge_vmap_node(struct work_struct *work)
+ 		dst = is_vn_id_valid(vn_id) ?
+ 			id_to_node(vn_id) : addr_to_node(va->va_start);
+ 
+-		spin_lock(&dst->lazy.lock);
+-		insert_vmap_area_lazy_locked(va, dst);
+-		spin_unlock(&dst->lazy.lock);
+-		nr_failed_pages += va_size(va) >> PAGE_SHIFT;
++		if (publish_vmap_area_lazy(va, dst)) {
++			nr_failed_pages += va_size(va) >> PAGE_SHIFT;
++			continue;
++		}
 +
-+		list_del_init(&va->list);
-+		dst = is_vn_id_valid(vn_id) ?
-+			id_to_node(vn_id) : addr_to_node(va->va_start);
++		spin_lock(&free_vmap_area_lock);
++		retry_queue_add_va_locked(va);
++		spin_unlock(&free_vmap_area_lock);
++		queued_retry = true;
+ 	}
+ 
+ 	if (nr_failed_pages)
+ 		atomic_long_add(nr_failed_pages, &vmap_lazy_nr);
 +
-+		spin_lock(&dst->lazy.lock);
-+		insert_vmap_area_lazy_locked(va, dst);
-+		spin_unlock(&dst->lazy.lock);
-+		nr_failed_pages += va_size(va) >> PAGE_SHIFT;
++	if (queued_retry)
++		schedule_work(&drain_vmap_work);
++}
++
++static void drain_vmap_retry_queue(void)
++{
++	struct vmap_area *va, *n_va;
++	bool queued_retry = false;
++	LIST_HEAD(local_retry);
++
++	spin_lock(&free_vmap_area_lock);
++	if (list_empty(&vmap_retry_list)) {
++		spin_unlock(&free_vmap_area_lock);
++		return;
 +	}
 +
-+	if (nr_failed_pages)
-+		atomic_long_add(nr_failed_pages, &vmap_lazy_nr);
++	list_splice_init(&vmap_retry_list, &local_retry);
++	spin_unlock(&free_vmap_area_lock);
++
++	list_for_each_entry_safe(va, n_va, &local_retry, list) {
++		struct vmap_node *vn = addr_to_node(va->va_start);
++
++		list_del_init(&va->list);
++		if (publish_vmap_area_lazy(va, vn)) {
++			atomic_long_add(va_size(va) >> PAGE_SHIFT, &vmap_lazy_nr);
++			continue;
++		}
++
++		spin_lock(&free_vmap_area_lock);
++		retry_queue_add_va_locked(va);
++		spin_unlock(&free_vmap_area_lock);
++		queued_retry = true;
++	}
++
++	/*
++	 * Ensure retry-only backlog keeps making progress even if no new free
++	 * events arrive to trigger another purge pass.
++	 */
++	if (queued_retry)
++		schedule_work(&drain_vmap_work);
  }
  
  /*
-@@ -2823,6 +2506,15 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+@@ -2392,6 +2720,9 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end,
+ 
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
++	/* Retry queued transitions first, so they can join this purge cycle. */
++	drain_vmap_retry_queue();
++
+ 	/*
+ 	 * Use cpumask to mark which node has to be processed.
+ 	 */
+@@ -2489,6 +2820,7 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ {
+ 	unsigned long nr_lazy_max = lazy_max_pages();
+ 	unsigned long va_start = va->va_start;
++	unsigned long nr_pages = va_size(va) >> PAGE_SHIFT;
+ 	unsigned int vn_id = decode_vn_id(va->flags);
+ 	struct vmap_node *vn;
+ 	unsigned long nr_lazy;
+@@ -2496,9 +2828,6 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 	if (WARN_ON_ONCE(!list_empty(&va->list)))
+ 		return;
+ 
+-	nr_lazy = atomic_long_add_return_relaxed(va_size(va) >> PAGE_SHIFT,
+-					 &vmap_lazy_nr);
+-
+ 	/*
+ 	 * If it was request by a certain node we would like to
+ 	 * return it to that node, i.e. its pool for later reuse.
+@@ -2506,18 +2835,20 @@ static void free_vmap_area_noflush(struct vmap_area *va)
  	vn = is_vn_id_valid(vn_id) ?
  		id_to_node(vn_id):addr_to_node(va->va_start);
  
-+	/*
-+	 * Drop occupied-range visibility as soon as the area is freed, even
-+	 * though coalescing/reinsertion into the free index remains deferred.
-+	 */
-+	spin_lock(&free_vmap_area_lock);
-+	try_init_occupied_mt_locked();
-+	WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
-+	spin_unlock(&free_vmap_area_lock);
-+
- 	spin_lock(&vn->lazy.lock);
- 	insert_vmap_area_lazy_locked(va, vn);
- 	spin_unlock(&vn->lazy.lock);
-@@ -5240,14 +4932,11 @@ EXPORT_SYMBOL_GPL(free_vm_area);
+-	/*
+-	 * Drop occupied-range visibility as soon as the area is freed, even
+-	 * though coalescing/reinsertion into the free index remains deferred.
+-	 */
+-	spin_lock(&free_vmap_area_lock);
+-	try_init_occupied_mt_locked();
+-	WARN_ON_ONCE(!occupied_mt_erase_va_locked(va));
+-	spin_unlock(&free_vmap_area_lock);
++	if (publish_vmap_area_lazy(va, vn)) {
++		nr_lazy = atomic_long_add_return_relaxed(nr_pages, &vmap_lazy_nr);
++	} else {
++		spin_lock(&free_vmap_area_lock);
++		retry_queue_add_va_locked(va);
++		nr_lazy = atomic_long_read(&vmap_lazy_nr);
++		spin_unlock(&free_vmap_area_lock);
  
- #ifdef CONFIG_SMP
- static __always_inline struct vmap_area *
--free_vmap_area_prev(struct vmap_area *va)
-+free_vmap_area_prev_by_addr(unsigned long addr)
- {
- 	lockdep_assert_held(&free_vmap_area_lock);
+-	spin_lock(&vn->lazy.lock);
+-	insert_vmap_area_lazy_locked(va, vn);
+-	spin_unlock(&vn->lazy.lock);
++		/*
++		 * Retry transitions are drained from purge context; poke it
++		 * immediately so transient pressure does not prolong retention.
++		 */
++		schedule_work(&drain_vmap_work);
++	}
  
--	if (va->list.prev == &free_vmap_area_list)
--		return NULL;
--
--	return list_entry(va->list.prev, struct vmap_area, list);
-+	return __find_vmap_area_enclose_addr_mt(addr, &free_vmap_area_mt);
- }
+ 	trace_free_vmap_area_noflush(va_start, nr_lazy, nr_lazy_max);
  
- /**
-@@ -5262,19 +4951,9 @@ free_vmap_area_prev(struct vmap_area *va)
- static struct vmap_area *
- pvm_find_va_enclose_addr(unsigned long addr)
- {
--	struct vmap_area *va;
--
- 	lockdep_assert_held(&free_vmap_area_lock);
+@@ -5023,6 +5354,8 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 	struct vmap_area **vas, *va;
+ 	struct vm_struct **vms;
+ 	int area, area2, last_area, term_area;
++	int inserted_busy = 0;
++	bool queued_retry = false;
+ 	unsigned long base, start, size, end, last_end, orig_start, orig_end;
+ 	bool purged = false;
  
--	if (free_mt_supported())
--		return __find_vmap_area_enclose_addr_mt(addr, &free_vmap_area_mt);
--
--	list_for_each_entry_reverse(va, &free_vmap_area_list, list) {
--		if (va->va_start <= addr)
--			return va;
--	}
--
--	return NULL;
-+	return __find_vmap_area_enclose_addr_mt(addr, &free_vmap_area_mt);
- }
+@@ -5061,6 +5394,8 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
  
- /**
-@@ -5293,13 +4972,19 @@ pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
- 	unsigned long vmalloc_end = VMALLOC_END & ~(align - 1);
- 	unsigned long addr;
+ 	for (area = 0; area < nr_vms; area++) {
+ 		vas[area] = kmem_cache_zalloc(vmap_area_cachep, GFP_KERNEL);
++		if (vas[area])
++			INIT_LIST_HEAD(&vas[area]->list);
+ 		vms[area] = kzalloc_obj(struct vm_struct);
+ 		if (!vas[area] || !vms[area])
+ 			goto err_free;
+@@ -5170,10 +5505,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 		struct vmap_node *vn = addr_to_node(vas[area]->va_start);
  
-+	lockdep_assert_held(&free_vmap_area_lock);
-+
- 	if (likely(*va)) {
--		list_for_each_entry_from_reverse((*va),
--				&free_vmap_area_list, list) {
-+		do {
- 			addr = min((*va)->va_end & ~(align - 1), vmalloc_end);
- 			if ((*va)->va_start < addr)
- 				return addr;
--		}
-+
-+			if ((*va)->va_start == 0)
-+				break;
-+
-+			*va = free_vmap_area_prev_by_addr((*va)->va_start - 1);
-+		} while (*va);
- 	}
- 
- 	return 0;
-@@ -5382,6 +5067,8 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 	}
- retry:
- 	spin_lock(&free_vmap_area_lock);
-+	try_init_free_mt_locked();
-+	try_init_occupied_mt_locked();
- 
- 	/* start scanning - we scan from the top, begin with the last area */
- 	area = term_area = last_area;
-@@ -5419,7 +5106,10 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 		 * If this VA does not fit, move base downwards and recheck.
- 		 */
- 		if (base + start < va->va_start) {
--			va = free_vmap_area_prev(va);
-+			if (va->va_start == 0)
-+				va = NULL;
-+			else
-+				va = free_vmap_area_prev_by_addr(va->va_start - 1);
- 			base = pvm_determine_end_from_reverse(&va, align) - end;
- 			term_area = area;
- 			continue;
-@@ -5459,6 +5149,12 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 		va = vas[area];
- 		va->va_start = start;
- 		va->va_end = start + size;
-+
-+		if (occupied_mt_supported() &&
-+		    !occupied_mt_store_range_locked(va->va_start, va->va_end)) {
-+			area++;
-+			goto recovery;
+ 		spin_lock(&vn->busy.lock);
+-		insert_vmap_area_busy_locked(vas[area], vn);
++		if (unlikely(!insert_vmap_area_busy_locked(vas[area], vn))) {
++			spin_unlock(&vn->busy.lock);
++			goto err_unwind_busy;
 +		}
+ 		setup_vmalloc_vm(vms[area], vas[area], VM_ALLOC,
+ 				 pcpu_get_vm_areas);
+ 		spin_unlock(&vn->busy.lock);
++		inserted_busy++;
  	}
  
- 	spin_unlock(&free_vmap_area_lock);
-@@ -5501,11 +5197,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 	/*
+@@ -5197,33 +5536,43 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
  	while (area--) {
  		orig_start = vas[area]->va_start;
  		orig_end = vas[area]->va_end;
-+		WARN_ON_ONCE(!occupied_mt_erase_va_locked(vas[area]));
- 		va = merge_or_add_vmap_area_free_locked(vas[area]);
-+		WARN_ON_ONCE(!va);
- 		if (va)
- 			kasan_release_vmalloc(orig_start, orig_end,
--				va->va_start, va->va_end,
--				KASAN_VMALLOC_PAGE_RANGE | KASAN_VMALLOC_TLB_FLUSH);
-+					      va->va_start, va->va_end,
-+					      KASAN_VMALLOC_PAGE_RANGE |
-+					      KASAN_VMALLOC_TLB_FLUSH);
+-		WARN_ON_ONCE(!occupied_mt_erase_va_locked(vas[area]));
+-		va = merge_or_add_vmap_area_free_locked(vas[area]);
+-		WARN_ON_ONCE(!va);
+-		if (va)
+-			kasan_release_vmalloc(orig_start, orig_end,
+-					      va->va_start, va->va_end,
+-					      KASAN_VMALLOC_PAGE_RANGE |
+-					      KASAN_VMALLOC_TLB_FLUSH);
++		if (occupied_mt_erase_va_locked(vas[area])) {
++			va = reinsert_or_queue_vmap_area_locked(vas[area]);
++			if (va)
++				kasan_release_vmalloc(orig_start, orig_end,
++						      va->va_start, va->va_end,
++						      KASAN_VMALLOC_PAGE_RANGE |
++						      KASAN_VMALLOC_TLB_FLUSH);
++			else
++				queued_retry = true;
++		} else {
++			retry_queue_add_va_locked(vas[area]);
++			queued_retry = true;
++		}
  		vas[area] = NULL;
  	}
  
-@@ -5551,7 +5250,9 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ overflow:
+ 	spin_unlock(&free_vmap_area_lock);
++	if (queued_retry)
++		schedule_work(&drain_vmap_work);
++
+ 	if (!purged) {
+ 		reclaim_and_purge_vmap_areas();
+ 		purged = true;
+ 
+-		/* Before "retry", check if we recover. */
+-		for (area = 0; area < nr_vms; area++) {
+-			if (vas[area])
+-				continue;
+-
+-			vas[area] = kmem_cache_zalloc(
+-				vmap_area_cachep, GFP_KERNEL);
+-			if (!vas[area])
+-				goto err_free;
+-		}
++			/* Before "retry", check if we recover. */
++			for (area = 0; area < nr_vms; area++) {
++				if (vas[area])
++					continue;
++
++				vas[area] = kmem_cache_zalloc(vmap_area_cachep,
++							      GFP_KERNEL);
++				if (vas[area])
++					INIT_LIST_HEAD(&vas[area]->list);
++				if (!vas[area])
++					goto err_free;
++			}
+ 
+ 		goto retry;
+ 	}
+@@ -5240,6 +5589,16 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 	kfree(vms);
+ 	return NULL;
+ 
++err_unwind_busy:
++	while (inserted_busy--) {
++		struct vmap_node *vn = addr_to_node(vas[inserted_busy]->va_start);
++
++		spin_lock(&vn->busy.lock);
++		unlink_vmap_area_busy_locked(vas[inserted_busy], vn);
++		spin_unlock(&vn->busy.lock);
++	}
++	goto err_free_shadow;
++
+ err_free_shadow:
+ 	spin_lock(&free_vmap_area_lock);
+ 	/*
+@@ -5250,17 +5609,25 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
  	for (area = 0; area < nr_vms; area++) {
  		orig_start = vas[area]->va_start;
  		orig_end = vas[area]->va_end;
-+		WARN_ON_ONCE(!occupied_mt_erase_va_locked(vas[area]));
- 		va = merge_or_add_vmap_area_free_locked(vas[area]);
-+		WARN_ON_ONCE(!va);
- 		if (va)
- 			kasan_release_vmalloc(orig_start, orig_end,
- 				va->va_start, va->va_end,
-@@ -5598,7 +5299,7 @@ bool vmalloc_dump_obj(void *object)
- 	if (!spin_trylock(&vn->busy.lock))
- 		return false;
- 
--	va = __find_vmap_area(addr, &vn->busy.root);
-+	va = find_vmap_area_busy_locked(addr, vn);
- 	if (!va || !va->vm) {
- 		spin_unlock(&vn->busy.lock);
- 		return false;
-@@ -5650,11 +5351,17 @@ static void show_purge_info(struct seq_file *m)
- 
- 	for_each_vmap_node(vn) {
- 		spin_lock(&vn->lazy.lock);
--		list_for_each_entry(va, &vn->lazy.head, list) {
--			seq_printf(m, "0x%pK-0x%pK %7ld unpurged vm_area\n",
--				(void *)va->va_start, (void *)va->va_end,
--				va_size(va));
-+		try_init_lazy_mt_locked(vn);
-+		if (WARN_ON_ONCE(!vn->lazy.mt_enabled)) {
-+			spin_unlock(&vn->lazy.lock);
-+			continue;
- 		}
-+		MA_STATE(mas, &vn->lazy.mt, 0, 0);
-+
-+		mas_for_each(&mas, va, ULONG_MAX)
-+			seq_printf(m, "0x%pK-0x%pK %7ld unpurged vm_area\n",
-+				   (void *)va->va_start, (void *)va->va_end,
-+				   va_size(va));
+-		WARN_ON_ONCE(!occupied_mt_erase_va_locked(vas[area]));
+-		va = merge_or_add_vmap_area_free_locked(vas[area]);
+-		WARN_ON_ONCE(!va);
+-		if (va)
+-			kasan_release_vmalloc(orig_start, orig_end,
+-				va->va_start, va->va_end,
+-				KASAN_VMALLOC_PAGE_RANGE | KASAN_VMALLOC_TLB_FLUSH);
++		if (occupied_mt_erase_va_locked(vas[area])) {
++			va = reinsert_or_queue_vmap_area_locked(vas[area]);
++			if (va)
++				kasan_release_vmalloc(orig_start, orig_end,
++						      va->va_start, va->va_end,
++						      KASAN_VMALLOC_PAGE_RANGE |
++						      KASAN_VMALLOC_TLB_FLUSH);
++			else
++				queued_retry = true;
++		} else {
++			retry_queue_add_va_locked(vas[area]);
++			queued_retry = true;
++		}
+ 		vas[area] = NULL;
+ 		kfree(vms[area]);
+ 	}
+ 	spin_unlock(&free_vmap_area_lock);
++	if (queued_retry)
++		schedule_work(&drain_vmap_work);
+ 	kfree(vas);
+ 	kfree(vms);
+ 	return NULL;
+@@ -5364,6 +5731,13 @@ static void show_purge_info(struct seq_file *m)
+ 				   va_size(va));
  		spin_unlock(&vn->lazy.lock);
  	}
- }
-@@ -5671,12 +5378,19 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
- 
- 	for_each_vmap_node(vn) {
- 		spin_lock(&vn->busy.lock);
--		list_for_each_entry(va, &vn->busy.head, list) {
-+		try_init_busy_mt_locked(vn);
-+		if (WARN_ON_ONCE(!vn->busy.mt_enabled)) {
-+			spin_unlock(&vn->busy.lock);
-+			continue;
-+		}
-+		MA_STATE(mas, &vn->busy.mt, 0, 0);
 +
-+		mas_for_each(&mas, va, ULONG_MAX) {
- 			if (!va->vm) {
- 				if (va->flags & VMAP_RAM)
- 					seq_printf(m, "0x%pK-0x%pK %7ld vm_map_ram\n",
--						(void *)va->va_start, (void *)va->va_end,
--						va_size(va));
-+						   (void *)va->va_start, (void *)va->va_end,
-+						   va_size(va));
- 
- 				continue;
- 			}
-@@ -5689,7 +5403,7 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
- 			smp_rmb();
- 
- 			seq_printf(m, "0x%pK-0x%pK %7ld",
--				v->addr, v->addr + v->size, v->size);
-+				   v->addr, v->addr + v->size, v->size);
- 
- 			if (v->caller)
- 				seq_printf(m, " %pS", v->caller);
-@@ -5754,6 +5468,8 @@ static void __init vmap_init_free_space(void)
- 	struct vmap_area *free;
- 	struct vm_struct *busy;
- 
 +	spin_lock(&free_vmap_area_lock);
-+
- 	/*
- 	 *     B     F     B     B     B     F
- 	 * -|-----|.....|-----|-----|-----|.....|-
-@@ -5761,19 +5477,18 @@ static void __init vmap_init_free_space(void)
- 	 *  |<--------------------------------->|
- 	 */
- 	for (busy = vmlist; busy; busy = busy->next) {
--		if ((unsigned long) busy->addr - vmap_start > 0) {
-+		if ((unsigned long)busy->addr - vmap_start > 0) {
- 			free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
- 			if (!WARN_ON_ONCE(!free)) {
- 				free->va_start = vmap_start;
--				free->va_end = (unsigned long) busy->addr;
-+				free->va_end = (unsigned long)busy->addr;
- 
--				insert_vmap_area_augment(free, NULL,
--					&free_vmap_area_root,
--						&free_vmap_area_list);
-+				if (WARN_ON_ONCE(!insert_vmap_area_free_locked(free)))
-+					kmem_cache_free(vmap_area_cachep, free);
- 			}
- 		}
- 
--		vmap_start = (unsigned long) busy->addr + busy->size;
-+		vmap_start = (unsigned long)busy->addr + busy->size;
- 	}
- 
- 	if (vmap_end - vmap_start > 0) {
-@@ -5782,11 +5497,12 @@ static void __init vmap_init_free_space(void)
- 			free->va_start = vmap_start;
- 			free->va_end = vmap_end;
- 
--			insert_vmap_area_augment(free, NULL,
--				&free_vmap_area_root,
--					&free_vmap_area_list);
-+			if (WARN_ON_ONCE(!insert_vmap_area_free_locked(free)))
-+				kmem_cache_free(vmap_area_cachep, free);
- 		}
- 	}
-+
++	list_for_each_entry(va, &vmap_retry_list, list)
++		seq_printf(m, "0x%pK-0x%pK %7ld retry vm_area\n",
++			   (void *)va->va_start, (void *)va->va_end,
++			   va_size(va));
 +	spin_unlock(&free_vmap_area_lock);
  }
  
- static void vmap_init_nodes(void)
-@@ -5825,13 +5541,15 @@ static void vmap_init_nodes(void)
- #endif
- 
- 	for_each_vmap_node(vn) {
--		vn->busy.root = RB_ROOT;
--		INIT_LIST_HEAD(&vn->busy.head);
- 		spin_lock_init(&vn->busy.lock);
-+		mt_init_flags(&vn->busy.mt, MT_FLAGS_LOCK_EXTERN);
-+		mt_set_external_lock(&vn->busy.mt, &vn->busy.lock);
-+		vn->busy.mt_enabled = true;
- 
--		vn->lazy.root = RB_ROOT;
--		INIT_LIST_HEAD(&vn->lazy.head);
- 		spin_lock_init(&vn->lazy.lock);
-+		mt_init_flags(&vn->lazy.mt, MT_FLAGS_LOCK_EXTERN);
-+		mt_set_external_lock(&vn->lazy.mt, &vn->lazy.lock);
-+		vn->lazy.mt_enabled = true;
- 
- 		for (i = 0; i < MAX_VA_SIZE_PAGES; i++) {
- 			INIT_LIST_HEAD(&vn->pool[i].head);
-@@ -5881,6 +5599,11 @@ void __init vmalloc_init(void)
- 	 * Create the cache for vmap_area objects.
- 	 */
- 	vmap_area_cachep = KMEM_CACHE(vmap_area, SLAB_PANIC);
-+	/*
-+	 * vmalloc_init() performs Maple stores/preallocation while importing
-+	 * early ranges. Ensure Maple node cache is available at this stage.
-+	 */
-+	maple_tree_init();
- 
- 	for_each_possible_cpu(i) {
- 		struct vmap_block_queue *vbq;
-@@ -5911,7 +5634,15 @@ void __init vmalloc_init(void)
- 		va->vm = tmp;
+ static int vmalloc_info_show(struct seq_file *m, void *p)
+@@ -5635,13 +6009,21 @@ void __init vmalloc_init(void)
  
  		vn = addr_to_node(va->va_start);
--		insert_vmap_area(va, &vn->busy.root, &vn->busy.head);
-+		spin_lock(&vn->busy.lock);
-+		insert_vmap_area_busy_locked(va, vn);
-+		spin_unlock(&vn->busy.lock);
-+
-+		spin_lock(&free_vmap_area_lock);
-+		try_init_occupied_mt_locked();
-+		WARN_ON_ONCE(!occupied_mt_store_range_locked(va->va_start,
-+							     va->va_end));
-+		spin_unlock(&free_vmap_area_lock);
+ 		spin_lock(&vn->busy.lock);
+-		insert_vmap_area_busy_locked(va, vn);
++		if (unlikely(!insert_vmap_area_busy_locked(va, vn))) {
++			spin_unlock(&vn->busy.lock);
++			panic("%s: failed to import busy range %#lx-%#lx\n",
++			      __func__, va->va_start, va->va_end);
++		}
+ 		spin_unlock(&vn->busy.lock);
+ 
+ 		spin_lock(&free_vmap_area_lock);
+ 		try_init_occupied_mt_locked();
+-		WARN_ON_ONCE(!occupied_mt_store_range_locked(va->va_start,
+-							     va->va_end));
++		if (WARN_ON_ONCE(!occupied_mt_store_range_locked(va->va_start,
++								 va->va_end))) {
++			spin_unlock(&free_vmap_area_lock);
++			panic("%s: failed to import occupied range %#lx-%#lx\n",
++			      __func__, va->va_start, va->va_end);
++		}
+ 		spin_unlock(&free_vmap_area_lock);
  	}
  
- 	/*
 
 -- 
 2.34.1
