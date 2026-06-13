@@ -4,89 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D6E1CD98C5
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 04:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FFFCD98CF
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 04:23:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550CE6B0005; Sat, 13 Jun 2026 00:17:51 -0400 (EDT)
+	id A3A606B008A; Sat, 13 Jun 2026 00:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5016F6B008A; Sat, 13 Jun 2026 00:17:51 -0400 (EDT)
+	id 9C4596B008C; Sat, 13 Jun 2026 00:23:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418286B008C; Sat, 13 Jun 2026 00:17:51 -0400 (EDT)
+	id 88C396B0092; Sat, 13 Jun 2026 00:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 337F46B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:17:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D2ABA02C1
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:17:50 +0000 (UTC)
-X-FDA: 84873581100.02.E4E15F3
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 30B5340009
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:17:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xJza6x1T;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781324268;
-	b=GdMWz/F3k87cX8UNOnymDOuQPDXCo8tzxKjQHuLbrqpaV2qI9Wb/VY0XiPyq2azf5J8/9V
-	uejXZS6282P/g4BI3wnKakQnRLLFIT9zkTfi8HkzFEhchnT6xltTFeiKU7RgFsE44phPsU
-	a0HN/jd+Af5jL7WPYP+Xiooz3wzlvlM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xJza6x1T;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 753626B008A
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 00:23:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E6F2402EB
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:23:01 +0000 (UTC)
+X-FDA: 84873594162.29.68E4B4E
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2987520004
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 04:22:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tPb/kuJv";
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781324268;
+	s=arc-20220608; t=1781324578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcQKZ3Zx433YnbmCCBs9ea4yshxodmQHfHdKd6s7mwY=;
-	b=u+yl/CCKPhCHF+N2/ae4BLK25u6LzpaN7p4pNgyW/bqMsul/4V0viyYWF8tt4D+CiRva/V
-	hvMTlfYXt/X2AY8zdKuFgyqPxL3sfdnNXYZ4fLQZlf/83V3HFlpz2JjEsYly12PJnfK0PZ
-	YmTcJOSSRKy6Vo6PMEZsnT7P3z8ReKg=
-Message-ID: <661b47de-af1a-488f-a691-82df7add1f49@linux.dev>
+	bh=DEMwa4f1MFnoeLMMYpMgo/qvtlYKFkI0l0gCAFNfcMQ=;
+	b=MWdnKfNEBYcAn9ZrnrBO54JpGz2HsJSSpvbs7puafx0F1Jg7NQ9zHpRFvCVv3ABFsmxNMS
+	0q0ZWgVRVqvh7nxJq1Fo7A5besOxz/ldN2nbuyQscYEXdDZZCs178lXd9OPcKKJxltzXaR
+	uUNRNj9Pn31d7se1P9GEfRKTDWuQhvY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781324578;
+	b=tWgd7o/m2OvtGUf7fsoqYM/APgvGa6AJRfC8exwe1FygAKE2Fkhao8ngc+hPHS8q6hEpfk
+	X90jRmYERgQIuO/7Cdc94s1w4528KQWa0o8WGDwEes/Z1GGlf94kgO7M4ZMQv0LhrhbDo7
+	YxH0Y8x/2Dk3vp2bo1OtWzV6/gMDSUM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="tPb/kuJv";
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781324266;
+	t=1781324576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lcQKZ3Zx433YnbmCCBs9ea4yshxodmQHfHdKd6s7mwY=;
-	b=xJza6x1T5OLJx+L4ldxhJ8F/UUA3Cmze9+E8XxRLhbAltPSM7Lg3gqn1gccCAvQ0KTXj6v
-	eTvbvyWlk7mXNOH1AA1jhha5L7nIh2ELAYX8PUJ31Nbzume6UXYMTxplNl/YyYkx2htjZD
-	rdqoS/ucZjITP2QQHjZvtoZockmzkZM=
-Date: Sat, 13 Jun 2026 12:16:38 +0800
+	bh=DEMwa4f1MFnoeLMMYpMgo/qvtlYKFkI0l0gCAFNfcMQ=;
+	b=tPb/kuJvWgaPzvQpy+4bzGMmKA8DJRnuluujcznryfkSdJX4r649PfcIlHlywiFQYv2cBu
+	fmtO8tEOi8UZ3flArfYAvge816lR4fX9d07VP4xxMsfg0sHnRtmOggt8xINgnWQbWc0RdR
+	AVru2TvWh3ebEYv2mgiG7T8fnKxfOaQ=
+From: Lance Yang <lance.yang@linux.dev>
+To: usama.arif@linux.dev
+Cc: david@kernel.org,
+	lance.yang@linux.dev,
+	ying.huang@linux.alibaba.com,
+	baoquan.he@linux.dev,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	ljs@kernel.org,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	ryan.roberts@arm.com,
+	chrisl@kernel.org,
+	vbabka@kernel.org,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	kernel-team@meta.com,
+	kasong@tencent.com,
+	ziy@nvidia.com
+Subject: Re: [v2 00/16] mm: PMD-level swap entries for anonymous THPs
+Date: Sat, 13 Jun 2026 12:22:32 +0800
+Message-Id: <20260613042232.93691-1-lance.yang@linux.dev>
+In-Reply-To: <680441bf-c878-4a00-8787-63ad8b201bc9@linux.dev>
+References: <680441bf-c878-4a00-8787-63ad8b201bc9@linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 5/6] show_page_info: Remove printing of page index
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260608210618.3437216-1-willy@infradead.org>
- <20260608210618.3437216-6-willy@infradead.org>
- <20a5a752-3ed6-4fde-96c9-e8369b15524c@linux.dev>
- <ainCu2HZTTdP4skd@casper.infradead.org>
- <11cc4dca-7841-4897-8665-e27d7555f246@linux.dev>
- <aizL_QrL4dNWMJ8Y@casper.infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <aizL_QrL4dNWMJ8Y@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 30B5340009
-X-Stat-Signature: gqtcmo8xppgg18zyiu7qxepx9rtmrg1i
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2987520004
 X-Rspam-User: 
-X-HE-Tag: 1781324268-502493
-X-HE-Meta: U2FsdGVkX1/Y5lEqZUR6dQvnPVAmn3QLlWh1Mrf4iuU+z/HoKDWtEUn+ukuw4Qs3TDFetbFwyR4vfgLAzqsRNRqtFFGaMaaJPpGYDI6rKm4IfRKJxRL2UlE1lv6jHZX/OPSx4zNXxdHdLvwuWk7UFNzjEWBtEVlkGLbwc6yCoOcZCeHFO1skHACZyMfdLLDCNmGpYnuv0AGXFG58XJt2Uq2Z4rnpmvIHrgjPeSXukrjL0wqRFHWtrQH87TX2q9ZPD+3lqsMMqOunPO8JX8gX0dvIUuLT6ZNdof6/5BYiGNbJZ1OaHla3p0pjgPf0pixkC6tUlM1LGJSrsqm/utyail6BxxgFZ0yNm/dYbh4bb+rx1Kb49TCm1jqEqG2NsXZXwfODUbbeK3YZGvx+oDnw4lDVTb69c9qaEDKdVwBg9FtgyKpYTEXy44WcGAcdeZ0g+K1gTzwoG9Rcig1ckpCFPQnfZXVarKJIvnPPgeDXA+uB1/Si7Uegqej+wGzb6iV9AasWomZ5UWMt1SzdC29zBA71DN06K6JkvyZ6atAhpj5GPDgYObPTFqgJbuSEWU+GU3oy78duuZgGflruT4CyE+K9s9tqxgztdcwsa6dAeDPiUSGeRInVSZieYTEhWOrKx/dLZjhBBy283A/FX56AjGyq3zMP9We6LLxQta0qhIJmFGVJ57Z8S/GqVQNMxRq+rj/eETE0nGORC0i3GxR5gR6hOFEvsaUxH3pJFFhkVt8gTZrPMSWZj5SLQm8sQ5k/5on7JpcnVU+0acBgjbfQSplHnyU5EdtX6cgg7urIeVT0ktddXcJKY2Ub839BzVCCJ3ec9hAzlX/7U59UvFacf/mKSpDd96EIvSZoE+y+t1GrO5QxtwFOxfYdaQbmzFhztFGAiKr6/b3f9FialItA5ZhGzt/nkd+hAz7fpLcaGnh2+pSReCoCEjTcNGhT/PtrrlxRqYlCFsYMIoR++uu
- KcpLCd+2
- GdFYPWtibt3/fNXK7gZgJ9Ctrx8bUreRijDiC4MWgZUG/CM8a6B0bJFHSATkGF7FgOrha1aq7+X/SLpIuhzYTkOHudJPkeeIcXvQS5jTrdVC+lys13zTk1r7CgDXfU1cy6yqpwRHqr/wQjuMjEfraeiir7GWLUrrwIbXi4iYoA0kdRXJvzOHn59G1oQwp/HJUDrEpY//ncteMWB6FP7Q+FFNujuWb7BM+bsXNOBXCA/S3dv/FcrNwY05px9UMIq1WH3DspVE6sST9lYyI2ErTtNIVPA==
+X-Stat-Signature: x3ekt89189w5tq1z65tm6tsyzuema4rg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781324578-671830
+X-HE-Meta: U2FsdGVkX1+pN34qM7nXy8lGOW/yXuUeorClyt9ENSWAS/Egpdv9ARO9AxS9J9+QHn9hDniiuik2Zg19WRrl8ppeYKg6Lw84VAZ0tlea5mSdxBG1/iSl7Ph5ybNfqQfxjLtkttzfncf6mFH28W2IAPNGStwsGHl81TqPpRh8qViWvRNtWd3SkEnJjxabTmCp2meF/gIVvFCQlYcWC1+Lt1TR3hQmJe+esrxMGkb5CeGsw7+fhSCc88VfHexU6j1MrZlyDoJVqv2iwMXj4HK8t2+dzNJO6zUwF8lasit4FhjOxr7tcYMdRsBitkOjWFPOiBlxRCu6NXk/2zvx+Qz5OIamc7BOVrm/MvlyoG+fUq+Eor8wL5SqMe8cUZzA4x9VYfjnW3D0Vzjby+aVctD0ckC6eUuNXO3GFBve/75oIaVmkr/mQFzSMf7ypiGyyj6d0fobvGXATqfAiS/eaQTLJfljXI3eoMTTFNXmY0aAjTN5uhUP9Foz3tWzQYPZoHqsFkrlPiA9g3/P/g9idsZ7UVoCMBxNFCm5BrG1jjZOKmA4gisydEioAPSnEcZIDJV4whut1/8niurvOiM0WPU+dULajBlWKU7Oal2XEIKdJKxh4vPH/YbvK7thK5vML94+yMhDfz19cCpmjs9ytJFeAzmOHfs3hCUzMyVDc4f+j7ezbgBXVEWGQyGHRXP5LMwJxFn/xdEybTii5RR++uE3DWc0q7TXrKczo/pfHeYpw4dc4r1MrSSWk5OfcZN5uRT3OypjyPhelKg6BLkKBGGOcvfEHtLSgCxsXql0dv+fypn2zSyAAdr7m1Jj9vNjNVerTvxR8WyHptzK5YcvwWHh8B4/jJura0/Hw5Ry9vXperWtNQ2IaXt2L3G9EeEV1bbQ+e55NM6RsNH2LwBc26oy+7R+QTLC7GOMG6So4VsIf+wKS2LAsBxol6HLsjPPQUeckUN4aoOV8GyQ3LLMAes
+ BGMhFFAm
+ iBqvcdfIWK3KMv19rhcvnuWXTIxxpzLe6QffvVm32zom69lXshVbKEoeU0/+03HgrsJSzMFfiAWrJHRAuOAbpLd4vW+n4JNM4MjMfsuCexA8veQoo9/JXo3phxN8i4MXlzOar1O76qrwqLLryhT0bunr0JGzPPOandr67QUjo9Y0v8JI/G8dRW1uyO4bPZikzmO4eROv2ndoQCTfHdAo77LyyJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +115,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Wed, Jun 10, 2026 at 03:44:32PM +0100, Usama Arif wrote:
+>
+>
+>On 10/06/2026 14:48, David Hildenbrand (Arm) wrote:
+>> On 6/10/26 15:01, Lance Yang wrote:
+>>>
+>>>
+>>> On 2026/6/10 20:24, David Hildenbrand (Arm) wrote:
+>>>> On 6/9/26 16:29, Usama Arif wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> Hello!
+>>>>>
+>>>>> Just following up if there were any reviews/comments on this series!
+>>>>>
+>>>>> I know its a large series but was just checking if there was any
+>>>>> feedback?
+>>>>
+>>>> It shall be reviewed. We just finished the mTHP khugepaged review to get it into
+>>>> 7.2, so we've all been rather busy.
+>>>
+>>> Right, mTHP khugepaged was a rough one. Glad we got it over the line,
+>>> but yeah, there's just been a lot of THP work lately. pretty nonstop ...
+>>>
+>
+>Yeah its definitely a lot. I have set a target of leaving review comments on
+>atleast 2 patches from mm per day myself, but even that can sometimes be
+>difficult! I will try and help out more in reviews.
 
-在 2026/6/13 11:18, Matthew Wilcox 写道:
-> On Sat, Jun 13, 2026 at 11:02:06AM +0800, Ye Liu wrote:
->> 在 2026/6/11 04:02, Matthew Wilcox 写道:
->>> Thanks, but could you explain why you don't just call dump_page()?
->>> It's more comprehensive and will continue to be maintained.
->>
->> This script is based on the drgn tool, but the drgn tool does not
->> have a dump_page helper. What kind of method do you mean by      
->> directly calling it?                                             
-> 
-> void dump_page(const struct page *page, const char *reason)
-> 
-> in mm/debug.c
+Awesome!
 
-I’m aware of this kernel function, but could you please clarify
-how to call it from a user program?               
-Or how to achieve the direct call you mentioned?
+>>>> (I mean, just take a look at the THP-related flood of patches we are fighting
+>>>> with on a daily basis, it's not funny anymore)
+>>>>
+>>>> This is clearly going to be 7.3 material, so there is plenty of time given that
+>>>> the merge window is about to open soon.
+>>>
+>>> Usama, I'll try to make this one a priority too. Looks interesting :P
+>
+>Thanks Lance!
+>
+>> 
+>> I have two other bigger series to review, but I should soon get to this as well.
+>> 
+>
+>No worries at all! Thanks for the reviews! and yeah definitely 7.3.
+>
+>I will send this out again when 7.3-rc1 opens (rebased), so that the reviews wont be on
+>outdated code which could cause some confusion.
 
--- 
-Thanks,
-Ye Liu
+After skimming through the whole series, probably PMD swap entries need
+one bigger rethink ...
 
+Emm ... same tricky bit keeps showing up ...
+
+One PMD swap entry is easy to handle while the swapcache still has one
+PMD-sized folio behind it. Once taht folio got split and reclaimed, the
+512 swap slots need per-page handling :)
+
+Maybe worth first pinning down the rule here.
+
+Is a PMD swap entry supposed to mean "there is, or soon will be, one PMD-
+sized folio behnid it", or is just a compact page-table encoding for
+512 swap slot?
+
+Without that rule being very clear, every caller has to guess how much
+it can assume, and it is easy to miss one ...
+
+So I stopped staring at the details for now, because the same issue keeps
+popping up wearing a slightly different hat :)
+
+Anyway, no clever answer from me here, not a swap expect :( Just pointing
+out the pattern I keep runing into.
+
+Thanks, Lance
 
