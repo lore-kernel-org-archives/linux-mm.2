@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE3DCCD8CA8
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 07:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FFCCD8CA8
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 09:41:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1A666B0005; Sat, 13 Jun 2026 03:06:22 -0400 (EDT)
+	id 33BFC6B0005; Sat, 13 Jun 2026 05:41:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCB5A6B008A; Sat, 13 Jun 2026 03:06:22 -0400 (EDT)
+	id 2ED0C6B008A; Sat, 13 Jun 2026 05:41:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1056B008C; Sat, 13 Jun 2026 03:06:22 -0400 (EDT)
+	id 1DC446B008C; Sat, 13 Jun 2026 05:41:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99B8A6B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 03:06:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50E751C34D7
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 07:06:22 +0000 (UTC)
-X-FDA: 84874005804.07.4EC2D49
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 50FCD120003
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 07:06:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sbVKK8zI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 082A06B0005
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:41:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 904C14038E
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 09:41:17 +0000 (UTC)
+X-FDA: 84874396194.28.A65627C
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 98653C0004
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 09:41:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXkESVPd;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781343676;
+	b=2XL2ZIGJ+g/U9l2C7sobyIzaBZ9dRt+dn2YaXasB5M4vihAHC23dNtHr79k9ww5yJk/TML
+	6DHrq98T/s5gpH3qDdxnqQUGOXekw1ta2tIGyxaUD9s1z8UX4R04y2I8SG0D1Pu+ac+/Ms
+	4wQj6xhXLTcUY6JCgnWECFmcTdvpwvE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xXkESVPd;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781334380;
+	s=arc-20220608; t=1781343676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pF1QptbT4ANn9dIzeaKLaJnMG/TsByf/t+R0Qjd78m0=;
-	b=qrpC27/Uxe7HGchZHE8Hwde6ZYn8xtl8fimQ7TQnoV9YGKJIp4k2cV2juN4jlStT37FL53
-	yiSvIQLFgAvb5FOHyf0qfGI7YNyUPXNFuXOPj2at4ptBlwMDKX8WJLAYKu+WF+GaMMGkub
-	SticYgoPzsO8Ocb5xA8iEKlLzHFdyYk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sbVKK8zI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781334380;
-	b=xCoTgQSiyy61XTC60TKSrlkP45WavwrF3teJbBNjbu6wmqT6bjYO0MIlBLUYLmrdiW869+
-	537wVoSpQMRAUj1LEsbT2b022cS2MRQWVNKNp92Da8bBAh3gGyhoZ5mI+tSoZ1MkY3lI6b
-	CJsft+RYDEIrxet+w4vaiPpSerUJQNc=
+	bh=l9vhqsq5bfyaKJuEZ7vSS3uuF/Bho5vCtA+nLHPqRKk=;
+	b=w5NgFa1iKaLTkn4yvyvjRKCBBt7Ux0N9tbJ22IuSnxGgvzBtAT6xE9t+vKF+F53ZYL8PRF
+	g3EueQtJFWUemdFx5kbUjkm1k2U2WbXDFr2smCTknGloaGFJSekSUM8wJ8GBTAqhnGRJ+G
+	mB7abQ7O2U9wWH0ZRb/E7Z9/qsR45QU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781334378;
+	t=1781343672;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pF1QptbT4ANn9dIzeaKLaJnMG/TsByf/t+R0Qjd78m0=;
-	b=sbVKK8zIzOChSg5o22XKRCzvqn9ogGWt+uRgS7n7cGELmP4UVSHuxv546SKLCTu72hnLJx
-	BdFQGAUCzrbf7mCfdmcX6+EWjYoMGuI1Eu2zr20m2G8J05zf15Q/5MGvAmaU8VbEB1M8Ix
-	l4+fDxaTOXTLgZuqNSpnaKB45S7FJw8=
+	bh=l9vhqsq5bfyaKJuEZ7vSS3uuF/Bho5vCtA+nLHPqRKk=;
+	b=xXkESVPdFyKZZn6C6OJvt76RiV1y8lHsEnjZCUElMzdTuxcFSOe0ID2yshvdAt4hMuwZD/
+	OtQnP1QlUKPZCKDgiBflT8ns5FKe0FLIA3se3BymbIYVxyDXabziEg3S1PGukLAfdShziI
+	wz+HIRFPtXuGXkjpMldu70s0gWPY33Y=
 From: Lance Yang <lance.yang@linux.dev>
-To: usama.arif@linux.dev,
-	willy@infradead.org
+To: willy@infradead.org
 Cc: akpm@linux-foundation.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
+	hyc.lee@gmail.com,
+	usama.arif@linux.dev,
 	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v2 2/6] ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
-Date: Sat, 13 Jun 2026 15:06:01 +0800
-Message-Id: <20260613070601.90382-1-lance.yang@linux.dev>
-In-Reply-To: <fda62f90-2c8c-48ec-88ae-310bb5adaa37@linux.dev>
-References: <fda62f90-2c8c-48ec-88ae-310bb5adaa37@linux.dev>
+Subject: Re: [PATCH v2 3/6] ntfs: Use zero_user_segment() in handle_bounds_compressed_page()
+Date: Sat, 13 Jun 2026 17:41:03 +0800
+Message-Id: <20260613094103.14051-1-lance.yang@linux.dev>
+In-Reply-To: <20260608210618.3437216-4-willy@infradead.org>
+References: <20260608210618.3437216-4-willy@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 50FCD120003
-X-Stat-Signature: 6xk18o537hskombq8epa3u8e5ejkzfdu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 98653C0004
 X-Rspam-User: 
-X-HE-Tag: 1781334380-769027
-X-HE-Meta: U2FsdGVkX1+bV+b+XzGvRMSlUO5gJUriVzbBR3J4DdYyATdpCxw7SyBYIFPUPyIXLldc6k3Jk8ZjgIn6nKzXe+amiiNOtJUM8R7pYEdJ4GkRgvOBvgwbI++EoI3UlCdnnmfoZ7saSIVOTCaT9LSbS05JvsruydHPzzjnBo+oRSdOWUwy7+fjCAwbxSuySMIrS5iknzST5rsk9Fu8E7xfTK2oZnURlYOdI1pIIGebTHR+hRC93hMSL0GSKt9HZ2Kg79nLMjXxdlR0t5bvQ6KRAjY9GjyeRuyFRn9tgBpXm/tVUmk9T/5sti1pm5ZedGokgMSg8YvUtZWPeirMDdY5RLfuuUWd10oXXgA0FasVoLkXYB5iSmJTRJmpRFlTcuavTMIjKOSeBouOw85qe2qEsb4Nz04xDckJBdSEtRGchzCo0kLBJLPU73Yh7/ZQiY13tPW1LTYNYGbzkYFifRomsVIZ+oVjOKRl0ceSWdot1/Muh/9lgN9sfTxKy3PIv/fX5mfWSl/JXQF2FcPG+nfjuiDWnkfQPJ+wdLAi/faSk8hrd6aeWRlBAWlJWZuy+nuvHqcGcNWpfatOv3QGmpfgOR+OZivH3Y4LM4iqVy2EXDZRvXXLOMZyzEcXzqO5uI5d8PfjGCMqgXti1S0vKdm/hCKRBiJI06kIWvQEhtS79hGzKVJ2z+JSqnKQD9/DrD5XxkQDHrNt8gOBUqSKG//6ysUtUFVQImqanaORBiHVCEO78KeFx1e9gfsTszOC/M9C2yPYr7M/Dys3OBlm4v5sXOFAuPDr20YSl3jVpo+6CJTVe6PX9mC24oWsMbZmtEY0Gtnubmri61nRlW97JP9vEs7gYcPzssEuikr3XchFZOsNO33QFFdiwtDu+GigzSWn5xVj5MhY8q4QCoIQxWI34sjl10GMSwiCs9vNFcdznzXfmVoMB3Z1+ADafDMJJIo3SQ8SjNyEM8l34U1xCfq
- XvSDJKJ6
- ofGwFoGCgFS20s2ewtcDLZj0+mfkgve5HnTvksd2FAl6fTXGHHXnwzbz0Wm6W6Dq7JQ6WALpKl8W8Q1GlSO3xru2oJJO/bP5WepT2d84i6IxoeLhmIx6Ehjs3wMmUA7wOOBjgHaUyb8HeucIb4nILN0C6mB3SXLSjBGlxXUjbQqWlFg1PJ7z9aG0vrf0vQLxNgHBC0T60WS3OhHmyAN3+lGuPak2kNSQ79Q/kR9R5TzXLk4wL3TOGeDATN9orzrbaF9Mb
+X-Stat-Signature: nikzqd17jj79g9izxhxef17f1brw5k1d
+X-HE-Tag: 1781343675-353260
+X-HE-Meta: U2FsdGVkX18A4LJxFA7wjW3qLnC7AEcHArRnBHlTZ7AoEzak0vTSMTouHlAMgIG0daB9kT2xPqRfg4xpKVBEh2pby+6JDdTGgRIkD1+R+yGJpOfC5hukSzQv7A+3PrIZf3v9Zf1MvLmio6BMaj7pMutnnaMsVUZLaWYqjt4J4RwL2ANBykLW8FFpjkFqqya7opF1lecgdk0ieIGQvZQnOwua5R4z7LZN58GoDR+PRBlP6mz6AVgz8IkFEaDWX85YKLydjWTjRF355dRwa0qNXFpWLSkMU2VcBiPQHH67odPnQ01JEhtN70dSzjHyhzBe1S6hhV9sqNWqBbOMl51+oGxaIHsL0I+TM9cH+VXuFli3tyAPVl6nWY6/XNZj97+kSBl4o8dcNIo6ASIBu8CrkMJv0HxNrxCaTQEvip/BC0rYE145jpxmmNNQnkN7fpbxP/j9Zfqqte0TKCbUDF1HcT8lrZTDwCbtM9Nrn+lqhXL3GGj6ODbvyLIaLbRYWI0dlamnLfAQh3NlnWpWW2fZLzdCMshj/GTSyhqfsz/6eby+M4ODFcNDOwvCSNpkqx/Z/VN1nEnt3jBTnCGVMjx6dPA77+h0sPTrTl1f+7q5PVbvki/nK5xJOV4c9JIERHr/FGmSOethyoQ7Ozh6IhSr41tz7hoonA3Q8iCIUrHUCX7bX+0vPmtZZbGIYeUmaMYZv/SDLvte5ZitcldbS7n3iOv5qA4dTMXkcV7NntcwWfaLdMSI2C7zg8b9kDnJ5Yymtyoh+DRQdoWq5YeOARfAKAIdA9OrRAiXhqfBaltueyTaT4+iqXU7Lr8jvjE1NjDKFJE6fEYEoeH1v5QowzsiPbS0Bs9nJjs8YVT9ijo4btVuMVy7OYCgFzMQgykwQA+h1EFhbeL14PtbUXv2YXQokHSacRu08CSaNV+SMdGFIctc5pACbkGRDaPPW9p6NQptqdtRPWKA8cK+W5Rd5Ky
+ yQB8+vz5
+ ybCe1sG/Ffc+4ruSB9GS/4ro44z2OBEhue2viyKx5JkTKbomaod+lyk6iQUbbc4/FmvP9R/30rNU4jz56JKAONVP3HUyZlQCu5Bk6PI06/G97LrKdhv0V//8fVqbp+DwfxtQxwewCQGaX+3Ol5k70EFBPBX856lZv8xtgXp9yvXXL+esNQVMU74PFuaAUaEYmAg3K8mDJVHeV+eZe+vo3RLR0/Xc6yc/hp2nPpvYojjHD9y7VfJQPYqDsez88JlgzuEQCPoMj/3rpKnokubhSILuDAtuCFEQzHqRs+OX6FEVUH233qaiZQ2twToue77TOmzeN+LbSmE5kRCtMim7S3mYm8hT68OMVcn0Jp0EC+oOAtcj3KQXnagqoWe7bx6WVg6aWEUjFNwBfx8g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,77 +93,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Tue, Jun 09, 2026 at 04:55:03PM +0100, Usama Arif wrote:
-[...]
->> 
->> Are you saying my transformation is non-equivalent (and I have
->> introduced a bug), or are you noting that this is a pre-existing bug?
->> 
->> If the latter, is the error that the else branch exists, or did the
->> author intend to write a different test?
+On Mon, Jun 08, 2026 at 10:06:13PM +0100, Matthew Wilcox (Oracle) wrote:
+>This fixes handle_bounds_compressed_page() on highmem memory
+>as page_address() does not work on memory which has been kmap_local(),
+>only on kmap() memory.
 >
->The transformation is non-equivalent.
+>Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>---
+> fs/ntfs/compress.c | 18 ++++++++----------
+> 1 file changed, 8 insertions(+), 10 deletions(-)
+>
+>diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
 
-Right. Let me try to make one case easier to see.
+Just a thought.
 
-Assume:
+This file still seems to have a few more page_address() users where the
+kmap_local_page() return value is not used.
 
-  PAGE_SIZE             = 4096
-  page->__folio_index   = 2
-  pos                   = 8192
-  initialized_size      = 9000
-  i_size                = 12000
-
-Before the patch, the relevant code was:
-
-	if ((page->__folio_index >= (initialized_size >> PAGE_SHIFT)) &&
-			(initialized_size < i_size)) {
-[...]
-
-		if (((s64)page->__folio_index << PAGE_SHIFT) >= initialized_size) {
-			clear_page(kp);
-			return;
-		}
-		kp_ofs = initialized_size & ~PAGE_MASK;
-		memset(kp + kp_ofs, 0, PAGE_SIZE - kp_ofs);
-	}
-
-For this page, the outer check was true:
-
-  page->__folio_index >= (initialized_size >> PAGE_SHIFT)
-  2 >= (9000 >> 12)
-  2 >= 2
-
-and initialized_size < i_size was also true:
-
-  initialized_size < i_size
-  9000 < 12000
-
-but the inner check was false:
-
-  ((s64)page->__folio_index << PAGE_SHIFT) >= initialized_size
-  (2 << 12) >= 9000
-  8192 >= 9000
-
-So the old code reached the tail-zeroing case:
-
-  kp_ofs = 9000 & ~PAGE_MASK = 808
-
-and zeroed page offset 808..4095, i.e. file offset 9000..12287.
-
-After this patch, the outer check became:
-
-loff_t pos = page_offset(page);
-
-if ((pos >= initialized_size) && (initialized_size < i_size)) 
-
-For the same page:
-
-  pos >= initialized_size
-  8192 >= 9000
-
-so the first half of the outer check is false, and the block is skipped
-entirely.
+Should the rest of them be cleaned up in this series too?
 
 Cheers, Lance
 
