@@ -4,110 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B89CD98CF
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 05:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6C2CD98D2
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 05:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B3626B00A2; Sat, 13 Jun 2026 01:21:43 -0400 (EDT)
+	id 8403A6B008C; Sat, 13 Jun 2026 01:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38A706B00A3; Sat, 13 Jun 2026 01:21:43 -0400 (EDT)
+	id 7F1706B0092; Sat, 13 Jun 2026 01:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7AA6B00A4; Sat, 13 Jun 2026 01:21:43 -0400 (EDT)
+	id 707D86B0093; Sat, 13 Jun 2026 01:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CAD76B00A2
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 01:21:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D6BEA02F1
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:21:42 +0000 (UTC)
-X-FDA: 84873742044.01.82612F7
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3A69EC0006
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:21:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=KF9BbB51;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.92.39.34 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5314E6B008C
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 01:42:50 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5E081C1A42
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:42:49 +0000 (UTC)
+X-FDA: 84873795258.26.42E11D8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 42F08100003
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 05:42:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Deu9DwUf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781328100;
+	s=arc-20220608; t=1781329368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x4QVOxbNyVER4Y8xAB1a0ABr+3fy6sUUGD91r/VPWq8=;
-	b=z4dqLAfL0/hawB9MijqMMVY/LIEx9wyLC9epqjdiaspKZwHzAbQlMqyQuQ8HRyspMRKnls
-	BAslftbnUNcpDI2g5k7huopZkmWFnUFXd57uJ19SeABUTA8C0sfiVp6KjMLfsjLP3wy+wm
-	BYL70ijBeO+U8m3no9WDIVKXUr/FAeo=
+	bh=cQ9VuLrT9lWjXA95UmdYTFa3mfcUEGbFNAD+hFt7gJI=;
+	b=3KrEnrzE1hOPoILLPnBo5XpadxnjMWFt3bs3I+io+VU+UWRQLCnv78Aa+vxK6DEQIJoIkz
+	PIeUCYt2J93H+EJ3KRwCuHBjz8hxrwXO07YtevD0njCd0rL3FThl7T3BvEu9z3kf2mPpU4
+	c+1iFN2HOwdLttQy1P010gpX1QdMbdA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=KF9BbB51;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf28.hostedemail.com: domain of chenyichong@uniontech.com designates 54.92.39.34 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Deu9DwUf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781328100;
-	b=aM3Qbpl9Dt5p8/h49emNI+aU6iDpWgHjGJ0Rjy7YlKvmlGssgGA2mTJn4tDojVsqCm7Ok4
-	6HqMOknc8dqYnswcrrhK7huOsE0Ya3r4nzPyj1pOKi02mfwnypQs1lQ9i7MNOcXVyvcamj
-	osND8iSpbLc/jcW8JuGBrgx+uY7OAFE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781328071;
-	bh=x4QVOxbNyVER4Y8xAB1a0ABr+3fy6sUUGD91r/VPWq8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=KF9BbB51Tq44YbmH9ToBpfc+afbFs4QZWv93qyiZhcfqGAeFAUhbIwBFT5iyJeYim
-	 7zC/kriz5uWVX3jvsU4dAr/4DIKOz4kEyu6gaLW/fOWnDbS0eK+1D8rPrY1Iz/grQN
-	 zxwE7Ci8uc9kC4Ubsp8aF2kASirnlDGtqciHQ8Rw=
-X-QQ-mid: zesmtpsz2t1781328055tb504b0a1
-X-QQ-Originating-IP: lNTXQBkqkQa6mWiToZ7BbiFgO8B9cp8f1toHpQ1ngV8=
-Received: from Shurima ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 13 Jun 2026 13:20:53 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6196117950154666207
-EX-QQ-RecipientCnt: 7
-From: Yichong Chen <chenyichong@uniontech.com>
-To: sj@kernel.org
-Cc: akpm@linux-foundation.org,
-	chenyichong@uniontech.com,
-	clameter@sgi.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	penberg@cs.helsinki.fi
-Subject: Re: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
-Date: Sat, 13 Jun 2026 13:20:52 +0800
-Message-ID: <DE8C9DC863EFD0B6+20260613052052.859238-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260613002913.1509-1-sj@kernel.org>
-References: <20260613002913.1509-1-sj@kernel.org>
+	t=1781329368;
+	b=oK6/NbjfaY799XoR7b0OFeeNHzq6BAdeyzEm7se11A7YXAjcYcVSxWtmU4JL804e2Igo/W
+	+CaMQuD9H0UPCw5O4ZXDqh7ieF0v4p+XKWuoRWm/KjbvqJsTDFJ15mXL+ocCJq1ilMjafC
+	pc/HJ7i6i0JmSChbxMzoqFjVyzoXQt4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7251260018;
+	Sat, 13 Jun 2026 05:42:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A124D1F000E9;
+	Sat, 13 Jun 2026 05:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781329367;
+	bh=cQ9VuLrT9lWjXA95UmdYTFa3mfcUEGbFNAD+hFt7gJI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Deu9DwUfPvX+pf8YXRD2gCfZxGgvy5aGSubS/nTu0DBGOffo/JU1Whk7S/8xIFAeH
+	 YD/VbMOYUhz1r16cGhJ8UAdwozjbE7z8kD4y22AgfpRatKCt4cEg4gPy/Py8QvrUZw
+	 yem6a+k8nfXV5LDD0BdIyoXjbtXxVVDwlRtNwxAoNGPlpyPVtT2X0hlyiKeiUoKFBr
+	 J77x6YwhS1lt87mUu4BlRZqMDb+X025LBPSNdWT6ugI82/MNQGS4PqnaOIrPHA8n/d
+	 zOKRfr8VklRuYBFMkgo08nD0HpVYlDs80yDGxlb1pOseSwDNHOb82Bwz5vDpjsqbS6
+	 t/+dBDQ4mqq6Q==
+Message-ID: <d09bdcf2-c713-4195-a1f6-84117ac9884e@kernel.org>
+Date: Sat, 13 Jun 2026 14:42:41 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MNbA5mkmBXEJ8NP/ttQVlXK8mER20gFRRCy5TWLWxXDG4IZiV7cYsGFO
-	+1EtIsSB07rJxjHlyleHssvT+rCNKcPokWksSf/dj8d71f/G9XyAoaVBe3wksTPjk170oij
-	KKU07JCFFi4TxbRogUvde4edklAiB2uyk7eN6qZIX7QlT/wAwcF3Dk+PSEWey5AjZ2Yx2uE
-	h8/rSX2McCAvj1P9ztOvyPHcf72OOIE1Nl2n2aJG4Ji81uhDmOsnm0sKO4j09yoYv9jhSok
-	sxf4dYE/Nv4ihFovJNBUWqWcRbgn7MM8+e0svOCilio7vZM1phDZoLHqMEw7o6JVwVDdtsy
-	IEr2DAG02bemQa1URePXYYoYC+j0pYB86N81fqSmnKo+DH2xDtVw5+CiipAiEYuPxJcVna7
-	jZjxqBotWaXtGs86IXaTSaFFJtiHrq4/181ZAGplEF82rYZNhCapzO4r4AoGN8QF+o8QqvO
-	MmZcI+1mOwgJdjqYR80saJPclrquD02LQoO3CjP6AINwJNsNkIa3/hFJXMIShX6s8uFFWJq
-	M316MEX1nXHVk5YDa5BMX2Ah8Rum6cB8T1RI/XHzW8ZMEQvHj6WE7clpAQKF1YWUlR4vuTG
-	0/qrCR7UagG4w3Egnbji7jy+aXXiqDvPg1DxShQjvK2Xw1Sfj0+NCTEsU2Guy/P5kc/rOEO
-	DcSztpBraX2HAwpmZxmv6Ljh7PPJZEKL27pQg2HDYVqwJqj9poPj1OnGh5pp2LWP+OgK6ai
-	MA94wzS47a08TPIzsQUxJnwoEdY29KiVU9WhkXuwsNo5e/prvIh30ULEyrqgWi/1JXolwQf
-	SYizVl2KIfFUAI1NsivJOMRgKp+5Oa/gSeIIH+YPRT+fO+pxP/yJQlNAbeQYkj5YzOrkN3Y
-	ELTEy8MQ+r3oeXRvlXCzpBc26ZhWSKumL+AiTkhq+/9Hu3N9oxKiTC/HtmJAPQgy+VH/dBv
-	OsXcWCXqatjdj3Ao6c3DMsmTu+bo4+1pdht5cPS/CYZAyAcSyp64kytnB9aGd6mktyVD73q
-	XecGm+3Q==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Pengpeng Hou <pengpeng@iscas.ac.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+ <2b5577b0-d81a-4dee-b4e2-acadcf7f7db2@kernel.org>
+ <8c5d67d1-e4b0-4cb2-9336-875f4f2ca96b@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <8c5d67d1-e4b0-4cb2-9336-875f4f2ca96b@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------B9SkLUiW8DsmSGOmWKChDNmd"
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 3z44beokpmu5o6qi6err9betsojp6zxu
-X-Rspamd-Queue-Id: 3A69EC0006
-X-HE-Tag: 1781328097-294913
-X-HE-Meta: U2FsdGVkX1/dYru1lLZjyPlO95CRxb9VGTyd/5I/6zPVbsa0XzKLnt9/l7HnMmuguyxUie5emfTS84sDt8DfFDZ0kCxnSyplf1C8eF/6e+sAHEeJN03pqb11HV5v34r2LLe76l4nsCNdYsWug8qlFsdeV8HWqR9urGFSBlHlbebpZyL7mY0k0vI5fORiXak/1OCFfmrCzYHvSRxfcr3BRwLZmqJ8WDg6Eg/faL8/Ize7Vc+69LUTZnLBgzO1lxAFByuLACg1zhZIBbxcQu0u4xTLQDMeF/UH0sPQP3fcmPn9Uk99/NcrS7YeaWwyiJKJyN0tAXjUqHJjsBOXJDmuRIbD2ZpDn/micrIFBEHE2FgKD1J+feoilv+bqN4gfc9Dghf4UwwmbsH/urD+9bp5BbCBGSBP/3Z+qiMuoL46v899SwgRUm0BiMvg+9wPyZLBD/2XVLkztc1KRkVTQqzljKG2VJrcZ4eefWCSTlE4CcbWoZU8DZxoPWkA2aTPC6IwPlV6xA7Hbse6zu28IdymP+mGlWaBaDK1DBBz06nr513wa78+MakseY60owcpNh2jwkzEgkRPRDVCLWGHKPEnqY0LLLGldFoya/Og/xTkpNxm3YZwnebqwskNF4gzxc/MZ3gDyb6REcxjgGimJW4Y3xbF1qzWJ2uR0hGxbZO43pV+L0/k4vjLaJaPZlxjbUpHfqkhmW+d4tr9JXNHHLfpDyDb75FJo88CjF4vZB/sYGZ83fjfmgrdSKJzAhK3x4RGQkYHVdM0ME5VcgtZmsMe9s7oUTYCAlHmQmB5hCdBbCDUlfrR7l+ykdzYigg3gKzJDpjnQxWTWEP39/b000T93FNuJebJOrhZopzsuWdXCy83oXu4t4WCDKB1/Um8kZqmfNjxr0vhe/JH+MMJiZO0E38un+mWWi2oETYEfAWPXcFouCrf7Lzs69OYWd8vXueA/Koold2zYEkVIz0Gqu0
- 1g6IDnJ3
- ZhRItPutVuBwi0N8R1M0yAoj2p9ZQsHkZUabl7sNJy2bsvY7hSJ9JvckfpsD5/EgqT7AmBgV7qo87dlL/l8nowlRuv5J43xvZ7toVlzfybMltOGYNPHmA/zngT9SA8katwbBlkNm7TMl+bK2Q7r+nwLhfoUifRolde9GC+bKTBMGuljMGRT6b70cmeCtmPrtOCOLvEl7hOEYwf3vUcBEwQrX10H1ml9rrfagfrMrzkqzF4LEvGZS9BcGAX0O2hbnjAto+BIUHGAFcnXpbVlmu4tK+8SatNToHcF7OoofHoUCcnkn50ax/ruuOkg8lL9P62YY1ltB/fD4mTOD7DDpIDvPNxN1XK3d15Pe+
+X-Stat-Signature: nkf6dt9mjo5s45h1qi4t31mh6fahdcib
+X-Rspamd-Queue-Id: 42F08100003
+X-HE-Tag: 1781329368-684021
+X-HE-Meta: U2FsdGVkX1+VK8A/EiO8In1jgktffliBy+EK0VUqUwSlsmjJZR02r6MegsL2g22EAx3BVDLXdzibuicnpg+iFj6RWl3tDwAL3lr1XC1PPuGjLDRpmr/f53whzu5JI9qEUyyVEoBSRgsuyDprs1RYArcmtP6yqgoM4erzjRo+WbHAPfGU7nqPzOGTEP2jmIVAx5V+FKIlrSSkGCIISgkw+qsqZ/wr4nMluA21iQbnFc/q+7voUefNTkO2n/tu8DySGZj5b4Nhq3ojUvVPxxShMJ26t08DQjqLcnHIFlQZZrDdrL0P1TqWy9aHYFgDZBmzsqvF0xpowLg/6vozwDk1jyY55FpKDvQNepzw8BysL0bp9EuXav1AZKxoY6oR1zZ0ONGRGw/0qY3QVrATHryYz++ZnpUUbr0QJMqtcaaFhNkyfhRxGQPvFwDqATP797TxlDgtaKQtEMNU9DSXr/SrN0kjOC/N6o74Iba36V4c/ovl3L92AL+JyORBWyAdET+nuDBMqB5AwcmxLN2c35zdJ2ruzkLtpkdFHzMPiICktuH6LDfLVRRkgcaIrJ1dUfjeeGapTeEbTXgolUR66u96Kkg3WFr3cndHMc4f3yQNk7sRG0HS6Qrm1Dymze+77xsuGG//MO/x5X6EBGvWaUBo7aWEVHUytTDFyeoJ/kPFNAoozXdpio3tXAqfZvdrrGOVf0P3Vb/8G7KGNH3BgCyJbRWvvJLitpmYKaU+cyDrEiWZ7+0QpND9q+KHtJrv6qUGMA2MZL6HpGNblQqCwTJNZBpmkXqdPenK6sF5yNhZaa5kNfNtoTj7+cjE09LeFUWm85/FBsIIDH4X4sAbz5cUWqUHQvMfp+1WQUJ3niZ3RbTUSjuAsO9VsVRKn3XZhRUdfQ1VC3OMV/+KX1ZpKdY5Huc+1ZMr7zHNTS3EwwhkEXjO/cKQHcXmQO2hP3/zNJlZycSnvPYBCzMzQzuWmGL
+ XvRW/GGN
+ nKXyrQXIQQ5e+dUjK7hnuW20eYi0YbtCjkpdXe31ihYbS9yJfo8lo9nkusjUWB0paMlP9sMf5jHaOEo7O2Cr4SCwfmYNf0GbZWNtjNFrOmOt9+T8kSxMK3AXNWCUw+UxTP2XnKmoS6ZrR8FI08kBNvzINpYo6GD1SZrWrxKDnvwokzBvjhksLbryg8/aw4n9w4RFlGGNQd/5vcdrP0Kp5PCQd1d7AVBbSQVhvANcKzMc5ZdNdrVVDao2MXtU1fcQwbbisjxsW9JDZ4V70UCbkkQq2j05sSuNbK9klsrIQWJcbYbmfZLhguIQgdgx1LBnekV1cqIVW+eZsuqYuUyg/68o+iVVXiVERyLidYU5Fi8XjhG/DIYC9Uus2h16hBlmXZHPiMQgv7OB1mYnMzZYT/GKwCMVCPOhxv9HvF8dxhSuTwBzLW2dRQPzHD1E5qDq7cM+UmkZmghGOYO8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,7 +103,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yes, please add Cc: stable@vger.kernel.org.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------B9SkLUiW8DsmSGOmWKChDNmd
+Content-Type: multipart/mixed; boundary="------------TC5JMruIL0kh5xzF0eWK8sF5";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Pengpeng Hou <pengpeng@iscas.ac.cn>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ liam@infradead.org, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <d09bdcf2-c713-4195-a1f6-84117ac9884e@kernel.org>
+Subject: Re: [RFC PATCH 0/5] mm/slub: preserve previous object lifetime
+References: <20260611063926.38111-1-pengpeng@iscas.ac.cn>
+ <2b5577b0-d81a-4dee-b4e2-acadcf7f7db2@kernel.org>
+ <8c5d67d1-e4b0-4cb2-9336-875f4f2ca96b@kernel.org>
+In-Reply-To: <8c5d67d1-e4b0-4cb2-9336-875f4f2ca96b@kernel.org>
 
-Thanks for the review.
+--------------TC5JMruIL0kh5xzF0eWK8sF5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+On 6/12/26 2:13 AM, Vlastimil Babka (SUSE) wrote:
+> On 6/11/26 09:19, Harry Yoo wrote:
+>> Hi Pengpeng,
+>>
+>> On 6/11/26 3:39 PM, Pengpeng Hou wrote:
+>>> SLAB_STORE_USER currently stores one allocation track and one free tr=
+ack
+>>> for an object. This is useful, but it loses part of the previous life=
+time
+>>> when the object is reused: the new allocation overwrites the allocati=
+on
+>>> track, and a later stale free can overwrite the free track.
+>>
+>> I'm not sure what you meant by "stale free", UAF is accessing object
+>> that are freed. What makes the free "stale"?
+>=20
+> I'm guessing it means 'second/duplicated free" of the previous owner.
+
+Okay, it wasn't clear in the cover letter but now assuming the same...
+
+> Accesses (UAF) perhaps may not happen by that owner, or if they happen =
+after
+> he object is reallocated, they are not recognized as such.
+
+Right.
+
+User A				User B
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+allocates an object
+frees the object
+				allocates the object
+frees the object again
+(poison the object)
+				overwrites the object
+				(not detected until freed)
+				frees the object, UAF detected!
+
+By the time it detects a UAF, free trace is from user A (of the second
+free) (since we perform consistency checks before updating free trace),
+alloc trace is from user B.
+
+So the only thing we know about user A is the stack trace of double free
+but no original alloc/free traces of user A.
+
+>> In general, I don't think slab_debug=3DUP is the right tool to debug
+>> use-after-frees, because slab will never know _when_ the object was
+>> overwritten. It can only tell that somebody has overwritten freed
+>> objects by checking if the object content is POISON_FREE or POISON_END=
+=2E
+>=20
+> It could give more information about double frees like this, however.
+
+Right.
+
+>> KASAN is a better tool to debug use-after-frees, because it can
+>> tell you which kernel code is accessing memory it shouldn't. (It also
+>> quarantines slab objects to avoid immediately reusing the object for
+>> better coverage).
+>>
+>> So I have to ask, "Why not use KASAN instead?" before enhancing
+>> slab_debug (neither is intended for production anyway).
+>=20
+> From my distro experience, it's very useful to tell a user to just enab=
+le
+> slub_debug for a specific cache with the existing kernel, with some but=
+ not
+> prohibitive overhead. And with some luck it gives you enough informatio=
+n to
+> find the root cause too. So in that sense it can be used in production.=
+
+
+Right.
+
+> KASAN is indeed superior wrt catching issues, but almost never applicab=
+le in
+> such environment. It would need a rebuilt kernel and the overhead is mu=
+ch
+> higher. So it's a tradeoff.
+
+Right and not all users reporting bugs are willying to do that...
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------TC5JMruIL0kh5xzF0eWK8sF5--
+
+--------------B9SkLUiW8DsmSGOmWKChDNmd
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaizt0QAKCRCGXBN6rc5S
+1k1IAQDlH9d73y9KVNOffoPOZhCVjmizsVyS5PKhR8KGaNd15QD9EF1XWBhLH5GL
+sjIkxJykNrDMs321EfQtA+bvk0WZEw4=
+=y2SJ
+-----END PGP SIGNATURE-----
+
+--------------B9SkLUiW8DsmSGOmWKChDNmd--
 
