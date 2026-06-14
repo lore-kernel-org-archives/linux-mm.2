@@ -4,141 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58835CD98C7
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 17:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD92CD8CA8
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 20:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 101536B0005; Sun, 14 Jun 2026 13:33:21 -0400 (EDT)
+	id 6C9476B0005; Sun, 14 Jun 2026 16:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A506B008A; Sun, 14 Jun 2026 13:33:21 -0400 (EDT)
+	id 6A0776B008A; Sun, 14 Jun 2026 16:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93D26B008C; Sun, 14 Jun 2026 13:33:20 -0400 (EDT)
+	id 58F936B008C; Sun, 14 Jun 2026 16:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3A2C6B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 13:33:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 41253165EA8
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 17:33:20 +0000 (UTC)
-X-FDA: 84879214560.25.C28C477
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 411DAC0002
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 17:33:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sl2PLKbt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781458398;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 436726B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 16:29:52 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD40D120816
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 20:29:51 +0000 (UTC)
+X-FDA: 84879659382.16.B73891D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 22467180006
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 20:29:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYDwSm03;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781468990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CgDMGJiLxv/wqdnxmsIJXskRPn4fvdvYBRvDM3yawdI=;
-	b=xlnnZ8ZOmir3iZlP9u//r9lLN4YpBCbaD9Kh+1m5/iYzHh0nk/jG5KCuNO3w741rrFFLrw
-	AqPdinnsF875A4/I2FvP4/piM/OYIYVoSerIhOicUBTfR5wupz/EME1kRiuah6rsSB7oH5
-	G99gH2T4vRwGG1iw3EpQR3U7GfSLB8w=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sl2PLKbt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781458398;
-	b=JkGjEUea9n2rqKCKwjgwgKNsD9WrT4qxCC4vilkMAGjEpmSyyY3mN19on71oHMHi6v0WzL
-	O93mR9ozHDySiz95Pb+tM1MvUuBGaAe4JqQO0IhDPXbAkM4PGFSSYEXRMGzcW6SOAQ3hFR
-	gYZ94CWx/rspeRGvOBNHCHMR2bDsEtA=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bebde89cfd3so294275266b.2
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:33:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781458396; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MZGaa/mqEudtk867dmAC74Uo5je8N8AwMqAlNWIkgkL5ABabL1tEbUNG1aKd1+g5Cp
-         LhGEwg13uLusX6MyJ1ytutTIEyqLwOUmwQqAtUpQsIWgZTeYAC0BgHCnk7DY+SpH8FUf
-         lPx8JAOmOaOiFKLopC6l0v6yVBmggp9znfyVEQuJ9NZy6P8oqn3iCsu/4GjQcAWb2ZEb
-         qp56yapCvhslCciyMiwow82aSqoL4on8FCtBg7YAv6bGLO+dIy9e6F3ckaVULIsgzKLF
-         5OlKBHNtPh5rBrNkBp6+o31f3n9vUnd6c5mH5gGfpl2oqXz0802X2ge55GZ8dzqhodnT
-         sj6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CgDMGJiLxv/wqdnxmsIJXskRPn4fvdvYBRvDM3yawdI=;
-        fh=HE92M6X2NmBnfU2REiM/9c8Xm75yE3n5r71U9xhoeV0=;
-        b=e1y/bq+NAempCWnsaUndcP8P1fsu3AdsqOOwrZwpkn8+pVjgYKcuQD7rXSGr+f8OSz
-         wrBSLxkKGHDCOA9r3O83x8Ye6FsXpw+9+vYBFuzZIhCQTIH33sKfJjVVCta+lJihbuoT
-         HY/Md66H27LiOPJPmPeCKtXIJgmViz1iYIJ0mtHK6yTt4HFmBC6+P4cnTP0pt8a359Es
-         o3e1pxgclpWK1XaX5MD9oEPpJ0mpV1kvBOU+FlSow2RuVNSa/mstTooGtR0I8qTg+pfS
-         dCWVTRZTf8hJu5M9ajfuhQ+RL8HUn7zgzGpqQ10y/8i1Pt02X78iEQ7rISsMKGJcv/51
-         XH7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781458396; x=1782063196; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CgDMGJiLxv/wqdnxmsIJXskRPn4fvdvYBRvDM3yawdI=;
-        b=sl2PLKbt6sd6zONzxzGFJuwtOnpOS5R8NY5nMijeQsXDCqcEwasJQPdgo2TLzuMHPe
-         aLgs9PgcuR/WLf/I1CJ5Xsr9ALxaFtUCmgDttuCWkq+2ANookexAEti288AGmuuWspTx
-         ERvENf1jyHHirkvJ7XU+WF2unCRoJ4D6R+sbsJdL1CKpD5mY6v2GiN/SaS/PcSIFZ0KS
-         B8OQrICwzho3qqSr1sdoicKhbKx6biQIrwVMtwZtJruCIyptD4ywjlFb5Gv8C/qoXuiM
-         clpx3oP/G/Wlof8H+/HNT3xLKtyOz3BMTtYgl5wzogMkepRYyo9EnExFgqdMLr1FxUt+
-         QYXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781458396; x=1782063196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CgDMGJiLxv/wqdnxmsIJXskRPn4fvdvYBRvDM3yawdI=;
-        b=U3uIGgRZBgFf2up268x4YD9yNWncLFBaC6q0jjCcEDUPjQrGbTXRflvFAalou42hll
-         sSbYZ3kfAX8nGi2cUh4pHAVk7X0FyXcZJ+SkBFoxiMeWfKnZ8dTskx9uCNQIy2xSPVTW
-         HcdJLgoa84M+WKV0jWGQ82AxGPH+PUIINNarZ8MKuZq6jgIepcfOF84E1hsS6GfQ3PgY
-         rmjnMpZgiMdBLtWTTE8aBJJ9ggnEFun5GQdF3Lx0jckUxhc99ZDaQmFUlJ32DC+esQek
-         KaN/M88rWYMajXiKhhlg7zKTi8pDutaRbbyXKQc0YdzUOUNYH0XIcjyKHhPIbL6nw/qq
-         fa5A==
-X-Forwarded-Encrypted: i=1; AFNElJ+DkYAkk/cLzAbWrSuoXK5zbbJQfCsZKkBf9S/zACkxDRpCk5rRIt59bS3TGNBqYQRlIpg92CnlKA==@kvack.org
-X-Gm-Message-State: AOJu0YyQffkFs6vVd3zbJpu6WaWYNQe2uLoVeafnGsff1dE6YemiZqed
-	v9zLKWekQ2XVfRI3RRjxIuDs+fIzklxrEvQorb6Bl+eD3PE2lbg1vz6/ghVmrM6NU0V6r+kiFD3
-	zyRzq7jekn+rjE7SlSM6z9J4UWHBnUYQ=
-X-Gm-Gg: Acq92OHfz2ZQudOuME6/gBSfnH/MkImhNjNJVBVwgPFmM8tpr+6+SQ4hj402LXSxttq
-	z8yaIiks3ttVALkNGkgwllcZsvL/ek1glyUKLqY79243JB0h820XX/kCrYC5F8TalvqAS/FBa8T
-	AyXDs3TrsNAlTcs52wSVQ5taDoETyYTFMf2b4MGa1D/rm38h4ZsSLz72Onn6J5+yL2syOoky8m7
-	dGCZ5uv5e3e4ferRd5JBlHszanF3XKGLjwh/vtOZUTTtBWD1s1IWbpsFG5u6qXvlF3I43oszoH8
-	iYeVkWdypkP67C88tpgCAK4Kxfhnh/KF5SWxANds
-X-Received: by 2002:a17:907:97c8:b0:be2:cd33:2142 with SMTP id
- a640c23a62f3a-bfe28600d04mr525947966b.15.1781458396194; Sun, 14 Jun 2026
- 10:33:16 -0700 (PDT)
+	bh=cmUoJYqaVdVHGV7w7+TmyHFK+lvk5ocel9J4vmj8ogo=;
+	b=rqHaxU8Ecw6cx0KkfG7KUag9GnXo+NdHRAQmVYYcK7g1JpBqz1RWiAWq2oYjou/qG5F8xg
+	F5gqvEgcJ0lrPKhNGaU9zdAgQe22KtBso2en1pLhFDjiGVAM3kUBCEKAMp+XC4VDArCifv
+	2UdgfqMox9luNt6MUeBKLCzT2H3drjQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYDwSm03;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781468990;
+	b=tga1Bpv+/VPUfPbF+46WtBs/eWloCYDETA17G8MWByfmmWafrZuYJb0AxJHGGH8gvUJRmW
+	WUyYizALcXakPlRY77XJenDrM8zkYcCNM9dDAjPgCXum/FouuZBFt4XGhvASMlmYwdnOEM
+	ufeXMJX/wZTRbCk6NuFLPtNtfQfKXDo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D7E4540138;
+	Sun, 14 Jun 2026 20:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931491F000E9;
+	Sun, 14 Jun 2026 20:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781468988;
+	bh=cmUoJYqaVdVHGV7w7+TmyHFK+lvk5ocel9J4vmj8ogo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aYDwSm0383Gdgkg6dRBN6iou+Hh0+xVWh+A7/C9B1O+WfdGdJs/gZ2xxZ2mZFqQrG
+	 3GRC3iiE++STQf19+vmj//iQnB2GlGhRi+lVqeC7AsCA7kZ5cjkmM82H19CBDRqJ+v
+	 NFX5jO1S62yAnh9albUSwgXsIezzCbzQIDdSGMJtQXUmHurn3+mujGe+NHrCLD+Swf
+	 f03DFhawbt9ZfNXpmeI6X2iKBw6TxVY9Ggfv6WMi8WdlGrAx8slDoWior29fxjbHb8
+	 I+CsDpirW6/7E/qUt620Y41Lb7Mpty/4i37thGO6YCOHJBUCkpuu4DRe8JCUN9cDbb
+	 wbRQXOn7xHBSw==
+Date: Sun, 14 Jun 2026 10:29:47 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
+	bpf@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_set() for lockless empty-slot
+ installs
+Message-ID: <ai8PO0NThJeuQYzy@slm.duckdns.org>
+References: <20260522172219.1423324-1-tj@kernel.org>
+ <20260522172219.1423324-2-tj@kernel.org>
+ <ai50IpfcvBiTZ7Ss@willie-the-truck>
 MIME-Version: 1.0
-References: <680441bf-c878-4a00-8787-63ad8b201bc9@linux.dev>
- <20260613042232.93691-1-lance.yang@linux.dev> <526fdbc0-1944-4328-9ff6-7922d021828d@linux.dev>
-In-Reply-To: <526fdbc0-1944-4328-9ff6-7922d021828d@linux.dev>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 15 Jun 2026 01:32:38 +0800
-X-Gm-Features: AVVi8CdrP9EcM4FCIPur31zjV81nkQN-14APK-sEXoNqzXjz8UX9rHlKXJypZJY
-Message-ID: <CAMgjq7BrFGHb7+-dpEQ_V9wqEbwBiYyKx2iU61uLMPWk3qKsxA@mail.gmail.com>
-Subject: Re: [v2 00/16] mm: PMD-level swap entries for anonymous THPs
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Lance Yang <lance.yang@linux.dev>, david@kernel.org, ying.huang@linux.alibaba.com, 
-	baoquan.he@linux.dev, willy@infradead.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, riel@surriel.com, ljs@kernel.org, shakeel.butt@linux.dev, 
-	alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, liam@infradead.org, ryan.roberts@arm.com, 
-	chrisl@kernel.org, vbabka@kernel.org, linux-kernel@vger.kernel.org, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ai50IpfcvBiTZ7Ss@willie-the-truck>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: ybgoyfeftki8orq1osqhcbhttu3b8bdf
-X-Rspamd-Queue-Id: 411DAC0002
-X-HE-Tag: 1781458398-301706
-X-HE-Meta: U2FsdGVkX18WkB47GvicDK7ZlWuAdJN2DdWVJEpEvDRRnEeUehCR2BotD/gmY9n+R5RcFdkMksxsQgWJBAnK7AVC0MSxnS6tMHtj/4J0L2kkROSNDHNZlVjPwrAS+IyqRGtI0ysEnDDcTKPWCddf5oe5VG6Y17yGrgkqF/6zSN2knxslWtec8zWF+fwLiESsBZEPtAJGHU0GkhJoz6h10T8xBwH3Xj06kgZWhkaIDYzBDh48I/aHBh4dDWQlEfjdIkBbsg4QUOc3PgKsPT+AMN3isPmSAi2FpkMgyHhz095+BXsKK0bdOT+RDW5/VWxdnZK4XEycF9xNNXFKN7W++MGH/MxiCQnjUV2+6CHcAABPIKezCWmFsQw1vAiDT/Yt+sEtmK4Ie3tufTucDDp318696qocoY79VfDGrBNUPJVk2ljkHMYvjZE85O1HtO7YooAfk5st/cN3/eYdDTVQJCiVKOT9k6q01rkCia/fufpE5f7JsyeMkUWVbEYDKKyLilN2lUvfoJXO+QADvewnPjJEwXcYrBlkA9KpsCetAj+qBaprM404cae2+yNFyD5neSLB/V75wsQX7xrVy/ecHn4qZOTrN9AiZIm4unm8h+QZfAlfmIcdGyfUa1wDXfBcxlLPS1fKLws8vfQQV8ZKlJn3eajl3CJKW6XtrHDsmIDTcawY2Aoi7DxyBEiGnivL7vj/W+oVE6HE0yA0ybST827Tc44rU+iLrjQ/RYwB7VzFGqZezm69+B9jLkAkV3/bzz96bnFQMnc+yeJbqVDLF/kmDOjTOGsj52/tzthOD+1k0dcnKwNUBfjJFNiW1Rg/hNhvyadz9cCiKUJ3FTXGajh6gLhf0U0YG1+oRfuzGFymc8KoTIvlE1m23lardPNQwKu8VV6RLTk0920E0LwGpmjS1pbkuYs2QSGJWRMY9+Lf92X1i6xtABPtrTHTAib3pnTPkrQoaQml4l7bqdg
- XptxoP8l
- /duNyRU50+3YH8BKU3cDmRJ/72dDQQAtfiQBip/TLxC1Pwda5L+t6PEIdQqsPzB5u5/ACfMu/tc6EVySXyHRX8P+zzZMaga0BBhiyUF0jrgH4oaicz/jB7aO79ZKtLfwrpGqdDYedi1Jiq7CqthHpFKHQcnOvWRYsBJhhBambwfjOMZN5ZE6pvvlWyZfXjFZEtz7DMYManu6LATuDo8vRzDcMh5t4W1eHAeuG0ZIlFPh4v1qSuuwM5hvUpx7AnAjdPF/WB+GY6UK3tuK8lEok6o5CHetesd0jxD9PvXS68+Hdm5Cf9uDhbfgnX/CZx09t2QZp5PLkAqbLIE7TRH9iL7TvHxNxV7HjEEZ3+HbS+E9yRayFAm9M6HGHgIRYV9Bx/CqR96HbKKN8KsQY8PmM2cPT2g==
+X-Stat-Signature: rw7h85gpwpcri8zrfs9sequ973sshdq4
+X-Rspamd-Queue-Id: 22467180006
+X-HE-Tag: 1781468989-392109
+X-HE-Meta: U2FsdGVkX18C8A2V/8dxCNhJA4qUW4+6eID9Ude7e1YTrfIaT2JgtOw+pE3KXlAkKtcNFBfTtEo74u7wNzFrv0X/lPyOjHyaWuDrQ1EiekHO9Aufloa8B+9tGk/5F6FAIprraXxo3TxNxsp4x8pxfH9/W3IVYPbj1MQHIWLwsOOqGp02sbrQ52ikDxGSPGkLcDvp51ko5Abt/bvORXBB0MMritfp7S0r1FyPYt3L4QV3w8+kQCaZvOKyZAZbWtJal8VaPInhpeGzfJ2sKiV5VvecMgaBRM+HaRtp8qlY3RQPBmszAQU3WqFk5YbmqeU+HC31w5KYi29X3m2EgV9GYTVBfhaHoQJ0nIhZ955cBM7hh1KUyJAmU7YRFYP75banh0r1djuHSX+0Bzixpm3RGjR/MFmnweETgMgaYG9UC/K737JDxWepGhaTgqIOpb3J9NSK5NjK1IuunUcrpgoku9j98mDGsqpaRRiHMcAY0gHIfhGPkrPkwQ6eChU/cBf3qXqv4O6FKHMEafKd9Y3FNugZJPtKaJixvDIQHIDDWCOnm8dXvNDpQkBP618cxZq73yFein7571kkSPcG/MQg9n1xBGOajnXKaGHZ3iihWWiYKYW0OVfg91H2w160Iqe/85GmZzy72wBV/BI97gHJxIZ2EZ8vNxK53Lqqt1C/y3fKLgHkLvbNDH1arRtIW1WgTW3OP+7zD03aWfI1FEqgCnPvJh13HfNx9CY45TL2WGoGo+ohKkhuGVHHG9o9jA1F6RK2aoPD5Dv82izojmCr9OlP/wmcvFG1Px5d+UrS0oNvu1cLIEl5TVvOHzm+lxqrm+YymB8aUyGStmTS/1Ru/u95f2/XFNurKm8o36pu69tgfmVJ08e/RSfNzrCLFCt+VCcwF51jaELl6uZZtAz68zTdnTkjStS29jotHSRm/bZ6A+Pgy4rPIHEEELC8Zv9/61X2lBGRMsc58OsvBJS
+ WxHqRZpI
+ BQaeS2xR12UI+5cwYpk0vm25BqsB22ZpCuwIHf186DQvgzKOpWYfq0x5GluKTFoMEkh7H6r+mwiATfU+JSMHmUIaET0tJEgn8vIywn8dewYttKTyHcWGfdk//DsXgsyGRKFDQFo8gfV5D43UW5E1FZ/usPWeJ9VvPRA9gcaZLKk+EYqSu4mfsQKLKZns3ZMoMPNxMJw0PV/LtNeu+rGUBZDQZa1BkWgZauVIZ15ORD9H4Ow70/WEo+2iEqbmGv3UgXlHmJ7UUUDzDqUc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,75 +110,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 14, 2026 at 3:19=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
->
->
->
-> On 13/06/2026 05:22, Lance Yang wrote:
-> >
-> >
-> > After skimming through the whole series, probably PMD swap entries need
-> > one bigger rethink ...
-> >
-> > Emm ... same tricky bit keeps showing up ...
-> >
-> > One PMD swap entry is easy to handle while the swapcache still has one
-> > PMD-sized folio behind it. Once taht folio got split and reclaimed, the
-> > 512 swap slots need per-page handling :)
-> >
-> > Maybe worth first pinning down the rule here.
-> >
-> > Is a PMD swap entry supposed to mean "there is, or soon will be, one PM=
-D-
-> > sized folio behnid it", or is just a compact page-table encoding for
-> > 512 swap slot?
-> >
-> > Without that rule being very clear, every caller has to guess how much
-> > it can assume, and it is easy to miss one ...
-> >
-> > So I stopped staring at the details for now, because the same issue kee=
-ps
-> > popping up wearing a slightly different hat :)
-> >
-> > Anyway, no clever answer from me here, not a swap expect :( Just pointi=
-ng
-> > out the pattern I keep runing into.
-> >
->
-> Thanks for the amazing reviews!
->
-> For the next revision I=E2=80=99m going to treat a PMD swap entry as just=
- a compact
-> page-table encoding for 512 ordinary swap slots. It does not mean that th=
-e
-> swapcache still has, or will soon have, one PMD-sized folio behind it.
->
-> With that rule, whole-PMD handling is only valid when either:
->
-> 1. the swapcache still has one PMD-sized folio for the range, or
-> 2. the whole PMD swap range has no cached folios, so the caller can try a
->    PMD-sized swapin and still fall back if that is not possible.
->
-> If any slot in the range has per-page cache state, the PMD entry has to b=
-e
-> split and the existing PTE paths need to handle the individual slots.
->
-> I an reworking the next revision around that. I added a shared helper to
-> classify the swapcache behind a PMD swap entry as empty, PMD-sized, or
-> split, then used it in the places where this assumption mattered:
-> mincore, UFFDIO_MOVE, swapoff, MADV_WILLNEED, and the PMD swap fault path=
-.
-> UFFDIO_MOVE now checks the whole 512-slot range before moving a PMD swap
-> entry without a cached folio, and falls back to PTE handling if per-page
-> cached folios exist.
+Hello,
 
-Looks interesting, sorry I haven't go though the whole series in
-detail yet, one question from me is how much different is it compared
-to the current THP handling? We are already dealing with THP fallback
-where sub-pages (of any order) could exist in the swap cache range
-covered by an incoming (swapin) (m)THP, the only thing different here
-is we need to do split, right? Meanwhile shmem already has similar
-split logic (split of large shmem mapping xarray entry), maybe they
-are somehow similiar so some routine can be shared or reused?
+On Sun, Jun 14, 2026 at 10:28:02AM +0100, Will Deacon wrote:
+> > +/*
+> > + * Note: strictly-zero compare is narrower than pte_none(), but the gap is
+> > + * harmless: a fresh kernel PTE has no software bits set.
+> > + */
+> 
+> This comment really confused me :/
+> 
+> What is a "fresh" kernel PTE and why do you specifically call out "software
+> bits" if the CAS requires all 64 bits to be 0? Why is that narrower than
+> pte_none() given that pte_none() for arm64 is:
+> 
+> #define pte_none(pte)           (!pte_val(pte))
+
+Yeah, that's complete non-sense for arm. The comment is about x86's
+pte_none() excluding DIRTY and ACCESSED due to an erratum when testing none
+and how that doesn't matter here. This shouldn't have been copied to arm.
+I'll send a patch to remove that.
+
+Thanks.
+
+-- 
+tejun
 
