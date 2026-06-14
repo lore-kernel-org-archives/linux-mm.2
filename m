@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63276CD8CA8
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 01:48:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B4ACD98C5
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 01:58:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFD706B0005; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
+	id BD7046B0005; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EADF76B008A; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
+	id B88576B008A; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC38F6B008C; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
+	id A9D096B008C; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB95A6B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CAD71205F3
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:48:45 +0000 (UTC)
-X-FDA: 84876834210.07.E6AE2FE
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 328A7C0002
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:48:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sUYFAKqt;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C5886B0005
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47BEB165B98
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:58:10 +0000 (UTC)
+X-FDA: 84876857940.04.19ABEF2
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0E18718000A
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:58:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uV+74kii;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781401723;
+	s=arc-20220608; t=1781402288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZzjGDj2ejPIFCiun0MsPB5P0vlqMvB9lE1U6mFzN0Ps=;
-	b=fY/i+zYtQ+DJR66l2YVizFDJ2izRzkt8aDlnwzBnhADR8DYOn9X9El3BuEDapy4/Uk/eHG
-	JU1xU3UocgK5Gk77f2vJJGNkuBMyjf3vVGFcEarIJHmWFqU9tFKXwgCSbxV+tulWYd7rQq
-	LvtKwE/dNPNTawPVYXhXQsNplU2nHfY=
+	bh=unvZVA01RCOsE6OHH2kWfSGkp8R7E0svliMMATKZkqc=;
+	b=pCmMIiY55Vl4kxIhIp7RgXOm7bXl2kLUAJoJwc6kHt+2IQbmvDVbUkPT41gd64ZLRuKz/v
+	lJg7JzvFBPjIneAdWEI+mhE8RAsa/q7LeFfUJmDp8E2ZhTGquBtf+oO0SLhwS3HVDGdSYA
+	xd2o4fy7h1fqbXD8n+2ti1QzTiXnUSU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sUYFAKqt;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uV+74kii;
+	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781401723;
-	b=WOJyCCvCjD7XAF8BCOcjXheBXJnrhvsXXTgHIlTd7peLhG+CLtsKU2e8cQIu0mDU5U2q9Q
-	yk2+f2vEIsXn89BS16tIZWXy939FlXwKERch5sDE0PqsP5TI5lfGzE/ESMwxp/5Uk+ZppJ
-	NM5S13JCWx+FIVoLP0lnTqBJurjJqVU=
-Message-ID: <b08cafbb-a4b7-4609-84ae-dbb2cfcfc8be@linux.dev>
+	t=1781402288;
+	b=tVn9qPyCGjTRTB5b/8J0mid+fOUiwWRXiOevTrb3WEUtSFMa4EvWM1GLAUTnluQ2Ykybkh
+	nMtjCKmHXZChIjku3x0BiY0AdtAQlPVwxn0Mhs6NpTpk5Sgn8j7SXZjqGPGE7vGrfblC+t
+	oxPUIZlDIO4xv9RKLmyDPcaKU40xxmQ=
+Message-ID: <7e57e99b-865c-43d9-9f84-2df3f318d03a@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781401720;
+	t=1781402286;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZzjGDj2ejPIFCiun0MsPB5P0vlqMvB9lE1U6mFzN0Ps=;
-	b=sUYFAKqtwM4RJf6fCmx+1mgrbZe2fNy90UH6Dz0sMWf9THOBHRjr/8xpLW9NMR5yF1I6hg
-	DLAzI1CLKsdTGwB6mWiMkBZKmCzHxLTFXBYSwebKQ6q0Bk7ExwfKgD31y1ypL02WzML/Dv
-	WeRWbCTudTh8FwDEyK/GZ3zTwOAJI7Q=
-Date: Sun, 14 Jun 2026 09:48:30 +0800
+	bh=unvZVA01RCOsE6OHH2kWfSGkp8R7E0svliMMATKZkqc=;
+	b=uV+74kiiC8O0Ll78QiLSnyimuryVlqv+vtUZli3RT7nv9VQ4YcfkHCOLL1GDr0qIVdXw56
+	xOT2JhAUExDugrj6ZI0SzwQ3/R2x8j6BUnIkYMwBpQ7nppJx3lM+PQE/MiGSjAGbai2G6x
+	OA24y1udqeviPhlXS/0JaLsIirPkauA=
+Date: Sun, 14 Jun 2026 09:57:58 +0800
 MIME-Version: 1.0
-Subject: Re: [v2 00/16] mm: PMD-level swap entries for anonymous THPs
+Subject: Re: [PATCH v2 5/6] show_page_info: Remove printing of page index
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260608210618.3437216-1-willy@infradead.org>
+ <20260608210618.3437216-6-willy@infradead.org>
+ <20a5a752-3ed6-4fde-96c9-e8369b15524c@linux.dev>
+ <ainCu2HZTTdP4skd@casper.infradead.org>
+ <11cc4dca-7841-4897-8665-e27d7555f246@linux.dev>
+ <aizL_QrL4dNWMJ8Y@casper.infradead.org>
+ <661b47de-af1a-488f-a691-82df7add1f49@linux.dev>
+ <ai2CIGzlCeqbOz5o@casper.infradead.org>
 Content-Language: en-US
-To: Usama Arif <usama.arif@linux.dev>, Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
- Linux Memory Management List <linux-mm@kvack.org>,
- ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
- kernel-team@meta.com
-References: <20260602142537.198755-1-usama.arif@linux.dev>
- <aa712058-7b4f-4421-b265-c3173fcad87c@linux.dev>
- <6E99CC4E-A026-4DE3-8A5A-34216771F521@nvidia.com>
- <e68d5c68-9b4e-4959-a507-a9f94f3ce6e0@linux.dev>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <e68d5c68-9b4e-4959-a507-a9f94f3ce6e0@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <ai2CIGzlCeqbOz5o@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 328A7C0002
-X-Stat-Signature: omq8xtfums6x7eywm1pr5ubwmieacqp6
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0E18718000A
+X-Stat-Signature: 9sz4dmrrmctp3gjuanh8zdgddict49bm
 X-Rspam-User: 
-X-HE-Tag: 1781401723-593261
-X-HE-Meta: U2FsdGVkX193Hbx7Az0NL2s/OeotTcalZzJhTN+crY988rc7Af3y3cUpK2ZiLFBASLTEuUms4A2EjYGWsJZTeV1ThhNcY1QvuUKFzDYKuw1GIEwoV6V2GnxZcYW2UWY5o1yeqLsJsFyr2ZbztGfsDWCy/q876WfFxZTKYkcrp4wbqTLDzQb1dzqE+CxAWQAh4IBARCMzubgMdt0FNG4ICsmlZpbwQYcSPCsfobjNElVJW/038wIkyV4a/zRPvCughaWxtpLOwd6dXJUQPpqjs08Y4VxU8f4px81XCMcAu+M9BuiKbyGFaAwqsYOwj1J5rc2ApPJ0iixAFLnlNkjae1QuWNIaBHyRxv1OLZGkAB2EnJtFUCg4Op1prQU3Hn3pkBCFOhim4E+Ls6+lNNrwWycbYrnCbm+iE9fFO9z9vW0ds+o20A5hkZVH836XUyxSfD5SmDlvlIh3hfjghLwMMYwvXXaf8MBfsMJhAjgPuTuAsp8xZ+O2BCrD2J7086cctdhXsnlpjoKwbYd8jdZ2vcedgEN5H9dqi6QsJ199oRJk2H6apqpgi7oT3H+rg0meMOcNSY0fv3g4ExEba/s4ulOZd/vud7ViraDwTHEVJboQ1f6T4br3As337EUkSIbIQimBrWkdc2utVMjToNnHjQCBd2jj9dAPes6c3arKp8A+cNP8ZfJkUwX69o+ICqJrv3vCtDASTLnbPLEvf9tmYn3vgsLRqECxZpDrkGEsaYuTO2JFOavtaHnlpGLbhb2W16snWSdgfZM5L7xJWLvvegKKp1T/lDqUpws0bnilAg7ZCGu+XP8V29M885FfG76dCKerLRqI+7XHszGNnx2WrNek9bx1xNyZRcxowjKK1PHmGM+mrZGJhhuujFLLzNMD3DM7eIg87VGggRSFboF0p/AijfwvgUMvkxDh57D6tlE8NoWg3+uLCz7jhhpyyWcQURbSb14VGlqb0VdfBqZ
- 6djW1dAR
- +qNETl1NCK/y+fPpmZOfY/6HuIHFF4ESESsJBAfDrOm4Ub/Xa0B0mfJ6AE8yv73EDbdqztZiz44SUpxjNldu5qtRs1omzTq58bLVFMQnel60FiCg5SuWi6bx44ZUIi6EQJxF6mAdBTr3+h4wkM+4JhuYbyWKolt8oS4s0mt7CGtDs4TBR7n70R7IuypuGaWZqwUqwvxMKaGogD6hqGTp6XHHevg==
+X-HE-Tag: 1781402287-214564
+X-HE-Meta: U2FsdGVkX1+xJMnsrdPw25MIZ1QicvHcoCa+uk5JxPT2cy+7Ad0G3T9Uh9MEr1BN/TpSWPxASEIbnZKqanOQ56D+QxGRs7Bi0KUznXKO3a7YIq1jBnWKbaBdfYP3IHhoKeweCEdTdhNu+2oY0IwWH7e53lcdj5cdK+a7THSx/2olfrxVxeILoKSYbZrGFrJwtOgoj3XCJ/J9wJg6sIVbcTijtACMSmvXRbngKIJOWJuefB5bSKn3HIQrg1fMwsnti3eiAamN8KBOd0GmCb+pkbzy1yOCQi4tgXQOL3z3HnsS5wSbQr//Rbow32eYdL7VWFlE7xcX5zzYLszxthVURvXW92kh6wC5ptgQq4sq1mTk1mNVm5te949vLXXzbEY6V0Lm3Mow3ZciJWoupcey9ZnymVOsBWpUW7q3lJ/rxVE6K0ws+u/24qIjYgYD0rJAn1Sf0eBdJm3GmwhuFAPr7iVUoFpMm90vyp0dxZ+jb11lPTPmGDf1wZTnd1sZQnt5deO3RvuCzrMqI6DMb08HjbSDJU0r25hjVQpZrIbeCx8WZL1Ob8f7r/cjGduMjoaiUWncXauub1+Qw1e3JCQFj7JzjRrUpYHK0sRgMT0swJolB+F/n1jC4kwYxHmxjQ1+/GkNjWnbZGBnDT7pkO9uPM0pg0J2nhCAgRb/ny0QQol7BYi2AlFosJfTZcMe/0zrBeNHQXHALkJdOjAN4NYvV3BqixHm3Locn9vfuHnXr7jsD3BK1cndX0BocIvCLPorf2Ot5UrN3AtvZNvRedUeaijAVTo+u7kdnEfsICFdv4AzyAn3B99LqFSjLDbNLaWQ8p0l0wloTPGrn/JbtW/HT9v7JmLKkchKTjrWXXAPhh+iizSmLAoSC6EpfTO+uwLKjZaSU4eRN9NRb2GC4iaLBZKMIQ6hlBCSxYKQ/tihfxkPfTlj61bUlfIRDiJd4JvyU75fJMYG0MwCSJAxtDv
+ OmM6Osek
+ KlwpWbn+lepzDiOvX2iK+e0XTKCbi0SLLM3EhNVyL4JFpWh/aantpZ/cynBv1kNRF/r7kbrqj3vH3Q/uW80W3KLNqNlwx3XkxDkFVhUpaKQFfi0dmf0drL8HjVLVdBumjf6E4ldYjGah5s4yStX7n/pS4O6gHCj+D8gsmXynhhUEofoes8Y/2ncqQZtEOE08KZxGdFW48GfYXt8oIxOzr/lQyowEnFOgmVDIudmslXg33IzrZ5Z5DGAAZDWf82cF0YD166XcTqt7SEETOg2CG9e5v92Ywk5iFq2yDAvcQIAZWk9KpXG6rcs+eAhxOwsuYSV2c5Pnh6pBxo8Gg8dtBZAzflika0FWsdl05C+lqJ65JseHsTOYr/oSVr+YrXr+KcvCEQcZNDVsktuw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,37 +98,34 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/14 03:34, Usama Arif wrote:
-> 
-> 
-> On 13/06/2026 20:27, Zi Yan wrote:
->> On 9 Jun 2026, at 10:29, Usama Arif wrote:
->>
->>> On 02/06/2026 15:24, Usama Arif wrote:
->>>> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
->>>> split into 512 PTE-level swap entries via TTU_SPLIT_HUGE_PMD before
->>>> unmap.
+在 2026/6/14 00:15, Matthew Wilcox 写道:
+> On Sat, Jun 13, 2026 at 12:16:38PM +0800, Ye Liu wrote:
+>> 在 2026/6/13 11:18, Matthew Wilcox 写道:
+>>> On Sat, Jun 13, 2026 at 11:02:06AM +0800, Ye Liu wrote:
+>>>> 在 2026/6/11 04:02, Matthew Wilcox 写道:
+>>>>> Thanks, but could you explain why you don't just call dump_page()?
+>>>>> It's more comprehensive and will continue to be maintained.
 >>>>
->>>> This series introduces a PMD-level swap entry. The huge mapping is
->>>> preserved across the swap round-trip, and do_huge_pmd_swap_page()
->>>> resolves the entire 2 MB region in a single fault on swap-in,
->>>> no khugepaged involvement is needed. swap_map metadata is identical
->>>> either way (512 single-slot counts), so the PTE split buys nothing
->>>> on the swap side, it is purely a page-table representation change.
->>>>
+>>>> This script is based on the drgn tool, but the drgn tool does not
+>>>> have a dump_page helper. What kind of method do you mean by      
+>>>> directly calling it?                                             
 >>>
->>> Hello!
+>>> void dump_page(const struct page *page, const char *reason)
 >>>
->>> Just following up if there were any reviews/comments on this series!
->>>
->>> I know its a large series but was just checking if there was any
->>> feedback?
+>>> in mm/debug.c
 >>
->> Maybe send first 6 clean-up patches separately to get them merged first?
+>> I’m aware of this kernel function, but could you please clarify
+>> how to call it from a user program?               
+>> Or how to achieve the direct call you mentioned?
 > 
-> Good idea! Will do that. Thanks!
+> https://drgn.readthedocs.io/en/latest/release_highlights/0.0.28.html
 
-Yeah, sounds good. Less churn, and the cleanups can land first, and
-life is easier for everyone :D
+Note that this feature is currently experimental, only supported on x86-64.
+Furthermore, I tried calling_function() a long time ago,
+which caused the system to crash, so I haven't used it since.
+
+-- 
+Thanks,
+Ye Liu
 
 
