@@ -4,91 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B4ACD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 01:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56DD0CD98DC
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 04:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD7046B0005; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
+	id 399A06B0005; Sun, 14 Jun 2026 00:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B88576B008A; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
+	id 34AD76B008A; Sun, 14 Jun 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9D096B008C; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
+	id 260926B008C; Sun, 14 Jun 2026 00:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C5886B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 21:58:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47BEB165B98
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:58:10 +0000 (UTC)
-X-FDA: 84876857940.04.19ABEF2
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0E18718000A
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:58:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uV+74kii;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 14EAA6B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 00:32:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A68E1C3DED
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 04:32:35 +0000 (UTC)
+X-FDA: 84877247070.13.A7F56D0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5E1661C0007
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 04:32:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=h++d1cC7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781402288;
+	s=arc-20220608; t=1781411553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=unvZVA01RCOsE6OHH2kWfSGkp8R7E0svliMMATKZkqc=;
-	b=pCmMIiY55Vl4kxIhIp7RgXOm7bXl2kLUAJoJwc6kHt+2IQbmvDVbUkPT41gd64ZLRuKz/v
-	lJg7JzvFBPjIneAdWEI+mhE8RAsa/q7LeFfUJmDp8E2ZhTGquBtf+oO0SLhwS3HVDGdSYA
-	xd2o4fy7h1fqbXD8n+2ti1QzTiXnUSU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=wbTsdcKabIyQohejTSPjDg4bsyzeWwiLRpGSTlitJAg=;
+	b=mWF13tKE1rlBEc0scRDs/MHr1OruTnrRuTVnAJQ43FniXG1mvVEPUkdskTe0iTpRnqqpXx
+	eptcirJfOMLj2nMkD0uScmU48FjJfQmjt1h5TKfCokh+GwskiG8CGQ8OdIwER+oq9MFq50
+	ES5f6q+2yiCuD5Ix8EZ88kLK6/XBAl4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uV+74kii;
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=h++d1cC7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781402288;
-	b=tVn9qPyCGjTRTB5b/8J0mid+fOUiwWRXiOevTrb3WEUtSFMa4EvWM1GLAUTnluQ2Ykybkh
-	nMtjCKmHXZChIjku3x0BiY0AdtAQlPVwxn0Mhs6NpTpk5Sgn8j7SXZjqGPGE7vGrfblC+t
-	oxPUIZlDIO4xv9RKLmyDPcaKU40xxmQ=
-Message-ID: <7e57e99b-865c-43d9-9f84-2df3f318d03a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781402286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=unvZVA01RCOsE6OHH2kWfSGkp8R7E0svliMMATKZkqc=;
-	b=uV+74kiiC8O0Ll78QiLSnyimuryVlqv+vtUZli3RT7nv9VQ4YcfkHCOLL1GDr0qIVdXw56
-	xOT2JhAUExDugrj6ZI0SzwQ3/R2x8j6BUnIkYMwBpQ7nppJx3lM+PQE/MiGSjAGbai2G6x
-	OA24y1udqeviPhlXS/0JaLsIirPkauA=
-Date: Sun, 14 Jun 2026 09:57:58 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 5/6] show_page_info: Remove printing of page index
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260608210618.3437216-1-willy@infradead.org>
- <20260608210618.3437216-6-willy@infradead.org>
- <20a5a752-3ed6-4fde-96c9-e8369b15524c@linux.dev>
- <ainCu2HZTTdP4skd@casper.infradead.org>
- <11cc4dca-7841-4897-8665-e27d7555f246@linux.dev>
- <aizL_QrL4dNWMJ8Y@casper.infradead.org>
- <661b47de-af1a-488f-a691-82df7add1f49@linux.dev>
- <ai2CIGzlCeqbOz5o@casper.infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <ai2CIGzlCeqbOz5o@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0E18718000A
-X-Stat-Signature: 9sz4dmrrmctp3gjuanh8zdgddict49bm
+	t=1781411553;
+	b=IFSwvaDUGcqQw/OSnw2ueAuYnQbdEx/tCbRED/lzKnOi9x4Sirr2d2Kc7aWep0+uG59y36
+	CNKh36E+/Nbm/ou5vWrCrVHIsPZkD+Dkbf/O6i33N49xwNLinmsY8DYz1H3cy6mzheZDre
+	gB7ZkVLGOvY7N5BHJ49QUwByiLZbuXw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781411552; x=1812947552;
+  h=date:from:to:cc:subject:message-id;
+  bh=mcAUpQPzV89gY8Em0RjRj9LGRVt4Uu77gUkO07OzNcA=;
+  b=h++d1cC7tp/ZgeUe+Zfiwg9gbgnJQxzHDh6B45dZyj1QniYHUjoPv4mI
+   sA1WMgRxCnZa7scu4DdPrb4OoYNCb6ReNz7AJX1iYRWdDQXSHhkz/43A+
+   N7qkJ/hoA54hPsMkR3I+UXjAjFvMiipIS//xM7B5bZ+gHboQt2eSL7aL3
+   T4B2NK9rIt1kFclQ7ffUoDmyW5k7AcUAThXN0+4N05irEeflLQd9guYcv
+   +TFyp5MBcge1i5OKS+oWGyNoOZxESc/TJ1OflmkM9ZWvYIvBGGpztPJNC
+   LbSzG4P6DEJUI88vRuojVIQQAspNw4n4c1gmNXBkuKAxtStdogweStACx
+   A==;
+X-CSE-ConnectionGUID: XcYX1ZrqRraCM6BYcrniKg==
+X-CSE-MsgGUID: Hdp8X+aKRPC3t2m9iID0lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11816"; a="93681834"
+X-IronPort-AV: E=Sophos;i="6.24,204,1774335600"; 
+   d="scan'208";a="93681834"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2026 21:32:31 -0700
+X-CSE-ConnectionGUID: j79822ffSSmGUnXYNkUdXw==
+X-CSE-MsgGUID: 2ap/MrKtSseyjQGSUCASqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,204,1774335600"; 
+   d="scan'208";a="246061958"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 13 Jun 2026 21:32:29 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wYcWI-00000000QYI-1yWM;
+	Sun, 14 Jun 2026 04:32:26 +0000
+Date: Sun, 14 Jun 2026 12:31:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Josh Law <objecting@objecting.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: include/linux/decompress/mm.h:(.text.get_bits+0x5c):
+ undefined reference to `__ashldi3'
+Message-ID: <202606141256.AcV2LO0U-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781402287-214564
-X-HE-Meta: U2FsdGVkX1+xJMnsrdPw25MIZ1QicvHcoCa+uk5JxPT2cy+7Ad0G3T9Uh9MEr1BN/TpSWPxASEIbnZKqanOQ56D+QxGRs7Bi0KUznXKO3a7YIq1jBnWKbaBdfYP3IHhoKeweCEdTdhNu+2oY0IwWH7e53lcdj5cdK+a7THSx/2olfrxVxeILoKSYbZrGFrJwtOgoj3XCJ/J9wJg6sIVbcTijtACMSmvXRbngKIJOWJuefB5bSKn3HIQrg1fMwsnti3eiAamN8KBOd0GmCb+pkbzy1yOCQi4tgXQOL3z3HnsS5wSbQr//Rbow32eYdL7VWFlE7xcX5zzYLszxthVURvXW92kh6wC5ptgQq4sq1mTk1mNVm5te949vLXXzbEY6V0Lm3Mow3ZciJWoupcey9ZnymVOsBWpUW7q3lJ/rxVE6K0ws+u/24qIjYgYD0rJAn1Sf0eBdJm3GmwhuFAPr7iVUoFpMm90vyp0dxZ+jb11lPTPmGDf1wZTnd1sZQnt5deO3RvuCzrMqI6DMb08HjbSDJU0r25hjVQpZrIbeCx8WZL1Ob8f7r/cjGduMjoaiUWncXauub1+Qw1e3JCQFj7JzjRrUpYHK0sRgMT0swJolB+F/n1jC4kwYxHmxjQ1+/GkNjWnbZGBnDT7pkO9uPM0pg0J2nhCAgRb/ny0QQol7BYi2AlFosJfTZcMe/0zrBeNHQXHALkJdOjAN4NYvV3BqixHm3Locn9vfuHnXr7jsD3BK1cndX0BocIvCLPorf2Ot5UrN3AtvZNvRedUeaijAVTo+u7kdnEfsICFdv4AzyAn3B99LqFSjLDbNLaWQ8p0l0wloTPGrn/JbtW/HT9v7JmLKkchKTjrWXXAPhh+iizSmLAoSC6EpfTO+uwLKjZaSU4eRN9NRb2GC4iaLBZKMIQ6hlBCSxYKQ/tihfxkPfTlj61bUlfIRDiJd4JvyU75fJMYG0MwCSJAxtDv
- OmM6Osek
- KlwpWbn+lepzDiOvX2iK+e0XTKCbi0SLLM3EhNVyL4JFpWh/aantpZ/cynBv1kNRF/r7kbrqj3vH3Q/uW80W3KLNqNlwx3XkxDkFVhUpaKQFfi0dmf0drL8HjVLVdBumjf6E4ldYjGah5s4yStX7n/pS4O6gHCj+D8gsmXynhhUEofoes8Y/2ncqQZtEOE08KZxGdFW48GfYXt8oIxOzr/lQyowEnFOgmVDIudmslXg33IzrZ5Z5DGAAZDWf82cF0YD166XcTqt7SEETOg2CG9e5v92Ywk5iFq2yDAvcQIAZWk9KpXG6rcs+eAhxOwsuYSV2c5Pnh6pBxo8Gg8dtBZAzflika0FWsdl05C+lqJ65JseHsTOYr/oSVr+YrXr+KcvCEQcZNDVsktuw=
+X-Stat-Signature: ish9r33scjfa35z9fw8okx9mxun1w11o
+X-Rspamd-Queue-Id: 5E1661C0007
+X-HE-Tag: 1781411552-238613
+X-HE-Meta: U2FsdGVkX1+bFoVQ9icf76SYg3PVW+GHiAmkIFhcWap8ULtWmvJpsIIXJlBKVRzwE429yomPtSm3oxiAfiVpvLM6yE9d+HLuJCuvAs5dtKPv/XfomezwV9OxZ9CFbEaStyuUGshcNaMdOmriNK2TClnDC+jSTxAdBDNFgY8z4yfo9uTi0xuEmfirreZTDYU1ek+Bue88JYdwvIYpyeiuoC8p/+an3DkMkHGHP8IKNqpxiXKr33lnOrXBW3JnF/JZZc10zbbPp6tQsEX+oD+Tm+9lthe7orIqTXZxCZHvJcfDV4aY6fiUf90ouAJXGW8pEKvgh7KEKktMBDLtmye13aBXNLiuFPEzi46OLEC7yHlq8feZgmWQlc1vsbqQ7Q29bKjSa53wJCL4gJUeHiRXhUrT2XRv9WvKxAQC+MG0yPE67ov0SexaVbOIWAKgaiVlkcJB9HM1AAG8ctXnQglzDTMnzBJjPinyIqNgN0oBwyDGhY6CB3zT3ne7+xPz/TEliN88OGqnEu8QxMn3BsdSHx/TZ3/souPWdEfHViAeq45Ji4Pn/FCfqz5QX7nA+RiDKL4EL8EEyM/E0HWdASAyyKPlPfDJGGaDIKibGbBQQhHgvLyuBCdRqv2axpzxvgC+fMJfEhj9lFzkq/q+oL27ooZ/LMrkECO/p7DLn686l5OHodVYcQmR9KmEWNhDNvz6X/fhrrDUy9lJ4jx4VQTQ5rNUDFKtUuYMRguUauQzsdyHCznKGaKzIi+YS9CNYw/fKk/3xNug8Ya22XaFFhQjf6DRQ7jehVh4/6nkCQ9UINKAcMn4Pa12XRG/Z9EsuoBvqNipf4hnHfD/gVMZXXks6hsjqdi17OQCdW+sB5gQoVnwRgwPvSoPWvnQ3olN9lCkotuRKiu0cQhLnkibUqYZgOzfVI1v4HPMCLlJvkuG8jzAVTdgOsqkO3bkjLRGE1xDt7cs2wWNGeKNY/LkVUq
+ 75cMXBp6
+ cK3+8q/2MnK7ldCanuyIwdp4iFP5nVe1fTrAVeCeIXf+usRED9N80/shP+po8jDIEDEXRn1NlzTFj8IdBiFaorJPdCTn7ZAIc2/JNu/FzSjOAOgQVX852PxVCloArKUOKa1XawwmrsmtX85HR7ToAhSN7roEU2+FXGMUeHg4+bqOmxOQTPp9ULimjaaATd5Vq98W0nAVVuzikQpUMYl4hxHJWyzyNkFsLcawWJ+ysq4omPFYACPdtseDl8PHrasJr2aQEq0lALvEJVBe5l5IsnrFacSYqHGK0Ub802+m83B8ABa9fdd6T0f7EGei5ighi0YmQ2HSnGgpFXEzTPnAgr2XnHJ8+9ifU+BVG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,36 +102,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   2b07ea76fd28989bde5993532d7a943a6f90e246
+commit: d4dba3b9c03a326cfa73833d6b166aeb442f82b5 lib: decompress_bunzip2: fix 32-bit shift undefined behavior
+date:   3 months ago
+config: mips-randconfig-r052-20260614 (https://download.01.org/0day-ci/archive/20260614/202606141256.AcV2LO0U-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260614/202606141256.AcV2LO0U-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: d4dba3b9c03a ("lib: decompress_bunzip2: fix 32-bit shift undefined behavior")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606141256.AcV2LO0U-lkp@intel.com/
 
-在 2026/6/14 00:15, Matthew Wilcox 写道:
-> On Sat, Jun 13, 2026 at 12:16:38PM +0800, Ye Liu wrote:
->> 在 2026/6/13 11:18, Matthew Wilcox 写道:
->>> On Sat, Jun 13, 2026 at 11:02:06AM +0800, Ye Liu wrote:
->>>> 在 2026/6/11 04:02, Matthew Wilcox 写道:
->>>>> Thanks, but could you explain why you don't just call dump_page()?
->>>>> It's more comprehensive and will continue to be maintained.
->>>>
->>>> This script is based on the drgn tool, but the drgn tool does not
->>>> have a dump_page helper. What kind of method do you mean by      
->>>> directly calling it?                                             
->>>
->>> void dump_page(const struct page *page, const char *reason)
->>>
->>> in mm/debug.c
->>
->> I’m aware of this kernel function, but could you please clarify
->> how to call it from a user program?               
->> Or how to achieve the direct call you mentioned?
-> 
-> https://drgn.readthedocs.io/en/latest/release_highlights/0.0.28.html
+All errors (new ones prefixed by >>):
 
-Note that this feature is currently experimental, only supported on x86-64.
-Furthermore, I tried calling_function() a long time ago,
-which caused the system to crash, so I haven't used it since.
+   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `get_bits':
+>> include/linux/decompress/mm.h:(.text.get_bits+0x5c): undefined reference to `__ashldi3'
+>> mips-linux-ld: include/linux/decompress/mm.h:(.text.get_bits+0xf0): undefined reference to `__ashldi3'
+>> mips-linux-ld: arch/mips/boot/compressed/decompress.o:(.debug_addr+0x3a0): undefined reference to `__ashldi3'
 
--- 
-Thanks,
-Ye Liu
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
