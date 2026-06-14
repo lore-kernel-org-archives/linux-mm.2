@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6EACD98D2
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF41BCD98C5
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FD586B0099; Sun, 14 Jun 2026 05:14:46 -0400 (EDT)
+	id D89476B009D; Sun, 14 Jun 2026 05:20:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AE736B009B; Sun, 14 Jun 2026 05:14:46 -0400 (EDT)
+	id D139B6B009E; Sun, 14 Jun 2026 05:20:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F06C46B009D; Sun, 14 Jun 2026 05:14:45 -0400 (EDT)
+	id C30846B009F; Sun, 14 Jun 2026 05:20:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E2E866B0099
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:14:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74F131C2C1C
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:14:45 +0000 (UTC)
-X-FDA: 84877958130.06.85B9583
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE12C6B009D
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:20:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2758A1A0668
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:20:47 +0000 (UTC)
+X-FDA: 84877973334.11.E58B6B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DA850C0002
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:14:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UMx8Eb/8";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 938D7A0003
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:20:45 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jd0ax0pZ;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781428483;
+	s=arc-20220608; t=1781428845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PTdII44FGFmJdbMtCPKaS2eB6vk6Xg9WicWBVorhrQU=;
-	b=xp+pwooHb1AQxlFat7qFXQSDR+3Mw2XW58GqD/soQHrARYYMR7oMk7gqCZjl+TJcK1iiSv
-	jZhL3L07xkDjkVj+0IBFvgZV+qG9XTKdzGkVmUSt9XyxheELW6k5RRuj6GrrSiBM+q52sW
-	YcnrwM8WUVy8H+SZxHEAVRwcMWAPC5o=
+	bh=jfnRHd5Yrh42NqlaThzTMtQX1FZRWVJGBOIMDcQKQys=;
+	b=3vEM0OtLTztDrSzB5hKitt096tDzJRIqIt+9hKy/LRIqGaGx1oKET4CoA6Y6WHijsjDz1P
+	QQ7egZO2YGitPnNkkCIH0nROKMW+ep6Eab4cw6hfAuPco1B/NTG93bgXmW5bbF7Qcqggxo
+	brbBIOFkJY1tlNN8i2+tQSaG6mqhTRY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UMx8Eb/8";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jd0ax0pZ;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781428483;
-	b=WWN8RreUiykVaJ0C4wNb+iTthlmGlwzkbDgW4sKLM+ehOYjxzIXbNsbgxsGJ3VAiA8ikoA
-	/BHn7oaS4pCWQ9HfjVsskCci7pDi2wCIM0NGkxHDx9WrnDzBFLsFPiCuJeTTpzIMJQZq/X
-	RzLIKDU8yODavh4tYUmTt1d3a7i6SkA=
+	t=1781428845;
+	b=z2LOfeDs2iy/OjcQSQ7gxwdikBGNz+fsuALJySDSn2OLUs+DSvwND8FYwqHT4HA70O8IzJ
+	+zV6Fv/SDK0nr4Mut1H9bXH2VphnBcNffsZwvE6Ul5sJcHxHD+VnAgxI+lCzrq/4Cv0D6/
+	4a5RjjJxkDv9LcOotCHPvWG55LFKwFY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C84FF44369;
-	Sun, 14 Jun 2026 09:14:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BD81F000E9;
-	Sun, 14 Jun 2026 09:14:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CC9E44058D;
+	Sun, 14 Jun 2026 09:20:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010561F000E9;
+	Sun, 14 Jun 2026 09:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781428482;
-	bh=PTdII44FGFmJdbMtCPKaS2eB6vk6Xg9WicWBVorhrQU=;
+	s=k20260515; t=1781428844;
+	bh=jfnRHd5Yrh42NqlaThzTMtQX1FZRWVJGBOIMDcQKQys=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UMx8Eb/8JnZEGxjCkj5fbSZIF8ouy/FZaJqolliub6IojIr7yzYw9OXytXU+YyLzG
-	 1sfXtl3YbiZTHx4pobKS44wrOe/9MYhm2tWwd31Ert3JNdVaXqg114iI+UWTuy4OjW
-	 eEq7hlRisAo9IafOG18VOinIoj/K4b0RqrIZFDM1y5lIoa8PmtHJeKDDrIZSW/aEVw
-	 WaSKWCYHK5mZ04tE5rKZ8HuRwYBK/0w2yG1YGIlxnc5hKe4rk9Nn3wgPZK3PHPflvl
-	 Us+XMr6qFdCT9iRh/a2jnmp39Sb0AR4c4PW9TiXmXDwBbHO7SOyAGNjWnkqwUDaRak
-	 h+seQ0Hl9eOnw==
-Date: Sun, 14 Jun 2026 12:14:35 +0300
+	b=Jd0ax0pZos8vM/cT6h3tqmuvBhokhbPiuG78ZaY1Fboi1lHAXCT7PvAWfR5sETJkW
+	 a6Le/DUi9vJ4WrNo/RxmMgfx/UiT7IWrO2T9ut+CY/Vsf08qdmihqnZlLk19t04r2L
+	 c86xCwlDnrrRKRr2CmFcgSCHmrWIOu5zagFAlLx68u0uX5zdt7fruHcDTCJTRe3EsB
+	 WCLiL/cnEpKju4MoCnibYzTLQyeE0gf9brggWwfjVDxfH69HdWWJ/M/nq8Ru8ow0pd
+	 2LFTQGCe0QYfL7Sy7b/gszdvkQAvz0WN3s8Uoq7yOVPfeFUfJqppJH9FFq+Tx1s6Nt
+	 w634YnFNIj1Cw==
+Date: Sun, 14 Jun 2026 12:20:39 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH] docs/mm: describe current criteria for enabling split
- page table lock for PTE tables
-Message-ID: <ai5w--zzNaUHuQ6S@kernel.org>
-References: <20260613221448.98657-1-enelsonmoore@gmail.com>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/memblock: Remove redundant pageblock_align() in
+ free_unused_memmap()
+Message-ID: <ai5yZ2AQp3gI21xv@kernel.org>
+References: <20260612031105.3350181-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260613221448.98657-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260612031105.3350181-1-zhen.ni@easystack.cn>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 938D7A0003
+X-Stat-Signature: wuzncmu53trtqkrghw4muhab9z7t8mz6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DA850C0002
-X-Stat-Signature: px5xt3qyo7nmk7ahx8rpgw7tusmeixb9
-X-HE-Tag: 1781428483-331235
-X-HE-Meta: U2FsdGVkX19bmCNkug9N3u5KyOL/ZBuRKalEGrIt+YxHLEC9DH84lrII0gnmtJ4MjwtA6IbN9rw8aJnVdGU7rVQaSseHCmCdcZrzy1tiA+3xZ3XOGLDcBFDo/mDdKnMSYnMg/Ydfiynv1c2FR8WcGORbJ3sVZqHc9aYqY80ABnwjkO6IDQPC/Uzot9M7wTQylR61PIBNRisdSBUD96dE7hoYFPcNcQ0bnV34iE6yxuL793o77O203KsfpmNEW465Yx/g5/M+ppQDlZjxgWIL39yAZwAEuKhWSbJTEK5SkUtxTnc8zxvWwQkK5kFDua3L2dAuHlDeyMXWlqZc4jn6QmKb49uj2bwLDYBUcMZXL+nuAT/MS7LlQY8G16BhysYrWAgU3iVvrREBCLsnkXyZQ6i5mLzlymXs65NPJvqHPt6txr7miKQsv51xFbeJTDRRNGbZQdX13a87Uu9Sozj1Y+520hkx538R84d9u1l/+Z9+3NHri3nLm1GkWQUsuDtxhfBuSASWMrRFgskcVpYYMTAY0DVtmUPIlB7x4kt6qjbr6+nrDjGAHbN/OltYFg0rk0J+UWBX4R1cJDP/FOV0knU6z8XjoXLIanDfwyNgDetXGUeEmGxedQ7VvgtNDnnVpKiENkEp8HtYD3+BUV+ZbPsvmcn08rxLkR9zFTtHvzNHNNXJl1wiGlycNKnDUGH2Jq24XJVXcyt2iU8yOAU1LdSOJLXTeQvfrLAyGdvmYXiWg8L+F+cc3dRJvQN40gPjwa2UfZxzDHXYwBCAY2UUnU+po1+BgjQbu3Gk8y/M+0TuuGEp6nWlotZc4PcDUL1krlQbz8TUZuQQlhZqkng8IrXGb/PLW5IcUGfEodvsEYdFjAITihL9R6L5Hzp8ktxrvI6flrGIFRWv3Ms0DVbs3b0+ZKNgR56q/H+NfAK/HXMY+LP216WPMxQ/0DTlWVtVpHeGB9r568jqL6C0pEN
- QsMCliX1
- ePx8mzjoSJACesClDmfhzCT2c5HJWrOwKREqdi4SHS6cixDFO1OgBsrXknhGmnIeCwkUEdXw0Y3thCabaxWh1GlJWDOV4qsHyF3aHY8AD0MTxMiOeoJKa3Ngm4G4u6IFd+/bZHUTGHbbW+8Lsp9v52qTnuxxio0vKI/3PPqNxAcrrQS2Il4QTYdlIRB0x76eY1lxt5fX6tFy4AE14cXLElwvavMkP11ES/uURKEqeGjwsdSbpwZWQ1+53rLsG4bTQfQjB+HPIkjSSNNtSYyq6deADPw==
+X-HE-Tag: 1781428845-243662
+X-HE-Meta: U2FsdGVkX1/wzogXp6rpQPpPJCObP8v7sqm4SAnVeNewOWFNtJP2m1bx4l+B9UQomflHaEsRGzcfUCJR5KTr/TpglkOhBy9Di532ZMsoNsFQIKdO/Dk6uGyqryxSe3MmUj+KgulGXCAUtDMngUQSNc93FNKrmtZpkiUsDECkcvB8YULVFPAsrRbEaGGqUd8Eqpcgbu5RQ2hPviiMcSfRF8oAsjTqKuNP397vzVap+kOvO8T/x7uYWUMvCUDo3r35zZUIcATGGjZz/UvNNc9I1yXuvTVtInscajijrIKWc72eVKeg/qk1b41bAWwEeUl3riQCW0Y6YU8xfNMaJeJXugxr0jmD7dkbPwbdCekFALvHOUZJpgecLSIBBce38AnhH0zNaVfDlQowbm4NXmDoX0sRZIm54Py9rGHWifIP6QWWWFWxr5u+x6q1dzns+VbJ3+pSH9885LuW1P9hOEiFjCAvoAT2qvVIL7hv/7aBLoa+Pg/Vst7mWFDOIaL1GPxJvsW0fCvn5WIP/rd4NfF64Tf9/sKEPdkM7C8nCGD/y8/bnWTrE9v9P2jBbqKqC4jl9U+/yQudWcPLnCLJdpnH1HAkMm5HRyCMMmtu6+OgbfDjLagnj+Mh3rpBDpfcbOoD8Y0LzOThJzn5vktnW9m2S6wRe4CMvAjWWvB2urL6DmSlZu197Yc0+k6gRb8oH/n+ZlWhNP7AGAr3GwVUEGYxj1PBNJMhcz420L7hSozaEyI2TUJdYU7mkEhXN72jIlw0m53almxHD1PFmxaIgevuA8OduY+0Q+7ANDqdhv00lEUtHYqUYGFXrvAC7fqA7XmUWdD5RHuDj30Wh41HvP16KP2Mrv9VAp+m+uBumPZcaxJkHRm2IdJaKIut86X2a65DfAfg0MRpjitijfzLSXapoyN2hVupBHCTnB05gdieiAyrvFENa8lboF6lhSVG+x7kvrJ+gInrj3yu7P0nU4y
+ uZSG5vLD
+ h4nhVaZNrnj7BeSYCjQlM9sMVyfRj81Fe9nUwHLdt7c81sNif98NbAoGqRoM8IJVlT4xLFLQObJzhUbcf46GfgOZMOo1WWqgSXfYgn+i2e4RBROphswsejPVis+ffFNOM8CzGHaopi2EkNdY1REGd3iLpS1a3a+fQjGGOQ0hmz3rex4GApuvX6ZOyYHYzC0UfoDVCX21l/BTULxYPoK9xXGEhYWVcNUszXCQBFY8n3gIbupuYqXoU6bNSdrID+nej94ht3eQzt3t9w8pBvmnHfCohjKPvFDS2OX6yfRRS/i/RVog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +91,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 13, 2026 at 03:14:47PM -0700, Ethan Nelson-Moore wrote:
-> The mm documentation regarding split page table lock for PTE tables
-> refers to the CONFIG_SPLIT_PTLOCK_CPUS config option, which was
-> superseded by CONFIG_SPLIT_PTE_PTLOCKS in commit 394290cba966 ("mm:
-> turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig
-> options"). Update the documentation to refer to the current option and
-> document the situations in which this feature is not supported.
+On Fri, Jun 12, 2026 at 11:11:05AM +0800, Zhen Ni wrote:
+> The assignment `prev_end = pageblock_align(end)` is redundant because
+> `prev_end` was already aligned to pageblock oundaries inside the loop.
+> Since pageblock_align() is a pure function, calling it again with the
+> same input produces the same result.
 > 
-> Discovered while searching for CONFIG_* symbols referenced in the
-> kernel but not defined in any Kconfig file.
+> This line was added in commit f921f53e089a ("memblock: align freed
+> memory map on pageblock boundaries with SPARSEMEM"). Remove it to
+> simplify the code.
 > 
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+
+I queued it up for after -rc1.
+
 > ---
->  Documentation/mm/split_page_table_lock.rst | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-> index cc3cd46abd1b..c9d16024543b 100644
-> --- a/Documentation/mm/split_page_table_lock.rst
-> +++ b/Documentation/mm/split_page_table_lock.rst
-> @@ -37,9 +37,12 @@ There are helpers to lock/unlock a table and other accessor functions:
->   - pmd_lockptr()
->  	returns pointer to PMD table lock;
->  
-> -Split page table lock for PTE tables is enabled compile-time if
-> -CONFIG_SPLIT_PTLOCK_CPUS (usually 4) is less or equal to NR_CPUS.
-> -If split lock is disabled, all tables are guarded by mm->page_table_lock.
-> +Split page table lock for PTE tables is enabled compile-time (via
-> +CONFIG_SPLIT_PTE_PTLOCKS) if NR_CPUS is greater than or equal to 4 and an
-> +MMU is being used. However, it is not supported on ARM processors with
-> +virtually indexed, physically tagged caches, PA-RISC processors older than
-> +the PA-8000, or 32-bit SPARC processors. If split lock is disabled, all
-
-"it is not supported on some architectures" would be enough IMO.
-
-> +tables are guarded by mm->page_table_lock.
->  
->  Split page table lock for PMD tables is enabled, if it's enabled for PTE
->  tables and the architecture supports it (see below).
-> -- 
-> 2.43.0
-> 
+>  mm/memblock.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
 -- 
 Sincerely yours,
