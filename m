@@ -4,147 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E69CD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 14:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD86CD98C5
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 14:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73FD36B008A; Sun, 14 Jun 2026 10:01:13 -0400 (EDT)
+	id 26D316B0005; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CA1F6B008C; Sun, 14 Jun 2026 10:01:13 -0400 (EDT)
+	id 21ECD6B0092; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56AD56B0092; Sun, 14 Jun 2026 10:01:13 -0400 (EDT)
+	id 10D006B0093; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4168D6B008A
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:01:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBAD290F96
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:01:12 +0000 (UTC)
-X-FDA: 84878679984.17.BB06523
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BA7184000E
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:01:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NEKhsFrd;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id F0D8A6B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:10:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A936F8EADE
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:10:59 +0000 (UTC)
+X-FDA: 84878704638.05.257DDDC
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CB684A0011
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:10:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ao8JvxSu;
+	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781445670;
+	s=arc-20220608; t=1781446257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fF8u6DKkckQuJavK70W0G+qrxbgEHWN1DTuCSFFIGv8=;
-	b=2BEWsS8/1X1UM9vUEJD5sRBfjSaZ0yYN/NwYkQmSa4eZKRSayG3BwTU1A26E8xuw1xLosF
-	fvDRLzxF3p8i9QTnOw5CJTfEgAqlm2JtaOOMuIgdJEu3Xbenn7OqMqkUzqrWKb9vtKdD7g
-	ZCXgFf6z0GSnBlkjEPsgda9iG8pq7J0=
+	bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
+	b=XZ9D2eR82mX3D8aXnQbNs7nwdJBzCTtj8lLwB0esyElNnwgGhptlQ3E5uL8knhP5uYrZed
+	8Knl0U4p2DAafo0GR6ClQ41UDhRw34+pXiRvPgkgC9F4HfzTK10nRukr6Ehs2GnoVgCQmE
+	WyGzBRcRSXlUL1llqM46uLuLaUTL9MM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=NEKhsFrd;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ao8JvxSu;
+	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781445670;
-	b=v8nU0jCrGqF8G0PAJK2N5MtwaGsKQ+TOXGVne1x0lsU8KeB+8WI9Pnj1tWpcz1fAi1Aha5
-	WfUatFJ7tRevNROVGn5CHsabrztGDviYBTAl5Spp6a0a0I+9naWDn/7dJ7FG6p/QOKLlcW
-	wyB5BRRXtsfs1ifC4xUaXlBt/7YTrW4=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-9158fbaa4bbso290955385a.1
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 07:01:10 -0700 (PDT)
+	t=1781446257;
+	b=kxOOr0/v+icOKjmtoNn3ARGaR4p6u/vbPXGpYrjnqo+63bukIoeLqaMDJrW4dc91sSGNTq
+	8FsRMgFnHqlXY/nqlCMSz9ONZUrscdXPKYelReb751cDRfTH7ItMz7cyHlEnv5hq9DCuUK
+	GlFfzLa3UbapQ36E6/6cF3BYiLFTLxU=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf2d865383so81075ad.1
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 07:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1781445670; x=1782050470; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fF8u6DKkckQuJavK70W0G+qrxbgEHWN1DTuCSFFIGv8=;
-        b=NEKhsFrdQrn2eUZ2S7UY9eCjVgcNStPmkzuWO7YqqSC4zRrkSPI9IdMEjprqJlju1t
-         UY9Gx2///C+Jsdz8zR4mOdX9p3IU9nwmQOklosxMnEm3aCd9OpDPlNqHJLFBBXLQ38yX
-         +KltKkc1JXlkvpA+qka3cFfZF6V1YzSX2liVsMBTkcXguMO8IDS0j+/CBHffjbwZgpiK
-         tvG05t5qKaE5P6qztk+G5YJ0uuRLwn0W3xIDtU+6BiIsUoE0cZZs+T+sdFXY6ALjxMVU
-         g4XwCcx9dOKOH78mk+d4aHZMhjU763NR/CC8uZj/ILQoJ1TRR1cqc1J/MY3CQQ4OWGC0
-         FspQ==
+        d=google.com; s=20251104; t=1781446257; x=1782051057; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
+        b=ao8JvxSu7+mUM8mkWnhFOlSiflgXMBspsMPwfGBkthgJk22k/M2O+FPlcoBGLNEylE
+         xaF1gDdf+8er5vDnfzxHz/Zct9k84sCoJzSOhycyf9VgOZuxWjRKPv0mm2IRV8R8Nd+X
+         Wrf9AXlBqF+USrqMDKJsHfPr8pKORggOlmVaRRpOdtz4bxgsL0J3BpQNK9V/jDikwrAm
+         T4Yl98x218GmzXEmBj8sBv7+CIBr/OtfPfjft43IPp1R/3w9SAqL1BNi7o+yUFcLrSAO
+         oSY8WRxQwredwi2bwSRRcxcams5Xcv4QM0ABAJhUw1UOL8vEHsilgKU77ZAev5Fc9m6Z
+         QL4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781445670; x=1782050470;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fF8u6DKkckQuJavK70W0G+qrxbgEHWN1DTuCSFFIGv8=;
-        b=KlNFWX4n8q77IN3mMoWOTjL3208yzjKeASzl3JzrZUGBGX0+b1wb2sy3rjHD2jnFTi
-         TBEvO2kbFFBc6mfa7PGm4T60bQtB2TZSuLfye0eu1H1vCMRCKcs096+8UbRmvoabDA1l
-         /cCPw34oju5eTGZMw1fqILRTMsoDGPP7JjarXPTpMGVNpOEbIebkuP7I8RoTmgmou+/+
-         4UlZHv0z1qdnQFUALFJtAYSWXUiZdr8HpKluX/ZSLM3CIe/VZJIz9g0o/6QoOeV0+Vtg
-         B5xFLrNhmmAiiJw9icSrabRUwUctLX5tPoFXol3hYsFvC3E4NsNGCsClzIIOWJF6b9+i
-         5tJg==
-X-Forwarded-Encrypted: i=1; AFNElJ9nhLcDrUHMoqPEO/sKxcj6y0CYs+JeKe44uow9sv+nRXmYsyTtG8Bg5vIRS0EOIsAuJktJjMPn7A==@kvack.org
-X-Gm-Message-State: AOJu0YzREfEF8pRMlsvK4qpRVDTDnDnWhO2sl/w+BHWi/fCUEGeYoRcK
-	rPKqicVdR2JdWOE5rHUEndLAVcabojkrSS7Xrv+zfT6slKSFViKxht0vF99tb+nc99Q=
-X-Gm-Gg: Acq92OGJ49a7ChtA26xZVh5UvivNlJSjAu2r3pcS+AJPz3AIdTXxBB6Qul1qVDYGLuA
-	3sOb2e+L0NUZXs2bI1PZ71ZyZXwM+8Rvd+rSsiSZYcq0emXM7MWCd572KOcMiQnfWxK4/Defxdh
-	6JmYfHMmy66EngsFntyBYWWIwotp4f33uHnEsccjmixYgC+OW5DMmi5+TOkm9/5gV+8TtUhY4V0
-	xNgiQQ3+OFIg4NNRBbzKg7eQbo21JWl+h6aXQead320qeBLcY+uIAiJU9xRcJ9VATVlkVzlwGW8
-	o1cBkA3Aj3t42k+EsWHPr9TbZOLhNGVQ3PEussJtjapcRUznc0CL0nO6y0Kbknw148lJ7wfoQli
-	48mLNnrNY4WbGAd3jdokBy0JBg8o9DrgI9zW+wfeAqswIqr6bm7rj0K0h8o/GbIybAPHTKkDa4k
-	O/rg3a1toLaqKPnzK6tGKHWJ2u+9i4AvAp8rSXvgh1/o+/U/76iOtEGRQOUizLfvw6ZNJKhjw=
-X-Received: by 2002:a05:620a:3705:b0:914:ac45:a98 with SMTP id af79cd13be357-9161bb03ad9mr1608583285a.17.1781445669356;
-        Sun, 14 Jun 2026 07:01:09 -0700 (PDT)
-Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f05fe7sm806892185a.12.2026.06.14.07.01.07
+        d=1e100.net; s=20251104; t=1781446257; x=1782051057;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
+        b=n1blM/NCaYjmmNlMBwTtfn/ED811DT5/Y1LUpfGe5yfs0SkO1X3PMrt5hDegC3Iw6r
+         4SbhRlZ39MMy4sK2ofC+Hl/SptWinOE0xY/+m289DwkpXij8v9KKV4yudd8LGd0VvnEA
+         Ed9UzlGXROO/EBKZ14ikspu7bJ/FPbijhsxQF2V5MZCB0k3ZNDZtlnasKJ5C8gNwJVA0
+         viL4AOTs9HK90a0bjAtZqcTz9NdVxjHxtVBRphDtiPSZQP3TksyPGsKpbs6QdkBh4/9O
+         eDPm+uxnJe1HkcRJLZRbY6I7JNEqtdR/gTHAKM65dQiwC6QfaDZUnbo8zkuV1mmsrkRN
+         Fukg==
+X-Forwarded-Encrypted: i=1; AFNElJ83auz8sBoXoloBuztMFYGxZlJRr5G44ZDswHfUrsyDCYVC4fwU4NfWjhkG2lD9/xDA/aYDT/fuEw==@kvack.org
+X-Gm-Message-State: AOJu0YzOFONhI1r8F3RYgtOqjkWohRD32mRIuESnWmBfQhEBl8O8bMXI
+	OF6RBYLrQPZO0m5yItR/FvdyOGpRzrADn2LX577uzKTJtLUzAXnAAVmpgbWDk1k7JQ==
+X-Gm-Gg: Acq92OHsskNmyaMBLYuwafQFQBapQ6woPWuB+XJlB7vDi9yQ4Ewujvl3dufhEsULOPM
+	wjGXDzX6ILFu4PpNro3+CxAYVchuoVWD9Yj6Yu9cU+LLFqDSEMd+yujHSMxCPKaea4BS0BrTLkx
+	KaPS8/qKlZrzvWaxL4WX1AQhOPWBNN3n4bOZP488NhbSIzRcCSzGQ+eVWJFFUH0wWnOzPZfB1/7
+	V52Gwz8GMibmEiDa6euf/Jeqw1PXrr665QTa5WVU00T/yQkJnQcNTQQg9KfSAH5+qsCNK3E1b32
+	1ti2P6LRROIffy9t9/cyBbm45fJC064Ao0BZIPuqMttLGo2BOiXIsri61JtIsJVRAgMdPciN3i4
+	AV4zXioOQNPckZEgAW1OOGzJUyQJf4dRkJzI7N40ByEOCku7kIHTuv9qH3hzlU06BHGU7Qcbftn
+	LNDjqMLjtx280AASHnBY/G6XFXsnMi9No+rKRPC3PGQLMpzvA9/SwX50n6rQxc9yU2b8dg2xQgY
+	bob9WLX+TtA7nvD4Yy5pp916F4YvnyP/Bv49DOY7Gwn5w==
+X-Received: by 2002:a17:903:2d0:b0:2c1:ee6e:be1d with SMTP id d9443c01a7336-2c665ec6cc3mr1663605ad.27.1781446256310;
+        Sun, 14 Jun 2026 07:10:56 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a233f4531sm7699437a91.2.2026.06.14.07.10.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 07:01:08 -0700 (PDT)
+        Sun, 14 Jun 2026 07:10:55 -0700 (PDT)
+Date: Sun, 14 Jun 2026 14:10:50 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Todd Kjos <tkjos@android.com>
+Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <ai62ap9SS3KTpqeR@google.com>
+References: <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
+ <aipphZ5iCnbXVNSR@google.com>
+ <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
+ <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org>
+ <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
+ <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
+ <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com>
+ <CAJuCfpFo_avdhpOviX7EsPqLgDJ3DfeGpth+yu1-ahfawqaSzw@mail.gmail.com>
+ <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
+ <aixi-DxMuc0MiGeO@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 05/12] PCI: liveupdate: Keep bus numbers constant
- during Live Update
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
- David Rientjes <rientjes@google.com>, 
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-In-Reply-To: <aiQAJRINEKiwCmVm@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-6-dmatlack@google.com>
- <aiQAJRINEKiwCmVm@google.com>
-Date: Sun, 14 Jun 2026 14:01:06 +0000
-Message-Id: <178144566685.1266136.10385355007970146916.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4053;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=0/f3k6YhFFNYqylgqcMG4vpeDMtx34OA88JRI3jDl7g=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqLrQjWixclC4MmfNpLIwWFqBCFzofhX0Jr8QQJ
- bpVL95JpeyJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCai60IwAKCRC7dyhM23N6
- 3kUaEACol4WdgDqN/9YA64JobY3TtWyKckwy4VgKxaRGy/1HiRGiXX5khGnvPxf/QUt2GqkrOAD
- 9bfcRjR/HmwRhjEO8hkWUhHd5uwowgrsW2sn3Y0fs3qD3jwY1OCZ9WdrkMReE8b3B3ii5wzbOQd
- +dlUHARMl3hjaiT9TSaHtHOkmSDKHM1UKPlzTWRDrCmh6+LnpuOakhfPOKFldJYDgw/YIBKmZQG
- +YIWAWmBPRFGkUgCD9FoglbeuyIym39QFmBpPde0isIetl86PwQReKOb5H2Zi+aD+mm4ine49jq
- KLbeKAxjqxMj1cXWKk84Xe40fr4H4wkU4vsfGH/eGK1o3wiQVoBbu2TPp1LCeB9N0cNWCVE9DH0
- 7EizDfLEBK/1DKZaUprLyucUu/eA2S/S254GS3Jn5LDRzlNOj1al3yHR68VyCLeMWcZA/VgxYI5
- dqQYd/bN6gOvwDlFB/xexPatXErOhIo0iGC1i84tXL4C1OQEi9uIY1CtDZ+Ztv0pgUNlVOhFyGb
- kqDZniluCNmnn8OGPvNMZz+sCPJtmqQBEATH2Hv8dlOdlb4s8lSUeGD1aBMvKPKB5Bh0hAczvNh
- Sj5W6biG4ZUAj1L8BivCr0gTvsEJ2WSr9VMRTzsZ+0+dMV96HGvU4RyHQY7IY0Mx6kLObjr8TRS
- KOqR+oScoluku5w==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Rspamd-Queue-Id: BA7184000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aixi-DxMuc0MiGeO@google.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CB684A0011
+X-Stat-Signature: sh845wsehr5xamy9y15jmkqnr1tfy117
 X-Rspam-User: 
-X-Stat-Signature: 9daoaqd5ccjsjdhrrgf8th1nckq3e48z
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781445670-675382
-X-HE-Meta: U2FsdGVkX1/IF6em7iXAn+L9hBOCrS9gKYuf0a53/D8t+eI+vJpGK9RchGbUorlIEev1pJTdI9xWcUsIaU1HergzHe23XxJ+G27Y6SWxfPAzgbdzMvTeQCG22/XSh8rJhq3SLnHEclh3wxV0qLUC75Az6hlO+V3s8OdyVRGpW6FGYl9I4gSVtvVIy23ngWxMYPi7TgCV4UfTmGTj4r3bxHwB/gXZ20YkbmnGI0VZU7+ETNvMomK9myhBRSt5E8U941ddw+uSgftNbBTSS+J0XbaFm0OuHRkleH3G6C4b0R3TO8MBIhmXa2ow1gfy4FFJgWDJwunmSIJWh9sRJHmEhww8GeEawkz7qZ3WyW60i4RGgMX2QSsl20K1stNsuyalrI4xT/6Qv3LFWsWLg3fuWKLVhSOrtwtODbmG3w0pao63Ja/r9nJOTWEWlf3wgeEegof+8kJJ/4v6SFCAXPvOlBUUmm2sezQn41dcxSarHqVAEbz/uIhnqcTePaXwisKKjA/nFdWUa2mkLxT5MjXxe6zzbwVempsxCJu1rDleOChJumkU80l7rPsbrX2Lv1eu07mciXpo3Qd1ETNXT4MGA7poizsuUvCv2XnLw4F2SCcfFI5cHSB+ML77VKO/Fm47s9AzN29nQ8QE2PhngJfFZutGbAwLPNfxvpJ+oH2r3V43zaK8ehRI28AVv7iFHQfgN5Zaj5a+rowtEflJWet1kKMnnmobGzTTDG9j8oqrWga5QoaZ6ZasB0ySaHlGs6u8mMg4VjkRsfTknmnOHiEhnvQFIgVMqPZZsTRuENMnph0ShNQJAWMrmwcpgwIKobW+55q6R1NGDz8qVc6zm8GkxSj/b2BePvRc8O0T3cxDxOS9+LhA7K6+Mgcqe6teuUSUEjKnpjEBKaFa72ter6ZnSZ7txPYxB8CvhGtWWqluh6iJ+jD1kmOaSAx6tzvMrl8KzH8gzd8LY2svh8LIGEY
- aTx0bnvL
- PG79ffNRvnYpvM7/CH1HTG5jE3RAuaaWf8XNvzkBgWSoZPTuKg3tQXXYpz8gTpq5PH5V+biphKx53Ca0HDAsBATGp3LPWX+XyqbPueVpyJIN/oFzS51TMfbdaR2SnwKZ6Sw4bs9AiIP9cy6G+fNsDqHxKPlDr9h/295WkAu7uaa6uWObhSbibfnE7jgeTyEAoGXo42jJw3sta61XE1pVRAlfUdP1JLyDFhE2npo1KR/iqeKsLxCr+QFRwzuEsGlZEBkhmAXpZ7Hyqm9Cti67W4Ts0+rz6Nj3BlQIQ6irWXp0zzX0=
+X-HE-Tag: 1781446257-172867
+X-HE-Meta: U2FsdGVkX19VmK413Ymj7k85MLiUv3kUFOpiFnq+e1PCHM3fzN39ZPQsnM/I8lDgFBVxKNbm0lVVjyRUuVtbuUaCvotYu+h0p3PuRRtcRNWDpC25HC5QRIrURGkxMjg7kTmkWi1BKjxrQ1/EvNf2bblynYtY4PhhH1SOhjXw4GJ2hZTQb0cxMX4imxLCSxMO2Q8yAxpANPcjSBYmVOKiPds6aGTAR6vd6oz30VPv7OTEsfqkgqQo0vDavAMqbZVqvOBB6RuKGVWOEb3m/eYYnnTzDoNezxWgYCdEgtKOu/aSyL7gJR7nox72K3/l/TlYV6yL4H57ZU38hnR2vFqesnrEZwcYXFnhTutRhmoENov6583hCwbjCYwXPpw6T5ZgMcAt8drEpNVQ7aDFl1XH2Dtwv1VdcA8FryPdCodL108H+Wu19e5V7vCQI+tERMdgjRD/bTJ3yNAQO/1Zgbkjiczsdg9UbNUYUUKtPkW1FLmgeJVgtQcEW9XUiWe6eBwBk74tqyzS6xqsyheQdq6fzg9QlWusrg/y/w72mrqR+kOpRk9F7ErGgoNc5/RjNIacoE3I7pLW/yxDqU00yn8rL1hX1vXHrKInPkYNcKgpvzjM76mhwGQ+sfr/wjP4iSjav+1fPhHsSFjlhhAv8Aww9ci9RAli2iVty/unmxIbnq5bATDPNWu4tlBEqzXpk2K4xwt6zZYBCB7pXIrGYGUWqzWsNj5W4reiBIXub/RCgJCnspoHaq2CiUuc5zydCJ4fMWwcXhIQ+zRaci2QvKRLSDcC6Bkc6fu5EfqiMR81mf4RmMez+D2ZTLUXuOCC9ljK1X23cC+aHhQiYdw/Tk8ZOTbo5CSFm43KCje+VCFVISm58iyewirUjZd7xKZOhRtR+MBjts6sIctOFuVxq2iV7DxwkkDWrxVXGzhNdfT9nmPLARdoSNHhHlpJE91gvQU6Q3rUSk3r0SyPW5TJiyQ
+ +62yO9VX
+ HvMRyZ3lze9bS1m44y0LPvllx84ti6lkeJce2SAHudiCHNpOcoiAqqlFuJB5NNOL7K7/y+vSE3bMSyKLe2wC3xhssGXeiNnhMi2ix+LoF9hpV+VNlb/Ojqni/rTSqogIeUpgSe12qgPkJXVJ11/C047bgnRYzJUbnGPoAiAyMyTKoGyo7c9YkNe6REDrqSo74LsFZ+6rnoNgem38bNC+JjrIKg9tb1XhgcB4St7pV96oUJWoPQ3Xfswmh5AAH0YtBPgXeiwEmC543fQqKvR///nb5IGnLr0hm7akdNuwYgPvMA1Av+Y+ffG38fSWfm88JSkjT56DL6GHBbN1awqf5hJoUS32K4IjuvjyoqqrlcHpl5Szk99b4N/9XGPe3je8uyF7UWxscmQVbt758dQ+g2mRZFF/3VI4cGgwRMIYYpafjbMHVn8WopC0t0TU1JYDWvr0I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,121 +139,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-06 11:10:29+00:00, Pranjal Shrivastava wrote:
-> On Fri, May 22, 2026 at 08:24:03PM +0000, David Matlack wrote:
-> 
-> > During a Live Update, preserved devices must be allowed to continue
-> > performing memory transactions so the kernel cannot change the fabric
-> > topology, including bus numbers, since that would require disabling
-> > and flushing any memory transactions first.
+On Fri, Jun 12, 2026 at 07:50:16PM +0000, Alice Ryhl wrote:
+> On Fri, Jun 12, 2026 at 11:47:59AM -0700, Dave Hansen wrote:
+> > On 6/12/26 10:44, Suren Baghdasaryan wrote:
+> > >> It's not impossible, but I do think it is irrelevant. Or at least that
+> > >> the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
+> > >> means that the binder VMA is gone. It's not in the maple tree, and it's
+> > >> not coming back. If a VMA is found, it's an impostor.
+> > > Right, but before your change we were bailing out early. With your
+> > > change we would be generating the traces and freeing the page. I think
+> > > that's a functional change. Was that your intention?
 > > 
-> > To keep bus numbers constant, always inherit the secondary and
-> > subordinate bus numbers assigned to bridges during scanning, instead of
-> > assigning new ones, if any PCI devices are being preserved. Note that
-> > the kernel inherits bus numbers even on bridges without any downstream
-> > endpoints that were preserved. This avoids accidentally assigning a
-> > bridge a new window that overlaps with a preserved device that is
-> > downstream of a different bridge.
+> > Yeah, it was intentional.
 > > 
-> > If a bridge is scanned with a broken topology or has no bus numbers
-> > set during a Live Update, refuse to assign it new bus numbers and refuse
-> > to enumerate devices below it until the Live Update is finished. This is
-> > a safety measure to prevent topology conflicts.
-> > 
-> > Require that CONFIG_CARDBUS is not enabled to enable
-> > CONFIG_PCI_LIVEUPDATE since inheriting bus numbers on PCI-to-CardBus
-> > bridges requires additional work but is not a priority at the moment.
-> > 
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > ---
-> >  .../admin-guide/kernel-parameters.txt         |  6 +-
-> >  drivers/pci/Kconfig                           |  2 +-
-> >  drivers/pci/liveupdate.c                      | 83 ++++++++++++++++++-
-> >  drivers/pci/liveupdate.h                      | 14 ++++
-> >  drivers/pci/probe.c                           | 17 +++-
-> >  include/linux/pci_liveupdate.h                |  4 +
-> >  6 files changed, 119 insertions(+), 7 deletions(-)
+> > I think the existing behavior is buggy. It also complicates the goal of
+> > removing the mmap lock fallback. I've broken that behavior change out
+> > into a separate patch. (attached here)
 > 
-> [...]
+> I think you can just:
 > 
-> > +		incoming = pci_liveupdate_flb_get_incoming();
-> > +		if (!incoming) {
-> > +			dev->liveupdate.inherit_buses = false;
-> > +			goto out;
-> > +		}
-> > +
-> > +		/*
-> > +		 * It is safe to sample incoming->ser->nr_devices and then
-> > +		 * drop the rwsem since nr_devices will only decrease. Thus the
-> > +		 * only "race" is that the current scan will be overly
-> > +		 * conservative and force bus inheritance.
-> > +		 */
-> > +		dev->liveupdate.inherit_buses = incoming->ser->nr_devices;
-> 
-> Nit: inherit_buses is a bool, while compiler will handle it correctly,
-> maybe we could:
-> 
-> dev->liveupdate.inherit_buses = !!incoming->ser->nr_devices 
+> 1. do a lock_vma_under_rcu().
+> 2. if it fails, check binder_alloc_is_mapped().
+> 3. if still mapped, return LRU_SKIP, otherwise behave like a failed
+>    vma_lookup() does today under the mmap read lock.
 
-+1
+Right! This is the same suggestion I sent.
 
-> 
-> OR
-> 
-> dev->liveupdate.inherit_buses = (incoming->ser->nr_devices > 0)
-> 
-> for readability?
-> 
-> > +		pci_liveupdate_flb_put_incoming();
-> > +	}
-> > +
-> > +out:
-> > +	return dev->liveupdate.inherit_buses;
-> > +}
-> > +
-> 
-> [...]
-> 
-> >  		/*
-> > @@ -1497,8 +1501,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
-> >  		 * do in the second pass.
-> >  		 */
-> >  		if (!pass) {
-> > -			if (pcibios_assign_all_busses() || broken)
-> > -
-> > +			if (assign_new_buses || broken)
-> >  				/*
-> >  				 * Temporarily disable forwarding of the
-> >  				 * configuration cycles on all bridges in
-> > @@ -1512,6 +1515,11 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
-> >  			goto out;
-> >  		}
-> >  
-> > +		if (liveupdate) {
-> > +			pci_err(dev, "Cannot reconfigure bridge during Live Update, skipping\n");
-> > +			goto out;
-> > +		}
-> 
-> Quite helpful! Thanks :)
-> 
-> > +
-> >  		/* Clear errors */
-> >  		pci_write_config_word(dev, PCI_STATUS, 0xffff);
-> >  
-> > @@ -1572,6 +1580,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
-> >  	pci_write_config_word(dev, PCI_BRIDGE_CONTROL, bctl);
-> >  
-> >  	pm_runtime_put(&dev->dev);
-> > +	pci_liveupdate_scan_bridge_end(dev, pass);
-> >  
-> >  	return max;
-> >  }
-> 
-> With the minor nit above,
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> 
-> Thanks,
-> Praan
+...
+Also, I would _prefer_ if the commit message was more accurate. The
+mmap_lock fallback was there because of "compatibility", as per-vma
+locking is technically behind CONFIG_PER_VMA_LOCK. This would be the
+only part that IMO describes the actual reason for the change:
 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
 
+Cheers,
+--
+Carlos Llamas
 
