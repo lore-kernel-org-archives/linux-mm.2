@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53E58CD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6EACD98D2
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5144E6B0096; Sun, 14 Jun 2026 05:08:48 -0400 (EDT)
+	id 0FD586B0099; Sun, 14 Jun 2026 05:14:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C4766B0098; Sun, 14 Jun 2026 05:08:48 -0400 (EDT)
+	id 0AE736B009B; Sun, 14 Jun 2026 05:14:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DA446B0099; Sun, 14 Jun 2026 05:08:48 -0400 (EDT)
+	id F06C46B009D; Sun, 14 Jun 2026 05:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BFD06B0096
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:08:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC244140657
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:08:47 +0000 (UTC)
-X-FDA: 84877943094.04.0E0F651
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 537B31C000B
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:08:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JmDgkLjt;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781428126;
-	b=K4zo+BJuWbbLBe2ENhyKqX/eaQdIU17O8ZgSIMeqmPAPDgccnFTb76rbBaibbEI67gNb6v
-	003SJLuycfsqnYlOmegW5F2Zs16whjF0fppCpnxIEYXEVn9EwyuFwMY04HrcmtVfk48hsp
-	sCXcc6I8QXRUt2hEezwUzblJrXgQ9u0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JmDgkLjt;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E2E866B0099
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:14:45 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74F131C2C1C
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:14:45 +0000 (UTC)
+X-FDA: 84877958130.06.85B9583
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DA850C0002
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:14:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UMx8Eb/8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781428126;
+	s=arc-20220608; t=1781428483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9LYN2F22JfxLMFILRwK47fnnXK4CRYMdn70feq0hkAU=;
-	b=57txYHgKXjyVfhsM9R41rlrXT6XbU1hEqnTc55SniiB257ifQy6kcYiOOXdWCu+qh59UO6
-	MsyObss64ED/xeuJM2EwX2Op+eHG0xjk9EFAXjexHztkwK1xl1aL+YwGhE6FtGql46ibJg
-	mBUvj6o1N2EngKjONQajXrHbhKkLsqA=
+	bh=PTdII44FGFmJdbMtCPKaS2eB6vk6Xg9WicWBVorhrQU=;
+	b=xp+pwooHb1AQxlFat7qFXQSDR+3Mw2XW58GqD/soQHrARYYMR7oMk7gqCZjl+TJcK1iiSv
+	jZhL3L07xkDjkVj+0IBFvgZV+qG9XTKdzGkVmUSt9XyxheELW6k5RRuj6GrrSiBM+q52sW
+	YcnrwM8WUVy8H+SZxHEAVRwcMWAPC5o=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="UMx8Eb/8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781428483;
+	b=WWN8RreUiykVaJ0C4wNb+iTthlmGlwzkbDgW4sKLM+ehOYjxzIXbNsbgxsGJ3VAiA8ikoA
+	/BHn7oaS4pCWQ9HfjVsskCci7pDi2wCIM0NGkxHDx9WrnDzBFLsFPiCuJeTTpzIMJQZq/X
+	RzLIKDU8yODavh4tYUmTt1d3a7i6SkA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 804EB6008A;
-	Sun, 14 Jun 2026 09:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CAE1F000E9;
-	Sun, 14 Jun 2026 09:08:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C84FF44369;
+	Sun, 14 Jun 2026 09:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BD81F000E9;
+	Sun, 14 Jun 2026 09:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781428125;
-	bh=9LYN2F22JfxLMFILRwK47fnnXK4CRYMdn70feq0hkAU=;
+	s=k20260515; t=1781428482;
+	bh=PTdII44FGFmJdbMtCPKaS2eB6vk6Xg9WicWBVorhrQU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JmDgkLjtoZnLFZgAtR+vHMK67JuchCave9VSHr4gLxyba74SghnllzjeHu1vbkQOW
-	 XMApUd/vQy4am3/StkR3hL+lROIGeGWOtRo949v3aVeGb9zi8sfmGMdbwQGgC7T5fH
-	 i2A7clnIf1ZvlIDh41v0VNmHzZq2u55//0upr281SoxrShLFRXxfcU3mk6AJIyCr5N
-	 5YyVO6Fsl3tlEDNaZeeEUxHQTAN0b3oc9b8C6+IfnDtEEgxEseTYT2914AIAMH+r7c
-	 dqZeXh3ZbKvgMrRtOx1GuOwyKd7+ZYYMYz5+bgKsStmqg8oZrwzNSzAbLtGPuV6pkV
-	 xPkPs0FBsBsuQ==
-Date: Sun, 14 Jun 2026 12:08:31 +0300
+	b=UMx8Eb/8JnZEGxjCkj5fbSZIF8ouy/FZaJqolliub6IojIr7yzYw9OXytXU+YyLzG
+	 1sfXtl3YbiZTHx4pobKS44wrOe/9MYhm2tWwd31Ert3JNdVaXqg114iI+UWTuy4OjW
+	 eEq7hlRisAo9IafOG18VOinIoj/K4b0RqrIZFDM1y5lIoa8PmtHJeKDDrIZSW/aEVw
+	 WaSKWCYHK5mZ04tE5rKZ8HuRwYBK/0w2yG1YGIlxnc5hKe4rk9Nn3wgPZK3PHPflvl
+	 Us+XMr6qFdCT9iRh/a2jnmp39Sb0AR4c4PW9TiXmXDwBbHO7SOyAGNjWnkqwUDaRak
+	 h+seQ0Hl9eOnw==
+Date: Sun, 14 Jun 2026 12:14:35 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, x86@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	driver-core@lists.linux.dev, kernel-team@meta.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
-	lenb@kernel.org, gregkh@linuxfoundation.org, dakr@kernel.org,
-	akpm@linux-foundation.org, rdunlap@infradead.org,
-	feng.tang@linux.alibaba.com, dapeng1.mi@linux.intel.com,
-	elver@google.com, kuba@kernel.org, ebiggers@kernel.org,
-	lirongqing@baidu.com, paulmck@kernel.org, dave.jiang@intel.com,
-	jic23@kernel.org, xueshuai@linux.alibaba.com, kai.huang@intel.com
-Subject: Re: [RFC PATCH 1/3] mm/numa: add exclusive node pool and
- numa=standby boot parameter
-Message-ID: <ai5vj_RjSxl_FLu-@kernel.org>
-References: <20260610014517.253609-1-gourry@gourry.net>
- <20260610014517.253609-2-gourry@gourry.net>
- <aip5IWmxg9CWg8hQ@kernel.org>
- <airAUSrNjbSEwuti@gourry-fedora-PF4VCD3F>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH] docs/mm: describe current criteria for enabling split
+ page table lock for PTE tables
+Message-ID: <ai5w--zzNaUHuQ6S@kernel.org>
+References: <20260613221448.98657-1-enelsonmoore@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <airAUSrNjbSEwuti@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 537B31C000B
-X-Stat-Signature: p5u8yke1zxgsw4t33jh6dczwsswa6ae7
-X-Rspamd-Server: rspam03
+In-Reply-To: <20260613221448.98657-1-enelsonmoore@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1781428126-93478
-X-HE-Meta: U2FsdGVkX1+RiwBgI0efSwuE74Y3f9iZ2fuwEyslMft+momYZqXS4bRDob04/Ezfu2jgTmxjo/lEo3oTginxBfPHn3A3+CcG79V8/yzWn3zxvu+WNl7z81cyiMy3VXMT1bHBeZ6W45aZbEGT0BYzVdWufnXlJMnEQD3KCuVNfVc6Smp7wGsBigGOlEIySqoRlsywBNMpDM3xZBxCNjVvvwUwF4faHdDxnvurwRPWrXa9B6Y+4+GgB18mecpd20DO+k2TwDh45ADIhlM36qz4h9L+VuMZcs+qJlKqYillEvNne8lyMYkAu+pelZw9E/X02NowbgSG+JtJ6BRrA4ZkFjYHTexrI8vPRPtGHNHc8hXtFtyxdrXJdx1dXpueXsdaolD7RVqfHmKYRhx+RN6wMbnBgm+M6ZAx9ZzswkZLworwGkZD8ZfehAF8ENUpmmlK6azEcEAi74Ww+E+GIYIBBw1eJujMS+HB/v3VyhnMp4lFbx4El8I5lB1vKautVLVA8yCoW6OxKg2/Qi6gBnyLYUEF2UGpIRi66ir1anYXhktYnoB2Zlblxz2ZXekl41nIpDq0qwqdIvEIsu3dNsZAZMBe534onRhCQbpfQBnaYtc3zOpvbkWQniRLFvoP5GUyedionPn7hdMQb817NqYkhsunxUfctv8i3YTUGRYZ8UoE4upglS9zDXx4aYu9CikrTHgitUghst6MqDJ/ph2TuOBPMcORz3GBIIpY1xWvgfgzh17vCuavLRdha2KMLyvoeQ5wTDEsI3DJeqUeHkRZJAMhTihTvTqQwcbz2oqx+ykAZRxe6quhNUDZPQYghCq0m24lkpBH26GCXYon2OoQLMI83geU/vqK9KEnjoAw/EPBfPzEoWYgiVEkTLn08N+rQBD819+n96dgkeuoEYwMYi9po4ZuWglPugblY6eFIN9xInWS8T3C6k464FL96hG3656aN5f1zLSyQkVKD9k
- Tn+of55n
- IMuIoV8pL6GZZaUcWag7ELOKwk6ig4MSQjEn8c3xKCn66vcriagun+e++DBwDLIgKNQZO93QPy2cHXv8sTZU+bjTKGlhvE8avTks8ErH8+57HI99VPv0nkSU+lXMDL0R5o0u7LBiionqU8lJ9NdR1NGJ42K/oGUYaLU1bkiUbXi7APJI7x6S5bYXTpg1CES25KvJ0BzMrKgp6ojw10nxkssnvzPAQxIr1WYWgj9fEsrLO+AqBhuF6m/jM9f8CHL2E/SZ5J21VX1UqT7GJubyCP+HgbDaikCCEcwiypU0VQN+EPqe9TFIADjb4ISHZAdOiigrC5w/X9Bb5QvsQoIi4Gk9SZg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DA850C0002
+X-Stat-Signature: px5xt3qyo7nmk7ahx8rpgw7tusmeixb9
+X-HE-Tag: 1781428483-331235
+X-HE-Meta: U2FsdGVkX19bmCNkug9N3u5KyOL/ZBuRKalEGrIt+YxHLEC9DH84lrII0gnmtJ4MjwtA6IbN9rw8aJnVdGU7rVQaSseHCmCdcZrzy1tiA+3xZ3XOGLDcBFDo/mDdKnMSYnMg/Ydfiynv1c2FR8WcGORbJ3sVZqHc9aYqY80ABnwjkO6IDQPC/Uzot9M7wTQylR61PIBNRisdSBUD96dE7hoYFPcNcQ0bnV34iE6yxuL793o77O203KsfpmNEW465Yx/g5/M+ppQDlZjxgWIL39yAZwAEuKhWSbJTEK5SkUtxTnc8zxvWwQkK5kFDua3L2dAuHlDeyMXWlqZc4jn6QmKb49uj2bwLDYBUcMZXL+nuAT/MS7LlQY8G16BhysYrWAgU3iVvrREBCLsnkXyZQ6i5mLzlymXs65NPJvqHPt6txr7miKQsv51xFbeJTDRRNGbZQdX13a87Uu9Sozj1Y+520hkx538R84d9u1l/+Z9+3NHri3nLm1GkWQUsuDtxhfBuSASWMrRFgskcVpYYMTAY0DVtmUPIlB7x4kt6qjbr6+nrDjGAHbN/OltYFg0rk0J+UWBX4R1cJDP/FOV0knU6z8XjoXLIanDfwyNgDetXGUeEmGxedQ7VvgtNDnnVpKiENkEp8HtYD3+BUV+ZbPsvmcn08rxLkR9zFTtHvzNHNNXJl1wiGlycNKnDUGH2Jq24XJVXcyt2iU8yOAU1LdSOJLXTeQvfrLAyGdvmYXiWg8L+F+cc3dRJvQN40gPjwa2UfZxzDHXYwBCAY2UUnU+po1+BgjQbu3Gk8y/M+0TuuGEp6nWlotZc4PcDUL1krlQbz8TUZuQQlhZqkng8IrXGb/PLW5IcUGfEodvsEYdFjAITihL9R6L5Hzp8ktxrvI6flrGIFRWv3Ms0DVbs3b0+ZKNgR56q/H+NfAK/HXMY+LP216WPMxQ/0DTlWVtVpHeGB9r568jqL6C0pEN
+ QsMCliX1
+ ePx8mzjoSJACesClDmfhzCT2c5HJWrOwKREqdi4SHS6cixDFO1OgBsrXknhGmnIeCwkUEdXw0Y3thCabaxWh1GlJWDOV4qsHyF3aHY8AD0MTxMiOeoJKa3Ngm4G4u6IFd+/bZHUTGHbbW+8Lsp9v52qTnuxxio0vKI/3PPqNxAcrrQS2Il4QTYdlIRB0x76eY1lxt5fX6tFy4AE14cXLElwvavMkP11ES/uURKEqeGjwsdSbpwZWQ1+53rLsG4bTQfQjB+HPIkjSSNNtSYyq6deADPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,53 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 10:04:01AM -0400, Gregory Price wrote:
-> On Thu, Jun 11, 2026 at 12:00:17PM +0300, Mike Rapoport wrote:
-> > > 1) Can we do dynamic addition of nodes?
-> > > 
-> > >    Not Trivially
-> > > 
-> > >    Some services utilize num_possible_nodes() as a static value to
-> > >    calculate the amount of resources to use at runtime (bpf, md/raid5).
-> > > 
-> > >    Example: futex_init uses num_possible_nodes() as part of its
-> > >             hashsize calculation during __init.
-> > 
-> > AFAIU, we don't add the additional nodes for generic hotplug memory but
-> > rather for exclusive use of by drivers/applications that are aware of these
-> > nodes.
+On Sat, Jun 13, 2026 at 03:14:47PM -0700, Ethan Nelson-Moore wrote:
+> The mm documentation regarding split page table lock for PTE tables
+> refers to the CONFIG_SPLIT_PTLOCK_CPUS config option, which was
+> superseded by CONFIG_SPLIT_PTE_PTLOCKS in commit 394290cba966 ("mm:
+> turn USE_SPLIT_PTE_PTLOCKS / USE_SPLIT_PTE_PTLOCKS into Kconfig
+> options"). Update the documentation to refer to the current option and
+> document the situations in which this feature is not supported.
 > 
-> The intent is to use for "non-generic" hotplug (see the whole private
-> node series [1]), which would eventually still use the hotplug mechanism
-> just not for generic memory.
+> Discovered while searching for CONFIG_* symbols referenced in the
+> kernel but not defined in any Kconfig file.
 > 
-> [1] https://lore.kernel.org/linux-mm/20260222084842.1824063-1-gourry@gourry.net/
+> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> ---
+>  Documentation/mm/split_page_table_lock.rst | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> > Wouldn't adding them to possible nodes actually skew the calculation of the
-> > resources by the services utilizing num_possible_nodes()?
-> > 
-> > With the futex_init() example, won't be hashsize scaled down two much
-> > because we've added these special nodes to the possible mask?
-> >
-> 
-> The result is the same as BIOS reserving nodes with PXM entries that
-> don't get used.  The CXL ACPI Tables do this for CXL Fixed Memory
-> Windows that may never be hotplugged.
+> diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
+> index cc3cd46abd1b..c9d16024543b 100644
+> --- a/Documentation/mm/split_page_table_lock.rst
+> +++ b/Documentation/mm/split_page_table_lock.rst
+> @@ -37,9 +37,12 @@ There are helpers to lock/unlock a table and other accessor functions:
+>   - pmd_lockptr()
+>  	returns pointer to PMD table lock;
+>  
+> -Split page table lock for PTE tables is enabled compile-time if
+> -CONFIG_SPLIT_PTLOCK_CPUS (usually 4) is less or equal to NR_CPUS.
+> -If split lock is disabled, all tables are guarded by mm->page_table_lock.
+> +Split page table lock for PTE tables is enabled compile-time (via
+> +CONFIG_SPLIT_PTE_PTLOCKS) if NR_CPUS is greater than or equal to 4 and an
+> +MMU is being used. However, it is not supported on ARM processors with
+> +virtually indexed, physically tagged caches, PA-RISC processors older than
+> +the PA-8000, or 32-bit SPARC processors. If split lock is disabled, all
 
-Well, even without CXL there could be nodes that may never be hotplugged, I
-suppose that with CXL the difference between available and possible
-nodes can get much larger.
- 
-> So really i think you're pointing out that futex_init() here probably
-> shouldn't be using num_possible_nodes?
+"it is not supported on some architectures" would be enough IMO.
 
-I'd rather say that num_possible_nodes() with and without CXL (or other
-differentiated memory) has different semantics.
-Maybe we need to add a new primitive for possible differentiated nodes and
-keep num_possible_nodes() to mean "number of possible nodes with normal
-memory".
- 
-> ~Gregory
+> +tables are guarded by mm->page_table_lock.
+>  
+>  Split page table lock for PMD tables is enabled, if it's enabled for PTE
+>  tables and the architecture supports it (see below).
+> -- 
+> 2.43.0
+> 
 
 -- 
 Sincerely yours,
