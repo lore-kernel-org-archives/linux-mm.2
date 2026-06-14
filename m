@@ -4,105 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45C57CD98C5
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Jun 2026 23:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63276CD8CA8
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 01:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199456B0005; Sat, 13 Jun 2026 19:15:37 -0400 (EDT)
+	id EFD706B0005; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1494D6B008A; Sat, 13 Jun 2026 19:15:37 -0400 (EDT)
+	id EADF76B008A; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05ED66B008C; Sat, 13 Jun 2026 19:15:37 -0400 (EDT)
+	id DC38F6B008C; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E92CF6B0005
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 19:15:36 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F17A1C276A
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 23:15:36 +0000 (UTC)
-X-FDA: 84876448272.16.FF97DC2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 08FD840008
-	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 23:15:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hLXD7eOS;
-	spf=pass (imf12.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781392534;
-	b=Iq8l3fT1hzH7RXo/qi/wFNNDlLoW8i33GsZsDlGXBhY/lEGU1r96QKI3C1CyeYeUfI3YBu
-	Xc+fhlKZTUnepBEDKeunwwEp9vZ++HOnRgdGMhiSu7sU9LmM411FEU1D2HAE2iyQRUca1R
-	YYTbOIDTd9vaLnghZ5Sj0Fm4zP47nsA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hLXD7eOS;
-	spf=pass (imf12.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB95A6B0005
+	for <linux-mm@kvack.org>; Sat, 13 Jun 2026 21:48:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CAD71205F3
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:48:45 +0000 (UTC)
+X-FDA: 84876834210.07.E6AE2FE
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 328A7C0002
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 01:48:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sUYFAKqt;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781392534;
+	s=arc-20220608; t=1781401723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dG3xiqATit6gEoZb/SAPMSkQ9RbQB4Q9JV9vSc+U8/U=;
-	b=kcan80e747/SomI85tPCEiSRW3Gn3nVfcGPUlTcc/EhvlNM+O/pBb3UNYYsj7D3k7iOTYJ
-	zEfTvYiwRegGK+V7lQbjSg7dkaY8c7gjmnGqK9TZn5fTppsiLhMrk78K9BiRm7OBHmTM/O
-	9eBaPvvMEQ8nsS+Y7F7a279ZD9YtBX8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=dG3xiqATit6gEoZb/SAPMSkQ9RbQB4Q9JV9vSc+U8/U=; b=hLXD7eOSFoc4e2VKrlStDVD/Du
-	Rr+P17+rwokxTAhVCNohqPP9xa8dwN5Gi99qnUYhjXMy1K2Er6rjVlTluAYt0GL2ig88zArVF+8DL
-	1/r8ywXcf5yEuOG0JnPadEGtjy5v63TLkLSQ70KRMIuWmvKKakX7q1pHwcg1DfEk4IeZ/S6IqkYln
-	kK9hiVzrvTJZ/6d9Odoqp+g1zWurLoBhkgzSKTtbcDwye5KDzjdlm+L9hX3dMprypCjS5+1y1JLrS
-	xwqZskhRqi/p1tQ841bYJ3x4SRVontkg24HJu8IqA2hPgNMB4hyDySHxDiw4H7B/Tgi2UkDMmFTXs
-	EFlnYPnA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wYXZY-00000006DCZ-3ADY;
-	Sat, 13 Jun 2026 23:15:28 +0000
-Date: Sun, 14 Jun 2026 00:15:28 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Will Deacon <will@kernel.org>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mostafa Saleh <smostafa@google.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Shuah Khan <shuah@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Wyes Karny <wkarny@gmail.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: Re: [PATCH RFC 00/12] mm/vmalloc: migrate vmap_area indexing from
- rb-tree to maple-tree
-Message-ID: <ai3kkIpaR0aT_6q5@casper.infradead.org>
-References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
+	bh=ZzjGDj2ejPIFCiun0MsPB5P0vlqMvB9lE1U6mFzN0Ps=;
+	b=fY/i+zYtQ+DJR66l2YVizFDJ2izRzkt8aDlnwzBnhADR8DYOn9X9El3BuEDapy4/Uk/eHG
+	JU1xU3UocgK5Gk77f2vJJGNkuBMyjf3vVGFcEarIJHmWFqU9tFKXwgCSbxV+tulWYd7rQq
+	LvtKwE/dNPNTawPVYXhXQsNplU2nHfY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sUYFAKqt;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781401723;
+	b=WOJyCCvCjD7XAF8BCOcjXheBXJnrhvsXXTgHIlTd7peLhG+CLtsKU2e8cQIu0mDU5U2q9Q
+	yk2+f2vEIsXn89BS16tIZWXy939FlXwKERch5sDE0PqsP5TI5lfGzE/ESMwxp/5Uk+ZppJ
+	NM5S13JCWx+FIVoLP0lnTqBJurjJqVU=
+Message-ID: <b08cafbb-a4b7-4609-84ae-dbb2cfcfc8be@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781401720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZzjGDj2ejPIFCiun0MsPB5P0vlqMvB9lE1U6mFzN0Ps=;
+	b=sUYFAKqtwM4RJf6fCmx+1mgrbZe2fNy90UH6Dz0sMWf9THOBHRjr/8xpLW9NMR5yF1I6hg
+	DLAzI1CLKsdTGwB6mWiMkBZKmCzHxLTFXBYSwebKQ6q0Bk7ExwfKgD31y1ypL02WzML/Dv
+	WeRWbCTudTh8FwDEyK/GZ3zTwOAJI7Q=
+Date: Sun, 14 Jun 2026 09:48:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 08FD840008
-X-Stat-Signature: u15s9om4wc84p13yaz59grga71eem4fx
-X-Rspamd-Server: rspam03
+Subject: Re: [v2 00/16] mm: PMD-level swap entries for anonymous THPs
+Content-Language: en-US
+To: Usama Arif <usama.arif@linux.dev>, Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com
+References: <20260602142537.198755-1-usama.arif@linux.dev>
+ <aa712058-7b4f-4421-b265-c3173fcad87c@linux.dev>
+ <6E99CC4E-A026-4DE3-8A5A-34216771F521@nvidia.com>
+ <e68d5c68-9b4e-4959-a507-a9f94f3ce6e0@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <e68d5c68-9b4e-4959-a507-a9f94f3ce6e0@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 328A7C0002
+X-Stat-Signature: omq8xtfums6x7eywm1pr5ubwmieacqp6
 X-Rspam-User: 
-X-HE-Tag: 1781392533-591700
-X-HE-Meta: U2FsdGVkX1/TZGDLCpgKs35amQ61n/kiGFnFo/9kxN3PUNy3fMa0Jt4RX5uoC3r+zASmEJLpv0gHg/lraIqthBIg62Kmo3GdL85j5SzbjDRSSlthp3UmBVoZJg0Cq08SkmF/v7dGDn7ZluhyP3ZtJmbRh+poIB+FOi80p+XniWfzzpIoic1+ANXeLVufSdCu2l322jFp5EX464drd9DPnPdRtVsfvkurTSnLui5EceeVMoNCjMx8vqZvPA3svd3vBjVq2XneYGpTM/kiZq5gpDt9/mrvZSYoTjUmLGz8NgcLcMDtKNd2Jku13n11gt8ggTloHn7TebyBxxUQAGoBX1OXZLdjDRXFcsw6y1uECSro95qDg8dOK5wgv+WoG+VJa8tvpMukt5yr6VhZXOjusAOpLtl46rV6sVvNMJlXTE5JueLOLZR1xLfjSZ4k+NsBXmqoOZGt5qriZxdnA2OOn2YJHxPRWYlUB6tVu+0XfgHuJQjgh14TP+stzfZRnurMyzc90kUoBkrjtgvuZ9RFsqgS3T6SnLoljBp2E6IDjKurZ8DLsNPjvi9FXymYc2EBeAWZQl6rnpBZBIilKfD35L5UICHp+4b/vzQc7/nxXMB3XIMnmKADK6EJo7UfU3tIGEqUaEM+IMdQ8iBNG4SCN9ary6O3Hifzu+tHXbc8ZtV7uNkR1Y3Mbjp36sF862FiSWg+4e0FBanfwKisLZuVXBT25h6HMZ3I6Zdbvj25qN67wAkgDa8t6JbfWODB3TeHrHSbSOgHqeMYShpUWdPNrrNkNtehr49+xWFBNHMpnUzU4Y21EQQ8qCVtgJzM3FdPeCNx0uPOsuKwjCgjsFhwSIA1U2SDmDs2GaNqv89m45JHekN3vLMtNcVfcTgczI5hg7CsOr75aAwLfvSjWiIt4TK5DW73hTNqoONEInKDrwB5GBPwFIv65/iGfC23tz4LWiQqBkhEGOdLAG3A2C9
- HTp90bUW
- 5K+KA+/yVLXkCSDeWcYVkKdb+1Rh52xpM3yF9tNjLe21X+4mQ318Qcr1s3TgMMxun/bm1fA6So12TZQ3wQyiNUCcRL6EkCSPf7WXAXhTAc45CMlSqtgZrOfPzsihGV1zHIIIqfoGq+LWkGcCpfZ2Gew9SlMo6b/9M4HvSCKYugozP/6HttfPHgGZrsAo8Xq1ZSxfnNkJZg/tUPe4BnurfgJHwXSnMrz559j4UtSb7+hFKwjTt0D1/an7cCepeWa2U84v+gknKXXpxU5h3bGZIWFN0HvoBRmM5YawrkBTqdA1UzK7kfFln9Z5QlWfwtgPcEIMl
+X-HE-Tag: 1781401723-593261
+X-HE-Meta: U2FsdGVkX193Hbx7Az0NL2s/OeotTcalZzJhTN+crY988rc7Af3y3cUpK2ZiLFBASLTEuUms4A2EjYGWsJZTeV1ThhNcY1QvuUKFzDYKuw1GIEwoV6V2GnxZcYW2UWY5o1yeqLsJsFyr2ZbztGfsDWCy/q876WfFxZTKYkcrp4wbqTLDzQb1dzqE+CxAWQAh4IBARCMzubgMdt0FNG4ICsmlZpbwQYcSPCsfobjNElVJW/038wIkyV4a/zRPvCughaWxtpLOwd6dXJUQPpqjs08Y4VxU8f4px81XCMcAu+M9BuiKbyGFaAwqsYOwj1J5rc2ApPJ0iixAFLnlNkjae1QuWNIaBHyRxv1OLZGkAB2EnJtFUCg4Op1prQU3Hn3pkBCFOhim4E+Ls6+lNNrwWycbYrnCbm+iE9fFO9z9vW0ds+o20A5hkZVH836XUyxSfD5SmDlvlIh3hfjghLwMMYwvXXaf8MBfsMJhAjgPuTuAsp8xZ+O2BCrD2J7086cctdhXsnlpjoKwbYd8jdZ2vcedgEN5H9dqi6QsJ199oRJk2H6apqpgi7oT3H+rg0meMOcNSY0fv3g4ExEba/s4ulOZd/vud7ViraDwTHEVJboQ1f6T4br3As337EUkSIbIQimBrWkdc2utVMjToNnHjQCBd2jj9dAPes6c3arKp8A+cNP8ZfJkUwX69o+ICqJrv3vCtDASTLnbPLEvf9tmYn3vgsLRqECxZpDrkGEsaYuTO2JFOavtaHnlpGLbhb2W16snWSdgfZM5L7xJWLvvegKKp1T/lDqUpws0bnilAg7ZCGu+XP8V29M885FfG76dCKerLRqI+7XHszGNnx2WrNek9bx1xNyZRcxowjKK1PHmGM+mrZGJhhuujFLLzNMD3DM7eIg87VGggRSFboF0p/AijfwvgUMvkxDh57D6tlE8NoWg3+uLCz7jhhpyyWcQURbSb14VGlqb0VdfBqZ
+ 6djW1dAR
+ +qNETl1NCK/y+fPpmZOfY/6HuIHFF4ESESsJBAfDrOm4Ub/Xa0B0mfJ6AE8yv73EDbdqztZiz44SUpxjNldu5qtRs1omzTq58bLVFMQnel60FiCg5SuWi6bx44ZUIi6EQJxF6mAdBTr3+h4wkM+4JhuYbyWKolt8oS4s0mt7CGtDs4TBR7n70R7IuypuGaWZqwUqwvxMKaGogD6hqGTp6XHHevg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,18 +101,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 13, 2026 at 10:49:42PM +0530, Pranjal Arya wrote:
-> vmalloc's free/busy/lazy area tracking is one of the last remaining
-> augmented-rb_tree consumers in the core mm allocators. The rest of
-> mm/ has been gradually consolidating range-keyed indexing around
-> maple_tree (notably the per-process VMA tree in mm/mmap.c), and
-> the underlying reason is a structural mismatch between rb_tree and
-> range tracking:
 
-First, and most importantly, I love this.  The maple tree is undoubtedly
-the right data structure to use for this purpose.
 
-What I don't understand is why you maintain a separate "free" tree.
-It should not be necessary any more, but maybe you tried removing it
-already and found a performance problem?
+On 2026/6/14 03:34, Usama Arif wrote:
+> 
+> 
+> On 13/06/2026 20:27, Zi Yan wrote:
+>> On 9 Jun 2026, at 10:29, Usama Arif wrote:
+>>
+>>> On 02/06/2026 15:24, Usama Arif wrote:
+>>>> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+>>>> split into 512 PTE-level swap entries via TTU_SPLIT_HUGE_PMD before
+>>>> unmap.
+>>>>
+>>>> This series introduces a PMD-level swap entry. The huge mapping is
+>>>> preserved across the swap round-trip, and do_huge_pmd_swap_page()
+>>>> resolves the entire 2 MB region in a single fault on swap-in,
+>>>> no khugepaged involvement is needed. swap_map metadata is identical
+>>>> either way (512 single-slot counts), so the PTE split buys nothing
+>>>> on the swap side, it is purely a page-table representation change.
+>>>>
+>>>
+>>> Hello!
+>>>
+>>> Just following up if there were any reviews/comments on this series!
+>>>
+>>> I know its a large series but was just checking if there was any
+>>> feedback?
+>>
+>> Maybe send first 6 clean-up patches separately to get them merged first?
+> 
+> Good idea! Will do that. Thanks!
+
+Yeah, sounds good. Less churn, and the cleanups can land first, and
+life is easier for everyone :D
+
 
