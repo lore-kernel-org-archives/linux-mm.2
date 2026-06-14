@@ -4,93 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5665ACD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFA6CD98C5
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 09:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF4D26B009F; Sun, 14 Jun 2026 05:23:10 -0400 (EDT)
+	id CD1E16B00A0; Sun, 14 Jun 2026 05:28:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA58B6B00A0; Sun, 14 Jun 2026 05:23:10 -0400 (EDT)
+	id C84FB6B00A2; Sun, 14 Jun 2026 05:28:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 994236B00A1; Sun, 14 Jun 2026 05:23:10 -0400 (EDT)
+	id B9A476B00A3; Sun, 14 Jun 2026 05:28:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 850D26B009F
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:23:10 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 29B6D140652
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:23:10 +0000 (UTC)
-X-FDA: 84877979340.11.8707AEC
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A22AC120005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:23:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id A8F616B00A0
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 05:28:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 537641C3DC7
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:28:13 +0000 (UTC)
+X-FDA: 84877992066.05.33FB2A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id ACC9B140002
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:28:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LuvD5wtl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781428988;
+	s=arc-20220608; t=1781429291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Eu7CZX1tL9ZftgmiUDlCbgNaoN46c6mOx0nSdxIlLKc=;
-	b=WWAgQZmItIK/Jw9GvrKq2RPragq3WY97QXNzbN9m+09o32dleVDjp6BWPwaEqw4EjVpMSM
-	lmDruwnxfDgP4dbMEreiW6JjG/SiTEnZGAvTL1V61cdtZwret2fP0UCZKt/CZFTFm9btlX
-	qWc3zeVC4LUH4zHx7Agdd5gBnyabnUg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IJeMLnJVlGg+3yFfYY8ewvq+lahUXEA89ZCMNVqQriI=;
+	b=DHfZIkbgLX5rMxoklObah5c1jrdKnpyxsyynWfxOw5EUPzw9bO0bHYtXHm8Ny00f8BfNij
+	muFq06PlGGLoM8KlHvumit/abYzKLVVwuewUBPpX1GA3ueLlZ5YFxfkQRilA3B/0H9Ib+l
+	bHVv8P1YOzranUBsyIEnOeWUhorlReU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LuvD5wtl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781428988;
-	b=OZQ/moQQ9zeZF4XPYV9/nhCj0n9FZrzjY6Df6ecrd5M8w2JeXbDKJj2rph3LF6sRFpSTjR
-	mBExZg5OqBcYfrdEwOqPeTeIRJno2iuyiH8uF3vLjnWbciTMu7rgYsUsKQU7b21eISjrgy
-	vkIIUWM0P7pzWTDeD/jtLu2ibhmuN6s=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 14 Jun 2026 18:23:03 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sun, 14 Jun 2026 18:23:03 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yosry Ahmed <yosry@kernel.org>, Hao Jia <jiahao.kernel@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org,
-	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev,
-	Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org,
-	chengming.zhou@linux.dev, muchun.song@linux.dev,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org,
-	kasong@tencent.com, baoquan.he@linux.dev, joshua.hahnjy@gmail.com
-Subject: Re: [swap tier discussion] Re: [PATCH v3 2/4] mm/zswap: Implement
- proactive writeback
-Message-ID: <ai5y923elCSZp41j@yjaykim-PowerEdge-T330>
-References: <aicJBVT4pBvmyooT@linux.dev>
- <aicZ-5GX9De3MAU7@linux.dev>
- <CAO9r8zNBJ-BsXyKFveA92jbwMu63uFVTY5CuT4fRHTBVcOjhPw@mail.gmail.com>
- <aictKA0XWMWbxFdN@linux.dev>
- <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
- <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330>
- <airzE7jD9UtyR17J@google.com>
- <aisEWnb3pzmVC4dl@linux.dev>
- <aiu06fbV7rWqY0Bm@yjaykim-PowerEdge-T330>
- <aiw2p5ANjsQUCIHA@linux.dev>
+	t=1781429291;
+	b=ewab5Z4g0E/blwT6/HxCQiGEVj2OhYTQ/fjjhzpJppPUWeEfd9RmKmtxmBHtvIwz45P23k
+	0deVy5mWH1CMF9b60duEFvoixXEbk8yrPkLE2RjPhdgtLN3cij6Ll7lAlgAGgKs14z715j
+	rwgrBdV73v9Se3z8r1QDqHQlLYzi19Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D19E543B27;
+	Sun, 14 Jun 2026 09:28:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7E91F000E9;
+	Sun, 14 Jun 2026 09:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781429290;
+	bh=IJeMLnJVlGg+3yFfYY8ewvq+lahUXEA89ZCMNVqQriI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LuvD5wtlvmMDVWxQCRAKGP5Fk5Ua91zWTtmgGiEjyZl0naJm7QD2bq1IQErR3g4kx
+	 5g1lq7n1S4JCN4MRC6H+pQfs6eWEWioGavXdi6/0+bma0C5rW5da6/fu/4xwuJvgKe
+	 HzrTO4ttBCMkPgmdrFGCy/9oPvg6teWpN+L63Kw6eKG2HVCgK98SQ+ophIaIHfzCGU
+	 iqfBrIBYurBTrCX4cmqNgI4Boz6FhWb39R+bblyb+UeqldQesf5cc1GFb79FuOhPzP
+	 /+UhXK5vXox6n9KKV/D05ZUh267keaN2trcOykJqJLq99QW2h1NuPfnmYaqWvYKGCV
+	 0pIzPn9odMx9w==
+Date: Sun, 14 Jun 2026 10:28:02 +0100
+From: Will Deacon <will@kernel.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
+	bpf@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_set() for lockless empty-slot
+ installs
+Message-ID: <ai50IpfcvBiTZ7Ss@willie-the-truck>
+References: <20260522172219.1423324-1-tj@kernel.org>
+ <20260522172219.1423324-2-tj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aiw2p5ANjsQUCIHA@linux.dev>
+In-Reply-To: <20260522172219.1423324-2-tj@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: ACC9B140002
+X-Stat-Signature: 1rkfqmmycc6pum6wftjmi6niy1fjpjjm
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A22AC120005
-X-Stat-Signature: 49p7zs4e3sh9ec46nekpgso1kcauwum3
-X-HE-Tag: 1781428987-560257
-X-HE-Meta: U2FsdGVkX1+henhkal8PT6yx8whTly+A/fEhVIhoWVjaO9Qz/OWVYWFUbjpZgQOYZ0hdQrblGViuv4SnwIKOLUFpg0WS0eQ4gVu0Qw+ovSOkyGikijSEjDt1Er4t+OqA6yW11s6QCFKBnlmi2OmembZ8g3GSK2CwTupeaW1qjU2V4X5CJzLKCfVlJ3FcZl1dto+EQIx4zaCDq2hK/G+7tdsc8Ur+nLdZ7K+JTjhPhLhHaZgEqC3KOKMMp3Pyr8b/taf8EeccLrA3zGEyN0eNhBjHtA6czBE2i/Rr+dYKhijGMnoEzYPxPbVaH+ZupHGP2SUPaC8TyNexanSFRseEFSupn7X4pnVIRqfQpHQ77xmvtaYEEeFg/I0QMN7iHRPwTM+pmPQ4cuxfSX0fkj+G/2qBeCR2p9hXTvucancEN2WYbIbyDp0o7jwBwLpRm7/XZi/Iaa1K1sVsDAwZVGg/x6srQBXvNbRzJSAx37PCme8DWKbNbLFkuA7ZWBLU5/4JfbMDt6YXbKcced9ZRxAXY7CrPGS0YgQdxVNR6PhtRYD9NXgMQ8JazYZSpYvSKf1Q1Ja2gzifNzmH9yqgKkQUWfU0EfvtCTJ9e/xaKVnfO702G60dsCuqofniIWPq7RBJKQB1mzaLRLh7XMacZFWShW8jXO4HHenSY88J3CBYF48qpmd7wuhaQxOtiJ23HWBev51xtB4w25+5rjKCaBOJJTGeQDzMLzFQZFkg/8gzAK9OHOmQN7bERnTh2Jl2kBL6LyzD6gZR5kx3qYskgBgOGNeu96usyqfG//cuZMKrstj2gkoA2IFEL+WbFogkVYcPf0wN+nsKr8QAw8SFbEBM1gzzR/kcmHQ/Q0aBQeWr8mfLzzhaiHNYCrDdKpxrrSFu8wLTEng4kBFR6188GM76XkwU+Be+P5iZyQNyYLAZYzpzogRmESjvE0OOPBv9YagslHPCjyQEf/IjLKW+05A
- bwqNoLWD
- Sb8mxGwZe4NtD/tp6yVc0oAdT7uMUFL1bpy1NaoLcWxxoK8xN2ZCbjNrjI22slqR2gCsMQD8BooaGLe8o4gEaee5HWvk19oEshRwa1x6GzF+RT/4w35TjggtKxSgX+HL1qLF8xHs3UV0YL9c9ov/bd/w9mvZ7xY6FkbYTRWuMJgMNAYafUHpEahZ1G/TMi3O/3MEBVtV2GG9njAjh/FUlmXiWaV2p3vGkcT/NRMKCIP8gmJxj7jG+C/d4K+Jv2pojE6G/MwaYj8q5oND75IPG+cKQrfLenQGVpKb7thaJvOsmgNBYS1p/yUb2yDBWGH3q6pqIVZonv7/ZUciZX3B6O69k6PIFqDIj4slaLB3eu1BhP30bqL6zPqCf8w==
+X-HE-Tag: 1781429291-623732
+X-HE-Meta: U2FsdGVkX1/kNmbq/o8h4BzNxNrRdQ3v0YixE8x9qISuocYa+gTReg9DSoSq6sdbkeCNN9y1LXtNq8gcz+E/IWTB9ubzT2+hW1gcvrhsZtNHXqb6h5akpySaoX3OTPDq3DqPdwN6UCqdggaYybvheyBqgImJurIAntgQPGhtECaEOklmfXL7kCjZPs5oRGxOZFzIyo2e2Dz+YNXre7eje7oJ9FJ3ocYeYHF4h1QP3uvGXq61opJTxKiC0n+Dmo7hz7+/GTx8bePa4qI1a1AHOizRKlpzz5Bk8G40ZMxyz7zf663e3jmoV1a3NJHNGKg80MGA8f70OLYYMKtEAOd/1t6JnGDO0LW7gu2qpGs2f4oJ8D4Z7edtqcbBZJeBlZzF2oIWV5bzCaCOWjCdP9tzZl9GijmfztIPr0b0gHV7l6EwQkKrz8CsnXuWTzpyvA/slDDiwozQUmHiN6dmTQg1RPP7ZIjIMW+LSs3iwaA+0fFBRIYp2CpOzRKiUp9gETU14l8PihdCVozaoTHvaRg1pCxDUY4Q+VSD1yakpohpvTmQScDZYnkUFwWd33PPr3+mUnl9vkr2tg9sDty2uY4wbQDeGo185UB1vusqtMP977Or5oZl9qj7qQ5DrFFfHQAFjDmf2H4TFU35y62CjYeUlkctVui2ZeJjLZ5PClPB0CVJMz9VIX2Nl+ps+LeBV7ZcKOZNhbAAFlkeAWP05RXSUXnur8OQ7EiPOiOd/A74D+rvsC7DBqRm3l6fpzlaRH/FtdXNgoKyhbol6Bcbi6zrNyVFtJVG/P70h6xa13OA/XDewFA7S+edBQn+4F2juLUqartCzji4rive+1EFgiRsVcOjSaqAHyh8ODm1Zb6rIaPQXBW6oFqXbE+Peh9sdvZ5IQoJlQdm1GHir9EOgs3SXIE6KNSH/MWLTDW9gA2/ljcZPCYIMu0rFDP2TnyOHmBKAxwzqfYLKdrp2PKdanB
+ GzRF8hl5
+ z1BD6SQGqMguvzOYxqZlX86+FOndyxU9ldJPNmAnulCpN9qKLWDJVaBqeDznscCvFYeeNxcfCeLFN8wkTllLOhwnwXjv6b0fjPFiF98hpFIKeJLOeplYIcYMBgVfCHD8uH4OhM5K/8ewj57hGrPUSCXoiDyGoC6uVt9lM7ourOO4BEXpe/Pr/tc1Hu/cc+D9iL2SJLKkWo2pYZW6BezXFIA89D/C1OyNhTSUeX6UkziAyKMHRmHGKHwzq5zWu4550UjJUfdY1TNAsgU38lKOIfmEr9NEEDjZzcMMMWVe4OCRteO5WbJP25xDmp9Qem0JEhfUDzMS/BwvN7WzoajZLac3MdRlcYodf8qtEWqg7F0KzL0MpfwWCC/dODA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,117 +109,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-....
-> >Based on the memcg interface currently proposed in swap_tier
-> > (memory.swap.tiers, memory.swap.tiers.effective), I think it aligns well
-> > with the current direction. It provides a foundation for selectively
-> > targeting devices in tier order.
+On Fri, May 22, 2026 at 07:22:12AM -1000, Tejun Heo wrote:
+> Add ptep_try_set(ptep, new_pte): atomically set *ptep to new_pte iff it is
+> currently pte_none(). Returns true on success, false if the slot was already
+> populated or the arch has no implementation.
 > 
-> Here instead of cpuset like interface, we may want more zswap like interface
-> where you can put limit on the usage i.e. memory.swap.tier*.max. We can start
-> with allowing only two values i.e. 0 and max which effectively will be the
-> same as what you need.
->
+> The intended caller is the upcoming bpf_arena kernel-side fault recovery
+> path. The install runs from a page fault that can be nested under locks
+> held by the faulting kernel caller (e.g. a BPF program holding
+> raw_res_spin_lock_irqsave on its arena's spinlock), so trylock-and-retry
+> would A-A deadlock. Lock-free cmpxchg is the only viable option, which
+> constrains this helper to special kernel page tables where concurrent
+> writers cooperate via atomic accessors.
+> 
+> The generic version in <linux/pgtable.h> returns false. x86 and arm64
+> override with try_cmpxchg-based implementations on the underlying pteval.
+> Other architectures get the false stub - the callers there already fall
+> through to oops.
+> 
+> v2: Rename to ptep_try_set(). Tighten kerneldoc. (David, Alexei)
+> v3: Note that strict-zero cmpxchg is narrower than pte_none(). (Andrea)
+> 
+> Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> Reviewed-by: Andrea Righi <arighi@nvidia.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 12 ++++++++++++
+>  arch/x86/include/asm/pgtable.h   | 12 ++++++++++++
+>  include/linux/pgtable.h          | 25 +++++++++++++++++++++++++
+>  3 files changed, 49 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 9029b81ccbe8..28bada97d443 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1830,6 +1830,18 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+>  	return __ptep_get_and_clear(mm, addr, ptep);
+>  }
+>  
+> +/*
+> + * Note: strictly-zero compare is narrower than pte_none(), but the gap is
+> + * harmless: a fresh kernel PTE has no software bits set.
+> + */
 
-Good idea, and it's certainly feasible. When I considered this a while
-ago, the reasons I didn't take this direction were:
+This comment really confused me :/
 
-1. There's no real-world usage for adjusting the swap tier amount (it's
-   either 0 or MAX). That said, your suggestion to initially allow only
-   0 and max is the killing point, and it's making me reconsider.
+What is a "fresh" kernel PTE and why do you specifically call out "software
+bits" if the CAS requires all 64 bits to be 0? Why is that narrower than
+pte_none() given that pte_none() for arm64 is:
 
-2. The implementation cost seems high. The current implementation
-   handles this at runtime via simple masking.
+#define pte_none(pte)           (!pte_val(pte))
 
-3. Relationship with swap.max:
-   - If we tie it to the current interface, wouldn't limiting the swap
-     amount within a selected tier already be possible? I wonder if
-     that alone is enough.
-   - If we add tier.max, it would need to be a subset of swap.max.
-     (Any other complexities here?)
-
-4. vswap enable/disable: vswap doesn't seem to have an amount-control
-   aspect, so an on/off semantic would be clearer.
-   https://lore.kernel.org/linux-mm/ai5kOOmR1LPTWs1J@yjaykim-PowerEdge-T330/T/#m8831ec057bf9387978d3bd698f51920600e09a04
-
-In that case, the internal logic could stay roughly the same rather
-than counting via a page counter. Something like:
-
-1. Change the interface shell: tier.*.max — allow only 0 ~ max.
-2. Keep the internal logic as is: 0 disables the mask (child memcgs
-   off too), max enables it (child memcgs on too).
-3. memory.zswap.max integrates naturally (it's memory."tier_name".max).
-4. Extend later if use cases arise.
-
-On balance I still lean toward the current interface, but if a per-tier
-max is the better fit for memcg's direction and others feel the same,
-I'm happy to switch. I'd like to hear Shakeel's thoughts again, and I'm
-curious about others' opinions too.
-
-A few more perspectives on the points below.
-
-> I will respond to your other points later when I have time.
-
-> > 
-> > To summarize the discussions so far, the following points align well.
-> > 
-> > - Per-cgroup swap control, as I suggested.
-> > - Proactive zswap writeback (Hao's usecase)
-> > - Swap device target demotion(if it wants selective, then it is more better), as you mentioned:
-> >   https://lore.kernel.org/linux-mm/aicZ-5GX9De3MAU7@linux.dev/
-> > - Virtual Swap on/off in the future, as Nhat mentioned:
-> >   https://lore.kernel.org/linux-mm/20260528212955.1912856-1-nphamcs@gmail.com/
-> > - The memory.zswap.writeback alternative (no hierarchy model conflict)
-> > - zswap is first swap tier.
-> > - Promotion. (Also better for selectve usage)
-> > - tier based swap policy (e.g round-robin...)
-> > 
-> > To accelerate this work, I believe we should reach a consensus and
-> > merge the currently proposed swap_tier interface :)
-> > 
-> > If the above approach is difficult, I would like to suggest an
-> > alternative for progress with the memcg interfaces removed:
-> > 
-> > 1) We could make zswap the first tier and create
-> > a use case where memory.zswap.writeback internally is handled by tier logic.
-> > 
-> > 2) Or simply merge the swap_tier infrastructure itself first.
-> > 
-> > This would allow the swap_tier infrastructure to be merged and discussed
-> > more easily.
-> > 
-> > If it takes longer to adopt swap_tier anyway, by doing so we progress next step
-> > as a experimental feature.
-> > 
-> > - Apply per-cgroup swap as an experimental (debugfs) feature.
-> > - Apply Hao's use case experimentally or as it is as Yosry suggested.
-> > (future migration to swap tier)
-> > 
-> > How do you think?
-> > 
-> > (FYI: My emails to kernel.org are failing due to internal server issues.)
-> > 
-> > Thank you 
-> > Youngjun Park
-
-Let me clarify a part I wrote confusingly. Handling
-memory.zswap.writeback via tiers is possible, but I don't think the
-interface itself would be replaced even if memory.swap.tiers is adopted.
-
-Selecting only zswap in memory.swap.tiers would not just disable
-writeback.it would also block regular swap entirely, which differs
-slightly from the current semantic. (... "Per the cgroup v2 docs: a
-zswap-only tier setting is subtly different from setting
-memory.swap.max to 0, since it still allows pages to be written to the
-zswap pool; this has no effect if zswap is disabled, and swapping is
-allowed unless memory.swap.max is set to 0.")
-
-So the interface itself needs to be retained, and it could be extended
-toward selective writeback — e.g., passing a desired tier into
-memory.zswap.writeback so writeback targets only that tier. Currently
-it only controls on/off. Other tiers probably don't need this. demotion
-based on the selected tier should be enough.
-
-Thanks,
-Youngjun Park
+Will
 
