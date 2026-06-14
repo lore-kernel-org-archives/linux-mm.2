@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C8B9CD98D6
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 10:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE07CD98C5
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 10:33:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9B346B00A7; Sun, 14 Jun 2026 06:23:16 -0400 (EDT)
+	id 212EB6B00A9; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4BFB6B00A8; Sun, 14 Jun 2026 06:23:16 -0400 (EDT)
+	id 1C4256B00AA; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61986B00A9; Sun, 14 Jun 2026 06:23:16 -0400 (EDT)
+	id 0D9A66B00AB; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A476B00A7
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 06:23:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE8906B00A9
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 06:33:56 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C718B1C299E
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:23:14 +0000 (UTC)
-X-FDA: 84878130708.30.70C2C1E
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8072C1C3F1A
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:33:56 +0000 (UTC)
+X-FDA: 84878157672.30.53FCC97
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2C0031C000C
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:23:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ealqgkai;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id D5FDD14000A
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:33:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4O033mF;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781432593;
+	s=arc-20220608; t=1781433234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3kqt2PsjkTRNbqmgv01YobweDN9fkjlj+b394Tb6Uu0=;
-	b=by6VOsP2GluohEvP8DBl4C6Qd78MgVE9ihnWEDUAZbOJEl4oZOyHvugooDnXXzpiqX6pre
-	pLzRZLbIzKEZEWFpMAzcStszf/Z01gLJbZERVI3otMjdgpi3usB0TtZqR+Z2m6PvhMf8IE
-	taJCQFLl655igT9MnUxOchZyZjfsEZg=
+	bh=fNZGt5jAdvGJ9FE8m2dMOVkQl0H6oyUWqUmCHO4bEDo=;
+	b=lrTVE2mVaTgOYi9XQZreRQQ622dn2gU888ZNunuV+c1Y7yDWfU8PrgaX2IA8Jm0AbjZiqi
+	61uIJmoW2ciU1JjgyHgR10XJEzGo47tJ6S1jfPQbyck4YG9q+h1iK97eLQLYvAPb1C6q4R
+	W5eBbEraA+II42lBDvWesoheeqvmbqA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781432593;
-	b=O361vJ8G1b2e7sA0h1XJvs9/WaMwMloy9/0nqj0xheLR+nCGfMuU/VRWhhksRsN0slRwF3
-	Q7TwgQJhzK11xs+lkvUGAt4tOenBBnZHvsxBgYpUP+XejuNCFDwF/xwB8x0R3yhcuGlSfF
-	JGqYASH+wlEo2Eg6XnKaN2e/4yP6z5I=
+	t=1781433234;
+	b=Uflmjeh6J/Efym9OgpUYj9/JtpfUWgo5Us8hL8IOf5s+0YbXSp59BSZhmd5vec7h3qW/25
+	s8sLIwvlPvtFdtVKxWpKVtAZz8PJ9+tYJMG5UliYepUKHv2SHICN0QImkpsU5YM9JjGnPO
+	jKjjUX3C+KSyO/Fb9cGysN4cDu9pM/o=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ealqgkai;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4O033mF;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB0D24431C;
-	Sun, 14 Jun 2026 10:23:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315241F000E9;
-	Sun, 14 Jun 2026 10:23:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD40C4374D;
+	Sun, 14 Jun 2026 10:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD01F000E9;
+	Sun, 14 Jun 2026 10:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781432591;
-	bh=3kqt2PsjkTRNbqmgv01YobweDN9fkjlj+b394Tb6Uu0=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Ealqgkai4qqTif1CDYIGqpuXKEUkZpWX1rrlTJZYqn4Gk8Nh8DDN3ub6KB02kVvZN
-	 x4CAJMfzUv7VEeOzFAB3PtoQc3yYUD3HTwf4SHDYxCOPZiw39hIFVIG2P3LduzPW1O
-	 pYj58K3ewGrckUmR6B+zCng2vz4C8k9AXgGN1kirbidHcnCW6EYXEC2qG151+cN8Q9
-	 Eo4X70VM1fItupStDRQjHyA44R5N/eHuCNoMhHyDUFO5cGpMx5FaT15HKm76d04nK2
-	 ab5dFLosIzV4tt0xcUzjbzAcIhNkjI2iCb2nblLkldnpZhYU+ABp9SfjlyB5tjMQwm
-	 NbmQbN8BkBe5Q==
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 3/3] selftests/kho: add LoongArch vmtest support
+	s=k20260515; t=1781433233;
+	bh=fNZGt5jAdvGJ9FE8m2dMOVkQl0H6oyUWqUmCHO4bEDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D4O033mFlKeba1PLOGOiRmaKT0HE5hCywAb2SmHaWTLg7Si9bZXSFsGSHQ2W5zmqQ
+	 ys03YqOtdxF4fiW61Q7KcV8HbOnyBKxBgn95LV/qvejr8YcPGFLfykFMYKao9DmxIh
+	 QSmkssstKxU22KEdn6XIPYm8omxvYWxxIVeh31P5IMP6p93MOWrlHgBD/00hQSuS+4
+	 8u/nCwXfb4s7Lr/quIEefgn3MuMlBtPNP57E34hRse3Dzti0yLPt/ngnQOhg+UDG+w
+	 zT5HCGNe7QMMaCdgWcJRrG6ut0rmGxAbJds9ctsWLOSmxhHdR+0u0H4buLOVBx3nkg
+	 mMyv6PUIGqE2g==
+Date: Sun, 14 Jun 2026 13:33:47 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- George Guo <guodongtai@kylinos.cn>, WANG Xuerui <kernel@xen0n.name>, 
- Alexander Graf <graf@amazon.com>, loongarch@lists.linux.dev, 
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, Kexin Liu <liukexin@kylinos.cn>
-In-Reply-To: <20260601093930.112758-3-dongtai.guo@linux.dev>
-References: <20260601092823.110362-1-dongtai.guo@linux.dev>
- <20260601093930.112758-1-dongtai.guo@linux.dev>
- <20260601093930.112758-3-dongtai.guo@linux.dev>
-Date: Sun, 14 Jun 2026 13:23:03 +0300
-Message-Id: <178143258399.2123877.4049283498071192411.b4-review@b4>
-X-Mailer: b4 0.15.2
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Rich Felker <dalias@libc.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
+Message-ID: <ai6Diz0UgSGccbhY@kernel.org>
+References: <20260510135546.13554-1-rppt@kernel.org>
+ <agr7XvoWn_-axX1-@kernel.org>
+ <adb1db8d1fbb9d219fa041776ae863aa2fc09270.camel@physik.fu-berlin.de>
+ <aiBI_QEmeVSBb2HY@kernel.org>
+ <865aaa7aa64ab69ca9020d64d86baa8d9b700bcb.camel@physik.fu-berlin.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <865aaa7aa64ab69ca9020d64d86baa8d9b700bcb.camel@physik.fu-berlin.de>
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2C0031C000C
-X-Stat-Signature: 6hzoxf3ndsebgnk64s1j1tb8x6g4gans
-X-HE-Tag: 1781432592-217553
-X-HE-Meta: U2FsdGVkX1/p2oRw5Pks+isEetxv9WHOrrBOrBlY7R0u8/RTPzlJn3qro1dVA+kxlKyiBA7MAqMKox40rk1LmmfvwJfXTowV/Gn0VfuGQiWIjYMnIHJ+T8nDiXC0C8Z4E55H3gSPlNw9sY/Cm+dx0IOD+xf/DoLU+2g0NVqBthjDx0qA3sHsXIatevrOpN1T/S4vNw5/xdF7dIIvPbXF0sctadGklwqzRuXnlb6ufYnxNBNDQmNq7eo7G7sWiARCfikLaVSjdyuEGpTxhbAYWH0ylC4FlTrRUdGSraiHS0i5qluqXhcCsBzk6sHKhjdtA3G6lKR2x5H7YPz9DRaWdvZ7HBnlN6SAngxfBVlSDlljXftC3OPRdg6/55NPyW2mtB9X7jvcuwy0Ij48XAEayTpyT/iwyW3DgsliSlPBRIXD1EBTqQaeKtlw048PghClpjV+Brxb3+OkTrtcpB7ZA2WsK1LhGSzcrIVwZunS1Iwwh8sG9t4CI4LzzMtdfE7Zx9pt9kHWSo0rSldPyEtgc9LaBstMeda2ksUfW/IDLH5ktq5KETGh+1ISx0pMOnakF5avL1JVGEa/5pPnLKPMkEXf1Ug8oSqWDJuoyXEGgCbisgCiRMDlbMmzMcU9d7WrpcKKBvA5ohx2OS8Ir0C21F8FZktIOeKmp8WC0D7VM9qKTqNHASXi/K1FD04m9Q0rEzmgxAsx8YlxWNCDlIMh91Lls0XXhrqzR9EXW9AUq9H+gfHMW8PDhBcPXBeAYAk0GvdH3F8E7N5Oval1559gzkya5K724y/Emu5l+bdlMMvT6r6RUK0ZQHbHnawXctvwJow8mXbr0lo8ya1h16pMKT+nDXow3W7bn9DdCWg1Q3OF1buaJsQLnoDJcEVL77eUnU01IbjJDon0MCaoJNAAFMTOhe/CAt5KFlPzCb8FXFVYIvMgibGoor1lOGdtpOn0C4wAPDb+KTPn6+wPHQ/
- NAMj9evp
- oLOfrn5BUn/jQWEUoTOl7cI8RA3ofoouXMaaugGjTWvxuc9CoFsFyruI0/yjoTXrt0wfkxFFUkG0UpcRR+BJU/G7jMDmya04dvw1GhKcld25hLqGB+yPNXQ7gWS6D/im9YZujDdudDRB0Ol0t2bgpeisMxQIA+hJwkVgm8SCa7QiJdfX47z4qmFskvX64hArkm/8qDswphB/XiBVjggzO7P20eWywpFiLFt2w
+X-Rspamd-Queue-Id: D5FDD14000A
+X-Stat-Signature: 1ic9a7xufidr1epcp9w9xur7rezuei7j
+X-HE-Tag: 1781433234-747279
+X-HE-Meta: U2FsdGVkX1+1DVQ1RVkhPtDQRgfAv2z6BL26wTdLGfjIi7mv9naJ+RJfPEp402T8E8ApT1pNw+wmNEv3x4acstPwr0A/bcZRlmmBPB8GTk5kdGs7VIblJtjkhok+VeUdH96WKopiCtV4WZf2wVwe2/vCMYsSMl9jeKvct/F8+WrM6k0VvItiFG4fEAuoqwdwOJQlmZ95ZsFkZ78ztz3kJwynXoBbVclNZaLCyXr4X3UWWkRCE2V0zX14QuytUto4Mz1RxUvU7AL3svGt3QLnE45eRH9UmnUVgG9T7AXQ6LXLo6TfhsarTfz7UGizHqUx+XsTk8kTneAu/c7lqM4z4hesapvofxbJAOQCv4L3oAADYlQkkBnAT2Wpf4C8+1hXjOEocKpnVdRbu3x7K/gbOsjyQ9MfuNuSaqPho46XgbCEyV9zJQ5Nd4uBkwU566jkT96M/jCi2jkuuXu9rSTZB4lxhyMUG1CXHi6Haz7pwOYqz1GW32LR7EvciUb6ghvqrkKhKY3Krq+Pjx+75wlhStuVezptYuV4D1SrsnaodKVSAXaQfa9STMJ9RGRKxfyRZVIKpVOjrlFemKjcFrMVAat3gaiEEZJi3wb4MeZ9Ws80a21jItJkBKUhUsnBwLOx65sFhwmfe4N+bQuz+hndS6sTd6tgUveMU7m9kFtirVa07CfMYZrm/pJc2H3WwYDnJd/wXWKoYMtXsCS77Cbh+L8crqmy6YJcc4ftinVAY3GPZN+mIs5k+aEFFKAKHSRcMsxg1pvm+mwX67R6nvQYjwT+mTmvYzXMNyy8hRxY0ZXU9qxpmfEA6EYy9hGAH9hvB2OBy37F4xOsfGolc/1/3yLfcXqxghi4NUumvnySXQPAxDlYkTFU7cLs/Gf5Lu/ZNQY3mV/EqBySwxgodsgccrOM3qAm8ZWDaXhUb8393T8AmN0CUNIwrvuypp7fEqP/mMIa2JVqiNr2g1Vn3o6
+ Vp9Nw67b
+ 1X2DzzxizyH2TYH2nUZUVEDyBgM1AnABnFUTTCAL7QrVONleXM7dKaAZEIVWFgsBdIpxfMPpu5GnIcXMz9AsonKBXBtcjWx8khCTSdNVnDG7Ylc9NVDhxW75DA1RAWpWFrzELLQAsMeYEWSG0CH1eC5ZYOQkNH0ROvU6WcF4/IRw+UGCADFmFhC3VDTKVv4mfV1Lj6Gwv7MXeVYxWm8quReLQbX2nQrpfTf+otkz1BnzLxsydKDR5VBGtAFL/eQdDTHp2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,34 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 01 Jun 2026 17:39:30 +0800, George Guo <dongtai.guo@linux.dev> wrote:
+Hi Adrian,
 
-Hi,
-
-> Add loongarch.conf to configure QEMU's LoongArch virt machine with a
-
-Please spell out "virtual machine" here and below or use VM abbrevation.
-
+On Tue, Jun 09, 2026 at 09:21:37AM +0200, John Paul Adrian Glaubitz wrote:
+> Hi Mike,
+> 
+> On Wed, 2026-06-03 at 18:32 +0300, Mike Rapoport wrote:
+> > On Mon, May 18, 2026 at 02:05:39PM +0200, John Paul Adrian Glaubitz wrote:
+> > > Hi Mike,
+> > > 
+> > > On Mon, 2026-05-18 at 14:43 +0300, Mike Rapoport wrote:
+> > > > Gentle ping?
+> > > 
+> > > It's on my TODO list for this week!
+> > 
+> > It's sad to see this being dragged since mid April (if we count v1 and
+> > there were really minor changes in v2).
+> 
+> I apologize. I am doing the maintenance as a hobby in my free time, it's
+> not my primary job and it can sometimes take me a bit longer to take up
+> changes.
 >
->
-> diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
-> index 49fdac8e8b15..918698b6dd2a 100755
-> --- a/tools/testing/selftests/kho/vmtest.sh
-> +++ b/tools/testing/selftests/kho/vmtest.sh
-> @@ -107,12 +107,20 @@ function run_qemu() {
-> [ ... skip 14 lines ... ]
-> +		-kernel "$kernel"
-> +		-initrd "$initrd"
-> +	)
-> +
-> +	if [[ -n "${QEMU_TIMEOUT:-}" ]]; then
-> +		timeout "$QEMU_TIMEOUT" $qemu_cmd "${qemu_args[@]}" || true
+> > If you don't have time to take care of that, just say so and we'll take
+> > this via one of the mm trees in the next cycle.
+> 
+> It should be better this week. I've been recently busy with CVE fixes during
+> my dayjob and the workload was extremely high.
+> 
+> I am not going to let this slip, don't worry. It's just been a bit too much
+> stress the past weeks due to the AI CVE reporting.
 
-Runnig with timeout can be actually useful for other architecures. Let's
-make a local variable for timeout of 120 seconds and always run qemu with timeout.
+I understand that this is a hobby for you and there are a day job and other
+obligations and you don't have time for timely responses for arch/sh
+patches.
+ 
+I just don't understand why do you insist on taking this via sh tree given
+you don't have the resources to timely deal with the patches.
+
+This set can perfectly go via mm tree as it cleanups a memory management
+feature that should not have been added to sh at the first place.
+ 
+> Adrian
 
 -- 
 Sincerely yours,
 Mike.
-
 
