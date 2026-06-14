@@ -4,139 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1254FCD98D2
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 13:26:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3463DCD98D2
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 13:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1F6D6B0005; Sun, 14 Jun 2026 09:26:00 -0400 (EDT)
+	id 4374F6B0005; Sun, 14 Jun 2026 09:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA9396B008A; Sun, 14 Jun 2026 09:26:00 -0400 (EDT)
+	id 3E7F86B008A; Sun, 14 Jun 2026 09:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D714C6B008C; Sun, 14 Jun 2026 09:26:00 -0400 (EDT)
+	id 2D67B6B008C; Sun, 14 Jun 2026 09:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C21706B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:26:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7927AC2897
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 13:26:00 +0000 (UTC)
-X-FDA: 84878591280.07.F57D0D3
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 134288000C
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 13:25:57 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=berkeley.edu header.s=google header.b=OX+TjmXP;
-	dmarc=pass (policy=reject) header.from=berkeley.edu;
-	spf=pass (imf30.hostedemail.com: domain of farhad.alemi@berkeley.edu designates 209.85.128.170 as permitted sender) smtp.mailfrom=farhad.alemi@berkeley.edu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781443558;
+	by kanga.kvack.org (Postfix) with ESMTP id 201D46B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 09:38:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9463C27B2
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 13:38:50 +0000 (UTC)
+X-FDA: 84878623620.22.4424FE6
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C389D40006
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 13:38:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=O4X4Q7co;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781444328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=my7WznhvuaINq07i0eln+93EnzFiKa95Z+VUna30ulc=;
-	b=nl8Gv65jKv3JoIBEkeEhEgoPd1NUvdIgiIGL1XvfzgqtIBJk3jrUreOZRkcg7TdI42gfmD
-	I01k6lacIizp5LCII2cOpMdSvZvzeGRAeAWqGwYqnfd/p4U12tduMwtdyYUn6IkSvXlBjx
-	TizwUqigN3uijoR/s1ro5koNgHTZWtY=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=berkeley.edu header.s=google header.b=OX+TjmXP;
-	dmarc=pass (policy=reject) header.from=berkeley.edu;
-	spf=pass (imf30.hostedemail.com: domain of farhad.alemi@berkeley.edu designates 209.85.128.170 as permitted sender) smtp.mailfrom=farhad.alemi@berkeley.edu;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781443558;
-	b=jQD39AXzx7gpizQFUctUE/Ozo6kwXHlXzc3sPWmLfRbdr7h3y5BbgTNWxelGzAtvF4mY0l
-	bfSqeGpNiq/M6LxewK0rEtDt4EF0aTUt105Yg6MqkslPiDnS/Zihl+3PaAEzI/bSKrOdzy
-	zDBd0DKgCcz/sEsjTnUxxHnTTgEZNBA=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7defee656dcso14736387b3.0
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 06:25:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781443557; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RiB/L4xOao0zwdkHY7t/6tTi1qKDWpdb5OCPxxHQxX1o2ql38WcpcTO0RKceTlCBBU
-         S1NMUd/mU0gcNdKfHTsHAEBMbRRtxgmPxbWy76Th/4p9v2KVVCwp4YfiQp+PBO9AZZAJ
-         2mrb5tLMmlXSAYUd1hTndR3CwbHd2YdkTz8OcoWcSAUfNYnTMIkWYWhPYABgxaU5RzyU
-         8NVY6v5TTPP4+qlpm8DX35yTXc4EMG8CcPs7KGSNBaFnzWbOPCUl32xiRDFuyNB5+lzT
-         ba9DVO0llk0K1BF+o2bTDObCMyP+k+QeOEHlFc1hvOVgtOIWEZA+QON7r27Cl1iXbRfe
-         1pGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=my7WznhvuaINq07i0eln+93EnzFiKa95Z+VUna30ulc=;
-        fh=JVdfWTb4K/4VsDtCqUo2LWCQs9JNak2qk/lSqsKxcic=;
-        b=TeL4h1/f3+ShL0l7m2QHqKaefathmAIIQXRx//WVjf+Irj+LW8P8z0tWlEpSs6iA1x
-         uVN3VZoN7JYoMj5Jm/wKZVCPehmgnsXElMIBJpriGBZUheIqKpGdVPloahcioSy8bhNd
-         zQbld+Mmj89BEQFGB1LqiZ2e4O8BCnZVYYIo3TgNjgG/Rb/VtuKpyH8IRwAYjL2/GhGm
-         A6hm3yua6aGUVlaaxujHAl7ukmJ8pqrzZYH6A96Sv1jo47DOMw7h7+arVar/08FjUBmF
-         QQ7UtnwdAHoquZ+lKw6xxfWg7kuxRiTrsA1m6UfoFffxKhQO2AL47qy23Q2zf3Datqu3
-         6rVg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=XXg+GT95yYO4T14XPgWTJKtcxJfATzJGx0/pfKwDeqA=;
+	b=SFgGjqsGiwChgkP88mcJaqZT9SKnjyRNYdlU0PsICkNGF6wpuhlIRycdnFWFtOqySvt64w
+	l6Qu71hLZtoXW7TDVft+ndy5zsGSTR4OLWExVUnRS+CkZ+HQPRbSSO+3LBSDwrT7gcouwK
+	naPFq9CxTpbnr46ggPeyIYyaROQexLM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=O4X4Q7co;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781444328;
+	b=qCCOZ9+nN8fvn7PQkxDRSttqbNuBg4PfhzwQftvh7bTCf+L+VtqZW667sbj+8i1+NGZEjD
+	Nz+q+HvOPndChm1i4Mu4ZItoDaLMzlxcjLmvTUow2O2ZX2feEoUEvkTEdq8dlibiuOsgcl
+	h2ljbdM0iRUusR0/by5vdbo/OLC0vO8=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-517dc520840so27705261cf.3
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 06:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=berkeley.edu; s=google; t=1781443557; x=1782048357; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=my7WznhvuaINq07i0eln+93EnzFiKa95Z+VUna30ulc=;
-        b=OX+TjmXPMF1E27QpXbRKcE/Vbi3+2Agpmq+ZqwTucGmq6LWd2TTj5Nn+De+5vx6YHL
-         QlpUJivhslR1ONBGuZ4dsgF1an6P9PcYLue9k/GwpAotqITDsI74jjkCbiEb45ninktG
-         5N6I3Fas+Vuyw1UtFvae1F/4DGc7b1VBXK1tUA6vnrG4RRaXkrDxoG66Y3Q52ieo8Yfu
-         KJMur+69YAMc5R+WZnt4wlPbmSbLQY7yC7Q1Wr48TI1Ac8YY6FJQkIWFvuB8KQ+sQFtP
-         HsSKNhFbGwstWOkzgVKNuS8tqRd81FeZIY1dYNwow+g7gOUPqLe/8xjtgnbISFel0YMV
-         Cr1w==
+        d=soleen.com; s=google; t=1781444328; x=1782049128; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XXg+GT95yYO4T14XPgWTJKtcxJfATzJGx0/pfKwDeqA=;
+        b=O4X4Q7coQyFRpRzeIdaEoJ8LI2oykMQjx5Y645piUBiXCyeYm12wV2oUcQobWTzu8K
+         ILTrVabCjbCSewNcjczakCu8Oae8DbX3DOY2hbcIAAGJiYp2tKH3k2eX6Oj4B4pm98A3
+         MpOEi1DEzmF53YKfeVKWsmARp49ZV5BvmlZnf8uHyDKI33Aj3mxhiKhHojde477uqSGB
+         zYfJ3Z9MTYf67rII1p0l4iR0gNnYAgP0hZcyAhZNqrqhQzGlLzdnjrim3XtKRZ/xSlzT
+         BF/td7has3H94KdbhRp0WSO+TjRMUefzotoFoH4mP8GJveetQslfuh7jGqdevUosYDGN
+         0tJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781443557; x=1782048357;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=my7WznhvuaINq07i0eln+93EnzFiKa95Z+VUna30ulc=;
-        b=s/Ga6t6j0AYD/ScVEJYe8WvbbxX8npUoe+b32BZO48yTxTHy6jZqsMFV1Ihyw3Z6BB
-         JDX9M/Lrbw5eZG1zPSJk5ywcGa+VySAkHw3dRmhAiiuLu6imKwqmK3i+IfUEQe+XQtzh
-         GNRmBOYIlgyNuW+DDQ6jVazvyLarAQv9kEqadDckUWPz/Kd10/JJnfMN1DJuxKSDHGMQ
-         GGgSJeNWf6ANZA6rkwCVg5Uc3Kb3rovYGncFW1kQ8p7tsfqt9AsgW0WqSo+K18Z9ei/V
-         CVrhYfVgmhW2Rnsi0F7Y5l3dpUbP998a/NotWbJXKaLf8esDEWCwtYhG8qveIjp6JDKZ
-         Mgww==
-X-Forwarded-Encrypted: i=1; AFNElJ81NfOR3nVDRA/FUfVB3LlsrE0gUaac9u4dT2ki9RAhouORy+Wc6GBt2B0C8zOkeUORvA2r4C0ukA==@kvack.org
-X-Gm-Message-State: AOJu0Yw6zjmCAtkRanK3UTQ6OQXKdvB0fSVoVavUswf7CVxbBqYESk4g
-	R7grq1/Jr5vDwgdnQzmQ4WjGNvUzsL1/lQhDOxQas5PvbaDetrp+Z43o9glMPtwctS9iqqGruwX
-	5RTa0wEYt6D3HCAYzRdqZsNipsof2bY4MQhWlaqM9
-X-Gm-Gg: Acq92OGvvrDX+F8bU5XqBb69YW307kbDYq/ZA3YVvYUjAccdPRO0bHRA4tRUHiKZAjr
-	dcwV3VLPWUEIW/1PUKDo1qUbhis1xqVDk4uxt0RDzAHsJZsXFW3UiCwTQu4O2YNbqPNtVoa45Bz
-	3jruXaa291lS82g9l7vX4uCPXExESIQ3vNdQcaF7tFVkZBqqhb/EX18rOiEnv/WmH6xelTcZPeQ
-	lh3zIkQ5L34nwuV7trrbFtXe8mNywUD9pA3d55eR/Q5WcT5rlQ79G0WuTL+zQtNVS7S8w+UBjrz
-	VAaCDCZ+Ag==
-X-Received: by 2002:a05:690c:3745:b0:7e2:a956:4083 with SMTP id
- 00721157ae682-7f8c1f15742mr70603597b3.20.1781443555816; Sun, 14 Jun 2026
- 06:25:55 -0700 (PDT)
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 14 Jun 2026 06:25:55 -0700
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 14 Jun 2026 06:25:55 -0700
-From: Farhad Alemi <farhad.alemi@berkeley.edu>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
-References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1781444328; x=1782049128;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XXg+GT95yYO4T14XPgWTJKtcxJfATzJGx0/pfKwDeqA=;
+        b=Tncg/ef/K8HR4iBHeNx6aTTr6gnz65RrzsxHsBwEH3O1kJNwesqyTzUMvqF1CPRHCJ
+         xHSsMbgrr/OPs5MBTnBEtYeqT62dHi8LMUffawbcp/VT5pBojBtm+X3rtu7vBxSXShUq
+         myu4hw4XFvCFaeZwYNBodotVK0j4+yO3JlSIazhl5/ZoFkyue0br/0IzwAxM/td3zOWa
+         7qPd4kUrXTaAV5a3S2OAkBy/jcfK3mZTUsJ5jjmxZZfQxn1Joeo453SqjN2fi/Mh4xa8
+         2BWB+t3hWfEpsMn7f0oR7RvMMpyE+49fhIHTpsxHFqG5kYGHlkdOHb+uibosqbz4Mhnq
+         4tzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9MO5T3fhHtcop1Kffo7+56rfbZWDG3ApRWVaEogfDeNuutWfiEgsDC+7wi8AGdY4oQkn/7D+DtLA==@kvack.org
+X-Gm-Message-State: AOJu0YylKHU6EjksXzcgC2Ch2TJQEfWiUyuhuYaWnNsyQ4OonBbzL0XI
+	vwM/y9WGWxfDns3iplTfS9f+xbfJR0HXIV01Szm3N0bPHLQoeY4uViuPwhqI4iJWECA=
+X-Gm-Gg: Acq92OGFo+erSGhcCVE3mqsPxoP2cIQuhwnvp8+ZYrNWA3fdL4/XYveKLp87uN+6TxD
+	VoA7xugj12PvWsFpXI2KSS3j35wAFyV80O3W+lLfZmSTu4DRrHxUeuNMIv/2de7VghujG6bT3Ep
+	LVgTWRZoEJzDFyI3SzMqlChRuaIhJehIEgbBe0GTpWNAfzA90ED3sAQC2umTF8X7/UT4qDmt4a+
+	R34ur60OZ6kb9L22vV+9ntYBXWFA5m37H3tELgV9WSE6Se/mDbcDxhz4QTlM6LOU7tQ+9bAAeec
+	Hy1f9fcUCfBQY7LySpZqRkrla8H/pDJN7mVR1zxgu4PmW1OVB+QVrGUGbuamVVbTCvSXmdgjfzn
+	w8sk6C/RrArcA8T1KM314Anz/UJHdpHYskbx0n6fwAiklfB87I5XYhN8vK929mf+ofhc6n4YPH1
+	4/P90VNJtWNFeIBfESvq8tFxhjXs6RsDdEZW/LsXyfVUHmYaTdez1cBx+PFu1y
+X-Received: by 2002:a05:622a:8387:b0:50d:66b6:1564 with SMTP id d75a77b69052e-51953503dcbmr85951991cf.14.1781444327877;
+        Sun, 14 Jun 2026 06:38:47 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb7dad16sm73669631cf.21.2026.06.14.06.38.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Jun 2026 06:38:47 -0700 (PDT)
 MIME-Version: 1.0
-Date: Sun, 14 Jun 2026 06:25:55 -0700
-X-Gm-Features: AVVi8CdOyddTc0VCwydJ03Yt1oOOOGpiCzbsY_HpVqvtkDz1Xj3Bl7yujHIBV_M
-Message-ID: <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
-Subject: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
-To: Andrew Morton <akpm@linux-foundation.org>, Waiman Long <longman@redhat.com>
-Cc: Farhad Alemi <falemi@asu.edu>, David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+ Adithya Jayachandran <ajayachandra@nvidia.com>, 
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, 
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pranjal Shrivastava <praan@google.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20260522202410.3104264-4-dmatlack@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-4-dmatlack@google.com>
+Date: Sun, 14 Jun 2026 13:38:40 +0000
+Message-Id: <178144432039.1257322.9644414453415904478.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3299;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=imkMf1LWuc5WHnOYfzLBjY+C/lZku32PXLp//Z5mGeY=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqLq7l1REohFN/W+c/zZvmZsiNBGib+GmmJ98Xn
+ Q+7rb16wzOJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCai6u5QAKCRC7dyhM23N6
+ 3kxIEADBd+AmGBTMM3+Eeu1O0iFW2mY7VSiDXVMIuYE2Aff07zDsPuFqh4iaxqw5y6yQq1RDRS9
+ C+LCuvNoHjr972Bm+MNjX7C07NBMYiDKF/eZq0xHbj1XYcvY3GjqVzl5O2NnP0UkUp3d5XxdB2U
+ kRMKTDUBoWa3SJaUak+oxi08sxN+Je36bFKJwqBY9dcpbDzgF/LY2TXsLUIsLhTK7mJJZ1Zua4D
+ UllLotthUK/tr3huxjhNXxTtHxzpkCFabCnjYT8xZjmKs/WZmMMSP5laKjVC95NnLsDcZQZJcaY
+ fVhlX1FaX9DSWDdZ7SsxAYVJ7Ur3pbt9FjS0jeI2lOhMlBGh/ybDkx4+LAnHvXuwa1taPVB55fP
+ eavqiJEVaCFIZWubPMrJDMotiK4Re7Jw1ldxwPS0Qef24xJe0PBaNgnXCwEFfIGun6uZ2ev1uiD
+ hsnw6UqUOs1u/utfaWudvAaNnZjzHo0l/k5+sc6C6QYbwAOSME6sT5ASpuABBfnrKTvMiveYmU9
+ iSshqRHWh3vmaVHLAuamw7P21HrLeUpe1rAs+hC2gyfZ3ZKwrw4ErSfhqVMgkOBVovFuHcx1P/7
+ lQyQjY82doo6RAVRWKXjvFekoAN0iqkrC5llrFeQHZvb2oyr/0eG3Rdd4Ga+VUaHcMzU3/xLWHV
+ PULRypTcExsyIYg==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C389D40006
+X-Stat-Signature: 4cwqfrxt4dysmyrkptzc1efatmb7hanj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 134288000C
-X-Stat-Signature: xuuksfk73rgp7ce5t8kxygewjjbs6csz
-X-HE-Tag: 1781443557-510412
-X-HE-Meta: U2FsdGVkX185+wDHTvg6aWsxOp5CZSppWr4AWEWhhMaJJSf5WQWOOF18ywejGnVBBmjgBmJiOm/FpQCDf7LqpucQ6jKC2bDhO2XIkU+K3TUiqb17LUFd1c8URHKX4sWYayKfW4UugWMgSTyrELJwu4zS+CBQ6gSSmHkt1Jj0JXTsiEdzjDI96/mCE+W4+rBvE36nBQLGsrd9Pm+57VX9GZqRxUgdWhb2rI1BtuumBapbDn183wH0us6Tx2/b91gVihlpDn6P+Km0IcVuZgn2C0Jbcw1XQASPr6crcMNZXO2gszOMdd0aSQqCRwGjJxI8qjGnJzMv2cXnYerZDDOO18QZt2xazgKXfm5Br50ssnOzso9Kr4Gdy6T+EhAEAIi280L5xY9sC+9hUmU2UUPX7fk6RJ+y2LwPxa0Su3dnLb8Pv2xjQBQ01ecjEMxjEUaGAOAahV5NkVjEU9E5o30t/6cWX+fC92cfYc8RD8LfJ79TxLzecpx9sN18nq+SJBkc/8UxfT70cHdnl0elskZRoqI0eYity2Y3C58/cZUB/KM2VVRsp3Wn9rHsxZY+kRFxEga/tgpO3+issmyPocoDMbeUQLDny/XNP5yV4lh3IBHt94i9TmGeVrzSGVFypXRaYloBeIp5VBFJDTBv8B4hpeH8FyUmBKK1FAdZ80JnS7By7WJwPruf6iB/GugottiOM6RfvDVc351fv/p/O627JZtxQzFEGLh+Z8uJz+o8oCIK4nCUuDU4obUo0Q4fX4VTBiiinbt7OQBYLCrtIti21iKRvKym2D6RrVgAIKpRgNkSROxCEKE5sIm2H6ZYW/33umzvehy7I7FvwUMO96TRIJG3AVA8YeY8l2ZJPI26j92qXiKdfIIksMwGDtnu2RwC4QiWz0nZz4DRExZou8zyS1ISps2S1JGknk0vsT4Lqp6EUo9WgTu03jhlgJLxsEYscdMPuBMSSLNn6q42p82
- YQWEb4Lg
- pKqKUFOw5jZpW19xbLIjXDIBwCa7LSerFeARZRGGVWEAvLwffGhpNSEEK5GSiPDDIMeJtaeCKChZiU7gqmWw04Q6v9Xs0lIWK8KHbacLKE6ZDaTo+HOjVQq32rHR/RaKFI1Q8sY6nBR+OkocWvMHhPi6QpIJ1WcJkDfR7ejV1jufAlK3hrTCtqu/3taKX8JxUhPuXRO/A25u/U7T3NLweIg2uh22EPOsf9PGV+MSViygMvDURNAXTbwlp55r/mNd+AuDy3LBAVZ5LYXTgkqNHCtKXVB8rtaBJwb3t96uE8BNrKgXuoujQAX8eJ78xgiIrbXZWKLFSJfliAslxIK8C282qOkpaeEcVHvqQGcIQXIzdbGsrv82r+2qCffeEv/n5+yCJYYece0xNt9pQ00xIb47R+iH51yg6jowtIhnQwRve2EjMnqvOBtqo3v3rH1eSqA6T95ulcg9uj3MEzmBwNxKyRx3UBSD0C+D94ZlVHb4iCNzM1MqxVgYtnAu3i0qIMgigDqGhx+OpH+SjiratNOY5irntEoU4uQL6T7Hd/AHlR8U=
+X-HE-Tag: 1781444328-649934
+X-HE-Meta: U2FsdGVkX1+vxbOdfdbgZPDMgwPv6QV+6eL6PRuWqsB/ROK2W1oOHOxsDiEXwOrL9h+EN03mrSchaszh2UMAPiX26LbQTjFJQpJCFcoMk2bMBD7SlLnLaC/z8zaeS9f6WPvKqaynZXmWt0SpbLwTyi5nje8f/1909ioc6OP2bsL8YEzTQsIZS2nKlxH5JgxlyEH/hclKI+9IWYxDGRAuRTDOQMMncBT/+BRWkJI3XvnNmkRd211uAPKOPztdrt6k8k80wMDvGjSNNSQGN4og4QzpIYSbwDiIT88R+LLjK4zj2zHnOGqGwNqRKB/TzcI6+chI6ukGsodNUuXGv3bE9L7FNnaNa/ypW4mNAxTT32nIUESIDdsMisyvnppXiYXPOpwIHAuxAF6txVxbn//IfALBvLZd9KI8OqHAJK5sYyQQ+I0K7zKTEVcmiefyXxqC/kfKqY7O9bYhz8cbJhYt5rwK1Vp6YoRTo6zG4RBoFZ5IHOk3WRlc3y/pagK9BWaG1ns1O4u77DSfOdDQQVTnI434rSCi5+m8TzYxzgPDwteWMomSiKaxR9o7J0M0Zf3kj6Ibv1tJEhn28jrxVMjDaTKEaju0szOxyyQYEe29FgkXeakV27M/iO0lPRWvx408saLMYf4A5icQVC1+cbzoCBSvALFZQAT5ECfOizjfdOcwLbLXZikYM0Nvqhtixmi6iilLhOPwbZ6ZRQg4tW7FaYk+hKj1lY/+y40ql8whbesQsAiCXz4IdzsHH0FefnONkvoQDOyKYAd9w9QixHttKnm+EvQlcXiXQykGMYvkA/OLmsLZMP9186beb3kwvP3GczZvtRb18GZl1IxfmEiqCYA3WYhy5LUOR32lYCW/xXTlHj1FbrCRQEnSJl/gZoJasPxd+ReO1UyhMr9ijHgHjWtRDP3j+2HVx2yFMprv759ubVAyZTd9Huaz4dkW8Nbw69ISDJSatIh6whwFSev
+ woHJ6R2o
+ smR4rkxB4HqKsV/Qof1r82kA6u4A0UGzH9zecnALFrH/d2in3jm308fdI/jGEk3N9X7SplXuhV0zXv7FShRgF65MX3xiJU63d9lv05LLQQbcObRm3Yg1YbLz+5IEIPS9Q3y7CupHXYcEkeqie5kA4hvOGZDOoYFLsRlV+HtDkB6qHrook8jqF52jE3c4Ksn+I9CAC5XU6kfM2JtwlJya7LntzRyseZ/vnTj+dG12fTHDNec3kkMFd9V0nSiesuIF5qH8bIlN8Z+9A/n7BTooO6284nWPUpreF5RXnQltm8MnF6JvKtrxksWbRlqcInJnaRysSwj1K+PxKorzS9l7HQ4d0+ymsO/rwMh1MC7Uljt8FGnI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +152,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Creating a child cpuset where cpuset.mems is never set leads to a div/0
-when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
-CPU hotplug event.
+On Fri, 22 May 2026 20:24:01 +0000, David Matlack <dmatlack@google.com> wrote:
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 10c9b65aa242..e68ae5c172d4 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -330,7 +330,7 @@ config VGA_ARB_MAX_GPUS
+>  
+>  config PCI_LIVEUPDATE
+>  	bool "PCI Live Update Support"
+> -	depends on PCI && LIVEUPDATE
+> +	depends on PCI && LIVEUPDATE && 64BIT
 
-Reproduction steps:
- 1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
- 2) Move the task into the child cpuset
- 3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
- 4) unplug and hotplug a cpu
-      echo 0 > /sys/devices/system/cpu/cpu1/online
-      echo 1 > /sys/devices/system/cpu/cpu1/online
- 5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
-    call to __nodes_fold()
+Please move this to the first patch, fewer changes between patches, and 
+also KHO does not support anything but 64-bit mode.
 
-The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
-nodes to the rebind routine.  Use cs->effective_mems instead, which is
-guaranteed to have a non-empty nodemask.
+>
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 065d5af822f7..96c43b84532c 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -128,13 +157,49 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+> [ ... skip 31 lines ... ]
+> +
+> +err_xa_destroy:
+> +	xa_destroy(&incoming->xa);
+> +	kfree(incoming);
+> +err_restore_free:
+> +	kho_restore_free(ser);
 
-Link: https://lore.kernel.org/linux-mm/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
-Link: https://lore.kernel.org/all/CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com/
-Fixes: ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}")
-Suggested-by: Gregory Price <gourry@gourry.net>
-Suggested-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: stable@vger.kernel.org
----
-v2: rebind to cs->effective_mems instead of newmems (Waiman Long);
-    condense the changelog.
+This is the pattern we have been enforcing in other places in LUO. If 
+the first retrieval fails, return the same error thereafter.
 
- kernel/cgroup/cpuset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> @@ -270,6 +335,91 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
+>  
+> +static struct pci_flb_incoming *pci_liveupdate_flb_get_incoming(void)
+> +{
+> +	struct pci_flb_incoming *incoming = NULL;
+> +	int ret;
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2649,7 +2649,7 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+Maybe make the error return static, and avoid another search through compatible 
+FLBs if it failed before?
 
- 		migrate = is_memory_migrate(cs);
+1. Add "saved_err;"; if it is set, return it right away.
+2. Change all errors to use goto save_err;, and at the end of the 
+function, assign ret to saved_err;
 
--		mpol_rebind_mm(mm, &cs->mems_allowed);
-+		mpol_rebind_mm(mm, &cs->effective_mems);
- 		if (migrate)
- 			cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
- 		else
+> [ ... skip 15 lines ... ]
+> +	 * This could mean that no PCI FLB data was passed by the previous
+> +	 * kernel, but it could also mean the previous kernel used a different
+> +	 * compatibility string (i.e. a different ABI).
+> +	 */
+> +	if (ret == -ENOENT) {
+> +		pr_info_once("No incoming FLB matched %s\n", pci_liveupdate_flb.compatible);
+
+I would assume this is very normal, e.g., no devices were preserved but 
+memfd+hugetlb was preserved. Maybe use pr_debug_once().
+
+> +		return NULL;
+> +	}
+> +
+> +	/*
+> +	 * There is incoming FLB data that matches pci_liveupdate_flb.compatible
+> +	 * but it cannot be retrieved.
+> +	 */
+> +	if (ret) {
+> +		WARN_ONCE(ret, "Failed to retrieve incoming FLB data\n");
+
+No need to print backtrace, please just print a warning:
+pr_warn_once("Failed to retrieve incoming FLB data: %pe\n", ERR_PTR(ret));
+
+> [ ... skip 34 lines ... ]
+> +	 * through pci_liveupdate_finish(). This can happen if PCI core probes
+> +	 * the same device multiple times, e.g. due to hotplug.
+> +	 */
+> +	if (!dev_ser->refcount) {
+> +		pci_liveupdate_flb_put_incoming();
+> +		return;
+
+Pleaes use 'goto put_incoming'
+
+> +	}
+> +
+> +	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
+> +	dev->liveupdate.incoming = dev_ser;
+> +
+> +	/*
+> +	 * Hold the ref on the incoming FLB until pci_liveupdate_finish() so
+> +	 * that dev->liveupdate.incoming does not get freed while it is in use.
+> +	 */
+
+How would that work? If finish is not called FLB stays around until the 
+next reboot.
+
 -- 
-2.43.0
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
