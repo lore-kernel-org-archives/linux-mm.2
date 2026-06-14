@@ -4,134 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD86CD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 14:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E78CD98D2
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 15:35:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26D316B0005; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
+	id 906F16B0005; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21ECD6B0092; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
+	id 8B8796B008A; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10D006B0093; Sun, 14 Jun 2026 10:11:00 -0400 (EDT)
+	id 7A70D6B008C; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0D8A6B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:10:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A936F8EADE
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:10:59 +0000 (UTC)
-X-FDA: 84878704638.05.257DDDC
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CB684A0011
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 14:10:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ao8JvxSu;
-	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 683C86B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FDD014072C
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:42 +0000 (UTC)
+X-FDA: 84878918124.19.CD62DF4
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0DF851A0006
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AYTKaWdU;
+	spf=pass (imf19.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781446257;
+	s=arc-20220608; t=1781451340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
-	b=XZ9D2eR82mX3D8aXnQbNs7nwdJBzCTtj8lLwB0esyElNnwgGhptlQ3E5uL8knhP5uYrZed
-	8Knl0U4p2DAafo0GR6ClQ41UDhRw34+pXiRvPgkgC9F4HfzTK10nRukr6Ehs2GnoVgCQmE
-	WyGzBRcRSXlUL1llqM46uLuLaUTL9MM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ao8JvxSu;
-	spf=pass (imf25.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
+	b=0D46RXeNEru2edEdaGJnYtEXlQwC7dyIyod8LCjA//P0cgu/LHqYPNLIikhMuETM38gV0B
+	SrYF1wnZyUJitqm25uJtnvEN7whygzp7YjQWZHmSGZDrD9ZoFd6600FkmqYy78EpuUHZp9
+	MFSIHPH7Mvxd5puXZACPZooCSWdGY+A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781446257;
-	b=kxOOr0/v+icOKjmtoNn3ARGaR4p6u/vbPXGpYrjnqo+63bukIoeLqaMDJrW4dc91sSGNTq
-	8FsRMgFnHqlXY/nqlCMSz9ONZUrscdXPKYelReb751cDRfTH7ItMz7cyHlEnv5hq9DCuUK
-	GlFfzLa3UbapQ36E6/6cF3BYiLFTLxU=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf2d865383so81075ad.1
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 07:10:57 -0700 (PDT)
+	t=1781451340;
+	b=gSD8TRCOYjAECanTGj7BZlVR50U8jH0WP+BNSqYaDLnrJDnJZsV5Piy3HZ7SHwLPAAzu8S
+	o2xJdq4Bvvx2umD6hWaaIHC2NCmvkCrAQ/F188mLybPAC/NoQ7d1afBYRD+tfR4d38lqkV
+	/ghC4G3yVzAP7N1IkU8HgfzEHLfpRPA=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AYTKaWdU;
+	spf=pass (imf19.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30759632453so2883080eec.1
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 08:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781446257; x=1782051057; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
-        b=ao8JvxSu7+mUM8mkWnhFOlSiflgXMBspsMPwfGBkthgJk22k/M2O+FPlcoBGLNEylE
-         xaF1gDdf+8er5vDnfzxHz/Zct9k84sCoJzSOhycyf9VgOZuxWjRKPv0mm2IRV8R8Nd+X
-         Wrf9AXlBqF+USrqMDKJsHfPr8pKORggOlmVaRRpOdtz4bxgsL0J3BpQNK9V/jDikwrAm
-         T4Yl98x218GmzXEmBj8sBv7+CIBr/OtfPfjft43IPp1R/3w9SAqL1BNi7o+yUFcLrSAO
-         oSY8WRxQwredwi2bwSRRcxcams5Xcv4QM0ABAJhUw1UOL8vEHsilgKU77ZAev5Fc9m6Z
-         QL4Q==
+        d=gmail.com; s=20251104; t=1781451339; x=1782056139; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
+        b=AYTKaWdUh2Sdug9b6HPfIvTNXdPe0JbO1pFyJq2JQua568YLrncuYY/c+muCEmPLLc
+         nfeEMlrv0Mw+mlk4YH/lX/Z1x4PL8UdFwKXugukIfpGQ2tBZUdwVC2J1sX++1ADDuQqv
+         mMi1+3kz/byeo5ykPSYGpClyr7zdNbmxBXASntXmCltISk+gXGcg/1NHbw1t03L+vA/h
+         QGIOTDpthpCMpEsoIJ5b++vJVVwdnF1iImkwvg8JSAYXn84uQcel74Jz6V/CZZmgd6KQ
+         2m7k7BDkOqhmqnuh9k92S+cNzZgMvlGrAfhW32xhOJ0CpSDdgb+3TPQXUHRAhheG8lkC
+         mp7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781446257; x=1782051057;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yHF10+gcCY+52/p+MI0EpREqdUQuaXVQZcqVUlKnjNk=;
-        b=n1blM/NCaYjmmNlMBwTtfn/ED811DT5/Y1LUpfGe5yfs0SkO1X3PMrt5hDegC3Iw6r
-         4SbhRlZ39MMy4sK2ofC+Hl/SptWinOE0xY/+m289DwkpXij8v9KKV4yudd8LGd0VvnEA
-         Ed9UzlGXROO/EBKZ14ikspu7bJ/FPbijhsxQF2V5MZCB0k3ZNDZtlnasKJ5C8gNwJVA0
-         viL4AOTs9HK90a0bjAtZqcTz9NdVxjHxtVBRphDtiPSZQP3TksyPGsKpbs6QdkBh4/9O
-         eDPm+uxnJe1HkcRJLZRbY6I7JNEqtdR/gTHAKM65dQiwC6QfaDZUnbo8zkuV1mmsrkRN
-         Fukg==
-X-Forwarded-Encrypted: i=1; AFNElJ83auz8sBoXoloBuztMFYGxZlJRr5G44ZDswHfUrsyDCYVC4fwU4NfWjhkG2lD9/xDA/aYDT/fuEw==@kvack.org
-X-Gm-Message-State: AOJu0YzOFONhI1r8F3RYgtOqjkWohRD32mRIuESnWmBfQhEBl8O8bMXI
-	OF6RBYLrQPZO0m5yItR/FvdyOGpRzrADn2LX577uzKTJtLUzAXnAAVmpgbWDk1k7JQ==
-X-Gm-Gg: Acq92OHsskNmyaMBLYuwafQFQBapQ6woPWuB+XJlB7vDi9yQ4Ewujvl3dufhEsULOPM
-	wjGXDzX6ILFu4PpNro3+CxAYVchuoVWD9Yj6Yu9cU+LLFqDSEMd+yujHSMxCPKaea4BS0BrTLkx
-	KaPS8/qKlZrzvWaxL4WX1AQhOPWBNN3n4bOZP488NhbSIzRcCSzGQ+eVWJFFUH0wWnOzPZfB1/7
-	V52Gwz8GMibmEiDa6euf/Jeqw1PXrr665QTa5WVU00T/yQkJnQcNTQQg9KfSAH5+qsCNK3E1b32
-	1ti2P6LRROIffy9t9/cyBbm45fJC064Ao0BZIPuqMttLGo2BOiXIsri61JtIsJVRAgMdPciN3i4
-	AV4zXioOQNPckZEgAW1OOGzJUyQJf4dRkJzI7N40ByEOCku7kIHTuv9qH3hzlU06BHGU7Qcbftn
-	LNDjqMLjtx280AASHnBY/G6XFXsnMi9No+rKRPC3PGQLMpzvA9/SwX50n6rQxc9yU2b8dg2xQgY
-	bob9WLX+TtA7nvD4Yy5pp916F4YvnyP/Bv49DOY7Gwn5w==
-X-Received: by 2002:a17:903:2d0:b0:2c1:ee6e:be1d with SMTP id d9443c01a7336-2c665ec6cc3mr1663605ad.27.1781446256310;
-        Sun, 14 Jun 2026 07:10:56 -0700 (PDT)
-Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a233f4531sm7699437a91.2.2026.06.14.07.10.54
+        d=1e100.net; s=20251104; t=1781451339; x=1782056139;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
+        b=EfJHsYmb35vGe0xlxl6u/3ky2EMSswBRjoCkHrXDN+beRGwKyDQnP18nhPMH2XWGz6
+         v/h5yr9ATr1Jg8I7EQrjaP///fTysokathNuilUciSZQ7zf6kr6mW2Pa/DlRnwekdv5M
+         Jk9Iz2CoZIW9olpGJGT1K0TsBLg9hPnfpmHjfNAJcKQZZa0HVa7tbyaVSKHUpBhO6IPx
+         jOTgxgTiJiR2eIOy16UPCQpdjTCAVHRYwEsJgv0jCaritnhKdAb+DfgBVjmm0SSFAM9j
+         SoPAfT6vMCSIn2VTHT7w1JZx/xHlwX22lWgh2RtnrXsHdx9I67PHjT0RfRxqeTXWnJlB
+         U2Hw==
+X-Forwarded-Encrypted: i=1; AFNElJ9RBrnvVsQjE07ZpIzQgqTwgVE8PVs5SSyjdEBodkUSIWnyepr/p9YtfeHK0mncJMycN8Wv3i2Siw==@kvack.org
+X-Gm-Message-State: AOJu0YyIn4W6KH+dzGpdsn+AuTHA5RHCJe5sbd2eWSMFOspmmK+lYlOE
+	N4zPvjoakDeTQ1d2CNvFTZe7p7nnU3NEidRcRhrM4PlNaTrdx5cVGubm
+X-Gm-Gg: Acq92OExfkv+iOszKVLjIm70zGQ/f/Ne1xIRepntS3VvnhOzsnC83FifNl+GG1hjp43
+	wSFueLtDHsATKDuI0RhQML8IHfgbdOM4iTxv9M51zK4ZfG5jcJvpWs734glAMWrtR6m8Fbc5ug8
+	eg+MopChieZRtcDeyRAmgwi7Pr6mvovJfe+Tm6OifK0/vPb1CNtI4rzpNA4jTzt/J5JD2fOPgnN
+	c0O4toeIsPlX/u1onRer8hp58PUyTTcRr9wSDmPy5hGiZHXtLW2rfhF8nD0f/SCbv7J+97UtBwN
+	yRpB7QNtoH+Cc2O+vhkhKhCMyp3rBmPCQNjinybdXqu8FOAraBTG1PBNKUz/6AKbQXw0O/NWkoU
+	vKsDZSVwcrI2qK5htYfKD0ypbFp9hDW1A2960giaOswh9nuuYS/vq7MKj4/lv2RwOhJg+Ui2cM/
+	In2s9xbkGB4Oblpxmg0iPzlsjHVwL7GKK0kihl8U5z8pEJfRl/8rMBKpoXJbEp6jmXayCdn/++/
+	w==
+X-Received: by 2002:a05:7301:9f0a:b0:304:dfae:68a with SMTP id 5a478bee46e88-30820213e52mr5158364eec.28.1781451338754;
+        Sun, 14 Jun 2026 08:35:38 -0700 (PDT)
+Received: from NV-J4GCB44.localdomain ([103.74.125.162])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d0849sm12580632eec.7.2026.06.14.08.35.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 07:10:55 -0700 (PDT)
-Date: Sun, 14 Jun 2026 14:10:50 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Christian Brauner <christian@brauner.io>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Todd Kjos <tkjos@android.com>
-Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
-Message-ID: <ai62ap9SS3KTpqeR@google.com>
-References: <20260610230413.D68967BC@davehans-spike.ostc.intel.com>
- <aipphZ5iCnbXVNSR@google.com>
- <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
- <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org>
- <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
- <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
- <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com>
- <CAJuCfpFo_avdhpOviX7EsPqLgDJ3DfeGpth+yu1-ahfawqaSzw@mail.gmail.com>
- <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
- <aixi-DxMuc0MiGeO@google.com>
+        Sun, 14 Jun 2026 08:35:38 -0700 (PDT)
+From: Jianyue Wu <wujianyue000@gmail.com>
+Subject: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
+Date: Sun, 14 Jun 2026 23:35:28 +0800
+Message-Id: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aixi-DxMuc0MiGeO@google.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CB684A0011
-X-Stat-Signature: sh845wsehr5xamy9y15jmkqnr1tfy117
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEDKLmoC/x3MQQ7CIBAAwK80nN0EKJDqV0wPCyyVaEvDNmps+
+ nfR41xmF0w1E4tLt4tKz8y5LA3q1Ilww2UiyLFZaKmddMrAp+IM/MIVysrgHyXcodKUeaMKqLw
+ OfTRkkxOtWCul/P7317HZIxOEMs95+6WD0cmqSBjRGXMeTJ8GpXxCrcn2DqVCsiiDOI4vt8GwP
+ 6kAAAA=
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>, 
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Youngjun Park <youngjun.park@lge.com>, Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Jianyue Wu <wujianyue000@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openssh-sha256; t=1781451334; l=2936;
+ i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
+ bh=YipMZO8vcbHpc9Uwgtl34KMkub+gxp1VqBvE4Awkxbs=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
+ H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QLdreTA16fucfMYtRCr0kKLCyUAAQoxuzmykekFWnqFYKkGLmaOZIoZGMb0x7xF17AyieFiOMQI
+ NKjzX+rxzaQU=
+X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
+ fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
 X-Rspam-User: 
-X-HE-Tag: 1781446257-172867
-X-HE-Meta: U2FsdGVkX19VmK413Ymj7k85MLiUv3kUFOpiFnq+e1PCHM3fzN39ZPQsnM/I8lDgFBVxKNbm0lVVjyRUuVtbuUaCvotYu+h0p3PuRRtcRNWDpC25HC5QRIrURGkxMjg7kTmkWi1BKjxrQ1/EvNf2bblynYtY4PhhH1SOhjXw4GJ2hZTQb0cxMX4imxLCSxMO2Q8yAxpANPcjSBYmVOKiPds6aGTAR6vd6oz30VPv7OTEsfqkgqQo0vDavAMqbZVqvOBB6RuKGVWOEb3m/eYYnnTzDoNezxWgYCdEgtKOu/aSyL7gJR7nox72K3/l/TlYV6yL4H57ZU38hnR2vFqesnrEZwcYXFnhTutRhmoENov6583hCwbjCYwXPpw6T5ZgMcAt8drEpNVQ7aDFl1XH2Dtwv1VdcA8FryPdCodL108H+Wu19e5V7vCQI+tERMdgjRD/bTJ3yNAQO/1Zgbkjiczsdg9UbNUYUUKtPkW1FLmgeJVgtQcEW9XUiWe6eBwBk74tqyzS6xqsyheQdq6fzg9QlWusrg/y/w72mrqR+kOpRk9F7ErGgoNc5/RjNIacoE3I7pLW/yxDqU00yn8rL1hX1vXHrKInPkYNcKgpvzjM76mhwGQ+sfr/wjP4iSjav+1fPhHsSFjlhhAv8Aww9ci9RAli2iVty/unmxIbnq5bATDPNWu4tlBEqzXpk2K4xwt6zZYBCB7pXIrGYGUWqzWsNj5W4reiBIXub/RCgJCnspoHaq2CiUuc5zydCJ4fMWwcXhIQ+zRaci2QvKRLSDcC6Bkc6fu5EfqiMR81mf4RmMez+D2ZTLUXuOCC9ljK1X23cC+aHhQiYdw/Tk8ZOTbo5CSFm43KCje+VCFVISm58iyewirUjZd7xKZOhRtR+MBjts6sIctOFuVxq2iV7DxwkkDWrxVXGzhNdfT9nmPLARdoSNHhHlpJE91gvQU6Q3rUSk3r0SyPW5TJiyQ
- +62yO9VX
- HvMRyZ3lze9bS1m44y0LPvllx84ti6lkeJce2SAHudiCHNpOcoiAqqlFuJB5NNOL7K7/y+vSE3bMSyKLe2wC3xhssGXeiNnhMi2ix+LoF9hpV+VNlb/Ojqni/rTSqogIeUpgSe12qgPkJXVJ11/C047bgnRYzJUbnGPoAiAyMyTKoGyo7c9YkNe6REDrqSo74LsFZ+6rnoNgem38bNC+JjrIKg9tb1XhgcB4St7pV96oUJWoPQ3Xfswmh5AAH0YtBPgXeiwEmC543fQqKvR///nb5IGnLr0hm7akdNuwYgPvMA1Av+Y+ffG38fSWfm88JSkjT56DL6GHBbN1awqf5hJoUS32K4IjuvjyoqqrlcHpl5Szk99b4N/9XGPe3je8uyF7UWxscmQVbt758dQ+g2mRZFF/3VI4cGgwRMIYYpafjbMHVn8WopC0t0TU1JYDWvr0I
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0DF851A0006
+X-Stat-Signature: 5fgk5myzxdchu41np5zaea8is3tqm3db
+X-HE-Tag: 1781451339-377802
+X-HE-Meta: U2FsdGVkX18ajzFPom67qPSi45MJpHjxQYV9qaTuU971sHT+rPG6zspg4Fr2XFKlLo6n8PxwolaOqedXV7YjUQuQNuxv5xAzy51xJmbmp8+jowPNsi+dRQMXpxrstit6miU/ZN17Bf2Hj65CBGqvICqSWFEallnuapnH91OOMm4GJfTknC85qdg6z3besZP60S7gsOUxeiXOsPGdhNxhsdFaIsb+ZQNj+T+sTHQDJZykivLEiWblq1/1jZmrrQbeZXLXw/5z9KFqsgl9Jz5I8pHjUbSNK/BRg9A0s+T1scJ074MpDCxX08AdyubVOIqJKwU3zv5KXsAfbXIkk7LMCmLCuiEbc2MqCUVdFB+f4EMLhmL/iIeT8ZvI/x+cAPrtnAw4Nz8vmz0m2NQhYqGjFnt8ju8NT9um3UcaOq0fflOEwef9xBTjbz4pqYXyFC/76xrEsmLnfcJ38DgUkxqvLUDlZE4BX+PnIEMk7KBISaElS5UArzIsxZKn8z5eE17FoDSKY8ZCdiUlUh6RSFxL/oiI6glZ6YypGKXmkzqxjgrOSDNcHPohXEgWlnkBgZLnIBzp07LNcy/FMsh4uYsW16km8a23KJUIIcLUo8ZzWwxwdicCkRBJ0zluWjHs0eTkNTzF5hwTKfrFC73Mq8bTen927dL2XNEjrLcpz3Ud6cVVRARLDvguz5n3H3x3Xf/s8cQZ0rD9ZouZmTq6CKMSGnjfXJCRWHwk2o+YhvjFK57jwXMi3QyWV7yOBHMrG6FmXA/Ult4ST31dF3G+Y5cQY9lB0+6kPnERnvTLkJ0skjvyTxhsZdg+fVdTVDXnEEv4GxlfogmoAT8JDMLYcq5ZK0p44scDUD0G41/oA2hyWr5+D/SOdwBmmwoRNcCxt3yOcn9+iYdAqzCd0T7X8HYcUHisl0uoDcLImHLgaZ3vVvICr+CWZMOkOI7p9sNeOVbQteHnT6wT+Ju/127hBzj
+ /PvTavdt
+ c/1FIsxOXqhwwWuZ2GDA6P4emKnN8+vYgdiPp2XYe317/fp9zLK87ROhzk2SO0lSFEGuRVELkaxNG1Wflh7Ui/t7Jwqftt9X7EjGXwiNiQaiuOee5oCmPGJOi831YU8+UJq3r9hT2zK/nQaNbCDGqUjroQmFwE1JtqVSWAjjhpi5a8qv9YcRD78edKmkzS5pBF6CvSmvZY9ETL+juxFiANsLVzJ23tV77yZRoD/3+V9R5u5IujOe3+xDa/8AdLiOwN70OI+IuV3o6nqXpPHnrvc/1nUgw28eBBDGhQCgFJdvTfTQJ/unsB8H6z3OZlXQqH6mtDMShiZ0+V0v7xE0nFCZpWRP3fiT/X/61wJGya4ct+5iWuB6S9Y8bt8DPi5/rQTx8HVD5ZY943BeKLisfdcFUmXxicO93UIBwggzLk7nStRSMgxQykmY6R12euSFqc/5D0L2dMLCvC9guUANDEPlMt4nabsdp0xwYaisd4GCgcgpq65DL70XqsQ2H01VqM0naxAVJ32YRQpaf0zqeyCFVaEBENpv2iVoz7MrxWkSzJ/qUsxcakhcB0fNzFuh6qDj8JSqAIftA0j/Zl90Ri9NjF0KtMbDkzgqFpXcrrcMYR/3KcBNq0stbxTYT1I+sEGmC67vmnxW3NXuFENwQHu7B1ufvj8uFBFYQxZ3Hvd1hvIwn95LXuTrQVZdRK0VV1NlXkZWsrjF+rMQ/tIwOjbHDOL0fxOLc47V9SS49rXHbljsB6spTlN9W7JgjFtzxnjH7HmW1Aj9PHvjc4IbsM8UqbBu0BvYkboXW57VHMQLvvh8jKazom86yHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,42 +137,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 07:50:16PM +0000, Alice Ryhl wrote:
-> On Fri, Jun 12, 2026 at 11:47:59AM -0700, Dave Hansen wrote:
-> > On 6/12/26 10:44, Suren Baghdasaryan wrote:
-> > >> It's not impossible, but I do think it is irrelevant. Or at least that
-> > >> the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
-> > >> means that the binder VMA is gone. It's not in the maple tree, and it's
-> > >> not coming back. If a VMA is found, it's an impostor.
-> > > Right, but before your change we were bailing out early. With your
-> > > change we would be generating the traces and freeing the page. I think
-> > > that's a functional change. Was that your intention?
-> > 
-> > Yeah, it was intentional.
-> > 
-> > I think the existing behavior is buggy. It also complicates the goal of
-> > removing the mmap lock fallback. I've broken that behavior change out
-> > into a separate patch. (attached here)
-> 
-> I think you can just:
-> 
-> 1. do a lock_vma_under_rcu().
-> 2. if it fails, check binder_alloc_is_mapped().
-> 3. if still mapped, return LRU_SKIP, otherwise behave like a failed
->    vma_lookup() does today under the mmap read lock.
+This series builds on Christoph Hellwig's swap batching rework that
+moves block swap onto struct swap_iocb and per-backend struct
+swap_ops handlers [1].  Christoph's patches unify batching for
+ordinary block devices and swap files.  zram still needs a custom
+path because swap slots map to compressed pages, not disk sectors.
 
-Right! This is the same suggestion I sent.
+The first patch adds swap_register_block_ops() so a block driver can
+install custom submit_read/submit_write handlers when swapon targets
+its block device.  The default swap_bdev_ops path is unchanged for
+devices that do not register.
 
-...
-Also, I would _prefer_ if the commit message was more accurate. The
-mmap_lock fallback was there because of "compatibility", as per-vma
-locking is technically behind CONFIG_PER_VMA_LOCK. This would be the
-only part that IMO describes the actual reason for the change:
+The second patch registers zram_swap_ops at module init.  On write,
+the swap core still batches folios into a swap_iocb.  zram maps each
+folio to a slot index and stores it through zram_write_page() instead
+of building one bio per page.  Read handling keeps slot_lock and
+mark_slot_accessed() in one critical section.  Writeback-enabled zram
+falls back to swap_bdev_submit_read() for ZRAM_WB slots.
 
-> Now that per-VMA locks are universally available, lock_vma_under_rcu()
-> will not persistently fail. Rely on it alone and simplify the code.
+The third patch moves slot_free_notify into swap_ops next to the
+other zram swap callbacks, and documents the locking contract for
+that hook.
 
-Cheers,
---
-Carlos Llamas
+Applied on top of Christoph Hellwig's "better block swap batching and
+a different take on swap_ops" series [1].
+
+[1] https://lore.kernel.org/linux-mm/?q=better+block+swap+batching
+
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Youngjun Park <youngjun.park@lge.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-block@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+
+Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
+---
+Jianyue Wu (3):
+      mm/page_io: let block drivers register custom swap I/O ops
+      mm/zram: handle swap read/write via swap_ops
+      mm/swap: route slot free notifications through swap_ops
+
+ Documentation/filesystems/locking.rst |   5 -
+ drivers/block/zram/zram_drv.c         | 215 +++++++++++++++++++++++++++-------
+ include/linux/blkdev.h                |   2 -
+ include/linux/swap.h                  |  47 ++++++++
+ mm/page_io.c                          | 187 ++++++++++++++++++++++++++++-
+ mm/swap.h                             |  18 +--
+ mm/swapfile.c                         |  17 +--
+ rust/kernel/block/mq/gen_disk.rs      |   1 -
+ 8 files changed, 414 insertions(+), 78 deletions(-)
+---
+base-commit: 842f51deada6449843f811bfa22e536a01ae5a0c
+change-id: 20260614-zram-swap-ops-block-register-a1b2c3d4e5f6
+
+Best regards,
+-- 
+Jianyue Wu <wujianyue000@gmail.com>
+
 
