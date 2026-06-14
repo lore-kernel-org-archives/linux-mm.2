@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E78CD98D2
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 15:35:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAEAFCD98D2
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 15:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906F16B0005; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
+	id 314706B008A; Sun, 14 Jun 2026 11:35:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B8796B008A; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
+	id 2EBE06B008C; Sun, 14 Jun 2026 11:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A70D6B008C; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
+	id 1DADA6B0092; Sun, 14 Jun 2026 11:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 683C86B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 11:35:42 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0F2706B008A
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 11:35:48 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FDD014072C
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:42 +0000 (UTC)
-X-FDA: 84878918124.19.CD62DF4
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0DF851A0006
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AYTKaWdU;
-	spf=pass (imf19.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B4FC3140732
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:47 +0000 (UTC)
+X-FDA: 84878918334.19.98BCDFA
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B23732000B
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 15:35:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FMmLae0y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781451340;
+	s=arc-20220608; t=1781451345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
-	b=0D46RXeNEru2edEdaGJnYtEXlQwC7dyIyod8LCjA//P0cgu/LHqYPNLIikhMuETM38gV0B
-	SrYF1wnZyUJitqm25uJtnvEN7whygzp7YjQWZHmSGZDrD9ZoFd6600FkmqYy78EpuUHZp9
-	MFSIHPH7Mvxd5puXZACPZooCSWdGY+A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781451340;
-	b=gSD8TRCOYjAECanTGj7BZlVR50U8jH0WP+BNSqYaDLnrJDnJZsV5Piy3HZ7SHwLPAAzu8S
-	o2xJdq4Bvvx2umD6hWaaIHC2NCmvkCrAQ/F188mLybPAC/NoQ7d1afBYRD+tfR4d38lqkV
-	/ghC4G3yVzAP7N1IkU8HgfzEHLfpRPA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dL4jh6CljPK2pUBwM3XMHGdtCtJ8jAZGJrHlUx58ijU=;
+	b=G8kftbzuojksIWMJ8I+DyYcvTTPW9/CBZQ3XCr9CVB/HZi6zrF1yllXlIkz9FyXxyiP4S8
+	/2m16fRB15hduYujlke1sd14sLmyAF7slm09OIO1EnoxhqtcttF0/8mEoR1VqvTqNE6kDN
+	QrHXLwhCB4+GhzU+IuxSKPKkll1bRbc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AYTKaWdU;
-	spf=pass (imf19.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30759632453so2883080eec.1
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 08:35:39 -0700 (PDT)
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FMmLae0y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of wujianyue000@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781451345;
+	b=4xKLZB6RaQhc/EROVtN/ppBK5f6JcvmTHV/BCsBpwuZdoW4G3VHchcMtRuF3eDEbfY2R9k
+	mP8ziiSUKcljt5VamWWtkMKv0x1auNm4tgTOvjltaE6m24nWNvaTz9jWJ3Xg2k1JKsOwU0
+	V1eAgoZawS/5QMWgAB6wH0tEVvxQ3zE=
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-13721dfd471so2712627c88.1
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 08:35:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781451339; x=1782056139; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
-        b=AYTKaWdUh2Sdug9b6HPfIvTNXdPe0JbO1pFyJq2JQua568YLrncuYY/c+muCEmPLLc
-         nfeEMlrv0Mw+mlk4YH/lX/Z1x4PL8UdFwKXugukIfpGQ2tBZUdwVC2J1sX++1ADDuQqv
-         mMi1+3kz/byeo5ykPSYGpClyr7zdNbmxBXASntXmCltISk+gXGcg/1NHbw1t03L+vA/h
-         QGIOTDpthpCMpEsoIJ5b++vJVVwdnF1iImkwvg8JSAYXn84uQcel74Jz6V/CZZmgd6KQ
-         2m7k7BDkOqhmqnuh9k92S+cNzZgMvlGrAfhW32xhOJ0CpSDdgb+3TPQXUHRAhheG8lkC
-         mp7A==
+        d=gmail.com; s=20251104; t=1781451344; x=1782056144; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dL4jh6CljPK2pUBwM3XMHGdtCtJ8jAZGJrHlUx58ijU=;
+        b=FMmLae0yGfRmiERqcd9NfvpnCRwGPIt3KTD68ADAXGtcSOifEydZ9M/sb3ql+cvGTx
+         wZRbdZ69vBNruu1oboVMi6ax/WHcbtPaPLfjZDHUmBw+psxAIRfLtJy+r+EKSI1CFtEb
+         +e1ZtSkYuNu39XZCZEq2NlUx1QUZzOdgT5YRMlhR1len1gzpwlXLgqTe+FiWTO6Ag9Hq
+         Dnu995bfxUnHVqbTZBRXjeFLlCHrHWzU/RXkMLKfOcSe9CR9mXn+ZlsF+ltfObg8M/YY
+         Z/Ibtw5wKI8g0sYAhfQV5CwOv6oFWp5L+gTAF7AO+dUatGpkO3Zmw7dZ2fC2V5jNyoVA
+         H5tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781451339; x=1782056139;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pR8769p891UZMpH2W/uEW47L6qds0Zm441UJr101ko0=;
-        b=EfJHsYmb35vGe0xlxl6u/3ky2EMSswBRjoCkHrXDN+beRGwKyDQnP18nhPMH2XWGz6
-         v/h5yr9ATr1Jg8I7EQrjaP///fTysokathNuilUciSZQ7zf6kr6mW2Pa/DlRnwekdv5M
-         Jk9Iz2CoZIW9olpGJGT1K0TsBLg9hPnfpmHjfNAJcKQZZa0HVa7tbyaVSKHUpBhO6IPx
-         jOTgxgTiJiR2eIOy16UPCQpdjTCAVHRYwEsJgv0jCaritnhKdAb+DfgBVjmm0SSFAM9j
-         SoPAfT6vMCSIn2VTHT7w1JZx/xHlwX22lWgh2RtnrXsHdx9I67PHjT0RfRxqeTXWnJlB
-         U2Hw==
-X-Forwarded-Encrypted: i=1; AFNElJ9RBrnvVsQjE07ZpIzQgqTwgVE8PVs5SSyjdEBodkUSIWnyepr/p9YtfeHK0mncJMycN8Wv3i2Siw==@kvack.org
-X-Gm-Message-State: AOJu0YyIn4W6KH+dzGpdsn+AuTHA5RHCJe5sbd2eWSMFOspmmK+lYlOE
-	N4zPvjoakDeTQ1d2CNvFTZe7p7nnU3NEidRcRhrM4PlNaTrdx5cVGubm
-X-Gm-Gg: Acq92OExfkv+iOszKVLjIm70zGQ/f/Ne1xIRepntS3VvnhOzsnC83FifNl+GG1hjp43
-	wSFueLtDHsATKDuI0RhQML8IHfgbdOM4iTxv9M51zK4ZfG5jcJvpWs734glAMWrtR6m8Fbc5ug8
-	eg+MopChieZRtcDeyRAmgwi7Pr6mvovJfe+Tm6OifK0/vPb1CNtI4rzpNA4jTzt/J5JD2fOPgnN
-	c0O4toeIsPlX/u1onRer8hp58PUyTTcRr9wSDmPy5hGiZHXtLW2rfhF8nD0f/SCbv7J+97UtBwN
-	yRpB7QNtoH+Cc2O+vhkhKhCMyp3rBmPCQNjinybdXqu8FOAraBTG1PBNKUz/6AKbQXw0O/NWkoU
-	vKsDZSVwcrI2qK5htYfKD0ypbFp9hDW1A2960giaOswh9nuuYS/vq7MKj4/lv2RwOhJg+Ui2cM/
-	In2s9xbkGB4Oblpxmg0iPzlsjHVwL7GKK0kihl8U5z8pEJfRl/8rMBKpoXJbEp6jmXayCdn/++/
-	w==
-X-Received: by 2002:a05:7301:9f0a:b0:304:dfae:68a with SMTP id 5a478bee46e88-30820213e52mr5158364eec.28.1781451338754;
-        Sun, 14 Jun 2026 08:35:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781451344; x=1782056144;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dL4jh6CljPK2pUBwM3XMHGdtCtJ8jAZGJrHlUx58ijU=;
+        b=FzJFDIkI4dZ7qwZHiJoWsb+PHQQidaCFY9c3j0MPzV/ir6xt91hd+0PQuvL9zXRUo8
+         /4wz7RcS+ocxsJntLiQHj5o19o7mQeBAke4vCbGduFDRWjQrioqnm95gibg6aj83gBEf
+         CjUWISmw9RFU7treF4k6WdNlZ902oGIFr6Blm/Ns2w15R4dairAMoho7ccfFkanvoqxS
+         OL+fD7UufBrivhWIQ41AOOpzDpnhbjNMMe+/2HdUrPqRqA0gNhTsmxLi6b9ecSIi80+u
+         37qZB/42PdIul9jnBmVvoq5pbL0dj7M0YqIpcSj7zH+ZSQQsIi6NLq01v8dVBJoDtrTC
+         Sgdg==
+X-Forwarded-Encrypted: i=1; AFNElJ/hrCPXF0wVjTkb96XVbtd/oZ2fN95JQw/PGQcZTSqf6UeaNK0tkevNmmttxBf6SQ+Z/RVZKn8+/g==@kvack.org
+X-Gm-Message-State: AOJu0YzX5NUjVUkSA//Puj/ZmGYNYI2LuHN3klEqSTaDsp2xoF0SrG1E
+	4cBCTsszjPUvLrvF+zGx09P+HRq5W4YPPfHi2O6+b+XcZ5CP11hKZJuU
+X-Gm-Gg: Acq92OGlq1+tGmvKV6Y9kucLYfB6Fvc1415Pc0djCE59Y1/PJMgfnzpD6E1ALqKA0Uz
+	KPJtBIm31JRMc4xyucdOn6DVWsucOjS7m0sBBn6zkAztERN1pVMSAl/nDn4QXSd4gl6ABXLNd9u
+	8yuCbEANHz8kATIq0Oh6CDeLRQ+8KkGmsxq+rySy4bcYA+etVnk6TwUG3dJoZWwQxKds26VTkPu
+	uIeZZUXjRDaObXdXS2DSCNB+UsgZSIQs5YbHa71GRmmg/KYDeZZTr0BfQ+FS1nnKn5P4pnUOk9k
+	1yhB3BbRCAxbCMwDvI2+2Zcl94e+GdPro8gXZQjHJ9iN7XtRiG/ylOigyrw1j0Slsqsmen7fCx9
+	RGMYg8KZmokAz9+f2HZhq2eOxh0NTBrXw162GoovKNEMyrv2kR+BxBwkwodOfvSnk0HuysnffjH
+	3WdoSyrk6Ve4insXAb0ophLCHYUaj9pof6ipAWeFkY2LkapoIc23vKsrd1bxOo8hNpW6HE8b56V
+	g==
+X-Received: by 2002:a05:7022:20c:b0:137:ea00:3f3a with SMTP id a92af1059eb24-1386f3500e0mr3183171c88.9.1781451343974;
+        Sun, 14 Jun 2026 08:35:43 -0700 (PDT)
 Received: from NV-J4GCB44.localdomain ([103.74.125.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d0849sm12580632eec.7.2026.06.14.08.35.33
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d0849sm12580632eec.7.2026.06.14.08.35.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 08:35:38 -0700 (PDT)
+        Sun, 14 Jun 2026 08:35:43 -0700 (PDT)
 From: Jianyue Wu <wujianyue000@gmail.com>
-Subject: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
-Date: Sun, 14 Jun 2026 23:35:28 +0800
-Message-Id: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+Date: Sun, 14 Jun 2026 23:35:29 +0800
+Subject: [PATCH 1/3] mm/page_io: let block drivers register custom swap I/O
+ ops
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEDKLmoC/x3MQQ7CIBAAwK80nN0EKJDqV0wPCyyVaEvDNmps+
- nfR41xmF0w1E4tLt4tKz8y5LA3q1Ilww2UiyLFZaKmddMrAp+IM/MIVysrgHyXcodKUeaMKqLw
- OfTRkkxOtWCul/P7317HZIxOEMs95+6WD0cmqSBjRGXMeTJ8GpXxCrcn2DqVCsiiDOI4vt8GwP
- 6kAAAA=
+Message-Id: <20260614-zram-swap-ops-block-register-v1-1-6c1a6639c222@gmail.com>
+References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+In-Reply-To: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>, 
  Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -113,23 +114,23 @@ Cc: Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>,
  linux-block@vger.kernel.org, linux-doc@vger.kernel.org, 
  Jianyue Wu <wujianyue000@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1781451334; l=2936;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1781451334; l=9506;
  i=wujianyue000@gmail.com; s=id_ed25519; h=from:subject:message-id;
- bh=YipMZO8vcbHpc9Uwgtl34KMkub+gxp1VqBvE4Awkxbs=;
+ bh=SEmcnaThJirfirtCrJB7w7V1XHZ+ozbyyyxT7/QXp/0=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgW51Zh3v9nG0Wlld2Ti8ylp1TnO7yB
  H+z9CbXty/WEAQAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QLdreTA16fucfMYtRCr0kKLCyUAAQoxuzmykekFWnqFYKkGLmaOZIoZGMb0x7xF17AyieFiOMQI
- NKjzX+rxzaQU=
+ QBq6IcYS32kGX7vwT5waqxnXTy5OSvQnIuQ76gdPnMhD+5AVEVR6uGOd9LKRdUK0aJApP4rAfNS
+ kiFgFHpwNLQ0=
 X-Developer-Key: i=wujianyue000@gmail.com; a=openssh;
  fpr=SHA256:gVWBPJbHGWlCIw+V8F63Ff0k21S7AB5+rZt8+huemvg
+X-Rspamd-Queue-Id: B23732000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0DF851A0006
-X-Stat-Signature: 5fgk5myzxdchu41np5zaea8is3tqm3db
-X-HE-Tag: 1781451339-377802
-X-HE-Meta: U2FsdGVkX18ajzFPom67qPSi45MJpHjxQYV9qaTuU971sHT+rPG6zspg4Fr2XFKlLo6n8PxwolaOqedXV7YjUQuQNuxv5xAzy51xJmbmp8+jowPNsi+dRQMXpxrstit6miU/ZN17Bf2Hj65CBGqvICqSWFEallnuapnH91OOMm4GJfTknC85qdg6z3besZP60S7gsOUxeiXOsPGdhNxhsdFaIsb+ZQNj+T+sTHQDJZykivLEiWblq1/1jZmrrQbeZXLXw/5z9KFqsgl9Jz5I8pHjUbSNK/BRg9A0s+T1scJ074MpDCxX08AdyubVOIqJKwU3zv5KXsAfbXIkk7LMCmLCuiEbc2MqCUVdFB+f4EMLhmL/iIeT8ZvI/x+cAPrtnAw4Nz8vmz0m2NQhYqGjFnt8ju8NT9um3UcaOq0fflOEwef9xBTjbz4pqYXyFC/76xrEsmLnfcJ38DgUkxqvLUDlZE4BX+PnIEMk7KBISaElS5UArzIsxZKn8z5eE17FoDSKY8ZCdiUlUh6RSFxL/oiI6glZ6YypGKXmkzqxjgrOSDNcHPohXEgWlnkBgZLnIBzp07LNcy/FMsh4uYsW16km8a23KJUIIcLUo8ZzWwxwdicCkRBJ0zluWjHs0eTkNTzF5hwTKfrFC73Mq8bTen927dL2XNEjrLcpz3Ud6cVVRARLDvguz5n3H3x3Xf/s8cQZ0rD9ZouZmTq6CKMSGnjfXJCRWHwk2o+YhvjFK57jwXMi3QyWV7yOBHMrG6FmXA/Ult4ST31dF3G+Y5cQY9lB0+6kPnERnvTLkJ0skjvyTxhsZdg+fVdTVDXnEEv4GxlfogmoAT8JDMLYcq5ZK0p44scDUD0G41/oA2hyWr5+D/SOdwBmmwoRNcCxt3yOcn9+iYdAqzCd0T7X8HYcUHisl0uoDcLImHLgaZ3vVvICr+CWZMOkOI7p9sNeOVbQteHnT6wT+Ju/127hBzj
- /PvTavdt
- c/1FIsxOXqhwwWuZ2GDA6P4emKnN8+vYgdiPp2XYe317/fp9zLK87ROhzk2SO0lSFEGuRVELkaxNG1Wflh7Ui/t7Jwqftt9X7EjGXwiNiQaiuOee5oCmPGJOi831YU8+UJq3r9hT2zK/nQaNbCDGqUjroQmFwE1JtqVSWAjjhpi5a8qv9YcRD78edKmkzS5pBF6CvSmvZY9ETL+juxFiANsLVzJ23tV77yZRoD/3+V9R5u5IujOe3+xDa/8AdLiOwN70OI+IuV3o6nqXpPHnrvc/1nUgw28eBBDGhQCgFJdvTfTQJ/unsB8H6z3OZlXQqH6mtDMShiZ0+V0v7xE0nFCZpWRP3fiT/X/61wJGya4ct+5iWuB6S9Y8bt8DPi5/rQTx8HVD5ZY943BeKLisfdcFUmXxicO93UIBwggzLk7nStRSMgxQykmY6R12euSFqc/5D0L2dMLCvC9guUANDEPlMt4nabsdp0xwYaisd4GCgcgpq65DL70XqsQ2H01VqM0naxAVJ32YRQpaf0zqeyCFVaEBENpv2iVoz7MrxWkSzJ/qUsxcakhcB0fNzFuh6qDj8JSqAIftA0j/Zl90Ri9NjF0KtMbDkzgqFpXcrrcMYR/3KcBNq0stbxTYT1I+sEGmC67vmnxW3NXuFENwQHu7B1ufvj8uFBFYQxZ3Hvd1hvIwn95LXuTrQVZdRK0VV1NlXkZWsrjF+rMQ/tIwOjbHDOL0fxOLc47V9SS49rXHbljsB6spTlN9W7JgjFtzxnjH7HmW1Aj9PHvjc4IbsM8UqbBu0BvYkboXW57VHMQLvvh8jKazom86yHQ==
+X-Stat-Signature: xss4h736w9qsjyby8b15jyag95x3bjb6
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781451345-824298
+X-HE-Meta: U2FsdGVkX19Rmg/B+9+2osOkc+i79lXS4lN7MPnR9fkUDZ+UuvYz2NCQkAfOWGHREheg5l3eggCHheiM0RifLUujNI+RofUcIxUGoZ91tJbsIWTQYph/swwR1q8UcAjcfs4v7ijIoIAkJnZL7ThN9dOs23pc1mTiUKBGwyUckm/Fhm6tJ+TShkjO+lf9GrVMunH4+5+74dVwwGe21ugzUULmjHa5c3hpfp/H5Qtb4CSbHW2YHMysxWYKk6HyoqnpnYB6G6yiQVfy+KFuAdgfr9EEHnMB2uh6cus9fOI5q28WnafRE9mmxxfZ/pp1u7x9jMl2dUNnffedg0o2nQMjygcnutEcJK2UfiR0D23LtdAa96SfldfeUwe+IJpvFsgrtdItnqN2dpWxUiwRrrZTVdPVf8HlGloey1/9dWNpe3wrUVBjPl3pjv6WtXebLLogbRvCt5dQxuwyMki4NKPhwYmQ/AqHzMu8Hpqy7G+PzkyVqELavKsO4XoYRczUi2yF/QLjAGLbdWyjtfmuuZfJQmhj7fgb3o4142kOhdneObWrkCTnPVjsjbfkBKWVd9uv14YoGDjs8kjndwhMSVrvZDjpDZVXMT7mvs9yHTwFnN1YAoaSXRXiWRjy9BllFHpCfqriZoZD1iHxcecKpufTZEnP119EV+9mLDtECGXvbRoeK3UDaNJiFCXwMPQhBjpX2/MarkEwC0E9slEF4NoYnFOT5s2T/J6ZOwkiM9SCtrkY1viyAivdSkqZbxpVRbP04ONlL9PTLYZRQ0j1ZSM7xlpaykYV6Xka+l0fPoAaOAlxE/qBPRYys55fgr1vIM/4iOI3E6WlU5RP5xe9B6R/JZlQgtGYwFhDA3nuFQa+Iq4Hdr60PhrAL9PsC2YIzBa6SManhIw/Rg6OHAT5sKDcxRNqUL4IREOjlYmQdRCGqMq6xIqfdnUUI6s0J21ik19k49fbBxB60HB30qSqpxD
+ MOeeyM1X
+ VrIVhPic3amNGvkOnGs/Z5vMZWFtPfiANTPyq8D9SI8lJbNwo1RFNE0KeqCdhqsmYKEy/7PyyPqN5Gm29ULUhhaUUXU5+564xy5Z8JEgZ8RwK/xQzaMhoaTALZo/99f5btNENePP7/Ishhw2M+lh5/FQaCJBoe/kFDm1/f16K6HQAlHteaKsRgHiO8koEBOkElHXS6ojKCntlGSpKbG6f8KT3ie+1u7ccOc0FPOOsyZEKXkDMF6oNdi6cNFe7aGWHI1VPukdTTYAdiQQX3K2XVuKz4YPSTbSe6GLUnkEsNNFQeloBrSG4mgnReu8196IJFgpoEOYf5KUZf6OmbMgxXI/Z/yzRyFrziVS+y9q//SzprTgekLiKNEVYV15/5+zMJUrKlkcsHsLK3irNU5TQgLeqgD1LeE7mqnZ4fSc01YMGGAFQ3rYkR8XQ7vg5lQokzH4bmhgdcQgCM/wdZs/rE3nu9OwgMzyC4rrtzZGEgl0kjGfWjSaGYTefxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,74 +138,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series builds on Christoph Hellwig's swap batching rework that
-moves block swap onto struct swap_iocb and per-backend struct
-swap_ops handlers [1].  Christoph's patches unify batching for
-ordinary block devices and swap files.  zram still needs a custom
-path because swap slots map to compressed pages, not disk sectors.
+Add swap_register_block_ops() so a block driver can install custom
+swap read/write handlers instead of always building bios.
 
-The first patch adds swap_register_block_ops() so a block driver can
-install custom submit_read/submit_write handlers when swapon targets
-its block device.  The default swap_bdev_ops path is unchanged for
-devices that do not register.
+When swapon targets a block device (S_ISBLK), setup_swap_extents()
+checks whether that driver's block_device_operations were registered.
+If yes, sis->ops points at the driver table. Otherwise sis->ops
+stays on swap_bdev_ops.
 
-The second patch registers zram_swap_ops at module init.  On write,
-the swap core still batches folios into a swap_iocb.  zram maps each
-folio to a slot index and stores it through zram_write_page() instead
-of building one bio per page.  Read handling keeps slot_lock and
-mark_slot_accessed() in one critical section.  Writeback-enabled zram
-falls back to swap_bdev_submit_read() for ZRAM_WB slots.
+Swap files are unchanged. They still use the filesystem path and
+extent tree, because their page index is not a raw disk sector.
 
-The third patch moves slot_free_notify into swap_ops next to the
-other zram swap callbacks, and documents the locking contract for
-that hook.
+Register swap_ops in a single global slot keyed by the driver's
+block_device_operations. lookup_swap_block_ops() matches sis->bdev
+fops at swapon. -EBUSY if the slot is already taken. That is enough
+while only zram needs custom swap I/O. Several block drivers would
+need a per-fops lookup table instead.
 
-Applied on top of Christoph Hellwig's "better block swap batching and
-a different take on swap_ops" series [1].
-
-[1] https://lore.kernel.org/linux-mm/?q=better+block+swap+batching
-
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Youngjun Park <youngjun.park@lge.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-block@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
+swap_unregister_block_ops() must pass the same fops that
+registered. Swap areas created before unregister keep the old ops
+until swapoff. The driver module must remain loaded while they are
+in use.
 
 Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 ---
-Jianyue Wu (3):
-      mm/page_io: let block drivers register custom swap I/O ops
-      mm/zram: handle swap read/write via swap_ops
-      mm/swap: route slot free notifications through swap_ops
+ include/linux/swap.h |  35 +++++++++++++++++
+ mm/page_io.c         | 106 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ mm/swap.h            |  18 +--------
+ mm/swapfile.c        |   4 ++
+ 4 files changed, 147 insertions(+), 16 deletions(-)
 
- Documentation/filesystems/locking.rst |   5 -
- drivers/block/zram/zram_drv.c         | 215 +++++++++++++++++++++++++++-------
- include/linux/blkdev.h                |   2 -
- include/linux/swap.h                  |  47 ++++++++
- mm/page_io.c                          | 187 ++++++++++++++++++++++++++++-
- mm/swap.h                             |  18 +--
- mm/swapfile.c                         |  17 +--
- rust/kernel/block/mq/gen_disk.rs      |   1 -
- 8 files changed, 414 insertions(+), 78 deletions(-)
----
-base-commit: 842f51deada6449843f811bfa22e536a01ae5a0c
-change-id: 20260614-zram-swap-ops-block-register-a1b2c3d4e5f6
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 636d94108166..1d51df4179c1 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -19,6 +19,41 @@
+ struct notifier_block;
+ 
+ struct bio;
++struct block_device_operations;
++struct folio;
++struct swap_iocb;
++struct swap_info_struct;
++
++struct swap_io_ctx {
++	struct swap_iocb	*sio;
++	struct swap_info_struct	*sis;
++};
++
++/* Set when the swap backend requires GFP_NOFS allocations. */
++#define SWAP_OPS_F_NOFS		(1U << 0)
++
++/**
++ * struct swap_ops - per-swap-area I/O batching callbacks
++ * @can_merge: optional. Return true iff @folio can be appended to a ctx
++ *             that already holds @prev_folio of @prev_folio_size bytes.
++ *             When NULL, folios on the same swap area are batched until
++ *             the iocb is full or the plug is flushed.
++ * @submit_write: flush the accumulated write ctx to the backend.
++ * @submit_read: flush the accumulated read ctx to the backend.
++ */
++struct swap_ops {
++	unsigned int		flags;
++
++	bool			(*can_merge)(struct folio *folio,
++					     struct folio *prev_folio,
++					     size_t prev_folio_size, int rw);
++	void			(*submit_write)(struct swap_io_ctx *ctx);
++	void			(*submit_read)(struct swap_io_ctx *ctx);
++};
++
++int swap_register_block_ops(const struct block_device_operations *fops,
++			    const struct swap_ops *ops);
++void swap_unregister_block_ops(const struct block_device_operations *fops);
+ 
+ #define SWAP_FLAG_PREFER	0x8000	/* set if swap priority specified */
+ #define SWAP_FLAG_PRIO_MASK	0x7fff
+diff --git a/mm/page_io.c b/mm/page_io.c
+index c020e8ebf966..3ab620860379 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -24,6 +24,8 @@
+ #include <linux/uio.h>
+ #include <linux/sched/task.h>
+ #include <linux/delayacct.h>
++#include <linux/export.h>
++#include <linux/mutex.h>
+ #include <linux/zswap.h>
+ #include "swap.h"
+ #include "swap_table.h"
+@@ -325,6 +327,8 @@ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+ 
+ 	if (ctx->sis != sis)
+ 		return false;
++	if (!sis->ops->can_merge)
++		return true;
+ 	return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
+ }
+ 
+@@ -577,6 +581,18 @@ static void swap_bio_read_end_io(struct bio *bio)
+ 	swap_read_end(sio, failed);
+ }
+ 
++/**
++ * swap_bdev_submit_write - default block-device write path for swap
++ * @ctx: in-progress submit_write context.
++ *
++ * Builds a bio for the accumulated ctx and submits it through the normal
++ * block layer. This is the submit_write implementation used by swap_bdev_ops
++ * for ordinary block swap areas. swap_ops providers that override submit_write
++ * (e.g. zram) but still fall back to the block layer for some I/Os should use
++ * their own bio construction, this function is not exported.
++ *
++ * Context: process context (may sleep if SWP_SYNCHRONOUS_IO is set).
++ */
+ static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
+ {
+ 	struct swap_iocb *sio = ctx->sio;
+@@ -640,6 +656,96 @@ const struct swap_ops swap_bdev_ops = {
+ 	.can_merge		= swap_bdev_can_merge,
+ };
+ 
++static DEFINE_MUTEX(swap_block_ops_lock);
++static const struct block_device_operations *swap_block_fops;
++static const struct swap_ops *swap_block_ops;
++
++/**
++ * swap_register_block_ops - install swap callbacks for a block driver
++ * @fops: block_device_operations identifying the driver. Used as a
++ *        match key in setup_swap_extents(): a S_ISBLK swap area is
++ *        routed to @ops when its bdev's gendisk fops equals @fops.
++ * @ops:  swap_ops vtable selected for matching swap areas. Must populate
++ *        ->submit_read and ->submit_write. ->can_merge is optional.
++ *
++ * Lets a block driver (zram and similar) replace the default
++ * swap_bdev_ops with its own submit_read / submit_write implementation.
++ *
++ * Returns 0 on success, -EINVAL when @fops or @ops are bad (a required
++ * callback is missing), or -EBUSY when the single registration slot is
++ * already taken. That slot is enough while only zram needs custom swap I/O.
++ * Several block drivers would need a per-fops lookup table instead.
++ *
++ * Context: process context, may sleep.
++ */
++int swap_register_block_ops(const struct block_device_operations *fops,
++			    const struct swap_ops *ops)
++{
++	int ret;
++
++	if (WARN_ON_ONCE(!fops || !ops || !ops->submit_read ||
++			 !ops->submit_write))
++		return -EINVAL;
++
++	mutex_lock(&swap_block_ops_lock);
++	if (swap_block_fops || swap_block_ops) {
++		ret = -EBUSY;
++		goto out;
++	}
++	swap_block_fops = fops;
++	swap_block_ops = ops;
++	ret = 0;
++out:
++	mutex_unlock(&swap_block_ops_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(swap_register_block_ops);
++
++/**
++ * swap_unregister_block_ops - undo swap_register_block_ops()
++ * @fops: same block_device_operations passed to swap_register_block_ops().
++ *
++ * Clears the registered fops/ops slot so future swapon calls fall back
++ * to swap_bdev_ops. The @fops match acts as a soft owner check so a
++ * driver cannot accidentally tear down another driver's registration.
++ * A mismatch is treated as a bug and triggers WARN_ON_ONCE. Swap areas
++ * that already captured the registered ops keep their sis->ops pointer.
++ * The caller must ensure the module owning the ops outlives any such
++ * swap area. For block drivers this is guaranteed by the bdev open
++ * reference held across swapon.
++ * Calling unregister before a successful register is a no-op.
++ *
++ * Context: process context, may sleep.
++ */
++void swap_unregister_block_ops(const struct block_device_operations *fops)
++{
++	mutex_lock(&swap_block_ops_lock);
++	/* never registered or already unregistered. */
++	if (!swap_block_fops)
++		goto out;
++	if (WARN_ON_ONCE(swap_block_fops != fops))
++		goto out;
++	swap_block_fops = NULL;
++	swap_block_ops = NULL;
++out:
++	mutex_unlock(&swap_block_ops_lock);
++}
++EXPORT_SYMBOL_GPL(swap_unregister_block_ops);
++
++const struct swap_ops *lookup_swap_block_ops(struct swap_info_struct *sis)
++{
++	const struct swap_ops *ops = NULL;
++
++	if (!sis->bdev)
++		return NULL;
++
++	mutex_lock(&swap_block_ops_lock);
++	if (swap_block_fops && sis->bdev->bd_disk->fops == swap_block_fops)
++		ops = swap_block_ops;
++	mutex_unlock(&swap_block_ops_lock);
++	return ops;
++}
++
+ static void swap_fs_submit(struct swap_io_ctx *ctx, int rw)
+ {
+ 	struct swap_iocb *sio = ctx->sio;
+diff --git a/mm/swap.h b/mm/swap.h
+index edb512e619ee..4bdd38f7a5e8 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/atomic.h> /* for atomic_long_t */
+ #include <linux/mm.h> /* for PAGE_SHIFT */
++#include <linux/swap.h>
+ 
+ struct mempolicy;
+ struct swap_iocb;
+@@ -79,22 +80,6 @@ enum swap_cluster_flags {
+ 	CLUSTER_FLAG_MAX,
+ };
+ 
+-struct swap_io_ctx {
+-	struct swap_iocb	*sio;
+-	struct swap_info_struct	*sis;
+-};
+-
+-#define SWAP_OPS_F_NOFS		(1U << 0)
+-
+-struct swap_ops {
+-	unsigned int		flags;
+-
+-	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
+-			size_t prev_folio_size, int rw);
+-	void (*submit_write)(struct swap_io_ctx *ctx);
+-	void (*submit_read)(struct swap_io_ctx *ctx);
+-};
+-
+ #ifdef CONFIG_SWAP
+ #include <linux/swapops.h> /* for swp_offset */
+ #include <linux/blk_types.h> /* for bio_end_io_t */
+@@ -472,6 +457,7 @@ static inline void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ #endif /* CONFIG_SWAP */
+ 
+ extern const struct swap_ops swap_bdev_ops;
++const struct swap_ops *lookup_swap_block_ops(struct swap_info_struct *sis);
+ 
+ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+ 		struct list_head *folio_list);
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 284eebc40a70..ebdc96092961 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -2849,6 +2849,10 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+ 	sis->ops = &swap_bdev_ops;
+ 
+ 	if (S_ISBLK(inode->i_mode)) {
++		const struct swap_ops *block_ops = lookup_swap_block_ops(sis);
++
++		if (block_ops)
++			sis->ops = block_ops;
+ 		ret = add_swap_extent(sis, 0, sis->max, 0);
+ 		*span = sis->pages;
+ 		return ret;
 
-Best regards,
 -- 
-Jianyue Wu <wujianyue000@gmail.com>
+2.43.0
 
 
