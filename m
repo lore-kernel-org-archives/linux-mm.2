@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE07CD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 10:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7B9CD98D2
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 12:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 212EB6B00A9; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
+	id 420116B00AB; Sun, 14 Jun 2026 08:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C4256B00AA; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
+	id 3F6356B00AC; Sun, 14 Jun 2026 08:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D9A66B00AB; Sun, 14 Jun 2026 06:33:57 -0400 (EDT)
+	id 30C946B00AD; Sun, 14 Jun 2026 08:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE8906B00A9
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 06:33:56 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8072C1C3F1A
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:33:56 +0000 (UTC)
-X-FDA: 84878157672.30.53FCC97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D5FDD14000A
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 10:33:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4O033mF;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EB686B00AB
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 08:02:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3766164F21
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 12:02:41 +0000 (UTC)
+X-FDA: 84878381322.16.EE3E39F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1CD9618000B
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 12:02:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgRL+DHG;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781433234;
+	s=arc-20220608; t=1781438560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNZGt5jAdvGJ9FE8m2dMOVkQl0H6oyUWqUmCHO4bEDo=;
-	b=lrTVE2mVaTgOYi9XQZreRQQ622dn2gU888ZNunuV+c1Y7yDWfU8PrgaX2IA8Jm0AbjZiqi
-	61uIJmoW2ciU1JjgyHgR10XJEzGo47tJ6S1jfPQbyck4YG9q+h1iK97eLQLYvAPb1C6q4R
-	W5eBbEraA+II42lBDvWesoheeqvmbqA=
+	bh=GWSdtbQlJqxP48YULvGZFlse5tTUXxbf+XtbPMjiKPY=;
+	b=sewpkyHrr+mg2KXOLWQBLI5IeDPfgOHhrCxmkEQR0j9ddvFF7/utaKD5QHYT2Arc4VoqmD
+	m/ty4GUDomEBeH0NJqvclzC4k+OrhOB5xFxgbK2iGF8bGNP8uZuBvFI/iDFQ3hzBvhrczj
+	qQhHQQTN82r+S7i6EJaZInJpLTVFOus=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781433234;
-	b=Uflmjeh6J/Efym9OgpUYj9/JtpfUWgo5Us8hL8IOf5s+0YbXSp59BSZhmd5vec7h3qW/25
-	s8sLIwvlPvtFdtVKxWpKVtAZz8PJ9+tYJMG5UliYepUKHv2SHICN0QImkpsU5YM9JjGnPO
-	jKjjUX3C+KSyO/Fb9cGysN4cDu9pM/o=
+	t=1781438560;
+	b=ZnOa+W0cmyg+N3qKjuj+Kpkpp96HxolsFtf7V66wdObZZf0JzKXZX7Ith3ZkbfeeY/8QIy
+	bdINK+6vC1CFcfjlwoj2FEWd4kDiKUMVTDqz3+BwDFsVSKaKZjy6B+98LiaHs/4RaxemZt
+	JC5VJ/3Ynal513+gD4z8zJdruJlHYEQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4O033mF;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgRL+DHG;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD40C4374D;
-	Sun, 14 Jun 2026 10:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD01F000E9;
-	Sun, 14 Jun 2026 10:33:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63AD06008A;
+	Sun, 14 Jun 2026 12:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190C31F000E9;
+	Sun, 14 Jun 2026 12:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781433233;
-	bh=fNZGt5jAdvGJ9FE8m2dMOVkQl0H6oyUWqUmCHO4bEDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D4O033mFlKeba1PLOGOiRmaKT0HE5hCywAb2SmHaWTLg7Si9bZXSFsGSHQ2W5zmqQ
-	 ys03YqOtdxF4fiW61Q7KcV8HbOnyBKxBgn95LV/qvejr8YcPGFLfykFMYKao9DmxIh
-	 QSmkssstKxU22KEdn6XIPYm8omxvYWxxIVeh31P5IMP6p93MOWrlHgBD/00hQSuS+4
-	 8u/nCwXfb4s7Lr/quIEefgn3MuMlBtPNP57E34hRse3Dzti0yLPt/ngnQOhg+UDG+w
-	 zT5HCGNe7QMMaCdgWcJRrG6ut0rmGxAbJds9ctsWLOSmxhHdR+0u0H4buLOVBx3nkg
-	 mMyv6PUIGqE2g==
-Date: Sun, 14 Jun 2026 13:33:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, Rich Felker <dalias@libc.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
-Message-ID: <ai6Diz0UgSGccbhY@kernel.org>
-References: <20260510135546.13554-1-rppt@kernel.org>
- <agr7XvoWn_-axX1-@kernel.org>
- <adb1db8d1fbb9d219fa041776ae863aa2fc09270.camel@physik.fu-berlin.de>
- <aiBI_QEmeVSBb2HY@kernel.org>
- <865aaa7aa64ab69ca9020d64d86baa8d9b700bcb.camel@physik.fu-berlin.de>
+	s=k20260515; t=1781438559;
+	bh=GWSdtbQlJqxP48YULvGZFlse5tTUXxbf+XtbPMjiKPY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=RgRL+DHG+pbx6FyKuwK64FgghxEPzcl5tUxL5BTUMlsHB0LchxHi1fxfSVJrW2SHH
+	 GYZR02kBSzZjr5QDD9fIwz3Wi9RVXgytCPB3HF7t1+AC5aNRVRBMT8KxB/OuXo0eFK
+	 /xmAhTC9vpOFf55oqpl5NLhtIQH01A1L+3FnGLzh2LfEA+m3s9fRLXNYSe8v1fG8Xz
+	 wypsOwAUwy9fbfkWrbJfgKrwkQN7mQbWXavpSt5w0WfxgQGDq51Ggn6B3C1rvhtifW
+	 Y/4m0rlF6IiJQNas4nmS+diqEc8H2xF6oCdqnPzxELGmYhE2Z6pf1anaHBR2GYyQj7
+	 iB1cccqHPfdbA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <865aaa7aa64ab69ca9020d64d86baa8d9b700bcb.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 00/18] kho: make boot time huge page allocation work
+ nicely with KHO
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Alexander Graf <graf@amazon.com>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jason Miu <jasonmiu@google.com>, 
+ Jork Loeser <jloeser@linux.microsoft.com>, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260605183501.3884950-1-pratyush@kernel.org>
+References: <20260605183501.3884950-1-pratyush@kernel.org>
+Date: Sun, 14 Jun 2026 15:02:31 +0300
+Message-Id: <178143855109.2123877.12981752740377469952.b4-review@b4>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D5FDD14000A
-X-Stat-Signature: 1ic9a7xufidr1epcp9w9xur7rezuei7j
-X-HE-Tag: 1781433234-747279
-X-HE-Meta: U2FsdGVkX1+1DVQ1RVkhPtDQRgfAv2z6BL26wTdLGfjIi7mv9naJ+RJfPEp402T8E8ApT1pNw+wmNEv3x4acstPwr0A/bcZRlmmBPB8GTk5kdGs7VIblJtjkhok+VeUdH96WKopiCtV4WZf2wVwe2/vCMYsSMl9jeKvct/F8+WrM6k0VvItiFG4fEAuoqwdwOJQlmZ95ZsFkZ78ztz3kJwynXoBbVclNZaLCyXr4X3UWWkRCE2V0zX14QuytUto4Mz1RxUvU7AL3svGt3QLnE45eRH9UmnUVgG9T7AXQ6LXLo6TfhsarTfz7UGizHqUx+XsTk8kTneAu/c7lqM4z4hesapvofxbJAOQCv4L3oAADYlQkkBnAT2Wpf4C8+1hXjOEocKpnVdRbu3x7K/gbOsjyQ9MfuNuSaqPho46XgbCEyV9zJQ5Nd4uBkwU566jkT96M/jCi2jkuuXu9rSTZB4lxhyMUG1CXHi6Haz7pwOYqz1GW32LR7EvciUb6ghvqrkKhKY3Krq+Pjx+75wlhStuVezptYuV4D1SrsnaodKVSAXaQfa9STMJ9RGRKxfyRZVIKpVOjrlFemKjcFrMVAat3gaiEEZJi3wb4MeZ9Ws80a21jItJkBKUhUsnBwLOx65sFhwmfe4N+bQuz+hndS6sTd6tgUveMU7m9kFtirVa07CfMYZrm/pJc2H3WwYDnJd/wXWKoYMtXsCS77Cbh+L8crqmy6YJcc4ftinVAY3GPZN+mIs5k+aEFFKAKHSRcMsxg1pvm+mwX67R6nvQYjwT+mTmvYzXMNyy8hRxY0ZXU9qxpmfEA6EYy9hGAH9hvB2OBy37F4xOsfGolc/1/3yLfcXqxghi4NUumvnySXQPAxDlYkTFU7cLs/Gf5Lu/ZNQY3mV/EqBySwxgodsgccrOM3qAm8ZWDaXhUb8393T8AmN0CUNIwrvuypp7fEqP/mMIa2JVqiNr2g1Vn3o6
- Vp9Nw67b
- 1X2DzzxizyH2TYH2nUZUVEDyBgM1AnABnFUTTCAL7QrVONleXM7dKaAZEIVWFgsBdIpxfMPpu5GnIcXMz9AsonKBXBtcjWx8khCTSdNVnDG7Ylc9NVDhxW75DA1RAWpWFrzELLQAsMeYEWSG0CH1eC5ZYOQkNH0ROvU6WcF4/IRw+UGCADFmFhC3VDTKVv4mfV1Lj6Gwv7MXeVYxWm8quReLQbX2nQrpfTf+otkz1BnzLxsydKDR5VBGtAFL/eQdDTHp2
+X-Rspamd-Queue-Id: 1CD9618000B
+X-Stat-Signature: enk6wq51rzz5wp9j3x85z9umif1q6ggc
+X-HE-Tag: 1781438559-711366
+X-HE-Meta: U2FsdGVkX19jUF+5QEi+ZL/rAE7adE0dSuHJRQCHjimBFvgve0mURB8xMl1OfbJFPo7DQlhz7nv3wAlpA9iPsr8l7vVgBoYuZnN31oLvMlt2gSqv8tf5yVKRMOkro3oVRqvGhQoDG+ZrNQxkavmowrBX6t262/LOCm/CtX3TNQoyDUtrh510WQ/W2rgZ0MTrcjZ3yWKFvS71FyAvisoI//DSuUz4on4ju6lOlX0Cp9ExWehSNMk5OLCBSLQ3WovKfmobWwgAw86gRWxNBuMWvpvVs73GID14Qz4YX4VS6mXmbwv9jlr5nXSje5BU7JD8qCSMXyaGFbXX12qv+p2ksmgdJ4LlxxrraAawpx/f1eQawhL/w+yfawYLc71vTeIZwtcAIPhVx1aUup/rZs3vntUE3XREmGtzS+QrLyPhFEpEimWDCN31bn2Cs8EbRt67sKWzghU7O0tCtUiCzHzVjsUSLkViIN0zFsU+k4TRepmWAwZyKVI1BnSfkZDXuBz6msMdGHqtUg6Klz5ZuSztssDLYPj2NfwrEvqZgH6jIF4e47QVopxrSAP3MmDcL98CyQ4Iyyjg6IMie+XoKd2axdO9pF0EYJi60gvVXePnIa2one63jodUzD2AMp6UHA3EAgpV5SkDsBfIeC64tuLgSvU6hx61x3HOOeAED7iGTU4U0Gw9JjBdVgrPRiYgPSz/iSnb41mHtlXA76IOeMRYMYjEEPNJVyVxX9KKZcDwsgJokWpRmY0ASiPBkxzYcUKsNs4fmbbonwiwJzWvTI7rhgI44dzScEopgeOlsrUFA2B1k0vpZpza2qleRlohM01cAfOxPZB0gTvmSgvcntlujOudoXGJdNtgVJwX2IFznSAx/B2YFhC9Ln0jiYdjTvYx3Tn88lsO5b3sWA14dwrlqufxXhKNfWBJZYz1zJnUfU/iKYUNVzrWraWAQdhjnCg7peZ/sbORArmQHSbKGQj
+ HyQ8t2+h
+ LwgqArdJhWPYswsgbwL6nEbezF/jIWTFJYEaxL/IBRwGIQUJp0nr34zLXw/Bf9za0WqP+oRd9/l3QJmzlvYEJSBibc47Dkd/4N3WoTmkOr0t/z4vHawLlEOup0syP8tMTfqDKMq8GzSFv7BcCK4zSLskuAyNKm2nqM1Qb3xOjXvRbPJo9v14L0kAQEwaz0yBwA5d6URA30/3xf4OU8LZ1SaKga9HJwUUPqxuh/hHzduE0i7yAVhfgk687Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +98,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Adrian,
+On Fri, 05 Jun 2026 20:34:33 +0200, Pratyush Yadav <pratyush@kernel.org> wrote:
 
-On Tue, Jun 09, 2026 at 09:21:37AM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Mike,
-> 
-> On Wed, 2026-06-03 at 18:32 +0300, Mike Rapoport wrote:
-> > On Mon, May 18, 2026 at 02:05:39PM +0200, John Paul Adrian Glaubitz wrote:
-> > > Hi Mike,
-> > > 
-> > > On Mon, 2026-05-18 at 14:43 +0300, Mike Rapoport wrote:
-> > > > Gentle ping?
-> > > 
-> > > It's on my TODO list for this week!
-> > 
-> > It's sad to see this being dragged since mid April (if we count v1 and
-> > there were really minor changes in v2).
-> 
-> I apologize. I am doing the maintenance as a hobby in my free time, it's
-> not my primary job and it can sometimes take me a bit longer to take up
-> changes.
->
-> > If you don't have time to take care of that, just say so and we'll take
-> > this via one of the mm trees in the next cycle.
-> 
-> It should be better this week. I've been recently busy with CVE fixes during
-> my dayjob and the workload was extremely high.
-> 
-> I am not going to let this slip, don't worry. It's just been a bit too much
-> stress the past weeks due to the AI CVE reporting.
+Hi,
 
-I understand that this is a hobby for you and there are a day job and other
-obligations and you don't have time for timely responses for arch/sh
-patches.
- 
-I just don't understand why do you insist on taking this via sh tree given
-you don't have the resources to timely deal with the patches.
+> [...]
+> allocated from scratch, they will fail to be preserved with the upcoming
+> hugetlb preservation series [0].
+> 
+> Fix this by introducing the concept of extended scratch areas. They are
+> areas that the kernel discovers on boot by walking the radix tree and
+> finding free memory ranges. See patch 10 for more details.
 
-This set can perfectly go via mm tree as it cleanups a memory management
-feature that should not have been added to sh at the first place.
- 
-> Adrian
+Overlall LGTM.
+
+I have some small comments here and there for now as I din't get into
+all the details yet.
 
 -- 
 Sincerely yours,
 Mike.
+
 
