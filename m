@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01333CD98C5
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 21:02:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E7BCD8CA8
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Jun 2026 23:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105FF6B0005; Sun, 14 Jun 2026 17:02:14 -0400 (EDT)
+	id 456F46B0005; Sun, 14 Jun 2026 19:30:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 090196B008A; Sun, 14 Jun 2026 17:02:14 -0400 (EDT)
+	id 408046B008A; Sun, 14 Jun 2026 19:30:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E999C6B008C; Sun, 14 Jun 2026 17:02:13 -0400 (EDT)
+	id 31F506B008C; Sun, 14 Jun 2026 19:30:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D587F6B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 17:02:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D39F918FC
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 21:02:13 +0000 (UTC)
-X-FDA: 84879740946.18.F33064B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EC1E5140003
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 21:02:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnL97brA;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781470932;
-	b=WbB1SabMDkl8nBf4nWC0qurJ3Y7IjV3juK81zy4KlFvOTEDUxE+450qHZw2il4/atmdWbT
-	Bj+ZvrfvoMtAW6EQFqwyQhIY6gWBU9nmeQ78MNyvvYkPm+yeOfC9wgJX8gqj+2bc8MdeHY
-	EBajxCfJjzXim6JNo6TfMXktyWeyHQY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnL97brA;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 20E226B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 19:30:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C884120854
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 23:30:12 +0000 (UTC)
+X-FDA: 84880113864.13.0A815C9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DD56DC0002
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 23:30:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lkDvCDE6;
+	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781470932;
+	s=arc-20220608; t=1781479810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=x5PL9ea68ETMoE/me7VchVD3ZaplPIV6ryZDRpLN4uU=;
-	b=Eh+/JADgsnDt3CcnNsr1c8o3WpOnvnIPw+l3wjhuHFCMWIs7qJ0AEWIBBTQXAm/jnyppWV
-	7wGszcZwRYDAvYF22pjNLHuCoQLH6Zo1tark4x+ci4h7MOyfeEdtMV6f7QqyxmHtl/OzAk
-	Gl44WS9Nd6VGamOuAQNZva/eNPsMC6Q=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/rbjK59HUTf0wE3NhmbrJC+irGOkjOo/XNW6yQgv5do=;
+	b=5Jis/lVDAJw8HI0YPBzEyl7Nww+Dny2chskk7FfUbgjthUAN8rY3i8iKlPM5KAljxAX+cN
+	v/QVEwGE91sEhIvItvbBPlJh2Rbl2N4EMNTlWZ6eOu2cOEj5Xx5ScT5HJhF7TRcnYjBNQA
+	kHqeNGqJ8HEz82my0cqXbCtIiEwXr9Q=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lkDvCDE6;
+	spf=pass (imf10.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781479810;
+	b=omlXLBmUnVob/VvPFTxOFzgKvGiFc73Jhvy6P9BTJ7CQY1gw6YV2R8uIHdG/Elzd4CEtlw
+	Yxnaq3blc8TCA2RPqiX4rZVGAcWNX9Y+HVzly2kjIR78jL3tUNXTMYdrFkzd6XO4JjyeXG
+	pjYbmiqon9MOfonJOGC7FZJVACGhv+E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F082143A05;
-	Sun, 14 Jun 2026 21:02:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00EE1F000E9;
-	Sun, 14 Jun 2026 21:02:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24F4360132;
+	Sun, 14 Jun 2026 23:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1241F000E9;
+	Sun, 14 Jun 2026 23:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781470930;
-	bh=x5PL9ea68ETMoE/me7VchVD3ZaplPIV6ryZDRpLN4uU=;
-	h=From:To:Cc:Subject:Date;
-	b=DnL97brAJwWsRnbft2pAvI6LhC44L+A+or5qP9u5r5vret8j3fO/knh/Payo1LFUi
-	 ciEFh4xbJHSSzl+SrYmvlwaF0hCP2j5rNZJc3wTNMaMWbCVwM1P2f6K0fEvp3y6Wk+
-	 qjNgktpemBXnmDOcOkEZd0qmq9x31Ammny8roA1Hg35bAMO7hEm17lGbIOAHUTNruE
-	 X3wAhWdTRMRwToz7jU0zLKAYr/TY4xHB0M93FKFg6FiGwwqmUi9DJgF61LsWm0SXeM
-	 K8Qa0dRUWC+zyEvRL/jibWjjFgvrEVQ5db03zFnV/ltJfv3j9FXFG7TtT1tI8eFszF
-	 +n7kxmpgPpj4w==
-From: Tejun Heo <tj@kernel.org>
-To: catalin.marinas@arm.com,
-	will@kernel.org
-Cc: ast@kernel.org,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	martin.lau@linux.dev,
-	memxor@gmail.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	rppt@kernel.org,
-	arighi@nvidia.com,
-	emil@etsalapatis.com,
-	linux-arm-kernel@lists.infradead.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf-next] arm64: mm: Remove misleading pte_none() comment from ptep_try_set()
-Date: Sun, 14 Jun 2026 11:02:09 -1000
-Message-ID: <20260614210209.2371030-1-tj@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	s=k20260515; t=1781479809;
+	bh=/rbjK59HUTf0wE3NhmbrJC+irGOkjOo/XNW6yQgv5do=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lkDvCDE6RMD8G5/LvLDstEOtWKW3qYZnvDKAkirS3ZRQ1e4DjIJMv+wIsrCVftQu/
+	 SwwQOt7+n2s8FVoYyGBqEeS/iZIdtX/oboGnZhsjS508f5JwhOciNbONguC52q8Cpi
+	 TyE+T70fzf7tCLi7Q/G/sEwSJCaiCjfhKsjxSNc8pvGk4VefKGdmGVkoI6/u2sSc/z
+	 +chmkkiAnRJeHB2OLlp2rtimjFLmoSiHq9JonTMlZLHviDpRx2D27jH61dQkceOwAK
+	 VNpuY72kcyOXNPgItk5csB+PITWpppuyfnwe4HcV3elu7Mi3hAJVTV73AopQ9Yx975
+	 NvLyIURINvuPA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93BD53A566CC;
+	Sun, 14 Jun 2026 23:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EC1E5140003
-X-Stat-Signature: 3uyswpsgqjwy144mgd3trywacqkrc3oq
-X-Rspamd-Server: rspam03
+Subject: Re: [PATCH bpf-next] arm64: mm: Remove misleading pte_none() comment
+ from
+ ptep_try_set()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178147980539.2349009.4002197585422309428.git-patchwork-notify@kernel.org>
+Date: Sun, 14 Jun 2026 23:30:05 +0000
+References: <20260614210209.2371030-1-tj@kernel.org>
+In-Reply-To: <20260614210209.2371030-1-tj@kernel.org>
+To: Tejun Heo <tj@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, ast@kernel.org,
+ andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
+ memxor@gmail.com, akpm@linux-foundation.org, david@kernel.org,
+ rppt@kernel.org, arighi@nvidia.com, emil@etsalapatis.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Rspamd-Queue-Id: DD56DC0002
+X-Stat-Signature: n5pas6xdicihgmucnqn5em5uxf7s86ks
 X-Rspam-User: 
-X-HE-Tag: 1781470931-70311
-X-HE-Meta: U2FsdGVkX1/4S/Ra5TjOiaciwMVdptYmJLp6eGPH0D8TCnAruJ/L3ibec170D1YL0B82q9twyk41pmUGMyFcrlAb63Gzs2oZkfYfV1OZmcTM1Q7p+Y+voUUf9D4KM+jrR3b6lNEl1vpcAZY7cuUJHlEDN4KMS2GuWJVOpHoVKLbM3t49Cg5V87VkoueXJvKMzasx/ebRqd6zIKtmVcPQHHa7glmf8569TaZsF4Rks1yCoIxVmwJ8r6XmAS5MS8SryRgh/nx3fRQsb3aq7LodKXfx0EBYPzM3ErMlSofrkORMRpthWKgsMBvRWRnLFI/nmXg/cKeUNfFO8P8XyRdEVPYG03MhNI+gMzps3gJTbACJnlu1wsMMbQqspavamKHdRExyN9QfI+NcIREAwu3f8GDlop3h6MGjTGzi47hrsFvd3muGy4NvYzZJEHJAg///KPy+WhbnZ3zvMwYguGJ5rnFm6GojjOkEFZdpKGcU8M2bZeTC7/wej5aQwTOuD1aSCbF+4fmsaOIWbuudxi3Q09DR44vpN7eD8EeN4+38UJtf3L+KNdyaL2ahXeRDboIDPAYKII9Dy3ea0nUxtUFofrivMxIr4+65Iv377Zx3MNzRDvTdah4+J/Y95d1m90mCdhQLfVqwAnXHeFcvJamvErtHDVWuCPtdKOXrJjLOF8wTgYZR6S9l55QmbV1jH79ZOLYoi3RpkgXI+fLs9pGUDuPJregAoZiZ2MYQUkklU3oRMSSLwdozxo4ZmoXcFz2Tbcn0pAbz34SN+JdlwFb1xzXaENh9iNS63sB7SyTYXV4OhcVsvjtnknDjvaDnsykcD9nz6auzKpLohkkRKcwGc9cY0Im2kSojhmh3iT2tzc4FMOOSR1TDAqRKg5xupysCH/LXC3TEH95+t65rChYXthMB0X6Ltj8XwQmEabOoSzooyo/LaT+JYzUy5b9JDN51IeyDvaDqPcLnlPSnPbW
- +lDOzD67
- WzdXfUd/yT3nVyGIY1HU52RNGbOmMgEpYhjn5Dq5gGNAtKBIIL+EaOLyxpBB27Goi/gO06ozugABbCTrGnRdE7CA7zStVJ65qA+ifXqsdMHc/zVySp5sHq+o3a1EpxXsuRQSqbCUXF5SHA4kMXPR6KvWWfspgbj4Qd0EUZa5JdVThdLL6m6Q4yydH0GDfy9aKrzlSBBfYyamSqteVre/cK8cXLc6nU72YX983y9t9BKAqSNvVqnT6if76fPxsLhL+iZX5Yqa0ZfJkwvZOMd25GHLQTnLVMqUZ8PMX
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781479810-258263
+X-HE-Meta: U2FsdGVkX1/sN8A4ibPeXZoz8zDASVHZBIRZkf2BXlTBzI1eIs5m7TvAjtTiJ7zb5L2wmbpH/kRPJfLvydK2cNTQDNVS813lF2nBU4hQ8IRkLlbHgJ5UPHRpkir6WaCpiF5mpa2e/ifyONRaz10uOXYckPWIzBv8bo1aNtEgu1IPHnwMwfkJ8ZCyDsfyhHSd6i1dfHVv2LZr9WEhZ6vhn5T14IM3wQgHQF4oJr3gZspZANvpIrUpv1Ej+T4imJ48b8r7hm858dFDXAuOjR05mDK0ph30LJHGkK2g1XmDRY0EK9FepojiR24aCxfy0HzBjrTdC4igTyH+DxWHUubTHU7ZRmM0Pb68+NUSVL5DmrUTs3/QfNaM/7j+UMMcaw7U75DjLMi6pghcnRw7PWbUiaewzo5BaC+mKXmgprub4unI+FxpOTnKJvE04mhaB2nNM3ergfq/fgXq12ssO9N5glAzBcwYFdVsrWxcVWTDwY6nxo1paB4QeZebCfbGdRTTZsTpP3KPuhYbBF2HrV87NWgYBTHgNYkeHBgnwLyU6/cFolaKQoQ4S/kJMdsGg+mLDp1JK9Ju4hMWI3kF2Gpm9no4wwk5/TvyAVRtc0KFYjHsW7P8K0BNX7sd/zig8WiZv5148vmT1qz82Y+3L1GIDo/mmVN5BDDIt5Lt0gz66b4DlVHYi2e6yvvfXh1Q9/ZPfiJCKR7mJVIW3mfiW8kDTv5QfHb0aZ+LNbzFMCi7V1RPfXqQBNIdhXrLrP4YoslDXOGBKmyjHO/gxkCHzwmTWVWNMxCxva1DhgJtVr4FPP7h/Y0azVsei7mmO3bBX5irUZEZnObnkXBtqMnhASpkcTy32UsX0fGHDSs+MlK+Yz4ClT4jTS+MDZoOEfVxBU1x9uN834W8cdB3rUbPiaFvX7JnAvp3sX+joyDWAZYtlD8uUlRbrZAmLVWPxj9UQDuOniwlj3Ykwv1XL34Fyah
+ ijsFIIkR
+ r46sLKYD/PV4dUNnqiAr+uTviBX9kfmUsO076pFGWAILu0D2HzCSPrvRSNzldawmbLYOu80k9WDI7phszQHC7VK44ceC6Wh6C7DwZxB1FCqTNY80l2YlaSm4kkQ4rpk78QL/HXnHdUzVn0Q4pzzQZkqsGUr2pk9bU7lkfccQ142uQjaLuqH5pZFGlQIiHUNFFllZz3zhmSbcndhoh2HdHYzNAMxXZ4gQqx7Nfp4Yh7H8TJyCM4ueNms62ft6NZ2ddj8nTx39al02dAO2V9ppPEM1Uw5Q/pGJNjoD3xGZ0CTl3gFnLhG7ovUpbd5nYged2DFjsBbaOlE4lATOF41DoF4VTT38rX9xckGZfA29owmIBrG1Uc0UdmV8LvZNSSCMlFKsqVN8uzjQw3xhedsA2fykjq8/UlIfPoI1P9A9eTHO9TPDTsUQrfYMCgTjimF0PQkZKqK/w31eMEd0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,30 +101,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This comment was thoughtlessly copied from the x86 version and doesn't
-apply to arm64. Remove it.
+Hello:
 
-Reported-by: Will Deacon <will@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
----
- arch/arm64/include/asm/pgtable.h | 4 ----
- 1 file changed, 4 deletions(-)
+This patch was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 3ce0f2a6cab6..b0213799ebc4 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1830,10 +1830,6 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	return __ptep_get_and_clear(mm, addr, ptep);
- }
- 
--/*
-- * Note: strictly-zero compare is narrower than pte_none(), but the gap is
-- * harmless: a fresh kernel PTE has no software bits set.
-- */
- static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
+On Sun, 14 Jun 2026 11:02:09 -1000 you wrote:
+> This comment was thoughtlessly copied from the x86 version and doesn't
+> apply to arm64. Remove it.
+> 
+> Reported-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 4 ----
+>  1 file changed, 4 deletions(-)
+
+Here is the summary with links:
+  - [bpf-next] arm64: mm: Remove misleading pte_none() comment from ptep_try_set()
+    https://git.kernel.org/bpf/bpf-next/c/16deef8de06e
+
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
