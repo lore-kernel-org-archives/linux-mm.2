@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF68ECD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A49CD98DA
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FA6D6B00A2; Mon, 15 Jun 2026 07:07:16 -0400 (EDT)
+	id 9C67B6B00A4; Mon, 15 Jun 2026 07:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D2126B00A4; Mon, 15 Jun 2026 07:07:16 -0400 (EDT)
+	id 977B36B00A6; Mon, 15 Jun 2026 07:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C1796B00A5; Mon, 15 Jun 2026 07:07:16 -0400 (EDT)
+	id 8669B6B00A7; Mon, 15 Jun 2026 07:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 192CD6B00A2
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:07:16 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D031692F0F
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:07:15 +0000 (UTC)
-X-FDA: 84881870430.17.355A124
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 21B561A000B
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:07:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GITsWOW5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 736BA6B00A4
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:07:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4688C1C45CF
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:07:22 +0000 (UTC)
+X-FDA: 84881870724.03.D85A4DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 89E622000F
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:07:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ok05IY9h;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781521640;
+	b=kOOmFcR9tWIcgacNW+mOytgPkBsTRa47pnB8E5BrcDONBlleBa4V41cj0HqBrHw8R1zuRg
+	rChEmpxMC050LmnmaO3MQpCr5PNyGqQQXH/OfUTbKwVNMOQo0lt/201SoymmlUyUy8/TwI
+	CXGLfUZrC5gGi6G4v7LW1ecpU044be4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ok05IY9h;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781521634;
+	s=arc-20220608; t=1781521640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/ijfUoogm2b+cM5xgTnmLzdDUHT22OxJy5j6X1e9RQ=;
-	b=QWYEugBPS5GNtwXhJl8KhSf8r1e0wJSWRg1vzTvudmOJkVgoXCGHiuSzJm8VO1wowCvpiZ
-	Eg2aAmUoJg2M7v9SdjcXMyOZ34rIeaQDxzCKUWELolwuuVG3TGj6lcnlufvYcC+btu/JNG
-	JnZ0NvbEyJH91x0PdBtxOzPJhcraCpo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GITsWOW5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781521634;
-	b=CZ8mdbQK/AS1HqG56x6RJUMlPdexJDOpZugIxB9CMwrDvogHw4+yGZKxkx4eLIP+RKDZOG
-	0asyyYc1+vtX0/4Rsx13traNfC3XgZ2/JNqHG2oveBCGyAqyK68S/7o0iqp1l3BVHQKp1O
-	Ha6Pcf5W3XDLoQ56TcReAPDO+3mZJc0=
+	bh=alw5HkCTiTdHCndsz3LKMMxy51B8ZMiiU4H9kP+lPXc=;
+	b=hsv/DnII0botMYhOnwdOQcb9N7gx4xgNYHDwJYeNrGzZikjLcHK6avm6nE0i/GuVN1wBWu
+	gytIYcD1ANFF7rtlQVnJPuvC2HifMxND7uiJl+ru/BuYzDDwS1iBPA/KDmnfDO12NcyjfW
+	KkMlC3OGKFk1strl74mH8c9foLNaPmQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B169860132;
+	by sea.source.kernel.org (Postfix) with ESMTP id DCDBE4383C;
+	Mon, 15 Jun 2026 11:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E811F00A3A;
 	Mon, 15 Jun 2026 11:07:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CDA1F000E9;
-	Mon, 15 Jun 2026 11:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781521633;
-	bh=o/ijfUoogm2b+cM5xgTnmLzdDUHT22OxJy5j6X1e9RQ=;
+	s=k20260515; t=1781521639;
+	bh=alw5HkCTiTdHCndsz3LKMMxy51B8ZMiiU4H9kP+lPXc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GITsWOW5Z+GUrJ29hd5mnyWVcwRgNpK0cKXHhfvpn+jS1rdcIBwgkVI40th8X1OT1
-	 Pmlef5x0adbs9WTIBlC0zm6kmZC2nR0GKy5+AeGij5ceNSQz+ElKxuR0246cDNjorO
-	 yRArBG3Ajo/Ez18if/6kdRxPilq6HffXPvxak4BEzgR6dPkYvewkcB08T+dNKXHs+2
-	 Ymw29lVDR61ttwh4nO/SbZ7WzHAASXbRG/k5TyLgMYRJaeBle/bSNjO2uKTZnYZ/0/
-	 mvOW+pJgFZ4zHH1a8E0WiPn1uzho/hecZq9PY+754qLcDBpYsclPbQbR25Dze4ceZW
-	 xvtxReIX6elsg==
+	b=ok05IY9hDxqFSvOMGbiJhAqKJrAvhilMe/yiZa/x/NCFYVEgFIgWqE3p95bLknrRc
+	 U4fKogysbNvoJiIg8J2l3ZpscbhAS+tfD1/xqyGSSQBpvLEQy224NpcUVDheeaHsDj
+	 heHwLnTiGf/e70zkq43DWD5YIxoYCNwcmt3FzDgmGy4aGaNCT9hJKL7T2zUP3/Nzsr
+	 uNqRWaN3ZVjjmFut8Xzh2qOlp9WzqSwIANUqdWLd8rxKQi59Tgv1IrR1uuuB30m/y3
+	 zn2wu/LLHf/xG8OdnpoYEDsXvIA4FXbZhbB6xDHLesBpcv6EHloGjd8+soJiTHTxZM
+	 kca4UZ4Ve702Q==
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Mon, 15 Jun 2026 20:06:02 +0900
-Subject: [PATCH for-next v3 8/9] mm/slab: introduce struct kfree_rcu_head
- and use in kfree_rcu_nolock()
+Date: Mon, 15 Jun 2026 20:06:03 +0900
+Subject: [PATCH for-next v3 9/9] slub_kunit: extend the test for
+ kfree_rcu_nolock()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260615-kfree_rcu_nolock-v3-8-70a54f3775bb@kernel.org>
+Message-Id: <20260615-kfree_rcu_nolock-v3-9-70a54f3775bb@kernel.org>
 References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
 In-Reply-To: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -94,14 +94,14 @@ To: Vlastimil Babka <vbabka@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 21B561A000B
-X-Stat-Signature: y4444p9s4siiq9a6y8jgxtzmao7o7yx7
+X-Rspamd-Queue-Id: 89E622000F
+X-Stat-Signature: m7kgz7u8yig779bjbww6sdkuxtgp5db8
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781521633-174361
-X-HE-Meta: U2FsdGVkX1/R3088E4N83oLqUcBpF6SjDFdxqriqDXSud/3NR6SrNX/NbhOTfil7Yy+era70qKPhd1/wmDUCWoGhxndUZKGnRrCY7Mwianx8m5OBe7wahPpY4D4xOFmtISttGZol7ICyLKcLJ/Q2/6Q16sYyfsAXxJSLM+0HmRNkMYnuk2XrLI6xjT+bi/1MR8ETv+5TOTN3tCRGKiohKxJuQ8f3mlvAPNsBArReHB09d2CE5ek1pC+lWxUw0e78pVzXn0r2Fo7LH+NX2a5Q0pIw6Yyqa8aR/G+iKWo3II3NQvrfdQFCHrjqtbUk6aFJj/2LyZXehYJ4I5abSYtMGBZGdg2WZbUX2GW1jgNAnDrXeDAxBj0wniLe+FYcSP0DhDEbqLlzgNfcl3SRnTDzPQzPNVLbm0LcWT/PXmVp2DHGpUR1TJN8p1soYuf3LVzztg0S1vnz1bCIUpxb4/G2xeQ+3NWc/WpJq94BMgEgDEQ7YlCCiMlPg89U8PKgPCMukHyj8ItOkd0aLiRbD7+0nyCwCUsXw5hP4NQMxXBtJ9IxXgBo4dVCh64ao5A5rtJj5B8PCCar5gv2WS5WrRkUXSoXFP6IH7xK7WJovdWQvRfx/9bQ5B0EMJ7Cczf7BGAFPthBdFJCLs6eCwnume0hxwPb6KBb93e+pjTnlszPM0rsmZ82EFC7DhHmJ0YF6p3E9mmLuNbp85vR73qxoBI/kPI3i/qN0WupWhfi1xXqmC7mHrLw16tAa2VONa6QqwKSDKJO5PoyPMwjol2mrYMfSuHmxKLBGrSOc0qmF7rFtQId/kJ4mQw4te3n7W8nCHI2L+GW1/0ilaXrT/qVs+vrlQ/teZEu5YeoNhLOz4uubEZLgAbSH2vDI4MCV5a7KfgKhQhKPlvi72KTVQTomlMT1ZHGW/Thd5fp6BpsVg2ACPbO47nOprIpHKFa8MDgUWzWdSk4WultCywZBWNqD4r
- u/iLSbQm
- C3D/KJf+lLmAbQmK6PiaTsC6M+HReIAKH6tioPBa1CmLjPKbIeRQpxYVws30dWUJSxZtxW0EWG+7igVpuLn1MwX0giIeBIwWvVtkdwHKKQswGth2/LLNjlY2gnzmEpTDbaF98uYnJFiP2A0IDcJWl8nwAbVPT2TawRnLqXVECIexCOXClVmg6VlvPop9q3pt0ASbPeb6XP5r9Vvlp869pXPgFsuQoaBjNP173NCCEg30qgYHEMDoCxdNlNCNtwY0lk8r/GtdZQvYF9lr5n9lqcFzEoRpzQBv6jPaL
+X-HE-Tag: 1781521640-859883
+X-HE-Meta: U2FsdGVkX19FlBlxW6W0Ys5vSz1dIcM5DiPDLHVcolSAFTL05AdAP/qAxizx7e4wzvP5gSbwp4UmfhEJpqN9jSqFJrv1dU8yRR2KwPuWMmeXOLdHyubanJuEsBKj63ytfo3NaW2PmKnQMcdjqGUM4B96nZvPUQIiLXFGu6HWBKn+dmSLZwE2kcXU0rAfXosdezQUyVAQaK04rQ3ZzarUXD52QvG8t2c8w5nlSIr2e8oMkXUSMeFZsdE3onGne3+B0xjmo+kPXtaTRb7mSvvZT83ehX6S9dj19TvPSJD1ndB8qCbFp0sme1Osk88ETA5rnhU3w/+JTZ7NS+QvelG0Rc4gw6K/AdfnXAq29oOTNnl2+npqUW8ikDINGxWUMV3E1R2Us7Z2Mg2gLU3wgEiGaICuuFtb2ilggTpbDxPTM7eLvq2RFfCnPmNPQXP/5L45KhzhQ8uGn859YjhYaO3hopW5qodrQvRCIT5Y28llHAWS+9o14IzOagI2wyOwJpg4ppU9olFcSK4AjLv1fDpKxVBzk6QZ/1UKaSbSDBMS5DGxkkI6ta9ekZC/XpZjT4y2cxP33FANrk2EKGWvYvIR2NWYpecIR07y1atr7L0qrMuGpZKdct/HgTd49HxSr/ogEOTZwB8KNGRxRCBCwzmAwCXeqEfEpbgvACUbRt2f0T/4nAaM/3/1FyQKNw2OmxdJEhUTc+pkB+ptPzPDcm/ElTtNeKxqzeKU/16l4yjQHs8+/X59eqz/ixaJUU47BE44f7/dkZ46I9uUSYx1mxZ4MEuZ/Mb5rqEcYSqzK1P4Ioc+zCzlFeD+U/iReAiNg9ZrSuX9tcPW4mI2NYiHXtVPR8eYL1/ONfXRUFzUE68Z1hGR/EWt3Zb1HpvzFS2H8PbYYfyZr3KWO406ieLrRVrO3Oj39oasg1l9DcI4UW3YWrCi5xTzcINHxIsU5tARjKd+PViy47e9EVdtnSHZ4C9
+ nVzSA2kg
+ cMqn6BHad7cPcipC1ryIfgy0QAnAW/d7lRZ0Micqo/jcHFU2in/6Hqa8jurK5rxaEE0XNPIyJwqxm0Iw7oVMorjSjqdM5xQj+7I6IsFp1fnqMwRlDHhhuOVnNZFaooLVPUMlgC+5fKKovqPP6k4ggks7wLZ5SWIwtPPiSs9badp6T6rvniteYJWlMID9B47SmoSz/oyc9HgKZZC4w4+knJw9QI3RBK/G0Vs5U8dRvP/G/lhGJP9FF7XysiuqLIvHVSfQbKY+k/LrXixDlCYKkCQB4yODuFg5eq3Sh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,266 +109,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-struct rcu_head is overkill for kfree_rcu() because the callback
-function is always kfree() and thus there is no need for a function
-pointer.
+When slub_kunit is not built-in, call kfree_rcu() and kfree_rcu_nolock()
+to test kfree_rcu_nolock() in slub_kunit.
 
-It is enough to implement a linked list using a single pointer.
-Introduce a new struct called kfree_rcu_head (the name was suggested
-by Vlastimil Babka), which is similar to struct rcu_head but is only
-a single pointer. Use it only in kfree_rcu_nolock() for now.
+Rename the test case as the test covers more _nolock() APIs.
 
-It is intended that in most cases, kfree_rcu_nolock() goes through
-sheaves path and the field is not used at all. However, in the worst
-case where trylock fails or no empty sheaves are available, maintain
-a global list of objects that will later be freed after
-synchronize_rcu() in a workqueue. Since the fallback is intended to be
-the last resort, it focuses on minimizing complexity and memory usage.
-
-To avoid crashing the kernel in a theoretical case where fallback path
-is taken before kmem_cache_init_late(), do not queue the work until
-the workqueue is actually allocated.
-
-Factor out the logic that calculates object start address into
-object_start_address() from kvfree_rcu_cb() to avoid duplicating it.
-
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- include/linux/rcupdate.h |  2 +-
- include/linux/types.h    |  4 +++
- mm/slab.h                |  2 +-
- mm/slab_common.c         |  2 +-
- mm/slub.c                | 92 ++++++++++++++++++++++++++++++++----------------
- 5 files changed, 69 insertions(+), 33 deletions(-)
+ lib/tests/slub_kunit.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 3025249bfcb5..83e66585001f 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -1099,7 +1099,7 @@ static inline void rcu_read_unlock_migrate(void)
-  * In mm/slab_common.c, no suitable header to include here.
-  */
- void kvfree_call_rcu(struct rcu_head *head, void *ptr);
--void kfree_call_rcu_nolock(struct rcu_head *head, void *ptr);
-+void kfree_call_rcu_nolock(struct kfree_rcu_head *head, void *ptr);
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index 01d808cb77fa..6ed4de88bf0b 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -162,7 +162,10 @@ static void test_kmalloc_redzone_access(struct kunit *test)
+ }
  
- /*
-  * The BUILD_BUG_ON() makes sure the rcu_head offset can be handled. See the
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 93166b0b0617..695f2a71411e 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -255,6 +255,10 @@ struct callback_head {
- } __attribute__((aligned(sizeof(void *))));
- #define rcu_head callback_head
- 
-+struct kfree_rcu_head {
-+	struct kfree_rcu_head *next;
-+};
-+
- typedef void (*rcu_callback_t)(struct rcu_head *head);
- typedef void (*call_rcu_func_t)(struct rcu_head *head, rcu_callback_t func);
- 
-diff --git a/mm/slab.h b/mm/slab.h
-index a493c5201e96..19a2a819fd13 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -745,7 +745,7 @@ void __check_heap_object(const void *ptr, unsigned long n,
- 			 const struct slab *slab, bool to_user);
- 
- void deferred_work_barrier(void);
--void defer_kfree_rcu(struct rcu_head *head);
-+void defer_kfree_rcu(struct kfree_rcu_head *head);
- 
- static inline bool slub_debug_orig_size(struct kmem_cache *s)
- {
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 5a39e6225160..6b80b516c93f 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1263,7 +1263,7 @@ EXPORT_TRACEPOINT_SYMBOL(kmem_cache_alloc);
- EXPORT_TRACEPOINT_SYMBOL(kfree);
- EXPORT_TRACEPOINT_SYMBOL(kmem_cache_free);
- 
--void kfree_call_rcu_nolock(struct rcu_head *head, void *ptr)
-+void kfree_call_rcu_nolock(struct kfree_rcu_head *head, void *ptr)
- {
- 	struct slab *slab;
- 	struct kmem_cache *s;
-diff --git a/mm/slub.c b/mm/slub.c
-index 19018a979445..853430c7fbe0 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4075,20 +4075,25 @@ static void flush_all(struct kmem_cache *s)
- 
- struct deferred_percpu_work {
- 	struct llist_head objects;
--	struct llist_head objects_by_rcu;
- 	struct llist_head rcu_sheaves;
- 	struct irq_work work;
+ struct test_kfree_rcu_struct {
+-	struct rcu_head rcu;
++	union {
++		struct rcu_head rcu;
++		struct kfree_rcu_head krcu;
++	};
  };
  
- static void deferred_percpu_work_fn(struct irq_work *work);
-+static void deferred_irq_work_fn(struct irq_work *work);
-+static void deferred_work_fn(struct work_struct *w);
+ static void test_kfree_rcu(struct kunit *test)
+@@ -294,10 +297,10 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
+ }
  
- static DEFINE_PER_CPU(struct deferred_percpu_work, deferred_percpu_work) = {
- 	.objects = LLIST_HEAD_INIT(objects),
--	.objects_by_rcu = LLIST_HEAD_INIT(objects_by_rcu),
- 	.rcu_sheaves = LLIST_HEAD_INIT(rcu_sheaves),
- 	.work = IRQ_WORK_INIT(deferred_percpu_work_fn),
- };
+ #if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
+-#define SLUB_KUNIT_TEST_KMALLOC_KFREE_NOLOCK
++#define SLUB_KUNIT_TEST_KMALLOC_NOLOCK_AND_FRIENDS
+ #define NR_ITERATIONS 1000
+ #define NR_OBJECTS 1000
+-static void *objects[NR_OBJECTS];
++static struct test_kfree_rcu_struct *objects[NR_OBJECTS];
  
-+static LLIST_HEAD(deferred_free_by_rcu);
-+static struct workqueue_struct *deferred_wq;
-+static DEFINE_IRQ_WORK(deferred_irq_work, deferred_irq_work_fn);
-+static DECLARE_WORK(deferred_work, deferred_work_fn);
-+
- static void flush_rcu_sheaf(struct work_struct *w)
+ struct test_nolock_context {
+ 	struct kunit *test;
+@@ -336,19 +339,24 @@ static struct perf_event_attr sw_attr = {
+ 
+ static void test_nolock(struct test_nolock_context *ctx)
  {
- 	struct slub_percpu_sheaves *pcs;
-@@ -6394,13 +6399,12 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- static void deferred_percpu_work_fn(struct irq_work *work)
- {
- 	struct deferred_percpu_work *dpw;
--	struct llist_head *objs, *objs_by_rcu, *rcu_sheaves;
-+	struct llist_head *objs, *rcu_sheaves;
- 	struct llist_node *llnode, *pos, *t;
+-	void *objp;
++	struct test_kfree_rcu_struct *objp;
+ 	gfp_t gfp;
++	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
  
- 	dpw = container_of(work, struct deferred_percpu_work, work);
- 	rcu_sheaves = &dpw->rcu_sheaves;
- 	objs = &dpw->objects;
--	objs_by_rcu = &dpw->objects_by_rcu;
+ 	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
+ 	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
+-	objp = kmalloc_nolock(64, gfp, NUMA_NO_NODE);
++	objp = kmalloc_nolock(sizeof(*objp), gfp, NUMA_NO_NODE);
  
- 	llnode = llist_del_all(objs);
- 	llist_for_each_safe(pos, t, llnode) {
-@@ -6431,12 +6435,50 @@ static void deferred_percpu_work_fn(struct irq_work *work)
+ 	if (objp)
+ 		ctx->alloc_ok++;
+ 	else
+ 		ctx->alloc_fail++;
  
- 		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
- 	}
-+}
+-	kfree_nolock(objp);
++	if (can_use_kfree_rcu && (ctx->callback_count % 2))
++		kfree_rcu_nolock(objp, krcu);
++	else
++		kfree_nolock(objp);
 +
-+static void deferred_irq_work_fn(struct irq_work *work)
-+{
-+	if (!deferred_wq)
-+		return;
-+
-+	queue_work(deferred_wq, &deferred_work);
-+}
-+
-+static inline void *object_start_address(void *ptr)
-+{
-+	void *obj;
-+	struct slab *slab = virt_to_slab(ptr);
-+	struct kmem_cache *s = slab->slab_cache;
-+
-+	VM_WARN_ON_ONCE(is_vmalloc_addr(ptr) || !slab);
-+
-+	if (is_kfence_address(ptr)) {
-+		obj = kfence_object_start(ptr);
-+	} else {
-+		unsigned int idx = __obj_to_index(s, slab_address(slab), ptr);
-+
-+		obj = slab_address(slab) + s->size * idx;
-+		obj = fixup_red_left(s, obj);
-+	}
-+
-+	return obj;
-+}
-+
-+static void deferred_work_fn(struct work_struct *w)
-+{
-+	struct llist_node *llnode, *pos, *t;
-+
-+	llnode = llist_del_all(&deferred_free_by_rcu);
-+	if (!llnode)
-+		return;
-+
-+	synchronize_rcu();
- 
--	llnode = llist_del_all(objs_by_rcu);
- 	llist_for_each_safe(pos, t, llnode) {
--		struct rcu_head *head = (struct rcu_head *)pos;
-+		void *obj = object_start_address(pos);
- 
--		call_rcu(head, kvfree_rcu_cb);
-+		kfree(obj);
- 	}
+ 	ctx->callback_count++;
  }
  
-@@ -6453,15 +6495,10 @@ static void defer_free(struct kmem_cache *s, void *head)
- 		irq_work_queue(&dpw->work);
- }
- 
--void defer_kfree_rcu(struct rcu_head *head)
-+void defer_kfree_rcu(struct kfree_rcu_head *head)
- {
--	struct deferred_percpu_work *dpw;
--
--	guard(preempt)();
--
--	dpw = this_cpu_ptr(&deferred_percpu_work);
--	if (llist_add((struct llist_node *)head, &dpw->objects_by_rcu))
--		irq_work_queue(&dpw->work);
-+	if (llist_add((struct llist_node *)head, &deferred_free_by_rcu))
-+		irq_work_queue(&deferred_irq_work);
- }
- 
- void deferred_work_barrier(void)
-@@ -6470,6 +6507,9 @@ void deferred_work_barrier(void)
- 
- 	for_each_possible_cpu(cpu)
- 		irq_work_sync(&per_cpu_ptr(&deferred_percpu_work, cpu)->work);
-+
-+	irq_work_sync(&deferred_irq_work);
-+	flush_work(&deferred_work);
- }
- 
- static __fastpath_inline
-@@ -6731,8 +6771,6 @@ void kvfree_rcu_cb(struct rcu_head *head)
- 	void *obj = head;
- 	struct page *page;
- 	struct slab *slab;
--	struct kmem_cache *s;
--	void *slab_addr;
- 
- 	if (is_vmalloc_addr(obj)) {
- 		obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
-@@ -6752,19 +6790,8 @@ void kvfree_rcu_cb(struct rcu_head *head)
- 		return;
- 	}
- 
--	s = slab->slab_cache;
--	slab_addr = slab_address(slab);
--
--	if (is_kfence_address(obj)) {
--		obj = kfence_object_start(obj);
--	} else {
--		unsigned int idx = __obj_to_index(s, slab_addr, obj);
--
--		obj = slab_addr + s->size * idx;
--		obj = fixup_red_left(s, obj);
--	}
--
--	slab_free(s, slab, obj, _RET_IP_);
-+	obj = object_start_address(obj);
-+	slab_free(slab->slab_cache, slab, obj, _RET_IP_);
- }
- 
- /**
-@@ -8698,6 +8725,11 @@ void __init kmem_cache_init_late(void)
- 	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
- 				  0);
- 	WARN_ON(!flushwq);
-+
-+	deferred_wq = alloc_workqueue("slab_deferred_wq",
-+				      WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-+	WARN_ON(!deferred_wq);
-+	queue_work(deferred_wq, &deferred_work);
- #ifdef CONFIG_SLAB_FREELIST_RANDOM
- 	prandom_init_once(&slab_rnd_state);
+@@ -432,12 +440,13 @@ static bool register_slab_kprobes(struct test_nolock_context *ctx) { return fals
+ static void unregister_slab_kprobes(struct test_nolock_context *ctx) { }
  #endif
+ 
+-static void test_kmalloc_kfree_nolock(struct kunit *test)
++static void test_kmalloc_nolock_and_friends(struct kunit *test)
+ {
+ 	int i, j;
+ 	struct test_nolock_context perf_ctx = { .test = test };
+ 	struct test_nolock_context kprobe_ctx = { .test = test };
+ 	bool alloc_fail = false;
++	bool can_use_kfree_rcu = !IS_BUILTIN(CONFIG_SLUB_KUNIT_TEST);
+ 	bool perf_events_enabled;
+ 	bool slab_kprobes_enabled;
+ 
+@@ -455,7 +464,7 @@ static void test_kmalloc_kfree_nolock(struct kunit *test)
+ 		for (j = 0; j < NR_OBJECTS; j++) {
+ 			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
+ 
+-			objects[j] = kmalloc(64, gfp);
++			objects[j] = kmalloc_obj(*objects[j], gfp);
+ 			if (!objects[j]) {
+ 				j--;
+ 				while (j >= 0)
+@@ -464,8 +473,13 @@ static void test_kmalloc_kfree_nolock(struct kunit *test)
+ 				goto cleanup;
+ 			}
+ 		}
+-		for (j = 0; j < NR_OBJECTS; j++)
+-			kfree(objects[j]);
++
++		for (j = 0; j < NR_OBJECTS; j++) {
++			if (can_use_kfree_rcu && (i % 2))
++				kfree_rcu(objects[j], rcu);
++			else
++				kfree(objects[j]);
++		}
+ 	}
+ 
+ cleanup:
+@@ -504,8 +518,8 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
+ 	KUNIT_CASE(test_leak_destroy),
+ 	KUNIT_CASE(test_krealloc_redzone_zeroing),
+-#ifdef SLUB_KUNIT_TEST_KMALLOC_KFREE_NOLOCK
+-	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
++#ifdef SLUB_KUNIT_TEST_KMALLOC_NOLOCK_AND_FRIENDS
++	KUNIT_CASE_SLOW(test_kmalloc_nolock_and_friends),
+ #endif
+ 	{}
+ };
 
 -- 
 2.53.0
