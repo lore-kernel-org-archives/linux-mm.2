@@ -4,129 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD41CD8CA8
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 02:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60715CD8CA8
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 02:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8554F6B0005; Sun, 14 Jun 2026 22:46:02 -0400 (EDT)
+	id A56656B0005; Sun, 14 Jun 2026 22:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 806026B008A; Sun, 14 Jun 2026 22:46:02 -0400 (EDT)
+	id A07616B008A; Sun, 14 Jun 2026 22:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F46D6B008C; Sun, 14 Jun 2026 22:46:02 -0400 (EDT)
+	id 8F5B56B008C; Sun, 14 Jun 2026 22:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 537366B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 22:46:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D50571208AC
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:46:01 +0000 (UTC)
-X-FDA: 84880607322.23.6E7B148
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EC6F0180008
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:45:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l1QrTWvs;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781491560;
-	b=gP1mtPkIsMkUmWtmEB/jDbgNIkFeIsp+99m1xEKuGkksApDHecrG0j74ywWEQpI1YTIpw/
-	D8gItWAUjfXvkXxfO8X49sODdz3Nn3GNBhGRh+SibMogTqaHcPYNREwpp03GSkqAP7zZtN
-	fYjvORbL8l5yFkVKOusKFwyMEZ1MZ2U=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l1QrTWvs;
-	spf=pass (imf16.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781491560;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6856B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 22:49:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1EFD71660AF
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:49:33 +0000 (UTC)
+X-FDA: 84880616226.09.CEFD59C
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 217A91A0006
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:49:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZTaI3gZ4;
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781491771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8NLHGVjFApYnrN7TuvQPcE5946BfMaA9XvCk6482m8=;
-	b=aYW5X60Bk+NMWywHhNmLkyszogoR6byElifOIcM73d/DpKzNKWqFkl7ur2nRMrRtqwb+Lc
-	lpF0a5mxvqQa3CIoqOGJixDfMr3w2DY1/+K1O1oKZXPRMMvAZogUN5tBR2dv2G9N/AkLoZ
-	B+6Rh/PrYdWweHnC873qMDR7AUARNBk=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-842338c18e0so2025411b3a.1
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 19:45:59 -0700 (PDT)
+	bh=OdNFcwO3pIUwpCvp+zldQiEXMUiRSxo4K+xl6iYkrdw=;
+	b=ZB8xqU6/Nuvkwa77Ktcouz+6W34bwzXZMQ5OQ447TEaZ8OLbj6M7ZJjTowmsYaLGBPWzh/
+	pt7Xu8KKogZ5U0FAhvgUf0P2ZaaYgPmubQnrMNb/FzjvoQUXXIA30h8wdCxKnAYz/AnUt8
+	wMoF+QNUUHxQSPASFuZCufGeG7duTtM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781491771;
+	b=LkzVzVojKs9LTAV9+gOzFeqa16z/TjHXo8HitXmyr96FB5QQmNwnW/q4cjeXEB+9eY+IYT
+	PXvh0Aa7QbJOkKZM3CFDHp/0aedv66pMex/7RwHY4a3KbBK1MlwyT2y22XAMlvi9pGSaVw
+	sGtKczB/nc8rO9Oq1d7YFIAD2JDIb68=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZTaI3gZ4;
+	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490b64c8311so28765355e9.3
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 19:49:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781491769; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OLdEK6olCbPoJYpnXB2EoCnWA0tFNFbfypSa//QVwy9gOiL2f/RQKuk+/zMjuijwQO
+         Q9Ok8Sy5DDQrU1f/YmApDVaPCmBDrieB9GVIdStRtNfwlmjLYXQfh7oDXk7QIaK1NM4n
+         DsblMpE2lm+Cd5xFUTXdp/dRpmqtht3skU3vAt+SxYlsrJ6VaGG7p1JWwi+hq9xwzaRg
+         dwozF3Jn5MmO+CVLSev+YHr4y5ItcD96RnNN0OAJndtqfoLhIducJCXxS5ZHUfvR3n+O
+         DOir27yPz45zWIhKE6B0axre3QynF8eN1kGWhjCnnRXIM2w12vRP5sM1u5W0eFAPEtWD
+         Getw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OdNFcwO3pIUwpCvp+zldQiEXMUiRSxo4K+xl6iYkrdw=;
+        fh=Gq4V1vUEuEHL4PeE8q048qIHbyLxtfyIjLYGzfA05QA=;
+        b=LQXAy8SjOyTBG5+q2Y+tjqWdGANdkHyJWwDOXBBLGe8FU0ch9AgKzZelrQnewEu9Gz
+         Jb4cv5W7A9hLWf1NZE3e9MyW6uKC067EghbZylSfkLPLKp4sYUdb2Wota/XaWa0Q3O3x
+         RDzLp2O8VP9CdrzyYjbcMMsNr+DpM4LHR+r9Q06V5I/c8fDeeXN5ArgBXWn7OCYNzQGn
+         yBD2LBqyLQy8qkIZbhf9GU0jKWyitZKDwgE/a4I7Kc/RxviON3NHR+w9ZuAwOIznVmY+
+         h3BdbEFTlqEvG8cQ/mw7kgO80aNlQrmSdSDB9iK2qcRyJMmSbfMaNPmI8hpIwNVy9ssg
+         WryA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781491559; x=1782096359; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781491769; x=1782096569; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e8NLHGVjFApYnrN7TuvQPcE5946BfMaA9XvCk6482m8=;
-        b=l1QrTWvsmpvR0UMR1RmNE/0rfBLfI2D9CeU+BUKgf93CBwTC9G14jzC5TjcvQs/ptv
-         7Qujhd6jSpqAOTYCN9WB395wSq3sTzS+lRv6z+h01X+jA5TIEcx13tqmACB6co2bTIIf
-         ZQKRfoNhnKNAnQj0bgeMawgeS2oKkeF3fBnDR6LN9NcM8Be5E0eAycHoStt+JZMHfGSh
-         W/IKZcjlvVbmEjgrNk6o9kPwIhz3sXJrx0/+GEKVj6ylnY0UpmXf5xYvNLbiv9+UnMlK
-         RivqrC2fvNDy8GCh3jz3inZJp2G7m7Yu9r+Ty+UsrKkQzCgDWuOz9M/nju/O/Hyqckts
-         fLqQ==
+        bh=OdNFcwO3pIUwpCvp+zldQiEXMUiRSxo4K+xl6iYkrdw=;
+        b=ZTaI3gZ4mQ0oXd9V4bmpykSJSFgoW0i+U8nz7+qESCFZ3biLGQbZ4SU4Gd1dG/AoNR
+         ttAfJu/+sc7bNM8Eyo424RKXYWSbAPW4cy+tZYg8QzfSiafoTzqgy9NXMQXu6JgCrh6J
+         8EQAlWPN6GkTBEX8eNNIuUE+OITLoU7BKXXnZu2KlfRdRvoEpO/ySFVoJvQcz4LguC3b
+         +DiaBiMgw7twVy7yFbN23fKh4EXGDpuNEb35dtmqvgSVO1x5tkCCdhw4Q8iN0Bri81fV
+         9A7B6TJ9kPTuDVuHEU21/r25BBzWeuNoWW0gb+AyBS4LXeeFnQA3HKHzD4vXTnqAn/GF
+         TkHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781491559; x=1782096359;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e8NLHGVjFApYnrN7TuvQPcE5946BfMaA9XvCk6482m8=;
-        b=kJ1WgB1Y69G3cFumlvZ0FXge/BpLtAxTKopFsLJl/cvD2gRKw8FbDfjwA5ZpUsJyU7
-         My3uAYvS1NNddjtJSBJwxYAgYYGLvGnUBvPwlC88ockybMvlciRfaRc+xoBdaVF3zIoR
-         8F2PWdMA0LTXQBCa5cVZWPY7wpxNKSgMhreBTqK11GEs7dQw1O1OfLlPMehqHQRbS8Cx
-         h9z7a4h+9xCWFaMfSp7Z2cy1enQNmojkrPztzUy52AroLeeDfuLa81QS1aibFHA50s47
-         V53BinaZf0qcpGYb2KRicld3KFBiHiv5e9en3ggVGxQae40kekEWtxewjCbqfiAMN6ib
-         AHjA==
-X-Forwarded-Encrypted: i=1; AFNElJ+sM6sxOEwoATAS8P6g7V+xxs+Ua4Zz0HFbgBV/YBVzRmuZ8yfX6XZTsbFQvkAjuOeTzU5wB5J7lA==@kvack.org
-X-Gm-Message-State: AOJu0YyKjeAyAbv9+KMX/l2BSA5276U2HQ2Qahc/K6c4XvoMHaFESuOb
-	cE3EGqLth1QIk2NxTLwGtslj0EsiSwHQtJ4Wd3lY+WMIhU9Oi4FS9nDR
-X-Gm-Gg: Acq92OHkcK6RMECXADUyF2aKJe+JPwb8X7uy6d3V3wMGUH4hCyd00FjMKScGK/zPa3N
-	FCsyvFy0CfhqyEX1CEaFb+B5zw3Bj5OWcSmRe2lThnCYkbVlxficsF/wwK9Sl+yl+REwB63A80D
-	fEvKo5RanmXw/RL5+4zHULHyp5/CZTzbLNFyRCiEcdW4J+hdkwdWVILGE+jSZva+du940+KTffU
-	4xlXI08owFHLHVlCjkSsjf+eoSOlDpvZVQRna4nOcNS37zpvvHOGVNqQskdcX/G9czEPxoIkkmz
-	PEx1WY0Wc4BHVeKFJsAoJmWKRKYYWCAuMiry47Uc1HmfQiz1lCQNCWca4To52p+8T+KswfhhXpB
-	hJSQMwMbh5DyupVZyNyswznzKwebrKFWCzo6/dv99RitQiiaa5IfWgulN2w4jq1i4/GI+4uMdPp
-	mDxbhXD0TXSbjeRlU48JZ5CNcoPSPTrY1rqgfbdvkvnYM8crd+tg==
-X-Received: by 2002:a05:6a00:400b:b0:83a:3135:edbd with SMTP id d2e1a72fcca58-844e1931335mr9663347b3a.7.1781491558659;
-        Sun, 14 Jun 2026 19:45:58 -0700 (PDT)
-Received: from [10.125.192.102] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b05921bsm8343847b3a.59.2026.06.14.19.45.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Jun 2026 19:45:58 -0700 (PDT)
-Message-ID: <128c28a1-71b5-d435-fb1a-9882c23727ca@gmail.com>
-Date: Mon, 15 Jun 2026 10:45:20 +0800
+        d=1e100.net; s=20251104; t=1781491769; x=1782096569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OdNFcwO3pIUwpCvp+zldQiEXMUiRSxo4K+xl6iYkrdw=;
+        b=P7m+Nshdq5ZDBD/H2cvOZyVvvARfglMFiHoa4eQZRsk7MPJYAf5f8kYGnKp8hv454X
+         QIl65DhR1OSNcINhb6brJbtlzJ5ghLkv71yIomu2MemMy38yByyWR8KWsmqz1h2tPMQn
+         GpG7CqOJNm42mBl2nUxMEKYpB4SsMTuh6uVYG2c+kunFEW369rwI/h22vo65cK3K+9bZ
+         tGDWbPSF14mo7HVw/VtfYeFJvkNG1hDfpTslE8F24isJ4N+ZQ7+xQYrUzWOI7AJ9qTai
+         Kpm3Y9csurKOLYyST9PgJ5FVu+lgPNufCSiTlAl45jE/GZQ+vdC4na3MM07y4y5hosz/
+         bbUA==
+X-Forwarded-Encrypted: i=1; AFNElJ9Y+gRbUmKWd3dIjogZ9o/uy0svl7I2k+/nvn6cVuITaQSIxZMSm3kNvHvVvLb9cXAA9mgYOrQEYQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXxrUrys7/4pDtJpxJyOTOPP7IkYqyfX8VD73+mNX9q4kCdvUv
+	rd2e+CYQQctzitvPSMZvQmCt3M9sKuy99PdLoyosLTE058+HDQzk8v6dIy5ZyVTRW8/YD10fyW8
+	L5IuFTQGxCuBkaU98kStOyTUW8o3occ8=
+X-Gm-Gg: Acq92OE7VANumEMKwRDq70m1wXZJ81PtLcYqzGmV6ZOchc+EXkfp/eakCvEJajwHsTy
+	Xv9Td7GaXHq6OBBtS/+p/3P0mBmI+dvqZERgnjjk5fTGYFlyJftV2oVJ/MJvYbM+WBUYwO/GcFU
+	onztcMNPN29e/mLUMF5rDWnqJE4Am9lEVvRTBhiZSf6a4lki7zhBTDXHSRUrcpPhXvpaceHIdCo
+	Q35sD4BkrYrTcqfHWBaAcTZaXm1e0vpap/TX90Ukl/0rz0KXbCb28ytoefn5QB3to5A932H89bp
+	8uI5BMDZBNotqn4w9VWmljhTMeA8ezGAahHP7Q==
+X-Received: by 2002:a05:600c:4595:b0:490:c7dd:7cc2 with SMTP id
+ 5b1f17b1804b1-490ec4fbaa9mr164234075e9.24.1781491769572; Sun, 14 Jun 2026
+ 19:49:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-From: Hao Jia <jiahao.kernel@gmail.com>
-Subject: Re: [PATCH v3 1/4] mm/zswap: Make shrink_worker writeback cursor
- per-memcg
-To: Yosry Ahmed <yosry@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, tj@kernel.org,
- hannes@cmpxchg.org, mhocko@kernel.org, mkoutny@suse.com,
- chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <9898f83d-fae9-e284-6b85-c7f4089840a0@gmail.com>
- <CAO9r8zPBH6-0SQ6-_ZOhTQeyu=rz4F=ugikCrU-JR_skm6fEWA@mail.gmail.com>
- <a60eedb6-f3fd-4092-b726-04a17a695ace@gmail.com>
- <CAKEwX=MQ3xXBAY-2H8vA+XSX5GHNBubJ2GCYAXGD+Hra++ZM7A@mail.gmail.com>
- <90730fa7-62e7-d5f4-b638-23b22a8509f2@gmail.com>
- <CAKEwX=PF9hfERC_QMq+rjkSc-BsJyawMgTe+EhwR_86HiQKm=Q@mail.gmail.com>
- <CAO9r8zN6VVZz7dpjNrh8n7wbLkqcrsROPm70MQQxO49HJSmMFw@mail.gmail.com>
- <CAKEwX=MCFbsh9ndBtR0-bGRr_=v-6bBwTo=muzd9ZSD-LAK1nQ@mail.gmail.com>
- <1c25650e-bf98-2863-d505-9b94c385668b@gmail.com>
- <airypNnKrJJ54k_0@google.com> <aiw2JB1lZV9xuNSp@linux.dev>
- <CAO9r8zM=CMtUfV0RX3YyztqMNcw=s8M3WX6Q0epR5YHUvwTTKw@mail.gmail.com>
-In-Reply-To: <CAO9r8zM=CMtUfV0RX3YyztqMNcw=s8M3WX6Q0epR5YHUvwTTKw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EC6F0180008
+References: <20260609113520.3507783-1-haowenchao22@gmail.com>
+ <20260609113520.3507783-2-haowenchao22@gmail.com> <CAKEwX=NoNXqk6koBYMSjaQaiMfq-dRaBxuFpYdrZyByxs1g0xw@mail.gmail.com>
+ <CAOptpSOHcbOrukxx_u73jhNyHcFNAg+BYKNqWxDcHqTM+k55_g@mail.gmail.com>
+ <CAGsJ_4w+3RYwGqmNvrF9ragiFNW+_mHfooQ5pOwGDLTzLUNomQ@mail.gmail.com>
+ <CAOptpSPseFH14dyyVQrvfLxqjSXFUyhoVg3GXsQh=7qktJ85Nw@mail.gmail.com>
+ <CAKEwX=MjWMTV3KLUDtfmGDM7LiRXNO5au85==SwFqpSBAQ6Wzg@mail.gmail.com> <CAOptpSOHNA-wSqfCsB2-RhM6AzJpn4bzDf4dXPcQrSO9g1tx6Q@mail.gmail.com>
+In-Reply-To: <CAOptpSOHNA-wSqfCsB2-RhM6AzJpn4bzDf4dXPcQrSO9g1tx6Q@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Sun, 14 Jun 2026 22:49:18 -0400
+X-Gm-Features: AVVi8CffijpEIs1Mji5uyaNR0BSLbM3RBdOWORtkxJpolItiF_Cn2oxkZTBBC08
+Message-ID: <CAKEwX=NmEVMoDcEbKCja6+FGpjd6k6MDpAzqaJSYFZ61we=Z2Q@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] mm/zsmalloc: encode class index in obj value for
+ lockless class lookup
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 217A91A0006
 X-Rspam-User: 
-X-Stat-Signature: 6188e1y374oajop1fhbgkxco8q3yf9mk
-X-HE-Tag: 1781491559-212270
-X-HE-Meta: U2FsdGVkX18Hhpm0sRkH4/qNJTw8DU8Y92JwF8rdmj4yjDbjsO4rUWCaGmEgshX8bb8h1pXrlKb7Odl/l6vfPwOo7+9zP9j9vDAF7J+03YVLNLrW/bR/SfG36BhA4VqiSGSE45Zqatee3AF3RvbFOjZtK4vvoJqN18BLAVFzLYhR1fBLVxZq8YLefrn09CivyRfe9WaTEeEV5iY4iXUa6Xc2e2vBPu/DOnabEdl/cL5Q6Dlxx/0iWpNWDYZYUbL7NY3X9+Bx+NgcnLOiy3ei3DO2z00g6Dnv/MgG7aaRvQbRMNFm713NCIjF7QuWXYrdE7//Dv6zFt8fxixb1eIaoXkSOTSxn9iryLQUE7U5LjNTn52pgaYflX4E4hGa43eJDZJvRyRilin5Cdk/O+ZPU3pOgPXV+FtO+qfGjUrzHVJFxXPBqldoh2vrSvZMd+NXINBkll4uce4z65U8twRfmf9A8RUFxGjPFgcBMfqYRz92yGC0ka4h1FD/b6QfTakmHkpFa45yfSdxsRVNVzMOKRApDJ9oiqQNlneVW6wAIwwGwICnElnGdgOOXkbeOAozhFDF3dyeAjXIMtmKHxrAjOLGjg9LmelRtXTxGPhJ1iDFswpnpzKKEXa/C9kUCCgIS9cbB3eRLuQ0q/33vxzZTMUX5yNBRD3mL2aA4opyxSgDXW0+2ZjE/VV6V5SxTKBMYl3EspCC6XfgT1bpZz3f3jQJM/ZkjVfh5BQCR8U/6mTv7ul3YH6GgpkY4qiTBDphaEkhWkkp0LdboshsQVmc9Mgz4euKSQSaMNtRRaX+wSyrkHxtGwsJhbaDpJZYmXS7ShgMBgrG6HYG1LBhf8OarmnBCuo4cektruHbxgvhs+wj2nJVnTQWVHKxpJKRDWE0QpbXe2y2ag+i/NcIk4iYuaZQoFQKoIMRiTjJz/36+prNSfVHUcPKozvI9jhYOS8sPUXy4EVphaEZjxqxL57
- IoFOHlXz
- /jMqCc8wpCs0vODes2RNGFq3rS21uuvlUfCy2uZiYrccYlhpGWlDwSYGOc3PIJbeqxL8l+IzMqCGZOoVGDVFN7KBOYkGe8ZyHPCxFDS30GD/RWCs2t0JqKEb9EvawoU9ViL7trJfjYMYhXepaU+Kpux+uJz2rXkHriuAIw8JmMm2cVKcNd807wTWYr7PGUuYe3JWwap1tIhjN95x9yihLq4OY+VmP88BBhU2iskWknk6zy/wj6SibHbvyFgT4hds4ADTmmycYdxO6RWU9xaAzYv5/E9igA0BPn78kVI0YGc15tNnSnd2Z/Ew4g8CTwjkfyc++1N8DuxGX22boZpqyE2wVyQlfO6igIj0ovnOoQvq8TVVZ4ef1I/JtQ9j91cKZSLveD7tu9nxELWDpj9pbSBhVgaB9FZudQgdRxsA5nngWfdsUB+vPPxZFPPxGoHVVuOAob+MsSkzwORMHrWrDLMvGCASAEQS3USeM/FsuflYPZZHaasoiSgJv+SrIjfhc1fuWxgSGqmWrm2gUbYjCIkfjcVuXTqc/BtfmfhCMiZWWzV7QgNIjs0EDsbwVlwgeU2fs
+X-Stat-Signature: 13bm8syiussgmrknt8r35npjjsky9mdb
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781491770-518908
+X-HE-Meta: U2FsdGVkX1/s9bYkTXGYvn/QvONTxZ9Exl37kZVX3zCMweXn6gDeklu1GdOoXd4gvSwOhVrkoNNH4sQBdl/AJ388Gxwae5r3Agp568MS4imT98gJ/Iy//VlvgHnEHAJEbJnMDV1B1RP6LpDOfI1CsdeN4T19cDRwUgIot9tmkPvvgWXB3IIS9zjOTpsw+50Kwuut1ByyZ2Wf7pgvU9DCPOErkS0e+7SmbEKpvmoqqjjTONXKQEzBNgboiPMP5Z9jvFoNkOLdrO70OyQ7XlIyrLeUwWWwROMb/h1zh1JQMSSKJUKqOh+nIpWRliq0JoRn7RCGo82e0Nv8LatvhcJKIH/j3RCysq34CHXpdN7WJ5VGkRRU8vb3lY+6nw+luijY1KfHXGwT0UJyUeuw7CY+1/h+sIq97XKCF5jql8t5opAmLg6UwANxUDQqIH1UFjVppucKgFRMqvlCDrCNw6vyte1kOVoddW9YGbB5DYDgdnePefEbnl4lE/pdcconE2B+Uyoj33GgG59jTkI9hQFFw41u++SW6DNtB0ONB6TwLG6kdnwCnZCCSpa8oPkXRESevaIcGRngXjziWxEIiW3y9WTUlLqehO6wDIfcyH0i5Iq2Acsyohr1q0uqLXXQmZEtZEy44JEkWZNkiShjTv4HzqAi/OG5RYiB3ejFCEVTeuWzx3Z8RJcjDT7HjIc8Qwulbj8aY+HNHG2fupFx4S++MGAfGki6++V5bVbfPVwusyIqLJAGaElEq0+1e7cjhh3deCDdLF9+TSOS0saXcoeSKa0FjI0CF04N7CDH2Ve6QaMXPtGH6zSKAaqXI9KQn7l5nLAHgqwWtw/5ARFGJMcZc75gMPmNplJOM40og7Jw4aKvjf7xxWSNQ85KL4fUIXrICpwG/EYhS9W9zqV9jJTizGlXPnhXAtM7n6E3JD7yeX8GOEZ4dYE4aZX4M8PuqndUJjuSJcspgq9uRsRjh46
+ a8nak7xZ
+ PT2UXESjIGqHMYfXNB5eXncXvK2LBUL3TbBOqZyZBMnvwvOIQQy9TeBjdeOy+wDMoM9ViCp4cmfi3ZARY7BvLbQ2PHO1yll+QcacqIbaVFz98+V6oQdpWezmHRb5A0nJFtR417sPsdbTBl0Ut39484uRpDVL5YhWgn8SkW9IMoJBYkjeiXKdQRHRvHdDyDN3TqHm7MNETXLKhzWHEsUJNLRV3oTBDPYVFax0rpigxsBBD1p4XmEMAjrIESHAacctX1k3poWDTAE10f7wCAnPlcUQfGzs+kOCJks+Et5anE3gDY4eMrAr3yZq+ov8yOqxpfsY04w1I9BIQ7mlH/gQCwoJTtTRRefF1mg9gDVoa7QgMCNeROscYHjGQY1g/fbEj4CnFUoAMn5FlWH6wx6CHbP0Wx/xkLXbywEKYJI1bXFKfqilCKbAm90iiGyFlt0SQXxXCJ1XUY896BVHFXI0+JwzoJWudWccS0SreJEbUIsg0Tc/dV6dMxHXIZqqv2RwvR764GH3NCaJhVTM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,73 +146,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jun 11, 2026 at 10:00=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.co=
+m> wrote:
+>
+>
+> Thanks!  Since the rest of 1/4 is unchanged from v4 apart from the
+> rename, would you be open to re-applying your Reviewed-by on the
+> next spin?
 
-
-On 2026/6/13 02:15, Yosry Ahmed wrote:
-> On Fri, Jun 12, 2026 at 9:40 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
->>
->> On Thu, Jun 11, 2026 at 05:39:16PM +0000, Yosry Ahmed wrote:
->>> On Tue, Jun 09, 2026 at 11:18:26AM +0800, Hao Jia wrote:
->>>>
->>>>
->>>> On 2026/6/9 02:01, Nhat Pham wrote:
->>>>> On Mon, Jun 8, 2026 at 9:48 AM Yosry Ahmed <yosry@kernel.org> wrote:
->>>>>>
->>>>>>> But OTOH, this does seem like a recipe for inefficient reclaim. We
->>>>>>> might exhaust hotter memory of a cgroup while sparing colder memory of
->>>>>>> another cgroup... But maybe if they're all cold anyway, then who
->>>>>>> cares, and eventually you'll get to the cold stuff of other child?
->>>>>>
->>>>>> Forgot to respond to this part, the unfairness is limited to the batch
->>>>>> size per-invocation, so it should be fine as long as you don't divide
->>>>>> the amount over 100 iterations for some reason. Also yes, all memory
->>>>>> in zswap is cold, the relative coldness is not that important (e.g.
->>>>>> compared to relative coldness during reclaim).
->>>>>
->>>>> Ok then yeah, I think we should shelve per-memcg cursor for the next
->>>>> version. Down the line, if we have more data that unfairness is an
->>>>> issue, we can always fix it. One step at a time :)
->>>>
->>>> Thanks a lot to Yosry, Nhat, and Shakeel for the great suggestions!
->>>>
->>>> Let me summarize what I plan to do in the next version to make sure we are
->>>> on the same page:
->>>>
->>>>   - Drop the per-memcg cursor and keep the root cgroup cursor
->>>> (zswap_next_shrink) logic intact.
->>>>   - Stick to using the zswap_writeback_only key, and change the proactive
->>>> writeback size to use the compressed size.
->>>>   - Consolidate and reuse the logic between shrink_worker() and
->>>> shrink_memcg(). Enable batch writeback in the shrink_worker() path, while
->>>> keeping the writeback behavior in the zswap_store() path unchanged.
->>>>
->>>> Please let me know if I missed or misunderstood anything. Thanks again for
->>>> clearing things up!
->>>
->>> Sorry for the late response, yes I think this makes sense. However, I
->>> have some comment about how this interacts with swap tiering, let me
->>> reply to the other thread.
->>>
->>
->> I think the swap tiers interaction will be figured out over next cycle. However
->> Hao can/should continue to push and we may decide to let it in orthogonal to
->> swap tiers.
-> 
-> Yeah I think there are a lot of changes we discussed outside of the
-> memcg interface, so maybe keep the interface as-is for now, work on a
-> new version with the other changes, and we can finalize the interface
-> at the end?
-
-Okay, I will split the non-memcg interface parts into a few separate 
-patches. These will serve as the preparation work for proactive 
-writeback and enable batch writeback in the shrink_worker() path.
-
-However, I will still send the complete patchset using the 
-zswap_writeback_only key approach in the next version. This should make 
-it easier to review whether the preparation logic is reasonable, and to 
-decide whether it should eventually be merged independently of the swap 
-tiers.
-
-Thanks,
-Hao
+Yeah feel free to keep my review tag.
 
