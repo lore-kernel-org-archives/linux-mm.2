@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD620CD98DE
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 08:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EFEBCD98C5
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 09:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06DF76B0005; Mon, 15 Jun 2026 04:52:58 -0400 (EDT)
+	id C62886B0005; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F556B008A; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
+	id C12DD6B008A; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4FFD6B008C; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
+	id B02B56B008C; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D4EA16B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90516A0953
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:52:57 +0000 (UTC)
-X-FDA: 84881531994.18.8C5DF74
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF096B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B89E1661B0
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:02:09 +0000 (UTC)
+X-FDA: 84881555178.22.1E51504
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B9A30180008
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:52:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewQFWwyg;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781513575;
-	b=N3oXRKn+wScAAky2PlfeRZPbP5ZeiZFQsKr8+mPweUjJJBYbU+KgDSr2RA5bNP2FmWgZkP
-	l/46tYMuhW07Wu5O4U4ISdzOfGedxcs8LJYh5YoteND5PYw7MvyS4A6M5iYU5MxVUld0dI
-	IN75DFoT6T/bXxNATK6zbu88ve+Bdns=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewQFWwyg;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7BF251C0015
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:02:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bpOCPu9c;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781513575;
+	s=arc-20220608; t=1781514127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r0nmh4n8OK2kmhJCZ0gvPcKvVFFqmHfVbiE1li979bk=;
-	b=bDPgYmjq+I4XKZHQdvCYsdICRlNjVWGn2P6G1NxH6yvL0Ld9cDg3Mkk574gS6gyHjz0joS
-	xOtZkC5ft3u3JVAM3X/7rWj7HHpjswrJpqRmp017qcCTqOtOP8IeNJkOUsHqGIvyv/sJn2
-	7Jz01u+6GuS+rASSGnoKTHe/ysqXoHs=
+	bh=zejvIfX8d2dRdR2mAJ04OI+CXDIR6kMQOBHLrkrQTuY=;
+	b=Xf1bYPHORKxW/ODOIyhG/3wyWnFOBU1sQlsQik66Ck1/FJEptwt4i6zNatzqOEGCoD1veG
+	F6wW47n1OxlUedS5pyv3Uwdd2nmoWbbcQy9T2cUUL7DhLbNT0i+Bo3QuBZU2MKnp3aCKa0
+	yl8DCzn4XFyTpI8yQ7+wiGLbdUAir0g=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781514127;
+	b=65XJC6zNy2IJLmh6V/vyEW/H+VUs1vqmvPHGMn0s1ftKJUuohrYNVqRKiYqeQvf1OqeOpx
+	8mZEPWOyu7+np7DX9UT93rrfhnMkYIBgPWskXGtD+7att834Er7H/l+2y9a8XqTx1OQTLr
+	lv2PLA0JMwgc06b8MBtRi8/iCHUTfak=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bpOCPu9c;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DBD6344255;
-	Mon, 15 Jun 2026 08:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ED61F000E9;
-	Mon, 15 Jun 2026 08:52:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3C34402F8;
+	Mon, 15 Jun 2026 09:02:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E71F000E9;
+	Mon, 15 Jun 2026 09:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781513574;
-	bh=r0nmh4n8OK2kmhJCZ0gvPcKvVFFqmHfVbiE1li979bk=;
+	s=k20260515; t=1781514126;
+	bh=zejvIfX8d2dRdR2mAJ04OI+CXDIR6kMQOBHLrkrQTuY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ewQFWwygD+69bmRiisV0lUdrbdqTMDJF5t9OWjDl1tRpbBeUrUmkHa60LypyOvYF2
-	 hzvirLnXweCCqO5jHf2welYVGNntxwNNJRuJ+GrufjNY06LsXQ9+DKRgbPPXq+y0zL
-	 WUKiqTtCEVwZafLR4jmWA4TNcQCMqIyhsWLTopNEZOb7pzpIh0Lxcgdf8whvcu6GLA
-	 qy+Gid7McKKg4ztXJgO7sw6l5wahjcCiRbFloEhHDglDhPUdHOL4jimfmDEuC+KEIt
-	 A9lhM7FHSG7CexjXtIppyPaMw7IWGVhSAh3xV2SIDyqIRO2WVlIe3U0qM3rTislIBE
-	 eOwjFpmKgzPfQ==
-Message-ID: <e4496401-6529-4f64-ab5c-84f737cb6798@kernel.org>
-Date: Mon, 15 Jun 2026 10:52:50 +0200
+	b=bpOCPu9cAnQ49Uo92ymBgaDMsNNkCNFKwGJhICCG+otI4FMV/1oOM9BbFmEiw5Em4
+	 C8wyRuso85zHacKQClkoVbhC99Qsbm8cmYaHrJ49uXB1J/tYEK+rCvNXsvrecquD7J
+	 kVgQwxtFU+5aDWA/ytr87bu917cKElEi7bbwLi+D91RJgEQO4cmrM9yOVBM4Hfxx9P
+	 SG93yjMZJnEoUuUMlo4c6fyG1UZFJuLRJfx5bN00r2+sriy+T6V/7PrtSWCk7LGuwk
+	 KXVr9X83dNSbMhpQ+2NqtyD41/ZR7kSIQyPYaVUtRUYg9VfALr3666VqLlO3RG9MTk
+	 pVT8qdIw+QhdQ==
+Message-ID: <f927f1b4-3f60-471e-b42b-8d098c1ce5dd@kernel.org>
+Date: Mon, 15 Jun 2026 11:02:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
- allocation
+Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
+ SLAB_ALLOC_TRYLOCK
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
  Alexei Starovoitov <ast@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev <kasan-dev@googlegroups.com>,
+ linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
+ "open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
- <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
- <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
- <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
- <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
- <4cf98483-ae35-4ad0-8f77-5a46194eb65f@kernel.org>
- <CAJuCfpH8g9mNGV_ke-mhVZ=J9J05PZg-ozPTA=5WQrm_eViVpA@mail.gmail.com>
+ <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
+ <aiuBoDbQc0N-l7e-@fedora>
+ <CAJuCfpGSHfNUvL9AzbftSg=uGRW4cJLbO6iB15keyN6A_eSWEw@mail.gmail.com>
+ <CAADnVQJPETYAOd9R9Bg2JuuF1q7grg8VtEnvdvr0fDFhxb9O6A@mail.gmail.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -131,17 +129,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <CAJuCfpH8g9mNGV_ke-mhVZ=J9J05PZg-ozPTA=5WQrm_eViVpA@mail.gmail.com>
+In-Reply-To: <CAADnVQJPETYAOd9R9Bg2JuuF1q7grg8VtEnvdvr0fDFhxb9O6A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B9A30180008
-X-Stat-Signature: se4wxrzjg38u6a3skisrhkrh43p79eow
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781513575-52223
-X-HE-Meta: U2FsdGVkX19XaJQTVEtD+ciwqkFxprVmdSOYmay0rR8ctHZqBumIlicxEZoJYGN1DNqWqajs/esbZOwJQciZgLyOkkb3gRS03x0xHWZS0IPTYQVRSNyVWgEmHY58cEtGMRwHVANaqcO1KPecIWT3yAUtESREm0sbglDDp0uNod7pJT/ObX+K6AYIyMuSJ0CMXsOlZ4lwVeEwjgu919Mkeh0BUpLsWkptWosrFlVRBgAqVC8zCpDHXt/kIcRR55BPFZkZPwWC/mcqH60xJYEjDroeTRK5gKeRUNMisUfH1X5aFDJGITWYWtWrO6Jafir1KSavkQxtsCmKZ/ioKenP18dXpa25ZkC5qX2RHqQMKt5gZJLYPa4Rrm995ZupjPa/+bPjj02FDuKp42EqytApVzKzq/VgpjbhT5vXU0ZFJk8t6+00cdtp+kxN7vUIPuBC/2qIoKLWhGGGfrHc8yxREizlXdoRz+PoBivPHzkBUSc2Svm7LU+CJA8grshIpeQWTOa8xGEFFNtng8qmC7LKUDV0W3Dudd+vZV1LxGOgkLut/qQpF58SlVqn8ZSCZgLn/Fg6QFd+hCPZ1O1/OQIm2P6iMGVffll3a07MUBcyyJBDo0n/uQyxVTnQRh/4S4lqhZQNfq1e+bW5l6Nc0RwHNRRER7sQbXpqkJ5+2lAS/8yCS2ep71+kmiHQNlFG1SWPKSadZSxFzUUCwfYALifNhgZ3PQmQhCjteBZvexlSZ/FIwNgeFZ2y0FYew3vPsWJGb1/GxPQucLyULWAo+IEUgs+xeqiQ60T8GPgNBGIGqD6acN5tVGP8fkCe4XCTapt+KAyd8M18F6sWeBVo/zkRqfzUJ1GrHo1GDmQ6mNvQ01WAZzC6iYnVFipVaQOLRXs0UjhGZZCR7xX3GzICFkPFVzQINcWcqt/6HYL/jGKfoawqI86A5PKzFOIfvYDC8U8C/BXarcBcntu4Z6td14G
- Rsu9sPQt
- ncstSU7XqKYmy7GN3lPTEhaJy0+ECuKgAmd4DFPsfNxuCxGjiI2yf5gwaTXvOGjgJCZhGcNTbUrSKLSTRUtXImz5H/FTZoThr8nQLbcbzu7JcaemI5TczQ/rDNgGSYBrNM3qcXE/TeFCZJhODgv21p15xJbitWT0VFwnM2OZAqRfqd8VptC4nqggqPv7OwSh6GSyI55gckBipbCEP+NGKG9LJl/s1yN6OerMTMf4OVQ4qiclU5NfdIMDXkHfQKl8eJ4b5qj84s8GaoNo6XJU6kBXZ5sV/+u4QSXEghQYllxz1PLKGpY/E/O8czJVwoMzGQILucKDLpf1fl4IOMNJv8t65zklqSrlByAZzjlpvaQiqCjA=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7BF251C0015
+X-Stat-Signature: ge4pq1nhjurr35fs6fiysyoewrgu14mx
+X-HE-Tag: 1781514127-715007
+X-HE-Meta: U2FsdGVkX1+V5ijN+fjU1T7CMPE9bdPRquVyB3PYDXOKDv3iFd3ndoC3Q+o1h4z6wA37WR2YQJmXnKMAYY4gxu70+fPrfttgeHZ8czqvcCbhWDJ3QymokcmhfQ/ywhx/9nySAP8GRrVAR1ECgviqd7blzn5SjqqePsBPVCmQkJARk/0+4mN1X0VvFed55FY4kekiz8FozvKevk2rWEk5b7pKrrXYAIUyh42FlsTfxa6ajjPrJXQFKb/Zg5cJs9LTANDQ5zQ4nEtD9owtheBGynRjhjdpEkPJswJYUke7zXwpmyob4s/zCxYqYsNsLhP3zBVNbEzX0dmHjM7kVKA384l5i6fDGnOplzuKZ0/fBw7k/DDFJEtMDIsnLJOPAb+inEWAfqjfMTYNNqd+PEHv+sFp+xT9ew+jtyKKXTSDcJ7Uk+M8KlBvPrte2nbHmLpj5bMkD2qnEviCK1NETG/WtRQO3CDjCvNcvXV9huahHXUB96pjmOkZLRrim7sizk3iproDBkLA22s2Vav6NNEe2O7bG4axzv1gdNYSTZNlx1YmNRJZgjmtt3XtsK5bHxO1269Trv+jLTjkE5Bh4aDuSw0W8lZGLRWJJlYn5lpzNOebWFc4KKksyEJz8N8WUxB2qPkzbO9fmhUNSEfwLgkqJdVtThbO0TTENUfiDpFOmX/p4ebPl5RNCzikYT99x02apZHPKr/iV2+6oCgeav598jEGALruWGixpFsvKzM9EzDSVl7Vj/vU0yrhtWqHzdDgIobpcK+IHvBx8/5nyDDq7lTa4ifW6hAqPaxAH17w4DafbIHwwJ8glPESplLmU1nCCkwLu14VIxwtxbd5oJeP1qkgwLXp7ttZ2OXuCpxOR0sBy3O+GeFp09LGv6IGgqxUNxjwe9okscDXpxWRlxksTNoMlI6bWC7kZPnDEfD2fynID0DujANVMOpohWuK5bEiPgWe6fRqird4m3Q3SWa
+ F4ez2zTd
+ gE8NZBuWStfdX8v6hq3/O5zdI6FfnUsolx1L8h/Zu0ciBQlzvRiKxSlcl1mcZg1LW4QVmVYK2vOC2IkWNXIjBzgC3CggFD5HGWZFwo+KaHvZy22x3mAPa8BputwZxVYMahaVs65yrGyrYW4+IIdJqLl9z0wYRFz8AXQxPjYKr7IQKLu0c0IjrqZXM9/YJ+XjW0XfEtJa5+p4m/m/5dhJN9e3jP14p5twUNEA+knApfkcyWEfu5qfk5nAjJlTpGGgQlnJkM7x5BYfHhZC99/4UU5SZf67bk3cw/ClGuaYaoYxVMGiNH0QyFIGrsMocp9t4mxwV5W8+RjO8FrBPq8x4pUsVLnPQQthSXgEJQwTf6RU2Ht97HtvBnZK+a5GJaEf+fkaVsBD23eZdvgh2yQCxtLvRG52TYqSIfghnDDmOJM9TpPiTWgkrBHBbHKxcKd5cPnO1qRGjY+IIm4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,34 +147,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/15/26 03:28, Suren Baghdasaryan wrote:
-> On Thu, Jun 11, 2026 at 9:37 AM Vlastimil Babka (SUSE)
-> <vbabka@kernel.org> wrote:
+On 6/15/26 04:16, Alexei Starovoitov wrote:
+> On Sun, Jun 14, 2026 at 7:01 PM Suren Baghdasaryan <surenb@google.com> wrote:
 >>
->> On 6/11/26 17:11, Harry Yoo wrote:
+>> On Thu, Jun 11, 2026 at 8:50 PM Hao Li <hao.li@linux.dev> wrote:
 >> >
->> >> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
->> >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
->> >> Date: Wed, 10 Jun 2026 17:40:04 +0200
->> >> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
->> >>
->> >> When init (zeroing) on allocation is requested, for kmalloc() we
->> >> generally have to zero the full object size even if a smaller size is
->> >> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
->> >>
->> >> When we end up allocating a kfence object, kfence perfoms the zeroing on
+>> > On Wed, Jun 10, 2026 at 05:40:07PM +0200, Vlastimil Babka (SUSE) wrote:
+>> > > Similarly to the page allocators, introduce slab-allocator specific
+>> > > alloc flags that internally control allocation behavior in addition to
+>> > > gfp_flags, without occupying the limited gfp flags space.
+>> > >
+>> > > Introduce the first flag SLAB_ALLOC_TRYLOCK that behaves similarly to
+>> > > page allocator's ALLOC_TRYLOCK and will be used to reimplement
+>> > > kmalloc_nolock()'s "!allow_spin" behavior. That currently relies on
+>> > > gfpflags_allow_spinning() and thus the lack of both __GFP_RECLAIM flags,
+>> > > importantly __GFP_KSWAPD_RECLAIM. This can give false-positive results
+>> > > e.g. in early boot with a restricted gfp_allowed_mask.
+>> > >
+>> > > Also introduce alloc_flags_allow_spinning() to replace the usage of
+>> > > gfpflags_allow_spinning().
+>> > >
+>> > > Start using alloc_flags and the new check first in alloc_from_pcs() and
+>> > > __pcs_replace_empty_main(). This means some slab allocations that were
+>> > > falsely treated as kmalloc_nolock() due to their gfp flags will now have
+>> > > higher chances of succeed, and this will further increase with followup
+>>
+>> nit: I think it should be either "higher chances of succeess" or
+>> "higher chances to succeed".
+
+success it is
+
+>>
+>> > > changes.
+>> > >
+>> > > Remove a WARN_ON_ONCE() from refill_objects() as it's now legitimate to
+>> > > reach it from a slab allocation that's not _nolock() and yet lacks
+>> > > __GFP_KSWAPD_RECLAIM for other reasons.
+>> > >
+>> > > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> > > ---
 >> >
->> > nit: perfoms -> performs
+>> > Reviewed-by: Hao Li <hao.li@linux.dev>
 >>
->> Fixed.
+>> I would call SLAB_ALLOC_TRYLOCK something like SLAB_ALLOC_NOSPIN or
+>> SLAB_ALLOC_NOLOCK but naming is hard and I don't claim myself to be
+>> good at it. So, feel free to adopt my suggestion if you like it or
+>> ignore it otherwise.
 >>
->> >> its own because has its own redzone beyond the requested size. Thus
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > 
-> nit: s/because has/because it has
+> Just noticed "trylock" in the #define SLAB_ALLOC_TRYLOCK
+> 
+> Please call it SLAB_ALLOC_NOLOCK.
+> 
+> Initial api was using 'trylock' name and it was a mistake,
+> since people assumed normal spin_trylock() like semantics.
+> "trylock" implies that it fails under contention
+> and retry is a normal next step. It's not the case.
+> No one should be retrying. That's why the final api was kmalloc_nolock().
+> So please keep this important distinction in the name.
+> SLAB_ALLOC_NOLOCK should mean that spinning locks
+> should not be taken. It should not mean "just go to trylock everywhere".
 
-Fixed.
+Eh, ok then, will change to SLAB_ALLOC_NOLOCK. Even though it's mostly internal.
 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+So next thing we change page allocator's ALLOC_TRYLOCK to ALLOC_NOLOCK too?
 
-Thanks!
 
