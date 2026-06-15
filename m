@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25DEFCD98C5
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 06:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA5BFCD98D6
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 07:28:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5117E6B0092; Mon, 15 Jun 2026 02:51:25 -0400 (EDT)
+	id C25A36B0005; Mon, 15 Jun 2026 03:28:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1F46B0093; Mon, 15 Jun 2026 02:51:25 -0400 (EDT)
+	id BFD1B6B008A; Mon, 15 Jun 2026 03:28:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8076B0095; Mon, 15 Jun 2026 02:51:25 -0400 (EDT)
+	id B13AB6B008C; Mon, 15 Jun 2026 03:28:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C2376B0092
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:51:25 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B871CC3325
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:51:24 +0000 (UTC)
-X-FDA: 84881225688.07.20BCD20
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6416810000C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:51:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U6lYtNM4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A504D6B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 03:28:48 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E4794094D
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:28:48 +0000 (UTC)
+X-FDA: 84881319936.26.67AA22F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4AF2C40006
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:28:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q/CaMD2J";
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781508526;
+	b=6dHCZxkvHWcQmc30XguJUcEX1zbEzzhqRjkR0GQNbgNRpWQZKWJpRFzKuFn5IQmDcX5oM1
+	o71KP6dxZ+Wo7dNuOoZTI9WgTE89eWQyNt5C5yqlG5CXhzHxUc0N0kQGJp0UMrZ5TTVJsl
+	IDclrhICM6sdbnq6ab2sVlWe021Q4aI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Q/CaMD2J";
+	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781506282;
+	s=arc-20220608; t=1781508526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hrkz43e0CktTxobQYWEmQydCF6benCwIbJSIRVKApEE=;
-	b=mERVp2VQkTFQ385O/wKsCdv6V2sZBs/RAD/eYNJjhA1E6iSCrPqJeGlX1LIXdINzhGgmhZ
-	ppOMbsxK6Z07UtoDA2wXkpbLDVHLjDi1Z2nEtu161UuioPeW10ItYrKimU59JY7bZnderm
-	3ShVln+Io3E+yvRNFR6+NyS6QaXlv7s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=U6lYtNM4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781506282;
-	b=jmFiFvVn/Ki+pETn8eiQACDxGUpCiRuvao4wqvk+OWU/FKoyDy9RzztxJpvVw59VsLFh8e
-	YLOZNFIbw+PKARqzFqXtByi7oeRirxWCRoK42Dp4HN0dRWZ4H/3WLyoXtN8cwtcwYidR0D
-	mK7huq+a2m2RrWcjQAPnzGzrKtNdLBQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781506277; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=hrkz43e0CktTxobQYWEmQydCF6benCwIbJSIRVKApEE=;
-	b=U6lYtNM4VHS82osL29XiVYCc0oxmVAruMefgCJnAnERFVTsDkRF9CAEfqbIdEdjBsYSncY5Km3fIBxMtDg6P8K6plWpBBTKAiJDQb6UtsUq64Qcp7TkF1Vo5a5bBnjJDxQVT1gXMf4CNr+SGFQuTbkQ3+tN0TzRN4J5ASiy9UAw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0X4qX61x_1781506274;
-Received: from 30.74.144.140(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X4qX61x_1781506274 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 15 Jun 2026 14:51:15 +0800
-Message-ID: <01b9caf7-241a-4140-a05c-826756611e7b@linux.alibaba.com>
-Date: Mon, 15 Jun 2026 14:51:14 +0800
+	bh=QrT0Nqym8cVujN+BGqEvEZa2wIO7f7wGj5xv4a3vBhs=;
+	b=3EIO/BR0G6zRf2zyTEch9sXlVRtE15dkFYvDzaAOC1bCho0WbI8ah/D+cVaKCjwkahtQUD
+	lh+v382Col0kda9ep23ZGeM6bYaw6RnMDHTboNQObDgVus0rEowc07axGXSWTOC9Dn2A3a
+	vlY2mo5jmwfdTfNuFtkOoEAgtelgVnk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F48E40381;
+	Mon, 15 Jun 2026 07:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8597A1F000E9;
+	Mon, 15 Jun 2026 07:28:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781508525;
+	bh=QrT0Nqym8cVujN+BGqEvEZa2wIO7f7wGj5xv4a3vBhs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Q/CaMD2JrF2pTjlhK/TRJoijtc+T7MLW4K5Bt8771ovSAOUISBy/0s7kTXLCCA4Eo
+	 F6JkuSbEQ47tuGCCBd2HymgHzY8A3cN3Zk42QxwPydN3oH5A+UFvahvKfg2fprDnnA
+	 uU7fNr6HqCgAkxDszcqadC4xknFOmVn3L9+jW/B3kE4pkHzORKQUA2h3eUTSgco8ig
+	 dOh/ja3GJCsTIytBEx5BWqZKvr0zWMuImpO6QeQS+fvQBbS2YIo6Cg2mCvnXVzZTde
+	 APlmOivm9rPynOmP72ep7EiNiEvo/28TE1iBiKNN6gsx8VjdmWDx05H87/Tx3X0jc1
+	 wXbGZ3/rFl+0A==
+Message-ID: <ad862f5c-34e4-48d6-8d8b-f02bdc02d7d6@kernel.org>
+Date: Mon, 15 Jun 2026 09:28:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 08/11] selftests: mm: extend the check_huge() to
- support mTHP check
-To: Nico Pache <npache@redhat.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, liam@infradead.org,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1781083630.git.baolin.wang@linux.alibaba.com>
- <bbedc5afc56b0f7b2073324a3551159ed9cf5f9c.1781083630.git.baolin.wang@linux.alibaba.com>
- <9c424084-2223-4d69-87b9-cd21c443b396@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <9c424084-2223-4d69-87b9-cd21c443b396@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net-next v2 0/2] net: isolate SKB data area allocations
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, linux-hardening@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Kees Cook <kees@kernel.org>
+References: <20260611124642.345400-1-pfalcato@suse.de>
+ <20260613113303.7562bc59@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260613113303.7562bc59@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4AF2C40006
+X-Stat-Signature: zirmibyo19oxhfad9mjjde3ak969cndr
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6416810000C
-X-Stat-Signature: dwfdb4g4mq958fujj6q348pritdtmwe5
-X-HE-Tag: 1781506280-114728
-X-HE-Meta: U2FsdGVkX1/bldVkToWbTCd0R8a/9lfjpZs6wOuXufaeJBZkn4AaRoKEMcwQKFwDYQtWwwdmkgyfWZ852C7GrD3xu5vz0X82FT5Xy9B6YRHgw+i0dGs1xk04OO/BNCln6fRiIBiw5yNs0yvlJRpdXRhP9k3KY9v43+sF30ntbcVaInhNnrQU0DTR49FVwr2d1NI1T7gHuDyCV6KVn2EmTVFAoXhqL6LJtAhmSeGw/8gzCOT0iODyALmhLX5ldhRvDA3auF+hhF7SXj9eR15qipwko/p4evrYJrZhaTma8DnJ6aqNEW7wYNqaHtDhs909/6NsDA9GfXH0VEqChJGEB5my6Rajosd1fPxeDe3BzjTctrkFJfq4IpGdL+GnP9FRHQRJw6Exo7/AdoKcoixMVT9FvpZzvr0qFwejlplJ56+vMbi4x5Wz+PZEzfuRokH8+8talxlt2695nrKg9/BST17V9AD7hc+noU82y1S1wyf15IEQKmqp5oiNFSUYhWBeDzdjVRrqVRExALli+yCQBgjWOk4/uR8Gh/IusdHqEFyQCxaDWbyfZNgyAVmUMxijnWFMeMPyMh2cMnUqydge+hjPw0K4GVuvgCm9RlYd+FWx/0XBa49mFZ1Q/3J8mIegH1rJI2KyRW6968X+mgLiTiPs2g5BlnmDUwBBTm/79rSjG3mWuikLav7CU57L5+6hu3t1GhfEXW2qzBfDOzHOpR8j/h4d6LL4iRKpOBpNAa4CvcbldqeIETcgH/8C0UnXgT1as/JcmmpcPr3W2N1gYDuBlCctM7EJihNVpIsD763bQB44FvvXdv0+vcvRIIYPVCd2Q/Vs+H91Bx1wNaXmdD4o2iafc0esHYkZ+5ZAGeviBIQlVTBX03A4m3XlTClkDJtYTt0Lo5XyyF3sCp8wHLFO5DhANFohqUJSa1U6J08Qx+PdzSlx8H1ITUYCcpBRfixmn0O50sDEnc+u9qx
- UECnZ7fU
- xhvvwucNGDm8a0LO9htollziWj28/1jaqeKylPEQdIGBp5qJRdsrHADBLHkGKPU0cl8e0n0my+jolkUxqGwIjzBNiBQRjVJB66TdhO4hUiNQiij8/ldPMUf0KQ/7WTrkl5yTeYiBZC99MvdVgLmkFlIIy89aZN7jY1kR1GReLsdhEheImbYZT4nrqrabUrCWLk9zj/Uj5XqnrBwNWWK1OnxKQB/ndQYvOduGzALAQh022eWa6vKx8UoPk6ruOzMTouuUUGoWNdP6Ykx+s4d64Qdue+ynm38gla9iWgwEJ6KaXmT7DlbWPu7F8z8cIFx1Z70fqrvOTHJoU+lrbqrHQppWMRqVsxhn5+j9W
+X-HE-Tag: 1781508526-85840
+X-HE-Meta: U2FsdGVkX1+1w8AvhtwUpElHPN3JRHAcJ4Xvp0533SnaYLRuLucOE0YWeUHqOeT+euBVxrCzvg+mRJnxAFztzU0dqR/Dy3HiBZQCmzzEuoTDTZ3dzzsrDnT5SKY2rKBK+tdXIz0XAAJ1sUUiI3e1O4ZuGAjHenCltY+64ywB+WOqr+5OYeakSBdkwAh+ZG/UXJULR0DRp2bZiFMNAeRtRJnjTs4VbXGT9qt7wI49QNUS+qHmLoNINnp8P0C6UDij9cHKS7l4b7a/mvj12ePuHKtt4dYxD59Qr5ocE+sx7/di8HlVZ8LiRKfb+J9SUiIqKMDdDjIGF+taN7arvUpUS4cdc8A3U6Sw/AxUFKTuOShp/ROD3k+/M7qhuyPMA4ADWaAWdyDPCqIn9T2DX/dTV/Fh/CUOaJdadp+dqxLwIqlkXTu03hwaNCaRC4hJExy4aAYFSJ3ksOnRsD6UPGaPYggnh1zyoMuJDXXSdur8WBwtVmeFQhTcPQfZm0WmkthGnqCtx/xFVQrwqUubKlhV+2x59o15PQ9kWmnrzI4Sq+S0ulY5OPhtdCKiwmnGrQT9BeqR0jQ/3DWvhSsxmKleoQ8drlWGSL6nnBmKP2yVR5qk7zPDGq22OySBQmXxIafsPTYxLRxlvi8M9DCGiULPxxqANFZcK+eCYyRL/1eU0Dhcbex/4Tv4SF7B6vnaTO6jZ1LpCG0jooezTE8C7RSoH9sR+nG8ICqUuSZMS12e1GC39h277iDqGbl9KO5w1CbszzRw9wW4IFXYViKRNwXrWCAIbfO4LmmOigVGTAkkBvGnc+rFfNznya+YqI/eAJ+Q4/e3lfmSOd9xB6JkoxReChgNVGVb3Li39SNuV7HKqpaOf/lMulT9F+9XkIwelmSt+9QaYx+uYxuwtrecSgN6ke8qQLYkfp9vB4ibk2T4prhcaUughEoLQ9Lks2vAJOXfXgsKDHNv2PRbXsypSTR
+ X/FCwlOt
+ ABaHCVBUzXWj8izqcqwcLfwGoS4V5n0njod0qX4ehgNW0mwlUJwkIlrIuKVDB/MKfo0B6bx+zmEsiEcgWij9ekjuJRczbn18C07jerB6yFLQBrDxAruF+v1dvNYJyzAoF/fltuQR38fZTFfJD8aIcYwlCllY/R8qjEtH1ULY+l1nz2677MJbxnxap7yB1yYaHxEj9QbtYbkz7DVPFWWDn51Qrh1j4z6pADJAr5HfXSg1kUglTWIHVqde1YEf7wfUvI3pA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,69 +140,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 6/13/26 20:33, Jakub Kicinski wrote:
+> On Thu, 11 Jun 2026 13:46:40 +0100 Pedro Falcato wrote:
+>> Subject: [PATCH net-next v2 0/2] net: isolate SKB data area allocations
+> 
+> This doesn't apply to net-next, does patch 2 not apply to mm?
+> If neither tree can take both - maybe MM can take the first patch by
 
+OK I'll take the first patch through the slab tree in the planned second
+next week's PR.
 
-On 6/12/26 6:32 PM, Nico Pache wrote:
-> 
-> 
-> On 6/10/26 4:29 AM, Baolin Wang wrote:
->> To support checking for various sized mTHPs during mTHP collapse, extend the
->> check_huge() function prototype to accept two new parameters specifying the
->> address range and mTHP size, in preparation for the following patches.
->>
->> No functional changes.
->>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>   .../selftests/mm/folio_split_race_test.c      |  2 +-
->>   tools/testing/selftests/mm/khugepaged.c       | 66 ++++++++++---------
->>   .../testing/selftests/mm/prctl_thp_disable.c  |  2 +-
->>   tools/testing/selftests/mm/soft-dirty.c       |  2 +-
->>   .../selftests/mm/split_huge_page_test.c       | 14 ++--
->>   tools/testing/selftests/mm/uffd-common.c      |  4 +-
->>   tools/testing/selftests/mm/vm_util.c          |  6 +-
->>   tools/testing/selftests/mm/vm_util.h          |  6 +-
->>   8 files changed, 55 insertions(+), 47 deletions(-)
->>
+> itself and we will queue patch 2 after the changes propagate during 
+> the merge window?
 
-[snip]
-
->> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
->> index 311fc5b4513e..b43adfa92116 100644
->> --- a/tools/testing/selftests/mm/vm_util.c
->> +++ b/tools/testing/selftests/mm/vm_util.c
->> @@ -247,17 +247,17 @@ bool __check_huge(void *addr, char *pattern, int nr_hpages,
->>   	return thp == (nr_hpages * (hpage_size >> 10));
->>   }
->>   
->> -bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size)
->> +bool check_huge_anon(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
-> 
-> Whats the purpose of adding 'size' here?
-> 
->>   {
->>   	return __check_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
->>   }
->>   
->> -bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size)
->> +bool check_huge_file(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->>   {
->>   	return __check_huge(addr, "FilePmdMapped:", nr_hpages, hpage_size);
-> 
-> Same?
-> 
->>   }
->>   
->> -bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
->> +bool check_huge_shmem(void *addr, unsigned long size, int nr_hpages, uint64_t hpage_size)
->>   {
->>   	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
-> 
-> And here?
-> 
-> Perhaps I find out in the next patch :)
-
-This is to specify the address range, so that when calling 
-gather_folio_orders(), it can count the number of hugepages within that 
-range.
 
