@@ -4,105 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9800CD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F3BCD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60476B0005; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
+	id C99D66B008A; Mon, 15 Jun 2026 06:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B118A6B008A; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
+	id C712E6B008C; Mon, 15 Jun 2026 06:54:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A274C6B008C; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
+	id B605E6B0092; Mon, 15 Jun 2026 06:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 924066B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E4CE1C45BE
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:44 +0000 (UTC)
-X-FDA: 84881838888.28.E0503DA
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 57638140003
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bAhttd3I;
-	spf=pass (imf26.hostedemail.com: domain of 38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781520882;
-	b=7LmIp40uI+/5955HUju9Vt02tMnQIXdsoe/K0CPtD8QnuEll+mp2rZDkz/ac/DXJVBjurx
-	HSskxvCObfIonUlpBrZqGAUYrP2ZHZvwMlN4vT0ThKG0/0MkEs1xd8W2GAx/3JRlAQybaM
-	nWKMmfmuPlXYWy2n786o5UZXFfOoOzI=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bAhttd3I;
-	spf=pass (imf26.hostedemail.com: domain of 38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7DE36B008A
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:54:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6493A1C2F70
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:54 +0000 (UTC)
+X-FDA: 84881839308.04.07A6FB1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8C5A8180005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNRUmekz;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781520882;
+	s=arc-20220608; t=1781520892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
-	b=lFdarjylczU4oD+kpJQ38zl+Gefe/iMnUoKbOLjzl5x/iDnIQKSF/j1AIddrLU047/6x+6
-	RfoLEJIuZx69pvMTwivrt/N6EH3vVYdDPzA41EyD+yfTrL8fYoiWqaWzUrRExuBl3LzW8u
-	AKgaUbS3AsxozddydoEJ/3Ppg7VjnN8=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490a767b782so19527315e9.2
-        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 03:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781520880; x=1782125680; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
-        b=bAhttd3Ijl5596Z8G+8MU5pJL0NEavqvAKqkSGZyimcaMJhp4x4DkHwNS/d6QL3iAc
-         P4k+IdWwDIvSP3j1Q2Ai+tJ56otIz839V7x9EsDkbF6uQ2eoA3Xz6ZSmeC2bU06iSQw0
-         /SEWxlyxfwjCdDaFAQ1gFjjdgOmm15yD+63PDVid61gVdmP2YW7mTlIFlk4zm379iD7o
-         3alhEBe5m45kyzv4h/OIqfOlf+ebb6e0FIdrS6HCcd5Sg3HwbyjUUqfGKtHdvESsCDPM
-         ZUgL7ZT6lnpffYS7jzhJ8/LzFS9ILVrg5jOEDpH12CCvN9wpEZ7daZqsC+zsS1UIyOML
-         VoJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781520880; x=1782125680;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
-        b=lBPKchr2ouVKVm7a8rWse+DtvWmoUlVQHDgQbdASIVYkTh6YIHgtYp8Iz9JQAB64Al
-         vOsgMa/arvRGqLSchMICaRIc+ClkbozKPa+Rh9+A4btro3J/Q4cYcYMrgqziH/HN4vrN
-         KDHfJpcliiaoxnClNA7LxDXIjCS0uVhgd9xV2YrR1RcA7tOLgoCQVeVTVWTzRXLdmE5f
-         ybqXG4i1fLiPwBeA4Q6ui3HfMxlqe3LmL0R4PLTX336m/knPypUpfbeQDE8gjIS4mgTN
-         lCwRutZAeruv7HXSBcBScoerz6qAVNw9bdXTVIaojngmApVLN7AuNXEFeITSFSYQqczK
-         1U+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9jYWWOtam6ka5ss8+5CyVWhZjQTQNmyeQETUT8Gs6x8rf8tl8cX08Fn9rZCbcFXklr8BbOdh+dTQ==@kvack.org
-X-Gm-Message-State: AOJu0YxuiLxnn+EwVr5fKMN+7WNtAXjB67oEzjuuSBnt5HCOT5LA5EvJ
-	TQzZyaUZprT8t7ll5FS1H2CAH3xBOrT6kV+wVBQxXpp7SurgLPTSYvKtSL+VOfQX4Js/9UFEPVi
-	ohheJ6gWTVpkdLg==
-X-Received: from wmbhj26.prod.google.com ([2002:a05:600c:529a:b0:490:b6fd:4e2])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c059:10b0:490:cf76:dea4 with SMTP id 5b1f17b1804b1-490ec4bfa54mr128265285e9.2.1781520880063;
- Mon, 15 Jun 2026 03:54:40 -0700 (PDT)
-Date: Mon, 15 Jun 2026 10:54:34 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAOnZL2oC/32NQQ6CMBBFr0JmbU1boSor72FYtDCUSYQ2HUI0p
- He3cgCX7+f/93dgTIQMbbVDwo2YwlJAnyroJ7t4FDQUBi21kUZp4ccoIjLTTGzX0hZONzdbO9e gG6DsYsKR3ofz2RWeiNeQPsfFpn7pP9umhBL3i0En61LD68OH4F947sMMXc75C/U0Ab+zAAAA
-X-Change-Id: 20260612-gfp-pessimisation-b258a4bb5ebd
-X-Mailer: b4 0.14.3
-Message-ID: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
-Subject: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 57638140003
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0q6LuyfOsMS4a8EdXR/KT8Uh3LN8s86rxTJxrDIWwxk=;
+	b=7XqcOvNPvwfIeEGX8jx5+9fP/7L99rmxdHRZYBP8xB5Odi+Cf9feIfgoZA+QUCzPaZC9Xh
+	ELCXc+RQaqZ8BxqAt8QnDjF6daKhQ0RWiAlHqSJq+HIiBlBbXdPwptzjnHT+nlODrPDt4N
+	fw72DxJPngDpDP0Thf0u5xail5gYUXw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNRUmekz;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781520892;
+	b=ZG4ArTcIS9YevwaPFVLz6TF4ED8wVC7yc3pMhE70n4oBOtC+Iztnh0MWNsvWgTfIrMiE/c
+	JQth4CMIRhDsX1hqMNFddVpJMaLhKz2w6OKKEROB5R9YHYJw86GPB4nMosq7lh2tW+pUuk
+	TrOQojiviBTenvfJk0KD9jONFQ+sA58=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B3DB340AE4;
+	Mon, 15 Jun 2026 10:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930001F000E9;
+	Mon, 15 Jun 2026 10:54:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781520891;
+	bh=0q6LuyfOsMS4a8EdXR/KT8Uh3LN8s86rxTJxrDIWwxk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BNRUmekzCtO6iJgCCGcr7et0XnHvffh8tTUcaQ5/xz3kWR8yOejh3+ghoLMtk1jdo
+	 W+Wx0ayFfAcqVw+esnhucDIFCC8Y6RY+Q5CeQVAOxygv1cx4256Vu8xLVuB/jMyWwe
+	 m/L/wZ9fddxRRe6UYZSd88zAp4BwJpRK+Zu6BWGb02us5eRcHSqMkHLNN9+cL/nN5H
+	 pOSPnqe7B8f9zixGq9/t7H0o2Ge31zATPc2yYNLquTg4lz99HS15zGXT1eryOiHLaZ
+	 c8Zk/DS9enr4MnC/C7PyXrcnsKv6m+mcIsFWDUdrQN9cLhfz9T9ybpLRVLUyVYjUfI
+	 f4RwtTqnsD/KA==
+Message-ID: <be1b20ed-5b75-46b8-b7be-3c9b029f016b@kernel.org>
+Date: Mon, 15 Jun 2026 12:54:38 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH splitout] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+To: Miaohe Lin <linmiaohe@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>
+References: <20260609111020.e88f51a7b6ebc37360d66fdc@linux-foundation.org>
+ <8c1f468e-b50a-487a-a267-8d1ea5a61c87@kernel.org>
+ <FB250C43-790E-4AB0-BD40-74665FC601A0@nvidia.com>
+ <38C84F23-E881-4DB2-86BA-93F39D44AE1B@nvidia.com>
+ <20260609162437-mutt-send-email-mst@kernel.org>
+ <4BA276D9-9EB9-4E2A-8A05-657ACACFF227@nvidia.com>
+ <20260609165829-mutt-send-email-mst@kernel.org>
+ <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
+ <20260610171646-mutt-send-email-mst@kernel.org>
+ <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
+ <20260611013644-mutt-send-email-mst@kernel.org>
+ <1b5676ab-0dc5-ef33-9d79-a2bd6090a62d@huawei.com>
+ <cbffabdc-42bf-4e67-9d2b-ace9a1e09f29@kernel.org>
+ <984d9775-e17c-0231-b021-126b13a9aa42@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <984d9775-e17c-0231-b021-126b13a9aa42@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8C5A8180005
+X-Stat-Signature: r97ychiqhgoqjm9b7kkdpnd9wnqkjqwe
 X-Rspam-User: 
-X-Stat-Signature: 8xtxqkym5khmyc7rpwsb4onxqi6skk59
-X-HE-Tag: 1781520882-695708
-X-HE-Meta: U2FsdGVkX1/F+pm0g2TfxI5Dysjp5mtdXm9kRQEMx6K4wqBiCAsLiBo8ejy1GHRwy2SkIBZ4+xM/RC4I4K8lQ2/HcqW1iXsBq71mavMBSzg0m+T89DVODOhoAaqC7tPzjctvuMtda9DnO3PvCngKcOkEoIBbdYpkY5kJb0Zu6UoiLMUYjX2pwIKNiO0qt3kh4MFy8pLFavXn+5wTh8J168hEz1R2YRehuwp3OZU6pRsDUndjlAzX6c7XWxrHn/wicbcPwTUOZxE2JtxhKLPYWIYx202wcOju9twmNEW/G2ipHNUz+5ax7EO142cx3KpaLagabqtQRpZ8SHrj8o+7tDAITJCsdStmtLBQPNNxd8MyeplYZRz2JA4u1P++vxvru0drUvMR2IeS2TylEbIRfktkZA/eR2SkCC+YQcsK64vqzgtnz/m5y0XKCW36I6mtRIblUOw5JaS0sH4VVCTxNKju6MwtFmNAryoRBFlWWP4MHueXle2RtCEE9uC/uQMLU7h2jFN7um5JU+JOB2PnE3zvksu5GWpshH9fEgQQT5ai1lWmqy9md8jrYwQgSW1WG+T83G+OPQvpDbeAw0PQ9ug8ZAPzQCp9QUk9kSc9uel8Ih2PGvMPLbj8whcyalaGZHc1qDCtblQDxoBsqWU79CumfZuZAXD8rCoKNItUHq4DWT9Q8ddZqzFfZrIiYOB22xKJW22QNS4/lLxklKnHtSrhUzN043X0hhJeaMKL/mgOGXIx0UNnUXQo+HdcgSnCw2H6gm0eOPc6S8I+j5UBdQaYUvfOZBebCr43zU4pFj/DgLbx28QLm0xr2lDdVH0QH5Ydho84ssVxyYBFbkvi5K9OJJiUF9u3sYTtKdtbbYjJcbLevllpdMIcC1jBoh401GZhmrz32yYrcxDCZSwZfdhCwMp+o2ESRBwjttlTbvtZWCIkdI3MMi2EA2vT5jN1b7fL3QCj0AwyzWszLDf
- bG7vOkpq
- p/j5k1oon7ipoCNHN9ZWFr6kFHxPYTabizOnopgganvjutgae7I9aSwpNvDVPgNhdT7KqdSEb3tmXn6/9r3gyc4SC8f5IX3INyY0Lccf7mLQLZFtou6vKplMuGuVHL20bxoLmgS2rv2H98NJBjWApGWD0MRM0GCH0z7hOk7VDjcnSpoxn0hAINRxWujTGSLBZQYnxI4FoERuLzmtg1ViT4lFOFHnHX00+xLiKH2mZ6GVZlvSja/ddiF6JrA9qQv3DednL4XAf8Tr8FzF4zhJ0OmELkGbZozkcmgOl0RNNqoXQnrBFcgCNTdbqiD3RdadIt++gYHCORai76QucGo4PKnA6UeD5G96sY8oJVeXwO6G0EcNBLZlRsLHV/YPj990jBmy4l36XzWZieK2wK/ZrIrtwds0TQDs6IwMIBsNpIvCWMwqDbw+X7qj28/meyu0MfsUbuspVHwOg9utBnWhlrRMGxfSc6uZfNR6HWqPsqT8DVs3NXFs0OTepZPxKsCiV74wmejgsk2tBlzduPYTxUlW+HyMlhJpoA3l1vvEPp7USAN7sSu0+U66O0y87gfyE6XUqoOCLoVg/z8mCQvBBPzGUGNU2578ldRDVd6C1cDsgp9KVD/ESABzUMBoCZ1r2pj9WCVklDWg38jLC8BzQEnYxh3h3LT4GCpXK7/PxGwjHqEQPNlNXbEBpqw==
+X-HE-Tag: 1781520892-700981
+X-HE-Meta: U2FsdGVkX19BqPvB7aDWkQNEw48qhQ6/qzsRGFR1Ta09cBMYG2+pYoRUWYNmGN5fxB8eeKY/HqN/4btH/bVC+qMY6HbthR18NQIoFCrMTRJuzLsnQIMyF9d+HFfkvmfJO855ZKTlZRavhCbh1cMxFCBOWdNh6zGXydJuoVQBom7Duv9cRgUAJh6Dk7VcsZGV5A4kbkiD+YMDF3BuslMeDeZ8V0OTBfopI2lyEBPJaKyO+xvS1tOIyQsdWR2GxJERXhkWw8xUi707KF16EOI5+Sgdpa1C8utaDwQwmd3vDwaW024GORMKbTpaPo4+BSEW5HjVRqgN9WK5MhXm+pX+9DIoqXaUb+S39S7hb32GjU4XIWFoG/3cp/dvhAyn6CrsPr3qWdIIht3eIub0dAyAMv20eb8fDakzQ+F0cLG7Rh21nM0P81Iqt9uncTvneSdIh503xjWvLXjlqZhkbChM5tophWE3SBnqBkBt3VHlZPeSyQXn1UPfRFkWlqVOmL9jnhs0i9C15fRSNbtpUWzQG6qMXlndMjB8pcWpOY9jFOLw8jt3qwO78L82iJHa9huRf4s+NjRTq3jMw4SJ19x4H6YtQIEqOxY5csrgDCG1HXkbkRrLE9KzQoalHbDsn29B3cBQkk3OUJvAmEQ7K3xmmMu8gdzeXYrE443WG/DpHPCS1M2cmggBEYeakw7KjB61m9drLpQSBW87OYC0JlF7FNGB7yve4xo63N08vBCuEJNHeUg/C+hqqPqCjeE+xk+106L0bj8EUAwrNe6sb81gNfkyBz7P2876TslPdJTvMFrFKmXjbYKFTESZaBBZHEXRspSAkJ5z54w2hSwc1EPNp0+jPOo0yMPDjCUeKrwBbyznm6LtR/4W0xdWTDnk4aYmO2ZJNFsBzlQc6mcc8DfQ3i01yyQMDQxlJUqNfDgR7n8SnzUiLaNq+jpc4Xu8WqbqxybJmaP1ofMRJ7dQ7M5
+ 2EvRgUaX
+ +tZWSKXTj3VO/3mvHFG9N+NV4ufVh5rzK4LhhGLTTgdn7QYLTEwlLUBk15ZIwE5cHaNpC06GhXTh5RVU1D3VmE7ftqjziG2YZHCbLHjayHfZRZYNDuLSaqvQQPVbuG/NsR90v5TsWhFVskYdGHJVhllMzDxR254RyqDjOXOUDD1Wx2fbRT5ZP0ghctDl9JDqi2EclR5P5OAg9MG9E7AvvrnarTyYmQcEtofvkxdr2fZu0wr+5+58vcG2u+oJLPHQx4FB5i/GId7dvKeYwz9yHtIXvEJ/h8ZE2r0EHwtwq1lUw/YcrxJANk9cwV3ugOC1ogRJB7QG8qKJ8XNNW05Oufct1CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,145 +175,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This code uses flag equivalences to try to optimise conversion from
-GFP_ to ALLOC_ but there's no clear reason to believe it makes things
-faster. Even if it gets rid of conditional branches, it just trades them
-for a data dependency.
+On 6/15/26 05:29, Miaohe Lin wrote:
+> On 2026/6/11 21:20, David Hildenbrand (Arm) wrote:
+>> On 6/11/26 09:36, Miaohe Lin wrote:
+>>>
+>>> Agree, it's not worth to do so.
+>>>
+>>>
+>>> Since memory_failure might be the only place, this change would be unacceptable.
+>>> We should come up with a better solution. Maybe we can try repeating SetPageHWPoison
+>>> and ClearPageHWPoison at a first attempt though it looks somewhat weird to me and makes
+>>> code more complicated.
+>>
+>> And I am fairly sure we could still have some remaining races ... it's shaky.
+> 
+> I have to agree it's shaky.
 
-CPUs are pretty good at conditional branches. But, in my GCC x86 build
-it doesn't look like there are any branches anyway, the compiler found
-some conditional instruction tricks. (Caveat: This was extracted &
-annotated by Gemini AI, I did not actually read the disasm myself)
+Right, just let writing task reschedule after reading the flags,
+but before writing the flags.
 
-Old code:
+> Any suggestion for next step?
 
-        ae50:    8b 04 24                 mov    (%rsp),%eax           # Load gfp_mask
-        ...
-        ae5d:    41 89 c4                 mov    %eax,%r12d
-        ae64:    41 81 e4 20 08 00 00     and    $0x820,%r12d          # Mask both flags at once
-        ...
-        ae6f:    44 89 e1                 mov    %r12d,%ecx
-        ae77:    83 c9 40                 or     $0x40,%ecx            # OR with ALLOC_CPUSET (0x40)
-        ae7a:    89 4c 24 60              mov    %ecx,0x60(%rsp)       # Store to alloc_flags
+We have various code that assumes that no concurrent writes are
+possible, and consequently, we use no atomics.
 
-New code:
+__free_pages_prepare() is just one user.
 
-  For  __GFP_HIGH  ( 0x20 ):
-  It uses the Carry Flag (via  sbb ) to conditionally add  0x20  to the base  0x40  ( ALLOC_CPUSET ) flag:
+Then we have __folio_set_locked(), __folio_clear_active()
+and __folio_clear_unevictable().
 
-        ae63:    83 e0 20                 and    $0x20,%eax            # Test __GFP_HIGH
-        ...
-        ae6a:    83 f8 01                 cmp    $0x1,%eax             # Set carry flag if 0
-        ae6f:    45 19 e4                 sbb    %r12d,%r12d           # %r12d = (gfp & 0x20) ? 0 : -1
-        ae80:    41 83 e4 e0              and    $0xffffffe0,%r12d     # %r12d = (gfp & 0x20) ? 0 : -32
-        ae87:    41 83 c4 60              add    $0x60,%r12d           # %r12d = (gfp & 0x20) ? 0x60 : 0x40
+But also __folio_mark_uptodate(), which is called rather frequently.
 
-  For  __GFP_KSWAPD_RECLAIM  ( 0x800 ):
-  It uses a conditional move ( cmov ) later in the function to set the  ALLOC_KSWAPD  ( 0x800 ) bit:
+page_cpupid_reset_last() is also a thing, but it mostly falls
+under __free_pages_prepare() handling.
 
-        ae72:    25 00 08 00 00           and    $0x800,%eax           # Test __GFP_KSWAPD_RECLAIM
-        ae77:    89 44 24 30              mov    %eax,0x30(%rsp)       # Store result
-        ...
-        af2c:    80 cf 08                 or     $0x8,%bh              # Set ALLOC_KSWAPD (0x800) in temp reg
-        af2f:    45 85 c9                 test   %r9d,%r9d             # Check if __GFP_KSWAPD_RECLAIM was set
-        af32:    0f 44 d8                 cmove  %eax,%ebx             # If not, revert to flags without it
+... and __split_folio_to_order() also messes with flags directly without atomics.
 
-Testing with a modified version[0] of lib/free_pages_test.c (adding
-printks with timing)...
 
-[0] https://github.com/bjackman/aethelred/blob/2ccdc84ef087c2a631914f58e106e99e19bd3b98/page-alloc-test/page-alloc-test.c
+Many of these are only possible for frozen pages (refcount == 0). I think
+only  __folio_set_locked() and __folio_mark_uptodate() are called on
+non-frozen pages, when there is the expectation that nobody will concurrently
+use atomics that would be bad (e.g., don't trylock if not an lru page).
 
-Old results from a Sapphire Rapids consumer CPU:
 
-[   67.157118] page_alloc_test: Testing with GFP_KERNEL
-[   67.157122] page_alloc_test: Starting 1,000,000 allocations...
-[   70.704446] page_alloc_test: Completed. Time: 3543002 us (Avg: 3543.00 ns per alloc+free loop)
-[   70.704456] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
-[   70.704460] page_alloc_test: Starting 1,000,000 allocations...
-[   70.944672] page_alloc_test: Completed. Time: 239980 us (Avg: 239.98 ns per alloc+free loop)
-[   70.944675] page_alloc_test: Test completed
+We don't want to use atomics at these places just to please memory failure code.
 
-New results:
+Would it be sufficient to know in memory-failure code that concurrent
+handling succeeded?
 
-[   70.079015] page_alloc_test: Testing with GFP_KERNEL
-[   70.079020] page_alloc_test: Starting 1,000,000 allocations...
-[   73.669396] page_alloc_test: Completed. Time: 3586954 us (Avg: 3586.95 ns per alloc+free loop)
-[   73.669402] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
-[   73.669405] page_alloc_test: Starting 1,000,000 allocations...
-[   73.905084] page_alloc_test: Completed. Time: 235496 us (Avg: 235.49 ns per alloc+free loop)
-[   73.905086] page_alloc_test: Test completed
 
-Seems like a wash.
+Assume that we enlighten all non-atomics to grab the rcu read lock, such as
 
-So, drop the flag value coupling here and let the compiler and CPU do
-their job. Superscalar CPUs are pretty neat after all.
-
-(Used AI for the disasm but the rest is all manual).
-
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
-Changes in v2:
-- Updated alloc_flags_nofragment() too.
-- Link to v1: https://lore.kernel.org/r/20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com
----
- mm/page_alloc.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee902a468c2f5..0111cdbdb5321 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3739,13 +3739,10 @@ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
- static inline unsigned int
- alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7223f6f4e2b4..3c3852b60bbd 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -803,10 +803,30 @@ static inline bool PageUptodate(const struct page *page)
+        return folio_test_uptodate(page_folio(page));
+ }
+ 
++#ifdef CONFIG_MEMORY_FAILURE
++static inline void page_flags_modify_nonatomic_begin(void)
++{
++       rcu_read_lock();
++}
++static inline void page_flags_modify_nonatomic_end(void)
++{
++       rcu_read_unlock();
++}
++#else
++static inline void page_flags_modify_nonatomic_begin(void)
++{
++}
++static inline void page_flags_modify_nonatomic_end(void)
++{
++}
++#endif
++
+ static __always_inline void __folio_mark_uptodate(struct folio *folio)
  {
--	unsigned int alloc_flags;
-+	unsigned int alloc_flags = 0;
+        smp_wmb();
++       page_flags_modify_nonatomic_begin();
+        __set_bit(PG_uptodate, folio_flags(folio, 0));
++       page_flags_modify_nonatomic_end();
+ }
  
--	/*
--	 * __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
--	 * to save a branch.
--	 */
--	alloc_flags = (__force int) (gfp_mask & __GFP_KSWAPD_RECLAIM);
-+	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
-+		alloc_flags |= ALLOC_KSWAPD;
+
+And then we have some retry logic such as:
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 51508a55c405..1123c40aaf43 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -162,6 +162,62 @@ static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
  
- 	if (defrag_mode) {
- 		alloc_flags |= ALLOC_NOFRAGMENT;
-@@ -4478,22 +4475,16 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
- {
- 	unsigned int alloc_flags = ALLOC_WMARK_MIN | ALLOC_CPUSET;
+ static DEFINE_MUTEX(pfn_space_lock);
  
--	/*
--	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
--	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
--	 * to save two branches.
--	 */
--	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_MIN_RESERVE);
--	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM != (__force gfp_t) ALLOC_KSWAPD);
--
- 	/*
- 	 * The caller may dip into page reserves a bit more if the caller
- 	 * cannot run direct reclaim, or if the caller has realtime scheduling
- 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
- 	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
++static bool page_test_set_hwpoison(struct page *page)
++{
++	lockdep_assert_held(&mf_mutex);
++
++	while (true) {
++		/* Already set -> not our problem. */
++		if (TestSetPageHWPoison(page))
++			return true;
++		/* Make sure concurrent non-atomic writers completed. */
++		synchronize_rcu();
++		/* Setting the flag was sticky. */
++		if (PageHWPoison(page))
++			return false;
++	}
++}
++
++static bool page_test_clear_hwpoison(struct page *page)
++{
++	lockdep_assert_held(&mf_mutex);
++
++	while (true) {
++		/* Already clear -> not our problem. */
++		if (!TestClearPageHWPoison(page))
++			return false;
++		/* Make sure concurrent non-atomic writers completed. */
++		synchronize_rcu();
++		/* Clearing the flag was sticky. */
++		if (!PageHWPoison(page))
++			return true;
++	}
++}
++
++static void page_set_hwpoison(struct page *page)
++{
++	lockdep_assert_held(&mf_mutex);
++
++	while (!PageHWPoison(page)) {
++		SetPageHWPoison(page);
++
++		/* Make sure concurrent non-atomic writers completed. */
++		synchronize_rcu();
++	}
++}
++
++static void page_clear_hwpoison(struct page *page)
++{
++	lockdep_assert_held(&mf_mutex);
++
++	while (PageHWPoison(page)) {
++		ClearPageHWPoison(page);
++
++		/* Make sure concurrent non-atomic writers completed. */
++		synchronize_rcu();
++	}
++}
++
+ /*
+  * Return values:
+  *   1:   the page is dissolved (if needed) and taken off from buddy,
+@@ -199,7 +255,7 @@ static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, boo
+ 			return false;
+ 	}
+ 
+-	SetPageHWPoison(page);
++	page_set_hwpoison(page);
+ 	if (release)
+ 		put_page(page);
+ 	page_ref_inc(page);
+@@ -1744,7 +1800,7 @@ static int mf_generic_kill_procs(unsigned long long pfn, int flags,
+ 	 * Use this flag as an indication that the dax page has been
+ 	 * remapped UC to prevent speculative consumption of poison.
  	 */
--	alloc_flags |= (__force int)
--		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
-+	if (gfp_mask & __GFP_HIGH)
-+		alloc_flags |= ALLOC_MIN_RESERVE;
-+	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
-+		alloc_flags |= ALLOC_KSWAPD;
+-	SetPageHWPoison(&folio->page);
++	page_set_hwpoison(&folio->page);
  
- 	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 	/*
+ 	 * Unlike System-RAM there is no possibility to swap in a
+@@ -1789,7 +1845,7 @@ int mf_dax_kill_procs(struct address_space *mapping, pgoff_t index,
+ 			goto unlock;
+ 
+ 		if (!pre_remove)
+-			SetPageHWPoison(page);
++			page_set_hwpoison(page);
+ 
  		/*
+ 		 * The pre_remove case is revoking access, the memory is still
+@@ -1866,7 +1922,7 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+ 	head = llist_del_all(raw_hwp_list_head(folio));
+ 	llist_for_each_entry_safe(p, next, head, node) {
+ 		if (move_flag)
+-			SetPageHWPoison(p->page);
++			page_set_hwpoison(p->page);
+ 		else
+ 			num_poisoned_pages_sub(page_to_pfn(p->page), 1);
+ 		kfree(p);
+@@ -2380,7 +2436,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	if (res != -ENOENT)
+ 		goto unlock_mutex;
+ 
+-	if (TestSetPageHWPoison(p)) {
++	if (page_test_set_hwpoison(p)) {
+ 		res = -EHWPOISON;
+ 		if (flags & MF_ACTION_REQUIRED)
+ 			res = kill_accessing_process(current, pfn, flags);
+@@ -2410,7 +2466,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 			} else {
+ 				/* We lost the race, try again */
+ 				if (retry) {
+-					ClearPageHWPoison(p);
++					page_clear_hwpoison(p);
+ 					retry = false;
+ 					goto try_again;
+ 				}
+@@ -2431,7 +2487,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	/* filter pages that are protected from hwpoison test by users */
+ 	folio_lock(folio);
+ 	if (hwpoison_filter(p)) {
+-		ClearPageHWPoison(p);
++		page_clear_hwpoison(p);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		res = -EOPNOTSUPP;
+@@ -2751,7 +2807,7 @@ int unpoison_memory(unsigned long pfn)
+ 		}
+ 
+ 		folio_put(folio);
+-		if (TestClearPageHWPoison(p)) {
++		if (page_test_clear_hwpoison(p)) {
+ 			folio_put(folio);
+ 			ret = 0;
+ 		}
 
----
-base-commit: ca2351ac6da277a470d4fcf122b53267e02b2716
-change-id: 20260612-gfp-pessimisation-b258a4bb5ebd
 
-Best regards,
+Maybe that would work. There would still be issues to solve
+
+(a) We don't hold the mf_mutex on all call paths, but we really need it so a
+page_test_set_hwpoison() cannot race in weird ways with the other primitives I think.
+
+(b) There are some leftover SetPageHWPoison etc. instances. The ones in
+arch/x86/kernel/cpu/mce/core.c likely cannot grab the mutex, but maybe they are
+corner cases either way and we can document the situation.
+
+
+Further, while I assume the synchronize_rcu() on the MCE path should be fine
+(who cares about performance there?), I don't know if the added RCU read lock
+on some paths could be noticable.
+
+So one idea worth discussing, but I am sure there are more problems.
+
 -- 
-Brendan Jackman <jackmanb@google.com>
+Cheers,
 
+David
 
