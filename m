@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D133CD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0625ECD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:55:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AABAF6B00A2; Mon, 15 Jun 2026 07:55:26 -0400 (EDT)
+	id 6DB0E6B00A9; Mon, 15 Jun 2026 07:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A84676B00A3; Mon, 15 Jun 2026 07:55:26 -0400 (EDT)
+	id 6B2DF6B00AA; Mon, 15 Jun 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C0EE6B00A4; Mon, 15 Jun 2026 07:55:26 -0400 (EDT)
+	id 5C8DD6B00AB; Mon, 15 Jun 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E27B6B00A2
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:55:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FCCB930B0
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:55:26 +0000 (UTC)
-X-FDA: 84881991852.20.1FB5B84
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F5D96B00A9
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:55:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1997CC36A2
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:55:30 +0000 (UTC)
+X-FDA: 84881992020.06.CA2F90B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7F304140007
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:55:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k53SX+hd;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781524524;
-	b=dI5ke7rE/SaskrRBv4zZL1E4c36pZajvSBESPNM6bwiA/2OY+jSsrHqG4NDLMAMCyOgr2y
-	lHM2/sWp3ReiI+UhxNXPUhL7eblBX5FLYdXsmy5spzmvKfJ+QM+CAwiOsjdhmvY/a/ykGb
-	SuvJmqDRcSS6oL6y27aR6f41Ve+/eBE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k53SX+hd;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 637274000A
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:55:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HdUMO7qd;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781524524;
+	s=arc-20220608; t=1781524528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ebzcFj5BKF/W8hw3xShUpyqxyWez0/CEroCTp+cjzdk=;
-	b=3ItN1gDiooWvKtFhxAErs0rgAWItxUeE/CFyN7w9Nsl0fB1YASq5Svaf7W/sUDLNvXwQWE
-	Kbposu0Idg5Xo/DYGP9Hu9XTIEdjEYmGSJxu/aDngUZjT8OdcMYuipmZzAf/YBvGwT+NfL
-	kViH8hX4M3b9qZI+eHDahN3L3tozdMA=
+	bh=B6dmcdjP+5ZIBOi/iXRYbZybDrhTvdvmtqJeoRuINj4=;
+	b=uZ740Av5uTr75HWJo+RY1goHJPEcMjHWrC7/g1pPD6Gq035JpCPoc5uwywTIygjFwWjBRe
+	BWpH9XZG93/O1U4kGM6WsbymBXBs4o3QZez+AzPgNSPx9Cq+1vzALoQw1unrY5SoLtvHa9
+	8FleNoZED9HayCkpznkUmzBS1Oe69vQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HdUMO7qd;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781524528;
+	b=DuB5zm4DUDh19zPdoisvMiYpv+u0Q3HGC8+Prz381XLtsZAGCS7bkLwMco0i0+sgX/lMGW
+	7pPoZWtjcoE2GJI6pYVIxWZ3fH9ZVmjukAWYz+ALgjIyeWo2cEmMyXUyZdqA/Z4QTDAqRP
+	Lwgx9Nv1XFSxTcmPupOPbaHSsP9vJ+M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA4F3441F8;
+	by sea.source.kernel.org (Postfix) with ESMTP id B4228419C8;
+	Mon, 15 Jun 2026 11:55:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FFE1F000E9;
 	Mon, 15 Jun 2026 11:55:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C20E1F00A3D;
-	Mon, 15 Jun 2026 11:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781524523;
-	bh=ebzcFj5BKF/W8hw3xShUpyqxyWez0/CEroCTp+cjzdk=;
+	s=k20260515; t=1781524527;
+	bh=B6dmcdjP+5ZIBOi/iXRYbZybDrhTvdvmtqJeoRuINj4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k53SX+hdNKSO4F+2QdGRewU07K+P4JkgXQWXn5mkCdLhn5MRVSmjAPyFQJLlFqOI6
-	 6/h9nqvrzu9UK8w2e265TXGtJydhU2AKlSl/t4+8+EBhSXwQQhPQrEly4/idNyC0iz
-	 xcFdsz7LdrfKUTktxP053HuNgOsvPlIu3HK+6zoYbVE+MyixgU8PcJnVvrfVZ+aheN
-	 og4wmzoVBOhi7f8zA7a2/knEFVH3wHTvDpAoow3PzL3xHQCwhaBsHxuu9j9/QdgcnG
-	 BGilDC/BybWyAL6ULwZRohrt8M0BAnLL8cXytktfBRqBxXALiY4m4cmqYgtI3xbMJD
-	 DC/x0AHo67yiA==
+	b=HdUMO7qdkda4aakMktunsbyk0bBiJgwEkxj9/C6vT/cp3P7H9EDO/8EP7dK8HvepH
+	 tnaDmbWoH5V5QPxT0x7HSCV/L5RZsckBrbHsbfBCblSYuaxfF3B3DGAtzYMo2V/C2E
+	 QaoP/2kjRGlZqvV7ma50hx9maTaXW0zTtVcGGw85Pofht3pCQ/o7iGOUAWmdetpK/L
+	 KZ9pbDEyvLJfd7xyZeAmcidIn52okNaAPj3dNV4Pu9vxOH4o2AiRsYU7GGB/HXWEdm
+	 23wD8vJJCjGpASWbfVZC9/RTqktswWqL099XaVZstDyu+mU+LkmUw77sGShrJ/6FnC
+	 mDxO9cSAirF1Q==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Mon, 15 Jun 2026 13:54:43 +0200
-Subject: [PATCH v3 10/15] mm/slab: allow kmem_cache_alloc_bulk() with any
- gfp flags
+Date: Mon, 15 Jun 2026 13:54:44 +0200
+Subject: [PATCH v3 11/15] mm/slab: pass slab_alloc_context to
+ __do_kmalloc_node()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260615-slab_alloc_flags-v3-10-ce1146d140fb@kernel.org>
+Message-Id: <20260615-slab_alloc_flags-v3-11-ce1146d140fb@kernel.org>
 References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
 In-Reply-To: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -87,14 +87,14 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 7F304140007
-X-Stat-Signature: m7acgxkcuihnsiitr599hyz9hd675ch7
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 637274000A
+X-Stat-Signature: xzdica7jcpizpf5d6nr4eos63njnm3q3
 X-Rspam-User: 
-X-HE-Tag: 1781524524-445244
-X-HE-Meta: U2FsdGVkX19XXzTRIphMD3XoUPtq3YSs/LqFLpvz99zeYQFnMa56mo4QnwOfAK/8y8Shl1lc9ENhhALIwkSLKPjy3cjcqxELzkZZ4sM4EWk+97Vb+iYfmjN+xWltRVzUNOVGX5vQdTfv5GYkSqk6YlqXVSKdT+pD0EvFPCu/MlaAIu7ZSl4WllpBEZsiv4p6DUO160CEEDLQHfCGKWYFJ4hdJ73YibhfPKL7WF6nDb3bJ3lyNhIgwHFtOSqcawvjNmkP20P058sfRBKAnYL9aZsIrSmggl9v3nh7nPKpC11YOp3LducBDy9iG1L5rzE5gEdapskNEE+SeDlZ08ZQDRFNgbJOH4Gc2b60EuUVrWew9rjYRVsUfxgmYkbqkQExdRgfswWLGp8Em3xCkt4eXgFXRTVZLqun3bxIe0DNTWAZbCpF8Bk9trKecubQfTOITEY/r2PHRlwCt0E9n5wkW9GhltGgYfiw3pyXBV2tVi7hO1BBKK0UQ5u2MpcweTe5h1X9NklQxleBtIh/K+OtEuHCw/9yxj6BLD3fIFtoZd1S+Jk5Kci9j7UOzpd1pyLvT5QT+cH4yEE+alr0YZF2pGTPQTBb6WT5PnA1WapFncv7E/eXegzvVdf5/AAu8dQxHOB59UjDJ6m37iKtwgzl6cVWGu1bqRVV9FnxvNjfq9re6U/rZZ0gJtFMEPmgeIDSqNf1lArts618vwfWpUNb9mLLsKiA4Th0cVmdQ3LdEDeN1P7cGkKzmAe16LEKniwx4wWLFVrYMVRb9h8vUmsTSutypgorDBTz81djSrBzA0tt9ejuW907uRbGkO44ywR4DoyyZUyoaRaoMcTKKZf3LRLkZRVZOZGMHYYevbEuD2ULAT2SQuI0+brqfk8TP8QmTSO/JMaZ4ngtk6DfRW/ITEWNilQOQAyn5eYbjc+QV1g/KUiS95Fs+j/AlTpKLd4Fgaaq0sy6tTrFYnn/Jce
- 0MYzagqu
- xIrj/loaVyP/UakSo5KLf4G7pHgiWvnN4UzsldDP6UGMNcLGYIs58XmNAtT1lGfCwdTILnwH625IjrZjFl3jB3xbQ+1vqR2uj5GYEpa0HL1VZp21/i9RITtQ+/8FEx+ZrUX3sxh7hGf5Z6V3+LfwW0lyZ0IhpX8sulSfXx6kI7a9AZE7onMB5oTOFu+7L3GJ7G3JYTTP88TpwPQKbWztAAd1gMSsw38b8NqKu+Qb3Kf2lB3nI24XozuoRz1riTqaVV3HGcbwEfDI5t/PZKaayMjz/S3iAzMozJZWt/YCZjZQp85fA1r35Xuu27lXctJkPigua0Sl2KIX+uHt7VUihLUQwTgUk7JSvFTorBSpu5xBo8otnjhDXZHu+yCzEv+1ds/z+wAHWryy68oEKKbqAYEQL5A==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781524528-31449
+X-HE-Meta: U2FsdGVkX1/k+Pj7OXRYSrOCjfzSXeSBEmaTSuq5FalXmATMUbdKOVWtj1XijH2p7E0a1QBf2IxfUSKfj+/bzTd1+3gdRkh6hNl3uA5+aNw/wKZFmMfUiLcJboPUrpuGI2zOq4H7XWFkpP5YNBQSvXsgqSbIaFkc4lrT728C9VpDl9ALttQA2F0qjhiOMQFF3Ti9jwDaRyMgdICwy+4xBximux5Y17c7Z7VMxVLTB6SlZqT++UnqrOMmdx+dEoX55Wa41Gj01TmPT5jCeDLzxmR8tOPPaMSLGOUyKToX4r0vFw8Q5qxwRtSeJXX5+M9Tpv5B1e0UEYAOXoBJ/SEBLg7ObLvq+wbiW3KXcOWXZt4aDJAvSxLrtu2u/ALpZnlm7IM8rExeiEV9ukzgNGxX9/0ENDQ71rT3bqh8mk2VwPO/VLgtTM/PyCpD7cpYbosVG/FNbGm7gdOhXuxF6qQKoxKcK99GKl9uOJckkZ2COyry8xRqDM5ZRSYq77oUSpe1v2gj+e8DYLg1HzmEIEY7hTmpfAAw5ogt0rCtXdyJTupFVG/hDlK2BdK8J4Satk6sGQayjsqLwHbwCnhsJhPOik6bYiLli2KkM5XwJWsAe150Q8w3SGfTBs1jRpFguuwLRLCew1qGD0axgfYRwNiM4HW+Qvx9E+GkHxkfxh0/48U+1NEritmb0ywpS8FOJMLNN4oG5IJYp4NZw3yVoUhvGyGCdTGHEfdJd/Bg8D2YcqLf37el1TGNnTpABK5uGmlW0XlS4DkLswCr2zFTo+FW9ACqyNuw/72g1csOCCkTp9IzKFCQdKX0b7Uu7LsurRd5B/RYE8djk5VUiuYSMNA/HQ1aeVaaUH+KKd1itWImZ7m9nUGZq+xOL2k7Ou/Zfjm5OqHuoqbh1cm+YckK4mSSFtFrXXTJsNOPm5SKAqjnTN6hQ2Oi2TW3TITYCQhubgXvYLqk4+Vcv/TYZjFXj63
+ um+8/c2y
+ qABTE9BxdIxhLbMe92h4OYSC0AGhEwEUc0zt+8Rwl/FhOFd+4JahpQzrw7eShJ4grf7kQqmUOcfYR8cMOn4tstzBsRIM+gQS/HMwzjzfZdma8XDqFofsOV5gEJLSFo11ERe8r0oAfMAXfxZywLehgvO67+QkCKU6T/idB9RXGZnuaGhsFQlDjW/dsgHgP0Uzc+sMiknhR66AnQj10OuXvDw/+UBiUybBrcstX/NFDcRv4gif+i5m3rFceFP9U3c36gIAzfk854Mh4AO8nDlkiHaPIhRjRpBrGHnkNllwhO/QMAEmS23N5UEGA80bnwfFTR2ZmGHONdNgzLAHjPejPNYLYzuRgS1D4f+/DKQQQ2hYIhFcJNVdC2GcnUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,85 +102,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The last user of gfpflags_allow_spinning() in slab is
-alloc_from_pcs_bulk(), which is only called from
-kmem_cache_alloc_bulk().
+With alloc_flags usage in slab, we can replace __GFP_NO_OBJ_EXT with an
+alloc flag that prevents kmalloc recursion. For that we need a version
+of kmalloc() that takes alloc_flags and use it in places that perform
+these potentially recursive kmalloc allocations (of sheaves or obj_ext
+arrays).
 
-It turns out that gfpflags_allow_spinning() is not necessary, because
-kmem_cache_alloc_bulk() is only expected to be called from context that
-does allow spinning, so simply replace it with 'true'. This means we can
-also drop the gfp parameter from alloc_from_pcs_bulk().
+As a preparatory step, make __do_kmalloc_node() take a pointer to
+slab_alloc_context. This replaces the 'size' and 'caller' parameters and
+includes alloc_flags which we'll make use of.
 
-With that, we can remove the "@flags must allow spinning" part of the
-kernel doc, as there is no more connection to the gfp flags in the slab
-implementation.
-
-Also remove a comment in alloc_slab_obj_exts() because there should be
-no more false positives possible due to gfp_allowed_mask during early
-boot.
-
-Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-11-7190909db118@kernel.org
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-12-7190909db118@kernel.org
+Reviewed-by: Hao Li <hao.li@linux.dev>
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/slub.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ mm/slub.c | 54 ++++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 562495b80d74..81938774098b 100644
+index 81938774098b..537ea68f417b 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2171,12 +2171,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+@@ -5335,20 +5335,16 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
+ EXPORT_SYMBOL(__kmalloc_large_node_noprof);
  
- 	sz = obj_exts_alloc_size(s, slab, gfp);
- 
--	/*
--	 * Note that allow_spin may be false during early boot and its
--	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
--	 * architectures with cmpxchg16b, early obj_exts will be missing for
--	 * very early allocations on those.
--	 */
- 	if (unlikely(!allow_spin))
- 		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
- 				     slab_nid(slab));
-@@ -4830,8 +4824,7 @@ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, unsigned int alloc_flags,
- }
- 
- static __fastpath_inline
--unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
--				 void **p)
-+unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ static __always_inline
+-void *__do_kmalloc_node(size_t size, kmem_buckets *b, gfp_t flags, int node,
+-			unsigned long caller, kmalloc_token_t token)
++void *__do_kmalloc_node(kmem_buckets *b, gfp_t flags, int node,
++			kmalloc_token_t token, const struct slab_alloc_context *ac)
  {
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *main;
-@@ -4866,7 +4859,7 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
- 		}
++	const size_t size = ac->orig_size;
+ 	struct kmem_cache *s;
+ 	void *ret;
+-	const struct slab_alloc_context ac = {
+-		.caller_addr = caller,
+-		.orig_size = size,
+-		.alloc_flags = SLAB_ALLOC_DEFAULT,
+-	};
  
- 		full = barn_replace_empty_sheaf(barn, pcs->main,
--						gfpflags_allow_spinning(gfp));
-+						/* allow_spin = */ true);
- 
- 		if (full) {
- 			stat(s, BARN_GET);
-@@ -7331,8 +7324,7 @@ static bool __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
-  * Allocate @size objects from @s and places them into @p.  @size must be larger
-  * than 0.
-  *
-- * Interrupts must be enabled when calling this function and @flags must allow
-- * spinning.
-+ * Interrupts must be enabled when calling this function.
-  *
-  * Unlike alloc_pages_bulk(), this function does not check for already allocated
-  * objects in @p, and thus the caller does not need to zero it.
-@@ -7370,7 +7362,7 @@ bool kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags,
- 		size--;
+ 	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE)) {
+ 		ret = __kmalloc_large_node_noprof(size, flags, node);
+-		trace_kmalloc(caller, ret, size,
++		trace_kmalloc(ac->caller_addr, ret, size,
+ 			      PAGE_SIZE << get_order(size), flags, node);
+ 		return ret;
  	}
+@@ -5358,22 +5354,34 @@ void *__do_kmalloc_node(size_t size, kmem_buckets *b, gfp_t flags, int node,
  
--	i = alloc_from_pcs_bulk(s, flags, size, p);
-+	i = alloc_from_pcs_bulk(s, size, p);
- 	if (i < size) {
- 		/*
- 		 * If we ran out of memory, don't bother with freeing back to
+ 	s = kmalloc_slab(size, b, flags, token);
+ 
+-	ret = slab_alloc_node(s, flags, node, &ac);
++	ret = slab_alloc_node(s, flags, node, ac);
+ 	ret = kasan_kmalloc(s, ret, size, flags);
+-	trace_kmalloc(caller, ret, size, s->size, flags, node);
++	trace_kmalloc(ac->caller_addr, ret, size, s->size, flags, node);
+ 	return ret;
+ }
+ void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node)
+ {
+-	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node,
+-				 _RET_IP_, PASS_TOKEN_PARAM(token));
++	const struct slab_alloc_context ac = {
++		.caller_addr = _RET_IP_,
++		.orig_size = size,
++		.alloc_flags = SLAB_ALLOC_DEFAULT,
++	};
++
++	return __do_kmalloc_node(PASS_BUCKET_PARAM(b), flags, node,
++				 PASS_TOKEN_PARAM(token), &ac);
+ }
+ EXPORT_SYMBOL(__kmalloc_node_noprof);
+ 
+ void *__kmalloc_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags)
+ {
+-	return __do_kmalloc_node(size, NULL, flags,  NUMA_NO_NODE, _RET_IP_,
+-				 PASS_TOKEN_PARAM(token));
++	const struct slab_alloc_context ac = {
++		.caller_addr = _RET_IP_,
++		.orig_size = size,
++		.alloc_flags = SLAB_ALLOC_DEFAULT,
++	};
++
++	return __do_kmalloc_node(NULL, flags,  NUMA_NO_NODE,
++				 PASS_TOKEN_PARAM(token), &ac);
+ }
+ EXPORT_SYMBOL(__kmalloc_noprof);
+ 
+@@ -5468,9 +5476,14 @@ EXPORT_SYMBOL_GPL(_kmalloc_nolock_noprof);
+ void *__kmalloc_node_track_caller_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags,
+ 					 int node, unsigned long caller)
+ {
+-	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags, node,
+-				 caller, PASS_TOKEN_PARAM(token));
++	const struct slab_alloc_context ac = {
++		.caller_addr = caller,
++		.orig_size = size,
++		.alloc_flags = SLAB_ALLOC_DEFAULT,
++	};
+ 
++	return __do_kmalloc_node(PASS_BUCKET_PARAM(b), flags, node,
++				 PASS_TOKEN_PARAM(token), &ac);
+ }
+ EXPORT_SYMBOL(__kmalloc_node_track_caller_noprof);
+ 
+@@ -6871,14 +6884,19 @@ void *__kvmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), unsigned long
+ {
+ 	bool allow_block;
+ 	void *ret;
++	const struct slab_alloc_context ac = {
++		.caller_addr = _RET_IP_,
++		.orig_size = size,
++		.alloc_flags = SLAB_ALLOC_DEFAULT,
++	};
+ 
+ 	/*
+ 	 * It doesn't really make sense to fallback to vmalloc for sub page
+ 	 * requests
+ 	 */
+-	ret = __do_kmalloc_node(size, PASS_BUCKET_PARAM(b),
++	ret = __do_kmalloc_node(PASS_BUCKET_PARAM(b),
+ 				kmalloc_gfp_adjust(flags, size),
+-				node, _RET_IP_, PASS_TOKEN_PARAM(token));
++				node, PASS_TOKEN_PARAM(token), &ac);
+ 	if (ret || size <= PAGE_SIZE)
+ 		return ret;
+ 
 
 -- 
 2.54.0
