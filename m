@@ -4,141 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7BB9CD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8901CD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 12:09:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299E56B008C; Mon, 15 Jun 2026 07:58:23 -0400 (EDT)
+	id 088446B009B; Mon, 15 Jun 2026 08:09:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2236F6B009D; Mon, 15 Jun 2026 07:58:23 -0400 (EDT)
+	id 05FFD6B009D; Mon, 15 Jun 2026 08:09:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 112426B00A1; Mon, 15 Jun 2026 07:58:23 -0400 (EDT)
+	id EB81E6B009E; Mon, 15 Jun 2026 08:09:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0F8B6B008C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:58:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B38751409F2
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:58:22 +0000 (UTC)
-X-FDA: 84881999244.28.75BADEB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E16A9180006
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:58:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=luqAq5Ws;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781524700;
-	b=dacZmE8VgB3+o7zHiecOlDgAcnqXotNJD4Or49Jv4aYkS3QA5V1bgoSyZwufcgc9itZnwh
-	O9jbnrFO7lRV6dHFg37l7KU6UEekNYkytYFKe2o9tjoE2+FEy4LyVoHieJxOyFZPLlN7r7
-	kgB60OCy98gQf66E5fnWSDL3zKkCfZM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=luqAq5Ws;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DAFBA6B009B
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:09:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99E7DA09CA
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:09:43 +0000 (UTC)
+X-FDA: 84882027846.20.BCF890E
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AA28A40012
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:09:41 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=HzwgEsTm;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781524700;
+	s=arc-20220608; t=1781525381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nob7Ef0LhlOFzeo/NONUfcSw5/BZ0C2rsatl1k+CwG0=;
-	b=GJi+UvfodQxbFqo1nd+kJRci00ZMSAVQjmrtHHaqLFhwmfv2LNgK8bfQBB6pUlMCkSkwqP
-	CKZFtF0VtgGKYn3Z15CmQgmI34SaRc0WabY2IHtZ2OnEyTT0Dn3kTxsY6vxv7gX9IvuMth
-	CS4S8PieqwskZsqBFACNeIehKzgkhms=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E692600AB;
-	Mon, 15 Jun 2026 11:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C3B1F000E9;
-	Mon, 15 Jun 2026 11:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781524700;
-	bh=nob7Ef0LhlOFzeo/NONUfcSw5/BZ0C2rsatl1k+CwG0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=luqAq5Ws195uyaNNIqx+TtXLqYwS693yXltM2TcKwMEPE9xcEJ9gXkebKd6da5RvT
-	 aAetj7reft8CUSF4tJAD9LUsRfwVv1o2iMAeKI/D7fY+9cxkdZ8RXhupWE6A+X0sNy
-	 70pSyWH+eg6GmOqPpzWKo59VOZ0tk8aIB7nMONpv10msu/A1w2CjvA7BTKHvlLk6N6
-	 dnfzbUvRsGafRRh5PlQymk0GdV65M+uNECKCD6FD5LatW1RC9OMb1pD8sOcqeir4Tx
-	 8O8slBqcLy7jGqX7aUP7Xe7pJfZyrQqbfh1MxNrMTin+UGI3DGmGdHLxFhBTsdAGKT
-	 O/UMy/Lz0NpJw==
-Message-ID: <2d48ef0d-1110-4a9d-adcb-f701a1ce2cfa@kernel.org>
-Date: Mon, 15 Jun 2026 13:58:15 +0200
+	bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
+	b=QukhFcVYmRhoPmczhhf9ZsjBsPWAtWqEMdX5exwjlFwjJztjYsmsKi4vF4ERRfQdmEL3/v
+	1yiWhRNBnaVIImJo3PKVN1tlhrU6OxyFimqC6cXqf8bSM+JJVKvyAgRN/MC8gtBzHi79rU
+	NUzJI1fPhnYOPuLzwqg1G72PxMl7rUU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=HzwgEsTm;
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781525381;
+	b=qsFAU6zsrSlGgNM0N70L+xmqxGVjqKuBZafWh+zalXh2VtXujdw2fmYuJppET3U6JrMRyl
+	3sNIov+vxUWoovb51gq+uYrLBuTU5XIrvTrnv8JgjX5noiwaulBV4X71Fy9zaYyXAGrKm2
+	ZRALCSEvPp3B4s51wkR2s+5cIDcoqsM=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-91588056619so229649785a.2
+        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1781525381; x=1782130181; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
+        b=HzwgEsTmbfLyjLq5gplfLTID7rGnDamnL+hZ1R3des5xQaEQqdStUqYyZEND51eBr5
+         bRXxWoSHlsbnHtP8XmA+EU98xAlJKXWC2zvZaqvAMc8JhOXav8ufFlSWDsZfkyvDriy/
+         KPG9COJaKJNQ85grfQxrcitvumKr2UNKjj1jnpuzLR4ix4zVUS+TAV4jvwJ3PuJOTOqB
+         YJsVOg4/Ml+bmdZPFQA3JELiQ786ZbYld5hOSfu0WYnyiAiBLIm3/x8/5IL+6Ff4PUH0
+         qbhZsRDJ0ZIGGlCgcEJFhC0Ie+Mih0rk6a86PsZgSuA1k5xy4foTjPJhoERmewaU75yY
+         gPyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781525381; x=1782130181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
+        b=mD+LccAv9fxMh/svnyHkI7i3TJzswNwI++1HoEyPQ50iWMPTqkrJfa2KOHAdsRFzm4
+         PQoqz5ra13vpBtS+DkmN+UM8mmlEr6MZwNCuM8ScSE7ycO9HJPvlsTDrmJeK+gC1uLk1
+         KcFVniH661EKkju6aZo06yFr6Zm0e5bWKadGMAZ58gziYOOuwWKlX+AN7hKGEotP88gN
+         6QSGPpr6COzkJy60+L82JdTprJnJyVCTjT75bNghfS6GOHZdt5Hn4/s/ucGiX+f1sAfC
+         T7n2ARMDJk24JCvEcbm4Llu6Oyp8RF3FCqOxUplGvUgPMieEysiaWjF0ayGqCy8hbkIG
+         oUvw==
+X-Forwarded-Encrypted: i=1; AFNElJ9N9S7HYwGFrS/5kizGL9zRUyIUOxXWXm9kp2jCfoKzzvKsjxPMwaCZ7p+kii654xKE021BFQA6LA==@kvack.org
+X-Gm-Message-State: AOJu0YzyY723IiNMZyhuNTRaaYjZTa31q8fctKaw4sfnhjaQfXoCqae1
+	zNuTwo+5MZ7pcS0cQh+IlNHUjLApRxVQjJIQgwZ7dBpazJovuLLayrKm/EZb1OvqeU0=
+X-Gm-Gg: Acq92OHX9GgxsaItkBoQpqBJXmKsu8lEaZaPmiREHbhsfSl0tQ9+AzJQJhH0/pnMK8P
+	Uzyk01gnxgccO8D2t1XnuGozF5Z0OL+VsAts86zX+2jhE/TZbQNuHcH4/b4paw+loJxnLB7rgwB
+	BcwICXjY6hd8d869bA5kmNtaT21rl+2FGKOnP/fY6vYdMBxQrIFlJs/AFsZefNLkFJbKcbeCkmW
+	u15dopSsTxmrCxQfZchutKH5KAkNlHMH9gDS0BB+2V9UK60HdeH0Xq+6s1Q7v3nQfFTMY/c9nn0
+	DBV79A8sOQ6oWTzM6vhHfYkZ6gdDu0oYSKef6Dliq1tNWQaeodZVTWGZFpChqgkLTuUholKBh3N
+	DH38Esl0nK/q6Yvd9QIRnBistGlGPeUFuv7cY4h3+OcWzVnBz23kS+c7FmWFkevfuC1bJuEd/7R
+	HHaigdlFgE/LtF6q8kh+OFNROXa+YFwaWiAuYgkopCCwaClOS69dqq3UprNgjBPjKUFc6Zp3WEj
+	7TjJA==
+X-Received: by 2002:a05:620a:bce:b0:915:8f08:5fa7 with SMTP id af79cd13be357-9161bf92252mr2134995585a.52.1781525380729;
+        Mon, 15 Jun 2026 05:09:40 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f05fe7sm1176650485a.12.2026.06.15.05.09.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 05:09:39 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wZ68I-0000000DLwG-2JkO;
+	Mon, 15 Jun 2026 09:09:38 -0300
+Date: Mon, 15 Jun 2026 09:09:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Kameron Carr <kameroncarr@linux.microsoft.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"urezki@gmail.com" <urezki@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>
+Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
+ vzalloc_decrypted()
+Message-ID: <20260615120938.GR1066031@ziepe.ca>
+References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
+ <aibhnnDFQTHWMEFe@arm.com>
+ <20260611114954.GC1066031@ziepe.ca>
+ <aixGqCqKkQeDfUST@arm.com>
+ <20260612181807.GP1066031@ziepe.ca>
+ <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check before
- return device-private pmd
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
- ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, sj@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- stable@vger.kernel.org
-References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
- <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
- <20260512143542.izpp3gu4iqxttw3f@master>
- <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
- <20260612024840.qdw76serbgj67yrv@master>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260612024840.qdw76serbgj67yrv@master>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E16A9180006
-X-Stat-Signature: yay1qiannpdgm6a53meaztj5a3znqdpz
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
+X-Rspamd-Queue-Id: AA28A40012
 X-Rspam-User: 
-X-HE-Tag: 1781524700-503075
-X-HE-Meta: U2FsdGVkX1/b0NE4twwKfUdKA2xNljxSShZN84+ec7wBFEj6BDduwxmNwJqSBZNo0WMOzzyOGFMOBnjkaHqYl510dXslGUwjl7we/zRKqoTlsWFZgJnQkyVNXtcXmOm7UHP/s+2TQW3WznsZGJlNQREHrG7hjzucJtCzo5aXXZ6F768uk5iu2USkfc9iLX0fD+p7ABlEPW0bg1z/5cIpiFLLfkVrA0MhAPVQY9s0zjxJPmtCR0xfqK/+THQwkJin9PpNUP/0bxcxqNxde1D4ZwXm0Msxnr3agYwdsdLU+tiOpOOx5bt+wgJ7X1THgqS9qX+VycYCeEj74fee0thUk7EJ2Kdf4ddu/T9GrclSA5xa9qUfqeNPzN/A59VpKgTi54kdPLV+g6rOhnuU4ctXbaUZTaFOrkqDFcR6GvPm6u+XlTRYN8wO0kvHJa3G+JgKdK6AVEBcLZpgjQEsius/NGe2e1DQMsX862g0rvPGXyFi9p4GkFHq2td5sbjW0fhvhBm/RLLtNkHJCRvkShPdZsiCpkCx+AiGeaySNZTz0Fqn4oCQAJ5FxEgrbNy/jE6QJdTNgc7WkvqsTCDoTz1koEff3ak1HgZdfnkE5XMBqk8quXbemqX8gKb7MWCIzokQkvuEMz7ZCOr2eiSCRRcLywsBnF7iOxBiyGQETybPaQt4Qce4R1UeoMYZfITWJMPbnMcMLw8mECb0cAx2QTmMinCnsp1J8cn4Om8V3zmWlh0iUhcCdFmQE67V0iaycZr2f4LvIvtcivvCGQhfJyyO3SD22RlrC9U9LDarGJk6XHhMJuFD048VHxodNA7XKEDzB/9Uy96LP+Ro8fkWeE2Q8BocSFMIIzS5J3CphfFsOcQcmAZ+cjaSyQY+zwOCAmQ8fYle1+nCkhbmhViM7C1LbrVW5/EOd8KOM0dHW9b/WQKoLbbtUMTMUHuYNiDezSdowtf0TjTnUf7b+bKioWL
- v3i/vhEb
- CYYfkSGBPvJ1Qg9/YapQJ+xBtURDWT7lYVRsOu/uFdjp+/HadkNwcR6G3+3i4z+5/DXnYPdXdrUFY44bSC84yrxJq31L+/98m4E/dylrG7lnqvMcsWeh59xrfqkiOqcD0JCyYqnP38rH3SkFKUACAzBN11wuT1B4aeFmFAF7W0v5/fY8h21RqNhsq31/oia/f2S50DmCG9bO+Ijd3PK7RAI/2IcSMy4uyangTlvE/GTcxIpkqE8GJy2HsE4R8pP+S5vbVZxi8ZQA0YnAboZKA2H3tTdaHWPVTwFJpt1sFCSxd66QShGMn+ktHU/elTp1Kt+TRzerVtlRitSLeBYb4RdOV4SQ3tB0xoGg1iiiDHTnECavQiqJHl1uAfYJUrq/Ktr42
+X-Stat-Signature: boun1coa847snd7i1st3xcw9dp3xeake
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781525381-55841
+X-HE-Meta: U2FsdGVkX18y/GbxBoZ6sJm4MDLx1sIUNMdoXZ8Zj/UUv8RERgZodEMJjjGFW7mcRv0vNRhZ3jXAinZVmNnGm/IpbbdjMChZQdJKQ5BVyZwVfWwx/YIIFs8L+MkKB/qp7973s/nny+RuUweVN9/cOFEzfvYZ5PdqyK+JNK15OnZmvizUgTiJhuzQLBFcs8aDWlgGPmT2ekTySoyOZf97EJna+9di/jJV5PoLpkeFpv6mgk9MAOKApzKIyu3gfF/5k1zc49AmjVwGNpVV/zj79jvAwcVYLd0dDuhMkhAIJ9e+ALbAUafKPMKMeIAOeCT9HzCCiLjzLJg62zT7QWYGBGob/HMXBWnkcbFzhbPi9bd5m2Lft8eb50dCRuMc3OM/AxyBCJASSqULD1JP3DpIvUgArsm0CQaPK2faHybKlaG0bl7FerMmhixl/M1UwP91MZNd7E7TusNh6GxXkQ348MFNgMpW6o5cbILNynuagpxeMzLkEurN64cOJ+1QGCmtmlG4jASQytAoMipmX62acuomK8iiNUMAbnRKMWR42zkFvPuYs1GCqm4ou/82Ch2ySVXSkun/aIKyXOgoYPE/P9rUp3/er8gwie1Rg+bAgZOF0MRhY8rUgiaVGFkbS60gRTGmpOyLI9EhJQmToJxYzDmc/OEI3I1yzxy3d5C17emPh0IbMD+N9O2w9PPBbA7fzF3reTxWtK/MekQf0DYE2S6/EWhDDD4C1rZiaBnqY2jBBVZ9slc8FSCM6TjNBnZTf9lsgqQXbwibWZJDbR/qC7FeaSW7StskyBdqL97ZQRw7aTnu/gvLet471N57BCsVxZTe+PxMi2A3gqhx+j+qwxiIR4GAvNtm6f40UVO22eO290i9dQngMh63LZMccXZ04yY5RcjerQHwkYlPmUOAU+B1QO/TmNBS+TnLWmK3CyuxAQd14289CD5rmfcQe8nQOeA+GYMgFxQyfpeTWa0
+ G35TnCcJ
+ VOs8DdvaXZ2MQvksc1bp2wYY5mMnN8jNBVAKZML9ttindWgUuG5+vbStCp5B5+repoF/ifHPuY3IHkkKMrnduZSwW6z3hjs04cruCiFSWw8AA9S/9prVq/JBYmdq6+pYO+FgfxmOeFQOz4xXEZwmQMCgwyAttiLeDLx0Nu1wO/c+TZfdhxnJYoOYJSIhEu4RhI+dRHk/KlcIzPmNokZJoJO8HX1V6ajmm5BPE1nWxGLX86mJMj9m4JGR48TZzpzUJwI/fQBJKHdnSvvHUBklNrDV9Cy8ChyGyRQQ3Uj08kPavYN2oVz+UU2GYTaIvb3O7BFdbQMWZsCjqmKm7WShkyUgn1dZL87LnYzDntuXeG45ajptR3wuGlh5qiQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,56 +135,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/12/26 04:48, Wei Yang wrote:
-> On Tue, May 12, 2026 at 08:55:47PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/12/26 16:35, Wei Yang wrote:
->>>
->>> I tried to compress above logic like this, hope it could look cleaner.
->>>
->>> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
->>> 		unsigned long pfn;
->>> 		bool is_migration = pmd_is_migration_entry(pmde);
->>> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
->>>
->>> 		if (is_migration != for_migration)
->>> 			return not_found(pvmw);
->>>
->>> 		if (pmd_trans_huge(pmde))
->>> 			pfn = pmd_pfn(pmde);
->>> 		else
->>> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
->>>
->>> 		if (!check_pmd(pfn, pvmw))
->>> 			return not_found(pvmw);
->>> 	} else if (!pmd_present(pmde)) {
->>
->> It's more compact, but not necessarily cleaner. In particular, I detest
->> pmd_trans_huge(), we should phase it out.
->>
->> if (pmd_present(pmde) && !pmd_leaf(pmde)) {
->> 	goto pte_table;
->> } else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
->>
->> ...
->>
->> Might work as well. But once we add support for other softleaf types, we'll have
->> to touch it again. So I'd rather just list what we actually expect.
->>
+On Fri, Jun 12, 2026 at 07:06:00PM +0000, Michael Kelley wrote:
+
+> > I thought arches are either preserving the memory content or zeroing
+> > it, you are saying some arch leaves it as garbage? I'd argue that's an
+> > arch bug and they should clear it in their path.
 > 
-> Hi, David
+> AMD SEV-SNP leaves the memory contents as garbage after an encryption
+> or decryption state change. On the flip side, my understanding has been
+> that TDX zeroes the memory (or at least has an option to do so) after
+> such a state change, though a couple of AI chats say TDX also leaves
+> garbage. To be sure, I'd have to run an experiment to check in a TDX
+> guest on Hyper-V.
 
-Hi,
+So there are many bugs then if the pre-zero is lost and you have to
+zero it again. Even swiotlb doesn't reliably zero it's pools in the
+right order under these rules, though alloc coherent does get it
+right at least.
 
+IMHO this is too sketchy to be usable and optimizing for AMD is not
+the right call, IMHO.
+
+> > Otherwise this sharp edge is not documented and we have many other
+> > places getting it wrong, eg system_heap_allocate() doesn't re-zero the
+> > memory after decrypting it.
 > 
-> I may not follow you. Just want to confirm whether you prefer this goes as a
-> fix first, or you prefer it goes as what you suggested here as a cleanup?
+> In the Hyper-V code that uses set_memory_decrypted()/encrypted(),
+> there's always an explicit call to set the memory to zero afterwards.
 
-I guess we should just do it properly when we're touching the code already.
+Good for it, maybe next time improve the APIs :(
 
-Does that answer your question? Will you send a proper patch?
+Even more compelling that hyper-v should be using the dma api..
 
--- 
-Cheers,
-
-David
+Jason
 
