@@ -4,139 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EEEFCD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:01:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48716CD98C5
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 679E26B008C; Mon, 15 Jun 2026 06:01:46 -0400 (EDT)
+	id 8A66C6B0005; Mon, 15 Jun 2026 06:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62AFF6B0092; Mon, 15 Jun 2026 06:01:46 -0400 (EDT)
+	id 87E9D6B008A; Mon, 15 Jun 2026 06:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519CA6B0093; Mon, 15 Jun 2026 06:01:46 -0400 (EDT)
+	id 793CF6B008C; Mon, 15 Jun 2026 06:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 422C86B008C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:01:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D23B21209DB
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:01:45 +0000 (UTC)
-X-FDA: 84881705370.20.72EFEA3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 15A308000C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:01:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/TxuAZi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B7FF6B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:07:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1473B1C1F91
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:07:39 +0000 (UTC)
+X-FDA: 84881720238.08.58EE8D0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C51BC1C0003
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:07:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lIWfMw4+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7GE2tcE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lIWfMw4+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7GE2tcE;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781517704;
+	s=arc-20220608; t=1781518057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5AbWeqS/xKwakGdjqbnfqVp4y0udwwlVR+ZRCrbcWMg=;
-	b=caBPPwMcuruk3J5wi0m04IXO66E1+zqup1FCk8qiQlx5G4PeAgxUyfCohqwWbeq6kvqi1X
-	SLITAFmlCICejNE075xquWWuNks9xDnYjCJoe6OJmHPE5eoV2crz2MWjqaFS68b3bdKz4W
-	zc+bwIG3OtZLPXeGoFCl+GM+BzZJ3/4=
+	bh=Bcwcuid5G9Jv1yAJ2BEQE/cLseUTL/2R5NAEuMMhL8s=;
+	b=eCh4OngUVRhl2IjnKXkTl9pBrYW4JR97DGVlIgbYeljA9KgT+U4T0mi0LgmAsPMrS4jZLk
+	BhaHHBcOpYy/e4f5MJ3eb7qRGMoliyiNhiEH2BVpi9kpGL0hmPGtN6S9RIVQU7QvX4D02W
+	Wdv2wZQIGNEWRgG5AU3/yCUoLNzo0tI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/TxuAZi";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lIWfMw4+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7GE2tcE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lIWfMw4+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7GE2tcE;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781517704;
-	b=RBt5LnjfV2UZ2O/p5H8o/3Cv7s4tJu8FhZDxcggoM0GqphVxEtMvoZ+xMKUKUwdGcm3veN
-	8/r81DnujmomOljW9dDSddIGk9q21JXNzvMg8Gor0pZ9L3pfsMmcdsL2yLgr2HdiAA/Sw6
-	1eji35NBwj82qdQgG2DAlIp9d1BGd54=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7AEB96008A;
-	Mon, 15 Jun 2026 10:01:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83EF1F000E9;
-	Mon, 15 Jun 2026 10:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781517703;
-	bh=5AbWeqS/xKwakGdjqbnfqVp4y0udwwlVR+ZRCrbcWMg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H/TxuAZinPO4H71+nK3269iPNOuT97g11xD6SDqSrKd7T3fxvRlFJgHlI4Gma1yQV
-	 /IYJiZhuXR0LLW1db5XGNfABDZkZCbh02bJjkzAhdBC/wFQKZ5hMtroYD8Wnhp24gu
-	 71b1QHLdRCkyNprqN9ZxqsFFnipGqqVARGdJjt2yMQJiCv5i1oBLvxZRCQWpgx7R0L
-	 HUowHP1uxPwScLWaD7ejXYJsITXHuJpM+dl6x1z5uWY9GmEGuZzrVv+OlAWgTghry+
-	 RW1RiJ3Ub64ulmOshHoEtuJc3EYJhRledrDxodS8kEhTft/GYgqYixnRaKiUu+tFRO
-	 wlcUW/8WnRa0g==
-Message-ID: <1c63fbca-6ee4-466f-bfb5-5ff25a847607@kernel.org>
-Date: Mon, 15 Jun 2026 12:01:38 +0200
+	t=1781518057;
+	b=T/rh1DWEbmRjs7O4YiPKyn2E5cFoKmw0wHF1l2zf0nh4WiTCMbmxSNxMtkl4levsfzxxUB
+	pn/Dy08kn8FbesXV05tY8zxI5gBf6Ns/xEitfB5ZCB0BU0YBNPVzHq3QiN9FMYDuRCl1Ud
+	nZT1T5TlBwDa9p8fc9qYn+aJmSq/Fmg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 05D8F75938;
+	Mon, 15 Jun 2026 10:07:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781518055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bcwcuid5G9Jv1yAJ2BEQE/cLseUTL/2R5NAEuMMhL8s=;
+	b=lIWfMw4+rNTJWFvjKaMg19WvN7uXYaEL/vc9yYUWlX3NTQiwVXNqsO4Yag5WnpDkDGWN1u
+	FCNRj/ypXIisZylFFLwG4qDxMD9EZSd9+vBmHD5XQhE3yx6oTR2bhoM+1WC8bLrpiLLELc
+	nqLtRgTBmJmPn73fZ8TQ7ii60F9oxTM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781518055;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bcwcuid5G9Jv1yAJ2BEQE/cLseUTL/2R5NAEuMMhL8s=;
+	b=t7GE2tcEHcCkbYQInDvZT+SaB70th4oyF0Wlm6kqpMdYvUz/tgyXUOBnNKnZR3Pxrjy2HY
+	DOwTWKUzN0fOs+CA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781518055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bcwcuid5G9Jv1yAJ2BEQE/cLseUTL/2R5NAEuMMhL8s=;
+	b=lIWfMw4+rNTJWFvjKaMg19WvN7uXYaEL/vc9yYUWlX3NTQiwVXNqsO4Yag5WnpDkDGWN1u
+	FCNRj/ypXIisZylFFLwG4qDxMD9EZSd9+vBmHD5XQhE3yx6oTR2bhoM+1WC8bLrpiLLELc
+	nqLtRgTBmJmPn73fZ8TQ7ii60F9oxTM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781518055;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bcwcuid5G9Jv1yAJ2BEQE/cLseUTL/2R5NAEuMMhL8s=;
+	b=t7GE2tcEHcCkbYQInDvZT+SaB70th4oyF0Wlm6kqpMdYvUz/tgyXUOBnNKnZR3Pxrjy2HY
+	DOwTWKUzN0fOs+CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB0E0779A7;
+	Mon, 15 Jun 2026 10:07:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hHJGKuXOL2qLZgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 15 Jun 2026 10:07:33 +0000
+Date: Mon, 15 Jun 2026 11:07:31 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH net-next v2 0/2] net: isolate SKB data area allocations
+Message-ID: <ai_ObgbjlahfXs37@pedro-suse>
+References: <20260611124642.345400-1-pfalcato@suse.de>
+ <20260613113303.7562bc59@kernel.org>
+ <ad862f5c-34e4-48d6-8d8b-f02bdc02d7d6@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/16] mm/slab: replace struct partial_context with
- slab_alloc_context
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-7-7190909db118@kernel.org>
- <f9b7935c-f5f0-496c-b55e-1f3feee5c87a@kernel.org>
- <CAJuCfpE3XfxLmV-DzM5nLqYqGsFJThr-1i4bmEEqMpGZ28RLFQ@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <CAJuCfpE3XfxLmV-DzM5nLqYqGsFJThr-1i4bmEEqMpGZ28RLFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad862f5c-34e4-48d6-8d8b-f02bdc02d7d6@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C51BC1C0003
+X-Stat-Signature: cdrdijrr6ohjx5fs5xc45uiaiqn7oxku
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 15A308000C
-X-Stat-Signature: r7xwpcc575ftt67ran9f3rry8fm7qf6g
-X-HE-Tag: 1781517703-153229
-X-HE-Meta: U2FsdGVkX1/lIyDNbimGTzR31VD439u0scVMJRxi8nDtBWwCm/DUPNI3Mjrx7/sDJcwoXpu/1wpchsJDHsA57aF1BKr0gTNvhPZjcZ5dn64RT9UP4EIMcUIzv77ocAuyEMgHJsPMFLURDZrMUnoNFA9nV0tVXna5UU7HHlW0TsAsL4fgZl+Ftdr88rt1BPVAr4jOXq4+iO1TVWPBKnj1J/HfHjh33sF4YK/vhAU+6NrpveHDfdG7HKLbKbL+MdehKXTf/2NHTyeHb9W1VUEP3/mUKm02gA+w/Ef5J25Sgb9mjJ5EM8J7U3AIiydNjSVW4q20c5/SoGQb3Xaf3ypq0Nd8ca4RTqal2pOlK2lhwbpIvkVtu4VbA5RyeiXCvKbkdQE5w1aMqN5FSdtTghsWU9M/Z1QXKZALK9KT1jX+ghmq2KDZLQKmmovMy3ytdoFu8si53PQVaZE/504eVknrE4nft5nnDVlm3Cy8IvIunN6ZFfEtpxTulqIHFENcgY7gXde0sTA1KJF+bBinDixDl2peIjtsCsUT5+kblUaf8I+6GAg4L9sjorsgiqFrzyazhLWalfBXoA68QGy/kGxJA4PxNDb7nmVAD03i1cFonJ/nuanhkOcKSyphATU+szr1dbztrHjMuYxSUzZgwK8gFTjCZBg2aAdeGsY3prn5gFOtULjxq41ktYYOCaYjXFHHZS/G+IjnlVwDZecR1GIsbfXMDF8NblmQs2Q+4JQiFVxo9yu+pzwI/MHpv/9R4QisKr8wgQcqzzfsdp6+izTfKB7iyMbp+vb3+YxEKgn/o4V+B5CUlnkjOUXkdv5KdaXImLcNE048DTIkLD8amSpSr1xu22Ptpmm7geOlTQoEGGX+mBs27G3eVj9KBInxQB91mRpHTahb52zeC0i8YBwSyL3BTyqh7X1CjmCI4+smAqxBIaKXnA87JFsepSVUYkgT5jk3EJQ0WDyaAzuHJ/X
- Y6pWwgab
- k2vLNJWSjZjyauX7QabAS7aLHHpnYNZ80gN5ix8ZJHuflVQ4bNAjIHJBedJI/Pcp5CYFSb6ezkTrFVE0Lt+UgxvOLOxzMzXttlBGJjWXe+mRpu8joGDKW2OfZu574XqeLV8IzIUn4MRW4+IWToyEjtmZUemQs48VxzjyNWRUVvuA+JmulHBfzfkNSBvNGb9JwrmkHPrVW80Ne/OOZ0F9e9Z3N00IYUDboiCvCMyDZ5QO9gyng4OO+HcYcfBu0Ntf0yjYrPCLg/6l6YetZ+SZfe81SxebB5wuNL5As0D3w/ahMqeqxtqLG29Sfo+SMiaUe4KJiqBeSBcSBT2OBDjHFKRfGh97reRcXMxQDp2H2LpXbGolWwXobEhM/jlS3JzTqQHSK
+X-HE-Tag: 1781518056-294921
+X-HE-Meta: U2FsdGVkX180ND2xhzw/bQLiSDu+NOhZW3vD+IClyg87x9ufdJ+R3m3Hnj+DxPPGT2IAqIR+p1D3QTqSkUqkUUkKBepDUokfHRdq08KMQ0MVk6YEkNjSTAK4Ca98rALOKJf8REvHF1KoIN5JmgHTdYg2a/J4JVbqhjk9x96ZqTY3z4vZvnv2vZnRLb6QX2MAG3QQWUQfLtN1pspwqZRHjyZiEN0PC2/Ys7oJUbi4WtMi946YVunrHAZVzICuWPsua5Azknp09KhoPr6Mqzd0m/LN+Tc1MBBFFzJ22gEAFTb3F9xZ1hi8QaBgdy9xHUfPwagy3wWlYWq5sGrefnyCkidktVig3plT0NN02zXdJuwEAm7jFrsuH9yeeQd7qmYQr1QoIlwFqF5Cps+FTYBLXPsH6R4yUeLCDylyw4QhsjE/8/acxghDZDHLCQZ3jFXeBiUjIZix7uYYaW+gxH+lZ3dm0WZeUpyxZhD9sq5mnu7voeT7epzUWbyGfpYtgTjxveJLJgZ0i8i/Q4rTPefmJauQuq+rCZDdbWE+WIiGuzCTAchJq1JXIwDDgQJmA8uctbNHujtR9fqf+Z3zoSjN9PiGpSJw3gH7U3rmwri6zQm5vV94pXsQlm5g065/CoVLRUmYeGSWFNqDf6G6ZAaSl5X0qwxtTrRjT56+jnsq42hCFd7VphnRalb9+r6dI1JYQpN67kKVnZDRnL7AadlOnZUQdk0B6UbVX+KN/nrMfn6zTQ74933D15aoi29XHWy9+q2HPIqB76OG6QjwVkByuP9pZVYirO746wKfc28IEyLzrlpdpuoeMbr6lMbplFcICPApyTgK88uvKkqMHR+m4ttPn+xlqFcNQ5BxKI9j4RcLYJU1UGJOfMc6ATZawNsjAUBlN21FD4zIElNFqD5BENfJi5v1iWz2DpSoufK0Ofhb+52Vj+oT6zxygv2Eu1t4/FRM//6oUBKdnCK9ikY
+ ETCSL4Nl
+ Fl2gGXjjDo+MsBM+LB/uByA0x8XQz7h1jZnSnPZG5eWhU5F3IXzbdtE1Zvhm/f0XsfESPy6tl86pjVEpSYAD+ADRPdBeXFcshXWKRkQIc1ptpfnXdbuKfIwFudJAN2rIRfYHoaYa1Vj3IZLyMR9x/eNtL4vd/cbVVZ2C5UU5GGwiZ5bagayzpokWvYiv/rtAzPS2A5Fz8TyxoS2ASqwPlRowBP95aPvkgWycsTdCqnqyjnUncxM+iBrgju1BiTHknfvxSE6fbAYf3GL0X1yjTlQpCEIaDrocVvjetltkG5diNT/w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,50 +139,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/15/26 04:36, Suren Baghdasaryan wrote:
-> On Wed, Jun 10, 2026 at 11:05 PM Harry Yoo <harry@kernel.org> wrote:
->>
->>
->>
->> On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
->> > Refactor get_from_partial_node(), get_from_any_partial(),
->> > get_from_partial() and ___slab_alloc().
->> >
->> > Remove struct partial_context, which used to be more substantial but
->> > shrank as part of the sheaves conversion. Instead pass gfp_flags and
->> > pointer to the new slab_alloc_context, which together is a superset of
->> > partial_context.
->> >
->> > This means alloc_flags are now available and we can use them to
->> > determine if spinning is allowed, further reducing false positive "not
->> > allowed" in the slow path due to gfp flags lacking __GFP_RECLAIM.
->> >
->> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> > ---
->>
->> Looks good to me,
->> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+On Mon, Jun 15, 2026 at 09:28:39AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/13/26 20:33, Jakub Kicinski wrote:
+> > On Thu, 11 Jun 2026 13:46:40 +0100 Pedro Falcato wrote:
+> >> Subject: [PATCH net-next v2 0/2] net: isolate SKB data area allocations
+> > 
+> > This doesn't apply to net-next, does patch 2 not apply to mm?
+
+Ugh, annoying - really should have rebased on net-next precisely
+(vs just linux-next).
+
+> > If neither tree can take both - maybe MM can take the first patch by
 > 
-> Ah, nice! The conversion I was anticipating in the previous patch...
-> I would do this removal of partial_context as patch 6 and then convert
-> ___slab_alloc() and get_from_any_partial*() altogether in patch 7. I
-> think that would keep the behavior of the ___slab_alloc() more robust
-> throughout the patchset. But I would say it's nice to have, not a
-> must-have.
-
-OK, so I switched the order of 6 7 and all the changes from
-gfpflags_allow_spinning() to alloc_flags_allow_spinning are now in the
-newly-later patch; the "replace struct partial_context with
-slab_alloc_context" part has no functional changes. Verified that the end
-result is exactly the same, and only updated changelogs a bit.
-
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> OK I'll take the first patch through the slab tree in the planned second
+> next week's PR.
 
 Thanks!
 
->>
->> --
->> Cheers,
->> Harry / Hyeonggon
+> 
+> > itself and we will queue patch 2 after the changes propagate during 
+> > the merge window?
+> 
 
+It's all the same to me, I'll have to resubmit the patches when the merge
+window closes. So whatever is easier on the maintainers side sounds good to
+me :)
+
+-- 
+Pedro
 
