@@ -4,130 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8901CD98C7
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 12:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E444BCD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 12:18:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 088446B009B; Mon, 15 Jun 2026 08:09:44 -0400 (EDT)
+	id 242E96B0093; Mon, 15 Jun 2026 08:18:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05FFD6B009D; Mon, 15 Jun 2026 08:09:44 -0400 (EDT)
+	id 1F4236B0095; Mon, 15 Jun 2026 08:18:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB81E6B009E; Mon, 15 Jun 2026 08:09:43 -0400 (EDT)
+	id 0E35B6B0096; Mon, 15 Jun 2026 08:18:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DAFBA6B009B
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:09:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99E7DA09CA
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:09:43 +0000 (UTC)
-X-FDA: 84882027846.20.BCF890E
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AA28A40012
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:09:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HzwgEsTm;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF65C6B0093
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:18:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90FCA1C2E47
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:18:24 +0000 (UTC)
+X-FDA: 84882049728.19.C020A5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AC4721C0013
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:18:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MzBocGIR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781525381;
+	s=arc-20220608; t=1781525902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
-	b=QukhFcVYmRhoPmczhhf9ZsjBsPWAtWqEMdX5exwjlFwjJztjYsmsKi4vF4ERRfQdmEL3/v
-	1yiWhRNBnaVIImJo3PKVN1tlhrU6OxyFimqC6cXqf8bSM+JJVKvyAgRN/MC8gtBzHi79rU
-	NUzJI1fPhnYOPuLzwqg1G72PxMl7rUU=
+	bh=RNWGwFSKjA3Zc2avqSM5jAetNKC3W00VshxznT6QQ5o=;
+	b=SaOz7me++PFpiqTuwV0Fhhh5nSQHrS+LExlb6HmZP2Djx0M3A/RM2QAYHJx2n5keglUr6J
+	cbZ9F4qtBX/OZv7vVx2m9HPYxxGblBiYOZSPleBSXZmp/5M30AhKdRXiFk/6B64wmHM4hE
+	2zzOLQZku6lJU/yjkWxTEIpTZwnDM84=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=HzwgEsTm;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MzBocGIR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781525381;
-	b=qsFAU6zsrSlGgNM0N70L+xmqxGVjqKuBZafWh+zalXh2VtXujdw2fmYuJppET3U6JrMRyl
-	3sNIov+vxUWoovb51gq+uYrLBuTU5XIrvTrnv8JgjX5noiwaulBV4X71Fy9zaYyXAGrKm2
-	ZRALCSEvPp3B4s51wkR2s+5cIDcoqsM=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-91588056619so229649785a.2
-        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:09:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781525381; x=1782130181; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
-        b=HzwgEsTmbfLyjLq5gplfLTID7rGnDamnL+hZ1R3des5xQaEQqdStUqYyZEND51eBr5
-         bRXxWoSHlsbnHtP8XmA+EU98xAlJKXWC2zvZaqvAMc8JhOXav8ufFlSWDsZfkyvDriy/
-         KPG9COJaKJNQ85grfQxrcitvumKr2UNKjj1jnpuzLR4ix4zVUS+TAV4jvwJ3PuJOTOqB
-         YJsVOg4/Ml+bmdZPFQA3JELiQ786ZbYld5hOSfu0WYnyiAiBLIm3/x8/5IL+6Ff4PUH0
-         qbhZsRDJ0ZIGGlCgcEJFhC0Ie+Mih0rk6a86PsZgSuA1k5xy4foTjPJhoERmewaU75yY
-         gPyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781525381; x=1782130181;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xOdMIsFz2F8FrAy6a0jOSLjcHU/RXuOpv1/VNxSWE8o=;
-        b=mD+LccAv9fxMh/svnyHkI7i3TJzswNwI++1HoEyPQ50iWMPTqkrJfa2KOHAdsRFzm4
-         PQoqz5ra13vpBtS+DkmN+UM8mmlEr6MZwNCuM8ScSE7ycO9HJPvlsTDrmJeK+gC1uLk1
-         KcFVniH661EKkju6aZo06yFr6Zm0e5bWKadGMAZ58gziYOOuwWKlX+AN7hKGEotP88gN
-         6QSGPpr6COzkJy60+L82JdTprJnJyVCTjT75bNghfS6GOHZdt5Hn4/s/ucGiX+f1sAfC
-         T7n2ARMDJk24JCvEcbm4Llu6Oyp8RF3FCqOxUplGvUgPMieEysiaWjF0ayGqCy8hbkIG
-         oUvw==
-X-Forwarded-Encrypted: i=1; AFNElJ9N9S7HYwGFrS/5kizGL9zRUyIUOxXWXm9kp2jCfoKzzvKsjxPMwaCZ7p+kii654xKE021BFQA6LA==@kvack.org
-X-Gm-Message-State: AOJu0YzyY723IiNMZyhuNTRaaYjZTa31q8fctKaw4sfnhjaQfXoCqae1
-	zNuTwo+5MZ7pcS0cQh+IlNHUjLApRxVQjJIQgwZ7dBpazJovuLLayrKm/EZb1OvqeU0=
-X-Gm-Gg: Acq92OHX9GgxsaItkBoQpqBJXmKsu8lEaZaPmiREHbhsfSl0tQ9+AzJQJhH0/pnMK8P
-	Uzyk01gnxgccO8D2t1XnuGozF5Z0OL+VsAts86zX+2jhE/TZbQNuHcH4/b4paw+loJxnLB7rgwB
-	BcwICXjY6hd8d869bA5kmNtaT21rl+2FGKOnP/fY6vYdMBxQrIFlJs/AFsZefNLkFJbKcbeCkmW
-	u15dopSsTxmrCxQfZchutKH5KAkNlHMH9gDS0BB+2V9UK60HdeH0Xq+6s1Q7v3nQfFTMY/c9nn0
-	DBV79A8sOQ6oWTzM6vhHfYkZ6gdDu0oYSKef6Dliq1tNWQaeodZVTWGZFpChqgkLTuUholKBh3N
-	DH38Esl0nK/q6Yvd9QIRnBistGlGPeUFuv7cY4h3+OcWzVnBz23kS+c7FmWFkevfuC1bJuEd/7R
-	HHaigdlFgE/LtF6q8kh+OFNROXa+YFwaWiAuYgkopCCwaClOS69dqq3UprNgjBPjKUFc6Zp3WEj
-	7TjJA==
-X-Received: by 2002:a05:620a:bce:b0:915:8f08:5fa7 with SMTP id af79cd13be357-9161bf92252mr2134995585a.52.1781525380729;
-        Mon, 15 Jun 2026 05:09:40 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f05fe7sm1176650485a.12.2026.06.15.05.09.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 05:09:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZ68I-0000000DLwG-2JkO;
-	Mon, 15 Jun 2026 09:09:38 -0300
-Date: Mon, 15 Jun 2026 09:09:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"urezki@gmail.com" <urezki@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <20260615120938.GR1066031@ziepe.ca>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
- <aibhnnDFQTHWMEFe@arm.com>
- <20260611114954.GC1066031@ziepe.ca>
- <aixGqCqKkQeDfUST@arm.com>
- <20260612181807.GP1066031@ziepe.ca>
- <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
+	t=1781525902;
+	b=eF3MBQO/NgcZhQlEvkb1/VYCDiPJjhHw30aIBYY5ZaD2DjVBHFLBkOP1MuaEz54Uyn5bLv
+	dVJzJU7cx00+YUjDxFfISkvddC5PDJtMMU4jJTtPKMtp2hNYeTBngrGKD5xXBZXY/z1V0i
+	b/O7G4UUnVYDuTWyCnOYwxHZWm1AOVM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D780D44507
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:18:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF7D1F00ACA
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 12:18:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781525901;
+	bh=RNWGwFSKjA3Zc2avqSM5jAetNKC3W00VshxznT6QQ5o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MzBocGIRimUIfECbau7gMyNWTks71OHqgCltInHbH4cnm/Idzbdfeb7RKZYhOIByJ
+	 JzKHZMWHGJ3Q2sQPrO+iv19T6rlkV/TjkzGr05h9b2IJqaLUQlI0GUuEtzkrtInWHi
+	 uEWjj3l8bZ2WmPltYCPUolqregZGYwx831LEJXMtal4gQJYqUMSgG27sq67PXavBOk
+	 ev2O3lgpQdGNwQllsPf+YsVrIAjal5rSq4NRuDOKM+5R7MFhevolIg5xgTKkca9mxR
+	 pMWhMPjo/QWSjcG99wiXHYhzKrixbvggtWoZ3173NsMLZWqCv1CKLiMl10B3geDUYs
+	 m3uXwKWtd7ZaA==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-68d234218bcso5776108a12.2
+        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:18:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+bDMQKOFs9aa3pxoLuXasiH7orQTs+kQ3rYBEBtBJ/Z92HYNME8WZG3PSRsyZ9MF3L1dQVGtfDsA==@kvack.org
+X-Gm-Message-State: AOJu0YxgxwltqjuUeWZlE+e4AlpDa7OwOPnZNl6nxB0puUHQbtMqLGi0
+	heT9QZ77DmDJJvDXIXF8Lh9ctP6XnjcE9DY3JxWd0R1q1MXr7cy7xNoTcCvrl3SPj69ulMoMZPT
+	fwVcYakbC5NwO5iePt3b9l8wDQ0A4EWQ=
+X-Received: by 2002:a17:907:ab8:b0:bed:eb8b:d404 with SMTP id
+ a640c23a62f3a-bff4a8fbaddmr334747266b.16.1781525900353; Mon, 15 Jun 2026
+ 05:18:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157EC032AD55D182FBC1318D4182@SN6PR02MB4157.namprd02.prod.outlook.com>
-X-Rspamd-Queue-Id: AA28A40012
+References: <20260608210618.3437216-4-willy@infradead.org> <20260613094103.14051-1-lance.yang@linux.dev>
+In-Reply-To: <20260613094103.14051-1-lance.yang@linux.dev>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 15 Jun 2026 21:18:06 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9GG_k62pJGrpoimk_zx8ehDmXfKs2C+TLkUtrmFRW2ew@mail.gmail.com>
+X-Gm-Features: AVVi8CcWt8LeBE3YYhybMNRnqvhqv1HIlspL771HkR6o6Ca0Qo3nSFmNxCTZ9xY
+Message-ID: <CAKYAXd9GG_k62pJGrpoimk_zx8ehDmXfKs2C+TLkUtrmFRW2ew@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] ntfs: Use zero_user_segment() in handle_bounds_compressed_page()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: willy@infradead.org, akpm@linux-foundation.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, hyc.lee@gmail.com, 
+	usama.arif@linux.dev
+Content-Type: multipart/mixed; boundary="0000000000007343b4065449d2b0"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AC4721C0013
+X-Stat-Signature: ou81jn9miwhkwr9igbrashqp5tib3kim
 X-Rspam-User: 
-X-Stat-Signature: boun1coa847snd7i1st3xcw9dp3xeake
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781525381-55841
-X-HE-Meta: U2FsdGVkX18y/GbxBoZ6sJm4MDLx1sIUNMdoXZ8Zj/UUv8RERgZodEMJjjGFW7mcRv0vNRhZ3jXAinZVmNnGm/IpbbdjMChZQdJKQ5BVyZwVfWwx/YIIFs8L+MkKB/qp7973s/nny+RuUweVN9/cOFEzfvYZ5PdqyK+JNK15OnZmvizUgTiJhuzQLBFcs8aDWlgGPmT2ekTySoyOZf97EJna+9di/jJV5PoLpkeFpv6mgk9MAOKApzKIyu3gfF/5k1zc49AmjVwGNpVV/zj79jvAwcVYLd0dDuhMkhAIJ9e+ALbAUafKPMKMeIAOeCT9HzCCiLjzLJg62zT7QWYGBGob/HMXBWnkcbFzhbPi9bd5m2Lft8eb50dCRuMc3OM/AxyBCJASSqULD1JP3DpIvUgArsm0CQaPK2faHybKlaG0bl7FerMmhixl/M1UwP91MZNd7E7TusNh6GxXkQ348MFNgMpW6o5cbILNynuagpxeMzLkEurN64cOJ+1QGCmtmlG4jASQytAoMipmX62acuomK8iiNUMAbnRKMWR42zkFvPuYs1GCqm4ou/82Ch2ySVXSkun/aIKyXOgoYPE/P9rUp3/er8gwie1Rg+bAgZOF0MRhY8rUgiaVGFkbS60gRTGmpOyLI9EhJQmToJxYzDmc/OEI3I1yzxy3d5C17emPh0IbMD+N9O2w9PPBbA7fzF3reTxWtK/MekQf0DYE2S6/EWhDDD4C1rZiaBnqY2jBBVZ9slc8FSCM6TjNBnZTf9lsgqQXbwibWZJDbR/qC7FeaSW7StskyBdqL97ZQRw7aTnu/gvLet471N57BCsVxZTe+PxMi2A3gqhx+j+qwxiIR4GAvNtm6f40UVO22eO290i9dQngMh63LZMccXZ04yY5RcjerQHwkYlPmUOAU+B1QO/TmNBS+TnLWmK3CyuxAQd14289CD5rmfcQe8nQOeA+GYMgFxQyfpeTWa0
- G35TnCcJ
- VOs8DdvaXZ2MQvksc1bp2wYY5mMnN8jNBVAKZML9ttindWgUuG5+vbStCp5B5+repoF/ifHPuY3IHkkKMrnduZSwW6z3hjs04cruCiFSWw8AA9S/9prVq/JBYmdq6+pYO+FgfxmOeFQOz4xXEZwmQMCgwyAttiLeDLx0Nu1wO/c+TZfdhxnJYoOYJSIhEu4RhI+dRHk/KlcIzPmNokZJoJO8HX1V6ajmm5BPE1nWxGLX86mJMj9m4JGR48TZzpzUJwI/fQBJKHdnSvvHUBklNrDV9Cy8ChyGyRQQ3Uj08kPavYN2oVz+UU2GYTaIvb3O7BFdbQMWZsCjqmKm7WShkyUgn1dZL87LnYzDntuXeG45ajptR3wuGlh5qiQ==
+X-HE-Tag: 1781525902-983866
+X-HE-Meta: U2FsdGVkX1/lramVHIUo2/xLdLk/hoq5nJI8zXBtHp2vRnbO+LU7Aoh/qH2HCNdng0c/qP1DihydffC364PWyIHw0nrQUPtGcs2W4hL+AnGGZHJAEY137quX4JBb34mpPTLONjhWG7qN/5iGHewlx+/usWwsST9cPjASyNzB17rbM77+TNq5lfypFIfkMh3gfJV/CAthcUeHEab1/o6z6PknA5w76stnW8XxawVPRj/qcTRsHV9/3SqpnrctXeCwYEHula3uuSMIHL17ujOQFX0VaJiOCPGN/0OlB1nbifZ5fh4Y74YgrytTpJp1VwXZpIW+jvgjmL0x/T3Vi0BjmHSXfabTXpRXK2XrBO8q6Ag8ff/dpttMlyGb7JlvmMSnUZjY+hKQ60vtN51qrYsWbTCSdrHznc8ogtpUTq4UJtcD+YcYIT3sBtFUjRjzAeAEfdIyLSmz8imdk3G86JdQGEsjt8CZZXfYmsxtFj8xZpJ9E6df2Fi0PHibQ6MYvetwg23KIh7fIYNL5ktfNPkvteTVccUEpHVfWcZeEgOk0IRBvquVkciapwRpLBEq2qzO2wBQrDwLgYyYf0QyRXiAis8FShCQZHQRhMRHs0rVHnNGs30BX8VEOI9+7OEz0Du84NOZwxWm/0XiMOvLiOrbntnoJ9XdKNI2ifnckbFHhjVK1/m1TqyscXkm3YQP5enlYWpX2x0yd2AwjNNzNH4h7U3wnhXsYNIH1xatBo6MHS9XlcyafY+btCVqAnrA/A6TfYlaT+Ppt+Zukl6p7mz4U70/yrPLrA63y3DoVLFbJnKeDWFYkWdeUdwxUfyzCTJi7kCE6LOigSBXCxxEQ5LnIjvXXZGCqL4OBN4okuiSrXVJrSCpMcTbh8WRWJtwRTxgDGuqICeTbLKtq9MVtGpcxKBdQg10GFFADXHG+7RQDAL691lqLVip34TrgGdjA6gafzi17k/qfksytW057Bf
+ o9nyZgqp
+ 2ZFebVd6jNzvP+RoeFtI6kLASlAufs7vQpiP1raZBh1VlU1rCQxsrrhx0/2zxOucLTUyoZm622vR9DS5SBAQRY7C36NOI7s5bXUqdsWidxFeMza+8Imo2lQNHSJTQiU+AsE+r1Yexv2MsRe/BIVF7VA+fbF6KH9HlvTTEXfMmdqrCPwjhmz8IuSmaPlzUR5lYRlhrnLCIolzPMaul3IcjB+iWHGkhbOjo/5d8R2N2W7YbWEHAsyf08sOLY1hY7UaBoUY9iDg3NYNReVwH5UeFcBguQJHHosK5VT+07Z7jkiIem/fn+kYaUn7UIQkcBhGlxwWGFSgwc/RP0Vb1IQ62ioVbDMeyPXbhSeXnhNglxi5GTNGYgyzSLbcFs51qywIYrjA2TbuYnBLJOdHLMLxzXeD/5KJQ6u/HFx77JhMXWXlCyLLT9cMJwZGSJnfQvYf87TJFM6/GR32wGUe9DdXu6xuIKaVtW92qiFeyDwcmgpIU8enJOZGEBYLAUFcEq12yMsDGA6skQCwUw50cDis2GSwlslktqBsI8vKmlsf8nyDkdE9whTpdap7Ef5Q2JWITYJnvwSIieesa9hlKpCVwEG6+S3XaPaSldMO5CdzLUfHZdfpXbBgmkPKrh+4+qwPpLG4iTunt1jiCO9B82h9bWHWXuaH8d0CrszMF08Zd8Ymtnu09IPBUjZuj5BdBqzAoDr59/rqESkMNLQt+IcMDLBDs1T/p2dsrTFBJs6z5oFpU2G8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,37 +101,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 07:06:00PM +0000, Michael Kelley wrote:
+--0000000000007343b4065449d2b0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > I thought arches are either preserving the memory content or zeroing
-> > it, you are saying some arch leaves it as garbage? I'd argue that's an
-> > arch bug and they should clear it in their path.
-> 
-> AMD SEV-SNP leaves the memory contents as garbage after an encryption
-> or decryption state change. On the flip side, my understanding has been
-> that TDX zeroes the memory (or at least has an option to do so) after
-> such a state change, though a couple of AI chats say TDX also leaves
-> garbage. To be sure, I'd have to run an experiment to check in a TDX
-> guest on Hyper-V.
+On Sat, Jun 13, 2026 at 6:41=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+>
+> On Mon, Jun 08, 2026 at 10:06:13PM +0100, Matthew Wilcox (Oracle) wrote:
+> >This fixes handle_bounds_compressed_page() on highmem memory
+> >as page_address() does not work on memory which has been kmap_local(),
+> >only on kmap() memory.
+> >
+> >Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> >---
+> > fs/ntfs/compress.c | 18 ++++++++----------
+> > 1 file changed, 8 insertions(+), 10 deletions(-)
+> >
+> >diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
+>
+> Just a thought.
+>
+> This file still seems to have a few more page_address() users where the
+> kmap_local_page() return value is not used.
+>
+> Should the rest of them be cleaned up in this series too?
+Matthew previously requested to fix that. I am waiting for this series
+to be merged before applying the attached patch.
+Thanks.
 
-So there are many bugs then if the pre-zero is lost and you have to
-zero it again. Even swiotlb doesn't reliably zero it's pools in the
-right order under these rules, though alloc coherent does get it
-right at least.
+--0000000000007343b4065449d2b0
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-ntfs-fix-kmap_local_page-usage-in-compress.patch"
+Content-Disposition: attachment; 
+	filename="0001-ntfs-fix-kmap_local_page-usage-in-compress.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mqf6g5nd0>
+X-Attachment-Id: f_mqf6g5nd0
 
-IMHO this is too sketchy to be usable and optimizing for AMD is not
-the right call, IMHO.
-
-> > Otherwise this sharp edge is not documented and we have many other
-> > places getting it wrong, eg system_heap_allocate() doesn't re-zero the
-> > memory after decrypting it.
-> 
-> In the Hyper-V code that uses set_memory_decrypted()/encrypted(),
-> there's always an explicit call to set the memory to zero afterwards.
-
-Good for it, maybe next time improve the APIs :(
-
-Even more compelling that hyper-v should be using the dma api..
-
-Jason
+RnJvbSBlYmM1ZDZkN2Q2ZWEzY2FkZmE1OWY4MzMzMWI2NmI4NWVlNTI0MGU3IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBOYW1qYWUgSmVvbiA8bGlua2luamVvbkBrZXJuZWwub3JnPgpE
+YXRlOiBNb24sIDE1IEp1biAyMDI2IDIxOjA3OjE5ICswOTAwClN1YmplY3Q6IFtQQVRDSF0gbnRm
+czogZml4IGttYXBfbG9jYWxfcGFnZSgpIHVzYWdlIGluIGNvbXByZXNzCgpTZXZlcmFsIGNvbXBy
+ZXNzZWQgSS9PIHBhdGhzIGRpc2NhcmQgdGhlIGFkZHJlc3MgcmV0dXJuZWQgYnkKa21hcF9sb2Nh
+bF9wYWdlKCkgYW5kIGxhdGVyIGFjY2VzcyBvciB1bm1hcCB0aGUgcGFnZSB1c2luZyBwYWdlX2Fk
+ZHJlc3MoKS4KVGhpcyBpcyBpbnZhbGlkIGZvciBoaWdobWVtIHBhZ2VzLCBhbmQgbG9jYWwgbWFw
+cGluZ3MgbXVzdCBhbHNvIGJlIHVubWFwcGVkCnVzaW5nIHRoZSBhZGRyZXNzIHJldHVybmVkIGJ5
+IGttYXBfbG9jYWxfcGFnZSgpLgoKTWFwIGVhY2ggZGVzdGluYXRpb24gcGFnZSBpbiBudGZzX2Rl
+Y29tcHJlc3MoKSBvbmx5IHdoaWxlIHByb2R1Y2luZyB0aGUKY3VycmVudCBzdWItYmxvY2suIFVz
+ZSBtZW1jcHlfZnJvbV9wYWdlKCksIG1lbWNweV90b19wYWdlKCksIGFuZAptZW16ZXJvX3BhZ2Uo
+KSBmb3IgdGhlIG90aGVyIHBhZ2UgYWNjZXNzZXMuIFJlbW92ZSB1bm5lY2Vzc2FyeSBsb2NhbApt
+YXBwaW5ncyBmcm9tIG50ZnNfd3JpdGVfY2IoKSwgd2hlcmUgcGFnZXMgYXJlIGFjY2Vzc2VkIHRo
+cm91Z2ggdGhlIHZtYXAoKQptYXBwaW5nLgoKUmVwb3J0ZWQtYnk6IE1hdHRoZXcgV2lsY294IDx3
+aWxseUBpbmZyYWRlYWQub3JnPgpTaWduZWQtb2ZmLWJ5OiBOYW1qYWUgSmVvbiA8bGlua2luamVv
+bkBrZXJuZWwub3JnPgotLS0KIGZzL250ZnMvY29tcHJlc3MuYyB8IDM4ICsrKysrKysrKysrKysr
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygr
+KSwgMjMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvbnRmcy9jb21wcmVzcy5jIGIvZnMv
+bnRmcy9jb21wcmVzcy5jCmluZGV4IGVhZTAzMzlhODUxOC4uMjY3MWJjYTUyMWIzIDEwMDY0NAot
+LS0gYS9mcy9udGZzL2NvbXByZXNzLmMKKysrIGIvZnMvbnRmcy9jb21wcmVzcy5jCkBAIC0xNzYs
+NiArMTc2LDcgQEAgc3RhdGljIGludCBudGZzX2RlY29tcHJlc3Moc3RydWN0IHBhZ2UgKmRlc3Rf
+cGFnZXNbXSwgaW50IGNvbXBsZXRlZF9wYWdlc1tdLAogCiAJLyogVmFyaWFibGVzIGZvciB1bmNv
+bXByZXNzZWQgZGF0YSAvIGRlc3RpbmF0aW9uLiAqLwogCXN0cnVjdCBwYWdlICpkcDsJLyogQ3Vy
+cmVudCBkZXN0aW5hdGlvbiBwYWdlIGJlaW5nIHdvcmtlZCBvbi4gKi8KKwl1OCAqZHBfa2FkZHI7
+CQkvKiBMb2NhbCBrbWFwIGZvciB0aGUgY3VycmVudCBkZXN0aW5hdGlvbiBwYWdlLiAqLwogCXU4
+ICpkcF9hZGRyOwkJLyogQ3VycmVudCBwb2ludGVyIGludG8gZHAuICovCiAJdTggKmRwX3NiX3N0
+YXJ0OwkvKiBTdGFydCBvZiBjdXJyZW50IHN1Yi1ibG9jayBpbiBkcC4gKi8KIAl1OCAqZHBfc2Jf
+ZW5kOwkJLyogRW5kIG9mIGN1cnJlbnQgc2IgaW4gZHAgKGRwX3NiX3N0YXJ0ICsgTlRGU19TQl9T
+SVpFKS4gKi8KQEAgLTE5MCw2ICsxOTEsNyBAQCBzdGF0aWMgaW50IG50ZnNfZGVjb21wcmVzcyhz
+dHJ1Y3QgcGFnZSAqZGVzdF9wYWdlc1tdLCBpbnQgY29tcGxldGVkX3BhZ2VzW10sCiAJLyogRGVm
+YXVsdCBlcnJvciBjb2RlLiAqLwogCWludCBlcnIgPSAtRU9WRVJGTE9XOwogCisJZHBfa2FkZHIg
+PSBOVUxMOwogCW50ZnNfZGVidWcoIkVudGVyaW5nLCBjYl9zaXplID0gMHgleC4iLCBjYl9zaXpl
+KTsKIGRvX25leHRfc2I6CiAJbnRmc19kZWJ1ZygiQmVnaW5uaW5nIHN1Yi1ibG9jayBhdCBvZmZz
+ZXQgPSAweCV6eCBpbiB0aGUgY2IuIiwKQEAgLTIyMiw3ICsyMjQsNiBAQCBzdGF0aWMgaW50IG50
+ZnNfZGVjb21wcmVzcyhzdHJ1Y3QgcGFnZSAqZGVzdF9wYWdlc1tdLCBpbnQgY29tcGxldGVkX3Bh
+Z2VzW10sCiAJCQkJICovCiAJCQkJaGFuZGxlX2JvdW5kc19jb21wcmVzc2VkX3BhZ2UoZHAsIGlf
+c2l6ZSwKIAkJCQkJCWluaXRpYWxpemVkX3NpemUpOwotCQkJCWt1bm1hcF9sb2NhbChwYWdlX2Fk
+ZHJlc3MoZHApKTsKIAkJCQlTZXRQYWdlVXB0b2RhdGUoZHApOwogCQkJCXVubG9ja19wYWdlKGRw
+KTsKIAkJCQlpZiAoZGkgPT0geHBhZ2UpCkBAIC0yNjgsNyArMjY5LDggQEAgc3RhdGljIGludCBu
+dGZzX2RlY29tcHJlc3Moc3RydWN0IHBhZ2UgKmRlc3RfcGFnZXNbXSwgaW50IGNvbXBsZXRlZF9w
+YWdlc1tdLAogCX0KIAogCS8qIFdlIGhhdmUgYSB2YWxpZCBkZXN0aW5hdGlvbiBwYWdlLiBTZXR1
+cCB0aGUgZGVzdGluYXRpb24gcG9pbnRlcnMuICovCi0JZHBfYWRkciA9ICh1OCAqKXBhZ2VfYWRk
+cmVzcyhkcCkgKyBkb19zYl9zdGFydDsKKwlkcF9rYWRkciA9IGttYXBfbG9jYWxfcGFnZShkcCk7
+CisJZHBfYWRkciA9IGRwX2thZGRyICsgZG9fc2Jfc3RhcnQ7CiAKIAkvKiBOb3csIHdlIGFyZSBy
+ZWFkeSB0byBwcm9jZXNzIHRoZSBjdXJyZW50IHN1Yi1ibG9jayAoc2IpLiAqLwogCWlmICghKGxl
+MTZfdG9fY3B1cCgoX19sZTE2ICopY2IpICYgTlRGU19TQl9JU19DT01QUkVTU0VEKSkgewpAQCAt
+Mjg5LDYgKzI5MSw4IEBAIHN0YXRpYyBpbnQgbnRmc19kZWNvbXByZXNzKHN0cnVjdCBwYWdlICpk
+ZXN0X3BhZ2VzW10sIGludCBjb21wbGV0ZWRfcGFnZXNbXSwKIAkJLyogQWR2YW5jZSBkZXN0aW5h
+dGlvbiBwb3NpdGlvbiB0byBuZXh0IHN1Yi1ibG9jay4gKi8KIAkJKmRlc3Rfb2ZzICs9IE5URlNf
+U0JfU0laRTsKIAkJKmRlc3Rfb2ZzICY9IH5QQUdFX01BU0s7CisJCWt1bm1hcF9sb2NhbChkcF9r
+YWRkcik7CisJCWRwX2thZGRyID0gTlVMTDsKIAkJaWYgKCEoKmRlc3Rfb2ZzKSkgewogZmluYWxp
+emVfcGFnZToKIAkJCS8qCkBAIC0zMjMsNiArMzI3LDggQEAgc3RhdGljIGludCBudGZzX2RlY29t
+cHJlc3Moc3RydWN0IHBhZ2UgKmRlc3RfcGFnZXNbXSwgaW50IGNvbXBsZXRlZF9wYWdlc1tdLAog
+CQl9CiAJCS8qIFdlIGhhdmUgZmluaXNoZWQgdGhlIGN1cnJlbnQgc3ViLWJsb2NrLiAqLwogCQkq
+ZGVzdF9vZnMgJj0gflBBR0VfTUFTSzsKKwkJa3VubWFwX2xvY2FsKGRwX2thZGRyKTsKKwkJZHBf
+a2FkZHIgPSBOVUxMOwogCQlpZiAoISgqZGVzdF9vZnMpKQogCQkJZ290byBmaW5hbGl6ZV9wYWdl
+OwogCQlnb3RvIGRvX25leHRfc2I7CkBAIC00MjgsNiArNDM0LDggQEAgc3RhdGljIGludCBudGZz
+X2RlY29tcHJlc3Moc3RydWN0IHBhZ2UgKmRlc3RfcGFnZXNbXSwgaW50IGNvbXBsZXRlZF9wYWdl
+c1tdLAogCWdvdG8gZG9fbmV4dF90YWc7CiAKIHJldHVybl9vdmVyZmxvdzoKKwlpZiAoZHBfa2Fk
+ZHIpCisJCWt1bm1hcF9sb2NhbChkcF9rYWRkcik7CiAJbnRmc19lcnJvcihOVUxMLCAiRmFpbGVk
+LiBSZXR1cm5pbmcgLUVPVkVSRkxPVy4iKTsKIAlnb3RvIHJldHVybl9lcnJvcjsKIH0KQEAgLTU1
+Niw3ICs1NjQsNiBAQCBpbnQgbnRmc19yZWFkX2NvbXByZXNzZWRfYmxvY2soc3RydWN0IGZvbGlv
+ICpmb2xpbykKIAkJCSAqIGxlYXN0IHdhc3Rpbmcgb3VyIHRpbWUuCiAJCQkgKi8KIAkJCWlmICgh
+UGFnZURpcnR5KHBhZ2UpICYmICghUGFnZVVwdG9kYXRlKHBhZ2UpKSkgewotCQkJCWttYXBfbG9j
+YWxfcGFnZShwYWdlKTsKIAkJCQljb250aW51ZTsKIAkJCX0KIAkJCXVubG9ja19wYWdlKHBhZ2Up
+OwpAQCAtNjQyLDggKzY0OSw3IEBAIGludCBudGZzX3JlYWRfY29tcHJlc3NlZF9ibG9jayhzdHJ1
+Y3QgZm9saW8gKmZvbGlvKQogCQl9CiAKIAkJbG9ja19wYWdlKGxwYWdlKTsKLQkJbWVtY3B5KGNi
+X3BvcywgcGFnZV9hZGRyZXNzKGxwYWdlKSArIHBhZ2Vfb2ZzLAotCQkgICAgICAgdm9sLT5jbHVz
+dGVyX3NpemUpOworCQltZW1jcHlfZnJvbV9wYWdlKGNiX3BvcywgbHBhZ2UsIHBhZ2Vfb2ZzLCB2
+b2wtPmNsdXN0ZXJfc2l6ZSk7CiAJCXVubG9ja19wYWdlKGxwYWdlKTsKIAkJcHV0X3BhZ2UobHBh
+Z2UpOwogCQljYl9wb3MgKz0gdm9sLT5jbHVzdGVyX3NpemU7CkBAIC02ODIsMTQgKzY4OCw3IEBA
+IGludCBudGZzX3JlYWRfY29tcHJlc3NlZF9ibG9jayhzdHJ1Y3QgZm9saW8gKmZvbGlvKQogCQlm
+b3IgKDsgY3VyX3BhZ2UgPCBjYl9tYXhfcGFnZTsgY3VyX3BhZ2UrKykgewogCQkJcGFnZSA9IHBh
+Z2VzW2N1cl9wYWdlXTsKIAkJCWlmIChwYWdlKSB7Ci0JCQkJaWYgKGxpa2VseSghY3VyX29mcykp
+Ci0JCQkJCWNsZWFyX3BhZ2UocGFnZV9hZGRyZXNzKHBhZ2UpKTsKLQkJCQllbHNlCi0JCQkJCW1l
+bXNldChwYWdlX2FkZHJlc3MocGFnZSkgKyBjdXJfb2ZzLCAwLAotCQkJCQkJCVBBR0VfU0laRSAt
+Ci0JCQkJCQkJY3VyX29mcyk7Ci0JCQkJZmx1c2hfZGNhY2hlX3BhZ2UocGFnZSk7Ci0JCQkJa3Vu
+bWFwX2xvY2FsKHBhZ2VfYWRkcmVzcyhwYWdlKSk7CisJCQkJbWVtemVyb19wYWdlKHBhZ2UsIGN1
+cl9vZnMsIFBBR0VfU0laRSAtIGN1cl9vZnMpOwogCQkJCVNldFBhZ2VVcHRvZGF0ZShwYWdlKTsK
+IAkJCQl1bmxvY2tfcGFnZShwYWdlKTsKIAkJCQlpZiAoY3VyX3BhZ2UgPT0geHBhZ2UpCkBAIC03
+MDcsOCArNzA2LDcgQEAgaW50IG50ZnNfcmVhZF9jb21wcmVzc2VkX2Jsb2NrKHN0cnVjdCBmb2xp
+byAqZm9saW8pCiAJCWlmIChjYl9tYXhfb2ZzICYmIGNiX3BvcyA8IGNiX2VuZCkgewogCQkJcGFn
+ZSA9IHBhZ2VzW2N1cl9wYWdlXTsKIAkJCWlmIChwYWdlKQotCQkJCW1lbXNldChwYWdlX2FkZHJl
+c3MocGFnZSkgKyBjdXJfb2ZzLCAwLAotCQkJCQkJY2JfbWF4X29mcyAtIGN1cl9vZnMpOworCQkJ
+CW1lbXplcm9fcGFnZShwYWdlLCBjdXJfb2ZzLCBjYl9tYXhfb2ZzIC0gY3VyX29mcyk7CiAJCQkv
+KgogCQkJICogTm8gbmVlZCB0byB1cGRhdGUgY2JfcG9zIGF0IHRoaXMgc3RhZ2U6CiAJCQkgKglj
+Yl9wb3MgKz0gY2JfbWF4X29mcyAtIGN1cl9vZnM7CkBAIC03MjksNyArNzI3LDcgQEAgaW50IG50
+ZnNfcmVhZF9jb21wcmVzc2VkX2Jsb2NrKHN0cnVjdCBmb2xpbyAqZm9saW8pCiAJCWZvciAoOyBj
+dXJfcGFnZSA8IGNiX21heF9wYWdlOyBjdXJfcGFnZSsrKSB7CiAJCQlwYWdlID0gcGFnZXNbY3Vy
+X3BhZ2VdOwogCQkJaWYgKHBhZ2UpCi0JCQkJbWVtY3B5KHBhZ2VfYWRkcmVzcyhwYWdlKSArIGN1
+cl9vZnMsIGNiX3BvcywKKwkJCQltZW1jcHlfdG9fcGFnZShwYWdlLCBjdXJfb2ZzLCBjYl9wb3Ms
+CiAJCQkJCQlQQUdFX1NJWkUgLSBjdXJfb2ZzKTsKIAkJCWNiX3BvcyArPSBQQUdFX1NJWkUgLSBj
+dXJfb2ZzOwogCQkJY3VyX29mcyA9IDA7CkBAIC03NDAsNyArNzM4LDcgQEAgaW50IG50ZnNfcmVh
+ZF9jb21wcmVzc2VkX2Jsb2NrKHN0cnVjdCBmb2xpbyAqZm9saW8pCiAJCWlmIChjYl9tYXhfb2Zz
+ICYmIGNiX3BvcyA8IGNiX2VuZCkgewogCQkJcGFnZSA9IHBhZ2VzW2N1cl9wYWdlXTsKIAkJCWlm
+IChwYWdlKQotCQkJCW1lbWNweShwYWdlX2FkZHJlc3MocGFnZSkgKyBjdXJfb2ZzLCBjYl9wb3Ms
+CisJCQkJbWVtY3B5X3RvX3BhZ2UocGFnZSwgY3VyX29mcywgY2JfcG9zLAogCQkJCQkJY2JfbWF4
+X29mcyAtIGN1cl9vZnMpOwogCQkJY2JfcG9zICs9IGNiX21heF9vZnMgLSBjdXJfb2ZzOwogCQkJ
+Y3VyX29mcyA9IGNiX21heF9vZnM7CkBAIC03NTcsNyArNzU1LDYgQEAgaW50IG50ZnNfcmVhZF9j
+b21wcmVzc2VkX2Jsb2NrKHN0cnVjdCBmb2xpbyAqZm9saW8pCiAJCQkJICovCiAJCQkJaGFuZGxl
+X2JvdW5kc19jb21wcmVzc2VkX3BhZ2UocGFnZSwgaV9zaXplLAogCQkJCQkJaW5pdGlhbGl6ZWRf
+c2l6ZSk7Ci0JCQkJa3VubWFwX2xvY2FsKHBhZ2VfYWRkcmVzcyhwYWdlKSk7CiAJCQkJU2V0UGFn
+ZVVwdG9kYXRlKHBhZ2UpOwogCQkJCXVubG9ja19wYWdlKHBhZ2UpOwogCQkJCWlmIChjdXIyX3Bh
+Z2UgPT0geHBhZ2UpCkBAIC03OTMsNyArNzkwLDYgQEAgaW50IG50ZnNfcmVhZF9jb21wcmVzc2Vk
+X2Jsb2NrKHN0cnVjdCBmb2xpbyAqZm9saW8pCiAJCQkJcGFnZSA9IHBhZ2VzW3ByZXZfY3VyX3Bh
+Z2VdOwogCQkJCWlmIChwYWdlKSB7CiAJCQkJCWZsdXNoX2RjYWNoZV9wYWdlKHBhZ2UpOwotCQkJ
+CQlrdW5tYXBfbG9jYWwocGFnZV9hZGRyZXNzKHBhZ2UpKTsKIAkJCQkJdW5sb2NrX3BhZ2UocGFn
+ZSk7CiAJCQkJCWlmIChwcmV2X2N1cl9wYWdlICE9IHhwYWdlKQogCQkJCQkJcHV0X3BhZ2UocGFn
+ZSk7CkBAIC04MTcsNyArODEzLDYgQEAgaW50IG50ZnNfcmVhZF9jb21wcmVzc2VkX2Jsb2NrKHN0
+cnVjdCBmb2xpbyAqZm9saW8pCiAJCQkJIlN0aWxsIGhhdmUgcGFnZXMgbGVmdCEgVGVybWluYXRp
+bmcgdGhlbSB3aXRoIGV4dHJlbWUgcHJlanVkaWNlLiAgSW5vZGUgMHglbGx4LCBwYWdlIGluZGV4
+IDB4JWx4LiIsCiAJCQkJbmktPm1mdF9ubywgZm9saW8tPmluZGV4KTsKIAkJCWZsdXNoX2RjYWNo
+ZV9mb2xpbyhmb2xpbyk7Ci0JCQlrdW5tYXBfbG9jYWwocGFnZV9hZGRyZXNzKHBhZ2UpKTsKIAkJ
+CWZvbGlvX3VubG9jayhmb2xpbyk7CiAJCQlpZiAoY3VyX3BhZ2UgIT0geHBhZ2UpCiAJCQkJZm9s
+aW9fcHV0KGZvbGlvKTsKQEAgLTg1NSw3ICs4NTAsNiBAQCBpbnQgbnRmc19yZWFkX2NvbXByZXNz
+ZWRfYmxvY2soc3RydWN0IGZvbGlvICpmb2xpbykKIAkJcGFnZSA9IHBhZ2VzW2ldOwogCQlpZiAo
+cGFnZSkgewogCQkJZmx1c2hfZGNhY2hlX3BhZ2UocGFnZSk7Ci0JCQlrdW5tYXBfbG9jYWwocGFn
+ZV9hZGRyZXNzKHBhZ2UpKTsKIAkJCXVubG9ja19wYWdlKHBhZ2UpOwogCQkJaWYgKGkgIT0geHBh
+Z2UpCiAJCQkJcHV0X3BhZ2UocGFnZSk7CkBAIC0xMzA3LDcgKzEzMDEsNiBAQCBzdGF0aWMgaW50
+IG50ZnNfd3JpdGVfY2Ioc3RydWN0IG50ZnNfaW5vZGUgKm5pLCBsb2ZmX3QgcG9zLCBzdHJ1Y3Qg
+cGFnZSAqKnBhZ2VzLAogCQl9CiAJCXBhZ2VzX2Rpc2tbaV0gPSBwZzsKIAkJbG9ja19wYWdlKHBn
+KTsKLQkJa21hcF9sb2NhbF9wYWdlKHBnKTsKIAl9CiAKIAlvdXRidWYgPSB2bWFwKHBhZ2VzX2Rp
+c2ssIHBhZ2VzX2NvdW50LCBWTV9NQVAsIFBBR0VfS0VSTkVMKTsKQEAgLTE0NDIsNyArMTQzNSw2
+IEBAIHN0YXRpYyBpbnQgbnRmc193cml0ZV9jYihzdHJ1Y3QgbnRmc19pbm9kZSAqbmksIGxvZmZf
+dCBwb3MsIHN0cnVjdCBwYWdlICoqcGFnZXMsCiAJZm9yIChpID0gMDsgaSA8IHBhZ2VzX2NvdW50
+OyBpKyspIHsKIAkJcGcgPSBwYWdlc19kaXNrW2ldOwogCQlpZiAocGcpIHsKLQkJCWt1bm1hcF9s
+b2NhbChwYWdlX2FkZHJlc3MocGcpKTsKIAkJCXVubG9ja19wYWdlKHBnKTsKIAkJCXB1dF9wYWdl
+KHBnKTsKIAkJfQotLSAKMi4yNS4xCgo=
+--0000000000007343b4065449d2b0--
 
