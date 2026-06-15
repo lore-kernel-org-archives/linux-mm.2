@@ -4,141 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1AF2CD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:11:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16792CD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:16:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A69B6B00AA; Mon, 15 Jun 2026 07:11:46 -0400 (EDT)
+	id 58E786B0005; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0575B6B00AC; Mon, 15 Jun 2026 07:11:46 -0400 (EDT)
+	id 53ECA6B008A; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87976B00AD; Mon, 15 Jun 2026 07:11:45 -0400 (EDT)
+	id 47B686B009B; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DA0156B00AA
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:11:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80BC11409C2
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:11:45 +0000 (UTC)
-X-FDA: 84881881770.23.5BD4F0C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BB2D12000F
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:11:43 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJvU2YxL;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39FE96B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78607120A18
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:16:08 +0000 (UTC)
+X-FDA: 84881892816.01.121EE0D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3183E140003
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:16:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cdY4lVPE;
+	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781521903;
+	s=arc-20220608; t=1781522166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C3XmSWBwxX07T7EjBP+Cm499OZVt/4ndfxyt/cAc+yY=;
-	b=HTOVwnr008Pq887Uj2CN4XeYR/sGV6nbPmDczcRhtOGna1aWS2JJ0FglrQwBIR0YMYAkgR
-	qJCjlGVnZg9MQooVgfWYxTxFKS1mwXBbcJsLFtd1lMz4029HvHLuDJeq+rR3+7nJNs+LDP
-	xGwFNUimH2F3qiw2tX8UhKE0cVLzthw=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJvU2YxL;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=3uCpF5smpc9mUAlnydhdP+W4oOPGRNWqN7XTyVAHkgI=;
+	b=GZifELw9kn2T8MJmcgU75Rd4A/f/KmADnIFJYOeuPxzNOgXGxn8LOltv0M6ik8r23jqYwP
+	kwDh9LHTxXl3Lu//8Cu7M+h6tOgbYKMdq46ouvQ8nS0QtJL4MNFC7U4rIsrCzxY3LGxJQ9
+	DQaBqdL1bXDcVSPchMuGKfkC2sig0HA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781521903;
-	b=eqXVN1+HvoraEEsLvL2lrs4WVdOBRbcYLaseziWrkAoy8BXKgfcdJjHY4CbVTDgEbsbLHV
-	obSVIvZNTLcrLghDlgFPlwPSQEge+DGrGOEDtgj4+tqE8+VymlIqxJBeK3AuCrgWFJooFX
-	EU43030tQJRgAvRxoVMSQ8f3R8oIhTE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B40860154;
-	Mon, 15 Jun 2026 11:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD8B1F000E9;
-	Mon, 15 Jun 2026 11:11:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781521903;
-	bh=C3XmSWBwxX07T7EjBP+Cm499OZVt/4ndfxyt/cAc+yY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dJvU2YxLmYXK/jl2u71imBIY4cLgK8q4YeB6PZOa48MXe9mzkP57bFHOVIwKbf5Ok
-	 Tc0CklWbTCnsIWPXoiP5U7rSWvUhf6TOfrN5ioOLPCTfjFfILsUUKaPQiBRapJJuG+
-	 Q2uXLFPxjR5C3nmyZ/+NI4DqtT91KKd4YYRRnlUSmu6Nqp0wWUNmYF0IoY1vvYyiL/
-	 OsJe8e35TU1xZGvitLtGggiEWNkyVQ9fKSVKC+yDIYxQkrdDjcwPQ6gJAGehnUCwF2
-	 LHXy/9d0VGUGzmpKLYm0XU/m86qu+F9/TTHVpT+9dFHfSEIl3jJ2d3ORRxDcBmksCr
-	 FMEupNOtrQlFQ==
-Message-ID: <e17e628e-0633-4c5e-a9f9-ea68a4ca09df@kernel.org>
-Date: Mon, 15 Jun 2026 13:11:37 +0200
+	t=1781522166;
+	b=TcEf2ysA1VHmywkOf9kW+TWmrdseDqYtTcQ6o0lvQTLEoIf5fe/gIHofWocFn9b6mVsRdg
+	CuibkWYAdTvWiqE+N1dpK8IRJtfvHrB7H+Qc0i5dWK//FmZ8SxtAyIobfR6WNteGuUjqS6
+	IsEQN60SFKxRD6KiZT/C4J2dXYE5eQA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cdY4lVPE;
+	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7194328D;
+	Mon, 15 Jun 2026 04:15:59 -0700 (PDT)
+Received: from arm.com (RQ4T19M611-7.cambridge.arm.com [10.1.32.56])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17E643F915;
+	Mon, 15 Jun 2026 04:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781522164; bh=Gy0LHTdLmlPA2i+iN2Je30fdWIJBmw4l6fKDIDT15Cc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cdY4lVPEYrNPl4E1WB89Pyctf4ei4UjwuF0x5VaUZ/uHD8RP//KUfcDlDlXD/ZTMz
+	 4jsOCEDRAult1wHuB6kgB9dPNw4l/aXf3iKX5DOr7uzAVhOh5XiMoI801LGS3cOdFY
+	 iYUnfiVA+rR0pNdM9dXCMb8naE0yjNA7UicT2d5I=
+Date: Mon, 15 Jun 2026 12:15:58 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, lance.yang@linux.dev,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Oleg Nesterov <oleg@redhat.com>, Qian Cai <cai@lca.pw>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task
+ stacks
+Message-ID: <ai_e7gfv5vze5tB5@arm.com>
+References: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
+ <aiw9u4BllwZXDH2S@arm.com>
+ <ai_EVJVfe42glgKI@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/16] mm/slab: remove __GFP_NO_OBJ_EXT usage from
- alloc_slab_obj_exts()
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, Hao Li <hao.li@linux.dev>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Hao Ge <hao.ge@linux.dev>
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-15-7190909db118@kernel.org>
- <aiurbPx1SISBarBy@fedora> <49f1bf1e-fcaf-48fa-a7b1-f8ee78b19762@kernel.org>
- <aivpob0Zgnbc4AG4@fedora>
- <CAJuCfpFNftMYw0XoHyN1QAWfm7NYmeuY1T_NGbYy8boGO48MOg@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <CAJuCfpFNftMYw0XoHyN1QAWfm7NYmeuY1T_NGbYy8boGO48MOg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB2D12000F
-X-Stat-Signature: nipj6j6gkr7cshr4dpua3zp4mthredkt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ai_EVJVfe42glgKI@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781521903-76427
-X-HE-Meta: U2FsdGVkX1+yW6F5/0JUW3OM41Yl6Ufqxme3eF2qZvRs9MFcotX6IKIfOqjUcdEKJbIDkgf0juqCONDbRWN7dBYg/eFE0TvVB/VnnQugGSW3uCkB5qjQYANJqo1r2XSosMBgSLGMIwxKs74V/wYRkjmuRUDtZQzFKA1Eo97dXbJF7i3l9ehQMxHowA3rIBReBqk+N+7v9iUBwpP378f8X5pU8mwwzRwJoyH9cAKj9CGV2zPMWGgl3tru7pw/wOmaiz0yAX4eJAOA3pM8/r//hIkxpjxDHZKm3KKAMMeh+uf7554RT4YQ6fKg8V0OVllhJ36nrS9NYGZfvczkbpe1aQ4QdrcF9CumSt0o9p0KOAnsRQXYqZ6G+1/ydxoVcQAq5HM7cldSZi/NdwR2J/Uy4ZsBGL67pqeihEUSlHVAtVuhju74kBtbtw862+I9SDebV7Sp7KvWDM94WZQD2PkOupHsoGNsC9cIPYZ7CF5mtVDcZHst41dca70CR4NdWqPOPw18tyC0nRwk+X5TfICdYg5ebKzanSbvsMAx5hCZ+wCD+Kwl9d5nEZoIdOKduU78cVbU/Nz4rnpaRpryi1ITIb2VqPO/RqHv8376PDC/LD57/pKZTjBtjiRBWhEoFe0iuM0Q5a8cQssu1owYFzJOTxUuvnie3iJmhOySkOlrt5lG5m1yQ6fL+6Zl/CxcM9mP8zRh1WW0hTslpd1uyrVIgbiFW8zD06/V4NHKiis0JRpoLR6z05JloWhY1S0y0lP0z4CRPf8qk6UtRgd7YD6Y9Mf/0yVCSW+Es9bZZCJcv9ZfGqh7cUzhJpRqaaKsSTb/2uQV+/yyFdIDmD3VFCe39+scduIKL5Gf8QVaZSquLiUWyVZFkKFTesXmFVX0wEQgaUfUbi7YX9sTNCZ7jQtkIIGechk7dRsNkZJtU0NtocKNAVDbAsDIIaBoBoHegrv9i0gM+8OwOCBgMa8viOY
- ng2vNh3e
- scIMa9MCdqPxhlCmfDm9CwqIQdKb64NsUYIREdMi9qhw57p4du/9Ek5AIJHX3ERlC69KDrT5oZzfBlHJvud/V3vQlLMV1amLCCk1XrCT78E0xST+Ucp+LxRiNL+RaXm2bKvAXXFlwAl6woSnWxpDv9tPCR2fTJv1otLxPDaiNk5OtsE69eIpvkgn67Usx0HiGLMzIoXlyLHzIgRsHvhFcmsVK/YOgdktHFIA5KtaWsrYnXtWTjFSSQ/UwCiln7rr3jvQeeL+ZtnNXO9TvjDp497zyE49Xg8/2K9vSBI3D1f+amGC8oyJS0AHuBVytaJJZRmdVd+yhDTPF/D7QMiSQLmanSVyDOTfhdBYY
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3183E140003
+X-Stat-Signature: yhxxhfw5etnt8kg8ifebb1ab8cw8yqw5
+X-HE-Tag: 1781522165-151713
+X-HE-Meta: U2FsdGVkX1/HGcvcali+Zg5PCiRvBnJSe9o+ZxpHu2x6u/AFvrXGUJIGcJIWLj4zEjXSDtH/QVGpeZ5x5DsDOwsRLp3DmnGLljegMe/aPtMYoEl13rGsjTiHKd4qxJyslBko/5YEx0YWlPr6NF+yvo7h4EQQUJHoNrQo4ii9/WWdH8Cuaxvpsc3KGo4FrcikX2PLH9Jqhwpph+k6w4cIiMTZx0+JswQJYHIwACN9qC4x8r8EHJFM2Lr76f6XiChlHZNT3QuP8nVBwiuOuqEqZgaV/inEJV1b11Qbc+nTAiODFEGOXBf8OjFm/cAUGHwDfedWJ8hVePl0TJrY/GPO3vs7Mv32+Za6H+PKFPZfzcUk5gSi6UtB1g8tebVJ9PhrMsy4ZC9U0YPwcaeSRvUbkvifKxM8cP12SPPVmurkjnA9LfOaBQz0x1qiaj4/AGYRRICZPU/1yfvKOqsOEnydGxywP7v732WkuPxZhgDdbEVKFShdk7t3hLaHOw9ZN6BI0AhYEcft3yHhL5HRQADnGPLHV4HVRJheGzD2QJ851m73yqk7oGUNzrF+8rX7v/P3269UHowxBRYH+5KCteihTskkpe/KK4ZBZ6n8tYaBjpwGt+1UfiFu1A6B+UDHb/ywUZtb+CIvwAoXSumA1lbfwV2saX8BkaRQ8RM7sAXhyhx7Zf/qDMcb3Vu/arUGzBnmYI6ifNEtTxWr9Qr0ALbs8ZzVKWJTGF4ESwDeuHIt1ZSdVPkPxSklEUAFshXLWCCPXpfC9jB8B1X1LKYXAaLMxpSxeP//CVAqDUEryDnkEK5gck3g6ln/vy/famDHm8TRmasmw5szcxOhqLVdU2Ke81FWxJgX/ORTF5bSbdgAk1tXM2PbuOdmymiyFzU/Ex6FCBFuhNLC/1ti5ltZIkQ0UdMixZpGJd4nvyDSnc/ZZbHF5HzS0CKR/wY3Vgpi+QRKQacLzp1K/FJM0U6oIKv
+ GIsu6sio
+ rdrhyvEAzpYbZwyJVksZNLfyQGoeafPLr4iXtwsjez0zQbZllSZvCVEU2RNdyo2gDC4rgkTafl/WpMtmjcSnQRpEgHppsbY9EGIvR6Bou6TOFigF140KHLq5gdueA7g6xMtsAjOqITcN+B4FqEhuTN9LANaVbJ4q7bQOA104CN0VSn7t+nf8vUL6aZhOM03047HsfURIGk5Q0QeXp5yVU7XyTme06djnWp4zDmrOILFACms8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,147 +93,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/15/26 07:38, Suren Baghdasaryan wrote:
-> On Fri, Jun 12, 2026 at 4:30 AM Hao Li <hao.li@linux.dev> wrote:
->>
->> On Fri, Jun 12, 2026 at 12:17:45PM +0200, Vlastimil Babka (SUSE) wrote:
->> > On 6/12/26 08:54, Hao Li wrote:
->> > > On Wed, Jun 10, 2026 at 05:40:17PM +0200, Vlastimil Babka (SUSE) wrote:
->> > >> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and
->> > >> gfp flags are a scarce resource, unlike slab's alloc_flags.
->> > >>
->> > >> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
->> > >> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
->> > >> family function should not recurse into another kmalloc*() for the
->> > >> purposes of allocating auxiliary structures (obj_ext arrays or sheaves).
->> > >>
->> > >> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
->> > >> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
->> > >> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
->> > >> added. This will also pass through SLAB_ALLOC_TRYLOCK so we don't need
->> > >> to special case kmalloc_nolock() anymore.
->> > >>
->> > >> Note that until now the kmalloc_nolock() ignored the incoming gfp flags
->> > >> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass on
->> > >> the incoming gfp flags (only augmented with __GFP_ZERO), because if
->> > >> alloc_flags contain SLAB_ALLOC_TRYLOCK, the incoming gfp flags have to
->> > >> be also compatible with it.
->> > >>
->> > >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> > >> ---
->> > >>  mm/slab.h |  1 +
->> > >>  mm/slub.c | 13 +++++--------
->> > >>  2 files changed, 6 insertions(+), 8 deletions(-)
->> > >>
->> > >> diff --git a/mm/slab.h b/mm/slab.h
->> > >> index 45bfcfb35a9c..509f330654b8 100644
->> > >> --- a/mm/slab.h
->> > >> +++ b/mm/slab.h
->> > >> @@ -21,6 +21,7 @@
->> > >>  #define SLAB_ALLOC_DEFAULT        0x00 /* no flags */
->> > >>  #define SLAB_ALLOC_TRYLOCK        0x01 /* a kmalloc_nolock() allocation */
->> > >>  #define SLAB_ALLOC_NEW_SLAB       0x02 /* a flag for alloc_slab_obj_exts() */
->> > >> +#define SLAB_ALLOC_NO_RECURSE     0x04 /* prevent kmalloc() recursion */
->> > >>
->> > >>  static inline bool alloc_flags_allow_spinning(const unsigned int alloc_flags)
->> > >>  {
->> > >> diff --git a/mm/slub.c b/mm/slub.c
->> > >> index cbb38bd01e46..7dfbd0251aa2 100644
->> > >> --- a/mm/slub.c
->> > >> +++ b/mm/slub.c
->> > >> @@ -2167,15 +2167,12 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->> > >>
->> > >>    gfp &= ~OBJCGS_CLEAR_MASK;
->> > >>    /* Prevent recursive extension vector allocation */
->> > >> -  gfp |= __GFP_NO_OBJ_EXT;
->> > >> +  alloc_flags |= SLAB_ALLOC_NO_RECURSE;
->> > >>
->> > >>    sz = obj_exts_alloc_size(s, slab, gfp);
->> > >>
->> > >
->> > > For the original calls to kmalloc_nolock and kmalloc_node, I notice a difference:
->> > >
->> > >> -  if (unlikely(!allow_spin))
->> > >> -          vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
->> > >> -                               slab_nid(slab));
->> > >
->> > > kmalloc_nolock completely discarded `gfp` flags.
->> > >
->> > >> -  else
->> > >> -          vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
->> > >
->> > > while kmalloc_node preserved and passed it along.
->> > >
->> > >> +  /* This will use kmalloc_nolock() if alloc_flags say so */
->> > >> +  vec = kmalloc_flags(sz, gfp | __GFP_ZERO, alloc_flags, slab_nid(slab));
->> > >
->> > > Now both paths are merged into kmalloc_flags, the gfp flags are
->> > > unconditionally carried through. It seems this might carry some unwanted flags.
->> > >
->> > > I traced the call path and found that ___slab_alloc sets the __GFP_THISNODE
->> > > for trynode_flags. If this flag propagates all the way into
->> > > kmalloc_flags->...->__kmalloc_nolock_noprof, it will trigger the
->> > > VM_WARN_ON_ONCE warning. Maybe we need to strip the original gfp if
->> > > `!allow_spin`.
->> >
->> > Thanks. This should do the job in a more generic way I hope?
->> >
->>
->> Yeah, this is more elegant.
->>
->> > diff --git a/mm/slub.c b/mm/slub.c
->> > index f9b8dc56bb57..0bf53f70c9be 100644
->> > --- a/mm/slub.c
->> > +++ b/mm/slub.c
->> > @@ -2047,12 +2047,15 @@ static inline void dec_slabs_node(struct kmem_cache *s, int node,
->> >  #endif /* CONFIG_SLUB_DEBUG */
->> >
->> >  /*
->> > - * The allocated objcg pointers array is not accounted directly.
->> > + * The allocated objcg pointers array or sheaf is not accounted directly.
->> >   * Moreover, it should not come from DMA buffer and is not readily
->> > - * reclaimable. So those GFP bits should be masked off.
->> > + * reclaimable. Node restriction for the parent allocation also should
->> > + * not apply to the slab's internal objects.
->> > + * So those GFP bits should be masked off.
->> >   */
->> >  #define OBJCGS_CLEAR_MASK      (__GFP_DMA | __GFP_RECLAIMABLE | \
->> > -                               __GFP_ACCOUNT | __GFP_NOFAIL)
->> > +                               __GFP_ACCOUNT | __GFP_NOFAIL |
->> > +                               __GFP_THISNODE )
->>
->> Good idea! Both code and comments make sense to me.
+Hi Breno,
+
+On Mon, Jun 15, 2026 at 02:27:13AM -0700, Breno Leitao wrote:
+> On Fri, Jun 12, 2026 at 06:11:40PM +0100, Catalin Marinas wrote:
+> > 	if (kmemleak_stack_scan) {
+> > 		struct pid *pid;
+> > 		int nr = 1;
+> > 
+> > 		do {
+> > 			struct task_struct *p = NULL;
+> > 
+> > 			rcu_read_lock();
+> > 			pid = find_ge_pid(nr, &init_pid_ns);
+> > 			if (pid) {
+> > 				nr = pid_nr(pid) + 1;
+> > 				p = pid_task(pid, PIDTYPE_PID);
+> > 				if (p)
+> > 					get_task_struct(p);
+> > 			}
+> > 			rcu_read_unlock();
+> > 
+> > 			if (p) {
+> > 				void *stack = try_get_task_stack(p);
+> > 
+> > 				if (stack) {
+> > 					scan_block(stack, stack + THREAD_SIZE,
+> > 							NULL);
+> > 					put_task_stack(p);
+> > 				}
+> > 				put_task_struct(p);
+> > 			}
 > 
-> Makes sense. I see
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-next
-> already implementing this and also keeping __GFP_NO_OBJ_EXT and
-> SLAB_ALLOC_NO_RECURSE both used. That version looks good to me, so
-> I'll wait for v3.
+> Should we add a scan_should_stop() check here to allow early
+> termination?
 
-OK.
+Ah, yes, I think we should, maybe as 'while (pid && !scan_should_stop())'.
 
-> At the end of this series, we end up with no users of __GFP_NO_OBJ_EXT
-> but we still keep it defined. I'm guessing you leave it because of the
-> new patch [1] which aliases __GFP_NO_OBJ_EXT? I will have to make that
+scan_block() already bails out early but it will still go quickly
+through all the stacks which we don't need. As a later clean-up, I
+wonder whether we should change scan_block() to return non-zero and use
+that.
 
-Yeah.
-
-> mechanism work without a GFP flag, possibly using a similar approach.
-> CC'ing Hao Ge to be in the loop of these changes. I'll work with him
-> on aliminating that __GFP_NO_OBJ_EXT alias.
-
-Good, then we can remove the flag completely.
-
-> [1] https://lore.kernel.org/all/20260604024008.46592-1-hao.ge@linux.dev/
-> 
->>
->> >
->> >  #ifdef CONFIG_SLAB_OBJ_EXT
->> >
->> >
->>
->> --
->> Thanks,
->> Hao
-
+-- 
+Catalin
 
