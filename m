@@ -4,142 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88E8ECD8CA8
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 01:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4355DCD8CA8
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 01:33:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 354496B0005; Sun, 14 Jun 2026 21:28:44 -0400 (EDT)
+	id 72BA46B0005; Sun, 14 Jun 2026 21:33:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3053B6B008A; Sun, 14 Jun 2026 21:28:44 -0400 (EDT)
+	id 6DC876B008A; Sun, 14 Jun 2026 21:33:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F4F86B008C; Sun, 14 Jun 2026 21:28:44 -0400 (EDT)
+	id 5CB2B6B008C; Sun, 14 Jun 2026 21:33:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A0406B0005
-	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 21:28:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C36F140860
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 01:28:43 +0000 (UTC)
-X-FDA: 84880412526.25.8FE5112
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6EECCA0006
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 01:28:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Dgrrcn5p;
+	by kanga.kvack.org (Postfix) with ESMTP id 4C4036B0005
+	for <linux-mm@kvack.org>; Sun, 14 Jun 2026 21:33:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0B3EA9169A
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 01:33:18 +0000 (UTC)
+X-FDA: 84880424076.15.2E9E836
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1002FA0002
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 01:33:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K4ZeFBcD;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781486921;
+	s=arc-20220608; t=1781487196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ULCiQmh3Fr57rxfPWnrO4oKZXSzYPIWseb5cOe0Q/Q0=;
-	b=gfECP43RVJ7mJpR3qYMpwJyefosz+9b540X4A+hKt0tYO+oR/lMgHaA654qH+KMrJexD4v
-	zdQ8EU69Stp/AmQ31A0cwuU8BrPoc4yePLjK7p4Xinb9lV+FR/RS4uScuPApAWRzyRkjMX
-	rZhOgv1vvo7eGjjrNclgPYdgtxh5sEY=
+	bh=7YfAIRPnSgVTVTSZup2KxqvQOtyczG2cRa3xPgGvnEo=;
+	b=YbAkvXsTAPTxpjxrtFl+0L66CPM73QvoLQ/Qkv2PWqac3X0zg2J6ODEEKDO7xl+af685oB
+	W0OHLJ7xBT3Gavaf6I89CRJvFV/eXVYr8k72xE6LuUfs5830V4ioa0g/ssfCq3JVWiFX9E
+	sAT4BHnjki6AGfGdGBg1UcOp6EeKDMw=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Dgrrcn5p;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=K4ZeFBcD;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781486921;
-	b=pB2y3h6WJ1FwzmVnPhsexXEua5xBn5EkgVxBMejbkOJecJTINTqwD4e+ynkJ2kC4xTXo/M
-	kQ8HobDNxqT6l97Gr11zH1F9k8hnmNT3QkcAe+BEdGx6lBhtNnjWlMCtjVJCgGqSt4bZ7M
-	E+oOAAhI4tJyRCJdRxNTM5ysxHd6f3s=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51765531803so800131cf.0
-        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 18:28:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781486920; cv=none;
+	t=1781487196;
+	b=Lp+I13DXr+yPBEIzuNjuPf069nQ8Ag2h/gAyESC/Lrbcop3P/Ydd5eF5v2w79jmX/aHWdz
+	ArpNhS8Qa2Lh6aBK4Pw0FW+b1/ueMhMas8I07e9J10czxOR0sIJ8usOS5KocuMIr5RZPim
+	5AB+6cvzHEE9rnqN7PZl5MTfkTVuOW8=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-51765531803so800831cf.0
+        for <linux-mm@kvack.org>; Sun, 14 Jun 2026 18:33:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781487195; cv=none;
         d=google.com; s=arc-20240605;
-        b=iGy7TUxK4siuGtV18IKl4L6GyRJvyRFAgHYkNoXRUY6tk138eExJ8Rzr8Vv+K4lwWT
-         AJHbo+sq9YtHUVFSniDVpgNkNv4EHNmf7VLN/eX20sqfD9VamM/Xv1ElCi4E338Dky3I
-         6hUSoFFhMar2tvtPpACICnqHf4SuXEYfK91T6Gj/J0uq7uNJ4Y7CeKDF1+6PTcCTCqMj
-         XuaOIU+UzSEOPdOD4bnwfLkZb8pNZD5YPKruQ6BT9wutRjgfPokJqJP5vrDrH4YGGnS1
-         P9zDDQ+HgeLA3nc0o9xwk4Zp4gZuAP4SAD0wGWIRn/9uoKv53ujN1cVo4YS3aIXbAM7f
-         bnng==
+        b=bDgetVqiIFcXX4EBkZaSeooO7N3OtpcGZKE6h9ByXLccpLVW/v3uqZcSjsCiZ9lcBf
+         lEkCxpx3R+BOXDC6bBfnZdXsE6FmBExY6lqXrjZxFbb9ouFwDd4XE1Ur7fAy2ZnlbuvA
+         D+LD0b/QOOggm4+pK4pbheS1vj9dSLuSWj9g8FxgI2YuDwcQ0OwIjmEou+ltUPkgV5ya
+         ZurMp5Xv9uBvc3EhjXxInik8oYZ6LEZuBhx4Z7/y4S9E/HidBSWFyXowc8gPR/3XE7H1
+         zbBv4xGSrvQqXiTvl4c3qgvmj90lg4DP8lLAPtctj6QHTmVz/HP9YUxCcMFm1rwB7B0q
+         bMPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ULCiQmh3Fr57rxfPWnrO4oKZXSzYPIWseb5cOe0Q/Q0=;
-        fh=lSSc7eIzHjgTYn7S436iFgBDNj9qwx2Z5Et4rthUnhg=;
-        b=LeTfyTRZUEgp/tig4THuxLCtKdORZ7UiQGsgxPG87e7GsYhhbNlM65YaGyOuUtUXdF
-         /kBmXC67RVHCbIvPDhVKPIOXdvmVBKcc1682jgBvhgaWZwPsozHBvNe/IIgXVxy11Mer
-         MuUeMew484RK4X9jMyE6pTDL1RNB4pngaCBA+Wx6Q4lnhG8+yYWc0PmUO8v96Les8L9y
-         JSCcT5N73uxzkfQGt9xTEkj7V475147llIoFC3C4FOX+mN4WX6MmadBYRayzTJrfHgjO
-         PppwkifG/u/5/lY2rZdUXDCwhDXNrIcCeRf+cEiYyMLkP8ZtqrLBewL5f0lIqsfbdt3T
-         3rNw==;
+        bh=7YfAIRPnSgVTVTSZup2KxqvQOtyczG2cRa3xPgGvnEo=;
+        fh=q+NJuPb2ShB+GNoHK7zvT3ez700a3seQf7EDZkNIjTs=;
+        b=Je9FI6PnslCtKUA1KjxTh9amDGkJMa09leNtJ4nta0wiJkmmE3quiIBTxfqwboP7Ve
+         Eto9TfVpKFfhumhQp5Apv9xV8YazLHVVGVilhlerqLPh3Lxh5GFdcihGU3H/zekCLYG0
+         /8Qw32KMzmdZO7Ekt20dOSORahGXS9sVXRSdEzYYcVScSLwVW0heEOc6Ipa3auwM3/pG
+         EyiT2Zgji7W3jOanE1k8BmbaKGdeLezyOOKTBOLfvTYa8d1Jafn+Ptvf3V984+QCJUIA
+         fAdJyYEGyDKg8UrmfdJG2B+8ERVl2ItMntM1W7QJPMHCBzVfm1PJKpTOTS5uz/LFdUHT
+         Voiw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781486920; x=1782091720; darn=kvack.org;
+        d=google.com; s=20251104; t=1781487195; x=1782091995; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ULCiQmh3Fr57rxfPWnrO4oKZXSzYPIWseb5cOe0Q/Q0=;
-        b=Dgrrcn5pxGwtT1zcNpGvnkEyLNGOb2NX0thagz8pDJ9syJWxHroYl+h139G/tO073/
-         zrip0b+d0BYplHE08sfHsx4JEGmz+0uxV2z1sslABv1H7zv7/EdjNfPAym9gn/jn4K9W
-         oPMqJQfLznf4iJ57l7DeOQF+hZsADV+eAr/VrCEJH37GrXMhjrUIDfEZNoxZEh4OT/4a
-         as7eM3HBqM7w/MXTx7qcFJ4WGUYPMG2fW5eFHwofSWYyi/qCihBNrmd/vz/06lJSGMgj
-         jgQkmAlsXQXzaSMhQkuTM4ENhJ6INuFZUO/ihfOPuFcvahQThYW7m1jerE0v5i/B+xUT
-         YrHA==
+        bh=7YfAIRPnSgVTVTSZup2KxqvQOtyczG2cRa3xPgGvnEo=;
+        b=K4ZeFBcDHgkXYERbMxI9uA0tyBq5ni9kBqLrClsMu31AJaeaZmzSybjxVf6H3bzjrC
+         lll13QAV7o//nSTnjFANNGUbvwTO0Xxm8QglYdJ+fjmn9bSFdyyDXVDPlVKcK3eik9yV
+         O7Fa4zvR0G8kw8Fq0sQB1p78Pza+k1h5V/0NRRC6WrsRVfXUtB9Shy/F6FuCG5VUb3Bv
+         +IItecY7+2vvVc/3dqlFe6866+JxdFRKhMnVrok8lxb6JBH7/EpOd/o8ljR/x5Vxsiqx
+         Ppe3cqmhURqEccyYZdvXQG5kb/GyPP6SAlcoKShw/dc/5pETwB03HzX0aggIRhljqb0V
+         MI3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781486920; x=1782091720;
+        d=1e100.net; s=20251104; t=1781487195; x=1782091995;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ULCiQmh3Fr57rxfPWnrO4oKZXSzYPIWseb5cOe0Q/Q0=;
-        b=nUwLbQECInfg5hdJdGWnxvMbrgkvqMGRSH3D9ODW25bBzGhQEo2LlYXHR0qZT9PHGX
-         q/7TTnkn6UwNxAQ2DyExWtasQ3PNJ8gHoOk+G3KEAVM7OXb0hECgpovKonmC5AVVZPyt
-         3ORCId50WJc8lUsDCVWUuSIJ2X3vRZm+MJ6dBV7gX+BsQiKk0GSAm3AZb8K4M8kDZse9
-         tbmFdZ49O6Dt3NQ7orRsr7ypQ7wYuq5Hv0OxgKtpDLmdPAvfDAURy5CYe5jfV1at+GRn
-         trNejwQ6+JXaL/LJc0ueBRrQrw2HYqzGklUNDJc77kirYPSPtHdpuZmL5m652yKAgz/S
-         WH2g==
-X-Forwarded-Encrypted: i=1; AFNElJ9YuwaeBJytIlEj7VQn1HKM/0SVuyHzit0fp1Pu+OuOjrH8qy25H8PMj/zpTScO4yGvti29Xff0ig==@kvack.org
-X-Gm-Message-State: AOJu0YzZ4BD3gWwa+A/jRlqFl2zwRIaOzPNshX2bOnebjtxl6b5uj00b
-	DA3Ty/GnZLws8H5My10muRr4TSkNyTEeYq+nARMuflvQ89QDdR/9Xmja58S4SxEoHBB9s32deJS
-	ZoSnUCZ2EfWstymD/g2/DWv4/aFNQtEiKCO/EAWhY
-X-Gm-Gg: Acq92OEbHfzqu2XNpfKJ0YD/o8Ywrpce8VAZ27k5qGDVzJGLgsL2RIZEEeoFhOVwbZY
-	Hbwx0TNh7XzP7r9POOQV0FxCXlR5AIaYBwMNcJx8DPFnvEONdLXL61tZFYy8l7xHqNG7IvWmooY
-	3Zgo3KX+nNM9cW/ClTZTmtr+dtVGrU7FQzGjlNr/4po9mwOf47pF14E/NU2mm5CynEe2fzWLqGE
-	BTXodQmkWeXXHdrt1TNMkLH8QR4uywivV2NHBND6j5phREsuXZlWEgjM/FbT+z8qbSlHkAufwx1
-	EMoRtQ==
-X-Received: by 2002:ac8:5785:0:b0:517:38aa:c2b3 with SMTP id
- d75a77b69052e-519549f8a99mr12415291cf.14.1781486919930; Sun, 14 Jun 2026
- 18:28:39 -0700 (PDT)
+        bh=7YfAIRPnSgVTVTSZup2KxqvQOtyczG2cRa3xPgGvnEo=;
+        b=gAHjtni6MqxHUDnuuQ7URloLBzvPjnsuppcdKiu806R+HkttgjGeoGribarqeYp8M1
+         0mFVxuKljC0ZMAKftYnh8wG3LjQeVUPLSnTzf/ybA/DUL7aPMNzncgDTD8WNtdF+cJug
+         HFIrCvHJ4CyU4/i7iSzyBYm5FZoEXGGHGkOdeuQlpHQG+ZNIp7PMespq2+EIphPEki40
+         iFrIe50L3Hrx/Wgo7lM+MLM4AsZYROJh26FfySyFLEjypL/ohXJ+p6JO+9CWiWDhQWuQ
+         COzp4sunA9pRlFtbjuotn8Cu96joPuVeDfGcjbcLzl+A8QaDWi6F4SqDkKiXS6+amIYT
+         +Dcw==
+X-Forwarded-Encrypted: i=1; AFNElJ/evqh5e9wkkyt4a6bCGvf4f/Nt2ZHONj9sV5KID4env8YlAKhbUS+pVAV9Y4azsvP2E1jG3XNP1Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyuqbnpt/K76gSa6Xwb/VAOApbZHwpAFTFxYOznJc5So9AZwhF2
+	o4v3aL0YdwA56V3KgZGADeRlF6hBqxlKc0b0LpTorSLq2zqQiqS+I7auB0XGQKAxpi4WDmXW+8l
+	VvTaqK/6h3QijRay/TQ1HaD4tJKWTphNPwjfCMbdk
+X-Gm-Gg: Acq92OGDm72jjfYckCf4oSw09gSZmAxr6dLPnwWKQediF/TKgqH47kbOXJnLFXfqH0q
+	QZZiOxpLPoDh5Kawv5yilmulbbfmYpWNhi+5JCaxW/saNscpgIOnTzr43qPqFgKFi/n4+GLdqW0
+	TDPu1n6qlHmQYHZRJ4BnqFxJU75VihTzUOVkLnGtDmbqc9HvQR3FS00k9z4KrxzA0DCp20gIzQS
+	84oiB0q3DI3UEeMTwvl8Wv035IyHyGNLmnozsoadls3LJvzoSiK9KDE4g2YZpTiyDoWD5XLPfa7
+	LhUzOhlRR6WN/24n
+X-Received: by 2002:a05:622a:4c05:b0:517:99ea:ab77 with SMTP id
+ d75a77b69052e-51955ed47abmr10839081cf.23.1781487194598; Sun, 14 Jun 2026
+ 18:33:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org> <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
- <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org> <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
- <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org> <4cf98483-ae35-4ad0-8f77-5a46194eb65f@kernel.org>
-In-Reply-To: <4cf98483-ae35-4ad0-8f77-5a46194eb65f@kernel.org>
+ <20260610-slab_alloc_flags-v2-3-7190909db118@kernel.org> <aiuBW_xY6x5IBQfE@fedora>
+In-Reply-To: <aiuBW_xY6x5IBQfE@fedora>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 14 Jun 2026 18:28:29 -0700
-X-Gm-Features: AVVi8CeJscivUYBempgvh_YTouGssLUsWYrE-XuqGN36nJ9_C6J7p37pzGF9m8A
-Message-ID: <CAJuCfpH8g9mNGV_ke-mhVZ=J9J05PZg-ozPTA=5WQrm_eViVpA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on allocation
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+Date: Sun, 14 Jun 2026 18:33:03 -0700
+X-Gm-Features: AVVi8CdgiUpri-ysDlsl1zKbLaoB6SytnWZ1DdXfEBNz5uTw-d7A6qLAoBejAcU
+Message-ID: <CAJuCfpHh+DW_G8VrD7yX9mU-onGBtkNecCmGJOgMoBqTm1GQPg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/16] mm/slab: stop inlining __slab_alloc_node()
+To: Hao Li <hao.li@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
 	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
 	Roman Gushchin <roman.gushchin@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
 	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EECCA0006
-X-Stat-Signature: p9irny7hhemrtr7d17pdsmygkjmy54zd
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1002FA0002
+X-Stat-Signature: gpg8c65fkqktsffggbkuxynt5zqngyrq
 X-Rspam-User: 
-X-HE-Tag: 1781486921-438350
-X-HE-Meta: U2FsdGVkX1/HuSVXegnH/Y4urEcJMYF0NToVs4eB99EirZci9Ysyx5j3xNsfdS1/WaNz7E0byixr9n+ohfZ+B0kVWtHXvpmffvIEt2kV7zphYE2UZ+tFai/QebWsX6UEfMDUwYzXJZxP5fRx3rm3StkRPWC832WpmCL2JxlL/RHL9iCD8NlqpXXMTa86yqnAWn9ucbWKU0uFisaTAV2AUeCMnMwLpnx6Sa1esRp7PYH3+jVydv9Fg37GZOAbpaEvfOOtDjmlOkRUWWWhgMe4ENLcVDqZJpVgUX6QFJiZW6mS9uNoHTbI4KSwaWCoC5uZR7wuVJcFb+v2J8FNpJNW9FcwuKOXePlRqPT35Mg+STGSXbemdh3TcjUYqKSqhVvJTE+Fmha5s7FN0sqXPpQ6fx8lEzTNngXu8jRVjlv6U2mKXcTG9VzxmUznqfw8eZb/LRAD5uSn5LYFnoyeHei74RmzQhTN5PXNyXh7nPQgiZfiFOg8IJUlWefuWQeZCnBvng02ydrcwcDQqO7szIvPHWBxRLj9OZYmHtEgFDrBc5YNayYsNea7R08+9Mm14qEBkXan/tjyIzScTi50bK46Kv/4bl0rLRPFCfAhqwDUXxWd2XfErDQaH2xH+CQS5lKuOcgk5IZ2GprqqhUD1HHHH0/0OOacXEo7/M3FtFhlvAWpsAsZhXT1BY/tqlQtO9cetwrUjmubrrlFMMYOGoytb6eMADDozYpPFuiBqIHAx0C76uvZGGW2AttnmDmQRvtYIvLEUW3qwTTPlG+80JZ1wRpOeN4v9oB9kQUJS3TMmksMpjnQf+O1o6bu6YGFMuSrwqhmyVkc1c/Iy+VeNuhzUlmmOAmt60oQv6dOhVEMP2pFoFc/NMzpdZWyDsLVTITFHUYAwEjIi1Q/zUWL01Xkps3Q2pSwdSh8ixsB9R7WGx9GSAEtIui+RgASiMEYlrkz6yS/d7VmM61fWUI+SYO
- Fhc/dW69
- PDbcZue+GA6yc3wFIRPjjsJrJUlMBkI3eWsiA7ssY6xVz5xv33wG/F2IRv8JQhGCsLH74fhHfyWfZb8do+8Old7IHBKePXWugTZgl5E9WMG+hQhVL4ur0zldw/2BsPBHyGjvo0ozzH+elRtus/9cYaGchOhZV1O8VACuT20Sy3yV23eFcXvP290jrg4hcrnFl9F5OM9Gaow2eOUuLwnfqw462V7SGSnVy8ibI+BjLEJebO7F84/k1noJsC8xXlRA0q5jpfOdLE5aC3bYaZ2/8O65+OoGfQCOiDIdmCusDvv+yR+pth7bCEnAktodP7sLMYnDWkwnW3k1pclPpOGHYmWuWOvrCQ5HMvu7rHaEziuZgc2D0BeiAeEQQvg==
+X-HE-Tag: 1781487195-850781
+X-HE-Meta: U2FsdGVkX18we0etyJeGbm3Bux5rgBJemf1QodgXb1j34B13Xq7VSFEhBELZRZ6XPYy9Jd/IBWM6JULGZ4XsaXvdolEc91AAg7K1vFOpew4dck/20B1YycT7zwWsWllQ+/EmjgtAOmOQMGm3U1224zMaj7Ae8ebrRsUThhFvwsMEg7swxgYth4eHrRH5ReYLrgs1XXW0Lg8YEr9ygKJmRtNffg9LwKI9beJ8/gs9PKesxCEg0/xBEpAuIrNrr3Qn+d+8BDy97wdbABBE17SnpHwvWg9PQxJtzl5lr/mswOxfPRS/ytGYzi2FJqAbLOwTkTI7eItgwL4e6qgWL+35rTPTaaMzSGUmAlKkmRcHStiw+lKibv6V3++5TGLiQXp5uUOl4t3ZnhtBg/O2HCVlPEW4Z+W61r43bC6TwbrbVmx1j/p4cUm5HeIXx5milbvMUJ4kK1gF0BPLOuIhO8UAXHPyKl33Ayhz/Np4mdokVSdR3xzKIk9mkb+llRGC4Y5mt7g2cz20Qt6bIAuio4n3h8N9zdhLxdWd0Gu1MtOT3yUoV0dw5nVR4FhR0JXlulZvvdWyJ0mhl4sBDLyy4CCM2OxP20SOmEZM85lZlTfwEOJ+hlcTB4iPSaTJXkbM3L6ND2RNBOS9CLBA5Lb6tvuDvK+qRtGuQWIJyQMVfFwBRVKxxOivZ9r3/jvTqdg8boBnPPLdH8jUWA7iTp+opbpxRkmLbz52MiiUoZoP9Q7KyzYpNQS2RMMALa1GZRdCzXDSDYFQlzUhBZfP3nuOPyLH+7yxci09cvbsQS6tzzy3KiomoatzHDymmD1MEZ7BHsBbo77KSos5W9Z2qTD+o3Rm08pcAKNGoGKlyDR9Ue3yh63A1Yln7pFxk620k8Dl4HugSV8W4Oz/7MMmS+UsisEKR4dQmVwB0Wz9fAzrQSlVijy8HIv8CllrD3BFk7gdRpIgqw9ETXgzfljFD8rVH2p
+ pWYIEgy6
+ eTG6JtXA0ZGt1jSiryAs8lF4wg6Nvanhu2cFqO2CBRF2yD/DJdj4oHMom0LxYcNVSB+ETVC9aT7QwFj/yH8kIIRgx2TzlQ1HLDXwqvIf9JqRvFTX4oatQWSngQws2lWFNnMk0CljckLk8YPkeghmFCMQ4FrqEmQ6SlKXzqfWr/2a0LehjWaAOHAFbreGWrzZ2T9XkEU2f8nURkPg2AqIefal/ako0WK8vDsINI/yt1gsHVoQoFmZHc3P995soCgQlxkAKFmUlVMbNb94+CgfetKqGD+hBbad3fpul+QzDu+f/YW2FrnnZDnMEnNz3NG4NwPH+ADzTelHVeqax+yhlixHzdtdbjTQnNBmtzlWKBOcsbgnoDawvsyUQ8FY6g5O4lCVzlNYgdeWkvB8m3zDGWmAMCbdzie3QCmXB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,90 +145,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 11, 2026 at 9:37=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
+On Thu, Jun 11, 2026 at 8:48=E2=80=AFPM Hao Li <hao.li@linux.dev> wrote:
 >
-> On 6/11/26 17:11, Harry Yoo wrote:
+> On Wed, Jun 10, 2026 at 05:40:05PM +0200, Vlastimil Babka (SUSE) wrote:
+> > With sheaves, this is no longer part of the allocation fastpath.  For
+> > the same reason, also mark the call to it from slab_alloc_node() as
+> > unlikely().
 > >
-> >> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
-> >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> >> Date: Wed, 10 Jun 2026 17:40:04 +0200
-> >> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
-> >>
-> >> When init (zeroing) on allocation is requested, for kmalloc() we
-> >> generally have to zero the full object size even if a smaller size is
-> >> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
-> >>
-> >> When we end up allocating a kfence object, kfence perfoms the zeroing =
-on
-> >
-> > nit: perfoms -> performs
->
-> Fixed.
->
-> >> its own because has its own redzone beyond the requested size. Thus
-
-nit: s/because has/because it has
-
-> >> slab_post_alloc_hook() has an 'init' parameter which has to be evaluat=
-ed
-> >> in all callers (via slab_want_init_on_alloc()) and should be false for
-> >> kfence allocations.
-> >>
-> >> For kfence allocations in slab_alloc_node() this is achieved by subtly
-> >> skipping over the slab_want_init_on_alloc() call. Other callers (i.e.
-> >> kmem_cache_alloc_bulk_noprof()) however evaluate it unconditionally ev=
-en
-> >> if they do end up with a kfence allocation. This is only subtly not a
-> >> problem, as those are not kmalloc allocations and thus the "requested
-> >> size" equals s->object_size and thus it cannot interfere with kfence's
-> >> redzone. There's just a unnecessary double zeroing (in both kfence and
-> >> slab_post_alloc_hook()), but it's all very fragile and contradicts the
-> >> comment in kfence_guarded_alloc().
-> >>
-> >> Remove this subtlety and simplify the code by eliminating the init
-> >> parameter from slab_post_alloc_hook() and make it call
-> >> slab_want_init_on_alloc() itself. Instead add a is_kfence_address()
-> >> check before performing the memset, which will start doing the right
-> >> thing for all callers of slab_post_alloc_hook().
-> >>
-> >> This potentially adds overhead of the is_kfence_address() check to
-> >> allocation hotpath, but that one is designed to be as small as possibl=
-e,
-> >> and it's only evaluated if zeroing is about to happen. This means (asi=
-de
-> >> from init_on_alloc hardening) only for __GFP_ZERO allocations, and the
-> >> zeroing itself comes with an overhead likely larger than the added
-> >> check.
-> >
-> >> While at it, refactor the handling of evaluating when KASAN does the
-> >> init instead of SLUB, with no intended functional changes. A
-> >> non-functional change is that we don't pass kasan_init as true to
-> >> kasan_slab_alloc() if kasan has no integrated init, but then the value
-> >> is ignored anyway, so it's theoretically more correct.
-> >
-> > Right.
-> >
-> >> Thanks to Harry Yoo for the initial refactoring attempt, and for updat=
-ed
-> >> comments that are used here.
-> >
-> > No problem ;)
-> >
-> >> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-2-7190909d=
-b118@kernel.org
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> >
-> > Looks good to me,
 > > Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > ---
+>
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
+
 >
-> Thanks!
->
-> > Thanks!
-> >
->
+> --
+> Thanks,
+> Hao
 
