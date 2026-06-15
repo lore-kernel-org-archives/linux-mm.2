@@ -4,111 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD2DBCD98C7
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:43:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9800CD98DA
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 10:54:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5CF76B0005; Mon, 15 Jun 2026 06:43:33 -0400 (EDT)
+	id B60476B0005; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0DB56B008A; Mon, 15 Jun 2026 06:43:33 -0400 (EDT)
+	id B118A6B008A; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D24916B008C; Mon, 15 Jun 2026 06:43:33 -0400 (EDT)
+	id A274C6B008C; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C29656B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:43:33 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5359E140991
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:43:33 +0000 (UTC)
-X-FDA: 84881810706.12.C5571D4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2D12DA0003
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:43:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YilFCdw7;
-	spf=pass (imf15.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 924066B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:54:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E4CE1C45BE
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:44 +0000 (UTC)
+X-FDA: 84881838888.28.E0503DA
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 57638140003
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 10:54:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bAhttd3I;
+	spf=pass (imf26.hostedemail.com: domain of 38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781520882;
+	b=7LmIp40uI+/5955HUju9Vt02tMnQIXdsoe/K0CPtD8QnuEll+mp2rZDkz/ac/DXJVBjurx
+	HSskxvCObfIonUlpBrZqGAUYrP2ZHZvwMlN4vT0ThKG0/0MkEs1xd8W2GAx/3JRlAQybaM
+	nWKMmfmuPlXYWy2n786o5UZXFfOoOzI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bAhttd3I;
+	spf=pass (imf26.hostedemail.com: domain of 38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=38NkvaggKCLskbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781520211;
+	s=arc-20220608; t=1781520882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1QxZfZzm8KbWsn7EcMwfMhpI2Zi+BCO1Qsj0jBDfZ5Q=;
-	b=v06wJF3OOm27Kt7JS0olSy8vi5FIpxztoLUf4V8iiWKsQy6JvhegqMs4gqLBSItSFz77tB
-	uiKWoUakKqnbAKIlayo1jWnuUttJymUyx1lm9EYR2Cna3lVT7jPjViijG2hYxjq0/T6cyO
-	VWpJRt2eWSK6PDaLpncIkw32nVccaj0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YilFCdw7;
-	spf=pass (imf15.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781520211;
-	b=2iawi7g3A7PH8Tc2Khe/qOlw5fhx84v899tUVBLJJaMh26EXVTb9olsFZydmIkhX1yBppZ
-	1pB0mfz1DneoXJ5A9A5qB+hFP0jpcnhc6JdjfLWTN0JVHwPeRgIgRAEqSx1bnaKsbJLc3x
-	BubAn9FRhTLTToeNtZOF00uPsK4TSTE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAEB1328D;
-	Mon, 15 Jun 2026 03:43:24 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 75FD73F905;
-	Mon, 15 Jun 2026 03:43:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781520209; bh=3yAHPoiKaxpCvGRtA07MNdia4xyAMd/XClNlGDs+yTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YilFCdw7wnbi02p8Ri37XQ9LOpP+gWIbj1xLxh6VFzlKpkicKF+zKdXigOj42eUFe
-	 ECB8oiTRkLs1UEvL96SQTRLUaBxPXfMXbysW2WvyNOHsHoIAo9UCdTxpZcD/tf4F/m
-	 bGpKZ3AP3paUcX/S/ZEhVk3Sy2CPal6yF/LtIlWA=
-Date: Mon, 15 Jun 2026 11:43:14 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>,
-	Patrick Roy <patrick.roy@linux.dev>,
-	Pratik Sampat <prsampat@amd.com>,
-	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-Message-ID: <ai_XK__RTXMCEcCG@raptor>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
-X-Rspamd-Queue-Id: 2D12DA0003
-X-Stat-Signature: rzk9bs97ngunmes51wozbx3ocnao5sfu
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
+	b=lFdarjylczU4oD+kpJQ38zl+Gefe/iMnUoKbOLjzl5x/iDnIQKSF/j1AIddrLU047/6x+6
+	RfoLEJIuZx69pvMTwivrt/N6EH3vVYdDPzA41EyD+yfTrL8fYoiWqaWzUrRExuBl3LzW8u
+	AKgaUbS3AsxozddydoEJ/3Ppg7VjnN8=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490a767b782so19527315e9.2
+        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 03:54:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781520880; x=1782125680; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
+        b=bAhttd3Ijl5596Z8G+8MU5pJL0NEavqvAKqkSGZyimcaMJhp4x4DkHwNS/d6QL3iAc
+         P4k+IdWwDIvSP3j1Q2Ai+tJ56otIz839V7x9EsDkbF6uQ2eoA3Xz6ZSmeC2bU06iSQw0
+         /SEWxlyxfwjCdDaFAQ1gFjjdgOmm15yD+63PDVid61gVdmP2YW7mTlIFlk4zm379iD7o
+         3alhEBe5m45kyzv4h/OIqfOlf+ebb6e0FIdrS6HCcd5Sg3HwbyjUUqfGKtHdvESsCDPM
+         ZUgL7ZT6lnpffYS7jzhJ8/LzFS9ILVrg5jOEDpH12CCvN9wpEZ7daZqsC+zsS1UIyOML
+         VoJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781520880; x=1782125680;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eobnSkbfcthpGZ3uSiACB77vsJPzjUfl3qO5CZCMbzQ=;
+        b=lBPKchr2ouVKVm7a8rWse+DtvWmoUlVQHDgQbdASIVYkTh6YIHgtYp8Iz9JQAB64Al
+         vOsgMa/arvRGqLSchMICaRIc+ClkbozKPa+Rh9+A4btro3J/Q4cYcYMrgqziH/HN4vrN
+         KDHfJpcliiaoxnClNA7LxDXIjCS0uVhgd9xV2YrR1RcA7tOLgoCQVeVTVWTzRXLdmE5f
+         ybqXG4i1fLiPwBeA4Q6ui3HfMxlqe3LmL0R4PLTX336m/knPypUpfbeQDE8gjIS4mgTN
+         lCwRutZAeruv7HXSBcBScoerz6qAVNw9bdXTVIaojngmApVLN7AuNXEFeITSFSYQqczK
+         1U+w==
+X-Forwarded-Encrypted: i=1; AFNElJ9jYWWOtam6ka5ss8+5CyVWhZjQTQNmyeQETUT8Gs6x8rf8tl8cX08Fn9rZCbcFXklr8BbOdh+dTQ==@kvack.org
+X-Gm-Message-State: AOJu0YxuiLxnn+EwVr5fKMN+7WNtAXjB67oEzjuuSBnt5HCOT5LA5EvJ
+	TQzZyaUZprT8t7ll5FS1H2CAH3xBOrT6kV+wVBQxXpp7SurgLPTSYvKtSL+VOfQX4Js/9UFEPVi
+	ohheJ6gWTVpkdLg==
+X-Received: from wmbhj26.prod.google.com ([2002:a05:600c:529a:b0:490:b6fd:4e2])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c059:10b0:490:cf76:dea4 with SMTP id 5b1f17b1804b1-490ec4bfa54mr128265285e9.2.1781520880063;
+ Mon, 15 Jun 2026 03:54:40 -0700 (PDT)
+Date: Mon, 15 Jun 2026 10:54:34 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOnZL2oC/32NQQ6CMBBFr0JmbU1boSor72FYtDCUSYQ2HUI0p
+ He3cgCX7+f/93dgTIQMbbVDwo2YwlJAnyroJ7t4FDQUBi21kUZp4ccoIjLTTGzX0hZONzdbO9e gG6DsYsKR3ofz2RWeiNeQPsfFpn7pP9umhBL3i0En61LD68OH4F947sMMXc75C/U0Ab+zAAAA
+X-Change-Id: 20260612-gfp-pessimisation-b258a4bb5ebd
+X-Mailer: b4 0.14.3
+Message-ID: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
+Subject: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 57638140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781520210-909619
-X-HE-Meta: U2FsdGVkX1+dIdDTNNqDqrWkbE/qwS5oVnp7/SFA89j1ChN+YPScL3+soCWgrfWIHmhm/StRv8FRZGCubm3wrRNKfdy2VfkAcGghUtyM+GQXQrBbf693NYPrKFquO2EZ8kfPJULjOOLXMtaLLP9NTFJu3GQyI41zy70O0qXSmjHXEkbe7agflHqHji65gbusiimo+Cgxw9kzBZmunFzVqbTjkIBECJl2qMRA3ckUiI6xfx0DOq5ehPPC3qWI96ecb0Bp/3uV21gyR/i8Mb+Eo30tuHJpHOC06w4ZIsdsjjo0XfigJyTmJ4t+CqyrypfFKe9R5CAALig5McIol7RjD7/O3NIll/GvLi1uJzq7TVUERCVRCXXEMa13veFEbuX6E89F0NeI+j0SXCE8HF60RnGdxfIHVPm90zYEQVzyCZcogSE5tnlRMO4sApJ+hMcDqpN9C2Od5/J+0fY+KGkTZT4RPw4cb4uArnCwQYXz0JxDgyRLPiRixqfJFZV/fq6pBZ0N3m9asgIqbmHxpG4H5uSpDBvE8fkjKKp3P3887EEnMtSdo0O29y57GnQxip5cPNMysRWvmMJ5wcPJYB0eKrYPnb4rxhcX3wh3aemKqGXHx6kgEEYH9QK7ASMKFs8DYK/czdosQT6aNxjvOLeAu1Sf3o5t7TQN8S71Q4CARTSOCC3Siqvjg/KAw3ZfPuLptQUbIegfBbtDnxGxBRUb02dMTpRxCJUuNGOZqxzXAYYZC1W9fBERONtY2njhHn5E6s4awTlEphxCBezdwWyQX+RajxgmxtfCJHfPrRDSRHY+GUWhavubnz39fwRtEUSQ/6i5eMRJKQrdyhsXrNmVT4turXJn3B/x/PkeOVYGYfwaiZ95zevvxl5EzV2jMHSOUEVxL+60g0sq3CQ2nidXWTt/8ID41Z7nmgwa/x4G3vUoA48EzEe7s0JCsnGfYdli8QIWUJJPGVryyFPvQBd
- BEdDIqoP
- NDeiYy3LaF18sU8WEwrtEJVsk4BZUxTdNZUfRhoUdNMAtYrfq5dbEeAzI8+mJflEdk3ChxPcdQdROJ/M5jGmXwfxKyRRBshT1EKfL3r89aG1OyWqqPPaJfFoMPMDL2AtatLtE+KVv+XL3/64YBhyBRvYSwn5OEV9kb2pjfpY3cW0ZqkJlHssWh/GtHSKaLUp/ITY9bbTcuCnd15mGFMl5bXHOrp87XJaNo7Bzg8qNIrpeKLLwyAVpzyK1WlRE0P7Xr59yZGMsDFG2qbV+V/BOw7gUpYrYUVho9Y/esyxP4aGTVY+4M+shJadyO+hP9nTSbLWLpynKRKHrwz2341aAuGLRaeghsyrlykYgKtsIqWQEsvGT7jXBIHg40h97zBREluvp0r7bxxbRZ20=
+X-Stat-Signature: 8xtxqkym5khmyc7rpwsb4onxqi6skk59
+X-HE-Tag: 1781520882-695708
+X-HE-Meta: U2FsdGVkX1/F+pm0g2TfxI5Dysjp5mtdXm9kRQEMx6K4wqBiCAsLiBo8ejy1GHRwy2SkIBZ4+xM/RC4I4K8lQ2/HcqW1iXsBq71mavMBSzg0m+T89DVODOhoAaqC7tPzjctvuMtda9DnO3PvCngKcOkEoIBbdYpkY5kJb0Zu6UoiLMUYjX2pwIKNiO0qt3kh4MFy8pLFavXn+5wTh8J168hEz1R2YRehuwp3OZU6pRsDUndjlAzX6c7XWxrHn/wicbcPwTUOZxE2JtxhKLPYWIYx202wcOju9twmNEW/G2ipHNUz+5ax7EO142cx3KpaLagabqtQRpZ8SHrj8o+7tDAITJCsdStmtLBQPNNxd8MyeplYZRz2JA4u1P++vxvru0drUvMR2IeS2TylEbIRfktkZA/eR2SkCC+YQcsK64vqzgtnz/m5y0XKCW36I6mtRIblUOw5JaS0sH4VVCTxNKju6MwtFmNAryoRBFlWWP4MHueXle2RtCEE9uC/uQMLU7h2jFN7um5JU+JOB2PnE3zvksu5GWpshH9fEgQQT5ai1lWmqy9md8jrYwQgSW1WG+T83G+OPQvpDbeAw0PQ9ug8ZAPzQCp9QUk9kSc9uel8Ih2PGvMPLbj8whcyalaGZHc1qDCtblQDxoBsqWU79CumfZuZAXD8rCoKNItUHq4DWT9Q8ddZqzFfZrIiYOB22xKJW22QNS4/lLxklKnHtSrhUzN043X0hhJeaMKL/mgOGXIx0UNnUXQo+HdcgSnCw2H6gm0eOPc6S8I+j5UBdQaYUvfOZBebCr43zU4pFj/DgLbx28QLm0xr2lDdVH0QH5Ydho84ssVxyYBFbkvi5K9OJJiUF9u3sYTtKdtbbYjJcbLevllpdMIcC1jBoh401GZhmrz32yYrcxDCZSwZfdhCwMp+o2ESRBwjttlTbvtZWCIkdI3MMi2EA2vT5jN1b7fL3QCj0AwyzWszLDf
+ bG7vOkpq
+ p/j5k1oon7ipoCNHN9ZWFr6kFHxPYTabizOnopgganvjutgae7I9aSwpNvDVPgNhdT7KqdSEb3tmXn6/9r3gyc4SC8f5IX3INyY0Lccf7mLQLZFtou6vKplMuGuVHL20bxoLmgS2rv2H98NJBjWApGWD0MRM0GCH0z7hOk7VDjcnSpoxn0hAINRxWujTGSLBZQYnxI4FoERuLzmtg1ViT4lFOFHnHX00+xLiKH2mZ6GVZlvSja/ddiF6JrA9qQv3DednL4XAf8Tr8FzF4zhJ0OmELkGbZozkcmgOl0RNNqoXQnrBFcgCNTdbqiD3RdadIt++gYHCORai76QucGo4PKnA6UeD5G96sY8oJVeXwO6G0EcNBLZlRsLHV/YPj990jBmy4l36XzWZieK2wK/ZrIrtwds0TQDs6IwMIBsNpIvCWMwqDbw+X7qj28/meyu0MfsUbuspVHwOg9utBnWhlrRMGxfSc6uZfNR6HWqPsqT8DVs3NXFs0OTepZPxKsCiV74wmejgsk2tBlzduPYTxUlW+HyMlhJpoA3l1vvEPp7USAN7sSu0+U66O0y87gfyE6XUqoOCLoVg/z8mCQvBBPzGUGNU2578ldRDVd6C1cDsgp9KVD/ESABzUMBoCZ1r2pj9WCVklDWg38jLC8BzQEnYxh3h3LT4GCpXK7/PxGwjHqEQPNlNXbEBpqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,76 +110,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+This code uses flag equivalences to try to optimise conversion from
+GFP_ to ALLOC_ but there's no clear reason to believe it makes things
+faster. Even if it gets rid of conditional branches, it just trades them
+for a data dependency.
 
-On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
-> guest_memfd folios are currently marked unmovable, so the kernel cannot
-> perform NUMA-balancing, memory compaction, etc. This is unavoidable for
-> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
-> needs firmware assistance. However, for non-confidential VMs (like
-> Firecracker), we can migrate the folios.
-> 
-> This series enables folio migration for non-confidential guest_memfd and
-> also lays the groundwork for migrating confidential guest_memfd later.
-> Once firmware-assisted copying support is available, those VMs can be
-> made movable, the confidential folio content can be copied separately,
-> and the destination folio marked with FOLIO_CONTENT_COPIED so
-> __migrate_folio() skips the host-side folio_mc_copy().
+CPUs are pretty good at conditional branches. But, in my GCC x86 build
+it doesn't look like there are any branches anyway, the compiler found
+some conditional instruction tricks. (Caveat: This was extracted &
+annotated by Gemini AI, I did not actually read the disasm myself)
 
-I always thought that one of the nice things about using guest_memfd as a
-memory backend, as opposed to host userspace mappings, is that the host
-cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
-collapse, compaction, etc, acting on the host userspace mapping of the
-VM memory, and outside of the VMM's or KVM's control.
+Old code:
 
-I think it would be useful to preserve this behaviour, even in the absence
-of confidential VMs (i.e, guest_memfd file descriptor created with
-GUEST_MEMFD_FLAG_MMAP).
+        ae50:    8b 04 24                 mov    (%rsp),%eax           # Load gfp_mask
+        ...
+        ae5d:    41 89 c4                 mov    %eax,%r12d
+        ae64:    41 81 e4 20 08 00 00     and    $0x820,%r12d          # Mask both flags at once
+        ...
+        ae6f:    44 89 e1                 mov    %r12d,%ecx
+        ae77:    83 c9 40                 or     $0x40,%ecx            # OR with ALLOC_CPUSET (0x40)
+        ae7a:    89 4c 24 60              mov    %ecx,0x60(%rsp)       # Store to alloc_flags
 
-Thanks,
-Alex
+New code:
 
-> 
-> Testing
-> -------
-> Host: 7.1-rc7 + this, 2 NUMA nodes
-> 
-> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
->   back and verify resulting NUMA node and the folio contents at each
->   step.
-> 
-> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
->   guest was running, forced host-side migration of its folios via
->   migratepages(8) and explicit move_pages(2) of guest_memfd
->   pages. Verify with /proc/firecracker_pid/numa_maps.
-> 
-> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->     and change builder.rs to remove GUEST_MEMFD_FLAG_NO_DIRECT_MAP from
->     vm.create_guest_memfd()
-> 
-> Best regards,
-> Shivank
-> 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
-> Shivank Garg (3):
->       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
->       KVM: guest_memfd: support folio migration for non-confidential VMs
->       KVM: selftests: exercise guest_memfd folio migration
-> 
->  include/linux/pagemap.h                        | 24 ++++++--
->  mm/compaction.c                                | 12 ++--
->  mm/migrate.c                                   |  2 +-
->  tools/testing/selftests/kvm/guest_memfd_test.c | 77 ++++++++++++++++++++++++++
->  virt/kvm/guest_memfd.c                         | 49 ++++++++++++++--
->  5 files changed, 149 insertions(+), 15 deletions(-)
-> ---
-> base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
-> change-id: 20260611-shivank-gmem-migrate-8c1c519b30a6
-> 
-> Best regards,
-> -- 
-> Shivank Garg <shivankg@amd.com>
-> 
-> 
+  For  __GFP_HIGH  ( 0x20 ):
+  It uses the Carry Flag (via  sbb ) to conditionally add  0x20  to the base  0x40  ( ALLOC_CPUSET ) flag:
+
+        ae63:    83 e0 20                 and    $0x20,%eax            # Test __GFP_HIGH
+        ...
+        ae6a:    83 f8 01                 cmp    $0x1,%eax             # Set carry flag if 0
+        ae6f:    45 19 e4                 sbb    %r12d,%r12d           # %r12d = (gfp & 0x20) ? 0 : -1
+        ae80:    41 83 e4 e0              and    $0xffffffe0,%r12d     # %r12d = (gfp & 0x20) ? 0 : -32
+        ae87:    41 83 c4 60              add    $0x60,%r12d           # %r12d = (gfp & 0x20) ? 0x60 : 0x40
+
+  For  __GFP_KSWAPD_RECLAIM  ( 0x800 ):
+  It uses a conditional move ( cmov ) later in the function to set the  ALLOC_KSWAPD  ( 0x800 ) bit:
+
+        ae72:    25 00 08 00 00           and    $0x800,%eax           # Test __GFP_KSWAPD_RECLAIM
+        ae77:    89 44 24 30              mov    %eax,0x30(%rsp)       # Store result
+        ...
+        af2c:    80 cf 08                 or     $0x8,%bh              # Set ALLOC_KSWAPD (0x800) in temp reg
+        af2f:    45 85 c9                 test   %r9d,%r9d             # Check if __GFP_KSWAPD_RECLAIM was set
+        af32:    0f 44 d8                 cmove  %eax,%ebx             # If not, revert to flags without it
+
+Testing with a modified version[0] of lib/free_pages_test.c (adding
+printks with timing)...
+
+[0] https://github.com/bjackman/aethelred/blob/2ccdc84ef087c2a631914f58e106e99e19bd3b98/page-alloc-test/page-alloc-test.c
+
+Old results from a Sapphire Rapids consumer CPU:
+
+[   67.157118] page_alloc_test: Testing with GFP_KERNEL
+[   67.157122] page_alloc_test: Starting 1,000,000 allocations...
+[   70.704446] page_alloc_test: Completed. Time: 3543002 us (Avg: 3543.00 ns per alloc+free loop)
+[   70.704456] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+[   70.704460] page_alloc_test: Starting 1,000,000 allocations...
+[   70.944672] page_alloc_test: Completed. Time: 239980 us (Avg: 239.98 ns per alloc+free loop)
+[   70.944675] page_alloc_test: Test completed
+
+New results:
+
+[   70.079015] page_alloc_test: Testing with GFP_KERNEL
+[   70.079020] page_alloc_test: Starting 1,000,000 allocations...
+[   73.669396] page_alloc_test: Completed. Time: 3586954 us (Avg: 3586.95 ns per alloc+free loop)
+[   73.669402] page_alloc_test: Testing with GFP_KERNEL | __GFP_COMP
+[   73.669405] page_alloc_test: Starting 1,000,000 allocations...
+[   73.905084] page_alloc_test: Completed. Time: 235496 us (Avg: 235.49 ns per alloc+free loop)
+[   73.905086] page_alloc_test: Test completed
+
+Seems like a wash.
+
+So, drop the flag value coupling here and let the compiler and CPU do
+their job. Superscalar CPUs are pretty neat after all.
+
+(Used AI for the disasm but the rest is all manual).
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+Changes in v2:
+- Updated alloc_flags_nofragment() too.
+- Link to v1: https://lore.kernel.org/r/20260612-gfp-pessimisation-v1-1-936eb04202e7@google.com
+---
+ mm/page_alloc.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f5..0111cdbdb5321 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3739,13 +3739,10 @@ static bool zone_allows_reclaim(struct zone *local_zone, struct zone *zone)
+ static inline unsigned int
+ alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+ {
+-	unsigned int alloc_flags;
++	unsigned int alloc_flags = 0;
+ 
+-	/*
+-	 * __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+-	 * to save a branch.
+-	 */
+-	alloc_flags = (__force int) (gfp_mask & __GFP_KSWAPD_RECLAIM);
++	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
++		alloc_flags |= ALLOC_KSWAPD;
+ 
+ 	if (defrag_mode) {
+ 		alloc_flags |= ALLOC_NOFRAGMENT;
+@@ -4478,22 +4475,16 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ {
+ 	unsigned int alloc_flags = ALLOC_WMARK_MIN | ALLOC_CPUSET;
+ 
+-	/*
+-	 * __GFP_HIGH is assumed to be the same as ALLOC_MIN_RESERVE
+-	 * and __GFP_KSWAPD_RECLAIM is assumed to be the same as ALLOC_KSWAPD
+-	 * to save two branches.
+-	 */
+-	BUILD_BUG_ON(__GFP_HIGH != (__force gfp_t) ALLOC_MIN_RESERVE);
+-	BUILD_BUG_ON(__GFP_KSWAPD_RECLAIM != (__force gfp_t) ALLOC_KSWAPD);
+-
+ 	/*
+ 	 * The caller may dip into page reserves a bit more if the caller
+ 	 * cannot run direct reclaim, or if the caller has realtime scheduling
+ 	 * policy or is asking for __GFP_HIGH memory.  GFP_ATOMIC requests will
+ 	 * set both ALLOC_NON_BLOCK and ALLOC_MIN_RESERVE(__GFP_HIGH).
+ 	 */
+-	alloc_flags |= (__force int)
+-		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
++	if (gfp_mask & __GFP_HIGH)
++		alloc_flags |= ALLOC_MIN_RESERVE;
++	if (gfp_mask & __GFP_KSWAPD_RECLAIM)
++		alloc_flags |= ALLOC_KSWAPD;
+ 
+ 	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 		/*
+
+---
+base-commit: ca2351ac6da277a470d4fcf122b53267e02b2716
+change-id: 20260612-gfp-pessimisation-b258a4bb5ebd
+
+Best regards,
+-- 
+Brendan Jackman <jackmanb@google.com>
+
 
