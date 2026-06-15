@@ -4,88 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16792CD98C7
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46525CD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:19:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58E786B0005; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
+	id 8562D6B00A0; Mon, 15 Jun 2026 07:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53ECA6B008A; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
+	id 82A056B00A2; Mon, 15 Jun 2026 07:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47B686B009B; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
+	id 767196B00A3; Mon, 15 Jun 2026 07:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 39FE96B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:16:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 78607120A18
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:16:08 +0000 (UTC)
-X-FDA: 84881892816.01.121EE0D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3183E140003
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:16:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cdY4lVPE;
-	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2A46B00A0
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:19:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 10B52409EC
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:19:21 +0000 (UTC)
+X-FDA: 84881900922.07.3788626
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2E18618000C
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:19:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bR3er4aW;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781522166;
+	s=arc-20220608; t=1781522359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3uCpF5smpc9mUAlnydhdP+W4oOPGRNWqN7XTyVAHkgI=;
-	b=GZifELw9kn2T8MJmcgU75Rd4A/f/KmADnIFJYOeuPxzNOgXGxn8LOltv0M6ik8r23jqYwP
-	kwDh9LHTxXl3Lu//8Cu7M+h6tOgbYKMdq46ouvQ8nS0QtJL4MNFC7U4rIsrCzxY3LGxJQ9
-	DQaBqdL1bXDcVSPchMuGKfkC2sig0HA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781522166;
-	b=TcEf2ysA1VHmywkOf9kW+TWmrdseDqYtTcQ6o0lvQTLEoIf5fe/gIHofWocFn9b6mVsRdg
-	CuibkWYAdTvWiqE+N1dpK8IRJtfvHrB7H+Qc0i5dWK//FmZ8SxtAyIobfR6WNteGuUjqS6
-	IsEQN60SFKxRD6KiZT/C4J2dXYE5eQA=
+	bh=3DIsUqGC96VZVDdHkEFPij9wdORi4Oo6AKf22v21DwI=;
+	b=SdiSZj8/APDb77yYuK/PuiA3OnfbY57LZ3Gl7XkESd9c+0ba3qJx1J6+7jf/VzNFlQjPPa
+	wremA/7ZzzoLjmevUsi6u08VU9BGO3xOxeinb1IZScmLpt4h9pQFGd3uGw4x/1GRBI1B8O
+	983PuQy8OZArlJ3PcRzEmnRK6NzYAAw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cdY4lVPE;
-	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7194328D;
-	Mon, 15 Jun 2026 04:15:59 -0700 (PDT)
-Received: from arm.com (RQ4T19M611-7.cambridge.arm.com [10.1.32.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17E643F915;
-	Mon, 15 Jun 2026 04:16:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781522164; bh=Gy0LHTdLmlPA2i+iN2Je30fdWIJBmw4l6fKDIDT15Cc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cdY4lVPEYrNPl4E1WB89Pyctf4ei4UjwuF0x5VaUZ/uHD8RP//KUfcDlDlXD/ZTMz
-	 4jsOCEDRAult1wHuB6kgB9dPNw4l/aXf3iKX5DOr7uzAVhOh5XiMoI801LGS3cOdFY
-	 iYUnfiVA+rR0pNdM9dXCMb8naE0yjNA7UicT2d5I=
-Date: Mon, 15 Jun 2026 12:15:58 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, lance.yang@linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Oleg Nesterov <oleg@redhat.com>, Qian Cai <cai@lca.pw>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/kmemleak: avoid soft lockup when scanning task
- stacks
-Message-ID: <ai_e7gfv5vze5tB5@arm.com>
-References: <20260612-kmemleak-stack-resched-v2-1-53240de79e88@debian.org>
- <aiw9u4BllwZXDH2S@arm.com>
- <ai_EVJVfe42glgKI@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=bR3er4aW;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781522359;
+	b=o8jj1kaSWV9B8gSOXDJYFzrje1lvLmthGoqVJvIwNvcdylOXZc3o2nzDrudYrIolpqI/SX
+	eUlof3Xp2hXVZS0a5XHmCsI1hyrto7cTbxEQDJpafh0Hl7k3mYtw0113v4GE1cyMp1yRPx
+	K3K0JQVZ2vQUQ+emTOkxkM7wHfxRd78=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-915c36e32abso285209485a.2
+        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781522358; x=1782127158; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3DIsUqGC96VZVDdHkEFPij9wdORi4Oo6AKf22v21DwI=;
+        b=bR3er4aWgh1RtkLRG9oKalPjuEkE9qRJpruMdWwdJ7JcGDGCohXooluLCbGQI1WhyG
+         BuPZAChfzxXJymBBR7pN1R/rErHaimKAB4TBENiiPQwfyVDadh6K+SPs4lbrgUbhs/fM
+         G0tflACuP/rPZPo9RD3MzKtZl39v2JfIs+xtWv4iEwN41kS/cjYsjesmYwwRurNzo1Od
+         7R9X7RqSMM6NLj+bmJ9CuiNtv+47nl+RscdkYcIv/+q0fpsuDu9bMq9WcdJFBlTYwAbc
+         eGub9UG/8Jzr3tdmhZJckE9PPmmfHhJUU3+3JgaDTriQ9/4Tyyk/ZxIwk+Ovz7SNGx62
+         2gIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781522358; x=1782127158;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3DIsUqGC96VZVDdHkEFPij9wdORi4Oo6AKf22v21DwI=;
+        b=iD1rB6pEoiAziwRac6M+MVbWc5rvWPS/48LzfLRk6dfxYNLN90/nCYbWL/rI/oCPT0
+         xRN4zyi1TDmpARmF4JMlJzwl+QzauC/cg/3U+z/q8KqZywwStt0OoYjU2IFoZdxPl1sL
+         6u/FF0sFSKs1KhT0K4ROoHhLb9U7Q91TDHyFsYcX8Oe3jeMaZymzJ/gNpaWpxp8odDKV
+         zwT8d25qpTD238dLH1hmDo9tdalUZkdZiuKx5yaq+LTm4iA4WUJYbCrAs2bqBVFK+l+C
+         WucxzyOgWGsO6YmRPT6XiyIzRguB5DeTkFWUmT4QhyRStoUxiVENkId5YJ4Ku1QvkNqO
+         aj1w==
+X-Forwarded-Encrypted: i=1; AFNElJ8Wa6B4DbKiH5tji6ibuavm0yTU2nBC7yzC4Gt1pyu/k7jXIhpPCF/dq/EQenDFI0Pi2SNrTsa4SA==@kvack.org
+X-Gm-Message-State: AOJu0YxXxvJ40V3xPdg9GGL38/WhnqJc4sXfGY7jATuCPA/laFqvgwKR
+	/PAGcCca0nZUWvxkJatmI2HQkOjLwYKIYtDg9TQ3//6Qc9YcX2lWFrDRyNANdmH6udU=
+X-Gm-Gg: Acq92OERmXBIQMlsSvX08ArVIlGbWg6fq3pEk0x+/J9nouQFJqA6nqyZNf3b6E4T6Wd
+	l3hS8JrVBuNy0Y+CTpAY5K2Slr5v3ziDKIb8sbASeqs4CuvxcR/M1VRn9A8b5IQYd0UPbqhS6Dc
+	ySc4PJOkaTGQLXTu22zVFo0hjvlX8MuteZThGosDFzx7KB90kSTeupD0H/W2WbW43laWjWWMeg2
+	ppalazO1T3bAs2WNXL5tIGEKq6CCEVvORXs0tRbgr3iFxvDe7ZRKrbm1SVrNw+43e5fUxo1d+aC
+	rit3yd9hNX+YHyD3TNgTxLQM/ac4vVxYy1shULKGF/iaBU0R2WwClhzSRbXhj6kJdEv/LYt2tNm
+	sTAUMPWdTTzIx9z+D4xveJNhGDuYbltMDYbIhgofYUEyS9jHf574fASDfEQ2YRXn0DHRt7IH+M0
+	BsvPQnEkq6fUcaciCBfKwXJyig09VECzoTXAuUdnqNIc2jJNM5l32dgNCYUh9tMzjDGfm5aIxwC
+	QZw
+X-Received: by 2002:a05:620a:448c:b0:915:db15:4e36 with SMTP id af79cd13be357-9161bd156bcmr2061939485a.42.1781522358133;
+        Mon, 15 Jun 2026 04:19:18 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (158-94-182-130.mclarenap.oninferno.net. [158.94.182.130])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619ed7f16sm1071791285a.1.2026.06.15.04.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 04:19:17 -0700 (PDT)
+Date: Mon, 15 Jun 2026 07:19:13 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>, Farhad Alemi <falemi@asu.edu>,
+	Yury Norov <ynorov@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+Message-ID: <ai_fsVg51_GTtzT1@gourry-fedora-PF4VCD3F>
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <ec4b4b70-dc01-41fc-ad58-e1c877f6a7eb@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ai_EVJVfe42glgKI@gmail.com>
+In-Reply-To: <ec4b4b70-dc01-41fc-ad58-e1c877f6a7eb@kernel.org>
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3183E140003
-X-Stat-Signature: yhxxhfw5etnt8kg8ifebb1ab8cw8yqw5
-X-HE-Tag: 1781522165-151713
-X-HE-Meta: U2FsdGVkX1/HGcvcali+Zg5PCiRvBnJSe9o+ZxpHu2x6u/AFvrXGUJIGcJIWLj4zEjXSDtH/QVGpeZ5x5DsDOwsRLp3DmnGLljegMe/aPtMYoEl13rGsjTiHKd4qxJyslBko/5YEx0YWlPr6NF+yvo7h4EQQUJHoNrQo4ii9/WWdH8Cuaxvpsc3KGo4FrcikX2PLH9Jqhwpph+k6w4cIiMTZx0+JswQJYHIwACN9qC4x8r8EHJFM2Lr76f6XiChlHZNT3QuP8nVBwiuOuqEqZgaV/inEJV1b11Qbc+nTAiODFEGOXBf8OjFm/cAUGHwDfedWJ8hVePl0TJrY/GPO3vs7Mv32+Za6H+PKFPZfzcUk5gSi6UtB1g8tebVJ9PhrMsy4ZC9U0YPwcaeSRvUbkvifKxM8cP12SPPVmurkjnA9LfOaBQz0x1qiaj4/AGYRRICZPU/1yfvKOqsOEnydGxywP7v732WkuPxZhgDdbEVKFShdk7t3hLaHOw9ZN6BI0AhYEcft3yHhL5HRQADnGPLHV4HVRJheGzD2QJ851m73yqk7oGUNzrF+8rX7v/P3269UHowxBRYH+5KCteihTskkpe/KK4ZBZ6n8tYaBjpwGt+1UfiFu1A6B+UDHb/ywUZtb+CIvwAoXSumA1lbfwV2saX8BkaRQ8RM7sAXhyhx7Zf/qDMcb3Vu/arUGzBnmYI6ifNEtTxWr9Qr0ALbs8ZzVKWJTGF4ESwDeuHIt1ZSdVPkPxSklEUAFshXLWCCPXpfC9jB8B1X1LKYXAaLMxpSxeP//CVAqDUEryDnkEK5gck3g6ln/vy/famDHm8TRmasmw5szcxOhqLVdU2Ke81FWxJgX/ORTF5bSbdgAk1tXM2PbuOdmymiyFzU/Ex6FCBFuhNLC/1ti5ltZIkQ0UdMixZpGJd4nvyDSnc/ZZbHF5HzS0CKR/wY3Vgpi+QRKQacLzp1K/FJM0U6oIKv
- GIsu6sio
- rdrhyvEAzpYbZwyJVksZNLfyQGoeafPLr4iXtwsjez0zQbZllSZvCVEU2RNdyo2gDC4rgkTafl/WpMtmjcSnQRpEgHppsbY9EGIvR6Bou6TOFigF140KHLq5gdueA7g6xMtsAjOqITcN+B4FqEhuTN9LANaVbJ4q7bQOA104CN0VSn7t+nf8vUL6aZhOM03047HsfURIGk5Q0QeXp5yVU7XyTme06djnWp4zDmrOILFACms8=
+X-Stat-Signature: nwqpkhcaoyjuswwjekxf6udgw1i1zmb5
+X-Rspamd-Queue-Id: 2E18618000C
+X-HE-Tag: 1781522359-57143
+X-HE-Meta: U2FsdGVkX1+wT9/lGk1LHTrKb47qYZHALgCR9qt4D7PYbLjjyA4ay5GPDdv6RV8x2dFqTCst/HKHW+rMfVP4PS4rhAJsjeWVrfdPdUnnk6bAVtSlQTFGIdInk86PYn3ynUPK4zVyfsOhvX9zlNnYm9DnZbfw1odt+3v85IV3Y+2qYsm6mkOOefQ3dj6XStI9g4bC2A1eEsSCzweTiUBewQH+B+w8O0scsdjhg4u41LPAzEkTBDrwwMYypMn/A9ioctMylnYNU1fOd3jnDwRQHnOSQFfyr0Gx+9jnYKz7e+X+vQ/pMOAmCvnDfx9E1q+S5ACmIK1Nb9wp2yQAZnZFdl1yVaHpYKNUa9CvQCKIFknNkPqgt7rB/w2UMCpGrWPzkoDRS7pAcGVATaXxDSK3YAToMr95l49cxQBeWtB8ztzorbbZqqkl9P2gVjWzyI2RCwILFMklV7kGFHdJlTnRQywaOu7bCrouJY8PeMOwB75RnI5OibLzyhMSPNr2bRt1y/XX8KflRnvltMR9scpT2EqFw/81wNbBgldzwTvEBg0iOStrBYtOH1keUXsf0B/ioCgrAi6AAplwGe+8S0YABkk9f+ybAj2CCf9CNVqA45jqiJmIdTnfBSMbM8uEYvNu0x6elDHTtRUGB+ABbUAVjYarYz+haHuIq5rRUilOIS2XryRjVeWwFe9DEgncd23fp3s/ZFEpBq1NMKKfpZPKlKpbuvIP9HyYHGJr9Cqoy6UGYWFWJDnmeQGVzNxDunb5wYvqWC4U09/1nzsTVQIJLKgNrKYUNvboWrM0e0HY9sXwlqHV9zG3xIdqMp/Tsv36oprvQxgTI9u8q+7KROufWC2qf4Oa7ygPvRaf4WxFHvCY6a7G6KFftp6+rP455sExdHU8Yf82aNJacZ91Gx2B+5gkVOPPiLc6h3YWQOKYCb2L7uZF5s1w0GW87fBElzIYvIaLzNylV2xFVO/lrE9
+ 8yCkQkSc
+ JiwnoG7y1BiW5KHfVvXS//ZUxDSvkWJP+mFkH5zDL6l7Wvfx2IBASht6KvFQF5re+nXO7rwLi3M+1Fl57qWOiZPki0huPGljO5e7aFNKGNSfHggCbUQ3JZldMYos5GZ0I/95uE7cxcQVa2XXirriGta/TpxXi2W/PGT1+QspK//b0HU2qBMnAqhg2SwzZVLx94Z8TCn64a0aLW1uePx+B+VXVZi1yaPvBGXJbu/LlDF1tffpK7AgNVLLa1XlaEBz4r17p0GupBG/l75krcFroTMWfr0Caw0ur9+B1pN8DgaQOByqIrWS/FVvoPhWV175tctP8J0ojExDzaIqSkI/ygSktY6B9VcctHx3EELhDHO2UG8bIavLiK5FtnucREwwNGQETraX60iWbk7RzyylvOowKc0ibKt2DLJ/CXlDj2L6Acpqc9BFpc+qMWZdjJVqBTnh98LTKMtZBOPXJNkrngsktaX+Hnh/3af+VFO1kgG1iv9GUIrnLIKFkkHT0yq24KxqLIQ9DH+dHhABevtKd8hTKE1sa3zgWW4Kk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,48 +132,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Breno,
+On Mon, Jun 15, 2026 at 01:08:16PM +0200, David Hildenbrand (Arm) wrote:
+> With newmems it's clear that it is guaranteed to not be empty.
 
-On Mon, Jun 15, 2026 at 02:27:13AM -0700, Breno Leitao wrote:
-> On Fri, Jun 12, 2026 at 06:11:40PM +0100, Catalin Marinas wrote:
-> > 	if (kmemleak_stack_scan) {
-> > 		struct pid *pid;
-> > 		int nr = 1;
-> > 
-> > 		do {
-> > 			struct task_struct *p = NULL;
-> > 
-> > 			rcu_read_lock();
-> > 			pid = find_ge_pid(nr, &init_pid_ns);
-> > 			if (pid) {
-> > 				nr = pid_nr(pid) + 1;
-> > 				p = pid_task(pid, PIDTYPE_PID);
-> > 				if (p)
-> > 					get_task_struct(p);
-> > 			}
-> > 			rcu_read_unlock();
-> > 
-> > 			if (p) {
-> > 				void *stack = try_get_task_stack(p);
-> > 
-> > 				if (stack) {
-> > 					scan_block(stack, stack + THREAD_SIZE,
-> > 							NULL);
-> > 					put_task_stack(p);
-> > 				}
-> > 				put_task_struct(p);
-> > 			}
-> 
-> Should we add a scan_should_stop() check here to allow early
-> termination?
+I hadn't noticed he switched the patch from newmems -> effective_mems.
 
-Ah, yes, I think we should, maybe as 'while (pid && !scan_should_stop())'.
+This needs to be changed back to newmems, otherwise we're depending on
+a derivative value set somewhere else in the code being correct instead
+of using what we *know* is correct *at the moment we need to use it*.
 
-scan_block() already bails out early but it will still go quickly
-through all the stacks which we don't need. As a later clean-up, I
-wonder whether we should change scan_block() to return non-zero and use
-that.
+So yes, go back to using newmems.
 
--- 
-Catalin
+~Gregory
 
