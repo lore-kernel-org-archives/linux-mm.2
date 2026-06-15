@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E56BCD98CE
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 06:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B91CD98C5
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 06:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3D916B0005; Mon, 15 Jun 2026 02:25:18 -0400 (EDT)
+	id 4153F6B0005; Mon, 15 Jun 2026 02:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC7556B008A; Mon, 15 Jun 2026 02:25:18 -0400 (EDT)
+	id 3C6216B008A; Mon, 15 Jun 2026 02:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F216B008C; Mon, 15 Jun 2026 02:25:18 -0400 (EDT)
+	id 303A76B008C; Mon, 15 Jun 2026 02:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9409D6B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:25:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4103A1C444C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:25:18 +0000 (UTC)
-X-FDA: 84881159916.11.7C6F73E
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4290A140003
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:25:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=packett.cool header.s=key1 header.b=ircNaqFJ;
-	dmarc=pass (policy=quarantine) header.from=packett.cool;
-	spf=pass (imf09.hostedemail.com: domain of val@packett.cool designates 91.218.175.179 as permitted sender) smtp.mailfrom=val@packett.cool
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22EA76B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:39:31 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 912D84088B
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:39:30 +0000 (UTC)
+X-FDA: 84881195700.21.DA425E5
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 66A4220006
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 06:39:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781505569;
+	b=aLfHrzXXOPwscuZzOwhfTR1wtm/j80f/WXnFR8KVgy3YkW15Rx3kNfRHoHf7RR0lcSI+A8
+	qOKrDnAJ40FMhhC99JTpsfps564wuYWsrSZoYnbmnrOSYB36pqGToSQz0GArzwyB3Fo9b6
+	oXXXuL7tnCHPmpfs17IVTC7cCzbXY7A=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781504716;
+	s=arc-20220608; t=1781505569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIagr78v8+wu8I0zN50DJ/gAtpHtsl0YE4lvqsZn4bE=;
-	b=dMMV56FmuW21HiIxlwRnOYZqTNB6lT6FMoSmbMpZIZuq9Nzwj/bDYGPfFbq7kzEQjR2tUY
-	XNckFXjGdGBJ7GlZCTsfzkJMFEdhkUQZdUWnu9OJ/NgMw2t5hYf3T/uzjuayoBS9P69re0
-	GMMradHGeyZ+/f+KLFalqCPdE9hiCyw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=packett.cool header.s=key1 header.b=ircNaqFJ;
-	dmarc=pass (policy=quarantine) header.from=packett.cool;
-	spf=pass (imf09.hostedemail.com: domain of val@packett.cool designates 91.218.175.179 as permitted sender) smtp.mailfrom=val@packett.cool
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781504716;
-	b=6sg3+bLP/vjApGyI5KVmA8I8oRzVA0AvyN7REDjH2oiEfyQZgq3xa7ey75H1cnH2fIQgJb
-	06fZye62pT3DNcGutqjoUDwwIlMGxiPcTSW5Mz95EykrJ15qdXWFH50vBfTUGU0i8iDqd9
-	3joEoJH7MWGsNy5OBES+cPbXjrM0jr8=
-Message-ID: <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1781504714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dIagr78v8+wu8I0zN50DJ/gAtpHtsl0YE4lvqsZn4bE=;
-	b=ircNaqFJIqIbLoIQAsKyoXo4rpXEoQiRy6zyFmI9hK3HrAfkw05xW4pZqyr/gEPP8FmgQe
-	YCMXXOF0Ojr6Ke64K6mJnYe9JlDM5n9QaPTquf4RxnS2VJebzilW8irZlVAq2ZBbu8tU3H
-	Ym5nnlp7yvHYcIa6UVoQguJIN6I828BXaZ6Oa3MyWDm++G633gd71/V0K0NJtv18Wf3rcc
-	TGhtZ7HAjNfT3f/melWV8TK5yeAV4SGF18G26grrndY/UhwmBAr77wIkgpV/3r4qCrE+rr
-	yyIzP94mT15QER7XOLBnD39ifvW2hpCx+GHe19vIvRAPUfC7zO4rmCN5XEqkKQ==
-Date: Mon, 15 Jun 2026 03:25:04 -0300
+	bh=ymgPLb95Gorp/d4/yQWHFlUnDsVwKIqud9GGRY122H8=;
+	b=jRYVUP8YBV89Mbm4o45CHVjnr8T+0Zy60qQp0O76Bbu0KbeeSqLhtF0/dbKeh/th4wfILK
+	YoQeodUOi3vtZnD5cV1lWbxAHF8WIML2w0uWAO9UhDncmIdPkzw7dsSaiQzCOI/zH7jahB
+	gyJUHth1jgOCECU+nj1ELt6vehMZ37s=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 15 Jun 2026 15:39:24 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 15 Jun 2026 15:39:23 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>,
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+	Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/zram: handle swap read/write via swap_ops
+Message-ID: <ai+eG9sFYTn/vTq5@yjaykim-PowerEdge-T330>
+References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+ <20260614-zram-swap-ops-block-register-v1-2-6c1a6639c222@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-To: Al Viro <viro@zeniv.linux.org.uk>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Askar Safin
- <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-api@vger.kernel.org, netdev@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Steven Rostedt <rostedt@goodmis.org>, Joanne Koong <joannelkoong@gmail.com>,
- fuse-devel <fuse-devel@lists.linux.dev>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <20260601173325.GH2636677@ZenIV>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260614-zram-swap-ops-block-register-v1-2-6c1a6639c222@gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 66A4220006
 X-Rspam-User: 
-X-Stat-Signature: wn6uyqknbnkz9hkxemr7yqqf7pttkpc8
-X-Rspamd-Queue-Id: 4290A140003
-X-HE-Tag: 1781504716-647951
-X-HE-Meta: U2FsdGVkX18Kq0HvGzZrXQ+a/BW8LJLnJGdL5YlcI0YyV695mF2qxWufBSJZpWu5iljHjxQtyUETSlUk1dtIk0M0RiKjjF3Q/DPtUMb7+a7MG7oQGGP1gyeJdvEQXg0orTgsuajhibVED7OVb8ng+A6wu8/hLyJw8VWZk/rXVh65us5JxLUP+dJQ99ZQoR7URlz6OAdHW1KClPpT8CZblcVZj6f+rxmSxkHShgpGrZx9NT1wLo0HKQFnQIY7VD0ef0b4lwZO+wRxrm5cihVq0iAQdJ6x6FBdrQxeTbCJWiDgqOUlMAQ0qutKW+J/arIn3V5XxkgXy6FCu2Sc2SDNBoDGgkSvPuaCco2vYsmsvwrsV3Ai3cslQ6N3Gy2SQ9LRnFwQqe/vzoJMZ9UP8ouIWG5CV4aNi1DExPPvhQunMQBgCDeDzHTnh08eHOC+Z4Dr2Wk/Wx3uNc1wSLTyfpS9w5pmzLvbC5XXKhyahr3htZjYcoq56pWUcXOGCxLjjxJwUNGRXcbRpCT6TrikwoTZOAnvQjdsWLOghz8uHvMquAjkBNl4aBQgeSpCuyyd0A+2nFl+r8BvOZ4bNBi5cYROHnp+HIM1mGVndoTxDHNHVY36NKPfOiPknXfZ7HQ2PNyfKWNeDT1fRtEjo5iv6oMuyheEBF+lEcSFwRatG2tDSy1EZ9x6cJy7Td8bMU9Tx9uCxRVHx2cNLvwVcDJzMTicTkI5nbQczQZyyz0ADUgDYfXwTcsudJqpqwxySvGuhP31+RGE1gF/D8IawrBKZQ6PngXHE8X6+J9SxpZH+XdepUMLTbkXUO3UJXZFf+nLBNgvhqmxx3PTjKA9tJbTwe5iFTLaUr5YMxV3p9w5WGNsKBP52XtGIl4mrEHLR50KHFaOXzrKSAau50s61h/RvAL6m+Eh2bKHdJ5bNtZz2zh5MJWe1CHPpkHAlRld/Rs+nTnGj/B4LgTe0ovRcUrtYlN
- nSDj5OCj
- bo4O0dxvghYUgwWmGo4B7QxCFHqd4C97nlGK8RoJDBcHnzmzNXPC4OxoW9RCei2BxFo+30XlLljUpIPVSHgEEogh8+Pb3RmnFIV9ndMDqdC0I0Sr9nz/bVigh78nqbuFUhu5m3plCDfoUj754mU/ME6RKzRGR5MQjvh+XlPM9SjfI9xrGXyg2hC4zgw/onN4/Z1JUAmVwMhNX7GUWlDaXWXM+cUcfK9KxaeY+eQwF6YC9l6nE8iWx1gbrtPw9XQHwwG95zgXqvZ6CyBSfnRLQxXcqT+PonUNufkPqoAdlsjvx80G08lAQ+DXNoS/UjZRmvGbeUFvM5ZXq9SLAZSokXSZcn797r9CHbmPQqTqXB6H3YfUhDumyJDmcpBBcI3xnYB7PKcth0cOavJ0TpMOZvtdCbQ==
+X-Stat-Signature: u63pccd4wicrzrqpsnes9aajqfpsx8p9
+X-HE-Tag: 1781505567-477064
+X-HE-Meta: U2FsdGVkX1/ShOiDtQyD6uA9VqYNP0BRU0oCtlh8M6H5dsLsvTuqaPaHVET+bP9fzSKL+1BSsxMMuxiN3pHFc3KtYVdtGNHB2UgjlTs3JtzuoWfveRSM374X/EIPX66KHbrpE/G1jalKrK1dfiXTFd2AiktArc/RRjVTeJw+oQ8Ty300UpaCcmTGy3Qwtyjxy6b/ROlxU3gxEAdCl4cOEy8FvFfUbQMZImLbS9lqkNo1ZAgF9pYBVGExpSMtzPBKqlwZ6v9Ex8cti0C6vV9XyxPAsf4PsTpKi3R7+SG7/SVHgiO8FVGx3r6cnnq1wIxbxAsUNZxiJ2wMP1Ebjrbt9lomKIhxmwj0DO9lx7j9LzxhHsZOlWSbt65RgDPHIPfDTC3ws/OMmf78fQ7vqxmcoF4L+cLemHJiFM4SlU8xZ0bYAq7kcadfSvdqp6cBavIhK1PvuVJL4ZP+82kDxSDa8hZ8cyTlTr8nwDPDS/+bBwRx1DY2YdbRsko3d6DnsCWiIyUaBuJPpraQxECZ/UlSYmyMT8cSo4/w4iS5cncth+WhfKb+4F0H8x5ge3RflOsQjsNm/jhrsivjVWCD+5qufNUfHhr8ulGdMOhDVFPoaZGEQDGwNwCH/YDGwAZdpgJ4aZXF61+IamyhAdANvjh2J6xpjDTxt/O/+ivOyLerDCrAzN2TwENnYaCWzqHdZok6K+gvCRmiQfW1NjSMpfdy8Z9i2MReBrBVW6oDOhpPiTsEzQRdLDVePSLEhf6XPF/QtSVXRg4kLwNIBUw4CTUMkrxqAb/FexZZ99X6IgTQfRPOYLs4AQii0LBTwuq2vhMNAOf5oU0bKMuPxw1pxDLuJUg2D/mZMWehIKFLU6EkA0qDqXwNCs7ak8tGtY6PfXDigvCl8E9AJtZq0j4stNXr2ZFJ+oU/TLqxGhWL3YVnE3RBwLjSKzm6rR3Zdb3iq4e9fQbYH4oXJA8VSWoiGKB
+ nPF6kRP6
+ S8IAaiDL/iCAKTBBiMcSMD8LtxIKz/fY/ou/IbTTEUjsH2Jdjg5FaL0fjRGyrKxTXS97haIzH/NHT5RTc8yUd4EmK0igwnPo1A5AwOTqp9y9YTUqXCyUlKvHeugBugS5e/HmKJ1iiNipyElMegZcoIQ448/KFXdh3jmNDKspq9IyFJaSnCCzKhbwizl/AZXNFJ26QaZNunkByGzLiAbS2+VzHsUyHcTtj7SqygXqI//jEVEZc7a+u3UV7iM/Un84jKx3fiwOuVRKBUuo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +90,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Sun, Jun 14, 2026 at 11:35:30PM +0800, Jianyue Wu wrote:
 
-On 6/1/26 2:33 PM, Al Viro wrote:
-> On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
->
->> TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
->> a big simplification.
-> FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> Communications between the kernel and fuse server at least used to
-> seriously want that, so that would be one place to look for unhappy
-> userland...
+Hello!
 
-speaking of fuse_dev_splice……_write actually, this series has broken 
-xdg-document-portal!
+> +static void zram_swap_submit_read(struct swap_io_ctx *ctx)
+> +{
+> +	struct zram *zram = ctx->sis->bdev->bd_disk->private_data;
 
-https://github.com/flatpak/xdg-desktop-portal/issues/2026
+A passing thought. accessing `zram` here is too indirect. We might
+need a `private_data` in the swap device struct someday?
 
-Specifically what happens is that the EINVAL is returned due to oh.len 
-!= nbytes:
+(And If there is a real value like some swap-side only private data really needed.)
 
-fuse_dev_do_write: oh.len 16400 != nbytes 15526
+> +	struct swap_iocb *sio = ctx->sio;
+> +	int nr = swap_iocb_nr_folios(sio);
+> +	bool failed = false;
+> +	int i, j;
+> +			/*
+> +			 * read_from_zspool() and mark_slot_accessed() must run
+> +			 * under the same slot_lock.  zram_read_page() unlocks
+> +			 * before returning, which leaves a window where
+> +			 * writeback can pick an idle slot we just read.
+> +			 */
 
-(where 16400 == 16384 (read len) + 16, 15526 == 15510 (file len) + 16)
+Regarding the comment about the "window" where writeback can pick an
+idle slot. I think this reasoning is a bit of a gray area. Writeback
+could just as easily pick the slot right before entering this routine,
+so the race condition seems fundamentally the same.
 
-After reverting the series, there is no error because oh.len 
-becomes 15526 too.
+Isn't the actual justification here to separate the non-backend logic
+and ensure mark_slot_accessed() is called under the lock, given that
+zram_read_page() can call the backend device?
 
+If the "window" mentioned in the comment is indeed a valid issue, then
+zram_read_page() has the exact same problem and needs to be fixed as
+well?
 
-Thanks,
-~val
+If not, IMHO I suggest revising or removing this comment to clarify
+the true(?) intention. :)
 
+> +			slot_lock(zram, idx);
+> +			ret = read_from_zspool(zram, page, idx);
+> +			if (!ret)
+> +				mark_slot_accessed(zram, idx);
+> +			slot_unlock(zram, idx);
 
