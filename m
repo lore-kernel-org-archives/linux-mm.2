@@ -4,121 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DF07CD98DE
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 08:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09390CD98C5
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 08:45:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A0DD6B0005; Mon, 15 Jun 2026 04:28:21 -0400 (EDT)
+	id B12336B0005; Mon, 15 Jun 2026 04:45:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 578436B008A; Mon, 15 Jun 2026 04:28:21 -0400 (EDT)
+	id AC32A6B008A; Mon, 15 Jun 2026 04:45:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 467726B008C; Mon, 15 Jun 2026 04:28:21 -0400 (EDT)
+	id 9B3436B008C; Mon, 15 Jun 2026 04:45:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 35E906B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:28:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BAB6EC317D
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:28:20 +0000 (UTC)
-X-FDA: 84881469960.24.4C29175
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CC94980006
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:28:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AnyeY37q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0926B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:45:34 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51B7416627F
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:45:34 +0000 (UTC)
+X-FDA: 84881513388.11.FB4F9D5
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6A2CD1C000B
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:45:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hkljb8J7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781512098;
+	s=arc-20220608; t=1781513132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIK6+R0N6S5FbjNUFVY3i/UoNEgCH6Sdv2/saOFAeXs=;
-	b=8iH6V+9LGRImG0ZmTOn65aHcBOVTrr/6ykpK2VKvlX6Hk3ldoT4cGk7PL0szopfcEQ8kC9
-	QbLOJllVPAYgC4ghp3qX01iLEgnAqzgw7+9WUY5ghpbT4b9RL13pGbfbDjY4+adyeEMi27
-	CuiQ+NYEC8N+/GhaEFZijfmdQUKy1tM=
+	bh=9Jm4k2i1ci/THg4OcVgCv1Y10n2g7/5+J2F//tf0Ado=;
+	b=RXQiSpvF/2DvD8QpqiA8A78O3n3Jj2kjpiJntsnNzttznfjisgYDMpFh3MHV55UHRxv4NP
+	BhYASOoZosn0qrBL996JW82CUtcrkL9KaTkbplrWLKFfsV2jX9Qhe4T3B1iOoUwpS/UQas
+	plQVqrLMZUE2t13a2tf2N/r5dLfKoro=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AnyeY37q;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hkljb8J7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781512098;
-	b=leWO5cjstEDA3YCEJNlWC/ecuqG99v7kzPw0kJNb9sTemddBotHQDG+3cpPOgHpnJH0vcp
-	p/cmUZ9+Bb+eBGxWu3inDTqpo8y80fnyrrjcFCJwTtiNBvRfhKN7S9aRsR4R4UAy7ONosZ
-	sm/tjwuSlaiyWKqd8P5FCazaFtJtesw=
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2c0b9328c4aso22224775ad.0
-        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 01:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781512098; x=1782116898; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OIK6+R0N6S5FbjNUFVY3i/UoNEgCH6Sdv2/saOFAeXs=;
-        b=AnyeY37qU3v8azGphMUqmB6knXQqFndg/KiZP3rho4+v89jwd+on/k/UTi+yd8U1pF
-         +MQ4YskClQfkhGDo9BQ7XHJk9c4KL8KDfBAy+hxNI8oV5eKOHo04dczjXkhcHAS8kCAW
-         9iDUTpi78CGfiCbLmQfwmIsZghokYWYEo+jS4n9IZA3KHIXXdRR2sUsMI8dgFyRQEejc
-         u0qH9wi4ZPeIDLgGeBh/dbBY/wZdeO2uYh7nQdyjv5SeXfJQ8Sakkv+JvVxHJFqULVqG
-         N+nOhMAyxINst3/YPE6q34JtgQnEYFEz+j6Uz73G0bIa+jO3ZR2vbAywD26ZvkyR2Sw6
-         V7QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781512098; x=1782116898;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIK6+R0N6S5FbjNUFVY3i/UoNEgCH6Sdv2/saOFAeXs=;
-        b=Y6tLemZRugQzvQJGYtRoS1BsakOD68Ol713WnqRSFP5UcewIKUEJKFccG11FnTxpwJ
-         9f+fS4Wkqd2O7LkwySCdUHWAO86gydNWRY3X24usBZlvZ/aPP22aYj+PCIaqn0jipsRb
-         7h7u8gXqNibpl3IIFIYbOP6KWr3s0LnsRSrHI0JqKu5poGDP1u1n6uZ1YuNs0X+81mP4
-         REEVr+frwnaFr+V1SKj9PC0mhBtpJydkCW5Gmr2ZRPzZT2aKBjqRzvxGxN+iCxUAjuD3
-         u9DQ4pQ3FZy1iSjjawXQbQ+WEghv/Z18Vh4Q/ZmKYuFPwPi4ZNBPALqwLxg8f4oM7sZf
-         QzGA==
-X-Gm-Message-State: AOJu0Yxuxw811JFu8ssYR0Jrz1rK/Mw4VUcJSt53NzrIhT9AgkiI3rCW
-	GwgC6zulhs+OukFgplspBdTjho5qc4OQFYaGq48tV3tqnvyeIbNGrrlbN6x//MwOduYjTg==
-X-Gm-Gg: Acq92OELRPhjaBFqfAwT2RE4mfLDw+cVhZhlUHW/Y7473b2s6MuYvbPDxDd4vQuYUSB
-	nukSYR+43LqqkscfJ94hyBVNcV30+ro3QxJ65W9CD72mxj5IyIhZ5EV2196MMAdWfhlKnbeh8/9
-	8NK584e7xh5wbleARLK9HdFSHGWOGqB1cQbPAuGl+3DnomT01dPIJTG8GWykKnAMTy0ToWTjX2W
-	ssqK2PU/Cwc9dHobkZdiq/tW/Tz4i80t/vgN68AQlt5tTyPPd6vM3zMSaWHQFBPGLkgYLQnOiaE
-	DgZPUdGWSkkachviR/mVIomTojsN+Wkp49MGKYVD+EQ/vP0wm95an57J6zIp0aEvOPJDWMDoa/0
-	o65YOE9+fySm7q0jSaIFlG2ogw6bw7AWT7Bv4VvFUlhGcYs2e4lWtwlTWe/FQO19Xa/dWyhjpGM
-	tScp2127Zx+rDM+FnXFh0ylW79SYcMUz8=
-X-Received: by 2002:a17:903:2408:b0:2bf:1cda:29ce with SMTP id d9443c01a7336-2c4104117eamr138814175ad.6.1781512097656;
-        Mon, 15 Jun 2026 01:28:17 -0700 (PDT)
-Received: from [10.125.112.20] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e52b5sm94136475ad.7.2026.06.15.01.28.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jun 2026 01:28:16 -0700 (PDT)
-Message-ID: <5d3d16f6-0654-483b-9625-94ab93d3d836@gmail.com>
-Date: Mon, 15 Jun 2026 16:28:07 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] mm/compaction: honour compact_unevictable_allowed
- in mlock race and alloc_contig path
-From: Wandun <chenwandun1@gmail.com>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- vbabka@kernel.org, bigeasy@linutronix.de, rostedt@goodmis.org,
- hughd@google.com
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, rppt@kernel.org, clrkwllms@kernel.org,
- Alexander.Krabler@kuka.com
-References: <20260604023812.3700316-1-chenwandun1@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20260604023812.3700316-1-chenwandun1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CC94980006
-X-Stat-Signature: ibnopeqx9rduxiufo9b69hkg1ch5h7my
+	t=1781513132;
+	b=qhRC/Pf+9B4sPv3T0CwZW+hLg4rnnu8YxlLF+vGnwi7ci5bOnqql7tafI4bIIl9RcESUfU
+	wNa30g019evBRWqbhVOlOMU7p1reTt/DEbTiilpxLv6fxWe9sM0P96hLsApenvHr8dVWrK
+	60CR8wIIP0JX6DXxXjgv/YqpNskDjOw=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781513129;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9Jm4k2i1ci/THg4OcVgCv1Y10n2g7/5+J2F//tf0Ado=;
+	b=Hkljb8J7pCiLEUhyQY16gBNRETl0vYvjfj/swktUmFSzMKg8I0fR4+bIC8enNuSbBnZfwh
+	3R9UTd1e1xfylTPm/Fiy7Z8JsbGEdq6aGH5xaAPjMyB5kXAIDU8vK5fGefV27Fhm2M7tbv
+	MX/zl2wkZoqzXvOYThktd19dkbVpSzo=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3 14/19] mm/hugetlb: Free cross-zone bootmem gigantic
+ pages after allocation
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ai56f5AxGJQ5SiGp@kernel.org>
+Date: Mon, 15 Jun 2026 16:44:48 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <386B96EF-7EBB-44C0-8B83-D4BB8B60D649@linux.dev>
+References: <20260602101039.1867613-1-songmuchun@bytedance.com>
+ <20260602101039.1867613-15-songmuchun@bytedance.com>
+ <178041489395.457517.12727427621570734471.b4-review@b4>
+ <1ABCD934-CA2C-4541-9B76-32FAEFD398FF@linux.dev>
+ <ai56f5AxGJQ5SiGp@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781512098-301621
-X-HE-Meta: U2FsdGVkX18+MPzd9nwaC2fH4H4WGt7dW8r9Xh2+IXcU5r0o59gxxisIkztrIjqh7s6JbxB0SDDV/2e2U6HsKJNiQBPh+TtICEer+i5JZoPGWU0S/vF1ebj1uzaej233EclnegaJGNR4W32FDOPQuqQbhi1Hz/istdh1gUKTok7BGFK9Nnep/DM8R2ZZKAGTaHPn3RwBly86NM4rF8nd53tMctox4nDX/EgYXoAzAH8tzb16IIk9RL+Sl6sMfQCwu17aDa8mRZpGVPSWiovTuqcnmwbry7schH2TUq1pT7zk0nXRsB9tC3HZ3ehcUx5EMDQvaU9cYXYx4ZLwrynffZ966Pi+R1dhTAiYV6PrUBbWgOUkziBE3dlS+d9VnSOPyIM4356nVUjxrtvv1tvQtW2OKvDJOmvGl+nv0QGeCrmMIN3Tz3QbRD8b6wW1fXwu/rDnMPCJFD2ftVTvQzhw7n61/7Rz3zWgA3sgNAEa65FR0+UzLBaVLsmza1TVoXVQJKGKxWKl14U0cZ5o6pk061J6RDrU4PG92vKTJo93DHyOngeB9LYSKMI/BaFptpllwgvXTWCpNVIctlU5Scr/JkJpPclI5VQF5mjiZDoTUzSr7jPVWMlYZtrWrPkGPCy0i8c/n/X15gOViVXhjRSQOOVfh8mgYWkIHrktn0VQfoVu5DgkS+jNPhgrlCq79clXTm9SonHi+Wtak/tqXBd0ARLBr+6gTholpcSxdHdu60rBXvWon99VcFwWNEikxH1xOqmpSmxKHzcvdjYs/48p0XNjJG+tCPuINcQpd567KTdY1zFchT2GLk3OaRoyQjCsrkweXwGsU5K7gz0h1pMy4ggABX93QSKJ2jIx6BpXvdguMguMSQhNYvsrwQ9jjvXMXHgWOUTKLRPbLhGqb38kyrt1E5crhu60t3euaIy2+PxOWQP2FIuAYtausRk96MVOf4cLI3RcMdIywOERiIq
- lMfEcJ2D
- EblpJROKHERLJMGCuNZwW1HuLSTlzj7FY8weMXcQBusVn6eZzK3uHiLq/EakQX+IFlQvU16d2VMap/bMY1hKdBKOytM4biQQdnw7ekVIWeYvs5BjER1F8JHvP4eD2fVL9VZT2ScSmD6bqZa7nyk0JfhZRD1iqPKgE5ttKIf+veTpAphPtSEQC5R7FjJ8fu/mu4hWfzhArbMgWtHs4806komqZkuGsXo3FtFxPbZ3SkGrtJCoHVXnUH+npSp8wwpyEf7OvHm7j/whCvDFwRdkD9Jfkan/Kq1LrCaJeatHbgwRvorX71kpJOPhTqbcNxvz54bMSw3beAdn89woZMV3gbtr1ArmCLIaAc3cwUv4L3I8pz7d4tn1n+hy6QvB3wBrDppTCNUhpsqJHTfQVSTFMnxOIpEB5UEA7KnZpy7uqjU+ew4PNtEQExcxF9K77lXK+AqSnX6YgU8/0Ckfwl+Vs2l0jgYEctgCJrxLz21c+IFGx48T10r7145qfMig7KbdRZFp3IZVwbChjXVISRuQvmkt0DJodW6xv/siiPIsuNjpGK5M=
+X-Stat-Signature: 61a18bj9ffdjr6au1rjuxpyus8fqs8c8
+X-Rspamd-Queue-Id: 6A2CD1C000B
+X-HE-Tag: 1781513132-132010
+X-HE-Meta: U2FsdGVkX19+6bRZRASO6cdz/5osYw4FSCuwO7PLoXeT4iXJRGDX6SLWJmqw1+QrqyHJTDaJNDN5tZBLCF7/jXzcWFiVxMwoxhetc0TcVRfG7VRCa45RT2NByCfcHu8tFF5MLHE315MYqrde+X6MqzH7ae7k+ztNS5z9A5M/LNH6Nlv6V5fGYVE0pb8ON852KcShdrv7nfwjCttBQzyFWTlb/HQMm+jAPLcMpugF4+SGjcLQj6gvXhj9MRj58YVaVpvONSkCQL2BYrxcQ9K9SKiXw7aQzJvdgiPommsNYui/p0VnpiBfAOXKLm1bz1GAYIEtB5SNaZ7iDp8sb8cqukSVAHnhTNjYEf6WOkyPoSR6S8dvmq8GjhwQB4DXL+Ouj90HQ864HouOEmk3ASh6hbdePE0OX72Gfr/RILfGUkZTCdIM7+u2Ng+PWPl7XA3QD7P/hgFq6OnaZYa0aPAWDJhKw4RAfgdiybRxKl7yV1yDi5H9+483u3laducmlKhfws1BinhpmxkTHGchH1ane8flzrVzCANdwgDZeAbXx6AASe31ENP9/QyKJzUDhDz1Lo+BFxQ6pq5TrGEthy0STUD2J2DJ1fgGfVTDrPuilD3y9vcWs9AAo1ASZL0TeYehYsS1wcDGfIk3ZdT6lZMfQyWQytvTYaI6Q5/hH9hzpXg/wm/K6q+sbEb9nXI0NwAJ/Sw8NRixO7CKPTIwuY/Xkmc8IEa455aYyjPAQp0B97+WuA5Z+LbB6WsAy2GwLuVIfTJeSF4nKCQ9UDWuWfgWh0KhINjMBjWm2GWKdaIN+wrDX4/DtDJIBeH+JwaMQlbWDkfJ/doeAIe6kCf5aUI0yboJ/0vKcu/k3E5w8v2KddIUEG734q8BSFCg6HADSlFlIWbeHmU9QgIhs4IDrfANyZuzP//zew38wJ6qeEgBvZiLe047g/u9CtTn5NFyUdaVaZaPyp9sV7GxFbGD4f8
+ 1qrVZ3vH
+ vA5o/Z3nrG4d/b9jKl07KP/uxMVnc52FRXwRSRFlMbTzmyreYykPuoidiKcNGdYzvDbxRhDbNV9FyU2Ge+CFojBs1c2qLB6vQeAmseCUVUm08KTLjFTwMbZLHA9rq7Ti9wUV1AT91/Yi/FdsT4HvO6J+iKELzoiUAG7qCWey2eIbr/dxKK+d0wc+O8UMUN7zQpuoTNWO3mW9AoVVgyupEbaKm1uUXtBeqSjJKwT4A883NA8Imw34NRHKIJTcKJIjHnLbydtwXiTCewLRRzP7jvPp6QbDQHIYebaZIy8bHWnYQT9w68J8skFBoe804lHTfp85Xzlam8zIukZWSG2jJfoalWexOxOMUReGM1bnZ1B13JRw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,36 +110,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 6/4/26 10:38, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
-> 
-> vm.compact_unevictable_allowed=0 is meant to keep compaction from
-> touching unevictable folios. In practice there are still two paths
-> where it does not take effect. This series fixes them and adds a
-> tracepoint to make such issues easier to diagnose in the future.
+> On Jun 14, 2026, at 17:55, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Wed, Jun 03, 2026 at 10:53:04AM +0800, Muchun Song wrote:
+>>> On Tue, 02 Jun 2026 18:10:34 +0800, Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>>>>=20
+>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>> index 5e557c05d80a..218fb1ca45f4 100644
+>>>> --- a/mm/hugetlb.c
+>>>> +++ b/mm/hugetlb.c
+>>>> @@ -3073,22 +3076,38 @@ static bool __init =
+alloc_bootmem_huge_page(struct hstate *h, int nid)
+>>>> [ ... skip 26 lines ... ]
+>>>> + * pages belonging to the requested node.
+>>>> + */
+>>>> + if (WARN_ON_ONCE(nid_request !=3D NUMA_NO_NODE && nid !=3D =
+nid_request))
+>>>> + list_add(&m->list, &huge_boot_pages[nid_request]);
+>>>> + else
+>>>> + list_add(&m->list, &huge_boot_pages[nid]);
+>>>=20
+>>> Can we just memblock_free() the page that intersects zones here?
+>>=20
+>> I had previously considered doing this, but then I realized that if =
+we free the
+>> allocated cross-zone memory here, memblock is very likely to select =
+the exact
+>> same block for the next allocation. This means we'd just end up with =
+this
+>> cross-zone memory again, degrading allocation efficiency. Unless =
+there is a way
+>> to mark the block so memblock avoids reallocating it, I ultimately =
+chose to
+>> defer the release to prevent this issue from happening.
+>=20
+> You are right, there's no simple way to avoid memblock using the same
+> range.
+>=20
+> The comment at hugetlb_hstate_alloc_pages() hints that we might want =
+to
+> split allocation of gigantic pages to be more explicit as a followup
+> rework and then freeing of cross-zone pages would be cleaner as well.
 
-Gentle ping, any feedback on this series?
+Make sense. A followup rework is better.
 
-Sashiko found a potential compilation error in patch2, I'll address
-that along with any review comments in v2.
+Thanks.
 
-Best regards,
-Wandun
-
-> 
-> Wandun Chen (3):
->   mm/compaction: skip isolate mlocked folios when
->     compact_unevictable_allowed=0
->   mm/compaction: add per-folio isolation tracepoint
->   mm/compaction: respect compact_unevictable_allowed in alloc_contig
->     path
-> 
->  include/linux/compaction.h        |  6 ++++++
->  include/trace/events/compaction.h | 26 ++++++++++++++++++++++++++
->  mm/compaction.c                   | 14 +++++++++++---
->  mm/internal.h                     |  1 +
->  mm/page_alloc.c                   |  2 ++
->  5 files changed, 46 insertions(+), 3 deletions(-)
-> 
+>=20
+>> Thanks.
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
 
 
