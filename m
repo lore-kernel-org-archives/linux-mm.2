@@ -4,142 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EFEBCD98C5
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 09:02:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83121CD98C5
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 09:14:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C62886B0005; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
+	id 7E10E6B0005; Mon, 15 Jun 2026 05:14:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C12DD6B008A; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
+	id 7914E6B008A; Mon, 15 Jun 2026 05:14:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02B56B008C; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
+	id 6CEE36B008C; Mon, 15 Jun 2026 05:14:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EF096B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:02:09 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B89E1661B0
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:02:09 +0000 (UTC)
-X-FDA: 84881555178.22.1E51504
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E8CC6B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 05:14:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E534640982
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:14:18 +0000 (UTC)
+X-FDA: 84881585796.09.A81A9F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7BF251C0015
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:02:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bpOCPu9c;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5DAD240002
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:14:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="azP4Du+/";
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781514127;
+	s=arc-20220608; t=1781514856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zejvIfX8d2dRdR2mAJ04OI+CXDIR6kMQOBHLrkrQTuY=;
-	b=Xf1bYPHORKxW/ODOIyhG/3wyWnFOBU1sQlsQik66Ck1/FJEptwt4i6zNatzqOEGCoD1veG
-	F6wW47n1OxlUedS5pyv3Uwdd2nmoWbbcQy9T2cUUL7DhLbNT0i+Bo3QuBZU2MKnp3aCKa0
-	yl8DCzn4XFyTpI8yQ7+wiGLbdUAir0g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781514127;
-	b=65XJC6zNy2IJLmh6V/vyEW/H+VUs1vqmvPHGMn0s1ftKJUuohrYNVqRKiYqeQvf1OqeOpx
-	8mZEPWOyu7+np7DX9UT93rrfhnMkYIBgPWskXGtD+7att834Er7H/l+2y9a8XqTx1OQTLr
-	lv2PLA0JMwgc06b8MBtRi8/iCHUTfak=
+	bh=uUJeAFXXt09c94jeT887u1t44BQncrNmZQ1/OxLwVUA=;
+	b=QaIIrunZHrmo8M48FQ2X45mN40ayBfibTEAHUDsnWtjmMX0U5wGu0Mr7+h/wEGT3PrW7Tm
+	JPMLO470fMG/61TrFsj/56SwtK9eXXwtr6CX1Hi05FxAA0evoDH+He5qj6ibJeKulmB4MQ
+	KTa7Na3IcTFslnlk26SJAeuRQhX2ZuA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bpOCPu9c;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="azP4Du+/";
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781514856;
+	b=FqD+rNL/KC7lptQFgNDpdC+KqF2KakZlQ2dHDtcSXBS9HgFs23MqmPoL4VrcXmO9fpyhwL
+	+CnT5pQAhWSlA6L/Va7XmmmvXI9HsrkCJ1ZWC8FhenXlFAl1XjOAWi+gjETzGMsh1LWNAF
+	8jW7ChlM8wh14qgzmVGX8SFZEj9wlF8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3C34402F8;
-	Mon, 15 Jun 2026 09:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E71F000E9;
-	Mon, 15 Jun 2026 09:02:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B32D44535
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713A31F00ADF
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 09:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781514126;
-	bh=zejvIfX8d2dRdR2mAJ04OI+CXDIR6kMQOBHLrkrQTuY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bpOCPu9cAnQ49Uo92ymBgaDMsNNkCNFKwGJhICCG+otI4FMV/1oOM9BbFmEiw5Em4
-	 C8wyRuso85zHacKQClkoVbhC99Qsbm8cmYaHrJ49uXB1J/tYEK+rCvNXsvrecquD7J
-	 kVgQwxtFU+5aDWA/ytr87bu917cKElEi7bbwLi+D91RJgEQO4cmrM9yOVBM4Hfxx9P
-	 SG93yjMZJnEoUuUMlo4c6fyG1UZFJuLRJfx5bN00r2+sriy+T6V/7PrtSWCk7LGuwk
-	 KXVr9X83dNSbMhpQ+2NqtyD41/ZR7kSIQyPYaVUtRUYg9VfALr3666VqLlO3RG9MTk
-	 pVT8qdIw+QhdQ==
-Message-ID: <f927f1b4-3f60-471e-b42b-8d098c1ce5dd@kernel.org>
-Date: Mon, 15 Jun 2026 11:02:01 +0200
+	s=k20260515; t=1781514855;
+	bh=uUJeAFXXt09c94jeT887u1t44BQncrNmZQ1/OxLwVUA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=azP4Du+/WiFT2KFEJjOrb5bzQ7OtlZDZoUD3/x/vY1dO97ql6KH1AGH5GnUfgnLYf
+	 UzC8zmGIJguNr2TysIs/I5wsGBxtVoY6YtwPCrmanZPmNEckaBzL5S6ebR5xXGifs/
+	 7Du7ddXDj1jqRtsEOW99zvWz/qC9gxhj2+8nHvCX2wx7fPiVQDe3ZQki19GfzuMvy/
+	 DbRCHas1IeMPV7SOBjp/jOxhXBxwzKObbA1so6xSlyBZRGvdBIiud5+kxoZZEIS7WR
+	 eKUtRy6tLlsw66ok534YGQNNARna6sZRB/RnjMhtmMB0m94GlERUsyJJpsbcWQyk7c
+	 yIvCenSjn5/5w==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-915aa0a9293so400868085a.1
+        for <linux-mm@kvack.org>; Mon, 15 Jun 2026 02:14:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9LeDvWMCtId3WQFtpwSo/Yk0QwYZey5plBtbogMmRU7LMAdcVkNyD5m4EPHoOIKtqZOL7e0BTjCQ==@kvack.org
+X-Gm-Message-State: AOJu0YyhsomhXxlqyEnAb9vzUyGRTb6IaSIzTvY5RpjlD66psrKkU1d1
+	0o+U7+w4pahvjqSJ+ERYwWDGpadWVSvUK0GgSZ5wFKhw+iDbuBtxSxr5HV7dE2VpsjuARa4croX
+	wPV/PuirmBSERjJmwgFoN3l80o8dZeHY=
+X-Received: by 2002:a05:620a:171f:b0:915:e8fc:1396 with SMTP id
+ af79cd13be357-9161c03e623mr1645007385a.13.1781514854834; Mon, 15 Jun 2026
+ 02:14:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/16] mm/slab: introduce alloc_flags and
- SLAB_ALLOC_TRYLOCK
-Content-Language: en-US
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Li <hao.li@linux.dev>, Harry Yoo <harry@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev <kasan-dev@googlegroups.com>,
- linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
- "open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-5-7190909db118@kernel.org>
- <aiuBoDbQc0N-l7e-@fedora>
- <CAJuCfpGSHfNUvL9AzbftSg=uGRW4cJLbO6iB15keyN6A_eSWEw@mail.gmail.com>
- <CAADnVQJPETYAOd9R9Bg2JuuF1q7grg8VtEnvdvr0fDFhxb9O6A@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <CAADnVQJPETYAOd9R9Bg2JuuF1q7grg8VtEnvdvr0fDFhxb9O6A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+In-Reply-To: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 15 Jun 2026 17:14:03 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yqy3ZnXirSZD0X_1b5qDnyoMLuuSS4mHRcip+CPpvQdg@mail.gmail.com>
+X-Gm-Features: AVVi8Cddn7j6HKvYvm1_sm083n__hkLYQ5ZvaULuaYEU5HZ_XQXMl2mMQbb7DQs
+Message-ID: <CAGsJ_4yqy3ZnXirSZD0X_1b5qDnyoMLuuSS4mHRcip+CPpvQdg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5DAD240002
+X-Stat-Signature: 1jpyh7nw43n9c1m6311f3r3h9s63usga
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7BF251C0015
-X-Stat-Signature: ge4pq1nhjurr35fs6fiysyoewrgu14mx
-X-HE-Tag: 1781514127-715007
-X-HE-Meta: U2FsdGVkX1+V5ijN+fjU1T7CMPE9bdPRquVyB3PYDXOKDv3iFd3ndoC3Q+o1h4z6wA37WR2YQJmXnKMAYY4gxu70+fPrfttgeHZ8czqvcCbhWDJ3QymokcmhfQ/ywhx/9nySAP8GRrVAR1ECgviqd7blzn5SjqqePsBPVCmQkJARk/0+4mN1X0VvFed55FY4kekiz8FozvKevk2rWEk5b7pKrrXYAIUyh42FlsTfxa6ajjPrJXQFKb/Zg5cJs9LTANDQ5zQ4nEtD9owtheBGynRjhjdpEkPJswJYUke7zXwpmyob4s/zCxYqYsNsLhP3zBVNbEzX0dmHjM7kVKA384l5i6fDGnOplzuKZ0/fBw7k/DDFJEtMDIsnLJOPAb+inEWAfqjfMTYNNqd+PEHv+sFp+xT9ew+jtyKKXTSDcJ7Uk+M8KlBvPrte2nbHmLpj5bMkD2qnEviCK1NETG/WtRQO3CDjCvNcvXV9huahHXUB96pjmOkZLRrim7sizk3iproDBkLA22s2Vav6NNEe2O7bG4axzv1gdNYSTZNlx1YmNRJZgjmtt3XtsK5bHxO1269Trv+jLTjkE5Bh4aDuSw0W8lZGLRWJJlYn5lpzNOebWFc4KKksyEJz8N8WUxB2qPkzbO9fmhUNSEfwLgkqJdVtThbO0TTENUfiDpFOmX/p4ebPl5RNCzikYT99x02apZHPKr/iV2+6oCgeav598jEGALruWGixpFsvKzM9EzDSVl7Vj/vU0yrhtWqHzdDgIobpcK+IHvBx8/5nyDDq7lTa4ifW6hAqPaxAH17w4DafbIHwwJ8glPESplLmU1nCCkwLu14VIxwtxbd5oJeP1qkgwLXp7ttZ2OXuCpxOR0sBy3O+GeFp09LGv6IGgqxUNxjwe9okscDXpxWRlxksTNoMlI6bWC7kZPnDEfD2fynID0DujANVMOpohWuK5bEiPgWe6fRqird4m3Q3SWa
- F4ez2zTd
- gE8NZBuWStfdX8v6hq3/O5zdI6FfnUsolx1L8h/Zu0ciBQlzvRiKxSlcl1mcZg1LW4QVmVYK2vOC2IkWNXIjBzgC3CggFD5HGWZFwo+KaHvZy22x3mAPa8BputwZxVYMahaVs65yrGyrYW4+IIdJqLl9z0wYRFz8AXQxPjYKr7IQKLu0c0IjrqZXM9/YJ+XjW0XfEtJa5+p4m/m/5dhJN9e3jP14p5twUNEA+knApfkcyWEfu5qfk5nAjJlTpGGgQlnJkM7x5BYfHhZC99/4UU5SZf67bk3cw/ClGuaYaoYxVMGiNH0QyFIGrsMocp9t4mxwV5W8+RjO8FrBPq8x4pUsVLnPQQthSXgEJQwTf6RU2Ht97HtvBnZK+a5GJaEf+fkaVsBD23eZdvgh2yQCxtLvRG52TYqSIfghnDDmOJM9TpPiTWgkrBHBbHKxcKd5cPnO1qRGjY+IIm4E=
+X-HE-Tag: 1781514856-265553
+X-HE-Meta: U2FsdGVkX1+EDCw4g3CCiB/1k6M7JkKs1jthm5YaM/4JbAzCcBI+WP1czodYTAR2K6kCeNQZ7sOUf12WH0tyYqAMHGaidCEBRdGmCW9y7yxk7d+0fP+C63DHNvbcMPdyvLHR06x5q8iAe0kj0BSw1NfsgyIWlh4/Gou7QyzH/JdOzpLKy+VsoNLtaKeIqi/ySIJCtjttwSuvKcChnyoe2AMUeboJne8/W9pm3s1JgU+3uS/jZarpRc3z+9pDrLTi9MsIBA2Id3onFN1FHSEsvOUZNlkeDY0yc31EnHZplZXDKotztWUA95amKIQZUTrb+nLiLBMOj+9XvPkOEw0D/DEzhgexLqme6VNLnadK9D6hrNkLs3RUCQJBswsKreeplXy39jwBxc/3ja9R14RucXh5m/LnVHndhmFHXAry/rA8wgeQzIFYuzq+VCJipx8zbmkZfk/JK1/wdPET9L5vfBhI7p6cWjWdtzXF+vdsma1r5w2C7A+ZNyeLWyWZaCBL1BSZZnR/jQYJ5IBVx4eLt2R7HNKQ8NjXwppr1YMs9XRqluor9a5Cy2IZDR2CGLsXDCTLx9hn5T8dhZ3/xASB+/HprFSzIiXC+iGlTz1++hZaosWx2ocPndTs3mFO3pZdfmbjIFJb2JYsG6wNUIkOf1ZzMX9L20rnLgeKNGjcAu7o4KSb5u6RzPz8roHKA/2CrQ1xX/3Bf9Q7VHImTjGCWK6/gddo8PvNqbjc+140EA2F0k9dWu4ZMAWjuKjL6O2HmZgqvAVGH5CflthOt4Q8gnJ+Yl8fQTKYhCf1kxcZMaOUCy9LaUuEcSyjL4Of2zAzcqV3unrcjX+psfRD3vHv4smrH8gBfqE/OM4O9bYcz3HAHXj057r5ofLPC5lUjAjF/FB3W2vD+c/fmyO98x+5gMrt4ZlbrrGFs42os8oQv0Bm4ledqmjsem9WLlh+MnVCCuY3IWQdf6J7U3V0BBr
+ t7frF2at
+ i50jaEh1chLmZd73vxoHvKS9Rci235OO6WQCi0upt6AzTssFXU7WkFoKFHkQ8A66S4q6hWYbYWy1A3Jdd3MA2ebHQGvVMvDB6JpNUru3uGhuhDdlBvZyxwY4GGKNZ/bnkqk0xMx4sf55fQv9RI4hn0ZChDHiNXi7xF2Sx9GJW+WRwCZzT1tOmMYyqdALpVOQn9vco89d09eKX6bdJ7P1AMrPqBlGd0dJdH70hljprztQpUieMIJirc+OejKObOikJykJrwfOj9N3vVwHVhBzgDQrW3L5ewp6ZP3Z9n5eZLghEpaVOcPanTgOuDsiBChGMuCstktr1vkShH2l9XTRjHjsolNWC5sPmyqa1J7ktircXko10oaJBQWF4bE+Ny8sOygWi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,70 +107,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/15/26 04:16, Alexei Starovoitov wrote:
-> On Sun, Jun 14, 2026 at 7:01 PM Suren Baghdasaryan <surenb@google.com> wrote:
->>
->> On Thu, Jun 11, 2026 at 8:50 PM Hao Li <hao.li@linux.dev> wrote:
->> >
->> > On Wed, Jun 10, 2026 at 05:40:07PM +0200, Vlastimil Babka (SUSE) wrote:
->> > > Similarly to the page allocators, introduce slab-allocator specific
->> > > alloc flags that internally control allocation behavior in addition to
->> > > gfp_flags, without occupying the limited gfp flags space.
->> > >
->> > > Introduce the first flag SLAB_ALLOC_TRYLOCK that behaves similarly to
->> > > page allocator's ALLOC_TRYLOCK and will be used to reimplement
->> > > kmalloc_nolock()'s "!allow_spin" behavior. That currently relies on
->> > > gfpflags_allow_spinning() and thus the lack of both __GFP_RECLAIM flags,
->> > > importantly __GFP_KSWAPD_RECLAIM. This can give false-positive results
->> > > e.g. in early boot with a restricted gfp_allowed_mask.
->> > >
->> > > Also introduce alloc_flags_allow_spinning() to replace the usage of
->> > > gfpflags_allow_spinning().
->> > >
->> > > Start using alloc_flags and the new check first in alloc_from_pcs() and
->> > > __pcs_replace_empty_main(). This means some slab allocations that were
->> > > falsely treated as kmalloc_nolock() due to their gfp flags will now have
->> > > higher chances of succeed, and this will further increase with followup
->>
->> nit: I think it should be either "higher chances of succeess" or
->> "higher chances to succeed".
+On Sun, Jun 14, 2026 at 11:35=E2=80=AFPM Jianyue Wu <wujianyue000@gmail.com=
+> wrote:
+>
+> This series builds on Christoph Hellwig's swap batching rework that
+> moves block swap onto struct swap_iocb and per-backend struct
+> swap_ops handlers [1].  Christoph's patches unify batching for
+> ordinary block devices and swap files.  zram still needs a custom
+> path because swap slots map to compressed pages, not disk sectors.
+>
+> The first patch adds swap_register_block_ops() so a block driver can
+> install custom submit_read/submit_write handlers when swapon targets
+> its block device.  The default swap_bdev_ops path is unchanged for
+> devices that do not register.
+>
+> The second patch registers zram_swap_ops at module init.  On write,
+> the swap core still batches folios into a swap_iocb.  zram maps each
+> folio to a slot index and stores it through zram_write_page() instead
+> of building one bio per page.  Read handling keeps slot_lock and
+> mark_slot_accessed() in one critical section.  Writeback-enabled zram
+> falls back to swap_bdev_submit_read() for ZRAM_WB slots.
+>
+> The third patch moves slot_free_notify into swap_ops next to the
+> other zram swap callbacks, and documents the locking contract for
+> that hook.
+>
+> Applied on top of Christoph Hellwig's "better block swap batching and
+> a different take on swap_ops" series [1].
 
-success it is
+Nice. I think it's better to mark it as RFC at this stage.
 
->>
->> > > changes.
->> > >
->> > > Remove a WARN_ON_ONCE() from refill_objects() as it's now legitimate to
->> > > reach it from a slab allocation that's not _nolock() and yet lacks
->> > > __GFP_KSWAPD_RECLAIM for other reasons.
->> > >
->> > > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> > > ---
->> >
->> > Reviewed-by: Hao Li <hao.li@linux.dev>
->>
->> I would call SLAB_ALLOC_TRYLOCK something like SLAB_ALLOC_NOSPIN or
->> SLAB_ALLOC_NOLOCK but naming is hard and I don't claim myself to be
->> good at it. So, feel free to adopt my suggestion if you like it or
->> ignore it otherwise.
->>
->> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> 
-> Just noticed "trylock" in the #define SLAB_ALLOC_TRYLOCK
-> 
-> Please call it SLAB_ALLOC_NOLOCK.
-> 
-> Initial api was using 'trylock' name and it was a mistake,
-> since people assumed normal spin_trylock() like semantics.
-> "trylock" implies that it fails under contention
-> and retry is a normal next step. It's not the case.
-> No one should be retrying. That's why the final api was kmalloc_nolock().
-> So please keep this important distinction in the name.
-> SLAB_ALLOC_NOLOCK should mean that spinning locks
-> should not be taken. It should not mean "just go to trylock everywhere".
+By the way, besides the architectural refinements, have
+you also observed any noticeable performance improvements?
 
-Eh, ok then, will change to SLAB_ALLOC_NOLOCK. Even though it's mostly internal.
+>
+> [1] https://lore.kernel.org/linux-mm/?q=3Dbetter+block+swap+batching
 
-So next thing we change page allocator's ALLOC_TRYLOCK to ALLOC_NOLOCK too?
-
+Best Regards
+Barry
 
