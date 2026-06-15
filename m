@@ -4,112 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4078FCD98C7
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DB3CD98C7
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:06:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A387A6B0005; Mon, 15 Jun 2026 07:04:30 -0400 (EDT)
+	id 5F4E96B0005; Mon, 15 Jun 2026 07:06:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1776B008A; Mon, 15 Jun 2026 07:04:30 -0400 (EDT)
+	id 5A5276B008A; Mon, 15 Jun 2026 07:06:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8891A6B008C; Mon, 15 Jun 2026 07:04:30 -0400 (EDT)
+	id 493C66B008C; Mon, 15 Jun 2026 07:06:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 715246B0005
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:04:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E5C31A0984
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:04:30 +0000 (UTC)
-X-FDA: 84881863500.03.808812B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F1A5E40006
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:04:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ITcrxen1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 35DDA6B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:06:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E01C3A09B4
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:23 +0000 (UTC)
+X-FDA: 84881868246.26.F82BBB8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3E2CF4000E
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNkXimwb;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781521468;
+	s=arc-20220608; t=1781521582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9hWOY7MWUjRw7SnwfLftxff6I6ZGrfupK3fRU9X3Vrg=;
-	b=Olbo8uSH1pixTKyamP4C8E6rUqCqIGwQq7VPXsUTc9LNgNAVdeJdxu9QBQHi3/95PtlW0b
-	+nKpeXHRKhPStH/j+L/v+3x7yWsZhpITE9WT2FJ1upWTrFEwcqk2bf9qBcZc8lEw/0V2KM
-	3/aYIvhl0fjRpl4zi/9IhxwTYNqC6WY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ITcrxen1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf11.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=DEzGeZYgP0g65zZZplfnHWmn77H05/JBjDI6P7zmy+c=;
+	b=JIgdmAkEMqs3sONdKrRrL97SKYG+AaqV+ItIqCfutmgdXRiTMX2lREX622FskZ4jca9aIe
+	ay7M8kEFp9pxnrNEzbIaXzocVeY8YXMMjbHB6WGjdK8mfmoXDzWc150zf29KYQSI8y9Xp8
+	nn0y1nMJWBjJAWK/LfJ6aDU/jAeTwG8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781521468;
-	b=fgBYk586Wh2Uv4txfkyIdn25vMU6St06YijeyRS2y7BnuW8TCDEELFBG9ayFDQpWYWqa4i
-	dbnv81KrkuAC1FsBrovg47dKR+By6MgzATPgRLusPSdV7UfC8CQnKb1XhNVFz5SCcUITDf
-	zMZON2lpi7JrwI2bvi6DLl9TwtV+8D0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4303E328D;
-	Mon, 15 Jun 2026 04:04:22 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E54C13F915;
-	Mon, 15 Jun 2026 04:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781521467; bh=G5bCUMpAj7XkCblIAeX+67lQJO0pVJ0HsMawKtJgxQU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ITcrxen1FUILXt0yTvFGlM97RCokdSUG6KreIW5VnfKj1yUsv5nAXAUCQjVOZEyus
-	 1bxtVRPtXhyGGGbSLmKSdOfzkBrck+oXlbdN9jdKXe1uibx4w6l3zzqX0H/xXyhSXE
-	 z3BP5/FQv9K7Ctbm7B/qLe39ZaH6N64JsRAQb/a8=
-Date: Mon, 15 Jun 2026 12:04:15 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>,
-	Patrick Roy <patrick.roy@linux.dev>,
-	Pratik Sampat <prsampat@amd.com>,
-	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-Message-ID: <ai_aczmeH2IA6JaB@raptor>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
- <ai_XK__RTXMCEcCG@raptor>
+	t=1781521582;
+	b=w836VWz6TrAYY3x/CzgJJi2BG0MnOQCbnanyXj5JQmonyfUI74cQHu3zoDhnVy+2YaSWnq
+	nKNjmOKZucu86hweQdktiiOcqPmpWJlaR3EkYaaOuU3wZJz8DBZjXR1Io8F1+IYaSbc08Z
+	Bf078kUCJy31TAiBl/0TWmBmLIA8yGY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNkXimwb;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A72E660132;
+	Mon, 15 Jun 2026 11:06:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3A21F000E9;
+	Mon, 15 Jun 2026 11:06:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781521581;
+	bh=DEzGeZYgP0g65zZZplfnHWmn77H05/JBjDI6P7zmy+c=;
+	h=From:Subject:Date:To:Cc;
+	b=eNkXimwbNZv8ecFiizQ1mGPxgUthsssfa8+ShsXFhzz9AZRPiffPNOqesVpMmsTPo
+	 TcrJG/XA/SdI9IPvOyvjRXUqeWKez81c49clENShHjFsc9rwjrz/Ss4q+xBKxKiCQk
+	 PWopBB5GKccK9bZtT/m4gQLhUAIJqeZ5EgWmSAKqAEg9XMsNUA0tS22lO64tSaMlQR
+	 S2UADW1WpLVi0zKML5mkHx1wtdKLOeTMu21uOZ9LuIJM2j8Eu7+fQnhEmNbNmz2HBk
+	 9WBGmmxUVuZcUAZhmlExu27HLBGgalPtD7LEojBWH7fZ6Zrw6eGANybaN953w4ZWDa
+	 61nKpTpLS+jjw==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: [PATCH for-next v3 0/9] mm/slab: introduce kfree_rcu_nolock() and
+ improve slub_kunit coverage
+Date: Mon, 15 Jun 2026 20:05:54 +0900
+Message-Id: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ai_XK__RTXMCEcCG@raptor>
-X-Rspamd-Queue-Id: F1A5E40006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrBuIkRHsVUSkxD86WBKZ1CKId
+ ze4/BbvnZShgkzv6iTFX7KkWNC8KvLLJ84wMhWTs661bc1mDQqM6vcxpm/yqwGzdczcdS5QyTZ
+ FkONZ9hSSmojjR8N13VjsbORsAAAA
+X-Change-ID: 20260615-kfree_rcu_nolock-e5502555992f
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, 
+ Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 3E2CF4000E
 X-Rspam-User: 
-X-Stat-Signature: f6ii5bds1rhg8rir9mhh41fpz1b5d9fj
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781521467-312008
-X-HE-Meta: U2FsdGVkX1/4dj7Apr64T6q3S8W1AoWRiyAh9reKwLJgTlD+VYMvTrFCMK/x9R8uQBFjebV5qAKefEas8n7egajGT57oFo1LdBoo+9qrzLw7jN9rvXrX8K2cxFsL/Z3wcxq3YgmA/8MDycQhm3BQ9nQhqzGYvmCRj5bzvjIAeeOyiaxwosGGAYgkDTn3ooJuBhzHtts8yrwLvdMw+qYMzdQM1dUVZNMyiR17Cpd1IuAjc4Po1zsC1IJDHQPSQCuH+E9hzr7f78s3uQj2rbB6dZLz4FCDvE9Vq6RY1oz92ynMW4Nn+fSQgymuFtg/VPW1zblQwre1+7LMREDiPg+wbQRURzIHJrL3jXybHaPR2ovuznmVBBpJuE8uYSfX22pCDPJuLIt9pROqlKIQz/BjZq3QQ6xqYqJ2kcZRrCzqjEoRx/f4AQkktcw/GO0nhaWsM1uaLSAmMvbbsl0m3U4wmpJxiaw+GYWVazm5IKh/c+u0+VWqtsV9IbRlPLIaUx69dL/mA0U+s1Al4N8O1zgCLL3LbTa8ux3bhAI/LVXvCHOTCJ7JJbVl61rUC/2ymiioXRRL4flS/UAaGzVkrf8Far1bvYE5a6lJhE6P5HS83uJYl9Ln8FjvdO9Y4AqpmsfOlyFPZxHal9UrBEq71SKhx5K2AYIFxsQNVb4AMdEFxkChZMzRMbWPc7b+cYs0lb9IYeKEdL6gK8mh1A7ZQFh6YqhVjdQMgKK+JNX91fmg8dlkEubJ876/A6+0ovJhiVv6hgv7ZH2K+lUI9HBxzLsqUaQg0UX9ETAub9HE5Y8L3nEmuXF840SVT9kml4HeNI+QRaL4LjmJRFimVzMVZLkjpCHZwyuTiSqUlngMs+hwAeoIHg+v7wp8eaymJmuSdiwuadC8d0CUh4It1rXFAWqAI5sGe/ayZ+TmhB6a0zXikCOJZFu2jLqSxAzs4nKWIxx4ZukBRQdMZVdBy1WMr+K
- r0Dj9U74
- c+OPGwHSn7QS8Q0Xm831nrKfp8lIaKxizI0GVeDfh+/Oxj+2k7eenWBNZA6qwFP4xQ/+oL0Fu7qRU/IjCQ89zBfZku1MGN6dJw7iHC2LYK+8onQByGkawgRPgsqE4PqHvg4bow9zoIyOMCS1iR7U1R9Y0InMH3m8woggoMnDIYRF7ifPwRvnti66c4t0aQIn9GZ+/KvDfIC3s8sILXFeeQPoDWphXIN2BSD5+OVAgy6JFFJtJl6c7NZpMhnVFOe5ygH92jMXU+Wyhf5DoNyyEFirGZeYtfkW4iC4d4qPYGsF4NyRWBhj74v1HMZWyl2Tf+cGSzCHHQ8HjYfzg5va4a/9D2+2K72HSwRmm
+X-Stat-Signature: qwjnoua7zxhsxftpkoekgxyo9ofrtjsa
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781521582-293245
+X-HE-Meta: U2FsdGVkX19Xrwe6JXaBC7yQZAh8L0fiP8VDwun/9chuEv8/GMBD8eKHaPOuFjLjxopo/Td/jhNhtX9SPQpFi5FXusM+rozp7+KEDFM5qHCodOTFNmeB/aHWljgO8OGVheNOuomXgiyXLnPHk2tKHaTEUoiVGAtOsQo8m7Tn43I4DXhzuSp94l9fSMhqTge0ZdymCiiqJD9Amwx7ZZ1Z7DBYK87/IkPcg90zlh+pmKAWlpaVzOJeI5tRZAXXcmcF4UZzufgiXFoyynQ+Z1PUQU58aLk/84G1zJZq0Igh/yHTOmXyP6OY4iKxoFsoyS9e8iUT9uKP4Mv++YOquSSDGa0XVaYtDkz4E/sis914o09yXbhO9eD7ko7vsmrSZhnnarQ4T/9t+jOHrbSPnh1LuKalkAiy+VRxUgFbiygG3VPg9ittnCbVLJkbuQi0sUuBvpLQ24MwjHjWWKkGp0KEZOqvJ8nXsY7FjFnflyo1oRMN1+0IhFrhZdtdOY9cTabOrpS9LW5kP0SWAazStyj8qI6wqR5RCS72VQuYCotahsLfu6wEEknT8q3gDS5pcx5uQPMgwj684eOeawhjuKc2f//kLR1sfidzaxnF7RUY9do2VFrShqDT5/RgIc+5yTIoU7tePkE5Gncdf0vECra3AyKQfik031tFZYgFfo/x4RhzcHEotSh4RK+NjuhRd9Ut0l5QSedI8M32OA9a+pFmEQ24ufmaU60E7U7EwTJJ9mo6RpPG5nLR9gWw42uRHKpfOifc9ZK0K6IkPZ25ZuM9K+gZeydRj/XJLW752XpdxBBYdJlKMrpIznWOaP2lvGFMbNCXtzkRIVTZjPHeTZJmtfiJ2a2Z6qa0uD+4X49ZyRcCh5uHpF4c/17mQkeedR2l3ILOURV9zT4Rfa++cAV3rP7Av/opBhqXuDtYtgn1tlDH3gU99+ODOuHnJZHstGW2fYyjUoKWudqZJarGE7Y
+ Y3n3x4jr
+ DlqKh1JelOhJByjhvY5EwJW+wgz0aDEZxx9k6P8r8QyM43m7612rFL01c26ZXgf8okSsDH0lzjA0LaNdsiGhdZGzksVCqmleUlbpanKOr7xOmo47jvvlbRw8FqC5Ar2+HGBvPyOt7b6b0lmLdwuAG73J0GGGWNyybTavq8CeD/Ec6RojXUt1sM2D9zLE49QnIof1sNpnvMbN703kkJ2n0wGDWXt53w45cb0lWmfNY/+hBGGgOCU01CeTjh1ftmovw+O2Rboq+nW8XIdzSRn2TuvWPYmu5c6gp5L8xVIGmhb5J7pzl4Fe1PI9Aed0gHMxV5Uxs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,40 +110,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Not the best time to post a series, but didn't want to delay posting
+the series for too long. no pressures ;)  This is aimed to be queued
+for review and testing after the merge window closes.
 
-On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
-> Hi,
-> 
-> On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
-> > guest_memfd folios are currently marked unmovable, so the kernel cannot
-> > perform NUMA-balancing, memory compaction, etc. This is unavoidable for
-> > confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
-> > needs firmware assistance. However, for non-confidential VMs (like
-> > Firecracker), we can migrate the folios.
-> > 
-> > This series enables folio migration for non-confidential guest_memfd and
-> > also lays the groundwork for migrating confidential guest_memfd later.
-> > Once firmware-assisted copying support is available, those VMs can be
-> > made movable, the confidential folio content can be copied separately,
-> > and the destination folio marked with FOLIO_CONTENT_COPIED so
-> > __migrate_folio() skips the host-side folio_mc_copy().
-> 
-> I always thought that one of the nice things about using guest_memfd as a
-> memory backend, as opposed to host userspace mappings, is that the host
-> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
-> collapse, compaction, etc, acting on the host userspace mapping of the
-> VM memory, and outside of the VMM's or KVM's control.
-> 
-> I think it would be useful to preserve this behaviour, even in the absence
-> of confidential VMs (i.e, guest_memfd file descriptor created with
-> GUEST_MEMFD_FLAG_MMAP).
+This series is based on next-20260612, and is also available on
+git.kernel.org [3].
 
-Just to be clear, I was thinking that it might be useful for both
-behaviours to exist (migratable and non-migratable) for non-confidential
-VMs, and allow KVM or userspace to decide which they prefer for a
-guest_memfd.
+To RCU folks: It would be great if you could kindly take a quick look at
+patch 4 and either ack or nack the patch ;)
 
-Thanks,
-Alex
+To BPF folks: Ulad asked to share workloads to measure performance
+of kfree_rcu_nolock(). Unfortunately, I focused more on correctness
+and have not spent much effort on that. It would be nice if BPF folks
+could help evaluate it on their relevant workloads.
+
+To PREEMPT_RT folks: The most relevant part is allowing
+kfree_rcu_sheaf() on PREEMPT_RT (patch 6). It carefully avoids sleeping
+by acquiring the locks via local_trylock() or spin_trylock_irqsave()
+to avoid sleeping within a raw spinlock. When trylock or unlock is
+unsafe, kmalloc_nolock() always fails.
+
+Changes since RFC v2
+====================
+
+Reduced complexity and intrusiveness (Uladzislau Rezki)
+-------------------------------------------------------
+
+While discussing concerns about the complexity of adding allow_spin
+handling with Ulad (Thanks!), I realized that adding complexity to the
+kvfree_rcu batching is not strictly necessary: only slab objects need to
+be batched, they are already batched by rcu sheaves, and slab already
+supports unknown context. So it is enough to implement only a minimal
+fallback for the sheaves path.
+
+I tried to avoid making intrusive changes to the existing kvfree_rcu
+path as much as possible. struct rcu_ptr is renamed to kfree_rcu_head
+following Vlastimil's suggestion, and it is used only in the
+kfree_rcu_nolock() path for now.
+
+As a result, the complexity is significantly reduced and the series
+became much less intrusive. This is also reflected well in the diffstat
+below.
+
+RFC v2 diffstat:
+  8 files changed, 514 insertions(+), 163 deletions(-)
+
+v3 diffstat:
+  6 files changed, 370 insertions(+), 105 deletions(-)
+
+v3 diffstat (slub_kunit improvements - patch 1, 2, 9 excluded):
+  5 files changed, 199 insertions(+), 66 deletions(-)
+
+kfree_rcu_sheaf() PREEMPT_RT support (Vlastimil Babka)
+------------------------------------------------------
+
+As suggested by Vlastimil (Thanks!), kfree_rcu_sheaf() can now be used
+on PREEMPT_RT as well, by always assuming allow_spin is false on
+PREEMPT_RT.
+
+slub_kunit enhancements
+-----------------------
+
+- Currently the test is skipped when there is no hardware PMU. This can
+  happen on machines without a PMU, or in virtualized environments
+  (e.g., automated testing or virtme). Implement a fallback based on SW
+  perf events so that the test can still run in such environments, even
+  though the coverage is slightly smaller.
+
+- While testing on PREEMPT_RT, I found that kmalloc_nolock() fails every
+  time, so the fallback path is not properly tested. This is a limitation
+  of perf events: the handler is called in NMI (HW perf events) or
+  interrupt context (SW perf events), where kmalloc_nolock() cannot
+  succeed.
+
+  slub_kunit now registers a kprobe pre-handler at the points in the slab
+  allocator where lockdep_assert_held() is invoked. The pre-handler calls
+  kmalloc_nolock() and friends, to improve coverage on PREEMPT_RT instead
+  of relying on perf events.
+
+One thing that needs to be further explored
+-------------------------------------------
+
+The global deferred_free_by_rcu (introduced by patch 8) list for the
+fallback should probably be per-CPU [5].
+
+Actual Cover Letter
+===================
+
+This series improves kmalloc_nolock() and kfree_nolock() coverage
+in slub_kunit (patch 1 and 2) and introduces kfree_rcu_nolock() for
+an unknown context as suggested by Alexei Starovoitov.
+
+Unknown context means the caller does not know whether spinning on a lock
+is safe (e.g., a BPF program attached to an arbitrary kernel function or
+in NMI context).
+
+The slab allocator already supports unknown context via kmalloc_nolock()
+and kfree_nolock(), but te slab allocator does not support freeing
+objects by RCU in unknown context.
+
+It is not ideal to have completely separate batching for unknown context
+because the worst scenario where spinning on a lock would lead to
+deadlock is very rare, and in most cases, it is safe to use the
+existing mechanism (kfree_rcu_sheaf()).
+
+Since most part of the slab allocator already supports unknown context
+and sheaves support batching kvfree_rcu() calls for slab objects,
+implement kfree_rcu_nolock() with minimal changes by teaching
+kfree_rcu_sheaf() how to support unknown context and making
+it a little bit harder to allocate an empty sheaf, instead of making
+intrusive changes to the existing kvfree_rcu batching logic.
+
+kfree_rcu_nolock() tries to free the object to the rcu sheaf if
+trylock succeeds. Once the rcu sheaf becomes full, it is submitted to
+RCU via call_rcu() if spinning is allowed or IRQs are enabled (to avoid
+calling call_rcu() in the middle of call_rcu()). Otherwise, call_rcu()
+is deferred via irq work.
+
+In unknown context, when there is no sheaf available, kfree_rcu_sheaf()
+falls back to defer_kfree_rcu(), which inserts the object to a global
+lockless list [5] and those objects are freed after synchronize_rcu() in
+a workqueue.
+
+Unlike kfree_rcu(), only the 2-argument variant is supported.
+This is because the last resort of the 1-arg variant is
+synchronize_rcu(), which cannot be used in an unknown context.
+
+As suggested by Alexei Starovoitov, kfree_rcu_nolock() can be used with
+struct kfree_rcu_head (8 bytes), which is smaller than struct rcu_head
+(16 bytes).
+
+For more background and future plans, please see [4].
+
+[1] RFC v1: https://lore.kernel.org/linux-mm/20260206093410.160622-1-harry.yoo@oracle.com
+
+[2] RFC v2: https://lore.kernel.org/linux-mm/20260416091022.36823-1-harry@kernel.org
+
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=kfree_rcu_nolock-v3r3
+
+[4] kmalloc_nolock() follow-ups, including kfree_rcu_nolock(),
+    https://lore.kernel.org/linux-mm/esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3
+
+[5] However, we should probably make the list percpu because,
+    unlike RFC v2, it can be triggered more frequently under memory
+    pressure.
+
+    https://lore.kernel.org/linux-mm/805c33d7-3a7b-470c-bd9d-065717a3e3e2@paulmck-laptop
+
+Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+---
+Harry Yoo (Oracle) (9):
+      slub_kunit: fall back to SW perf events when HW PMU is not available
+      mm/slab, slub_kunit: register kprobe to trigger _nolock APIs
+      mm/slab: handle the !allow_spin case in kfree_rcu_sheaf()
+      mm/slab: use call_rcu() in unknown context if irqs are enabled
+      mm/slab: extend deferred free mechanism to handle rcu sheaves
+      mm/slab: allow kfree_rcu_sheaf() on PREEMPT_RT
+      mm/slab: introduce kfree_rcu_nolock()
+      mm/slab: introduce struct kfree_rcu_head and use in kfree_rcu_nolock()
+      slub_kunit: extend the test for kfree_rcu_nolock()
+
+ include/linux/rcupdate.h |  12 +++
+ include/linux/types.h    |   4 +
+ lib/tests/slub_kunit.c   | 174 ++++++++++++++++++++++++++++------
+ mm/slab.h                |   5 +-
+ mm/slab_common.c         |  38 ++++++--
+ mm/slub.c                | 242 ++++++++++++++++++++++++++++++++++-------------
+ 6 files changed, 370 insertions(+), 105 deletions(-)
+---
+base-commit: c425609d6ac4012c8bbf01ec2e10e801b1923a7b
+change-id: 20260615-kfree_rcu_nolock-e5502555992f
+
+Best regards,
+-- 
+Harry Yoo (Oracle) <harry@kernel.org>
+
 
