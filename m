@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A87CD98DA
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10A90CD98DA
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 11:06:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25506B008C; Mon, 15 Jun 2026 07:06:31 -0400 (EDT)
+	id 77B416B0092; Mon, 15 Jun 2026 07:06:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4F66B0092; Mon, 15 Jun 2026 07:06:31 -0400 (EDT)
+	id 72CEB6B0093; Mon, 15 Jun 2026 07:06:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C4BB6B0093; Mon, 15 Jun 2026 07:06:31 -0400 (EDT)
+	id 61C2A6B0095; Mon, 15 Jun 2026 07:06:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B4F36B008C
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:06:31 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5598B1A09E6
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:31 +0000 (UTC)
-X-FDA: 84881868582.30.2110EAA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 520E16B0092
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 07:06:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E690092F5E
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:37 +0000 (UTC)
+X-FDA: 84881868834.22.CD3F27E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 97E4580010
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5H9yP13;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 24C71140004
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 11:06:35 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTzUu+6l;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781521589;
+	s=arc-20220608; t=1781521596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E2F1Wu57D1KXCqh6uiw1Q3ldSnxREhsNBlfWv4bIRtA=;
-	b=EAnKXzRLOXaPZj7jSGV6XlNBn5wD0TFzT/fEWQ3LfHs/rml1sTw59lHQH11huJDRCwwJ+p
-	d5byJ//2Mv6NwC25dcHSy8F42yD9VN/Rrc7DMEXn02CySqM5zEilvDOyzLvEfwzTeGpN6/
-	JYXOdawpquu++DjwomfGG33T62HB+d8=
+	bh=RcAg6p8uPFXDZsEK18Yc6WgpUSfGRhbKOaoMj5tkMkU=;
+	b=m6VQpHWDAXoLE7srwaEmx+Mvl29atljXdcyvL5b4nXD4C8Kex/BimwWec8KM+PqcSJ6GmK
+	scvw0VC+ISrniESujJ9+PTmmQDfVUj7xO+97sqyBMQn65KPsg3xBUanMYNhurfmRIj7tcp
+	ZnAcOTwlydWDTtJ4z6F589WNFMkjhVU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5H9yP13;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eTzUu+6l;
+	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781521589;
-	b=HM2X5BdH/MqMXhP9WpiFxnWX4dMu9/PH3gueQd5+/sSRciwWoSNnH+CCPANRJZ8nh8PfvA
-	jOsF93Q7/vCENC9sQsfieO7A+y7SQon2sSG7LsJQmkyfWbmgU9PTsqk0WRtx6yxL4suf8R
-	O3FdmlzsDsP2ZCBlMuxx68132VwleTE=
+	t=1781521596;
+	b=elU9bChVTAuNcl6FPlpSDt3NtN9MFSp0QzpC2AguMnuTHiFB7hy+Djr/eeSXg2sx2ECmu2
+	uC/FyEibtBcd4GXBdd8uL12es3M16vt5bljzcCxyYlzlWmqJstJVdgEqyXiCcmG+1wFa7F
+	Tos63aOrmHEmY+H0WGHPehAUi/7t40s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0B03442FF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E83E418E1;
+	Mon, 15 Jun 2026 11:06:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DBC1F000E9;
 	Mon, 15 Jun 2026 11:06:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74711F00A3A;
-	Mon, 15 Jun 2026 11:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781521588;
-	bh=E2F1Wu57D1KXCqh6uiw1Q3ldSnxREhsNBlfWv4bIRtA=;
+	s=k20260515; t=1781521595;
+	bh=RcAg6p8uPFXDZsEK18Yc6WgpUSfGRhbKOaoMj5tkMkU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=D5H9yP13aY80Y2xhF3JVFFWrN4W6dVhuuI98KQ1YDvo9Oe+drurxdalTUrkaNxWan
-	 MJ8PK7fLtFxF17cr1WLl59X4KWuqN30d8C3NIwxXzUoGelQI5yRBYCq7QJI2RQG2FK
-	 7rI14rO8PhCEjL4SSIeMBmXZJaMYLz5kkUIssGlrNvJKDK7HxklEcDiz8eOHb9b87Y
-	 oe8uN7kAHB5l1RMZi7UjMLExpg5IfJGOoYGvMuOR+aL6LfJY3b50n3W82P9mCBq4kS
-	 /UKC0Jv0lfHdBb1M5fruzj5V0ORmMIYUltVzp2eYdYK9p8iJVsimFM6RP3TJjFo1zd
-	 +ze5sN3apHUsQ==
+	b=eTzUu+6lX/AL6Bep4Xs8pOL7/YPmDO8dFu4iC0orItAJncn+htYYzx+VLgsDiJVmz
+	 e68bAsZs/BUNfc/kD0aSFIlTchM2O+FCtfgkl0H77UWDHDzMVDKAEgnuFXBf+71Mqm
+	 X5SVx8SYrW4TX0wbgDBe19jseLOJi/w2jS1K6mDVui77I8OTpaNZRtjJQiI5oF9l7p
+	 kPVmtkzG2YCUK8dCftoJ2D0pnk1fhlD/XHGpFWqg0MkgsMWqz9bvztU+NxfX+DsHwO
+	 DV7z+NosVKk/t03e3VRVLDT1pJ5yDqgQ/3zTsDuA6M0LZLscleJzotgBjScrbs43Jg
+	 TVoI2Q9wYQVBQ==
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Mon, 15 Jun 2026 20:05:55 +0900
-Subject: [PATCH for-next v3 1/9] slub_kunit: fall back to SW perf events
- when HW PMU is not available
+Date: Mon, 15 Jun 2026 20:05:56 +0900
+Subject: [PATCH for-next v3 2/9] mm/slab, slub_kunit: register kprobe to
+ trigger _nolock APIs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260615-kfree_rcu_nolock-v3-1-70a54f3775bb@kernel.org>
+Message-Id: <20260615-kfree_rcu_nolock-v3-2-70a54f3775bb@kernel.org>
 References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
 In-Reply-To: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -94,14 +94,14 @@ To: Vlastimil Babka <vbabka@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 97E4580010
-X-Stat-Signature: m5yaufjxmwyfz1mgshhz89w5uyt898t8
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 24C71140004
+X-Stat-Signature: ymxg6f79jkhwcgz195wkfxjpxj7xobnc
 X-Rspam-User: 
-X-HE-Tag: 1781521589-693190
-X-HE-Meta: U2FsdGVkX18/AczI92YzEK//4WkiKGhrTmcuNXT2pShB95Fx4Wq88GlRzbUvN065lXuNBLott9ghcA/YTFCu4riVgflrFEWVSSHtdA/k0NxtRMa5xmfrYbYE577BTbVlpLfQ9wq9mLeQnp3tDl2HnVJ0Vs/jQ4mq9YP4n7SKHm9UI7Vp0ndfYF+miaam5P9zDGmoNpOo3pR7T09pi1EegdRUoC38a54FoksyL3E+2Y2ci06qRTzXyiYB0LniA+ZrY/dQi/+G6vShiGuC8zkPQOHIPBClMeASfijCDK0+dyWII5X8EumgaFX9FBUGF7SJP6wqfZEIMB1TnqWt7sNxbLlg1/GPXI0JO+1Bri1wW3kzJ2TPqZFdqN3T4uc71YGmaTGzlZ9yO6238FoM3WoAD8Oo5LzdtMjIfhCb8FQ2XpevLd5rxQDe42fqvtiwCDWvVJwotW51EAIQDYtcoY+FSDviVUQZ7Vx03nQulw3hAPowHMXXFBwYUl6Yvc3IAbSdGaIpLH/hXepNayGtIPVlWS2dcL6Mo+uXNsz0skoehISdYKXlQvcFeMK2nKN/v3w3NQSOsS1kNScMhF7JMEWGNqAYmcuyrZWpStLlFpxq/TvH5iOCme4oDf6QHPHRKrbgiSULqzEfx6IPCrtnV3NCtntCumImbYRngS4JyL4yVJ+NG8yig7omKr+/QBk+01wZTOG8R4BDi2MSGVCdFDDUrXQSOjZj0kWpzRunIjPhgZEp4wLvAYSVWZybBalCm+gVUyeracRTiinNpMPTgrjc8yXn8/tIEy5DfjoidT0YaEx5FzEKrr6+hbYjS4uLdlPt7FVEmA0dLrOH3nX42w22F+g7uks/Hfc5R2W1H+Ag6cmbCNoep/pXLXpDdysAxc+FnVnC9Y/ryoGcG7eFRdFphdJr4VVPjOQlWALI2nKYVuYOssBPpXehV1y71eWh2YFRUHpzc9DkTigaBpEaTvJ
- rFVsfWt/
- yyCjJ14yzcQYgwiMuDZi386x2RqVFrZhdR3O+uwguttf8011x8b8077qlSPefPVuiEwCfoRXYjvfySwSjk+ktUuH1J4TPf3iwrbbmibzN4oir6p/2DZqmgCa6aVSNRQOBuBL/W/ohs9qA9n2yihUFqQr3p73O2FcLsxFastxLyHpYlaJaQmc8rgANMAJdD+o3me/BFRIa9kJ0CGJ7P8musuBpnYeytZSZgA2DhQ67gWzA8oZNbQM89uCDmtqH69ofujrZw93bdQRaCetJeSEK5N9P45NwdG+YMnCz
+X-HE-Tag: 1781521595-579851
+X-HE-Meta: U2FsdGVkX1+RsMR5Urc5TJJR1gI5OS2T9iIvqxgc4kYrVR+mrzPM8DlM+J0E6CRXU8mKLU/kvseS5PCX3Gj+FXsI+9pmkQSyLiOSlhJ85+3S3RLOADMrf5plEOuJQyVczmMwEe8MrysCeO5Mw23pZxv3a870MSu/w+NdCXSF5PpWnPPwHvrAerPB/ZN2n02YhGwTwcmNjazDtVCGVy8uii/OG+R1udurnS4/en5TLF79uC7Y271W/8swIpDHw+/47Y+Rm/wDRp565P5wu+hstaaCo/t485VUpTWCukC7EaOkNWU4HvFP0HFR5e5psnzjDva2DvF38Od2QNZqwR3+igWLjvoXzKMRIB5UnAIICnBWzmDcMNWNiWgIV+r3tBCAcokw7MjVK/mPImQkRm4OQ7jUEE0pXBc8eQD3ZTYGFqZe32QNG3r6diNYBLAUEMU4MHyJq70Gyf2zLvO57EL+exfFysCfIySemTL3wOUhuhw75GhHiM5+XaTLAy6L/rKWRzTIU3UeSRjnV48BfVcL0tQY+duBNXeQlUK/g0QeWP30sB2cCkOjppp7ijRbvnc4P23M0q+RtlElwGIb7bRW6Klwwz7Kz2mamj6CIgn9vM75llZbf5m/MbJnyoK2J73j0+cw/jUumjTVKoYgANlYZ/IAivuJe7thN3d4TEOpUsmTKMGPjr7iBcHRoi7b62pyPgQsnSNsW4GQZ9V5021dCjaBZhCr0h5ryKPgDtHhRPT9nKMtdJ4FAZpK7LQ5WZFzUCNLdw7HgqycKTqpAyChK5qgE4+1kNqNzI2sVzRXQDe0a6b/z92e7WFAJVxIuRdUD+AJ57tzm9/2Kv3B7decTmRuXQeYLLFnf4uZqt64dyfBTKxu1qHayMnkk2aeYB8FdeiuDXy2Tz5idfksa5+IRvckgRI6qVtgyB/YPx9rDF8uDO5m9J/nqzW+tXjDzCSPRhbL7DXZ0XnxEZIu1Vn
+ Z+PDwBMB
+ U+jMze/sDx3ZWgQMmEtsj3lzrXjqdNUpGkyibk36y14rXMB1UJdaa1KeuA8Y/JoHvYo6tjUHhDZabNGwMMzYYTp61qPuimEYvsMKJW1En4ihXBAZ/pZQEgzQ170qMlbJaxLih5aErTvowBWh+v0gasK3PZqikmLKcO9mW6fkNZCxdSqiyZU4kITfAXI+rQvEuQK+OmZerbXlAWCZnQQbcjEIjpyYMYbnSEvQuo9MdsAPWbhQOvqgKSgOLwDMCUNeD6IiPAkBmDWxsJkD5S9MJWUrxZNgzfn1hOIm0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,132 +109,296 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-slub_kunit uses hardware perf events to invoke _nolock() APIs from NMI
-context. However, creating a HW perf event fails when there is no
-hardware PMU, or when running in a virtualized environment without a
-virtual PMU configured.
+Since kmalloc_nolock() always fails in NMI and hardirq contexts on
+PREEMPT_RT, slub_kunit cannot properly test _nolock() APIs.
 
-Since tests are often performed in virtualized environments, fall back
-to a SW perf event so that the test can still run, even if it cannot
-cover IRQ-disabled sections.
+Register a kprobe pre-handler to invoke kmalloc_nolock() and
+kfree_nolock() in the middle of the slab allocator. However, do not
+register the handler on UP kernels [1].
 
-For the sheaves path, IRQs are not disabled until the barn is accessed.
-So some coverage is still expected.
+To attach the pre-handler while s->cpu_sheaves->lock or n->list_lock
+is held, add a wrapper function for lockdep_assert_held() that calls
+a no-op function slab_attach_kprobe_locked() on debug builds. The
+function is optimized away when neither CONFIG_PROVE_LOCKING nor
+CONFIG_DEBUG_VM is selected and register_kprobe() fails.
 
+The function calls barrier() to prevent the compiler from optimizing
+away its callsites. Otherwise, the compiler may consider the function
+does not have any side effect and remove callsites.
+
+Link: https://lore.kernel.org/linux-mm/20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org [1]
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- lib/tests/slub_kunit.c | 70 +++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 55 insertions(+), 15 deletions(-)
+ lib/tests/slub_kunit.c | 82 +++++++++++++++++++++++++++++++++++++++++++-------
+ mm/slub.c              | 36 ++++++++++++++++------
+ 2 files changed, 98 insertions(+), 20 deletions(-)
 
 diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
-index fa6d31dbca16..11255fc8eb78 100644
+index 11255fc8eb78..01d808cb77fa 100644
 --- a/lib/tests/slub_kunit.c
 +++ b/lib/tests/slub_kunit.c
-@@ -303,6 +303,7 @@ struct test_nolock_context {
+@@ -8,6 +8,7 @@
+ #include <linux/rcupdate.h>
+ #include <linux/delay.h>
+ #include <linux/perf_event.h>
++#include <linux/kprobes.h>
+ #include "../mm/slab.h"
+ 
+ static struct kunit_resource resource;
+@@ -292,7 +293,8 @@ static void test_krealloc_redzone_zeroing(struct kunit *test)
+ 	kmem_cache_destroy(s);
+ }
+ 
+-#ifdef CONFIG_PERF_EVENTS
++#if defined(CONFIG_PERF_EVENTS) || (defined(CONFIG_KPROBES) && defined(CONFIG_SMP))
++#define SLUB_KUNIT_TEST_KMALLOC_KFREE_NOLOCK
+ #define NR_ITERATIONS 1000
+ #define NR_OBJECTS 1000
+ static void *objects[NR_OBJECTS];
+@@ -302,10 +304,16 @@ struct test_nolock_context {
+ 	int callback_count;
  	int alloc_ok;
  	int alloc_fail;
++#ifdef CONFIG_PERF_EVENTS
  	struct perf_event *event;
-+	bool is_perf_type_hw;
+ 	bool is_perf_type_hw;
++#endif
++#ifdef CONFIG_KPROBES
++	struct kprobe kprobe;
++#endif
  };
  
++#ifdef CONFIG_PERF_EVENTS
  static struct perf_event_attr hw_attr = {
-@@ -315,9 +316,19 @@ static struct perf_event_attr hw_attr = {
+ 	.type = PERF_TYPE_HARDWARE,
+ 	.config = PERF_COUNT_HW_CPU_CYCLES,
+@@ -326,13 +334,10 @@ static struct perf_event_attr sw_attr = {
  	.sample_freq = 100000,
  };
  
--static void overflow_handler_test_kmalloc_kfree_nolock(struct perf_event *event,
--						       struct perf_sample_data *data,
--						       struct pt_regs *regs)
-+/* Fallback when hardware perf event is not available */
-+static struct perf_event_attr sw_attr = {
-+	.type = PERF_TYPE_SOFTWARE,
-+	.config = PERF_COUNT_SW_CPU_CLOCK,
-+	.size = sizeof(struct perf_event_attr),
-+	.disabled = 1,
-+	.freq = 1,
-+	.sample_freq = 100000,
-+};
-+
-+static void overflow_handler_test_nolock(struct perf_event *event,
-+					 struct perf_sample_data *data,
-+					 struct pt_regs *regs)
+-static void overflow_handler_test_nolock(struct perf_event *event,
+-					 struct perf_sample_data *data,
+-					 struct pt_regs *regs)
++static void test_nolock(struct test_nolock_context *ctx)
  {
  	void *objp;
  	gfp_t gfp;
-@@ -336,20 +347,53 @@ static void overflow_handler_test_kmalloc_kfree_nolock(struct perf_event *event,
+-	struct test_nolock_context *ctx = event->overflow_handler_context;
+ 
+ 	/* __GFP_ACCOUNT to test kmalloc_nolock() in alloc_slab_obj_exts() */
+ 	gfp = (ctx->callback_count % 2) ? 0 : __GFP_ACCOUNT;
+@@ -347,6 +352,15 @@ static void overflow_handler_test_nolock(struct perf_event *event,
  	ctx->callback_count++;
  }
  
-+static bool enable_perf_events(struct test_nolock_context *ctx)
++static void overflow_handler_test_nolock(struct perf_event *event,
++					 struct perf_sample_data *data,
++					 struct pt_regs *regs)
 +{
-+	struct perf_event *event;
++	struct test_nolock_context *ctx = event->overflow_handler_context;
 +
-+	ctx->is_perf_type_hw = true;
-+	event = perf_event_create_kernel_counter(&hw_attr, -1, current,
-+						 overflow_handler_test_nolock,
-+						 ctx);
++	test_nolock(ctx);
++}
 +
-+	if (!IS_ERR(event))
-+		goto out;
+ static bool enable_perf_events(struct test_nolock_context *ctx)
+ {
+ 	struct perf_event *event;
+@@ -382,17 +396,60 @@ static void disable_perf_events(struct test_nolock_context *ctx)
+ 	perf_event_disable(ctx->event);
+ 	perf_event_release_kernel(ctx->event);
+ }
++#else
++static bool enable_perf_events(struct test_nolock_context *ctx) { return false; }
++static void disable_perf_events(struct test_nolock_context *ctx) { }
++#endif
 +
-+	ctx->is_perf_type_hw = false;
-+	event = perf_event_create_kernel_counter(&sw_attr, -1, current,
-+						 overflow_handler_test_nolock,
-+						 ctx);
-+	if (!IS_ERR(event))
-+		goto out;
++#if defined(CONFIG_KPROBES) && defined(CONFIG_SMP)
++static int slab_kprobe_pre_handler(struct kprobe *p, struct pt_regs *regs)
++{
++	struct test_nolock_context *ctx;
 +
-+	return false;
-+out:
-+	ctx->event = event;
-+	perf_event_enable(ctx->event);
++	ctx = container_of(p, struct test_nolock_context, kprobe);
++	test_nolock(ctx);
++	return 0;
++}
++
++static bool register_slab_kprobes(struct test_nolock_context *ctx)
++{
++	ctx->kprobe.symbol_name = "slab_attach_kprobe_locked";
++	ctx->kprobe.pre_handler = slab_kprobe_pre_handler;
++
++	if (register_kprobe(&ctx->kprobe))
++		return false;
 +	return true;
 +}
 +
-+static void disable_perf_events(struct test_nolock_context *ctx)
++static void unregister_slab_kprobes(struct test_nolock_context *ctx)
 +{
-+	kunit_info(ctx->test, "%s perf events: callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
-+		   ctx->is_perf_type_hw ? "HW" : "SW",
++	kunit_info(ctx->test, "kprobes: callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
 +		   ctx->callback_count, ctx->alloc_ok, ctx->alloc_fail);
-+
-+	perf_event_disable(ctx->event);
-+	perf_event_release_kernel(ctx->event);
++	unregister_kprobe(&ctx->kprobe);
 +}
-+
++#else
++static bool register_slab_kprobes(struct test_nolock_context *ctx) { return false; }
++static void unregister_slab_kprobes(struct test_nolock_context *ctx) { }
++#endif
+ 
  static void test_kmalloc_kfree_nolock(struct kunit *test)
  {
  	int i, j;
- 	struct test_nolock_context ctx = { .test = test };
--	struct perf_event *event;
+-	struct test_nolock_context ctx = { .test = test };
++	struct test_nolock_context perf_ctx = { .test = test };
++	struct test_nolock_context kprobe_ctx = { .test = test };
  	bool alloc_fail = false;
-+	bool perf_events_enabled;
+ 	bool perf_events_enabled;
++	bool slab_kprobes_enabled;
  
--	event = perf_event_create_kernel_counter(&hw_attr, -1, current,
--						 overflow_handler_test_kmalloc_kfree_nolock,
--						 &ctx);
--	if (IS_ERR(event))
-+	perf_events_enabled = enable_perf_events(&ctx);
-+	if (!perf_events_enabled)
- 		kunit_skip(test, "Failed to create perf event");
--	ctx.event = event;
--	perf_event_enable(ctx.event);
+-	perf_events_enabled = enable_perf_events(&ctx);
+-	if (!perf_events_enabled)
+-		kunit_skip(test, "Failed to create perf event");
++	perf_events_enabled = enable_perf_events(&perf_ctx);
++	slab_kprobes_enabled = register_slab_kprobes(&kprobe_ctx);
 +
++	if (!perf_events_enabled && !slab_kprobes_enabled)
++		kunit_skip(test, "Failed to enable perf event and kprobe, skipping");
++	else if (!perf_events_enabled)
++		kunit_info(test, "Failed to create perf event");
++	if (!slab_kprobes_enabled)
++		kunit_info(test, "Failed to register kprobe pre-handler");
+ 
  	for (i = 0; i < NR_ITERATIONS; i++) {
  		for (j = 0; j < NR_OBJECTS; j++) {
- 			gfp_t gfp = (i % 2) ? GFP_KERNEL : GFP_KERNEL_ACCOUNT;
-@@ -368,11 +412,7 @@ static void test_kmalloc_kfree_nolock(struct kunit *test)
+@@ -412,7 +469,10 @@ static void test_kmalloc_kfree_nolock(struct kunit *test)
  	}
  
  cleanup:
--	perf_event_disable(ctx.event);
--	perf_event_release_kernel(ctx.event);
--
--	kunit_info(test, "callback_count: %d, alloc_ok: %d, alloc_fail: %d\n",
--		   ctx.callback_count, ctx.alloc_ok, ctx.alloc_fail);
-+	disable_perf_events(&ctx);
+-	disable_perf_events(&ctx);
++	if (perf_events_enabled)
++		disable_perf_events(&perf_ctx);
++	if (slab_kprobes_enabled)
++		unregister_slab_kprobes(&kprobe_ctx);
  
  	if (alloc_fail)
  		kunit_skip(test, "Allocation failed");
+@@ -444,7 +504,7 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_kfree_rcu_wq_destroy),
+ 	KUNIT_CASE(test_leak_destroy),
+ 	KUNIT_CASE(test_krealloc_redzone_zeroing),
+-#ifdef CONFIG_PERF_EVENTS
++#ifdef SLUB_KUNIT_TEST_KMALLOC_KFREE_NOLOCK
+ 	KUNIT_CASE_SLOW(test_kmalloc_kfree_nolock),
+ #endif
+ 	{}
+diff --git a/mm/slub.c b/mm/slub.c
+index 813fb863254d..87ca154ccd80 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -908,6 +908,24 @@ static inline unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
+ }
+ #endif
+ 
++/*
++ * A no-op function used to attach kprobe handlers in slub_kunit tests.
++ * The barrier is needed to prevent the compiler from optimizing out callsites.
++ */
++#if defined(CONFIG_DEBUG_VM) || defined(CONFIG_PROVE_LOCKING)
++static noinline void slab_attach_kprobe_locked(void)
++{
++	barrier();
++}
++#else
++static inline void slab_attach_kprobe_locked(void) { }
++#endif
++
++#define slab_lockdep_assert_held(lock) do {	\
++	lockdep_assert_held(lock);		\
++	slab_attach_kprobe_locked();	\
++} while (0)
++
+ #ifdef CONFIG_SLUB_DEBUG
+ 
+ /*
+@@ -1665,7 +1683,7 @@ static void add_full(struct kmem_cache *s,
+ 	if (!(s->flags & SLAB_STORE_USER))
+ 		return;
+ 
+-	lockdep_assert_held(&n->list_lock);
++	slab_lockdep_assert_held(&n->list_lock);
+ 	list_add(&slab->slab_list, &n->full);
+ }
+ 
+@@ -1674,7 +1692,7 @@ static void remove_full(struct kmem_cache *s, struct kmem_cache_node *n, struct
+ 	if (!(s->flags & SLAB_STORE_USER))
+ 		return;
+ 
+-	lockdep_assert_held(&n->list_lock);
++	slab_lockdep_assert_held(&n->list_lock);
+ 	list_del(&slab->slab_list);
+ }
+ 
+@@ -2866,7 +2884,7 @@ static unsigned int __sheaf_flush_main_batch(struct kmem_cache *s)
+ 	void *objects[PCS_BATCH_MAX];
+ 	struct slab_sheaf *sheaf;
+ 
+-	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
++	slab_lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	pcs = this_cpu_ptr(s->cpu_sheaves);
+ 	sheaf = pcs->main;
+@@ -3545,7 +3563,7 @@ __add_partial(struct kmem_cache_node *n, struct slab *slab, enum add_mode mode)
+ static inline void add_partial(struct kmem_cache_node *n,
+ 				struct slab *slab, enum add_mode mode)
+ {
+-	lockdep_assert_held(&n->list_lock);
++	slab_lockdep_assert_held(&n->list_lock);
+ 	__add_partial(n, slab, mode);
+ }
+ 
+@@ -3559,7 +3577,7 @@ static inline void clear_node_partial_state(struct kmem_cache_node *n,
+ static inline void remove_partial(struct kmem_cache_node *n,
+ 					struct slab *slab)
+ {
+-	lockdep_assert_held(&n->list_lock);
++	slab_lockdep_assert_held(&n->list_lock);
+ 	list_del(&slab->slab_list);
+ 	clear_node_partial_state(n, slab);
+ }
+@@ -3575,7 +3593,7 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
+ {
+ 	void *object;
+ 
+-	lockdep_assert_held(&n->list_lock);
++	slab_lockdep_assert_held(&n->list_lock);
+ 
+ #ifdef CONFIG_SLUB_DEBUG
+ 	if (s->flags & SLAB_CONSISTENCY_CHECKS) {
+@@ -4646,7 +4664,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	struct node_barn *barn;
+ 	bool allow_spin;
+ 
+-	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
++	slab_lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	/* Bootstrap or debug cache, back off */
+ 	if (unlikely(!cache_has_sheaves(s))) {
+@@ -5786,7 +5804,7 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
+ 		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
+ 		struct node_barn *barn)
+ {
+-	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
++	slab_lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	/* This is what we expect to find if nobody interrupted us. */
+ 	if (likely(!pcs->spare)) {
+@@ -5837,7 +5855,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	bool put_fail;
+ 
+ restart:
+-	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
++	slab_lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	/* Bootstrap or debug cache, back off */
+ 	if (unlikely(!cache_has_sheaves(s))) {
 
 -- 
 2.53.0
