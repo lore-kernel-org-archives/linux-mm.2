@@ -4,80 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B84CD98E0
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 08:45:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD620CD98DE
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Jun 2026 08:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 481DA6B008A; Mon, 15 Jun 2026 04:45:38 -0400 (EDT)
+	id 06DF76B0005; Mon, 15 Jun 2026 04:52:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 432EE6B008C; Mon, 15 Jun 2026 04:45:38 -0400 (EDT)
+	id 01F556B008A; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3214F6B0092; Mon, 15 Jun 2026 04:45:38 -0400 (EDT)
+	id E4FFD6B008C; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 220926B008A
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:45:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB50D1C3038
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:45:37 +0000 (UTC)
-X-FDA: 84881513514.06.25CF1F7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D4EA16B0005
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 04:52:57 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90516A0953
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:52:57 +0000 (UTC)
+X-FDA: 84881531994.18.8C5DF74
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id ED98E1C0008
-	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:45:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=biJIXRTF;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id B9A30180008
+	for <linux-mm@kvack.org>; Mon, 15 Jun 2026 08:52:55 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewQFWwyg;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781513575;
+	b=N3oXRKn+wScAAky2PlfeRZPbP5ZeiZFQsKr8+mPweUjJJBYbU+KgDSr2RA5bNP2FmWgZkP
+	l/46tYMuhW07Wu5O4U4ISdzOfGedxcs8LJYh5YoteND5PYw7MvyS4A6M5iYU5MxVUld0dI
+	IN75DFoT6T/bXxNATK6zbu88ve+Bdns=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewQFWwyg;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781513136;
+	s=arc-20220608; t=1781513575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=tiW8D0e/EjERwLG+vfr9CQQgu67WuB4fGpBfPHlvrJQ=;
-	b=ZIO19GqO9Yy5R95YI9f5XgNfGuIstvVmayRBQcC6N4PRcvBUk4tIPrG1RBSk3qUs2eDqGC
-	iwHNLD4Jtu5eGl/5miv7PJWAh5xQ5sLLCRLrb25oFpDckMu9LiTi3bBrjpKgcV+yQw8B/+
-	oiXfP3ulC/NAEIPGx/OuD+4K1UyW+l0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=biJIXRTF;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781513136;
-	b=Y7D/TdlyEBEkfeRt19RrGeUtmPvCEAvjBu8NKVUDB8BooZs/QKhz4LYeCzfg94oblgqoc2
-	BRyfS1nGMSNuUUNI+uQe+9lvQfX455IYWYjsCy8NimntWT2II3mMigACmdh1nSx4tqWqO2
-	KSpDSxBl/24freaD/h/hA3YhdiBOFGE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r0nmh4n8OK2kmhJCZ0gvPcKvVFFqmHfVbiE1li979bk=;
+	b=bDPgYmjq+I4XKZHQdvCYsdICRlNjVWGn2P6G1NxH6yvL0Ld9cDg3Mkk574gS6gyHjz0joS
+	xOtZkC5ft3u3JVAM3X/7rWj7HHpjswrJpqRmp017qcCTqOtOP8IeNJkOUsHqGIvyv/sJn2
+	7Jz01u+6GuS+rASSGnoKTHe/ysqXoHs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E531140E47;
-	Mon, 15 Jun 2026 08:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A08C1F00A3A;
-	Mon, 15 Jun 2026 08:45:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DBD6344255;
+	Mon, 15 Jun 2026 08:52:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ED61F000E9;
+	Mon, 15 Jun 2026 08:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781513134;
-	bh=tiW8D0e/EjERwLG+vfr9CQQgu67WuB4fGpBfPHlvrJQ=;
-	h=Date:From:Subject:To:Cc;
-	b=biJIXRTFjuNKjNTmQa7cMJmvBa8VHwMk54DkF+9w7tiDP6PlMz/fQ+sGmi+vVnI2b
-	 RFq9haZltVXRR8+lslqHWvQ1dTL2N6tDZAbn0vLHWJTZ6dWsVV74PbCp5dYTEFkALD
-	 bn/w2lY7mOdP+Bm/MbUNZVrfE1nBp/p8u7TlIH15uJ/EI8ptmMKeYu5bRW+oXRcuqY
-	 dvbyD514XAcFQKP3uNYFJRx+LiQsBOEhKlExQyHCkXD+nkE7AMV/FDZTH+zVpKTOqy
-	 PXcL14VM6IDWf86UAH8YSS1VUheSzlbReiGD/syetvTuRcDKHfEZDIpRaFFkfB0mEE
-	 kWDFMwR5pOKUQ==
-Message-ID: <fa60be45-ffdd-43f6-b1c0-4a8ed1d5c4cc@kernel.org>
-Date: Mon, 15 Jun 2026 10:45:30 +0200
+	s=k20260515; t=1781513574;
+	bh=r0nmh4n8OK2kmhJCZ0gvPcKvVFFqmHfVbiE1li979bk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ewQFWwygD+69bmRiisV0lUdrbdqTMDJF5t9OWjDl1tRpbBeUrUmkHa60LypyOvYF2
+	 hzvirLnXweCCqO5jHf2welYVGNntxwNNJRuJ+GrufjNY06LsXQ9+DKRgbPPXq+y0zL
+	 WUKiqTtCEVwZafLR4jmWA4TNcQCMqIyhsWLTopNEZOb7pzpIh0Lxcgdf8whvcu6GLA
+	 qy+Gid7McKKg4ztXJgO7sw6l5wahjcCiRbFloEhHDglDhPUdHOL4jimfmDEuC+KEIt
+	 A9lhM7FHSG7CexjXtIppyPaMw7IWGVhSAh3xV2SIDyqIRO2WVlIe3U0qM3rTislIBE
+	 eOwjFpmKgzPfQ==
+Message-ID: <e4496401-6529-4f64-ab5c-84f737cb6798@kernel.org>
+Date: Mon, 15 Jun 2026 10:52:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [GIT PULL] slab updates for 7.2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, Marco Elver <elver@google.com>,
- Kees Cook <kees@kernel.org>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v2 02/16] mm/slab: do not init any kfence objects on
+ allocation
 Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
+ <20260610-slab_alloc_flags-v2-2-7190909db118@kernel.org>
+ <b6530e92-d648-4028-9e77-0df8c3ab166d@kernel.org>
+ <159d1e20-5b21-4329-ac9a-f7a5cb0fd56a@kernel.org>
+ <e71bfc13-c233-4f85-a6ec-76327d3c6510@kernel.org>
+ <74adf668-78c2-4989-a6c6-c6ec7bd68855@kernel.org>
+ <4cf98483-ae35-4ad0-8f77-5a46194eb65f@kernel.org>
+ <CAJuCfpH8g9mNGV_ke-mhVZ=J9J05PZg-ozPTA=5WQrm_eViVpA@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -117,16 +131,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <CAJuCfpH8g9mNGV_ke-mhVZ=J9J05PZg-ozPTA=5WQrm_eViVpA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: ED98E1C0008
-X-Stat-Signature: encr6jr51ecwzsw135fm67nc8r193qgt
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B9A30180008
+X-Stat-Signature: se4wxrzjg38u6a3skisrhkrh43p79eow
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781513135-542835
-X-HE-Meta: U2FsdGVkX19pcNElj8dSAVYsrxWj0tPllDxd7cdJOB74tlD7atMDae4cdKqCzm/7Ay2z7CrYAzLqA2okgwaPM7fiWxTMFKsDiK86nSF9YgArfTO739cjDokK/hF4ZjQRPOrp/OrJ4fmsNFUZPPYjIXXi42ATKwr3nF7uMSX4LiXKRfWcCwCrlzoeUQJQgwOhMPE3GH8QwOscGhvKb4e1qg/lpvODAufQW29jALmhLy0uPcm1Tdi+UsMZsVBeQCsXOHatkJ/k3E9xKywPxO/SN0HDuul7/vWRNtL3bm88tNeQ6H5kKzlYi0f7+XoS0DrVAXbT3zlDSKlQgKdsHwZNxnYO/8S0b/NV3LV0SDPSV2S/UJBWLlmQC0KEKfI8/uLXRhHb3aYw497YBxn6IfQeNR8RAX1fldaWeBuIw57XBakTpuk2ZitkGoIKH8rKLR8+QjkO7pg6nE8FKaA1zq39sLSNN1KaB3V1b/CDS0KSfBOytGJ3e1q2xpXs531gK+iK8GYERZJjnF+EsaMXlcbcEEA4vFsQv+OgEos6QdST5GXEp58XkuJ2RQKrHX6S5MU2LVmzdcZuGtSnjz5pzmAT51ANTFxJtj7n51aC/9LxMvHk6oRTw58w4zzTVcZ0PB8XXzQt3rnX2kaG8ruZeLmYdmH8Q+5uoVxhvMFbF/0rm6sxa+kVkCf+emPTBTIKslOu6N6u1a/PRx/VJ56C4GVskpaRvbkzu1D84dHCVZRh+K46f45S9G6ck37VAdZV6cP/5XE/ks3xHjA4hNMALXlHTPs6wc29t6jfUWM+iN9e5062l2Qq1huRHFKUiJAWuGOIRpIwwevIRmFxet/7ZHlO+dQYLRJS+R5EbwJ3APCDY4D3TERRsHjD0Wpg8TXKygmzvUjgQKiUxAIASrY5xCzqj//c4ok+nlPwRPpGhBUoZP4M9V3ArZQpmpswqQBHAtxSx1ZbRjWYNOWxs0QTpv7
- 6xePUrDI
- 6WSDKdMxbur8E3XHGZ5rH0rJ3HQhjEK2Mo2soMc/fGOU1D90DD09XDUndTpqEIbasHZyaccoavcuezJug7VuEuIeNhm3Ckyh18D9Ej9kmg3TGnv5GrV0fqZ+HeSH3VzCy6Pz6Zx6a7g3yLxTKFeLswrmzylrM7R0ikxbQoQZK8doMRFhNKuhDfth2tcnbaYwvpvEshjSAjPRvTk3z1MkxRVbJHbdXAcanILVId4MgpBsc1jy79k/AcHklc9B8N6pz5U7qdiikVWF6rMoQS45TZdHelb/MFBebe9iCJF5gBUAprag+WufgAgGjj6cvzrIIglXTCQPVVjuK+Xoycho/AoDJXQuz4IlyFFj2qD12M3jLH53/cTY3byrcIA888sW3gETI
+X-HE-Tag: 1781513575-52223
+X-HE-Meta: U2FsdGVkX19XaJQTVEtD+ciwqkFxprVmdSOYmay0rR8ctHZqBumIlicxEZoJYGN1DNqWqajs/esbZOwJQciZgLyOkkb3gRS03x0xHWZS0IPTYQVRSNyVWgEmHY58cEtGMRwHVANaqcO1KPecIWT3yAUtESREm0sbglDDp0uNod7pJT/ObX+K6AYIyMuSJ0CMXsOlZ4lwVeEwjgu919Mkeh0BUpLsWkptWosrFlVRBgAqVC8zCpDHXt/kIcRR55BPFZkZPwWC/mcqH60xJYEjDroeTRK5gKeRUNMisUfH1X5aFDJGITWYWtWrO6Jafir1KSavkQxtsCmKZ/ioKenP18dXpa25ZkC5qX2RHqQMKt5gZJLYPa4Rrm995ZupjPa/+bPjj02FDuKp42EqytApVzKzq/VgpjbhT5vXU0ZFJk8t6+00cdtp+kxN7vUIPuBC/2qIoKLWhGGGfrHc8yxREizlXdoRz+PoBivPHzkBUSc2Svm7LU+CJA8grshIpeQWTOa8xGEFFNtng8qmC7LKUDV0W3Dudd+vZV1LxGOgkLut/qQpF58SlVqn8ZSCZgLn/Fg6QFd+hCPZ1O1/OQIm2P6iMGVffll3a07MUBcyyJBDo0n/uQyxVTnQRh/4S4lqhZQNfq1e+bW5l6Nc0RwHNRRER7sQbXpqkJ5+2lAS/8yCS2ep71+kmiHQNlFG1SWPKSadZSxFzUUCwfYALifNhgZ3PQmQhCjteBZvexlSZ/FIwNgeFZ2y0FYew3vPsWJGb1/GxPQucLyULWAo+IEUgs+xeqiQ60T8GPgNBGIGqD6acN5tVGP8fkCe4XCTapt+KAyd8M18F6sWeBVo/zkRqfzUJ1GrHo1GDmQ6mNvQ01WAZzC6iYnVFipVaQOLRXs0UjhGZZCR7xX3GzICFkPFVzQINcWcqt/6HYL/jGKfoawqI86A5PKzFOIfvYDC8U8C/BXarcBcntu4Z6td14G
+ Rsu9sPQt
+ ncstSU7XqKYmy7GN3lPTEhaJy0+ECuKgAmd4DFPsfNxuCxGjiI2yf5gwaTXvOGjgJCZhGcNTbUrSKLSTRUtXImz5H/FTZoThr8nQLbcbzu7JcaemI5TczQ/rDNgGSYBrNM3qcXE/TeFCZJhODgv21p15xJbitWT0VFwnM2OZAqRfqd8VptC4nqggqPv7OwSh6GSyI55gckBipbCEP+NGKG9LJl/s1yN6OerMTMf4OVQ4qiclU5NfdIMDXkHfQKl8eJ4b5qj84s8GaoNo6XJU6kBXZ5sV/+u4QSXEghQYllxz1PLKGpY/E/O8czJVwoMzGQILucKDLpf1fl4IOMNJv8t65zklqSrlByAZzjlpvaQiqCjA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,113 +149,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On 6/15/26 03:28, Suren Baghdasaryan wrote:
+> On Thu, Jun 11, 2026 at 9:37 AM Vlastimil Babka (SUSE)
+> <vbabka@kernel.org> wrote:
+>>
+>> On 6/11/26 17:11, Harry Yoo wrote:
+>> >
+>> >> From 3a1c4398ce9f361a4e6f4d9946eab6237eea89c2 Mon Sep 17 00:00:00 2001
+>> >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+>> >> Date: Wed, 10 Jun 2026 17:40:04 +0200
+>> >> Subject: [PATCH] mm/slab: do not init any kfence objects on allocation
+>> >>
+>> >> When init (zeroing) on allocation is requested, for kmalloc() we
+>> >> generally have to zero the full object size even if a smaller size is
+>> >> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
+>> >>
+>> >> When we end up allocating a kfence object, kfence perfoms the zeroing on
+>> >
+>> > nit: perfoms -> performs
+>>
+>> Fixed.
+>>
+>> >> its own because has its own redzone beyond the requested size. Thus
+> 
+> nit: s/because has/because it has
 
-please pull the latest slab updates from:
+Fixed.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.2
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-One conflict was reported with the drm tree. The kmem_cache_alloc_bulk() call
-we adjust has moved to a different function there:
-
-https://lore.kernel.org/all/ahoZ7OCzxTAbGMtO@sirena.org.uk/
-
-Thanks,
-Vlastimil
-
-======================================
-
-- Support for "allocation tokens" (currently available in Clang 22+) for
-  smarter partitioning of kmalloc caches based on the allocated object type,
-  which can be enabled instead of the "random" per-caller-address-hash
-  partitioning. It should be able to deterministically separate types containing
-  a pointer from those that do not. (Marco Elver)
-
-- Improvements and simplification of the kmem_cache_alloc_bulk() and
-  mempool_alloc_bulk() API. This includes adaptation of callers.
-  (Christoph Hellwig)
-
-- Performance improvements and cleanups related mostly to sheaves refill.
-  (Hao Li, Shengming Hu, Vlastimil Babka)
-
-- Several fixups for the slabinfo tool. (Xuewen Wang)
-
-----------------------------------------------------------------
-The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
-
-  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.2
-
-for you to fetch changes up to dfdfd58cce1c3f5df8733b64595448996c08e424:
-
-  Merge branch 'slab/for-7.2/alloc_token' into slab/for-next (2026-06-12 11:25:12 +0200)
-
-----------------------------------------------------------------
-slab changes for 7.2
-
-----------------------------------------------------------------
-Christoph Hellwig (2):
-      mm/slab: improve kmem_cache_alloc_bulk
-      mm: simplify the mempool_alloc_bulk API
-
-Hao Li (2):
-      mm/slub: introduce helpers for node partial slab state
-      mm/slub: detach and reattach partial slabs in batch
-
-Marco Elver (3):
-      slab: support for compiler-assisted type-based slab cache partitioning
-      slab: improve KMALLOC_PARTITION_RANDOM randomness
-      slab: fix kernel-docs for mm-api
-
-Shengming Hu (3):
-      mm/slub: defer freelist construction until after bulk allocation from a new slab
-      mm/slub: use empty sheaf helpers for oversized sheaves
-      mm/slub: preserve original size in _kmalloc_nolock_noprof retry path
-
-Vlastimil Babka (SUSE) (7):
-      mm, slab: add an optimistic __slab_try_return_freelist()
-      mm, slab: simplify returning slab in __refill_objects_node()
-      MAINTAINERS: add slab-related scripts and tools to SLAB ALLOCATOR
-      mm/slab: do not limit zeroing to orig_size when only red zoning is enabled
-      Merge branch 'slab/for-7.2/tools' into slab/for-next
-      Merge branch 'slab/for-7.2/alloc_bulk' into slab/for-next
-      Merge branch 'slab/for-7.2/alloc_token' into slab/for-next
-
-Wilson Zeng (1):
-      mm/slub: fix typo in sheaves comment
-
-Xuewen Wang (3):
-      tools/mm/slabinfo: Fix trace disable logic inversion
-      tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
-      tools/mm/slabinfo: remove redundant slab->partial assignment
-
- MAINTAINERS                           |   6 +
- Makefile                              |   5 +
- block/blk-crypto-fallback.c           |   9 +-
- drivers/gpu/drm/msm/msm_iommu.c       |  13 +-
- drivers/gpu/drm/panthor/panthor_mmu.c |  13 +-
- include/linux/instruction_pointer.h   |  24 ++
- include/linux/mempool.h               |   2 +-
- include/linux/percpu.h                |   2 +-
- include/linux/slab.h                  | 324 ++++++++++++----
- init/Kconfig                          |   3 +
- io_uring/io_uring.c                   |  23 +-
- kernel/configs/hardening.config       |   2 +-
- lib/test_meminit.c                    |  23 +-
- mm/Kconfig                            |  73 +++-
- mm/kasan/kasan_test_c.c               |   5 +-
- mm/kfence/kfence_test.c               |  13 +-
- mm/mempool.c                          |  27 +-
- mm/slab.h                             |   4 +-
- mm/slab_common.c                      |  52 +--
- mm/slub.c                             | 680 ++++++++++++++++------------------
- net/bpf/test_run.c                    |   7 +-
- net/core/skbuff.c                     |  24 +-
- tools/include/linux/slab.h            |   2 +-
- tools/mm/slabinfo.c                   |   8 +-
- tools/testing/shared/linux.c          |  19 +-
- 25 files changed, 788 insertions(+), 575 deletions(-)
+Thanks!
 
