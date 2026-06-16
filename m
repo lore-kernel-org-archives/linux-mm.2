@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4257FCD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24F54CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30CCE6B00E0; Tue, 16 Jun 2026 17:09:35 -0400 (EDT)
+	id 189D06B008C; Tue, 16 Jun 2026 17:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E4AF6B00E2; Tue, 16 Jun 2026 17:09:35 -0400 (EDT)
+	id 161BA6B00A5; Tue, 16 Jun 2026 17:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FAEB6B00E3; Tue, 16 Jun 2026 17:09:35 -0400 (EDT)
+	id 09F766B00D1; Tue, 16 Jun 2026 17:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9F7C6B00E0
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:09:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A64611401E9
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:31:17 +0000 (UTC)
-X-FDA: 84886466994.21.509FE5A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D20C76B008C
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:11:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A9CA51C107D
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:54:45 +0000 (UTC)
+X-FDA: 84886828530.11.11F5BE2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B3762A0012
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:31:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X3w7nHsy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id C03521C0003
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:54:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JS1CEPM5;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781631075;
+	s=arc-20220608; t=1781639683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WVV5qnuazsXM93UQJWpV+Y+mNZmy8LyDox+BmjJrU+s=;
-	b=E09srxgwLzAFa74gJ7Srxx7uUBJNUl12xySuHN+95cBahf3CsMWz4D6PPVc5wh+I3T/yi8
-	h1OxC1K73EpW+SuNvycZsWFxGwdz9QMH7YRnYKaigGbTyaD58m0SWsUYys/fS3zsTPuAqR
-	eyehFq/sikA41ixClYirIHSgZRWZllk=
+	bh=WsFleb3h7HVa9Owq6c5tqmzQO4Gd0VwPEzAt0GlErL0=;
+	b=KjbKUI7plZDEW9POSuTx2A31S2Yz1rtiZHX5oCNBQ8SgvwjGuu6FX2rz5//8oNwqsChyfC
+	5nAgGUsxzt7BQzvmVDkWdMuyzbdxBloEqJD3jo7eHxSTMrIigirjjUe1m3gfRfU5TRWka8
+	/REObcVEkG6pRP/m+iFwDRjwp1a3wX4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X3w7nHsy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JS1CEPM5;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781631075;
-	b=R73YqzMCyGvNCn42GkXen1swkSX484XePrxWjF6ptD/+h8F8k5r3hZQasMyIzCCevQXV/q
-	+jf/48mY0zAfH/efAGjqZ8up8zE34o/VCipy5IuVyHsA0PsqQf/PEUX1QV5gND0BAAI4b5
-	0WWDUg/GDb3KRzgnPlfM8aSN6uf8ksQ=
+	t=1781639683;
+	b=KfrE3xaKLom4koYjgJ+q7su3GRd4TBi9sXvBKR8abcz1gaHQ0lORHOuAj9WBXOV55PlU7S
+	gevKxS6CawW9Vzvz53uCqY/1uoQdsjzUd1CV86f/HUpm++7WoNsUop41DfMkc2AtZzZSTO
+	RtJ+XoOdIX+w6iULlS8MfDgjECWfH0E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3AA1360137
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52151F00A3D
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:31:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BDD4600BB
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDF91F00ADE
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781631072;
-	bh=WVV5qnuazsXM93UQJWpV+Y+mNZmy8LyDox+BmjJrU+s=;
+	s=k20260515; t=1781639680;
+	bh=WsFleb3h7HVa9Owq6c5tqmzQO4Gd0VwPEzAt0GlErL0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=X3w7nHsydopsmdHj7nw/UjEnhvA8C3Ys92eDGlhDu56KnfPGiKAbcDzMVjXVqenRa
-	 M9+Dykl9JYHalHKhzgcSs1DxvUNs1jHlLudUM7yfd4kBJCM5cQmibGJ1aevI3nefOc
-	 BK4CDHfvJt2hSsRez+hKODMSxteaZU4AxKTqdf/Wg2km31eyZLwFjHLITy76tfQGKc
-	 VAy6cnS+V4QHSQnQjxghRjHvXhiDwbl+kEhNjGg9Jzi1OgttdCPhQsBXGyggxXMoBh
-	 NuhYd+woC/Pgbzax5ckIZxKRnqNnIQz30GP9HzzX6B/x4RR5RBo/cwwRjwZIk3ZCbS
-	 jyZ05mURd8GmQ==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bef1e6423e7so530836566b.1
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 10:31:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/ctLYzTbsatoX/P/woL3MfYZxsti5WqFGSmqg2P6BOFQll8Hye6arJUdgNHmYLkqFCiNh8ZH52TA==@kvack.org
-X-Gm-Message-State: AOJu0YxAzonVx3FchbDOat7AsotzXJcSuOfngd0q29bu8ccCSGQ8cSDO
-	m0lyOPNjOwkLz8oMiGuj5dULeLnMkqDOjkMFb0vtLJCvz+wtCbYakl/o2/CZBHVbAIBIV2fq+UT
-	SDxi+znrJq+yTgbqmRhDFut7p4dGuYU8=
-X-Received: by 2002:a17:907:c1a:b0:beb:b53d:4839 with SMTP id
- a640c23a62f3a-c05a6bd7018mr44427666b.33.1781631071598; Tue, 16 Jun 2026
- 10:31:11 -0700 (PDT)
+	b=JS1CEPM5WPbmbrvCbVO5+FZn/GYSIreqCzVUD61BQ6ULMLDq1uOCnsnNHvCwNbL0R
+	 8dV0ZVasaoT7gugCdF1tw0zurWWRsETsRHwGwdjrFKPk7DSZcoxJi7LS20SgULbVik
+	 7jbxw5ep1Ap4UxdmkWdtS56G9hsJpc/wrb1hD0xycdYWapO8MKLGQ9N0GyqXf7Bi+4
+	 qLhn9Rj9Szbz21kxW9yuxGAGoYyVaNtKnBtQgcV9nTktt82iO56uOH/XMZiX7zUY5p
+	 Cobl3nDdM5kWsVtLNgtPtuAxi816UclkD4TBuZklId4kPpMggu4DWQgMkIxJkmlWqV
+	 xmwuiXEcnLmSA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c029505b389so39177666b.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 12:54:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+NYSsWtJYYhmDEpeWVZHVrY+nTTMt/E4e8d6cCLn/JylzJIpXB/+4ZKSC+R4sQ9qMH1+vcKz3y+A==@kvack.org
+X-Gm-Message-State: AOJu0YzoRuATuRpLpACWfOv06mihqJ5gS0tTz1hASkTNDKAkkYFyn/jL
+	UOPBDpBjjzQPrkiG70Vsf+awdrAfgLGuj3Da1q5jlhxz0mBqCXP0jxfp2UVpwWmuKnIjXNlXRx9
+	CzbDJy8vRyq+04Z1zfZ75Gdueq/e39Mo=
+X-Received: by 2002:a17:907:704:b0:bec:1632:ece8 with SMTP id
+ a640c23a62f3a-c05d75c4721mr7784266b.15.1781639679768; Tue, 16 Jun 2026
+ 12:54:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <aictKA0XWMWbxFdN@linux.dev> <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
  <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330> <airzE7jD9UtyR17J@google.com>
@@ -80,32 +80,33 @@ References: <aictKA0XWMWbxFdN@linux.dev> <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOO
  <aiw2p5ANjsQUCIHA@linux.dev> <ai5y923elCSZp41j@yjaykim-PowerEdge-T330>
  <CAO9r8zOVqbJEaBqTHw=r2bYw7Lm1tO0TU9QuG+eH1rfqcTAJJQ@mail.gmail.com>
  <ajCgzNIPLhjTRSXR@yjaykim-PowerEdge-T330> <ajC+FNpkVpI4pbBz@yjaykim-PowerEdge-T330>
-In-Reply-To: <ajC+FNpkVpI4pbBz@yjaykim-PowerEdge-T330>
+ <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com> <CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com>
+In-Reply-To: <CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 16 Jun 2026 10:30:59 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com>
-X-Gm-Features: AVVi8CfvlTpa8wwRc_d-snmqbqbbbY8sLFpgryNiKy5mHm820TJFiip5SD6Te9E
-Message-ID: <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com>
+Date: Tue, 16 Jun 2026 12:54:28 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
+X-Gm-Features: AVVi8Cd9nHylszomRw_rh9bJO82Db4NrHN8B87fA6yRA9MBwH5p_UAEEXHvDHNw
+Message-ID: <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
 Subject: Re: [swap tier discussion] Re: [PATCH v3 2/4] mm/zswap: Implement
  proactive writeback
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Hao Jia <jiahao.kernel@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, tj@kernel.org, mkoutny@suse.com, 
-	roman.gushchin@linux.dev, Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, 
-	chengming.zhou@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org, kasong@tencent.com, 
-	baoquan.he@linux.dev, joshua.hahnjy@gmail.com
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: YoungJun Park <youngjun.park@lge.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	akpm@linux-foundation.org, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org, 
+	kasong@tencent.com, baoquan.he@linux.dev, joshua.hahnjy@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B3762A0012
-X-Stat-Signature: jt3bcf6bxoy7883aywt179itnaydpsoe
+X-Rspamd-Queue-Id: C03521C0003
+X-Stat-Signature: m5hbu7ad1gt9bbxh515dfkzriwygfdny
 X-Rspam-User: 
-X-HE-Tag: 1781631075-21835
-X-HE-Meta: U2FsdGVkX1/6yO1y6BUVDQWjQnJth2c09SD4SCEnsFK4PgrQII9L3hMDWevlZBi9mrLeBAqcWDYsxTkquoCIbBU5maYPzwamcRQHe/2GJkdyyUZOmtG5453Rem3mbr5LH4fiy8EbpDSAOV2bdYJCcVGYsOwVWggoZKDWvREe/H9BQN97vLiYp7BwQUnEMgKsDFiic0SzanOd2GjMVp7yQV2CT7L/X7kDw4VFW4V2MJW3bcskyJIr+MX++JjAtXj1ncfmGIY62Dt2W/gRJw/ijDpOcP5GuSl4LYvNcdS96NjmsBp5NxJL0EiRAhUw41xLqy9hfQDHaXqA0EWwow975aSaVK/A/5jwwCftyNA1IVdzGoRcJyIS1SFxW/SV1z2E0mmBUgPaJF40BigE99RHWptyJOQfD95bq14PpDo8N1YmSH0OBQuSivZU3pMx7GidrB+fmJ0ZFgULc97wof+7JOp2pOBMwTIN2WLB7gRtLs+rNueninPyHzz8a17+9BACHXz+3JpAvbQlIuB18MTvO3lo9iSadbZqJlfuzNKbyOwl3AAdNzoQ/khBbtIF0iyMllD9rpMlt9bBUAL33hrvo+pwvI5a8mSiU8nHIYNGt3RmAYBTA+N8z1UsX8Z0S+5rpBMLQedfcXdWZZ1Dj81zZGH8y66VuA26qZKnpgZw8X5/Zrdcr8WQ8axK2ezqJZcDDbZluaZoohU6ct4o8Y9re07b9ARvSTt4FGVWDBhSiSRaZ35U7gIxOebAwBwtsmXMZIQtwoRcHr5BYzWdr0dzQ5YAajr2zfVMSn4HOaUa9pePKO0T5l8iUq5dmtv4iSBFd/TQFCUX0MSSLI3nPuGYejTjJAvgrTw2/XWKIiP0cK7LOZHckdliZcnEZ7EhCrF/E9Tspj1E4Oe/7Biwlm3KA8GdVuLqYWlTIWsXB5Xjb/dLuLGpqrdYB0QWRUrS5dC65qofUuyI0VHDg842J/M
- 3kaUvvP/
- SxQJj6xGoGBO/qS0crNDhFJgwjtzpJdOIKTWZaDjHLGIf+hfhMYmZz8RWKptbx1yY24yEaZdeIegXXz+fruXeCRcHVZccMMTUsH9kd+KtCByuUe3veo5llneQs5x3RZ+zoQZO1Vajf1UVwBp4u6ldmyWuyH7wKwSBG9LzzcrOKMsPgOm1NJnX+o73aEJ0SlPI3Cv8zWfXcYmIi8QK3GCJvgT+t66dUQmTs+qeeZcWWXMgUTa9Yj5GwhHHJueUwcKdwUEhHt9u3NYnggZUUXhgcw5DvWCgUkW/5ZCi9aA88b15QL6aIvraelSi2EqAZrkzY8N/mJxPehrkP7AjxIRHWGkfFzG6I0vDVm4evxLMrHWEevdidzeVPFJL+oecPXiVxj9b
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781639683-189349
+X-HE-Meta: U2FsdGVkX18nnpvPRuEB1PE/ZcAifKQZ1cdnFGMD08ZDemggq+EgFM6avDv2xIMgdkLp1Cz12DtWR9DyNV1zNC1H1gwBuSB5SvMTIJxgOAEIL7GIP5Ag/UAGuuYFxND5hO2Nbmsex0pHEWlhRW+yfZtms5LgC/WO3k7Ck+DRzbsRNxF9l2UXXIRCcUCrATDVoPd2Y7itP8WFj6BrW7rCfXe/UpKR30jx/Qvkr8J6uOOMMReXDd5A1NxX7ShAde9ublCuZGh7Q5NU68bRz8jqFmOcmivHg2xamdGlCYwGYgxB6h/spU2mUFm8eXdg/bMZNkp4qqgpCrUYBiscU2+OWy3t+/s2jmgAg+qVdgXN5xirrkEBDWOG1d/LgBRsyEPhqhQZGoF/H9SLfJDL2t1buDKb2T6BLJY4MSGQgKxQMXWOJkUlV3kmIwQrnPL2iHLbwvCAlPPdOj9CCdjFi+CPVFPcVt2tvA+JAaQfCruL6p5rmzRnwWXIE1n+MglWR1lA5nOCME1xot5t2MNHOFit3KLBz7UR/X5zH4neiw+w8Bc5v1GGqesfoFKY56tqlokgLvyGzEaGOLOElJnWxL72scCH54+Q5cX0f/Aw+uk6zqX8puWFb7/Hzk3qlh0kvktKYLtpiD66dUZa2Gb7MQiPzcbUOhR7/3snlD3tOYhzzuG1MZWOh4xmFkRBnI/tdswFf5cfu6XbhpxaGBhS/0ZE7FICYR70VJFZSuV0Ek4n490vRR6NRHM/BB7el8pErMCA4YANxANvAvmL64+mF8P1SE8Xfe3CgFAJ36h0o6I0FJqToUrQxD/s25loaZImyY7cfIpnCIqVbUeeU2D+K63hFKc38q5J7Zxf4Ylu7Sgp1a3jqsyIBkeiGdjUke/4VD6pfUCyhLsNWIhaQlmmnOgsbTbxgzOGhbUjk4j+kqSHwHtfod9VfC+GxaWZ3Fy/HiXZ2e/uUNphKkHtaD6oUwp
+ 1SBL2wjS
+ qxGjlvCKR6S/SOdhAa+tv1QEyzv6tJVGOTboQCoFHt6Zr+trjBHT630qOG4TsBM9Eid1TDXz96MjCZlxpgHez4sG0sXoKBw5Ztq0Vs5v1MnY6zXGLyRQrJVnZ8D2jVnHFfp/YEr8wltlsPEZ68S602dlQZRhQPb68JN49+w8YXUhfPx6YfUXbXSZbzmhQYrpGxlJ2TTqCxrNwthzoAgJwKGNaZH9+ELs0t7h4yMhzaTHbrxCgSCyZGSzYFJHlHEkl0YIphZxBZjurfQRUlUXj/9R5rLNkpvRyc3LHIEByVQ1E+56wbXhqlMYQDXHgUdmc7XhXrNtMbOElMQ21LXXn/WUkm3oram8hFwmtEwwDOWF6d2qV3DXbEXOMNruHqCtr5NO8xcTcJxTWgHNP8pCLX4LvxMq/RuwsMd0RRbcUPr8PGH6v9zLROCk/IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,55 +114,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 15, 2026 at 8:08=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
+On Tue, Jun 16, 2026 at 11:33=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
 >
-> ...
-> > - "zswap tier only": Only zswap is allowed. Fallback to other swap is
-> >   blocked.
-> > - "zswap writeback disabled": zswap is allowed, but if zswap_store()
-> >   fails, pages can still fall back to other swap devices.
+> On Tue, Jun 16, 2026 at 1:31=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Mon, Jun 15, 2026 at 8:08=E2=80=AFPM YoungJun Park <youngjun.park@lg=
+e.com> wrote:
+> > >
+> > > ...
+> > > > - "zswap tier only": Only zswap is allowed. Fallback to other swap =
+is
+> > > >   blocked.
+> > > > - "zswap writeback disabled": zswap is allowed, but if zswap_store(=
+)
+> > > >   fails, pages can still fall back to other swap devices.
+> > >
+> > > Upon double-checking the code, my previous clarification was wrong.
+> > > You are right. Sorry for the confusion. "zswap tier only" is indeed
+> > > equivalent to "zswap writeback disabled".
+> > > (I'm not sure why I read the code that way...)
+> > >
+> > > As I initially thought, it might be possible to replace the zswap wri=
+teback
+> > > control with the tiering mechanism.
+> > >
+> > > If we need to keep the existing interface, we can integrate or share =
+the
+> > > underlying logic (though the specific details need more thought anywa=
+y).
+> > >
+> > > It can be summarized as follows:
+> > >
+> > > - "zswap tier only" + "zswap writeback disable" -> meaningless (noop)
+> > > - "zswap tier only" + "zswap writeback enable" -> meaningless (no wri=
+tabck backend exist)
+> > > - "zswap tier with other tiers" + "zswap writeback disable" -> uses o=
+nly zswap
+> > >   (can be replaced by "zswap tier only". This code could be intergrat=
+ed, modified or something.)
+> > > - "zswap tier with other tiers" + "zswap writeback enable" -> works a=
+s is
 >
-> Upon double-checking the code, my previous clarification was wrong.
-> You are right. Sorry for the confusion. "zswap tier only" is indeed
-> equivalent to "zswap writeback disabled".
-> (I'm not sure why I read the code that way...)
->
-> As I initially thought, it might be possible to replace the zswap writeba=
-ck
-> control with the tiering mechanism.
->
-> If we need to keep the existing interface, we can integrate or share the
-> underlying logic (though the specific details need more thought anyway).
->
-> It can be summarized as follows:
->
-> - "zswap tier only" + "zswap writeback disable" -> meaningless (noop)
-> - "zswap tier only" + "zswap writeback enable" -> meaningless (no writabc=
-k backend exist)
-> - "zswap tier with other tiers" + "zswap writeback disable" -> uses only =
-zswap
->   (can be replaced by "zswap tier only". This code could be intergrated, =
-modified or something.)
-> - "zswap tier with other tiers" + "zswap writeback enable" -> works as is
+> TBH, without vswap, we should not allow setting zswap as its own tier.
+> It's meaningless. Maybe makes it a no-op, and warn users what they're
+> setting is gibberish?
 
-Hmm we might want to somehow disable memory.zswap.writeback if tiering
-is enabled, to avoid having to deal with this. But I am not sure how
-possible this is.
-
-If swap tiering is behind a config option, maybe we can disable
-memory.zswap.writeback under that config option? But then if distros
-start enabling the config option it might break some users. Not sure
-what's the right way to do this, but having both interfaces active at
-the same time is annoying.
-
->
-> As mentioned in the previous email, the zswap tier on/off control comes a=
-s a
-> bonus (though, as you pointed out, we may need to discuss if it's actuall=
-y
-> needed).
->
-> BR,
-> Youngjun
+Why? vswap is transparent to the user. Why can't zswap be its own tier?
 
