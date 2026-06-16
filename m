@@ -4,100 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54203CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D3CCD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:43:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AE126B00E6; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
+	id 118726B00DE; Tue, 16 Jun 2026 17:43:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7589C6B00ED; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
+	id 0C9376B00ED; Tue, 16 Jun 2026 17:43:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 646916B00EF; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
+	id ED3896B00EF; Tue, 16 Jun 2026 17:42:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3495F6B00E6
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8FD2EC14B7
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:44 +0000 (UTC)
-X-FDA: 84887100648.26.D088053
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1DFA1A0002
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=X4jn8n0U;
-	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C32326B00DE
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C526A40130
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:44:06 +0000 (UTC)
+X-FDA: 84886196892.15.AFD568A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 80B2640007
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:44:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bFtf/ljm";
+	spf=pass (imf17.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781646163;
+	s=arc-20220608; t=1781624644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xyyMgzL3dB9zRqf2mWub/khi9AUa+g6mx9a5bkCc6yY=;
-	b=yJdLC2gqNRpakp448BMHemUtimsV6xG0pUGNgOtUv1a1aX7jxVEHdSsFfRF+NPJ7uGu9yt
-	RuC1Pz+zEcaGQcINFfrUFNHCJDHrCLxoYB35wDNyK61JDFtoBB9T/S21pg45OZ05E/caRg
-	bcE5BkEnB4gM/Q2gDHVWkzmQsJMSv2g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PM8sP3MAiJZZknY6HDXqfIBCoWcPf7VRCGmXyvu7wus=;
+	b=mYp6TSOPh3BJj6PSnLxXWVv+T5xHkX10XvS0PNpDH+55ub1bxTPbVBFIA5hM+QYCMz8C/Y
+	i7G1f54SmC7eLoMMQP7LYfIAZP6lbP7h3csbfGIazL5YdimWf2JSBMIw1x9a2Ihe+l0RQB
+	xf9dCpMg+4hvOGy0IqeEVog+hJGssCc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=X4jn8n0U;
-	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bFtf/ljm";
+	spf=pass (imf17.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781646163;
-	b=X9qa9vms5/JUAIwflhbdzZpFiKgYJOUiFkJYUDj0Rzk3I3BBSmWG+9WW1WdYVM+E/LFAQK
-	wNQkqv4ZA8t+njf4+HQ6d7B67XjIhmbwn0Ysk0J5ZizDscaBMRG/Bzujnu8/myxxDk79A0
-	l1L09d7TqjM4zU7vPgx0Iqxv3JOQ5Aw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=xyyMgzL3dB9zRqf2mWub/khi9AUa+g6mx9a5bkCc6yY=; b=X4jn8n0UChybSdWbaA3p5vTXQ9
-	POf5b0yi0/B8W8WTmHwPzzKRALHRqJeKIpscn2Hd8ThX3gUT6csiQmRRRjiSJlrFS4EggNtX7vu53
-	n814jdE86cyFX83NHtB6FbOyWPgJVpQNkzHQspyXZPDqSh7TlY2kDv9cqEj9OdLxAcpxQvJc4EAI5
-	QTgP14bu/cz5cFwd0CvtNlW7ZMIcxXPmH3zaat242zpK4gE1ITbiCqHlft9rxEiwqudDjCRFq5EXl
-	FgUL6zTZjeowEvI8b/HE0KHSpSJObx8kwzHIE2yhkB/sFQyqnlXyOOoiBGT2wY8Cwj6B0mf7vfrG6
-	d5y6fF8g==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wZVBC-000000002wP-3kfH;
-	Tue, 16 Jun 2026 10:54:18 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Hugh Dickins <hughd@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-mm@kvack.org
-Subject: [PATCH] mm: khugepaged: free xarray nodes left behind by failed collapse_file()
-Date: Tue, 16 Jun 2026 10:54:13 -0400
-Message-ID: <20260616145413.1491961-1-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
+	t=1781624644;
+	b=Fc6q1/bic56a6280XOUiNMf+D73EFPM6Xg/zJbJs/58fIPI9e+rLoNG1Av2c03sdzCevI6
+	w/2R0eE5VPKh95HgkVFSSQ5MO155+xu/sWFgGgPyv8G0bU534qMicssBnsQv3z3T/HVsnX
+	LQb63mIuooncltLPDxMbGX7OeY4wyC8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781624643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PM8sP3MAiJZZknY6HDXqfIBCoWcPf7VRCGmXyvu7wus=;
+	b=bFtf/ljmQQCZwQ+abOXBWrX7JpPzc34SUMIFdGdQfYry8qoCI9w7v+35CuDMLZJOap35Ej
+	JXiVb2QdHlhR6sVymkwkXfTQdthusNPKmuRIZY2rY/TguEYAwkTIvqzqwRUf3zKBnX67i5
+	oLpUYdOWPRL5Ksdp7kn0g2kUVV/2v3U=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-jgGo_N4IM2WI6zmN4LSXbA-1; Tue,
+ 16 Jun 2026 11:27:23 -0400
+X-MC-Unique: jgGo_N4IM2WI6zmN4LSXbA-1
+X-Mimecast-MFC-AGG-ID: jgGo_N4IM2WI6zmN4LSXbA_1781623638
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4AB4C1955F0D;
+	Tue, 16 Jun 2026 15:27:17 +0000 (UTC)
+Received: from [10.22.81.159] (unknown [10.22.81.159])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 60017180058F;
+	Tue, 16 Jun 2026 15:27:13 +0000 (UTC)
+Message-ID: <cca24d1a-f4c9-43a2-8411-5b2919d4efb0@redhat.com>
+Date: Tue, 16 Jun 2026 11:27:12 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1DFA1A0002
-X-Stat-Signature: xaq8tc6sqkcyfc6pr7k5tbdcqqstbuqf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+To: Gregory Price <gourry@gourry.net>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Farhad Alemi <falemi@asu.edu>,
+ Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+ <c1495b1b-9dee-4cd5-ac8e-eeb7a2d968ed@redhat.com>
+ <51eafe6c-6622-479b-b391-6d3ff9350e75@kernel.org>
+ <ajFTVaMBeu-ViGIC@gourry-fedora-PF4VCD3F>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <ajFTVaMBeu-ViGIC@gourry-fedora-PF4VCD3F>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: boxWzrUxkXp8YSdaRIL4skZ_Vz0XNqqD9rtsSmwvr5c_1781623638
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 80B2640007
+X-Stat-Signature: jdy7bu88jsyxszmwm8auw3azp7kcbk6q
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781646162-333357
-X-HE-Meta: U2FsdGVkX1816KWx5FW26qyhbeBcuv0RnL1VLyyhn45K+l9T5Ca6zA3WNvYjmuDlUk7Z+VfmO+wYh+XdzKXA+lngtONewltKr5yp5XKfA44EGFMfqpV37NffSfFH6aLwSoDhsrUWiXVakUyEwG1f4a8CLuH9l5tZrrIInr3Xytx8FFD1pvnHW1TIBf4usT5IpOAci9fqjeGUEm8g2VLmWgWLp9MFvDwY8J9x0xbuQ6C0eJNiJHZ+f5TzypefrdEvkQZFrIQkKpYv34FLJ3T7wiftCJfllwj0naqqHgSlyFqGj/bKn9ax7Gcr320VPkFQM73IKejIWRg5epREeVMgoxWvcGvluJcKgpPZoMePMdS5Xflbz5nUtDLMeIaCo4SzrQ3MLzfAruobFvZwF0nmvtWH7aIXMoRf/xWultaUlctjCS4+6t9giFW+EBXGXWKGzUXSP3g17Kgcs3VBjmdvNNVgMRTinn/6ZX16oXebqD/mNInR/qcjAFAQ6iELgl4vx3sobodmR8lmGHAFPeNsa1GK91syrxJmShJywpSfYIwlTtb5tuiIL6wHyE+o3lQObQa5u1E2f8Nyjz5sxcYmxcSKmc8x4GdJuvGrmtteWf3jimfskutswf9Abd85XqEgTFmrKE7B3ic9BPB0Xm2QluZLe6weSxRWgifxnJQ1CEjTOuoB1dmXo2K0XsPh/O9eC7u2tWhVklEWyQFnQ1jv0iNQ7dKpDS2/LUxhs/RAevVQJMPHC9IdL3y5k2TtmpBu9Gd5qidBHzf4EOID/OL0NRlsrNazGHmu4FUpNK7LevatUMbR11kT558o6H1PUx72kjYWhGLWtY39DL9EWl+D5H/wFoc1t7xttRVj7Y+Xtlsf3AuNnBaMDZVIQFGF2z5XrgnR0XeK5yhmzqw1sh23WG3npUd/Bm3OgYB5nXRPBql/x3DQfDQ6wgORIkF/DBVwCPWb1jcYYRUkIXkhPZk
- RaEeBLAf
- /23yCWnxRyZ+Hwb+/gnj5L3UALEAOYJ88nmgJ50T8fjhDrBcZnU9QvkWm+x0cL9Spbp0+TAqYS5ftgSRY3hkzTlpEOMJG8QTpZusKGknkPi6AqMh2uQf8Gv0wjMRT+x40501xrzco3fO/KzId7CovWZUf1K1vbanVfi3pkyfu1nmU9hQkvjGanEegGxbJiFRsiLwoqO8vrhY9RZEehKvPOs+ZDfbDqVgWNKrqvkOJK90SgrEItue4BrqmpUd+m1CTak5PpCBsF1ONGqBlrc0/FnWx6ia9nwZA0RqGFq+w6ykqMzFJJkG3NsnycY3YuQ+u0HxdzXOuKo8znIiuZa86+Y46So7f8iRESiSS92mi0FInaxEE8sFB1b1JkBoynVw91TITQELPa2hgnk3LAwiQj4MqT/FW/BYooJoC8N//QF67Gm2rwQY9x/vgwhT1QEnxwSVn8nFz9fNQUxB00Uv2aETSdG3VyzugcxzehVqpGmw44KN2TG0iLz+58GQ+W2UASmlEByvjuTwQkj1Pj/+Zvbm+UnpENfySlhgehsRc1hpo8URNI8u9s9KcjZH5mpn0nMUImELZyVSwdSPd/LsKViuyUU7D9ZaJ0lQOpLT2U23LumjZ+JtkdArftrR5lSKvR4SDziPDFVmDGOm4Kv16UFTCWA==
+X-HE-Tag: 1781624644-122655
+X-HE-Meta: U2FsdGVkX1899cHVxuu72Ye6QFmqYDI+3UQAQBgl6fb8NCi88C0kQDfEwpD0Pg8WvBHFZPwQfS/n9rcGyRYQDQjT0JzRV2NPlE8oeGAx3wtsqqNK1VTB9RtfDMmtLZmoVPB/i3LGcrn/Pq7M7qZJYOMnHt/9+1VcWi+/DY2Uoxt0J/Yi3NmorPBkGdP8ljYIDRGctcdkbGfO80hkg9nIDtPrrdyVY/Fhe6YhA077EjY1lwZaUsv+y+hHM563n+MeiteQlRFiRcgpxbHEdVjDLvSyDoR54ADfwsYW8pssGQlNc42frGOh7pYDq01+/84BPsiGJSwmMjqHUW0ZKe8ArChSivp8gcn/RjMve+6QQ+iz5JU1zxhD/7369QNQLvIG0zKShyLbjW5hhGB+Fexk9yR4hF7YsZwPIPwMf07FbIR4/xFy3VV3+ph9JL8rTUkocxWoE7fDNylig8sn0M0VgVjVzcyKFcZW6iEjXqzjUtlxIb5Z4GDewAlduSKDmQxxBbdumg18BrNsD7ADWXdCiQ6v6yyolPKaY+Z1lMBLcBPkUb8DcxSUhhhW3tiKAtH3kdbYk7bf75JUHxsLQz4+4jq3zgf03bOxfSWxFyKrUGmN34Tnw7nXhF4AW5faveHnP3j3JSlAvUXXFP28RfcjVCYMmgjv5rcdOWnhSuF0wwy9MT4PH2WXw4mu9tXA1lh4LnNj5SF23FQeEyHgcVCktDf7ISuV3MOrm7zDBkTS1CgYsxMgaBWX6BvRdWVWA4CTdOkl+zAdRneykd9/s2BT789ax179HXxCni0jvhCUlItn/SNb4Be+1EsMTML3D/YsyRh2Wxo9i8VITzbpmBOwIONeRFO/ouEiKGRu5X85GprECF0X++t7Ol2cXBdBf9yfZxvWG1PSS8HG7gMmuBACT0ijtGAbHHwaBaAJ4VThF9vStdlwmcVcMI19Hf6fS/ALzvXTSo2XpstoJiQmu6V
+ L7Ph2Zw1
+ mR5ENWJ3niqCoaJcARGxv/e5r0KfADzHk1xd4dHNRsMwTXL92vBM9D1QY6qZYMho8Vs8Wc8IbZOt8yWdcCFUxOYAB01N05KF0Nne9nbmcV4A0pQP2WKPuZPboja15xwa0al/28fv09jrtk0KM8wzye62M8i5FW221Ut/gEHBnjyKag0uH5vS9PvR7LYNlKbzfMMzbefbwXwIuBPlL7q6Wkf+Yy/AKbYVQ0kjs35Rmc5gSKIX2MAsaSIt+TYxpOsisqR5e1lMYbP87vsMXG2IOUMr+8zAYpPA/P37/h9GGQHbNVc4RLhlG8Ju1u/Qhk7vRAhuocBHWANUkk30gVapCbW8cB22QajbctpHp112ugYOBilo3s43plPpU17c5Js08AxbphK84AKecJZhQ3hTQQ0kRb7P5ZZObHNY8+sU4cbC4hN2Ll3TmNmfNMSmJirwKX9oy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,109 +123,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_file() calls xas_create_range() up front to populate the
-xarray with nodes spanning the entire collapse range, including empty
-slots for the holes (the nr_none entries).
+On 6/16/26 9:44 AM, Gregory Price wrote:
+> On Tue, Jun 16, 2026 at 08:59:07AM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/16/26 05:43, Waiman Long wrote:
+>>> On 6/15/26 10:26 PM, Waiman Long wrote:
+>>>>
+>>>> The reason why I am suggesting to use cs->effective_mems to keep the old
+>>>> cgroup v1 behavior. If the consensus is to use the output of
+>>>> guarantee_online_mems() for mpol_rebind_mm(), I will not be against that but
+>>>> it will be a slight change in user-visible behavior.
+> I'm not grok'ing what is user-visible here.
+>
+> The two values should effectively be equivalent because we're
+> using this value to constrain mpol's during a hotplug event.
+>
+> If the values differed, you would be saying there's a race condition
+> that could affect correctness of the rebind (which can't happen,
+> because this whole thing is done under the hotplug lock btw).
+>
+> Can you help me understand?
 
-On the success path those nodes are either consumed by the multi-index
-store of new_folio or freed by the nr_none retry-entry dance.  But every
-error path that branches straight to the rollback label -- e.g.
-SCAN_TRUNCATED / SCAN_PAGE_LOCK / SCAN_FAIL detected in the main scan
-loop (which then sets nr_none = 0 and jumps to rollback), or SCAN_COPY_MC
-during the copy -- does neither.  The empty nodes are left dangling in
-mapping->i_pages and are leaked once the inode is finally evicted.  This
-is exactly the "THP collapse_file() failed" case that clear_inode()
-documents and deliberately tolerates without warning.
+The effective_mems and guarantee_online_mems() should be more or less 
+equivalent for v2, but not for v1. In my response to David, I gave an 
+example of how the behavior will differ.
 
-syzkaller reproduces it trivially with MADV_COLLAPSE on a sparse shmem
-mapping (collapse aborts with SCAN_TRUNCATED because the range is empty),
-and also via slab fault injection, which forces xas_create_range() down
-the xas_nomem() path before the same abort.  kmemleak then reports the
-576-byte struct xa_node objects allocated in xas_alloc()/xas_nomem().
-
-The leaked objects are struct xa_node (576 bytes each), left dangling in
-mapping->i_pages and reclaimed only when the inode is finally evicted.
-Nodes leak when a collapse takes one of the rollback paths (SCAN_TRUNCATED
-/ SCAN_PAGE_LOCK / SCAN_FAIL / SCAN_COPY_MC), and only for the empty hole
-slots (the nr_none entries); they are not leaked on the success path (the
-nodes are consumed by the multi-index store and the nr_none dance), and
-slots still holding folios are never touched.
-
-Prune the now-empty nodes on the rollback path.  A node is only freed
-once its slot count reaches zero, and storing NULL into an
-already-empty slot is a no-op, so briefly store an XA_RETRY_ENTRY into
-each empty slot and immediately clear it: the clear drops the count
-back to zero and lets xas_store() -> xas_delete_node() free the node
-and its now-empty ancestors.  Slots still holding the original folios
-are left untouched.
-
-Fixes: 77da9389b9d5 ("mm: Convert collapse_shmem to XArray")
-Assisted-by: Claude:claude-opus-4-8 syzkaller
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Hugh Dickins <hughd@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
----
- mm/khugepaged.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b8452dbdb043..d11a4c9610e1 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2273,6 +2273,39 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 
- rollback:
- 	/* Something went wrong: roll back page cache changes */
-+
-+	/*
-+	 * xas_create_range() above populated the xarray with nodes spanning
-+	 * the whole collapse range, including empty slots for the holes
-+	 * (nr_none entries).  On the success path these nodes are consumed by
-+	 * the multi-index store of new_folio, and the nr_none handling further
-+	 * up frees the ones covering the holes; but the error paths that branch
-+	 * straight here do neither.  Prune the now-empty nodes explicitly,
-+	 * otherwise they are leaked until the mapping is torn down -- one of
-+	 * the two cases called out in the comment in clear_inode().
-+	 *
-+	 * A node can only be deleted once its slot count drops to zero, so
-+	 * briefly store an XA_RETRY_ENTRY into each empty slot and then clear
-+	 * it again: clearing the retry entry drops the count back to zero and
-+	 * lets xas_store() -> xas_delete_node() free the node.  Slots that
-+	 * still hold the original folios are left untouched.
-+	 */
-+	xas_lock_irq(&xas);
-+	xas_set_order(&xas, start, 0);
-+	for (index = start; index < end; index++) {
-+		if (!xas_next(&xas)) {
-+			xas_store(&xas, XA_RETRY_ENTRY);
-+			if (xas_error(&xas))
-+				break;
-+		}
-+	}
-+	xas_set_order(&xas, start, 0);
-+	for (index = start; index < end; index++) {
-+		if (xas_next(&xas) == XA_RETRY_ENTRY)
-+			xas_store(&xas, NULL);
-+	}
-+	xas_unlock_irq(&xas);
-+
- 	if (nr_none) {
- 		xas_lock_irq(&xas);
- 		mapping->nrpages -= nr_none;
--- 
-2.53.0-Meta
+Cheers,
+Longman
 
 
