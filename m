@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10836CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A76CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:44:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 061136B00A3; Tue, 16 Jun 2026 16:43:08 -0400 (EDT)
+	id 432386B00A7; Tue, 16 Jun 2026 16:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0113E6B00A7; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
+	id 3E3126B00A9; Tue, 16 Jun 2026 16:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C816B00A8; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
+	id 1E8A26B00AB; Tue, 16 Jun 2026 16:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA9E6B00A3
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F89014025C
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:57 +0000 (UTC)
-X-FDA: 84886949994.27.CB74722
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1DDC94000C
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Pg/JNMRr";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D66276B00A7
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:43:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 62B601A0257
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:43:26 +0000 (UTC)
+X-FDA: 84886951212.10.2FD207A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 30E5640003
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:43:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A2BEN5RP;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781642575;
+	s=arc-20220608; t=1781642604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4ajQemgFpmbOrhSeKWmphC3MKjX+akwoMtIIP/Joqc=;
-	b=8CYRnlymaYy0IoOJINEm9uJ+H++isq1T1rptu8/1gxXuu64rNmVqs+9OzvFbuAWZdPkNLe
-	NGLz5oULHd+ZjEyZti07zThn8l8UI110kPScJWUjTY/58Vk/qNAEZy1LqYbPyr6e2GNrel
-	H63jxKUh+DLzQyft8yld7/Ss4TGFTBE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RMfqveTS00B2bVfK8ta2tvPTyb6FBrxiY4BewlyDnv4=;
+	b=IsUd70qQbzsT9wZ1IZDg6NZ/Her/RvyEZW86VyC4AmVPaVPY187z1Kg7ltU7P7zjX6VRd/
+	7uEAka6FNXHcX7OM/QaRf6H/q3aXgMWN26fXd208+6hXJLE1NLCcB/Rpzfr0KrVFo+Z9ni
+	crszeOljcGojupAwY4Oy0AamBze6y98=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Pg/JNMRr";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf27.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=A2BEN5RP;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781642575;
-	b=jo0xDBeka1DwhMlQCyrwhxY9mBV4+83atbSNZcDyl0SJE+7mbkH/E1OnbffA87Osqrlac2
-	foQHhDxsJ+1qPNvU6z5rlKVnE03Xq7n70/HLofjc28eMSaXj+ncys/pVqmY4b7uqIt/uVS
-	eFJIYhckxlC7mJA089DacVwKAUaZlSQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A4944507;
-	Tue, 16 Jun 2026 11:17:37 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D7A63F905;
-	Tue, 16 Jun 2026 11:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781633861; bh=K2IjKo4Wn3O01fRwrLGrTisY260F8ix0pXcab0mJkzk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pg/JNMRruttP4uU2EfyTL6OzWBb0QGQPaB/o+z2ZnXsM0rK3NsYvRM0YpSnQvlfhU
-	 S2iN3nhz5q8lT9uIhr8k0juyGOp/N82uBPy1aDqJmc1+9X1m5j8/gFL6/w1+vxp73K
-	 hQK2hyrT8f5ie1L+K2o8m49Ph+5gArucV+q47T7g=
-Date: Tue, 16 Jun 2026 19:17:33 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
-	linux-coco@lists.linux.dev,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <ajGTPelKLhgFqh7F@arm.com>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
- <aibhnnDFQTHWMEFe@arm.com>
- <20260611114954.GC1066031@ziepe.ca>
- <aixGqCqKkQeDfUST@arm.com>
- <20260612181807.GP1066031@ziepe.ca>
+	t=1781642604;
+	b=aM7YfTOhcGEu8Wqpr5OLAtx0JVghTOAhseTvmEQpgfaYgGJwt6gwqTHuRG5HdyP+ceTE4S
+	BmKRkayKlSt5iq9620PVmd+zHJmPbD28Zm+0UaQvIUwrJ4XPdu1o2F6i0PRg5eVWCHSz12
+	InBYzgUvsQbQO955MbaD+zTUOWwyN5A=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIUfX1156242;
+	Tue, 16 Jun 2026 12:40:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=RMfqveTS00B2bVfK8ta2tvPTyb6FBrxiY4BewlyDn
+	v4=; b=A2BEN5RPK9lJM/HXFcOY/6j2NIwpsWsrtRVbhUDkR6orF7fBzZFG+fj2u
+	lBh2o5S+Aj/rb+bT4nvXiyPHAb2w2bv5wqGt3uBplBEinuoWUwUUVCZ2MEaBZKb3
+	nOFCUSML+Sj946JwGXb4BK1ZURhqAdB4b0AV2RF4Fuh9XjMjSx/cwwIQ+mZBk6FV
+	2vbh8UDycQ4xSxg6D3IS7NgUlfrdG6yrsyofKBgNGXM76sFq4e9SB5DWs+ri2rg0
+	ua79XvBfFW3ptQIOIVv14Vkdg70AQZ0svGWOHzdA+06D11tKBNYckVnxpET6piSq
+	BpOh5LpPLjbSmPIqxnfRl10CJizlw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1eg53mm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GCYbpI021705;
+	Tue, 16 Jun 2026 12:40:43 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eshww3dw2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:43 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GCedEK57868582
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 12:40:39 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BEE6E2004D;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A00E120040;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 7E1B9E0612; Tue, 16 Jun 2026 14:40:39 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3 0/7] s390/mm: Batch PTE updates in lazy MMU mode
+Date: Tue, 16 Jun 2026 14:40:32 +0200
+Message-ID: <cover.1781611976.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612181807.GP1066031@ziepe.ca>
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX7c+xetp8jSG+
+ uSnWJ9hWUvWOoyUNDqfT/BGCLBjOSGUMOq5Lk2+Sw0IAKkY8+1VfA/ruBcUQaU3yesasFwXtdnC
+ OpfNXRdosZm8oqgIdQythO2xkvJOBsQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX5TyCm4jyASzL
+ Amt8KyZtZopY2jzT1HverTYjpcjbM3wCyBl5h+nmbKgUWzfOHfOR+1B6XQt8kT6Uu6nwGO4t+G4
+ JQhTl80MJ9Pu8sEq/dzGwQM+gwHShoKmqS7H7TVdUEUGaIRga3JuT7o7dZ/D6swh55Z99sq3uo+
+ 4QT0Xg6U4osROZxRTaMDeXpDkU1DghsaEH1HnbmMs0E3xfD0eOhEA2HIDP/0fguuyfWLwM2JMlV
+ 1ODAb7pJVGk7ZUlmCgCKJr/zP0q5suHuybrWPgHsTNSkdincWktQTzn+AmUw5prCRH3LQ8MPLCQ
+ I4IqJmpiXbF7qHz0vcu017xCzjmVMlB8FNqFfhXVtmccXsIjm6pvRtZa/YPZq0ONoz+WwgjfFGD
+ 8KqCeYA8ThOFXMNxBgeHVEs5oxWeAiyWl9rvTPT9LN+80EP9CotQhF2paH0Wx0jm4H3382mGNdk
+ rxHIVsH2pT/vEeFtn3Q==
+X-Proofpoint-GUID: vC5Q112xbJDkLGfdT8fd-nsfA7-zz7vr
+X-Authority-Analysis: v=2.4 cv=NuDhtcdJ c=1 sm=1 tr=0 ts=6a31444c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=c92rfblmAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=TRBNZcfPePrm8P-CY9YA:9 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-ORIG-GUID: vC5Q112xbJDkLGfdT8fd-nsfA7-zz7vr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 suspectscore=0 impostorscore=0 clxscore=1011
+ phishscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160125
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 5djtqogcn1oythq6w513xysyrzcp341u
-X-Rspamd-Queue-Id: 1DDC94000C
-X-HE-Tag: 1781642574-534573
-X-HE-Meta: U2FsdGVkX18qQlpfi5xnFEZrZPVA4HzndAF9qI3D6q5yScLSKVCUkdaJM2bbOz7ebvi2neskF1HHYPBaffLNG5YeqWnHCoK/a5gyNCo8Tu+1OoRyTzDpYmR8OybxdfeMSOEbA4uDW86UgK/ASTjV3JhziQGiizTuQRi5U9e8mQB5LG7zOax6zDpcS7K4D+VaHvyR/IJGf+E7Wf76T8kbU3nSe7ZfrltVm9Md10k6wAIlOYx/6Pj2/udMA8mMLe2haM5/AYBhkQtCJ3z+uzifbShxXvur7qUZ4/HKeZ3D2aGV/GK3TcyNSWjI9WCV85FVARYSnt3/DWHlJY2kZJ2wwdsEUljeN0qRWOxksayQoSjRlxxl43y0qvbQWmQhMuvz1h9yqG8e6sQrrTALLBjGwLaSN61N7IEBHXyC95HyTzRSSxt04Da0CzjkoSd87ddf4GkTqBRgFhw3+dYPoOQCU9R6nJ5RMagV0zziaBcyaqrKExQbGkYWLsuSBXxOLm89+OWCnKimoluO1FJRySnN4CjlPbTThpVe25b2oSO3vxOxXM7uYlrFJE4VNXFfQiz2UZnQ11PFZaDkr7HH3FBK+I0Z1pGylnFIJkV9ruIaRanZg+bN2AS6qXhkDe/KOXpccnDy6fhOMzH5a/oTz11O5UrMXfywbn8PvmuXeQEvgdBCCMkbupQO6Y+kLvhDb+yyFryk0o4WoB77t9JXKKO7Aom+0KQqffenGeg1cQQ7z4zclBbIYnnpWUTX/dzW/d6OgIVc773wvZdqtckWw7WChrAXydvZ83ksdo6qk8qND5lTWhibevMM00du6tPsuOTBYJznCqTmaXaDcHcNGKLMSgUUbKEH5Iec7gCmnTIc0wSjbK8ajwR4G7RtPgaaRVAUqWDX+kdfnzUH1en6yvSNbMQtcuT+PCzes+eZJowqaO0Bv8443v90Iaz4upHmkZHSxSM2igYa3HEdSx1CEx0
- 7lVikEX2
- PO9iszNtbUYAhGHrCO34vMCwHuYAIZK53k6SkCai7RuQ1awt+a2b/sU1kMJxo+XYkxILE755sqT8Tiuk887eJpVfr8+QYGixDnQxNcSnPhF6zqgZ/X+BnPyFGhWcHKrQbHPkNIqnxlikIEVDW+GS/w1Z+SgQ8x4j/T9cEIIbMNiufzkEkowjSyB4DuPSlGmdJ5uolH1Lz5QbppQ9TtzamuNS8iyE1zgglhbCXkxnnIOlbyx5gApSMaxF7pEa2AuoztsnrMIdOy+nZKVH6x2AxU846mw==
+X-Stat-Signature: 7jp8ge4jyojpm4quwajysx6trzbedrzy
+X-Rspamd-Queue-Id: 30E5640003
+X-HE-Tag: 1781642604-462234
+X-HE-Meta: U2FsdGVkX19Uirj3csE6qvZS2uE1ekeW6f2MO9pwqgkTHnlhM0swLAkqJhqY/Ivo+iR9cWrKX68p4RJoN9HoG4No0yONPm8CigQ6jd//v0zHA5dbDZRsDtGhq32ezamEb1eqel9TbM4xuy+K/pPWB27wiwYF8PNF8AgdBkCJpM4981ffKRXe8EYLo6/09j6CDbn5sNSCs8NT8KFsxLzUgDtEzUexmndGvWpu+ksNPUHaxR5ccNgsgFFRlv2QJtUNDCkgItkAyrcLpwDB3c2Ss3rCpDs7dTG1eoC37zY+EnLK+PleLzQ8cLTZKKH1J2s6xkF1SnSw5q+JBIwNV2My1fcpn1xSMJiMakIXTu10qjRydnI6rreDQI8UXg552EIEhLf83SLUk1vJer9qmKJXqKr9+ae70Vo7v4SxlO9DYKPotlWGW11+AdO8MxMSOiCJPdDXKzdIm64Cjd6qba0KB9F2d0C9KgN8yv62NyrrRPlU4sSKbzU+wajm4dieyvjd0UAnOJE0eUQnHU9eGk5j2mDjbCY9vIojSMt8Df/Uwhq5veyWbvq1DL9trESEV0m4mM9sIUf0JNhR8CM92TUTNM5DFar9IV2+OymqYJD8JH6qhRyucv7A0fuStbQpNBmQs0yGf3kikrCK9G5DvWjps9fql3m3RDW5uo70P2ulhYyaHEp96I6Wkz1KSqDbEyoLAshSz7ixKfomIkKP1jMMPVbMNG288VoSwFjEZsUS+NivlL5hRUdFxHc4dCLspWXATi48RlHpiYWrC76zq/so0iFmKKtkge/lWqVSiFLPC8KfQHx69ozLW9KmJvZ96oeLuDRB4sAPqOhGyRqxMEJg5Yi6De7FMEA5IwMSq/ZU62Jqldhc2eKmFzaKkhs0U+0N2KfYsqvqCU60cmLHxx2ns3zmbYEWRleIpQV3gWnymmk25pcfSyYVIx5YLhmAKjJXy5iFlXhoOZGnitOdTYm
+ 39OlGJHG
+ c0oOy3eQOLXhGqPVYHqhVHXKXrug9pK4NLXlzlCao7uIfvQWohzKsI7MFhQkVzMM8hEj2lgAeeaFLD5nzIkgU6ogiASPrOCmlSrCd9evVvujZB/JM23fVT+5AeJGqefrqU6vSrM3FSrmx2uL34IT8n6geN4Obzf2QiNMxILGA1Mv0ROh6zmU5LgiDug7k3IrLpv8nWobHJ1PsFgyFLnlOGn7TxG03XxMqxdQkTPuRBFvwyQonyGGAb7bwuxlFZ9YqTRzisWwvpvpdD8TvmT7WCpd9Lnd5zpcEcGHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,91 +143,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 03:18:07PM -0300, Jason Gunthorpe wrote:
-> On Fri, Jun 12, 2026 at 06:49:28PM +0100, Catalin Marinas wrote:
-> > On Thu, Jun 11, 2026 at 08:49:54AM -0300, Jason Gunthorpe wrote:
-> > > On Mon, Jun 08, 2026 at 04:37:02PM +0100, Catalin Marinas wrote:
-> > > > > +/**
-> > > > > + * vzalloc_decrypted - allocate zeroed virtually contiguous decrypted memory
-> > > > > + * @size:    allocation size
-> > > > > + *
-> > > > > + * Like vmalloc_decrypted(), but the memory is set to zero.
-> > > > > + *
-> > > > > + * Return: pointer to the allocated memory or %NULL on error
-> > > > > + */
-> > > > > +void *vzalloc_decrypted_noprof(unsigned long size)
-> > > > > +{
-> > > > > +	void *addr;
-> > > > > +
-> > > > > +	addr = __vmalloc_node_range_noprof(size, 1, VMALLOC_START, VMALLOC_END,
-> > > > > +					   GFP_KERNEL,
-> > > > > +					   pgprot_decrypted(PAGE_KERNEL),
-> > > > > +					   VM_DECRYPTED, NUMA_NO_NODE,
-> > > > > +					   __builtin_return_address(0));
-> > > > > +	if (addr)
-> > > > > +		memset(addr, 0, size);
-[...]
-> > > But what is the purpose of this? I guess some hyperv thing - but
-> > > shouldn't we have a more structured way to "DMA map" things for the
-> > > hypervisor instead of stuff like this? Why can't you use
-> > > dma_alloc_coherent() which actually gives you an address that is
-> > > sensible to pass to the hypervisor?
-> > 
-> > IIRC netvsc_init_buf() uses vzalloc() to allocate some memory and that
-> > buffer ends up in set_memory_decrypted() via vmbus_establish_gpadl().
-> > arm64 does not support changing the decrypted/shared attributed of
-> > vmalloc mappings and I don't think we should add it. Better to just
-> > allocate it properly upfront.
-> 
-> Sure
->  
-> > We might be able to use the DMA API but we won't get something like
-> > vmalloc() - physically non-contiguous. 
-> 
-> The entry point is dma_alloc_noncontiguous() and you get a scatterlist
-> back.
+Hi All!
 
-Yes but not scattered pages unless there's an iommu behind. Anyway,
-that's an implementation detail, something like
-dma_alloc_noncontiguous_vmap() could allocate scattered pages as a
-fallback.
+This is v3 of the batched PTE updates in lazy MMU mode rework.
 
-> > I think dma_alloc_noncontiguous() just falls back to
-> > dma_direct_alloc_pages() in the absence of an iommu.
-> 
-> In all cases you get a scatterlist with a CPU list and a DMA
-> list. iommu gives a smaller DMA list.
-> 
-> If you want a vmap then you can feed that CPU page list from the sgl
-> into vmap().
-> 
-> A dma_alloc_noncontiguous_vmap() helper would not be hard to make, and
-> IMHO, would make alot more sense for hyperv to treat the memory access
-> from the hypervisor as "DMA" instead of trying to re-invent the DMA
-> API.. :\
-> 
-> HCH was already saying we should not be allowing drivers to use
-> set_memory_decrypted() at all, and hyperv is the biggest non-core user
-> right now...
+The prereq patches 4,5 are in the mm tree and scheduled for -next already=
+:
+git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 
-That's a good aim longer term. I'm not familiar with hyper-v but I think
-it needs a mix of private or shared allocations depending on whether a
-paravisor is present. That's handled by the vmbus code and the
-information is encoded in the vmbus_channel objects.
+The presented implementation sets up per-cpu caches in the s390-specific
+hotplug callbacks as opposed to CPUHP_BP_PREPARE_DYN hooks. I like this
+approach better, since it locates the SMP-related lowcore initialization
+in one place. But that is up for discussion.
 
-Currently, something like netvsc_init_buf() just does a vzalloc() and
-passes it down to vmbus_establish_gpadl() which knows how to interpret
-the channel encryption status. I assume with the vzalloc_decrypted()
-API, that info needs to be interpreted at the netvsc_init_buf() level to
-know which allocation to call.
+Changes since v2:
+- lazy_mmu_mode_enable_for_pte_range() renamed to lazy_mmu_mode_enable_wi=
+th_ptes()
+  (David Hildenbrand)
+- patch "mm/pgtable: Fix bogus comment to clear_not_present_full_ptes()"
+  is dropped (David Hildenbrand)
+- direct PTE dereferencing KASAN sanitizer added (Heiko Carstens)
+- CONFIG_IPTE_BATCH option is dropped (Heiko Carstens)
+- PTE_POISON changed from zero to 0x800 (Heiko Carstens)
+- allocate per-cpu caches on CPU hot-plug (Heiko Carstens)
+- introduced a lowcore field for fast lazy mode checking (Heiko Carstens)
+- few minor code changes (Heiko Carstens)
 
-If we move towards a dma_alloc_noncontiguous_vmap() API we need vmbus to
-encode the encryption requirement in the hv_device::device somehow so
-that force_dma_unencrypted() knows what do return. We have the
-DMA_ATTR_CC_SHARED but that's not interpreted on the DMA alloc path, so
-there's a bit more work needed on the DMA API I think (not sure whether
-Aneesh's series covers any of this).
+Changes since v1:
+- lazy_mmu_mode_enable_pte() renamed to lazy_mmu_mode_enable_for_pte_rang=
+e()
+- lazy_mmu_mode_enable_for_pte_range() semantics clarified
+- some sashiko comments addressed [1] including one bug fix
+  1. https://sashiko.dev/#/patchset/cover.1774420056.git.agordeev%40linux=
+.ibm.com
+- patches 2-4 added
 
--- 
-Catalin
+This series addresses an s390-specific aspect of how page table entries
+are modified. In many cases, changing a valid PTE (for example, setting
+or clearing a hardware bit) requires issuing an Invalidate Page Table
+Entry (IPTE) instruction beforehand.
+
+A disadvantage of the IPTE instruction is that it may initiate a
+machine-wide quiesce state. This state acts as an expensive global
+hardware lock and should be avoided whenever possible.
+
+Currently, IPTE is invoked for each individual PTE update in most code
+paths. However, the instruction itself supports invalidating multiple
+PTEs at once, covering up to 256 entries. Using this capability can
+significantly reduce the number of quiesce events, with a positive
+impact on overall system performance. At present, this feature is not
+utilized.
+
+An effort was therefore made to identify kernel code paths that update
+large numbers of consecutive PTEs. Such updates can be batched and
+handled by a single IPTE invocation, leveraging the hardware support
+described above.
+
+A natural candidate for this optimization is page-table walkers that
+change attributes of memory ranges and thus modify contiguous ranges
+of PTEs. Many memory-management system calls enter lazy MMU mode while
+updating such ranges.
+
+This lazy MMU mode can be leveraged to build on the already existing
+infrastructure and implement a software-level lazy MMU mechanism,
+allowing expensive PTE invalidations on s390 to be batched.
+
+Alexander Gordeev (7):
+  mm: Make lazy MMU mode context-aware
+  s390/mm: Complete ptep_get() conversion
+  s390/mm: Batch PTE updates in lazy MMU mode
+  mm/gup: Cleanup pgtable entry accessors
+  mm/page_vma_mapped_walk: Use ptep_get_lockless() for lockless access
+  mm/kasan: Introduce helpers for lazy MMU mode sanitizer
+  s390/mm: Lazy MMU mode sanitizer
+
+ arch/s390/Kconfig                |   1 +
+ arch/s390/boot/vmem.c            |  32 +--
+ arch/s390/include/asm/hugetlb.h  |   2 +-
+ arch/s390/include/asm/lazy_mmu.h |   9 +
+ arch/s390/include/asm/lowcore.h  |   2 +-
+ arch/s390/include/asm/pgtable.h  | 213 +++++++++++++---
+ arch/s390/kernel/setup.c         |   2 +
+ arch/s390/kernel/smp.c           |   7 +
+ arch/s390/mm/Makefile            |   2 +-
+ arch/s390/mm/hugetlbpage.c       |  12 +-
+ arch/s390/mm/lazy_mmu.c          | 401 +++++++++++++++++++++++++++++++
+ arch/s390/mm/pageattr.c          |  45 ++--
+ arch/s390/mm/pgtable.c           |   8 +-
+ arch/s390/mm/vmem.c              |  82 ++++---
+ fs/proc/task_mmu.c               |   2 +-
+ include/linux/kasan.h            |  16 ++
+ include/linux/pgtable.h          |  46 ++++
+ mm/gup.c                         |   8 +-
+ mm/kasan/common.c                |  10 +
+ mm/kasan/kasan.h                 |   2 +
+ mm/madvise.c                     |   8 +-
+ mm/memory.c                      |   8 +-
+ mm/mprotect.c                    |   2 +-
+ mm/mremap.c                      |   2 +-
+ mm/page_vma_mapped.c             |   9 +-
+ mm/vmalloc.c                     |   6 +-
+ 26 files changed, 805 insertions(+), 132 deletions(-)
+ create mode 100644 arch/s390/include/asm/lazy_mmu.h
+ create mode 100644 arch/s390/mm/lazy_mmu.c
+
+--=20
+2.53.0
+
 
