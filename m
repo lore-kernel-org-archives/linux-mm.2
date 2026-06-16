@@ -4,141 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D149ECD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FE0CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7E236B0095; Tue, 16 Jun 2026 17:00:34 -0400 (EDT)
+	id 327516B0005; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B57176B00C5; Tue, 16 Jun 2026 17:00:34 -0400 (EDT)
+	id 2D2C76B009D; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6BC76B00C7; Tue, 16 Jun 2026 17:00:34 -0400 (EDT)
+	id 1EF8D6B0005; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 79AA56B0095
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:00:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9EB391C094A
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:51:54 +0000 (UTC)
-X-FDA: 84885914148.20.0D0580D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E6A9C6B0005
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:02:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7843D40184
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:24:39 +0000 (UTC)
+X-FDA: 84886450278.02.F896D7C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E09994000D
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:51:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e9vCwaSi;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id B4D0280018
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:24:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcrdmCKD;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781617912;
+	s=arc-20220608; t=1781630677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KwHACTTFql24JLhpRs/SKKJ5Pukn1cbDl1znL1oY7TQ=;
-	b=7A2tA+oMgv+a2JlSkPqDB4pD9qI6LARgWsnO+eBOriwqi3YpbiyZzscSE8Ufb8wvNTNhX2
-	zLnua9OoGaNn9vH5ahxLMAMmGzitIlp7GGye87wWCIZ0HNohexhayOxRvdUdtepQ358w/B
-	FeWlwmRjLqorjz3Mp7vwo0aXCkTNMDw=
+	bh=5rZHvUYAFFezct1JmztPZchYNztAliiGoPJ37fwtMSc=;
+	b=1cKhuDwitxgAdYoHgP2cSBaVidhrcFHiUKarayZSwOUX53SKZqtPWDWPeOZAOdwlrZCNX1
+	Dvi/WnrIEGIxdvoGNR1KS16tLazMgWAaoVPZM9xOKgeVlPg8cU3bfayooeS1lsCJ4cPVcR
+	IvSezNJRax987BwoLMZB0rWeJLiYS2c=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e9vCwaSi;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcrdmCKD;
+	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781617912;
-	b=S12hH4vXOHOtZTKGsXvjldqspec0GYBw9c4yfTnyGrLENUZe78G2H/wufoP/87N/REKn1K
-	KI221lJn07pyHwlIMDkJIVme40JH8wDF5m7a4Ba+TQEzQ5YWjerNAMK/YabNeYAAZM/ucj
-	By4E4ooS9eWYJlxrFQy8pzDxWT4+/Vg=
+	t=1781630677;
+	b=RHzHSRl+SMAl99eYXoyG1lPwkTsT8D4kh6qwvf841D0WwL02qGCu+GOxT1RxsLXJcebFZ8
+	5KPWY1ioWt0/rMio0DfCQcaEzMpOuMq0/KoTn0isjJir0RFv9HN0pf8PCKdRkgkKV3dlFc
+	T9c4tzm/WmDstpU0TxE+iyTNAqH93xY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75DD06012B;
-	Tue, 16 Jun 2026 13:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D086A1F000E9;
-	Tue, 16 Jun 2026 13:51:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 411C6600AB;
+	Tue, 16 Jun 2026 17:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C131F00A3A;
+	Tue, 16 Jun 2026 17:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781617910;
-	bh=KwHACTTFql24JLhpRs/SKKJ5Pukn1cbDl1znL1oY7TQ=;
+	s=k20260515; t=1781630675;
+	bh=5rZHvUYAFFezct1JmztPZchYNztAliiGoPJ37fwtMSc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e9vCwaSiLr1deDMrhdRjdvNsGwaxmDybQYV61mAAQYH2Iz4GKnnGi+/7PaC59EwzL
-	 AOPmq+n2zRtdCNtxN1jdYqwkQUdItRe9rMiwWMAN6IdE6ola59I9f/OxltGVrLqT83
-	 lgBHlT4qsazD2WG/oKqGBXUmda4LozIDkt2dHwVRQXA7bKuPvGovAqIbZBcfIgvSUf
-	 HB3kuDMlB3S5bqUriaJ7aWH4RkAl1dNO4N4HeD4faoPUUpN1K13jzDfMGNhEI0vAOE
-	 Tk9kSISPcQN8a6tcyAGwoWTvRmHu8KfGijPKNl+1oCBVbF9PhekIE2t4zc9ZbKDWb4
-	 rMteAxo0hgjBA==
-Message-ID: <c10553ba-aa03-48bb-985c-fd16197be851@kernel.org>
-Date: Tue, 16 Jun 2026 15:51:43 +0200
+	b=VcrdmCKDG348Ke2lDsy2UqK00o1do3UWIjsrQ/MslTqIzvLcsQyKthAP/HbhczEni
+	 Edg6r0anV/gtHzlj3y8mYx4mQ3urRDoiuPmfcW3A6ErnbUHo52nmtIM8nCOW0QdT/4
+	 +MbnpBZq7dD8xeHa3DbGzWe/svWvNWIRFZE3rROWW7VCV/uBURMaRUjhhiGtUi5DgO
+	 Sp9LJWbJ5vsE9DXhtnv8yCXSZYI3a6GZeYsXb6kU1Fmi+2dV9ANkaTvjqCJnnfz7PN
+	 bCzrMMO+NjuagZLpAWDHc9gzXMOMLqlngiJPHb8rLu5lTZTTearUx2+GPAAI/IpPcl
+	 lJC/2OvRStrvA==
+Message-ID: <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
+Date: Tue, 16 Jun 2026 19:24:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/12] mm/swapfile: Add batched version of
- folio_dup_swap
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-8-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
+ PREEMPT_RT
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260526063635.61721-8-dev.jain@arm.com>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E09994000D
-X-Stat-Signature: 19s8w1rw5cdith1p3eok7i5yyjr64rm9
+X-Rspamd-Queue-Id: B4D0280018
+X-Stat-Signature: 7ta7amiw9xjs6cj4zfarwgjud49q8rry
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1781617912-352050
-X-HE-Meta: U2FsdGVkX18NwDwDh6fvD086tGUrWO9f7T4bogdLSUvDEedtRZt/XcYqQBk4WAb+LqNVS078LERyRwoSdTdXHWsldNiwsgbV6a63EyLvHjRRoRcM2C98EzYejjzd1WYAJLixJ2/3bf0WVDt5InLM/4EF5wR7HEyZc5BSK9xcVp6KEexYZzrASc/MaFiTIFQwRgBy0YxYiqpa7VRD5AhwnqYwovFjZfRkA8waCvRrWwnkcP1enJ3U1TG3R4fSNeVval/NhGuhOVd0vNOpfZK1RF+/oNvl5T71Wnxn2+sPdePJmeU+gleh+wy+MKD2e1TXkbw9DjMuBFU7ullR1fwoiIIq5zNEko0DotQ7k/booxNLGgys04Z87PIsQ/IJjtuq6Bs3xQqT+e9pr00t1zeElmndzAJbW1OvkS68fVxuO+fAyL5Qv8WkGfjvcOA5iuDZcptfjblSBxkoeCtriCf60uw2sF1dpC7JTVH9tLwU2/ahuuK0lwz3ikGvgkJKLVzhCxaeGxFQd3ZFQFwp4WXEMcLGXo0ayS9jt44jMU0AqU1Nytkk1LwRGdyV6tU9YG8SVflefGb1ql0Dkd2p6FD2BJ9zzgtNbsB0NbQ/4Os8zoTeocDlnPAaVG2ZyUj3SgP9CRj0iXuLa/T8hESH5nUbFua6edLj6yATGows96kDywdPEFs1u38iO+tvFJCLwRgGoXOry25l/V25jWtoQ6+TfSOCRn8LJZxHN9Dhe12wK+a5hrtydMerNKZM7muTQXDeRY7spoWVv7gCi/zcTKndKOMSNyDZ4IY/iGMvafxhzSxRmgpVS21jIE4Rfo0M1jHxMxRL7ZaOfbZ6Y/88OL/L+rjUrTMorGYX9MBi7cH38nlvjLTqKDAySqnpBvlp81Igv5eOVpnqFXLGFRdVMdhMkei/TfWi7M4bM/UN8cPNfb0dKlHNbXS+kU4INVrft7Xnfr79dPe3NNbYUL4M6wo
- Y8Ek+7hc
- pqKOrVob+H0NtDgoCeTIi4eYgyswGKFj1FSi6IpQTBukOHPiGovBWT89sz4qpbUu+woPm66cPC7BooETxLEvl0+3KWnTi8CA7GQKviyIFzv7IwiFA3U3YrO8Hal7PHNIqjNP4NrzCHtt/uNqI01Y1sDV7GAhM6XpuYsNLc3Qi1lIfZb/DER1L0kfPtiVLCyhPu7K/SMR8T3aSOtqkBJ+IykvP4xW9y5RpJWv6MvMl0UI9+rbzy3RrWiwPFRa4aXCyzwGzOWbiXtJtDny7GqjKh8FjpJXDCh5RaC1dyLlEcvZ4HINgk0b8HPsBDVFyMborwQETPL+D4QheyOYOV5V0XE1MC+mC9zwpiZT3EOLabGIzH6A=
+X-HE-Tag: 1781630677-975228
+X-HE-Meta: U2FsdGVkX19QjM7czQQuPT7u4AgED1xT1yQAZsHbXXsKdOApqQfX+dN7Jq8wXcmx2N/9mEH8QPar88PrslKe09DUuwgxONp6Ysopb/wE/J6MfCYKC+/eqMQ44VBoeBolwbdaoqtGmr65dSSxsvbk+XBrzU7qXb2dJr6/7nu2VfwLG5OAEq3WyzOWdBdV6ZqAnDIz7rn2rbrRYE7zXTjCF/9QDSgCnbbIH4Kwyd0u5pcDRkGgVkPdeqEXsXMvhryDZZkZzkrqJ/43W1AYqtEveAsafyAeYrRMXS8ZUuOPsZ4oHkNsKD51m3e9HRcw83U8nvaDOJyJLBL+8UvTwZ+mjR7PR+q7CdVKcoUMbP2r/AMpwIWXPwwhN/rzp3j2XKxzfpl+JRaagAxKScy4XdgVe+EusIymFj9tP6hJ5zvRz/6WFx4kaIQbpeDJLpptLL1d7iez3uX2PTnap/wtapLulNdWNDian3Aa3LwyJKg12eGk0jkdVgGV30sTAGxyAgBUxoRo0dwEeKC8P3MFw4EnFjrVMUT7SqOFRctjHM8v8qpzd6jeAi7ZIA1KAhUEtyRxiLPV3xEnBwepWBTLxhpHrRxoiJPT/b2/USrsnzFZjK2nFNjFZ/yPTrgLmW/m+vVOkdsP1feTCtuzSSarGSq6RvJFOz2jSUZxgVD6qbWkouwvsGnqG/9XzWXg6FUntIhOvaKnHDkNMiDqd5hIlyNjUNARxhr0YWxRs49e+vL1apNC/HAXcPxc0DMLg0I4YcDROL5eo6lG75kw26wow6Ue/IHSCeGO1GpyX1sLF8LfCxL2D40Yo20GSqDLmq3iB0m1gath0lXcweOljF5zK/hP2KKcywfwqM5imvgg4cYkufRNz3GGjTKCkURR1PDsFt/uIx7SFq5NG6W2RIaYolLiJtHnteAsHu44+1KP0Jc0vYMgQnZpAE7JoPnSTRR+ZC8xs3DGWh47Idjp1mTyKma
+ kTTe/UyB
+ Mf9mBZ39vBQ01Bq6e1tUfMsP2SjXJvrkHdjhVDBH7ORlE8VNKXJgq9Ny9OtOi0cmrHy6fpX9RDcYYa9Ay3pjIEUQbafmqX6N2UGoGPiBkAGPtQmThwT7iA34LBZZcxkHweROT+GyQyCdXmvb4twn1o/dE1pafgVwjOyn6wdMXqzZoKCXWCy9VQ60Aum7rccal6dw9K4imCJNgd2oG+im5wkYmFGpAId8Kw3NXCFiBVwZI+n0brER2AQzeUQVQUVZDQ/OiiVKMuCP0lYGH6Hr8EvVFJlVV6Axa7hnO8+WD87cz+jVIl+qau6+EPt8um/gp0lX2OmvdfT7ARLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,69 +150,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 08:36, Dev Jain wrote:
-> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
-> that folio_dup_swap already can handle a subset of this: nr_pages == 1 and
-> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
+On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
+> As suggested by Vlastimil Babka, kfree_rcu_sheaf() can be used
+> on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_RT.
+> This is because local_trylock and spinlock_t are safe to use with
+> trylock variant as long as the kernel does not spin and the context is
+> not NMI and not hardirq.
 > 
-> Currently we have a not-so-nice logic of passing in subpage == NULL if
-> we mean to exercise the logic on the entire folio, and subpage != NULL if
-> we want to exercise the logic on only that subpage. Remove this
-> indirection: the caller invokes folio_dup_swap_pages() if it wants to
-> operate on a range of pages in the folio (i.e nr_pages may be anything
-> between 1 till folio_nr_pages()), and invokes folio_dup_swap() if it
-> wants to operate on the entire folio.
+> Now that __kfree_rcu_sheaf() knows how to handle allow_spin = false,
+> relax the limitation and try the sheaves path on PREEMPT_RT as well.
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Keep the lockdep map on non RT kernels. However, do not use the lockdep
+> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
+> 
+> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
+> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+LGTM, but maybe unnecessary pessimistic wrt call_rcu() on PREEMPT_RT?
+I thought (in the Link: above) we'd only need to downgrade allow_spin to
+false on PREEMPT_RT for handling sheaves movement from/to barn and
+alloc_empty_sheaf(), but call_rcu() would be safe from kfree_rcu() even on
+RT? Or is the irqs_disabled() condition rare enough so we don't care?
+
 > ---
->  mm/rmap.c     |  2 +-
->  mm/shmem.c    |  2 +-
->  mm/swap.h     | 19 +++++++++++++++++--
->  mm/swapfile.c | 14 ++++++--------
->  4 files changed, 25 insertions(+), 12 deletions(-)
+>  mm/slab_common.c | 11 +++++++++--
+>  mm/slub.c        | 17 ++++++++++-------
+>  2 files changed, 19 insertions(+), 9 deletions(-)
 > 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index ead031361bc61..3065d384cadf8 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2331,7 +2331,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  				goto finish_unmap;
->  			}
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 55546b8385ff..807924a94fb0 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1595,6 +1595,13 @@ static bool kfree_rcu_sheaf(void *obj)
+>  {
+>  	struct kmem_cache *s;
+>  	struct slab *slab;
+> +	bool allow_spin;
+> +
+> +	/*
+> +	 * It is not safe to spin on PREEMPT_RT because the kernel might be
+> +	 * holding a raw spinlock and slab acquires sleeping locks.
+> +	 */
+> +	allow_spin = !IS_ENABLED(CONFIG_PREEMPT_RT);
 >  
-> -			if (folio_dup_swap(folio, subpage) < 0) {
-> +			if (folio_dup_swap_pages(folio, subpage, 1) < 0) {
->  				set_pte_at(mm, address, pvmw.pte, pteval);
->  				goto walk_abort;
->  			}
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index bab3529af23c5..5e4f521399847 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1698,7 +1698,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->  			spin_unlock(&shmem_swaplist_lock);
->  		}
+>  	if (is_vmalloc_addr(obj))
+>  		return false;
+> @@ -1605,7 +1612,7 @@ static bool kfree_rcu_sheaf(void *obj)
 >  
-> -		folio_dup_swap(folio, NULL);
-> +		folio_dup_swap(folio);
->  		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
+>  	s = slab->slab_cache;
+>  	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
+> -		return __kfree_rcu_sheaf(s, obj, /* allow_spin = */ true);
+> +		return __kfree_rcu_sheaf(s, obj, allow_spin);
 >  
->  		BUG_ON(folio_mapped(folio));
-> diff --git a/mm/swap.h b/mm/swap.h
-> index b57547c25ffc9..36c69b2788c77 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -206,7 +206,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
->   * folio_put_swap(): does the opposite thing of folio_dup_swap().
+>  	return false;
+>  }
+> @@ -1954,7 +1961,7 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+>  	if (!head)
+>  		might_sleep();
+>  
+> -	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
+> +	if (kfree_rcu_sheaf(ptr))
+>  		return;
+>  
+>  	// Queue the object but don't yet schedule the batch.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index ba593c1c53d5..4850629774b2 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6082,12 +6082,13 @@ static void rcu_free_sheaf(struct rcu_head *head)
+>   * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
+>   * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
+>   * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
+> - * this problem by bypassing the sheaves layer entirely on PREEMPT_RT.
+> + * this problem by passing allow_spin = false on PREEMPT_RT.
+>   *
+>   * However, lockdep still complains that it is invalid to acquire spinlock_t
+>   * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
+>   * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
+> - * by temporarily raising the wait-type to LD_WAIT_CONFIG.
+> + * by temporarily raising the wait-type to LD_WAIT_CONFIG. Skip the lockdep map
+> + * on PREEMPT_RT to avoid suppressing valid lockdep warnings.
 >   */
->  int folio_alloc_swap(struct folio *folio);
-> -int folio_dup_swap(struct folio *folio, struct page *page);
-> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
-> +			 unsigned long nr_pages);
+>  static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
+>  
+> @@ -6096,10 +6097,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct slab_sheaf *rcu_sheaf;
+>  
+> -	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
+> -		return false;
+> +	VM_WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT) && allow_spin);
+>  
+> -	lock_map_acquire_try(&kfree_rcu_sheaf_map);
+> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
+> +		lock_map_acquire_try(&kfree_rcu_sheaf_map);
+>  
+>  	if (!local_trylock(&s->cpu_sheaves->lock))
+>  		goto fail;
+> @@ -6199,12 +6200,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
+>  	local_unlock(&s->cpu_sheaves->lock);
+>  
+>  	stat(s, FREE_RCU_SHEAF);
+> -	lock_map_release(&kfree_rcu_sheaf_map);
+> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
+> +		lock_map_release(&kfree_rcu_sheaf_map);
+>  	return true;
+>  
+>  fail:
+>  	stat(s, FREE_RCU_SHEAF_FAIL);
+> -	lock_map_release(&kfree_rcu_sheaf_map);
+> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
+> +		lock_map_release(&kfree_rcu_sheaf_map);
+>  	return false;
+>  }
+>  
+> 
 
-Nit: \tab\tab
-
--- 
-Cheers,
-
-David
 
