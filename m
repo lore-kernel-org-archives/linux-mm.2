@@ -4,96 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC06CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE836CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:03:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5455F6B0096; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id BFC4F6B009B; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51CBD6B009B; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id BD4876B009D; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4590C6B009D; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id AE8806B00A1; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 144606B0096
+	by kanga.kvack.org (Postfix) with ESMTP id 773616B009B
 	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1216840111
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:57:31 +0000 (UTC)
-X-FDA: 84885928302.17.2F078EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5257410000A
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:57:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2PnEnYx;
-	spf=pass (imf14.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EBD8401B4
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:17:07 +0000 (UTC)
+X-FDA: 84886280094.03.553612D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BF3AA4000D
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:17:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OpYEyvsX;
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781618249;
+	s=arc-20220608; t=1781626625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2HQDPl4Fge9D8LBQD7QCKGIXM2QN58OYRKHRC0rBkGU=;
-	b=gPlWui4WZvBbm/wpFswKrt4YgCMQPTOvQtOJV7KVw1awN0PHAq5MnO8qKNu9ncWgUhHWAC
-	AaR8babkLrhEX8TrAonQvUZVvDwj4t9ZbzVurAFchGzqYXiHlpJYDDWlCEOfgFUu7qaIfr
-	fc8QIErS1C8OiCOCnqVz2ltg8csmpI8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2PnEnYx;
-	spf=pass (imf14.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=fSQ34ivI/Ck5Jq+TGrrZE0Mw5Nd/Xw5eBhLGnI6+rzY=;
+	b=8XUOF1WuXzlVnv90HQFsMhEgUMYnC66YGUEXHH+zEIPjkbgvURiXPmi7h/MJVwsjl1m4Nx
+	/UB+g+EpcEuRkOa/DQ2UIQDVE96OY/oqCxqjUz3MeaA/GdRNv/NZ4nA55gxLRxDIbQ0IUI
+	+aTNfJu0bOD3WReRrzPRl1pMxJYpC3s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781618249;
-	b=CuU3vbjr/Ev2tWeTU3SZYSYy8ranMFcb+sEfE/koPCosOMYbxKV0gS9Zf6tTWMkLoA+Tdi
-	mdQzUdEutoPBv3pmg9cYdaUqatG9SJti7pIg9BBUdTjdjDQuivugCn8tklHLy6RCPevliC
-	vSLwNq4/oI6XbruYQgxEG2OXszqM8KE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DCEC6600AB;
-	Tue, 16 Jun 2026 13:57:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D6F1F000E9;
-	Tue, 16 Jun 2026 13:57:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781618246;
-	bh=2HQDPl4Fge9D8LBQD7QCKGIXM2QN58OYRKHRC0rBkGU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=o2PnEnYxJOrqBmCTljOBgmtEqnsmtt4iSTaJauqZ6cxnQ+mR+iXvcyycJR1kFvcCe
-	 yWUyoeAwVH4s8tQiUkJCdHppm3BEkHIAYGBXKDK+Hc4qWA8olKjWoGLXQxnq4PcQtW
-	 rP6FZaoqCE/Fi8EeG9QlgoFJndtCWvd1CfTRCL2Kumkaxi6ZhYDy7upSrUZCpbFs1c
-	 WWmBs/k495pgDYgSPRlL82RAGWDEmEWKxobGoZqVROdWYlhx3mv61s4bx/kkuzdaKF
-	 sCbqTj2qfBjiaxGGrTPVZIBdv0jG4izkN/6lviMsMkM52YxSA7t+LjS6/DxzGY16yX
-	 EG2wVnsWfHqFA==
-Message-ID: <bdfdbd6b-81e0-49e3-a02f-2dc75727a71b@kernel.org>
-Date: Tue, 16 Jun 2026 15:57:21 +0200
+	t=1781626625;
+	b=PUlA17330KrVhpt7fvYMHr0HTqfob9f7CogaAcqGfeL746+DHOQ39s1G3UU5tMduoc1UxO
+	G86TMvwu/VBTEBZzQlDL/cjlXc6AV2t3k6JZ/pubZ/zohbimSzVw1AoTslCk5jSk6UNQJq
+	M5tpEdYBQjW150zacYKV6Ou8fE8FGrY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OpYEyvsX;
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781626624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fSQ34ivI/Ck5Jq+TGrrZE0Mw5Nd/Xw5eBhLGnI6+rzY=;
+	b=OpYEyvsX6e3ieiSfqA5zJ9ezG84yJFCnx5oPKdseH37bMnres2UUiPrNi1wbZhyLC6XWLH
+	4VMJvd+L3y8ti1KQUZKXvku5nIsOV2RUDQ9/I6GnVECsCcExXpuhXJMmxFrgJJpFoL0cSA
+	Plvzf4xYu4841ddX64RCOESX0mgE9tI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-o71Ktco0P--fTE8WiKAi5A-1; Tue, 16 Jun 2026 12:15:48 -0400
+X-MC-Unique: o71Ktco0P--fTE8WiKAi5A-1
+X-Mimecast-MFC-AGG-ID: o71Ktco0P--fTE8WiKAi5A_1781626547
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-461da6328c9so16012f8f.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 09:15:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781626547; x=1782231347;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fSQ34ivI/Ck5Jq+TGrrZE0Mw5Nd/Xw5eBhLGnI6+rzY=;
+        b=IseM9+mq8tFXNTm4IdZGhRPLPbLNTWwIRWPYkYEw+awm7SYV/gwmn0ywXGndqiF/QP
+         mWLMtgb4FHsWe2vkqj5+cPHEaucFokfm9O13PMSd7767MQxtPOQg6jfZWgMz3cVt84w5
+         85jELMXbwgrcPLYLMr9+MuvQBkakFQX7gNwLzhR4eBw2k4IPv+xeNHnO/Ue58JcVFVSF
+         wEj3++E0zWOc0jy4370FzbIYCse/KRFJIKaRPc2kzucfATDjLP6V5pNcIn5o5R3B3S5Y
+         +bhQprz4ApTLrZvNdNr6QEJWZd4w68pCEt9gzOq3QTKI7URMn2l09c5Ra/by47SDwdVk
+         N02Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9YO+wrtI5QT/aMAOICd+ny5SPeR8oAnhN5x+SQl8E1+0nUXKjNs+jPSu07LKeTBVkfNjIueZpnxg==@kvack.org
+X-Gm-Message-State: AOJu0YwNzgLLieHilZd2F9/pOf3NWhPnHpTiSWazOz581KmwIYiy6/M5
+	k8CZCzImpRiGTAHjkw4TrjfmEin/3muaqxUxEkB7JrTY8gNJs6skmCWlXSnzeI05BsLHd5N36U/
+	KC0Aj85ZjgYh3Umi3PnZAse9Iv29eN4x7v1/byH/datTbBaOb/pLG
+X-Gm-Gg: Acq92OHYKvkwtKg8qv+nYY4ccexTZIhgQWaRR4AMnkNDwhPdeoJsECPA6gQUCF6CIcw
+	wf9U9e47r/O0w9ZY5W3YlAllA2PctV19Y7eosOizkLToRRyTg0Z8+tVMwToXrEusy3ZGzP8uObD
+	c23NytG49JjuapvgcqB8ezlPNbm1dfWJKOQF0KO8nK8Hm8K82iZ2Ha+5z/0vGzNYoJdC+/FmpCR
+	iLKkqB2MZLoPXMI1d516mX50khumcQg17i3XHGYMXeS86WxnwIsonegcXAf+9xhuJwvSo2DErBW
+	2thAGJnJKgiYxwY6h83A787GvBPGDVp102EOhVYDUZ0wupP4QbwXHDsqi/ClYDbybJ2urnfdzMB
+	xMksun3uv/jqn2K18ESlto0vynvL0jkMp9Kt7SHhvNNQ=
+X-Received: by 2002:a5d:6b10:0:b0:455:51cf:9f92 with SMTP id ffacd0b85a97d-4622d7072b7mr429464f8f.18.1781626547229;
+        Tue, 16 Jun 2026 09:15:47 -0700 (PDT)
+X-Received: by 2002:a5d:6b10:0:b0:455:51cf:9f92 with SMTP id ffacd0b85a97d-4622d7072b7mr429076f8f.18.1781626544025;
+        Tue, 16 Jun 2026 09:15:44 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2b0d70sm46116268f8f.19.2026.06.16.09.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 09:15:43 -0700 (PDT)
+Date: Tue, 16 Jun 2026 12:15:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>
+Subject: Re: [PATCH splitout] mm: memory-failure: serialize
+ TestSetPageHWPoison with zone->lock
+Message-ID: <20260616120114-mutt-send-email-mst@kernel.org>
+References: <dd8d89be-9c73-8ff7-7d44-9705bddeda4d@huawei.com>
+ <20260610171646-mutt-send-email-mst@kernel.org>
+ <14537566-94d9-eac5-2636-35f925a9d159@huawei.com>
+ <20260611013644-mutt-send-email-mst@kernel.org>
+ <1b5676ab-0dc5-ef33-9d79-a2bd6090a62d@huawei.com>
+ <cbffabdc-42bf-4e67-9d2b-ace9a1e09f29@kernel.org>
+ <984d9775-e17c-0231-b021-126b13a9aa42@huawei.com>
+ <be1b20ed-5b75-46b8-b7be-3c9b029f016b@kernel.org>
+ <d7e97bec-72bf-7d56-3811-6d9c41fefb35@huawei.com>
+ <e4e123f3-ef32-417f-8369-ff944b6f358d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap &
- xfs
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
- ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>,
- dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de,
- brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- pankaj.raghav@linux.dev, Daniel Gomez <da.gomez@samsung.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
- <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
- <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-Content-Language: en-US
-From: Daniel Gomez <da.gomez@kernel.org>
-In-Reply-To: <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5257410000A
-X-Stat-Signature: tnzckufssc9mxm1k9gncaqpwmqhjincf
+In-Reply-To: <e4e123f3-ef32-417f-8369-ff944b6f358d@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: F-EAHuT73MqgYZZJKngGRPVJ_8u5ksQRb6a0-M0LPwU_1781626547
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: BF3AA4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781618249-853379
-X-HE-Meta: U2FsdGVkX1+yz4zmMRekO8OYHdshfwvvK996WgafHHsf6hc7ICdYM8LFjKNiOdM4OqoxY3LNk5pPqzH8aSv1fkFlaYNnG316j9ctgoFFvU7Q2QTnLJKY6mRMFBBaM8R1kahSKIYCLMN1NQ7Q4PoRAb+V3sTXXWzY2wLLAPD5/jifBvb0QMraJqnb8R+X8qg4tGaT/QSyNlGiToAU4/BBcTWjlnxElmBlP/8t9Q9yiV+ihb/YlyOWwFS1JbGIkfPiwED9YjoqL7652gOuf7+pDIfJZTyAaHKKJ/HlNRFLA5H/TDK57g2WnfbSA0dji9QP0ffgUKyMxq59jKrF05GnmxvmaKXFM9h7lDJIbzAsFbAuVKULasR9YNlAHn5uDEmfIl3nJ+OZQXsKhD3N3SBQrniQ2+TzxHY5avPCk0pn8qLcfXlQ411yh4ymYlB9DspYAmyELZEQkpgqEs4fHr7oFrZxth9+I9frPQQIY5dBtsbS38YWoRRUCBT6AzvV6tXckFVfJ9VWjPVHd9qYWEaJxsY+XNUwpBfc0w122nalu9BqT6XV4BdkGhk57q8YLMmClTpNdBU6myPsfNA7n/cy6uZMEEtP4LL8hwzjnXqfLGtD2nl7JExsXIXe79Ic+91Y7IYiCd+uIup0iyOHzd7HEZLiTK9nkFii9PZG75zDaHASRQ+J+w2ALRgcp6NOEOgdFaX7qUscuLHfhtfl/YDhPZvr9oTurA673H8LArnRVwin0UUoVDoTP00iPjV9LC1abt1B4m1d3/Il7IIw08+AR4cHROuFFWgd4hGIoLKpisxmps/nZALs/FhCrRk0opwFuLZd9pG/0HwKtMLOVQS0hUAL6iXp7ZIqFpEGc0BYBzoU7SWaSQLvo49q4fDLbQV/h+8wTBFnUYcF1X8l6FY+kgli/SURF1X5UuZMDMv+2y3wvpssW9gqFS4ewL+NwPP98rqdp13UzcQxHnqKKvE
- t1QQDFRj
- HgsU0fsnrPbOzIP3+F1comZiogXArn4bLK319jm3r6nYQkfnMSg1h5NyyVhUq+un89zE/4xWtmogJ8/2L+YwNmD/HWPeblqRlPQcCT25Ie0EkD7HPpKX+07gYHb/82YepbwRQKe2l51o1blpe/x2fcvhdz5sgPsbbiLm6b0rjevdsV8h+bOtFGX4HSi9wkGU+eUVk9oJpoh3RgA/DA/EGXF0+WfETr4X5jpWOydferJFholNQsPZPOy7x1b6pHgRVyO9wdWlr9Wm5ArqIIcmWC6zIPfreKWvpjEjGVy5Y80cdl3R2wB52d/ef2yODs43hJWZiBGkONnQU2JM=
+X-Stat-Signature: hjdg68hysnjajmabzi1mh6ortkomqx38
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781626624-514429
+X-HE-Meta: U2FsdGVkX19y+JnO5aw2zMeBZin8ZGDcj6E6lA6gYtZ3GgQlBsnNLcxBUBBOxvcklP1NmFBv/60WC7HtAcjFXG0uHUQV2wjFXQQNGVS1zpUNIye9Lw4I5csYHM4tmqyN7YBkx90JCAkkEd0P0G45XfvJ0xL2vOiqZ8obqNGnNc7uDPe4mBwCkO888vzvAAVaPc9gUMRDa8Kbr991HVUNPhtkL9Gn9yjskH3oAvLCE9xe2EgfgXmGE87RQtFOBJaTfyrhB1iWhcKWLrdpOJWO5L5IXAR+RdPzjUL5LLgqKBUWMQ9MbkaUhBgyq3cW2IcQc/ii5ld0Bcj0j2eJYWlcvPSkywSbQSP4c9dtSJY9pveBJg9QaLgvk/srJRFyhOzfrG+rbIXCEXyCUt7JNG/kZJ5/28+7bwPun7/6QWzX++fygS2ULZu76I6R0FBrKHsLGVW2xArYlyY+xKWJW/wxBGhxTRHjjUlTmEEwf/N5R/7bM6kpoBe1cUNGj/z0q7a+/3VRCYw5ClhgzsDxzNzyd3F9dEoDWCl7OafZdERO/ykGRiH9Un8RgCFvyMWa1uUR/0bMhJEEPerBY/0IJDcdqxoC7x5xRtzrcpqkg3JiqZRLXIYKqFZZrhS/zzt0m9ZBFbYES9qad68WX5h9FickAbMVGWPgEl41dBSTfS28+OnkRGVda322YxKlgYg9UiYpfFzkFUwFJr1ij5nLti0zzsHSUqvvB7Yxb9Xt2ogsmKCFXG+3Hbnh/nIzeS2h4cCT3pZFH8FkdbYv0DLXng5RTUDBlSuKHVoUfhxEzyV8bcLsz+r0P4SpBuJNvHjC9LpHwIN4EozT6uh70DTbdeTSnLFRY56UtYyj9u8jZnmefBaq3iarq9D6rfjks7sbRKfr7Ypn5d5+JGbizXx6VqDGZu+XL0LyYITNEVSXMuFeLt3NA7tg+BqMe2Z3/X9wFcdM3IOjZEY/NUPMonUra7A
+ CXaBoQ5P
+ B1vefjBoUnSqx29jQxm7RTUeQHX4M8hMtppQPMx8oM1zhmuh2h5QKkA2gdJDH5i+NYWpPjccSTwAtQr2tmj+TghZHx9qc+xZRwggxpm4pPQZHthEOVnG3FmqVt5vTltgVCQ5p1q2UctfDOqe6jhHTaD0hnlTi4fVqgndnfqgvLVjPVm3DOY+nXaWwfrA837jr5mBYaudJdhiEJMpnsN81t2LjvLiwy4eVE4TauxfC2DyBzKI4/HWs/SjlaiwOu5+hBEAffd3Qk+BMgwfnRPSNoabGVdOQQ3cuGSo0xtGj0xjUtkqbw4lyBzf+XWSuyUxsrMWSP13yBeS9rtWv2Ulpm/WDRqHCKgrQijhsKxwwii1wQmOp/NpKSYVIlzt4OCeIfL74LfUZSKm75TsGRwGFl9RyIqv/zvSrvTxA+bJyKixV1KmoNcYyzFrkvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,83 +170,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/06/2026 18.49, Ojaswin Mujoo wrote:
-> On Wed, May 13, 2026 at 11:14:21AM +0530, Ojaswin Mujoo wrote:
->> On Mon, May 04, 2026 at 09:54:49AM +0200, Daniel Gomez wrote:
->>> On 08/04/2026 20.45, Ojaswin Mujoo wrote:
-> diff --git a/ltp/fsx.c b/ltp/fsx.c
-> index 720bca83..1c76634b 100644
-> --- a/ltp/fsx.c
-> +++ b/ltp/fsx.c
-> @@ -2077,16 +2077,34 @@ test_dontcache_io(void)
->         return 1;
->  }
+On Tue, Jun 16, 2026 at 08:56:42AM +0200, David Hildenbrand (Arm) wrote:
+> >>
+> >>
+> >> Assume that we enlighten all non-atomics to grab the rcu read lock, such as
+> > 
+> > These non-atomics are defined and used because they want to avoid atomic ops overhead?
+> > So I'm afraid using rcu read lock in these places would lead to unexpected overhead.
 > 
-> +/*
-> + * Use a temporary file to test RWF_WRITETHROUGH so as to not modify the
-> + * original. This is so that fsx expected contents and the actual contents
-> + * of the original file don't go out of sync
-> + */
->  int
->  test_writethrough_io(void)
->  {
->         char buf[4096];
-> +       char tmpname[PATH_MAX];
-> +       int tmp_fd;
->         struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf) };
->         int ret, e;
-> 
-> +       snprintf(tmpname, sizeof(tmpname), "%s.fsx.XXXXXX", fname);
-> +
-> +       tmp_fd = mkstemp(tmpname);
-> +       if (fd < 0) {
-> +               perror("test_writethrough_io: mkstemp() failed\n");
-> +               exit(132);
-> +       }
-> +
->         memset(buf, '\0', sizeof(buf));
-> -       ret = pwritev2(fd, &iov, 1, 0, RWF_WRITETHROUGH);
-> +       ret = pwritev2(tmp_fd, &iov, 1, 0, RWF_WRITETHROUGH);
->         e = ret < 0 ? errno : 0;
-> +
-> +       close(tmp_fd);
-> +
->         if (e == EOPNOTSUPP) {
->                 if (!quiet)
->                         fprintf(stderr,
-> 
+> It should be cheaper than atomics IIUC. Further, I assume that some pages could
+> batch over multiple such operations (esp. page freeing path when we process tail
+> pages).
 
+Doubt we have the energy to bother with this much.
+We'll have to stick them in the bit manipulation macros if memory failure is
+configured and be done with it.
 
-I think this is missing:
+-- 
+MST
 
-@@ -2158,12 +2175,6 @@ test_writethrough_io(void)
-                return 0;
-        }
-
--       if (ftruncate(fd, file_size) != 0) {
--               perror("test_writethrough_io: failed to ftruncate to 0\n");
--               exit(132);
--       }
--
--
-
-The fix works for me after a stress loop test on generic/457.
-
-> 
-> Im unable to replicate the 415 failure, but this one is strange because it
-> doesn't involve any writethrough IO. In you previous runs have you seen
-> this be flaky?
-
-I couldn't confirm back then, so I think we can ignore it. Also, unrelated.
-
-> 
-> Admittedly, I've not yet started thorough testing since this is in early
-> RFC and the design is still getting finalized but I appriciate the help
-> in testing this.
-
-
-No problem. IMHO, testing makes a design more robust, once the path is
-agreed on. That said, do you think the path needs changing? Reading LWN
-and the patch series threads, I don't see any blocker. You can cc me for
-the next iteration and I'll follow up with more testing.
 
