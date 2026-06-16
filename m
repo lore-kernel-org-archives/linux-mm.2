@@ -4,145 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FE0CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC06CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:03:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 327516B0005; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id 5455F6B0096; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D2C76B009D; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id 51CBD6B009B; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF8D6B0005; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+	id 4590C6B009D; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6A9C6B0005
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:02:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7843D40184
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:24:39 +0000 (UTC)
-X-FDA: 84886450278.02.F896D7C
+	by kanga.kvack.org (Postfix) with ESMTP id 144606B0096
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:02:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1216840111
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:57:31 +0000 (UTC)
+X-FDA: 84885928302.17.2F078EB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B4D0280018
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:24:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcrdmCKD;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5257410000A
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:57:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2PnEnYx;
+	spf=pass (imf14.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781630677;
+	s=arc-20220608; t=1781618249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5rZHvUYAFFezct1JmztPZchYNztAliiGoPJ37fwtMSc=;
-	b=1cKhuDwitxgAdYoHgP2cSBaVidhrcFHiUKarayZSwOUX53SKZqtPWDWPeOZAOdwlrZCNX1
-	Dvi/WnrIEGIxdvoGNR1KS16tLazMgWAaoVPZM9xOKgeVlPg8cU3bfayooeS1lsCJ4cPVcR
-	IvSezNJRax987BwoLMZB0rWeJLiYS2c=
+	bh=2HQDPl4Fge9D8LBQD7QCKGIXM2QN58OYRKHRC0rBkGU=;
+	b=gPlWui4WZvBbm/wpFswKrt4YgCMQPTOvQtOJV7KVw1awN0PHAq5MnO8qKNu9ncWgUhHWAC
+	AaR8babkLrhEX8TrAonQvUZVvDwj4t9ZbzVurAFchGzqYXiHlpJYDDWlCEOfgFUu7qaIfr
+	fc8QIErS1C8OiCOCnqVz2ltg8csmpI8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VcrdmCKD;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o2PnEnYx;
+	spf=pass (imf14.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781630677;
-	b=RHzHSRl+SMAl99eYXoyG1lPwkTsT8D4kh6qwvf841D0WwL02qGCu+GOxT1RxsLXJcebFZ8
-	5KPWY1ioWt0/rMio0DfCQcaEzMpOuMq0/KoTn0isjJir0RFv9HN0pf8PCKdRkgkKV3dlFc
-	T9c4tzm/WmDstpU0TxE+iyTNAqH93xY=
+	t=1781618249;
+	b=CuU3vbjr/Ev2tWeTU3SZYSYy8ranMFcb+sEfE/koPCosOMYbxKV0gS9Zf6tTWMkLoA+Tdi
+	mdQzUdEutoPBv3pmg9cYdaUqatG9SJti7pIg9BBUdTjdjDQuivugCn8tklHLy6RCPevliC
+	vSLwNq4/oI6XbruYQgxEG2OXszqM8KE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 411C6600AB;
-	Tue, 16 Jun 2026 17:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C131F00A3A;
-	Tue, 16 Jun 2026 17:24:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DCEC6600AB;
+	Tue, 16 Jun 2026 13:57:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D6F1F000E9;
+	Tue, 16 Jun 2026 13:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781630675;
-	bh=5rZHvUYAFFezct1JmztPZchYNztAliiGoPJ37fwtMSc=;
+	s=k20260515; t=1781618246;
+	bh=2HQDPl4Fge9D8LBQD7QCKGIXM2QN58OYRKHRC0rBkGU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VcrdmCKDG348Ke2lDsy2UqK00o1do3UWIjsrQ/MslTqIzvLcsQyKthAP/HbhczEni
-	 Edg6r0anV/gtHzlj3y8mYx4mQ3urRDoiuPmfcW3A6ErnbUHo52nmtIM8nCOW0QdT/4
-	 +MbnpBZq7dD8xeHa3DbGzWe/svWvNWIRFZE3rROWW7VCV/uBURMaRUjhhiGtUi5DgO
-	 Sp9LJWbJ5vsE9DXhtnv8yCXSZYI3a6GZeYsXb6kU1Fmi+2dV9ANkaTvjqCJnnfz7PN
-	 bCzrMMO+NjuagZLpAWDHc9gzXMOMLqlngiJPHb8rLu5lTZTTearUx2+GPAAI/IpPcl
-	 lJC/2OvRStrvA==
-Message-ID: <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
-Date: Tue, 16 Jun 2026 19:24:27 +0200
+	b=o2PnEnYxJOrqBmCTljOBgmtEqnsmtt4iSTaJauqZ6cxnQ+mR+iXvcyycJR1kFvcCe
+	 yWUyoeAwVH4s8tQiUkJCdHppm3BEkHIAYGBXKDK+Hc4qWA8olKjWoGLXQxnq4PcQtW
+	 rP6FZaoqCE/Fi8EeG9QlgoFJndtCWvd1CfTRCL2Kumkaxi6ZhYDy7upSrUZCpbFs1c
+	 WWmBs/k495pgDYgSPRlL82RAGWDEmEWKxobGoZqVROdWYlhx3mv61s4bx/kkuzdaKF
+	 sCbqTj2qfBjiaxGGrTPVZIBdv0jG4izkN/6lviMsMkM52YxSA7t+LjS6/DxzGY16yX
+	 EG2wVnsWfHqFA==
+Message-ID: <bdfdbd6b-81e0-49e3-a02f-2dc75727a71b@kernel.org>
+Date: Tue, 16 Jun 2026 15:57:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
+Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap &
+ xfs
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de,
+ ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>,
+ dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de,
+ brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ pankaj.raghav@linux.dev, Daniel Gomez <da.gomez@samsung.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
+ <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
 Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
+From: Daniel Gomez <da.gomez@kernel.org>
+In-Reply-To: <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B4D0280018
-X-Stat-Signature: 7ta7amiw9xjs6cj4zfarwgjud49q8rry
+X-Rspamd-Queue-Id: 5257410000A
+X-Stat-Signature: tnzckufssc9mxm1k9gncaqpwmqhjincf
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1781630677-975228
-X-HE-Meta: U2FsdGVkX19QjM7czQQuPT7u4AgED1xT1yQAZsHbXXsKdOApqQfX+dN7Jq8wXcmx2N/9mEH8QPar88PrslKe09DUuwgxONp6Ysopb/wE/J6MfCYKC+/eqMQ44VBoeBolwbdaoqtGmr65dSSxsvbk+XBrzU7qXb2dJr6/7nu2VfwLG5OAEq3WyzOWdBdV6ZqAnDIz7rn2rbrRYE7zXTjCF/9QDSgCnbbIH4Kwyd0u5pcDRkGgVkPdeqEXsXMvhryDZZkZzkrqJ/43W1AYqtEveAsafyAeYrRMXS8ZUuOPsZ4oHkNsKD51m3e9HRcw83U8nvaDOJyJLBL+8UvTwZ+mjR7PR+q7CdVKcoUMbP2r/AMpwIWXPwwhN/rzp3j2XKxzfpl+JRaagAxKScy4XdgVe+EusIymFj9tP6hJ5zvRz/6WFx4kaIQbpeDJLpptLL1d7iez3uX2PTnap/wtapLulNdWNDian3Aa3LwyJKg12eGk0jkdVgGV30sTAGxyAgBUxoRo0dwEeKC8P3MFw4EnFjrVMUT7SqOFRctjHM8v8qpzd6jeAi7ZIA1KAhUEtyRxiLPV3xEnBwepWBTLxhpHrRxoiJPT/b2/USrsnzFZjK2nFNjFZ/yPTrgLmW/m+vVOkdsP1feTCtuzSSarGSq6RvJFOz2jSUZxgVD6qbWkouwvsGnqG/9XzWXg6FUntIhOvaKnHDkNMiDqd5hIlyNjUNARxhr0YWxRs49e+vL1apNC/HAXcPxc0DMLg0I4YcDROL5eo6lG75kw26wow6Ue/IHSCeGO1GpyX1sLF8LfCxL2D40Yo20GSqDLmq3iB0m1gath0lXcweOljF5zK/hP2KKcywfwqM5imvgg4cYkufRNz3GGjTKCkURR1PDsFt/uIx7SFq5NG6W2RIaYolLiJtHnteAsHu44+1KP0Jc0vYMgQnZpAE7JoPnSTRR+ZC8xs3DGWh47Idjp1mTyKma
- kTTe/UyB
- Mf9mBZ39vBQ01Bq6e1tUfMsP2SjXJvrkHdjhVDBH7ORlE8VNKXJgq9Ny9OtOi0cmrHy6fpX9RDcYYa9Ay3pjIEUQbafmqX6N2UGoGPiBkAGPtQmThwT7iA34LBZZcxkHweROT+GyQyCdXmvb4twn1o/dE1pafgVwjOyn6wdMXqzZoKCXWCy9VQ60Aum7rccal6dw9K4imCJNgd2oG+im5wkYmFGpAId8Kw3NXCFiBVwZI+n0brER2AQzeUQVQUVZDQ/OiiVKMuCP0lYGH6Hr8EvVFJlVV6Axa7hnO8+WD87cz+jVIl+qau6+EPt8um/gp0lX2OmvdfT7ARLA=
+X-HE-Tag: 1781618249-853379
+X-HE-Meta: U2FsdGVkX1+yz4zmMRekO8OYHdshfwvvK996WgafHHsf6hc7ICdYM8LFjKNiOdM4OqoxY3LNk5pPqzH8aSv1fkFlaYNnG316j9ctgoFFvU7Q2QTnLJKY6mRMFBBaM8R1kahSKIYCLMN1NQ7Q4PoRAb+V3sTXXWzY2wLLAPD5/jifBvb0QMraJqnb8R+X8qg4tGaT/QSyNlGiToAU4/BBcTWjlnxElmBlP/8t9Q9yiV+ihb/YlyOWwFS1JbGIkfPiwED9YjoqL7652gOuf7+pDIfJZTyAaHKKJ/HlNRFLA5H/TDK57g2WnfbSA0dji9QP0ffgUKyMxq59jKrF05GnmxvmaKXFM9h7lDJIbzAsFbAuVKULasR9YNlAHn5uDEmfIl3nJ+OZQXsKhD3N3SBQrniQ2+TzxHY5avPCk0pn8qLcfXlQ411yh4ymYlB9DspYAmyELZEQkpgqEs4fHr7oFrZxth9+I9frPQQIY5dBtsbS38YWoRRUCBT6AzvV6tXckFVfJ9VWjPVHd9qYWEaJxsY+XNUwpBfc0w122nalu9BqT6XV4BdkGhk57q8YLMmClTpNdBU6myPsfNA7n/cy6uZMEEtP4LL8hwzjnXqfLGtD2nl7JExsXIXe79Ic+91Y7IYiCd+uIup0iyOHzd7HEZLiTK9nkFii9PZG75zDaHASRQ+J+w2ALRgcp6NOEOgdFaX7qUscuLHfhtfl/YDhPZvr9oTurA673H8LArnRVwin0UUoVDoTP00iPjV9LC1abt1B4m1d3/Il7IIw08+AR4cHROuFFWgd4hGIoLKpisxmps/nZALs/FhCrRk0opwFuLZd9pG/0HwKtMLOVQS0hUAL6iXp7ZIqFpEGc0BYBzoU7SWaSQLvo49q4fDLbQV/h+8wTBFnUYcF1X8l6FY+kgli/SURF1X5UuZMDMv+2y3wvpssW9gqFS4ewL+NwPP98rqdp13UzcQxHnqKKvE
+ t1QQDFRj
+ HgsU0fsnrPbOzIP3+F1comZiogXArn4bLK319jm3r6nYQkfnMSg1h5NyyVhUq+un89zE/4xWtmogJ8/2L+YwNmD/HWPeblqRlPQcCT25Ie0EkD7HPpKX+07gYHb/82YepbwRQKe2l51o1blpe/x2fcvhdz5sgPsbbiLm6b0rjevdsV8h+bOtFGX4HSi9wkGU+eUVk9oJpoh3RgA/DA/EGXF0+WfETr4X5jpWOydferJFholNQsPZPOy7x1b6pHgRVyO9wdWlr9Wm5ArqIIcmWC6zIPfreKWvpjEjGVy5Y80cdl3R2wB52d/ef2yODs43hJWZiBGkONnQU2JM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,121 +101,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
-> As suggested by Vlastimil Babka, kfree_rcu_sheaf() can be used
-> on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_RT.
-> This is because local_trylock and spinlock_t are safe to use with
-> trylock variant as long as the kernel does not spin and the context is
-> not NMI and not hardirq.
+On 01/06/2026 18.49, Ojaswin Mujoo wrote:
+> On Wed, May 13, 2026 at 11:14:21AM +0530, Ojaswin Mujoo wrote:
+>> On Mon, May 04, 2026 at 09:54:49AM +0200, Daniel Gomez wrote:
+>>> On 08/04/2026 20.45, Ojaswin Mujoo wrote:
+> diff --git a/ltp/fsx.c b/ltp/fsx.c
+> index 720bca83..1c76634b 100644
+> --- a/ltp/fsx.c
+> +++ b/ltp/fsx.c
+> @@ -2077,16 +2077,34 @@ test_dontcache_io(void)
+>         return 1;
+>  }
 > 
-> Now that __kfree_rcu_sheaf() knows how to handle allow_spin = false,
-> relax the limitation and try the sheaves path on PREEMPT_RT as well.
-> 
-> Keep the lockdep map on non RT kernels. However, do not use the lockdep
-> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
-> 
-> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-LGTM, but maybe unnecessary pessimistic wrt call_rcu() on PREEMPT_RT?
-I thought (in the Link: above) we'd only need to downgrade allow_spin to
-false on PREEMPT_RT for handling sheaves movement from/to barn and
-alloc_empty_sheaf(), but call_rcu() would be safe from kfree_rcu() even on
-RT? Or is the irqs_disabled() condition rare enough so we don't care?
-
-> ---
->  mm/slab_common.c | 11 +++++++++--
->  mm/slub.c        | 17 ++++++++++-------
->  2 files changed, 19 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 55546b8385ff..807924a94fb0 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1595,6 +1595,13 @@ static bool kfree_rcu_sheaf(void *obj)
+> +/*
+> + * Use a temporary file to test RWF_WRITETHROUGH so as to not modify the
+> + * original. This is so that fsx expected contents and the actual contents
+> + * of the original file don't go out of sync
+> + */
+>  int
+>  test_writethrough_io(void)
 >  {
->  	struct kmem_cache *s;
->  	struct slab *slab;
-> +	bool allow_spin;
+>         char buf[4096];
+> +       char tmpname[PATH_MAX];
+> +       int tmp_fd;
+>         struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf) };
+>         int ret, e;
+> 
+> +       snprintf(tmpname, sizeof(tmpname), "%s.fsx.XXXXXX", fname);
 > +
-> +	/*
-> +	 * It is not safe to spin on PREEMPT_RT because the kernel might be
-> +	 * holding a raw spinlock and slab acquires sleeping locks.
-> +	 */
-> +	allow_spin = !IS_ENABLED(CONFIG_PREEMPT_RT);
->  
->  	if (is_vmalloc_addr(obj))
->  		return false;
-> @@ -1605,7 +1612,7 @@ static bool kfree_rcu_sheaf(void *obj)
->  
->  	s = slab->slab_cache;
->  	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id()))
-> -		return __kfree_rcu_sheaf(s, obj, /* allow_spin = */ true);
-> +		return __kfree_rcu_sheaf(s, obj, allow_spin);
->  
->  	return false;
->  }
-> @@ -1954,7 +1961,7 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
->  	if (!head)
->  		might_sleep();
->  
-> -	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-> +	if (kfree_rcu_sheaf(ptr))
->  		return;
->  
->  	// Queue the object but don't yet schedule the batch.
-> diff --git a/mm/slub.c b/mm/slub.c
-> index ba593c1c53d5..4850629774b2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6082,12 +6082,13 @@ static void rcu_free_sheaf(struct rcu_head *head)
->   * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
->   * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
->   * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
-> - * this problem by bypassing the sheaves layer entirely on PREEMPT_RT.
-> + * this problem by passing allow_spin = false on PREEMPT_RT.
->   *
->   * However, lockdep still complains that it is invalid to acquire spinlock_t
->   * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
->   * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
-> - * by temporarily raising the wait-type to LD_WAIT_CONFIG.
-> + * by temporarily raising the wait-type to LD_WAIT_CONFIG. Skip the lockdep map
-> + * on PREEMPT_RT to avoid suppressing valid lockdep warnings.
->   */
->  static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
->  
-> @@ -6096,10 +6097,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
->  	struct slub_percpu_sheaves *pcs;
->  	struct slab_sheaf *rcu_sheaf;
->  
-> -	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
-> -		return false;
-> +	VM_WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT) && allow_spin);
->  
-> -	lock_map_acquire_try(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_acquire_try(&kfree_rcu_sheaf_map);
->  
->  	if (!local_trylock(&s->cpu_sheaves->lock))
->  		goto fail;
-> @@ -6199,12 +6200,14 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj, bool allow_spin)
->  	local_unlock(&s->cpu_sheaves->lock);
->  
->  	stat(s, FREE_RCU_SHEAF);
-> -	lock_map_release(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_release(&kfree_rcu_sheaf_map);
->  	return true;
->  
->  fail:
->  	stat(s, FREE_RCU_SHEAF_FAIL);
-> -	lock_map_release(&kfree_rcu_sheaf_map);
-> +	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-> +		lock_map_release(&kfree_rcu_sheaf_map);
->  	return false;
->  }
->  
+> +       tmp_fd = mkstemp(tmpname);
+> +       if (fd < 0) {
+> +               perror("test_writethrough_io: mkstemp() failed\n");
+> +               exit(132);
+> +       }
+> +
+>         memset(buf, '\0', sizeof(buf));
+> -       ret = pwritev2(fd, &iov, 1, 0, RWF_WRITETHROUGH);
+> +       ret = pwritev2(tmp_fd, &iov, 1, 0, RWF_WRITETHROUGH);
+>         e = ret < 0 ? errno : 0;
+> +
+> +       close(tmp_fd);
+> +
+>         if (e == EOPNOTSUPP) {
+>                 if (!quiet)
+>                         fprintf(stderr,
 > 
 
+
+I think this is missing:
+
+@@ -2158,12 +2175,6 @@ test_writethrough_io(void)
+                return 0;
+        }
+
+-       if (ftruncate(fd, file_size) != 0) {
+-               perror("test_writethrough_io: failed to ftruncate to 0\n");
+-               exit(132);
+-       }
+-
+-
+
+The fix works for me after a stress loop test on generic/457.
+
+> 
+> Im unable to replicate the 415 failure, but this one is strange because it
+> doesn't involve any writethrough IO. In you previous runs have you seen
+> this be flaky?
+
+I couldn't confirm back then, so I think we can ignore it. Also, unrelated.
+
+> 
+> Admittedly, I've not yet started thorough testing since this is in early
+> RFC and the design is still getting finalized but I appriciate the help
+> in testing this.
+
+
+No problem. IMHO, testing makes a design more robust, once the path is
+agreed on. That said, do you think the path needs changing? Reading LWN
+and the patch series threads, I don't see any blocker. You can cc me for
+the next iteration and I'll follow up with more testing.
 
