@@ -4,96 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9D73CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9EACD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:47:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD3506B00AD; Tue, 16 Jun 2026 16:45:57 -0400 (EDT)
+	id DD48F6B00AE; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5D086B00AE; Tue, 16 Jun 2026 16:45:57 -0400 (EDT)
+	id D5E8B6B00B0; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4BF26B00AF; Tue, 16 Jun 2026 16:45:57 -0400 (EDT)
+	id C270C6B00B1; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 94FB66B00AD
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:45:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0CC00165723
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:45:57 +0000 (UTC)
-X-FDA: 84886957554.08.0BC0377
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F338AC0007
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:45:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BDLtvHYb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 829CE6B00AE
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AD0C40267
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:46:52 +0000 (UTC)
+X-FDA: 84886959864.21.06AB8AD
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3AE391C0013
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:46:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=srv2joZc;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781642755;
+	s=arc-20220608; t=1781642810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7Yshx7diMX1O/OKyuwR/SBp/Kaw8zYRlyF2SsJvqRA=;
-	b=iF5Pq9SycnA+Vhn0NTwqRAe8b0Tf0sHtKIRu4E2EcRL/9nwQ/7jZl/KVGBkxVBCPuzT72E
-	ZGdHeq0bPRhLVJhVZWzjlZP4wB3fVOW2PCYgRZYrhuQrAg7O7EUa0mznNBJXocDflSAFXb
-	FSJ+PQedj9W6c86YBRfiUsqrNmkpsx0=
+	bh=S9oJCY5n62a4g8tvLn717moYZyykJ5ixCSgWMj5Zy0s=;
+	b=2ZDnqctwmeUJxOBs7HOjvlRT1+OvgJU+YCqZvIz8B6oE93OcPrHjprZEXEjVlUBqfCAwQl
+	8cf3Ok41L8M1twVRSaqmfovYRtpIB/z2jR7pa9pFgQGagE/aEorwTifC1ZfLfe5kMk/G6Q
+	GZ+yl4EHRPhMgWzrPB6Orc2g8Y1xJSc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BDLtvHYb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=srv2joZc;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781642755;
-	b=2PEltjTe7Zmn0YFIvqQ2W8N8EXGYPv3dM12h1KyqSfZO7pdgmtUduVQ1cgkIoKg8+Bt8uI
-	YUvpTUskNzTJLY75WlE0auN2dxoPdqpX071taNftGIHJWOyg5ulLchtt2aJGB9BqLnaCI9
-	EUemfPYNsIODtumD4Jcxp3AxZebgWl8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781613032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a7Yshx7diMX1O/OKyuwR/SBp/Kaw8zYRlyF2SsJvqRA=;
-	b=BDLtvHYbtbBl6jCK8W2J5U0MaZ+1oaEDCCnJQ5XN2nOHOb6aWrop/Ja302qc7D7mNgSFTC
-	JhIIPs9BWClMLzVyKktOsLn4D0CWfbprCz/ctP+BoNqWfwJ0yJmum4cSwIH2ADDPypw0OF
-	nlVgsdz7pcnHRW7oy9djaeQRtFiomBg=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	balbirs@nvidia.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Tue, 16 Jun 2026 20:30:01 +0800
-Message-Id: <20260616123001.6501-1-lance.yang@linux.dev>
-In-Reply-To: <20260616063436.20455-1-richard.weiyang@gmail.com>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
+	t=1781642810;
+	b=NhcYKz9eDj7DwgLdA11c2NswwN7W7dnfPIzY6HZjaDqkV4Cx+NdU2+g7F+nWPapBdHWmuT
+	my6LrTWH38fv3StSpVuKEoX9VQcuLtaW30GrVofe6OnLdazsBhNERipLGGm/im2zjrOab/
+	A3TPxqOHVWTzUqu4AjEtd7paE/s6Ckc=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIlAY1135639;
+	Tue, 16 Jun 2026 12:40:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=S9oJCY5n62a4g8tvL
+	n717moYZyykJ5ixCSgWMj5Zy0s=; b=srv2joZcJHVT2koM3BlW2pBg438OrMzYw
+	kJW74eTvH6O+CX+8YXsdXMVH42wN3NCTtOqOaIMjdpru3g2FuE0RMxevY9ZnDw2C
+	It40YDpCw1GBbJE+8jO6M3uQY/+xS+7UZS9Uvhm4XpO59IpIi8a0ce7qcGJNhDd+
+	/iKkrJ3W03LqnPtjNnM0T/2q8jvsxqE3FcVAaCjVlO6jgn5pu6ziU9iSCqSFv1HB
+	ABlNjRSKimzlo6l6/PgioKWv/Egd6upCbPyP1n4wCfeOAYeQAm4QvSVP3A4WZKZT
+	U/5JHD2lIl1ERhC+SI0MTt4BXEDrXgx1K4duHw76UoEdX7llY907w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1u0n49x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GCYi21022470;
+	Tue, 16 Jun 2026 12:40:44 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4esm7y32yd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:44 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GCedIL49414566
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 12:40:39 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF41D2005A;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D5B12006A;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 80D4EE0CEE; Tue, 16 Jun 2026 14:40:39 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3 1/7] mm: Make lazy MMU mode context-aware
+Date: Tue, 16 Jun 2026 14:40:33 +0200
+Message-ID: <23a92e6ceca70289123efbff7eb1f26850772e4b.1781611976.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1781611976.git.agordeev@linux.ibm.com>
+References: <cover.1781611976.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kEUWujA05618VrelC3I93yolB30pGGGg
+X-Authority-Analysis: v=2.4 cv=XdK5Co55 c=1 sm=1 tr=0 ts=6a31444d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=7CQSdrXTAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=ovIRSG1zLJ1dbapjHkcA:9 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX/3vU1BexlLK1
+ Yv3y0Mumv2boBKa8E7JvS1zYKN6Lo0jL2FIw3QEMAKLYFmQr2FMihcLjnMyzdTJq4n4bNm5l6qt
+ 7CLAJdsCNp2r3dYi7z1fhZLJqBEy/+7/L1Chd0Tgavt8STawx4+Ambp3NL/aC+p18Qv3wkjQxrl
+ tvepYOvYz9agp+PMqKwwuUJOFRPdYhbLdZphXwt6dLdlMBhBIGTH+aV3azlIkvhHts3jeY7U/+s
+ 0zXYW/fNo4eAfCHFa5efP2kOIxAYbp1//XlMFtrVjOpVZfSWjYjC+TL0IjwZ4LcWHg/O94MW7Yt
+ QIceKGaO6jXBsGz0NBZBTixLZvM7lIWcwUJskHZD/atPSxvJj+kj2U2qV6biz0H4uT09sHZyL7z
+ 1L6A0mGLbHhI+iSxOo9DHYB0OUWfIMC9JbGyrBb2rfvXqsn2i6vRGhFxwy1t81tG5tnhLQVN/e6
+ MwZts9MBTCZ3QbhNXMQ==
+X-Proofpoint-ORIG-GUID: kEUWujA05618VrelC3I93yolB30pGGGg
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX9AmKqPnbkl7D
+ TMT7oMEtp65FmJp2P9E4AMipCng4/u1c+Oo1C8aHVpErDs/s+Y1M8+R6nB7KLoFm1A3qD7N445D
+ EeVASixNB9oBPzURI4EKHuOi9seRL+w=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 malwarescore=0
+ spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160125
 X-Rspam-User: 
-X-Stat-Signature: 5igqz8nj3shwgbp5e7mtcfzck9tp8syi
-X-Rspamd-Queue-Id: F338AC0007
-X-HE-Tag: 1781642754-490833
-X-HE-Meta: U2FsdGVkX19BKqvvn08wlGBzHWP+Cqb/7WduM3kJQr0WSXxawqcXM+vvek1xPvBg1TQE4g+FD6HDfLhFkha0Rnb9ybBdjh2ZdzRkj/xPdUZazLE8MjhVf3NeabZ+z6UyAy8CBzH8M6cfJ3vF106RFT7fLubN7HZ+ieo46hNpDa1N3zIhuKGPsFYmsL7ffnOqtinJOVbgGX2orvCrAQRHVU4nv/53V5KEZm1wdk1KPTYBtigMN1Nwd+wD6w7Cefheptpuvr2K0cKZ+WEvPeg54kz/Gp8lRFDRl681pm9gC0aR29HBmcpVzTC2nDieZtTpkqGBw9SP4cIvXvPnoKPOEFHH5W0UmoCVmKA2qg3ymR9PX/2BHmtwZbP+pm82t1qaS7qqL4zn8/jNJZqE0UeP5L65FlERiG3Wxuwmism+59vc3AE9mV+zhRFge2vtrfH4jd0HeoAM3mCbd8T5synHtr7Tk0ODNoqyc2crxah9IO3kPzgAuU5vTaB2rHRfJhu1lSoQz8p19sH11eNlYrawO5Kr2UrXpKm/Bs68Oo5XAwtaxA1G5/5FKmkZ7XI5OhIZX/Kmjvk+cLcxle4GG9G2eM087QzvCqVilMXlTq8nbBMYMWsYd7tjdHkW+f2JNuWpQBmvggpxWbpmh2gA/1ECh+KITfRPnL/QK+BhO6LQOFDSXfFt7+ewUXmWkaxegrNr6U8e7swFS5i3Jj89PeCWscYroWivCJNrU/lkIeUrr11h58j4ZhToM343mDXwZoR9DNxVQlM/yuZiunSeEkWERx1Q4rmcaIDTEBY4tETnCr8ASGaWaO6XgVaBFlJwZH9aZrl4Q+jnKAbmYrB2BK1VPGRD0r5OsjIicfwxDlAj0atMnOZGaGAANBgLUuZNF7F7lF2G/L8SD1lDT2VOZouNey7MVTf+s6mYCY75otITnyoJlsmNek9VLVFaKutupyKvKgDwryVah8q85xxKgQe
- KqCIQrvh
- HpOsdI5ozJBzjslRNM4rV0C3ws2Tvd1VKXyrESiJP1TjN6NyyScb0KCQ3wDIZoGFlnY1n3jj+OLFXMQgK5sAK/5pWmHtyRYa2+DrP72SLRpIiyCWePh0rNb3n7lXOnjG4B45SeVVrEqjN4tNFOtVoV7ReJh3yNwe+ocEaADA1RO+OXhPSVotf/dXILGy8KIJxHOXzbE2fR0Ptwkuve2Ns9vNU4MTHNZcy4K9nIZPQyuz229C7rGsbTMikq9+zPfCybI7RNOVykc7NxDqu4gIqcu4gzIfzfqiY8zVafAiLYOHnNa/4oYIiFkkorzaB1LLlZGkUVPBM3+gx/UI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3AE391C0013
+X-Stat-Signature: oxtk1b4d73zbyywbutx1jt8xjizn9sbm
+X-HE-Tag: 1781642810-45962
+X-HE-Meta: U2FsdGVkX19RGJsdNBaI9QInT010lm9Y848v9t29owmr2qRG/2pbsKC66KR5aEel/WUmu0f4tPQIVNJMZDX2IUhD9JnwyPAPeRXpywq+nxSDu8qa0TqXehdBEiC+CnKtOZJzlGFp9PnBIi9afF+67vVJCW7ALiicN84e+qAxJFAfq8bBOjdaRj1f9OTqaTL0yn6PHt3q34/Zmep6IeacmT07oxO+ctPc6aczP08OCV3zV3UxPfwl1Y/hsf4TaRXxWIuqdPOvQKg4OBWuLjocFxVbAnzuD9xciZlEpLu7V54bIt6BWzHIoLkbdP0dpV3qqDjPMDzy6OU3+wIbSZyWxTNOj3C+wj33FVqk3kbisMeaIlxmAjj67klpFpjlFzQTvPlWa9AfPftUBRvfU4DS+svS5k6VwMFmkS9NNJhQwloyr5eCnJLwDthqpOCkYLa/PA84F7VaRqgLLRHrYGqgtD3XruUduNcrqF+4Q5qobdZEBacIaH4Dh+gN4vgceSZx/wTcz3hLD2gZ8zBExt2EugsbIF9gQeG6YFIW8kF69jYwNRkNXrM0YtUxwDdWAc2Uj9aN1ts5nnTFV73MfwE6o8c4gcK3sANnnH3NVSbdXj7pzZoGc9XwcGIcaCVOs8gepX8qbHfnvNKN8BHeUBM8pSjmJZki6w1xyQAgcVOohvJ7NyBBTmLutDlUE2rsdONaX3IShcvciHUJ0BN3MeGURUfjt7Udb636VWPtCGZ6SnKwj5b27P68Qg5965MfbSos7UT4IcxX2g9CkAyF5aEdJqo6DJ5ScCrGYcg9zpbwPOTxG/OU5x2klS2Y0noaGWEF4Lnhjt4azshRuR63yxvo0glwEQgalLOENn/d5ZSsXPI/rpOqcFcdhypBEDU4hD1iocZgVzpVDsG987CrazQX4Wyr8CZBsSYEu8Acbmitcs0VkrgS1SnmOdO2U5dcPl/1bGLMyotuZeEb/5DoLKv
+ eQ5cSEOk
+ wHlg8YswMQSJrA+0ON5Y+fnQLhuwdERDVGlZsByqU6ZbPLB4cOw6qU7aeOEi+lWxpHIZL5+1R6Ajiksdk9wf8kJY4kKENqYxkfGedrvm+DUXsYBfH7FR9ozJtBflhFHLdfOtqyg5pwgxy/drFVXT/yHJ+zP/5wPJsD6szdzonjsUQFkIxhF5kgFHI7PBuc6nLPKzuVgnNWnlqKKfiD0UOk1HCytdOK6gs5+81X3Il4P8YddeMTA703eTjNFRg+AQp7Hc2uhZwJISXgIgMPp4XopfmhkPulEWbJ1Fpv7s+blTgjoSuxsPRq0N5L7w8ARaqtdb6FBeKQ6ctTZ/s0b0EZnpxEwVeEki9ZQ+xEWRok4F/gy7NVxk+GCMRkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,113 +145,269 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Lazy MMU mode is assumed to be context-independent, in the sense
+that it does not need any additional information while operating.
+However, the s390 architecture benefits from knowing the exact
+page table entries being modified.
 
-On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
-[...]
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index 2ccbabfb2cc1..21635fab209c 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 		 */
-> 		pmde = pmdp_get_lockless(pvmw->pmd);
-> 
->-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-			pmde = *pvmw->pmd;
->-			if (!pmd_present(pmde)) {
->-				softleaf_t entry;
->-
->-				if (!thp_migration_supported() ||
->-				    !(pvmw->flags & PVMW_MIGRATION))
->-					return not_found(pvmw);
->-				entry = softleaf_from_pmd(pmde);
->-
->-				if (!softleaf_is_migration(entry) ||
->-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->-					return not_found(pvmw);
->-				return true;
->-			}
->-			if (likely(pmd_trans_huge(pmde))) {
->-				if (pvmw->flags & PVMW_MIGRATION)
->-					return not_found(pvmw);
->-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->-					return not_found(pvmw);
->-				return true;
->-			}
->-			/* THP pmd was split under us: handle on pte level */
->-			spin_unlock(pvmw->ptl);
->-			pvmw->ptl = NULL;
->-		} else if (!pmd_present(pmde)) {
->-			const softleaf_t entry = softleaf_from_pmd(pmde);
->-
->-			if (softleaf_is_device_private(entry)) {
->-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-				return true;
->-			}
->+		if (pmd_present(pmde)) {
->+			if (!pmd_leaf(pmde))
->+				goto pte_table;
->+			if (pvmw->flags & PVMW_MIGRATION)
->+				return not_found(pvmw);
->+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->+				return not_found(pvmw);
->+		} else if (pmd_is_migration_entry(pmde)) {
->+			softleaf_t entry = softleaf_from_pmd(pmde);
->+
->+			if (!(pvmw->flags & PVMW_MIGRATION))
->+				return not_found(pvmw);
+Introduce lazy_mmu_mode_enable_with_ptes(), which is provided with
+the process address space and the page table being operated on.
+This information is required to enable s390-specific optimizations.
 
-Looked at history a bit, and I wonder if this changed something old
-here ...
+The function takes parameters that are typically passed to page-
+table level walkers, which implies that the span of PTE entries
+never crosses a page table boundary.
 
-Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
-migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
-including not_found() cases. So lockless PMD read was just a filter ...
+Architectures that do not require such information simply do not
+need to define the lazy_mmu_mode_enable_with_ptes() callback.
 
-With this fix, true case gets final pmd_same() check, but this
-not_found() case happens before taking PTL.
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ fs/proc/task_mmu.c      |  2 +-
+ include/linux/pgtable.h | 46 +++++++++++++++++++++++++++++++++++++++++
+ mm/madvise.c            |  8 +++----
+ mm/memory.c             |  8 +++----
+ mm/mprotect.c           |  2 +-
+ mm/mremap.c             |  2 +-
+ mm/vmalloc.c            |  6 +++---
+ 7 files changed, 60 insertions(+), 14 deletions(-)
 
-So a !PVMW_MIGRATION walker could race with someone, e.g.
-remove_migration_pmd(): we make the not_found() decision from old PMD
-value that still says "migration", while real *pvmw->pmd may already be
-present again. We return without ever taking PTL :)
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 751b9ba160fb..a02a83c390b9 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2752,7 +2752,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsig=
+ned long start,
+ 		return 0;
+ 	}
+=20
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(vma->vm_mm, start, end, start_pte);
+=20
+ 	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
+ 		/* Fast path for performing exclusive WP */
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index cdd68ed3ae1a..6e582b9e58f3 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -271,6 +271,50 @@ static inline void lazy_mmu_mode_enable(void)
+ 		arch_enter_lazy_mmu_mode();
+ }
+=20
++#ifndef arch_enter_lazy_mmu_mode_with_ptes
++static inline void arch_enter_lazy_mmu_mode_with_ptes(struct mm_struct *=
+mm,
++		unsigned long addr, unsigned long end, pte_t *ptep)
++{
++	arch_enter_lazy_mmu_mode();
++}
++#endif
++
++/**
++ * lazy_mmu_mode_enable_with_ptes() - Enable the lazy MMU mode with a sp=
+eedup hint.
++ * @mm: Address space the pages are mapped into.
++ * @addr: Start address of the range.
++ * @end: End address of the range.
++ * @ptep: Page table pointer for the first entry.
++ *
++ * Enters a new lazy MMU mode section; if the mode was not already enabl=
+ed,
++ * enables it and calls arch_enter_lazy_mmu_mode_with_ptes().
++ *
++ * PTEs that fall within the specified range might observe update speedu=
+ps.
++ * The PTEs must belong to the specified address space and be in the sam=
+e PMD.
++ *
++ * There are no requirements on the order or range completeness of PTE
++ * updates for the specified range.
++ *
++ * Must be paired with a call to lazy_mmu_mode_disable().
++ *
++ * Has no effect if called:
++ * - While paused - see lazy_mmu_mode_pause()
++ * - In interrupt context
++ */
++static inline void lazy_mmu_mode_enable_with_ptes(struct mm_struct *mm,
++		unsigned long addr, unsigned long end, pte_t *ptep)
++{
++	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
++
++	if (in_interrupt() || state->pause_count > 0)
++		return;
++
++	VM_WARN_ON_ONCE(state->enable_count =3D=3D U8_MAX);
++
++	if (state->enable_count++ =3D=3D 0)
++		arch_enter_lazy_mmu_mode_with_ptes(mm, addr, end, ptep);
++}
++
+ /**
+  * lazy_mmu_mode_disable() - Disable the lazy MMU mode.
+  *
+@@ -353,6 +397,8 @@ static inline void lazy_mmu_mode_resume(void)
+ }
+ #else
+ static inline void lazy_mmu_mode_enable(void) {}
++static inline void lazy_mmu_mode_enable_with_ptes(struct mm_struct *mm,
++		unsigned long addr, unsigned long end, pte_t *ptep) {}
+ static inline void lazy_mmu_mode_disable(void) {}
+ static inline void lazy_mmu_mode_pause(void) {}
+ static inline void lazy_mmu_mode_resume(void) {}
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 69708e953cf5..de39703c26a1 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -453,7 +453,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *p=
+md,
+ 	if (!start_pte)
+ 		return 0;
+ 	flush_tlb_batched_pending(mm);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
+ 	for (; addr < end; pte +=3D nr, addr +=3D nr * PAGE_SIZE) {
+ 		nr =3D 1;
+ 		ptent =3D ptep_get(pte);
+@@ -508,7 +508,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *p=
+md,
+ 				if (!start_pte)
+ 					break;
+ 				flush_tlb_batched_pending(mm);
+-				lazy_mmu_mode_enable();
++				lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
+ 				if (!err)
+ 					nr =3D 0;
+ 				continue;
+@@ -675,7 +675,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigne=
+d long addr,
+ 	if (!start_pte)
+ 		return 0;
+ 	flush_tlb_batched_pending(mm);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
+ 	for (; addr !=3D end; pte +=3D nr, addr +=3D PAGE_SIZE * nr) {
+ 		nr =3D 1;
+ 		ptent =3D ptep_get(pte);
+@@ -735,7 +735,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigne=
+d long addr,
+ 				if (!start_pte)
+ 					break;
+ 				flush_tlb_batched_pending(mm);
+-				lazy_mmu_mode_enable();
++				lazy_mmu_mode_enable_with_ptes(mm, addr, end, pte);
+ 				if (!err)
+ 					nr =3D 0;
+ 				continue;
+diff --git a/mm/memory.c b/mm/memory.c
+index 86a973119bd4..e4487564b166 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1272,7 +1272,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, stru=
+ct vm_area_struct *src_vma,
+ 	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 	orig_src_pte =3D src_pte;
+ 	orig_dst_pte =3D dst_pte;
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(src_mm, addr, end, src_pte);
+=20
+ 	do {
+ 		nr =3D 1;
+@@ -1922,7 +1922,7 @@ static unsigned long zap_pte_range(struct mmu_gathe=
+r *tlb,
+ 		return addr;
+=20
+ 	flush_tlb_batched_pending(mm);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
+ 	do {
+ 		bool any_skipped =3D false;
+=20
+@@ -2919,7 +2919,7 @@ static int remap_pte_range(struct mm_struct *mm, pm=
+d_t *pmd,
+ 	mapped_pte =3D pte =3D pte_alloc_map_lock(mm, pmd, addr, &ptl);
+ 	if (!pte)
+ 		return -ENOMEM;
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, addr, end, mapped_pte);
+ 	do {
+ 		BUG_ON(!pte_none(ptep_get(pte)));
+ 		if (!pfn_modify_allowed(pfn, prot)) {
+@@ -3330,7 +3330,7 @@ static int apply_to_pte_range(struct mm_struct *mm,=
+ pmd_t *pmd,
+ 			return -EINVAL;
+ 	}
+=20
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, addr, end, mapped_pte);
+=20
+ 	if (fn) {
+ 		do {
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9cbf932b028c..3fc26418e837 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -337,7 +337,7 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 		is_private_single_threaded =3D vma_is_single_threaded_private(vma);
+=20
+ 	flush_tlb_batched_pending(vma->vm_mm);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(vma->vm_mm, addr, end, pte);
+ 	do {
+ 		nr_ptes =3D 1;
+ 		oldpte =3D ptep_get(pte);
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e9c8b1d05832..0dfe3de39ccc 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -260,7 +260,7 @@ static int move_ptes(struct pagetable_move_control *p=
+mc,
+ 	if (new_ptl !=3D old_ptl)
+ 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+ 	flush_tlb_batched_pending(vma->vm_mm);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(mm, old_addr, old_end, old_ptep);
+=20
+ 	for (; old_addr < old_end; old_ptep +=3D nr_ptes, old_addr +=3D nr_ptes=
+ * PAGE_SIZE,
+ 		new_ptep +=3D nr_ptes, new_addr +=3D nr_ptes * PAGE_SIZE) {
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index bb6ae08d18f5..11c9c78072ae 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -108,7 +108,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long a=
+ddr, unsigned long end,
+ 	if (!pte)
+ 		return -ENOMEM;
+=20
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
+=20
+ 	do {
+ 		if (unlikely(!pte_none(ptep_get(pte)))) {
+@@ -371,7 +371,7 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned lon=
+g addr, unsigned long end,
+ 	unsigned long size =3D PAGE_SIZE;
+=20
+ 	pte =3D pte_offset_kernel(pmd, addr);
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
+=20
+ 	do {
+ #ifdef CONFIG_HUGETLB_PAGE
+@@ -538,7 +538,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned =
+long addr,
+ 	if (!pte)
+ 		return -ENOMEM;
+=20
+-	lazy_mmu_mode_enable();
++	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
+=20
+ 	do {
+ 		struct page *page =3D pages[*nr];
+--=20
+2.53.0
 
-Not sure about practical fallout, but should these PMD-level not_found()
-cases also take PTL and restart if PMD changed?
-
->+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+				return not_found(pvmw);
->+		} else if (pmd_is_device_private_entry(pmde)) {
->+			softleaf_t entry = softleaf_from_pmd(pmde);
-> 
->+			if (pvmw->flags & PVMW_MIGRATION)
->+				return not_found(pvmw);
->+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+				return not_found(pvmw);
->+		} else {
-> 			if ((pvmw->flags & PVMW_SYNC) &&
-> 			    thp_vma_suitable_order(vma, pvmw->address,
-> 						   PMD_ORDER) &&
->@@ -286,6 +274,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 			step_forward(pvmw, PMD_SIZE);
-> 			continue;
-> 		}
->+
->+		/* Double-check under PTL that the PMD didn't change. */
->+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->+		if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->+			return true;
->+		spin_unlock(pvmw->ptl);
->+		pvmw->ptl = NULL;
->+		goto restart;
->+pte_table:
-> 		if (!map_pte(pvmw, &pmde, &ptl)) {
-> 			if (!pvmw->pte)
-> 				goto restart;
->-- 
->2.34.1
->
-
-Cheers, Lance
 
