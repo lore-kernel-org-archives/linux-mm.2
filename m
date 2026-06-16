@@ -4,152 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AED1CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7853CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:56:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E4D86B00C2; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
+	id E82226B00C1; Tue, 16 Jun 2026 16:56:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BD5E6B00C4; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
+	id E59AF6B00C2; Tue, 16 Jun 2026 16:56:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D36A6B00C5; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
+	id D49226B00C3; Tue, 16 Jun 2026 16:56:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0881C6B00C2
+	by kanga.kvack.org (Postfix) with ESMTP id AB8656B00C1
 	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:56:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C0671C3A66
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:18 +0000 (UTC)
-X-FDA: 84886983636.05.B2448AB
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8B07E18000E
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nc4dClDC;
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781643376;
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5BD4288415
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:50:54 +0000 (UTC)
+X-FDA: 84885911628.08.76C1951
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8F2FEA000E
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:50:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iAaWvAlF;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781617852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-	b=yL18WJSAsELQleMkmiIrkF3IrjVGuVUp/6opDn1LtGOUDj3yV2RP9Xpfax2pc9IjxdYZ35
-	guctupFn26EgJhX/E1i6KgqMfUxn5yoLTyAnVjqMqcZUY4tKC+uRmPL8OlFG3z6uFLfI2C
-	zNOj3y/yV4OG2vYGziEPrwZ/A4auTTM=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781643376;
-	b=aeTT3cxq0pBQsEcZhCasxav7T88iB69BQfoRI8buZ7IbC6yrwCHMwo8EELcLsXc/ePWGfp
-	vBPM7HvaV2NPx8eTKmBYvBjeBpemnvITg+4ocOCxwH6t8VcoP/oJUMBbSSY2OKzGeEInn5
-	oIgV38CL0V2LnvjBxE1aiPL2wjhNksM=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nc4dClDC;
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51778077b28so55368321cf.1
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:56:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781643375; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fawYZYtGkM9hUzsrsD9eJl9vqMClT5f2zeUr3mDuGxyrMC3DV0g+m++uipV/6cMdre
-         Zc0a86SJJVNmKAA+CQeCrlHLvqyXBc2RnjQErhutPVHMaPH6ObZ4EWeFOGmylkctJHv5
-         RCF/Dx19rXNKGIls7WrQuL/ICPgd6VwABVhAXPJtdXouR3UFSWEShjwuMGhv3x4Tk70p
-         dCzpRlMyLZ4meh8x/aghRI6pydezH+rO1Mh2ptFXiLMba8h8pmRdIWz+FNzI9dhdb6sm
-         X9EH53hfMNnqrZ/nG5aoxPBHtueeqn+Vcq83ApLWmL53qqleQo/mPs3cOFwSlAf7/gcK
-         NbEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        fh=A5/Nktpqp/9co9EhhiEl5xyGd7zH2xLUXA7stdKZgPc=;
-        b=Srw5OapBIyF+uitZoYxKGqo4Mhj8WGvHXRFNJcSY9e41Nxlh0UVBtmsPXq6APpD6/W
-         OxA7y/iUew1MwIhZ+yzbFmK6NiFPzGld/MYEZEEcJI0v0ywYhkZNJnlUg3Fge91BkKzh
-         QQvdWj4TMcLFY1TI5EmFJyB3kMSyQo2cxR/TTKzfh+uQJ7MZOOcX4x1Ri9CMmPAKXMQn
-         vNcvP3fcwqaYm64SveQu8w6yiOVl/ESuT6Nwd7UEpXdMex2ziclV56yYY5GfwqzYsEls
-         tCMl+KRt76LIPd2A7q98s+UbKnp4c2fDvD02PZdl7inT7BW8kOoaG792AVsbb9fYv2AG
-         53yg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781643375; x=1782248175; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        b=Nc4dClDCfO0S3nnW8S18GtTECmUEMkJ/JiQp/yyiDy68r2xfyF18JceBFqzaDnoqDX
-         Y1eVClh6/hQIvQJWpuNNpy79GdGGH7yRlK0fEDAJORNr/eDYJ1Kir5apMZUbD3YiXYcw
-         uBpbSUMpG4iFYHaxq50J82Bc4tZGivdde7sQlOg6l05sJRn/vBKa2HN50Bq2cOV3UJ4a
-         5+12nLSgo8D2JTZmCG3LF7j3nJZJ92ci3NHbJHv2vlbL/+DphPaNXr7pck6rWj+4Jc+3
-         ZBvLSl7a1VkF6yrGk3R0Q949/npiACFJLzM/ooMtd6nN1TA4VjaeVdQ9VXvxm0u6wK+x
-         zO4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781643375; x=1782248175;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
-        b=af4XRkVhsIBprrVeceDDP3lp0npM3woUvd2mapB08sZsVBrhLFIzE62YjgNjCQaI4Z
-         0KMz9fSFhLrN4MTlLl2I4jujyylnbm/RQiITwioKNmg9TGrtnDVAjG56wBaW8gKhR+aq
-         KJhDe72FCAsvuEkTpuwcuU00IEtyRQEOtcwAn5iWdWHvV3BRyfMej0PSWkeCjZD/2BHZ
-         27Ht5gBcN6nKQzOoQD5gJRY4yiTpwJ4nhgSq6PbBnKoPxHfD+XnennqbQxeB8X+9Hc4j
-         /a7O/cr+os+qrbQxbVTly3TXKKBUGnl5u4v/Qy/wLC4X9yMBj/PohKRiRva1KEgCgTDa
-         CxQw==
-X-Forwarded-Encrypted: i=1; AFNElJ+iLuRQD1TzSC5v3lyNacq/UnwdhWREa3rfKL0SF+itp9k1dVmO1LDETU43ITCOJD0kjlDRg09vCA==@kvack.org
-X-Gm-Message-State: AOJu0Yyb1bRK/A5QDeGALswYUViRGyqm3L2mIOsPEIzkoX01Br3v/2Gm
-	p2QqsPXFEIIpqKdvDysizAAagezJscthwrco+uQMd2+m1z2uo6JuCqZPCaeVheb5gQMRqCdYL99
-	prLUe+rF6nTyPy7pc5KhlEhK6MvD1BSBdr5HTWL7z6ShjR7Pb9rRfSQX32ds=
-X-Gm-Gg: Acq92OHFdAdLotuZcS8xqD8Rs6NKQ+owZbzKYYoPYIKcVCakBuSJyGJXcdtI4iVEWUT
-	TDni0GCbxXWcJDdwUCeBqwZDMjBj23gWQKJd0POyk7Lb3hJnYh8O5hz1sieHzRLPBAsBna/6ZFZ
-	kFN4etyY4tQudoxip1PmBDviTBPQJObhCUN8aYryuix62hfRrUWo7yfngL/v7/ojN0hi6CBjgVm
-	l5pxXtzXrUt7UcNIZAP57+lS/KXNVDtZuABN+8w+B4/15uRAndHU5zR/uEYDXFEeyv7XG1z6F4K
-	/9W5wB5ajIE18OtATI5xtQupDqAzNZOrXa7ixYa+jpmg1Aoc36FJ/fqCMxMpaNocjbKl/A==
-X-Received: by 2002:a05:7022:622:b0:137:9399:fc59 with SMTP id
- a92af1059eb24-1398f69626amr23221c88.21.1781633399141; Tue, 16 Jun 2026
- 11:09:59 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
- <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor> <ajA4z_Wkb93cTW4m@google.com>
- <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
+	bh=6+ScgYfxi0F5b6Wvpjx0LZ37xL7ykIrxLDeq6EIQyhg=;
+	b=59BYgTlQiwnnfXtXERgA8HHI8jek8m1KSiTjY/Cv3eG0EBGYpacPa5piATc/K8I7J0BjX8
+	uBJmCMIgHND9//rhoDIqr8Kk5DvzmfJCYqeog4Er1eXUlJ5ZiPTwq+FMCA9cswgldt2TxF
+	lC2fbCjT0uBOqeL/0opkYS6ae5RyB6I=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iAaWvAlF;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781617852;
+	b=lXUSI4N1t/eRbNKMoaNCLhuqBuxLfPUrgV4c9LL60JHZWyuAuGE4kXe12x1c7kbmrOUNxU
+	TY5K20NH4e73rcyYZmmiZPAJWKG64Kwyiwg46fjx0qBLT90IFTA0Dc07xmgTM2LibRnN83
+	qTM5qgss0BxOCcPkksLk0FXrEdhhMvY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA11440585;
+	Tue, 16 Jun 2026 13:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210251F000E9;
+	Tue, 16 Jun 2026 13:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781617849;
+	bh=6+ScgYfxi0F5b6Wvpjx0LZ37xL7ykIrxLDeq6EIQyhg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iAaWvAlFrQXzwN0luqih09KxDpyecFwRNgyEJGZQZvlcqfWBWriNCVs6bNtlxE4ug
+	 eOfP8G0iCrDrvAV1SyjxZvt2RpiaErQtQyCxhEuFU/NhalDxogfri5r9OUtoUpIzYW
+	 jzO1g4Zqw2tZo77ZH4CC4psd9pMph8BJpkKiY9/hM0TsGpzgJx0eCML83c88vS558m
+	 dQe30yILfvPApiTdDVihnLs46ePuDn6KME18EWyt/oKxDVwmhgZ23m7RvUjAmDdRcU
+	 gXPANzsTmyEEtNdIRkbjbkzlzG4bJFDaNJB0v81wTQzs9wQvMsa+qBjLtPDm+OcD1Q
+	 m9Pq1Ts78YFzg==
+Message-ID: <e496b312-2496-4168-ad51-9764e9aad886@kernel.org>
+Date: Tue, 16 Jun 2026 15:50:42 +0200
 MIME-Version: 1.0
-Date: Tue, 16 Jun 2026 11:09:58 -0700
-X-Gm-Features: AVVi8Cfci2aZVOJMaXs8XbxR0646nJUtiwZFbcmm9wi2jMlpzFimiOSyoy_glyY
-Message-ID: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: Shivank Garg <shivankg@amd.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Pankaj Gupta <pankaj.gupta@amd.com>, Fuad Tabba <tabba@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
-	Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, 
-	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/12] mm/swapfile: Add batched version of
+ folio_dup_swap
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-8-dev.jain@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260526063635.61721-8-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8F2FEA000E
+X-Stat-Signature: bnitmfk6yeiwp13cca45xrbxqh8gabe4
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8B07E18000E
-X-Stat-Signature: 7o3mptfu9ysizt15xuh4ynihq718psmp
-X-HE-Tag: 1781643376-36510
-X-HE-Meta: U2FsdGVkX1/a9VUkguXEglzhgrP+sK+pTGpcYH/+HZPbFmW5oZHSBYUXvg8CTz/aybUJRwGXapjf8Wnp9bw5yW62mbohxH1lJY9P2A+Fbmvtz8Poe4Ij3UYAfaQTv/MoqTDyrr7Qaeq43e3vznava4KEexqr4Q5POe8DiEOEOHATQki54XAFRJ6IG4UTunaCK3+ojOT6Ha5xsB//wMTzVK/ariXhYS2hmVWvTHhgiahSC2TRomeG/VUyo+Uixs3GwAl0BhwsFD3LKeP0bz6Tlk665ZWeXVtx9PG0oTSArbuCKQwjvxCytI8siM5nMh2rAmrEijk+Q5MlFMkMY89HXvtWxTJzfwTWEA9+nsHUxp6PwtJEWnxIqsMRLAo6fV7kOSB3lr0XN80vIUzW4JyVoKHIrvUHvYEH6JBVx7Nitm2Ha2IFXxFqiH0c2OYOSqYdua3HFMKtGvRCB8KiwDrGjSTyZMiUx6CMadEw/E/3RQXuaiTNZwCpZIAnEJlYCLHiwgwo9I4U0HPKtHwFSMTasgKpK9pr3Z7EK4zEjKPwaICgg4c5NKUcvHA2MpCKhLiqeYbUxREoO71OOfqtcev3xiC6qUJ8cy90Qo5eZDLJurXDjHWb9EGN0w8WC4QZXK/oHS4+6ilQRmiQv7CZwhfK29TC4NY9qg2yr5T8bj5fiJmDcdKWBniFrOQYu6wDpnGrASD30bBUx1Wt9hL3yvfllsCcA56OV7VWKhP2fc0o3QShjYhO6nYN+eDjfyJzJ1uOmYMK1OU6x3jVyvuJWZw1NEBJlP1uN0tvh7gyfDNmuloxK3VCrRdEZWut6ybXCJj39I7XVxb3Pig45HL0pWjTiunjiTnzEDkPvaSZbrFTEzpEHvoIgpzgCGBLTAoroy7o+pr39qxwHKc0f1Hws5QzXzWo0ee3sgIDveGqBIW53dHrTPsyj5iiyyggIs7+aYx+s/6dfZI/R08ZNk1V+7l
- jqjrVKvj
- 7hLXV9/fzeDV7855lJNH5WnGuwjPAAvK9oCBiP6lq8Z5zZf2uOEPDmB8fRt8Ji+WDD+GiGKWjrV4n9z9ev3D2TMm4yPAHrTjIyqc21HJ+XREOc/6GqqThYxTftEAtV8OVNr6++FPH2Xc+C47fn89fknfxBmMLRzG4JgWfz02Z0r33Vgsm7QRsmuROxDdfTb+V9kbaxVryIcDNmIgAK+kjErOnJgQfbLcAjlSPaegbXvLNy59KW4w+21xC8ArbZvfAW6lHWZCUyJABDBn4JNTglltkrnwW3CxrzSy263UZHJ3AgLvHtbvR1u8NIfLmu+bZITyrVkv0fGKv2UpR0S8zdkVUBqKFVYI7/fZFYj3IJGvNtO4ooOMEcWjb7dTLHmeaZtU1u2ZOrBTkyMvKOWPb3y+bSUGJcVfmq8c/inT0zOFCmIk5WlhPP7AHIKvCrqRNxW6jlFRY4fgezClqbPNxlaYMDvVA8s/HjhmOpvOFTkDaviU=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781617852-841969
+X-HE-Meta: U2FsdGVkX193CY8OakKsi/J1vURFIf8volQ9iDPQNbWXEu2xX7t+aY9w795InmCwxPzldrr32xD84rlSltG/BdXAnyVcnsHes5bbIrvaMHdEvhS8pgSCPO3hjC4rh0QF601eQcSSycg2ydxUI0ZfxN+HqvwHRVsFf2rtxKTe7Dsm4wVTeenmbFq9gdrA20cC0wWgbv6IjKIuF7LZr0w3u/mdGmrmTAhGqobsG6csWssAoIwkgOLWVLPm+KYKBBzAwn57ea73UqD2hCMJS3ikogUbl84EyUSxgKWkGfBJIDfImeiVL2tlyyM0OmnwV4o4BvRVy00w298/FAFqsvj4eNRn3ggwc9Y5Ylyucm96LFxJUmoe6xDmQJhErH61odGO2rTQiSLMjjjOVQfH56fBnD2aEDt/hE0M1i9UBoTFLV8o+lQ5Z+3FG81eSUrOl+x58EOb8hnQgFAGhYJBQJjCjMN8qsTBQNuGr965KbQvlJ9xwMFtEsDrROohK7WlqMb0i5R8gE023Fwx6+5OUWajqBg1vWbsJQtNAcJFIObisUxuRVOQCoQVsP+DpPBZW9LURFf5VQpUU2KlT0KW2RsY4J/Rzdz/fJE7wM5J2h8rRFHRWabiOddJd8EmwvpjyUZlyQ/1Lx4oWcR7i+/0SCJhOeNMG6jB4p8o8JFvI5HpZ2O9b4Ls59oQDw9aO5BtwOJ5iumBpb3MCbKIw5LWwaMv7nUxz/LgA46rdWzM+HljTAcCAGv33X8GVezTTMejDMxwthHpGBZw8ZMSDJt2DX5jm7vzhjZR6STJBXVIx98oQ7EduDbMbJHRadN+/4y8LFSf1sSF8Pl/DJ6XNv//qDeC/2/UopYm47n+mcrgdtwG160CKju/FpLOVoMihC8rhVL8w1psCZBQ420L5diodafarS7KVotctMP0SgnAC5XBUJWGfqe2H8bEqrhh0Etfqx6GmZPrHSlVR7PehrA0r/h
+ ZV4YBtLz
+ UvvDh2nKdks212bPzU8pdxKKnjhxk06q1j0Km1MpbXZkz3xaWXf+miryuQr2FKJBeW1noRi+bGZmKtNlwbsrqmulbhBXhidjUTsn3JITGDfMDPmBG8Xfme+YFnVO2ZKdwhIlyHuiYB+u7mEhdVAQ/E1mTU3i9WNcOowKGrPQQlzr6ySB9QcI58/cepbcVztvXZTaeMRUPcWMZZ2NCwX/0Qna7iWBYpsPKgJi6hyTL2uuc0gXAb0CMqzvK/iYYJWAoCJxpm7QYFKSkVbmS8iO1qZ95NXRjWzO5Z14MFvOvUdk6VxAOAqcB2SKj+CZf17xKo1D8S7o0NN19fmOXJ9Bloxt6n7M3sp4fNQNJVEoaBkAP6isTt0GmgXThe4XSW9XJ2UXUbNJhlYNRM1E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,65 +146,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 5/26/26 08:36, Dev Jain wrote:
+> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
+> that folio_dup_swap already can handle a subset of this: nr_pages == 1 and
+> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
+> 
+> Currently we have a not-so-nice logic of passing in subpage == NULL if
+> we mean to exercise the logic on the entire folio, and subpage != NULL if
+> we want to exercise the logic on only that subpage. Remove this
+> indirection: the caller invokes folio_dup_swap_pages() if it wants to
+> operate on a range of pages in the folio (i.e nr_pages may be anything
+> between 1 till folio_nr_pages()), and invokes folio_dup_swap() if it
+> wants to operate on the entire folio.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-> On 6/15/26 19:39, Sean Christopherson wrote:
->> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
->>> Hi,
->>>
->>> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
->>>> Hi,
->>>>
->>>>
->>>> I always thought that one of the nice things about using guest_memfd as a
->>>> memory backend, as opposed to host userspace mappings, is that the host
->>>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
->>>> collapse, compaction, etc, acting on the host userspace mapping of the
->>>> VM memory, and outside of the VMM's or KVM's control.
->>
->> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
->
-> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
-> use case of having non-movable guest_memfd pages such that we can support use
-> cases where we can hopefully guarantee that a stage-2 mapping will not just
-> randomly go away.
->
->>
->>>> I think it would be useful to preserve this behaviour, even in the absence
->>>> of confidential VMs (i.e, guest_memfd file descriptor created with
->>>> GUEST_MEMFD_FLAG_MMAP).
->>>
->>> Just to be clear, I was thinking that it might be useful for both
->>> behaviours to exist (migratable and non-migratable) for non-confidential
->>> VMs, and allow KVM or userspace to decide which they prefer for a
->>> guest_memfd.
+I was briefly wondering whether "folio_dup_swap_range()" would be better (a
+folio range), but *_pages() works for me as well.
 
-More concretely, are y'all pointing towards a
-GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
-kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
->>
->> For the purposes of this discussion, we should separate the physical act of
->> migrating pages from the features that trigger migration.  As I said in last week's
->> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
->> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
->> anything else that goes against the goal of guest-first memory.
->
-> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
-> offlining, virtio-mem and possibly some collapse mechanism if we were to support
-> THP of some sorts in guest_memfd would are all reasonable.
->
+-- 
+Cheers,
 
-Background question: how would virtio-mem use migration in the host/guest_memfd?
-
-> As soon as we mix in access/lru semantics, we're going into the wrong direction.
->
-> Fortunately KSM is anon-only and not even worth a rant here :)
->
->
->
-> --
-> Cheers,
->
-> David
+David
 
