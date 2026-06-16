@@ -4,120 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224B7CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:43:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA147CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:43:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0E246B00A1; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
+	id B5D606B00A5; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABF866B00A3; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
+	id B0EDA6B00A7; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986C06B00A4; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
+	id 9FDAD6B00A6; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 632176B00A1
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6B1A1401BB
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:46 +0000 (UTC)
-X-FDA: 84886949532.01.81D82DA
-Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1A1E320002
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:44 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=etxsyHqY;
-	spf=pass (imf31.hostedemail.com: domain of 3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.167.74 as permitted sender) smtp.mailfrom=3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AE9B6B00A3
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:43:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DADE012020F
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:27:15 +0000 (UTC)
+X-FDA: 84886910430.17.297CD20
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E9EF7C0007
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:27:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuHuu832;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781642565;
+	s=arc-20220608; t=1781641634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
-	b=gmAJkQFD1e6bE7WGwLOVMjcQK26IH4EuVr0z9mjIo7eJAxbq96IGPneFpliEg88NSfCH3x
-	G7q47ccOk+LzhDuXi90HyIGhwWOvVWEE+WVflRlZJFaePwvDvNpUJe6zfT4Ye2FNxOXQxX
-	rrdvaOmpHFLK02fZs1JLeHx4T7dgUUI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781642565;
-	b=6AaFW6EtkF2Zg3tRWX8KgxvUhxJwYWml33x+eIwcdRofov5q1Iz11Ge5Ar+v9CyZvZYlNc
-	+qyx3Hm9nr19gxBvxYMdRz5lzLW6eiKyZGce6aNgtBjz6EtDtH5ZV3qT5vJ3FiH79TbxtL
-	ybZYBa0PAuCJ9LX7zxEyh8Xj7ny9D6M=
+	bh=e6nRZUUDaqrNRBspLG7ihU4cunwzWB+iNdq0zIyl7ds=;
+	b=LJvqFSg/e5Ud4pFzg2ROvBpffHDTU4GLtsJzCfq5tqyvI2QXjvFnzfyMFuQhNH8zI4XHlp
+	rJCEK2YjabUx4g8fTD8E6FJkXyuJ83ILsreB3AgPMTtmfVP49setyMIgi5WmUVPLZFX5cF
+	7g9j6RzBPM1FH9s7iOrqPIXiAboLa6s=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=etxsyHqY;
-	spf=pass (imf31.hostedemail.com: domain of 3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.167.74 as permitted sender) smtp.mailfrom=3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-5aa607bbfe2so2640154e87.3
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:42:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781642563; x=1782247363; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
-        b=etxsyHqYqAnQjg3pKc7OzM/QJtE5CRkgo5Oe3Y+0o2QX4/XiromjwbAejqNHQDIcS9
-         XrkRqIf2XJ3TbzLEmI793heO+LLo6yHZsymkqiKh27H/DL9V42k81YhzONUsEHfUmL1u
-         WEPXelDHiMBYWLvhRJx7FgSXxl2paZlgIhTmLgINxjTJab/WaUeuXpRP+WZt0fpKFXVJ
-         5AdLWWUEBl0ADYi4jGJi2qneC0hwRA7Zc0d1gt9ACazGnCR2hFcNL4SxYxC8DS2i42wZ
-         9J5Ul2NAhSySCMtwkvDvwY2dW7mL512XFdlRQcp7tTXzTUtTZXPwulIuYMZruxvYEtQN
-         yc1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781642563; x=1782247363;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
-        b=erlKei9ER8jaz3XU9pk8lHsL/vNx9y0b1oOzxR6bND3IHrAvZ4HC8KLWA08lyjRhp4
-         gnf6noABzHR+hj01mAU7pdGP/U+V0+PvpvzS07Ocz5eU22IDMhuIkn/CupFuKB+Jw0iz
-         VVtlDE6KQPYibD3cLVMLzfPThWPWlYuTfEiLqOvqfsCIX/9RoMx+zNNYi197Nmn05zZ3
-         MTZ9RIrQTbL9IYqb4HJ7Wu4U0Lpzf+w9WGz08xgGEKI0aDeH3UkyXPfu6Sd0ziZ27AVx
-         ib6nPNTLCEafUUzIY/KxHl3Bt5A2IsN9Nm5bDizoklTzW5KuQebs42I0LKibe20uc8q2
-         lHTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8e2g+XsShcJ06wDJ717yokX3o8JL+uRnSlk69DApaKNV3Z/WCoLS0ZW32GcU6+kU5EGTGqgniiJA==@kvack.org
-X-Gm-Message-State: AOJu0Yx0bYo/iPz1/Je37XhRmP7DNOoVOxzzN0CDZIHIovOaLBtQ+0PB
-	ZfzkT/g9bvsJSZWWJRcos0jbqP/C8FqFBg0ylDUhrTJ5vK+wGTXVa7KutRxt/B0Hne48mjLMdZ9
-	22mLgbBo1sYK1wY75Xg==
-X-Received: from edrc26.prod.google.com ([2002:aa7:d61a:0:b0:68d:205:9a90])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:35c5:b0:695:865:47cd with SMTP id 4fb4d7f45d1cf-695086ebec3mr1540972a12.7.1781610868582;
- Tue, 16 Jun 2026 04:54:28 -0700 (PDT)
-Date: Tue, 16 Jun 2026 11:54:27 +0000
-In-Reply-To: <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
-Mime-Version: 1.0
-References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org> <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
-Message-ID: <ajE5c-5gZtJRoadx@google.com>
-Subject: Re: [PATCH v17 02/10] rust: types: Add Ownable/Owned types
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Viresh Kumar <vireshk@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Igor Korotin <igor.korotin@linux.dev>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
-	Asahi Lina <lina+kernel@asahilina.net>, Oliver Mangold <oliver.mangold@pm.me>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 1A1E320002
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JuHuu832;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781641634;
+	b=JWDceE7j/pwITIZipeGE3SMT7oLMWWg4NS3g5/OTNp0Wn5MiIWX15GNiLtJ/ILYaKDW7Fn
+	PNrv6VuhDC3P79tgKTAE4OpXAoYzHCQjdiFzoRlWCIcHBn1iYb8nH5oHxlD8ibRUnsl7yi
+	riIUiIlJrXTgRPczhC57sB5f/2zrFHA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4759D60120
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:27:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD291F00ADB
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781641631;
+	bh=e6nRZUUDaqrNRBspLG7ihU4cunwzWB+iNdq0zIyl7ds=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JuHuu832ps/PLAv/yjPk05o0j/bNWU+8RQEPpNUm12No95UDH4ydA/RnpaX0vKxOQ
+	 bMOKWuENOMqiq1ZmHfZX+tyYpmRZ9jbR68Pg3GXPiEttCHCBNkxjoMgusSYAlxxYIp
+	 WPhsjHYJEnkYmhJKTJr1bXIKaR0p6jN58Lhm7zYuK33zmj5lsaUfEZt+e46Dn7jl75
+	 /+WkL8VWfs/4p8OfhmRkeXMULgoi3L4ZBvUPuQaM08r/kNEaJrXPY2h5R40+Nhy11A
+	 jkLT/8QkQNdzPa+BTmgWkAR5Zvdyb0a/AIBtFGYFWwJHx4DPDZ493iuwCyO5hyI1cs
+	 SFULSDoPg8t/g==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bf0170c80f7so851986066b.3
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:27:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+/c0WTZrG5F01TWr6CxZ7rjkSyMQrp8puvX+a72+HUKrsBM4Y0QOuCmsGTb+2C23YFvte40RnOtg==@kvack.org
+X-Gm-Message-State: AOJu0YxBdNjjxP0IkNrGqV/FFyKqCjWvacm2P2n0CoK+VsGRtMho7pDr
+	e/lv0wpzxjONeyw+InALQK/oaxXlnZ6lT8L71qrr/HEVoDGpzrJuYNqmDElJmSWaKpzTnG8TGti
+	1LC1HwmWgS3Cc/t106EkVclfaGpTBc5Q=
+X-Received: by 2002:a17:907:3f0a:b0:bec:6c5c:cced with SMTP id
+ a640c23a62f3a-c05a69ec26dmr89257366b.28.1781641629909; Tue, 16 Jun 2026
+ 13:27:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <aictKA0XWMWbxFdN@linux.dev> <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+ <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330> <airzE7jD9UtyR17J@google.com>
+ <aisEWnb3pzmVC4dl@linux.dev> <aiu06fbV7rWqY0Bm@yjaykim-PowerEdge-T330>
+ <aiw2p5ANjsQUCIHA@linux.dev> <ai5y923elCSZp41j@yjaykim-PowerEdge-T330>
+ <CAO9r8zOVqbJEaBqTHw=r2bYw7Lm1tO0TU9QuG+eH1rfqcTAJJQ@mail.gmail.com>
+ <ajCgzNIPLhjTRSXR@yjaykim-PowerEdge-T330> <ajC+FNpkVpI4pbBz@yjaykim-PowerEdge-T330>
+ <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com>
+ <CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com>
+ <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
+ <CAKEwX=N=Umi94wdKcLxEWOqUwhz6=Lj909pc1Pr_5ivVnZmdPQ@mail.gmail.com>
+ <CAO9r8zMHGFG_jcVeDPgowaQ2RNntp3KankwzQdgrJb9PrWu8_w@mail.gmail.com> <CAKEwX=NyfxfXhHESTLyirAgdVA6QaYAcam792-vSZdmo0Pz+bA@mail.gmail.com>
+In-Reply-To: <CAKEwX=NyfxfXhHESTLyirAgdVA6QaYAcam792-vSZdmo0Pz+bA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 16 Jun 2026 13:26:58 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOg0OP1Ak1v7CRzSfQq0D8b4Dw+_T0Jui6YTM_KwQQNOA@mail.gmail.com>
+X-Gm-Features: AVVi8Cef9RFgkBD4H21fnyl2aKEeUxi6JgJdg1HlDVnffa50e_DqpC4LMfTVVho
+Message-ID: <CAO9r8zOg0OP1Ak1v7CRzSfQq0D8b4Dw+_T0Jui6YTM_KwQQNOA@mail.gmail.com>
+Subject: Re: [swap tier discussion] Re: [PATCH v3 2/4] mm/zswap: Implement
+ proactive writeback
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: YoungJun Park <youngjun.park@lge.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	akpm@linux-foundation.org, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org, 
+	kasong@tencent.com, baoquan.he@linux.dev, joshua.hahnjy@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E9EF7C0007
+X-Stat-Signature: ybojrx3cuaqs66km7a7oibn9pqou8hab
 X-Rspam-User: 
-X-Stat-Signature: 5w3cksinxogdoy3t8wpx1jw8zf4a9xex
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781642564-450548
-X-HE-Meta: U2FsdGVkX19L+KTbJF5hqMLMC6WfFlIfV281KYPsGago9Hhb3wUW4gIRxv1fc+mIEShsEOYXotZK3Q1TmarULrH8kEunL1eosvbeuHhpYC7l3ilV2Mh3bfHNDjDjPyjYN5LvHqmpJ5DdrCrSnhe39V4Y1WIdsZJYY0yf4XhDOAKziY/Kjo+4nm63Y/OU2PidA3SLE2HPLD35mWBqieScDg1ffbTaSe4WRhXhSqBdh7Uv4CFB+kxyg2c00mcf6UUnmWZgspMHzr+lDeBKhZPTc12qFBMrt6BBORdMQ1fUWLSUz5j4AneWXvWw+8X5s8i6Pz4p1ubKfq0Dxi/94el/FnSB2Z3kwMhhMlb5Bs+MQEAVKMIPKRdt0PAoDO92YS2Fh0K6KzTRMQ+a5cFK/ezQ/Urk6yoNL58S89Ed2Y/qpocBH9rv4D0wQ5beqfcBjDdPIQqhGSAWcQ0EOqQuj49brZtWtEzZUuFIKPCC3QriFhVU7ps4cFGKPxN1PJPqmBVCGu2btMLhipwYQGmumOJKQx6ItyJv9yUZ4nsgj1mUeXFl8IpiaGUFvO+RgenRNdwbxFbBiadAGY2TV4Q2bMLqCzeH8xfYZzW8LHB5OuBZsD7tQ1HGOC94iGgDAO2JJJMK02IE2/ciTJVZk402qA0cBHQxHWm6aa10R15IoVEu5mpmSzUYH8S9luG2ZvPpgmpzCFgOzaPWG4CmX+zjESZr8Vw/mejXbYT7HQ+wRfFPo2jLCFUKvapW/daCnDHce8Aqe7IOCiYbaEU5bPdBZwy6T/8mTWDbV6e+Ohimk9YVqzV7i7QLWAehtqJagvVnOhv9mwPiCouBBsee9RD/PQK+GJlAya0AZNT2AGlMKeF6K5NZ23szF0Xfb44CukUNfhT6BJ9EiFBm1KMVcrGH7UHlnt6BiheDloTQrq4ZpOHaiIERlrHQRdFenL6DDPhQ3a5lvjBO8+GDRCc2531hJjV
- oGZVL4E7
- qOeIveEClZ/Wu8cmZ+R/wByMfJVaNs6+7pydtMyjv8yuoR5pPtQ2mHXySGc4y/fB3wfVn3JyBNvJwANZiFiwy5PMAFcJ+NCiHTHjjLzLm89M0CCkX1FdwxbpwTZeObylAbaPAFZn/so5R/BRBKE916uA+RA83lXuewvb89G66QpTGOGJ3OCjOK8Ses9JOt73ZU2eCLlFXpJHCbBZOaDWtdKp/B8Y5vVjixtczHv4Jal0rY7toKNJF0aZlxq77dLvWY8OGroOhKN84qsX29xBollC25W1ZE7llw5s4fWKszmpPKfg61hTpd9tQzZKjlED1uLoFZBVUVyMHwnQFNgOz6eFYOqEQ9ZhzwkrpWpkg4u8y2v2VSTjc1f361hdx6XCeU2gcONIw+ubI6hYpJ8GdQAvJOqxFs1WFyCAHPEoTTp7tj1cSMIZvpBk3h/ZAsb9K9z6rvlZo5zfL0qqO1JSShpFjQYGQIn8hrqpO6zDDFjD9VDeDFad4uBYhl7Z2xqZVfP+z9DVxuou4nnONa14kSKeQZiCFBI0wqGVyECMgx1KLODyZXSSGAvLc3FA47vezLeyQuMxmqXb5Xui9rGGPFKV2MtMhySTctuHsgxV25FYHsediWCou2EppwDwa9CZm/ZYOlOC+u7jNJSRK0KMS2sm3HbfebYiOE/dn1mhKKCF9koOgKoAbqO6YYwcmzFroGJk7lSV0JZcFhZ8rNWpqnH4v4oHy3CFKEHWhO67/k0S7+DfFrGWA9clc8T6tFji32z6SkbjpDdezNgIFFyUJtgjLnhCCdl7UncDk1JVty4E74ereqejUsJ3HUB/dNxju8aNpeaJ0HWaDTJiYd8lPrRGwGGrJrhfqHs502BxQVRsaRfkVPbi5q/szTU/of6rwnJCpuDpO2qDDTVwl3szlaatm4rGiSFXxP+WIeQiS4LKVPbXNZT5x08Yx66k//FvEL4X05OzBPHI6+zgnNsjT4rhX4JO/
- NbG8gXVq
- YtzQJVxc7K4JKHQ1f2I9k6ks6Vb531/PYuBHI9GLrfVCBplYFY8mHrRki4X/dPSdoernPb14F0SSiPqeG2Whrw==
+X-HE-Tag: 1781641633-329310
+X-HE-Meta: U2FsdGVkX1+5m3jJsTNDYXC7D3qNlO5uBOJusc8TbamqVPd30GeZRsXOZD27Z/7slRXhPhGsj3JLa/tFwcOCcHRMccDqftcYWaB5RUV6nodRf1TIrFpURtIukdimXofgENqcC+wYNnOGUGmWu6Izs5dVfSJoYyTr3cOl6DYR1jm0/13WeoTblJwrB4Ac8EgXGsPhqRVtc/DEOuEmfKspLnXt/oOZQmf8DjA3Min7iIQrMfsA3eRDrpkvoNKSJENmt4kIgApsLmRKDSQEI2AGSDQ27QD5SCcIeQi2OLwrNMJNCD3bEQvX2NfACRblay7vjoJXhXNQZt6IopcI2V9ZzbYKXPk+7mmo+XMD5NDLG3tScw5zjdWMBrEDprlJyxDmDf7StIbsrGaRJhfPDHjFVN1aqvkzHV7Myw3BzjC6krDhXVA1iklCkk1+jkAG/lwyerh0yDFlHCjOi5kT4uzHFjplf/K+jAY9W1wvKBVbz8zITOc+txwWPlO6tRzBGpF9vMBZHnjOAkXKvoBak2j8DpuqX95AyrePc51+BSWtrbKQNEF1BHoJlS4B2edbYuEWsc283d4pO/ZYUVbgySyhvREEM+Kb8IeXGPcYFBjdFgt+Fb/XQFB6Y81FDI3Kafv6ptA8mCgLcRzCHKxylmzL2dwjfi3G4jb7Uqpgli6ctftSlltNXL/CGObfWMbGCuio7uTGzfIsWi88siL2MOf3eBU3NfTQmPW53OJqsGfDF1PM4UREinbuaRb4LFr83yKqX2HBeA5kCbeqx5UauAU/9CSiog7mSghjXf56q1UxslJNwh9jbtgMK7O7gJsMXJJYmNKm6IBLXV54neNv33PWgPvBROntyFkVAiLgJ9ZhyPGKsXLM4LinVxSyiWfVKSwF7d2q7YModg7LglP3xtT6ITgk9paDbNJx6nOqx9YY8edRhoXVH2opFtudaIU78x+pNXoxXBVOb7Qr0uoOcCC
+ gS9PGuJw
+ Smiu82GTlP70NxF797X8wZTYWW7W615Eix/383kk0I2z5xb7fPQ1t5yjJa4B3/zSzWJLcfY+4/9qAuz8MXUYJNIc/quYPd4IC0EgcjEghNBHCNwhmZXPh1sVb0IxBei2nqvxLshUcyZm7/8H8e8FDnTK42j6gZMmO2ShBUnZ+k1a+6WUfUW6B97cEZXjNgaAZcAq7XkmHxvd+HuevKROgnI+4YUt3E6GRddavPg8zg1SOEsmDVLA3E4Ctu6Z06LdE9Nk3WNmYlk8AKWHsIavAHC1vzS+aPV5zD18AmRIlSHdKGjL/UHzCSbzw8aru4AbCN26KDwG5xCc/dEI9ldlgDHYm1fz6j+X5iJkg4epcefUhDWpLbyN5f7h9fLyD9O17+PSVKRmSGY/HpOkm0plVN8g11Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,76 +118,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 04, 2026 at 10:11:14PM +0200, Andreas Hindborg wrote:
-> From: Asahi Lina <lina+kernel@asahilina.net>
-> 
-> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
-> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> `AlwaysRefCounted`, this mechanism expects the reference to be unique
-> within Rust, and does not allow cloning.
-> 
-> Conceptually, this is similar to a `KBox<T>`, except that it delegates
-> resource management to the `T` instead of using a generic allocator.
-> 
-> [ om:
->   - Split code into separate file and `pub use` it from types.rs.
->   - Make from_raw() and into_raw() public.
->   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
->   - Usage example/doctest for Ownable/Owned.
->   - Fixes to documentation and commit message.
-> ]
-> 
-> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> [ Andreas: Updated documentation, examples, and formatting. Change safety
->   requirements, safety comments. Use a reference for `release`. ]
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Tue, Jun 16, 2026 at 1:24=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Tue, Jun 16, 2026 at 4:10=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Tue, Jun 16, 2026 at 1:09=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> w=
+rote:
+> > >
+> > > On Tue, Jun 16, 2026 at 3:54=E2=80=AFPM Yosry Ahmed <yosry@kernel.org=
+> wrote:
+> > > >
+> > > > On Tue, Jun 16, 2026 at 11:33=E2=80=AFAM Nhat Pham <nphamcs@gmail.c=
+om> wrote:
+> > > > >
+> > > > > TBH, without vswap, we should not allow setting zswap as its own =
+tier.
+> > > > > It's meaningless. Maybe makes it a no-op, and warn users what the=
+y're
+> > > > > setting is gibberish?
+> > > >
+> > > > Why? vswap is transparent to the user. Why can't zswap be its own t=
+ier?
+> > >
+> > > Without vswap, if you set zswap as its own tier, which phys swap
+> > > device should we allocate from for the backing slot? :)
+> >
+> > Today we just allocate a swap slot in a swapfile during reclaim,
+> > before swapout, and zswap will just writeback to that one. I assume
+> > the same will work with swap tiering, except that maybe the way that
+> > swap slot will respect the allowed swap tiers?
+>
+> Yep! So if we set zswap as the only tier, then it wouldn't be able to
+> allocate a swap slot in swapfile right?
 
-Overall looks good to me, but two nits below. With them fixed:
+Ohh I thought you meant we shouldn't allow zswap to be a tier at all,
+not the *only* tier.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Or are you suggesting that if we set zswap as the only tier then we
+> can allocate from any swapfile (since we're not doing any IO anyway)?
 
-> +pub trait Ownable {
-> +    /// Tear down this `Ownable`.
-> +    ///
-> +    /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
-> +    /// include freeing the underlying object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
-> +    /// be transferred to the `release` method.
-> +    unsafe fn release(&mut self);
+Hmm, technically having zswap as the only tier should be equivalent to
+disabling writeback, but you're right that if zswap is the only tier
+than the memcg is not allowed to use swap slots from any swapfile, so
+zswap cannot be used. Very good point :)
 
-I'd make this take a raw pointer because the pointer can be freed during
-the execution of release(), which references don't allow.
-
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 4329d3c2c2e5..4aec7b699269 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -11,6 +11,17 @@
->  };
->  use pin_init::{PinInit, Wrapper, Zeroable};
->  
-> +pub use crate::{
-> +    owned::{
-> +        Ownable,
-> +        Owned, //
-> +    },
-> +    sync::aref::{
-> +        ARef,
-> +        AlwaysRefCounted, //
-> +    }, //
-> +};
-
-We removed the types::ARef re-export, so you shouldn't add it back.
-
-Alice
+In this case I think yes, we need vswap to be enabled to allow making
+zswap the only tier. That's one gap between zswap being the only tier
+and disabling zswap writeback, the former requires vswap while the
+latter doesn't.
 
