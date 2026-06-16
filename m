@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23845CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE11CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20C196B00EE; Tue, 16 Jun 2026 17:16:06 -0400 (EDT)
+	id 56A756B00B3; Tue, 16 Jun 2026 17:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BBEF6B00F0; Tue, 16 Jun 2026 17:16:06 -0400 (EDT)
+	id 51BAF6B00DD; Tue, 16 Jun 2026 17:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AD2F6B00F1; Tue, 16 Jun 2026 17:16:06 -0400 (EDT)
+	id 40ADD6B00B6; Tue, 16 Jun 2026 17:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD4D6B00EE
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:16:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 802E01A015D
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:36:46 +0000 (UTC)
-X-FDA: 84886480812.07.57D2A5F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BEF9E40007
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:36:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C90SZoFg;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 065A76B00DD
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:17:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18934164CCB
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:38:42 +0000 (UTC)
+X-FDA: 84886485684.13.577FDD2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 448BB1A0005
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:38:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrAsnxec;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781631404;
+	s=arc-20220608; t=1781631520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=miWoZw44n/i8JPGdPHxVqhm2xC4JeWLsG92ImJPLJOI=;
-	b=C8Az39UpOTZ/7X9g5jYFP8rzjcKP33ZQ3B2/XQhUdjN43gfvDveqedH9fQRYdHGqZm/Ead
-	T0LGc4lmP4X+YFXdanJPd99vA7H7tkIMZ4o6Ai2kvALl9m+7mvR2GCdIj+8pbab9mWmXTQ
-	fP8wKjCDtFohb5bX23QOFe1cLWU1dRc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C90SZoFg;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=QK0WcBjuiKh3VFQfCN5accJY6l2Z8scVMqhkVQzP9qE=;
+	b=TnAqFlYICET96yfP/NeKxPlQZZozoUxYI6/w/tD3GfliVTDQfoT6Kb2t++YphO2kkCSSZO
+	n47gCrssLjEXzi/eLghg/CXvEm0nRAYTQHsL0fqrdw12PuE6vAiNpInRfRm2XTc8h7knS/
+	11RRVQBtEYcecUXbb/8cNCvysnbnUcI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781631404;
-	b=JQAE6N42dJJA4X5PrGR7baZRaEzLTgmmReWmhSaRJOBOzGdALXTQ+H0huwXf+3vRWDXhWM
-	r4OszndqC87QIqWj0BdOSOEMVUJY8ZSvZkJ8F0Fv2hj4Knk0ppZ6kyc7r9wgMduMxf3/nm
-	4PH+v33f30PDFSn0tVVqn677xZNrM5w=
+	t=1781631520;
+	b=j6YR6RvJIs/FvYojCc4x++DSDH9v+LgEoEVt6yKJPS9pTEBqAAa4XzTQz5xN0lVrrDo84t
+	dcv9+FIpIxWyMI+sEzxHkEXSOe+7p6EXDHbeHZak0alQkNHsTO+xyGPeKJIburI7NDQLYK
+	Wkg+IckNk3MRrDegugoKoEoVQZ1Lbug=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrAsnxec;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3257C60103;
-	Tue, 16 Jun 2026 17:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BF81F00A3A;
-	Tue, 16 Jun 2026 17:36:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 62FB2434B2;
+	Tue, 16 Jun 2026 17:38:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9B71F00A3A;
+	Tue, 16 Jun 2026 17:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781631401;
-	bh=miWoZw44n/i8JPGdPHxVqhm2xC4JeWLsG92ImJPLJOI=;
+	s=k20260515; t=1781631517;
+	bh=QK0WcBjuiKh3VFQfCN5accJY6l2Z8scVMqhkVQzP9qE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C90SZoFg4ac5+IOo7IeDW3b2pZsuaYxolz4o7a8725ULS2tGbQBi9DvtDeP8zKVGj
-	 l8W7QnZvuVDtl/UjocYfHS5Ns09NH22YGhKDcl7RAlV4F2ADWvP7UObbO5L+0Jnkuj
-	 TLb5IPfd962++y4B2ksGFXtQfuXp3Msh5mA5tX84YdaSHQ/G1ev2JODiwMpmVmnl6z
-	 I6BvxNw2m63HOVQJzcRY7qkofbiv9KiuMPM6s/+nkHrMtn/gdauhzvUcy1FgaP7eV2
-	 twnCczBqnu+6Raiu6oP3cNmjva7BiA8/6cE4NcutFUaEuj5tgNhN8BvVoA704OhiWq
-	 pEr2x+df6w1vQ==
-Message-ID: <bf349ff7-d749-4cc6-a6c1-56f5549b82b8@kernel.org>
-Date: Tue, 16 Jun 2026 19:36:34 +0200
+	b=RrAsnxec8P54n6b6R6QwwiJZCip8IXfDNZr8JRBoLwAn20sgtgBr/zz+2WrtTT8aG
+	 xpDj2IDsCQT6Ww2fGNeBd4+olS+MBwLhv8QkoRnKoIEL9cygOB2mlvdEbxhykCF+QO
+	 q1t2UYpMDRL2pjjtDAAPY9MjM1yiTP26D+xOIPXypu0LfpsAipafDWlh4WRxhEE/xI
+	 NIBC3Vr/Lk4et/QcuoWY3TyJxETAnn8WpTqhXDkknWPmEBgEZ/gZ9IQ6nId06TPoJA
+	 yJLx5oQcs+Txw23vZ2pnzd95hrR9A9Vi1yuhlj+RzSKyyZ6DAPZQDCZ1ptpN50/6ht
+	 WaZHZUJq4l2CQ==
+Message-ID: <518ef286-9c33-4a9e-9d4f-3ed962b977ae@kernel.org>
+Date: Tue, 16 Jun 2026 19:38:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 8/9] mm/slab: introduce struct kfree_rcu_head
- and use in kfree_rcu_nolock()
+Subject: Re: [PATCH for-next v3 9/9] slub_kunit: extend the test for
+ kfree_rcu_nolock()
 Content-Language: en-US
 To: "Harry Yoo (Oracle)" <harry@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
@@ -91,7 +91,7 @@ To: "Harry Yoo (Oracle)" <harry@kernel.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
 References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-8-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-9-70a54f3775bb@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -132,17 +132,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260615-kfree_rcu_nolock-v3-8-70a54f3775bb@kernel.org>
+In-Reply-To: <20260615-kfree_rcu_nolock-v3-9-70a54f3775bb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BEF9E40007
-X-Stat-Signature: wyecwn6igtqs78ujic6t6i9df6uyj8nx
 X-Rspam-User: 
-X-HE-Tag: 1781631404-871838
-X-HE-Meta: U2FsdGVkX191ZwrfyzXz9dIrjxZQFSGbPXhyTHJsl8HQQNaJ8AdwErH+r/rOlbGAX2NuTU7isQRCwWmBfeDSkFOx4cg0/8AbW61tV8Rmb7Q1Q4QtcCZRHQTNWBGBI1EB3RmVu/0h6ghfYpHzVvGtQ/KnRBtcSd6awSjWubUWYm1qRixZKan94xfUTVW+85EYA9VgE7Z2OlYijqsz59FdJ9N8jQqKlbqr/yWv60DcJZsrhRjtAbKi0zTuFwUM7/regGVy5WuhzkSnoOFpG4iRXxqgpfWuwMtLh3AD+r+SimvcHUmi5/5dP58V0D+PAnPruafb0vlCj8lAQiR3mC80ez0DbhPu3Fit4lUOmzoDLpysOemO7NzwVd6RMwqMthhscSBW9DnggRgEiftRYVYamWHaKYfYrhpxfVZhtPp4+VGJyEHjcgSVqErDuSe+/FDurYeNM4vrE1q/euoNlh/DxSFN2Hlzgb+vI8EmqKo3lboh01STAJweMm+i1vD6jdfKVS9watS1lxc4Z4dWEjW4YqYtAfJiVesHwOXg4xjshIjC/G3rxgiRw1hzvcIzrFveOPwz34YQgXtSoYUWVMyLC0hykdhI4Q3fmp34QBhs8Brc5xSVEyWiT2IBlDYktv6PYZuuJGhg47DKc4KpScGRdgmu6JervBxomDoHm6rC30WCS4hqECOFb1Vp6DpkO/sQzaMCYrJ2rrK2Y0j1PZF9T3+GQXgKN/+2O5oTWn3FOsAGI7ToQJpUlYWrg1MPJl9uadgNXhNYIUM696u7/TSKEyzeqryZrRykrGj64LzLh0xtFh9ELNaspOVyMODoV12LxEIGXMq3bEp7N2bxodUSewpEmD1l9bX5r/VDvKA8dqdgAvcdY7Cs7hUmQbsOuDAAEFGZ5jVjqTcWt6obLq4DNuYTKHDP1CoGq6d4erxeWUoKJJpl3JoPjgo4MMkIrcNt5hEldp/4b/xfTwDAUsd
- U5msd2EC
- luIQ5A92SCyOk3SfrrfxXfPN9GMd23qQBNS2nw7uNjnHrdt9yX9tzHLSGepO/L1oXtSlzExVNIef3C9iE/95GkUFyyUsyn4b44IT70TEW5LraThxj5UmHAXePrb0KCHM//1RSunXhKlhl7FWT76NQXkEL4sgmCct6NUp0CFuvz7qsTzifNivWMw2WO1wHdre72gi8zGmjwd6hSC9WGM7LGTkKSuQX84iwApCakToI7QR4ItJNQlmQ1ZkG+ycCw/iXPj0w3GiRN8if/g4kAyHZbm2cFVRT4G5zRa7CYD48peYX06vFbsDHOpje5fURGJFrnC/6czy9ehEryAE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 448BB1A0005
+X-Stat-Signature: 3xhjw3wwj3xa5egct9qat6o8psc89bcp
+X-HE-Tag: 1781631520-622642
+X-HE-Meta: U2FsdGVkX1/j3ItrknPWA7l6u1IO1YJOUbfxt4Ti68LOPuAyDm7TdNRMXH7vJTA5nkPXGscS26ocQ9p4O3cWZS75GoY1qEDfGVp6FuRSPJsP3rEIEU3qxyw0ewDN4SbFvL7+YaNHd6tEpl39J1l+Wac+z30x6gqCYb9ec76wRnkx3ZJrspmFJAfHxlDAF4KiBYFv0uwUcDSVjDxnREN/SN96At11ETeKUES9WFPERoMTwrK0zs1WmwboyDMWFXySWaMFz054Bu9Bk7B1M8Hq6cCe/lnWrvXUSPn3ZBsyyQVCcL50QOLtYSY7FHfubiXcj3zE4s7a+bDIJxwBB574lpvvMRS58U4kP4vRpMkaN+1Dc9EDvAkJVo460ARPdv46JZ9hxSDeoiM9WTCGkNOb9c8dOHTxJqQgAFk2JKf5hA8QoWk9Th19sypzsowUgvGecnSKCHtvyL4e2ODnDwkouB+V5FTL1DnB5ENj3S85zpBrzGCrapZsK3cnUpkGT+Q4vTr6bxLyOCAFezu8hdVXaosyYOcuiGIW8O2LleycXBSvnt96vLwftV7BQTv2/0mxAjKVm0ptGpXs8vKnuf2melcxSa0OQfYUtLUyXUrhLI7+yC2eKC5to4BtmFydsWk9BZznF7vuKAcn2BSlJrwNMRS0AhIzaap7IQkLmYJcX6cvzXXwYUt/CJmrCglQ5uehqrzxL0rrQfGioq/rnWIzMLOIXPlFseEyL/LUFkFpU6jFVS7Z10JXNddA2oXdqB6eS9FBNXZOqvhY83Cu+LXegPBM/8O/uYxfjyJEHXHrKHD+TKS/+t9INVPWOhVIBdGWc8sbblp1JN/uJhKqVkGyFNTGe11UHunlatTWkC+4P4fCyZD9/3wQtYJFWUza31rqSyNq7TUIQv/3fbl8RsAWG1GoaFPh9HB4VcdotZ88PUvQY29AJlsCiMvMThpvLEzt8fxLMTKoMU+hgGDZt4X
+ YshHAH9d
+ YCW9MZxbrhxnDDg/Mr7Pt0dCx+8SC3ztPLES0Eao8Mm1YB8Z9Sq3nViRxfPpbr/Znf84bWg8njHT8/RLwl9rnl36pnXAXRTVrTmBAjWqpMRK0752ZKWJCCdIjfkR6ksR0oa4+pxe5QZ+O7hCj77jfez8oJFNKxZB/OgQ34QB7JLlJNVnrsg/+6e0VWTv3HQWAw2nnR3+MpChHoDgDanpXYkcpAS8d0soI9SMuP0QnazeGBcl9mKuDsEJKGRuEcimwpnjf3oL/e6MA6CIYSffQZGO1fKadTaF/gL6ZWICMgALSJPWMucq0mC1bxwiTK0NETzxMTZGroHijw2c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,33 +151,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
-> struct rcu_head is overkill for kfree_rcu() because the callback
-> function is always kfree() and thus there is no need for a function
-> pointer.
+> When slub_kunit is not built-in, call kfree_rcu() and kfree_rcu_nolock()
+> to test kfree_rcu_nolock() in slub_kunit.
 > 
-> It is enough to implement a linked list using a single pointer.
-> Introduce a new struct called kfree_rcu_head (the name was suggested
-> by Vlastimil Babka), which is similar to struct rcu_head but is only
-> a single pointer. Use it only in kfree_rcu_nolock() for now.
+> Rename the test case as the test covers more _nolock() APIs.
 > 
-> It is intended that in most cases, kfree_rcu_nolock() goes through
-> sheaves path and the field is not used at all. However, in the worst
-> case where trylock fails or no empty sheaves are available, maintain
-> a global list of objects that will later be freed after
-> synchronize_rcu() in a workqueue. Since the fallback is intended to be
-> the last resort, it focuses on minimizing complexity and memory usage.
-> 
-> To avoid crashing the kernel in a theoretical case where fallback path
-> is taken before kmem_cache_init_late(), do not queue the work until
-> the workqueue is actually allocated.
-> 
-> Factor out the logic that calculates object start address into
-> object_start_address() from kvfree_rcu_cb() to avoid duplicating it.
-> 
-> Suggested-by: Alexei Starovoitov <ast@kernel.org>
 > Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-Looks reasonable, if it works fast enough in practice.
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
