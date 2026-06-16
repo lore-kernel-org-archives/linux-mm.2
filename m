@@ -4,146 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE28CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF80FCD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:07:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3856B00DB; Tue, 16 Jun 2026 17:06:32 -0400 (EDT)
+	id AA8E96B00A6; Tue, 16 Jun 2026 17:07:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8B246B00DD; Tue, 16 Jun 2026 17:06:32 -0400 (EDT)
+	id A59BA6B00CE; Tue, 16 Jun 2026 17:07:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA4C36B00DF; Tue, 16 Jun 2026 17:06:32 -0400 (EDT)
+	id 997506B00DD; Tue, 16 Jun 2026 17:07:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FFCD6B00DB
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:06:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 360571C0E73
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:06:32 +0000 (UTC)
-X-FDA: 84887009424.23.461880E
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 05F871C000B
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:06:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hSEwNQOU;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781643990;
-	b=pUabWKkLvP6HweH1dKV/SaEpjkJyr0fkJnjN6qD+vuE+3RGSn6hz6hDylwhoGMO1NeIlcB
-	6RncI9I6pN/MFN6968HgHcpWtkKDFowz+tSReXf7smhwF1hPoRPIrL1cL7AxqFjcYVip6J
-	XiYx2ltiVkDQ3Vj0l50k1K22XFMO9uA=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hSEwNQOU;
-	spf=pass (imf18.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781643990;
+	by kanga.kvack.org (Postfix) with ESMTP id 731C16B00A6
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:07:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50BCD161A74
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:09:04 +0000 (UTC)
+X-FDA: 84886108608.21.1B795EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id ACBD520014
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:09:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPkfFt4K;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781622542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rnlo4U+8XVQcpe9elBQDCdpqJEQyFEfgWsDtAuY9ZpE=;
-	b=23QGUb2o6fKt/84DpwRnhU0i7i8pHYCsa+rlNLUmhezeqfZXS94FiJzdR8DLaZD1F6fEDU
-	ZG3m9APJvm6ZSEt7fM2T8Ed2H12067U/hyUjBQWjbRbTId0tEzwEwwbVEi1r/yIvh+UhCr
-	uztE/aMbyY/SVfJwgpUt0M0sYUy239Q=
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa6792e7b8so4586793e87.1
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 14:06:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781643988; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gQtOH9bW0tpQTbfFhWwtkIt2ELaAR+IWaW30YTXC8uJeSvkgG3OklUMQoXO9f1vm79
-         O6itNkN7V+BZw99UiP90dDalQtu3gavaI+oDzGLnAyzD7s2SulU7PXjt/qltDA0ce47H
-         bzdcthdlT6WK7qb4z9eE1H45Hv842jGhwsVloeP2VQsbQ+FBOetW9BONOd+Yf19/P6QA
-         iZMCiWMUIbmAelyw9i+3aIY0GGfYU3P8A1gseSfPzwnKXUjOLofj5HJpXbr5zT4EtHER
-         +U+vlCwpAK7dbk55dMwfmMGZZWxitx3P3q3c+y+0OzJZAYvAmHWEYliJCyWs4pw3m1uP
-         i//g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Rnlo4U+8XVQcpe9elBQDCdpqJEQyFEfgWsDtAuY9ZpE=;
-        fh=OZl2L+3g1wHG03I89zcV3jFymzJ/bIaS3W9KxytZyUg=;
-        b=VNMEheWLigLL974cKPV59tDuQ6vec5Api82P8/Nx6ZN9nh6RCrNOurhku6m/4mFrSC
-         Nl37EUO8xBcB9XVAUCKe4F9KExM4FM0/BogyjT33J6X+Z1oNdgMWz1PNFDp+UJ/UGEgF
-         8FZmCKgSLtMiJQGBthj2b82CV6iks7EDPDs9kpItTMxHo7J01wOcF4uAegLMotpD5Dp/
-         kLNoDTlreSKdEWHkPEfNYrsDbAqFOny8qCY+VUSuCGsVOt1cTxDsNVuv9tcy5DIufAB3
-         38682EXU9IUQ+9d5GsHX2lN1+kLp7wQBM03nJvNzxTh7+Az628lu4nlQrmCJtMFM2Day
-         +Ddg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781643988; x=1782248788; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rnlo4U+8XVQcpe9elBQDCdpqJEQyFEfgWsDtAuY9ZpE=;
-        b=hSEwNQOUiVPUQ+t6yOLwIif9pbEmTKyNIi7vvHNYh5r16Kg/cGUIM+CkG7qkfTLYbR
-         VnPcKRZkmXy33wuS2VHOFOgDB344NudqyUXAV0HwY5QxJBl2vYLkXCNFV2IB3lTRWsTe
-         1Zx2dNsx8QMKMXkoAiye0BclKpxXiGqLVxOWqUkX2y1mSWsuhej6jA1JYqZy4gQDs3+X
-         tTQQswe29ft9ykf+eL7NtPHE4Iv9s/NOAwjCfYItiruqTYVPHwKEizRn2rqf4T+mowqB
-         iQnx9Z+OaHo0UnWMKQDO7Dv1Pm6X7bFzimEpr8Y8c2Qrbev7ufAVeTCoI0037gJtL+Ma
-         qWtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781643988; x=1782248788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Rnlo4U+8XVQcpe9elBQDCdpqJEQyFEfgWsDtAuY9ZpE=;
-        b=HO2xLDLfeDegA0TpRTmAwGu7r8mr9ktVAriUDeUe3l7pRFV4Vh1IeBk8kmNB6keRSO
-         5DxgmCpNUFzUS4plQJgYn0FJYexwjwbCgzik2lMWHqBRWQE1dpCWLjKsyg5NNFNFHtXS
-         6z1X39JKV4KqrfkawJ057LZhmKHzbDHI7H6sibP9a59s/MewZzGXy+inOl0rnz+5ylFu
-         ZisXTXPxNfjQeF5BWWBD0canPAUi1Mkq1H0+X856IAZYNSM0DHgbP+8DfrmABUYlcfYP
-         T8Nw13+7R93Kj9VQj3gOIzw5p3sy9zERuWSBSLvgk5GVmuom2TG5t7gBKhzQ9tCbIoh2
-         kaMw==
-X-Forwarded-Encrypted: i=1; AFNElJ+bWzl+KOCLwZm8xY0OIh3YY/DS/z1ZPGloR/YsgJ5buyqU6dZnR4HOmbE+eyjRf1WH9fuZ2qfz5Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz/EQY5DKLchR+fytfIVilmc0cjdnGx8GJYbd/XTq50aeh3GtBD
-	5tKuB/sp2OaRHTwfgYib6OJ6Z+suYGIR/EpFRRNVWIGJG8hfT+ZW8vEOrzNDLHGIp3yIAnaUCiw
-	M6s6pL/a2j29MeKU01qeKevSWfTB+q+X0mw==
-X-Gm-Gg: Acq92OGKdHMm/1LjchRdkGZS1IpUfTXTe2dfpVCmurKVz5gtB1shp64qkMY+/gBtI41
-	tm8zGU7wti9gFXlqG3PoUYtZrs2oZR0yG3WGZ6mYCFlh6XEOC1ltbTDih7BhalSlCCwdKkhOBVe
-	rzFVETgXf3TSXfpy8/s4YKONNyUIRdEnuAK214oPcw9Vo4TYbjvEbTx7/E0+F425549iFQ1mu8z
-	AxgmEUoZIWdqCOTB5mL8zaUU7i4isEQ23SWcAwhznuXSFaDBgVkJk/YpBgmduweyW2nDPNsH7XA
-	xH9kKw8JZJA/mypeRW8I18HSwPmUU4lRV0BrNA7v51R8kxMlxX7D08E=
-X-Received: by 2002:a05:600d:8443:20b0:490:b0e0:3de2 with SMTP id
- 5b1f17b1804b1-492333f7715mr12498135e9.33.1781640537700; Tue, 16 Jun 2026
- 13:08:57 -0700 (PDT)
+	bh=iKJW527X2a4DyTxX/3xqnHNqlZ5qhWrmVwqPolgxgiQ=;
+	b=QfDBo8g8WqXL93JMmDKUct/XUG8CWS3jP99AeUjLw8gFcUZ9z6PEf9ttdi2DydWV2jjqeb
+	42B7KNeQeYl1fdE8YDjb++jmTcUiEE6W5t37Z4e3RX0hr94a+jMSZ8cyQYSeFnOpRhGlu7
+	otSS3GKzJY9hhMnDM7l+574OrjXmqwU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPkfFt4K;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781622542;
+	b=zxyhVbnsv4MBMx9yCQ3vBBfG8rcTEh/h10Csbru7gJfYj2dwcXHOcoYa8hMA+znLJx1bN3
+	vtNisJdETUcOreAiOPxQ9JvLwknWVadHuU9LdX+FH3Vamjbs8AFHTqX5PwDYiTHsa5sDeb
+	fgcQ/30kZKpXG0fFrYONwCh2B5TzOJk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 070684011A;
+	Tue, 16 Jun 2026 15:09:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAD51F00A3D;
+	Tue, 16 Jun 2026 15:09:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781622541;
+	bh=iKJW527X2a4DyTxX/3xqnHNqlZ5qhWrmVwqPolgxgiQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OPkfFt4KgmzgN4DhuMQCVJn5o7UhWA9RfTeQqzO99cG3zORFg54DXQsFptf6d3gAd
+	 JX/tXvvmsSI42Yk5UiWjM2bfzN7kneCYXt2s29WQhXv+sQLvZHlO2YQ1yqUifQZKJ1
+	 rAcgOwT42JNSdacCUKE/9zmMLIvTUHjDLw3MdP8msrnSZObqfETfhWfvWXRDi8W3Ff
+	 MMFJIhbDs8X55QdPbfZBhVcbOcHowNYHBVIQ6SAMa0pTXcaSDFX3MQ5kAqdCCsm6FP
+	 D/WO+G3QBG/imlxXTMP5FqVqO8CespQrCVJg6ryEOUfwSHDOsgY4Xiap6cOPLUN1IV
+	 KJR9311dEvrGA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 4/9] mm/damon/sysfs-schemes: kobject_del() scheme region dirs
+Date: Tue, 16 Jun 2026 08:08:38 -0700
+Message-ID: <20260616150844.88305-5-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260616150844.88305-1-sj@kernel.org>
+References: <20260616150844.88305-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <aictKA0XWMWbxFdN@linux.dev> <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
- <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330> <airzE7jD9UtyR17J@google.com>
- <aisEWnb3pzmVC4dl@linux.dev> <aiu06fbV7rWqY0Bm@yjaykim-PowerEdge-T330>
- <aiw2p5ANjsQUCIHA@linux.dev> <ai5y923elCSZp41j@yjaykim-PowerEdge-T330>
- <CAO9r8zOVqbJEaBqTHw=r2bYw7Lm1tO0TU9QuG+eH1rfqcTAJJQ@mail.gmail.com>
- <ajCgzNIPLhjTRSXR@yjaykim-PowerEdge-T330> <ajC+FNpkVpI4pbBz@yjaykim-PowerEdge-T330>
- <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com>
- <CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com> <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
-In-Reply-To: <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 16 Jun 2026 16:08:45 -0400
-X-Gm-Features: AVVi8CcJkF64DjJPscg6dRd5pZugnnFWUYYuUhZo9kqIJ3vQ0Lo_eZdOtaRqDxM
-Message-ID: <CAKEwX=N=Umi94wdKcLxEWOqUwhz6=Lj909pc1Pr_5ivVnZmdPQ@mail.gmail.com>
-Subject: Re: [swap tier discussion] Re: [PATCH v3 2/4] mm/zswap: Implement
- proactive writeback
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: YoungJun Park <youngjun.park@lge.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
-	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
-	akpm@linux-foundation.org, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org, 
-	kasong@tencent.com, baoquan.he@linux.dev, joshua.hahnjy@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05F871C000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: ACBD520014
+X-Stat-Signature: bkb8axo4ou3wxzn1z6bbwfc36c1i6t8t
 X-Rspam-User: 
-X-Stat-Signature: jedzww6h67qesuacjjniskse3pbrtti1
-X-HE-Tag: 1781643989-985269
-X-HE-Meta: U2FsdGVkX18RYaXZ1hFGhCpPfw9pd+DHwAw/t1xdr7ENFyjEdkwDpW64ZvQUjiurr/s233JR/2l2dy6dNJvaCqayRo+Yz9cnHeTu5zcq3W2d97/PsyjC8QIiiUtz9D/hj5QCAjGgUM9z3UoAjwJjDd9mA3OF7GTo/kbZ3ee040rDVoJFE0lupLtDObhylRMUmXeEBCeRNbJpqrbEbBA8feE0t4ctY7jBjfZJT/AN23MYeiXNqlaad9mHCahO5VUOrzONvY3kW8PO0PE0x38E0rhKWk5qWTxMyfJ2vtkLZF6NVa0L7VtV++fG7hvaWf0vQglQ7twZcyzPyXFYA+ZccicZtsxawA0J7roxdNxRI42LTa7xMD3n3KyeZu54ITqmMH+GQUsDHQkv57ywlmW3AyUiaQ3Vj0EIL6hOnBehGiG3EOE5Tyhx60jfjXeKI/c3/GmQSbNyggpeN6vFrhv1PojrCod9sKcF0hQI2dq4DXjoAMDHgvQ8cGLY6fzTEL24sDZ7MtXO3X17T2fRkV6R/ZhZYWJl864A54QmorbQ97F7kXl2B6VKhBZ7IbJGqsqZHqcpUjEom19JsSJ26NDc8WfRSRQOFbdFrPjRRRVDFp12eEYxToOUDyPzhlLQ1GK2hapVxMB/fPWlgC4lXVpwVCC1oeE7iLXW6wPXMPwur5EEUCxmihCaWeOMkKNcZOZrHyP6COnE2LssBSdvs2bMaC72WmsU5YXDOHfgpmNQGvBvUhBHvlUrbAxHViYwNNu6JZVewnb0QpA/LSeiX0bTCUKUetVhIWd2Kd63XK44GwjyyC/iZL85MFKdq7WKGSGMZ38ka4A1mUU/PJKi7Zwn3QbKNRDy6C7VxBMqxgt79TGsx/gNcRyMNL5rM4uPmFqs8afneyknwFQU5vxOwrn33141s/rWda/Cmmj9ZJPJdoCpDW29Akggth4nqQwvqOXjABNaN1/zsYo3+hQzw56
- Hc2UaCWS
- U0n6a1jLMRM151s/7kpBoYubTqJuMrFTbc9YghtXt7TFbF03vx6UrTHdq/MzpjkOEXsLGaW0kmySO365zNDt9HOWRCrKnHQvBqGxkVn3mD65kKPV0bwRtVXZYFciWtfPwB+PHZIb/UDZ1nQyECvkeHha1bzSSg1zgCE6GwlqBbPzbk5BiLcKbcNeMxINFadRvo2V1HMAXRn4DXEemEoeXEqAWVWS8Z5TZl+YWrT5llAygs0C67ngOzIZWe8MwTxZQp1mOtZYFOYo3sF2WNB4mnJy+OYzdcaULBd/uRv8VmsaMs6AghDQwGHx0UHynSkLpIvk+7loPaPZ1Ol7j06EnDsIGuplHFIEnOMzHhM0RmJORFuqvNpY1LR7Nq9EOC4Pox3QNQujU8du04bOHYXRwITqAiAjoHEhvCqLBOXhfmxWloWpX7pyQiYqKSGdLCRhwK3NctiUu2Xnk2RQOJixdYat1DHaMzjmGdIHlZodwtO2eoweGizbIJjwMZVwLlFt1DvfqpShh7mroIGNjPjVIhr9j0w==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781622542-791344
+X-HE-Meta: U2FsdGVkX1/Tv2OvFvpufgjPyxhpj9K9e6YaABW7iVSCJlL62Z9o98mCYS70ZujgemXtWSyMUuLnMANGcj4BexmsDDkS38eue1tuukPhL+Xc/agTv79rUniFOWr8zb4dV43OmASZ+odedPVhu3g3UL5O8DxQ4I938x0DKZNCcOsva1uN4CrgEbgCAI/8Q+4Hh4bEM8WrMS+oeJ6h1gMMrlYo21Iuc4myuNyoexPBaxC6xNwbchPz8KAwAPVAL5f6FtFZrV3rCYm/nQp5KStqw+rOOg56iU6WAcQ2lKRFwWyzNnffch9b2u+x01nkl9t96ZS9jKeCnbnmupcTVJTpCwjbxRpuU9z9QNDr2VStQAx1RJYD1kNTTxvqppOB/7Uw2I8XQsTV/LAL7fFDxzhnfsUgcS0i4/6DH79x3qhrAuSOQE/Ci1jgX86vTFr3BgWNLe9D1CgPRpSwF69p5tcxxx1VN1tZVpBD8cJtEMvJzZRDCmZukACnJnULCUx7Usk28ZRbp9nWwAc08XveD5/mjAXXhTwd5fR7pSe+lf9LWAXvlT9OhSVYK306n1/In2wpoximjt8vZ6gEZjvatXheyZq26Lf93zAIQZqc+6+yccmc5lrLsala1Mpmo0xYYnqaq17ocewElGyvDrWRQB4q8S40+fb08qZE3gULoLvk80fFauWXwf6vf7/iwZBQIYt+mZUbz+Qn+KjaRlm/ECxhEsDzmva4cxNDMW7IFs7Vli6Po4XJhVqhrj2H0QM8EB7yHuTNyylPbVsVHrM9AQ+GeCtqywCKhUX7sYP5fYnjGzeV1F8mBTvj6YB5WqmZs7EfrZMZ3NsVKt2jIGIicohbsP+eN+W3qezpEibN78ma91lXrIwkLPdGy+TNfjNsDiO922U0XG/gbnP0OcDRQEvgcmkIclIigCQhF8bGB5qWGooPsJm4Gk81mxNfTdKB+RUKuG4VHljnb0Ahixsu5tZ
+ vL69L7ij
+ J7oCu6A10lzQhg6dDFebVzJz5Ly/gvOvnmEHkS2dnO8b036jAeoY7kIjPRSvM10Fh/P86kAGEGlrQGX/XEhUBbQ/ku6q7cmUCRVYCGg8TZNtLGXCyHPw9D7FOH0RAM8mjNEndt7zuyRHiqbf+TqC4uCn+13dd1yc1QT3hJjS2ea20U0sBXR+n5YCZDOw1iQiMv93juRo5o554RTNN0k00f2QKBF2UNB3jNB6bKcmQhkgJ09cUdtpVgI3FUJ5LwnsG9DdsnYxA45q9/ZgsSBhNKcpnEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,21 +94,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 3:54=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Tue, Jun 16, 2026 at 11:33=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wr=
-ote:
-> >
-> > TBH, without vswap, we should not allow setting zswap as its own tier.
-> > It's meaningless. Maybe makes it a no-op, and warn users what they're
-> > setting is gibberish?
->
-> Why? vswap is transparent to the user. Why can't zswap be its own tier?
+On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
+could cause directories creation failures due to the name conflicts. Fix
+those issues for scheme region directories by adding kobject_del()
+calls.
 
-Without vswap, if you set zswap as its own tier, which phys swap
-device should we allocate from for the backing slot? :)
+This issue was discovered [1] by Sashiko, though its analysis was
+partially incorrect.
 
-With vswap then it makes sense (and would probably be the "default"
-for zswap setup until we enable zswap writeback).
+[1] https://lore.kernel.org/20260517205828.6204-1-sj@kernel.org
+
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs-schemes.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 37cf6edb54f17..bf08e6e1f1635 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -334,6 +334,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+ 		damos_sysfs_region_rm_dirs(r);
+ 		list_del(&r->list);
++		kobject_del(&r->kobj);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
+-- 
+2.47.3
 
