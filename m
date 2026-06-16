@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E9CCD98EC
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE177CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 600876B00DD; Tue, 16 Jun 2026 17:42:41 -0400 (EDT)
+	id 7FCF86B00E1; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA416B00E1; Tue, 16 Jun 2026 17:42:41 -0400 (EDT)
+	id 7A8AC6B00E6; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D436B00E6; Tue, 16 Jun 2026 17:42:41 -0400 (EDT)
+	id 695686B00ED; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4CE6B00DD
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7878DC1652
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:40 +0000 (UTC)
-X-FDA: 84887100480.27.80BC01A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 37C646B00E1
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB4CC16556C
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:42 +0000 (UTC)
+X-FDA: 84887100564.21.933C53C
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 05090100002
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=IXIgeFBr;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1AFAE140006
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=WjnH4X4b;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781646159;
+	s=arc-20220608; t=1781646161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=S8BsJvF6zEh1NYK1csQzbN1lg51lDIINZMD0TD5QoMM=;
-	b=4tEZkPHdmao+273eR+d019oQNnKSQUChzf4kLGv3HppINoOzaOCa5TQZZgYB9ygXWm6ksi
-	3Qdf/CHC8djeb40VM+crBnYdT10idzQg/quNXnRKN05yYpzUTKlCOYRobiuRMda8L2Cxc3
-	S791ldo8tK7EOmduq83N7r9tvBeEduI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DjDE7wKN3rUmIZIqeyfahm1B1o9cqGnY+Db4wh52/Bw=;
+	b=fO7CfXLdM5iSCACc8pj8s1jkojmsGOW1IKaMHqxow9fyz4Ax23tUMFNCaLy6Ax1Ei1L45r
+	BSunojoOhLOfqDkn0fIEezm7vkSY9d7DfklbGd3rgitZSyAOR95pWMyIM4DZ5A3BQ9MIKM
+	GMKf5emz+qIzRz29BWaldsZpzWjkgVU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=IXIgeFBr;
+	imf09.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=WjnH4X4b;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781646159;
-	b=d2iZ6lgDScRDUeIUj7EGKsgtkCws3uWQlCB2kMOVPuwTG8+dC6vXg7keJcrNqQE/XZLP29
-	pcORGwxGZTGSWyXs//KKaVqUEv5FmEExp8wgRew2eDiNgXDr1wlbD9b+t496tEr3jPwwSh
-	p7VnmarZ6ZQ88VeTcYpKVUz3tPaBSQ0=
+	t=1781646161;
+	b=2N3sUMkE4LX24bQH/swmd9hibNWLkv/PVZN077mCTTUp2D+3MOqDVm5aYPwie4VvJ0Slys
+	mPeThxnZzQPI7CyNsYQu7ez+jTwt+K13fCVrneImKJsxm49oP2VtEEuD1x8M+POyOCXCZ1
+	c51zqxoIboyUCpXUbS0+c08w14RK5fs=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=S8BsJvF6zEh1NYK1csQzbN1lg51lDIINZMD0TD5QoMM=; b=IXIgeFBrGy0wFVwSSSiP59iIDh
-	8HGsh5qFq717GXuQsdxfD8wTRSkrFoh7tMRE8LvZvs7XEPTVCtYB3qHW+zfQARgwC/PRDnicA8/Hu
-	UP68Ek/Nco2FjTZXQJDjdHE7/t97tE8wSTtykL+56RVubc09Fh95holHXlbRDcXjxMIpO6KHzKEzk
-	LTKvEfv4IrnugHGv72p63IhouAEIorcyxvoxR7PnmFofeN7d0vRFKGQrvH6rAUgbBVpO+xSThdeWV
-	XplP0J1GAQUjVsPJx8w7wpzVorPgFWY4sQ0dumEfTD2Hu2OETl6/3SQ03EOmguwAlLx8rP9Diqlzk
-	qCYWWMlw==;
+	bh=DjDE7wKN3rUmIZIqeyfahm1B1o9cqGnY+Db4wh52/Bw=; b=WjnH4X4boIaoBJMZdUKpm/czgi
+	NdqdncMtB88Ww31D+EtWTTXRkVJ5/dWz0Otdu66yetupfgZpCFXIn8SSLdb0yr/X1tpnRVWPUlSG4
+	gthnRjzZh19EI99mbhokNzYwDYT2SxxGTqTldW6alArbjMLBHJ3wSCe+BFqJsBQzFR151OBsuVEYI
+	gTarx3ziZnYlv7/k4uXn4RIJIUqCcGmX4zciwcu5RY/t7lDmPih4my/1/4b7LlHipZjL9+M/osrzP
+	ceogbzPn1HUMOK+zB2lm5nMSxDtsTYpKIKG/Q/HuClWXlSOtP4Iblkqjf3hf743zi2ACrMkEs3Adl
+	ZVlnrolg==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wZZ4N-000000005GL-0uRT;
-	Tue, 16 Jun 2026 15:03:31 -0400
+	id 1wZZ4S-000000005GL-1Fcw;
+	Tue, 16 Jun 2026 15:03:36 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
 Cc: Rik van Riel <riel@surriel.com>,
@@ -82,20 +82,22 @@ Cc: Rik van Riel <riel@surriel.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	"Vlastimil Babka" <vbabka@kernel.org>,
 	"Suren Baghdasaryan" <surenb@google.com>
-Subject: [PATCH 0/3] mm: __access_remote_vm with per-VMA lock
-Date: Tue, 16 Jun 2026 15:02:57 -0400
-Message-ID: <20260616190300.1509639-1-riel@surriel.com>
+Subject: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the per-VMA lock
+Date: Tue, 16 Jun 2026 15:02:59 -0400
+Message-ID: <20260616190300.1509639-3-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260616190300.1509639-1-riel@surriel.com>
+References: <20260616190300.1509639-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 05090100002
-X-Stat-Signature: namig9z1dssh54bnickoc5xyptiqwpmc
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1781646158-660380
-X-HE-Meta: U2FsdGVkX18P0PiBl/9vR1ZjcHq7PNJJV1FzIghqbqOVJYxNHjq58k0b5mmbzQd9EKy/EZcWtQRe5ieVpE+EoJzFZKxR/sUDSUJnBxmYNxef70vl+gvhsqqpmyLml30vUDKRcXLVSWs523I2yMuR8SG4lGS0qmGwa65lwd/i3Sywm/UWl9V7kNl5783iYv+xxvtJeq97VglHRiNllbzyB1UzbRNoxUT4U7qiE/m+4w30lAtKI1nGiYZJRKVVmNvO2+N13rISGKJkzVG3rDjvOhQrSTnS8KsW2weR7JqR8+pICHADDkyt0wqudnoYlffjoqMnq8VnZ6FYM6oAB1jluBrKV3+UcrJdqcUTSI8iscXLAflg810qyr7ZkN28m+s8baW8YELsS2vkpaIpd47Mu5WTPKqDENvpaRSBPNg3zOtRje4jJQzr4YoZvkJZwEjbqWi+MAfNdzl9zgPQU0/YYxEx65pljeZNQjdxb6gMYMqF6JdHRxj8fiXIDCMRb7NCS7M1f9vZKr2YLxDnNpZly81Ix88xvEcVWgPgmyxOxhHo36PPRxxbN2lHOvPY2W2ZHHI8dADYDzcetno9ETk2dxoIk2AgIrWBHdc7QZ1BK/Jxe69JF99D5FhXLSYcO55zwehESVdrp0eH1LRAmeAz7jg+5wSY47KsGgQGSOzuitrIZwIdat/s5GmLwUp6X4to21F2+ToW6fjQp1BoE20CxosL2KMQi8FVgsxz6ztN23VLIwVPsvb67FBF8c2cTbcix8jlQa1VvO4c/vui6Upw5s58uhe4Lu5XefV1Jtb7LIW2bMMK5PXcMqE1f9iyGvvQ5aIC/5pVH9aenF9DOxGcm2wqSRRbr2fbEz8sRUQEgfJDEHPYV+h00WDsL8gIyVHmNSVfUH7lYMXOYEvQKfCkqTLRfeT3pNJpZfuerPEC/xAuj09Tun0+gHZH5PX9VUBWzerpIf4cgbvJ8ddQaBY
- oPyJa2DL
- mNeWuFYNu7gbozhsidjEIm/vGMX0b2kzx36bzIqWY3hKvcy8xElmKATGTtRMmm1gUR8BGjGnwi/wdekRoS6TL7y3VhwRf/DL8tgTsWrqIH5qB2uHiVwqDEnXfIHQwYyWywbp92P3aSM36YzrfH+IWKseE/l31LOxRWg55QZY9ko2q75nB29nv5GJJQ0VYYfAwT8fwy0bSGwxFqejQXuJqkE0IyU59VzXOoou1Df8bv0vAdi8q520/OFsKsNzWb3v9DjFa
+X-Stat-Signature: p9j18ticeaz91xirahexr3p8m7ryptoh
+X-Rspamd-Queue-Id: 1AFAE140006
+X-HE-Tag: 1781646160-149428
+X-HE-Meta: U2FsdGVkX19H3HDLjDP/2QCE66JqTKo0sJ0tYYRWXkyrK7B/4E0szzRu5CppGwNlCxBHmTi2eimsng14N1kg9xkb2rAuzRGhwHJngSWNMX5W0jXtcSGSckOf+ZZnb74mvxnVue7HNCidhrdGniAY6yGvBi5nM5E+GUP9I056G9XOcTH/5T03xFFx9HksSjF0nL3PDqk/qX8sSD0c4A6OERv/wPdomiLljxoY4THEc781eITMNbxsuFp+zywok+JJ8G5ov2p/F2tVIxZFfcFxg/g/nQqtyjATl3oEixvAbo54M27gvTsqDGsEOXvjli5ADaD6ntULCTyJGZf3QKD91oivE9i7nubXQho6wfwGnpNNayrBPwSXUfcyfZ2yEan7CusAh8mLCGHu7NOb1sjxhXa1ZrAe/i2qs+j7wS1RrLxXB9AwuQrOLj1wUP/WnwEdyl8Cn7rBGcMs+E+JtuUlW00ZXH3syL+PQ79WlPU7ecmn02JfTfqCym8A8L4PpnFx0HL5HOaVu6DAsMdtp6KEtoCHt4iyGNZ08aprQUSBuvL71GWPhLFmt8rnL2B41VOVL6aCYium41FWpHpDZeIMZ9rSkdaIhiP/tx3gGaUy8af9ra8LAsY/Dpgo20Gs+sp6G1FOm0mvN9awFzj3e2SIT8Fy1NGPhyjGg6qMeVROeOkEyZUfYFc6agws8QnItOHBoN8oiGHDJ4S45Omph6qYrRuz5Oh7NdQMAEaOXawaol6uJXTfgk6pFuRPXLMVNwvlFnG9UgarinLLn8m5DAv/xv80KlI5tV9tkkNOuGlKOLqBY1BtVkYCvG206vwbbYloT+4+9fHQdTQTy3WaLae7BMtWCExJ+aZnNy9+ndt7c/Lz8I4S48FLcCLAg8CDmghwdk50Gwa1cc1AsPH2vDLkLLSE0OwLc0sB4LCcGMg+Oina+Bd8XLe2PmgyphjRt+8iIRiBk5Xjg5u9YNZu8u3
+ RRJCT3FV
+ X2EjHLJtvIMEd4AzeatZzikFAb/evDhEaNTxa1Vg2DjINg7YhxNl+fiv/LncVNWhhpud2QQU6VeHLG3B4ECRfgDrBtyPSjaX6qKpWlH3dxLWQIvTCi0RBN0XU/CXU8ZFXj2+Stm2bpztOk4X4kbTJ4fV8KMyR0iF9wwRfFMapZ3GUmprCKJBLWy24bgddVVkRrQvQpDgeC8MMmkJiJgBmKXxtiXccNajXw4qO/Km2wO4m3IMh2SFuWwXJhpQQUBlZWFzG5Umdowc+H57SZEeXV2d8Cph8zBUCCFMEz2D8XQQKUjJ6dECSLWImqtR0xvyl1HQq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,21 +105,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sometimes processes can get stuck with the mmap_lock held for
-a long time. This slows down, and can even prevent system monitoring
-tools from assessing and logging the situation, because they themselves
-end up getting stuck on the mmap_lock.
+folio_walk_start() asserts that the mmap lock is held.  For callers that
+only need to read a single, already-present page, the mmap lock is a
+heavy and often badly contended hammer: the VMA can instead be
+stabilized with the per-VMA lock, and the page table pages that are
+walked are kept alive by RCU page-table freeing
+(CONFIG_MMU_GATHER_RCU_TABLE_FREE).
 
-However, with the introduction of per-VMA locks, we can improve the
-reliability of system monitoring, and generally speed up __access_remote_vm
-under mmap_loc contention, by adding a fast path that does not require
-the process-wide mmap_lock.
+Add an FW_VMA_LOCKED flag.  When passed, folio_walk_start() asserts the
+per-VMA lock instead of the mmap lock, requires RCU-freed page tables,
+and refuses hugetlb VMAs (PMD sharing cannot be walked safely this way).
+Everything else folio_walk_start() relies on -- the page table locks,
+pmdp_get_lockless() and pte_offset_map_lock() -- is already safe without
+the mmap lock, mirroring the per-VMA lock page fault path.
 
-This fast path is only compiled in and used when it is safe to do so,
-meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
-is not hugetlbfs, iomap, pfnmap, etc...
+No existing caller passes FW_VMA_LOCKED, so behaviour is unchanged.
 
-The code seems to work, but could still use some more cleaning up
-and benchmarking.
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ include/linux/pagewalk.h |  5 +++++
+ mm/pagewalk.c            | 18 ++++++++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b41d7265c01b..84dd0d68f747 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -150,6 +150,11 @@ typedef int __bitwise folio_walk_flags_t;
+ 
+ /* Walk shared zeropages (small + huge) as well. */
+ #define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
++/*
++ * The caller holds the per-VMA lock instead of the mmap lock. Only valid with
++ * RCU-freed page tables (CONFIG_MMU_GATHER_RCU_TABLE_FREE) and not for hugetlb.
++ */
++#define FW_VMA_LOCKED			((__force folio_walk_flags_t)BIT(1))
+ 
+ enum folio_walk_level {
+ 	FW_LEVEL_PTE,
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index 3ae2586ff45b..c85364b73e12 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -890,7 +890,9 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
+  * huge_ptep_set_*, ...). Note that the page table entry stored in @fw might
+  * not correspond to the first physical entry of a logical hugetlb entry.
+  *
+- * The mmap lock must be held in read mode.
++ * The mmap lock must be held in read mode. Alternatively, if @FW_VMA_LOCKED is
++ * passed, the VMA's per-VMA lock must be held (only supported with RCU-freed
++ * page tables, i.e. CONFIG_MMU_GATHER_RCU_TABLE_FREE, and not for hugetlb).
+  *
+  * Return: folio pointer on success, otherwise NULL.
+  */
+@@ -908,7 +910,19 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+ 	pgd_t *pgdp;
+ 	p4d_t *p4dp;
+ 
+-	mmap_assert_locked(vma->vm_mm);
++	if (flags & FW_VMA_LOCKED) {
++		/*
++		 * Lockless walk: the per-VMA lock keeps the VMA stable, and
++		 * RCU-freed page tables keep the walked page table pages alive
++		 * across the lockless upper-level walk and pte_offset_map_lock().
++		 * Hugetlb (PMD sharing) is not supported on this path.
++		 */
++		VM_WARN_ON_ONCE(!IS_ENABLED(CONFIG_MMU_GATHER_RCU_TABLE_FREE));
++		VM_WARN_ON_ONCE(is_vm_hugetlb_page(vma));
++		vma_assert_locked(vma);
++	} else {
++		mmap_assert_locked(vma->vm_mm);
++	}
+ 	vma_pgtable_walk_begin(vma);
+ 
+ 	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
+-- 
+2.53.0-Meta
 
 
