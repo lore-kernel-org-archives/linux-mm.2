@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE177CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54203CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FCF86B00E1; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
+	id 7AE126B00E6; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A8AC6B00E6; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
+	id 7589C6B00ED; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695686B00ED; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
+	id 646916B00EF; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37C646B00E1
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:43 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB4CC16556C
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:42 +0000 (UTC)
-X-FDA: 84887100564.21.933C53C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3495F6B00E6
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:42:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8FD2EC14B7
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:44 +0000 (UTC)
+X-FDA: 84887100648.26.D088053
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1AFAE140006
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=WjnH4X4b;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1DFA1A0002
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:42:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=X4jn8n0U;
+	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781646161;
+	s=arc-20220608; t=1781646163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DjDE7wKN3rUmIZIqeyfahm1B1o9cqGnY+Db4wh52/Bw=;
-	b=fO7CfXLdM5iSCACc8pj8s1jkojmsGOW1IKaMHqxow9fyz4Ax23tUMFNCaLy6Ax1Ei1L45r
-	BSunojoOhLOfqDkn0fIEezm7vkSY9d7DfklbGd3rgitZSyAOR95pWMyIM4DZ5A3BQ9MIKM
-	GMKf5emz+qIzRz29BWaldsZpzWjkgVU=
+	 in-reply-to:references:dkim-signature;
+	bh=xyyMgzL3dB9zRqf2mWub/khi9AUa+g6mx9a5bkCc6yY=;
+	b=yJdLC2gqNRpakp448BMHemUtimsV6xG0pUGNgOtUv1a1aX7jxVEHdSsFfRF+NPJ7uGu9yt
+	RuC1Pz+zEcaGQcINFfrUFNHCJDHrCLxoYB35wDNyK61JDFtoBB9T/S21pg45OZ05E/caRg
+	bcE5BkEnB4gM/Q2gDHVWkzmQsJMSv2g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=WjnH4X4b;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=X4jn8n0U;
+	spf=pass (imf15.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781646161;
-	b=2N3sUMkE4LX24bQH/swmd9hibNWLkv/PVZN077mCTTUp2D+3MOqDVm5aYPwie4VvJ0Slys
-	mPeThxnZzQPI7CyNsYQu7ez+jTwt+K13fCVrneImKJsxm49oP2VtEEuD1x8M+POyOCXCZ1
-	c51zqxoIboyUCpXUbS0+c08w14RK5fs=
+	t=1781646163;
+	b=X9qa9vms5/JUAIwflhbdzZpFiKgYJOUiFkJYUDj0Rzk3I3BBSmWG+9WW1WdYVM+E/LFAQK
+	wNQkqv4ZA8t+njf4+HQ6d7B67XjIhmbwn0Ysk0J5ZizDscaBMRG/Bzujnu8/myxxDk79A0
+	l1L09d7TqjM4zU7vPgx0Iqxv3JOQ5Aw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
+	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=DjDE7wKN3rUmIZIqeyfahm1B1o9cqGnY+Db4wh52/Bw=; b=WjnH4X4boIaoBJMZdUKpm/czgi
-	NdqdncMtB88Ww31D+EtWTTXRkVJ5/dWz0Otdu66yetupfgZpCFXIn8SSLdb0yr/X1tpnRVWPUlSG4
-	gthnRjzZh19EI99mbhokNzYwDYT2SxxGTqTldW6alArbjMLBHJ3wSCe+BFqJsBQzFR151OBsuVEYI
-	gTarx3ziZnYlv7/k4uXn4RIJIUqCcGmX4zciwcu5RY/t7lDmPih4my/1/4b7LlHipZjL9+M/osrzP
-	ceogbzPn1HUMOK+zB2lm5nMSxDtsTYpKIKG/Q/HuClWXlSOtP4Iblkqjf3hf743zi2ACrMkEs3Adl
-	ZVlnrolg==;
+	bh=xyyMgzL3dB9zRqf2mWub/khi9AUa+g6mx9a5bkCc6yY=; b=X4jn8n0UChybSdWbaA3p5vTXQ9
+	POf5b0yi0/B8W8WTmHwPzzKRALHRqJeKIpscn2Hd8ThX3gUT6csiQmRRRjiSJlrFS4EggNtX7vu53
+	n814jdE86cyFX83NHtB6FbOyWPgJVpQNkzHQspyXZPDqSh7TlY2kDv9cqEj9OdLxAcpxQvJc4EAI5
+	QTgP14bu/cz5cFwd0CvtNlW7ZMIcxXPmH3zaat242zpK4gE1ITbiCqHlft9rxEiwqudDjCRFq5EXl
+	FgUL6zTZjeowEvI8b/HE0KHSpSJObx8kwzHIE2yhkB/sFQyqnlXyOOoiBGT2wY8Cwj6B0mf7vfrG6
+	d5y6fF8g==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wZZ4S-000000005GL-1Fcw;
-	Tue, 16 Jun 2026 15:03:36 -0400
+	id 1wZVBC-000000002wP-3kfH;
+	Tue, 16 Jun 2026 10:54:18 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
-Cc: Rik van Riel <riel@surriel.com>,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	"Thomas Gleixner" <tglx@kernel.org>,
-	"Ingo Molnar" <mingo@redhat.com>,
-	"Dmitry Ilvokhin" <d@ilvokhin.com>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"David Hildenbrand" <david@kernel.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
+Cc: kernel-team@meta.com,
+	Rik van Riel <riel@surriel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Hugh Dickins <hughd@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka" <vbabka@kernel.org>,
-	"Suren Baghdasaryan" <surenb@google.com>
-Subject: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the per-VMA lock
-Date: Tue, 16 Jun 2026 15:02:59 -0400
-Message-ID: <20260616190300.1509639-3-riel@surriel.com>
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org
+Subject: [PATCH] mm: khugepaged: free xarray nodes left behind by failed collapse_file()
+Date: Tue, 16 Jun 2026 10:54:13 -0400
+Message-ID: <20260616145413.1491961-1-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616190300.1509639-1-riel@surriel.com>
-References: <20260616190300.1509639-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1DFA1A0002
+X-Stat-Signature: xaq8tc6sqkcyfc6pr7k5tbdcqqstbuqf
 X-Rspam-User: 
-X-Stat-Signature: p9j18ticeaz91xirahexr3p8m7ryptoh
-X-Rspamd-Queue-Id: 1AFAE140006
-X-HE-Tag: 1781646160-149428
-X-HE-Meta: U2FsdGVkX19H3HDLjDP/2QCE66JqTKo0sJ0tYYRWXkyrK7B/4E0szzRu5CppGwNlCxBHmTi2eimsng14N1kg9xkb2rAuzRGhwHJngSWNMX5W0jXtcSGSckOf+ZZnb74mvxnVue7HNCidhrdGniAY6yGvBi5nM5E+GUP9I056G9XOcTH/5T03xFFx9HksSjF0nL3PDqk/qX8sSD0c4A6OERv/wPdomiLljxoY4THEc781eITMNbxsuFp+zywok+JJ8G5ov2p/F2tVIxZFfcFxg/g/nQqtyjATl3oEixvAbo54M27gvTsqDGsEOXvjli5ADaD6ntULCTyJGZf3QKD91oivE9i7nubXQho6wfwGnpNNayrBPwSXUfcyfZ2yEan7CusAh8mLCGHu7NOb1sjxhXa1ZrAe/i2qs+j7wS1RrLxXB9AwuQrOLj1wUP/WnwEdyl8Cn7rBGcMs+E+JtuUlW00ZXH3syL+PQ79WlPU7ecmn02JfTfqCym8A8L4PpnFx0HL5HOaVu6DAsMdtp6KEtoCHt4iyGNZ08aprQUSBuvL71GWPhLFmt8rnL2B41VOVL6aCYium41FWpHpDZeIMZ9rSkdaIhiP/tx3gGaUy8af9ra8LAsY/Dpgo20Gs+sp6G1FOm0mvN9awFzj3e2SIT8Fy1NGPhyjGg6qMeVROeOkEyZUfYFc6agws8QnItOHBoN8oiGHDJ4S45Omph6qYrRuz5Oh7NdQMAEaOXawaol6uJXTfgk6pFuRPXLMVNwvlFnG9UgarinLLn8m5DAv/xv80KlI5tV9tkkNOuGlKOLqBY1BtVkYCvG206vwbbYloT+4+9fHQdTQTy3WaLae7BMtWCExJ+aZnNy9+ndt7c/Lz8I4S48FLcCLAg8CDmghwdk50Gwa1cc1AsPH2vDLkLLSE0OwLc0sB4LCcGMg+Oina+Bd8XLe2PmgyphjRt+8iIRiBk5Xjg5u9YNZu8u3
- RRJCT3FV
- X2EjHLJtvIMEd4AzeatZzikFAb/evDhEaNTxa1Vg2DjINg7YhxNl+fiv/LncVNWhhpud2QQU6VeHLG3B4ECRfgDrBtyPSjaX6qKpWlH3dxLWQIvTCi0RBN0XU/CXU8ZFXj2+Stm2bpztOk4X4kbTJ4fV8KMyR0iF9wwRfFMapZ3GUmprCKJBLWy24bgddVVkRrQvQpDgeC8MMmkJiJgBmKXxtiXccNajXw4qO/Km2wO4m3IMh2SFuWwXJhpQQUBlZWFzG5Umdowc+H57SZEeXV2d8Cph8zBUCCFMEz2D8XQQKUjJ6dECSLWImqtR0xvyl1HQq
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781646162-333357
+X-HE-Meta: U2FsdGVkX1816KWx5FW26qyhbeBcuv0RnL1VLyyhn45K+l9T5Ca6zA3WNvYjmuDlUk7Z+VfmO+wYh+XdzKXA+lngtONewltKr5yp5XKfA44EGFMfqpV37NffSfFH6aLwSoDhsrUWiXVakUyEwG1f4a8CLuH9l5tZrrIInr3Xytx8FFD1pvnHW1TIBf4usT5IpOAci9fqjeGUEm8g2VLmWgWLp9MFvDwY8J9x0xbuQ6C0eJNiJHZ+f5TzypefrdEvkQZFrIQkKpYv34FLJ3T7wiftCJfllwj0naqqHgSlyFqGj/bKn9ax7Gcr320VPkFQM73IKejIWRg5epREeVMgoxWvcGvluJcKgpPZoMePMdS5Xflbz5nUtDLMeIaCo4SzrQ3MLzfAruobFvZwF0nmvtWH7aIXMoRf/xWultaUlctjCS4+6t9giFW+EBXGXWKGzUXSP3g17Kgcs3VBjmdvNNVgMRTinn/6ZX16oXebqD/mNInR/qcjAFAQ6iELgl4vx3sobodmR8lmGHAFPeNsa1GK91syrxJmShJywpSfYIwlTtb5tuiIL6wHyE+o3lQObQa5u1E2f8Nyjz5sxcYmxcSKmc8x4GdJuvGrmtteWf3jimfskutswf9Abd85XqEgTFmrKE7B3ic9BPB0Xm2QluZLe6weSxRWgifxnJQ1CEjTOuoB1dmXo2K0XsPh/O9eC7u2tWhVklEWyQFnQ1jv0iNQ7dKpDS2/LUxhs/RAevVQJMPHC9IdL3y5k2TtmpBu9Gd5qidBHzf4EOID/OL0NRlsrNazGHmu4FUpNK7LevatUMbR11kT558o6H1PUx72kjYWhGLWtY39DL9EWl+D5H/wFoc1t7xttRVj7Y+Xtlsf3AuNnBaMDZVIQFGF2z5XrgnR0XeK5yhmzqw1sh23WG3npUd/Bm3OgYB5nXRPBql/x3DQfDQ6wgORIkF/DBVwCPWb1jcYYRUkIXkhPZk
+ RaEeBLAf
+ /23yCWnxRyZ+Hwb+/gnj5L3UALEAOYJ88nmgJ50T8fjhDrBcZnU9QvkWm+x0cL9Spbp0+TAqYS5ftgSRY3hkzTlpEOMJG8QTpZusKGknkPi6AqMh2uQf8Gv0wjMRT+x40501xrzco3fO/KzId7CovWZUf1K1vbanVfi3pkyfu1nmU9hQkvjGanEegGxbJiFRsiLwoqO8vrhY9RZEehKvPOs+ZDfbDqVgWNKrqvkOJK90SgrEItue4BrqmpUd+m1CTak5PpCBsF1ONGqBlrc0/FnWx6ia9nwZA0RqGFq+w6ykqMzFJJkG3NsnycY3YuQ+u0HxdzXOuKo8znIiuZa86+Y46So7f8iRESiSS92mi0FInaxEE8sFB1b1JkBoynVw91TITQELPa2hgnk3LAwiQj4MqT/FW/BYooJoC8N//QF67Gm2rwQY9x/vgwhT1QEnxwSVn8nFz9fNQUxB00Uv2aETSdG3VyzugcxzehVqpGmw44KN2TG0iLz+58GQ+W2UASmlEByvjuTwQkj1Pj/+Zvbm+UnpENfySlhgehsRc1hpo8URNI8u9s9KcjZH5mpn0nMUImELZyVSwdSPd/LsKViuyUU7D9ZaJ0lQOpLT2U23LumjZ+JtkdArftrR5lSKvR4SDziPDFVmDGOm4Kv16UFTCWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,81 +105,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-folio_walk_start() asserts that the mmap lock is held.  For callers that
-only need to read a single, already-present page, the mmap lock is a
-heavy and often badly contended hammer: the VMA can instead be
-stabilized with the per-VMA lock, and the page table pages that are
-walked are kept alive by RCU page-table freeing
-(CONFIG_MMU_GATHER_RCU_TABLE_FREE).
+collapse_file() calls xas_create_range() up front to populate the
+xarray with nodes spanning the entire collapse range, including empty
+slots for the holes (the nr_none entries).
 
-Add an FW_VMA_LOCKED flag.  When passed, folio_walk_start() asserts the
-per-VMA lock instead of the mmap lock, requires RCU-freed page tables,
-and refuses hugetlb VMAs (PMD sharing cannot be walked safely this way).
-Everything else folio_walk_start() relies on -- the page table locks,
-pmdp_get_lockless() and pte_offset_map_lock() -- is already safe without
-the mmap lock, mirroring the per-VMA lock page fault path.
+On the success path those nodes are either consumed by the multi-index
+store of new_folio or freed by the nr_none retry-entry dance.  But every
+error path that branches straight to the rollback label -- e.g.
+SCAN_TRUNCATED / SCAN_PAGE_LOCK / SCAN_FAIL detected in the main scan
+loop (which then sets nr_none = 0 and jumps to rollback), or SCAN_COPY_MC
+during the copy -- does neither.  The empty nodes are left dangling in
+mapping->i_pages and are leaked once the inode is finally evicted.  This
+is exactly the "THP collapse_file() failed" case that clear_inode()
+documents and deliberately tolerates without warning.
 
-No existing caller passes FW_VMA_LOCKED, so behaviour is unchanged.
+syzkaller reproduces it trivially with MADV_COLLAPSE on a sparse shmem
+mapping (collapse aborts with SCAN_TRUNCATED because the range is empty),
+and also via slab fault injection, which forces xas_create_range() down
+the xas_nomem() path before the same abort.  kmemleak then reports the
+576-byte struct xa_node objects allocated in xas_alloc()/xas_nomem().
 
-Assisted-by: Claude:claude-opus-4-8
+The leaked objects are struct xa_node (576 bytes each), left dangling in
+mapping->i_pages and reclaimed only when the inode is finally evicted.
+Nodes leak when a collapse takes one of the rollback paths (SCAN_TRUNCATED
+/ SCAN_PAGE_LOCK / SCAN_FAIL / SCAN_COPY_MC), and only for the empty hole
+slots (the nr_none entries); they are not leaked on the success path (the
+nodes are consumed by the multi-index store and the nr_none dance), and
+slots still holding folios are never touched.
+
+Prune the now-empty nodes on the rollback path.  A node is only freed
+once its slot count reaches zero, and storing NULL into an
+already-empty slot is a no-op, so briefly store an XA_RETRY_ENTRY into
+each empty slot and immediately clear it: the clear drops the count
+back to zero and lets xas_store() -> xas_delete_node() free the node
+and its now-empty ancestors.  Slots still holding the original folios
+are left untouched.
+
+Fixes: 77da9389b9d5 ("mm: Convert collapse_shmem to XArray")
+Assisted-by: Claude:claude-opus-4-8 syzkaller
 Signed-off-by: Rik van Riel <riel@surriel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Hugh Dickins <hughd@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 ---
- include/linux/pagewalk.h |  5 +++++
- mm/pagewalk.c            | 18 ++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ mm/khugepaged.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index b41d7265c01b..84dd0d68f747 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -150,6 +150,11 @@ typedef int __bitwise folio_walk_flags_t;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b8452dbdb043..d11a4c9610e1 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2273,6 +2273,39 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
  
- /* Walk shared zeropages (small + huge) as well. */
- #define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
-+/*
-+ * The caller holds the per-VMA lock instead of the mmap lock. Only valid with
-+ * RCU-freed page tables (CONFIG_MMU_GATHER_RCU_TABLE_FREE) and not for hugetlb.
-+ */
-+#define FW_VMA_LOCKED			((__force folio_walk_flags_t)BIT(1))
- 
- enum folio_walk_level {
- 	FW_LEVEL_PTE,
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 3ae2586ff45b..c85364b73e12 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -890,7 +890,9 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
-  * huge_ptep_set_*, ...). Note that the page table entry stored in @fw might
-  * not correspond to the first physical entry of a logical hugetlb entry.
-  *
-- * The mmap lock must be held in read mode.
-+ * The mmap lock must be held in read mode. Alternatively, if @FW_VMA_LOCKED is
-+ * passed, the VMA's per-VMA lock must be held (only supported with RCU-freed
-+ * page tables, i.e. CONFIG_MMU_GATHER_RCU_TABLE_FREE, and not for hugetlb).
-  *
-  * Return: folio pointer on success, otherwise NULL.
-  */
-@@ -908,7 +910,19 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 	pgd_t *pgdp;
- 	p4d_t *p4dp;
- 
--	mmap_assert_locked(vma->vm_mm);
-+	if (flags & FW_VMA_LOCKED) {
-+		/*
-+		 * Lockless walk: the per-VMA lock keeps the VMA stable, and
-+		 * RCU-freed page tables keep the walked page table pages alive
-+		 * across the lockless upper-level walk and pte_offset_map_lock().
-+		 * Hugetlb (PMD sharing) is not supported on this path.
-+		 */
-+		VM_WARN_ON_ONCE(!IS_ENABLED(CONFIG_MMU_GATHER_RCU_TABLE_FREE));
-+		VM_WARN_ON_ONCE(is_vm_hugetlb_page(vma));
-+		vma_assert_locked(vma);
-+	} else {
-+		mmap_assert_locked(vma->vm_mm);
+ rollback:
+ 	/* Something went wrong: roll back page cache changes */
++
++	/*
++	 * xas_create_range() above populated the xarray with nodes spanning
++	 * the whole collapse range, including empty slots for the holes
++	 * (nr_none entries).  On the success path these nodes are consumed by
++	 * the multi-index store of new_folio, and the nr_none handling further
++	 * up frees the ones covering the holes; but the error paths that branch
++	 * straight here do neither.  Prune the now-empty nodes explicitly,
++	 * otherwise they are leaked until the mapping is torn down -- one of
++	 * the two cases called out in the comment in clear_inode().
++	 *
++	 * A node can only be deleted once its slot count drops to zero, so
++	 * briefly store an XA_RETRY_ENTRY into each empty slot and then clear
++	 * it again: clearing the retry entry drops the count back to zero and
++	 * lets xas_store() -> xas_delete_node() free the node.  Slots that
++	 * still hold the original folios are left untouched.
++	 */
++	xas_lock_irq(&xas);
++	xas_set_order(&xas, start, 0);
++	for (index = start; index < end; index++) {
++		if (!xas_next(&xas)) {
++			xas_store(&xas, XA_RETRY_ENTRY);
++			if (xas_error(&xas))
++				break;
++		}
 +	}
- 	vma_pgtable_walk_begin(vma);
- 
- 	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
++	xas_set_order(&xas, start, 0);
++	for (index = start; index < end; index++) {
++		if (xas_next(&xas) == XA_RETRY_ENTRY)
++			xas_store(&xas, NULL);
++	}
++	xas_unlock_irq(&xas);
++
+ 	if (nr_none) {
+ 		xas_lock_irq(&xas);
+ 		mapping->nrpages -= nr_none;
 -- 
 2.53.0-Meta
 
