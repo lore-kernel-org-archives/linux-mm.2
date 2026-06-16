@@ -4,143 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D926CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2B15CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1C86B00F0; Tue, 16 Jun 2026 17:37:56 -0400 (EDT)
+	id D26F86B008C; Tue, 16 Jun 2026 17:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B91E36B00F1; Tue, 16 Jun 2026 17:37:56 -0400 (EDT)
+	id CCF796B009B; Tue, 16 Jun 2026 17:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A815B6B00F2; Tue, 16 Jun 2026 17:37:56 -0400 (EDT)
+	id B96DE6B009D; Tue, 16 Jun 2026 17:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 793296B00F0
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:37:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF8341C130F
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:37:55 +0000 (UTC)
-X-FDA: 84887088510.15.1A19FF8
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B9926180006
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:37:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mRKQHsBT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781645873;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 744086B008C
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:39:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 021EAA0165
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:41:14 +0000 (UTC)
+X-FDA: 84886189710.16.01C03F9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 30D821A0009
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:41:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b+dMyBHR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781624473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5foDtgqeTQXrOWV48GNDC5TnV9fQo3PaQ7iDDwN1xA=;
-	b=PCO2GBGmoqcrQ0UPmOWgYtizmLh11bdWX8MrKrIcT01cWTXS2riIEWOoOieOtPdJT6E+lS
-	IG4ikvEi0/VQIP+2ZHZDdx/po2MALXDOW3evLUmslxBLjai3Bb1oi64Xy4HlL2IhbbnZoY
-	8LCHmZ/TdxPAiy/vhfRmiTk6iKmV3VQ=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mRKQHsBT;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781645873;
-	b=QKX5o8X82qHh1H51gRKmcFaR/vPzbiVBRx+803xDhbjrKML2x1XTR73C/qu+hyhAhnmzTl
-	LvGBCTgTwvKe8Iiqz2lLW6wX8ZRtOkkfnK8qPqRYU7wjAECznnluHgN4iv1ipP733juTtl
-	bmHWqLHb0V6MIP1JEw8vuCBkmYF2XyI=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-691c5776f95so9873630a12.3
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 14:37:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781645872; cv=none;
-        d=google.com; s=arc-20240605;
-        b=O2h3MBhnzK64KA+aTUmV0AKUh9P37njHrWr9oYmjvLHfkE+bp+uiCxDKrmk1/FwRbu
-         peOa2STgKHd0OdUt5pkRBK2jHl3U79/uOV2Wfvl7DBiEfudnOL8C4BT48H6wJdbmNRzf
-         P7yUht0BYAuCpQXbOMwwLN/nbRKP70Hq8qUF1mDdJTit784aWHy4kwC0HBDlQD1P9eBx
-         1CYOyt44Ngk9iSGmpN5DJ3OR2x7Ncvy+CqxI4L3SAvZp1geGkHK9UVzXNd8JdKCuKxiQ
-         hZ7FlKAlbagUlcqYNDXcwrseY3fio8swnysp5aZhPHEMGySrneAEXYqxLJaP5u9xzoBv
-         C3SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K5foDtgqeTQXrOWV48GNDC5TnV9fQo3PaQ7iDDwN1xA=;
-        fh=+WrTcS90RmioMWGS0YHKWksHsyRZecvT4IzCakd8SdM=;
-        b=g2OQr0zxcb3RnfOmCe0j1oElRYdnwH4C/JOI5k1+12znA3PwxMcZZGNmUCJ9ptTtce
-         C7bWdAUbmCdj9YT398GQhxAcwfgKERCgSyjzjaUkfTr0+hgaa6+HDb6udligajmI+3j8
-         OIv62x9DJDtoVqCRjhxxOnEad5FuGpT+lEn/6nZX26Fxzd6B1eRyo50bZpHJQifuR16E
-         4wPOX7eAfreUdprodpuvnGS1c46d4nvSCRohXgxOYcKHCnhw5VNVzrA+QyqKAIccG+jz
-         goCti9AIHntVPm+JOvhntBLyFJ01AxNzSqnPe0H00NqZfOv1aKxx13cbi7VEEepMwqUY
-         ASgA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781645872; x=1782250672; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K5foDtgqeTQXrOWV48GNDC5TnV9fQo3PaQ7iDDwN1xA=;
-        b=mRKQHsBTGgVBh0NeH48RTBDAnMvhp0FamKC5Bn8QhYmXiZNX7nZJnGnzRYFl+8uPYr
-         osmHm6o2xh3SBeHDkhpOC7RBagA2vJfYqWdBetLgHMGK4oq+EbDYBntmUq3TFgIStTcp
-         Y3ppNnUjsKuWmk6ag3IAnpQSv72e8cLah7HzJp5szoKOpKRQT+dpaIQtR+HhxiACHPE7
-         EDqWYyLyZQIc7nNEPZor+aF0Pb2jP+l1uA1ZI9qAzrllY4pLueEH0cCCpIEgVdiAWZWE
-         LEl+HQcfOlU/A0FtZFC4ogOtODGCooTCpYQfr7CDSBEbj64TtDHBrlt1sS/ZVX6TIr2Y
-         c7AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781645872; x=1782250672;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K5foDtgqeTQXrOWV48GNDC5TnV9fQo3PaQ7iDDwN1xA=;
-        b=QsDmq1A7mZWNTqXu1blk26929bj0kFkcxJjNC9e5M9USKOfH/iUw+hyqBE4E3Fhtqi
-         zRROdjI7g/D8WEY96/ybpeO2gfIcut9Nw2oaq+g/TVWm4mWTntFJuz9+yQOS8Ck8U146
-         BX2LSQS4b5DYTBiIy05VHNG3qZqyBmF3N3OufF1UexfGivcuC9LPWXUgXgGn616zWkup
-         0TMDg2yb64/x8ZudpxHgmnXbdD8P3T35V4DyrA24m66zuJAwoYvVvqdS85jkamF1WDM6
-         SbhIxSwp+nqJofMf91028NiQJG1xZ+Q8z1taczYx1IAyYHNhBxVcLbTwdbdf0aqr8Woz
-         1aGw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Htjo3bm31F+qk8l/bjXmlvYZLGE7OIUbbeBx/85hhpxTYev2f1+SmNFPDkEiHhmq3A8r/EOWA+g==@kvack.org
-X-Gm-Message-State: AOJu0YyyZlNPuz59kLdncXfYhhVnbdsXFgQ+Np9/hjYJFpkEmj3FxnEH
-	NOuedRejoOX5c72g+pdhj5XNPqCZCw2D/fHA0kuedYt2ycMGgr9yVZgcPUMpd92QAZgaIGo4iT1
-	Tp77rNNFSICYF1BYmYNKsvNW5unUvLJGfBA==
-X-Gm-Gg: Acq92OHrQTBIyYhzbvbU5k6WQ+P8TMeObQNcMOXk2XW/Fx2nl2j7ZPuzx2pNnB3bJJk
-	NrJgFptuJCNXILC9p/GxeMh72aFl1Y3/PkL3aClA8T5a+wLVwu0OLB6lq9v+KU+hKnZtO9jBZtH
-	INIeQtcXCopsGcWll0ho1RnuvNVrzT6Lf9Ba2vnTk0MuF+3lJuFYEEbsl7St1wa03mHyKkZxw3V
-	GhTU3KoBIQP1exZLVfXwzw5y3k7aGRXnIGNFyOD51qlcIEqVIbHmr11utSTf58AcYycyF1uyaz2
-	+w0IFwlBsGFg8py0s/Bbqm62++Rur9ZXW1DndQ==
-X-Received: by 2002:a05:600c:820c:b0:490:c2a3:3302 with SMTP id
- 5b1f17b1804b1-490ec526f4fmr251514085e9.35.1781612147341; Tue, 16 Jun 2026
- 05:15:47 -0700 (PDT)
+	bh=4fXKQZ62YbUSWMyHmi4buCG/RQAWQXgAM+XKOF1miWg=;
+	b=EK4dqM3RYgJLqiqCp1GXZizb1GHycl3Eeeexj9KJ1Z5E3Z94XnGTiGXfQhzFwXfOw0Prct
+	U1ofv7iFcl0QczSOupzl97TSSwFKQHKZzCk0X6W3/hvmRlsKh+ZCC3eui/fVXJ9Ezh+Wbp
+	5nMjYbJfUiOF5GZ7hbZZYXAKXPaFGhk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b+dMyBHR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781624473;
+	b=Lm1KwQzGv/YsqC7NSfdB/Ec5Cuzq0KPJOdS4aWQb50VubhwEO8r6ydjzyvuBT1dP2xuRBI
+	3HqGfCpbVTY1kXKdEY+7Izs2KpzVO5aW/LJdA6zegbUSfV/jjSlmswD+fFbJv/NYUV9Cz8
+	qvRAeSZIyWRUNY+5jmfryoAaCr8F5q8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E19D60141;
+	Tue, 16 Jun 2026 15:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1D11F00A3A;
+	Tue, 16 Jun 2026 15:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781624470;
+	bh=4fXKQZ62YbUSWMyHmi4buCG/RQAWQXgAM+XKOF1miWg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=b+dMyBHR6oRMk34jYJ5+9hacn+vl4i1HjkIPv1VdV5hCcpOveE1k5rHWYZP61ieb8
+	 lSPbvU43se8+w/uZKjFucWKa6QWOcFQHbUSv3osbRweZaZzBxF2KtyLss3gOf8WlkE
+	 x8s2dvTpbY0NpBBgVv8zOFzuccrAjYLHMy8cSIXCzRxfQbhx+YOhMA4EW9hccdMDQX
+	 yuRDK6VHPKv8P/D6uQKOuiccx2+s713o5GAmFuyPEKSWaxGBy7/oB0/u5raXeJ/KmX
+	 1ccIijXynm3jy2p7h2cH+Az7bsSvtwfLAdcVeHiHKPfWaAVV+wzzmglsG+bLMhBf/B
+	 bxNI5Sn2wa+2Q==
+Message-ID: <e026ab6b-aee2-48e7-9bb5-1735d7a23859@kernel.org>
+Date: Tue, 16 Jun 2026 17:41:02 +0200
 MIME-Version: 1.0
-References: <20260612193738.2183968-1-nphamcs@gmail.com> <ai5kOOmR1LPTWs1J@yjaykim-PowerEdge-T330>
- <CAKEwX=O23a4iWBZoewKVb8QqODte6r3Xijckw3_oCJNoiO9M5A@mail.gmail.com>
- <CAO9r8zPj5EH8Mbpc6N+d1u2eEgoV33f+4s=v-84gaobAodPtUw@mail.gmail.com> <ajCm44rYpLOKCQ43@yjaykim-PowerEdge-T330>
-In-Reply-To: <ajCm44rYpLOKCQ43@yjaykim-PowerEdge-T330>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 16 Jun 2026 08:15:34 -0400
-X-Gm-Features: AVVi8Cf1GupVHqkNcZhtYoOUz9DU0zT_2oeWtf5qDBtNiWLRx6q_yt7muoLsCPw
-Message-ID: <CAKEwX=OPaUputOYJrJDvcNGn7WWoXOp-GzztA5MPbynj-4cPWQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/7] mm, swap: Virtual Swap Space (Swap Table Edition)
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, david@kernel.org, 
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, 
-	baohua@kernel.org, chengming.zhou@linux.dev, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
-	haowenchao22@gmail.com, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B9926180006
-X-Stat-Signature: oskmywjzpofyi9qj1dh4hxd1eriwwa95
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v8 02/24] set_memory: Introduce set_memory_pkey() stub
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>
+References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
+ <20260526-kpkeys-v8-2-eaaacdacc67c@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260526-kpkeys-v8-2-eaaacdacc67c@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781645873-92535
-X-HE-Meta: U2FsdGVkX18ZlfCoRHHxs3vnI3EJ+g6EBeaxL1wf0MvHH2JYRRBxSw2wdSlm4yRvK0RBBkU7rYuatose6yvOT6IpjG4xHvp0EteYTWpMyIWpyLRVDS86wx33+N92IR/ulf3hjfMRAx1HOgEpDEAjFqBxbvEJp2QNFugcduCgx3c7HSED+lpbK5LX87dyISCwN+rOFPYIph9Z0zywazof2vEoTzMHl6y3E+hsfVTjyWE4bk1smjc8W0eKY/i9WcvQ66kZUfOilGqZFRC5cO2z5DsWF9IIwW7Sqorma5m6S577gxHjD4SQv0Cf4qKFmZ19ex4hh8eFI26U/2WUzULIZ5/qlgvjr8FT969XYvSUY8wXagNvM7nTlvW7zxGot98CagSMMbabTUwqG6VuWgDZyyqVGy2/BFcvQqk9nfnjfDIlK3WFmbDTjH95+IC25tOGlWPHF8Qz9MyqxUcp5TqKS4r1ggJvwoypiIYOrH2xTJ0K5RYZp7mjKw77kOX2DP5SPJbZ8DoF5Iu9KBUPQgMt3iui5iH15fJmdbjxoQZnReWjd+wghW8ZWT287qOD+jJ548Xpi/TGn/26A/B6mN6Gz3OdiDlvHMnm0UTgmcG+cP1RHOSgzok35TAe4HHMw6K+TKmdqEfz/1pLlaRCAZW5aAtbiEdW/ElIpZbSzNMwUmnH+m6MyBtiZRzwfS+r9ReoMd2sMiRnJ0Us0/6VZFEEzdPNc1AR9SGyXM7oQkkEujcFxzfshUbAbkJQjCLB64myhAYpO+IgnJFdWn3bngqKQuBu3HmWlgMVdUMg+fjVu8gvoLViy49UaxFTEMssaq5r7Ebh+Nm3dn+9cuJgbqZ5TIZQnQFnXjUi55ZP+RpP7HOK06M4Psc10zv8MBboRUiUmKoneANQlDBSjwtDvx85VdYy3HnaPa6vkz/dSXiAZxCucdyhYCj0BkGhP95O9O0YTEqLy0esNJZSa0KsBmb
- 6LZn7gWe
- 0O+x53T0tRXByBtg3iXy20aqeTA78lFZARoIVSD4cBNyiX0bS+6EB99WOF2T9P7swxcHMVYI9E2HeVZCCdzKOebMd27UJykoj5k6GZ6BS+1y/WSDUhTlMKR1klZv4TON/uEz0dhLEj8FcmBFAf5MwgDXLZZxK0vtQRlEScRP9wn70wCVSzeOleM8kBjguiTVU9WNkeMQvK1BYrJPIrockhx3rCUOpN0e7fec0tHMzYlIA7Yg3DLkJmHdHKunCMoL/EOMjelcmDbmdAUi0spqnf7XB9T1RfHUY0c3LPKdQSN5aKc1EcgyMtt5ku0Mmjsuvvdw377eH/DSO/sfPSmqZ+3PZ5moEs1BEMXDt2EdfqHMIyzfEDj4qph4CJdtcQ3+Ni8c44l625/NU8WwMCSCc8Nn/ESVlnk9wk3d/6r3wO9pO1c+bPuMklsY4XtB/Shc3t9AFn1a5BHrfRHXazzJrb8wplwBTmE0sYq6TEOxvuprFbWhi2birbLtrZqM9hs0dCA4RXv+RA8zcNvsAvB+XRVTINA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 30D821A0009
+X-Stat-Signature: kzo33r6gu3m74x811yg9mmohb5zy5axf
+X-HE-Tag: 1781624473-943810
+X-HE-Meta: U2FsdGVkX18ee9ZMwm4Q1QqJCKjnLR5wTlzZQ5zqJ+Bksx2bcqJV0A5uPCRGug12Mui3+1jEwNH6lN6YRwHn+TBHPl40RUAnblmir0HqafB6x2RaFYkfhW0KMniTne/FZWCVfPknLJhJ06do+FgiVLSY83MTd/qMp9FEDh0gU3HtDvQPmZ7IzbiRVcnlM89DjtydxCRhb+BFyF0S+nlZ7yGixKYMEYn40teqN//rrzrQw4WIvmZuflJ6YdgDVZoyVpiE5Yk27ygkC0vYgI7WXEjFYZ9jtcY+R1gZ2E7tR4XRcvokxUolB46pcwo9b2tTOIqthon7PWuFyhQW16ZRKPa5QXX6OeolAP4ot645jxcYHT3osDcc/w754tQfWh3goQ/9y0E+xYRG7T2qHl2CZ7hY9xBScCk9dOxJ7cuCmbefw35q7S2d1SsrfiiOtdqeSuw7mnLNNcDfp6x6PhbOx4igMMalECTOQYkxKN08NW6OU3IPDG+fvkDyeEl/Vz6dwWaLyZRMgJ7QOsOQFbLfpowT5TrwFZJDC7ahP/nYLeB1cO4uNL7wb4XuZQKVZFGAI8kNKMEsm6FX/92XKnpcFdzs5mEqZ+NBsGtQ+yvqjb7axrVu4rxuVlKaolbOKjGrHikfQlkTiIuUlKrftBqw1mmPiPyeL2Ai1CHoBlb9SDp3WRSvycyFRFtB6qrU6zJ8ie5tap/FyUuYwRlERrrM0EREv+Tum7UrA2KcawEbPVIqMgRAj+csZrVOndyGhWjHiljQ2iVbZgPJTH4PMFPWKpyJogq1Q2bys64oQIRpz/qMfS09Umi+3hi07QW4pvpInz12+HFCOsW0IhPk1bLoTLlegXG7SwobpwUxjcx19e7mPmvPw68zPdv5WJ/yvK7UMxQi3PeAap7W5+ey9zMUofKlN4FBszR1q3YhPdUyckNhYqqpL+4yHCR7Qos0tOOI23CuG3gAjehx9qMaHCc
+ knbvQ/2u
+ igdO3GhpWWxcO2mtGXzhj5jm3q0vUtEDeKQhkCyRF9BKl3eNE23Hyc2z25iAOzTG0xQ5S8mN15Rj7C0DNGWLxOMA9gUDkrFRRebnuEvXyCfXQHWzQ6MlxYet6FltDpZTfW/QYqofLU88wTC2LhA613HzDgjolki1gu/nD3hVUOP7GODOgadC/mCaQDLCOGUBqbC7Hm00IMLRF8BuCGnhGk8fKCZRyKjZ1zmktnZ/WCg6Od169MjrTAx+9/feX1MsIbW4uwYks9LIBMDjrpvYa9YmEiP42iRSv7ZH+XruBiLNqnosPBO3GFHVX0n8VxtphYQTsICst1ZDdJX3ErU6ncrp4bkDKhfUQXxFPEXNNyUD9iKA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,89 +154,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 15, 2026 at 9:29=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Mon, Jun 15, 2026 at 12:56:26PM -0700, Yosry Ahmed wrote:
-> > On Sun, Jun 14, 2026 at 7:39=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> w=
-rote:
-> > >
-> > > On Sun, Jun 14, 2026 at 4:20=E2=80=AFAM YoungJun Park <youngjun.park@=
-lge.com> wrote:
-> > > >
-> > > > ...
-> > > > > * Integration with swap.tier by Youngjun (see [12]). For now, I'm
-> > > > >   leaning towards opting out the vswap device from swap.tier enti=
-rely, and
-> > > > >   treat it as a special device. Integrating it with swap.tiers wi=
-ll
-> > > > >   benefit the cases where you want some cgroups to skip vswap for=
- fast
-> > > > >   swap devices (pmem), whereas other should go through zswap firs=
-t. But
-> > > > >   most other use cases, either the overhead of vswap will be acce=
-ptable
-> > > > >   (or not the bottleneck), or we can just disable CONFIG_VSWAP en=
-tirely :)
-> > > > >
-> > > > >   Youngjun, may I ask for your thoughts on this?
-> > > >
-> > > > Hi Nhat,
-> > > >
-> > > > Tier 1: VSWAP, Tier 2: ZSWAP ...
-> > > >
-> > > > I don't see any problem applying the desired functionality with the
-> > > > currently proposed mechanism and interface. With this, a user would=
- be
-> > > > assigned the default Virtual -> RAM swap tier, and the overall pict=
-ure
-> > > > becomes one where swap tiers are composed according to the priority
-> > > > setting.
-> > >
-> > > It's more - is there a strong argument to let vswap be a tier (which
-> > > is not supported by just turning of vswap altogether).
-> > >
-> > > Because right now I'm not exposing vswap device to userspace in any
-> > > manner, pretty much. It's abstract and transparent, and minimizes
-> > > complexity (no vswap and swap.tier interaction) and surfaces for
-> > > issues.
-> >
-> > I definitely think vswap should *not* be a tier. First of all, a vswap
-> > entry can be backed by zswap or an actual swap device, which would be
-> > two different tiers. How does that work?
-> >
-> > I also think vswap should not be exposed to userspace in any way, at
-> > least not now. I still think we should aim to just make the
-> > redirection layer always on and eliminate "vswap devices".
+On 5/26/26 13:15, Kevin Brodsky wrote:
+> Introduce a new function, set_memory_pkey(), which sets the
+> protection key (pkey) of pages in the specified linear mapping
+> range. Architectures implementing kernel pkeys (kpkeys) must
+> provide a suitable implementation; an empty stub is added as
+> fallback.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  include/linux/set_memory.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+> index 3030d9245f5a..7b3a8bfde3c6 100644
+> --- a/include/linux/set_memory.h
+> +++ b/include/linux/set_memory.h
+> @@ -84,4 +84,11 @@ static inline int set_memory_decrypted(unsigned long addr, int numpages)
+>  }
+>  #endif /* CONFIG_ARCH_HAS_MEM_ENCRYPT */
+>  
+> +#ifndef CONFIG_ARCH_HAS_KPKEYS
+> +static inline int set_memory_pkey(unsigned long addr, int numpages, int pkey)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_SET_MEMORY_H_ */
+> 
 
-Yeah I will just expose a pair of usage/failure for diagnostics purposes :)
+This patch looks rather odd, given that this is just a stub that won't be used
+before patch #20.
 
->
-> After following the answers and giving it some thought, I agree that
-> vswap should be kept user-transparent. If there is a strict need to
-> disable it, relying on CONFIG_VSWAP to remove it entirely seems like
-> the right approach.
->
-> If a strong use case for user interaction emerges in the future, we can
-> revisit the design and figure out how to handle it at that time.
+And there, it's only used from arm64 code? So why do we need the common-code stub?
 
-Yeah the only argument for adding vswap to swap tier is if we want it
-to virtualize swap on a per-cgroup basis, assuming:
+-- 
+Cheers,
 
-1. There's a setup where some cgroups benefit from vswap and some
-don't, in the same deployment or host (so you can't just use
-CONFIG_VSWAP).
-
-2. We can't decide it with some heuristics purely based on kernel's
-knowledge (so for e.g, if a cgroup enables zswap, then vswap probably
-makes more sense than not, etc. etc.).
-
-Maybe I'm missing something, and if so please let me know. But
-otherwise I'll stick with transparent vswap for the next version.
-
-With Youngjun's new interface, if we made a mistake here and
-per-cgroup vswapping turned out to be necessary, fixing it is fairly
-cheap. We don't need to add any new knob - just need to expose it to
-memory.swap.tier somehow, and we're done. That can be done as
-follow-up :)
+David
 
