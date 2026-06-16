@@ -4,93 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD420CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AED1CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:56:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A144F6B0098; Tue, 16 Jun 2026 16:56:05 -0400 (EDT)
+	id 4E4D86B00C2; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ECAD6B00B9; Tue, 16 Jun 2026 16:56:05 -0400 (EDT)
+	id 4BD5E6B00C4; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9296B6B00BB; Tue, 16 Jun 2026 16:56:05 -0400 (EDT)
+	id 3D36A6B00C5; Tue, 16 Jun 2026 16:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DB4E6B0098
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:56:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1DF0140266
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:04 +0000 (UTC)
-X-FDA: 84886983048.13.0B65564
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DA5E7120005
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JtqzoA8V;
-	spf=pass (imf29.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781643363;
+	by kanga.kvack.org (Postfix) with ESMTP id 0881C6B00C2
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:56:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C0671C3A66
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:18 +0000 (UTC)
+X-FDA: 84886983636.05.B2448AB
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8B07E18000E
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:56:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nc4dClDC;
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781643376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gSaf42jn3+fLsDQCSMpWQgJLjHRCHodZ2YaUk+EncNo=;
-	b=yLhhr6cbwHY2NE7Ed3juaw1s3Jg14UceWiPjVpTpLHmP4McYpQ5JS3Nu1iGBkZR4T3NAdX
-	xrDfEsx41ybltDneKjZl9JnKS0BwVneguZnN6V9K7njgN54tGQtRsfsc8i0tf+ElJ0nAT6
-	k4k19iq8MwLcaJMsoT9iyFJEQhS1CeQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781643363;
-	b=bCgKtQ9/SpCUm4w8cWkJGVjgKJVSkjfkK0CXUO2w91gdbMVzgHTlMLgIEfW9RhZy4vHrXO
-	maMXIiJVLpvYvpqwA78EIR+iZbmXR5sWndnZW1qjf7UCpfsma1u4/HIBy5PtfP60xNA5l5
-	VCyGsion1CQ1dkh+wcNDfOYfHt7A4TY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JtqzoA8V;
-	spf=pass (imf29.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <bb1e9f4c-be28-4bc8-8a45-a59b3af888f0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781639951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gSaf42jn3+fLsDQCSMpWQgJLjHRCHodZ2YaUk+EncNo=;
-	b=JtqzoA8VKjIknorG9Pb5x3/2DDERgweH5lFIkkFecJxVUyFViaJepzDV3BzXOqWP2BCAPb
-	f85KZIXyMPYiNn3emkIe/aV0Z70wAo9ykhyTOHct2bK0NN9ZXQ+0ozwPTJLAXf9ZGIiQxX
-	KJrrnf3/62eg9z5cIYgclQe22sUDKgo=
-Date: Tue, 16 Jun 2026 12:58:48 -0700
+	bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+	b=yL18WJSAsELQleMkmiIrkF3IrjVGuVUp/6opDn1LtGOUDj3yV2RP9Xpfax2pc9IjxdYZ35
+	guctupFn26EgJhX/E1i6KgqMfUxn5yoLTyAnVjqMqcZUY4tKC+uRmPL8OlFG3z6uFLfI2C
+	zNOj3y/yV4OG2vYGziEPrwZ/A4auTTM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781643376;
+	b=aeTT3cxq0pBQsEcZhCasxav7T88iB69BQfoRI8buZ7IbC6yrwCHMwo8EELcLsXc/ePWGfp
+	vBPM7HvaV2NPx8eTKmBYvBjeBpemnvITg+4ocOCxwH6t8VcoP/oJUMBbSSY2OKzGeEInn5
+	oIgV38CL0V2LnvjBxE1aiPL2wjhNksM=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nc4dClDC;
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51778077b28so55368321cf.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:56:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781643375; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fawYZYtGkM9hUzsrsD9eJl9vqMClT5f2zeUr3mDuGxyrMC3DV0g+m++uipV/6cMdre
+         Zc0a86SJJVNmKAA+CQeCrlHLvqyXBc2RnjQErhutPVHMaPH6ObZ4EWeFOGmylkctJHv5
+         RCF/Dx19rXNKGIls7WrQuL/ICPgd6VwABVhAXPJtdXouR3UFSWEShjwuMGhv3x4Tk70p
+         dCzpRlMyLZ4meh8x/aghRI6pydezH+rO1Mh2ptFXiLMba8h8pmRdIWz+FNzI9dhdb6sm
+         X9EH53hfMNnqrZ/nG5aoxPBHtueeqn+Vcq83ApLWmL53qqleQo/mPs3cOFwSlAf7/gcK
+         NbEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        fh=A5/Nktpqp/9co9EhhiEl5xyGd7zH2xLUXA7stdKZgPc=;
+        b=Srw5OapBIyF+uitZoYxKGqo4Mhj8WGvHXRFNJcSY9e41Nxlh0UVBtmsPXq6APpD6/W
+         OxA7y/iUew1MwIhZ+yzbFmK6NiFPzGld/MYEZEEcJI0v0ywYhkZNJnlUg3Fge91BkKzh
+         QQvdWj4TMcLFY1TI5EmFJyB3kMSyQo2cxR/TTKzfh+uQJ7MZOOcX4x1Ri9CMmPAKXMQn
+         vNcvP3fcwqaYm64SveQu8w6yiOVl/ESuT6Nwd7UEpXdMex2ziclV56yYY5GfwqzYsEls
+         tCMl+KRt76LIPd2A7q98s+UbKnp4c2fDvD02PZdl7inT7BW8kOoaG792AVsbb9fYv2AG
+         53yg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781643375; x=1782248175; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        b=Nc4dClDCfO0S3nnW8S18GtTECmUEMkJ/JiQp/yyiDy68r2xfyF18JceBFqzaDnoqDX
+         Y1eVClh6/hQIvQJWpuNNpy79GdGGH7yRlK0fEDAJORNr/eDYJ1Kir5apMZUbD3YiXYcw
+         uBpbSUMpG4iFYHaxq50J82Bc4tZGivdde7sQlOg6l05sJRn/vBKa2HN50Bq2cOV3UJ4a
+         5+12nLSgo8D2JTZmCG3LF7j3nJZJ92ci3NHbJHv2vlbL/+DphPaNXr7pck6rWj+4Jc+3
+         ZBvLSl7a1VkF6yrGk3R0Q949/npiACFJLzM/ooMtd6nN1TA4VjaeVdQ9VXvxm0u6wK+x
+         zO4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781643375; x=1782248175;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o82nbH8071ZDGLm0iYK2gdlkX600tsvrzfNh6VLN4Fo=;
+        b=af4XRkVhsIBprrVeceDDP3lp0npM3woUvd2mapB08sZsVBrhLFIzE62YjgNjCQaI4Z
+         0KMz9fSFhLrN4MTlLl2I4jujyylnbm/RQiITwioKNmg9TGrtnDVAjG56wBaW8gKhR+aq
+         KJhDe72FCAsvuEkTpuwcuU00IEtyRQEOtcwAn5iWdWHvV3BRyfMej0PSWkeCjZD/2BHZ
+         27Ht5gBcN6nKQzOoQD5gJRY4yiTpwJ4nhgSq6PbBnKoPxHfD+XnennqbQxeB8X+9Hc4j
+         /a7O/cr+os+qrbQxbVTly3TXKKBUGnl5u4v/Qy/wLC4X9yMBj/PohKRiRva1KEgCgTDa
+         CxQw==
+X-Forwarded-Encrypted: i=1; AFNElJ+iLuRQD1TzSC5v3lyNacq/UnwdhWREa3rfKL0SF+itp9k1dVmO1LDETU43ITCOJD0kjlDRg09vCA==@kvack.org
+X-Gm-Message-State: AOJu0Yyb1bRK/A5QDeGALswYUViRGyqm3L2mIOsPEIzkoX01Br3v/2Gm
+	p2QqsPXFEIIpqKdvDysizAAagezJscthwrco+uQMd2+m1z2uo6JuCqZPCaeVheb5gQMRqCdYL99
+	prLUe+rF6nTyPy7pc5KhlEhK6MvD1BSBdr5HTWL7z6ShjR7Pb9rRfSQX32ds=
+X-Gm-Gg: Acq92OHFdAdLotuZcS8xqD8Rs6NKQ+owZbzKYYoPYIKcVCakBuSJyGJXcdtI4iVEWUT
+	TDni0GCbxXWcJDdwUCeBqwZDMjBj23gWQKJd0POyk7Lb3hJnYh8O5hz1sieHzRLPBAsBna/6ZFZ
+	kFN4etyY4tQudoxip1PmBDviTBPQJObhCUN8aYryuix62hfRrUWo7yfngL/v7/ojN0hi6CBjgVm
+	l5pxXtzXrUt7UcNIZAP57+lS/KXNVDtZuABN+8w+B4/15uRAndHU5zR/uEYDXFEeyv7XG1z6F4K
+	/9W5wB5ajIE18OtATI5xtQupDqAzNZOrXa7ixYa+jpmg1Aoc36FJ/fqCMxMpaNocjbKl/A==
+X-Received: by 2002:a05:7022:622:b0:137:9399:fc59 with SMTP id
+ a92af1059eb24-1398f69626amr23221c88.21.1781633399141; Tue, 16 Jun 2026
+ 11:09:59 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 16 Jun 2026 11:09:58 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+ <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor> <ajA4z_Wkb93cTW4m@google.com>
+ <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
 MIME-Version: 1.0
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: JP Kobryn <jp.kobryn@linux.dev>
-Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
- costly order
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Mel Gorman <mgorman@techsingularity.net>
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- usama.arif@linux.dev, kirill@shutemov.name, willy@infradead.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260519012532.272770-1-jp.kobryn@linux.dev>
- <agzH5BCkTMaK19Tx@cmpxchg.org>
- <c467595c-31a4-4d23-abee-0fdf90f8d505@kernel.org>
- <7a906c76-6dd9-4bd6-8bab-cb69eb0a3db6@linux.dev>
- <ae742ae6-a7b4-424b-bc87-c18200d9d203@kernel.org>
-Content-Language: en-US
-In-Reply-To: <ae742ae6-a7b4-424b-bc87-c18200d9d203@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DA5E7120005
+Date: Tue, 16 Jun 2026 11:09:58 -0700
+X-Gm-Features: AVVi8Cfci2aZVOJMaXs8XbxR0646nJUtiwZFbcmm9wi2jMlpzFimiOSyoy_glyY
+Message-ID: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Shivank Garg <shivankg@amd.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Fuad Tabba <tabba@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>, 
+	Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>, 
+	Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: fj5g8yiwrhgt1g8g5cdqd8ibeeyx8xqk
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781643362-902593
-X-HE-Meta: U2FsdGVkX18XjMsXpRh9l8GdObxSicV1jooN9rhJfDWVheqizOJpGQ4Ut7J3IYT6kARqQfKzpa5RrJBUiBqWidp37pPHr56+cRfeymEYu4X9pUbp7285tIINsbLeJG0HqCi3V3bc8WMIJWGEUZvCpD/vVVspf0AR+rERVDzlZHV/1zPhzev8PMtWY3jwzpUdpAa0begSfzBK7reVoB2v9TTOw9mPNR/5gvQbB7MsVCJ6e8YBD5cnGXUccYud9xvkbP/lUm87r9TToVlhx4G3t6JtTqISjqnuQXiyWUfRZHAauQvfe+HaMR2Nkn9Jx4R4UPfFll1JDk0Mn823NIZ63G69pHWjHTD0gIQEcSSXr5JQPaKqDsjqXDMUNELBaBP15/nlYSKBDilEUmAUAJweBC5gbsNqCfEepOrKoqmfqhn4Xj+vDn09V2niQrCtawnynHRxzx0HzHocIz6p0eRLY/Fjxd3/uBSY3AUDNBX7jhX3yMtTxYJ8xWeHWmv6aTCpDE0RsKYqBloPyqWXyN8dvxUQ4NOTWE+KlkMBZmkqVBLQzd/ybVZlAsjI6krNkIkHcKff6Z/I0xN0Mg7/O3zrNjq9lpUHSX7G/HgxfvWVbN+evJ4fmenmt1KkvzMS9XBeRjADg4wa/fhM9AOGfBJEr1QG01+TkvedaFWelqCxzBNflDP6+05cAUPXtWl2bynNuUDmjr+ey1wGYUkOrfstaXPHXxE0jVvvNFhCa0uJAZDkjIN/UjB6+ST9qTEUT7AeAEzdVGZbFZuI84nYQNCGDxRseoPNM0MFnpiio6lKQJWYAjA61S5IC4jwtvzb7hFTzO3n8ErLJXIVu2GTOPE4+PXqZRrXBevsX8b8UtEdgBN6sVSNr0LZikqZajODp1xyeiiiD0XFbgfZREFErgaePjQoNnhB3Fz951aOe788z83nu7l1ZOgj6WU95TFUG8THiy3CDbmKZrwlDkmJ6S/
- fAOgQEG2
- 2yIIDhu0gbZWbGNWsVq93jdQuACBPp56wjzr6pUqXwYKDaZH5TokghOlv4iMM/AE25yj7+xDcOfNdzXO6v86GzGyDMRk9qAkGKGGLMgB85/WcwavsxVm5eVNP7etUnO6rOhp5sYYdUVfEuLesvau2Y+X15mjuzxNvSkPTm/HHq+jnEIST94XWjm6UJiz/iafbFDP/REuRR9e9SSbQrKv0pc9LmjZtFkKtbNmhb9A42lw2XfPS5RPmG+rTS4D5VDezdX6kLk+FLn4LXcEsvSIm97zW+ANo/KHVjuYjTO7uY5C8iW4NMhW0rFjxSrRBRRQoMjD5e2AFDtgKFzy2JDP5+8EsRzphsgL+n2n8rzuJjqh/lCU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8B07E18000E
+X-Stat-Signature: 7o3mptfu9ysizt15xuh4ynihq718psmp
+X-HE-Tag: 1781643376-36510
+X-HE-Meta: U2FsdGVkX1/a9VUkguXEglzhgrP+sK+pTGpcYH/+HZPbFmW5oZHSBYUXvg8CTz/aybUJRwGXapjf8Wnp9bw5yW62mbohxH1lJY9P2A+Fbmvtz8Poe4Ij3UYAfaQTv/MoqTDyrr7Qaeq43e3vznava4KEexqr4Q5POe8DiEOEOHATQki54XAFRJ6IG4UTunaCK3+ojOT6Ha5xsB//wMTzVK/ariXhYS2hmVWvTHhgiahSC2TRomeG/VUyo+Uixs3GwAl0BhwsFD3LKeP0bz6Tlk665ZWeXVtx9PG0oTSArbuCKQwjvxCytI8siM5nMh2rAmrEijk+Q5MlFMkMY89HXvtWxTJzfwTWEA9+nsHUxp6PwtJEWnxIqsMRLAo6fV7kOSB3lr0XN80vIUzW4JyVoKHIrvUHvYEH6JBVx7Nitm2Ha2IFXxFqiH0c2OYOSqYdua3HFMKtGvRCB8KiwDrGjSTyZMiUx6CMadEw/E/3RQXuaiTNZwCpZIAnEJlYCLHiwgwo9I4U0HPKtHwFSMTasgKpK9pr3Z7EK4zEjKPwaICgg4c5NKUcvHA2MpCKhLiqeYbUxREoO71OOfqtcev3xiC6qUJ8cy90Qo5eZDLJurXDjHWb9EGN0w8WC4QZXK/oHS4+6ilQRmiQv7CZwhfK29TC4NY9qg2yr5T8bj5fiJmDcdKWBniFrOQYu6wDpnGrASD30bBUx1Wt9hL3yvfllsCcA56OV7VWKhP2fc0o3QShjYhO6nYN+eDjfyJzJ1uOmYMK1OU6x3jVyvuJWZw1NEBJlP1uN0tvh7gyfDNmuloxK3VCrRdEZWut6ybXCJj39I7XVxb3Pig45HL0pWjTiunjiTnzEDkPvaSZbrFTEzpEHvoIgpzgCGBLTAoroy7o+pr39qxwHKc0f1Hws5QzXzWo0ee3sgIDveGqBIW53dHrTPsyj5iiyyggIs7+aYx+s/6dfZI/R08ZNk1V+7l
+ jqjrVKvj
+ 7hLXV9/fzeDV7855lJNH5WnGuwjPAAvK9oCBiP6lq8Z5zZf2uOEPDmB8fRt8Ji+WDD+GiGKWjrV4n9z9ev3D2TMm4yPAHrTjIyqc21HJ+XREOc/6GqqThYxTftEAtV8OVNr6++FPH2Xc+C47fn89fknfxBmMLRzG4JgWfz02Z0r33Vgsm7QRsmuROxDdfTb+V9kbaxVryIcDNmIgAK+kjErOnJgQfbLcAjlSPaegbXvLNy59KW4w+21xC8ArbZvfAW6lHWZCUyJABDBn4JNTglltkrnwW3CxrzSy263UZHJ3AgLvHtbvR1u8NIfLmu+bZITyrVkv0fGKv2UpR0S8zdkVUBqKFVYI7/fZFYj3IJGvNtO4ooOMEcWjb7dTLHmeaZtU1u2ZOrBTkyMvKOWPb3y+bSUGJcVfmq8c/inT0zOFCmIk5WlhPP7AHIKvCrqRNxW6jlFRY4fgezClqbPNxlaYMDvVA8s/HjhmOpvOFTkDaviU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,177 +157,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/28/26 6:57 AM, Vlastimil Babka (SUSE) wrote:
-> On 5/27/26 07:57, JP Kobryn wrote:
->> On 5/25/26 2:11 AM, Vlastimil Babka (SUSE) wrote:
->>> On 5/19/26 22:28, Johannes Weiner wrote:
->>>> On Mon, May 18, 2026 at 06:25:32PM -0700, JP Kobryn (Meta) wrote:
->>>> This is an interesting patch. A couple of thoughts:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
+
+> On 6/15/26 19:39, Sean Christopherson wrote:
+>> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
+>>> Hi,
+>>>
+>>> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
+>>>> Hi,
 >>>>
->>>> 1. You disabled the highatomic reserve for this workload and it didn't
->>>> seem to matter. Presumably <costly orders don't need the protection.
 >>>>
->>>> 2. Maxing out the reserves is odd. ALLOC_HIGHATOMIC allocations will
->>>> try reserved space first,
->>> Hmm, but if the allocation succeeds before entering slowpath,
->>> ALLOC_NON_BLOCK won't be set.
->>> But reserving another block should mean we already exhausted the 
->>> reserved ones.
->>> Unreserving is only done when direct reclaim made some progress but failed
->>> to produce a page. But if it works, or kswapd does the job, we won't 
->>> enter it?
+>>>> I always thought that one of the nice things about using guest_memfd as a
+>>>> memory backend, as opposed to host userspace mappings, is that the host
+>>>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+>>>> collapse, compaction, etc, acting on the host userspace mapping of the
+>>>> VM memory, and outside of the VMM's or KVM's control.
 >>
->> There was just no real pressure to invoke the unreserving. Let me know
->> if I'm misunderstanding the question.
-> 
-> Sorry, it was more thinking out loud about Johannes' point than a question.
-> Yeah it seems there was no real pressure to invoke unreserving.
-> 
-> The reserving side is probably fine. Highatomic allocation will not try the
-> already reserved blocks in he fastpath, which is maybe not ideal. But they
-> will try them before reserving another block, and that's the important part.
-> 
-
-I sent a patch [0] that addresses this.
-
->>>> and I'd expect things that are commonly
->>>> highatomic to be short-lived. Why don't we stop with a couple of
->>>> claimed highatomic blocks that get continuously recycled?
->>> Maybe it's some big burst of highatomic allocations that leads to the
->>> reservations and then they stay around "forever"?
+>> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
+>
+> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
+> use case of having non-movable guest_memfd pages such that we can support use
+> cases where we can hopefully guarantee that a stage-2 mapping will not just
+> randomly go away.
+>
 >>
->> I should add to the changelog the missing info that high frequency
->> net allocations are responsible for these high atomic reservations.
->> Even though the allocations are not necessarily long-lived, the
->> pageblocks remain high atomic.
-> 
-> OK, thanks for the info.
-> 
->>> If that's the case I think we should be perhaps looking at the unreserving
->>> being done more proactively, rather than limiting things to costly order.
+>>>> I think it would be useful to preserve this behaviour, even in the absence
+>>>> of confidential VMs (i.e, guest_memfd file descriptor created with
+>>>> GUEST_MEMFD_FLAG_MMAP).
+>>>
+>>> Just to be clear, I was thinking that it might be useful for both
+>>> behaviours to exist (migratable and non-migratable) for non-confidential
+>>> VMs, and allow KVM or userspace to decide which they prefer for a
+>>> guest_memfd.
+
+More concretely, are y'all pointing towards a
+GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
+kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
+
 >>
->> What are your thoughts if we instead look at it as: should we be reserving
->> full pageblocks for small allocations?
-> 
-> Well, since migratetypes operate on the pageblock level, so do the
-> highatomic reservations. It at least groups them together and not scatter
-> all over random pageblocks?
+>> For the purposes of this discussion, we should separate the physical act of
+>> migrating pages from the features that trigger migration.  As I said in last week's
+>> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
+>> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
+>> anything else that goes against the goal of guest-first memory.
+>
+> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
+> offlining, virtio-mem and possibly some collapse mechanism if we were to support
+> THP of some sorts in guest_memfd would are all reasonable.
+>
 
-Right, that's the trade-off. I'm not going to pursue this approach.
-Instead, I've been looking for a more targeted fix in the relevant
-allocator paths. See this patch [0].
+Background question: how would virtio-mem use migration in the host/guest_memfd?
 
-> 
->> It seems to come down to whether we want the disproportionate protection 
->> of full
->> pageblocks (below costly order) for high atomic allocs vs letting them 
->> coalesce
->> in the buddy path. Is the data not enough to justify the latter?
-> 
-> I still think the data shows we might be too lax in unreserving.
-
-Ack.
-
-> 
->>>> 3. The impact on THP and compaction success rate is pretty
->>>> extreme. How can 1% of memory throw such a wrench into the gears?
->>> Maybe if ~all free memory is in the highatomic blocks, compaction can't be
->>> effective much. Or some suitability check somewhere in reclaim+compaction
->>> wrongly assumes the highatomic blocks are usable, so it won't do the work.
->>
->> I could be missing something, but I spent some time tonight looking into
->> this and didn't find an issue in the compaction/reclaim suitability path.
->>
->> __compaction_suitable() calls __zone_watermark_ok(), and that path
->> subtracts free MIGRATE_HIGHATOMIC pages from usable free memory for
->> callers without reserve access:
->>
->>   /*
->>    * If the caller does not have rights to reserves below the min
->>    * watermark then subtract the free pages reserved for highatomic.
->>    */
->>   if (likely(!(alloc_flags & ALLOC_RESERVES)))
->>       unusable_free += READ_ONCE(z->nr_free_highatomic);
->>
->> So free highatomic pages are removed from the usable free count there.
->>
->> Also, the suitable-free-block check in __zone_watermark_ok() only treats
->> MIGRATE_HIGHATOMIC as usable when alloc_flags includes
->> ALLOC_HIGHATOMIC (or ALLOC_OOM). __compaction_suitable() passes
->> ALLOC_CMA here (not ALLOC_HIGHATOMIC), so I don't think compaction is
->> incorrectly treating free highatomic blocks as usable.
-> 
-> OK, thanks for checking.
-> 
->> The only caveat I noticed is the fragmentation accounting side:
->> fill_contig_page_info() / fragmentation_index() appear to count
->> free_area[order].nr_free across migratetypes, so fragmentation scoring
->> may look better than they really are. But that seems adjacent
->> to this patch.
-> 
-> Right.
-> 
->> I think though that by the time we consider reclaim or compaction we're
->> dealing with the aftermath. The patch prevents the problem from occurring
->> up front.
-> 
-> But I think as a result the highatomic feature is effectively dead. Your
-> results confirm there are no more Highatomic pageblocks and zero Atomic
-> order-4+ allocations (actually it's weird there's still 1 highatomic
-> pageblock with zero allocations that would reserve it, or is that a rounding
-> error due to calculating average across multiple hosts?).
-
-Likely a rounding issue.
-
-> 
-> I think it's not a surprise that there are no costly highatomic allocation
-> attempts, we've always said they are too easy to fail, so likely nobody even
-> tries them. MIGRATE_HIGHATOMIC was introduced by Mel [1] and evaluated on
-> order-1. Even the non-costly orders can fail of course and should have
-> fallbacks, highatomic reserves are just supposed to make the success more
-> likely as that improves e.g. the networking receive performance, and they do
-> use non-costly orders.
-> 
-> Did you observe no increase of net receive fallbacks due to this patch?
-> Would that be an universal outcome? I.e. did highatomic reservations become
-> obsolete thanks to other improvements to the page allocator since they were
-> introduced? That would be great as we could remove it completely and
-> simplify the code, but we don't know that yet.
-
-See the separate patch [0] which takes a targeted approach on the
-allocator path. It accounts for net fallbacks and should help napi/page
-frag allocs in the fastpath.
-
-> 
-> If there are still benefits, they probably should stay, but that means keep
-> them working for non-costly orders, and we should fix the observed problems
-> differently. I can see two directions to try in that order.
-
-Ack.
-
-> 
-> - You say there are "high frequency net allocations" so I assume they are
-> ongoing. We could try modify the fastpath __alloc_frozen_pages_noprof() to
-> properly evaluate ALLOC_HIGHATOMIC and let them prefer the reserved blocks
-> in cases that do not end up in __alloc_pages_slowpath(). This should ensure
-> the reserved blocks are actually being used even if we are above low
-> watermarks and don't enter the slowpath.
-
-Yes, this can be seen in the separate patch [0].
-
-> 
-> - If that doesn't help and we still have unused highatomic pageblocks,
-> figure out how that happens - is the highatomic allocation frequency higher
-> at some point, resulting in their increase, and then it drops and they stay
-> around? If yes, think about how to make the unreserving more aggressive than
-> it currently is.
-> 
-> [1]
-> https://lore.kernel.org/all/1442832762-7247-10-git-send-email-mgorman@techsingularity.net/
-> 
-
-The patch below improves the allocator path. I'll explore opportunities
-for unreserving.
-
-[0] https://lore.kernel.org/all/20260616191420.52556-1-jp.kobryn@linux.dev/
+> As soon as we mix in access/lru semantics, we're going into the wrong direction.
+>
+> Fortunately KSM is anon-only and not even worth a rant here :)
+>
+>
+>
+> --
+> Cheers,
+>
+> David
 
