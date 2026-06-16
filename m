@@ -4,129 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E048CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 22:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD737CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 23:50:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B4A06B00CD; Tue, 16 Jun 2026 18:38:13 -0400 (EDT)
+	id 1AC796B00A7; Tue, 16 Jun 2026 19:50:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 064C86B00CE; Tue, 16 Jun 2026 18:38:13 -0400 (EDT)
+	id 15C986B00A9; Tue, 16 Jun 2026 19:50:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E958A6B00CF; Tue, 16 Jun 2026 18:38:12 -0400 (EDT)
+	id 04CC46B00AB; Tue, 16 Jun 2026 19:50:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BAAF76B00CD
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 18:38:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 223B0120275
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 22:38:12 +0000 (UTC)
-X-FDA: 84887240424.07.EBDCC59
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2E47E4000C
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 22:38:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KV0oxm1q;
-	spf=pass (imf01.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781649490;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0bi42mNvv8zEfpJesfq39j8DzoTdUbmNl2yt46Rb57o=;
-	b=QfepPt1+9OTrmnfJcSYp65RW6a+IEghe1qGazfyV9XLCRGlENk0YFrBvu0g8Mxcx4KepRu
-	EPAztamGLHFnbhSB4/uyC6qTuxT30x7h4gipoFn/OZCIsc9qaG7relUaxeTVIU+sHbeiXp
-	O3IKD6s+rMI7SQ/96j+l+fUdbiRLRn8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KV0oxm1q;
-	spf=pass (imf01.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C370A6B00A7
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:50:30 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 267C51C128A
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:50:30 +0000 (UTC)
+X-FDA: 84887422620.28.CC8F572
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 23EC41C0007
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:50:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5gHiOFJ;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781649490;
-	b=5248sHXbfbcKfKOftRkO0TlR29/T9AZ1TOeAIP75jX+Z3CcTfXlioz574ILlM1K4ZFpjZf
-	EmGT1/1Nnn/xPDF3k5AOJG/RALV4/csgzJNcuRdawJ3Zymh8zSOfxHerOK0pqXRw2FhsLJ
-	ZJ5KAjFmEImEgK5Rx0HCqeYL0/BBBj8=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c6a4eccab1so8585ad.1
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:38:09 -0700 (PDT)
+	t=1781653828;
+	b=Znb7HKfiLSklZVouko7kdXooeMMtbcE+MXpPHTpgwnezmoCr2Qudgc79oZgjVArW6AoYbo
+	536qZhcjosqcZqkhySlMbp1CWuwilvz19k+PG2G9TmHsAkKtyrD8sjxeAfRYjEGcUBINrd
+	gaEsliZKKmfu4/D1Svei+5DyKCvB35w=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5gHiOFJ;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781653828;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
+	b=20Yvwlbd3qkMlZkSqNqSdZSvDQYm9FtarmLdbkxBZ4itCiDKKAiTs56igtVk4uILeF1q9/
+	yv9dlhvmFSbnNHgPQTYLcR7m7RQhJDO1RACFHgGR5g2LD+Eb0ce72aTag6VKyvrc/AHNo7
+	Tk5qq6ReL3ChzLT6re5JFtQMdeyhsVI=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-692491fec0bso8742909a12.2
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781649489; x=1782254289; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0bi42mNvv8zEfpJesfq39j8DzoTdUbmNl2yt46Rb57o=;
-        b=KV0oxm1qzt63NBgg7yhY+ZjS8MS9fDtuc8d/+Lzl8SyvOdBsz3i/We14cLBmrZxL28
-         7r6zxESNX/SEgP8BVMGskXk+sY/k2Cb+KrxL+P+gk6JQIdOhte/YRgBCZCbMAvw3qhFc
-         upNuGQEmMg3SlCDcgkv9hRbwKSn1z6osvGB/zjIwZjD8/21cgyOVYkDmYlnCVrRKYxJW
-         WK18A7Q3WO8Mv5whhENjMrs901mqCsZdm9lpnJ+zFWiV1XcgJQgOmxMzkDVoxaJeCkRv
-         i6i2ydBqW63I2vGalAf76qIcXI0NPHL/y8CL3T1SFpTHnAScf6DuwwTn+Xa9LNxFkjw4
-         xzNA==
+        d=gmail.com; s=20251104; t=1781653826; x=1782258626; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
+        b=j5gHiOFJ4fBMO3O5v6UfY2SW0kBKooiUb8yiNQ7B0X4DZdmmQYE5adRD5/S/VL0wFi
+         iiBKYRwttVfUnfrUNq6LG37QaKPdXPyLFmVDttcz5GgCQ1wXTswSBIkd7ZF7Oi77joPL
+         xRAZoEyYL332Q1f0NfpbBhcAJNz5jVJJ9pHG1mjlQyhPFDAXYQ5yiNLw5NAyUdHMCmi8
+         oNY5O1uRAtQS7rpMarWQgPn1QyXKszHq6x18WQ24EZgNuGC3e8wBt1myhgSs9lqNbpc5
+         H0lmV2QdyS0O12Jd3IoGmlxjpo7YcAT3n6XlYOVMhY350Wkjmhe7Cru625swCvfFBN/I
+         PujQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781649489; x=1782254289;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1781653826; x=1782258626;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0bi42mNvv8zEfpJesfq39j8DzoTdUbmNl2yt46Rb57o=;
-        b=pH8MKpMg7j/i6sahND9edgUYx8ny8BSWB7dfSyFvQ3RwZCSkAHP7ek0XoNb5POqoi9
-         05jvw+dvpZyVs1FlhUV2gX4IuZ2GbTC94S268uBtT+5R1Lv+otiwpK9bXruHi5JuxoCz
-         lCGlDQ3anEbNGHphOSGzSZmfUGXWRzs5ai05AmTwMvG3KxZwej11Fd3IpDJoSeevlfiO
-         mGLnvfYMtWaFY5GYqwytQt0VPwRukX5zG2OTfnJ84t+qJzZcubYuoc0plEpuWc9RkOuL
-         Hsmdr68mYzjc6r9jX8a6ICgLUZ9sYNCeJu58ZdtYoaZGhe/dPSPwqbmZWOE+iVOXz+G1
-         pTWw==
-X-Forwarded-Encrypted: i=1; AFNElJ9NIyD740Djpo+Ma6hqkLtaMXBKWh9pALkt8CcHkG+XSMAgIPkReYyvgNPsxCUl3vmX7LBTEfuO9Q==@kvack.org
-X-Gm-Message-State: AOJu0YxuSib7tLR/fRGt01xwtU5PHlntTS9Ot9p9rQRglgED+3ZXgXsC
-	SHIfAOtTBlSudGIScrKzrsLHODOtHJlw80NQ6ycRhmIlS4q0DGUl+CsdNrkS1Er62Q==
-X-Gm-Gg: AfdE7cnsogYMNmk4jCwHHOSvcwfZ/p1MBLu8rZj0bs/KDo2dwUflFY6s2AjKm0Wn+rn
-	8Tiy2e8Y5AO7qD6XB0uTBUdOFlN2CfZpym8eGVvB0Umlv52CEjlAM6Xg5TKeABTiYkEuZuUuG4L
-	PqLac0D3Sr0GdaoFHB9nYXNow6wNKAV2y/hTWfO/+P6voywkxIgxOCcyJcjFRVljzBplLpGe1EW
-	lJsYYLYLcDB68MGSI25roM3281diR9A52x1DZwbK4150y/N/vIrY288EN+cJsuStjU84ZcstCV9
-	tgukAtOF+YI+8PSQdEnwrcZpDaOttALFXKgxFLDw1iyg7lrhO/Rsib4Vhh9J2epb/ifk+J9DCOW
-	JaLMGI25krnMQh+x7PcLAmoFgZkNHmvBSV1PtFeAtRCX+NB4EsQLPkjlDQqnTqQJ8D/8Qgac/GA
-	AKwXzwI+/0aUrK7WBTH+XWu1t/yXg/2iuO5EWpTYOQgAxdF94+8nwhdQlBzjxBsjvssI3KQD2lY
-	weBA+eMkrc+xQANemc=
-X-Received: by 2002:a17:903:289:b0:2bf:2e8c:db96 with SMTP id d9443c01a7336-2c6bd35b47fmr636505ad.5.1781649488392;
-        Tue, 16 Jun 2026 15:38:08 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e5590sm159640205ad.14.2026.06.16.15.38.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 15:38:07 -0700 (PDT)
-Date: Tue, 16 Jun 2026 22:38:04 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 03/12] PCI: liveupdate: Track incoming preserved PCI
- devices
-Message-ID: <ajHOd1lkBJTySVif@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-4-dmatlack@google.com>
- <ajGpxMXk9iyXLzC4@google.com>
- <CALzav=eo=UwoTNTYM8Z7uKoihxfB7NtVP701qidVgoqyBKhUig@mail.gmail.com>
+        bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
+        b=T7XaxGe/zY43qv3mxT5/VF0ipRyHnc7BQwFyHuHmJjCljTyBTx7hVVPjvd4p8riiKd
+         e0n3KPJpg0KI2q7vbWTMsOsJVMXriLN+rIsvLQChfKu2KKpTzzCIqrHzHSJDUF5BbhrE
+         PIwJt+0CdBlWF7vpFYKnzcx7+DcL7PIHmls3qjLSsc8OnfNmaG7MbZ50fhfysVkByAVH
+         CATgszJx0CJJvfCYhtDHasJ5M3PK4wDS2ryO6qGXoBhWFLFeW10L/Ls9nmydMlue9rqQ
+         hMxFowKPJS+hUYosIu1gLacIbR4fYePIktdxy8KMF8zh6fwgQTRidQnkG/nSbDD3PdM4
+         M/+Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/1Qos2BVmqv8Q9RNf0G7/aDS+yFe8kXk6G1LHXqno3fLFr97eAFNPNgOVg/OgqZLY7o2PEzu31lw==@kvack.org
+X-Gm-Message-State: AOJu0YzM2nDmvNoySnHuXDZHQPXhBJVV6/pSzr1lbN+VbbI5mgkgtrTF
+	vZFew4/k9uj05S6LwnMJ4W9DdRKXcpnijpTCRdd3/cDmXN7KHzswjr0q
+X-Gm-Gg: Acq92OH0oVX0RDRW2gLoqeOCkPa/RpOEZHoLzarhDiLxeEU71aEMy0QoCBDXjWiZSRL
+	cGLTfeJrj7fLdKJC4zfBPaVkWK8w81F9Ekz5o/InxYkhEY4JI9RVDodqq8+ltNHX9MY3V3GRGjv
+	8gMwK0PT5iSsZmE9os7pPL5KLaYi7hg/LmM8yffHFt1E8bDE1KLYDYB1arJlI24VKNUPAxF6fhr
+	q4IkYSoa96+IPDCcfaZDNEMALP8Hjl6vJK1LWJB8JJ3P9Fy4LJ0BD+wkW4WxkvZ9++AOd9OQBjR
+	hix6oTqCgWhde7F0sOuvHCP66LAvlKotaaNvaIVSl9jaNmw/DP9Z0l8bMPDc/IowTu5fmB1UlSL
+	pfXW89UiUZjGrbFa8pdwUab3uwLPjC11psB5sY2T9REz4gnMHVsWAoPBZenB7MAgDoyqsWbijL9
+	W4jZs+19ewx6+YCWZoCms6Iw==
+X-Received: by 2002:a17:907:7387:b0:bec:2d7f:fe03 with SMTP id a640c23a62f3a-c05d215ac07mr40439766b.17.1781653826221;
+        Tue, 16 Jun 2026 16:50:26 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb7b6d9b7sm715657866b.41.2026.06.16.16.50.24
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 16 Jun 2026 16:50:24 -0700 (PDT)
+Date: Tue, 16 Jun 2026 23:50:22 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: richard.weiyang@gmail.com, akpm@linux-foundation.org, david@kernel.org,
+	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+	balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
+	stable@vger.kernel.org
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
+ before return device-private pmd
+Message-ID: <20260616235022.iesy2jeb2p7zof2l@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260616063436.20455-1-richard.weiyang@gmail.com>
+ <20260616123001.6501-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=eo=UwoTNTYM8Z7uKoihxfB7NtVP701qidVgoqyBKhUig@mail.gmail.com>
-X-Rspamd-Queue-Id: 2E47E4000C
-X-Stat-Signature: hzf9conyota86mitbnt6f6or8ywmcnay
+In-Reply-To: <20260616123001.6501-1-lance.yang@linux.dev>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 23EC41C0007
+X-Stat-Signature: dec5t95ehxjhp71ecmi8ebqucko1jec9
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781649489-715937
-X-HE-Meta: U2FsdGVkX18BNApb0n1H+toN3Y3JonFwY5FdTW9IrXENal94vgXJHSaLjFXGIzA3FeXCONC1AtbsKC0u1EHOzMoFHJqnmOfoRJOZYjAFB1ZNKi5Ki+4EM21X4FUEcRkkTVZz0uoikYj/f+679S0qplm3Upydc+fgLPYWCxcMdSvyzNFfZ20IBs1qBFgXg+byydWFgi6fiSHL37CFEmQIKStMt6y5zb7VJDM46+1O4piMSCtT+vVFgqv2ZbTDXjrh48lBornJj0f8p+y7ZCNGNFTWnLkqQr7zOGK/JbofwBeSS5PZ5wN5PXrRv/Yh/ZOPGNjTocQDz8HlWM/qBMhFaF7HP5T+ca5N2rRzTuLXRma/ebfd+R8Vgq8mhgGsmJu53c01PvObuNLyGwWNHcvx9b1XuonlsdqCEWmSDxcdRZhBP55N+3R147k3aDzKIdCFkUKcQCIdxAid7bLy9WZufSZ201mpthq0rg+m91TL1m7s+3aXO1OGRd0w7wqpLa2RKOfL1WQTGMP2O/Y4Px1hD1UQ0REhlhl9+KhOlKC3mOZK3RtBylnH3B8TUwaEuJwreqfj0GTy8TnU6OyEr+tcX9dFGEwwNuN/8lPsnOHxHnw4tbPgKK4/D4fBu1TTAT2lHRuYAokDVI+Taq4zhx5N9ZuahfRo6U1TLi33gYaSqwJUvPpmObB83ReG/+gJ+z1jsvtIgQ/EFMH6FxwvD12LZMx0rPDO6scm4GA2YvVuN+A+RrM8NHrDK5VN7FAF0u4P2uZUDMcze8pMTnzW2gzFZKTAJY/vRIwDSFu5gzgIUgQZgQpn8Z/9KREc+zeaq4bhwseMVXO82w4JWPzRfu4jS/R2SiHylF0vTCdGfLJ3F/GDWNrCcrWoyfrHPFlqCKf7V/eCqm0b8GMnkrIRRDFiEE0AKyJtymlaKiTnJR3/8gM7bctMxwnskLB1WLMq3B+HQuE976D86CcDv2OwhHe
- J0YBpwgy
- VRCuyJNy2quyn2/LHzws6Fb+gz/PLpHzc3vk8BKIWXqHdB3zXaWsV0wRJ7s8bM/Ol1sWBe6vNItORKXzTsAPrEy2cuk/Jc2JkFbnjuyogI0v6L5riS6/qOHsfW7G+Bi0AJVvOol8CchITxRnZkg/TuASJYxxpIkQprTFGdacLFQl86e/M2nHGmfvHFvLfSQDiJuytNld4XmPEWjKwqcYxdMPeYyNb07eSeEDZNKq2JoHXI8H/6oxzfT1Cqvt0SIFW+czFGNWIoApYVuka08RS9O/syV+huCnzNlQ+IiE0RDJxdfLAVY6mMJdbya+BSYncOxnrRblMKPwmaI6BKpBaLugo4RJOXD6mvOwHpsZ1gTZ1iIo68dFqPzh9JKBM3WX+XABOkdsrsW3EnMx/JiDP3G8xF93yIH/9jJ6QhgRTg99kTSkP/E65s5lINTqiPgyovN1E7aEWfE/0ML0=
+X-HE-Tag: 1781653827-882538
+X-HE-Meta: U2FsdGVkX1+lVDd7o7zwWtl0L3WEcNsBlYngJ1b3J6ynrCoH3CGIcE+AByaJ+P5Y3KT7l1AbAtLyxLVl5C64LrAKfz5lt/ufu9DMeLXXDSR0GB+EbXpYBH3UgTj79hNJ9wtcPpNPmgbCkeK4j8I7UYp1zquSzbouh0ensOESjb1+QTS5Ctmoms6SvPNdlc+h3YR4Jd8bES9i8OuUscq073k4oPpzMGD5Ecruqqi+SdVp9xhHqu77CnpRUhCCNgfXVvcpzt1lvCL721fsLPLH/M9Oe8umE6h01UjFv4JLO+PVMKIusNb94kY9r7WVMwpCOu7p6O9fPpjA8owL3+4T5rS8mIFfYFyMCb42AIl27DxYSux73v0krPrQi58kZ6fsNrKq8VfCGTYX3iThoUNaHmdysrZrSfzNPJaz4l0UP+xcbAWbStx/jDD4VEor+L9P4zsO6pa1a9MbqTDfhNPx9ilmB4/c7tkNvAoDcdwBiGLd8bqOlcjVI2Ol67F4cmZ9Qmk8oTVGibI9JI7jkM2UQ2ChQGxeq+tCJoV/KwY9kOf/Wgsq0bHp5Hzb0PlirQIgDxANlbzNj4geOHl+voLcXMXyZMqXd+Y1f/dWKvP5CudYuU984oD27y3DfA3J2yUq6crKfKFNA85AZlAcetAoCQcWql5odAwzLpkvZDmCI49i2jsfqoxNeoLub2TsJSt3C5dpw+noABdGcfUOiZKZ+yRcX+4AHk4Z11bCvwKSY1Xc+nvE+PGFNSl2QUMoBO6ALJbCeIar6MDDf12OlOl/2e5xpvxHGSk+MPVmAvtbfMOluSYtTDskOeYfdbrtmhilkDxPDBYR9IRFUGd0+j82DI+wo/hlpos+K7KfG2dqe9aIfqM5K3eKVU/MHRDJPlW/xB84hEFC7TUM5wmx1BY3ArmnJJZtbspj321dd78Wv3ks5yvFiHMjnrRy8TYKFCoMGlqEvL74GmjrIZ3+NRm
+ qD9deAZk
+ xyvsz3ouT00oazRk2TBx8dfjkt+7uNe1tnwRGovib2HNIEVpCzQrW1MvrkXSeo3R/3dDzOb0gl7i13lPqIwwZJkPDghWT6DKSBo4twMwHa0WdJ/51LJuqDSKjYq/FCnjIx/ja87FttWCSFKbZNQbvKe30gHVpIVgzAQfbnWZw6iw6AxuUr4c6LrOgEpCMjgbJ3Wzt6zBN1Bx4IqOuTcmq1VzYbGMMaxDelQzuaU/4ks8s04sMY9qJtOqYpNH4NcKYr3EGXvPX1QCX4x7d9PziQgG43o4Am9j7BsNePISKKMvBovmtNpFPkDaJTKzzQLyDloP2HwGqzcG9gUIt5G3z0wB+8cqPntRKWE6GJPkJsfu8uwffWJT50YeXFBWvkWo3L7PDmu3hKhO9VdS8BNiORDERdE1BfP5nx38SNyCbwkOVCSRtzSMB9gRpgfKLTUpoJC3nmGe5N0c2yk29jkvIUdFtJhyZwRXhEnAfYhgTXJ9oRyV26xkyqsWfSebnWOpTDizeV4jk2zyj788YYvsrMA7wJuXFzYF5DhBonemX8nc/fOEcXlmDr4d3WBEghIWtB/qRkhiKJR5EXLQv/h5QP5bCcN/LTRXURFFga8GiZwB+w9sFeit2x/fTw15d+5OYZmPn5dZVc2HzLLZfhIc7NrVjyiZrWsr+kLGMiDPtLfIE0EhB5HiW/kSihmu54NtK8W5xdwr3KgEZMFLRdRgUgtEHl1Wq8CJd0pId
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,126 +125,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 03:20:33PM -0700, David Matlack wrote:
->On Tue, Jun 16, 2026 at 1:09 PM Samiullah Khawaja <skhawaja@google.com> wrote:
->>
-
-[snip]
-
->>
->> Hmm.. This is interesting, so the KHO state is freed and it cannot be
->> reused. I see you already pointed out that we are putting an LUO policy
->> to say that the retry is not allowed.
->>
->> But what should be the behaviour of liveupdate in this regard? Let the
->> system boot in a normal way? This might break other subsystems as they
->> might depend on PCIe restoring state properly. Also I think some of the
->> PCIe state, like device-id, BAR addresses, ACLs etc, might be used as
->> source of truth by other components.
->>
->> For example, lets say FLB retrieve() of PCIe fails, but succeeds for
->> VFIO/IOMMU, now VFIO/IOMMU are restoring state of a device that is not
->> restored/preserved?
->>
->> Should this be considered fatal?
+On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
 >
->If PCI FLB retrieve fails then there are certain things that cannot be
->guaranteed, such as BDF (B specifically) remaining constant. This
->could lead to memory corruption as the IOMMU may have live
->translations in place for those specific RequesterIDs. And, in the
->future, preserved devices may be doing P2P which depends on BARs not
->moving. If the PCI core cannot retrieve the FLB saved by the previous
->kernel, it cannot make these guarantees.
-
-Yes, this is what I was worried about.
+>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
+>[...]
+>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>index 2ccbabfb2cc1..21635fab209c 100644
+>>--- a/mm/page_vma_mapped.c
+>>+++ b/mm/page_vma_mapped.c
+>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>> 		 */
+>> 		pmde = pmdp_get_lockless(pvmw->pmd);
+>> 
+>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>-			pmde = *pvmw->pmd;
+>>-			if (!pmd_present(pmde)) {
+>>-				softleaf_t entry;
+>>-
+>>-				if (!thp_migration_supported() ||
+>>-				    !(pvmw->flags & PVMW_MIGRATION))
+>>-					return not_found(pvmw);
+>>-				entry = softleaf_from_pmd(pmde);
+>>-
+>>-				if (!softleaf_is_migration(entry) ||
+>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>>-					return not_found(pvmw);
+>>-				return true;
+>>-			}
+>>-			if (likely(pmd_trans_huge(pmde))) {
+>>-				if (pvmw->flags & PVMW_MIGRATION)
+>>-					return not_found(pvmw);
+>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>-					return not_found(pvmw);
+>>-				return true;
+>>-			}
+>>-			/* THP pmd was split under us: handle on pte level */
+>>-			spin_unlock(pvmw->ptl);
+>>-			pvmw->ptl = NULL;
+>>-		} else if (!pmd_present(pmde)) {
+>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
+>>-
+>>-			if (softleaf_is_device_private(entry)) {
+>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>-				return true;
+>>-			}
+>>+		if (pmd_present(pmde)) {
+>>+			if (!pmd_leaf(pmde))
+>>+				goto pte_table;
+>>+			if (pvmw->flags & PVMW_MIGRATION)
+>>+				return not_found(pvmw);
+>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>+				return not_found(pvmw);
+>>+		} else if (pmd_is_migration_entry(pmde)) {
+>>+			softleaf_t entry = softleaf_from_pmd(pmde);
+>>+
+>>+			if (!(pvmw->flags & PVMW_MIGRATION))
+>>+				return not_found(pvmw);
 >
->So yeah I think you're right that PCI core should treat FLB retrieve
->as fatal and just panic.
-
-This sounds great.
+>Looked at history a bit, and I wonder if this changed something old
+>here ...
 >
->> > }
->> >
->> > static void pci_flb_finish(struct liveupdate_flb_op_args *args)
->> > {
->> >-      kho_restore_free(args->obj);
->> >+      struct pci_flb_incoming *incoming = args->obj;
->> >+
->> >+      xa_destroy(&incoming->xa);
->> >+      kho_restore_free(incoming->ser);
->> >+      kfree(incoming);
->> > }
->> >
->> > static struct liveupdate_flb_ops pci_liveupdate_flb_ops = {
->> >@@ -270,6 +335,91 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
->> > }
->> > EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
->> >
->> >+static struct pci_flb_incoming *pci_liveupdate_flb_get_incoming(void)
->> >+{
->> >+      struct pci_flb_incoming *incoming = NULL;
->> >+      int ret;
->> >+
->> >+      ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&incoming);
->> >+
->> >+      /* Live Update is not enabled. */
->> >+      if (ret == -EOPNOTSUPP)
->> >+              return NULL;
->> >+
->> >+      /* Live Update is enabled, but there is no incoming FLB data. */
->> >+      if (ret == -ENODATA)
->> >+              return NULL;
->> >+
->> >+      /*
->> >+       * Live Update is enabled and there is incoming FLB data, but none of it
->> >+       * matches pci_liveupdate_flb.compatible.
->> >+       *
->> >+       * This could mean that no PCI FLB data was passed by the previous
->> >+       * kernel, but it could also mean the previous kernel used a different
->> >+       * compatibility string (i.e. a different ABI).
->> >+       */
->> >+      if (ret == -ENOENT) {
->> >+              pr_info_once("No incoming FLB matched %s\n", pci_liveupdate_flb.compatible);
->> >+              return NULL;
->> >+      }
->> >+
->> >+      /*
->> >+       * There is incoming FLB data that matches pci_liveupdate_flb.compatible
->> >+       * but it cannot be retrieved.
->> >+       */
->> >+      if (ret) {
->> >+              WARN_ONCE(ret, "Failed to retrieve incoming FLB data\n");
->>
->> I think this should probably be considered fatal as mentioned above or
->> the caller of this function should get an error so it can fail. I think
->> retrievel of preserved state should generally not fail unless there is
->> memory corruption or ABI is incompatible.
+>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
+>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
+>including not_found() cases. So lockless PMD read was just a filter ...
 >
->Yeah. I think I will just call panic() here to cover all cases.
-
-We have an luo specific panic macro/function that you can use.
-
-luo_restore_fail()
+>With this fix, true case gets final pmd_same() check, but this
+>not_found() case happens before taking PTL.
 >
->> >+              return NULL;
->> >+      }
->> >+
->> >+      return incoming;
->> >+}
->> >+
->>
->> [snip]
->> >+
->> >+static inline bool pci_liveupdate_is_incoming(struct pci_dev *dev)
->> >+{
->> >+      return false;
->> >+}
->> > #endif
->> >
->> > #endif /* LINUX_PCI_LIVEUPDATE_H */
->> >--
->> >2.54.0.746.g67dd491aae-goog
->> >
->>
->> Sami
+>So a !PVMW_MIGRATION walker could race with someone, e.g.
+>remove_migration_pmd(): we make the not_found() decision from old PMD
+>value that still says "migration", while real *pvmw->pmd may already be
+>present again. We return without ever taking PTL :)
+>
+
+Hi, Lance
+
+Thanks for take a look.
+
+I am trying to understand the scenario you mentioned. Let's say A migrate a
+pmd and B want to unmap the pmd.
+
+            A                                        B
+
+  try to migrate a pmd
+  pmd is set to migration entry
+                                           unmap the pmd ...
+  managed to finish migration
+                                           ...still see migration entry,
+                                           so skipped and unmap fail
+
+Would this be a timing case? Even B grab the PTL, it still could see migration
+entry if B visit pmd before A finish migration.
+
+Maybe I miss something, look forward your insight.
+
+>Not sure about practical fallout, but should these PMD-level not_found()
+>cases also take PTL and restart if PMD changed?
+>
+
+-- 
+Wei Yang
+Help you, Help me
 
