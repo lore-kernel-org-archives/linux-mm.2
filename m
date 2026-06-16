@@ -4,141 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4A0CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9553DCD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:51:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7E896B00B2; Tue, 16 Jun 2026 16:49:35 -0400 (EDT)
+	id 6B1686B0099; Tue, 16 Jun 2026 16:51:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2F086B00B4; Tue, 16 Jun 2026 16:49:35 -0400 (EDT)
+	id 689426B00AB; Tue, 16 Jun 2026 16:51:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91E186B00B5; Tue, 16 Jun 2026 16:49:35 -0400 (EDT)
+	id 578576B00B6; Tue, 16 Jun 2026 16:51:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46AB16B00B2
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:49:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BEE714010F
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:43:30 +0000 (UTC)
-X-FDA: 84885892980.16.904C907
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 694DBC0003
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:43:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aCSNGbwd;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 219406B0099
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:51:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7D56165417
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:51:45 +0000 (UTC)
+X-FDA: 84886972170.18.00C6F8D
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 57AA440006
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:51:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=T1YJpfMl;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781617408;
+	s=arc-20220608; t=1781643103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Oh0YS9b7Onf91e9ZZvanm7f8j4pWdMaNaTk7gpNPIo=;
-	b=prCLzSQMsgtd/BwBWUqgGJt+4CMWGqDD1WVPeK9RDGtZj5ulHYFbOSzP7ZE1c668X1b3/F
-	ryAnMMcVReOVfREL7D2jM+akDKrVHtVM4AIQYgjrZ4E1XLsuVFYpBfBQ/q2FZAps73tRAp
-	JCNVsUqloPTm25YDCongKrgdKzNUWbQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aCSNGbwd;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=nUfBEGqesd6MqjNBtQa0F7SwyBD3Kt2fkoYxJnylfBc=;
+	b=qbvPZgRGT7QPWS5aWiYgM4ac/uzL1OSKFpmRO3ehE6FMBql/ltL3KmJ9fikL/DaiYU0nCx
+	XPXpVY02TEh9Wzw7AxP7GBo76ydXLbKN6z96C7qGHGgionmF1RrqSxve0MDjTqxJcUppCw
+	V5V4hwTngiptrI3CJtPP1ce83CzkxXg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781617408;
-	b=lek/4PdTrLjVn0Zqo7tAWCqYJSe2U6UVCKTgAhZ4TZ4tLg5k49ljHxCjV5M5vhZyWXLlOh
-	ecK6MJ9b9J2Giyfq9Jnn5V36yxPNBM9XGfisbVew1gcFqbnV1qf8tKz5dOPX0Xd4pNJeFT
-	D/73HO4l791tAkCpKtmgiCVoBvoi7BY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E20743D3F;
-	Tue, 16 Jun 2026 13:43:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3924C1F00A3F;
-	Tue, 16 Jun 2026 13:43:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781617405;
-	bh=0Oh0YS9b7Onf91e9ZZvanm7f8j4pWdMaNaTk7gpNPIo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aCSNGbwdLj3Zayt1teh5UoLkNXqA1qaYUk18rDsMPc/r87sJ5sUV9x9b9AwCHF2QH
-	 3ef1qoWTZUDSd8DiEd6gUuODwjrgkpihoBb60QeixWbAdaOcN7Uvt6e1OWYj0K/9cI
-	 qSqHhYCrulgOtvpxYchB+1Tp88iFkZDbuO+mtnowPqMONzrqatat0CBxIU9+hpVMse
-	 JVmUqHO8twhuXMP/yYAxDMEA+QMqVksfT/r6meISjvr13E77Wnmyoq7eJf2Kn0r2mz
-	 PEwm2wa0Qv9JuhzvAMrMGqfvPUnORRRtgjMUVLyTfJnwdXXKpN0QE6UH7ZoYtC7dJg
-	 2jipYxMaQMV8A==
-Message-ID: <a9483db7-5b13-40ff-8d45-12f40dc97c77@kernel.org>
-Date: Tue, 16 Jun 2026 15:43:18 +0200
+	t=1781643103;
+	b=zobV/lXjo4/59Px7m5DD2FXPUEmW8UEFbBS05kqK5fASSWm7Gl0tmZmm+o1bYDDamlA2oC
+	4QuNpdQXNAsp+42o77XeVqsNTkKFdQYTWJ+OLUIfeXVhg3nHyRnyMcVNhiUZ14sQ4R4CkK
+	9wOUSYTEfLtysflkLSjGziWmrhfQaSw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=T1YJpfMl;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIZYF1117823;
+	Tue, 16 Jun 2026 12:40:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=nUfBEGqesd6MqjNBt
+	Qa0F7SwyBD3Kt2fkoYxJnylfBc=; b=T1YJpfMlHT2yfdWBA6p/lNx6sVnx7Ol+7
+	NOl0+AvAsoX8UG/fMo3TcWbj/wB8ds4vbgmnY0DZ7cmUmlO3J0RdCSNe4BEs97gF
+	1W8sb96Dttk2uyKpJmk/oHjr5n5M51FCmVTh8gdF7D6Gg2/yeqsl4aLcLEFZBC6Y
+	5gk6nLsk3GmfBuavOjadOWDeaJkp5FsupG0futzvbUI6Az8kIZvaGR6+rAYAGe2c
+	PYm2KHFm6BaHA8nkoAoVEA+VgYURMnj89jEBYGh8L3ApGqVFrfIq6jq8WU/MiWRr
+	E/rMAOb0qpY3DwNdAIZglnpWNaJWlsQkZcmoy36pWcneKI0ykZ6VA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1v2d36s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:44 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GCYgJv030961;
+	Tue, 16 Jun 2026 12:40:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eskrgb46h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:40:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GCedBs48824710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 12:40:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C8EEE2004B;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D26620067;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 83D19E0E0C; Tue, 16 Jun 2026 14:40:39 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3 2/7] s390/mm: Complete ptep_get() conversion
+Date: Tue, 16 Jun 2026 14:40:34 +0200
+Message-ID: <394c934384e463a36852af3e806d9b69be4a3626.1781611976.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1781611976.git.agordeev@linux.ibm.com>
+References: <cover.1781611976.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/12] mm/memory: Batch set uffd-wp markers during
- zapping
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-5-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260526063635.61721-5-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 694DBC0003
-X-Stat-Signature: 1jh49b53naj54otd9mq11zp9jjz8xrgd
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfXxCVlLJjVo3S7
+ BltFSDHhNI8io31CZ98BJUUykwIcShn3jvo2ALVrpnKes5/HVY4/ZTivX9AbYRkGzDM2veH98U1
+ YZiU6upiRqpP/ltvhxGvA4q2kzzeVZU=
+X-Proofpoint-GUID: gUIvkMhyGw5nJmWYKWLQAqzq_iC0xaWz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX7YIFNwKRKCFF
+ rvanbhAGN9qiskLEFNvuMcH2M8SYbu4IRGIyCd+y4O6UTmS41y6/1UiFuInoIx2jyK0z/GMI23G
+ iPRHTXvYQdmnVCBAv0n0dEc0X6SSNuV4l46cdI0Xtn5YymkkCLPrIPzmY/A4m+xohdo0dUDZHOd
+ cUsKfexgXLZl1WJtM0kkWMbGg6WCSAVjkdgo+jW5eSjFby4JDeLOB9gECmPpx9ny1894pPs/etn
+ Xo2HiehPYZ+egJLsmSJLLlbi9bEzoFyn8qMrUlv4BMhEzFfdWOQ6P8a+lgfCRD+SpO0d5fC2UQ/
+ tIx/rXk91zlBSjlWadPx4xX2EaefGf1N+6Ai1QPY/n4/byxR9Iawb19lw/BPuNc5gZP/4GNdRZL
+ YhAAMdz+GCpYc2wpAM3MDy6o2zFB4uPoDu0ZnhYUAbULTbaZpu2Xolmc0TCLUwnucUK66lESgqL
+ kvLkUoaMNr5fNgMLKUg==
+X-Proofpoint-ORIG-GUID: gUIvkMhyGw5nJmWYKWLQAqzq_iC0xaWz
+X-Authority-Analysis: v=2.4 cv=Dd0nbPtW c=1 sm=1 tr=0 ts=6a31444c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=icivV8tQf5KrWCeISukA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0 spamscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
+ definitions=main-2606160125
 X-Rspam-User: 
-X-HE-Tag: 1781617408-732320
-X-HE-Meta: U2FsdGVkX19rOKKvt7TFM8Tj9Z/PLaA6PPq738EQLLRHsyQiMmUYf8KWLbokUCW5EQ1ZeUXC+4v/bWIyVCS23IdkjCxrlzGB6sLWHqSTCVqLTzAgUx9c5XKn1ESPBWibkg1I8oVp7V8LzbG1adqCqJzSzrIuml34mrloTs//NFDJWzt2UaPjCJz/dsFfGhL64dGhNTDqFB3PBzaOa6ZWlfUd46R4iEfRVGZxk1lFr8378IfCZzC8epg97wDLxJm9baLIQ94O0FIe/bqprUI5/NZ4DhuRxD1F2MxK44SXK0U7Tub5WhMPn8WnvVMSB+VR+kR+lj+nKikApQu3uGejvi52rJpfEfRLjZO9TnI/F9k1+HbcvBg/byjuBDfgjnzEq3pmtr+k5Qu4/TkZp3nTR6v/yaDSYli3i95E8F7mCUwKtb8KGjnbi/LyOZFGAi/9VeufNiV8NNB9f4hQ8K+FfCPcjSfYYocBSJc3EN0q5lbBle1XDGQrRmImuLVldeQvgffqV7a/SAYdHj59S2D1W0rOAgK9CLqqc4dCEPGSSUvoeKGzAES4XsML20a2kd0LGcVoaiDbk2AixjSkqxOErW6ZW9g1nUcJpRVIuKRVLHCliu/jDcyx4bAgg21CPSGn1T7vHcnbjkjbim5yY34i0+w8Y3DoaWQx+ErPnVyqPX6zWsEEOgXx0DrtEhbKB+1fgkLyke6JsQh0tPgS/NMvG8ytHIo1+l/8k5MP+A+vttB5v22JoeXwMsa9jlOizgsulVpn1x3h/ZVNs/MGLmrlD7s1b6boIuxpGDxfJ2eNyYWV0kzOxxJv6N0PE+pmiSF5QpiceN/nivf8TRgUnqonHYWgCyNPqtUu3fUYcrD2Tb6dswpZDgFej8LWA6Sk0NRf5+5CwAOgWqhDEh6HbUl398BfRE1+UqkwS4yUshDKjOdaPvgbfAVyA21ocEwEq+C6DL3zjgNJJjYd9jsGEe/
- nsNokbj6
- xHJuR0RBM1i/fxKnMcL5njIgvERheQEEraK2EtxPBFawnuyY4LDD04AX2Nj/vVrymbpGdTOTHuRw1Lck/3AwC+OUonpxc1+F+nIt1hsWFwnlHoGI1hsC+U03ox7T4JvEV4f/J9K1IBtLI3nZpTf9zD/X0FPOWarycBsG69FgCht2HSbIOT+RyTQ+J97cCKAsEV2n24Vctr0kJSvwnCPZ9a1WV8v2U3cBKX/mU3vX0Vkq4Ups8xZ7K9OBsIL2DQjO7YqRC
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 57AA440006
+X-Stat-Signature: itxyq4fgiaq3s6oeddrm9uqetkhkszn6
+X-HE-Tag: 1781643103-617032
+X-HE-Meta: U2FsdGVkX19eLWuWTIBZDMD2pef6SprM65TB36YhvImqSoX7IpesB+uNCiecdbzNBsVlJR8ZOTUXWN2W8fIRLKOATqcZofQ1/f5J7MuBxbTdLhy7MVIeETzgT6yk+a1E+37d/EQ4zwsklkLwz29mniljqrE8/zi6Fpq6+VtdupVoXLTxuLTRHUkZFenn6YDF6xIOsceSi/lH4Yhg50sgV76mmEsGCfqt9YDIIEHVEyN3CEoBSPsgSXulSFqRmy0DDrFkaoGzXjrD2CSU2DETUay1rONRJHxLnk9ZoE9uWbDU4BOitUvcsMlUBYtTPjIHo9r7BDXRTwT/qLv2UDpqTcX9ifr6jXI8gi+7tMJEopdu0RPX+74diLZn2GwbG8cbO7I4sB2d0vYyf197xF4kNpbRV29V9HjnMkeJKIUHhpeNVw4T/QNFJZyQdwC2RY1Q22aSPQ06YTOsObh2pWmyZ1U8jza1yNzumrJAMeKa3NSsv/9jHoHKJ5XqIP0ikhm/Q4R/AIIsO74tPatoaM1KZMI7ORvnCoaq7DqH2A+A2Mw99SZ59Yh1+djdtHe/n4crMdaoxQcFewld2aMZ5sbtUcdJBLL00IP6WFe5ejkhGmhjJyF+jV8g15gKLINTiVbUWdFe9KVBM8ciPsbwD1Z42wyiHzLgFLasuMzwQjW9enZbvRIcYpR3sg/um7fXekjXXwM+WJgXMoac2b92zM0UlI6sbyFJpHgsx6YqRGdNZXEBa9Mrr9D59hw0dqLk7N+88hnB4S8o+dxM0UwAaq0ryXIgIMD7elaQSPkc1nFPx4noJu8nV0SeqQUg5B1YFmBc7IHSP6H5SwB1Xhw6qiy6u3fnSc9UqJvB2ORxsi9+TMMxoJojH1gArYgtkVWQQjnp09s+Pp1HWTbqMSWpZK5iF/+IRhQbAioq08l6J7bUK49erjjpvpkPYWa4EBXZcxaXUnwgcdJOl+pvfFbLwqM
+ BgzO8Lpw
+ lSCpiY2zvF8XOf0mjYAnBnqsJrhMSjpErjbOKim5SgjIjuC3lZLJNMs3bbz7VkeIXamAZU4la+6xnj3MRlWeZ2EvHQV7hpcXlxSmo0Dr1pip0a5MBbGDtJrIeX9gAJ3ejMzuHU9xc97h9rxFqcJHT0QhV9de9+sIecjWzyF8UTyHI02f/wh4CMp3XUOh6dwewrN9nnoFIGzoPxwSjcWprve8VOd8gMgWeZ+XdYgBZ5Dn2mDrh6+F9WAekxsI0h68rlWcVKlUS2nnYESVgkkQUFaqo86jwDTtm5qruVEZ/uiO1tQTWaamnXNRcS2psI4iI/Rr2wa0Ds6NynrHp8tphmHpxaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,56 +145,778 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 08:36, Dev Jain wrote:
-> In preparation for the next patch, enable batch setting of uffd-wp ptes.
+Finalize commit c33c794828f2 ("mm: ptep_get() conversion") and
+replace direct page table entry dereferencing with the proper
+accessors (ptep_get(), pmdp_get(), etc.).
 
-Avoid talking about "next patch". Phrase it as "In preparation for batching...".
+Override the default getter implementations even though they are
+currently identical: pud_clear(), p4d_clear(), and pgd_clear()
+require corresponding architecture-specific getters, but these
+are not yet defined. This avoids a dependency loop.
 
-> 
-> The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
-> that nr through either folio_pte_batch or swap_pte_batch, therefore
-> batching is correct:
-> 
-> 1) all ptes belong to the same type of VMA (anonymous or non-anonymous,
->    wp-armed or non-wp-armed)
-> 
-> 2) all ptes being marked with uffd-wp or all being not marked (same is the
->    case with the pte_swp_uffd_wp_any check)
-> 
-> 3) uffd_supports_wp_marker() is independent of the function parameters
-> 
-> Note that we will have to use set_pte_at() in a loop instead of set_ptes()
-> since the latter cannot handle present->non-present conversion for
-> nr_pages > 1.
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ arch/s390/boot/vmem.c           | 32 +++++++------
+ arch/s390/include/asm/hugetlb.h |  2 +-
+ arch/s390/include/asm/pgtable.h | 60 ++++++++++++++++++------
+ arch/s390/mm/hugetlbpage.c      | 12 ++---
+ arch/s390/mm/pageattr.c         | 45 ++++++++++--------
+ arch/s390/mm/vmem.c             | 82 ++++++++++++++++++---------------
+ 6 files changed, 140 insertions(+), 93 deletions(-)
 
-Below you have
+diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
+index 7d6cc4c85af0..ff6d58a476ba 100644
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -338,7 +338,7 @@ static void pgtable_pte_populate(pmd_t *pmd, unsigned=
+ long addr, unsigned long e
+=20
+ 	pte =3D pte_offset_kernel(pmd, addr);
+ 	for (; addr < end; addr +=3D PAGE_SIZE, pte++) {
+-		if (pte_none(*pte)) {
++		if (pte_none(ptep_get(pte))) {
+ 			if (kasan_pte_populate_zero_shadow(pte, mode))
+ 				continue;
+ 			entry =3D __pte(resolve_pa_may_alloc(addr, PAGE_SIZE, mode));
+@@ -355,26 +355,27 @@ static void pgtable_pmd_populate(pud_t *pud, unsign=
+ed long addr, unsigned long e
+ 				 enum populate_mode mode)
+ {
+ 	unsigned long pa, next, pages =3D 0;
+-	pmd_t *pmd, entry;
++	pmd_t *pmd, entry, large_entry;
+ 	pte_t *pte;
+=20
+ 	pmd =3D pmd_offset(pud, addr);
+ 	for (; addr < end; addr =3D next, pmd++) {
+ 		next =3D pmd_addr_end(addr, end);
+-		if (pmd_none(*pmd)) {
++		entry =3D pmdp_get(pmd);
++		if (pmd_none(entry)) {
+ 			if (kasan_pmd_populate_zero_shadow(pmd, addr, next, mode))
+ 				continue;
+ 			pa =3D try_get_large_pmd_pa(pmd, addr, next, mode);
+ 			if (pa !=3D INVALID_PHYS_ADDR) {
+-				entry =3D __pmd(pa);
+-				entry =3D set_pmd_bit(entry, SEGMENT_KERNEL);
+-				set_pmd(pmd, entry);
++				large_entry =3D __pmd(pa);
++				large_entry =3D set_pmd_bit(large_entry, SEGMENT_KERNEL);
++				set_pmd(pmd, large_entry);
+ 				pages++;
+ 				continue;
+ 			}
+ 			pte =3D boot_pte_alloc();
+ 			pmd_populate(&init_mm, pmd, pte);
+-		} else if (pmd_leaf(*pmd)) {
++		} else if (pmd_leaf(entry)) {
+ 			continue;
+ 		}
+ 		pgtable_pte_populate(pmd, addr, next, mode);
+@@ -387,26 +388,27 @@ static void pgtable_pud_populate(p4d_t *p4d, unsign=
+ed long addr, unsigned long e
+ 				 enum populate_mode mode)
+ {
+ 	unsigned long pa, next, pages =3D 0;
+-	pud_t *pud, entry;
++	pud_t *pud, entry, large_entry;
+ 	pmd_t *pmd;
+=20
+ 	pud =3D pud_offset(p4d, addr);
+ 	for (; addr < end; addr =3D next, pud++) {
+ 		next =3D pud_addr_end(addr, end);
+-		if (pud_none(*pud)) {
++		entry =3D pudp_get(pud);
++		if (pud_none(entry)) {
+ 			if (kasan_pud_populate_zero_shadow(pud, addr, next, mode))
+ 				continue;
+ 			pa =3D try_get_large_pud_pa(pud, addr, next, mode);
+ 			if (pa !=3D INVALID_PHYS_ADDR) {
+-				entry =3D __pud(pa);
+-				entry =3D set_pud_bit(entry, REGION3_KERNEL);
+-				set_pud(pud, entry);
++				large_entry =3D __pud(pa);
++				large_entry =3D set_pud_bit(large_entry, REGION3_KERNEL);
++				set_pud(pud, large_entry);
+ 				pages++;
+ 				continue;
+ 			}
+ 			pmd =3D boot_crst_alloc(_SEGMENT_ENTRY_EMPTY);
+ 			pud_populate(&init_mm, pud, pmd);
+-		} else if (pud_leaf(*pud)) {
++		} else if (pud_leaf(entry)) {
+ 			continue;
+ 		}
+ 		pgtable_pmd_populate(pud, addr, next, mode);
+@@ -425,7 +427,7 @@ static void pgtable_p4d_populate(pgd_t *pgd, unsigned=
+ long addr, unsigned long e
+ 	p4d =3D p4d_offset(pgd, addr);
+ 	for (; addr < end; addr =3D next, p4d++) {
+ 		next =3D p4d_addr_end(addr, end);
+-		if (p4d_none(*p4d)) {
++		if (p4d_none(p4dp_get(p4d))) {
+ 			if (kasan_p4d_populate_zero_shadow(p4d, addr, next, mode))
+ 				continue;
+ 			pud =3D boot_crst_alloc(_REGION3_ENTRY_EMPTY);
+@@ -451,7 +453,7 @@ static void pgtable_populate(unsigned long addr, unsi=
+gned long end, enum populat
+ 	pgd =3D pgd_offset(&init_mm, addr);
+ 	for (; addr < end; addr =3D next, pgd++) {
+ 		next =3D pgd_addr_end(addr, end);
+-		if (pgd_none(*pgd)) {
++		if (pgd_none(pgdp_get(pgd))) {
+ 			if (kasan_pgd_populate_zero_shadow(pgd, addr, next, mode))
+ 				continue;
+ 			p4d =3D boot_crst_alloc(_REGION2_ENTRY_EMPTY);
+diff --git a/arch/s390/include/asm/hugetlb.h b/arch/s390/include/asm/huge=
+tlb.h
+index 6983e52eaf81..e33a5b587ee4 100644
+--- a/arch/s390/include/asm/hugetlb.h
++++ b/arch/s390/include/asm/hugetlb.h
+@@ -41,7 +41,7 @@ static inline pte_t huge_ptep_get_and_clear(struct mm_s=
+truct *mm,
+ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long ad=
+dr,
+ 				  pte_t *ptep, unsigned long sz)
+ {
+-	if ((pte_val(*ptep) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYP=
+E_R3)
++	if ((pte_val(ptep_get(ptep)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_=
+ENTRY_TYPE_R3)
+ 		set_pte(ptep, __pte(_REGION3_ENTRY_EMPTY));
+ 	else
+ 		set_pte(ptep, __pte(_SEGMENT_ENTRY_EMPTY));
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
+ble.h
+index 3197b8b372a2..f9a8a92fa160 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -983,22 +983,39 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+ 	WRITE_ONCE(*ptep, pte);
+ }
+=20
+-static inline void pgd_clear(pgd_t *pgd)
++#define ptep_get ptep_get
++static inline pte_t ptep_get(pte_t *ptep)
+ {
+-	if ((pgd_val(*pgd) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYPE=
+_R1)
+-		set_pgd(pgd, __pgd(_REGION1_ENTRY_EMPTY));
++	return READ_ONCE(*ptep);
+ }
+=20
+-static inline void p4d_clear(p4d_t *p4d)
++#define pmdp_get pmdp_get
++static inline pmd_t pmdp_get(pmd_t *pmdp)
+ {
+-	if ((p4d_val(*p4d) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYPE=
+_R2)
+-		set_p4d(p4d, __p4d(_REGION2_ENTRY_EMPTY));
++	return READ_ONCE(*pmdp);
+ }
+=20
+-static inline void pud_clear(pud_t *pud)
++#define pudp_get pudp_get
++static inline pud_t pudp_get(pud_t *pudp)
+ {
+-	if ((pud_val(*pud) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYPE=
+_R3)
+-		set_pud(pud, __pud(_REGION3_ENTRY_EMPTY));
++	return READ_ONCE(*pudp);
++}
++
++#define p4dp_get p4dp_get
++static inline p4d_t p4dp_get(p4d_t *p4dp)
++{
++	return READ_ONCE(*p4dp);
++}
++
++#define pgdp_get pgdp_get
++static inline pgd_t pgdp_get(pgd_t *pgdp)
++{
++	return READ_ONCE(*pgdp);
++}
++
++static inline void pte_clear(struct mm_struct *mm, unsigned long addr, p=
+te_t *ptep)
++{
++	set_pte(ptep, __pte(_PAGE_INVALID));
+ }
+=20
+ static inline void pmd_clear(pmd_t *pmdp)
+@@ -1006,9 +1023,22 @@ static inline void pmd_clear(pmd_t *pmdp)
+ 	set_pmd(pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+ }
+=20
+-static inline void pte_clear(struct mm_struct *mm, unsigned long addr, p=
+te_t *ptep)
++static inline void pud_clear(pud_t *pud)
+ {
+-	set_pte(ptep, __pte(_PAGE_INVALID));
++	if ((pud_val(pudp_get(pud)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_E=
+NTRY_TYPE_R3)
++		set_pud(pud, __pud(_REGION3_ENTRY_EMPTY));
++}
++
++static inline void p4d_clear(p4d_t *p4d)
++{
++	if ((p4d_val(p4dp_get(p4d)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_E=
+NTRY_TYPE_R2)
++		set_p4d(p4d, __p4d(_REGION2_ENTRY_EMPTY));
++}
++
++static inline void pgd_clear(pgd_t *pgd)
++{
++	if ((pgd_val(pgdp_get(pgd)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_E=
+NTRY_TYPE_R1)
++		set_pgd(pgd, __pgd(_REGION1_ENTRY_EMPTY));
+ }
+=20
+ /*
+@@ -1169,7 +1199,7 @@ pte_t ptep_xchg_lazy(struct mm_struct *, unsigned l=
+ong, pte_t *, pte_t);
+ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep)
+ {
+-	pte_t pte =3D *ptep;
++	pte_t pte =3D ptep_get(ptep);
+=20
+ 	pte =3D ptep_xchg_direct(vma->vm_mm, addr, ptep, pte_mkold(pte));
+ 	return pte_young(pte);
+@@ -1230,7 +1260,7 @@ static inline pte_t ptep_get_and_clear_full(struct =
+mm_struct *mm,
+ 	pte_t res;
+=20
+ 	if (full) {
+-		res =3D *ptep;
++		res =3D ptep_get(ptep);
+ 		set_pte(ptep, __pte(_PAGE_INVALID));
+ 	} else {
+ 		res =3D ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
+@@ -1259,7 +1289,7 @@ static inline pte_t ptep_get_and_clear_full(struct =
+mm_struct *mm,
+ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+ 				      unsigned long addr, pte_t *ptep)
+ {
+-	pte_t pte =3D *ptep;
++	pte_t pte =3D ptep_get(ptep);
+=20
+ 	if (pte_write(pte))
+ 		ptep_xchg_lazy(mm, addr, ptep, pte_wrprotect(pte));
+@@ -1295,7 +1325,7 @@ static inline void flush_tlb_fix_spurious_fault(str=
+uct vm_area_struct *vma,
+ 	 * PTE does not have _PAGE_PROTECT set, to avoid unnecessary overhead.
+ 	 * A local RDP can be used to do the flush.
+ 	 */
+-	if (cpu_has_rdp() && !(pte_val(*ptep) & _PAGE_PROTECT))
++	if (cpu_has_rdp() && !(pte_val(ptep_get(ptep)) & _PAGE_PROTECT))
+ 		__ptep_rdp(address, ptep, 1);
+ }
+ #define flush_tlb_fix_spurious_fault flush_tlb_fix_spurious_fault
+diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
+index 302ef5781b65..db35d8fe8609 100644
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -143,7 +143,7 @@ void __set_huge_pte_at(struct mm_struct *mm, unsigned=
+ long addr,
+ 	rste =3D __pte_to_rste(pte);
+=20
+ 	/* Set correct table type for 2G hugepages */
+-	if ((pte_val(*ptep) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYP=
+E_R3) {
++	if ((pte_val(ptep_get(ptep)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_=
+ENTRY_TYPE_R3) {
+ 		if (likely(pte_present(pte)))
+ 			rste |=3D _REGION3_ENTRY_LARGE;
+ 		rste |=3D _REGION_ENTRY_TYPE_R3;
+@@ -161,7 +161,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned l=
+ong addr,
+=20
+ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *pte=
+p)
+ {
+-	return __rste_to_pte(pte_val(*ptep));
++	return __rste_to_pte(pte_val(ptep_get(ptep)));
+ }
+=20
+ pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
+@@ -171,7 +171,7 @@ pte_t __huge_ptep_get_and_clear(struct mm_struct *mm,
+ 	pmd_t *pmdp =3D (pmd_t *) ptep;
+ 	pud_t *pudp =3D (pud_t *) ptep;
+=20
+-	if ((pte_val(*ptep) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_ENTRY_TYP=
+E_R3)
++	if ((pte_val(ptep_get(ptep)) & _REGION_ENTRY_TYPE_MASK) =3D=3D _REGION_=
+ENTRY_TYPE_R3)
+ 		pudp_xchg_direct(mm, addr, pudp, __pud(_REGION3_ENTRY_EMPTY));
+ 	else
+ 		pmdp_xchg_direct(mm, addr, pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+@@ -209,13 +209,13 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 	pmd_t *pmdp =3D NULL;
+=20
+ 	pgdp =3D pgd_offset(mm, addr);
+-	if (pgd_present(*pgdp)) {
++	if (pgd_present(pgdp_get(pgdp))) {
+ 		p4dp =3D p4d_offset(pgdp, addr);
+-		if (p4d_present(*p4dp)) {
++		if (p4d_present(p4dp_get(p4dp))) {
+ 			pudp =3D pud_offset(p4dp, addr);
+ 			if (sz =3D=3D PUD_SIZE)
+ 				return (pte_t *)pudp;
+-			if (pud_present(*pudp))
++			if (pud_present(pudp_get(pudp)))
+ 				pmdp =3D pmd_offset(pudp, addr);
+ 		}
+ 	}
+diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
+index bb29c38ae624..e6f788696dd1 100644
+--- a/arch/s390/mm/pageattr.c
++++ b/arch/s390/mm/pageattr.c
+@@ -85,7 +85,7 @@ static int walk_pte_level(pmd_t *pmdp, unsigned long ad=
+dr, unsigned long end,
+ 		return 0;
+ 	ptep =3D pte_offset_kernel(pmdp, addr);
+ 	do {
+-		new =3D *ptep;
++		new =3D ptep_get(ptep);
+ 		if (pte_none(new))
+ 			return -EINVAL;
+ 		if (flags & SET_MEMORY_RO)
+@@ -114,15 +114,16 @@ static int split_pmd_page(pmd_t *pmdp, unsigned lon=
+g addr)
+ {
+ 	unsigned long pte_addr, prot;
+ 	pte_t *pt_dir, *ptep;
+-	pmd_t new;
++	pmd_t new, pmd;
+ 	int i, ro, nx;
+=20
+ 	pt_dir =3D vmem_pte_alloc();
+ 	if (!pt_dir)
+ 		return -ENOMEM;
+-	pte_addr =3D pmd_pfn(*pmdp) << PAGE_SHIFT;
+-	ro =3D !!(pmd_val(*pmdp) & _SEGMENT_ENTRY_PROTECT);
+-	nx =3D !!(pmd_val(*pmdp) & _SEGMENT_ENTRY_NOEXEC);
++	pmd =3D pmdp_get(pmdp);
++	pte_addr =3D pmd_pfn(pmd) << PAGE_SHIFT;
++	ro =3D !!(pmd_val(pmd) & _SEGMENT_ENTRY_PROTECT);
++	nx =3D !!(pmd_val(pmd) & _SEGMENT_ENTRY_NOEXEC);
+ 	prot =3D pgprot_val(ro ? PAGE_KERNEL_RO : PAGE_KERNEL);
+ 	if (!nx)
+ 		prot &=3D ~_PAGE_NOEXEC;
+@@ -142,7 +143,7 @@ static int split_pmd_page(pmd_t *pmdp, unsigned long =
+addr)
+ static void modify_pmd_page(pmd_t *pmdp, unsigned long addr,
+ 			    unsigned long flags)
+ {
+-	pmd_t new =3D *pmdp;
++	pmd_t new =3D pmdp_get(pmdp);
+=20
+ 	if (flags & SET_MEMORY_RO)
+ 		new =3D pmd_wrprotect(new);
+@@ -165,16 +166,17 @@ static int walk_pmd_level(pud_t *pudp, unsigned lon=
+g addr, unsigned long end,
+ 			  unsigned long flags)
+ {
+ 	unsigned long next;
++	pmd_t *pmdp, pmd;
+ 	int need_split;
+-	pmd_t *pmdp;
+ 	int rc =3D 0;
+=20
+ 	pmdp =3D pmd_offset(pudp, addr);
+ 	do {
+-		if (pmd_none(*pmdp))
++		pmd =3D pmdp_get(pmdp);
++		if (pmd_none(pmd))
+ 			return -EINVAL;
+ 		next =3D pmd_addr_end(addr, end);
+-		if (pmd_leaf(*pmdp)) {
++		if (pmd_leaf(pmd)) {
+ 			need_split  =3D !!(flags & SET_MEMORY_4K);
+ 			need_split |=3D !!(addr & ~PMD_MASK);
+ 			need_split |=3D !!(addr + PMD_SIZE > next);
+@@ -201,15 +203,16 @@ int split_pud_page(pud_t *pudp, unsigned long addr)
+ {
+ 	unsigned long pmd_addr, prot;
+ 	pmd_t *pm_dir, *pmdp;
+-	pud_t new;
++	pud_t new, pud;
+ 	int i, ro, nx;
+=20
+ 	pm_dir =3D vmem_crst_alloc(_SEGMENT_ENTRY_EMPTY);
+ 	if (!pm_dir)
+ 		return -ENOMEM;
+-	pmd_addr =3D pud_pfn(*pudp) << PAGE_SHIFT;
+-	ro =3D !!(pud_val(*pudp) & _REGION_ENTRY_PROTECT);
+-	nx =3D !!(pud_val(*pudp) & _REGION_ENTRY_NOEXEC);
++	pud =3D pudp_get(pudp);
++	pmd_addr =3D pud_pfn(pud) << PAGE_SHIFT;
++	ro =3D !!(pud_val(pud) & _REGION_ENTRY_PROTECT);
++	nx =3D !!(pud_val(pud) & _REGION_ENTRY_NOEXEC);
+ 	prot =3D pgprot_val(ro ? SEGMENT_KERNEL_RO : SEGMENT_KERNEL);
+ 	if (!nx)
+ 		prot &=3D ~_SEGMENT_ENTRY_NOEXEC;
+@@ -229,7 +232,7 @@ int split_pud_page(pud_t *pudp, unsigned long addr)
+ static void modify_pud_page(pud_t *pudp, unsigned long addr,
+ 			    unsigned long flags)
+ {
+-	pud_t new =3D *pudp;
++	pud_t new =3D pudp_get(pudp);
+=20
+ 	if (flags & SET_MEMORY_RO)
+ 		new =3D pud_wrprotect(new);
+@@ -252,16 +255,17 @@ static int walk_pud_level(p4d_t *p4d, unsigned long=
+ addr, unsigned long end,
+ 			  unsigned long flags)
+ {
+ 	unsigned long next;
++	pud_t *pudp, pud;
+ 	int need_split;
+-	pud_t *pudp;
+ 	int rc =3D 0;
+=20
+ 	pudp =3D pud_offset(p4d, addr);
+ 	do {
+-		if (pud_none(*pudp))
++		pud =3D pudp_get(pudp);
++		if (pud_none(pud))
+ 			return -EINVAL;
+ 		next =3D pud_addr_end(addr, end);
+-		if (pud_leaf(*pudp)) {
++		if (pud_leaf(pud)) {
+ 			need_split  =3D !!(flags & SET_MEMORY_4K);
+ 			need_split |=3D !!(addr & ~PUD_MASK);
+ 			need_split |=3D !!(addr + PUD_SIZE > next);
+@@ -291,7 +295,7 @@ static int walk_p4d_level(pgd_t *pgd, unsigned long a=
+ddr, unsigned long end,
+=20
+ 	p4dp =3D p4d_offset(pgd, addr);
+ 	do {
+-		if (p4d_none(*p4dp))
++		if (p4d_none(p4dp_get(p4dp)))
+ 			return -EINVAL;
+ 		next =3D p4d_addr_end(addr, end);
+ 		rc =3D walk_pud_level(p4dp, addr, next, flags);
+@@ -313,7 +317,7 @@ static int change_page_attr(unsigned long addr, unsig=
+ned long end,
+=20
+ 	pgdp =3D pgd_offset_k(addr);
+ 	do {
+-		if (pgd_none(*pgdp))
++		if (pgd_none(pgdp_get(pgdp)))
+ 			break;
+ 		next =3D pgd_addr_end(addr, end);
+ 		rc =3D walk_p4d_level(pgdp, addr, next, flags);
+@@ -451,7 +455,8 @@ void __kernel_map_pages(struct page *page, int numpag=
+es, int enable)
+ 		nr =3D min(numpages - i, nr);
+ 		if (enable) {
+ 			for (j =3D 0; j < nr; j++) {
+-				pte =3D clear_pte_bit(*ptep, __pgprot(_PAGE_INVALID));
++				pte =3D ptep_get(ptep);
++				pte =3D clear_pte_bit(pte, __pgprot(_PAGE_INVALID));
+ 				set_pte(ptep, pte);
+ 				address +=3D PAGE_SIZE;
+ 				ptep++;
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index eeadff45e0e1..803099f3db73 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -171,18 +171,19 @@ static int __ref modify_pte_table(pmd_t *pmd, unsig=
+ned long addr,
+ {
+ 	unsigned long prot, pages =3D 0;
+ 	int ret =3D -ENOMEM;
+-	pte_t *pte;
++	pte_t *pte, entry;
+=20
+ 	prot =3D pgprot_val(PAGE_KERNEL);
+ 	pte =3D pte_offset_kernel(pmd, addr);
+ 	for (; addr < end; addr +=3D PAGE_SIZE, pte++) {
++		entry =3D ptep_get(pte);
+ 		if (!add) {
+-			if (pte_none(*pte))
++			if (pte_none(entry))
+ 				continue;
+ 			if (!direct)
+-				vmem_free_pages((unsigned long)pfn_to_virt(pte_pfn(*pte)), get_order=
+(PAGE_SIZE), altmap);
++				vmem_free_pages((unsigned long)pfn_to_virt(pte_pfn(entry)), get_orde=
+r(PAGE_SIZE), altmap);
+ 			pte_clear(&init_mm, addr, pte);
+-		} else if (pte_none(*pte)) {
++		} else if (pte_none(entry)) {
+ 			if (!direct) {
+ 				void *new_page =3D vmemmap_alloc_block_buf(PAGE_SIZE, NUMA_NO_NODE, =
+altmap);
+=20
+@@ -212,10 +213,10 @@ static void try_free_pte_table(pmd_t *pmd, unsigned=
+ long start)
+ 	/* We can safely assume this is fully in 1:1 mapping & vmemmap area */
+ 	pte =3D pte_offset_kernel(pmd, start);
+ 	for (i =3D 0; i < PTRS_PER_PTE; i++, pte++) {
+-		if (!pte_none(*pte))
++		if (!pte_none(ptep_get(pte)))
+ 			return;
+ 	}
+-	vmem_pte_free((unsigned long *) pmd_deref(*pmd));
++	vmem_pte_free((unsigned long *)pmd_deref(pmdp_get(pmd)));
+ 	pmd_clear(pmd);
+ }
+=20
+@@ -226,6 +227,7 @@ static int __ref modify_pmd_table(pud_t *pud, unsigne=
+d long addr,
+ {
+ 	unsigned long next, prot, pages =3D 0;
+ 	int ret =3D -ENOMEM;
++	pmd_t entry;
+ 	pmd_t *pmd;
+ 	pte_t *pte;
+=20
+@@ -233,23 +235,24 @@ static int __ref modify_pmd_table(pud_t *pud, unsig=
+ned long addr,
+ 	pmd =3D pmd_offset(pud, addr);
+ 	for (; addr < end; addr =3D next, pmd++) {
+ 		next =3D pmd_addr_end(addr, end);
++		entry =3D pmdp_get(pmd);
+ 		if (!add) {
+-			if (pmd_none(*pmd))
++			if (pmd_none(entry))
+ 				continue;
+-			if (pmd_leaf(*pmd)) {
++			if (pmd_leaf(entry)) {
+ 				if (IS_ALIGNED(addr, PMD_SIZE) &&
+ 				    IS_ALIGNED(next, PMD_SIZE)) {
+ 					if (!direct)
+-						vmem_free_pages(pmd_deref(*pmd), get_order(PMD_SIZE), altmap);
++						vmem_free_pages(pmd_deref(entry), get_order(PMD_SIZE), altmap);
+ 					pmd_clear(pmd);
+ 					pages++;
+ 				} else if (!direct && vmemmap_unuse_sub_pmd(addr, next)) {
+-					vmem_free_pages(pmd_deref(*pmd), get_order(PMD_SIZE), altmap);
++					vmem_free_pages(pmd_deref(entry), get_order(PMD_SIZE), altmap);
+ 					pmd_clear(pmd);
+ 				}
+ 				continue;
+ 			}
+-		} else if (pmd_none(*pmd)) {
++		} else if (pmd_none(entry)) {
+ 			if (IS_ALIGNED(addr, PMD_SIZE) &&
+ 			    IS_ALIGNED(next, PMD_SIZE) &&
+ 			    cpu_has_edat1() && direct &&
+@@ -281,7 +284,7 @@ static int __ref modify_pmd_table(pud_t *pud, unsigne=
+d long addr,
+ 			if (!pte)
+ 				goto out;
+ 			pmd_populate(&init_mm, pmd, pte);
+-		} else if (pmd_leaf(*pmd)) {
++		} else if (pmd_leaf(entry)) {
+ 			if (!direct)
+ 				vmemmap_use_sub_pmd(addr, next);
+ 			continue;
+@@ -306,9 +309,9 @@ static void try_free_pmd_table(pud_t *pud, unsigned l=
+ong start)
+=20
+ 	pmd =3D pmd_offset(pud, start);
+ 	for (i =3D 0; i < PTRS_PER_PMD; i++, pmd++)
+-		if (!pmd_none(*pmd))
++		if (!pmd_none(pmdp_get(pmd)))
+ 			return;
+-	vmem_free_pages(pud_deref(*pud), CRST_ALLOC_ORDER, NULL);
++	vmem_free_pages(pud_deref(pudp_get(pud)), CRST_ALLOC_ORDER, NULL);
+ 	pud_clear(pud);
+ }
+=20
+@@ -317,21 +320,22 @@ static int modify_pud_table(p4d_t *p4d, unsigned lo=
+ng addr, unsigned long end,
+ {
+ 	unsigned long next, prot, pages =3D 0;
+ 	int ret =3D -ENOMEM;
+-	pud_t *pud;
++	pud_t *pud, entry;
+ 	pmd_t *pmd;
+=20
+ 	prot =3D pgprot_val(REGION3_KERNEL);
+ 	pud =3D pud_offset(p4d, addr);
+ 	for (; addr < end; addr =3D next, pud++) {
+ 		next =3D pud_addr_end(addr, end);
++		entry =3D pudp_get(pud);
+ 		if (!add) {
+-			if (pud_none(*pud))
++			if (pud_none(entry))
+ 				continue;
+-			if (pud_leaf(*pud)) {
++			if (pud_leaf(entry)) {
+ 				if (IS_ALIGNED(addr, PUD_SIZE) &&
+ 				    IS_ALIGNED(next, PUD_SIZE)) {
+ 					if (!direct)
+-						vmem_free_pages(pud_deref(*pud), get_order(PUD_SIZE), altmap);
++						vmem_free_pages(pud_deref(entry), get_order(PUD_SIZE), altmap);
+ 					pud_clear(pud);
+ 					pages++;
+ 					continue;
+@@ -339,7 +343,7 @@ static int modify_pud_table(p4d_t *p4d, unsigned long=
+ addr, unsigned long end,
+ 					split_pud_page(pud, addr & PUD_MASK);
+ 				}
+ 			}
+-		} else if (pud_none(*pud)) {
++		} else if (pud_none(entry)) {
+ 			if (IS_ALIGNED(addr, PUD_SIZE) &&
+ 			    IS_ALIGNED(next, PUD_SIZE) &&
+ 			    cpu_has_edat2() && direct &&
+@@ -352,7 +356,7 @@ static int modify_pud_table(p4d_t *p4d, unsigned long=
+ addr, unsigned long end,
+ 			if (!pmd)
+ 				goto out;
+ 			pud_populate(&init_mm, pud, pmd);
+-		} else if (pud_leaf(*pud)) {
++		} else if (pud_leaf(entry)) {
+ 			continue;
+ 		}
+ 		ret =3D modify_pmd_table(pud, addr, next, add, direct, altmap);
+@@ -375,10 +379,10 @@ static void try_free_pud_table(p4d_t *p4d, unsigned=
+ long start)
+=20
+ 	pud =3D pud_offset(p4d, start);
+ 	for (i =3D 0; i < PTRS_PER_PUD; i++, pud++) {
+-		if (!pud_none(*pud))
++		if (!pud_none(pudp_get(pud)))
+ 			return;
+ 	}
+-	vmem_free_pages(p4d_deref(*p4d), CRST_ALLOC_ORDER, NULL);
++	vmem_free_pages(p4d_deref(p4dp_get(p4d)), CRST_ALLOC_ORDER, NULL);
+ 	p4d_clear(p4d);
+ }
+=20
+@@ -387,16 +391,17 @@ static int modify_p4d_table(pgd_t *pgd, unsigned lo=
+ng addr, unsigned long end,
+ {
+ 	unsigned long next;
+ 	int ret =3D -ENOMEM;
+-	p4d_t *p4d;
++	p4d_t *p4d, entry;
+ 	pud_t *pud;
+=20
+ 	p4d =3D p4d_offset(pgd, addr);
+ 	for (; addr < end; addr =3D next, p4d++) {
+ 		next =3D p4d_addr_end(addr, end);
++		entry =3D p4dp_get(p4d);
+ 		if (!add) {
+-			if (p4d_none(*p4d))
++			if (p4d_none(entry))
+ 				continue;
+-		} else if (p4d_none(*p4d)) {
++		} else if (p4d_none(entry)) {
+ 			pud =3D vmem_crst_alloc(_REGION3_ENTRY_EMPTY);
+ 			if (!pud)
+ 				goto out;
+@@ -420,10 +425,10 @@ static void try_free_p4d_table(pgd_t *pgd, unsigned=
+ long start)
+=20
+ 	p4d =3D p4d_offset(pgd, start);
+ 	for (i =3D 0; i < PTRS_PER_P4D; i++, p4d++) {
+-		if (!p4d_none(*p4d))
++		if (!p4d_none(p4dp_get(p4d)))
+ 			return;
+ 	}
+-	vmem_free_pages(pgd_deref(*pgd), CRST_ALLOC_ORDER, NULL);
++	vmem_free_pages(pgd_deref(pgdp_get(pgd)), CRST_ALLOC_ORDER, NULL);
+ 	pgd_clear(pgd);
+ }
+=20
+@@ -432,7 +437,7 @@ static int modify_pagetable(unsigned long start, unsi=
+gned long end, bool add,
+ {
+ 	unsigned long addr, next;
+ 	int ret =3D -ENOMEM;
+-	pgd_t *pgd;
++	pgd_t *pgd, entry;
+ 	p4d_t *p4d;
+=20
+ 	if (WARN_ON_ONCE(!PAGE_ALIGNED(start | end)))
+@@ -449,11 +454,12 @@ static int modify_pagetable(unsigned long start, un=
+signed long end, bool add,
+ 	for (addr =3D start; addr < end; addr =3D next) {
+ 		next =3D pgd_addr_end(addr, end);
+ 		pgd =3D pgd_offset_k(addr);
++		entry =3D pgdp_get(pgd);
+=20
+ 		if (!add) {
+-			if (pgd_none(*pgd))
++			if (pgd_none(entry))
+ 				continue;
+-		} else if (pgd_none(*pgd)) {
++		} else if (pgd_none(entry)) {
+ 			p4d =3D vmem_crst_alloc(_REGION2_ENTRY_EMPTY);
+ 			if (!p4d)
+ 				goto out;
+@@ -575,6 +581,8 @@ int vmem_add_mapping(unsigned long start, unsigned lo=
+ng size)
+ pte_t *vmem_get_alloc_pte(unsigned long addr, bool alloc)
+ {
+ 	pte_t *ptep =3D NULL;
++	pud_t pud_entry;
++	pmd_t pmd_entry;
+ 	pgd_t *pgd;
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+@@ -582,7 +590,7 @@ pte_t *vmem_get_alloc_pte(unsigned long addr, bool al=
+loc)
+ 	pte_t *pte;
+=20
+ 	pgd =3D pgd_offset_k(addr);
+-	if (pgd_none(*pgd)) {
++	if (pgd_none(pgdp_get(pgd))) {
+ 		if (!alloc)
+ 			goto out;
+ 		p4d =3D vmem_crst_alloc(_REGION2_ENTRY_EMPTY);
+@@ -591,7 +599,7 @@ pte_t *vmem_get_alloc_pte(unsigned long addr, bool al=
+loc)
+ 		pgd_populate(&init_mm, pgd, p4d);
+ 	}
+ 	p4d =3D p4d_offset(pgd, addr);
+-	if (p4d_none(*p4d)) {
++	if (p4d_none(p4dp_get(p4d))) {
+ 		if (!alloc)
+ 			goto out;
+ 		pud =3D vmem_crst_alloc(_REGION3_ENTRY_EMPTY);
+@@ -600,25 +608,27 @@ pte_t *vmem_get_alloc_pte(unsigned long addr, bool =
+alloc)
+ 		p4d_populate(&init_mm, p4d, pud);
+ 	}
+ 	pud =3D pud_offset(p4d, addr);
+-	if (pud_none(*pud)) {
++	pud_entry =3D pudp_get(pud);
++	if (pud_none(pud_entry)) {
+ 		if (!alloc)
+ 			goto out;
+ 		pmd =3D vmem_crst_alloc(_SEGMENT_ENTRY_EMPTY);
+ 		if (!pmd)
+ 			goto out;
+ 		pud_populate(&init_mm, pud, pmd);
+-	} else if (WARN_ON_ONCE(pud_leaf(*pud))) {
++	} else if (WARN_ON_ONCE(pud_leaf(pud_entry))) {
+ 		goto out;
+ 	}
+ 	pmd =3D pmd_offset(pud, addr);
+-	if (pmd_none(*pmd)) {
++	pmd_entry =3D pmdp_get(pmd);
++	if (pmd_none(pmd_entry)) {
+ 		if (!alloc)
+ 			goto out;
+ 		pte =3D vmem_pte_alloc();
+ 		if (!pte)
+ 			goto out;
+ 		pmd_populate(&init_mm, pmd, pte);
+-	} else if (WARN_ON_ONCE(pmd_leaf(*pmd))) {
++	} else if (WARN_ON_ONCE(pmd_leaf(pmd_entry))) {
+ 		goto out;
+ 	}
+ 	ptep =3D pte_offset_kernel(pmd, addr);
+--=20
+2.53.0
 
-> +	/* The current status of the pte should be "cleared" before calling */
-> +	WARN_ON_ONCE(!pte_none(ptep_get(ptep)));
-
-Could we easily extend set_ptes() to allow for non-present -> non-present with
-nr > 1?
-
-> 
-> Rename the function to cond_install_uffd_wp_ptes, and convert the
-> documentation to kerneldoc format.
-> 
-> Move the function to memory.c since this has grown too long to be kept
-> in mm_inline.h, while retaining the inline hint.
-
-Well, for functions in the header you really need "static inline", so it's not a
-hint and I would just drop that comment.
-
-However, the move while modifying a larger function is rather suboptimal for
-reviewing (more like "spot the difference between these two pictures"). I'd
-suggest moving it in one patch, and thenb modifying it in a second (this) patch
-instead. You can perform the rename already while moving I think.
-
-
-Nothing else jumped at me.
-
--- 
-Cheers,
-
-David
 
