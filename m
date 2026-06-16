@@ -4,187 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA57CD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224B7CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5976B009F; Tue, 16 Jun 2026 16:42:25 -0400 (EDT)
+	id B0E246B00A1; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9864A6B00A1; Tue, 16 Jun 2026 16:42:25 -0400 (EDT)
+	id ABF866B00A3; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84E706B00A2; Tue, 16 Jun 2026 16:42:25 -0400 (EDT)
+	id 986C06B00A4; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD136B009F
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:42:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C3E3014025C
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:14 +0000 (UTC)
-X-FDA: 84886948188.23.3587401
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022127.outbound.protection.outlook.com [52.101.96.127])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DC2F64000B
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:11 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=H67cCqWL;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of gary@garyguo.net designates 52.101.96.127 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781642532;
+	by kanga.kvack.org (Postfix) with ESMTP id 632176B00A1
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:42:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6B1A1401BB
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:46 +0000 (UTC)
+X-FDA: 84886949532.01.81D82DA
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1A1E320002
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:42:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=etxsyHqY;
+	spf=pass (imf31.hostedemail.com: domain of 3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.167.74 as permitted sender) smtp.mailfrom=3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781642565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=05saV88BDRnUt9+HfuLvy8ZXpd1g6jM9K8StEk8oE1A=;
-	b=fGAJ9NyPxs0dyLNMAgpvkaXylFhoE3Y4AmIEQnkUgrCgxiCVgsnrAc3BGY8R+lVtPqMena
-	AZWg/ssU2WmheusbI+p0ajB1sNKVek7HJxCYjc3VIhwUdumazBRQXgwpjnh5Aq4lTdIPyj
-	dfmqWMFd339HXhieusFdvftXOUg4zAM=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=H67cCqWL;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf11.hostedemail.com: domain of gary@garyguo.net designates 52.101.96.127 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781642532;
-	b=0QP5k52NCV9bQ6buvFO6wVtQFFciosZrq9uGPkwnzM4yOuWg5nCITkhMVEXZGdppJ/ONF7
-	1BftT0cRWvI5kDDePzun6k4L9Wl562jl6R4Li51mYfkzZWoDowrUgy0KGnHDLl9GvfHMer
-	GdBuqIhRSsV5VZtrJ0QMqCfEAxg7cBI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FmRHdxkPyv5SRV5ZWrhVNAK/92s5AHpn0jrbGnv8lNWZZzP3KwLUXcQJKKkAut6ZQz8GpAVrXcvRVjDkTQ0nZKCjdeOdAKBwqNCGGpmMSQnl/3ctkSGHTgKPuE7ylID6NhsmLkaXOTWizZyJ1CtRYRUuRXMuhHZVng3Ib7HMc5aid9hvrFFRn6V7r52pHhJ6opKQEe8qs4fByc/q10+tPx1oRqGvPP/wEWeh5uG2OGmTlkJoIM1reXyv6tMr/pPabTN9Ekk5CuofRok5MT0FuF2VxpOiBfAbJg2B6DpCW/NU/e+3/OCiUcf2NGXOou+An4hUjn20LoIwp1wgExKFiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=05saV88BDRnUt9+HfuLvy8ZXpd1g6jM9K8StEk8oE1A=;
- b=MDOw3lWC6gg73GwSyDRNizTCqVdoRgzXFyBT755giNXCHeeHW0RO9mahNN9aBbqeKaYtD+18SNHdheglzkT3hmxGbrMYfAJojL5xvIxxN+uM9OA7JV3izr0c9Nn3h78gbQ0a7LJbp5eBa2JI88LEEFIYoA1ocyLjuIKTUBDwtPvWp0ciezyd0k3U0d6QkUGwzdLq9sw9Kv73Fb60UyUEe3X7n5CSbHOZYOiNWdoo/XyMzxQ54FvakK/bBesRRqlb7BQX7nKgJT+j+HU/d6B0er1wUzsDosK9IIwuV4Cd9Z/gic0eOPWVAAQ8Ba/VjdLiN3FwVHc46MKonG0o3Sl6tA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=05saV88BDRnUt9+HfuLvy8ZXpd1g6jM9K8StEk8oE1A=;
- b=H67cCqWLhRDwANSCiRzjilOdsCQcR/sTKLk2j6JNwv8YJXwuNTawGQKWbwGwn1LbVdUNc/TXGszK5fYuhJnvq0Cu9xs/bwSIPOdkNwDoST592B36Ur7u91ko7ejhE7oSvn10a1w1MH+1Yc6ogTFIAcIehPOf5ph6uj5+7oTxVhU=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOAP265MB8506.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:471::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
- 2026 11:52:11 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
- 11:52:11 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Jun 2026 12:52:10 +0100
-Message-Id: <DJAGAMNJ043Q.3597PYV2YD6CI@garyguo.net>
-Subject: Re: [PATCH v17 01/10] rust: alloc: add `KBox::into_non_null`
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
- Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
- <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Viresh Kumar" <vireshk@kernel.org>,
- "Nishanth Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Igor
- Korotin" <igor.korotin@linux.dev>, "Pavel Tikhomirov"
- <ptikhomirov@virtuozzo.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <driver-core@lists.linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
- <20260604-unique-ref-v17-1-7b4c3d2930b9@kernel.org>
-In-Reply-To: <20260604-unique-ref-v17-1-7b4c3d2930b9@kernel.org>
-X-ClientProxiedBy: LO4P265CA0275.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::11) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB8506:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8cf5de7c-008e-4a5e-3331-08decb9db35b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|10070799003|921020|56012099006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Q9/HIh9CMNXG8bgye913HrVSETxYwEONTy8Z/yhiyWt3kNDjyRUUuiWWIYqAohPJ4W/QpGezELO1zhe27ksNHgtK1XjDO6KTi56dq8cgr4SjpwPGKebh9r7fr3XFG1ghsseuJ5dHJ2OfSEOzM1oYmF9uM8UCpd9jf8OuIhBp4gUqp3QqZCzz6HvhSMvlilFHZ+AkjstoJl2Dq+xpMPVMxbkBMjQFF1OBJD7yzlSbh72u9NJIKxHf9vMAlS8HCiKnqeebzdG7fheb//gh1FmiqUFPjr/sfaWrwVwGxkySELgUYcjUbJZfXcLZyrmjbF/vVH1Mr23QIWnyBecxV0erEW0rNSWF7iPu4MrGQO27gKx972Rr+93Poh5s5vEUpMos96rF7m4y5e4JAxqiz/InFWihRq7yhUnMferkOCiHTZY7oHAPiVQjFn15hhYpWPqpCFoi5pV7KMdZq+gTA4oLqLqu35xVwtygR8KwcJ8D5W7kyDSlOOIAA6map2xOPXgKO0fFxzlbK2R8IuvrkIatA0LQuG2GLupz90qUxfLpVucWbUcB7eaZCsL+q+imC7Gewyb0/GFFTgsr9pHhu035V6RJreHPg2RVfqkApdmQ/FU7VrgWOHtLZ4ZS2caXgXj36sA8dA1kymcfI3xhWN9iZPU5RrFewI2DX+IskZZTZbTm63xQW5Mw3+DqgXepT7k3lWBQ2SAkCe5qppbE+40Z2E3n3r9wsHmXzv8IZijS620=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(10070799003)(921020)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZTc5YnFhZ3c4VU1vUzIvZjRCOVlQTENCczBaV3BEWDVST25TZERHaGltbStt?=
- =?utf-8?B?WHRVRURibWFCWEJIS041azE1UTRsaDdGSm9ReTFuZ3V1WTdvV0Y1aUFZZXQy?=
- =?utf-8?B?TzFrd01qbEJLZFJuT0hmcU1sZkNVZlFWQkVzUUozMDVWSVVDV2FYUDRwZjBz?=
- =?utf-8?B?VFVlRlFtakRLeERmVHN2eUlFRWxLT1ZueE42d3RneGZWb2RDdVcwNGNMZnNm?=
- =?utf-8?B?S1Vya21OWDlmOXJVbFJsZzFoOWY4NXUxNzhZREF4UDgyTVNnOXp1R3V4MGIy?=
- =?utf-8?B?b0x0ZlBKVFFKNUE0Ukc4UCtrTm9UcVZrbnJ2bkxQNUcrOVBNYU1kK0FRcE1S?=
- =?utf-8?B?Q20zeFN3VzRoNkROOEd0N1MwbWordEtSTDdudTgyWHdwbmJsZ2I0c2VEWE1o?=
- =?utf-8?B?enNWZkQxZVUzTGN6NmszenJCVXduemRSUmp6QzdHVHJocTB4ZU9yMGtoTmlh?=
- =?utf-8?B?dG83T0ZXaUI1VzY3ZW1ONkNtdFQ0bHZSN3dPR01MZFZVRE5tUDN4MEVMNkhL?=
- =?utf-8?B?UjhDeEVZejNLODRUQUQzTVgyeEpjY2s0SXJQdzhjSlUra3pZRThCNVF6Y2gz?=
- =?utf-8?B?cmxNM0ROUTRsUjRDdHZjc0FlVjcyMEZ3d05NdlMyZUZadjRTWDVHOTJhQzhO?=
- =?utf-8?B?QzlYSStBZ2cyZXNJSzZWbTQ4VGl4SHNrOWh0bDI0M21lL1dPaURXY0dLUjBh?=
- =?utf-8?B?UE5lTGJOVkRxdG1DNjJYSUYrQWpDTXlSaUxCNGFhNlhzMzVpNHp0K282cnJx?=
- =?utf-8?B?Qk9ONmpBU1Y3d1d1d09wMmFRdzBKKzRjbFFIZmh4S0NCeTE4WmcwL0tMYWFy?=
- =?utf-8?B?NVRpRjJVYitXV0h5Vyt2d3d0aFp2aWtGc2hKdDlxU1pYRFJjSEhMVTBDRmZl?=
- =?utf-8?B?MmpQUUNlamJRbXVYSSswYkFIbTA4SmxaTnhLYVA2NHcrVE5XSmhFN2FYMlQ4?=
- =?utf-8?B?REVHQnRpKzYrbGtscGs4R3ZSaEJQQmdsNlZPY2JVcU1sMWprMTVDZldjcFh3?=
- =?utf-8?B?VnhXZ1AyRGlabXFod3NiVGtlWDNDd3lhZCt1V3huSjFsK05CZTBDZmxHNGVT?=
- =?utf-8?B?UXdhektZRUNPOWJUWVkrNVNRcC9UK2lJN3lCSkN1MHZOVnZ0b2pENTdBYkZ3?=
- =?utf-8?B?UEFFa3FvenlWWVUyRDNmYUx1aVpmM2twMkF0U09LbXV5WWpUbjluNnNzdU05?=
- =?utf-8?B?RmdNV3dyUFBrZW5Nd1VyemwzUm9zRXFNRFZ2SitqY1VrV29PR0RjWnVNOGg2?=
- =?utf-8?B?azMzb2lBbDlOVkd2Q3VPL1VReUduVTQ4dTMrb3JabkVpUDVjVGFiNjVIWUhW?=
- =?utf-8?B?MGJPUnh1VzVCUXZNM2FWWldSQWs0TDdIaVoxSGhYcEJhMThLSkVFemdTc3BT?=
- =?utf-8?B?SDlVMjNVT2s2dHEwaFZ0TnU3bkR5WGk0VmdKUTJzYVdySkJkUlNSSzVWSEI3?=
- =?utf-8?B?cm5sZnR1d0hialplVkp6K3dDdlN4QWJwWkp5WTJlL09XcFB2c0lidW1hVVJO?=
- =?utf-8?B?d0FPL0x2Qm44T0kvanF3WitoWlVkWlpOR3FISklDQ1dlak9GVWthSFRJdER3?=
- =?utf-8?B?N1dhRzhoZjR1TGRSTHo3bktmWGxVR21vbGRramY3THFsRE9YUjdkWTdvRmpT?=
- =?utf-8?B?L0RtcmpXOFkzNmxCYXZYNStzK2RIMkRWcjYvL3M1YXcvSEpUUVN2ZEhoeHNM?=
- =?utf-8?B?TUhZY3hwNDdzRWZ5ZUkyMWU5NDN5KytLS0tPdGJxOFhGbkVUOCtTSjljQ0Zu?=
- =?utf-8?B?dFFpSE03UE9hbVpRQ1MvTlJYWklra0hnbmk3UVA0MXROMjZ1Z1hZWWtGNDkz?=
- =?utf-8?B?aC9ka21qeDNmSm5maTF4b255dHlLK0c5bWxORHFWWVJDQmNlVXpqNHFvWVdO?=
- =?utf-8?B?djBpdHVUaEJxbFJZZmQyQWk1RlM5UlBGU1I1ZloxdTlHc3ZtTXdtVWEzakd0?=
- =?utf-8?B?MTN1SUI5WGtyUGM2SEtJNmFVdi9WRGdtUkFvWVN4TjA3TTlrazA1dWtDSXZD?=
- =?utf-8?B?T0dJUFZLNCtjYUJpeDFYeXVwV0VkK0NVOFN1RmZrVkJBVm9ZTFgzRktRZDFo?=
- =?utf-8?B?SFd2QzgzMDhzd28vKzB4c0ZUcFRVVlMxNGhQd3loTnZaQ3RtR0wyaStHQmh5?=
- =?utf-8?B?UFFtM2NrWitmUklBbjJiTVV2a1hyemdoNEFNUUNOemVPSGpuZHZZQmFNdDA5?=
- =?utf-8?B?eHhHWjRSdWJTdVhDWjRWQUxhUjVSd0JaSVNwWjhwWTFMeEFaUlBDOEJFMk15?=
- =?utf-8?B?RGV1RlZXNjVrenl3eDZRNllRTFo5bnZSMmRpS25YcUcwb1I4NTl6V0lhZE1n?=
- =?utf-8?B?WGk2TzlqSmZOdmdiRE1iSU0vbmpURWNQWjZSaDljL0EyVzVreFZTQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cf5de7c-008e-4a5e-3331-08decb9db35b
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 11:52:11.4018
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b2/lLAwZTO9LPC+egOCtIhkRBn/Xob7jYnVIP5JoWWVWOoPhqJkZerjA8A30pohqPaNYVqGNbH1NHsnuLBbxpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB8506
-X-Rspamd-Queue-Id: DC2F64000B
-X-Stat-Signature: 1pphc8mjp5g5noxsoqn1nrdjw8ca5n9x
+	bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
+	b=gmAJkQFD1e6bE7WGwLOVMjcQK26IH4EuVr0z9mjIo7eJAxbq96IGPneFpliEg88NSfCH3x
+	G7q47ccOk+LzhDuXi90HyIGhwWOvVWEE+WVflRlZJFaePwvDvNpUJe6zfT4Ye2FNxOXQxX
+	rrdvaOmpHFLK02fZs1JLeHx4T7dgUUI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781642565;
+	b=6AaFW6EtkF2Zg3tRWX8KgxvUhxJwYWml33x+eIwcdRofov5q1Iz11Ge5Ar+v9CyZvZYlNc
+	+qyx3Hm9nr19gxBvxYMdRz5lzLW6eiKyZGce6aNgtBjz6EtDtH5ZV3qT5vJ3FiH79TbxtL
+	ybZYBa0PAuCJ9LX7zxEyh8Xj7ny9D6M=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=etxsyHqY;
+	spf=pass (imf31.hostedemail.com: domain of 3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com designates 209.85.167.74 as permitted sender) smtp.mailfrom=3dDkxagkKCAUfqnhjw3mqlttlqj.htrqnsz2-rrp0fhp.twl@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-5aa607bbfe2so2640154e87.3
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:42:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781642563; x=1782247363; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
+        b=etxsyHqYqAnQjg3pKc7OzM/QJtE5CRkgo5Oe3Y+0o2QX4/XiromjwbAejqNHQDIcS9
+         XrkRqIf2XJ3TbzLEmI793heO+LLo6yHZsymkqiKh27H/DL9V42k81YhzONUsEHfUmL1u
+         WEPXelDHiMBYWLvhRJx7FgSXxl2paZlgIhTmLgINxjTJab/WaUeuXpRP+WZt0fpKFXVJ
+         5AdLWWUEBl0ADYi4jGJi2qneC0hwRA7Zc0d1gt9ACazGnCR2hFcNL4SxYxC8DS2i42wZ
+         9J5Ul2NAhSySCMtwkvDvwY2dW7mL512XFdlRQcp7tTXzTUtTZXPwulIuYMZruxvYEtQN
+         yc1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781642563; x=1782247363;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fkz/8WHSlc5z8mgSFYgivmaJvolb4fXApnGq7F/IsFs=;
+        b=erlKei9ER8jaz3XU9pk8lHsL/vNx9y0b1oOzxR6bND3IHrAvZ4HC8KLWA08lyjRhp4
+         gnf6noABzHR+hj01mAU7pdGP/U+V0+PvpvzS07Ocz5eU22IDMhuIkn/CupFuKB+Jw0iz
+         VVtlDE6KQPYibD3cLVMLzfPThWPWlYuTfEiLqOvqfsCIX/9RoMx+zNNYi197Nmn05zZ3
+         MTZ9RIrQTbL9IYqb4HJ7Wu4U0Lpzf+w9WGz08xgGEKI0aDeH3UkyXPfu6Sd0ziZ27AVx
+         ib6nPNTLCEafUUzIY/KxHl3Bt5A2IsN9Nm5bDizoklTzW5KuQebs42I0LKibe20uc8q2
+         lHTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8e2g+XsShcJ06wDJ717yokX3o8JL+uRnSlk69DApaKNV3Z/WCoLS0ZW32GcU6+kU5EGTGqgniiJA==@kvack.org
+X-Gm-Message-State: AOJu0Yx0bYo/iPz1/Je37XhRmP7DNOoVOxzzN0CDZIHIovOaLBtQ+0PB
+	ZfzkT/g9bvsJSZWWJRcos0jbqP/C8FqFBg0ylDUhrTJ5vK+wGTXVa7KutRxt/B0Hne48mjLMdZ9
+	22mLgbBo1sYK1wY75Xg==
+X-Received: from edrc26.prod.google.com ([2002:aa7:d61a:0:b0:68d:205:9a90])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:35c5:b0:695:865:47cd with SMTP id 4fb4d7f45d1cf-695086ebec3mr1540972a12.7.1781610868582;
+ Tue, 16 Jun 2026 04:54:28 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:54:27 +0000
+In-Reply-To: <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
+Mime-Version: 1.0
+References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org> <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
+Message-ID: <ajE5c-5gZtJRoadx@google.com>
+Subject: Re: [PATCH v17 02/10] rust: types: Add Ownable/Owned types
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Viresh Kumar <vireshk@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Igor Korotin <igor.korotin@linux.dev>, 
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
+	Asahi Lina <lina+kernel@asahilina.net>, Oliver Mangold <oliver.mangold@pm.me>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 1A1E320002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781642531-275767
-X-HE-Meta: U2FsdGVkX1/IXwdWnh6RsUIhdE3NNq5qjG9U9/nL+LwFPTF+gekClEtUXfIHtquby6Ld5DSGkYwoxqpXkuFrsXqy83aLm66H/G3N0igUpZ0AUGQ8ru5UD+LWSlSZXoa5SS/8B644jbyzMzEOSwwgwBB+WW/WOKID6p/WDhGKUw0lltzarlK8QbBjZLDyQgz97Vyc6TwUNHg+NNq40tozNx8GRzYGSEVOSkoBI0eAt35MPun8Y0NVel5KiSBJnwUa+bcMkzOpzAGwGvatoA/48fLGduSdYYZYGYYDQk/osjaFsil45IhN4eqAF+d0OzWu7tlSQSL6k5uj4iUbDoWr/pBob4Tf40OStTpWxMQTdKUtjhs27bkfjKjjO0l941NjuinY0oq8GBfzu5RESuxweVIoNYJIN9hwlVuqqCGWRvCPQw/AxFHI0O4omjt9MUa46glYQEp3Xpdbxbc7eIo0eEyRFXSZZicotVc8Bo2t3jrTVcT50/qmHNFWy9+mBmYtgVWF1Io5sg3C1squ8yElnMQ6M/ZB9ZeAKAIOTbJZt/B1nz/cRX9w0RK9qTkrsWA5tJq305z4PdIAm5W1IsWch+uZvdgiFV9wlz3e0RnBQFA1otYcObqGrFbCm7c2gLt/ZQ82eNZSmYURvthZPhkFSK3P+nK/TVgFiaTvJbyfcYssOc3l06IbjWQQwCzu+r7ki5welTTsLkajBKNN3+N/eI7IYGpCk5JQdl2ErWscM5pUA5tarVgX9ENZUbUxamyaPgFDlqMXaggIu9ObmMELnFcRefjsVVXgvUH6i8VAFsoA6EkAHZ+MNLhsqxqqjkYu9dX4m2JWbbXP/TMdJnvBXx2Ymbbo/kDJZkgm5EXCD2utXozKSiQgoB9uA7egezAyJwAD3qGuWi3/46jSJ9jJ3Qsdyq5DOVIIni9lYYiyNuI00NuW+fpgi6hk/asP24DJT/ZRqBZj6sibJANotTz
- jvqljokV
- vDWgaRut1j4xPrtZqzmgwG5KCCk5N6r9goxK6felKrmNozHZJflw+3hfOKP374wkJZYo0QT7XgLtdaMO3Bo7XJQdotuUzmJf76dZVQDn5ocKeNzc8ihv76EDIaI622nlu0Ghngkwb6v1c3vnkqj1onlz8Sp5D9aQz23FPUY1i8Qb9yVAEHjrHSKG6YMTj26LBshestXYz5NVBxYpCXk3z+Q1HNYsascZZ78sy5qaesv1PsHYOscE/hJZ8Ue3OAe5Ns8RLdT96z6lyAg35xl0m7DfnGcYFTXPYSGMBd3N9f0c/2f23r2GuN+v+NXZXAmZpad/KplH4SW3Lt/e2ZHtaz17dO35TyEd56z9oloO4OyC1z5IkhbGzVcEvcJexeb+d0zOqx003RWveeLPzNFWnqGlIxBK/WqGTFWVGcBqQrT4g2kBTE0qWzw8fFTndUVSrFKPNPTjKMAyM/Ac5/DHZ9h1sQdDXQr/pJcwJ3vKQ/+jdi9gIBS0I5AIduNWfgsoKXgqIvDUq1xuuLBZLfLunRyEmFLjslLFPQ0yfqe9M3OMtEjWvdZvLyPBzBeNzsaiduFVIbEWRk8yJI1rr6yIyDo3SICfNVtDd8Ys0+qeIqJTC2mxwYXWes4rXzu317IS7o0IW
+X-Stat-Signature: 5w3cksinxogdoy3t8wpx1jw8zf4a9xex
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781642564-450548
+X-HE-Meta: U2FsdGVkX19L+KTbJF5hqMLMC6WfFlIfV281KYPsGago9Hhb3wUW4gIRxv1fc+mIEShsEOYXotZK3Q1TmarULrH8kEunL1eosvbeuHhpYC7l3ilV2Mh3bfHNDjDjPyjYN5LvHqmpJ5DdrCrSnhe39V4Y1WIdsZJYY0yf4XhDOAKziY/Kjo+4nm63Y/OU2PidA3SLE2HPLD35mWBqieScDg1ffbTaSe4WRhXhSqBdh7Uv4CFB+kxyg2c00mcf6UUnmWZgspMHzr+lDeBKhZPTc12qFBMrt6BBORdMQ1fUWLSUz5j4AneWXvWw+8X5s8i6Pz4p1ubKfq0Dxi/94el/FnSB2Z3kwMhhMlb5Bs+MQEAVKMIPKRdt0PAoDO92YS2Fh0K6KzTRMQ+a5cFK/ezQ/Urk6yoNL58S89Ed2Y/qpocBH9rv4D0wQ5beqfcBjDdPIQqhGSAWcQ0EOqQuj49brZtWtEzZUuFIKPCC3QriFhVU7ps4cFGKPxN1PJPqmBVCGu2btMLhipwYQGmumOJKQx6ItyJv9yUZ4nsgj1mUeXFl8IpiaGUFvO+RgenRNdwbxFbBiadAGY2TV4Q2bMLqCzeH8xfYZzW8LHB5OuBZsD7tQ1HGOC94iGgDAO2JJJMK02IE2/ciTJVZk402qA0cBHQxHWm6aa10R15IoVEu5mpmSzUYH8S9luG2ZvPpgmpzCFgOzaPWG4CmX+zjESZr8Vw/mejXbYT7HQ+wRfFPo2jLCFUKvapW/daCnDHce8Aqe7IOCiYbaEU5bPdBZwy6T/8mTWDbV6e+Ohimk9YVqzV7i7QLWAehtqJagvVnOhv9mwPiCouBBsee9RD/PQK+GJlAya0AZNT2AGlMKeF6K5NZ23szF0Xfb44CukUNfhT6BJ9EiFBm1KMVcrGH7UHlnt6BiheDloTQrq4ZpOHaiIERlrHQRdFenL6DDPhQ3a5lvjBO8+GDRCc2531hJjV
+ oGZVL4E7
+ qOeIveEClZ/Wu8cmZ+R/wByMfJVaNs6+7pydtMyjv8yuoR5pPtQ2mHXySGc4y/fB3wfVn3JyBNvJwANZiFiwy5PMAFcJ+NCiHTHjjLzLm89M0CCkX1FdwxbpwTZeObylAbaPAFZn/so5R/BRBKE916uA+RA83lXuewvb89G66QpTGOGJ3OCjOK8Ses9JOt73ZU2eCLlFXpJHCbBZOaDWtdKp/B8Y5vVjixtczHv4Jal0rY7toKNJF0aZlxq77dLvWY8OGroOhKN84qsX29xBollC25W1ZE7llw5s4fWKszmpPKfg61hTpd9tQzZKjlED1uLoFZBVUVyMHwnQFNgOz6eFYOqEQ9ZhzwkrpWpkg4u8y2v2VSTjc1f361hdx6XCeU2gcONIw+ubI6hYpJ8GdQAvJOqxFs1WFyCAHPEoTTp7tj1cSMIZvpBk3h/ZAsb9K9z6rvlZo5zfL0qqO1JSShpFjQYGQIn8hrqpO6zDDFjD9VDeDFad4uBYhl7Z2xqZVfP+z9DVxuou4nnONa14kSKeQZiCFBI0wqGVyECMgx1KLODyZXSSGAvLc3FA47vezLeyQuMxmqXb5Xui9rGGPFKV2MtMhySTctuHsgxV25FYHsediWCou2EppwDwa9CZm/ZYOlOC+u7jNJSRK0KMS2sm3HbfebYiOE/dn1mhKKCF9koOgKoAbqO6YYwcmzFroGJk7lSV0JZcFhZ8rNWpqnH4v4oHy3CFKEHWhO67/k0S7+DfFrGWA9clc8T6tFji32z6SkbjpDdezNgIFFyUJtgjLnhCCdl7UncDk1JVty4E74ereqejUsJ3HUB/dNxju8aNpeaJ0HWaDTJiYd8lPrRGwGGrJrhfqHs502BxQVRsaRfkVPbi5q/szTU/of6rwnJCpuDpO2qDDTVwl3szlaatm4rGiSFXxP+WIeQiS4LKVPbXNZT5x08Yx66k//FvEL4X05OzBPHI6+zgnNsjT4rhX4JO/
+ NbG8gXVq
+ YtzQJVxc7K4JKHQ1f2I9k6ks6Vb531/PYuBHI9GLrfVCBplYFY8mHrRki4X/dPSdoernPb14F0SSiPqeG2Whrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,17 +125,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jun 4, 2026 at 9:11 PM BST, Andreas Hindborg wrote:
-> Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
-> is a convenience wrapper around `Self::into_raw` for callers that need
-> a `NonNull` pointer rather than a raw pointer.
->=20
+On Thu, Jun 04, 2026 at 10:11:14PM +0200, Andreas Hindborg wrote:
+> From: Asahi Lina <lina+kernel@asahilina.net>
+> 
+> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
+> 
+> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+> resource management to the `T` instead of using a generic allocator.
+> 
+> [ om:
+>   - Split code into separate file and `pub use` it from types.rs.
+>   - Make from_raw() and into_raw() public.
+>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+>   - Usage example/doctest for Ownable/Owned.
+>   - Fixes to documentation and commit message.
+> ]
+> 
+> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> [ Andreas: Updated documentation, examples, and formatting. Change safety
+>   requirements, safety comments. Use a reference for `release`. ]
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Overall looks good to me, but two nits below. With them fixed:
 
-> ---
->  rust/kernel/alloc/kbox.rs | 9 +++++++++
->  1 file changed, 9 insertions(+)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
+> +pub trait Ownable {
+> +    /// Tear down this `Ownable`.
+> +    ///
+> +    /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
+> +    /// include freeing the underlying object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
+> +    /// be transferred to the `release` method.
+> +    unsafe fn release(&mut self);
+
+I'd make this take a raw pointer because the pointer can be freed during
+the execution of release(), which references don't allow.
+
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 4329d3c2c2e5..4aec7b699269 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -11,6 +11,17 @@
+>  };
+>  use pin_init::{PinInit, Wrapper, Zeroable};
+>  
+> +pub use crate::{
+> +    owned::{
+> +        Ownable,
+> +        Owned, //
+> +    },
+> +    sync::aref::{
+> +        ARef,
+> +        AlwaysRefCounted, //
+> +    }, //
+> +};
+
+We removed the types::ARef re-export, so you shouldn't add it back.
+
+Alice
 
