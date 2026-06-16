@@ -4,116 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72665CD98E6
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 581F1CD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:15:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C03E6B00EA; Tue, 16 Jun 2026 17:14:02 -0400 (EDT)
+	id 4EF736B00EC; Tue, 16 Jun 2026 17:15:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64B0B6B00EC; Tue, 16 Jun 2026 17:14:02 -0400 (EDT)
+	id 4A14D6B00EE; Tue, 16 Jun 2026 17:15:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53A046B00ED; Tue, 16 Jun 2026 17:14:02 -0400 (EDT)
+	id 368466B00EF; Tue, 16 Jun 2026 17:15:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 26FA86B00EA
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:14:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A942FA01C1
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:14:01 +0000 (UTC)
-X-FDA: 84887028282.08.73C29BC
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C286B40005
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:13:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QEo8Zpyw;
-	spf=pass (imf07.hostedemail.com: domain of skhawaja@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07C8E6B00EC
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:15:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80A531C2C4A
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:19:34 +0000 (UTC)
+X-FDA: 84886135068.20.C0E6B3E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B58F81C0003
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:19:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ck1DRL22;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781623172;
+	b=5uFLDmEEOqgYKB4Mb1UVwoB+qcvk6lM2f/SSadqiemC0lSprRH5PjUnBedu1VOytv6zZdt
+	QiGOt0qeeb+tIF7mbTx1pt1iWeUGt8/0lbYA0SArXrePjMAc4sHrbiJpLpZAv0QyVH+0Mv
+	2hmsaDKgWAhr9fx2DJy9q8FgnyTrOlA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ck1DRL22;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781644439;
+	s=arc-20220608; t=1781623172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJNdmkiK3PhuRperaiQ6089ov2561C0H0udd8xzGUrk=;
-	b=Z0s5NxWCq2pNTlm38YRIoFBR9hEEsJcBkn6UIIXcoXF1/3jh1VRG2mF4ZxFZXiezJyki5x
-	7No4Ub5fmHMdTl8gc8ks4AMpG5E+6cNHk1sv5w8CSZx8SEsoruVm5wHq3nu1M5I6ritSXT
-	woVF/HV4ZEfCAJZXUZBulm6ivCi6aHw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QEo8Zpyw;
-	spf=pass (imf07.hostedemail.com: domain of skhawaja@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781644439;
-	b=Jv/NKGWBhfUHL5kmGV3r5I8ztlyrm5SigHrr4+RuGM38GFY7j1UBrz6qKlpVJQQXOVDK1X
-	aX7bh6tL7inKHaNhXcXB0VCXSzcwQrD+ltHU4+aflFsy6CeJyvIgFyXmi2SCerG9/837iq
-	dxvSpXFnwTkaytIDSPbqVeICFEClfKc=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5175d339e8bso91931cf.0
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 14:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781644439; x=1782249239; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uJNdmkiK3PhuRperaiQ6089ov2561C0H0udd8xzGUrk=;
-        b=QEo8ZpywZ4lf+CHaQylwhrBr/50+TPu7TzRdercGvfVTlPcdaXHzNindj0xTjCK/Yk
-         mYa7Dv6YzANQCDRaEuUlMHhVPOKcW5J/3Kx6TPts3YElfpq34DG4y7DhYRylZ3NhPQIO
-         q9r/PGlPJ+cisDodOGALT2eyxh+3tgKH7NGEY+ex7B+6wjF53v0v4av81uLJw+K6qUjG
-         FpOmnIXqFLTvt0PhMDqpNDPqyGJpOjo4ced2+rpg3ynThUPnp1QyjAE3u7litpCc+rob
-         VlMvBF9fpo3Xx3NgSQye53gshLRB0HFw91MMJXDkc9lxFYitCA1E58BGHBnWyOgeNdnA
-         99AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781644439; x=1782249239;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uJNdmkiK3PhuRperaiQ6089ov2561C0H0udd8xzGUrk=;
-        b=shUWO1FLGmXMWx9s6DxKa6nb/YU6+6qsB7dBHdYW7GKiEUuFpHtuPwneccXzeBQxcO
-         KElg/i28wdeE7XiWIonfXpb/CBySsbtN6vjhgt0pP0d3Amy3cwF6rPMw+ZiVGu1OvBw4
-         AXykUdHkaxO+7qZk8RfAsNX9Hxavf9k0ujUGC5rfVhfSYMsPXVr0IpekFze9fZ0gIRGY
-         zNpT0j+2VOHBwXbsD3P5Rmm+TSAmECGIXouX5NtIU3Lrx3mL8qfV1smZOBOze2NbL2dA
-         thrFPhdOPxlbMr+D9Uc7viMBLCrpasKz/E4TDacfyURwyMiZVWckUbsgv+v1DU/OmuhO
-         VdoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ87nogKh0yCCpD6ASb1JSlBKWN2pK1hsuEXDphJhbvI5DyObik2vJUHoVrZJI4J2J3bmvTH2h5B7A==@kvack.org
-X-Gm-Message-State: AOJu0YxdgO3sHcM+k6LI9YF3ZBkOqDAz7hg7Pw4ZL/KHSeCAnoiYaMd4
-	ddaVO7n1tLUAh1AaQoEXi3UZ7/q8tHVW6BqEgT/nt6c1aIgR4DM77Dvqd5fAEXmoBFE8Xwcj4b8
-	Kag35/g==
-X-Gm-Gg: Acq92OEdZEJl5mvRBuK3sikYq0HrE/bnxh1IqTKCKyLjFDsqrFxK3jgP1EYKFAx/mVr
-	KQjIkdTvuuAwSkm6qdjsZ/qk4t47Dx6pOf03nKObCcDR5PDJB7Hu1YSbreQRuJjEWPLCE7Syqhr
-	jcaTjLo9FQRBbp5YvwPrb8QeyBRK2fEn46BXaIssI0r4bshUfig0cUU5Lo7s6ji2p7ZnIFuXiyp
-	kYmcJkKWaA1zpEO1xjjqJFeL411ZQaMCSkcfh2RyXhZyRnsWn7Zn6xvLNJUsd8YsfsOYIjtUMuR
-	svj0ShEV+o3acOrm+gPbuR41IG2eNtmaXyLtVji1Ld6KtQFk889/lyZFAo83utXpsoDXn5+ZTQX
-	giprsTAYBpTvayJxUozG/Xb+PlIi3NpLP4zDZGu7d32vaDXK7la7zXA7Bv7gV9kkxwNvur2S5VF
-	xQAOF4T/eq1WHMJkCKXuM2Y+p7qWfvW180HgQ7pNLvH5ES7N+Og8VQFTHzOfvwkCov9y9WLtHKW
-	tYmINaciqwsPxfJ3QQ=
-X-Received: by 2002:a17:902:f706:b0:2c6:8564:46b9 with SMTP id d9443c01a7336-2c6bbb030femr394805ad.30.1781637306612;
-        Tue, 16 Jun 2026 12:15:06 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432d86501sm132585345ad.61.2026.06.16.12.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 12:15:06 -0700 (PDT)
-Date: Tue, 16 Jun 2026 19:15:03 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	David Matlack <dmatlack@google.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, "open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 0/3] kho: Add support for kunit mocking KHO restore API
-Message-ID: <ajGOIOqBY1pazq5g@google.com>
-References: <20260521193202.746810-1-skhawaja@google.com>
- <ah0t9Ss_S-5iOM59@kernel.org>
+	bh=r4HeNsdpZXcuGDpdJwc1l324i0d9msH0jiY923pAvrc=;
+	b=ecWqWH+J0egt+YQCqoLHpqxqCBdDz14bjnFQoEczbOYoCopJrUBdf5Q+UOpka6JJO3yjaN
+	X58KO0acnOBZEvn2ATCzWNF3w4cR5En+Ou8i3+CoWRElQzOLGUbUGB7fhViZjOt1gmMey5
+	qSJ0mbLEEGqrLDS95sWA0QbYIDiYIeg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E6F116012A;
+	Tue, 16 Jun 2026 15:19:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C961F00A3A;
+	Tue, 16 Jun 2026 15:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781623169;
+	bh=r4HeNsdpZXcuGDpdJwc1l324i0d9msH0jiY923pAvrc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ck1DRL22ljLe93iK/7HgtsYxeBKDxBCFPWNpfgWDBiVxkCWICUXwCIPlsaTKuJuhs
+	 biK6K8nc9I2zI8He0La3nV8IU8ak0Atra2CONHCbod28hTjnrKvyEfkj4VfeW53F1f
+	 GHQ3vk6KZDZD3RaqEf1baP32aHjSwcsvZMgaYvKICu+3us71lDvpfucBjbXqNpMP3t
+	 /QHtweoSA0bIaoRc6cbNqeqGC2oiiptTvR0x2HTdG2GRYQWsjg3jaaiy2CrPP2v0Sn
+	 hMxk+u60vSWW3+yjH/D02PCNUyXJ2gH95+b58HXM4lHcsFY1TOkWbafCI2y4I75VyO
+	 1xBe5AlPkpqTw==
+Message-ID: <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
+Date: Tue, 16 Jun 2026 17:19:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ah0t9Ss_S-5iOM59@kernel.org>
-X-Rspamd-Queue-Id: C286B40005
-X-Stat-Signature: 848rj3pm7f5ugt4us4n45mqnztn9jptg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v8 01/24] mm: Introduce kpkeys
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>
+References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
+ <20260526-kpkeys-v8-1-eaaacdacc67c@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260526-kpkeys-v8-1-eaaacdacc67c@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B58F81C0003
+X-Stat-Signature: 1kc7nhorxg591mjz7rdfmumuxepd35xd
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781644439-437058
-X-HE-Meta: U2FsdGVkX18UO+qdJu9PhdGg7Sud7bhqiSH/Y/IgUfR5Gx+A20va6rIbyq3ZsuLTcVzpH5wRwU0R5mzt1nFmrNlkZCVf4/8DcGg4SMfF4+02mMpiw/2DptU1a4LDRNcjQt9fCPwtEWwL3ZyZR04k/5g9m8axAzgdMLgOMUcmzY35tUDhOH0cyzOeHAxxnqxtm1cNXznoAxB+uy0Bk50+ihqggNsrwQ0vCO8GhyepIEbnMRtv+JrBQDQJfQp7ynMiH/drTCpRtL66plFe1MmBsWqiE429s+lQoWZGSsUmNWNbt4Z9QbeZc85Iis+riU2bWD+ewRcSKuv1wYucJZaWAIeAk/8tEzROj0UYp+ThXYUxHYfBn4pQqfqvsTZGkE3+eogM6mJjg0C1/nNUz88gMtDW383U62GgQhv/Rfsr+SRNN62LiMCysWMfqFO70CDcGqUfXiFUcDoDvLGFTYziHoAKMU2vLZY8Xmv1T52ZLMwO9U7TYFrs6ReGojjULHqw9g+KpZjtos5hK8P4Sd99ZUIE7zpANMH6S/i57iUCh4mJ+CEOu+HbCmuN+2/VM8UVdDxIfIHOjZnmP4c1beICsqO59SmpHVhOu4ph7u32E+ir1631fxE9kiBNhOzYp8fdZ9/Kj+PL3cIm1aX5I49TodOkGkWMBs9I109WJUe78+84IPLigudUhHf7DEJGQczhHhnxRtse3BWHsVJe1A/aDBXnpW0OAbHHQVSAMqe6n6fKdllfwYUTchjhPwNnphlCFU0goBVNzXFZF0dY6ZZYkeE77EcUfQmZrdn7X8H8qCzkpkYW38Z7azxlRA1BbUDa7aRHWwc6zX+luxg0UU1+8TkenBz0m+Qm2JrB8rZg8wee8A5E5Ld7OBX5vqg0u4F2FBrs4S9vp3/GhUMw3gWiiqxUmRQOgFe3wEBRhiuiPvKCfLJHVRUfUuy5h+w3fiPztejK14TScGpA1+VXO5Y
- jHQwduMB
- 3nPMlI2x/Vc1xRaY0x4HwLgDB3cwdHdgZ6eO092heNt4bUbRWfEJh79Mmu3BE6lXjCCp6MNCrbv+ORpDDpp6+N1kW/JoydinG1QteWTYxAwhNnUJz1m0Xsu9qASFkOCydFF+AmDWHDIKmjJsUB1m6JayEYw5p0LHhJFvwrSiwj1enbMW5Z+INLbDbYFmzvX//3pSdCwqleDNVL4wgufConQuyCNbwVIbi5+PFN9YSoItSR8Vx1ug8v5xi3yloaAhxvUHUfEQMpUa4g1WttLeAUQoFxvvgxlSLL/S+BWjs/RwchAaGYZ7/wy/kWnH/wUCRGbslEOsH/WudEVlpJMAE1xvaDkXTtZWiS9007sibHw+4On0=
+X-HE-Tag: 1781623172-880166
+X-HE-Meta: U2FsdGVkX19NqmG5Kl2KeR7t3m/bTEcNQJs9CLzgsr9yooGgasP7WLl5GBKeXejHRvrFpGl7hJlXl0evCP+qAo9ypg6IDF69Kywgy06XwJowGclUzOTejReCp7CUk50stw8Z87JYwc5Ylwu4f+SBAiuKU5nmInl7/KSo1PPAw2fCeQw7L4gYmzLoLe004/8ANHBz1r1DSZyiMR5wqcthGZ/cupHZGXnB4V0LsBFfEri0+3mh/1GoJmp+ecPbhQr7S+zO95P+nO4p2b63ARMR5U5n0BHiUCWt7HEvFCHslVdJNu+Sge8vAm7+Sgbzn1W902gY5Qvh2jqIc99EvR651yTjLiuO0d5scmmnMb661crw6AdAbgddBc3FKAJBrx3XPwjITB+6wzbCcLjgt775vLWOdgw5+FRWwKmKOrpmvq3P8rQT5KPDl/cBZsoOjY7KlmZ6Cpm4Po5phPd7VsQLhf0k/poNsYyZ5XA37dVHllQJJVJ9FlFdT6ll0qMDEZwaX/LoQtE2j4fik58HfRmcTq/DYTPP6KrfCJp5A19fD1Q+jOxI7eiH2CalOPUluS0T5Cqsz6ChGAM+LlhQsOnL7cg3XZ/avoyEXX/FvTBvTowm86XYlBowbBa4T8fXAmsxvCnbgPSmdJYCktzLunNxj+VLi41QKluKcBIuEQ1DX0IewJ/7PNOW0sNfCdT3qvrVPameGxckmZ99wHJw+idAuAZjg+OdwjBGefandIVhr3ETaorFl+GOG2aX+ppEfqKKgNfHx9NzEz/vOcjuVmULdpxCPc9ExfckGbGxOGgLKzTl8JjsJGkK0dyDOr87FxSqzc8+YUtTrZu6U0bo/66zK9pZnuNYeeUDYlgoHWYihZ1rNn9gdFRKZ8lsmayRerXb+RYXJugdT4U/udOL+pnKAnIYHlMshfKNzfxJBkPI9h3LyHZcdbjsxynuoke62bk4QdQ7w6YX85XUksxNu7G
+ f9i8NGid
+ wKF8QaCiU56nWvdcijgUJM68o7fWq+kYB3kjqWuK8pBSAgFOAeqwnmCe3PD5wcOtGQ2VE876GUv2qQvgH1aJUPXSZjY39QLIYWsER7iubBXcbQ2DmKu6B4WhM0LmNy6orjuugrBKXoIVAZsDiWT7lbbTuhcu3O+ZJkxinBa+Z9/vK+c6V5rVDV7q1YOj1M6ZiOdyisKG4S2LAAnQndl3VwCg6wUc4isVGzgIDxRpjSWn0fc9Qldts4RzH/SQf8X1MiiShZh/OLRJznU+/0LYVguXJ1TPWa7GVGJyZspDL+nGBBPOddZHBAq7Ydl9UGggEFnHqcsObV1HrEXjqapfj+ttxN6qd+KrcRMtf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,58 +154,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+On 5/26/26 13:15, Kevin Brodsky wrote:
+> kpkeys is a simple framework to enable the use of protection keys
+> (pkeys) to harden the kernel itself. This patch introduces the basic
+> API in <linux/kpkeys.h>: a couple of functions to set and restore
+> the pkey register and macros to define guard objects.
+> 
+> kpkeys introduces a new concept on top of pkeys: the kpkeys context.
+> Each context is associated to a set of permissions for the pkeys
+> managed by the kpkeys framework. kpkeys_set_context(ctx) sets those
+> permissions according to ctx, and returns the original pkey
+> register, to be later restored by kpkeys_restore_pkey_reg(). To
+> start with, only KPKEYS_CTX_DEFAULT is available, which is meant to
+> grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since this
+> is the only available pkey for now).
+> 
+> Because each architecture implementing pkeys uses a different
+> representation for the pkey register, and may reserve certain pkeys
+> for specific uses, support for kpkeys must be explicitly indicated
+> by selecting ARCH_HAS_KPKEYS and defining the following functions in
+> <asm/kpkeys.h>, in addition to the macros provided in
+> <asm-generic/kpkeys.h>:
+> 
+> - arch_kpkeys_set_context()
+> - arch_kpkeys_restore_pkey_reg()
 
-Sorry for the late reply, I got pulled into some other stuff.
+Looking at this, and wondering about "why do we get registers involved in this
+API" I would probably have an interface like:
 
-On Mon, Jun 01, 2026 at 10:00:05AM +0300, Mike Rapoport wrote:
->Hi Samiullah,
->
->On Thu, May 21, 2026 at 07:31:59PM +0000, Samiullah Khawaja wrote:
->> To write kunit tests for preservation and restoration of liveupdate
->> state in various subsystems without triggering the actual kexec, the KHO
->> restore API needs to be mocked by the test writer. The mocking is done
->> to allow testing of the individual components or functions in isolation.
->>
->> The patch series adds the following to support kunit testing when using the KHO
->> API:
->>
->> - Add static stub hooks to mock the KHO restore API so the restore path
->>   can be tested without triggering kexec.
->> - Add helper function that can be used by the test writer to check if
->>   memory is preserved in KHO tree.
->>
->> Finally, it adds a KUnit test for the KHO API that verifies the allocation of
->> preserved memory, and the preservation/restoration of pages and folios.
->
->I looked at the tests for preservation and apparently they don't add
->coverage beyond the existing KHO selftest. How hard and/or intrusive would
->be adding tests for example for error paths?
->
->Do you have an example of a kunit test for another subsystem that would
->benefit from mocking of KHO APIs?
+	arch_kpkeys_enter_context()
+	arch_kpkeys_leave_context()
 
-I think intrusive tests to get more coverage for KHO would probably not
-use the stubs added in this series, as these are meant to mock the KHO
-restore API itself.
+Whereby you return a "struct kpkeys_state" or sth like that.
 
-My motivation was to allow downstream users of KHO to test their own
-preservation logic (making sure their ABI doesn't have bugs). LUO or the
-recently added KHO linked-block can probably be a start?
+You could either let the architecture define what's in the state, or
+alternatively store some generic data in there as well.
 
-The KHO kunit test added here is just a minimum example of how to use the
-stubs, which is why it doesn't provide much extra coverage.
+struct kpkeys_state {
+	bool entered_context;
+	struct arch_pkey_state arch;
+};
 
-I am perfectly happy to drop this patch for now. We can get this in
-later when we have kunit tests for KHO users. WDYT?
->
+Maybe the "entered_context" or however you would want to call it could avoid the
+KPKEYS_PKEY_REG_INVAL (which confuses me ;) )?
 
-[snip]
->
->-- 
->Sincerely yours,
->Mike.
+But the KPKEYS_PKEY_REG_INVAL usage confuses me. I understand the
+KPKEYS_GUARD_COND + kpkeys_restore_pkey_reg() one, but not the one where
+arch_kpkeys_set_context() would return that value.
 
-Thanks,
-Sami
+
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  include/asm-generic/kpkeys.h |  17 ++++++
+>  include/linux/kpkeys.h       | 122 +++++++++++++++++++++++++++++++++++++++++++
+>  mm/Kconfig                   |   2 +
+>  3 files changed, 141 insertions(+)
+> 
+> diff --git a/include/asm-generic/kpkeys.h b/include/asm-generic/kpkeys.h
+> new file mode 100644
+> index 000000000000..ab819f157d6a
+> --- /dev/null
+> +++ b/include/asm-generic/kpkeys.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef __ASM_GENERIC_KPKEYS_H
+> +#define __ASM_GENERIC_KPKEYS_H
+> +
+> +#ifndef KPKEYS_PKEY_DEFAULT
+> +#define KPKEYS_PKEY_DEFAULT	0
+> +#endif
+
+Do we currently expect an architecture to overwrite this? How does this interact
+with KPKEYS_CTX_DEFAULT?
+
+Nobody in this patch uses it, so maybe it should be added where actually needed.
+
+> +
+> +/*
+> + * Represents a pkey register value that cannot be used, typically disabling
+> + * access to all keys.
+> + */
+> +#ifndef KPKEYS_PKEY_REG_INVAL
+> +#define KPKEYS_PKEY_REG_INVAL	0
+> +#endif
+> +
+> +#endif	/* __ASM_GENERIC_KPKEYS_H */
+> diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+> new file mode 100644
+> index 000000000000..0ce0db80b4ee
+> --- /dev/null
+> +++ b/include/linux/kpkeys.h
+> @@ -0,0 +1,122 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef _LINUX_KPKEYS_H
+> +#define _LINUX_KPKEYS_H
+> +
+> +#include <linux/bug.h>
+> +#include <linux/cleanup.h>
+> +
+> +#define KPKEYS_CTX_DEFAULT	0
+
+
+Agreed with enum.
+
+
+> +
+> +#define KPKEYS_CTX_MIN		KPKEYS_CTX_DEFAULT
+> +#define KPKEYS_CTX_MAX		KPKEYS_CTX_DEFAULT
+> +
+> +/*
+> + * ... is used to discard extra arguments - this allows users of this macro
+> + * to have set_arg default to void.
+> + */
+> +#define __KPKEYS_GUARD(name, set_context, restore_pkey_reg, set_arg, ...) \
+> +	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
+> +	DEFINE_CLASS(name, u64,						\
+> +		     restore_pkey_reg, set_context, set_arg);		\
+> +	static inline void *class_##name##_lock_ptr(u64 *_T)		\
+> +	{ return _T; }
+> +
+> +/**
+> + * KPKEYS_GUARD_NOOP() - define a guard type that does nothing
+> + * @name: the name of the guard type
+> + * @cond_arg: an argument specification (optional)
+> + *
+> + * Define a guard type that does nothing, useful to match a real guard type
+> + * that is defined under an #ifdef. @cond_arg may optionally be passed to match
+> + * a guard defined using KPKEYS_GUARD_COND().
+> + */
+> +#define KPKEYS_GUARD_NOOP(name, ...)					\
+> +	__KPKEYS_GUARD(name, 0, (void)_T, ##__VA_ARGS__, void)
+> +
+> +#ifdef CONFIG_ARCH_HAS_KPKEYS
+> +
+> +#include <asm/kpkeys.h>
+> +
+> +/**
+> + * KPKEYS_GUARD_COND() - define a guard type that conditionally switches to
+> + *                       a given kpkeys context
+> + * @name: the name of the guard type
+> + * @ctx: the kpkeys context to switch to
+> + * @cond: an expression that is evaluated as condition
+> + * @cond_arg: an argument specification for the condition (optional)
+> + *
+> + * Define a guard type that switches to @ctx if @cond evaluates to true,
+> + * and does nothing otherwise. @cond_arg may be specified to give access to a
+> + * caller-defined argument to @cond.
+> + */
+> +#define KPKEYS_GUARD_COND(name, ctx, cond, ...)				\
+> +	__KPKEYS_GUARD(name,						\
+> +		       (cond) ? kpkeys_set_context(ctx)			\
+> +			      : KPKEYS_PKEY_REG_INVAL,			\
+> +		       kpkeys_restore_pkey_reg(_T),			\
+> +		       ##__VA_ARGS__, void)
+> +
+> +/**
+> + * KPKEYS_GUARD() - define a guard type that switches to a given kpkeys context
+> + *                  if kpkeys are enabled
+> + * @name: the name of the guard type
+> + * @ctx: the kpkeys context to switch to
+> + *
+> + * Define a guard type that switches to @ctx if the system supports kpkeys.
+> + */
+> +#define KPKEYS_GUARD(name, ctx)						\
+> +	KPKEYS_GUARD_COND(name, ctx, kpkeys_enabled())
+> +
+> +/**
+> + * kpkeys_set_context() - switch kpkeys context
+> + * @ctx: the context to switch to
+> + *
+> + * Switches to specified kpkeys context. @ctx must be a compile-time
+> + * constant. The arch-specific pkey register will be updated accordingly, and
+> + * the original value returned.
+
+Are these arch details and registers relevant? Ideally, we'd keep it very simple
+here ...
+
+> + *
+> + * Return: the original pkey register value if the register was written to, or
+> + *         KPKEYS_PKEY_REG_INVAL otherwise (no write to the register was
+> + *         required).
+
+... and here. Not sure if any caller cares about these details. Again, with some
+abstract state we could maybe handle that internally.
+
+"Return: the pkey state to pass to kpkeys_restore_pkey_reg" (or however that
+function will be called)
+
+> + */
+> +static __always_inline u64 kpkeys_set_context(int ctx)
+> +{
+> +	BUILD_BUG_ON_MSG(!__builtin_constant_p(ctx),
+> +			 "kpkeys_set_context() only takes constant values");
+> +	BUILD_BUG_ON_MSG(ctx < KPKEYS_CTX_MIN || ctx > KPKEYS_CTX_MAX,
+> +			 "Invalid value passed to kpkeys_set_context()");
+> +
+> +	return arch_kpkeys_set_context(ctx);
+> +}
+> +
+> +/**
+> + * kpkeys_restore_pkey_reg() - restores a pkey register value
+> + * @pkey_reg: the pkey register value to restore
+> + *
+> + * This function is meant to be passed the value returned by
+> + * kpkeys_set_context(), in order to restore the pkey register to its original
+> + * value (thus restoring the original kpkeys context).
+> + */
+> +static __always_inline void kpkeys_restore_pkey_reg(u64 pkey_reg)
+> +{
+> +	if (pkey_reg != KPKEYS_PKEY_REG_INVAL)
+> +		arch_kpkeys_restore_pkey_reg(pkey_reg);
+> +}
+> +
+> +static inline bool kpkeys_enabled(void)
+
+Is the enabled vs. supported intentional?
+
+> +{
+> +	return arch_supports_kpkeys();
+> +}
+> +
+
+
+
+-- 
+Cheers,
+
+David
 
