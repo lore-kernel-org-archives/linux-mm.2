@@ -4,127 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE48CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 21:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8075ACD98D2
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 22:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 908F06B00F7; Tue, 16 Jun 2026 17:43:24 -0400 (EDT)
+	id 569156B00D6; Tue, 16 Jun 2026 18:19:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0706B00F8; Tue, 16 Jun 2026 17:43:24 -0400 (EDT)
+	id 5412D6B00D7; Tue, 16 Jun 2026 18:19:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F6406B00F9; Tue, 16 Jun 2026 17:43:24 -0400 (EDT)
+	id 42F226B00D9; Tue, 16 Jun 2026 18:19:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3DF6B00F7
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 17:43:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C61D41C33E8
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:43:23 +0000 (UTC)
-X-FDA: 84887102286.26.0DFE6D3
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D7659140002
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:43:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=kQnP0wXD;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.82.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	by kanga.kvack.org (Postfix) with ESMTP id 18E5D6B00D6
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 18:19:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87A33140288
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 22:19:18 +0000 (UTC)
+X-FDA: 84887192796.25.35A92B5
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AA43140002
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 22:19:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=szJ1nf0O;
+	spf=pass (imf01.hostedemail.com: domain of 3hTgxagkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3hTgxagkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781646202;
+	s=arc-20220608; t=1781648356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G18mYJrcuFPmmxraU/yFJy+0YudgzW+4bZ7GypMnwpM=;
-	b=KodmP3Sbk5BpkU26I5YhDZG8wVIFpQEXAwilmE5qBHbegm34IlR7vpDlbkRetGNe/00Hdh
-	vwo19Z74Wm+C6n27VZvnOUZOi2sEQ5AbgVlnIU9Fq/XwiizB8aMkh8BffQr/Rn0cJZVOND
-	6v73G5TQ37CHHMIa3Kz2CmfnNQyb6L0=
+	bh=hcH8wbzZOm8yn4lLoAkAwb8V6hZltU+bJ+2UV9XpA9s=;
+	b=AscRmMbsdoEmRPWIi9ic3LLNKoBD46AiORkV8IlAtSNtyNdXBGnTC1UhQUx9wDhrcufV6D
+	gi3W1Qhnsw6d0cM+7K8JBPaPGslJBR5sxc4pldjgFpfpg9rVuZTMWYYJxkLjMDPPazXeKT
+	G9Seu2oFEHIejIByQZ9l7BHwYF0a39o=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=kQnP0wXD;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.82.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=szJ1nf0O;
+	spf=pass (imf01.hostedemail.com: domain of 3hTgxagkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3hTgxagkKCBQu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781646202;
-	b=03mNLDjyWbX/P7Vi0vs12fqGlwgUu/OnJOuhc99r6hGDnLOJ4Pp4jBAoZlusCNbcaft1aO
-	M9QP475r05FQIgTS26sLMdcAErAq7nk7HHnXENMG1eQ2MHuIHlyCJo82d7Yk+fTr4HB9L/
-	H+U8LcYgqhGRzv3fWPuqOLnNqJl5nQo=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30bbe98c3f0so1291111eec.0
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 14:43:21 -0700 (PDT)
+	t=1781648356;
+	b=hHamQjZHpAJNeIErFg7fCj6+gNuJeeGyXVj1wLwosrZsNOoEPDnWplhzej5B5AgkYJyKNR
+	hlh0j+iHhLtK75wT6YFwwlDmOv4LWI8guOg+byncy++/APeesnVJxqAp1Jgu47KtgZDYUE
+	m5KtuOnVBWRj+JKNSKQXasCcKWvsmAc=
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-691a67a7b58so3945833a12.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 15:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781646201; x=1782251001; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G18mYJrcuFPmmxraU/yFJy+0YudgzW+4bZ7GypMnwpM=;
-        b=kQnP0wXDfLOZXDQK5zKg5A3enKgRMKx+gtiFXzGnDBH0D+OcjecT+GQ2Tbzs8ujBJL
-         ucvpp407RtAe3q49eGnLpBUnpiMapx8IWcQdZVDQPbAwcipBHx9BZiAt3RedAhMxeYVW
-         LrXhpNQ7o5wfXmzgDt14WY1SB07bf9KC1e8Yr53PARWKtypLAD/tGvcEYelVSIupBcv7
-         hn0SbLTSqRWi8xGolrs1k0a5ECvz4hYf2QMqrJEgFpKjJXIAGqc+5FESi6Lc11nXSgc2
-         jtg5+eel9CMMvjeVdxxBh4wiaftOPxD1tqofnw2uZ4p4ayvDwltdeUNaIjLIUNdyQT2L
-         tQtg==
+        d=google.com; s=20251104; t=1781648355; x=1782253155; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hcH8wbzZOm8yn4lLoAkAwb8V6hZltU+bJ+2UV9XpA9s=;
+        b=szJ1nf0OcpJdlYLbU5rzXP4XpYvHO3JAVFbP/0ahiQlwtiV7ufpYb+uyP/wnLwhuUr
+         G/6LdqV8uvzWteXyZHIt8Q2jrfLlcdxTxn2VR1bhLshH7Icya0WuNv61+exYzxACau/c
+         8OoIyhCdnmd1fLgwMgq3sfIOwl4hO0awPPHrEv8IqX3JpmAdKqrb6kjPxuv2kZ7Dwexk
+         /ErF0XBEE7qTnPCvnltVDmF93Eo2v6P6ry55MEgpzmyc4g6zcSf52U5NY+cyUxXDroFe
+         eQC4HlCnnKQ4PFQ+dA/eSrqAjMLhGSBMU4FJt8WG1Bl4NJegiYwmx1L2a05LoCdEjOaW
+         HReA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781646201; x=1782251001;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G18mYJrcuFPmmxraU/yFJy+0YudgzW+4bZ7GypMnwpM=;
-        b=VjMwa/gsEpkwQw8mfCAub9RkhHDXrhScGe6G84d4Qmq9krpCVcfjYg0PsjaSQDdfYz
-         AEBqMtQPehkI1n2CQLeRj1ccRyqYJs7WC/ATUWjpTUTq2Uk4v55RU8Ozk2P9u5CnIlT0
-         VSxRk+nQ2rW9O2DNxvs9tELgsXNNqDTRvHdih7c5wAFghzKYNN++P3t3ECxKn+rf+1Bz
-         RwvfYvFTTzfz6FIC5tsuG0oq9X/ZbCUGBIou66FQAuyR8KAwVMNEG4MQjs5PfWv8YdOY
-         8ef8S8caPzowzrxGnRLm17V+ujZgLLhMrUOatGzDhVGB+vaemhav5a36sxIa7dssNxh5
-         5rww==
-X-Forwarded-Encrypted: i=1; AFNElJ+xagRFbn5NQG8kKHdGkcUhNwym7BGMi3xfryxpkwm2gfFY8R9o1CUqye3We8z0e+iJsFOIA4JitA==@kvack.org
-X-Gm-Message-State: AOJu0YwKiEnzLqAzsLwXGyhq4SVgqummT33VjZ9A1++FzIvbLWEfYE8w
-	wa6UG42FKYYYmkBlweQ52LN8r/vFTOfj+D73maheRmBKbnmEZeCmWnj0mmkOLdbIYoczwrBbIUz
-	aMBsl
-X-Gm-Gg: Acq92OHaazAgwCncKRbz5wIfV4N5UsI5mveW0OqUNblTIjlZkU5IjQBCyhhRZrY5hbu
-	x+lVpXv2ycJmjUyz6powVu2bIAFwgJTYBsNoHvj3DogFfdOfPHkw35ZoDq5chfDSbHrFL+PmaBg
-	8jI3m7ylUy8GhruAEN5EM2X4Gewg/N08zXe2C6ycO8Nlcv3rvkC/fCpv+doS6YiC+nG3H9kH4JA
-	ccYNPKhCLoQ2QtDsh2O80YmAHun8BY5gt9e7DLgfP2oxEZYv8YRGhAD+65saWQKdNDvJPUEZT7O
-	6qqaDOrx9vC84nIxivmA6jwnzmWGYJ5WTkAp5bcUIGVHxrBhZQ2dBsSD/SGwN3h3K89NPP9o5uQ
-	9X6j8Z71nIWmd6z4OHSJUbOfTDjMauSfK1E1P2TYvtvwLDNmIhC/S9neMDWhR9gbKakfXHc0r/u
-	s94Kn41n8h+4gsVwJYPoc7PPuWAZ273suHobx9kW6gVMg9LIZpB2JjMc1uT6fk2Ki0NjJNvTImf
-	n8A/A==
-X-Received: by 2002:a05:620a:2908:b0:915:d32a:1cba with SMTP id af79cd13be357-91dbc52c4damr20136485a.27.1781635502015;
-        Tue, 16 Jun 2026 11:45:02 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9161a00af50sm1669672285a.30.2026.06.16.11.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 11:45:01 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZYmS-0000000GgQZ-3dnI;
-	Tue, 16 Jun 2026 15:45:00 -0300
-Date: Tue, 16 Jun 2026 15:45:00 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Kameron Carr <kameroncarr@linux.microsoft.com>,
-	akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org, mhklinux@outlook.com,
-	linux-coco@lists.linux.dev,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>
-Subject: Re: [RFC PATCH] mm/vmalloc: add vmalloc_decrypted() and
- vzalloc_decrypted()
-Message-ID: <20260616184500.GD3577091@ziepe.ca>
-References: <20260521205834.1012925-1-kameroncarr@linux.microsoft.com>
- <aibhnnDFQTHWMEFe@arm.com>
- <20260611114954.GC1066031@ziepe.ca>
- <aixGqCqKkQeDfUST@arm.com>
- <20260612181807.GP1066031@ziepe.ca>
- <ajGTPelKLhgFqh7F@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajGTPelKLhgFqh7F@arm.com>
-X-Rspamd-Server: rspam10
+        d=1e100.net; s=20251104; t=1781648355; x=1782253155;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hcH8wbzZOm8yn4lLoAkAwb8V6hZltU+bJ+2UV9XpA9s=;
+        b=DACRP5mgRZzSfJdgg423JhcTWeFOJU1PUg4THgB4YnE/gjFeSNK+IqKoTQ+lBc9vxG
+         3jn/QiHpcs+Ie0+qhpcpfrPhc84+xf2ulf6hSbZFqnN1xXIhXjRJ8ieVclipGpp0TWOQ
+         L+7cbasg5WVKvRKLM5Ug1blcuhr7ezhEYMDYZxo9NNwBVYoJIJRYYZ6JWzRlBGy1quyK
+         b0yWAUEhDdl6pDR0VjO0jDkrnxrWgK+zKEEG6PXYGAjKXVIowpqva2lBWPPXVE2bnii5
+         qFa7iycETS0MB5qK8MvbmzalznnZNN2/IpcBxjjhdBxAmZoMxdt82NCT2FhKZ32T6dVZ
+         Tvcw==
+X-Forwarded-Encrypted: i=1; AFNElJ8u6V9Ud6t85HfnCdhlsYgpjnwSJebwUD7SOhN7DVZ7jFSkK/EoVWY7qKTvg3WOQHF56HHlpzkFZA==@kvack.org
+X-Gm-Message-State: AOJu0YwwWOsS/TXFlcblatKnhvHSPPzIXdHQo0A5w8BD8i3cUWlb1VA9
+	QWVX9COqOpoRM7ZTH2uq0H6VHwmWj/6cMtHHZZI9hRLSrpUZbUgMkXa0Cy//VvorIJULM3Wk8bz
+	YTYdrntE5pdNwYAjS4g==
+X-Received: from ejfp18.prod.google.com ([2002:a17:906:e92:b0:beb:c99:aa2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:1dd6:b0:bed:9a7:5ed1 with SMTP id a640c23a62f3a-c043a477df5mr130254166b.5.1781610629337;
+ Tue, 16 Jun 2026 04:50:29 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:50:27 +0000
+In-Reply-To: <20260604-unique-ref-v17-1-7b4c3d2930b9@kernel.org>
+Mime-Version: 1.0
+References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org> <20260604-unique-ref-v17-1-7b4c3d2930b9@kernel.org>
+Message-ID: <ajE4g7JsM6bnpEOu@google.com>
+Subject: Re: [PATCH v17 01/10] rust: alloc: add `KBox::into_non_null`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Viresh Kumar <vireshk@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Igor Korotin <igor.korotin@linux.dev>, 
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: AA43140002
+X-Stat-Signature: amcen4k8aw6fdirr67sowqycaso77hk5
 X-Rspam-User: 
-X-Stat-Signature: shiazitm6r19s35xzw14dredoc5bj74c
-X-Rspamd-Queue-Id: D7659140002
-X-HE-Tag: 1781646201-108847
-X-HE-Meta: U2FsdGVkX19c9Cow+0Xy9SEHYIwFO6KHd4xjryj23E4FOOUvIAwe97CajFSDXf/Nx+h7W16+VzZfy0qOttR4h3Qyl0nPPdbruzGyMzfYcEXL01VYrJqK2mVVwDaV/QzNBBuT8rKmKm6d9Rrc2mPs11HmCfeFqlCwY9wreMklQannlGpDVf5g0PUgpkViEYSFjiOkc2tqyVCJfa9dz4YXffcLWsxGvXdqiIIlI6bkp3XNz+Rn4cCF7OBXqtam3Ha6I3hHKXEzmivVkxnETdHKohl51GHKmT+vSM4e3og9NazEtYbUF5P7Rgneh6TVBRepPk03ZuN+f9fSqa810kVOIm4XnJVxoynqzWUVcT2yb/rTKgUgmBjFWC1DWcqP4VBj8UzqPiPIcEa3yFP4F5icdsj7JeDz8HngxUQi8mFHTyCYIlQJM936qEro/GYbcRFp1H1c9kORB+SsM4PmIA3Q8GY2DJ72sYPYLlWMsgxbo+y9TabGydjvDdbdAPWFlYOmv3NmV1L79SjSvBl+kvfk+UcytoHyM0J+PCuJtw3N6+arIL5c5h5hz/uP9Iv41ckpDzhqUwYovwTh0RcE2nt3tJBY9f7cwT71K6MukTQXVhd4QwHFN9iv5XiMbX2s860PdF4fuQ96UbPBgxDisQYnk3pACq/1NoFXAFzb8QpdUyOBkq9vgaQeIxaOnMweETZKCszdG1AJyucZzUXeWZq9u8vghGEO48w5RFtLiG+HWMte1crQKnaSiE52PFmTmJhhxTcWFQP6uo5bB5iUtFlOFw6j39n/pRxsquLbFZQYIsCtqAsTwjFSbK0YiOOyN14Yj/chwbmgHKVYlkm0OnBGmO6GzsOnmFIFsV5UgpYGP56lNqERs4wNKMB9qmyNzjSdyMbnmHxpVfcQBE8H8gek5OS7drMMMkPc317RwV+E+ZWcrRy3qRRX5m7agQQ2wQYcqTUjVCTybd5J2mVg0Yv
- KtUM+mBN
- dS3I4P/cKmwoWZ7OVhncylRpop7ZTCcekvMNQLhlp+AGaw5oG0Surbk66dd0s9prrmuqiegKNi0AifoSWNB/2734YSTjZtOToX/t4fKapDZvPYyr1v1ACqO9FYHajeRaTBjnKPOkH48QtdYOSPYkiOVc/fTRaCLTkSOaP+Mpq3XsynrfHnN6Wexy+pPcubAgLPEpHIW4WSpSSeqCNR1vtpY2PeMdvBNFHT7gLUZXhQtUJCfJ7I2vAazXp9d3grJl67tafdz8x4aDRU9QtbgBsCKn1a43VhrgjD0rPlKENc10ygbAw3z0y1UFSbR2JCTd7ZTvvYsCV2YutlhM=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781648356-496897
+X-HE-Meta: U2FsdGVkX18stcMvDjBfrUaD6/IyoCI1mmyd0ZIKFE6QqOU4Ubx9V30WqhzsTFoSMZmtwFi8MKX9B05ytRU3GHY3FkqZHwLr67EdjwJZiM5rW2qWEWckkL3UkyIAgEPo42Nvi6Bc5Lf1EyTX+82FyYvfbOvwEMhp2k9EBVfSAj1HPnv1GJUxRb1WqSoh0xYYLdmi6u8ptP+OHT3fWNoOgd1DTFLLzrySI2vQxF+qEkwIp/R09ciHOgHjwb6VSLVBcd0zenK1xuMOZF8LbLEFBeIDZDo1Mzp9ZF3sCQoG86M09Pq/qcYdN6otI6vzAqHokSDE0C8UR6N1xQghSK+9M96pGChjVnXwmndAu+UjVk2kj7BgTMFCPYr0HdR3FqIYt0xkobEXSc9lUTxdfzYIzqiOv7kH8qjp/0FE+n/wWjjgVWDQYInytSlpjnOjRsbkhJeYq1ak92TLE72wX+QFMUP7ufBPXz8KbVeulA5F7OZNaC7T5BzYHJPCT6R4OKIPjC0695Kz4aDG3j8K6nhDchT24ruQCRpl8f0mMrWIru4ioin/X7gekAOn99Fcyw9dBBy6GwrbQNZhIYTIJwBnBzMKgan2LXFFbanXWGAOsWiBSDOdF4XFMAQnFSb1ie6Xg7CrQq5cYrsCgsPwVG2rdM/jfegHi1DI9vhlK67AU2HlGfJ/nKRsNtR24dM+bAN67MgaG/1XrPjcEo2L72YQwRmU9gfWkZ9VOsi56fiLS2uwwnOWm+oMWNL7mvUSD2oTSLTWAkvQ1HQkQB+6QvHEumE9WrPhUKtFIy28X95sYAVIxla1ITLTy10wYXAzEsD43FzrzyJ4XDc9VZ7s++a5FkdKt3ES37gvu5+vqmtPJzNL5t3zjIIj7YpNd5m9FWAMl4miHXbaLgnS0OXALhYD8DXT5JvKpgGffZ1SZfUnge5kCS9kZ/29SG+MUQOazwiLjz9ELvg3GDLoEQN70ob
+ ZYib9mS/
+ duAkMUZqzrhyJ5nZkFUU4BX+IEr+J47v57od2j5/ZdntcVgaxzuKZ4B5/OuYB36eVZAhcbSQxJVFh4bgQEB4u5gmlX4T4sTdUbKmRlpvzWcK4X95UeZfNDnyYWX+xbD7Tlrns6FuEUuRzSdButQqUppfUOYAiWqJ2YEWLVGnkt2tsZfxTmP+/88u14HFYsfIjLCQBLRs5oteftMe1ifojhEVtCkBLMTceqcj4roTPnzReOg4P7ItlB5Fn4BCT31a7LFtBqDcfcfQIcIbkdVUfOp8fIgBgq/kiNUPuCdvFmMi94c9eSxaoCcTq9SfVKdrYzOrZ/kdWMC3ETpPzVxJvxoSZACmq+H63F2m53Q9PeMvS0DeQeJ5yn80NaIcFttFRUoj+xNCcZ05bt+KrqfinA9yywEAz4JRYF+KkggBO519Eue2HEcFSLxxOTruPHOQKMVPvEmFPDgn26X1CRgaZcZsPe6UL7b9UCCnvXwBrquLXYnhEBy5jcTjUNVju6n7UPAxRnv5Qyt2bheiIYODwAOEIgOLrcH8bCki9BcbhE+UZNJa3iz0+TdIWjoIbRiKfwLSPxO8rBganXeUGS111qGUGZSkx+9u4btIXEa03BgwrkGd+g+OyNfvELtRMKWnyGcGrq3a27VAV6U3MhAb+t5R/gHRXdntwDrSfMa4dvWj0o9qRa+SWZw+POO2qDYEhb8tj6LzZu7CEB8lUY6SKfY0yTXbZnpqjr1NHx9arFrNY8mitmOanAEsq61I9fw+2wvk2ClKXKn741srtab0sDhEtDt8aG4tW7qGyzvi7EMUThHNLjfgglI+uwR3M/YM49PNdNWwgTe3nlKqYMJ7vpOwVex6FpaI6EMYnJxW1GVnEpZ8Q4ymkuopYNhsF7mnIa5ur
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,55 +122,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 07:17:33PM +0100, Catalin Marinas wrote:
-
-> > The entry point is dma_alloc_noncontiguous() and you get a scatterlist
-> > back.
+On Thu, Jun 04, 2026 at 10:11:13PM +0200, Andreas Hindborg wrote:
+> Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
+> is a convenience wrapper around `Self::into_raw` for callers that need
+> a `NonNull` pointer rather than a raw pointer.
 > 
-> Yes but not scattered pages unless there's an iommu behind. Anyway,
-> that's an implementation detail, something like
-> dma_alloc_noncontiguous_vmap() could allocate scattered pages as a
-> fallback.
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Oh I never noticed it deliberately returns only a single dma entry. I
-think that could be optionally weakened without alot of trouble
-
-There is also dma_vmap_noncontiguous() already, so I think the main
-framework is there, though it seems like it needs a a bit mmore features.
-
-> Currently, something like netvsc_init_buf() just does a vzalloc() and
-> passes it down to vmbus_establish_gpadl() which knows how to interpret
-> the channel encryption status. I assume with the vzalloc_decrypted()
-> API, that info needs to be interpreted at the netvsc_init_buf() level to
-> know which allocation to call.
-
-But it doesn't end at alloc does it? hyperv will still have to reach
-into the vmap and convert it into an appropriate IPA to pass to the
-hypervisor. That really needs to use the arch helpers the DMA API has
-and those should not be called by any sort of driver environment like
-hyperv.
-
-> If we move towards a dma_alloc_noncontiguous_vmap() API we need vmbus to
-> encode the encryption requirement in the hv_device::device somehow so
-> that force_dma_unencrypted() knows what do return. 
-
-Yes, they would have to act like PCI and mark in-TEE and out of-TEE
-struct devices properly so the DMA API knows what to do instead of
-open coding a copy of all this logic in hyperv.
-
-> We have the DMA_ATTR_CC_SHARED but that's not interpreted on the DMA
-> alloc path, 
-
-It is to describe memory that was deliberately allocated as decrypted,
-not to control allocation choices.
-
-> so there's a bit more work needed on the DMA API I think (not sure
-> whether Aneesh's series covers any of this).
-
-I don't think it does directly. It largely sets the stage to properly
-allow a struct device to opt out of force_dma_unencrypted() so we get
-support a T=1 PCI device.
-
-Jason
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
