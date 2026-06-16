@@ -4,140 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9EACD98E1
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A422CD98E1
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 20:47:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD48F6B00AE; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
+	id E9A546B00B0; Tue, 16 Jun 2026 16:47:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5E8B6B00B0; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
+	id E4BE36B00B2; Tue, 16 Jun 2026 16:47:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C270C6B00B1; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
+	id D173C6B00B3; Tue, 16 Jun 2026 16:47:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 829CE6B00AE
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:46:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AD0C40267
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:46:52 +0000 (UTC)
-X-FDA: 84886959864.21.06AB8AD
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3AE391C0013
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:46:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=srv2joZc;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781642810;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8246E6B00B0
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:47:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0951B1C3B3B
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:47:37 +0000 (UTC)
+X-FDA: 84886961754.22.C443AD9
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E62AB18000A
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:47:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eXyzLQ7A;
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781642855;
+	b=bGJzI93hvuq5x6x8WSDSauaOTt2RffAzj/rQnH0oYSUTYSnAWnC0qkSIICNQe+YqHlvxno
+	uxj/V/JTrAm7E3tKtCVb19z049V8p2JCnFGYZfDrZRtIVZm/ZWxp4//Tkf1Jrj7j6x8fzT
+	9A5g32p53Bo7C1VVc4py9b+ZpYA7oBk=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eXyzLQ7A;
+	spf=pass (imf06.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781642855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S9oJCY5n62a4g8tvLn717moYZyykJ5ixCSgWMj5Zy0s=;
-	b=2ZDnqctwmeUJxOBs7HOjvlRT1+OvgJU+YCqZvIz8B6oE93OcPrHjprZEXEjVlUBqfCAwQl
-	8cf3Ok41L8M1twVRSaqmfovYRtpIB/z2jR7pa9pFgQGagE/aEorwTifC1ZfLfe5kMk/G6Q
-	GZ+yl4EHRPhMgWzrPB6Orc2g8Y1xJSc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=srv2joZc;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781642810;
-	b=NhcYKz9eDj7DwgLdA11c2NswwN7W7dnfPIzY6HZjaDqkV4Cx+NdU2+g7F+nWPapBdHWmuT
-	my6LrTWH38fv3StSpVuKEoX9VQcuLtaW30GrVofe6OnLdazsBhNERipLGGm/im2zjrOab/
-	A3TPxqOHVWTzUqu4AjEtd7paE/s6Ckc=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIlAY1135639;
-	Tue, 16 Jun 2026 12:40:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=S9oJCY5n62a4g8tvL
-	n717moYZyykJ5ixCSgWMj5Zy0s=; b=srv2joZcJHVT2koM3BlW2pBg438OrMzYw
-	kJW74eTvH6O+CX+8YXsdXMVH42wN3NCTtOqOaIMjdpru3g2FuE0RMxevY9ZnDw2C
-	It40YDpCw1GBbJE+8jO6M3uQY/+xS+7UZS9Uvhm4XpO59IpIi8a0ce7qcGJNhDd+
-	/iKkrJ3W03LqnPtjNnM0T/2q8jvsxqE3FcVAaCjVlO6jgn5pu6ziU9iSCqSFv1HB
-	ABlNjRSKimzlo6l6/PgioKWv/Egd6upCbPyP1n4wCfeOAYeQAm4QvSVP3A4WZKZT
-	U/5JHD2lIl1ERhC+SI0MTt4BXEDrXgx1K4duHw76UoEdX7llY907w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1u0n49x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 12:40:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GCYi21022470;
-	Tue, 16 Jun 2026 12:40:44 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4esm7y32yd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 12:40:44 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GCedIL49414566
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jun 2026 12:40:39 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF41D2005A;
-	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D5B12006A;
-	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 16 Jun 2026 12:40:39 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 80D4EE0CEE; Tue, 16 Jun 2026 14:40:39 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 1/7] mm: Make lazy MMU mode context-aware
-Date: Tue, 16 Jun 2026 14:40:33 +0200
-Message-ID: <23a92e6ceca70289123efbff7eb1f26850772e4b.1781611976.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1781611976.git.agordeev@linux.ibm.com>
-References: <cover.1781611976.git.agordeev@linux.ibm.com>
+	bh=BOzw3QtUmoBO3cAElRCyupjJm7YaXn8FH12Din3toF0=;
+	b=IoKc9vloPgk7RZZ1zgivhwmmtMnnhotVRBaNN3F0mYRdqZAMud6JJegUvoYtCV8VtVxEK3
+	JKhmwIIkUdIkNsOcKxOVfgxefK9zdOUw4j7hLK1wNBjS6fBghVxohfgO8/AlbTWR3JTTnl
+	4eAG3kTjl6oR1LB361HC7THtWSxCOy4=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bef1e6423e7so551684566b.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 13:47:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781642853; cv=none;
+        d=google.com; s=arc-20240605;
+        b=G5qhYKDHx1kl0vcBLOSehHvBh6yiJJRp1DxXna2ZSkGip43hcU1505wcLZrqPKjPPE
+         c0fT4KvsNLnVj+5NSeM/RccJbeASRZFN5HPfVNQg0530i2RaRo7ckunxE9CGdhjW3uZ2
+         0EezMiTHfplWvHlSgoEMUhJmGa7Xo0FwHTFbwnNDaItvlNO34sozXXkoZeFDHUXFqdsl
+         TMoBPq1ni8xW3IgB6gWWff0YGB3IZO6RfuO1TZu9X4CLDPXqObOVcbEIF+ezs6IS/k+p
+         7t13Bq6YJ6qEnb6SiYVm0phycKYPhU1zm6xWwe7bE3We1K9Gw+Zjm1QxP7iB2NkRVE5g
+         P1wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BOzw3QtUmoBO3cAElRCyupjJm7YaXn8FH12Din3toF0=;
+        fh=a33Jd0eM6xY5RGPK75i+apHlksz7Tly3UcvLGQd+wyM=;
+        b=hjElXGmcLE/CTEotl2XGWB2w5lmAtR3AJZmulnWSdpIynT5YTh0ag3+6dt4wqtZpAp
+         wtkohcIWdqDBl9jWWKncH8BnACTrJ3EPC6LppTBXwCq5Fon9cIK/Sn+pU2yZ6LL0t/VL
+         j9ksSqemJny4u1Is8DfSfqF0JQi/xEb5JmBckwo00xX/IC9QAogwkOMYZ4vg8CXZtdNz
+         dliXnxIbe5aeJGEpaLcZwmp4u9klzXV5uzbYC/11gnYUKLaLPpRzeqpFDCEWJ9a3N0M0
+         qdXQ1IDezt1A0f/UFdXIxpDsOmIBT7ydIJMAPAqcB34AgmbE3XQAaAlU0ioq38FMiBmB
+         THJg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781642853; x=1782247653; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BOzw3QtUmoBO3cAElRCyupjJm7YaXn8FH12Din3toF0=;
+        b=eXyzLQ7Aq5RDzojsqwoiyz9ymM6AGvOnYNfx4QG07DCh5ptOmtAYGAq8D6kTLhSa4J
+         dwrGJkBF0di7H4pXNlhc3UNl4xZBEWGXdKZ6gGvCuz5iDwZ13E1QoOq+r/CsPQgadd3t
+         wp5fu833FxZHps3h38TdWuu/fzwk/ik4c+WEh9JZBV3nyl9+VQRz3xEbNhdk9P3sLiFP
+         1uiSKASJcNyp3RanMpQE0H2VGo0ARJQaVdy+xbPFJ/SiVQ/rZHPfi+/KDNLkU+tKJXNX
+         K1XNmiiOV1jnie4Uqoc6KAwWcNxh45xYIUjiQ0ugpbxWZGF7vgiVROkoo2viSIFx71HI
+         t5Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781642853; x=1782247653;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BOzw3QtUmoBO3cAElRCyupjJm7YaXn8FH12Din3toF0=;
+        b=q7CuLYzglUzM05xdCOD9lVUKBPnGsFYsBrRadKP4JJaITmUq26oAAogcfmyQhCuEfb
+         6KnCY2kI2sOGoTimNAubQid3l14rjFjWauNG/mD3/Mb1QFWqG2L0nDa7BvZIfCY/+ih6
+         N7LMprf6Npe/P5jNp1Q+g67deu14KHG6C1+rqOV6K4F4uUP81E11Oi6meZ6CX9Bv6loK
+         s55wKIm+E9pCmSb8VBuyzhOSt273EahqIFIzKICWxn/vJWgyAvf/oP9iJYtxi1GxpZeB
+         lXBC9uxr4n1YpIwojmWemWGnezJo5T9DgqHj6SJ1Q7x8a7/0nvSfQBUTXwWobH52v+zg
+         NaMw==
+X-Forwarded-Encrypted: i=1; AFNElJ+fLfrnOTxxnDM/kFlicNtBmXAfTTKQrgf9UqHqC4xVGFhds3VhMY+O+60YEmDrDibtF6Y/sA6W0w==@kvack.org
+X-Gm-Message-State: AOJu0Yz3YCS0tVIhudxSa6wkgXjA0V5WWUfnaaPc/KvX57BvPfPnaa/l
+	WrTxV7+lkhLkq4zrLyjkl85vntks7y09HNOjrTfHa3W1lTu677rE1qMGz/TmcEPXxpdSZ1uVMwi
+	iyWMBvsBUNKrVIYxKLKc8hNiyakrvJpEJsA==
+X-Gm-Gg: Acq92OGYOdDDgLnHhq8i3v/jOx+yPcuIISh53OS0rLp0NFcZdpZChGB7jXDrxCDV/BK
+	nNSqTSwJtk9lmQr4/ZAbxYPU8vmmBGAa2RajOmbkdsptQSI9TMnCqJCF8hkeOwRBIg6gNIeIlTa
+	bZcP3461u36Eiz92jPmdF5UxbusZzu+DCW7fF9OMQUJb1o4fP9FQbD2Lv7WVYXQiilbDLAMl00M
+	IUuRHQHS+BMKXpSgLSF49oWkW9dOB3QfSthsB8mj9M2f4/x1wZBaWqa6DSRGBa89EGjq2Ni6ldp
+	WZUxk5wHb8LQkvyiqdOUxVtUKk07lk62RVMLpjrX52Z1PAPg6u03/I10zhOEm04mwA==
+X-Received: by 2002:a5d:63c5:0:b0:460:67e0:563c with SMTP id
+ ffacd0b85a97d-46238f9813dmr1112278f8f.38.1781641480296; Tue, 16 Jun 2026
+ 13:24:40 -0700 (PDT)
 MIME-Version: 1.0
+References: <aictKA0XWMWbxFdN@linux.dev> <CAO9r8zPvCaCqvoUhPdAN5Oi_Sj0mK-t7DJhOOz3Xf1DT-Wrgcw@mail.gmail.com>
+ <aieUQUBHI+E3uNPW@yjaykim-PowerEdge-T330> <airzE7jD9UtyR17J@google.com>
+ <aisEWnb3pzmVC4dl@linux.dev> <aiu06fbV7rWqY0Bm@yjaykim-PowerEdge-T330>
+ <aiw2p5ANjsQUCIHA@linux.dev> <ai5y923elCSZp41j@yjaykim-PowerEdge-T330>
+ <CAO9r8zOVqbJEaBqTHw=r2bYw7Lm1tO0TU9QuG+eH1rfqcTAJJQ@mail.gmail.com>
+ <ajCgzNIPLhjTRSXR@yjaykim-PowerEdge-T330> <ajC+FNpkVpI4pbBz@yjaykim-PowerEdge-T330>
+ <CAO9r8zMimM8n54BL1viuX3pYzO=wzQU89LhCF1HW0bAv97ZQtg@mail.gmail.com>
+ <CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com>
+ <CAO9r8zOD7XaJ0Uo_LLLDTRKbeTOmAwmM3q8q6rUyH3oS-X3Csw@mail.gmail.com>
+ <CAKEwX=N=Umi94wdKcLxEWOqUwhz6=Lj909pc1Pr_5ivVnZmdPQ@mail.gmail.com> <CAO9r8zMHGFG_jcVeDPgowaQ2RNntp3KankwzQdgrJb9PrWu8_w@mail.gmail.com>
+In-Reply-To: <CAO9r8zMHGFG_jcVeDPgowaQ2RNntp3KankwzQdgrJb9PrWu8_w@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 16 Jun 2026 16:24:28 -0400
+X-Gm-Features: AVVi8CdzFDN-vHGmMQaFueNywR5at5r2sQirZ_jaY4lUl8gv53voplk3KBJ-6kg
+Message-ID: <CAKEwX=NyfxfXhHESTLyirAgdVA6QaYAcam792-vSZdmo0Pz+bA@mail.gmail.com>
+Subject: Re: [swap tier discussion] Re: [PATCH v3 2/4] mm/zswap: Implement
+ proactive writeback
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: YoungJun Park <youngjun.park@lge.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Hao Jia <jiahao.kernel@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, mhocko@kernel.org, 
+	tj@kernel.org, mkoutny@suse.com, roman.gushchin@linux.dev, 
+	akpm@linux-foundation.org, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, chrisl@kernel.org, 
+	kasong@tencent.com, baoquan.he@linux.dev, joshua.hahnjy@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kEUWujA05618VrelC3I93yolB30pGGGg
-X-Authority-Analysis: v=2.4 cv=XdK5Co55 c=1 sm=1 tr=0 ts=6a31444d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=7CQSdrXTAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=ovIRSG1zLJ1dbapjHkcA:9 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX/3vU1BexlLK1
- Yv3y0Mumv2boBKa8E7JvS1zYKN6Lo0jL2FIw3QEMAKLYFmQr2FMihcLjnMyzdTJq4n4bNm5l6qt
- 7CLAJdsCNp2r3dYi7z1fhZLJqBEy/+7/L1Chd0Tgavt8STawx4+Ambp3NL/aC+p18Qv3wkjQxrl
- tvepYOvYz9agp+PMqKwwuUJOFRPdYhbLdZphXwt6dLdlMBhBIGTH+aV3azlIkvhHts3jeY7U/+s
- 0zXYW/fNo4eAfCHFa5efP2kOIxAYbp1//XlMFtrVjOpVZfSWjYjC+TL0IjwZ4LcWHg/O94MW7Yt
- QIceKGaO6jXBsGz0NBZBTixLZvM7lIWcwUJskHZD/atPSxvJj+kj2U2qV6biz0H4uT09sHZyL7z
- 1L6A0mGLbHhI+iSxOo9DHYB0OUWfIMC9JbGyrBb2rfvXqsn2i6vRGhFxwy1t81tG5tnhLQVN/e6
- MwZts9MBTCZ3QbhNXMQ==
-X-Proofpoint-ORIG-GUID: kEUWujA05618VrelC3I93yolB30pGGGg
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEyNSBTYWx0ZWRfX9AmKqPnbkl7D
- TMT7oMEtp65FmJp2P9E4AMipCng4/u1c+Oo1C8aHVpErDs/s+Y1M8+R6nB7KLoFm1A3qD7N445D
- EeVASixNB9oBPzURI4EKHuOi9seRL+w=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 malwarescore=0
- spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160125
+X-Rspamd-Queue-Id: E62AB18000A
+X-Stat-Signature: m7whe8gjtouxpmr4ehpbjdoopxcb1ykc
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3AE391C0013
-X-Stat-Signature: oxtk1b4d73zbyywbutx1jt8xjizn9sbm
-X-HE-Tag: 1781642810-45962
-X-HE-Meta: U2FsdGVkX19RGJsdNBaI9QInT010lm9Y848v9t29owmr2qRG/2pbsKC66KR5aEel/WUmu0f4tPQIVNJMZDX2IUhD9JnwyPAPeRXpywq+nxSDu8qa0TqXehdBEiC+CnKtOZJzlGFp9PnBIi9afF+67vVJCW7ALiicN84e+qAxJFAfq8bBOjdaRj1f9OTqaTL0yn6PHt3q34/Zmep6IeacmT07oxO+ctPc6aczP08OCV3zV3UxPfwl1Y/hsf4TaRXxWIuqdPOvQKg4OBWuLjocFxVbAnzuD9xciZlEpLu7V54bIt6BWzHIoLkbdP0dpV3qqDjPMDzy6OU3+wIbSZyWxTNOj3C+wj33FVqk3kbisMeaIlxmAjj67klpFpjlFzQTvPlWa9AfPftUBRvfU4DS+svS5k6VwMFmkS9NNJhQwloyr5eCnJLwDthqpOCkYLa/PA84F7VaRqgLLRHrYGqgtD3XruUduNcrqF+4Q5qobdZEBacIaH4Dh+gN4vgceSZx/wTcz3hLD2gZ8zBExt2EugsbIF9gQeG6YFIW8kF69jYwNRkNXrM0YtUxwDdWAc2Uj9aN1ts5nnTFV73MfwE6o8c4gcK3sANnnH3NVSbdXj7pzZoGc9XwcGIcaCVOs8gepX8qbHfnvNKN8BHeUBM8pSjmJZki6w1xyQAgcVOohvJ7NyBBTmLutDlUE2rsdONaX3IShcvciHUJ0BN3MeGURUfjt7Udb636VWPtCGZ6SnKwj5b27P68Qg5965MfbSos7UT4IcxX2g9CkAyF5aEdJqo6DJ5ScCrGYcg9zpbwPOTxG/OU5x2klS2Y0noaGWEF4Lnhjt4azshRuR63yxvo0glwEQgalLOENn/d5ZSsXPI/rpOqcFcdhypBEDU4hD1iocZgVzpVDsG987CrazQX4Wyr8CZBsSYEu8Acbmitcs0VkrgS1SnmOdO2U5dcPl/1bGLMyotuZeEb/5DoLKv
- eQ5cSEOk
- wHlg8YswMQSJrA+0ON5Y+fnQLhuwdERDVGlZsByqU6ZbPLB4cOw6qU7aeOEi+lWxpHIZL5+1R6Ajiksdk9wf8kJY4kKENqYxkfGedrvm+DUXsYBfH7FR9ozJtBflhFHLdfOtqyg5pwgxy/drFVXT/yHJ+zP/5wPJsD6szdzonjsUQFkIxhF5kgFHI7PBuc6nLPKzuVgnNWnlqKKfiD0UOk1HCytdOK6gs5+81X3Il4P8YddeMTA703eTjNFRg+AQp7Hc2uhZwJISXgIgMPp4XopfmhkPulEWbJ1Fpv7s+blTgjoSuxsPRq0N5L7w8ARaqtdb6FBeKQ6ctTZ/s0b0EZnpxEwVeEki9ZQ+xEWRok4F/gy7NVxk+GCMRkA==
+X-HE-Tag: 1781642854-661206
+X-HE-Meta: U2FsdGVkX1/zzfN5WbAVX7nvxtkpHUHCVtpVoVAD24TxY5SIkX/pvyC76gdUHZ34RijqDDQUmBL5uZdZEtpUtRjnVJnJ53FhY0nqvdhLtsSEzH2X25yBa9VTWxQ85eWUaaYerOyT37Wr2LGiEsvVzyq/DMIy39GsFVRnH2ERt1ykgkYz23fPa4zUnH0R4HexbDipQoprEnzJa9qyQBhP6Pc8dk/zy1lEf2ZO+NyN1+VOLxuUKJrYyHWfrk+dXhMNuP8Sin4vPv6JXsoqW9cWw46i4ZFWlF9lO9GEtS/nWq+LxfOWMzZkhq+OQpE/UQ81/MRITVMg/7JjRHIj3GOK6siom55ahiaSMwGBnDFlWtkNNxbswMQwaggkOkzvd5EeG3iG+MztTFLrZ3WdsxO49Lfo2q7XJt3QmvyM6OYzAHcwH4i8nkfC1WXYhQywsoe8C+aMHbAqnXhNlCm0gJcw8ACAopoJmk8E6pRvqc/ksD+7Wb33D/UojPOht7nsk2S5Z8HG9jW5qrfAUU/PtVLxg8wnISV6gVnBC0PTBqsfSh7/tZglFWqV/yKllpQz871E+zBOrXlfr4OVVAfV+pBbjGe2h87sZzig1Kbt+td77RX6TWnwtstpCJpaJPelB5pqb7lzfwcdNa/cu4jd6vu53XHVZCe2fAuhj1ssEDclqKPaw6EeFhHrEuqWLkvPtB8YSoa6tbOqYsjC2P/hbK6B0w3Hol9VP7XPL/2vJEzAe3jqXFG9BvqRJmz0p6j+QlNO4FkO+pSoe7K4zaR/FhWmfjHmQOwjvJ1NXxmU7Rg3YXg4pUQcjAeRls+m8gXhwmRl85SqEhsynkrX2I+KOEu02JFVIw56CYj5GGkqzuot4kQtuuyabN6hfA4HWi5xj6DF1njOY/hkHZQVNYxw7Tfe7SqbLpPtj2XUaiz5B3uj94SpjBUVl2nOKqT4avtHCuZ9bpyFScyX4x/yXEI6bXO
+ 62GjsZtb
+ I7mkX7MnP80hp69+8FczO/Sx/B8tIX+Ncy3+XG/Xamypm+dCf/znLfRpMlyF2FdKKmu3D29u5a/EzFPf8iCBGFgxWP+Iv9vx2Z8Q2Yy77tMH4QlCpZqUNJfnjyhpu5cpIo0mJd1cyoamDlihYapsahtbusmefxi9C7Xkeh+Zt0RqmwWw7lR6pU9dIrDWr0vAQatnT1w9YAXLP5C6wpd0paNN2s5TyEHGy6Fq4yGlh6fWcNxD2TUcKmmicKcuV6h/3HSr6jX0zCEk9+ujNCN6WGdOq+nMgRnU8rpGMeFyn0wo8IFKiw6rC0ecD3XMeib1oeYvqLv95SH/LHYY3QYie2UrKj5e+5fqMpQItGpFdBZqUDux+scpRzd3CpLji+J+6JKclx9tCMpCVRaKpbsZpmG+3J2y89oiUlT+XNf6Ms0SIjTO1VLMVqrAHuA9sPZqwj6Qs9g+yLCAxULvyIS7cV0TngDniKp2Zx5iw+3Ek4D931bmO8/455uNxrh3MyOWDI76PW8Ko0U5TAFLgZoK3Fspr0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,269 +153,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lazy MMU mode is assumed to be context-independent, in the sense
-that it does not need any additional information while operating.
-However, the s390 architecture benefits from knowing the exact
-page table entries being modified.
+On Tue, Jun 16, 2026 at 4:10=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Tue, Jun 16, 2026 at 1:09=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
+te:
+> >
+> > On Tue, Jun 16, 2026 at 3:54=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Tue, Jun 16, 2026 at 11:33=E2=80=AFAM Nhat Pham <nphamcs@gmail.com=
+> wrote:
+> > > >
+> > > > TBH, without vswap, we should not allow setting zswap as its own ti=
+er.
+> > > > It's meaningless. Maybe makes it a no-op, and warn users what they'=
+re
+> > > > setting is gibberish?
+> > >
+> > > Why? vswap is transparent to the user. Why can't zswap be its own tie=
+r?
+> >
+> > Without vswap, if you set zswap as its own tier, which phys swap
+> > device should we allocate from for the backing slot? :)
+>
+> Today we just allocate a swap slot in a swapfile during reclaim,
+> before swapout, and zswap will just writeback to that one. I assume
+> the same will work with swap tiering, except that maybe the way that
+> swap slot will respect the allowed swap tiers?
 
-Introduce lazy_mmu_mode_enable_with_ptes(), which is provided with
-the process address space and the page table being operated on.
-This information is required to enable s390-specific optimizations.
+Yep! So if we set zswap as the only tier, then it wouldn't be able to
+allocate a swap slot in swapfile right?
 
-The function takes parameters that are typically passed to page-
-table level walkers, which implies that the span of PTE entries
-never crosses a page table boundary.
-
-Architectures that do not require such information simply do not
-need to define the lazy_mmu_mode_enable_with_ptes() callback.
-
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- fs/proc/task_mmu.c      |  2 +-
- include/linux/pgtable.h | 46 +++++++++++++++++++++++++++++++++++++++++
- mm/madvise.c            |  8 +++----
- mm/memory.c             |  8 +++----
- mm/mprotect.c           |  2 +-
- mm/mremap.c             |  2 +-
- mm/vmalloc.c            |  6 +++---
- 7 files changed, 60 insertions(+), 14 deletions(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 751b9ba160fb..a02a83c390b9 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2752,7 +2752,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsig=
-ned long start,
- 		return 0;
- 	}
-=20
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(vma->vm_mm, start, end, start_pte);
-=20
- 	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
- 		/* Fast path for performing exclusive WP */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index cdd68ed3ae1a..6e582b9e58f3 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -271,6 +271,50 @@ static inline void lazy_mmu_mode_enable(void)
- 		arch_enter_lazy_mmu_mode();
- }
-=20
-+#ifndef arch_enter_lazy_mmu_mode_with_ptes
-+static inline void arch_enter_lazy_mmu_mode_with_ptes(struct mm_struct *=
-mm,
-+		unsigned long addr, unsigned long end, pte_t *ptep)
-+{
-+	arch_enter_lazy_mmu_mode();
-+}
-+#endif
-+
-+/**
-+ * lazy_mmu_mode_enable_with_ptes() - Enable the lazy MMU mode with a sp=
-eedup hint.
-+ * @mm: Address space the pages are mapped into.
-+ * @addr: Start address of the range.
-+ * @end: End address of the range.
-+ * @ptep: Page table pointer for the first entry.
-+ *
-+ * Enters a new lazy MMU mode section; if the mode was not already enabl=
-ed,
-+ * enables it and calls arch_enter_lazy_mmu_mode_with_ptes().
-+ *
-+ * PTEs that fall within the specified range might observe update speedu=
-ps.
-+ * The PTEs must belong to the specified address space and be in the sam=
-e PMD.
-+ *
-+ * There are no requirements on the order or range completeness of PTE
-+ * updates for the specified range.
-+ *
-+ * Must be paired with a call to lazy_mmu_mode_disable().
-+ *
-+ * Has no effect if called:
-+ * - While paused - see lazy_mmu_mode_pause()
-+ * - In interrupt context
-+ */
-+static inline void lazy_mmu_mode_enable_with_ptes(struct mm_struct *mm,
-+		unsigned long addr, unsigned long end, pte_t *ptep)
-+{
-+	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
-+
-+	if (in_interrupt() || state->pause_count > 0)
-+		return;
-+
-+	VM_WARN_ON_ONCE(state->enable_count =3D=3D U8_MAX);
-+
-+	if (state->enable_count++ =3D=3D 0)
-+		arch_enter_lazy_mmu_mode_with_ptes(mm, addr, end, ptep);
-+}
-+
- /**
-  * lazy_mmu_mode_disable() - Disable the lazy MMU mode.
-  *
-@@ -353,6 +397,8 @@ static inline void lazy_mmu_mode_resume(void)
- }
- #else
- static inline void lazy_mmu_mode_enable(void) {}
-+static inline void lazy_mmu_mode_enable_with_ptes(struct mm_struct *mm,
-+		unsigned long addr, unsigned long end, pte_t *ptep) {}
- static inline void lazy_mmu_mode_disable(void) {}
- static inline void lazy_mmu_mode_pause(void) {}
- static inline void lazy_mmu_mode_resume(void) {}
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 69708e953cf5..de39703c26a1 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -453,7 +453,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *p=
-md,
- 	if (!start_pte)
- 		return 0;
- 	flush_tlb_batched_pending(mm);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
- 	for (; addr < end; pte +=3D nr, addr +=3D nr * PAGE_SIZE) {
- 		nr =3D 1;
- 		ptent =3D ptep_get(pte);
-@@ -508,7 +508,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *p=
-md,
- 				if (!start_pte)
- 					break;
- 				flush_tlb_batched_pending(mm);
--				lazy_mmu_mode_enable();
-+				lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
- 				if (!err)
- 					nr =3D 0;
- 				continue;
-@@ -675,7 +675,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigne=
-d long addr,
- 	if (!start_pte)
- 		return 0;
- 	flush_tlb_batched_pending(mm);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
- 	for (; addr !=3D end; pte +=3D nr, addr +=3D PAGE_SIZE * nr) {
- 		nr =3D 1;
- 		ptent =3D ptep_get(pte);
-@@ -735,7 +735,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigne=
-d long addr,
- 				if (!start_pte)
- 					break;
- 				flush_tlb_batched_pending(mm);
--				lazy_mmu_mode_enable();
-+				lazy_mmu_mode_enable_with_ptes(mm, addr, end, pte);
- 				if (!err)
- 					nr =3D 0;
- 				continue;
-diff --git a/mm/memory.c b/mm/memory.c
-index 86a973119bd4..e4487564b166 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1272,7 +1272,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, stru=
-ct vm_area_struct *src_vma,
- 	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
- 	orig_src_pte =3D src_pte;
- 	orig_dst_pte =3D dst_pte;
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(src_mm, addr, end, src_pte);
-=20
- 	do {
- 		nr =3D 1;
-@@ -1922,7 +1922,7 @@ static unsigned long zap_pte_range(struct mmu_gathe=
-r *tlb,
- 		return addr;
-=20
- 	flush_tlb_batched_pending(mm);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, addr, end, start_pte);
- 	do {
- 		bool any_skipped =3D false;
-=20
-@@ -2919,7 +2919,7 @@ static int remap_pte_range(struct mm_struct *mm, pm=
-d_t *pmd,
- 	mapped_pte =3D pte =3D pte_alloc_map_lock(mm, pmd, addr, &ptl);
- 	if (!pte)
- 		return -ENOMEM;
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, addr, end, mapped_pte);
- 	do {
- 		BUG_ON(!pte_none(ptep_get(pte)));
- 		if (!pfn_modify_allowed(pfn, prot)) {
-@@ -3330,7 +3330,7 @@ static int apply_to_pte_range(struct mm_struct *mm,=
- pmd_t *pmd,
- 			return -EINVAL;
- 	}
-=20
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, addr, end, mapped_pte);
-=20
- 	if (fn) {
- 		do {
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 9cbf932b028c..3fc26418e837 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -337,7 +337,7 @@ static long change_pte_range(struct mmu_gather *tlb,
- 		is_private_single_threaded =3D vma_is_single_threaded_private(vma);
-=20
- 	flush_tlb_batched_pending(vma->vm_mm);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(vma->vm_mm, addr, end, pte);
- 	do {
- 		nr_ptes =3D 1;
- 		oldpte =3D ptep_get(pte);
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832..0dfe3de39ccc 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -260,7 +260,7 @@ static int move_ptes(struct pagetable_move_control *p=
-mc,
- 	if (new_ptl !=3D old_ptl)
- 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
- 	flush_tlb_batched_pending(vma->vm_mm);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(mm, old_addr, old_end, old_ptep);
-=20
- 	for (; old_addr < old_end; old_ptep +=3D nr_ptes, old_addr +=3D nr_ptes=
- * PAGE_SIZE,
- 		new_ptep +=3D nr_ptes, new_addr +=3D nr_ptes * PAGE_SIZE) {
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index bb6ae08d18f5..11c9c78072ae 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -108,7 +108,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long a=
-ddr, unsigned long end,
- 	if (!pte)
- 		return -ENOMEM;
-=20
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
-=20
- 	do {
- 		if (unlikely(!pte_none(ptep_get(pte)))) {
-@@ -371,7 +371,7 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned lon=
-g addr, unsigned long end,
- 	unsigned long size =3D PAGE_SIZE;
-=20
- 	pte =3D pte_offset_kernel(pmd, addr);
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
-=20
- 	do {
- #ifdef CONFIG_HUGETLB_PAGE
-@@ -538,7 +538,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned =
-long addr,
- 	if (!pte)
- 		return -ENOMEM;
-=20
--	lazy_mmu_mode_enable();
-+	lazy_mmu_mode_enable_with_ptes(&init_mm, addr, end, pte);
-=20
- 	do {
- 		struct page *page =3D pages[*nr];
---=20
-2.53.0
-
+Or are you suggesting that if we set zswap as the only tier then we
+can allocate from any swapfile (since we're not doing any IO anyway)?
 
