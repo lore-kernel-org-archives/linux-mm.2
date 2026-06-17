@@ -4,143 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB3A9CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:25:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49811CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:25:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88CAD6B0005; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
+	id 335B86B0088; Wed, 17 Jun 2026 08:25:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 863026B0088; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
+	id 30CDB6B008C; Wed, 17 Jun 2026 08:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77BE56B008C; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
+	id 1D4FC6B0092; Wed, 17 Jun 2026 08:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 34F726B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4B47166178
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:14 +0000 (UTC)
-X-FDA: 84889324548.27.D72917D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ECF251C0002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:12 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C52598IM;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E2AF46B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:25:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 519B04044B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:21 +0000 (UTC)
+X-FDA: 84889324842.29.6392847
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 40B741C000D
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YWvHmfAs;
+	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781699119;
+	b=1D1O8lEdQRYAs0d2Xjxa+zuISVBjQxC4XTGUSwYIgAh56+CDOccjDnJeC/YGt9iF4Vft2j
+	5g0U8SM93bAudIssZFvoahL1bZ24NEFrIyVPX3j05jOTGtGFsWYJfA7onjpuLE5jdf891K
+	XLZVxisQ6Zjg+srBNNlllmFHVVN5uNU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=YWvHmfAs;
+	spf=pass (imf21.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781699113;
+	s=arc-20220608; t=1781699119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OdtIhxhs69RtHMcAvKY5HcExVt+ZojdtWVXmBp9x+PY=;
-	b=11LCVvjR1cl4oNdklKrRiZOb2Tk/EQKZNmyO0VdReIj1GOP6AxW8xyTgFEvxfAwI2xTe2F
-	ddjz9hKUa8ry3vczArivP/Tcny8AEEeMIoUgNjwet+r8/yxPrlgrSeVhdTrSnJgk4/soBW
-	e4XP8ayiMWGc7L/J4q+9XNdGNFoPozI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C52598IM;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781699113;
-	b=s4f8rWxdCUE7V7NoKbaiNmRZyBYrlP9xPSE9aXr/A/0kX1nLVxFl9Ok8C3lCD208pSkynx
-	iHSmKRKsSA9XGaUB1RZ1r44CUkcSFyyg77lTsEsXMdJGaiJRa5ijPyb3H/58uEWdyiEA8L
-	bSyXAowbwdCE2X6lB+8tsCvQQd/9w40=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 767CC600AB;
-	Wed, 17 Jun 2026 12:25:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840D11F000E9;
-	Wed, 17 Jun 2026 12:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781699112;
-	bh=OdtIhxhs69RtHMcAvKY5HcExVt+ZojdtWVXmBp9x+PY=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=C52598IMtLkxeWXRo3nEXZTSbmTlLUNAQZ5eAH8MNISHuXqPiMCVYnaldT1WnC+a8
-	 10XYrJU3AU2cwXMBz9gZVi0W8v2jsiM8pXGFsEgdyaG2jILHjQQVtscuyAhI08pgu6
-	 2tPYoFz/8kmbYfR2jJCqgHA0KHZTKpvZGzrYezbdlKyyDcI9eIR2deKEiQebz0IEdw
-	 HcBCz1zwT6H3L7xIM9Y7vw2OsPaDcn5YIwqQUr4WujNnBsx+M8SArA4tOWkyF9bFUA
-	 MS3tNDO+NLswQLgruCpHGklhYz0O+tdgNzXD8UAnyt8SrGTLITHYOUKJX4GvDi5KE4
-	 hv/nAlqii0mag==
-Message-ID: <3dd8c114-f6a5-46a1-b9e1-671b43354d0d@kernel.org>
-Date: Wed, 17 Jun 2026 14:25:07 +0200
+	bh=1yJxZq3tkF0bDvOTRpsnisysrPdGXlXB3E4O1ntJTHg=;
+	b=JETBdzi95mClQlZAWVVeQbeJe/wDzMiIY/gNPQNJjxjaiqa4dPjCuv3tfejh3qFJ/STCJo
+	w8v2+5e3xHh/1gW8lXImVNnBsIFT5JRC7jUlKqE9sAZF3B26eMvmEnKYr5D6Vsr2d9kDL9
+	6raZRAOOmetl8QL9JLjrqtUD1ogkgFQ=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490b64c8311so55586645e9.3
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781699118; x=1782303918; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1yJxZq3tkF0bDvOTRpsnisysrPdGXlXB3E4O1ntJTHg=;
+        b=YWvHmfAsGmJt5OgEoFJ0Em0A4ot2ojaJWN3qfeeJoUu+xDj5wgfTM1xBotF3wHEbVG
+         kzVabzpf7b3nTxFThL8nh+wHD9XRedrcW7nNxKA4Xq9dKqszdBj90ExImMX+LJ/yurQc
+         1DRU7RPaN+4W3RGEM8hHW4F+Xwgi7E9fVxtFkKcO7G3YtKPGAVc2Gv+7ZQckne6/5vEF
+         FJ0WnwZJXhkn4HWJIh1uY0v0HJvOBZpxb5VvRhG0UlcE+orpHryeo7VwlzC/s4WqSjYM
+         bYot88OsLAHvWHR5X0bWPeJOKrAdruK8WNqiKq6aflrBxP4TOLLYZjT63jLcrUGmHBUk
+         EpvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781699118; x=1782303918;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1yJxZq3tkF0bDvOTRpsnisysrPdGXlXB3E4O1ntJTHg=;
+        b=BlbeNqTMzB6HoWuBB6/MEd39l+d/z2AJ3Pp5tG98VtS4/m0AFt7/MKhzAQnHn4cmxZ
+         VnNT48mW4rMuBonqNNj3RMqfLHZk0NJ1trZz3Ava2aKeBJ1T1OcAw13jKMkxvb2S+nFF
+         jFOyos8eWPgcLKj4rDsbE/2+Y4psU3DrCJEHQ5Y7IyJ0xK5ea1TuKWTnESlUr4uWdkZH
+         5mJCLhqaOyn40p3mgdbzwDO6LTl54h3ZEIkKM4lNYozGXfHTgMc8XxW5l/dlj3N9TEKH
+         iIaCWVi9iUVkak7WrTYhZNIT90ERUgFgr/gHAVuOi1A1BaPmk82BX/VddFVgnJGwKkBr
+         H2ag==
+X-Forwarded-Encrypted: i=1; AFNElJ87AZk+OmqI/HBEUsCt4wJW7GuxmQa90ZZe3KKTnEIQPQAho0/nZPNUA21xxE9XSCkrJRKSa+Qgkw==@kvack.org
+X-Gm-Message-State: AOJu0YwnGqSuKg+Vvy38W5QfehURj4tnFFYYYScefGn9H5GhbYUDsrmW
+	00glko9J9uDof2m4AOxPtGuAtT0/kaP7mNW3GdaKXP47vI0shVTzk907/9/IGJrH444=
+X-Gm-Gg: Acq92OHWyetjQxpr+ZVGzuLq4SlGNs01RbY+TpXjW+kKhGRwjWUdSzNBO7zGpvUyJlQ
+	bkWDM8bWf/W3przEfTQFnBtWz9TVTF085i9/sXMK7Yklcw726nbUgCTkAc4vMyjlE6l735o6esc
+	0KKbfEcgu48ymq3DV30kKnCVb/eqRIsyJts1WHPBaRm5N/1+c92dBdSfVxzRDLSOvKwMhe3SKfz
+	/AiqoLeyLStcKwWbJjLRN6WEOb7MyzXH3Q0qe02mQfkYq5p7HOjabhfsEC7CBtkaA/pi78BuPps
+	oHJttUQfPSpEVeac9pO8AfB4uVbHFKU/y8cnu2XXpo0aU7RkFM2SSnPTgLCrMXUgvpjcmIasBw+
+	wOOrq9l04SnETvWa0rPy+7tU8YZjGU5AN/817gab2NdPfQq7JX2g2Ml/uu8AccGZyKMZtIHz6AH
+	k86RznFn4AxLZHnsG+Eg==
+X-Received: by 2002:a05:600c:c0d2:10b0:490:e5c1:b8c6 with SMTP id 5b1f17b1804b1-492333a16c3mr51513355e9.8.1781699117684;
+        Wed, 17 Jun 2026 05:25:17 -0700 (PDT)
+Received: from localhost.localdomain ([62.77.90.70])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm140088385e9.14.2026.06.17.05.25.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 05:25:16 -0700 (PDT)
+Date: Wed, 17 Jun 2026 14:25:14 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Li Wang <li.wang@linux.dev>
+Cc: akpm@linux-foundation.org, tj@kernel.org, longman@redhat.com, 
+	roman.gushchin@linux.dev, hannes@cmpxchg.org, yosry@kernel.org, jiayuan.chen@linux.dev, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, shuah@kernel.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v7 3/8] selftests/cgroup: use runtime page size for
+ zswpin check
+Message-ID: <ajJwNecLWRvX_7Tw@localhost.localdomain>
+References: <20260424040059.12940-1-li.wang@linux.dev>
+ <20260424040059.12940-4-li.wang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] mm/vmscan: extract pageout_one() from
- shrink_folio_list()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Zhang Peng <zippermonkey@icloud.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Qi Zheng <qi.zheng@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
- Zhang Peng <bruzzhang@tencent.com>
-References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
- <20260525-batch-tlb-flush-v4-3-83789d6abc00@icloud.com>
- <5c665b98-088a-401f-aab8-7c9c4d4f484d@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5c665b98-088a-401f-aab8-7c9c4d4f484d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ECF251C0002
-X-Stat-Signature: c1wwmygcmpbg5ibgxz9n478bi8pqk6ok
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fw3psxfcciuimhrk"
+Content-Disposition: inline
+In-Reply-To: <20260424040059.12940-4-li.wang@linux.dev>
+X-Rspamd-Queue-Id: 40B741C000D
+X-Stat-Signature: r4s4pqhch8sfp8hf5f4m4d8ssymkfae8
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781699112-220268
-X-HE-Meta: U2FsdGVkX1/o1epTpjGMrMkZPhyACm60S0+JtD3ICCIJzHKs/6gFHQi9M8my47kWGKHXxXg9ai/ClsYI+OSLWO/aVnejNxUsGyGcpJHfdmBrem0yHWJPxOYCD7mPY+6LTRFfCSJfcyPn5qpUyj3fMo1JfLJ4FB6+DvU4da8qBbioAfoETotJJ0GQpZRpLSAtOBj8wJpYBeC5ZLG7obf4jl1YXpEqF/DGQIVzYT8xDUjqlfeAUokQyNnEw+aRTB9ODTKycdtHIg0of6KVbmvkK23wPeebM80p6BmBWyn0q7nwoNA5h2+QcA8OBMu9PRgSDcbYElhZQSBEYbW97g2tR7hd5EFIxpQiq+ommkHPea/djPJftkuph2okJlLY8Py8OwDz0ffxSv7BYT2qlelpUnhy3l+KegDbLOF3fiSzwKX/YpVP6oZYN+wcMpH+wTmv081f8A+Y4cUTT8wQb+LnPxs1qUi+ucgKv5copJJPmmGnxpyPIFpWVYaaORVTFImCLPNRaSX21mUm7hDWXbrmC0Ka7yWpalc0GRZCC0not/bsdPQstMSvbE2TBB20K4vLVRo21uvOpeuwHbMfzR8IJ1hHzcVKpAbHzp9ZucRv5ho5/k4D96Voc5AFv1/9EaWB8Y3epC3B53AkafdLhYm48FbzbVfkZsF5L8IKCzM9fYsnxCQpR8S4B2adaXHLxuezUZZSm9okYnx/Cuniu6fvxL1UgxtEYuv5QmQyzACx1GsGZH3iroTuaBYylLIdnMl1O6Q5x2RgFNAxnaAI3PRxao+5nZ11YME9sOTSyKZCskXrArV9Xj6beRdpcstWoEfMEJhD7z1N8k7sI2ntmJ3Di9cYKo0jfB65B6IYkqgOCwkKJvh7rRr8LW1yMXhD5cDk3vwLaeX3PqMqD5mpIVtfi6zBJuTgosbTqMJU9o0xSP5vUWY+GkA7xFj0Zhrgjdsx9oN41SS5a7vjstgBJJg
- XWK7He3i
- 1IKaYSoTV5zWnPLVjK8Bw1PXtd5Q7ofeka+Vh1eMqT1XFVJh8Dg+wErENs1lSw49UYyaRWuXmMNsCur7nawnZmkOU3XQ6D88uZFSJMJkq6G4/LOlOxynw1SHR5961EmoCiMLGeJp9aEtqqDPTLEhUqTnd1kjvbUC4lyjfQiT1UhqZ7Lg7zs9OlkpZpKR/UKg6oqWGmEEqaFTb8x16sZLsNsO4v6GbY0CDrQsatx3V9vehYRSTt77xWfS6PsUiQ1H1pCR9+YIjiV/oSlqPmp6SO7xMZaCy6gw7o7MA5x7rllw2l2wRCDRozsk/RkpepRNH7IS6nG0nahw8TVg=
+X-HE-Tag: 1781699118-240021
+X-HE-Meta: U2FsdGVkX1+WMzLY10b4UbZDDLSbYLZ/FdyVVBho3b3z++F+SmRKB3lr16f6/oN9SPqzVnbG+bN0Gbn+3Em00q5q05MeuM0UStJzQ2+0OKuvan1Rrpwd8QuY0Ia3dFApsynGcPNzPLDg1qbfgn5FsgQRT/YsBhQpnglOE67Foqz15y0gtaU17gz5zLI4J8/04irXfV0AESrPqN1yqGIJsBuqAbtGzEwV+aSu7g60YYnoQG6JE5trH6ORWo0PAJyVgP/d2KTjONCsuJst3jX+G+TgG9gPq8IUjNtuuoEqlOSgI7l5jcji/gKbFXND6YKJMXVdhy76U2tVofkxlAma20gnPmJBXl3eM4kBobgcinYWCq1xyR1VDszKU8AI+W9P6Zd73UvdjYO/+VCcGG/2UWdinOTp5IhUDr1Zxsnrh45maQrd33H32ZLby0gOHup1eqGBZgok4r/f3YClf8X8iHbau5havxs6vf3ML9Y/FTb/TxP1HpJTftqI106rNs0jPztHazSqWE5pbTEt0WdiDOviTDjDHY4Ffi8tUzAtCLMuKaRcLh9vY3lLCKmut+WYtFboZHSOxU+MSrra8JgWzgkHQ3syPD4swCmcLgf6Aaf4T7x48dlCwjYppQHP00tlP3WPQwsq1PUFNMr7oTvDuZCc95mLBXbejvwopyxuyTrg/3H7M6N9XgxTyTdylCbrK8yX44qVEziUDgcEcvmVvE1d6SUUdnSDbnZDdDbWzyzmyKXmAsBCe03+WIVl0/sZ9Dc5Mq3aRZeTxMet6J0SocZIarDtDBnPCSZ3BCVyZ/YW4Macmdwmq8kgjs8mf9yyZWc0T+fnZcR5bgqiE/Ttl6X9+5lrJIP3zqQlH186yrR7U9kW4tdSSFhDx6eCFV1dGG5p2/vzHE6F2LMHU3xi9osekLSd1KOugFUJQXySrCHiQRic3vIIp0bsPGiraEtNAIm7GP6D6g/cknvuVXm
+ EmuQ/bRk
+ sDi4bukP+8y0jYgJaK8qhnIJpIuiRd+4n5yX55BAZsyp08AyfuJagzksFKlkjRZWv91JRlB8/o6pYnecMjT7f9WULsMvIIoCaG7C5O4erjt1Czsl2VZ2wsk7m34efRd4SX1fBWzFxitA9aBexkLhhkjWjQhwixoKioAjefyRxfWtz3697Njz7VudBol0RUflYuPyzc+o8I/JZapVDg94tsOKPrSgOBl9FljyJhCKPnYEsffH6ysSNfIUTgu4QEOCCRmT8XX4d4ZyJK0qLig+GI7KQl6NEDH895LXGJh9VKG93SDajnrJONHZsT4cEWk4WSwVXquuHbAclC0pitKZHRkUe+l/hsxi+UQwslRzZIjFmelGpvFbBrfugzG0KPBEC+FajQwT8KJqi6TOhgxlsC+U2VduJRQzTJ3qnLdfaD7kKOHPUExLmKC0nfHbj6G6tQvRIBLaJL80i9Q6wHUCYJrVQeUD3DSo0olSeEmREit9yLL2rtGD8iHXi/M0X1pRXQyF6mWCUPZz7k+pbWggENnGad5bYj6W6ygIEhIsC5sUTNbnJDpS9Lk0zSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,42 +123,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 14:19, David Hildenbrand (Arm) wrote:
-> On 5/25/26 16:57, Zhang Peng wrote:
->> shrink_folio_list() contains a self-contained pageout() dispatch state
->> machine. Extract it into pageout_one() to reduce the size of
->> shrink_folio_list() and make the pageout step independently readable.
->>
->> No functional change.
->>
->> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
->> ---
->>  mm/vmscan.c | 107 ++++++++++++++++++++++++++++++++++++------------------------
->>  1 file changed, 65 insertions(+), 42 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index b31f67801836..456d38eb172c 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -1161,8 +1161,68 @@ static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
->>  	return true;
->>  }
->>  
->> +static bool pageout_one(struct folio *folio,
->> +			struct folio_batch *free_folios,
->> +			struct scan_control *sc, struct reclaim_stat *stat,
->> +			struct swap_iocb **plug, struct list_head *folio_list,
->> +			unsigned int *nr_reclaimed)
-> 
-> Two tabs please.
-> 
-> Same comment regarding returning a bool.
 
-Thinking again, should we call this "folio_try_pageout" or something like that
-(and keep the bool)?
+--fw3psxfcciuimhrk
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v7 3/8] selftests/cgroup: use runtime page size for
+ zswpin check
+MIME-Version: 1.0
 
--- 
-Cheers,
+On Fri, Apr 24, 2026 at 12:00:54PM +0800, Li Wang <li.wang@linux.dev> wrote:
+> test_zswapin compares memory.stat:zswpin (counted in pages) against a
+> byte threshold converted with PAGE_SIZE. In cgroup selftests, PAGE_SIZE
+> is hardcoded to 4096, which makes the conversion wrong on systems with
+> non-4K base pages (e.g. 64K).
+>=20
+> As a result, the test requires too many pages to pass and fails
+> spuriously even when zswap is working.
+>=20
+> Use sysconf(_SC_PAGESIZE) for the zswpin threshold conversion so the
+> check matches the actual system page size.
+>=20
+> Signed-off-by: Li Wang <li.wang@linux.dev>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Michal Koutn=FD <mkoutny@suse.com>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: Nhat Pham <nphamcs@gmail.com>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
+>
+Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
 
-David
+--fw3psxfcciuimhrk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCajKSJBsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AifigEAsoKP16b+0Ymtb3KGVhyI
+va7ay0/8bjusHJQkcZqNicIA/1Wml5S9Nn0nE+3XPCz+4d6nCaUqIpGdRKFGT56w
+XSAD
+=y8NZ
+-----END PGP SIGNATURE-----
+
+--fw3psxfcciuimhrk--
 
