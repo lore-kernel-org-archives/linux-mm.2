@@ -4,79 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8069CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:16:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C0D8CD98F3
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A7296B0005; Wed, 17 Jun 2026 14:16:49 -0400 (EDT)
+	id 5C2506B0005; Wed, 17 Jun 2026 14:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8516A6B0088; Wed, 17 Jun 2026 14:16:49 -0400 (EDT)
+	id 597AA6B0088; Wed, 17 Jun 2026 14:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718D66B008C; Wed, 17 Jun 2026 14:16:49 -0400 (EDT)
+	id 45F066B008C; Wed, 17 Jun 2026 14:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 458116B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:16:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9B7E1665E8
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:16:48 +0000 (UTC)
-X-FDA: 84890210496.30.F23E483
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C5C48C0007
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:16:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k1msFA/7";
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1824B6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:19:06 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8269EC2139
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:19:05 +0000 (UTC)
+X-FDA: 84890216250.09.DEED3F7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BBED212000A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:19:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TQOFWsva;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781720343;
+	b=txv9CkLZ7gAjYhJqRnEvbXIIvuidcFOiRniAUrHh8+LOV5ipJw8MPOjHjQGM9mXdSIrT6a
+	XfzOjieZCXxR5+mlVsD+sZmQsfA1t7WZeaRprhVi9tkYvOfH4BEXOUQBbBqjgMYdQC2mHp
+	9FMvqkSL2d54qD/N8l15TYFVi/A3NTg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TQOFWsva;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781720206;
+	s=arc-20220608; t=1781720343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=34T8fjVS2ijKeY073d7cPWfK3Eup8GlZsznBtOHwLAk=;
-	b=vY75Pj4jbnDSvruWuCtHL/9kp1WT1VeWuOP0XSbAVa/+vPvVZGLvgtREUdo+xxP0vH419t
-	t1Qrg41kf/GRMM58gxq4yZbRnYK1cJ7REAVeyrq79ryqJvMuqGX4Tspo/JnEOBuvFxK9ZI
-	imF0Jf785+R7bDHxKR0QohwrSeMe/Q0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781720206;
-	b=EQ20w2O8GLgfAo0mK9Fkmb5J+pt6FKCOItdzfQHqryAxoPDvcDQWVHjZLbV5RU7Mr+n9YN
-	EQwvqk+x68trnOfrpW9H4shfhQGX6K9/ktwalWLh+pAJV8YBO5Z+Jk+D2rA3eSKzVSSauX
-	2HUDxpcHAd3LAPgb113zN7/TUiVR/co=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k1msFA/7";
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=65QRkQSPu45itKPZo5VCpczhZ2orHwojKEIsve8RGCg=;
+	b=X0WGSGey5esWeTPdYrAt7FLyxrg7lEnWNTKMivX+iEiaioXSPT//ff8FQwrhZTtA1s5Mna
+	/GLI4Gopg7Um5JDSieT8m8BaH9dyIKMBfjm/sZxt0jKdDSYRtxE/gFN0rl7bvUwvhSM4+5
+	+W8h8HAKn5PM03y2OTc3Vzpd3iNWO2E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEA2C4172A;
-	Wed, 17 Jun 2026 18:16:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0867F1F000E9;
-	Wed, 17 Jun 2026 18:16:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 15BBB60052;
+	Wed, 17 Jun 2026 18:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A411F000E9;
+	Wed, 17 Jun 2026 18:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781720205;
-	bh=34T8fjVS2ijKeY073d7cPWfK3Eup8GlZsznBtOHwLAk=;
+	s=k20260515; t=1781720342;
+	bh=65QRkQSPu45itKPZo5VCpczhZ2orHwojKEIsve8RGCg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=k1msFA/7sWqjtak7jhvFWE52RHjJvxyaPLUVFiyCdcgtn/EOS7R3ztlAs5wt4PZuf
-	 nldlzfXpwh6i33uufNBV07/pzvjDHT2tQG5GVWd5k4twbHnYbhMkHapJP/UfO5xHg6
-	 /o7Q6iVlKAQhD6+0me4dvgaqprajFvit0hvB6F/OHvOoTRWQ3cq9+g/bWbED2WpTcB
-	 R1d+1oNzdRyprLGeuVOlOfRn/wbKcl4sd8i6DzEEvhvmTUsTW591TMj/S4ei08Bt1l
-	 j/swA4TBUewBZGsillQb1ERsNdzD38OQv8Q30e9RTfC15CrWGF2RJChQwlnouNyFLr
-	 Gz5PyhzE0vCGg==
-Message-ID: <89da8f81-9e6c-4923-be0e-7e29c7fdb68b@kernel.org>
-Date: Wed, 17 Jun 2026 20:16:42 +0200
+	b=TQOFWsvacBh/H+QKfWlTUHQpbcJy5i705DeADqJ8QDA0XtY3ARIdOD4G6U5MHBQf9
+	 vG/WIIoc5axb9rFBefsHIpYzWZ+N0hbwQEQNBL5u5417hBCwUg/PmGGbvX1WoZnpy5
+	 6IaE+eGmciTr4YBs51A4NNr0nND7U3r7mN2OIi6MjOy6ICb35H2mQUe4ktcbJAiMKv
+	 zLWuYTbAOrPcb+eylcCF+g2mQ0ixJTmucUj09gNZTiDWpYWS/ZriQuLhB7nXR9ae0U
+	 s2pzK5PRzngFjmUbwJlVh/A16KcVmlmdYYgcWC34c2cfWEjXxAlrxS/qJanH7u9y29
+	 xjgguslc/s0Jw==
+Message-ID: <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+Date: Wed, 17 Jun 2026 20:18:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] slab: recognize @GFP parameter as optional in
- kernel-doc
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
 Content-Language: en-US
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- stable@vger.kernel.org, Kees Cook <kees@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>
-References: <20260617163125.2716279-1-rdunlap@infradead.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
+ usama.arif@linux.dev, akpm@linux-foundation.org, mhocko@suse.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
+ <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+ <ajK1YsIJmD2ImbAk@linux.dev>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -117,17 +123,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260617163125.2716279-1-rdunlap@infradead.org>
+In-Reply-To: <ajK1YsIJmD2ImbAk@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BBED212000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C5C48C0007
-X-Stat-Signature: nsa8zhbocdksp9y66ixu8dnp53m3d9kg
-X-HE-Tag: 1781720206-771003
-X-HE-Meta: U2FsdGVkX1+OTFI65CuHrKS3VL01R4wRa4xT+g0obv2KrYgkPJoDdVNmDQRO4OfgPnG5W1rfXpS+v8qG+nT0maMSS5bKY/+Ym+yScy1xoz7P5KihFNcV+EibsLQRIsuy02YzuZjD91VjCj5+knY4z0e70k48ySlI9HbEPjpK81g6Njn7PhXIPqZVZRpmbSlXpZ1/pU/VIavgoRM4ydfo5CM1RLmMegiC4oy/utZqgtCFUS8SFjv65Etp5rvpPwhAHWb7fGTY6OKDdMVGra2hIJRYPiRvCSMPFpNsClCOWW6BHHngeFV3a8JCc+eU+NwdJXudfMO3jWF+tHjy6aBdCoX+8rIc9E5q07XvdptRrpQvfKT0nVuIN0hGWfCLBVyc8EeGTHDlFIgTBa7Pd0rlRXKwrM0xNzCcu3K6UTzZc7i/Dzwhudl8xF1wBqJDuMB32m5Rv+sJuLz6l0zn7FxzrR0WgZHoiDW/h4rh0ojiIlSayx5TqZ3NCwlOUGfJfIoc3LbMGbpq+nqtrjN1L2OyN+myFDOYbZefSco/rW0g66voGzUL+3uJIAMibS8lREcSt5/MXh85k4ujrBsY/9ApXj3LHwynRCbURewmDQMllOIBWOaiDEt+SsD9KZ311wajnUpnLi5SqoQFtvD4s7EAMqqGFPPur072YgzpdnxKtVZ7pa5xdxvJjva7ifMsBMP9Koz8NXSZAOzABUGI47/Q+6mMHHzHidUQ0RN7ReaEwZql1wRfX242taX7AhaopjMKMpVRXEvgA7XO44+qEV3yE+c/uSJnmoZlaRMTKTBDqW7QfKwgvSRonLRWT6JHNMmOQSA1ioP3bHSR0J1P0lcGgwKlWsU2z9LId7r8WmZCpqeR0qOquACsk77T9eiM/2AF8vLr0bgBhR7ezwET5wk7Oa7ncNufvq+LAvbtshKQofB5hbRVPvfHrdYbnNdfiSYWoMDW5UnJ04XblsODM/B
- cus+xYpu
- eiRgE496yDzwDpyW8Os3KMZrjg0kkSO8jGlyJtFV/mhvZyjzWuMj2tTplhJB7ahNqerlAsSsnZj6iYyLNoRHGU4cm+iomKIHT3emviVISWwjlVaOvnhWzYdHaZY9pu+tea59sH3+OMV6Ld18s7bKkHyiac3u/DpNdH/HSiN6qQDeXNxjCPdDSQr8FJzZqMo3wgvrvuUFYS3eV+MFksGeUGSHG5qDq24vhLE7lwslowcVWZ3VnDOb9CQdLqBvLSPLdqu3IwXijSljIa3VdRgN6CSx8Z/Sqma5aQZL08DiR9kmXvlAysYZ34jkcJ2qwXUACgHttU0k955zW3YiCDvGUxMGll1O1sjLlRmXKZaHgcLCy5PhbJqPIjHrxSzyxdRHrzJSn+HCt8raj+UXAT0VnxLYsCe9vFnRDJDtdIiZQ88hmtg8AdB1JP/y58WfleoCYjhJrq4FTJiR0r4LROvtwBpwu2zBYQAUJE1sRavYl/t0iTAPPkRF101j+67XcmMyEJQos7gN9gRxM7og=
+X-Stat-Signature: 13ig7oyn59f4ytybxy6rmeyyup1gp5t3
+X-HE-Tag: 1781720343-232056
+X-HE-Meta: U2FsdGVkX1+UdJpJfEWckOaa2FtihipSn8uOY4D0i90ZduCBz93wYHwzSNh4T5U/iFPdJ6zn5jp7H+tTec/iP2v6MGi41GLOYLWaUvnE+dtkuHD/DZPWOQlk/1wgYKe55F02ZQSY6izUj/uE7ar/I4dVyqNLhwCDWNFs/N1l3wLuT+0O46sfXk/htY5Sav1y01UadXXXn2BqzWfD2sk91EUxoso4htcIXBu2chcC/xWyf6NV1BLdj80cLgo9BCoP0DSKSXo3Z41zn6gz9WD+B5llwhOlzZjeaxVN+Qm2w9IrQBds36xjkaX4ROnO4urFgzsKDMfgOL2KHrNy0G+Hf2vDOuHH8jEmtIdfy6dVX9m2bV5v40JtL5NcvbxRvHYU/HEGRFMxQCYfek/X7zGbqRBD30xoH89n2WxDN71lUPRuQ8Tu3V3LcrneerW5B/9GxKztrQ8NRBjj8LDVyle4fG45srqXkm2jLMt5CkM5eEAAJ/SJe57+ip4vr0JVf1D7/hxmu7Z6r9mj2K/cXtHHSpi+HCYMDIUaDKiRaNmM0/UjxujJm+j7aGrs9MEmwvSnD0/lj+FgB3k/mdCKDq1Icq4+glIeiQ651YOZk/AYMxdhLFr7Eby3tcRPqCLsPb8HMRS6/dIzKAPUFyqY4/b6GUvBRHaUZz436kWy1+M8jiL9XWs5Gi2UsJDlwsWmqP/E8pgJjZjsrm+GBxFGFrgabgJBatlBB1ncrQ7B8EdDzt5Y6m9bjbw6KAm+mmrUKFtQ1RMzHav/pvR3kJ6DaXeyVKjXkVst9yH5WTEFVqDie8VVTE+7IaSw5IC+Ez3Tz6Z3Xn/pdtrCjfpQ8+n8ynz0hn/Lim5Gt5LdSbGABzhelwqHRThYLWV1fTgkBbZwoUH/klYQ/05b6kzrdBfssLn8OjQAjsnUGGeu2E8gP59kYorDdf208cMewkAB4GrHFNU2MT+8z5X6QYcPHwWHlGZ
+ RhTUfrYG
+ Lbl+yd+aR7xhdXqP/Mlg6PhLdIb9CwG5RVph/DtJSH+vf1Cnqp3cLHRMFd66piBBVZiOD6tQyoNhFmyVBn22yWbUApLxh+qoP5+kDY8GPzbo7np1HncTJUEvwrSU6zs9QgBpl47p3GGFN08WXoTTbeEf68qar3slg3lpmkc4l9Eqa5ADCqIH1m2VG70+2C+nDIUmvu+q4UIU+95+G2PRLZ8lbIkzOrOjW4COSw1eSGjmavllV9USWrZ5YlBrbqgVyy55J7FkDGebXVTGTyfLGzMQWUcnFiAkZsmgf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,63 +141,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 18:31, Randy Dunlap wrote:
-> Since the @GFP parameter in kmalloc_obj() etc. is now optional, change
-> the kernel-doc to indicate that it is optional. This avoids kernel-doc
-> warnings:
+On 6/17/26 17:03, Shakeel Butt wrote:
+> On Wed, Jun 17, 2026 at 01:11:16PM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/10/26 21:52, JP Kobryn wrote:
+>> > LRU add batches can be drained before they reach capacity. This can be a
+>> > source of LRU lock contention, but it is not currently possible to
+>> > attribute these drains to callers with existing tracepoints.
+>> > 
+>> > Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+>> > lru_add batch is drained. This allows tracing to distinguish full drains
+>> > from partial drains and attribute them to the calling stack.
+>> > 
+>> > Add mm_lru_add_drain_all to capture callers of __lru_add_drain_all and
+>> > whether they set the force flag for all CPUs. The tracepoint resembles
+>> > the signature of the enclosing function, but is needed because of
+>> > potential inlining.
+>> > 
+>> > Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+>> > ---
+>> >  include/trace/events/pagemap.h | 37 ++++++++++++++++++++++++++++++++++
+>> >  mm/swap.c                      |  7 ++++++-
+>> >  2 files changed, 43 insertions(+), 1 deletion(-)
+>> > 
+>> > diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+>> > index 171524d3526d..ff3da07ccb40 100644
+>> > --- a/include/trace/events/pagemap.h
+>> > +++ b/include/trace/events/pagemap.h
+>> > @@ -77,6 +77,43 @@ TRACE_EVENT(mm_lru_activate,
+>> >  	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+>> >  );
+>> >  
+>> > +TRACE_EVENT(mm_lru_add_drain,
+>> > +
+>> > +	TP_PROTO(int cpu, unsigned int nr),
+>> > +
+>> > +	TP_ARGS(cpu, nr),
+>> > +
+>> > +	TP_STRUCT__entry(
+>> > +		__field(int,		cpu	)
+>> > +		__field(unsigned int,	nr	)
+>> > +	),
+>> > +
+>> > +	TP_fast_assign(
+>> > +		__entry->cpu	= cpu;
+>> > +		__entry->nr	= nr;
+>> > +	),
+>> > +
+>> > +	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
+>> > +);
+>> > +
+>> > +TRACE_EVENT(mm_lru_add_drain_all,
+>> > +
+>> > +	TP_PROTO(bool force_all_cpus),
+>> > +
+>> > +	TP_ARGS(force_all_cpus),
+>> > +
+>> > +	TP_STRUCT__entry(
+>> > +		__field(bool,	force_all_cpus	)
+>> > +	),
+>> > +
+>> > +	TP_fast_assign(
+>> > +		__entry->force_all_cpus	= force_all_cpus;
+>> > +	),
+>> > +
+>> > +	TP_printk("force_all_cpus=%s",
+>> > +		__entry->force_all_cpus ? "true" : "false")
+>> > +);
+>> > +
+>> >  #endif /* _TRACE_PAGEMAP_H */
+>> >  
+>> >  /* This part must be outside protection */
+>> > diff --git a/mm/swap.c b/mm/swap.c
+>> > index 588f50d8f1a8..e14b7612f896 100644
+>> > --- a/mm/swap.c
+>> > +++ b/mm/swap.c
+>> > @@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+>> >  {
+>> >  	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+>> >  	struct folio_batch *fbatch = &fbatches->lru_add;
+>> > +	unsigned int nr_folios_add = folio_batch_count(fbatch);
+>> >  
+>> > -	if (folio_batch_count(fbatch))
+>> > +	if (nr_folios_add) {
+>> >  		folio_batch_move_lru(fbatch, lru_add);
+>> > +		trace_mm_lru_add_drain(cpu, nr_folios_add);
+>> > +	}
+>> >  
+>> >  	fbatch = &fbatches->lru_move_tail;
+>> >  	/* Disabling interrupts below acts as a compiler barrier. */
+>> > @@ -869,6 +872,8 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+>> >  	if (WARN_ON(!mm_percpu_wq))
+>> >  		return;
+>> >  
+>> > +	trace_mm_lru_add_drain_all(force_all_cpus);
+>> > +
+>> >  	/*
+>> >  	 * Guarantee folio_batch counter stores visible by this CPU
+>> >  	 * are visible to other CPUs before loading the current drain
+>> 
+>> Given that trace events can quickly become stable ABI [1], are we really sure we
+>> want to add this?
 > 
-> WARNING: include/linux/slab.h:1101 Excess function parameter 'GFP' description in 'kmalloc_obj'
-> WARNING: include/linux/slab.h:1113 Excess function parameter 'GFP' description in 'kmalloc_objs'
-> WARNING: include/linux/slab.h:1128 Excess function parameter 'GFP' description in 'kmalloc_flex'
-> 
-> Fixes: e19e1b480ac7 ("add default_gfp() helper macro and use it in the new *alloc_obj() helpers")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Yes, I think so as this is useful to get insights into lru cache draining.
+> Trace events being stable or not is secondary IMHO. If in future we rearchitect
+> the lru page handling where there is no cache draining anymore, we can make
+> these a noops.
 
-Added to slab/for-next, thanks!
+Yeah and I don't recall ever that a change to a mm tracepoint would ever
+break someone who'd complain and we'd have to revert it. These are niche
+enough. So I think the risk is low.
 
-> ---
-> v2: add default value for GFP flags to the description (Harry)
-> 
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Harry Yoo <harry@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
-> Cc: stable@vger.kernel.org
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> 
->  include/linux/slab.h |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> --- linux-next-20260615.orig/include/linux/slab.h
-> +++ linux-next-20260615/include/linux/slab.h
-> @@ -1094,7 +1094,7 @@ void *kmalloc_nolock(size_t size, gfp_t
->  /**
->   * kmalloc_obj - Allocate a single instance of the given type
->   * @VAR_OR_TYPE: Variable or type to allocate.
-> - * @GFP: GFP flags for the allocation.
-> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
->   *
->   * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
->   * on failure.
-> @@ -1106,7 +1106,7 @@ void *kmalloc_nolock(size_t size, gfp_t
->   * kmalloc_objs - Allocate an array of the given type
->   * @VAR_OR_TYPE: Variable or type to allocate an array of.
->   * @COUNT: How many elements in the array.
-> - * @GFP: GFP flags for the allocation.
-> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
->   *
->   * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
->   * or NULL on failure.
-> @@ -1119,7 +1119,7 @@ void *kmalloc_nolock(size_t size, gfp_t
->   * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
->   * @FAM: The name of the flexible array member of the structure.
->   * @COUNT: How many flexible array member elements are desired.
-> - * @GFP: GFP flags for the allocation.
-> + * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
->   *
->   * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
->   * failure. If @FAM has been annotated with __counted_by(), the allocation
+>> 
+>> [1] https://lore.kernel.org/r/20260603130006.7d2c4a62@gandalf.local.home
+>> 
+>> -- 
+>> Cheers,
+>> 
+>> David
 
 
