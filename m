@@ -4,119 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BDB5CD98F0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E28CD98F0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:24:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63E5D6B008A; Tue, 16 Jun 2026 23:22:33 -0400 (EDT)
+	id 5AF3C6B00B0; Tue, 16 Jun 2026 23:24:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C9B46B009B; Tue, 16 Jun 2026 23:22:33 -0400 (EDT)
+	id 531636B00B1; Tue, 16 Jun 2026 23:24:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 443FB6B009D; Tue, 16 Jun 2026 23:22:33 -0400 (EDT)
+	id 3F90B6B00B2; Tue, 16 Jun 2026 23:24:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B1286B008A
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:22:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 872991C3C22
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:32 +0000 (UTC)
-X-FDA: 84887956944.21.9386AA2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf14.hostedemail.com (Postfix) with ESMTP id ED11E100002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:29 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UsF6oC+6;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 158C66B00B0
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:24:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F107402EA
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:24:17 +0000 (UTC)
+X-FDA: 84887961354.16.AD1C9C9
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 003C240002
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:24:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=LA1KyDtw;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781666550;
+	s=arc-20220608; t=1781666655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TC0Drr/h8wB8fM9GCpuSniMNikbBilxoTV0ewTVbjE=;
-	b=eXb+Xk/zS8zRqyxl9pG2eeIC23CJDngZIOMSGfOH1+gd94uqKJJvpKJTjw2cWs/nmezYTQ
-	0Qp08f4ViZT7QkoKp0Cb+3mhOlCY4XtLrxiDknbfKnNj0XCKRRlT97/wo9sR4PtkiPbI0K
-	Mt0J/bW1i4hveNk+CphYbu4yQ6VJTBg=
+	bh=QXpgPLCGZMBAJlhoq6iPX1R1MqV1uv8ilwrrn60/bL8=;
+	b=g9Je1/HCU3nM31a/g/26nE5AqaOMTwZqd8TJHNUE/91L2fPSSgTuufPEnMGICtlWm3GWXU
+	Dx4CMa1QoqrVJj06ojo2grMcOwCW0pTy1FlkqqE1mvOzIUntb/ZmGjqPyoOqrsgRtXNIDi
+	HQdnnx9HwRXoSAwmZ6eXym4R7LoDuGU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UsF6oC+6;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=LA1KyDtw;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf12.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781666550;
-	b=IqTyl7twnHQ2bVYGYfEFB+a4e6MOONuuXx2pGPS/8JSkJdxyvbh/zLf34kAamnWH6A9Q2u
-	rqLOAJ8mL96/xKZqLGSfR1P4wsR97gbsLARYwl34AjmbVRGO5Lgt3Q+F2mAC8UzhCyLe4J
-	NODS3Z5IegMJsZFw2RhlmGFoaL4M79g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781666550; x=1813202550;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Tt7iPzBiJh9j79rJU7UBrFI9pphqDSVUmAlrXMaHjUE=;
-  b=UsF6oC+6zTfb1cw+3HitoHS/ZFGAQSGcdkvBojTnARWfNIqb31AEZH91
-   12nXNciDrpNHwMNwEaBgMov3Y/IarnZ7g8j09cGOMRAUbHxxdeBPq5YQe
-   r8rlMXu1oTxPTnXeYKbxsSldvva74nGdErKrh9VFZJD9RO3SJrzbQ+Et6
-   cjpM8hN6dAvUt8NUYzCC6VNlkT+sLYUafohbwD9w/dAnLxgs/v9wUvSUe
-   T/PCgROPSovRtJalzligMhw74NQJdhrybLXepMJjww+/VFS/xxlNcdm4j
-   LQBoigvW/RiWdrhSDDLGD2ksPSCyZALpvfTeW/kLzYpl3EeRpUByIV3AG
-   A==;
-X-CSE-ConnectionGUID: GANHPWv4RUGiRZvxLQA3zQ==
-X-CSE-MsgGUID: x8Fi+whjSy+nUo9jge3olQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="107914556"
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="107914556"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:22:26 -0700
-X-CSE-ConnectionGUID: 0FapH5E5TfGVZiIGZlnNXQ==
-X-CSE-MsgGUID: +dWJtbQDRL2hmsPEzYhUKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="248017806"
-Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:22:26 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>
-Subject: [PATCH v6 1/2] mm: Introduce opportunistic_compaction concept to vmscan and shrinkers
-Date: Tue, 16 Jun 2026 20:22:17 -0700
-Message-Id: <20260617032218.1165929-2-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260617032218.1165929-1-matthew.brost@intel.com>
-References: <20260617032218.1165929-1-matthew.brost@intel.com>
+	t=1781666655;
+	b=8HfMIr4pTUU4QHttKKRKKfMiXSAwNb9KGgJD8K31BQ4fQ1+QyYVpnGcwkB2Ao7+WOz66sI
+	U/J1NMbxCULnsNSZUlJozKY+HhKgphD9vMSefls7SOBbGBn+GyAEmMAX8yBewxk45RF7Zo
+	JuX+gMUjqlj2hLIyMMdSUDhcWsVnMsY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=QXpgPLCGZMBAJlhoq6iPX1R1MqV1uv8ilwrrn60/bL8=;
+	b=LA1KyDtw3R5x/rV5uAch8d0C04aDQivZ2h4t1Hz9AeLUdzfsQ+ExwOqkzGgnQ2szCDpcKv1LU
+	DBdB63k7PKs9cNMqouWifcVcbcvgUQT9VlOS5cZyNVZZdOqeMTT2Q3caCqQSiuweoiKs+LsxSJ7
+	bErq0V0cGYCOCWzDBPb4hb0=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gg8By2QM6zKmTb;
+	Wed, 17 Jun 2026 11:16:10 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 320BD405D1;
+	Wed, 17 Jun 2026 11:24:11 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Jun 2026 11:24:11 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Jun 2026 11:24:09 +0800
+Subject: Re: [PATCH v4 5/7] mm: selftests: Add shmem into memory failure test
+To: Lisa Wang <wyihan@google.com>
+CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
+	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
+	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
+	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
+ Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <c5758613-38b0-fb9a-81ec-0ef709c786ec@huawei.com>
+Date: Wed, 17 Jun 2026 11:24:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-5-a5bc7db5a9b2@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 003C240002
+X-Stat-Signature: fx6zf1szuf7h31cguoajpf1iacnu3odj
 X-Rspam-User: 
-X-Stat-Signature: 3hgq3fund9kyj388t77qomq6nudj4csd
-X-Rspamd-Queue-Id: ED11E100002
-X-HE-Tag: 1781666549-735630
-X-HE-Meta: U2FsdGVkX1+ZrccTZCtelD4sxz4QdFYjyvFrIoCFhHomYrbbLdfzUHTwS0enJTG9nlLUSTrZt2RdYwkesb88pWasdPO2Wds7RDgGLt/Z2Yu34GWX9LXAfGTN4/wTx/JEIswrTo4gYmGzuql8b9AhsXnmSWdwOFhfPG2MWPBNXvPRPbwGctiRCZaQFYW3H6PNO4/fDhYhntoUOrjNoMKGrEcjVKTDhIwN2ugL4qmuLXUcgmAnGVCwHu5pY1/2sulGV/4sfp7DllFC7imiW7ciQRMUB8eA95Yw5kNmZ9DqiWQxUlFmE4BojNkXDtYQHyarmYte/B8Ob/bwVXOJqvoG9vQGSYEZHzTVx8NPV0F4v60dz+9nyfGqQBHCuB/B0CXJXlErxoR2Py2wQXJhzPzuqMN0jPP9V200H7qB3YADxOwxClleuh/DoAw3Z1ZYrRhmfjFlW8eG8g/PYB1xrjYIwzhyHUE06SXtvB7CTJ3BPtZUXt9Ycsi7DPbFs+20w3/NYTAXtFXSJ+v7FkrFlI/2LFPkX0x/y/nPq/CD6Pq8HyFtQFqt4umGKypgxRUxBu33zx8hEqcZnuJcWH6IKqEHKH6UA/Y2rZZwIlrpzjb1flhwYtg6O6JWFl3Jt0/dmQt0uCbg/qmvZeFUpRGwnR1Y4drIhcaOy19JZOUzGkseq2hg/HsBfZlaSD6k63KinPnLyIA1tURQv+prZ1fw/uRc5SRV5tTNlT4EboPk/AWE8dobK4OoVeHrHgfVRTbdmf9LP0aWv1LCcHNznxHLUHWiUjwj7JRDLQ8001n2icT2l8E4s9IPNGVINZ47JkRm334HM0UajWcOjq3zQ9bTvzGWQLPKVK2DN/YNswjZxsloxMo0RzlOBjtV9k9sMiDo+pXLeDoT9QO0Aqppn0tbnYR6ccFokZxgBfyCeu22XPxNnSfd6e771+tukIEzm14URDmXnoIzNgWgshCiofoauNW
- JmzbjioK
- VTDvF9VzczUQPt4JO5VdoReN0onUfMXW4s3JRv8Ic2m4uFA+p7KVhqQSzz/EmUSlj2th+Vzv4W+aX+rRu+Io5luuxG+K4T549bsoBGgqOHkDESLzodrAj9nBBynON76RGntjdgs2L5j//rmkGrabdrXameJqVvOGGQbi1MY8nOLQTbj/eSafeYUnXcaCGMW8OvLKNcF22C3hbH6dOoXLfs0eRaKuVSUinTphG+R/eE1PKvxC4NfHNkcEi3W/JY1TnRk0KZJ11ijILlPhQakz+9wi8gNudVN7ypXIHHMBnuMkdrbdTr9WR0gzH+glkBN6pmZoHD3psx93aoj2+yxWof2/R3GUgWQAMjwhViv8inP24u81td8qgnZiuhGiAmlwD+TLa1jf5Zq7I6O96wRHYObzVwxQY+2ZknDjk1R57wiMEky7+pHsVjxUD1Cp8ThkL7VYqyiMrUNWXKMzg8sqQ7bmKcWDJMWh3s4q/3ZmddVl5ViEdxn4+U92QxuT/9vdI28CHPnngrKBp0TZywziYEi1Kc1qi8MeQUWrFMnhu0QGU9e8gIhaS6wkuJPxZwP86qGLEx8IJSoGUvLqMyM8jNzFanhsCOYMHPVt0ZOmbTAKpCBAkpIY9JZymZtYXMaP8BOHBZ48+KETgMbQHQXbosPDy7tzQtXPLy84ZYHkTB5l5SRk=
+X-HE-Tag: 1781666654-378192
+X-HE-Meta: U2FsdGVkX18rSvZrRR/IBUoVYw1fI7UYyMNr+l0W/Qt0T+sLxke7luC/nZHtB/zGuUgz8D0uA2vgrKqEjqKrGfbiNqszgt5Fl7aSKWG/IFN38cPrX4ATgzhcdcBsHqcr5VeEPxute5usRWqAjrjssxLQVlwfa6d6fCskj3lLbczqKYu8JwcyX/R5VKqBvSWtbtuMrkSE6GF5f1+yyzeF+svK8W/6OknC1e+rMwClkknag84ZNxHuBy9b0HgI37+0K1O22J2/S8u8FrYeWsWxw7YTnz4uIpr4ik4oz/xOKxmg7DyhqpvksN+v1XcgjlQA4kAFTXqXdUxoRmmluTS4jjwndscKiOKMro/FaShzYEWVaJpY00AGwxreS88SuuuJArM2Mp/8vtUGGIb6j2U3xuM1/jNtScUnQvcY6zEPAd0zc36+4wFSK9m8EdrxaA7dFcz4Hxs2D4yakg/U8gkKzgk2JLjWL8lz/gAzahYFDCCT8AriyDWi7eV3v8krXlgO8CJwwuScJJXKUBh/uIL9W+irWSQpzH3rxqNHWFgxsFb0KE6V00EKHkF8vlxLshzw7uVcyoKZhARYrfvVIG4E3Gwv0rOt1ov/E7EGRZPLm/XJ5YRNgj3lxnxlfm4Em91MU62mU8agCyvxH/78EBne0kP6MTce8T6KOcA9N5hoGCtTGw/PrpDYnu2mqs0M60OTLTsz49e8WKg2FUVx7zSDT3h9Fd4GmZewBpvZe8lHTNxpg2AwHYMGhQblANRwAAaKRW/uQfDJpGeWLxVlUXziTY0XGYMtcywgV8A4gGWkGfLsmiL4RSCjIJuh+B/vZg3YkhrQAtgiYK8Xcv6qoplylhOHyZfYW5Qm/19q53JkuALFpAcu0sOBPJ7f8aEAhJhrktwb8MpyMSZFc+3d6aVA5JnOW22Qkr/pE2xW17/fzrL1zW+mCdqKI6j3Hx+4Y90VbO91d4D3s5Y3NqeJiC/
+ u3MP/5Sc
+ ZQVVn6xcQ9qwU7uP+kdKwr4ro3ToR1HLt4NYyWk3Ek9qQg+9Wm0lg5iujRwHPnkncH5nj0Hgq74jwzi7MClsPFG+rBRG+4Hzr8FM4jvHZlhOv4TEFxDUMHECXgzZ3HDuQzEaKWCJ61nmMAkiqgNU0cqI5Wa3Hj8GfJFVsYmZ4ZbZgNhqSMQkAOvYZbtJTfzNV4E+hmPPBh+EQnXWK/0OOuiH1bUE+zWRxhkn7Ur/kgK5QyWDuK1gnZ5SAc/EJzAHsKdvHAatZmygNEt2TE5Muhx2/HTnUwwYIeX5mV2rta1J+vXU8Jo1LZxo1DVPpMFpSUsfPHh18TyP8UKdnoImuP571exPw7qcgthCpgOv75RUWHD2f9L9ehlsqWHuRTlIHyE240TiYNrOgpxLe44aypOccUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,457 +114,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-High-order allocations using __GFP_NORETRY or __GFP_RETRY_MAYFAIL
-are often opportunistic attempts to satisfy fragmentation-sensitive
-allocations rather than indications of severe memory pressure. In these
-cases, reclaim may invoke shrinkers that aggressively destroy working
-sets even though reclaim is unlikely to materially improve the
-allocation outcome.
+On 2026/6/3 5:55, Lisa Wang wrote:
+> Add a shmem memory failure selftest to test the shmem memory failure is
+> correct after modifying shmem return value.
+> 
+> Specifically, test the expected behavior under various scenarios
+> combining page dirtiness (dirty vs clean) and failure types (hard vs
+> soft):
+> + Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
+>   SIGBUS when reading the page again.
+> + Dirty + Soft: No SIGBUS is triggered, and the original value can be
+>   read successfully.
+> + Clean + Hard: No SIGBUS is triggered on injection, but trigger a
+>   SIGBUS when trying to read the page again.
+> + Clean + Soft: No SIGBUS is triggered, and the page can be read
+>   successfully.
+> 
+> Signed-off-by: Lisa Wang <wyihan@google.com>
 
-Some shrinkers manage expensive backing or migration operations where
-reclaim can result in substantial working set disruption despite the
-system having sufficient free memory overall. This is particularly
-visible in fragmentation-heavy workloads where reclaim repeatedly tears
-down active state while kswapd attempts to satisfy higher-order
-allocations.
+With David's comment addressed:
 
-Introduce an opportunistic_compaction hint in shrink_control that allows
-kswapd to communicate when reclaim originates from a high-order
-allocation context that may be fragmentation driven rather than true
-memory pressure. Shrinkers may use this hint to avoid destructive
-working set reclaim while still participating normally during order-0
-or stronger reclaim conditions.
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-The hint is propagated through shrink_slab() and derived from
-high-order kswapd wakeups associated or direct reclaim gfp with
-non-failing allocation contexts.
-
-No functional changes are introduced for existing shrinkers.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
-
-Dave Chinner — I’d appreciate feedback on this approach, as you NACKed
-an earlier revision where a similar heuristic was implemented in the
-drivers. It is now baked into the shrinker, as you suggested.
-
----
- include/linux/mmzone.h   | 40 +++++++++++++++++
- include/linux/shrinker.h | 20 +++++++++
- mm/internal.h            |  2 +-
- mm/shrinker.c            | 13 ++++--
- mm/vmscan.c              | 95 ++++++++++++++++++++++++++++++++++++----
- 5 files changed, 157 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 9adb2ad21da5..1afc51018355 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1461,6 +1461,39 @@ struct memory_failure_stats {
- };
- #endif
- 
-+/*
-+ * Per-pgdat state machine for the kswapd "opportunistic compaction" hint.
-+ *
-+ * wakeup_kswapd() collapses the gfp flags of all wakers that arrive between
-+ * two kswapd runs into a single tri-state, which kswapd then forwards to the
-+ * shrinkers via shrink_control::opportunistic_compaction:
-+ *
-+ *   KSWAPD_UNSET_OPPORTUNISTIC_COMPACTION
-+ *	Initial state after kswapd consumes the previous value. No waker has
-+ *	been observed yet for the upcoming run.
-+ *
-+ *   KSWAPD_NO_OPPORTUNISTIC_COMPACTION
-+ *	At least one waker is an order-0 allocation, or a high-order
-+ *	allocation that cannot tolerate failure (i.e., not eligible for
-+ *	opportunistic behaviour). Shrinkers must do their normal best-effort
-+ *	work; the hint is cleared.
-+ *
-+ *   KSWAPD_OPPORTUNISTIC_COMPACTION
-+ *	All wakers seen so far are high-order allocations that may fail
-+ *	(__GFP_NORETRY or __GFP_RETRY_MAYFAIL, without __GFP_NOFAIL). Shrinkers
-+ *	may skip work that is unlikely to produce a contiguous high-order
-+ *	block (e.g., evicting working-set pages).
-+ *
-+ * The state is sticky in the "NO" direction within a single kswapd run: once
-+ * any non-eligible waker is observed, subsequent eligible wakers cannot
-+ * upgrade it back to KSWAPD_OPPORTUNISTIC_COMPACTION.
-+ */
-+enum kswapd_opportunistic_compaction_type {
-+	KSWAPD_UNSET_OPPORTUNISTIC_COMPACTION = 0,
-+	KSWAPD_NO_OPPORTUNISTIC_COMPACTION,
-+	KSWAPD_OPPORTUNISTIC_COMPACTION,
-+};
-+
- /*
-  * On NUMA machines, each NUMA node would have a pg_data_t to describe
-  * it's memory layout. On UMA machines there is a single pglist_data which
-@@ -1525,6 +1558,13 @@ typedef struct pglist_data {
- #endif
- 	struct task_struct *kswapd;	/* Protected by kswapd_lock */
- 	int kswapd_order;
-+	/*
-+	 * Aggregated opportunistic-compaction hint for the next kswapd run.
-+	 * Updated by wakeup_kswapd() based on the gfp flags / order of each
-+	 * waker, and consumed (and reset) by kswapd before balance_pgdat().
-+	 * See enum kswapd_opportunistic_compaction_type for the state machine.
-+	 */
-+	atomic_t kswapd_opportunistic_compaction;
- 	enum zone_type kswapd_highest_zoneidx;
- 
- 	atomic_t kswapd_failures;	/* Number of 'reclaimed == 0' runs */
-diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-index 1a00be90d93a..5f3e8dc98129 100644
---- a/include/linux/shrinker.h
-+++ b/include/linux/shrinker.h
-@@ -37,6 +37,26 @@ struct shrink_control {
- 	/* current node being shrunk (for NUMA aware shrinkers) */
- 	int nid;
- 
-+	/*
-+	 * Opportunistic compaction hint.
-+	 *
-+	 * Set by the reclaim path to tell shrinkers that this pass is
-+	 * driven by an order > 0 allocation that the caller is willing to
-+	 * have fail (e.g., __GFP_NORETRY / __GFP_RETRY_MAYFAIL without
-+	 * __GFP_NOFAIL). Such allocations only really benefit from
-+	 * shrinking when doing so frees up a contiguous, high-order block;
-+	 * thrashing working sets in the hope of producing one is typically
-+	 * counter-productive.
-+	 *
-+	 * Shrinkers that can produce naturally-aligned high-order folios
-+	 * (see shrink_control::order) should treat this as a hint to skip
-+	 * costly work that is unlikely to help compaction (for example,
-+	 * evicting hot/working-set pages just to free single pages).
-+	 *
-+	 * Only meaningful when @order > 0; ignored otherwise.
-+	 */
-+	bool opportunistic_compaction;
-+
- 	/*
- 	 * How many objects scan_objects should scan and try to reclaim.
- 	 * This is reset before every call, so it is safe for callees
-diff --git a/mm/internal.h b/mm/internal.h
-index 5a2ddcf68e0b..cc915f04cf1e 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1760,7 +1760,7 @@ void __meminit __init_page_from_nid(unsigned long pfn, int nid);
- 
- /* shrinker related functions */
- unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority);
-+			  int priority, bool opportunistic_compaction);
- 
- int shmem_add_to_page_cache(struct folio *folio,
- 			    struct address_space *mapping,
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 76b3f750cf65..2cf8f3a157f9 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -467,7 +467,7 @@ static unsigned long do_shrink_slab(struct shrink_control *shrinkctl,
- 
- #ifdef CONFIG_MEMCG
- static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
--			struct mem_cgroup *memcg, int priority)
-+			struct mem_cgroup *memcg, int priority, bool opportunistic_compaction)
- {
- 	struct shrinker_info *info;
- 	unsigned long ret, freed = 0;
-@@ -529,6 +529,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- 				.gfp_mask = gfp_mask,
- 				.nid = nid,
- 				.memcg = memcg,
-+				.opportunistic_compaction = opportunistic_compaction,
- 			};
- 			struct shrinker *shrinker;
- 			int shrinker_id = calc_shrinker_id(index, offset);
-@@ -588,7 +589,8 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
- }
- #else /* !CONFIG_MEMCG */
- static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
--			struct mem_cgroup *memcg, int priority)
-+			struct mem_cgroup *memcg, int priority,
-+			bool opportunistic_compaction)
- {
- 	return 0;
- }
-@@ -600,6 +602,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  * @nid: node whose slab caches to target
-  * @memcg: memory cgroup whose slab caches to target
-  * @priority: the reclaim priority
-+ * @opportunistic_compaction: do compaction opportunistically (e.g., do not swap working sets)
-  *
-  * Call the shrink functions to age shrinkable caches.
-  *
-@@ -615,7 +618,7 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
-  * Returns the number of reclaimed slab objects.
-  */
- unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
--			  int priority)
-+			  int priority, bool opportunistic_compaction)
- {
- 	unsigned long ret, freed = 0;
- 	struct shrinker *shrinker;
-@@ -628,7 +631,8 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 	 * oom.
- 	 */
- 	if (!mem_cgroup_disabled() && !mem_cgroup_is_root(memcg))
--		return shrink_slab_memcg(gfp_mask, nid, memcg, priority);
-+		return shrink_slab_memcg(gfp_mask, nid, memcg, priority,
-+					 opportunistic_compaction);
- 
- 	/*
- 	 * lockless algorithm of global shrink.
-@@ -657,6 +661,7 @@ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 			.gfp_mask = gfp_mask,
- 			.nid = nid,
- 			.memcg = memcg,
-+			.opportunistic_compaction = opportunistic_compaction,
- 		};
- 
- 		if (!shrinker_try_get(shrinker))
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..c40bc3f9ddd4 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -96,6 +96,14 @@ struct scan_control {
- 	/* Swappiness value for proactive reclaim. Always use sc_swappiness()! */
- 	int *proactive_swappiness;
- 
-+	/*
-+	 * Opportunistic compaction hint snapshotted from the pgdat at the
-+	 * start of this reclaim pass. Forwarded to shrinkers through
-+	 * shrink_control::opportunistic_compaction so they can skip
-+	 * non-productive work for failable high-order allocations.
-+	 */
-+	enum kswapd_opportunistic_compaction_type kswapd_opportunistic_compaction;
-+
- 	/* Can active folios be deactivated as part of reclaim? */
- #define DEACTIVATE_ANON 1
- #define DEACTIVATE_FILE 2
-@@ -200,6 +208,29 @@ struct scan_control {
-  */
- int vm_swappiness = 60;
- 
-+/*
-+ * Is @gfp_flags a high-order allocation that is eligible for the
-+ * "opportunistic compaction" treatment in kswapd / shrinkers?
-+ *
-+ * The caller must be willing to tolerate failure (__GFP_NORETRY or
-+ * __GFP_RETRY_MAYFAIL) and must not have set __GFP_NOFAIL. For such
-+ * allocations there is little value in burning working-set pages just to
-+ * scrape together a single high-order block: if compaction can't easily
-+ * succeed, the caller would rather see the allocation fail.
-+ */
-+static bool gfp_opportunistic_compaction(gfp_t gfp_flags)
-+{
-+	return (gfp_flags & (__GFP_NORETRY | __GFP_RETRY_MAYFAIL)) &&
-+		!(gfp_flags & __GFP_NOFAIL);
-+}
-+
-+static bool sc_opportunistic_compaction(struct scan_control *sc)
-+{
-+	return sc->order && (sc->kswapd_opportunistic_compaction ==
-+		KSWAPD_OPPORTUNISTIC_COMPACTION || (!current_is_kswapd() &&
-+		 gfp_opportunistic_compaction(sc->gfp_mask)));
-+}
-+
- #ifdef CONFIG_MEMCG
- 
- /* Returns true for reclaim through cgroup limits or cgroup interfaces. */
-@@ -412,7 +443,7 @@ static unsigned long drop_slab_node(int nid)
- 
- 	memcg = mem_cgroup_iter(NULL, NULL, NULL);
- 	do {
--		freed += shrink_slab(GFP_KERNEL, nid, memcg, 0);
-+		freed += shrink_slab(GFP_KERNEL, nid, memcg, 0, false);
- 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
- 
- 	return freed;
-@@ -5053,6 +5084,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 	unsigned long reclaimed = sc->nr_reclaimed;
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	bool opportunistic_compaction = sc_opportunistic_compaction(sc);
- 
- 	/* lru_gen_age_node() called mem_cgroup_calculate_protection() */
- 	if (mem_cgroup_below_min(NULL, memcg))
-@@ -5068,7 +5100,8 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
- 
- 	success = try_to_shrink_lruvec(lruvec, sc);
- 
--	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority);
-+	shrink_slab(sc->gfp_mask, pgdat->node_id, memcg, sc->priority,
-+		    opportunistic_compaction);
- 
- 	if (!sc->proactive)
- 		vmpressure(sc->gfp_mask, memcg, false, sc->nr_scanned - scanned,
-@@ -6134,6 +6167,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 		struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
- 		unsigned long reclaimed;
- 		unsigned long scanned;
-+		bool opportunistic_compaction = sc_opportunistic_compaction(sc);
- 
- 		/*
- 		 * This loop can become CPU-bound when target memcgs
-@@ -6171,7 +6205,7 @@ static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
- 		shrink_lruvec(lruvec, sc);
- 
- 		shrink_slab(sc->gfp_mask, pgdat->node_id, memcg,
--			    sc->priority);
-+			    sc->priority, opportunistic_compaction);
- 
- 		/* Record the group's reclaim efficiency */
- 		if (!sc->proactive)
-@@ -7104,8 +7138,14 @@ clear_reclaim_active(pg_data_t *pgdat, int highest_zoneidx)
-  * found to have free_pages <= high_wmark_pages(zone), any page in that zone
-  * or lower is eligible for reclaim until at least one usable zone is
-  * balanced.
-+ *
-+ * @kswapd_opportunistic_compaction is the aggregated hint produced by
-+ * wakeup_kswapd() for this run; it is propagated into scan_control so that
-+ * shrinkers can skip costly work that is unlikely to help compaction when
-+ * all wakers are failable high-order allocations.
-  */
--static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
-+static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx,
-+			 enum kswapd_opportunistic_compaction_type kswapd_opportunistic_compaction)
- {
- 	int i;
- 	unsigned long nr_soft_reclaimed;
-@@ -7119,6 +7159,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 		.gfp_mask = GFP_KERNEL,
- 		.order = order,
- 		.may_unmap = 1,
-+		.kswapd_opportunistic_compaction = kswapd_opportunistic_compaction,
- 	};
- 
- 	set_task_reclaim_state(current, &sc.reclaim_state);
-@@ -7338,8 +7379,10 @@ static enum zone_type kswapd_highest_zoneidx(pg_data_t *pgdat,
- 	return curr_idx == MAX_NR_ZONES ? prev_highest_zoneidx : curr_idx;
- }
- 
--static void kswapd_try_to_sleep(pg_data_t *pgdat, int alloc_order, int reclaim_order,
--				unsigned int highest_zoneidx)
-+static void
-+kswapd_try_to_sleep(pg_data_t *pgdat, int alloc_order, int reclaim_order,
-+		    unsigned int highest_zoneidx,
-+		    enum kswapd_opportunistic_compaction_type kswapd_opportunistic_compaction)
- {
- 	long remaining = 0;
- 	DEFINE_WAIT(wait);
-@@ -7385,6 +7428,11 @@ static void kswapd_try_to_sleep(pg_data_t *pgdat, int alloc_order, int reclaim_o
- 
- 			if (READ_ONCE(pgdat->kswapd_order) < reclaim_order)
- 				WRITE_ONCE(pgdat->kswapd_order, reclaim_order);
-+
-+			if (kswapd_opportunistic_compaction ==
-+			    KSWAPD_NO_OPPORTUNISTIC_COMPACTION)
-+				atomic_set(&pgdat->kswapd_opportunistic_compaction,
-+					   KSWAPD_NO_OPPORTUNISTIC_COMPACTION);
- 		}
- 
- 		finish_wait(&pgdat->kswapd_wait, &wait);
-@@ -7441,6 +7489,7 @@ static int kswapd(void *p)
- 	unsigned int highest_zoneidx = MAX_NR_ZONES - 1;
- 	pg_data_t *pgdat = (pg_data_t *)p;
- 	struct task_struct *tsk = current;
-+	enum kswapd_opportunistic_compaction_type kswapd_opportunistic_compaction;
- 
- 	/*
- 	 * Tell the memory management that we're a "memory allocator",
-@@ -7458,6 +7507,8 @@ static int kswapd(void *p)
- 	set_freezable();
- 
- 	WRITE_ONCE(pgdat->kswapd_order, 0);
-+	atomic_set(&pgdat->kswapd_opportunistic_compaction,
-+		   KSWAPD_UNSET_OPPORTUNISTIC_COMPACTION);
- 	WRITE_ONCE(pgdat->kswapd_highest_zoneidx, MAX_NR_ZONES);
- 	atomic_set(&pgdat->nr_writeback_throttled, 0);
- 	for ( ; ; ) {
-@@ -7466,13 +7517,18 @@ static int kswapd(void *p)
- 		alloc_order = reclaim_order = READ_ONCE(pgdat->kswapd_order);
- 		highest_zoneidx = kswapd_highest_zoneidx(pgdat,
- 							highest_zoneidx);
-+		kswapd_opportunistic_compaction =
-+			atomic_read(&pgdat->kswapd_opportunistic_compaction);
- 
- kswapd_try_sleep:
- 		kswapd_try_to_sleep(pgdat, alloc_order, reclaim_order,
--					highest_zoneidx);
-+				    highest_zoneidx, kswapd_opportunistic_compaction);
- 
- 		/* Read the new order and highest_zoneidx */
- 		alloc_order = READ_ONCE(pgdat->kswapd_order);
-+		kswapd_opportunistic_compaction =
-+			atomic_xchg(&pgdat->kswapd_opportunistic_compaction,
-+				    KSWAPD_UNSET_OPPORTUNISTIC_COMPACTION);
- 		highest_zoneidx = kswapd_highest_zoneidx(pgdat,
- 							highest_zoneidx);
- 		WRITE_ONCE(pgdat->kswapd_order, 0);
-@@ -7499,7 +7555,8 @@ static int kswapd(void *p)
- 		trace_mm_vmscan_kswapd_wake(pgdat->node_id, highest_zoneidx,
- 						alloc_order);
- 		reclaim_order = balance_pgdat(pgdat, alloc_order,
--						highest_zoneidx);
-+						highest_zoneidx,
-+						kswapd_opportunistic_compaction);
- 		if (reclaim_order < alloc_order)
- 			goto kswapd_try_sleep;
- 	}
-@@ -7537,6 +7594,28 @@ void wakeup_kswapd(struct zone *zone, gfp_t gfp_flags, int order,
- 	if (READ_ONCE(pgdat->kswapd_order) < order)
- 		WRITE_ONCE(pgdat->kswapd_order, order);
- 
-+	/*
-+	 * Fold this waker into the per-pgdat opportunistic-compaction hint
-+	 * that kswapd will pick up at the start of its next run.
-+	 *
-+	 * The state is sticky in the "NO" direction: once any waker in this
-+	 * batch is order-0 or a non-failable high-order allocation, the hint
-+	 * stays cleared until kswapd consumes it. Only when every waker so
-+	 * far is a failable high-order allocation do we set
-+	 * KSWAPD_OPPORTUNISTIC_COMPACTION, asking shrinkers to skip work
-+	 * that won't realistically help compaction.
-+	 */
-+	if (atomic_read(&pgdat->kswapd_opportunistic_compaction) !=
-+	    KSWAPD_NO_OPPORTUNISTIC_COMPACTION) {
-+		if (!order || !gfp_opportunistic_compaction(gfp_flags))
-+			atomic_set(&pgdat->kswapd_opportunistic_compaction,
-+				   KSWAPD_NO_OPPORTUNISTIC_COMPACTION);
-+		else if (order && gfp_opportunistic_compaction(gfp_flags))
-+			atomic_cmpxchg(&pgdat->kswapd_opportunistic_compaction,
-+				       KSWAPD_UNSET_OPPORTUNISTIC_COMPACTION,
-+				       KSWAPD_OPPORTUNISTIC_COMPACTION);
-+	}
-+
- 	if (!waitqueue_active(&pgdat->kswapd_wait))
- 		return;
- 
--- 
-2.34.1
-
+Thanks.
+.
 
