@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B4ACD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACB7CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:27:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D94996B008C; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
+	id 8B3C66B0092; Wed, 17 Jun 2026 09:27:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6BE46B0092; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
+	id 88B2F6B0093; Wed, 17 Jun 2026 09:27:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C81D06B0093; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
+	id 7A1A56B0095; Wed, 17 Jun 2026 09:27:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D5B16B008C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1306B1C1DEA
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:54 +0000 (UTC)
-X-FDA: 84889479948.27.CB94868
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3FD3B8000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOOOjbBu;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781702812;
-	b=le5BGy9xChGR7W6dj5fQNYDp8hWgd2f34x54b8YnHr9lsjPAdb8uyvdqs/Lkm4IpDCMNQS
-	ahTlhbwjG5p1Etsb/7gdGelHZwDFrEo/RGJ6pR4+kib0ccW3IINtGx+s8WYqY818oQjknn
-	9y5peJtvAqdfEEEoAvNuX/LBcFR/YXo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOOOjbBu;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 572B16B0092
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:27:40 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1E56165FC0
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:27:39 +0000 (UTC)
+X-FDA: 84889481838.07.D1EB44A
+Received: from imap4.hz.codethink.co.uk (imap4.hz.codethink.co.uk [188.40.203.114])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F416740015
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:27:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap4-20230908 header.b=BhJJBEgU;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk;
+	spf=pass (imf11.hostedemail.com: domain of srv_ts003@codethink.com designates 188.40.203.114 as permitted sender) smtp.mailfrom=srv_ts003@codethink.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781702812;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781702858;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKfodi5xnv9D7a4lhvk6g2oXZZM8M2XRkN2sbgB7GdM=;
-	b=V5iF8lxi0cN3zppXIDoiO3a0ky5tELATzJcIdaiXoZQxzcPVLtaw8fNI1JBrS1uh/yDxwf
-	qA7mgvXCBn7hE8Lu6LudODZ5D46x+/RtPv5ZBRL79A6dnxNygxlO1DnQEbxINF7keWpPSa
-	dG0QszSNOrdVwt9Z8EoVO5j6slrq/iA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C83756001D;
-	Wed, 17 Jun 2026 13:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15A81F000E9;
-	Wed, 17 Jun 2026 13:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781702811;
-	bh=JKfodi5xnv9D7a4lhvk6g2oXZZM8M2XRkN2sbgB7GdM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HOOOjbBulayar72jE4PpeQpr/J5jBb5E597NhJvvldz9BFi/vpLpbkSjkn3OCDQoC
-	 hH//q6U1KLMN/hqh85obvPW5dqxOZ3zFeJdPLE3BCeFJAediI26qg0h9EhJRdEg3+r
-	 +pU1uk+SrsWBLEMiBXTHZQGyuzkz+6vt6JfaT7y8/pDa0mmX7aYcyUYJKuA1KOkMv3
-	 0dAkKNziPDxpza9taDNGG85fNEwcA7S3+4a+gqosFi5zUWwfeGotg6BkdncqGfIOVL
-	 YUegj20Pj3RyTW7HgtvBBf6Kdz6oy9nuMizfohVWX+bDolo/+MN4Vz/iaZISjp15MX
-	 SQ1VR2h+ua5Jg==
-Message-ID: <cdf8ac63-4e1b-43e2-becf-97dca47f4260@kernel.org>
-Date: Wed, 17 Jun 2026 15:26:48 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=w8mflvKn0NMwTjHgJdfiDm6HNouGMiUgC+mp/yHQj9c=;
+	b=ybAPm/kIKGMFGfte+/l4deWBENLuOvITaxvfxs35M4irbsUmPN/U7e9XK8vBicznrOFKaA
+	pa37zGFCIFprpII3MoHBBOSIt5WV6nYAAuRlnjUfdZMoTCcIcALeSbUBU7LUfc6QrqMpSt
+	GCYMjVQFIYMYD7QGCKGCiSvYNph664U=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=codethink.co.uk header.s=imap4-20230908 header.b=BhJJBEgU;
+	dmarc=pass (policy=reject) header.from=codethink.co.uk;
+	spf=pass (imf11.hostedemail.com: domain of srv_ts003@codethink.com designates 188.40.203.114 as permitted sender) smtp.mailfrom=srv_ts003@codethink.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781702858;
+	b=L7xdLcrJG0pQRqHx4/BXWq3Q+YEotWN3bGU+WQvdo/e3K9hEjvx3NdJmVTytWJRc0NT1C7
+	+Yku+sZ2yXhka7KoYjL0XkTu2DQPLdpEb8dtxsJzOIW0rPLxxPiyt8ls808g3Rta8W18L3
+	/uKJLniHXMW5sOIErG6kOw5FjSANi0I=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:In-Reply-To:
+	References; bh=w8mflvKn0NMwTjHgJdfiDm6HNouGMiUgC+mp/yHQj9c=; b=BhJJBEgUkQtGyh
+	h3uskq6LDevhoOYkBumeSWmNnXczdCEJ/itr08K3UW6TEdhxQ7MyiQ9rmTf7Eyas3GVfmaMT7ajyv
+	7RivJR4lERk4RkOsy+JeBCnXg+NnNG10c/4GVrQTZnKl43INWhnDCLI3MyJ3S/Hw7KxJ6wLM9OU/o
+	a8/cOkoDByhRCKqczmKK/WTA975dAJYPviWxpywa4BVvTAoZzZPiVWoJq8bXrWFDnSt9cIRRfpsZ/
+	TG41bwav2YNrv0ueCvJgGReNiFqATZqUtTN/R4Z4IrJjwOyrIf1o8U5fYDUtU1I+dWYaisBYbJ39z
+	G/JB4gfOxoQQrZEc8buA==;
+Received: from [167.98.27.226] (helo=rainbowdash)
+	by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
+	id 1wZqIi-008fSe-GT; Wed, 17 Jun 2026 14:27:28 +0100
+Received: from ben by rainbowdash with local (Exim 4.99.4)
+	(envelope-from <ben@rainbowdash>)
+	id 1wZqIi-00000004Yfe-15Ox;
+	Wed, 17 Jun 2026 14:27:28 +0100
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Subject: [PATCH] mm/page_alloc: include <linux/vmstat.h> for vm_numa_stat_key
+Date: Wed, 17 Jun 2026 14:27:26 +0100
+Message-Id: <20260617132726.1086576-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.37.2.352.g3c44437643
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] mm: mlock: use walk_page_range_vma() in
- mlock_vma_pages_range()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
- <20260617082622.3397584-4-wangkefeng.wang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260617082622.3397584-4-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3FD3B8000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: 1r4k8txji83wp1msuky11ars4domgp9a
-X-HE-Tag: 1781702812-165880
-X-HE-Meta: U2FsdGVkX18UUVvPN/H4+Vx4T8y03sY96S6fi/oJ9dMVQWW7vXRM5zGXVIOszZzYe4tAMD9jH0+kjdvqCunWthy29f11yGuPyqJqOYreMOvbB0K93D+iaLgqwkAGZUJJVU7tCsEBSoZp8339ByxnjzV7GlXzD9NU3OkBt9GXNMA9+o8/8uSJezYCOc1o3+I5JKs4RDmKWnjv4krn7eb9XzY1IRe9YlBOGUi8DCNsr5l942PcLRb9oXD/nmQb1vJ+DIEMqFc46ybxJ0zIoHn0Q5MuRdMbX6d87iGLE4XOQPrIINN0pxKLZ24EERDKX0mp0dwy5B6A0JapMjCAc3JjAPL3Fg914m1ENYMO2oc/IxCb3eftHggJS/lULj5ClVoqcPkeNdG8z6dq8VH8MJ18dpAs8f0J3vJX1WNyWyDHI8YqMcCrgF4N4TjIqKZWAZXHqWxGy+lE8kaeUV2dxH9hHFTT1+tNnOpWVmdl52QOWRXKLMtmVEKnz6bi2f/H4sELqAtZ16m0ooXnkYGvYlRb2ablc01C1XECaWfS5w4UAe3JiE0h+qA8pxwSJ3r83mAuQNKSXTFglflQvPwZbiptid0n/0n9otk8CQ6h9GbWuU2+lp2HBPAYe54e0UK2BdBiDseWZ6x9BADTD2pUFWzoBUbsUnsNCHrvdCEa0T5cNIF+/3TmiBQwW3adCzMNSa4FCahLDuoHP2QV/0mT3VpJjgeLYJxuMy+0QnfspoYPuBtY8rlr/vs4GjQ3ciHh2ndCVP6mK9D6rgg2QllOWwyqNotGNiZw3XFnsDJto0iqzYjGr2T1+OWjvdunATfJW3Xz1DuziCARMOF7uFLOQgxSQZhJs3MbruzSoVJrMs0JqFhdrDwHZUY6QBkfHwzb2/BV2ZWHVGEQXYGNZJ8L6S3JrhKLBq82aWb8pR+fLp2gBaRxetl/6A6u03IJMQwhejomfa5SXexVi3mcCK0tjVd
- RLMkOfA8
- F9TwUHAdHEVeY2299I5Gxc0nL1EsJ/G1IgJKI7JUShQvKRoM5E7za2sUPq7Vo+30HiinonDwYKurU9YYs4BDTHmqxmJqW7/YZ0WnjwkFjoCnoUtrNuwAvf67RM+6YZR70mnilMphR4gTHf8It/LA+8jNhtxhj15MwuxEWdpJbrqu7bpck/5CWyhyAif4ntJqMzZ/7MgHy8ObERxH+0raQAjJQHuNWiee0l97ZPgbuuhoarTju3fL+X+KP2K1MnVwSAXE8u+jblE+MX2e1Em/5XbS4iLldL9A2vTZRzUCfu37k9EEjWFfFJN9api9tUr8CySt467/zjxHWEeVlDcrckVCZIvpHwOz7yj7X
+X-Stat-Signature: jbpma3tesat9887uf9w36fmjo9ccfhcf
+X-Rspamd-Queue-Id: F416740015
+X-HE-Tag: 1781702857-435388
+X-HE-Meta: U2FsdGVkX18/Yjvj+Ufoi7ve92uqcBnhsjAr32HpSQWaRo2z5BWYCXbVpFhTPmZr2sDYMcYyfYuHchapJ19lWnM4uxT3t37njDe9kg9VQXZ5nW3e/mYW3P78Nr8yM+HuH6Ge+QY9Mk3Owy6ZrOkZiU/Z91M7L3oRFaYiBwuay6nsmyPahK95MwFcQVIjryR/B5zSIxm/pmhH3ljPKffcAVcYNNdU1xkVZsKW2EOFYNEkUxGA1wpAiI0wC5udTh3CAVFYb3MxHD29477Oh4AINqq8GyZF3ZvxBUnUyrzyEb02p7NAhP0IFtRfitzyj39lQc7nuyE7oM5+Gi7CLAnAy+4MEQtwTv8rPfJ+d/gtE1PQZ+yJRh/9rRPEXxA5ZMNnN4Y9g/vnb09wBMEr5ZaXtabxbvXStqFtcwwMrJY0gIpByYfbJaC5OA5uFNU2L3OQ6/gWj5HoGFqFvgUolL7XvClkOTcuaNnpWq5yf5RhRZQEGhUG7L992b9DjDmzQe6/2BqYp2dnhwx+zJiwYZNixEHbphDjJ9Kgk0u+xuHm0R1wJyXRHFU2hxdrZg2A79K+jBTbUFkXrnSEWvQcqgUtDsgEwuWHLEpe85sd4fQX0SzI9nvBi2u/9V5Y210K9ou8Ue77p0XPgLaeF88LN6VYKZXYsPBT4HiZgyu2FF22CCSpcwuMNXXmsUJoO25GzU8+SqdecL1paWQQQYwASP1pNY4+Y6FZI6k5x8GktQ/FAr4ncLuCRaxQtX0EgCegokuEYJXJ2QnA7Z6SOMGsKKAJD85tDIozwaxUSF1xBK12HhJ7h/p/7flwI0Mj3LX1nXMmG9kp3hh2NQa3VLyHb56Y1M/96G/mwJHw8tcWnKm/tXiZlQXFWEPUt1TC0slGcJEBHD6qGHD5BNMIzaaXxcrtG3mq1UpkpxbOQviVhmqTQ2QZNJwwmi148ZPJbbeuKkz+0R8M0FUA2MBS8jlgcDW
+ /pt7BN3I
+ mpPJSwqdxs3lF3Gvfur90vZyJdNyf6LGlC+E5Kg36XrPlEC9n8hu4xfa+Bs5tYylwLeEltBYagCsr6iArZ0TSSLWIB3m6mK0bkp9585ftA+vQvDL9aK1AFkrq9ISz5Rdc/UtZEqxtuhQG6AFHmO3+Kpve8RbocnYRukcz5Qh9Iw1Q0OKKNGGFrx9EVwr7gWQE10JCvXn9JoJqES/quzqHE82qdezVTujuRR+vG6WhP9yT8kSKH0DvAmHR2j/9Z6Pi6htLoh6397Ip7icmi8rorRN7g6fsYvHuMkwcnzmtdJAyQcYq5WGfuBKuq5UHSWo4iWrvsJjxlKqkSgUROpYFtPBqUWVi6qUMwRE2uEj0JmvC0sambqKB975v7sauyj9znITxfrMj5HiSdB8sYqqyj1XdzRHMEArgzZN0ARExG25A1Dc4O0+L+pGNBuGJn+Oay4kxyrL1Y3fQ+cnCSDcjvNo74i870Tm7vK13KNJYNDK8Fi+HeK4F+r9FLN4cDhx9cz/0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,40 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 10:26, Kefeng Wang wrote:
-> The mlock_vma_pages_range() uses walk_page_range() to walk the
-> page table. Fortunately, the caller always passes start/end that
-> falls within a single VMA, apply_vma_lock_flags() iterates per-VMA,
-> and apply_mlockall_flags() passes the whole VMA.
-> 
-> Since there is no .test_walk in mlock_walk_ops and VM_PFNMAP has
-> been filtered by vma_supports_mlock(), it's safely replace
-> walk_page_range() with walk_page_range_vma() to eliminates an
-> unnecessary find_vma() lookup.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  mm/mlock.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 8c227fefa2df..97e49038d8d3 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -446,7 +446,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
->  	vma_flags_reset_once(vma, new_vma_flags);
->  
->  	lru_add_drain();
-> -	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
-> +	walk_page_range_vma(vma, start, end, &mlock_walk_ops, NULL);
->  	lru_add_drain();
->  
->  	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
+The vm_numa_stat_key is declared in <linux/vmstat.h> but this is
+currently not included in mm/page_alloc.c so include it to fix
+the following sparse warning:
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+mm/page_alloc.c:165:1: warning: symbol 'vm_numa_stat_key' was not declared. Should it be static?
 
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+---
+ mm/page_alloc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d49c254174da..58aa960a8dd0 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -54,6 +54,7 @@
+ #include <linux/delayacct.h>
+ #include <linux/cacheinfo.h>
+ #include <linux/pgalloc_tag.h>
++#include <linux/vmstat.h>
+ #include <asm/div64.h>
+ #include "internal.h"
+ #include "shuffle.h"
 -- 
-Cheers,
+2.37.2.352.g3c44437643
 
-David
 
