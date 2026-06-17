@@ -4,125 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAA9CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:53:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89908CD98F0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:00:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0566B0088; Wed, 17 Jun 2026 07:53:51 -0400 (EDT)
+	id 639E96B0005; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987DE6B008A; Wed, 17 Jun 2026 07:53:51 -0400 (EDT)
+	id 5E9CF6B0088; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89E526B008C; Wed, 17 Jun 2026 07:53:51 -0400 (EDT)
+	id 4D8B06B008A; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FE806B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:53:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA8671C1F6E
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:53:50 +0000 (UTC)
-X-FDA: 84889245420.17.2068F7D
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf13.hostedemail.com (Postfix) with ESMTP id F170920003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:53:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GEGwopih;
-	spf=pass (imf13.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781697229;
-	b=ot+PELSgHkzNmzIDEucnALgZOHZe1GCdWfLzza8jn9oyhiu/XPkYZv6Ru9Y1MsFdN6IjCj
-	vRUUPm4EHyorl+ueU1Li9xQOo5OXGEn2knNK+1V75cPEC4MBj8NSnmAQjD7So/ghPqyk6G
-	ntX5M1vi7gHUNGD+HipR4MC0r2LN6Yk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GEGwopih;
-	spf=pass (imf13.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C966B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 928AD1203E7
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:00:03 +0000 (UTC)
+X-FDA: 84889261086.26.75D97AB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CD6ED80004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:00:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzugZWjj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781697229;
+	s=arc-20220608; t=1781697601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=WfOCgBUYMvXbl1f8j58WJcsxpt1QKz3Glw/S1uy49Es=;
-	b=hrcXsdB3sSeyF/glr1qJ5xyr5bS5MYZ3kSequ1r24506FPDbRtXvpY800wQxQaTWr5Krfv
-	jqU/nScMq197xs8NpjlSE90C9ggC1GoJgwQV3gjIObHvNlFe/ff5oJoV4laWsaAQYGJTXo
-	O6shg0fl+X95W25PRZO02Nb/n+ajU+8=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490aebf33e9so27141315e9.3
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:53:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781697227; x=1782302027; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WfOCgBUYMvXbl1f8j58WJcsxpt1QKz3Glw/S1uy49Es=;
-        b=GEGwopihPa7tXW5Ad8jv82ikcY6ABL12tRlWmFgVUp124DrUrJMUO8fl8LL9HUUqR5
-         /3AxEXYXKgDBwnmGI0wqgIrNXeLrb5jgwc6uwKCKCTKN0aG7KRoTd6BJqFZvqVgM8Cet
-         sjWaDgAerHNjZuFY9LvzzHDcgjf9T7p7l6DUoL76iiKlIae/LMPha5zD1SsEknAXtIDl
-         MoqUvsXAyBzyh6rAon78kFXe9wx+KKrqGe3TtAhpAJ8KWtDldSPkHmbc80hwT6zLT0Wi
-         q2wsSpeeA/bBjj6uc1J8M9dCXA2zG5VEjsc4NT4+ntGbiMJcdTvbUGVR3HzIrtQleW4A
-         GkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781697227; x=1782302027;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WfOCgBUYMvXbl1f8j58WJcsxpt1QKz3Glw/S1uy49Es=;
-        b=bdp2r+uOgT1ohKSA7rIu23dDM9PVXOefp+1Bu4fBTe7uMuqnO9L1/uY5ajaUIhIF7r
-         fCc4dsFEi9EZirv71UQjQuDXBP1obVJQ+ulUHY8AlxPI7PKqI19TYj99UDS8SABkLTnG
-         RjAArpkM+BBB0Aza58jKma6pG3JzCfzqsh+mJf7riFjcW86il17NkRfwWy91ffLNadqy
-         SV8hFKZqDzvJ+OTri5pumwMmBTGN2iNyrqeobVWLG2lH9FS4rX0KL4riBvQ160WLJNCU
-         ajJ76jw46tmlJKg1NAc4G0G12qQsdfEYLdpmrxQrqOJqPqgKS1/uSbv8aYxgadts0Aey
-         FQkw==
-X-Forwarded-Encrypted: i=1; AFNElJ+/G30M8TCfQrgvde1kDpNRqvZa+diuiTD6SV+CUXxMz4pj9slmCGfrC0VQ6YpdHTc5H6odJtceNQ==@kvack.org
-X-Gm-Message-State: AOJu0YynV/WAFt4No+E1xcgW2A7PsV/rF9kxPoPxeglXYVLPrE0Yl6LQ
-	Wg/U3NKmHCPV+7qrdYIISre0ervuy+OzXCTZDbkhHSE6GCYeJrGY1/hZ
-X-Gm-Gg: Acq92OFU1oKvia/ZZpAc89PJywEfa4QjYywxzvaxzdtLYu0tACqc4hQijejuHmIeGCd
-	cmmTPSUVUSXPGAcE0PO/4fBHgwaVaON6p7eAwHATDWkixehwXAsvuNLcj9UKOBY0mmb4/DNdkiN
-	U+TuHRJX1YKSKgH//G3bZ/DPNHPi+xhNOlVIjYxddbPJCgEWrZPX1f7REKV26vhPZqnCyrDWWTj
-	jCwscNn2ZvL9nhK53CKLgRGLxQEgr/BXtZla6NYAB2XtEE1KAfxDuvQ9KcgXGKsVtE1veOtEEdw
-	rdUivc4wuiGjyGUX/HTZN73fjuLFmbU7dVW4nD74rEwGGSl4eB3jhJXIpB72sTjI7AVjFMJ8asQ
-	PzwVVZDAGv7kddbQG6ipBeJMtc5GbpA+q3z9vguylefYJ44dLcrMF8AelXoQaSVaRESjqdBBpcx
-	XqtqICNib114og2RxRHgbsfM/RxOYUJj1nxL42BVGfWMCMoNlw6AHeaL0li2fcwky36oHHba/9
-X-Received: by 2002:a05:600c:8b43:b0:490:bbc4:76a6 with SMTP id 5b1f17b1804b1-4923341fdb8mr72118915e9.21.1781697227028;
-        Wed, 17 Jun 2026 04:53:47 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a58becsm143702955e9.7.2026.06.17.04.53.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 04:53:46 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: akpm@linux-foundation.org
-Cc: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com,
-	David Carlier <devnexen@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH v5] mm: pgtable: free kernel page tables via RCU to fix ptdump UAF
-Date: Wed, 17 Jun 2026 12:53:42 +0100
-Message-ID: <20260617115342.156775-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pB4Abb2UOhjdAhAHuvf3a1nJJ405s5Ch33hn7iCDN/o=;
+	b=44M0Vhxr33MvB2jUSGRmvsalBn/fwDNygOHVYPR2wXaGIeBrP1TtRNrTSPOzz0h45sXjQi
+	kbS+lpJ518Xy18DBs9DO9clhPIbfL0WX/qcHDY2UQKJ0nRsRzqdNsIe2qCZUp00JQB9b7u
+	/Pzpy/XaX6fpq8KZzsutOclpKiaD89k=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzugZWjj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781697601;
+	b=Gtfj6JJO8LrlC2JZDMSIab+6To6TyU6BxThw4/WqSru0WfjKP0+YEWW1nJC6zIUJRExqOm
+	OZOT65/MoQsmFwjO8exeu4SKxskWQ5anNtmErAV1JR+lynx1wicQalyoiVxMNUg/WVAkO9
+	Nb1ddnWrvHEKcyjZsHQDAa5hiMTrGuw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 564FF600AB;
+	Wed, 17 Jun 2026 12:00:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB031F000E9;
+	Wed, 17 Jun 2026 11:59:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781697601;
+	bh=pB4Abb2UOhjdAhAHuvf3a1nJJ405s5Ch33hn7iCDN/o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bzugZWjjZadfXWZKAbRexvl2j+QC3fgPmjWU+IdcOqaSJOKm/uIo+Jb91BmQ3t7e1
+	 aWrHm6HFM99ta8/H45a6g/Jjoxebz3uM3CkvXYm+u07cGhXdTSbP9V2tLWhEQGIgLV
+	 3Qz4zk3dVYY/iF+2K+AxnqLx8RPFrsS89GtyMg5CI3NP/pJPG1pyzSmgVHNqSQ+83y
+	 Q+9EpQOiJ7rYhpNJyM/7COaY1L3MJLxws1KIPfrzrL/csluSGk1ikLAr6YzkjnIxU0
+	 9f+IbVi8K98e1eq3oFOGoGrsIU3Mv0srQnxmr/5jZJwgXriYIOd5qadOcelzxAaimO
+	 vzNFmYLcTcVhA==
+Message-ID: <8a8240ad-049f-4bf8-af65-d5bab2c19024@kernel.org>
+Date: Wed, 17 Jun 2026 13:59:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F170920003
-X-Stat-Signature: 45dr6qusqmzazb3mg9kdffmqm7rmcfm7
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] mm/vmscan: introduce folio_activate_locked()
+ helper
+To: Zhang Peng <zippermonkey@icloud.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Qi Zheng <qi.zheng@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Zhang Peng <bruzzhang@tencent.com>
+References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
+ <20260525-batch-tlb-flush-v4-1-83789d6abc00@icloud.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260525-batch-tlb-flush-v4-1-83789d6abc00@icloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781697228-678374
-X-HE-Meta: U2FsdGVkX18GZcrG08dpm6+gbsVWcdh9wZEVy2Hc+exGKW+7DnsWuR2A8UUNPrzon9cJ3zELb+SanK8EV6a49g7aF0evJNZ3QiNhKr6ZwJlxi2da6WBYc1SY+7L/8vOPNyd/bKKrpnf0Sj/aX844LVassDYNG1GWDsVdxtzmt6rXjvZGgJjVoNb5fllH2jN9DyFzzE0Ea6yht5HVKgsOQ4n4KO45wGPzdw/VJfy6NBfFa6CXjQf4rC5PUgfY2NJx4iDzO5ot8oF0sPHIQXXztuKR+cfDpfz9NCutIEeJQIFIAd1srCXZGn1eGywxvr7JUHXt3hE5OLDei87bbHzrd4i4BcLS6qJKgOrXMFfOTSgfVqOTi9GIQdMjJCSgHK5M3QnfrKXHeqrbwuumQ2nugsFKDCjdv1Zg2zWLD1KNU1XdLFzOG8bFeVX0JvsEM5IwAuF3LbXfD14wzFPqkYR3gaC04BGWBp78/8niwRxiaMvAWotITLC8ApLdQv4zrbqiFFQDFoE/Z54nFvdNcvpYCC+VmUDaPwjesdwT8DlFj+/cmDbhT+qGA6XuZ+lYALHyQJZmb94Dp44f8LNa+Z5ueyHbWiOm6nGBkv8hm71i1/rb5ckC92CBAQRntPRpuz0XC+d1LEsO/0y/AcCToq3sSP5Z49s3SzEUSYA2yyMmV7ZHrlhC+oCl8ANUqOd1zjFq5xhDrmXtq3LAyyszd4SagUdABqeEVdrjU4Y5jm344xoral+YRSunHxe0M78Iv3o+j8dZozKrC/b/e4SfvUx2pqwu+Vce4xwPrLud8X6uOBJqZkrzsnx7X7r2mNYDj7PcLL97RBeqf2elhDqxMvCSf4mlpeIH9tXJu4BEGtTka1kWFsNe+CMRYoRPvAByAvX8fEfdYpFBZJBrf8OXXFEiq9LvRyCM1Mzon1iKrROsR2fIlzUADr/uvYNCS1LvLRJT3mEpFIfbTTmS0lhcNx9
- E/SEOS4b
- v7+HOCXYgDO6ESdqzhHSNKUoKAn2vxbqK4J+waNlOvgelSbKCnPwLYS5fPCRUOXxhNF1OfgvxkgQTVY0wdSa1YOlECIryYSa3+noWaMrau2XRTeZJgG3UScP4aof6KydSld4wE1QJqwgNSOC9iKUpuD3rW48O2Dw99DZzxhgSNAjHM8jZoGmFalZx0+zCGEWUrzvFVyhtJyNauvbAV0UADz0/Q+GfKGD4U8gEJz0TlZyAm1j4Vcgwh5/iSATiBsbqdhG5GXI4w801IiDuinZmNjl4Qayk/mJJJGlCeJ9/mOj78XrSMVa424eHMH8/IGksEiSoTea0wWSkALftGCpwXtbbt6qJCeO6P1Q1Ljgnup/Z7VKHR67h8YI+IMKkfbiZz1WyIm4oKJ1JXpQQc9ecpY4XtpJRoHyMQdl8NgzJKKcKtpG8YiYVxT3mBWoPa12NyetrGr7RCw3qZwFlmQURdvnFzOj2qu6Ij6D4GOH2HSNhzoq80xJUVrUxZ9vf3d2/L0Anhi6/UTTOfADuyXA8GIKVXiv1+a4VyIxLT6PFCjtinTI2s5iEusfKWD56+qWiPXdBhXF2LZbK6omm10cHDarmwl4R0ASgFI3OLFwOp1gw5nOIOUM5CccqMZZz3tzKFpnOPHcR+jEsRXra0eqR3eLWDg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CD6ED80004
+X-Stat-Signature: 9hce3way89q4s5ny58n116ygf6gtdr61
+X-HE-Tag: 1781697601-318105
+X-HE-Meta: U2FsdGVkX1915TIGC2R2fvcG8Mo06Cn9P3w8IfunEF5LGEXqsEtbY93leOK8lZfYEm/16B37DMDgrf/OVHUdldsBwwCIIitpkVPsxAqnauA2jrshjx22AWKPgLYODNNC0KEANB0EWkVP2jnSxGGUROV24WBCDFCWt0UwjqvyWY4abH3SKhBbz6nHy7EIcETp+iHZFB3wHxFK0DUQyIpY+VqzqzEYIJcHxWoQbfuB/UjAm8w76rTEKqvUaSepctYwuu+FZ739Zi1g5HRfKwqKNHpkQ3rGJSEOwnDVrLLb5DNzlQO64UuWYSPRRPhcvluW7iRE16lU5rUmL3c7hDCYuZbHEyKUfvAn8LYj3sgo8tbgF1nBfMRUMTKqrN7bRrVXpl5BRStPMaZ2PGgIic1XE4HCTIsv9YS3S8FGu10bcToMeJEhQd9j4eO5+ZjT71onAl5EzWAGM6uRpF4FJlxB6pBHWdcBCZXd7GZG+kUnDloA3amZ4rHUskkyeYCtD96/K7edFN0Aoa0KDECOl/2L7Tk1InhD3pUXZ+PXHmnlD3U2HnRIfUkAOiQkEBb9mo7IQckGwPSs7CCkKd9sYcKaUn+bvWYmSnIrJz5iadKp+mL3pqmForf7EoZZGOWLaBT/rlRUPvRlbN/Ypat9SfvD7DzYCcqDRCi/FVcsw5L5stmQd9vpvoyTiDYqFkoSMjlgTKKZp1Jnk2WZCViFNmxQIis5Ap6yytlFQ/8D3jgTuVwo3/U3DJE9G2SQxYUJEg+8mHKcU1Y9G5ZJmOM+VeE86j59Y+DNp6g0Y1l9HWyZm87KDaLiuihf7wc6+J52l6fd7x4QxfYh1U7ZvURGUdodfJVKe4uap2sL2dQ1hLFxGO9uwxMsrIXljxImNUKCS3Z4uqDFyD+1RTh8NcHJbYmDNZ44cPd7QO3Tohy9bH2KOc21SP1eilTcKHP17yIUkUPYJDr4bvwtnw7TpfhDkLr
+ uY23aLV9
+ DLCz5swRn7AhoqPYtiYaGLcmSl5B6rF4stBHpsd+GCJ4axHgSkaNkb73/PDVlLWPeq0QyFmH4B3lrLTgbROQGbpL6J7ZezUdx2BrlDDRySD82nKAV/F7x4kX0M6+hFm7BurnDMbjgQj+LAXoR1RlMEySKFn1nv1bqEU2R/UbrWPMNy9CPuaTGD35pPMgcFqNF+J4VesYq8bDcK7bZojVerwRkkzKad/DLibx7KY+rzjmhbFfXjoiiMGtj1wOQw2pS03MlwI1RxPACC5wSCb1Gy2lmfZaB+oSSnq5s7vDXkozqamakqzfPA5Ld/Q0UKPQoOfASXSZF9XaomrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,193 +147,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ptdump_walk_pgd() walks the kernel page tables under get_online_mems() and
-mmap_write_lock(&init_mm). Neither lock stops vmalloc from freeing a kernel
-PTE page underneath the walk.
+On 5/25/26 16:57, Zhang Peng wrote:
+> The activate_locked label in shrink_folio_list() reclaims swap cache
+> when needed, marks the folio active, and updates activation statistics.
+> Extract this block into folio_activate_locked() so it can be reused.
+> 
+> No functional change.
+> 
+> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+> ---
+>  mm/vmscan.c | 34 +++++++++++++++++++++++-----------
+>  1 file changed, 23 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index ca4533eba701..886d8b4843aa 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1050,6 +1050,28 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+>  	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
+>  }
+>  
+> +/*
+> + * Prepare a locked folio to be kept active rather than reclaimed.
+> + * Reclaims its swap slot if it will not be swapped, then marks it
+> + * active and updates activation statistics.
+> + */
+> +static void folio_activate_locked(struct folio *folio,
+> +		struct reclaim_stat *stat, unsigned int nr_pages)
 
-When vmap_try_huge_pmd() promotes a range to a huge PMD it collapses the
-existing PTE table and frees it via pmd_free_pte_page(). On x86, riscv and
-powerpc this runs without the init_mm mmap lock; only arm64 takes it, and not
-on the block-split path. So ptdump can dereference a just-freed PTE page,
-which is the use after free syzbot hit in ptdump_pte_entry().
+Passing nr_pages to this helper is rather questionable. Just use
+folio_nr_pages(folio) here and make the function less weird.
 
-The race is not new. ptdump walks the whole kernel address space, including
-ranges other code is actively mapping, so it reads page tables it does not
-own. 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
-only widened the window; the Fixes tag points there for that reason.
+> +{
 
-Every other walker works on a range it owns and is the only one mutating it:
-set_memory() on arm64/riscv/loongarch, the arm64 block-split path, the
-openrisc DMA path and the hugetlb_vmemmap remap. Nothing frees those ranges
-concurrently, so they cannot race and do not need RCU. ptdump is the only
-walker that traverses ranges it does not own.
+Do we want to add a
 
-Defer the free by an RCU grace period. pagetable_free_kernel() now frees via
-call_rcu() in both the async and non-async configs. The async path still
-flushes the TLB first, then queues the per-page RCU free. The page stays
-valid until any walk that may have observed it drops its RCU read lock.
+	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
 
-On the read side ptdump_walk_pgd() takes the RCU read lock around the walk,
-and walk_page_range_debug() asserts it with RCU_LOCKDEP_WARN() for the
-init_mm case rather than taking it, matching pagewalk.c convention. A walker
-either sees the cleared PMD and skips, or keeps the page alive until it drops
-the lock. The owned-range walkers are unchanged.
+> +	/* Not a candidate for swapping, so reclaim swap space. */
+> +	if (folio_test_swapcache(folio) &&
+> +	    (mem_cgroup_swap_full(folio) || folio_test_mlocked(folio)))
+> +		folio_free_swap(folio);
+> +	VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
 
-ptdump callbacks now run under RCU, so they must not sleep. The arch
-note_page() and effective_prot() callbacks only format into the preallocated
-seq_file buffer, and the walker does not call cond_resched(); the only
-GFP_KERNEL marker setup runs before the walk.
+While at it, do we want to turn this to a VM_WARN_ON_ONCE_FOLIO?
 
-Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
-Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
-v5: reframe changelog around the pre-existing race and range ownership;
-    correct the mmap-lock description (arm64 is the exception, not x86);
-    move rcu_read_lock() into ptdump_walk_pgd() and assert it in
-    walk_page_range_debug(); drop walk_kernel_page_table_range_rcu(); fix the
-    pgtable-generic.c comment; document the no-sleep audit of the callbacks.
-v4: defer the free in both the async and non async configs, not just
-    the async one. Move the walk under a named
-    walk_kernel_page_table_range_rcu() helper instead of open coding
-    rcu_read_lock() in walk_page_range_debug().
-v3: take rcu_read_lock() in the init_mm branch of
-    walk_page_range_debug() rather than inside the lockless walker,
-    which the arm64 split paths also use with GFP_PGTABLE_KERNEL and
-    can sleep.
-v2: use call_rcu() instead of synchronize_rcu().
----
- include/linux/mm.h   |  7 -------
- mm/pagewalk.c        | 14 +++++++++-----
- mm/pgtable-generic.c | 22 +++++++++++++++++++++-
- mm/ptdump.c          |  2 ++
- 4 files changed, 32 insertions(+), 13 deletions(-)
+(and can we move that to the beginning of the function?)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..79408a17a1b0 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3695,14 +3695,7 @@ static inline void __pagetable_free(struct ptdesc *pt)
- 	__free_pages(page, compound_order(page));
- }
- 
--#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
- void pagetable_free_kernel(struct ptdesc *pt);
--#else
--static inline void pagetable_free_kernel(struct ptdesc *pt)
--{
--	__pagetable_free(pt);
--}
--#endif
- /**
-  * pagetable_free - Free pagetables
-  * @pt:	The page table descriptor
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 3ae2586ff45b..c0be87580989 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -620,7 +620,7 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
-  * Note: Be careful to walk the kernel pages tables, the caller may be need to
-  * take other effective approaches (mmap lock may be insufficient) to prevent
-  * the intermediate kernel page tables belonging to the specified address range
-- * from being freed (e.g. memory hot-remove).
-+ * from being freed (e.g. memory hot-remove, vmap huge page promotion).
-  */
- int walk_kernel_page_table_range(unsigned long start, unsigned long end,
- 		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
-@@ -643,7 +643,7 @@ int walk_kernel_page_table_range(unsigned long start, unsigned long end,
-  * Use this function to walk the kernel page tables locklessly. It should be
-  * guaranteed that the caller has exclusive access over the range they are
-  * operating on - that there should be no concurrent access, for example,
-- * changing permissions for vmalloc objects.
-+ * changing permissions for vmalloc objects, or vmap huge page promotion.
-  */
- int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end,
- 		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
-@@ -692,9 +692,13 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
- 	};
- 
- 	/* For convenience, we allow traversal of kernel mappings. */
--	if (mm == &init_mm)
--		return walk_kernel_page_table_range(start, end, ops,
--						    pgd, private);
-+	if (mm == &init_mm) {
-+		RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
-+				 "RCU read lock must be held across kernel page table walk");
-+		return walk_kernel_page_table_range(start, end, ops, pgd,
-+							private);
-+	}
-+
- 	if (start >= end || !walk.mm)
- 		return -EINVAL;
- 	if (!check_ops_safe(ops))
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index b91b1a98029c..7a32e4821957 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -410,6 +410,13 @@ pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
- 	goto again;
- }
- 
-+static void kernel_pgtable_free_rcu(struct rcu_head *head)
-+{
-+	struct ptdesc *pt = container_of(head, struct ptdesc, pt_rcu_head);
-+
-+	__pagetable_free(pt);
-+}
-+
- #ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
- static void kernel_pgtable_work_func(struct work_struct *work);
- 
-@@ -434,8 +441,15 @@ static void kernel_pgtable_work_func(struct work_struct *work)
- 	spin_unlock(&kernel_pgtable_work.lock);
- 
- 	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
-+
-+	/*
-+	 * Debug walkers (ptdump) may walk ranges they do not own and race this
-+	 * free, so they walk under rcu_read_lock(). Free after a grace period:
-+	 * a walker either already saw the cleared PMD, or keeps the page alive
-+	 * until it drops the RCU lock.
-+	 */
- 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
--		__pagetable_free(pt);
-+		call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
- }
- 
- void pagetable_free_kernel(struct ptdesc *pt)
-@@ -446,4 +460,10 @@ void pagetable_free_kernel(struct ptdesc *pt)
- 
- 	schedule_work(&kernel_pgtable_work.work);
- }
-+#else
-+void pagetable_free_kernel(struct ptdesc *pt)
-+{
-+	/* Defer the free by a grace period; see kernel_pgtable_work_func(). */
-+	call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
-+}
- #endif
-diff --git a/mm/ptdump.c b/mm/ptdump.c
-index 973020000096..50cd96a33dfd 100644
---- a/mm/ptdump.c
-+++ b/mm/ptdump.c
-@@ -178,11 +178,13 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
- 
- 	get_online_mems();
- 	mmap_write_lock(mm);
-+	rcu_read_lock();
- 	while (range->start != range->end) {
- 		walk_page_range_debug(mm, range->start, range->end,
- 				      &ptdump_ops, pgd, st);
- 		range++;
- 	}
-+	rcu_read_unlock();
- 	mmap_write_unlock(mm);
- 	put_online_mems();
- 
+In general, LGTM
+
 -- 
-2.53.0
+Cheers,
 
+David
 
