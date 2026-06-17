@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1931CD98EE
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 09:19:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD91ECD98EE
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 09:24:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9950F6B0005; Wed, 17 Jun 2026 05:19:14 -0400 (EDT)
+	id 66BE96B008A; Wed, 17 Jun 2026 05:24:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 946686B0088; Wed, 17 Jun 2026 05:19:14 -0400 (EDT)
+	id 61CDC6B008C; Wed, 17 Jun 2026 05:24:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8836F6B008A; Wed, 17 Jun 2026 05:19:14 -0400 (EDT)
+	id 534C66B0092; Wed, 17 Jun 2026 05:24:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A4866B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:19:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C766712038F
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:19:13 +0000 (UTC)
-X-FDA: 84888855786.14.0C50E6C
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D80F040011
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:19:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QPy5fbS0;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 233116B008A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:24:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 782AE8D5AA
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:24:56 +0000 (UTC)
+X-FDA: 84888870192.12.C7000A9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CD62740006
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:24:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVKZCXUL;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781687952;
+	s=arc-20220608; t=1781688294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMQGqpgSC5EMLyUBnCorVPFjA76iXNC33Ltwj1O5yMQ=;
-	b=1HR+ItMj5ggelF39FYgEmnj4OsAqXgKZjhyAwTzDckF8q0+fI0zbTmcrrG2HFZIURMIagS
-	FetGnIXFXUKCp9ycXGpd/V1wlbd4ezfV1jioIU3PH41xMoy+0K78kYdNmDiveF/6LR5jvH
-	f2fHFJdNBq92IniSoY7Ux8oG3RQOD6A=
+	bh=ukDROeDwzr3ZoL8vVJ3NTzkwU232sE6vLyeqP7y78jw=;
+	b=TpxxNnOgN0Zy3A9zmp7dVYBRpLgyAPGho4c59F3/bd7wSQRx3Kn8YcBiAQqZgWLwAbelFE
+	wc3RMZB1Z+KrDzTS554qd4QXRjJpHuYpxAzWl/PzzTaUr8RE4V61GsbVWbG+4S0PiUC3T3
+	E4o1HJdvwK5OQAwxWmjqm+NRh5WwWqk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QPy5fbS0;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MVKZCXUL;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781687952;
-	b=Ju17mpfCI/9/vxKIkjo1At0R/fsFEkl4aqS6DtbbhjIjZ2pNGzf3A9lDPWHXqTfyewCN4M
-	BD547LM7CI+oUzYNF+6orbaq//+mQNe9iLT4rWjBGOCyP66ZqRJ8hdLGT4Hp7Z+y3VLgjO
-	BdVh3krN/dBm3NWC8+mxxIbBuJ+BiCI=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781687950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lMQGqpgSC5EMLyUBnCorVPFjA76iXNC33Ltwj1O5yMQ=;
-	b=QPy5fbS0RybOo1ITfmRGYOxj37GMmK1I1T8rjl+fDmd6rf2JhYAMwF9D5oAvzGpAGOTjmP
-	veiggTaNCIb8k2GPskVwl6CCKSfXJtrbVE2aLN4iYda++M3j6OffFni1+oWG7C0ojDvSGc
-	dukv9z/KDBkRJpbWj8PcGFu2gt2rE/I=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH] mm: shrinker: fix shrinker_info teardown race with
- expansion
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260617085658.27096-1-qi.zheng@linux.dev>
-Date: Wed, 17 Jun 2026 17:18:07 +0800
-Cc: akpm@linux-foundation.org,
- david@fromorbit.com,
- roman.gushchin@linux.dev,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D326325D-79A4-473F-9C63-B875176F378E@linux.dev>
-References: <20260617085658.27096-1-qi.zheng@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D80F040011
-X-Stat-Signature: tsftwduxbwzhown388bobr856hmpbx8o
+	t=1781688294;
+	b=ijtq6sQaykxCmLXM7DSsFpaYA6s2M9m9zseI8R4ZYT76k7OLiC22LJ3llrY8ZomQS+UhWM
+	Y0ptmBG0uP0cIRU52V7m6u5FRYP5S8EMH+b9v2wExX3g9JCocvHaI8DzAnDDDjn8Mi8NPx
+	upwd1Owx3gKtke3vbM+4fXBNNyRRrlo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 29026600AA;
+	Wed, 17 Jun 2026 09:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E2B1F000E9;
+	Wed, 17 Jun 2026 09:24:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781688293;
+	bh=ukDROeDwzr3ZoL8vVJ3NTzkwU232sE6vLyeqP7y78jw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MVKZCXULeCc3WHehHQnprURu8tAPLhNcCq/k4c0vi55Vk42y2WoRo6luW4D+o8FUK
+	 K8h8MeEyeIg2MhIiiLPh8kRC9LPQynCKhfxaA+aCu+5pUoGLpqSbXAyWlCIOKwLVQb
+	 Aec4MI0xzeskZa0VK89aplGsm2o9JhqXjG3GzxyNREu0Yn5ZJdf4z8/ajjeqd/qLk4
+	 KZU1/YWovxiWjFxAA+xx2glO8JnUrPStRAiLjKXSikU1+R/91EH3d+fK119lfz9JLZ
+	 J0cHUT37Qt0OZHEzXwwNnTOErU36KY60pTySsx75q5njKlFylGee/J/n5grhzSt6CU
+	 UiF7wUqT6Kuuw==
+Message-ID: <a80d7409-5a58-48c0-8ccb-b568b3e3a1f9@kernel.org>
+Date: Wed, 17 Jun 2026 18:24:44 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/15] mm/slab: replace slab_alloc_node() parameters
+ with slab_alloc_context
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-9-ce1146d140fb@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-9-ce1146d140fb@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------tWEfSKJRdmtGLwcIaNnNhpfw"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CD62740006
+X-Stat-Signature: njng5sdzyjxm7xfc74f36kt9ydz8cpke
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781687951-553196
-X-HE-Meta: U2FsdGVkX19DgHwozexg+jF2RRrDUgFNbJoVstvtdQ7fMXb2MhgRTIuqMRyE0FCyLo+KTkrYBxUcD5T6kBW8BWMS7rX9YnySSs2q/WDebtQeenNomVxj+hkp8qms/kp1/qdIdB299B0Ei6HjjjwZBnhu4w+dC/1l4SrC5BmyAD2wVd5uOMdxKgiy0pWmJSrJd3u1lpa7fJ3CLNRTQGvLme0CQRC1JeO2PzPnPUBto6DIuZDDcs/AlYQNHNMAw+ddUIUSS0R/APZ3IA1mRZcZcRS5M1QWvXFFuS/VL76kebn4JdSzROUVbCw+053LNaCeTZAhsa5dHQ+wpuGj5SQb612e3glTAjhqzeRNa/A659USST0wUYoGtoTcc49hky9LQM5gD7cJ9zjzb+S5Jrh/ixaFy6bPWZdur4YRPbWgLga5mcJD10V9lJxi3/yhTZr6MyTVI5UGPSPaKrHGH1ql2qat4Hhdnjxy5mziajM+l+sAODbwHpC2xfirD/ipjDWy6zVZyHH7krEnbUq/mDDdedoiOHRso0dto7X2K5q+WENxwgwCGIWIuwbHnIQOhjTzKrIEFdnP9WLA0ikyXoRASUlUl0vq8vY/Hks+8pjaK9yzqSyIqGLK9x+/uSB4MLkhwBJ+vRqVcIElwxjkT3c3+EUdXUIsH7Wrs41PPIa/J0JTURlabYxMn4C0tRGCJg2NvaD80rdtlbNcuC+AGU+9RzBldn/kLsMhwCvkijeuBFNHT/GSsKnCBavd8IOWjzG7EF/qDcEFgQXhHpBokJDartyyz+Z38f+Bs/SYGNQFI03JCCebdPSZ1G+bQ6ulI74AaL6KV01CwDdK/tpL2fPNeNZm77Tk1fpw74ukPX1/dtwQrnrBBXy7lRXqvJI6A2xSPKZLgcBxo1ANcyqH1OhtHW775Mmq6RT5HeaiPXutV9iYUMUqU1Womw7CxHLD732NSthPm3raJCAJyDBXBE9
- OoSDk42H
- 8HW/44k1D2h610Q58rjHspoGyvaLwDMUTsAQNK1ufIhrD/wagdpDUNlOGQBmSOvx1Qde5aJvdtg7gM9HuTiyAIEzPBOP3oWiEOvXJq6cLZX4kUvpfC3aBFyRcXyIsgSK/KdqPS9LAVgzYjUdHC9ykThqa+qONVyAn3VztOUjtNV7ro5YZoWAbGZweiZ30OS04+eCufwK98Pj3dw/M5mpnINoPcxZZUWboEXaQaw9cuDtFCGF86RbbICpXEa3y1jHMIiCOWxQo58xK0R10EEuqgpsi71pu69umQ0p0UiwTswpD9Da5x6OnyXMkSHP9ph8BFv/a9cVJ2tzOfKk=
+X-HE-Tag: 1781688294-144945
+X-HE-Meta: U2FsdGVkX1/UaKCnVS2ZiExUw1zUQ/HaFT/xjRE5JLE1kFpUocTSTaiWdkDe54GkI/8AjWEGMTej4JcQTHU1rSAmJF3E6mW9M63bYqkZHUMbjsMARdGEnKSfbGew5vmeqmLofM0gj5/s4apfKMQLgjQECjSfY7TuaVHRm60C7pNfk/i22GeEZnxQozqgTuXoclMIBuaIXCNon+ZddONGCEdaaMSXQ1iS6kvlo6UB9yygquFyMESonwflRHzSs3qlXUAO4E16xywiT39TuUfpC2UUTmRGWNLK47uxzz/kwzF3sMrFQmGLwAo7ySEyxJEvUZlk5kcoVDWBj3yrqdrEpkMtGii3QCMgZ/Bqx2dIzzANVn6SQ0xjm4v70OGqcUJrCSUKh9FMpVM0A7kyCCxXCCAeuiU/GUptycrN6mu+hTIzXx0BdlolYlfA5T89gUPofPMTldQSNO+eXBmDc1DTssQUnwaq5KddqR49Ya6e18tzz8wjl2Br0ZsKi58McsR08TI+hFXsliAbk7dXkRZ6374DWsyPjt2Y3oCaU/3KumbyQH1viFgeMRWww/UHNz/rcteqd55k99sSGXkyT2y6NQ43EzfXvxe/Gic+MmB6uWBTP0eACqIx8eA412fyfFP4SLmMkOO9OmwMTGrO8i4DRs/VRw7U0NyZN7Dv05hmpRmw1A7WxrqYkN8zMbyM5mBDl+trRfbHm85Z9DUXLaZZ7kvMWWurIDXUNK87Gbx0pb+H1NgM3cwpfesk9+MiLDOGRwtdcJvwZw0Dg9eJQ+8LTx8jI37nkQFtuQmTniM2ZLZn9NBOXjbV5DxiidCBVPFfd05QPN6YKIvHeJQeAH/VMndIFxBR5awRmSHBor7s1DOuciMzbNCXpTQ8g6RtNpXjlvp3WdYU2fditzbs8Vn9dvLy3d/sTYJ0AR9RUs6ZrrmztQz/+uNM4y2N4HPcy0ORhtH1uc48iIxXVIZMB5w
+ auvK3q/F
+ iDfvQhHDrgY8Lv6/LSLu/6NmHRv/JDg8n0e8+AeyEPNYqnN+I8NyJj0ZXUGaoU61f/rEjcEuFYKfy/PD9sSh2UqRAnA9D4SvkMVLzbF0E3pQ1/No+jhAXRY2CNXVNFjz2ov5P++Xmw6UV9hFQHCc7rYNjRtcy2M8OgA39in1gtJL2EOPuwmJK0CvOt1+bUtQZKsxt24OSYiWxv/gIWjwiMKeywizLXEWJSGb5Y1QTphj/Vy9epEaeqUvCryVM7TyDEaq1CQe/GQv8IDSl9ejO0SlTdBF6JfOxM9VDAuDms+vsHr5x3WyfuhWK8a5ALisfkh6VBm50mc0MaQ/wb1B9FC9fM+FvlL9IzItD2pCwsA6IR62Rhzh3gQw9jNTpJyiLdW5b4g5irojX+wm/50cLbGcre96gEoGosTWVc9y5iKWDejjY22egrN1rg0BvASb4oJklynv+6Ez7nOv1ezMVOVQ2No67Q8tg0vBAJIzcdSjZiN2IUKD0tNmTqxUoSPCTwu5q45nrBXXxpr/6Ae4alrswRFv5MZ/7IS8Li72lKwlK/7SLXUye/3Rp1AU5sFUFTIanTiA10v2I2nW0enyxr64m2j6XODug+AqG4zH97l30fpktHbOhVRwOMd/toKcLDXrc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,74 +103,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------tWEfSKJRdmtGLwcIaNnNhpfw
+Content-Type: multipart/mixed; boundary="------------XVYSd1G00Q7d0rl9kEo4pZcy";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <a80d7409-5a58-48c0-8ccb-b568b3e3a1f9@kernel.org>
+Subject: Re: [PATCH v3 09/15] mm/slab: replace slab_alloc_node() parameters
+ with slab_alloc_context
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-9-ce1146d140fb@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-9-ce1146d140fb@kernel.org>
+
+--------------XVYSd1G00Q7d0rl9kEo4pZcy
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-> On Jun 17, 2026, at 16:56, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> The expand_shrinker_info() iterates all visible memcgs under
-> shrinker_mutex, including memcgs that have not finished ->css_online()
-> yet.
->=20
-> Once pn->shrinker_info has been published, teardown must stay =
-serialized
-> with expand_shrinker_info() until that memcg is either fully online or
-> no longer visible to iteration. Today alloc_shrinker_info() breaks =
-that
-> rule by dropping shrinker_mutex before freeing a partially initialized
-> shrinker_info array, which may cause the following race:
->=20
-> CPU0                   CPU1
-> =3D=3D=3D=3D                   =3D=3D=3D=3D
->=20
-> css_create
-> --> list_add_tail_rcu(&css->sibling, &parent_css->children);
->    online_css
->    --> mem_cgroup_css_online
->        --> alloc_shrinker_info
->            --> alloc node0 info
->                rcu_assign_pointer(C->node0->shrinker_info, old0)
->                alloc node1 info -> FAIL -> goto err
->                mutex_unlock(shrinker_mutex)
->=20
->                       shrinker_alloc()
->                       --> shrinker_memcg_alloc
->                           --> mutex_lock(shrinker_mutex)
->                               expand_shrinker_info
->                               --> mem_cgroup_iter see the memcg
->                                   expand_one_shrinker_info
->                                   --> old0 =3D C->node0->shrinker_info
->                                       memcpy(new->unit, old0->unit, =
-...);
->=20
->                free_shrinker_info
->                --> kvfree(old0);
->=20
->                                       /* double free !! */
->                                       kvfree_rcu(old0, rcu);
->=20
-> The same problem exists later in mem_cgroup_css_online(). If
-> alloc_shrinker_info() succeeds but a subsequent objcg allocation =
-fails,
-> the free_objcg -> free_shrinker_info() unwind path tears down the =
-already
-> published pn->shrinker_info arrays without shrinker_mutex. The
-> expand_one_shrinker_info() can race with that teardown in the same =
-way,
-> leading to use-after-free or double-free of the old shrinker_info.
->=20
-> Fix this by serializing shrinker_info teardown with shrinker_mutex, =
-and by
-> keeping alloc_shrinker_info() error cleanup inside the locked section.
->=20
-> Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for =
-shrinker_info::{map, nr_deferred}")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+On 6/15/26 8:54 PM, Vlastimil Babka (SUSE) wrote:
+> The function takes all the parameters that exist as fields in
+> slab_alloc_context, except alloc_flags. Replace them with a single
+> pointer.
+>=20
+> This moves slab_alloc_context initialization to a number of callers,
+> which is more verbose, but arguably also more clear than a long list of=
 
-Thanks.
+> parameters, and most do not use the 'lru' field.
+>=20
+> This will also allow kmalloc_nolock() to call slab_alloc_node() and
+> reduce the special open-coding it currently has.
+>=20
+> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-10-7190909d=
+b118@kernel.org
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------XVYSd1G00Q7d0rl9kEo4pZcy--
+
+--------------tWEfSKJRdmtGLwcIaNnNhpfw
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajJn3AAKCRCGXBN6rc5S
+1n9AAP9BIM7s05pk3i6+4MllnOO0QTEqYjoecioUKF0ZmLq1KgD/aE3egAllgoSq
+jLfLRz8KrH5YC0vg+GWDmTfCQokaEwY=
+=xhq6
+-----END PGP SIGNATURE-----
+
+--------------tWEfSKJRdmtGLwcIaNnNhpfw--
 
