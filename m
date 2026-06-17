@@ -4,136 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8909CCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 16:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2506BCD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 16:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C6F6B0005; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
+	id 066376B008C; Wed, 17 Jun 2026 12:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DDE26B0088; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
+	id 03E476B0092; Wed, 17 Jun 2026 12:31:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE306B008C; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
+	id EBD1D6B0093; Wed, 17 Jun 2026 12:31:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4028F6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A5021664E7
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:15 +0000 (UTC)
-X-FDA: 84889944510.19.668143F
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A29C71A0018
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:13 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OKQqCX9N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781713873;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D2C6B008C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:31:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E9108DD1F
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:31 +0000 (UTC)
+X-FDA: 84889945182.04.9647B69
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2A01D12000F
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Io1nRl4G;
+	spf=pass (imf29.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781713889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
-	b=XhB62XDT6wGoCD3Yq+UbqSThNfaPVlGqtLa6CPd6k+UAv+KB4zan/PCbu2xKV2LUaBYp0W
-	7tCDYRzvy54+2fryC8fb2X29kPy48dfrS8dJoPPHo6ZfpC9YG6pfq1GYUo3cRf+W6beyaf
-	SCd7/WOkNRwkvyC/AUtgK/3z069zZcI=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OKQqCX9N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781713873;
-	b=XOYbdaDcLLmX7seGQwEWnThn3z90ut+32B6tUMuagQX3/thGzFOjm2au0Q/y+Z8820XqhR
-	g9PLx6H4vHd5E6UU0yl7TEc6zUCAM1Z0MIMe7oeIG+K9kJSMjlnscq3fETP19KhxgwMVzR
-	IN/ubn6uTCdEvB40L8snzIwaMmM0BBk=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5175d339e8bso831cf.0
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:31:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781713873; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TkSbPNiRTi+E2Y9WBqUqvQkzDo32RSlPU/p4bgpceWgI/sbxRaYDj6YhPeFz4eAdSI
-         qUahppa9uTEIw4aJUlsrwbyqWdDq5vCSCf6YTicwebzDUT5G078XEIkByM+ZHAOyZ72A
-         MY1/5bQ54Iu2FUENWiILm+wegBA4ivGeTv2go62eClICagdzd0h1ela/S7Qt3FPIwn9y
-         K/i4fqd9XKDddtM9qbEANyvpdRvAdSZTvIcvKpKR9KbJfg2WdoE+ehsAGWHHR/XUOz2m
-         j9ytDCia6E1XnDKoIzfGYJqNf/qzBNYPbY+lStp40iysV9VAjS9GW3sDXc/Ss+k8EZIB
-         0j4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
-        fh=cQPV964Dz32tAiO3h9zPmY/cdNOYvauZP5Lm+BC0K28=;
-        b=LBeR53ljF+G04zwFl00jiVjcDobVHGV1kvw8gtPw3r1Jg6YuEeqkswA3+k918N91CA
-         DRgNgFm50v4FeuLdqWF1rkVysrCTWqPdz7ZJjTtqYDkqxUQwELXicLB/D2ReZzcYh82C
-         YgyaVjUsXG82BbA4ta7vIyqJDMQtuG2e6hKEho8deuZrE0iwB5XdX6sohTQm/8sYgDkb
-         sOBQie7MNzM+S4XGUwBiB01lDFDMOinWQ9JXO0dtuQlu1UQR0U24zF5RxNxD9gzOTnv6
-         UVgetVAx5yQ8Py5tosnN0C5RcPzI+q8LTgadt4mv7ymroAsma2o3GunayQAJ1C/yddT4
-         7CZg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781713873; x=1782318673; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
-        b=OKQqCX9NiHIQSqkwaXI9cDqoV9oEp3EV59j0Nq3JmIlTTwEo/PBlp/91DiVVRNcJ0n
-         To8ggfi4bTM7NYqbkUnIpMF2vmfkiLzuEvzdsC56J56CU/QAVdBLttnpiAYihbDGHccC
-         MaK3QtWtS0z0iA3wYUW1MvYa39RedIiV5fULFEN+aRinBiHVkxQWAEMiZ4z9zvXdV1kU
-         SKOKquPfskLFbvOUJUyai7PeDQrqerTSNEwLb+bMcN7yDHUzSm9SNdV5D6CZw5KM2OKB
-         0WioAOcj3w8vrfmpb3JfXZ1LEG0IX4Q9LBdHO5JAoXNYfz6B+47WxZqFgE4fI0TaUeaB
-         eplQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781713873; x=1782318673;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
-        b=Ewszn0gCxkqcUJT+WrDapp91+m70WC8FegvAMjVsa+sh+9XSiYclE1ZEz4SUH4o8Xe
-         S15pz1TiB+0xb96xOSlnR50hgBv/GuTFt2FIpLPxuRJEq7a4afkShWYr+f3VhgQHVbqg
-         ZpqqwOsRuhnr5t438BxANfPZhv9mMM0KIZkPn+05sBQ3IbgZsW57x/kHsU6RLSVnCysK
-         KlsX8e59Dv117lFJAFMAqXPjUbVRwHMJOONSMqdhm8mZ0bBDcnjQRwPFnyH5DJY6zYGg
-         GwZ2b4ELtW7RoBRb1A12UwTefKY4r4IOAY1pQSmYnQ2BCtiHI8O1DQM4NeRLZ90FTI20
-         0stw==
-X-Forwarded-Encrypted: i=1; AFNElJ+0iZtyZqhyJ8zupXf2Crpga8Lti0N0XBXqhkUH51u9tmfckhpyP0ZYe6A7O/Y09WG0DSxcU+aszA==@kvack.org
-X-Gm-Message-State: AOJu0Yxk40vVB589LC8u1f2swSRa2+oaw4yibvKY0+bTEziGOKpR8S7p
-	eeh0i5aYbQ1jgiwBKQuHaCM5R+Bo8bxJ3r1QofLnL9/lLLQBxCX2HBo22z4Xu1k1k7ztEpCtixG
-	DVOwnf8R+XHJGkSPOoBVXk72P7Wumerre51GvVGve
-X-Gm-Gg: Acq92OFiILChQmCo7HvMH6vVOCK7wBEFwuPpGGI8ftZVIuZTr8gM9h1BevujJKKjuU1
-	rKA6yT1cWD4nmpQr0QhX1TJUl750ZqcLHh+qWxVfT0TqrRdzV2YkrlQcMppTYO33e7n0u37VELM
-	3Z72tcTb8bNpgLAxifuGJMfaa9zV8msNtg44iwbN7MftoqwoOD6AcSKKDp3sDIfPOZhCSyBYHNB
-	Mr4Xkk96XDtu6HVFANlNlzvWH7524rdGhmhAw4Qf1b47Pi/X9e4mDGO3y3N9hzZ2oUXaQTkb6gA
-	zdHxOKhbYskddWc66ENWvDKVZvuanWUSG27deQ==
-X-Received: by 2002:a05:622a:c17:b0:517:99ea:ab80 with SMTP id
- d75a77b69052e-519aae433f3mr10984371cf.26.1781713872147; Wed, 17 Jun 2026
- 09:31:12 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SC2CjG0tyBQTzB68y+c7c4kv0xX9wi+E9xbDTYwfOrw=;
+	b=U2sKZt1NBZcTG1jaVQfCYvkCZJiGE2XJeWLlhTaFT7HfCv6m8uKtBtjYWwjPWf5ofsGLrD
+	5/71Y1Or09wQ1swZF470TBYu6v5l1D24GHSk1Xd1az2NN5PDSq/QxgPjxKXHpzPupAum2o
+	dUM+CDkbeUPn1CgjANAEYRgfBawYrLc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Io1nRl4G;
+	spf=pass (imf29.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781713889;
+	b=RjhbyBYophdwCMNf2yui6JW8xJ8f9QKXVZ3sdPKP5oe84nTg1AZXiDVrcymlranDCDU1fh
+	4xtzHdaQQDYM1OUNEWUegpkMZzhnjj6pPzF3UvX+60J7NlmXuKfnThdR1lNBcmsI4Vef7k
+	mE2+Z6XYeJ6lnhlEprc2GWTUjBhd7A8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=SC2CjG0tyBQTzB68y+c7c4kv0xX9wi+E9xbDTYwfOrw=; b=Io1nRl4GKWGEkviVg4PYxP+8Xh
+	LXNMBLy7nu8iHIuLPQ0LAMgxHpfrt+wVsd98vTbzX/pmDOUV2N+52sUGkwfqvB+CVj53WdFjlItO1
+	9n8TtThKb3wMCKbsozkalBko4c6zD03emBdp4ifanmq+z72W6NEpH84fwpAbFG9M5+7WYSpo182OH
+	maXlypIWcCReEnHkWcNTtIeVVyX70J7zJOJofYI0Fvaf7KUiFV5X10RFgiVkjBhzqVY+hjWAkFlQc
+	+uDSrf0cyLAN7+JkVS4bbYu1S0Eg9wyi3v6+xnYKGKF937lvyMYL9sFlPAOX9JQnOd0hpshq0hmFi
+	ZWqp7ynQ==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZtAl-000000003P8-3sVs;
+	Wed, 17 Jun 2026 16:31:27 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	"Harry Yoo (Oracle)" <harry@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH v2] slab: recognize @GFP parameter as optional in kernel-doc
+Date: Wed, 17 Jun 2026 09:31:25 -0700
+Message-ID: <20260617163125.2716279-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-References: <cover.1781564384.git.abhishekbapat@google.com> <db41f6b4a1ec7429be79b3b342f1ac8cf1300e72.1781564384.git.abhishekbapat@google.com>
-In-Reply-To: <db41f6b4a1ec7429be79b3b342f1ac8cf1300e72.1781564384.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 17 Jun 2026 09:31:01 -0700
-X-Gm-Features: AVVi8CcdfMAr-2IUGIwuq0ed5D66f5ARjmPrvoZSjdivlnH_oGVPzXV2FjX90bE
-Message-ID: <CAJuCfpHvDhdVseywuk08iJKhos_rU0bsaoKKRPayQ0Oo1OJamA@mail.gmail.com>
-Subject: Re: [PATCH v5 4/6] alloc_tag: add accuracy based filtering to ioctl
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2A01D12000F
+X-Stat-Signature: 66otgioy5frmu98x6umcgq8h65zcfqd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A29C71A0018
-X-Stat-Signature: uf3zr6ugqxqa1miwg3xo1dnokxfzh6ic
-X-HE-Tag: 1781713873-699808
-X-HE-Meta: U2FsdGVkX19XGVzu18E6/7gdrQouUrr26ZVeU7NG7Ic7vpUG3uALoGoHPSH3/FhQFNCJAXOg4b+d67aaiL58VAVQcsEco+2l84qnovTioWV1GIy/KqGgrEU5aTf9ZxN3eS4OyTa872mRWzRfcMh79pcMI7/Ht3XOOnhqZ7FHmVPxtU3XOmR5l6MILASzRBvy5bpPJKD/yzRvS1Hlbh71OyZpQZlg4vDFFWAyCquqtzf3fj5k+PDSI1ZE+4I3K0xaKfjKqiJq9AxP2eqgP4CroiliYczdyXHzJAoYTkalk4GYgXo/UI/RlmPXirocToMA6xnyw8E8AYq588ty5LARThT9UejbZZIzrsiy59yDZWWkvCF+MnuSLz3SQvhthlU2yI4yH1j9bC3WcCUzgfohmZRERONSiisbdpzQTYTaybUzw5oMhEwkSXWbp8Hnyyj3LDDDm4UVdPE1Xp08z4ro3uYzPvaPBhKCxPdXtsIms0sTij/u6iufdCXaG1wO/RWLWQfDARaGBHpUwt7d+av5DszGvC83n6oV1gyicqcEPkeA7esv70mQjpvzmVmHxrO3h3vSDAp5Z02zfoc2EnyAFv8jHsDHwhHk+fCkgi9SzgqdD2KBgqcRqd8iF0y6tLg5NG/qOncOa2K/20DQa3GYaZCJ8OScAxN3sCn5qwBb/5VJaVO53PI/Fhz7vXHnkeMM24zlxoVmjTLEdvOs4EUrFHU9fGX0MgRb2X/5FiBtmRWqdRGUroTV0EXyTVC6nxHgBuAp5acd224Y/EyVLBNMh7vICMJ+anw5K6UhF2CGQDx5urM1kVoHXrgLZb4ZnC+VGrnEoIbMoKEqkn2qE2fbHOsDYVxf+u94IskA7K564hKZ2OXYoukOPtpQ68xUCzm9t1xRViOo6EDw3P9KjJIG2GqwFm+WQmG/TfZf6H9o2/xGDiaEolZcUhpH/EIwBEch8hYC5i0Zs93GDxNeHdg
- f1PzAyYs
- ymFI9DplsTya8uGPdwdR2ivVMV/yFrKjzWjfiKjrPFo3RurLK37zb5sF4xwRc5RHV8OGKYt7XcmC1yIqRAEu3YvA46Jq9C2llKGmdFam/+Hfs9fKXF/vDYbot5RcHj0Yg9WENqxpskBiaRk9Odl3jJwF2F0ddB4YEOgDbAttEX3fZNT8aJMQChDjOX+ZsQ1FWLYHMAIyUO2LmU7Rw62TXhK0TaNcL+AHydc6TvrlM8gKq2Wi9VhfLOmsx74BnhznRaxXHLgBcmD9Q1VUTMnaL6egcU2t/cOw5jGj4g8qKuHNA7ahoACoSmrLLJYHvRnXnZHb0QEo8e6Kv1fA=
+X-HE-Tag: 1781713888-474169
+X-HE-Meta: U2FsdGVkX1/Phs0PoDauLzaYbZ5TN0Fh4fLpc/u8Dekxovb81AbEHHmwxJqrEc0O8QQV+lifI83XfJ0B8N2FFP2N86U+we5sJNeM60zfKheCZWxfL446Yu9bx/RvSp6c8ULHp7/BVMhQqgg6QZ8HoJx0+pDFjJcArlpKOdrqKh4O6/Cyt/svMt+I0KJ+wYQOcWxYqkC10GcSni/eQULhqK3k6hYqIrw1sYfgbcdrK8tMpqhBFhPAJcohHeNDapWcMqTyu91b7zff7i/aF390Ev5vt2nDqPIEKNVln/yuJGzPFFnsQAQmgCMh0XCRgXjbPTc9FkSTfS6YX9RHLBjoWWjAACD8Gq+zpg9ibMzyHfA6Xij98+8vh2JKaZ+yXcHeHx3o8mizsrK+hJDjV3KhBfhAqJh7Zy/5DtqnxE2vKoZHhh6Mbprl9GYIySg8BU/s6Tu1mSYQ/ktKvaN7Ty5T2U+Ak9NoW54eStc2kJfz0aqC3h8Rtf05egqhDP0Y2VtbCoI1d7KYcZotWV+9n7QZ4ruQmav0ysS5KGdUlYE1spMa51p5eD+jG4qIy1F2HGVvlLgs5iNx2QT2r2lCy8JvfZUnShkslah5+ev4Nzr32TA6erSwS+/Pguy9Fn3ZlX+9MF1jWUhIWq8HzK104KKpqu1rMz+LLl/cVR/y/nSe6JoC+Z2Uk61yb/OSv5WBs98xBb/4WlusCqGmdaRu2ZN8p2Ip0IgHzUtzDHOrrHFOdy5xYJjtMal0vlUKvrF80FUHA992l6k24iEv/hB9q/LdIk7ImUZG5ExPoOZMMNEtlAWpScR+WvmRi640ngba/GrBuZTABLuGmjt5i5mVhrHAA0fOjWY9cGBamqra9kbZPiV1d+agkThYtZ0A4OYBXbx9ycmcBZsPtwiuOBwRwrNJTWoQ5uvMCfmb3Q+ENruIP4L/dgJ2R7aYEAf1Juhac1EE8LU32xVhVX1yXUo4inf
+ yl1EeV8s
+ mLQw/x96xmm9/Tv9BznAPiPNAwuLUM2FlqbmnaMkAXP5oeDSwC++5SmhMmjCQQ43xbswtu1P2ZD/Umr8YmlN4AURBuFrZYtJ7H9xfLia7Mx9CubMbcFDXmXPUPak8/wm89R4/y81fh967gnYW8gcONieuGYqq5NMu1OUIcmVBb33IhwyfN2+O/d2hfISFG4O36sel+fuPug8okSO2V3bzflfYHIro9S11ktSqVlfF6VJgktT8SFrOS/0fe6lQ6aMqHxSLAijpHGL3hSa4Sir2e68xo/9km8ObHNd2YvF1UitLZOe+ogAhG1Qu7QxdmYB4Xz6vcLMA2nZmxbaZkEMMS/j6DkgbRuOPA5MUjapSRj2qd1/P9Niwd3rIdVQaIkYhdveOaYpe2OQRqBrGkbCRtFVcO2gOqXQFfWk47iSc15v7S/4VMpViH/bEQkLJE+JF4SMm0Ge2bE0bCbZtB/UEMaLmZRGeme0WkdT6tlSajyIGMM/KUSjyelh5+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,89 +93,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 15, 2026 at 4:04=E2=80=AFPM Abhishek Bapat <abhishekbapat@googl=
-e.com> wrote:
->
-> Extend the allocinfo filtering mechanism to allow users to filter tags
-> based on their accuracy.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> Acked-by: Hao Ge <hao.ge@linux.dev>
+Since the @GFP parameter in kmalloc_obj() etc. is now optional, change
+the kernel-doc to indicate that it is optional. This avoids kernel-doc
+warnings:
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+WARNING: include/linux/slab.h:1101 Excess function parameter 'GFP' description in 'kmalloc_obj'
+WARNING: include/linux/slab.h:1113 Excess function parameter 'GFP' description in 'kmalloc_objs'
+WARNING: include/linux/slab.h:1128 Excess function parameter 'GFP' description in 'kmalloc_flex'
 
-> ---
->  include/uapi/linux/alloc_tag.h | 4 ++++
->  lib/alloc_tag.c                | 8 ++++++++
->  2 files changed, 12 insertions(+)
->
-> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
-g.h
-> index 7f5acbb44c14..6ea39c4869fe 100644
-> --- a/include/uapi/linux/alloc_tag.h
-> +++ b/include/uapi/linux/alloc_tag.h
-> @@ -26,6 +26,8 @@ struct allocinfo_tag {
->         char function[ALLOCINFO_STR_SIZE];
->         char filename[ALLOCINFO_STR_SIZE];
->         __u64 lineno;
-> +       /* filter criteria only; see allocinfo_counter.accurate for actua=
-l accuracy */
-> +       __u64 inaccurate;
->  };
->
->  /* The alignment ensures 32-bit compatible interfaces are not broken */
-> @@ -45,6 +47,7 @@ enum {
->         ALLOCINFO_FILTER_FUNCTION,
->         ALLOCINFO_FILTER_FILENAME,
->         ALLOCINFO_FILTER_LINENO,
-> +       ALLOCINFO_FILTER_INACCURATE,
->         ALLOCINFO_FILTER_MIN_SIZE,
->         ALLOCINFO_FILTER_MAX_SIZE,
->         __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> @@ -54,6 +57,7 @@ enum {
->  #define ALLOCINFO_FILTER_MASK_FUNCTION         (1 << ALLOCINFO_FILTER_FU=
-NCTION)
->  #define ALLOCINFO_FILTER_MASK_FILENAME         (1 << ALLOCINFO_FILTER_FI=
-LENAME)
->  #define ALLOCINFO_FILTER_MASK_LINENO           (1 << ALLOCINFO_FILTER_LI=
-NENO)
-> +#define ALLOCINFO_FILTER_MASK_INACCURATE       (1 << ALLOCINFO_FILTER_IN=
-ACCURATE)
->  #define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 << ALLOCINFO_FILTER_MI=
-N_SIZE)
->  #define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 << ALLOCINFO_FILTER_MA=
-X_SIZE)
->
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index b3d21834b61e..4fb3653cb876 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -253,6 +253,8 @@ static bool matches_filter(struct codetag *ct, struct=
- allocinfo_filter *filter,
->                            struct alloc_tag_counters *counters,
->                            bool *fetched_counters)
->  {
-> +       bool inaccurate;
-> +
->         if (!filter || !filter->mask)
->                 return true;
->
-> @@ -278,6 +280,12 @@ static bool matches_filter(struct codetag *ct, struc=
-t allocinfo_filter *filter,
->             ct->lineno !=3D filter->fields.lineno)
->                 return false;
->
-> +       if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> +               inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
-> +               if (inaccurate !=3D !!(filter->fields.inaccurate))
-> +                       return false;
-> +       }
-> +
->         if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FI=
-LTER_MASK_MAX_SIZE)) {
->                 if (!*fetched_counters) {
->                         *counters =3D allocinfo_prefetch_counters(ct);
-> --
-> 2.54.0.1136.gdb2ca164c4-goog
->
+Fixes: e19e1b480ac7 ("add default_gfp() helper macro and use it in the new *alloc_obj() helpers")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+---
+v2: add default value for GFP flags to the description (Harry)
+
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+Cc: stable@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+
+ include/linux/slab.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- linux-next-20260615.orig/include/linux/slab.h
++++ linux-next-20260615/include/linux/slab.h
+@@ -1094,7 +1094,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+ /**
+  * kmalloc_obj - Allocate a single instance of the given type
+  * @VAR_OR_TYPE: Variable or type to allocate.
+- * @GFP: GFP flags for the allocation.
++ * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+  *
+  * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
+  * on failure.
+@@ -1106,7 +1106,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+  * kmalloc_objs - Allocate an array of the given type
+  * @VAR_OR_TYPE: Variable or type to allocate an array of.
+  * @COUNT: How many elements in the array.
+- * @GFP: GFP flags for the allocation.
++ * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+  *
+  * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
+  * or NULL on failure.
+@@ -1119,7 +1119,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+  * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
+  * @FAM: The name of the flexible array member of the structure.
+  * @COUNT: How many flexible array member elements are desired.
+- * @GFP: GFP flags for the allocation.
++ * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified).
+  *
+  * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
+  * failure. If @FAM has been annotated with __counted_by(), the allocation
 
