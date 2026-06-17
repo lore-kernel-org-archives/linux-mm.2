@@ -4,98 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB9E8CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC882CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 14:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1216B0095; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
+	id B3FB96B0099; Wed, 17 Jun 2026 10:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 988776B0096; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
+	id AF0BE6B009B; Wed, 17 Jun 2026 10:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89FBF6B0098; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
+	id 9DE766B009D; Wed, 17 Jun 2026 10:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 503496B0095
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8990A03A0
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:50 +0000 (UTC)
-X-FDA: 84889555380.28.F2DE18A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 369D0100009
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraHK5CF;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781704609;
+	by kanga.kvack.org (Postfix) with ESMTP id 6D09E6B0099
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:01:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D83BEA042E
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:01:37 +0000 (UTC)
+X-FDA: 84889567434.23.9621C77
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7834BA0018
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:01:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GOXfr9t0;
+	spf=pass (imf25.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781704895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mi7jxCBuTqaaYC6JDqqn8peOnTfQK8+n6GuPM4X817w=;
-	b=3QBHBcp6zG+4uoJOfGlo72oajp67hSSH+Sxv31gnLd6qjsr00M81oc1IzxlPy/ijGvnGp0
-	sIGm1Wz88gG4VQ/k8JaQStcr8uFGuC52hkDZjA8At/jocJR8xNlVHXfxyJHzZGMSq5WKzs
-	ntK0NXt44SuhUbSsnCO7gsW8BIeqbFk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraHK5CF;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781704609;
-	b=sFySVINe43HgXgdssBuZMbJY7uy7Q+IFfbBei9hw5Qw3XP5ahfZnjCQflD/ey4Mpy5wPhn
-	r4uPxloxjpMC5ys/PvYhgRa1khHNgqnMJ5zNWbxp2mWKMGo0NKQRjzU7kugNIZ+rrVtJw8
-	8BJULoyl3l7y4yxqs/HxWzhU1/NDMJc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B85B660052;
-	Wed, 17 Jun 2026 13:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62731F000E9;
-	Wed, 17 Jun 2026 13:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781704608;
-	bh=Mi7jxCBuTqaaYC6JDqqn8peOnTfQK8+n6GuPM4X817w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kraHK5CF4FrRvFnQJ0VsRChLUJSHWInCzt2ZQlbzcfxiJwaZPkbZb/szb9+MAX+i7
-	 t7gPjz6AE5H0WiV9bYsLcRXHAMXa62IrS8LD2lKFH7hlfwE4/LLR8yYFx14Ja4XU9J
-	 g100+AcmfJ8CMsw7poJskCe+caWz7uE5qvBpnBdyWbrxS7wC6/cWekkczcgFSeaQiH
-	 iqJFBRWZz4HXTsi53E/M1UspG4tGKSACwTcuWuWkDaSbhypB9XoilM0+4Sx/5H4hB7
-	 jnT1bbpPzpCQ0t9EM1W+WtJvaLsHGa48iknWK4LE0Cvcgu+9Ot5Eooe4m25C7IHiYm
-	 x9HRHfRAZV7Ug==
-Message-ID: <78b67a9b-44e5-4649-957a-9d42bfaa098e@kernel.org>
-Date: Wed, 17 Jun 2026 22:56:42 +0900
+	bh=tiRv+G39h+X8YKopQA1rD5KpEf5r1LXb2YHn926YfMc=;
+	b=JxtGudPFiTnSWEbi9M3EsxDHdDJe0gbgCwvxpzvgnEKKaPgvVTWq/nTh5B8zJvxjvDvDaQ
+	JTPMTrGyT17eMk5SIwj8NdswvTgBPDTxHcUjE1Hh63Ns1KenGebZOpbdADg8an0cNBaTYR
+	/w+gr7u7W4iHPc25eyt8F1N/nIR5J44=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781704895;
+	b=GtBPPYSepLwhIdIylg+OERuIQLuJYrJChjiSpPmDGCp3ujxiIEC7cak4UUt1pi3oq3JiFC
+	bU27hEjFQRho735e4YMbd/u2XnhBMh7JtmawtVRBqjA21nznK5fs1hwd3/D96Jf28RoqcS
+	ZiDPV8SP8Mr/th86+h41XhWyP8lL9bI=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GOXfr9t0;
+	spf=pass (imf25.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-36da8439078so5043887a91.2
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:01:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781704894; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hwLdcxkJ7q5ab+DGG7ntvZIKS4SCd9L0BUMN47lEPcG8bGOstWV3VSdoW1Xbck3P9T
+         AZQF9tjk6mR7/etZGwckCVuX4V7Ui7ks3EkCVvw7ihwJrK6T08O4MZmIk4tXM+epSDgG
+         XQ4DcUOjqJ49lKhe0Sb+Yoqw2YVQVdDCT1pxaX42IAPLPFO/BNjOlei54VhjM0SzFmzO
+         9N+v8SdDDUKwC3TD9R9Eznc0Wy2uPbWR17uqzTPaPRFgfDif8btq6zg6bta8fWPYNfAN
+         kKwO0KrbvupVrcZndGjXk7zU7/SD/ETFqg7VJY6s6viB70rLyhjxkCQw24IV/RaOFr1Y
+         x8tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tiRv+G39h+X8YKopQA1rD5KpEf5r1LXb2YHn926YfMc=;
+        fh=C2AtZn8xIbuKtvRe73/tUKnqCmefSdyXRR7vxiYTQWM=;
+        b=IH1mQz8GDkxCEAJFvR7OGTwa4lpSS1oILjXYgHV17uBIgDSk5PM37hFEfwXZleoVqk
+         k444ZVq2vmp1Ge8zVqyMwziii2+oUa+k1ms1BpNavH2GQxKdY/9DQNA6UHjGb+YagFhh
+         bydG7sYG6Zqte7guurXaoG73mSai0xfKpHmN6yMvCzfoIQAlXI1bbvZljY8USvagsXvF
+         ncDqmY3K3KTJfKfMi76sUCwTIB38obH7wOaDcUHg7wb3scbO8jRzj6WioK08hR+s1aCu
+         1sGmDqWhMJlWi3gnnQWFXrJASFQydjDb//SYr/N4qDTjFaWaS97MhaiZNgkno3XnKR+b
+         Pghw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781704894; x=1782309694; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tiRv+G39h+X8YKopQA1rD5KpEf5r1LXb2YHn926YfMc=;
+        b=GOXfr9t03V2YJjzvsRNZtKbapr6Pdzn07SBXynNmpZDz3jmSHHXdkpX4MtcGyyHOUP
+         pEQSLxD2kwo2/+g20nMqx7TBmFr1RKq07RWl3BxXwVgh7o1KFh9CPJL0vLUoQyiMB4U2
+         EFWRa3EwgPcygllBQGkcPBdZ176cGq1UNfJULmZW39hj5dZv9yMzskzWFKoSwBnewY82
+         flfoF8MlaL6oFD4dEotQ/9A1SreSJcdTH8uHUkXtD+YJsMOtA3+AqT5sj4Ay3hA/1BUq
+         wD45b8EBsnsGDjr4x4zZ3byfPzKaSIsvOCuwMaIec1CtAXEHle/ctSbwr1EFGc4n18LK
+         FBbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781704894; x=1782309694;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tiRv+G39h+X8YKopQA1rD5KpEf5r1LXb2YHn926YfMc=;
+        b=AXBq0hM4ofxbG3dwKdW2QgXTK4D4okL65/ZstqWnjvjyW1caSEj/de7l/n8QHFgujw
+         fnakyaIg6k4B/BIzLEf+flwWGrMsbc6L4Drl0jgiPyKmeXRz5ChkdhoU/IIMtwUHuCXp
+         HYFy6HUBHBTrbf78a5R/hwBmJFjdabQFOYc+v2MweWKuaaRcKBDk8KRL7zCCxV3g+0lM
+         sAUXNV7F8f3RyAbkOY/jqne8385zmOBNXqm9tebzl7Q/WkZD9Hq3sRcC63aWLFuO1SvZ
+         pdz/eNo5L4fo5SpF/0F6wpYtBK5TylEwXPFLN14H0KJvAc/IcGSckDMbMKlP2uZEOLbC
+         vpLA==
+X-Forwarded-Encrypted: i=1; AFNElJ/hlxDC0/8on0IqJt0/EuqtUe+GwR09nL0/Rc9d5wggugNp2zwS+r/1O9dePbXGs7eacd7mPQI+7g==@kvack.org
+X-Gm-Message-State: AOJu0YyQyYN3x86GQ2UCUkDQvAO+oG3x6LesDORS9fLGJie20gXTsb3M
+	YacPrYPfBhmqVSddMo2vS4b+GI+QwYxVyrv8S9/K4qcp78EmwpAP1vVofTNexi+PtadqPgC2EEy
+	N739drmLZIw9kCYY9vW7YFSOx1uINppE=
+X-Gm-Gg: AfdE7clpZuGxVS6/35RETz58vY/hRG9s3Ih2wW23ibKDQPPNv2nQQ6u7Iu1yYKFZiBK
+	PhTm8DtFSQEu2Fl8qWktRZS3DJPOeZRuwi/yXnJz791cGz6RQoik+Rbzu/OE7Js+AM2csVIWTTP
+	fMRfchmlGcXEW8i9w1YZycMLm9Nh3CeOUUFWDHIx9ZQjXmB7Wq7fmNv/TkosR+Ry8GXDJg1yA0f
+	r9fWsO3vMKvzDv6dWB1wu3r71439DG1sLBsDbCFPeXA+V3vwmsNFDl/dcbYMz6bO7CmUyd0x+h3
+	IWwTbAcu2T8avGH0kw3scDX7Ww==
+X-Received: by 2002:a17:90b:350c:b0:377:36af:c996 with SMTP id
+ 98e67ed59e1d1-37c947363e6mr4256111a91.21.1781704892396; Wed, 17 Jun 2026
+ 07:01:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from
- alloc_slab_obj_exts()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------3cY5hSMZtGl0G9UhgN7kKCMK"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 369D0100009
-X-Stat-Signature: tp6yzxc7ja8d5jeokpa5t7r4xxbnurtt
+References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+ <20260616123646.GB21024@lst.de> <CAJxJ_jhK+zkpjhs3YsQ9RoasKYh+E0NweQci0sPAEY1ne5LmBA@mail.gmail.com>
+ <20260617061743.GA19844@lst.de>
+In-Reply-To: <20260617061743.GA19844@lst.de>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Wed, 17 Jun 2026 22:01:19 +0800
+X-Gm-Features: AVVi8CcmbYlKs19G5r-C0VfRk8c0vOg--A7ctAfStsGLM_YhFG6Fmldj3URh3So
+Message-ID: <CAJxJ_jiBFUwqZwbE1XQg4oKM0XDrBzZeScvJ0PAUqusG0CObvw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1781704609-743938
-X-HE-Meta: U2FsdGVkX18oG5haGgm695iCeslv8lTPBufbxJhPL8T/xkxIEyaOswqLu5x6mCG5wGnIZINw/dYEdIebPsJyTbk670KDqEmoPssPpGO1ksphAWx9UehlS4pBWRYk0dZgfPjlm/vmzclAH4flbPEl79HWKVz9BNinJbUes8NOOOUgrs6P8HkCS1KxzWYVZ5r1OyvfhWQP294NAdRSWjhDl/rCeitQjNjtQpQEIMFQMznReAR8gQ8Bx9TpNjwOtTSsJTGPf6kqcG3hpCk4Q5DaT36W9kyclc5mDyql5GYRnIOuXTQdCI20Xj5uq+1vZGMYKyXcMe+jJopWpqMkw/+2f3KAJbHY5C0SCJi0eBYngvcho3XP9OCLG+od2qqL0GOEeKe3ynOSEGf2E2Cdb9EByBVkrryo3/4ev9/P1i3O6GLGViHR3dCJTN9RRX5ljsEDJsPMdT53PraN2AtZSttTp7qCPwNNGHeHFtEvJLbaPFup7ioLfuwnRTJ/0jvO4yrLKwkik0cm4bZE5uo2o0eu82srDlKZI/yd0nNvCOnVz/9d1EcmnFtuTHAW3AYtzSu83tZvEUJ/OauPQNJBeglY3O/CXtMHkLsT/rA/o+FgyluPYwtBZplOAvvbqEbGQa/xX7vva00gAyiNjk20blfEM5r2TcpzOEhRou9Q8OPYzJxPSB5pKLpQ5r+s+4DPNShTpIqEctyh10jxEYfbhM9jn2vUMsVUcmbhP40fnGWWfve60paVj/WwDpVMdn9+AlGmjC/B2S0y631QqTBePF9vZRTH1ecu1EA10m36P7xZ5TyuzABpPmp7V0YeFkJdVSVHaAmOsvl/SEfrzRHYOS7RodO9i6jy7KC9v4vhymZg5/GgQkro3J0Wqt7JkqYyGKFzJJN4XFY4/whRL7CS2KWiXI4f0HBHwvFO19oUdGgqD2ouXH7AixbahezeotN94azvfOibVWJ+hRPIV2P+V9K
- RNTZQSAN
- Fnbuc5RY1orZ6AEhf89vRXt4r+Rj0p1sN57K5589pk6H2XID06hGq385WY5A2pZ1IWTYPY0V1d4U1DPDV0Wmv5/APtygX2k6HXuzz0qHO6t1NnC8RG0o38ZSrXf8O1Tsscgc/YLaE7qjMQSEILaPUvfgZO3cnUbKcQvd6qCG6ysNgVF8xrF81hRy5MBZZKF8YNzH8XGkhQlpQhh3Uy+R7ai+cRtwwquO/8xSfgSI+5CgSz6t4tM+dVwe89PYbSpNkX4UbNE5SceSVyKywtU8XQRoV26t/HO+fZTldBDUKeGraAYbC3WicP/ys6iIvyPXHcVTPJdqz3dPxYkXAger3CQ/AKN7yA2AyrtIxf8b+TYpLXEqF+d9Xh0Lo1/GEZbOQm2BXAQNk7025NKDkb4fU0VBokRIkHwr0R4jeyNgtwrPKJriPg/6Ijg0C3ZvWJUMf4y+07zyctT8jRv1i5A66ZKLlSOuY7OX3K3+e2e9HKS3CugHF92JUhfxrovZPGXoyEId115D6scY18XA+3PO4bSkEV5XnRkHGmMhEmqjV2TDxm9OLf+sFMCzqeChQHEqIBi34TJ9i7nWkVHIkybWS/JGG9q1zmKh5zScg+ySDbwJV53w=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7834BA0018
+X-Stat-Signature: mmhotjy8jndrf57igskbuaahkk4wcaog
+X-HE-Tag: 1781704895-324243
+X-HE-Meta: U2FsdGVkX1+K2OXR/8dr/+hYlbCrmsAmZPZuPw7xZDVMWgHVIFwA5kWGcwCEbtT6SzeO+pARzLxoRNj8Ne9l11gTdXlnittTy3YsBjemDjhC37DWsgYgNkuiWf82iRKpSkO/fRiYfDSJuJtBaewu21xcoUxS72bjB60rnzof/xEN1VNtVrXkj0ZXUYf59CjnjzmKEjSV3+MKPvcLERJD+OYM6tmSmie7y7MMedZz0tZMbALHxNJTLuPDz1nOHUPlSgKwXQSHlU2WfQUaSxzA6YdYlUXaGV2pZCrKTXg0ZmcShbEZh1C7Dt4aE81TMUZ3c8WJBK5JALjsmZdOPqcwE5Ux2EaVwQlmcyzxp6c5hW5HoMUPT0sdcZNuBjVR01k78uJuvCwD4XdvyC0mwGfuENseTFx5bAsde0z6ww/4QTNdOuNV8H+QnAiX87rDpS9+PxeanJDt9U9UCxERTluPcXd4+r1PRmUgNQkwbY1FpTshFwt9ueASRX3adU9oq70xYzBBk+V+E1c4qlePIDwUE5eKjmdSerLu5ZO6xUgDQQ660t9zqMb6fVqsKKCTYLy3O+Frj8ar/7FEnvvOu0mI94ywj9gqcuaCNUsJNgALh3xA7bEDWpPNoTTE6/9tW0ax1HcSo83jCoeQ4P839FarekYVEieXwEZVrUceHj2ferCf1TOdDJrLBkp5A4Vc+szwMqYwQ279MeU646JF+0rwG1bG/9n2q6ryqrOCfCUgi4hUPvjoVsCLUpKjB4yDwPy0xehFK0kTBQ8YAIWrLExcdADz+H0seqUVKz+1fgVx/Ct1UPkqfyqdpIN2QTDtUFe88MyHwvSgdj37/oufSEyMwyMRGrDsfysgd6D4fVZVJ3PZIkCnHH3/vWW6IJS/9QBtWtGsae3QcHvyPLnk/dcKq/vdGzxVzoJcg48e3LIxI1RChSoFBzx6ch5Xf269o4yLXvfbmZTVeY3LOerzoj9
+ 0ogh4dND
+ zgN/4aw/My3n6TtH8McNQqJ+fB51xkKNyyT+45cZh9MlPKydsckEfbYzqkE868NbcuS8evtqYEAMRN8KT9iqXWau3eIgR5RvQzpk1lKpjput7g5YvGMdpjmOXhcsDL2rCSIGr3cxtR7mu0IN00Z1zcSpKXFmau7xBRRmtGG3GyHRvUqfg8aWRHuPmQ758aLY8MEiQ1bLZ21MWD2t5Qu4H7s4L2A60cvFP/j0Sy6yHbNQ80LFj/Y9IKowLcPs1Fl4zvpQDlgt3W0zoe67tdw2mm7iq1DOyoqn4BvVdVVCWQGVRWEFmo+rACp7q/Dc2/InUvl5sMGDzovaKMH9bMMmz2/1JaP99QmhgXcKjL1mMe+e5JufTnJ5u+pNFlvdicUjyZAeeyDiqFVvMkR4yTPl1vyiWYk43jiYi8P0VLp/kKUs3Oeo2K19vxNbNJjlI3kOPA6aBRyVhGjvJqCKT28BDr3pJu/0MlHxExKmQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,125 +146,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------3cY5hSMZtGl0G9UhgN7kKCMK
-Content-Type: multipart/mixed; boundary="------------5rrQhoodNrxJ9Qsb340LQn6A";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <78b67a9b-44e5-4649-957a-9d42bfaa098e@kernel.org>
-Subject: Re: [PATCH v3 14/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from
- alloc_slab_obj_exts()
-References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
-In-Reply-To: <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
+On Wed, Jun 17, 2026 at 2:17=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
+e:
+>
+> On Wed, Jun 17, 2026 at 11:38:02AM +0800, Jianyue Wu wrote:
+> > Before I rework or drop the RFC, could you outline how you see that
+> > core-side model working? In particular:
+> >   - How should a compressed backend like zram or future block device
+> >     plug into swap_iocb / swap_ops?
+>
+> I don't think that is the right layer.  The virtual swap layer that is
+> currently in the process of being upstreamed is the right level, and
+> the actual swap devices or swap files are just a dumb backend for what
+> they higher level code does.
+>
+> >   - What role do you expect zram to keep while the legacy block interfa=
+ce
+> >     remains: current block swap only, or something else?
+>
+> For now we'll need to keep it working as-is.  It is heavily used in
+> android and potentially elsewhere.  Once we have zswap fully working
+> in the virtual swap layer world it might make sense to say never
+> compress again in zram when REQ_SWAP is set (or maybe a new
+> REQ_COPRESSED) so that we can use the core compression code without
+> breaking existing setups.
+>
+Hello Christoph,
 
---------------5rrQhoodNrxJ9Qsb340LQn6A
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Thanks for the clarification.
 
+I understand the goal is to have more common code in the core layer,
+with dumb backends. On the swap path, once core has already compressed
+the data, zram would only store it and not compress again, while
+non-swap use of zram stays as-is.
 
-
-On 6/15/26 8:54 PM, Vlastimil Babka (SUSE) wrote:
-> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and=
-
-> gfp flags are a scarce resource, unlike slab's alloc_flags.
->=20
-> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
-> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
-> family function should not recurse into another kmalloc*() for the
-> purposes of allocating auxiliary structures (obj_ext arrays or sheaves)=
-=2E
->=20
-> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
-> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
-> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
-> added. This will also pass through SLAB_ALLOC_NOLOCK so we don't need
-> to special case kmalloc_nolock() anymore.
->=20
-> Note that until now the kmalloc_nolock() ignored the incoming gfp flags=
-
-> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass o=
-n
-> the incoming gfp flags (only augmented with __GFP_ZERO), because if
-> alloc_flags contain SLAB_ALLOC_NOLOCK, the incoming gfp flags have to
-> be also compatible with it. However, we might have added __GFP_THISNODE=
-
-> for opportunistic slab allocation, as pointed out by Hao Li, and
-> __GFP_COMP by allocate_slab() as pointed out by Shengming Hu. Solve thi=
-s
-> by adding both flags to OBJCGS_CLEAR_MASK as it makes sense to strip
-> them anyway for non-kmalloc_nolock() allocations of sheaves or obj_ext
-> arrays as well.
->=20
-> To avoid recursion of sheaf -> obj_ext -> sheaf -> ... allocations at
-> this patch, until the next patch converts sheaves to
-> SLAB_ALLOC_NO_RECURSE, use both gfp and alloc_flags for obj_ext. The
-> next patch will remove the gfp part.
->=20
-> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-15-7190909d=
-b118@kernel.org
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-With some comments below.
-
-I was worried that perhaps replacing SLAB_ALLOC_NO_RECURSE with
-__GFP_NO_OBJ_EXT will create a cycle of
-
-alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
--> kmalloc_flags(SLAB_ALLOC_NO_RECURSE)
--> alloc_from_pcs(SLAB_ALLOC_NO_RECURSE)
--> refill_objects(SLAB_ALLOC_DEFAULT)
--> new_slab(SLAB_ALLOC_DEFAULT)
--> account_slab(SLAB_ALLOC_DEFAULT)
--> alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
-
-with __GFP_NO_OBJ_EXT, it would have been passed to refill_objects(),
-but SLAB_ALLOC_NO_RECURSE is not. However this cycle does not exist
-because alloc_slab_obj_exts() clears __GFP_ACCOUNT (as part of
-OBJCG_CLEAR_MASK) and memory profiling itself does not invoke
-alloc_slab_obj_exts() when allocating new slabs if SLAB_ACCOUNT is not
-set (which is interesting, by the way).
-
-Also alloc_slab_obj_exts() propagating SLAB_ALLOC_NEW_SLAB to
-kmalloc_flags() is little bit confusing because it does not have any
-effect due to SLAB_ALLOC_NO_RECURSE.
-
-Those are quite subtle and perhaps worth some attention.
-But technically, should not be a blocker for the patch.
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------5rrQhoodNrxJ9Qsb340LQn6A--
-
---------------3cY5hSMZtGl0G9UhgN7kKCMK
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajKnmgAKCRCGXBN6rc5S
-1haJAQDK3uVXonDI0YBvLzkAybijWZr2Qa7jZx3GhFza1G/qjQD/dcdV6qNgaQS6
-SF4LWQHTO6baylkB0+NrAe4QBdWSKQ8=
-=/47q
------END PGP SIGNATURE-----
-
---------------3cY5hSMZtGl0G9UhgN7kKCMK--
+Thanks,
+Jianyue
 
