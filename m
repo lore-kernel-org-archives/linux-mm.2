@@ -4,98 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD22CD98F2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06986CD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:52:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D41256B0005; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
+	id BD34C6B0005; Wed, 17 Jun 2026 14:52:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D182E6B0088; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
+	id B84686B0088; Wed, 17 Jun 2026 14:52:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07DC6B008C; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
+	id A72526B008C; Wed, 17 Jun 2026 14:52:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 56A116B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AB2B4053B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:40:36 +0000 (UTC)
-X-FDA: 84890270472.30.66175CF
+	by kanga.kvack.org (Postfix) with ESMTP id 7190A6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:52:35 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3130405B6
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:52:34 +0000 (UTC)
+X-FDA: 84890300628.26.D99F609
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 41F4FC000F;
-	Wed, 17 Jun 2026 18:40:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGEAs34F;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 12E621C000E
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:52:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxiFCM4M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781721634;
+	s=arc-20220608; t=1781722353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ldThSSQTB2CI5zmNiVNRBJEFd14r4QvroLDBqhcTeek=;
-	b=lHEYW3IL+SDFZysjQ/4bujnepc1BuNcuG5YMeu25PtTRrOlY42XlXYP1LI0hnp6GrUQBmP
-	3CWi6oZdqOdIvdk4xZmxX7PjlbKG91jwn/KyU5RoyBBTm4W4tmcl7XqgKzaXFoR5tOqdBi
-	pq65jx420CKLcvZ9M0J8ezWzpFwds1I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781721634;
-	b=JVcQxKgLxC+EfFfsmS2IWJ0HfUJXB2J71NtZr1/+6K6AgoU5fpiuvV8s3B4h2K/MrUQpd/
-	bjpag6DMg6qEToKaRnagWVAe44Aic0fnMIihUD2Byj8kfc5FPR2f5+UDgAdOdJNf6onDH7
-	kz27nlDTworHc3c//SbQtsMFHwiunYc=
+	bh=1mhh+jU+SViuEIswUJX3OsTgBu5BICnREJa91OfaeeY=;
+	b=pGe2Z7s5Nz1k+CYeEM1ROgIkYwrJp2kcIJ4IWVHeoDU+FyiznraVeRXKoiUoWggYJV04gs
+	PK1ZHkKnnkkYnkgwanLUBe6fL8tapWvEsj6/6z/O4lbU6r5TtfGZt6st9IdJYFi3TLsfkU
+	AnqtOJXR62blxcWK4XQtt8FW4pN/Q88=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGEAs34F;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxiFCM4M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781722353;
+	b=Hk/8t1hHpCNO1HApxjhjpCnAGkpz+6shGu/47FzrBuNIxm5dt6vhaEbVOCHpGNqNLEE/SD
+	YzASKMQtnyJk3D2s+/lE2dpopnhMft/+RBdqXGUC4nT0M1STzld8llmXiVorkOYu769dwJ
+	kLrgpi9/A86QnkM9N6GjE7XvegIkEGU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6044A40BBD;
-	Wed, 17 Jun 2026 18:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398011F000E9;
-	Wed, 17 Jun 2026 18:40:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 466BE43BF8;
+	Wed, 17 Jun 2026 18:52:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306081F00A3A;
+	Wed, 17 Jun 2026 18:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781721633;
-	bh=ldThSSQTB2CI5zmNiVNRBJEFd14r4QvroLDBqhcTeek=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PGEAs34F6BiEJMajWABVfRAt6apO6GdmemXHMH9ZaDCtfTlhEYqpEiVDB/HATlSB+
-	 5c8IZjhNSJbfvIKg3U/WcQ8QMFrETr1FwWAEiMnEo3zeh1Eu0mWa/S9jPYpERLx66T
-	 2BjXib8XHNbQc7T3GRgH4fqDla3faZEtb42/ywbV8Pbb6efs2PGh/vIfIJmL1bdHNM
-	 CViMGplX75QLZCOIlfNt9NbEG9KrbTjrWe/WC5MAibT4lN+1YOTGS59HzxKPT3ENFH
-	 pf7bxdmXswR3mZijG+ATccnjAev3cNuDR0uzCu0H9xumEJMiUdcPjwBYm8fm8JsOvm
-	 cdF0DYB088P2w==
-Date: Wed, 17 Jun 2026 21:40:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-Message-ID: <ajLqGZ7sfKsQaSf4@kernel.org>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
- <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
- <aiuyoy8Kmr9yU4GM@kernel.org>
- <ajK6w3YTFpVaUl3v@google.com>
+	s=k20260515; t=1781722352;
+	bh=1mhh+jU+SViuEIswUJX3OsTgBu5BICnREJa91OfaeeY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kxiFCM4MJcV/aLWLoH1cJ+nt7/RWWggSenk4fFCmjRqKAZvgCy7+6/imKq1vuaUOE
+	 e8AI9PjAWmFo/yrZNICWmQFM0rhdX3q6BmQmeLX6tCbZD5/CDvzLwx4Qtf+8AXohYZ
+	 ZJ/leLAdu9nmSxyrDHOYm5IlNEYT57BUVCFlLgEz7Ts5sSOUjLNgk6pnhXhtMCleKB
+	 X/Iv/EcFF3b3RhUbEzp3nu+PWRFKOwsWnIS9Ohxt7SNKVXo3f8chZrVW/PWujOfnE5
+	 dKRmaBKTuZtosYuBj6dW4Xj4Xv/UbpCfEYtjuaYRzrXhtYxPDnlNzWh9w5gXbRRZWT
+	 4Jy3to8iIkHgA==
+Message-ID: <969cb14b-5b8b-48e6-add6-4dd13101dd89@kernel.org>
+Date: Wed, 17 Jun 2026 20:52:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ajK6w3YTFpVaUl3v@google.com>
-X-Rspamd-Queue-Id: 41F4FC000F
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when
+ compact_unevictable_allowed=0
+Content-Language: en-US
+To: Wandun Chen <chenwandun1@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com,
+ Hugh Dickins <hughd@google.com>
+References: <20260604023812.3700316-1-chenwandun1@gmail.com>
+ <20260604023812.3700316-2-chenwandun1@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260604023812.3700316-2-chenwandun1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: 5afpyqzbjurgneysof4cahwrmszqzabd
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781721634-109819
-X-HE-Meta: U2FsdGVkX1/D5DtKC9uc/dsI5zacEXIqLn7on8YoZoPP9Ry62BXkwpmmfzM17TBSOSfOq+gx/1EAL4yj4BYP5ib5SmsP8D2MnvGaK5Hk0y0/EwlWwHThssbPe+xo7UrZoMo6aRRERptAycSUaQKw0gjpfLMHcPK2szAgOGh3EJl2LwEO0HZy7bCXfweFbmVExa2nm8M05UX6c3ZLxhQxWksZ8fTk4lr8fCcTqZodENil/r8tlZxI3kipWNV1pcFKAPpQ7NzxCYbw9qg1tfW8f0pH6YjjHZyBO/EC1PDf9t5oe89kCup7Wyr9cr37TFbHBPL8hZ90OMAM/iOkGMltSv2O30GMwTvsLZteq1nB4YPuDmf/2LArg2tdbKDT2wy5LCaxXJ7RifndssGrEAe7p/yPPBMhnfLlpfvXdCh8akVDT7W2YhDi1z5HrhypavXb7e3qBNTg8iFqMXCu6KlapHIrckWLosfOT+++KUQuA20HhokL6eYZlqRa+Y1OrwIg6u1F+WC0Nwy1/MG1RvVixK3dL3xTzCdWzZfIv/GWut23ue2uZNmCxHNc6BL2AkoiDlguSIozWlBENW7GougtUchD+b3A/3HxXyPymXXveh64AnCGzY6CIE8DworAAfby/i8yrPpa9yZYr0pVRmcUSBPh6Qfj/DOEXYkgJXcyOnl+0QiGaeqg3L7uT8yoIqHhaQy2YmqRgcLBs1uDURNz4HvVXdglvT41Y0tCXsSRNLUBrBKffEVKlKA3ydvdEFeUnto3V0Gzem2bpdlYHRSKZsJfLZAN+sepfoPFpbPJ7z2TekeatJ8XhhTMYTm/AHtjIaj/u3A630RJMZc1O1nQ3M0PZYzABfKmize6GkofFo7Ldm7Ry+IAbHfdlwKSQkUUiR4VhV19yAiFNls0WXDt7eSbK7t2DNcKvs0GItJ9j2cz6EzYImhbV415L+BMZQkP123HnUOr2xCkO+k2qc6
- HUPboWuo
- kUZIzuPoWJfPggw7wZYlxDgZxL4W5t3e/GT2b+z8l+eARwscLaoaRr4/LuXv4r4TlpXPZaLg+kIL50z3pSuLSrRKuN9fBH1W8JfJb8zAs76RYI0EjvaZC0UZHGVwW4qBFPDf4IeZgxBZ3jzGKo0zPg4PlIXJSx/sHWoceiEcfRKuXcxAWhIFIwaj7nat5cI/u7QA4dYZomh4umBVfMKCok49BxuY6SdQ4lmFEnd/BFM/+hb7XWyy2puQcWq9a0HkyW/cMFBIroiyBMvLtmuqMGk0yQmHCCkpJ+1NhRg7LVoziEz3fOlB/9d7WbvtISr79+8VzLAP3bRAWJt4=
+X-Stat-Signature: 39bkd1s9winmkzri3dh19am1egepx586
+X-Rspamd-Queue-Id: 12E621C000E
+X-HE-Tag: 1781722352-879928
+X-HE-Meta: U2FsdGVkX1/dhqjGmwfoHqphTPrY3zJrq6F7t92/YcsrcLvt1V0n1BuJpt4OctVeBzuji15FhpcwC5odpxzMmi44q/RE85eBMCYm6oKKAJSj1TAtABb1IoT4Ka2Kdtk8flV9LWkH4goI/ylEltAAN8O0RIgHLocrZF352iJvpYGUmhEuP0K0tp7VmNwp/Ah7PUWZDZ4ZEpHiEB3mFDiRGbgOhE0oOvJXWCAHqVvflZ9/TEGydMszUN7Gf25qzqKJ2gDRS++O3OWtHwU8ADo00lK57kcIHEkkemloFXnok7yCW2etn+d0rp8XQN1sNOMkZ9+s3odDs00fKZ9MUYCaTNPrduqTYxZ5pQxUXCTA2+eQjpaKnF4iKH5UkZe0DzoZ31fxpn+ky9HLzZCALz6vTHneo2LGgCROPNFFMiORhma58sS5Vg2kDsuIReFG5Pkg1Ku4pkASOI+fvPufDtRBPmw7nrLSDPY940C2EHJeNT+GVMicscKbk7M4K+C/kLmG0XmDgA1UO0L2pvWHdxqgagRqfT1JYxMnKmf7e4QF8xVQPv1iRomad7y+HzB3kbUBspnXcvSLklANv+rrkkLY3j0z8TTzarybGx3FLYZwb6cMBDKLr6HvT4CviIO9Ap84F1CJwJFl4wpDh3N2/+QVoUret5rSKBe/p1pMWFfhFHfhpoVsZAAnf6IQb7SfxRg7dHHpk/DU++4n105MjqWglQw3aGW6UE/6tYs9oiAljqtgDhXoyEHhCYFI308lwYVh/usVOfZuj2k3JMHb28nHW73Ir5Cwco5Vu57OfdOfFva8w04iKDosnfJD15gBoJapPVSSlPa6xb7MxfYqKILToi8JAnP91Y8vGnVZt/okZKsZ97ebigVF4hI7UrPwEjf7ggNoHgpf9uq4n9Nhb/J+zsNO5R/wUJIJWMln1vTf0jq7wWNpdvfhG8rVjyjJ7j9hnPeW7BeJk7m2n7RcT9z
+ QXnaQr/W
+ y8oVo6yyko9fq3EM640zjzg7fMrxpCBAo/EYn1DzSHLEeogNMR0JnZuADxlgKucHAELWZVQ9k34u3W8fxiPM0a/1Wv6QALgJox77Z2knImo7bncK+A9MuQTlYXURVCTSqfiFTsjBjNsSEV/5E4y6RFAdBVn6gpIfYh/LhnfPkF2M9ddqWZxIHBTZdyOtXG+sZwjyyRhFpY3er+nBlkrd3qKx0PijJD4cXZ/LTfNT3oYAqWvoDAQGGDJ6dRqDjMyttZz8wSEz3aKOJywdBltZqyJPGXA2gapnwh0doC0AyIaXF1NEVV+rYMnx+guOzcEgfGcIGKMiW0JRyJc+1hsdQGkoke7DmVL6Vj/09NH7uaCYKNPYSVMKJ1dOugx7C/fMBW4gvTrBez/mVvsHgRzv9JsVmckgZpyWGvW98Ijg+NndMc/epZkIGgcBAX5qSpEd26bgWxFQYXKEUgK8iMsZIUz39ly5HEUn593EP01yt9/aMkCToNDcqHFg3V6LXLyYV0aYd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,64 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Adrian,
-
-On Wed, Jun 17, 2026 at 03:18:27PM +0000, Adrian Barnaś wrote:
-> On Fri, Jun 12, 2026 at 10:17:55AM +0300, Mike Rapoport wrote:
-> > > 
-> > > Hm, maybe desirable for execmem but that doesn't really mean the x86
-> > > behaviour is correct. Maybe it makes more sense to change the x86
-> > > to align with the arm64 behaviour here?
-> > > 
-> > > BTW we should probably document this API a little bit, I never thought
-> > > abut what "valid" actually means until now. I had thought of it as "I
-> > > can access this memory" but that's an unclear concept and now I realise
-> > > "valid" is a technical concept in Arm that's confusing. And it's extra
-> > > confusing if the kernel API uses "valid" to mean a _different_ thing.
-> > 
-> > I've got confused too and that's how set_direct_map_valid() got into x86
-> > with a different semantics than on arm64.
-> > 
-> > What execmem really needs is set_direct_map_default() variant that gets
-> > nr_pages.
-> > 
-> > AFAIR, set_direct_map_default() has a single 'page' parameter because it
-> > was added to reset permissions for the direct map alias for vmalloc()'ed
-> > pages before there was VMALLOC_HUGE and each page had to be reset
-> > independently anyway.
-> > 
-> > Maybe it's time to add nr_pages to set_direct_map_valid().
+On 6/4/26 04:38, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
 > 
-> I was also quite confused by this initially. I spent some time debugging
-> until I realized why unloading all the modules was causing the kernel to
-> crash.
+> compact_unevictable_allowed is default 0 under PREEMPT_RT,
+> isolate_migratepages_block() skips folios with PG_unevictable set.
+> However, mlock_folio() sets PG_mlocked immediately but defers
+> PG_unevictable to mlock_folio_batch(), result in a folio with
+> PG_mlocked=1 but PG_unevictable=0. Compaction will isolate such a
+> folio.
 > 
-> The reason I took this approach was that I wanted to send out a working
-> prototype for arm64 that wouldn't interfere with the existing, working
-> implementation on x86.
+> Fix by checking folio_test_mlocked() together with the existing
+> folio_test_unevictable() check.
 > 
-> Following your suggestion, I can put together a preparatory patch series to
-> refactor the set_direct_map_* APIs to accept a nr_pages parameter. This
-
-There was a patch Nikita sent a while ago that does something similar:
-
-https://lore.kernel.org/all/20260410151746.61150-2-kalyazin@amazon.com
-
-I believe you can start from there.
-
-> refactoring would also allow us to drop the redundant set_area_direct_map
-
-We can't drop set_area_direct_map() because vmalloc pages might be not
-physically contiguous.
-
-> helper. I could then rebase the rox_cache series on top of that.
+> A similar issue has been reported by Alexander Krabler on a 6.12-rt
+> aarch64 system. Vlastimil suggested to check the mlocked flag [1].
 > 
-> Does this sound like a good path forward?
-> 
-> Thanks,
-> Adrian
+> Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
+> Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+> Link: https://lore.kernel.org/all/33275585-f2db-4779-89f0-3ae24b455a67@suse.cz/ [1]
 
--- 
-Sincerely yours,
-Mike.
+Well in that thread, Hugh doubted my suggestion and then it seems we didn't
+concluded anything. Did you actually in practice observe the issue that
+Alexander had, and that this patch fixed it, or is that theoretical?
+
+> ---
+>  mm/compaction.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index b776f35ad020..7e07b792bcb5 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -1116,7 +1116,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>  		is_unevictable = folio_test_unevictable(folio);
+>  
+>  		/* Compaction might skip unevictable pages but CMA takes them */
+> -		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
+> +		if (!(mode & ISOLATE_UNEVICTABLE) &&
+> +		    (is_unevictable || folio_test_mlocked(folio)))
+>  			goto isolate_fail_put;
+>  
+>  		/*
+
 
