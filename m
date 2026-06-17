@@ -4,114 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96FCDCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31518CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:39:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 624D06B0088; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
+	id E003E6B0088; Wed, 17 Jun 2026 11:39:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D6C06B008C; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
+	id DB19D6B008C; Wed, 17 Jun 2026 11:39:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C5C26B0092; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
+	id CA2CF6B0092; Wed, 17 Jun 2026 11:39:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 175D96B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E4BF6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:39:19 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 948831C27C8
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:29:51 +0000 (UTC)
-X-FDA: 84889789782.28.DCEE3DF
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 631BC1C000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:29:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DKx80smN;
-	spf=pass (imf21.hostedemail.com: domain of 3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781710189;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5322404E0
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:39:18 +0000 (UTC)
+X-FDA: 84889813596.28.18A01E1
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E524D4000B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:39:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NVuhYYOF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781710757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
-	b=LhexDWkNUZ9h5+FwDMhxsTq6gvmGvmJAlz3vOQZ0cKs5wpC1EwTXGgJ/Z6q/+hh3tBWAPq
-	Lr7ldR5KEZKS2Xsjmgepef1yMQsMmkzgnNhnkXr7KtEEnkI4XkasArBiUR+kXnqywNacK/
-	aEKOLwp2SF6oESzWVNi96dtlv/hzwEA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=DKx80smN;
-	spf=pass (imf21.hostedemail.com: domain of 3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781710189;
-	b=Ei4OUbr7MV1VuHHeU36z3Vq6lMLDpipXHKH6k/5s0rqV5LPqkTlZyi0ZqxLwwKgrl8SQ0c
-	fuvz84G2xTh6V4HuYbI4Hf/+o9Q/yDGoT4Oph33Rn3YKn2FDrPYo0M5BaYUlEWn+12CFpp
-	WHKu7hJsOilY/cEQeoxlfj6y97i7pwQ=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef0af9517so5428771f8f.3
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:29:49 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e7O+YFaniyt4mqlxJTogbnmDsFLsPWU7djzJQ4Y9xm8=;
+	b=4pmYFl+oxZqN6xcGWhtcaEFZF5rvkgXgkiMj+4DbqXdoByC0QGbMmAeCcqIJmxUE2UQjBE
+	HWaNKIS4mrFKRQoKU+JBST5QFffj2sHrUAsTW07jCoIPU1xYStakeV1Zpfk2OmGlvonanG
+	PaxMvTkvF/P9sRk/P899kPeJYtm/7Xw=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=NVuhYYOF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781710757;
+	b=aQjq7x5fcGzJInMMJTFm89xelrgf11Xgt7CJzWX59LwnwIsMMA+jVNAepqyQks7oQW92yM
+	C8Q9hWN3uZLSgBWNY7iniJkShSqhrxk9OziaSPGH/M2BB6J0RCsY1AIEWyVAeIufU2gwFA
+	seM5rsdJuf5YbHXGiROTr7xq/fMK/88=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51765531803so332571cf.0
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:39:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781710756; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Lh1RVm8SePO5uoSWcgsyGczdEgxIOGy26j46cfEKVaGHoS8rpMO3nmnU6o5AQcoOMu
+         1xd3LPM+MdOYhzB+fTIQ2REx0top4VKATkGUzOk5qO7IrjFF2mDK7/MXo+lVY/G9XanG
+         EGo+lfw4zFVSBc8cIQQEXy52cWthjZeAxUfE3njX6ZuCXKhegjDdS1KLPN1YdIM/Kcm5
+         UuetrWVupKeHe2Vcnn1/o6eJRhVM5GGETgwiYSMp1I3rPBhzPylGCovDaNY1G2E2+geY
+         C8BHY6UENygNHCZmO89WmquOwwEmTzoTyCMLSzWaBTGb91Y70wPYn+z0SUz5/7kOPTFv
+         gCVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=e7O+YFaniyt4mqlxJTogbnmDsFLsPWU7djzJQ4Y9xm8=;
+        fh=znoYbdiJr6r7gXeDNsd5avYxEP3Oj95uBSy6Nb4Buc4=;
+        b=FjipsRTKMmd0+3HxxNEFWOZPerHlCSvniwWSmgklrafC+bxKJNUmbHMcle9KdA7yZB
+         azqjKBt86aTcdYEhjb4DCzlHcbjIiqSC0qivSCpQar46kIVCY5UMNVEGUjeib8PDqhCy
+         +3mpS5pjC1hY+vMwrx6XCsHFQtzNwwAINs7LCXvdtCpTd9pelosyD90IskhW9zBNSTkv
+         mEadO+GQYTts1FtL4dXP8jQpr0cCT2IVo4FZ/JkGL1aH0X7IKssvntAXkZd41v45lA6V
+         fuiTcKqmKnwcS+2i27PWj3uGKEsoqka/SRP6D+O1zEqPtSUyYHyC8CXHD4BFa+hF77N0
+         MT8A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781710187; x=1782314987; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
-        b=DKx80smNZfRPsL+rgLmYJL/Z8P509zkQwe+Jy8QtARBNr5eo21wyBPfGdoDeXS3WHL
-         F2LCq/hlskDEWDjsjL7Lpp85vUKyQpdh34hVEdN92irpfcQh1SPXOhCCtlahhWszfWkO
-         C6K8VpkYnKcDuW94truQBTZM0xsEHoTsPQa9r1ENhu/4SYK1nIk/ZngEix1TwfCdomy4
-         KZMWDyX70ZLxjVKxWVI12U+9ayaHni4d7dIgGJMAwD9qKYQR/dyVs46R+jcKzN8MuQGB
-         eVxnMf4TPq6OTL0KCdTOjQ2B5+7k2R+IO9vAM2ziEWtYOabKTW4kEwGqCRFjueORLpdK
-         5ZcQ==
+        d=google.com; s=20251104; t=1781710756; x=1782315556; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e7O+YFaniyt4mqlxJTogbnmDsFLsPWU7djzJQ4Y9xm8=;
+        b=NVuhYYOF6gWuVO3sDHVuxUt6PWoSVxWh/4jxT+2Ao9P1eA3Ywh4xgM6kEosbrq7Aiw
+         LS4lKMoZfv/LYB7vhMFfN6tGslfAjqqhGwThQ0gKnkB/Rz5cyDvaXXxuuqRikvzfzViT
+         +ce1MyBGM1PlxOgTtZ9hB2xC9v2BBYovgljE/Cgv1iC+Zsds27QUefXpLjzPKpAHmjmY
+         DHr1Qrq/2LvjFUPRNaU7EUq0Z0EhTON5FDF0wibU2qkPVL/FCrlHIOhoBtq7TKcowjan
+         8Um4U4bKDFdUjjURwOPCLf4MVfF0nYqQw4MiMol8sRTj8xzYpbh8kC8l3U/1bjqR7NEX
+         +jMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781710187; x=1782314987;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
-        b=LZGz5JZl3O9VFyHLbtCK31uNBagzJ0yGXu9BkSV5NOEp3Ishrik4pLzI9OiVFCVusH
-         v4zxHEpwjwcg0OyyS1RvtF2UwL1VqD2Hbsg5EYR9l/SE/1IlD94uaMeYXMf6jvryV3tV
-         Vqjh0M3+f/PyTp97cMOScrnKzvuYrKgZhpaoHWa1t6rnSW97bErMCLNiPxYVhaQ1lvoo
-         LN9rMpy+yWaVDFxbNJxIe7F9XaSLDDA+9tT/oRHW/GNVlWMAboQrFJVIjhvOn9M5yU4/
-         a2/Yqfy6qZbdytA571RhqIIcXJZyHa3TiIJOs0hVNdTSnwPbu2V0CFl6e8qQTst39qeh
-         O+fA==
-X-Forwarded-Encrypted: i=1; AFNElJ9CBPszwn0013WAr2LuEiHqVPZDW2HB+Lq2vbJ3Ha5ZUs+20QWWH6L2PZu6XaEmMJcRYe+HTuo7iA==@kvack.org
-X-Gm-Message-State: AOJu0YxOb/Tf+MbuXLwQzNyTVCWxNKY1He+WyUmzFW9E0T1u8zwYkRX/
-	w/ubPtFBRiGBZQHE1DvH4k6UbQBfUqjNQ6MLJ9P8Pn09H5t9d3EERuSuQknCMX6y7zXtjzqa3h/
-	Xniwh+QIoHt6aZQ==
-X-Received: from wmok21.prod.google.com ([2002:a05:600c:4795:b0:490:bae0:2975])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a30c:b0:490:c024:2eba with SMTP id 5b1f17b1804b1-492333e2829mr68327805e9.22.1781710187354;
- Wed, 17 Jun 2026 08:29:47 -0700 (PDT)
-Date: Wed, 17 Jun 2026 15:29:42 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGW9MmoC/yXMQQ5AMBCF4avIrDVpVTRxFbGodjA0SIsQcXfF6
- uVbvP+CgJ4wQJlc4HGnQPMUIdIETK+nDhnZaMh4VvBCKKadmw1b/RlnZCLXViqrGykVxM/isaX j61X177A1A5r1jcB9P6+TR9lxAAAA
-X-Change-Id: 20260617-alloc-trylock-14ad37dab337
-X-Mailer: b4 0.15.2
-Message-ID: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
-Subject: [PATCH] mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 631BC1C000B
-X-Stat-Signature: c3ref78ejyqzqpynxkemqnjyxizaoota
+        d=1e100.net; s=20251104; t=1781710756; x=1782315556;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e7O+YFaniyt4mqlxJTogbnmDsFLsPWU7djzJQ4Y9xm8=;
+        b=JYw6cV7li340kCx2bSw9PPZ7xZFx1K1m53/ZvHIkLUZt4X2MHqd6p8YSO0sIs0RX+D
+         truB9/abWCbgM8Y2ZabeLVXoNmYbl+EYirF76SEGYhjSe9Lde9oAiNDcY2sKXcPb4pgX
+         5sHsd7A6OIN/6N3i5+lqv/mY/IWRHw2NeZbprP8KkzkTUcl4Xo3Tjx9Kch0mwAqRCwPS
+         LMpNvxFwQ9bxv8SG082AU0gJyYozfiIQd8eKj0rmeR6H3ypoqPlK8W/OmXxFWdbT5gIR
+         LxmwE7dDJLbSL70UkrMjUTazkuGlo2UB4btkoTbBLc0Wd4Lpvrya4C4XFrtIsgwIS9Kz
+         WNrQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+BA1SOXSKuDcCeP5M9rXlkzc3forQcbl9m0CvzesuV5WgUAq+sz3L0dfAUQEH+ePgyKNNCesNAgA==@kvack.org
+X-Gm-Message-State: AOJu0YyEMtM+MZdHM2Bi/bzDwV1mGL2jGzMrXXlQ5kWY8uPH/tr5FGyF
+	/amXOOlxmt+hY5zTqgVCC1fdCoxO2FPrBECF3LyTs4kI9KiOGkdC91NrGFVzbPd+yD54VzCZp45
+	LkO80191jS0atnAtZYk4wbI+gJnRYfXcQ8ATzdgQM
+X-Gm-Gg: Acq92OEXNmWusKXa4hPzfPc3NR407aGybMN8WD4337xtdi6NGvQYJi0aDdlkwetJZ3W
+	H5DHvdCw/ikjOdj9NL8k4uojt6dGqQTmTfWJAu8QpB6ahTQJZ4+1neosqUsxWa+D11NXxX2PBfr
+	raNaF/2BrTZcHRoMReTuehp3KKz9LqDuitiR9Jr4mTK6j73j7DNvCVbXa7uyWDlB874tM4+PV0B
+	cLwi7oNg0XogESsQuKZNmA4h+0+4M38Cxo32kTCw9+v1Uz2nSQbGRQ3zogSytd/9EE7QOB+/h+U
+	/FO6m6oBxGpDy022gSvPj2EYMXc=
+X-Received: by 2002:a05:622a:5884:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-519aa962ed6mr11253791cf.10.1781710755155; Wed, 17 Jun 2026
+ 08:39:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1781564384.git.abhishekbapat@google.com>
+ <4d9c8dc420e2019e1fce62ecf31ec40933fce3a8.1781564384.git.abhishekbapat@google.com>
+ <f5afcb7a-5b38-4c98-ac3e-529631bda4cb@linux.dev> <CAL41Mv7s9iA6a3YKV40E-9vk9WZfCjMEgBbLq_FVOjRS-PdVvA@mail.gmail.com>
+In-Reply-To: <CAL41Mv7s9iA6a3YKV40E-9vk9WZfCjMEgBbLq_FVOjRS-PdVvA@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 17 Jun 2026 08:39:03 -0700
+X-Gm-Features: AVVi8CeNyhEAJn89ckCO6vpBZ60MjcT4wEDr_0XaNZkmvpxfoh4Ep57-FKkkyNM
+Message-ID: <CAJuCfpF12rccM5YEXhDicL4-aRifA5fQMUKRGN8M13zMnoWr+Q@mail.gmail.com>
+Subject: Re: [PATCH v5 5/6] kselftest: alloc_tag: add kselftest for ioctl interface
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781710189-683215
-X-HE-Meta: U2FsdGVkX1+hVvRCVNikBKDftmNthLgAIIF2xOJ2LVIgQs6uGZm6QwixK3A/A4wP1VDE28kDeLqY9XpE4KORkS8SIUSFHcvxDrCoquiekmB9eGyhWQzMYqaIQrMbUhUYje2q7kitVzEaYzWqUuspvVpeYSuJzht0hWnVQd2emQdLYOi3R9FVpsTzg3OfBTkUSmc2mcWI06C2w4Fd3gMMS6LXoXzA7+ujOBvGAs12M6mwRiKAUg79y6a5ONWg3eQVqfScxeivdqBNC2ymwmI+6bUte8T8y8Pjz3P8fqOagotdghjgcXxN24DpJo8ZJ0qTPp9jMOiSxSk7WU/iI8xqC+QwvoBzPr2z4Q+xJO8Jq4T3lgrYRX2yqwxRRXrFU/VS6j6yFEn61v5JN2wGnQYfFsVrLbexiG+tc+RiNkebYBrJFzc882S+PBhAmifDmzetUYGpl0aY+DeX8x9cw3hEtzM19vvGe83n3hJm9hXsMeWTUrdazKHoZtdJ5hbcAbNTRU96GgVJn5age2l3c/izLNRAfBXmgBWL8ik7n+ZNkJh+I3Q3imWoeKiVnEa+G3pSEorF5WlRx3QZhqXAQvBFwV7wb57FfZFmbpI//aAhOl+Ern8G7zTgS+H2vXAw9ph2Z2wjld0eJpzRMLCZSo2G9pvBZXt+0d1auneKeUA6EWsBe+52pTrchMpguuVT12WqL7JKMgHCwXPwEe9z1J3BKRB2HQ0de5r6PjrS1/MygPHVk4ZNDcr657WPN9+8Oa8wBxKscJA+Y7uDW78vYYQlUw3lF7KSc9SBeHlfMzATuz+qmaLBg/e8ThYTcU1DaFo8RlE9xkN2SuSh2AvxdHGtyWkTtiBGy10Ee6wcg+wh+W/rXcAY6pDueIgXJiDma9PhwiACOsWqjc1zDEoNG8PfwDA5N1uTZw1OoJu882Lnacp5Ac+3cUAfFhh0oDE3VVUb7BPpakql9U4C6q4rzsM
- Z/AKfT5j
- WYHIfNBZreZKoTmDs82cxasGLcBG2SxrzXIx1R012J9L99bjoIUkizY8kbg443l8KBZE+2570Dt7xlsuV2sTelZfI5PnfHI1xB0f1eunXF0Y3GFdMGU4KH2XFO36aAFmmRWusNAjB3vQuvPtmUZWsvh5ithW343jNDWQiHYiIuWy1y7dV4sGhI1s+IaVraXUwjUAWyaOHiTaApvT7EZ88vM0A5Vb8AJmgR6VPDnwSNHREr4PzInYrQdWo20PX14v+fj7MvAJRtIq4WgtSuruio5tdEvTwwZZEKNKNWaNXqnmJt1tDccCPMGFMtrnGvytcS/x/KKUT/sGb9ptvd1ssZyKbUuUmb4PpKY1s9li33YB04KBlHSNsThs2MxGvy3P8wTwM9H6qzm89xb2gHz9naxW7Bq506jZWN6EEsO8GarRLUAK0c/acKKQvrmdho/vT6oQV3qCkeWFh+2Hjeff5iU0fX6zS7YNPg1p2EnqM8jDaie4+ETxeZ2rv2K5MZJqETC344ye5K4QH+MM6e/Twd7Kkssekv08QKyxSC1rsbw1IurS67SbMCr/iIzPBTcuFJYhH0mBXfJrGhWRpTqaWraUvN55gUnlfqxD+rg+MbB7f6GojSo9eW0b8pIcXa61WXtOBWIEc+8eP5lDmDiIHB7s1FPckpgpHzVwQXaTJDbd8+ouIiWZ3qH1ejQ==
+X-Stat-Signature: yo7nbgoasrqhdtxcirbdmou5a4oocfsq
+X-Rspamd-Queue-Id: E524D4000B
+X-HE-Tag: 1781710756-733636
+X-HE-Meta: U2FsdGVkX19VLqqiH6ZQn7/+HP8EAIfbPavS1YbBeO642aLkW6Yf9Ai1du/7mTIxO4iNP8qsSaT9DZqXV8QKx6vKjwvZ2rTTD++4PhsXmiSMv/uUSnvQ1n5zd5wkDuZGEOw3Fh+Ejn8VEVmO1ja/U3Zwg/Ep8l7L3PfaZg84aqZsCck5IW205bSomCA1p+GfNkYYEi8JxUq8fl4WoF8H4gtBDslZcvnX7aEU8Po2j3w6PtT3Z5snol/uIeel9NAOYn6ld9AZ1YaOM6viu6v9773I90s0DdjRSIIScNXCGCE+ae1fpxwwWk4UzhO1fUEq2yzENkryYuQ1K8UX+KpbCXhGgHvvQN/+uYFe7JVkaGeTATJ/isbEDxDa+eKwuOxHv4U0SiLkPntfgiKepeM1RIUHGYl1b65/Kb1rjrvqUFgP8zx7hhXfopiY5CRZoo/CGDPodztl9OMta+397fEQpVlqFBimyZKbV0Xvu/JbLvMvRgx4RL1T83ySbph850v8MNWyQbJt3NUNSvg3NHW5nZZ01Z/VdCRjg+IGzey8n9FaVn3I7KCwXvm9Vgt4jfnha/r4X0fpt26jwSVUqSifLx2x05IEvfySDVOxr9VGGWssJDpZNW/VYsTbMZmqD501bPQB4PTaHTKPPjRXnHY+QXNPI6a8DjWzdCYgxej2AAqvtmt9D1yReYkJRBvz0PgPVmkpU/KwabtHKLkWrF630+eGqU/skp3b1nVOE+TxpYhQXgERO0mdcv8DyMuzzqSs85eMweYd0+nhd6oKey338m/i35pe1pwHV5p3xMVmox+hq2osgnzhDNazrkusgLrPR9NdNK4lUO6np5kkMdlv89ZzyzC06E8wP+szMvSRfUM42tGLWXs2KUZ5oRmD1cawRnrWG4wJs8tvT7934mjWbdPIsy+7QQah2aKwY3Idv/8X1/wPf2nW88qVBIsPJWkbdQ+w2zX+D+FjhzSoq80
+ nHGm9YUd
+ Q5MxsBWuq6iot1e46AEi7x5sdEDfHOgm78s8nz3jl3XSbZ1REneexvxxcs6zQACCiL/w1hFhfuALVJDuKCgvXZ7g8hJEvUeMPTOivqrJDQdWev6WXtpeQU6/a/ufs1f0WzqFy7esqYw3yM9nyY7EGLhd8Dh20Fp24ado/Rt+7cdE5JMTDqgZv3DikMwa/jLHgFyTkzE5mG+LXPqReuKzjIRg9qe7AS87p1COHKpBJZ9HclU5DoaKshBivxcyyT8Y5dGf4z59AqNc5RJJgvkmlPR5ceDVTdd5mwk7JKWQK7nqphYEjRunuj7neXMm1LzON6/oOTxy0PYXujkOlf9vW2K+5tg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,373 +143,557 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
-main entry point function is significantly different from the normal
-__alloc_frozen_pages_nolock(), this is tiring when reading the code.
+On Tue, Jun 16, 2026 at 9:56=E2=80=AFAM Abhishek Bapat <abhishekbapat@googl=
+e.com> wrote:
+>
+> On Mon, Jun 15, 2026 at 11:01=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+> >
+> > Hi Abhishek
+> >
+> >
+> > On 2026/6/16 07:04, Abhishek Bapat wrote:
+> > > Introduce a kselftest to verify the new IOCTL-based interface for
+> > > /proc/allocinfo. The test covers:
+> > >
+> > > 1. Validation of the filename filter.
+> > > 2. Validation of the function filter.
+> > >
+> > > The first test validates the functionality of the filename filter. Us=
+ing
+> > > "mm/memory.c" as the candidate filename filter, it retrieves filtered
+> > > entries from both procfs and ioctl and matches the first VEC_MAX_ENTR=
+IES
+> > > entries.
+> > >
+> > > The second test validates the functionality of the function filter.
+> > > It uses "dup_mm" as the candidate function as we do not expect this
+> > > function name to change frequently and hence won't be needing to modi=
+fy
+> > > this test often.
+> > >
+> > > Note that both the tests match line no, function name and file name
+> > > fields. Bytes allocated and calls are not matched as those values may
+> > > change in the time when the data is being read from procfs and ioctl =
+and
+> > > hence can lead to false negatives.
+> > >
+> > > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > > ---
+> > >   MAINTAINERS                                   |   1 +
+> > >   tools/testing/selftests/alloc_tag/Makefile    |   9 +
+> > >   .../alloc_tag/allocinfo_ioctl_test.c          | 331 +++++++++++++++=
++++
+> > >   3 files changed, 341 insertions(+)
+> > >   create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+> > >   create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioct=
+l_test.c
+> > >
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 019cc4c285a3..6610dd42e484 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -16715,6 +16715,7 @@ F:    include/linux/alloc_tag.h
+> > >   F:  include/linux/pgalloc_tag.h
+> > >   F:  include/uapi/linux/alloc_tag.h
+> > >   F:  lib/alloc_tag.c
+> > > +F:   tools/testing/selftests/alloc_tag/
+> > >
+> > >   MEMORY CONTROLLER DRIVERS
+> > >   M:  Krzysztof Kozlowski <krzk@kernel.org>
+> > > diff --git a/tools/testing/selftests/alloc_tag/Makefile b/tools/testi=
+ng/selftests/alloc_tag/Makefile
+> > > new file mode 100644
+> > > index 000000000000..f2b8fc022c3b
+> > > --- /dev/null
+> > > +++ b/tools/testing/selftests/alloc_tag/Makefile
+> > > @@ -0,0 +1,9 @@
+> > > +# SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +TEST_GEN_PROGS :=3D allocinfo_ioctl_test
+> > > +
+> > > +CFLAGS +=3D -Wall
+> > > +CFLAGS +=3D -I../../../../usr/include
+> >
+> >
+> > I think we should replace -I../../../../usr/include with $(KHDR_INCLUDE=
+S).
+> >
+> >
+> > > +
+> > > +include ../lib.mk
+> > > +
+> >
+> >
+> > We would also introduce an extra field in the parent directory,
+> >
+> > allowing our alloc_tag target to be built when running make
+> >
+> > within /home/linux/tools/testing/selftests.
+> >
+> > like this:
+> >
+> > --- a/tools/testing/selftests/Makefile
+> > +++ b/tools/testing/selftests/Makefile
+> > @@ -1,5 +1,6 @@
+> >   # SPDX-License-Identifier: GPL-2.0
+> >   TARGETS +=3D acct
+> > +TARGETS +=3D alloc_tag
+> >   TARGETS +=3D alsa
+> >   TARGETS +=3D amd-pstate
+> >   TARGETS +=3D arm64
+> >
+> > Below is the relevant build log:
+> >
+> > [root@localhost selftests]# make -j8
+> >    CC       acct_syscall
+> >    CC       allocinfo_ioctl_test
+> >
+> > Below is the log from running make clean:
+> >
+> > [root@localhost selftests]# make clean
+> > rm -f -r /home/linux/tools/testing/selftests/acct/acct_syscall
+> > rm -f -r /home/linux/tools/testing/selftests/alloc_tag/allocinfo_ioctl_=
+test
+> >
+> >
+> > (Sorry about this inconvenience. I had limited experience with the
+> > kselftest framework,
+> >
+> > so I reached out to my teammates to sort out the relevant build logic.
+> >
+> > It's my fault for not catching this issue in prior reviews
+> >
+> > and forcing you to send a revised patch.)
+> >
+> >
+> Before writing this patch, I had discussed this with Suren and he was
+> of the opinion that this should be done later in a separate patch. So
+> I'll let Suren answer this further.
 
-Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
-an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
-exposed to mm/) and then turn the nolock variant into a thin wrapper
-that just sets that flag (as well as handling NUMA_NO_NODE, similar to
-how some of the wrappers in gfp.h do).
+Hmm. Don't recall exact details of that discussion but it does not
+make sense to introduce an issue just to clean it up later. I agree
+with Hao and if I said otherwise before, I was wrong.
+Thanks,
+Suren.
 
-Rationale that this doesn't change anything:
-
-1. Simple bits: A bunch of the nolock-specific handling is just moved to
-   the new alloc_order_allowed(), alloc_trylock_allowed() and
-   gfp_trylock.
-
-2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
-   previously in the nolock variant:
-
-   a. Application of gfp_allowed_mask; this only affects early boot, and
-      only flags that affect the slowpath get changed here.
-
-   b. Application of current_gfp_context() - also only affects the
-      slowpath
-
-3. The slowpath itself: this is now just explicitly skipped under
-   !ALLOC_TRYLOCK.
-
-Ulterior motive: adding an alloc_flags arg to the allocator's
-mm-internal entrypoint can later be used to do more allocation
-customisation without needing to create new GFP flags.
-
-No functional change intended.
-
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- mm/hugetlb.c    |   2 +-
- mm/internal.h   |   4 +-
- mm/mempolicy.c  |   8 +--
- mm/page_alloc.c | 175 +++++++++++++++++++++++++++++---------------------------
- mm/slub.c       |   4 +-
- 5 files changed, 99 insertions(+), 94 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835e..619f6307dc98d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1806,7 +1806,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
- 	if (alloc_try_hard)
- 		gfp_mask |= __GFP_RETRY_MAYFAIL;
- 
--	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
-+	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask, 0);
- 
- 	/*
- 	 * If we did not specify __GFP_RETRY_MAYFAIL, but still got a
-diff --git a/mm/internal.h b/mm/internal.h
-index 181e79f1d6a20..1043eb833836c 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -913,7 +913,7 @@ extern bool free_pages_prepare(struct page *page, unsigned int order);
- extern int user_min_free_kbytes;
- 
- struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
--		nodemask_t *);
-+		nodemask_t *, unsigned int alloc_flags);
- #define __alloc_frozen_pages(...) \
- 	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
- void free_frozen_pages(struct page *page, unsigned int order);
-@@ -924,7 +924,7 @@ struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
- #else
- static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
- {
--	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL);
-+	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL, 0);
- }
- #endif
- 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 36699fabd3c22..dccff90682035 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2425,9 +2425,9 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
- 	 */
- 	preferred_gfp = gfp | __GFP_NOWARN;
- 	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
--	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask);
-+	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask, 0);
- 	if (!page)
--		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL);
-+		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL, 0);
- 
- 	return page;
- }
-@@ -2475,7 +2475,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 			 */
- 			page = __alloc_frozen_pages_noprof(
- 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
--				nid, NULL);
-+				nid, NULL, 0);
- 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
- 				return page;
- 			/*
-@@ -2487,7 +2487,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 		}
- 	}
- 
--	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
-+	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, 0);
- 
- 	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
- 		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0111cdbdb5321..fc4d07bbf44b5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5253,24 +5253,98 @@ void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
- 	}
- }
- 
--/*
-- * This is the 'heart' of the zoned buddy allocator.
-- */
--struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
--		int preferred_nid, nodemask_t *nodemask)
-+static inline bool alloc_order_allowed(gfp_t gfp, unsigned int order,
-+				       unsigned int alloc_flags)
- {
--	struct page *page;
--	unsigned int alloc_flags = ALLOC_WMARK_LOW;
--	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
--	struct alloc_context ac = { };
-+
-+	if (alloc_flags & ALLOC_TRYLOCK)
-+		return pcp_allowed_order(order);
- 
- 	/*
- 	 * There are several places where we assume that the order value is sane
- 	 * so bail out early if the request is out of bound.
- 	 */
--	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
-+	return !(WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp));
-+}
-+
-+static inline bool alloc_trylock_allowed(void)
-+{
-+	/*
-+	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
-+	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
-+	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
-+	 * mark the task as the owner of another rt_spin_lock which will
-+	 * confuse PI logic, so return immediately if called from hard IRQ or
-+	 * NMI.
-+	 *
-+	 * Note, irqs_disabled() case is ok. This function can be called
-+	 * from raw_spin_lock_irqsave region.
-+	 */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-+		return false;
-+
-+	/* On UP, spin_trylock() always succeeds even when it is locked */
-+	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-+		return false;
-+
-+	/* Bailout, since _deferred_grow_zone() needs to take a lock */
-+	if (deferred_pages_enabled())
-+		return false;
-+
-+	return true;
-+}
-+
-+/*
-+ * GFP flags to set for ALLOC_TRYLOCK i.e. alloc_pages_nolock().
-+ *
-+ * Do not specify __GFP_DIRECT_RECLAIM, since direct claim is not allowed.
-+ * Do not specify __GFP_KSWAPD_RECLAIM either, since wake up of kswapd
-+ * is not safe in arbitrary context.
-+ *
-+ * These two are the conditions for gfpflags_allow_spinning() being true.
-+ *
-+ * Specify __GFP_NOWARN since failing alloc_pages_nolock() is not a reason
-+ * to warn. Also warn would trigger printk() which is unsafe from
-+ * various contexts. We cannot use printk_deferred_enter() to mitigate,
-+ * since the running context is unknown.
-+ *
-+ * Specify __GFP_ZERO to make sure that call to kmsan_alloc_page() below
-+ * is safe in any context. Also zeroing the page is mandatory for
-+ * BPF use cases.
-+ *
-+ * Though __GFP_NOMEMALLOC is not checked in the code path below,
-+ * specify it here to highlight that alloc_pages_nolock()
-+ * doesn't want to deplete reserves.
-+ */
-+static const gfp_t gfp_trylock = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC |
-+				__GFP_COMP;
-+
-+/*
-+ * This is the 'heart' of the zoned buddy allocator.
-+ */
-+struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
-+		int preferred_nid, nodemask_t *nodemask, unsigned int alloc_flags)
-+{
-+	struct page *page;
-+	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
-+	struct alloc_context ac = { };
-+
-+	/* Other flags could be supported later if needed. */
-+	if (WARN_ON(alloc_flags & ~ALLOC_TRYLOCK))
- 		return NULL;
- 
-+	if (!alloc_order_allowed(gfp, order, alloc_flags))
-+		return NULL;
-+
-+	if (alloc_flags & ALLOC_TRYLOCK) {
-+		VM_WARN_ON_ONCE(gfp & ~__GFP_ACCOUNT);
-+		if (!alloc_trylock_allowed())
-+			return NULL;
-+		gfp |= gfp_trylock;
-+	} else {
-+		alloc_flags |= ALLOC_WMARK_LOW;
-+	}
-+
- 	gfp &= gfp_allowed_mask;
- 	/*
- 	 * Apply scoped allocation constraints. This is mainly about GFP_NOFS
-@@ -5291,9 +5365,9 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
- 	 */
- 	alloc_flags |= alloc_flags_nofragment(zonelist_zone(ac.preferred_zoneref), gfp);
- 
--	/* First allocation attempt */
-+	/* First allocation attempt (or, for trylock, only attempt) */
- 	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
--	if (likely(page))
-+	if (likely(page) || (alloc_flags & ALLOC_TRYLOCK))
- 		goto out;
- 
- 	alloc_gfp = gfp;
-@@ -5310,7 +5384,8 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
- out:
- 	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT) && page &&
- 	    unlikely(__memcg_kmem_charge_page(page, gfp, order) != 0)) {
--		free_frozen_pages(page, order);
-+		__free_frozen_pages(page, order,
-+				    alloc_flags & ALLOC_TRYLOCK ? FPI_TRYLOCK : 0);
- 		page = NULL;
- 	}
- 
-@@ -5326,7 +5401,7 @@ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
- {
- 	struct page *page;
- 
--	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
-+	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask, 0);
- 	if (page)
- 		set_page_refcounted(page);
- 	return page;
-@@ -7856,80 +7931,10 @@ static bool __free_unaccepted(struct page *page)
- 
- struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order)
- {
--	/*
--	 * Do not specify __GFP_DIRECT_RECLAIM, since direct claim is not allowed.
--	 * Do not specify __GFP_KSWAPD_RECLAIM either, since wake up of kswapd
--	 * is not safe in arbitrary context.
--	 *
--	 * These two are the conditions for gfpflags_allow_spinning() being true.
--	 *
--	 * Specify __GFP_NOWARN since failing alloc_pages_nolock() is not a reason
--	 * to warn. Also warn would trigger printk() which is unsafe from
--	 * various contexts. We cannot use printk_deferred_enter() to mitigate,
--	 * since the running context is unknown.
--	 *
--	 * Specify __GFP_ZERO to make sure that call to kmsan_alloc_page() below
--	 * is safe in any context. Also zeroing the page is mandatory for
--	 * BPF use cases.
--	 *
--	 * Though __GFP_NOMEMALLOC is not checked in the code path below,
--	 * specify it here to highlight that alloc_pages_nolock()
--	 * doesn't want to deplete reserves.
--	 */
--	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC | __GFP_COMP
--			| gfp_flags;
--	unsigned int alloc_flags = ALLOC_TRYLOCK;
--	struct alloc_context ac = { };
--	struct page *page;
--
--	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
--	/*
--	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
--	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
--	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
--	 * mark the task as the owner of another rt_spin_lock which will
--	 * confuse PI logic, so return immediately if called from hard IRQ or
--	 * NMI.
--	 *
--	 * Note, irqs_disabled() case is ok. This function can be called
--	 * from raw_spin_lock_irqsave region.
--	 */
--	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
--		return NULL;
--
--	/* On UP, spin_trylock() always succeeds even when it is locked */
--	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
--		return NULL;
--
--	if (!pcp_allowed_order(order))
--		return NULL;
--
--	/* Bailout, since _deferred_grow_zone() needs to take a lock */
--	if (deferred_pages_enabled())
--		return NULL;
--
- 	if (nid == NUMA_NO_NODE)
- 		nid = numa_node_id();
- 
--	prepare_alloc_pages(alloc_gfp, order, nid, NULL, &ac,
--			    &alloc_gfp, &alloc_flags);
--
--	/*
--	 * Best effort allocation from percpu free list.
--	 * If it's empty attempt to spin_trylock zone->lock.
--	 */
--	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
--
--	/* Unlike regular alloc_pages() there is no __alloc_pages_slowpath(). */
--
--	if (memcg_kmem_online() && page && (gfp_flags & __GFP_ACCOUNT) &&
--	    unlikely(__memcg_kmem_charge_page(page, alloc_gfp, order) != 0)) {
--		__free_frozen_pages(page, order, FPI_TRYLOCK);
--		page = NULL;
--	}
--	trace_mm_page_alloc(page, order, alloc_gfp, ac.migratetype);
--	kmsan_alloc_page(page, order, alloc_gfp);
--	return page;
-+	return __alloc_frozen_pages_noprof(gfp_flags, order, nid, NULL, ALLOC_TRYLOCK);
- }
- /**
-  * alloc_pages_nolock - opportunistic reentrant allocation from any context
-diff --git a/mm/slub.c b/mm/slub.c
-index a2bf3756ca7d0..b9fb66071bd07 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3275,7 +3275,7 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
- 	else if (node == NUMA_NO_NODE)
- 		page = alloc_frozen_pages(flags, order);
- 	else
--		page = __alloc_frozen_pages(flags, order, node, NULL);
-+		page = __alloc_frozen_pages(flags, order, node, NULL, 0);
- 
- 	if (!page)
- 		return NULL;
-@@ -5236,7 +5236,7 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
- 	if (node == NUMA_NO_NODE)
- 		page = alloc_frozen_pages_noprof(flags, order);
- 	else
--		page = __alloc_frozen_pages_noprof(flags, order, node, NULL);
-+		page = __alloc_frozen_pages_noprof(flags, order, node, NULL, 0);
- 
- 	if (page) {
- 		ptr = page_address(page);
-
----
-base-commit: 1111012ec6508a38a39f8d20c213c8c9cf3c96c0
-change-id: 20260617-alloc-trylock-14ad37dab337
-
-Best regards,
---  
-Brendan Jackman <jackmanb@google.com>
-
+>
+> > > diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c=
+ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
+> > > new file mode 100644
+> > > index 000000000000..62d5a488a04d
+> > > --- /dev/null
+> > > +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
+> > > @@ -0,0 +1,331 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +
+> > > +/* kselftest for allocinfo ioctl
+> > > + * allocinfo ioctl retrives allocinfo data through ioctl
+> > > + * Copyright (C) 2026 Google, Inc.
+> > > + */
+> > > +
+> > > +#include <errno.h>
+> >
+> >
+> > errno.h is unused and may be dropped.
+> >
+> >
+> > > +#include <fcntl.h>
+> > > +#include <stdio.h>
+> > > +#include <stdlib.h>
+> > > +#include <string.h>
+> > > +#include <stdbool.h>
+> > > +#include <unistd.h>
+> > > +#include <sys/ioctl.h>
+> > > +#include <linux/types.h>
+> > > +#include <linux/alloc_tag.h>
+> > > +#include "../kselftest.h"
+> > > +
+> > > +#define MAX_LINE_LEN         512
+> > > +#define ALLOCINFO_PROC               "/proc/allocinfo"
+> > > +
+> > > +enum ioctl_ret {
+> > > +     IOCTL_SUCCESS =3D 0,
+> > > +     IOCTL_FAILURE =3D 1,
+> > > +     IOCTL_INVALID_DATA =3D 2,
+> > > +};
+> > > +
+> > > +#define VEC_MAX_ENTRIES 32
+> > > +
+> > > +struct allocinfo_tag_data_vec {
+> > > +     struct allocinfo_tag_data tag[VEC_MAX_ENTRIES];
+> > > +     __u64 count;
+> > > +};
+> > > +
+> > > +static inline int __allocinfo_get_content_id(int dev_fd, struct allo=
+cinfo_content_id *params)
+> > > +{
+> > > +     return ioctl(dev_fd, ALLOCINFO_IOC_CONTENT_ID, params);
+> > > +}
+> > > +
+> > > +static inline int __allocinfo_get_at(int dev_fd, struct allocinfo_ge=
+t_at *params)
+> > > +{
+> > > +     return ioctl(dev_fd, ALLOCINFO_IOC_GET_AT, params);
+> > > +}
+> > > +
+> > > +static inline int __allocinfo_get_next(int dev_fd, struct allocinfo_=
+tag_data *params)
+> > > +{
+> > > +     return ioctl(dev_fd, ALLOCINFO_IOC_GET_NEXT, params);
+> > > +}
+> > > +
+> > > +static bool match_entry(const struct allocinfo_tag_data *procfs_entr=
+y,
+> > > +                     const struct allocinfo_tag_data *tag_data,
+> > > +                     bool match_bytes, bool match_calls, bool match_=
+lineno,
+> > > +                     bool match_function, bool match_filename)
+> > > +{
+> > > +     if (match_bytes && tag_data->counter.bytes !=3D procfs_entry->c=
+ounter.bytes) {
+> > > +             ksft_print_msg("size retrieved through ioctl does not m=
+atch procfs\n");
+> > > +             return false;
+> > > +     }
+> > > +
+> > > +     if (match_calls && tag_data->counter.calls !=3D procfs_entry->c=
+ounter.calls) {
+> > > +             ksft_print_msg("call count retrieved through ioctl does=
+ not match procfs\n");
+> > > +             return false;
+> > > +     }
+> > > +
+> > > +     if (match_lineno && tag_data->tag.lineno !=3D procfs_entry->tag=
+.lineno) {
+> > > +             ksft_print_msg("lineno retrieved through ioctl does not=
+ match procfs\n");
+> > > +             return false;
+> > > +     }
+> > > +
+> > > +     if (match_function &&
+> > > +         strncmp(tag_data->tag.function, procfs_entry->tag.function,=
+ ALLOCINFO_STR_SIZE)) {
+> > > +             ksft_print_msg("function retrieved through ioctl does n=
+ot match procfs\n");
+> > > +             return false;
+> > > +     }
+> > > +
+> > > +     if (match_filename &&
+> > > +         strncmp(tag_data->tag.filename, procfs_entry->tag.filename,=
+ ALLOCINFO_STR_SIZE)) {
+> > > +             ksft_print_msg("filename retrieved through ioctl does n=
+ot match procfs\n");
+> > > +             return false;
+> > > +     }
+> > > +     return true;
+> > > +}
+> > > +
+> > > +static bool match_entries(const struct allocinfo_tag_data_vec *procf=
+s_entries,
+> > > +                       const struct allocinfo_tag_data_vec *tags,
+> > > +                       bool match_bytes, bool match_calls, bool matc=
+h_lineno,
+> > > +                       bool match_function, bool match_filename)
+> > > +{
+> > > +     __u64 i;
+> > > +
+> > > +     if (procfs_entries->count !=3D tags->count) {
+> > > +             ksft_print_msg("Entry count mismatch. ioctl entries: %l=
+lu, proc entries: %llu\n",
+> > > +                            tags->count, procfs_entries->count);
+> > > +             return false;
+> > > +     }
+> > > +     for (i =3D 0; i < procfs_entries->count; i++) {
+> > > +             if (!match_entry(&procfs_entries->tag[i], &tags->tag[i]=
+,
+> > > +                              match_bytes, match_calls, match_lineno=
+,
+> > > +                              match_function, match_filename)) {
+> > > +                     ksft_print_msg("%lluth entry does not match.\n"=
+, i);
+> > > +                     return false;
+> > > +             }
+> > > +     }
+> > > +     return true;
+> > > +}
+> > > +
+> > > +static const char *allocinfo_str(const char *str)
+> > > +{
+> > > +     size_t len =3D strlen(str);
+> > > +
+> > > +     if (len >=3D ALLOCINFO_STR_SIZE)
+> > > +             str +=3D (len - ALLOCINFO_STR_SIZE) + 1;
+> > > +     return str;
+> > > +}
+> > > +
+> > > +static void allocinfo_copy_str(char *dest, const char *src)
+> > > +{
+> > > +     strncpy(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE - 1);
+> > > +     dest[ALLOCINFO_STR_SIZE - 1] =3D '\0';
+> > > +}
+> > > +
+> > > +static int get_filtered_procfs_entries(struct allocinfo_tag_data_vec=
+ *procfs_entries,
+> > > +                                    const struct allocinfo_filter *f=
+ilter)
+> > > +{
+> > > +     FILE *fp =3D fopen(ALLOCINFO_PROC, "r");
+> > > +     char line[MAX_LINE_LEN];
+> > > +     int matches;
+> > > +     struct allocinfo_tag_data procfs_entry;
+> > > +
+> > > +     if (!fp) {
+> > > +             ksft_print_msg("Failed to open " ALLOCINFO_PROC " for r=
+eading\n");
+> > > +             return 1;
+> > > +     }
+> > > +     memset(procfs_entries, 0, sizeof(*procfs_entries));
+> > > +     while (fgets(line, sizeof(line), fp) && procfs_entries->count <=
+ VEC_MAX_ENTRIES) {
+> > > +             char filename[MAX_LINE_LEN];
+> > > +             char function[MAX_LINE_LEN];
+> > > +
+> > > +             memset(&procfs_entry, 0, sizeof(procfs_entry));
+> > > +             matches =3D sscanf(line, "%llu %llu %[^:]:%llu func:%s"=
+,
+> > > +                              &procfs_entry.counter.bytes,
+> > > +                              &procfs_entry.counter.calls,
+> > > +                              filename,
+> > > +                              &procfs_entry.tag.lineno,
+> > > +                              function);
+> > > +
+> > > +             if (matches !=3D 5)
+> > > +                     continue;
+> > > +
+> > > +             allocinfo_copy_str(procfs_entry.tag.filename, filename)=
+;
+> > > +             allocinfo_copy_str(procfs_entry.tag.function, function)=
+;
+> > > +
+> > > +             if (filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) {
+> > > +                     if (strncmp(procfs_entry.tag.filename,
+> > > +                                 filter->fields.filename, ALLOCINFO_=
+STR_SIZE))
+> > > +                             continue;
+> > > +             }
+> > > +             if (filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) {
+> > > +                     if (strncmp(procfs_entry.tag.function,
+> > > +                                 filter->fields.function, ALLOCINFO_=
+STR_SIZE))
+> > > +                             continue;
+> > > +             }
+> > > +             if (filter->mask & ALLOCINFO_FILTER_MASK_LINENO) {
+> > > +                     if (procfs_entry.tag.lineno !=3D filter->fields=
+.lineno)
+> > > +                             continue;
+> > > +             }
+> > > +             if (filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) {
+> > > +                     if (procfs_entry.counter.bytes < filter->min_si=
+ze)
+> > > +                             continue;
+> > > +             }
+> > > +             if (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) {
+> > > +                     if (procfs_entry.counter.bytes > filter->max_si=
+ze)
+> > > +                             continue;
+> > > +             }
+> > > +
+> > > +             memcpy(&procfs_entries->tag[procfs_entries->count++], &=
+procfs_entry,
+> > > +                    sizeof(procfs_entry));
+> > > +     }
+> > > +     fclose(fp);
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static enum ioctl_ret get_filtered_ioctl_entries(struct allocinfo_ta=
+g_data_vec *tags,
+> > > +                                              const struct allocinfo=
+_filter *filter,
+> > > +                                              __u64 start_pos)
+> > > +{
+> > > +     int fd =3D open(ALLOCINFO_PROC, O_RDONLY);
+> > > +
+> > > +     if (fd < 0) {
+> > > +             ksft_print_msg("Failed to open " ALLOCINFO_PROC " for I=
+OCTL\n");
+> > > +             return IOCTL_FAILURE;
+> > > +     }
+> > > +     struct allocinfo_content_id start_cont_id, end_cont_id;
+> > > +     struct allocinfo_get_at get_at_params;
+> > > +     const int max_retries =3D 10;
+> > > +     int retry_count =3D 0;
+> > > +     int status;
+> > > +
+> > > +     /*
+> > > +      * __allocinfo_get_content_id may return different values if a =
+kernel module was loaded
+> > > +      * between the two calls. If that happens, the data gathered ca=
+nnot be considered consistent
+> > > +      * and hence needs to be fetched again to avoid flakiness.
+> > > +      */
+> > > +     do {
+> > > +             if (__allocinfo_get_content_id(fd, &start_cont_id)) {
+> > > +                     ksft_print_msg("allocinfo_get_content_id failed=
+\n");
+> > > +                     return IOCTL_FAILURE;
+> >
+> > Sashiko pointed out the fd leak in get_filtered_ioctl_entries().
+> >
+> > Since we already need to update the patch to fix the missing
+> >
+> > TARGETS entry in the top-level Makefile, we might as well fix
+> >
+> > this at the same time.
+> >
+> >
+> > Thanks
+> >
+> > Best Regards
+> >
+> > Hao
+> >
+>
+> Ahh I missed this code path interestingly. Ack, I'll remove these
+> return statements here.
+>
+> > > +             }
+> > > +
+> > > +             memset(tags, 0, sizeof(*tags));
+> > > +             memset(&get_at_params, 0, sizeof(get_at_params));
+> > > +             memcpy(&get_at_params.filter, filter, sizeof(*filter));
+> > > +             get_at_params.pos =3D start_pos;
+> > > +             if (__allocinfo_get_at(fd, &get_at_params)) {
+> > > +                     ksft_print_msg("allocinfo_get_at failed\n");
+> > > +                     return IOCTL_FAILURE;
+> > > +             }
+> > > +             memcpy(&tags->tag[tags->count++], &get_at_params.data, =
+sizeof(get_at_params.data));
+> > > +
+> > > +             while (tags->count < VEC_MAX_ENTRIES &&
+> > > +                    __allocinfo_get_next(fd, &tags->tag[tags->count]=
+) =3D=3D 0)
+> > > +                     tags->count++;
+> > > +
+> > > +             if (__allocinfo_get_content_id(fd, &end_cont_id)) {
+> > > +                     ksft_print_msg("allocinfo_get_content_id failed=
+\n");
+> > > +                     return IOCTL_FAILURE;
+> > > +             }
+> > > +
+> > > +             if (start_cont_id.id =3D=3D end_cont_id.id) {
+> > > +                     status =3D IOCTL_SUCCESS;
+> > > +             } else {
+> > > +                     ksft_print_msg("allocinfo_get_content_id mismat=
+ch, retrying...\n");
+> > > +                     status =3D IOCTL_INVALID_DATA;
+> > > +             }
+> > > +     } while (status =3D=3D IOCTL_INVALID_DATA && retry_count++ < ma=
+x_retries);
+> > > +
+> > > +     close(fd);
+> > > +     return status;
+> > > +}
+> > > +
+> > > +static int run_filter_test(const struct allocinfo_filter *filter)
+> > > +{
+> > > +     struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
+> > > +     struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof=
+(*procfs_entries));
+> > > +     int ioctl_status;
+> > > +     int ret =3D KSFT_PASS;
+> > > +
+> > > +     if (!tags || !procfs_entries) {
+> > > +             ksft_print_msg("Memory allocation failed.\n");
+> > > +             ret =3D KSFT_FAIL;
+> > > +             goto exit;
+> > > +     }
+> > > +
+> > > +     if (get_filtered_procfs_entries(procfs_entries, filter)) {
+> > > +             ksft_print_msg("Error retrieving entries from " ALLOCIN=
+FO_PROC "\n");
+> > > +             ret =3D KSFT_SKIP;
+> > > +             goto exit;
+> > > +     }
+> > > +
+> > > +     if (procfs_entries->count =3D=3D 0) {
+> > > +             ksft_print_msg("No entries found in " ALLOCINFO_PROC ",=
+ skipping test\n");
+> > > +             ret =3D KSFT_SKIP;
+> > > +             goto exit;
+> > > +     }
+> > > +
+> > > +     ioctl_status =3D get_filtered_ioctl_entries(tags, filter, 0);
+> > > +     if (ioctl_status =3D=3D IOCTL_INVALID_DATA) {
+> > > +             ksft_print_msg("Trouble retrieving valid IOCTL entries,=
+ skipping.\n");
+> > > +             ret =3D KSFT_SKIP;
+> > > +             goto exit;
+> > > +     }
+> > > +     if (ioctl_status =3D=3D IOCTL_FAILURE) {
+> > > +             ksft_print_msg("Error retrieving IOCTL entries.\n");
+> > > +             ret =3D KSFT_FAIL;
+> > > +             goto exit;
+> > > +     }
+> > > +
+> > > +     if (!match_entries(procfs_entries, tags, false, false, true, tr=
+ue, true))
+> > > +             ret =3D KSFT_FAIL;
+> > > +
+> > > +exit:
+> > > +     free(tags);
+> > > +     free(procfs_entries);
+> > > +     return ret;
+> > > +}
+> > > +
+> > > +static int test_filename_filter(void)
+> > > +{
+> > > +     struct allocinfo_filter filter;
+> > > +     const char *target_filename =3D "mm/memory.c";
+> > > +
+> > > +     memset(&filter, 0, sizeof(filter));
+> > > +     filter.mask |=3D ALLOCINFO_FILTER_MASK_FILENAME;
+> > > +     strncpy(filter.fields.filename, target_filename, ALLOCINFO_STR_=
+SIZE);
+> > > +
+> > > +     return run_filter_test(&filter);
+> > > +}
+> > > +
+> > > +static int test_function_filter(void)
+> > > +{
+> > > +     struct allocinfo_filter filter;
+> > > +     const char *target_function =3D "dup_mm";
+> > > +
+> > > +     memset(&filter, 0, sizeof(filter));
+> > > +     filter.mask |=3D ALLOCINFO_FILTER_MASK_FUNCTION;
+> > > +     strncpy(filter.fields.function, target_function, ALLOCINFO_STR_=
+SIZE);
+> > > +
+> > > +     return run_filter_test(&filter);
+> > > +}
+> > > +
+> > > +int main(int argc, char *argv[])
+> > > +{
+> > > +     int ret;
+> > > +
+> > > +     ksft_set_plan(2);
+> > > +
+> > > +     ret =3D test_filename_filter();
+> > > +     if (ret =3D=3D KSFT_SKIP)
+> > > +             ksft_test_result_skip("Skipping test_filename_filter\n"=
+);
+> > > +     else
+> > > +             ksft_test_result(ret =3D=3D KSFT_PASS, "test_filename_f=
+ilter\n");
+> > > +
+> > > +     ret =3D test_function_filter();
+> > > +     if (ret =3D=3D KSFT_SKIP)
+> > > +             ksft_test_result_skip("Skipping test_function_filter\n"=
+);
+> > > +     else
+> > > +             ksft_test_result(ret =3D=3D KSFT_PASS, "test_function_f=
+ilter\n");
+> > > +
+> > > +     ksft_finished();
+> > > +}
 
