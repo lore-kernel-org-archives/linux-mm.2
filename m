@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C621CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB9E8CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E910E6B008C; Wed, 17 Jun 2026 09:56:27 -0400 (EDT)
+	id 9B1216B0095; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E19F56B0092; Wed, 17 Jun 2026 09:56:27 -0400 (EDT)
+	id 988776B0096; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D57DE6B0093; Wed, 17 Jun 2026 09:56:27 -0400 (EDT)
+	id 89FBF6B0098; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC816B008C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:56:27 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 34B0A8DCF2
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:27 +0000 (UTC)
-X-FDA: 84889554414.14.A492AD9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 503496B0095
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:56:51 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8990A03A0
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:50 +0000 (UTC)
+X-FDA: 84889555380.28.F2DE18A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 97E3E100014
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVk4GCzT;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781704585;
-	b=WhAdB0oJg+4uvgftnlmcfww1mOHytE2mtCZPD+QSx4RYOGuVWzo8LQmps7mo+HlNl++oFZ
-	K4WdgVEbbF7wnKU9ExP8Js0qSCbL9okhjSeHGkUVINSl3K2IgdVfF+TziytUurOwGSQSbs
-	uP1llvnq7wv/WShWK8Ubt0AUk8ZwSg4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gVk4GCzT;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 369D0100009
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:56:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraHK5CF;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781704585;
+	s=arc-20220608; t=1781704609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vj1ysZXTzQEftM04gbB5WCu/uXQrIziK86sFp/rbmQE=;
-	b=Svk61n4Jr0VKZwFJChqY2HTUIeQTrwJN413ENU3rwgxvuzVLERYDBhQ8waJeRrwdAwzv9Y
-	AzVqvnQNarA/kGK0YUyhhoxhPaqDGzaZK4ir1jeNrDS73B0Rj3AnplKbqZFqtc6cBIxOk5
-	1v3OzFegA4MY2GF3umEmVqjznVy4+Ik=
+	bh=Mi7jxCBuTqaaYC6JDqqn8peOnTfQK8+n6GuPM4X817w=;
+	b=3QBHBcp6zG+4uoJOfGlo72oajp67hSSH+Sxv31gnLd6qjsr00M81oc1IzxlPy/ijGvnGp0
+	sIGm1Wz88gG4VQ/k8JaQStcr8uFGuC52hkDZjA8At/jocJR8xNlVHXfxyJHzZGMSq5WKzs
+	ntK0NXt44SuhUbSsnCO7gsW8BIeqbFk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kraHK5CF;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781704609;
+	b=sFySVINe43HgXgdssBuZMbJY7uy7Q+IFfbBei9hw5Qw3XP5ahfZnjCQflD/ey4Mpy5wPhn
+	r4uPxloxjpMC5ys/PvYhgRa1khHNgqnMJ5zNWbxp2mWKMGo0NKQRjzU7kugNIZ+rrVtJw8
+	8BJULoyl3l7y4yxqs/HxWzhU1/NDMJc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3911E600BB;
-	Wed, 17 Jun 2026 13:56:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2F41F000E9;
-	Wed, 17 Jun 2026 13:56:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B85B660052;
+	Wed, 17 Jun 2026 13:56:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62731F000E9;
+	Wed, 17 Jun 2026 13:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781704584;
-	bh=vj1ysZXTzQEftM04gbB5WCu/uXQrIziK86sFp/rbmQE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gVk4GCzTydE/VLXFS5zavJfEcO6uZLU2RKW/qhmY52zZCbEorj0GM+0/Vud/iv/PI
-	 LPbrfX9J8N84b7NgCyNa6wB/kJVW3Ab6DHBo8/YQ7+HHircHPDZottMoq9go0iphnt
-	 fUcTic3wlW+OUwlLI0qJYDGvEPMiIrE9NB+zzYjNk2r+pcf8deMyFVde1dYpa7HTwN
-	 0LOuiX8U916o4spNlKBTeENGx60RiowdiyXDG1FYTW2SjeKO/txFrI2p5MvYwQHjRe
-	 km88rPO5Od7bX0RJ95nhn3ETVF/vLTWZGRtMu1zTmSK6ArfAPUoozGPv8NGTqlArr1
-	 vge2G+TQPiDTA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 2 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 2/2] mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
-Date: Wed, 17 Jun 2026 06:55:49 -0700
-Message-ID: <20260617135551.86013-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260617135551.86013-1-sj@kernel.org>
-References: <20260617135551.86013-1-sj@kernel.org>
+	s=k20260515; t=1781704608;
+	bh=Mi7jxCBuTqaaYC6JDqqn8peOnTfQK8+n6GuPM4X817w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kraHK5CF4FrRvFnQJ0VsRChLUJSHWInCzt2ZQlbzcfxiJwaZPkbZb/szb9+MAX+i7
+	 t7gPjz6AE5H0WiV9bYsLcRXHAMXa62IrS8LD2lKFH7hlfwE4/LLR8yYFx14Ja4XU9J
+	 g100+AcmfJ8CMsw7poJskCe+caWz7uE5qvBpnBdyWbrxS7wC6/cWekkczcgFSeaQiH
+	 iqJFBRWZz4HXTsi53E/M1UspG4tGKSACwTcuWuWkDaSbhypB9XoilM0+4Sx/5H4hB7
+	 jnT1bbpPzpCQ0t9EM1W+WtJvaLsHGa48iknWK4LE0Cvcgu+9Ot5Eooe4m25C7IHiYm
+	 x9HRHfRAZV7Ug==
+Message-ID: <78b67a9b-44e5-4649-957a-9d42bfaa098e@kernel.org>
+Date: Wed, 17 Jun 2026 22:56:42 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 97E3E100014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 14/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from
+ alloc_slab_obj_exts()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------3cY5hSMZtGl0G9UhgN7kKCMK"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 369D0100009
+X-Stat-Signature: tp6yzxc7ja8d5jeokpa5t7r4xxbnurtt
 X-Rspam-User: 
-X-Stat-Signature: dm34gfxi7789zf6dqt34s7ofxan1qctf
-X-HE-Tag: 1781704585-897319
-X-HE-Meta: U2FsdGVkX18zuIqVMtzaDiDQHHb1dT4OwrISyZAql8+e6lwlfcKUVyTe5xdXABfxO+81iD2zU28v/xZRZ8tAimAxAeDYia00j0qGeCY2u7EG5VlI3AE8QVLVvX7jp3ZWTLc3xSijljedaM9FWUZCv8fjCIlFDihDg1MG96NZszGU4yOsqkEjaBdOwluLT89jbn2ekpbrxJnPdFYmqqpm/qVtKk3teXcJo0VKOvSi3qcoxf1QSbGAn8SP7XaQ5z8Lf/EH+qaPKRUJV99YbMfpvXGWgcOfMrHwYaCyhHF9AWLAEyT3El9LILcj7Jckm0s+NBFAWBtuXUt60j5o8ALvDsN1fEQktwDkAjO8RakfrFjXKq4hyoL2tGLmQ+EpZjVb8fSRviPMLovoSStmiLH3uhthFA2G1gfN3wY3Uc2mEZ7u5nnJfTLk/1NOxEZGoMyLDU7TyuDxVjnWLrxYIZ4P1TMYXQCpSP3VauyJf9lop5AC6EDLwhfrpUfVhfxKzz0dIIeEnvVrexv8E1p6PiviRx9mNigSctgM4OgSxl8zlXzM5Z28+AV8nFtliiKKREK5akxE6KXi5qkKXGGpcD+80NWd7eOfACO3NVdxJ07I9IFwKY9giV79gdyRHSAkwnZc5gvnFE1GDghdIqidte37BOQRK54dcvubDNRHgFJz8A7nXmyh9Xd+ETHi6f0/VitgOpF50k+MpcEpPJMwxT/ZLxqfp18hGkfnm/+XK6LKrzWaCQAtreMgoDSNEpD2FWhA59Y6Z1Pxkza46oGjq0qODMs16hD2YhQaY0jsI1qsrHaa2XRoHDyzqlwvasjxh88fom/gE/jyTyCq8Ed4Jaj8h9u0EsQH92euXfIhhFdTfp8XW08DN/POaW+qZcKjY9EN279lO1DcvOiU1npX8SYHPd3BzgNx+iUsC3FleSifxu7Lfqf6TXkOZLcvi2k0IzC1sFEp2ZckiLEyBzub12V
- A7dcqo7m
- QhnhKsLPkRKgpPjcosRnZHLw/ze/JV+IHouMg+bHEwDfUojaLsoLNUhCx6kfeL87HcQ6jmngX0iPI/9FMXLAzSFHAaXK3Vw/+UCmRhtFujsWA12KWWbZEGBHT4h7I0tPbBa1iWs47Sm/9XwDH6V18a1BHSghSLoU6k8qpL4YSaoAs0B8BOmYvDclapu94SmLcCLJjnl4lgPjNvn1Vxt1TZzdxjYAbE23IuqKX6f4oTnTDxwZsvUP5LGzeibLFb/yB8XcxmQJs0bNrla/b8yn6KQaRNg==
+X-HE-Tag: 1781704609-743938
+X-HE-Meta: U2FsdGVkX18oG5haGgm695iCeslv8lTPBufbxJhPL8T/xkxIEyaOswqLu5x6mCG5wGnIZINw/dYEdIebPsJyTbk670KDqEmoPssPpGO1ksphAWx9UehlS4pBWRYk0dZgfPjlm/vmzclAH4flbPEl79HWKVz9BNinJbUes8NOOOUgrs6P8HkCS1KxzWYVZ5r1OyvfhWQP294NAdRSWjhDl/rCeitQjNjtQpQEIMFQMznReAR8gQ8Bx9TpNjwOtTSsJTGPf6kqcG3hpCk4Q5DaT36W9kyclc5mDyql5GYRnIOuXTQdCI20Xj5uq+1vZGMYKyXcMe+jJopWpqMkw/+2f3KAJbHY5C0SCJi0eBYngvcho3XP9OCLG+od2qqL0GOEeKe3ynOSEGf2E2Cdb9EByBVkrryo3/4ev9/P1i3O6GLGViHR3dCJTN9RRX5ljsEDJsPMdT53PraN2AtZSttTp7qCPwNNGHeHFtEvJLbaPFup7ioLfuwnRTJ/0jvO4yrLKwkik0cm4bZE5uo2o0eu82srDlKZI/yd0nNvCOnVz/9d1EcmnFtuTHAW3AYtzSu83tZvEUJ/OauPQNJBeglY3O/CXtMHkLsT/rA/o+FgyluPYwtBZplOAvvbqEbGQa/xX7vva00gAyiNjk20blfEM5r2TcpzOEhRou9Q8OPYzJxPSB5pKLpQ5r+s+4DPNShTpIqEctyh10jxEYfbhM9jn2vUMsVUcmbhP40fnGWWfve60paVj/WwDpVMdn9+AlGmjC/B2S0y631QqTBePF9vZRTH1ecu1EA10m36P7xZ5TyuzABpPmp7V0YeFkJdVSVHaAmOsvl/SEfrzRHYOS7RodO9i6jy7KC9v4vhymZg5/GgQkro3J0Wqt7JkqYyGKFzJJN4XFY4/whRL7CS2KWiXI4f0HBHwvFO19oUdGgqD2ouXH7AixbahezeotN94azvfOibVWJ+hRPIV2P+V9K
+ RNTZQSAN
+ Fnbuc5RY1orZ6AEhf89vRXt4r+Rj0p1sN57K5589pk6H2XID06hGq385WY5A2pZ1IWTYPY0V1d4U1DPDV0Wmv5/APtygX2k6HXuzz0qHO6t1NnC8RG0o38ZSrXf8O1Tsscgc/YLaE7qjMQSEILaPUvfgZO3cnUbKcQvd6qCG6ysNgVF8xrF81hRy5MBZZKF8YNzH8XGkhQlpQhh3Uy+R7ai+cRtwwquO/8xSfgSI+5CgSz6t4tM+dVwe89PYbSpNkX4UbNE5SceSVyKywtU8XQRoV26t/HO+fZTldBDUKeGraAYbC3WicP/ys6iIvyPXHcVTPJdqz3dPxYkXAger3CQ/AKN7yA2AyrtIxf8b+TYpLXEqF+d9Xh0Lo1/GEZbOQm2BXAQNk7025NKDkb4fU0VBokRIkHwr0R4jeyNgtwrPKJriPg/6Ijg0C3ZvWJUMf4y+07zyctT8jRv1i5A66ZKLlSOuY7OX3K3+e2e9HKS3CugHF92JUhfxrovZPGXoyEId115D6scY18XA+3PO4bSkEV5XnRkHGmMhEmqjV2TDxm9OLf+sFMCzqeChQHEqIBi34TJ9i7nWkVHIkybWS/JGG9q1zmKh5zScg+ySDbwJV53w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,56 +103,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_scheme_add_dirs() setup the tried_regions directory after
-the stats directory setup is completed.  When the tried_regions
-directory setup is failed, the setup function ensures the reference for
-the tried regions directory is released.  Hence the error path should
-put references on setup succeeded directory objects, starting from the
-stats directory.  However, the error path is putting the tried_regions
-directory instead of the stats directory.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------3cY5hSMZtGl0G9UhgN7kKCMK
+Content-Type: multipart/mixed; boundary="------------5rrQhoodNrxJ9Qsb340LQn6A";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <78b67a9b-44e5-4649-957a-9d42bfaa098e@kernel.org>
+Subject: Re: [PATCH v3 14/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from
+ alloc_slab_obj_exts()
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org>
 
-As a direct result, the stats directory object is leaked.  Worse yet, if
-the tried_regions directory setup failed from the initial allocation,
-the scheme->tried_regions field remains uninitialized.  The following
-kobject_put(&scheme->tried_regions->kobj) call in the error path will
-dereference the uninitialized memory.  The setup failures should not be
-common.  But once it happens, the consequence is quite bad.
+--------------5rrQhoodNrxJ9Qsb340LQn6A
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Fix this issue by correctly putting the stats directory instead of the
-tried_regions directory.
 
-The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260617005223.96813-1-sj@kernel.org
+On 6/15/26 8:54 PM, Vlastimil Babka (SUSE) wrote:
+> __GFP_NO_OBJ_EXT has limited scope within the slab allocator itself and=
 
-Fixes: 5181b75f438d ("mm/damon/sysfs-schemes: implement schemes/tried_regions directory")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> gfp flags are a scarce resource, unlike slab's alloc_flags.
+>=20
+> Introduce SLAB_ALLOC_NO_RECURSE alloc flag that has the same intent as
+> __GFP_NO_OBJ_EXT but a more generic name, meaning that a kmalloc()
+> family function should not recurse into another kmalloc*() for the
+> purposes of allocating auxiliary structures (obj_ext arrays or sheaves)=
+=2E
+>=20
+> First, replace the __GFP_NO_OBJ_EXT for allocating obj_ext arrays in
+> alloc_slab_obj_exts(). Make use of the newly added kmalloc_flags()
+> function, where we can pass alloc_flags with SLAB_ALLOC_NO_RECURSE
+> added. This will also pass through SLAB_ALLOC_NOLOCK so we don't need
+> to special case kmalloc_nolock() anymore.
+>=20
+> Note that until now the kmalloc_nolock() ignored the incoming gfp flags=
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 7c00aa78b2f50..0134111c3c1ff 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2513,12 +2513,12 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- 		goto put_filters_watermarks_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_tried_regions(scheme);
- 	if (err)
--		goto put_tried_regions_out;
-+		goto put_stats_out;
- 	return 0;
- 
--put_tried_regions_out:
--	kobject_put(&scheme->tried_regions->kobj);
--	scheme->tried_regions = NULL;
-+put_stats_out:
-+	kobject_put(&scheme->stats->kobj);
-+	scheme->stats = NULL;
- put_filters_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->ops_filters->kobj);
- 	scheme->ops_filters = NULL;
--- 
-2.47.3
+> and hardcoded __GFP_ZERO | __GFP_NO_OBJ_EXT. But it's correct to pass o=
+n
+> the incoming gfp flags (only augmented with __GFP_ZERO), because if
+> alloc_flags contain SLAB_ALLOC_NOLOCK, the incoming gfp flags have to
+> be also compatible with it. However, we might have added __GFP_THISNODE=
+
+> for opportunistic slab allocation, as pointed out by Hao Li, and
+> __GFP_COMP by allocate_slab() as pointed out by Shengming Hu. Solve thi=
+s
+> by adding both flags to OBJCGS_CLEAR_MASK as it makes sense to strip
+> them anyway for non-kmalloc_nolock() allocations of sheaves or obj_ext
+> arrays as well.
+>=20
+> To avoid recursion of sheaf -> obj_ext -> sheaf -> ... allocations at
+> this patch, until the next patch converts sheaves to
+> SLAB_ALLOC_NO_RECURSE, use both gfp and alloc_flags for obj_ext. The
+> next patch will remove the gfp part.
+>=20
+> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-15-7190909d=
+b118@kernel.org
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+With some comments below.
+
+I was worried that perhaps replacing SLAB_ALLOC_NO_RECURSE with
+__GFP_NO_OBJ_EXT will create a cycle of
+
+alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
+-> kmalloc_flags(SLAB_ALLOC_NO_RECURSE)
+-> alloc_from_pcs(SLAB_ALLOC_NO_RECURSE)
+-> refill_objects(SLAB_ALLOC_DEFAULT)
+-> new_slab(SLAB_ALLOC_DEFAULT)
+-> account_slab(SLAB_ALLOC_DEFAULT)
+-> alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
+
+with __GFP_NO_OBJ_EXT, it would have been passed to refill_objects(),
+but SLAB_ALLOC_NO_RECURSE is not. However this cycle does not exist
+because alloc_slab_obj_exts() clears __GFP_ACCOUNT (as part of
+OBJCG_CLEAR_MASK) and memory profiling itself does not invoke
+alloc_slab_obj_exts() when allocating new slabs if SLAB_ACCOUNT is not
+set (which is interesting, by the way).
+
+Also alloc_slab_obj_exts() propagating SLAB_ALLOC_NEW_SLAB to
+kmalloc_flags() is little bit confusing because it does not have any
+effect due to SLAB_ALLOC_NO_RECURSE.
+
+Those are quite subtle and perhaps worth some attention.
+But technically, should not be a blocker for the patch.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------5rrQhoodNrxJ9Qsb340LQn6A--
+
+--------------3cY5hSMZtGl0G9UhgN7kKCMK
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajKnmgAKCRCGXBN6rc5S
+1haJAQDK3uVXonDI0YBvLzkAybijWZr2Qa7jZx3GhFza1G/qjQD/dcdV6qNgaQS6
+SF4LWQHTO6baylkB0+NrAe4QBdWSKQ8=
+=/47q
+-----END PGP SIGNATURE-----
+
+--------------3cY5hSMZtGl0G9UhgN7kKCMK--
 
