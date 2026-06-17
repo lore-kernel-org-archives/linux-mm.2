@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 281E5CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 14:49:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD9FCD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 14:49:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C128F6B00A4; Wed, 17 Jun 2026 10:48:48 -0400 (EDT)
+	id 0A0EF6B00A5; Wed, 17 Jun 2026 10:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B74906B00A5; Wed, 17 Jun 2026 10:48:48 -0400 (EDT)
+	id 051306B00A6; Wed, 17 Jun 2026 10:48:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8B326B00A6; Wed, 17 Jun 2026 10:48:48 -0400 (EDT)
+	id E82FF6B00A7; Wed, 17 Jun 2026 10:48:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 709F06B00A4
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:48:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D225D1A0491
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:48:47 +0000 (UTC)
-X-FDA: 84889686294.08.98F062A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B4C776B00A5
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:48:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A3C88DE60
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:48:49 +0000 (UTC)
+X-FDA: 84889686378.28.403C348
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4E5A3140003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:48:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fy6S+g/M";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78DE314000A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:48:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o0RujzvK;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781707726;
+	s=arc-20220608; t=1781707727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDjjHeE3ik/DACcTjgmd/gOCffqc91TStH/d4lyl+0A=;
-	b=m02gJh1F4mOistkpekc2keO6+GTckWPeVBfurylQGeCnCE8KvIHBvTI0qCR7JUIUjGtn7b
-	B7+rIxJPCWBYA5KsYodH8fqU8EtOIE7ZL46ZFRy5/my19otLo7SSrv8HRQ3M8RvrQHAXP4
-	MyZuvaH729pcYuPWAww8iyiW6XJ1kfY=
+	bh=apeCKq9Hxx5icDF/JvpCpTO4zm17bsS1r78YB3ZGzD8=;
+	b=X3EhkMYpUhfzvqdU1nqwlHh/NIXON8XSetH/yJsDHt+HwW6NV0wSKGXuowisPxkxacieTC
+	wN5J6NR2UbYLH321ZqkuAjReBo0zlR8k9uHizWXRRecjOChKsSErwpgg6VuqaZthrcpz86
+	Zk2rfY6P0JGKP5at9+RNwN4wWdaNsGU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fy6S+g/M";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o0RujzvK;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781707726;
-	b=XibQNt/+/OFGMJVPXwRooT5BEL7YAZKzg54TCSOxZaHM5baCS3TaxyqTcC/n6qJJW85DO9
-	6OD73RpydKIz9kk0TTqewM+jgvBUOdNkRDr+9s20+BWw5qwlW0JTTZm9KH0ojTuP0uH261
-	hYEr4TMpAZJYnxfWItcxPLBLXnep0fw=
+	t=1781707727;
+	b=swwyfwCS+0+24jv99Msa8sGlYZTZQew2JtqwI6v7dA7Kbzkj3C69C91BFLOnCxtoj1yImX
+	4m2vpGyKzkUBFZ/KGj2sM5on5Xm6xV4ihi6qcCLeFH32kfidwD9Kc+gpNeJX0jQ2/QXlU8
+	38PoDvX0beHu3vg1Yk6WMbjXmvPqoFk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDC8860103;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1570B60137;
+	Wed, 17 Jun 2026 14:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9E11F00A3A;
 	Wed, 17 Jun 2026 14:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9441F000E9;
-	Wed, 17 Jun 2026 14:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781707725;
-	bh=xDjjHeE3ik/DACcTjgmd/gOCffqc91TStH/d4lyl+0A=;
+	s=k20260515; t=1781707726;
+	bh=apeCKq9Hxx5icDF/JvpCpTO4zm17bsS1r78YB3ZGzD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fy6S+g/MK/ISQR2I32EJsEB4grURqXEipGqfk1mscMpuO9ztiidZGhOWTl+BtvkkS
-	 iv+WYXxOHxVgrKPmPXkSgeMso+cvjojMoU11EGce1S+fQvG2VHobPCMsvIvyu4zpbC
-	 qywaVfNLvJxbkQ9Eg7MSWIhqDPhKX2lC2+DlvZboy7AKRaRQ4AchFCdEs6STZbPl4X
-	 hl/OH8PNPLvTYQnYZ5uM0r1J7tTagWMjxH8UG+0Pe8auzYYbyLv8JaAUG3HhxSnBJZ
-	 KB+oDvlOECeuyJMwnI99ZC3e8Dom0dWjRnEH1vkSiJIv495Ctw8z4pgcGVfSAfR7u7
-	 rIKWhdsszaZVA==
+	b=o0RujzvKdowxiou2k5I7rDAbBol8LTn/gsflatroNfF4spTvvLI9+Xq21bydJ6894
+	 n0mhMH1+yEp8xOxBtcF+hbScJiJCl/8qfHvuRxXruFbT2nkVOhn6EqFmJFOxGLJI2q
+	 61QEXsZM4TAEc3WIsoz1D3i+C/qOvmhcVYrHheaHqF8R45fDfkRcqefguLn+kQBGWi
+	 KuBZaWuNL3GvDEoHbj6PelLI+4W/IOAKUKyUgQ1C9pUiXdBq8PqrWwzi1FiNVRKtor
+	 2DZmvAh75VbIB8T4tNZqWaBpKu+z/DldRKjs9FdIUX0dYLP1fOFH8AYbCYv0PRht1Z
+	 mI2fHcS6Lo3Ew==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 08/11] mm/damon/sysfs: kobject_del() probe dirs
-Date: Wed, 17 Jun 2026 07:48:02 -0700
-Message-ID: <20260617144807.91441-9-sj@kernel.org>
+Subject: [RFC PATCH v1.1 09/11] mm/damon/sysfs: kobject_del() probe filter dirs
+Date: Wed, 17 Jun 2026 07:48:03 -0700
+Message-ID: <20260617144807.91441-10-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260617144807.91441-1-sj@kernel.org>
 References: <20260617144807.91441-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 78DE314000A
+X-Stat-Signature: e3nwto6prgwmcweecag1qk3yfanynf5k
 X-Rspam-User: 
-X-Stat-Signature: y53j758mbso53oiqe37x1wiht859uzrk
-X-Rspamd-Queue-Id: 4E5A3140003
-X-HE-Tag: 1781707726-312821
-X-HE-Meta: U2FsdGVkX18Kf6mGPxDIq/kU+AdZs1mVLzu99bM97yndTnR2/UxxYsCuya6+V3gJix/spKOgtRbc4ht1Q3AGxUfcnh3H2hnCd7a7uzlW4ngJTyd38f4dG1QYMpDKg+/go7V2m2aCzlA53A0IEatTdjDQc7WSSrR64ejdn9zChlIDCWjQ/RISX9lngR2KcBTj7PshBmdBo7FFTOpZFniZz0TkdSjPdUkqgRQrAjJq8VkVHhL6CFagyFx64iMdgMsySUf1rZtRTCuw3VukOSW3DeRtcvdIiKafd0AEJrSNlAzJ8OzQixvyp2qCkW0kB59DM0CQvqxkoCzsHjMqGeynBn1shR5fUoHiNLywEzwbpkdFZuXDfsb73WNf7z7Hhieyvd6paLhym3GGl6UipWyW8wbpNEPgcZcC25EYUIFdmg169K4k81piF28BfkFF4sn5GpW8eaDM/4ZbPhqNcnCeCQxEpJByMEdSeSZk/ZEb1EDOFDL6dC7SVReiNcf3aRW1u81toTEU6FEMoXUTj2vqPYSt9ffSi/92g7wcDJe8Bhvfa1MtJ6E2p/u5kbfPthNwnTuxm0dJ7btTb70C7CdAG54DW7SEOOBM3Wv64gOgrLRST3zhvpnKzLiBG2Q9F5gO9v5bhgbb86jXzj6ygAcPKTUDZ9U/7U1D+MD94FAjsDzSAiYg3v74AwBG1e2nxs7nTE/VHsqh/KkyWV2UiiRFodYnrvDq0hE0ugPLxUhwyru84kBVPr2c/QizcAQlFlZB1klKpSWWagLnK1D6w0h8WkY8FgMUrnEZqRoXiJpywrfON5SuGVMFbgYadTaNoLt/ZroSUdawY6hiwsWWIfAGyvQV4oh7nbAUUdU6Kdt+4K5UREA3Btpj6A+9q8PBS+vsOXaS+xS3tDc8ZB7yNCTXWPccMDaVZlmezx2e7RPhSdPWZFATWhanKAxzE6696MyRB5894elqY0bZX4T/vQ4
- V+QqzXlr
- 8wmgqQMwYKdrvyT3X3s3LLsosvAiR5iTMzjG43Kz0w9eJYo4lURnuZnPKXt5pMDd99R/USt5yAr9jnWn0P6bua80f4iUC1NP/62mQJ7dYLULF7dth7qWNQMzsY7nfN/MZCOcDkGDktJ9JBpoYuzpWmPKvxT7Nzo8barCWD7u89o3C5F1YGNk7lpj+zOT+a01Tm3U45r+xtBWKdm8l4odJ5qQl2pH2y/EaBwq6//fb/Bdn5+lAi5ame0egx+wmHEQM80sHE172Hj2EAMnJky/PLTmlJg==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781707727-863156
+X-HE-Meta: U2FsdGVkX1/38spx1/jsasQePrOhIFyiD7EmstpWqBDu/W9HpfyyHf4c2lF6YMWyKKz025GJDdw2oKOP2Kgsr3lZer9Zl6gW2UUWeJQ5b/aZSc9CtgQ5hNQJKyHZM38HT5uo75fikM2QWMz2/yGJv2iwx9KMcLHuLG2E3DUDAmlNjnAxPvMt74aTFhleeDXRpcgKPOojItBoPSC5O0jy8d45H8+kdldgNlEIVkM2kAs5Kszj2X6llGMD40HFqpjBD3KMbVTcZsPdHqWqNkikQqKm/Rob6rYDO/DzimDivopUNU04K/teMACLAP5BV/TdEwzax3VYifOR0n8JEH6seYxqYkSlW9cmjrou3dKKxffgCMND0BDw9lJY354LEz5VyyUqB/M/QR5iq3l9e9Rohm7xnNzaFdDzaufBMhNsz8SKQOBCNXvaFly2ahyAwf640aNnPMg8yMOEOeEai4cTmjqddtBKpTJni8Lo/dBy2PMj1hO1wL7lPadSQluMVYmVG4IBg42PUWC7dYIo80iTy40pyZY8fkxStZxeBUfK5pvd3kJI4o0n/lm741KOPqRpteZHhM1pcoMi4fIZ1wKWgih7L4b2UtOC8OLDS1hTuU3knCuJKEYIp+IZn5j8/BbKjNDROTySCMz6iAKOloStLLxSmTVKwQ3Dx7JWXy2HE4a0kn7JA0IrQ9SQ/7GMMMWK8sJysweKiPCQy5lJSfcWVITFkxLLMA15XmFPpwHCghPP+dVzGuG/OxbjC0NGFz8YyWVKW9r2N+V4GW5ZLbR0uGBwWdeZlWnNCKbK9MjjS9GnqkKxkhmsCTER8knXdPD7+aVIe8HslYpbZJdJh7T6U/R+ULd5mITaIENJCDDb608WBfzzX0V3HboIwmgRx92YYM5bFse74aWea4xSnOl3tTJLTwUWAhwkw37s9yVEij4Txgg2xokhUDxw+vbUTKq13rCGOml/51W6NvR6rZ3
+ /QITTKg/
+ TSavCg9nlGc/G7IUxhd58w93qf3v8DTeIRtoP/zB1aJE3QlrEC+DqxQtU1x/dDi1q8OALc4LH+a0waezESTydrdTw9um0H38ueq5K+Vkxh1LnVQfmLXugiyDI9KlS7dKAy0XCkQJicGXzbzdpoCxU4hN5wsckIWtTJJhCCoPAiUUmr4N1nxX0NDBVT/vd4xT9eEItfMdGBnrYIzycVdSQVntGayxex28SvyX4X0+hzc2fnNdAiRu68LpekT04d2iIkeHb5pInrkuh096Snp+3sQVYTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +95,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
 could cause directories creation failures due to the name conflicts. Fix
-those issues for data attribute probe directories by adding
+those issues for data attribute probe filter directories by adding
 kobject_del() calls.
 
-Fixes: bf3ea3d30880 ("mm/damon/sysfs: implement probe dir")
+Fixes: 82e66aef7714 ("mm/damon/sysfs: implement filter dir")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/damon/sysfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 3c349f0fe80f0..5ca45654cdd39 100644
+index 5ca45654cdd39..36a0e82601697 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1139,6 +1139,7 @@ static void damon_sysfs_probes_rm_dirs(
+@@ -962,8 +962,10 @@ static void damon_sysfs_filters_rm_dirs(struct damon_sysfs_filters *filters)
+ 	struct damon_sysfs_filter **filters_arr = filters->filters_arr;
+ 	int i;
  
- 	for (i = 0; i < probes->nr; i++) {
- 		damon_sysfs_probe_rm_dirs(probes_arr[i]);
-+		kobject_del(&probes_arr[i]->kobj);
- 		kobject_put(&probes_arr[i]->kobj);
- 	}
- 	probes->nr = 0;
+-	for (i = 0; i < filters->nr; i++)
++	for (i = 0; i < filters->nr; i++) {
++		kobject_del(&filters_arr[i]->kobj);
+ 		kobject_put(&filters_arr[i]->kobj);
++	}
+ 	filters->nr = 0;
+ 	kfree(filters_arr);
+ 	filters->filters_arr = NULL;
 -- 
 2.47.3
 
