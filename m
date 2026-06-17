@@ -4,75 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF355CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E7ACD98F0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:22:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB9FE6B008A; Wed, 17 Jun 2026 07:22:22 -0400 (EDT)
+	id C82BD6B008A; Wed, 17 Jun 2026 07:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6AD46B008C; Wed, 17 Jun 2026 07:22:22 -0400 (EDT)
+	id C59FC6B008C; Wed, 17 Jun 2026 07:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C582F6B0092; Wed, 17 Jun 2026 07:22:22 -0400 (EDT)
+	id B492F6B0092; Wed, 17 Jun 2026 07:22:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 93F2A6B008A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:22:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A89F6B008A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:22:57 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C23F2C1D39
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:22:20 +0000 (UTC)
-X-FDA: 84889166040.08.A5B7CD1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0BFFB180009
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:22:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hlN/psn7";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BD001652C8
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:22:56 +0000 (UTC)
+X-FDA: 84889167552.08.6526A52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BB3EE40008
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:22:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYKA4OQ1;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781695372;
+	b=c68nJ/Uysw+ae/GnuqHlzcfhee/q2eh3SHZ0hPI60m/TmL09XfUmDcnS4mKCn+5e4bFOkn
+	pyIahvr4FQ4wrKngRnHu2FuJE0yRqI9+ckX/6Cl1/3FJvONPBK1eXStl5opqSx8in0Wwao
+	fighsZcHvX4FxkSmte++y5EpsqpXejo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYKA4OQ1;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781695339;
+	s=arc-20220608; t=1781695372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WQhB/401jptiGb6RHclDY+GGltdU3xd1uAGY75OTgzE=;
-	b=6oG+6gtKTtueMqOWYzIUfpN1yNwZSn2CELPOBJrjERRXcdke72N9Cs1BUL3k1anzDhZIss
-	F3DX2I624/tXEyqQm/dyQR4rf78I9cBsznW5Z5w4F5vHxmsYyorCD8ZWByXo4JsqxaAclP
-	B4UIp+JDCOkVM6uuUiuGk3IJRZ0FVh4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hlN/psn7";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781695339;
-	b=ObjDTBzZE2ky+lQbsP8wx49WPJpgd0/hg6NQ+O2G6EEIGnH6Enh7ffwTTJisokRhdb2iN3
-	zB6xpaliTEe18sDEwuSSeXA2jzmG6rg6o+pvJoBKKoMYy04LHhRqGK4ie4vH+wreCBkXb7
-	aBv69zcJsSZWdNPpixTUREq3I82V5z4=
+	bh=I7duUS/o+2Rjhafkc9CaqufSkb+lCQvp2AZzH3DDf00=;
+	b=drRQMsL+N0ba3RjbAuoDahA5MfkMSOxvNePnyCUwhVMjjaRoWGotF4lpxX+2K/966FJGFs
+	dLfGGmxKuiiGmMNWFW4g7iC5rC30btQSGjL/eswV43iuBQXHCPwcCG34CHUWZTIKRZ6uqR
+	3WUcOZF7aME/iyg98638THzjwWNqJ/g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F4CD60103;
-	Wed, 17 Jun 2026 11:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821711F0156F;
-	Wed, 17 Jun 2026 11:22:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ECAC343C6C;
+	Wed, 17 Jun 2026 11:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F5A1F00ADB;
+	Wed, 17 Jun 2026 11:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781695338;
-	bh=WQhB/401jptiGb6RHclDY+GGltdU3xd1uAGY75OTgzE=;
+	s=k20260515; t=1781695371;
+	bh=I7duUS/o+2Rjhafkc9CaqufSkb+lCQvp2AZzH3DDf00=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hlN/psn7CPVDqC4Q8psBocyQ5V9FSKg0dbWlUOkqzqKU9HzP+rU90xc/p73oOToh8
-	 Y4R7U8VDszaizTP5onpgBarKsHDbYeIOPX5wUr2p/5LY+jQFAfWz5A0eDDEbQ22Zzw
-	 H2Tn10e0XVd9yW0tv+kAWT3TTBI4qQWSXePBc/oFKq3B99tRUlIuz1vsppLe/eN9bN
-	 1YwJ+47HyoQZBnw7PBJDmp8Q4CdbVHGdh/xtfaPKteJ0uGDpHR+n7l6Cb5EqYXvKa1
-	 03KjGB0D0zB8gesFjz8UU1UMPBQfdcGqQPkWOdrMj5PeTN3VXncclGz7OOAUVUl2tD
-	 tIpm3hojYY/OQ==
-Message-ID: <aa419310-de31-4119-84cd-67474d2ba917@kernel.org>
-Date: Wed, 17 Jun 2026 13:22:16 +0200
+	b=CYKA4OQ1fv9tbESg33lpVUL5ge5+E8xhb0vN34882IONucljMZgUAz1TyNMBZTbDa
+	 Ce/91qbDV2+R0ymjalUHGObVyRFEqTH9gGlyQVbVKhH1xgcHjt/0k8kfiC5yUgiyEH
+	 FyORRqfwpII8epDCalbLNgLQBMjyNPXssjB3+ByX6TyjzXl4x6RtpHL8Lc7JKYs3m5
+	 KAwuppcSqdm7squAcbuBAxGK2JXyRmdt/RDbh0bnEcNyXrrFLWjSQ+0p5MVP53UNOK
+	 ROc97NIC0EYEvJqF0NqUADh7cwTXDfV+T/7ZKCkvwazKkBKiu2huAxS6Ha2oHHgXYx
+	 9P48AxCLslG5g==
+Message-ID: <db97ac11-5dd4-40fe-8b2b-d4f4e435ba40@kernel.org>
+Date: Wed, 17 Jun 2026 13:22:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Document the folio refcount a little better
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-References: <20260526200032.353868-1-willy@infradead.org>
+Subject: Re: [PATCH v2] mm/page_alloc: remove VM_BUG_ON()s from pindex helpers
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260526-page_alloc-unmapped-prep-v2-1-412f4d486115@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260526200032.353868-1-willy@infradead.org>
+In-Reply-To: <20260526-page_alloc-unmapped-prep-v2-1-412f4d486115@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0BFFB180009
-X-Stat-Signature: nfrkkrfzend3rspptaerc7kiaexfnugi
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BB3EE40008
 X-Rspam-User: 
-X-HE-Tag: 1781695338-213541
-X-HE-Meta: U2FsdGVkX197EuvY8xEURMIfHbAP43W1Y39PMGFwQlQMVb72fTKZvmIaheELCQHvpVqARTUAireUP+IrOFdLDvC4C/xtLgeFP/4nCnS9cmIe//+emFUEELi+HxhNngQhlp9F0vC+cJaeqn774T4G0iWMMQHCO1fgTxScawwni0RV7Ip5cwPz/JpnmHkb1QEFaBRdrMB65qrgIMQiZSdPtQoXXIlPA8GW5I2mmuzuswXjxhrUBJXIxG7BY8l7XycV8kj+5/mhPSrF/gMxyrD2nJVM4FtmMjEzmwmjAvJwCkTkxRRKqz7/FV9Onndj/JEhItmtX/u76dwZjV+xYhhjoeJym8b70yq4MGwEiAZmpTw/BUmG4/TuG9i1HUOtRZRWpcG1PfOvnTubfXo7Cz7FHCN73YoXhCkVzfVTrdwdXPd7CcWM/Vlc8r6aX5pt9eNvxqWFWtE92B61+ZKuLmtuIF7L9SLIB5VZj0/tbaTUEIssc2aIQ0aJ8v5a3fI6cqIQS3whQ9JlLNHBGOcnQarBGURE2QENy09vi5qe8xo27/ZMxFOuzruLbO2hUC0QQPZuK8FFFQkuFAgeWwcihAUsongQCsCsyKYh1f8RkZy7P5Fjkv06HoeAc1Jv2jxjVlNgBJ/sIdZ/JnQocGJIK0I3dZyKiVedKt3vhp9y7ntB72K3MU844nBTZvGcyiWsZt0iQXRArlD4a/madFh1vhVH/X3OAY2KLADJVegd35hgHD4U9EtEUm3qjTca3vuRGDP36+2WDxqx/Hy8Mi4fJmuCNPPAL2ZPOZpV3EOpf/ZTduH6XuF774vF1c1BJ0EUIuILONniZ6pxtT5RYlq/7+tY4uaUcsAnZnn2VTDSYm7UqjTxNzdgAISk3jAycet2tjw+eWpjnWm23/ssaI7qMJcDCOhFuqqSOFuyvV2P3ogkUbVoSe5L8jlF3S76Fi73D+9q2x0r9rgH5Z/LKjwTu71
- elWR014/
- lo1QQl8RN2nBwhRHKDTPdEw+9SmP9jnbng4HmyA5k+MQkH+LwOTeyxm7JgfEjMIkI9M7LhXFIj0BF+5gtsDHwfwYG7i0nISSpu7nY54uNK/abu8yixiPEC6iQzlOz3LpJdZeoHTIujnZ5Ba2LekO7g/ir2IdQmO+XKzr/LQLBsiRkPDEL9et5ANYDHjNZf2pk+B75xq2zSl4+h9tGgGyEo/YJDwAsEgAXqXeye3qG9CuR+6sI5GG6Zp7JsKwfQJYAIcKd+CDZvkrNtsaHYt4RK5M/goSuDpZScNi8pAi8xvQHXhak+mVlT2FoMw==
+X-Stat-Signature: r5zh8xb4u1e3m3abhdpfua3e6poi1ohe
+X-HE-Tag: 1781695372-665657
+X-HE-Meta: U2FsdGVkX18+yMBM9Vu8zPjcZJUKKbS38Yd2n8e4up8rEcWg4tqGICVoTKNEJgXVKF9ZBbS2DbmXzVGryXt9msqOK5bFodhxwyIvocUgLhq4iYN+a8zmawH5LzNc9k2HFXnq2PFzmh5b68kLDAoodpBpmtVF4NKzqIDSzoENNnnPz3daLzQI8uWejgev9zszEmlqvYGigLL2E1TwwoSr6ofuRItdCvdzrHcAowzAqSq2x8ssraZKYhBQje9GIXXmgEiUElsypiVhXMSu/7TLRB24LKN94NeDloUpg56qPg0Fqdms7JPzt6n4bwXV9jvnzKNJHSYNT93QjraOW4/mAAOTn89aRHKnZNMtmzrYOYfmJqQvouyyXmgyRwayJz9mu7jGN51wXJaABVxpeemDTtfM/IWQ1HDbXVTAJC1EzW1teiAHvp/xEGz/87joTqMdbjibzV2J7o09NY61lc68oiU8zLTzDefeOLZO65XiQJRwA/7M1LGYe7kzuX/KaOSMALqeW1xmTFnvohYfFtLnxR6Hxp7zdZZAsf0Tx6SUKsS3kFuFe8eJ8mSmnZeRWlg4Qeko7UDALFAAge30WkzAqQbwVcsd1Se2xhhytApqvfweYa/OwTMbqsOavx7Lkcheaum7aIF5Ufiaji4X9K4XNx+I/yqCmkNfXvAxpOesarAv09FQa1PdjSR9Cvc1WxA5soykVQPBdfaqiveLgf1/67Rw4vktMMHcv52oOUG0JRHMk/PWypoIlZZCaN6xdieCpIyfnxufQDtiL+6Lom/1mI4xh2khQkPj5UUMjeYGZCnK98jaK06c886FE0EOXhu4hTNJ8t4jXQkyVjhTqI5BdgphJxcuTwge+aDTW5zq5sJHev7lSKgcM7vPXI043Euf9Em5zKe9D0YqxoGA4oG5kDzAlqeXRSFdweMEbSZKq3PE723TDliYl8nKjoqm3xs8FjyEncflZ4fofhDrn4M
+ EhEhhijq
+ +2mSDzlVtx/6H42ky55EC+C+lbOyTWzGzjjdXTyvk9AetcaQdBi3fYzp1WkKK/oL7MrlyYqwPShrUw2Z/r70IN+qxmCME3J6jC9GW80n4NjbnFl9mYG/Q01L5SZDMpfIKejmf6DfwGpzPQzGco5cNQ/dDnkA7vK77wplIwnhz1pIdhWMpouJmNwTvcolY2crKDuDp5ck3foken1gA3r37sC0ISIpfX6hkvBV7Cp3Bq4qTCpNHxWwYX9Fu4h4Ym6l2BOOe9P1zAFhcz0F0fjsEcnrxgwuTgPVU0nkH9Cttv3zVx+VpdKOEgQAOYU+czohKK5StD4MSPGYmsUfc1xdx5o0mSmsinMIvpVjn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,54 +140,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 22:00, Matthew Wilcox (Oracle) wrote:
-> Expand the documentation of folio_ref_count() to talk about expected,
-> temporary and spurious refcounts as well as the concept of freezing.
+On 5/26/26 13:28, Brendan Jackman wrote:
+> Vlastimil pointed out that the VM_BUG_ON()s have fallen out of
+> favour, so remove them.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Link: https://lore.kernel.org/all/4074a816-9e75-45a6-8141-25459bcc106b@kernel.org/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 > ---
->  include/linux/page_ref.h | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-> index 94d3f0e71c06..9f5c75d06f76 100644
-> --- a/include/linux/page_ref.h
-> +++ b/include/linux/page_ref.h
-> @@ -71,6 +71,12 @@ static inline int page_ref_count(const struct page *page)
->   * folio_ref_count - The reference count on this folio.
->   * @folio: The folio.
->   *
-> + * Folios contain a reference count.  When that reference count reaches
-> + * zero, the folio is referred to as frozen.  At this point, it will
-> + * usually be returned to the memory allocator, but some parts of the
-> + * kernel freeze folios in order to perform unusual operations on them
-> + * such as splitting or migration.
-> + *
->   * The refcount is usually incremented by calls to folio_get() and
->   * decremented by calls to folio_put().  Some typical users of the
->   * folio refcount:
-> @@ -82,6 +88,18 @@ static inline int page_ref_count(const struct page *page)
->   * - Pipes
->   * - Direct IO which references this page in the process address space
->   *
-> + * The reference count has three components: expected, temporary and
-> + * spurious.  The expected reference count of a folio is that which
-> + * we would logically expect it to be from just reading the code.
-> + * Temporary refcounts are gained by threads which need a temporary
-> + * reference to make sure the folio isn't reallocated while they use it.
-> + * Spurious refcounts are gained by threads which, thanks to RCU walks
 
-I think we often call them "Speculative references".
-
-Not just RCU (GUP-fast doesn't even use RCU for page tables). We also have PFN
-walkers that don't involve the pagecache or page tables at all. They don't find
-stale pointers.
-
-In essence, all these users use folio_try_get() and friends to grab a reference
-speculatively, while the folio might have been freed concurrently, or the
-pointer from where they might have obtained the folio could now be stale.
-
-Maybe it's clearer to explain it from that angle.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
