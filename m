@@ -4,146 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2004ACD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 19:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B443CCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0762A6B0088; Wed, 17 Jun 2026 15:57:30 -0400 (EDT)
+	id 741B86B0088; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04F506B008A; Wed, 17 Jun 2026 15:57:30 -0400 (EDT)
+	id 6CC226B008A; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7E6F6B008C; Wed, 17 Jun 2026 15:57:29 -0400 (EDT)
+	id 595BF6B008C; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B208D6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:57:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1201FA0546
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 19:57:29 +0000 (UTC)
-X-FDA: 84890464218.09.0398025
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0943F180008
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 19:57:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LajOphUS;
-	spf=pass (imf06.hostedemail.com: domain of avagin@gmail.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=avagin@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781726247;
-	b=fmsNh8JMTx5AVm56W2OGKTs7Bycy9cXmb+7L3piwvbIQWMBI6dy1172ZNTAUOI61aTnjOY
-	Ha2sXEpKl9r1/wMf8XOn9WjFqFIi22EexZSjSD04jLzwcO0MEtzbPxwQUJPOgdPelx9Fgj
-	ynerD8WgMlBpZrJScZTNUOI7W3x1Huo=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LajOphUS;
-	spf=pass (imf06.hostedemail.com: domain of avagin@gmail.com designates 209.85.161.53 as permitted sender) smtp.mailfrom=avagin@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781726247;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7916B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A9C214058C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:08:00 +0000 (UTC)
+X-FDA: 84890490720.10.2BA71CD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C80D0180007
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:07:57 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FWZohVnf;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781726878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i6aC/adY0+BnTZkQLrAHVNjq6XIIvBAX4bGpMQTnTwE=;
-	b=dEUMaFMWk1genymQwQ4DTAkl2h3fqvfeAytC/waEkvSREf5w50IwJj/fjWBtx8NtBkDjNP
-	PL3uXPFAcGY2gwkN0x1oMaG7nho4hu8BaaKfIPPF0RbOim73aKT0z2ThmYEI2f82kNjn6y
-	RCkx6yNa96mm2SwGlCpq4aKIn57icNk=
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-69e4a083687so163106eaf.3
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:57:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781726246; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HqTOPVu48kOyxRQe1N6yvf0fhn8PySPXHbwYeUfp/nyktka8AExalm9xydWuLVLUvb
-         EdN+eZ5mcYG+5U5svcMASn/VEkfnQkOTtXsZU+PdvQZwT9xiVev5WEnYlTYWH2VxW51l
-         gVR6cQsXxkC4rfB4cXdo9P/BFrd6HUyJx7jb3HdFVawbtgMPC+ChB6Q6u4wUgO3DSRxs
-         eLOfYlulmH1SVw0VSJ//sGKRwpWC3gV5XSKRiIzfCGuVZRzrfnBvSGp1PkffLnpCMLBm
-         x+DyRTAXgO0qW9Ao57zVXiYnRr2/lWMETfawXmuxMDRRzXnMFeXqgMJ4OE0xpSOouhuT
-         gCtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i6aC/adY0+BnTZkQLrAHVNjq6XIIvBAX4bGpMQTnTwE=;
-        fh=Du/P4SAbrYaXl8FbpnvKKBAPbZa+zAz4W/T8RhwPvvI=;
-        b=goNkveASLWYYhyPq8CcFf9NNvvPXuRCqFgVbgpNxWFkN40XtK7p3wokq2mc2bs3zov
-         S5FGcsXr/jUWqqqW/9iwT3cRkPk26/9vgG0rpyXfNrQAT1P7VaWPWbVaKf/iL3ZJh2lw
-         pURkS4OcAC0Q3ZHMZl2mlCJkVHQhJciPYGTTp/P/z68lFaYRTmmCVZFwdzGq3IdFJPxD
-         tYVOzpUTXIiwMbhrjAyNnvElpOwj0FqFjmBI+MYArrNBbI6ltcnSeUJhVGJxQinZQXJi
-         TdJcIvkdmWcxjJWgJs9FtygWEJRA0Rh2ALvxBEBbiHl4iGdRw1v0fnxkDEvaE0LBG0Tq
-         OKfA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781726246; x=1782331046; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i6aC/adY0+BnTZkQLrAHVNjq6XIIvBAX4bGpMQTnTwE=;
-        b=LajOphUSSOPJB6vwwOOxbGkCDNzswAaGfohnhspApnjIC+Er4f90dZ/NObuD0724G2
-         v7QsczD/9NXJW6mdznjeXdnL3BHpl0mGWzGuguO7HfKP7BckEqD7OGIV7kKsBOArsr2L
-         vNjuMqh9Ir5KNMyIzoDtNPmUOU9vR23PA1cowAhWn16+hsvqbaHlIvv9qucbWFf57nhn
-         XdGs/a8nnI+VodasE+EzQgDoBH/p6f6/v2m0DGX7uKrOmhLZu4nd+8RE+UeBQF5akube
-         6Nvz9QS3Wb4ERXVp+0eMuyBIQ+6aNjgdb6wG07Du3rmaBq3Z6FDhyFLmEJb9vhjEPeGm
-         cyuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781726246; x=1782331046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=i6aC/adY0+BnTZkQLrAHVNjq6XIIvBAX4bGpMQTnTwE=;
-        b=TB+POWU4a8lKmetmVuDghMN/k4+aBM2Wcgxo6BFi4Tq1GgN/eHAp4bupaEEXt4AoUF
-         CDnIvd71LMpE4WHr89RZJG7P0ygxG/ZLL2CFvJtGPh2sYuoEsLVo4C/saSYB8LWG1PNo
-         swaKE7crooilgjBHsOskFD++Jt1k287WftjNrbMl8Cb6drM7vyREv0Oe0/zyyBuCw9rq
-         toLHcCcuwyGGBpgyYQzo42rilUB0d8B0AOUL5Ns0JkDNAvdkSDe/Rl7zvBiiu8MFercJ
-         i77jv+tfT0CS2UGE0Vjovp9EM4n701kxQm/lmFEI7DmY5PUnYrBTRiuy8hKYaV8C+NBx
-         izGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+bOdKlaiifIYdyvLksaQ2U9dGdwwb8KyJeepSDOPCWEt5IeCUTGfR6R4fVK6U1mM8RYI1s5qykYQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyw5jNeWcfEH7mxtPunMyIqeW3MNvEDTvFipdjDgaJ+MMyQ1O5W
-	XmwXWCsSnTRjtEKwEGhy/wU3CSuFqU/8eEClmpUzHgs+bVE4n8S64aX1Au/j6P7UGZYktaZdE0k
-	E2E05jCXEQUnZqCV55IZDynJak8MzgCg=
-X-Gm-Gg: Acq92OG86m1njuo1Y8tPmEHfLhHBteboGR5wiLaVkJowTdepAzxphcv+VTnXcNtBuZq
-	eEps/mHGFGWaf0jhMw8s5wmjsOA7YCqRJoGjFGI5ZyzSdlUm+dYiXlo4PpuQ7YMx3lzT/W1GwRb
-	jK0aO7Y+d+Vn7ao5ixyyHZWyOBm6Ryr0GFOSAWidlCcW4sEmNRRYPSl+Jg7f7pYzJ/ZIA3RD1us
-	9QSX9wbUDEeRmcXlO5eRiPRJFqQxstXo3BGWHUJWhcGQwaNRCqL0JgAUHiJueFUNOhhOqg=
-X-Received: by 2002:a05:6820:1c90:b0:68a:f494:e8fc with SMTP id
- 006d021491bc7-6a0b60c0b36mr3762306eaf.33.1781726245995; Wed, 17 Jun 2026
- 12:57:25 -0700 (PDT)
+	bh=xkc/cwFVPTo6PfiKk5XSU4N+7uAosbnedDKdwgjJAs4=;
+	b=UFeVhDgkC4+eLcgAi//RCJiCiQ2prQ/cDXt1yqNG58uiUo4NayluGBcf3XPpURFYm6A3mF
+	LbElrWCHshJvyNwOuJfBcaoY80JvLmcNV9mjC0ZWi/fIf1H0V2XxLCaztlDKdnVYM+5aiM
+	gtr4IFD4e+7Z9EsM7z0KQI+bKVqytXU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FWZohVnf;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781726878;
+	b=16/AiHKCmHb6n7m3JawZ/tEHoFPUYZHejpBkmV7tdHgIGkHjCZnGqv/zGPYgAbWDfVpX+6
+	1aOyyPLxMt3MhFvZ1/piizK4veOIflUk7fM2K4teLgI0nFI+icA9Dk5a8ERN1FWK8dau1I
+	lt6o4283SFkyo/ifjOTY5tK0I6tao+c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xkc/cwFVPTo6PfiKk5XSU4N+7uAosbnedDKdwgjJAs4=; b=FWZohVnfjGzWlfq0c6Jx8HhCkE
+	uHSI+UsVJtrzf0zrp6i9dUqecmh8INz9icR8j1wxFgkF5Y/2z1rpGYcIWo2XI//nGKTuoWbZrzy8I
+	pj5c+PE1kJtho72bNCBEASb3GO05NK1OT59UjkqgmeHPzHUzT5fcZ1zRDwKRoVP+GQ7VE0e+2+K/i
+	ki7eZcQbRWaBpBDmCH4vXhtFyX1XADU8yfNmFGwVqTTNtxj8rtyKvzHbRA+nv5U/IAOGG+jTgDZRw
+	WDk2Ye6HPjDzgc46m/BTkwX1LTOKK3L4RvUAYzUtPjHI9F0iPqntolPyYH2zHlsV7UJ26i9iXhUYd
+	cKw5xM9w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZwY2-0000000DDQk-3y3d;
+	Wed, 17 Jun 2026 20:07:43 +0000
+Date: Wed, 17 Jun 2026 21:07:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, jack@suse.cz, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+	david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
+	rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 04/11] hugetlbfs,filemap: replace
+ hugetlbfs_read_iter() with generic_file_read_iter()
+Message-ID: <ajL-jsMdL0u1wGo2@casper.infradead.org>
+References: <20260617172534.1740152-1-jane.chu@oracle.com>
+ <20260617172534.1740152-5-jane.chu@oracle.com>
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV> <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
- <CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com> <20260617-attest-gewechselt-tragik-7ed473860051@brauner>
-In-Reply-To: <20260617-attest-gewechselt-tragik-7ed473860051@brauner>
-From: Andrei Vagin <avagin@gmail.com>
-Date: Wed, 17 Jun 2026 12:57:14 -0700
-X-Gm-Features: AVVi8CcHFrVPI3Twv4VAYTkdhufN4WGXszz_j2JUYmYPkPtYdrsmDFCM1RURvTg
-Message-ID: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Christian Brauner <brauner@kernel.org>
-Cc: Joanne Koong <joannelkoong@gmail.com>, Val Packett <val@packett.cool>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
-	Steven Rostedt <rostedt@goodmis.org>, fuse-devel <fuse-devel@lists.linux.dev>, 
-	Bernd Schubert <bernd@bsbernd.com>, Aleksandr Mikhalitsyn <alexander@mihalicyn.com>, 
-	"criu@lists.linux.dev" <criu@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0943F180008
-X-Stat-Signature: i7wfgrx7hzti4go63yyo5aaioj81e8w5
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617172534.1740152-5-jane.chu@oracle.com>
+X-Rspamd-Queue-Id: C80D0180007
 X-Rspam-User: 
-X-HE-Tag: 1781726246-949055
-X-HE-Meta: U2FsdGVkX1/IqNWFY4XFNovwGdjyarmGjR5LKZ/s9bhI9Ioxd+CcV/ong57D3mCJJAovjQpF2KWqaS4PZeSRpEtFFbfaxG01Hyrz88eJIF70RU8xV8EgJMfv46u24JdT5prHj979bl8GU8M1yNvnecPWf0dev8W1t/yZlL4lF+4zgZ10gP49s2v6/SpgKIKIqEVIhImMy2BQyY7DnXOdO/cKtA+Ojcewgb23VOEbSSKDGRakSZEt90/pjrsaOwUd/Ry3zOxJF7Pv6PcQyxsrOyR1Gd9O6/XTJXy/1PSgxCE/RhXGXVBG3Jm0sY39Q5IxvU2nAC3Py4q8g1c2mkaVefxRaPA338dOL1RIJm1wADq/jMJ2yJvjj8tcIebTGl5I9ftwOn89tCA4F6Uec2GPUfYMYos9PURQgmDgI3RWDpiQZHA3GD+RHEiEaYoOrp3gJ9ZYyjGMjLsl/ojodzkXbdsnmvrFnYsZx3Lc+b+TrGVFm5c9btp8PYJN3WVKDTWzUK/SBLZFWosNrvS81UCV1kjpDp5Z10jNzZ32rclcEQMnuT7bkM+DeuaapAlbLxaL3JMIMrvVzYnQKnnO3d8nQQ6G13cV+iIC1s5gG1dTaC+zMaiNmEWnZRFPeL92k4S76lgTzdkrk90KB1Kr/tOZRuQOeQuKq6+qxn8/OL9s663I+K2AglzZRjKFg9wlFQ+RoVxOwm8oujzFtojbM2JG9V8CNQWDhbi7BJFDyoNiN4GCyfzUnZ0yFO3o9kdk36SCSApQOkZ14mikVD8z96O4JfenFEMwIDlaV2eSy9nIQapwALCoq0LkGUjuYrMfzFMoWGV7UM2874R/yDq3zR3z3l2EWqPTC9S3P3rYy0L5SKL3mTFl0rYpJAzDhVAkujBhuFAajOKFWDmE8zGVpzw8q01fhS8vZ70I/+CUbFiqZSFGYuQ7TppUgqKcoqzq+OnuO/SogFrQfUtqIBPU+qh
- 6f4UbCaT
- rsNTs53nGb6PA6giyslF7jU5eZ0UDGy3+N0/Ngd1PqqdrgjOkGUepQ96fiNBder8IENX+QFgD9mpJMKef9NzJNugDPkmPKTuHpD+ztcYzb4ga+Ex4TzMNSErrXhLNqQFEwvMQjGTvN1V1pT1uuAZJqpAA0eP6JCPYMQNOiF9FvY5eeVmbrPwydeV8AH47zcbVHORUwASZOL5M17yDf245tRFA9WMlDHFgQ8LdEjxqiE+ht5um5iTw5wZc9WGs1cpHXxDTE9NTfkfoIIokyhFirsCQJyRsCV6C1JcW/8cFPv58AVmLmfvhUo0rKlDNGoOuNzg+xwRtI7NnmEiswyHqTsAv/UyoBRhN+BDySrIfvsdqny4iSw7kEYlod0weZLgbuZf4qNClhWydL8vCtD+pn+ale/ma60DZoKQPcQM88uPY/hErXAJiGNd6XGUdg5WrcRGxqd7uRVCy5XfYybo+lyQh7g==
+X-Stat-Signature: t1tsm7hn3twzd4pdr61msre1exugg4oo
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781726877-296861
+X-HE-Meta: U2FsdGVkX19EXMRoAWjiiiamPlAado8uHtlE+Og9SvG4f1cTxzsQTxieIZPI6/K+sxgZVHqBcjF2udXeC9/qADDAH6fw8QgxwuDRKR08M39PKbot5fC//nbnQhSHpZ8ntZr+DII3TDFO32PHJ5tug2UvHLxQK63HxhwyH/wrOSIDHJb5MR9DyMc+YCyW1Ydvq6F1zD6+eP947C/4dYLt/AeNeO+HFbr8UbuOadEgI3NwSFOubyQh2mC1NhPMZzlv/nz67YRvM9HNJ0DQ12CgXc8C1FgBYvoR+z/ISuBGDdcdGPoOHCxDJTS/5WlYk9nVImB/waScdDlROAxji4ikYYt007Su3Q3GCF92+EZf7wIag5bw4n6ByLToX/vCAIq00kge8Z2yFXmJTfntNYnasbzFeJUgHUSK9S/+fjvwc1zDXjyFtM1qQwxJtZqIMmlC0R671HUehAEMNGTB8tE5enckKn1Png/TOT9y2m1eAvQFhgLeh10eTN4+TyRxbraVYEgHZLEDiigDfjFQHz6OCrqyqYVCPk5VOex9rC+rn5j/+VzqkNw3FKs5jjc+xi/Hkzbn0Ddwyhm++N9fo5nl8UG6VzlrRTWRJr+zsY6B1PRt28PBemKm+EFeqWVKhpUtcGF6LcKNn9mw8BcYm0fnJQWSzlp6+2/5CcPCUX2otjwgyysZQAreOdIO1bOmeiwAYK6MJT05La/8diSp5gLqB/C49S0eFR2ppbPU6ZZ7wvmYSEPlClOpzpzN2KkUvq8T454/hBm3gBTS23F71CVtfrXq3MN0nbzHVRltv8fFyjx2TlG5FgDdV4NphNNxDwgUlrY0kyGWxibU6GYxZT3yeSN+aseW+QImPQXCeN4yKo8frOvkvm87wfvGZfzZtoofSTa0PaTNJs8d88tX861U9fB9a0XvRbZU0lIDz7PHuL6wt+ac/DwfEmvpbAIWMt5wLgWmhCqjPYgsmi/Mmur
+ JBdC3T/l
+ oNcbWR/ZV6z8kIKNvxiomr30ONTFZIxApRClzB3yxTIqP3DAjnrEuKJpxmiQes5Rl6tqOwQE7L46uT++Snq1IqRDWahYdjs9/LeX6UOXnCXND2HyoATGklRmncqr2q5HeVKl8y5g2B4p7NfVafImsdHEvAwftLHqAv5qihEExC/sB2QwlLSswpUNNr2bA//Hptc8ABgRMxY3FNsHoHdxbmnD2fFX96CVMVesygjy26u5mZJXoyayHdoQFAI9ektBhvfv3yogP59Z7P6LuRgfxg24yJ3a9YnjSDtSPp5etPnb0lgygd3p0zsS7KdzPlu7cNhHBwZhRhRbowyAHIuRbM3cN42t+75YlS1Lfgd5u/eeunCNaDhNDYZytwSO30ijoaTSVvcVDBzOw8SE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,36 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 4:08=E2=80=AFAM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> > After this patch, step b) is a straight copy which means step d)'s
-> > fixup doesn't modify what's in the pipe. This could be fixed up in
-> > libfuse to not depend on modify-after-vmsplice, but I don't think this
-> > helps for applications using already-released libfuse versions. I
-> > think this patch needs to be reverted.
->
-> Note, nothing was merged. I deliberately kept in -next though for a long
-> time to see how quickly we'd see regressions.
+On Wed, Jun 17, 2026 at 11:25:25AM -0600, Jane Chu wrote:
+> +++ b/mm/filemap.c
+> @@ -2672,20 +2672,30 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+>  {
+>  	struct file *filp = iocb->ki_filp;
+>  	struct address_space *mapping = filp->f_mapping;
+> +	bool is_hugetlbfs = is_file_hugepages(filp);
+>  	pgoff_t index = iocb->ki_pos >> PAGE_SHIFT;
+>  	pgoff_t last_index;
+>  	struct folio *folio;
+>  	unsigned int flags;
+> +	size_t min_folio_bytes;
+>  	int err = 0;
+>  
+>  	/* "last_index" is the index of the folio beyond the end of the read */
+> -	last_index = round_up(iocb->ki_pos + count,
+> -			mapping_min_folio_nrbytes(mapping)) >> PAGE_SHIFT;
+> +	if (is_hugetlbfs)
+> +		min_folio_bytes = huge_page_size(hstate_file(filp));
+> +	else
+> +		min_folio_bytes = mapping_min_folio_nrbytes(mapping);
+> +	last_index = round_up(iocb->ki_pos + count, min_folio_bytes) >> PAGE_SHIFT;
 
-The bait worked. CRIU wins a prize in this lottery.
+I don't love this.  Is there a way we can get mapping_min_folio_nrbytes()
+to give us the right number for hugetlbfs?  I don't see why it wouldn't
+be possible ...
 
-The CRIU fifo test fails with this change. The problem is that vmsplice
-with SPLICE_F_NONBLOCK to a fifo file descriptor fails with -EOPNOTSUPP.
+>  	filemap_get_read_batch(mapping, index, last_index - 1, fbatch);
+> +
+> +	if (is_hugetlbfs)
+> +		goto done;
 
-It seems we need a fix like this one:
+We don't actually need this, do we?  For hugetlbfs, I don't think we
+can get 0 folios in the batch, and then we won't find a folio with
+readahead set, and they're always uptodate ... so we're just skipping a
+few tests with this?
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 429b0714ec57..6fc49e933727 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -1253,6 +1253,7 @@ static int fifo_open(struct inode *inode, struct
-file *filp)
-
-        /* We can only do regular read/write on fifos */
-        stream_open(inode, filp);
-+       filp->f_mode |=3D FMODE_NOWAIT;
-
-        switch (filp->f_mode & (FMODE_READ | FMODE_WRITE)) {
-        case FMODE_READ:
 
