@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD18DCD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD0E9CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:19:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EA936B0005; Wed, 17 Jun 2026 08:18:02 -0400 (EDT)
+	id 880AC6B0005; Wed, 17 Jun 2026 08:19:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39B606B0088; Wed, 17 Jun 2026 08:18:02 -0400 (EDT)
+	id 832906B0088; Wed, 17 Jun 2026 08:19:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264B46B008C; Wed, 17 Jun 2026 08:18:02 -0400 (EDT)
+	id 6FACB6B008C; Wed, 17 Jun 2026 08:19:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EE07A6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:18:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 647561403BA
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:18:01 +0000 (UTC)
-X-FDA: 84889306362.14.7AE4434
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A61B6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:19:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A614E1203B5
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:19:46 +0000 (UTC)
+X-FDA: 84889310772.13.48B1A62
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id ACA0C8000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:17:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e74Tc10i;
+	by imf14.hostedemail.com (Postfix) with ESMTP id C2AF710000C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:19:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB1V4jU1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781698679;
+	s=arc-20220608; t=1781698784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uiUpLWWUi0/Ij99VUFv9W7HFIta4SzxOm+ph3FaGX1Q=;
-	b=YaoJ8x7hUts9qV8HF31NQYjrlY4TJ50AZNv8/wJqSJwObjITQNZg+SED7UVJA7+RbhYV8o
-	hcxDUlJiADJDKgjPSV5uaIRRgkp7Nv4nn+A5889cPbXfpjDeJi6zbcKI7d/d8CFXKCFcFx
-	lDbiX7Q1hqmTQgfMcqxoIq6iisJ99HE=
+	bh=36dwFZxBM2Mvs9Ysq17fBYZA5ElHiSQOeMD61I0SgP8=;
+	b=PNaH4xqBrQvNf76fXsW8KvCX3RfodZ4615NQW9PzpV03HBfTp5FlkCWJk/eV6tOWFcZ650
+	ohDYnRwiPh+Hm5DtaRyDWi3cAHP1ZkXI+LvzK49ojMJKumBhJxPqHnk1US/KGSwK4V/PSS
+	m9F5YUoD/Aason7nOMsLQ22gyAOSSKc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e74Tc10i;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jB1V4jU1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781698679;
-	b=k0MvcMGweAy/sRlhhmgUd75wwFtuQPhKhwUgBW8B5L+KWyzvd8C+BeCPi/c1Q/V6gdBNVG
-	9s49ORvFoGlZYf0vW0r4zz7wmbtSPzwT9CiSSMRKQ3cj8pT6ghesXfBIssyzhQrdT+/iYQ
-	Boj8bIc9nDTqE897noBP/eSCwnInjYI=
+	t=1781698784;
+	b=UfGmKZm7LYwEnNEI6DhfjIHvYtiJwkfFGvWoRM30FCEsGgveDjBXMxlQkN+od2tJ8KyK5K
+	xEiOye1TQxYIMijhnsHJ298NRuhyIiByOoVNS/hSsWDEB4lbO7Y9ObPRPBH5fhANVPwTVg
+	I/pWe0g93jk/0M4IMzaYbWtLAEnLiTQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF48E6001D;
-	Wed, 17 Jun 2026 12:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C506D1F000E9;
-	Wed, 17 Jun 2026 12:17:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D0666001D;
+	Wed, 17 Jun 2026 12:19:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441C81F000E9;
+	Wed, 17 Jun 2026 12:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781698678;
-	bh=uiUpLWWUi0/Ij99VUFv9W7HFIta4SzxOm+ph3FaGX1Q=;
+	s=k20260515; t=1781698784;
+	bh=36dwFZxBM2Mvs9Ysq17fBYZA5ElHiSQOeMD61I0SgP8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e74Tc10i08lDXN77ibTdKvAmwkmjdWcHOxFVFvRG41VjCayL0V85LOpMrs5XLwwLl
-	 HG+TEBp6HJA2lona+dH2siCL26bPknGq2dEOHFW6yzb/kKhhrN/lXw1e0g6e+vdCOx
-	 mXGsgyUQf3o4hEz6a9fAfdFUX82g/gqKQKbK6CWmIwTuytWYO2wDcC9c8oN4295KUc
-	 chevt5A4Qt86cRyYojKnRHPOVK/tBhEzhUZmYufIBMTPrtcdm3ban2/IKixeU/AmW/
-	 pZSKPvmJolNc6AUAbbM6QCg64p6+ts6G4t7Oxk4/1ZAV7KOC/+Hz8zEwobuO/M6R3K
-	 IJF2Cu4WDS7ew==
-Message-ID: <c6220407-fbdf-47ab-a80c-732e470894bf@kernel.org>
-Date: Wed, 17 Jun 2026 14:17:53 +0200
+	b=jB1V4jU1lUYP3KvbH/Mzbj6NniqX2MC9cIu2RXWR28+Yj2yGrrfQntXLFmrsDodba
+	 jHC/koUFMYVj1aQMOouElyHbMSUxDdm06SKVQbReL9o1Jxk5PDzA9whZhZA8XBH+Eu
+	 5IDT8fEgNKSRq6jpjJrQOXzXL9Qu9ndMdArLmXoAWHtT4jEXCE/N8D9dQ9wmSyKfdp
+	 xU4WEzsNMepapnsgUNzkn5TfAuA+QwDev93oFOkBXBCUGSdp+bBhVWDQA/WtdL/jvI
+	 Gbq4NymcjjbDz0IfKDSCdjr7gbw7wWCo3xq+q5rIXMJqe3DsGILnTwKgImjWRVijad
+	 FUZZenIcKFlbg==
+Message-ID: <5c665b98-088a-401f-aab8-7c9c4d4f484d@kernel.org>
+Date: Wed, 17 Jun 2026 14:19:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] mm/vmscan: extract folio_free() from
+Subject: Re: [PATCH v4 3/5] mm/vmscan: extract pageout_one() from
  shrink_folio_list()
 To: Zhang Peng <zippermonkey@icloud.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -82,7 +82,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
  Zhang Peng <bruzzhang@tencent.com>
 References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
- <20260525-batch-tlb-flush-v4-2-83789d6abc00@icloud.com>
+ <20260525-batch-tlb-flush-v4-3-83789d6abc00@icloud.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260525-batch-tlb-flush-v4-2-83789d6abc00@icloud.com>
+In-Reply-To: <20260525-batch-tlb-flush-v4-3-83789d6abc00@icloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C2AF710000C
+X-Stat-Signature: 6t9ufqzs4prbrckeud7kqz9spnq3f4ty
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ACA0C8000B
-X-Stat-Signature: 4yf933aacagmncf33wiegeukpaxwkyp7
-X-HE-Tag: 1781698679-566911
-X-HE-Meta: U2FsdGVkX180W9YJAmiEnhw/RGCExeOnrqRmeNsraaciH4tcgZ1Rv4+dElNWSoQprhHjTpursYOH8GapK8CZZ0lcHc6bYbcAziW5SY7hK4jC2Ew1C9RKHSt0QSWWi7diDIUxeYUF+OWKS+HpkZQ4+9jnKliWDAmC+JRvGgn+ZK8qF7ctArSsoxSuPvpaj19PJNBsMVu4efMbIvSghaezu+R4tagmDIlt7pze4Obz+nj1rVhT8cGnqHcDmjrVyk1VrYdDFOrHXW919VV7ocdf0YS5fz2V7Ax2Le/WYaKlMZhTMA/BdIkml0F7b7b4GuSghiV2gpP5eQpWtA6zE/c8BUJ3lr8hYaZ5Q5887QF8zU5iERoM9C4SkDGLERZi6WYS6n0x/dpMN3lVYKzPl6nhxjY057u9sgTb0fc7ernllILv9ghGMJoQ5DOX61lmdS3wodw1HoKoqFXb6LCAuzH094EgcvsGB3JnamLHtatW9StJZs4G132Vd5yKqopxL8+gzWF04vgYPQ7FX6OEKmLDdb3hjvWqkx/YzxLMUDmfpUu2HBNjNEufrEv6ZQ2wTsPIsksmM5K16qElR87jzHXPc1uhEZK1g2dREgsNkjf3U2sJiZ0LURdf7lhrmha0cCyfK8YQQT/bUPL+SmCPrBpPB0SXSgEqNW5WQW1Bz/t0cJkhwOeA1XFAh/ichcxN0f1NqbcgxMu10PcjTgonDRTmf/S/A+BSJmnkXOwOQfhkhB5oID9QQ7oNrXNew9HbO0+G6vbP68gUTI99VGJamtLf9qce72uyWSz8QkhUnyDnPv4nNmOx2LhtZUvwY6AnyqQH+EfbOgetyWJkG4v2nurQR5SK9gsvGFBeq4m1zeiYbPMt9FMa1HPJm2e7VNGgPSXcppPyVIdOsP1XDSOF4zIG2WQmHI4dNKgl8fR1o4Q7ZC+lCJ3cdhiSgO31BucPFAqE/fbsoTNQyVSTUqRHKt1
- eimHSd+K
- s0aZ97VKqJohLX6l/JozqCWYizLlPwQ8nyvFOrAaMo1IAM09sDvu86g8ebBWF0kuXskdReBK1rR3/zXNm3GLzO4XetRBlBTFuGcKyKx2hrydu1f3yeDzOdVpqjGTvIHLnY7Pj21e5AOjKb82Ps8Obb5/0N8ga5NjS7rVr/54KfxEWogINcka+b/G/I1lPdWmro5ihfHcnVr/tPmPX0YdOWxgXV2qbjL54egYXk99CBqNUjppoUwz/CAp2yCrmCITTs5SzR8GzbFNb86FP2Evpv31rpSiUOTGzz0UvHMqJWqI8xnaCySloMVbuOpAPus5h/n6UOhxeDnyauhg=
+X-HE-Tag: 1781698784-471247
+X-HE-Meta: U2FsdGVkX19mxk9sq37mxgwjJtZCtVEaCOU30LQTAOs5VEThfoiFiX0wOBBRVT98Ic1njJddcaI64KQqhHzPjJll78y8nr6tR9oJGyu6gfNJYdRX/yVWnruTSqTB8xlc0t+GEuRhZSTcyUEMYwH8P8KuxpIRhwIsd4/W9vmus/PJcUpi6I44dcVaAjjT0wty+6XJj6hIwb1r33aXMqgCdjgBwtFBN+91IGsARANbGWU7RnfJ6yqE90B55i5Imgcb/xCcsw8kfcqWZhPxyhVPLjq6Ultfc/7Y9p1p2zkn8GnENuCXLIeZZVGglyHksbOVzfwTjHSqB81YBelgreuxRa+OICJN440mcRwLYSY/jOi9Pu5J/s3i7sCEIOfFIwoSDYyuQZx6eLePNcNEoNyFZR4fJ0Mq0qijwPflPlOYfBJH46+UJHS8gOOj6HB9vZnm1PSW9fRGsN6xQDUi56AQaVvktbY8kjsC8pDlV7Aly8kX16yqf+btkTJ6wvTnwazjHOcM/Ojn9OB17VhpWucTp9xDBrC/jOIkHVCvSiXS9/eNeJbciUXT5C1LNPCh90eKjiQS7tv5wu5MdlYvNuWs2jdXh9Ji8JCLzXFImLw52+JHPT7d89b54A/VaCNlFOzF+JqzyY7C5zQSZhEH3kxuNJcCU90y7G9YnfLzRiEUMnuiIqTxhjl7YneaVPGvqwN4S6xgbNGdpPIZwYIkIM51IYDw4dO8mMchTmH7JSGvt4MEz2Andc6V5ELy0P4+jDGtz+XzVe65kZcIN9ORu6iDmBd97FufO+e8ZXKY08iAsFmKE3/1Mg5aZtmyIxs312b4dC7Fy72Y2nU+EUv4VlZJMJiuhPZRR1sEZuLDy+hbJtC2fd8IUnoJytQaZA8ZlWi/FtNVoDVa64G7iPhD/mHWgF84T48tutiRZE6OYODDyTCffexvUVzK6kQRefDdJqlqvPEvm5ZuBWN174xeUyE
+ Vmo6klk4
+ vFt3ZJFRV6rjSLLQSgOKxwOpjDO2pa9okM561u6m8vO+kB2KC0CeXuS9FBXa2vHNfstYXXbbWgvnAUDh9MIR+DKn/qh208SSBQX1QHS2NMIuOR8IPoGvueOndGTq7Z8MY0sUD4LpS2atsK+bKsdUHGM+ZQuU2XE/lj7qIQxnQlfvAu3qDAICn1YiIP9vDptuzNKCbnfV0Z5jYtvSLTJDlRU4tCVGjRsxfbaBfJs2JptNHmjISi2b7C+LWat1O0uQEWNdKRKI7wriWYtVCNsiVFuYUzXCeX3zXfJcV2gWS0M84YLV+4SckETZbPPu2gQZE8go0vCwMEatfhAE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,252 +148,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/25/26 16:57, Zhang Peng wrote:
-> shrink_folio_list() contains a self-contained folio-freeing section:
-> buffer release, lazyfree, __remove_mapping, and folio_batch drain.
-> Extract it into folio_free() to reduce the size of shrink_folio_list()
-> and make the freeing step independently readable.
+> shrink_folio_list() contains a self-contained pageout() dispatch state
+> machine. Extract it into pageout_one() to reduce the size of
+> shrink_folio_list() and make the pageout step independently readable.
 > 
 > No functional change.
-
-As you are touching the code, I'll suggest some simple improvements as part of
-the move.
-
 > 
 > Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 > ---
->  mm/vmscan.c | 168 +++++++++++++++++++++++++++++++++---------------------------
->  1 file changed, 92 insertions(+), 76 deletions(-)
+>  mm/vmscan.c | 107 ++++++++++++++++++++++++++++++++++++------------------------
+>  1 file changed, 65 insertions(+), 42 deletions(-)
 > 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 886d8b4843aa..b31f67801836 100644
+> index b31f67801836..456d38eb172c 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -1072,6 +1072,95 @@ static void folio_activate_locked(struct folio *folio,
->  	}
+> @@ -1161,8 +1161,68 @@ static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
+>  	return true;
 >  }
 >  
-> +static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
+> +static bool pageout_one(struct folio *folio,
+> +			struct folio_batch *free_folios,
+> +			struct scan_control *sc, struct reclaim_stat *stat,
+> +			struct swap_iocb **plug, struct list_head *folio_list,
+> +			unsigned int *nr_reclaimed)
 
-I don't quite like the function name, as it sounds like something very generic,
-when it's really specific to memory reclaim code and does things like removing
-the folio from the pagecache.
+Two tabs please.
 
-Any way we can easily make that clearer? I think it should contain something
-about release and reclaim.
-
-folio_release_for_reclaim() or just "folio_reclaim()" ? Not sure.
-
-
-
-> +		struct scan_control *sc, struct reclaim_stat *stat,
-> +		unsigned int *nr_reclaimed)
-
-Instead of returning a bool, can we just return 0 / -EBUSY? IMHO, a bool mostly
-only makes sense if the function name implies some sort of yes/no test. (there
-are exceptions).
+Same comment regarding returning a bool.
 
 > +{
+> +	struct address_space *mapping = folio_mapping(folio);
 > +	unsigned int nr_pages = folio_nr_pages(folio);
 
-Can be const.
+Can both be const I assume.
 
-> +	struct address_space *mapping = folio_mapping(folio);
 > +
-> +	/*
-> +	 * If the folio has buffers, try to free the buffer
-> +	 * mappings associated with this folio. If we succeed
-> +	 * we try to free the folio as well.
-> +	 *
-> +	 * We do this even if the folio is dirty.
-> +	 * filemap_release_folio() does not perform I/O, but it
-> +	 * is possible for a folio to have the dirty flag set,
-> +	 * but it is actually clean (all its buffers are clean).
-> +	 * This happens if the buffers were written out directly,
-> +	 * with submit_bh(). ext3 will do this, as well as
-> +	 * the blockdev mapping.  filemap_release_folio() will
-> +	 * discover that cleanness and will drop the buffers
-> +	 * and mark the folio clean - it can be freed.
-> +	 *
-> +	 * Rarely, folios can have buffers and no ->mapping.
-> +	 * These are the folios which were not successfully
-> +	 * invalidated in truncate_cleanup_folio().  We try to
-> +	 * drop those buffers here and if that worked, and the
-> +	 * folio is no longer mapped into process address space
-> +	 * (refcount == 1) it can be freed.  Otherwise, leave
-> +	 * the folio on the LRU so it is swappable.
-> +	 */
-
-I assume you can now adjust the comments to use more space and less LOC.
-
-> +	if (folio_needs_release(folio)) {
-> +		if (!filemap_release_folio(folio, sc->gfp_mask)) {
-> +			folio_activate_locked(folio, stat, nr_pages);
-> +			return false;
-> +		}
-> +
-> +		if (!mapping && folio_ref_count(folio) == 1) {
-> +			folio_unlock(folio);
-> +			if (folio_put_testzero(folio))
-> +				goto free_it;
-> +			else {> +				/*
-> +				 * rare race with speculative reference.
-> +				 * the speculative reference will free
-> +				 * this folio shortly, so we may
-> +				 * increment nr_reclaimed here (and
-> +				 * leave it off the LRU).
-> +				 */
-> +				*nr_reclaimed += nr_pages;
-> +				return true;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (folio_test_lazyfree(folio)) {
-> +		/* follow __remove_mapping for reference */
-> +		if (!folio_ref_freeze(folio, 1))
-> +			return false;
+> +	switch (pageout(folio, mapping, plug, folio_list)) {
+> +	case PAGE_ACTIVATE:
 > +		/*
-> +		 * The folio has only one reference left, which is
-> +		 * from the isolation. After the caller puts the
-> +		 * folio back on the lru and drops the reference, the
-> +		 * folio will be freed anyway. It doesn't matter
-> +		 * which lru it goes on. So we don't bother checking
-> +		 * the dirty flag here.
+> +		 * If shmem folio is split when writeback to swap,
+> +		 * the tail pages will make their own pass through
+> +		 * this function and be accounted then.
 > +		 */
-> +		count_vm_events(PGLAZYFREED, nr_pages);
-> +		count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
-> +	} else if (!mapping || !__remove_mapping(mapping, folio, true,
-> +							sc->target_mem_cgroup))
-> +		return false;
-> +
-> +	folio_unlock(folio);
-> +free_it:
 
-Okay, at this point we should have a refcount of 0. We could make that
-more obvious through
+Same comment regarding making these comments use less LOC.
 
-VM_WARN_ON_FOLIO_ONCE(folio_ref_count(folio), folio);
 
-> +	/*
-> +	 * Folio may get swapped out as a whole, need to account
-> +	 * all pages in it.
-> +	 */
-
-Likely can shorten to
-
-/* Only full folios get reclaimed. */
-
-Or just drop the comment completely, I don't quite see the point.
-
-> +	*nr_reclaimed += nr_pages;
-> +
-> +	folio_unqueue_deferred_split(folio);
-> +	if (folio_batch_add(free_folios, folio) == 0) {
-> +		mem_cgroup_uncharge_folios(free_folios);
-> +		try_to_unmap_flush();
-> +		free_unref_folios(free_folios);
-> +	}
-> +	return true;
-> +}
-> +
->  /*
->   * shrink_folio_list() returns the number of reclaimed pages
->   */
-> @@ -1459,83 +1548,10 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  			}
->  		}
->  
-> -		/*
-> -		 * If the folio has buffers, try to free the buffer
-> -		 * mappings associated with this folio. If we succeed
-> -		 * we try to free the folio as well.
-> -		 *
-> -		 * We do this even if the folio is dirty.
-> -		 * filemap_release_folio() does not perform I/O, but it
-> -		 * is possible for a folio to have the dirty flag set,
-> -		 * but it is actually clean (all its buffers are clean).
-> -		 * This happens if the buffers were written out directly,
-> -		 * with submit_bh(). ext3 will do this, as well as
-> -		 * the blockdev mapping.  filemap_release_folio() will
-> -		 * discover that cleanness and will drop the buffers
-> -		 * and mark the folio clean - it can be freed.
-> -		 *
-> -		 * Rarely, folios can have buffers and no ->mapping.
-> -		 * These are the folios which were not successfully
-> -		 * invalidated in truncate_cleanup_folio().  We try to
-> -		 * drop those buffers here and if that worked, and the
-> -		 * folio is no longer mapped into process address space
-> -		 * (refcount == 1) it can be freed.  Otherwise, leave
-> -		 * the folio on the LRU so it is swappable.
-> -		 */
-> -		if (folio_needs_release(folio)) {
-> -			if (!filemap_release_folio(folio, sc->gfp_mask))
-> -				goto activate_locked;
-> -			if (!mapping && folio_ref_count(folio) == 1) {
-> -				folio_unlock(folio);
-> -				if (folio_put_testzero(folio))
-> -					goto free_it;
-> -				else {
-> -					/*
-> -					 * rare race with speculative reference.
-> -					 * the speculative reference will free
-> -					 * this folio shortly, so we may
-> -					 * increment nr_reclaimed here (and
-> -					 * leave it off the LRU).
-> -					 */
-> -					nr_reclaimed += nr_pages;
-> -					continue;
-> -				}
-> -			}
-> -		}
-> -
-> -		if (folio_test_lazyfree(folio)) {
-> -			/* follow __remove_mapping for reference */
-> -			if (!folio_ref_freeze(folio, 1))
-> -				goto keep_locked;
-> -			/*
-> -			 * The folio has only one reference left, which is
-> -			 * from the isolation. After the caller puts the
-> -			 * folio back on the lru and drops the reference, the
-> -			 * folio will be freed anyway. It doesn't matter
-> -			 * which lru it goes on. So we don't bother checking
-> -			 * the dirty flag here.
-> -			 */
-> -			count_vm_events(PGLAZYFREED, nr_pages);
-> -			count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
-> -		} else if (!mapping || !__remove_mapping(mapping, folio, true,
-> -							 sc->target_mem_cgroup))
-> +		if (!folio_free(folio, &free_folios, sc, stat, &nr_reclaimed))
->  			goto keep_locked;
-> -
-> -		folio_unlock(folio);
-> -free_it:
-> -		/*
-> -		 * Folio may get swapped out as a whole, need to account
-> -		 * all pages in it.
-> -		 */
-> -		nr_reclaimed += nr_pages;
-> -
-> -		folio_unqueue_deferred_split(folio);
-> -		if (folio_batch_add(&free_folios, folio) == 0) {
-> -			mem_cgroup_uncharge_folios(&free_folios);
-> -			try_to_unmap_flush();
-> -			free_unref_folios(&free_folios);
-> -		}
-> -		continue;
-> +		else
-> +			continue;
-
-You can just drop the "else", no?
-
-if (...)
-	goto keep_locked;
-continue;
-
->  
->  activate_locked_split:
->  		/*
-> 
+In general, LGTM.
 
 
 -- 
