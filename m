@@ -4,124 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1105CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96FCDCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8D076B00A7; Wed, 17 Jun 2026 11:18:36 -0400 (EDT)
+	id 624D06B0088; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3DDC6B00A8; Wed, 17 Jun 2026 11:18:36 -0400 (EDT)
+	id 5D6C06B008C; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2CA06B00A9; Wed, 17 Jun 2026 11:18:36 -0400 (EDT)
+	id 4C5C26B0092; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD076B00A7
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:18:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F00EA140478
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:18:35 +0000 (UTC)
-X-FDA: 84889761390.23.3452F04
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F03FFC0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:18:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qFZ30UNr;
-	spf=pass (imf10.hostedemail.com: domain of abarnas@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=abarnas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781709514;
-	b=nhwMHkRAbp1YdkkXvtbN8L0eUHEb4oVkk7Pzi/MLpYJgQKjFQcHqSFUavMEpt/GogD4e+/
-	Wab0t5ahevQrfY2w9ReTuH9LeoCgbTbXHeZlqXyJ3F6ccCMvI1xS2OMz5yitCR/mxNSVVR
-	jV2b0g9QyN3kLkHG+YEM9wH15k7leDI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qFZ30UNr;
-	spf=pass (imf10.hostedemail.com: domain of abarnas@google.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=abarnas@google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 175D96B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:29:52 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 948831C27C8
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:29:51 +0000 (UTC)
+X-FDA: 84889789782.28.DCEE3DF
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 631BC1C000B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:29:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DKx80smN;
+	spf=pass (imf21.hostedemail.com: domain of 3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781709514;
+	s=arc-20220608; t=1781710189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+mqWVy0xz5Q5QOdMchs2mpfdZbtXWI7hrs2LNKIi0SA=;
-	b=msCG3ydyp/51pitA5FI8O6ng4xkGV5NFCUCvQQxa8kItmXnt5LKhGW0kfuwihqF5okf+yQ
-	xQNzhJW3SgeKSwZ+GYJdopdI6vnh68qfvxpGhCuhWomz+jkqmG0OZfy6X6aC2IRWWYqsTL
-	ReVvZPH168DufUco0s21yTnK+IPi178=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-69583ca0499so1050931a12.1
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:18:33 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
+	b=LhexDWkNUZ9h5+FwDMhxsTq6gvmGvmJAlz3vOQZ0cKs5wpC1EwTXGgJ/Z6q/+hh3tBWAPq
+	Lr7ldR5KEZKS2Xsjmgepef1yMQsMmkzgnNhnkXr7KtEEnkI4XkasArBiUR+kXnqywNacK/
+	aEKOLwp2SF6oESzWVNi96dtlv/hzwEA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DKx80smN;
+	spf=pass (imf21.hostedemail.com: domain of 3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3a70yaggKCAotkmuwkxlqyyqvo.mywvsx47-wwu5kmu.y1q@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781710189;
+	b=Ei4OUbr7MV1VuHHeU36z3Vq6lMLDpipXHKH6k/5s0rqV5LPqkTlZyi0ZqxLwwKgrl8SQ0c
+	fuvz84G2xTh6V4HuYbI4Hf/+o9Q/yDGoT4Oph33Rn3YKn2FDrPYo0M5BaYUlEWn+12CFpp
+	WHKu7hJsOilY/cEQeoxlfj6y97i7pwQ=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef0af9517so5428771f8f.3
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781709512; x=1782314312; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+mqWVy0xz5Q5QOdMchs2mpfdZbtXWI7hrs2LNKIi0SA=;
-        b=qFZ30UNrHMiSTouMu+uwEKRxzkG6B1jiD8nmepVoY2O818rKMfjdjVCqbausEozB2G
-         WnQ34GFrZ6L4ZT9iFflEoKzYRUetpA0UgKWiwcH+aW3vvpDBc4LOIPly27EoPlZQw57C
-         uKXZ75YHAeoWMXR8/tdazLExRc1Adw0mjPOUtXPy6mXy4zoyVYJzHk4iqKNCmd88bRjo
-         ECPUt7D+w5tuUZ/2z4ZlBGTwsQDAkPqHiXx5gvtA/GWwFrGRcfJGeptdoX7sKdjO+6Md
-         IRyDyf5s1P/RUD1rhAODy7CThe1xXiveZi7ttXttOcyev4dKOYVzb1TmTpkes+b+kKop
-         oKvA==
+        d=google.com; s=20251104; t=1781710187; x=1782314987; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
+        b=DKx80smNZfRPsL+rgLmYJL/Z8P509zkQwe+Jy8QtARBNr5eo21wyBPfGdoDeXS3WHL
+         F2LCq/hlskDEWDjsjL7Lpp85vUKyQpdh34hVEdN92irpfcQh1SPXOhCCtlahhWszfWkO
+         C6K8VpkYnKcDuW94truQBTZM0xsEHoTsPQa9r1ENhu/4SYK1nIk/ZngEix1TwfCdomy4
+         KZMWDyX70ZLxjVKxWVI12U+9ayaHni4d7dIgGJMAwD9qKYQR/dyVs46R+jcKzN8MuQGB
+         eVxnMf4TPq6OTL0KCdTOjQ2B5+7k2R+IO9vAM2ziEWtYOabKTW4kEwGqCRFjueORLpdK
+         5ZcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781709512; x=1782314312;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+mqWVy0xz5Q5QOdMchs2mpfdZbtXWI7hrs2LNKIi0SA=;
-        b=azOPcmkeGV3u3pwDGx7WzB7kYZ2fMDzPb6A+vE1dbIV2sDMnb9w5Uyzr5oZ/06LpIn
-         jnIkDIPP5Wod9i2U8z2GLVVETNciG7mNnIZWI+hsQ54JGvIpH/61aZPx++X3r+xyB5gy
-         4+6RLAPYsW+TFX/+AmSX5PUb9GDw0qNVm6HuCNk0++4Cy6+KUsGC2atyxz2sGj6YfAxw
-         mWitaW+SxeQe1IzM+ll/FtKjUyorr8lGeCyxSbr3V0mWm86+soyQ21t3NGGdoMaKIbih
-         0YOaP57TGDObW2p45gAD3mP3O+mzuvuhz0yYr9nHufKXixOh/i7Dr7rxO8/yzEHIzWiS
-         C6iA==
-X-Forwarded-Encrypted: i=1; AFNElJ+3dvOTbVPQ+RPJO9T4VsJBFnpPNSAxqueaaFcbyL0hlR5S/3aqe9qODk6B6upgEK5lMSPs6TypXQ==@kvack.org
-X-Gm-Message-State: AOJu0YzScQj93+njNqUcVMGus8wU0vzUi8HKzqUpjhR4xIjOzDcSL23C
-	IqRxVSV1InDtbd4iHdjBx50OyQGKaTW7Xm+Mpgoop5lJs8t4oS9R7nWW30g9gfZGXA==
-X-Gm-Gg: AfdE7clShLiT+DYy0Le0yp2Q+SqId8EhaV/Ci0kr+Bx858+r5qRvVVpeodOOCdNzorj
-	SMBdZmz89+JZ5UZlEjwMg9bU7wCOGMm+/qvsrkRSLR8eAmqBGltyE8JOeq5Iws6iwrcoQD+vp4z
-	ypLpAhRtB00mo5a+b2UnCVTaGrl+WMxdAYkmwN56WTo1nNZ1e+S0BkowUK022qfHX52+VGdLjWR
-	tP5i6RVuE9pjN+D/Gs0laXSW8hS92fQhC0DQidrVdyAQHlMfOyZCwG1Ts6mTebpJ7LSZmW391Jx
-	Gp/E8YKDGToTZFEGPHPTmRKA1+mqb1yJG7bsC/PLSVOjDASCJhPobTxHtxPFddknnFWbL7+VUxX
-	jbVmm1ZadQlUCkIBiX0amIZvyKsXsm3FjZmAxIVGMpNWeJny9CLmuhzeknkLLuxVWxi+Hds9cPt
-	yTJ0/LSA+yF2SUK/V+P7nMJ6xosdDHgQChBA+gNRIczWGSG5xbNw==
-X-Received: by 2002:a05:6402:528b:b0:68a:ac5e:f4ba with SMTP id 4fb4d7f45d1cf-695476ff271mr2444959a12.24.1781709511761;
-        Wed, 17 Jun 2026 08:18:31 -0700 (PDT)
-Received: from google.com (78.207.190.35.bc.googleusercontent.com. [35.190.207.78])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6937948dde4sm6692740a12.20.2026.06.17.08.18.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 08:18:31 -0700 (PDT)
-Date: Wed, 17 Jun 2026 15:18:27 +0000
-From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-Message-ID: <ajK6w3YTFpVaUl3v@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
- <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
- <aiuyoy8Kmr9yU4GM@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aiuyoy8Kmr9yU4GM@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F03FFC0005
+        d=1e100.net; s=20251104; t=1781710187; x=1782314987;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Khja+sb+mPgskrmGQ7X77sIX1T917JjgVFb5aBSLAJU=;
+        b=LZGz5JZl3O9VFyHLbtCK31uNBagzJ0yGXu9BkSV5NOEp3Ishrik4pLzI9OiVFCVusH
+         v4zxHEpwjwcg0OyyS1RvtF2UwL1VqD2Hbsg5EYR9l/SE/1IlD94uaMeYXMf6jvryV3tV
+         Vqjh0M3+f/PyTp97cMOScrnKzvuYrKgZhpaoHWa1t6rnSW97bErMCLNiPxYVhaQ1lvoo
+         LN9rMpy+yWaVDFxbNJxIe7F9XaSLDDA+9tT/oRHW/GNVlWMAboQrFJVIjhvOn9M5yU4/
+         a2/Yqfy6qZbdytA571RhqIIcXJZyHa3TiIJOs0hVNdTSnwPbu2V0CFl6e8qQTst39qeh
+         O+fA==
+X-Forwarded-Encrypted: i=1; AFNElJ9CBPszwn0013WAr2LuEiHqVPZDW2HB+Lq2vbJ3Ha5ZUs+20QWWH6L2PZu6XaEmMJcRYe+HTuo7iA==@kvack.org
+X-Gm-Message-State: AOJu0YxOb/Tf+MbuXLwQzNyTVCWxNKY1He+WyUmzFW9E0T1u8zwYkRX/
+	w/ubPtFBRiGBZQHE1DvH4k6UbQBfUqjNQ6MLJ9P8Pn09H5t9d3EERuSuQknCMX6y7zXtjzqa3h/
+	Xniwh+QIoHt6aZQ==
+X-Received: from wmok21.prod.google.com ([2002:a05:600c:4795:b0:490:bae0:2975])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a30c:b0:490:c024:2eba with SMTP id 5b1f17b1804b1-492333e2829mr68327805e9.22.1781710187354;
+ Wed, 17 Jun 2026 08:29:47 -0700 (PDT)
+Date: Wed, 17 Jun 2026 15:29:42 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGW9MmoC/yXMQQ5AMBCF4avIrDVpVTRxFbGodjA0SIsQcXfF6
+ uVbvP+CgJ4wQJlc4HGnQPMUIdIETK+nDhnZaMh4VvBCKKadmw1b/RlnZCLXViqrGykVxM/isaX j61X177A1A5r1jcB9P6+TR9lxAAAA
+X-Change-Id: 20260617-alloc-trylock-14ad37dab337
+X-Mailer: b4 0.15.2
+Message-ID: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
+Subject: [PATCH] mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 631BC1C000B
+X-Stat-Signature: c3ref78ejyqzqpynxkemqnjyxizaoota
 X-Rspam-User: 
-X-Stat-Signature: ecfstgmucg8ziwds8xrx4xu5rix9ups5
-X-HE-Tag: 1781709513-286998
-X-HE-Meta: U2FsdGVkX1+nr/8Xy66mGGcw41IwfqmSW+MmyMIky3Ic57ImINAN/ZAxjoZI8BFy/MhZhQIkYkFijrAsD01SKWyjyI4zH6LiUh02fmkQWvVZnNmJofkqZybtEEbYmusdYaoDq99zOlAGirAQ0u0R3pA2ee6mFUt1IVux4lRI0nCiCRRHyYZJQpbdDoG0anXPLbCXMml+f0Yoo4YIUmaz5w8b5qth1R0pRqJ4N0Pq9jxSoouykjFyIMh7+BBmZu8D2OYWkY3KKkvi+Dj/9wPk4OOun78HvL/jq5lYWUlxe0H6DQqnaIvnI2nFJ7AoTHvPR2nunvzkrVnEqdHIKDGsPtS06UcfRV5ZEkyGlWncPWFATNGbjjLGrpCVqhAvp2VbkZG/CEbuNVtzt6Icax4lt1awJIKW1DjG++civC+7cysMC/+SexQdZa9Z4vxYhDKZ1hd8GT0Ra3VuxMJv363wmj9LDH3BiQ5UAvYiRI3U/3SEiST6/tlx1kVVGQWVjGOPN4fOETzuVGc5nj6cUNKTN0wXsu/BEFEq0I3hdGZ7jOchRrqkE+2pgktAjXNkdpebYz9XRyTErOctKFswE8L7yFta9KY98EWHt7KU5X/UcugovDJZM3l2SdlMzvahx4/7QIufACnO814sIg/JU3W3j596L8gQXret8Jt8shKCm/Q2m7/6ZXaDD8FUA+S4P4Uos+mcy1+99wc2fNrffdI0Wx8R2DoaPKzvOTyLJbFoW7aUK1qmIT9b2IEOmtkN3lIpCDxHOTFP21PpmldK/niNulgvfUGpivcyep1voZlD/7rd07g0zFXmD7acCOWFb935z09e74fFgZ+jHJQK31AwVwmDPABPxttNJ+UgHl2bdfvvdXcgWD1kYpLDSZWrSznbdziHWaw0Xnnaanar8LhPXZ/Xa/sYsr1+Js6lSht0Q/vr63m4PDn3IJHP7Yav8mtuWwpfssfMALv1eNpbjFC
- ZO9eR7oI
- BBcZHeKmdVKr+rHB1EsXOUdc9vvX+SXLY2UTcTILYr/dESsBUgHz3EWT7sZds7XxlsZ6M7+QPO3nRtgCGk9fiZiyI3lIFy5TRrSaOMIqv6jh0xLf/wnUUa8wJH9d1kYknp3rm6Exfovk+qzGilpVxfWLNHI6mEzH3Vu7kqCjKeAtfzhnsWMBzKfL3KQqOcijxG5y9rX5XJBtMKfq5nKuIxMtYwz5sYyFIoVFmJBS54vMCcOW33XXlr9dnaEwD8744JfR9YLF24tXjW+coWtrXnmHKjjD2EK3ifTZ8iXh4saO7w1X8OdY/YGDOvXL3FtcnSgpAuP8yoB/d31+lbPofJn0rm+qh3/X4YHMQebb12IMcttzh6LPm/zbGRnMWZS12SqbYB9ExGMjsH9W/4en3SbPxIw==
+X-HE-Tag: 1781710189-683215
+X-HE-Meta: U2FsdGVkX1+hVvRCVNikBKDftmNthLgAIIF2xOJ2LVIgQs6uGZm6QwixK3A/A4wP1VDE28kDeLqY9XpE4KORkS8SIUSFHcvxDrCoquiekmB9eGyhWQzMYqaIQrMbUhUYje2q7kitVzEaYzWqUuspvVpeYSuJzht0hWnVQd2emQdLYOi3R9FVpsTzg3OfBTkUSmc2mcWI06C2w4Fd3gMMS6LXoXzA7+ujOBvGAs12M6mwRiKAUg79y6a5ONWg3eQVqfScxeivdqBNC2ymwmI+6bUte8T8y8Pjz3P8fqOagotdghjgcXxN24DpJo8ZJ0qTPp9jMOiSxSk7WU/iI8xqC+QwvoBzPr2z4Q+xJO8Jq4T3lgrYRX2yqwxRRXrFU/VS6j6yFEn61v5JN2wGnQYfFsVrLbexiG+tc+RiNkebYBrJFzc882S+PBhAmifDmzetUYGpl0aY+DeX8x9cw3hEtzM19vvGe83n3hJm9hXsMeWTUrdazKHoZtdJ5hbcAbNTRU96GgVJn5age2l3c/izLNRAfBXmgBWL8ik7n+ZNkJh+I3Q3imWoeKiVnEa+G3pSEorF5WlRx3QZhqXAQvBFwV7wb57FfZFmbpI//aAhOl+Ern8G7zTgS+H2vXAw9ph2Z2wjld0eJpzRMLCZSo2G9pvBZXt+0d1auneKeUA6EWsBe+52pTrchMpguuVT12WqL7JKMgHCwXPwEe9z1J3BKRB2HQ0de5r6PjrS1/MygPHVk4ZNDcr657WPN9+8Oa8wBxKscJA+Y7uDW78vYYQlUw3lF7KSc9SBeHlfMzATuz+qmaLBg/e8ThYTcU1DaFo8RlE9xkN2SuSh2AvxdHGtyWkTtiBGy10Ee6wcg+wh+W/rXcAY6pDueIgXJiDma9PhwiACOsWqjc1zDEoNG8PfwDA5N1uTZw1OoJu882Lnacp5Ac+3cUAfFhh0oDE3VVUb7BPpakql9U4C6q4rzsM
+ Z/AKfT5j
+ WYHIfNBZreZKoTmDs82cxasGLcBG2SxrzXIx1R012J9L99bjoIUkizY8kbg443l8KBZE+2570Dt7xlsuV2sTelZfI5PnfHI1xB0f1eunXF0Y3GFdMGU4KH2XFO36aAFmmRWusNAjB3vQuvPtmUZWsvh5ithW343jNDWQiHYiIuWy1y7dV4sGhI1s+IaVraXUwjUAWyaOHiTaApvT7EZ88vM0A5Vb8AJmgR6VPDnwSNHREr4PzInYrQdWo20PX14v+fj7MvAJRtIq4WgtSuruio5tdEvTwwZZEKNKNWaNXqnmJt1tDccCPMGFMtrnGvytcS/x/KKUT/sGb9ptvd1ssZyKbUuUmb4PpKY1s9li33YB04KBlHSNsThs2MxGvy3P8wTwM9H6qzm89xb2gHz9naxW7Bq506jZWN6EEsO8GarRLUAK0c/acKKQvrmdho/vT6oQV3qCkeWFh+2Hjeff5iU0fX6zS7YNPg1p2EnqM8jDaie4+ETxeZ2rv2K5MZJqETC344ye5K4QH+MM6e/Twd7Kkssekv08QKyxSC1rsbw1IurS67SbMCr/iIzPBTcuFJYhH0mBXfJrGhWRpTqaWraUvN55gUnlfqxD+rg+MbB7f6GojSo9eW0b8pIcXa61WXtOBWIEc+8eP5lDmDiIHB7s1FPckpgpHzVwQXaTJDbd8+ouIiWZ3qH1ejQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,119 +119,373 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 10:17:55AM +0300, Mike Rapoport wrote:
->On Thu, Jun 11, 2026 at 01:54:13PM +0000, Brendan Jackman wrote:
->> On Thu Jun 11, 2026 at 1:01 PM UTC, =?UTF-8?q?Adrian=20Barna=C5=9B?= wrote:
->> > Strip the read-only attribute from the selected memory range when
->> > restoring the linear map after an execmem cache clean.
->> >
->> > An execmem cache clean is performed when a cache block becomes empty
->> > after unloading a module. When making the memory valid again, the linear
->> > memory alias must also have its read-only attribute cleared.
->> >
->> > Without this change, the linear memory alias remains read-only even
->> > after the execmem cache block itself is freed, which prevents subsequent
->> > allocations from writing to that memory.
->> >
->> > Signed-off-by: Adrian Barnaś <abarnas@google.com>
->> > ---
->> >  arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
->> >  1 file changed, 16 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->> > index 88720bbba892..eaefdf90b0d5 100644
->> > --- a/arch/arm64/mm/pageattr.c
->> > +++ b/arch/arm64/mm/pageattr.c
->> > @@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
->> >  					__pgprot(PTE_PXN));
->> >  }
->> >
->> > +static int set_memory_default(unsigned long addr, int numpages)
->> > +{
->> > +	return __change_memory_common(addr, PAGE_SIZE * numpages,
->> > +				      __pgprot(PTE_VALID),
->> > +				      __pgprot(PTE_RDONLY));
->> > +}
->> > +
->> >  int set_memory_valid(unsigned long addr, int numpages, int enable)
->> >  {
->> >  	if (enable)
->> > @@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
->> >  	if (!can_set_direct_map())
->> >  		return 0;
->> >
->> > -	return set_memory_valid(addr, nr, valid);
->> > +	/*
->> > +	 * Execmem cache uses this function to reset permissions on linear mapping
->> > +	 * when freeing unused cache block. On x86 it makes memory RW which is
->> > +	 * desirable.
->>
->> Hm, maybe desirable for execmem but that doesn't really mean the x86
->> behaviour is correct. Maybe it makes more sense to change the x86
->> to align with the arm64 behaviour here?
->>
->> BTW we should probably document this API a little bit, I never thought
->> abut what "valid" actually means until now. I had thought of it as "I
->> can access this memory" but that's an unclear concept and now I realise
->> "valid" is a technical concept in Arm that's confusing. And it's extra
->> confusing if the kernel API uses "valid" to mean a _different_ thing.
->
->I've got confused too and that's how set_direct_map_valid() got into x86
->with a different semantics than on arm64.
->
->What execmem really needs is set_direct_map_default() variant that gets
->nr_pages.
->
->AFAIR, set_direct_map_default() has a single 'page' parameter because it
->was added to reset permissions for the direct map alias for vmalloc()'ed
->pages before there was VMALLOC_HUGE and each page had to be reset
->independently anyway.
->
->Maybe it's time to add nr_pages to set_direct_map_valid().
->
->> Also, shouldn't execmem be using set_memory_default_noflush() before
->> freeing anyway? I guess that shoudl even be documented as "if you change
->> anything you need to call this before you free the page".
->
->It does on x86 because there set_direct_map_valid() is the same as
->set_direct_map_default().
->
->> > On ARM64 set_memory_valid() just change valid bit which
->> > +	 * leave direct mapping read-only so use set_memory_default instead.
->> > +	 */
->> > +
->> > +	return valid ? set_memory_default(addr, nr) :
->> > +		       set_memory_valid(addr, nr, false);
->> >  }
->> >
->> >  #ifdef CONFIG_DEBUG_PAGEALLOC
->>
->>
->
->-- 
->Sincerely yours,
->Mike.
+Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
+main entry point function is significantly different from the normal
+__alloc_frozen_pages_nolock(), this is tiring when reading the code.
 
-Hi Mike, Brendan,
+Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+exposed to mm/) and then turn the nolock variant into a thin wrapper
+that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+how some of the wrappers in gfp.h do).
 
-Thanks for taking a look at the RFC.
+Rationale that this doesn't change anything:
 
-I was also quite confused by this initially. I spent some time debugging 
-until I realized why unloading all the modules was causing the kernel to 
-crash.
+1. Simple bits: A bunch of the nolock-specific handling is just moved to
+   the new alloc_order_allowed(), alloc_trylock_allowed() and
+   gfp_trylock.
 
-The reason I took this approach was that I wanted to send out a working 
-prototype for arm64 that wouldn't interfere with the existing, working 
-implementation on x86.
+2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+   previously in the nolock variant:
 
-Following your suggestion, I can put together a preparatory patch series 
-to refactor the set_direct_map_* APIs to accept a nr_pages parameter. 
-This refactoring would also allow us to drop the redundant 
-set_area_direct_map helper. I could then rebase the rox_cache series on 
-top of that.
+   a. Application of gfp_allowed_mask; this only affects early boot, and
+      only flags that affect the slowpath get changed here.
 
-Does this sound like a good path forward?
+   b. Application of current_gfp_context() - also only affects the
+      slowpath
 
-Thanks,
-Adrian
+3. The slowpath itself: this is now just explicitly skipped under
+   !ALLOC_TRYLOCK.
+
+Ulterior motive: adding an alloc_flags arg to the allocator's
+mm-internal entrypoint can later be used to do more allocation
+customisation without needing to create new GFP flags.
+
+No functional change intended.
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+ mm/hugetlb.c    |   2 +-
+ mm/internal.h   |   4 +-
+ mm/mempolicy.c  |   8 +--
+ mm/page_alloc.c | 175 +++++++++++++++++++++++++++++---------------------------
+ mm/slub.c       |   4 +-
+ 5 files changed, 99 insertions(+), 94 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 571212b80835e..619f6307dc98d 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1806,7 +1806,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+ 	if (alloc_try_hard)
+ 		gfp_mask |= __GFP_RETRY_MAYFAIL;
+ 
+-	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
++	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask, 0);
+ 
+ 	/*
+ 	 * If we did not specify __GFP_RETRY_MAYFAIL, but still got a
+diff --git a/mm/internal.h b/mm/internal.h
+index 181e79f1d6a20..1043eb833836c 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -913,7 +913,7 @@ extern bool free_pages_prepare(struct page *page, unsigned int order);
+ extern int user_min_free_kbytes;
+ 
+ struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
+-		nodemask_t *);
++		nodemask_t *, unsigned int alloc_flags);
+ #define __alloc_frozen_pages(...) \
+ 	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
+ void free_frozen_pages(struct page *page, unsigned int order);
+@@ -924,7 +924,7 @@ struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
+ #else
+ static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
+ {
+-	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL);
++	return __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL, 0);
+ }
+ #endif
+ 
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 36699fabd3c22..dccff90682035 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2425,9 +2425,9 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+ 	 */
+ 	preferred_gfp = gfp | __GFP_NOWARN;
+ 	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+-	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask);
++	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask, 0);
+ 	if (!page)
+-		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL);
++		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL, 0);
+ 
+ 	return page;
+ }
+@@ -2475,7 +2475,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 			 */
+ 			page = __alloc_frozen_pages_noprof(
+ 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
+-				nid, NULL);
++				nid, NULL, 0);
+ 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
+ 				return page;
+ 			/*
+@@ -2487,7 +2487,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 		}
+ 	}
+ 
+-	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
++	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask, 0);
+ 
+ 	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
+ 		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 0111cdbdb5321..fc4d07bbf44b5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5253,24 +5253,98 @@ void free_pages_bulk(struct page **page_array, unsigned long nr_pages)
+ 	}
+ }
+ 
+-/*
+- * This is the 'heart' of the zoned buddy allocator.
+- */
+-struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+-		int preferred_nid, nodemask_t *nodemask)
++static inline bool alloc_order_allowed(gfp_t gfp, unsigned int order,
++				       unsigned int alloc_flags)
+ {
+-	struct page *page;
+-	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+-	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
+-	struct alloc_context ac = { };
++
++	if (alloc_flags & ALLOC_TRYLOCK)
++		return pcp_allowed_order(order);
+ 
+ 	/*
+ 	 * There are several places where we assume that the order value is sane
+ 	 * so bail out early if the request is out of bound.
+ 	 */
+-	if (WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp))
++	return !(WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp));
++}
++
++static inline bool alloc_trylock_allowed(void)
++{
++	/*
++	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
++	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
++	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
++	 * mark the task as the owner of another rt_spin_lock which will
++	 * confuse PI logic, so return immediately if called from hard IRQ or
++	 * NMI.
++	 *
++	 * Note, irqs_disabled() case is ok. This function can be called
++	 * from raw_spin_lock_irqsave region.
++	 */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
++		return false;
++
++	/* On UP, spin_trylock() always succeeds even when it is locked */
++	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
++		return false;
++
++	/* Bailout, since _deferred_grow_zone() needs to take a lock */
++	if (deferred_pages_enabled())
++		return false;
++
++	return true;
++}
++
++/*
++ * GFP flags to set for ALLOC_TRYLOCK i.e. alloc_pages_nolock().
++ *
++ * Do not specify __GFP_DIRECT_RECLAIM, since direct claim is not allowed.
++ * Do not specify __GFP_KSWAPD_RECLAIM either, since wake up of kswapd
++ * is not safe in arbitrary context.
++ *
++ * These two are the conditions for gfpflags_allow_spinning() being true.
++ *
++ * Specify __GFP_NOWARN since failing alloc_pages_nolock() is not a reason
++ * to warn. Also warn would trigger printk() which is unsafe from
++ * various contexts. We cannot use printk_deferred_enter() to mitigate,
++ * since the running context is unknown.
++ *
++ * Specify __GFP_ZERO to make sure that call to kmsan_alloc_page() below
++ * is safe in any context. Also zeroing the page is mandatory for
++ * BPF use cases.
++ *
++ * Though __GFP_NOMEMALLOC is not checked in the code path below,
++ * specify it here to highlight that alloc_pages_nolock()
++ * doesn't want to deplete reserves.
++ */
++static const gfp_t gfp_trylock = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC |
++				__GFP_COMP;
++
++/*
++ * This is the 'heart' of the zoned buddy allocator.
++ */
++struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
++		int preferred_nid, nodemask_t *nodemask, unsigned int alloc_flags)
++{
++	struct page *page;
++	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
++	struct alloc_context ac = { };
++
++	/* Other flags could be supported later if needed. */
++	if (WARN_ON(alloc_flags & ~ALLOC_TRYLOCK))
+ 		return NULL;
+ 
++	if (!alloc_order_allowed(gfp, order, alloc_flags))
++		return NULL;
++
++	if (alloc_flags & ALLOC_TRYLOCK) {
++		VM_WARN_ON_ONCE(gfp & ~__GFP_ACCOUNT);
++		if (!alloc_trylock_allowed())
++			return NULL;
++		gfp |= gfp_trylock;
++	} else {
++		alloc_flags |= ALLOC_WMARK_LOW;
++	}
++
+ 	gfp &= gfp_allowed_mask;
+ 	/*
+ 	 * Apply scoped allocation constraints. This is mainly about GFP_NOFS
+@@ -5291,9 +5365,9 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ 	 */
+ 	alloc_flags |= alloc_flags_nofragment(zonelist_zone(ac.preferred_zoneref), gfp);
+ 
+-	/* First allocation attempt */
++	/* First allocation attempt (or, for trylock, only attempt) */
+ 	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
+-	if (likely(page))
++	if (likely(page) || (alloc_flags & ALLOC_TRYLOCK))
+ 		goto out;
+ 
+ 	alloc_gfp = gfp;
+@@ -5310,7 +5384,8 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ out:
+ 	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT) && page &&
+ 	    unlikely(__memcg_kmem_charge_page(page, gfp, order) != 0)) {
+-		free_frozen_pages(page, order);
++		__free_frozen_pages(page, order,
++				    alloc_flags & ALLOC_TRYLOCK ? FPI_TRYLOCK : 0);
+ 		page = NULL;
+ 	}
+ 
+@@ -5326,7 +5401,7 @@ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
+ {
+ 	struct page *page;
+ 
+-	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
++	page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask, 0);
+ 	if (page)
+ 		set_page_refcounted(page);
+ 	return page;
+@@ -7856,80 +7931,10 @@ static bool __free_unaccepted(struct page *page)
+ 
+ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned int order)
+ {
+-	/*
+-	 * Do not specify __GFP_DIRECT_RECLAIM, since direct claim is not allowed.
+-	 * Do not specify __GFP_KSWAPD_RECLAIM either, since wake up of kswapd
+-	 * is not safe in arbitrary context.
+-	 *
+-	 * These two are the conditions for gfpflags_allow_spinning() being true.
+-	 *
+-	 * Specify __GFP_NOWARN since failing alloc_pages_nolock() is not a reason
+-	 * to warn. Also warn would trigger printk() which is unsafe from
+-	 * various contexts. We cannot use printk_deferred_enter() to mitigate,
+-	 * since the running context is unknown.
+-	 *
+-	 * Specify __GFP_ZERO to make sure that call to kmsan_alloc_page() below
+-	 * is safe in any context. Also zeroing the page is mandatory for
+-	 * BPF use cases.
+-	 *
+-	 * Though __GFP_NOMEMALLOC is not checked in the code path below,
+-	 * specify it here to highlight that alloc_pages_nolock()
+-	 * doesn't want to deplete reserves.
+-	 */
+-	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC | __GFP_COMP
+-			| gfp_flags;
+-	unsigned int alloc_flags = ALLOC_TRYLOCK;
+-	struct alloc_context ac = { };
+-	struct page *page;
+-
+-	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
+-	/*
+-	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
+-	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
+-	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
+-	 * mark the task as the owner of another rt_spin_lock which will
+-	 * confuse PI logic, so return immediately if called from hard IRQ or
+-	 * NMI.
+-	 *
+-	 * Note, irqs_disabled() case is ok. This function can be called
+-	 * from raw_spin_lock_irqsave region.
+-	 */
+-	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+-		return NULL;
+-
+-	/* On UP, spin_trylock() always succeeds even when it is locked */
+-	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
+-		return NULL;
+-
+-	if (!pcp_allowed_order(order))
+-		return NULL;
+-
+-	/* Bailout, since _deferred_grow_zone() needs to take a lock */
+-	if (deferred_pages_enabled())
+-		return NULL;
+-
+ 	if (nid == NUMA_NO_NODE)
+ 		nid = numa_node_id();
+ 
+-	prepare_alloc_pages(alloc_gfp, order, nid, NULL, &ac,
+-			    &alloc_gfp, &alloc_flags);
+-
+-	/*
+-	 * Best effort allocation from percpu free list.
+-	 * If it's empty attempt to spin_trylock zone->lock.
+-	 */
+-	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
+-
+-	/* Unlike regular alloc_pages() there is no __alloc_pages_slowpath(). */
+-
+-	if (memcg_kmem_online() && page && (gfp_flags & __GFP_ACCOUNT) &&
+-	    unlikely(__memcg_kmem_charge_page(page, alloc_gfp, order) != 0)) {
+-		__free_frozen_pages(page, order, FPI_TRYLOCK);
+-		page = NULL;
+-	}
+-	trace_mm_page_alloc(page, order, alloc_gfp, ac.migratetype);
+-	kmsan_alloc_page(page, order, alloc_gfp);
+-	return page;
++	return __alloc_frozen_pages_noprof(gfp_flags, order, nid, NULL, ALLOC_TRYLOCK);
+ }
+ /**
+  * alloc_pages_nolock - opportunistic reentrant allocation from any context
+diff --git a/mm/slub.c b/mm/slub.c
+index a2bf3756ca7d0..b9fb66071bd07 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3275,7 +3275,7 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
+ 	else if (node == NUMA_NO_NODE)
+ 		page = alloc_frozen_pages(flags, order);
+ 	else
+-		page = __alloc_frozen_pages(flags, order, node, NULL);
++		page = __alloc_frozen_pages(flags, order, node, NULL, 0);
+ 
+ 	if (!page)
+ 		return NULL;
+@@ -5236,7 +5236,7 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+ 	if (node == NUMA_NO_NODE)
+ 		page = alloc_frozen_pages_noprof(flags, order);
+ 	else
+-		page = __alloc_frozen_pages_noprof(flags, order, node, NULL);
++		page = __alloc_frozen_pages_noprof(flags, order, node, NULL, 0);
+ 
+ 	if (page) {
+ 		ptr = page_address(page);
+
+---
+base-commit: 1111012ec6508a38a39f8d20c213c8c9cf3c96c0
+change-id: 20260617-alloc-trylock-14ad37dab337
+
+Best regards,
+--  
+Brendan Jackman <jackmanb@google.com>
+
 
