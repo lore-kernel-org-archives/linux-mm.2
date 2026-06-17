@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABEBCD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04643CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:26:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24D006B0096; Wed, 17 Jun 2026 08:26:24 -0400 (EDT)
+	id DBF416B0098; Wed, 17 Jun 2026 08:26:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FDAA6B0098; Wed, 17 Jun 2026 08:26:24 -0400 (EDT)
+	id D961B6B0099; Wed, 17 Jun 2026 08:26:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB746B0099; Wed, 17 Jun 2026 08:26:24 -0400 (EDT)
+	id C847F6B009B; Wed, 17 Jun 2026 08:26:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D09046B0096
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:26:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57AE6166162
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:26:23 +0000 (UTC)
-X-FDA: 84889327446.07.A6E99A0
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6D9D1140002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:26:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=AZvroIyo;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf23.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0836B0098
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:26:34 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16BC91C0C71
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:26:34 +0000 (UTC)
+X-FDA: 84889327908.22.0C02F2F
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2EA004000D
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:26:31 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VY9QcIAg;
+	spf=pass (imf11.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781699181;
+	s=arc-20220608; t=1781699192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iim+7rfRj3+oRPn4MTff3Qg6MkJBVhCqBNuI2UP5kD8=;
-	b=YZ41Wqu/VjvIZdRnug9jkjObVyVnGL/LkYV+95+vFD9koMZhBaetho0qULHPyqJSCKTlpb
-	edNVGCFXFuTwCbszJbVyRY2SOfSHy1EW3vsOHBOvynza6ZMR6a2Y3egt7NuZUR8oGN4UA+
-	B+Yq6aw2KKDjRYtSQjpoW75H33+LOyQ=
+	bh=KplI5DIltMOxeWE/hVG9qMzqxTkTYf7x6780RRs6dfI=;
+	b=IKF5Ax5NBDIkNrui1I6J5V+RJQiNBhJEoPL2meeWUZFZaXM56uFF0K7aP+1E8GFMNNgjXV
+	s3ggivhDARoVo7lZZYPCc6jJV76R/LjFv3NdEzmytCZPFrkbjp2jIttt2zeTxkst5GvpH0
+	/mzjCPumnce2PtWhs6JrP1uuQwJhQx0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=AZvroIyo;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf23.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VY9QcIAg;
+	spf=pass (imf11.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781699181;
-	b=oWirVoNF7r2q7tfWw1X/rnrYez2/crWf4oqSygk4Zm+NExfw33I2IQGmb663aGsQQ6axb0
-	qrKY8Gih9vbXZwz+gCpbjs/YfPotsxEO+d0cdfwa9bH6sJQNdPCzB1h/NvWnpONCZpfkbo
-	mx+IkXC/njd4x1nlqJUvijqNwAAtCYw=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45fe59255beso3223046f8f.1
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:26:21 -0700 (PDT)
+	t=1781699192;
+	b=Suawr9RpCyL9L8tixVV9QTs1E9oHcJFfreXa22tKg1I33xzo6u0h4U5nxxUKUVtz/IZ3GO
+	fgdFrfuhkoyPAwUI3yTnh4fk9VzqEnxX+FejjprddP2rNwjaNLVPaBJxjhcH/vmynHqelS
+	sufj4/5l1z6PjHU8Glc7mNTc4SSB9RU=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490acbb0f89so37079375e9.0
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781699180; x=1782303980; darn=kvack.org;
+        d=suse.com; s=google; t=1781699191; x=1782303991; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iim+7rfRj3+oRPn4MTff3Qg6MkJBVhCqBNuI2UP5kD8=;
-        b=AZvroIyoNqSHAGEkhwfcnQoGPkU8XcEWP8P2BmIaOKb/05kfMPy9qtft63sDD4dgWg
-         6gwz2bbpMPH2vREoIJAyh/1m7tqo1cY4HK3KoeZduEmeUtTdGJBgo+iiPoAnDCW4CVcg
-         zrYQW6MD/nDfEOnXOMWMUR4xsiskWCj8Clk4KntLc9Di5wURsHZR8NsH1g3i6I8bAR5d
-         WdlNgMgZIzGIZ8P9gZNBsNXsIdh+i9vqv72BVxZW7OxFe1z+Cxdzl9pfwMgktyQbR8xi
-         GI3b8hiHBtiroWf60FxuOU8RI8VmeQ9ZonjGcBnXcqD8a0vhRF4k+mB9fdKyuijzBX5k
-         vziw==
+        bh=KplI5DIltMOxeWE/hVG9qMzqxTkTYf7x6780RRs6dfI=;
+        b=VY9QcIAgMNR2t2S5Pskor0Q9pS85KptDXf1XrxhI5Pz2bbbIpbh67EuXrmijES2QbJ
+         HGumlNuZigSOyHZDWs8r2yQXngbar+c2fb4zudayyT2V3a6XKZxo9bDnUodQcZVzE3CP
+         J8XmR4FsACVBxmKxAaxGG5/TO1lsnznd3w/tRt9dygliZOnIYlFlyjFGpKou1imXIq4g
+         ptNUVFeFcXyqgCaxdJVSYF083FzwU/B2UkE18CzSfvSMpHOZ1oTRJi7VVL38DPftJ8GN
+         Ijn+nrckh3FoSzUuriALnSl8ZZlj+lsjNywk8XEC5f3529UIKFsHWMs9mjJfA5ILyJmH
+         BkXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781699180; x=1782303980;
+        d=1e100.net; s=20251104; t=1781699191; x=1782303991;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Iim+7rfRj3+oRPn4MTff3Qg6MkJBVhCqBNuI2UP5kD8=;
-        b=d9CwPOzm+jEI1SQWwcyta4rPFtdvsc4frbolb/TOVDO4a4hSfcxu9c7RgLjzQrRGYh
-         0rL/AZ1aE8lNPeFbykEd+qbUvBkBsmRkWzcN3i7Ge/fJk9xWnQPOQfPWV5nnGeW553M+
-         g3yJLRDafPiCJxhmeb4canRuM8fuwx6p4pEQOfsjeYuZ2LcMbKDBSp6VVnb9J9DfKx4k
-         LeONI9wxohtW9RaGp/Fk2yFgNpwis1/1dSF6W0gtqXGtsRdXoz8hh6g0XOR3cMucArRD
-         3gzMHbiKEcBnDyJe6hLFTpIDjEF1ISvPHWru2ueOsSla1xHouIbGjaMBoKJUQohE8ULz
-         fV7A==
-X-Forwarded-Encrypted: i=1; AFNElJ9EhHWtEaGBYPq6025f2GnWOPrXUvI3ihL8nB2m79sLG1ky2OxnqVnMowLVJUiYb/IAmciMJZ/pSg==@kvack.org
-X-Gm-Message-State: AOJu0YzqfvhfxXDd+Ni4Huy2h1QX89cW0fO/Yo1Lv8GIinVbXYsNQmNy
-	7fKrzw1nfGrlK2QL1FnwG2gdqiRDpUznwZxPFa9P/zUj4duB/5qF3mviywAY+T4B2ok=
-X-Gm-Gg: AfdE7ckz/KUw1O9aqkaBvev5hkswSZmt1LOyYZ6BS8IuJVeu9kdOjpgaVOefiQPDDSN
-	RrmWcXa2VZRv7mJYgtGG6Phr3M09uS0Je5U5v8jY7daslBqDiq305RMurCnyVmQOFrnuliLp/lw
-	zUDCfEgTiKdjdfEvMnpd4jkzKvPJW6obJ9Y77nlbkDxRnnWJF9MNmbUu3u5VyKPHqJwcmCAStT+
-	dwDr+zYBVh7agK6F4ZIHdmzZ/VudH1ph50RuCEBEsFE33BKXczDRfHY6X5+29btumu48RFIOpPX
-	h6kXRCX4wU2s1AUv6SUSLO8EfAT3WoOHDy2OT3w/Rn4e4xbDayI0lRJJPY1iUZTCVbCcYwUyylc
-	3j1hYOVxF0CWA1FOCV5BmZ8q9E9uV2aLbg7DqiYieqZkwmXJS5xLcU3i1WUm22r5iFNA7r1MCAG
-	7zhO254F6mgdvPR/rYdw==
-X-Received: by 2002:a05:6000:46da:b0:461:a5a3:692e with SMTP id ffacd0b85a97d-4623f2e7e00mr4513543f8f.5.1781699179970;
-        Wed, 17 Jun 2026 05:26:19 -0700 (PDT)
+        bh=KplI5DIltMOxeWE/hVG9qMzqxTkTYf7x6780RRs6dfI=;
+        b=hdqeUv0Ozf6bsBtDYPOgvBb/usUOfSI3UP+1gCjr8LlHE9POz82g3FLNOuQhiaNJ1/
+         ro2nvW+0aNopUL50rwOj7ARoXLtc+xbaiVIqosumRxG0tmjCwRO7P7QRIXo3cKXJGbTd
+         HXPgyYTAm3b/M98tXZlEv8xs8n7ftYa05BNQFJoDod/T8/ruiRmm6U8w+HxAwH158Pgv
+         UGX+3LvHoLJa/BUsEJuABFbtrbT0SCvdbPDM8aJleT6H0b5UwkuY224KBGBkH8MRaPBS
+         xTsoGTVHTkCQSThigtZZJU8RbuFfHeh/Y0MV5p9ia5BFy/Hy+8LRe6VErXhLDvOBJP2j
+         fkdg==
+X-Forwarded-Encrypted: i=1; AFNElJ8gShPmvQllOj7UJcGsNDqFc9l3j5f9k721GH0aKoRu2cjwIMblOaMGijLEKbKtqa3D8sAGSJFs5A==@kvack.org
+X-Gm-Message-State: AOJu0Yx7N26nyArvny35BvrPolt2vLT2U2nqrQjlQuuiLU9CdfcsKvkK
+	LNCw7OqwlmAiQkrLpdruY+9Ki+psS7+2QJyo9ZXoBwkcNINq1iviLrXrpzyHtD6QzG0=
+X-Gm-Gg: Acq92OE8oGGg92KK9omk2lH23onrqPmjbb0ZRrYPx4D1E1CWnLO7aZ4UZa3JEjzvDYx
+	mI73tp5F/ozalnfMdrS62vFCdHRMUfoOfV0J+BQ0aL8oqKgnbATIF3EYkKPF3CbaJJQLfksJI9e
+	QWUZzH8Z9jmH+wNHkbh8wSq5o2oC9fqNYYUEYYEr3L98svmamweIzDmADSffyjRTExHxX3kAEaz
+	wvAN+Gry1Bu7oZwd0FqTiC8ovgVdGgjmjVKpaAt/f8OedPQ4rsa2NvmdyQMmiSCyBNc2TyeCRLz
+	dVHo09MzA9tAif2uqgeUip60vhHCg9x+OY31W+mJ0LgnW/9hsNvxVlxg8lG5ajpQvfgqzv/p/qO
+	EnAd3wOy7AmSqP/ruMQGQ38K4HXL/y7ovIxxmUpy9/03vFFzlRgN9uVqDiLC0FKUlU0GFjJvVZj
+	LHTBULYlJVuRxk/PrCRw==
+X-Received: by 2002:a05:600c:a148:b0:490:44eb:c1ec with SMTP id 5b1f17b1804b1-492333dafe8mr43904695e9.27.1781699190703;
+        Wed, 17 Jun 2026 05:26:30 -0700 (PDT)
 Received: from localhost.localdomain ([62.77.90.70])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2b0c10sm53060827f8f.21.2026.06.17.05.26.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a458f2sm150801395e9.3.2026.06.17.05.26.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 05:26:19 -0700 (PDT)
-Date: Wed, 17 Jun 2026 14:26:17 +0200
+        Wed, 17 Jun 2026 05:26:30 -0700 (PDT)
+Date: Wed, 17 Jun 2026 14:26:28 +0200
 From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
 To: Li Wang <li.wang@linux.dev>
 Cc: akpm@linux-foundation.org, tj@kernel.org, longman@redhat.com, 
@@ -98,24 +98,24 @@ Cc: akpm@linux-foundation.org, tj@kernel.org, longman@redhat.com,
 	cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v7 7/8] selftest/cgroup: fix zswap attempt_writeback() on
- 64K pagesize system
-Message-ID: <ajKKABt0ZKO9UJTI@localhost.localdomain>
+Subject: Re: [PATCH v7 5/8] selftests/cgroup: replace hardcoded page size
+ values in test_zswap
+Message-ID: <ajKEZn0KP3KmyQd2@localhost.localdomain>
 References: <20260424040059.12940-1-li.wang@linux.dev>
- <20260424040059.12940-8-li.wang@linux.dev>
+ <20260424040059.12940-6-li.wang@linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t4tngv5chqbx2jyz"
+	protocol="application/pgp-signature"; boundary="yjb7q5g62opqahpv"
 Content-Disposition: inline
-In-Reply-To: <20260424040059.12940-8-li.wang@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6D9D1140002
-X-Stat-Signature: hda3fny7t91o4ey3tp7m1j8c3g3jqis9
+In-Reply-To: <20260424040059.12940-6-li.wang@linux.dev>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2EA004000D
+X-Stat-Signature: r38zag3dmhto83igwwf8kpa37igeaz51
 X-Rspam-User: 
-X-HE-Tag: 1781699181-167064
-X-HE-Meta: U2FsdGVkX18ivYQNTMzry1BGzOGsEDgjd2ZKukcEe2mPIdlirctw9NRFD8QOyKptlKU1deyf+ZLCCUBBIZ5S4BQ7MNuFEi55NfLUfHEX4b7Xfxl2c1IZ+ESufW+h4bHtdDYfPlnWvHghMFozFcBQ44qyoetamOMkqMryHuGzcPwTUcoQ2DVYlgayDWJShBd3TrP7duyHCxnGacsbzvFLdj4hT+rB8ygqf87Fl0nk2YQD9fwjRF0CFGd/sxuULw28e2B7wkF5gG/GHAVRggfNXA8yt1iPzjhcMfV+ot5jtJiya6eovr4UCbSmv8HIKMtLzMQEhVelxkQjbbu3qeiaPBkaaLasBJqwtgiWOZo/9vQa9YMoUHHm5lXECEx99gqQEyhIDOImpahMRKB2d67gIf8x+6Hr40+aMDt0oRL9X93cNWnMKW3eCs1jhpvLYTmm1RHrv2weIkoLL+E1tnFdREVVen/4gHD3naAyWdaY6eF+wUikYPUm8FNwY8O73G/vq94CdPdnRq4oI8E9tsp97/F/d5aZnijYwe2aB/2YhwGknkyRAkBcfrsVPSrtKJLcVqKfowDwXUFT1zSpf7wNM79TcR7TbPpr78jLoeSNinX3Sn9Z/WLqzOUTy4Zr6kCSX/1XaiYdRRJJN30laL26Q249j85JF+VKPCPldVQvmlVlmED+QS3mPe9CDazTHlsRkJYKAHj306u63kdCuOEoeJrG4pb0Atz1CoTOSZdHd8dKGQzvU0hOUgs+mnTEVt7Lv/millo8pNmqwBwkSMxhAJaHI2NvDfDcP55jA0hi0eONoqiBgFAlKwzFyAUsCJNyKQKKhM5pUQmF1Qd7EImislaoG70RASX35tT0AxToDeVJZYFiwN2r7uAoxZ/VxvUtHOj1akq8CAVI/iBVROGXjxo00vh0LscPBjD/t0B5IA8U5WC4b9/LK5D4Rgn7SqRo+wZ8ZwsrBMBg93f1B3l
- kv9NM9UI
- e+oKExyux3Oyza/3SvjFn2u8drpHGZ4dClsDGxpG/ahOdYOrQAA2Bi+YL5r9avwtO/mG5XPtQSuToRJTe69fiFD8vhzi2LmVAxXhuXatc3axmTB0D12gz/zyG/MXcYJzkcJ5vMcMRDBB9zQXXh+T7bdz3+ZosAZasoApbOCKKbrkbF8qGdhtqRS1WdlGwT/In7sBfu7dLlLY7mY4hOi9iHYPReyJzGdYvQtO4mnRlTd+Hq4W/F4S6UZ3CZ8bzLGLu3DIv6BNVqPGpUKw9mC3o06Jvp7tJO+W9cvSv/8WgWu3Dc4DnF6H765iBnsgqNTWu16QqIR3ygOqSmCKAuTMgJuIp/ORE6a8XTTo8UtXt7JH/PnDTRa5uz+F+1yMst1tR3qAD2B5Z9Ut2Z32DjUZTi9b/SDYVhrBT3K6JRHXPQ/0ukG5DvwSZq4JWn6EfUA8MkYalgURAU7Hzjo6gEr/UqF4rxzP1pC+XF2beP186t9wHClideZ7medDp5C29DZdUG8IEmZ/TnUR4UuGw7GcOK9k9o7NmuYMw10f7TfhzWu9u0xQh5rFkRpNqfpMT+oSO/jW5f7ogruzZkSvSuH596vJkJw7Ldnp4+Y+Y
+X-HE-Tag: 1781699191-412419
+X-HE-Meta: U2FsdGVkX1+Ei/TNS6vFkT6N4olJ3ywehIZuAqfzkQLRhnzyxOsC1sl1NhP2fE41CG8DZQDHPtZvHooCDtsX6sEpdLUYHRvuUCukJgdzdbyKszPujIp4bkTkYAL2AxE0YJUgzk4D5CxBxJUbGhXAW26M+VPQf/k+pMHIKX2YhcXimFGQl2t4JeX+rRDAdBEcp2wsq/dP+YWsZxY6pkpcKJNeu078w9WNXOxFexWj5AikZgIl7D+1ma6dMYWFEtrC+7ukHK0iAQ0QZs6Fg4ihGeNlUy0IwAt/zEGenCSBgRbB3YH0zBAv8PSD+gkv8GKI6ahijgye67Ze85enJzXqyQUTWMbjV9cnGPG7oY/60TE05C1FYHNOOVb4qL44WEtC7yIXIPyhb5x/t3nQCjrzttRLzr4vPSSTM0dLWoLf/iTH09ZvaZqf0JShajVgVM64/IxEkzlht/OzO9KA7WoriW1Fi9YjFnJm0bEgWqL//ftQMfZ3GlebJrrIx9wR5kaqY+VIwGb5CNtr+ospTI7+5U4pBe9wsKfixfqPBMxNWryMOgIUWPAa3/RDQPeEuxrzh0qH+YfroZ94Nnw1VNrA4ijMIaO5ZZzBZE3BgOh5xG/mCz/mfevd7CzPHn2S1ex88x7UG8iiUKn4FilgnZRj0cCYWvcaGALaME+SL9aRR+gc7VRdUeL8EV6HzaPmK7REK6dwK6txXQk35fLXE9x2bOFe0cH/cCJ+HM1Q41flK4rastKSGVwAICGLNqfPYyDnN8idvjr/nYVls663XIhMn9kMKIRHycZLWcbNFEeuaDucGNDQKKcjQ+FC784EfT38XHAkhoZRq+7/TKVvM9gkYtVn7UrUv8Qfs9zpEy8D9Fypk9KModZ3WiockRrvmPhUbpTpl5EAfbPCvdngQ0jRm+82rVsSx8U53msVhxkjm6wBMY4N8Lohvtfarldy0EN1cuWJrpvYb3kVsuIntXq
+ 8sivUWKP
+ ifL/+uF/0BdIyZfpNEmC64dPdofl5Py+2LN0F++14ZmDjnlrwI+zSj35z7pMsOcY68gi29AHB50Hgfmv6E5Jwz5ee8vO3NgNhIcqRMv75HBO6IcEuH2hBAK06YeXgn7c4bI8/eufZ6jY+LCUt8+cHizeVjQbf2KfNHrMAp/qzXOrfP1iI/eHgoR27zQq2Rh0sJOKz36ED4mnFav/lRmLRXIxoqZUpaxMq+uRrTpmpDRhODMEww1S299RaIzRzW66UWJCWBL04bzOUVHyRNAw6Wj1OVSUTLA058ItLjxF8NKzlula3K96YBzWTxmiPQXbyWsXrvhGAU8h5TC5yAI/22FLp+ycOYTNIFdAi/TH8byQkBaSk4K0O1grRAXJGao4qeXAFcZAB9sQUVaBbuLhPgDnTc+S2IYrFNhYZ4ouR4EJySRHAXFpfEkj1C6pjkE0IOnfY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,81 +124,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---t4tngv5chqbx2jyz
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+--yjb7q5g62opqahpv
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v7 7/8] selftest/cgroup: fix zswap attempt_writeback() on
- 64K pagesize system
+Subject: Re: [PATCH v7 5/8] selftests/cgroup: replace hardcoded page size
+ values in test_zswap
 MIME-Version: 1.0
 
-On Fri, Apr 24, 2026 at 12:00:58PM +0800, Li Wang <li.wang@linux.dev> wrote:
-> In attempt_writeback(), a memsize of 4M only covers 64 pages on 64K
-> page size systems. When memory.reclaim is called, the kernel prefers
-> reclaiming clean file pages (binary, libc, linker, etc.) over swapping
-> anonymous pages. With only 64 pages of anonymous memory, the reclaim
-> target can be largely or entirely satisfied by dropping file pages,
-> resulting in very few or zero anonymous pages being pushed into zswap.
->=20
-> This causes zswap_usage to be extremely small or zero, making
-> zswap_usage/4 insufficient to create meaningful writeback pressure.
-> The test then fails because no writeback is triggered.
->=20
-> On 4K page size systems this is not an issue because 4M covers 1024
-> pages, and file pages are a small fraction of the reclaim target.
->=20
-> Fix this by:
-> - Always allocating 1024 pages regardless of page size. This ensures
->   enough anonymous pages to reliably populate zswap and trigger
->   writeback, while keeping the original 4M allocation on 4K systems.
-> - Setting zswap.max to zswap_usage/4 instead of zswap_usage/2 to
->   create stronger writeback pressure, ensuring reclaim reliably
->   triggers writeback even on large page size systems.
->=20
-> =3D=3D=3D Error Log =3D=3D=3D
->   # uname -rm
->   6.12.0-211.el10.ppc64le ppc64le
->=20
->   # getconf PAGESIZE
->   65536
->=20
->   # ./test_zswap
->   TAP version 13
->   1..7
->   ok 1 test_zswap_usage
->   ok 2 test_swapin_nozswap
->   ok 3 test_zswapin
->   not ok 4 test_zswap_writeback_enabled
->   ...
->=20
-> Signed-off-by: Li Wang <li.wang@linux.dev>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Michal Koutn=FD <mkoutny@suse.com>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Nhat Pham <nphamcs@gmail.com>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: Yosry Ahmed <yosry@kernel.org>
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> ---
->  tools/testing/selftests/cgroup/test_zswap.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On Fri, Apr 24, 2026 at 12:00:56PM +0800, Li Wang <li.wang@linux.dev> wrote:
+> @@ -752,6 +753,10 @@ int main(int argc, char **argv)
+>  	char root[PATH_MAX];
+>  	int i;
+> =20
+> +	page_size =3D sysconf(_SC_PAGE_SIZE);
+> +	if (page_size <=3D 0)
+> +		page_size =3D BUF_SIZE;
+> +
 
-Reviewed-by: Michal Koutn=FD <mkoutny@suse.com>
+I'd just fail the whole test if this fails. To have page_size always
+represent what it says. (When can this fail anyway? Maybe nommu archs?)
 
---t4tngv5chqbx2jyz
+(Rest looks good.)
+
+--yjb7q5g62opqahpv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCajKSZRsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Aho+AD/XAL/DakRMJXz9yk1Zazg
-v5ZtizO1OMSuDPj/gKs2+1sA/iTg96YzL1efNS85Rz0XMUIW3UE34U/bKW2+nSp8
-/SII
-=BiG6
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCajKSbxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AiB9QD+JZid1KLNr2xP2rppXnyG
+ZyqJwgVUMqNZfB9Kc0L877YBAP851mEpZbHlmbTPoKRdoUXS0YKDMn1wPVRc2WSE
+rWEA
+=qqEb
 -----END PGP SIGNATURE-----
 
---t4tngv5chqbx2jyz--
+--yjb7q5g62opqahpv--
 
