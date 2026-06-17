@@ -4,132 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADC49CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5B4CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:16:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A78766B008A; Wed, 17 Jun 2026 07:15:52 -0400 (EDT)
+	id 76D816B0005; Wed, 17 Jun 2026 07:16:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A50086B008C; Wed, 17 Jun 2026 07:15:52 -0400 (EDT)
+	id 744296B0088; Wed, 17 Jun 2026 07:16:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98E4E6B0092; Wed, 17 Jun 2026 07:15:52 -0400 (EDT)
+	id 684226B0092; Wed, 17 Jun 2026 07:16:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 77E836B008A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:15:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E23471C200B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:15:51 +0000 (UTC)
-X-FDA: 84889149702.21.441236E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3B22640002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:15:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8QKJV2y;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A7696B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:16:35 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3806C1482
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:16:34 +0000 (UTC)
+X-FDA: 84889151508.27.2E362D1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E6E4FA0011
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:16:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOoZArdh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781694950;
+	s=arc-20220608; t=1781694993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8OVn5cSwrAaSds42v4NucAklapZL31OeeEiylDJQAEs=;
-	b=lNdsi7oHZ+bVYl9EyDKHp/rEoS0KBP01805kU23ZqucgqsbX5HQkNX79bFJ+gJbBjkbTCh
-	1LaiY6O9Tf1+q9eM7jIHCIOqDK4dLk+2H8qW8gCaFmBJzjX88CrUgXzM1g6E5pyaVY7MvD
-	Vjlp8SeWzsl/FRhEgY5lSWWdEpQ583w=
+	bh=2rnPd2MSt1vwOoN5rRd8/PQGwWGmqtToaNtSJ9AESsw=;
+	b=FvuXj0PmKBjMEdOHRbzDNRHTvJCMEZbn/Z0bM9KE/1bT7z5JdxJTa47MtgV0B1ZHUYe3kO
+	s9Ptjcb0ZnYZMYY6gzbJJY3oRBHBsQGxCAdI9JUTbKm4SicfbwFCJNfN7OLMXyrwnMlLXY
+	XY/rv0335fQzOm7hB+EM89OxkMbvQL0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8QKJV2y;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gOoZArdh;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781694950;
-	b=olWmJ2LiRXxMiPR8KhJ5t6pWnurqZiibpLcFkKIeAvDsZbUEn3uMRZaGpgAZo0hDdF3thI
-	Pg5Cjr0TE9aCXuHMCvE7zqnczrn5VlJIJrnRsZUmAVwdGOTd9jYoxOFQnJYaSvhNG4Umr2
-	M38mmJ+3LSn5AjpkvWL0cwtomyjmEPw=
+	t=1781694993;
+	b=tKPA7eObwoEb1qwh2XJXgLJMJOjx3bM6eWenjuXaE7GJTPF8ugzsZ+52cU7R7H8PaRVIuO
+	P6C0ZVWArt+tydteEhzDRTozr9w14G9YdwmVsel61IZYl0lroRrH6X6lFsOZNMAYhpkHfb
+	TCldDDjmG7eTnxQZM2meUY26MVp9NY8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7EE8600AB;
-	Wed, 17 Jun 2026 11:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36431F000E9;
-	Wed, 17 Jun 2026 11:15:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 289DE43CA6;
+	Wed, 17 Jun 2026 11:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF641F000E9;
+	Wed, 17 Jun 2026 11:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781694949;
-	bh=8OVn5cSwrAaSds42v4NucAklapZL31OeeEiylDJQAEs=;
+	s=k20260515; t=1781694992;
+	bh=2rnPd2MSt1vwOoN5rRd8/PQGwWGmqtToaNtSJ9AESsw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V8QKJV2yG5eXD+JvRDZqbjoNG8wdlQL1/xQA+P73ais5nQreg8JLtqHAEb6LhxY60
-	 076IzSkZa+K8iZthau/3PQHnFHt5oBEH2NnZBpfcHmn4PhmMWipRLDRTmiP4jW7O45
-	 7jH3HOO7ewh/Fmkh2ANswAoN8OW2U0mfYa1IHyciS4J/slTiD8RCxJaTbsVv4kKrJj
-	 zd4efYEpfBe50Rf90FkaWcVdpCDLpHr15vZ9FKQcWjz5kM/paF/4qI+9Oj8jqdUgR1
-	 vWjWn/Be/0FzDkqhc74ErfanKuc2GzEVssP/c+Ea9pOpqsHPrV3kpsmprwl6+CwcrL
-	 QKcoXUtmvucbw==
-Message-ID: <849ad1f8-973f-4742-b56b-7d31570d93fc@kernel.org>
-Date: Wed, 17 Jun 2026 13:15:42 +0200
+	b=gOoZArdhBL5WquhQUqQhY90uMk+cX0ytq2vILPFsG04Kcu7pbgM+rJlgZGYKmAV+Z
+	 EeDMupv5/vAOrRL6BHCjH/aZiBD4lwt8Fywe4QNYbU38ljKy/62HpEdz4L2uhDw+He
+	 oPedq2y1GqHboyOLFSU8/J+FznBem5XaepHdcIF0u1uk1dG4cOAokcIeY9pfcOyqee
+	 J6PtH9dOvJPxNZT61rXHn9IPaXYdsEtZpighL7/LkZyd5pukIsJZSBTN39pVwOy2zB
+	 yT3f9aw3wxyKNmPccs60UW1AminTZTAhbuH3yiD6FsSDgfZfI+PHFzyyPx1TTRZNkO
+	 FkAzeejkhaf+Q==
+Message-ID: <22d6cf47-b8cd-4495-8b33-2e9d645fac3d@kernel.org>
+Date: Wed, 17 Jun 2026 20:16:23 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Remove mentions of PageWriteback
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-References: <20260526195650.353196-1-willy@infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 13/15] mm/slab: introduce kmalloc_flags()
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-13-ce1146d140fb@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260526195650.353196-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3B22640002
-X-Stat-Signature: crm4cn768u9niyjcemu3yah9dy6a8bbs
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-13-ce1146d140fb@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------h0Nqf9c0wfHouf0LoBxkrjqk"
 X-Rspam-User: 
-X-HE-Tag: 1781694950-477164
-X-HE-Meta: U2FsdGVkX189r1fgZVb6fQpp5bEUFeFoL1YK2pIiLzXn11wlN0EBo0AlRDJpuxX4w4Hen6il3QBKUEhGRqcstpAieElWUCPMc9Xheb9FtpOffnlFh/JxXiI5Oiz2u+D8gcNNwYZj6S+UcobI64xdnDTv6fpa+xXr8f3QRZjfszGxYwRUIVIFNIXYmR+IKq/lHD+8Y3OrvsfqKbtqspkB8PdNrtprPJabAF6wrp3TB/r/3XF/7lDzL030OU8u1qY+9VXYH31zFalGoVsTibEHe8BOG6VNz8DEhvO9CeEQN4Q21TwLa1VpFHYhmncswJqqgdaCNA5IV261pF6PiroEOhE1yjxUYHXnz/142SVvboIcG0dIU7zGThkfaRxk0EiY7UuLMknuXWex51QXsj/L72MUWHPPVhO1e1a/pxiK7FbzJ/p4Yk2wofe7SKtobJnTw2uy+Tih6KB1vThzSL5WSZUadh3Qv5da/K0fLyaN8fcWp0Qdt5JCHdlYn7KnDSbIDS7pCxVz6KYcvec/k4P2LUHz3i/bGEM4t3Z0x07CAixFzKfGiVFDutMy4JC817ijcKsdbc70RWGpzCtRfhNDiZVI9uuPnRt0LX9zhEo6+eeaQ2MGALAkTg+fi/KBuscP7yIVTy/UdgciOt/y9Iyx3JdKGlD2zeVk3iHwTxBihsEeZ8bL9F7GfonF9LMR3p//rm5tb48p/2fvXPueBx/8HIOFeFeEhuWIMf1NAgyQF5cPj8Xw4ZpM1gW9lkYfjxq50ros2ymI4f2Wr3ybXpjA2iCC5dVvs/cLTJ2B/Rl4fMlVT4Y73jxd07GD5fhqgoM1IV9d6f3oti+ajeHbHwP/t4f9AHcH15xyhqvvt3cqddz3F0owmUZGOtnPUGc6lEOM0+W02O5JsQgB+YIlNviWCJvJx+3M5D8w3GOiz0b8ozlJCdhaZSYbHECiqQpMYZymbQLZiElB3+LIHaJSLKZ
- tgzP0uMP
- YvHWQb2QzD4HQnO+rRaBcwJfCvVn8t1EBzIwxwF33RRbJP1MumEQ+SaS5r5ntazMUNnp1IPkpeF6HWYtc8LJ5kCVbiO6NDIXVcPtAamrFW9jrsLuGoCdhx7QxCq5993wfzxuDnJYZ/UeJc+RIkbXljqvtBoItqN2QuwRiKjX5teqVcODDkmQydOArioNgwqP+OJJAGK+9RuFt28uVGDg+LIMKGJ2Dvyz3fj6IuQI02/trgmmHhaOlU19Q72Xegx9DGpt05XKLDda72tLvmmFX/Bl5/Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E6E4FA0011
+X-Stat-Signature: oo63tzq5pxe8psere4zrtt5iqpfzgzc6
+X-HE-Tag: 1781694992-846491
+X-HE-Meta: U2FsdGVkX19piKIkXAYHipYg/9+s8p/85nHJXUNIt39tS3y7yhkJNxliXgUNCvowb4cyfS7p/sUU2WFwkdgwf2zOtnMhaK4jVNLSYqILXmOqRkQOeo32G0XdQlAc87pKEHqQp8eBdrIqb3aLkawTjTyoc0yeKu1Kffe3YFKP8hSlI0b72UyJ/Mhjzc8USX0akPHTBlfuintcXwLcrCR4o4oGFWadHldKy25frsUn8mb+yt8kly7tnkRNPwidr0h114oockPBqoeVE7bseHoLhJRiWQr9rLegDmfUuNj8BWqNHVFBNd3q//NlmMI8xXe1Xx3NVzCaawjQq7Dk21lm6aQEwUeebBsAnTY570vO0kp5N/INxO8gUodDPpnN/76Bq/bfhZspVNOJnVuEqFrMY1WMnBst1ex3fq2SWWcogecz0c9E1gqzlhBm5aCkgEtnU7856YnG3eUHgyyOFVe8CuQlrDkk5+Af2VFMAsqeBS/c/wJLLNUJEYKIpXZ//viarcsk1ubkAetZG9nqcQ67uI35kVJqNK7HRhg8xJ+9ABe+lRSFhcj74gb6nZmj/BKhYUTNbPHs6G/vJXP3NeGD6bmCmDzpelOYgmWkGPjBPoOun9LvxcBdi7h9LJKSJaCA7RVK3YxkAy4ozsBYr3x5hYJrKA2gsteiaCrzVKOeGvnYWIHYcWK8bUQ9Be6UUDmaRvAm+A1wkte8e93M+fspiq4fbZVjoXM5ExpqnNCzylZxyV49Xj1W2sLS9XYnVVyqrvBwDGw/Hnq7bXbZUhQHm/veXD6qSdhUHkAjMn++8mCjnbxg/gc0ddiFpfpxHhzg0a3P/mx+h1N1GXHGc26IhVCHMmPfe7KxDnRB4efjLh2Y9Dp5po3a+nojrsmi7HnmP3ky3zCZ3CDNNpHBeOxrCOkKKkvKtwFHqIQrkfMdfwmTZyAT4FcwbDnnDpM+IdCrhIXRmsgrHdPlqUS9LMo
+ E7a/7Cfx
+ HD1DQgfSZEDsRumf861aFIWcXTj7L4QNBf63NKzY8Zc2PXSaPotHCzg+nt+9n1vWrmXIvw/BxrZqfe1nxK4i4Pg9tZ+InQdYg05rw7QmBxn8Nuyr75HcIcTSE6oJQFHc/zUdsEq8V8y1OakJSXUfUn7wQJedMvQPQJAhASXtjMfjLyMIryett3FW+2m2Ugplikty6n7174rVwkMXMm8He+GuKmGAde/Dxp0pukWpCVKWKvB/dbzzlKJYmQdCJZfdLxSECaKrCXQz0Ou84W30m3APUB56omfPA9lGXTZrFgGIixiuwYaqQbezYfNwit/MYRGBejqgleCwtQhBzH+bFcW5W7fP+ZLflYrFJ0qcii7M1Xuy+x4K1V4T97sAII1x/sQxza2AedXbJ2XqXFRinQxfiMCal7Je5ybu+/nt5NoI/k9HLUeuz32B5TWhWNYKc0/8rOGq/ijL2eucphPffcWsLu9YBgpadW6aDzSgqoYU4fyxF612Ku7AFRo/icKwmjpsUu3zcd+i9BDyfrpKic5wZTpK5zVqKdlFzs4+LYFb71h1AyfhtHn/tkM5FiLnHxvzyiyGvUXYbYXw2kpBBh8iCvKLLlbr/f7pHbOdIGkQEKjfFcKVliGrihgEOBgo9g10q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,19 +102,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 21:56, Matthew Wilcox (Oracle) wrote:
-> Update two comments to refer to writeback in general instead of the
-> specific flag.  Convert the large comment in memory.c to be entirely
-> folio-based.
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------h0Nqf9c0wfHouf0LoBxkrjqk
+Content-Type: multipart/mixed; boundary="------------2QCMyJtDnYVZ8sn4T36zDC4w";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Message-ID: <22d6cf47-b8cd-4495-8b33-2e9d645fac3d@kernel.org>
+Subject: Re: [PATCH v3 13/15] mm/slab: introduce kmalloc_flags()
+References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-13-ce1146d140fb@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-13-ce1146d140fb@kernel.org>
 
-How could I tempt you into using checkpatch.pl or similar tooling to pick up
-people to CC from MAINTAINERS? :)
+--------------2QCMyJtDnYVZ8sn4T36zDC4w
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
--- 
+
+On 6/15/26 8:54 PM, Vlastimil Babka (SUSE) wrote:
+> With alloc_flags usage in slab, we can replace __GFP_NO_OBJ_EXT with an=
+
+> alloc flag that prevents kmalloc recursion. For that we need a version
+> of kmalloc() that takes alloc_flags and use it in places that perform
+> these potentially recursive kmalloc allocations (of sheaves or obj_ext
+> arrays).
+>=20
+> Add this function, named kmalloc_flags(). Right now it's only useful fo=
+r
+> these nested allocations, so it doesn't need to optimize build-time
+> constant sizes like kmalloc() or kmalloc_buckets.
+>=20
+> Since we need it to support both normal and non-spinning
+> kmalloc_nolock() context through the SLAB_ALLOC_NOLOCK flag, split out
+> most of the special _kmalloc_nolock_noprof() implementation to
+> __kmalloc_nolock_noprof() that takes a slab_alloc_context, and make
+> _kmalloc_nolock_noprof() a simple tail calling wrapper with the proper
+> context.
+>=20
+> kmalloc_flags() can thus determine whether to call
+> __kmalloc_nolock_noprof() or __do_kmalloc_node(), based on the
+> given alloc_flags.
+>=20
+> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-14-7190909d=
+b118@kernel.org
+> Reviewed-by: Hao Li <hao.li@linux.dev>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+--=20
 Cheers,
+Harry / Hyeonggon
 
-David
+--------------2QCMyJtDnYVZ8sn4T36zDC4w--
+
+--------------h0Nqf9c0wfHouf0LoBxkrjqk
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajKCBwAKCRCGXBN6rc5S
+1iFIAP0XkxFaf0DXeb833MFb+xoznKV7cfz9DIc3UD2ItuB5IwD9Gh1fUPp8WVuw
+KG12x0NvvlNEQNDeaqbaj9R9mbmYCgg=
+=04dK
+-----END PGP SIGNATURE-----
+
+--------------h0Nqf9c0wfHouf0LoBxkrjqk--
 
