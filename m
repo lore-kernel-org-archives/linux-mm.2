@@ -4,192 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A088CCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 04:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04C7ACD98E1
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 04:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 530F76B00A1; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
+	id E36516B00A2; Wed, 17 Jun 2026 00:05:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 508A96B00A2; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
+	id E0D9B6B00A4; Wed, 17 Jun 2026 00:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D1046B00A3; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
+	id CD5A56B00A5; Wed, 17 Jun 2026 00:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4726B00A1
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 00:03:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61CC51C16E3
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:03:07 +0000 (UTC)
-X-FDA: 84888059214.30.75B58CC
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011001.outbound.protection.outlook.com [52.101.62.1])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 744111A000A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:03:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ozuDjcCh;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781668984;
-	b=xqQCdEs/Kn1jFlyqG8CBGo3ny1tK1EOphGDfokvS4nDOgHHpeB6lQpyaHcz4eOn7WDFe1i
-	rgP6SV8aTZswOQ9FpyF/e4va+UY/RqmDAQUXa5q+gSw4FYRyIeEflzwFflp8CiedjoQMiL
-	sjR247TAoi13huSzyfVX1Le4acYEU/g=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ozuDjcCh;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781668984;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F4E76B00A2
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 00:05:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0409B1202D9
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:05:00 +0000 (UTC)
+X-FDA: 84888064002.09.7401550
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 546D780004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:04:59 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AKPH2dow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781669099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
-	b=fZeUdP1y6r1KjxWYsWLoXiILLjwlRRJACVl58wIsp9k7begjW0phe67+NOq47qN7IX+sur
-	NLzYK/6bJoHHl7/SiGzyfkWNZERZ/BzGpmgy4SfnI0zRKA5CKd83+yTEDYwNhLXIqXVlyw
-	F2FHJ3CJhyR5QAsO/LrqMn5ffEVeu94=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I8aeupI7OMtTdzJD7Uu+FSe8BbRdbBC6cTncg6d3luIg+JtSWjJSk0KhFf6UYZtEaEcLmyDcqnvz/cfVNi4Jo3n9Wm+Ps9iMX5zD8e++cKJ+5cblAlkv89cw8DIdI5Ww1ner2MI4hUa1oWoysWeFV8wQx46+Icp1ENDJH3XESSc8psgzRXzgUFEid2t9QXkq3ww4zvxkffeC0/LnPspCa74kb/FaTCs3+G+kf/+K4zMY9jiF3BW/qizJtmlojWwWw3JTkf3ZvUfjv+gnp2V8ZiPkSQ5QnzPx0t3teehaTQRQHPjtGudt9Mb4GlHMUVebt75JIBWn1HhwBxL/kHmjfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
- b=XmJtFVBcc2wBWeNJC0ru0+tO94lpyw3CQMl1lhFyh6tB0855gurwcTewVpmT8kn5nHrilpA5sEOFwuJdmZT9hKe/n+bOQJapdhj37BWsPeJpFHL0A5PmrSVVoJY61m3Cc1BfBQQL624z5U7wNr1CAVtdgPXKh0XwSnO3jsB9DQHiWo3Dxm8Y74MFkJu4tZ+90OgoikcoXPIqchNGgsBWnxX2QB515pnn6tguJuz8gvuUWR3yd3r3LV3ErBCVESUfxsmUC2ozOMSyytiKZG4AASSiWYvJXXQmBW8KfK9zaiNuaxdb37OWa1ewa86ddOHYNrj570Vyx58XxrlyX8QOnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
- b=ozuDjcChD6ZpuzEBokN8YLTk4A3jIhvRolGTz1MMuSw+OfeufQ5RHFiIfuToI8lh8W+uA5CHbw4V37w/zEFJZHLElwR90fSFTurCsJLFrlPI2OZEVyh5y6kjT1vwVO9/+/oZNR3XFiiBhsWdKwnfnUdPA+dENrUKln91iJpZB+EOQXIYXnnVcxHkbgy8yIeItopm+VROJMukjdLlbLDAkjtp6epTvytsyXMJpnx+MsF51X7Y/f/1XvIF0roLTce/D2vp8smPJdO72g++zoSuDX+9aCdMT8/gpOtbyz1CBL+AuX+wlRnWKKBps/IbVfyrkhtJmmwm0VR7F4STE/URlw==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by IA0PPF73BED5E32.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd2) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 04:02:55 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%5]) with mapi id 15.21.0139.009; Wed, 17 Jun 2026
- 04:02:54 +0000
-Date: Wed, 17 Jun 2026 14:02:47 +1000
-From: Balbir Singh <balbirs@nvidia.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	damon@lists.linux.dev, kernel-team@meta.com, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
-	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com, 
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
-	jackmanb@google.com, sj@kernel.org, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
-	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, jannh@google.com, 
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com, 
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org, 
-	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <ajIb4DJdLGPbMB4V@parvat>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <ag6XyvxR-NU5rGn-@parvat>
- <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
- <ah47NNhuiClgGCdn@parvat>
- <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
- <ah-0CyZurn5D1ezY@parvat>
- <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
- <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
- <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
-X-ClientProxiedBy: ME0PR01CA0080.ausprd01.prod.outlook.com
- (2603:10c6:220:233::23) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	bh=CzwO8wyPCbgXUfabywX6hMjgq1NpqudjdbpQdWLuUA0=;
+	b=WExnoNaIDgLOG/T+of/pW2N2NNLqjMkClYHRGMDQlLYZod8vCL1V/BbktW5sVhW3JZJbDZ
+	auXDReqZKgaTVYVA7zrHwej2QbzOIIVlwiIrteaTfdNmxcixc5n2wd55suBauTlXo+6tE0
+	lVsdJNj13167Wndl7QsWT/NFgN8UEJ4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AKPH2dow;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781669099;
+	b=qFhIUJv/k+z3e9HFnEamwRp8G8vYxyuUmZn7/CYiMkddy2O2noASXy7vfoZiO4Fe23STsb
+	SkJ6XW5cMZDOG0VLguI1ps1BLuiJkZcz/8fWH9/vT655yMivfmVJfbucR26TH0qFrTFYa3
+	Q4etaKwSkchsAj3dM04VFjSgh2E3YQU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 80699432E9;
+	Wed, 17 Jun 2026 04:04:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8637A1F000E9;
+	Wed, 17 Jun 2026 04:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781669098;
+	bh=CzwO8wyPCbgXUfabywX6hMjgq1NpqudjdbpQdWLuUA0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AKPH2dowmgNQUhdAg8e2TmF2PdIYeK5R1BxU5ykQ1VRs0/4eb3oPKcuL/uZRnY7Ph
+	 egEHJSQSc//qPYth6kzOqHh2Tjc1EFix+p79K7uaxY7aauL+EJYdLY8YW0ukrKga2s
+	 1RSjtsHo02A1E3JwhyKnrVjb5x02w25adiLF6YTpQTc4gaWxN6BuqX075zuo47a+ZK
+	 03HAxKQSxveCXVYnRdzTzyrFKmpgW4vRIH5hm3IzjpdxbQbABx0dz5XBhJI4BVKzMf
+	 y0hRYJ9TdSkaQYBoinnNAGxfJF6sMPC3/yL90CRYwiQ67nKI+M//AUkVbWhDSER9Uz
+	 odxPNMt3JnjIw==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
+Date: Tue, 16 Jun 2026 21:04:52 -0700
+Message-ID: <20260617040452.98621-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260616150316.580819-3-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|IA0PPF73BED5E32:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef50179a-2e7f-46fc-45e1-08decc254ded
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|56012099006|11063799006|5023799004|22082099003|18002099003|3023799007|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	LX/0QUaZzdLTRoGjNspt9VKVAEJbth1SqxwFY/9ESxCysxQXkrLZz5JVjxQ4CTpxZ1W+ziH/cIqGRDtpfj6uFgpZUYsS/zATGcyzj6vvk+NlZ0mgprThl0l3EtTYeNO5t/aCPhzHCqPEHyxsGk9i7mfm3/XaXJSySYQzyWw+Mx/vub/n0TQnys4AtzXx9NpHJAmU5EidVXckol5lkaaNeownWOC9s6IPGzBFOvIMntV3I118RgCIAj99ITWFiHdwyTj1S/FXOEv5lgj69GnhTFDJLAtIwcfTAIrvqDjCnIuD82mMkWPtp6T99zfjwzX10ydPotFWAlEwQYiK7ctr3lhCDnzCC6txKs4lwd425vNxpcgqb3mPsP5wE2EA3Vz2yO56mUA3xOmEkGoGwNfOESMCSKimfGzAflYfOorCRJ4jdK7JDZORfXR7roVyruktanMytrSMFFGuFHvUoEwXHlPuMKoOpLunaVDINMvH//WGGZ5ddiwOcb5jjnMrkltNH3QQ3Byy8z9OFle0dd/QYk73Oe6/372gbBld00EC+ObUlh2y9s2A7cb6cwHVDpazKV1iyhDg9qV7/nGz7JMkyvwzaWlJdban0GKWPmX77veewzvD+QDtpIOh4BCikDeOKU3lMAd9fAuUJkxV+klnG5xtBP8Ucdlc2NItN9gxsIy/WaLeNUP9FCfP3C+xyGJW
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003)(3023799007)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y1gzM2c0TWhKbk00R1RUdERaM3dDeTNaVWpjY3VWb1AzTDJpQytBcWpYRTh2?=
- =?utf-8?B?aGNsQWV2OWN2OW5TRHl5M29PSVYxR0w0V1BsSVhUODJPT09sVXJtdGd4RFpj?=
- =?utf-8?B?cnRiZmpCcjlCYTBuaGI4T3lPd00wNmZRUHdtaHlQL3loTzNFMUZ1OFplODVX?=
- =?utf-8?B?Z3NsRHQxb2tUTitzZmw4UUhtZGxqUWdKbWE0OFhmYmNoUjVSTmk0aUw0ZmNp?=
- =?utf-8?B?ZSswYkl2dks4V2sraytzNGc4aG0yUWpBRktnTlhtQmk3NGFoRW1zV2FvVy91?=
- =?utf-8?B?S3BLMTdKMGJmR0I4bU53bHNSS3dFWFVsWGVFRWhmZU5oYU9pc3h0NmI3SWl4?=
- =?utf-8?B?eDZhaUtBWEUrM3BmczRFVkVLakRPSXFyVUlEblNsUmpMRWNhL21GaEM3Sjgx?=
- =?utf-8?B?VjFmdnUweTRZcG1WVnRFVE9jSWJmRGxkdkJDNHR2b2V6YXZXcDFoTlRFQmhG?=
- =?utf-8?B?QkN2Z2dzb2NKUjlPMVFTaS9NeTk4WDloek5mcmlXemJlRFQ4U25BMW5vbk55?=
- =?utf-8?B?T0ZOeTVyOS9ZL2tOTEdhL3Y4M2Z3Q3NvMDZraFFCTWNKL3F4NHlyRW9Ka3No?=
- =?utf-8?B?T1Z6R092d0tsVFRkYlFKVVBUaGJ1YXI2QU1YcVg3bWE5Qyt3MHdwZUNLWkFN?=
- =?utf-8?B?V091cFVIcWJnNmUwc1FLVFQrQ1RYWmNUbXFnSVJVa200eElaQmxtbGZjdCtE?=
- =?utf-8?B?cVRZdUNYMG1xWVNwZFR4WFkxTDlKNDJFaXBBaHM0bGFKUVpCRnEzdVNZdHlx?=
- =?utf-8?B?cS9qUUxsL2VIUGlvZGkyYjMyUmNRZWNYMTI4a0FjdGlqU0VyWjE2UTdtNm5X?=
- =?utf-8?B?NzRWVWhvQ0k0QllHS0FaNGUzalVPSVN4RWI3YUxQSEwrNGlEU2x3SGxQN0hw?=
- =?utf-8?B?WkJXU3pjditLelZPaHhYRmZTZVc0K2JWVnNWRGdhQlVGd3N1bGNRU0Y1cFpj?=
- =?utf-8?B?dG4zUVB2VnJsMXdRS08yNlFWVHg4RHZPS3l6c01EM3E2Q3VibENQTHdGVVZo?=
- =?utf-8?B?dlFyamFjWVEyTlhuT1ZvUTN4dkRqUUhaeno4clVHRHdBUDBJM3ArUUo1SjZP?=
- =?utf-8?B?a2dxelpwaGc1LzBEdHdIY3RJcWkwOWFYdkVCb2JSN044YjZDNkpJWWplZDRX?=
- =?utf-8?B?TnpaSlBEOHdkTDZkbms0dlJWbWVTYnA0eVpvWGpwbVRLWE84QmErM2dRSU5Q?=
- =?utf-8?B?bkpzWWRsQUc0RWdjYzcxbkhpZHRqUHNGZFNyc0pMRDEyV0lFT3dYdTZ1TVVt?=
- =?utf-8?B?VVpuOXphZllrOGVGd1NPSnJKT3lsUXZYcHVsR29QakV2STcwQ1oxaVd5U29h?=
- =?utf-8?B?WnZhbFhzdi9sSUdDL21PRFoxMnRPRzlMTlZRQmtqL3FHc0RPUDVyZytKT1c3?=
- =?utf-8?B?bk1lSitHUUp3VWJFM1NSWUN3VDE5MG45NmdOS0hLNTFrY2pOUk1tNzFnV3hX?=
- =?utf-8?B?NEVWSWlERDFvSmk4VGlBc3JwZUExS0xRYWZGZmpkWjRrQnpsWVcxVUxLN2xt?=
- =?utf-8?B?dXhxbjZ6VWdkME9vWlB2aWdlRFRvLzRGc1RjbXA2Wk0wdExPSWQwZkErZ2VD?=
- =?utf-8?B?V0VIUGl3UXpLR2pDMGh6SjgxZTR3S1oyQjI3SkhTWjUxZWg3Z0VtbFhJV2xq?=
- =?utf-8?B?RXFxdEdENXlLNmd6UGE3bW0vSHJEUTE4aHZkazdCeUlSSkJ6RVdPYXd3NWRr?=
- =?utf-8?B?UHFCb2hVdEdHUERtUDUwc0FQTHJYRTJhL1RGSjN1SEVsemZXc0xwblVjRllG?=
- =?utf-8?B?UXYrTTZRV0crcVVsSmUveDUrVEtuT3hzVFNHRG12UTNIOEhPNUtjdk01Tm9o?=
- =?utf-8?B?Ykh6REZxdkJ5U2dQSDJqcDYzQ3NNTVZBRjZST1hESk1aU0RnQWZRWUFjck1l?=
- =?utf-8?B?LzhGYjdnZWQvMXRHK3R6cEhWaUJmMlR3Y281SXVKNGJVeTZQSGllbjJBZGNk?=
- =?utf-8?B?YUtYRmgvaC9xMzNpT3ZnVzhvZXBlVGYrdStVU1h4Wi9WaWJBL2h6K1NGengx?=
- =?utf-8?B?TG85SlN6OU50M3UybUt0NFZkdEdjSGwzU1VZOXNUU1RmLzFTSVlsODJkVmFv?=
- =?utf-8?B?WjU4OFdFZkJGajd0N0ZDNFBjUXlBRHljWnZNdW93ekVvdDdScjdsQ3h1aFFK?=
- =?utf-8?B?L2JDcVFNUXN3YXF6bEIzaStBdEZ6eUIzRFFVRUZNcExGekJjSVlDaWQ0UURN?=
- =?utf-8?B?bUpWS2JIdmpZSGZNdWNrZk5HTDJ5MFpXajZiVUh3ZW5TLzFLTkFGc0dmay83?=
- =?utf-8?B?SVp3UHZuWDl3eXdQcjFmNGpNYk1MSEs4N29nSjI2QmNRUTVxL3NSdzdmcnh1?=
- =?utf-8?B?djJBRHdDbUVXNzJrSTFBcVJ3bDFRalBvL0VxWUJoaE5RUUw3cmROdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef50179a-2e7f-46fc-45e1-08decc254ded
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 04:02:54.4739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NpKV9YIpgmvq5DJ+8nn525AIpdnxq3cYhoBtCJ7MmnCSh1572oL6iYkzUecQ4LHu+q9swBJSAdlbL2Q4ys3e7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF73BED5E32
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 744111A000A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: b4cado9gcdi56khctdf8n53kydo7sshp
-X-HE-Tag: 1781668984-207665
-X-HE-Meta: U2FsdGVkX18VfRwjGnjYsXJQeRBixGrN+ZE6p+SGmFL5bV0wF9DYzgqDFbrc4rhX7XIF+vy2YUIXmBKZM/6etIDOGGwAz7TXjTIkb8u4XClsJ2jpIJCl1EmTN/YZCejTd/e9o56KTmufC6LvKaWAkA1HKapR/OyHhptl5PLBcrUvsY1edtSZq6Kl44fGq0agVlDY9OYDjTC58k3QeomNbQ3jCDcnCGuMBUH598a0HyG7qMpkCRhNodcCpMiCj5HOoY4C6fWhxKdf2qcn+uITPddCemtHVoyawOqpI56grMVWdH/qWQ0n39nhDCUVWLq4Yy4pKMmWPIsLQfGiMYaBsVrZbpunI1EF/OpL0bn2wWfdrtZK1iauXAg7Ut/xOQPEIzgBjMsiz1z3tNx2nMWW+CML/44H//jBoUdPFqkSxp5t1kjwAdz+BXfLU0cBLCMITe0RIjr1p0j6TTE72+UzsZWXlSV76/f6mfr+O5FM2yhOKySU50xVMpjiz03RZTsoi3WSYgI15OuD2DBDSrwIkFrqaM2JLrBV1IzPDpjQfdo1mBMuEAhPZHM03AfotRPNLbRC55cTHgz7CYG+ff+mNk/CvVwGHNxb5vHLKsvKZaiqNxKZBtwz0pjr4lwLcJaAWCHyRIq2CP3zPwKpPtISI/r7Hruz7RAlXpRP/3/zUAXoFo94r5dn4NgnFIvtjxO3Mgs1UfTyOm/rS802+9idknKQmHrLKv1m4uSHCNINphZslXqWrncF2oAexgGP2mg7Kf/yZRFeUC/kpUWjF2vzZUY5K0HCDCx3Ky/RxwcxO8XWdI2LFMLXq7lWSpRSj/hwpljaVK7o2Yl/cnkIdZvzloEbV8WHGL5gAKtHeLJY+TGGkzXA76hv8+EeSZhScS2KLt1gdjCRijppz1jK57Peaq0wwTuO794BoEaE1W/H6ti6nNhGN+5BzGTJelPOgURORZFnUQJgVoVhssGSRbS
- 81P4is/V
- pRGe0a3kh+3fHeLpAF1QohpQbXU/QUdqDNWSk6AOqtSPf1yl/VQFkeGNxac4O4plk0k1er6izPK/K3b22wqv1e2l0QBmZD5corJyT64v6symy2IrdvKWY1LOjreXF9XhtVzfRiMyNT6pdQuX9bssMkAoSr36WtmbXxs3a/KeXo+Mf8WdhO7yOZgL+5jS58Tn+g12xRjp059poeo6sJe32+n7AmRLsDCK9HqfBFs9UPpju0XhufJ7BjQEN+xEtz4eKn5U+DWDhGaJ/s5IO+t8rZMmbqGCjJsYuN02Xd0Gvxt9SdkQ5MwyisuRRzlUSKTKDNxEH8WccmJqi/703wu9goyryYUSOUbr3MQsKCGRJmPf6udeAZx4UU8XQztnTwRe5H05oV+6ocBXenwSNcY5jpOfEWV27OhbvP+1BBMhDlfOMnyhPaak6eOtoPbX1BIetir/QyOeZ4+V5BMfvsDbhEsRljy+Ww8/bgrbpNl4jW/TvQJGK7wil6b0E2dkBwpyytX9n
+X-Stat-Signature: iotxi1z8yrby64qp38iux9999gk6n7zi
+X-Rspamd-Queue-Id: 546D780004
+X-HE-Tag: 1781669099-478896
+X-HE-Meta: U2FsdGVkX1/LCkk/3ZU/drqAgiq2f+tHpslQR9bi7bOAhL8dMEDfgeMPCUNJmlxWu4sdM0sAMaKf5+ClFXf0l1Ps7IgjsMeqaJmWAxIzJ2iWhhiYoxw0sRE8kcsRiYBzoB9ir63RuxWd6za33MBxmw+BzvFVc8VRg9OQJFij66XvSt8QzN6vWHydtU/YIPykB+SVPX1UqcVOac1ZivVb0SN38+bcdjaENUBXwLBoNUlJnSMtpwQlYshtH4uHCDzykAjx9Tm+s/oeo+YBowHniuY1mXARy0o7uXwEyN3hfKFOqq1sJmAQRsNTADIYS1gaACdSz6T7PkVavrWOTXAIPksgGkQtDUBuyyvdL6+fJn4mOt3Fn7aAD661wQ5Du9mpeeTuPc7GEjIz5+LVD2ju6zlCbH8mWolWNqB3oQI8eY34ZUuLwqgT/gQ1Qv6w0+yd8rAvCCxV8TKIa3ecdq07DM+eWs7JIvV4eqPcF0vggBSOoCZifLFL8Adsalh/hpye5lPm2XJkGUy/CXZrnX13gNxY5y9c5hoEZ8r71bez2K9NelfSQo6RoqF9H5ntmTziJgAN8laXYbvnLtOevIcyUVq+DHUaT8CFSfnESEZV3dBtPZHmVA1dXsAHfGooSPCXe+CLNff5jZd79TG8fDlZF7Bt2lnSHSgxUU/EYRodvsc5nid4gv5HYYxmzErXD3LamXGwtUlRttO45zrc3N49UC6neOE2Kx4BOpno113MGVxEnNPDnNeEhwojm3n7G26uZ4IKBQNqlOiVtP0flUyG/ad9sOjh0HFMV6/HzcClwOugIH51ZN6XwwRvUsHvRhObpJ5hlIUMWx1jrkgglTa2i3NpH8+z8Ep5mUwIBw/Cs2WGj/8Kj1rbBoCzmW8n69PPsyp29uCYYA2zqltlbGO3SMtCDnxMUeRLandoWjgtt+4SYP8ZQlo5hnj1RInzZzGGON5c0+6WJJmin+xDtWe
+ 2NgWQU2m
+ VJ2NMEhKsVkLLsJKG7kY6njPUmYzzIL3as4ZNSZ0/xVbIH8+opiZNKvSUDhA0OZhu0rI/kyjpmQ/9grEYQ7vKUSGcaWS2u1W1k/VT5oRbX6qWAs417u0Eic+G5JRXPgMXXmm5g+Fs+3LcR08xaAreHKmDoOdNh3dMSByzNg5OeqzMaExleb7huotYB/BxTDjSp5rVOCrR3HFOezjxND61dnpG5KybknZ1bkLP5/xsUNB3s02RxWxW7YLUkMk1wSAqvyiKm17pP2yCyMC7FzQCSK1EOhMZ4ypPPHzfYfoTduFqpq83SwkP+9AuacYF+22nBzVz18ndqOOduZNBioc1M0UNZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,204 +98,349 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 10, 2026 at 12:37:34PM -0400, Gregory Price wrote:
-> On Wed, Jun 10, 2026 at 05:00:33PM +0200, David Hildenbrand (Arm) wrote:
-> > On 6/10/26 12:41, Gregory Price wrote:
-> > > On Wed, Jun 03, 2026 at 03:00:01PM +1000, Balbir Singh wrote:
-> > > 
-> > > Notably: slub.c injects __GFP_THISNODE internally on behalf of kmalloc,
-> > > which causes spillage into private nodes because slub allows private
-> > > nodes in its mask.  I think this is fixable.
-> > > 
-> > > I have to inspect some other __GFP_THISNODE users (hugetlb, some arch
-> > > code, etc), but it seems like fully dropping the FALLBACK entries and
-> > > requiring __GFP_THISNODE might be sufficient.
-> > 
-> > Sorry, I haven't been able to follow up so far, and not sure if that's what you
-> > are discussing here ...
-> > 
-> > After the LSF/MM session, I was wondering, whether if we focus on allowing only
-> > folios allocations to end up on private memory nodes for now: could the
-> > __GFP_THISNODE approach work there?
-> > 
-> > Essentially, disallow any allocations on non-folio paths, and allow folio
-> > allocation only with __GFP_THISNODE set.
-> > 
-> > I have to find time to read the other mails in this thread, on my todo list.
-> > 
-> > So sorry if that is precisely what is being discussed here.
-> > 
-> 
-> So, I remember this being asked, and I didn't fully grok the request.
-> 
-> I'm still not sure I fully understand the question, so apologies if I'm
-> answer the wrong things here.
-> 
-> I understand this question in two ways:
-> 
->   1) Can we disallow PAGE allocation and limit this to FOLIO allocation
->   2) Can we disallow [Feature] (i.e. slab) allocation targeting the node.
-> 
-> 
-> 1) Can we disallow page allocation and limit this to folios?
-> 
-> No, I don't think so.
-> 
-> Folio allocations are written in terms of page allocations, we would
-> have to rewrite folio allocation interfaces and introduce a bunch of
-> boilerplate for the sake of this.
-> 
-> struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
->                 int preferred_nid, nodemask_t *nodemask)
-> {
->         struct page *page;
-> 
->         page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
->         if (page)
->                 set_page_refcounted(page);
->         return page;
-> }
-> 
-> struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
->                 nodemask_t *nodemask)
-> {
->         struct page *page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
->                                         preferred_nid, nodemask);
-> 	return page_rmappable_folio(page);
-> }
-> 
-> At the end of the day, this all reduces to `get_pages_from_freelist`,
-> and at that level we don't really care about folio vs page.
-> 
-> __GFP_COMP is insufficient to differentiate between a non-folio compound
-> page and a folio, and __GFP_COMP is passed into __alloc_pages_*
-> interfaces all over the kernel.
-> 
-> Trying to detach these paths things seems like a horrible rats nest /
-> not feasible / will create a lot of boilerplate for little value.
-> 
-> (I did not fully understand this request when it was asked, I do
->  not fully understand this request not, please let me know if I
->  have misunderstood what you were asking).
-> 
+On Tue, 16 Jun 2026 15:03:15 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
-I agree with this, any changes to folio only allocation could then be
-easily adapted for N_MEMORY_PRIVATE
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> This patch introduces a new DAMON module (SAMPLE_DAMON_HPAGE)
+> which collapses hot regions into huge pages.
+> 
+> SAMPLE_DAMON_HPAGE operates in the virtual memory space, for a
+> specific task. The user is expected to supply the PID of the task
+> that is going to be monitored through the target_pid module
+> variable.
+
+s/variable/parameter/ ?
 
 > 
-> 
-> 2) Can we disallow SLAB allocation.
-> 
-> Yeah, but I think a better question is whether there's a difference
-> between alloc_pages_node() and kmalloc_node() when it all just sinks
-> to the same fundamental code in mm/page_alloc.c
-> 
-> Maybe there's an argument for something like NP_OPT_KMALLOC (allow slab
-> allocations on the private node w/ __GFP_THISNODE)
-> 
-> On my current set, I don't implement any explicit filtering at all in
-> mm/page_alloc.c - the filtering is a function of the nodes not being
-> present in the FALLBACK list and only having a NOFALLBACK list.
-> 
-> What __GFP_THISNODE actually does under the hood is just switch
-> which zone list (FALLBACK vs NOFALLBACK) is used for the target node.
-> 
-> For isolation w/o __GFP_PRIVATE, we're removing N_MEMORY_PRIVATE nodes
-> from *their own FALLBACK* list and only adding them to their NOFALLBACK
-> list.  That means to reach a private node you MUST use __GFP_THISNODE.
-> 
-> I realize this is confusing, but essentially we don't have to modify
-> mm/page_alloc.c to get the __GFP_THISNODE filtering, we get this from
-> the fallback/nofallback list construction.
-> 
-> 
-> Ok, so how does this flush out in practice - and why do I call this
-> filtering mechanism fragile?
-> 
-> consider kmalloc_node() and __slab_alloc():
-> 
-> kmalloc_node(...)
->   └─ ___slab_alloc()     mm/slub.c:4406   pc.flags |= __GFP_THISNODE
->       └─ new_slab(s, pc.flags, node)
->           └─ allocate_slab(s, flags, node)
->               └─ alloc_slab_page(flags, node, oo, …)
->                   └─ __alloc_frozen_pages(flags, order, node, NULL);
-> 
-> Slab silently upgrades the page allocator flags here to include
-> __GFP_THISNODE - even if the user didn't request that behavior.
-> 
-> This is exactly the kind of "spillage" I said was hard to police at LSF.
-> 
-> Without __GFP_PRIVATE, we have to keep an eye on what around the kernel
-> is using __GFP_THISNODE and how.
-> 
-> For mm/slub.c we can choose to do one of thwo things
-> 
->   1) 100% refuse slab allocations on private nodes, i.e.:
-> 
->      kmalloc_node(..., private_nid, __GFP_THISNODE)
-> 
->      And will fail (return NULL).
-> 
+> SAMPLE_DAMON_HPAGE uses the hugepage auto-tune mechanism to
+> increase or decrease the aggressiveness of page collapsing. User
+> autotuning is also available for additional tuning aggressiveness
+> control.
 
-Doesn't this iterate through N_MEMORY only? N_MEMORY_PRIVATE should not
-be in the regular for_each(...) loops
+Is the user autotuning really needed for this sample module?  I'm concerned if
+it is unnecessarily making the code complicated.  Can we drop this?
 
->   or
 > 
->   2) Do not upgrade private-node slab requests w/ __GFP_THISNODE
->      
->      This allows kmalloc_node() to work the same as folio_alloc()
->      or alloc_pages() interfaces (__GFP_THISNODE is the key), with
->      the understanding that any __GFP_THISNODE user
-> 
-> We can opt these nodes into slab/kmalloc with a NP_OPT_SLAB
-> if the owner wants kmalloc_node(), with the understanding that any
-> caller using __GFP_THISNODE may get access.
-> 
-> That's the kind of fragility I was trying to avoid.
-> 
-> 
-> That said, in practice, I have found that basic kernel operations don't
-> generally target use kmalloc_node() w/ __GFP_THISNODE - there's just
-> nothing to prevent anyone from doing so.
-> 
-> So this seems promising...
-> And then theres arch/powerpc/platforms/powernv/memtrace.c
-> 
-> static u64 memtrace_alloc_node(u32 nid, u64 size)
-> {
-> 	... snip ...
->         page = alloc_contig_pages(nr_pages, GFP_KERNEL | __GFP_THISNODE |
->                                   __GFP_NOWARN | __GFP_ZERO, nid, NULL);
-> 	... snip ...
-> }
-> 
-> static int memtrace_init_regions_runtime(u64 size)
-> {
-> 	... snip ...
->         for_each_online_node(nid) {
->                 m = memtrace_alloc_node(nid, size);
-> 	... snip ...
-> }
-> 
-> static int memtrace_enable_set(void *data, u64 val)
-> {
-> 	... snip ...
->         if (memtrace_init_regions_runtime(val))
->                 goto out_unlock;
-> 	... snip ...
-> }
-> 
-> This is the *exact* pattern I said would be hard to police - and it
-> doesn't look like a bug, just not informed that private nodes exist.
-> 
-> This is why I'm concerned with trying to depend on __GFP_THISNODE as the
-> filtering function.
-> 
-> That said, the number of __GFP_THISNODE users is very limited
-> kernel-wide, so maybe that's an acceptable maintenance burden?
-> 
+> The module also includes changes to the DAMON compilation,
 
-Balbir
+I think this is not true?
+
+> so that
+> the module can be enabled or disabled.
+> 
+> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> ---
+>  samples/damon/Kconfig       |  14 +++
+>  samples/damon/Makefile      |   1 +
+>  samples/damon/hpage.c (new) | 207 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 222 insertions(+)
+> 
+> diff --git a/samples/damon/Kconfig b/samples/damon/Kconfig
+> index cbf96fd8a8bf..1ef0b12c32e6 100644
+> --- a/samples/damon/Kconfig
+> +++ b/samples/damon/Kconfig
+> @@ -40,4 +40,18 @@ config SAMPLE_DAMON_MTIER
+>  
+>  	  If unsure, say N.
+>  
+> +config SAMPLE_DAMON_HPAGE
+> +	bool "Build DAMON-based collapse of hot regions (SAMPLE_DAMON_HPAGE)"
+
+Please make this be consistent to other sample modules.  E.g., DAMON sample
+module for ...
+
+> +	depends on DAMON && DAMON_VADDR && TRANSPARENT_HUGEPAGE
+> +	help
+> +	  This builds DAMON sample module for collapsing regions into huge pages.
+
+... for huge pages collapsing?
+
+> +
+> +	  This module monitors a certain PID provided by the user through
+> +	  target_pid attribute. Hot regions are determined by DAMON-based
+
+Please use two spaces between sentences, consistent to others.
+
+> +	  sampling. Collapsing occurs according to the quota goal using total
+
+"DAMON-based sampling" sounds verbose and technically not making much sense.
+How about just "DAMON"?
+
+> +	  memory usage to huge page usage ratio. The ratio is set by the user
+
+huge page to total memory usage ratio?
+
+> +	  through a module attribute.
+
+s/attribute/parameter/ ?
+
+> +
+> +	  If unsure, say N.
+> +
+>  endmenu
+> diff --git a/samples/damon/Makefile b/samples/damon/Makefile
+> index 72f68cbf422a..a348dc74ddcb 100644
+> --- a/samples/damon/Makefile
+> +++ b/samples/damon/Makefile
+> @@ -3,3 +3,4 @@
+>  obj-$(CONFIG_SAMPLE_DAMON_WSSE) += wsse.o
+>  obj-$(CONFIG_SAMPLE_DAMON_PRCL) += prcl.o
+>  obj-$(CONFIG_SAMPLE_DAMON_MTIER) += mtier.o
+> +obj-$(CONFIG_SAMPLE_DAMON_HUGEPAGE) += hpage.o
+
+... Can this be compiled...?
+
+> diff --git a/samples/damon/hpage.c b/samples/damon/hpage.c
+> new file mode 100644
+> index 000000000000..ebbe5e1be1a1
+> --- /dev/null
+> +++ b/samples/damon/hpage.c
+> @@ -0,0 +1,207 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2026 HUAWEI, Inc.
+> + *             https://www.huawei.com
+> + *
+> + * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> + */
+> +
+> +#define pr_fmt(fmt) "damon_sample_hpage: " fmt
+> +
+> +#include <linux/damon.h>
+> +#include <linux/kstrtox.h>
+> +#include <linux/module.h>
+> +
+> +#ifdef MODULE_PARAM_PREFIX
+> +#undef MODULE_PARAM_PREFIX
+> +#endif
+> +#define MODULE_PARAM_PREFIX "damon_sample_hpage."
+> +
+> +static bool enabled __read_mostly;
+> +
+> +static unsigned long target_pid;
+> +module_param(target_pid, ulong, 0600);
+
+Why 'ulong'?  I think 'int' is enough?
+
+> +
+> +/* By default, total huge pages to system memory usage ratio set to 10% */
+> +static unsigned long quota_percentage_hugepage __read_mostly = 1000;
+> +module_param(quota_percentage_hugepage, ulong, 0600);
+
+"percentage" in the name sounds weird.  What about hugepage_mem_bp or
+target_hugepage_mem_bp?
+
+> +
+> +static unsigned long quota_autotune_feedback __read_mostly;
+> +module_param(quota_autotune_feedback, ulong, 0600);
+
+I'm not really sure if this is really needed.  If not, could we drop this?
+
+> +
+> +static struct damon_ctx *ctx;
+> +static struct pid *target_pidp;
+> +
+> +static int damon_sample_hpage_damon_call_fn(void *data)
+> +{
+> +	struct damon_ctx *c = data;
+> +	struct damon_target *t;
+> +
+> +	damon_for_each_target(t, c) {
+> +		struct damon_region *r;
+> +		unsigned long hugepages = 0;
+> +
+> +		damon_for_each_region(r, t) {
+> +			if (r->nr_accesses > 0)
+> +				hugepages += r->ar.end - r->ar.start;
+> +		}
+> +		hugepages = hugepages / HPAGE_PMD_SIZE;
+> +		pr_info("hugepage: %lu\n", hugepages);
+> +	}
+> +	return 0;
+> +}
+
+What's the purpose of this function?  If not really  needed, can we drop?
+
+> +
+> +static struct damon_call_control call_control = {
+> +	.fn = damon_sample_hpage_damon_call_fn,
+> +	.repeat = true,
+> +};
+> +
+> +static int damon_sample_hpage_start(void)
+> +{
+> +	int err;
+> +	struct damon_target *target;
+> +	struct damos *scheme;
+> +	struct damos_quota_goal *goal;
+> +
+> +	pr_info("start\n");
+> +
+> +
+
+Let's have only one blank line.
+
+> +	ctx = damon_new_ctx();
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +	if (damon_select_ops(ctx, DAMON_OPS_VADDR)) {
+> +		damon_destroy_ctx(ctx);
+> +		return -EINVAL;
+> +	}
+> +
+> +	target = damon_new_target();
+> +	if (!target) {
+> +		damon_destroy_ctx(ctx);
+> +		return -ENOMEM;
+> +	}
+> +	damon_add_target(ctx, target);
+> +	target_pidp = find_get_pid(target_pid);
+> +	if (!target_pidp) {
+> +		damon_destroy_ctx(ctx);
+> +		return -EINVAL;
+> +	}
+> +	target->pid = target_pidp;
+> +
+> +	scheme = damon_new_scheme(&(struct damos_access_pattern) {
+> +				.min_sz_region = HPAGE_PMD_SIZE,
+> +				.max_sz_region = ULONG_MAX,
+> +				.min_nr_accesses = 0,
+> +				.max_nr_accesses = UINT_MAX,
+> +				.min_age_region = 50,
+> +				.max_age_region = UINT_MAX},
+> +				DAMOS_COLLAPSE, 0,
+> +				&(struct damos_quota) {
+> +				.ms = 10,
+
+I don't really suggest time quota to people nowadays.  Size quota is easier to
+understand and sufficient in many cases in my humble opinion.  Did you find it
+is really helpful and essential for this module?  If not, could we unset time
+quota?
+
+> +				.sz = 128 * 1024 * 1024,
+> +				.reset_interval = 1000,
+> +				.weight_sz = 0,
+> +				.weight_nr_accesses = 1,
+> +				.weight_age = 1,
+> +				.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL},
+> +				&(struct damos_watermarks){}, NUMA_NO_NODE);
+> +	if (!scheme) {
+> +		damon_destroy_ctx(ctx);
+> +		return -ENOMEM;
+> +	}
+> +	damon_set_schemes(ctx, &scheme, 1);
+> +	goal = damos_new_quota_goal(DAMOS_QUOTA_HUGEPAGE_MEM_BP,
+> +				quota_percentage_hugepage);
+> +	if (!goal) {
+> +		damon_destroy_ctx(ctx);
+> +		return -ENOMEM;
+> +	}
+> +	damos_add_quota_goal(&scheme->quota, goal);
+> +
+> +	if (quota_autotune_feedback) {
+> +		goal = damos_new_quota_goal(DAMOS_QUOTA_USER_INPUT, 10000);
+> +		if (!goal) {
+> +			damon_destroy_ctx(ctx);
+> +			return -ENOMEM;
+> +		}
+> +		goal->current_value = quota_autotune_feedback;
+> +		damos_add_quota_goal(&scheme->quota, goal);
+> +	}
+
+Seems this module is not really utilizing the user input feedback.  To use that
+in real, the module should periodically read user's input and feed that to
+DAMON core.  I find no code doing that in this module.  If it is not really
+being used, I'd suggest to drop this.
+
+> +
+> +	err = damon_start(&ctx, 1, true);
+> +	if (err) {
+> +		damon_destroy_ctx(ctx);
+> +		return err;
+> +	}
+> +
+> +	call_control.data = ctx;
+> +	err = damon_call(ctx, &call_control);
+> +	if (err) {
+> +		damon_stop(&ctx, 1);
+> +		damon_destroy_ctx(ctx);
+> +	}
+> +	return err;
+> +}
+> +
+> +static void damon_sample_hpage_stop(void)
+> +{
+> +	pr_info("stop\n");
+> +	if (ctx) {
+> +		damon_stop(&ctx, 1);
+> +		damon_destroy_ctx(ctx);
+> +	}
+> +}
+> +static int damon_sample_hpage_enabled_store(const char *val,
+> +				const struct kernel_param *kp)
+> +{
+> +	bool is_enabled = enabled;
+> +	int err;
+> +
+> +	err = kstrtobool(val, &enabled);
+> +	if (err)
+> +		return err;
+> +
+> +	if (enabled == is_enabled)
+> +		return 0;
+> +
+> +	if (!damon_initialized())
+> +		return 0;
+> +
+> +	if (enabled) {
+> +		err = damon_sample_hpage_start();
+> +		if (err)
+> +			enabled = false;
+> +		return err;
+> +	}
+> +	damon_sample_hpage_stop();
+> +	return 0;
+> +}
+> +
+> +static const struct kernel_param_ops enabled_param_ops = {
+> +	.set = damon_sample_hpage_enabled_store,
+> +	.get = param_get_bool,
+> +};
+> +
+> +module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+> +MODULE_PARM_DESC(enabled,
+> +	"Enable or disable DAMON_HUGEPAGE (default: disabled)");
+
+s/DAMON_HUGEPAGE/DAMON_SAMPLE_HPAGE/ ?
+
+"(default: disabled)" seems unnecessary.  Could you please remove that?
+
+> +
+> +static int __init damon_sample_hpage_init(void)
+> +{
+> +	int err = 0;
+> +
+> +	if (!damon_initialized()) {
+> +		if (enabled)
+> +			enabled = false;
+> +		pr_warn("Module not initialized\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	if (enabled) {
+> +		err = damon_sample_hpage_start();
+> +		if (err)
+> +			enabled = false;
+> +	}
+> +	return err;
+> +}
+> +
+> +module_init(damon_sample_hpage_init);
+> -- 
+> 2.43.0
+
+
+Thanks,
+SJ
 
