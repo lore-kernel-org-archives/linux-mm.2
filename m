@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52ECCCD98F3
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 17:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0768ECD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 17:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48EBA6B0093; Wed, 17 Jun 2026 13:26:14 -0400 (EDT)
+	id A06D56B0095; Wed, 17 Jun 2026 13:26:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45EC86B0095; Wed, 17 Jun 2026 13:26:14 -0400 (EDT)
+	id 9DF566B0098; Wed, 17 Jun 2026 13:26:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B3306B0096; Wed, 17 Jun 2026 13:26:14 -0400 (EDT)
+	id 8D8D66B0095; Wed, 17 Jun 2026 13:26:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1AC16B0093
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 58E6214047A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:26:13 +0000 (UTC)
-X-FDA: 84890083026.12.F1B9A4D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 619DE6B0095
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD901C251D
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:26:15 +0000 (UTC)
+X-FDA: 84890083110.22.3F31549
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4872916000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:26:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YqakzRFV;
-	spf=pass (imf08.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 928664000F
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:26:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=b8MSN0wJ;
+	spf=pass (imf12.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781717171;
+	s=arc-20220608; t=1781717173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=keeu02Fp3GttgS1mWUJNl7//OWMwchcp1IbJBKzOEDk=;
-	b=PujzRon0pyCt5WHVCwriTLtEpMO5O9pUY5voKWyml8TpHOL0mVCKQz8F9x+t1Mw8i7sYRi
-	n0OHF8Ugw/7qMYD2uU0L9S/aL4G1S98NGkBW5TPrW134xb2v0+bAB8wjigHl+d4cxctZRD
-	QYcGo0Ufcmiunp/Kbbxr73FMo2nEVzU=
+	bh=i32ZvW+vpI4Ko63/BjKa2UU88DSctsuX+gkqMrOcxsk=;
+	b=DWVqoC6jbcpTgGcAdrRL/e79D63zIvU0Mxz8wz9UNDXmKa+Siq24cmys+UrGzyHx+mNSro
+	QGMQxQbPkb9LBEkdw5Wa4bY3MHV5Ov9RJdKfVnBtpWC8mlPQF0/u+KMc5qW5JOUwxsin2j
+	XkpoOsOu1AE8eiiA3CXu+517IjmqYRM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YqakzRFV;
-	spf=pass (imf08.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=b8MSN0wJ;
+	spf=pass (imf12.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781717171;
-	b=EKO6l2EBHhdzpRJpZB48gegEt10lgL/gf4HsJESmO0cvR2t+sRmfWmgZkj6noEtk6dFWRp
-	qO2mTzfHjsSE9lj8MprY8GkakX+eTmNjj0VDUBx87/lqwCIQ/29bgkzpFDR+kq+c8RVT7I
-	iO/0yWiJf+Qt+oig9Lj3JYlghvIsBm4=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65HEsSup2367932;
-	Wed, 17 Jun 2026 17:25:57 GMT
+	t=1781717173;
+	b=BOKW/IdYDP/fcaj0SALrYZQI5taQw9x+gnnkUjqhx1qexdgRWfduU48XVB3fuhGE8JukVj
+	HRbU3zpcns4oFAGjp7HHzCN+PlrHtpOTG4i7xNk/8sMhyeJSOSdgyTXSkq6MUihPaxPeOc
+	esPNgrFi4kaaskwh8nbXw+mAILEs/3c=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65HEsHJi2481167;
+	Wed, 17 Jun 2026 17:26:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=keeu0
-	2Fp3GttgS1mWUJNl7//OWMwchcp1IbJBKzOEDk=; b=YqakzRFVl8+Hqy9z3KX66
-	gGrectHUpL9WKupasXX6xSI0yA0t1GsTtmPMGM/vvo8b/2O9zQaaXyeHWByR19HB
-	p4neJyQKgVeeDVBX+pbZbzLiEdRzZ8MYp49sxZQ6gjIZj6mb3rZor85isatIQyID
-	OWvqE55QF9hyYlzwXaR+sbVWAIbo114XF2DesNfCFzbeQms61KuQa/vbSP/dfePC
-	k3+E/+uT3fn25y/AWxQPdMqzTNBEkpam4lEbbwMfRMESi2oR/wElDGHi1cbqV4MV
-	3aAUVfRZrBrRjFBH+DuoPg3j+kJF5eFijV7gJOHkIaDp1Zc4y5z2UCOqpTfdqwIB
-	Q==
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=i32Zv
+	W+vpI4Ko63/BjKa2UU88DSctsuX+gkqMrOcxsk=; b=b8MSN0wJtsM/2xk/jI79P
+	i7ZKVbXTKFSjb5Sr+KBAem0iGSCieNVTytgA/XI82qoFS387KhhQUOFB0vz09ppt
+	x+nfUMLOonQ4kql349gIyE7a0XvtNyedq7PgzY37h9WEC6xsJZ2HzC7bH5/sT/30
+	umGsZWXJtUYaLHPhoBlnZwlHxQOSvndhAcQQFxmec/XlqTWyXGtr9/N5GMugmlm/
+	Dmb5OGj1qdoqX6h0LhXRWcUczmr5GIGQ53DyJh6xvwefAv22L067vrbKbesWh65g
+	LzdsPXbHDh9svsuEJZAiTKOqwT3cTfaYklHfSJUyvDgiOKFlldv5i6f93jK2FtIw
+	w==
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eueg31c3c-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eueg2hcgh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Jun 2026 17:25:56 +0000 (GMT)
+	Wed, 17 Jun 2026 17:26:00 +0000 (GMT)
 Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65HHNVOl003778;
-	Wed, 17 Jun 2026 17:25:55 GMT
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65HHNVOm003778;
+	Wed, 17 Jun 2026 17:25:59 GMT
 Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4eudvc0wgy-4;
-	Wed, 17 Jun 2026 17:25:55 +0000 (GMT)
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4eudvc0wgy-5;
+	Wed, 17 Jun 2026 17:25:58 +0000 (GMT)
 From: Jane Chu <jane.chu@oracle.com>
 To: akpm@linux-foundation.org
 Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
@@ -80,9 +80,9 @@ Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
         rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
         linux-doc@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 03/11] mm/filemap: add hwpoison handling to filemap_read()
-Date: Wed, 17 Jun 2026 11:25:24 -0600
-Message-ID: <20260617172534.1740152-4-jane.chu@oracle.com>
+Subject: [PATCH v2 04/11] hugetlbfs,filemap: replace hugetlbfs_read_iter() with generic_file_read_iter()
+Date: Wed, 17 Jun 2026 11:25:25 -0600
+Message-ID: <20260617172534.1740152-5-jane.chu@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260617172534.1740152-1-jane.chu@oracle.com>
 References: <20260617172534.1740152-1-jane.chu@oracle.com>
@@ -95,33 +95,33 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
  lowpriorityscore=0 adultscore=0 spamscore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.19.0-2606150000 definitions=main-2606170167
-X-Authority-Analysis: v=2.4 cv=I8VVgtgg c=1 sm=1 tr=0 ts=6a32d8a5 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDE2OCBTYWx0ZWRfXwdXLKCCqgDf2
+ Pe5YRVq597paTPzxgB9CdqMg1ST6XMgesE1zf3q34PBckZuyysijv0YjwqN/qmrA/9QrAYA8Mzz
+ 8KMYuZBbppGDkK9kTvVAQGho/QoMnlZOrWVq47Vy2w9xqRS4FlLKx3MngeUVVqDnwhMdnXJ/WKP
+ 3b2KxWv/J0vylL1iQyOefZtqsAm/G0o0msT2K1P2eags7mCe6GfQkz50BTzne1rIOUhds6RP2Ap
+ 5FIf9QGL5tRCTffntMm+H75Mi7PFy/CEecDwvfIIRs1DhkyeJYJHsSGhxVWVFmwpoUKXxh8njHt
+ 0Fup0VJaOg2y2aG6HtzQzoIddD097tmk5IyG6YG/blt1WEDWMg9LZKj04oAKz+ruo5O82lseiLT
+ v4NTkYJZjiLDk8XrBqELaORIlbLv5szBplW/pRf4K/l6mv/5cdE1gBEQ7EBPYw7kglMx1IrbfKo
+ FFfIFg5blOnmmkfv/+bAcova0u1Icw0x6nAd0bqQ=
+X-Proofpoint-GUID: QQjsk5quOBfyFwEZf0gQ9eQofZvvKb7S
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDE2OCBTYWx0ZWRfX1JRL9Etm08Jq
+ olXbWlzE0Zelg34my9bxrpeTmqEsBLI6DfUldLPRlBZEV+YtqRopIdhrF26CFi8a33AIe3P9fZ9
+ zhm87Shz1z91C9vnGP712mOVPY+Osmfm51wluLxIazjcUOAHJqX6
+X-Proofpoint-ORIG-GUID: QQjsk5quOBfyFwEZf0gQ9eQofZvvKb7S
+X-Authority-Analysis: v=2.4 cv=UY1hjqSN c=1 sm=1 tr=0 ts=6a32d8a8 b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=7Gl3-_t3PgB9XO-mQDs3:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8
- a=bp1g5Iz1D7c7guLF1_8A:9 a=1CNFftbPRP8L7MoqJWF3:22 a=5yU3S35YU4bGjq-dph-N:22
+ a=x0eKOSpe3m1H3M0S9YoZ:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8
+ a=BVX3X0w32c5Jxbss9mcA:9 a=1CNFftbPRP8L7MoqJWF3:22 a=5yU3S35YU4bGjq-dph-N:22
  a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12312
-X-Proofpoint-GUID: uXOmksX9GDaWEUnKmgnfQCd2euQz12WU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDE2NyBTYWx0ZWRfX/uWkgVnRjjGc
- g8+RpAexXA/6ZOUXFvcWdHpQkC7xnjpnUL8yPkIKC/psTN9sHbwd4x9MQ97vE5iFn8Rbf3t8re+
- /aTL+hEgxZELnXIm86PxVnPKjtVhzuEHYzcf/w0/MvIf10zOP9w3CC0kp6XlnKz+AteQqJc911W
- lDUeBAGt7QdAmqFazSo/eZyh/u2HQhiBoZEEwiI4BJWadnlhc4qRQWaYvCYS8mjuZ2Iw1qEY9mo
- YOGc1p5LCICRpTj5OiS7TYvU+zMFsl7DiDXlto2Y7bsfk7NzMCz1NA56H0uSVdXh9EOc6CL1U9v
- o/N/CyaeBXJmDxUCZZG58Mh6Ez+Yp4jO23M/svIpmxVvmbg7fbipiGtDM3O4NVDojrTTEyn1qr7
- tXdu4kwmIuMwI3rGHpFBfYQRpgEYmo03omHCfVM6Bn+aGBDoGvaQ7XOsk0qdmr1X4O1nrGV9/Wf
- HGnSWGuu5tGI4c555ATGseKqliiQYJvcNmDrn2b0=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDE2NyBTYWx0ZWRfX1UonwiatnJwS
- WGpV8rDkik3ahZ4RxT4LexW0LHpobXFhxG85ArzXg06f0Ld+FhV3uMhhDuhV43aPyzca3FQXbtJ
- XZiKJyRnDy3ubWK1b6Fla7X7GLdpc3M1fblQ9al1xQcEz07LDIBn
-X-Proofpoint-ORIG-GUID: uXOmksX9GDaWEUnKmgnfQCd2euQz12WU
-X-Rspamd-Queue-Id: 4872916000B
-X-Stat-Signature: yomea6w6jwrrwk3tp4zki7gts99wuaxn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 928664000F
+X-Stat-Signature: bfdhkuc7yrcd38h6t66r8uf9nwtthfc4
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781717171-114830
-X-HE-Meta: U2FsdGVkX183SFwh13iTgBXinxtkG3zr5qe2O0fzLzFl7p6VRO+sFnihZ+IKizGK9ahS2b6YoqNxPjAoq8wIXXN/mkz7x04c6IAQ5fM7AE+36EV32Iq6b0XgRh+uxtM8mVcYA+6ykQtMP3JOGtZmhmDrpyQJZzmlvayFgbI49bT4TlXTZ91KRIpuTQ60lUWrQpPcBFEdX0hTvzPHg/kM+alqBcqKXuCf98ISXu791u150mndBH37bXWOGDk4b4K19aUGIJeVjSp/5DksUPEgu9W3WxByaBRDNIT9BZq87K11H/iIFMUeZHS5MUPHlR78AP9fWN4yK2WZzPug58Q2ybiX9sNE3//jIWnvCFkIzs7TSCXqR6vMMOGuA9a2bVF2ZdY9y42LBRm/4PzqWxfiqeG9Bj8CE7A0l1iRt/wCu8l+bcFVKiDBjOR9KcgD80ZiprEawQMusHlJMguD2AO0Z6DqDqKGiWQ0BzvFXju+l/laPERPyQp46triZyBvBNQEqVZVeZgpJ+rzd49QRbUqj47+VxzvIguJ0jqtKWsDbj69ljShrKTAFltI8+abIoZogppMd1eKcq4N71XR2dzHWaZFhC1pLcSvS4t8Pp+aqv5nA68AJxZmOz8U/cVdyme/4DPpANszApiyOJgragrzEbuCNWwG9xvOXh6yfxJl2e9uk15NHC+fvuy/plAcmQI4EToSE0kihQCLLIID1eyL5wxA9jL+CHTGtUZsmzggpKLpe7Z9iGrXm0+E3I9mpm8xKkSYJgcL8WdLTQitiv7HF8JwAJXCH7WvJVqAbnUk/0tnb5l+Grov/RkyPgC9RD3ZiklPcDBOpHFMU7v+9tdbk2JkCvd0YyogoU0axt6rkfMM7JykMFiPRr6drH4J55QFnmkh0CjbgsefRxdG13yF87hyn2pcz+7suCo+FpKuf4TXZ+UStuPDtH2eejBrsMFkvaOogtaRAwS4005p562
- t/Pz0Ntr
- +bz3ETD2SZPi8CqmW5ZtX0kzgEJbl+JqC2SwgpEaegwEAxhYSsn6bFoq2GEvFD/uw4vdTsHSrMMyPeSWCe/Elu9BHJkv5XYTklZqeI4/69915hiinzbaJoo6ABUhahPa+T8XgG/+43gxV9URkOQnM0McImJU3AI3BsQqDWC0q6YtoxEJx667CGASUhWiLgrF+rYX6nZal0K1tYzY3VTrJANJveDWLYa7aPpq9Kg51dPUN6L6mwtFmYHDE+zTYpqAk1JH7Chjh6iSaDdh97GSQLAoGv/MbpS9QVOZi44Harm9BK22Kk2li017To3W1eOXeJ/j3KrE9WieKR/leuaG+lqYSvHHR/WKzbNOcW/yhs3QyHMxjUqR4p4JtItwse/AXeueIoU3Z23I8mOexjDcpXxSQAHJjUZLTRD1gfnHuBQu8LuUWRwWd2FmFqilS7PxCPR+AF1qzR6Nk2ocfa1Ua4ouezo23hQeXtUap
+X-HE-Tag: 1781717173-425768
+X-HE-Meta: U2FsdGVkX190rhUnr6QQTgwk9lUsfnT38VUDS/WHRfjcJF6bwUinHMBs0YYJevM6kc6rRmz4xeMP5mEOK2iUmakat+eNsu2byg2oEOJk3Bj4zHruZtQA4sWSWLh5vkpR+5DPxpZ+pxPWSyEd947zA3Vfgf/fh7gdSvaNgtsOtaDrot1jx57s0FajrE36cF7wYT4x4MXZL8s6qNW1S9wGe9xKMoshFAF2HLrBW5OP+Vm/5Dr+SsMUCVfvkYA12JWcKR+gWoP64c6SDyzx9Lcz1ZRbDUclIRG62O1vTxDBzKt1xqInOlW+ifrx3gjrv8liNfIyQUtjOAJ9PbyDS+IRKk0ocdGzFj5AArXx7xaPVxI7KP9icaQkRUxzwOogQniqeHJ+4jZ+1rplNI3p+TG76vKzbHbuqIsNy/3cqKQLFRqLtovsnbXvf0xdvB/LcBYKBPimtMgrdP8CfWzArnJHO78mQS8kI5MZxKZzBqINAUdHnqS0GnwyIJpLacgDidySQjPiVd50v+JdgZofhieeBESjLzSWum3aLHfCOedGTVqBWjndbPg+kUea12wnapUJkIa/wAQODW/8PisCZPOw8M5MQOMZAkyTdGWahE+sfTZ3BoPjDPpBknRt7mxUGfOTIpony77Egm7XcIK5BzmUSJnE9QqEDvgtr7S0CP1daULsOIEVM7o6lUOnf5irxygxqhHovDCSkVaAFl0fxUB94z5+iVY56TSMq5JWtJRn/eJe1r7lPViWXFQ44b4VJPOameIuAknLHPdJgjzIaVcrHdJPWN1ILjTaVQxGCD//oLnbKGjq3zMMHMo3SvY1Qf0DWjfE0fPxeBb+Qg7i2WYOy3EF2yq4DCXvTjJJgWKEmFn999tm5F2ISxULk3bWICA6TUQKX1o6WY/LLuue3LF37lI3BHJkHtldcqPURUV8QYB1dKnqWX3Gm8Dzu4DrR8ThcgQfK10WhGfgbDJ1LtH
+ rpIfT8QS
+ fBHmJ7lqqc+N1z2nxC+8w34Vm+irMWDvvX0KSMq7JkCtJilEt6EVMfV11P8iM7aompJaz3gL41k0sit7QQnToDgfJSqC3d8yRAEgX1ec4TuptxNrxtEjC/CMX01WB/y4YslQ4ZtykvFzU07XwQN1QS/w9tsAgnSUTEUGtnVuaOHGDHz9DPUD8FFE1VN28vuncElbx4TeDL6XuzV2UMkoblZybXyWuDgDZ4thPSZxRt62DxoD2BqiOTNMnYs6Ns1HIiLytwGh7CkDjl5aKv1EkXHL1lBDlKU37B1FvLNLl6GF4Y2qtLlL7PzcOrCjPxUwmKpmw4KHGTygNVSWXRWtV+4ISnioE5I/EbEsXx39ic1u3M8p+LBYZRz4TNAm+eJXgTwIJtI21+AeSypmtZzxXEulFqG5Hwyv/0AJql+5UfjeoLpTxke+MqNyQlqVfs/vOr5ejJ8yCEsOt8szFgKAKLi8Egj7xM4Lk1Q3G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,64 +129,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add hwpoison handling to filemap_read() such that .read_iter() could
-make best effort copying data out of clean pages without risking
-MCE in case page cache contains HWpoison.
+Replace hugetlbfs_read_iter() with generic_file_read_iter(),
+teach filemap_get_pages() to be aware of hugetlb pagesize while
+calculating 'last_index'.
 
 [1] https://lore.kernel.org/linux-mm/aeZwAz6PcdlqSnJ2@casper.infradead.org/
 
 Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Jane Chu <jane.chu@oracle.com>
 ---
- mm/filemap.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/hugetlbfs/inode.c | 84 +-------------------------------------------
+ mm/filemap.c         | 15 ++++++--
+ 2 files changed, 14 insertions(+), 85 deletions(-)
 
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index f1f8c3f7388f..1c25485c91b9 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -187,88 +187,6 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ 	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
+ }
+ 
+-/*
+- * Support for read() - Find the page attached to f_mapping and copy out the
+- * data. This provides functionality similar to filemap_read().
+- */
+-static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
+-{
+-	struct file *file = iocb->ki_filp;
+-	struct hstate *h = hstate_file(file);
+-	struct address_space *mapping = file->f_mapping;
+-	struct inode *inode = mapping->host;
+-	unsigned long index = iocb->ki_pos >> huge_page_shift(h);
+-	unsigned long offset = iocb->ki_pos & ~huge_page_mask(h);
+-	unsigned long end_index;
+-	loff_t isize;
+-	ssize_t retval = 0;
+-
+-	while (iov_iter_count(to)) {
+-		struct folio *folio;
+-		size_t nr, copied, want;
+-
+-		/* nr is the maximum number of bytes to copy from this page */
+-		nr = huge_page_size(h);
+-		isize = i_size_read(inode);
+-		if (!isize)
+-			break;
+-		end_index = (isize - 1) >> huge_page_shift(h);
+-		if (index > end_index)
+-			break;
+-		if (index == end_index) {
+-			nr = ((isize - 1) & ~huge_page_mask(h)) + 1;
+-			if (nr <= offset)
+-				break;
+-		}
+-		nr = nr - offset;
+-
+-		/* Find the folio */
+-		folio = filemap_lock_hugetlb_folio(h, mapping, index);
+-		if (IS_ERR(folio)) {
+-			/*
+-			 * We have a HOLE, zero out the user-buffer for the
+-			 * length of the hole or request.
+-			 */
+-			copied = iov_iter_zero(nr, to);
+-		} else {
+-			folio_unlock(folio);
+-
+-			if (!folio_test_hwpoison(folio))
+-				want = nr;
+-			else {
+-				/*
+-				 * Adjust how many bytes safe to read without
+-				 * touching the 1st raw HWPOISON page after
+-				 * offset.
+-				 */
+-				want = adjust_range_hwpoison(folio, offset, nr);
+-				if (want == 0) {
+-					folio_put(folio);
+-					retval = -EIO;
+-					break;
+-				}
+-			}
+-
+-			/*
+-			 * We have the folio, copy it to user space buffer.
+-			 */
+-			copied = copy_folio_to_iter(folio, offset, want, to);
+-			folio_put(folio);
+-		}
+-		offset += copied;
+-		retval += copied;
+-		if (copied != nr && iov_iter_count(to)) {
+-			if (!retval)
+-				retval = -EFAULT;
+-			break;
+-		}
+-		index += offset >> huge_page_shift(h);
+-		offset &= ~huge_page_mask(h);
+-	}
+-	iocb->ki_pos = ((loff_t)index << huge_page_shift(h)) + offset;
+-	return retval;
+-}
+-
+ static int hugetlbfs_write_begin(const struct kiocb *iocb,
+ 			struct address_space *mapping,
+ 			loff_t pos, unsigned len,
+@@ -1181,7 +1099,7 @@ static void init_once(void *foo)
+ }
+ 
+ static const struct file_operations hugetlbfs_file_operations = {
+-	.read_iter		= hugetlbfs_read_iter,
++	.read_iter		= generic_file_read_iter,
+ 	.mmap			= hugetlbfs_file_mmap,
+ 	.fsync			= noop_fsync,
+ 	.get_unmapped_area	= hugetlb_get_unmapped_area,
 diff --git a/mm/filemap.c b/mm/filemap.c
-index a27ce4ad6247..df8543573570 100644
+index df8543573570..eb03b31791fc 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -2475,6 +2475,8 @@ static void filemap_get_read_batch(struct address_space *mapping,
+@@ -2672,20 +2672,30 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ {
+ 	struct file *filp = iocb->ki_filp;
+ 	struct address_space *mapping = filp->f_mapping;
++	bool is_hugetlbfs = is_file_hugepages(filp);
+ 	pgoff_t index = iocb->ki_pos >> PAGE_SHIFT;
+ 	pgoff_t last_index;
+ 	struct folio *folio;
+ 	unsigned int flags;
++	size_t min_folio_bytes;
+ 	int err = 0;
  
- 		if (!folio_batch_add(fbatch, folio))
- 			break;
-+		if (folio_contain_hwpoisoned_page(folio))
-+			break;
- 		if (!folio_test_uptodate(folio))
- 			break;
- 		if (folio_test_readahead(folio))
-@@ -2871,6 +2873,7 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 			size_t offset = iocb->ki_pos & (fsize - 1);
- 			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
- 					     fsize - offset);
-+			size_t adjusted;
- 			size_t copied;
- 
- 			if (end_offset < folio_pos(folio))
-@@ -2885,13 +2888,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 			if (writably_mapped)
- 				flush_dcache_folio(folio);
- 
--			copied = copy_folio_to_iter(folio, offset, bytes, iter);
-+			adjusted = bytes;
-+			if (folio_contain_hwpoisoned_page(folio)) {
-+				adjusted = adjust_range_hwpoison(folio, offset, bytes);
-+				if (adjusted == 0) {
-+					error = -EIO;
-+					break;
-+				}
-+			}
+ 	/* "last_index" is the index of the folio beyond the end of the read */
+-	last_index = round_up(iocb->ki_pos + count,
+-			mapping_min_folio_nrbytes(mapping)) >> PAGE_SHIFT;
++	if (is_hugetlbfs)
++		min_folio_bytes = huge_page_size(hstate_file(filp));
++	else
++		min_folio_bytes = mapping_min_folio_nrbytes(mapping);
++	last_index = round_up(iocb->ki_pos + count, min_folio_bytes) >> PAGE_SHIFT;
 +
-+			copied = copy_folio_to_iter(folio, offset, adjusted, iter);
+ retry:
+ 	if (fatal_signal_pending(current))
+ 		return -EINTR;
  
- 			already_read += copied;
- 			iocb->ki_pos += copied;
- 			last_pos = iocb->ki_pos;
+ 	filemap_get_read_batch(mapping, index, last_index - 1, fbatch);
++
++	if (is_hugetlbfs)
++		goto done;
++
+ 	if (!folio_batch_count(fbatch)) {
+ 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
  
--			if (copied < bytes) {
-+			if (copied < adjusted) {
- 				error = -EFAULT;
- 				break;
- 			}
+@@ -2724,6 +2734,7 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 			goto err;
+ 	}
+ 
++done:
+ 	trace_mm_filemap_get_pages(mapping, index, last_index - 1);
+ 	return 0;
+ err:
 -- 
 2.43.5
 
