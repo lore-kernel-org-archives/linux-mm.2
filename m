@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08286CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 05:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BE7CD98EE
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 05:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB6416B008A; Wed, 17 Jun 2026 01:33:32 -0400 (EDT)
+	id D445E6B00A2; Wed, 17 Jun 2026 01:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D666D6B008C; Wed, 17 Jun 2026 01:33:32 -0400 (EDT)
+	id CCD946B00A3; Wed, 17 Jun 2026 01:34:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7C996B0092; Wed, 17 Jun 2026 01:33:32 -0400 (EDT)
+	id BBCC06B00A4; Wed, 17 Jun 2026 01:34:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A4E056B008A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:33:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 259BEC1892
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:33:32 +0000 (UTC)
-X-FDA: 84888287064.22.DC9F58E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9D2222000D
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:33:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sm58GnAf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 75FB86B00A2
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:34:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD1201C4240
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:34:58 +0000 (UTC)
+X-FDA: 84888290676.21.5CF858C
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B20C9C0002
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:34:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781674497;
+	b=c+Rw9OYJFaXErnP3iJLEcMIOPcmHMS2ouYfoVhLwjIuHOptURftOrI0L8MQOZuYwu42AIz
+	n+ScLWSFTfsTzIQe1c/iJuY9mmHwMEd54OPI4jOq61RaV6CiERMzEi/rYAi+o/s3j10rxu
+	1x0Fs3XsQr7ht8nXEubGeuyIrb/iJIM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781674410;
+	s=arc-20220608; t=1781674497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=q7KbxmNe1Mx2RhlgRxTjCgEeTsCY0crj1GVLCPmkWn4=;
-	b=c9DOZlNlfyExQ5trJNseN+KCIKKgqHg3guSQ5tV7z2tVxrx2qsOMDqFsKe8xlPa4HVrCds
-	FpEBUR8hW05UgbqzyKh3ed8BLTS31JwxTeiAiyIOrqjI6Dk9j4ExfqzxEB6saNOIzjLpF/
-	3ecC29PGIV7Zssal3x/xJVkWYhxljVk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sm58GnAf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781674410;
-	b=t6VZHZBS1jAFAEMKYI/6SlMy4tEOrzXN9vhDGs1kHjBuN3J4X/RF7Fe4sHzt0Y2D9O2xTL
-	8zLLTW/Ejtw0etJ8ghAUs8N6qqTDJj50RxxHgH/tQvnj475wm/66vN9KheyU0ScwsOjeoX
-	BaKkcuv9cqC3zRd9zuiTefsMfHS7zog=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F3444600AB;
-	Wed, 17 Jun 2026 05:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5D51F000E9;
-	Wed, 17 Jun 2026 05:33:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781674409;
-	bh=q7KbxmNe1Mx2RhlgRxTjCgEeTsCY0crj1GVLCPmkWn4=;
-	h=From:To:Cc:Subject:Date;
-	b=Sm58GnAfoIV6Zm4aRiV1K7AAc/U3olxpPxNC9Rm1WbZz2LKeL0yPrG4TKtJf7fVw8
-	 TdZSlsKwdd9KUabaMKmsFUNkeZCPuSKc+w31Xi6Xrxq/eNDQMijglchjhuTskrQOeN
-	 50/jyK5fQRRlJJ6XOGwRjrUOmwUm0UOastwjALISZPJXTCxX9yqYMfW158Sw+xBrbE
-	 xQO3mA7VRQ06j8KpAHJ4/7iPmu2umaTA0l8+dZMMyrCFxBsbtR/FJF2Ff0PYNDj342
-	 trTcn7jWXZQFYZqoqU3dRXHzVVq/TYloCSfBFZ5npoPxxIFE6BuVDIRBzVhdHcGsk2
-	 vi4vNXJe13ZSg==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 2 . x" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+	 in-reply-to:references; bh=QCjGnRk14oXN6vZPeLnNSTa7EYJhjDFgvBFSse2ToaQ=;
+	b=Ac+nnDpfqGUnsbAP3/Z1nXXjUk5IedAaMKoXZvreho0FClSD6M5LO9/9AmT30Ez6FtaOb7
+	oSZF5kEMPoIKYxJlzif/A1duekQTIG6W9+UHvjZfrhfPJGlNFmLWPV8ff53Ei7IcT12/QJ
+	4Wf/2uGl4DFEfHCKI0TMms+HlSm6+0E=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 17 Jun 2026 14:34:51 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: akpm@linux-foundation.org
+Cc: chrisl@kernel.org,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH] mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
-Date: Tue, 16 Jun 2026 22:33:07 -0700
-Message-ID: <20260617053308.83200-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	kasong@tencent.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	yosry@kernel.org,
+	gunho.lee@lge.com,
+	taejoon.song@lge.com,
+	hyungjun.cho@lge.com,
+	mkoutny@suse.com,
+	baver.bae@lge.com,
+	matia.kim@lge.com
+Subject: [PATCH v8 0/4] mm/swap, memcg: Introduce swap tiers for cgroup based swap control
+Date: Wed, 17 Jun 2026 14:34:43 +0900
+Message-Id: <20260617053447.2831896-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B20C9C0002
 X-Rspam-User: 
-X-Stat-Signature: tctsxiutxhbai6w9biqiqup11m66cy7d
-X-Rspamd-Queue-Id: 9D2222000D
-X-HE-Tag: 1781674410-428919
-X-HE-Meta: U2FsdGVkX189E9AND7lX6fcw7ihfesCxUIZBlVJ9TkdZMuL8X6KUe1uGrQ5coUeDF1CgnAA+1KnI3PKDbHFCV1/D6Ec/HHgxWVFFwSDtB1BeqIeWGWSwaluB5UpM3e+beoAmN8+4ftMA0eTkU8Acxou+lolRQmXPPkEifaDm/MHGBppwrOmOSobbH3ATQb4NnTATpeQPHs/ck79EhE/RTet0twwBaOzDd982j7f6q7uvGzB3zt3gckG+2Oxkt5jk6VOz0AzJbj/D+TXHmCE0WibgtdYIDSGqdXtPk9kIoJVXnr+V/m7cxpU+i/R+JP6olv9WZVZf3pnquN78aaKiLdgJGOTSxTzVzd+v/aIa1gQTboROmV3KExvZ4hg1yWlSSohOWYknh3H1foEHpft9bjGV6F8XNl6p/3FvI6U1pVaQUsOwy02UPYu6ulW9aWNu9ddmd/6dRwDSczt3fX7a2GfO3EQmRCrgzSuBj+3NSNARf1AB/gTQOD5IINQ1YaDZKyRVCrRgMVEZw0FioWqzD9C4X7HMjdpxS8QHlAPum+SG3WwwxZPPRACeor52VzKpfUrBgR+Kx3GYcLtX8VymDvfO4wjBkNG5O/avQOdcZEadkKdiLTTeyBwk3OCzdUgv9x6/DrK+kLMES/3SEERyq4KAR3TGUfmKYtVyb7CkZzeZok9y4DKj7+lEDzkEk+QXCa8w9BZDB2y1KjNOCbhHZ+iYbsA33aIyABbTaCX7w80IwRoLxj2s2/g2Csz1e7XH4516QKJN8FUyn+ntkLAEv9jEQgzJW+zc/0dpESBxkj1avtR4E8ncfSP48MAPZ9XrQ03alj4G5LRVmwRUsNnIjz1Er5dIjvKjyXAXXzjoOI6q39F0RUty3zGO5BXXKHMKReJSHYL2S0I9x4RkbETiNNV+rnfN2CCGBvQE6H1rwXa7itUD/y4CZEswX3AqiY4nut70WulOQVS38eKIE+g
- KG+RXnl7
- 4dwbkMqed3IxGYLPTPXeETa2yOLSh2gdAz3OAMCqIHieiRQ7TmmYmlQygk4tWvRbBtyvk1+VTBLP1HQ0ixoHcgK6KwII+DSdkk5yU9u3ji884AiuFPURbyo1rJasqQLlp6ySwhKmBgjBl+pF0V6YT8xBV2Xd00d/n6WPd4sgA9Ss2TWaE1Zs2KNdp+JJl8WzdGVG957wvxMVQIKEnZpMkBoKolnVwUMKPF6UE/ohV9OKm1xYztgB82SKlxPgkxnJOjn452SEdHYqmfCu4oZEgvAqXmg==
+X-Stat-Signature: 9goddrsbzuw1if5wqa7xaxgb5zm5kxjk
+X-HE-Tag: 1781674495-921
+X-HE-Meta: U2FsdGVkX1/jBaLGS/kvTh1N6Q0pxfWGGqcQvDhVYy0deIZAFuULN7zI+c/iLEjWmNoDB9Eda0J+3uTaGVzWGuxanJK+4AbYdRarUvO+AbNEkX5u6yc4SJeG1pQlXS4djrkcOjWdzci9sw8EayVUnRUGEiSx23c2ui1No4zjWD93QVa8Hy+FuFJGwUnwZAKkYGzVA7ef325lPML0sfU0Kgjfmq1M/eeBE1V45g81HeUsoCQnvxP+/FKKQcXUuFvO/TYtRs1Tk0xdqtbuVIW2eVoC7K1F4nH+RcslLx+uWLCvYc0cbGxi5xwYIHSSdmZlHXsEU+flZuuRkIdPQ8zVHzn/GqMTVDskk8GPISgTeXEwzvFWSLQpEpLUjUvumvciiq6+kFXy/9YUi+Df6fsWaPlU3Mz0QKVNRyPWAjjm7GCrwREtRF7h8UkUlW4UKOwTBgO3X9JpnvrDQW6sP2XE6r3x5s5r2kpTE4oUCmiBqu6vX+qoDIMAlQbgN4B1PclysTpZaVeWCiLbNr0GYC9ya54KJ0ZW0DkGnXbG2Blf+oo/b1+vRaewuNDHiphC/UYtHdw7FG1IzVV/oCvT9ZL+IFfbp84kYPGPQa4358ar6g4ukzfrYIDUtwaZMptdtmdlHjnMqwxj+8zcOTYkBS5NpTbpR9XDDTuv3Ob8U43I8uemr3osfmJ5rsuG+9FP3FRPSZXEbCpATNlD4v8LDWDPPAEn5wH78OSEOU7PCvIuyIytqdKJH/PlDgawc85E0YfEVu8IKe/KFv6wCQRrLU+e348MjtUfCv5m5mqS8x93+LFoBftEPwXqODS9TAAFmVG9xb1HBub9S6N0Qb+BZwujE4/KlRvtTLbQf3PCznePJhA8PBmiiairy8ycqzEo9gb0DcIuvvToS5Tsw51w1K6ZxbQFEJwjX1esHZvn6wHPFsSOfC0agnz5RNQmjMH/+YfuPUCMBHaPFGPe9crZi19
+ UQEnETkK
+ BybMNDiYXIYhLe+4Vek30RTlH7cD4eSc5SmRkume//iAdJqTQ1ydMz2dvkf0D4cY0TPvtlwPhEdt7zxLIC1rSL27x20ROwoe5SRWWyN8vMXCs3biPAZSHRcUUH4Y1bBlZAAVYcIWL45ofz7veJFgLYOExRJV/0ZN+h2MuPojfBQkBf9/SrGoVJ8AZ5OkyqAH7RtaLmNjxojkmf/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,58 +96,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_scheme_add_dirs() setup the tried_regions directory after
-the stats directory setup is completed.  When the tried_regions
-directory setup is failed, the setup function ensures the reference for
-the tried regions directory is released.  Hence the error path should
-put references on setup succeeded directory objects, starting from the
-stats directory.  However, the error path is putting the tried_regions
-directory instead of the stats directory.
+This is the v8 series of the swap tier patchset.
 
-As a direct result, the stats directory object is leaked.  Worse yet, if
-the tried_regions directory setup failed from the initial allocation,
-the scheme->tried_regions field remains uninitialized.  The following
-kobject_put(&scheme->tried_regions->kobj) call in the error path will
-dereference the uninitialized memory.  The setup failures should not be
-common.  But once it happens, the consequence is quite bad.
+Great thanks to Shakeel Butt and Yosry for the reviews and discussions [1].
+The main change in this version is the interface change to use
+memory.swap.tiers.max with '0' (disable) and 'max' (enable) values.
+This mechanism was suggested by Shakeel and Yosry.
 
-Fix this issue by correctly putting the stats directory instead of the
-tried_regions directory.
+This change allows for future extensions to control swap
+between tiers and aligns better with existing memcg interfaces.
+Even with this memcg interface change, only patch #3 needed updates.
+Internally, patch #3 still uses the existing mask processing method
+(which is implementation-efficient), so only the user-facing interface
+was modified.
 
-The issue was discovered [1] by Sashiko.
+We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel for their
+valuable feedback.
 
-[1] https://lore.kernel.org/20260617005223.96813-1-sj@kernel.org
+Here is a brief summary of our tentative conclusions. Please correct me
+if anything is misrepresented (details in references):
 
-Fixes: 5181b75f438d ("mm/damon/sysfs-schemes: implement schemes/tried_regions directory")
-Cc: <stable@vger.kernel.org> # 6.2.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+* Zswap tiering [2]:
+  Tiering applies only to the vswap + zswap combo. Zswap itself will
+  not be tiered, as the current architecture requires a physical device
+  for zswap allocation.
+* Vswap tiering [3]:
+  Vswap should be handled transparently to the user. Vswap itself will
+  not be tiered. But, someday supported if there is strong and real usecase.
+* Relationship with zswap.writeback [4]:
+  If zswap tiering is introduced, it could replace the zswap-only tier.
+  However, since zswap cannot be tiered independently, it is still
+  needed for non-vswap cases. Separately, the internal logic could
+  potentially be integrated into the tiering logic.
+* Tier demotion [5]:
+  A separate interface like memory.swap.tiers.demotion might be needed.
+  For now, we only support 0/max to enable/disable tiers. In the future,
+  we could introduce an "auto" mode to automatically scale the limit
+  based on swapfile size and memory.swap.max, similar to the direction
+  memory tiering is heading in.
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 329cfd0bbe9f3..0668a0e539713 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2516,12 +2516,12 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- 		goto put_filters_watermarks_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_tried_regions(scheme);
- 	if (err)
--		goto put_tried_regions_out;
-+		goto put_stats_out;
- 	return 0;
- 
--put_tried_regions_out:
--	kobject_put(&scheme->tried_regions->kobj);
--	scheme->tried_regions = NULL;
-+put_stats_out:
-+	kobject_put(&scheme->stats->kobj);
-+	scheme->stats = NULL;
- put_filters_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->ops_filters->kobj);
- 	scheme->ops_filters = NULL;
+I plan to apply the swap tier infrastructure and the first use case
+(cgroup-based swap control) first, and continue following up on the
+discussions above.
 
-base-commit: 2d57ad161a03e7a68b2c036bc4895ef56b4c76a6
+Overview
+========
+
+Swap Tiers group swap devices into performance classes (e.g. NVMe,
+HDD, Network) and allow per-memcg selection of which tiers to use.
+This mechanism was suggested by Chris Li.
+
+Design Rationale
+================
+
+Swap tier selection is attached to memcg. A child cgroup may select a
+subset of the parent's allowed tiers.
+
+This
+- Preserves cgroup inheritance semantics (boundary at parent,
+  refinement at child).
+- Reuses memcg, which already groups processes and enforces
+  hierarchical memory limits.
+- Aligns with existing memcg swap controls (e.g. swap.max, zswap.writeback)
+- Avoids introducing a parallel swap control hierarchy.
+
+Placing tier control outside memcg (e.g., via BPF, syscalls, or
+madvise) would allow swap preference to diverge from the memcg
+hierarchy. Integrating it into memcg keeps the swap policy
+consistent with existing memory ownership semantics. There are
+also real use cases built around memcg.
+
+In the future, this can be extended to other interfaces to cover
+additional use cases.
+
+I believe a memcg-based swap control is a good starting point
+before such extensions.
+
+Use Cases
+=========
+
+#1: Latency separation (our primary deployment scenario)
+  [ / ]
+     |
+     +-- latency-sensitive workload  (fast tier)
+     +-- background workload         (slow tier)
+
+The parent defines the memory boundary.
+Each workload selects a swap tier via memory.swap.tiers.max according to
+latency requirements.
+
+This prevents latency-sensitive workloads from being swapped to
+slow devices used by background workloads.
+
+#2: Per-VM swap selection (Chris Li's deployment scenario)
+  [ / ]
+     |
+     +-- [ Job on VM ]              (tiers: zswap, SSD)
+            |
+            +-- [ VMM guest memory ]  (tiers: SSD)
+
+The parent (job) has access to both zswap and SSD tiers.
+The child (VMM guest memory) selects SSD as its swap tier via
+memory.swap.tiers.max. In this deployment, swap device selection
+happens at the child level from the parent's available set.
+
+#3: Tier isolation for reduced contention (hypothetical)
+  [ / ]                    (tiers: A, B)
+     |
+     +-- workload X        (tiers: A)
+     +-- workload Y        (tiers: B)
+
+Each child uses a different tier. Since swap paths are separated
+per tier, synchronization overhead between the two workloads is
+reduced.
+
+Future extension
+================
+
+#1: Intra-tier distribution policy:
+  Currently, swap devices with the same priority are allocated in a
+  round-robin fashion. Per-tier policy files under
+  /sys/kernel/mm/swap/tiers/ can control how devices within a tier
+  are selected (e.g. round-robin, weighted).
+
+#2: Inter-tier promotion and demotion:
+  Promotion and demotion apply between tiers, not within a single
+  tier. The current interface defines only tier assignment; it does
+  not yet define when or how pages move between tiers. Two triggering
+  models are possible:
+
+  (a) User-triggered: userspace explicitly initiates migration between
+      tiers (e.g. via a new interface or existing move_pages semantics).
+  (b) Kernel-triggered: the kernel moves pages between tiers at
+      appropriate points such as reclaim or refault.
+
+#3: Per-VMA, per-process swap and BPF:
+  Not just for memcg based swap, possible to extend Per-VMA or per-process
+  swap. Or we can use it as BPF program.
+
+#4: Zswap and vswap tiering:
+  Tiering applies to the vswap + zswap combination.
+
+#5: Vswap on/off control:
+  Currently not supported. If a strong use case arises where vswap needs
+  to be controlled by memcg, the tier interface could be used for it.
+
+Experimentation
+===============
+
+Tested on our internal platform using NBD as a separate swap tier.
+Our first production's simple usecase.
+
+Without tiers:
+- No selective control over flash wear
+- Cannot selectively assign NBD to specific applications
+
+Cold launch improvement (preloaded vs. baseline):
+- App A: 13.17s -> 4.18s (68%)
+- App B: 5.60s -> 1.12s (80%)
+- App C: 10.25s -> 2.00s (80%)
+
+Performance impact with no tiers configured:
+<1% regression in kernel build and vm-scalability benchmarks
+
+Change log
+===========
+
+v8
+- Changed the memcg interface to memory.swap.tiers.max.
+  Values are '0' (disable) and 'max' (enable). Default is 'max'.
+- Addressed Sashiko's review: Update the mask value atomically at once and
+  read the mask value while grabbing lock.
+- Collected review tags from Kairui and Nhat.
+- Rebase on recent mm-new
+- v7 link: https://lore.kernel.org/linux-mm/20260527062247.3440692-1-youngjun.park@lge.com/
+
+v7
+- Collect Baoquan's review tag
+- Baoquan's feedback on fixing improper comment
+- Minor code adjustments per Baoquan's feedback.
+- Rebase on recent mm-new
+- v6 link: https://lore.kernel.org/linux-mm/20260421055323.940344-1-youngjun.park@lge.com/
+
+v6
+- Sashiko AI review fixes
+ - Fix batch parsing error path to restore snapshot before exit
+ - Reject overlong tier names to prevent truncated duplicates
+ - Avoid restoring raw list_head via memcpy (stale pointer risk)
+ - Ensure early parse errors do not skip DEF_SWAP_PRIO validation
+ - Use (1U << TIER_DEFAULT_IDX) to avoid signed shift UB
+ - Defer tier mask inheritance to css_online() to close race window
+ - Add READ_ONCE()/WRITE_ONCE() for tier mask accesses
+- Other fixes
+ - Fix build error reintroduced due to missing v5 change
+ - Fix WARNING in folio_tier_effective_mask by adding rcu_read_lock()
+ - default number of swap tier max (change to 32->31, for reserving last bit)
+ - commit message refinement.
+ - rebased on recently mm-new
+- v5 link: https://lore.kernel.org/linux-mm/20260325175453.2523280-1-youngjun.park@lge.com/
+
+v5
+- Fixed build errors reported in v4
+- rebased on up to date mm-new
+- Minor cleanups
+- Design docs with validation (by Shakeel Butt discussion)
+- v4 link : https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.park@lge.com/
+
+v4
+- Simplified control flow and indentation
+- Added CONFIG option for MAX_SWAPTIER (default: 4)
+- Added memory.swap.tiers.effective interface
+- Reworked save/restore logic into snapshot/rollback model
+- Removed tier priority modification support (deferred)
+- Improved validation and fixed edge cases
+- Rebased onto latest mm-new
+- RFC v3 link: https://lore.kernel.org/linux-mm/20260131125454.3187546-1-youngjun.park@lge.com/
+
+RFC v1 ~ v3
+- Change the direction after discussion with Chris-Li
+- apply some LPC feedback.
+- RFC v2 - https://lore.kernel.org/linux-mm/20260126065242.1221862-1-youngjun.park@lge.com/
+- RFC v1 - https://lore.kernel.org/linux-mm/20251109124947.1101520-1-youngjun.park@lge.com/
+
+Earlier Approach (per cgroup swap priority)
+- v1: https://lore.kernel.org/linux-mm/20250716202006.3640584-1-youngjun.park@lge.com/
+- RFC: https://lore.kernel.org/linux-mm/aEvLjEInMQC7hEyh@yjaykim-PowerEdge-T330/T/#mbbb6a5e9e30843097e1f5f65fb98f31d582b973d
+
+Reference
+=========
+
+[1] https://lore.kernel.org/linux-doc/aiw2p5ANjsQUCIHA@linux.dev/
+[2] https://lore.kernel.org/linux-mm/CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com/
+[3] https://lore.kernel.org/cgroups/CAKEwX=O23a4iWBZoewKVb8QqODte6r3Xijckw3_oCJNoiO9M5A@mail.gmail.com/
+[4] https://lore.kernel.org/linux-mm/CAO9r8zOg0OP1Ak1v7CRzSfQq0D8b4Dw+_T0Jui6YTM_KwQQNOA@mail.gmail.com/
+[5] https://lore.kernel.org/linux-mm/CAO9r8zNi4-QC4sUi=xXWHt9WMeG39mbyoSf8kON9vLOZ=cbCmw@mail.gmail.com/
+
+Youngjun Park (4):
+  mm: swap: introduce swap tier infrastructure
+  mm: swap: associate swap devices with tiers
+  mm: memcontrol: add interface for swap tier selection
+  mm: swap: filter swap allocation by memcg tier mask
+
+ Documentation/admin-guide/cgroup-v2.rst |  20 +
+ Documentation/mm/index.rst              |   1 +
+ Documentation/mm/swap-tier.rst          | 159 ++++++++
+ MAINTAINERS                             |   3 +
+ include/linux/memcontrol.h              |   5 +
+ include/linux/swap.h                    |   1 +
+ mm/Kconfig                              |  12 +
+ mm/Makefile                             |   2 +-
+ mm/memcontrol.c                         |  67 ++++
+ mm/swap.h                               |   4 +
+ mm/swap_state.c                         |  75 ++++
+ mm/swap_tier.c                          | 483 ++++++++++++++++++++++++
+ mm/swap_tier.h                          |  76 ++++
+ mm/swapfile.c                           |  20 +-
+ 14 files changed, 923 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/mm/swap-tier.rst
+ create mode 100644 mm/swap_tier.c
+ create mode 100644 mm/swap_tier.h
+
+base-commit: 9d335aed8840f6bf83ba93309ae5e185de829c21
 -- 
-2.47.3
+2.34.1
+
 
