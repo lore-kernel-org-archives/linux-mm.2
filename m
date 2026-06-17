@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C70CD98F0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81928CD98F0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5110D6B00A2; Wed, 17 Jun 2026 08:28:50 -0400 (EDT)
+	id 7081C6B0088; Wed, 17 Jun 2026 08:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C0B86B00A4; Wed, 17 Jun 2026 08:28:50 -0400 (EDT)
+	id 6E01E6B008C; Wed, 17 Jun 2026 08:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AFB76B00A5; Wed, 17 Jun 2026 08:28:50 -0400 (EDT)
+	id 5D1696B0093; Wed, 17 Jun 2026 08:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 180616B00A2
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:28:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C2781203ED
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:28:49 +0000 (UTC)
-X-FDA: 84889333578.01.C923163
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CDEAB120002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:28:47 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aPu0lwpL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A17D6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:47:45 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9B9BC1D3E
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:47:44 +0000 (UTC)
+X-FDA: 84889381248.03.54E0C8E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CF181180016
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:47:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9akpU4D;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781700462;
+	b=f8wYtRNK6cIDbBG0kOAGd9UHe0u8D87irGnUVsiGPMwhPvPtByfTGzQmMqV8AX2PghEGrC
+	0w2Y8v58KL9mmNMc+2R0/gqBdFAzRF9OMkoKiZCynRG3w2OFJsKr0CJ94Qjwp+XvAmfGG2
+	7LqjU5I7eLOYIFyvZRcY1Kfh4u9oyeg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9akpU4D;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781699327;
+	s=arc-20220608; t=1781700462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mLeD86WlaOzT6NMJq1mWVXP+jO3RbCBQR26svGNQO/Y=;
-	b=Y1Pg+P1i24DvqsZKGQ5rXm1zu6Vc2BBj+nrnYmlXlB1gFIUGRdS4npTMCes/lIAsSfGif5
-	QyJfsBeTB1vJWo+p6HDE3cTRBAWDnK9IdsM/D9nY+uXCN2By17oXNEyhTz81xahlhY9aXs
-	vVMRawIr8RmoElJpC5uZxs+nbQeSBww=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aPu0lwpL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781699327;
-	b=6xJTTwqOUfi4+YibG4L0sMp6RqG97JTN4Hrp/PdJtPKPDVgm+v77ABxMagWUTLWYry0fYD
-	Ny8MwBqgQPs8gGgVP5eKsMotE0ANc+NzRrGm31b11uEAjQMT/Zt3a6Cp4yHy+nj9e0oZjB
-	B22ltILHZixq5MDQF3EqtaV1ra6hVXs=
+	bh=vNxoXi2Xs2Z/S6rhk+D/+FM4hX0Vdz/T8a58ZEMk0Bc=;
+	b=qRHvuQLgeLckMLaEA7s/WeEN9EnaA/6pT4FwilSNnsQxZmYwYgnLWjkLNnDEGev2Vi08Po
+	0k/YDcLpvnKPZKLnI9fXB/8GDhnybT7TzongW1c9jPDStsKeq13LNuJ++mbsbjnFnPJ45s
+	ML4cSFF+E6P6LbIoR2BJ2twrBw0bNFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 625C360052;
-	Wed, 17 Jun 2026 12:28:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6881F000E9;
-	Wed, 17 Jun 2026 12:28:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CAF9D42D7A;
+	Wed, 17 Jun 2026 12:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169041F00A3A;
+	Wed, 17 Jun 2026 12:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781699327;
-	bh=mLeD86WlaOzT6NMJq1mWVXP+jO3RbCBQR26svGNQO/Y=;
+	s=k20260515; t=1781700461;
+	bh=vNxoXi2Xs2Z/S6rhk+D/+FM4hX0Vdz/T8a58ZEMk0Bc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aPu0lwpLerB36iAslE6t72DuGoUvNHsGDCoXJHzSwA4YW/NjJyaDt+rl84MRMFnul
-	 7/WkoIyvV5Edo1017A9I6dxi5XZkKhjLiFeZU67o3pCgjevg3TndZO88HQdMXJsYSd
-	 HNjWKm2M/aQX1iAj9MEUo3UIhs44NXDNk51fDK+r8iK6dZn2I3ZjiC4ugHaMH50FZd
-	 vojPOYSoL2fULeUgBoqx7STZzdG3MMZOXE2LCDKA/pfqCOCvLvJtq9ncw15r9dlAwr
-	 UuOoK0qsRQuu6CCNznHS3y6VMCFaDHC2exTr0U8klHJvN6f5t7ZR4G7P2eQWCTLI+E
-	 HsVTLOARVFQKQ==
-Message-ID: <72874bf7-d2f7-4bb9-9211-804533bd5c19@kernel.org>
-Date: Wed, 17 Jun 2026 14:28:42 +0200
+	b=G9akpU4D7eBc6wCgUNqt8IAwOznRQPfrvsitOvDpn9ghIDmykuLJXuAZRiZzYIrqN
+	 ZrZwtORd3cPZZtHWJCCH9EGppeiIqORFpXs/+TqJiAjTVno0KCVoiOy1rfB1TMnntU
+	 8ojqYvzZ+R4GL/j1UulOO6DEidtfjhwPo5ffDlJc+a5auvCs6pKQ6wUsyimWCHhmbt
+	 99OxpUwNlADvzN6r0OiK5uK9jmv6zIv6gCkmlMX0VMtQ17DxkUNKO+cmumDy1qTDXG
+	 LPjxgi75NAndePaWbiW8IeHslgbk/YCG9qUAvFuDsx8YIulPPV3H8/hXAa8xZd1xBd
+	 2xW6WsYvkeCTQ==
+Message-ID: <0ea1abc4-ff2c-4070-8bfa-67f6892aaca7@kernel.org>
+Date: Wed, 17 Jun 2026 14:47:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] mm/vmscan: extract folio unmap logic into
- folio_try_unmap()
+Subject: Re: [PATCH v4 5/5] mm/vmscan: flush TLB for every 31 folios evictions
 To: Zhang Peng <zippermonkey@icloud.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
@@ -82,7 +81,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
  Zhang Peng <bruzzhang@tencent.com>
 References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
- <20260525-batch-tlb-flush-v4-4-83789d6abc00@icloud.com>
+ <20260525-batch-tlb-flush-v4-5-83789d6abc00@icloud.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260525-batch-tlb-flush-v4-4-83789d6abc00@icloud.com>
+In-Reply-To: <20260525-batch-tlb-flush-v4-5-83789d6abc00@icloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CDEAB120002
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CF181180016
 X-Rspam-User: 
-X-Stat-Signature: hyokh689wn8tko3ppzbst14akfjtunke
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781699327-879974
-X-HE-Meta: U2FsdGVkX19U9vlRhopX7Mvx6ECKt9MMy547R+yfk/+zBDB8ay3DgB7AyvF+LZf+Tko3NWSnFNTg+nvLDR3SjHK68TjRwVVTR9dfL+UkWdQ7Fgx11HQbp6JNLojDO4q0D9AhWpoQpOdsvFBem7DiBFULFFcS3xKMF0c+QXsDzbiq/N8eSk5YMZ9MalS3mt/ZE7msYsR3SmOFaWf1r7zwOtuiKkCxQvqNF7q24uMgW07e+4lzlWzs0eZ6Gt2Yd3fssjmP+6nSetYwUXWjtlagXWw4KYU36/cf0lgFN6fyTpb4z4pO2L75SH065AYtd2GmEU5N+Ac83E41fz7IvZ0gmNVmRIBoWBBsjaPkAdg69V13vIDjrIiTEAbBFnaEKPPl4rDljOGmszWlVkoiQICeOt8XG5Hk0XEHRLd1uo5SShg8uSWNjTBtxzEhtGR6y1Wl/7VEDKWKzz1lMYrVEDvHo2l4MIm40YK0h8JHqPHsL99KAwUJSgRVj6sd6h97bDhLjjDPZaSyJANDAb+5+yzZC7srXWuwCds5fqtcyTBoEhBBibs+aaHuKQUNZC00E9c2kyKtQhhx2PXID8SSTODVuxzzQXIaTl93M9z9dMDS0fidUaL2VRsy8c6zQF3nGOwdcJb1LCY2QOYsBZSPfaFPkuHzsxpNfPXYMagJV7ksQyZcId/gomp+75upTQWm0ZZnE71KIUgRL3VXK+arBOXxgDENmwBsbS2VN4AKDsUBIJOx7ZtrN3MTMjooq0u/ugNJo+zmvEJy4Fsrn/muskhFGdPCgLhPGt60Lv0oNhfRUt8BhCggUp7ugMfKKTBLFBXJ7ZEH4YVUc8mh2KqMtpTGK5KZLB2kB4x9xZjEDTyi8sS6+PW/cNLwwN0+jySBLQQKxOVZKEAUR3aOrZbzMN+ro4jSN4wkcTWD/syGWGjze84oRzO2MMshPEX0ZUmQ0d6/zVctkarCF50N9QzFbBk
- eDRLB4z7
- x199m1CUECQcoUJ3ZUHMKxHgDLJGre7N5h5HGmZ39Iv5OrzwciQ0jlPuk9sPZsGSLWNfgclC910nO+5XnoCMydeE4bEHxnBv0ztodmNB8sGsiYQExVahZvmZaH4rc2tPlRksHnUg6pqPrytHwvL3dM+Nq15mTI6YDFEhNxe/O/L/Ytmge62Hvm1iK8q4tWjC12PIQc2d+LEtToQXa89dXEsiEI4FaePpX3bl+mHROU3vfNqUvMqNJA2HuJx/adeuuEjHKOoAHnUwAL07nlqfXWFjp/GuxU3WEnYhdBiueMp3GzDqk7FQxn9vQI8R3dGh9iw1lZq5UYd6JpTw=
+X-Stat-Signature: 78qro8z8cocpkzznwjbeimboz4diyha6
+X-HE-Tag: 1781700462-808644
+X-HE-Meta: U2FsdGVkX1/5slX2oZGkXKEzP1aMtm0vQgmHxcNiB+M+vZQZ0AvP7jA2NJqxW/PKp0BuRkVGp2ZSqcAlj9PH16dML1pCnaR1P/TaFkGAyCHA+tZPFCLRoXdB8apmNiO/LccXPvqGSyiWfBzpqj6myq4AnHdw3Sh40FcOOsN7BcfxDmnqiBaF1kACIU6sds/kr3vGCoRpgoQb6eUoZ3p9241TqM5zMRvheh0TgcWpp2RMVTPU7SgjYBgRmXfU974Lfbss33jarG9hT0SEtT5/dIhnwMOamiThJJZsUhSTpojjIi3vKAwDW9COMeGpiQm2Ie4mBS+oTnAFhFpy8vTj+ynkB1GU+6ib4UIkegviFEw8+GuKv4KTbU7R5g8KQmZh/455q8j5ltScTzUqbBAWQE8sxjCHL6dsMBp3Q7MNWSH623QqlqQIbQNrzQ+0xgl4zzFNpXXbj7BDVLDU1KWizOzed0FEsUqwgkWecY17TOI2E2GAN7LHu+JTPB7FVm0XFMxnEXntRhOx9XHCWmHYUztNRTTURT2iJu28PkfVvXK7xTYmhboZ8nVC8RsTcSykiykY09gYBWqDlIHmxP/5twfYF7j+GyBB0U4LXrugObiCY9lmPzvUxYs2TxRnykRo/AidVE1xLCbA/L7M9pKEW+stiSlcf7ANk+MMXEOGgL48E9r6+24N3BIi1k3U65tW2QbWOMeJjUl5KYQU+qVK96J92BWpuUMIIIJO4T6WxYPEXuIoD96X0vBVIal0DfrFaDFvhfQaTuMxDYoSDhmTIuFZcMwM5ffgWbf4+qfbseeR9zibHhLY5NhgHdmCNiR1x9fPIzNUt9QlkjdBgJMSZjwYt6qCeM+cl9VSq3IJX++cxMEdhr6f5yBCc5GrP1CQv+1AkTDzQC1LIlm5P+tk31dq0RxBXDhxNUu3TVlnJZuOfI8XP3VtH7Rq6XZZ2M8Bv2/ms4G5NYKUtuni+qP
+ JJ7psPvX
+ r+hFx9zrpN8O/rM68KKzxeCdAh+x6pwn5BX7kJ8dH1ot9sBXbC5oXRe6DedIhK1gnsBCbykRyLTF/Xtde/8fKFgjr6oTB6R65U4OFPW+lS8UbMpympxVSY9rl5cQG06uhjyO07i4HS1WSFKbU3M28pVm2JZTTgWstm0wMaqz16wAMhBwTyLy/7f/QGaBGYxZkBIRiTlgWxD98BncPi/vu6DfDDb7AKypDHm2EzcbS2g86ExFky721R+q+hNeOPNK9edCWppFigkkbgDwnKSGZZs34G3yDMPjiQXh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,135 +147,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/25/26 16:57, Zhang Peng wrote:
-> shrink_folio_list() contains a self-contained block that sets up
-> TTU flags and calls try_to_unmap(), accounting for failures via
-> reclaim_stat. Extract it into folio_try_unmap() to reduce the size
-> of shrink_folio_list() and make the unmap step independently readable.
+> Currently we flush TLB for every dirty folio, which is a bottleneck for
+> systems with many cores as this causes heavy IPI usage.
 > 
-> folio_try_unmap() is only called when the folio is actually mapped;
-> the !folio_mapped() check stays in the caller, keeping the function's
-> semantics clear: it tries to unmap a mapped folio and returns whether
-> the unmap succeeded.
+> So instead, batch the folios, and flush once for every 31 folios (one
+> folio_batch). These folios will be held in a folio_batch releasing their
+> lock, then when folio_batch is full, do following steps:
 > 
-> No functional change.
+> - For each folio: lock - check still evictable (writeback, mapped,
+>   dma_pinned)
+>   - If no longer evictable, put back to LRU
+> - Flush TLB once for the batch
+> - Pageout the folios
 > 
 > Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 > ---
->  mm/vmscan.c | 68 ++++++++++++++++++++++++++++++++++---------------------------
->  1 file changed, 38 insertions(+), 30 deletions(-)
+>  mm/vmscan.c | 79 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 71 insertions(+), 8 deletions(-)
 > 
 > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 456d38eb172c..abf3a2878456 100644
+> index abf3a2878456..c0d22afe67a5 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -1221,6 +1221,41 @@ static bool pageout_one(struct folio *folio,
+> @@ -1221,6 +1221,57 @@ static bool pageout_one(struct folio *folio,
 >  	return false;
 >  }
 >  
-> +static bool folio_try_unmap(struct folio *folio, struct reclaim_stat *stat,
-> +			    unsigned int nr_pages)
+> +static void pageout_batch(struct folio_batch *fbatch,
+> +			  struct list_head *ret_folios,
+> +			  struct folio_batch *free_folios,
+> +			  struct scan_control *sc, struct reclaim_stat *stat,
+> +			  struct swap_iocb **plug, struct list_head *folio_list,
+> +			  unsigned int *nr_reclaimed)
 
-Two tabs.
-
-folio_try_unmap() vs. try_to_unmap() Hm.
-
-Again, maybe we should throw in a "for_reclaim" ?
-
-folio_try_unmap_for_reclaim() ?
-
-Not sure.
+Two tabs. But this is starting to look a bit messy. Could a helper struct be
+used to reduce the parameter count to something readable?
 
 > +{
-> +	enum ttu_flags flags = TTU_BATCH_FLUSH;
-> +	bool was_swapbacked;
+> +	int i, count = folio_batch_count(fbatch);
+> +	struct folio *folio;
 > +
-> +	was_swapbacked = folio_test_swapbacked(folio);
-
-
-const bool was_swapbacked = folio_test_swapbacked(folio);
-
-> +	if (folio_test_pmd_mappable(folio))
-> +		flags |= TTU_SPLIT_HUGE_PMD;
 > +	/*
-> +	 * Without TTU_SYNC, try_to_unmap will only begin to
-> +	 * hold PTL from the first present PTE within a large
-> +	 * folio. Some initial PTEs might be skipped due to
-> +	 * races with parallel PTE writes in which PTEs can be
-> +	 * cleared temporarily before being written new present
-> +	 * values. This will lead to a large folio is still
-> +	 * mapped while some subpages have been partially
-> +	 * unmapped after try_to_unmap; TTU_SYNC helps
-> +	 * try_to_unmap acquire PTL from the first PTE,
-> +	 * eliminating the influence of temporary PTE values.
+> +	 * Reuse fbatch in-place: reinit only clears the count, the
+> +	 * underlying folios array is still accessible via saved count.
+> +	 * Filter and re-add valid folios back into the same batch.
 > +	 */
+> +	folio_batch_reinit(fbatch);
 
-Comment can now use less LOC.
+That looks rather hacky. You reinit the batch to then traverse the batch? There
+must be a cleaner way. Walking and modifying the same folio batch in one go is
+rather crazy.
 
-> +	if (folio_test_large(folio))
-> +		flags |= TTU_SYNC;
+> +	for (i = 0; i < count; ++i) {
+> +		folio = fbatch->folios[i];
+> +		if (!folio_trylock(folio)) {
+> +			list_add(&folio->lru, ret_folios);
+> +			continue;
+> +		}
 > +
-> +	try_to_unmap(folio, flags);
-> +	if (folio_mapped(folio)) {
-> +		stat->nr_unmap_fail += nr_pages;
-> +		if (!was_swapbacked &&
-> +		    folio_test_swapbacked(folio))
-
-Probably best in a single line.
-
-> +			stat->nr_lazyfree_fail += nr_pages;
-> +		return false;
-> +	}
-> +	return true;
-> +}
+> +		VM_WARN_ON_FOLIO(folio_test_lru(folio), folio);
 > +
->  /*
->   * Reclaimed folios are counted in the return value.
->   */
-> @@ -1495,36 +1530,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  		 * The folio is mapped into the page tables of one or more
->  		 * processes. Try to unmap it here.
->  		 */
-> -		if (folio_mapped(folio)) {
-> -			enum ttu_flags flags = TTU_BATCH_FLUSH;
-> -			bool was_swapbacked = folio_test_swapbacked(folio);
-> -
-> -			if (folio_test_pmd_mappable(folio))
-> -				flags |= TTU_SPLIT_HUGE_PMD;
-> -			/*
-> -			 * Without TTU_SYNC, try_to_unmap will only begin to
-> -			 * hold PTL from the first present PTE within a large
-> -			 * folio. Some initial PTEs might be skipped due to
-> -			 * races with parallel PTE writes in which PTEs can be
-> -			 * cleared temporarily before being written new present
-> -			 * values. This will lead to a large folio is still
-> -			 * mapped while some subpages have been partially
-> -			 * unmapped after try_to_unmap; TTU_SYNC helps
-> -			 * try_to_unmap acquire PTL from the first PTE,
-> -			 * eliminating the influence of temporary PTE values.
-> -			 */
-> -			if (folio_test_large(folio))
-> -				flags |= TTU_SYNC;
-> -
-> -			try_to_unmap(folio, flags);
-> -			if (folio_mapped(folio)) {
-> -				stat->nr_unmap_fail += nr_pages;
-> -				if (!was_swapbacked &&
-> -				    folio_test_swapbacked(folio))
-> -					stat->nr_lazyfree_fail += nr_pages;
-> -				goto activate_locked;
-> -			}
-> -		}
-> +		if (folio_mapped(folio) &&
-> +		    !folio_try_unmap(folio, stat, nr_pages))
+> +		if (folio_test_writeback(folio) || folio_mapped(folio) ||
+> +		    folio_maybe_dma_pinned(folio)) {
 
-Probably best in a single line.
+Took me a second to understand why exactly you test for these properties. Can
+you add a comment how these check here mimic what we checked earlier, before
+dopping the lock?
 
-> +			goto activate_locked;
->  
->  		/*
->  		 * Folio is unmapped now so it cannot be newly pinned anymore.
-> 
+> +			folio_unlock(folio);
+> +			list_add(&folio->lru, ret_folios);
+> +			continue;
+> +		}
 
+So, IIUC, what could have happened after dropping the folio lock is that someone
+would have remapped the folio to user space?
+
+Either from the pagecache or from the swap PTE -> swapcache.
+
+From there, it could have gotten pinned through the page tables.
+
+Is that correct?
+
+What would happen if page migration finds the folio, locks it and wants to
+migrate it?
 
 -- 
 Cheers,
