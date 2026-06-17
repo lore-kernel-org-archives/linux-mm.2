@@ -4,102 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4EECD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:33:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6714ECD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:38:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E771D6B0005; Wed, 17 Jun 2026 03:33:09 -0400 (EDT)
+	id 3A4346B008A; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E20EE6B0088; Wed, 17 Jun 2026 03:33:09 -0400 (EDT)
+	id 355136B008C; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D38476B008A; Wed, 17 Jun 2026 03:33:09 -0400 (EDT)
+	id 26AFB6B0092; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A898E6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:33:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30C3E403A2
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:33:09 +0000 (UTC)
-X-FDA: 84888588498.26.5619226
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 524DDA0006
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:33:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4PvViPGF;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E4BD66B008A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:38:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 685B1A0349
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:38:26 +0000 (UTC)
+X-FDA: 84888601812.13.12B7A25
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 58E81C0009
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:38:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=L1cW5Lko;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781681587;
+	s=arc-20220608; t=1781681903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MU8cLNW4cs3+j2eOxJiKF6ANHGeeIXo1iPWKsVafUj0=;
-	b=U/5jy+0AeO8X7oZ7Lf1buVNl6KHIGrLHWXBov/9Hp/oUPVmV6mVKVnCNcl8bA73d8PVB27
-	r49zcu004SjZeSDlVW38kYQfnuDtI/IU30hCk9eftFQ2XrEkHRDdS94EDJ5qpzMgUprnIv
-	kh64hJMTMxb4jxSBgdrYzTHoQ2nGo9g=
+	bh=OlHpfhG6RtHov9Iyyi+B0BO0xvSLE7bwTX2Gg1r93rs=;
+	b=VxUbpRA1SbvWo5zqfgLX8IiyzwxvyydZidhaxPtyQzRC57LPNJm6u6Kso6QE06BWqiAFMr
+	l2hO5HKJfxSYBL+D6OegMi8BZLRZEsV2QU3JTae118o34ZfDi7KBlWn0NDqpqjOUYXpvbj
+	xhFXTPjcmSoJlNTmFEvNbN1pRYWyRwQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4PvViPGF;
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=L1cW5Lko;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781681587;
-	b=rVefjWVtsLplU9YW2/At5Gr7o1Wngvb7ftrfZyupE4bQa2uYcChvhO8TfxQAhGk1aHDTsP
-	ldfDcR6/+bV6PL1DT5CHKDvPiWGCjfdnK5J6Q8vpRUwLypX3BfNbC8fjH9W7KxajxFSuqP
-	w+5ya01l0iJeB5dbPDJzIQ7tsimW8xE=
+	t=1781681903;
+	b=MAbIeMgxO2hcZOlJ07qnaJj2cITNIFk4z8ALhw914qNzBaMEBntwXLmuIVkHZowY7IDkk/
+	kQ6P0w1QE/h30hva6jtae7NhFJOR2IQgmidrB8QYyu1WfB0Sm9FNx0CiY3cWjDx+kL36dA
+	+SRmvKuw7W3cCtxAj4IQdjVH0D6RSEM=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=MU8cLNW4cs3+j2eOxJiKF6ANHGeeIXo1iPWKsVafUj0=;
-	b=4PvViPGFBMXqKLhx5j6wvRohmp2ncVACO9EumK5IolLjCPHRUP8h3CVM4jdHfmb9IOLx0s+CH
-	GHhiwVvqqtqbl9MfC1PYW3n9gK0letrx3B8YENNVd16HAnKmuxZ1sCd/oO9d5zCWAapstD6CqDh
-	uA6c4ztoPwHWpzRLwl7Geig=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4ggFk924s3z1cypL;
-	Wed, 17 Jun 2026 15:25:05 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 89B11405D1;
-	Wed, 17 Jun 2026 15:33:02 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 17 Jun
- 2026 15:33:01 +0800
-Message-ID: <7fa4b268-5c5b-4a69-ba47-40246ff933e0@huawei.com>
-Date: Wed, 17 Jun 2026 15:33:00 +0800
+	bh=OlHpfhG6RtHov9Iyyi+B0BO0xvSLE7bwTX2Gg1r93rs=;
+	b=L1cW5Lko8NTkoTU61zFAqQl6tc/dqLCfB1VusVhd8zgxxrESR45LRPCFHhA01wV2X8PlyYFT/
+	QRBgnpC43exbQnQN4Fg6iPly0OzYZupdlflCdX5g6MmYd7jZLdxArz0s9TQsK/I8FulUzIubeU5
+	SHoTN5mNfSkoR4XOIMVgPJQ=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4ggFqB2WH9z12LDV;
+	Wed, 17 Jun 2026 15:29:26 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6676340575;
+	Wed, 17 Jun 2026 15:38:17 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Jun 2026 15:38:02 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Jun 2026 15:38:00 +0800
+Subject: Re: [PATCH v5 4/4] selftests/mm: add hard memory failure anonymous 1G
+ HugeTLB page test
+To: Jiaqi Yan <jiaqiyan@google.com>
+CC: <osalvador@suse.de>, <lorenzo.stoakes@oracle.com>, <jackmanb@google.com>,
+	<hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>, <david@kernel.org>,
+	<william.roche@oracle.com>, <tony.luck@intel.com>,
+	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
+	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
+	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
+	<osalvador@kernel.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
+	<willy@infradead.org>
+References: <20260531055829.3636554-1-jiaqiyan@google.com>
+ <20260531055829.3636554-5-jiaqiyan@google.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <d1333353-b615-2dc1-ecff-8093d237cba7@huawei.com>
+Date: Wed, 17 Jun 2026 15:38:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: khugepaged: free xarray nodes left behind by failed
- collapse_file()
-To: Matthew Wilcox <willy@infradead.org>
-CC: Rik van Riel <riel@surriel.com>, <ziy@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <kernel-team@meta.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Hugh Dickins <hughd@kernel.org>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, Nico
- Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain
-	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, <linux-mm@kvack.org>
-References: <20260616145413.1491961-1-riel@surriel.com>
- <ajFrxhGf7loEHUeX@casper.infradead.org>
- <8a4caadc-f414-4874-97d4-2fbaebe2af39@huawei.com>
- <ajID7ZpnBYOucAVz@casper.infradead.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <ajID7ZpnBYOucAVz@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Queue-Id: 524DDA0006
+In-Reply-To: <20260531055829.3636554-5-jiaqiyan@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: aeauk1qrwnf6fkp5qpydbbfcwm8htk4h
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781681586-950399
-X-HE-Meta: U2FsdGVkX19AAPmy0/jwAQBNkL0E0DwJLnk2Npd+gadMsyqHRlqC4cBW2hSYP7fj6hvgva1mAiiBoDJ9P803VsfULfdeyAVS87BG1FtwgG/p3sDoFESDHoAWXbbfFWRJCFtnnvFzeF3ZTfEh/qoo3fFxKhG00y4ay1NTvy+EWi9PfVyYNWmg54IxJFmvMiNAJQtokZ/MDixpY+Zf8fcbNzm1yZK21Yi83yY0IJioze8RRTOTXMsD3n5R2f7QbosBq1nyQgcOrjLDXwiHM4fjx8NoyfZkPyoRNDbe9TQNZwk2nAuaZsc+wlW4UiVG0KxvRB9nGhFRqi0WvxjMHq6KTy7OKfi+SrVJ6+QQ0AVt2A0p7Tfs45hH4QXDf4RlqMINOE6D7oqfmaqL5O0EcxlI1wEcsgWRMp558My6+rbG1hMgW95wkEfmP0XMd0/96ijTovrcZ0QJ9ZVyMH0A3A6wreQ9/OFsLTstsg5MXRwQLQ1MlEwXF7RgUp9dyE711yHuFrK70jtlpLvCfpIUwhW998e3/sv2KRtclFj2t8kR1Nm1qVo/6f32aZ6dAhwT7GT1IWWBuNZuLGmbs+Ds6G9hKxJp7ai5VhEIxWFKwwkCE2K4QDyrAV61lKY0u7/+ZbJu2KCkQmthdQoA76+pCGCIUbMg+K8CvHHW5GSzeyPCGxMOqYAZOjfFERWnP+QIvT3WDQbJe3/Ou6oOjfWPTftflZzXVpVlqu9mF23U3aSfg2ooFyqLPtoVkTO2fjcQzvTVNhGOguQNdxeMYGDn+yBhI+nwxwkaZon6tWZwT3S5md3RUkUCZgetVZzVM+Cua+vGhpIiVnxUrtN2thVCbVNMbByKAYLnpniqh6C964s4MNErIv6mS8Df1mg49Qqx8Op9nGqaof/YVblfyrQeV5T3abqMFS9PLMTU8sQNOQcqfCqfF0pDN27Ad4k+ok2er3rfPxJhpzyYcl/fQDLvZh7
- rKNgAlek
- i0o1sKs6aEFqyI4jn1nCF3MMGC9d+TpaBPJNremaqbrfXyOoRcdS1E7rRSAEw7kcbsDCst2TCiAGyCwJtiq4YkyouZMaq4KpoaHNt0x3F72/1DKvpGYbMNoh19CgWNrHudviIOmUyDFLorU2NnakSKJ4OmQpv6aLtI+9/gChNhMElEfUtglMDF++uQwf6ATF4kH1lmWVaQpYX9vC8npRd4BNq46BNhPdUsaoZ8KsrcpEkUWFxLBTeSQE93J61uJf3qkKNLjdwGsQDbJXQXv0hg7z5TUVrbLJXF6h5eOJiwzxu8jwVAJ4NsMwbh7SCYjPVySeA9G4OKjzzRg1jwzuCUj/Gvl46KY+cJWSnZ9buXrQSsIiQo7aWLYsn/7KvjCP/sWYa6ATBOAQ8fyM=
+X-Stat-Signature: 4xutkkrqd7fztfidpn1qrkjsifscot59
+X-Rspamd-Queue-Id: 58E81C0009
+X-HE-Tag: 1781681902-882030
+X-HE-Meta: U2FsdGVkX18P1b2ApgsPIj3+VS3OYz74nTvyTrUcPgHnewQ9XM5ivMDueqkXqcSRy/v0Dp/wxSGRiHCfuBoZ2FNf1lEbBn0G+arw06sXXp1uv4xSJEOh9Q2ugDLrPoqNH0Rkwc3KD6CZmCZ3gKQ0nyF5DoLXCW0bDTapA8OK4Jg0z9/NQmwYFGXcd+SmD6fJMxNz1qJLAnXYIKQ2XswCeLdTdMzDUcrqRwDuKd+6KPwa2JbuKoMszyn3l2O5uBTs+7RMfGYnpWlKVFcXABF2NEGSJqATrU+1lzkxs4ENqsGnk9onQKfeJ992rDuj0kjcgnEpLir7ZZyk9ACVqVBHxO0085ZUwKDMt04uspQsm2s/IElJ/piyBKEilRcnmjavgIjw2SWqw06ftL1DB3xtAJybfhfQWDT37BnkayDuzch8Jq6RbTsyL2XQa4XQl/qu45zynlmfE7gfavmLInC8e9/iMoxAGC8Lk0RwMUP/2qYWPJ+47im5+iQDqEiVNDsgZvAkk+CcXODWniCAgb6JEiUtL5QmaAc900H1t+leaP5T9PBJ4IB5fGUzKvDErLpYV1YZ4695MFem957G8VKo7U4shi8DIEZ3cvGbi2TPnrKbipMePX4zgZxqQ89EtROhFkho5YUY1yVMVxQk3CzEJ2LE7Tj+eZor37LNU58ji4di7Fy+cv/ADtxY3nx6zuOwBGtq7LTjvsud3HL/5yMSr0j7CCTiNQrm9ZC4OOUFSczZ9VNiSGj74CPq0Kw+LQO6HsZUjsncEBIN3R5YcboqIQVjElUmZ//FVCNvIs3EkbMpZKX+V0WU7DD0FKa8H2oAIDP92WFdRehKfYgBsRVH9l9yhhMpOV88QujlwcmqTFCTtFNDe6i3ROrlHX1VLT0+PEj/7VJdQRGUf9JJGo802RAKRRJ/ksgxcHOyeaAIMI/JS399bEGV/VH5oP9yVFpHwZd2T8AOT/M1QO5cooa
+ E6iKzZI4
+ QsYPyiP8Se6JSd8ROKljJQqNXQsZ6JpgW3ks8Asd7IofVOXMFrL3Lt/RJQyGt8URDelJGCZgEbGLVCGDfgqlSqri6Ts48h2BsJuu2aQGLjk5K2sc/vs+t142O3TtZLAfuKKhBfTbgxCwAAxQRBJppEAPN2+Rkc0uhAywIyONCAvkItZuGbOn+Lim3ZZUD0Lnc1QmDY3OILQu63rkG0VzG8Toi6E4F9YYgTzTEeziCSAaMnXbVlaGKD26clmXShIr1JfADyNI38EVuq/Kk8oomuScuwUNeIWL0hazZcDhSf+LJl/hsne1/qEYpP9mOgKNDMY6Uo7EchGFpDuhl0qhgJBOli+ee9RhpR3HIm0QwQo0/lduXYctv6ITrHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,31 +114,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026/5/31 13:58, Jiaqi Yan wrote:
+> Add a new testcase to validate memory failure recovery for HWPoison
+> anonymous 1G HugeTLB page, including proper SIGBUS delivery,
+> releasing a 1G HugeTLB page containing one HWPoison page to buddy
+> allocator, and isolation of the raw HWPoison page.
+> 
+> Although can be added in future, this patch does not support testing
+> the MADV_SOFT variant.
+> 
 
-在 2026/6/17 10:18, Matthew Wilcox 写道:
-> On Wed, Jun 17, 2026 at 10:00:59AM +0800, Jinjiang Tu wrote:
->> 在 2026/6/16 23:29, Matthew Wilcox 写道:
->>> On Tue, Jun 16, 2026 at 10:54:13AM -0400, Rik van Riel wrote:
->>>> syzkaller reproduces it trivially with MADV_COLLAPSE on a sparse shmem
->>>> mapping (collapse aborts with SCAN_TRUNCATED because the range is empty),
->>>> and also via slab fault injection, which forces xas_create_range() down
->>>> the xas_nomem() path before the same abort.  kmemleak then reports the
->>>> 576-byte struct xa_node objects allocated in xas_alloc()/xas_nomem().
->>> I think the ways to produce this problem are sufficiently rare/unlikely
->> I can reproduce it easily with following steps. [1]
->> 1) create file /tmp/test_madvise_collapse and ftruncate to 4MB size, and
->> then mmap the file
->> 2) memset for the first 2MB
->> 3) madvise(MADV_COLLAPSE) for the second 2MB
->> 4) unlink the file
-> Yes, but is there a problem?  That is, do we need to clear this up
-> before we get to clear_inode()?
+Thanks for your patch. Some comments below.
 
-A user cannot exhaust memory by continuously creating xa_node structures. So
-it is enough to free empty  xa_nodes in clear_inode().
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> ---
+>  tools/testing/selftests/mm/memory-failure.c | 73 +++++++++++++++++++--
+>  1 file changed, 68 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+> index 032ed952057c..ea43b2877c81 100644
+> --- a/tools/testing/selftests/mm/memory-failure.c
+> +++ b/tools/testing/selftests/mm/memory-failure.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/magic.h>
+>  #include <errno.h>
+>  
+> +#include "hugepage_settings.h"
+>  #include "vm_util.h"
+>  
+>  enum inject_type {
+> @@ -27,6 +28,7 @@ enum inject_type {
+>  
+>  enum result_type {
+>  	MADV_HARD_ANON,
+> +	MADV_HARD_ANON_HUGETLB,
+>  	MADV_HARD_CLEAN_PAGECACHE,
+>  	MADV_HARD_DIRTY_PAGECACHE,
+>  	MADV_SOFT_ANON,
+> @@ -47,6 +49,8 @@ FIXTURE(memory_failure)
+>  	int pagemap_fd;
+>  	int kpageflags_fd;
+>  	bool triggered;
+> +	/* Number of initial HugeTLB pages with default page size. */
+> +	unsigned long nr_hugetlb_pages;
+>  };
+>  
+>  FIXTURE_VARIANT(memory_failure)
+> @@ -157,11 +161,11 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+>  		  void *vaddr, enum result_type type, int setjmp)
+>  {
+>  	unsigned long size;
+> +	unsigned long nr_hugetlb_pages;
+>  	uint64_t pfn_flags;
+>  
+>  	switch (type) {
+>  	case MADV_SOFT_ANON:
+> -	case MADV_HARD_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_CLEAN_PAGECACHE:
+>  	case MADV_SOFT_DIRTY_PAGECACHE:
+>  		/* It is not expected to receive a SIGBUS signal. */
+> @@ -174,6 +178,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+>  		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
+>  		break;
+>  	case MADV_HARD_ANON:
+> +	case MADV_HARD_ANON_HUGETLB:
+>  	case MADV_HARD_DIRTY_PAGECACHE:
+>  		/* The SIGBUS signal should have been received. */
+>  		ASSERT_EQ(setjmp, 1);
+> @@ -183,17 +188,36 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+>  		ASSERT_EQ(siginfo.si_code, BUS_MCEERR_AR);
+>  		ASSERT_EQ(1UL << siginfo.si_addr_lsb, self->page_size);
+>  		ASSERT_EQ(siginfo.si_addr, vaddr);
+> -
+> -		/* XXX Check backing pte is hwpoison entry when supported. */
+> -		ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
 
-We shouldn't free empty xa_nodes in collapse_file() rollback path, because we
-couldn't avoid a concurrent call of collapse_file(), which creates xa_nodes
-for the same region and may use these nodes.
+Can we write this as something like:
 
+		if (type != MADV_HARD_ANON_HUGETLB)
+			/*
+			 * XXX Check backing pte is hwpoison entry when supported.
+			 * Check backing pte is hwpoison entry when supported.
+			 * Although try_to_unmap_one() also installs hwpoison entry
+			 * for HugeTLB, pagemap_hugetlb_range() doesn't parse
+ 			 * swap entries at all.
+			 */
+			ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
+
+So we don't need to modify the if condition when more base page size tests are added?
+
+>  		break;
+>  	default:
+>  		SKIP(return, "unexpected inject type %d.\n", type);
+>  	}
+>  
+> +	if (type == MADV_HARD_ANON || type == MADV_HARD_DIRTY_PAGECACHE) {
+> +		/*
+> +		 * Check backing pte is hwpoison entry when supported.
+> +		 * Although try_to_unmap_one() also installs hwpoison entry
+> +		 * for HugeTLB, pagemap_hugetlb_range() doesn't parse
+> +		 * swap entries at all.
+> +		 */
+> +		ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
+> +	}
+> +
+>  	/* Check if the value of HardwareCorrupted has increased. */
+>  	ASSERT_EQ(get_hardware_corrupted_size(&size), 0);
+> -	ASSERT_EQ(size, self->corrupted_size + self->page_size / 1024);
+> +
+> +	if (type == MADV_HARD_ANON_HUGETLB) {
+> +		/*
+> +		 * Only one page is hardware corrupted; the rest should all be
+> +		 * released to buddy allocator.
+> +		 */
+> +		ASSERT_EQ(size, self->corrupted_size + getpagesize() / 1024);
+> +		/* HugeTLB should have lost the HWPoison HugeTLB page. */
+> +		nr_hugetlb_pages = hugetlb_nr_default_pages();
+> +		ASSERT_EQ(nr_hugetlb_pages + 1, self->nr_hugetlb_pages);
+> +	} else {
+> +		ASSERT_EQ(size, self->corrupted_size + self->page_size / 1024);
+> +	}
+>  
+>  	/* Check if HWPoison flag is set. */
+>  	ASSERT_EQ(pageflags_get(self->pfn, self->kpageflags_fd, &pfn_flags), 0);
+> @@ -247,6 +271,45 @@ TEST_F(memory_failure, anon)
+>  	ASSERT_EQ(munmap(addr, self->page_size), 0);
+>  }
+>  
+> +TEST_F(memory_failure, anon_hugetlb)
+> +{
+> +	char *addr;
+> +	int ret;
+> +	const unsigned long nr_alloc_hugetlb_pages = 4;
+> +	unsigned long alloc_size;
+> +
+> +	if (variant->type == MADV_SOFT)
+> +		SKIP(return, "Soft offline test is not implemented");
+> +
+> +	/* HugeTLB settings will be automatically restored when test exits. */
+> +	hugetlb_setup_default(nr_alloc_hugetlb_pages);
+> +
+> +	alloc_size = default_huge_page_size() * nr_alloc_hugetlb_pages;
+> +	self->page_size = default_huge_page_size();
+> +	self->nr_hugetlb_pages = hugetlb_nr_default_pages();
+> +
+> +	addr = mmap(0, alloc_size, PROT_READ | PROT_WRITE,
+> +		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB, -1, 0);
+> +	if (addr == MAP_FAILED)
+> +		SKIP(return, "mmap failed, not enough memory or 1G hugetlb not supported.\n");
+
+This test is no longer 1G specific, so "1G" should be removed too?
+
+> +	memset(addr, 0xce, alloc_size);
+
+For 1G hugetlb, alloc_size will be 4G. Would memset() here take a long time to finish its work?
+Same issue in check_memory(). Should we try to enhance this or it is just acceptable?
+
+Thanks.
+.
 
