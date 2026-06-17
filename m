@@ -4,107 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE93CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 05:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 811AFCD98E1
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 05:16:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCA6C6B0096; Wed, 17 Jun 2026 01:14:44 -0400 (EDT)
+	id 4913D6B0005; Wed, 17 Jun 2026 01:16:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7BDA6B0099; Wed, 17 Jun 2026 01:14:44 -0400 (EDT)
+	id 468FA6B008A; Wed, 17 Jun 2026 01:16:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6ABB6B009B; Wed, 17 Jun 2026 01:14:44 -0400 (EDT)
+	id 3A6396B008C; Wed, 17 Jun 2026 01:16:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 769F46B0096
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:14:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3F7F4033D
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:14:43 +0000 (UTC)
-X-FDA: 84888239646.29.FA57334
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E0C26B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:16:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A2EBA02F2
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:16:33 +0000 (UTC)
+X-FDA: 84888244266.24.6E45BD1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4192340004
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:14:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vq5KoxGj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id D9EFC180004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:16:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJPz6v23;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781673391;
+	b=LEwiiHuoMWK+plRSbYRjMlca9zvtrmXxT4Vw7GRsSi4+1a6DwEEsioC81tHiTUnWE/nyVv
+	QSOdVMXOTvasPGGmvX8cphDJ9tCrjncrKDRD3jEB6vCejUkOXNeq12FReSDFndmFRYSxl3
+	YCnmSKT3gYLLdkUbV6jd3vfAyF6jMWU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jJPz6v23;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781673282;
+	s=arc-20220608; t=1781673391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i4gI8nBuxA9HRcUwNvotK2yH1/Y4niKmJ4bOseHnoOY=;
-	b=cRPzY6iLC4oFUbLinKqEHooTATAjYUC9imOjijFaypjWbXdvkKu52RbO+wM6aAgVyUeiQu
-	xtQLoJb1I9WmU6LP1pSxTUnm6Io2q2HW/27ysR5K8CCGu1pnn0rZkv15JPo9Tqlvis0GmD
-	gHkuzX7RltgoJtVv+U1vjghdKkG8oNw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vq5KoxGj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781673282;
-	b=GzeQHyNOfUuEfRilROuElyG45uSqFc7gGe4wq4Pvmk64jT4rEILlKDAfmRAwLyagn1xBZg
-	h7/NFe8NlHmgUk31W7OTXVDOYjVlWuitn+ASaqXSU554wn7HC9niBFuBMgHN76lnoeq9iz
-	2FHBI/hdXo/gKOkvwDrxjKTSt4pMRXU=
+	bh=optTuxDRVX4Xxh/GiuxV8bViN9w6npI10kFhBkpLDZI=;
+	b=cZlNuVSKsCVFb/8M2qQW2m5KzggY9BCQaNILkafqcyPcMGfy5eZaaLrWzY7s4PeamjlMT/
+	FKm/jmPotHYpkovv+eTZat55OhcWViFL+zqlevzVGrhd0WCrTxOIqhJpxEguabZLSXQrSq
+	J3BHKZgeD+Nb9fpMVnjjx0lNm06ZB50=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75B24600AA;
-	Wed, 17 Jun 2026 05:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5991F1F000E9;
-	Wed, 17 Jun 2026 05:14:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6C4C7600AA;
+	Wed, 17 Jun 2026 05:16:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A032C1F000E9;
+	Wed, 17 Jun 2026 05:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781673281;
-	bh=i4gI8nBuxA9HRcUwNvotK2yH1/Y4niKmJ4bOseHnoOY=;
+	s=k20260515; t=1781673391;
+	bh=optTuxDRVX4Xxh/GiuxV8bViN9w6npI10kFhBkpLDZI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vq5KoxGjOeZU7bfYcs6X2ic2+hFhWSKqGgqfdCjVZy2jo1ZH3yXx6tBFJUGVnDLPq
-	 FRkbuYQdKulgt+hMMWNOJ6rg/hgsSsWtQgRZBsc8wIALCQdjtTY+90vF3lTjx+CJ76
-	 gc7RwVd0S2MmHruzJzyn/jJf3x+enPN8Yk/c3tVX11PsHcEakhw30+CDNpaiGZxbLi
-	 vo2iyxTE4uBv23I3XtYp5Km71YP+rjdtnogZPG5Ynv8IuBnmu/0SrQfqKiazfIrc2K
-	 MzKx0UlxQIeCPhRWYE7Rlj1opOvG/qB7x+PPd2g3llsJgPCPP5lcop1iW+bs50TTtT
-	 3GVL74u3KPyoA==
-Message-ID: <40591888-3a87-433e-b3d2-cda1cab543be@kernel.org>
-Date: Wed, 17 Jun 2026 14:14:16 +0900
+	b=jJPz6v231XAaES5dnkAcxqwBCRaMnEAbtpwWk0x28tofsgfttjRWn4csRhQBz9X+W
+	 bczer+7z2xxBhKCCIZf5jUeOsruXrhrFCdlf0skBgdY3VAP03C23nRxRe6RJiLKQju
+	 2/6Bo/bDbAypqU+0DWZXpVIy86ZWcYtfmPVH9EhlZq6CihD7tLJSvBdAtDREbcyNKT
+	 t+xqUOcjvZjP2aKqlEnaXR1BtWsyYd+gmNKQpnGMQaMYNGIG4bx/gmDaL8B6McuOtK
+	 NAxnXbsDdquftgOfUEIN+PkGXdAVo3ACGoD7LNDRvgMPJYWL4/rFRraQmhM45b5hNS
+	 NXVMHmr1v1LgA==
+Message-ID: <7ab220a8-2bec-4b00-8bf5-e76dff93fe13@kernel.org>
+Date: Wed, 17 Jun 2026 14:16:28 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
- <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
+Subject: Re: [PATCH] slab: recognize @GFP parameter as optional in kernel-doc
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ stable@vger.kernel.org, "kees@kernel.org" <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+References: <20260616193929.2394119-1-rdunlap@infradead.org>
+ <48840fb6-8c33-4e4a-9951-aa603576357e@kernel.org>
+ <79c90e12-c157-4d91-a7a4-54225d876d56@infradead.org>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
+In-Reply-To: <79c90e12-c157-4d91-a7a4-54225d876d56@infradead.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------kEBv9bKx3bhSjfXvp2FnnpK0"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4192340004
-X-Stat-Signature: ea8uqdqxu48be4obfed85a1i74ppeh6r
+ boundary="------------bKJ2JvUyLmi0aUgh8ALxlOvy"
+X-Rspamd-Queue-Id: D9EFC180004
+X-Stat-Signature: eq4m8fqxmzuyn6oq55u5kcw77yykcnqm
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781673282-643878
-X-HE-Meta: U2FsdGVkX195mEro0/hGQbLU9VFjBFk/H6TYEhuonYGiiGbN/MU51NwFdTQjw1ipkHXbCHCYSBWrJCTC4DwkU6ZritOoTNIXlcVSOb6Ynw7oYGndRL878e9BaYCqTK3OjPdifzMa5qti9TBJ5XutxduzoqKw4Zgwl6Prtw2s57llEdSNzfyNKifU6bvc1Fd1BtD/aZsyiSZGi5DZJS0RlclQB3uQDloDBLHruo+ydMmFp4svTF6Ot+vAqiuqY+nRCohVGnthE1pEANEqfZLd8aGYT2rXNjN3uTPQDCXgo12nKn9wk64/nQBTS+VneMyd5A5UkPN3fjsEq0ITpYNHJ6yMg2UjZIQPYa4T+XM77qWkLje8nWZaHUE+MUlMMbz8fBb84XL6iUPNn7dNbZrC1Mi7dEUJtFB8k3BMvcFXMhtIs4u94Fm+BuThgdbNg8StwGwgbV2fkxa7AXQ3YfYpeMC2ebo9gZNK7XVBPP63vNuoruVru/QvzR3wgTt+yyiK9btAi5WQbtYs2RgLQQ7W4MdMzhZuR/H3G18oi0E0AtSV9Ik8N46X7VsA51Z0cGjjgAw4nzpWy2wbMPkO4PQYswg+A7j+weTO5a7dYhqxL5ILvxP5nHIviiBVW8upzKvKamHXMnFddkwbwaovhDDyiKsnH/U//R55+RTTBMWQJgxrlEergP2qGsXmN4rhKtcLnalrIuMRIiBghG/H19Kz7ptx6GEcZni+No7ww2UzOLe1KFJauanVuXJjgM3CHA21s9qdW0W5et6Tb5YdrSkSkP2uYXq8mTG7v9QfzDm5vPtskV56giKHNEVXiDUw0fdEkuPBZ7NNsrXh8bMUrXKjZyKKzqux1hTN/CABjMzCh5DwhSELwoq00KfF6XfEz5CgaJqM7KEuO4wJ9zlPzVxzzldD1rT6aPcGv37tAXdhxg1l/CH5POxdCnyiWWCBjn+MaQlvWLRNQb614vDJFqt
- j3zA94wq
- EffQRtTPrFXoZXfnN9+CbHHg4hEeubW8j+v5fTZLSsawdO5zxDm6sLgQ0PWwa4JtvnOXrj6Jg6Tha4ZQqcYGIVT3tN90O1nAeU+Vh78/sEmwPNbRd6/2aIEy6r/qsrA5eqCJcDFKmFURY+FCSHaXdlX3gDZtufdK1Ex/k5XKELjDSKHfwjPhPYUD1IaIKqWIZH+pz9QpYBTyUWTE3p2q1S6LMGRj4xYBQ+dKJJMS/5/wFWe0kAVLalh86qnJGDeAZqI9xoL64G1g/YER0etQRBNGSdBNQ3A416lSJ0Cao+b664SWcEgckqAJ8R/r5VrG3FBgu5BjOfmzjr6UgzE8O8FRcwTIomROMIosYNughBPMy8nJ0cWlkR3N5Qw1I4ZClTR3sz4bZU9WPzoCEWD3YhRCV7s02Uu77TB+i9Y65xYr5BI/WEelMrGXNdbf6d+GYlascPnYuVypJNNeMwJR7w9JTTbxRZtESssrQNenb6dnGFP74hmbAgxAugPkyx+/l0+u1BZht5W6nEMGlCgOu9KsNOg==
+X-HE-Tag: 1781673391-64512
+X-HE-Meta: U2FsdGVkX1/aHZVMlV6n4D18tQwOHMdeHxlzfUu9BfW2/y8cafjHJYfjyE7udhB+0i/PBpGvNXpHMzlprlssZeALkdUMuuveSRAMMEOiA/h+F7wiH48kkp0QpTpJnaHDPT4aTEaKuBS7SMcQhPMa7hKvVm9L3DPEhlRRQ54CAZgGJV5lFIszqw36lo2rvRh4dzfT/a1vg/mrCw8GczIfjQo6S5V0FJAR681bE/DRH0He0neXp/1utuP7f1giv+p8Nx8uTU9j/XveyoWlqvK1StrTfAUbKsAjIs/zyiY28cDAua1PEtErCvcRLsVFww+4BmT2UueU8oKt4myO1gXxqzA+ETCFi5oeyTE3kSB9RfTrHk+H1UcYV2+pzfVilswOU+edC0it0KmI58lV+FCsVdGveIR0Yt69PTQL7+MpyGAvaigQ5Jq6iNrV/Z3sJq3ZKA3U9dEj0IWkaGYuVOFnax/9poWz+DpRiLNmyds1lRf1VTD5QpKs9RjfJZASiM/ZQONPKXRo2xo21ubQP3fnlQmWiCajxrWfwrIAVDagKgyig2skrt74erdM1VpRfhf5XH0SWm7xVqBElP3Qnl1LVKaixWslX+cvcLnPf1xILf9ESO1DOglXBK0W/1LXJ0VCl8b8GxXq44b8n7t9Johm1QUGRt/BcQcKAxT3HSdjRvQxIVfIVFrGpkDB1Q4ezXpaTaRE1zIK3QQpBfCVpAQTfkVPRRZcdpXSKsaKnu+bcWlj7DSZj2T4z+Gw5BmCenUxp3095+CXRmfOTXeBp6tDh1m4z0cyUXvAE1OCZmIKZfqpy36H7khRVZLFcUY/7XcUzY3C6kaGLOFFLo5Z9C41G+od7WiBpiE/1w3dUIUHmhW/o9cDfvVhMHRey/AD9TPZJtp/J3hN/GDfXL91TxvA+gDFIaTnjSqXp3qyrsGQPbtw2ukTDRaFokJSkrKhKSzwS+QJqPusxuV35BUbDyE
+ tgKvMSct
+ PeJdTbNR/qs7GOuPbohWSyMvi81gGTWfa+Mkmldwy7RXAuzCf62rV+/JsPNaqTkRSelSgLIUY2AaeGiGxOwakvDQTpWLrLb1PWvvr5Wk+0N/Ej/shKboTHKsAT9NW6yjdW2Pu5P6V1wVE/drUoz6tTclRf8MmLnOcVP7hEWg0JZppSlanH8AXnuIp5E3Bxt0O7gGlk0lTCFc0tA/74RPelNBKIQRwHzrT0k0h8cdeVhtVHdip5bUKKpZsW/73+bR8s15NEc4eZahN2xLilZtYAI6e3RqMhmLTqE8adGQTz1pAy0S632qSyp8deAUWwEWeZYe0oMf9fUYVYaMTyB/oPzo9GiDfQ2SNjANbjpcZqPiNxv4Uwx3AasiCkRhkd1fgaEIy7j/WJD/idMp8LzkZxjap1C5KixTT4ZEpZjIqfViM8KWHekwRCn6+Bnc87JOF9h4v0KqSJu8LQLD15irD4wQD2x/48QTZOqYFqA9YumeectRprrwfUmQgu+e0v8t3rZcZXS8JvI7HvYEVXn0BqMqK3Qt7cUHKOk6bUgDFHBtlE3tsUGozke+C8wQ3Klpa0ve3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,116 +98,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------kEBv9bKx3bhSjfXvp2FnnpK0
-Content-Type: multipart/mixed; boundary="------------vb0IaWkZAOplq9hp2tUYiTMN";
+--------------bKJ2JvUyLmi0aUgh8ALxlOvy
+Content-Type: multipart/mixed; boundary="------------bC0iEyxP5mx28kx8B10PvWrQ";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
-Message-ID: <40591888-3a87-433e-b3d2-cda1cab543be@kernel.org>
-Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
- <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
-In-Reply-To: <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ stable@vger.kernel.org, "kees@kernel.org" <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Message-ID: <7ab220a8-2bec-4b00-8bf5-e76dff93fe13@kernel.org>
+Subject: Re: [PATCH] slab: recognize @GFP parameter as optional in kernel-doc
+References: <20260616193929.2394119-1-rdunlap@infradead.org>
+ <48840fb6-8c33-4e4a-9951-aa603576357e@kernel.org>
+ <79c90e12-c157-4d91-a7a4-54225d876d56@infradead.org>
+In-Reply-To: <79c90e12-c157-4d91-a7a4-54225d876d56@infradead.org>
 
---------------vb0IaWkZAOplq9hp2tUYiTMN
+--------------bC0iEyxP5mx28kx8B10PvWrQ
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 6/17/26 2:24 AM, Vlastimil Babka (SUSE) wrote:
-> On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
->> As suggested by Vlastimil Babka, kfree_rcu_sheaf() can be used
->> on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_R=
-T.
->> This is because local_trylock and spinlock_t are safe to use with
->> trylock variant as long as the kernel does not spin and the context is=
-
->> not NMI and not hardirq.
+On 6/17/26 1:38 PM, Randy Dunlap wrote:
+> On 6/16/26 8:25 PM, Harry Yoo wrote:
+>> [+Cc Kees and Jonathan]
 >>
->> Now that __kfree_rcu_sheaf() knows how to handle allow_spin =3D false,=
-
->> relax the limitation and try the sheaves path on PREEMPT_RT as well.
+>> On 6/17/26 4:39 AM, Randy Dunlap wrote:
+>>> Since the @GFP parameter in kmalloc_obj() etc. is now optional, chang=
+e
+>>> the kernel-doc to indicate that it is optional. This avoids kernel-do=
+c
+>>> warnings:
+>>>
+>>> WARNING: include/linux/slab.h:1101 Excess function parameter 'GFP' de=
+scription in 'kmalloc_obj'
+>>> WARNING: include/linux/slab.h:1113 Excess function parameter 'GFP' de=
+scription in 'kmalloc_objs'
+>>> WARNING: include/linux/slab.h:1128 Excess function parameter 'GFP' de=
+scription in 'kmalloc_flex'
+>>>
+>>> Fixes: e19e1b480ac7 ("add default_gfp() helper macro and use it in th=
+e new *alloc_obj() helpers")
+>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>>> ---
 >>
->> Keep the lockdep map on non RT kernels. However, do not use the lockde=
-p
->> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
+>> I think there is no better way to specify an optional parameter, so:
+>> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 >>
->> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f=
-98162@kernel.org
->> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+>> By the way, the doc should probably say that it is GFP_KERNEL when it =
+is
+>> not specified?
 >=20
-> LGTM, but maybe unnecessary pessimistic wrt call_rcu() on PREEMPT_RT?
-> I thought (in the Link: above) we'd only need to downgrade allow_spin t=
-o
-> false on PREEMPT_RT for handling sheaves movement from/to barn and
-> alloc_empty_sheaf(), but call_rcu() would be safe from kfree_rcu() even=
- on
-> RT?
+> How about (in general):
+>=20
+>  * @...: optional GFP flags for the allocation (GFP_KERNEL when not spe=
+cified)
+>=20
+> ?
 
-Indeed. Good point, thanks!
-
-Hmm, but I'm not sure that it's worth the complexity given that
-PREEMPT_RT tries very hard to avoid disabling IRQs...
-
-> Or is the irqs_disabled() condition rare enough so we don't care?
-
-Given that most users don't call kfree_rcu() under raw spinlock or
-IRQs-disabled section on PREEMPT_RT, I think it's okay to keep it as is
-(it's not making things worse, at least) and wait for call_rcu_nolock()?
-
-On a side note, I don't have much idea on what needs to call kfree_rcu()
-under a raw spinlock, other than set_cpus_allowed_force(), which should
-really be using kfree_nolock() instead of kfree_rcu() once we support
-kmalloc() -> kfree_nolock():
-> 	/*
-> 	 * Because this is called with p->pi_lock held, it is not possible
-> 	 * to use kfree() here (when PREEMPT_RT=3Dy), therefore punt to using
-> 	 * kfree_rcu().
-> 	 */
-> 	kfree_rcu((union cpumask_rcuhead *)ac.user_mask, rcu);
-
-Any thoughts, RCU/RT folks?
+Looks good to me!
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------vb0IaWkZAOplq9hp2tUYiTMN--
+--------------bC0iEyxP5mx28kx8B10PvWrQ--
 
---------------kEBv9bKx3bhSjfXvp2FnnpK0
+--------------bKJ2JvUyLmi0aUgh8ALxlOvy
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajItKAAKCRCGXBN6rc5S
-1jLFAQDJjkqWNsckxRckQG/ifpkFidi3A6aFYgVvzxCG+/hQQwD+LUnZJI7/+UOa
-K4FDOVTUA6hwmP3OMAXM1Q1fH4PjOwM=
-=nbP0
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajItrAAKCRCGXBN6rc5S
+1o+vAP95308qeS2ZXYZ01jII/8FeugApGaKtmElPaVAE0mdMGwD/UrVY7d+FhpVZ
+oIbAqvpYj+xMZ97HA2ZObgrk2Eg1JA4=
+=JwhS
 -----END PGP SIGNATURE-----
 
---------------kEBv9bKx3bhSjfXvp2FnnpK0--
+--------------bKJ2JvUyLmi0aUgh8ALxlOvy--
 
