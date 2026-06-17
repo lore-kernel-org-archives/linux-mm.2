@@ -4,123 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CCCCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 17:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECB7CD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 17:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2D16B00A8; Wed, 17 Jun 2026 13:27:29 -0400 (EDT)
+	id C8CDF6B009F; Wed, 17 Jun 2026 13:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CA056B00A9; Wed, 17 Jun 2026 13:27:29 -0400 (EDT)
+	id C3E5E6B00A0; Wed, 17 Jun 2026 13:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06BA46B00AA; Wed, 17 Jun 2026 13:27:29 -0400 (EDT)
+	id B54066B00A1; Wed, 17 Jun 2026 13:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C78E26B00A8
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:27:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A5568E1F4
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:27:28 +0000 (UTC)
-X-FDA: 84890086176.23.695859D
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3C26880003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:27:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TkfPSTuX;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf30.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+	by kanga.kvack.org (Postfix) with ESMTP id 889676B009F
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:36:06 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BAF01C4831
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:36:05 +0000 (UTC)
+X-FDA: 84890107890.12.FBE46B4
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 47902A0003
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 17:36:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cLmyeicQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781717246;
+	s=arc-20220608; t=1781717763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzgVrwBLp8IJXktshUBMWJeuGythVYw1ADhUnzQfp+I=;
-	b=xFHTqQQv2lyEzMbRXta2GJ1avLwhFFnW/WwgCtgHXoB6FbRvv3401YLG9Dz8h9uQFowS+G
-	7YDf9ISreWlMg73QVT5te+h1CRsDn05cjiUBEaAAmEgQzaTsXH/Vya9RQywcgHqUnG77Fp
-	TIQlB1PZYrz+ws902obzfFlYz/8Tq0o=
+	bh=T5V4tVp6yKnTKF6RniMiSm/7lWhPKZviX4QeBCL6yRU=;
+	b=Ihc3KNDuyKvsn+xRNUKyuZzFZlHS8vNwckW2JJZExSQC5rIVVlW6hVcvcqoRv5gmIHemgr
+	7o3JoJ+hHmq2NJX2DNez/GE3qnbQj9BgG3JKJ3K2x3DETUtlzC1n115eqSF2lQnjVhMn11
+	AS/Ty1zwLdED4kxIhC884rxCr2oxcU4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=TkfPSTuX;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf30.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cLmyeicQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781717246;
-	b=29s3T1IVpozl3SxDxArYjYalFepniU+nCMKJQC1tPNhiwiqCa8iudl4AgLz86IM5DeFi2p
-	NNjjlqjT8cVRYHfG71fUCoJVEFUmjM6FbzFwHta/W8hOiy+pM2U1BU22HfUFeUlA5Ql+dT
-	RtXbip9SsNVwn9tF98kq23pmsBhn2Xg=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65HEpTrX2364580;
-	Wed, 17 Jun 2026 17:26:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=QzgVr
-	wBLp8IJXktshUBMWJeuGythVYw1ADhUnzQfp+I=; b=TkfPSTuXbDp6jHJr3ZM8V
-	V2T5jmX/NTroedg/cWYptuRyE+mWJvMwHoMx+0Xal1CN4jiNcX+X1obw+tlFNk0s
-	t/xDAC2HpqotcnJpq69rA6O86iQl9w2YE0XZxHjNIA5bNlIgGppGZ25J+p9bmBsy
-	9TQA3n1qbObwqr1HKmpm4bzEsCShuEvCYRnh8QMrA1wvNzsVxqj+lu5jL5sU3/Ag
-	pOIi6S/PmJpydRA8VxYdHp/6gCGFrMBuBlAOPLGRQBICAl5/UEldFh83vFxZ1bTR
-	NTAsneqjfttwwDZ0mz80PD3nq9ZfgaPaVf1aq+f/WE2/rpltd4GOUjngnHKQFPSC
-	g==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4euegm1bbd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Jun 2026 17:26:23 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65HHNVP7003778;
-	Wed, 17 Jun 2026 17:26:22 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4eudvc0wgy-11;
-	Wed, 17 Jun 2026 17:26:22 +0000 (GMT)
-From: Jane Chu <jane.chu@oracle.com>
-To: akpm@linux-foundation.org
-Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
-        david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
-        linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
-        rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
-        linux-doc@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 10/11] hugetlb: drop vma_hugecache_offset() in favor of linear_page_index()
-Date: Wed, 17 Jun 2026 11:25:31 -0600
-Message-ID: <20260617172534.1740152-11-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260617172534.1740152-1-jane.chu@oracle.com>
-References: <20260617172534.1740152-1-jane.chu@oracle.com>
+	t=1781717763;
+	b=VpjWMGJcfJvWGlaIXDippfhzfzgGqzDtCpBttuGQIHOf1l+0iIFA4L6cu12b/i8Vyq44cq
+	X/XK+X6ZWACjZQETg+y5V78DoEM2aWISq/jyWFqW3YfKivc2nN6k6J/Gd/g9eveaU3wX6D
+	eZrHp5GDWYBi9WZlpklfFCesSaDc0Lw=
+Message-ID: <9370ec06-417c-46e1-8874-2613cdd6372b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781717761;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T5V4tVp6yKnTKF6RniMiSm/7lWhPKZviX4QeBCL6yRU=;
+	b=cLmyeicQb1OOCtrCPxsmlxji/GtE3X2lza/AN5O0w0VmbN+LeKTzSfzormpVJKwWIVhbQ1
+	sXjl7sqg5xTfjMp3mEa//bgFiluJtHsbg5c5PCEdP0g7OjWOB0G/c+7y6eYXhvyeh17Ntv
+	9qrkJe/DJzq6+6UaJE4D5gFDmqKvBv0=
+Date: Wed, 17 Jun 2026 10:35:43 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-17_02,2026-06-17_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2606150000 definitions=main-2606170167
-X-Proofpoint-GUID: _2XpTPAb0pPOlVVX2vqjml7rVmYBfAkf
-X-Proofpoint-ORIG-GUID: _2XpTPAb0pPOlVVX2vqjml7rVmYBfAkf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDE2OCBTYWx0ZWRfXwYhGeHbVeG0J
- ViHY/88UQDIzz9RfW+U/aJSDz6gNMoMp6kgvt+KTfVfpZVTtW8zHWVbr4fwnSXhBkShiaKOhT0u
- es5prhNVrNdGTeRlwgDlaNp9PcJ6XfrYN3Za+ucQWk8wCbbK7iCpVw2IilHPB83fBck3P2lxeur
- JCMaOb0vc0wEW+GgWSRTMdPcZjpl4BQNCd2YLO0w3uvmI+tS3ss+GzS+y1H/wDxh4FM+NHaZRxY
- rlL/No4TG/lq1cTzcnHCX0WaTbizkMJS1VcwPcRKXVkbzWY23Pam7AQA2qpNOfxPPyNc6k2fUvA
- yPwZ44mc6kvntLrguE3OX4nff/1sDk9KmdPD1hAF89Tg7hVYBupf8aFEt4M9MXht7XghpRAussc
- Hp4z33GTV4UPPUWd1SfCF2eq1FD5dxiuSlT+g8SZ3UN5099gRoyRT2ui7i7g6gToVtlg20lvZ/E
- W4/BrahvJNTFbtv2Hz8eRUzQjdSnuYYR8bxrGa3A=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDE2OCBTYWx0ZWRfXwxKHnVXHdZyI
- tLYXcyjS+uOD1UgGTcVjmKSlmowo4S+P9wtPWWJ61zn5rKya4e1EEVSxM15hbdgI+oBoyJdih8Q
- pYANUuF9FbcDeGmluYe1kxhbbd9+pxYP4lnHaCRDopPp2jLvPlDH
-X-Authority-Analysis: v=2.4 cv=G4Ys1dk5 c=1 sm=1 tr=0 ts=6a32d8bf b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=o5oIOnhZENCTenyL_yNV:22 a=yPCof4ZbAAAA:8 a=g8M0rzeWxNo8AqK0pVkA:9
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12312
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3C26880003
-X-Stat-Signature: 4qap3zx38n65p7owndbb1y75z1pgrzkr
+Subject: Re: [PATCH] mm/page_alloc: use existing highatomic reserves on the
+ buddy fastpath
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, fvdl@google.com, linux-mm@kvack.org
+Cc: shakeel.butt@linux.dev, usama.arif@linux.dev, linux-kernel@vger.kernel.org
+References: <20260616191420.52556-1-jp.kobryn@linux.dev>
+ <fa69e7f3-45da-4722-b47f-e6fcd38717c7@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: JP Kobryn <jp.kobryn@linux.dev>
+In-Reply-To: <fa69e7f3-45da-4722-b47f-e6fcd38717c7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1781717246-973210
-X-HE-Meta: U2FsdGVkX1/DV5RsjQtuyV+hd+23C+rmdPmIVuD2NyM8UD37DAwydwR9IzIrku499wbhT93JB8OKYpypLlbCAbVdHDERlKSgGUCHmXtX594liCrKqsTslXeS56AOCDT7mCyj0iV7h87d6xtD5V4qJ4QryAiHlZf7QtrZSmTe2ir/4L2z0X2mcK28/9AjDF27LhNNlGUqj01dlIaT1BSsg67vVKmF2sTEpHspe52ioS2NrMfOmapunAOIhD6tvIaU6ZjHlk5S0MO8trsC55a6GidYb36UhAPDd0aO1h2cDUM+tozY4CGuG7PTeAVqn9GchkX2Cf9z+GWudV9qIFxr5nbZqmcW6gZhMQTJXKRxwl0hf2LypaqwGUWMAfb5K17Qyh77U/x4edTs6Glb9UEn9eSlCN3LUp21lKopbZ4W3Xji9KUNtXElNlTu+UgsrIcgFr7gGX8bcOlNLX86DvHth7x2aQdybPQIP+Gp6a9GqRJnJEXhvwAsxAjhftmL3cTsev+Dxev0pgYIxthfSo28xL7fN6UCJ/9mJguIxUV1blS5Ttug3HkYeY8y+NhMpytzI8GOKZ8C9n49XV88KAnUk106xzZWK6BpHI5t4SsV6IdPMPHOZxmHZvmXK5HOHx9fD+1NokVvd4sHvhMxtlQI+3g65oD4/gAnLQhff/2Gfg/+lGam+Yw3vSo5DzevaRZVnMgorec1fIh4V7h5OzAc7DHiq9OWV6RGs+yOkMOnZ8jtKu2GdIVzxKBWLcyGoF7hc7RzIuH8dKMqXHbWrN8BqX2DDbzbKnvJV6Y63jI6oNykRH84u8vdklehTMHg/UDGPLQvWJ+17zJl4PC21GfFMj/EoRqhGFzRqUNHidXN/4rSFpj/BBne3CqLN+F7PDiIidcXcpFQNh078kovwFb7smHRD4jeWnOQvkw7muAIDtx4ThBZtwNTrr6dXgmxKzQFQCmZK4N81J+EQI+VRnU
- wFnHLuPx
- VZRPMGFrQZRUFgeVUK8KOetJMmJW1+xnOhKNNKETCEpGCkwqdGezFW5RJfLLNQN9+4iYwUF1hJfYhQ6ls/nVzsU0AP7MB8kQmMy3OrmO2UKUf607A6C/XMq49At5tMwTQGCnsdf/i2EsbYWFlDE0mmipDbTZRxichp/Nhcok6TrGWYpCDuFwg+um4PtD4yThj9LhzSn3mvk8zFNZXVGOKf4oM1hisOH1sIliO2uwOwWKetnQ+mNkVIbTDDs6zjr0Zvau1GD5PhxSh/BbKa5ndvJTaFbbu/3IZ0OBAy1j9yvWTv4kNRyxeD6FOYQcUjVFn53gO9l5B2aGrYmlvCqPq6B1HWD2W6fRSdUs/psLyLJCUWPZYiDKuvElMAX9TIZpCp+Aty1rder84xNQ=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 47902A0003
+X-Stat-Signature: 431rbptynwm5mnkbonqtoymuqxcpuomj
+X-HE-Tag: 1781717763-645614
+X-HE-Meta: U2FsdGVkX18vIHTLamZbOfCYOdQUK+HDP9PazdW/t8hz2n3rvHG4OKadS8e5bgIbVYvdlx16b8EJonzl+jlTrbi4dPTbugKGWx9syvecapWLWjH9q3mHWo3kTnJPqSzC+ywqXsTLS6Hg/1lqwRC81HP9J4chRBKDhtaz58+zZWHFU0amZA0YE6BVPR6lfFixZNZYRcLAiv/tugiL7vjMzCLKgvdY1umedm4DncTPW7ugFdOmbpzmJI+1fxPjGO9owHnDQkNBQ8uzKVO3vgYwHNpZmrr5tOI9x6dfZ/AxMNjFB99VOsEuvFFtzSsCfdQfYTNqIONQTNAoMIbx5xVK33OraFH0eJZpO/HeOZ7+LseZmWxIM4ak7FZwyW+pvqbzaH+9CKv9UIntOZiW5eptYIXN/dRaf3rA7K0NvZ/0wZ8FYAw17IgKF0bWNRkrO6Mfj7EWaP9fbUgTCa9JHgFJS9dwr7CCtBrv15QCijwIQCqTVHYFdXm6nQiAQcmoPpEGu7z13pEFG+4qGAYtz/hqni6w+odYDRUu30RlGjaaYHzNxEEmmI5oLuWAJZOW/t9dzwIpb1S/enAdPT2OquqsmhF6i3+iaWixDtM+v/5L0ph+Sw3GJ6GcbdSHZF7nofk7zJmFdUwzrCwwSANDTpFINoGdIYPnPCZ5a/PP4GzUdInfCNuZZd/tLf6YrMljOnU9epkVe75by941RYq1Qu/f/C/N8VqJRniCewZzi1cz/XIQaXk5XgAZM/20b2lpZ6azzfsOqsk6ijQJdLbmaD6j7YWcC97s2oHKs+GcJ+7OfZV6ei0KYJ4J60L9pbXFs7LstXEEcE3OKm9Q6NF0xfdM1zCKgftapmiZZq1zlwG/SfMRPIcrWwuq9DUssWZ/HhszsKzOJOSA7KDA3S+V6aZU7tE1TEDlTnceFBZXdvrPp04K9sa/EaQvBXSRIklm2Lg8AW95xbMqGX8Qa52JOeq
+ gl3sKsYm
+ Ea3kWec0z5fCP7EpNKxIogoXx5KqWhh3Oigo29I7+baqVsGXHPxR16Si1pbEisJHPEhaoBbKs3DlHE/DTGsRikZsVaxnkWdFrfh9b74kvPB5slyFcYxBdH1FpRF9DsBMRBKsjQLogoVMwB6J24RmHn1/xqEmJkvgdyC1T2EmAQPSmLSf1bNVHWQdNp+enyhLKGdp9P/QU9TYmeIF0SHrElbumJEsUlOvbtETnkx8fkob3uK3dew6Y2nt/Y+O9izB9jz3n1/S+GblHk2QLFqoQ9Swj/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,67 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vma_hugecache_offset() converts a hugetlb VMA address into a mapping
-offset in hugepage units. While the helper is small, its name is not very
-clear, and the resulting code is harder to follow than using the common MM
-helper directly.
+On 6/17/26 6:02 AM, Vlastimil Babka (SUSE) wrote:
+> On 6/16/26 21:14, JP Kobryn wrote:
+>> ALLOC_HIGHATOMIC currently provides both access to MIGRATE_HIGHATOMIC free
+>> pages and permission to create new highatomic pageblock reserves. This
+>> makes it unsuitable for the fastpath.
+>>
+>> However, the fastpath can reach rmqueue_buddy() while MIGRATE_HIGHATOMIC
+>> reserves have free pages available. In this situation, the allocation can
+>> fall back to other migratetypes without trying those reserves first.
+>>
+>> Allow high-priority non-blocking allocations above order-0 and up to the
+>> costly order to use existing MIGRATE_HIGHATOMIC reserves on the buddy
+>> fastpath without granting permission to grow these reserves. Add
+>> ALLOC_HIGHATOMIC_RESERVE for allocations that may both access
+>> MIGRATE_HIGHATOMIC and grow the reserves. Change the semantics of
+>> ALLOC_HIGHATOMIC so that it may only access the reserves.
+>>
+>> A UDP receive workload was run with free MIGRATE_HIGHATOMIC pageblocks
+>> available in the target zone. Before this patch, the workload did not
+>> consume these blocks. With this patch, comparable runs consumed available
+>> blocks for 96-100% of eligible order-1 atomic allocations reaching the
+>> buddy path, with no highatomic misses observed. The workload did not grow
+>> highatomic reserves and NAPI page-frag allocations remained healthy with no
+>> failures or order-0 fallbacks.
+> 
+> Great.
+> 
+>> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+> 
+> LGTM, I have just one style suggestion. If you agree and apply it, feel free
+> to add:
+> 
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Use linear_page_index() instead, with an explicit conversion from
-PAGE_SIZE units to hugepage units at each call site, and remove
-vma_hugecache_offset().
+Thanks for the quick review.
 
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
----
- mm/hugetlb.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+> 
+> ... and (unless other reviews raise something) send v2 rebased to 7.2-rc1
+> once it's released. Thanks!
+> 
+>> ---
+>>  mm/internal.h   |  4 +++-
+>>  mm/page_alloc.c | 34 +++++++++++++++++++++++++++-------
+>>  2 files changed, 30 insertions(+), 8 deletions(-)
+>>
+[...]
+> 
+> And only here add both ALLOC_HIGHATOMIC and ALLOC_HIGHATOMIC_RESERVE.
+> I.e. ALLOC_HIGHATOMIC_RESERVE would not be a superset of ALLOC_HIGHATOMIC,
+> but access to reserves and ability to grow them would be decoupled. The
+> comments on the flags actually suggest that's the case.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index b41e7b8df094..a677ea774143 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1001,17 +1001,6 @@ static long region_count(struct resv_map *resv, long f, long t)
- 	return chg;
- }
- 
--/*
-- * Convert the address within this vma to the page offset within
-- * the mapping, huge page units here.
-- */
--static pgoff_t vma_hugecache_offset(struct hstate *h,
--			struct vm_area_struct *vma, unsigned long address)
--{
--	return ((address - vma->vm_start) >> huge_page_shift(h)) +
--			(vma->vm_pgoff >> huge_page_order(h));
--}
--
- /*
-  * Flags for MAP_PRIVATE reservations.  These are stored in the bottom
-  * bits of the reservation map pointer, which are always clear due to
-@@ -2437,7 +2426,9 @@ static long __vma_reservation_common(struct hstate *h,
- 	if (!resv)
- 		return 1;
- 
--	idx = vma_hugecache_offset(h, vma, addr);
-+	idx = linear_page_index(vma, addr);
-+	idx >>= huge_page_order(h);
-+
- 	switch (mode) {
- 	case VMA_NEEDS_RESV:
- 		ret = region_chg(resv, idx, idx + 1, &dummy_out_regions_needed);
-@@ -4693,8 +4684,10 @@ static void hugetlb_vm_op_close(struct vm_area_struct *vma)
- 	if (!resv || !is_vma_resv_set(vma, HPAGE_RESV_OWNER))
- 		return;
- 
--	start = vma_hugecache_offset(h, vma, vma->vm_start);
--	end = vma_hugecache_offset(h, vma, vma->vm_end);
-+	start = linear_page_index(vma, vma->vm_start);
-+	start >>= huge_page_order(h);
-+	end = linear_page_index(vma, vma->vm_end);
-+	end >>= huge_page_order(h);
- 
- 	reserve = (end - start) - region_count(resv, start, end);
- 	hugetlb_cgroup_uncharge_counter(resv, start, end);
--- 
-2.43.5
-
+I like this idea and will decouple in v2.
 
