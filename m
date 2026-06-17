@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA81CD98EE
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 06:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FF8CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:03:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90B666B0005; Wed, 17 Jun 2026 02:58:22 -0400 (EDT)
+	id B11466B0005; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BB126B0088; Wed, 17 Jun 2026 02:58:22 -0400 (EDT)
+	id AE6CA6B0088; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0FB6B008C; Wed, 17 Jun 2026 02:58:22 -0400 (EDT)
+	id A24F86B008A; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3EC6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:58:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B4E008D370
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:58:21 +0000 (UTC)
-X-FDA: 84888500802.11.8B81717
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B5928C0003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:58:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 790A06B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 005FC1C1A97
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:03:21 +0000 (UTC)
+X-FDA: 84888513402.16.F120A5E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4C57A4000B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:03:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ek6qZyIl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781679499;
+	s=arc-20220608; t=1781679800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=jWL0l2/uXOcgrXqllx7Dp+o1IU0yNqgnIbMBEVuqEyY=;
-	b=qdOpGOYEQ+JP/yNHS7UCmW+5psM/ayUuGSlUqaRyO0UiL3rlsnVRaRMAL8JawxTlIg6fUc
-	5BX2pcvOdWyrE+I8SexMoKciCzFOjAv88+4WbpmQKaUscfmjGwJtokh5w3/q68KPUg3deX
-	c3XDXK/seMECyBuDvMrBzTKz24cS2kA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781679499;
-	b=ar9yQhJRL9ENi+N4oCHM9yknPdCifFqH4Y3JNlDxpzvGTmEhlZ2eEv0iOvuKp3r2cazGUM
-	2uSWFnuIIQTGLBSCMlcudWiMXGX22MgjNc5HYJNeFrAPYaFWbtenU/wT4RkMITabd8FoHT
-	NL9nwC1rDOPs/BiDPuQPn7vO1+kPrzM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FA2Y02eZezagRsG3EdVgIrWy+bRirlt7CeSWEzPBaVM=;
+	b=FowZhwuD2BNvagqee5G9GVHEZMUo5XEJlwVFfV+33lA4s7zvajRRe3RcDGlovxU90BSRti
+	TQinyfB1aSV+qIq5ETZsnDeXiAUtPpJQQInaSMDJWyf1dGFE3UvUKDAUWjnAJnwLTwTEDX
+	AdtDQUMXZTYxS/SYIi6y5P+pm9CWRT4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ggF6s2tqvzHnGg3;
-	Wed, 17 Jun 2026 14:57:57 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 412E740577;
-	Wed, 17 Jun 2026 14:58:15 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 17 Jun 2026 09:58:14 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v1 1/1] samples/damon: Fix typo in Kconfig help text
-Date: Wed, 17 Jun 2026 06:57:16 +0000
-Message-ID: <20260617065716.750179-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ek6qZyIl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781679800;
+	b=oWAwfBTiPJTawESW1DBHpGbC6YU3YPiA6R0pzKtz8kcjvdM4pUBUSsPsxNYgijCzW3kEYT
+	suPdJz933RjUU29B4lkp9WOIH7toENsvCMULSQaw42bJQWRJsHbtIHhtgFXMcAPrNpq3AZ
+	fX7G/YLtjbIEIe0VuHENa7jKw+QBArM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F44C417EC;
+	Wed, 17 Jun 2026 07:03:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AD31F000E9;
+	Wed, 17 Jun 2026 07:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781679799;
+	bh=FA2Y02eZezagRsG3EdVgIrWy+bRirlt7CeSWEzPBaVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ek6qZyIlMX059nAqQp7ILoHOYNVLln8kdnR0ej7fSY8YGO6JdSb9TYTEmaezv9ZbU
+	 /cmvc14wGOblMQZEj4ehaH5CVigL0tUh9Lgkt8DOiyy0rbYFsbEoLjAYBFHjrIDFcp
+	 ki5+SnK0GnCFdirEhPYzjgf8ymQwyWCi5in8/n1bGOnVWqMz5rlMhsfuR78GWcbimt
+	 eJj35PXdbjvX3JEb347otpUmi908r7xOP+Ocmu5XcHo5N3sH3hqfYd6TIYFcEAW1XR
+	 +L++LXZN4j01mK4W3F7Zw6gimKV75Z8Z/ZpUX+afwGnLPWgp5C0uIf1PO2NSWgSu5i
+	 R4UZi6FSQwhnw==
+Date: Wed, 17 Jun 2026 00:03:17 -0700
+From: Dennis Zhou <dennis@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, chengkaitao <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v3 0/3] mm/percpu: Fix possible NOFS/NOIO reclaim
+ recursion
+Message-ID: <ajJGtVDi0rShPfE1@palisades.local>
+References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260612022648.13008-1-kaitao.cheng@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B5928C0003
-X-Stat-Signature: 5aqqeysqjr1k9ynpp1k8jsnh3xacznq4
-X-HE-Tag: 1781679498-210166
-X-HE-Meta: U2FsdGVkX1+W1qmcysC8CNjMAvyVW6YZCiZVutb20hEH6LkgHHJGa24HRWclgUnnjfOkshjHiZPBYIslU1Qc5e608Y5Z5vpZhFKTRcjZUB6u9Box+3IustVRfFrw1YoQSRonjE1X/PH/HLVvQqyv+WVjkQ+ZFCXY2mbaMO189L9EKWfD2C0CBvq2Gi1g7NGIi+p01xjz4tstDaOaPBuQ/yX1duVvPKgKYCliL9qnIb/eSJ+L90HlU1dxHSeW56Mj3Wzl8sXcIi2GcPytSCb1dw4js2nfTvsiZsAl/oCICPVnZZWNumpYS6SIhVH1jKnKCqhm3HgR86ErBB0uQk34pK8WfDH1xmphGY6ZbTWYGdyJo7AH+XAY9DnKPCgED5T3VwdvbPzl9ZFVS84dhvBDp7YHkSM/l5Nwg8Kl8j201yET/vWbemt6W9FdQAOmOY7XTh1zrmzADKgzx5nBpkpBfRBmzS5fXgvNBvlGcA/FJotLkixmAnVWmH/pE7eHaBLi6UGl6Bjkr3yjO6yHMaqUOZhJP4qw8VXXIGbUWmAHfx8TH/FY2I/5/uWR8ewygzm4Ah3iQJuHQIuQPlIzyjd/bqaLKolohdhX3zhXT0Y81cBS4mlnVfVyiFS+Ep6JBAFtCbsvG50kMtdKD9sMkWXpOVkqQfOz9g1y/fVvzWatZXQ5iv5u5AmfjnEa+faQtVMjxWEDlAM2QhKuXvnHpe/2HDw/DITVJraQA2yEvzXDq+1YwXLCSjawOVz61kvTLc9nC2Ou4nszpLuikpEtpjGSY8wues2bfIDLkWRGy9cYOlzhudwXZOCyoDBYLbFeaZ+xjRGimTEX3svsr3uDkDOt35qT9rcM8dCSOxguMbwqthb18CKJQYmtNmB6QHTAqdmpH4Jzy6MLAm44CK1uPCGmAiTzncjHBNlrvzeQ+2p89DVK4HVbj9cGQxtRJAl95molkCGWfC6v7I/+opkPYGL
- nL5CPiAv
- frEuk9GTde6nX9WXbHnjT1iX1hnKBzmnrmlThsKgInrYBRIBKAmiya0a2+MF3H+ueI2LXjZ5rBgRn05TNoen8mNmWXixpF5tgO0teJuvBNnVKoFwERsolKBEKxa5zKtJO10el6gvGZXEsFXnofGLpMQrlISW98P1q6gV/sEM2/301/jyGYNUm05sugqtjYsG1SmPXaB972qLYuVEOspkPBz3X6gMdDeZJUnfrIcE9qX0k3QnI+LpZMk6RS7u5y4Z3/OZfMtSunZ9lQkc=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4C57A4000B
+X-Stat-Signature: pg45ataszcdb41sofwgx7xu3wrkeqk3o
+X-HE-Tag: 1781679800-826731
+X-HE-Meta: U2FsdGVkX19Da1m6VvxPhdlXZn/gbNuxjoujPNhnxchg8N/uQdvPAzs0T7a9H1h9EeeIuMZT3oZMGGpNSHOagJpTYq96Tc+xan7scD9B/+423ZDuybQxJmw2JQne7I8552faWhWPZxRwq+AJ2SMj3NAn2eF+gosO++8u6UyzbmKQhHGg2WfCjAmnPYif/TTozJvqIFvVZyFG+A74qQB9bM5WNZO8bWosa9mgq5PBtbHGreL+wwcNQEa/ntyEIyHsKOY/EZiw91ziu/6OIijVea+e1cRvJH8Ihgj6q5UHf3IFHgE1doVqf2SVIOa4RvFqM2L0PcX0cnFof7dYAJWpjM3AWA1E8f9XjH+MbdPBuXjh1YScf8u9k/nu0eBf2mUfYSWE9NrqiDyW30X4t39VNPJJJDgTzgLo45AFm5LwIv4DTZhmFPxFQkckEtXRf3Ealq/qGVOsjluq4S60KyPw8zp5opIAxuCcJqWwdnzRX1kDBzN56se6vyqdFPyo+6OJg68xp23dAc7s0d6QM64aPZl/n8vdmLl/xsWORSngFVQIX+XlrFCwZyCYT9vAt0T6LN8Crp65jnKYUl32cRoXBEb1pjKA7ReMP4pFXjytYpEAzgl8gZNC/Jr03zjjNATYKTXgfmsRaVOl1dVZB5xyGezk8tHaZTsbUAbwSBRvUbe0vMMNamZ1qd7egYRdB2jV8pahHYcuLtaIO2VRkkS7bt/8ZkJwk3r6xtCa1o+lfa49ZgzFdvF+StvnFYJ6a71c2Y9T0v3Wh8gK64OTzvskfjUAXuyQlwG5GYUyO1837kQXljpJxntoZYNlWE9hL4yKwcuMwTOFz9QqzgE6TpaVfi+axKyabcPXsCtDjiP4CTC0dWbDzfTRFiKCtikTFDI7WPXdTqE0lVzY7Or3zffwN/gGxC060+H1APIPW+RMoeJ58+yo511a3Dx/61AvxaE9o4pzkmRNuBgp+eqpUfM
+ 0IJG+0Rs
+ tkp5ecEOyW43ajC/i2IMtmv2jKbSyzOICfXUafmsQP4fsdGHro/PgTF1FwxlAn69oUrbBjNyfRGztsaoZn7SwImO9PYA6GMOrUapYx/u/MwCTHFpVQiSZLADgRxCC8zNakkAKcRwR4A1jSf6iXMQ9yfezqhfiCpqbGqV2URgv7utw1r5TP9NMioHNLSi8jposV9ja/WiWqeWxS5P+wrLT3uU4xB2aMbQMqi/gN4v4p8FJiKA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,30 +95,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Hello,
 
-Fix a typo in samples/damon/Kconfig help text. Change
-"Thps" to "This".
+On Fri, Jun 12, 2026 at 10:26:45AM +0800, Kaitao Cheng wrote:
+> From: chengkaitao <chengkaitao@kylinos.cn>
+> 
+> Hi all,
+> 
+> After v1 was posted, there were many different opinions, mainly around
+> optimizing pcpu_alloc_mutex. This v3 is intended to describe the existing
+> problems more clearly and provide a conventional fix approach.
+> 
+> Commit 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations
+> atomic") allowed GFP_NOFS and GFP_NOIO percpu allocations to use
+> pcpu_alloc_mutex and the chunk creation slow path. This restored the
+> allocation capability that was lost when those constrained allocations
+> were treated as atomic, but it also makes the percpu slow path visible
+> to callers from constrained reclaim contexts.
+> 
+> There are two related problems.
+> 
+> First, the create and populate slow paths do not fully preserve the
+> caller's allocation constraints. pcpu_alloc_noprof() derives pcpu_gfp from
+> the caller supplied GFP mask and passes it down to the percpu backing page
+> allocator. However, chunk creation calls pcpu_get_vm_areas(), and chunk
+> population can allocate temporary metadata or vmalloc page tables while
+> mapping backing pages. Those internal allocations can still use GFP_KERNEL,
+> so a caller using GFP_NOFS or GFP_NOIO can enter unconstrained FS or IO
+> reclaim while holding pcpu_alloc_mutex.
+> 
+> One possible case is blk-cgroup after commit 5d726c4dbeed
+> ("blk-cgroup: fix possible deadlock while configuring policy").
+> blkg_conf_prep() now serializes against blkcg_deactivate_policy() with
+> q->blkcg_mutex, and blkg_alloc() uses GFP_NOIO because queue freeze and IO
+> reclaim dependencies can otherwise deadlock. If the percpu slow path loses
+> that GFP_NOIO context, direct reclaim or writeback can issue IO to a frozen
+> queue while q->blkcg_mutex is held.
+> 
+> Second, allowing sleepable GFP_NOFS/GFP_NOIO allocations to take
+> pcpu_alloc_mutex means that unconstrained backing allocations made under
+> the mutex can create an FS/IO reclaim dependency against a constrained
+> caller which already holds an FS or IO lock and then waits for
+> pcpu_alloc_mutex.
+> 
+> This series fixes those issues in three steps:
+> 
+>   - pass the caller supplied GFP mask into pcpu_get_vm_areas() and use it
+>     for vmalloc metadata and KASAN shadow allocations;
+>   - pass the GFP mask through the chunk population path, including the
+>     temporary pages array and vmalloc page table allocation scope;
+>   - restrict percpu backing allocations performed while holding
+>     pcpu_alloc_mutex to GFP_NOIO, so they cannot recurse into IO or FS
+>     reclaim.
+> 
+> This keeps sleepable GFP_NOFS/GFP_NOIO percpu allocations working, while
+> avoiding the reclaim recursion risks introduced by making those allocations
+> eligible for the mutex-protected slow path.
+> 
+> Changes in v3:
+> Allow @gfp to pass __GFP_NOFAIL through. (Andrew Morton)
+> 
+> Changes in v2:
+>   - split the previous first patch into vmalloc-area creation and chunk
+>     population changes; (Pedro Falcato)
+>   - pass the GFP mask explicitly to pcpu_get_vm_areas(); (Pedro Falcato)
+>   - apply the corresponding memalloc scope around vmalloc page table
+>     allocation during chunk population;
+>   - replace the reclaim recursion avoidance with a GFP_NOIO backing
+>     allocation mask instead of only rejecting nested reclaim.
+>     (Michal Hocko)
+> 
+> Link to v2:
+> https://lore.kernel.org/all/20260604113101.89510-1-kaitao.cheng@linux.dev/
+> 
+> Link to v1:
+> https://lore.kernel.org/all/20260528132917.81123-1-kaitao.cheng@linux.dev/
+> 
+> Kaitao Cheng (3):
+>   mm/vmalloc: honor GFP constraints in pcpu_get_vm_areas()
+>   mm/percpu: honor GFP constraints when populating chunks
+>   mm/percpu: Avoid IO/FS reclaim in backing allocations
+> 
+>  include/linux/vmalloc.h |  4 ++--
+>  mm/percpu-vm.c          | 40 +++++++++++++++++++++++++++-------------
+>  mm/percpu.c             | 18 ++++++++++++------
+>  mm/vmalloc.c            | 23 ++++++++++++-----------
+>  4 files changed, 53 insertions(+), 32 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
 
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
----
- samples/damon/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for taking on this work. I definitely missed this earlier.
 
-diff --git a/samples/damon/Kconfig b/samples/damon/Kconfig
-index cbf96fd8a8bf..182a59722879 100644
---- a/samples/damon/Kconfig
-+++ b/samples/damon/Kconfig
-@@ -31,7 +31,7 @@ config SAMPLE_DAMON_MTIER
- 	bool "DAMON sample module for memory tiering"
- 	depends on DAMON && DAMON_PADDR
- 	help
--	  Thps builds DAMON sample module for memory tierign.
-+	  This builds DAMON sample module for memory tierign.
- 
- 	  The module assumes the system is constructed with two NUMA nodes,
- 	  which seems as local and remote nodes to all CPUs.  For example,
--- 
-2.43.0
+I acked patches 1 and 2. I think 3 is good but the __GFP_NOFAIL warrants
+more discussion. I think my take back then was a single percpu
+allocation can trigger a large # of backing pages. As a result, while
+the caller may not be asking for a lot of memory, we may need
+substantially more to back that allocation. Given the discrepancy,
+that's why __GFP_NOFAIL is just mutex_lock() vs mutex_lock_killable().
 
+Thanks,
+Dennis
 
