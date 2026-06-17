@@ -4,135 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C18E4CD98ED
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F973CD98ED
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:52:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FD9D6B0088; Wed, 17 Jun 2026 16:43:31 -0400 (EDT)
+	id 506C36B0088; Wed, 17 Jun 2026 16:52:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AF486B008A; Wed, 17 Jun 2026 16:43:31 -0400 (EDT)
+	id 4B8966B008A; Wed, 17 Jun 2026 16:52:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875F26B008C; Wed, 17 Jun 2026 16:43:31 -0400 (EDT)
+	id 37F846B008C; Wed, 17 Jun 2026 16:52:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40E5C6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:43:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A70DC1C4985
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:43:30 +0000 (UTC)
-X-FDA: 84890580180.15.78163C3
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A28ABC0008
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:43:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NO+/mesP";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 05A166B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:52:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 90C6D405E1
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:52:28 +0000 (UTC)
+X-FDA: 84890602776.10.28B6420
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 70FEF4000D
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:52:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=C1+2umhN;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	spf=pass (imf17.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781729008;
+	s=arc-20220608; t=1781729546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+6ifopdlqgIxgw2B9IIAgJNzgxL9tW7aCswkc9fIqqs=;
-	b=xPyqZV6hUDE1TL20r88Xc7IRVqfzNhShHBsAZXkml2cRqcuWdJBxFYe3e12Yq67ECaQwi1
-	qXL+rfbM9c5BZhZgRujLjLoMGbdUUPyHAucs0e3vrMFwFTKcbvMe7VI/56NWv6WhKL7vc0
-	R3fSpnIPnbKQ4o+BNdr3B2/psnXYP2E=
+	bh=hFPYglbe5qYHgRXrF6cxAEUo2zlYC9VGhGaVSLw8NmE=;
+	b=XtbO4VPMyUPb0VU2AQHn49r1cnaHSkiNlDYheg6d7eydTU/frAShTZn3PeW1vLmgFoLc+t
+	985zbZFQOKu1YMtSQvEscnzGeVv3UmlzVOrbA+gugRPPiNFDYJKGtw7huYtrV9R6MQQDh3
+	Xls8zXeeIRizlMQ7KWV1TkaPV4UviRM=
 ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="NO+/mesP";
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=C1+2umhN;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	spf=pass (imf17.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781729008;
-	b=zzean/XBIk4SCGWP8CWDG6dz6YTYj/y+coRVzjtBWM1inWQkEM6wIGQDiC1a0gv/iTQkws
-	59DBj1UDMVpmR8QDslEcradpbEiAGb20SP25dRt/NjmqqFZOEk9UCuedo4f5Dn/pwbjkup
-	g9OMmOaaXTp1iHZ8XueLZhVrzEAzsn0=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c6d3851e0aso5255ad.1
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:43:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781729007; cv=none;
+	t=1781729546;
+	b=EVRDGLTYJ+eD4g/C9yONovr5PHI283payQ41UHCr3wANvDIq8K+4tgGFXr+WzoN74F3OpX
+	+qQm4RxL+oCyKeT2geFAlvmbLMzv+4U5uIeaPnW+YLQ1xTqHinqT3tThHnlLJL07k6vr4o
+	8SHJYvua1X307QwGcotd/UzF4gQI5Rg=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c6a4eccab1so5775ad.1
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:52:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781729545; cv=none;
         d=google.com; s=arc-20260327;
-        b=e0EJafkD66PtMV09E3wsNXT/RmSof2+AZbuXiwufDN4GQOTR+r5k4k7oCtKZO7HIQV
-         xIjdK+X5tbcCrJs22xz0FCE+dtu/TUHk8j1TNaaFeXYpzMImgRuWsSiivSPHSQHdAAbA
-         q0sGdshl7wRSUp5tZyx1z582jpv2dSR+6O7tmCNlNS8tnobXicASzdL13XmmK3RXVmL2
-         V+YsQWPTjQkyf/K350tKEAR3qmJ4BlptY1biWaAHuuqAiCoPA/bHyOS3VtwYLi1avakP
-         FDb99LGnrY2O+uH1VuBkveiAI9LTIXwGrDuuFEkXqAkT8oR5B8PyVaHeUf21hrFFCOcI
-         NKDQ==
+        b=PUnJhcWGb/FgLyeqaPUKKwZNP6IiQuGd2RP+BV4tMgwnh6wjuEq6zHSMy4O3BgUUEN
+         c7QiLoNiBtLQjgnGnMW4qrNe+bOniqoDUWC20r7wnJaiZ2COfZopdxPg1sjxCaRc9U0Z
+         FP2eBef5StK//naoXLhjpBYDIvoV7azXbj6PShy0d+R0lBTEw7bwLS5Fu81S3dhQdHkr
+         2i55dAfa7XjGCDVefn2KyNEHqoGqPrAKwTg3DjCmmQ821LqihA3POSk38fyeXvWIfXgX
+         6IMSixX8b+8LP345/uCxPIJjElqqU/dEsf807GVSRpHrY6vUpYoPxDMPe4y2DtHNWS9Q
+         3vMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=+6ifopdlqgIxgw2B9IIAgJNzgxL9tW7aCswkc9fIqqs=;
-        fh=Pa6JQhQioUla2ZAD0RPCgMr82MX0x83IlvZxTjUfo9Q=;
-        b=RsNMqeWtKm/vXHlunV8LOY5zNIV9hs8PiE5h2+JUc8A88M0CXPAuRWW6vbp4ZrvB3G
-         6wZWynPtK7KtZBQvy4skcLXBf6QMQWH45OsEI36ga1URJf+0B4b8kIjq/jlXPYPMA+Y9
-         LDzuuhkjtBN7CMywzAXL/Y5zkfiJQagNX0E482WMwp0HSpRmaNJ4IoBN2pH8ankAmQw5
-         ThPrmfndjdzpIR5twHmm569azQydylXocVDKRdEpy8KUpbzrvbmrrFNBVo0sWO1STuFt
-         zJzfgo9b/JNqFRyAa/9wUAZ4vWg8ZWo0YmvB7LjKTn/i/aqpXlzaSxi/BqynFUSy3HMy
-         s0lw==;
+        bh=hFPYglbe5qYHgRXrF6cxAEUo2zlYC9VGhGaVSLw8NmE=;
+        fh=DDbKeLe6JxXsUgvPCjQ9DkCzxayYhd38cW0uJ/3ufmA=;
+        b=figCvGObvySZ1rnYVXdHt8RRIS/IwC3HfC7CoTAjLEvgUDBWdelZTKef/rQL6G663T
+         hRJdh00L7kI8VfdCLtM5pUU6YVSjToEMyrTqCcgdGtW4+TLFJvXtIJDR1xQsAcCii2id
+         hDZeeZ65sMKl3RqQFpEikA2dJS5rvW1xuIh1KKHYprHDp23lj900U/Hz9asEwfkqi260
+         KXrVUxHiP3x3TdQqSJhFp2O5YsqgO9COI0eRP0NCLttGukc126SqwAUr9e8pdkxgs8OO
+         AHrIfWE9doqqlot85lfwMH9mf0Zk57PoNysKRHTn2Y45MnHhVuRdh9CFP4DAeFqh4Nmz
+         vONw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781729007; x=1782333807; darn=kvack.org;
+        d=google.com; s=20251104; t=1781729545; x=1782334345; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+6ifopdlqgIxgw2B9IIAgJNzgxL9tW7aCswkc9fIqqs=;
-        b=NO+/mesPMX/NFmgUhrtsLBLHh9i/yJKQoUKP0XBTiqBXsb/Hau7dckHpIF8ARyIS4J
-         DrqkWRpa5G3B2D/+VNtz0KguLCXBNVRhRHDQaR8MnpLQSDBADr6CaUYajfcoO5SwrqyW
-         daDYb80hwZI30XrCjJuWyS56+fhXUgbzupet5iy4DQ4v1lAabLk86w04Z1SBSemAnmOt
-         AynPi4qcqeadA1UaGYRzdSjYXv9cOPpN5IyLOtzCoBVE1Z9WKVTn92IWbESg2DioDSzF
-         VbZalCL+v6UtySufbIFvjNmYtuqS3hWeDVjKiiskszq+PdUeA6xgOTgvxxD8Zl025Okz
-         ybog==
+        bh=hFPYglbe5qYHgRXrF6cxAEUo2zlYC9VGhGaVSLw8NmE=;
+        b=C1+2umhNn2NtdMK+OttY7d4aVfVzVSao5RkXOU0KlraWJVIMMtx8TO6n4W4AqoiSvn
+         d58/hmE6hgOmm26g50jZtgVjn0c8GUoek0KYpc310izhf9Z2qw/V+ImEXanMN5YIcDjj
+         MVCfe+MOQfJQ0a9AGl3e1Jxl/RgViAOLtmozu5XCG7NG79xWqYEBOh59ECIKzplqbTKG
+         0pVqRThaBs0t5H5m59AC+CD8Jy3+XEBoi5jqo9iCwC1WtckkW13hkra2QH6N3FMtY1Br
+         5+9mAjrHxX1rFhItcud2+744Q0gRp722KrnBA8AsP5dNVCmjUOcTQqyOn2tbuqcxElt/
+         ANdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781729007; x=1782333807;
+        d=1e100.net; s=20251104; t=1781729545; x=1782334345;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=+6ifopdlqgIxgw2B9IIAgJNzgxL9tW7aCswkc9fIqqs=;
-        b=HtCtPch8qJxJyEwnrssjbeqm8Q0DmahIPHBILkhn7jQOJfKlVDux/ScGlxHZsvQMQS
-         Xqv8SEkqixd0GGpfP+SpMpeQ7VzchJGB7Y9hA2PQTp7OrPV4yLU9u3u6oJoNVpNjwEcS
-         dZC7ttf6wPU5DXUsotcnCISY5QIyJhAFI3ltJXpRZN4dxwPKOC1gHfV1XjQ+G7wQ/pbm
-         vmftXvomCeLkmg9hFsrKAnGzzUSFzRRtjaax0nl+DXtvolGqSRj9kkWZ47UFYDr9Ss7k
-         KFVLvEJLZ4yTe4qMjYTpB6tY1qlFvCClAPokUIMdBXX8vcd5eU98RwVCkm21rvO0j9Kr
-         JfaA==
-X-Forwarded-Encrypted: i=1; AFNElJ+GO68IIq+LeGEpkVZPOlHZHzCz0HBhxjIK7xGCBh1aGJK1YYujrfBLfmlCtRvnl+Al1awLVtTcjA==@kvack.org
-X-Gm-Message-State: AOJu0YyBEsA9bA8dGdg691+BW3hzTYZiazRkjfi/rT7VKK7mvvPlkJ2X
-	j6GQ8+i9q0j+zWAzkhIiYT2ypgCAek1/RCIVY/uai9bw1vZlidZqo6NOcKE79A57m3XTTxZkQxH
-	TIW14g7aQOdpWL7MgKK8q0EYShUp1wgI/CFcjs480
-X-Gm-Gg: AfdE7ck6iP6krYKn5im5x5UTdwkNoJ7WcnP8qH6LcXlciT0IwcvdbST4kcGGEpbNbiX
-	MUayW0X+5NAq1p2gHHofTqWnfACBXWz7YYUINzBHL28XihG1ibeLSvBJtyr269co19wpgKyAk7S
-	dgGRJdoTV++6b1+TEPo1kDx/ENEWUHlgrhvz7jEJ+vL+uOeIbBMJure+BJo4A9k3E+PgYaQUOar
-	JvXN4ct2UKnCZnBPFAV1UqBr9AJwLzMEPMIS2FX7Elz/N33EXQqdgC78f0k7dnYyd2YJd7Oa+jR
-	hvoF8FqbkE2OWih+fNg6aPOyLgk=
-X-Received: by 2002:a17:903:19e7:b0:2c1:ee6e:be1c with SMTP id
- d9443c01a7336-2c6e23ac948mr640025ad.26.1781729006148; Wed, 17 Jun 2026
- 13:43:26 -0700 (PDT)
+        bh=hFPYglbe5qYHgRXrF6cxAEUo2zlYC9VGhGaVSLw8NmE=;
+        b=opVEAwnOGJP80baYQ3nX+PS8GW3PY51GJCMnWaVkeJ/CVfAtYkF8d7y+GdV17ngA5V
+         +rcS9+S2u2fxlzrcAWt46EfMc97r6Wh23r19INCumR3L3aqnwlnmicqbYj6Zpf525nhi
+         4crZthnFbUAJ5lu7mk14KTp9kPdE8gmBrlre1vR7lpVLC1jeGfbiFLwxni5+1XYYkTI2
+         wBBTn26aPTT4BWHyxNH8jl0WDf29Syq51jXtnkBa46XsfBm47AJWmkMGTqPn0SzxWzKL
+         CHT9KAys8cA4lMwki+5tQ93wXZENWio/QMamERtpPAg7K/IAnRS0VuLYXAt75zFD1vMt
+         UUFw==
+X-Forwarded-Encrypted: i=1; AFNElJ+YU3Xucu1gVt2EZyYG2JSFUurv6mbouDp8TojomgEIeNdivhmmu/GH0RPkDyubzHodrmlC5yiYyA==@kvack.org
+X-Gm-Message-State: AOJu0YxIr5SEAUMk/4cBeeSCvhXQDWgMurBzbk5nDpcTO3XxsWtL3Ns6
+	yA5esEeHB9Sg9U/8TMjoKTySI0wWjv8XewY4ZfARro8IYvyRlTp9+j3w4DdlJC3wFToew1dk0V6
+	AEPjw2wZCpkBDAlSe2PqOOEhhQv1YXjo4/Ki2gyEj
+X-Gm-Gg: AfdE7ckPSoOPIhBmOBnlBVLXRrgF5jRpwyjCeEtHJdkQwVW7PO2cDGg9EpGDVNeyr/B
+	s10+HA2Ax5Own1K7aBo+xncQVY12JMb6cWftC0e6zNyYY+mjEmTeFWwK/CZ4fWHxW+tnpnNui70
+	oLg3LjCyRNcsVAIKufIO1rLn7OskvmiVCtBSB7tVKy1KBVJOHBGxHi+tobJugre08SXIaErJfuo
+	QotSuxV5+kGAiZs10N73FyfU5iv74NrxJH6rvjgElAKz8u0FA20BCB5ST8+83TbOwWPLX1NB9p1
+	gnX7MyIORu5bh2mepwS23LAiNXI=
+X-Received: by 2002:a17:902:da88:b0:2bf:193b:a195 with SMTP id
+ d9443c01a7336-2c6e868ff0emr135275ad.11.1781729544657; Wed, 17 Jun 2026
+ 13:52:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1781564384.git.abhishekbapat@google.com>
  <7d98db60ab0fddab230b1a7a32140f3361ab42cf.1781564384.git.abhishekbapat@google.com>
- <CAJuCfpFbCKc7FR3tbeCzexCzyfiP+Ab2fJ7Vd1Q76MKTvqC2XA@mail.gmail.com>
-In-Reply-To: <CAJuCfpFbCKc7FR3tbeCzexCzyfiP+Ab2fJ7Vd1Q76MKTvqC2XA@mail.gmail.com>
+ <CAJuCfpFbCKc7FR3tbeCzexCzyfiP+Ab2fJ7Vd1Q76MKTvqC2XA@mail.gmail.com> <CAL41Mv7+t9_Ohz2313AM_CgCoFGkt6xd0VnCw+zQZd4pKrr8Ww@mail.gmail.com>
+In-Reply-To: <CAL41Mv7+t9_Ohz2313AM_CgCoFGkt6xd0VnCw+zQZd4pKrr8Ww@mail.gmail.com>
 From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Wed, 17 Jun 2026 13:43:14 -0700
-X-Gm-Features: AVVi8CdHuB4m_1dxu5hpB40zda7iOBIdXs7upxa3RQeoqyO83JJfpZIbOIWNQH4
-Message-ID: <CAL41Mv7+t9_Ohz2313AM_CgCoFGkt6xd0VnCw+zQZd4pKrr8Ww@mail.gmail.com>
+Date: Wed, 17 Jun 2026 13:52:12 -0700
+X-Gm-Features: AVVi8Cei1hvkIQoiw94PklUJfisrI5GHrBhQNDvkAddqFhLjD2UP9Oo229Uk7OA
+Message-ID: <CAL41Mv7as17=_Z=sPRaC6HhwzSt+9-Mshg72Hga9Qfbh3fO=og@mail.gmail.com>
 Subject: Re: [PATCH v5 3/6] alloc_tag: add size-based filtering to ioctl
 To: Suren Baghdasaryan <surenb@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
 	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
 	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
-Content-Type: multipart/alternative; boundary="000000000000806db90654791c40"
+Content-Type: multipart/alternative; boundary="00000000000099f5580654793c1c"
+X-Rspamd-Queue-Id: 70FEF4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A28ABC0008
-X-Stat-Signature: ssuh648iyhkxjsi96n868yeg7rm1d9no
-X-HE-Tag: 1781729008-374844
-X-HE-Meta: U2FsdGVkX1/TnawHUYDlxcE0NbRNFXOfACcVc7Uu1qIArsC/F/z85/bUWvTyXkt18kefGglBEwLBhpIMR2jazMbJDy8gSurM7jfpKSNgxHASmXMAPP3UmtNuHrp5UOYdJxIpbr1y1gsod5G/E6ZvaCCZqmhPuTuzoTxdp+blxcdJMyTnqIyLEvKlCoZ061TB6Sjajb5Q//dUZCX5ERAvxKEUT9TWxvg6gKNyqAkJWF/UibWLjgn4e5Utqy94rWpuLjPizxjwMxtuCE2qwSdb5ImSOw3UOKj0KyjxikjTj5jPe1HrE1Ekr2spVQcW9EuX9Dn+eRfHhnTEX4ozXwxBr72GJHStcDNhaIHy3rD7CeVk5glak6bRHK1H1sQiuxNmGM+Tk08n398fmMXvm/23VRlsALyznTQNE+1tgSjTnI59OW9Ev4FZZYKhHyombKOh2X+WcudUfaCiFmiHj3w7kxiS39tqXnm/1sAcVVx8dqCsD+Vk2n4ssXq5p0nUrnwJVEi6I5wf0lgKOlVSi/XgZeQQkelmwmcvXVfRfNwA7MUpW25UrMRcvryTnnAIxAVD/zPXoSfOrThPUjoH0ncnSIpoc4xk3LG92MX6eaYCKS8ewRrrXbXWHTqzDp3EcLfzxEerhQLeCPYVY9zCwMv2/zFThgcGC4EEz9wwMnxO7Fa0q0YMtV+HYIuZbK4VUFfP7ADPC45evVkDTGbdZ2hDbKnozC3+9AhiqTF4Icg3DC0TjSyuTBzEbXDSvNlBN8yOAqoqWE2cqSQRo4naWpazQg3NANfEa03SFCcZno+f6mqbtTcSmJTfzW+EEbfqLGoCQEhKHAgX7/Is2P/DRbEk0PPqwKs+bRAtO7mz2RTvgGTODQ1RoDPN0HWE3SyRQljDWvpRlmpFkUWmCdrXPRWQ2FxOdVUvrCK6O3um7/JTOZ1P3kIG632KvIjf7MjQKg05stRPuHNq0qaWUAdiuic
- E7mv5BV+
- QBra/GPdhNgk3Foy96rqTGi5Sgbqu+FbMsNqDPMW8jBuN3mjBGb2YgX3rNUiJWeR/L3JBYIRxMLNxLu8PFJX1lcx25Jb8THpttVY+aCPwXYM/GCXKC7X5q6c2bHBfHhLeeKYwzxPLuxD5VxSawzZy4jHYXOPPXn1SCHCIqEftepIklzSiSGsLod3630TJHU2p0uF5avD+mvfkYvPiusiWxJnV3XAB5qBF16p3azzHmK1UPiSmImI5kr6Cy4qJtfBSn7EqY32NItG2BWaq22w6UlQE0sKDbL6afyxdBaiptJcge5i/igKt+x+3CyQndJ9yXrtjEjIqV4TEKA3dJdVyOeZtgthY4cWoaI5k3xXfKoc4baqde3gXz2FMqWoGJxGDayvFIfdR/QnCFM3qWEUGPOu2t6vczxGQ7Ljrdu8M3Hnxe+ySO1OtrU7YUg==
+X-Stat-Signature: 75kwc9jk1m6a5mfzq83ymcbnqq5bdesi
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781729546-184652
+X-HE-Meta: U2FsdGVkX1+75Nem5aFvvwtVJaRNYwVAKCgYCBZZ1QfRq4770Mgbe5wx366IAbUhyLx4arQR1YD+yAcAPlgsFXXuYT9i7DN69QP4VKjDt9jPy1cO8bOpHTR7Mzcp4lAJxKwTXllxQr8woKcO2dfh8aTha6LmFE7N/unLYu/WUzU+TO3FA8m7uI4QpCu+swm0PNGkNivg3BzDVbcMWog2rhEGuw8ZHpZa23do5y1rdhuW49aTyXaKqOGbAff0D9xBYIiE+hmKFloMtqnEuCx4fkX3Ya4v+TvwxNaOntAcMGdMpKxBPNzo/+3Ez9wE0UeNJkCUvHm2GHwnKbJbbA7xD6Q6GVhlLdiwKnIo0XmgxaHyLeubZWuHN4fHekksHNTWG7HSnaV7PIkoL4DiPVI2t6C11cM9aatekHVJO8U3NCMObHTWakKyzqgnyqJN5v9h+15NhaVGAA6GiYqexcupXJJS9aHn5mZC75WuUodbLFZ7WEk359U6BpLHDryBoC9iNgNZjWMJeEocoyitbGsCBYQGJds1vV8pFGxLP6WBS1ZstIhfqj74HtoISoikYJnWbLle8aIWUNkMdN3URyDiPSf5IVSGfjvZ8WQ6bpDcW2eId83+ynXXpXLH2jnTlA3GoO4MGB4SOSgps/R5+CFt7NguFmRkDmUlv69ylVwvgSZXnvDKIcfjScIsVATo+o2vWWsP4HQpwPfMuznfpRGwnvzZilvaxWEd5EmXmhemy3nvXkQtReqiuHpLDs6rkO9fDszWHLfTf1NmGPkCkDsSM18HRW4B33tBK7nO2m5ObkzTG6fgHBbtFNsWOWHlGTX9WHQH1oL4vngQpVPuPVVk4JpMC+x6gIIxJVxUkZLGkwuluu3s4avcoDhfx5yjNUulVgBsI7HXSFNSrnosKO5FkhcXPeiHqz+jT4fa0z/BkGDYmWUs+/5ehUk2/pElRdDoHpRfAXn+YE9mqv7fbDv
+ dzHE11aW
+ tm054JoClp3AHrNDq0tkGcd3/WcXA5FTeg7+bioMc3CaxTrfZHs1t5h4F4QbwtvUFgJfK5fwMjjC/OpdK5tAdO911DILVTIXZEfi86aYFQR2e9y30RC4ymgxoPn+RAYvcQpeZ7sUmBkNCij+Yv0uTzsZ19ZHnQxeGDfef8L612IP/Trkp6oBqc8DiUfP6V1Ufb1aT07Qyf53FVSUAWXDw1geYhuozNtZ2NY0bZky1l/Q9a7uM1OmjAH0NlyDOAOUL8rNsopM8wYPPp42rCfuCPPbTrf8I0fvBCXCQPDEvwk40iW2R2H9pV7XcTwtD3r96CXdPov1IMOmR9MnLaYFBjuIOj4fIW/T+QuKOmRoIjTCKGsOeKnGHTn5NzJYN5ysJVZTurJ35BzUkQhSfBs28uswDfMHulGAJ38vA43QhWqlPxtoZbTvMotKuyWg6/2lYmhWGCNdONZwTvsb6Fqar1XOL3WpYt4H7OrgBisffAyBqtpia+7qdnCqqstm03SvHfnXsDJauk26LpXJYFWEP2phZpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,289 +140,317 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000806db90654791c40
+--00000000000099f5580654793c1c
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 17, 2026 at 9:29=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om>
+On Wed, Jun 17, 2026 at 1:43=E2=80=AFPM Abhishek Bapat <abhishekbapat@googl=
+e.com>
 wrote:
 
-> On Mon, Jun 15, 2026 at 4:04=E2=80=AFPM Abhishek Bapat <abhishekbapat@goo=
-gle.com>
+>
+>
+> On Wed, Jun 17, 2026 at 9:29=E2=80=AFAM Suren Baghdasaryan <surenb@google=
+.com>
 > wrote:
-> >
-> > Extend the allocinfo filtering mechanism to allow users to filter tags
-> > based on the total number of bytes allocated [min_size, max_size]. The
-> > size range is inclusive.
-> >
-> > Filtering by size involves retrieving allocinfo per-CPU counters, which
-> > is an expensive operation. Hence, the performance of size-based
-> > filtering will be worse than other filters.
-> >
-> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > Acked-by: Hao Ge <hao.ge@linux.dev>
-> > ---
-> >  include/uapi/linux/alloc_tag.h |  8 ++++-
-> >  lib/alloc_tag.c                | 63 ++++++++++++++++++++++++++++------
-> >  2 files changed, 59 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/alloc_tag.h
-> b/include/uapi/linux/alloc_tag.h
-> > index 3b11877955b9..7f5acbb44c14 100644
-> > --- a/include/uapi/linux/alloc_tag.h
-> > +++ b/include/uapi/linux/alloc_tag.h
-> > @@ -45,13 +45,17 @@ enum {
-> >         ALLOCINFO_FILTER_FUNCTION,
-> >         ALLOCINFO_FILTER_FILENAME,
-> >         ALLOCINFO_FILTER_LINENO,
-> > -       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
-> > +       ALLOCINFO_FILTER_MIN_SIZE,
-> > +       ALLOCINFO_FILTER_MAX_SIZE,
-> > +       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
-> >  };
-> >
-> >  #define ALLOCINFO_FILTER_MASK_MODNAME          (1 <<
-> ALLOCINFO_FILTER_MODNAME)
-> >  #define ALLOCINFO_FILTER_MASK_FUNCTION         (1 <<
-> ALLOCINFO_FILTER_FUNCTION)
-> >  #define ALLOCINFO_FILTER_MASK_FILENAME         (1 <<
-> ALLOCINFO_FILTER_FILENAME)
-> >  #define ALLOCINFO_FILTER_MASK_LINENO           (1 <<
-> ALLOCINFO_FILTER_LINENO)
-> > +#define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 <<
-> ALLOCINFO_FILTER_MIN_SIZE)
-> > +#define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 <<
-> ALLOCINFO_FILTER_MAX_SIZE)
-> >
-> >  #define ALLOCINFO_FILTER_MASKS \
-> >         ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> > @@ -59,6 +63,8 @@ enum {
-> >  struct allocinfo_filter {
-> >         __u64 mask; /* bitmask of the filter fields used */
-> >         struct allocinfo_tag fields;
-> > +       __u64 min_size;
-> > +       __u64 max_size;
-> >  };
-> >
-> >  struct allocinfo_get_at {
-> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> > index 5feb61d9fb92..b3d21834b61e 100644
-> > --- a/lib/alloc_tag.c
-> > +++ b/lib/alloc_tag.c
-> > @@ -195,15 +195,26 @@ static int allocinfo_cmp_str(const char *str,
-> const char *template)
-> >         return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE=
-);
-> >  }
-> >
-> > +/* Fetch the per-CPU counters */
-> > +static inline struct alloc_tag_counters
-> allocinfo_prefetch_counters(struct codetag *ct)
-> > +{
-> > +       return alloc_tag_read(ct_to_alloc_tag(ct));
-> > +}
-> > +
-> >  /*
-> >   * Populates the UAPI allocinfo_tag_data structure with active runtime
-> >   * profiling counters extracted from the given kernel codetag.
-> >   */
-> >  static void allocinfo_to_params(struct codetag *ct,
-> > -                               struct allocinfo_tag_data *data)
-> > +                               struct allocinfo_tag_data *data,
-> > +                               struct alloc_tag_counters *counters)
-> >  {
-> > -       struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
-> > -       struct alloc_tag_counters counter =3D alloc_tag_read(tag);
-> > +       struct alloc_tag_counters local_counters;
-> > +
-> > +       if (!counters) {
-> > +               local_counters =3D allocinfo_prefetch_counters(ct);
-> > +               counters =3D &local_counters;
-> > +       }
-> >
-> >         if (ct->modname)
-> >                 allocinfo_copy_str(data->tag.modname, ct->modname);
-> > @@ -212,9 +223,9 @@ static void allocinfo_to_params(struct codetag *ct,
-> >         allocinfo_copy_str(data->tag.function, ct->function);
-> >         allocinfo_copy_str(data->tag.filename, ct->filename);
-> >         data->tag.lineno =3D ct->lineno;
-> > -       data->counter.bytes =3D counter.bytes;
-> > -       data->counter.calls =3D counter.calls;
-> > -       data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
-> > +       data->counter.bytes =3D counters->bytes;
-> > +       data->counter.calls =3D counters->calls;
-> > +       data->counter.accurate =3D
-> !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
-> >  }
-> >
-> >  /*
-> > @@ -238,7 +249,9 @@ static int allocinfo_ioctl_get_content_id(struct
-> seq_file *m, void __user *arg)
-> >   * Verifies whether a given codetag satisfies the active filtering
-> criteria by
-> >   * matching its characteristics against the specified filter.
-> >   */
-> > -static bool matches_filter(struct codetag *ct, struct allocinfo_filter
-> *filter)
-> > +static bool matches_filter(struct codetag *ct, struct allocinfo_filter
-> *filter,
-> > +                          struct alloc_tag_counters *counters,
-> > +                          bool *fetched_counters)
-> >  {
-> >         if (!filter || !filter->mask)
-> >                 return true;
-> > @@ -265,6 +278,19 @@ static bool matches_filter(struct codetag *ct,
-> struct allocinfo_filter *filter)
-> >             ct->lineno !=3D filter->fields.lineno)
-> >                 return false;
-> >
-> > +       if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
-> > +               if (!*fetched_counters) {
-> > +                       *counters =3D allocinfo_prefetch_counters(ct);
-> > +                       *fetched_counters =3D true;
-> > +               }
-> > +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> > +                   counters->bytes < filter->min_size)
-> > +                       return false;
-> > +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> > +                   counters->bytes > filter->max_size)
-> > +                       return false;
-> > +       }
-> > +
-> >         return true;
-> >  }
-> >
-> > @@ -278,6 +304,8 @@ static int allocinfo_ioctl_get_at(struct seq_file
-> *m, void __user *arg)
-> >         struct codetag *ct;
-> >         struct allocinfo_get_at params =3D {0};
-> >         __u64 skip_count;
-> > +       struct alloc_tag_counters counters;
-> > +       bool fetched_counters;
-> >
-> >         if (copy_from_user(&params, arg, sizeof(params)))
-> >                 return -EFAULT;
-> > @@ -285,6 +313,11 @@ static int allocinfo_ioctl_get_at(struct seq_file
-> *m, void __user *arg)
-> >         if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
-> >                 return -EINVAL;
-> >
-> > +       if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> > +           (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> > +           params.filter.min_size > params.filter.max_size)
-> > +               return -EINVAL;
-> > +
-> >         priv =3D m->private;
-> >
-> >         mutex_lock(&priv->ioctl_lock);
-> > @@ -308,7 +341,8 @@ static int allocinfo_ioctl_get_at(struct seq_file
-> *m, void __user *arg)
-> >         ct =3D codetag_next_ct(&priv->ioctl_iter);
-> >
-> >         while (ct) {
-> > -               if (matches_filter(ct, &priv->filter)) {
-> > +               fetched_counters =3D false;
-> > +               if (matches_filter(ct, &priv->filter, &counters,
-> &fetched_counters)) {
 >
-> Do we really need this "fetched_counters" parameter? Here are the
-> possible cases:
-> 1. If the filter does not include ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> ALLOCINFO_FILTER_MASK_MAX_SIZE then counters would not be fetched.
-> 2. If the filter includes ALLOCINFO_FILTER_MASK_MIN_SIZE |
-> ALLOCINFO_FILTER_MASK_MAX_SIZE and
-> 2.1. matches_filter() returns true then we know counters were fetched
-> because they had to be validated.
-> 2.2. matches_filter() returns false then we don't care if the counters
-> were fetched. We do not report that tag anyway.
+>> On Mon, Jun 15, 2026 at 4:04=E2=80=AFPM Abhishek Bapat <abhishekbapat@go=
+ogle.com>
+>> wrote:
+>> >
+>> > Extend the allocinfo filtering mechanism to allow users to filter tags
+>> > based on the total number of bytes allocated [min_size, max_size]. The
+>> > size range is inclusive.
+>> >
+>> > Filtering by size involves retrieving allocinfo per-CPU counters, whic=
+h
+>> > is an expensive operation. Hence, the performance of size-based
+>> > filtering will be worse than other filters.
+>> >
+>> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+>> > Acked-by: Hao Ge <hao.ge@linux.dev>
+>> > ---
+>> >  include/uapi/linux/alloc_tag.h |  8 ++++-
+>> >  lib/alloc_tag.c                | 63 ++++++++++++++++++++++++++++-----=
+-
+>> >  2 files changed, 59 insertions(+), 12 deletions(-)
+>> >
+>> > diff --git a/include/uapi/linux/alloc_tag.h
+>> b/include/uapi/linux/alloc_tag.h
+>> > index 3b11877955b9..7f5acbb44c14 100644
+>> > --- a/include/uapi/linux/alloc_tag.h
+>> > +++ b/include/uapi/linux/alloc_tag.h
+>> > @@ -45,13 +45,17 @@ enum {
+>> >         ALLOCINFO_FILTER_FUNCTION,
+>> >         ALLOCINFO_FILTER_FILENAME,
+>> >         ALLOCINFO_FILTER_LINENO,
+>> > -       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
+>> > +       ALLOCINFO_FILTER_MIN_SIZE,
+>> > +       ALLOCINFO_FILTER_MAX_SIZE,
+>> > +       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+>> >  };
+>> >
+>> >  #define ALLOCINFO_FILTER_MASK_MODNAME          (1 <<
+>> ALLOCINFO_FILTER_MODNAME)
+>> >  #define ALLOCINFO_FILTER_MASK_FUNCTION         (1 <<
+>> ALLOCINFO_FILTER_FUNCTION)
+>> >  #define ALLOCINFO_FILTER_MASK_FILENAME         (1 <<
+>> ALLOCINFO_FILTER_FILENAME)
+>> >  #define ALLOCINFO_FILTER_MASK_LINENO           (1 <<
+>> ALLOCINFO_FILTER_LINENO)
+>> > +#define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 <<
+>> ALLOCINFO_FILTER_MIN_SIZE)
+>> > +#define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 <<
+>> ALLOCINFO_FILTER_MAX_SIZE)
+>> >
+>> >  #define ALLOCINFO_FILTER_MASKS \
+>> >         ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+>> > @@ -59,6 +63,8 @@ enum {
+>> >  struct allocinfo_filter {
+>> >         __u64 mask; /* bitmask of the filter fields used */
+>> >         struct allocinfo_tag fields;
+>> > +       __u64 min_size;
+>> > +       __u64 max_size;
+>> >  };
+>> >
+>> >  struct allocinfo_get_at {
+>> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+>> > index 5feb61d9fb92..b3d21834b61e 100644
+>> > --- a/lib/alloc_tag.c
+>> > +++ b/lib/alloc_tag.c
+>> > @@ -195,15 +195,26 @@ static int allocinfo_cmp_str(const char *str,
+>> const char *template)
+>> >         return strncmp(allocinfo_str(str), template,
+>> ALLOCINFO_STR_SIZE);
+>> >  }
+>> >
+>> > +/* Fetch the per-CPU counters */
+>> > +static inline struct alloc_tag_counters
+>> allocinfo_prefetch_counters(struct codetag *ct)
+>> > +{
+>> > +       return alloc_tag_read(ct_to_alloc_tag(ct));
+>> > +}
+>> > +
+>> >  /*
+>> >   * Populates the UAPI allocinfo_tag_data structure with active runtim=
+e
+>> >   * profiling counters extracted from the given kernel codetag.
+>> >   */
+>> >  static void allocinfo_to_params(struct codetag *ct,
+>> > -                               struct allocinfo_tag_data *data)
+>> > +                               struct allocinfo_tag_data *data,
+>> > +                               struct alloc_tag_counters *counters)
+>> >  {
+>> > -       struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
+>> > -       struct alloc_tag_counters counter =3D alloc_tag_read(tag);
+>> > +       struct alloc_tag_counters local_counters;
+>> > +
+>> > +       if (!counters) {
+>> > +               local_counters =3D allocinfo_prefetch_counters(ct);
+>> > +               counters =3D &local_counters;
+>> > +       }
+>> >
+>> >         if (ct->modname)
+>> >                 allocinfo_copy_str(data->tag.modname, ct->modname);
+>> > @@ -212,9 +223,9 @@ static void allocinfo_to_params(struct codetag *ct=
+,
+>> >         allocinfo_copy_str(data->tag.function, ct->function);
+>> >         allocinfo_copy_str(data->tag.filename, ct->filename);
+>> >         data->tag.lineno =3D ct->lineno;
+>> > -       data->counter.bytes =3D counter.bytes;
+>> > -       data->counter.calls =3D counter.calls;
+>> > -       data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
+>> > +       data->counter.bytes =3D counters->bytes;
+>> > +       data->counter.calls =3D counters->calls;
+>> > +       data->counter.accurate =3D
+>> !alloc_tag_is_inaccurate(ct_to_alloc_tag(ct));
+>> >  }
+>> >
+>> >  /*
+>> > @@ -238,7 +249,9 @@ static int allocinfo_ioctl_get_content_id(struct
+>> seq_file *m, void __user *arg)
+>> >   * Verifies whether a given codetag satisfies the active filtering
+>> criteria by
+>> >   * matching its characteristics against the specified filter.
+>> >   */
+>> > -static bool matches_filter(struct codetag *ct, struct allocinfo_filte=
+r
+>> *filter)
+>> > +static bool matches_filter(struct codetag *ct, struct allocinfo_filte=
+r
+>> *filter,
+>> > +                          struct alloc_tag_counters *counters,
+>> > +                          bool *fetched_counters)
+>> >  {
+>> >         if (!filter || !filter->mask)
+>> >                 return true;
+>> > @@ -265,6 +278,19 @@ static bool matches_filter(struct codetag *ct,
+>> struct allocinfo_filter *filter)
+>> >             ct->lineno !=3D filter->fields.lineno)
+>> >                 return false;
+>> >
+>> > +       if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE |
+>> ALLOCINFO_FILTER_MASK_MAX_SIZE)) {
+>> > +               if (!*fetched_counters) {
+>> > +                       *counters =3D allocinfo_prefetch_counters(ct);
+>> > +                       *fetched_counters =3D true;
+>> > +               }
+>> > +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+>> > +                   counters->bytes < filter->min_size)
+>> > +                       return false;
+>> > +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+>> > +                   counters->bytes > filter->max_size)
+>> > +                       return false;
+>> > +       }
+>> > +
+>> >         return true;
+>> >  }
+>> >
+>> > @@ -278,6 +304,8 @@ static int allocinfo_ioctl_get_at(struct seq_file
+>> *m, void __user *arg)
+>> >         struct codetag *ct;
+>> >         struct allocinfo_get_at params =3D {0};
+>> >         __u64 skip_count;
+>> > +       struct alloc_tag_counters counters;
+>> > +       bool fetched_counters;
+>> >
+>> >         if (copy_from_user(&params, arg, sizeof(params)))
+>> >                 return -EFAULT;
+>> > @@ -285,6 +313,11 @@ static int allocinfo_ioctl_get_at(struct seq_file
+>> *m, void __user *arg)
+>> >         if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+>> >                 return -EINVAL;
+>> >
+>> > +       if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
+>> > +           (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
+>> > +           params.filter.min_size > params.filter.max_size)
+>> > +               return -EINVAL;
+>> > +
+>> >         priv =3D m->private;
+>> >
+>> >         mutex_lock(&priv->ioctl_lock);
+>> > @@ -308,7 +341,8 @@ static int allocinfo_ioctl_get_at(struct seq_file
+>> *m, void __user *arg)
+>> >         ct =3D codetag_next_ct(&priv->ioctl_iter);
+>> >
+>> >         while (ct) {
+>> > -               if (matches_filter(ct, &priv->filter)) {
+>> > +               fetched_counters =3D false;
+>> > +               if (matches_filter(ct, &priv->filter, &counters,
+>> &fetched_counters)) {
+>>
+>> Do we really need this "fetched_counters" parameter? Here are the
+>> possible cases:
+>> 1. If the filter does not include ALLOCINFO_FILTER_MASK_MIN_SIZE |
+>> ALLOCINFO_FILTER_MASK_MAX_SIZE then counters would not be fetched.
+>> 2. If the filter includes ALLOCINFO_FILTER_MASK_MIN_SIZE |
+>> ALLOCINFO_FILTER_MASK_MAX_SIZE and
+>> 2.1. matches_filter() returns true then we know counters were fetched
+>> because they had to be validated.
+>> 2.2. matches_filter() returns false then we don't care if the counters
+>> were fetched. We do not report that tag anyway.
+>>
+>> So, instead of passing fetched_counters to matches_filter() we could do
+>> this:
+>>
+>> bool filter_by_size =3D (params.filter.mask &
+>> (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE)) !=3D
+>> 0;
+>> while (ct) {
+>>            if (matches_filter(ct, &priv->filter, &counters)) {
+>> ...
+>> }
+>> if (ct) {
+>>            allocinfo_to_params(ct, &params.data, filter_by_size ?
+>> &counters : NULL);
+>> ...
+>> }
+>>
+>> Wouldn't that work?
+>>
+>> Ack, yeah this logic works and obviates the need for fetched_counters.
+> I'll include this in the next version.
 >
-> So, instead of passing fetched_counters to matches_filter() we could do
-> this:
 >
-> bool filter_by_size =3D (params.filter.mask &
-> (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE)) !=3D
-> 0;
-> while (ct) {
->            if (matches_filter(ct, &priv->filter, &counters)) {
-> ...
-> }
-> if (ct) {
->            allocinfo_to_params(ct, &params.data, filter_by_size ?
-> &counters : NULL);
-> ...
-> }
->
-> Wouldn't that work?
->
-> Ack, yeah this logic works and obviates the need for fetched_counters.
-I'll include this in the next version.
+Actually, thinking a bit more on this, while we can deduce whether counters
+were fetched outside the matches_filter function, I think the current
+implementation is more intuitive from a readability perspective. I believe
+it  should be kept as is for that reason. If we extract the logic, we'll
+first have to replicate the boolean logic at two places. Second, we'd need
+to add a comment explaining the boolean calculation, and the reader might
+have a higher cognitive load trying to determine which function populates
+the counters. The current implementation makes it easy for the reader to
+deduce the original intention. Let me know what you think.
 
-
-> >                         if (skip_count =3D=3D 0)
-> >                                 break;
-> >                         skip_count--;
-> > @@ -317,7 +351,7 @@ static int allocinfo_ioctl_get_at(struct seq_file
-> *m, void __user *arg)
-> >         }
-> >
-> >         if (ct) {
-> > -               allocinfo_to_params(ct, &params.data);
-> > +               allocinfo_to_params(ct, &params.data, fetched_counters =
-?
-> &counters : NULL);
-> >                 priv->positioned =3D true;
-> >         }
-> >
-> > @@ -343,6 +377,8 @@ static int allocinfo_ioctl_get_next(struct seq_file
-> *m, void __user *arg)
-> >         struct codetag *ct;
-> >         struct allocinfo_tag_data params;
-> >         int ret =3D 0;
-> > +       struct alloc_tag_counters counters;
-> > +       bool fetched_counters;
-> >
-> >         memset(&params, 0, sizeof(params));
-> >         priv =3D m->private;
-> > @@ -356,10 +392,15 @@ static int allocinfo_ioctl_get_next(struct
-> seq_file *m, void __user *arg)
-> >         }
-> >
-> >         ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > -       while (ct && !matches_filter(ct, &priv->filter))
-> > +       while (ct) {
-> > +               fetched_counters =3D false;
-> > +               if (matches_filter(ct, &priv->filter, &counters,
-> &fetched_counters))
-> > +                       break;
-> >                 ct =3D codetag_next_ct(&priv->ioctl_iter);
-> > +       }
-> > +
-> >         if (ct)
-> > -               allocinfo_to_params(ct, &params);
-> > +               allocinfo_to_params(ct, &params, fetched_counters ?
-> &counters : NULL);
-> >
-> >         if (!ct) {
-> >                 priv->positioned =3D false;
-> > --
-> > 2.54.0.1136.gdb2ca164c4-goog
-> >
+>                         if (skip_count =3D=3D 0)
+>> >                                 break;
+>> >                         skip_count--;
+>> > @@ -317,7 +351,7 @@ static int allocinfo_ioctl_get_at(struct seq_file
+>> *m, void __user *arg)
+>> >         }
+>> >
+>> >         if (ct) {
+>> > -               allocinfo_to_params(ct, &params.data);
+>> > +               allocinfo_to_params(ct, &params.data, fetched_counters
+>> ? &counters : NULL);
+>> >                 priv->positioned =3D true;
+>> >         }
+>> >
+>> > @@ -343,6 +377,8 @@ static int allocinfo_ioctl_get_next(struct seq_fil=
+e
+>> *m, void __user *arg)
+>> >         struct codetag *ct;
+>> >         struct allocinfo_tag_data params;
+>> >         int ret =3D 0;
+>> > +       struct alloc_tag_counters counters;
+>> > +       bool fetched_counters;
+>> >
+>> >         memset(&params, 0, sizeof(params));
+>> >         priv =3D m->private;
+>> > @@ -356,10 +392,15 @@ static int allocinfo_ioctl_get_next(struct
+>> seq_file *m, void __user *arg)
+>> >         }
+>> >
+>> >         ct =3D codetag_next_ct(&priv->ioctl_iter);
+>> > -       while (ct && !matches_filter(ct, &priv->filter))
+>> > +       while (ct) {
+>> > +               fetched_counters =3D false;
+>> > +               if (matches_filter(ct, &priv->filter, &counters,
+>> &fetched_counters))
+>> > +                       break;
+>> >                 ct =3D codetag_next_ct(&priv->ioctl_iter);
+>> > +       }
+>> > +
+>> >         if (ct)
+>> > -               allocinfo_to_params(ct, &params);
+>> > +               allocinfo_to_params(ct, &params, fetched_counters ?
+>> &counters : NULL);
+>> >
+>> >         if (!ct) {
+>> >                 priv->positioned =3D false;
+>> > --
+>> > 2.54.0.1136.gdb2ca164c4-goog
+>> >
+>>
 >
 
---000000000000806db90654791c40
+--00000000000099f5580654793c1c
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
 mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 17,=
- 2026 at 9:29=E2=80=AFAM Suren Baghdasaryan &lt;<a href=3D"mailto:surenb@go=
-ogle.com">surenb@google.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">On Mon, Jun 15, 2026 at 4:04=E2=80=AFPM Abhishek=
- Bapat &lt;<a href=3D"mailto:abhishekbapat@google.com" target=3D"_blank">ab=
-hishekbapat@google.com</a>&gt; wrote:<br>
+ 2026 at 1:43=E2=80=AFPM Abhishek Bapat &lt;<a href=3D"mailto:abhishekbapat=
+@google.com">abhishekbapat@google.com</a>&gt; wrote:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br>=
+</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
+On Wed, Jun 17, 2026 at 9:29=E2=80=AFAM Suren Baghdasaryan &lt;<a href=3D"m=
+ailto:surenb@google.com" target=3D"_blank">surenb@google.com</a>&gt; wrote:=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, Jun 15,=
+ 2026 at 4:04=E2=80=AFPM Abhishek Bapat &lt;<a href=3D"mailto:abhishekbapat=
+@google.com" target=3D"_blank">abhishekbapat@google.com</a>&gt; wrote:<br>
 &gt;<br>
 &gt; Extend the allocinfo filtering mechanism to allow users to filter tags=
 <br>
@@ -695,8 +723,20 @@ s.data, filter_by_size ?<br>
 Wouldn&#39;t that work?<br>
 <br></blockquote><div>Ack, yeah this logic works and obviates the need for =
 fetched_counters. I&#39;ll include this in the next version.</div><div>=C2=
-=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+=A0</div></div></div></blockquote><div>Actually, thinking a bit more on thi=
+s, while we can deduce whether counters were fetched outside the matches_fi=
+lter function, I think the current implementation is more intuitive from a =
+readability perspective. I believe it=C2=A0 should be kept as is for that r=
+eason. If we extract the logic, we&#39;ll first have to replicate the boole=
+an logic at two places. Second, we&#39;d need to add a comment explaining t=
+he boolean calculation, and the reader might have a higher cognitive load t=
+rying to determine which function populates the counters. The current imple=
+mentation makes it easy for the reader to deduce the original intention. Le=
+t me know what you think.=C2=A0</div><div><br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex"><div dir=3D"ltr"><div class=3D"gmail_quote"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
+:1px solid rgb(204,204,204);padding-left:1ex">
 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
 =C2=A0 =C2=A0 =C2=A0if (skip_count =3D=3D 0)<br>
 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
@@ -759,6 +799,7 @@ positioned =3D false;<br>
 &gt; 2.54.0.1136.gdb2ca164c4-goog<br>
 &gt;<br>
 </blockquote></div></div>
+</blockquote></div></div>
 
---000000000000806db90654791c40--
+--00000000000099f5580654793c1c--
 
