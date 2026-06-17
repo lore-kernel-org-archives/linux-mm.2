@@ -4,92 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60318CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 06:02:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9818DCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 06:10:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31D736B008A; Wed, 17 Jun 2026 02:02:24 -0400 (EDT)
+	id 74D216B0005; Wed, 17 Jun 2026 02:10:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CE1D6B008C; Wed, 17 Jun 2026 02:02:24 -0400 (EDT)
+	id 6FDD06B0088; Wed, 17 Jun 2026 02:10:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BD126B0092; Wed, 17 Jun 2026 02:02:24 -0400 (EDT)
+	id 6156A6B008A; Wed, 17 Jun 2026 02:10:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7CB6B008A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:02:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 61A388D262
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:02:23 +0000 (UTC)
-X-FDA: 84888359766.23.43EA692
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B52CD4000D
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:02:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1qEgAUA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 355866B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:10:19 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEE13A0331
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:10:18 +0000 (UTC)
+X-FDA: 84888379716.16.9FCCB52
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1E4AC20002
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:10:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781676141;
+	s=arc-20220608; t=1781676616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tdg+qxsERN6xrjUnxPGS2XNaJdEod0AKmfxv6p5DAjE=;
-	b=MmXF4g5FoK1VIGuZuHQRf8Yi4P4+YKwKO+tjXd5opRQ+nM/CI7/bokUdYG8Aj6tuN0rGIA
-	0qkORwGQUM6W3/b4fr791l/B9Erhjw7Lo+ptUBCPCpH7tgfoVNuWJeBaS5ghdsrmL7qz0Z
-	Kpv1qY/Ntw2HH1i04cqnQJwSLib4WDs=
+	 in-reply-to:in-reply-to:references:references;
+	bh=tQ1F140yU92zZOzRpzYu4UDTbBRUfAVELBtgf1k0MGM=;
+	b=T82eAvpQZtHDbd5+Z6uLbZbq0IIwK8d7JITqeF2mjmNCNy0iZOjmdEqvsklNrvIM0TZNsD
+	DA3zq+/XKMWpQEvHPtDEGZc3/o2iU9OV+UDYuaZeQnZMEuKIJyjFyhueO6DYEOAIcU6I/z
+	JsTpUXmkJqLAlSHgqgmes49Ymux7+/E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1qEgAUA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf31.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781676141;
-	b=P/XU8EPIQuI1HHmrmyDr1MS3XxuO538CbjyjuQBmZ93Tbx1sBemXa+FBQF9hgKrF9Oy+OG
-	eAcTM6KA6XLSc1f5CBqLw4YbECOn9Cu9HDqr4sX1LTt7qeCuY65mUGJCD8N36Np7hegvEw
-	frp3ktuDh39LynVmaZy4/+jZfP7ReEA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 450A8600AA;
-	Wed, 17 Jun 2026 06:02:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B2B1F000E9;
-	Wed, 17 Jun 2026 06:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781676141;
-	bh=Tdg+qxsERN6xrjUnxPGS2XNaJdEod0AKmfxv6p5DAjE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d1qEgAUAo6blDAhN91UNiZow7zQ464yVflIh9uH8SnlNEterfQJsfiUwxOWvNfU1S
-	 WtERR+Hb2aOl+EQ+3PLnHJGjOOeev5luXk98tx/A1znZ2jguGLacUX37MBFlDK6zDp
-	 FTLNL4zrANsVYKUmoQxNZijPnHjV9oPA4TOCEDTaV53FLw7iDHFP3yWKWCOTLedpkc
-	 VWwPuSJPp4BlXilsYd1YU2kUB+5y+UAKVNx7swEj1qimxwoKP+csf6le0/wIYrF6/m
-	 /O/ejAsblbG6z2mHY4Y9SQbL+qTQFcVtEbVb2j/mDZtplx4AlaqwpDX0/YGmcFkDOP
-	 aihEFDXrBYoYg==
-Date: Tue, 16 Jun 2026 23:02:19 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	muchun.song@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v3 1/3] mm/vmalloc: honor GFP constraints in
- pcpu_get_vm_areas()
-Message-ID: <ajI4a0BvAlFHihJx@palisades.local>
-References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
- <20260612022648.13008-2-kaitao.cheng@linux.dev>
+	t=1781676616;
+	b=0k+XGfeajt/VTQaB72jcFzDm+fkcz5oRG8W/XfjDki5wIhvWcobH760/T5rEotShKltKid
+	imrcak9GDYYekxxNNej7hikNIpyWEJE8S97oxDYSwnDrSg23hRfB78u4aLhaTnSaqEkq7A
+	6YpFsoFXmkGDWZli3YzujAg/bI1Jd64=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 17 Jun 2026 15:10:13 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 17 Jun 2026 15:10:13 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: akpm@linux-foundation.org
+Cc: chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+	baohua@kernel.org, yosry@kernel.org, gunho.lee@lge.com,
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
+	baver.bae@lge.com, matia.kim@lge.com
+Subject: Re: [PATCH v8 3/4] mm: memcontrol: add interface for swap tier
+ selection
+Message-ID: <ajI6RaSrZYXOKgV9@yjaykim-PowerEdge-T330>
+References: <20260617053447.2831896-1-youngjun.park@lge.com>
+ <20260617053447.2831896-4-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260612022648.13008-2-kaitao.cheng@linux.dev>
+In-Reply-To: <20260617053447.2831896-4-youngjun.park@lge.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1E4AC20002
+X-Stat-Signature: jt59ui1mjowm8nhn979xxz8o1iewrfpw
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B52CD4000D
-X-Stat-Signature: zyejwgkf4mn71mjie9j3a8bs6q6fiq8z
-X-HE-Tag: 1781676141-980104
-X-HE-Meta: U2FsdGVkX19CJhLyRNPtgyl1EHrXWt3Bfmuor6/F2bSJ8t81JMNkheQRSy4ghetTiSR8f8a5B9vs3PVsuowNn/i5C6fI283kiyLYtRB0N3A9oEyynysu9O9JBeTdDQS5MAaKSQoHRGK9wA0IHIZvJwua2ITYbM1GfsjXHCVEKoeRKhXLWJ57rhR/NiX7SGgRxELDVOpElls+VDpaRVcngGXb/Tyg+qrDchVxiBk8oYlEQQFEORT7RNj+bK0c51xM77QbOgMMpYQyoosf+cTg0BQ44BkZj5j1ReV3waq7ePef1DJIZSHULRVSh9qoKE/E46bvMDhV3EBtod7HyjtIB3IEWFrUBfC5WI/FpGV3Mn28BXgTxqI/ezyhJMPkJtOPoxUSh2IBzV3aMTyFdaVAT6d0r98ye+fGkbgvWzjOZhS/EHNeZR0neVV2kK+JL9SLsCJZlYeLYH6OI/zMmWFTTW6qm95A1qbNmWv74+rae4L53+xquFWO+yMNRNWLiJSfTY44nVvmJuu+kTLGTQap+5Xsewx+TIIMEXfi8bpxjIlRlNsa7RLeEBowLGKgTSkN5NwQc7mYpmeopZpRP3wH3uHJxYpY8Pa9NnkutT+njNgwcamltbh4U5E5wKzJ2+2sIIKewleTietvbSD7KfwXl3Tw2YQS1oG182MGAbmvrBYiWNOqUBCKLmXx1+7qa2ptQUU9SwkE+0B6wh69mpxW5CJbY7ejHuC7mAkY5O0l5Cd4QxNHWpXYubbFJNLuK5VnRmhLOy+x+8gQwipYV3XSUPSZmLn0qutO+xCi3/zmr2xDUTv+MFWYtikEbEmZ+D+JD9H2B480rlIv9/LPmi//+vD7aOdinUassmdosu/Df7ertGNJqBmgO1Q4NCYMWFzRIIBZ3r6J2Lld4bK12z8VA88I4hg+t0iA27nyDY0Wi2iEw3hpjp66SGUcrcddnbT4GrVnwLWIdjNulp5UjYF
- Y9jPgHNK
- lMPY9ZMA1VxCMuWFTTwNBDmeMsZAG4qPaGRCH1N1dosd/2TuPv1Th2T+cTQVuPKNTMt6oBWu/ObGyORoQv4X50HT1esjzbO4dwvnSd2M/RjSkkZGlpuVXJiYDbaC5ExWcNc2MK+08VeE3HwwsdgdnOigU5ABNR9XgH8jVSuwuQG9kIAbXR353ZAxNrE+iponDgL7nRuu3+7u9iLTywMVruw1rmgxTK16GC8CIv+7Q1See60Wu92hUpSRriWqKvxqaJmeJXUXtAGdco2Ee1OlI3RzIgDQHRiPFYsAIfNtRizf3AUvankNFcUxaKw==
+X-HE-Tag: 1781676615-875574
+X-HE-Meta: U2FsdGVkX19pBPx249bbH3gewXV5zFFP2l6op9iMS2pY5HWojqMzN6vvKRGOW9kXQRdx1xDWZGCG8oD9vH4ntmm+GSkpa5B1ko6o0u5pm4daIzKCMg20h7WvWs34OOoQKcRBWJCia24Pg1cWiZCMCFWvZudfYPGzw+6hBaNzQX12jzJOAGfpoX5pd+piuXhnzYMeBe6pO2pATn8Ku5orHk56jRRViuD0aDI/hCdpOsNBnqC/c5Cov02mxaqrn5JRB9kKiyrC8L7gTmLZHh+INjk4rxcxxrBA5JJIgsG5jlQipyETMsucxfqP8ozZeOBWcVvisZJjwoioFgECoOAoENoTDrlrVOPVeleG3RAGEQH9BQVrx2xQ9Dy6/DjjUASvdAE0h46zQElZc3UZALhhR6uNncbqjVAiTjNSmhszaIETpRVwV21IiD5nwLTMalvBbdpI4Xa4D659n6ryi2vYwiT9czm1K8m/SvDxerCiX6IVWwgywOHULWxFb7u1mXlnjOxe1ANALMy8sdqi59OlwBczFhV6joTriRKPPlLDpTt43M2idUnujgUpbhqN668zkVPsaqhNlDjK6XTQhryVHR01XG6jF5zDRe8e4074ixnAhxhoVVDDwovgL9kAvsBLDPa1zUaCtBsbGnVebYqLeKygMANCbzG0z4x79tjadf9pZQ2gTs6TDepmE8swFwWwYtRp8VNdRMn9DCCnNGUtq/32pLyrXAmmtueJYmNfpcG1K47Iy9REbby8VNPTpBvidXyZ7Xtb1DfHUJEU9Jl+tWQBxbUGxyajf9yBTY1PIryJhpvDtteT/ga4ZFky6dZ2EjjQ/DiRye92K3rnYc2eU++/KFp5KpyA4Z7qv+MwzgER5d+yu9syzsePSW1aETVHE82Reeoive3Z6hm2JHvAGBeittYMGAC209wB7jhA+cAbcovDrNVjTVXbNH0HoeLmkOQyuNZKCExp1v4WHtj
+ 7ibTdXkw
+ iVZmcrUClr7yjWd0HOcpIyUkEuzXsLavC5ONI+tvCwDope1de9WNldkAbLmBEyYj1jck9fS6QtyVQ3PTTdOnhT79LZJmHbuqVXJ0m1NPafldt1DOAaow55ZF6VSGGI1rx01L8ei/z6xcRHJJz2+8mdCaHUKtvBldbMWmSRzeFnv4IqH6SoI4wW6H9dq3DTU8oOjdDuSCKv7KZuGW1xP721k4ZfyDEfIUiOUuKwS1ZgMwNnOfYb6pqCs3GCK6Y3FRn42TEf2TSzsaZnyryzxxgpM5mPLgglPAr0KZB55btQyqKK7yWU2o5i9dA7t6FsXsWW4zt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +87,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Sahiko review
 
-On Fri, Jun 12, 2026 at 10:26:46AM +0800, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> pcpu_alloc_noprof() derives pcpu_gfp from the caller supplied GFP mask
-> and passes it down to the backing percpu allocator. However, when the
-> percpu vmalloc allocator has to create a new chunk, pcpu_create_chunk()
-> calls pcpu_get_vm_areas() to allocate the corresponding vmalloc areas.
-> 
-> pcpu_get_vm_areas() currently performs its internal allocations with
-> GFP_KERNEL, including vmap area metadata, vm_struct metadata and KASAN
-> vmalloc shadow population. This means that a caller which deliberately
-> uses GFP_NOFS or GFP_NOIO can still enter FS or IO reclaim while creating
-> the vmalloc areas for a new percpu chunk.
-> 
-> One possible case is blk-cgroup after commit 5d726c4dbeed
-> ("blk-cgroup: fix possible deadlock while configuring policy").
-> blkg_conf_prep() now serializes against blkcg_deactivate_policy() with
-> q->blkcg_mutex, and blkg_alloc() was changed to GFP_NOIO for that reason:
-> 
->   CPU0: blkg_conf_prep()
->     mutex_lock(q->blkcg_mutex)
->     blkg_alloc(..., GFP_NOIO)
->       alloc_percpu_gfp(..., GFP_NOIO)
->         pcpu_alloc_noprof(..., GFP_NOIO)
-> 	  pcpu_create_chunk(GFP_NOIO)
-> 	    pcpu_get_vm_areas()
->               -> if percpu chunks are exhausted, chunk create may do
->                  internal GFP_KERNEL allocations
->               -> direct reclaim / writeback can issue IO to this queue
->               -> IO waits because the queue is frozen
-> 
->   CPU1: blkcg_deactivate_policy()
->     blk_mq_freeze_queue(q)
->     mutex_lock(q->blkcg_mutex)
->       -> waits for CPU0
->     ... unfreeze only happens after q->blkcg_mutex is acquired/released
-> 
-> So the concern is that the caller deliberately uses GFP_NOIO because it
-> may hold a lock which can be acquired after queue freeze, but the percpu
-> slow path can temporarily lose that allocation context.
-> 
-> Pass the caller supplied GFP mask from pcpu_create_chunk() to
-> pcpu_get_vm_areas(), and use it for the internal vmalloc metadata and
-> KASAN shadow allocations.
-> 
-> Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
- 
-Acked-by: Dennis Zhou <dennis@kernel.org>
+https://sashiko.dev/#/message/20260617053447.2831896-4-youngjun.park%40lge.com
 
-Thanks,
-Dennis
+I think this might be an overconcern. In normal
+situations, cgroup delegation is strictly under the administrator's control.
+
+Furthermore, if a user already has a delegated root, there are numerous
+other ways they could potentially cause a DoS attack. Therefore, I believe
+this doesn't need to be modified.
 
