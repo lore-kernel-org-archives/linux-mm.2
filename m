@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93698CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D579CD98E1
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B5C86B0005; Tue, 16 Jun 2026 23:22:30 -0400 (EDT)
+	id 3D0146B009B; Tue, 16 Jun 2026 23:22:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 666936B008A; Tue, 16 Jun 2026 23:22:30 -0400 (EDT)
+	id 381106B009D; Tue, 16 Jun 2026 23:22:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5561E6B009B; Tue, 16 Jun 2026 23:22:30 -0400 (EDT)
+	id 184B06B009E; Tue, 16 Jun 2026 23:22:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 108A56B0005
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:22:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86B8D165A71
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:29 +0000 (UTC)
-X-FDA: 84887956818.28.D11F4FA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DEF766B009B
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:22:33 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 556AB402CA
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:33 +0000 (UTC)
+X-FDA: 84887956986.08.E2EA74F
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 15F93100007
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=inB0RHD+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+	by imf11.hostedemail.com (Postfix) with ESMTP id 31CAB40006
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:22:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=n0++xm3b;
+	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781666547;
+	s=arc-20220608; t=1781666551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0K6TLKQmteGqMPOjogTpyguO3OA0c6FcnunPrM8g9xU=;
-	b=GLrMAT4+r70yauUx3cpJOofBX8uePo4+1cb4dMXXPux1KmWwcgTOJuELqwKmdlUdTL5Z0P
-	hk/mGiuBY7iblW+QzinE13vwNBZDem0Qh3LOkhBSAxaRInOkS3n3CXn7b3UJK5do8MvysS
-	ceIko3aen6PlQBEfxKnPGPGcPHy58bk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TQV3xFHJKgQkMS8NV/Ihex626F8ipTfXl+Lbz6MfWE4=;
+	b=emt7skr5WojikQhQ11OeVq3M4+j31pOBqr54I9OdiNZJpYbYMgROnvaRJc1E7SDFsr9XBN
+	MUmXJk/Po2kxWQvvjJ5ELPLrrWq8EkyfUMh+bwib6kPvfzqNA+w9qIRTDrgpcpIGSzF3Mu
+	kmhQLnnPbg3U0aaLd/snzxgiGAiGL7U=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=inB0RHD+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf14.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=n0++xm3b;
+	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781666547;
-	b=r76kdL1Dy17I1P/M3LYAEswK6eJL0MaEyGVXpafNR+TW2LYBAVpQz6CkOTYtAtuLezvM6I
-	nWnGzuZ+yWq+Zy0pVQpYeg0mgNkhayRC5zeIqIKa+eLRoqMatRO4az5ehD94bFfp7J/wgT
-	yOhlJrcO8giSxLNfjcvEKtowOBNDJFA=
+	t=1781666551;
+	b=dMT2UU55iTz54QesKUb875jpOAbstqMt9bHLHA5NYVLHt0xRiQGPOYL+HE97myCgwostre
+	gxgc+RBL0F0QiLW5APiOeRKX9lXEwStq0MMpEXUm8pIgTGyZf60iH5+HMfFPQdwZTDR31e
+	ORV48Am2jQ9BtSthxzLKlQMLHHB6d44=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781666547; x=1813202547;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=84O97qTDilDn95yjtESFooPy0tR2mZAlQQWrqQIVeU8=;
-  b=inB0RHD+y40yJUFyLTylnI8e1+IxemFlaTnLT9Si7lByIvAlX+c+2/Pp
-   UQkIHTtZhEgvTIwpdp6vd8Os9YPPGX1LG5WFnNYwir1EHw1bgUdY0QYC9
-   jKhKJWOS4gOgH9aviMh0Xeusaa7WGRWanj+NSZjaQxur/Mgr0oyS7L2BS
-   CWnJv7vER7dMTm0kp5uzKTiPKq0mjnStt3aGY2ESbYnX/aQ3t8jL0hbDl
-   OVjnJvbiSrzuhyf7mwBM44tQ7FzAhZ4ztrGznLqgpFzQXVhiALz+dRK2h
-   +4pZSLFIa+HP5y7iqi/vrP+IhCMKnlS9qnf+3MSDt7+JCWtFFPJThEleY
-   Q==;
-X-CSE-ConnectionGUID: eS6wKQK9RGq0SvJldRYyuQ==
-X-CSE-MsgGUID: iI073GjNS3yQlYW8z3zQow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="107914542"
+  t=1781666551; x=1813202551;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JhM7c5o70ybfdwXn6SKxKv1V4lXqjrtlzjyeowK/Ybs=;
+  b=n0++xm3bJKo+lhijU+Y7FTk0hNWBKTbH9MPZiiTw8OOkSfnshUoWcGh/
+   KAeriQ8S4VqO9luppfEIAJCDpVbtk3YDtwaeRd8P5/yBt/haT2aB7zBcr
+   sJXQHrzZUt8HPjlrr4d1wzLVdjQqkf6UVlAKgJxGBNw6TGD/6itUfP95H
+   IGB2PQg036cfRvA7jOHjsHOR6b2547Z/pbHCggPDQy5oAws209ScT1k9C
+   O7ueWv3RHhmxjbJA4VrmVnwBezd8Cj3eNubkvfWiyRVFOf0LGd1SNVOn8
+   ROGXCn7Rwiz++wq+NWd4BSmI1WZd+tgf5NuHjcJSdQWDtgQmAORLpWy+q
+   g==;
+X-CSE-ConnectionGUID: /FtHbWCAQbWq7pxoonB6iA==
+X-CSE-MsgGUID: 1Mh995quSY+M0CK3gNI2Vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="107914568"
 X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="107914542"
+   d="scan'208";a="107914568"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:22:26 -0700
-X-CSE-ConnectionGUID: 9z/ROdvTT3aAhlYNvsMV2A==
-X-CSE-MsgGUID: 4foYZTSmQPiUg06iRxuMUA==
+X-CSE-ConnectionGUID: +ZClgS0VSr+yHpa6nm6ycw==
+X-CSE-MsgGUID: Xt7l2jTsQAm2vq6Yk3nP1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
-   d="scan'208";a="248017805"
+   d="scan'208";a="248017807"
 Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
   by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 20:22:26 -0700
 From: Matthew Brost <matthew.brost@intel.com>
@@ -80,9 +81,18 @@ To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Cc: Dave Chinner <david@fromorbit.com>,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Kairui Song <kasong@tencent.com>,
@@ -90,41 +100,24 @@ Cc: Dave Chinner <david@fromorbit.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Wei Xu <weixugc@google.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Carlos Santa <carlos.santa@intel.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Daniel Colascione <dancol@dancol.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v6 0/2] mm, drm/xe: Avoid reclaim/eviction loops under fragmentation
-Date: Tue, 16 Jun 2026 20:22:16 -0700
-Message-Id: <20260617032218.1165929-1-matthew.brost@intel.com>
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH v6 2/2] drm/xe: Make use of shrink_control::opportunistic_compaction hint
+Date: Tue, 16 Jun 2026 20:22:18 -0700
+Message-Id: <20260617032218.1165929-3-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260617032218.1165929-1-matthew.brost@intel.com>
+References: <20260617032218.1165929-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 31CAB40006
+X-Stat-Signature: pspi3bnt4w48fki7wtgdtqcebe683xwo
 X-Rspam-User: 
-X-Stat-Signature: 4cbycedd3knzq8jibiq896rw4imixani
-X-Rspamd-Queue-Id: 15F93100007
-X-HE-Tag: 1781666546-947805
-X-HE-Meta: U2FsdGVkX1+KLHp1ybiSzf1lLLaqBSJ53/L9H5Ot34NgDjG+jRNrPndEJa/EErOJJQ7uXYO80/nW6Ty0D4Om23a8FRw+q7OFyydJ8D3fVP2Pee7WDIZkzMmD9T9SRY9lGFayxU461N15RRCfyYBkssx/4CQ3m9znNF3L407VI6N/6hIhjxjQN9X0+DwVMeb56/kvmV/lWDt6XHQzfpfykbrQe4ZDIG0Xx9/Rvl/U8GypQZdWa1AcitB7tfvy6TND2TMlm6vWbI2PLNxgKCKipfAItvR6cleYhSN3R70j1uB6EfqfkpYnE2TkB0jm3BCjn5ytne39p12ZGiFPAZqMHXsW4s0ffZvoCFCOPPZWVqWV7TkMFQanklXAYsmyPQK3gdA6l3cCRCYFRy8F6MRdZRVH+AMQXR78EnCGeUaD2oZP4z5n5KolyRiQICOwijwbb14hWoBjAm2rzSbAqZOzqP+AghPxwXIRiaqrkKtNRvoSjTrNkSxb+InxmtwFLOiXDgKPocRtCgmDYPHl/uD2jmmtXMSQ9+a7XFPMeI/NbUj8ex9XdnGXsfb9EvwX8RHi6wnR3ANakAN4aP2Oj0tOTZEsDHub7vk6h8k60d5SdJF9P1yxXKdnhyOFfye2Gms6OFW3XEXpP1YBS6P0nr9M6wAiJJu4CVzBLIfHPJJnTPxrZ6v2MlSp8L0BvbY8y2L5eVqznMDK3tgu6BNYSKdtYd94CDS3i003IqvvbWbpsqNVPCci9kHHyV8HKd8636/SEawQmhGsYqOrr0Gn8Hg//C6wejYsh9NmCQJ86Ngdf4fxOHiIovuILOqoCXrf4uhzF+dfAKQu4vSYuIBdg+tRXBaqtGqq9RkaTLnUhv4PmkQf/nsYMDD/ypxNkJgmM2onZ63hcqXsnsJqyDJFNaiZ307pkfBJ0u6xBSvUidB6lT784No7ytYWTJU4c50amAI/z0nhHdre2eI5nY8ouQY
- Bx9RKjy/
- fnVJRA/wC1nxJU0uz2EPDZWN7xf4eYfJAKUcdxuRF9E5b8mmvwGe5nlH+ORttTRAC0xfWIaM6Z1ETyuhld2URA7KyTy0I1jY2frJbgCx2cEomnQPcf2Avod5Gz1lijvpAzqij90uIIAmVQrTREdBIDQWat4DELgF7Wd0GhFZ5eWPgw4eNodDWP3NuVjANOmzP5wJmXunmpqRGXEFpEverxpNF/CsX4wJPQKlZ0JvR1yYHyANu8ab7756d/P1Rsz8UqXXdQ23mCH7SkDDf0o5Pg8jTu3I6UavEECgww0ohZlqNWz4TPGakFQzOuYYvGjiENEzxOCaFoPu+QDYe/nIZbIYZl/1KlmIOqeivi/4IM9N+ndJzDJSosygPHs5q1kjb8u1ilJY+twsecL3TSODe6vQtfRhr+uYPd5dIGgFgVi4D4TlP95m/51mIguVz9xXAXksSV2eQn5MwPWzCcMkrlsNTLlVQsWBN8LYojfqGfA9lNTsK5cm5pUyJAYaPXGQU/L+PvEkVJ64J4ErOvBAA+Bkzr/1LLsNr85WrhqzaSpNp319u6yKEj3ybboTLj8t/DQLwd/byaOmNzVFUvfrZm/5pkDK2FtYYTjFKdU4eLwM6qjhqgs41SZ3FZCObnnyjdU0hOfKJ29D1uLQktHDDs20KeWzHmKLJ1hLdzs+3mfzOcUa/fGsUB+QEEKYQY8GEoPyvKPmyt/mZBhDSg+4MAwcx78CNHuPX6PCAdYoSHXW6lZe6jXwfh6MDfyQw/JOY/hPxW+HpOmxkVwud4g+cDIrb6hh/Cwouc9yeK1ZP3MOAygVyG2vBHONlANSV5vp09YhDgM8kCpEhdXx3qL3m84Y/2dihFpthNgRH
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781666550-945710
+X-HE-Meta: U2FsdGVkX1/1lHdMBWMbTigXcsiIZ0McwjzwIELMRt2gqLxQLbSs/INcOVesUBBXum3XBeywlV34AkR8Ycxd4gfX+4Jel/dFOuj/lM8WR3Tf0OJEJwbt1vK0QzIDMuZwLnzGCWKccNjJNZciOvKE8JmleUEyOsgq0vfwlA47cUMJIu7eTG73lOyQcVCA9WnBi7ZjbFL6m3E5rpnN7S1aJnilXlRKgui4ZoHaL7FV5cC5US9FwmUg3V8eerJGjD5DAmyFOjafjKneDNn8O3SWJA9uaj8nfF5+D1P44CwB7zWCTwQQxzb0fCB22Cet3t+pi/1lSVA4Qn/ujOP3VRNpeDT6v2ZirYi3ntho/yY2IZDdeSfAyUtnPfkeCykn/cADD9fJlMjlkb4VtRoPmETMC2t2X86kbgamAedsINvI3m4y1riPlIGW2V88dMhv1acw+Sc4XeJLzM9ssf+DJAsz/ItoUgo2PcQDuqBtOu6VVrLDDFUnPabugd1c/V3d8XDY/Rx0X54XPx94FPsTPlopSXkzwFBljmZZYviW84fGwAXnp9+DogRiK6QZtOu3SAV0NNNEhIJZWeE7NgTCd81mRO4Uspex3IH81fpu6b3KN0ZSghDJhzUwJsm+hTDet2Vgf8upp/AILI7rt6kynKCP3z4xFQDkCWxA/VbW1Tr3Ye0LW3YE7Y3qtglWQJDKgbKtYUmg1/DE+D6vTpEJeKzZ6PdwDVHmK3IaCVEUzvAAoobZA92GEYiGLC8xqr/QOTFko2dA5cDw4b2bmSU9Rdu4glYlNp7VR1PFNq2BKTHA/b/86MAHDI31udCkjqVCvwDkVZMcJApAhG3L6Y3jrnzuh4LygIInvdjjogp2zrsEHPpD4kf2RsVYyecL9WaZwV8rW6mSDewCqdddiPlcHy+sCHeCbhbqA1xkiSzKigvUh/m+cfEvmq3Fwj40Y8sCqMjQSiN2bpcIKoFt8eQ+A2G
+ qEWeaXLp
+ FFyulJuWCk98KEbbI6X8F3myJL0m31F4I9uu/cGr+S9WkDcWc0EeqZzVC5idpLuoURvIv+Tc+X5s01mP0Fjq9sehZpmdP+Dd9PvJ8pwrPX1H70KNOCrtTgqFANLafOzti2TtHmFO72AfTx7bJ5cwfZ8zys3lLmm6L3ivwXDKW4Cg/Y/FvaOwn2AjXbaXUp3qksVaHaan/vEM05Yn5pdVP7rLW93lL84FtLealKFMkHcur6at+gkilMbHnrmOmz4Vu+GRngm+6/+2XlCWrF6K1wHesWfnYWoRTgnJdKMUoMy0PeqgZrLeljdZxRcpc1+SMQL88b31mgmBwROcbvoSHBCu4BuFn3s73Qh6GBCrXm1QuwpkT2QnsRloMr1Z8AWbix8SzXK2hOl381C13grfoOCk6ze8NzEpWPTStO5OEJ676sCiLzgoQu832/Zh7swdQI8fXJfpUevnhq1YbRQLLDeNecvhVI/wsC1K/CxryHlgMUJcPfwz/B6hiVLMKJK99bFw1wXL10pcs/w+46RCwib0WgbPDT4fO4/kfHTHZP3coNfy/VU7TfyPE3/UrdQUnJHDPGkkItDzgyi72TYJiA85Rdrse9R4lFcyGWtOBbAhZsSp2DBy5/SfX3Ri2DlXfRK2Gpt/tmbWtopA1SkJPlxrdG71Waw0X2PHefw6Lo0mtMvg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,116 +125,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Continuation of [1].
+Xe/TTM backup reclaim can be extremely expensive under fragmentation
+pressure as reclaim may migrate or destroy actively used GPU working
+sets despite the system still having substantial free memory available.
 
-TTM allocations at higher orders can drive Xe into a pathological
-reclaim loop when memory is fragmented:
+Under high-order opportunistic reclaim, repeatedly backing up GPU
+memory can lead to reclaim/rebind ping-pong behavior where active GPU
+working sets are continuously torn down and reconstructed without
+materially improving allocation success.
 
-kswapd → shrinker → eviction → rebind (exec ioctl) → repeat
+Use the new shrink_control::opportunistic_compaction hint to avoid Xe
+backup reclaim during fragmentation-driven high-order reclaim attempts.
+In this mode the shrinker skips advertising backup-backed reclaimable
+memory and avoids initiating backup operations entirely.
 
-In this state, reclaim is triggered despite substantial free memory,
-but fails to produce contiguous higher-order pages. The Xe shrinker then
-evicts active buffer objects, increasing faulting and rebind activity
-and further feeding the loop. The result is high CPU overhead and poor
-GPU forward progress.
+Order-0 and non-opportunistic reclaim behavior remain unchanged, so
+Xe backup reclaim still participates normally during genuine memory
+pressure.
 
-This issue was first reported in [2] and independently observed
-internally and by Google.
-
-A simple reproducer is:
-
-- Boot an iGPU system with mem=8G
-- Launch 10 Chrome tabs running the WebGL aquarium demo
-- Configure each tab with ~5k fish
-
-Under this workload, ftrace shows a continuous loop of:
-
-xe_shrinker_scan (kswapd)
-xe_vma_rebind_exec
-
-Performance degrades significantly, with each tab dropping to ~2 FPS on
-PTL (Ubuntu 24.04).
-
-At the same time, /proc/buddyinfo shows substantial free memory but no
-higher-order availability. For example, the Normal zone:
-
-Count: 4063 4595 3455 3400 3139 2762 2293 1655 643 0 0
-
-This corresponds to ~2.8GB free memory, but no order-9 (2MB) blocks,
-indicating severe fragmentation.
-
-This series addresses the issue in two layers:
-
-MM: Introduce an opportunistic_compaction hint in shrink_control.
-kswapd folds the gfp flags of its wakers into a per-pgdat tri-state
-(see enum kswapd_opportunistic_compaction_type) and forwards it to
-shrinkers. The hint is set when every waker for a kswapd run is a
-failable high-order allocation (__GFP_NORETRY or __GFP_RETRY_MAYFAIL,
-without __GFP_NOFAIL) — i.e. callers that would rather see the
-allocation fail than have working sets torn down to satisfy it. Any
-order-0 or non-failable waker clears the hint for that run, so normal
-memory pressure is unaffected. Similarly direct recliam sets the
-opportunistic_compaction hint based caller's gfp_mask and order.
-
-Xe: Consume shrink_control::opportunistic_compaction in the Xe
-shrinker. When the hint is set for a high-order pass, the shrinker
-skips advertising and performing TTM backup work — which operates at
-native page order and would not help compaction — and avoids tearing
-down active GPU working sets.
-
-With these changes, the reclaim/eviction loop is eliminated. The same
-workload improves to ~10 FPS per tab (Ubuntu 24.04) or ~15 FPS per tab
-(Ubuntu 24.10), and kswapd activity subsides.
-
-Buddyinfo after applying this series shows restored higher-order
-availability:
-
-Count: 8526 7067 3092 1959 1292 660 194 28 20 13 1
-
-In addition various 3D benchmarks show signicant improvement memory is
-fragmented.
-
-v2:
- - Layer with core MM / TTM helpers (Thomas)
-v4:
- - Fix build (CI)
-v5:
- - Use shrinker based heurstics (Dave Chinner, Thomas's GFP idea)
- - Rename lazy_compaction → opportunistic_compaction
-v6:
- - Drop order in shrink_control rely only on opportunistic_compaction
-   hint (Testing)
- - Set opportunistic_compaction in direct reclaim (Testing)
- - Drop unrelated TTM which merged independently
-
-[1] https://patchwork.freedesktop.org/series/165329/
-[2] https://patchwork.freedesktop.org/patch/716404/?series=164353&rev=1
-
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Dave Chinner <david@fromorbit.com>
 Cc: Qi Zheng <zhengqi.arch@bytedance.com>
 Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Carlos Santa <carlos.santa@intel.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-CC: dri-devel@lists.freedesktop.org
-Cc: Daniel Colascione <dancol@dancol.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>
 Cc: David Hildenbrand <david@kernel.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
@@ -249,21 +155,62 @@ Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
 Cc: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/xe/xe_shrinker.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-Matthew Brost (2):
-  mm: Introduce opportunistic_compaction concept to vmscan and shrinkers
-  drm/xe: Make use of shrink_control::opportunistic_compaction hint
-
- drivers/gpu/drm/xe/xe_shrinker.c | 20 ++++++-
- include/linux/mmzone.h           | 40 ++++++++++++++
- include/linux/shrinker.h         | 20 +++++++
- mm/internal.h                    |  2 +-
- mm/shrinker.c                    | 13 +++--
- mm/vmscan.c                      | 95 +++++++++++++++++++++++++++++---
- 6 files changed, 174 insertions(+), 16 deletions(-)
-
+diff --git a/drivers/gpu/drm/xe/xe_shrinker.c b/drivers/gpu/drm/xe/xe_shrinker.c
+index 83374cd57660..198149f266c6 100644
+--- a/drivers/gpu/drm/xe/xe_shrinker.c
++++ b/drivers/gpu/drm/xe/xe_shrinker.c
+@@ -139,10 +139,17 @@ static unsigned long
+ xe_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+ 	struct xe_shrinker *shrinker = to_xe_shrinker(shrink);
+-	unsigned long num_pages;
++	unsigned long num_pages = 0;
+ 	bool can_backup = !!(sc->gfp_mask & __GFP_FS);
+ 
+-	num_pages = ttm_backup_bytes_avail() >> PAGE_SHIFT;
++	/*
++	 * Skip accounting backup-able pages when this is an opportunistic
++	 * high-order pass: TTM backup work shrinks at native page granularity
++	 * and is unlikely to produce the contiguous block the caller wants,
++	 * so don't advertise it as reclaimable for this hint.
++	 */
++	if (!sc->opportunistic_compaction)
++		num_pages = ttm_backup_bytes_avail() >> PAGE_SHIFT;
+ 	read_lock(&shrinker->lock);
+ 
+ 	if (can_backup)
+@@ -233,7 +240,14 @@ static unsigned long xe_shrinker_scan(struct shrinker *shrink, struct shrink_con
+ 	}
+ 
+ 	sc->nr_scanned = nr_scanned;
+-	if (nr_scanned >= nr_to_scan || !can_backup)
++	/*
++	 * Stop after the purge pass for opportunistic high-order reclaim:
++	 * the subsequent backup/writeback pass works at native page order
++	 * and is unlikely to free a contiguous high-order block, so doing
++	 * it here would just churn working sets for no compaction benefit.
++	 */
++	if (nr_scanned >= nr_to_scan || !can_backup ||
++	    sc->opportunistic_compaction)
+ 		goto out;
+ 
+ 	/* If we didn't wake before, try to do it now if needed. */
 -- 
 2.34.1
 
