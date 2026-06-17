@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C49CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 04:26:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC26ECD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 04:38:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 625A86B00A9; Wed, 17 Jun 2026 00:26:42 -0400 (EDT)
+	id A5D0F6B0088; Wed, 17 Jun 2026 00:38:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FDC26B00AA; Wed, 17 Jun 2026 00:26:42 -0400 (EDT)
+	id A339F6B008A; Wed, 17 Jun 2026 00:38:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53A826B00AB; Wed, 17 Jun 2026 00:26:42 -0400 (EDT)
+	id 971A06B008C; Wed, 17 Jun 2026 00:38:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 294A26B00A9
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 00:26:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D99F140314
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:26:41 +0000 (UTC)
-X-FDA: 84888118602.19.8884887
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AFEBC100004
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:26:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RWy+6Acq;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781670399;
-	b=RvhZ2vohaZAqQBMBiY98aoMVQ+xO4tpAUfra4xfc/z39a8WD/gcuV40X9XVHDEFcDnjN6C
-	eRXdzIsruHMk2dST3CbtuTPAcUEn4Cba41+JQQBPAqHVtbReCS/RSttYXkWZcpTklvfpAZ
-	TtkvEaEM8VAdo9dqURVOnkqOvQZ9wRE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RWy+6Acq;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C77B6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 00:38:17 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ECF261C1A3D
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:38:16 +0000 (UTC)
+X-FDA: 84888147792.29.E110B4F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 059E480003
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:38:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jSX+kpzd;
+	spf=pass (imf30.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781670399;
+	s=arc-20220608; t=1781671095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uq70pVdz6YKZLfbdKy0h09bc+19np/RW+u0WBUf03HQ=;
-	b=EyOcq3mLgC5CRP5l5Ik+NRsGx2qDL2B49dSWE1hAq7P4ubk8ZMXbySC6nFX866sSezEidg
-	xPhbaYRCm2FK0/CP69qiZZQzjiTEVP3dKl04eZQ9JYgXMLbk/TDRSBfeIAcQ2hgsoiHrhc
-	TPLkAQgV6vuGpy6dqlCpGfbM/ZeH31k=
-Date: Wed, 17 Jun 2026 12:26:08 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781670392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Uq70pVdz6YKZLfbdKy0h09bc+19np/RW+u0WBUf03HQ=;
-	b=RWy+6AcqD5IlFQWwjNyPnNYdTylEhmJ5KcGETwljXFmsDV4A8L8IBz1Jcua0G8m8z5zWQ3
-	BEM032kvw/+DlUkUqeg6Opylm1/MnXc2jybmBKCatOPuMaof1XLczC05vgcdPMUv+pddb1
-	E5lhp18VT5/D42mrY0DYLOQKE8NngJk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Harry Yoo <harry@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm/slub: factor user tracking metadata size
- calculation
-Message-ID: <ajIg4JCDhz_yAnOX@fedora>
-References: <20260616141410.52117-1-pengpeng@iscas.ac.cn>
- <20260616141410.52117-2-pengpeng@iscas.ac.cn>
+	bh=wZk7D+ivMxt9ZF3nKyDzrGddw1Qvn0Tco2RSdjIvfNY=;
+	b=5F+su5hKVOsEjA82+dFRlx7d2isGOdAmAVI4NcOaALGuIRNb9gg+jHgJHMqWSw28f10O57
+	X+2HODYWA4P75l6nUuFd/TBMQwgOG5HsTGVyDODHVIap0fzjoewur6ZNiz4aPXLB/uzBWv
+	3UrNKwO2Mmj0B1onjBeqTwXzpr9Lf3o=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=jSX+kpzd;
+	spf=pass (imf30.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781671095;
+	b=2ueJGtLSeA+2fSNR9uINC711lToKnRen3Jm2uf5V7BOADsdFB9mf++rZu9sk5NOcNfp+Ws
+	XOfSKJEEiY2LGB6C+UFFqp64jPqGkJ4h0VggmeoLYLwrxPoqoJPFu0EHhUUBb2E29OCStL
+	FBU/HVxa8fyMvMWEgtgCM3EzsVsaRwo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=wZk7D+ivMxt9ZF3nKyDzrGddw1Qvn0Tco2RSdjIvfNY=; b=jSX+kpzdrZtnNDIskjSTsizwTZ
+	Cj6hwX6PJcXqKeNMpOTd67r9mv5UQdqNjn32xGHBaGgcj3CEUe7kcmYretduKkNmxX3tyXezHvlsF
+	yvbPyPBGQ9TGo+efO3ax70Kibg2nQyy+wZoC8COw968zlSx5OAB2/5uLKBRTVSEf0XSAjnMvL7+Jh
+	c8av7dNx9rAwsXeHGzpiGqWgB5qY48c/vPjR42BOzbRv/Pfa0lTa4aujxn1/UsxnwbHBElM3tzlhD
+	Syvbr2p7ko1BvzF6oqNM6bkn6IxSxZU+ZWvxn/Q1n8Im3ZnFaytqL31U1QM0pF+1y3GSt5E0DkqBB
+	w39hQvag==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZi2W-0000000Gc3w-1uAw;
+	Wed, 17 Jun 2026 04:38:12 +0000
+Message-ID: <79c90e12-c157-4d91-a7a4-54225d876d56@infradead.org>
+Date: Tue, 16 Jun 2026 21:38:11 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616141410.52117-2-pengpeng@iscas.ac.cn>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: AFEBC100004
-X-Stat-Signature: 61gjuf78d1y1d1mxy9gn4nqtc184zaym
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: recognize @GFP parameter as optional in kernel-doc
+To: Harry Yoo <harry@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ stable@vger.kernel.org, "kees@kernel.org" <kees@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+References: <20260616193929.2394119-1-rdunlap@infradead.org>
+ <48840fb6-8c33-4e4a-9951-aa603576357e@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <48840fb6-8c33-4e4a-9951-aa603576357e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 059E480003
+X-Stat-Signature: ergwanobfzq7ahwwamhjpfwe9we1me4s
 X-Rspam-User: 
-X-HE-Tag: 1781670397-58196
-X-HE-Meta: U2FsdGVkX18H6D+7PtweIADv/pRTjlXRboFeI8ewFwBBwVYdMWeTEwnNTNy90RjcWSQ03tsr2CZlJuhU7qOrLm2bUMiD832fX4qyLEX+ZkDpGWGR7vQUswXMuDphPiKZ7ay5u/qx5dY9uKHAhnLYBoxt6uPwvKaqvz2UtLE8PeJHpgfL2YCd5O+d+uehLxQuiO7Bnj9mXuHdwcpd7Lt2qRpFXK8x1liLrGuRClhxEhUsGBOwGHPCP6mqlcUXQ7UDGFBGOXyyYsxLB+A1fU9rfgpT3LRVDnUkFyQtalG6rT1tOgYWb80ElSmyAw4mvSRGvpLLBkZ9Fax2UH7pVNkONqhKzyo2I1ZztF2gcYWvXlG/JRYS8ynePojpZYR09jswOwK6mC+W+lcbBcwxDnYadPsbNt927FVy1W+qEKCxzwDlUh4RQrw+RQYMptwDMTSCEpNBDFWzbRNNzenwZ2PvEcGrKbHIk/fcDpPk/p2q+vYKxJnmxItdU3kOMkSzzuhh7J82GtIYlXip59ygKITfBmgeXjFxLmwblY1vDBIsWOmWDZe1lG2pIjX30dj5Y0ZjpuQOcKZfzv45X6KqOi/OPIGMaTmGmacZuhLQZJ/ZAg6C4LXOM9h17+xVOQewmhIwpeo655oXqjjo7aY3ftdb8IVlNjRl2QvNIgYviU+JDzXgZmP/emWGQwj9NhJR0/0Xhmqkdfz/PEVe1/Ef5+lVQHMV4sbdyXG4d1DBUFmvrjUauuvUSqTp6szAd/jiBbBdnCfwnwqEivvJ3gflHtmcRJ/ipMa9IE5drJVsSv15/C9FCSxWYH+BSggVxqcSQLxSai/8niwxKP4tqK7TEm8IRg0bEOQ/LP8/uSMxrg8EMhyJ6YD6v2QtlUa4toOCaNoPbzuosvdpDrXOR5myGwY5ZBJAYl5eurl+8DBhr1z919thiXDsuWN1NmNil3a3AjnQVZjJv38Ao+8ukB+Amg9
- tvaAJXc+
- yXFmm5a7+3pgb2clUvCvdK7CXNpAEWqeAm87A2P27F9ShgChBN8iQYLSNbsZDJ+UU7brKW7lTqx/ZamXhbb/o7Vk0mIdFKdOXxmwdWj9ERxvizXsWK6wZuFex1IwydLgBTRELa0XNVlK3S2ssBf9sUDIyPHYFzS4wMs71gXADuKf2d+h84J+0IqHS9jjgBMe0KMfHhAmViyHFTc8=
+X-HE-Tag: 1781671093-927879
+X-HE-Meta: U2FsdGVkX18xtNzw1VdLMKQa5/Iwbvn12y+GeHova/I2qxo6z7fucRlmN1d15LqLokx5mphSiAAHp1sL8S7sUG2E6KuVRQJkNulexW3ULxMLvYqkD3bP3OKKHItXFwUpSN5wbCnlZrYRg+h64lx0R+qjaHQZeSUq2iqWp3PKpVfW0nCSUmYjqh3J6jSyrsWtDcKYwE332W201ONAstfXUhpyrXPz4uu8jEJsCQpqLpaK+vGw89Ey3jeKGjbYlHFoGWzvKUQHV3DW8/2EJtRjkessUo+xrGZImf04OPXKNvxVvZK8NhzKDaOZp/sh87Fpx31JAKTxe3Pfg7Hposr6ZePpOPr+aX0YAAlJ6Vz9oBH6NLAT49jqGue5/9aA2g7tp6Ofgc4Cprrn53tJgX/9QJCOAo5jNStzIbKC/ucP/wmvAYCMZWq4b1F99jdpOec1UsaNT2IiToMO5WLAlb5D/ic8ZtSWmkduF1Hv/Pf3uiqtMr0YMr8YJaP4vqfEYQURxmOh26+uea+UnQZn2cY9UdZsK39/97gxDrccvGuEDo4aTovtoxXfeGuBcZLAgA6uDRDrgisHbP+PXpPFgMrlb9IzFAFpNzwpHlp24Vspub6V7z/4JR7SGdiRi4oZOV79Rou7sabGE5brfPIO1U08RIGYS4xlK/8gz3vzID5pDAQTbSyjq0RTI+777EwFJNSavvCTjp92ImkQqCP306e1kouOKIxzjUmaPPeeP0Jk97EqJKzbg+EHZe7jOUxcJ0Dw4v5LpkKR7rNOuvX5180jSjbBST7/vKKOs1ic/J+NpVjg7VQ91n9QfjF3C9lGgmA1LMHAdo0qkkezezb9vJO+yP/z1skHRl36xvKOWBJMSHxSSg8PnGHBVc48nU6TdZKHaM4mHzRiL+8vH0k4xhI6SpEFMSocBOGq62rkYVxCS/Qf4WP01umIF1DXYLALZGGNvwJhmvS+/Sa6JKGjVbK
+ 1WVHy8VA
+ MV9dqduEHKJmeiya8aY5oXl584Hes/E0TWfWKyEPtGNurUadHO+WBpQzKKko2PHLhVbDzuv2s0SJVInFcOZaZ9BXlCmarcwP/EgWrdtTQlvJGqiS5gSu/b0NV0y4gmE1fvLnTbXPA1CXRHDEBYJRpDcBHHwtB+JJsy0o0pgwq4468sOOw92ZseIiE2grd9EO78OhJ6dVVeYIonHTnfi7ShzguDIsyq3B/46g0hKJihs1ZQNZYB4jj3DyvRU+oNCh6lJJmlNz+41eY0z0yuaDdtaAWoQKfj4cI7Vuz1POV9rNdtbcTQQWzvhpMDFzGJD6EO4bLJ4Wlpsdz2fZkpusqeVk6QSC+i9HHVzPe/cZ0LMtFQV5XRgficA8RWgglOVHlNmSNRr5fG3mgkjtFTjlEwPuNziGFrnLa0q/p+jrLsQJ/XD34p7ceaToPwL5gYb36paK9ejkLvb2JVxpsK/60Gcl1aiqzQpLzvhTLO9bIRpJQeMEGKc0eYTNfU1ghahyN8XIlpyvWSKAwgzoHGqAorEhjYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,121 +95,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 10:14:07PM +0800, Pengpeng Hou wrote:
-> SLAB_STORE_USER currently stores two struct track records in the per-object
-> debug metadata.  The size is open-coded as 2 * sizeof(struct track) in
-> several layout and offset calculations.
-> 
-> Add TRACK_NR and a small helper for the user-tracking metadata size.  This
-> keeps all offset calculations tied to the number of track records and makes
-> the following extension less error-prone.
-> 
-> No functional change.
 
-Do we really need a user_tracking_size helper? This seems introducing some
-redundant checking for SLAB_STORE_USER.
 
-For example in set_orig_size(), obj_exts_offset_in_object() and
-check_pad_bytes()
-
-redundant checking may be confused...
-
+On 6/16/26 8:25 PM, Harry Yoo wrote:
+> [+Cc Kees and Jonathan]
 > 
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> ---
->  mm/slub.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
+> On 6/17/26 4:39 AM, Randy Dunlap wrote:
+>> Since the @GFP parameter in kmalloc_obj() etc. is now optional, change
+>> the kernel-doc to indicate that it is optional. This avoids kernel-doc
+>> warnings:
+>>
+>> WARNING: include/linux/slab.h:1101 Excess function parameter 'GFP' description in 'kmalloc_obj'
+>> WARNING: include/linux/slab.h:1113 Excess function parameter 'GFP' description in 'kmalloc_objs'
+>> WARNING: include/linux/slab.h:1128 Excess function parameter 'GFP' description in 'kmalloc_flex'
+>>
+>> Fixes: e19e1b480ac7 ("add default_gfp() helper macro and use it in the new *alloc_obj() helpers")
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> ---
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f87e693aca5d..43d4febd5bf2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -327,7 +327,15 @@ struct track {
->  	unsigned long when;	/* When did the operation occur */
->  };
->  
-> -enum track_item { TRACK_ALLOC, TRACK_FREE };
-> +enum track_item { TRACK_ALLOC, TRACK_FREE, TRACK_NR };
-> +
-> +static inline unsigned int user_tracking_size(slab_flags_t flags)
-> +{
-> +	if (flags & SLAB_STORE_USER)
-> +		return TRACK_NR * sizeof(struct track);
-> +
-> +	return 0;
-> +}
->  
->  #ifdef SLAB_SUPPORTS_SYSFS
->  static int sysfs_slab_add(struct kmem_cache *);
-> @@ -751,7 +759,7 @@ static inline void set_orig_size(struct kmem_cache *s,
->  		return;
->  
->  	p += get_info_end(s);
-> -	p += sizeof(struct track) * 2;
-> +	p += user_tracking_size(s->flags);
->  
->  	*(unsigned long *)p = orig_size;
->  }
-> @@ -767,7 +775,7 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
->  		return s->object_size;
->  
->  	p += get_info_end(s);
-> -	p += sizeof(struct track) * 2;
-> +	p += user_tracking_size(s->flags);
->  
->  	return *(unsigned long *)p;
->  }
-> @@ -885,7 +893,7 @@ static unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
->  	unsigned int offset = get_info_end(s);
->  
->  	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
-> -		offset += sizeof(struct track) * 2;
-> +		offset += user_tracking_size(s->flags);
->  
->  	if (slub_debug_orig_size(s))
->  		offset += sizeof(unsigned long);
-> @@ -1088,7 +1096,7 @@ static void init_tracking(struct kmem_cache *s, void *object)
->  		return;
->  
->  	p = get_track(s, object, TRACK_ALLOC);
-> -	memset(p, 0, 2*sizeof(struct track));
-> +	memset(p, 0, user_tracking_size(s->flags));
->  }
->  
->  static void print_track(const char *s, struct track *t, unsigned long pr_time)
-> @@ -1196,8 +1204,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
->  
->  	off = get_info_end(s);
->  
-> -	if (s->flags & SLAB_STORE_USER)
-> -		off += 2 * sizeof(struct track);
-> +	off += user_tracking_size(s->flags);
->  
->  	if (slub_debug_orig_size(s))
->  		off += sizeof(unsigned long);
-> @@ -1401,7 +1408,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
->  
->  	if (s->flags & SLAB_STORE_USER) {
->  		/* We also have user information there */
-> -		off += 2 * sizeof(struct track);
-> +		off += user_tracking_size(s->flags);
->  
->  		if (s->flags & SLAB_KMALLOC)
->  			off += sizeof(unsigned long);
-> @@ -7820,7 +7827,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
->  		 * Need to store information about allocs and frees after
->  		 * the object.
->  		 */
-> -		size += 2 * sizeof(struct track);
-> +		size += user_tracking_size(flags);
->  
->  		/* Save the original kmalloc request size */
->  		if (flags & SLAB_KMALLOC)
-> -- 
-> 2.43.0
+> I think there is no better way to specify an optional parameter, so:
+> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+> 
+> By the way, the doc should probably say that it is GFP_KERNEL when it is
+> not specified?
+
+How about (in general):
+
+ * @...: optional GFP flags for the allocation (GFP_KERNEL when not specified)
+
+?
+>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>> Cc: Harry Yoo <harry@kernel.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: stable@vger.kernel.org
+>>
+>>  include/linux/slab.h |    6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> --- linux-next-20260615.orig/include/linux/slab.h
+>> +++ linux-next-20260615/include/linux/slab.h
+>> @@ -1094,7 +1094,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>>  /**
+>>   * kmalloc_obj - Allocate a single instance of the given type
+>>   * @VAR_OR_TYPE: Variable or type to allocate.
+>> - * @GFP: GFP flags for the allocation.
+>> + * @...: GFP flags for the allocation.
+>>   *
+>>   * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
+>>   * on failure.
+>> @@ -1106,7 +1106,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>>   * kmalloc_objs - Allocate an array of the given type
+>>   * @VAR_OR_TYPE: Variable or type to allocate an array of.
+>>   * @COUNT: How many elements in the array.
+>> - * @GFP: GFP flags for the allocation.
+>> + * @...: GFP flags for the allocation.
+>>   *
+>>   * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
+>>   * or NULL on failure.
+>> @@ -1119,7 +1119,7 @@ void *kmalloc_nolock(size_t size, gfp_t
+>>   * @VAR_OR_TYPE: Variable or type to allocate (with its flex array).
+>>   * @FAM: The name of the flexible array member of the structure.
+>>   * @COUNT: How many flexible array member elements are desired.
+>> - * @GFP: GFP flags for the allocation.
+>> + * @...: GFP flags for the allocation.
+>>   *
+>>   * Returns: newly allocated pointer to @VAR_OR_TYPE on success, NULL on
+>>   * failure. If @FAM has been annotated with __counted_by(), the allocation
 > 
 
 -- 
-Thanks,
-Hao
+~Randy
+
 
