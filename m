@@ -4,142 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD7FCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D2FACD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:08:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844746B0095; Wed, 17 Jun 2026 11:08:41 -0400 (EDT)
+	id 0C9F56B00A1; Wed, 17 Jun 2026 11:08:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81B966B00A1; Wed, 17 Jun 2026 11:08:41 -0400 (EDT)
+	id 07B356B00A9; Wed, 17 Jun 2026 11:08:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 731A06B00A9; Wed, 17 Jun 2026 11:08:41 -0400 (EDT)
+	id EFA0C6B00AA; Wed, 17 Jun 2026 11:08:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455E36B0095
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:08:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C16B71C45BB
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:08:40 +0000 (UTC)
-X-FDA: 84889736400.08.D269C8E
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A8A2240016
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:08:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iQ97aFeQ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781708918;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C8BA06B00A1
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:08:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 54DEE1A04A2
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:08:47 +0000 (UTC)
+X-FDA: 84889736694.22.6F7A0CF
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0A9CF20003
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:08:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H5w89jvj;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781708925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H9tseRqnP7TDkio6KWr0QuA9aNrzwe8EnrwXOovFL6Y=;
-	b=X85Pib4pjlUWk2FRYLZDOPj9KkkDU51UgWAG9GAouM1YXa2gstoULv/aCYW4t2JJ+WOBit
-	pX+UcLg7vaouPxBRYt7/gzXtWFhedsuoz85iuWZCt4xH/My+z6LLqmIeqcu4ozkMXL0D0I
-	xsABZHbmU6k1Xj7TYkREYQ/laSRbVPc=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iQ97aFeQ;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781708918;
-	b=emunGQIDmstFj4g+Ge7hUI3swN0aLsHmZ8WqRWG6uTSIsHZzMneP0kwSsyvZKqJ5ybmNXb
-	XfGLA1JlTY/BJUoBb6Ntu31CVRPDvbkl4oD3/YLmI627YpMZZAbhW8d5TJd+w1GHc8tzQo
-	RQEcjNTvEe1Y7ILJnjtN7vaWBGZSGko=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51765331535so277171cf.1
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:08:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781708918; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BDkO/3Z+qzYPlE9EZ8mlQDlR1LBHaU4wJwxdMH6uQp+o+xHzrsDM7vmiYl5Xy4G54c
-         zWKqVPuH9/ogZ12SYvs5an4+i6giwFuVFtkdPXNTyG9/uCFWJrQPRx9TugIb6nH9L0wj
-         8slJgVuTl9Jkyl2h3CMMtO7zLOEPyei3wINndfFLAm8a2WxNDLP0n6h04fIw/jORwD13
-         /GWqBhS8QmSNj9qC3wKAjryRGLYxA+G+nf2c3tJEsV7cSgITRfbXNHFpk4ORYhcPYHeQ
-         mHqoB6wcImCEDFT7UDqfHNKJVM++co+GWGjMfQ14AcrV+zuazlFPUcC8YqX4MiF1E2bm
-         iF3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H9tseRqnP7TDkio6KWr0QuA9aNrzwe8EnrwXOovFL6Y=;
-        fh=PKALt0PTBalY84Oq3m/tY1VA7qMHXTy5PSYkWhzU3yY=;
-        b=I/sYvvbaymXCALz9boEqlen6UxchEu/bTZeLB6lryXNcIhQohqkIeD/PoiOH+iSnJ4
-         /88SDMlrJH9KIhxRkDFhyFScJyaWbQVkSQ0MFShn/RCIlMEfv3cq8CP30gEZ2bnWyw9A
-         6a2J6GI+gF1J73R7MxKAgobXkCVZmhfSMMy+JZp2e+Cw/pZHKkwEIN8uLHiKgs0wUk3/
-         9movaHMKM/FjKaLDfzWeiRqelJVgFPNBOs5y6cZuwyEPrNlStcl/njtTqWAOlNAvpftB
-         Ikb6Wzrt42P3q1N2hC1Si2kFQ/XwLtZXuNxQa+O4Jmpxqo4lHFdX/OV3nNFJ16a4k1si
-         kl2g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781708918; x=1782313718; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H9tseRqnP7TDkio6KWr0QuA9aNrzwe8EnrwXOovFL6Y=;
-        b=iQ97aFeQ2yNMyxxLY43jbAFub6d/bsz7oy6cVvVPTPlBa7njJYKjf+xfbe0IQdfjPv
-         zD1q5PtIC5QjjAnuQhRogByAojAjF9jdIXEJJDkcwTQNFUTX9SdLdHU9hCeAZiDlCBDA
-         UPai0Sef/HNLzpSxZukq4pKtcDxjw5K81erwwf093J796SZHdnvfhnq1+SlpLjyisd4C
-         MVINSweGaw5RK9cBHOqokWPx97Q8nNhbDIbrNdmfTnVdJCOUkI7Qg6oN+1oVyKNpz7ud
-         kzjztIQnmdfihbMCBd77Okc1iMhcMXs5wpNf7epheLicxkyD2P4ZJRt2X02RsNidb6Q+
-         buDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781708918; x=1782313718;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H9tseRqnP7TDkio6KWr0QuA9aNrzwe8EnrwXOovFL6Y=;
-        b=FUc0eO/+IEz1D5+VDfVK/bzhY9SO0jJH0GUYJ4hMXelqvKnoYG3BGvtOUh6ql2EWUF
-         MItN+JGhhRdXq3K+WlU7WNLNH6v+ZVGBk02cGFQ7tUsIpWAEAkO9JicBUzFTRstseFvg
-         azlFn3grOXoNj3qCIPbjiTv5QorBNboX7NYgnBk1XSAJSiFefY1iw2nyCXr4NvlG72ug
-         z0jXds7WIxKH3gTNCzexYMpVkTb99fVAoqZv7DOq3UkCS/9qgsorgtj0aq1IGzCw3va+
-         6m+Zml0IeWubtsOf5d2aWClGeWAXF5Wt4PH0WcAwKxZ19tzLsbUDIdFE1OLUDmCd0APu
-         WUhw==
-X-Forwarded-Encrypted: i=1; AFNElJ+XpMKbq6NkagrR/MuQ69qNWZQ52ADAGjRM5syH0WRVC5Jfm3q2BmpC/Xj8nHgm8p04gRGmYznKsg==@kvack.org
-X-Gm-Message-State: AOJu0YwlReiUgQp1cX5fSBic8rq3rMqU9i7yxBK6fkd2y9NVSNjXzSMv
-	w9SuED6ysQhavCX0v/SkQFRgDuQ0L78DABmOILrAc5IciojccGYU3k2BOxWOcaMtzRUo5BtrZHd
-	hXVk23jvyupn57yof42xKUEorcZRXQDJwNXyfZ9R5
-X-Gm-Gg: Acq92OFDEDA9SVe7iTBrQ+0xpsoJpA43bUBgmLFqVVaPOU3JjP2WQhwDHKOqzX/SVvW
-	YqrOvlJh4ZNrBstoaNAg3vX/S1IoE3dca92edWUZp4/b+V3O5qL/iRWphqI9u/V+eA96wUU1arR
-	tj6lWSC/DmsLks4dFkeVXaKW/27H5WPOuAUxO/HnpFersKL0yVaqfVGtaQ8z4mNSfet6CHdVP2Y
-	/w+DbW4XLEEcqwO6rXHgj5z8Jt24IT/pT+LSJ6YPXhvQa63bpmKvBN+n05YrWB6GzhZXF5oA2wo
-	zsUArx7EURpd3EemFg3jAsRhH/w=
-X-Received: by 2002:ac8:7f56:0:b0:517:6010:7c71 with SMTP id
- d75a77b69052e-519aa973f19mr9381451cf.4.1781708916916; Wed, 17 Jun 2026
- 08:08:36 -0700 (PDT)
+	bh=KmNoOt2xhXhUdVUypMM4EgODu463lMUf0qQnokW3yA4=;
+	b=XhD6//74YufLBtqqw0KuKzq4uvKnrz6ght0nKLmK8oc8UK+JSI400ekJ2o4q4p/1rgzB0l
+	n3rNDSJu404UzEAPMXSwDGkgGSttp7dTlG9LMkzRT19tK7Trk1X5CMSB5LOLWzg1XGZURR
+	QEZiTgyu97eVIE5wAelfSCJgDXmjkRo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781708925;
+	b=nAcZFZeuWNPwbM8fUZK7TCDBJbrltNhppFhGZWuC4GdPuoN/NcHhJDOndybhUMb9aRqbKp
+	qj7/CWTE+RqM1o1/k65oPDTw0RF4EkcElaAKcO3YXImWK5YNL94Mc4v3yXBCMUQ02hmJMj
+	wQae1AVnoofbH/CsDqirHj1u0ChGlOA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H5w89jvj;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 17 Jun 2026 08:08:35 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781708922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KmNoOt2xhXhUdVUypMM4EgODu463lMUf0qQnokW3yA4=;
+	b=H5w89jvjIl9L+nV8GNPt+jiKO3stjNwlMcQTQfT6QUXnYd4W8l4YZukHOKyaIWnSY63+yv
+	s4KpIx92Idi1rcmvtlmN1qed4GPPYv/h/M+IY77RlBqSXSspXt0xDhmbE4HpODIdd6XwS2
+	Tw2x8417z7hXyOHKlEuwhzSvz3thqYs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, jp.kobryn@linux.dev, usama.arif@linux.dev
+Subject: Re: [RFC PATCH 1/3] mm: avoid unnecessary lru drain for
+ wp_can_reuse_anon_folio()
+Message-ID: <ajK4N2zK3sPZFQuf@linux.dev>
+References: <20260611105124.98668-1-baohua@kernel.org>
+ <20260611105124.98668-2-baohua@kernel.org>
+ <air47cqcLUwI4D9X@linux.dev>
+ <CAGsJ_4yCeAmpfo_8ef4MrRyRD_UtV-xGm6F4GpSjvLVPQsbiEg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-14-ce1146d140fb@kernel.org> <78b67a9b-44e5-4649-957a-9d42bfaa098e@kernel.org>
- <26c29e4b-09b1-424a-b4e4-3358aac20115@kernel.org> <1bf749a4-1519-4d14-a0a7-6d8a56a6c850@kernel.org>
-In-Reply-To: <1bf749a4-1519-4d14-a0a7-6d8a56a6c850@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 17 Jun 2026 08:08:25 -0700
-X-Gm-Features: AVVi8CefVPn3P9FAIjVd3OjYJYXvkX-ZXLKpOt3BkEW1wHmD4yyLF5UmdjrpubY
-Message-ID: <CAJuCfpFacu+j_sWPSxUyEbG_9=o=GycZ1Y8bVob+sGSGO2cDLw@mail.gmail.com>
-Subject: Re: [PATCH v3 14/15] mm/slab: remove __GFP_NO_OBJ_EXT usage from alloc_slab_obj_exts()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A8A2240016
-X-Stat-Signature: ywptif3iwr6utdh8ujnr83arnasi6wbe
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4yCeAmpfo_8ef4MrRyRD_UtV-xGm6F4GpSjvLVPQsbiEg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781708918-143363
-X-HE-Meta: U2FsdGVkX18zRfSHkuFDCPwvBuED8IgPprORhnh6+JwcAHqGa5WfVfNdZKJhrVvrt/azvyvASF+3LM4+tPxM83dqvGZdMjVDLt39bKAp28DdxgQqkpiUovs49S3+IFoE6ypGT6JwvaWXRf+VdVsmZH3QWh27861Y4HOkTs778TwjV7zZ59Kgm3FBg+qJqH6NrIj9xfqQmA7SPiGbBwqpap8OMNuRGW2toj0HitPfKKC3ep+jsrp9g2Hw721EAYKPeeXxK5qm1/sMNIku4WjLiZuMTtXlc4UmK4U+Ipquo93/ejP4x1BWJhXjRnhGpc1l4HDjwkfVdYJFLX3LzP7GfZGuvwd/UGuGh9shq14occDq8ljTvhtm3Xb6roGEnng8gQonH8woA6GqVeGHhpWxR3YrEOD+DqSpvtvHWDAcQxTcgOPc6s1XwdfLT8b7Yt0dh9uWoKVrCu+eMvuHc5IY7zRCwBGk97l9vNVqMgxtUVABK0IZAApN9+A72m9mhbDcixDwrCfoLDGQ4KzSgskT4CGph83D03Po0y4D6vlK0Ntjy4IXYrk0qk9FCHW3+Ziaplt91Y7q/pt03hkg28nYA1XMav+rTavjKOjxmnlTic/hGBx4ARIYxa9+y3oWmvooZPQl8mF6lJSK6JxmXlzB5Bla9Eos30VU16s3DoHR1UUcZkKcCWDknk17y4J096aoK+uPQP++4GX1BvKL6HzExemXopR/1hamMEMDHvwH3Q5ixM0fpuw9yzw/xMdS+b4MeA5e16CXiTZ//djcVBrK3k8dMbBxQNGFb3VtObSDQfrI5fAIQ1e6A/kX+CDjJlhZma48gfi/n7bSV68nsFH7G01aOrPuyj+xqH/8usK/dQpMbe0YC6yR4jyZkiFQnXeTYMVjMR4OKKc1LsiIeTq/OgkYpBJnxCsGGLfAYZzb7088pbqSI/t61/B4a+HLOARnDmY3xTeFbFzUgawE9/L
- ynzPonKl
- Eo1nDxk5jh8TnhRaNnt7Juifm2Sf5F+IDlNPzDT75OFu+nEpoWW8GdZ9lfMJ7tXNZl6RSavtZwJIBlYxQUwnZd7dr1iAs4ZQwbLjgUbSzA2eJG10cDpKYTsVbq9XmzdUKsr6p79df+7IZ5Ns0bH0vuTVgNtbHDa7NlaIYB2r8DL0up25wb33ma1DL44qMjxzcKkY0hIyJFwofuHp9DM8DguUPub619UX2Rt8DZN/DYaGvIabx/gAlySJW7XxQQHDt2Eb+RJn18Oe9v/1q3L6PCRPsds0KgOvf4SE9Cpuk3wSBPE9rhUTF1FrvxB+VCorkTdOPozDKZBN7Dsg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0A9CF20003
+X-Stat-Signature: daf1uukzbf36fzi6gt58zii1bygurw6w
+X-HE-Tag: 1781708924-710322
+X-HE-Meta: U2FsdGVkX18a5fPVZMvu3E1tusK0OFLB+cDVgHZdJZWHSzzZWNGjy4yJTy4+rTEnFTLOsLYs+g+1J5YgT3c0qs/GwvuvAYc+Ba6PWfXDdoMh6/sF1dAsSCR+CoqUckqDM1WeJVg+cm6sVLxrFAORH8/c9wj8rBIcTrp22/VfZ3Mjgv0Y3y/HbU+4vSB5Ydg9BE033EyN0ULNpmVxnnpjc5UZel6U+F+IwsoZqHn8M1+l8laSRhE1ibbm8jBGuuubCrCMXSli5LBd4r+GEHiOMBnlNHaZaHL5HcSIT9hfj5AM90hoUE9T1vj1akiJEHQyNidXuwC9uolqYNO5YkhsV4E8jmu9sh+eXWZSr91WBisDW0JEy88BA+HmqR6eBoHehRoD6RKaNHFtpeW63+38cGNDz5weT31OcmIH5YEBTAMmEzLa2hJJEMrt4xT+w9eZvHQ2Q6YV9kzrtTD2hOubrvoJ7/3R+P/TlwCFh13tY4+dgTtf91Mr8+hqd1fzY0Zr62nQwSr2rtEA3oAQstSyXISPhU3sdaFBk4+ReFSwFZwRtAOjSRY8q89j+gwKLHLVI9rMJ57+apcsN0g1Nv50LLCnYQ+jWuipgPR2QB5RZaQWOEy1KeRiAQq7MFIxK84AN8XYRqZtPjLdQv+AIjC4BvZlPccQjM4EPMA/AmnSGPG4pw026Ud6VnKb/4C6+xsGtAC7i9lo/0q+IWsq/fESzRNSRW6zYdQt58Pl/FpOMHHdy3Vl43RrmAVU15+bNGDjM6mulaE1eVEL4VABJvHQauAiAc4f5sZk9IbKXFPtN+1Z0vvNQPT9g09y4HbqeTMRI2dOFwxHCLoFcDjMPuhb4i8F9/OjHvHCNSU2yYgFIS0lEli7U5q4+yu8c9EB9K9jtX3RsyM7jZuXC6KVlpubsb0yp4OLpM75AfDQb0Dr9WifvgD9x/W9fJfAHZpde+KyiLHNbhNjCi17KvcJz0E
+ 3Q26sAz5
+ Y0vlFhsf3C4Vc/pHQcfzsbBb1HG9nmJukhRqH/aHYj41FrCLNS+/APOLW5/6ZRgSoV4AycyIn0X2CsbJej/R7LYIniVtlHbYrXLetq1D+Y+Wx5hSpXgAGSjFv2iv0SfANr7cTPYYnugz0/kiR6V4wpZ47aEpUbk3unFr4eLg4s2KNeRjWePqrzIM4yQvEKHOTd2V2uFPG24GMz2wIR1YjnIPH/MboYylwOAPdFKugBeTUoaFsi4vGOy+fGIlm7DeW8wW/KQuzmLFTsZrCjl6azBqXP48sSjeUBcdhehQ33dVOb6WTygL1CgoYHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,90 +96,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 7:57=E2=80=AFAM Vlastimil Babka (SUSE)
-<vbabka@kernel.org> wrote:
->
-> On 6/17/26 16:36, Vlastimil Babka (SUSE) wrote:
+On Fri, Jun 12, 2026 at 12:48:19PM +0800, Barry Song wrote:
+> On Fri, Jun 12, 2026 at 2:10 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > >
-> >> With some comments below.
-> >>
-> >> I was worried that perhaps replacing SLAB_ALLOC_NO_RECURSE with
-> >> __GFP_NO_OBJ_EXT will create a cycle of
-> >>
-> >> alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
-> >> -> kmalloc_flags(SLAB_ALLOC_NO_RECURSE)
-> >> -> alloc_from_pcs(SLAB_ALLOC_NO_RECURSE)
-> >> -> refill_objects(SLAB_ALLOC_DEFAULT)
-> >> -> new_slab(SLAB_ALLOC_DEFAULT)
-> >> -> account_slab(SLAB_ALLOC_DEFAULT)
-> >> -> alloc_slab_obj_exts(SLAB_ALLOC_DEFAULT)
-> >>
-> >> with __GFP_NO_OBJ_EXT, it would have been passed to refill_objects(),
-> >> but SLAB_ALLOC_NO_RECURSE is not. However this cycle does not exist
-> >> because alloc_slab_obj_exts() clears __GFP_ACCOUNT (as part of
-> >> OBJCG_CLEAR_MASK) and memory profiling itself does not invoke
-> >> alloc_slab_obj_exts() when allocating new slabs if SLAB_ACCOUNT is not
-> >> set (which is interesting, by the way).
+> > On Thu, Jun 11, 2026 at 06:51:22PM +0800, Barry Song (Xiaomi) wrote:
+> > > We always unconditionally drain the LRU before retrying anon folio
+> > > reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
+> > > are in lru_cache, and use the refcount to avoid many unnecessary LRU
+> > > drains.
+> > >
+> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > ---
+> > >  mm/memory.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 56be920c56d7..487a34377a7b 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+> > >        */
+> > >       if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> > >               return false;
+> > > -     if (!folio_test_lru(folio))
+> > > +     if (!folio_test_lru(folio)) {
+> > > +             /*
+> > > +              * Assume folio is on lru_cache and holds a cache reference.
+> > > +              */
+> > > +             if (folio_ref_count(folio) > 2 + folio_test_swapcache(folio))
+> > > +                     return false;
 > >
-> > Hm yeah I think we should propagate alloc_flags to refill_objects() etc=
-, to
-> > avoid later surprise. But can be done as a later cleanup.
->
-> It's also not a new hazard I think because while previously gfp flags wit=
-h
-> __GFP_NO_OBJ_EXT would could be propagated more thoroughly than alloc_fla=
-gs
-> for obj_exts only __alloc_tagging_slab_alloc_hook() looks at them, and
-> alloc_slab_obj_exts() (from account_slab()) didn't either, so the amount =
-of
-> (finite) recursion is the same I think.
+> > In your experiments, how much amount of drains were reduced due to this specific
+> > check?
+> 
+> This is a very good question. I booted the system into Ubuntu, and after
+> boot completed I observed:
+> 
+> wp_reuse_skipped_drain: 5542
+> do_swap_skipped_drain: 0
+> 
+> Then I built the kernel in a 1GB memcg using zRAM swap, and observed:
+> 
+> wp_reuse_skipped_drain: 25017
+> do_swap_skipped_drain: 43595
+> 
+> So in summary, even without swap-in we can save a significant number of
+> drains in wp_can_reuse_anon_folio(). With heavy swap-in workloads, most
+> of the savings come from avoiding drains in do_swap_page(), while we
+> still see a substantial number of skipped drains in wp_can_reuse_anon_folio().
 
-True but I think we should clean that up anyway after this change.
-
-With the fixup you showed, LGTM.
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
->
-> >> Also alloc_slab_obj_exts() propagating SLAB_ALLOC_NEW_SLAB to
-> >> kmalloc_flags() is little bit confusing because it does not have any
-> >> effect due to SLAB_ALLOC_NO_RECURSE.
-> >
-> > OK let's address this one by this fixup:
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index fc5b8c85b690..dc4b4ae874ce 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -2164,6 +2164,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct=
- kmem_cache *s,
-> >  {
-> >       const bool allow_spin =3D alloc_flags_allow_spinning(alloc_flags)=
-;
-> >       unsigned int objects =3D objs_per_slab(s, slab);
-> > +     bool new_slab =3D alloc_flags & SLAB_ALLOC_NEW_SLAB;
-> >       unsigned long new_exts;
-> >       unsigned long old_exts;
-> >       struct slabobj_ext *vec;
-> > @@ -2173,6 +2174,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct=
- kmem_cache *s,
-> >       /* Prevent recursive extension vector allocation */
-> >       gfp |=3D __GFP_NO_OBJ_EXT;
-> >       alloc_flags |=3D SLAB_ALLOC_NO_RECURSE;
-> > +     alloc_flags &=3D ~SLAB_ALLOC_NEW_SLAB;
-> >
-> >       sz =3D obj_exts_alloc_size(s, slab, gfp);
-> >
-> > @@ -2203,7 +2205,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct=
- kmem_cache *s,
-> >       old_exts =3D READ_ONCE(slab->obj_exts);
-> >       handle_failed_objexts_alloc(old_exts, vec, objects);
-> >
-> > -     if (alloc_flags & SLAB_ALLOC_NEW_SLAB) {
-> > +     if (new_slab) {
-> >               /*
-> >                * If the slab is brand new and nobody can yet access its
-> >                * obj_exts, no synchronization is required and obj_exts =
-can
-> >
->
+Thanks and this is very good info. Add this in the commit message when you send
+the non-RFC version.
 
