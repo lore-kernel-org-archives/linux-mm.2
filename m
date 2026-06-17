@@ -4,93 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A01F7CD98E6
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 407C1CD98E1
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:38:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 801FB6B00A9; Tue, 16 Jun 2026 23:31:15 -0400 (EDT)
+	id 01DFF6B009F; Tue, 16 Jun 2026 23:38:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8D36B00AA; Tue, 16 Jun 2026 23:31:15 -0400 (EDT)
+	id F10DC6B00A0; Tue, 16 Jun 2026 23:38:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EDD66B00AB; Tue, 16 Jun 2026 23:31:15 -0400 (EDT)
+	id DFF5F6B00A1; Tue, 16 Jun 2026 23:38:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3662C6B00A9
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:31:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 974DC165BD3
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:31:14 +0000 (UTC)
-X-FDA: 84887978868.22.DB7D61C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D648918000A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:31:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nFSc5IUu;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781667073;
-	b=ese3dBh+VTG4KQB39pYiwOTLbXSTr+vpptIkjxILviMEimvEV6W96p9bwspdTtY2auCg0k
-	a1dgHHt2DfnWfIFXiZKdG0PBFMA1ccUkv1I6Nx6CFHkuKXiLINQj46ktHQqFFAewrXAuwr
-	5d9S5PU6kniIqkAzswj6Vv+rtQFOVxc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nFSc5IUu;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781667073;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B59986B009F
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:38:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 26F39120169
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:38:17 +0000 (UTC)
+X-FDA: 84887996634.28.B6C281A
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2943320008
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:38:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bGzKNak3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781667495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oRk5REZ1sq8yz/FEd2MRrPo8/o6v1rgYxnNAIv2TPNA=;
-	b=aqk/IJ1q9+FipG3cydd4dEy5Xcm51ZVQl+/mqDdWwyxHVExEoqIaSzj0PFhKBCNTZwQtsz
-	Gi1ynqD3sRu5CHmmKEtv278Iew9WEESJwbmB4faRo9spW8HPyEanYnTK8asZGYvqfIFC4W
-	QOqt140VRSQfU1Qw++ysfl0HeUMUonU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBDFC43FB5;
-	Wed, 17 Jun 2026 03:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AA21F000E9;
-	Wed, 17 Jun 2026 03:31:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781667071;
-	bh=oRk5REZ1sq8yz/FEd2MRrPo8/o6v1rgYxnNAIv2TPNA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nFSc5IUugCDmljlonMMQqY1wbqP+8d8ppLolDixCmob043Rpc25zvnPMzTg6tJkTf
-	 /Da6IpoogaOI9xqf/fEm+gsmViQmX1sqFEy105e+cDLOtEEVHkFmBc/YXDEL4ZVTxp
-	 brmx2SveZyDtG17HgiFXfl/jBW5FOk0nSL8o44JqxsY46pgzKPiON+Rer7hJcZwlH4
-	 fBOllj/UKLXIQx8Ko0Xf1EaqAv09xo3CbcApTo0dkX1QPFvKROfFGVLVzLhPXsonQY
-	 KTrM1LNBEHpNmuEzj45MdLW/IF7uq1nKngzldKqLVn16RiNg2m0C+qHxLQKCQ+KFVc
-	 IjA6o+vaTHp6w==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] mm/damon: Introduce DAMOS_QUOTA_HUGEPAGE auto tuning
-Date: Tue, 16 Jun 2026 20:31:03 -0700
-Message-ID: <20260617033104.98334-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260616150316.580819-2-gutierrez.asier@huawei-partners.com>
-References: 
+	bh=ml3xcOh2MxfIz5ly++h37MpYhzCflCK0dlrikZM10nE=;
+	b=RDbufS2a1AHhgYZfU84iDr5nesHl5mjk43/irsN9ddGBxfzQz24Q+y1U2h4JeNR4+K4U/c
+	s0Zdv8lXx5fTE8ZXcABD68/gC4gNlHAkEU3xdQJZO5VT+qXd6zfYvjWx4tgMEgNywkOD4n
+	E+eWR+S/I18f73m7PthVvIFZ/yp/ZxI=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bGzKNak3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781667495;
+	b=dxupJAIejKnz3//lgLfTDH7Y3jZvu1zrXCNIYj2W2f06RtP8ICdM8BXWUH7WB6uXOKqJq1
+	FSNNrrG7Pqr4FLS0wiqYoATBblnkpO7OhuGlMM1ERAu2XL5o2BtxxPn8L0l+5S7nz4Dt4D
+	7O4eZhKoLx0ctd/Thlbw1EWAUvw4XxM=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39657d28132so39652931fa.3
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:38:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781667493; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z3I927DPbbjNj7ujYHdcGhTFyEtC8cGpzTnL1E/iFAEDH/OwaiPyX6YJpCz08sbM1U
+         MmVU19uYbWt9xa9dECK1fhpJmjTbwl3SUdugYejr9Szu1THi2Yjy0JF0fFFj/cxRma+Y
+         nAWKaaB5XZKh+y97yYdtpxsqpNM1yoK2nv4kblmmXppRSyow+HgN2B2i97/5wYa1654e
+         D3GFJQYhHcdSqV/rAlMGA/YCBeQ/1xmcSMgXjP7q8fqSVpq4dSUbgVusiHTmFHBgd9sh
+         Qrl1YR77iGJuhCf9P+dkLaCiFf7P6+u85pIpmz+yuRSaM3B8IvlYrQrrMN9wB2YeWMMw
+         DcuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ml3xcOh2MxfIz5ly++h37MpYhzCflCK0dlrikZM10nE=;
+        fh=SAKTs4A5vuT26XdmzFBn6qlNKmNqEe8AX5fBIlh0060=;
+        b=SzPI6WGEuo3jf4/X1ndWsUxjj42SYPzIMNCcbHG+CJrnFZRqmWbIz8veCY0gzTComh
+         Pd0vLD9a6et0VUrErTDeEKPVq7fAVFbPYueQUG4hvAfcZNwEJCu1LonfulTMby1we49B
+         4kxoLbMPtrhPP2zu2q9uBRIIS7nzIFyP7MAkNrATphDAnTHOrD1cYx/Dzzjih4X0Sev1
+         qp5RDk1bXqiXjSmHU+AE0JjyoWnxW3bfS92xeI4Nor2iOd7scQdjbrcAtQ6CigJ0lRFo
+         9aFHElXLIYKcIz0OrO07w3n1iR0p3dyZLeEAZ7E2AWWVdBv4L/6Lc0XWm5/Rjlqh2jYi
+         7bGA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781667493; x=1782272293; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ml3xcOh2MxfIz5ly++h37MpYhzCflCK0dlrikZM10nE=;
+        b=bGzKNak3OcAgDWSCG63l5eUoNP7cCPiNUGUJeM7zs4zD90w7Pwe1v01pSu+6Zqq5Vc
+         lWV90FgH3RzoGqUTDJJaoZ2LysXlMFEob3M7IBRMKvUX2pwFSjy8UUPirs+Mk05O9feY
+         eaPbsaPLBe72WeEapIjkA59MdLI4HCXsY47ziSUTtqJwy6BECBPvQ5/xddTurYVYUyKw
+         tTkJpSRdWOgrRXSFP5LtNXpb1NZM0MkW2qdYfXq1v6cD4PaLGpSdtaQVeZRC51dCIV8k
+         CuV1w7twV57PrO0KJx61lx72b9EkX6IDz3ItZaFJViCq5jW/lC5tEuXa2AIlRvSF5FUN
+         1sNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781667493; x=1782272293;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ml3xcOh2MxfIz5ly++h37MpYhzCflCK0dlrikZM10nE=;
+        b=pNaMTTIcj8We/SH8Rpo0Q91Ez98kffUtH06hohBmPbvNAS0OGzJUNb3jJKLd9frU10
+         X1MI8vH2xlkHujvFoLltsHNw0bOL3rc+lJ+6FOS1GeBoibF04vYEXxU1ECfV5zHETVJm
+         1vj/TMxTf6fzGTR9EPmPd+BJlRWXKhkwj2J/lb3Rn1siZbcsjv4Uv6x7Y41P99LR1Zs0
+         LE0TUKwLJVtbg/RTZs5njx4U5hDcQkJW4cPZSAjPV0yfgM84eA2WcHPayFc//h+UqCil
+         eodyOLvG103arIHDZcWFGmPcImw/CBDtfNB+DRr+CsJGv0CgGBXNzCHQKbPgsDN/zYDx
+         Z3Bw==
+X-Forwarded-Encrypted: i=1; AFNElJ9hVy01LKozp6mIanM7t3owAiRyjVe4YT500+0Jsi+34/AhvavLSXSG+dbAqrXq8k8xdN5pM7EWLg==@kvack.org
+X-Gm-Message-State: AOJu0YypIGo5I9+ZZMk6ktpKDQDg15wpoEus5+IAd9e0N7ZWNADbH+i/
+	7Rm+Av+xRLUzJi6qtLFCRZzAe5Yz4Nd/Q4mvklLFCUpRo7DsUjVh73hTQkCwGoju2jhhPNp4Hnr
+	5cyXsXzB8GE6/Fu/iyKpdMDi4zLsBwuc=
+X-Gm-Gg: Acq92OF7dYbZ6TZxz4jvdGAbQPeRmJRJnyC7jFfBnvuuyBi9092/LpsiZNleIjJg1mL
+	MQb1TCxgJ6OULLjggsvcaVRop/ms3eYRJ+hgFFfUdohtKotbYd03XNkwl8qyix8u2vpNv7HbtWj
+	iyhT6PptN01xvGDJsH/RfMEBrBD0JMrOKxAgtwJPOQxs1pnOklpV5gcHD8GLLEibYo9+ZV91NfE
+	SmNX3OC8RD4+L6LlzuIxE5kMkzFeyZF4QPRutUgy/IumXQ+lJnZ4WgviX6oVR/M2FnKSSpnopir
+	8/xQQdGF6KIHptPXDDuIIt4Iww==
+X-Received: by 2002:a05:6512:3990:b0:5aa:500f:7bae with SMTP id
+ 2adb3069b0e04-5ad4701aa1cmr506325e87.35.1781667493023; Tue, 16 Jun 2026
+ 20:38:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D648918000A
-X-Stat-Signature: 1mw1dwmiyjwdmqtdw98qmgsuji8fqef8
-X-Rspamd-Server: rspam03
+References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
+ <20260616123646.GB21024@lst.de>
+In-Reply-To: <20260616123646.GB21024@lst.de>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Wed, 17 Jun 2026 11:38:02 +0800
+X-Gm-Features: AVVi8CciGk9AEKRBRV_ut2Q8RKhgWQ0siGiHzajgiKnai1OCYfaSoTtY1t2d4Zw
+Message-ID: <CAJxJ_jhK+zkpjhs3YsQ9RoasKYh+E0NweQci0sPAEY1ne5LmBA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2943320008
+X-Stat-Signature: 88rfoq3366ebw8169meef3sfjocftnpx
 X-Rspam-User: 
-X-HE-Tag: 1781667072-228292
-X-HE-Meta: U2FsdGVkX19a8seiHMZDo06057ylOctDC+ZxMv345J0uIpxzZdpYSBPG4TcshVP7sAuvnSa/vdWcS1kycltMVXICdi0UXdKUtwnla2ekVt2oryEj+hu7Cf1DQ8g03c9FR1m9HEtKx5jkYpWGkiZ4MLRi8ymPNFOvi7FmNX/ZaH7AI7o3Um5bQHq2vI1sE4uqVQHoBalpp9ceKPNlGLVBzEyhiHu2j+5gtQorN0OsTTYPVTv9HM3+LMQLweCiQFEB+ReS7m0gL4KM7vU46PjOBOkvIH7GX7OQHQ9WA2LKnOGaA0YI4W60I8zoD0kzJTKtNjGjYl+oJMJIGtZs0vXACn2OqImPey1k5/jYbYEVWXnSgYHtXqbv8Dg+lmXyVwgsish824cW1PAf/ZlolT+CUzyR2COjMiX/K5tMzCGL9/rJcDZAMg+WZfiIvascEBsb8g/OB2X4dXIIWYZXTquprhc0L6ibtSTpXAC8RdRP/xSOX5R49IM3ikYu7i3y02Mz4U3FktYqxKSI/v5yexX154PocwV7HwpnEO8LxRGE+GWafXnVPSkR2eH8JtHv1a73Bu5PXU9gCDYFRTnwfni2/XvZIB+X1MZT5zPxfC3Ku/dmDfFye8P+/t1kKt1kjum+MzTff5Okntm0+oWFuUScqJOWUy7xf1UtIrGDmF1Htv1Z70WsO3G3dlwbloaz3PHJTBTOiAY/xiVoZbQGIy91zVmYyOUt2UqDIsDXF2yGmyIZ32/M5RJbYXlub4Cmy7G29QBrpY/JAv1rTTpwhHtiiBR5ayhH3sgyIRXASVBYoccQA8Ow1YDF9CrEzu3wuel16en1m1PX53rlTXCsa9W/+VZgk21mPDSbUdC7azUBsqzBkaP8a18n+ys0EKtX0oKeFq5gVhqxUBwlr2aSTAyLsx9g7zGpPI6pmni2vczSzh731A5kX7PLvXLkr9p8kg6aWMDU/nEkatMbfSgV0El
- eGKfCUEU
- 3C/kcf0fc+l61coIi6ihMsGCG5CuE0KIe64djZPoHOdYOC+C/oQsIhitdSGEeJCFDdK8d3NyE1SEW/1pdad+H5+VPmTc/G0fvxh3a7A0oUJUeizz4HD7IF/AoSLYBF3oOTb7GnrOovo7Rqp/VsKCGWXKbXAagqUFaRCPJCH7Eu9fhmlFJejDYTdNWdJyOj8FCiyvheEaOAHp/uMYi0TwHH5jUM6EojJ1i7H7C/v7j1BdNuAPfpwGiCv4eIRJJ6E06yz0cc8n71vNbOr6uFjUD4LRoEGox0Zq2oke99p4EcOg/qYJkv91svcCWIRPBT5ojYo+tMfVFcQ2/FwbkovCvxdgu6McvV+IT7Fi0
+X-HE-Tag: 1781667494-871810
+X-HE-Meta: U2FsdGVkX18zWPrI47Rd7lkMwO09y7orGU6zcMkTCeguu49HD+hjfyaeidr498tuwkr653jMDPNqtmnvTri7OYzPyBflKZuBdxLJ5UKEi6OcEiJqFVSsL56BJmFV1WYdJPN3V8WNPZGELbyw33EZCRv9HiyXw1S9r2Ot7HQSay0G4Qs9X4k0TXp4tnSI/G8RIX57YEEakO7vM34IYNJsoU18TWoUxVjRMdLOKR2lllh9ZjM0/2uHeYl3ASSUNZEHkj7zDeWnP6XufmEmhLP/w2XkWeIt5P3Uzbbzpc4EzgCUn97GJic83kjxx2LZgRHqGnhMqrW/13vWSg8Oi2cf6aeWpxfWzgOjNEm3rpR7pXEm/yjRAJIdv/eQaHnHpQfughaKB5zS4xc2eX46YtutvRdL6yGzQnFAwZuGYybX6PANM9YXpBty49Axhxx/sK0os2C55SrxmExF8KQ6L/VOu/TYcRktnEixnt4TOA/y1PCtJ77k4LOpDFgObKAecMhLpMCp+uA7ptOwJigqxBgwBrRKTJ1ZX63FPVTSIlYArWfwHBuGy0tpzzRqlRwlfApdsLPtg8IGISJa1f/LxvEzkZE7gV3q6QyEh4eNaIfBXAEI8Q+wGyjfj6ASfHwP/MkqFD5ukQXCqk222OEOUuOOkxF46iEuS1qr4Of+MYrrQbpmQg9Eb/EX8mQBHcYx933BfNmjyN2+hzYVjQWjGHEyDc1+1fP+mJNQ/+SlgO40a77eChrBi4jnYz5JWcTOMYdUDGDLVW4f1t3v/lnkBz8nul3+k4/ZzxMGqqVj9Bf+baUNV3yOxecGniJQhYc6rcgq6FYMPRiK0yGHRKVOS51RxW/R6iSMSNyWc6Hd0Tw1/iKXBNT7LwZBexzFswJ4NO8EwlhxVSPlewv4jUQ/9NlUllb3jkD1W2qNrV7pJzVTrHoKIeHuXwHQLKK3Fn+ie6kpTr+Qcg5Z9ZzNrp4QoDH
+ hENF4MlG
+ X9uy2QAld+8l4heuqOD7QYxBc0gbSrGYO1vyuve869YxJMHj+GJktICI0W/SZVgpF2sva9eEueyidBSuq8X3olW9/KHb7xGEfNbhC3a7RuMrFFK4ne7Bi2LHDLXRBMkvgzXV9ZVu3CfdddaQHEYIh8MRn2I0zQficWlxl3CLsTWvTdQKRUKOXzz2wwHSYyz4YMAI2xyISqeNRD4Oow8XFVME1+zVBLsnpt5Qg+qETlkGaplodyUJua6BH+gL+ytCwxdXV889ZVKUI+t8V1taPnKrt73mBryZcH2AHwBUdTlXdx16zysVUEyE/vKALIIxnoJfAb0eo2L6LHp9frnLHkMrQxF6+nCANI2ZT6LoiPov0UYFzJYADPT/F4y35G9uSC9BlgjjExJuft/awRQf9GavwEQnl26BqF5Wl5/xAP372k9+SXY7Ng0QiYwI5rx0JCe4xlVqL69w1CT5Xk1yk4LlpSsanE8d1yXmW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,81 +142,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Jun 2026 15:03:14 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+Hi Christoph,
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> 
-> Introduce DAMOS_QUOTA_HUGEPAGE auto tuning Add a new
+Thanks for the feedback.
 
-Please fix the name of the quota, and add the ending period after 'tuning'.
+> I fear this is going entirely in the wrong direction.
+OK. I was trying to build on your swap_iocb / swap_ops rework
+for the zram swap path, but I take your point that compressed swap can
+be handled more nicely.
 
-> DAMOS quota goal metric to measure the amount of huge page
-> consumption to total memory consumption ratio.
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> ---
->  include/linux/damon.h |  2 ++
->  mm/damon/core.c       | 14 ++++++++++++++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 6f7edb3590ef..23a9cec05033 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -162,6 +162,7 @@ enum damos_action {
->   * @DAMOS_QUOTA_INACTIVE_MEM_BP:	Inactive to total LRU memory ratio.
->   * @DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP:	Scheme-eligible memory ratio of a
->   *					node in basis points (0-10000).
-> + * @DAMOS_QUOTA_HUGEPAGE_MEM_BP:	Huge page to total used memory ratio.
->   * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
->   *
->   * Metrics equal to larger than @NR_DAMOS_QUOTA_GOAL_METRICS are unsupported.
-> @@ -176,6 +177,7 @@ enum damos_quota_goal_metric {
->  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->  	DAMOS_QUOTA_INACTIVE_MEM_BP,
->  	DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
-> +	DAMOS_QUOTA_HUGEPAGE_MEM_BP,
->  	NR_DAMOS_QUOTA_GOAL_METRICS,
->  };
->  
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 7e4b9affc5b0..b001f80681b1 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2795,6 +2795,17 @@ static unsigned int damos_get_in_active_mem_bp(bool active_ratio)
->  	return mult_frac(inactive, 10000, total);
->  }
->  
-> +static unsigned int damos_hugepage_mem_bp(void)
-> +{
-> +	unsigned long thp, total;
-> +
-> +	thp = global_node_page_state(NR_ANON_THPS) +
-> +				global_node_page_state(NR_SHMEM_THPS) +
-> +				global_node_page_state(NR_FILE_THPS);
-> +	total = totalram_pages() - global_zone_page_state(NR_FREE_PAGES);
-> +	return mult_frac(thp, 10000, total);
-> +}
-> +
->  static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		struct damos *s, struct damos_quota_goal *goal)
->  {
-> @@ -2826,6 +2837,9 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		goal->current_value = damos_get_node_eligible_mem_bp(c, s,
->  				goal->nid);
->  		break;
-> +	case DAMOS_QUOTA_HUGEPAGE_MEM_BP:
-> +		goal->current_value = damos_hugepage_mem_bp();
-> +		break;
->  	default:
->  		break;
->  	}
-> -- 
-> 2.43.0
+> Yes, we have to keep zram around as a legacy interface for now,
+> but the right place to deal with compressed swap is in the core.
+I agree compressed swap belongs in the core is better, so not only ram,
+but also the block layer can use it.
 
-Code looks good to me.
+Before I rework or drop the RFC, could you outline how you see that
+core-side model working? In particular:
+  - How should a compressed backend like zram or future block device
+    plug into swap_iocb / swap_ops?
+  - What role do you expect zram to keep while the legacy block interface
+    remains: current block swap only, or something else?
 
+I am open to reworking the series toward a core-based approach once
+the intended direction is clearer.
 
 Thanks,
-SJ
+Jianyue
 
