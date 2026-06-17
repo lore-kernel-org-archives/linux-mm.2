@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DD0DCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 08:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 772F6CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 08:57:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19B166B0005; Wed, 17 Jun 2026 04:53:04 -0400 (EDT)
+	id 43C476B008A; Wed, 17 Jun 2026 04:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14D036B0088; Wed, 17 Jun 2026 04:53:04 -0400 (EDT)
+	id 3C5B26B008C; Wed, 17 Jun 2026 04:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061C16B008A; Wed, 17 Jun 2026 04:53:03 -0400 (EDT)
+	id 2DC1E6B0092; Wed, 17 Jun 2026 04:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3ADE6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:53:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62D861401F0
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:53:03 +0000 (UTC)
-X-FDA: 84888789846.14.BB59BB8
-Received: from mail-m2493.xmail.ntesmail.com (mail-m2493.xmail.ntesmail.com [45.195.24.93])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 29522140003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:52:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf23.hostedemail.com: domain of zhen.ni@easystack.cn designates 45.195.24.93 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 088FE6B008A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:57:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 834181C3CDB
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:57:50 +0000 (UTC)
+X-FDA: 84888801900.30.947EE2D
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7F968C0004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:57:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G6zDIISx;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781686381;
+	s=arc-20220608; t=1781686668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cVIOAXMwEqT3z2kZkNd/8ZkIcTKoDXKr+pLVqTdg6U8=;
-	b=H2RHtVDMzfmN5XHkih72XvwwiJVk4HRWolkvLNcbb6eUaUp12yTceVq/FhpijTuxyJ/ruU
-	qteLZDD1Eu2f8m7Z3umCtUqhXEJwudK5if0XQ6o7UpK1KJXQGHw+lVci/Np6YTzYDx5juj
-	fsB0HSoAIWjs5UVxd1adWGDPFYBu7zo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf23.hostedemail.com: domain of zhen.ni@easystack.cn designates 45.195.24.93 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LJv33QYNn3uul9I11VO5bijTdE4dZbcs1/oX8cvoHKE=;
+	b=GZKq7HsLHbDoGUSl1P/bF/4PuevStGZVUzRAx0y1F3Zk5NZFawwNJObfESr6wnxF4UNjab
+	lBPESfrqLlKEFhcitFZxGkxxrqCuCqKjMzQnexLTXYWyhXCylfi+zHtrdCMbodr1+OTcBP
+	OTsD61uvmyZwAE4V4fA84cJu6WW2eG0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781686381;
-	b=J7RKKnZwDuJQg08KCQ7Ywu4vCh/nDM/j23Q3lo+xTGx1K5SsPUJliSIbaO6ip5OWxtJz06
-	GiqXSZMHLGM+sGQ4B+pB4jywHZZ2v33uLL006eSQmfRpCTMEooqRib0sak4p2djHvx6zwc
-	XhaM32zZSIUrnz7nzSI6AgQkiMvzYFk=
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1b8eaee8a;
-	Wed, 17 Jun 2026 16:52:53 +0800 (GMT+08:00)
-Message-ID: <5ef656db-c6b6-4a2c-b6be-628e5214952f@easystack.cn>
-Date: Wed, 17 Jun 2026 16:52:52 +0800
+	t=1781686668;
+	b=ztCsKyyjgIYNs1eeKY0EbWMy2VQ5McKp2jdkJ3QXk7/7VsV5RnV0lRbSATfw/FmJ2Xyjsp
+	uZnpBIpZt2IY56lxtroDDW1exsz1+r7W6zRBbfGToFcvkq94wu1xtqAtec2OH1UGfXsOKY
+	X7FTn4xP2LYcszGixB3hRrnfNDFs2IA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G6zDIISx;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <def64c45-bbe0-426a-bba1-9ac9e4db672d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781686666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LJv33QYNn3uul9I11VO5bijTdE4dZbcs1/oX8cvoHKE=;
+	b=G6zDIISxunkBVC1of9TkL8OfBK4o7OBby5JNOZDMEgIOCcKY7o0KinIEcyGmZSIhVa+bC0
+	AFCmsquCrexm2aEivFGneGwasore4AZAdRNchMCQtYo3oBwmSIq1swY7HIO7L3+BfdPt5B
+	yR43tg3gf/O3Sh6pe2dHrhWaYepnBik=
+Date: Wed, 17 Jun 2026 16:56:56 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260525081652.2210206-1-zhen.ni@easystack.cn>
- <20260525125819.1857f215bc56b26a0727bedc@linux-foundation.org>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <20260525125819.1857f215bc56b26a0727bedc@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 3/3] mm/percpu: Avoid IO/FS reclaim in backing
+ allocations
+To: Dennis Zhou <dennis@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, muchun.song@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
+ <20260612022648.13008-4-kaitao.cheng@linux.dev>
+ <ajJETfcD2XzzpR8w@palisades.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <ajJETfcD2XzzpR8w@palisades.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed4c88a4a0229kunm6cbe07ca9d54e
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQkIfVkgaQkpNTx1CT04YGVYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Queue-Id: 29522140003
-X-Stat-Signature: 8wr1zt9qak474xnpefdbpof6xsygfqio
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781686379-698253
-X-HE-Meta: U2FsdGVkX185UnPXlnf2IgIHV/fybN/h+DwEL160cbgt2zs28Nr2hPwNjYYCM3TfyUNrXb/J78FaP2yyfkgi9FtR4rh4sVoTnwZoKqVrQNTEzkEIIaK+7eZJUpFveoIno6r2LoEyTWMP/+wTByJEaN042QfOMvdH00QJ2oMKSzL+Ng8dnAgR1TI69S9oxF47lNNP9GX6E5eYrbc7q+lbQ93xB+dFYGEkmp0ajFvYd7A3i+htl34Xknr1HuERni07CfsxyGJeUZ+ZwNs2/2DCZUGdR8wKAZVik38rR76dLY3/bqvEYOClVdf9STuHUDp4wCDBFRtDS5+JhE+y6l+ue7zdIeKnDYesjG5WvUAlVShCntKzkJ6JUiGYxO4GuqIUvRLvbkFr9+nFLEFmRRoIIES5JYQfEvCIogLMKbvJGxpeZ16+22FTZudM3stbbE92NOwg3Xq5t3JztP7dWRBoXrTZFcY0FxLPgElrd7I1hMk/Rqx04RehcadNRY8tXKTMwbDij68zJMeOZmS3iyhGlX2ugG//3U3NfnnE0pu5KG699tQWgrwKmMDjcptu4IBxGdfNbbFq8sCMuZnznZ/Pli0s1MWdOL3uH2yfGyXq4wio7lOOIQcfUYNpaSxdEGPolHAas+mKFygOcuEcONOfl0uh89zpcOLZFD2Hi1uuC0JVyT8n7qJbSDuAfMM9kDVdUzaFCN4dxZ75nPOs6E+smZiZ4xh7FyQv0DlIEl89ZGm3DYnF8ZFF17ULSxFARAUGBJeGAcBJOxKoj2owo6ctvJjOS9FsUACa3Me05KBJMCpLZv9my3jk7leOM25lQHKL4+xTuA7qiuyhPhIyQ/UI+KgZiQ1KTxuis2hUk1uhrhmFhJVO5A8XMOVtXEB/P7tuWWRyL/P0i/G+T6wSyu5mn42VVm9Vaj0xMIUgZFwJZyt7mCqlXtmuqrxTOPvt6eqUpxuKSsR5x8Qizm3lXuY
- 1SyMZJuf
- qIeg1JvTXBu6csQBvMBp6Mci8Mr7ESjrwGcFGkmLuTPhPLOncwIgbdaxn/AI6kbkyKvneTHBburoorLLblawOYxRT46C6V0oWbSDGlKAEKgdnkSUnz4a/ASTDE/I8wLOiVqgBlP421K3HltAocCeUT7Erj4NZlMNK50rFqv53WPxBuwarZtBrfDadNEQQhVr+pqEuEVHo22H0GMXL60kG/kBMRMm9b60wlhFgknRGjOHYWU+mF/4DnjucWawbCKmLqkLpqKMTSztd0eUL3Q7+BSJcvA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7F968C0004
+X-Stat-Signature: 78ddyyx4kyyxrsfowezua66bixubp3th
+X-HE-Tag: 1781686668-860810
+X-HE-Meta: U2FsdGVkX18ZVk0fFfFvUu6fGyDVopSN0U1b1uI1GJ0kZg9L3WRCVKPtz+gnMwkW7E1WydgDy+8wOkJlyq3dHiGYavkkM0N6nROeTv/3iCINsPjO6xKIOvKKoxQW5VMTmQC551p1EtpRrIzTQh/zomiYNajVEp5zu/JeHcNPlxO+RnXt4zpOlAPdeRu2snKkhWbeLlSf2Cl6nyotvVc7rsOKMjpODw62/NSqZb32a0dC0FHFkL49I8mO6JpADBGhD1utmiMR53opi8tDoM9ErbZaFgArfgRzTjGqhG9jWJnjM69IP7336/gt5cWveOolhxetE2hC8WWXJiaWfK4i6bVQ6aGPaftatI2Nj6k1K+1PezKyOSJhz94wJ3D+JH3PSq/2U5xvsFZRdvdQE3bz6Ct7vjqiupzS8zltpqZ5eJM5ZlyyS4/kLQgfEYG5JcrUFerIRrMHzNjsBffs4iSpsbolgv60BV41+eBl8sy+aa6vRU2mKXZRfoROSv6KDfJqWDLRe/oeqm6HBNPBlzXbOJfXFoFDc9QS+I6JuXQ+AkVSt5yOleU/kC9g9UfcDdJmGDsDabqOFlZoTEDQMdG/ZbBucVUOFg4YvtGvdaf55dnWPI8B/xO5PfaQJaYF1apcWXL1o+kparEgV3xjGG5AasR9BU/Q9DRYWE1OjgpyszSxgrt6wSuz/sswP8KLlWcFG+6MVlTC7MbK/AgD5RCzINvwx1ZOy2D2R0/iisSeAn7WkkVPZPlv01Y7quXMCgrwmuQu59Zcz5HsGJ06RdC7Oz9sudfh5WgRskAJMVXmHqLMTz83+DRQRLGWZ9etdeQ8+ZCYhASKOHTWV0NBSUCbYGDIok0u0Xq/bw+kasHTRjvQPaYP3NQrSJ1apcUMRE8kJdUivElF3jZloRoFoUo728oHcxSBRdH9WY9y3D83hYs39wXWh4OlUrWJNqvE0vh7raJXYixsrgcawf06Tys
+ 1MAUoInY
+ CLYL19am0q6f6RcrZOdcm0PqF+T3ZVvkWrXaNhKJExAjtYKnIcptGWOCPi5SngOoo3WEN0NBAiFvoNWVViBtcUrgNDCOMYzrsDtzBd4lJgX2O5OPqaVioA52lPOlYOaHSpPozSbV5MqLc5wAglzr/IvplnFkG3jIndDxIs0U4c/JnGnX1VL5ZoLgqKYmAWK3z4pKHU627tl03N0wuqX/h693aC2UnGTMJhj0n6z7jtkfaAX9h3d4H3I7jRxOL3opVdFI8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,103 +94,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/5/26 03:58, Andrew Morton 写道:
-> On Mon, 25 May 2026 16:16:48 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+在 2026/6/17 14:53, Dennis Zhou 写道:
+> On Fri, Jun 12, 2026 at 10:26:48AM +0800, Kaitao Cheng wrote:
+>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>
+>> Commit 9a5b183941b5 ("mm, percpu: do not consider sleepable
+>> allocations atomic") allows sleepable GFP_NOIO and GFP_NOFS percpu
+>> allocations to take pcpu_alloc_mutex.  This avoids premature allocation
+>> failures, but it also makes the mutex visible to callers from constrained
+>> IO/FS contexts.
+>>
+>> Thread A calls pcpu_alloc_noprof() with GFP_KERNEL and takes
+>> pcpu_alloc_mutex. Since the internal allocation is not constrained by
+>> NOFS, it may enter FS reclaim while still holding pcpu_alloc_mutex,
+>> creating a dependency like: pcpu_alloc_mutex -> fs_reclaim -> FS lock
+>>
+>> At the same time, Thread B may already hold an FS lock and then call
+>> pcpu_alloc_noprof() with GFP_NOFS. It will try to acquire
+>> pcpu_alloc_mutex and block, creating the reverse dependency:
+>> FS lock -> pcpu_alloc_mutex
+>>
+>> This can still form a potential deadlock cycle.
+>>
+>> Avoid the dependency by restricting percpu backing allocations to GFP_NOIO.
+>> The public allocation still uses the caller's GFP context to decide whether
+>> it may block, but the internal memory allocations performed while
+>> pcpu_alloc_mutex is held cannot recurse into IO or FS reclaim.
+>>
+>> Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
+>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+>> ---
+>>  mm/percpu.c | 16 +++++++++++-----
+>>  1 file changed, 11 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/percpu.c b/mm/percpu.c
+>> index 4d89965cba16..47824061a701 100644
+>> --- a/mm/percpu.c
+>> +++ b/mm/percpu.c
+>> @@ -1726,9 +1726,9 @@ static void pcpu_alloc_tag_free_hook(struct pcpu_chunk *chunk, int off, size_t s
+>>   * @gfp: allocation flags
+>>   *
+>>   * Allocate percpu area of @size bytes aligned at @align.  If @gfp doesn't
+>> - * contain %GFP_KERNEL, the allocation is atomic. If @gfp has __GFP_NOWARN
+>> - * then no warning will be triggered on invalid or failed allocation
+>> - * requests.
+>> + * allow blocking, the allocation is atomic. If @gfp has __GFP_NOFAIL, backing
+>> + * allocation failures are retried. If @gfp has __GFP_NOWARN then no warning
+>> + * will be triggered on invalid or failed allocation requests.
+>>   *
+>>   * RETURNS:
+>>   * Percpu pointer to the allocated area on success, NULL on failure.
+>> @@ -1749,8 +1749,14 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
+>>  	size_t bits, bit_align;
+>>  
+>>  	gfp = current_gfp_context(gfp);
+>> -	/* whitelisted flags that can be passed to the backing allocators */
+>> -	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
+>> +	/*
+>> +	 * Allowlisted flags that can be passed to the backing allocators.
+>> +	 * Backing allocations under pcpu_alloc_mutex must not recurse into
+>> +	 * IO/FS reclaim.  Otherwise a GFP_KERNEL caller holding the mutex can
+>> +	 * block on reclaim while a GFP_NOIO/NOFS caller holding an IO/FS lock
+>> +	 * waits for the same mutex.
+>> +	 */
+>> +	pcpu_gfp = gfp & (GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN | __GFP_NOFAIL);
+>>  	is_atomic = !gfpflags_allow_blocking(gfp);
+>>  	do_warn = !(gfp & __GFP_NOWARN);
+>>  
 > 
->> This patch series introduces per-file-descriptor filtering capabilities to the
->> page_owner feature.
+> I think GFP_KERNEL -> GFP_NOIO makes sense. It breaks the cycle.
 > 
-> Thanks again.  AI review has found a bunch of new things to get worried
-> about:
-> 	https://sashiko.dev/#/patchset/20260525081652.2210206-1-zhen.ni@easystack.cn
-> 
-> 
-Hi,
+> For __GFP_NOFAIL, I think my concern is that a chunk can be quite large
+> and might need numerous pages. If we allow __GFP_NOFAIL, then we could
+> potentially churn and stall out other allocations for quite some time
+> while GFP_NOIO tries to reclaim without access to fs or io paths.
 
-Can this lead to an out-of-bounds memory read?
+__GFP_NOFAIL is actually unnecessary here. The main reason is that,
+for now, I have not found any in-kernel callers that pass __GFP_NOFAIL
+to pcpu_alloc_noprof() or its wrapper functions. The reason I added
+__GFP_NOFAIL was to address the issue reported by sashiko, and I
+provided a detailed clarification in the link below.
 
-The NUMA filter in page_owner (mm/page_owner.c:790-798) bypasses
-PF_POISONED_CHECK() to avoid triggering VM_BUG_ON during concurrent page
-allocation/free:
+https://lore.kernel.org/all/3de3a89b-92f0-4cd2-9f41-8e853eae4e78@linux.dev/
 
-     int page_nid = memdesc_nid(page->flags);
+We should probably revert the current patch back to the v2 version,
+and then add some comments explaining why pcpu_alloc_noprof() must
+not be passed the __GFP_NOFAIL flag, as suggested by Andrew Morton.
 
-When NODE_NOT_IN_PAGE_FLAGS is defined, memdesc_nid() performs unchecked
-array access:
+-- 
+Thanks
+Kaitao Cheng
 
-     int memdesc_nid(memdesc_flags_t mdf)
-     {
-         return section_to_node_table[memdesc_section(mdf)];
-     }
-
-If page->flags is poisoned, memdesc_section() can return a garbage
-section_nr that causes out-of-bounds access.
-
-## Lockless Access Safety Principle
-
-The page_owner iterator runs without locks, meaning pages can be 
-allocated or freed concurrently. The fundamental design principle should be:
-
-"It's acceptable to skip a small number of abnormal pages, but panics 
-must be prevented."
-
-In lockless iteration, TOCTOU is unavoidable - even with reference
-counting or RCU, page->flags can still be modified concurrently during
-access. Zone locks prevent this but are prohibitively expensive.
-
-## Proposed Solution: Add nid to struct page_owner
-
-Record nid at allocation time when page state is stable, eliminating the
-need to extract it from page->flags during iteration:
-
-### 1. Modify struct page_owner
-
-     struct page_owner {
-         unsigned short order;
-         short last_migrate_reason;
-         ...
-         pid_t tgid;
-         pid_t free_pid;
-         pid_t free_tgid;
-         int nid;  // NEW
-     };
-
-### 2. Record nid during allocation
-
-     static inline void __update_page_owner_handle(struct page *page, ...)
-     {
-         int nid = page_to_nid(page);  // Safe in allocation context
-
-         for_each_page_ext(page, 1 << order, page_ext, iter) {
-             page_owner = get_page_owner(page_ext);
-             page_owner->nid = nid;
-             // ... other fields ...
-         }
-     }
-
-### 3. Use saved nid in NUMA filter
-
-     if (state->nid_filter_enabled) {
-         int page_nid = page_owner->nid;  // Direct read, safe
-
-         if (!node_isset(page_nid, state->nid_filter)) {
-             spin_unlock_irqrestore(&state->lock, flags);
-             goto ext_put_continue;
-         }
-     }
-
-### 4. Update nid on page migration
-
-     // In split_page_owner() when page migrates
-     page_owner->nid = page_to_nid(&newfolio->page);
-
-
-The remaining two issues can also be improved. If there are no 
-additional comments, I will proceed with sending v10.
-
-
-Thanks,
-Zhen
 
