@@ -4,120 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD737CD98D2
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Jun 2026 23:50:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E9BFCD98D2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 01:10:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AC796B00A7; Tue, 16 Jun 2026 19:50:31 -0400 (EDT)
+	id 10E2E6B0005; Tue, 16 Jun 2026 21:10:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15C986B00A9; Tue, 16 Jun 2026 19:50:31 -0400 (EDT)
+	id 091C66B0088; Tue, 16 Jun 2026 21:10:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04CC46B00AB; Tue, 16 Jun 2026 19:50:30 -0400 (EDT)
+	id E9BE46B008A; Tue, 16 Jun 2026 21:10:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C370A6B00A7
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 19:50:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 267C51C128A
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:50:30 +0000 (UTC)
-X-FDA: 84887422620.28.CC8F572
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 23EC41C0007
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:50:27 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5gHiOFJ;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781653828;
-	b=Znb7HKfiLSklZVouko7kdXooeMMtbcE+MXpPHTpgwnezmoCr2Qudgc79oZgjVArW6AoYbo
-	536qZhcjosqcZqkhySlMbp1CWuwilvz19k+PG2G9TmHsAkKtyrD8sjxeAfRYjEGcUBINrd
-	gaEsliZKKmfu4/D1Svei+5DyKCvB35w=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j5gHiOFJ;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781653828;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A6D906B0005
+	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 21:10:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 111738CFAA
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:10:50 +0000 (UTC)
+X-FDA: 84887625060.05.E0B359F
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 19CB11C0003
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:10:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TfL9Ioh9;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781658648;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
-	b=20Yvwlbd3qkMlZkSqNqSdZSvDQYm9FtarmLdbkxBZ4itCiDKKAiTs56igtVk4uILeF1q9/
-	yv9dlhvmFSbnNHgPQTYLcR7m7RQhJDO1RACFHgGR5g2LD+Eb0ce72aTag6VKyvrc/AHNo7
-	Tk5qq6ReL3ChzLT6re5JFtQMdeyhsVI=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-692491fec0bso8742909a12.2
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 16:50:27 -0700 (PDT)
+	bh=g8vTRaR/pA7ZwYritB+PT1OlFjaCid8Lr3IAk6dJInE=;
+	b=n9d6MtpnRG3hNkVqyT8XhF9HjbP0uuJILeGyeyC7IfwgFE0f+FmgmpSk6UuI/EckKJDIgQ
+	QzbAXdapLNZOe89K9mJcmN5StStnWE9AaP5E5IHII8n682vItlF4oo3uo9QQmJhJZeYiJy
+	Eu8l5FtMwXdzX4hxxzY3EY3zzzjawNM=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781658648;
+	b=py6NYImKIOqWoY12LLLW2c9S18GXeZp6nMxy5GkWfNJ6tkgRxaPSaVoRHxv/KMURMCsNWF
+	gSI7g82xPjEPXDIZf1CsBjkjdJmEr96BzxXwLLEvf7j89AzyAPrjvUAfc1mB82kT6UbFc7
+	XmVchYUr5pNv/kqUWlSgpGmyWOdYtpk=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TfL9Ioh9;
+	spf=pass (imf20.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51765331535so75541cf.1
+        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 18:10:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781658647; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YEaPi+Wb4drIUOggR0w5M6h5Cyx82oSQDwIIkbnYtxVybFkcQ7+YrV0IAXCaBUvqeP
+         mKkJfV39RBNH5lG53V8vh8VpMrR7QL7xUywJUqrQCKC4ZaZaDq15vdPwNodPV3XGoudP
+         WrzdOTv1ubND0TOLxRR3KmjYiPPMIw5dFLFaWfURanEzFzIEA+jkJA2A3LS+/WuI1aoP
+         eVLiuOLeN32lnA7zjSzEu4TWdt0cfqf4m5tSbwb1UKnZga3CKup6Z5blDa/+CyGPEtPo
+         h2FoXfBERGpubAZe0SZgAPpTEqe3CLjaEb6hIcWPfvh2pz524UXAMFqZ2Y4o3D2UA+J1
+         IcuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g8vTRaR/pA7ZwYritB+PT1OlFjaCid8Lr3IAk6dJInE=;
+        fh=RoYIppHIl9jve0nCaHgO1DHZ1toGC9v4UfTMcWbx2js=;
+        b=OHb1IuZ4ipoJ9taj7aomtXDlIgwISz1FJF8A0aF27wbkzHMgdD35u6XG+rHiyMl/85
+         wZcuLWLkiz9wH04+kWicl3at3J6se9VI7EzrwFht4r+QaABOe++Eb3wCKKwn0iQxRedC
+         aAlj/+OUSDGRWhmMMIVI4o+bAfiBCswCZbWuCuvgzL+NJa0BNtVFOH9tont3OLeQAsIn
+         NeNN3AVN8Yvy5R0ZNqO3wdtWJmXjk6RTuDq49D7OuF9ijgouLMaXNmGbgZwJA7kFaIQc
+         kWIBEP+A8ww/K68t4Db42scklqlEsCeIiIuaL0D1YphxXiwxpHgFJUlfz/V4HGgZS8Jv
+         iZfw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781653826; x=1782258626; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1781658647; x=1782263447; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
-        b=j5gHiOFJ4fBMO3O5v6UfY2SW0kBKooiUb8yiNQ7B0X4DZdmmQYE5adRD5/S/VL0wFi
-         iiBKYRwttVfUnfrUNq6LG37QaKPdXPyLFmVDttcz5GgCQ1wXTswSBIkd7ZF7Oi77joPL
-         xRAZoEyYL332Q1f0NfpbBhcAJNz5jVJJ9pHG1mjlQyhPFDAXYQ5yiNLw5NAyUdHMCmi8
-         oNY5O1uRAtQS7rpMarWQgPn1QyXKszHq6x18WQ24EZgNuGC3e8wBt1myhgSs9lqNbpc5
-         H0lmV2QdyS0O12Jd3IoGmlxjpo7YcAT3n6XlYOVMhY350Wkjmhe7Cru625swCvfFBN/I
-         PujQ==
+        bh=g8vTRaR/pA7ZwYritB+PT1OlFjaCid8Lr3IAk6dJInE=;
+        b=TfL9Ioh9lMYRAoD+Iw3qnIBJnQROVXWRqzj+5LY5uUshsKdq/uDoOhBCZdWwoZD9bQ
+         m/4RTMLrZlHQmqTAm5J4D9FHUtaKtWEsQtpPKunMnFuT+BPpXwVSgIYiZ8MBhFmCNgm4
+         flSRxwvVN/Ia3vqLoC/7oMX2fIUIIAZ5cDEp+ltGLxhuxC7dE3UdDbpCfU/YqCllUWpN
+         FEiMeEy7KYvFXAoULzPghrrm4XqfBvd/YOcWgvT9rlSBdpi7wui8kIF94uETDX1z6XgY
+         2KpThgx6miez21/Mr4yP1NrHTjUs6nZATGzuWBIKHkdUxyufttrLyj1i9Tklv7sVn6za
+         p73Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781653826; x=1782258626;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XYXAdHjBb50GzCmVXSvykxewhsYbV/+YVuzJ3H00HQU=;
-        b=T7XaxGe/zY43qv3mxT5/VF0ipRyHnc7BQwFyHuHmJjCljTyBTx7hVVPjvd4p8riiKd
-         e0n3KPJpg0KI2q7vbWTMsOsJVMXriLN+rIsvLQChfKu2KKpTzzCIqrHzHSJDUF5BbhrE
-         PIwJt+0CdBlWF7vpFYKnzcx7+DcL7PIHmls3qjLSsc8OnfNmaG7MbZ50fhfysVkByAVH
-         CATgszJx0CJJvfCYhtDHasJ5M3PK4wDS2ryO6qGXoBhWFLFeW10L/Ls9nmydMlue9rqQ
-         hMxFowKPJS+hUYosIu1gLacIbR4fYePIktdxy8KMF8zh6fwgQTRidQnkG/nSbDD3PdM4
-         M/+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/1Qos2BVmqv8Q9RNf0G7/aDS+yFe8kXk6G1LHXqno3fLFr97eAFNPNgOVg/OgqZLY7o2PEzu31lw==@kvack.org
-X-Gm-Message-State: AOJu0YzM2nDmvNoySnHuXDZHQPXhBJVV6/pSzr1lbN+VbbI5mgkgtrTF
-	vZFew4/k9uj05S6LwnMJ4W9DdRKXcpnijpTCRdd3/cDmXN7KHzswjr0q
-X-Gm-Gg: Acq92OH0oVX0RDRW2gLoqeOCkPa/RpOEZHoLzarhDiLxeEU71aEMy0QoCBDXjWiZSRL
-	cGLTfeJrj7fLdKJC4zfBPaVkWK8w81F9Ekz5o/InxYkhEY4JI9RVDodqq8+ltNHX9MY3V3GRGjv
-	8gMwK0PT5iSsZmE9os7pPL5KLaYi7hg/LmM8yffHFt1E8bDE1KLYDYB1arJlI24VKNUPAxF6fhr
-	q4IkYSoa96+IPDCcfaZDNEMALP8Hjl6vJK1LWJB8JJ3P9Fy4LJ0BD+wkW4WxkvZ9++AOd9OQBjR
-	hix6oTqCgWhde7F0sOuvHCP66LAvlKotaaNvaIVSl9jaNmw/DP9Z0l8bMPDc/IowTu5fmB1UlSL
-	pfXW89UiUZjGrbFa8pdwUab3uwLPjC11psB5sY2T9REz4gnMHVsWAoPBZenB7MAgDoyqsWbijL9
-	W4jZs+19ewx6+YCWZoCms6Iw==
-X-Received: by 2002:a17:907:7387:b0:bec:2d7f:fe03 with SMTP id a640c23a62f3a-c05d215ac07mr40439766b.17.1781653826221;
-        Tue, 16 Jun 2026 16:50:26 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb7b6d9b7sm715657866b.41.2026.06.16.16.50.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 16 Jun 2026 16:50:24 -0700 (PDT)
-Date: Tue, 16 Jun 2026 23:50:22 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: richard.weiyang@gmail.com, akpm@linux-foundation.org, david@kernel.org,
-	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
-	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260616235022.iesy2jeb2p7zof2l@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
- <20260616123001.6501-1-lance.yang@linux.dev>
+        d=1e100.net; s=20251104; t=1781658647; x=1782263447;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g8vTRaR/pA7ZwYritB+PT1OlFjaCid8Lr3IAk6dJInE=;
+        b=SRa/t2u6UI87W2vDfoo4NLgOJ/9c6pH+vqOZk5QMby4799sSFLn009XqJWceFcN0ey
+         VPIQIr33CJb2uv5vUZtw2wz9bLrzU1tliQO8S7afvGqoRQFexoews8yI08LZjuuu4kNy
+         mSwdYYHXqDAghMyyc98/q60MIWuHycoOkCrudqnhOs5kTdCAEIOcsqlKqoa9zZZL0krM
+         tP3ddO4+68n/bHJMXQx+bnbqwt35Jw2iKjclRy3ivoE7g7O+N7a94tdEjYaIb2fysfvi
+         r983nRbvQC3D3zkIjoX/Fx1AiSGk2AElOZb1bsraRZoP7QJwzt4veFXbd9Ts+PqLST+y
+         CkiA==
+X-Forwarded-Encrypted: i=1; AFNElJ825iDmk4IQoIiuDkz9JW3UDHcGuJpO0EU/E/JnWLphDeNxqE0lBW2KKNaVTY3DUjaGwZPAjGsBsg==@kvack.org
+X-Gm-Message-State: AOJu0YxKBGg8KbhUYl2JhjV1+xRM7RH7prYQucY4iD8iGBMivorC6Edd
+	NWpJcdGKYn3g/Gd+U/09LW2aq/dCLTDa9eA2+Ckvud/XEaEKsh/BDZkNIahTiQ9khNiUvK3JgPu
+	0B4V64pM9XaIp0M9uSezdgGJ7MOVZnG2rpwUYqGNQ
+X-Gm-Gg: Acq92OH9f81new3a7tXzvYwA3bVwk5ZJHsibW3hilsOL+sl6nWsVrTCuR0YIhSpTDLD
+	OAiOoZxBCROdAcRoojsol8QQKrny/c80IfSyOcfgo/SHOe/faMpV7eAZup8oZ1yL230nbpya77P
+	ri/B4JdWXXcDOj+jRYE+5NDPnV0w+U6zf6mBvJkXohxUo1OFIT8DhV4lBuZ4s/MoKOT7A+88tRZ
+	TLh9roqAg6NoEUFsX+TdpFDrE9xdg8F8z6gw5y/5lcQx5iSRpEcCezsYPFwZm0mjhhhhKWo19Zx
+	8k5TLQ==
+X-Received: by 2002:a05:622a:2587:b0:516:9871:9a37 with SMTP id
+ d75a77b69052e-519ad7f9dc0mr2778371cf.3.1781658646471; Tue, 16 Jun 2026
+ 18:10:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616123001.6501-1-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 23EC41C0007
-X-Stat-Signature: dec5t95ehxjhp71ecmi8ebqucko1jec9
-X-Rspamd-Server: rspam03
+References: <20260616190300.1509639-1-riel@surriel.com>
+In-Reply-To: <20260616190300.1509639-1-riel@surriel.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 16 Jun 2026 18:10:35 -0700
+X-Gm-Features: AVVi8Cf0iwHJ8U5Flz_etgagn77f-YLs-fCLVAm7q1DizBt07IX8qqwkZnN-d7Q
+Message-ID: <CAJuCfpEKgiQDGXgCKrqnn7Wk5YrT8nr4-H88PVeEruSKjtY_CQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm: __access_remote_vm with per-VMA lock
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1781653827-882538
-X-HE-Meta: U2FsdGVkX1+lVDd7o7zwWtl0L3WEcNsBlYngJ1b3J6ynrCoH3CGIcE+AByaJ+P5Y3KT7l1AbAtLyxLVl5C64LrAKfz5lt/ufu9DMeLXXDSR0GB+EbXpYBH3UgTj79hNJ9wtcPpNPmgbCkeK4j8I7UYp1zquSzbouh0ensOESjb1+QTS5Ctmoms6SvPNdlc+h3YR4Jd8bES9i8OuUscq073k4oPpzMGD5Ecruqqi+SdVp9xhHqu77CnpRUhCCNgfXVvcpzt1lvCL721fsLPLH/M9Oe8umE6h01UjFv4JLO+PVMKIusNb94kY9r7WVMwpCOu7p6O9fPpjA8owL3+4T5rS8mIFfYFyMCb42AIl27DxYSux73v0krPrQi58kZ6fsNrKq8VfCGTYX3iThoUNaHmdysrZrSfzNPJaz4l0UP+xcbAWbStx/jDD4VEor+L9P4zsO6pa1a9MbqTDfhNPx9ilmB4/c7tkNvAoDcdwBiGLd8bqOlcjVI2Ol67F4cmZ9Qmk8oTVGibI9JI7jkM2UQ2ChQGxeq+tCJoV/KwY9kOf/Wgsq0bHp5Hzb0PlirQIgDxANlbzNj4geOHl+voLcXMXyZMqXd+Y1f/dWKvP5CudYuU984oD27y3DfA3J2yUq6crKfKFNA85AZlAcetAoCQcWql5odAwzLpkvZDmCI49i2jsfqoxNeoLub2TsJSt3C5dpw+noABdGcfUOiZKZ+yRcX+4AHk4Z11bCvwKSY1Xc+nvE+PGFNSl2QUMoBO6ALJbCeIar6MDDf12OlOl/2e5xpvxHGSk+MPVmAvtbfMOluSYtTDskOeYfdbrtmhilkDxPDBYR9IRFUGd0+j82DI+wo/hlpos+K7KfG2dqe9aIfqM5K3eKVU/MHRDJPlW/xB84hEFC7TUM5wmx1BY3ArmnJJZtbspj321dd78Wv3ks5yvFiHMjnrRy8TYKFCoMGlqEvL74GmjrIZ3+NRm
- qD9deAZk
- xyvsz3ouT00oazRk2TBx8dfjkt+7uNe1tnwRGovib2HNIEVpCzQrW1MvrkXSeo3R/3dDzOb0gl7i13lPqIwwZJkPDghWT6DKSBo4twMwHa0WdJ/51LJuqDSKjYq/FCnjIx/ja87FttWCSFKbZNQbvKe30gHVpIVgzAQfbnWZw6iw6AxuUr4c6LrOgEpCMjgbJ3Wzt6zBN1Bx4IqOuTcmq1VzYbGMMaxDelQzuaU/4ks8s04sMY9qJtOqYpNH4NcKYr3EGXvPX1QCX4x7d9PziQgG43o4Am9j7BsNePISKKMvBovmtNpFPkDaJTKzzQLyDloP2HwGqzcG9gUIt5G3z0wB+8cqPntRKWE6GJPkJsfu8uwffWJT50YeXFBWvkWo3L7PDmu3hKhO9VdS8BNiORDERdE1BfP5nx38SNyCbwkOVCSRtzSMB9gRpgfKLTUpoJC3nmGe5N0c2yk29jkvIUdFtJhyZwRXhEnAfYhgTXJ9oRyV26xkyqsWfSebnWOpTDizeV4jk2zyj788YYvsrMA7wJuXFzYF5DhBonemX8nc/fOEcXlmDr4d3WBEghIWtB/qRkhiKJR5EXLQv/h5QP5bCcN/LTRXURFFga8GiZwB+w9sFeit2x/fTw15d+5OYZmPn5dZVc2HzLLZfhIc7NrVjyiZrWsr+kLGMiDPtLfIE0EhB5HiW/kSihmu54NtK8W5xdwr3KgEZMFLRdRgUgtEHl1Wq8CJd0pId
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 19CB11C0003
+X-Stat-Signature: z8pngwp6wt3zdpr3aue7gmffb6wp9k4t
+X-HE-Tag: 1781658647-495705
+X-HE-Meta: U2FsdGVkX1+BlAixgcW5ZMsBXZca4WWrRZsx4xFo1ZQwR4UZWBkfsarmFfmOLF15M9AtBhHOMtF4mFL49onZCL2ivdYOwi9R8cyLkHs6qs13t49chLS6VJ2OXGKj0ESFfa1oHcHKcKKsSb+KNgxEe0Nu8JRfWlIc7bMY6e7IJzVhNCK/TBZEO/tklaotBkJr5dETvxMZK7nYXaWI1bfl9G/m/1FuaJynd0LpR5UUk8nXi0JiUWezlDX2rhB1IEUJnjQTzsNfBvsdxtqcSlk6f003WF1eIfmEm2Wx5cpndlf23XBMtrKsZAqBlIOIyDkQUy647tftFXHmBc1HScd3fA51E+b4NYF9T9EaQg9TScmyzxA460VMTbrv8mPwZITZcWvOwfjXsD8kKNLKn2vQqwMzdeunuxICIj2XrYo4eBzpqW//zzR1MmUlBhdzuCXncRESZDrlTuKhGBB/oW+6mJxCNoNeayfGa0r65/7wtegQNw31adYWFjK33kFNM9dXWhEq9O6Ff5vOZSIy2YviROPKrfB/dqeAB4ueZVQ4cqcHmCYpY40l4cef+oq/gGo45wVfbzx6WOQDCpVgb00ffbzVgnEk2GcrBb/8MOLQYc9DxgJ2b5Rr/9lwfaHrufk1oosa10zeW/rcNcDBSJ2qkmTxwjbZnZgeYmS190jkiTRwngSmDc4wjYJaxJSGOHcVnPfjyZO8Igb/jgpfUwSdLBBQ4cjZre0mXGs8gtaLL6Ur4QzncX3qlPtHDuBhjpDYIWDveBxDCL8D0UI2+lox3GHeZ6lcVK7AQNcQXvCHrVQmRGOt5bNQ6a8xdnKLfLdARSclQBraaxMHoHvCsU6+8iw7XPDqqghg8QNPK8xfC+QiuN5qSbXrEWYygvUOtIcFRbYfPhMIUVrmdHq9d52WfG0FKRsggSrPZ12d30AFIhUHhqZs+B46VQHKqVhovUKo0JN8XkUspXVKKSYudmS
+ bQigP7dM
+ 2xR152u9XtSXupKZ+5bt37tiQQTyoWys8JaPa+0wbMuzx2iCxDps2HA4bJEFNRwuAngenWj4gtLLpWyV+pvs8oB8cA3J3dywsLAId+SLxtM2pNf7iGtUs64GRilnLgGR/XRPQGzIoKGokH2h6OD9mZ6/1VKxDG/jo6j12tLOQ197VcT2rDRiqniRhwuGAFnLJ8itmoU96sevXgd5U40etlKsEyyT0Ix+KBt96oXXj46jxhfX13Fn+0Unhni8A4LvVd5zCySmP5ETr9XBzAhw6sr0N/2yeFZDb/N18s1zkNlWm6rvy/FVC9PWNNlsfu+RJmjPIW4n17/IwdLflCasV/gItx82Y4XDWLORVt5bu0GQsQGeu3BT26393x9ob2brv5+4EliJn/GLZRUvb7+wbx9JdJw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,106 +141,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
+On Tue, Jun 16, 2026 at 12:04=E2=80=AFPM Rik van Riel <riel@surriel.com> wr=
+ote:
 >
->On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->[...]
->>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>index 2ccbabfb2cc1..21635fab209c 100644
->>--- a/mm/page_vma_mapped.c
->>+++ b/mm/page_vma_mapped.c
->>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> 		 */
->> 		pmde = pmdp_get_lockless(pvmw->pmd);
->> 
->>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>-			pmde = *pvmw->pmd;
->>-			if (!pmd_present(pmde)) {
->>-				softleaf_t entry;
->>-
->>-				if (!thp_migration_supported() ||
->>-				    !(pvmw->flags & PVMW_MIGRATION))
->>-					return not_found(pvmw);
->>-				entry = softleaf_from_pmd(pmde);
->>-
->>-				if (!softleaf_is_migration(entry) ||
->>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>-					return not_found(pvmw);
->>-				return true;
->>-			}
->>-			if (likely(pmd_trans_huge(pmde))) {
->>-				if (pvmw->flags & PVMW_MIGRATION)
->>-					return not_found(pvmw);
->>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->>-					return not_found(pvmw);
->>-				return true;
->>-			}
->>-			/* THP pmd was split under us: handle on pte level */
->>-			spin_unlock(pvmw->ptl);
->>-			pvmw->ptl = NULL;
->>-		} else if (!pmd_present(pmde)) {
->>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>-
->>-			if (softleaf_is_device_private(entry)) {
->>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>-				return true;
->>-			}
->>+		if (pmd_present(pmde)) {
->>+			if (!pmd_leaf(pmde))
->>+				goto pte_table;
->>+			if (pvmw->flags & PVMW_MIGRATION)
->>+				return not_found(pvmw);
->>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->>+				return not_found(pvmw);
->>+		} else if (pmd_is_migration_entry(pmde)) {
->>+			softleaf_t entry = softleaf_from_pmd(pmde);
->>+
->>+			if (!(pvmw->flags & PVMW_MIGRATION))
->>+				return not_found(pvmw);
+> Sometimes processes can get stuck with the mmap_lock held for
+> a long time. This slows down, and can even prevent system monitoring
+> tools from assessing and logging the situation, because they themselves
+> end up getting stuck on the mmap_lock.
 >
->Looked at history a bit, and I wonder if this changed something old
->here ...
+> However, with the introduction of per-VMA locks, we can improve the
+> reliability of system monitoring, and generally speed up __access_remote_=
+vm
+> under mmap_loc contention, by adding a fast path that does not require
+> the process-wide mmap_lock.
 >
->Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->including not_found() cases. So lockless PMD read was just a filter ...
+> This fast path is only compiled in and used when it is safe to do so,
+> meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
+> is not hugetlbfs, iomap, pfnmap, etc...
 >
->With this fix, true case gets final pmd_same() check, but this
->not_found() case happens before taking PTL.
+> The code seems to work, but could still use some more cleaning up
+> and benchmarking.
+
+Thanks for the patchset Rik!
+Previously when I looked into using per-VMA locks in
+access_remote_vm(), the biggest hurdle was get_user_pages_remote(),
+which required mmap_lock. Your implementation avoids altogether and
+keeps the code much simpler than what I expected. I very much support
+this approach and will start reviewing in more details.
+One question: CONFIG_MMU_GATHER_RCU_TABLE_FREE still has this comment
+about "Semi RCU freeing of the page directories." [1]. Does that
+mechanism being "semi RCU safe" pose an issue here? I'll need to
+refresh my memory on why it's only semi-RCU safe but you might have
+the answer ready.
+
+[1] https://elixir.bootlin.com/linux/v7.1/source/mm/mmu_gather.c#L236
+
+Thanks,
+Suren.
+
 >
->So a !PVMW_MIGRATION walker could race with someone, e.g.
->remove_migration_pmd(): we make the not_found() decision from old PMD
->value that still says "migration", while real *pvmw->pmd may already be
->present again. We return without ever taking PTL :)
 >
-
-Hi, Lance
-
-Thanks for take a look.
-
-I am trying to understand the scenario you mentioned. Let's say A migrate a
-pmd and B want to unmap the pmd.
-
-            A                                        B
-
-  try to migrate a pmd
-  pmd is set to migration entry
-                                           unmap the pmd ...
-  managed to finish migration
-                                           ...still see migration entry,
-                                           so skipped and unmap fail
-
-Would this be a timing case? Even B grab the PTL, it still could see migration
-entry if B visit pmd before A finish migration.
-
-Maybe I miss something, look forward your insight.
-
->Not sure about practical fallout, but should these PMD-level not_found()
->cases also take PTL and restart if PMD changed?
->
-
--- 
-Wei Yang
-Help you, Help me
 
