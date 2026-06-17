@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D60CD98F2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDD3CD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 19:00:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99AF16B0088; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
+	id 0C0666B0005; Wed, 17 Jun 2026 15:00:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E0C6B008C; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
+	id 0719D6B0088; Wed, 17 Jun 2026 15:00:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 834196B0092; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
+	id ECC746B008C; Wed, 17 Jun 2026 15:00:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C84D6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDA9214056C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:42 +0000 (UTC)
-X-FDA: 84890313564.18.C43C018
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C77786B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:00:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DCED1664DE
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 19:00:49 +0000 (UTC)
+X-FDA: 84890321418.02.88329EA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 397C0C0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXryMjMk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 73EC2160023
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 19:00:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NlGZSzs/";
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781722661;
+	s=arc-20220608; t=1781722847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MuHmxF3Q3Im7lyehrUggcluXuhikWRgzOx5fgePtduM=;
-	b=ihf1aJL7m7dDG0kV+oCP3FP1KkRHA6vWsMlVtN+Csm4fAiQzkGry2JHVmSP1j8v0PII9dn
-	iI0+AQrISu5BKgkWM8zTAwRM1v1hhEoXV4zH3ZhrnTZn7e5URctTf6+QcZi5DD7UI4pUP8
-	F4Vw2OUbRBA7nD4V/RO75ScMSPMtwhQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXryMjMk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=ztkkIPmg9U+YA/yLFAokmrecB+uGWFUWKvG1CC+VtcQ=;
+	b=cqkXVnirTidunfplSf+josducWOwMwW0BrhVsEH5BJbmi/M6c9pA4X8o5gpVmqtYd5CqcD
+	mF4nbTPLGqiK4+HQuQGHU/6NjtO2V7BImpTpRr+gpsDt5Pf3niblzkDZ5YV5FD7varkfQd
+	jSJMH3oU8WXpeW1txql51guRZakRyNc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781722661;
-	b=bprYzkMBO2uqzUJU1ajO2EICyRBlxcRHLs6X7IhVgBnQHYfA37rKPMw4u0aJ+U/skpEA6z
-	O1ETMljBkIrAk1PEaen6dSupzMUtqGhHNJI8iFZRc4/pp+E7ri9+KMUKNG5Q9TvOss3Kkx
-	vJbXA8rgJesmsihvPCRU/aM6KJfWxB0=
+	t=1781722847;
+	b=Lt1lNbZL717gmm4Jeg+j7GtliiWUc4L8bu6iPjpzkY05tg0qRqHke2oMW6mpePELpAOWdQ
+	dzaiPZyiyUZ/Z3gEfacwpxSb1sJU9WBEdQn5QB3GNnUGM8RxFELJKTsZvA8Q0uAnHeT113
+	D31rig0Qp8nyV1vt2mA7BYil5lQ/4Vc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NlGZSzs/";
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD4A460052;
-	Wed, 17 Jun 2026 18:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7891F00A3A;
-	Wed, 17 Jun 2026 18:57:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EF3A16001D;
+	Wed, 17 Jun 2026 19:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A901F000E9;
+	Wed, 17 Jun 2026 19:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781722660;
-	bh=MuHmxF3Q3Im7lyehrUggcluXuhikWRgzOx5fgePtduM=;
+	s=k20260515; t=1781722846;
+	bh=ztkkIPmg9U+YA/yLFAokmrecB+uGWFUWKvG1CC+VtcQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fXryMjMk/Xq0WcxFi0hr2UMx4uUqPl2Mf+U9u1XOSgK97gCt9F2Qm2zCSpchld2X1
-	 vfC2fdVvpzjCo3Z9nE+pNnZI9XoAGHR5qfhtC4Q2v4OBXjWdQ8gaqUoL9eCDuxcXER
-	 xedFJeKWCkOW7+5sRRdytlXq/QqYQhGgJqFmrYNyT0nllTv/ZUNuiDlzC2prcNqvb/
-	 8dz/HpV3EQ9T90n+zh5IiZ8qKomMPZAeeA3UGDdcVlp+Ywim0K6W0R150Qcj3fGN1q
-	 Ej1mYOlwedKVnNOTm2EjbjCH4U3hB27BjqzilFy1KDmqWYsrIOR9dZAuJzC25K8GFG
-	 o3Ys2n/hyo46Q==
-Date: Wed, 17 Jun 2026 21:57:34 +0300
+	b=NlGZSzs/gjXRpoS8cRAEp1qvHOvKXm57Xwd+WjSh1mksdHHhasQJmBYSpkHquvZxI
+	 iBczxb6BlR85sfINTRuz3WqEo4Xrfx+zTFBO+lsV2+aHxvDsb9X1NDWVZ/O6Ha2QX4
+	 YF7JdeVoO4fOK9uGEO+rtzsGc3kIg78Tqk2xZmTvFJu9xySYA6BHC8D42OdHeYQbYC
+	 wBoZM4NECr8iTylm62lwf/QUY793pls70cfJPaVLdci14RLQy4alTmOhWkxSCkU2Ck
+	 AvLFWWnwkkwz3uJTET1QKF0Mo/wlkZAyOMeMqub+oNkn98sPzhYO75M3dv8ZJkNfMo
+	 q1nIqyLI2sYDw==
+Date: Wed, 17 Jun 2026 22:00:39 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Samiullah Khawaja <skhawaja@google.com>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Alexander Graf <graf@amazon.com>,
-	David Matlack <dmatlack@google.com>,
+	David Matlack <dmatlack@google.com>, tarunsahu@google.com,
 	open list <linux-kernel@vger.kernel.org>,
 	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,
 	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 0/3] kho: Add support for kunit mocking KHO restore API
-Message-ID: <ajLuHq-FJxrIzr51@kernel.org>
-References: <20260521193202.746810-1-skhawaja@google.com>
- <ah0t9Ss_S-5iOM59@kernel.org>
- <ajGOIOqBY1pazq5g@google.com>
+Subject: Re: [PATCH 0/1] liveupdate: Add internal APIs for file preservation
+Message-ID: <ajLu1-CnJfgD5Ch2@kernel.org>
+References: <20260613012521.835490-1-skhawaja@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ajGOIOqBY1pazq5g@google.com>
+In-Reply-To: <20260613012521.835490-1-skhawaja@google.com>
+X-Rspamd-Queue-Id: 73EC2160023
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 397C0C0005
-X-Stat-Signature: 3kbsuqzxw8k3ykiwpq4sg7robyj95a4m
-X-HE-Tag: 1781722661-791397
-X-HE-Meta: U2FsdGVkX18ZvdYAsu9V7ZXJlqtQdBLTSPGO/ZJ0vy6nMXZ5NPhB2JipbuEk71zcPJg3SYSwrr5N1prpEYNU4aK5OjYeOCsrq2vPJnypwClUN2NsHTfOF2n6pfKabn9uaTOSk3YOplvpG8NkF4ZUywZKHZRqRVDTkJR1fmAqxR4hJ11aqcPI5pWJNGZYaxfJTqo5TE+4TZD8PqYMvpbGmgW9IAWKHA3mtbKtPXKYPm6S8xCSg8+Rp+v9ZqmoQ+MErPWIf4+IFaFsiqIoSFfoBUY/tx90pE3Kuk+M4HDgX5v99C4O7JRHM++zl4emB/9jo5FWtw/vpGGeAmmYsqVNE+R+6uiidD0jpM8Xpe22vPVw48RqKQntCNtPfrijeYO46cQeCeRWrpMxJMm/PpFcJPTqAhLrNnJ96lV7CRv5IuL4MUO2Ym+orduRwhZdBBHFGmwXGyLe+tSPQhhzsgNWu5+ayFiz98oYhpMtFoI4TllJtnhEGz3GcO2K8NQYKCbjaxtL2QNoM0GCk4MjXsnsBc2QWyGKovWVKLf7nEmEODVEoa/0kGIcZPbTNR+lujyhEc2AHalOaQUrdegUfwpMVoGavvnvwQQHbfztMItv22pyueps6W3aT3bs0lUCNgn+/lcvsidEEi4LgfoLsBRDpFxwXDQveqUpg6azS8wGla2NOSKT+qL/Ke9VMOegypR7Qn+Y+7dNpINMdmhucCCLFhAQhLzAZ2b7E9Q6ZMPraLOTTKyjGRi0BDmb+vskedH6sUF7Abo/R68FFpX+eEN1a3QTYouMiXkkqVIQaGSiWUArsx0TY9Xn78nVtxGlIRA6MKXiJqxPVkHfM9Aj4RWMRp5B7gU+6NdnQvPIsSZJPlTVg3v/VghaLcIvChUB4TZwXA8FWDDDSV45drNcsMAjhHIftjffkmcuYtuIniSvPIWOei3ox5zmiCCuIi97dBKuA1iqvvQik5qmHzqK+AX
- s7tSa17f
- 3QS2Z/e/TRMs6yxN4xCfyoeoqxYHq4xWeJvEUAvFkHXrF60G8ylW6vMFV6uaoxuatTX9OMX3YUSjJGzPOvzWpf3SGnZQorkAEAIwlrc1eLS5RJRoOTnCy/3qJsSkATUDxsxLziVuiVhKUoGj8MhuEPHwzc7Rl++VKzxhQusHRYFYOW20zt6PaILW0iN/3vqO5MqjPb6u7e4jO5aa2K4SCLrMssaRyRaUT815+didaXchJzmYp6+tlLhxVD/E1NeYH3DTi
+X-Stat-Signature: n41h38y67k4apjf6u58cttu87oo6wze9
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781722847-541719
+X-HE-Meta: U2FsdGVkX197j+X1bi9ux0gb87ew+a0u6DTwuMaNJRthoWQW5iP2sx285+pcfr9X/P9dDQAtH5FPHoke+QSf6fMXy0QoioKHKNULFjGoCRM0nxQwLkz4JPhuTafmTHIYcnzA0MHGIAofKoq8JNki7tPyVSd+xuwWWJLxqdW03Ms7WCC3/3n1jQBm0BaebBYfO2nxPftTDXij4RFcVDWPq/Cat8riNRBMfkKlBn+q+JEPzdSEoa0y2L2Az0knrg9lSnMXL/11zhDpuF3HjcQdNOQURfA88eqHmo6TRrgQw4kdG7QG/3Z+0TftWidrNibLWaXxYcN4CQrx2d4rWYpH0y1X8sFB8B7L9DLq+6y8HTo3FVOHC4hUFygzutMimJ/wd7ziDT2JjQfiViYwZ8SqbpTKZC3Ig7/606q0ovI7Q16QkTFE+KtLCTdxyGUbZb61a8rnjkNGxZo578LhhZsNnE4IysbgE01WggsEBWyFuGqOINGR2kSMoZdWOOIFbLbGxcQn0ToupTduxxLiUWouhTo4y7r6m0CEQkruMbmMZRddgiJLqXrQ21+epRBR4HLh1mkpesOtu8HxZovaDDsz0uEpV2qmjtMdjiIr4vIp8b9l2UGuATTm19KIAQC6wQOpD0yTVDhLUe0jqhB5cXlkX3RnZ+gkcRMhaxrxElTu3EqBe0Z18YK7QOIJCZWsHOsrzIb18fIDzR2dm0c440cDpd+yeZd04OwyqOyIf5Slu4v1/MHe8YSLtaoDkNCtx08X/tUf/J4wVu2+V8O6tv2fiPs4xdj/+TkjcuDeLxoH1QGp++uRvB7OBvBVIbT/VEuKtx+TJW2T1yhg+qWggHbM3vX1A/BrCNfxTiph70sIP/BeH5/W5qeKs/hpB39YdB/vEcS3mSkEeo28tUClP1+4fpX2q3EvTBnwhfCgc+l25jc6KJBVDvS7Bb3CR9CztUguiiSiEP9QfwbcArDVR7O
+ b0j4ei2d
+ zrNhIV/wCN3pL2eLcDtGrUWskUzFnG2kbxZYzDuHVA9nBq5aWIUEU6k6hkbVoamMplEQ/39EPCKZWDxbBPkDqQ3nZaRunEsvv7C97ebCIZz42ywG+lIDm68XYdrmeEsyCxv4HLuNv6aCZ59kcujTac34W1HzdkLpfO2tgWjxZfdZFvgwrs7c2brT24jEeGCtfnD6vyZ292R8pkyHO18RW+snYGAmNTMpPQgUHebf5QG5QDSXF6i2E1SRSrmFETGaVy1P9s1TMruHy+iO2iDJFNlssuL0Y0Sa8IrIHQQuu9vkESGM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,57 +97,25 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi Sami,
 
-On Tue, Jun 16, 2026 at 07:15:03PM +0000, Samiullah Khawaja wrote:
-> On Mon, Jun 01, 2026 at 10:00:05AM +0300, Mike Rapoport wrote:
-> > Hi Samiullah,
-> > 
-> > On Thu, May 21, 2026 at 07:31:59PM +0000, Samiullah Khawaja wrote:
-> > > To write kunit tests for preservation and restoration of liveupdate
-> > > state in various subsystems without triggering the actual kexec, the KHO
-> > > restore API needs to be mocked by the test writer. The mocking is done
-> > > to allow testing of the individual components or functions in isolation.
-> > > 
-> > > The patch series adds the following to support kunit testing when using the KHO
-> > > API:
-> > > 
-> > > - Add static stub hooks to mock the KHO restore API so the restore path
-> > >   can be tested without triggering kexec.
-> > > - Add helper function that can be used by the test writer to check if
-> > >   memory is preserved in KHO tree.
-> > > 
-> > > Finally, it adds a KUnit test for the KHO API that verifies the allocation of
-> > > preserved memory, and the preservation/restoration of pages and folios.
-> > 
-> > I looked at the tests for preservation and apparently they don't add
-> > coverage beyond the existing KHO selftest. How hard and/or intrusive would
-> > be adding tests for example for error paths?
-> > 
-> > Do you have an example of a kunit test for another subsystem that would
-> > benefit from mocking of KHO APIs?
-> 
-> I think intrusive tests to get more coverage for KHO would probably not
-> use the stubs added in this series, as these are meant to mock the KHO
-> restore API itself.
-> 
-> My motivation was to allow downstream users of KHO to test their own
-> preservation logic (making sure their ABI doesn't have bugs). LUO or the
-> recently added KHO linked-block can probably be a start?
-> 
-> The KHO kunit test added here is just a minimum example of how to use the
-> stubs, which is why it doesn't provide much extra coverage.
-> 
-> I am perfectly happy to drop this patch for now. We can get this in
-> later when we have kunit tests for KHO users. WDYT?
+On Sat, Jun 13, 2026 at 01:25:19AM +0000, Samiullah Khawaja wrote:
+> Live update orchestrator file handlers depend on the preservation of
+> other files. To make sure that the dependency is preserved, the file
+> handlers needs to fetch the preservation token of the preserved
+> dependency. Similarly during restore, a file handler wants to fetch the
+> restored file of the dependency.
 
-I wouldn't want to merge this upstream before the actual users appear, but
-we can apply this to a branch in the liveupdate tree and keep it there so
-that subsystems that plan to use these stubs could base their work on that
-branch.
-
-Let's revisit this after -rc1 is out.
-
-> Thanks,
-> Sami
+This will have to wait until -rc1 is out.
+I'm thinking about taking it to a branch in the liveupdate tree and keeping
+there until a patchset that uses it, be it iommu or kvm matures.
+ 
+> There are two known usecases of this,
+> 
+> - VFIO-Cdev preservation requires the preservation of iommufd. This is
+>   required by the IOMMU preservation series:
+>   https://lore.kernel.org/all/20260427175633.1978233-1-skhawaja@google.com/
+> - guest_memfd preservation requires the preservation of kvmfd. This is
+>   required by the guest_memfd preservation series:
+>   https://lore.kernel.org/all/20ae20f9d1a198b289444ebb4c824314cbba1bcf.1780676742.git.tarunsahu@google.com/
 
 -- 
 Sincerely yours,
