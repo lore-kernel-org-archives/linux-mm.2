@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46912CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD22CD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19A136B0005; Wed, 17 Jun 2026 14:34:15 -0400 (EDT)
+	id D41256B0005; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14AE66B0088; Wed, 17 Jun 2026 14:34:15 -0400 (EDT)
+	id D182E6B0088; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05FE96B008C; Wed, 17 Jun 2026 14:34:14 -0400 (EDT)
+	id C07DC6B008C; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE6306B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:34:14 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E44CA054C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:34:14 +0000 (UTC)
-X-FDA: 84890254428.27.8D1B3E7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D9C0A10000E
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:34:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rLMLw3YE;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 56A116B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:40:37 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AB2B4053B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:40:36 +0000 (UTC)
+X-FDA: 84890270472.30.66175CF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 41F4FC000F;
+	Wed, 17 Jun 2026 18:40:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGEAs34F;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781721252;
+	s=arc-20220608; t=1781721634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k2GzHzkNl51kx/TX95UyoFQNPNRSdhNZlHgf3FbcUJc=;
-	b=JARNnj7qO23u2GVili78G5gOiqiG3x1rZ9e+cHitnCK7E1JzSRA72n1iZKTmf7fY3NjpB4
-	7tlXDD+Ij/ux4NnZ7EwUPUDb5S8GX25/GYgPocM8JVLlE/FT2n0exxDMJNJDK32XqZ32Bq
-	0jaerq5InU8QT9ywnrNQ/CCGrmP8INk=
+	bh=ldThSSQTB2CI5zmNiVNRBJEFd14r4QvroLDBqhcTeek=;
+	b=lHEYW3IL+SDFZysjQ/4bujnepc1BuNcuG5YMeu25PtTRrOlY42XlXYP1LI0hnp6GrUQBmP
+	3CWi6oZdqOdIvdk4xZmxX7PjlbKG91jwn/KyU5RoyBBTm4W4tmcl7XqgKzaXFoR5tOqdBi
+	pq65jx420CKLcvZ9M0J8ezWzpFwds1I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781721252;
-	b=T7OC1iTvWVtpTz+odq5CIVx4VsyWkkigx665Qwt3CXaERwf2/OUB4QJKF2oOdXeqlWS5Ur
-	knJbAEE9vLfKEo4LMtN3b1ddM8pUNzTF3v9R0t5usfyJcSjoGEN69VJQlmaH1PXWvIv810
-	bprTC4qKGCG3RkVzMkFSAMfZc7/Q3P0=
+	t=1781721634;
+	b=JVcQxKgLxC+EfFfsmS2IWJ0HfUJXB2J71NtZr1/+6K6AgoU5fpiuvV8s3B4h2K/MrUQpd/
+	bjpag6DMg6qEToKaRnagWVAe44Aic0fnMIihUD2Byj8kfc5FPR2f5+UDgAdOdJNf6onDH7
+	kz27nlDTworHc3c//SbQtsMFHwiunYc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=rLMLw3YE;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=k2GzHzkNl51kx/TX95UyoFQNPNRSdhNZlHgf3FbcUJc=; b=rLMLw3YEoEOEr4GC3HjqsVN3af
-	ogDDH3MXIW5LxCe18UNZxkZbGgFXjecx3HxK5Ce7kp75qLNsTleOWoIkQsuIcQxL0BshPFQfLIBfP
-	RQS6aJelEiko5Deu5BohD05WYoQyhnBegQGWhcc+FgEmGOOBAPgx+dsj1TtwFIm3LrHTYOdonbRPa
-	pon9W6r06R2BzJB4L6Euv3bMJZBkTGKQebWT/h+23YSJoxkVHil433iE4OuTE9ptbcld4/f3eUzys
-	raN3Ro3ag4Q7zuazH0AHrYBQpuN8lC39+9ZaCK1zTkeOkLbXZ7dCVZ0rk75B+ZAs0Rn8Os7y2Emhd
-	UWr2TBYQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZv5T-0000000D6IK-05Yq;
-	Wed, 17 Jun 2026 18:34:07 +0000
-Date: Wed, 17 Jun 2026 19:34:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	linux-kernel@vger.kernel.org,
-	Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <ajLontmFa1oRXeoK@casper.infradead.org>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PGEAs34F;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6044A40BBD;
+	Wed, 17 Jun 2026 18:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398011F000E9;
+	Wed, 17 Jun 2026 18:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781721633;
+	bh=ldThSSQTB2CI5zmNiVNRBJEFd14r4QvroLDBqhcTeek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PGEAs34F6BiEJMajWABVfRAt6apO6GdmemXHMH9ZaDCtfTlhEYqpEiVDB/HATlSB+
+	 5c8IZjhNSJbfvIKg3U/WcQ8QMFrETr1FwWAEiMnEo3zeh1Eu0mWa/S9jPYpERLx66T
+	 2BjXib8XHNbQc7T3GRgH4fqDla3faZEtb42/ywbV8Pbb6efs2PGh/vIfIJmL1bdHNM
+	 CViMGplX75QLZCOIlfNt9NbEG9KrbTjrWe/WC5MAibT4lN+1YOTGS59HzxKPT3ENFH
+	 pf7bxdmXswR3mZijG+ATccnjAev3cNuDR0uzCu0H9xumEJMiUdcPjwBYm8fm8JsOvm
+	 cdF0DYB088P2w==
+Date: Wed, 17 Jun 2026 21:40:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
+Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
+ on execmem cache clean
+Message-ID: <ajLqGZ7sfKsQaSf4@kernel.org>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-4-abarnas@google.com>
+ <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
+ <aiuyoy8Kmr9yU4GM@kernel.org>
+ <ajK6w3YTFpVaUl3v@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ajKtdCN0AlbmBnAj@x1.local>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ajK6w3YTFpVaUl3v@google.com>
+X-Rspamd-Queue-Id: 41F4FC000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9C0A10000E
-X-Stat-Signature: xn4cdzj46he3r3dhbsg5xcysek33y456
-X-HE-Tag: 1781721251-979806
-X-HE-Meta: U2FsdGVkX1+qpvXymdp1mHQlq+p9bkFmjGMQhzlQ6PSuDRFyAnVZQjoq1O6satWlVmSoFVr3CWY0Oyof4ABKwI0xb0xzmgvn+7rOSa7WmhYWoC9M5kBuGTgTSPmS2+KLGx6RxbAnK2JnKW0lYwtKZd8T4pP20Q/3OsaXdsJ2IXqezGj4Hv9jwiYqcX0+igAVLZlekHY7EgvPCz3l52+WtmsdZaDbvHtQPB9U6fa9iDvxPHfuBUVVdgu7H5Vm5NuBtEkXrHUmQ2ZxBVXOfMmNEKZuX12aWT1bsPEwqSKYy3lunuRYwH+vi81OTKMOqKpdZv5R4Aq4hBzUAhAzzAJM5VLGmbjm7C2Ak3SFFcv52mo/GcNucNhE7ahXiJMi0/6EYabb+OlDs0k6tCTOo1tzf4swoPsN3PvTQmK1703XE/9uS2LY9BpLgTN8VFmObHoZ+Sa8/ULeeMZRRWJdz8LtpL3yvSi7C/NttBtq3R9l9OueqYqE+9oVlb1oS8xD0kFWIovyyce6QqMsjQTYlstu6zLCBA6A0daY3cSavpAVd8GC/JpmyPwbRgQjys/oATIRdUmtOKId8pHx0I0cfiH2Qn/Ash2KWxQ2EdTeb3Mwk3CbWbrNRux3MR1IgwctX3e9iGB89oLVwMEBO+t5NjaWmwyWdXws2+geKRbulS2qUxH5krQFPrEnoHUWPYzDh77bhGexGX/ULNXOg6zHv5XORwMLNWNNpJkQKhgXf5ndDbQ/W/cKvQQ3Jb7lrSoU02/NRMZPJmF3PxXbDwxB+/Yc2NDEhe2zt2db83dkfnNoFaZBdU+6DfLDshKTsg8VCUg/CRquXPOpjXBzMjzyF6gu2uXUqyeP5S8T5l4XSmfQaT/OzbS82EuCZbpbKpFxjE9DKaAMRMOY9SHCQeo6IUIBfeKS1GEbbubo30B09Ot14Kejxsxfh/dSsmAJanIVc2t3f8Bquegp0fMyRr37DAu
- oi+V1+Rl
- K8K9DIcWox9VSTEimbAIWQNrcWXTf47zsDYVhQZYW/wfFH4d0auircKyXJx8VkP5wT1HQJ839vtYTj1EnqDLhjLGtbj/lq529tsM6Ea+78TmDL9X+ZVhB0BK/XqVeGrtw7595o4dVpa1abjwMg0vH5y/q35TRT/d2G+Vsqvz0gUTxmtd9NoxWAhY09n4jblp01fCtzuY918aFR3TMe76iDjy5mUtz0kMQVQwSKnc/G4n+VMOcpg40QXSqeaSZAps6/WZ+QXWj6tmSZ5mZKksGHvm93nDuaru773FU3o/MuwgWHQ4=
+X-Stat-Signature: 5afpyqzbjurgneysof4cahwrmszqzabd
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781721634-109819
+X-HE-Meta: U2FsdGVkX1/D5DtKC9uc/dsI5zacEXIqLn7on8YoZoPP9Ry62BXkwpmmfzM17TBSOSfOq+gx/1EAL4yj4BYP5ib5SmsP8D2MnvGaK5Hk0y0/EwlWwHThssbPe+xo7UrZoMo6aRRERptAycSUaQKw0gjpfLMHcPK2szAgOGh3EJl2LwEO0HZy7bCXfweFbmVExa2nm8M05UX6c3ZLxhQxWksZ8fTk4lr8fCcTqZodENil/r8tlZxI3kipWNV1pcFKAPpQ7NzxCYbw9qg1tfW8f0pH6YjjHZyBO/EC1PDf9t5oe89kCup7Wyr9cr37TFbHBPL8hZ90OMAM/iOkGMltSv2O30GMwTvsLZteq1nB4YPuDmf/2LArg2tdbKDT2wy5LCaxXJ7RifndssGrEAe7p/yPPBMhnfLlpfvXdCh8akVDT7W2YhDi1z5HrhypavXb7e3qBNTg8iFqMXCu6KlapHIrckWLosfOT+++KUQuA20HhokL6eYZlqRa+Y1OrwIg6u1F+WC0Nwy1/MG1RvVixK3dL3xTzCdWzZfIv/GWut23ue2uZNmCxHNc6BL2AkoiDlguSIozWlBENW7GougtUchD+b3A/3HxXyPymXXveh64AnCGzY6CIE8DworAAfby/i8yrPpa9yZYr0pVRmcUSBPh6Qfj/DOEXYkgJXcyOnl+0QiGaeqg3L7uT8yoIqHhaQy2YmqRgcLBs1uDURNz4HvVXdglvT41Y0tCXsSRNLUBrBKffEVKlKA3ydvdEFeUnto3V0Gzem2bpdlYHRSKZsJfLZAN+sepfoPFpbPJ7z2TekeatJ8XhhTMYTm/AHtjIaj/u3A630RJMZc1O1nQ3M0PZYzABfKmize6GkofFo7Ldm7Ry+IAbHfdlwKSQkUUiR4VhV19yAiFNls0WXDt7eSbK7t2DNcKvs0GItJ9j2cz6EzYImhbV415L+BMZQkP123HnUOr2xCkO+k2qc6
+ HUPboWuo
+ kUZIzuPoWJfPggw7wZYlxDgZxL4W5t3e/GT2b+z8l+eARwscLaoaRr4/LuXv4r4TlpXPZaLg+kIL50z3pSuLSrRKuN9fBH1W8JfJb8zAs76RYI0EjvaZC0UZHGVwW4qBFPDf4IeZgxBZ3jzGKo0zPg4PlIXJSx/sHWoceiEcfRKuXcxAWhIFIwaj7nat5cI/u7QA4dYZomh4umBVfMKCok49BxuY6SdQ4lmFEnd/BFM/+hb7XWyy2puQcWq9a0HkyW/cMFBIroiyBMvLtmuqMGk0yQmHCCkpJ+1NhRg7LVoziEz3fOlB/9d7WbvtISr79+8VzLAP3bRAWJt4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,73 +103,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[why on earth was stable@ cc'd?  adding/removing various other email
-addresses]
+Hi Adrian,
 
-On Wed, Jun 17, 2026 at 10:21:40AM -0400, Peter Xu wrote:
-> On Tue, Jun 16, 2026 at 04:30:54PM -0600, Alex Williamson wrote:
-> > On Tue, 16 Jun 2026 14:01:29 -0400
-> > Anthony Pighin <anthony.pighin@nokia.com> wrote:
-> > 
-> > > VFIO PCI devices support PMD-sized page table entries for BAR mappings
-> > > via their huge_fault handler (vfio_pci_mmap_huge_fault).  However, the
-> > > VFIO device file_operations never provided a get_unmapped_area callback
-> > > to request PMD-aligned virtual address placement from the mmap address
-> > > allocator.
+On Wed, Jun 17, 2026 at 03:18:27PM +0000, Adrian Barnaś wrote:
+> On Fri, Jun 12, 2026 at 10:17:55AM +0300, Mike Rapoport wrote:
 > > > 
-> > > Before commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-> > > get_unmapped_area"), this was masked by a bug introduced in commit
-> > > ed48e87c7df3 ("thp: add thp_get_unmapped_area_vmflags()") which
-> > > inadvertently applied THP alignment to all file-backed mappings,
-> > > regardless of whether they provided a get_unmapped_area callback.
+> > > Hm, maybe desirable for execmem but that doesn't really mean the x86
+> > > behaviour is correct. Maybe it makes more sense to change the x86
+> > > to align with the arm64 behaviour here?
 > > > 
-> > > When commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-> > > get_unmapped_area") correctly restricted THP alignment to anonymous
-> > > mappings and files that explicitly opt in via get_unmapped_area, VFIO BAR
-> > > mappings lost their PMD-aligned placement.  Since the huge_fault handler
-> > > requires both the VMA start address and the physical PFN to be
-> > > PMD-aligned, unaligned VMAs force a fallback to 4KB page faults.
-> > > 
-> > > For example, a 2GiB BAR results in 524,288 individual page faults
-> > > instead of 1,024 PMD-sized faults, increasing the VFIO_IOMMU_MAP_DMA
-> > > pinning time by orders of magnitude -- a regression directly visible to
-> > > KVM guests during PCI device initialization.
-> > > 
-> > > Fix this by providing a get_unmapped_area callback in vfio_device_fops,
-> > > following the same pattern used by ext4, xfs, btrfs, fuse, and other
-> > > subsystems that benefit from THP-aligned placement.
+> > > BTW we should probably document this API a little bit, I never thought
+> > > abut what "valid" actually means until now. I had thought of it as "I
+> > > can access this memory" but that's an unclear concept and now I realise
+> > > "valid" is a technical concept in Arm that's confusing. And it's extra
+> > > confusing if the kernel API uses "valid" to mean a _different_ thing.
 > > 
-> > The trouble is that PMD alignment isn't right either, your 1024 PMD
-> > faults on a 2GiB BAR would be 2 faults on x86_64 with PUD mappings.
-> > QEMU has forced the alignment to make it optimal for some time[1], so
-> > there are userspace VMM options.  Seems like you were previously
-> > getting lucky.
+> > I've got confused too and that's how set_direct_map_valid() got into x86
+> > with a different semantics than on arm64.
 > > 
-> > Peter Xu was working on a more comprehensive solution[2] late last
-> > year, but it seems there was an objection to the
-> > file_operations.get_mapping_order() proposal before Plumbers and the
-> > thread hasn't rekindled.
+> > What execmem really needs is set_direct_map_default() variant that gets
+> > nr_pages.
 > > 
-> > Gentle bump to Peter and Willy that maybe we could resurrect that
-> > effort.  Thanks,
+> > AFAIR, set_direct_map_default() has a single 'page' parameter because it
+> > was added to reset permissions for the direct map alias for vmalloc()'ed
+> > pages before there was VMALLOC_HUGE and each page had to be reset
+> > independently anyway.
+> > 
+> > Maybe it's time to add nr_pages to set_direct_map_valid().
 > 
-> Yes, since QEMU doesn't need it, it was low priority on my list (also due
-> to much more downstream works recently, and a lot of things happened).
+> I was also quite confused by this initially. I spent some time debugging
+> until I realized why unloading all the modules was causing the kernel to
+> crash.
 > 
-> I can definitely try again.
+> The reason I took this approach was that I wanted to send out a working
+> prototype for arm64 that wouldn't interfere with the existing, working
+> implementation on x86.
+> 
+> Following your suggestion, I can put together a preparatory patch series to
+> refactor the set_direct_map_* APIs to accept a nr_pages parameter. This
 
-I don't see this as being something that drivers should be involved with
-at all.  The MM should be able to get this right without any hints from
-the file-provider.  Yes, that means I also want to get rid of the setting
-of get_unmapped_area in ext4/xfs/other filesystems.
+There was a patch Nikita sent a while ago that does something similar:
 
-Looking at generic_get_unmapped_area_topdown(), I think we can do this by
-making an additional call to vm_unmapped_area() before the existing two,
-setting info.align_mask and info.align_offset appropriately.
+https://lore.kernel.org/all/20260410151746.61150-2-kalyazin@amazon.com
 
-Now, what's "appropriately"?  I think it's based on length (>= PMD_SIZE,
-then >= PUD_SIZE), but we should also take CONTPTE architectures into
-account.  And maybe there's a CONTPMD architecture we should also consider?
+I believe you can start from there.
 
-Anyway, that's my initial thoughts.  Perhaps others have feedback.
+> refactoring would also allow us to drop the redundant set_area_direct_map
+
+We can't drop set_area_direct_map() because vmalloc pages might be not
+physically contiguous.
+
+> helper. I could then rebase the rox_cache series on top of that.
+> 
+> Does this sound like a good path forward?
+> 
+> Thanks,
+> Adrian
+
+-- 
+Sincerely yours,
+Mike.
 
