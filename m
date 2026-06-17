@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82027CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C88CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53CEE6B0005; Wed, 17 Jun 2026 07:09:33 -0400 (EDT)
+	id D56316B0005; Wed, 17 Jun 2026 07:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 513426B008C; Wed, 17 Jun 2026 07:09:33 -0400 (EDT)
+	id D2D396B0088; Wed, 17 Jun 2026 07:11:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 402056B0092; Wed, 17 Jun 2026 07:09:33 -0400 (EDT)
+	id C1C4C6B008A; Wed, 17 Jun 2026 07:11:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 007806B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:09:32 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F7ED166080
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:09:32 +0000 (UTC)
-X-FDA: 84889133784.26.92E8150
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AE7A6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:11:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05CE91203BB
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:11:25 +0000 (UTC)
+X-FDA: 84889138530.06.7637119
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8E3EF1C000F
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:09:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7+RShmh;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0EE89140004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:11:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2GISETD;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781694570;
+	s=arc-20220608; t=1781694683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uhSrWqn0IM9g7LwbWzgWfCpDeanxPIH9UlxzhP1mWKA=;
-	b=OXBrzcnmW/RnzKt3hpj7DRMPX6Ed85xUT1BJKTxRFgRAXlO/3ZyEeop84WnCzq6VQA36Nu
-	kfW7yf4sEUIeo3YpgTQTTPk6U4iT/km9fssbl/skEkueL5gwyhpsYJztum7PlvLaI2jnSz
-	dl4LVCQLukcumjyv4dZiu8c7KiVsQ7U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A7+RShmh;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SiaKWxtsrJCVgybVhz4X8gHJGp58KurwzLbmq6ogImQ=;
+	b=6oc7fQvywGJV4kVJ2BA9D+0fn3xrIvn3JYwMnsI6RwWy7YpqSpVLmGjI0tyjAWV7mSGD07
+	7Am9GpcLM1nUsZX7ndf2KfjoLlwSP1KlSNhbzUldUGHhM01FujVRf3VTKEdSPj567GOnNQ
+	qGij45pBHIImcOBECcbD/du/T2dsHtk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781694570;
-	b=RJ/lsYVktgBPifaIyUx8d8w4VdseNR1Ipe+rEHy1WNHJ5YG/mh4IpgZv2CrKaLlrx5GVIz
-	ukTkbW74C6FAsjIOrc1wsP3g0PsAoWVqM4cgNfhVQjDMYTboAcW+vm8jMEwxevSM4yM5WX
-	+0VzaYPMRF4v0eFDu+pIOc+hBFQEwWY=
+	t=1781694683;
+	b=tEc7pevnD493NOGwgU2vs5EJ2LShv5ImeWwEAR4xzpnyLs3cc5smXCeOR5XQwsSdE7kVD4
+	vkvw11DvSXMpJRf9lSGnXrQ9StywGUb3eP6380AktW9wrSwmmuhm5fkhbbRRZH2znRY1nx
+	ai0/j52OZ64WhsQiAsGtwIPj+aU0b2g=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2GISETD;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9CBF43E5B;
-	Wed, 17 Jun 2026 11:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F551F000E9;
-	Wed, 17 Jun 2026 11:09:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C875437BA;
+	Wed, 17 Jun 2026 11:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511181F000E9;
+	Wed, 17 Jun 2026 11:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781694569;
-	bh=uhSrWqn0IM9g7LwbWzgWfCpDeanxPIH9UlxzhP1mWKA=;
+	s=k20260515; t=1781694682;
+	bh=SiaKWxtsrJCVgybVhz4X8gHJGp58KurwzLbmq6ogImQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A7+RShmhLJ7ENpuqwWUHUmQ52PtNjbqA4LgsUkx4bGIsiEkjf22min2rodWkg4kHb
-	 CpoKhLUsBl4ozOuG09JJLkMTsrYmHAJkLdFwA4+aqGjHq7CP3lWBn9RJPJbcs57PpD
-	 48B7GKQnVC1/rpfwlOXiGCqgwlf63M52lCvgOEEFOvFcuphb+fu6ne6DMCw40wFNQe
-	 xuLMnZ3oat3mVDbgZtAgtIOwq2ZT6WYQEZprUUiKR3g9mCyIbncFjFQhoW5Ud93/v1
-	 8SZ284+wiX3obTyqHDwn45SvCqPfyX77hFEir75Zc83RAO2s04f6nFVkZrRSyHlkkL
-	 2/nOskthOLbKg==
-Message-ID: <8fc34141-b8a7-43fd-8c84-f843bd34fb9f@kernel.org>
-Date: Wed, 17 Jun 2026 13:09:26 +0200
+	b=L2GISETDR7ytjswxWuQiaw6cu9KE+dOUjms263mMicLABEo1Ubjx5XRDqidUmu+P5
+	 E+DNoNpojjUwY50aQisyeFc8e4pQWCcB2XFFkj/b5ZgDIDHwM4teqOIeoVDQ6RFk+8
+	 +EuMiRth+LUSq2hVlr+ZBw/4XB1HKemkbdrfV9UBzs2pTiUilN9yMPYhh3MGBs+WZh
+	 nWrTcJbkdY9IIyVtJwXLVhXUM1onmEXFtpauv5b2QRU8yr1ei2HU/rfVNKZYdUEaBz
+	 ffdC4rcEP1px/qGJnjFm+SJV3akJOsaCrpsHpj+ZdlWUQus1N0gqfq9PxQoNg+nstt
+	 WMf6nHHMZhrfg==
+Message-ID: <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+Date: Wed, 17 Jun 2026 13:11:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix CONFIG_STACK_GROWSUP typo in
- tools/testing/vma/include/dup.h
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl <aliceryhl@google.com>,
- linux-mm@kvack.org
-Cc: stable@vger.kernel.org
-References: <20260611012258.432043-1-enelsonmoore@gmail.com>
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
+To: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
+ shakeel.butt@linux.dev, usama.arif@linux.dev, akpm@linux-foundation.org,
+ vbabka@kernel.org, mhocko@suse.com, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com, kasong@tencent.com,
+ qi.zheng@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, chrisl@kernel.org,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260611012258.432043-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260610195220.12403-1-jp.kobryn@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8E3EF1C000F
-X-Stat-Signature: 11ug9t3qhi8sopudtgy33kbakgwqmdpb
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781694570-332895
-X-HE-Meta: U2FsdGVkX18MbkaZ+79kaMm2RRnj+6sWLACDFubCKULaTj74ePwax2Mw7khQ36ijWCqj500bUzMPwfzelN9MHu4c+xiaxwuemXsr4T8Lk87pfE+TICLSZ/MtbnIsQdJVi2Cf25W2s1tAHxy5DY9zvlAkOcfBwilftQJAVv9X3p2NW30G21LDnobm9bhDnjr5V+YlSZbxXeLS24P4kZtkZXD5Vk+QboAoEMK2x+UWmtLKlvasxKTxpLMJcBY3nI2+YfapBZBdw3IMy9lesPlhbN3unlKQnkR6BfJlOQPZ3YCHg2G0KGb5pIAyaScGmAhpCSTGnOzk7P2BRAT5AFTm00vjQ6mGSBCA3OyGdfLRxAaEU28y8/rnlbp7B/Imhx3zv+wgb+nhcaLiepI7S5frSLW1bGKXpq3EsMzG+62/piXMi8veDKSZ9ugiv2falfGrcaDxYZi5R4EHZGSTnpdCFuqrITmr6Fwh3GZjB3v86OqKc2ThN6cvPMJ1etdhjt667Ed8pAWCzsdeeATpcpC9ZUBKOGqwrtY2syCO98sEyhNVgCvoHDtxde/EKD5IMscO0/oygVfQp6aWlJr361ymyRbclQuow9N5bEsFDuHA3+xu4qtmJQPJsiaBjMUbeZ8cQeyiYu0NvFbVitR8gbh+BsCiCYOW4pNIt0SYFZzYkAiA5p178f3IhJXEKX2Yd8vOnQXQ1QPC07+wSlz6sDHMsQ3STyEv0W6qB4rFa7ayylmS1P73lmp/VXuLld3+y4wkHXA7nGC+TIYaC6NeIO1c9bLBfPFlrWucqzy6n/9oUae9uI66nBRSQJZ+6FFOmamaFwIGmfIAGes9ZOS6LPJl/dQrgX+Eef9GyS81Zw7YmWardjMsUcr8jq3ztHcBPvXrD0oasz0OM7OwQ1ONPf9hx18cW0PUT3ZUiiGne1vhBqiGgQYGyQr6ztAapgLINOJ/myXnHby3uYF4cLrL4lA
- LUxF+UzV
- pNomrsTrD5nj+zuVNiQiNYr+kYu96M1Jsm/gjTydKqnlyQzuUsKiLwxR9x0mrRktnUheS3Cg11PoQaN+sdAdPhuRMKvUBBSCTH3Xo3ExxLUymWYaoAun7e7JY7Kvg476LF0cNM+BXADWhZU9dSAsgfTGw5JIn1mCyFxUYYVz0Fi6sH+w/p1EkVBx2dNN1z3+U+utw2PDamRA5cHAvroDX5WOokMRFV2DjdMwXPJ4j0abvyTwHa7iWLY2Nt88KDKqDAXqLv81vD/amFHMnN6ZxooSmP6qGiEwSsxtIMI3w/JVUKjnw5mDA8mf/hM86fBxKsGVcWlym809HMV7pv+++SdGBYDC89/oo1/yr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0EE89140004
+X-Stat-Signature: dn8dta79kc81q5d5qeons17s4yumhsm1
+X-HE-Tag: 1781694682-672864
+X-HE-Meta: U2FsdGVkX18CsEomokcEJdO+qxqz+Dkz67NW7UwbJuHqGdfrmqc2H/qO82B8LfiRqFcDiegZvGoqxkaud9G/gKfNeSvvDBjFyJy/lX7/GgThaBzF5tDBs9gEMtSxFj94fdhnjjYWhzazEkQZEV1j41tc/WsyCSdjdweOqsUaD5Pcr0jfet474qBKCqw3zVkOczWKLHEYSfMTtakQ6Tmnmgm1lB4Tqa7wps2Uos/3dldJxO/QmgA4RhKEo9YXXo0Xveb+U4MlzdCu54Ux40RVIjkDfVLCyNK3/ugLv9g5LUObGO4y/TYyYE2kcsB9oGnX0zH6uhZ49wc+TMyu4ybdVFXzPVG16MRBBYjOl+zE8qqInuCmnwgHDXQ+RWmJhrWd3/GDlJf628pvL+Bqsc6v7hY0vuHE+XXt09lHqw7mAaCdEfa29A1N1fcGrDMFb332jJ2RxilLNHKDb+hUTlEEOUUNFmpgz3iXgczLE/TthkGxxu+JjDhbwLG1V4TQfvZYpzse/LKt7e0xp1nlsEXAw/VexfAvhX3rm3/m9MkpFoQMT2Y/ORl42dcKsir7sJR3IaraM/hWFG79rTmQ5pih23TZ9o3+6bZNvsEPVOaqUXonOJcGBT2DhWrp7CrzXtSKD2+2x5t2fqjTgd//5Oc4Vqw6fbOgzjZEWxjRy8mAUsil4r1aIMTsPn7TpTUbCsdX8i7CMfQmB9yClhNoXnS7VA78tDnXMer9kKS+TQGqKYhzb1KCD1n7qO068ipuluVVs6koAP0PJ8N5wzcY3lmEeizRFLKcZm0/W4Isgd28v/fhJE+Ye1yo0LMNg0hgV10tDj6SnR5aN4dEnEVyeOFuBUATwDLodmspF8Cj7WvaSGNr9LjpbO7dr4zCISH/6TV+DL3PDnntOdPittmS6Go5TkFhmNLceE0xKsB3K+17H7FFUe2PKl/DmapMXfndPfygG21yHfQNBY92QZP9pBN
+ Yqlaz0v0
+ yXtwvjD614bl+0pKj7Z03ZSrA4htyB2Dma5N17Gvlu8B/9pXVaXh3IGqFMzfQ18jGDUTyQRJGuukMwFyMChuJkvYgevzsQhuF7L9FB6eO8nKbbymVoNSThaRFrFrJyGM79LJnpcB10tcwfZP1rF4olE5EstxNIsM5BEYHSB3H/OsKwLN1rbbTyPx+fJwCFLvWjHnO7+Kp2+82VF1/d55enTUDjb/v3Kc77ixybSxUVW2mbmWe/6KRDSzxVovaSKdRzbSsAnENHEehow8sSTnj0NMyfZve+vWNIkYJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,49 +143,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/11/26 03:22, Ethan Nelson-Moore wrote:
-> Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly
-> refactored the header file include/linux/mm.h.  In that step, it introduced
-> a typo in an ifdef, referring to a non-existing config option
-> STACK_GROWS_UP, whereas the actual config option is called STACK_GROWSUP.
+On 6/10/26 21:52, JP Kobryn wrote:
+> LRU add batches can be drained before they reach capacity. This can be a
+> source of LRU lock contention, but it is not currently possible to
+> attribute these drains to callers with existing tracepoints.
 > 
-> Commit 40a4af52e047 ("mm: fix CONFIG_STACK_GROWSUP typo in mm.h") fixed
-> this typo in the mm.h header file, but did not update the copy of the
-> code in tools/testing/vma/include/dup.h. Update this copy as well.
+> Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+> lru_add batch is drained. This allows tracing to distinguish full drains
+> from partial drains and attribute them to the calling stack.
 > 
-> Commit message adapted from the above-referenced fix to mm.h.
+> Add mm_lru_add_drain_all to capture callers of __lru_add_drain_all and
+> whether they set the force flag for all CPUs. The tracepoint resembles
+> the signature of the enclosing function, but is needed because of
+> potential inlining.
 > 
-> Fixes: 2b6a3f061f11 ("mm: declare VMA flags by bit")
-> Cc: stable@vger.kernel.org # 7.0+
-
-This is in tools/testing/vma. Why does this require a stable tag?
-
-What is the resulting problem (in the test!) that we even care about the Fixes: tag?
-
-If there is no user visible (test!) problem, then this is merely a cleanup, not
-a bugfix.
-
-Change itself LGTM.
-
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
 > ---
->  tools/testing/vma/include/dup.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/trace/events/pagemap.h | 37 ++++++++++++++++++++++++++++++++++
+>  mm/swap.c                      |  7 ++++++-
+>  2 files changed, 43 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> index 9e0dfd3a85b0..adbc3179085d 100644
-> --- a/tools/testing/vma/include/dup.h
-> +++ b/tools/testing/vma/include/dup.h
-> @@ -243,7 +243,7 @@ enum {
->  #define VM_NOHUGEPAGE	INIT_VM_FLAG(NOHUGEPAGE)
->  #define VM_MERGEABLE	INIT_VM_FLAG(MERGEABLE)
->  #define VM_STACK	INIT_VM_FLAG(STACK)
-> -#ifdef CONFIG_STACK_GROWS_UP
-> +#ifdef CONFIG_STACK_GROWSUP
->  #define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
->  #else
->  #define VM_STACK_EARLY	VM_NONE
+> diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+> index 171524d3526d..ff3da07ccb40 100644
+> --- a/include/trace/events/pagemap.h
+> +++ b/include/trace/events/pagemap.h
+> @@ -77,6 +77,43 @@ TRACE_EVENT(mm_lru_activate,
+>  	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+>  );
+>  
+> +TRACE_EVENT(mm_lru_add_drain,
+> +
+> +	TP_PROTO(int cpu, unsigned int nr),
+> +
+> +	TP_ARGS(cpu, nr),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(int,		cpu	)
+> +		__field(unsigned int,	nr	)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->cpu	= cpu;
+> +		__entry->nr	= nr;
+> +	),
+> +
+> +	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
+> +);
+> +
+> +TRACE_EVENT(mm_lru_add_drain_all,
+> +
+> +	TP_PROTO(bool force_all_cpus),
+> +
+> +	TP_ARGS(force_all_cpus),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(bool,	force_all_cpus	)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->force_all_cpus	= force_all_cpus;
+> +	),
+> +
+> +	TP_printk("force_all_cpus=%s",
+> +		__entry->force_all_cpus ? "true" : "false")
+> +);
+> +
+>  #endif /* _TRACE_PAGEMAP_H */
+>  
+>  /* This part must be outside protection */
+> diff --git a/mm/swap.c b/mm/swap.c
+> index 588f50d8f1a8..e14b7612f896 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+>  {
+>  	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+>  	struct folio_batch *fbatch = &fbatches->lru_add;
+> +	unsigned int nr_folios_add = folio_batch_count(fbatch);
+>  
+> -	if (folio_batch_count(fbatch))
+> +	if (nr_folios_add) {
+>  		folio_batch_move_lru(fbatch, lru_add);
+> +		trace_mm_lru_add_drain(cpu, nr_folios_add);
+> +	}
+>  
+>  	fbatch = &fbatches->lru_move_tail;
+>  	/* Disabling interrupts below acts as a compiler barrier. */
+> @@ -869,6 +872,8 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+>  	if (WARN_ON(!mm_percpu_wq))
+>  		return;
+>  
+> +	trace_mm_lru_add_drain_all(force_all_cpus);
+> +
+>  	/*
+>  	 * Guarantee folio_batch counter stores visible by this CPU
+>  	 * are visible to other CPUs before loading the current drain
 
+Given that trace events can quickly become stable ABI [1], are we really sure we
+want to add this?
+
+[1] https://lore.kernel.org/r/20260603130006.7d2c4a62@gandalf.local.home
 
 -- 
 Cheers,
