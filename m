@@ -4,101 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B180CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 10:34:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC2ECD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE25C6B0005; Wed, 17 Jun 2026 06:34:50 -0400 (EDT)
+	id EFB8F6B0005; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E93466B0088; Wed, 17 Jun 2026 06:34:50 -0400 (EDT)
+	id ED2F46B0088; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D82246B008A; Wed, 17 Jun 2026 06:34:50 -0400 (EDT)
+	id DC1F26B008A; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2DC6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:34:50 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1ED021A03CF
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:34:50 +0000 (UTC)
-X-FDA: 84889046340.22.1868ADE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6A3EB10000E
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:34:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wv97yqYT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA116B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E30C1A4E
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:07:22 +0000 (UTC)
+X-FDA: 84889128324.07.D4044D1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 23C5A80013
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:07:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xd4qAxDs;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781692488;
+	s=arc-20220608; t=1781694440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mUzimGhtwXxeFlNbjp2T5cpsz2AsOPIbGLnMGM1e6Dk=;
-	b=rP6ngxSmeve/pe6fE2PLGeZbtnyKrrT4e45JAjPa9dzGrxCDNm5A8mjRjNmwFDvimuX8y3
-	RCnLxlEk/UQQn2JRZOJG011Xfd8eAhEnYRn/g117q5vBAsmBPKeoipoiF40B7pc+t4Bk19
-	C8L8MzUwYVPQjRWIJhFsX0N+6fHlokc=
+	bh=h6dXIG9Ix1iq8lF+scJp0tVtUJekSbTJUAEd9UVcqC4=;
+	b=rgYKGtp82bgkEm9+IrN3AUeGpMk3IDpWGOFKYMmeN4ABNDpsPcV7x9GGRUS2e0SliMUDlY
+	++6tyKZ05GvdCtpfRw0EIybNt+r/I3RPcAMsFOVOtFZebBWgBFYGAqVb2KkSQ/fEz7xKMY
+	0ORPNIjmbmVZHfVwXgJm8JHWJ/E3Bjk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wv97yqYT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xd4qAxDs;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781692488;
-	b=AMjlRSj8neBB+QlA3p/dy0sSeoHAdaxPe3r09TGUWZ3F2kNs6hKwLMlr59LID6CTrR6AXh
-	tHJPiclbKpD7aE7ijihQpBed2jTnWlhTU30dWmUy6szezUbBrbOdPFTyzC45lHolDryeFT
-	O5y/fNPkvvyhyAGeI5ECCsJRCdFL0g8=
+	t=1781694440;
+	b=O+foIJ2/b7lGTR4O6leZgDFl+2G7h5BDxPs7y9tcxNbyVvPCsTnOah+yCK6AjyEmqkVAYN
+	382D5JLY4bwtcKS2eJbwMKoN8Wsq/x4cM+xeW+FmtCU01AH902fxyjg8z4bp3jzxlxiuUl
+	IkEV2IQgy2UZMODLxih1qMVat2oqr+I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B340160137;
-	Wed, 17 Jun 2026 10:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FC81F000E9;
-	Wed, 17 Jun 2026 10:34:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 198D04064B;
+	Wed, 17 Jun 2026 11:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6D91F000E9;
+	Wed, 17 Jun 2026 11:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781692487;
-	bh=mUzimGhtwXxeFlNbjp2T5cpsz2AsOPIbGLnMGM1e6Dk=;
+	s=k20260515; t=1781694439;
+	bh=h6dXIG9Ix1iq8lF+scJp0tVtUJekSbTJUAEd9UVcqC4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Wv97yqYTUmHJUFnZj5sV6+KfbOH9WCS97aAe2ipipFgYFnAgIyBaKA0DCVPWhme8b
-	 jBXKmFR2LjzO+WhSOm9S4yVMbmlCGSH11yqqO0mq9Xr+BMQwf85wyzev4hqlx7sAUT
-	 TP75DRBIfR2q7apcjUstwzSBStuIhrXIKy0StOYafxpFp1VHhyvgwcppG1/+ui/4da
-	 DESJJGo+QdHVu+ZYi2jSI9lSUgtYxh3qp8sgvNI53EqqofZTgpeK2jKBhZFfFk8Wf3
-	 TqJyGELBLbKO32SIHiP5JHb5yBTFjIcK1lUfKpyDqSi0Ae97MquHzGkCTY7bgu/xsK
-	 W2A4DwTyVd02g==
-Message-ID: <9ebadac0-0ec2-4ebc-8193-1a289574c0a9@kernel.org>
-Date: Wed, 17 Jun 2026 12:34:38 +0200
+	b=Xd4qAxDsspeL4VPFXtGf6ezzzzy3sFoOLNA/rgK9CqhbNBV78Bx5Jw9dOc/7ORvpi
+	 Ux6t84B976GEVfgr0WeTR1nEJ4qY/eFWkymBFbNit34duGhAjlcOeDiCyyvKOFCeZ7
+	 iopv/+rFJH6HABE6inEDqWJGZBipr3UEcuXPwKTpHamr8JCV7OXlRSYl5fZJpdE07x
+	 bFLbJDMrkeb3VkwSO5fiQh+RG2+I/pwnfFeKCl29NnmcqlR32zvjlYlmrc+0D3TNTV
+	 icpze+hF5EEQvSMoi9xpBxk/Xszdn+0LXCVKGC+BAH9YfIVZ+IAHHn5eSjH3CdgP23
+	 HFV3qaRNMhiVQ==
+Message-ID: <e37721e1-75d6-4908-8f93-7c0f68a73eb9@kernel.org>
+Date: Wed, 17 Jun 2026 13:07:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
- non-confidential VMs
-To: Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Chao Peng <chao.p.peng@linux.intel.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny <ira.weiny@intel.com>,
- Michael Roth <michael.roth@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Fuad Tabba <tabba@google.com>, Vishal Annapurve <vannapurve@google.com>,
- Nikita Kalyazin <nikita.kalyazin@linux.dev>,
- Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>,
- Ashish Kalra <Ashish.Kalra@amd.com>, linux-fsdevel@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
- <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor>
- <ajA4z_Wkb93cTW4m@google.com>
- <1e77f24d-315a-4f68-a109-2f4520343c0c@kernel.org>
- <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+Subject: Re: [PATCH] mm/page_table_check: do not track special (PFN-mapped)
+ PTEs
+To: Andrey Smirnov <andrey.smirnov@siderolabs.com>,
+ pasha.tatashin@soleen.com, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr,
+ syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com,
+ Thomas Gleixner <tglx@linutronix.de>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Andrei Vagin <avagin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, stable@vger.kernel.org
+References: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAEvNRgFQLEsKanKrj=ePHoShiY2cgQgxtGs_2CJcZHP=JOjidg@mail.gmail.com>
+In-Reply-To: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6A3EB10000E
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 23C5A80013
+X-Stat-Signature: bs653g8xunqntfz6j4yumqut9kxugkie
 X-Rspam-User: 
-X-Stat-Signature: zgz64bis6n9rmg68ru1p3z5mzkpwabdq
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781692488-20765
-X-HE-Meta: U2FsdGVkX1+eezdB+yIZRqQ+NaIV82baPYmWpjCbxTMggrvr30to/Chwsi31pqeGBA/sCHRZg5be5tGAGziGHbfgrsd9ZcYVOFyQuL/u1zWszTHaSWNEMD3DVlL2juMM4rXgWtVz5WBZ+FGR243189oWDPl55GIvKG6FmwLsRvOIIzyY5ZBxCEJcsGUy622tVQCOCy6rP7DllID4r/oa3agJjYUNOVIjm9f38g6/7Sg+3A05Bi8vI6dProC3ypEX4YaRY+5IH18AM1UFcTu3HUCDdqPv0mqdOavJlbnZTr1S9Y0CB73hlQK4GKwnIie4KzcoQJmBhA0+PTt1++vj70LuMx1z/FKqJOEGsh4eyJxR3/h4UiNT8G+L0qOC52lzb05zwR9LkrvLCdspdJHW7eatIjXHtPGNtU2s/E/byDwuu58lo6uYVkZWwUtKK0C9dWmEIUHQ9FxFxjEPUXt4AeFtzxK30diak47U0kc+Vipsw30KNsuIQgTXNdaplk+r1/MdNFbsRfeyrv3Lb60QvUDAXQU9mA1t4OTSf6iQaqihvDNQI25WBX0tut8oCEaEJ2fe8afOepaGe+4NYEsEdIneSaXv1HgRP7L0YT0Ay1plL81FcBdBgxd95zbckswqiwR/Y/rwqAfUZy1utIRAdWxz2/VBNW0ROZI/gA8BbzhVmrK2PbHDEJ4NSZfGKUkDT9sXXZmkzUanuTE85xY3bZ4GTeQqD6dJ11pjDj7LOvcis+PVLeEpc0qIk0eNpPQAIeyYccTq1o4eOpyQDFIBBgDSJZgoSifPZWKEb6ZOlyIobRRBEjm5MYYYqSSazaKr4afk+1CHsZgc1HWkz2L7eTj9ueTYoPE2lX2vCKKnSSIxcUT1q9Wh8YopK3N4s6a74wBsSyI9cXlRK6nOjJQvRfkO7/lqNRiNu0X3/1RHPtYOeTAq99+wXVy1z8eEGTCsAXI+S9WM3au3ecbuvBl
- Wf01SHPp
- 3aCUosRY8+ww0y1MYBgvbvn70sPOtX4U1mPHlbrAoXpg7I+WznpBxAdVTWa51B/Cvj00euQu3IkTsgMmXvxwXSDgddoauZJI+J5ssgo+ovdOH+zMlTNM7UXUqbmJ/EzXYy04vaqunVCpjXfNnX9KHyGM5g4tl7gTx/YjEu7AgEAwdem6iYvCHZ6IoLqqUu2YlTnvgj5BLkgpB8QbMgmCwozgO+8SyY8JR5ovDrQoohdEguf5ltizNMMcqi346mBaoMYEJhq3nsJc5ha+REPuitGK6+0Cg9NbNz5LdEW8cM/EKFtkb0ZyJ+BgGBYlIYepj/nZGn/xrvl6jjOtrkAk8ZLbGqcB/X12mQGc5WHtxE1fmmvHEixtF5PrMTjs1ONhawWFLtyZ9c8dk9LuW9Qc1y5m1qg==
+X-HE-Tag: 1781694439-121818
+X-HE-Meta: U2FsdGVkX1+EwO0IxnrN+jxg3IJPXfU9e+XKoHzi5dqSrWIGZJAWllQSKIvBqjopQ67JUYi0D4INka81DsJY/8++ckxWL1/gby8kpdcBc7sR7UNUcq/4NEr1qcU+7pLkNm9O/5ueLYE1rlrqGxFfCzspf5jyEjySLxmSRlTcnXpZNJmNvN4oVdg9izJwEWlXDRFNavUNLG1IXHIe0MWkXJ1ViDpRUCC5XRfGVXBW+eAPXqIiLrUWH3O1Mgm5kc/C/DWr+t6S/OUD4e35bCCVAujpiNbFY0hB5WBficeyWQjuXLOLg6y22ZtxaurukdygByK64IjEs1otxH50QFFWIcRNvbxAf5cG5Rd8qn8Edc7DKUQOswqSyiNfZiwXwAHZ4ILYfp9xmwxkHQXkRfVg/gmyIi4V/4CSGkYqTJibebFRJciBhWkLcAlZ0VF7rmudjNEA+mkrnoyhWhJoYKFZVP0paVXjspbBfUSyZdeZvRPeMWtuv9wA/meDYZ1dopOkepPNYS7Ybbfpz+Dw17+OA3XXJpurZlUAlWB7x5U9hYTdUwsXefEVjxljaBS1mqV2CC0/sqK/LZ14erg/2v/ZltfN4L43/Wko0DZnFd4t35LeZo1IAgVmQ70kjNm5ALKYrri64jdA6FNd5EEWuYntucZ05SimaoBemOPHjW1sCfPIyPjU8ynjmXry/QY6A7Z7hV0xneq7x44qIi9cAn92Jyik3z14gmwoHgKqPsnP27DlW9pOORu/n1mqFATwFNIVWUtRXXSTcrBEaF1dJL09ux6W6p/VEyard8CqbAYIpxghSzrssgR6ebfvgZVtE07T0jhG6DpQLKQMCWROd9U9hbNOyyuGmnLjE6kkTXop0f0AFWfn6QwbHWtfoRAnwgPEHN9oiEajz5QQctUoctFvBMj4Yuh35tDFgO1FGv48/282kFClJ0mb2QCSwNqVZjMazY8T8n6pyN2iMGTZ/0N
+ +VwoalSH
+ r7840YekEc8Fsp6M8hBT2ZBGldJC9Y1EFAJeQayboRis5BI5YKlbEUCUGh7aHD3ofP2l49rrLno89vPnHnvpktVV6XZu/q4IjJ+jV1LYtW/o7wycxr0HXcWb8S65o+MVb7AmrvaxuBt1Xl6lKAoRmIncn34aPOH59MEtv1je4lfl/OH6XmGy4ntc9OZ5twzHkARSerSpb/smhpFA3rq58rnb2PLVUFS4t7lor8nWyBHt+ALveegxqQoWYHgZqUtth6RWf1xBgKeuKsJAPRNG80WQljg21To28nCpJ0IY1FoLSQ0GU4YAPSnptlDQLzqh5xF9qB96vmJGso6JJDLIo4408aHgE7dlvTTLNRGa8JFJPE87EHnNAI8V4z51rvy/DRQ9+63ZF8HC/gXd/Pv63hgYMcFKRwytP5Z+mYtvqczYs6pCHuRh2QNfQcK8SGzo0yd/e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,41 +145,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/16/26 20:09, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 6/8/26 17:57, Andrey Smirnov wrote:
+> The vDSO data store ("[vvar]") special mapping is created as a VM_PFNMAP
+> mapping and its pages are installed into userspace with vmf_insert_pfn(),
+> which produces special PTEs (pte_special()). On x86 and arm64 (and riscv)
+> pte_user_accessible_page() only tests the PRESENT/USER bits and does not
+> exclude special PTEs, so page_table_check accounts these PFN mappings in
+> the per-page anon/file map counters even though they are not rmap-managed
+> pages (vm_normal_page() returns NULL for them).
 > 
->> On 6/15/26 19:39, Sean Christopherson wrote:
->>>
->>> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
->>
->> Right, and I raised in the guest_memfd call also the rough idea of Alexandru's
->> use case of having non-movable guest_memfd pages such that we can support use
->> cases where we can hopefully guarantee that a stage-2 mapping will not just
->> randomly go away.
->>
->>>
+> Most of these data pages live in the kernel image and are never freed, so
+> the stray accounting is invisible. The time-namespace VVAR page is the
+> exception: it is a real alloc_page() page that is released with
+> __free_page() in free_time_ns() when the last task of a time namespace
+> exits. Across the map / unmap / vdso_join_timens() zap transitions the
+> special-PTE accounting is not balanced for this page, so a non-zero
+> file_map_count survives to the free path and trips:
 > 
-> More concretely, are y'all pointing towards a
-> GUEST_MEMFD_FLAG_MIGRATABLE, which will set .migrate =
-> kvm_gmem_migrate_folio, and for now, error out for CoCo VMs?
+>   kernel BUG at mm/page_table_check.c:143!
+>   __page_table_check_zero+0xfb/0x130
+>   __free_frozen_pages+0x52f/0x650
+>   free_time_ns+0x85/0xc0
+>   free_nsproxy+0x7f/0x130
+>   do_exit+0x313/0xa60
+>   do_group_exit+0x77/0x90
 > 
->>>
->>> For the purposes of this discussion, we should separate the physical act of
->>> migrating pages from the features that trigger migration.  As I said in last week's
->>> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
->>> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
->>> anything else that goes against the goal of guest-first memory.
->>
->> Right. Page migration for supporting ZONE_MOVABLE/CMA, compaction, memory
->> offlining, virtio-mem and possibly some collapse mechanism if we were to support
->> THP of some sorts in guest_memfd would are all reasonable.
->>
+> This is reliably reproducible on x86_64 and arm64 under heavy container/CI
+> churn that rapidly creates and destroys time namespaces (CLONE_NEWTIME via
+> runc / docker-init / tini), and was independently reported by syzbot on
+> riscv. It only manifests when CONFIG_PAGE_TABLE_CHECK is active.
 > 
-> Background question: how would virtio-mem use migration in the host/guest_memfd?
+> Special PTEs have no struct-page rmap semantics and must never have been
+> tracked by page table check. Skip them in both the set and clear paths so
+> the counters stay balanced (always zero) for PFN-mapped pages, regardless
+> of how the architecture defines pte_user_accessible_page(). pte_special()
+> is available generically (it is a no-op returning false on architectures
+> without ARCH_HAS_PTE_SPECIAL), so this is a single, arch-independent fix.
 
-Good question! As long as there is no nested-virt support (and virtio-mem
-support for coco still being in the making) that wouldn't apply, only ordinary
-memory hot(un)plug (incl CXL).
+Using pte_special() is usually a sign that something is likely shaky, as it
+misses architectures that don't support CONFIG_ARCH_HAS_PTE_SPECIAL.
+
+I assume relevant architectures (loongarch32?) do not support
+CONFIG_PAGE_TABLE_CHECK.
+
+arch/arm64/Kconfig:     select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+arch/powerpc/Kconfig:   select ARCH_SUPPORTS_PAGE_TABLE_CHECK   if !HUGETLB_PAGE
+arch/riscv/Kconfig:     select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
+arch/s390/Kconfig:      select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+arch/x86/Kconfig:       select ARCH_SUPPORTS_PAGE_TABLE_CHECK   if X86_64
+mm/Kconfig.debug:       depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
+
+Can we enforce somehow that we expect CONFIG_ARCH_HAS_PTE_SPECIAL, so anybody
+unlocking ARCH_SUPPORTS_PAGE_TABLE_CHECK is aware of this?
+
+For example, through a BUILD_BUG_ON?
 
 -- 
 Cheers,
