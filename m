@@ -4,82 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090EACD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2648ECD98ED
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:40:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 983A46B0088; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
+	id F00CE6B0088; Wed, 17 Jun 2026 16:40:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95BD76B008A; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
+	id ED94C6B008A; Wed, 17 Jun 2026 16:40:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84D136B008C; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
+	id DCBB16B008C; Wed, 17 Jun 2026 16:40:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 562A86B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB9B11665F3
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:22:15 +0000 (UTC)
-X-FDA: 84890526630.20.84F983D
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6DC7C1C000C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:22:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=amAb0OIv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B0E4F6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:40:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3350CC267A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:40:39 +0000 (UTC)
+X-FDA: 84890572998.28.7DA7A06
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 66A1B40004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:40:37 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gylbkn5P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of "SRS0=nOb4=EN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=nOb4=EN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781727734;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781728837;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bFbB1BtfczxDB+uTNT4qTGVZYo6BQXoVhZaGmDWFja4=;
-	b=QhWM4VTeFTe+F3vrQy5aPVKtrop87jsFSDV529JRGpeUIJB2TCG2JX/Rs+xgJreOg2qCoc
-	WOjY3s6wzUmmopjhjH3TrEXlnyTu2j905JmDy4xTZV3FrYHdjNoru7BEEuK0IyvaZ6iG6F
-	mweSRSAf3M5XiTweOpjfs39orurRZyA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VvEnwrbAPa/pJg7QIpc03r+TzOKPlfQjHrFj1uoaMwc=;
+	b=BGD0RNGgkn08SFdZeBTPYPS3m8KLuiMw9SlA396GEUdvvsaemEzmqVvtrR7zKbVBSmcDWa
+	S4meUHW0ZDJlGHU2uPdE1PLZRqy1ADI5MGaC+qHZApuKkgtk72Z5T/iSUFKO3T3TUpcplN
+	Ar09N0fv+ZsPpzD4l+uE3/ditP2kQOg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=amAb0OIv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gylbkn5P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of "SRS0=nOb4=EN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=nOb4=EN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781727734;
-	b=6NWfuahPv79RQ2LbHZ5AG2t5aP8ySGNnwfE292N/N2/07K9ueYdfteFZ3D1G/d20HGQ8jm
-	0H92x5ZdumBSifJldkGooNeVQaZEGRKSj5CKBf8hDxO+gJg28huc3RNLqT8FWOY1xbPsDu
-	e0Ma+l5Rv6cY6ZRA9b+fjnRsy8AKMHg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781727730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bFbB1BtfczxDB+uTNT4qTGVZYo6BQXoVhZaGmDWFja4=;
-	b=amAb0OIvInfXWf4o2w+HJ/T068r7UoZcCTSudJaDxT5hZfiBMINHEYeQ8cAqMRg3iJKM/E
-	RT36vA4HAan0H+wug1L0XuHSxyIWCiM8cq/56X//0l5pyUgMGRNAOS958zWEEj188Xe0Lz
-	Ee4BduE0YQNFbT45bLzYHlcaEh4+K3M=
-From: JP Kobryn <jp.kobryn@linux.dev>
-To: roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	akpm@linux-foundation.org,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/bpf_memcontrol: mark BPF memcg kfuncs static
-Date: Wed, 17 Jun 2026 13:21:47 -0700
-Message-ID: <20260617202147.78347-1-jp.kobryn@linux.dev>
+	t=1781728837;
+	b=e5bkDnWur0CXzv9zSkU3t0zcEODnldxoMDaXLVBUz2ae5ewUYybj7Y2Yo2kkcGSalwWz+g
+	YNAA3ZW1QnaGfERFqMA2do6QxLrkdMfdRg6mQaJa1BDhiDAVUJ0RXguZQaLbhwx7dlJhO1
+	IZHCMl3j4Ku3R0uX3M8EKkxKXOxtUj4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F6F544140;
+	Wed, 17 Jun 2026 20:40:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DF81F000E9;
+	Wed, 17 Jun 2026 20:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781728836;
+	bh=VvEnwrbAPa/pJg7QIpc03r+TzOKPlfQjHrFj1uoaMwc=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=gylbkn5PU4X+qaVT2pQyl74j/WSjRQWrKsuURN7hn4ompKgYAjbhUzMRoBi+GSCUO
+	 cLIDzdgF692xY3/wUsGWcMxF2jPcw7Zg6qPxMDMEUYJgMjEh5ZDQt+uEg+lC2hlvsa
+	 0elmDj41ytZWORBXtwvwLGcZWnfpS1xHQ/hCQQNsoYdu8MdSJj1OUoi7zWh925Z+1/
+	 ydwZ7ia3625Hjxq0keojNKHc/pMJHyNlL3Bp2/jJjx6LLaQ9HUGfHl+gdIW5qFBEdw
+	 Z/oJtM6GAU0Dko3RbCVsKcX+gako9fxvDVuxF4mqMLGKEFq7vQHwv7WEmTs8GHBY5d
+	 Lyczkdkin9Y7Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id E9DC2CE1113; Wed, 17 Jun 2026 13:40:35 -0700 (PDT)
+Date: Wed, 17 Jun 2026 13:40:35 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Amery Hung <ameryhung@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	rcu@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
+ PREEMPT_RT
+Message-ID: <03da8742-3790-4428-84b8-11911bf44c9e@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
+ <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
+ <40591888-3a87-433e-b3d2-cda1cab543be@kernel.org>
+ <9d8ca1ed-bc53-417f-944b-d78eecd1e6a5@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9d8ca1ed-bc53-417f-944b-d78eecd1e6a5@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 66A1B40004
+X-Stat-Signature: 9nuipbcns3mb4445ubtmxnbh7ggwhrig
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6DC7C1C000C
-X-Stat-Signature: iz3wz7wp31t4qgixo6h1gsxtqh8z57pb
-X-HE-Tag: 1781727733-473702
-X-HE-Meta: U2FsdGVkX18bFgkR16c6YecjCa2D549i1iYup3R1pAWpD/KJHx9IXj3uMo90bqISPSw8HKGjKNeDKJ+Tj/qB8+8WFNxQPRAn9o9py3hnpQ5tmbNOhCBVqVgppL7NUeLVlIkidKcW09Z/EGs5aybv1/GDCK0A0InoYUtlW2IP8DDHoKPBezOjp12+pJbfPL1nQV0sKkzWJ09ewCE1NPcUxxZ55wAJhMlUseb87gg0EbU8N6L4WCjCkycVmYZ2/+iIx1Qy9ZpzpTEdjmrc2NgZ8gqqcNfkkR8QkYzwWFRIxUapM7xMPKNFZVEFhxsLzB8RA5xa4mWgljxFzrOEk67UAJ6+X4gUAg4KJQy2JAb6DwfCSUMfvJvCmTHj2M1tCQ9EMfkh/Mh4OQpNBG7xr97jymGSnIkc4qrAs2SwSZLDLxDxqtgFd/Kc73fSqk+z45Eouyd1y/GgxDWPlk2GlHMtsLfGE1MnifRNjpnROhQdURNub/+JP9EAmKnvYPSoQYTb+Pbp1znQUkM6wB9zwvrTPAYm1o+OcsKR4splc5hzd5mumRI6C9jDxgdSCEuDJxOvWf4vZIA0d+xiyZ44r1+lTT1HCGciS8okchDRu1y7uRMvsZhenEhlXcKrWELU0RW4DtQ5Xo/l96iwilHQDl03ctfp06TdArDGZ7DWFsyXc1bhFcQRDIFz16ZErGLhP9g+dM1yfEQfKTGrotUaznP8dkHHr/YD6vOJK8umx+WEN8BEamoWY3R69kLXLS/+AVTjkAzv9btGN/8w4fI7PmMFx0/76Ca36ylanE3mPcGXIKrfjXQEDhFQmcGzq5MjKLdL8N/W1NVrAgkgnd80Pg6thCYnTawlpp09qw8zy7jeszx4oOOgDLQVjqdUrKq0Y2kuqsN0Va27WUfAVSNNZflw1yatQLEC4ZVNnl2Q0S1XvDWmg3KYMZJ6OI/CgNcDHrev3PijUBIevY7vOZauYu2
- 9teDrxeC
- eUuhDmN/onTy0yud5muYiIsHnPfqpUdmloF7ZDj1HW7UY/kvZhCKvfJY1uCzKk1YtrCL+pcmh5p3ZSWsPIv+pjuajFo8T8mUsdkRYtx1UoDOUH2NO7/iXV+H2O/dwJ5qmsJWBh6cIcmkYi7qrzmACPC7VCedAw6NPOuJLJ4mBDB7qDb+rnRydkk9szw4PCgeeVLwbtQBu32D9NXhwOy/EQ+uP4VzNnyw96IrxTwD7XTrF16RlD0nRzUc2nNZkZ4466Sibnp0BzbkUPZ+9OKf7gM6PHuUwUy0XGKmT
+X-HE-Tag: 1781728837-617516
+X-HE-Meta: U2FsdGVkX1/spwHEGqoITC6DkRGlFEyq+dkETblppU1lSrttpjmu3kql7osaa7o7OKl2XVAs+LbpJEO1WrUO2zSqmZGUn5i19zOOlqtVsL/CywyTAbbiOuxDzoiskaJ0Xz7SGJaL/nCaUmqc1BiQgK2m6umsL/cfB+wJZprkJxmgFSUxhQRm+egPU80iJ5Q+BFd6aa+LFhn3rert1RkFaKyd1dYkU7dcMV+B8QxJYbsja1dKZe08zEpSJ8ugcYVPQKxJqkeEiM7fW5r8N6CgvDyKR72RKm70bLXrT3oYvQyBcmhAyScOdbd1BSnGDmlnKzE88fnHpxpTGpnfyhkPmoOLpXPjrcv5VpD8XfZ629fw0Ld/JAAXnPuCzwQkil2Gou5FOljYAxu9Kx5Rk4Nu1FAbehxW91WWFjVWzpU3Iq6rdRSBMwSkfELIVIJh33G3H72aDzGalUSbkGwmYCMO5Qz4WiR1e4fLN7eFP06KAQk6KxwHJt+Ugre2aEF3bq9BTqE8VdoIAg0GtfTiQa1tLDk47oHnjukaRr3Dea8RXXb7sLnAJ8DrCMEc+xG57IR7UPxeWYYK/xK89tef5ZP9OzKpountzMrt4uIbSN12aqIdCi97jyPUzltqS4M8G3Ft9l6IP53WmaD5KAy8q99y/xfbfv2Pzncn8XEBHSt8b6WOUmVMj1H7D/eXjYaLmZAWgh6iasLMyjIPPbQJRZQeqZlKdIuhYanLQ22sbabxwnBY3505z9zVbt65b4LFBjWwff2HEIRLA6ze4FbtQIi7Bn9/O/fHRV0onlTUx3FSqGT9QJdr6KT/o0BwxZah3J1Oa31hW6nTKjevXJ7JsSGq3aqi7XiKrAsuGpAyiN405labeSt+HIYn8iE5K2Xw5ey67KaP6/Tij35jWL6syXh6HYeczNMC+vEuLqTEaQ6FtnXMzSwmgVM/CviJkRhuXEY+0M9cRGBF0i75bYb/axD
+ Qj4LJFlF
+ GnhBBeJ0QGMcJqlb7SM1sGSe3YTVsjQtUdnPVhIj+q88XEaBQKGzWquyeTL03V6VR+I64HXGxaDw6W6PfmNnsVBkfYVReJ2vK/yxfLeXOy9Hb5gfeIvTH2v+uW+/Dm/qlIWtDi2rRckuu6Pi1PmJrerVVc5hRC0i6bGfteA1QWURhnMFdelrYvXGgyo6XFfuRG2ciarJlNzCgafi3XCncdYCdvMjy72DslpoQAra3dwp/KjGCiFVBsUf3JwNtuXscbx4c+0LfAcAboYtUIZiGKmpvoNK2Q10dY9k8nkkgWWDhIp6nW51oeD3+y2gq460wQ6O7lYuzbpIama5dLCjC2vMOvWwfCbwXKlvIlFfvJEquYvjQxZGBPbHx8iifpgg9KwJ9oO/pPC/QfTc1Gngqr/cnRt9oWervZ+DI3MA9Z1FrKqlWGM7RL8rz0+QSWpGtcmjfTeCqkJ6EvRN99EWplZj/PSvXO8TCOPd31wOyD1B0gEiM7WetZSERSe8/dCu7RtUxS3VnJFIXjnwvujsLKFVGpX+YIGOiK8lweO8WhiHXLR6mYJT9VdP0DWQ78FOJ5OU/Awrf/zZr984kJIhgCnnwfBbqpn/JFWIzsUDH7JhOMBZaOkRqWKl/KrnzBU7ly5WmnS1Wj2n6nBGStI0rUP4PqpN3lSoFK5tyf4qj7cRskWI0gyIf+1HwvM8VXAQoCSVg5oMv/V/wNuwolB9jPFTqZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,103 +119,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The kfuncs in bpf_memcontrol.c are not called by in-kernel C code. They are
-only referenced by BPF programs and resolved through BTF.
+On Wed, Jun 17, 2026 at 07:38:16AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/17/26 07:14, Harry Yoo wrote:
+> > 
+> > 
+> > On 6/17/26 2:24 AM, Vlastimil Babka (SUSE) wrote:
+> >> On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
+> >>> As suggested by Vlastimil Babka, kfree_rcu_sheaf() can be used
+> >>> on PREEMPT_RT if we always assume spinning is not allowed on PREEMPT_RT.
+> >>> This is because local_trylock and spinlock_t are safe to use with
+> >>> trylock variant as long as the kernel does not spin and the context is
+> >>> not NMI and not hardirq.
+> >>>
+> >>> Now that __kfree_rcu_sheaf() knows how to handle allow_spin = false,
+> >>> relax the limitation and try the sheaves path on PREEMPT_RT as well.
+> >>>
+> >>> Keep the lockdep map on non RT kernels. However, do not use the lockdep
+> >>> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
+> >>>
+> >>> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4d9f98162@kernel.org
+> >>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> >>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> >> 
+> >> LGTM, but maybe unnecessary pessimistic wrt call_rcu() on PREEMPT_RT?
+> >> I thought (in the Link: above) we'd only need to downgrade allow_spin to
+> >> false on PREEMPT_RT for handling sheaves movement from/to barn and
+> >> alloc_empty_sheaf(), but call_rcu() would be safe from kfree_rcu() even on
+> >> RT?
+> > 
+> > Indeed. Good point, thanks!
+> > 
+> > Hmm, but I'm not sure that it's worth the complexity given that
+> > PREEMPT_RT tries very hard to avoid disabling IRQs...
+> > 
+> >> Or is the irqs_disabled() condition rare enough so we don't care?
+> > 
+> > Given that most users don't call kfree_rcu() under raw spinlock or
+> > IRQs-disabled section on PREEMPT_RT, I think it's okay to keep it as is
+> > (it's not making things worse, at least) and wait for call_rcu_nolock()?
+> 
+> Sounds good.
+> 
+> > On a side note, I don't have much idea on what needs to call kfree_rcu()
+> > under a raw spinlock, other than set_cpus_allowed_force(), which should
+> > really be using kfree_nolock() instead of kfree_rcu() once we support
+> > kmalloc() -> kfree_nolock():
+> 
+> Looks like the case. Well if the fallback path of kfree_nolock() that is
+> irq_work_queue() is indeed safe here.
+> 
+> >> 	/*
+> >> 	 * Because this is called with p->pi_lock held, it is not possible
+> >> 	 * to use kfree() here (when PREEMPT_RT=y), therefore punt to using
+> >> 	 * kfree_rcu().
+> >> 	 */
+> >> 	kfree_rcu((union cpumask_rcuhead *)ac.user_mask, rcu);
+> > 
+> > Any thoughts, RCU/RT folks?
 
-Since no external linkage is needed, mark these functions static.
+For the call_rcu*() counterparts, I am currently considering making the
+existing functions check for interrupts disabled, using irq_work_queue()
+in that case.  I suppose that I could use raise_softirq() in the
+use_softirq=1 case when in_hardirq().  Either way, the check should be
+cheap compared to rest of the processing.  The additional rcu_barrier()
+work required is of course way down in the noise compared to acquiring
+a global mutex.
 
-Fixes: 5904db9891f8 ("mm: introduce BPF kfuncs to deal with memcg pointers")
-Fixes: 5c7db3239c9f ("mm: introduce bpf_get_root_mem_cgroup() BPF kfunc")
-Fixes: 99430ab8b804 ("mm: introduce BPF kfuncs to access memcg statistics and events")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202606150332.Xy4Egd9s-lkp@intel.com/
-Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
----
- mm/bpf_memcontrol.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+In your case, kfree_rcu() can be quite a bit lighter weight, though.
+So the extra checks might not be lost in the noise.
 
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index 716df49d7647..eff79bb2c758 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -20,7 +20,7 @@ __bpf_kfunc_start_defs();
-  *
-  * Return: A pointer to the root memory cgroup.
-  */
--__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
-+__bpf_kfunc static struct mem_cgroup *bpf_get_root_mem_cgroup(void)
- {
- 	if (mem_cgroup_disabled())
- 		return NULL;
-@@ -41,7 +41,7 @@ __bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
-  * Return: A pointer to a mem_cgroup structure after bumping
-  * the corresponding css's reference counter.
-  */
--__bpf_kfunc struct mem_cgroup *
-+__bpf_kfunc static struct mem_cgroup *
- bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
- {
- 	struct mem_cgroup *memcg = NULL;
-@@ -75,7 +75,7 @@ bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
-  * Releases a previously acquired memcg reference.
-  * Implements KF_RELEASE semantics.
-  */
--__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-+__bpf_kfunc static void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
- {
- 	css_put(&memcg->css);
- }
-@@ -89,8 +89,8 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-  *
-  * Return: The current value of the corresponding events counter.
-  */
--__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
--						   enum vm_event_item event)
-+__bpf_kfunc static unsigned long
-+bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg, enum vm_event_item event)
- {
- 	if (unlikely(!memcg_vm_event_item_valid(event)))
- 		return (unsigned long)-1;
-@@ -110,7 +110,7 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
-  *
-  * Return: The current memory cgroup size in bytes.
-  */
--__bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
-+__bpf_kfunc static unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
- {
- 	return page_counter_read(&memcg->memory) * PAGE_SIZE;
- }
-@@ -122,8 +122,8 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
-  *
-  * Return: The current value of the memory event counter.
-  */
--__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
--						       enum memcg_memory_event event)
-+__bpf_kfunc static unsigned long
-+bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg, enum memcg_memory_event event)
- {
- 	if (unlikely(event >= MEMCG_NR_MEMORY_EVENTS))
- 		return (unsigned long)-1;
-@@ -140,7 +140,8 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
-  *
-  * Return: The value of the page state counter in bytes.
-  */
--__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
-+__bpf_kfunc static unsigned long
-+bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
- {
- 	if (unlikely(!memcg_stat_item_valid(idx)))
- 		return (unsigned long)-1;
-@@ -154,7 +155,7 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, in
-  *
-  * Propagate memory cgroup's statistics up the cgroup tree.
-  */
--__bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
-+__bpf_kfunc static void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
- {
- 	mem_cgroup_flush_stats(memcg);
- }
--- 
-2.54.0
+Thoughts?
 
+								Thanx, Paul
 
