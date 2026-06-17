@@ -4,90 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B443CCD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:08:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090EACD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 20:22:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 741B86B0088; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
+	id 983A46B0088; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CC226B008A; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
+	id 95BD76B008A; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595BF6B008C; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
+	id 84D136B008C; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7916B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:08:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A9C214058C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:08:00 +0000 (UTC)
-X-FDA: 84890490720.10.2BA71CD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C80D0180007
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:07:57 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FWZohVnf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 562A86B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:22:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB9B11665F3
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:22:15 +0000 (UTC)
+X-FDA: 84890526630.20.84F983D
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6DC7C1C000C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:22:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=amAb0OIv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781726878;
+	s=arc-20220608; t=1781727734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkc/cwFVPTo6PfiKk5XSU4N+7uAosbnedDKdwgjJAs4=;
-	b=UFeVhDgkC4+eLcgAi//RCJiCiQ2prQ/cDXt1yqNG58uiUo4NayluGBcf3XPpURFYm6A3mF
-	LbElrWCHshJvyNwOuJfBcaoY80JvLmcNV9mjC0ZWi/fIf1H0V2XxLCaztlDKdnVYM+5aiM
-	gtr4IFD4e+7Z9EsM7z0KQI+bKVqytXU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bFbB1BtfczxDB+uTNT4qTGVZYo6BQXoVhZaGmDWFja4=;
+	b=QhWM4VTeFTe+F3vrQy5aPVKtrop87jsFSDV529JRGpeUIJB2TCG2JX/Rs+xgJreOg2qCoc
+	WOjY3s6wzUmmopjhjH3TrEXlnyTu2j905JmDy4xTZV3FrYHdjNoru7BEEuK0IyvaZ6iG6F
+	mweSRSAf3M5XiTweOpjfs39orurRZyA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FWZohVnf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=amAb0OIv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781726878;
-	b=16/AiHKCmHb6n7m3JawZ/tEHoFPUYZHejpBkmV7tdHgIGkHjCZnGqv/zGPYgAbWDfVpX+6
-	1aOyyPLxMt3MhFvZ1/piizK4veOIflUk7fM2K4teLgI0nFI+icA9Dk5a8ERN1FWK8dau1I
-	lt6o4283SFkyo/ifjOTY5tK0I6tao+c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xkc/cwFVPTo6PfiKk5XSU4N+7uAosbnedDKdwgjJAs4=; b=FWZohVnfjGzWlfq0c6Jx8HhCkE
-	uHSI+UsVJtrzf0zrp6i9dUqecmh8INz9icR8j1wxFgkF5Y/2z1rpGYcIWo2XI//nGKTuoWbZrzy8I
-	pj5c+PE1kJtho72bNCBEASb3GO05NK1OT59UjkqgmeHPzHUzT5fcZ1zRDwKRoVP+GQ7VE0e+2+K/i
-	ki7eZcQbRWaBpBDmCH4vXhtFyX1XADU8yfNmFGwVqTTNtxj8rtyKvzHbRA+nv5U/IAOGG+jTgDZRw
-	WDk2Ye6HPjDzgc46m/BTkwX1LTOKK3L4RvUAYzUtPjHI9F0iPqntolPyYH2zHlsV7UJ26i9iXhUYd
-	cKw5xM9w==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZwY2-0000000DDQk-3y3d;
-	Wed, 17 Jun 2026 20:07:43 +0000
-Date: Wed, 17 Jun 2026 21:07:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: akpm@linux-foundation.org, jack@suse.cz, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
-	david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
-	rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 04/11] hugetlbfs,filemap: replace
- hugetlbfs_read_iter() with generic_file_read_iter()
-Message-ID: <ajL-jsMdL0u1wGo2@casper.infradead.org>
-References: <20260617172534.1740152-1-jane.chu@oracle.com>
- <20260617172534.1740152-5-jane.chu@oracle.com>
+	t=1781727734;
+	b=6NWfuahPv79RQ2LbHZ5AG2t5aP8ySGNnwfE292N/N2/07K9ueYdfteFZ3D1G/d20HGQ8jm
+	0H92x5ZdumBSifJldkGooNeVQaZEGRKSj5CKBf8hDxO+gJg28huc3RNLqT8FWOY1xbPsDu
+	e0Ma+l5Rv6cY6ZRA9b+fjnRsy8AKMHg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781727730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bFbB1BtfczxDB+uTNT4qTGVZYo6BQXoVhZaGmDWFja4=;
+	b=amAb0OIvInfXWf4o2w+HJ/T068r7UoZcCTSudJaDxT5hZfiBMINHEYeQ8cAqMRg3iJKM/E
+	RT36vA4HAan0H+wug1L0XuHSxyIWCiM8cq/56X//0l5pyUgMGRNAOS958zWEEj188Xe0Lz
+	Ee4BduE0YQNFbT45bLzYHlcaEh4+K3M=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	akpm@linux-foundation.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/bpf_memcontrol: mark BPF memcg kfuncs static
+Date: Wed, 17 Jun 2026 13:21:47 -0700
+Message-ID: <20260617202147.78347-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617172534.1740152-5-jane.chu@oracle.com>
-X-Rspamd-Queue-Id: C80D0180007
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: t1tsm7hn3twzd4pdr61msre1exugg4oo
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781726877-296861
-X-HE-Meta: U2FsdGVkX19EXMRoAWjiiiamPlAado8uHtlE+Og9SvG4f1cTxzsQTxieIZPI6/K+sxgZVHqBcjF2udXeC9/qADDAH6fw8QgxwuDRKR08M39PKbot5fC//nbnQhSHpZ8ntZr+DII3TDFO32PHJ5tug2UvHLxQK63HxhwyH/wrOSIDHJb5MR9DyMc+YCyW1Ydvq6F1zD6+eP947C/4dYLt/AeNeO+HFbr8UbuOadEgI3NwSFOubyQh2mC1NhPMZzlv/nz67YRvM9HNJ0DQ12CgXc8C1FgBYvoR+z/ISuBGDdcdGPoOHCxDJTS/5WlYk9nVImB/waScdDlROAxji4ikYYt007Su3Q3GCF92+EZf7wIag5bw4n6ByLToX/vCAIq00kge8Z2yFXmJTfntNYnasbzFeJUgHUSK9S/+fjvwc1zDXjyFtM1qQwxJtZqIMmlC0R671HUehAEMNGTB8tE5enckKn1Png/TOT9y2m1eAvQFhgLeh10eTN4+TyRxbraVYEgHZLEDiigDfjFQHz6OCrqyqYVCPk5VOex9rC+rn5j/+VzqkNw3FKs5jjc+xi/Hkzbn0Ddwyhm++N9fo5nl8UG6VzlrRTWRJr+zsY6B1PRt28PBemKm+EFeqWVKhpUtcGF6LcKNn9mw8BcYm0fnJQWSzlp6+2/5CcPCUX2otjwgyysZQAreOdIO1bOmeiwAYK6MJT05La/8diSp5gLqB/C49S0eFR2ppbPU6ZZ7wvmYSEPlClOpzpzN2KkUvq8T454/hBm3gBTS23F71CVtfrXq3MN0nbzHVRltv8fFyjx2TlG5FgDdV4NphNNxDwgUlrY0kyGWxibU6GYxZT3yeSN+aseW+QImPQXCeN4yKo8frOvkvm87wfvGZfzZtoofSTa0PaTNJs8d88tX861U9fB9a0XvRbZU0lIDz7PHuL6wt+ac/DwfEmvpbAIWMt5wLgWmhCqjPYgsmi/Mmur
- JBdC3T/l
- oNcbWR/ZV6z8kIKNvxiomr30ONTFZIxApRClzB3yxTIqP3DAjnrEuKJpxmiQes5Rl6tqOwQE7L46uT++Snq1IqRDWahYdjs9/LeX6UOXnCXND2HyoATGklRmncqr2q5HeVKl8y5g2B4p7NfVafImsdHEvAwftLHqAv5qihEExC/sB2QwlLSswpUNNr2bA//Hptc8ABgRMxY3FNsHoHdxbmnD2fFX96CVMVesygjy26u5mZJXoyayHdoQFAI9ektBhvfv3yogP59Z7P6LuRgfxg24yJ3a9YnjSDtSPp5etPnb0lgygd3p0zsS7KdzPlu7cNhHBwZhRhRbowyAHIuRbM3cN42t+75YlS1Lfgd5u/eeunCNaDhNDYZytwSO30ijoaTSVvcVDBzOw8SE=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6DC7C1C000C
+X-Stat-Signature: iz3wz7wp31t4qgixo6h1gsxtqh8z57pb
+X-HE-Tag: 1781727733-473702
+X-HE-Meta: U2FsdGVkX18bFgkR16c6YecjCa2D549i1iYup3R1pAWpD/KJHx9IXj3uMo90bqISPSw8HKGjKNeDKJ+Tj/qB8+8WFNxQPRAn9o9py3hnpQ5tmbNOhCBVqVgppL7NUeLVlIkidKcW09Z/EGs5aybv1/GDCK0A0InoYUtlW2IP8DDHoKPBezOjp12+pJbfPL1nQV0sKkzWJ09ewCE1NPcUxxZ55wAJhMlUseb87gg0EbU8N6L4WCjCkycVmYZ2/+iIx1Qy9ZpzpTEdjmrc2NgZ8gqqcNfkkR8QkYzwWFRIxUapM7xMPKNFZVEFhxsLzB8RA5xa4mWgljxFzrOEk67UAJ6+X4gUAg4KJQy2JAb6DwfCSUMfvJvCmTHj2M1tCQ9EMfkh/Mh4OQpNBG7xr97jymGSnIkc4qrAs2SwSZLDLxDxqtgFd/Kc73fSqk+z45Eouyd1y/GgxDWPlk2GlHMtsLfGE1MnifRNjpnROhQdURNub/+JP9EAmKnvYPSoQYTb+Pbp1znQUkM6wB9zwvrTPAYm1o+OcsKR4splc5hzd5mumRI6C9jDxgdSCEuDJxOvWf4vZIA0d+xiyZ44r1+lTT1HCGciS8okchDRu1y7uRMvsZhenEhlXcKrWELU0RW4DtQ5Xo/l96iwilHQDl03ctfp06TdArDGZ7DWFsyXc1bhFcQRDIFz16ZErGLhP9g+dM1yfEQfKTGrotUaznP8dkHHr/YD6vOJK8umx+WEN8BEamoWY3R69kLXLS/+AVTjkAzv9btGN/8w4fI7PmMFx0/76Ca36ylanE3mPcGXIKrfjXQEDhFQmcGzq5MjKLdL8N/W1NVrAgkgnd80Pg6thCYnTawlpp09qw8zy7jeszx4oOOgDLQVjqdUrKq0Y2kuqsN0Va27WUfAVSNNZflw1yatQLEC4ZVNnl2Q0S1XvDWmg3KYMZJ6OI/CgNcDHrev3PijUBIevY7vOZauYu2
+ 9teDrxeC
+ eUuhDmN/onTy0yud5muYiIsHnPfqpUdmloF7ZDj1HW7UY/kvZhCKvfJY1uCzKk1YtrCL+pcmh5p3ZSWsPIv+pjuajFo8T8mUsdkRYtx1UoDOUH2NO7/iXV+H2O/dwJ5qmsJWBh6cIcmkYi7qrzmACPC7VCedAw6NPOuJLJ4mBDB7qDb+rnRydkk9szw4PCgeeVLwbtQBu32D9NXhwOy/EQ+uP4VzNnyw96IrxTwD7XTrF16RlD0nRzUc2nNZkZ4466Sibnp0BzbkUPZ+9OKf7gM6PHuUwUy0XGKmT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,41 +87,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 11:25:25AM -0600, Jane Chu wrote:
-> +++ b/mm/filemap.c
-> @@ -2672,20 +2672,30 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
->  {
->  	struct file *filp = iocb->ki_filp;
->  	struct address_space *mapping = filp->f_mapping;
-> +	bool is_hugetlbfs = is_file_hugepages(filp);
->  	pgoff_t index = iocb->ki_pos >> PAGE_SHIFT;
->  	pgoff_t last_index;
->  	struct folio *folio;
->  	unsigned int flags;
-> +	size_t min_folio_bytes;
->  	int err = 0;
->  
->  	/* "last_index" is the index of the folio beyond the end of the read */
-> -	last_index = round_up(iocb->ki_pos + count,
-> -			mapping_min_folio_nrbytes(mapping)) >> PAGE_SHIFT;
-> +	if (is_hugetlbfs)
-> +		min_folio_bytes = huge_page_size(hstate_file(filp));
-> +	else
-> +		min_folio_bytes = mapping_min_folio_nrbytes(mapping);
-> +	last_index = round_up(iocb->ki_pos + count, min_folio_bytes) >> PAGE_SHIFT;
+The kfuncs in bpf_memcontrol.c are not called by in-kernel C code. They are
+only referenced by BPF programs and resolved through BTF.
 
-I don't love this.  Is there a way we can get mapping_min_folio_nrbytes()
-to give us the right number for hugetlbfs?  I don't see why it wouldn't
-be possible ...
+Since no external linkage is needed, mark these functions static.
 
->  	filemap_get_read_batch(mapping, index, last_index - 1, fbatch);
-> +
-> +	if (is_hugetlbfs)
-> +		goto done;
+Fixes: 5904db9891f8 ("mm: introduce BPF kfuncs to deal with memcg pointers")
+Fixes: 5c7db3239c9f ("mm: introduce bpf_get_root_mem_cgroup() BPF kfunc")
+Fixes: 99430ab8b804 ("mm: introduce BPF kfuncs to access memcg statistics and events")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202606150332.Xy4Egd9s-lkp@intel.com/
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+---
+ mm/bpf_memcontrol.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-We don't actually need this, do we?  For hugetlbfs, I don't think we
-can get 0 folios in the batch, and then we won't find a folio with
-readahead set, and they're always uptodate ... so we're just skipping a
-few tests with this?
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+index 716df49d7647..eff79bb2c758 100644
+--- a/mm/bpf_memcontrol.c
++++ b/mm/bpf_memcontrol.c
+@@ -20,7 +20,7 @@ __bpf_kfunc_start_defs();
+  *
+  * Return: A pointer to the root memory cgroup.
+  */
+-__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
++__bpf_kfunc static struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+ {
+ 	if (mem_cgroup_disabled())
+ 		return NULL;
+@@ -41,7 +41,7 @@ __bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+  * Return: A pointer to a mem_cgroup structure after bumping
+  * the corresponding css's reference counter.
+  */
+-__bpf_kfunc struct mem_cgroup *
++__bpf_kfunc static struct mem_cgroup *
+ bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
+ {
+ 	struct mem_cgroup *memcg = NULL;
+@@ -75,7 +75,7 @@ bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
+  * Releases a previously acquired memcg reference.
+  * Implements KF_RELEASE semantics.
+  */
+-__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
++__bpf_kfunc static void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+ {
+ 	css_put(&memcg->css);
+ }
+@@ -89,8 +89,8 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+  *
+  * Return: The current value of the corresponding events counter.
+  */
+-__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
+-						   enum vm_event_item event)
++__bpf_kfunc static unsigned long
++bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg, enum vm_event_item event)
+ {
+ 	if (unlikely(!memcg_vm_event_item_valid(event)))
+ 		return (unsigned long)-1;
+@@ -110,7 +110,7 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
+  *
+  * Return: The current memory cgroup size in bytes.
+  */
+-__bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
++__bpf_kfunc static unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
+ {
+ 	return page_counter_read(&memcg->memory) * PAGE_SIZE;
+ }
+@@ -122,8 +122,8 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
+  *
+  * Return: The current value of the memory event counter.
+  */
+-__bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
+-						       enum memcg_memory_event event)
++__bpf_kfunc static unsigned long
++bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg, enum memcg_memory_event event)
+ {
+ 	if (unlikely(event >= MEMCG_NR_MEMORY_EVENTS))
+ 		return (unsigned long)-1;
+@@ -140,7 +140,8 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_memory_events(struct mem_cgroup *memcg,
+  *
+  * Return: The value of the page state counter in bytes.
+  */
+-__bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
++__bpf_kfunc static unsigned long
++bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, int idx)
+ {
+ 	if (unlikely(!memcg_stat_item_valid(idx)))
+ 		return (unsigned long)-1;
+@@ -154,7 +155,7 @@ __bpf_kfunc unsigned long bpf_mem_cgroup_page_state(struct mem_cgroup *memcg, in
+  *
+  * Propagate memory cgroup's statistics up the cgroup tree.
+  */
+-__bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
++__bpf_kfunc static void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+ {
+ 	mem_cgroup_flush_stats(memcg);
+ }
+-- 
+2.54.0
 
 
