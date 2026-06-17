@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2C40CD98ED
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 08:18:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05098CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 08:27:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2CEA6B0005; Wed, 17 Jun 2026 04:18:23 -0400 (EDT)
+	id 8E3E76B0093; Wed, 17 Jun 2026 04:27:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDEE46B0088; Wed, 17 Jun 2026 04:18:23 -0400 (EDT)
+	id 894B46B0092; Wed, 17 Jun 2026 04:27:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACCD86B008A; Wed, 17 Jun 2026 04:18:23 -0400 (EDT)
+	id 734C96B008C; Wed, 17 Jun 2026 04:27:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 718C46B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:18:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4B34A0364
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:18:22 +0000 (UTC)
-X-FDA: 84888702444.16.3FB83FA
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C9D6AC0003
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:18:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntD40d2V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7F76B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:27:47 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3C3AC1A03
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:27:46 +0000 (UTC)
+X-FDA: 84888726132.10.412AE2D
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E1B0116000B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:27:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Du6t8X9I;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781684300;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781684865;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YhalDeiPKafuB6dh85e27yohyG4zdlphxrEzu0htw90=;
-	b=Xn/erSzRCoNdbwLmf7iO4q4P2236UfExqXmZ/7E5ZOVYVrxCEFpq+FwjaVN450RewdNDNP
-	J7gQBLBtOjIX31KAQ9I5EF79qH5D89NdRpV/GsfFb7nkRjjpzGVpkSzUBjo5CO8cC1079+
-	p/uLrbIPcX6CKHSmJUrwEowHf5JyLQM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6Jc3FfHMo5wUv6AISsordZbf15xLxlvlfa02PWrjJLY=;
+	b=vMt94k920kMHrjhSoap1BK68l760c/d4m3iuMF7494Bav6XEFtrcDr0Dfyd4IEUcwlmV2G
+	RGzI82oEv4py4GaxxHC7gpWJuO+X9r0Mkb941Qk5U4hKWk/ZTkcQM+8+fa4Uebp2+tVfj1
+	r9smORxL6g201rKgXbOAnwajBgsWp70=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntD40d2V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Du6t8X9I;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781684300;
-	b=FqpjKE/93GnFRANcb3ecHoYCstgUrlbvH9HWmrWDV4JFzPmSrsWTaFl9Mny2Hqz8+0oCMn
-	mQOY+hOjFvTKqs6/HTKoGWRTSQ82dA9xzU8K2pRfMijUSZAmQgdSCFLo8AJgqj8CB+JEkP
-	NOHSOvD9oZ+5NVilWn2Fva5PTyqqr0w=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bec49f7e35eso720623766b.2
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 01:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781684299; x=1782289099; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YhalDeiPKafuB6dh85e27yohyG4zdlphxrEzu0htw90=;
-        b=ntD40d2V/s8IIwzBGDtQICuAHfJAe0LOx9CjsJ6EQHI+mxhd8TW2bXHXsWQsNfg3JP
-         k/gn0/O/FrjFs50YLIexhrNzLdh0eIX5bkpifq9JbfdM4Fkbtq8Byu7M9kf/rWv9uxmD
-         7fW9kiycW0VkY6UsKW1/2qRsaCn6h0r4Fdq0drLd92IcE3WpPf+a2uR6Z534ZfJyekUQ
-         qW79OPC6sXu2Tu8Pdx4YgtG3Gx4EUaCqQEApqqIwGEIqioXuNJqKZQ3clEaeNLapiHvi
-         DuBu/GPrquh6dMkeL2RTugRPvLBBTOtT0L/ULTGgAqql1bm+CqQoJ+sh5qI2NxoKH6mx
-         SrpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781684299; x=1782289099;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YhalDeiPKafuB6dh85e27yohyG4zdlphxrEzu0htw90=;
-        b=Zj2XqONeSx2EF+qBoQXNHdrDddLBrVJVOMU0m0iEWI8KyIfkZZh9ThRDJFfCauzfl4
-         IXyHQwVqbIS3PqVV9Kw7mzHWfYjeM7THJ9tXcXXYeCIZptDrz2+eTP4iXdFegtZEGqDP
-         1+L15mTkd91ZasUs58LUnhn2hfCLaSTD5iO7WAm7PMaG6Ugjs2pFu232w5qnxJpo1xzg
-         aWc46nT7Lw9ufQIR/hvHW8rv9A1NBI3fyCX7C+vaKlPD5RYudOcW4Zmn+PZIRHNhVU9k
-         giskL2SjEWbZNsfY17SLVBR8Lej2xpPLMDTFp51ySXoMYHaoVBDt7F5mWdjcK9ZbgCIt
-         8+dg==
-X-Forwarded-Encrypted: i=1; AFNElJ+BhtUM9TizX/+q6h63TLFKbalFFpfSNp9aUvJqs6OaIWJjWz5ASsFSjvOheZgV41sPVagMKRQFZg==@kvack.org
-X-Gm-Message-State: AOJu0YyrEdrg0xC4BAHbNclZQr6Kmbp56B1yq35hbjLwIx/3SSBjmn2m
-	5NV1JWfGR5ELxOkseGj+yZeyRG+Uf4wfNJJ533UfQaXGTCUILVOOIcbG
-X-Gm-Gg: Acq92OGJ3RL0zv7XPM4dwUO3tbKgBRpldTlPEZNpva0DwiS9sYk2n1DMc47la3+28cF
-	KGBFhvykUgBqQYwq/APc5F3bsJJICws0K6xvYqUm5UrVLxdqLBtcgNVNyxWH281ATHfcczOkJc8
-	bYGzjiwu1mJkDK1lgIvOU9Wvfc/WcpQPpivtrU5yXpCdLnXM5DvdWAryiLMGoa2O2xW8d00g8VJ
-	pUToBYaNOr8zHkPtCVeu7Joc1Ccqm8MQZq6aqnh8nUjwYmYkWXsOJgTK7D0PITu4L0j/wjymnMH
-	zP+KYZgmwCDW9NJYq4vBL3u6KB4Ft0bV7YHiB5RYoSYZoyJhXvr9XtO0nRGCZdBFV+dS+acGrwM
-	zNrV6N+PLSy8J1a8+QnmrtxUS5l5Z5BThnyL2shyyO+uyNexzWG3JED28euWsd8AAA/VIOR1Cx2
-	3VIx3Pew26T/w=
-X-Received: by 2002:a17:907:9805:b0:bfe:ed06:5a16 with SMTP id a640c23a62f3a-c05a7bb59c7mr155753266b.52.1781684296405;
-        Wed, 17 Jun 2026 01:18:16 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c063f9b2470sm33268266b.62.2026.06.17.01.18.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 17 Jun 2026 01:18:15 -0700 (PDT)
-Date: Wed, 17 Jun 2026 08:18:15 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: richard.weiyang@gmail.com, akpm@linux-foundation.org, david@kernel.org,
-	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
-	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260617081815.kq6g3rjtomudxca5@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260616235022.iesy2jeb2p7zof2l@master>
- <20260617023211.80409-1-lance.yang@linux.dev>
+	t=1781684865;
+	b=jVixHkro4+tYyOIoLcUWegwZIoj9z4UKcCw5rTUbocWyE4IqT8qsjJd0IKAMr44Am8RUEf
+	v4l67rr01qR3+sgl2PmDeDUkn6ajOh8Uu/mt0j/VQw+glx5CZLGIyD7m1L8Ff8KjDWpjPf
+	CwE9/2Rg2VZzv3MX6WHKONIye9t1czw=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=6Jc3FfHMo5wUv6AISsordZbf15xLxlvlfa02PWrjJLY=;
+	b=Du6t8X9I8loJS+VWyxfmpbmeZXtsCoQPhAmSsxDGRYW93ucqajrswqn5PFbM3xsGAjNNkz7q4
+	pQjwIJt/aN90iPb4gjFfQX1M2F7DUnsNIUU9unOBfTrlNo9icyUkTLrWEgFksCyYZyO1INOuPjT
+	qO/BBxP8Me26a6iYxFVCTNc=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4ggGxB1CZzz1K97S;
+	Wed, 17 Jun 2026 16:19:42 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5F94E40561;
+	Wed, 17 Jun 2026 16:27:39 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Jun 2026 16:27:38 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R.
+ Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH 0/4] mm: convert to walk_page_range_vma() to eliminate find_vma()
+Date: Wed, 17 Jun 2026 16:26:18 +0800
+Message-ID: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617023211.80409-1-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C9D6AC0003
-X-Stat-Signature: ro89yaacyygax6ijxfdcug1npeyhgfm9
-X-HE-Tag: 1781684300-870374
-X-HE-Meta: U2FsdGVkX1/iPWzcbQsfXgbJMIsRsbFvuFLJ7OJ5H9agBnNyEBjxcJg8kVLPp3eNxHUhmJDiTtD4LmGdm4tfUpuhdaN+vO517jvmwT79EyF/AjaOZK3KYtVSnrxrK0PjENUgB9ODwoQv7pasfc/rR9+NY6XWXCQGpXkxY1jB/9JwwtHprT9+4PywtXJRWCdglIwXGlrji5LIWY1aC8Plcu9myu6B8t5PoOSRDpnGsDQEkxip884JPPvypk9Q7jWXPnpPXjQjhTGWj3CrtKkI7Duq9hmfT1fQOr3ZMC2noussfLp2kg87OY3jgenSpV3BHdxWxCImpkQYix7hHxitJOJ/QBowFvHetWJJTCvLz/PKYnxvUTGVwERKHzZXJ7/OxUzTH5aSZ4kTtZ3XXj3aI9zoYEPANZUP+g1klubtcpEUEWDXGti3dhtzpK07IUqwqlaSvlQ79r+4i7i1zdFWmoLgJNNwsmLT0jfKReih3ariyqAvc/p4kMCcAFpy37ujf+RPAY1ZM7vjW9lA4A41gGHaEVEGBwF8CfX0Z6KagZe3q2kwd5YF/3rix7fkUlZOfORu/vobfOnZmH4LcvgtRRWkWYwIsHnBTRSNR9+STRNPkUwBMthg0o66zODtr4DfyUQdXVCz30Ms2TjR8DH4V2vLqG6mw7go4CDpCO86qYLyUfhsW2CN2sdU+CIzVERcX30+AZSqdBshy0RS1goXIUqX+w3XRsuL8KFUgRvXVTbGbqDRbdJpctytnKa8IWcJQS17J3NYt9NAsR8NBgzBdOsDQxyClLgTEGjAVKEV91ONfBMfZmYGSpgpTITDQawbHGdrmK3/5WQ4wzn5UEP+Z8oIRYkOLHelTaG/0PXBH3C05Miu1Z649hO7NGMZJBaWG3k6YqbLUoTJIIWg9P6/RnqkMUdXAhWzFHegT7Vmf4R5oifhsgofcdqF+O4+wbgSU56QEmDPUq6NmcCtm+p
- C5YlopH0
- +CCH3wSy4zdCweC9nCzXYvZ0xV/W/oEMKx/DucjjZBVdRnkWhy4N7tFH9EoWpw2X+aJr9m+d1RB+t2pQvRHWVI0Tlh/0Snk/owGX7ASzHVkA7xF3GgAvLuvmUm8d1iYzUf1q5Rj5TqFM6f3x/pFN+VCpVABDQVcIjvA6hw1UCgKMJZt+nJlQsLOKcwN30FotIIw5JhpMApfDbMjZhLHJZJB0dpmQgvQr9KzSAoKEglHYY0hY3Pa4vx8DyuBVIlyqX6unslSgr7LhThAUe+2VlCjqzvTVSH5wJtxVwqZtu+Rxw680sHTnMAYPxzawHqeOi4vSpEy2qPHH+p9KTA8bByJmw6kvhnQGs9xgrZSMeJWrnampDz3TRLj7fi2P5nsZX0dY4tmH4RQDUPSYGutA7grQ6Qwsumd1IiMC/bWsvfjNQGcGh8WosYjiMkqhGLGvrmLHNGiNhNmd5Yn21ov1kERX/Wi/suId69RJs9mbjz8+s4XL9TS3OqjcqekpOad91NkE8+ltkViF0ht7Q3qs5YtkAxy0Z+WGIJXOjxWFrd/Otm89M4YEHNYKYrX47SXZXM1HSSAozSWTFnd73caxoyHHEyFqJHRVa4s6nTOX06HT2dVGkM4Qqc+jK+dSAjTxXnZUO8nrN5aYHDQ39GUhNHVdzy8NV7JUGIQ3cTOy5MG30HzdP2LzrDKZpQsstsAJocDg1rJ4U2eXrndEY8cT+q3ACa7EkvaZNT8Z2
+X-Rspamd-Queue-Id: E1B0116000B
+X-Stat-Signature: ug7odq4jueoowa934qo4rq3sjoiwpkue
+X-HE-Tag: 1781684863-966314
+X-HE-Meta: U2FsdGVkX1+pav/68Urlklc5aWyct5qZTLyHMnGwP6SEFIE69sIWKuGmzFZkhSMHepfy38nor+91RHPfSIsCKnCJfLRsuOAsntmGMZ6tpRQDVcsCRcjJ4VUJ2Spm4bQxUV1VRNMia6BKcHXWI19rHjeV8Dpd/MRYsZH/hgOzkqMPql07AjOLeb6eqKmzrQTROGkMZqba4ymvNv9If1gdQ2Zjm0lEm5G4uNKj4rw5hYbqv5az+a7Dgg6xnSpyyPDS2V9fCSDxFidV9j77wpCne+6yOEToDQJAzh0RCVN+SarJ5N9GmIfcFAzAyhnD29ShZGkH8dRlrnjHL8vA2HEb2crFBpDAlWtcH0WWsXenzcHHSGqHb068L72MqWivo/UANMbc8XpbZYeTC+bSZdgOMZbV1QxqBATCScHFVxsoXTtpq3VeA3Iws8Kc7xnUenVO1vE2rGP5bF2d41WdbV4LjQ4cKwhrvrEi+BM5v6Bb2VyHATtmrs8sQ0T1D7H1CPBQ+joEjjboLKMFee0mlH8Il8J4mWOBjOcgqGDFz6+05gOPHuWPTYFI9r5s+y154S8i52tm9oyHySzJ7SFmPAX/42LPsf9522sPXDUG3Cq+iZGHnIhr0ac5denj1qjOBqXTnL/MrJapoCDfnVizdUD12oXuUZBoIr43/6QEAtLSFaeTaQoMUkViLsXGVUfNDx9iLMLzaT1RUC6lq1NbTMGTCaV1gYR9NzAlsDndtgueE9XNi0QKf3G2RUxW8eERLME22QPDXqprmxf9wj2fdn6/6GAIKJGHBqNe6R6c1jdfA7hgMtXIDre/OClNJD5F+Y+oQEyupr350zVqPiW8UHmnuzHo/MSGe3120ffEpmGTHcqv76oUBw2jx2OlmHbMtzy/v593jvh81Lp/fNZgFb3PWDtm/6p+oGmkbqK7gLMP5qX1McVjywuV/4bmH5QsGsHw4iTFDKir2HWgbBKEHc5
+ FjhmE1pf
+ 0oLT5DNUOJzzaVBm/O2TwxckrWzeAQfM3dyUr0hio5to1lnfU1k97TCnrP3BFzSUGkHBTic7xYekcZ1tgf8yI8uil4nzVZd9PHynAXtTssy23R/ohjehctK3+PTpsUjWPCFskBWTOwNeRH/kVsn8I8GqnvaTdE0vH7StUvyHMetwNDZPFWGN6CEOSUjsR3X+0Tkc/gt8992hV0quSTy1pO4rE1fn2w85f61X2T5l6ReJWexxqzVgWk2JhnNTITDzpQkJ3jAyNw/vLNi3/BUukEllTSNSIwLftkx3mhaPBUjmhxCPfmBP8zrhLgkBS72beupfK8QnQeO8YLWz+E6GWirFgrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,163 +96,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 10:32:11AM +0800, Lance Yang wrote:
->
->On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
->>On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
->>>
->>>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->>>[...]
->>>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>>index 2ccbabfb2cc1..21635fab209c 100644
->>>>--- a/mm/page_vma_mapped.c
->>>>+++ b/mm/page_vma_mapped.c
->>>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>> 		 */
->>>> 		pmde = pmdp_get_lockless(pvmw->pmd);
->>>> 
->>>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>-			pmde = *pvmw->pmd;
->>>>-			if (!pmd_present(pmde)) {
->>>>-				softleaf_t entry;
->>>>-
->>>>-				if (!thp_migration_supported() ||
->>>>-				    !(pvmw->flags & PVMW_MIGRATION))
->>>>-					return not_found(pvmw);
->>>>-				entry = softleaf_from_pmd(pmde);
->>>>-
->>>>-				if (!softleaf_is_migration(entry) ||
->>>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>>>-					return not_found(pvmw);
->>>>-				return true;
->>>>-			}
->>>>-			if (likely(pmd_trans_huge(pmde))) {
->>>>-				if (pvmw->flags & PVMW_MIGRATION)
->>>>-					return not_found(pvmw);
->>>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>-					return not_found(pvmw);
->>>>-				return true;
->>>>-			}
->>>>-			/* THP pmd was split under us: handle on pte level */
->>>>-			spin_unlock(pvmw->ptl);
->>>>-			pvmw->ptl = NULL;
->>>>-		} else if (!pmd_present(pmde)) {
->>>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>>>-
->>>>-			if (softleaf_is_device_private(entry)) {
->>>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>-				return true;
->>>>-			}
->>>>+		if (pmd_present(pmde)) {
->>>>+			if (!pmd_leaf(pmde))
->>>>+				goto pte_table;
->>>>+			if (pvmw->flags & PVMW_MIGRATION)
->>>>+				return not_found(pvmw);
->>>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>+				return not_found(pvmw);
->>>>+		} else if (pmd_is_migration_entry(pmde)) {
->>>>+			softleaf_t entry = softleaf_from_pmd(pmde);
->>>>+
->>>>+			if (!(pvmw->flags & PVMW_MIGRATION))
->>>>+				return not_found(pvmw);
->>>
->>>Looked at history a bit, and I wonder if this changed something old
->>>here ...
->>>
->>>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->>>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->>>including not_found() cases. So lockless PMD read was just a filter ...
->>>
->>>With this fix, true case gets final pmd_same() check, but this
->>>not_found() case happens before taking PTL.
->>>
->>>So a !PVMW_MIGRATION walker could race with someone, e.g.
->>>remove_migration_pmd(): we make the not_found() decision from old PMD
->>>value that still says "migration", while real *pvmw->pmd may already be
->>>present again. We return without ever taking PTL :)
->>>
->>
->>Hi, Lance
->>
->>Thanks for take a look.
->>
->>I am trying to understand the scenario you mentioned. Let's say A migrate a
->>pmd and B want to unmap the pmd.
->>
->>            A                                        B
->>
->>  try to migrate a pmd
->>  pmd is set to migration entry
->>                                           unmap the pmd ...
->>  managed to finish migration
->>                                           ...still see migration entry,
->>                                           so skipped and unmap fail
->>
->>Would this be a timing case? Even B grab the PTL, it still could see migration
->>entry if B visit pmd before A finish migration.
->>
->>Maybe I miss something, look forward your insight.
->
->Right, seeing migration entry while migration is still ongoing is fine.
->
->What I meant was this ordering:
->
->  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
->  CPU 1: remove_migration_pmd() restores PMD to present
->  CPU 0: returns not_found() from old pmde, without ever taking PTL and
->         rechecking *pvmw->pmd
->
->So issue is not seeing migration entry itself, but making final
->not_found() decision from stale lockless PMD value ...
->
->Before this patch, PMD migration case took PTL before making that
->decision ...
->
+walk_page_range() performs a find_vma() lookup on each page table walk.
+For callers that already hold a valid VMA and operate on a known
+single-VMA range, this lookup is redundant. Replace walk_page_range()
+with walk_page_range_vma() where the caller guarantees single-VMA
+semantics.
 
-Yes, this patch changes the decision making condition for pmd entry. Thanks
-for pointing out.
+For mincore, walk_page_range_vma() skips walk_page_test() which
+normally handles VM_PFNMAP via ->pte_hole() explicitly to preserve
+the original behavior in do_mincore().
 
-Hmm... I took another look into current pte handling and find for pte entry,
-we did two phase check:
+Kefeng Wang (4):
+  mm: mincore: try per-VMA lock firstly and use walk_page_range_vma()
+  mm: mprotect: use walk_page_range_vma() in mprotect_fixup()
+  mm: mlock: use walk_page_range_vma() in mlock_vma_pages_range()
+  mm: migrate_device: use walk_page_range_vma() in migrate_vma_collect()
 
-  * map_pte() without ptl
-  * check_pte() with ptl
-
-While check_pte() do extra pfn range check, map_pte() doesn't.
-
-This means for pte entry, we may face the same situation as you describe: 
-make the decision before grab PTL. Till now, it looks reasonable.
-
-But one thing jumped at me, PVMW_SYNC. When this flag is specified, all check
-is done under PTL. But now for pmd entry, we don't have a chance to do so.
-
-And as the comment says in try_to_migrate_one()
-
-	/*
-	 * When racing against e.g. zap_pte_range() on another cpu,
-	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
-	 * try_to_migrate() may return before folio_mapped() has become false,
-	 * if page table locking is skipped: use TTU_SYNC to wait for that.
-	 */
-
-I tracked down to commit a98a2f0c8ce1 ('mm/rmap: split migration into its own
-function'), but not getting more detail on reasoning. Not fully understand it
-yet, but it seems there is some race between migration and unmap which is
-protected by PTL?
-
-Will look into this to get more detail.
-
->>>Not sure about practical fallout, but should these PMD-level not_found()
->>>cases also take PTL and restart if PMD changed?
->>>
->>
->>-- 
->>Wei Yang
->>Help you, Help me
->>
+ mm/migrate_device.c |  2 +-
+ mm/mincore.c        | 71 +++++++++++++++++++++++++++++++++------------
+ mm/mlock.c          |  2 +-
+ mm/mprotect.c       |  2 +-
+ 4 files changed, 56 insertions(+), 21 deletions(-)
 
 -- 
-Wei Yang
-Help you, Help me
+2.27.0
+
 
