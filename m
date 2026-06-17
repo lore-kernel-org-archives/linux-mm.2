@@ -4,120 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C587CCD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:17:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A31C9CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:17:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A73906B0005; Wed, 17 Jun 2026 09:16:56 -0400 (EDT)
+	id A275E6B0088; Wed, 17 Jun 2026 09:17:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4B8D6B008C; Wed, 17 Jun 2026 09:16:56 -0400 (EDT)
+	id 9D8696B008C; Wed, 17 Jun 2026 09:17:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 960B26B0092; Wed, 17 Jun 2026 09:16:56 -0400 (EDT)
+	id 8ECE36B0092; Wed, 17 Jun 2026 09:17:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EA126B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:16:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E26191C1F9B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:16:55 +0000 (UTC)
-X-FDA: 84889454790.27.9E0F6E2
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E69761C0007
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:16:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q70hf4ek;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781702214;
-	b=y0VNfA+RQLb0EIvWlfAyHu0nGnYzKlWFUk854ETuHLB0RmOAJQTKbBxe6y0cvswkweDA5i
-	sucY2+Y4nuvmTGf9vEM4iRuJnI7o0pAz7qkknPcRR2uiSwlVsbL/kdWqMPilenOf1LqQTA
-	oL3NCNMVkCNcfXqNGnCA+9VR6WG0V3c=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Q70hf4ek;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781702214;
+	by kanga.kvack.org (Postfix) with ESMTP id 5443C6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:17:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E5B141659A7
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:17:36 +0000 (UTC)
+X-FDA: 84889456512.08.DA92F53
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B5CB7180010
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:17:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LqsErQD1;
+	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781702254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3pPCU6nCdJvVHJbZRjEnMddaR/VZZZQcrWepUMo+BZw=;
-	b=bvRMR732zyS4RrW3rXEPORpzWoiR+kxKliDjkHxMftJJyQkBxW0jMHfJKzqhAb+pFXbC1F
-	nGy5IEaKr3V0jtEjOtWby0sAqOui23EcVcOoUv09Xg891g7ZSK1tnp2sptnnJ9iGduotj7
-	Oos08X2ZCIznhJ2UeQglZWkTD7kjRVc=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4923139e940so11264095e9.3
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:16:53 -0700 (PDT)
+	bh=RwC8e8Lmq0O5HhDIZSANNcyMzpbq38LuCnVbAdWRbDE=;
+	b=7q9p8YqQcqg7G6lbiE1BN6N8KLxXRdymsGwP0jRbb2vvr0XBri3m5vkG49FHUwri/+y6qm
+	/oQyWIkVQ3a8YBCxf2UVped14cfJHaBzvE+AAPCY3+pokUmKsymamhFQPTiC40LFJFzX1e
+	9QbdyGh+nL9jxqEcBFUxxjPDjfF6k5E=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781702254;
+	b=j5PpPOVUXKJZQ8sCo25YIunIV2cnvSmsq9HCEqqWJnt4a4VSM2zYGdzpXbEGsz+hLNa5rr
+	B5V8PnBk8SxDkn1nNXEKGmTR/qmTay4+BIltMKyWK3anlbZhouyvzO3MqJxX3nvaXhz7FG
+	8vsw5IassgU9+aY4Va9jwnshnSIPOn0=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=LqsErQD1;
+	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-13986d61b4fso1923968c88.0
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:17:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781702253; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cVVqXrncJbpD2lzYs6Tq6tUykKb6yWnv+wAvqYg9PXlp4UoD6FbeVcXX+ZY9H/dyFg
+         gLJhOUGLagSaZiEPc++Y1LKBkRHd942t2F6FMsCGJzqOsNnDk6rqGbil55rxgNw5gDju
+         iqVQYtxqKQ5i9somowedhO5GnQS9y4cBrbnK2lz0xQS6KdOGBhFf8W81gGAAY3lI+KPv
+         oWvsAnKN2b7L/YWNLRwEXzs1IueW8Vie9v/qNlS7wIsg9Cntgd9CUrQA4PyQvgBm9fMp
+         f8nPxxmXRqniOhJ/f+zs+XbVWVszelfFW9H9WNnnpYY4vym1c2EeI3kAG9+/nQ4hiYg3
+         n4Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=RwC8e8Lmq0O5HhDIZSANNcyMzpbq38LuCnVbAdWRbDE=;
+        fh=aEvYyVz6Zp+tuCmjqRiGWuoxJnQJP57+8hqsWVdfmpY=;
+        b=C+3AV88bS9VkyRHjVfDRcfjG6QaL5Qi2Ir1N+pQcMcjA25Pdo/vvCEwRXAcy320AW8
+         3Bh33nN/fMesY1GqtljHyTwJeEKm9Fhdkmw4svyKaeKnyhvHxc+2V+QRMrEDw/XviwDQ
+         fYYeTbv6scdlmN8V2drXqH5yupjN0+uKwyqDk+oNbRjv7/djLzoSfJCzYig+VJQ5c1Ds
+         Ldk7Xou946JmvUv5QyuYPFOAsf5T6gZmI8arVtbze/wwTWdAbRQGLG8R0d94UV1hN9re
+         nFg31BA2+Azf+z21JaKb4VtmzJtbyzVDn6OCNgwJFyXvikSQEOx7XLGEHjiYZbKvYCgl
+         CcAQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781702212; x=1782307012; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3pPCU6nCdJvVHJbZRjEnMddaR/VZZZQcrWepUMo+BZw=;
-        b=Q70hf4ekV/P/GUqV5MuqiiGw/j9/N3qWI4b5UUfpTt2zBhoD/EVKfIKNDrGou54oCv
-         uFNB2wtHQVoes5SM9fg17U7OXYvjJs5Q/k4Ghcf8l81HIhHTCHG5JmnJhG1BnF758med
-         Fl124SQ1Xn0kQsxnwBWRRk9jmghzCi/yMCCbC14vBV3zpGNU55dXxHiQZhi39tgGqk7a
-         /kjYoAoXIqaxDmlVLwUNWVEx/TpiLLDv2VZQ+eU6sCPYte0lK9VOWtBzQ/ba+PD6C6ej
-         M9WfRlVjSHbqi+dAzaC4s4rs8vHIsVRX7NBh5e9WcA+OMXUenmYL8PH5e1xHWd7GbwrS
-         ynPg==
+        d=google.com; s=20251104; t=1781702253; x=1782307053; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RwC8e8Lmq0O5HhDIZSANNcyMzpbq38LuCnVbAdWRbDE=;
+        b=LqsErQD1Fur3cmXtnI4913xfW4qGWyMpm/XdD/j4ZrwDOdwYoJZcJMcSpWjF0SMtba
+         UMAYIqnD52Vd4iI1Ycd6QChDEZclLEJN1sBLcNV6PJK2q3lFacPNg2B3oVJzpxnmy2w8
+         Pm5lY4V6Sta5Bp/SF1W0dvEduIDO7Usvb9LK8zuWc//gFCIaW77LdfVXm/qmYbpckyqQ
+         oH+3bCJxCeWzaTZs3NgyuAeY0I4yNoq8oeIiEWlda4/zyuGUkz2CwQUHILmaGmswWnwM
+         ntqJKBzhPglJYoUD3nH2Pc4RcaA7myO10+ch5AcPnjK3IjiMcjWz6CKmBzS5HbaQaBoA
+         YUsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781702212; x=1782307012;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3pPCU6nCdJvVHJbZRjEnMddaR/VZZZQcrWepUMo+BZw=;
-        b=H14TnEsffTu5y65gIDWHiNn6uZ6afyTPTW6tJ1X+AJy8gvI99tHh02yU8+R6FFxJ5g
-         PSl5ASkKo3Wyp81zDc43ILBWZz4hdQTmqJIXdodBO7ruyIJ7XfVh86z/KeklrV7ZRtx6
-         apGzZXK4QCpn/sdRIe5bKp12san7jOYE9B3pgmVEPNCjo6u4TcVjjy8qpw0cboPukBgN
-         mWYETB4aDTLp8ZT+gNrdy7DfZzaUjIJZ+JgHL7FWVlZ7RnnXAZQvPx9BsSUc/VmumJVw
-         zxcB+dmtSJGURbhxIoWZARJV/raLE7n+6dl7eh9T/qjRKtOT3ZiRAcHtuw3XgvwabbT8
-         fOmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+vX+7mDctfTWZx7AijqClI3KdH5qu6tZexU90qBwLZB0R0TJlqkk8mZhik5WAPhumsWOIBb2y9vg==@kvack.org
-X-Gm-Message-State: AOJu0Yyty9aoppIe60LqFHyHJC5q+wPyVoPsknhyC7Smc6HR+3fjwC0Q
-	0sOBR9fvsj1inGLZwHQK40vuUsSWGC+pVXPQK1A4SNalF8KgdWI1YTb0oLYkasBm6j4=
-X-Gm-Gg: Acq92OG5zDd5kvd/ECvtGoow65/PQ7GhDV6QOZUsTNK+nHuX/Z0beWBHgmihoQnnxd0
-	SHC445Q5HVS4Pyj/hraAfSEjnxvilthZkxadhHc3laTlD74MzdxdqM8tsRwJYfufxBpcfIPp/vi
-	ihfeq/qIsLrcjv2kvgZFBUeHXkMbsEe4B8MjnjEA/hojY9gJlcmZITsyhPpG0DC2yU3dHfwiMkP
-	/jJpC44UMyIuL6XRBjcbjEiwiL+sOXrK1lcuMTkL9+M3K6sJOudXE07HCeS81seanvpFNOGRlok
-	EmlFJ6sP2VwhhrkvfGhn1Izy+njIV/5k2xgJoYyPMh33CNVnUYhOdCsDcIX0yo2RQ3wjYJ68a57
-	XPPBWK0zZLLDQpUCKRuCc0gxgnCKKYhGAydC3C9CTk49cZSIg4z0ptx1D+aseEEbPfUiYb4/TeL
-	ttWvVo51At5BqqyJnJWM9C7t4=
-X-Received: by 2002:a05:600c:4f93:b0:490:bb3e:30b0 with SMTP id 5b1f17b1804b1-492340feb65mr46215015e9.4.1781702212016;
-        Wed, 17 Jun 2026 06:16:52 -0700 (PDT)
-Received: from localhost (109-81-90-71.rct.o2.cz. [109.81.90.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa891acsm164250535e9.9.2026.06.17.06.16.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 06:16:51 -0700 (PDT)
-Date: Wed, 17 Jun 2026 15:16:50 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Dennis Zhou <dennis@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Vlastimil Babka <vbabka@kernel.org>, muchun.song@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v3 3/3] mm/percpu: Avoid IO/FS reclaim in backing
- allocations
-Message-ID: <ajKeQhvsPwjjVLEx@tiehlicka>
-References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
- <20260612022648.13008-4-kaitao.cheng@linux.dev>
- <ajJETfcD2XzzpR8w@palisades.local>
- <def64c45-bbe0-426a-bba1-9ac9e4db672d@linux.dev>
+        d=1e100.net; s=20251104; t=1781702253; x=1782307053;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RwC8e8Lmq0O5HhDIZSANNcyMzpbq38LuCnVbAdWRbDE=;
+        b=kLvxw20ilCdADCXfAO9/SbiHf7WPha+O/LXmVBFax7+KkMP6l0Lu+dGOT0le1l0jY+
+         6vtrZF3n8lSvfAHagBRCIjzBR0/egCYzO18RDVItstriUtOosZC3c/dMXwrMcLnJXFyz
+         eAD2T09tDuegP8YmCDejum60ZTFP4hPDC+tDWhOygh3g49aLytVH0ZptvVYigt3+YJIp
+         RXyXlObkB9pfRAefvRte/j9+3szFnzzVeZwvuOzHS/+yJI/zGWhZdsenvxiHJR+GMaZV
+         SoiTWfU8uGZc9xofL2/sFcEPEvKhbqyg5qvJt14MVOQqZ1eRyN+zM9eklxmqNmy3sSJx
+         8fBA==
+X-Forwarded-Encrypted: i=1; AFNElJ9YD6Mgl9AijhhXeOfFCk3T9cpS0lWJ14XrWlEmPfSQThlIdiVLs9LV3USwjj+shijUN7OxukBF8A==@kvack.org
+X-Gm-Message-State: AOJu0YxgmlhTSK7i65dQujZW7TpELKkIJ74op3KkAlrcCW2r9/F5effN
+	XHxEoB4ww224mTngWQjA8vMW4hdE9a0nBlffPaOom1uaZQ6UdlzUxpqlEWkvDjlrP5GQWgeSXLL
+	FtkRPtbkYeN1xl+o3hEHS8NSHqMj8IwBNOS6j2NYg
+X-Gm-Gg: Acq92OHzPhbOUHqXXQEoGgMAg26Ir3EYYhadQxTz5BEbxCmkaEgN69RBRlfXicJFjwO
+	M37Myd4XW4BnkLOrWUMCdHqOvI+VyWPjoDvo3Mj3Tl+Flw2+kQNoWW32lAcmpo56i/jqf02PrP7
+	WhtojaRgp1gVS8YCVsFwHVnCpuXnQipMxc9HHmZGpn5eLCL3fTmWcuVNF39gInUXLpydtAj/yTp
+	paf+nqRAI30uiNPyBuwCsSoDYM6gp2tpY5kzrC8LFw6Bmp7Rz0QGBGLh6L3O9IE77IJ6KFw1Al/
+	lLU9KWCUAbQqOaRNEO+ETcBJ0fu1
+X-Received: by 2002:a05:7023:b0a:b0:137:fac1:c062 with SMTP id
+ a92af1059eb24-1398f666456mr1449795c88.7.1781702252499; Wed, 17 Jun 2026
+ 06:17:32 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 17 Jun 2026 06:17:31 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 17 Jun 2026 06:17:31 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
+References: <20260602-memory-failure-mf-delayed-fix-v4-0-a5bc7db5a9b2@google.com>
+ <20260602-memory-failure-mf-delayed-fix-v4-3-a5bc7db5a9b2@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <def64c45-bbe0-426a-bba1-9ac9e4db672d@linux.dev>
-X-Rspamd-Queue-Id: E69761C0007
-X-Stat-Signature: xfspxa6furopthnywxpichk5s3jp1ci4
-X-Rspamd-Server: rspam03
+Date: Wed, 17 Jun 2026 06:17:31 -0700
+X-Gm-Features: AVVi8Cdef2qXnvj8kjBvz8bXKzlY8rIYk_kwyzXVJwqQ7pJ9jLNjcBvloKBgS-0
+Message-ID: <CAEvNRgE2iqYpEy8F4df2b=zegzqmJAgVJs5xz2KD-jxe+0GNMQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] mm: shmem: Update shmem handler to the MF_DELAYED definition
+To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, vannapurve@google.com, 
+	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com, 
+	dave.hansen@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: B5CB7180010
 X-Rspam-User: 
-X-HE-Tag: 1781702213-925063
-X-HE-Meta: U2FsdGVkX1+dC8CXUoZ3N5vgDCAJ0RA+uqYEyX15bYRmdPo45ctQFWewwVckDMpra86hQGOjbDPzmulGOYL3Ww7nkWWzDu88+9fprZB72Iy7CdCmJ/+udqz/7f5sjMty9FRgW9C+bOb+JTDtbcmUdQ5mXh2BAOhunxE27GEUUrakxBi8DspEjHYJxF9bcczvqBlvJNJ7qdmsh01X+tFHYvbsYzHt2Cd8C0BREOKN/4KLKAVlLSNCb6yuSeWYh8zqgrwD5Z8sNOVnKIW7B9qx7WHi39jnAtCsPmbIgyYqRIwgO8pGJ8/JFapKt75TkPAkT86JnDnvuiXkLoTwk3PsNpHiputabdH7sbXI+9fQGw2V+QLcePlXwsNt2VEvICWq2ljoEb34k3UapOtMLLRwRiMhU54FmbKKQvyXHmV7PJ/XS5ieVseiGqS3p8f3w7PZcJtNyu92zG5Hp5kTNfhENAboKUBs6g84fE0ZIf+m87LkUiNP2r6iBdHpdKtaNGuJLD3VtQIs1Q2amGcZx5ymJCglARBItp7xCO0DF9Fap29M2gyEOV9kUx75/1aqwMHGG8DYbSDx+6cw0nvJy8njrk/xTQne0ipsklIGlCuxvCGP/k3X7jF33vpNN21InS3sJ6znv+OCRNVT1nNTxYE7qYDgKWhj2SLBnnEUzWR93wotLwySDRpnUL3A2eFQx4pRbYzvQWCDmCdabAv9v3BEdHZI+Za0lrXgkLVI93gQj/jX6ajh8BcO4YzXZ7JMSkcGs5f2ZAx9rhxhz4CpAUBaPW3IdYFHD5AnYo2kgHy2zbpcXcD4eJMehIcZtwE0Wx0CtGMwcy3eqLFX4nikL5oKzLWqQ8eE+kYXNUpgiVTGV7A4A1T1B2L0buafZs+Wfqng5eGvzQq9TvREStcZJS2bBL+XfXMUJoWcNCbAWHmCvMS6SChSTb1GimKx0yf831LxJ1UipVuxbhxtvvjBlM1
- PrxKW5Bs
- Z9xQXEwLH+BE4ESYSDMe6lqAFVOge0H/GEcdlvV9dkJjpuiGzjffu8muhIQO551q2U9lzNoeKWdAj1WB3XzhytstndC5KPdP1gNgCb05rir84ntfNB/SFhCcswJ/5wvSqxB+y1/O5GkVMp5dveO/xmO1PZi4B0MHiunUrC4V2DPP0CNy8brXdjGyQZS32ST5jvsBApNysdEqRAbzkVvnjQvM+YIceZn9dnNSmeuCa3m7EjEyPdrlgFUnndTiylh+ZPbhx7J2NVV5tIjEmEdsa4XdO0XfbjN1kK86fTDMsNrTFBOOOht0G/z8wmVdwc8cnvTYSBjrAn48GwnB0K8hzLf8okUV41aCwBoAn3GQ0rzw9dS/lgADJCFirHJfgjtau5L0e
+X-Stat-Signature: cr7kn5s7eijbtkf4ndnkaxxqpbd9k9kj
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781702254-306568
+X-HE-Meta: U2FsdGVkX19DQaeOHlCf3vWtBsU9djwxSJF/VgXRO64Zj7HmT84egFptGdXB8xEsjzS/DVirJW7QSvSzofbO9JbjgaTQ+zMCenChGrWn2QtPP5Kvu2kY1VNBS0gbWH/XG6UgYyJcoow0xoTptCQAJpT0bNrEshzi3brEJ03t7gLwB006JiCReyGbgUuS2qMPByMLGwEd5nq84Rs01+fBRUTJGwgycS6S9O2/7WeLlVddn9B2pUUzXGyYdLjjgZBgoKcKDPw3igD3EaHM89aFPHE96xAu6zNV6BhrYrqLrj0Gh5DLU5jz/9AWaonlqhdsjOsMJuc7uM3omYGg4MpoELOMpeOqeWXkE+1I9L0BSOM1cFAO1TYj2Mn8mKn4JitYT42PvSTPCKqrRe75qJQfK0J91dYvEa257jdSlOFSdlX9g/VGdnrYx3I+HBRSfKp/fxu+fC8d6LJhXlr8VU2Yto33HT6gSBQ8JXKiGBKKOaoeQMLs5SYFqhs8PYmNyxVBmkvId6R4GEL4M6Rhx4/gzgy622rsUzZKrMB0d2adM0pnuYrWvETnmCwL5UeQl389wSDRWtBweXfhJz+TwidrcI+NB8GYXzXuTxzTetpZmsk+AOYFDHEUCt39miKtJ6oEypu0wunIAhjyyUjrdmgFBO6bEmWsuYT/wJcVVoSNAXfrv+sYjtxXIPQodroH9WmKxIpStGQHC8RTx1QknJ/p4FQU9KgNSFoXezLd/gpmVADDNbkLavAlUDWfBJzuPNC4UzJApvYgcb4k+lB4pqkC79+HMlN0SbCTCfJeAzUXbTwohhaJWxzekFXVn3Rf5eu0qC4QZIk2PGxyn5FhLwXEYCetK1hvLrEoD3DdEauYFESwXpvx8fdcUyK+N5BcmRDGqxMExV/Pv5oX2IBaPODlSKOtfLRPgdmrjgyJEQylGYnZ5anFHRkdPAtBILkvzhhca1l+K122sUysWdpA4Gz
+ h0/5D8DB
+ sWjVaP2W5gAj8mWAWC6gxsiRts1DEz9or7G8/jZU/YP2pXNInJp021VhsX2amNHrSD76JspAo2Rhl5XgwDUSTjQrSwCsxbUXAh0Xs+5UMHnKQHkXNzSQX6TaB8N3jArYxmJdht/5GG3UrW7OhJuO5rjurwgcjF7aLH4nDqgagPhV+u/7vMD6k17VVdE7stddV/oSV5cyyBklq/XYD6CFwTEWJzbVgVmrBhfRerGcQiITQgHD/UxdvLhxz7TZkUx44nAKdClN8h4A3wtXSywFteuzqsW1DauJXEYriwR+es/rQiz5jGpoUSQrsMYQxvGRQINA98Mq3pw2V0yI33yTwrlxMptwsP5R8jUizfJ7pjj3l4QJLEf5IldS2YeBNpJoSMxcHfydmS3AB4h9TMoPDg5myJwzvcG/CY7gHeCZEXrjYxkHX61gnmGP150aeyirx8qfy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,25 +149,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 17-06-26 16:56:56, Kaitao Cheng wrote:
-[...]
-> __GFP_NOFAIL is actually unnecessary here. The main reason is that,
-> for now, I have not found any in-kernel callers that pass __GFP_NOFAIL
-> to pcpu_alloc_noprof() or its wrapper functions. The reason I added
-> __GFP_NOFAIL was to address the issue reported by sashiko, and I
-> provided a detailed clarification in the link below.
-> 
-> https://lore.kernel.org/all/3de3a89b-92f0-4cd2-9f41-8e853eae4e78@linux.dev/
-> 
-> We should probably revert the current patch back to the v2 version,
-> and then add some comments explaining why pcpu_alloc_noprof() must
-> not be passed the __GFP_NOFAIL flag, as suggested by Andrew Morton.
+Lisa Wang <wyihan@google.com> writes:
 
-Do not add support for nofail semantic until there is a clear demand for
-it. Supporting this semantic is a big commitment and it shouldn't be
-done without a very good usecase in mind.
+> To align with the definition of MF_DELAYED, update
+> shmem_error_remove_folio() to return MF_DELAYED.
+>
+> shmem handles memory failures but defers the actual file truncation. The
+> function's return value should therefore be MF_DELAYED to accurately
+> reflect the state.
+>
+> Currently, this logical error does not cause a bug, because:
+>
+> - For shmem folios, folio->private is not set.
+> - As a result, filemap_release_folio() is a no-op and returns true.
+> - This, in turn, causes truncate_error_folio() to incorrectly return
+>   MF_RECOVERED.
+> - The caller then treats MF_RECOVERED as a success condition, masking the
+>   issue.
+>
+> The previous patch relays MF_DELAYED to the caller of
+> truncate_error_folio() before any logging, so returning MF_DELAYED from
+> shmem_error_remove_folio() will retain the original behavior of not
+> adding any logs.
+>
+> The return value of truncate_error_folio() is consumed in action_result(),
+> which treats MF_DELAYED the same way as MF_RECOVERED, hence action_result()
+> also returns the same thing after this change.
+>
 
--- 
-Michal Hocko
-SUSE Labs
+Thanks for explaining here!
+
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> ---
+>  mm/shmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>
+> [...snip...]
+>
 
