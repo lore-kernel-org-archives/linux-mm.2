@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C02CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 09:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03367CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 09:36:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 932B66B0005; Wed, 17 Jun 2026 05:29:11 -0400 (EDT)
+	id DFDFB6B0005; Wed, 17 Jun 2026 05:36:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E42C6B0088; Wed, 17 Jun 2026 05:29:11 -0400 (EDT)
+	id D872F6B0088; Wed, 17 Jun 2026 05:36:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA1F6B008A; Wed, 17 Jun 2026 05:29:11 -0400 (EDT)
+	id C752D6B008A; Wed, 17 Jun 2026 05:36:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1CA6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:29:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D73BD8D5AA
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:29:10 +0000 (UTC)
-X-FDA: 84888880860.20.19BFCAF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2C7884000C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:29:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ka9YkXJH;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98C016B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:36:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 203E6165B67
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:36:38 +0000 (UTC)
+X-FDA: 84888899676.30.B268770
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 80604C000A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:36:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUcZfZx2;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781688549;
+	s=arc-20220608; t=1781688996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bl4HHza+GTCgy+MYtBFrYAN0WFCZBYUrBco4XR9hSIM=;
-	b=VrIm4GdoOJbf4pG//ZB9jmT5wIOVsYvJ59Azm3q3sK07zOJzHW+HIcPx9eimYaokB3LWDS
-	ojFWVj64vcRE/L5gCtg8Qe7OJCPs5yCwj+lYH3ML3W5ExI/fpFtz3ZGW190noxuqAirmi3
-	V0OyaE5QXq7xsLYlXxkSN2OFJhttOFM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ka9YkXJH;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=apFpL1e7Ohu0dfTLu6wmaybdl1sf57ZeY/cr6ue447Q=;
+	b=y3QuwxEVISkFeNiIzNqbCxuCKt0uE6YuE20NktS04+pgf9p8vwuG/kmHh6JGk2sSCvlnsR
+	sjVGvXwzVTVIN2aE0VVnCvqNHhXCyB69mw0uKLAESFFpC468ZTMj3I9d0VmhXYx0nT3SQ1
+	3Sd5PopjqUsBzLmqmJMSKdQ1FGWXEiI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781688549;
-	b=u48Mmj5GqtewAwq6ffuHZiw1PlYTlEkJ3NIn9q1BuhwVOHkavwtgS87Wu17/I4s0grj4AP
-	WfJAlCqZq5TQTOQ9TceohoUb37dqp2EC5JMRIL2/gQt/KttHr8DmObKM0l2ohlT6R4Ce2G
-	NX5YayWm88NA6nYIt4DZkSbeeP09JFc=
+	t=1781688996;
+	b=nbSwp5TizlEpcFWbhquNVOPWCHQum9c0DWMO/sQvKLEHnq3snRGCgr+dKtscIpvI10iAX3
+	TkqGktoJ9sqJ4eQFsFJ7v0ZS4GcvU03IbwVevBwZHFUHkwP4eTWVnTspkseS8LSSb27emE
+	dU2XV2pwFWDPcueRHbxaTyYBu2wjfHY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iUcZfZx2;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5992E43260;
-	Wed, 17 Jun 2026 09:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB111F000E9;
-	Wed, 17 Jun 2026 09:29:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F1825600AB;
+	Wed, 17 Jun 2026 09:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F6E1F000E9;
+	Wed, 17 Jun 2026 09:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781688548;
-	bh=bl4HHza+GTCgy+MYtBFrYAN0WFCZBYUrBco4XR9hSIM=;
+	s=k20260515; t=1781688995;
+	bh=apFpL1e7Ohu0dfTLu6wmaybdl1sf57ZeY/cr6ue447Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ka9YkXJHHhSQQnBqIKSEgvcoiOLqdDtfGSALn/LNvuy2b8RTgsJp39DWDURwtGQjI
-	 sxCeuYAXlA5pSal2qPm/tbUTvwxjWEMJbdbhe3Y76PO6dSTd2i31kqupihTqVaSl4i
-	 0JyN4HwOwONPu1D2Wtvg7oltowBDz6evuehFMSRiDpA1ZDtSXI/LpoC0R5CPrLuoTC
-	 urb0kRVqbindWU5aebR7rtwOvjto39JuIenS7fz+LK4UphhkHAxvRYz1BmzheVpDnG
-	 IrKSXMSEAfhYxtwtNl3GiGSXwszvgmEBUJPuBpUQZRq7cEDjahfE1FQq/U2DyvZC2M
-	 OP5ICXShkpTWQ==
-Message-ID: <64c1908f-a46e-4489-8f1e-6dabd8afc8ae@kernel.org>
-Date: Wed, 17 Jun 2026 18:28:59 +0900
+	b=iUcZfZx2htTGVUMnfQK3FveqDTIDwSfOiCNAFKqjTunLhJAA4LbCoZksU57JMWqhb
+	 E7zKfLx+KjxB/1F3hRN7ld03Xnd4OOAYpHLxu2GuD0GMG8AmH1LJKd9bS62vKpMj4Z
+	 RkdTlxSlkMR+rNu/1d3sQxLXUtfrLURsDYHfDaJ+DlBTcYmit5UP7bkPzmaCU1gn3r
+	 O7UY29DgPoZVyu3QpP93j0KtDKpgFGCEEPQFzPVDtEFbA9MRSZfi9rnx1I8KjtN4GQ
+	 cNATgsxQvnSC3Fdg+eLYYLKEJcB0OO4RwHDKdAKT0x0/GbdHjjSPFo0U36HtaTIqeM
+	 6R6aTf5QR+47A==
+Message-ID: <e499bab7-9217-4bac-848c-fb1472cd2c00@kernel.org>
+Date: Wed, 17 Jun 2026 18:36:26 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/15] mm/slab: allow kmem_cache_alloc_bulk() with any
- gfp flags
+Subject: Re: [PATCH v3 11/15] mm/slab: pass slab_alloc_context to
+ __do_kmalloc_node()
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  David Rientjes <rientjes@google.com>,
@@ -81,21 +81,21 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-10-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-11-ce1146d140fb@kernel.org>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260615-slab_alloc_flags-v3-10-ce1146d140fb@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-11-ce1146d140fb@kernel.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------iK2XvNSkWB0k77xTG0u4rrFL"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2C7884000C
-X-Stat-Signature: 4hkrkbpheqiojqacezyhqzbewfbxwuch
+ boundary="------------rWUE760itSiMGFZhE7U2S0m0"
 X-Rspam-User: 
-X-HE-Tag: 1781688549-442343
-X-HE-Meta: U2FsdGVkX19kpLOo3TtZC6Xo4br3NNq7Z30RmR9WLDSCgU6bPZJsDkP5bfX+6SXp4veMNl3NJ1t/q4dNNdaEQWpWhbpe78LD5M0ISSZGJ0cffjZ3/P7vL6BPihKND/6t8GKE2/Jy+XRwe5+4ZZA8fPIKH80AVkHWmsP+avx4aIiwLbvKnCagiOT0aSYqxkQtK9NgveFe6Y3EAewvX1Hh/HwhWVGS66bfBSi71vR1KIhAtXyNObXbnL2DfoKmeOpKGb9nYk3gVBC92IzDg9+BuYT3gZzSgAKK9e4pO9bTxrz6OFr7dSaITED5AaQ/ZziX5aIhObZTMLKdGaUKbrL6nVEQjJ7otGGz83oxUcGRYaUiXU2Ywe4MCal7nEzlqRZndJMXQQ4HNF+2Jbsf5pCKlWe3ULx982V0Tg/5H04cqqGLibK5sU8zv/Z05RRGF3Q3XrsWwhVPpcLn1MtWHY3u6W8DpUSTPzdvmu68csAywteBXB8pWSrT/87A9lj/Je7vwloO2xhtcCvw58nJogQVRg36nvT+0t+/7Shl+4aSd6VH0SFv20AHIrRlQzg93nqwsbHL528kuzN3acbzTNZjf4qU4rswJ7/klEKnhN2ZrvOW2OAq/dMQVecrRyQB+PwnODn951jbUJLcH0Hf0CiIaGj9uIEM5i2iEBwDt9CGmz0kqyVt8f1iPdd7FWPUDHJIoNUCxxit/ldzqGZpxlGdEVbyt0NaC677/cq2B5W7hsGsgYtlBOYXqHUDYJRKVPb/8UOGhM9ZHdO0PTUO80lntud6Aq+4tuvgrMYQuHQZHGNGswbbvv9UrPxouKIGGacNb4r9n4WXED/BkEM/IwQbXa1GQzjZ4inWoyhNpSXAm+hAAzvU9o+CfUUWCaV11f0V91p5dA1EbWqtdUABtvEsG9I/n0fnISBLw3qBdaStMHtTwyR09G6QFqyHXKYo6gAtDTQ0WalbbSTA1n8IttG
- qctOp+di
- AjNaLPzJsUjjDjxOGyYsfiu0aZwR28trgGRplQpSbUMHEkMmFGeghP0rb/J71/0FXNI/vRAmfHso8u01PDF8cNUOxAI7gkv5a09hOFoIBW7LXwh6SuVx6/q/SplVD/xDBNqxMXwwM7MDlzHTq3euEdhOjWG1VuQgMcaChDF/A88BS7q25mMooidPmfJT+pzCLlDISo8c+qV4ZBcFUu3GLCf/sk2iFz8jCh2KsNFX+kabjfSvfwAtgzbWBeRCTRJ1OVmFnhU7xS33f/EzsGOW+Ju4X52NwY/W5VMn0iAN12L5eZkO3Ly8/PvSrRptWJCMGJ9Q283qbCGMyonssojloCfaSQOksEClgbIvD71vTf3NR4iVZ3B1a4h5N9BnXuim+Jl2yyyKtfxbEkW8K0IuBz3NG+776bWeBv4tVymwTLXBynZDQQQ6iTX5K4AhzTmZMut9bfmA5CdCSIS4Fq3wkEH3S6JIOaMDtEFJ5s3QA5qzBf/xahIsSMsHTowalX1ytLD2bDFlB+jgiMcqAmst8JApkhCP9nb5WeVvJfFMoN3fyDG2RlpJFsajnACZsqBKN/v8fVlHPQgYZke1WQTKi9ucM3gpTCQOURiUzpk043t2H1+p8MXrRKcsPsgW5L5Y4q+SY
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 80604C000A
+X-Stat-Signature: 4bjjk49eqngeasst14eaw5m3atwpswyd
+X-HE-Tag: 1781688996-652577
+X-HE-Meta: U2FsdGVkX1/XHRL+1egJ1BFs3fdPRffNF1BUJViB4w67q5tsTNTbi0oE8EcC4+P6uVJH7QlTZbi8Gs4OCXioHaGdlGij2HW3VbYWMAHXGQJDyreM+9juSGZrmJwNTjagmjQS4GEFDpqNjeAru7gcG2E0RRxWaJppuOUbLQNH0/TghGTQxrlI2rgYUZwj3Sp66iNWQY1Ydp9MKh68+oQLAQa9e23qsPT9+VJjEF8oQulzNmZy9scQgtngT2xg2UuMmK0uG6l15aFZ19PpCFPd5pQzoOxB0tGm9w6f/2aaCUttdtpgJvz0STm6AC0Q5QLF/tUR3LYGHqoGrmNutuNUuD9mca+uhyHcqpZaE1HLaVKBbd8KPxoHolMleo8XblUsrThWKWRAyZ5lnlceu2NleZG1Bw4FHEgESb37J2xYn+k6/jpBPO6OapcZX73yc1Zrsnf3KYSX+WlzCcZvnpLLMiKSou476vtHR9ERPqhpUCDbS85osQeG11GXCq6a6Q+WBl8pnxAa7/L4ep5hJqGOSzchSqtqxB5D517yy7TzjvVEnLHSE/61sVUsgaenWQFZPVcb1aW/ZMANB/nwkbujBIN0mKX2RyRRhkp/2kRoAD5IyXrDOHUL47SoRMH0260AzV0sY/Rc3vOVBKatuBaKCrfTex9zTRZ0N2EW/54GonoQF12jp5ofrxcxreQZU5V5l15epOjs1/sl/HGJ0nGfsbBJ8TothWS1H8grwYGEIQ2e6kPs3dHMvqHuboYw4gBkTaclSokhNem2LmBUv4/jp0sw5ZN9KK0gWkU6ENvZSVwClT+6rsGdv5AeowmFlufM4Mx+t4ii6QtaciTpLVidmj8c+Qa+DabvGeS6WkqMC8QDQFXFNg+4bNiUINpDYyS47iB6vsUJQJHvTWErNabZ3z2hFZet9AYxtI1/lkfD4Obdw1W2XjeqcatNPq6aOtXJvvukmUJt0s4sdaXsjLg
+ ft7w7dhO
+ qaj8aKDGXSkS9lHJecNd5+gPjeEgLtn2AtN3w3DHa/tkqsLmmXsEtl34BXOxpqlHY5Ziha0UrbFom7llAtEvUgrK3eUjbeseCaDS+eBBGFxHOudN9rIbGdfrb3vHTGjs8FdEj1l5KYx2Mv8sKqdIwVzmauIthqq7nvVeYPnw6bO7Y/E3Ez6euGpOJA8Eei+zGthNv9IJyC1tSKOOWaaA6LJVthi+eWgjfdqrYM6aBUIpbbDuO3n3Z06vMxd80weYKqdERlHgdeR9uKmociJxl9oiE8j9cEQfL0Tp1qy9i0NrFPk0hTvOPKNlJzz4GyUcILgzTJZx6cvMW9kuGf2giZy6IYQfmGw7I6z2d7C6h6z8iKbrL3jQWnJOL5zVm7wLplhxchmDP9Yy1QOAQAYOCVTiNf07IrGyXN51A7SKdum/rIJUtBQ2dVjMJDkvQAtTuox/S8GZtz5narwtZvLVbxn16b+vAXugKlUe1zD6DBVW150fUDvvyeAEREUSDEEcggNrQ3xuW1fr6IUvrG091iVM7vQFOieuNdcX5SOpMSrz/Asq4H3WkCU/n+sDqaZ5oLDLqAdj8BzZDHT6Gs0RgzhnXfh1brxim4zG4P9/ZO1aSEQw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,8 +104,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------iK2XvNSkWB0k77xTG0u4rrFL
-Content-Type: multipart/mixed; boundary="------------uHnflAN49MCDrkRrwOTzCyef";
+--------------rWUE760itSiMGFZhE7U2S0m0
+Content-Type: multipart/mixed; boundary="------------0cKAcwBqd61rxD70lkQiPDmz";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
@@ -119,43 +119,35 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
  Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Message-ID: <64c1908f-a46e-4489-8f1e-6dabd8afc8ae@kernel.org>
-Subject: Re: [PATCH v3 10/15] mm/slab: allow kmem_cache_alloc_bulk() with any
- gfp flags
+Message-ID: <e499bab7-9217-4bac-848c-fb1472cd2c00@kernel.org>
+Subject: Re: [PATCH v3 11/15] mm/slab: pass slab_alloc_context to
+ __do_kmalloc_node()
 References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-10-ce1146d140fb@kernel.org>
-In-Reply-To: <20260615-slab_alloc_flags-v3-10-ce1146d140fb@kernel.org>
+ <20260615-slab_alloc_flags-v3-11-ce1146d140fb@kernel.org>
+In-Reply-To: <20260615-slab_alloc_flags-v3-11-ce1146d140fb@kernel.org>
 
---------------uHnflAN49MCDrkRrwOTzCyef
+--------------0cKAcwBqd61rxD70lkQiPDmz
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
 On 6/15/26 8:54 PM, Vlastimil Babka (SUSE) wrote:
-> The last user of gfpflags_allow_spinning() in slab is
-> alloc_from_pcs_bulk(), which is only called from
-> kmem_cache_alloc_bulk().
->=20
-> It turns out that gfpflags_allow_spinning() is not necessary, because
-> kmem_cache_alloc_bulk() is only expected to be called from context that=
+> With alloc_flags usage in slab, we can replace __GFP_NO_OBJ_EXT with an=
 
-> does allow spinning, so simply replace it with 'true'. This means we ca=
-n
-> also drop the gfp parameter from alloc_from_pcs_bulk().
+> alloc flag that prevents kmalloc recursion. For that we need a version
+> of kmalloc() that takes alloc_flags and use it in places that perform
+> these potentially recursive kmalloc allocations (of sheaves or obj_ext
+> arrays).
 >=20
-> With that, we can remove the "@flags must allow spinning" part of the
-> kernel doc, as there is no more connection to the gfp flags in the slab=
-
-> implementation.
+> As a preparatory step, make __do_kmalloc_node() take a pointer to
+> slab_alloc_context. This replaces the 'size' and 'caller' parameters an=
+d
+> includes alloc_flags which we'll make use of.
 >=20
-> Also remove a comment in alloc_slab_obj_exts() because there should be
-> no more false positives possible due to gfp_allowed_mask during early
-> boot.
->=20
-> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-11-7190909d=
+> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-12-7190909d=
 b118@kernel.org
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
 
@@ -166,20 +158,20 @@ Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 Cheers,
 Harry / Hyeonggon
 
---------------uHnflAN49MCDrkRrwOTzCyef--
+--------------0cKAcwBqd61rxD70lkQiPDmz--
 
---------------iK2XvNSkWB0k77xTG0u4rrFL
+--------------rWUE760itSiMGFZhE7U2S0m0
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajJo2wAKCRCGXBN6rc5S
-1kq3AP9mF3O+9eEwZracOcmZ+bzXYCob2+uJSads3yNJGPzRFwEA7kRgdkoJgCoC
-2inFLTTi3edE/X8QusVE5XIXADJypgA=
-=MW5p
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajJqmgAKCRCGXBN6rc5S
+1iS4AQCLRD76+3wcnQ2tKc8Sv5vzWltn/HT63SdLAQZxDEZHtQEA6UR3K29HgeQQ
+r9k7dPVVOUsWaYdcnknjgAp4TiM9dw4=
+=zxWP
 -----END PGP SIGNATURE-----
 
---------------iK2XvNSkWB0k77xTG0u4rrFL--
+--------------rWUE760itSiMGFZhE7U2S0m0--
 
