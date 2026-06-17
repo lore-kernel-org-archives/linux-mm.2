@@ -4,142 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89908CD98F0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2649CCD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 639E96B0005; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
+	id 079116B0005; Wed, 17 Jun 2026 08:06:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E9CF6B0088; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
+	id 051016B0088; Wed, 17 Jun 2026 08:06:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8B06B008A; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
+	id ECFFC6B008C; Wed, 17 Jun 2026 08:06:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 13C966B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:00:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 928AD1203E7
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:00:03 +0000 (UTC)
-X-FDA: 84889261086.26.75D97AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CD6ED80004
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:00:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzugZWjj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C03926B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:06:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36C64166114
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:06:36 +0000 (UTC)
+X-FDA: 84889277592.01.01C2CA0
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5F98C1C000A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:06:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hclS2CI/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781697601;
+	s=arc-20220608; t=1781697994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pB4Abb2UOhjdAhAHuvf3a1nJJ405s5Ch33hn7iCDN/o=;
-	b=44M0Vhxr33MvB2jUSGRmvsalBn/fwDNygOHVYPR2wXaGIeBrP1TtRNrTSPOzz0h45sXjQi
-	kbS+lpJ518Xy18DBs9DO9clhPIbfL0WX/qcHDY2UQKJ0nRsRzqdNsIe2qCZUp00JQB9b7u
-	/Pzpy/XaX6fpq8KZzsutOclpKiaD89k=
+	bh=Ck9osqufKTaOTuiUl+Je1iXASF7nv09kdv16+qBIsNc=;
+	b=H+HFBv+EQjW0H/zRYlyeucbcismTtJJjxS+1dJtKvhXjCgLpOGaHZ0FONni9cLm6mDq14N
+	V4Dcll+jlzCVgFYJfPXoT8/rxz6Qz6eDP/NooifsFqvRoLCWvFpn75iaIpFD+/pP8tXxZq
+	PzLj0RyKSpZcIbDLfYu+AMvBVaJHppk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bzugZWjj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="hclS2CI/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of devnexen@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=devnexen@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781697601;
-	b=Gtfj6JJO8LrlC2JZDMSIab+6To6TyU6BxThw4/WqSru0WfjKP0+YEWW1nJC6zIUJRExqOm
-	OZOT65/MoQsmFwjO8exeu4SKxskWQ5anNtmErAV1JR+lynx1wicQalyoiVxMNUg/WVAkO9
-	Nb1ddnWrvHEKcyjZsHQDAa5hiMTrGuw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 564FF600AB;
-	Wed, 17 Jun 2026 12:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB031F000E9;
-	Wed, 17 Jun 2026 11:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781697601;
-	bh=pB4Abb2UOhjdAhAHuvf3a1nJJ405s5Ch33hn7iCDN/o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bzugZWjjZadfXWZKAbRexvl2j+QC3fgPmjWU+IdcOqaSJOKm/uIo+Jb91BmQ3t7e1
-	 aWrHm6HFM99ta8/H45a6g/Jjoxebz3uM3CkvXYm+u07cGhXdTSbP9V2tLWhEQGIgLV
-	 3Qz4zk3dVYY/iF+2K+AxnqLx8RPFrsS89GtyMg5CI3NP/pJPG1pyzSmgVHNqSQ+83y
-	 Q+9EpQOiJ7rYhpNJyM/7COaY1L3MJLxws1KIPfrzrL/csluSGk1ikLAr6YzkjnIxU0
-	 9f+IbVi8K98e1eq3oFOGoGrsIU3Mv0srQnxmr/5jZJwgXriYIOd5qadOcelzxAaimO
-	 vzNFmYLcTcVhA==
-Message-ID: <8a8240ad-049f-4bf8-af65-d5bab2c19024@kernel.org>
-Date: Wed, 17 Jun 2026 13:59:55 +0200
+	t=1781697994;
+	b=uiagkRnm2+lmnct3RGRl4w/e2cmfSJ1Cl/OLTfsWGkamUpL/jasadk1W+U6eoqedbHxVXh
+	GDE04b4Kf9yHFGy81yUtPBvz9UkEiu57YyOyg36aZKLdYismDaMqBTQgxSSjcUSKJrB9Fj
+	YIGwV2szAawbvFA8LL+ad12/JTiG6Nk=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490aaeabdb4so39656105e9.1
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781697993; x=1782302793; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ck9osqufKTaOTuiUl+Je1iXASF7nv09kdv16+qBIsNc=;
+        b=hclS2CI//qI6dXPh102ixw6R2xepr2tKJ7l1V/sIQwF2rWCR7q175kAoS5a4O/gV7W
+         d4fQR+c0/CNJ/WCnRB49xcL7SRhhnkwDeWSnVujhzu6y2LViKy+AILH+9pL/Qzz2+zfD
+         OqBWDdLT7LCeCzpcj1xd0WAPk2DQfuNzbmBPfXF6NscvWADlIlkTCifpS7MLan6u2xh6
+         O3HOkKpXNYzZ1lxUpzA66yS4tu9mqvzOD1WxMYjdU2/O8iJXRID6TPEPnb6+mxOIb4HQ
+         IF0s+E4QKcigCYTIOr9k/x4A2CuexsOraKM3LQqiyn2QuEFaSDyIoe9Jz6PA06Fo/0RY
+         0cZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781697993; x=1782302793;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ck9osqufKTaOTuiUl+Je1iXASF7nv09kdv16+qBIsNc=;
+        b=UmDvwSyIaedrxIPG4b6DDRHZ1V8BmNvn140mCTIB6WGKTEa+xiGa8kfrLsAx0nQe5X
+         v1j7VVQ27jANCYWuKLsCmBX2+7EBrGWro9NmV7Lv7wypPdxRTHwLKvp3ma/D/wJbHTjz
+         02ewqpUVr8FHfxfYoOrRc1t/iDcI+IpwajPg9bA8AGc9M2mn4Z6O+4hqWX/hQX38PBJ7
+         nOYUUnA0HMigeOoPUpyhN9RJu6mb2cSoKFHVIAzfLmZZ2lZR+YpF6+qHyXs6XRUIR4DF
+         dN9FMWJYMPbUK8PBpjCLyNBayGONLP9i/TUDF0+dGmYldK/GMRJQgTNlTZrQRKlPRWA4
+         PoZw==
+X-Gm-Message-State: AOJu0Yzah+GgsJrsspF1yjfFLdYM1WAb3riybkH8Tewk2znGWtott7/r
+	OWSzPJbUYcWyFqY1M6U87Xp+FZgynrbGZze7rkaZs1MzNqHlpQWZwa3NRhIG0Gnr
+X-Gm-Gg: Acq92OEcBmEnHW72G19mUt6EAJJAxDIWN0UKv3DUdVEXP2AfNuDK8NX5xxJvJxqmj/l
+	1D9fd3QrqSbkp+a/Ql7KFCy0TSTbabX1DV22UtdBfd4zBUbmcB7ZwJ+NBLpky4ShDDIwSII6AfZ
+	8EwDTA/qW4YwoMSeq+Mr7V0mdZVbTwG70iwCq+Ri1LSS+lvUolKe/ZgGhW2s2I+KTIQ+grXHztx
+	oJ0wqm7aEhNYHAdDSwi+g7lW1IW0o9dSbnbnwPEvqFZcXXXKfgj0kKCL8Upkik71G8T3TgaWPK1
+	/hvaNUE2JcDoBxuSGq4MH7ZlpPDrvoueuKizv4Cr++onl0EbQaohFCvsfbPgwCJf+0GDc/6Uu0z
+	HlDGxMYXc2xjTP+IvI6LDBZjYdWsNUt7Ok1Ii3KmfChylVQPO4avte8EjF567Ep+P+uzcYS7bK1
+	/Nm/kTN8+kWPIiYiSXxp7L3kEANnq6iX0qDL5Uzj5NhQ03gxOIBGCTk8QltxeG9coVGFPi/T/Y
+X-Received: by 2002:a05:600c:8719:b0:490:bd1d:4732 with SMTP id 5b1f17b1804b1-492333c9350mr59879495e9.23.1781697992676;
+        Wed, 17 Jun 2026 05:06:32 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa47d1csm158902215e9.4.2026.06.17.05.06.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 05:06:32 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+Cc: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: Re: [syzbot] [mm?] KASAN: use-after-free Read in ptdump_pte_entry (2)
+Date: Wed, 17 Jun 2026 13:06:29 +0100
+Message-ID: <20260617120629.160448-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <6a287988.39669fcc.33b062.00a0.GAE@google.com>
+References: <6a287988.39669fcc.33b062.00a0.GAE@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm/vmscan: introduce folio_activate_locked()
- helper
-To: Zhang Peng <zippermonkey@icloud.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Qi Zheng <qi.zheng@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
- Zhang Peng <bruzzhang@tencent.com>
-References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
- <20260525-batch-tlb-flush-v4-1-83789d6abc00@icloud.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260525-batch-tlb-flush-v4-1-83789d6abc00@icloud.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CD6ED80004
-X-Stat-Signature: 9hce3way89q4s5ny58n116ygf6gtdr61
-X-HE-Tag: 1781697601-318105
-X-HE-Meta: U2FsdGVkX1915TIGC2R2fvcG8Mo06Cn9P3w8IfunEF5LGEXqsEtbY93leOK8lZfYEm/16B37DMDgrf/OVHUdldsBwwCIIitpkVPsxAqnauA2jrshjx22AWKPgLYODNNC0KEANB0EWkVP2jnSxGGUROV24WBCDFCWt0UwjqvyWY4abH3SKhBbz6nHy7EIcETp+iHZFB3wHxFK0DUQyIpY+VqzqzEYIJcHxWoQbfuB/UjAm8w76rTEKqvUaSepctYwuu+FZ739Zi1g5HRfKwqKNHpkQ3rGJSEOwnDVrLLb5DNzlQO64UuWYSPRRPhcvluW7iRE16lU5rUmL3c7hDCYuZbHEyKUfvAn8LYj3sgo8tbgF1nBfMRUMTKqrN7bRrVXpl5BRStPMaZ2PGgIic1XE4HCTIsv9YS3S8FGu10bcToMeJEhQd9j4eO5+ZjT71onAl5EzWAGM6uRpF4FJlxB6pBHWdcBCZXd7GZG+kUnDloA3amZ4rHUskkyeYCtD96/K7edFN0Aoa0KDECOl/2L7Tk1InhD3pUXZ+PXHmnlD3U2HnRIfUkAOiQkEBb9mo7IQckGwPSs7CCkKd9sYcKaUn+bvWYmSnIrJz5iadKp+mL3pqmForf7EoZZGOWLaBT/rlRUPvRlbN/Ypat9SfvD7DzYCcqDRCi/FVcsw5L5stmQd9vpvoyTiDYqFkoSMjlgTKKZp1Jnk2WZCViFNmxQIis5Ap6yytlFQ/8D3jgTuVwo3/U3DJE9G2SQxYUJEg+8mHKcU1Y9G5ZJmOM+VeE86j59Y+DNp6g0Y1l9HWyZm87KDaLiuihf7wc6+J52l6fd7x4QxfYh1U7ZvURGUdodfJVKe4uap2sL2dQ1hLFxGO9uwxMsrIXljxImNUKCS3Z4uqDFyD+1RTh8NcHJbYmDNZ44cPd7QO3Tohy9bH2KOc21SP1eilTcKHP17yIUkUPYJDr4bvwtnw7TpfhDkLr
- uY23aLV9
- DLCz5swRn7AhoqPYtiYaGLcmSl5B6rF4stBHpsd+GCJ4axHgSkaNkb73/PDVlLWPeq0QyFmH4B3lrLTgbROQGbpL6J7ZezUdx2BrlDDRySD82nKAV/F7x4kX0M6+hFm7BurnDMbjgQj+LAXoR1RlMEySKFn1nv1bqEU2R/UbrWPMNy9CPuaTGD35pPMgcFqNF+J4VesYq8bDcK7bZojVerwRkkzKad/DLibx7KY+rzjmhbFfXjoiiMGtj1wOQw2pS03MlwI1RxPACC5wSCb1Gy2lmfZaB+oSSnq5s7vDXkozqamakqzfPA5Ld/Q0UKPQoOfASXSZF9XaomrM=
+X-Rspamd-Queue-Id: 5F98C1C000A
+X-Stat-Signature: 8997bkbcswpxdxbwgzfexfephnftnad1
+X-HE-Tag: 1781697994-527093
+X-HE-Meta: U2FsdGVkX185qJO1jhYoNeCIKyeHymYIn6WW+hm22luGqhXIQZbd4r7rbbGDM2rv8I/27hOD1hArO/aq6LgEoJ1DK/07sRSyHtdbUT/5YkTeVK027CTld/3MhorI1tFby0ClaNCbu9/KN2U+Crbi4FsA75jDfi9P7G/HCX9MxZxmIBb5a4dtFSaKwXdxb33U+4hhvmB6pQO4BhOeUR9zXdDkkAJxIl4Fn/t75kt2e8ovxo9nVTHH/EwZ1ITHj5nYgg4pWvQz2sbqBp8hE+MTpdtlZtm1BKhxspKfWcF2dwCKmqrkOV6BzP9SprWuHaOBt7h7dSjI/puL/R8dnkvq7axCaqfJ8Eoo8Ti/kd1XkmIyavWKQqGiskFqqS6zV0wZXtlDveWlqHiRxIayl3wP/xqODxrU2ZsbnYA/NXR3Z+CwpObBcCXXR+swCJkMiK1vGzEIxWRAL4aaIlrHY5rImJUa2tiTrCBoqZuUhUoyDi05rZ4kG4tKk/IYN8Mq6LHhiYxzteR1qdV9284TNK7QQnT6z8KbRKQ4gWvADtylOyaniZw+XsgbVXA7Ud+LZCcACZkQtA/2s+Q6ESU03j2PIysvMmJ8R7Q1SpKgFp95yH+yTMBpe1jAJ+cJn6l8PlbuSBFkQRoDLFAZG/xl3519iZjSQp5E38480i+xKDxF3aHvZCdQaM98Xx2pxupEJ5coLtPiSEkVVVj1ZWl2s6meWxK8h6U3dHUAj/oPa7eUQ2CCy+RuqoZ1m2P/2VTq0s7pvywx+GxKDGD+Zcf5wXJAjH3TKdLkkqGgc0ubeMSukWtcb/o+ev3tcEZJTr8t68L8h/ZVq0x8GwAXuziwbVyAQQQJ2zjzmR8GxVddU9gk17xCfATRWtxMhcACqO9a76gMMsYK7FT0VxOCcC64ijTIQCSfm1aIGek0W7y6L5LhXOpWP5cfDQdOx30yx7RJo5FWNMrKXSDMbsKDttFEFrN
+ 0n4dkLnB
+ GafCxZZZ6RFmu8VvNZeFXbqz68Wsuf7x65F4vWFi0sf5QiEtxsT08d+HdUeA1BE+rhyHWQ0Aw7RbUkL78DdpL8qa7e2H8smiO+KSo8zv3D0cHhRalX7WD2I5Fd5FYRD9Al/IN/4jtwKFyQVDSa4EEfNAJWd37YY1m4PDEYofDvIPXt2WflsGdlsNpQkqG7UvZbsxXPkdQZuDpKHYr1xT4isExANlMByz/kDN3sSaKyAMmTydKFcGLgg9qYXngH6QiKmWSXblYIQF214wGM5mWtWyc0AzUITHA8n6cm/58rSXZhdbviVe13NMjsO3JvBdS4yB9j1UwOuj41V6tv1cyJhGLB3eoM94AdIKzXzceKiYMKFX1Vw/pCz7JIFsMniWtEnc0NN8HpupDjhGx05p73/euwFFLLqbntpG4AuJXmFUgk7GU8bGmEpht0AJLXpLLwWiGj55zURVx4ShE+AurxQ4Tg2065O6+seAKyENYAVjF7B18vtNYAHQVDzyfDUzKOnKl67Aa3xXh7p/7gIGyd64XY2sx60t4C1bHVkh065A9a9tTeJn5kninnFvlQchKqPYDJ3IUvxVKnA5NS8UdRGJj2JG+yYIfDa/npGUdFsq/WYdfpA/w5O0F7idcOp6jpYUqC7CgdgNQRf0H4AVEgkL1Hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,57 +118,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/25/26 16:57, Zhang Peng wrote:
-> The activate_locked label in shrink_folio_list() reclaims swap cache
-> when needed, marks the folio active, and updates activation statistics.
-> Extract this block into folio_activate_locked() so it can be reused.
-> 
-> No functional change.
-> 
-> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
-> ---
->  mm/vmscan.c | 34 +++++++++++++++++++++++-----------
->  1 file changed, 23 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index ca4533eba701..886d8b4843aa 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1050,6 +1050,28 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
->  	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
->  }
->  
-> +/*
-> + * Prepare a locked folio to be kept active rather than reclaimed.
-> + * Reclaims its swap slot if it will not be swapped, then marks it
-> + * active and updates activation statistics.
-> + */
-> +static void folio_activate_locked(struct folio *folio,
-> +		struct reclaim_stat *stat, unsigned int nr_pages)
+ptdump walks kernel page tables it does not own. While the walk runs, vmalloc
+can promote a range to a huge PMD (vmap_try_huge_pmd), which collapses the
+existing PTE table and frees it via pmd_free_pte_page() with no init_mm mmap
+lock on x86/riscv/powerpc. So ptdump dereferences a just-freed PTE page, hence
+the UAF in ptdump_pte_entry().
 
-Passing nr_pages to this helper is rather questionable. Just use
-folio_nr_pages(folio) here and make the function less weird.
+The race is pre-existing; 5ba2f0a15564 only widened the window by deferring
+the free.
 
-> +{
-
-Do we want to add a
-
-	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-
-> +	/* Not a candidate for swapping, so reclaim swap space. */
-> +	if (folio_test_swapcache(folio) &&
-> +	    (mem_cgroup_swap_full(folio) || folio_test_mlocked(folio)))
-> +		folio_free_swap(folio);
-> +	VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
-
-While at it, do we want to turn this to a VM_WARN_ON_ONCE_FOLIO?
-
-(and can we move that to the beginning of the function?)
-
-In general, LGTM
-
--- 
-Cheers,
-
-David
+Fix posted (v5): defer the kernel page table free by an RCU grace period and
+walk ptdump under rcu_read_lock().
+https://lore.kernel.org/linux-mm/20260617115342.156775-1-devnexen@gmail.com/
 
