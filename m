@@ -4,136 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9821CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A49CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B69C96B0088; Wed, 17 Jun 2026 11:01:38 -0400 (EDT)
+	id 815446B0095; Wed, 17 Jun 2026 11:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1B0D6B0092; Wed, 17 Jun 2026 11:01:38 -0400 (EDT)
+	id 7ED1E6B00A1; Wed, 17 Jun 2026 11:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A08E76B009D; Wed, 17 Jun 2026 11:01:38 -0400 (EDT)
+	id 6DE166B00AB; Wed, 17 Jun 2026 11:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76C6B6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:01:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7C10140456
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:01:37 +0000 (UTC)
-X-FDA: 84889718634.11.5E67AAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0785AC0016
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:01:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hgBgnl7j;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 434D06B0095
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:04:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C56D48DEA3
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:04:54 +0000 (UTC)
+X-FDA: 84889726908.22.AB199C5
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BB0A520016
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:04:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WOme3iZk;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781708693;
+	b=rUWIatIW/11TxjhI54EnbPPefD1Wwcjwd4nEp1k4G2Vq4H6u7qbmfD2pZQ4UxH2IFbc/ot
+	RY6tOcTjRySL349vQAYKRY0jF0rH/8fgUHfCEjVY2P3jiapzi5sFJc+cyu+V/9zctC0JA5
+	xCrWBPwWqmGYoL+GtSIfN8adPwzBC1I=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WOme3iZk;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781708496;
+	s=arc-20220608; t=1781708693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1zQg85PSs5JvNsMYxPqaIW/o9irYPQQUQ8HOK3gV9gw=;
-	b=t9BiByDHN4Qd9dIDYIZ3Pq4Dabp8mmlXCgQlX1XOnaLd1rqqrzxMbRiV/N9RAEA11k++IR
-	XKpEQHg/caA5oqEl/nl7vmgyegXtBJKXZobF3MSLRhJTQVTcswiDQs7kZczG+Nl9bomcA7
-	pEoQrk6pOAVVRz3a9V6LNYh6CEyia/w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781708496;
-	b=psbsIIzQ+BhgO9w49Mf1vFC8JkfVvRyFXXy+ATq31NWgjzSzRgHeDvXLF1ycQwf8H/LtRV
-	KU9lLok9luvcm13f/9gzE676iq49wpNtfSrFCN/3TIpAGMP81NK5bNkrCz+sF5Y200EtNU
-	sml7nhEzhje+5nnD/WUusvKINzfG64A=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hgBgnl7j;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 804E06001D;
-	Wed, 17 Jun 2026 15:01:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84B71F000E9;
-	Wed, 17 Jun 2026 15:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781708495;
-	bh=1zQg85PSs5JvNsMYxPqaIW/o9irYPQQUQ8HOK3gV9gw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hgBgnl7j2epbfs33gn3HCvJ6k2MS8x5tTLCc+X46ig3QCqYqQOiFRjIKXn28ne+io
-	 So0NFdSi1FwZudLFKS6ThHLjTEKpRfoeMWFx1Hy+4028Wtx+bP1YOo9ZGfVXHwed88
-	 n7ZF58dqNHrINgXCAs0Gl8zEO5OBdOlzjd8K3qtC61lHB6HBDnDvyi8FD/rRVPy/pY
-	 riaAq0ckLoHRmp0COq/B10ilFcwWp9mRcq2s/z5+hzwyYTFeH0Iv4plB73VyzmsnT6
-	 9I42Bxi4Ce/ssoxtywhxgXevuZFw+9Aag6y0wvMnwqYFkjqn7+7aXMJLl4tGhyeSr9
-	 gVoHmNSriWLrg==
-Message-ID: <6f323e68-94be-45e8-aff2-b64f5ef7bb36@kernel.org>
-Date: Wed, 17 Jun 2026 17:01:31 +0200
+	bh=QbMKVIg1ugQqoGUC2QorVo8Wp1VDG1veyx0si63uoJ8=;
+	b=7Z3beMIVfOLW8EXZI5llcs9rj0nLdlOcvW5B5sqXlav4apHqRJ6Tr0gum1Xo1UlW0EYZJb
+	Iti1MAO/DeBPZUprj08ClCjgPh9eHtydQQMtjFDC/f4WzQ+U4tjmY7ZoJME/p3FQdtN6ly
+	VnwLf2mCs6ncUesfG4SqdEewynq3wvs=
+Date: Wed, 17 Jun 2026 08:03:50 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781708690;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QbMKVIg1ugQqoGUC2QorVo8Wp1VDG1veyx0si63uoJ8=;
+	b=WOme3iZkjUstaFqsR8e6YxV33RE+tvJbmRG1dpljlqB6A5YYNHRMCwbcBkoSFlTB09aSpx
+	1xBF1TWLDlHCOuNbPGqY0IUI8kKBcsZWGQ4X9q+Bth+V+yf6nv2NcW16PSjDKtJlpQLce3
+	P4vtaBa/qoHNwZCasMMHzt9mdM2ZR8M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, 
+	willy@infradead.org, usama.arif@linux.dev, akpm@linux-foundation.org, 
+	vbabka@kernel.org, mhocko@suse.com, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, chrisl@kernel.org, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
+Message-ID: <ajK1YsIJmD2ImbAk@linux.dev>
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
+ <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: mincore: try per-VMA lock firstly and use
- walk_page_range_vma()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
- <20260617082622.3397584-2-wangkefeng.wang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260617082622.3397584-2-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0785AC0016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BB0A520016
 X-Rspam-User: 
-X-Stat-Signature: x7j9b4jbq85q87by7g46ttd6n8usjqjd
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781708495-94009
-X-HE-Meta: U2FsdGVkX19rR54bI80dx4JeMo0bn5SU5AnSpDBDfADRDA9IGEMgYpcTWPQPl7UDgDNHicBDYVwmjlxT4W2kY+y6m2pisVj90lgFxtWk0Cj9zjyQTiWVzom53Gww0EJWFar4gLt1o34nGdIEkXjhQGL4ydTIJ+ozNttCremqUXNCSZOOmVDyi4axYNAWFXORg1XRNLuS1YibJUFyz3NsIWDThybiSqluc3h3Z0/Sv2scvJGTrHDV/zTdnHbLuY+pYqPJ4CtkRJYjLgYpiCdzP53UnYUij99cza+U6e6p8Y58Yo5m3deftrDsUfqdbZnPBjq8f60QYkbjjZC56rmlLKjQ51CupxX5jkSay/Mx83LzGP0pLSu8gXDUn9sWwbvB7iNNInQ95n1+20pvVA2CoUz9ht35Pi7xJw8IMMFThibLMX8/Y83ieC0lVQ80DWILBKJPBDV05YkaSG3XRi9h9Vpb/h3/zVuiz3fmjQrPYg6i4hHTC3qvYMTetBLVC78EFcO3Zi1gjAqjML2ydCkLWOuJcdxNsEMCG2AsDgZePSTWVC9pgdHxctinIAJUyV8+iEdj+SLJ23utJwYpAILTLJIVM27ZjZm6ot6tj0fF+st8lpNlvWmBw80ZnCqDyrxL7Z7b588PFRdW6e6s/TnVAdAIL6h4Y21trhtak2r7MqlL2mt8kqnxNxxFXrFR4/tHqRTdl5AWtPlyFDa8Xzv+eRAnDsrqoxXvQjdJnAm2Bi2J/WAl5c9T/CHpBAzfs4m5jtkeWFKsqAFVXb/zWgv4ulnpFTXMUfhCPlV3dfbMHkxabfUqxZEDebDsekH300JN4EnGRBEaSRVduP65wThFw0rRfu+ZWIQ0GtE1Mc/emFHrZ6IcnPxUAgnz2sV8HqRyfWh0lenmkI3bkdPR6SJl0jgOoXptg4wPJoN8kLafYMAHXBcQm8FrMJcTOq7J0cy5va9LDK2X6clgKO4ABES
- /7negOem
- yh1J40IwbuSZvaOzaBqOwN4+vMJiPuiMhrwNqQyYn5zqDd3rWmRvVxE4SMYJ3AwPpVV6u+xQzACDFMhy9vDdDR7BK/VF2rkveJ/5/dbsp7MNos+l1QYIpwT108uR9nV+FJHBWdT/C1UgM4KagA7j11eFs2vZeqgom5fXMjiP1NdHWc/5EyicceXjfpkXM1cphB98IeCFEIgh8gYW9Kj3EXYlBFMAznLLijfR9mSGUNPnvR7um0Pz4+Buk5iU8IpMyji5kPLCWMI1FX6Mem5igZxjmGF/2O27utaLUynmMPgxqtqQSAdXfirtxDM81eu38jKthNp7/jceMq18=
+X-Stat-Signature: tctubcup9kcxq59ky9cdf5e1hpt8j7bm
+X-HE-Tag: 1781708692-889595
+X-HE-Meta: U2FsdGVkX1/S51gHqbNtunevzvn1zUayjcZI48eBybgth3YE4bWozLR2jdH3qRqads1YGitJc6COtXd4xfGuz6eQuATYP2FgeQKAEYAs/OT98ISqqxVnbswtXCWTx+460UcD/+BOTgxJJmiGkNQcFJki2maZWhGiDvQGGwX1vateJjZFQ93KV3vRhkpD023woip7svRmWuwFhYuMJFDwnkKu/GeIUifmqoW9Qzx3iY2sAtdoywyJIUCaFNh3zuCeJw0dGi2CdLktUjbua/mp3rz7Tr/Kg652NNiJsPVVOXbdZaYeltPBJQIBo8RJWQyiI11Zuw6LUdArwvAaFtqF0f6P2bgh+itqmjhxIKsulvuuK8wlVd5ozePcIR4VxTyCNAH0IjX8Zt9ra519opDWO3i0wA8GFtEGgPSotJWO4lbR30eX3DOsTQovcqMEoUM4HD/Z/HO2WXCGTVJx4n+EO7+YHJGNenfCxA0vzPLfAPc7BNTFSp5f0wngfZx2QQ+7QOzXNRYdyrvqgYukyclGS9I3vH3m3SIuUBN2IvQ36KrV1UyRjcE3W3pXG0GZ5v4zkEhr0l1il/t2qu5fB5P8MBFABJ/8YoAbA/15ueOTKqfwNx3SGwnVGUG/o6C5+QTxTQ7YmhCDoY9Ji8A+N9AlC83IvHT2FlfeIeOD2bBEfUyLAclluSVX+T78j74qgLPaymM16XmbacDgEHLfVCIJaogs4ePU/ZyeATHEFS4ipvePykyoIoFylij0aDbo++0KCaGnZwIUVwnbp+LVGRGIRxjGNamCeO2RX/8dmS0HrG18Bi4p5y04p3HIlNwMN7ah/d/R0aWw+k2nYOD16OMUXdGDPwEZuffUAHePtg0vi8VEoDu251mEqQDUbDFGQzvvilUtT2laBV/jT88kLhiGzqgftFmQxDGfVML2f5t3IPL49I7Mxemdnt/vF5DjMSeNe7lf61E47kO6oSYtIur
+ J9UkQQMZ
+ GAi47VTSDc3dAPEkPScaTW9Ys4ZQB6gbiCsPauhAhDks48tZyEx/XSnte7/XMXYl2yUtIjpbt55skiDwmmu1DJGDWaBfQPFoHGnLhbjuFkHXVZMAYO7xOlT51KeG7hN5+0whBE732u3VnKKQ0aVGiYq4Kqj5JpHUq2//MlEP+yW8IpFtWdKn2FpuTgiQu2OTScyI0b5d69we2RdzExNlLdC9uZvJML7Teb9CNWZ17PEEPrP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,41 +92,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 10:26, Kefeng Wang wrote:
-> The mincore syscall currently takes mmap lock for the entire
-> duration of the VMA lookup and page table walk. This creates
-> a global contention point with page faults and other mmap_lock
-> holders in multi-threaded applications.
+On Wed, Jun 17, 2026 at 01:11:16PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/10/26 21:52, JP Kobryn wrote:
+> > LRU add batches can be drained before they reach capacity. This can be a
+> > source of LRU lock contention, but it is not currently possible to
+> > attribute these drains to callers with existing tracepoints.
+> > 
+> > Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+> > lru_add batch is drained. This allows tracing to distinguish full drains
+> > from partial drains and attribute them to the calling stack.
+> > 
+> > Add mm_lru_add_drain_all to capture callers of __lru_add_drain_all and
+> > whether they set the force flag for all CPUs. The tracepoint resembles
+> > the signature of the enclosing function, but is needed because of
+> > potential inlining.
+> > 
+> > Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+> > ---
+> >  include/trace/events/pagemap.h | 37 ++++++++++++++++++++++++++++++++++
+> >  mm/swap.c                      |  7 ++++++-
+> >  2 files changed, 43 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+> > index 171524d3526d..ff3da07ccb40 100644
+> > --- a/include/trace/events/pagemap.h
+> > +++ b/include/trace/events/pagemap.h
+> > @@ -77,6 +77,43 @@ TRACE_EVENT(mm_lru_activate,
+> >  	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+> >  );
+> >  
+> > +TRACE_EVENT(mm_lru_add_drain,
+> > +
+> > +	TP_PROTO(int cpu, unsigned int nr),
+> > +
+> > +	TP_ARGS(cpu, nr),
+> > +
+> > +	TP_STRUCT__entry(
+> > +		__field(int,		cpu	)
+> > +		__field(unsigned int,	nr	)
+> > +	),
+> > +
+> > +	TP_fast_assign(
+> > +		__entry->cpu	= cpu;
+> > +		__entry->nr	= nr;
+> > +	),
+> > +
+> > +	TP_printk("cpu=%d nr=%u", __entry->cpu, __entry->nr)
+> > +);
+> > +
+> > +TRACE_EVENT(mm_lru_add_drain_all,
+> > +
+> > +	TP_PROTO(bool force_all_cpus),
+> > +
+> > +	TP_ARGS(force_all_cpus),
+> > +
+> > +	TP_STRUCT__entry(
+> > +		__field(bool,	force_all_cpus	)
+> > +	),
+> > +
+> > +	TP_fast_assign(
+> > +		__entry->force_all_cpus	= force_all_cpus;
+> > +	),
+> > +
+> > +	TP_printk("force_all_cpus=%s",
+> > +		__entry->force_all_cpus ? "true" : "false")
+> > +);
+> > +
+> >  #endif /* _TRACE_PAGEMAP_H */
+> >  
+> >  /* This part must be outside protection */
+> > diff --git a/mm/swap.c b/mm/swap.c
+> > index 588f50d8f1a8..e14b7612f896 100644
+> > --- a/mm/swap.c
+> > +++ b/mm/swap.c
+> > @@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
+> >  {
+> >  	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+> >  	struct folio_batch *fbatch = &fbatches->lru_add;
+> > +	unsigned int nr_folios_add = folio_batch_count(fbatch);
+> >  
+> > -	if (folio_batch_count(fbatch))
+> > +	if (nr_folios_add) {
+> >  		folio_batch_move_lru(fbatch, lru_add);
+> > +		trace_mm_lru_add_drain(cpu, nr_folios_add);
+> > +	}
+> >  
+> >  	fbatch = &fbatches->lru_move_tail;
+> >  	/* Disabling interrupts below acts as a compiler barrier. */
+> > @@ -869,6 +872,8 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+> >  	if (WARN_ON(!mm_percpu_wq))
+> >  		return;
+> >  
+> > +	trace_mm_lru_add_drain_all(force_all_cpus);
+> > +
+> >  	/*
+> >  	 * Guarantee folio_batch counter stores visible by this CPU
+> >  	 * are visible to other CPUs before loading the current drain
 > 
-> The mincore is a read-only operation that only queries page
-> residency from a single VMA, making it an ideal candidate for
-> per-VMA locking, so try per-vma lock firstly and use the
-> walk_page_range_vma() in do_mincore() to eliminates an unnecessary
-> find_vma() lookup.
+> Given that trace events can quickly become stable ABI [1], are we really sure we
+> want to add this?
+
+Yes, I think so as this is useful to get insights into lru cache draining.
+Trace events being stable or not is secondary IMHO. If in future we rearchitect
+the lru page handling where there is no cache draining anymore, we can make
+these a noops.
+
 > 
-> Unlike walk_page_range(), walk_page_range_vma() does not call
-> walk_page_test(), which handles VM_PFNMAP by invoking ->pte_hole()
-> to skip the page table walk. Without this check, PFNMAP PTEs
-> would be treated as present by mincore_pte_range(), changing
-> the returned residency status. Handle VM_PFNMAP explicitly in
-> do_mincore() to preserve the original behavior.
+> [1] https://lore.kernel.org/r/20260603130006.7d2c4a62@gandalf.local.home
 > 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
-
-I think you should first add a patch that converts do_mincore() to just use
-walk_page_range_vma() -- which is what your patch series "mm: convert to
-walk_page_range_vma() to eliminate find_vma()" wants to achieve.
-
-Which would already be an improvement :)
-
-Regarding the per-VMA lock, given that we already drop the mmap lock after each
-VMA, concurrent mremap() would already be able to return funky results.
-
-So that should be just fine.
-
--- 
-Cheers,
-
-David
+> -- 
+> Cheers,
+> 
+> David
 
