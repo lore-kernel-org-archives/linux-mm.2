@@ -4,140 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EC2ECD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0859ECD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 11:08:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFB8F6B0005; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
+	id C16346B0088; Wed, 17 Jun 2026 07:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED2F46B0088; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
+	id BEDF76B008A; Wed, 17 Jun 2026 07:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC1F26B008A; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
+	id B2B526B008C; Wed, 17 Jun 2026 07:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA116B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:07:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E30C1A4E
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:07:22 +0000 (UTC)
-X-FDA: 84889128324.07.D4044D1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E29F6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:08:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 293391A0380
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:08:00 +0000 (UTC)
+X-FDA: 84889129920.03.D402CAA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 23C5A80013
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:07:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xd4qAxDs;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8F36810000E
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:07:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLqJtmaf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781694440;
+	s=arc-20220608; t=1781694478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h6dXIG9Ix1iq8lF+scJp0tVtUJekSbTJUAEd9UVcqC4=;
-	b=rgYKGtp82bgkEm9+IrN3AUeGpMk3IDpWGOFKYMmeN4ABNDpsPcV7x9GGRUS2e0SliMUDlY
-	++6tyKZ05GvdCtpfRw0EIybNt+r/I3RPcAMsFOVOtFZebBWgBFYGAqVb2KkSQ/fEz7xKMY
-	0ORPNIjmbmVZHfVwXgJm8JHWJ/E3Bjk=
+	bh=t8E4VL5k1FCWK4bBsLA60HlUaTKskXgiRWXceTi/Z7g=;
+	b=oW8721fkUnZN5F4N4y0f5UrdOEwB06DC/Og0tOHwa+UOhosBA8pEN83Tc0wxMDmnd/rULk
+	EJZobKWOTpinrdCkpw/4suMqvq2E/8DCns+1RjysGWSHMc7+j+aqIiX+4PGMKFp4WngsGm
+	AQXySM4Mx5SvJR5MICle5K0CidcCHWY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xd4qAxDs;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLqJtmaf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781694440;
-	b=O+foIJ2/b7lGTR4O6leZgDFl+2G7h5BDxPs7y9tcxNbyVvPCsTnOah+yCK6AjyEmqkVAYN
-	382D5JLY4bwtcKS2eJbwMKoN8Wsq/x4cM+xeW+FmtCU01AH902fxyjg8z4bp3jzxlxiuUl
-	IkEV2IQgy2UZMODLxih1qMVat2oqr+I=
+	t=1781694478;
+	b=A27ZttsI4ul1XKKYQmnLBt5tWVs2Od/3X7dq37Kdn6yLTt8EGTB2y/jKZtGBTzfg1ERumV
+	ymvogAwfwb7q94LP9y1Edxegi2eGXn65/JugbesCisoYzgwhOk1AeuL2E/F9vXUvqDblRC
+	tqECwsmSbGCM6zDaXqxjxZLQXMBC2Hw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 198D04064B;
-	Wed, 17 Jun 2026 11:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6D91F000E9;
-	Wed, 17 Jun 2026 11:07:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DF0EA442BD;
+	Wed, 17 Jun 2026 11:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8091F000E9;
+	Wed, 17 Jun 2026 11:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781694439;
-	bh=h6dXIG9Ix1iq8lF+scJp0tVtUJekSbTJUAEd9UVcqC4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Xd4qAxDsspeL4VPFXtGf6ezzzzy3sFoOLNA/rgK9CqhbNBV78Bx5Jw9dOc/7ORvpi
-	 Ux6t84B976GEVfgr0WeTR1nEJ4qY/eFWkymBFbNit34duGhAjlcOeDiCyyvKOFCeZ7
-	 iopv/+rFJH6HABE6inEDqWJGZBipr3UEcuXPwKTpHamr8JCV7OXlRSYl5fZJpdE07x
-	 bFLbJDMrkeb3VkwSO5fiQh+RG2+I/pwnfFeKCl29NnmcqlR32zvjlYlmrc+0D3TNTV
-	 icpze+hF5EEQvSMoi9xpBxk/Xszdn+0LXCVKGC+BAH9YfIVZ+IAHHn5eSjH3CdgP23
-	 HFV3qaRNMhiVQ==
-Message-ID: <e37721e1-75d6-4908-8f93-7c0f68a73eb9@kernel.org>
-Date: Wed, 17 Jun 2026 13:07:14 +0200
+	s=k20260515; t=1781694477;
+	bh=t8E4VL5k1FCWK4bBsLA60HlUaTKskXgiRWXceTi/Z7g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NLqJtmafqtIX3Tb8AE5w+R11U0MKcAWK4r/JDthJKBeBFww+/nhMWIF7Vcjo3XlrP
+	 C+sMhhL877RwyM+BGepimtw0NisPuB3Fe44rYPXiUZt9dVlwKN4VrqVF9me6YdDbHl
+	 pFFXT0/2ZIigetaxoFUza6yYSkGZgku//+clVHrXjPGOM3iNH3j6c9GZ2OoQTBrAiL
+	 VNnD6yyvKpw7cHJSzgO6M1+U/I2Q5KYWJMTWD6vE4mdDhWQ/4FmLOGMt9O6OYslvQT
+	 ZVS4vIGo6Gf6cZHxw6BlWAWXLCudd7RA3cuiRLh4h9rHyWFqgckeY4P/SUMhk1pdmH
+	 DcVGLtqx4J2yA==
+Date: Wed, 17 Jun 2026 13:07:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Val Packett <val@packett.cool>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>, 
+	fuse-devel <fuse-devel@lists.linux.dev>, Bernd Schubert <bernd@bsbernd.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260617-attest-gewechselt-tragik-7ed473860051@brauner>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+ <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
+ <20260601173325.GH2636677@ZenIV>
+ <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
+ <CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_table_check: do not track special (PFN-mapped)
- PTEs
-To: Andrey Smirnov <andrey.smirnov@siderolabs.com>,
- pasha.tatashin@soleen.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr,
- syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com,
- Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Andrei Vagin <avagin@gmail.com>, Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, stable@vger.kernel.org
-References: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 23C5A80013
-X-Stat-Signature: bs653g8xunqntfz6j4yumqut9kxugkie
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-HE-Tag: 1781694439-121818
-X-HE-Meta: U2FsdGVkX1+EwO0IxnrN+jxg3IJPXfU9e+XKoHzi5dqSrWIGZJAWllQSKIvBqjopQ67JUYi0D4INka81DsJY/8++ckxWL1/gby8kpdcBc7sR7UNUcq/4NEr1qcU+7pLkNm9O/5ueLYE1rlrqGxFfCzspf5jyEjySLxmSRlTcnXpZNJmNvN4oVdg9izJwEWlXDRFNavUNLG1IXHIe0MWkXJ1ViDpRUCC5XRfGVXBW+eAPXqIiLrUWH3O1Mgm5kc/C/DWr+t6S/OUD4e35bCCVAujpiNbFY0hB5WBficeyWQjuXLOLg6y22ZtxaurukdygByK64IjEs1otxH50QFFWIcRNvbxAf5cG5Rd8qn8Edc7DKUQOswqSyiNfZiwXwAHZ4ILYfp9xmwxkHQXkRfVg/gmyIi4V/4CSGkYqTJibebFRJciBhWkLcAlZ0VF7rmudjNEA+mkrnoyhWhJoYKFZVP0paVXjspbBfUSyZdeZvRPeMWtuv9wA/meDYZ1dopOkepPNYS7Ybbfpz+Dw17+OA3XXJpurZlUAlWB7x5U9hYTdUwsXefEVjxljaBS1mqV2CC0/sqK/LZ14erg/2v/ZltfN4L43/Wko0DZnFd4t35LeZo1IAgVmQ70kjNm5ALKYrri64jdA6FNd5EEWuYntucZ05SimaoBemOPHjW1sCfPIyPjU8ynjmXry/QY6A7Z7hV0xneq7x44qIi9cAn92Jyik3z14gmwoHgKqPsnP27DlW9pOORu/n1mqFATwFNIVWUtRXXSTcrBEaF1dJL09ux6W6p/VEyard8CqbAYIpxghSzrssgR6ebfvgZVtE07T0jhG6DpQLKQMCWROd9U9hbNOyyuGmnLjE6kkTXop0f0AFWfn6QwbHWtfoRAnwgPEHN9oiEajz5QQctUoctFvBMj4Yuh35tDFgO1FGv48/282kFClJ0mb2QCSwNqVZjMazY8T8n6pyN2iMGTZ/0N
- +VwoalSH
- r7840YekEc8Fsp6M8hBT2ZBGldJC9Y1EFAJeQayboRis5BI5YKlbEUCUGh7aHD3ofP2l49rrLno89vPnHnvpktVV6XZu/q4IjJ+jV1LYtW/o7wycxr0HXcWb8S65o+MVb7AmrvaxuBt1Xl6lKAoRmIncn34aPOH59MEtv1je4lfl/OH6XmGy4ntc9OZ5twzHkARSerSpb/smhpFA3rq58rnb2PLVUFS4t7lor8nWyBHt+ALveegxqQoWYHgZqUtth6RWf1xBgKeuKsJAPRNG80WQljg21To28nCpJ0IY1FoLSQ0GU4YAPSnptlDQLzqh5xF9qB96vmJGso6JJDLIo4408aHgE7dlvTTLNRGa8JFJPE87EHnNAI8V4z51rvy/DRQ9+63ZF8HC/gXd/Pv63hgYMcFKRwytP5Z+mYtvqczYs6pCHuRh2QNfQcK8SGzo0yd/e
+X-Stat-Signature: 484f9xobkryng3iyydhawfe1fb6o6w4j
+X-Rspamd-Queue-Id: 8F36810000E
+X-HE-Tag: 1781694478-472303
+X-HE-Meta: U2FsdGVkX1/DZRX8g3rKqV4vNuiu/wh7QLQRCGXl661VzLRJELZcaBKa/MCNyTZ98fVlC+rZdS/byA2uGTAWlfUNprZr9mxCGyqeQJ5LWmN63Y+MqrutCk7yF9i7G7EF4jywqIcZY/cNxV+UOQ/FTo/fk3an6UOAJh5k937TshXiVHeLV6coyGZf2ZNqS7e7229HT13S3iY1rxQbR2cEqISAaV8TIimjTxa9Zg9gFyR43AXk+rcRbM49Vmvx0MyiTOb+5iHxbcTZc0al9s/sEkk18SECmUYXPCA8kU8Hjp6b0BRPGW6a3XO3P1UOlrsPLNorAiDGwKqn79GbdcQ54ze1IHuqMqOi+yfw8Fwjiu/vdVL0VqcGlghvjuz+HkugfG2apU9mAnw1qbUQNz6Dk2Ng2+5x0viMYZf6+wmy5CbhrJbcl0SbDpkcnWYqzFVEL2nYGz23NJ2eWuUJbZVb9F2VoYG+2w+L/3MBc/rd8jgyZWJsXYWWVCUayqpDq/vva52mRGl8q/E8d5P243xDz/kj+yv3tktt0pfC+WUzJh28KLyH1qRMDVKC5glYhKrNFkvPVPcaoBEpm7bIgMBOcXB6aFQ/V5SuIhqFpRexCAkj//PDJ3AXGArtwG/W9Uzydh/MF+DFjRfcG2VPNJkyR1QXBwgu9DvGoj3OXu5z+6KliSudAk4HJrSFhBO9m9l/QmQCl2qkWrEvlATPQwnkcWM9o7YyInvgf2iXDm8fEIjXOoxvQnnTJ1vsTwTWWp+tvO37eBuwniZT5jeJNOXa0iYPd5L0Iwf1VCLY2eT4r2mrB1c1ksYmtO00UBB2Th/FDemAimCbfbJxLtSUY9amWwWZ3oaJdPvBp5dpwKvXwLWjeKR1Bb7/svmDpMGwPpRvUMOh+OhfUDukT69Wg0PqAUxsGL0KyRGQBQDsGZ++xgF3P/jLqH56FHSzl20uFwy+3k1tHmbVOGcyqlMUjyq
+ x3lNWMT9
+ cVQHCl1i8IbGEmdEyA+4ofaQg8K9EN4mioyFhwvnNCmrmLONpsc3ciX2WLgUb8k2XS296tcaftF+RDlT0BTcqQgw0+qnN49x34JAnUAVRmq7V8xxS/JmAGgjcyQPownRuaAfBXbFoEVloB4Hp3rdnJV2mqHXjhp0jGD8EF5FX4lGo6QpYfWEazxTdCqiMDq1mjXowhCt5cao2dusiRSbbqTu5rHlYNXE5BchgsMnGXvtf1liRu0BXWjcykNkAmucDJ0vp/I4Qn/FmxAizr9erZMYP9Nxoc3vNnK062FHP8zdKUDvNUcag1dlasg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,63 +103,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/8/26 17:57, Andrey Smirnov wrote:
-> The vDSO data store ("[vvar]") special mapping is created as a VM_PFNMAP
-> mapping and its pages are installed into userspace with vmf_insert_pfn(),
-> which produces special PTEs (pte_special()). On x86 and arm64 (and riscv)
-> pte_user_accessible_page() only tests the PRESENT/USER bits and does not
-> exclude special PTEs, so page_table_check accounts these PFN mappings in
-> the per-page anon/file map counters even though they are not rmap-managed
-> pages (vm_normal_page() returns NULL for them).
-> 
-> Most of these data pages live in the kernel image and are never freed, so
-> the stray accounting is invisible. The time-namespace VVAR page is the
-> exception: it is a real alloc_page() page that is released with
-> __free_page() in free_time_ns() when the last task of a time namespace
-> exits. Across the map / unmap / vdso_join_timens() zap transitions the
-> special-PTE accounting is not balanced for this page, so a non-zero
-> file_map_count survives to the free path and trips:
-> 
->   kernel BUG at mm/page_table_check.c:143!
->   __page_table_check_zero+0xfb/0x130
->   __free_frozen_pages+0x52f/0x650
->   free_time_ns+0x85/0xc0
->   free_nsproxy+0x7f/0x130
->   do_exit+0x313/0xa60
->   do_group_exit+0x77/0x90
-> 
-> This is reliably reproducible on x86_64 and arm64 under heavy container/CI
-> churn that rapidly creates and destroys time namespaces (CLONE_NEWTIME via
-> runc / docker-init / tini), and was independently reported by syzbot on
-> riscv. It only manifests when CONFIG_PAGE_TABLE_CHECK is active.
-> 
-> Special PTEs have no struct-page rmap semantics and must never have been
-> tracked by page table check. Skip them in both the set and clear paths so
-> the counters stay balanced (always zero) for PFN-mapped pages, regardless
-> of how the architecture defines pte_user_accessible_page(). pte_special()
-> is available generically (it is a no-op returning false on architectures
-> without ARCH_HAS_PTE_SPECIAL), so this is a single, arch-independent fix.
+> After this patch, step b) is a straight copy which means step d)'s
+> fixup doesn't modify what's in the pipe. This could be fixed up in
+> libfuse to not depend on modify-after-vmsplice, but I don't think this
+> helps for applications using already-released libfuse versions. I
+> think this patch needs to be reverted.
 
-Using pte_special() is usually a sign that something is likely shaky, as it
-misses architectures that don't support CONFIG_ARCH_HAS_PTE_SPECIAL.
-
-I assume relevant architectures (loongarch32?) do not support
-CONFIG_PAGE_TABLE_CHECK.
-
-arch/arm64/Kconfig:     select ARCH_SUPPORTS_PAGE_TABLE_CHECK
-arch/powerpc/Kconfig:   select ARCH_SUPPORTS_PAGE_TABLE_CHECK   if !HUGETLB_PAGE
-arch/riscv/Kconfig:     select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
-arch/s390/Kconfig:      select ARCH_SUPPORTS_PAGE_TABLE_CHECK
-arch/x86/Kconfig:       select ARCH_SUPPORTS_PAGE_TABLE_CHECK   if X86_64
-mm/Kconfig.debug:       depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
-
-Can we enforce somehow that we expect CONFIG_ARCH_HAS_PTE_SPECIAL, so anybody
-unlocking ARCH_SUPPORTS_PAGE_TABLE_CHECK is aware of this?
-
-For example, through a BUILD_BUG_ON?
-
--- 
-Cheers,
-
-David
+Note, nothing was merged. I deliberately kept in -next though for a long
+time to see how quickly we'd see regressions.
 
