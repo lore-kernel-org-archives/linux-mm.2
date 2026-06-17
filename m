@@ -4,102 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3F7CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 09:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FB53CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 10:17:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB296B0005; Wed, 17 Jun 2026 05:55:30 -0400 (EDT)
+	id DB12A6B0005; Wed, 17 Jun 2026 06:17:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 792AE6B0088; Wed, 17 Jun 2026 05:55:30 -0400 (EDT)
+	id D62216B0088; Wed, 17 Jun 2026 06:17:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 681D06B008A; Wed, 17 Jun 2026 05:55:30 -0400 (EDT)
+	id C50AE6B008A; Wed, 17 Jun 2026 06:17:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4571B6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 05:55:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8EABA0373
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:55:29 +0000 (UTC)
-X-FDA: 84888947178.17.5229DAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F35B62000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:55:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rqk3daBB;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781690128;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 941C26B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:17:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0008A1203AC
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:17:52 +0000 (UTC)
+X-FDA: 84889003584.12.26F7968
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011035.outbound.protection.outlook.com [52.101.62.35])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C7AAEC0004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 10:17:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=GfoUfGtN;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.35 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781691470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m9Lgp78HT7pVAXZur8onseb66Nd18UDwgALM4MZsuNg=;
-	b=GwD4hB7N7YSqZG6SFgEd8qE3U5GiqfPVUZy0Wbzlz4aYyeoLXQZe0SPMO74e8aaN6fVNv9
-	cpyNzP3mHlFsRXHGWEfJ1nIDIoklS22G0NnQldXI6Eoqezo5E6pQYRMc7l0xe53JJ7Q0KW
-	IIUHbMiys+8qsDFhRUMcTS5xWe1r8Kc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781690128;
-	b=UID8n3D4NF50ImLkIqLMflkmYhCzv+JFTntAZGtUCycZjRWetbZExWboUt3JYMybSCE8O1
-	qvbl6xM6CRaEbU74juPldXQUX8MoAEMWpyjiqO8w+iLgMa8m1QTxzCDpnKE8EdJD1m5IG7
-	0ruNdUQSU4PVucWt3XLUjqJDRTy1z7o=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rqk3daBB;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6ED0C60121
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280121F00A3E
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781690127;
-	bh=m9Lgp78HT7pVAXZur8onseb66Nd18UDwgALM4MZsuNg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Rqk3daBBBfPc7/dDjixxxRax51Dv3j+3VVLIcdaAO7oW6BBfYlSKtVcnlQEDBNXbG
-	 35boQ765+nAsWAiQwkTlJvBi5S1vftfyATSP/3fDaZpM4W/T32Q8VCrHPhHsYC/LiB
-	 780kTvO3NTN1Fks6Emike/JmOBzF4J9K4V9cLsjPyUvk4Kz1R4pugegvAeje/aQr4i
-	 kCII1hL7kzcg/2ZPfnLb00DWqqVB2+Co78ZK7DVJf4neGFJIl4vC56m9J1f5yziT9J
-	 F2KHlAVlluhnYfyclfE0+TJm82nCXz0+I+BllLdByA5Ax8wZr2a48TXwEHXj6M3OyY
-	 aV2GWQehuDdOw==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-915aa0a9293so81134285a.1
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:55:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+vTvFMlI21no637tb+nQcoGkoHDs/3A0i058teIrRfUH+ucsFILq1vxwUg9A+AlXVak33bZ17ukQ==@kvack.org
-X-Gm-Message-State: AOJu0YyFGvzFv1xzhOklbmS7I1E9BPwfXChO51D9Dknyhesa6bSGjEqK
-	DDFd8+W0RlRBG6N+LntwjL+FVRMkGjUjhYPUeMKY6knwXzDcPiANCxLGj9NJjVZZMyfYHNnrQAC
-	znG5sQofpMQnkeO3HBXxCKUhJQ2N38xc=
-X-Received: by 2002:a05:620a:319f:b0:912:671b:d0b1 with SMTP id
- af79cd13be357-91dca2b4c9fmr282521585a.2.1781690126578; Wed, 17 Jun 2026
- 02:55:26 -0700 (PDT)
+	bh=GYoLKD/Hq+RQogNkKKkiCQy5Jqj66QUmx0jTEOnqpUk=;
+	b=GdF5durj9JIbn5vyCa/yKlASJqy8TOAJihKl03OL4zQddklDCmt2+1Ti1JSWEr1827TBir
+	FTZxB9MGaCKOz6AplHhBjujmwPIis80+cGqAf7S67obmFMbC+PuaeTbM8NBa2jPwf+a+I3
+	HKS82nWliAyNS5qF1J711LIX6Axr1p4=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=GfoUfGtN;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of shivankg@amd.com designates 52.101.62.35 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781691470;
+	b=oFqTAXNRWWALE1+zoHbEFLeM7xMWPftgO1NaAVeKpnYrWlqKT696168AwUp5JH6BgY9UfZ
+	NOerGCwZOCoK8PJQ+zF2ScS91H6vGGKBngPF7bsD40xzfI+jz0w8i//5Cv3zuex65lrq6U
+	rWWQ3LKetXJv47PRsWKj+gSZCwSgv4Q=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sm5cj6n7Q0W1og652BsQDyp3PsedO0nqG/mwo6DDebye6q5Pdk5pFJpCEhOZo4D+X0xgxrgJSXgYw0NG+gSv4GGfSfJ9mynvJGn04hBp6//B/D0M8TF5acllkmXotJym/OSAh0XMutzxIHYs7QoB4N9RRG18DPpHNivS3teIOHENQJ5XA/xClT6OpdYtKhR/ElgiA3lYpX3XoVw5IBGWTZmJVjWr61eJQ5rACVHog5iXP855OnxfFpbuiemZZKCa0wJFZt2VZr14X0hXjUCzTTGqW0qj86bnrb/yBD+H8UfoLit0+yKmjI7H/xTk/0wvKxeACrgv6/Ue3DBJGvK2vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GYoLKD/Hq+RQogNkKKkiCQy5Jqj66QUmx0jTEOnqpUk=;
+ b=cr9/ZVMo2euOKFmdc/hVStsfWoyRFVR/zegx1eKqljiYo1QTNj0bOTr/xecgpOaHPohPot09ToSzVutbMMpqdT2HTkIcbK+1lKaZ6IUgvBvL0dc7EP+9ulSFPnjeJ7tC3IkB3bSF1x1mLEU0F77SG08D+nOBFVMaIaNIFC+dVTa7YplyrPymVOjVnH8gWt/ZLL59as6TvK3huct0u8sXAi37y6+9wCKRdpHZlD43yodhCX5+j+FYnI0cyY3jKqE8oiKVgINrWVbxDA3yTfvusrxgOt0Qzmr7Rc8TLZKDFbab8wjCuTtEBD+yl6rrKtVFk6nLZqW3vTX9joeSyGQt1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GYoLKD/Hq+RQogNkKKkiCQy5Jqj66QUmx0jTEOnqpUk=;
+ b=GfoUfGtNQ9g/ycmLiIIn3n7YrxyLNJl7x1gowp+tBwFEweC5q1JfhSPLCODpXjdT6u14x3hmnChud/Jt9DRf+SxaSuM4p3VVSb+PIG4fSWSrtXkCrUJWSV8b3oT7dytqSNgdb+oBltbxcwCe5p687fGFQZLIf1h20dkUKhtBKLI=
+Received: from PH7PR17CA0037.namprd17.prod.outlook.com (2603:10b6:510:323::28)
+ by LV5PR12MB9755.namprd12.prod.outlook.com (2603:10b6:408:307::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Wed, 17 Jun
+ 2026 10:17:44 +0000
+Received: from SA2PEPF000015CD.namprd03.prod.outlook.com
+ (2603:10b6:510:323:cafe::44) by PH7PR17CA0037.outlook.office365.com
+ (2603:10b6:510:323::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Wed,
+ 17 Jun 2026 10:17:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF000015CD.mail.protection.outlook.com (10.167.241.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.8 via Frontend Transport; Wed, 17 Jun 2026 10:17:43 +0000
+Received: from [10.128.112.233] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 17 Jun
+ 2026 05:17:32 -0500
+Message-ID: <90768c5b-2268-4faf-ba0c-27245d73a0d0@amd.com>
+Date: Wed, 17 Jun 2026 15:47:29 +0530
 MIME-Version: 1.0
-References: <20260611105124.98668-1-baohua@kernel.org> <20260611105124.98668-4-baohua@kernel.org>
- <CAMgjq7D0roMW108dP60PaCTnYfSDCA7GyGDATn-nLD8kiNViuQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7D0roMW108dP60PaCTnYfSDCA7GyGDATn-nLD8kiNViuQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 17 Jun 2026 17:55:15 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yZVGcpKzvRE+tvdqLrP-rQP9c7iHrGLCttyUkSQAndPA@mail.gmail.com>
-X-Gm-Features: AVVi8Ce9fpjj358omqtBflORrPPCZbIf6R1G7Ohjnj0oDUixmwDFHUmG4aszuHI
-Message-ID: <CAGsJ_4yZVGcpKzvRE+tvdqLrP-rQP9c7iHrGLCttyUkSQAndPA@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/3] mm: entirely remove lru_add_drain in do_swap_page
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, chrisl@kernel.org, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
-	jp.kobryn@linux.dev, usama.arif@linux.dev, shakeel.butt@linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/3] KVM: guest_memfd: folio migration for
+ non-confidential VMs
+To: Sean Christopherson <seanjc@google.com>, Alexandru Elisei
+	<alexandru.elisei@arm.com>
+CC: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+	<vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, David Hildenbrand
+	<david@kernel.org>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+	<joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Chao Peng
+	<chao.p.peng@linux.intel.com>, Nikunj A Dadhania <nikunj@amd.com>, Ira Weiny
+	<ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Pankaj Gupta
+	<pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>, Fuad Tabba
+	<tabba@google.com>, Vishal Annapurve <vannapurve@google.com>, Nikita Kalyazin
+	<nikita.kalyazin@linux.dev>, Patrick Roy <patrick.roy@linux.dev>, "Pratik
+ Sampat" <prsampat@amd.com>, Ashish Kalra <Ashish.Kalra@amd.com>,
+	<linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com>
+ <ai_XK__RTXMCEcCG@raptor> <ai_aczmeH2IA6JaB@raptor>
+ <ajA4z_Wkb93cTW4m@google.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <ajA4z_Wkb93cTW4m@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: F35B62000B
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CD:EE_|LV5PR12MB9755:EE_
+X-MS-Office365-Filtering-Correlation-Id: 247f7d63-bc4f-467d-7fd4-08decc59abbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|7416014|376014|23010399003|22082099003|18002099003|6133799003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	4eNayiqcVY/u2wMyFEHSfItQDnw1id3GvmZHn/xDoItXXYrr8MMFLpmxk5ILgbkomy7CYgkPa99/tmdHmz20V5aMkCwf1neQm6yOlZkp3XYIYzU6er7PY+W9YCIX4IusCdXQhLIr+Ra1Dv1h6d20BpfGcnOw+dU1BwBJbiPu85+M4ks0AayqDX1XU7CtxJj4Hpta3n1UEtNozE0UN9oV1rUFeYi5q1SZjQeFPDrKrnDemnU4a7OaSoKTpvScQhfDUXGzAkkZ9hCXWUzUKO6Dt+cb3ECcyrGYctAE2JUJnCyrR/oTxO/7D2bO83DWkMF/H3GP438XUOfTNCHLEucezAmU/M6MXWCS72bi9C8E/Lz+ijAnqnaF2SbhztW+3zdx59BAEVXBL20cSNSnvixFxY1VTUjuuPTIEhYBDDpgPCZnMUGJttnvdSbiZN7NJKL/wUpk3XrQf9fwbOBg4DjncPVoOqnydE2KZLGupZ9I1fS06hRr9CgfmZzbNFeGczxIm0tU518vgHuw4XwEymyyd28KsbAtM7XZmfFyI+TK9Avf0nHrk3lLMLG8/msv0aZ3pCDetNqng8mowg5vTaSyme12FxCYtI1eEwL5Nj7xmGQ59UZ0cENhkBQTBOXbIMuB4uOEe/TTEVtrEskCLSp9M0FCb+KuiAHQY1HHFNSf/FX10QvUOB8+AJDZ9JREsHPauYLpr6NFzp5ur139cGlxtFHZpFqqfK8FSspSeKiOX9w=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(7416014)(376014)(23010399003)(22082099003)(18002099003)(6133799003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	2NC22HYElG55apYsrlgkl/XXTG/cKWaupwzDwXycqBkrEk10ziEzp3p06ESgg6vhpO4SpoYN+R4y7tCXEZ+ayCLqt6BFhxpit4hqcGvniEkQpYsI/L9Ecko/7jnlhYH267z6r4CvY7+r4TFA2d/anbJINsuvB/i297TvZ0knCPiy2E3rxNFAsfKFJhQrxnE/SMy4BDMFfQ3ahc51B3kNZlIt38OiH4sYTnZ67LCH0CK7iFlsT2FkeSwoUCjWtUUEMjE+fk9UED5XSjd4Xb/kc44QJ61/96r4FkeZy+PX+LcXsEeo9rd+bBZ+IOv0P7RFDNJjQp5wDmxBvGDeojZq0CzMDgVSTaE2M2L5PtK4gQV3Uhls/VVOrb+qwgddNYCaM6LKmtq4FCyKqRfDRC5mgAEFWJzxMeuRAtS6mERIGyZeVsq6hvjGYsKyUiqs4O6x
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 10:17:43.8020
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 247f7d63-bc4f-467d-7fd4-08decc59abbe
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015CD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9755
+X-Rspamd-Queue-Id: C7AAEC0004
+X-Stat-Signature: g8bcoaa3ipu9dj9za3tciaozcuwyr7nr
 X-Rspam-User: 
-X-Stat-Signature: 9k7den9s3ddujjrxoc8irsbkbmjmswhm
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781690127-36090
-X-HE-Meta: U2FsdGVkX1+aoR4il9SxOsLgRVz7MpS8PkdCpjf9L2UEXn5mZCrskuK1jVQSGyqiJcjB1iQYMeP/oC/LaLFyrA/fMFq4GOJMuyU5/blv7j+01iwOzWCWQ8YPc880Ckrq/oC1sKeIsTkdyvjmUA9d4UdXbmMq3+OkP+s6vkmMoaHPozeiXbhy2wGCW1KcbXBZhwOowmOk1rZVnU3xN3aEAAcis/2O0xmv7yrmeUIrcgcv4brv74OPhRK3SM2rfD56RR57HXTWA0FEPEVeAx+/reqmd/yrK7kFWZm6EI4NyXo+gtLBXQai+d8gHPS5CbC8jaQgbSfWRo9viUEnbNMwYYHiVy8PkTwCv0uwM64WlzQ3TuYAy7FI9wl5D+FD8N45esJc9egioLcaS5ZS0hpUzjEj8HxBCfj/rzTViv4lKTtXMb7qeAS+dQmFxdnFQ/qgAnY2Tt9zlVqQDeT/vWkYvOAr77twbkibbby3p5HvqS5yqGjS4Fz/U2TRlCeA5zhMFDwULKjiLq6GiLFB1dLm9S0RDr0hNPb3w051yfFhYNh4WnT5VBxxIpta8/1XSxjKaNqqrrKgxkQv7BkoFQ4Y2+oH7RjFTs9b++aNExaN4sqhpaCqSPouQ/ZEsNRa21JO0OuFFF4bktUXc+w9DZwTSHwnpxmkr3SpDsUVGNFQM0PDSv2+wjwiHS7IB7eCjCt35lyImSegoh24FIPAjLSWoa23nOZcfuOwJI05iZpdshZcpK+xaHSs1GK26Ipy/kkbrncHBSmgtOhS3vnJ2wS0Bej3dJ3NkcoX9Kt+Q2o2WgQMGSIKWKDXGyskO095bc6sUelf0KDYhJkvnQIppPVZFPgrGdX/NejwbRN6VKYiCPw31s2LMlRVgIE9lixZd3bYPKyQnBmGhPVVuSEUWCTZ8HiZBf8SgjGzyRoC1Oey6Czo1ixKSJ3+uPmP8z/pfhlHCd3XUPWKTiFU5R7rXFg
- 3edhqEvN
- 1iz3R/tMdenJhQrFwEOFUz5kFzbTvvzrdmoYr9COYKkgiA1eu3cPxfAyUq/g853EkGsYXFntZAJ6QitpZqFYMZiy9eDxGlW8AF8FaSjpP8ZKiize17n1nF0erS2XtJaQvc/EyLZi6XOqNC96BYrl39oeuzJfsuGNb/y5+nNaR3PlzETMqlObQY8vrtOustDmAz7TrV9UhLxGRIGXKKdqb1oW1eqhCil+g5ZhHSfZCphD2GuInoEiW9KGICPs+c/rQoq7La6t2Y+9ySnaJiDGtXKEGnXK4GuYg813Wit0Hqu7/4hBH/Zr5iYhPCvzmg1O3hQgw4YLorQbHGNqjlPBFo3+4fis/IUw1DgkLElqIKYzC54rhR7TSpheWYA==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781691469-727948
+X-HE-Meta: U2FsdGVkX1+VNquQnCz4keU20sPRWLG8GVr7TROB4g5ROIi898kKtCK2r3K/ZYK9S5mNyfbd0oIczh5qYCFuLiYUVJlMpi8cds3hrWxlhgCiO52Abjywtw2l+OjiFEnwQgEUC2cwkJn2W7nuTwSu3QW9iZMiAxqyhEzFJqp/wuUPw6AqSI7aVogrVsEWR2RLf2ESJsNVbFOKLJ6RxQ6r4bsYa6nhgXxZ5NzjctWKiuUl1xw2wJhBhPjX1SrfHdto7LekeAevXJcmu+FLn3TWt9GN69iPVZGXxcXZol6Cu2Z+0qTd7W6WBL8tfJaEz5ilsAvJw0wjn3QrHFTiqpx/4w/4oGBsQh7acJiOQOs3hFowQLYwCPBmHcLqSAbgkQpFghX464k6XztU4gTlKsWK1XaXdlrz8pLF2i5oNl024N/PChNm82cTvNMbew2+DRR9E5TzjquyQuHbuGgy+0a1dz5NAn8uCWWHpPivdPx9E9OmFCUO/jemKRwzv3eMGOkxmns/DZBCkb2u9nM1a9R9TtTHVsHc0lEFVP7Gu372CVoSXQTO81c+E77g7/W/3r8vjREjsKD3USiBndZAcFW8UiZWTOelHPOTu3s6oOTpJZdvP8eUZzKrpbAgs9MXNsGVBQo3oi2xI9SjujQE40YQYDLb3iD/t9jyI3gULSUdT2Zgz86pYucty9PMwbJaHaIBc/q+zGYRTLb7cIRmDgt5d9wPt2gVeRABSp7nrWaBKjdhagIuEJwmK4a+Pff0gCWE5cJeavn4gt6OPZcV2JJ6lGpI7ktA/vranERclC2s+mj9WTXXGDw6VAbGPnlQNz8ON3Bx7H0obqv5FzToCfVI08VYqtes9K0gs8Iw3PP/dC9DUnCFHbTzTqNl8s+xFvDgz7ZnUE8eOH4gvFtdu8274n5XTTAoqh7jhXt8MS7CMRkz73Md78lGPq3xwCCjAtAVFpHuqCkTug2R9poxJR1
+ DmKyoSBs
+ nVomjdN86nrV36A/9CLUcGiQhzbFIOpYNoUtb1wzK+/dD1q63ohebC8TlMusJ/l8D5SJcCiUAIIYvQN1IlI5F1lsPVPtrKxkg7mZ4j+TIw4MFRnW1YUztbiywiyzWNZLV7RYJsU8IFMUCtO7r2prpB4oMHtA6K/aJHeB2lKrbCDDGt+df/JGkKCJQyxE1ZBHtgxLzAkg/6Oh/fZjzLxPik+by3T5UpxSaGG8CPQprSY2eAOK2q1rYmUVzWQHqYt33XPwMZL6asijviiq4bZyTLJkd0rLy4wlFl4j85G6e94oFF/+ITgiPznJShduh4qPVScDgsKBs/Z7Rk1NkfB3m/XV4hg5YQZEc492mF+8PlWC1VBB3l8CXcJqEx07oZvQRfuxR/aJIZ/oQ9s64CrK1ru3sTc1nUVpVXQ3WDxFoDF7uKmcLZ0heAQ3Dscn7Oyx4k+gYnP9eCbHuPOTh1QqWPAaa3zzDRsN27eF3TTGssn0iU+QKmmhm6hiCerjYGNcCPFqsmHgVZi5D1wzR9SxOqIG/oeDLvAsFECvVLyNsseWIJVudcMFCxxR0IKGIh9uSgPt7VBsk3ZmnGgWMDQRjna3c8aXbyTs1Uk4PCGntu7kMrQg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,97 +169,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 1:38=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Thu, Jun 11, 2026 at 6:52=E2=80=AFPM Barry Song (Xiaomi) <baohua@kerne=
-l.org> wrote:
-> >
-> > We are doing a lot of redundant lru_add_drain() calls in
-> > do_swap_page(), especially for synchronous I/O devices. For
-> > example, the test program below currently ends up draining
-> > lru_cache 100% of the time:
-> >
-> > int main(int argc, char *argv[])
-> > {
-> >         int i;
-> >  #define SIZE 100*1024*1024
-> >         while(1) {
-> >                 volatile int *p =3D mmap(0, SIZE, PROT_READ | PROT_WRIT=
-E,
-> >                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> >
-> >                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
-> >                         p[i] =3D  i%64;
-> >                 madvise((void *)p, SIZE, MADV_PAGEOUT);
-> >                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
-> >                         p[i] =3D  i%64;
-> >                 munmap(p, SIZE);
-> >         }
-> >         return 0;
-> > }
-> >
-> > Folio reuse now relies primarily on the exclusive hint, making
-> > lru_cache draining to drop the refcount in lru_cache largely
-> > irrelevant.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/memory.c | 10 ----------
-> >  1 file changed, 10 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index ce8ef27e7a54..b5a78670bcc8 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4903,16 +4903,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >         } else if (folio !=3D swapcache)
-> >                 page =3D folio_page(folio, 0);
-> >
-> > -       /*
-> > -        * If we want to map a page that's in the swapcache writable, w=
-e
-> > -        * have to detect via the refcount if we're really the exclusiv=
-e
-> > -        * owner. Try removing the extra reference from the local LRU
-> > -        * caches if required.
-> > -        */
-> > -       if ((vmf->flags & FAULT_FLAG_WRITE) &&
-> > -           !folio_test_ksm(folio) && !folio_test_lru(folio))
-> > -               lru_add_drain();
-> > -
-> >         folio_throttle_swaprate(folio, GFP_KERNEL);
-> >
-> >         /*
-> > --
-> > 2.39.3 (Apple Git-146)
-> >
-> >
->
-> There is a ref check in should_try_to_free_swap though, perhaps we
-> should also improve that part too or we may have more more folios
-> stuck in swap cache after this change?
 
-Good catch. We could assume that a !LRU folio has an extra reference held
-by lru_cache. Does the below make sense to you?
 
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..237220ae1572 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5094,8 +5094,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-         * Remove the swap entry and conditionally try to free up the swapc=
-ache.
-         * Do it after mapping, so raced page faults will likely see the fo=
-lio
-         * in swap cache and wait on the folio lock.
-+        * Assume that lru_cache contributes an extra reference for non-LRU
-+        * folios.
-         */
--       if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
-+       if (should_try_to_free_swap(si, folio, vma, nr_pages +
-+           !folio_test_lru(folio), vmf->flags))
-                folio_free_swap(folio);
+On 6/15/2026 11:09 PM, Sean Christopherson wrote:
+> On Mon, Jun 15, 2026, Alexandru Elisei wrote:
+>> Hi,
+>>
+>> On Mon, Jun 15, 2026 at 11:43:14AM +0100, Alexandru Elisei wrote:
+>>> Hi,
+>>>
+>>> On Thu, Jun 11, 2026 at 01:05:07PM +0000, Shivank Garg wrote:
+>>>> guest_memfd folios are currently marked unmovable, so the kernel cannot
+>>>> perform NUMA-balancing, memory compaction, etc. This is unavoidable for
+>>>> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
+>>>> needs firmware assistance. However, for non-confidential VMs (like
+>>>> Firecracker), we can migrate the folios.
+>>>>
+>>>> This series enables folio migration for non-confidential guest_memfd and
+>>>> also lays the groundwork for migrating confidential guest_memfd later.
+>>>> Once firmware-assisted copying support is available, those VMs can be
+>>>> made movable, the confidential folio content can be copied separately,
+>>>> and the destination folio marked with FOLIO_CONTENT_COPIED so
+>>>> __migrate_folio() skips the host-side folio_mc_copy().
+>>>
+>>> I always thought that one of the nice things about using guest_memfd as a
+>>> memory backend, as opposed to host userspace mappings, is that the host
+>>> cannot unmap VM memory because of KSM, automatic NUMA balancing, hugepage
+>>> collapse, compaction, etc, acting on the host userspace mapping of the
+>>> VM memory, and outside of the VMM's or KVM's control.
+> 
+> +1000.  It's not just "nice to have", it's a core design principle of guest_memfd.
+> 
+>>> I think it would be useful to preserve this behaviour, even in the absence
+>>> of confidential VMs (i.e, guest_memfd file descriptor created with
+>>> GUEST_MEMFD_FLAG_MMAP).
+>>
+>> Just to be clear, I was thinking that it might be useful for both
+>> behaviours to exist (migratable and non-migratable) for non-confidential
+>> VMs, and allow KVM or userspace to decide which they prefer for a
+>> guest_memfd.
+> 
+> For the purposes of this discussion, we should separate the physical act of
+> migrating pages from the features that trigger migration.  As I said in last week's
+> guest-memfd call, I am a-ok with supporting page migration as a mechanism, but I
+> am dead set against supporting NUMA balancing, KSM, LRU-based swap/reclaim, and
+> anything else that goes against the goal of guest-first memory.
+> 
+> If userspace wants mm/ functionality, then use anon, memfd, hugetlb, shmem, etc.
+> 
+> Shivank, what's the immediate motivation for this series?
 
-        folio_unlock(folio);
+Hi Sean,
+This makes sense!
+
+Tbh, my main motivation was to start a dialogue on this, since the
+implementation+testing itself was easy.
+
+Compaction and memory failure handling were the cases I initially
+had in mind. And as David noted, ZONE_MOVABLE/CMA, compaction, memory
+offlining, virtio-mem cases would be useful too.
+
+I fully agree that NUMA balancing, LRU/reclaim and etc. features
+should stay out, and keeping the migration as mechanism only for
+guest_memfd.
+
+Thanks,
+Shivank
 
