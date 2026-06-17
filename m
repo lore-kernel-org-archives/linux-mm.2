@@ -4,90 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FF8CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:03:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20178CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:09:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11466B0005; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
+	id 157376B0005; Wed, 17 Jun 2026 03:09:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6CA6B0088; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
+	id 12F456B0088; Wed, 17 Jun 2026 03:09:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A24F86B008A; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
+	id 01CA66B008A; Wed, 17 Jun 2026 03:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 790A06B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:03:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 005FC1C1A97
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:03:21 +0000 (UTC)
-X-FDA: 84888513402.16.F120A5E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4C57A4000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:03:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ek6qZyIl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C28C96B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:09:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3DFD8140384
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:09:54 +0000 (UTC)
+X-FDA: 84888529908.12.D058461
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C5B11C0002
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:09:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Fgn61NTz;
+	spf=pass (imf10.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781680192;
+	b=6ent3tK70ggTdVn6tMHSl5SNqM0m5rX9AtBpDhI/Ek3P99OTUpCGa2nU8ggkY7z7ReUzSl
+	R6cGwRbzxCsiz1geidsRsNhVf54CT9e91hc053fxEMBZYVktCERKasPntlwE+BkVn1ZcXl
+	y50X+gRmUDRNjFiApI3/hnTfgReqfRA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Fgn61NTz;
+	spf=pass (imf10.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781679800;
+	s=arc-20220608; t=1781680192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FA2Y02eZezagRsG3EdVgIrWy+bRirlt7CeSWEzPBaVM=;
-	b=FowZhwuD2BNvagqee5G9GVHEZMUo5XEJlwVFfV+33lA4s7zvajRRe3RcDGlovxU90BSRti
-	TQinyfB1aSV+qIq5ETZsnDeXiAUtPpJQQInaSMDJWyf1dGFE3UvUKDAUWjnAJnwLTwTEDX
-	AdtDQUMXZTYxS/SYIi6y5P+pm9CWRT4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ek6qZyIl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781679800;
-	b=oWAwfBTiPJTawESW1DBHpGbC6YU3YPiA6R0pzKtz8kcjvdM4pUBUSsPsxNYgijCzW3kEYT
-	suPdJz933RjUU29B4lkp9WOIH7toENsvCMULSQaw42bJQWRJsHbtIHhtgFXMcAPrNpq3AZ
-	fX7G/YLtjbIEIe0VuHENa7jKw+QBArM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6F44C417EC;
-	Wed, 17 Jun 2026 07:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AD31F000E9;
-	Wed, 17 Jun 2026 07:03:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781679799;
-	bh=FA2Y02eZezagRsG3EdVgIrWy+bRirlt7CeSWEzPBaVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ek6qZyIlMX059nAqQp7ILoHOYNVLln8kdnR0ej7fSY8YGO6JdSb9TYTEmaezv9ZbU
-	 /cmvc14wGOblMQZEj4ehaH5CVigL0tUh9Lgkt8DOiyy0rbYFsbEoLjAYBFHjrIDFcp
-	 ki5+SnK0GnCFdirEhPYzjgf8ymQwyWCi5in8/n1bGOnVWqMz5rlMhsfuR78GWcbimt
-	 eJj35PXdbjvX3JEb347otpUmi908r7xOP+Ocmu5XcHo5N3sH3hqfYd6TIYFcEAW1XR
-	 +L++LXZN4j01mK4W3F7Zw6gimKV75Z8Z/ZpUX+afwGnLPWgp5C0uIf1PO2NSWgSu5i
-	 R4UZi6FSQwhnw==
-Date: Wed, 17 Jun 2026 00:03:17 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	muchun.song@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, chengkaitao <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v3 0/3] mm/percpu: Fix possible NOFS/NOIO reclaim
- recursion
-Message-ID: <ajJGtVDi0rShPfE1@palisades.local>
-References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
+	bh=XYe48FXtGS7x+UkZI1CFOAhBXOK6xAri4I08muqQyk0=;
+	b=7SK5sxe50PmZ1Kfg9+sfJJ6Mg9RPLVm3J5pLPozmFbmWFl56HpkaA4xSHHpoQpCIfAPkuK
+	zQkLnO8/C+g3WS/E9UadgOxHJTIsZvb8ayQ41e9NMFVcTA92fjhisrhdSs/FXpJwqaid3n
+	Mt+hBrOfEAOm+8Lm4CYGgsuIJoTp6k4=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GLn4Rr2895326;
+	Wed, 17 Jun 2026 07:09:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=XYe48FXtGS7x+UkZI1CFOAhBXOK6xA
+	ri4I08muqQyk0=; b=Fgn61NTz6UUL7y3O0pToliAEkaK+Tawvq9A+fnWT7HjxiO
+	rX9MyNOzpRh0Pz1j9RUyheov4WluyBTMf4yxOyckmpiX90ISUyQQYx/j+KBFdSKC
+	GU8/zmtcYWiDxwjtyxJi5QVf/jXK50AqaE8nsvQG78UV01riwXukz97SR7/aGS/S
+	q698Q2yHMCyk1L2mOVeHOynymPpKl98igr+DLQOqUj2WNtCEj0z0hXTD4YOAVyL4
+	54fAVn5rDleGOjIkeCRTxa/NFmkzBmB2ISUKHCYkXMdzw8kReNUgUo9oebIXwsJD
+	mnGzdGKsQcDVIP0L9dkIEtxiAS1FVgvH7tQHxeOQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4euequ1p3n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jun 2026 07:09:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65H74d7S032425;
+	Wed, 17 Jun 2026 07:09:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eudvaa06y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Jun 2026 07:09:38 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65H79bFs49414440
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Jun 2026 07:09:37 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1233020040;
+	Wed, 17 Jun 2026 07:09:37 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AED1620043;
+	Wed, 17 Jun 2026 07:09:31 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.28.216])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 17 Jun 2026 07:09:31 +0000 (GMT)
+Date: Wed, 17 Jun 2026 12:39:28 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Daniel Gomez <da.gomez@kernel.org>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
+        hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
+        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
+        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        pankaj.raghav@linux.dev, Daniel Gomez <da.gomez@samsung.com>
+Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap &
+ xfs
+Message-ID: <ajJIKK-pNudXtpMS@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
+ <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <ah24DlQobLjjDTGt@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <bdfdbd6b-81e0-49e3-a02f-2dc75727a71b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260612022648.13008-1-kaitao.cheng@linux.dev>
+In-Reply-To: <bdfdbd6b-81e0-49e3-a02f-2dc75727a71b@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE3MDA2MiBTYWx0ZWRfX/7m7W/uw9PI1
+ OVmW8NGg0/6VrzlRHWamFIww74OfS1DqI47YRP4npQ4VC8KWo+NNoPXx3XSWVltqbOwK5IY12hp
+ 12oijk52KC/4cn0497JXiAJLE7HA5R4=
+X-Proofpoint-ORIG-GUID: FTv06Lx3gRkmq5lUbvea8RPEfx3p8Qen
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE3MDA2MiBTYWx0ZWRfX49nhjzbA6mOJ
+ o7wu2aMC+fQoDiGqfeEx5JBByLXcve3v8I++zv5fLxZ+MEWyTmkp1N2NL/gEKpe0+BW4bsrS1/e
+ /zGdhkOcMU6K1ehuyyh3MINKjEt7o/9Jpifs9M2U8bY7w2l5ZQgcjACJGw8jvV4BEqx/gaZ7KaA
+ cKAP/PPvwArZq965Wlsead16iVzqsjQUmOx/hxjjv6LiNVJH9HiqNhDgMDyZ5tsFGu9prNFKUvx
+ 1+8HwsAglwjQYacHQC/lZwT63x5IBpB0HoWZxDjxofVIGjO+wrJofwm59fBKUEn+Yu4btyS4my8
+ ZbaMgRIHPbQJYWxpeRVRdtkPO2h6hXqMTFUWTKBSE0rRR8w5xYfnYslWJhVGMM3aRjj8Zy3Tu9T
+ Qm/0p0TKRszc/AnVMxEZ+d6qiBRM2A0IY4PNaddoa8U5fTgtf8zn46qj9z9U7JBQ+DvmpK0GuD8
+ NkrQfhIk577on62TPjA==
+X-Proofpoint-GUID: IFVLhdqCq6mqL5VWJ-Ne6GKnwYBxvYdT
+X-Authority-Analysis: v=2.4 cv=L9gtheT8 c=1 sm=1 tr=0 ts=6a324834 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=zrfNUkBl4axGHCdo8dAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_05,2026-06-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606170062
+X-Rspamd-Queue-Id: C5B11C0002
+X-Stat-Signature: 87bhth4cyrai17aqj3rw9qfgreq76y5y
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4C57A4000B
-X-Stat-Signature: pg45ataszcdb41sofwgx7xu3wrkeqk3o
-X-HE-Tag: 1781679800-826731
-X-HE-Meta: U2FsdGVkX19Da1m6VvxPhdlXZn/gbNuxjoujPNhnxchg8N/uQdvPAzs0T7a9H1h9EeeIuMZT3oZMGGpNSHOagJpTYq96Tc+xan7scD9B/+423ZDuybQxJmw2JQne7I8552faWhWPZxRwq+AJ2SMj3NAn2eF+gosO++8u6UyzbmKQhHGg2WfCjAmnPYif/TTozJvqIFvVZyFG+A74qQB9bM5WNZO8bWosa9mgq5PBtbHGreL+wwcNQEa/ntyEIyHsKOY/EZiw91ziu/6OIijVea+e1cRvJH8Ihgj6q5UHf3IFHgE1doVqf2SVIOa4RvFqM2L0PcX0cnFof7dYAJWpjM3AWA1E8f9XjH+MbdPBuXjh1YScf8u9k/nu0eBf2mUfYSWE9NrqiDyW30X4t39VNPJJJDgTzgLo45AFm5LwIv4DTZhmFPxFQkckEtXRf3Ealq/qGVOsjluq4S60KyPw8zp5opIAxuCcJqWwdnzRX1kDBzN56se6vyqdFPyo+6OJg68xp23dAc7s0d6QM64aPZl/n8vdmLl/xsWORSngFVQIX+XlrFCwZyCYT9vAt0T6LN8Crp65jnKYUl32cRoXBEb1pjKA7ReMP4pFXjytYpEAzgl8gZNC/Jr03zjjNATYKTXgfmsRaVOl1dVZB5xyGezk8tHaZTsbUAbwSBRvUbe0vMMNamZ1qd7egYRdB2jV8pahHYcuLtaIO2VRkkS7bt/8ZkJwk3r6xtCa1o+lfa49ZgzFdvF+StvnFYJ6a71c2Y9T0v3Wh8gK64OTzvskfjUAXuyQlwG5GYUyO1837kQXljpJxntoZYNlWE9hL4yKwcuMwTOFz9QqzgE6TpaVfi+axKyabcPXsCtDjiP4CTC0dWbDzfTRFiKCtikTFDI7WPXdTqE0lVzY7Or3zffwN/gGxC060+H1APIPW+RMoeJ58+yo511a3Dx/61AvxaE9o4pzkmRNuBgp+eqpUfM
- 0IJG+0Rs
- tkp5ecEOyW43ajC/i2IMtmv2jKbSyzOICfXUafmsQP4fsdGHro/PgTF1FwxlAn69oUrbBjNyfRGztsaoZn7SwImO9PYA6GMOrUapYx/u/MwCTHFpVQiSZLADgRxCC8zNakkAKcRwR4A1jSf6iXMQ9yfezqhfiCpqbGqV2URgv7utw1r5TP9NMioHNLSi8jposV9ja/WiWqeWxS5P+wrLT3uU4xB2aMbQMqi/gN4v4p8FJiKA=
+X-HE-Tag: 1781680191-501993
+X-HE-Meta: U2FsdGVkX1/yyyMkEiGvMFxpQ1ClBoTX+wXqb7hkoyKOz/oH7cSztM0fcVkRjfob653ttvJmTTda2QQy5lUpiSC88FMLVRhV95Hw/0Uek+oFqCUp7gjNMaHSfShbIiPfvaYJfJ/jAnpP0L9eiN1cFoWgU9MXB6pO/uDmmIKGIb3VrEDVkrWwghftgqABYd1TmRfPSix+SiO/3rErW9ikP3kCKzGckdv2ItfkBjvuXOtOhhE4vPAfcpXQ0zKa/l/JNNUlyMwdhNInnjAMUjxDSWgALYYaiYHtvnRFlT4H69gh2SJgX8x74x4l9ZJjHwYzQZr52SQSMaUzPP46ZT0az9DADo1NdXPqUURaujXimXJu6LjPJHhnajQ04SAKyMVjcfFXsQWGocigH5bCPBpEvLfDhTIcMW/Dkzgxny6VIrRc+k401VRBEi+T4CjAYrVjCgGLHBCZJPbcYyisOiTVYKwRAj3Y4QYZdtZPnFUbHiUtWxdpkuMVGZIy5xS0UVH7paUQNp6d2SYrUmXY1HfNWlsIavb4aJoRqJcj/Itax6VjIzT2wMunfBv/wFJ8NBcD8EJb++l7GTP12x5BW8U2POCOnONSjQ31ECu96PiMGk86gr5pIq4hR+CUVdoZhr+aHcqJ9+p6yMIm9pmvgQdcQ5rqyH0Gg0gu1Vu89njGUHrLrbaJRLgnGpBjoaWfNXRDzvY43sDX6oWhst6qt4YrO403cXwHmY1a5GsdM6QOsqV5qSzyJwMAwoUHgq8LGGrLf/Mfgc3L2P+RcqoPol6TcsX7RZvb4aLO4K3sI/YD98DPHf1vMVYOPegPtq+Z9cloymRny+CRIDUvpMBltkezIFMgJVOH8cgbU3/j8YApGCEaVFGczpY9EeVOlEr+MaHq7BNUEryqH3jJnblNfREuynfeTyRktAL5CNeDFR5/pah+bcSPAIDIke6CZxatFcPsqeQhMnjzVEL9mtxm9vL
+ Zc/OmABX
+ PEZcsYEEyyXiK2EYRsaqUjhsRjYzy+d+yOhJkhNforME++WX25eRNFGw6C9Yq0ilTCyhxXDnaPfty4gyUGNjjLBguqee6O8n/qocV1MBmhmnbs2SKP0ak/u7wu2QyYYNF7pvg9v5oVfCVgLTe9MOV+O1EPI/zBmdFrHmpwSCiUH1g0j8EWyr5S7AMiRctCrYPw38xQ/7D7srNFzM1qXCYvAMjwCWvXZMaci2rz5T+H57G/ggIT/aMy0cNZ7eq+95UIMAxhBVItp0YvalRiNd93FgM320W4KUTIFvTaOK/F9XrJbNqYnKBWfw1GseNJK/9Ng2npgogrlXs27BHMEn51KSlxvFd0bqWngGkrdHICYilaR4SLGc28/kMBXia7qIphiyYnwBCg0NHNPs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,106 +149,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Jun 16, 2026 at 03:57:21PM +0200, Daniel Gomez wrote:
+> On 01/06/2026 18.49, Ojaswin Mujoo wrote:
+> > On Wed, May 13, 2026 at 11:14:21AM +0530, Ojaswin Mujoo wrote:
+> >> On Mon, May 04, 2026 at 09:54:49AM +0200, Daniel Gomez wrote:
+> >>> On 08/04/2026 20.45, Ojaswin Mujoo wrote:
+> > diff --git a/ltp/fsx.c b/ltp/fsx.c
+> > index 720bca83..1c76634b 100644
+> > --- a/ltp/fsx.c
+> > +++ b/ltp/fsx.c
+> > @@ -2077,16 +2077,34 @@ test_dontcache_io(void)
+> >         return 1;
+> >  }
+> > 
+> > +/*
+> > + * Use a temporary file to test RWF_WRITETHROUGH so as to not modify the
+> > + * original. This is so that fsx expected contents and the actual contents
+> > + * of the original file don't go out of sync
+> > + */
+> >  int
+> >  test_writethrough_io(void)
+> >  {
+> >         char buf[4096];
+> > +       char tmpname[PATH_MAX];
+> > +       int tmp_fd;
+> >         struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf) };
+> >         int ret, e;
+> > 
+> > +       snprintf(tmpname, sizeof(tmpname), "%s.fsx.XXXXXX", fname);
+> > +
+> > +       tmp_fd = mkstemp(tmpname);
+> > +       if (fd < 0) {
+> > +               perror("test_writethrough_io: mkstemp() failed\n");
+> > +               exit(132);
+> > +       }
+> > +
+> >         memset(buf, '\0', sizeof(buf));
+> > -       ret = pwritev2(fd, &iov, 1, 0, RWF_WRITETHROUGH);
+> > +       ret = pwritev2(tmp_fd, &iov, 1, 0, RWF_WRITETHROUGH);
+> >         e = ret < 0 ? errno : 0;
+> > +
+> > +       close(tmp_fd);
+> > +
+> >         if (e == EOPNOTSUPP) {
+> >                 if (!quiet)
+> >                         fprintf(stderr,
+> > 
+> 
+> 
+> I think this is missing:
+> 
+> @@ -2158,12 +2175,6 @@ test_writethrough_io(void)
+>                 return 0;
+>         }
+> 
+> -       if (ftruncate(fd, file_size) != 0) {
+> -               perror("test_writethrough_io: failed to ftruncate to 0\n");
+> -               exit(132);
+> -       }
+> -
+> -
+> 
+> The fix works for me after a stress loop test on generic/457.
 
-On Fri, Jun 12, 2026 at 10:26:45AM +0800, Kaitao Cheng wrote:
-> From: chengkaitao <chengkaitao@kylinos.cn>
-> 
-> Hi all,
-> 
-> After v1 was posted, there were many different opinions, mainly around
-> optimizing pcpu_alloc_mutex. This v3 is intended to describe the existing
-> problems more clearly and provide a conventional fix approach.
-> 
-> Commit 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations
-> atomic") allowed GFP_NOFS and GFP_NOIO percpu allocations to use
-> pcpu_alloc_mutex and the chunk creation slow path. This restored the
-> allocation capability that was lost when those constrained allocations
-> were treated as atomic, but it also makes the percpu slow path visible
-> to callers from constrained reclaim contexts.
-> 
-> There are two related problems.
-> 
-> First, the create and populate slow paths do not fully preserve the
-> caller's allocation constraints. pcpu_alloc_noprof() derives pcpu_gfp from
-> the caller supplied GFP mask and passes it down to the percpu backing page
-> allocator. However, chunk creation calls pcpu_get_vm_areas(), and chunk
-> population can allocate temporary metadata or vmalloc page tables while
-> mapping backing pages. Those internal allocations can still use GFP_KERNEL,
-> so a caller using GFP_NOFS or GFP_NOIO can enter unconstrained FS or IO
-> reclaim while holding pcpu_alloc_mutex.
-> 
-> One possible case is blk-cgroup after commit 5d726c4dbeed
-> ("blk-cgroup: fix possible deadlock while configuring policy").
-> blkg_conf_prep() now serializes against blkcg_deactivate_policy() with
-> q->blkcg_mutex, and blkg_alloc() uses GFP_NOIO because queue freeze and IO
-> reclaim dependencies can otherwise deadlock. If the percpu slow path loses
-> that GFP_NOIO context, direct reclaim or writeback can issue IO to a frozen
-> queue while q->blkcg_mutex is held.
-> 
-> Second, allowing sleepable GFP_NOFS/GFP_NOIO allocations to take
-> pcpu_alloc_mutex means that unconstrained backing allocations made under
-> the mutex can create an FS/IO reclaim dependency against a constrained
-> caller which already holds an FS or IO lock and then waits for
-> pcpu_alloc_mutex.
-> 
-> This series fixes those issues in three steps:
-> 
->   - pass the caller supplied GFP mask into pcpu_get_vm_areas() and use it
->     for vmalloc metadata and KASAN shadow allocations;
->   - pass the GFP mask through the chunk population path, including the
->     temporary pages array and vmalloc page table allocation scope;
->   - restrict percpu backing allocations performed while holding
->     pcpu_alloc_mutex to GFP_NOIO, so they cannot recurse into IO or FS
->     reclaim.
-> 
-> This keeps sleepable GFP_NOFS/GFP_NOIO percpu allocations working, while
-> avoiding the reclaim recursion risks introduced by making those allocations
-> eligible for the mutex-protected slow path.
-> 
-> Changes in v3:
-> Allow @gfp to pass __GFP_NOFAIL through. (Andrew Morton)
-> 
-> Changes in v2:
->   - split the previous first patch into vmalloc-area creation and chunk
->     population changes; (Pedro Falcato)
->   - pass the GFP mask explicitly to pcpu_get_vm_areas(); (Pedro Falcato)
->   - apply the corresponding memalloc scope around vmalloc page table
->     allocation during chunk population;
->   - replace the reclaim recursion avoidance with a GFP_NOIO backing
->     allocation mask instead of only rejecting nested reclaim.
->     (Michal Hocko)
-> 
-> Link to v2:
-> https://lore.kernel.org/all/20260604113101.89510-1-kaitao.cheng@linux.dev/
-> 
-> Link to v1:
-> https://lore.kernel.org/all/20260528132917.81123-1-kaitao.cheng@linux.dev/
-> 
-> Kaitao Cheng (3):
->   mm/vmalloc: honor GFP constraints in pcpu_get_vm_areas()
->   mm/percpu: honor GFP constraints when populating chunks
->   mm/percpu: Avoid IO/FS reclaim in backing allocations
-> 
->  include/linux/vmalloc.h |  4 ++--
->  mm/percpu-vm.c          | 40 +++++++++++++++++++++++++++-------------
->  mm/percpu.c             | 18 ++++++++++++------
->  mm/vmalloc.c            | 23 ++++++++++++-----------
->  4 files changed, 53 insertions(+), 32 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+Awesome! and yes since we use a different file now, we can remove the
+ftruncate() call.
 
-Thanks for taking on this work. I definitely missed this earlier.
+> 
+> > 
+> > Im unable to replicate the 415 failure, but this one is strange because it
+> > doesn't involve any writethrough IO. In you previous runs have you seen
+> > this be flaky?
+> 
+> I couldn't confirm back then, so I think we can ignore it. Also, unrelated.
 
-I acked patches 1 and 2. I think 3 is good but the __GFP_NOFAIL warrants
-more discussion. I think my take back then was a single percpu
-allocation can trigger a large # of backing pages. As a result, while
-the caller may not be asking for a lot of memory, we may need
-substantially more to back that allocation. Given the discrepancy,
-that's why __GFP_NOFAIL is just mutex_lock() vs mutex_lock_killable().
+Okay.
 
-Thanks,
-Dennis
+> 
+> > 
+> > Admittedly, I've not yet started thorough testing since this is in early
+> > RFC and the design is still getting finalized but I appriciate the help
+> > in testing this.
+> 
+> 
+> No problem. IMHO, testing makes a design more robust, once the path is
+> agreed on. That said, do you think the path needs changing? Reading LWN
+> and the patch series threads, I don't see any blocker. You can cc me for
+> the next iteration and I'll follow up with more testing.
+
+Yes definitely and really appreciate your help in testing this. As for
+the design, the current design suffer when many writers are writing to
+the same file, because the inode lock critical section is increased. So
+I'm trying out a few optimizations that will lead to some non-trivial
+design changes (like deferring the IO to outside the inode lock). 
+
+I'm in process of preparing and benchmarking the new design and would
+hopefully post it soon. I'll keep you in loop, thanks.
+
+Regards,
+ojaswin
 
