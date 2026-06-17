@@ -4,82 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2404ECD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 06:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA802CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 06:29:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0B866B0088; Wed, 17 Jun 2026 02:24:43 -0400 (EDT)
+	id B1CA56B0005; Wed, 17 Jun 2026 02:29:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE29E6B008C; Wed, 17 Jun 2026 02:24:43 -0400 (EDT)
+	id AA61C6B0088; Wed, 17 Jun 2026 02:29:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1F656B0092; Wed, 17 Jun 2026 02:24:43 -0400 (EDT)
+	id 96DBD6B008A; Wed, 17 Jun 2026 02:29:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD21E6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:24:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 451DE1C413C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:24:43 +0000 (UTC)
-X-FDA: 84888416046.09.48EC82C
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C58E6180006
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:24:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id 66FE76B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 02:29:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEF6F8D2CE
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:29:41 +0000 (UTC)
+X-FDA: 84888428562.21.1FF96A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2CD8740005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 06:29:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUM/P/lJ";
+	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781677780;
+	b=x2WkIeSYW8yq8Dk+W8ebBNZNimN0LcTkkfK3FXyuQW8clzN9ULB39LRu73eGmqlw5pGdL6
+	5PtSCwPpT7TZNdliSe1aYUCQTHGsjOOkp7Rb9KVbwS3qqwWefFvGRk3QYKmm68ujHLuWJ/
+	s5HUAapWRRuEcAoJwR5hAgJiEgGnZt0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jUM/P/lJ";
+	spf=pass (imf17.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781677481;
+	s=arc-20220608; t=1781677780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=busgHP+z6JkzV9ZUJIF4qN+1v5HWMSreQkBoN89NFSA=;
-	b=O0JrHexOHTz8wli9OQ88VrQvP/i0EGp9DT3eA0uTR4vX4bN8SoPb2iFdZui9EqWfE4eUfw
-	K+70n4pP8WDFSc8ODE2tFotgMjE2xR7+hbGEbXUyzvJ5J4QlXjkNwfSQtt69xyQL38m7Fe
-	p/cI3zJsllNtiHUiN16mOBERaOH0k1A=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781677481;
-	b=NI7K7ud4ATqRAeD4MwZXczcuYn+MUQqO64b3/mxdGy/fa3UZ3iMoTBUxw4NGfiuzK0g1S7
-	drMKjjEoiamntC8cWlvC/9pgu3ZTRA61muj4P6WwlCPbmtPv6shZ08zhVBDhHBan0vch8u
-	8V+tyIfolQUCo74mNiXCaQhBpCMp9Lw=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 17 Jun 2026 15:24:38 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 17 Jun 2026 15:24:38 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: akpm@linux-foundation.org
-Cc: chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
-	baohua@kernel.org, yosry@kernel.org, gunho.lee@lge.com,
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com,
-	baver.bae@lge.com, matia.kim@lge.com
-Subject: Re: [PATCH v8 4/4] mm: swap: filter swap allocation by memcg tier
- mask
-Message-ID: <ajI9pmwrSXQarXBW@yjaykim-PowerEdge-T330>
-References: <20260617053447.2831896-1-youngjun.park@lge.com>
- <20260617053447.2831896-5-youngjun.park@lge.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kYfTT64KgZ64E56cDQTkTsPloeuusoGu/z8O/8d//+c=;
+	b=YHNKzlza66AwoynBQ7mIkquLnG14uZhbVEGqU55c90Cu2oC6efcbrDsYCH5u75Hq4pJfTU
+	uQ1w19/aQmgkE1Spt7EkMQaSO2KI0G9HgdDo1lCNLo6/VjGwI3qFJPFiSmKllO4XzqcNqT
+	C0j6Rh/xRGkN0dcpGawnJxEtgL3+Kdk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 54CE640ADE;
+	Wed, 17 Jun 2026 06:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D597A1F000E9;
+	Wed, 17 Jun 2026 06:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781677779;
+	bh=kYfTT64KgZ64E56cDQTkTsPloeuusoGu/z8O/8d//+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jUM/P/lJU5KWnSAdMWichlM1ydsEDUo7xpCyimK2P+cspLmFK2h1JH9e2hz79fHR+
+	 8p1otGzUGAzV+0KpXQKLEz5Yd7x+XaPc814gdWM0P7bhc0iA9IJlMNC9g0oyLum7nb
+	 /GKYHBejsczgGzYEf8t99+bTwzLg+u0xAJ+g6FqSBB+hQRIsqfWIitbLiYXyUW+5zq
+	 gn8bsyud4i0kvY9CqhHje07pQbQ2rQjfh+4Hg1wcQgrlQFdUwl7pvKgQiSvHPe3fN8
+	 aVZAmN9ka6O7GaysU0/S6XBNbK5hjV8XlbmsK/nuCblITcn3QDXDQo8Gy3lvVc8mZS
+	 5++35FI0bp4qg==
+Date: Tue, 16 Jun 2026 23:29:37 -0700
+From: Dennis Zhou <dennis@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	muchun.song@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v3 2/3] mm/percpu: honor GFP constraints when populating
+ chunks
+Message-ID: <ajI-0ZMWVPPbZa33@palisades.local>
+References: <20260612022648.13008-1-kaitao.cheng@linux.dev>
+ <20260612022648.13008-3-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260617053447.2831896-5-youngjun.park@lge.com>
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260612022648.13008-3-kaitao.cheng@linux.dev>
+X-Rspamd-Queue-Id: 2CD8740005
+X-Stat-Signature: ojt7o1qi3o3caxtgbatmwswp1rc41wb7
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: haw6pi56m5iy449zn5c5wqaxywrouwxy
-X-Rspamd-Queue-Id: C58E6180006
-X-HE-Tag: 1781677480-949123
-X-HE-Meta: U2FsdGVkX19o+F6UHkeCdAoZRNhmFRpt68KAbDEZp9OtXkmFZs+iRJ0EfOo9WMiXpScVAKMS/IFfre2J7DqyXYXPsu5wVk6mir0G+OJpVLrIgSRlT/OsRSixUvdrBEcGCeIkKWQ6zmQMaj2yAd01NA2uk0cH8uiqdjsEWPMT+2WBtpaAI697713ps7crHCeyJjJsYp4HUyT4Qlognfi2D/85LmN57mTEoRQHnZRSvpHMCxP4ihnG3hOhjryKBIJbPcSNKJhr29a6n+5N/g9iUdbJ8Nr6OJBSEVM+dl1asOed1qXGKRoeSIZHvLtMnWAqJVGyCJSzC6kIwnJVCbHeatUf0d58e6B2glzvAxe6fZPZmtSALITOA/R43g2ogm1w6xIgN06mnCgFZZENl8g2bQx7wz+t6PLXrPzMJlLEMsybJY7Z6VXMVxQIhKkDalJB2ynLZuDbAv6PloZXm7eutdBOE6TC4iBFTYE5Oanw1uEECYaTpqzLQz1i5n75jiZ0hnM9BXiIjI3lFKWFHNjO4qCGFWPZzZ4Mroozsc2rUVBv9ATxsw9zLQ414fSdMmYteE2EXatj2CsAGzBsIaQEBcHoEvtwOcwHPZZKxdH+GPczR/LF7qHtep4S9zO47amGubzFp0FCBXudqbhQeBLH5RwcRQmUIypyF6MbmfOA3cPLEJGE+SZXbXsZYrhs0MHdX72CTgkhOm9iwJ0ZY9OTj3alxtHYENzvG0MOeaIrq4y7lkTp6/GPVLHdGwR8BwtOBEvjB8qh2XzblmbHKqkbkbBs6/1A6WmdpToCD1aBGIHLdWL0v2jQy064XysTGoybqkN7tjyi0kBC4BFaKatOPmguJFG2dwu2CSpmdnk69V59qlyAtllGzJEBl5yEvhBJT9vN5PMMwo+tjCps+l6fjgVh3f55P8KZ2w902kb3O9mmK+4ryFL0QSN6MTuyDvpz8ofiLvajkO0aPPJuYdx
- Zn6e6HOE
- /J7I4ML2tYE5fpV2wNi3ighCDKud2dIqQCnXGNVbVCWYaVebq/+BGjP+0jEhWux9r4a1JHhB4akXnons7FdvKwLj00ret7JZc00MH0SnC/Al2treF/k/Oo904uvrsmrmZ9EsXSIrmB8b8465cvib+GQhytXroOzNN0BpiUuWU6fVOP4s9yOSRCHDIaNFemRozMiwi81SGdvrNW7I3GlAFS9hMGmk496pWzyNtymHb+X24vn3CmcPFN2K7jAu8Byv7pDm/3F+iQlUbLrjOuEsTwaUc/ehaqa4ACluJ/F2KhRjMgQVH3oTHYEJ8P/0Zl3RgcVIl
+X-HE-Tag: 1781677780-51275
+X-HE-Meta: U2FsdGVkX1/KtG+osALK65qDjB/PU3XpneuUHWtwXg/8UdfQQty+XIgdviIzKKOSGJIX0Chh/3K28lh6Lu+2FUgkHY0G4fyFyOd4QO7nPENdkgCTF8sCp9JzW92vaBNOCKCYNqALop+C01jctFWVrQhWvZRUJaPRjGsr/4nXDnPu7kXBH45sdxdHoGzTyKT/W1U2DJ3/Hz9LvejzH0c1dFdzGaXdlT20EwaeTLXk4xwC7B58a8d7vAZYMi3jtBPRFccJixQA5drtq3yHjpJHqFto8qzeZ/iLfMsZS3161rwl/Ylx56feGEIBJa9m4GWj2wDdoDngwcREMVGi4zK/S8yTxhpNTj9taQyvEJ4KaXHIypqR08JtIcVxhbjqYg3mFUBSKbswDJadiK+blwzkt34RIOaV4SMTuWtIsNryxeaadP4dhusf8snmM5zQc5TYs79qtHvNRYT59vyoAuGk31YG6n4nhzzYOMr42D0qsNsbJFgX0ShIDpwdTSEzu21FuVhS8ZV08skxv9vhYpcgBjxxDa8CDmTEOuOHgx+DyKXeI4tBEkaVsgsHJbbTJ2UwlMvy6caYRKNkarxJVBDhCC8KsTNaF260KyAWOqGbago61aOUHus6gHzLaTgU/8keqTqts2pSQUTXCAgX1RywybcbzmmSOsC5Am0kgWmqOVomTJJfQ7ySdz6b0xPNH7TnLTjFBx/gITaByGrwu+PCLTzB1D7RwDCw6CxVs65XtTVLAIeDTB7GqIHHZ2B7z/4OYtfA8LFfn14JYKgq6Ow4Jnfr/GRDJWgqCbOj+SzoZrhdwfZ2Wp2r3GgOR+49tnqKXkupOzr77NRB9/LUgQeV8W1lVhqIouenjMU/D4k86JtbbTxycDd2SvvszkPzebHWjojF05iim/pZfa6HisdKLd5hK81qK+vWtyYWOip6f7leQQfYf/7YArX3Xfz9XFQQ+e80b11RtY8jF66fmgE
+ epDtY/w1
+ 3ixQRD1WIt5NroH1nz89ZlJT2cImJX2RtzJLyznmG6ANLNci+8IioEu+BLJn+BYzhbFpVPHVSneGu3gj00kKy4obThxinUSfPjoJxRgh0JBEWiSdnCOdUmZPGZVVsISdc5xrNS67O6KoGBaSNfjTVgLbAwMWENcFRv191hdm0/6mBUj74L8RrRdjE9lzIWyrGQ6pgzX28E7+oA2PfUAo9FVuiMHMXyfnMqifBBiFWcgPUzlk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,18 +96,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-https://sashiko.dev/#/patchset/20260617053447.2831896-1-youngjun.park@lge.com?part=4
+On Fri, Jun 12, 2026 at 10:26:47AM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> pcpu_alloc_noprof() derives pcpu_gfp from the caller supplied GFP mask and
+> passes it down to pcpu_populate_chunk().  pcpu_alloc_pages() already uses
+> that mask for backing page allocation.
+> 
+> However, the populate slow path still has internal allocations and page
+> table allocations which can lose the caller's allocation context.  The
+> temporary pages array is allocated by pcpu_get_pages() with GFP_KERNEL,
+> and pcpu_map_pages() maps the backing pages through
+> vmap_pages_range_noflush() using GFP_KERNEL.  The latter can allocate
+> vmalloc page tables implicitly, so a caller which deliberately uses
+> GFP_NOFS or GFP_NOIO can still enter FS or IO reclaim while populating
+> a percpu chunk.
+> 
+> This has the same concern as chunk creation: callers such as blk-cgroup
+> may use GFP_NOIO because they hold locks which can be involved in queue
+> freeze or IO reclaim dependencies.  If an allocation reaches the percpu
+> slow path and needs to populate previously unbacked pages, the internal
+> GFP_KERNEL allocations can defeat that context.
+> 
+> One possible case is blk-cgroup after commit 5d726c4dbeed
+> ("blk-cgroup: fix possible deadlock while configuring policy").
+> blkg_conf_prep() now serializes against blkcg_deactivate_policy() with
+> q->blkcg_mutex, and blkg_alloc() was changed to GFP_NOIO for that reason:
+> 
+>   CPU0: blkg_conf_prep()
+>     mutex_lock(q->blkcg_mutex)
+>     blkg_alloc(..., GFP_NOIO)
+>       alloc_percpu_gfp(..., GFP_NOIO)
+>         pcpu_alloc_noprof(..., GFP_NOIO)
+>           pcpu_populate_chunk(GFP_NOIO)
+>             pcpu_get_pages()
+> 	    pcpu_map_pages()
+>               -> if the selected percpu chunk has unpopulated pages,
+> 	         chunk population may do internal GFP_KERNEL allocations
+>               -> direct reclaim / writeback can issue IO to this queue
+>               -> IO waits because the queue is frozen
+> 
+>   CPU1: blkcg_deactivate_policy()
+>     blk_mq_freeze_queue(q)
+>     mutex_lock(q->blkcg_mutex)
+>       -> waits for CPU0
+>     ... unfreeze only happens after q->blkcg_mutex is acquired/released
+> 
+> So the concern is that the caller deliberately uses GFP_NOIO because it
+> may hold a lock which can be acquired after queue freeze, but the percpu
+> slow path can temporarily lose that allocation context.
+> 
 
-Regarding the review from Sachiko.
+Maybe others have different takes on this, but I don't think this needs
+a full duplicate explanation in each patch.
 
-The AI review pointed out two things. a pre-existing issue and a valid
-issue regarding swap_sync_discard().
+> Pass pcpu_gfp through pcpu_get_pages(), pcpu_map_pages() and
+> __pcpu_map_pages().  Apply the corresponding memalloc scope around
+> vmap_pages_range_noflush(), because vmalloc page table allocation does not
+> pass the GFP mask down explicitly.  Keep the first chunk setup path using
+> GFP_KERNEL, matching the previous early-init behavior.
+> 
+> Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> ---
+>  mm/percpu-vm.c | 38 ++++++++++++++++++++++++++------------
+>  mm/percpu.c    |  2 +-
+>  2 files changed, 27 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+> index 69b00741dc68..ccd03cc152d4 100644
+> --- a/mm/percpu-vm.c
+> +++ b/mm/percpu-vm.c
+> @@ -21,6 +21,7 @@ static struct page *pcpu_chunk_page(struct pcpu_chunk *chunk,
+>  
+>  /**
+>   * pcpu_get_pages - get temp pages array
+> + * @gfp: allocation flags passed to the underlying allocator
+>   *
+>   * Returns pointer to array of pointers to struct page which can be indexed
+>   * with pcpu_page_idx().  Note that there is only one array and accesses
+> @@ -29,7 +30,7 @@ static struct page *pcpu_chunk_page(struct pcpu_chunk *chunk,
+>   * RETURNS:
+>   * Pointer to temp pages array on success.
+>   */
+> -static struct page **pcpu_get_pages(void)
+> +static struct page **pcpu_get_pages(gfp_t gfp)
+>  {
+>  	static struct page **pages;
+>  	size_t pages_size = pcpu_nr_units * pcpu_unit_pages * sizeof(pages[0]);
+> @@ -37,7 +38,7 @@ static struct page **pcpu_get_pages(void)
+>  	lockdep_assert_held(&pcpu_alloc_mutex);
+>  
+>  	if (!pages)
+> -		pages = pcpu_mem_zalloc(pages_size, GFP_KERNEL);
+> +		pages = pcpu_mem_zalloc(pages_size, gfp);
+>  	return pages;
+>  }
+>  
+> @@ -191,10 +192,22 @@ static void pcpu_post_unmap_tlb_flush(struct pcpu_chunk *chunk,
+>  }
+>  
+>  static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+> -			    int nr_pages)
+> +			    int nr_pages, gfp_t gfp)
+>  {
+> -	return vmap_pages_range_noflush(addr, addr + (nr_pages << PAGE_SHIFT),
+> -			PAGE_KERNEL, pages, PAGE_SHIFT, GFP_KERNEL);
+> +	unsigned int flags;
+> +	int ret;
+> +
+> +	/*
+> +	 * The vmalloc page table allocation path does not pass @gfp down
+> +	 * explicitly.  Apply the corresponding memalloc scope so implicit
+> +	 * page table allocations preserve NOFS/NOIO constraints.
+> +	 */
+> +	flags = memalloc_apply_gfp_scope(gfp);
+> +	ret = vmap_pages_range_noflush(addr, addr + (nr_pages << PAGE_SHIFT),
+> +				       PAGE_KERNEL, pages, PAGE_SHIFT, gfp);
+> +	memalloc_restore_scope(flags);
+> +
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -203,6 +216,7 @@ static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+>   * @pages: pages array containing pages to be mapped
+>   * @page_start: page index of the first page to map
+>   * @page_end: page index of the last page to map + 1
+> + * @gfp: allocation flags passed to the underlying allocator
+>   *
+>   * For each cpu, map pages [@page_start,@page_end) into @chunk.  The
+>   * caller is responsible for calling pcpu_post_map_flush() after all
+> @@ -211,8 +225,8 @@ static int __pcpu_map_pages(unsigned long addr, struct page **pages,
+>   * This function is responsible for setting up whatever is necessary for
+>   * reverse lookup (addr -> chunk).
+>   */
+> -static int pcpu_map_pages(struct pcpu_chunk *chunk,
+> -			  struct page **pages, int page_start, int page_end)
+> +static int pcpu_map_pages(struct pcpu_chunk *chunk, struct page **pages,
+> +			  int page_start, int page_end, gfp_t gfp)
+>  {
+>  	unsigned int cpu, tcpu;
+>  	int i, err;
+> @@ -220,7 +234,7 @@ static int pcpu_map_pages(struct pcpu_chunk *chunk,
+>  	for_each_possible_cpu(cpu) {
+>  		err = __pcpu_map_pages(pcpu_chunk_addr(chunk, cpu, page_start),
+>  				       &pages[pcpu_page_idx(cpu, page_start)],
+> -				       page_end - page_start);
+> +				       page_end - page_start, gfp);
+>  		if (err < 0)
+>  			goto err;
+>  
+> @@ -271,21 +285,21 @@ static void pcpu_post_map_flush(struct pcpu_chunk *chunk,
+>   * @chunk.
+>   *
+>   * CONTEXT:
+> - * pcpu_alloc_mutex, does GFP_KERNEL allocation.
+> + * pcpu_alloc_mutex, does @gfp allocation.
+>   */
+>  static int pcpu_populate_chunk(struct pcpu_chunk *chunk,
+>  			       int page_start, int page_end, gfp_t gfp)
+>  {
+>  	struct page **pages;
+>  
+> -	pages = pcpu_get_pages();
+> +	pages = pcpu_get_pages(gfp);
+>  	if (!pages)
+>  		return -ENOMEM;
+>  
+>  	if (pcpu_alloc_pages(chunk, pages, page_start, page_end, gfp))
+>  		return -ENOMEM;
+>  
+> -	if (pcpu_map_pages(chunk, pages, page_start, page_end)) {
+> +	if (pcpu_map_pages(chunk, pages, page_start, page_end, gfp)) {
+>  		pcpu_free_pages(chunk, pages, page_start, page_end);
+>  		return -ENOMEM;
+>  	}
+> @@ -319,7 +333,7 @@ static void pcpu_depopulate_chunk(struct pcpu_chunk *chunk,
+>  	 * successful population attempt so the temp pages array must
+>  	 * be available now.
+>  	 */
+> -	pages = pcpu_get_pages();
+> +	pages = pcpu_get_pages(GFP_KERNEL);
+>  	BUG_ON(!pages);
+>  
 
-For the pre-existing issue, I believe it is out of scope to address it
-together in this patchset.
+nit: it's a little misleading to pass GFP_KERNEL here because this is
+the deallocation path and we expect the pages array to be already
+allocated and cached in the static variable.
 
-However, the second point is a valid issue. For the case where
-swap_sync_discard() discards a non-selected tier, succeeds, and then
-retries swap allocation. I will fix this in the next version by
-checking the memcg mask within swap_sync_discard().
+A little terse might be just passing 0 and checking gfp != 0 to allocate
+pages.
+
+A little more verbose could be introducing pcpu_get_pages_cached() to
+get to that static variable.
+
+>  	/* unmap and free */
+> diff --git a/mm/percpu.c b/mm/percpu.c
+> index b0676b8054ed..4d89965cba16 100644
+> --- a/mm/percpu.c
+> +++ b/mm/percpu.c
+> @@ -3256,7 +3256,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size, pcpu_fc_cpu_to_node_fn_t
+>  
+>  		/* pte already populated, the following shouldn't fail */
+>  		rc = __pcpu_map_pages(unit_addr, &pages[unit * unit_pages],
+> -				      unit_pages);
+> +				      unit_pages, GFP_KERNEL);
+>  		if (rc < 0)
+>  			panic("failed to map percpu area, err=%d\n", rc);
+>  
+> -- 
+> 2.43.0
+> 
+
+I think this is correct regardless of the nit.
+
+Acked-by: Dennis Zhou <dennis@kernel.org>
+
+Thanks,
+Dennis
 
