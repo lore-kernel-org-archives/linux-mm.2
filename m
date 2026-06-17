@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F475CD98ED
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 22:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46550CD98ED
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 22:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9946B0088; Wed, 17 Jun 2026 18:13:46 -0400 (EDT)
+	id 259966B0088; Wed, 17 Jun 2026 18:28:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 459DD6B008A; Wed, 17 Jun 2026 18:13:46 -0400 (EDT)
+	id 20AA66B008A; Wed, 17 Jun 2026 18:28:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FFA6B008C; Wed, 17 Jun 2026 18:13:46 -0400 (EDT)
+	id 122A66B008C; Wed, 17 Jun 2026 18:28:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 092AA6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:13:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 74AEA1C49D6
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:13:45 +0000 (UTC)
-X-FDA: 84890807610.15.9D8B1F3
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3B3121A000A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:13:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JQWh5GSN;
-	spf=pass (imf19.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id D477B6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:28:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45B7D1C48DC
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:28:21 +0000 (UTC)
+X-FDA: 84890844402.21.9775B4E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E2BD7140004
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:28:18 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hcURVoml;
+	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781735299;
+	b=snPS9rFokve/MAAB7ajKyN7ytRnUqmzH0LOaadXD8OFfg+QOExIQ5cKctHtZM6cO1rXsPQ
+	/T7E7My+zt/7TZUFkIeCkrIRfRxGbZchs1B1eWeghylBEHy9AnY8xsr6melDfcHLguspqh
+	zGs26cTSXA2DEwqRZ2CdQuPVq0NyUsM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hcURVoml;
+	spf=pass (imf09.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781734423;
+	s=arc-20220608; t=1781735299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wXCtT0v0EUXn/TCjNbtIDqQixZXo8p0dSnCceCqrUHI=;
-	b=KqMMwFaRdsAmVC9uEHBoeXtiYWtQtk21ls6E4XeAXbbSzd/LEJFkpyhpMb4N8gs4BTA+zC
-	rww4cpuq24x/eFfXWMVgjn1SOXegNdSmNLOLYJiyqGT4dXCxeH+1nX1zj/Tq1aU3dUvZ4T
-	HttSlgk2Kuo0u3CVYvGVTnftZ/u5EZc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JQWh5GSN;
-	spf=pass (imf19.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781734423;
-	b=iIeqvG07WqOXQlDWk7HDaazEt3cVvgPQpSCLgaCrega8AHWBHr80xesTjEP2xRVFMdTo91
-	jrUZXIzehrzz+9D6hbhtRHA20GbFPbSZCyOwOouoyi6VWNf+4j67Nmcr/lr9/QuX5PPIHb
-	mlcxBoaP/Jdp7s9XMKjJpO1D7dxLVDE=
-Message-ID: <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781734420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wXCtT0v0EUXn/TCjNbtIDqQixZXo8p0dSnCceCqrUHI=;
-	b=JQWh5GSNswOXAIAtOLthK4YPH2rXesoew2oocgmabfDNY7GrFI8VhZRmTZRJPDLnO1EF9I
-	t0DX9XKg74MguhSeDG9tLRPRPOHHoeHsiusXKx78qWz4Waug8hmuYjlw8AJdElsRs+/kv/
-	7H6AZ8tLjCt0tjcl4f1LnXwjZfG0Mp8=
-Date: Wed, 17 Jun 2026 15:13:33 -0700
+	bh=KNYyO6SgPKl4C9MF3+RAjBkHpwVrxYNEfsKvOvBWLNg=;
+	b=b7FwTzMTHIEMvEUFQETGyaf0tg8HNw3ytyHu39G429ixxZPU3AfFFtO7YxnUo5kscwogMJ
+	xhMOffOWqi9Xo8PmJlaTUwnTHFvkx3DrrIW+g+h5zZIqf8dFjDEmBMbhdHFVQK3Fbj0Oyk
+	upTQIoRd2BtsOLlcgELvY58e8IW6rp0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KNYyO6SgPKl4C9MF3+RAjBkHpwVrxYNEfsKvOvBWLNg=; b=hcURVomlWT5nqRNu4mssXwPiRF
+	7ktKlqqLah/ESrsnAO6TOGb+NLOJLeg9107bAxjEw9M9V3sAlzaUcCiLUt9apxycXIeiKiPih4gqR
+	E2mufM5NaHDNLe8jEaU6Ts7ttO3cLylYfAZPi7Varz/WNutEv8s+8yBmeP0cPk0Kw4eYYvik0rd6Y
+	RN9uSE61LUWHgRolMlUq/PO7+H4PurkY+ph7z/Xx842H8s48zJPs3mjU79lXW20E7Prs+cNTufO/w
+	M4iDrprAndP9FvtTAFa9WZH9hBCX5oFdkS4wI1BDKX/NkpulEn0vhuVKEmqsmg7ftB/h8n3Cbc8Pl
+	RmuqUqmA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZyju-0000000DNrv-0BST;
+	Wed, 17 Jun 2026 22:28:06 +0000
+Date: Wed, 17 Jun 2026 23:28:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, jack@suse.cz, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+	david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
+	rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 05/11] hugetlb: Convert the vmf->pgoff to PAGE_SIZE
+ granularity
+Message-ID: <ajMfdQf-Fspwmstr@casper.infradead.org>
+References: <20260617172534.1740152-1-jane.chu@oracle.com>
+ <20260617172534.1740152-6-jane.chu@oracle.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
- under 5-level paging
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-To: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman
- <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: bpf@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman
- <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
-Content-Language: en-US
-In-Reply-To: <20260610175651.647515-1-ihor.solodrai@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3B3121A000A
-X-Stat-Signature: jr66y6uzkanys56p5cnuppktnqjrqwch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617172534.1740152-6-jane.chu@oracle.com>
+X-Rspamd-Queue-Id: E2BD7140004
+X-Stat-Signature: tgh5ypq49otqgyr7r4miuac6p81p6png
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781734423-182494
-X-HE-Meta: U2FsdGVkX18zT+Rh2oKmFh6aeTjQvPpols+yTeqci0rXHrJx6cNo1b8cFt+Y9czs/BP+7rDtdjPjeU7ambZzewFTWie5XKYrcGdk0vyRiViqiGLAVhW9BgbxAMZ8xX50pKxms3gxcyHTsoU4qEZuAsec4Ok1gQv/vdMlPFt02tWxndVI/7w0/3eQD5N5GfMtQPybYj/EMKO9OAnOLzhZ7PwHJsEVR9yox3lQBfxB7j4xvF6oEyAk/dXp69fP9yV/i4eg93pruKfjfH80ox1Dx1qesB8ab3bO+S2Rhnpy/a0msebCqyOFbIe+hvqx0T9E1O0jMyXyP+cJSFCR+OjzE7DelC2MrzeJyB7i7nohfhYQCparBqojH0Ttu+gZdtq7Hbml5HYrGFjVgIydHj6VOVTxWwPIulMqcp+5PXNRmEiX92RcoFhFZHhR7wujN9TnM9Wm+2C0ZigUz9NSaMTK9sWBsKG+9JgJUaB7B30BDXCCY/2EVKY9hd1LIfDxBD3qSw3ac3XHHFqHs3HAGE/b8q5Fp/BOoXlV8/4NJW2PG42Iv9Tuarxhs1yChQbDV/bxOw/FWoXzHj9/LxIUpFgeEmiFf8DdoQ2IHsYbO7UMtHDNnVLxuDcgLbDOp53eImlLRc3BEZ53WD7WqMfmcOXX0EefXngPE5EqY6e5zNIwNOP82DgPke2uWcgWS9jXnWcogAdFLEYdlSXwaJqqguvgWzbL9VG3h0l34DCG/kbWunRPawZprnC68oZ4PHalt3aDJNBMmmQjro0F7uq5MhedHtgSP3VbJ2uuCNd6+Ic9GP3eDOGMtSqsm4pQaVTzSr9SplfhA76Kp2g8KJZFid9BdkcY3tUAxAHlQ69EmhJimiL1nKkimF+RavRzKkDnpPaP64CN30Zd07+pzaq4oAgetJsavSKFv+bNNvCV/qZ+kcgk6wm8Vepo+Dmque55mLvsecQkUraqFTmY9cCPzGl
- lEg+XYxz
- ZtrdAzeT54sGev3c2XW5v4kcu4N9bTgQZaYAVgsDH4Yv1CnzotpWNZ77/rn1FZ8Tl9e8pALACavCMddAKi1gBDpZpDePjEkn1q6z76KgDR46mOmTvr4PnJSNVzrHMZdzzB7B0prQrxotq5h3eLYNMBVNbHEc1q9oPOSU2YCabkwiShjV5avOypMTI4bMimkRECLO+qTOrGknI/d3xzlhx8WauLKDsXKQAMe1mgyrbFbaBjyTE8hU4zYpKo7N5BTpzMKfTEdPwM8vwavct4agBi4mNdrSbxl/kzDEQMLFesaNyKm8c8vDOGmm/akuF/WvQ+f6i0rj//2B96fZVtvKe6ZR5UIDEQGpL/6Ak
+X-HE-Tag: 1781735298-557345
+X-HE-Meta: U2FsdGVkX18gHZiNE97lVULFDPrpTZCWcgVgZd8d/JLWCBIp489o5eCrENXszF3jIjDWDGWfOIoXkqNSxYngU1g6k9A5c/8/0Kgh0aHF9cjIP0r8op26ycaKU9gsXU0HY4yF5evqcZ44sGwXk7ENdAOcKrKTGIswkPaszmhU1TXmwixvwgG/SQ8RdkjqbL1szhXoBIvgF9yY0T6fk/PNtos2B2W+5T8P28ACAcutcj28tioANvZK/bYxqupjde75AQsZ8Njk9oLJ+dSg7WTLTQpYxyICY+gJ9ktKw/5j0z6GnOsuq4hie7oYI91Ad651xCmJgl0M1OewlUl06IDhi6Q0Psab6esCZqPjoLpd0lKGK/lE7Mjrpz2cvhlDXFjGpTiO2KQIMatBwBwD/gC2byyKlIjU3JAHQmr4cLocwtHf7Ln/a9sM7+FPSGqGSDrg1r8f4Vtbg/zhzNXLlvxRdy4YuP3rGPeFx3+ol+j+pii/kBV1IxcYfwT9WRoriWiXzZTN/3MyHsJu7vAdt/NwDpt6REgi7sq8k7qxGjYgZfbxetrRSH2os0bGhKIFRhNgkc012IYBe6p+LrYXpFof2Nccub3nlcZ9NjI/QHD4LTt5QoUZmA4b3amjPCEu2flokgztIZSU5F/8rslFvMjOo0G/Bf/r0Rltx8DUtpfAgKbSiUjK+2UfOdu9h54aTKeV+9u4/sox+WHMr8gLCLk2PLfLVV58L8UUbZqmMKkq2twDGoQVuqURX9S1YxqoeCqGOiTegNujTEKHs+Q//a4W5LNMiWxerx/uXkflCyQrMKxQeNKOLQlVcocGbJUUtCMToZR/7FcnalCj4r0y9arnCca2wPh4WlM1747HG9t2yA1btu2xNeZSwGN4R5bRHq8c9TdpGTYwaGCHSvaorgCrlUJK6/BHw23l+921EFA9RJcSnz9N1+iCQ23Olx/aUWLHHAn7ljsUtEqQmqWo5j0
+ vk+AzsH6
+ muQUgv0k5eRsHSIa4RXqmVxmfAFD5UwgdTAr883Jb313++p0vpzFE1fmGrXfUxJFy3P70muUGyUwNTTOiX+ABqFSd3P85YYKYixH93sdW/JcQ9ZMcKLZMEvC4hNx2SdaOev4YeoLs4Yh6RyCEbhe57orIIYzyjkkJ8Y9IDdxDOcat60s2f/TOTSp3zDLXDAnDcD869LsbTxJO1/cr5/SV0ickfZK49iJvqRIcXLNI+9oHCY+hgHCWanX6zpjkRAYbB1a03CtjUACIdIRipT4nubJ8eavXqFbRLRuvAw/DyktMfdfSiE1/Q0IQMLblhiASH9me4wqVL8Dcaer9Y9NFtXVX4++1S+wVDtwEgtJEdNmCn6gsptlGqAJp5RlUsDM5tpEwtJMvuWRby8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,65 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/10/26 10:56 AM, Ihor Solodrai wrote:
-> 
->  [...]
-> 
-> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-> index 2b8e73f5f6a7..b5f430f2dbb6 100644
-> --- a/mm/kasan/generic.c
-> +++ b/mm/kasan/generic.c
-> @@ -9,6 +9,13 @@
->   *        Andrey Konovalov <andreyknvl@gmail.com>
->   */
->  
-> +/*
-> + * check_region_inline() and addr_has_metadata() can run very early.
-> + * For example, in an interrupt taken while identify_cpu() has the CPU
-> + * capability bits temporarily cleared.
-> + */
-> +#define USE_EARLY_PGTABLE_L5
+On Wed, Jun 17, 2026 at 11:25:26AM -0600, Jane Chu wrote:
+> +++ b/mm/hugetlb.c
+> @@ -5654,6 +5654,8 @@ static inline vm_fault_t hugetlb_handle_userfault(struct vm_fault *vmf,
+>  						  unsigned long reason)
+>  {
+>  	u32 hash;
+> +	struct hstate *h = hstate_vma(vmf->vma);
+> +	pgoff_t idx = vmf->pgoff >> huge_page_order(h);
 
-Hi everyone.
+If we do manage to make mapping_min_folio_nrpages() return the right
+answer for hugetlbfs (see earlier comment), then we can avoid this by doing:
 
-Bumping the thread, as it's not clear how to proceed.
++++ b/mm/hugetlb.c
+@@ -5936,7 +5936,7 @@ u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx)
+        u32 hash;
 
-From the discussion, we've got three approached to the bugfix:
+        key[0] = (unsigned long) mapping;
+-       key[1] = idx;
++       key[1] = idx >> mapping_min_folio_order(mapping);
 
-  1. USE_EARLY_PGTABLE_L5 in generic KASAN
+        hash = jhash2((u32 *)&key, sizeof(key)/(sizeof(u32)), 0);
 
-  This one is probably the simplest. We add USE_EARLY_PGTABLE_L5 to the
-  files that call addr_has_metadata(). It's KASAN / LA57 specific.
-
-  The downsides are a performance hit pointed out by Kiryl, and that
-  it's an arch-specific switch in generic KASAN.
-
-  2. local_irq_save/restore in identify_cpu() - Kiryl's suggestion
-
-  This looks like a better fix addressing the actual problem of cleared
-  capabilities being accessed from interrupts.
-
-  An open question for me is whether this fix is complete, and whether
-  the scope of irq_save/restore is right. We might also be ok with it
-  even if it's potentially incomplete.
-
-  3. Static key for LA57 in KASAN - sketched in the thread
-
-  This is essentially a bit better implementation of (1). Still KASAN /
-  LA57 specific.
-
-So my question to maintainers is what approach seems best?
-I am open to other suggestions if any.
-
-So far this is mitigated on BPF CI with no5lvl boot param, but the bug
-is real, and I believe we should fix it in the kernel.
-
-Thanks!
-
-
-> +
->  #include <linux/export.h>
->  #include <linux/interrupt.h>
->  #include <linux/init.h>
+although I wonder if we still need the fault mutex array, given that we
+now have mapping->invalidate_lock?
 
 
