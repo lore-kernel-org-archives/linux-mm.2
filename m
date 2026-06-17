@@ -4,134 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC557CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D60CD98F2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 18:57:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83B666B0005; Wed, 17 Jun 2026 14:57:35 -0400 (EDT)
+	id 99AF16B0088; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4D26B0088; Wed, 17 Jun 2026 14:57:35 -0400 (EDT)
+	id 91E0C6B008C; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D5A66B008C; Wed, 17 Jun 2026 14:57:35 -0400 (EDT)
+	id 834196B0092; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 370F26B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:57:35 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0203405AD
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:34 +0000 (UTC)
-X-FDA: 84890313228.04.719294C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C84D6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 14:57:43 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDA9214056C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:42 +0000 (UTC)
+X-FDA: 84890313564.18.C43C018
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D11D540002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ss5/7B8P";
+	by imf22.hostedemail.com (Postfix) with ESMTP id 397C0C0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 18:57:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXryMjMk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781722652;
+	s=arc-20220608; t=1781722661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZWtaENFb8wsffv7f3IzX9YbZfqNh2H7+UoPSzSXYuI=;
-	b=zNvF2JEoXA80tZifhVD4+RerTPqdDKcUytm7lEs9TDzoAgQk/+anW1o4Ptsnq9A+92kqSj
-	RmJW1G5AfNImhJr+d99n0S4BGNvHVcPmObNaUzskaI07GiIMnGeDM4TQUbMh3xIL8T3mop
-	WPdNqDZPqYtxz5roYa/ZAi58gWgdEWI=
+	bh=MuHmxF3Q3Im7lyehrUggcluXuhikWRgzOx5fgePtduM=;
+	b=ihf1aJL7m7dDG0kV+oCP3FP1KkRHA6vWsMlVtN+Csm4fAiQzkGry2JHVmSP1j8v0PII9dn
+	iI0+AQrISu5BKgkWM8zTAwRM1v1hhEoXV4zH3ZhrnTZn7e5URctTf6+QcZi5DD7UI4pUP8
+	F4Vw2OUbRBA7nD4V/RO75ScMSPMtwhQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ss5/7B8P";
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXryMjMk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781722652;
-	b=M3h84S93DtSFnjEGg37Afzec0TROqIuJO4ZVhvgKpn4E+30sIH+olZPGcn9A8IX+k8hyN7
-	OjQdxIGe/fnyYxw3x3is5ygqybqjCzgHPmRrbKNB358evTU2Xkr6B+L3UuP4BIlH3pFqAP
-	vzquYpTi3Dmv3jg2FhLYfaqddVeg/IA=
+	t=1781722661;
+	b=bprYzkMBO2uqzUJU1ajO2EICyRBlxcRHLs6X7IhVgBnQHYfA37rKPMw4u0aJ+U/skpEA6z
+	O1ETMljBkIrAk1PEaen6dSupzMUtqGhHNJI8iFZRc4/pp+E7ri9+KMUKNG5Q9TvOss3Kkx
+	vJbXA8rgJesmsihvPCRU/aM6KJfWxB0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BD2B6001D;
-	Wed, 17 Jun 2026 18:57:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A281F000E9;
-	Wed, 17 Jun 2026 18:57:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD4A460052;
+	Wed, 17 Jun 2026 18:57:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7891F00A3A;
+	Wed, 17 Jun 2026 18:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781722652;
-	bh=zZWtaENFb8wsffv7f3IzX9YbZfqNh2H7+UoPSzSXYuI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ss5/7B8P4iVJPoxo3V8uqSXR32uktKCar1PAxSEIUAkKWjK8zbtQ2aArLbreU0Dd/
-	 7ARsemNGFI9DMTx4NFvVe00i0qE7iAmuiAjGwFAfU5HJ6PdTHbtQw2OOLGuUs+6rgx
-	 3EbBDikXjrhTlqc4ygMfDWESvYheqwElZvDOrvmIvINI37/nUboqOPddbJ8SCbzO6r
-	 /2Z8H9gMlcozH2lAEvmRZJUwubNIOEKzpesBcu5K+64kLbqGZNzYKkVqvSJQYSGzpj
-	 WE7rsyuS5eyLMDPAOIorSpQCck6JXOPZfxf0+kgMnp9w+AdSjyvjky6mwfDHk60mnt
-	 pGTM/sFIr1riw==
-Message-ID: <9890b8f5-69b9-49bc-8ed6-ea47723b644e@kernel.org>
-Date: Wed, 17 Jun 2026 20:57:26 +0200
+	s=k20260515; t=1781722660;
+	bh=MuHmxF3Q3Im7lyehrUggcluXuhikWRgzOx5fgePtduM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fXryMjMk/Xq0WcxFi0hr2UMx4uUqPl2Mf+U9u1XOSgK97gCt9F2Qm2zCSpchld2X1
+	 vfC2fdVvpzjCo3Z9nE+pNnZI9XoAGHR5qfhtC4Q2v4OBXjWdQ8gaqUoL9eCDuxcXER
+	 xedFJeKWCkOW7+5sRRdytlXq/QqYQhGgJqFmrYNyT0nllTv/ZUNuiDlzC2prcNqvb/
+	 8dz/HpV3EQ9T90n+zh5IiZ8qKomMPZAeeA3UGDdcVlp+Ywim0K6W0R150Qcj3fGN1q
+	 Ej1mYOlwedKVnNOTm2EjbjCH4U3hB27BjqzilFy1KDmqWYsrIOR9dZAuJzC25K8GFG
+	 o3Ys2n/hyo46Q==
+Date: Wed, 17 Jun 2026 21:57:34 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	David Matlack <dmatlack@google.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,
+	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 0/3] kho: Add support for kunit mocking KHO restore API
+Message-ID: <ajLuHq-FJxrIzr51@kernel.org>
+References: <20260521193202.746810-1-skhawaja@google.com>
+ <ah0t9Ss_S-5iOM59@kernel.org>
+ <ajGOIOqBY1pazq5g@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/3] mm/compaction: respect
- compact_unevictable_allowed in alloc_contig path
-Content-Language: en-US
-To: Wandun Chen <chenwandun1@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com
-References: <20260604023812.3700316-1-chenwandun1@gmail.com>
- <20260604023812.3700316-4-chenwandun1@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260604023812.3700316-4-chenwandun1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D11D540002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajGOIOqBY1pazq5g@google.com>
 X-Rspam-User: 
-X-Stat-Signature: yb5kbrydkped85iuuwsef8xg7eewhmd4
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1781722652-589615
-X-HE-Meta: U2FsdGVkX19KhjAsGbMFqkDEXiILFgClXh7XiGpzrPbpLFqkWyuDwDQpiAX/oqCtdj/+IpJc6mHxnuGctrLJOwiZ8E4rkGkvG43ZSAEqSfQ3aOtKtwVmbqdQaYOgvTdIO5Mql0cf91/H7+mXrkwthnXk3EjY1l3sU1dTIgXIN1WTNX2/RkmPn+/AWi1lZnyeeiocuEUFMKqzLThFVCoP7CAW8HapCE4zMyMF4S0SWdDKntCp29gDK0pDdawvQAmE7dT0WoHatki9DviCBym2mYBgZBDjJDbp4Y28raB2WMdWxw3yz3AVkCafx26fUN2LirL38+QJ2s1Uuk6npeVVPRkqxhzODk5UUmsX+uk81cA2TzPT2SxyqKR9kQQYtF/FJuksps9GyvaVLoA7sE96/hJBfdcMu4EnvtHeCh+oVJTeC/j7HBL/t0CvVrIaOMNo3O+Qy7pWm8FFFzNG+ohbLi7FS3xljPmcNbNdIa3Fjd0K2t7W/eDodoYaq3Og/OQ6IO5SGdiQTRVOhQPC3pk1ZUTpoAA/La6GN0ceVsEuTyNyvGLzr+xOvqQkN3g6vKV6dLf0bS0EdS4iXNAy2AxgQN/KMN+rWqgmc/hUV/3mZIAtirSVDBuVIxGy6/Bh6zpMVvKTQ1H0yx7xZOGc1AJD0tg8J55mU4YmCTaKUpPpPF1wzwISsROlkxehrkANoyc/ZGRrs/4XVA3bCoAEe/zi4knAaUhSmyR1S/RJ2i2L4PdMvCvfD5UAbYJwO4ETtKwnfIdea3xDBOdNfafBQ4ABPyYbvqaLGw1kriBk253loHTEa6ReS7Ri7ndGoLf8cO2rPPsLLCttm6DVsJlfS00XH3fma45iKmC47e7zFJHvulTmp7C7JukE9f7ClM1Ckwkfh8SqiTwB632lV+svGTGmAIypEyV4KdVsoZG64fUGfRtKjoo8RS3cPuEuV9/2gqQVekkJ5Q9KkafP/h831Ed
- Vd4hNhNT
- km+IEwX18TWZQQ4BpkV3VY8MVJxaPP0sM1ZjsmHGsDV8Vg3xC72yr3vZH/XnRquUt4wa67IrFpbOEPTK57OVBpsbdcKbl/ZdTnxpnV4RO8O+6k2QArJPNxR/Vx30cE+hiE3YNcOJn+p0j0ZZyochWqid8icGjTFXBq+TiOa5qlUITZSidxXr2VEZTng+dCugcV5ZN57rHpoZoD1hmI/ZRJd2osNAJvwvMlDfj+c2gIaEYzfI2G+iQsndno42fJDxVrY2RJESFpGw2ljhgSooNVBeP4IYLmTpttqX9om0zEp93YMvXGkS7jDxWHEOHOC+vk13ZJqvWI1N2ctwbTH1Z6hjftrzWA1DpHBav1uH2GcRfVGQSRULTg3iquXDcWEwAzD4U6nGd36zIargOLK0AM2T9cqX4ba7kAQW9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 397C0C0005
+X-Stat-Signature: 3kbsuqzxw8k3ykiwpq4sg7robyj95a4m
+X-HE-Tag: 1781722661-791397
+X-HE-Meta: U2FsdGVkX18ZvdYAsu9V7ZXJlqtQdBLTSPGO/ZJ0vy6nMXZ5NPhB2JipbuEk71zcPJg3SYSwrr5N1prpEYNU4aK5OjYeOCsrq2vPJnypwClUN2NsHTfOF2n6pfKabn9uaTOSk3YOplvpG8NkF4ZUywZKHZRqRVDTkJR1fmAqxR4hJ11aqcPI5pWJNGZYaxfJTqo5TE+4TZD8PqYMvpbGmgW9IAWKHA3mtbKtPXKYPm6S8xCSg8+Rp+v9ZqmoQ+MErPWIf4+IFaFsiqIoSFfoBUY/tx90pE3Kuk+M4HDgX5v99C4O7JRHM++zl4emB/9jo5FWtw/vpGGeAmmYsqVNE+R+6uiidD0jpM8Xpe22vPVw48RqKQntCNtPfrijeYO46cQeCeRWrpMxJMm/PpFcJPTqAhLrNnJ96lV7CRv5IuL4MUO2Ym+orduRwhZdBBHFGmwXGyLe+tSPQhhzsgNWu5+ayFiz98oYhpMtFoI4TllJtnhEGz3GcO2K8NQYKCbjaxtL2QNoM0GCk4MjXsnsBc2QWyGKovWVKLf7nEmEODVEoa/0kGIcZPbTNR+lujyhEc2AHalOaQUrdegUfwpMVoGavvnvwQQHbfztMItv22pyueps6W3aT3bs0lUCNgn+/lcvsidEEi4LgfoLsBRDpFxwXDQveqUpg6azS8wGla2NOSKT+qL/Ke9VMOegypR7Qn+Y+7dNpINMdmhucCCLFhAQhLzAZ2b7E9Q6ZMPraLOTTKyjGRi0BDmb+vskedH6sUF7Abo/R68FFpX+eEN1a3QTYouMiXkkqVIQaGSiWUArsx0TY9Xn78nVtxGlIRA6MKXiJqxPVkHfM9Aj4RWMRp5B7gU+6NdnQvPIsSZJPlTVg3v/VghaLcIvChUB4TZwXA8FWDDDSV45drNcsMAjhHIftjffkmcuYtuIniSvPIWOei3ox5zmiCCuIi97dBKuA1iqvvQik5qmHzqK+AX
+ s7tSa17f
+ 3QS2Z/e/TRMs6yxN4xCfyoeoqxYHq4xWeJvEUAvFkHXrF60G8ylW6vMFV6uaoxuatTX9OMX3YUSjJGzPOvzWpf3SGnZQorkAEAIwlrc1eLS5RJRoOTnCy/3qJsSkATUDxsxLziVuiVhKUoGj8MhuEPHwzc7Rl++VKzxhQusHRYFYOW20zt6PaILW0iN/3vqO5MqjPb6u7e4jO5aa2K4SCLrMssaRyRaUT815+didaXchJzmYp6+tlLhxVD/E1NeYH3DTi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,115 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 04:38, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
-> 
-> vm.compact_unevictable_allowed=0 is used to prevent compacting
-> unevictable pages. However, isolate_migratepages_range() passes
-> ISOLATE_UNEVICTABLE regardless of this sysctl, so the setting
-> has no effect in the alloc_contig path.
-> 
-> Fix it by:
->   - Keep ISOLATE_UNEVICTABLE for CMA allocation, discussed in [1].
->   - Honour sysctl_compact_unevictable_allowed for non-CMA allocation.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Link: https://lore.kernel.org/all/25ba0d77-eb61-4efc-b2fc-73878cbd85c1@suse.cz/ [1]
+Hi Sami,
 
-There was also the "Ideally by not having mlock'd pages in CMA areas at
-all." part. Is it the case? It was more elaborated here:
-https://lore.kernel.org/all/CAPTztWZpnX1j8-7yeppVUsxE=O9hbVeqricDjZt8_pnN7a-kBQ@mail.gmail.com/
-
-> ---
->  include/linux/compaction.h | 6 ++++++
->  mm/compaction.c            | 9 +++++++--
->  mm/internal.h              | 1 +
->  mm/page_alloc.c            | 2 ++
->  4 files changed, 16 insertions(+), 2 deletions(-)
+On Tue, Jun 16, 2026 at 07:15:03PM +0000, Samiullah Khawaja wrote:
+> On Mon, Jun 01, 2026 at 10:00:05AM +0300, Mike Rapoport wrote:
+> > Hi Samiullah,
+> > 
+> > On Thu, May 21, 2026 at 07:31:59PM +0000, Samiullah Khawaja wrote:
+> > > To write kunit tests for preservation and restoration of liveupdate
+> > > state in various subsystems without triggering the actual kexec, the KHO
+> > > restore API needs to be mocked by the test writer. The mocking is done
+> > > to allow testing of the individual components or functions in isolation.
+> > > 
+> > > The patch series adds the following to support kunit testing when using the KHO
+> > > API:
+> > > 
+> > > - Add static stub hooks to mock the KHO restore API so the restore path
+> > >   can be tested without triggering kexec.
+> > > - Add helper function that can be used by the test writer to check if
+> > >   memory is preserved in KHO tree.
+> > > 
+> > > Finally, it adds a KUnit test for the KHO API that verifies the allocation of
+> > > preserved memory, and the preservation/restoration of pages and folios.
+> > 
+> > I looked at the tests for preservation and apparently they don't add
+> > coverage beyond the existing KHO selftest. How hard and/or intrusive would
+> > be adding tests for example for error paths?
+> > 
+> > Do you have an example of a kunit test for another subsystem that would
+> > benefit from mocking of KHO APIs?
 > 
-> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
-> index f29ef0653546..04e60f65b976 100644
-> --- a/include/linux/compaction.h
-> +++ b/include/linux/compaction.h
-> @@ -106,6 +106,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
->  extern void __meminit kcompactd_run(int nid);
->  extern void __meminit kcompactd_stop(int nid);
->  extern void wakeup_kcompactd(pg_data_t *pgdat, int order, int highest_zoneidx);
-> +extern bool compaction_allow_unevictable(void);
->  
->  #else
->  static inline void reset_isolation_suitable(pg_data_t *pgdat)
-> @@ -131,6 +132,11 @@ static inline void wakeup_kcompactd(pg_data_t *pgdat,
->  {
->  }
->  
-> +static inline bool compaction_allow_unevictable(void)
-> +{
-> +	return true;
-> +}
-> +
->  #endif /* CONFIG_COMPACTION */
->  
->  struct node;
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 007d5e00a8ae..a10acb273454 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -1341,6 +1341,7 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
->  							unsigned long end_pfn)
->  {
->  	unsigned long pfn, block_start_pfn, block_end_pfn;
-> +	isolate_mode_t mode = cc->allow_unevictable ? ISOLATE_UNEVICTABLE : 0;
->  	int ret = 0;
->  
->  	/* Scan block by block. First and last block may be incomplete */
-> @@ -1360,8 +1361,7 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
->  					block_end_pfn, cc->zone))
->  			continue;
->  
-> -		ret = isolate_migratepages_block(cc, pfn, block_end_pfn,
-> -						 ISOLATE_UNEVICTABLE);
-> +		ret = isolate_migratepages_block(cc, pfn, block_end_pfn, mode);
->  
->  		if (ret)
->  			break;
-> @@ -1902,6 +1902,11 @@ typedef enum {
->   * compactable pages.
->   */
->  static int sysctl_compact_unevictable_allowed __read_mostly = CONFIG_COMPACT_UNEVICTABLE_DEFAULT;
-> +
-> +bool compaction_allow_unevictable(void)
-> +{
-> +	return sysctl_compact_unevictable_allowed;
-> +}
->  /*
->   * Tunable for proactive compaction. It determines how
->   * aggressively the kernel should compact memory in the
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 181e79f1d6a2..163f9d6b37f3 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1052,6 +1052,7 @@ struct compact_control {
->  					 * ensure forward progress.
->  					 */
->  	bool alloc_contig;		/* alloc_contig_range allocation */
-> +	bool allow_unevictable;		/* Allow isolation of unevictable folios */
->  };
->  
->  /*
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 81a9d4d1e6c0..1cf9d4a3b14c 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7118,6 +7118,8 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
->  		.ignore_skip_hint = true,
->  		.no_set_skip_hint = true,
->  		.alloc_contig = true,
-> +		.allow_unevictable = !!(alloc_flags & ACR_FLAGS_CMA) ||
-> +					     compaction_allow_unevictable(),
->  	};
->  	INIT_LIST_HEAD(&cc.migratepages);
->  	enum pb_isolate_mode mode = (alloc_flags & ACR_FLAGS_CMA) ?
+> I think intrusive tests to get more coverage for KHO would probably not
+> use the stubs added in this series, as these are meant to mock the KHO
+> restore API itself.
+> 
+> My motivation was to allow downstream users of KHO to test their own
+> preservation logic (making sure their ABI doesn't have bugs). LUO or the
+> recently added KHO linked-block can probably be a start?
+> 
+> The KHO kunit test added here is just a minimum example of how to use the
+> stubs, which is why it doesn't provide much extra coverage.
+> 
+> I am perfectly happy to drop this patch for now. We can get this in
+> later when we have kunit tests for KHO users. WDYT?
 
+I wouldn't want to merge this upstream before the actual users appear, but
+we can apply this to a branch in the liveupdate tree and keep it there so
+that subsystems that plan to use these stubs could base their work on that
+branch.
+
+Let's revisit this after -rc1 is out.
+
+> Thanks,
+> Sami
+
+-- 
+Sincerely yours,
+Mike.
 
