@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2107ACD98F2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 16:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8909CCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 16:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6E7F6B0005; Wed, 17 Jun 2026 12:29:32 -0400 (EDT)
+	id 82C6F6B0005; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1EFB6B0088; Wed, 17 Jun 2026 12:29:32 -0400 (EDT)
+	id 7DDE26B0088; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0F006B008C; Wed, 17 Jun 2026 12:29:32 -0400 (EDT)
+	id 6CE306B008C; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9FF6B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:29:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 07BE3A04CA
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:29:31 +0000 (UTC)
-X-FDA: 84889940184.29.7E85026
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E0F654000B
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:29:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Tqa50QAL;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4028F6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:31:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A5021664E7
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:15 +0000 (UTC)
+X-FDA: 84889944510.19.668143F
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A29C71A0018
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:31:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OKQqCX9N;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781713769;
+	s=arc-20220608; t=1781713873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3ViCNINWU1ApHw0TpbKMpVstUJu6vw+UuDtJWe3ZJE=;
-	b=1YtO2/6rDZwQV9Rfw/Ugjd0r+XCafq/nwCjn+mAGBdBcbPi+2nZndhOECNMyH4MGKn/m06
-	v/ndyIRfw0YMdg6A38CUbySqW3l+7b08eIA2uPOmhXxlQoQJu0oSLlK9YaiNqWvXO6Snp2
-	uf2ukRv0bqZZAgRUeBpKS+01luJZOo0=
+	bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
+	b=XhB62XDT6wGoCD3Yq+UbqSThNfaPVlGqtLa6CPd6k+UAv+KB4zan/PCbu2xKV2LUaBYp0W
+	7tCDYRzvy54+2fryC8fb2X29kPy48dfrS8dJoPPHo6ZfpC9YG6pfq1GYUo3cRf+W6beyaf
+	SCd7/WOkNRwkvyC/AUtgK/3z069zZcI=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Tqa50QAL;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OKQqCX9N;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781713769;
-	b=MkXMyTFh4K3gj7MaCl+pmzy950GK5SzMliIcXkdyBYyxSTQbVI1gUiqOkXf6h7BAWyxUjU
-	3iahFT3JNK5OT56sd2UVeOS2U1pa5iwraH7hMTnF5MFidEaCQsgLFFfK1X53tWSM3amFHf
-	bcKQ53m4GGFK3H+q3Ufh4LDm92QyeVc=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51765531803so353231cf.0
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:29:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781713769; cv=none;
+	t=1781713873;
+	b=XOYbdaDcLLmX7seGQwEWnThn3z90ut+32B6tUMuagQX3/thGzFOjm2au0Q/y+Z8820XqhR
+	g9PLx6H4vHd5E6UU0yl7TEc6zUCAM1Z0MIMe7oeIG+K9kJSMjlnscq3fETP19KhxgwMVzR
+	IN/ubn6uTCdEvB40L8snzIwaMmM0BBk=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5175d339e8bso831cf.0
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:31:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781713873; cv=none;
         d=google.com; s=arc-20240605;
-        b=Wn3ik8FcD5yIEPSgHC9Ahas4yDeshRmFS+FAY6w8JnmCNUbuRr0cTHePyBrIB3mWYy
-         DpTFRNjK6+FSsc2bOf7kWZ6cm8wYOc/1hq8IeSaURMfrNvLiHh1qwcwhqg4Z088TAwMd
-         D9hUNmDx0fRBTou8kFdDpxJOmAXgMf862PE6i9uoItwm5On5rJtCGsCFDAITuMI/8ud4
-         zNL0QqKtKA/x7ncJBLlkTs/RsdQ0NR+iBxMeVZP1sfEFlTv9SadG39dKkLX4wdT3ZwZk
-         hAyLDblqGkHKEY/o3vHbJyraqh3RKCOvZ6ZHIXpDcfjcaXkg7VbqD3QtHsqfynaizFW3
-         phBQ==
+        b=TkSbPNiRTi+E2Y9WBqUqvQkzDo32RSlPU/p4bgpceWgI/sbxRaYDj6YhPeFz4eAdSI
+         qUahppa9uTEIw4aJUlsrwbyqWdDq5vCSCf6YTicwebzDUT5G078XEIkByM+ZHAOyZ72A
+         MY1/5bQ54Iu2FUENWiILm+wegBA4ivGeTv2go62eClICagdzd0h1ela/S7Qt3FPIwn9y
+         K/i4fqd9XKDddtM9qbEANyvpdRvAdSZTvIcvKpKR9KbJfg2WdoE+ehsAGWHHR/XUOz2m
+         j9ytDCia6E1XnDKoIzfGYJqNf/qzBNYPbY+lStp40iysV9VAjS9GW3sDXc/Ss+k8EZIB
+         0j4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=j3ViCNINWU1ApHw0TpbKMpVstUJu6vw+UuDtJWe3ZJE=;
-        fh=FXZ38PVK6OXHrJf4JwfjWFw5hsXkYIWjeFvG49yySXo=;
-        b=eNLbXlpiBMr6BfSa5FmmbA2XHPgjugxhIWEU0Fm2HWrK6CameWRMFVEvQYEYy+LBFj
-         UmEH/dyr/swKac9OTBRJRVgzjWs85f+Ad9nDjIyX5dJDvh5yuBlIqDznM+SQx79qBmXB
-         vJ4yjRD0FC1+/oMEZop/58hN5dKgrNj08qmR95oHsBWKHUctW0j0Lx5qqcbrsCzoH30c
-         ThMs/uIrhjHic1F7QRQQ5rRsHLaoO60hrtEy5KX5eubkZZVnyE28BgRtmdILyNVHQZh8
-         4QkUowhfyFMgYuMp30l6EJTV3lZ1GXg73AqBxQOmdpb/2HCu8gbIOG40ZQRTjRxBk9/Q
-         HaNw==;
+        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
+        fh=cQPV964Dz32tAiO3h9zPmY/cdNOYvauZP5Lm+BC0K28=;
+        b=LBeR53ljF+G04zwFl00jiVjcDobVHGV1kvw8gtPw3r1Jg6YuEeqkswA3+k918N91CA
+         DRgNgFm50v4FeuLdqWF1rkVysrCTWqPdz7ZJjTtqYDkqxUQwELXicLB/D2ReZzcYh82C
+         YgyaVjUsXG82BbA4ta7vIyqJDMQtuG2e6hKEho8deuZrE0iwB5XdX6sohTQm/8sYgDkb
+         sOBQie7MNzM+S4XGUwBiB01lDFDMOinWQ9JXO0dtuQlu1UQR0U24zF5RxNxD9gzOTnv6
+         UVgetVAx5yQ8Py5tosnN0C5RcPzI+q8LTgadt4mv7ymroAsma2o3GunayQAJ1C/yddT4
+         7CZg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781713769; x=1782318569; darn=kvack.org;
+        d=google.com; s=20251104; t=1781713873; x=1782318673; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=j3ViCNINWU1ApHw0TpbKMpVstUJu6vw+UuDtJWe3ZJE=;
-        b=Tqa50QALqLKxP1eqGOr5RNwmOPamg7JJIIqi7tryr5+MAjobi+n5iu08JF/G4oHmK1
-         +tEmB3Ozn/R1QkPhnEatTTVgQ1NZIPlhkwGsjC1RmP1yKkVwYIxg0/V5SkWLA+CKtTCP
-         j9mqZhP4i3/xFdN0opdRYXp1vxiMsrRbzM7B8/6cTqRRnOWVxRwbVi7o9u+QFan5N18U
-         6AXz2dqbevc85Peo0HqCdCvDPnt4GFMSTAXu2YTwqnTjk/bq9jnioz5Huv+FNi2HkZpA
-         mzLJmNZHNm8OGw32Sit+VUE25AqSIbct9mNK4dl5XUol8EeRwzC1Z/drbUlbCUnfTrae
-         H4zw==
+        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
+        b=OKQqCX9NiHIQSqkwaXI9cDqoV9oEp3EV59j0Nq3JmIlTTwEo/PBlp/91DiVVRNcJ0n
+         To8ggfi4bTM7NYqbkUnIpMF2vmfkiLzuEvzdsC56J56CU/QAVdBLttnpiAYihbDGHccC
+         MaK3QtWtS0z0iA3wYUW1MvYa39RedIiV5fULFEN+aRinBiHVkxQWAEMiZ4z9zvXdV1kU
+         SKOKquPfskLFbvOUJUyai7PeDQrqerTSNEwLb+bMcN7yDHUzSm9SNdV5D6CZw5KM2OKB
+         0WioAOcj3w8vrfmpb3JfXZ1LEG0IX4Q9LBdHO5JAoXNYfz6B+47WxZqFgE4fI0TaUeaB
+         eplQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781713769; x=1782318569;
+        d=1e100.net; s=20251104; t=1781713873; x=1782318673;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j3ViCNINWU1ApHw0TpbKMpVstUJu6vw+UuDtJWe3ZJE=;
-        b=JydVmxiX71T4B/skoWY3yGubahr/4X0RhLrwHL3OXwYrkGtRawlw093KBqbsOcaU0o
-         U3Ky48Q7YWbf5UEAR9efg8JB49LgOcKYnd/VDosEhPXsiYkz0cElYLUrqgK6Lz8cHvpo
-         iIgXGGk6UvOYmR1u3iCi3c8YkQrkelSJGhX64xoK0HuG/+Gu3sZ8zalrlPRM5HX1nD65
-         /xJ5ZUA/UjysPdVU8Uo8KG2E1NzC6p8reHDK8fmiMxIez7V9jmIp0j9GFEK5CTKeXYdQ
-         /iBK7GSKi/ZCbcIBp+SbR5F1yiI8YK459C1zuWx2Rp44jvxT/ZC1gkKt0usGotZ35f/g
-         S/YQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9K37SQs18c8AqEA08NoRYIpPT5RnTrIe+Nl+qsgdSRAF7CNzPCd7rHsC7lFm5yXAAZDc17LYXb/A==@kvack.org
-X-Gm-Message-State: AOJu0YxUMONweHIYGbKEvWJiKOqBoR+IaX4ziL0TYOhRJZC/R9qyAL2a
-	pgT4nr0tDQqCxRdya9c1mPmqe8jr04t9F4AGQaEVDGU3HeJYuMoJZZCHrvwF/HwP1aL0Sh8iGeq
-	3w/dyZTkPNcPmg5B1AXlv8rm45FVuUc7MBtfHvkyk7O4lwB9ZvwcH1K8v3fE=
-X-Gm-Gg: Acq92OEZL47ggQiR0ZrkarprwvR3blMgfVqsOfWIMNFHtECbgqiLYsEiDlUGqGH92Rv
-	OaqZ1qwsjTvBEyDyjMZfBucIzKZVh5mF3gxSBLw/UVux546q2Bkk/L4vzTmgTufvSluHAKzmfh+
-	4KiossQlPtMBg84T0ao7HvJwxR/JHaJhInxdh02GISlIKkTFzxIxiSjfS3SGtaGLVlspgROUDkF
-	0nFT+W6yTDaCz7f8MeCwLtrWkbFwuTco9VJ5wZMtk3OB1xPXeQHhh/W1qnM1YEAnVC69hru1SfR
-	yjvxLONRWlhrJeiLLNpIL4vrId0=
-X-Received: by 2002:ac8:59d4:0:b0:50f:b69a:f4a8 with SMTP id
- d75a77b69052e-519ad98f5c4mr9857921cf.7.1781713768155; Wed, 17 Jun 2026
- 09:29:28 -0700 (PDT)
+        bh=nwqItWx2zhoOu+jNLo6XBphjqE31Cnx/skDcn/83dd4=;
+        b=Ewszn0gCxkqcUJT+WrDapp91+m70WC8FegvAMjVsa+sh+9XSiYclE1ZEz4SUH4o8Xe
+         S15pz1TiB+0xb96xOSlnR50hgBv/GuTFt2FIpLPxuRJEq7a4afkShWYr+f3VhgQHVbqg
+         ZpqqwOsRuhnr5t438BxANfPZhv9mMM0KIZkPn+05sBQ3IbgZsW57x/kHsU6RLSVnCysK
+         KlsX8e59Dv117lFJAFMAqXPjUbVRwHMJOONSMqdhm8mZ0bBDcnjQRwPFnyH5DJY6zYGg
+         GwZ2b4ELtW7RoBRb1A12UwTefKY4r4IOAY1pQSmYnQ2BCtiHI8O1DQM4NeRLZ90FTI20
+         0stw==
+X-Forwarded-Encrypted: i=1; AFNElJ+0iZtyZqhyJ8zupXf2Crpga8Lti0N0XBXqhkUH51u9tmfckhpyP0ZYe6A7O/Y09WG0DSxcU+aszA==@kvack.org
+X-Gm-Message-State: AOJu0Yxk40vVB589LC8u1f2swSRa2+oaw4yibvKY0+bTEziGOKpR8S7p
+	eeh0i5aYbQ1jgiwBKQuHaCM5R+Bo8bxJ3r1QofLnL9/lLLQBxCX2HBo22z4Xu1k1k7ztEpCtixG
+	DVOwnf8R+XHJGkSPOoBVXk72P7Wumerre51GvVGve
+X-Gm-Gg: Acq92OFiILChQmCo7HvMH6vVOCK7wBEFwuPpGGI8ftZVIuZTr8gM9h1BevujJKKjuU1
+	rKA6yT1cWD4nmpQr0QhX1TJUl750ZqcLHh+qWxVfT0TqrRdzV2YkrlQcMppTYO33e7n0u37VELM
+	3Z72tcTb8bNpgLAxifuGJMfaa9zV8msNtg44iwbN7MftoqwoOD6AcSKKDp3sDIfPOZhCSyBYHNB
+	Mr4Xkk96XDtu6HVFANlNlzvWH7524rdGhmhAw4Qf1b47Pi/X9e4mDGO3y3N9hzZ2oUXaQTkb6gA
+	zdHxOKhbYskddWc66ENWvDKVZvuanWUSG27deQ==
+X-Received: by 2002:a05:622a:c17:b0:517:99ea:ab80 with SMTP id
+ d75a77b69052e-519aae433f3mr10984371cf.26.1781713872147; Wed, 17 Jun 2026
+ 09:31:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1781564384.git.abhishekbapat@google.com> <7d98db60ab0fddab230b1a7a32140f3361ab42cf.1781564384.git.abhishekbapat@google.com>
-In-Reply-To: <7d98db60ab0fddab230b1a7a32140f3361ab42cf.1781564384.git.abhishekbapat@google.com>
+References: <cover.1781564384.git.abhishekbapat@google.com> <db41f6b4a1ec7429be79b3b342f1ac8cf1300e72.1781564384.git.abhishekbapat@google.com>
+In-Reply-To: <db41f6b4a1ec7429be79b3b342f1ac8cf1300e72.1781564384.git.abhishekbapat@google.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 17 Jun 2026 09:29:16 -0700
-X-Gm-Features: AVVi8CeKwui872F-kOLXNptMWCgfxo-c2VZxjkZFlkeHAc29MMPClekmD4MDk_Y
-Message-ID: <CAJuCfpFbCKc7FR3tbeCzexCzyfiP+Ab2fJ7Vd1Q76MKTvqC2XA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/6] alloc_tag: add size-based filtering to ioctl
+Date: Wed, 17 Jun 2026 09:31:01 -0700
+X-Gm-Features: AVVi8CcdfMAr-2IUGIwuq0ed5D66f5ARjmPrvoZSjdivlnH_oGVPzXV2FjX90bE
+Message-ID: <CAJuCfpHvDhdVseywuk08iJKhos_rU0bsaoKKRPayQ0Oo1OJamA@mail.gmail.com>
+Subject: Re: [PATCH v5 4/6] alloc_tag: add accuracy based filtering to ioctl
 To: Abhishek Bapat <abhishekbapat@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
 	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -126,14 +126,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@
 	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E0F654000B
-X-Stat-Signature: 4fk68awgzo5yb7qwty4kg3sbpqtuazor
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781713769-255666
-X-HE-Meta: U2FsdGVkX1/A30H1HLvAb/VHroMe/8rPxOJPlUGOZCSMEgIPb/Ynb0fv8mT1+gOOw30ZPZVb68WIGB9TkjGQZemOWXLbXdPORqX54Jr1STz2ZVwF1+RcopclF7sicwPNoen7FgGaniG8+Rv3B0z8BtjSqYVvxGJRCFKTkDj0ql/HQc/zp+R1xAKclaRPhpZ/dZoJt5gktfHQ1k+QCqy2ZuxuZumN6gB19VT4uZPS9BVIvidE6nh140XGK/rWEmUCkv4+/NMra+dW0McQTdyrbZNTMILq/5pk/97ZW79pDeE/flmaFqYektH4FhHIH2yHaHP81TNARv9msTiRB76iN/K7OYdFbDDGyPfe7M8mcWGiIeny2YezNncCrRqar5rfjEURbJrNebu5tiV/fkS8ExcCRh7+Ot1aldtJQf2kvpgUUED69cmfiX5Bv0Nw9oj8zCwnYFF3oUiawjJ2p7iZ7EQwXWJ4Kyk31yZn0k5RyLTQ/i9sJrSFLAevuRBW3Z2xTEV+Le0tZ1lwY4iwryVrm9qiHiFIDDiPZA+avmlTYOF4tG0hQpq9zCjX16BNm+DddVnYtcGSIVk+XpMsC/UH9FaympkmC6XU3PEXWylP8N29A/GXYdHtA09ceOCENQ2ZGuByygGNH0CYGLNtCYxym91T2c2M1gdAGYILc2ZSIcxaJQ6O3bqWb+ixDktI7NHohL3NX6DJssIuW0MUKoTwKEDpqo15NzqpC30kGAF0j4W7OHAJYqSSdonXvVMni6GwrXI1AIOmV9chPzRW3WbbKtOpkUxesSJNmSKI+5qZfnbdobxY8coilv1lhE5CnEdzlt85R1qr9ezNK/Eu3d9s54wg4hqC5jOsf0VrhfcVMytPcXcZMuuJp8JTmlQyNRugIckes/IeK6WgpvncQyOP/Ll12SueaeKwuTOl7HpptdMuBdzSEM6a4kBDgIAiBV9ADigf4TW8lutoBN2QBBG
- sYfogjWU
- H/2bAO4tiMVb/4TBf1wl39iTv8rhhHK1/poOCy6RjwbYdLIkn+PPyj+1WAi4QuUw4pUreGLMKZiFlvsK2wH4s5V+rJD9yb4abRWZfVXBU/ELT1Tl+/Rbi51ApyVVSUcC4AmX7nij6PYSyPwuXtP2lEdFMYUG8pMwZuek5XLcEMSEMAatiNHYdAIioA+CddaTw1crCKMZ1EF6oqv3Pho24qnwp/rJDpMhKgcGEIuxv3Y7jQOJIriWvjZ40K4sINmS0RVpiqZbG95jZk8wJeS6laKScgkmgJ1w9fZWfU8neoF3SVSKcXm6+EldyJX/Af2Rmhk8vaTntqGxEiD9ewRSL7Os9uw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A29C71A0018
+X-Stat-Signature: uf3zr6ugqxqa1miwg3xo1dnokxfzh6ic
+X-HE-Tag: 1781713873-699808
+X-HE-Meta: U2FsdGVkX19XGVzu18E6/7gdrQouUrr26ZVeU7NG7Ic7vpUG3uALoGoHPSH3/FhQFNCJAXOg4b+d67aaiL58VAVQcsEco+2l84qnovTioWV1GIy/KqGgrEU5aTf9ZxN3eS4OyTa872mRWzRfcMh79pcMI7/Ht3XOOnhqZ7FHmVPxtU3XOmR5l6MILASzRBvy5bpPJKD/yzRvS1Hlbh71OyZpQZlg4vDFFWAyCquqtzf3fj5k+PDSI1ZE+4I3K0xaKfjKqiJq9AxP2eqgP4CroiliYczdyXHzJAoYTkalk4GYgXo/UI/RlmPXirocToMA6xnyw8E8AYq588ty5LARThT9UejbZZIzrsiy59yDZWWkvCF+MnuSLz3SQvhthlU2yI4yH1j9bC3WcCUzgfohmZRERONSiisbdpzQTYTaybUzw5oMhEwkSXWbp8Hnyyj3LDDDm4UVdPE1Xp08z4ro3uYzPvaPBhKCxPdXtsIms0sTij/u6iufdCXaG1wO/RWLWQfDARaGBHpUwt7d+av5DszGvC83n6oV1gyicqcEPkeA7esv70mQjpvzmVmHxrO3h3vSDAp5Z02zfoc2EnyAFv8jHsDHwhHk+fCkgi9SzgqdD2KBgqcRqd8iF0y6tLg5NG/qOncOa2K/20DQa3GYaZCJ8OScAxN3sCn5qwBb/5VJaVO53PI/Fhz7vXHnkeMM24zlxoVmjTLEdvOs4EUrFHU9fGX0MgRb2X/5FiBtmRWqdRGUroTV0EXyTVC6nxHgBuAp5acd224Y/EyVLBNMh7vICMJ+anw5K6UhF2CGQDx5urM1kVoHXrgLZb4ZnC+VGrnEoIbMoKEqkn2qE2fbHOsDYVxf+u94IskA7K564hKZ2OXYoukOPtpQ68xUCzm9t1xRViOo6EDw3P9KjJIG2GqwFm+WQmG/TfZf6H9o2/xGDiaEolZcUhpH/EIwBEch8hYC5i0Zs93GDxNeHdg
+ f1PzAyYs
+ ymFI9DplsTya8uGPdwdR2ivVMV/yFrKjzWjfiKjrPFo3RurLK37zb5sF4xwRc5RHV8OGKYt7XcmC1yIqRAEu3YvA46Jq9C2llKGmdFam/+Hfs9fKXF/vDYbot5RcHj0Yg9WENqxpskBiaRk9Odl3jJwF2F0ddB4YEOgDbAttEX3fZNT8aJMQChDjOX+ZsQ1FWLYHMAIyUO2LmU7Rw62TXhK0TaNcL+AHydc6TvrlM8gKq2Wi9VhfLOmsx74BnhznRaxXHLgBcmD9Q1VUTMnaL6egcU2t/cOw5jGj4g8qKuHNA7ahoACoSmrLLJYHvRnXnZHb0QEo8e6Kv1fA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,253 +145,84 @@ On Mon, Jun 15, 2026 at 4:04=E2=80=AFPM Abhishek Bapat <abhishekbapat@googl=
 e.com> wrote:
 >
 > Extend the allocinfo filtering mechanism to allow users to filter tags
-> based on the total number of bytes allocated [min_size, max_size]. The
-> size range is inclusive.
->
-> Filtering by size involves retrieving allocinfo per-CPU counters, which
-> is an expensive operation. Hence, the performance of size-based
-> filtering will be worse than other filters.
+> based on their accuracy.
 >
 > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
 > Acked-by: Hao Ge <hao.ge@linux.dev>
+
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+
 > ---
->  include/uapi/linux/alloc_tag.h |  8 ++++-
->  lib/alloc_tag.c                | 63 ++++++++++++++++++++++++++++------
->  2 files changed, 59 insertions(+), 12 deletions(-)
+>  include/uapi/linux/alloc_tag.h | 4 ++++
+>  lib/alloc_tag.c                | 8 ++++++++
+>  2 files changed, 12 insertions(+)
 >
 > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
 g.h
-> index 3b11877955b9..7f5acbb44c14 100644
+> index 7f5acbb44c14..6ea39c4869fe 100644
 > --- a/include/uapi/linux/alloc_tag.h
 > +++ b/include/uapi/linux/alloc_tag.h
-> @@ -45,13 +45,17 @@ enum {
+> @@ -26,6 +26,8 @@ struct allocinfo_tag {
+>         char function[ALLOCINFO_STR_SIZE];
+>         char filename[ALLOCINFO_STR_SIZE];
+>         __u64 lineno;
+> +       /* filter criteria only; see allocinfo_counter.accurate for actua=
+l accuracy */
+> +       __u64 inaccurate;
+>  };
+>
+>  /* The alignment ensures 32-bit compatible interfaces are not broken */
+> @@ -45,6 +47,7 @@ enum {
 >         ALLOCINFO_FILTER_FUNCTION,
 >         ALLOCINFO_FILTER_FILENAME,
 >         ALLOCINFO_FILTER_LINENO,
-> -       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
-> +       ALLOCINFO_FILTER_MIN_SIZE,
-> +       ALLOCINFO_FILTER_MAX_SIZE,
-> +       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
->  };
->
->  #define ALLOCINFO_FILTER_MASK_MODNAME          (1 << ALLOCINFO_FILTER_MO=
-DNAME)
+> +       ALLOCINFO_FILTER_INACCURATE,
+>         ALLOCINFO_FILTER_MIN_SIZE,
+>         ALLOCINFO_FILTER_MAX_SIZE,
+>         __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
+> @@ -54,6 +57,7 @@ enum {
 >  #define ALLOCINFO_FILTER_MASK_FUNCTION         (1 << ALLOCINFO_FILTER_FU=
 NCTION)
 >  #define ALLOCINFO_FILTER_MASK_FILENAME         (1 << ALLOCINFO_FILTER_FI=
 LENAME)
 >  #define ALLOCINFO_FILTER_MASK_LINENO           (1 << ALLOCINFO_FILTER_LI=
 NENO)
-> +#define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 << ALLOCINFO_FILTER_MI=
+> +#define ALLOCINFO_FILTER_MASK_INACCURATE       (1 << ALLOCINFO_FILTER_IN=
+ACCURATE)
+>  #define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 << ALLOCINFO_FILTER_MI=
 N_SIZE)
-> +#define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 << ALLOCINFO_FILTER_MA=
+>  #define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 << ALLOCINFO_FILTER_MA=
 X_SIZE)
 >
->  #define ALLOCINFO_FILTER_MASKS \
->         ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> @@ -59,6 +63,8 @@ enum {
->  struct allocinfo_filter {
->         __u64 mask; /* bitmask of the filter fields used */
->         struct allocinfo_tag fields;
-> +       __u64 min_size;
-> +       __u64 max_size;
->  };
->
->  struct allocinfo_get_at {
 > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index 5feb61d9fb92..b3d21834b61e 100644
+> index b3d21834b61e..4fb3653cb876 100644
 > --- a/lib/alloc_tag.c
 > +++ b/lib/alloc_tag.c
-> @@ -195,15 +195,26 @@ static int allocinfo_cmp_str(const char *str, const=
- char *template)
->         return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
->  }
->
-> +/* Fetch the per-CPU counters */
-> +static inline struct alloc_tag_counters allocinfo_prefetch_counters(stru=
-ct codetag *ct)
-> +{
-> +       return alloc_tag_read(ct_to_alloc_tag(ct));
-> +}
-> +
->  /*
->   * Populates the UAPI allocinfo_tag_data structure with active runtime
->   * profiling counters extracted from the given kernel codetag.
->   */
->  static void allocinfo_to_params(struct codetag *ct,
-> -                               struct allocinfo_tag_data *data)
-> +                               struct allocinfo_tag_data *data,
-> +                               struct alloc_tag_counters *counters)
+> @@ -253,6 +253,8 @@ static bool matches_filter(struct codetag *ct, struct=
+ allocinfo_filter *filter,
+>                            struct alloc_tag_counters *counters,
+>                            bool *fetched_counters)
 >  {
-> -       struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
-> -       struct alloc_tag_counters counter =3D alloc_tag_read(tag);
-> +       struct alloc_tag_counters local_counters;
+> +       bool inaccurate;
 > +
-> +       if (!counters) {
-> +               local_counters =3D allocinfo_prefetch_counters(ct);
-> +               counters =3D &local_counters;
-> +       }
->
->         if (ct->modname)
->                 allocinfo_copy_str(data->tag.modname, ct->modname);
-> @@ -212,9 +223,9 @@ static void allocinfo_to_params(struct codetag *ct,
->         allocinfo_copy_str(data->tag.function, ct->function);
->         allocinfo_copy_str(data->tag.filename, ct->filename);
->         data->tag.lineno =3D ct->lineno;
-> -       data->counter.bytes =3D counter.bytes;
-> -       data->counter.calls =3D counter.calls;
-> -       data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
-> +       data->counter.bytes =3D counters->bytes;
-> +       data->counter.calls =3D counters->calls;
-> +       data->counter.accurate =3D !alloc_tag_is_inaccurate(ct_to_alloc_t=
-ag(ct));
->  }
->
->  /*
-> @@ -238,7 +249,9 @@ static int allocinfo_ioctl_get_content_id(struct seq_=
-file *m, void __user *arg)
->   * Verifies whether a given codetag satisfies the active filtering crite=
-ria by
->   * matching its characteristics against the specified filter.
->   */
-> -static bool matches_filter(struct codetag *ct, struct allocinfo_filter *=
-filter)
-> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *=
-filter,
-> +                          struct alloc_tag_counters *counters,
-> +                          bool *fetched_counters)
->  {
 >         if (!filter || !filter->mask)
 >                 return true;
-> @@ -265,6 +278,19 @@ static bool matches_filter(struct codetag *ct, struc=
-t allocinfo_filter *filter)
+>
+> @@ -278,6 +280,12 @@ static bool matches_filter(struct codetag *ct, struc=
+t allocinfo_filter *filter,
 >             ct->lineno !=3D filter->fields.lineno)
 >                 return false;
 >
-> +       if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FI=
+> +       if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
+> +               inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE);
+> +               if (inaccurate !=3D !!(filter->fields.inaccurate))
+> +                       return false;
+> +       }
+> +
+>         if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FI=
 LTER_MASK_MAX_SIZE)) {
-> +               if (!*fetched_counters) {
-> +                       *counters =3D allocinfo_prefetch_counters(ct);
-> +                       *fetched_counters =3D true;
-> +               }
-> +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> +                   counters->bytes < filter->min_size)
-> +                       return false;
-> +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> +                   counters->bytes > filter->max_size)
-> +                       return false;
-> +       }
-> +
->         return true;
->  }
->
-> @@ -278,6 +304,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         struct codetag *ct;
->         struct allocinfo_get_at params =3D {0};
->         __u64 skip_count;
-> +       struct alloc_tag_counters counters;
-> +       bool fetched_counters;
->
->         if (copy_from_user(&params, arg, sizeof(params)))
->                 return -EFAULT;
-> @@ -285,6 +313,11 @@ static int allocinfo_ioctl_get_at(struct seq_file *m=
-, void __user *arg)
->         if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
->                 return -EINVAL;
->
-> +       if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> +           (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> +           params.filter.min_size > params.filter.max_size)
-> +               return -EINVAL;
-> +
->         priv =3D m->private;
->
->         mutex_lock(&priv->ioctl_lock);
-> @@ -308,7 +341,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         ct =3D codetag_next_ct(&priv->ioctl_iter);
->
->         while (ct) {
-> -               if (matches_filter(ct, &priv->filter)) {
-> +               fetched_counters =3D false;
-> +               if (matches_filter(ct, &priv->filter, &counters, &fetched=
-_counters)) {
-
-Do we really need this "fetched_counters" parameter? Here are the
-possible cases:
-1. If the filter does not include ALLOCINFO_FILTER_MASK_MIN_SIZE |
-ALLOCINFO_FILTER_MASK_MAX_SIZE then counters would not be fetched.
-2. If the filter includes ALLOCINFO_FILTER_MASK_MIN_SIZE |
-ALLOCINFO_FILTER_MASK_MAX_SIZE and
-2.1. matches_filter() returns true then we know counters were fetched
-because they had to be validated.
-2.2. matches_filter() returns false then we don't care if the counters
-were fetched. We do not report that tag anyway.
-
-So, instead of passing fetched_counters to matches_filter() we could do thi=
-s:
-
-bool filter_by_size =3D (params.filter.mask &
-(ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE)) !=3D
-0;
-while (ct) {
-           if (matches_filter(ct, &priv->filter, &counters)) {
-...
-}
-if (ct) {
-           allocinfo_to_params(ct, &params.data, filter_by_size ?
-&counters : NULL);
-...
-}
-
-Wouldn't that work?
-
->                         if (skip_count =3D=3D 0)
->                                 break;
->                         skip_count--;
-> @@ -317,7 +351,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         }
->
->         if (ct) {
-> -               allocinfo_to_params(ct, &params.data);
-> +               allocinfo_to_params(ct, &params.data, fetched_counters ? =
-&counters : NULL);
->                 priv->positioned =3D true;
->         }
->
-> @@ -343,6 +377,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *=
-m, void __user *arg)
->         struct codetag *ct;
->         struct allocinfo_tag_data params;
->         int ret =3D 0;
-> +       struct alloc_tag_counters counters;
-> +       bool fetched_counters;
->
->         memset(&params, 0, sizeof(params));
->         priv =3D m->private;
-> @@ -356,10 +392,15 @@ static int allocinfo_ioctl_get_next(struct seq_file=
- *m, void __user *arg)
->         }
->
->         ct =3D codetag_next_ct(&priv->ioctl_iter);
-> -       while (ct && !matches_filter(ct, &priv->filter))
-> +       while (ct) {
-> +               fetched_counters =3D false;
-> +               if (matches_filter(ct, &priv->filter, &counters, &fetched=
-_counters))
-> +                       break;
->                 ct =3D codetag_next_ct(&priv->ioctl_iter);
-> +       }
-> +
->         if (ct)
-> -               allocinfo_to_params(ct, &params);
-> +               allocinfo_to_params(ct, &params, fetched_counters ? &coun=
-ters : NULL);
->
->         if (!ct) {
->                 priv->positioned =3D false;
+>                 if (!*fetched_counters) {
+>                         *counters =3D allocinfo_prefetch_counters(ct);
 > --
 > 2.54.0.1136.gdb2ca164c4-goog
 >
