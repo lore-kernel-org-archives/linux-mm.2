@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E9E5CD98E4
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB3A9CD98E4
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 12:25:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3B96B0005; Wed, 17 Jun 2026 08:24:33 -0400 (EDT)
+	id 88CAD6B0005; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECAD26B0088; Wed, 17 Jun 2026 08:24:33 -0400 (EDT)
+	id 863026B0088; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB9D66B008C; Wed, 17 Jun 2026 08:24:33 -0400 (EDT)
+	id 77BE56B008C; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A25A96B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:24:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88B3EC1C70
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:24:32 +0000 (UTC)
-X-FDA: 84889322784.11.C8774B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BF4B7140002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:24:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lmv/R7wz";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 34F726B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 08:25:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4B47166178
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:14 +0000 (UTC)
+X-FDA: 84889324548.27.D72917D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ECF251C0002
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:25:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C52598IM;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781699070;
+	s=arc-20220608; t=1781699113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mg//3UQ70bj9uUlzt+8oEG9Cfm3gjKCCACIO6Tks23I=;
-	b=dIkED5LMG6vmxWYSs5md20fdpLZfisSljhO9nJuGaLGMCqGcLoZWp2wgTb9/Uj0eKqlkDx
-	bJwA/6a8l3iT2jExnQkFSpQLTVks/s/FlvK0ZS+poxQpTJ3kZ+HrEIeVhf5YxyKjd+gRmU
-	upZj/hMq8JwJiyogDTuC0Zx1aBXh4X0=
+	bh=OdtIhxhs69RtHMcAvKY5HcExVt+ZojdtWVXmBp9x+PY=;
+	b=11LCVvjR1cl4oNdklKrRiZOb2Tk/EQKZNmyO0VdReIj1GOP6AxW8xyTgFEvxfAwI2xTe2F
+	ddjz9hKUa8ry3vczArivP/Tcny8AEEeMIoUgNjwet+r8/yxPrlgrSeVhdTrSnJgk4/soBW
+	e4XP8ayiMWGc7L/J4q+9XNdGNFoPozI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lmv/R7wz";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C52598IM;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781699070;
-	b=VkJL6RhDE/SoLebaQ0rvYy7oVaXm9EgWwLOL5nJIzWdXIgnjeaDZzCPfJDqxD6OgMGdbOC
-	H9pRE6bkgFAHRA3+vIlnf9lggF49sCcvB5rLgnrQggwhM7gCAnsKtXWWqT9QFhUgsMf5/g
-	TtirxC+K/f1jG1jh1nnEG002NEQ1o74=
+	t=1781699113;
+	b=s4f8rWxdCUE7V7NoKbaiNmRZyBYrlP9xPSE9aXr/A/0kX1nLVxFl9Ok8C3lCD208pSkynx
+	iHSmKRKsSA9XGaUB1RZ1r44CUkcSFyyg77lTsEsXMdJGaiJRa5ijPyb3H/58uEWdyiEA8L
+	bSyXAowbwdCE2X6lB+8tsCvQQd/9w40=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEE5541691;
-	Wed, 17 Jun 2026 12:24:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6401F000E9;
-	Wed, 17 Jun 2026 12:24:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 767CC600AB;
+	Wed, 17 Jun 2026 12:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840D11F000E9;
+	Wed, 17 Jun 2026 12:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781699069;
-	bh=Mg//3UQ70bj9uUlzt+8oEG9Cfm3gjKCCACIO6Tks23I=;
+	s=k20260515; t=1781699112;
+	bh=OdtIhxhs69RtHMcAvKY5HcExVt+ZojdtWVXmBp9x+PY=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=lmv/R7wzQqBpZfEQbn76QBwz/iFG+yXO4BfBqmzBv3rCSigjmnak9KaK5P7drp8KS
-	 X24wbmn5XrF5eyxSZkfnDlIMtU8l2CX3mTPd6AajXpEsmJHl6pyR5NmeFb7yVadowK
-	 qKiTWGc7SgXYFTa/l2e9JSJ0L3Q2IFtZ5ko5ntW+l6YP/EcDf2ItWrk41+E2UDyePB
-	 o3pAufiC9gsjNw/08QKk0BNQwjIuIPvyL05YxBhIhyp2FCZcKlIssm2lzlmrsQ5JEA
-	 rPdOKsKKAdcaqaKrgDXFuW7eczyv0LGLGBy71qKAC0wX70wBD6YSNyz0hmeIj0JejL
-	 gm0sgV+WlhCAg==
-Message-ID: <100aa8c4-5848-49a4-8b6c-17875256cc5a@kernel.org>
-Date: Wed, 17 Jun 2026 14:24:24 +0200
+	b=C52598IMtLkxeWXRo3nEXZTSbmTlLUNAQZ5eAH8MNISHuXqPiMCVYnaldT1WnC+a8
+	 10XYrJU3AU2cwXMBz9gZVi0W8v2jsiM8pXGFsEgdyaG2jILHjQQVtscuyAhI08pgu6
+	 2tPYoFz/8kmbYfR2jJCqgHA0KHZTKpvZGzrYezbdlKyyDcI9eIR2deKEiQebz0IEdw
+	 HcBCz1zwT6H3L7xIM9Y7vw2OsPaDcn5YIwqQUr4WujNnBsx+M8SArA4tOWkyF9bFUA
+	 MS3tNDO+NLswQLgruCpHGklhYz0O+tdgNzXD8UAnyt8SrGTLITHYOUKJX4GvDi5KE4
+	 hv/nAlqii0mag==
+Message-ID: <3dd8c114-f6a5-46a1-b9e1-671b43354d0d@kernel.org>
+Date: Wed, 17 Jun 2026 14:25:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] mm/vmscan: extract folio_free() from
+Subject: Re: [PATCH v4 3/5] mm/vmscan: extract pageout_one() from
  shrink_folio_list()
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Zhang Peng <zippermonkey@icloud.com>,
@@ -83,8 +83,8 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
  Zhang Peng <bruzzhang@tencent.com>
 References: <20260525-batch-tlb-flush-v4-0-83789d6abc00@icloud.com>
- <20260525-batch-tlb-flush-v4-2-83789d6abc00@icloud.com>
- <c6220407-fbdf-47ab-a80c-732e470894bf@kernel.org>
+ <20260525-batch-tlb-flush-v4-3-83789d6abc00@icloud.com>
+ <5c665b98-088a-401f-aab8-7c9c4d4f484d@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c6220407-fbdf-47ab-a80c-732e470894bf@kernel.org>
+In-Reply-To: <5c665b98-088a-401f-aab8-7c9c4d4f484d@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ECF251C0002
+X-Stat-Signature: c1wwmygcmpbg5ibgxz9n478bi8pqk6ok
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BF4B7140002
-X-Stat-Signature: e9x8zajec7wdeeqden18chya1zc6brwd
-X-HE-Tag: 1781699070-84864
-X-HE-Meta: U2FsdGVkX1+3rqrT6cCBGmLZdWupQigOrbgeOF6YVYe09Z8cneTY588ZeAE1brru2ohJg0KDtYTZxWUiNv1Q3mpxfHciGtaE+Mk8brRs2kqPTu4YjCnb8iL9EPbWCzYteip3Z29qjHd1bo0lUvibv2iWax13euqFFJARSaxP72kvgqs3Ln5FG1yDEJQbAGT02z+uEy2wiBvnrHiAw6N/2reyRFl5VKZ4MohcP1tGVmRJekwNEqngsA0vLbl4/KmjBJMLDR04PohJN7/bUJ/PidvHo4KniD/2e0tDNri4ax0MQiyQogfPxoFQPreU0puQEPzhl+uCxGhv4puiU/4Y6ZQXTtz1auVHOfhjz0O0HxbJ3H1tsv4j8wzvehZi4hHpOEbfIkbhaVYzrjwubFEVshcfmywohkS4xQyZiz9VpHOf4rSvnXrpjRm6zTnoANIu+6HS9YmdGU3tOOd9Z6Geu5gtiUTY0xoBK6O1fxkRZv6MfYj+Kgj6m0f/b4GHOjOghB9gRAYWsiYsuCwd4TSfiFSufK8f6OVU/8e8rsMIR2oQ62E788zJsRMcwocSUQidwQunlfn7pa1XZEuwZY3Eu6TLqxSGLZJZPZk+f7Q623Xwcz0m+0s/q+sK0JjXlFEGSh1h6y6XOy4LJve1zBWWIGpm7xlJmSESzjq0hQ/dZzDTR8yX4Kix5/fRJGbR3SzkAu5TUqIZNBrM3ayhd1yiBy7GPrHwTCrDi9mDJMGTxCfIUxP7qNdWlrDt8z0an/PG51ZijUD8i+anB2sKm6Z8U08K2nWWABZxVITyFX09zKwECyedH2bsBbU7npPYWFcJgI+4VDG0j02Rb4HwiMgEahvTXs/N0jc/Xwo9T2svdNughYBdTkl8m1MMmqIwuRYnPrwyptysVlBCZNtPfHh3zGo7r6U/O2CVUdNAvk5Nd+cCcJU435GRCYYG3AIRM4rZ7qh3+NTVoPkeBK1GYbN
- tGw+KWRX
- JIAMg2hmVvdxXa4KJieeeqSMa5B2/eB/3NpPCYuMAh8gAuFKJgAhZMbvdsIVqfHErflRQZdIalnqfTRuoREJnrP3Rn0+faFnYV3clFftuFfSOmo7nLMG2xx1thdGX37SktNGDSeSHIOfPqM6pKX0eAuQJ3qndm6UHg3HZnT9oGL4P/qOT/Zn+LNCcARIX3dFYGs7H/cPMfyfO5YBsO581J4qZmIaz6Lqvr4sgDPCVaVKDp6S9ZnkVwq/AkOrBAWX9ILF5eLSikk3AhGtreLVCQ0OCdMrYLA3jrhIzpaNQyi7dhfHPxonbSq6ZfWCW/S6yCHA47pGhHOHw/lY=
+X-HE-Tag: 1781699112-220268
+X-HE-Meta: U2FsdGVkX1/o1epTpjGMrMkZPhyACm60S0+JtD3ICCIJzHKs/6gFHQi9M8my47kWGKHXxXg9ai/ClsYI+OSLWO/aVnejNxUsGyGcpJHfdmBrem0yHWJPxOYCD7mPY+6LTRFfCSJfcyPn5qpUyj3fMo1JfLJ4FB6+DvU4da8qBbioAfoETotJJ0GQpZRpLSAtOBj8wJpYBeC5ZLG7obf4jl1YXpEqF/DGQIVzYT8xDUjqlfeAUokQyNnEw+aRTB9ODTKycdtHIg0of6KVbmvkK23wPeebM80p6BmBWyn0q7nwoNA5h2+QcA8OBMu9PRgSDcbYElhZQSBEYbW97g2tR7hd5EFIxpQiq+ommkHPea/djPJftkuph2okJlLY8Py8OwDz0ffxSv7BYT2qlelpUnhy3l+KegDbLOF3fiSzwKX/YpVP6oZYN+wcMpH+wTmv081f8A+Y4cUTT8wQb+LnPxs1qUi+ucgKv5copJJPmmGnxpyPIFpWVYaaORVTFImCLPNRaSX21mUm7hDWXbrmC0Ka7yWpalc0GRZCC0not/bsdPQstMSvbE2TBB20K4vLVRo21uvOpeuwHbMfzR8IJ1hHzcVKpAbHzp9ZucRv5ho5/k4D96Voc5AFv1/9EaWB8Y3epC3B53AkafdLhYm48FbzbVfkZsF5L8IKCzM9fYsnxCQpR8S4B2adaXHLxuezUZZSm9okYnx/Cuniu6fvxL1UgxtEYuv5QmQyzACx1GsGZH3iroTuaBYylLIdnMl1O6Q5x2RgFNAxnaAI3PRxao+5nZ11YME9sOTSyKZCskXrArV9Xj6beRdpcstWoEfMEJhD7z1N8k7sI2ntmJ3Di9cYKo0jfB65B6IYkqgOCwkKJvh7rRr8LW1yMXhD5cDk3vwLaeX3PqMqD5mpIVtfi6zBJuTgosbTqMJU9o0xSP5vUWY+GkA7xFj0Zhrgjdsx9oN41SS5a7vjstgBJJg
+ XWK7He3i
+ 1IKaYSoTV5zWnPLVjK8Bw1PXtd5Q7ofeka+Vh1eMqT1XFVJh8Dg+wErENs1lSw49UYyaRWuXmMNsCur7nawnZmkOU3XQ6D88uZFSJMJkq6G4/LOlOxynw1SHR5961EmoCiMLGeJp9aEtqqDPTLEhUqTnd1kjvbUC4lyjfQiT1UhqZ7Lg7zs9OlkpZpKR/UKg6oqWGmEEqaFTb8x16sZLsNsO4v6GbY0CDrQsatx3V9vehYRSTt77xWfS6PsUiQ1H1pCR9+YIjiV/oSlqPmp6SO7xMZaCy6gw7o7MA5x7rllw2l2wRCDRozsk/RkpepRNH7IS6nG0nahw8TVg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,54 +148,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 14:17, David Hildenbrand (Arm) wrote:
+On 6/17/26 14:19, David Hildenbrand (Arm) wrote:
 > On 5/25/26 16:57, Zhang Peng wrote:
->> shrink_folio_list() contains a self-contained folio-freeing section:
->> buffer release, lazyfree, __remove_mapping, and folio_batch drain.
->> Extract it into folio_free() to reduce the size of shrink_folio_list()
->> and make the freeing step independently readable.
+>> shrink_folio_list() contains a self-contained pageout() dispatch state
+>> machine. Extract it into pageout_one() to reduce the size of
+>> shrink_folio_list() and make the pageout step independently readable.
 >>
 >> No functional change.
-> 
-> As you are touching the code, I'll suggest some simple improvements as part of
-> the move.
-> 
 >>
 >> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 >> ---
->>  mm/vmscan.c | 168 +++++++++++++++++++++++++++++++++---------------------------
->>  1 file changed, 92 insertions(+), 76 deletions(-)
+>>  mm/vmscan.c | 107 ++++++++++++++++++++++++++++++++++++------------------------
+>>  1 file changed, 65 insertions(+), 42 deletions(-)
 >>
 >> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 886d8b4843aa..b31f67801836 100644
+>> index b31f67801836..456d38eb172c 100644
 >> --- a/mm/vmscan.c
 >> +++ b/mm/vmscan.c
->> @@ -1072,6 +1072,95 @@ static void folio_activate_locked(struct folio *folio,
->>  	}
+>> @@ -1161,8 +1161,68 @@ static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
+>>  	return true;
 >>  }
 >>  
->> +static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
+>> +static bool pageout_one(struct folio *folio,
+>> +			struct folio_batch *free_folios,
+>> +			struct scan_control *sc, struct reclaim_stat *stat,
+>> +			struct swap_iocb **plug, struct list_head *folio_list,
+>> +			unsigned int *nr_reclaimed)
 > 
-> I don't quite like the function name, as it sounds like something very generic,
-> when it's really specific to memory reclaim code and does things like removing
-> the folio from the pagecache.
+> Two tabs please.
 > 
-> Any way we can easily make that clearer? I think it should contain something
-> about release and reclaim.
-> 
-> folio_release_for_reclaim() or just "folio_reclaim()" ? Not sure.
-> 
-> 
-> 
->> +		struct scan_control *sc, struct reclaim_stat *stat,
->> +		unsigned int *nr_reclaimed)
-> 
-> Instead of returning a bool, can we just return 0 / -EBUSY? IMHO, a bool mostly
-> only makes sense if the function name implies some sort of yes/no test. (there
-> are exceptions).
+> Same comment regarding returning a bool.
 
-Stumbling over patch #4, I think if we call this something with a "try", a bool
-would be fine.
+Thinking again, should we call this "folio_try_pageout" or something like that
+(and keep the bool)?
 
 -- 
 Cheers,
