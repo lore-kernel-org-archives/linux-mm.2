@@ -4,109 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6714ECD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DC7DCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 07:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A4346B008A; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
+	id 017DC6B0005; Wed, 17 Jun 2026 03:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 355136B008C; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
+	id F0B356B0088; Wed, 17 Jun 2026 03:54:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26AFB6B0092; Wed, 17 Jun 2026 03:38:27 -0400 (EDT)
+	id E20A06B008A; Wed, 17 Jun 2026 03:54:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E4BD66B008A
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:38:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 685B1A0349
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:38:26 +0000 (UTC)
-X-FDA: 84888601812.13.12B7A25
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 58E81C0009
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:38:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=L1cW5Lko;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B8D256B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:54:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 48B581A0399
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:54:53 +0000 (UTC)
+X-FDA: 84888643266.05.EA62679
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 60AF340006
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 07:54:51 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MItORZYP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781681903;
+	s=arc-20220608; t=1781682891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OlHpfhG6RtHov9Iyyi+B0BO0xvSLE7bwTX2Gg1r93rs=;
-	b=VxUbpRA1SbvWo5zqfgLX8IiyzwxvyydZidhaxPtyQzRC57LPNJm6u6Kso6QE06BWqiAFMr
-	l2hO5HKJfxSYBL+D6OegMi8BZLRZEsV2QU3JTae118o34ZfDi7KBlWn0NDqpqjOUYXpvbj
-	xhFXTPjcmSoJlNTmFEvNbN1pRYWyRwQ=
+	bh=MWtYSes6tIGGuR+SZXDuYlRAGjOXZD/BHMUqdQhGjyg=;
+	b=3Ytrt30SSf9upzKBrzlEtnt5x7VTDvti+ImNe6AECM5QTBP8LwA1o5LYq++mLGgvMJ4duM
+	TOeu6oeqlBYmhqyCGKu6xxOtNfahBVKYoOTAg4SYpGBL9IJu3suIeHMyMjlLcRiS93WcXQ
+	fZ5+Wf+RpBIuSYiQ9V9DufXFnQFjW5w=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=L1cW5Lko;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MItORZYP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781681903;
-	b=MAbIeMgxO2hcZOlJ07qnaJj2cITNIFk4z8ALhw914qNzBaMEBntwXLmuIVkHZowY7IDkk/
-	kQ6P0w1QE/h30hva6jtae7NhFJOR2IQgmidrB8QYyu1WfB0Sm9FNx0CiY3cWjDx+kL36dA
-	+SRmvKuw7W3cCtxAj4IQdjVH0D6RSEM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=OlHpfhG6RtHov9Iyyi+B0BO0xvSLE7bwTX2Gg1r93rs=;
-	b=L1cW5Lko8NTkoTU61zFAqQl6tc/dqLCfB1VusVhd8zgxxrESR45LRPCFHhA01wV2X8PlyYFT/
-	QRBgnpC43exbQnQN4Fg6iPly0OzYZupdlflCdX5g6MmYd7jZLdxArz0s9TQsK/I8FulUzIubeU5
-	SHoTN5mNfSkoR4XOIMVgPJQ=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4ggFqB2WH9z12LDV;
-	Wed, 17 Jun 2026 15:29:26 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6676340575;
-	Wed, 17 Jun 2026 15:38:17 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 17 Jun 2026 15:38:02 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 17 Jun 2026 15:38:00 +0800
-Subject: Re: [PATCH v5 4/4] selftests/mm: add hard memory failure anonymous 1G
- HugeTLB page test
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <osalvador@suse.de>, <lorenzo.stoakes@oracle.com>, <jackmanb@google.com>,
-	<hannes@cmpxchg.org>, <nao.horiguchi@gmail.com>, <david@kernel.org>,
-	<william.roche@oracle.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <jane.chu@oracle.com>,
-	<akpm@linux-foundation.org>, <muchun.song@linux.dev>, <liam@infradead.org>,
-	<rientjes@google.com>, <duenwen@google.com>, <jthoughton@google.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <shuah@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <boudewijn@delta-utec.com>, <ljs@kernel.org>,
-	<osalvador@kernel.org>, <ziy@nvidia.com>, <harry.yoo@oracle.com>,
-	<willy@infradead.org>
-References: <20260531055829.3636554-1-jiaqiyan@google.com>
- <20260531055829.3636554-5-jiaqiyan@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <d1333353-b615-2dc1-ecff-8093d237cba7@huawei.com>
-Date: Wed, 17 Jun 2026 15:38:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	t=1781682891;
+	b=XhdZ06TmvNyxgTJ6ohj/fbRylH8YFZIOzGvZT6ovv/uEyn7bhbV/VeUL+QiPF7hni3V3/f
+	J4VpDkqgMo7gA8K4d1XPnq//jyLVBTzZw6XIPPPRFiZLi3si5dc876ba70HtvUQLouhsN/
+	yyOU95TYjac/SVi7Cci9HTQHcPAo4mY=
+Date: Wed, 17 Jun 2026 15:54:37 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781682889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWtYSes6tIGGuR+SZXDuYlRAGjOXZD/BHMUqdQhGjyg=;
+	b=MItORZYPQB5EbHt4M+9GB1KAhkcS+MMAvZLJXzBqJsqjvpcm9DeRX6Tg2H5CQIWEfjVHWY
+	UZEWyL9WIShc2Ar1Dr0zKLywX3jRRb62KeYUq7oKmL+ewMHCK0QP1xar9uLSi0qycxTVXO
+	rCU7ilHgsA6gHpQ47KstM85VADdXBUg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Harry Yoo <harry@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/slub: preserve previous object lifetime in user
+ tracking
+Message-ID: <ajJMzHe3W8a8NGqK@fedora>
+References: <20260616141410.52117-1-pengpeng@iscas.ac.cn>
+ <20260616141410.52117-3-pengpeng@iscas.ac.cn>
 MIME-Version: 1.0
-In-Reply-To: <20260531055829.3636554-5-jiaqiyan@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam07
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616141410.52117-3-pengpeng@iscas.ac.cn>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 60AF340006
 X-Rspam-User: 
-X-Stat-Signature: 4xutkkrqd7fztfidpn1qrkjsifscot59
-X-Rspamd-Queue-Id: 58E81C0009
-X-HE-Tag: 1781681902-882030
-X-HE-Meta: U2FsdGVkX18P1b2ApgsPIj3+VS3OYz74nTvyTrUcPgHnewQ9XM5ivMDueqkXqcSRy/v0Dp/wxSGRiHCfuBoZ2FNf1lEbBn0G+arw06sXXp1uv4xSJEOh9Q2ugDLrPoqNH0Rkwc3KD6CZmCZ3gKQ0nyF5DoLXCW0bDTapA8OK4Jg0z9/NQmwYFGXcd+SmD6fJMxNz1qJLAnXYIKQ2XswCeLdTdMzDUcrqRwDuKd+6KPwa2JbuKoMszyn3l2O5uBTs+7RMfGYnpWlKVFcXABF2NEGSJqATrU+1lzkxs4ENqsGnk9onQKfeJ992rDuj0kjcgnEpLir7ZZyk9ACVqVBHxO0085ZUwKDMt04uspQsm2s/IElJ/piyBKEilRcnmjavgIjw2SWqw06ftL1DB3xtAJybfhfQWDT37BnkayDuzch8Jq6RbTsyL2XQa4XQl/qu45zynlmfE7gfavmLInC8e9/iMoxAGC8Lk0RwMUP/2qYWPJ+47im5+iQDqEiVNDsgZvAkk+CcXODWniCAgb6JEiUtL5QmaAc900H1t+leaP5T9PBJ4IB5fGUzKvDErLpYV1YZ4695MFem957G8VKo7U4shi8DIEZ3cvGbi2TPnrKbipMePX4zgZxqQ89EtROhFkho5YUY1yVMVxQk3CzEJ2LE7Tj+eZor37LNU58ji4di7Fy+cv/ADtxY3nx6zuOwBGtq7LTjvsud3HL/5yMSr0j7CCTiNQrm9ZC4OOUFSczZ9VNiSGj74CPq0Kw+LQO6HsZUjsncEBIN3R5YcboqIQVjElUmZ//FVCNvIs3EkbMpZKX+V0WU7DD0FKa8H2oAIDP92WFdRehKfYgBsRVH9l9yhhMpOV88QujlwcmqTFCTtFNDe6i3ROrlHX1VLT0+PEj/7VJdQRGUf9JJGo802RAKRRJ/ksgxcHOyeaAIMI/JS399bEGV/VH5oP9yVFpHwZd2T8AOT/M1QO5cooa
- E6iKzZI4
- QsYPyiP8Se6JSd8ROKljJQqNXQsZ6JpgW3ks8Asd7IofVOXMFrL3Lt/RJQyGt8URDelJGCZgEbGLVCGDfgqlSqri6Ts48h2BsJuu2aQGLjk5K2sc/vs+t142O3TtZLAfuKKhBfTbgxCwAAxQRBJppEAPN2+Rkc0uhAywIyONCAvkItZuGbOn+Lim3ZZUD0Lnc1QmDY3OILQu63rkG0VzG8Toi6E4F9YYgTzTEeziCSAaMnXbVlaGKD26clmXShIr1JfADyNI38EVuq/Kk8oomuScuwUNeIWL0hazZcDhSf+LJl/hsne1/qEYpP9mOgKNDMY6Uo7EchGFpDuhl0qhgJBOli+ee9RhpR3HIm0QwQo0/lduXYctv6ITrHA==
+X-Stat-Signature: urgxkbru8og1mzh47qxr8rrjz3xpizzp
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781682891-240552
+X-HE-Meta: U2FsdGVkX1+BClrAauwl2fXzwKf99zBcE0PKAsz781E2DiZal7trVYw/torR5OVFf4rNqnXj/EDZZw6HJ2zHhPr9f4aM93llIOWKxEtPnqCE5CrKGat3bqs8+ssoKRH6ZGoYSuVSZkaXw4uwuGg4KZr1qQZnriR/7olD2kAyUIfhbyWAsyszLjO71F/Iku7q+YlojIPFnrOo7pBZVsjuTofHUwN3y1eK1DA2CgCIh5SanU1AW6Xs1cSE5lzZiy5ZqFO4aMTK6CfUUYgR/6KZ/YgkFoSDdi1h8VZOuej/AIE8Ct0LqTH+283vW3SZFuN/G2hop+hs+2qzg0rs7U8P4FqVB/tVPprHLQ7RWtv8Nisj3HhwgeTmVxlySi0pbmphmR9gFrV8aiWqj0fMQKDYe70sR1pnbCBASWsXHaznaNPsJo1lRFEnU3VNsVPebhMIZSmBuNrk7IrK5MN9Hz4j/jy1bE148AjRLRjJ85KPi8qNUDlmuRhaHz3DvgwUuEaiQ+i5q09shGRr3QwYu+VZ+Rc038VRZ8jmpq491tLPQNWIyJZ8Fs2LgxSzOisfyfvz+SlTfkQcAUxNa+KdZa68eoaEzqFYrFxJ5bzji4avUrgbooDEYkacK94WMbP7Kc+HpNJFS1jFhYemdWhn7V57Kc01KyarsBLdcCy1alm5W0kztZbuJ7y0vcmz+fEcjXcOsGl9SerBScw7zi2bmiKegfgO14lG9nMPN+bAIwTTYXuWSE5/rHxFklF9/fNjQRypYhqN/EpGKNZgwDNP1F5D+6z2ueD7pR55emV+idpBdCpTbu5mSj4Lr+2DMaaoj2pyCCLPdMHRzrk6rLYlfwwAz54xjZCRyhE+whwjsjrVM54qlNEAj5HggTf2Xl81huDthKCfvDtQw2L+CgjADnhir9WX0kQXs7kJfMazTWJ+Xsz9D3hB14kabSGS78zY1soJPrxP0CHfiTS3JMrcPFq
+ UIuZKlKJ
+ pSG/xeqxkcYLtoneKYHxLhtYPVbNZS7Z1O+7Ziwe4NlaIcaJs3opDA3Wf09Bf42hHyJWGBHLwR+JUZgIeTtVVBUn43sJS+RAaS/J20pZh1OF7eqhDePfWF0H2wD8sdkRnlFj99nwntYHtXU7fgg576D5Es18sEAWY/qpPhKGuUatZr4espXcZhinO7ALkdcLh3ErMAza8x5n+HMsT00Xm605RQm3NybXvFYBaICLDozYhd1qlyex3zYVOWva1GJPL1l5oTUmdvW7lg54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,162 +93,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/31 13:58, Jiaqi Yan wrote:
-> Add a new testcase to validate memory failure recovery for HWPoison
-> anonymous 1G HugeTLB page, including proper SIGBUS delivery,
-> releasing a 1G HugeTLB page containing one HWPoison page to buddy
-> allocator, and isolation of the raw HWPoison page.
+On Tue, Jun 16, 2026 at 10:14:08PM +0800, Pengpeng Hou wrote:
+> SLAB_STORE_USER stores one allocation track and one free track for an
+> object.  When that object is reused, the next allocation overwrites the
+> allocation track.  If a stale pointer from the previous lifetime is later
+> freed or otherwise reported, the free/check report can contain the victim
+> allocation and the stale operation while the previous completed alloc/free
+> pair has already been overwritten.
 > 
-> Although can be added in future, this patch does not support testing
-> the MADV_SOFT variant.
+> Keep one previous completed lifetime in the existing user tracking
+> metadata.  When an object is allocated and the current allocation/free
+> tracks both exist, copy that completed lifetime to the previous-lifetime
+> slots before recording the new allocation.  Clear the current free track
+> when the new allocation begins so the current lifetime does not continue
+> to display a free from the old lifetime.
 > 
-
-Thanks for your patch. Some comments below.
-
-> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> Print the previous object lifetime when it is available.  This is
+> diagnostic information only; it does not infer semantic ownership or
+> identify the root cause of a use-after-free.
+> 
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 > ---
->  tools/testing/selftests/mm/memory-failure.c | 73 +++++++++++++++++++--
->  1 file changed, 68 insertions(+), 5 deletions(-)
+>  mm/slub.c | 66 +++++++++++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 55 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-> index 032ed952057c..ea43b2877c81 100644
-> --- a/tools/testing/selftests/mm/memory-failure.c
-> +++ b/tools/testing/selftests/mm/memory-failure.c
-> @@ -18,6 +18,7 @@
->  #include <linux/magic.h>
->  #include <errno.h>
->  
-> +#include "hugepage_settings.h"
->  #include "vm_util.h"
->  
->  enum inject_type {
-> @@ -27,6 +28,7 @@ enum inject_type {
->  
->  enum result_type {
->  	MADV_HARD_ANON,
-> +	MADV_HARD_ANON_HUGETLB,
->  	MADV_HARD_CLEAN_PAGECACHE,
->  	MADV_HARD_DIRTY_PAGECACHE,
->  	MADV_SOFT_ANON,
-> @@ -47,6 +49,8 @@ FIXTURE(memory_failure)
->  	int pagemap_fd;
->  	int kpageflags_fd;
->  	bool triggered;
-> +	/* Number of initial HugeTLB pages with default page size. */
-> +	unsigned long nr_hugetlb_pages;
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 43d4febd5bf2..358f42e92207 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -327,7 +327,13 @@ struct track {
+>  	unsigned long when;	/* When did the operation occur */
 >  };
 >  
->  FIXTURE_VARIANT(memory_failure)
-> @@ -157,11 +161,11 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->  		  void *vaddr, enum result_type type, int setjmp)
+> -enum track_item { TRACK_ALLOC, TRACK_FREE, TRACK_NR };
+> +enum track_item {
+> +	TRACK_ALLOC,
+> +	TRACK_FREE,
+> +	TRACK_PREV_ALLOC,
+> +	TRACK_PREV_FREE,
+> +	TRACK_NR,
+> +};
+>  
+>  static inline unsigned int user_tracking_size(slab_flags_t flags)
 >  {
->  	unsigned long size;
-> +	unsigned long nr_hugetlb_pages;
->  	uint64_t pfn_flags;
->  
->  	switch (type) {
->  	case MADV_SOFT_ANON:
-> -	case MADV_HARD_CLEAN_PAGECACHE:
->  	case MADV_SOFT_CLEAN_PAGECACHE:
->  	case MADV_SOFT_DIRTY_PAGECACHE:
->  		/* It is not expected to receive a SIGBUS signal. */
-> @@ -174,6 +178,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->  		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
->  		break;
->  	case MADV_HARD_ANON:
-> +	case MADV_HARD_ANON_HUGETLB:
->  	case MADV_HARD_DIRTY_PAGECACHE:
->  		/* The SIGBUS signal should have been received. */
->  		ASSERT_EQ(setjmp, 1);
-> @@ -183,17 +188,36 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->  		ASSERT_EQ(siginfo.si_code, BUS_MCEERR_AR);
->  		ASSERT_EQ(1UL << siginfo.si_addr_lsb, self->page_size);
->  		ASSERT_EQ(siginfo.si_addr, vaddr);
-> -
-> -		/* XXX Check backing pte is hwpoison entry when supported. */
-> -		ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
-
-Can we write this as something like:
-
-		if (type != MADV_HARD_ANON_HUGETLB)
-			/*
-			 * XXX Check backing pte is hwpoison entry when supported.
-			 * Check backing pte is hwpoison entry when supported.
-			 * Although try_to_unmap_one() also installs hwpoison entry
-			 * for HugeTLB, pagemap_hugetlb_range() doesn't parse
- 			 * swap entries at all.
-			 */
-			ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
-
-So we don't need to modify the if condition when more base page size tests are added?
-
->  		break;
->  	default:
->  		SKIP(return, "unexpected inject type %d.\n", type);
->  	}
->  
-> +	if (type == MADV_HARD_ANON || type == MADV_HARD_DIRTY_PAGECACHE) {
-> +		/*
-> +		 * Check backing pte is hwpoison entry when supported.
-> +		 * Although try_to_unmap_one() also installs hwpoison entry
-> +		 * for HugeTLB, pagemap_hugetlb_range() doesn't parse
-> +		 * swap entries at all.
-> +		 */
-> +		ASSERT_TRUE(pagemap_is_swapped(self->pagemap_fd, vaddr));
-> +	}
-> +
->  	/* Check if the value of HardwareCorrupted has increased. */
->  	ASSERT_EQ(get_hardware_corrupted_size(&size), 0);
-> -	ASSERT_EQ(size, self->corrupted_size + self->page_size / 1024);
-> +
-> +	if (type == MADV_HARD_ANON_HUGETLB) {
-> +		/*
-> +		 * Only one page is hardware corrupted; the rest should all be
-> +		 * released to buddy allocator.
-> +		 */
-> +		ASSERT_EQ(size, self->corrupted_size + getpagesize() / 1024);
-> +		/* HugeTLB should have lost the HWPoison HugeTLB page. */
-> +		nr_hugetlb_pages = hugetlb_nr_default_pages();
-> +		ASSERT_EQ(nr_hugetlb_pages + 1, self->nr_hugetlb_pages);
-> +	} else {
-> +		ASSERT_EQ(size, self->corrupted_size + self->page_size / 1024);
-> +	}
->  
->  	/* Check if HWPoison flag is set. */
->  	ASSERT_EQ(pageflags_get(self->pfn, self->kpageflags_fd, &pfn_flags), 0);
-> @@ -247,6 +271,45 @@ TEST_F(memory_failure, anon)
->  	ASSERT_EQ(munmap(addr, self->page_size), 0);
+> @@ -1080,12 +1086,37 @@ static void set_track_update(struct kmem_cache *s, void *object,
+>  	p->when = jiffies;
 >  }
 >  
-> +TEST_F(memory_failure, anon_hugetlb)
+> -static __always_inline void set_track(struct kmem_cache *s, void *object,
+> -				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+> +static bool track_has_record(const struct track *t)
 > +{
-> +	char *addr;
-> +	int ret;
-> +	const unsigned long nr_alloc_hugetlb_pages = 4;
-> +	unsigned long alloc_size;
-> +
-> +	if (variant->type == MADV_SOFT)
-> +		SKIP(return, "Soft offline test is not implemented");
-> +
-> +	/* HugeTLB settings will be automatically restored when test exits. */
-> +	hugetlb_setup_default(nr_alloc_hugetlb_pages);
-> +
-> +	alloc_size = default_huge_page_size() * nr_alloc_hugetlb_pages;
-> +	self->page_size = default_huge_page_size();
-> +	self->nr_hugetlb_pages = hugetlb_nr_default_pages();
-> +
-> +	addr = mmap(0, alloc_size, PROT_READ | PROT_WRITE,
-> +		    MAP_ANONYMOUS | MAP_PRIVATE | MAP_HUGETLB, -1, 0);
-> +	if (addr == MAP_FAILED)
-> +		SKIP(return, "mmap failed, not enough memory or 1G hugetlb not supported.\n");
+> +	return t->addr;
+> +}
 
-This test is no longer 1G specific, so "1G" should be removed too?
+how about inline it
 
-> +	memset(addr, 0xce, alloc_size);
+> +
+> +static void clear_track(struct kmem_cache *s, void *object,
+> +			enum track_item track)
+> +{
+> +	memset(get_track(s, object, track), 0, sizeof(struct track));
+> +}
+> +
+> +static void save_previous_lifetime(struct kmem_cache *s, void *object)
+> +{
+> +	struct track *alloc = get_track(s, object, TRACK_ALLOC);
+> +	struct track *free = get_track(s, object, TRACK_FREE);
+> +
+> +	if (!track_has_record(alloc) || !track_has_record(free))
+> +		return;
+> +
+> +	*get_track(s, object, TRACK_PREV_ALLOC) = *alloc;
+> +	*get_track(s, object, TRACK_PREV_FREE) = *free;
 
-For 1G hugetlb, alloc_size will be 4G. Would memset() here take a long time to finish its work?
-Same issue in check_memory(). Should we try to enhance this or it is just acceptable?
+Maybe we can use memcpy instead of copying them one by one.
 
-Thanks.
-.
+> +}
+> +
+> +static __always_inline void set_alloc_track(struct kmem_cache *s, void *object,
+> +					    unsigned long addr, gfp_t gfp_flags)
+>  {
+>  	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+>  
+> -	set_track_update(s, object, alloc, addr, handle);
+> +	save_previous_lifetime(s, object);
+> +	set_track_update(s, object, TRACK_ALLOC, addr, handle);
+> +	clear_track(s, object, TRACK_FREE);
+
+sashiko has a comment:
+
+https://sashiko.dev/#/patchset/20260616141410.52117-1-pengpeng%40iscas.ac.cn
+
+It seems a simple fix could be removing clear_track() and allow the stale free
+track.
+
+>  }
+>  
+>  static void init_tracking(struct kmem_cache *s, void *object)
+> @@ -1120,11 +1151,22 @@ static void print_track(const char *s, struct track *t, unsigned long pr_time)
+>  void print_tracking(struct kmem_cache *s, void *object)
+>  {
+>  	unsigned long pr_time = jiffies;
+> +	struct track *prev_alloc;
+> +	struct track *prev_free;
+> +
+>  	if (!(s->flags & SLAB_STORE_USER))
+>  		return;
+>  
+>  	print_track("Allocated", get_track(s, object, TRACK_ALLOC), pr_time);
+>  	print_track("Freed", get_track(s, object, TRACK_FREE), pr_time);
+> +
+> +	prev_alloc = get_track(s, object, TRACK_PREV_ALLOC);
+> +	prev_free = get_track(s, object, TRACK_PREV_FREE);
+> +	if (track_has_record(prev_alloc) || track_has_record(prev_free)) {
+> +		pr_err("Previous object lifetime:\n");
+> +		print_track("Previously allocated", prev_alloc, pr_time);
+> +		print_track("Previously freed", prev_free, pr_time);
+> +	}
+>  }
+>  
+>  static void print_slab_info(const struct slab *slab)
+> @@ -1371,10 +1413,12 @@ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+>   *
+>   * [Metadata starts at object + s->inuse]
+>   *   - A. freelist pointer (if freeptr_outside_object)
+> - *   - B. alloc tracking (SLAB_STORE_USER)
+> - *   - C. free tracking (SLAB_STORE_USER)
+> - *   - D. original request size (SLAB_KMALLOC && SLAB_STORE_USER)
+> - *   - E. KASAN metadata (if enabled)
+> + *   - B. current alloc tracking (SLAB_STORE_USER)
+> + *   - C. current free tracking (SLAB_STORE_USER)
+> + *   - D. previous alloc tracking (SLAB_STORE_USER)
+> + *   - E. previous free tracking (SLAB_STORE_USER)
+> + *   - F. original request size (SLAB_KMALLOC && SLAB_STORE_USER)
+> + *   - G. KASAN metadata (if enabled)
+>   *
+>   * [Mandatory padding] (if CONFIG_SLUB_DEBUG && SLAB_RED_ZONE)
+>   *   - One mandatory debug word to guarantee a minimum poisoned gap
+> @@ -2029,8 +2073,8 @@ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+>  static inline int check_object(struct kmem_cache *s, struct slab *slab,
+>  			void *object, u8 val) { return 1; }
+>  static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+> -static inline void set_track(struct kmem_cache *s, void *object,
+> -			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+> +static inline void set_alloc_track(struct kmem_cache *s, void *object,
+> +				   unsigned long addr, gfp_t gfp_flags) {}
+>  static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+>  					struct slab *slab) {}
+>  static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+> @@ -4522,7 +4566,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  
+>  success:
+>  	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+> -		set_track(s, object, TRACK_ALLOC, addr, gfpflags);
+> +		set_alloc_track(s, object, addr, gfpflags);
+>  
+>  	return object;
+>  }
+> -- 
+> 2.43.0
+> 
+-- 
+Thanks,
+Hao
 
