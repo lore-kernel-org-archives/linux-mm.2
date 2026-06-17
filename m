@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C4D4CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:25:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B4ACD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 13:26:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10D536B0005; Wed, 17 Jun 2026 09:25:15 -0400 (EDT)
+	id D94996B008C; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BEF56B0088; Wed, 17 Jun 2026 09:25:15 -0400 (EDT)
+	id D6BE46B0092; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC8376B008C; Wed, 17 Jun 2026 09:25:14 -0400 (EDT)
+	id C81D06B0093; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C32456B0005
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:25:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3EEAE40451
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:25:14 +0000 (UTC)
-X-FDA: 84889475748.13.123DD91
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D5B16B008C
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:26:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1306B1C1DEA
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:54 +0000 (UTC)
+X-FDA: 84889479948.27.CB94868
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 81BF540006
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:25:12 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIvMcLUx;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3FD3B8000B
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 13:26:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOOOjbBu;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781702812;
+	b=le5BGy9xChGR7W6dj5fQNYDp8hWgd2f34x54b8YnHr9lsjPAdb8uyvdqs/Lkm4IpDCMNQS
+	ahTlhbwjG5p1Etsb/7gdGelHZwDFrEo/RGJ6pR4+kib0ccW3IINtGx+s8WYqY818oQjknn
+	9y5peJtvAqdfEEEoAvNuX/LBcFR/YXo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HOOOjbBu;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781702712;
+	s=arc-20220608; t=1781702812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rP9vqOfat9j3sSJpWmjfcwca53+/kNhJYcxVsUA7txM=;
-	b=wItKpO80uoKNrnnOb0pfC/YH9u9eRzsCXwcAIYhikvF/w0wp4uIs7qDy6gBvjOtKNeeJph
-	q4LVMw9FCno2JU21vmEASm28prFFuNbsO0MttStrWzPVbso6HWbtuyLy6DseoBIkwCmIIP
-	zW3qfw77VWJyNddz6Hfj+0L4/2FzgNA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781702712;
-	b=tmFR8D+3WRDaQRVWh/VJsDkyjsf6TMEVoE8XVEYsPHvHTGv4RwWSIk4LjyW1d2+w4+u9WX
-	3miuo1FjpRXCfYTM6zvWc7aZgQ6NkKfQBdx6Jvfleb9AW5pfX94+CdHIgvjDBiASb7o9II
-	QIWRN5OAICDGPk0GgqvMwEJKUisLlqA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIvMcLUx;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JKfodi5xnv9D7a4lhvk6g2oXZZM8M2XRkN2sbgB7GdM=;
+	b=V5iF8lxi0cN3zppXIDoiO3a0ky5tELATzJcIdaiXoZQxzcPVLtaw8fNI1JBrS1uh/yDxwf
+	qA7mgvXCBn7hE8Lu6LudODZ5D46x+/RtPv5ZBRL79A6dnxNygxlO1DnQEbxINF7keWpPSa
+	dG0QszSNOrdVwt9Z8EoVO5j6slrq/iA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EA01E600AA;
-	Wed, 17 Jun 2026 13:25:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC1C1F000E9;
-	Wed, 17 Jun 2026 13:25:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C83756001D;
+	Wed, 17 Jun 2026 13:26:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15A81F000E9;
+	Wed, 17 Jun 2026 13:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781702711;
-	bh=rP9vqOfat9j3sSJpWmjfcwca53+/kNhJYcxVsUA7txM=;
+	s=k20260515; t=1781702811;
+	bh=JKfodi5xnv9D7a4lhvk6g2oXZZM8M2XRkN2sbgB7GdM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IIvMcLUxWj5v4nGYPlCpNoSHynZMFZ0ycglnjXDEXKhUBS4s3Eqj0RJkmuW3ccDVt
-	 BVm/fwe7UOqkCOCYJZy5/mwMjGL0MtFs9UMCqvRxM2DVoEsSVFxeTpQSr4tSRJlTil
-	 Y+A0tpxxsQ5/OOpmxgd1spylgoLNyMBF6ofcYN4V1LFOZgMkAP+Ypilp3EFK6pzl4U
-	 TvZ1Ihk6JU6mOGdKVJYV+I7R/fTgogy9g2IBisZ5SLhYithNPW2JPmBRag1H0XWz5X
-	 7rLuhBpFvycO0JMYCvVazB6/JKpMtnZJpIgBv3AR3bdpBscRte0eVJihiP9uY+824Z
-	 c4uoFgGQsLWhw==
-Message-ID: <6fa17e01-8aa1-4597-a1e0-fa8d95eb0407@kernel.org>
-Date: Wed, 17 Jun 2026 15:25:08 +0200
+	b=HOOOjbBulayar72jE4PpeQpr/J5jBb5E597NhJvvldz9BFi/vpLpbkSjkn3OCDQoC
+	 hH//q6U1KLMN/hqh85obvPW5dqxOZ3zFeJdPLE3BCeFJAediI26qg0h9EhJRdEg3+r
+	 +pU1uk+SrsWBLEMiBXTHZQGyuzkz+6vt6JfaT7y8/pDa0mmX7aYcyUYJKuA1KOkMv3
+	 0dAkKNziPDxpza9taDNGG85fNEwcA7S3+4a+gqosFi5zUWwfeGotg6BkdncqGfIOVL
+	 YUegj20Pj3RyTW7HgtvBBf6Kdz6oy9nuMizfohVWX+bDolo/+MN4Vz/iaZISjp15MX
+	 SQ1VR2h+ua5Jg==
+Message-ID: <cdf8ac63-4e1b-43e2-becf-97dca47f4260@kernel.org>
+Date: Wed, 17 Jun 2026 15:26:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: mprotect: use walk_page_range_vma() in
- mprotect_fixup()
+Subject: Re: [PATCH 3/4] mm: mlock: use walk_page_range_vma() in
+ mlock_vma_pages_range()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
 References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
- <20260617082622.3397584-3-wangkefeng.wang@huawei.com>
+ <20260617082622.3397584-4-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260617082622.3397584-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260617082622.3397584-4-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3FD3B8000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 81BF540006
-X-Stat-Signature: ck44unxogqr4hnnyh837wj15sqbusfjg
-X-HE-Tag: 1781702712-515905
-X-HE-Meta: U2FsdGVkX1/DzwSg3JKd2eXevuwYIi9DMcq3xRvj+C1kkvULr3sbGwoau409aAMmr4ezgHxSyMtn30B+4fwOLj+cjpQednfIOPJG/bTUJCozVDS0ahNpeRsjzbvkNXe3GN1ickuZY2+zv1bcfXj3ufNjh7ipbabxo630fZFNp30VOEy3bIIkc+h6kdcz5U7rzJJFlfdF7W819Mg4eY2UJx0LldBlFCyCLNkRVYzXooE/WvwiwtfF6r+to1y64x1HXntu9BHYjSUItm3piNboteJpAtos59g9IGdcydMqP/mympXC4bSBE2xn1LB6ql08Z8mShcun0cDN/MNLRW028omIMVCNRqX8Iqtk6pWDm/I52LJ6f4GJfQK2CWe/YLsOKDOEgBWh9fvBcCTz6jogfJ5lQuyWG9wQ2ScHp/QLMNa8FLUAwfS5uLyJMlwVAR0Zicb5UomZcWHd/IzKO7pKSrgb+sZLWRIKLdK7adddboPJL06Pqai8JbypEVMxpy9nRre+hlcxJ6LTPDD/hnrr9e6uluYdz/oYEHqeGP9dbqTkHmatIUPFp/TBn5iFNlyu+SzpvWpV+j/QgqLfAl2ML8/DtEymmG2MEwswXETHVjK4pAcyg2Th0yPkc9eViy20oasK0E2hJYVJ0EFdLlhoBCpGxDfrlu6coTir8yhdLn6be698sOV4C9yasLlVjMnPb70WC/z4BllNwMYijUrBhjjF2lPoR8c0PWL3KyAFakOCLbw+FDO94l1UEAQUw9NLYRY3fjD4FLYOt/VUjnA4Qj/O5lClNvM4YBc+mPmVuElmcA52zWXNFOv1ac8AgpIGueRr6D/hflL1s4lNO+QaYcCv9zhOYnafAKe4S5dN53ri3ZqHhbH/D4MYwhsiOPzBIXTWWYMI/jKBl/DpNmSfPbZArZ9XdADYmu5RNM+7sddHgvnPHQ/wzF/TYMKwIX7LUUgfIfPoECqzH49qzMP
- 4HOUEVqN
- S92v5aWBJazEN/2TXTrVS/b6X0xuWGAEKkNpZ0pWrA9Tg1FvbpCkxTCMPxPz3K5+dQGVz4tZookwAlyjQ9wSI/SPxKaiVEHFNl/XnW+uvc8iL1CDofiRow6ZA7fAbCJ/fiD1atpi+uMssry6eGVfFZx59jmyF+TymQs9UFuvr9M7t9NlkgSLto6PpnZ3yjWSeiH8l43Q1LhPazOcFmBzzUTlWUe4PzQmi4AEruQ0Bx4A16gPQoafnHoY9gsjBrKuDwYwHwAjsswVjFRXLlXVJYojliMe2tJBnhkq8BWInqnFvKqpVE3g5BJfKghVKsq8zO4f7EADnEcvFSoo=
+X-Stat-Signature: 1r4k8txji83wp1msuky11ars4domgp9a
+X-HE-Tag: 1781702812-165880
+X-HE-Meta: U2FsdGVkX18UUVvPN/H4+Vx4T8y03sY96S6fi/oJ9dMVQWW7vXRM5zGXVIOszZzYe4tAMD9jH0+kjdvqCunWthy29f11yGuPyqJqOYreMOvbB0K93D+iaLgqwkAGZUJJVU7tCsEBSoZp8339ByxnjzV7GlXzD9NU3OkBt9GXNMA9+o8/8uSJezYCOc1o3+I5JKs4RDmKWnjv4krn7eb9XzY1IRe9YlBOGUi8DCNsr5l942PcLRb9oXD/nmQb1vJ+DIEMqFc46ybxJ0zIoHn0Q5MuRdMbX6d87iGLE4XOQPrIINN0pxKLZ24EERDKX0mp0dwy5B6A0JapMjCAc3JjAPL3Fg914m1ENYMO2oc/IxCb3eftHggJS/lULj5ClVoqcPkeNdG8z6dq8VH8MJ18dpAs8f0J3vJX1WNyWyDHI8YqMcCrgF4N4TjIqKZWAZXHqWxGy+lE8kaeUV2dxH9hHFTT1+tNnOpWVmdl52QOWRXKLMtmVEKnz6bi2f/H4sELqAtZ16m0ooXnkYGvYlRb2ablc01C1XECaWfS5w4UAe3JiE0h+qA8pxwSJ3r83mAuQNKSXTFglflQvPwZbiptid0n/0n9otk8CQ6h9GbWuU2+lp2HBPAYe54e0UK2BdBiDseWZ6x9BADTD2pUFWzoBUbsUnsNCHrvdCEa0T5cNIF+/3TmiBQwW3adCzMNSa4FCahLDuoHP2QV/0mT3VpJjgeLYJxuMy+0QnfspoYPuBtY8rlr/vs4GjQ3ciHh2ndCVP6mK9D6rgg2QllOWwyqNotGNiZw3XFnsDJto0iqzYjGr2T1+OWjvdunATfJW3Xz1DuziCARMOF7uFLOQgxSQZhJs3MbruzSoVJrMs0JqFhdrDwHZUY6QBkfHwzb2/BV2ZWHVGEQXYGNZJ8L6S3JrhKLBq82aWb8pR+fLp2gBaRxetl/6A6u03IJMQwhejomfa5SXexVi3mcCK0tjVd
+ RLMkOfA8
+ F9TwUHAdHEVeY2299I5Gxc0nL1EsJ/G1IgJKI7JUShQvKRoM5E7za2sUPq7Vo+30HiinonDwYKurU9YYs4BDTHmqxmJqW7/YZ0WnjwkFjoCnoUtrNuwAvf67RM+6YZR70mnilMphR4gTHf8It/LA+8jNhtxhj15MwuxEWdpJbrqu7bpck/5CWyhyAif4ntJqMzZ/7MgHy8ObERxH+0raQAjJQHuNWiee0l97ZPgbuuhoarTju3fL+X+KP2K1MnVwSAXE8u+jblE+MX2e1Em/5XbS4iLldL9A2vTZRzUCfu37k9EEjWFfFJN9api9tUr8CySt467/zjxHWEeVlDcrckVCZIvpHwOz7yj7X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,39 +142,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/17/26 10:26, Kefeng Wang wrote:
-> In mprotect_fixup(), the PROT_NONE PFN permission check uses
-> walk_page_range() to walk the page table. Fortunately, the caller
-> always passes start/end that falls within a single VMA, the
-> do_mprotect_pkey() iterates per-VMA via for_each_vma_range(),
-> and setup_arg_pages() passes the whole VMA.
+> The mlock_vma_pages_range() uses walk_page_range() to walk the
+> page table. Fortunately, the caller always passes start/end that
+> falls within a single VMA, apply_vma_lock_flags() iterates per-VMA,
+> and apply_mlockall_flags() passes the whole VMA.
 > 
-> Note, walk_page_test() isn't called in walk_page_range_vma(),
-> however, prot_none_test() in prot_none_walk_ops always return 0,
-> so it's safely replace walk_page_range() with walk_page_range_vma()
-> to eliminates an unnecessary find_vma() lookup.
+> Since there is no .test_walk in mlock_walk_ops and VM_PFNMAP has
+> been filtered by vma_supports_mlock(), it's safely replace
+> walk_page_range() with walk_page_range_vma() to eliminates an
+> unnecessary find_vma() lookup.
 > 
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > ---
->  mm/mprotect.c | 2 +-
+>  mm/mlock.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 9cbf932b028c..d26e09862daa 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -753,7 +753,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
->  	    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
->  		pgprot_t new_pgprot = vm_get_page_prot(newflags);
+> diff --git a/mm/mlock.c b/mm/mlock.c
+> index 8c227fefa2df..97e49038d8d3 100644
+> --- a/mm/mlock.c
+> +++ b/mm/mlock.c
+> @@ -446,7 +446,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+>  	vma_flags_reset_once(vma, new_vma_flags);
 >  
-> -		error = walk_page_range(current->mm, start, end,
-> +		error = walk_page_range_vma(vma, start, end,
->  				&prot_none_walk_ops, &new_pgprot);
->  		if (error)
->  			return error;
+>  	lru_add_drain();
+> -	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
+> +	walk_page_range_vma(vma, start, end, &mlock_walk_ops, NULL);
+>  	lru_add_drain();
+>  
+>  	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
 
-As Sashiko says, prot_none_test() seems unnecessary now.
-
-Apart from that, LGTM.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
