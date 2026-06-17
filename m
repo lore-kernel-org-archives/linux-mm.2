@@ -4,98 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74CE3CD98E2
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 15:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06035CD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 16:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FFE36B008C; Wed, 17 Jun 2026 11:56:31 -0400 (EDT)
+	id E46046B0005; Wed, 17 Jun 2026 12:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D7796B0092; Wed, 17 Jun 2026 11:56:31 -0400 (EDT)
+	id DF7086B0088; Wed, 17 Jun 2026 12:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 217D16B0093; Wed, 17 Jun 2026 11:56:31 -0400 (EDT)
+	id CE6336B008C; Wed, 17 Jun 2026 12:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E875C6B008C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 11:56:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8337C166476
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:56:30 +0000 (UTC)
-X-FDA: 84889856940.16.AF9AC81
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6834F4000C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 15:56:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T1J/WI1K";
-	spf=pass (imf04.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A039C6B0005
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 12:12:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A0D91204DE
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:12:51 +0000 (UTC)
+X-FDA: 84889898142.05.F8D2F4B
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1A5E540013
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 16:12:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ey4BzZsm;
+	spf=pass (imf07.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781711788;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	s=arc-20220608; t=1781712769;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MAW/jHNB+s73bmq2RK9pw8vdXIwRnuLexugbKU7MQww=;
-	b=BjXwoaGG0MrrPf+HaAFYhHLEDfQjqYQ1F3TnFfpENM7e3PeRgcdv1zGwb+qnaSVvySlVf1
-	3khvWeS/HhOa0SuP0Rui5OCov+bRhlsUE0whY9fk4512iTeRaDQovY9GJZlNjghLX9GzUX
-	o41mzaSMzZyTlG7teEpVYJsF9wTM64w=
+	bh=X0zBBw2mHLX44ib/ur8vL9yTzE1JcardieVVBx4eSzY=;
+	b=62LA+FbNDIBZVQ1O1qrWm0fLfGO064+RlfB5FHoCPBeD/O+sm/COFjl7D4/TrKeXV0Ldtb
+	gzaVz2p+NcIL4ijOzgAQAjcUZILOYzzTGXzUxNBTFaDcTcev8AUb3UrU3ee6g609N1fR+E
+	UIheFFAPbpgz2IOpiVkhVMVAAIguoAU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781711788;
-	b=uztrPdQfoqqKlZXGNeSRpbhBtH4/89w0CQEWGY8PqUwNzFSL2GH0/H3yG3uGAYqDZjJoLg
-	4BmR5i0oxuwbsyHX9ScruU3zGFl7UtaEz2dYw8Zx0MwaSl+C6C1Si0fRlkBnQNtuDFAOK+
-	LIxxwPtqh6PASZL0suz6FTJtwNwhXHo=
+	t=1781712769;
+	b=cpz+07YxAmciid/jY/jXNsKPPR7JptM7ijNfuqqNCDcGgxDgjYb4bTrjCB6mXwfbUqupn6
+	38oeCAacvgR1u3q2Mgl8u+LNXsJOxZB9m0kokR9sFc3pmcM0njqozqDf4Z39lfYdwgdf+/
+	fnjwPbUt9HMP3116QIwqlJlcLaJjUtw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T1J/WI1K";
-	spf=pass (imf04.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781711786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MAW/jHNB+s73bmq2RK9pw8vdXIwRnuLexugbKU7MQww=;
-	b=T1J/WI1Kel1qpBrOpKglPcwis+2PhWxb5gyj0zwbqYuS/7xBSLBcS8KAxN1wGf+rFBSIbU
-	6ZXYlnf+6irMQjApOiGijrQ6tgNGaLSYeKt27oRQ+UX24d1clXwr3q8vTORfDZ7wT0msJp
-	YdQC8SYqQrXLKEyeHZKZWKPfs7IRYtk=
-Content-Transfer-Encoding: quoted-printable
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ey4BzZsm;
+	spf=pass (imf07.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b12270b3so36853135e9.1
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 09:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781712767; x=1782317567; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=X0zBBw2mHLX44ib/ur8vL9yTzE1JcardieVVBx4eSzY=;
+        b=Ey4BzZsm0LOlummuG8lvznpQlb1ACaVIV6h+2lw0zCadvP3Vr5vIqKIUxktSIDWWz9
+         91U8bzE4a0ikdflGaBbgKTtdxbXfYSyPtCCAsNJGH/VGJ2wmipzo/z+k7guFjYEoKxv5
+         /rI/RlnXAg14Igrf6NreHWmocQrirD9i8Ff3+rL853dn2xKveSspkJRGHQ7Whaj3zDU/
+         UbIL3he4jmSFrrW/pL86MDUqlo8qnBRViAvXWKkFhi/su2RxUOoER6VdyuvS1+w4b4NS
+         835/zyV704LY4HBp8KPljP1c6HvGB/1m41FPcnrl8uie19A+MtbiA1RC3Y8mdR3Thgt2
+         My7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781712767; x=1782317567;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0zBBw2mHLX44ib/ur8vL9yTzE1JcardieVVBx4eSzY=;
+        b=sJQXTac/tw/H+QL0JZhj0JJEPiaiv3Gi66y0EvwAwYLnvh1FKsFWhBKdNAHJLclmcs
+         /tvOCp17mPHxwcMQOz8WXWtxM44gw6Eg3sQGUaAzCpwWWtWsMPk2LIpG/YDCjhAhHEcP
+         S8IzRnB9RZ84dEeOiLs2iEwV1fUTjHFVGID4C56AavVUzUhpEwDATWp7qBBfemS/DryY
+         ZA5vd7epxH+W9XDmQpBcgsTXiYY0BSSR0iZa/lOOiHrwPZg5MZEfzvB3gm1XrI7TqNTT
+         0SYhn+wY2LtRMTkqrgBmPkhl5SMFDzwDtl7JjQLt+gWpsx0eHiu6S2TYtfCHvmQ/jssp
+         RdJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+q5tmmzDBvbiZJFVOsiJcn5eJXsqfr4vULQm11YTcJ+KNjLjJ7bmPEQI/IB93Xk8MYNt7gukQFBQ==@kvack.org
+X-Gm-Message-State: AOJu0YwvllO5R1SbyyfvzZ6fuGx4YdVWI0p1lZ3lOqOKMJhY3mldTf1D
+	5bOPAlsGVerG0qqfgIEoTP8y5r69I69M9JJQdeduKCBZOH7bXVuabXvVn5iTO7cTcjTEUg==
+X-Gm-Gg: Acq92OFGssmdgAH3pVFMpdnXDlQCCSmidWPli7/wqFfTySO59nSx/nnint9OUrWszqS
+	5UO5BexpmMLF/2g+i++MGWAtDNQa3aysQUlLJ7cZWr6Ui82XBrcDIXxrG2udwy5BJ14u/RmHWux
+	SQZ8Ou2M8OGjoQIOYN/bMnnzQxwUU73OAluYOp6gwFXXPZ434hVmHUL4ORAi48JqgXBF+wmEule
+	usTFm3gtaD16aJd1Do6A4dRHfDf3OjFMN/bJUzD4E4sEao4EKVNpGiPkB86EuaN1I84yCyluq+U
+	zyNmQ9tHoQnQMydXpNP+106X1/ofJd3QnVXppLw2xWeYIXTJk6qdGg4WD/mtudPo64SJOep1Lok
+	pcGkAsP1GTCjJbBO/uv9RMMmseNfPVtiBLkAqeitbOygdke9EMOKNofRjKGa7u/VxCy86lwALE2
+	hnTAvazhG7jhmFqfl3q+0EvDZYnB8IfudZv1P4ZifOyTdFr+tpqCcyeS2FbfRdr7CRkVJvifb1k
+	70ERRwbpkKXzR2qDw==
+X-Received: by 2002:a05:600c:6b69:b0:490:a1dc:e542 with SMTP id 5b1f17b1804b1-49234100c1fmr46844735e9.6.1781712767174;
+        Wed, 17 Jun 2026 09:12:47 -0700 (PDT)
+Received: from [10.128.11.42] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2ce361sm52357251f8f.31.2026.06.17.09.12.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 09:12:46 -0700 (PDT)
+Message-ID: <39bf837e-d3c3-4b9b-b118-063caadcb700@gmail.com>
+Date: Wed, 17 Jun 2026 17:12:45 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] mm/damon: introduce DAMON_HUGEPAGE for hot region
+ hugepage collapsing
+To: gutierrez.asier@huawei-partners.com, artem.kuzin@huawei.com,
+ stepanov.anatoly@huawei.com, wangkefeng.wang@huawei.com,
+ yanquanmin1@huawei.com, zuoze1@huawei.com, damon@lists.linux.dev,
+ sj@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260616150316.580819-1-gutierrez.asier@huawei-partners.com>
+ <20260616150316.580819-3-gutierrez.asier@huawei-partners.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260616150316.580819-3-gutierrez.asier@huawei-partners.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Jun 2026 15:56:21 +0000
-Message-Id: <DJBG44TUTGYT.YIR4GG0EZ7CS@linux.dev>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
- <rppt@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>,
- <derkling@google.com>, <reijiw@google.com>, "Will Deacon"
- <will@kernel.org>, <rientjes@google.com>, "Kalyazin, Nikita"
- <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, "Itazuri, Takahiro"
- <itazur@amazon.co.uk>, "Andy Lutomirski" <luto@kernel.org>, "David Kaplan"
- <david.kaplan@amd.com>, "Thomas Gleixner" <tglx@kernel.org>, "Yosry Ahmed"
- <yosry@kernel.org>
-Subject: Re: [PATCH v2 20/22] mm/page_alloc: implement
- __GFP_UNMAPPED|__GFP_ZERO allocations
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Gupta, Pankaj" <pankaj.gupta@amd.com>, "Brendan Jackman"
- <jackmanb@google.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
- <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Wei Xu"
- <weixugc@google.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, "Lorenzo Stoakes" <ljs@kernel.org>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-20-28bf1bd54f41@google.com>
- <fe191e75-29b3-49c1-8c54-55d41b3e786d@amd.com>
-In-Reply-To: <fe191e75-29b3-49c1-8c54-55d41b3e786d@amd.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1A5E540013
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6834F4000C
-X-Stat-Signature: rtghpuftxaqxq7qg8ys6tcnhurddd3i5
-X-HE-Tag: 1781711788-553091
-X-HE-Meta: U2FsdGVkX19YRwcdZuOmlQ5pAMorwd6ycBt23Q1SYU+dGoy21taQnH70ck6EYaFxQfOwuB1urVWF+gDXEmQXW04isvoW09t0ANGH25PjEsalJCKREXkRz3RkjmLKpgbOnh3tgg9eaG4ApuFZNAvp12mbP5P/NmdCeeAx25+DjZ48opFfSl2GKBObddQIeqaYSL1wAI8az2S/cnCyniWVnNuHs2Z90FfXeRQ0C7GAvgw4maXuM+rPdfcHIE/6kTkwf0ITUVzdHYvRZ1PciFmPoUm9md9cXb2omqLsVb/Sr5KGMrDB7gRVCZKpIo6/uaWZ6Fd5R9pcKklc3JLjNr4MyRseui6RZl/J+470ooFgmfVtF7MBcI/3Nj42xgETmTEle0i2g7R2kL5QqHw5WnlFxD4vxOD9H+WUURJjMXqCGkdh5hlaITnbSy4Sc+Jid4+fNoI11Dh24QkR9+RmbEKbCFM717acljZ0Kv+bBHSywzgvAg/VdvRmX80yeY8d5Tzu81NTMqwWHlzeD7SJmAxkxlz5Lt2uhh4m3hjgqF823BMZzG1defizS19BmhtIKspTwQ9biJGuLB7lHf9OIXS1UmtX3rwFc6iW3ch+rx3AoPFJq8l8jnsVgAFkhy7O9erNWGPuUA1lJsguEm5f/qboKtgrgIPQ7XgyiQzI6WhcRtZn+nmuw+Rlx+NegfZyA4ay80dhB8zNugDnWyBAaJE1+6RYgCHZmwPn0kghTF8zCTHw2eIdwlwEiKuKF3QTnHYihbOoYo82LyQ6rEoWGImWWe9578rnOpI5DrSTyPmnofrhu+qn0VjDjkyAz7JvHX0cLy8xzNwB/EGgXWldzQd+69Ki3XOAwwCIJfBKg5tg1c/gAzMPcouWLIbioRevAcpLJYY+SbgJiEa0LNWzWeT56A8309iMdzPYIeryf9fjg8ftC83L0xypMe8FvnHPvhwm6EZxcrMS7W2z86EjWwr
- LNH5HBRx
- Ce3wi+F/BZ64b72H/rNEsyejQ/1XbmwRy3mbm7FqtpYB55cixzf/mHEXWfUjzstJIoCukHCX4hWuvARAYb/nN2trzfCSEWfB9faMslvvteGnrrrBX6Zt3wz8VTbcIRArXc+nTf1QFskygCOBm+2GoTnYu6pOuXUECETP+A9uPf68aF0+hxfSI3/l2bjOjtLpQWJic5Yv6+nj/n8u4XPk9cbtlGmf9l+rVyZARjW5RAzLnGXtWbr9ysXPyvvcW+p8GqEuI3TayKhxIVseBS2blmRIWnz6zd+NcvNwu
+X-Stat-Signature: fqkwaomktd8g6q89ieekt1b8nr4xwjc8
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781712768-210664
+X-HE-Meta: U2FsdGVkX19442oJwuYeiPMFccMbd9u48FGDCt9Bi50Dt24ZfhuZqzYVTbJkfminQB/bSQLPCbaNo+gkVyfpnV2nBpYX4W2kOs4NBNSVTUPfG2L3CH+giEYTdFWMoLxEBexFTTC9TLMlgiQ3ytLLPIA39Q+UjwAVwHZtiIIeLlEOi7dup5TjMZNuTBhErf94qhRgjib5Y9ulqbwtFwgaoJVOfHxKsFfyo/RJqCBcAJYMoYY2iY3QFJEphG65frjCuAhqUg3yYQRDLmGPHIoQmzm+LEZ8x2+Nwz9lwNsZUOSMhvo/8wp4j09o0Dsssfnk9bo+9AB4lOpWj4Pi65xVC4BRwX+fuzpI1sILs+Kf1UoHGZJVfx+OMbuIsv9IpfBj0whsSWNx1GIvXv4ul651hkLS+WxPwbO8aGikTAk7p/9ms8KzdXe1MPBugUaeKYGtaRzA5M/1bghx9sQJUD7+CYdTyouEk8zaRWJ7XOilCP19cDwVmFilvBD+9RCASC47dmF0eR4zUUxDPIVL2KvcYE5b7QvCDSw9Tz6Lbo2BeS68M1noC1yNtqcmWCExm6E+dYajXk/W3IOsrvH9oiKebl8BpjMV5LFOxLznJswu7B04mLQNfnbcgdyLLBpD6oDFaICjuN1wIsNhoG3fSKQu6CqJ0bJk7fZo7QXzphStY13wS2d0YE9aNaK3RnaoyTzRhVtjeK6LUbfnQS0NIMo8B+w/nwodJqfoXq59M90ik2tuvuk+6hPR0s23UvHJGLaXpITzSwIYzMSL5W49efvJt61qULQ2PX+ctmNwbrUXPPCGFsqhFdiPmnx9IXH0hOAVBa6kc8gGat9HbSzwEwxxa4z73VpyJIxiM9CWqhHRSSfxdyUCAb6wpkNMNgin9GwlyRR3Bu2mwE1MjNceFv61HjtcnM9QO1EktqnViGIpXcdJJKZSD9zPI5PH9Vd4B4PqrLm69InB92Mkk5dgIxK
+ 5KJjESPn
+ zXiaIVwu03rz+oYN+XYZOj2dTFNu9kXW5GuHq5fx9Dv0yl/ldg2b9viq3/zLvRNVFMsYD7k1gR/VjL+JPOb0q1or4Pk+VedBSTerWfKHCLOy3FdXuuKZVeTHijizkttv2rJm9WGMZfMXHYVLIaPfLgvtfYJYxR27x3ISE8NdFJLeLp+3pRTWfQA60ZeRboxUhgUOFC9JrZVJjreRPCmkrg9cO4hliSc0419d4E0J1n2fg0KBKQt4VjHQf3Or518XPQF1/X3AbhjDtFLVj+veILpbU4umHY+7xeM8XgZW+sx12tQl7/wIk8qbtyMq6A0mWhU+udzb489BjOnmet++KVAmnUviuPgNbB347samyTvBE9IKhwB1fNf/GOjvk+5XF2fCHETN+WAF50XSUnsvEoCcr7XHEuH89ulXnCP2DVkXDHRNQdESU9uZnKI9hlz2+56IO2IlY21FbA8jLsksxycClOm41ugn1/snKJtv1PglEUE7NY5iz5k1LslFbtUvxs4AYUx7lrk5wynCkKFgyNsYL5zGlAaGEx4k1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,78 +126,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pankaj,
+Hi Asier,
 
-Thanks for taking a look!
+On 6/16/26 16:03, gutierrez.asier@huawei-partners.com wrote:
 
-On Wed Jun 17, 2026 at 11:32 AM UTC, Pankaj Gupta wrote:
-...
->> +static inline void clear_page_mermap(struct page *page, unsigned int nu=
-mpages)
->> +{
->> +	void *mermap;
->> +
->> +	BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHMEM));
->> +
->
-> I was thinking =E2=80=94 would the fast path read better if we moved=20
-> migrate_disable()/migrate_enable() up a level, into clear_page_mermap()=
-=20
-> itself? i.e
->
-> migrate_disable() -> here
->
->> +	/* Fast path: single mapping (may fail under preemption). */
->> +	mermap =3D mermap_get(page, numpages << PAGE_SHIFT, PAGE_KERNEL_NOGLOB=
-AL);
->> +	if (mermap) {
->> +		void *buf =3D kasan_reset_tag(mermap_addr(mermap));
->> +
->> +		for (int i =3D 0; i < numpages; i++)
->> +			clear_page(buf + (i << PAGE_SHIFT));
->> +		mermap_put(mermap);
->
-> migrate_enable() -> here
->
-> Right now we split the migrate_disable/enable() a layer below across=20
-> mermap_get() and mermap_put().
->
-> Would it make sense to embed that in the clear_page_mermap() API itself=
-=20
-> =E2=80=94 mirroring how we already disable IRQs at this level for the=20
-> mermap_get_reserved()?
->
+> +config SAMPLE_DAMON_HPAGE
+> +	bool "Build DAMON-based collapse of hot regions (SAMPLE_DAMON_HPAGE)"
+> +	depends on DAMON && DAMON_VADDR && TRANSPARENT_HUGEPAGE
+The dependency on DAMON is unnecessary because you already depend on
+DAMON_VADDR.
 
-Hm, I guess the symmetry would make sense. The reason it's this way is
-because the mermap_{get,put}() API mirrors kmap_[un]local_page() etc
-which do the migrate_disable() internally while there is no precedence
-(AFAIK) for an API that automatically {dis,en}ables IRQs. That might
-also be a side-effect of the fact that local_irq_save() requires a local
-variable while migrate_disble() stores its state globally. Similarly,
-there is no equivalent of lockdep_assert_preemption_disabled().
-
-> Thanks,
->
-> Pankaj
->
->> +		return;
->> +	}
->> +
->> +	/* Slow path, map each page individually (always succeeds). */
->> +	for (int i =3D 0; i < numpages; i++) {
->> +		unsigned long flags;
->> +
->> +		local_irq_save(flags);
->> +		mermap =3D mermap_get_reserved(page + i, PAGE_KERNEL_NOGLOBAL);
->> +		clear_page(kasan_reset_tag(mermap_addr(mermap)));
->> +		mermap_put(mermap);
->> +		local_irq_restore(flags);
-
-BTW, writing the above just made me realise: we don't need to disable
-IRQs here, only preemption.
-
-In a WIP version I did have mermap_get_reserved() requiring irqsave, so
-that you could theoretically use it from an IRQ. But actually I don't
-think that makes any sense since it depends on state in current->mm.
-
+- Julian Braha
 
