@@ -4,116 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94A2CD98E1
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 03:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A088CCD98E2
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Jun 2026 04:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97D556B0099; Tue, 16 Jun 2026 23:47:03 -0400 (EDT)
+	id 530F76B00A1; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E1C6B009B; Tue, 16 Jun 2026 23:47:03 -0400 (EDT)
+	id 508A96B00A2; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 845596B009D; Tue, 16 Jun 2026 23:47:03 -0400 (EDT)
+	id 3D1046B00A3; Wed, 17 Jun 2026 00:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 549706B0099
-	for <linux-mm@kvack.org>; Tue, 16 Jun 2026 23:47:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BC481202BE
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:47:02 +0000 (UTC)
-X-FDA: 84888018684.28.ABEEC8E
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AD949140002
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 03:47:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="K/h/zD1p";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781668020;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4726B00A1
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 00:03:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61CC51C16E3
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:03:07 +0000 (UTC)
+X-FDA: 84888059214.30.75B58CC
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011001.outbound.protection.outlook.com [52.101.62.1])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 744111A000A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 04:03:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ozuDjcCh;
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781668984;
+	b=xqQCdEs/Kn1jFlyqG8CBGo3ny1tK1EOphGDfokvS4nDOgHHpeB6lQpyaHcz4eOn7WDFe1i
+	rgP6SV8aTZswOQ9FpyF/e4va+UY/RqmDAQUXa5q+gSw4FYRyIeEflzwFflp8CiedjoQMiL
+	sjR247TAoi13huSzyfVX1Le4acYEU/g=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ozuDjcCh;
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781668984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pK4PQ1902R80gheBMlvl0pQHw4MWAl4a6tgY9EExy9w=;
-	b=rScX0NsgM6WS6L3uwGOEC2Y4uVl9tC9smPJ2ZNC0vtdtfzz4SJ51l/Dxjaca90NcteEvKz
-	RGqKJWdLaZV3/nSziJ8DEHFSRPcEoEqUiF+Vp/C2mmOCWyuOIsHntaWZ0Uhy4FZXsPWj+z
-	HjNqLXu6/KILCLT3crC5on/761VsnDo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="K/h/zD1p";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781668020;
-	b=0+q6znhZEBfzDFKrxC3tNzDznln7wI44RDh5YlLlchIhECccTJM4lBAqlS/Cu7439dvIb4
-	FZafQyMICWPP1I1Okkq6aRdqj1v50QZPjpU2xEdeOnp6jD8CBRmwg2wruIKjJCF/JBBSkB
-	CZ7RPMePP6ArxPHCtBwdq5KCkBIr07U=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-37c64d34032so238576a91.0
-        for <linux-mm@kvack.org>; Tue, 16 Jun 2026 20:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1781668019; x=1782272819; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pK4PQ1902R80gheBMlvl0pQHw4MWAl4a6tgY9EExy9w=;
-        b=K/h/zD1pwyOYvK2Or2XIFfxnP/Tit4hIta/V4HUUv9iVg1AwWRMpYoyHlzgENMR2R+
-         994xBgnSa1f+c15hzzwRc/FkE/1AsM7Jn+29t8sSfxXzpso4ROXRoNXZ+bPMdxh7LsMN
-         shsBH3m5UM0PDlgIEMspCcSSA8CxyznaSZ88Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781668019; x=1782272819;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pK4PQ1902R80gheBMlvl0pQHw4MWAl4a6tgY9EExy9w=;
-        b=EvitHy1WsO4dmjwcRynlCfvtDUTE68yiP7sPIBkz+WprZ5/gowzQlYHDkxrpTWekQh
-         w7T723wj+dipLOrCKO8W0YhqhlPjEhRmooJcd+p27OV6iiHeimV2FOsYf9IHFI14Ddcn
-         WDumSIk7JMmKi9nH3bh3DidhkkyfUBm7qZB7xRaxeLMs79oF5ZXKizDGiBewhMWrn5yF
-         iJBrUTr3ZVUrMWiI6T4IyNWOLHu/700kTNAbLvxX+iJJkuYQRDU7xCBbbqOHi1+FNuIP
-         8EfXaJ9uX4qWPTc0892yrLRUHXtFmVNMmIDUqcDM+zJMI9L2RI6PwiqA8RTaU+hTCosL
-         inaw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Q8KjQOcYP3aKzTV+4HJHsKP4UshFEF1PBF6Se1wQdLQsE84nbzM9jCmbdPbxrzjFC7j+RFe4tXw==@kvack.org
-X-Gm-Message-State: AOJu0YxGReES9+M4jYyprpjMjjQZRIYzlr7c0F524EUzzg1KlZWctELH
-	weNiiWk2L8MIKlaJs9QEViAkmRMdQSZxkTv7SylKhnmJ2Sj2s2XJtUH1MBEQ/77DCw==
-X-Gm-Gg: AfdE7clITrDmZOdOxm0dfKoP3PJ0eVCeoFqANn2gy0CunPdirwvtlqNZs2wrih8W9Tj
-	vTsaKgf/Xse70Ivpf0wzP52xf8dp6/W2dIcVBp8/IHcn94C75wI0uFgvksTLt5lM6ydz3dXRN87
-	J6s/47Vlh2BFzD8h6rckWwgwRCfYPrUy3ZsgirT6GlRG4rKW1g/jqhQFIzHRU/lLTyOic/QuK5Z
-	VPcbA/Q8fBBokCgT8ZVOUB4Fq+sIl/9cW1bMhaOyF7++db/Mk/JERD1mtaDK3ypFdnvappbNRG1
-	6Q5Il0SscNrkpLAWxosbMrjI9lpaxSOQOOdyVwAUSSqJzePDOMQR1Meu2dwm2/trTT4SOadlrui
-	chJ/sAN7tBKkzpZgvOHMrybSq+BQERTHEcCthPRheSzfIzFt/hlcGHeDynKMIBsFG1UjeVuLvJg
-	ikt+oMm/t1muaYuO4jU8IvRDF5MoA8KGHXd4to+4P0j6r9bbFxjkc=
-X-Received: by 2002:a17:90b:350b:b0:369:9469:aeba with SMTP id 98e67ed59e1d1-37ca6843e76mr1031173a91.1.1781668019333;
-        Tue, 16 Jun 2026 20:46:59 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:a0b:fabb:5b62:b85b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521cac5bsm4446256a91.5.2026.06.16.20.46.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 20:46:58 -0700 (PDT)
-Date: Wed, 17 Jun 2026 12:46:53 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Christoph Hellwig <hch@lst.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org, Brian Geffon <bgeffon@google.com>
-Subject: Re: [PATCH 0/3] mm/zram: route block swap I/O through swap_ops
-Message-ID: <ajIYFtADxQDq8q1P@google.com>
-References: <20260614-zram-swap-ops-block-register-v1-0-6c1a6639c222@gmail.com>
- <20260616123646.GB21024@lst.de>
- <CAJxJ_jhK+zkpjhs3YsQ9RoasKYh+E0NweQci0sPAEY1ne5LmBA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
+	b=fZeUdP1y6r1KjxWYsWLoXiILLjwlRRJACVl58wIsp9k7begjW0phe67+NOq47qN7IX+sur
+	NLzYK/6bJoHHl7/SiGzyfkWNZERZ/BzGpmgy4SfnI0zRKA5CKd83+yTEDYwNhLXIqXVlyw
+	F2FHJ3CJhyR5QAsO/LrqMn5ffEVeu94=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I8aeupI7OMtTdzJD7Uu+FSe8BbRdbBC6cTncg6d3luIg+JtSWjJSk0KhFf6UYZtEaEcLmyDcqnvz/cfVNi4Jo3n9Wm+Ps9iMX5zD8e++cKJ+5cblAlkv89cw8DIdI5Ww1ner2MI4hUa1oWoysWeFV8wQx46+Icp1ENDJH3XESSc8psgzRXzgUFEid2t9QXkq3ww4zvxkffeC0/LnPspCa74kb/FaTCs3+G+kf/+K4zMY9jiF3BW/qizJtmlojWwWw3JTkf3ZvUfjv+gnp2V8ZiPkSQ5QnzPx0t3teehaTQRQHPjtGudt9Mb4GlHMUVebt75JIBWn1HhwBxL/kHmjfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
+ b=XmJtFVBcc2wBWeNJC0ru0+tO94lpyw3CQMl1lhFyh6tB0855gurwcTewVpmT8kn5nHrilpA5sEOFwuJdmZT9hKe/n+bOQJapdhj37BWsPeJpFHL0A5PmrSVVoJY61m3Cc1BfBQQL624z5U7wNr1CAVtdgPXKh0XwSnO3jsB9DQHiWo3Dxm8Y74MFkJu4tZ+90OgoikcoXPIqchNGgsBWnxX2QB515pnn6tguJuz8gvuUWR3yd3r3LV3ErBCVESUfxsmUC2ozOMSyytiKZG4AASSiWYvJXXQmBW8KfK9zaiNuaxdb37OWa1ewa86ddOHYNrj570Vyx58XxrlyX8QOnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FB69vVfVPBhIwbobVxhKuOXjePDausT/B1ctopKcIw0=;
+ b=ozuDjcChD6ZpuzEBokN8YLTk4A3jIhvRolGTz1MMuSw+OfeufQ5RHFiIfuToI8lh8W+uA5CHbw4V37w/zEFJZHLElwR90fSFTurCsJLFrlPI2OZEVyh5y6kjT1vwVO9/+/oZNR3XFiiBhsWdKwnfnUdPA+dENrUKln91iJpZB+EOQXIYXnnVcxHkbgy8yIeItopm+VROJMukjdLlbLDAkjtp6epTvytsyXMJpnx+MsF51X7Y/f/1XvIF0roLTce/D2vp8smPJdO72g++zoSuDX+9aCdMT8/gpOtbyz1CBL+AuX+wlRnWKKBps/IbVfyrkhtJmmwm0VR7F4STE/URlw==
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
+ by IA0PPF73BED5E32.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd2) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
+ 2026 04:02:55 +0000
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe%5]) with mapi id 15.21.0139.009; Wed, 17 Jun 2026
+ 04:02:54 +0000
+Date: Wed, 17 Jun 2026 14:02:47 +1000
+From: Balbir Singh <balbirs@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	damon@lists.linux.dev, kernel-team@meta.com, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com, 
+	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com, 
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com, 
+	jackmanb@google.com, sj@kernel.org, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev, jannh@google.com, 
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com, 
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org, 
+	roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <ajIb4DJdLGPbMB4V@parvat>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <ag6XyvxR-NU5rGn-@parvat>
+ <ahOqzpzAua96HVkn@gourry-fedora-PF4VCD3F>
+ <ah47NNhuiClgGCdn@parvat>
+ <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
+ <ah-0CyZurn5D1ezY@parvat>
+ <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+ <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
+ <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJxJ_jhK+zkpjhs3YsQ9RoasKYh+E0NweQci0sPAEY1ne5LmBA@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AD949140002
-X-Stat-Signature: qt7hwbo9wxj44e4641bn8469i3xh51ea
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
+X-ClientProxiedBy: ME0PR01CA0080.ausprd01.prod.outlook.com
+ (2603:10c6:220:233::23) To CH2PR12MB5001.namprd12.prod.outlook.com
+ (2603:10b6:610:61::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|IA0PPF73BED5E32:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef50179a-2e7f-46fc-45e1-08decc254ded
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|56012099006|11063799006|5023799004|22082099003|18002099003|3023799007|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	LX/0QUaZzdLTRoGjNspt9VKVAEJbth1SqxwFY/9ESxCysxQXkrLZz5JVjxQ4CTpxZ1W+ziH/cIqGRDtpfj6uFgpZUYsS/zATGcyzj6vvk+NlZ0mgprThl0l3EtTYeNO5t/aCPhzHCqPEHyxsGk9i7mfm3/XaXJSySYQzyWw+Mx/vub/n0TQnys4AtzXx9NpHJAmU5EidVXckol5lkaaNeownWOC9s6IPGzBFOvIMntV3I118RgCIAj99ITWFiHdwyTj1S/FXOEv5lgj69GnhTFDJLAtIwcfTAIrvqDjCnIuD82mMkWPtp6T99zfjwzX10ydPotFWAlEwQYiK7ctr3lhCDnzCC6txKs4lwd425vNxpcgqb3mPsP5wE2EA3Vz2yO56mUA3xOmEkGoGwNfOESMCSKimfGzAflYfOorCRJ4jdK7JDZORfXR7roVyruktanMytrSMFFGuFHvUoEwXHlPuMKoOpLunaVDINMvH//WGGZ5ddiwOcb5jjnMrkltNH3QQ3Byy8z9OFle0dd/QYk73Oe6/372gbBld00EC+ObUlh2y9s2A7cb6cwHVDpazKV1iyhDg9qV7/nGz7JMkyvwzaWlJdban0GKWPmX77veewzvD+QDtpIOh4BCikDeOKU3lMAd9fAuUJkxV+klnG5xtBP8Ucdlc2NItN9gxsIy/WaLeNUP9FCfP3C+xyGJW
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003)(3023799007)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1gzM2c0TWhKbk00R1RUdERaM3dDeTNaVWpjY3VWb1AzTDJpQytBcWpYRTh2?=
+ =?utf-8?B?aGNsQWV2OWN2OW5TRHl5M29PSVYxR0w0V1BsSVhUODJPT09sVXJtdGd4RFpj?=
+ =?utf-8?B?cnRiZmpCcjlCYTBuaGI4T3lPd00wNmZRUHdtaHlQL3loTzNFMUZ1OFplODVX?=
+ =?utf-8?B?Z3NsRHQxb2tUTitzZmw4UUhtZGxqUWdKbWE0OFhmYmNoUjVSTmk0aUw0ZmNp?=
+ =?utf-8?B?ZSswYkl2dks4V2sraytzNGc4aG0yUWpBRktnTlhtQmk3NGFoRW1zV2FvVy91?=
+ =?utf-8?B?S3BLMTdKMGJmR0I4bU53bHNSS3dFWFVsWGVFRWhmZU5oYU9pc3h0NmI3SWl4?=
+ =?utf-8?B?eDZhaUtBWEUrM3BmczRFVkVLakRPSXFyVUlEblNsUmpMRWNhL21GaEM3Sjgx?=
+ =?utf-8?B?VjFmdnUweTRZcG1WVnRFVE9jSWJmRGxkdkJDNHR2b2V6YXZXcDFoTlRFQmhG?=
+ =?utf-8?B?QkN2Z2dzb2NKUjlPMVFTaS9NeTk4WDloek5mcmlXemJlRFQ4U25BMW5vbk55?=
+ =?utf-8?B?T0ZOeTVyOS9ZL2tOTEdhL3Y4M2Z3Q3NvMDZraFFCTWNKL3F4NHlyRW9Ka3No?=
+ =?utf-8?B?T1Z6R092d0tsVFRkYlFKVVBUaGJ1YXI2QU1YcVg3bWE5Qyt3MHdwZUNLWkFN?=
+ =?utf-8?B?V091cFVIcWJnNmUwc1FLVFQrQ1RYWmNUbXFnSVJVa200eElaQmxtbGZjdCtE?=
+ =?utf-8?B?cVRZdUNYMG1xWVNwZFR4WFkxTDlKNDJFaXBBaHM0bGFKUVpCRnEzdVNZdHlx?=
+ =?utf-8?B?cS9qUUxsL2VIUGlvZGkyYjMyUmNRZWNYMTI4a0FjdGlqU0VyWjE2UTdtNm5X?=
+ =?utf-8?B?NzRWVWhvQ0k0QllHS0FaNGUzalVPSVN4RWI3YUxQSEwrNGlEU2x3SGxQN0hw?=
+ =?utf-8?B?WkJXU3pjditLelZPaHhYRmZTZVc0K2JWVnNWRGdhQlVGd3N1bGNRU0Y1cFpj?=
+ =?utf-8?B?dG4zUVB2VnJsMXdRS08yNlFWVHg4RHZPS3l6c01EM3E2Q3VibENQTHdGVVZo?=
+ =?utf-8?B?dlFyamFjWVEyTlhuT1ZvUTN4dkRqUUhaeno4clVHRHdBUDBJM3ArUUo1SjZP?=
+ =?utf-8?B?a2dxelpwaGc1LzBEdHdIY3RJcWkwOWFYdkVCb2JSN044YjZDNkpJWWplZDRX?=
+ =?utf-8?B?TnpaSlBEOHdkTDZkbms0dlJWbWVTYnA0eVpvWGpwbVRLWE84QmErM2dRSU5Q?=
+ =?utf-8?B?bkpzWWRsQUc0RWdjYzcxbkhpZHRqUHNGZFNyc0pMRDEyV0lFT3dYdTZ1TVVt?=
+ =?utf-8?B?VVpuOXphZllrOGVGd1NPSnJKT3lsUXZYcHVsR29QakV2STcwQ1oxaVd5U29h?=
+ =?utf-8?B?WnZhbFhzdi9sSUdDL21PRFoxMnRPRzlMTlZRQmtqL3FHc0RPUDVyZytKT1c3?=
+ =?utf-8?B?bk1lSitHUUp3VWJFM1NSWUN3VDE5MG45NmdOS0hLNTFrY2pOUk1tNzFnV3hX?=
+ =?utf-8?B?NEVWSWlERDFvSmk4VGlBc3JwZUExS0xRYWZGZmpkWjRrQnpsWVcxVUxLN2xt?=
+ =?utf-8?B?dXhxbjZ6VWdkME9vWlB2aWdlRFRvLzRGc1RjbXA2Wk0wdExPSWQwZkErZ2VD?=
+ =?utf-8?B?V0VIUGl3UXpLR2pDMGh6SjgxZTR3S1oyQjI3SkhTWjUxZWg3Z0VtbFhJV2xq?=
+ =?utf-8?B?RXFxdEdENXlLNmd6UGE3bW0vSHJEUTE4aHZkazdCeUlSSkJ6RVdPYXd3NWRr?=
+ =?utf-8?B?UHFCb2hVdEdHUERtUDUwc0FQTHJYRTJhL1RGSjN1SEVsemZXc0xwblVjRllG?=
+ =?utf-8?B?UXYrTTZRV0crcVVsSmUveDUrVEtuT3hzVFNHRG12UTNIOEhPNUtjdk01Tm9o?=
+ =?utf-8?B?Ykh6REZxdkJ5U2dQSDJqcDYzQ3NNTVZBRjZST1hESk1aU0RnQWZRWUFjck1l?=
+ =?utf-8?B?LzhGYjdnZWQvMXRHK3R6cEhWaUJmMlR3Y281SXVKNGJVeTZQSGllbjJBZGNk?=
+ =?utf-8?B?YUtYRmgvaC9xMzNpT3ZnVzhvZXBlVGYrdStVU1h4Wi9WaWJBL2h6K1NGengx?=
+ =?utf-8?B?TG85SlN6OU50M3UybUt0NFZkdEdjSGwzU1VZOXNUU1RmLzFTSVlsODJkVmFv?=
+ =?utf-8?B?WjU4OFdFZkJGajd0N0ZDNFBjUXlBRHljWnZNdW93ekVvdDdScjdsQ3h1aFFK?=
+ =?utf-8?B?L2JDcVFNUXN3YXF6bEIzaStBdEZ6eUIzRFFVRUZNcExGekJjSVlDaWQ0UURN?=
+ =?utf-8?B?bUpWS2JIdmpZSGZNdWNrZk5HTDJ5MFpXajZiVUh3ZW5TLzFLTkFGc0dmay83?=
+ =?utf-8?B?SVp3UHZuWDl3eXdQcjFmNGpNYk1MSEs4N29nSjI2QmNRUTVxL3NSdzdmcnh1?=
+ =?utf-8?B?djJBRHdDbUVXNzJrSTFBcVJ3bDFRalBvL0VxWUJoaE5RUUw3cmROdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef50179a-2e7f-46fc-45e1-08decc254ded
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 04:02:54.4739
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NpKV9YIpgmvq5DJ+8nn525AIpdnxq3cYhoBtCJ7MmnCSh1572oL6iYkzUecQ4LHu+q9swBJSAdlbL2Q4ys3e7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF73BED5E32
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 744111A000A
 X-Rspam-User: 
-X-HE-Tag: 1781668020-124768
-X-HE-Meta: U2FsdGVkX19Os6as2GzmICFFsH44bmWxlD9lzVlGI8NUCviH1IXOBA5sfhYfyvB6so0Zd6lp1AJNqqXtRaDH+q/hOFTKx0iLcvZYNWuJXRUpvTnJ+6XFmoXA5KYzgReJ7CFOklX1YLzR9e57h4t0czo5M61tzojnLGGE4ZtvvAQatctgLMDEOgchbzsmYg8gU/VhVI3I/hd2RxgwRhrKsC3Nz08fI2X9Icc0d9WMonx2sVkImjOXVRukN7S1I5W9bAAn1ynIybCllOAhLvmLctqJgk2CtbxNDtpbDDiakVsDrwp26GHx9KQJEBzUHU4yUsUF0hkceKfnoZWuTn9Pb1uz4lc09SaXOSWeb+4YC0cQlP6o76F+wyxtq9m/cvmIlEe0Fov5+z+cw6hrVwfkZLTckQkYO+TPtjJ3DJMNpTKhyMAvgwZP9gFERbKhGY0/fXgckYMO/UU9DPl/OYnedNlL5zU2LLOjKC8zAR2kwjaJ3v81O6EN0bHR+qws6GRRZKGJ2UWTWiy8uomJtUpGkD1hZnlCrirJhJ3mlaO8b0KyQb+t1l1N0ciFatppONyfsb+YLiCNKefmNZUbg99MnS4RjncZ4jpVtRJs1JdfAcrTKe8Fv/vvxIOBu1ED35xCxCDJiiT3g8827yop4A286bphiVqQmENYwLKE9W4U2nqDKF7Dp/VbudnEyz0Yydv69kpJplAA+yrZ8eVVnpYUGQ1ddRKj+P8LJl9oOZ0N8OfwPCx/DUEt4HrMBS2KmOtOAngojIZHzwXJeB/pcF50L9+W/FiyCrabEBJeqiJK9h+SHsmpeRYKb4j8B974DnYfZ3TL62H7QBmYUImBIsGyPaE+lirtOxum5imGS4uh+2F5D637S2rpyduWKRmzh5wHIJBysMOBkyhFdB4RbuTlwZXgVAWObBxC6zj2u45xiNIJlHt+YGNMoqmFpR/K11wUW2FSOCgoZPFG2Q8cNUH
- T41e+k0u
- 0Rr3Gyb7ZijfifvJ5FqEbGSVuPd+eqLIAWm6hIKWehKTeTC6PGALheGA2Cv8pSJyQSixD4ah7mYqQ56t/nIeu3AtVZF+EPFP/+hixSgosZ0kVWOaY838rHfHuk8tpD8HqZ4k5YrbX7NVfEfDCyIYFn5QON7T9NVD4dkHBwmjk97rGq7H3QJzJP7sfgJ/CDQMSJ+EI9sP5KV/5MsGq1wkYf3OugI71/Kmy0kM/1BbqSp9noNKOtD/EAmz4L1KpIflNUdzW1rmONnXNBADXgMbCZsKslGxslgrgm4iX04Xtvqp5GTD2N5fsC6mk+ACskr/Q67KRQPXroRSECsG4waJ+VbeQxwshlu6JKMyZhXNLw+9V7YRTaQw1q/CeZOekLlL/DlXYJS6s+uNBc6XKz2GUOpo0WA==
+X-Stat-Signature: b4cado9gcdi56khctdf8n53kydo7sshp
+X-HE-Tag: 1781668984-207665
+X-HE-Meta: U2FsdGVkX18VfRwjGnjYsXJQeRBixGrN+ZE6p+SGmFL5bV0wF9DYzgqDFbrc4rhX7XIF+vy2YUIXmBKZM/6etIDOGGwAz7TXjTIkb8u4XClsJ2jpIJCl1EmTN/YZCejTd/e9o56KTmufC6LvKaWAkA1HKapR/OyHhptl5PLBcrUvsY1edtSZq6Kl44fGq0agVlDY9OYDjTC58k3QeomNbQ3jCDcnCGuMBUH598a0HyG7qMpkCRhNodcCpMiCj5HOoY4C6fWhxKdf2qcn+uITPddCemtHVoyawOqpI56grMVWdH/qWQ0n39nhDCUVWLq4Yy4pKMmWPIsLQfGiMYaBsVrZbpunI1EF/OpL0bn2wWfdrtZK1iauXAg7Ut/xOQPEIzgBjMsiz1z3tNx2nMWW+CML/44H//jBoUdPFqkSxp5t1kjwAdz+BXfLU0cBLCMITe0RIjr1p0j6TTE72+UzsZWXlSV76/f6mfr+O5FM2yhOKySU50xVMpjiz03RZTsoi3WSYgI15OuD2DBDSrwIkFrqaM2JLrBV1IzPDpjQfdo1mBMuEAhPZHM03AfotRPNLbRC55cTHgz7CYG+ff+mNk/CvVwGHNxb5vHLKsvKZaiqNxKZBtwz0pjr4lwLcJaAWCHyRIq2CP3zPwKpPtISI/r7Hruz7RAlXpRP/3/zUAXoFo94r5dn4NgnFIvtjxO3Mgs1UfTyOm/rS802+9idknKQmHrLKv1m4uSHCNINphZslXqWrncF2oAexgGP2mg7Kf/yZRFeUC/kpUWjF2vzZUY5K0HCDCx3Ky/RxwcxO8XWdI2LFMLXq7lWSpRSj/hwpljaVK7o2Yl/cnkIdZvzloEbV8WHGL5gAKtHeLJY+TGGkzXA76hv8+EeSZhScS2KLt1gdjCRijppz1jK57Peaq0wwTuO794BoEaE1W/H6ti6nNhGN+5BzGTJelPOgURORZFnUQJgVoVhssGSRbS
+ 81P4is/V
+ pRGe0a3kh+3fHeLpAF1QohpQbXU/QUdqDNWSk6AOqtSPf1yl/VQFkeGNxac4O4plk0k1er6izPK/K3b22wqv1e2l0QBmZD5corJyT64v6symy2IrdvKWY1LOjreXF9XhtVzfRiMyNT6pdQuX9bssMkAoSr36WtmbXxs3a/KeXo+Mf8WdhO7yOZgL+5jS58Tn+g12xRjp059poeo6sJe32+n7AmRLsDCK9HqfBFs9UPpju0XhufJ7BjQEN+xEtz4eKn5U+DWDhGaJ/s5IO+t8rZMmbqGCjJsYuN02Xd0Gvxt9SdkQ5MwyisuRRzlUSKTKDNxEH8WccmJqi/703wu9goyryYUSOUbr3MQsKCGRJmPf6udeAZx4UU8XQztnTwRe5H05oV+6ocBXenwSNcY5jpOfEWV27OhbvP+1BBMhDlfOMnyhPaak6eOtoPbX1BIetir/QyOeZ4+V5BMfvsDbhEsRljy+Ww8/bgrbpNl4jW/TvQJGK7wil6b0E2dkBwpyytX9n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,26 +197,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc-ing Brian
-
-On (26/06/17 11:38), Jianyue Wu wrote:
-> > I fear this is going entirely in the wrong direction.
-> OK. I was trying to build on your swap_iocb / swap_ops rework
-> for the zram swap path, but I take your point that compressed swap can
-> be handled more nicely.
+On Wed, Jun 10, 2026 at 12:37:34PM -0400, Gregory Price wrote:
+> On Wed, Jun 10, 2026 at 05:00:33PM +0200, David Hildenbrand (Arm) wrote:
+> > On 6/10/26 12:41, Gregory Price wrote:
+> > > On Wed, Jun 03, 2026 at 03:00:01PM +1000, Balbir Singh wrote:
+> > > 
+> > > Notably: slub.c injects __GFP_THISNODE internally on behalf of kmalloc,
+> > > which causes spillage into private nodes because slub allows private
+> > > nodes in its mask.  I think this is fixable.
+> > > 
+> > > I have to inspect some other __GFP_THISNODE users (hugetlb, some arch
+> > > code, etc), but it seems like fully dropping the FALLBACK entries and
+> > > requiring __GFP_THISNODE might be sufficient.
+> > 
+> > Sorry, I haven't been able to follow up so far, and not sure if that's what you
+> > are discussing here ...
+> > 
+> > After the LSF/MM session, I was wondering, whether if we focus on allowing only
+> > folios allocations to end up on private memory nodes for now: could the
+> > __GFP_THISNODE approach work there?
+> > 
+> > Essentially, disallow any allocations on non-folio paths, and allow folio
+> > allocation only with __GFP_THISNODE set.
+> > 
+> > I have to find time to read the other mails in this thread, on my todo list.
+> > 
+> > So sorry if that is precisely what is being discussed here.
+> > 
 > 
-> > Yes, we have to keep zram around as a legacy interface for now,
-> > but the right place to deal with compressed swap is in the core.
-> I agree compressed swap belongs in the core is better, so not only ram,
-> but also the block layer can use it.
+> So, I remember this being asked, and I didn't fully grok the request.
 > 
-> Before I rework or drop the RFC, could you outline how you see that
-> core-side model working? In particular:
->   - How should a compressed backend like zram or future block device
->     plug into swap_iocb / swap_ops?
->   - What role do you expect zram to keep while the legacy block interface
->     remains: current block swap only, or something else?
+> I'm still not sure I fully understand the question, so apologies if I'm
+> answer the wrong things here.
+> 
+> I understand this question in two ways:
+> 
+>   1) Can we disallow PAGE allocation and limit this to FOLIO allocation
+>   2) Can we disallow [Feature] (i.e. slab) allocation targeting the node.
+> 
+> 
+> 1) Can we disallow page allocation and limit this to folios?
+> 
+> No, I don't think so.
+> 
+> Folio allocations are written in terms of page allocations, we would
+> have to rewrite folio allocation interfaces and introduce a bunch of
+> boilerplate for the sake of this.
+> 
+> struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
+>                 int preferred_nid, nodemask_t *nodemask)
+> {
+>         struct page *page;
+> 
+>         page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, nodemask);
+>         if (page)
+>                 set_page_refcounted(page);
+>         return page;
+> }
+> 
+> struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+>                 nodemask_t *nodemask)
+> {
+>         struct page *page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+>                                         preferred_nid, nodemask);
+> 	return page_rmappable_folio(page);
+> }
+> 
+> At the end of the day, this all reduces to `get_pages_from_freelist`,
+> and at that level we don't really care about folio vs page.
+> 
+> __GFP_COMP is insufficient to differentiate between a non-folio compound
+> page and a folio, and __GFP_COMP is passed into __alloc_pages_*
+> interfaces all over the kernel.
+> 
+> Trying to detach these paths things seems like a horrible rats nest /
+> not feasible / will create a lot of boilerplate for little value.
+> 
+> (I did not fully understand this request when it was asked, I do
+>  not fully understand this request not, please let me know if I
+>  have misunderstood what you were asking).
+> 
 
-Those are fantastic questions, thank you for asking them.
-Can we elaborate on zram being a "legacy interface"?
+I agree with this, any changes to folio only allocation could then be
+easily adapted for N_MEMORY_PRIVATE
+
+> 
+> 
+> 2) Can we disallow SLAB allocation.
+> 
+> Yeah, but I think a better question is whether there's a difference
+> between alloc_pages_node() and kmalloc_node() when it all just sinks
+> to the same fundamental code in mm/page_alloc.c
+> 
+> Maybe there's an argument for something like NP_OPT_KMALLOC (allow slab
+> allocations on the private node w/ __GFP_THISNODE)
+> 
+> On my current set, I don't implement any explicit filtering at all in
+> mm/page_alloc.c - the filtering is a function of the nodes not being
+> present in the FALLBACK list and only having a NOFALLBACK list.
+> 
+> What __GFP_THISNODE actually does under the hood is just switch
+> which zone list (FALLBACK vs NOFALLBACK) is used for the target node.
+> 
+> For isolation w/o __GFP_PRIVATE, we're removing N_MEMORY_PRIVATE nodes
+> from *their own FALLBACK* list and only adding them to their NOFALLBACK
+> list.  That means to reach a private node you MUST use __GFP_THISNODE.
+> 
+> I realize this is confusing, but essentially we don't have to modify
+> mm/page_alloc.c to get the __GFP_THISNODE filtering, we get this from
+> the fallback/nofallback list construction.
+> 
+> 
+> Ok, so how does this flush out in practice - and why do I call this
+> filtering mechanism fragile?
+> 
+> consider kmalloc_node() and __slab_alloc():
+> 
+> kmalloc_node(...)
+>   └─ ___slab_alloc()     mm/slub.c:4406   pc.flags |= __GFP_THISNODE
+>       └─ new_slab(s, pc.flags, node)
+>           └─ allocate_slab(s, flags, node)
+>               └─ alloc_slab_page(flags, node, oo, …)
+>                   └─ __alloc_frozen_pages(flags, order, node, NULL);
+> 
+> Slab silently upgrades the page allocator flags here to include
+> __GFP_THISNODE - even if the user didn't request that behavior.
+> 
+> This is exactly the kind of "spillage" I said was hard to police at LSF.
+> 
+> Without __GFP_PRIVATE, we have to keep an eye on what around the kernel
+> is using __GFP_THISNODE and how.
+> 
+> For mm/slub.c we can choose to do one of thwo things
+> 
+>   1) 100% refuse slab allocations on private nodes, i.e.:
+> 
+>      kmalloc_node(..., private_nid, __GFP_THISNODE)
+> 
+>      And will fail (return NULL).
+> 
+
+Doesn't this iterate through N_MEMORY only? N_MEMORY_PRIVATE should not
+be in the regular for_each(...) loops
+
+>   or
+> 
+>   2) Do not upgrade private-node slab requests w/ __GFP_THISNODE
+>      
+>      This allows kmalloc_node() to work the same as folio_alloc()
+>      or alloc_pages() interfaces (__GFP_THISNODE is the key), with
+>      the understanding that any __GFP_THISNODE user
+> 
+> We can opt these nodes into slab/kmalloc with a NP_OPT_SLAB
+> if the owner wants kmalloc_node(), with the understanding that any
+> caller using __GFP_THISNODE may get access.
+> 
+> That's the kind of fragility I was trying to avoid.
+> 
+> 
+> That said, in practice, I have found that basic kernel operations don't
+> generally target use kmalloc_node() w/ __GFP_THISNODE - there's just
+> nothing to prevent anyone from doing so.
+> 
+> So this seems promising...
+> And then theres arch/powerpc/platforms/powernv/memtrace.c
+> 
+> static u64 memtrace_alloc_node(u32 nid, u64 size)
+> {
+> 	... snip ...
+>         page = alloc_contig_pages(nr_pages, GFP_KERNEL | __GFP_THISNODE |
+>                                   __GFP_NOWARN | __GFP_ZERO, nid, NULL);
+> 	... snip ...
+> }
+> 
+> static int memtrace_init_regions_runtime(u64 size)
+> {
+> 	... snip ...
+>         for_each_online_node(nid) {
+>                 m = memtrace_alloc_node(nid, size);
+> 	... snip ...
+> }
+> 
+> static int memtrace_enable_set(void *data, u64 val)
+> {
+> 	... snip ...
+>         if (memtrace_init_regions_runtime(val))
+>                 goto out_unlock;
+> 	... snip ...
+> }
+> 
+> This is the *exact* pattern I said would be hard to police - and it
+> doesn't look like a bug, just not informed that private nodes exist.
+> 
+> This is why I'm concerned with trying to depend on __GFP_THISNODE as the
+> filtering function.
+> 
+> That said, the number of __GFP_THISNODE users is very limited
+> kernel-wide, so maybe that's an acceptable maintenance burden?
+> 
+
+Balbir
 
