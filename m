@@ -4,100 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273EFCD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 16:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCB3CD98F6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 16:21:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D5566B0088; Thu, 18 Jun 2026 12:16:26 -0400 (EDT)
+	id E3B0A6B008C; Thu, 18 Jun 2026 12:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AEAC6B008A; Thu, 18 Jun 2026 12:16:26 -0400 (EDT)
+	id DEBE76B0092; Thu, 18 Jun 2026 12:21:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C4D96B008C; Thu, 18 Jun 2026 12:16:26 -0400 (EDT)
+	id D040D6B0093; Thu, 18 Jun 2026 12:21:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA6E06B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:16:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 620BE1201A2
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:16:25 +0000 (UTC)
-X-FDA: 84893535930.12.9F8259B
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AC41D1C0018
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:16:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jqQndy+R;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB60F6B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:21:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 238131A0159
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:21:03 +0000 (UTC)
+X-FDA: 84893547606.06.4483C12
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0C9EE2000D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:21:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tZJCnIuq;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781799383;
+	s=arc-20220608; t=1781799661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1nA8ddpqn3sBSela2vYVrfvI6UDB/unaNSJzIV+XHpI=;
-	b=Iqijs2I2ZPtN8vTKO+raZegpgF0s33bl9M3UijGir9Qqr83kCQUS5tLgFLFsjJGhLjsSJK
-	8LDeJTEwGzdDunruonVI8YrKVQwZGZBycNmh2LyHQAuaC7q6XR0++f0R6MxNfZIU5mPLYW
-	kiwKlc4AAlrx0JmRveZDgE3mneyyQ8w=
+	bh=q0TqgCvzrxOigKV5Uh4y3eBAfwHwTb6Ism6AMx0v3Pc=;
+	b=MAiYZgidcX0jQdcbsbknRr4oGi6vKvkRsQwSrpdSeNuIhgAPoSvgMtAykqxAdfmReFrKZL
+	VM1FvaV0EX57w9MloorwW15Txl3sDzL8vBSP79JhnKKxq2RT1EYbnxaXaNGCcWLJecBkMd
+	8U2hs1fedZ6ZTx6YDWJepDYDtaDGoHQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781799383;
-	b=fq+VwbUj4ELNd5UpmPJRm2Zo0cdQgLlIWmtwTnkljnNg3aRVqcgdbDLDIzvKiVHLkECmPR
-	f+JQ47QR4EoBto0GC4c5W+zWrRr0UaXc2/SwRbzt5O1wOwVYqODv6Jr3QIFk1kk6D65Ggu
-	YSWee1UtaXhLhe8VOmUNnLcd4K1+Mgo=
+	t=1781799661;
+	b=t7ZBySpphucI+3EhtGMq9Y1jTlFkvZt/KAshA/ZSYOVN9qZHsov00RbHmegelPa8qSIdPO
+	o0pJ51R2uOlBK4B11XAE2s90/dMw//YVDcHUQVrZuUa9KNaDOWNx0joArfTZKwjTXP06Ed
+	/bZZ60Hefm5soid0wA+n9X6Ytf3TNqc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jqQndy+R;
-	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781799376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1nA8ddpqn3sBSela2vYVrfvI6UDB/unaNSJzIV+XHpI=;
-	b=jqQndy+RrKIlq05G3yP9DdrjzchOLnYIfMlf7J4K9RSosslKGLJ4EE7xGg2Dk3juCfY4GK
-	S3C3WQx1mjMEsOeqwTCz3X+532Yhg5fIQtHhJwi+A/2ANwFqLlJ8eYmcAOKpGoJrE3ptlM
-	Db6KlKw2gNfqqF5Q57AdC7kMM/SJUEg=
-From: Usama Arif <usama.arif@linux.dev>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	akpm@linux-foundation.org,
-	willy@infradead.org,
-	jack@suse.cz,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	lorenzo@kernel.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	corbet@lwn.net,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 07/11] hugetlb: replace filemap_lock_hugetlb_folio with filemap_lock_folio
-Date: Thu, 18 Jun 2026 09:16:05 -0700
-Message-ID: <20260618161606.4182915-1-usama.arif@linux.dev>
-In-Reply-To: <20260617172534.1740152-8-jane.chu@oracle.com>
-References: 
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tZJCnIuq;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-517907feed0so23462741cf.1
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1781799660; x=1782404460; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q0TqgCvzrxOigKV5Uh4y3eBAfwHwTb6Ism6AMx0v3Pc=;
+        b=tZJCnIuqaoFNGBrNoUpO2P2DFMMFj6MbiDmOJkDkpi0x+wYmjE4nPLk/KjlCkVr10t
+         KNYP1EPW5cwCjr0nz1d8Y0U3OmdDJStcciSXnCVvuo/PHR2AkL+Lvhg4mqFH5ALRfa0C
+         c4rS/ui0rMsU7qEjVAXhyA2VdJ16qYSX9Hqu5gkPbpRvqF/hH9uPVNpZmzq49xGOJX1a
+         h6kTOKJg7ycyAazSYIjv53DOqns+OLJUmVAEOT70t/mfz/WEqr/SzdV7icsiKu942Mp8
+         e7dMx5li/wALLbrERK4PBM7qbH6uQEAqsZ+sVOOh2kCSg9uq0Km4BcUbMth40tU95K84
+         kzWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781799660; x=1782404460;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q0TqgCvzrxOigKV5Uh4y3eBAfwHwTb6Ism6AMx0v3Pc=;
+        b=Sp4zEYA1a7zMofKOZ9L7p+fJrrv5VsfXiDIHceG4mhbs7bhIO1p9ih3DNJ6hG8ge+c
+         eI+wAEACHVcsU9sfkc8+xbioR04bbBSkQIY8w3ei4R9W0TVBZS8AQejBAxJblKZugGsX
+         FHLT8V70oq21migyWox7Dl1vrwgZUQVkMv5atGR93FSFqK7jhjovQVfsYgJdZ9/YxErF
+         XcXreEVMVQcrZfK1G2giJPK8PGMzoJGYJULd1Eow0fcUcX/x3ctey9c6NaRyBewQZ2qP
+         WZjlBOpA5Q8UH05Aud/65uIxi+L9KClk14HQPzGT0a2AI+5buOpvx53tQoUQoZj4dp26
+         Wd2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9r5cqcgbfJSzVRlNXXpkH0rs0G9s4JaHOrVeU6Rnth3Uj+fDvh9A9zlMSWf0p3//YbPIZCzaUYqw==@kvack.org
+X-Gm-Message-State: AOJu0Yy0YzBveE9UIJ2P0JQalzxyrsMGZodZZ+AayX1MiOSBa1ei3FJl
+	+P9MjslotYtSIVCcnFZejeL4Hq4nv9BvljbsnVLMutZQqIu47mSCp7caeMwljpb6MhQ=
+X-Gm-Gg: AfdE7cl1yM9ijrmH4mLw7pi5oj3e9O79qOu7bWD4m8LqXUvQwhRjp/oVSMpRWyiChRA
+	ZNfMOp+PYKUUIWCR2RzSWS0zUL3i2MYg4pfiLeLRRpFf1xo+qMO7o0ILN7JkTlO8I+I4GKj46Re
+	tXiKH3nx1K+MKCRI55rm7SLBv8lAvXxXvwwADjsz32ftEsC0SJse6pBwT8SrDlLS52+pj/PkXKK
+	MMKX42zN6p9exXE6pBZr3KmQJPcHCRgck7sNsKo1rjlxU/pBRkQq3HC9CDfoK/GIOk0RHXJCsAs
+	5kT7af2ATqbzfAemoDrxfGUon+Vu7HvrW0+LQwTMMuTnoOa0RyihpScr29UBMI1Cs5POsdzr2XI
+	c+hgkzW/njtRt/JkvtVxOyjkGetYyY5LnsowjN9hjmhijZnqXgAX/ZA71/kPbQk9k2J4bLPhed8
+	KD6/AqgQEDve4=
+X-Received: by 2002:ac8:5d47:0:b0:517:5f04:f23f with SMTP id d75a77b69052e-519c4bc1118mr52834051cf.4.1781799659683;
+        Thu, 18 Jun 2026 09:20:59 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-519e1d06ed6sm2389031cf.14.2026.06.18.09.20.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 09:20:58 -0700 (PDT)
+Date: Thu, 18 Jun 2026 12:20:55 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	linux-mm@kvack.org, bsegall@google.com, dietmar.eggemann@arm.com,
+	juri.lelli@redhat.com, kprateek.nayak@amd.com,
+	linux-kernel@vger.kernel.org, mgorman@suse.de, mingo@redhat.com,
+	peterz@infradead.org, rostedt@goodmis.org, surenb@google.com,
+	vincent.guittot@linaro.org, vschneid@redhat.com,
+	shakeel.butt@linux.dev, riel@surriel.com, kernel-team@meta.com,
+	Chengming Zhou <chengming.zhou@linux.dev>
+Subject: Re: [PATCH 1/1] sched/psi: skip irqtime accounting when no new irq
+ time has elapsed
+Message-ID: <ajQa56F2aOtfVzlo@cmpxchg.org>
+References: <20260617175219.2494857-1-usama.arif@linux.dev>
+ <20260617175219.2494857-2-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AC41D1C0018
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617175219.2494857-2-usama.arif@linux.dev>
+X-Rspamd-Queue-Id: 0C9EE2000D
+X-Stat-Signature: nt1uwzsoncm51wnkhw87ejdayp3ziyas
 X-Rspam-User: 
-X-Stat-Signature: 7yt8truhcbi8f9mm6ccnwc5obdam75ou
-X-HE-Tag: 1781799380-663826
-X-HE-Meta: U2FsdGVkX19Qqr39+qNrKqqepi+a4wzHZfm9nV9/hJpCe6MJ9ba7ZpwsVL9luUokdN5cT+Qr6bnbdgqseEZH3yp6eVPq7DsokSK/9506NReB5CTWVpoGqMVOsUKouK0na6/keDBdh83o25wbCq7LoNKV9C19T1IKTTlurIW5c+KyMMjeGmUeQxZZwwhyz3/q4k/tzThhFkXvnOSZr2zYg3THNuJ5HU1QRx4lHe2JGzlZlnrf0yhatntz7FNDqf2TcnyPkN0KeVsRB5iVVnuolybueepctmmNVSOuW4/guqQA0prm3ycY9Ar9ktJEPtx0qkYqL5Zl8lDSzCM1PU+gk/oDeSYvLQ1cErZZd+DAFg6vvs8AiRNC/SRl5Qxwl9V6w0jpcHjqj+UrgVCcx43qe4T0achBARR+hQ5NrVvqECKO8cZ+QvxPt/iHtN3vCDH4SXfl9DAfibliHbUkTxf9eM+M77BQ3v3nHyc1qDDd6ibe9C9ZHVYd4RCQ8P3DtzkKypHeFlmuoNAiJvbnTnwt3z4AW3q0+2Izp6Hlr04zeW64Y/DWUWVDgLyt8tYhy3C1bXBhKsMONbjRZFVbxhWhunaxTIIXkZHXtq8mdfnwQujh5RGeXwzbwbUEp+ys4BtMLUon+1jg6SWpsTfTtyNepPFog9yfj00Po1JgD4YVxtqwhOHGa9avK17uVTSlFeQfpRJQdFT6Ci2sM9mj/i6Uq97OYKv+2JfySA5XfPLQNt9MNI3y9I7uQ0jXm73qtun9qkbZyJp1km9uWhqHlg+WXj0cIRmhJlaRg58mMQoZSDVa2arL5+sPnjIehJ395YQN4eEHHYP4DwNpH4/Pd2T3hLHYO9cRvrZKFOmHHw+U0zjIrIWw/p8ggk8FCOQfN8sD6AwaSNhJr8U9LEyzlxYTWetAFwInkROBSgiplhilCwbLPh0btFsr3p90WTlo4ubGkSbWqiTfNV+zCQMpPb7
- 2HCSisaa
- WC2mKrtH3xzyJehN5GpKBPaP26DxlKuHsW0WI3RRea0Lj3V0nahmmwkAiZN6nbY3akQEa08Gjqc52vQPxW9tePD9rndl3g7jQeroyzlajGf7qQn0buK0uMvg989LGD78N4iA/FImCLy9Gun9czMY56PjgncUDuU0aUAKxd3d2FIUtr07vp7LbAGO0yZyUHGpHO4dxRXcSbsTKV4+WsS+5GO/1g53GRwKQlICQb2VVrVgxEUzKAB72Jrc1W/O5MyjWh2bJ5Qx736F6XA4POh+/DjALcaALl0Q9LK8WG9KrsQQlyLuSmLAT+W8Uqs2D47DxyRi/OxfAGt3pxf9OJImRCwskBs5hcFIyv3jtwUHkpB5mUYQPnLNhRNl62w==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1781799660-51433
+X-HE-Meta: U2FsdGVkX1+CG8LaHfr6S8xZ9QyeR8g5tY8U8j94Ea6IEB6lVZ9Q3yHtkF+M9gCABwzHOwgl+ctvSBEGvlWZRmNKkhSaRmHhl3M+02+LRKA3cSinYN8CwqQID6y8y69NVekwWVEE75uIpC90CUTnV7JhsXv/qXgxpucz/2gwc/v/6IiOV/yULK8NDBQAcqe00foszDHnl8alKLfROIV8y3XldhLoE5rg+bNlz4FraUuGjnV7S1y1yKFUHEKOyP8UZn0G49F154KpHlRX77megfgj1/ZeILLDSK5t1fBr/V9Bpvkk0eWyIuvVnPN55qB0xD2kCLjPLgMisx9hMTb6ykSG69NdzHq0uV9kFKnw0S05tsWl/jAbLFYzHwehGONGgLwH2csQ1zUeMrJWRdZEWpQC2cYtZz4TTWOFqYLXGS9BYJIKUdzpEErFE2/KSK1ANoXxxUg0UFezRjmUw/YUpBDJQH8F6U8lu2y9iRYYKiBIPRAVYGdSagb+nrWvUaTZqqmHJkirT94EhofPPbiD6EtRNqDX/j9VhkjF163lyry/D8+io+VNrbxPGjGGFXQvMsLAtK3P1sedlkZ6m5CYDodyrkNaKR8A8VzAeFN/302kEYRn6MIUFyiu2tyaxYhVGR36Oemeyd+QsvPVFZPoGXNtHtBfW6IkDeQ+iHn5iZnaFENllbaSG4iVxbl1PoKxjfZ+rr2IJaETXKYVwM5hjdUYUl6YRdOFR5FDf1yZE6Yh2KSyHQyMbL7MyHV2une/ZLSrKDASHOdXmy/PC/6FvvTqTm7eyTnzGZGss85GaSWZ+rv6dc4wQIxvgzQrgGfSCR5NxUjB22OvYB2JQK5r7PBQO5Av5opXtChYJ2aO7/qI5hs0V2OU/YXxLcUR9cSaLvJJXfaXkUTb/nMx/h6IEQzZcXIcnuPwqiE/GyYbz7S6cv4mvIeFEjTpvGrNczgiiy09L62/kKT7l7Sjx7w
+ uunP1pNV
+ A21ENGoMTLmj8pVcP1geuO2oSfN5jsJFP+ZrN8mCCdB2n93dnnRkPlacMYOyMeW0zZXPKuZQ+WYfqiL4ciLrDf93reI5P3vi7AVwrKZmbRdcg+7OdNhmwPUxsL8yRlPOdYrLHxNwHpzHMYGkdgT8/n7vrkDX8Q5ZF5T96YfyyAR4Ou/hzP2UgG63L1P5/ifuOGPmeLxKIRdWbaGd8CoXjLthGHhOKkrFQTXd2haoWVYuIhLRpiqPw/IfBNMWr576KGs0DTowvH+dPzwZU0h2CFzFp3OU6ddGaF3BXCrEWXaCxeHMpYGtlYDqIe2xIYuDEv5fMRGGOg1jUaRx7kKKngGWnc7MiWXrowuduP9tSd/BpAkcwChhCggUYiBtfXd1exYDSm/ahtxY0A1b4Cq9ptj/HUv9LBK+8TZuDC5115BcqUBnFxobPnpWwhuayZwF3WVorPexCv2vAGVYREDD+b/Rnsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,92 +124,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Jun 2026 11:25:28 -0600 Jane Chu <jane.chu@oracle.com> wrote:
-
-> The problem with filemap_lock_hugetlb_folio() is redundancy, replace
-> it with the generic filemap_lock_folio().
+On Wed, Jun 17, 2026 at 10:50:06AM -0700, Usama Arif wrote:
+> psi_account_irqtime() reads irq_time_read() into a per-rq cumulative
+> counter and only bails out when the delta vs. the previously accounted
+> amount is negative.  A delta of exactly zero is treated as "do the
+> work": psi_write_begin() is taken, cpu_clock(cpu) is read (which on
+> x86 ends up in native_sched_clock() / rdtsc) and the cgroup ancestor
+> chain is walked to add zero to every group's PSI_IRQ_FULL bucket.
 > 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> The zero-delta case is common in practice -- it fires every time a
+> context switch crosses a PSI group boundary on a CPU that hasn't
+> serviced an interrupt between the two switches.
+> 
+> Measured on a 176-thread AMD EPYC 9D64 server running a compute
+> intensive production workload, instrumented with bpftrace over a 30s
+> window (irq_time_read() read directly from the per-CPU cpu_irqtime so
+> that delta == 0 and delta < 0 could be separated):
+> 
+>   @total              17,229,311    (100.0%)
+>   @ret_curr_swapper    7,864,195    ( 45.6%)  curr->pid == 0
+>   @ret_samegrp           323,299    (  1.9%)  same cgroup as prev
+>   @reached_delta       9,041,817    ( 52.5%)
+>     @delta_positive    6,358,192    ( 36.9%)  real work
+>     @delta_zero        2,683,625    ( 15.6%)  work wasted (this patch)
+>     @delta_negative          (0)    (  0.0%)  monotonic clock
+> 
+> So 15.6 % of all psi_account_irqtime() calls - and 29.7 % of the
+> calls that get past the early returns - hit the delta == 0 case;
+> delta < 0 did not occur once in the 30 s window.  Under the current
+> code each of those ~89 k calls per second performs the full seqcount
+> write + cpu_clock() read + cgroup-chain walk just to add 0 to every
+> group's PSI_IRQ_FULL counter.
+> 
+> Extend the early-return to also cover delta == 0.  rq->psi_irq_time
+> does not need updating in that case (it would store the same value
+> back) and no PSI bucket would change.  The existing behaviour for
+> delta > 0 is untouched.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
+CCing Chengming as well, quote untrimmed.
+
 > ---
->  fs/hugetlbfs/inode.c    |  3 +--
->  include/linux/hugetlb.h | 12 ------------
->  mm/hugetlb.c            |  4 ++--
->  3 files changed, 3 insertions(+), 16 deletions(-)
+>  kernel/sched/psi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 02cb265a580e..6c883478f7e7 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -518,10 +518,9 @@ static void hugetlbfs_zero_partial_page(struct hstate *h,
->  					loff_t start,
->  					loff_t end)
->  {
-> -	pgoff_t idx = start >> huge_page_shift(h);
->  	struct folio *folio;
+> diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+> index d9c9d9480a45..848955f8893d 100644
+> --- a/kernel/sched/psi.c
+> +++ b/kernel/sched/psi.c
+> @@ -1023,7 +1023,7 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
 >  
-> -	folio = filemap_lock_hugetlb_folio(h, mapping, idx);
-> +	folio = filemap_lock_folio(mapping, start);
-
-Do you need to do start >> PAGE_SHIFT over here?
-
->  	if (IS_ERR(folio))
+>  	irq = irq_time_read(cpu);
+>  	delta = (s64)(irq - rq->psi_irq_time);
+> -	if (delta < 0)
+> +	if (delta <= 0)
 >  		return;
+>  	rq->psi_irq_time = irq;
 >  
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index cae5cdd3ea00..e78d0f706681 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -824,12 +824,6 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
->  	return huge_page_size(h) / 512;
->  }
->  
-> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
-> -				struct address_space *mapping, pgoff_t idx)
-> -{
-> -	return filemap_lock_folio(mapping, idx << huge_page_order(h));
-> -}
-> -
->  #include <asm/hugetlb.h>
->  
->  #ifndef is_hugepage_only_range
-> @@ -1096,12 +1090,6 @@ static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio
->  	return NULL;
->  }
->  
-> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
-> -				struct address_space *mapping, pgoff_t idx)
-> -{
-> -	return NULL;
-> -}
-> -
->  static inline int isolate_or_dissolve_huge_folio(struct folio *folio,
->  						struct list_head *list)
->  {
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index ecd1d1322fda..5484e78fe72e 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5715,7 +5715,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
->  	 * before we get page_table_lock.
->  	 */
->  	new_folio = false;
-> -	folio = filemap_lock_hugetlb_folio(h, mapping, idx);
-> +	folio = filemap_lock_folio(mapping, vmf->pgoff);
->  	if (IS_ERR(folio)) {
->  		size = i_size_read(mapping->host) >> PAGE_SHIFT;
->  		if (vmf->pgoff >= size)
-> @@ -6201,7 +6201,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->  
->  	if (is_continue) {
->  		ret = -EFAULT;
-> -		folio = filemap_lock_hugetlb_folio(h, mapping, idx);
-> +		folio = filemap_lock_folio(mapping, idx << huge_page_order(h));
->  		if (IS_ERR(folio))
->  			goto out;
->  		folio_in_pagecache = true;
 > -- 
-> 2.43.5
-> 
+> 2.53.0-Meta
 > 
 
