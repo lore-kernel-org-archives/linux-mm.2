@@ -4,139 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE6ACD98F6
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49062CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:51:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDFAB6B0092; Thu, 18 Jun 2026 10:47:41 -0400 (EDT)
+	id 2715E6B009B; Thu, 18 Jun 2026 10:51:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8FD26B0095; Thu, 18 Jun 2026 10:47:41 -0400 (EDT)
+	id 249426B009D; Thu, 18 Jun 2026 10:51:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BB6E6B0098; Thu, 18 Jun 2026 10:47:41 -0400 (EDT)
+	id 138676B009E; Thu, 18 Jun 2026 10:51:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AC1C6B0092
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:47:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D621212014D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:47:40 +0000 (UTC)
-X-FDA: 84893312280.19.57CB9E4
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 67D1B100004
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:47:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=J0cA797v;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781794058;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DB2306B009B
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:51:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 493611A015B
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:51:06 +0000 (UTC)
+X-FDA: 84893320932.23.EFDFB35
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4AD8940002
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:51:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bPuqDXAw;
+	spf=pass (imf07.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781794264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wVZh/diParohRV0vSr+dwmsRa2RCsdg+05fhUVnh7AA=;
-	b=brBl864KMJxzHHW1qY87jEXQxAskqCiSleMF/prtVhxuJglcFHlHaGrmVGEN6Ky7eb89AB
-	FA3OxW3cuIpHOld0buStWrTjZVfgEbruP4GPpxsMybmnsM22Uhdzu4uwdodSRrm4iMldKu
-	XRfbJkgbTEELvAPFPJQGVh1A7kM+gSw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=J0cA797v;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781794058;
-	b=7FrLoVODGTFFWjEN1MwFZTvaVtzWUjKIZPP2J5RarkmzisYAc2BfBWIl9Fkl7A+5+MRJTl
-	WYkRCoiEdXPREkAyKVsO5fBboMz6V6R3mxqjclhVeEYadPPkfGSLNRAAHH/pV6nbn4cYDa
-	BVr8OOmlXIAvYhqkjpBid3NMTRNlxbU=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IEIMf23825512;
-	Thu, 18 Jun 2026 14:47:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=wVZh/diParohRV0vS
-	r+dwmsRa2RCsdg+05fhUVnh7AA=; b=J0cA797vniT/OscH6U/sUnyW07Ah2vmBo
-	UAHJGiCXlIHuZFJnGi5vkCCnDF1t7tUuymRaSolNXvpHTLHMrEWn1KEQmKXPI/AS
-	wtb5ZZUmu88rps/6HIpFhhZykoT+8ZDxs9dNsqNRqPGMnLvsgzaOxBI30BjzX5x+
-	J4SISt8comsPGkAuWMEZbstFchPsYG0vyCra2Hh4hoSGmslPNRbgny6oHLQg2zA5
-	ygbBij6p4me/iagovWDshmES3caIWzra0ZCxLh5fXGaqCcZl7j9oac8DcZ6bnEbE
-	TMWBeQlBiso4GyLGlwSz+2Ra8FZXqcwIH3tHO4X+/x0O6TJq1j3sw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4euequ8pdv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 14:47:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65IEYekS003046;
-	Thu, 18 Jun 2026 14:47:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ev172c7gc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 14:47:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65IElTmu50856284
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jun 2026 14:47:29 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 170C320043;
-	Thu, 18 Jun 2026 14:47:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3C0720040;
-	Thu, 18 Jun 2026 14:47:28 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 18 Jun 2026 14:47:28 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id CB795E080A; Thu, 18 Jun 2026 16:47:28 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH -next v4 3/4] mm/kasan: Introduce helpers for lazy MMU mode sanitizer
-Date: Thu, 18 Jun 2026 16:47:27 +0200
-Message-ID: <0d76139923a280617a21839b7e3f3e7735b58fdf.1781789772.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1781789772.git.agordeev@linux.ibm.com>
-References: <cover.1781789772.git.agordeev@linux.ibm.com>
+	bh=3xzK9hDXp89mOfbYP6diL+1HgZ3l+0kIzx7qhy14yzw=;
+	b=aAUoPx8tDG0pt1Q34l2jn6G5C3elgwZ2Xvm4eYGGGIc940TkNe0UUbyVl4+DR2ZD/aWPwS
+	dVXdJ5wvW8JkeqcXrJVuXqcEc9YMJMKLkQuIc6FkGk2F/STv+nh7Uqn9qf3VWRvPbh4sw+
+	tLExiqdJWzxLhdfT5CBr7pRzks+XiZQ=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bPuqDXAw;
+	spf=pass (imf07.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781794264;
+	b=2+2fY+4VTpUhvRKW9/nLRDEnU2utFXYyQ8Ixdu1JaiUhPkhyOW0aYTLY8R+NIafRkvswE2
+	XAReneVYCvVx0/dJ+fCVfMRq0L8vm58QjVmCfAzVyUrRNQKRnAvsrLlli0PFrLYf3QNliK
+	ch2Z1xrvQ3G+IVlKo/tpnXsP69Jwxu8=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51765531803so326131cf.0
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:51:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781794263; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mw2LB/XjwhDJ3ZwHhkMq4qgB+B8n/M+6KDXAoC1KIPRhMkr4gMiJs5Q9Gpzn/5Gm+f
+         theHMO8iBxa0BAtcQqJkc3EcJbJvj7xo0M6giIumcEcETHfK3RUGUNucV+WFR1O9BvWL
+         CxVNMxla3jW36gMstUpbiIUdhHflPb0C6IhoT5j/81+jWymLcJC4cERUfh40XVsm4o1W
+         XssHW1WVJfuyDafMDJ9Ed3ZZBHx+qnnZ1TQEsqUnYJv4uf0ceh6xgNLbWAuhLExGFzzS
+         Nh+mdzVllDu9HjhFaPmGJ16lW4vAE/oMiFdISgr9jupKnVb2o3QBu25wqlc5/01cHm2n
+         +5fA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3xzK9hDXp89mOfbYP6diL+1HgZ3l+0kIzx7qhy14yzw=;
+        fh=q4bOvSQD58BwOIWdW+YbVTLbKCl1ZLDBSP/tby5oUPI=;
+        b=kOzwcz3OAgJEBtzCCVUynyo8Uk2M061PVp5BL1sJJo/vjPLnICDg6PnQERh1+D9W66
+         X0chksfz2WRUdRsSh60FZlj0xuCeCES4Niuq6MDme/JMgj841tprlIYnX3s3l5RK8oeH
+         lDDz2XpmKsqxjyFB+2bZpypE74m/POvfIcGvZFju2RMzD0784t7GR/20tZjBMbM7SMxj
+         g6e0clJiNiCTVCm+LA9u9zh/GZ8vpvsZ8m3Avp6eqsFYeH0kJ+DidtlWSbhrBSjdgr0Y
+         CA4c8D1hll4zG7x+yZt7+4FjMaSnLWZa7UdVf6mzdeE5HOWTmVDcFq3hsSyqJuYPqARa
+         PSOA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781794263; x=1782399063; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3xzK9hDXp89mOfbYP6diL+1HgZ3l+0kIzx7qhy14yzw=;
+        b=bPuqDXAwsdsvsZjXHmu19qqLfrej7lY9JUeVp+rzIRFE82HZx79d+4zXoplv9EL+24
+         000Lw3HPRB92YgBLRE3RiGNsKUOIPDOzvGRejLDx3uzW+w1yHeWDev4fOPTCpzF5dcQ7
+         pgowvMZiSnNb8dafJNzPv5m6q5lKKfq2esM1D8jnw78Vda9nyoq6H3ML5eVBjgUKikWx
+         3WUKRTMhELGuzJMwWTO4PaGXBgUuhpiWwYBmrvKqnUsD8zL6FLkMcGRIQ5Z69dy89lZ8
+         Cs5hDWTGt5/aKLONUckWsUgnfijeskE1dNXbjjKbkUJyfDlVTyShF84XMjoMLheWXYP0
+         HcYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781794263; x=1782399063;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3xzK9hDXp89mOfbYP6diL+1HgZ3l+0kIzx7qhy14yzw=;
+        b=por2tDeC7Lytm/f7aWWSYsnoMIsXNIeZXf7z0vkVR3s5a5h0RnYnoX/8eORRxm+xji
+         bqrm6Rjr6qMe65lTYwnZGRPe1njayQ7CYs8CukBN3JNJN5p+F0jZp9Gta9b1xicpgir5
+         Og28qgCT+54i3icELM+8eI+p6Qcu709+6Z2W+zRuBG7Q2TKekGBqL9RKt7go7tBBcacs
+         7qDlzQmfb/GRwnp7nJl0qpW6yCp06c6c9HgzN5RpZGDX8CaHjZg/NpF+zEHGA0iQMJIs
+         WAOu5p5TBU03251NrunGcUoW+GOf4/B8attnkKdfA3VV4+ajOLSQlVgS/V/wefvfD3AF
+         B0gA==
+X-Forwarded-Encrypted: i=1; AFNElJ/8PTtaMeyyGn7uuCly4Kh16G1UQEroMoP3X+o8Ob3Y6G8oSXbrrYIcpEu75PzwyMavjpLo3B4blQ==@kvack.org
+X-Gm-Message-State: AOJu0YwFoPxLWaNzTZHme6+ln3DUU5CFdGK5p/PheFN8YJfYXCfqPWYw
+	/KsxZnHLHDKzYLZDWL0kAqvp9fm5bwOH7d7NxhU23Ye3/Opo7LLTepoDBwgKwHwwsoXqMYUwZEZ
+	3yEJfp5X4Q1Sg7plv38q6Ap8GS6vy6+QpuBvWj03t
+X-Gm-Gg: AfdE7cnCKwWGqYKmgna+pu+Y1mxD57hwxdjYqy//xsWfCJf3iUdr5QhEWM5QZ+ePEzA
+	UtmQ8ad28crFBpCr9kiqEimRdku+/KvMAUQ6wTlB+AxecXw1rXojSxT2Pd1/QsZln1SI4F9RyxM
+	0Utvb+aUcitSzNyJihbzvlEGCI4ubtxHtg0q2WEYFyVhc2POfE/qVsrpJNsHIqmQcNM1IMJKc1S
+	qruz1XXRGPI9aqFN173rCK81idWIsUSzWHuQhwl1gDQr7mWO7KdQdZ2LtPbRf8ItZA/06znwQ==
+X-Received: by 2002:a05:622a:5a12:b0:516:4f62:85eb with SMTP id
+ d75a77b69052e-519c661aee8mr10188061cf.22.1781794262609; Thu, 18 Jun 2026
+ 07:51:02 -0700 (PDT)
 MIME-Version: 1.0
+References: <20260424191456.2679717-1-stevensd@google.com> <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+ <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com> <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+In-Reply-To: <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Thu, 18 Jun 2026 07:50:26 -0700
+X-Gm-Features: AVVi8Cd8J7A4tM0GgYrWT5722EdWYRcaMva6zkF64Do4I85F9yPUGOZvN9NSrNQ
+Message-ID: <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, David Stevens <stevensd@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDEzMyBTYWx0ZWRfXw/h4dcMCGa/w
- pyTlBGENgKlb5/zRUALKmPegxermI3iPsv2VolNnMXw4GatB+mDgOzKljsYnNZ09D0hdE4CFu1i
- c51wU0XeQ1/zoFtmvi2wx0FaEst9kOw=
-X-Proofpoint-ORIG-GUID: P3E1IP0mguKZJMoIp9_D6FKidqpvTnpm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDEzMyBTYWx0ZWRfXyBJcS+wx7zf6
- QZLwc3ePfrd5qak7lSfqZxWrRr9gIVmdu2/qkAWXTUFIv/HcylEKguW4j1MyzQ12sdCFqKuwsc5
- 3BeeAmDBlRlzO2+A0rSBOqLVQyilkH49pdzhI8n3fQ3qaebLbBxs9+p/5E/v3x/w4iNvC5lcz/Y
- tMrKTuUTjb/y/zo38dFv2g9iT1J4yfKBy18w1On/iNx/A5dvzAbr3fBBRBxPrhN2XE9iwdo8C3p
- 8N70Y4RN4467eV20h0W242rk+3/OrDWx3BsSVO02E2wq8M+JLV6UEbF6iDv0OkWypFQpYPka2ML
- L6K5sSptRc6DiABxW+vfowToI2bpkyhsGZu6u4Hm885qWqwbihUaDxKJXmZGyDIeAnry8wCkf58
- pga3UKZ7PBnu+5+s4lqS+J9VUDB3NGo/L5Su5zHKVrjx2V+F9+rWEcqDCFr4vfNRio5hwz6EIkG
- fhNjMkH+bFSzGkEIWjw==
-X-Proofpoint-GUID: P3E1IP0mguKZJMoIp9_D6FKidqpvTnpm
-X-Authority-Analysis: v=2.4 cv=L9gtheT8 c=1 sm=1 tr=0 ts=6a340506 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=lldn-txhwCp5ury-Zd0A:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_02,2026-06-18_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180133
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 67D1B100004
-X-Stat-Signature: 16gr17wg5teo9h83fj4rrqsajuw4mbf4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4AD8940002
 X-Rspam-User: 
-X-HE-Tag: 1781794058-24762
-X-HE-Meta: U2FsdGVkX18Phbp58NGllmwrTkldCTArUgWZ2oyjsz1aJ0drqyEGQO7B/dlCHGeFNjLNwaWKDZ1DkPR9Dyra/xEDKI+qc+b2EB7R/q6I8K2+le0dIeeeIJLepX27vQPcHvxfpfNf9/maRmDQAExGR6HFC7LmpyuT7aEFJVuwLjkmqoeJeKyJkcB9RT7QROeRwAn2uEjwH8dhwRRleImaQnzNo9l5s7NDt40QKqiptS/0xfhBRpDmyvomLsZM9YrQ7CreTotcWP+57CROxo0NLRCN0YyuMcLM/0Z4ZbO5Q5pcb819oyy4RlkKyeAem4nbZE/GX2UJrzo2faAWMoSHfDFmauhPlhVU8qBeI3zQU6j6vrsnZZNDV5Z+f7cYu83890TY+Rp8vJwCsxFBDzTD6pBR+l46Vzpo4Hs/KyFunTIxRDEhcs6MI8td9hyRemwk8kv2/nZdsivCIgEhH4FTxtA6QFPRumI7LktrwqX0WcIRPQo0XB4c9Cli8dMC5xEWt5ZhFuFGtbvxE4ERZTJugJxUXUJxAL0ZoiwU+zL2G9NRfMfQPmQ3PD0mnhsKsY7cJsLtNTSKiF30gGvvZTDD6MF4pn7mZwCpk4m8U4SFj5LB6PwW+CKoFj22LsBLSxnp//YVPTjJUAGk6JYdMBkSFsU+S0srEeM3/wYEDzplctfyVLbtSrTn/UifP45FXuU4W7lhsjWVI0IwZhDuzWVJxwIHs5gNLfQSgGFDGyYVb562yRHS+FOCSwMo2zRTnyqQnlqnr3RqA+F4oV7HgMXezP5Wlf+jD5ovzkv2GYSLVF1QFnwhIRKfxQmDAyLMZBtW00mXDwhR642W8/4ciXP+KGbL0Y98hZ80l4A8d2eWJh80LxMglgmx4leEsBV1WaxfPAYL0Isie8uIkmzu7Am+wN6Lwi+kR7uy1+h/O/76KvDeMsR50cgR2txb6x3HT4Eab8Vy/0rXmi/oCwdeoPs
- nsDJH2aZ
- r0ttSGnLkngSJt4MqQC1v/Eye2PKxPe0z5rM51XHxEWyl9ZZURFzwMrVCtr95qVWapMK+z6DEiq2RB90kvnRYV2qK0urjxDY1A24DyVM/T/PSAcWJdrbF0g9S2DWQhLGa8z85hc5KTvByK0VGgiL9CPnDPiR10GDhwsAn6I2IJjNNyFYQ0I17RBxpeOgu0N/idUXFoBLb5B1eqkU=
+X-Stat-Signature: mwcu4iifx56n5pnibd91tp1dynenykdp
+X-HE-Tag: 1781794264-64975
+X-HE-Meta: U2FsdGVkX19nkH3NMfm5HH5/8ylxgDh/CUIG28SwAc2MY5WFDBCHBsiU4hAePjx1lS1RVoTdWLpB9yuyVT79xc/wnDEV1htyEdmWA35nh+yiOLJk3JugOXmPljYt5H+vOp/r9b87IhkehNFQEV7PKJgw0ab02rc8Z6y1fRycXJHc0X1EjJJUUxqipUpB+j77XWlJY7ditYMAYi6PUuRtHJUabgIGuC8146raa2hWduuzwIPTFvzbfavnkmdDNq4aVHcpNrwbWYltmDeQH1fa5ssSlpcRuK+IXocl+oykyM4FIpjE+2al+9YvH+ZYg15vzeJnv3N/sHzV/Vnxx74dTyPzH5Ynv13BCmzDC8VwxjyglDJyh8+pQSXkKOLbTrbfLJD/5Lus33RRE00V6H1BOd14BbWdpI9SuGcONPjS5mteH52Q+SKoGYHjCDQS6wDZJOXxNUudFu4WtNg9nc8ukssugqsL1xTqKYb87pRaTI1cbLa9jvE13CPvqBYxVbIDQBMUH/VV/lb0uAWyMEe3dZNxBVOa5fZaD7gpw+kccvdLqtIK/Fm98KWJ4fZHVnZLZd4WLoTstntX1Dn7vIKRC6yCfRm4v1TzmIJyo0IFFZH7FptFu1A+J+1MHUoKNtYRUO1Q0kulePuTDu5yUAAYSixBbsxlRI30MQ6jUz64ObOvxHXDcmkGp/UWYuCoNoIv7HDb1qWq7bXoNxqS8gyUhbI5ISCLausNZmUoxP+hY95hbfg0Dpoe+JC4HFw1pCW1uFCDpt5NjkVPhJQLm8C8ERnUAPXZLbdn6zDssD54dglVUoJJmEGBEvm7IVw6ePcPozWI7cLEzGx4EwqJ6/Y7KtdacHN0N87OONR3hcsK3x5d5bg9BX0khzfZtYMDXSlaWIBJ7q/FrtzZ3qcTDBhdVup3FgZpOMnnQRcm4Sg86HeSCrt6VxCQKrBnOWy2864Tk7RhdpO60AjwpQOih6r
+ kyJqkNOp
+ v/dEQ0ejgSivMH0H1sweI8IroDKt82yfPRZtXW+nqNqY2riZgglNjkBZZGGZFJYkVBwz5FcM9Yaw+O2r2VjVkHmDURucr+m8w//IWWq5axvPrfZF8ItffPGrZW5SsYs4lVyzRYDBG56kTG1ejqn29/f1SRa24V9XtyasllbRf2nzrCmSiNwcRC3O0fe9X8GOT3mLvz3IYX/C8GPgwloDpE2N0SS52TxknXu8/AivcSUhW8bTMWxuqEkqCliOB9wyPwYWr+RiKN57GsWE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,109 +148,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide helpers that allow architectures implement
-illegitimate PTE direct accesses while the lazy MMU
-mode is enabled, such as:
+On Mon, Apr 27, 2026 at 9:22=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 4/25/26 02:19, H. Peter Anvin wrote:
+> > It is worth noting that this was one of the VERY early design decisions=
+ that
+> > has shaped Linux from the beginning:
+> >
+> > - No swapping of kernel memory
+> > - Kernel stacks are statically allocated
+> ...
+>
+> One other bit to add here: In the past, kernel faults on kernel memory
+> have been allowed, like to populate vmalloc() page table entries into
+> the parts of the page tables that are not shared across processes. Even
+> *that* turned out to be too much of a pain even though it didn't involve
+> allocation, and the kernel has been moving away from that.
+>
 
-	pte_t pte =3D *ptep;
-	*ptep =3D pte;
+Dave,
 
-By contrast, these would have to be:
+Necroing this thread, as the potential aggregate savings continue to
+stand out for us on the datacenter side (whereas David is motivated
+separately, from the consumer device side).
 
-	pte_t pte =3D ptep_get(ptep);
-	set_pte(ptep, pte);
+I certainly empathize with your position, and hesitation to give up
+such a nice simplification just to invite new headaches.
 
-The direct PTE accesses pose a real issue on s390.
+However, I'd still like to work with you to understand what feasible
+path forward you see, hoping you can proactively steer us away from
+some of the bigger headaches.
 
-Suggested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- include/linux/kasan.h | 16 ++++++++++++++++
- mm/kasan/common.c     | 10 ++++++++++
- mm/kasan/kasan.h      |  2 ++
- 3 files changed, 28 insertions(+)
+I think we are fine being forward-looking, and only supporting this
+for FRED (which is on our doorstep). That said, understanding the
+issues you foresee with the IST approach would still be valuable, as
+it might save us internal trouble should we choose to carry it
+temporarily to bridge the gap with FRED.
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index bf233bde68c7..deadf566b84a 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -134,6 +134,20 @@ static __always_inline void kasan_poison_slab(struct=
- slab *slab)
- 		__kasan_poison_slab(slab);
- }
-=20
-+void __kasan_poison_pte(pte_t *pte, int nr);
-+static __always_inline void kasan_poison_pte(pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_poison_pte(pte, nr);
-+}
-+
-+void __kasan_unpoison_pte(pte_t *pte, int nr);
-+static __always_inline void kasan_unpoison_pte(pte_t *pte, int nr)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_pte(pte, nr);
-+}
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)=
-;
- /**
-  * kasan_unpoison_new_object - Temporarily unpoison a new slab object.
-@@ -414,6 +428,8 @@ static inline bool kasan_unpoison_pages(struct page *=
-page, unsigned int order,
- 	return false;
- }
- static inline void kasan_poison_slab(struct slab *slab) {}
-+static inline void kasan_poison_pte(pte_t *pte, int nr) {}
-+static inline void kasan_unpoison_pte(pte_t *pte, int nr) {}
- static inline void kasan_unpoison_new_object(struct kmem_cache *cache,
- 					void *object) {}
- static inline void kasan_poison_new_object(struct kmem_cache *cache,
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index b7d05c2a6d93..cbf68680614e 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -163,6 +163,16 @@ void __kasan_poison_slab(struct slab *slab)
- 		     KASAN_SLAB_REDZONE, false);
- }
-=20
-+void __kasan_poison_pte(pte_t *pte, int nr)
-+{
-+	kasan_poison(pte, sizeof(*pte) * nr, KASAN_LAZY_MMU_PTE, false);
-+}
-+
-+void __kasan_unpoison_pte(pte_t *pte, int nr)
-+{
-+	kasan_unpoison(pte, sizeof(*pte) * nr, false);
-+}
-+
- void __kasan_unpoison_new_object(struct kmem_cache *cache, void *object)
- {
- 	kasan_unpoison(object, cache->object_size, false);
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index fc9169a54766..8ba0fbabd75b 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -144,12 +144,14 @@ static inline bool kasan_requires_meta(void)
- #define KASAN_PAGE_REDZONE	0xFE  /* redzone for kmalloc_large allocation=
- */
- #define KASAN_SLAB_REDZONE	0xFC  /* redzone for slab object */
- #define KASAN_SLAB_FREE		0xFB  /* freed slab object */
-+#define KASAN_LAZY_MMU_PTE	0xFD
- #define KASAN_VMALLOC_INVALID	0xF8  /* inaccessible space in vmap area *=
-/
- #else
- #define KASAN_PAGE_FREE		KASAN_TAG_INVALID
- #define KASAN_PAGE_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_REDZONE	KASAN_TAG_INVALID
- #define KASAN_SLAB_FREE		KASAN_TAG_INVALID
-+#define KASAN_LAZY_MMU_PTE	KASAN_TAG_INVALID
- #define KASAN_VMALLOC_INVALID	KASAN_TAG_INVALID /* only used for SW_TAGS=
- */
- #endif
-=20
---=20
-2.53.0
+Overall, are there any particular painpoints you'd like to see flushed
+out, first? How would you like to proceed? Would explicitly marking
+this as an experimental config, in the interim, be more attractive?
 
+Thanks, and I appreciate any help or guidance here.
+
+Best,
+Zach
 
