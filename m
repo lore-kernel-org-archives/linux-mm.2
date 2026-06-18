@@ -4,90 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08DFECD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 11:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5FFFCD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 11:53:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00956B0092; Thu, 18 Jun 2026 07:35:59 -0400 (EDT)
+	id 0AE4D6B00D6; Thu, 18 Jun 2026 07:53:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D7B56B00D8; Thu, 18 Jun 2026 07:35:59 -0400 (EDT)
+	id 0606C6B00D8; Thu, 18 Jun 2026 07:53:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C8886B00D9; Thu, 18 Jun 2026 07:35:59 -0400 (EDT)
+	id E67D76B00D9; Thu, 18 Jun 2026 07:53:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 61F316B0092
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:35:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2047A06EF
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:35:58 +0000 (UTC)
-X-FDA: 84892829196.01.53CAE02
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D3B2320009
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:35:55 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GVbWMym9;
-	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B33AB6B00D6
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:53:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E844590FF2
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:53:15 +0000 (UTC)
+X-FDA: 84892872750.25.CD757D0
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D2C011C0002
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:53:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tkJmfXIb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zLbFk2QT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tkJmfXIb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zLbFk2QT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781782557;
+	s=arc-20220608; t=1781783594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+p6JSYNOLQBLkW6pkWe1IZK62WyPL9jSV81uAwStG2Q=;
-	b=MZ9tTOVPROfocH8kILN7TS6YIHqWGbqCwsYV79/RYYk/WgB/oq4PF5cT0DBXK+6qPbYyx0
-	8wH88PC1vDxyFeaSwtBaXriIN+1e2vnaQBJYh3hX4fvefU2lzVn0RKA7mYutRPOhObj8Y7
-	CFtgdRF1ihRK2P2qkqP8LcA0gfvG3Lg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781782557;
-	b=YM2ITbdNaZ/K3nfHx1H3YSEMwAECmoQh15ZmUE8wvlcRSyy2luuCfgHPXqC2cpgXBWo6Fo
-	lMqhtb+KZj3FNxjeKVh2VcBUhk8lV+nGG8xg0jRy8ukMp6Vgp1MNUzZfuyqsEIt32mSqQy
-	Qp0Y92S5vl/aHxmBJEfpU65vo4DIst8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BEiRLGeKVxL1U6T0VrGb/zda4f8dnMRBfhdPPfgIhtk=;
+	b=1UFJ8rHERNVQuVdrKfsaGC+Jizz7UIeNBN/AKnSUcRGahaJ8c8fmXCps0KkGI3NrLKf6Ys
+	MAS6DCbV3SYFJCpM4isI8WHterA7bHcb44zwoaEFy6ijyklgv1UOjQGqJsJI3R2mr2V8vU
+	3eBAKgy56cxc7QZqakpOZ49YaI9MfLQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GVbWMym9;
-	spf=pass (imf31.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=+p6JSYNOLQBLkW6pkWe1IZK62WyPL9jSV81uAwStG2Q=;
-	b=GVbWMym9QBI3NFX1xRwQNjkcLT1JitZqvNBp5a8ergLK4ng3s2QkAFRNE39avAONhU0Wfx0Fc
-	FLY8uGdiDJqhuIm8sYwWGNUdOT1fWXq42qLMRhDtTkh4Dsonm9u1ozoHtB0PJgLpGGteNHettYN
-	/SmAan+Fj/QgXBOfA6DwjUc=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4ggz3p1XV0zLlsj;
-	Thu, 18 Jun 2026 19:27:50 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0CE2540565;
-	Thu, 18 Jun 2026 19:35:49 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Jun 2026 19:35:48 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, Xu Xin
-	<xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Kefeng Wang
-	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v2] mm: remove PageTransCompound()
-Date: Thu, 18 Jun 2026 19:35:23 +0800
-Message-ID: <20260618113523.3913307-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tkJmfXIb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zLbFk2QT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tkJmfXIb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zLbFk2QT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781783594;
+	b=l2rf2swY6fwTcWb/iRCa6ZVMCwHVaq1ehfBzy36eOK92Aq4YjqHTpiZPCcx/I/s4dnlnJQ
+	/ETd0N+6ggKKlMWOgZmB7QVUCF2B3oIF56Posn95F7xEVjtKM9FpuBnnbq6+0h+uknhmWk
+	XjtnIU823K2yqfPbQsx2lNkaBuZkSHw=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7655C75BF8;
+	Thu, 18 Jun 2026 11:53:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781783592; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BEiRLGeKVxL1U6T0VrGb/zda4f8dnMRBfhdPPfgIhtk=;
+	b=tkJmfXIbXsqQStQZ/dyTCWfdzSPGf8VhqJGXdWA0aCschgAWaiSCHpi0Ocv1kjriwqbIWy
+	qbQX7IEE/u+rw4OVV9O+Td0KhE7zYB/OxYSqH2/lxUzO0ICtlvlzaWyyvW0v5WmOw2CGqd
+	WCBBeH0lJVt130rVEkZeP4dmt3ys+Xw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781783592;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BEiRLGeKVxL1U6T0VrGb/zda4f8dnMRBfhdPPfgIhtk=;
+	b=zLbFk2QTZx2FJs+r8PhU4eKglF1NvJQH73d38bHRct2tTPw6UF4UxfEaCHFgBD9sAhQg/0
+	nTFMF2HsE/DLMCCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781783592; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BEiRLGeKVxL1U6T0VrGb/zda4f8dnMRBfhdPPfgIhtk=;
+	b=tkJmfXIbXsqQStQZ/dyTCWfdzSPGf8VhqJGXdWA0aCschgAWaiSCHpi0Ocv1kjriwqbIWy
+	qbQX7IEE/u+rw4OVV9O+Td0KhE7zYB/OxYSqH2/lxUzO0ICtlvlzaWyyvW0v5WmOw2CGqd
+	WCBBeH0lJVt130rVEkZeP4dmt3ys+Xw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781783592;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BEiRLGeKVxL1U6T0VrGb/zda4f8dnMRBfhdPPfgIhtk=;
+	b=zLbFk2QTZx2FJs+r8PhU4eKglF1NvJQH73d38bHRct2tTPw6UF4UxfEaCHFgBD9sAhQg/0
+	nTFMF2HsE/DLMCCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0340779A8;
+	Thu, 18 Jun 2026 11:53:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Fn+VLyfcM2rpfQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 11:53:11 +0000
+Date: Thu, 18 Jun 2026 12:53:10 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/4] mm: mlock: use walk_page_range_vma() in
+ mlock_vma_pages_range()
+Message-ID: <ajPcEyORfPKVpaWI@pedro-suse>
+References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
+ <20260618092845.3905740-4-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618092845.3905740-4-wangkefeng.wang@huawei.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D3B2320009
-X-Stat-Signature: 5m9wwzkippfi81bpyonnci5id5bewswe
-X-HE-Tag: 1781782555-894402
-X-HE-Meta: U2FsdGVkX1+pasneKVHJSXrS2x6vL+0fuN2pF/hLrmYJoyY6WIOteWFTv2115jvZcfAh3FhC76/v3ibRWTz3x2BbGN3eF80L5ywalIZEAoXHgyYF1Gam4BomXkDtXCL2XORDYwWXnhbgRus6UgNMgz/W3vrjpHGFRoReRTSpoGcT3f1dQr5l1mIuEMn7lknvXbrwrvhMvf+sU1dT6Gxl6DSOy7nlFzhU+1tODW91SrOAO7TvZVGUCDb+J2Lo7OHm7dxKlqOMeyzBgpDAVdNVx83YHLRjLqSB5jbsuXDSrnSk3QMkRYc96U34DcRLPIIUp1jT57+9F6bjCNfbtp+SeocqFzzMEhGaxWli8/wGXHi1NjK7g61ppbVi0tWH2rUrXhxHGSmtcl4H+CAlmZYYahtF+NSQTZbdUwOcjtmbKK0URcv8HKb4AjIXAYjUveY95wOdNQhscv/zX9niZ3AQXruC2hcYxdoA3jDqDgaIDktMSuFHfG1Vu27FZSCoSr2EtmBvXS2/81KndpARuaF/afIeIjaRP8wvJx0JY9ru7YxV6aQFAMEoZoLhlGMWk/kfa++kIrjMPQvX3zsnoOroObwWWg+VMU9KXa5VlvhAybs0uoxf+LxcILvdeCOgbNLcIVE0zvYJ+vo5scK+nIJONXmqzss35J45NT/ihjjz8pm2x9UHebiJ0Vs6S2J9dBBvL7QLwPbtgrV5XJfqLNN9d8ZdsPb8aKvAcM7pm/e+4IihDEmYLtnNRayZRrnfGTIVNn5CRHW2xWn2BRUN2NMdFyWKpVtyZYBkCOKBVx+MrqZjhPmlOu1ep8cB8WovXbGTHAedB3uBGFiCNH/SoQ261uNX4uUKDvZiT0ZVMoLyZyMv82NByA1da3NENtji9L1EtYaiIDqZcI/EQhKQyLan1Nb7N8Ji3Ea3e+1Y8M19sl5tVjA9rRCdLJ34N/+jKyBa0HEELaUyfmx2AdSATHM
- ZvFU6AGn
- SHjXqr1irjzhJeFGaZ/MQcNustyqaqAuXUkXACCx1XGP5zjaiKX/KNQTuYjnmbFTRXDSfwdXaa+ZU2qWzA3pnjpbXxbJ+0tvwVh3dIm7ectiGvvz2gY8cs98ZEzllKbO3rBUKlM8LM4gAVslWwjOTx63lXKM/MgW3hy1TOB3VPMHjlu8LAQe1ILnEBnWv6C+o3tlEp8o20HSifpY8s4oWLA5N4X4aqrGcIsjNY24dZFaG4IsBMwXx4uABpP547ubjTK+rqDLbwji0Hf2YDXsFhH9Al4ZA3BcaVlTz
+X-Stat-Signature: cmcdait6qyk4fdnnxtufsk8nszbecfhk
+X-Rspamd-Queue-Id: D2C011C0002
+X-HE-Tag: 1781783593-311675
+X-HE-Meta: U2FsdGVkX18aVfILId3WtmTYui8AcouXXVlquGcKoAXLlVSsxylqrH4SEu5y/t9sEIk0CH/ESQUKPoJYugutA8x8hDOvgf7RdP3BmydeF79DZgjfD69x0NuX//J1+lBhoDef6QrBfoAPhderdsz239VHFwtv/e45bZMBuDsV7YEh7FmyusCvL/0NkaPwAzS5gCFsqeqqBWrbieLCwjCWEByl4S34IIApgM70NqKa6UYSw5dV1rJuWsfhOP3sYc5zFx3jEO0giuxLUWW2yPz98xAIz0KDqEhfAQr2vvB9aA/tAxY9yAGnpz+LWsxTMbKcYnWdGcn6al3gzYe5S3K7vev9rxjI8Q83V/PMfyUcr4DeYZ/KiGAZ9e3SQzBuNHlwYWPvBtdRo8XgOi+9acy7appUlwfnS14QVvonJtLfp6luvnnT6hnU/cFxLp73fxScxdedjmncBr8hDhzTzjrAqbVT3uFaML62zVVvYv/QIeJuL6YNybAp4pTbUgfBHEMbijXMGiM/CVMIohHvyD52uKhsWhYciglsECg58wvA70j3rZl4CaLJ2N8T9Xpt7j307jV/DdNs4RAHqmfGUX/RGA7AH6XIE0lHf4/y+3FclHp1lDc8x+BRkzwp2m7E7A0qmGxAJknDNxxkvSNsfdrSnPoXAeT2nhjJDKPdWqBoHMolDe4tX2libLo+aaTpt907Zw7qWJDd9Q1dUP2PIWCOZcnM+PZ8BrIBVicRqjOcgbbFRDMLFNfhfMMBpOyJHLV1IP9Pc5Q8aZ2pa4YyfdQ/BqmrvM0HaaVH1l0XFEJr8Zwd5bbXLKou3hMfuEhaWhLSj8soUHUtQOdFsEYGWbMV9C/sQxHA71m3eOXFmD9Ou1RKTHtkXEDknlShIe5jk3Vaoi4YIAvDGtojtVpIBL9xmALlUyVYasRwQWLy+Xm0ZaCG2d/ZkQHKICSI0MN9lisHp7KKGjI1jqiIEhtxhkD
+ xSgRznz9
+ U91eVoeKLe5MiJAg9ERBy6hU5tV1kuRN1M9orzi/PNp0s0G5mvJv1JOIe41qNckTTZlEuCqA9QiAToBAH+WlC7RtpKkuef1eh0QTzUbp0RFw7gV3oejPixfbIHtTlmCK+bXuFa53IXbGyB/IpaNkLJfQDkdfebHit48+ton+ZoAK43Ykyu0/nN73rZPPyKK11sv+JXWEMrt1zT7GCitqVImhtGDe9j7Epwpqfsiswvos2h0uIA88ScBRH3skAcCM4mOJiLoqJ8tYJEzlI2TyKKt9VX1T6umQs+Iys7/poZetNND4eAKsLw63YKzUsj+mO2uhzAHTXhnQmkPfsY651SdyBANNFR6zXSj5F/MzrqTwHwYWd3EFkm/bAUXTRj01Y53Hj3JDbCOh3mfGpeqFklHEl784NQjx3PrFz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,81 +134,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove the last user of PageTransCompound() in ksm and
-get rid of PageTransCompound().
+On Thu, Jun 18, 2026 at 05:28:44PM +0800, Kefeng Wang wrote:
+> The mlock_vma_pages_range() uses walk_page_range() to walk the
+> page table. Fortunately, the caller always passes start/end that
+> falls within a single VMA, apply_vma_lock_flags() iterates per-VMA,
+> and apply_mlockall_flags() passes the whole VMA.
+> 
+> Since there is no .test_walk in mlock_walk_ops and VM_PFNMAP
+> was filtered by vma_supports_mlock(), it's safe to replace
+> walk_page_range() with walk_page_range_vma() to eliminate an
+> unnecessary find_vma() lookup.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v2:
-- use more folio in cmp_and_merge_page(), suggested by David
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
- include/linux/page-flags.h | 14 --------------
- mm/ksm.c                   | 17 +++++++++--------
- 2 files changed, 9 insertions(+), 22 deletions(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b4..7a863572adce 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -879,20 +879,6 @@ FOLIO_FLAG_FALSE(partially_mapped)
- 
- #define PG_head_mask ((1UL << PG_head))
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--/*
-- * PageTransCompound returns true for both transparent huge pages
-- * and hugetlbfs pages, so it should only be called when it's known
-- * that hugetlbfs pages aren't involved.
-- */
--static inline int PageTransCompound(const struct page *page)
--{
--	return PageCompound(page);
--}
--#else
--TESTPAGEFLAG_FALSE(TransCompound, transcompound)
--#endif
--
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
- /*
-  * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..41ab25aa2a82 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2327,23 +2327,24 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
- 	tree_rmap_item =
- 		unstable_tree_search_insert(rmap_item, page, &tree_page);
- 	if (tree_rmap_item) {
-+		struct folio *tree_folio;
- 		bool split;
- 
- 		kfolio = try_to_merge_two_pages(rmap_item, page,
- 						tree_rmap_item, tree_page);
-+		tree_folio = page_folio(tree_page);
- 		/*
--		 * If both pages we tried to merge belong to the same compound
--		 * page, then we actually ended up increasing the reference
--		 * count of the same compound page twice, and split_huge_page
--		 * failed.
-+		 * If both pages we tried to merge belong to the same (large)
-+		 * folio, then we actually ended up increasing the reference
-+		 * count of the same folio twice, and split_huge_page failed.
-+		 *
- 		 * Here we set a flag if that happened, and we use it later to
--		 * try split_huge_page again. Since we call put_page right
-+		 * try split_huge_page again. Since we call folio_put() right
- 		 * afterwards, the reference count will be correct and
- 		 * split_huge_page should succeed.
- 		 */
--		split = PageTransCompound(page)
--			&& compound_head(page) == compound_head(tree_page);
--		put_page(tree_page);
-+		split = folio == tree_folio;
-+		folio_put(tree_folio);
- 		if (kfolio) {
- 			/*
- 			 * The pages were successfully merged: insert new
 -- 
-2.27.0
-
+Pedro
 
