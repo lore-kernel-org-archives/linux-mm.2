@@ -4,95 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACF6CD98E2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B97CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226596B00C3; Thu, 18 Jun 2026 05:29:32 -0400 (EDT)
+	id 163F16B00C7; Thu, 18 Jun 2026 05:29:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D7096B00C6; Thu, 18 Jun 2026 05:29:32 -0400 (EDT)
+	id 13B716B00C9; Thu, 18 Jun 2026 05:29:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ECB66B00C7; Thu, 18 Jun 2026 05:29:32 -0400 (EDT)
+	id 029E76B00CA; Thu, 18 Jun 2026 05:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FBED6B00C3
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:29:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77F76A05F3
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:02 +0000 (UTC)
-X-FDA: 84892491684.14.6E540A9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CB21F1C0009
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouTe4zgo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 333FA6B00C7
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:29:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E043214062E
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:19 +0000 (UTC)
+X-FDA: 84892492398.18.5A28757
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CCFAC20003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qC70ke/P";
+	spf=pass (imf03.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781774520;
+	s=arc-20220608; t=1781774538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tEYJ9kMeEHLO272k6shUEWPID4kYl7yFrhvCwSW9EyQ=;
-	b=csPjRwSdTxnhmd/g5vtLW+/aZeEcoFEntQXXTGMlGfmtiieWW+uUTfUd+6JeQE9FQq1rKo
-	rZk7pn5SAhiv9SZA/7gVzQnze5uBCOLBz6fX99ilVHQLRr+TuHFg4W76ASNY+d6hbpYOpd
-	yM/r27deXBLSH06qfwMEff+rpLiOGSE=
+	bh=kx58UzGJ5PzxcjTsuUEJwFleVBmeQq5F4w9/tyaV6pU=;
+	b=mdxYzzShlc6xhsvYO6DS5yy5k2YQ5wEHsl0KF79ey1O6M+PkkASi0HBp5J8WUxbiVZL111
+	FzSIHEhTNYlOTgBN1wlG5bAX0oac5UwFo8FXAD9vzNPEE3kD2++1iUKEqUH7G9AEQYlvAZ
+	i5ZUBPfxvh0SDZPPHExlXwoZrpdxIKI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouTe4zgo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qC70ke/P";
+	spf=pass (imf03.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781774520;
-	b=awcC/HKjm5UUBlr2/3kwRO/XNui4GkEtOILE2l0RO+p81C+SFl+QSDygTh9V59gHOCIMmT
-	G3f6Jltl3zZujNaQxdEiJhLf2NYZoBXO7u4xaxKoe5EuBvADi5BNKKnEjITdUkqRgIyRYe
-	AXWRW9DMHCPk74FV3mQUDi4h23sb8/k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 41EFA601F8;
-	Thu, 18 Jun 2026 09:22:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA031F00A3D;
-	Thu, 18 Jun 2026 09:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781774520;
-	bh=tEYJ9kMeEHLO272k6shUEWPID4kYl7yFrhvCwSW9EyQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ouTe4zgol/qqvYdtUesO6rnH51nqxNfQqJrFucoXdQT8nSDiy+4iUGLreqe9CTCts
-	 k34aRchUC67G4GJScTMgV7qLie0WngGjy0TGU84hGnBUS4j1bWOapDB6yiCQ2vjx3p
-	 IBIygbkEI4qXzBFZarYkRXARmIWZaoxRV/Hzb2+brMGPMV4WUu721CKEsFszcUlPzA
-	 AXoy597hfwzuk2KgOe2vTy9TXE2vAzRkMFHW0BjCj+Ke2BLD0t9Y2focow7JFgFOYr
-	 90bvIuzU5MPLvWTusXIo5ChW1D09UBJYJnMloc+dtMa44O+5bIyDXrs8C6asHc5JwO
-	 /UHnkSkoCPfRw==
-Date: Thu, 18 Jun 2026 12:21:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Oleg Nesterov <oleg@redhat.com>, Peter Xu <peterx@redhat.com>,
-	vova tokarev <vladimirelitokarev@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
-Message-ID: <ajO4sLq2UBciSgOn@kernel.org>
-References: <20260617194059.2529406-1-rppt@kernel.org>
- <5a993689-f730-406d-8515-8bb6025cc851@kernel.org>
- <ajOtfdGgFQYL-T6f@kernel.org>
- <ajOvwGs5xhnfBu-k@kernel.org>
- <41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
+	t=1781774538;
+	b=QqKoMl64eZMK1WsoINroXjRUHCiTClIO9s7zisyhIXjnT24QEdGO8QCe+4QN9XjtMOmPs3
+	I+Rj7VX6Tvlt277kdGCeVjWRZGFZkshteAhTkOmxNPcY0FunC893z9KFug28ZzbfwJx8LL
+	z9nhhhUvlbmu41G111dOCRZpuvFjf3g=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781774535; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=kx58UzGJ5PzxcjTsuUEJwFleVBmeQq5F4w9/tyaV6pU=;
+	b=qC70ke/PUy5yPgdmlATG0uffwHsPqVGf4BBM050EKu1ntCMa1djwtlWv9PH9O9iPDXXAq0bAqLfD6HhdpZlOEtPBzlrZt92KnRu/hqlRqwEisNnskuOmeHUBjQlX1V3qd/Z5bJUz7U8O4CvSzd5JUymsXXjkM9I0czkqY5Om1RM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X56UT.A_1781774529;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X56UT.A_1781774529 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Jun 2026 17:22:12 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	rafael@kernel.org,
+	tony.luck@intel.com,
+	guohanjun@huawei.com,
+	mchehab@kernel.org,
+	xueshuai@linux.alibaba.com,
+	tongtiangen@huawei.com,
+	james.morse@arm.com,
+	robin.murphy@arm.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	ryabinin.a.a@gmail.com,
+	glider@google.com,
+	christophe.leroy@csgroup.eu,
+	aneesh.kumar@kernel.org,
+	naveen.n.rao@linux.ibm.com,
+	tglx@linutronix.de,
+	mingo@redhat.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	tianruidong@linux.alibaba.com
+Subject: [PATCH v15 8/9] lib/test: memcpy_kunit: add copy_page() and copy_mc_page() tests
+Date: Thu, 18 Jun 2026 17:21:22 +0800
+Message-ID: <20260618092124.3901230-9-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
+References: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CCFAC20003
+X-Stat-Signature: z7o3cy7tp9zaqqq83wy5n9xnr3jqkpjt
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CB21F1C0009
-X-Stat-Signature: 8snrt3se1bqus6m5kpqguni3ky9apg63
-X-HE-Tag: 1781774520-187911
-X-HE-Meta: U2FsdGVkX18TIEM53ZBbQxBzv2EW3gCKxM4FCHETxrGMS5bwo8LW/oSqiJ/8r7azya19Gs1bcpqBI+N8MCPHMPjLWQj+LXxkv4GhqZ6w2sijhq3NzIKRgR7sgpYePIUeI2JQJwQZbFSWeAoicTznCuRdnZWwV0ZyEIpBMDBfGc6FBH+OE14jWzMt28ses3spXzkFKzL4x/pcOeDsY10xpA2CT2fw8bttbd2MSY0saFNcihIZnlEj+7VKxZuvRY9KpRHveNqlprSX1/wjSZUuvk5xxYgpMVArOamnNLZ1l0CDT7yO6F0GRFBTDcpBApMw6oALE/OjA8TFXMcuVaFGbJiCdnbUnzMOiht2JfD0uCB8XZGvdn/6Ah17+YWoTC8lZ/S/dDYz+MrYClp3MrMHdCKoXCzM0vvY+njFNGqOxf7diyEzUHZpIJX8qTRzXIqylm9Bu7151chqwqegO54gl9zmKwLQw0Oeo+4r483RvAa9WHwZWEV13DuIqpRpjp2tDM0McBwj00veXTmOc912LHyx5DlJMFFqiDYO71it5DfkZnFpSG5bzrmyoqjfuJKb/jasQmaXhnPpQMuIxu9iEpoI+afi+rlgYe0Z4nhQsHWNfBdN/zIxOnS8BKdUYZpAbNK6Tpl2wmxRZmpKOylTO6sB8CN/ZtMWNoVK/w10qkJ9q7ryH05GJzXwzbnpZ0NW5KgsSb5J/OndL5h0qJDsglYfhzvrKIo3VVr5tjWl1GeS6RHbUAaVqoqiPpZpJUpfJeBo+jqF2rfGHrvctZOkt6xsFLB6PIwgZyLkis1Gw7PtQCHSE6SOmR0eaXCA+dYzeAp2dNiVnwkewojdfpdWG/RqYvQ0V35aaJafv8yWJOZIBNDJvLMBqB0yYv2CJRbMuo1X5bc2KxNEcxXBYSvsIkyYirLUxIQ0Y7fNgJtGgt4BIfHxWgEchj3sxkrvd9rNd+Jgawsi7sHMh2qgWh+
- Opd0H2t0
- Ece+iMBwsi3huxkZ5Yn+YidS2/D9ilRWXQ4bJT4Y2yFepflBJNgX+RcnKVA5PM7k+ZRVMsYU3KKjRgNQ8YssB/pSXEvCAsEyrYPljQ9wZvuX3PK6HA/2LDyKeJN68SQeGSDMvNLpzFrdl5NtkiwxLfrNZWjJWoLNRgnQPtofPP4V6v87wyq88XlaPyL9anUr0OrExSMs+aROa/5GPgoitZoT9OLZT6p4lRt7eWadCcUmTZ7mM2SnUhIwIN6yu9XOFdY5H
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1781774537-521033
+X-HE-Meta: U2FsdGVkX19tldx9QK++RwTLzRTESDLcJUumaKmh1bO7jeTlvPGbpwEo5zCO8R60A6ACzpk2ynvKE3FiMHhKp4BSDWI/LANI7WJOlpwX+eCBxsqzCjXUg7h0/MXBR9p5gKyS90eXmthixHYwbSOZ0jAjFo1QudTvmvXAf1Zq8nBiCDUUQtxIqNa0WwrtJdBcHPumBT2XzCWPqFyGbJzp15rGRfzCXKUUm5dLdtJ06PxQF3BTqIGIQTSZbZye4rLOT1GuFUOsaQ1nWBiXasUBnMtJSyV/4NGvUso62ijZT+AFYxPXEntWSS0xzrhIVKrVrgDNq5zXFaWRdpm6ydro6VDsUcbn0zt5zSUyzlg+IbI/3lZUovUM3iUVwWbMjkluc2bOofv969vYKPN0bGYzuHoAHcvREsGh2/aN5W17qISqiEKncWDBoWUKO7Bye45sNEUt5e6L8TepCPlyA0eNv0NKuqnU7yGIUeiXSaVOotQ2Jj0RX9E1R0Y7ZKGQy/JlNE7h4nP+Z816wRPuZX5rHhwre4RsFSL9b2j5hUfiKdOL+bj/IpcvLpSYYKT//UFwCDUMB2d4644qzrL2tFfpnoipg8ZWOEmZZe9OLjy/7lg6e6XkU6HaZVWGNp17OWAxDCRyEsFn0UOQ/o7YG4IhfuE3cpDcF1uGeUzMRezPevxjytY28++9dCAyS3BsZZKw+s4T79dU3cCjQeyya4IbtymqOb2KTkKjWWL28WaujpnCefcZ4hd+tWRDSUVcxUb6e4eI7yg7zWr3ZHvEGiysywm/HAZc2aGbsMtku0gQJCGFuzXVLq/Zz1KCcq0uGVEJFqkLjsUwFzE8c7D6ooq3fmvYRDw85hwAsQaz7Sgn2iB2kelGx2CLCZ7RCcgP3eKqBuajq4iZibee2Qnzlp2B8ZFEMKmHInQuYAuBbsrQN7T1RZpk42le7TX7cSS60P9wc0AU14BxUYt41QQyA+d
+ qFFmkcF4
+ G5T2bLRFZ0Lr4EwSUa2ze/M1yuYISyD+k5couZCMOa/wQ+mavP98mcrZ6+LhDKnqkUHILG93ybdjixQkJ1lK8xtf41Kw4pDzWRDZ0iwHC9SZYjcsXOabSTlZle0SfzUhn92IoBsWgVRfEwYYuvkBJ1AxpDLNPLDTagJDL35TG/Cz/FikBWgLtk4oILtTd0Qf2SluQaBanyqYXN4vSKINgWKCoDWQ0jVcaFWPjcInPBOQ3bUqfr15QzOhx1hA2a4NsnYpfa5qM0LoO8ahuyhMhLJHXXjAUOTwXPHqr9CGrsX6Zf0RfLGzwAvawshE01zMElGvb4QkZ/EIxBbJlcSu/O/Vp9R8EokGgGD33VLPEwqtF+RrcGsAPTBfoRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,33 +109,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 10:47:19AM +0200, David Hildenbrand (Arm) wrote:
-> On 6/18/26 10:43, Mike Rapoport wrote:
-> > On Thu, Jun 18, 2026 at 11:34:12AM +0300, Mike Rapoport wrote:
-> >> On Thu, Jun 18, 2026 at 10:19:17AM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> I'm sure you considered VM_SPECIAL, which additionally includes VM_DONTEXPAND.
-> >>>
-> >>> Would that be better, or what was the reason to allow VM_DONTEXPAND?
-> >>
-> >> By itself VM_DONTEXPAND won't matter, as uffd can't resize a VMA.
-> >> But thinking more about it, it's better to make vma_can_userfault() more
-> >> restrictive and just use VM_SPECIAL.
-> > 
-> > Ah, hugetlb sets VM_DONTEXPAND, so it must me excluded to allow uffd with
-> > hugetlb.
-> 
-> It would probably be cleaner to just allow hugetlb, and then check for
-> VM_SPECIAL if not hugetlb.
+Add KUnit tests for copy_page() and copy_mc_page(), modeled after
+the existing memcpy_test() style: a static page-aligned src and a
+two-page dst, filled with random bytes plus non-zero edges, then
+verify byte-for-byte equality and that the adjacent page is
+untouched.
 
-Cleaner in what sense?
-Will be uglier for sure, just take a look at vma_can_userfault().
+Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+---
+ lib/tests/memcpy_kunit.c | 67 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
+
+diff --git a/lib/tests/memcpy_kunit.c b/lib/tests/memcpy_kunit.c
+index d36933554e46..812c1fa20fd9 100644
+--- a/lib/tests/memcpy_kunit.c
++++ b/lib/tests/memcpy_kunit.c
+@@ -493,6 +493,67 @@ static void memmove_overlap_test(struct kunit *test)
+ 	}
+ }
  
-> -- 
-> Cheers,
-> David
-
++/* --- Page-sized copy tests --- */
++
++static u8 page_src[PAGE_SIZE] __aligned(PAGE_SIZE);
++static u8 page_dst[PAGE_SIZE * 2] __aligned(PAGE_SIZE);
++static const u8 page_pattern[PAGE_SIZE] __aligned(PAGE_SIZE);
++
++static void init_page(struct kunit *test)
++{
++	/* Get many bit patterns. */
++	get_random_bytes(page_src, PAGE_SIZE);
++
++	/* Make sure we have non-zero edges. */
++	set_random_nonzero(test, &page_src[0]);
++	set_random_nonzero(test, &page_src[PAGE_SIZE - 1]);
++
++	memset(page_dst, 0xA5, ARRAY_SIZE(page_dst));
++	memset(page_pattern, 0xA5, PAGE_SIZE);
++}
++
++static void copy_page_test(struct kunit *test)
++{
++	init_page(test);
++
++	/* Copy. */
++	copy_page(page_dst, page_src);
++
++	/* Verify byte-for-byte exact. */
++	KUNIT_ASSERT_EQ_MSG(test,
++		memcmp(page_dst, page_src, PAGE_SIZE), 0,
++		"copy_page content mismatch with random data");
++
++	/* Verify no overflow into second page. */
++	KUNIT_ASSERT_EQ_MSG(test,
++		memcmp(page_dst + PAGE_SIZE, page_pattern, PAGE_SIZE), 0,
++		"copy_page overflow into adjacent page");
++}
++
++#ifdef __HAVE_ARCH_COPY_MC_PAGE
++static void copy_mc_page_test(struct kunit *test)
++{
++	int ret;
++
++	init_page(test);
++
++	/* Copy and check return value. */
++	ret = copy_mc_page(page_dst, page_src);
++	KUNIT_ASSERT_EQ_MSG(test, ret, 0,
++		"copy_mc_page returned %d on clean memory", ret);
++
++	/* Verify byte-for-byte exact. */
++	KUNIT_ASSERT_EQ_MSG(test,
++		memcmp(page_dst, page_src, PAGE_SIZE), 0,
++		"copy_mc_page content mismatch with random data");
++
++	/* Verify no overflow into second page. */
++	KUNIT_ASSERT_EQ_MSG(test,
++		memcmp(page_dst + PAGE_SIZE, page_pattern, PAGE_SIZE), 0,
++		"copy_mc_page overflow into adjacent page");
++}
++#endif /* __HAVE_ARCH_COPY_MC_PAGE */
++
+ static struct kunit_case memcpy_test_cases[] = {
+ 	KUNIT_CASE(memset_test),
+ 	KUNIT_CASE(memcpy_test),
+@@ -500,6 +561,10 @@ static struct kunit_case memcpy_test_cases[] = {
+ 	KUNIT_CASE_SLOW(memmove_test),
+ 	KUNIT_CASE_SLOW(memmove_large_test),
+ 	KUNIT_CASE_SLOW(memmove_overlap_test),
++	KUNIT_CASE(copy_page_test),
++#ifdef __HAVE_ARCH_COPY_MC_PAGE
++	KUNIT_CASE(copy_mc_page_test),
++#endif
+ 	{}
+ };
+ 
+@@ -510,5 +575,5 @@ static struct kunit_suite memcpy_test_suite = {
+ 
+ kunit_test_suite(memcpy_test_suite);
+ 
+-MODULE_DESCRIPTION("test cases for memcpy(), memmove(), and memset()");
++MODULE_DESCRIPTION("test cases for memcpy(), memmove(), memset() and copy_page()");
+ MODULE_LICENSE("GPL");
 -- 
-Sincerely yours,
-Mike.
+2.39.3
+
 
