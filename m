@@ -4,76 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F342CD98F0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:23:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B538CCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:23:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452DA6B00A5; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
+	id 9D1946B00A6; Thu, 18 Jun 2026 04:23:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DC716B00A6; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
+	id 9A9126B00A8; Thu, 18 Jun 2026 04:23:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CC2B6B00A8; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
+	id 86F686B00A9; Thu, 18 Jun 2026 04:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0458C6B00A5
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:23:07 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BA4F120683
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:14:42 +0000 (UTC)
-X-FDA: 84892322004.23.D763107
+	by kanga.kvack.org (Postfix) with ESMTP id 515956B00A6
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:23:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A06D812068F
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:05:06 +0000 (UTC)
+X-FDA: 84892297812.24.2614197
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2570D10000A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:14:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ezu8amWw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id CC4C914000B
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:05:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S69TZUJ2;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781770480;
+	s=arc-20220608; t=1781769904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=djl1UEFmEC9ml3q9D+FtrJf3HHVAsDL/Pz8kB14AFRQ=;
-	b=aWm65nKNKA6yrfAH68hNa2Msq5nhul78qtaw/2opW0qOIRzFVvFXU/nVWTT3nmD0hhEQQO
-	43hRJit1pul+6w0ABqbc5dFrhr3rwa2X53d8/964yxqYVrTalkkrUbZFOdw849Q4nyonhu
-	Jn6jvhNbAXYTwl3RxkUX5rJFUJKLuuE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ezu8amWw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=6YqDSQnwQZ5jAJB3+SwA3fEKLb3ZSgJjnQVSZUsmR2k=;
+	b=avHLImsiMJlxXWMKsCxBKoSX0XZIMb30eq2YUCaFLKCcEdMCVB6qPhfnixU/yXo9BboPxW
+	vEsfpFZNtZnlecUsUL5CxYlfGf+HyKT5AmTMo/cXEeQwoO/loa4izYPRSpj/eTN1Ce2fP9
+	XEiB01jJpc9OKArb4pWZv0SJzk3LiuQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781770480;
-	b=xSCjqiJSyl9O5n+LQp7zoHvyxZybtfO57j/rNTl5392ycwt/lVNKaT9JwLJcjQvvALlwp2
-	wmAVMjT5YsPEIT0eUNyKH781HOKjH1YDoPQb9XUYZoIbNpw4a6p2QNJPLk70J+3+m6U+pL
-	6FAdJ3AMZe/Frmrwj5ms+xDSQVpeXiQ=
+	t=1781769904;
+	b=WGmwcyhSVjMAYJuX9qzbFJuckTlsJbxnx/Em+XaAil0+woHP/Tgq9Rg+qXO2hBpNeO0EJq
+	ScQiBjfMswBlGDaquwNaxpd5tgoTDSXJk2fZ+6LP/48omJKwjEkCftzSBCBIJpwL2pJSQW
+	6V64fNulNGDwmfhUR1I+Ld5LiscExg0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S69TZUJ2;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48978401DB;
-	Thu, 18 Jun 2026 08:14:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25121F000E9;
-	Thu, 18 Jun 2026 08:14:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9187943458;
+	Thu, 18 Jun 2026 08:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C391F000E9;
+	Thu, 18 Jun 2026 08:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781770479;
-	bh=djl1UEFmEC9ml3q9D+FtrJf3HHVAsDL/Pz8kB14AFRQ=;
+	s=k20260515; t=1781769903;
+	bh=6YqDSQnwQZ5jAJB3+SwA3fEKLb3ZSgJjnQVSZUsmR2k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ezu8amWweTpC/6Onms7/VBRTF+2CcbczR8U9E+BlszlyXabITstcyDz3238kT1e4v
-	 z7j3ovocssBr9Q/wQQoXzcTPU9tU35Wk5hVgOEPSBdKtOWK2fnaXO9tAjc5V2tnASS
-	 eOMZBelEhLad3+Tu6HvhT9F7jwrkK6O++vTpAo0MRs0rNaW/cRauLjVgSjM4VYOD4R
-	 ko0I2zLFLwMW2R3dtENX2oAyz0ASCUP6w5l9F0tTiodLCQdmnCy6g+GbPQ0dzBez5s
-	 3BibL4TCT09tRUSUD/nn6x+e0DttePEV6TFc4rMR4LfIKduwWkayBNzw63nHO8Xfr0
-	 iQarPWHdh8cJg==
-Message-ID: <a777b4ad-157b-464b-8cdf-feee9a6a03a1@kernel.org>
-Date: Thu, 18 Jun 2026 10:14:36 +0200
+	b=S69TZUJ2PfIhtzsTptZxj+G0cxSmrbG5Bevxw8t8/9uFuuW7bZJjhSMD251s/9TkJ
+	 J7aeCpLCsQ/iEpQPMbDWS0KM3gaNsSoNM5rgdFxSPSYengSnQAneBwc5wpKbE4xvN4
+	 HyvQvQeF1cnRFpdzcpkYaQn9hhx80e4pInshFNSAPEbLh+W8dKouzbZpn2/FTSA+w7
+	 EejfDKmwpJYCOztPf3nFVzzsmCPail15hicm/7GxzFDf1RuDkjxH/G4R4QaC2/diWe
+	 8fdvG8nAXaEeILt4e4xwVGDxGGIoGSOKvllpBP+9M4pgcfU0drzh6LjDJi+5tzpsUw
+	 obJYhTp6SXKAw==
+Message-ID: <fd4e11e9-21a8-445d-88a0-041123bb1ce3@kernel.org>
+Date: Thu, 18 Jun 2026 10:05:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: remove PageTransCompound()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>
-References: <20260618080411.3902214-1-wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH] mm: Remove mentions of PageWriteback
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <20260526195650.353196-1-willy@infradead.org>
+ <849ad1f8-973f-4742-b56b-7d31570d93fc@kernel.org>
+ <ajKj71cXOZMf6mK9@casper.infradead.org>
+ <53111e55-0e9d-45f1-b19e-554b0b17e746@kernel.org>
+ <20260617-nyala-of-noble-refinement-ac7df7@meerkat>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260618080411.3902214-1-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260617-nyala-of-noble-refinement-ac7df7@meerkat>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CC4C914000B
 X-Rspam-User: 
-X-Stat-Signature: zgf58ifi6xx6xg7iftr7p1rez3qoocnn
-X-Rspamd-Queue-Id: 2570D10000A
-X-HE-Tag: 1781770479-987793
-X-HE-Meta: U2FsdGVkX1/6Yyj30+j6rBWYYnaooztdU7LPqz/lon5KticOTSnJEWLkjYzDKko8dEcVwGFHY22SKxxog/godaEkpoPekWInZK4w6ll92V/urEfGRdw0o58ykGS5ai3p5ix/xnWdS+JGRZN4nt1QB7l+TeANL62qXcwAMdJClMfn90lKsNQWzgIOPh9xwoQw7J41KClRMi30IZYF+OoslwiutchzGcEPeGB85eVNL7wxB3wfRJKaZ97z8ZeTzNuIyXDoy5lot8ZbDwo+2khXZ1LqVwOsYmc8fM7hiSjFCLX5cPfXacyqSQaDUu/aFHvVFPLRF3XCrxqH958XNengTljcpwmlVUmpBordoAxQE4UUoPWNFokbqsaZy318wTY/XMrA0j1SGacN+Py+hgmi/SYAF5ExUiemEn0B+2ZBXENQHGHF67T3VsaApohFlnXHdkA2CikONB5ia8dUnK1b76lnHQoRGzt+MVjZ3dPGHwB1597t+iSWh/Y4LmnjlYMMK4l48ZQiZqjx4ZNBkzmGSKfZBoGESGAhDYts1d3rSP72EAKrpOPirp0CWBuhMTH5wHYBOlVOYLfSUljPvDcgVvokG5qEl8vfdvI5ENlRPHHGwK9Hrz3l3tESJ/U25AKC7HYnFuHbLiWuByzXp5PJi+FGo4zlfHbiPSglr67mNSFyXOC/5CNMZykCpbOm51JSXBnmIxxwMW1CIO8cvihNshwWWruURZmGCqBZgXse4WLipvFBcCM4jxfdAKs4ONTNJKqquq+1g1Oz72gh2swYHEIMfXGUKvk+5INUlFwHOe7AOKYbvxqP5pVImMfGCmwudfUvCNgU/JfXAbEM3YAkednonYDUY8ixASmyRuBMJMAmsy9pVQwX/wSVcuXuEgzfHAZEE9bFWSHWSYoGTpde5F7sO9Bw8t01qEZsQJ6gVMUfguY1huIXbqcsc0oBVD7A+4IBgNlief6f6q+WBbN
- yBZlbETp
- Vh1CF9itXFFyJyR8REddLlq6QWaqvPvRhnUJV7XT83Buzos+BJyZi3ZbcWyqLPIlPhRyZiikfz6EmCfI+wLK5X9hEX5ukWLEqc0rQm71iIn3NYCoMAFhCDF7H3OLhSUjkMUrLR8lrLiwud8TwR8Aksx90eZIEUVFAM5C2XleUsLvpMTnAfDiBKAkb6QcuKxqWYcJ/8zX1sVe7altF3gLraI73N5QYkpXWKdyt/hsMaViCF3irySO6IhPDT/97wJd14wqTLQnn2qCPMyDFgFIdLvfHaY4iD2qt46m9rXiym1E/33T8Nvtqf8bJg6hhsrT6Iv/Q7PUrqsVnhfA=
+X-Stat-Signature: tmy8se38seqjr1bp984657sn9qudsr3f
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781769904-167427
+X-HE-Meta: U2FsdGVkX1+fCYgPY7ExbhnTWWOIC60DT8LmZBrG3QuaZX1tm6ZhfEa7UbYTMCT02SpFJzsiw149/Et6MUqFLfwfKH4d3/zRxHuxrA00SqHSlFnAVW+DYDIlTLIDM9vpas2smWCh1e20bXwFZdqbXKTsn0k9jSSAtkZn3qqYSbtn3zc5J1p+TnJ/aXFgxOTfyHiOUM/e1GX6kwwHS2MSDkd8pvKFaHMGZz5jMcpN5BwHk7wSEJOKN6OKw9zZOhH02RWrfT/9T7HP9aezdeEDbQuJRwx8i47LObc5vwziuC7DBKnzFK56wa1P2M4Jr9nJnA0TtUbbNuHL4tsibx8NhdJL2RpcnhNtppt/Vo+DyNuZECyAYiGGDnkhmSg4+/YTizbGKDblz7lF6OTEs2kJYP+6P2SE7ydjChmLwsHNxPkW8c0p4f5PlLB/9xad6o7C0mWUY8yTFl1qSoO6Rd1mIF9LDneoRciSC3eWuF2TO/2OoUUBNVhiqTkonmmkDWPVIm/oMppa3/5jPN9HpW/Dt5xmanEKFPUZRIiQlEMEUv1pg9EnPiPhkBDI3gXRFWTbqfqghSTcYDH6KNevUCf5HESw4fiFBtTx6NAKc08pQGtpYXiqiWFExyGDIMTEDcCliPcWjg7dfsVjuPwuUdHGpmfBD96f8g2JdX/Je3LhVQYWLUXtrFUYgDNlWb9hT4+qfcxCWJxIWAeL+u0HZIXfGp4oWjLrFXumYDW/5an9VeaQpdqWw1z2MIilNGTAw6cE1MIaSteytr5KWvd9pPxKHU074+CA0QUhxfzPSlPfPVgiGowH/k+XqWpPWL0LI+pxA9tUnXzSHL9MMPuPAhXIlv6TuOJpYNciEFzX7jPttTRKBrx7oeKg+w70ja1SCJ++YrRTl9agEjQjxleySGJgdws5s7Nbv1iJwTDO9Ldu7+W6K/sSGsS46161zee8hFQBWkORgCR0uy1OzgATlqv
+ +pOh84Yy
+ XukkhyId0CjEjOfYIAde1vHONvXEtWTcjk2jCL7eTYRtvoru9rhpER59ja0ela161QcnWm6Qf0UnajkupTS4C0AEFkMTCzEs7EUVeRlvDjIzdUFo0DvcMtj73uL+SM5b4s1CGsLFn5fp6n3pJuygcelVS9XIVdHvZnbwVdCN8UQUY5/pC8Vz9C47caCoocyv0y7ZzYpDIHIBqkPFZm9akaFK3RPBAN1Js9ScFgx2eZ+FBsG3HadjAXJMeusllSMjPHqlf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,106 +141,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/18/26 10:04, Kefeng Wang wrote:
-> Replace the last user of PageTransCompound() by PageCompound in ksm,
-> and get rid of PageTransCompound().
+On 6/17/26 23:12, Konstantin Ryabitsev wrote:
+> On Wed, Jun 17, 2026 at 04:17:51PM +0200, David Hildenbrand (Arm) wrote:
+>>> pain to copy-and-paste from.  Particularly when it wants me to cc Ted Ts'o
+>>> (shell quoting rules are bothersome).
+>>
+>> b4 does a pretty good job for me with "b4 prep --auto-to-cc". I barely ever
+>> have to remove people (rather add some people I want to CC explicitly).
+>>
+>> It manages the CC list within the kernel tree (in the cover-letter commit),
+>> and respects CCs on individual commits.
+>>
+>> "b4 send" would send them out, but ...
+>>
+>>>
+>>> There's git send-email --cc-cmd, but that doesn't work for my workflow
+>>> where I generate the patches on machine A then scp them to machine
+>>> B where I run git send-email, but don't have a current kernel tree.
+>>> git format-patch doesn't have a --cc-cmd option.
+>>
+>> ... for your workflow that doesn't work.
 > 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  include/linux/page-flags.h | 14 --------------
->  mm/ksm.c                   |  2 +-
->  2 files changed, 1 insertion(+), 15 deletions(-)
+> Since b4 works on special "prep" branches, you can simplify your workflow to
+> make it work. Get the branch how you like it on machineA, then pull it on
+> machineB over ssh, and then run "b4 send".
+
+I think Willy was avoiding having a git tree on the other machine.
+
+I assume it's not sufficient to just PULL on machineB where you send it, after
+sending you also have to mirror back to machineA (PULL from machine A) so it
+would see the automatic reroll, right?
+
 > 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 7223f6f4e2b4..7a863572adce 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -879,20 +879,6 @@ FOLIO_FLAG_FALSE(partially_mapped)
->  
->  #define PG_head_mask ((1UL << PG_head))
->  
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> -/*
-> - * PageTransCompound returns true for both transparent huge pages
-> - * and hugetlbfs pages, so it should only be called when it's known
-> - * that hugetlbfs pages aren't involved.
-> - */
-> -static inline int PageTransCompound(const struct page *page)
-> -{
-> -	return PageCompound(page);
-> -}
-> -#else
-> -TESTPAGEFLAG_FALSE(TransCompound, transcompound)
-> -#endif
-> -
->  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
->  /*
->   * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..75db9ecebdc9 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -2341,7 +2341,7 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
->  		 * afterwards, the reference count will be correct and
->  		 * split_huge_page should succeed.
->  		 */
-> -		split = PageTransCompound(page)
-> +		split = PageCompound(page)
->  			&& compound_head(page) == compound_head(tree_page);
->  		put_page(tree_page);
->  		if (kfolio) {
+>> There is "b4 send -o tmp-mail/" that doesn't send the mail but stores them in a director.
+>>
+>> I just tried with one of my b4 series:
+>>
+>> $ b4 send --no-sign -o tmp-mail/
+>>
+>> Which gives me:
+>>
+>> $ ls tmp-mail/
+>> 0000-mm-remove-config_have_bootmem_info_node-part-1.eml
+>> 0001-sparc-mm-remove-register_page_bootmem_info.eml
+>> 0002-mm-bootmem_info-drop-initialization-of-page-lru.eml
+>> 0003-mm-bootmem_info-stop-using-pg_private.eml
+>> 0004-mm-bootmem_info-remove-call-to-kmemleak_free_part_phys.eml
+>> 0005-mm-bootmem_info-stop-marking-the-pgdat-as-node_info.eml
+>> 0006-mm-bootmem_info-stop-marking-mem_section_usage-as-mix_section_info.eml
+>> 0007-s390-mm-use-free_reserved_page-in-vmem_free_pages.eml
+>> 0008-powerpc-mm-remove-config_have_bootmem_info_node.eml
+>>
+>> Which should contain all information, even including Message-Id:, In-Reply-To:  and everything.
+>>
+>> I guess you could just SCP that to the other machine and send it from there.
+>>
+>>
+>> What "b4 send --no-sign -o tmp-mail/" doesn't do is update the version information + create
+>> tags etc (like b4 send would ordinarily do). "-o" currently implies "--dry-run".
+>>
+>> That makes it a bit harder to use, because one has to manually, after sending, use
+>> "b4 --manual-reroll COVER_MSGID".
+>>
+>> I guess we could extend b4 to just do the reroll even though the patches
+>> were not sent yet (to not imply a --dry-run). CCing Konstantin.
+> 
+> I think running manual-reroll is a better approach here, otherwise this would
+> be a significant reversal in how "-o" currently operates and can catch others
+> by surprise.
 
-Nice, but ...
+Right, the behavior would have to be adjusted by specifying another flag.
 
-we already have
-
-	struct folio *folio = page_folio(page);
-
-And we know that we work on folios.
-
-So can't we just work on folios?
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 7d5b76478f0b..41ab25aa2a82 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2327,23 +2327,24 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
-        tree_rmap_item =
-                unstable_tree_search_insert(rmap_item, page, &tree_page);
-        if (tree_rmap_item) {
-+               struct folio *tree_folio;
-                bool split;
- 
-                kfolio = try_to_merge_two_pages(rmap_item, page,
-                                                tree_rmap_item, tree_page);
-+               tree_folio = page_folio(tree_page);
-                /*
--                * If both pages we tried to merge belong to the same compound
--                * page, then we actually ended up increasing the reference
--                * count of the same compound page twice, and split_huge_page
--                * failed.
-+                * If both pages we tried to merge belong to the same (large)
-+                * folio, then we actually ended up increasing the reference
-+                * count of the same folio twice, and split_huge_page failed.
-+                *
-                 * Here we set a flag if that happened, and we use it later to
--                * try split_huge_page again. Since we call put_page right
-+                * try split_huge_page again. Since we call folio_put() right
-                 * afterwards, the reference count will be correct and
-                 * split_huge_page should succeed.
-                 */
--               split = PageTransCompound(page)
--                       && compound_head(page) == compound_head(tree_page);
--               put_page(tree_page);
-+               split = folio == tree_folio;
-+               folio_put(tree_folio);
-                if (kfolio) {
-                        /*
-                         * The pages were successfully merged: insert new
-
-
-
-I'd assume we don't need a check for folio_test_large(). We'd have to double check whether
-folio is still valid after try_to_merge_two_pages() succeeded, or whether we have to re-fetch it.
 
 -- 
 Cheers,
