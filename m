@@ -4,106 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0315CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:38:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDA93CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2C16B00E1; Thu, 18 Jun 2026 05:38:03 -0400 (EDT)
+	id 28C466B0095; Thu, 18 Jun 2026 05:43:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9A186B00E2; Thu, 18 Jun 2026 05:38:03 -0400 (EDT)
+	id 263936B00C5; Thu, 18 Jun 2026 05:43:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 915506B00E3; Thu, 18 Jun 2026 05:38:03 -0400 (EDT)
+	id 1536A6B00BD; Thu, 18 Jun 2026 05:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBD26B00E1
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:38:02 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D536D406FF
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:03 +0000 (UTC)
-X-FDA: 84892491726.28.98BF0FB
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8417C100011
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=L2pAxz97;
-	spf=pass (imf05.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3090E6B00C5
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:43:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B6C2D1A05C4
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:43:22 +0000 (UTC)
+X-FDA: 84892545444.13.EF3418C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EE5F240009
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:43:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrDg8s7v;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781774522;
+	s=arc-20220608; t=1781775801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+lp7IuTicfKn/jutgHJKaOpNy7+Kx5wxHCFNLAg35l8=;
-	b=Dmsl0/xqbUU4GyyrRnstl46np6Gblcn49PkhesZQRNCAnNkjJGCT9kYDiIvOQuNF0SxOyE
-	x0+cF3MKUgEo+K6gi/Vg9OfLf16kPvSmp0iXPi7rxWKBTyta3oMspMWLVxTwNRLu+NY87B
-	UuEae6r3frlqDFJIGuV8x1p6xwyF/u0=
+	bh=LZ+WWK/EtN/+c7t/LuN/tcS76BgfUhzIxVF7vA6SHLk=;
+	b=DHM4gH6km+/D7nlpOa5OO+rOBNoQOVQuBSO5s6gilX/lcjF2a5BGOdibyA8f08xtM79DoZ
+	MJA89Fnsao6KKrsxmR7IMHrx05NAp942c3/nmQiy5SaDQPM8/kL1pLAnbcEKo/xxnObA10
+	dqTx1qqfdp9GWPIS0P3tZq9u1c4ySB4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=L2pAxz97;
-	spf=pass (imf05.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrDg8s7v;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781774522;
-	b=u0655euBFOAQw6HpNItsF2Bzj9FSqcvCCJvW7/p1ZsC7PHujbeydWH0pqUQX78nRgYjwTc
-	IonKMdrnGvTPimtt3p/k3LSEtLs4yXOLMB8AEqsTSTDOaQD+1281gWYz2k7ZV6TS0Myjg2
-	X3EQA7RhtiGKH1o8WpP8FnQPC0LTBEM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781774519; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=+lp7IuTicfKn/jutgHJKaOpNy7+Kx5wxHCFNLAg35l8=;
-	b=L2pAxz9700gJe1kc9i6aOaei+L3zCx0Mv6EXGcXPQLfoLnxO7xSge5mOQ1JW4GwVZJ60zXeDAnqWX0GOsAWWfef2rjUN2vl96B8uyUPNUZYGMKUpfG9F7ihB8S7L2T7yvFNUoss86C/U0Yvi6yA0VQW7kaPTsYPj95UFCd+gTTc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0X56WGuf_1781774514;
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X56WGuf_1781774514 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 18 Jun 2026 17:21:57 +0800
-From: Ruidong Tian <tianruidong@linux.alibaba.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	rafael@kernel.org,
-	tony.luck@intel.com,
-	guohanjun@huawei.com,
-	mchehab@kernel.org,
-	xueshuai@linux.alibaba.com,
-	tongtiangen@huawei.com,
-	james.morse@arm.com,
-	robin.murphy@arm.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	christophe.leroy@csgroup.eu,
-	aneesh.kumar@kernel.org,
-	naveen.n.rao@linux.ibm.com,
-	tglx@linutronix.de,
-	mingo@redhat.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	tianruidong@linux.alibaba.com,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH v15 5/9] mm/hwpoison: return -EFAULT when copy fail in copy_mc_[user]_highpage()
-Date: Thu, 18 Jun 2026 17:21:19 +0800
-Message-ID: <20260618092124.3901230-6-tianruidong@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
-References: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
+	t=1781775801;
+	b=MIc2W4dGp0xtRR+rV2IRjAokzOr4d4eZwGSnfDUwrSqAh1oyZqUuOooP1nSS0S7Gakt3P1
+	X9zOloJCJf/ffwVZk74N1G5u818ZahfaCAVYd/xKf+v6zjGwKA79mXPAycvbo+jSHYcBHe
+	HskMSQ2NyrFgIKLbqSIXTJXaIQWa5qM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1239243E2E;
+	Thu, 18 Jun 2026 09:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB9B1F000E9;
+	Thu, 18 Jun 2026 09:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781775799;
+	bh=LZ+WWK/EtN/+c7t/LuN/tcS76BgfUhzIxVF7vA6SHLk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FrDg8s7vhYdjTv5G4yrao0SsCIYEHjftwZKQKVQTOCNQooQkUEijLSR0pt7xW+ss9
+	 baud6F/09FvIiE6d9bL5GVO/ApYEjz9F8G2wnjh84LB9l4gix+y6bQaYXNWWkzQTso
+	 8Mgpjsn85i1Tmheg/gvwQJQrs9Z/oWU2fGVNob3oj1du2bG0Tdz/xR+xnAje3K5NZS
+	 +BwHU0zkb+QINA+rNVTFn28PBiQC8rghVMqnWR10xES8fK3MqF/AQwofvrH8yiejln
+	 lkHeMuk/GdC0haSzwiBpkgDDE9TVQN9qfh4gVHwNf4DaA+22tWY190rC43RIQabpqi
+	 z6KJ+74E4TslQ==
+Message-ID: <e64fc2f2-c4a0-434a-8d60-dcb28b99b8c6@kernel.org>
+Date: Thu, 18 Jun 2026 11:43:11 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
+To: Lance Yang <lance.yang@linux.dev>, dev.jain@arm.com
+Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
+ pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
+ <20260618074449.24974-1-lance.yang@linux.dev>
+ <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
+ <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8417C100011
-X-Stat-Signature: 9dsdo3atcg7f6o1m9hcou4jjftdun8t4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EE5F240009
+X-Stat-Signature: gpoxgns5ge8s1u937dmryqeumccf7fex
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781774521-890509
-X-HE-Meta: U2FsdGVkX1/FwIALpLEvmviHd8yNgAtsXybOhHAVrpqrCqZS0hYCiVqYlm2YFzqX69Iz6OxJyp58Ijd4mAEQLx2Z0Em63Dc1zxzvVvgQ0gH7ZCTCOMGWx9kU9tiVjy8jvx1Q/Ys7untlOoS41KYZPuMlUB2TydGxQRh/V/zbYeT+voKNd0d9wtvdnZlJh2iWXohPafgV4MOzZFll3o7E7hhvPrqwCzcAqB6D/UyP4D4BTjNT63vJkt9s3jx/0O30l2HTKNki7uYzuc+jyfdJOh8aaTKs9/Tfoq/FpQ/8NiB4FXlA6SwpozyvGvtWgk7VkLVziRRx7KO0wwIAYjRJSnSdFOmcMz8n2laW8QOWBpzymlXFXkzIvpxfaCO3L2UpaaCL7Euz8c4i2cK3G212C0TNLJbanG2yPNwZWr7qdjy5ky1wvyQxAkfO+9wEVB2/DpFH8Hfpsvac0BONFW+GDLd6/XT56z1VMvKGu7j7050BX61NBA5aJVqolU150zcAEpl00qY/rQmpw99FWcSHnqaOoWbWQA7UZraqCjTOpAfMF8l0vttYp+doRWn8Jb11lgqH3knISzF/fCAaioRjDLHj3KRQxKXY+vmZ5eAXXBmcFqCE6VNgAfSbvkgoQNcL0xdljAPyKtRA9V2hm3AXcbLWTXUZ0+lNSGOWDd5npNsbBJdZr5KaV1vHQzK2mojLcwY9cLjl2Zw5oOcW8iDJi4N2Fu5nRc5Eh2ENIq6q85E/2RCLMZ2Lnko7AwavX5xzuk7VmI9IWRBSbTHxcZwSSD5Svv2T69iPBVxqc7asrdgdBiWiiySbN43wSTb41G6wnC5IzZJFLo/KQbmrd8ri+i5wGfc7njzGLbY9N0mJVjHtwfYQjHghhr5coarxJUx7y1l4beiRKUAg4BTaVD+9vjgn12Iyv7p+YsvIKe9Vlo7oBLSTmerfS+7D8W/Nsy5bdtLhGANAFhwfmd47nvx
- MWQAJYPs
- cTw+Ta+2hOamfcM2L1UdfNgZ8Go8T2nhFhUG1HA2nwF7qu24NzAZJ1bE9/9p1JB9APjtH9VM4+6rbfNLTkllPo3rHLwsd5EgqsqYo4m4xw8RzmtkDENclScIJaNbfnEwK22lERx1j/C+WEHPvXtwVc923oW0A468vYmedGPwY7JuXf4WohWLISsxtsVQapIB6OMr+TYVFZbWUiw0e9KRa5/q/GlWLWhYfIT3fFH4Ma7mKo9VtEUD35rwfGUnV3q2Drd6+fo2q8e7W2Lz+naJUfELSdstdP4lS9JDB6ybuDKtjVH0ztdjv7yLZAUuhLRVu0B9QCxieMuEVHB33PgR4q75uRxMFaFdnWaWPZdk4t6k5lucXhnNDgmcsGTptDpaRqnnUNmwHyP4pyDdji2ULgv+EzY9itnuxPEwsGMdIjnq8zMbxhjK6qiksflmiP+VJByZ4fCqNLgZzpwY=
+X-HE-Tag: 1781775800-637211
+X-HE-Meta: U2FsdGVkX1/2bi96P5igPlWKs4ZAYk8IptbNQbJ7JjKXSxM2dSXSJ7M6TOmzAb1vSK34R0aGK60VwXFlpsX3A/OJ6RUMzxtgD7UT5h9D1EvrjLbm5BUoRFo+xiJ/7Fpsnwlf/KwFngNTkAsIxx1/4ImV6aXf86jw8I+c8xVHU+rSuv6FF2uyQu32SRAcmEulTBb0u2wQmtGR44U5CweaQVEBEwlPoqSbEGHJOmRfg3tYgwlzC6wfJDSrgfs2SuubyLOKRuu9QqnoSdBuTHLr564BPWc8J/sF44PbO2Iv2mEz3C5wjoqRbncnbLdWFHtbQgYYedx3GLS2OkEDgfTwJWjQlLhaAl44AIuo9erdhcEoqY50d+Wwetkk5VLuV32njeZG/m+JYPhjJGRnRFIcxGD2ym5xz8UCtPWmNqt3DSfAbQv536Jb3KyOe86hvslzFw5XYSZ1bMz1Qs37a7KouspcuL6f8KbMq1a/u4YA5PW/Bxsas9I1P+2ujyCMekYoZEfO8fdPpFZ4E0r8mkYRFkNw8zXFKUqp/K97uQXY4T7ZB9cv2MG4/viHY60THWFFNWpgyQ+5lQymiCrnfPtN4tKo1c8tO+gF8ES7VZT8kYLcvmiFQ2Z31vpdzgJu6mMwrAUztJ4V/3LsrMRxVLjq3gb6zEgYstBVQuErMRwmXx0YuFb2v/TDw/pnahlxxNcNU5hLhTiO7Tn8W8oSf4Of+vzG5bQHkhKGjGeE6gV3vP/5/p6MA4j0he5crv/a2jQEuKIqeEIZeZWrjoPICDSKdxeoMsCttCR11oPR7+QaH8Pjx2rORPvdkJUk1flHCLU1cUmUQBne6GI5/A2jLayzhDuxtNKQ25FCRjm3HqZy/Kc3RXpPfYQQ+i+ejGqh3Nr3DY5wUP/lheUSU0oekP33b61Qh3XbWFf5ysEUxMhOCGforzLettbWiU5odelYc77PBvti1PYtRpkxJ4md8q/
+ gmGgS5ea
+ hWAQ8A8ghkDXlFT1MmaEvQhaC25D4jsTbIP7p01TwMN/jkoyErbXsDRYVkDiq9jA+3x7j9XSNxwpuZcFh15ULug7vsoHA+7B6EPxdYD2O+MOX/lFKQ9Wy2RLC3EoPiRQ6Q+kKeSBZ3kn3ypRC3SWTEmVRugvCVWfU4jCwaWOaYbK8J6hE0nzrlp2ZoGbI/anZxS8Xf2kPj4wZswvm9BPIbl/BcjgilenYWPLXBmJ2qU6q3ltHZAa95+9nXE6lR8YUw0ubb213hpqgn0Kns/d7zqyxBgJdstpTRVwNSJjnZG5sSerp8vC4oF/Vk7L0D7JurOtOg30alEYhwlo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,87 +147,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Tong Tiangen <tongtiangen@huawei.com>
+On 6/18/26 11:09, Lance Yang wrote:
+> 
+> 
+> On 2026/6/18 15:55, David Hildenbrand (Arm) wrote:
+>>>     return __rste_to_pte(pte_val(*ptep));
+>>> }
+>>>
+>>>
+>>> So plain ptep_get() can feed raw huge-entry bits into pte_pfn(), and the
+>>> derived subpage can be wrong.
+>>
+>> Good question which impact that might have in practice?
+> 
+> The subpage check can warn, but we still pass that subpage to
+> make_hwpoison_entry(). So the hwpoison marker can end up with the
+> wrong PFN?
+> 
+> +    subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
+> +    VM_WARN_ON(folio_page(folio, 0) != subpage);
+> [...]
+> +    pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
 
-Currently, copy_mc_[user]_highpage() returns zero on success, or in case
-of failures, the number of bytes that weren't copied.
+My s390x page table knowledge is a bit rusty.
 
-While tracking the number of not copied works fine for x86 and PPC, There
-are some difficulties in doing the same thing on ARM64 because there is no
-available caller-saved register in copy_page()(lib/copy_page.S) to save
-"bytes not copied", and the following copy_mc_page() will also encounter
-the same problem.
+IIUC, it would be a problem if some PTE bits in segment/region entries (pmd/pud/
+...) would pass the
 
-Consider the caller of copy_mc_[user]_highpage() cannot do any processing
-on the remaining data(The page has hardware errors), they only check if
-copy was succeeded or not, make the interface more generic by using an
-error code when copy fails (-EFAULT) or return zero on success.
+	 pte_pfn(x) -> (pte_val(x) >> PAGE_SHIFT)
 
-Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- include/linux/highmem.h | 8 ++++----
- mm/khugepaged.c         | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+check. I don't think this applies, because
 
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..18dc4aca4aa1 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -427,8 +427,8 @@ static inline void copy_highpage(struct page *to, struct page *from)
- /*
-  * If architecture supports machine check exception handling, define the
-  * #MC versions of copy_user_highpage and copy_highpage. They copy a memory
-- * page with #MC in source page (@from) handled, and return the number
-- * of bytes not copied if there was a #MC, otherwise 0 for success.
-+ * page with #MC in source page (@from) handled, and return -EFAULT if there
-+ * was a #MC, otherwise 0 for success.
-  */
- static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 					unsigned long vaddr, struct vm_area_struct *vma)
-@@ -447,7 +447,7 @@ static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 	if (ret)
- 		memory_failure_queue(page_to_pfn(from), 0);
- 
--	return ret;
-+	return ret ? -EFAULT : 0;
- }
- 
- static inline int copy_mc_highpage(struct page *to, struct page *from)
-@@ -466,7 +466,7 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
- 	if (ret)
- 		memory_failure_queue(page_to_pfn(from), 0);
- 
--	return ret;
-+	return ret ? -EFAULT : 0;
- }
- #else
- static inline int copy_mc_user_highpage(struct page *to, struct page *from,
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b8452dbdb043..cf1b78eed3c3 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -810,7 +810,7 @@ static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct folio *foli
- 			continue;
- 		}
- 		src_page = pte_page(pteval);
--		if (copy_mc_user_highpage(page, src_page, src_addr, vma) > 0) {
-+		if (copy_mc_user_highpage(page, src_page, src_addr, vma)) {
- 			result = SCAN_COPY_MC;
- 			break;
- 		}
-@@ -2143,7 +2143,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		}
- 
- 		for (i = 0; i < nr_pages; i++) {
--			if (copy_mc_highpage(dst, folio_page(folio, i)) > 0) {
-+			if (copy_mc_highpage(dst, folio_page(folio, i))) {
- 				result = SCAN_COPY_MC;
- 				goto rollback;
- 			}
+While
+	#define _SEGMENT_ENTRY_ORIGIN_LARGE ~0xfffffUL
+
+We also have
+
+	#define _SEGMENT_ENTRY_ORIGIN ~0x7ffUL
+
+So these bits are not actually used.
+
+What __rste_to_pte() primarily does is reshuffling present bits etc.
+
+So using any other bits besides the PFN would be problematic I guess.
+
+Am I wrong or isn't the present bit already at a different location? For
+prot-none hugetlb folios there might be a real issue, as the PTE present bit
+corresponds to the PMD/PUD read-permission bit.
+
+
+Oh my :)
+
+So yeah, we should probably fix that ahead of time unless I am missing
+something? Good that we separate that hugetlb crap out.
+
 -- 
-2.39.3
+Cheers,
 
+David
 
