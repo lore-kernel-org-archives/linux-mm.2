@@ -4,109 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C18CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 13:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78FBDCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 13:31:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C22C6B0088; Thu, 18 Jun 2026 09:23:16 -0400 (EDT)
+	id 142206B0088; Thu, 18 Jun 2026 09:31:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5732E6B008A; Thu, 18 Jun 2026 09:23:16 -0400 (EDT)
+	id 0F37D6B008A; Thu, 18 Jun 2026 09:31:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 461FA6B0093; Thu, 18 Jun 2026 09:23:16 -0400 (EDT)
+	id F24806B008C; Thu, 18 Jun 2026 09:31:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 181336B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:23:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A22A1A0782
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:23:15 +0000 (UTC)
-X-FDA: 84893099550.29.67B088A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AA33BA0011
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:23:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVaQzpYi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C7C4B6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:31:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D67A7A071D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:31:05 +0000 (UTC)
+X-FDA: 84893119290.01.712B64C
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E555FC0013
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:31:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Y/MhBcyZ";
+	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781789464;
+	b=1teXJK3/ArorE7p32nFsuSbj2u9hnGlfwerHF/Po93woBzK2A/HHpikTEpLskOsgLCne6F
+	cMST1VmxddsneFyZ8hWTmHDI60c1PI2CTlY0nrvhkYqBC4E/LRTs2rkr2pBMEvhISBJs5S
+	vFFZ1dipEGmNg3JwK0S/aKMOuH1I8lU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Y/MhBcyZ";
+	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781788993;
+	s=arc-20220608; t=1781789464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Hao5re1+cPlNlzNJBZ4sf1w820eCIPHa6P9dbVUFmE=;
-	b=niovVGc8yiH4T0D/2K+jZxiUZbV6A4TVNwEeIhesfHkMidYH31ArgTOLCseN+FnD28GKgS
-	OzXCwizD/gtBIGRWexjSC9QJZOmR/3U3PC2flwA2TAEya+xl+YwUfLeO8IV59LCuFKG0i0
-	eBqNGEidNr1Gbnb7+9vKxYYz5MFXmlE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVaQzpYi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of linusw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linusw@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781788993;
-	b=og/aXSFPYvH6enrbELDU8gPeYL0K8MesbyMxv03Bqk+ji1OO1xgPXWxm5RObvNfxDY/J9o
-	X0b0dBozp6yVc1EQ7ujAjHyXvjsXf7738tOkNomW//nQw0Ogs3ysiAL5HW8E+SR++vhd2a
-	PsmuOf+pbG3AUFgLE6vXvqVi8D5cFzs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C4FEB43F4B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81C21F00A3A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781788992;
-	bh=+Hao5re1+cPlNlzNJBZ4sf1w820eCIPHa6P9dbVUFmE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EVaQzpYiRqYK5hksirc5nS24Y0fzb4urTSaV/jtRdTqQooIUUArTy1+HgkpKtFwim
-	 1+4WlmhNJEAkxfk/lfl5HQjq/Y957Ghxvj8izXGw/06pRWDQPP+ruSGUZgnocnwips
-	 nbOIxMtH4SiWbCBweUzm8EhaTU1i0hc0tbBr2uihXX5GFXhUhRfgxP9GVbhs5rMYWN
-	 UNGGSkpKbvRFL+6yTa8AVdYBjxBLZUvVNeRIn9og2bs/QNiJX0VZzDE8FhqrkAKrLo
-	 Qg38vSG6ryiNQ1C1rfo8rjZkYxReWCmpGf8+iB5xzZqjutTJZyoifdtv8K9wn/4odD
-	 sAtImPZz7u1lg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aa6c66e6c5so723014e87.2
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 06:23:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8daKvf8c8/czn+6F4yGbJLejTErEZbhmva714oqMEQpSfVymbsbh3i+oaGDMALgoyT1lfrfzwRVw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5nS0rVjR74D88wPQtzVHyiu6ANRybLinrEANb6zbHlw8HHJlp
-	KSfRrXQxhFhhSgH/hX92tgZ7BPG9ARAqRbwBWtfmUaj11vd1F95NCARJSt20kCbVIFZI/cPc7oo
-	wu8mvnJe4uySW6xjhEMGwmyPA4UPY4HM=
-X-Received: by 2002:a05:6512:6487:b0:5aa:6289:e0b5 with SMTP id
- 2adb3069b0e04-5ad50ec7bfbmr700610e87.35.1781788991504; Thu, 18 Jun 2026
- 06:23:11 -0700 (PDT)
+	bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
+	b=JLT62h9lxZ8lLH4B20aPan2dFSKfuyl5urCAVjNL2K66UUIThsAbqHeZA6Pneb7sZdOg0V
+	4ncX85SIw20KQoI/NcAAJO/4yIWW0zdEkzkg486L4iEJTwskLhHYnxl8MSJ9FNX+sYI+Ha
+	28SegB+9d6tBjommDWFDmf2Iu9ALv+g=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c6a4eccab1so50195ad.1
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 06:31:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781789463; x=1782394263; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
+        b=Y/MhBcyZQ+hJtupzu2oSyXsq7z+kgR79q42PDh4HDLns2jCmgZRXFKrHezt3VGsGv8
+         CcJm9jp2DZ38kJrT3KcIKGTUT4AclDCOhcaXQeJWz/TrHGcyMMhDeD1C1t4viO0M5sjY
+         t8HvBXjDF8AYpC6J027JeNV76Nk96m7FHWpR887RWaRoKUaFJUFbdtRxU5knGdD5yyLR
+         D3fWp21Y434WD/lf1iQDoV1aND8hHlGixUdn+Fq8mggnAoPTiNozwZqmoVsD/oFBGuDd
+         /PHNMCxp0b12TtzhqTT2Tr58phJYJqskJFiRRj34CHQ3QTRY0lq/EBCD2mKRkl9QwEYY
+         Vzvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781789463; x=1782394263;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
+        b=GwwmcsMkjQGlOb+7desupWz1CQFr1xrTPHfE/HnTy0Qp7bQj2btHpg3t+Zjt8Y/DGk
+         ng/TgPQObcd3lvtEBgsrGSfKmJPGe8a/zyTP/i8JINu3LP4UWyproTjqV6F9j5XKqZjP
+         quAR7Z9jadXdTGanSvbx9wCfinsugqswpTMhIkhZ27IHpVE+ufB+vObmwrr4CpnxY07D
+         7Ui8zIzK1LSYIzjyL8PiZtgExbLqCzGZYI7ls7SnHgAUjiedYFsFxvCgxb8yNqOQAWwi
+         rro0DWOEjv87zg26aksA2uqeWs7Gg23Hs53Zh8JQoOv6e7PKUZJT2+dxx9lUYp0BJI3E
+         yBMA==
+X-Forwarded-Encrypted: i=1; AFNElJ/wYKku7BGCfUwPmmcPzU95dvBDgwLGkirMvy5r3lYfZ/178ZCHOKL6BODl21UMlRKfM921APQGIA==@kvack.org
+X-Gm-Message-State: AOJu0YymCDRkNZI+ItELgMeTkaVduRETNE1EqXBkVvKFAHNlzPjkTrQt
+	WbqJaoVFfBkyf+IRuI8Uj77AXn8ais75dRcBRiwrRXGohlYIpQAru212gxx5J0kp7g==
+X-Gm-Gg: AfdE7ck0f5havOxX5cvmTKLgKQr6x8kEfMoVy1EBRQfOdvblG4KDXYqATUZysaj/9Kz
+	7aUh4SVs8jqjjE1YvP5xRzdZKaENn9LyKbIn/QaCwq3Ogkh3tWB7rvZeaFKfaI0KraClFPLXlk+
+	p7hc1jyxKYb9euDhTvUA+dFiG5WlJKoTn2FUtJCw9twVBSCrU4OatIcYZcCwDf+Q/U1LvMl+u+i
+	+KgM8A9iSoRTychsssi89H7iEIQgN5WYEofy98p8BT0JubYUW1GlB2smj8vr7torRoMhQaeFmPV
+	uC4LFIzN6N8u+RZGD847PkjQrsZxJKEqbt8Hi22MM9c9j3mvx2TGKXYzRW1cL7t3w6vkS2n1Cbb
+	daB4RDifxho0PMZ5HEIs/zYrTEUIeeTu26dKsHpK7EHps+hSiBxT3vF3Qk01rcjYMnx4oiPf9On
+	Rjeu5ErOHTNBGceWm2xHc9hcitV1CpR9p2eF9nKY/mQdVOTXYUfg==
+X-Received: by 2002:a17:902:d587:b0:2b4:58ad:e987 with SMTP id d9443c01a7336-2c6e8692cdamr1747625ad.17.1781789461980;
+        Thu, 18 Jun 2026 06:31:01 -0700 (PDT)
+Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521aa16fsm9477952a91.4.2026.06.18.06.30.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 06:31:00 -0700 (PDT)
+Date: Thu, 18 Jun 2026 13:30:51 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Parav Pandit <parav@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 01/12] PCI: liveupdate: Set up FLB handler for the PCI
+ core
+Message-ID: <ajPzC2Xh1NMbfokP@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-2-dmatlack@google.com>
+ <178124130274.908199.14827357870284807134.b4-review@b4>
+ <aiutNINqxhtlm2Dt@kernel.org>
+ <178126123047.908199.12042730612990730743.b4-reply@b4>
+ <ajB6V6yBHOjgK5ew@google.com>
 MIME-Version: 1.0
-References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com> <20260526-kpkeys-v8-1-eaaacdacc67c@arm.com>
- <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
-In-Reply-To: <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 18 Jun 2026 15:22:58 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=km9hqTuTMFUhyx_QPuMEwWqmnUVQtPtMXnp8paHH1_A@mail.gmail.com>
-X-Gm-Features: AVVi8CdVd_MSXkJ8x_FXRhl-ZhQK3-a6vu0Q8TQoQCS7OolDkuqw-biJhYguwBU
-Message-ID: <CAD++jL=km9hqTuTMFUhyx_QPuMEwWqmnUVQtPtMXnp8paHH1_A@mail.gmail.com>
-Subject: Re: [PATCH RFC v8 01/24] mm: Introduce kpkeys
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Pierre Langlois <pierre.langlois@arm.com>, 
-	Quentin Perret <qperret@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
-	Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AA33BA0011
-X-Stat-Signature: 97naxxzfztxb86kuanae6pey6ibrzw86
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajB6V6yBHOjgK5ew@google.com>
+X-Rspamd-Queue-Id: E555FC0013
+X-Stat-Signature: a7edke4mheyxtzj1ahfgshzj8rcg4qaf
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781788993-317309
-X-HE-Meta: U2FsdGVkX18uXLW9Umjswz10lDRJEnNpNPKGs03Hbz1b9HXkNKOHmNrO9Rw+eYVYBs5mifqDauTvBYmVhQqVxV0cnvsS+Rllzm3tl9/9wFTc93pMflmC/KyYlDFWKItybTTl+OH//SuCC2FjxbjyBKTasOUw7wmAkwSRMA9vjUHKYoNMEzm7X2bn2VB02UQq/T163b5I8VwqFpY2lCXmmoLPuCnR8HWWvx8rOwvSvRO5ExKuB+YqWIpl7t+eZ6OztfVGDwkftmhYndzN58/MpHmcQ4yVTaRzXlu5wE8JEczetsWfSYzSSJrzx48IbJMzXLG8QeRZ0+chMWRYhq9WxP8kbp6bAAZ1P7MJaAeh8hNL1gxjbAM0csyWiWE7mGL8x8+bfY1CqHhpdmfWXTbojHsEgXzg/UIvbIjUjxJud9rPejfkwGJV7xS35oC/7PtkhpYSVYnOFL/Zim5rYeOtKb4Gm9U9IqN95HysALM1J8WK8Hq9wT4hagse8shNOo5iATs2vdu2pC6c97WFMZeLYblczLTj+hQ+xkATT2gvtsAlsKWI9Nkee0xcmgT18I2uN1YtdcSxBbDH6iEc06aFSYr+JGdI1AR2pM5zg+RYbRRVcQX45SrrqClQXtM5CgNH/qMhd81AoObZmFh04TGT0ACXDkUxSzJ6FPr0qDWtAGDuJTl84NvtTKQ55F1TY0hvWGAWLsbEUb0kzEJQsFoj2Z2bzoVs1kAUwO6SgH8UDp5cTW0DNr/u7wZd9T2UzCVr3dPpOFXC9bPHwMGseneT94OAH/YAhEj3pcHSdQHP3jJyRhjZawmkaCSSmRkvBUrFCgOJxqc9uSB7M3ZKdjqrmN0Ey/2IGdfIfb9AE+wVFFm0RAMjWoZZsFY7mEYaevqtEtnkRIEb82bGMKN07lrr8bTLe8U2Hu00HZlIPQQHpsOqTCRT2X+7ssMpleJWvHp1udrfhrjunqqCuYQmnjm
- WWhVO0rq
- dSJJp62UWOKLkKRAceKB04rp5NkPLNK0rikNKhnxqhrOlqH/JXISPH1WCinZHd3ZZ0d2xB2ooas8L2txwJNLbVaOG8NFIB9qCAkO8euhhg07+UaLVlbP20r6ofycbE3wFsC0BduVEiAVfoJkoj7fUsmZM/sIiucHp3MtlB7czzxNpZjByukF6nN9mjvrvo7OaDFD+DzPgtMhlLwqn8cxO06qEkX8abJrHgwy5wKLIOn6nifoeiIL17gogvLDF9A3RlErcVaO2y3TqPIXT3mVRUulBLg0caVAhZvgKoX8qH6bFS68d2VxgRET9Tw==
+X-HE-Tag: 1781789463-142569
+X-HE-Meta: U2FsdGVkX19G9ZUojiHyHSs44+FDieCofbwIIRe6q0UavFHYiuiyk5V+S06dUjl3CzbZtsTcBKFb2ilUZAl5YqX78IDdO1X1A1urkKJzXMEoSlt0kpyjY93dZOHNrLkGXzsMs62I+2bu6vY380TzxJq/tkXv5+0Gl3jyIqKBbI8HT5cYqCwo+1KE/eCP4Xx5PinQBKsu+aWA4yVaaZT1XXoBxJFSebxLpmnPrQNGv2X8hzl+DR/IAHYiYH6LNi9RrqH2/ON7UJHERDouCngii8OO9DtfYdj4qKy9NPlpffER/iSZZqizQuWfGlkW/XnBVVLPeGQ5/XTt+NMmvZlxgFLJQt3PUG+jVA7D5ZJ3NFdx684nHVfC8GuZxh3Uj9WUOefdF6XP1z7RbHT/rrO4GLXJlf7uWnU7cbz96rgLn0vXI9/yUNXN/SIRVVciXwv5hvchD0ReSMl9GTLNr/VQ9o1VCBI6UcjNfZuM4KCOU+rxDQolF/EYr7jsfuJlk9iXTEmHN1w5GP/BW5SSFaC/67iZgK9t100xwY4VPyfLK64MKH2fe6kCKuCs84EW5NnPhghZkWcQzYBW3XYscIUFR5SNltY9wqs7X0ngBBiOaS1g+szT4+0oP2r+y9pab+C4OzTEtYeZGjsptKvGURtJd1j6OlAd9EBgLrUz57615sMz00Btt96zjtw8GdKtoYykG97RNHOLHU2Xlw3hmyBu7g0Buz01CZvQPK6aYAqD9hNGaE5s4AyKQRyzPtaQucjCoqdOJDCwL+bRjIe7Osx0Mo66+2g8hI/809g7VZuH4RfgMe8g85bKtbOtC3qrDfeq4PsY/W5dAMpRtT15S93/fyvw0XBug9PvWHjXhj6MeJ6DcJfQ35eNAnDGhCoR016dRgSC+ax2+B4mMfJmTCZ4SEHZOAthURKsQG4Cke0onUEM9GNIUYKWhIkl+/2bNAYBRGgLDrdMeTxhSutNY7M
+ 7fBSqk6+
+ VVm8KsGzWo8hnYeJtdLS+JhsPnxsfYWjy2SwDQVuvIWoRDV6eYdCP2aeuSQDntn+1AIX7YcrrwSMSCSMDqbu0Nz05HkKdHtgLVpRzvbvqWzMq2jmfmcMt1BoguqDG0lnN5s4H6V/8Y/dfpMAVSvh04t97L8B54kwlBi39as6q0fZgHdkxEutdwgee64k7k2ui62pFRErClGndaB3xGrFauTSB8b4zIIWrsklLRcGSzBjNreJtmerF/Wuo4OoNHDYxuPT8WiJBP9n0Ai4KkH/p0u9fRaVOyi5//IkS50Gri0M/mE5VJn2ZYR4N/JqBl/qYY0flHoExKtutU0I2l/vF53scSx7UADAXd5xk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,31 +142,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 5:19=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Mon, Jun 15, 2026 at 10:19:03PM +0000, David Matlack wrote:
+> On 2026-06-12 10:47 AM, Pasha Tatashin wrote:
+> > On 2026-06-12 09:54:44+03:00, Mike Rapoport wrote:
+> > > On Fri, Jun 12, 2026 at 05:15:02AM +0000, Pasha Tatashin wrote:
+> > > 
+> > > > On Fri, 22 May 2026 20:23:59 +0000, David Matlack <dmatlack@google.com> wrote:
+> > > > 
+> > > > Please add Pratyush, Mike, and myself so we are notified directly of 
+> > > > incoming patches, the same as with other areas where the liveupdate/ 
+> > > > tree is specified.
+> > > 
+> > > Or we can add PCI liveupdate files to LIVEUPDATE entry.
+> > 
+> > That will not work, as we cannot serve as maintainers for 
+> > PCI/VFIO/IOMMU/KVM, etc. David Matlack will be the maintainer for the 
+> > PCI components, and we will accept patches once they have been approved 
+> > by him.
+> > 
+> > The simplification we could do is to create an email alias 
+> > for the live-update tree maintainers. This would allow us to use a 
+> > single entry instead of listing all three of us individually.
+> 
+> We could create a Live Update mailing list for all code that can be CCed
+> on all patches that must be merged through the Live Update tree. I would
+> also be interested in subscribing to that list.
 
-> Looking at this, and wondering about "why do we get registers involved in=
- this
-> API" I would probably have an interface like:
->
->         arch_kpkeys_enter_context()
->         arch_kpkeys_leave_context()
->
-> Whereby you return a "struct kpkeys_state" or sth like that.
++1. I'd like if there's a specific Live Update mailing list for
+submissions & discussion about the Live Update tree.
 
-This is close to what I was looking for as well.
-
-enter/leave makes the code look more like generic entry.
-
-Passing some kind of state cookie around is inevitable in
-this design and IIUC Kevin argued that it would be inefficient
-(another level of abstraction) as opposed to just hammering
-in the context we want, where we want it.
-
-But I think the compiler will optimize that out by constant
-propagation if the backing architecture implementation is
-simple.
-
-Yours,
-Linus Walleij
+Thanks,
+Praan
 
