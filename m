@@ -4,86 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF54FCD98DE
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 03:58:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B85CCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 04:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D48F6B0093; Wed, 17 Jun 2026 23:58:19 -0400 (EDT)
+	id 1641A6B0088; Thu, 18 Jun 2026 00:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511646B0095; Wed, 17 Jun 2026 23:58:19 -0400 (EDT)
+	id 114BE6B008A; Thu, 18 Jun 2026 00:49:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 426986B0096; Wed, 17 Jun 2026 23:58:19 -0400 (EDT)
+	id 02A426B008C; Thu, 18 Jun 2026 00:49:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C0C26B0093
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 23:58:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7AAB51A0645
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 03:58:18 +0000 (UTC)
-X-FDA: 84891675876.17.6CD1CE2
-Received: from mail-m82135.xmail.ntesmail.com (mail-m82135.xmail.ntesmail.com [156.224.82.135])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 367A2160003
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 03:58:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.135 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BFFC06B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:49:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 190E21C2E50
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:21 +0000 (UTC)
+X-FDA: 84891804522.21.F18C088
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 62A3420002
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ErrZNQS+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781755096;
+	s=arc-20220608; t=1781758159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItFcvXUylDLtztUYNUWHJT0jInwN4eJ8mU+enojXGhQ=;
-	b=FxTidF/ZHWa7Ih8LnllIuBwAY0KfFsx6xmWkR3o/Vr47BSutDM//7onVjgHZ5CtiFiZluu
-	Pt/5th1dtea8hUEdNcoTwAja8zzCNyKlC+NJdsGj36mbF16tcWMJ5BjmUPkNYgVh6RUjEs
-	VkAgR5O4inx2nIbetTPpoKT6Be8nSF4=
+	 in-reply-to:references:dkim-signature;
+	bh=/50j8h9PVe8SgOeD0lIk2bjb8dms38WVFY5YQFYhQcI=;
+	b=A4y2+KMKzE7llnP9PWWBtARQVPfJF7GbTFFSKUi+WCeQ9Praz1Ot3u8WhJY2yFMVuYVU+M
+	VpaqmDkj1mI5MniIuCvCDfgtDhWG1yjWilXpsOdqqNwa0vlJh4iDvGLt4bt5TzQ1gKi3ux
+	LZvmoK9gsDjE1jpBaKTuHV8OhxJpsaU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.135 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ErrZNQS+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781755096;
-	b=BvoXDh7up1rlm/noGF5PtCuCcTW7h5+D0Cb0asu8NT01hXWrrzLWdcjEP7Iac46KSaf9Zx
-	qJdjfdOzc2NWtwjDzOALTFo6BvAxGcu4DWwOiqFP7b7h6kNcb4ij7RYQsY14lAPKQaxFRW
-	639fdq00Y+fHA6Pyjxm/jDvBAcRikY8=
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1b989993a;
-	Thu, 18 Jun 2026 11:58:12 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
+	t=1781758159;
+	b=yqafscLbWambyAWV9QZgWr0oz1FyT3P1Y2OPRKwZrlfvUZWqr5z6iHLYetahfzMUaaeJd5
+	U5euFkAEc+r3I9LJNMy9YzjCNEyDfsKBSVLXVo/A0qRZxPebDhMVCNHzAFbddcg06DHaS2
+	XPYQbp9JI63VyIvBpTmXtyrqWBkoIk0=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8419ab3a297so203351b3a.2
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781758158; x=1782362958; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/50j8h9PVe8SgOeD0lIk2bjb8dms38WVFY5YQFYhQcI=;
+        b=ErrZNQS+8/3RtVB6jqMKn/1A6KaihwoiF5fZjCXzcs9QpBhWZtIdpyvQYgqqoDlORQ
+         Rr7dOhlidXbk0Tl/T3p7ZA+nCeomLyfWg0cS31W7tKi8qguw9XPgKDwDjcVg4Ew5J4+z
+         xyElf1hHyQGYPCwiTTAMN3I6ssANxmXP6aYIi2bYfOhtq03/eJN5M8AaNjUPpZoAplRR
+         KwrwgQvuq/6nVRR0Tg7ST4jrRpq5EcW3MQElobai16u/3D18h6HgswNAQVlxk/bm3SR9
+         ww/7mdn6IgRa7QyT0K09iIaSBEsUPVwxu0sh2XpWZcaKgApgtg5wLBCnFCOjr3eaXGFE
+         Dy6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781758158; x=1782362958;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/50j8h9PVe8SgOeD0lIk2bjb8dms38WVFY5YQFYhQcI=;
+        b=BpF7t1SFmYCYS4VtBu/CzZUByKMvodiNoUOKL4u0nlYVTt+fqHazBLnTIK6zoNuwBU
+         2BlGI+hk6/ssyuaj+g8vdWygUgCfUzdinf4z+XAcq8o/XaKSme7GfOVeHGkrIqTjymKS
+         P2QNhQE7oGzen0GrN/bV9uD/mzFPIJLLw5Qx2wuXDjs8erHe9y1HSFCbWHufe2qKvShr
+         p/HFxP7GCiQuzD7HsPJu4uFvEanzyRoBkF/2ifM4xfjs55ZFGNmEGOsuod2N12w3+jvY
+         sQumpVKDvJpYl2gAhtPX4tfQFTNL8/NI2+JopHhJnE7i79qwzpgPZcVbcf4DsE1VnFTf
+         Hu1w==
+X-Gm-Message-State: AOJu0YwmmKtR8xiTqAw6rLET6HLLNKvIQzT1axVrZbWJqlz9nJKbR6ys
+	UdFmFwCYEHuafXR7s3vbeI/yp9+YHGgerfbqpS+8bV0Jly0Dc/5zw3ys
+X-Gm-Gg: Acq92OF1f76kf6ryv/KJv/Up4CtLDiRL7ud7Q+92UM9HKmfjL+/XOgTV06KR52+TXq8
+	2o+DX4Pr2oh2RJc29IZ5IMSPEQXmAJgjriHylJ3z1KywiBhQc2kx4bRKW+p2t3w/g5pTl4dsRrK
+	IvWrDmdEw5d9cBrxAFmWe8KpHpHrGziJUWn5cRIi64y6r2V3CzLFKK8FbpS7/WE46SxElJmyl9e
+	h/EI9zk0WuSwY1ZwhnfG07KpVekcmT1ZiEnyKFPUO9e2lpNLnaQh4jO+irDb6cYOkxdb6L13sV+
+	lp6wZzARbQ0KHPrSHOi0ZLCtRhQf+Mptjfs+V2drB6whW7omPiAI/ZY9dXZoYzXU8qiHNuIn7po
+	OgqR+4VMjnnYczix2fiXj3NVzcfOXOu+NqXKnJH0250n/KhuHtkwhxg0mJuMKQHGF/TzFFbx+VC
+	fEaeCfEiszbfH85qLduQ5/Z9HYBJMxctrHOndNcYgtnBO4PzNIsHk=
+X-Received: by 2002:a05:6a00:4615:b0:822:6830:5900 with SMTP id d2e1a72fcca58-8452444604bmr7259302b3a.6.1781758158031;
+        Wed, 17 Jun 2026 21:49:18 -0700 (PDT)
+Received: from localhost.localdomain ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b020b53sm17214781b3a.47.2026.06.17.21.49.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 17 Jun 2026 21:49:17 -0700 (PDT)
+From: Hao Jia <jiahao.kernel@gmail.com>
 To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
+	tj@kernel.org,
 	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
+	shakeel.butt@linux.dev,
+	mhocko@kernel.org,
+	yosry@kernel.org,
+	mkoutny@suse.com,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	muchun.song@linux.dev,
+	roman.gushchin@linux.dev
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v10 4/4] mm/page_owner: document page_owner filter
-Date: Thu, 18 Jun 2026 11:57:50 +0800
-Message-Id: <20260618035750.3724613-5-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260618035750.3724613-1-zhen.ni@easystack.cn>
-References: <20260618035750.3724613-1-zhen.ni@easystack.cn>
+	linux-doc@vger.kernel.org,
+	Hao Jia <jiahao1@lixiang.com>
+Subject: [PATCH v4 0/5] mm/zswap: Implement per-cgroup proactive writeback
+Date: Thu, 18 Jun 2026 12:48:52 +0800
+Message-Id: <20260618044857.69439-1-jiahao.kernel@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed8e11d0c0229kunm88c9600fddaba
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGh5JVk4YH0wYQkhOTkMdTVYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
 X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Stat-Signature: djf8p9w4w9uo7w7z4j415a4zudwmg6g1
-X-Rspamd-Queue-Id: 367A2160003
-X-HE-Tag: 1781755095-553081
-X-HE-Meta: U2FsdGVkX194x/BObKVDtFq4dXit80kH9WYMsHN1xcTN/ADoU9FHbA1AofJvCq3ahTUV7BWq7pEe9kjis8q693BjwCznpNxHdLB4zoVYfZg2K5zrX18dlx6kuPHruL/o6OWpxRqDeKHped9/qE68wySXPQVcQ7ExhgwCboLo/V71h30qTNlsJZd0au+dIpD7+610I61EVTrweHDHWFkh0GDy+JOnkg1JhWyNDwddlg9f1V6GDfSdXyLvehLx38TGd51D8Yr0moICUrM8Czn6NeIseVOfawF6vw+3RrGrugIY+GT5excBj9XM2Wn6qElYDMwBcGN136z+k5nvrffI2Jsq5iZIIIl3V7q8xZQs0YYuo9Zk4w32f29+8JW08hmNajToeciTbfUE0RGMswZYCvIbtXkjU6NT8f1Z5q1y2LQG9H9zHlmTz3T7vsyltNsgsBwdjH1lsQpTqntdsxdFUgIMOiQhhrwFaRh8/7l0LxLwDGjp10isuaoTXDBcPLz079ORs834jB/gP7rdaWxOa/LBjpbU0qK/XuZVWniAuWqNiEddVyQN3h/xICkQPnPGOofLzgd799ptdZEy6cHfbxY9gYy3J2t1/oPML4i1Hji3vymywwaQigoo/JOCtZl30WgLKkZK5mej9EhAQMLq4vwRUCmnbUEuXtcmZweg5rfFL9GMc6OcfeRtCOww8BpqydAQPzfyZwFpPn0v2NUPsQG2c2PRbnEZtQAks/J0Djac8nER4+L2AdMcDrB/KbP22kNvw4W76KHJ1hLxfXnUXChbmfQ+ozkbAiyOyvVKCc3kj87583ibSXEcJ+JO7vWr1z4Zf4kfGeXMkXzepUHb5qOUk8p0vqr5TDGyTOcWMQ/uTh9oCqpImbgAVLk29WnxcwifwRk8O2phSqm9AI+nDxGiCXWKHCZTAhWwIaDw3xE/wd8Nn7dWGF8aP34B3Hv0l5+yv5Nrey/gLoEmdW+
- u+Ifd/MA
- nrUPQepQHziSWNrVXM/Hgfi0CLZQcT3LfhTH7tBAEHzCYOQXd0C7kJjY7Jf5f0zBUGIRUZc2FAtwpBUTeD7jCebROrifsmlB+X2aD/AMfV20C1uhURpyFP/84pqB1M2LDmYcCmyVZJiwlNj7AyaFxL1AX2nqpLHUmMJq9Qtkj2l5StVQ=
+X-Stat-Signature: bhyogujtdnru1uppgincpps5grjwbu6d
+X-Rspamd-Queue-Id: 62A3420002
+X-HE-Tag: 1781758159-298432
+X-HE-Meta: U2FsdGVkX1+IHxbgr7C0f/Auwowgu45PufgHyE0d/IOcAOjIbGaw3zMKcv8cg2BVMeLznGPbbr9V43RwD7vO0zhPQOTKLg7QiJG5no1LRQ31EkpLaBQ6qrRWHte+fwEu0pPGHkUjCsV5v/q7kZWcQTQ7StCokbqqldW6rIJ5ms9ZTSwuQ7nI3/3xcpf2Km16morUql31WGuoK0Jo29d/ilpFO6lwohJjwJDwF30Zs0Ao0tP7FHzU1ZEfRw9lrD2tB0jFL1PdbHe/60WmUsCnhW5EOTnqImfx8wFeOZ+m2NBb2oJpYm0a8PJ/v5N7YC4zTrC9Zvj4Wvh/1cIq28OaZlmiYtFPi1wu0e6QPVuvWBI6vTc5fNZ86nzXXOBav/mY9qCdHk2NSFQFbWGhYYUDvQh9oaLIx7h5abhFjn2Ha1w00R81wRzfOpdsr1kZ74rX+3Y5OjaRp+45yKYWklUfF4hVtLp1p7cOD8gbZzLwc5qUsBBqOwvJX9GBZT+1R2/iW6IJMBGgplDUdWOEpUzKxmMWLPbl+YsFj+iP0QECN2lgeRbP9e90kAmGnxR8Vh6uLKG0d9vP7nE8/iKT9HPHQhh9GIsCB5myfGOwzvVrbCeo44IpcYY26tagaFDJkT4xmuN3QQWxkz/mdfUbj6HlVAkkiwyXXEQvM4rc9WmMn4ObmWU+nUx9rYL5+nRiMzAYPFQNWJgq+1aYq8ELg1h5nF0yXtC7mfGQp5yCn/wQZcHacEw3+Ph1NSbF9UHpqFtP2tNk4EnUO72KDfUMBTEtSg6I96GaAj5D4q/ZbUm6W+g+yjjfyQBgAAgFeuc2py1AJ/Vo7ExLZd+dH06uRPWzHJx84BoEIUOY4gosbd5jNBgYFuf8aHHH/AWQbxr1MBTXl4cQaf1V/k6ogPaeisMRk9NFUe4S41nd4gdMlY+juDISy4o9iIJVjrzRa7AA7Gcm7oIBFGTRozQg0ahK/Fq
+ HO4ze0l5
+ P2xnZZzkAFMdh2XZwhjbtjR9naCTsYyOMDLXzfZjcDe8o14Vat1uZ/zsteGKuR4M39Omc8ZEBVSYwPQyoNF3IFYGXq3bJLFbgD+736++Te+s/ohUEG9L3wou/6aCcaHUeEiqxDc//cTxUB//ZrmAU1V5BBXmT8YxSScnBd35fE++IfYWp+k5KqWDj7Xr07Ts5L5JE41dbp7qI8Do6xrUjZSGXKm5Sim/vX9VLNI2Hob6GTqPSm46BYemGeYnfZYqMc9fuCG0uARS/kk2lvvu21WzHRYNtxH7xLQvzl7KAPRVtSJwPMqJ86TvWDJjuHHX7e0+asYYMADsJEj2QNwessxopPFSCluz/U4NoXjWtpFyNRJ1mTkpvV37CYcB5njQlzBgoTaR8V+zENnedlciiDSR+ceM8agMlWtrm5ywPL5iyxVmhskOfPRIyh6QUu30G0JG+94XWqYINAWqKJ3rrecNd/jYSwqqKMNpQeni4XvdLO/MHXalE1NZoOnkEHXp7DXUvGHe03T3pRk6xyhXTpmrqtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,152 +125,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the page_owner_filter userspace tool and
-kernel-level filtering features.
+From: Hao Jia <jiahao1@lixiang.com>
 
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
-Changes in v10:
-- No changes
+Zswap currently writes back pages to backing swap reactively, triggered
+either by the shrinker or by the pool reaching its size limit. Although
+proactive memory reclaim can automatically write back a portion of zswap
+pages via the shrinker, it cannot explicitly control the amount of
+writeback for a specific memory cgroup. Moreover, proactive memory reclaim
+may not always be triggered during a steady state.
 
-Changes in v9:
-- No changes
+In certain scenarios, it is desirable to trigger writeback in advance to
+free up memory. For example, users may want to prepare for an upcoming
+memory-intensive workload by flushing cold memory to the backing storage
+when the system is relatively idle.
 
-Changes in v8:
-- Fix Sphinx double colon warning
+This patch series introduces a "zswap_writeback_only" key to memory.reclaim
+cgroup interface, allowing users to proactively write back cold compressed
+data from zswap to the backing swap device. When specified, this key
+bypasses standard memory reclaim and exclusively performs proactive zswap
+writeback up to the requested budget. If omitted, the default reclaim
+behavior remains unchanged.
 
-Changes in v7:
-- document for per-file-descriptor implementation
+Example usage:
+  # Write back 10MB of compressed data from zswap to the backing swap
+  echo "10M zswap_writeback_only" > memory.reclaim
 
-Changes in v6:
-- No code changes
+Patch 1: Extend shrink_memcg() to support batch writeback based on a
+  compressed-size budget and update its return value semantics, thereby
+  improving the writeback efficiency in the shrink_worker() path.
+Patch 2: Extract the memcg iteration and writeback loop into helper
+  functions to prepare for proactive writeback.
+Patch 3: Extend the memory.reclaim cgroup v2 interface with a new
+  "zswap_writeback_only" key, allowing users to trigger proactive zswap
+  writeback up to a requested budget.
+Patch 4: Add the zswpwb_proactive_b stat to track the compressed bytes
+  of proactive writeback for better monitoring and tuning.
+Patch 5:
+  Add tests for zswap proactive writeback.
 
-Changes in v5:
-- No code changes
+v3->v4:
+  - Drop the per-memcg cursor and keep the root cgroup cursor
+    (zswap_next_shrink) logic intact.
+  - Stick to using the zswap_writeback_only key, and change the proactive
+    writeback size to use the compressed size.
+  - Consolidate and reuse the logic between shrink_worker() and
+    shrink_memcg(). Enable batch writeback in the shrink_worker() path,
+    while maintaining a low writeback budget in the zswap_store() path.
 
-Changes in v4:
-- Update print_mode documentation to reflect string-based interface
-  * Change from "0/1" to "full_stack"/"stack_handle"
-  * Add bracket notation example: "[full_stack] stack_handle"
-- Update NUMA filter documentation
-  * Remove "-1" example
-  * Add empty string as clear method
-- Fix indentation: use tabs instead of spaces in code examples
+v2->v3:
+    - Align the return value of zswap_proactive_writeback() with
+      memory.reclaim and update the corresponding documentation accordingly.
+    - Resolve conflicts in test_zswap.c on the mm-unstable branch.
+    - Enhance the zswap proactive writeback selftests to guard against potential
+      future regressions.
 
-Changes in v3:
-- New patch to document filter features as requested by Andrew Morton
+v1->v2:
+    - As suggested by Yosry and Nhat, extend the memory.reclaim cgroup v2
+      interface with a "zswap_writeback_only" key instead of adding a new
+      dedicated cgroup interface.
+    - Update the zswap documentation and add selftests for proactive writeback.
 
-v9: https://lore.kernel.org/linux-mm/20260525081652.2210206-5-zhen.ni@easystack.cn/
-v8: https://lore.kernel.org/linux-mm/20260520075641.1931080-5-zhen.ni@easystack.cn/
-v7: https://lore.kernel.org/linux-mm/20260515091942.1535677-5-zhen.ni@easystack.cn/
-v6: https://lore.kernel.org/linux-mm/20260511033017.747781-4-zhen.ni@easystack.cn/
-v5: https://lore.kernel.org/linux-mm/20260507064643.179187-4-zhen.ni@easystack.cn/
-v4: https://lore.kernel.org/linux-mm/20260430163247.13628-4-zhen.ni@easystack.cn/
-v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-5-zhen.ni@easystack.cn/
----
- Documentation/mm/page_owner.rst | 77 ++++++++++++++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 2 deletions(-)
+[v3] https://lore.kernel.org/all/20260526114601.67041-1-jiahao.kernel@gmail.com
+[v2] https://lore.kernel.org/all/20260525122242.36127-1-jiahao.kernel@gmail.com
+[v1] https://lore.kernel.org/all/20260511105149.75584-1-jiahao.kernel@gmail.com
 
-diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
-index 6b12f3b007ec..383e59c42743 100644
---- a/Documentation/mm/page_owner.rst
-+++ b/Documentation/mm/page_owner.rst
-@@ -65,7 +65,14 @@ un-tracking state.
- Usage
- =====
- 
--1) Build user-space helper::
-+1) Build user-space helpers::
-+
-+To filter page_owner output:
-+
-+	cd tools/mm
-+	make page_owner_filter
-+
-+To sort and analyze page_owner output:
- 
- 	cd tools/mm
- 	make page_owner_sort
-@@ -74,7 +81,11 @@ Usage
- 
- 3) Do the job that you want to debug.
- 
--4) Analyze information from page owner::
-+4) (Optional) Filter page_owner output::
-+
-+	./page_owner_filter -m handle -n 0,1,2 > filtered_page_owner.txt
-+
-+5) Analyze information from page owner::
- 
- 	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
- 	cat stacks.txt
-@@ -263,3 +274,65 @@ STANDARD FORMAT SPECIFIERS
- 	f		free		whether the page has been released or not
- 	st		stacktrace	stack trace of the page allocation
- 	ator		allocator	memory allocator for pages
-+
-+Filtering page_owner output
-+============================
-+
-+page_owner supports filtering output at the kernel level before reading,
-+which reduces the amount of data that needs to be processed in userspace.
-+
-+The page_owner_filter tool provides a convenient interface for this filtering
-+capability. It supports two types of filters:
-+
-+1. **print_mode filter**: Control what information is printed for each page
-+	- ``stack``: Print full stack traces (default, compatible with existing usage)
-+	- ``handle``: Print only stack handle numbers (much faster, smaller output)
-+	- ``stack_handle``: Print both stack traces and handle numbers
-+
-+	The ``handle`` mode uses numeric identifiers instead of full stack traces.
-+	The mapping from handles to actual stack traces can be obtained via the
-+	show_stacks_handles interface.
-+
-+2. **NUMA node filter**: Filter pages by NUMA node ID
-+	- Supports single node: ``-n 0``
-+	- Multiple nodes: ``-n 0,1,2``
-+	- Ranges: ``-n 0-3``
-+	- Mixed format: ``-n 0,2-3,5``
-+
-+Usage examples::
-+
-+	# Filter by print mode
-+	./page_owner_filter -m handle
-+	./page_owner_filter -m stack_handle
-+
-+	# Filter by NUMA node
-+	./page_owner_filter -n 0
-+	./page_owner_filter -n 0-3
-+
-+	# Combined filters
-+	./page_owner_filter -m stack -n 0,1,2
-+	./page_owner_filter -m handle -n 0,2-3
-+
-+	# Save to file
-+	./page_owner_filter -m handle -o filtered_output.txt
-+
-+The handle mode is particularly useful for monitoring and performance-critical
-+scenarios as it dramatically reduces output size. Testing shows handle mode can
-+reduce output size by ~66% (84MB vs 244MB) and improve read performance by ~4.4x
-+compared to full stack output.
-+
-+The NUMA node filter is useful for NUMA-aware memory allocation analysis and debugging.
-+
-+Behind the scenes, page_owner_filter opens /sys/kernel/debug/page_owner and
-+writes filter commands before reading the filtered output. The filtering uses
-+per-file-descriptor state, allowing each open() to have independent filter settings.
-+
-+Each file descriptor maintains its own filter state, so you can have multiple
-+independent filtering operations running concurrently. For example, in different
-+terminals you can run different filters simultaneously::
-+
-+	# Terminal 1: Filter node 0
-+	./page_owner_filter -n 0 > node0_output.txt
-+
-+	# Terminal 2: Filter node 1 (runs concurrently)
-+	./page_owner_filter -n 1 > node1_output.txt
+Hao Jia (5):
+  mm/zswap: Extend shrink_memcg() writeback capability
+  mm/zswap: Factor writeback loop out of shrink_worker()
+  mm/zswap: Implement proactive writeback
+  mm/zswap: Add per-memcg stat for proactive writeback
+  selftests/cgroup: Add tests for zswap proactive writeback
+
+ Documentation/admin-guide/cgroup-v2.rst     |  22 +-
+ Documentation/admin-guide/mm/zswap.rst      |  11 +-
+ include/linux/memcontrol.h                  |   1 +
+ include/linux/zswap.h                       |   7 +
+ mm/memcontrol.c                             |   3 +
+ mm/vmscan.c                                 |  14 +
+ mm/zswap.c                                  | 322 +++++++++++++++-----
+ tools/testing/selftests/cgroup/test_zswap.c | 153 +++++++++-
+ 8 files changed, 456 insertions(+), 77 deletions(-)
+
 -- 
-2.20.1
+2.34.1
 
 
