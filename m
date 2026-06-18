@@ -4,137 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F7CCD98F6
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:02:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1698ACD98F6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0698E6B0098; Thu, 18 Jun 2026 11:02:41 -0400 (EDT)
+	id 043A76B009D; Thu, 18 Jun 2026 11:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A566B009D; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
+	id 01A936B00A0; Thu, 18 Jun 2026 11:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4C576B009E; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
+	id E72AA6B00A2; Thu, 18 Jun 2026 11:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3156B0098
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 457E3C06D9
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:40 +0000 (UTC)
-X-FDA: 84893350080.15.E80ED32
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1BA7C80017
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=I3aIeWJq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9nj4athg;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipvHMcZP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5KCoBLuT;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B03726B009D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:02:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38917A0178
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:53 +0000 (UTC)
+X-FDA: 84893350626.01.3436C68
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 43E4080003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nn0Fg7wy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781794958;
+	s=arc-20220608; t=1781794971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
-	b=rlJKcetnPMcSMAD9oEFefHIKl+XoCSQ9vWMODCt+eIzJvODRLYN3dNlHNzL70p0fOSXWm8
-	JsrMcSTi0Qi12fngbGMOK2cJncB5J/62qozEXi59pI3VdnLUQCI04hJuT+BzADqjNxzSOc
-	kM3ROgK3y5LMDK8YlEgKuNr4F8NM9qg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781794958;
-	b=5bsI7ytGun+Nm5xehnG/PHY0UaYyOxcvLK4KPzBNkvy8mvkKPK4r/k22ov+D+AutB1alPa
-	wkB34vQOOo8uYcgQC63hnTUEfRtOeWyi+twiqHdc+QqqeiLeRpiUgX6IRvoVO2eaqWIpZ7
-	XlRmpYY6RA94pTI6TCjl8toyFO5vGBc=
+	bh=XrWWHE7HCzMTLFEr+DmM/BCd/rCfiNn7ZrXRNKxD8sw=;
+	b=3afauVxL46GGY1JsVDK5DUBsONhgbi8Xr8F9enYyNbCAvuzdgXlDTutR8d8LVCTq3R9mcN
+	if5X733SJ5nvgA/rcrtesERTBmn+9clGFekVgYOItHfWm7UtWJJwBv4e6h+RU6aAGG1Whh
+	5RNRj3NZOflGEcW7JUAYk+J8Q5mluLI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=I3aIeWJq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9nj4athg;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipvHMcZP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5KCoBLuT;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C1B1F7597F;
-	Thu, 18 Jun 2026 15:02:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781794956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
-	b=I3aIeWJqGtHnWch7dA4WBOrl8VynDCf+ndGvVpwb5uIdUUntJlNTYvsiQONKX/dMLTn27J
-	HVGYIdm4F2vgrbO4oagP+GvgCXcXbqjxng2MDUiduR+35dzx5hegR9mZLQNgTI6ILL8m6b
-	XUrGcCnaCcb4y2BT3y75ps+ooGxS3OQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781794956;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
-	b=9nj4athgqqq3B8Hj3wGtkc/gzkoHKcYuheIc4gKxbR/ET21uq7pwjhahr8OaIapkJNFQp3
-	gR+Q1tKpfypdtFDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781794955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
-	b=ipvHMcZP0PkH26HXzNsKowJ7yjgVHpYHjFJ+dtvTFhYOHYvR7Hn5RQbKLArJvESAbnUQ0K
-	D3qsFIQIMsCbvhQ+5eFLNyCCOzmiDfxDrQLNIl40Tc1g4f6FscAdQFf2jPQ6/5aH7sqKxq
-	14UnzWGCYqBtuORJ2eswh/xF+2keh5g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781794955;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
-	b=5KCoBLuTmGiEPYC7LkfcCqMu8yiclzzzAqf5FeVbbkrkHz9wSsc8qBhIXVYBvrxv8zku9X
-	L6RnOwehoYbTn2DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EA3C779A8;
-	Thu, 18 Jun 2026 15:02:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jcf1A4sINGoJPgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 15:02:35 +0000
-Date: Thu, 18 Jun 2026 16:02:33 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/4] mm: mincore: use walk_page_range_vma() in
- do_mincore()
-Message-ID: <ajP9bQhmvR9OX0VE@pedro-suse>
-References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
- <20260618092845.3905740-2-wangkefeng.wang@huawei.com>
- <ajPZlxq5z1hyo1kE@pedro-suse>
- <42e167b2-5676-45fd-8f3a-738d2f4f6623@huawei.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nn0Fg7wy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781794971;
+	b=tsCXVyl2XJ9IJpxDUenDCToIph0MeyI79FPATNFBpgWUnwAcMYUA3pgW3nqtVdS5ZWm8AY
+	jHCH9/KMSFeaiAbTtJhYjF4rBo1nEikx7aDEKsk9jzTJwhTVer9Ykm2gqkfAJOxeVS8f6h
+	Kb0HYnEE6ZTsqsx59snf/KVYXWaOMS4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A1BB436DA;
+	Thu, 18 Jun 2026 15:02:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883531F000E9;
+	Thu, 18 Jun 2026 15:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781794970;
+	bh=XrWWHE7HCzMTLFEr+DmM/BCd/rCfiNn7ZrXRNKxD8sw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Nn0Fg7wyY8Krc8YoBes8VyMbxEFBqOdnC1VrWWY8lLhEawopqw5ctiek/wuyVPLhn
+	 YhqoOOiKZUd6ae/gf0tuxAQI1h2ix3dbf/n6rSJZ2b3tc6ZDhprW1FAB4furHa8I+h
+	 nGJemLPnGD9FEFBsWuYUbToTJCeVHfqw1KXSibKp5L9fbZnpr+ezFjpWz65tuB1Wt1
+	 5pEct+bqx3jrlKhJHBbMw6R/lrYFjjCuFlupWUvuNd1sCkdfTbNVoOCSSHOJm5Tcas
+	 O5zilfFZYo8GtSuBbmoviOqXyJB43GM3cjvkQ3MvZK7U+jsBZddpI+Rb4p46wmwDmw
+	 nlzYddLR5ckhQ==
+Message-ID: <5942d4d2-5719-4196-af49-b35cf5f7b88d@kernel.org>
+Date: Thu, 18 Jun 2026 17:02:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] mm/page_alloc: only free healthy pages in
+ high-order has_hwpoisoned folio
+Content-Language: en-US
+To: Miaohe Lin <linmiaohe@huawei.com>, Jiaqi Yan <jiaqiyan@google.com>
+Cc: osalvador@suse.de, lorenzo.stoakes@oracle.com, jackmanb@google.com,
+ hannes@cmpxchg.org, nao.horiguchi@gmail.com, david@kernel.org,
+ william.roche@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ jane.chu@oracle.com, akpm@linux-foundation.org, muchun.song@linux.dev,
+ liam@infradead.org, rientjes@google.com, duenwen@google.com,
+ jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ vbabka@suse.cz, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
+ mhocko@suse.com, boudewijn@delta-utec.com, ljs@kernel.org,
+ osalvador@kernel.org, willy@infradead.org, Zi Yan <ziy@nvidia.com>,
+ harry.yoo@oracle.com
+References: <20260531055829.3636554-1-jiaqiyan@google.com>
+ <20260531055829.3636554-2-jiaqiyan@google.com>
+ <84a0b176-8534-e03a-9e6e-400c74ddab0b@huawei.com>
+ <45290F97-B8BD-4A9B-934E-0A122A5F3A80@nvidia.com>
+ <CACw3F51hi1SAs264i0FKMbieOQhCpRQQ9s7gS_cHDYgHsqu0WQ@mail.gmail.com>
+ <ce2f2cea-1451-09a4-4562-62808b1c2d93@huawei.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ce2f2cea-1451-09a4-4562-62808b1c2d93@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <42e167b2-5676-45fd-8f3a-738d2f4f6623@huawei.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 1BA7C80017
-X-Stat-Signature: hbqq48kskdmeiy8cddqes64d6yu7ft3w
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 43E4080003
+X-Stat-Signature: mgo4hqbarqmpy6d7pg8ie94nws6qe5ip
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781794957-714342
-X-HE-Meta: U2FsdGVkX1+rXPoJJl22NhreUAZtD4Ji75/lbmNu8nhRG4+rN2joa1+D8u/olaV0CxBj5HPHOk9Mn/sAnMH278Tky7Z/AGbvKzeg7i2Dg1d10klg7Hw0CXiJGMtKyOGKz6ulRnql7HnaHY0tJZASohEmQdEk/ZMYdQlUzhSQyQjs+K7oe7gEdDtnIvT2OCdCgKKALkCD3fi/vH2Tesp1HAvhgV0muohCL8oXT7COq1Wpp0k7v53rPP/EY3eitcK8BExb2vMy0whZzN4fZIE1ex/pAH2DVSM2IAQnLJ0edjNQf9rsfDJv0QcUXZ5p0NZUepTQz5GwEEZC3naL2uxQN0PGGLvOMzjLyw9qR9LoB0s/sRYM2+nZKjyecuAof4fL5nKEgwXCgftnmSrs4oYupTEIpKihCwL0UJriCpKvHROKhzfjJnngnypgs+BDjUsHqzNXovIarm7mL7zFPBr0d4YgmFtBKGc5UTlzfJhpQTVMJKVniAOQaqEfTiSvtksJTbpk3fd1L0LJWYNGfsYnk7QwPeD5J7Exxzkn/mqfMczsBf1fb3sNV7oFByCLOWWdKPsRpiXtariMpnGLfWgJBcp4pMUJrcoLIFYfumyXQJCtvkmOYu4M9z3TOeF0IniUzPJNPnr3h7NVR1n03VWoImhKaqg3Peez7A8ybQTQ1AucpYDSCMs9zFFacqiTD0/hFP49PIKKvz33Dd7IFnVdEgxHjEvpZcKpAinQ5d10Ib1o5eoy/87hf5xeX2vNRlT+M2lyIwA8HULb+7bLoziDt0c0SEGfYdtiOwjOSoSVZ9SsGJa2amjoOaOlxBO/GqD5UPvAXZE3BM9rpkO93cQ46bxl05anXXSRGohFFhDowTFgX3YbL4hztAnFAIC2/xilK0REFtjjjlmJ7L+j0EaqpmjlFXiYyE7nmCWtH95WJ9taY2botsmITLvchuPfQLSsIBG90wYj9oCTpZV7DW/
- Jrk1s7un
- DdjRFVG20520n+3sudw4QlUAoEBhdsSYZUj8VgmZ90NVAcF22cDul+Q4rrA4fFMgghr73k8AxfYWgs/fqDi/xase7yMzpVR2Swc2SVIOqYqKl/OXYlINx7yiznmKdmKabOFX11sNYt3SWCrN9/pcKXoPhNjIZsZqRxG/sMQ+NcLm66JOe+P4aj5R06PVoUCH/vK0vfhbkWApkoav/T8/5AQ3CK+JXxdL5lViZEpVJRJoTyBSY6DR49ZfJ14m2lx8PfGzL3bAJytUBgLLa/L6et6FUZlBBEqDkjaI1mY5x7Mb9arQLeWUIN/fkqj6FzVXBLOkQEayUZWJrb7flC8Q0ouCHIizY7/b56fVoE1+E+MpCX7LDqLvSQW1H9A==
+X-HE-Tag: 1781794971-895376
+X-HE-Meta: U2FsdGVkX1/nV17tqh2XiAIHPjyz5/5/zTzaLJOYK0NdKp7Hy7Ss7uqVDHv02yRzHwzuAO43H8j2rNImmRm4ESxJmPXqGFmomVn75xXWcUHbeUkuipS+7gWO8BK/YnGVnqjgF/uikBcKdN1IiuLIMFBxpeg3mtGCIGHPAQ2YVXoe1OYkZ+ieHAbAHlibJxlfEjKohRQOgj9oqf9TrXjepmWgKduS6CEaEjDRQBmBBWnB0HoeJUKpL/fLIc+zl3iXRmVmw9u9b1BTNExmV8CGLCqpOUbS/onCWtYnijDKXh9tO1ilSHcjXR1HQnf1fFo9BpiAqzuaMyor3xNpgDNOK3H5Zm+xLgxhBSn5huvlKVENPmPeLc+NoZ+oAq3CdtO6NGMrA891bWvC01Z6RZoVW++RmMd5146EnGvV7VzE9RKBsCaPB0aeklQs162rpo0MWkgIwvI1KcF90GgO9okADpX03a5GPgaKpCVn/CPl9/3Nd6nnTQfjatYVyV8ePYI90y4WXJCYjee+9n52LPr9ONfO59tk6I/weAUAjaZxgNiK1yMU0eBsrp07tBYW254/ZkA3y6SnnP6RpwvjhW2VsINafYjoYRsr+GqoP56RGHv8WhhssjGkXq94g02H7DgOSlxnn9y5pERxiWZb5ENC+KBDk2NvdbRd1snYnKqbmgJJpIjYFycv1QozXTykLYF07cKvUap5t0my7WDg+i/T34btgWPE+rKh/DB6Kn4TYdNpqN/8hdLC0iKQRij7j9DPe82OF4VnQ7Msn9Erp6nWN4g4eL28CjYLq8YpH4SpqYyxRJYF69knBdz9IkH02MbaGXYPbavPYR8PFcRdoWpULM+3VXfEfk1XS8cNxYH7+kQS3OqKMIVFG/uJN2YcmSB2kHS0CZthwsrR0pkuUTfLyTbMfRerzlip0VskdrurRosiVTkyOpLKrt/DCr2Hq0SHN/jBur6FX/3jYfydpEj
+ IQGDjnru
+ 2fIMcywizyS/4Nsfd6k+zGWHW/233tjXy5QXwcW+KNBgGkCzVvBKrj/aUFVNi/BKJUWYfMuLt7XJXw4Jod0BqbgMidh2IAb+U7LlyT2UAV0pggSBT/LnZAYSwmHjj843+z5XG3xOQlT1ZItFyeZzDcP7BJTMPj4vTQnd+yo3ExJDBzyUV4gE/OD5DgcchRB/NZIWr4Fb5gb916Gz28N8pYkVSUmxKtMW3/2hOoGefhNQEm3GZRUtZTciIx9tZ/irP/65hEwe9v/mKR9Vjrrl2zlLybKLfbPTZv5F77T5mN+GRoyQgijvOHLrmdnSc8TttMhVDFMdyl8PlnRqtAgv26QQIi55m3mCk6XheHimSioYfVjixD8W7YdIqgJiT8tosCLxjLVOvOg7dIo0DtJHRC/nx+dknSETp/MQlkenSyDx5FQRkJnsa5uKOR+HPRtVj00wLgddG1PVOmWQ6TjGU0ZKGlJk74+F1DFbP7M8Hs7QWuuimxJj8WS2NyeIqD22PxVqZKIJR2N2sk+P0GelNPqPNiLfi+4QZBhAjcUpt9UzDYvJI/W4raZnHdColT2/NOsWigHOktPs6mKJHVfaUEJo6vQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,73 +146,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 09:01:08PM +0800, Kefeng Wang wrote:
+On 6/16/26 08:53, Miaohe Lin wrote:
+> On 2026/6/16 11:23, Jiaqi Yan wrote:
+>> On Fri, Jun 12, 2026 at 11:34 AM Zi Yan <ziy@nvidia.com> wrote:
+>>>
+>>> On 8 Jun 2026, at 23:44, Miaohe Lin wrote:
+>>>
+>>>> On 2026/5/31 13:58, Jiaqi Yan wrote:
+>>>>> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB folio
+>>>>> becomes non-HugeTLB, and it is released to buddy allocator
+>>>>> as a high-order folio, e.g. a folio that contains 262144 pages
+>>>>> if the folio was a 1G HugeTLB hugepage.
+>>>>>
+>>>>> This is problematic if the HugeTLB hugepage contained HWPoison
+>>>>> subpages. In that case, since buddy allocator does not check
+>>>>> HWPoison for non-zero-order folio, the raw HWPoison page can
+>>>>> be given out with its buddy page and be re-used by either
+>>>>> kernel or userspace.
+>>>>>
+>>>>> Memory failure recovery (MFR) in kernel does attempt to take
+>>>>> raw HWPoison page off buddy allocator after
+>>>>> dissolve_free_hugetlb_folio(). However, there is always a time
+>>>>> window between dissolve_free_hugetlb_folio() frees a HWPoison
+>>>>> high-order folio to buddy allocator and MFR takes HWPoison
+>>>>> raw page off buddy allocator.
+>>>>>
+>>>>> Another similar situation is when a transparent huge page (THP)
+>>>>> runs into memory failure but splitting failed. Such THP will
+>>>>> eventually be released to buddy allocator when owning userspace
+>>>>> processes are gone, but with certain subpages having HWPoison.
+>>>>>
+>>>>> One obvious way to avoid both problems is to add page sanity
+>>>>> checks in page allocate or free path. However, it is against
+>>>>> the past efforts to reduce sanity check overhead [1,2,3].
+>>>>>
+>>>>> Introduce free_has_hwpoisoned() to only free the healthy pages
+>>>>> and to exclude the HWPoison ones in the high-order folio.
+>>>>> The idea is to iterate through the sub-pages of the folio to
+>>>>> identify contiguous ranges of healthy pages.
+>>>>>
+>>>>> free_has_hwpoisoned() is added in free_pages_prepare() as
+>>>>> a shortcut and is only invoked if PG_has_hwpoisoned indicates
+>>>>> HWPoison page exists and after checks and preparations in
+>>>>> free_pages_prepare() all succeeded. free_has_hwpoisoned() then
+>>>>> can re-use free_prepared_contig_range() [4] to decompose healthy
+>>>>> ranges into the largest possible chunks of different orders.
+>>>>> Every chunk meets the requirements to be freed via free_one_page().
+>>>>>
+>>>>> free_has_hwpoisoned() has linear time complexity wrt the number
+>>>>> of pages in the folio. While the power-of-two decomposition
+>>>>> ensures that the number of calls to the buddy allocator is
+>>>>> logarithmic for each contiguous healthy range, the mandatory
+>>>>> linear scan of pages to identify PageHWPoison() defines the
+>>>>> overall time complexity. For a 1G hugepage having 8 HWPoison
+>>>>> pages, free_has_hwpoisoned() takes around 1ms on average on
+>>>>> a system having 56 Intel Skylake physical cores. This is
+>>>>> 15x to the case of freeing no HWPoison page. The cost is far
+>>>>> from triggering soft lockup, and fair for handling exceptional
+>>>>> hardware memory errors.
+>>>>>
+>>>>> [1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net
+>>>>> [2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net
+>>>>> [3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+>>>>> [4] https://lore.kernel.org/all/20260401101634.2868165-2-usama.anjum@arm.com
+>>>>>
+>>>>> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+>>>>
+>>>> Thanks for your update. This patch looks good to me while some comments below.
+>>>>
+>>>>> ---
+>>>>>  mm/page_alloc.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>>  1 file changed, 85 insertions(+)
+>>>>>
+>>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>>> index e47679e7a9db..03df929abca6 100644
+>>>>> --- a/mm/page_alloc.c
+>>>>> +++ b/mm/page_alloc.c
+>>>>> @@ -208,6 +208,7 @@ gfp_t gfp_allowed_mask __read_mostly = GFP_BOOT_MASK;
+>>>>>  unsigned int pageblock_order __read_mostly;
+>>>>>  #endif
+>>>>>
+>>>>> +static void free_has_hwpoisoned(struct page *page, unsigned int order);
+>>>>>  static void __free_pages_ok(struct page *page, unsigned int order,
+>>>>>                          fpi_t fpi_flags);
+>>>>>  static void reserve_highatomic_pageblock(struct page *page, int order,
+>>>>> @@ -1309,6 +1310,14 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+>>>>>
+>>>>>  #endif /* CONFIG_MEM_ALLOC_PROFILING */
+>>>>>
+>>>>> +/*
+>>>>> + * Returns
+>>>>> + * - true: checks and preparations all good, caller can proceed freeing.
+>>>>> + * - false: do not proceed freeing for one of the following reasons:
+>>>>> + *   1. Some check failed so it is not safe to proceed freeing.
+>>>>> + *   2. A compound page has some HWPoison pages. The healthy pages
+>>>>> + *      are already safely freed, and the HWPoison ones isolated.
+>>>>> + */
+>>>>>  static __always_inline bool __free_pages_prepare(struct page *page,
+>>>>>              unsigned int order, fpi_t fpi_flags)
+>>>>>  {
+>>>>> @@ -1317,6 +1326,15 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>>>>>      bool init = want_init_on_free();
+>>>>>      bool compound = PageCompound(page);
+>>>>>      struct folio *folio = page_folio(page);
+>>>>> +    /*
+>>>>> +     * When dealing with compound page, PG_has_hwpoisoned is cleared
+>>>>> +     * with PAGE_FLAGS_SECOND. So the check must be done first.
+>>>>> +     *
+>>>>> +     * Note we can't exclude PG_has_hwpoisoned from PAGE_FLAGS_SECOND.
+>>>>> +     * Because PG_has_hwpoisoned == PG_active, free_page_is_bad() will
+>>>>> +     * confuse and complaint that the first tail page is still active.
+>>>>> +     */
+>>>>> +    bool should_fhh = compound && folio_test_has_hwpoisoned(folio);
+>>>>>
+>>>>>      if (fpi_flags & FPI_PREPARED)
+>>>>>              return true;
+>>>>> @@ -1443,6 +1461,16 @@ static __always_inline bool __free_pages_prepare(struct page *page,
+>>>>>
+>>>>>      debug_pagealloc_unmap_pages(page, 1 << order);
+>>>>>
+>>>>> +    /*
+>>>>> +     * After breaking down compound page and dealing with page metadata
+>>>>> +     * (e.g. page owner and page alloc tags), take a shortcut if this
+>>>>> +     * was a compound page containing certain HWPoison subpages.
+>>>>> +     */
+>>>>> +    if (should_fhh) {
+>>>>> +            free_has_hwpoisoned(page, order);
+>>>>> +            return false;
+>>>>> +    }
+>>>>
+>>>> When the code reaches here, the hwpoisoned pages have passed through kernel_poison_pages,
+>>>> kasan_poison_pages, kernel_init_pages, arch_free_page... These functions might write to
+>>>> the hwpoisoned pages. Is it safe to do so?
+>>>
+>>> At least, kernel_poison_pages() writes to the page. It probably should be
+>>> moved up, somewhere like above kernel_poison_pages().
+>> 
+>> Writing to HWPoison pages (location having memory error) is usually
+>> safe, as in it doesn't cause a machine check exception. Memory
 > 
+> In x86, set_mce_nospec is called for hwpoisoned pages. So writing to
+> HWPoison pages would cause unexpected page fault in kernel?
 > 
-> On 6/18/2026 7:49 PM, Pedro Falcato wrote:
-> > Please CC reviewers properly!
-> > 
-> 
-> Oh, I will put more reviewes to cc list.
-> 
-> > On Thu, Jun 18, 2026 at 05:28:42PM +0800, Kefeng Wang wrote:
-> > > The do_mincore() uses walk_page_range() to walk the page table.
-> > > Fortunately, the caller always passes start/end that falls within
-> > > a single VMA, so it's safe to use the walk_page_range_vma() in
-> > > do_mincore() to eliminate an unnecessary find_vma() lookup.
-> > > 
-> > > Unlike walk_page_range(), walk_page_range_vma() does not call
-> > > walk_page_test(), which handles VM_PFNMAP by invoking ->pte_hole()
-> > 
-> > Why not? Can we fix that instead? I really don't like having this open
-> > coded in callers. Are there callers of walk_page_range_vma() that expect
-> > to look at PFNMAP mappings as well? From what I can see, the callers all
-> > seem to operate on folios (and/or anonymous memory).
-> 
-> As you said, all the other callers don't operate VM_PFNMAP， so we don't
-> want to add walk_page_test() into walk_page_range_vma(). This hack is to
-> preserve the original behavior, but as David said[1], we could add a
-> follow-up patch to remove the special handling to see if anyone screams,
-> and this indeed changed some behaviors, so it's better to handle it with
-> another patch.
+> Thanks.
 
-Yes, I agree, I'm 95% sure no one is invoking mincore() on PFNMAP mappings.
-
-So, if we're keeping this check for this patch:
-
-> > > 
-> > > diff --git a/mm/mincore.c b/mm/mincore.c
-> > > index 296f2e3922b5..0c6731ae6c4d 100644
-> > > --- a/mm/mincore.c
-> > > +++ b/mm/mincore.c
-> > > @@ -259,7 +259,21 @@ static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *v
-> > >   		memset(vec, 1, pages);
-> > >   		return pages;
-> > >   	}
-> > > -	err = walk_page_range(vma->vm_mm, addr, end, &mincore_walk_ops, vec);
-> > > +
-> > > +	/*
-> > > +	 * walk_page_range_vma() does not call walk_page_test(), which
-> > > +	 * handles VM_PFNMAP VMA by invoking ->pte_hole() to skip the
-> > > +	 * page table walk. Without this check, PFNMAP PTEs would be
-> > > +	 * treated as present by mincore_pte_range(), changing the returned
-> > > +	 * residency status from the historical "not resident" to "resident".
-> > > +	 * Handle VM_PFNMAP explicitly to preserve the original behavior.
-> > > +	 */
-
-I would rather we amend this comment to something like:
-
-	/* mincore (historically) reports PFNMAP mappings as non-resident. */
-
-because we don't need to explain internal differences in walk_page_range
-functions in a random comment in mincore. And perhaps attempt a separate
-PFNMAP check removal patch as part of the series, or as a follow up (so if
-it does matter, we can simply revert that patch instead of this conversion).
-
-In any case,
-
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+Seems we'll have to extract everything between kernel_poison_pages() and
+debug_pagealloc_unmap_pages() to a function, don't call it when should_fhh
+is true and instead call it in free_has_hwpoisoned() on pages that are not
+HWPoison? I think it's acceptable to do it there one page at a time in order
+not to complicate things as most of that stuff is debug-only and we're
+handling a rare event.
 
