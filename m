@@ -4,125 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110B3CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1453CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:09:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E91D6B0088; Thu, 18 Jun 2026 08:03:01 -0400 (EDT)
+	id B7CB86B008C; Thu, 18 Jun 2026 08:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09AD36B0096; Thu, 18 Jun 2026 08:03:01 -0400 (EDT)
+	id B2DA36B0092; Thu, 18 Jun 2026 08:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBAA6B0098; Thu, 18 Jun 2026 08:03:00 -0400 (EDT)
+	id A1C776B0095; Thu, 18 Jun 2026 08:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF2386B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:03:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1060440736
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:43:25 +0000 (UTC)
-X-FDA: 84892847970.06.5A0E922
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1A28FA0005
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:43:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=a15r0v6g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 79D576B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:09:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E316A06E6
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:52:48 +0000 (UTC)
+X-FDA: 84892871616.18.6930D56
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 075C98000C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:52:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VpjFI/uc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nbxlDCTE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VpjFI/uc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nbxlDCTE;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781783566;
+	b=PWZWc1UbVUOMoX2zL3Ximv7P+46KREmH639qtLfh2dwjIf8WOuv4z4HY6W1R5VJaXTBffE
+	56KKyC6vs4Mj/kEcmRTuAHQPPj1UkBOwr3KgmeXCvxV/Anv0RHUddJeCa6jlPSbOm4KK8O
+	BqQWW9i4KxCyuURBfM7ZQoj3eXMgTHU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VpjFI/uc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nbxlDCTE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="VpjFI/uc";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nbxlDCTE;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781783003;
+	s=arc-20220608; t=1781783566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3uy+wslaGLTlcCcaujHMpqPGyDzguwt0VkdpSQM6UeA=;
-	b=5dHgx63yNfnBareaDMqB8zwcIl5UOoOYlLMHKRQtV0jfOcxtGZyHsz0hByH1Nm+/mkLnZK
-	z+Gh+GJhQapzfCK+5ZLXtKleaxg5HgHrNwvND9uza1xp6GKJsCbcUcAYSsi3H4nRMjBdH/
-	IeH6g315EAImAMNXeKY8hRdTmqK0eEk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=a15r0v6g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781783003;
-	b=ddH/lrBMMz5Fi34hzVRATtrcHoRLlV6PDlUqjFF+XhfxV0L0ZM2bjIvTmTpN26yte+txuF
-	3NfwyZjVgCcCa8eYTFfV3tm6za+L2qB1RzYRs2UP83wrD/uI5PvXeCtfs1tcR33DhrWgEX
-	7NaYuxrvzqL8fWKrtN60gNL9+yn6rhs=
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-36d630c0e35so767832a91.3
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:43:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781783002; x=1782387802; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3uy+wslaGLTlcCcaujHMpqPGyDzguwt0VkdpSQM6UeA=;
-        b=a15r0v6gjosrhZaABFO2BWoXhQE7nxhxz/+C2axLHzCJUUDXDS7t8ui+IgiMOKWzJN
-         jvUXaHh4nbI5P1SqWVAZpcU2vYgKx50bDpfHZsC8Jz2djWIZfQo47jF7GJnIuxRmazcZ
-         3CKq0ikHVWqb7KVHBph8B5XszQTX3JHVjdkW5wcMXDfrI2+jKPAHeKH1QEGJqns/C2t4
-         IeQwIgPZSKJO1gqsylxu0197k1KaklTdCg3v7Rw+Sy0ZVNBvQkgJRvasqOAPWkVn5Wcn
-         Cao8/xsS9yQRbcRAzKY8z+wLtZORB56b0091t/QSCXe5xyqflX2A3Sgbjk437QZLSCeb
-         Bfgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781783002; x=1782387802;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3uy+wslaGLTlcCcaujHMpqPGyDzguwt0VkdpSQM6UeA=;
-        b=P1QQj+7j6g47resl6xlWc+tnsbH3a50Y0eapwLvMJSyE8faWgi+7VfYxbpdzUHAqBi
-         yOqwhlijRYSaBBx59ZlDzyGqKbZ4deIvTw49KdaxDhWIV4Iz0EjWwVAb7pMy78ADYLB2
-         kWkNHB25TDO7VIXg1SPkgfE2gaywbx3Igdzc4Ll2hnD5o/emuoIjN1BHIHOXQ+ejESx7
-         +z9BsxCJVuLGqJCQxVb2yAvLjEpeEL7nF0U5chticpIzrbfoqPi6EeLq9tp87jSEph0b
-         3hVX7NEA5K0V8aceCkb23bJ7vMWkxMS57Ff//X0YsIeG19p/cUCV+EGC5kBJQGLj3i4e
-         TcJA==
-X-Forwarded-Encrypted: i=1; AFNElJ99gNBqWQMzSgfIT0czCq3OOQNQkb0ETkopGHYUhOBkfWrqea01EDWGuFnqfYWhtG+xa1ybM/SvsQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNfF1Kf6qOjo/6kiDGPbXRDQkoiWeSIwGo4QoZNxnqoYD2nO0e
-	YSyx08DRr//dTrnzQOo3274CvipBJNc3J6vEtyZ8O8bk4Qo/8HFHIEtY
-X-Gm-Gg: AfdE7ckU1N+aT3Btsra9OtkCPouer4UnjQ/JEkEuN+NDPWD2ayGoCH4x1Opvui3bPfK
-	XndxDBDgXYwQgo9RP+5i6X3iSRhvX+uDOFGO4yBZnVtVqBdp6GZ12OIBPo08pk3cE2BEHN3rxjn
-	5seHQgrCYYcn5+RVRCmsv3mQJRm3V0soPpDLI81xv9y1NcFVoLESoNyf0sI+1EuicFz1+h9y0PZ
-	KBODFuPOaymb6Fk1lnjITPaTCojjZBz9M3RbPEgHjpTk5OmImsstbnhzTSx3DQFnm9MipfWEnyi
-	P4IojFssvHldLoq0kprFI+0lvXbjFG+3P3XpJ9aFQw8HpYWRq5959AAxB+sZUruz+Anq6mVfRG0
-	XlKE1I3oaGdYSTVePsIkrWPOQolEGZyJJ/2b9h4rEKzp7f7ZAz851elYE3vMG3ppuuh+35YVsvC
-	oHWYcZ+jnz1Oks2FUqfGdI36EYPmIbC6E=
-X-Received: by 2002:a17:90b:3a43:b0:368:7c0f:ebf7 with SMTP id 98e67ed59e1d1-37ce45455d8mr3452661a91.16.1781783000992;
-        Thu, 18 Jun 2026 04:43:20 -0700 (PDT)
-Received: from [10.125.112.20] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866325e477sm16709082a12.10.2026.06.18.04.43.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 04:43:19 -0700 (PDT)
-Message-ID: <040788a9-e0d5-478e-bb48-3d22b8b41020@gmail.com>
-Date: Thu, 18 Jun 2026 19:43:09 +0800
+	bh=kEU8ULJ9WVWauU7Hmy0OmdTpWlCSAnosxhY6LpVUHus=;
+	b=UDMA000BhpuR+hocuCOvGEjfcO5ogApSkKmX5kAsnEFfsVcqLAFfKTCIQwUhAmWuc2ibTh
+	Q3/mz+6gw0zdqGXduLmm1BGWVl6PlF0Fa5mkJSeQoZhSpDoMyS8FKJ8Rh9txZpyzv0AD9K
+	8VlgHanD8czSCF965YFv41wC5u1VeVQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BDBE46D1E8;
+	Thu, 18 Jun 2026 11:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781783564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kEU8ULJ9WVWauU7Hmy0OmdTpWlCSAnosxhY6LpVUHus=;
+	b=VpjFI/uc8sR0nYvsju9jkaLtT2RK5sZnr4hp7AUCNhDl76IzqEwKknksbzgSA6azvuYx3Y
+	Ve44xQwtGG+klAS9XFPmlN2hAtJiQXF9ZiZP596YU5x5Vo3/ZUZRIVDnkAZ7JOQBIsr2lf
+	QBVUVCh3c3y4hFA4qMLtFiNPaKXUVhs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781783564;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kEU8ULJ9WVWauU7Hmy0OmdTpWlCSAnosxhY6LpVUHus=;
+	b=nbxlDCTELdZzi0P96bLvwm4JTlT0ChzRo6p+J6JcYseNNq24vKxHSwhXu1YUw9EHCdoW6L
+	ergWTqrPetzkhuBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781783564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kEU8ULJ9WVWauU7Hmy0OmdTpWlCSAnosxhY6LpVUHus=;
+	b=VpjFI/uc8sR0nYvsju9jkaLtT2RK5sZnr4hp7AUCNhDl76IzqEwKknksbzgSA6azvuYx3Y
+	Ve44xQwtGG+klAS9XFPmlN2hAtJiQXF9ZiZP596YU5x5Vo3/ZUZRIVDnkAZ7JOQBIsr2lf
+	QBVUVCh3c3y4hFA4qMLtFiNPaKXUVhs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781783564;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kEU8ULJ9WVWauU7Hmy0OmdTpWlCSAnosxhY6LpVUHus=;
+	b=nbxlDCTELdZzi0P96bLvwm4JTlT0ChzRo6p+J6JcYseNNq24vKxHSwhXu1YUw9EHCdoW6L
+	ergWTqrPetzkhuBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CFEB779A8;
+	Thu, 18 Jun 2026 11:52:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id n+DXAwzcM2rLfQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 11:52:44 +0000
+Date: Thu, 18 Jun 2026 12:52:42 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/4] mm: mprotect: use walk_page_range_vma() in
+ mprotect_fixup()
+Message-ID: <ajPbpLBqYc8uTyUJ@pedro-suse>
+References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
+ <20260618092845.3905740-3-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when
- compact_unevictable_allowed=0
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com,
- Hugh Dickins <hughd@google.com>
-References: <20260604023812.3700316-1-chenwandun1@gmail.com>
- <20260604023812.3700316-2-chenwandun1@gmail.com>
- <969cb14b-5b8b-48e6-add6-4dd13101dd89@kernel.org>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <969cb14b-5b8b-48e6-add6-4dd13101dd89@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618092845.3905740-3-wangkefeng.wang@huawei.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 075C98000C
+X-Stat-Signature: y8efdm3gtyrs8fhyw6eoit9r57hofau6
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 7wjgongec5bi8f8g45mruyhez1du7f6i
-X-Rspamd-Queue-Id: 1A28FA0005
-X-HE-Tag: 1781783002-962547
-X-HE-Meta: U2FsdGVkX1+VdSv5RGzZWs5OR5XVe5rqMudRRW+mX2mHhUFy+Bn75sz6/oU9qYV0dmqmq+gX2fOBVcyrxzO4s83ZMV1mWwxfty4naB2mw2xg+FJE/bea/3Dh9PDtgoM+f336ikmIEJzgi/USzF4FnyCc/QEiJfJnpWpqjuzmIXAapDEn+xnSscap5P3jMDthKeNxdDI9NlVk6bJ72eOCPuC1jpC6BU6uXSLwI4Yp/vG4yHvpxdXZmDwVrJ/uA5bJy+GkYReIDQWMMCQbd4NQB+2HYGSt4Q4ONzlRlU1o7/M7jPN+eQoNH7MsRVNb5KtDBsnK7B/gC4Sv+V1gTPUAbRaIeEf3VDHUee1IlcWra9LgMNMC1r98QwnufLXcCNAdLlBSAfGmUVeMiOwihBiQXH5K4nTTAnaeNK9sKlTVbC9VOzhIqRrDT4ItkRG0Pd3RTuFe2m1NJxlTvdyf9lfFtooUe46O7YJkIwpWxbzYzPKfcvsG5B6VZouaVaZ6uT6XPshdI9qHonDPC6qLzwqBjLaXrYaE7PSO+6djFtDPs3aeXGAnzTLbBYzbQcrNUR3MP5MHMrKNvNwOWrUrPf0eVNS8s03m68+kOTFVMK6FaqnSqrN9W43arHOPaczUO8vImC0lC+0zTTQruhdko+DeR4MyQi36oo6cjHfjNNZmfaegGnW706BB4/XKDZNhlcU3WY8firPyCvHFVXuTT+29KnQwjVnjCUw9RIdG46PCyJ/bOCE8yzrzPyCBhZtwyyIIrqGGx3Cuo/af6pc/l/uJ+gqo9xByaV1fic27vk1UDsyKe8CPxWS8WvrFQE/lLdZWm6ErB7BUPOmLDDd9OFv9is2CzS04RY7ADJtQZy1UvpecNCB0aqauNJkS5V+oOEy+SO6yNUkEiu5GQu1P2B0SRLsjZ73nIm8/jBuQIojLMcrBbSFO/AIn86I0K/9+RD/DCy2NUXZcipKzScxxBCe
- m76XV29G
- X8R+pTOicHUH3neV0Bp2g9lzY3ZIcplU8oabl0BvkotiylEMt0OL+nULM0toeBQ5BBehdzkw5Q3ZugO8oFIwz3JTiSDk/zhafb27rKJ308gvXv/0VsO4JAbM/C6MhwMqLbyCpoNAVDp5I6tDbxJZfOeoppy3IRxtzcS4Z3+l5J9/KBXFJuwCYkQwq5/QhutvLbb9ABoQwdUQdO5Y6Mwjp0xzmZR1pZHNAlFjTNzr7SqegNBpFhMjJB8gYe2vrdTzcK5ZXFeY9jx6jCGBFBJBWsAyEQAPp3wE7EaafPVthJEllVhrDf/CvVrk7cvXOzbTa8ZE7GsLQpONNYkoIPBG+wLkKTTtt5EP8Kk9kFR+ZydcdZpOrM13Wp66hzJPIyeyFoSa4yceJnKV/nDEN17kU5p8IaMazwib2LgztAytFauvtcSCK8dkIu/m94wxlVmWB1tLJRga46hWs4R/6K8SFjzlOnIgv9VrV1Pvr1/KYbKOtkroQCxlim34zW5177g0CljmmgqgGuYsDmRk1HvFsGOnQZ9ZHvU048YTj5wBzv3/aPKBza+RiwhRIfT/yoNRwqSv65ZITYPAPdAjzmIRyV4AtiGQ/yN3tgEafVzYR6xjFWj2OqNm8pixRMRzD3RBj5jfdeCOhRi/XozhRctsythtDJBV/9ibJgfH+aXhgxv65eLJpyw8qMGhNAOFtHf8B2kkXeSR66Dg+aPntkkapL4lQFZxmJOjGVyHUA/E2Mjt1hUo=
+X-HE-Tag: 1781783565-928267
+X-HE-Meta: U2FsdGVkX19QhhwvzJoHHx4n1XpE9QjM48miMvx2nz7cffB4r8Bco5Soq1WHgdtD3LoNR75lfOpzD0F5iRWhKADE18eL+anst8gDGBWF8wV0mCpp3gMV8rY1Zl0o+emRbGWS4xEUCbB4uRsx6xF5lpTCWUt77f5sqlxwwhuZOwP7lLgVonUg9mz8PXPEd7CkZXYXvpoRa6wfHgwUt4cjxctu0tQK0ymb/Sq4OcY5I8LFPReVp6+Quf1xhrgx5IKi0A4aO4ZWvkNCC/9bm3z2DV2ME6QbCBaCCb2GBaieB3g0VrB7ITxPOQx0M+biezQGy8TZNPGiuXUxXrila8xHZtxPZEBqm6fGtKyjw43w+IlMj50lV5XzxULfiyBh1pocOfq81v/+AIdwKxtThSdTNCrnr2g7qM8xSPz9iG1bwc5xZmXHIM+Kht5CApTr7qFQvMpPpy4/Zb+nCGFpdf6HJ0SmQx4//7xBYkRzPFQN2NXMLiuGf/1NeWw5oMtcbxgoz3vbkjwYgJO3rRaWNuS1QE0GQrxTnlsxkEFX9TLqjnSS8bi4wNyJe9O8w6yy5tGFNPImX1M86HDJlzufhxAvl5KyxoOnhuniB3OywZnytXWgxviTQEaCs1vx8HahPfVygTBIlTzW/XEKqTJqL3P1PzvFdrjzhzc7iZuWXxs7WybRkFfFjxuqWchVYfdyzqNHHwUDNF6vZV39Ib+uPa37jBe2CSFeH1jp7jdVTtu22G/vZcCWXmsTu+wm8r2+X3P44Fmk5tmrIxsVMv0VsURKZwXbtQCvA+PuyUAMKNfk/AMaDlptzOxRpKjEaTczhT9Fs+xUtuSRb3kSFVIDWooswmz8sfvbyHK/4oVf/DI1QLPgxyG/jIuMwSNT4Uip+oQllqiNi+2xPymIzVFo6EBQjoc6efaZGcwGbzLTKFZy725CiHBxB5xh3R3ncPFw/l1Hk3AebtTFa0FPL2pDW49
+ XpoqZoBO
+ pb0lc2j2qqaIHTf6dfavsI2XnAkBvIKrhO/fiHm2E+uzHtqpmExbMQKv4lV+NxTrYol8XPMR24CMTWw3WQsA97VKAj7jY7b3kw7PrZSgPCQANxChGq4MVKYV9CuJnqmmWdFLLlbKPGIetjshZOcGr2wUyyJmS0bSboDrn8TN56K1LWTqIRGn6QYrcY8ukYINhxNfyKGyxoWdX0aA5lOiXB6syjMyqwNr8LKjlDA2gugpMo6D06FlypQFQvP9tt/4pmFS7+YwwNR2cqZQz0mD3JrkF7HRrG+1PghYSx9DOGYLmWNe56dTaWpnRkoPN49kVW2nIymqP+PRfvS7kQpcgRwAownYzf7J3lxl4rZrVd609DruYTz/Y5bDCuRgGwxy1CBv1hcUO+kwe4VM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,163 +134,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 6/18/26 02:52, Vlastimil Babka (SUSE) wrote:
-> On 6/4/26 04:38, Wandun Chen wrote:
->> From: Wandun Chen <chenwandun@lixiang.com>
->>
->> compact_unevictable_allowed is default 0 under PREEMPT_RT,
->> isolate_migratepages_block() skips folios with PG_unevictable set.
->> However, mlock_folio() sets PG_mlocked immediately but defers
->> PG_unevictable to mlock_folio_batch(), result in a folio with
->> PG_mlocked=1 but PG_unevictable=0. Compaction will isolate such a
->> folio.
->>
->> Fix by checking folio_test_mlocked() together with the existing
->> folio_test_unevictable() check.
->>
->> A similar issue has been reported by Alexander Krabler on a 6.12-rt
->> aarch64 system. Vlastimil suggested to check the mlocked flag [1].
->>
->> Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
->> Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
->> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
->> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
->> Link: https://lore.kernel.org/all/33275585-f2db-4779-89f0-3ae24b455a67@suse.cz/ [1]
+On Thu, Jun 18, 2026 at 05:28:43PM +0800, Kefeng Wang wrote:
+> In mprotect_fixup(), the PROT_NONE PFN permission check uses
+> walk_page_range() to walk the page table. Fortunately, the caller
+> always passes start/end that falls within a single VMA, the
+> do_mprotect_pkey() iterates per-VMA via for_each_vma_range(),
+> and setup_arg_pages() passes the whole VMA.
 > 
-> Well in that thread, Hugh doubted my suggestion and then it seems we didn't
-> concluded anything. Did you actually in practice observe the issue that
-> Alexander had, and that this patch fixed it, or is that theoretical?
+> Note, walk_page_test() isn't called in walk_page_range_vma(),
+> however, prot_none_test() in prot_none_walk_ops always return 0,
+> so it's safe to replace walk_page_range() with walk_page_range_vma()
+> to eliminate an unnecessary find_vma() lookup, also remove
+> unneeded prot_none_test() too.
+
+Again, I strongly prefer walk_page_range_vma() to be consistent with
+walk_page_range() and others. But the change itself (apart from that)
+is fairly uncontroversial, LGTM.
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  mm/mprotect.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
 > 
-Yes, I wrote a test case that can reproduce it in a few second.
-
-The test case contains 3 steps:
-1. mlockall
-2. mmap file(2GB) + trigger file write page fault;
-3. during step 1, trigger compact via /proc/sys/vm/compact_memory
-
-
-My reproduction environment is qemu with 4GB ram, 8 core, aarch64,
-preempt_rt and includes the tracepoint in patch 02.
-After running the reproduction program for a few seconds, the
-following output appears.
-
-repro-403     [004] ....1   101.270505: mm_compaction_isolate_folio: pfn=0x71e3a mode=0x0 flags=referenced|uptodate|mlocked
-repro-403     [004] ....1   101.270507: mm_compaction_isolate_folio: pfn=0x71e3b mode=0x0 flags=referenced|uptodate|mlocked
-repro-403     [004] ....1   101.270513: mm_compaction_isolate_folio: pfn=0x71e3c mode=0x0 flags=referenced|uptodate|mlocked
-repro-403     [004] ....1   101.270515: mm_compaction_isolate_folio: pfn=0x71e3d mode=0x0 flags=uptodate|mlocked
-repro-403     [004] ....1   101.270517: mm_compaction_isolate_folio: pfn=0x71e3e mode=0x0 flags=uptodate|mlocked
-repro-403     [004] ....1   101.270520: mm_compaction_isolate_folio: pfn=0x71e3f mode=0x0 flags=uptodate|mlocked
-
-
-Unfortunately, I recently found that there is still a bug in the
-fix patch. Setting mlocked in the mlock_folio function could happen
-even after the page is successfully isolated, so it still cannot
-prevent migration. Because of this, I need to think more about how
-to fix it.
-
-Perhaps we should double-check whether the page is mlocked during
-the actual migration phase.
-
-What do you think of this best-effort approach?
-
-
-Best regards,
-Wandun
-
-
-
-
-
-The full reproducer is as below:
-
-/* gcc repro.c -o repro -lpthread */
-
-#define _GNU_SOURCE
-#include <fcntl.h>
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <unistd.h>
-
-#define PAGE_SIZE       4096
-#define NR_PAGES        32
-#define FILE_SIZE       (2ULL * 1024 * 1024 * 1024)
-
-static void *worker_fn(void *arg)
-{
-	int fd = (long)arg;
-	size_t len = (size_t)FILE_SIZE;
-	char *p = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-	if (p == MAP_FAILED)
-		return NULL;
-
-	for (size_t off = 0; off + NR_PAGES * PAGE_SIZE <= len;
-	     off += NR_PAGES * PAGE_SIZE) {
-		for (int i = 0; i < NR_PAGES; i++)
-			p[off + i * PAGE_SIZE] = 1;
-		usleep(200);
-	}
-
-	munmap(p, len);
-	return NULL;
-}
-
-static void *compact_fn(void *arg)
-{
-	(void)arg;
-	int fd = open("/proc/sys/vm/compact_memory", O_WRONLY);
-	if (fd < 0)
-		return NULL;
-
-	while (1) {
-		if (write(fd, "1", 1) < 0) {}
-		usleep(5000);
-	}
-}
-
-int main(void)
-{
-	mlockall(MCL_CURRENT | MCL_FUTURE);
-
-	int fd = open("./repro_largefile.dat", O_RDWR | O_CREAT, 0600);
-	if (fd < 0)
-		return 1;
-	unlink("./repro_largefile.dat");
-	if (ftruncate(fd, (off_t)FILE_SIZE) < 0)
-		return 1;
-
-	printf("repro_largefile: 1 worker, %d pages/batch, Ctrl-C to stop\n",
-	       NR_PAGES);
-
-	pthread_t compact, worker;
-	pthread_create(&compact, NULL, compact_fn, NULL);
-	pthread_create(&worker, NULL, worker_fn, (void *)(long)fd);
-
-	pthread_join(worker, NULL);
-	return 0;
-}
-
->> ---
->>  mm/compaction.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/compaction.c b/mm/compaction.c
->> index b776f35ad020..7e07b792bcb5 100644
->> --- a/mm/compaction.c
->> +++ b/mm/compaction.c
->> @@ -1116,7 +1116,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->>  		is_unevictable = folio_test_unevictable(folio);
->>  
->>  		/* Compaction might skip unevictable pages but CMA takes them */
->> -		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
->> +		if (!(mode & ISOLATE_UNEVICTABLE) &&
->> +		    (is_unevictable || folio_test_mlocked(folio)))
->>  			goto isolate_fail_put;
->>  
->>  		/*
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9cbf932b028c..b1595450e241 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -708,16 +708,9 @@ static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
+>  		0 : -EACCES;
+>  }
+>  
+> -static int prot_none_test(unsigned long addr, unsigned long next,
+> -			  struct mm_walk *walk)
+> -{
+> -	return 0;
+> -}
+> -
+>  static const struct mm_walk_ops prot_none_walk_ops = {
+>  	.pte_entry		= prot_none_pte_entry,
+>  	.hugetlb_entry		= prot_none_hugetlb_entry,
+> -	.test_walk		= prot_none_test,
+>  	.walk_lock		= PGWALK_WRLOCK,
+>  };
+>  
+> @@ -753,7 +746,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+>  	    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
+>  		pgprot_t new_pgprot = vm_get_page_prot(newflags);
+>  
+> -		error = walk_page_range(current->mm, start, end,
+> +		error = walk_page_range_vma(vma, start, end,
+>  				&prot_none_walk_ops, &new_pgprot);
+>  		if (error)
+>  			return error;
+> -- 
+> 2.27.0
+> 
+> 
 > 
 
+-- 
+Pedro
 
