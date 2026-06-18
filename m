@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CA3CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC84CCD98F0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D99656B0099; Thu, 18 Jun 2026 04:19:32 -0400 (EDT)
+	id B76356B009D; Thu, 18 Jun 2026 04:19:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D70906B009B; Thu, 18 Jun 2026 04:19:32 -0400 (EDT)
+	id AFFD56B009E; Thu, 18 Jun 2026 04:19:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAECE6B009D; Thu, 18 Jun 2026 04:19:32 -0400 (EDT)
+	id A16516B009F; Thu, 18 Jun 2026 04:19:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A452D6B0099
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:19:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C903A0661
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:04:19 +0000 (UTC)
-X-FDA: 84892295838.13.8EC8BAA
-Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2DB201C000D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:04:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=DlOMLRml;
-	dmarc=pass (policy=reject) header.from=codethink.co.uk;
-	spf=pass (imf20.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 78.40.148.171 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 785E06B009D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:19:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 48CBB1406B7
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:04:27 +0000 (UTC)
+X-FDA: 84892296174.06.B96F12D
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6876F14000A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:04:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=XzwVjjxv;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781769857;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781769865;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Um0iholy7NtKIoOFnNm3rYwqCi6fDk16hVrlqiwRuKY=;
-	b=Ya+f+UBRzhcfifKCQtySNlOi0zwyE7PPBcwBVaQiBSDRGalulfOevK+zEWPQXoZn5RHSN4
-	C9p0NpeyOTe38ZeS5ag7BFvjzvssBKJlFAXJw9OU84JqPK1ZAtTWb8pN8w4OVe7QAEj3uR
-	kCQqCWrQ8My4XxCd3NKnD2AIHt7I4mg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Oqe7CBCb4Ikmvh/siKVm6fDHcOfUAf8M4rR3KB55Zy4=;
+	b=m5JMc+/+7uK/GFQq+QS7OogHNDaZ7IIf4veD92QswwHxy3y0aVm7yHtUXSy0TRfT1+gaJk
+	zhnjPSX/dvZLgL6qwIkAszz57VmesAufZGhHhjjPy+cG7JxdFI1vAevQvNJZc2ICrdGn8G
+	2VmpOMUiZRo/h37oj19HP4Flc9GAPPs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=DlOMLRml;
-	dmarc=pass (policy=reject) header.from=codethink.co.uk;
-	spf=pass (imf20.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 78.40.148.171 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=XzwVjjxv;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781769857;
-	b=IjCxP3yCbj1fPOoYpao9HPi2J3tHDsB40D3cV3LvQytzFQxihMD8EMOcrBN37LEksANXyf
-	alG/rJe+u75MxjUbbq7PAEdrZ4CSBSEzWr0H0thuG2+cuRFcxt0cGl/n+CO876fmtQJE0O
-	thD1pbLzPPzf1xL1XWNZSL7X7i/hsRc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To; bh=Um0iholy7NtKIoOFnNm3rYwqCi6fDk16hVrlqiwRuKY=; b=DlOMLRmlGPJSv6iK
-	jnYvyi9xgI4NIR5Byil9ZOGQpBsNIsgrl3AZdKL5XZCcRClC58gneGt5EQCZyIfA9iointgpDu/1B
-	S+53xeEXmR1KOwv2H3YH7JgSDFbas1EFdDS0iNy2zUFBQYAVvKG9ihCx0AjU0xQ4fvN86eJheXUwj
-	kR/JzA0LM/tuh3EDSuKYpzW8sZa1FLIPV4LIk5691qhST3Br4/Aq005Ru3vGwxyqfTkstGRuAvxct
-	j/B7HbGlePImSwgfFvdPc4y7KC02fL33FDgVbQACsCOsOQAT9QMwvyvdEJy4Rl6yP0UosHMkt+uzx
-	S0QbMvC1yaWZv+EYuA==;
-Received: from ipa12.colo.codethink.co.uk ([78.40.148.178] helo=webmail.codethink.co.uk)
-	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
-	id 1wa7jM-00Ex0d-82; Thu, 18 Jun 2026 09:04:08 +0100
+	t=1781769865;
+	b=yq0ToZmUsOaBhxSdNeJyIGoYTqSWjheb11bSSozygYUICr4VYKTvUX8gHDxW8xDiANXgF/
+	L2YTbwisH+nK0mid0NBIUpcejHJ42XYmlyjr2JBUEc8h4wq/cNpgv5UjAoRJI/6b6OikW8
+	6ChpTxesVernzTpoqoVzu/vLjKMAtIs=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Oqe7CBCb4Ikmvh/siKVm6fDHcOfUAf8M4rR3KB55Zy4=;
+	b=XzwVjjxvSbRBnHrXAzmUSa0wlEFrCPDZFkdK0ImGch4fpMPjL6KhTJN89BnE4ORSko1SEXTCF
+	CYcleyvg0moPihWxcuyAc+xX/p6fX0Qn/efMn0I0qw75Lupn2m0fiZx/adZD7Q77IiIeYjw+va3
+	qxHAJlnC4MrdnBUw1Ubb9p0=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4ggtMj4G3DzmVC8;
+	Thu, 18 Jun 2026 15:56:17 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8A964055B;
+	Thu, 18 Jun 2026 16:04:17 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Jun 2026 16:04:17 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, Xu Xin
+	<xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH] mm: remove PageTransCompound()
+Date: Thu, 18 Jun 2026 16:04:11 +0800
+Message-ID: <20260618080411.3902214-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Date: Thu, 18 Jun 2026 09:04:08 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
- <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: include <linux/vmstat.h> for
- vm_numa_stat_key
-In-Reply-To: <B35448B6-4958-4FF0-8AB6-5464C2D6C50F@nvidia.com>
-References: <20260617132726.1086576-1-ben.dooks@codethink.co.uk>
- <B35448B6-4958-4FF0-8AB6-5464C2D6C50F@nvidia.com>
-Message-ID: <5e6b7e7ce7f9e2da70a73055eeec4157@codethink.co.uk>
-X-Sender: ben.dooks@codethink.co.uk
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Queue-Id: 6876F14000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2DB201C000D
-X-Stat-Signature: qoi3ob4cy9detxnbfdydzdfqesxsh81t
-X-HE-Tag: 1781769857-482270
-X-HE-Meta: U2FsdGVkX1/KIY9HCx5EjEBvchEXUaH4JyvNL4lgORTgGtcwWcqXoOo5FBgK2+CGnzXQ4x2jPlTZMZ9ESUxpv66ygCZOd0PPqeAJfZ9+T1cnD3SBorXUywKr7L5tMICJhyx3ZaRNB1zCJcBhwIb4DHXQwx2hQtWrdeWg5uHK0IihRxUe2m8tn2j/EgFxjAqanjRnFpyQNV3Cvfjd6346AgycKdHRfFsjIuzrT0Gt7yXRIuYPlNWLeDdUAHi74wREd70nu9cudc0UUT50tno4/pAlwDnAqCashpUcN0M8RN683nVek27fi4UysmSSc7Vc5f2BCWhsZbs8QM00GyvC1pxZZfljS0TT2gO5ENvwv1TpWpViWk+X564KlisBzDjMdv6Q9+NZHimItATE4P2VAYqggmdLMq0MoBg429Ozy/8E96VM7zNzCdJsU9hYV6bRJv32+gUYAjohzuKYt+f17ieQ/My+B37rQLMN+Xe5eMiIgkX/ECgH6tIAZkA1nDzsQ8XTrJgxPlXwica/pGkUr6VWEcoxyG03DM3pRZvP1oI1lwv6u6pI1bM+saMXHnJ4fxUDhc+3QtTiMocu6CHhGb4FaWaK0vTjnLaurwqq6ZtDenvhBYj9F7NrcZpSqyRpX5ozHy5WCY54AuL+FfO65YVJMf/jBk9HFNj93stAsynh+pW6enrcrS6oRYUy9y08ATwT3h0rhrRnmVbHxNIj5JSECUoMIPqeXWP5l0I7VNx0NQy38OJWdo9Y6rS6gN1wXoCks8nw+VMQ5OkH9egxUlpGMX+tnMmfutN4WH+1AymqMKgwYcw8nFr0PUA4imRC1YjyaghvZix69xmg70umCMSD7yy5s4mZOJ2jEcPv2x0hxtzKtKoTxdubHFY7BeyKpGUACycTMxSoyxAfgyJZRx2/q2w7YX8ZndIaxAvKD5G1uoyL0yzBjs+y4zrZHcvT8ha5rKz7i4vQgsQO0HE
- V/s0qoVz
- iLr0TZC2Hp93zFdtJKesFs6TZ0hItEY7ehsNtFdnBBVK87iBcnmUe7asZFFtfraSDWyEcC2tq9tI3yYRJCAiEVo391YLZ+Hur01Z+vbtGEn9QEaUKm7wSMSwsLbrO3oWc4bwOG9x0uvORTx35B20AaRh6R8LMnytzHJVQEZlCRh8i+23NZAjp+P3yIm/jNnCVMD3wKy0lBGcy9w8U/2ZDovo1CYrBBrkyjpymt8NC0SDUB1Fu3MF7O1BtlUvn4VapG73OCKmJYlw+CNQ3fhw4vUWe/HM7ZEwUHtnTUK/Ztb6hMkAaYpd/EadERm5pJImvycgdMPdK1VL5hnzukfPfzYrdeDNqK9VJdZuTk/EQNfXoWRwYIYwftdrAb6DA5uH4HxchxKRlid1dCnXPabhCIqCyMGwpfbdMA78HMfk2INhDCizT6ogdlqr+qvDplJRnNqnHAqkEbHtWgI4GW87tU4e/56wyLAhsjW30
+X-Stat-Signature: ro7uzeds5dhbnmx3bztpccsrco91y817
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781769864-810213
+X-HE-Meta: U2FsdGVkX19Ysdh9poSmZiYHgJfAOE4KZaLH7VJ/OV7Gk+NZYUy4/4uWXL5Dq6j4AJaeYYg808b/2EX9X791CzqBx/E88mpKb07AQzIU2zNEYaa7d/187fdruulb7Igu/poJ4SnhKPOEPVuwqhkwPDfmQC19Kzd0RX8aKEo2o7fCW71jzT6MjS1Bs8kzvgcsm2/aIdET+yjJzWhnMBlFbLEoSWFNtkoyTsG4ZAsTyDC8hPPl2mZmG8PWbZDaOrNpUs+8/S+IoKeUFM6z8LN8iMPxhjBP+Pu6eT7gK4/yPvbNFTwU1Q5maRoBDA1J9zO3P10xG0pUr9KDUFekcbRoxhMqX/2B/e6M/FZvNgqgq5MGds7WGExOFzD1qbM1dBGqudKFp5nvpHAliHNdY9Plrb6iOk8F975ccOv2+rES9JuVQVofni+g6ak3WM++Nfj/Ohf/CJLtmbzcaMNWq4UeiSmNlcvMsFwvuB6nH6P+SdEBQi7c3CjGezToe5eGB6iHLvW4RkDSuDCAK3qtkaE8iPITvsW5D9hJ7p68qPi/HrOkxuyZWdm7/QWuvlv81uYXJRD4aGOJX8yKOFGJcHJKT7cVq1en/YLBCYiN3gbkcCO9YVaiT1sTuX10v6mjMwHI/EGabf98ZbmEwxetsXuiJDXMW5piFZ8UWhODP/ehSzCjRf8yhwUsDZ4EMtq3Yg0K1KgJ0dNn0jPSDU7MKkGqTgjoS4qCrnWbPO8vgWKtMBUcz6fTC/9hP65xFvf6sLKAa8M6bwOLZfNwM7k6NMkUxrgcHzAvpbqgTOQ0L9W0cxdgC+GsqpmdN0luf+rxj95mcB5YcNVCm09JtXXo/RguQ+ZqzvW20veX321v5xhVIAwUKzI5+W19PEhubmZyCdqVYtfxTKmSWQZXvkY98oOxT7Nm584AaNNhQs31MmIXEC9t0HS59L5/BxocrC7cZCO0SStxBkGIQfbAHgbENrJ
+ YQbT2tGA
+ vUZnJz2esu+xoVc8RFf/vRfMAXsEFUTxI460QkqsrFfz+ryOWyJxXxRGwFNoQ62e/GdRy07+KNR1wNsdGHZbaWI8R43KygPxYKSfmoil6BTf7mR2YJNSiNmA5MbRP2gxbph28C43W5KdNl2c3zqktfmJJJWFexEO0ItPd2wigOoHbkQHficHD4Ecsfv/cD8UxOadtUat+xB/Aun9tdLs8klXosO70aDSw/KaKbNlO9Hm6VjOL/XNciQm86UUSqJSauE6rzqEV7yOvIOUTqdmogVGAxY0sLSlMfyPLrhJaiYowp8wTR8X04eKz867H105PjDDrRuWME/Xkvpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,33 +95,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Replace the last user of PageTransCompound() by PageCompound in ksm,
+and get rid of PageTransCompound().
 
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ include/linux/page-flags.h | 14 --------------
+ mm/ksm.c                   |  2 +-
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
-On 2026-06-17 16:47, Zi Yan wrote:
-> On 17 Jun 2026, at 9:27, Ben Dooks wrote:
-> 
->> The vm_numa_stat_key is declared in <linux/vmstat.h> but this is
->> currently not included in mm/page_alloc.c so include it to fix
->> the following sparse warning:
->> 
->> mm/page_alloc.c:165:1: warning: symbol 'vm_numa_stat_key' was not 
->> declared. Should it be static?
->> 
->> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
->> ---
->>  mm/page_alloc.c | 1 +
->>  1 file changed, 1 insertion(+)
->> 
-> vmstat.h is already included at line 37[1].
-> 
-> I wonder why sparse complains and why adding a duplicated one below 
-> fixes
-> it.
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 7223f6f4e2b4..7a863572adce 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -879,20 +879,6 @@ FOLIO_FLAG_FALSE(partially_mapped)
+ 
+ #define PG_head_mask ((1UL << PG_head))
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-/*
+- * PageTransCompound returns true for both transparent huge pages
+- * and hugetlbfs pages, so it should only be called when it's known
+- * that hugetlbfs pages aren't involved.
+- */
+-static inline int PageTransCompound(const struct page *page)
+-{
+-	return PageCompound(page);
+-}
+-#else
+-TESTPAGEFLAG_FALSE(TransCompound, transcompound)
+-#endif
+-
+ #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+ /*
+  * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..75db9ecebdc9 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2341,7 +2341,7 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+ 		 * afterwards, the reference count will be correct and
+ 		 * split_huge_page should succeed.
+ 		 */
+-		split = PageTransCompound(page)
++		split = PageCompound(page)
+ 			&& compound_head(page) == compound_head(tree_page);
+ 		put_page(tree_page);
+ 		if (kfolio) {
+-- 
+2.27.0
 
-I'll check, maybe the order is an issue here?
-
-> [1] https://elixir.bootlin.com/linux/v7.1/source/mm/page_alloc.c#L37
-> 
-> Best Regards,
-> Yan, Zi
 
