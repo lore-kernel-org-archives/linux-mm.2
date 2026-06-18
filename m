@@ -4,91 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C657CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B21CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:26:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11DFB6B0088; Thu, 18 Jun 2026 10:21:33 -0400 (EDT)
+	id 2895D6B008C; Thu, 18 Jun 2026 10:26:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F6B36B008A; Thu, 18 Jun 2026 10:21:33 -0400 (EDT)
+	id 260916B0092; Thu, 18 Jun 2026 10:26:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00D836B008C; Thu, 18 Jun 2026 10:21:32 -0400 (EDT)
+	id 14F716B0093; Thu, 18 Jun 2026 10:26:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C2D8D6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:21:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33CD8120129
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:21:32 +0000 (UTC)
-X-FDA: 84893246424.13.4EFAF62
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B1BF1180002
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:21:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sWlfSJOn;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6A826B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:26:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A6A58AB58
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:26:30 +0000 (UTC)
+X-FDA: 84893258940.29.E79604B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 930114000A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:26:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E7w7aSgO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FPZ6cOcJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Vf/L7LMb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NzDkm8dm;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781792788;
+	b=1kWjIV9Y6FXbO6PLnVLs3vlecgFrZ1UVbUkTpyCQ0Ozg3TOBkDDIfcks3mxuNkR95ZT3ud
+	yRLHuwMs180XG0ygnpGR9VQMLqx5Ki4wzlRd7NMBstfyeUSD+nnlirGs+joZcVxUzoL11Q
+	1arbnd2syWYirQuIiPxUd+seW6+X9sk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=E7w7aSgO;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FPZ6cOcJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Vf/L7LMb";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NzDkm8dm;
+	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781792490;
+	s=arc-20220608; t=1781792788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L9GEnYG33F17bRUebP70R9oSvlshe6oh8TC7uZQQU+Q=;
-	b=3RrPn3wxu8ADjRb1OYOfuM3nA8OVTQyU0Rbq/7gi+Hrs5qgcq/moPT+ChVVgggNpFKrI2C
-	vA3wzybuCIzuP8DnBeVYSxBplAqtydTqFgRlyCe3km9PUaahfumWjt7dNN9X3TCqs2WoLE
-	V1YmcMD0jFHUbmGNwOBQrLtcALYaWgE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781792490;
-	b=HmKGvkW7rjK6Fvg8nfLuAvnjhhYkJShVd+qUnyMJ2EqExGYBhk/myDb0dNp1mlUyMAIygk
-	KDEnvhlb3PqDw3ahhWJnP+VFW7dMZ0QRGL1f4isoWx3brWSedXtivxEa2gcivYCvBkZugM
-	KfgqzYNu4dZeR2MYgePX74tcNkln1jI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sWlfSJOn;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE6582A31;
-	Thu, 18 Jun 2026 07:21:22 -0700 (PDT)
-Received: from [10.1.25.219] (XHFQ2J9959-3.cambridge.arm.com [10.1.25.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2E653F62B;
-	Thu, 18 Jun 2026 07:21:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781792487; bh=UJvB2cE80ENLkJAysf+TRElR2F2FZEG3i8BWI3trRbs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sWlfSJOn+ZN3AFuGhMupaPTBVGQl78THl7kWB9Qc5De6MyoVUtz9XpHh9KnAiKzg4
-	 Y02lLu4SbsrvtwX8WrzRTqxIqiJsCDc+aIE51T47IlccPbJ+fNQ60k821ooOPlS157
-	 0OP/izXFX/EO2mnDAhmcuCh0OKsW4NJuJPv/SUf0=
-Message-ID: <07ab8b6f-cb58-4f8c-af7e-c99c2fb8933a@arm.com>
-Date: Thu, 18 Jun 2026 15:21:24 +0100
+	bh=3nBTSAFLZWoC3PysnA6b/+hH4FfP0bc0bS97qROFMb8=;
+	b=wHR4xTfjOGZF+Fnm9OvwbkDiKUaraZopPQetMMqOKbU2ts6xbNBnqzPExF3WF3JBSQ+FiT
+	2txC9JQifwfR4gfFju/aoVewkJGGoAcxaVvZvIjC/lbff8JgU2ccni717z4y9EFh3pwt2c
+	xUEsC8vollENOy8rBVdDTo/qndLgS2Q=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B506075F38;
+	Thu, 18 Jun 2026 14:26:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1781792786; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3nBTSAFLZWoC3PysnA6b/+hH4FfP0bc0bS97qROFMb8=;
+	b=E7w7aSgOtnaguNa6ZwxnpBPFQ0TaVIrJaFzZVTGai7Q1GKhXenyWr3t8unofUv6n/drpWE
+	hfrRS3HNjUlssOgJwMk6WfD6MTz4jhQFFbHQ2zYszvxh7zCaIHj+u7GFhqIjfT5yCSp6cT
+	hQdpypD6EL0q7XI5bSh0SG8X/rblIVw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1781792786;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3nBTSAFLZWoC3PysnA6b/+hH4FfP0bc0bS97qROFMb8=;
+	b=FPZ6cOcJx+gQ7DSm9rs8s+aUM9o6TPbqz39QQ+O7BCfMQy1/WTjh+sj7KZIF+L96tMMOQL
+	hwt3RgDXsWCuWOAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1781792784; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3nBTSAFLZWoC3PysnA6b/+hH4FfP0bc0bS97qROFMb8=;
+	b=Vf/L7LMbhvTW2oePUbEbyqRzRV04eTxzyl5caEyrIU6vfwOjNHy+OKRAg+wa2BP56VDyun
+	0vlxQcnJYF3+53do3m6jQmQEfB6Kup8qptVHtw9B+SCIZnCs3pnFeNjw/8MBxWE9D3ej5n
+	eT/yKsOz4BvxF/DrE4gRDyjXLRGgno4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1781792784;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3nBTSAFLZWoC3PysnA6b/+hH4FfP0bc0bS97qROFMb8=;
+	b=NzDkm8dmm333GNGV25Mbtkg3oogOcD4Nmk+3zdfhFyaEaa5j1ytPFdMlKloNBXZWf7UCNG
+	xp96Y/Bo2n90UODw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9BF61779A8;
+	Thu, 18 Jun 2026 14:26:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Wu8KJhAANGpdGgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 18 Jun 2026 14:26:24 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 37368A12D9; Thu, 18 Jun 2026 16:26:09 +0200 (CEST)
+Date: Thu, 18 Jun 2026 16:26:09 +0200
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+	Carlos Maiolino <cem@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v6 1/4] block: add task-context bio completion
+ infrastructure
+Message-ID: <4jtsjd2sbsn2w7fzfwb7wwowz72r4kc6345ckkkcjoxjbbwjwn@rkl44x3o3sgy>
+References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
+ <20260514-blk-dontcache-v6-1-782e2fa7477b@columbia.edu>
+ <agq2KRd8RkP1TAf5@infradead.org>
+ <ea1fa305-3ba2-4cfd-b7cb-86875032a300@columbia.edu>
+ <ahPbaSEoNA755Nt3@infradead.org>
+ <f1b8eeb6-2397-4f48-a21a-a023eb0c80ab@columbia.edu>
+ <rkb5oei6cx2erbyininczz6ukbnquqheexhu7tznn5rslkkdn7@b4kpdyhdwdb6>
+ <ahbq0RdUyLIPiItB@infradead.org>
+ <80cb53f3-e7e5-4f96-bacc-f9fb7661d976@columbia.edu>
+ <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/6] arm64: mm: allow huge vmap permission adjustments
- with bbml2_no_abort
-Content-Language: en-GB
-To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-3-abarnas@google.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260611130144.1385343-3-abarnas@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B1BF1180002
-X-Stat-Signature: 5nkiyt9w6dwrkr1wnks1bgx1yt7r167e
+In-Reply-To: <cuyklvhnt37xwk3jlr2iyyxxkzvt4bsf5iqv2gag4ixdicnbk2@rfqgjlclwesz>
+X-Rspamd-Action: no action
+X-Stat-Signature: 9dte7q9k6nu1uay8rzn3hpkcj1uan359
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781792488-558238
-X-HE-Meta: U2FsdGVkX1/nYw/cbaH81WeCiSKlUPHstZ16Dv59cJKbeT6B2l00Dq5k5HJejWXYs4dVk+GxWjZE95SZMCNT1uUKk8nOWh5Pjlh8HL8O0Ae4jpNz2MZfLlA6LZ2Hxj8a3SUcs/9/FFtmmHdAb0PomvGvjWEdrV0BX405SIiCEVMNZKNInTxGRKTIy9jJR1wKarEUNbWXMoeEbC9sn+/H7LanVOCFrwKmj08QLX3Mp5fOP6bdooDd0y/U6PpjlU21lhGzjiIjpRPjNl0iLLome6N7mLHX9U1W72S5ZY408gOSwk0md3PSF55hiHnJctSCSqSGiGApxxRbvTN/nzAADFBH3He9zZ4kGS/PMMzzePTScL9DBc/4y2NMPpQX0FOc2Zhm0BAyVkJGse52orWoLOcXngPqoeLL/T9bjUX1Xvx+e3KZOkfeN63t61dJmyNllbQL+yCkcUJPWcMgD+Drn44L1U9rm6dcaTmZF+9dMD7OTYD0kWGD2gBk7k6idXaxquWvxduHtxk4b6RJyZCzfqzEfHa03pYbdFDFfX2lCpuHnuZynRDAtI2dJGlkQY6bp/7PPX+gzr9FpU+1AXArG4eSCcJCP61R8Rve2uHvZwOLGmEeWVk0pNJCYZW1yQ265wobxKOf9on8CTWmROXmf4fJP1uVNASWa9an2zfSQVavnd2Nd5giMmIokcz2WMjgMXywXg30EYPhQHo/k3qy73U337/GedlEOz+cxObWXJ9c3pHoLI3oJwVO3yuqaZup4jYGRESgzXBlaV8Y14O2Em69tgUxP3mphsTP9l2xRiXoRw8b5cX624KzP6DNdX6X3ksCD0jnXHDmLAlrre7iqZx+RndhUtnFMikHNDceL4r/V3nyVQ8dVI9z0WkV0hccTmWn+apzKBuAu/N5HzHubJecjAT/I8upFtRw9xY582bHFCHidLhS9dxyeRZjYTMyIRpGg1WHXlW9PMJPSVT
- d6qeAhIe
- 8abGPDfC7GPqtFg1OSLBE2qTeuPOJmdh9JQbNSDmPoJPblHjqJEUCtk+0XC1Es6dDF8gZk8gYcfhckUw3GqSAHQ7CqB8QWBzTCjTKfe3wecSvV9t2V3lhxJI5hcadNgOmjzHQWW8ly23PbQ1rJ+GAl6gyRQu716lmib2/79Jfz2ncKLzEp6znswmDJdMo98khikDWNA2QqryCsfODXIuNAcRftJfXR5uCQuPIaQwXF/AyCV/0cqLfMzYR+FLsJIKdFIgpy/ZPll9CqIh9bHfEs97NrKpBVZ3opM+oX9lfH5OfaBJ6Cwvj2xEopsAkbiekWQ1/+SR5bn/0Rf/l+eq7bi+MYWmIaynLfkIJ+/sQbLYRsYhc36Vo1+Yjsa2D6qg1/JmDynKIM7PSkD8=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 930114000A
+X-HE-Tag: 1781792787-6443
+X-HE-Meta: U2FsdGVkX18msTpCEmDS7/rnWInjbNYv+SfU34MGloiPaBDYxNE7AwevOL+j2q9UsmvErDR5Mhh4Qef+jc+svxS7jrB+bcWBassc+d2ofVoMj0QUnNPGYTHeGmN1UhARW/LBPurREKQ4/FgJSxj1SGq5x6rMYD1YWq0jbP9CwtA4n1bivbPrxi0SnZHfb+p0RyfUJ25aW17Q2dvMlO5dtY8IBmfOuzeoQ2mEawGyrp5Ja9df0mZyBjaMHDyCpS68oagfbQrGCWmTzK0gYd5di4tv44jCz0TI37BESITQkd+G/U+gRAzye3ihlDPFUYCTAQFLibTMSSUHBlROh523PPfcTSjRaWtbec+3l3mC41Pp/+2KrjONguq4sUGIbzkqnP/Kkz5LD8Np55GuMcSUM1m8QTIdjnkMJ9WCRfRGRsxnfPZAByTGx8ewrQ4FtLffKgo5m4G2o4+QtUksafBENt6bYABxTj6rP3/7LeJMDO5s4l9UqXmohJsHvVPTc2jCx0N0gGdhKdT0VuwBv39DiX2wTjMilR08REgFVGQyKBRY/z4fAwiiXGh7akbAhmKXxpygggVnRHAnMVqLledvOpZA8TEB7lClZsRYDA/mG7GwihKs6zzd63oNn9sWJd0MtFsTS74LNtNjQp9UicTMa/Car+9SfpP6aRUlEwqIMrlMrVMQpmPM3xzahr1l2ntBAEIi7VfM/k/1Fhl/9/xyWU6dlD5ZVDCZiQ/3oB0RLjnfzdTmnAw0m1zmRQNOWWyGsWQw/+cSWRBQx+XTlWNgA4RGz27g/jipZeXYBD8Nyq7y4I70LspzL9vCwzbiA//S5+CpZ0UpYyxSxVT1t68fwSh4jMU0NhR2nue0aZjLF5SBR2kBppyxqAwSl/T0c97+qee8cwvA/Da7GadAu0tMB4pCuIv4CnxmP7JClldzSoLx60ocJOckIPkiTbuUJgphHaOMFcgCuHOlVE68SlE
+ 9QEGREGo
+ S6qKNn37cPwPmfpGrvO8GccMgZXkptrEUyY6r/Yz0ex95oIF3miUZZbSybYqhHofCNedmlwpFF+4pJoTscDQQ8XIJlLAAZP5DNjRhItNzQDge8Jqpb2KTU7OuIrgJZpThv0Hg21eZz+OgZPBrxpGHB2/YtP0kDtJ5HxWEApjqHC6TZjKedPubDD5ksy62FLRZMqCkCLI216C3ZLngVHTJs+j8IwEB4JiP5gl8viNWbZkTIULrLWUSn3oixfNFOAWi/V03+dM6V4pUgG5gWXo54+NZ44sGqEr/QeC3GbLLdXR/K2dTXEUKzJLB1r82Ef2wz2//cWLbENvoxyYoSB38qALFHOpS1GXIG998czerifxXbMCJouY47SXmZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,79 +153,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/06/2026 14:01, Adrian Barna≈õ wrote:
-> Remove the protection against huge vmap permission adjustments on
-> systems that support the bbml2_no_abort CPU feature.
+On Mon 01-06-26 13:04:41, Jan Kara wrote:
+> On Fri 29-05-26 16:46:15, Tal Zussman wrote:
+> > On 5/27/26 9:00 AM, Christoph Hellwig wrote:
+> > > On Wed, May 27, 2026 at 11:42:28AM +0200, Jan Kara wrote:
+> > >> > I ran some experiments with fio on both XFS and a raw block device. Five
+> > >> > iterations each for 60s. Results below.
+> > >> > 
+> > >> > TLDR: Removing the delay doesn't significantly decrease user-visible
+> > >> > latency or otherwise improve performance, but does significantly reduce
+> > >> > throughput and increase context switches in some workloads (e.g. C).
+> > >> > I think it makes sense to leave the delay as-is. Thoughts?
+> > >> 
+> > >> Thanks for the test! One question below:
+> > > 
+> > > Thanks from me as well!
+> > > 
+> > >> 
+> > >> > Results:
+> > >> > 
+> > >> > Workloads (all `uncached=1`):
+> > >> >   A: rw=write     bs=128k iodepth=1   ioengine=pvsync2     # XFS
+> > >> >   B: rw=write     bs=128k iodepth=128 ioengine=io_uring    # XFS
+> > >> >   C: rw=randwrite bs=4k   iodepth=32  ioengine=io_uring    # XFS
+> > >> >   D: rw=rw 50/50  bs=64k  iodepth=32  ioengine=io_uring    # XFS
+> > >> >   E: rw=write     bs=128k iodepth=128 ioengine=io_uring    # raw /dev/nvmeXn1
+> > >> >   F: rw=write     bs=128k iodepth=128 numjobs=4
+> > >> >      + vm.dirty_bytes=64MB, vm.dirty_background_bytes=32MB # XFS
+> > >> > 
+> > >> > Mean ± stddev across 5 iterations:
+> > >> > 
+> > >> >     metric                     delay=1           delay=0     delta
+> > >> >     --------------------------------------------------------------
+> > >> > 
+> > >> >   A seq 128k qd1
+> > >> >     BW (MB/s)                4333 ± 27         4374 ± 34     +0.9%
+> > >> >     p99   (us)              36.2 ± 0.8        35.8 ± 0.4     -1.1%
+> > >> >     p999  (us)               3260 ± 75         3228 ± 29     -1.0%
+> > >> >     ctx-switches          184 k ± 59 k     3.68 M ± 65 k    +1903%
+> > >> >     cs / io                0.09 ± 0.03       1.86 ± 0.03    +1888%
+> > >> >     avg bios/run            80.4 ± 0.6         1.1 ± 0.0    -98.7%
+> > >> 
+> > >> So 1 jiffie delay is (with default HZ=1000) 1ms. That means for this load
+> > >> the completion latency should be at least 1000us but your results show p99
+> > >> latency of 36. What am I missing?
+> > > 
+> > > Yes, this looks a bit odd.  Unless there's multiple threads submitting
+> > > and somehow the completions get batched this should complete one
+> > > bio at a time and be the worst case for the delay scheme.
+> > 
+> > Sorry, I should've clarified - the latency here is the userspace-visible
+> > I/O completion latency (i.e. fio's clat value).
+> > 
+> > I ran again and traced to get the actual time from __bio_complete_in_task()
+> > to calling ->bi_end_io(). The results match the 1 jiffie delay now:
+> > 
+> >   metric                  delay=1  delay=0
+> > 
+> >   A seq 128k qd1
+> >     fio clat p99             38us     36us
+> >     bio cb p50             1.23ms    2.5us
+> >     bio cb p99             4.13ms   1.44ms
+> >     bio cb p999            5.01ms   2.63ms
 > 
-> Splitting live kernel VA section mappings into page mappings was
-> restricted because it could cause TLB Conflict Aborts. This forced
-> permission adjustments on memory allocated with VM_ALLOW_HUGE_VMAP to be
-> rejected, resulting in performance drops (e.g., when enforcing rodata=on
-> disables huge mappings).
+> So I'm clearly missing something fundamental as I don't see how can fio
+> reported IO completion time be lower than the end_io callback latency...
+> Ahh, it is the strange meaning of clat in fio in combination with sync
+> engine where clat means: "how long after the syscall has returned the data
+> is ready". Which for sync engine is immediately so the clat number is
+> meaningless. I think reporting 'lat' numbers from fio would make more
+> sense but whatever.
 > 
-> The bbml2_no_abort feature (which mirrors the architectural guarantees of
-> FEAT_BBML3) ensures that changing between table and block sizes without
-> following a break-before-make sequence will not generate a TLB Conflict
-> Abort. This hardware guarantee makes it safe to allow dynamic permission
-> adjustments on huge vmap regions.
-
-FYI Linu Cherian has a series that renames bbml2_no_abort to bbml3. I think he's
-planning to post at -rc1. Would be good to rebase this on top once merged.
-
+> The bio cb latency indeed looks like what I'd roughly expect now. And
+> notice how the median latency of IO completion is 1.23ms in delay=1 case
+> and your throughput isn't abbysmal only because writes end up accumulating
+> in the page cache and writeback infrastructure ends up submitting a lot of
+> writeback IOs in parallel (you have ~80 bios to complete per run which
+> amortizes the latency to decent level).
 > 
-> Signed-off-by: Adrian Barna≈õ <abarnas@google.com>
-> ---
->  arch/arm64/mm/pageattr.c | 22 ++++++++++++++--------
->  1 file changed, 14 insertions(+), 8 deletions(-)
+> However if you'd have IO that were to use BIO_COMPLETE_IN_TASK
+> infrastructure which doesn't have so many IOs in flight (like direct IO
+> with lower queue depth which has to do extent conversion on completion),
+> you would very much see the latency hit on your throughput as well. In the
+> extreme case of qd=1 direct IO you'd reduce the throughput to ~4MB/s.
 > 
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index 358d1dc9a576..88720bbba892 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -157,23 +157,29 @@ static int change_memory_common(unsigned long addr, int numpages,
->  	}
->  
->  	/*
-> -	 * Kernel VA mappings are always live, and splitting live section
-> -	 * mappings into page mappings may cause TLB conflicts. This means
-> -	 * we have to ensure that changing the permission bits of the range
-> -	 * we are operating on does not result in such splitting.
-> -	 *
->  	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
-> -	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
-> -	 * mappings are updated and splitting is never needed.
->  	 *
->  	 * So check whether the [addr, addr + size) interval is entirely
->  	 * covered by precisely one VM area that has the VM_ALLOC flag set.
->  	 */
->  	area = find_vm_area((void *)addr);
-> +
->  	if (!area ||
->  	    ((unsigned long)kasan_reset_tag((void *)end) >
->  	     (unsigned long)kasan_reset_tag(area->addr) + area->size) ||
-> -	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) != VM_ALLOC))
-> +	    !(area->flags & VM_ALLOC))
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Kernel VA mappings are always live, and splitting live section
-> +	 * mappings into page mappings may cause TLB conflicts if bbml2_noabort
-> +	 * is not present.
-> +	 *
-> +	 * While bbml2_noabort is not present disallow VM_ALLOW_HUGE_VMAP mappings
-> +	 * to guarantee that only page mappings are updated and splitting is not
-> +	 * needed.
-> +	 */
-> +	if (!system_supports_bbml2_noabort() && (area->flags & (VM_ALLOW_HUGE_VMAP)))
+> Now I'm not saying the delay is bad - it is a tradeoff with clear wins in
+> CPU overhead your benchmarks are showing. I just wanted to point out
+> there's also the cost side which your benchmarks don't show very clearly.
+> So we might need to keep some stats showing how many IO completions we are
+> offloading per second on each CPU and switch to delaying the work only once
+> it crosses a threshold like 1000000/HZ per second or so (so we at most
+> double the IO latency by delaying the end_io callback).
 
-nit: no need for the parentheses around VM_ALLOW_HUGE_VMAP.
+Any progress here? The patchset looks really promising so I'd love to have
+it completed :)
 
-With that:
-
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-
->  		return -EINVAL;
->  
->  	if (!numpages)
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
