@@ -4,126 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC57CD98E2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F304CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FA4E6B00B1; Thu, 18 Jun 2026 04:47:58 -0400 (EDT)
+	id BDDCB6B00B5; Thu, 18 Jun 2026 04:48:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AC206B00B3; Thu, 18 Jun 2026 04:47:58 -0400 (EDT)
+	id B661D6B00B6; Thu, 18 Jun 2026 04:48:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A466B00B4; Thu, 18 Jun 2026 04:47:58 -0400 (EDT)
+	id A7BD06B00B7; Thu, 18 Jun 2026 04:48:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B5F46B00B1
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:47:58 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1DC51A068F
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:47:57 +0000 (UTC)
-X-FDA: 84892405794.04.658DD3F
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C87C44000D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:47:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BDiCr+v+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3056B00B5
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:48:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B051B406E2
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:30:37 +0000 (UTC)
+X-FDA: 84892362114.02.3D402C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D59C5180010
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:30:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fK7PnRy1;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781772475;
+	s=arc-20220608; t=1781771435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OfwAKcFuVrniumYvLLu8JFz9uYaRHWvyegwwsVszSZM=;
-	b=UDLlBpMO7UcAJbJKQ9/ZKZbzCCD1OEW/vZ5qrfeg9julaC+0NqmTnNrN+RfmDcsZ38hiu+
-	GCVR5HZor/WCFwDtVd9VUftpO0VhL2ASHxFX1tSprnL629jmtugz62PO7OrLcJKyN0H0fS
-	j/i4FqYE143YDYr8RT44cBY6/k5lJQs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BDiCr+v+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+	bh=nGhbQekJqWwn8AB1BZdGKXVYLktjfCTf6Z1qRB9iehw=;
+	b=4sHoOwLvSxGlZTd2bPSOhY7MY5kasfO+CbQbcPCieGRNHBQUnvCmenftb4gObuo7Jm9nbS
+	sqaCQeoE/OrckWc0tdSZgGpxRC/lOpG4/NY7Rgwj26WWBExWuu9RnCsrw6OdARaEmNJU5+
+	Mv+W0LpGwb7zFGvG5C2XOc4pxWcsIjs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781772475;
-	b=QRNZ0V323m9Jf5uj326CnTwnWOs8mYiUcxwIni3eLllhtQ0HIqXT3hYqcEzK+kgIrvZ9R0
-	h0Gh8q3xy2nGE5wDtepBVwxIiSsNmOt9SVIVu9MMIYPfak1Z9wQ0aFwuFXj8cOpl0sMOTn
-	A7mMWB+NKrxgkf9nopLj/B9XdaGoIec=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-36da8439078so544847a91.2
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781772475; x=1782377275; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OfwAKcFuVrniumYvLLu8JFz9uYaRHWvyegwwsVszSZM=;
-        b=BDiCr+v+LXcnQYf7fwRGkxiBhoZjxN91YiF+H/E/6RUGc0F2wRpoJOhuhVRYRyOhT1
-         dwtRpu1+HFpnM/UKrFESZ7Wq/1GHdYqkkKg3bZ/nW2oKGGamMXYI/Kcp/8i/eQp87NX5
-         A4zk53sByc8sXcJC62jFWcjr0iugxALD+9TCulcRqDxg3XhtQtrVNonV2egnrRdlApnH
-         uw0Y2Kogx0wWkS8F+yGfF7RAHV6nh/gGj8NZxYugX0mEbE7MStYVuxEkXp1hGvgy+qwf
-         zzYIBPsVrJBgpEAYLblw7m5YDkv/CbJef1oH5BG7vRlqzk/o0k9EUULg9EsnMU9ZfvQH
-         +dUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781772475; x=1782377275;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OfwAKcFuVrniumYvLLu8JFz9uYaRHWvyegwwsVszSZM=;
-        b=Ez45ozmmaEp153xUy5jIUI+Ac2hRYXClvOL76+QE+mQeI6GCnLU/CPknU1QsseYeOi
-         LqF1LhwmRy3VO4/2cHDqZyG+zAL12lsvdZ58MbaZez7CZrLfEYwrBOKs9L9Lthd7V8rh
-         i3r7Zjp+jH44KWNqb4YkYA7KHMHqq6srNOJU2Rzb+sKpe5rSWQ1vcPv/qZixtDQHjv20
-         0XN8ji2odmLVaa0/kycqEW//0Pvl8HHVMiC4taUWigAl5DEcagAPvAYhoRIEhz8CXp30
-         3ILM8kncl+AbuJ67Xc92evRTGyKFxKVfTWURuB+NL8NAKu4q2fRwXL9yBU1bc7p9x0mz
-         B/0g==
-X-Gm-Message-State: AOJu0YyexG7WKumXVRkb/MFQgwZMPJz3qLtJnTYPUJVnV9ZHrMb5hAwD
-	NYEVxuZIwRjlBX36325aEm2kUtF5XMe3xC3uKkf5AhjLZb0DVgmwoDb1LayYCQ==
-X-Gm-Gg: AfdE7cmsV8ocTrG3WKcEIpqCYYHKX5Hj9TMDCIexotkVjGqxq2d+AiCKW+Wl95kJ3ZK
-	oJT4G0KgNNljZNdO8Fd5gLk6pG+MlmP9G78G3QU/lDsqwqmK+wjU8NfMVWh9Gfca2u14NZ/TqrR
-	f2ca1JucamUbYYEzx6EPVZudHvqoJ4AnvIKzNKKfKdn78vCskhpeSJSRPLmTMCsL7XbNAd/SH6L
-	eR+iRRvzToSPse66m7FqExH70Vc9/3/EnwDUsn/t58Qe/2KshtLi5/oGXcxNFN6W5vDoeR6djHw
-	70oR/T8HGLfuXrdRGWlG9EBysl6HjeSbkwEl1FaO7W09UKIXsB/+pujlND/RiDxpU1peQ5vfEVt
-	5UAvINVtdjoAdhAvZYsfKoNJeKWPO7/iEx2wNTen7j4Dls/otW9RJxO/0vGwPHJnqey+AN8yCCA
-	QExC4tOXIqZkvfO9vuZZiKnpai//eWLgde8/uGHKpka20pAg==
-X-Received: by 2002:a17:90b:390f:b0:36d:635b:85a0 with SMTP id 98e67ed59e1d1-37c936a1d28mr8015697a91.3.1781772474606;
-        Thu, 18 Jun 2026 01:47:54 -0700 (PDT)
-Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521d8e7bsm8628856a91.5.2026.06.18.01.47.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 01:47:54 -0700 (PDT)
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
-To: linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: baohua@kernel.org,
-	Xueyuan.chen21@gmail.com,
-	dev.jain@arm.com,
-	rppt@kernel.org,
-	david@kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	ajd@linux.ibm.com,
-	linux-kernel@vger.kernel.org,
-	jiangwen6@xiaomi.com,
-	shanghaoqiang@xiaomi.com
-Subject: [PATCH v4 4/6] mm/vmalloc: Extend page table walk to support larger page_shift sizes and eliminate page table rewalk
-Date: Thu, 18 Jun 2026 16:47:24 +0800
-Message-Id: <20260618084726.1070022-5-jiangwen6@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
-References: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
+	t=1781771436;
+	b=s+z1vB75qOGxc6l9qxqj+1sRC3aLkV1unBLNaOjOWzMpQg6DzpjXHlrXX/dBInqTo4MIFE
+	/nDIchSbqgMG2NqCWswHA1i7pZ9JdzucrpClo+5DaRWZFOvphBRo1d0kTNO4MCzsiJmX6c
+	ut8h7ZNGiPoumc+2HBLmqSuEMPMaD2E=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fK7PnRy1;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06DCD4054E;
+	Thu, 18 Jun 2026 08:30:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6F61F000E9;
+	Thu, 18 Jun 2026 08:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781771434;
+	bh=nGhbQekJqWwn8AB1BZdGKXVYLktjfCTf6Z1qRB9iehw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fK7PnRy1mINc5gLPRbZ/6poyoyt3t0M5bTbyMiyuB+bCopIZKet3C9E0v4PFNnI62
+	 5k+oajs2ANDCtmp8bMremIf/p6d8ZT8sdS9ERHa0Eve379SeQIuOT2M/1DidM9MU/X
+	 fu5RQE4Lk+uEm1Z6yIBiCSXZHefqC16Kb53h0AvJ4CCDPCNolrnHtE63hLaVwARE3t
+	 qn1kbie8UesGRg8N1K72yF7fpHszX+ZMuNWahliLPf6/CxseOWPKrbV7Cl0s1Qlg2b
+	 RNsZWj9wqgLcRcdKgEPI6i5U6pMhz+0bX6xueOpDEWd1VA/0YRdMDVk0rsUJyGrfxg
+	 7QgBmSYhw7E8w==
+Message-ID: <bbcb6db5-6a01-46b7-979f-dadd52a5176f@kernel.org>
+Date: Thu, 18 Jun 2026 10:30:27 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
+ usama.arif@linux.dev, akpm@linux-foundation.org, mhocko@suse.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
+ <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+ <ajK1YsIJmD2ImbAk@linux.dev>
+ <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+ <3149bc84-dd3a-43ba-826e-6364965fdafd@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <3149bc84-dd3a-43ba-826e-6364965fdafd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 5dcayqajdyugpyou4urnaxju9rbnzgoy
-X-Rspamd-Queue-Id: C87C44000D
-X-HE-Tag: 1781772475-181298
-X-HE-Meta: U2FsdGVkX18CopZ1wrBXK1QcACXXLffXH2NgcsNUCSh69ObHu+4av4XDIIO1QScVNLpbw+zqzm+z58uA7eMVeAETn8qA2kzUtc0ZGEWsG6ofURdjLMEVf+4ZctH+pLfPECCgG3BwOkImFyiCkk/htTcgZX4sBDEQnzsi2ea/VqcvFsz+SQJGX/xF5R2E2XngueV1+yave6Bx59IJYKKPSWUgD0X6lMU43tokOQNQBSabH14Zgy/ALC2d/As9YuL+FsPi0rN1hEVy8EEntTA+tvJ5W5JDW754fW1QZLZ4LuPMjK2fdLnzg+PZPeR67J3sf59pCxApcS0M+6dItC2O1O1ydrkhkZlwenc6js+kX64ideuAzWqFqJ1uzBq5yO4RlmTRo918YZaHRAATN2dVFbx+0mKeK1CVKYxb33wG8BELK+W+xJpQ8ib20f6BbtgKVLrxqu4dhshF3XaayuU8jQNviD0nJMJayoZIISIz/pNVagUP03ykk0V1ItohTVp8BCVxE5Jsj6IibEj3ANZSPbtXkE9vD9JSMr04NfzEAsqxSXKCkyeKDFnO+8n19y69n7XYiEQkNm+Ktku+1cK8wyJqn5uOXlGEhgGG+x82PHWflfPtZwjPgTKiXPeSQInSGTTlaLO9IeRYra3vLd3aM+5zQIC3AsYw4XXc4Q4LH3S7rWd001J6+HsUFuzHuGKCfYWQFMwGtq4FiOqKmBFuLm9aJAOua49VOdqBKZhwkzUXHmGBnyXAkBVSk/FdLxv2KM2iUqjxTvD1oIaYl4kSN1cInjJCKa4HcKQ1o7icun9KqGJIwl+0GBS02ttavVBY1W+IUgvHYthtV60Z0wHWG7mJJUFltPb8sCkmdx/RkF6p/JkprZXZ3BoxmdBijwX+WIMKB0k5bzuJgDRwIXGgv/swIOUR1B5m1O9khAZ6Mp8fQSOUrKxkDFxfi86I9muVFq+5IiwDK8ylxyxRQXL
- o1VyjVUM
- Fwe+AcXG7BOQlqFW7T4RWKrnLhhhUKQeg0LwdOw8F1b024vmX8ygOeBkBywBrjoiqhBJqeTn2b+pnZwrIsYwO6TXr2flPbna0JhWjj6snTcwBsZUEHkIPaUQgNYyYj/1xEl+vI/MYNOFf+TNbOZ9YZf3iCDgDH//nBywfsOoCaxJcTgYDDeWUshQwJKtpVgva7QZeq60tBFhEhbMsAqB+6R6up7XN8nf9uJqxAxot3AwSNVynCWLceQAzSA4rswchOUyFKrn2YQoT3W0fA1wH9VsnpoPyGLf+ZmKXVWMBz8Wl9JQaKHf8p/+Nxm6CeERnh8WRYLAetmUOI8bE1n7pdZCa9FHrgQCdSzfhkXxZFAu/fc2bRsi0pjAyjToUZd6bZwnYZ2+gSfJ0EauoOAom2og0y07oLX17qNgXqhLevWBefQGl6mAJuEYQsvDWhQA5j+nO2hqtvKVvUO8wi3NezPfwgHBFeKCzSXhKP7YX56e+iCH5RtMn0BLR4h8fX8Knaenu1aHUxEqjOTQTdjrf3V74L81k9vJAoMkVKl0v8P6T4Vtgea8n1CuO7hBq7cZ4wqZ2kyPnb1IbIyaojOAjgJiZnQ2aukeszGHywWADS++o6nAxHhYBL0d64g==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D59C5180010
+X-Stat-Signature: n67jkiebsqcffq6z38bb589agn63csqu
+X-HE-Tag: 1781771435-118557
+X-HE-Meta: U2FsdGVkX1+rIRzuSrTCiU+kSRAEFz87VbM++ODtsQfhXD6xICXeT4pCPcCLoaB2erk5Km9Uw3NrI4iV950rdViyZ05IAUjn8vUBYoiuV1TTq7uso9DXVXN9GP9wDfsOecB41zUkTL7szW0MzHlvT838pZyIMSA5qHfVenIhfF0/GaFuXcoc9wMm6lSTH8mbzuUyF0DknRvobY4w0ZWSAq/9/nTCioaMQRH/EV16CThtz+iNgSG47sdppqZRwxoNirRUCGgb8HuJCqESMH9yhIM0G8s13atqABzyWPMGw7kbQdmSnZ4bHUzPXJpYLoMFed4KkL7X3O4bmBqbWP63KNEEwP/ZzFUXmP7q88ltCs2UzCL+vg0ir4oHXj5UaNnjbzFz6AaFEDlcNaTbl8beEzYSCzQChBAfwYIPRjQ7Q/kG83CzS9kJZ+bZSZt3zbzFx8h/81t47CcgZKdpZIWONVyhAWN/k5Tf4isTV7cci9levXgjoKrVegmd66ooDX1R5J+eklniqgO713ZkHNv9qfaE6cbcwnOf35sbwAKDjqc5cxacqwZe4oiAbzlSaTkTLLqxz8OPsNhCBNbKoHauqjHGf6gmMJKYW1TPNPmQUMBlS4Ix0ae/0SsMVfoxslR6U1Fc1uI9PgIKx0j2Q8DnQJMJVgXakQxQaxraPePu4389eYZ3QyYW9nq4ha0tgDAkQIWasc9MIlJnPMI1wLuipt9DnG5VgMyTg4D511S3lpFPo2HkBzGaYdRoPohWGZs+OrKpkoy7s7D1dD0IG76IlTkCsQD74xX3zRLZxDr7KmruwtoSKx3Jjo8gvRdYOR2G2rDC0bpUgDlvc7uZPWceDtPAt4wdlmMy/Hss+wbztsRZ9PcTXA/lvAk5u0xlMORBAkDVQQ7eGyEPM61E3ZT+hmARZrEFkkwk09tH6nR3ntUxEtImJsB+sWoWWKjd8j15AJTBW4Ylr6Q8kELmMfa
+ DDXSTipz
+ TQSnPd7BYA46w5NWsaVvQGnzc4JJxEEgqEvEkThGs53C4Enx4rB1E/wkBVG4pRoSS2JnNFULkoJvBnNBdNvKuK4kEO7tRrNAm1a/tlEIVE8ge4z/3nqQB0DMB9f0XvXG6m5WrRi9yrOFfJtIHBPHdpNq8ItJN/Kp7khlrbbY47zSponCssg1x4LhZRz551KhwV9ajRvLLLnImvF5A462ZTs0WzOmnH+xqUqM/SsM6I90rCyFL0jmTKvSAhQwAsAlW1w8K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,208 +143,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On 6/18/26 10:21, David Hildenbrand (Arm) wrote:
+> On 6/17/26 20:18, Vlastimil Babka (SUSE) wrote:
+>> On 6/17/26 17:03, Shakeel Butt wrote:
+>>> On Wed, Jun 17, 2026 at 01:11:16PM +0200, David Hildenbrand (Arm) wrote:
+>>>>
+>>>> Given that trace events can quickly become stable ABI [1], are we really sure we
+>>>> want to add this?
+>>>
+>>> Yes, I think so as this is useful to get insights into lru cache draining.
+>>> Trace events being stable or not is secondary IMHO. If in future we rearchitect
+>>> the lru page handling where there is no cache draining anymore, we can make
+>>> these a noops.
+>> 
+>> Yeah and I don't recall ever that a change to a mm tracepoint would ever
+>> break someone who'd complain and we'd have to revert it.
+> Really? :)
+> 
+> Read the context of the link I posted once more.
 
-vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
-provides a clean interface by taking struct page **pages and mapping them
-via direct PTE iteration. This avoids the page table rewalk seen when
-using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+Ah, I see. I've only read the single mail from Steven that referred to the
+old powertop breakage and didn't notice the context.
 
-Extend it to support larger page_shift values, and add PMD- and
-contiguous-PTE mappings as well. Rename it to vmap_pages_range_noflush_walk()
-since it now handles more than just small pages.
-
-For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
-iterate over pages one by one via vmap_range_noflush(), which would
-otherwise lead to page table rewalk. The code is now unified with the
-PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
-
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
----
- mm/vmalloc.c | 81 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 47 insertions(+), 34 deletions(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 6660f240d27c9..253e017130e09 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -127,7 +127,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	pte_t *pte;
- 	u64 pfn;
- 	struct page *page;
--	unsigned long size = PAGE_SIZE;
-+	unsigned long size;
-+	unsigned int steps;
- 
- 	if (WARN_ON_ONCE(!PAGE_ALIGNED(end - addr)))
- 		return -EINVAL;
-@@ -149,8 +150,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 		}
- 
- 		size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
--		pfn += PFN_DOWN(size);
--	} while (pte += PFN_DOWN(size), addr += size, addr != end);
-+		steps = PFN_DOWN(size);
-+	} while (pte += steps, pfn += steps, addr += size, addr != end);
- 
- 	lazy_mmu_mode_disable();
- 	*mask |= PGTBL_PTE_MODIFIED;
-@@ -542,8 +543,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
- 
- static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
-+	unsigned long pfn, size;
-+	unsigned int steps;
- 	int err = 0;
- 	pte_t *pte;
- 
-@@ -574,9 +577,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
- 			break;
- 		}
- 
--		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
--		(*nr)++;
--	} while (pte++, addr += PAGE_SIZE, addr != end);
-+		pfn = page_to_pfn(page);
-+		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
-+		steps = PFN_DOWN(size);
-+	} while (pte += steps, *nr += steps, addr += size, addr != end);
- 
- 	lazy_mmu_mode_disable();
- 	*mask |= PGTBL_PTE_MODIFIED;
-@@ -586,7 +590,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
- 
- static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
-@@ -596,7 +600,27 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
- 		return -ENOMEM;
- 	do {
- 		next = pmd_addr_end(addr, end);
--		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
-+
-+		if (shift >= PMD_SHIFT) {
-+			struct page *page = pages[*nr];
-+			phys_addr_t phys_addr;
-+
-+			if (WARN_ON(!page))
-+				return -ENOMEM;
-+			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
-+				return -EINVAL;
-+
-+			phys_addr = page_to_phys(page);
-+
-+			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-+						shift)) {
-+				*mask |= PGTBL_PMD_MODIFIED;
-+				*nr += 1 << (PMD_SHIFT - PAGE_SHIFT);
-+				continue;
-+			}
-+		}
-+
-+		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift))
- 			return -ENOMEM;
- 	} while (pmd++, addr = next, addr != end);
- 	return 0;
-@@ -604,7 +628,7 @@ static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
- 
- static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	pud_t *pud;
- 	unsigned long next;
-@@ -614,7 +638,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
- 		return -ENOMEM;
- 	do {
- 		next = pud_addr_end(addr, end);
--		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
-+		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift))
- 			return -ENOMEM;
- 	} while (pud++, addr = next, addr != end);
- 	return 0;
-@@ -622,7 +646,7 @@ static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
- 
- static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
- 		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
--		pgtbl_mod_mask *mask)
-+		pgtbl_mod_mask *mask, unsigned int shift)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
-@@ -632,14 +656,18 @@ static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
- 		return -ENOMEM;
- 	do {
- 		next = p4d_addr_end(addr, end);
--		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
-+		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift))
- 			return -ENOMEM;
- 	} while (p4d++, addr = next, addr != end);
- 	return 0;
- }
- 
--static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
--		pgprot_t prot, struct page **pages)
-+/*
-+ * It can take an array of pages which are not all contiguous, but it
-+ * may have contiguous chunks, as hinted by @shift.
-+ */
-+static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, unsigned int shift)
- {
- 	unsigned long start = addr;
- 	pgd_t *pgd;
-@@ -654,7 +682,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- 		next = pgd_addr_end(addr, end);
- 		if (pgd_bad(*pgd))
- 			mask |= PGTBL_PGD_MODIFIED;
--		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
-+		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
- 		if (err)
- 			break;
- 	} while (pgd++, addr = next, addr != end);
-@@ -677,27 +705,12 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
- {
--	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
--
- 	WARN_ON(page_shift < PAGE_SHIFT);
- 
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
--			page_shift == PAGE_SHIFT)
--		return vmap_small_pages_range_noflush(addr, end, prot, pages);
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-+		page_shift = PAGE_SHIFT;
- 
--	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
--		int err;
--
--		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
--					page_to_phys(pages[i]), prot,
--					page_shift);
--		if (err)
--			return err;
--
--		addr += 1UL << page_shift;
--	}
--
--	return 0;
-+	return vmap_pages_range_noflush_walk(addr, end, prot, pages, page_shift);
- }
- 
- int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
--- 
-2.34.1
-
+But I don't think these worries should stop us from adding easily usable
+tracepoints.
 
