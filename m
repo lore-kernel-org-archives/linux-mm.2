@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A4CCD98F0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 22:17:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7B9CD98F0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 22:40:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD7566B0088; Thu, 18 Jun 2026 18:17:30 -0400 (EDT)
+	id 7F2F36B0088; Thu, 18 Jun 2026 18:40:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D882C6B008A; Thu, 18 Jun 2026 18:17:30 -0400 (EDT)
+	id 7A4236B008A; Thu, 18 Jun 2026 18:40:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9DB26B008C; Thu, 18 Jun 2026 18:17:30 -0400 (EDT)
+	id 694216B008C; Thu, 18 Jun 2026 18:40:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A35B26B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:17:30 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 25C478CEAF
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:17:30 +0000 (UTC)
-X-FDA: 84894445860.10.D8E6C69
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 88EB314000A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:17:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VTWcS6/0";
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2FBC06B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:40:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94C621402C1
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:40:35 +0000 (UTC)
+X-FDA: 84894504030.05.0CDFBAE
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DCF104000F
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:40:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=WQ6+3nIT;
+	spf=pass (imf17.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781821048;
+	s=arc-20220608; t=1781822434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=AgP8C8n7AzeVj9tEQoLceMS8hiFVWTMxZ605a6ktMpo=;
-	b=cucWJTPPoIkiydOhX+J0fjZkZ8ycwl0Kf+XhJn6HhQ9Ia1BLha1fuiaO2uBLsFUxf08P7S
-	amTuaJcIEJH5iU/HWvfWdrfCNtmd+9oXpyDpvgzlNSHmQdK77NKam7pjgBuMq+D3NL1p46
-	SFPE4to8ktQLE1BGbSu1H42Ba1Dpf58=
+	bh=ApwCf7gpHgvcRXw+jcerBXpdyD2CtuN4rEen5WYkVwQ=;
+	b=BHtvGqoewepEYEhmV28ET/dDjuNo+YQ2GE3MIKj/yNj7eZ87+mn/uGoLpFSezE/EESvEZt
+	gOtG169rR8RSMVqQnN8fBpstbEVMVggn2OgsvhqU7Nq8AfnHi6UYrUixTEs/1Vg+zZV0kN
+	3xgTrTWeDbifXwvHrCK7PxYLiErdwEA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781821048;
-	b=lAoNhy6WC+Kgf2oSceRiqicQxTegQE4zOt1GsM0NU9KeunnKY1bnlDkk6GRS9YTFN03y2s
-	YYY1XuQ8TJrCJgRd6gVIRO8YXbpGDOEeG2ESkAzOX7j1GK2vSw8MnavlggFRL/H4I38dtw
-	xNS0iL9Lamy3Bvw+ErlSX9i+xNMqheo=
+	t=1781822434;
+	b=Gim+/KH1wWTzHmLK+yawWvrXmLMG+7yJ6K8qaGE0UKF+6Tt+gdZbW0ZfOZsF1HhVcHlRRl
+	LPol5BePJh04RXcKjpLmejmXx71fSN9ES1BHASYQkQvJ0IgqY0w7PAM2G68Mw+nWQ7SRuU
+	HBmHVGEJo6s+oWJTEphoS0LT90NqVt4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="VTWcS6/0";
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7503842B7F;
-	Thu, 18 Jun 2026 22:17:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B11F000E9;
-	Thu, 18 Jun 2026 22:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781821047;
-	bh=AgP8C8n7AzeVj9tEQoLceMS8hiFVWTMxZ605a6ktMpo=;
-	h=From:To:Cc:Subject:Date;
-	b=VTWcS6/0u0fy+q51rOfIGax1ATe4ygJ57UTUd6PSyTMWbQXGk8rY0qko1kWIXdpHz
-	 TIc7iBdWexOB2m8XhOcfP4e6l/pxd7nPTUioJ9sTwEXWGEGU0+6j0I70hR/F2jiuZK
-	 H7JhZFpARdupH1w+p3UqZsfUfqoXlHoWmlr0t2nMi5i8pjYzznlACT3wGxAi83k3Bn
-	 uVmyPB67Du3FmAGhx8aH7Rt5JFm7lJUyjqJcwpLSJrtsGMxGnsEhz7S6jymSOtHdNV
-	 EW4CykmPtNAvkeP34eO3aYOL2i3s4A0AqhG/ZV6UASfxSP6qQwU5zwbSRtoCTd090A
-	 PsXnbeN8lxLBQ==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Nanzhe Zhao <zhaonanzhe@xiaomi.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>
-Subject: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-Date: Fri, 19 Jun 2026 06:17:20 +0800
-Message-Id: <20260618221720.71768-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=WQ6+3nIT;
+	spf=pass (imf17.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from thinkpad-p16sg1.corp.microsoft.com (unknown [52.148.140.42])
+	by linux.microsoft.com (Postfix) with ESMTPSA id B86EE20B7167;
+	Thu, 18 Jun 2026 15:40:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B86EE20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1781822431;
+	bh=ApwCf7gpHgvcRXw+jcerBXpdyD2CtuN4rEen5WYkVwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WQ6+3nITFaUoApJS2gd3L88W/q4Hs5kTBRI8981tg0QPi2f3sqZqOWcDkV3Jlt8QW
+	 edV8ZExu6U4Ji+eDs6froMXJp26di0ia4++icpLJEqGjXeF+JqtbXbbnTnL1CP1/pO
+	 S+1KPikxyu8UqUeaKKSj5xsx2izvM51q1zuqNLak=
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
+To: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	kees@kernel.org,
+	tony.luck@intel.com,
+	gpiccoli@igalia.com,
+	bp@alien8.de,
+	rdunlap@infradead.org,
+	peterz@infradead.org,
+	feng.tang@linux.alibaba.com,
+	dapeng1.mi@linux.intel.com,
+	elver@google.com,
+	enelsonmoore@gmail.com,
+	kuba@kernel.org,
+	lirongqing@baidu.com,
+	ebiggers@kernel.org
+Subject: [RFC PATCH] reserve_mem: add support for static memory
+Date: Thu, 18 Jun 2026 15:40:18 -0700
+Message-ID: <20260618224018.117978-1-shyamsaini@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 88EB314000A
-X-Stat-Signature: 9yjy4s3bwr83f1uymtwcsig84xc8ckdb
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781821048-401127
-X-HE-Meta: U2FsdGVkX18ZIhkmO63D9nXb2KhLQ0yDVBj9xeRiLk2sjgKX2dNBt/VuNET+p4dbbkwcHg4zYciv8sF8l1zBX/hV7ftsvmpUir1oa93o4FyHxeArNOJvXZ/Mu+9GlLmcJC/lV3YJeC1zym2sqDhu/SwC2O8sf4bFixhMalIFrWAIg/OAZ6mnY8iSx0DXbKv6NdR9QfctvWQLyNpweaTUg3qdfzmq+h2oct1UbUpw+zOWGwwfGfn+zF3YCyndsJTtYO6EdehzaB0GYAIhRgaJ1LbTwfA9VlM7O+dINwd01cd9CeYR3r7GKSq8kD+p8G8Z0Y/z6CSS2IgxlkZBe8bLok+KzmdjVmOkg1xHSzYczyZVEaUNa6WuuxCGIY8ENqJldI2hJgU9MvHu3O1ghebP9PTcbnjad1m9BJ3BBn79NBUpKSHKeCcTczj6ZR145TxsTlTr8IIth/wA7hwhXCiu9tGdKlF9koDVx5fgvSYrwv7gcaQY+I31h3NSF5f0jt72/5KP7mVZTOQIi8nofSgUeZKJrR0XUlhCaMc4+uDKRQ4QMg+4iHR1L0EMExI64IZt2/ZhQvZf4w8XZFQmuFRnpyMQgmMni0tMQHYGZ+whvMakZMT4Ywsv+Ml8GpzKam3Wm1jQKN5UXXMx2ui7oXHbPxqhrqdhPeNmcB/saF5QTeazDy/W8kNKbXM7xxJPz25zuc40SfWm6SD/8refuvG/BWnCyQoVGEgOo8TC0GY5f1CLhZ1UfYumeUWZ3cxr2JmbW0Nv8GLyrTaeI461QqtR+xPH3qBxtGAGBYGAa8FEER0JDhjsjCfj1QkxdwMTlXMOmmyjojHXjMKdToohY7Cpc0yOT3oeFDI3EzK5XSb0N6ItlQ6v8ENOrs6EnWA4BX7uovq468nyT28ZJ43hR66vRrz4qsBFcnNx0HHw3NGWufEXvRDTiUii3VWROeEjz4XTWkkuW93/fxpaXIdcra5
- tIIXTAO3
- jKqH/u8Yp1dHQj/gpxWzjbaMHss5svIEaMOrWazzU0axFbTMJ8tQyLoE8bW/k0vZDixias/HjSeVib1GT590IkNOOUVBnHzGajOzVpaJilKiwEgDWpyRNtFhITSXXrOCM7yvUnw9uPgWWHMaNdcWWpvLkpdZXyFEPLPjRUf2xFURDeChABu9ihkTrOTI8a5dZxgu0Z2tQOdKv5qNoX2bPZd6eoPXZNYG3iFL1qUMulO0bpXmTmbTe9n549fcVKIXB1x/FgpERYU52W+XMxSVIu1pO5UZL5S0zcCG++O2ybdSkSCNYlQTSsjC67OBMTxiAoYpDhMXOihq63zptgxb81qbqRdj8KsI0CWjbnEGxBDw5dop+JDstb3eTPrVWs1pXKZ/s2IcxNZ2IkUxxaKudS8tZLGZdGI8pEbfcE0zJ0pQ11pblRijOAbkc3ZWbnsjD0DsLaWNAGQRBCg6YOZJfYoVtTOavu0nXZvL+chIRk8WMFnI=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DCF104000F
+X-Stat-Signature: i4bqeuit53h9rq1yddb9xxxr443ac1zi
+X-HE-Tag: 1781822433-9334
+X-HE-Meta: U2FsdGVkX19TdOTNZN+0CWAdS2V4rW96l/801+YY6sm34+mqNOiFZHWa9zhEUntdnk6kzimqYIL8eNPNNT/pql9i4MJ4LHAskjAMTSiOV92MW2p0quSf+pLI0SQaxh6TI7Lj4bCthcvfDE72nvbZ4YiSgee7ApL7tDE6a09Y3XTPMoUgyc8LR201uemkG9Ub1W5zpFAwcLmxLDxQFFOL0tfw5Ny9sBSkIC3w9zklAOLO8erg8xtXELhXfAcRL8d3D++AZktrHMjxg9posi/elp3pkeDjaewxuMps8nR+oHBtGhmx8Rp0aip89APGe8GaB5XwepIbZ/gbV+gjGwJ8iPz/nDgEYgrMolF5ic1FqztH/g9rkh6Dk/RCIM0OA5/7UVBHE8pS3aTeMDAq8xHcml/Cl7nYOds35xKx42tfr/5h8H0UPlwZmdPrNS2k10PYB08sQOdBs5mykAp/5aQ4LUYxSwl4YomcComVtrlFMPePTJd2GNm6E8HGZD/uhTBw/S+oBZLr97cjYPdbpFqXrJeZl15k+FMHe0MdbI5DFNW8am9YNMrszgKKwRR4uH1Qu2IvJVgYG+kZHnlBkYdhXVPa4U7kgGTMSpU4kx0+HdRQ8JIsoeMD8Wz+WTWT/qOP6XMZQMx4zZPg3skcnjTZF0KKYy7zRlCF4/KyZ3pxHQ5rWg3tHGeVtllDQx8hNuWFT8dPDdRYa30/feSBiLSTvlE6AHGEJYK3FSn1BnaxWbjeBv9yT9SF6Mv+Y64kQ5g70GHiguP6Zf8+LaVCML4OcpPh27M3KTH4Hd/Sr6A9X9XRFApBEdVry/Hg9+God0toKM1GAUswKVGn2LY5F+Btv/RXzyAFLSaojKtUaQk/NVXY1r1d6Ub7rQGUlJSJ989C1Y3xtPvsyO7a23XJGjTA25Un4TaK2DFOyNWy8KoJw9Ssskbl2TZohGXet69xPfv0k5/1dvZOLK0sznK73+U
+ 0FQcCxxT
+ wD8f4PkyDywxBSpXQblkHUjdJCMIiAlEYXCiZ1uxkBk6q43H+2HThXXhFvlpIr9Y6epeiYLt/WOID+TValxplDs/RaDS4beB8OTL9FmsT+G1p3eKeoDo4MVCXWDBpOSJJsxmG2vr0jbmzhk+H4GpSg90A+MPPiVf01LuRNP6CjWTChx63JyrmmMtJnoYjFl2lPlap1Z5PRNdl6qnpq59RFs7QDOcQPt1I1UDJ0BAU14NHlAMKvbGCPg3fnJiQuH9stnp0YqmwNU0BWa20IyBKdaIRkp7shC+7mDhk/ob4zWvjoMtKt3BqLInYTOYkHmsyNZj2jsewW/loh5x2gzxyyx4yVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,98 +99,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When swap is disabled or exhausted, swap slot allocation
-may fail during swapout, causing large folios to be split
-into small folios. The splitting is reasonable when we
-truly fail to obtain contiguous swap slots, but it is
-pointless in the no-space case.
+reserve_mem relies on dynamic memory allocation, this limits the
+usecase where memory and its address is required to be preserved
+across the boots. Eg: ramoops memory reservation on ACPI platforms
 
-A simple way to reproduce this is to invoke MADV_PAGEOUT on
-a system with mTHP enabled but without swap configured.
+So add support to pass a pre-determined static address and reserve
+memory at this specified address. This enables use case like ramoops
+on ACPI platforms to reliably access ramoops region across the boots.
 
- #define SIZE (16 * 1024 * 1024)
- int main(void)
- {
-         char *buf = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
-                    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-         memset(buf, 1, SIZE);
-         madvise(buf, SIZE, MADV_PAGEOUT);
-         munmap(buf, SIZE);
-         return 0;
- }
+Also skip parsing of "align" parameter when static address is passed.
 
-With 16KB mTHP enabled, we observe:
-~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
-1024
+Example syntax for static address
+ reserve_mem=4M@0x1E0000000:oops ramoops.mem_name=oops
 
-This patch checks swap space before splitting. If there is
-no available space, it skips splitting. After the patch, we
-observe:
-~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
-0
-
-Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
 ---
- mm/vmscan.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ .../admin-guide/kernel-parameters.txt         | 15 ++++++
+ mm/memblock.c                                 | 48 +++++++++++++------
+ 2 files changed, 49 insertions(+), 14 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 299b5d9e8836..33f84a5fe7ee 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -339,8 +339,7 @@ static bool can_demote(int nid, struct scan_control *sc,
- 	return !nodes_empty(allowed_mask);
- }
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index b5493a7f8f228..7e0baca564b97 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6563,6 +6563,21 @@ Kernel parameters
  
--static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
--					  int nid,
-+static inline bool __can_reclaim_anon_pages(struct mem_cgroup *memcg,
- 					  struct scan_control *sc)
- {
- 	if (memcg == NULL) {
-@@ -356,6 +355,16 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
- 			return true;
+ 			reserve_mem=12M:4096:oops ramoops.mem_name=oops
+ 
++	reserve_mem=	[RAM]
++			Format: nn[KMG]:<@offset>:<label>
++			Reserve physical memory at pre-determined location and label it with
++			a name that other subsystems can use to access it. This is typically
++			used for systems that do not wipe the RAM, and this command
++			line will try to reserve the same physical memory on
++			soft reboots. Note, it is guaranteed to be the same
++			location unless some other early allocation for eg: crashkernel=256M
++                        (without static address) is reserved or overlapps this region.
++
++			The format is size:offset:label for example, to request
++			4 megabytes for ramoops at 0x1E0000000:
++
++			reserve_mem=4M@0x1E0000000:oops ramoops.mem_name=oops
++
+ 	reservetop=	[X86-32,EARLY]
+ 			Format: nn[KMG]
+ 			Reserves a hole at the top of the kernel virtual
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 6349c48154f4b..79f1f806ea364 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2721,6 +2721,7 @@ static int __init reserve_mem(char *p)
+ 	char *name;
+ 	char *oldp;
+ 	int len;
++	bool addr_is_static = false;
+ 
+ 	if (!p)
+ 		goto err_param;
+@@ -2739,16 +2740,27 @@ static int __init reserve_mem(char *p)
+ 	if (*p != ':')
+ 		goto err_param;
+ 
+-	align = memparse(p+1, &p);
++	/* parse the static memory address */
++	if (*p == '@') {
++		start = memparse(p+1, &p);
++		addr_is_static = true;
++	}
++
+ 	if (*p != ':')
+ 		goto err_param;
+ 
+-	/*
+-	 * memblock_phys_alloc() doesn't like a zero size align,
+-	 * but it is OK for this command to have it.
+-	 */
+-	if (align < SMP_CACHE_BYTES)
+-		align = SMP_CACHE_BYTES;
++	if (!addr_is_static) {
++		align = memparse(p+1, &p);
++		if (*p != ':')
++			goto err_param;
++
++		/*
++		 * memblock_phys_alloc() doesn't like a zero size align,
++		 * but it is OK for this command to have it.
++		 */
++		if (align < SMP_CACHE_BYTES)
++			align = SMP_CACHE_BYTES;
++	}
+ 
+ 	name = p + 1;
+ 	len = strlen(name);
+@@ -2772,16 +2784,24 @@ static int __init reserve_mem(char *p)
  	}
  
-+	return false;
-+}
-+
-+static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
-+					  int nid,
-+					  struct scan_control *sc)
-+{
-+	if (__can_reclaim_anon_pages(memcg, sc))
-+		return true;
-+
- 	/*
- 	 * The page can not be swapped.
- 	 *
-@@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 	/* Pick previous allocations up from KHO if available */
+-	if (reserve_mem_kho_revive(name, size, align))
++	if (!addr_is_static && reserve_mem_kho_revive(name, size, align))
+ 		return 1;
  
- 				if (!folio_test_large(folio))
- 					goto activate_locked_split;
-+				if (!__can_reclaim_anon_pages(memcg, sc))
-+					goto activate_locked_split;
- 				/* Fallback to swap normal pages */
- 				if (split_folio_to_list(folio, folio_list))
- 					goto activate_locked;
+-	/* TODO: Allocation must be outside of scratch region */
+-	start = memblock_phys_alloc(size, align);
+-	if (!start) {
+-		pr_err("reserve_mem: memblock allocation failed\n");
+-		return -ENOMEM;
+-	}
++	if (addr_is_static) {
++		if (memblock_reserve(start, size)) {
++			pr_err("reserve_mem: memblock reservation failed\n");
++			return -ENOMEM;
++		}
++
++	} else {
++		/* TODO: Allocation must be outside of scratch region */
++		start = memblock_phys_alloc(size, align);
++		if (!start) {
++			pr_err("reserve_mem: memblock allocation failed\n");
++			return -ENOMEM;
++		}
+ 
++	}
+ 	reserved_mem_add(start, size, name);
+ 
+ 	return 1;
 -- 
-2.39.3 (Apple Git-146)
+2.43.0
 
 
