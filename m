@@ -4,94 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E7C0CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 17:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1579CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 17:05:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34A5D6B0093; Thu, 18 Jun 2026 13:03:01 -0400 (EDT)
+	id 3030D6B0088; Thu, 18 Jun 2026 13:05:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 322426B0095; Thu, 18 Jun 2026 13:03:01 -0400 (EDT)
+	id 2D9FD6B008A; Thu, 18 Jun 2026 13:05:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23BC56B0096; Thu, 18 Jun 2026 13:03:01 -0400 (EDT)
+	id 1F1B86B008C; Thu, 18 Jun 2026 13:05:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E13916B0093
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:03:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4216CC0A90
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 17:03:00 +0000 (UTC)
-X-FDA: 84893653320.07.22399CA
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A305840014
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 17:02:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Vzz+zfi8;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D320D6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:05:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 60B37A015D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 17:05:35 +0000 (UTC)
+X-FDA: 84893659830.04.108A4F4
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 50BE280014
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 17:05:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D9sTB9Q4;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781802178;
+	s=arc-20220608; t=1781802333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmuIcSpZ72Q2dFdWE8ZIFcNBmjQBX3Sgf0SwuEfsfUw=;
-	b=axXeerbGYOPvzsoMXJy1T8UfRussmrTJDG4aN5H3nYz7cAzmIQfXzQZTBiXpYi1ozxKyH9
-	79RxoCA+GBJHLuoWIrb8ZBQ4xQC/hL8n65odRpxfUSlok750OQOwK6jFd3CLKG9khAQpIA
-	Wi0DIlk84bzhmpFQQIJJwXsu2X4jyX4=
+	bh=ybW0XDMXWhhPRAahHbsLjLyEsfhFFCr/wzQmAvHHa+w=;
+	b=6adqh4sju1MOTbKLvUw3/SF5ofNI/eC5eG3Nx6chuxcNdjgRUNRXf4aemsJtEOFT2/LQD0
+	1c0ebz2zzMc5ppRFoisN6WTRtIbLboRa368yDmyMMt8FxtZYyFdASAG4SbvF1gZ6ZmmY2F
+	WoRHSlxkNa3uAnRMXsBLkDcXaXzFaSQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781802178;
-	b=c5DgPaRhYiAdXhk4wsuvFEpMHEfozTyp2kQJYIV6oe3PCTFx2fAcQpF6zqnNsnPTwQ5vha
-	ReFLwYepU9DlaE9FGt72BUV7p9saULtF3spR4XfDjJaLS01ThLdh0PruKliMBC5dCvVTaM
-	DfBMT2w44CAFOLq8SBOvuDpLsdzdGQ4=
+	t=1781802333;
+	b=BWFtZOb26KFKWjM8UYrg293UeFPpePok4x20YojNOTySi0QCoR6p7T7sBzh2jyFn9ABsMN
+	8A4h8NNb3gIQNWMgF8LFZnY6NLSvsf9spiOcY6zw6lSSVR4iEelk4QhC2tRrr/XVGZr9B7
+	Ip7itRJeUYWbAaDaeistYwBYnB/DCjc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Vzz+zfi8;
-	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781802175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UmuIcSpZ72Q2dFdWE8ZIFcNBmjQBX3Sgf0SwuEfsfUw=;
-	b=Vzz+zfi8tAIbw7fqohxlBjGj+G7vR0Xkrbpbhn554lIsTC87zYgvNxJfWzSdpVzo4xnW6H
-	pcRW6gJPMAKd5XG0DA22SZrRYVF7p7Hkj4EDcTY7Yw9Z49+0FGQFlxBw992xHv8HJVivG6
-	XGVVGrgmn72EXf2B7CXIrtenxclE598=
-From: Usama Arif <usama.arif@linux.dev>
-To: Rik van Riel <riel@surriel.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	"Thomas Gleixner" <tglx@kernel.org>,
-	"Ingo Molnar" <mingo@redhat.com>,
-	"Dmitry Ilvokhin" <d@ilvokhin.com>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"David Hildenbrand" <david@kernel.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka" <vbabka@kernel.org>,
-	"Suren Baghdasaryan" <surenb@google.com>
-Subject: Re: [PATCH 3/3] mm: read remote memory without the mmap lock where possible
-Date: Thu, 18 Jun 2026 10:01:56 -0700
-Message-ID: <20260618170157.1375279-1-usama.arif@linux.dev>
-In-Reply-To: <20260616190300.1509639-4-riel@surriel.com>
-References: 
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=D9sTB9Q4;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so8607715e9.1
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781802332; x=1782407132; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ybW0XDMXWhhPRAahHbsLjLyEsfhFFCr/wzQmAvHHa+w=;
+        b=D9sTB9Q4bAs/SXFyT1f20bsoGeuN3oYoEjySBJgcCO6xw4iRg1Fiz7BWbQqTv0FdNZ
+         k1znPy1Z4Slo0N8leL/M8nu6l/DWDZge2A2/Mu6YzyE5bc+u1dIhPKoKnFV9AJ/YJw3e
+         7jAZDOno1/bo7U90d261R98aTZfTgdg5XUSyXQDjeLEsKLqTVfX7Yd0t6hB7mWO3XCtm
+         IjaPo2Z0B3FZmpo6mGatzOiKdCNPgsQEjKoWb/D4Lri3vlHAJ24FPBgvF9eclZ30ah4R
+         Fz8BjDApI12GoQ5Or5uEtpdb/6ewv/FsS1vJoiFutD3KsGiuE4kVMplfko2UxP65Q1VE
+         uzyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781802332; x=1782407132;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ybW0XDMXWhhPRAahHbsLjLyEsfhFFCr/wzQmAvHHa+w=;
+        b=iVtmrnptVBtmGZiY+VghCcRGH33A9kl5876l1XRm1BPRfG9SlXjjFfdTgDIKWR4+lh
+         f6V7LD5RuZVNMZkbQ4PXYiFz5Y8iMsS7ktKrzJAmE4pHBzhjnvjBCkiIsaLKJ1rjiAUx
+         9kfxNcxASsRP3TPsM28b5JKGChU5FPjORlw7SKMpk9C1Hm3ISR3Ys4uKXkN5OkwbvTQT
+         n34V6nCX+f5irOndKyBGwPUg0RCHEYFJkxna8MAFbPVFHBRQwoIrSWpmglmof5xn7MBA
+         7AMHltfO5w26YdEheAubmkipseYXrkXIRHa65ZAUnxX2wbr1QcEudoCiUZQ98G8SBm3c
+         e1Yw==
+X-Forwarded-Encrypted: i=1; AFNElJ/CzxKuDM2t+zm2c8E4iJMQJF26x41VdplKIN2pcsskFm1RYVRF/2mqfCP1a7SkdD7XG+SznNeUfA==@kvack.org
+X-Gm-Message-State: AOJu0YwQWny1ds9tPleWzYu09YMLyyCrl9merPYILCncwO72w1JrNYKJ
+	e7xLKajgxvJeasmFS3oGX2nx8dO374OWWYBBZ1DV3/RmJ9Rl1qdRnZME4PKTYsF8cHg=
+X-Gm-Gg: AfdE7clHIMr8IPVcBRyT9fYUptENnRDD+fzR/TX9WHyPxxDGTd1XmPKnJnlzpWTOTPw
+	ZJLaR5rRhfzvSYFgYwoI8t0SoVGLFwfOMo9cJrkLLdnP9HuABaKVRHWPXwIAx+84ySa/3TtfymC
+	yKqTzAPYE3gRhhil6jA2ttauBNMyAnEKRjxcWa3KVC3GOFAnxcaRv0WOFsE742ungySU1XB4iOg
+	aTTEOVLvUlVuU3hqU0IkAkleJPW83CHWSzs2QRn+LgR+AqPxLAVOTRSLG3uUDbFHD6bQ+oHMnbR
+	nh8g6gsah5iLf46Hvl8pJQV95bR8uOkP2TzQB3CiHUeEE//gqTPQ5VT7O4DyzCEgE8lMTr90SEE
+	7+6H/B10ho4dxI9c0/2nBaVrk4C1U+Uv60N75z0GFXaaY4AESM1165t3nvZBmNh+RtYw5yAR1mV
+	bGTqopQUBIJm5rIu3ZKtm1RqWGfQ==
+X-Received: by 2002:a05:600c:c48f:b0:490:b645:3213 with SMTP id 5b1f17b1804b1-4923f56c119mr7287915e9.19.1781802331500;
+        Thu, 18 Jun 2026 10:05:31 -0700 (PDT)
+Received: from localhost (109-81-26-193.rct.o2.cz. [109.81.26.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fd33dafsm2921175e9.8.2026.06.18.10.05.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 10:05:31 -0700 (PDT)
+Date: Thu, 18 Jun 2026 19:05:30 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>,
+	Shivam Kalra <shivamkalra98@zohomail.in>
+Subject: Re: [PATCH v4 1/4] mm/vmalloc: honor GFP constraints in
+ pcpu_get_vm_areas()
+Message-ID: <ajQlWn2iyg-nPIR3@tiehlicka>
+References: <20260618130414.96383-1-kaitao.cheng@linux.dev>
+ <20260618130414.96383-2-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A305840014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618130414.96383-2-kaitao.cheng@linux.dev>
+X-Rspamd-Queue-Id: 50BE280014
+X-Stat-Signature: t65k3hyiesgqdfktfz4uww6rsfhdht45
 X-Rspam-User: 
-X-Stat-Signature: giad1gt8kzs1m961oqnk6cj7xix4eygm
-X-HE-Tag: 1781802177-772139
-X-HE-Meta: U2FsdGVkX19kujRk/3s1bp5043JE4qtulZ7Ynn3VBmqpOJ/wdNMHnYAI3zGn12ezWKILBRQLLq8+pT+dlT8AsziZu3q2UgCM8t0Vd65e0Z/Mww9X3l/pBEWg9EQkjYz1XgqC6L7jKm3TbJdK6wa2IbeneimwGPCOJSDjyTVMK7hDbqGBJoTuVgL7WMs1vQGfhcgF9SS+lfTCFX3RU/2LW9ZwBRHnh/OzLRPSDcGf04N8ijYgCDthTvzi2X+xK2P0U9JeOwLIH3wBLPA1YyEks5JhMPg4f8cz5c8IMadjoQacRgtc3WLB0JBdTZruhPi/VogC/Ed7vreSGPp1f4ZmYGYUZCvW2OyM7k8KNMJrVmImD5G5w2YE7Na1UyaLkACXNZpGBWy4zpni/pvHZV/ONiEPr5H+vXqAXGUA2Sxm1XxULK73e5Jt8MrwchTjPTi7HUr4LPuS6qA9jW55r8CphVxuhy9H52kGuuc9S1zCAHtauAhx5Dun25vGbXUgw99vpOgJdxkSyCEGGd4BIsYWrHjJPq880CPKX2y6CGRAUM7cE/qChwnRmv2kiQdg85H617qgWcFEdub0q6X5ikHIhSfJ5EHN+Qlku77dhPmLR9EL5Fq74Yj05wZjErmvkSA2bTjpWoytbiKceJGpUTCOWw5LUKd6iSLGNSi80mQNeVdE6Ztz7mruKlxLzIqq49mTEVmoQMgZSp0dz2SZpOgQ9gP009pJ8FuEUkIZALQtAo4W66lmGrY3SICIXiBuAZyg6x6iK/eWXGgtc+NUcGrHd1wdnrOXBE63SEceX+tAzFevkVYnQtxmKvVN3OXMXnNBIMndHapbwgX6bgiRZVb96CY/tjP4cL5E8btVxx/pkLbFi1rN+Kx/g7pSxvYiLo5k3aPilisuBmiZlCxjDn7OJSWM+BDTGP42rw4TAwBJBdQB/+higMjqSiooOnbiEUw1vKMP0NIWNlqkgTjg4Q7
- yyfARHNh
- YcEDouBV1PnaS/prUF6nT2K07PR3bgMtw0L3Y04rOv702UDUV3Byek1vH+BvIS/26CyDGywtAOlFluHiJeVyt06rJGjnkwR7PNFBc8+VAOY7I+lYImKjNHOYe056+e13gfSPkWW47/3DC4oo/Fk6mn10y3latLXRdenULEtM0RoGzvW5EbZxM9vvbPfxd93qYkV4sr8GOkK7GprBF8pnjyKCGJDPpXk4b5rfrCKGQNxDAv1q1vzWWo19JtH0BCY4B1FEj
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1781802333-417186
+X-HE-Meta: U2FsdGVkX1/0JsiH1vgQopm/RA8QpK1vGm7tjZ+GO5IgGsnOoW+DUQmFMb8bBvBcw7K7C5vM77L0twztKzCtiCup5DBBp6Nc3c3sVq0cFWU4VqMrfyt2jtRZFWvP7jwzAspzCEVD70jtwPITdYLWeGgHnNdHvG+z2xoz7FAcfCJtzPJj0oPkXDJUgprP+J7D8suEQuS9zeotZ32EigaT6tLI2AvpvBb0ILMdzDVYarYa+A02KAchmQ+Q9nz/usyFltCyUYLABR/pPWCthHPxGjEpRHa/xxCA5MGCan27DJdA9m+VEYYMMV55SAqb/yYH3lhpcvAUwW6xRwycpFDlzSDz0LRjPgzKbXk82/klXsLWkT3yGG5UitF6x37MFoeC0mHOtiOw0ugPjkgnMLEnMCuw2yOf0DU2aMPC1p5GVumZemVNOkwxPHKmShmmHRuLp1k4diRo3v0O6Nx9j750GN7x7iy3eDWjG8UZ5s20x6okg//vS3LSUGyvYvzlpfQaFYX4aZCCZxMDJkmGEmaztyahsbLlkfQ3MCGHsopquK+NnvJJ76ILOKGxk+STOJvgdqauUYw33jM9Nqp1/rP/1ovhv2C4tZHkrE1sZI6jSsjdWpVNgYK6tm/gifCjFF9kJ2MjRwv9vdlSAY3dLBverAhdR2m3aVzzvqUrxUFe4fZar0GwsjB46mANEHXQWGGwmWW/DZJ4muUUN3h1mYsUGVhzf8ItOkBz4IeAJUW2iDFjTu4mCncU7+n3qN6fNwFFVSh3F/O8ChZpsFskztmdHCJCsFy1qSjgbXZoIQqiNjwttXuJqU5eTa5oswt9LZlqzgvGcnrQMqxPWcktGSvJnBm0srscoOOrlJQ7E4ISVdLvZBr/dXyXjSsRa/A36zUmF24qsjVLptUTMtzK+uXPgLe/Uk1WWgdcWEmVCCqHu7JnR1s8ouhyt9kq6h8wUbFsLdUUC93wasKEgfUbkLc
+ KgFtubjj
+ RGf4jZSMhB6CxF1X+VgxMW5iu/jH6rDCVmNamOEae+HlVY2Ldcjk1STYcjgkDl0FAVGJmD3npActUo80G7AsGta9Hf7iY4fsUIjXClbf+62dpC7AHTrgnR217+Og0JMHXhQ6ony40X5jsIUfEOhDg/YOw2SxCiBjkU5nwjs0W13Yv5GZIe0/Na1V+Y1N37rV1uB+Qp4fKmPBXqcLIcQeZMhvO5qtUzpRoizHHIYYHyAGSCPHJaS3P92mi72OFmDquD5+nojqVZfhbtLvUQy7udSIgAmHZUx569tK8qmDJ91WvwupszAnTykTE1zoL8PD3lzv+6rInN3hYDEfEHpQk3MAqueM0PBq0sglzb0H1BK4eErJ2D7r+oTKHCaIIs59afz8hXrZEhVsZapVWYnlK+nREadt/p4CBAT4RvvDMah5UNk5jSKede44bvVENdXaTvjVCTGUdvejV6YC7LYeUJEMmtLJa1ECKD2U1+cneJwZ6FmNlcaMVb7NRU8Rqq+ZNVkAg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,302 +124,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Jun 2026 15:03:00 -0400 Rik van Riel <riel@surriel.com> wrote:
+On Thu 18-06-26 21:04:11, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> pcpu_alloc_noprof() derives pcpu_gfp from the caller supplied GFP mask
+> and passes it down to the backing percpu allocator. However, when the
+> percpu vmalloc allocator has to create a new chunk, pcpu_create_chunk()
+> calls pcpu_get_vm_areas() to allocate the corresponding vmalloc areas.
+> 
+> pcpu_get_vm_areas() currently performs its internal allocations with
+> GFP_KERNEL, including vmap area metadata, vm_struct metadata and KASAN
+> vmalloc shadow population. This means that a caller which deliberately
+> uses GFP_NOFS or GFP_NOIO can still enter FS or IO reclaim while creating
+> the vmalloc areas for a new percpu chunk.
+> 
+> One possible case is blk-cgroup after commit 5d726c4dbeed
+> ("blk-cgroup: fix possible deadlock while configuring policy").
+> blkg_conf_prep() now serializes against blkcg_deactivate_policy() with
+> q->blkcg_mutex, and blkg_alloc() was changed to GFP_NOIO for that reason:
+> 
+>   CPU0: blkg_conf_prep()
+>     mutex_lock(q->blkcg_mutex)
+>     blkg_alloc(..., GFP_NOIO)
+>       alloc_percpu_gfp(..., GFP_NOIO)
+>         pcpu_alloc_noprof(..., GFP_NOIO)
+> 	  pcpu_create_chunk(GFP_NOIO)
+> 	    pcpu_get_vm_areas()
+>               -> if percpu chunks are exhausted, chunk create may do
+>                  internal GFP_KERNEL allocations
+>               -> direct reclaim / writeback can issue IO to this queue
+>               -> IO waits because the queue is frozen
+> 
+>   CPU1: blkcg_deactivate_policy()
+>     blk_mq_freeze_queue(q)
+>     mutex_lock(q->blkcg_mutex)
+>       -> waits for CPU0
+>     ... unfreeze only happens after q->blkcg_mutex is acquired/released
+> 
+> So the concern is that the caller deliberately uses GFP_NOIO because it
+> may hold a lock which can be acquired after queue freeze, but the percpu
+> slow path can temporarily lose that allocation context.
+> 
+> Pass the caller supplied GFP mask from pcpu_create_chunk() to
+> pcpu_get_vm_areas(), and use it for the internal vmalloc metadata and
+> KASAN shadow allocations.
+> 
+> Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Reviewed-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> Acked-by: Dennis Zhou <dennis@kernel.org>
 
-> __access_remote_vm() takes mmap_read_lock() for the entire transfer and
-> uses get_user_pages_remote(), which faults pages in.  For the common
-> case of reading memory that is already resident -- /proc/PID/cmdline,
-> /proc/PID/environ, ptrace PEEK of resident pages -- the mmap lock is
-> unnecessary and is badly contended on large machines.
-> 
-> Add an opportunistic, read-only fast path that transfers what it can
-> without the mmap lock.  For each address it takes the per-VMA lock with
-> lock_vma_under_rcu(), re-checks the read-side VMA permissions, and uses
-> folio_walk_start(..., FW_VMA_LOCKED) to grab a short-lived reference to
-> a present page before copying it out.  Anything non-trivial -- a not-
-> present page (needs faulting), a hugetlb or VM_IO/VM_PFNMAP mapping, or
-> a race with a VMA writer -- falls back to the existing mmap_lock path
-> for the remainder.
-> 
-> untagged_addr_remote() asserts the mmap lock, so add an unlocked variant
-> for the fast path; the untag mask is a stable per-mm value.
-> 
-> Only reads are handled here; writes keep using the slow path.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Rik van Riel <riel@surriel.com>
+LGTM
+Acked-by: Michal Hocko <mhocko@suse.com>
+
+Thanks for fixing this!
+
 > ---
->  arch/x86/include/asm/uaccess_64.h |  12 +++
->  include/linux/uaccess.h           |  11 ++
->  mm/memory.c                       | 166 +++++++++++++++++++++++++++++-
->  3 files changed, 188 insertions(+), 1 deletion(-)
+>  include/linux/vmalloc.h |  4 ++--
+>  mm/percpu-vm.c          |  2 +-
+>  mm/vmalloc.c            | 23 ++++++++++++-----------
+>  3 files changed, 15 insertions(+), 14 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-> index 4a52497ba6a1..c6fac900a747 100644
-> --- a/arch/x86/include/asm/uaccess_64.h
-> +++ b/arch/x86/include/asm/uaccess_64.h
-> @@ -51,6 +51,18 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
->  	(__force __typeof__(addr))__untagged_addr_remote(mm, __addr);	\
->  })
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index d87dc7f77f4e..e4d8d0a9f30f 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -310,14 +310,14 @@ static inline void set_vm_flush_reset_perms(void *addr) {}
+>  #if defined(CONFIG_MMU) && defined(CONFIG_SMP)
+>  struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  				     const size_t *sizes, int nr_vms,
+> -				     size_t align);
+> +				     size_t align, gfp_t gfp);
 >  
-> +/* Same as __untagged_addr_remote(), but usable without the mmap lock held. */
-> +static inline unsigned long __untagged_addr_remote_unlocked(struct mm_struct *mm,
-> +							    unsigned long addr)
-> +{
-> +	return addr & READ_ONCE((mm)->context.untag_mask);
-> +}
-> +
-> +#define untagged_addr_remote_unlocked(mm, addr)	({			\
-> +	unsigned long __addr = (__force unsigned long)(addr);		\
-> +	(__force __typeof__(addr))__untagged_addr_remote_unlocked(mm, __addr); \
-> +})
-> +
->  #endif
+>  void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms);
+>  # else
+>  static inline struct vm_struct **
+>  pcpu_get_vm_areas(const unsigned long *offsets,
+>  		const size_t *sizes, int nr_vms,
+> -		size_t align)
+> +		size_t align, gfp_t gfp)
+>  {
+>  	return NULL;
+>  }
+> diff --git a/mm/percpu-vm.c b/mm/percpu-vm.c
+> index 4f5937090590..69b00741dc68 100644
+> --- a/mm/percpu-vm.c
+> +++ b/mm/percpu-vm.c
+> @@ -340,7 +340,7 @@ static struct pcpu_chunk *pcpu_create_chunk(gfp_t gfp)
+>  		return NULL;
 >  
->  #define valid_user_address(x) \
-> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-> index 8a264662b242..c8c83372c9d8 100644
-> --- a/include/linux/uaccess.h
-> +++ b/include/linux/uaccess.h
-> @@ -34,6 +34,17 @@
->  })
->  #endif
->  
-> +/*
-> + * Like untagged_addr_remote(), but for callers that stabilize @mm by other
-> + * means (e.g. a per-VMA lock) and must not assert the mmap lock.
-> + */
-> +#ifndef untagged_addr_remote_unlocked
-> +#define untagged_addr_remote_unlocked(mm, addr)	({	\
-> +	(void)(mm);					\
-> +	untagged_addr(addr);				\
-> +})
-> +#endif
-> +
->  #ifdef masked_user_access_begin
->   #define can_do_masked_user_access() 1
->  # ifndef masked_user_write_access_begin
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 86a973119bd4..0b23b82eaa18 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -42,6 +42,8 @@
->  #include <linux/kernel_stat.h>
->  #include <linux/mm.h>
->  #include <linux/mm_inline.h>
-> +#include <linux/secretmem.h>
-> +#include <linux/pagewalk.h>
->  #include <linux/sched/mm.h>
->  #include <linux/sched/numa_balancing.h>
->  #include <linux/sched/task.h>
-> @@ -7062,6 +7064,153 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
->  EXPORT_SYMBOL_GPL(generic_access_phys);
->  #endif
->  
-> +/*
-> + * The fast path uses folio_walk_start(FW_VMA_LOCKED), which needs the per-VMA
-> + * lock and RCU-freed page tables to walk page tables without the mmap lock.
-> + */
-> +#if defined(CONFIG_PER_VMA_LOCK) && defined(CONFIG_MMU_GATHER_RCU_TABLE_FREE)
-> +/*
-> + * Opportunistic lockless fast path for __access_remote_vm() reads.
-> + *
-> + * Memory already resident in @mm can be read without taking the heavily
-> + * contended mmap_lock: a per-VMA lock stabilizes the VMA, and folio_walk_start()
-> + * with FW_VMA_LOCKED grabs a short-lived reference to a present page via an
-> + * RCU/PTL protected page table walk (relying on MMU_GATHER_RCU_TABLE_FREE).
-> + *
-> + * Anything that would require faulting a page in, touching a hugetlb or
-> + * VM_IO/VM_PFNMAP mapping, or that races a VMA writer is left to the mmap_lock
-> + * path in __access_remote_vm().  Only reads are handled here.
-> + *
-> + * Returns the number of bytes transferred via the fast path.
-> + */
-> +static int access_remote_vm_fast(struct mm_struct *mm, unsigned long addr,
-> +				 void *buf, int len, unsigned int gup_flags)
-> +{
-> +	void *old_buf = buf;
-> +
-> +	addr = untagged_addr_remote_unlocked(mm, addr);
-> +
-> +	while (len) {
-> +		struct vm_area_struct *vma;
-> +		vm_flags_t vm_flags;
-> +
-> +		vma = lock_vma_under_rcu(mm, addr);
-> +		if (!vma)
-> +			break;
-> +
-> +		/*
-> +		 * Mirror the read-side permission checks of check_vma_flags(),
-> +		 * and exclude what FW_VMA_LOCKED cannot handle (hugetlb) or what
-> +		 * needs the ->access() handler (VM_IO/VM_PFNMAP).  Checked once
-> +		 * per VMA; anything not positively allowed falls back to the
-> +		 * slow path, which re-validates everything.
-> +		 */
-> +		vm_flags = vma->vm_flags;
-> +		if ((vm_flags & (VM_IO | VM_PFNMAP)) ||
-> +		    is_vm_hugetlb_page(vma) || vma_is_secretmem(vma) ||
-> +		    (!(vm_flags & VM_READ) &&
-> +		     (!(gup_flags & FOLL_FORCE) || !(vm_flags & VM_MAYREAD)))) {
-> +			vma_end_read(vma);
-> +			break;
-> +		}
-
-This should also do the FOLL_ANON check from check_vma_flags().
-
-check_vma_flags() rejects non-anonymous VMAs when FOLL_ANON is set:
-
-	if ((gup_flags & FOLL_ANON) && !vma_anon)
-		return -EFAULT;
-
-That flag is used by fs/proc/base.c for /proc/PID/cmdline and
-/proc/PID/environ.  It was added by commit 7f7ccc2ccc2e ("proc: do not
-access cmdline nor environ from file-backed areas"), which fixed
-CVE-2018-1120 by making those proc files refuse file-backed argv/env
-areas.
-
-> +
-> +		/*
-> +		 * Copy as much of this VMA as we can without re-acquiring the
-> +		 * per-VMA lock; re-lock only when @addr leaves the VMA.
-> +		 */
-> +		while (len && addr < vma->vm_end) {
-> +			struct folio_walk fw;
-> +			struct folio *folio;
-> +			struct page *page;
-> +			unsigned long entry_size, entry_left, folio_left, span;
-> +			unsigned long copied, idx0;
-> +			int offset;
-> +
-> +			folio = folio_walk_start(&fw, vma, addr, FW_VMA_LOCKED);
-> +			if (!folio) {
-> +				vma_end_read(vma);
-> +				goto out;
-> +			}
-> +			page = fw.page;
-> +			if (!page) {
-> +				folio_walk_end(&fw, vma);
-> +				vma_end_read(vma);
-> +				goto out;
-> +			}
-> +			/* Pin the folio so it stays valid after the PTL is dropped. */
-> +			folio_get(folio);
-> +			folio_walk_end(&fw, vma);
-> +
-> +			/*
-> +			 * folio_walk_start() validated exactly one mapping entry,
-> +			 * which covers a contiguous, present run of this folio:
-> +			 * PAGE_SIZE for a pte, PMD_SIZE for a pmd leaf, PUD_SIZE
-> +			 * for a pud leaf.  Copy up to the end of that entry,
-> +			 * bounded by the folio, the VMA and len, so a huge mapping
-> +			 * is handled in one walk instead of per page.
-> +			 */
-> +			offset = offset_in_page(addr);
-> +			switch (fw.level) {
-> +			case FW_LEVEL_PUD:
-> +				entry_size = PUD_SIZE;
-> +				break;
-> +			case FW_LEVEL_PMD:
-> +				entry_size = PMD_SIZE;
-> +				break;
-> +			default:
-> +				entry_size = PAGE_SIZE;
-> +				break;
-> +			}
-> +			entry_left = entry_size - (addr & (entry_size - 1));
-> +			idx0 = folio_page_idx(folio, page);
-> +			folio_left = ((folio_nr_pages(folio) - idx0) << PAGE_SHIFT) -
-> +				     offset;
-> +			span = min3((unsigned long)len, entry_left, folio_left);
-> +			span = min(span, vma->vm_end - addr);
-> +
-> +			/*
-> +			 * Copy the span page-by-page: kmap_local_folio() maps one
-> +			 * page on HIGHMEM and copy_from_user_page() flushes per
-> +			 * page on aliasing caches, but the page tables are not
-> +			 * re-walked.  The span borrows the single folio reference
-> +			 * taken above, so each mapping is dropped with
-> +			 * kunmap_local() (not folio_release_kmap(), which would
-> +			 * also drop a folio reference per page).
-> +			 */
-> +			for (copied = 0; copied < span; ) {
-> +				unsigned long foff = offset + copied;
-> +				unsigned long pidx = idx0 + (foff >> PAGE_SHIFT);
-> +				int poff = foff & ~PAGE_MASK;
-> +				int chunk = min_t(unsigned long, span - copied,
-> +						  PAGE_SIZE - poff);
-> +				void *maddr = kmap_local_folio(folio,
-> +						pidx << PAGE_SHIFT);
-> +
-> +				copy_from_user_page(vma, folio_page(folio, pidx),
-> +						    addr + copied, buf + copied,
-> +						    maddr + poff, chunk);
-> +				kunmap_local(maddr);
-> +				copied += chunk;
-> +			}
-
-__access_remote_vm() slow path calls get_user_page_vma_remote() which calls
-get_user_pages_remote(). get_user_pages_remote() adds FOLL_TOUCH and then the
-page-table walk eventually reaches follow_page_pte().
-
-The new resident-page fast path copies the same data without doing an
-equivalent folio_mark_accessed().
-
-That changes reclaim behaviour for pages repeatedly read through
-access_remote_vm(), such as /proc/PID/cmdline polling. I think you
-should mark the folio as accessed.
-
-
-> +
-> +			folio_put(folio);
-> +			len -= span;
-> +			buf += span;
-> +			addr += span;
-> +		}
-> +		vma_end_read(vma);
-> +	}
-> +out:
-> +	return buf - old_buf;
-> +}
-> +#else
-> +static int access_remote_vm_fast(struct mm_struct *mm, unsigned long addr,
-> +				 void *buf, int len, unsigned int gup_flags)
-> +{
-> +	return 0;
-> +}
-> +#endif /* CONFIG_PER_VMA_LOCK && CONFIG_MMU_GATHER_RCU_TABLE_FREE */
-> +
->  /*
->   * Access another process' address space as given in mm.
+>  	vms = pcpu_get_vm_areas(pcpu_group_offsets, pcpu_group_sizes,
+> -				pcpu_nr_groups, pcpu_atom_size);
+> +				pcpu_nr_groups, pcpu_atom_size, gfp);
+>  	if (!vms) {
+>  		pcpu_free_chunk(chunk);
+>  		return NULL;
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 1afca3568b9b..08f468135e4d 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4946,16 +4946,17 @@ pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
+>   * @sizes: array containing size of each area
+>   * @nr_vms: the number of areas to allocate
+>   * @align: alignment, all entries in @offsets and @sizes must be aligned to this
+> + * @gfp: allocation flags passed to the underlying memory allocator
+>   *
+>   * Returns: kmalloc'd vm_struct pointer array pointing to allocated
+>   *	    vm_structs on success, %NULL on failure
+>   *
+>   * Percpu allocator wants to use congruent vm areas so that it can
+>   * maintain the offsets among percpu areas.  This function allocates
+> - * congruent vmalloc areas for it with GFP_KERNEL.  These areas tend to
+> - * be scattered pretty far, distance between two areas easily going up
+> - * to gigabytes.  To avoid interacting with regular vmallocs, these
+> - * areas are allocated from top.
+> + * congruent vmalloc areas for it. These areas tend to be scattered
+> + * pretty far, distance between two areas easily going up to gigabytes.
+> + * To avoid interacting with regular vmallocs, these areas are allocated
+> + * from top.
+>   *
+>   * Despite its complicated look, this allocator is rather simple. It
+>   * does everything top-down and scans free blocks from the end looking
+> @@ -4966,7 +4967,7 @@ pvm_determine_end_from_reverse(struct vmap_area **va, unsigned long align)
 >   */
-> @@ -7071,8 +7220,23 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
->  	void *old_buf = buf;
->  	int write = gup_flags & FOLL_WRITE;
+>  struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  				     const size_t *sizes, int nr_vms,
+> -				     size_t align)
+> +				     size_t align, gfp_t gfp)
+>  {
+>  	const unsigned long vmalloc_start = ALIGN(VMALLOC_START, align);
+>  	const unsigned long vmalloc_end = VMALLOC_END & ~(align - 1);
+> @@ -5004,14 +5005,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  		return NULL;
+>  	}
 >  
-> +	/*
-> +	 * Try the lockless fast path for reads first; it transfers what it can
-> +	 * from resident memory without taking mmap_lock, and leaves the
-> +	 * remainder (if any) to the slow path below.
-> +	 */
-> +	if (!write) {
-> +		int done = access_remote_vm_fast(mm, addr, buf, len, gup_flags);
-> +
-> +		addr += done;
-> +		buf += done;
-> +		len -= done;
-> +		if (!len)
-> +			return buf - old_buf;
-> +	}
-> +
->  	if (mmap_read_lock_killable(mm))
-> -		return 0;
-> +		return buf - old_buf;
+> -	vms = kzalloc_objs(vms[0], nr_vms);
+> -	vas = kzalloc_objs(vas[0], nr_vms);
+> +	vms = kzalloc_objs(vms[0], nr_vms, gfp);
+> +	vas = kzalloc_objs(vas[0], nr_vms, gfp);
+>  	if (!vas || !vms)
+>  		goto err_free2;
 >  
->  	/* Untag the address before looking up the VMA */
->  	addr = untagged_addr_remote(mm, addr);
+>  	for (area = 0; area < nr_vms; area++) {
+> -		vas[area] = kmem_cache_zalloc(vmap_area_cachep, GFP_KERNEL);
+> -		vms[area] = kzalloc_obj(struct vm_struct);
+> +		vas[area] = kmem_cache_zalloc(vmap_area_cachep, gfp);
+> +		vms[area] = kzalloc_obj(struct vm_struct, gfp);
+>  		if (!vas[area] || !vms[area])
+>  			goto err_free;
+>  	}
+> @@ -5101,7 +5102,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  
+>  	/* populate the kasan shadow space */
+>  	for (area = 0; area < nr_vms; area++) {
+> -		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
+> +		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], gfp))
+>  			goto err_free_shadow;
+>  	}
+>  
+> @@ -5158,7 +5159,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  				continue;
+>  
+>  			vas[area] = kmem_cache_zalloc(
+> -				vmap_area_cachep, GFP_KERNEL);
+> +				vmap_area_cachep, gfp);
+>  			if (!vas[area])
+>  				goto err_free;
+>  		}
 > -- 
-> 2.53.0-Meta
+> 2.50.1 (Apple Git-155)
 > 
-> 
+
+-- 
+Michal Hocko
+SUSE Labs
 
