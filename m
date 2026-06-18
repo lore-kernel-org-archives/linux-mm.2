@@ -4,93 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36757CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F7CCD98F6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:02:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34E5D6B008A; Thu, 18 Jun 2026 11:02:06 -0400 (EDT)
+	id 0698E6B0098; Thu, 18 Jun 2026 11:02:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FE486B0098; Thu, 18 Jun 2026 11:02:06 -0400 (EDT)
+	id 01A566B009D; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2152A6B0099; Thu, 18 Jun 2026 11:02:06 -0400 (EDT)
+	id E4C576B009E; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EEAC56B008A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:02:05 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E576A016C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:05 +0000 (UTC)
-X-FDA: 84893348610.14.68FF48E
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B734B4001D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf27.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB3156B0098
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:02:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 457E3C06D9
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:40 +0000 (UTC)
+X-FDA: 84893350080.15.E80ED32
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1BA7C80017
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:02:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=I3aIeWJq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9nj4athg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipvHMcZP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5KCoBLuT;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781794923;
+	s=arc-20220608; t=1781794958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f1fX2H5ZBVf0imQ/+JuaknqKxpqJQWxoeiO/CE49iEU=;
-	b=oNtWhg2IxtJjDdYkevugMwQcuLZ9rPLMwFnwChIuX74nNnrSUYUVJMFgjH/USJJIO/bP8i
-	uVjlh9j2dX6jxvTzsIjQzmFDBOrk4oXfHT4aex4h31BkpDoEmKgRBGbUiFqTBfh/KJYiW8
-	v9Y8mjx0boTEgTlISQtQWlLcOa7Qd9c=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
+	b=rlJKcetnPMcSMAD9oEFefHIKl+XoCSQ9vWMODCt+eIzJvODRLYN3dNlHNzL70p0fOSXWm8
+	JsrMcSTi0Qi12fngbGMOK2cJncB5J/62qozEXi59pI3VdnLUQCI04hJuT+BzADqjNxzSOc
+	kM3ROgK3y5LMDK8YlEgKuNr4F8NM9qg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781794923;
-	b=C76X01fUEWasdU7eXakMTCGfHg70H6vtfUQK4KtaMPNOFgfnl2SxwAoA/ybtqwhAgbcXDS
-	dsp0gav3Qro9p8LAiDfqIirF/f1i0dofnNopESVPRX92mtDxQJnx2A4OUWmiqQ3QxttsIp
-	g7af/8JT9WSNFyV0xkLgIAQcqHRKoSI=
+	t=1781794958;
+	b=5bsI7ytGun+Nm5xehnG/PHY0UaYyOxcvLK4KPzBNkvy8mvkKPK4r/k22ov+D+AutB1alPa
+	wkB34vQOOo8uYcgQC63hnTUEfRtOeWyi+twiqHdc+QqqeiLeRpiUgX6IRvoVO2eaqWIpZ7
+	XlRmpYY6RA94pTI6TCjl8toyFO5vGBc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf27.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=I3aIeWJq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9nj4athg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipvHMcZP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5KCoBLuT;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gh3pn5pshz8Xrr9;
-	Thu, 18 Jun 2026 23:01:53 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 65IF1gwN029934;
-	Thu, 18 Jun 2026 23:01:42 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Thu, 18 Jun 2026 23:01:45 +0800 (CST)
-X-Zmail-TransId: 2afa6a340859010-ca2d9
-X-Mailer: Zmail v1.0
-Message-ID: <20260618230145460xKmaa1339oL10bfyqAiVl@zte.com.cn>
-In-Reply-To: <20260618113523.3913307-1-wangkefeng.wang@huawei.com>
-References: 20260618113523.3913307-1-wangkefeng.wang@huawei.com
-Date: Thu, 18 Jun 2026 23:01:45 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <wangkefeng.wang@huawei.com>, <akpm@linux-foundation.org>,
-        <david@kernel.org>
-Cc: <linux-mm@kvack.org>, <chengming.zhou@linux.dev>,
-        <wangkefeng.wang@huawei.com>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gbW06IHJlbW92ZSBQYWdlVHJhbnNDb21wb3VuZCgp?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 65IF1gwN029934
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 18 Jun 2026 23:01:53 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A340861.000/4gh3pn5pshz8Xrr9
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B734B4001D
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C1B1F7597F;
+	Thu, 18 Jun 2026 15:02:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781794956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
+	b=I3aIeWJqGtHnWch7dA4WBOrl8VynDCf+ndGvVpwb5uIdUUntJlNTYvsiQONKX/dMLTn27J
+	HVGYIdm4F2vgrbO4oagP+GvgCXcXbqjxng2MDUiduR+35dzx5hegR9mZLQNgTI6ILL8m6b
+	XUrGcCnaCcb4y2BT3y75ps+ooGxS3OQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781794956;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
+	b=9nj4athgqqq3B8Hj3wGtkc/gzkoHKcYuheIc4gKxbR/ET21uq7pwjhahr8OaIapkJNFQp3
+	gR+Q1tKpfypdtFDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781794955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
+	b=ipvHMcZP0PkH26HXzNsKowJ7yjgVHpYHjFJ+dtvTFhYOHYvR7Hn5RQbKLArJvESAbnUQ0K
+	D3qsFIQIMsCbvhQ+5eFLNyCCOzmiDfxDrQLNIl40Tc1g4f6FscAdQFf2jPQ6/5aH7sqKxq
+	14UnzWGCYqBtuORJ2eswh/xF+2keh5g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781794955;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TcBpkMrWRkv4c2eX3mnxASJhUwC5xasxtwqDsdHi1pg=;
+	b=5KCoBLuTmGiEPYC7LkfcCqMu8yiclzzzAqf5FeVbbkrkHz9wSsc8qBhIXVYBvrxv8zku9X
+	L6RnOwehoYbTn2DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EA3C779A8;
+	Thu, 18 Jun 2026 15:02:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jcf1A4sINGoJPgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 15:02:35 +0000
+Date: Thu, 18 Jun 2026 16:02:33 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/4] mm: mincore: use walk_page_range_vma() in
+ do_mincore()
+Message-ID: <ajP9bQhmvR9OX0VE@pedro-suse>
+References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
+ <20260618092845.3905740-2-wangkefeng.wang@huawei.com>
+ <ajPZlxq5z1hyo1kE@pedro-suse>
+ <42e167b2-5676-45fd-8f3a-738d2f4f6623@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <42e167b2-5676-45fd-8f3a-738d2f4f6623@huawei.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 1BA7C80017
+X-Stat-Signature: hbqq48kskdmeiy8cddqes64d6yu7ft3w
 X-Rspam-User: 
-X-Stat-Signature: 6ozmeczkkhbmj8omaaptw7keu57fighp
-X-HE-Tag: 1781794921-487212
-X-HE-Meta: U2FsdGVkX19FfItj2A+YEYhgiB2sR/ovyk27bjIZRIWUoNA4MQYuXnrvy6axi7zS/b9GJYuJv5mKF+qe3oUfUY60hWA4ut1+lJ11xSX3utH4SFEZLMTSygogio/13uZcTxgapxgR7uAvO+rwYW8ONkEd03Xdol38gbXpN9XfXJ7pOGYOcLBW0pr0ycq6R/LQPuNOaUa5AKdknllj9SDcfq5Wq3bJMLOl5xaZlZuw3J934sotoYtp+0SH+hlgNiw5dHEsDHqOHdDBO6N4hMnImtTSpHjBMRI3zyo0iowwpzu5S28Pg9788fP/7Yk4cbW8ojimlfP364xoOAoBMa4VbmFXw3/WEDXQIwhRLfNy97kwzaXc84/dsdMg22TIri8xI1cy26n54H0lcvS04n3Suh77pDMBXoC97RXhVnuQqak+R4uf3QvwxI/zeHIMG8wnnnjRMDdEwunwEWuO1ZtKCVKF9seBAQua33eAWNvqUOWsZRn9pPRZyppoZlLi9yrL3A8Tx+D+NITBrwtlxacEnHsKTLtG0Th2DjOJpvXYEhK0KcFLcXsxG6iRE2ZZu6FoZcUhmBXYsRxjVUxtacxSHpvCG/JcPYEydwPgEFBIesKzQu76p4zu0Mc6CPkeF0kV2E0Q2awhGXwI3WkOLZDU/nDHOhC4iajFovfFmFVz229O9amY0WF1G8NaFzAHle1ZNACLbjy5r0nfsRPc4f0DdwbkO9PKTFokXCqsJ4hG0r+jENdSvcMiXkDCnzsVU5MUlViA4obIL6TkI3KwjWmtQXbe1+0dmsAIMipGkVR6uUlg/A/A0sWQMMOK4uMRt/X46sbYfJRKitELhHfXX8IUc1xd1BAOc9XtIMJ94dF0tSrAYfZ56yCT4G/KKGY9jtzaeMRMd834AoB2pxUb7+N6MVh3ErGUcctVZwWE002L1f4RaSYrfPuLzA0nyjh5LIEfSnSHGigbs2EOpkeHR4A
- /V/KZcso
- vo/tK7uqOx6paCLwbQaqbDJ7CQBgr3bwmdJBP9Jfh4/DtHwtS1FvPERJMTkN4nzkGA+bpA/Sa8PoMBqoOu8iGrwvivtVp3RHFY9uK8WxGjnKohMVp+gw/DF6xFkZyNxX6zq7LUZ97OYH+gHDlMqqU5jF9mp1Fvox0uJ3F6J4r8Q1KbfJtVtxCEMq3CaFXA7vNLlsUOmETvTs+3eBaeF4f7FL27g==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781794957-714342
+X-HE-Meta: U2FsdGVkX1+rXPoJJl22NhreUAZtD4Ji75/lbmNu8nhRG4+rN2joa1+D8u/olaV0CxBj5HPHOk9Mn/sAnMH278Tky7Z/AGbvKzeg7i2Dg1d10klg7Hw0CXiJGMtKyOGKz6ulRnql7HnaHY0tJZASohEmQdEk/ZMYdQlUzhSQyQjs+K7oe7gEdDtnIvT2OCdCgKKALkCD3fi/vH2Tesp1HAvhgV0muohCL8oXT7COq1Wpp0k7v53rPP/EY3eitcK8BExb2vMy0whZzN4fZIE1ex/pAH2DVSM2IAQnLJ0edjNQf9rsfDJv0QcUXZ5p0NZUepTQz5GwEEZC3naL2uxQN0PGGLvOMzjLyw9qR9LoB0s/sRYM2+nZKjyecuAof4fL5nKEgwXCgftnmSrs4oYupTEIpKihCwL0UJriCpKvHROKhzfjJnngnypgs+BDjUsHqzNXovIarm7mL7zFPBr0d4YgmFtBKGc5UTlzfJhpQTVMJKVniAOQaqEfTiSvtksJTbpk3fd1L0LJWYNGfsYnk7QwPeD5J7Exxzkn/mqfMczsBf1fb3sNV7oFByCLOWWdKPsRpiXtariMpnGLfWgJBcp4pMUJrcoLIFYfumyXQJCtvkmOYu4M9z3TOeF0IniUzPJNPnr3h7NVR1n03VWoImhKaqg3Peez7A8ybQTQ1AucpYDSCMs9zFFacqiTD0/hFP49PIKKvz33Dd7IFnVdEgxHjEvpZcKpAinQ5d10Ib1o5eoy/87hf5xeX2vNRlT+M2lyIwA8HULb+7bLoziDt0c0SEGfYdtiOwjOSoSVZ9SsGJa2amjoOaOlxBO/GqD5UPvAXZE3BM9rpkO93cQ46bxl05anXXSRGohFFhDowTFgX3YbL4hztAnFAIC2/xilK0REFtjjjlmJ7L+j0EaqpmjlFXiYyE7nmCWtH95WJ9taY2botsmITLvchuPfQLSsIBG90wYj9oCTpZV7DW/
+ Jrk1s7un
+ DdjRFVG20520n+3sudw4QlUAoEBhdsSYZUj8VgmZ90NVAcF22cDul+Q4rrA4fFMgghr73k8AxfYWgs/fqDi/xase7yMzpVR2Swc2SVIOqYqKl/OXYlINx7yiznmKdmKabOFX11sNYt3SWCrN9/pcKXoPhNjIZsZqRxG/sMQ+NcLm66JOe+P4aj5R06PVoUCH/vK0vfhbkWApkoav/T8/5AQ3CK+JXxdL5lViZEpVJRJoTyBSY6DR49ZfJ14m2lx8PfGzL3bAJytUBgLLa/L6et6FUZlBBEqDkjaI1mY5x7Mb9arQLeWUIN/fkqj6FzVXBLOkQEayUZWJrb7flC8Q0ouCHIizY7/b56fVoE1+E+MpCX7LDqLvSQW1H9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,237 +142,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 7d5b76478f0b..41ab25aa2a82 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -2327,23 +2327,24 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
->      tree_rmap_item =
->          unstable_tree_search_insert(rmap_item, page, &tree_page);
->      if (tree_rmap_item) {
-> +        struct folio *tree_folio;
->          bool split;
->  
->          kfolio = try_to_merge_two_pages(rmap_item, page,
->                          tree_rmap_item, tree_page);
-> +        tree_folio = page_folio(tree_page);
->          /*
-> -         * If both pages we tried to merge belong to the same compound
-> -         * page, then we actually ended up increasing the reference
-> -         * count of the same compound page twice, and split_huge_page
-> -         * failed.
-> +         * If both pages we tried to merge belong to the same (large)
-> +         * folio, then we actually ended up increasing the reference
-> +         * count of the same folio twice, and split_huge_page failed.
-> +         *
->           * Here we set a flag if that happened, and we use it later to
-> -         * try split_huge_page again. Since we call put_page right
-> +         * try split_huge_page again. Since we call folio_put() right
->           * afterwards, the reference count will be correct and
->           * split_huge_page should succeed.
->           */
-> -        split = PageTransCompound(page)
-> -            && compound_head(page) == compound_head(tree_page);
-> -        put_page(tree_page);
-> +        split = folio == tree_folio;
-> +        folio_put(tree_folio);
->          if (kfolio) {
->              /*
->               * The pages were successfully merged: insert new
-> -- 
-> 2.27.0
+On Thu, Jun 18, 2026 at 09:01:08PM +0800, Kefeng Wang wrote:
+> 
+> 
+> On 6/18/2026 7:49 PM, Pedro Falcato wrote:
+> > Please CC reviewers properly!
+> > 
+> 
+> Oh, I will put more reviewes to cc list.
+> 
+> > On Thu, Jun 18, 2026 at 05:28:42PM +0800, Kefeng Wang wrote:
+> > > The do_mincore() uses walk_page_range() to walk the page table.
+> > > Fortunately, the caller always passes start/end that falls within
+> > > a single VMA, so it's safe to use the walk_page_range_vma() in
+> > > do_mincore() to eliminate an unnecessary find_vma() lookup.
+> > > 
+> > > Unlike walk_page_range(), walk_page_range_vma() does not call
+> > > walk_page_test(), which handles VM_PFNMAP by invoking ->pte_hole()
+> > 
+> > Why not? Can we fix that instead? I really don't like having this open
+> > coded in callers. Are there callers of walk_page_range_vma() that expect
+> > to look at PFNMAP mappings as well? From what I can see, the callers all
+> > seem to operate on folios (and/or anonymous memory).
+> 
+> As you said, all the other callers don't operate VM_PFNMAP， so we don't
+> want to add walk_page_test() into walk_page_range_vma(). This hack is to
+> preserve the original behavior, but as David said[1], we could add a
+> follow-up patch to remove the special handling to see if anyone screams,
+> and this indeed changed some behaviors, so it's better to handle it with
+> another patch.
 
-LGTM.
+Yes, I agree, I'm 95% sure no one is invoking mincore() on PFNMAP mappings.
 
-Reviewed-by: Xu Xin <xu.xin16@zte.com.cn>
-Tested-by: Xu Xin <xu.xin16@zte.com.cn>
+So, if we're keeping this check for this patch:
 
-and I test it with a reproducer about commit 77da2ba064 ("mm/ksm: fix interaction with THP")
+> > > 
+> > > diff --git a/mm/mincore.c b/mm/mincore.c
+> > > index 296f2e3922b5..0c6731ae6c4d 100644
+> > > --- a/mm/mincore.c
+> > > +++ b/mm/mincore.c
+> > > @@ -259,7 +259,21 @@ static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *v
+> > >   		memset(vec, 1, pages);
+> > >   		return pages;
+> > >   	}
+> > > -	err = walk_page_range(vma->vm_mm, addr, end, &mincore_walk_ops, vec);
+> > > +
+> > > +	/*
+> > > +	 * walk_page_range_vma() does not call walk_page_test(), which
+> > > +	 * handles VM_PFNMAP VMA by invoking ->pte_hole() to skip the
+> > > +	 * page table walk. Without this check, PFNMAP PTEs would be
+> > > +	 * treated as present by mincore_pte_range(), changing the returned
+> > > +	 * residency status from the historical "not resident" to "resident".
+> > > +	 * Handle VM_PFNMAP explicitly to preserve the original behavior.
+> > > +	 */
 
-and Test result shows OK.
+I would rather we amend this comment to something like:
 
-Happy to share my testing program:
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
+	/* mincore (historically) reports PFNMAP mappings as non-resident. */
 
-#define THP_SIZE        (1UL << 21)     /* 2MB */
-#define WAIT_SECONDS    10              /* time for KSM scans */
+because we don't need to explain internal differences in walk_page_range
+functions in a random comment in mincore. And perhaps attempt a separate
+PFNMAP check removal patch as part of the series, or as a follow up (so if
+it does matter, we can simply revert that patch instead of this conversion).
 
-/*
- * Read a single integer from a sysfs file.
- */
-static int read_sysfs_int(const char *path)
-{
-        FILE *fp;
-        int val;
+In any case,
 
-        fp = fopen(path, "r");
-        if (!fp)
-                return -1;
-        if (fscanf(fp, "%d", &val) != 1) {
-                fclose(fp);
-                return -1;
-        }
-        fclose(fp);
-        return val;
-}
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-/*
- * Print KSM global counters.
- */
-static void print_ksm_counters(int need_verify)
-{
-        int pages_shared, pages_sharing;
-
-        pages_shared = read_sysfs_int("/sys/kernel/mm/ksm/pages_shared");
-        pages_sharing = read_sysfs_int("/sys/kernel/mm/ksm/pages_sharing");
-        if (pages_shared >= 0 && pages_sharing >= 0) {
-                printf("KSM counters: pages_shared = %d, pages_sharing = %d\n",
-                       pages_shared, pages_sharing);
-        } else {
-                printf("Failed to read KSM counters\n");
-        }
-
-        if (need_verify) {
-                if (pages_sharing != 510)
-                        printf("\n Test result: Failed\n");
-                else
-                        printf("\n Test result: Passed\n");
-        }
-}
-
-/*
- * Print relevant fields from /proc/self/smaps for the VMA covering @addr.
- */
-static void print_smaps_info(unsigned long addr)
-{
-        FILE *fp;
-        char line[256];
-        unsigned long start, end;
-        int found = 0;
-        int AnonHugePages_val = 0;
-
-        fp = fopen("/proc/self/smaps", "r");
-        if (!fp) {
-                perror("fopen /proc/self/smaps");
-                return;
-        }
-
-        while (fgets(line, sizeof(line), fp)) {
-                if (sscanf(line, "%lx-%lx", &start, &end) == 2) {
-                        if (addr >= start && addr < end) {
-                                found = 1;
-                                printf("\n[VMA] 0x%lx-0x%lx\n", start, end);
-                                /* Read subsequent lines until next VMA */
-                                while (fgets(line, sizeof(line), fp)) {
-                                        unsigned long dummy_start, dummy_end;
-                                        if (sscanf(line, "%lx-%lx",
-                                                   &dummy_start, &dummy_end) == 2)
-                                                break; /* next VMA */
-                                        if (strstr(line, "Rss:") ||
-                                            strstr(line, "AnonHugePages:") ||
-                                            strstr(line, "Shared_Clean:") ||
-                                            strstr(line, "Shared_Dirty:") ||
-                                            strstr(line, "Private_Clean:") ||
-                                            strstr(line, "Private_Dirty:") ||
-                                            strstr(line, "MMUPageSize:"))
-                                                printf("%s", line);
-                                        if (strstr(line, "AnonHugePages:")) {
-                                                if (sscanf(line, "AnonHugePages:%d kB", &AnonHugePages_val) != 1) {
-                                                        printf("error: read AnonHugePages\n");
-                                                        exit(1);
-                                                }
-                                        }
-
-                                }
-                                break;
-                        }
-                }
-        }
-
-        if (!found) {
-                printf("Address 0x%lx not found in smaps\n", addr);
-                exit(1);
-        }
-        if (AnonHugePages_val != 2048) {
-                printf("AnonHugePages is not 2048 kb, not Huge page\n");
-        }
-        fclose(fp);
-}
-
-static int thp_is_enabled(void)
-{
-        FILE *fp;
-        char buf[256];
-        int ret = 0;
-
-        fp = fopen("/sys/kernel/mm/transparent_hugepage/enabled", "r");
-        if (!fp)
-                return 0;
-        if (fgets(buf, sizeof(buf), fp)) {
-                if (strstr(buf, "[always]") || strstr(buf, "[madvise]"))
-                        ret = 1;
-        }
-        fclose(fp);
-        return ret;
-}
-
-int main(void)
-{
-        void *p;
-        int ret;
-
-        if (!thp_is_enabled()) {
-                fprintf(stderr, "Warning: THP seems disabled.\n");
-                fprintf(stderr, "Enable with 'echo madvise > /sys/kernel/mm/transparent_hugepage/enabled'\n");
-        }
-
-        if (read_sysfs_int("/sys/kernel/mm/ksm/run") != 1) {
-                fprintf(stderr, "KSM is not running. Start with 'echo 1 > /sys/kernel/mm/ksm/run'\n");
-                return 1;
-        }
-
-        ret = posix_memalign(&p, THP_SIZE, THP_SIZE);
-        if (ret) {
-                fprintf(stderr, "posix_memalign failed: %s\n", strerror(ret));
-                return 1;
-        }
-
-        if (madvise(p, THP_SIZE, MADV_HUGEPAGE) != 0)
-                perror("madvise MADV_HUGEPAGE");
-        printf("Allocated %zu bytes at %p (aligned to %zu) with madvise(MADV_HUGEPAGE)\n",
-               THP_SIZE, p, THP_SIZE);
-
-        memset(p, 0x42, THP_SIZE);
-        printf("Filled with 0x42\n");
-
-        printf("\n=== Before madvise(MADV_MERGEABLE) ===\n");
-        print_smaps_info((unsigned long)p);
-        print_ksm_counters(0);
-
-        if (madvise(p, THP_SIZE, MADV_MERGEABLE) != 0) {
-                perror("madvise MADV_MERGEABLE");
-                free(p);
-                return 1;
-        }
-        printf("madvise(MADV_MERGEABLE) succeeded.\n");
-
-        printf("Waiting %d seconds for KSM to scan...\n", WAIT_SECONDS);
-        sleep(WAIT_SECONDS);
-
-        printf("\n=== After waiting for KSM ===\n");
-        print_smaps_info((unsigned long)p);
-        print_ksm_counters(1);
-
-        free(p);
-        return 0;
-}
+-- 
+Pedro
 
