@@ -4,81 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85166CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F342CD98F0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:23:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D5FC6B0093; Thu, 18 Jun 2026 04:23:03 -0400 (EDT)
+	id 452DA6B00A5; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ADF66B00A5; Thu, 18 Jun 2026 04:23:03 -0400 (EDT)
+	id 3DC716B00A6; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C3A06B00A6; Thu, 18 Jun 2026 04:23:03 -0400 (EDT)
+	id 2CC2B6B00A8; Thu, 18 Jun 2026 04:23:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 33BAC6B0093
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:23:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2513DC2C0A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:15:52 +0000 (UTC)
-X-FDA: 84892324944.19.01D6703
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 6E56220009
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:15:50 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jokNGls3;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0458C6B00A5
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:23:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BA4F120683
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:14:42 +0000 (UTC)
+X-FDA: 84892322004.23.D763107
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2570D10000A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:14:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ezu8amWw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781770550;
+	s=arc-20220608; t=1781770480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Knj7y01GHDRS45IwUSNAID4Zu7sh5HJzfhv5fC427g=;
-	b=EwlIpLKN51G0KM2mdkbTfwnd3BV/wCtdq+3Q7mLxyrqYRYAWZKHnHkKZhPUYifH94V1q03
-	1rpYpN5ZSjAdMZfIYHKCQozpIUAYw5ZYwMy3C+vMLZUZ3OpcawSNyQo+0XGqT2TnoAgsSE
-	/D9vBWsk8zds8HXNFlKBU/OhCXKibsI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781770550;
-	b=4g2URQSHSlRc6Jx63Ukrh3d7hn2KAY0+6hGbDbAnmWXMVjFEdP+b4m+jihSIaoHf4f7DJq
-	aYgqzKRIEltl7BhD4dzphY8O/UjrDnNyT+7Dl1p3fa1Ipm5Fto7FfnTm4a3IDVfPIoHzlv
-	wxGm38gUTaNYYZ7wVKUwO5XYPJ8dx9o=
+	bh=djl1UEFmEC9ml3q9D+FtrJf3HHVAsDL/Pz8kB14AFRQ=;
+	b=aWm65nKNKA6yrfAH68hNa2Msq5nhul78qtaw/2opW0qOIRzFVvFXU/nVWTT3nmD0hhEQQO
+	43hRJit1pul+6w0ABqbc5dFrhr3rwa2X53d8/964yxqYVrTalkkrUbZFOdw849Q4nyonhu
+	Jn6jvhNbAXYTwl3RxkUX5rJFUJKLuuE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jokNGls3;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ezu8amWw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781770480;
+	b=xSCjqiJSyl9O5n+LQp7zoHvyxZybtfO57j/rNTl5392ycwt/lVNKaT9JwLJcjQvvALlwp2
+	wmAVMjT5YsPEIT0eUNyKH781HOKjH1YDoPQb9XUYZoIbNpw4a6p2QNJPLk70J+3+m6U+pL
+	6FAdJ3AMZe/Frmrwj5ms+xDSQVpeXiQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05EE46012A;
-	Thu, 18 Jun 2026 08:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D91F000E9;
-	Thu, 18 Jun 2026 08:15:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 48978401DB;
+	Thu, 18 Jun 2026 08:14:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25121F000E9;
+	Thu, 18 Jun 2026 08:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781770549;
-	bh=3Knj7y01GHDRS45IwUSNAID4Zu7sh5HJzfhv5fC427g=;
+	s=k20260515; t=1781770479;
+	bh=djl1UEFmEC9ml3q9D+FtrJf3HHVAsDL/Pz8kB14AFRQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jokNGls3ixoGRdhDZ6QqH38obrdOQHN+DZeEo2hwsKYe/o8KfxbKq0R0282CfheXB
-	 lAcuREQMv0cfoJS6zGuFQ4OLTuD2rRok6hMOlUfpZH4oICtRTsCFswWlryM4C+mH+0
-	 50tdVv01yNvC5pKi9GWOjY5XV3ABmUB82gdYgc+XaJ7BJ6zjEPZaTDq0GktYHza0FM
-	 fOd4kCqwRW3fCxxHmSV37pnfAnXbBSiRieWKRR5qvP71JT9pFCbNH6N01ntreosI6C
-	 UklARm49eg/279HoVeKl9Ln/Cim8iHNyXzl501OJDV6w8J1uBHMmbovoLIw29OApQF
-	 Y1YwiH5U387GQ==
-Message-ID: <6f4a4ef5-0a23-4d89-9b34-a610299525d0@kernel.org>
-Date: Thu, 18 Jun 2026 10:15:46 +0200
+	b=ezu8amWweTpC/6Onms7/VBRTF+2CcbczR8U9E+BlszlyXabITstcyDz3238kT1e4v
+	 z7j3ovocssBr9Q/wQQoXzcTPU9tU35Wk5hVgOEPSBdKtOWK2fnaXO9tAjc5V2tnASS
+	 eOMZBelEhLad3+Tu6HvhT9F7jwrkK6O++vTpAo0MRs0rNaW/cRauLjVgSjM4VYOD4R
+	 ko0I2zLFLwMW2R3dtENX2oAyz0ASCUP6w5l9F0tTiodLCQdmnCy6g+GbPQ0dzBez5s
+	 3BibL4TCT09tRUSUD/nn6x+e0DttePEV6TFc4rMR4LfIKduwWkayBNzw63nHO8Xfr0
+	 iQarPWHdh8cJg==
+Message-ID: <a777b4ad-157b-464b-8cdf-feee9a6a03a1@kernel.org>
+Date: Thu, 18 Jun 2026 10:14:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: mincore: try per-VMA lock firstly and use
- walk_page_range_vma()
+Subject: Re: [PATCH] mm: remove PageTransCompound()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
- <20260617082622.3397584-2-wangkefeng.wang@huawei.com>
- <6f323e68-94be-45e8-aff2-b64f5ef7bb36@kernel.org>
- <900d0057-9b21-4bb7-a53a-397079d301e3@huawei.com>
+Cc: linux-mm@kvack.org, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>
+References: <20260618080411.3902214-1-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <900d0057-9b21-4bb7-a53a-397079d301e3@huawei.com>
+In-Reply-To: <20260618080411.3902214-1-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6E56220009
-X-Stat-Signature: 99a9znxrsfhib174i1yanwrjpgw4a5sj
-X-HE-Tag: 1781770550-938279
-X-HE-Meta: U2FsdGVkX1+Qbkrp6xeTW6tnRbrkinaEPTe2HPGJjnP5eBCIR/EPf2DCBga65dPOiMSheSe7bbFhEGiEFn9avs58fagN6eIDT4RMX3hHpiSgvoRqvbafdGUFIJv1fCBl5DmZqKel+XdrYHL6PZirpnUp70IJ+jZhWo6hKc3tnzqRNDzU+2wB48YjcVo/BHQLObCCoq0B7SeFv7xxsEG6VRrxVWKPd14uYbWKDtJ0bIAwuwS0EtXgsa1KVNpdDgmFH9ypfwKkaUqDJy8A0bBX0mthK7BXKWG1IifZLi3Ke/oBf6lXSfETaQq8Sq+5smS6keyo9n4bGiVim33b2hNtDueGIkbR4JGUe7BpsElxrmHxFqsj1bipqlV4OfDaKxxBPQTY28eO2b/FIDRJgJTcaC7NPexSvwbVccwbCM1XQcH1XN9rb4lffCvH3yCD3mJwyf4V1K9elPcHmADeyz9ZB8ebrb49Uo810xFUERFdztd4GA4X95kP8KHt0MNLcRgBfd+ILkxqrVN2zazpn8GnpbB9mLslJG6abIGhGyenAYnINLUtwv4aGmbYrvsfdBaNn6JG0QzR4VW9/8LsE3VOookquaGEHaqPt+64tGcY1nbooxH8m+WOc4R145jBbhd5dcG+72wH8Vu+j5G7vqmlVrHrWy012iv6MLTgjAdC/284AlwdSKxfI465MMq4R3v/wwc0bcLpxOJnS1nSZIDX41L2O3pzop+vunBH7xmW/zajmRXP2Uue64lSS48elqIZaf4eOt+SWuq0Ie4F5pZ9dv4H0+sT4QCDcACzBHLisN2WmAzYCWxN87mAJ93Nr9X5bBS1qdh6cGxPpTr6PIfsjVarogvyofUVsDYdw3QhEgYAb17vMfZDFyDWC5WsH8XBq/RRGRzVsUrUKq72Bth3lxsryR3bQIiPEZr7dBUpDqdd4LmjSFGfUTHxDKtLy8AAJTd7+V9c3p2rduIhxgW
- s1iVqEJM
- gLdVdS5REgwp6fMLvKzv9RuTjr9qqGqsskv9USGZXXdxv1haBoiS+plcZXDA3ZBhJaGATkdv4Cb4++Efpd9qjYJ11K14D4u1hk68rLnGmCyx4yKuTMJOxGn9x//fZK2WcA6kn/v43ErQL8ktFIE6a2q6zzP1s7allCwh6KqIlZfYQ9rtKPIy8mSJqhms6myxKsvqWAvFwM3bwaoKWFuetIYBa7F22IrkbZgMawgcq5+GM7w13z5ajhx7hkbwR0IB/ok3omMcLcBzPBCqqKU6rw+oRBYdoraCw+L1wX0O69f68mkxU1rDWhCrU2TeOx0v3C27IUQJJHMGZwvk=
+X-Stat-Signature: zgf58ifi6xx6xg7iftr7p1rez3qoocnn
+X-Rspamd-Queue-Id: 2570D10000A
+X-HE-Tag: 1781770479-987793
+X-HE-Meta: U2FsdGVkX1/6Yyj30+j6rBWYYnaooztdU7LPqz/lon5KticOTSnJEWLkjYzDKko8dEcVwGFHY22SKxxog/godaEkpoPekWInZK4w6ll92V/urEfGRdw0o58ykGS5ai3p5ix/xnWdS+JGRZN4nt1QB7l+TeANL62qXcwAMdJClMfn90lKsNQWzgIOPh9xwoQw7J41KClRMi30IZYF+OoslwiutchzGcEPeGB85eVNL7wxB3wfRJKaZ97z8ZeTzNuIyXDoy5lot8ZbDwo+2khXZ1LqVwOsYmc8fM7hiSjFCLX5cPfXacyqSQaDUu/aFHvVFPLRF3XCrxqH958XNengTljcpwmlVUmpBordoAxQE4UUoPWNFokbqsaZy318wTY/XMrA0j1SGacN+Py+hgmi/SYAF5ExUiemEn0B+2ZBXENQHGHF67T3VsaApohFlnXHdkA2CikONB5ia8dUnK1b76lnHQoRGzt+MVjZ3dPGHwB1597t+iSWh/Y4LmnjlYMMK4l48ZQiZqjx4ZNBkzmGSKfZBoGESGAhDYts1d3rSP72EAKrpOPirp0CWBuhMTH5wHYBOlVOYLfSUljPvDcgVvokG5qEl8vfdvI5ENlRPHHGwK9Hrz3l3tESJ/U25AKC7HYnFuHbLiWuByzXp5PJi+FGo4zlfHbiPSglr67mNSFyXOC/5CNMZykCpbOm51JSXBnmIxxwMW1CIO8cvihNshwWWruURZmGCqBZgXse4WLipvFBcCM4jxfdAKs4ONTNJKqquq+1g1Oz72gh2swYHEIMfXGUKvk+5INUlFwHOe7AOKYbvxqP5pVImMfGCmwudfUvCNgU/JfXAbEM3YAkednonYDUY8ixASmyRuBMJMAmsy9pVQwX/wSVcuXuEgzfHAZEE9bFWSHWSYoGTpde5F7sO9Bw8t01qEZsQJ6gVMUfguY1huIXbqcsc0oBVD7A+4IBgNlief6f6q+WBbN
+ yBZlbETp
+ Vh1CF9itXFFyJyR8REddLlq6QWaqvPvRhnUJV7XT83Buzos+BJyZi3ZbcWyqLPIlPhRyZiikfz6EmCfI+wLK5X9hEX5ukWLEqc0rQm71iIn3NYCoMAFhCDF7H3OLhSUjkMUrLR8lrLiwud8TwR8Aksx90eZIEUVFAM5C2XleUsLvpMTnAfDiBKAkb6QcuKxqWYcJ/8zX1sVe7altF3gLraI73N5QYkpXWKdyt/hsMaViCF3irySO6IhPDT/97wJd14wqTLQnn2qCPMyDFgFIdLvfHaY4iD2qt46m9rXiym1E/33T8Nvtqf8bJg6hhsrT6Iv/Q7PUrqsVnhfA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,45 +138,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/18/26 03:41, Kefeng Wang wrote:
+On 6/18/26 10:04, Kefeng Wang wrote:
+> Replace the last user of PageTransCompound() by PageCompound in ksm,
+> and get rid of PageTransCompound().
 > 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  include/linux/page-flags.h | 14 --------------
+>  mm/ksm.c                   |  2 +-
+>  2 files changed, 1 insertion(+), 15 deletions(-)
 > 
-> On 6/17/2026 11:01 PM, David Hildenbrand (Arm) wrote:
->> On 6/17/26 10:26, Kefeng Wang wrote:
->>> The mincore syscall currently takes mmap lock for the entire
->>> duration of the VMA lookup and page table walk. This creates
->>> a global contention point with page faults and other mmap_lock
->>> holders in multi-threaded applications.
->>>
->>> The mincore is a read-only operation that only queries page
->>> residency from a single VMA, making it an ideal candidate for
->>> per-VMA locking, so try per-vma lock firstly and use the
->>> walk_page_range_vma() in do_mincore() to eliminates an unnecessary
->>> find_vma() lookup.
->>>
->>> Unlike walk_page_range(), walk_page_range_vma() does not call
->>> walk_page_test(), which handles VM_PFNMAP by invoking ->pte_hole()
->>> to skip the page table walk. Without this check, PFNMAP PTEs
->>> would be treated as present by mincore_pte_range(), changing
->>> the returned residency status. Handle VM_PFNMAP explicitly in
->>> do_mincore() to preserve the original behavior.
->>>
->>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->>> ---
->>
->> I think you should first add a patch that converts do_mincore() to just use
->> walk_page_range_vma() -- which is what your patch series "mm: convert to
->> walk_page_range_vma() to eliminate find_vma()" wants to achieve.
->>
->> Which would already be an improvement :)
->>
-> 
-> Are you suggesting that the per-vma optimization should be separated
-> out? This change is not too big, and I am fine with either, which
-> method do you prefer?
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 7223f6f4e2b4..7a863572adce 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -879,20 +879,6 @@ FOLIO_FLAG_FALSE(partially_mapped)
+>  
+>  #define PG_head_mask ((1UL << PG_head))
+>  
+> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -/*
+> - * PageTransCompound returns true for both transparent huge pages
+> - * and hugetlbfs pages, so it should only be called when it's known
+> - * that hugetlbfs pages aren't involved.
+> - */
+> -static inline int PageTransCompound(const struct page *page)
+> -{
+> -	return PageCompound(page);
+> -}
+> -#else
+> -TESTPAGEFLAG_FALSE(TransCompound, transcompound)
+> -#endif
+> -
+>  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+>  /*
+>   * PageHasHWPoisoned indicates that at least one subpage is hwpoisoned in the
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 7d5b76478f0b..75db9ecebdc9 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2341,7 +2341,7 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+>  		 * afterwards, the reference count will be correct and
+>  		 * split_huge_page should succeed.
+>  		 */
+> -		split = PageTransCompound(page)
+> +		split = PageCompound(page)
+>  			&& compound_head(page) == compound_head(tree_page);
+>  		put_page(tree_page);
+>  		if (kfolio) {
 
-Yes, I would split the "use "walk_page_range_vma" from "use per-VMA lock", even
-though the first patch would be rather small.
+Nice, but ...
+
+we already have
+
+	struct folio *folio = page_folio(page);
+
+And we know that we work on folios.
+
+So can't we just work on folios?
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 7d5b76478f0b..41ab25aa2a82 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2327,23 +2327,24 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+        tree_rmap_item =
+                unstable_tree_search_insert(rmap_item, page, &tree_page);
+        if (tree_rmap_item) {
++               struct folio *tree_folio;
+                bool split;
+ 
+                kfolio = try_to_merge_two_pages(rmap_item, page,
+                                                tree_rmap_item, tree_page);
++               tree_folio = page_folio(tree_page);
+                /*
+-                * If both pages we tried to merge belong to the same compound
+-                * page, then we actually ended up increasing the reference
+-                * count of the same compound page twice, and split_huge_page
+-                * failed.
++                * If both pages we tried to merge belong to the same (large)
++                * folio, then we actually ended up increasing the reference
++                * count of the same folio twice, and split_huge_page failed.
++                *
+                 * Here we set a flag if that happened, and we use it later to
+-                * try split_huge_page again. Since we call put_page right
++                * try split_huge_page again. Since we call folio_put() right
+                 * afterwards, the reference count will be correct and
+                 * split_huge_page should succeed.
+                 */
+-               split = PageTransCompound(page)
+-                       && compound_head(page) == compound_head(tree_page);
+-               put_page(tree_page);
++               split = folio == tree_folio;
++               folio_put(tree_folio);
+                if (kfolio) {
+                        /*
+                         * The pages were successfully merged: insert new
+
+
+
+I'd assume we don't need a check for folio_test_large(). We'd have to double check whether
+folio is still valid after try_to_merge_two_pages() succeeded, or whether we have to re-fetch it.
 
 -- 
 Cheers,
