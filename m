@@ -4,84 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A326CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 01:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F194CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 02:24:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34F476B008C; Wed, 17 Jun 2026 21:48:01 -0400 (EDT)
+	id 21CD46B0088; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 326E16B0092; Wed, 17 Jun 2026 21:48:01 -0400 (EDT)
+	id 1CDB76B008A; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264136B0093; Wed, 17 Jun 2026 21:48:01 -0400 (EDT)
+	id 095DD6B008C; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEACA6B008C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:48:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7171A165212
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:48:00 +0000 (UTC)
-X-FDA: 84891347520.07.AA6EA35
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8D2531C0005
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:47:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id D07716B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:23:59 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D6D81C1FDA
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 02:23:59 +0000 (UTC)
+X-FDA: 84891438198.16.6ED6028
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 94737140003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 02:23:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="O3UfvT/1";
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781749437;
+	b=1XbcBp++BYGlOdDYjNGqyX9CoewKn5PJJLFbJ7qbwO9Xzr75hWvxnWLU8L9PfU0ELXCyIE
+	P4IbdiMJDgDEQQzH6nH/yyCBO0krns45DNsPYP6sXmWqgGR/SOJHXi08JfRXPwA+viQZY2
+	JQBC84i/LS4xQVIbziTuFJxkibWL1Ek=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="O3UfvT/1";
+	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781747278;
+	s=arc-20220608; t=1781749437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PfUm8af/m5Y+JvEu5zk0BWRI+9j/PXO2lmh/Wz0+tsw=;
+	b=Pam8jivspIkuhZ7OvEju3L3zEbpC4o34W9HPibKvBwAEXAonI6O18dUSf0WNmGQNvB+20q
+	Y45kXrvzObQrXyH5nSLJsE/m1JO0ehKhXXfqODDrLSBUMMqkPP7x+SWuoc1AJaqU9Yrfzm
+	/oWQras0niKjj0bFrUr7Z3X2Na/HORc=
+Message-ID: <45fcc57a-ec8d-46d6-9c28-065d001c081f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781749433;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fr3bhMRvsw9Lt6Y8DjrtChtVaZ44fdJhMV6movsjpdM=;
-	b=NTBMSKj7R+/ONIiaImiMQwgPSlGd8k68/JCDhDvs9YnuU+wdsC/xUjWlngpZnon3Ck9iKL
-	dD86VRwYA3I+un4J+JJq/HrEbdY6lUsSmYa52jdxTOhUhNHWs5oEFhSUVeXMqpECHxa6zJ
-	UUIzJHKzKo8PjBAZ5KbAXWGfX2fAtNc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf20.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781747278;
-	b=0SCvPcjPaGWr0Sb7nm4H7wCZRL2IGiYYvSPvID5Fn+jpsdfXcBuHbrcKnC/Jml6n1vQLyt
-	zqdwntOPHZpGE6Q4RyqIQoWh8Aiwy2v6kkxHt9FkSpyDdI5nT8HtdX42mb9AGcLDbgZ7gK
-	0KxHdH/hjx8YUzlfhfHqwdcyJTrA4PU=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 18 Jun 2026 10:47:53 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 18 Jun 2026 10:47:53 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev, baohua@kernel.org, yosry@kernel.org,
-	gunho.lee@lge.com, taejoon.song@lge.com, hyungjun.cho@lge.com,
-	mkoutny@suse.com, baver.bae@lge.com, matia.kim@lge.com
-Subject: Re: [PATCH v8 0/4] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <ajNOSesjwTyZc8EX@yjaykim-PowerEdge-T330>
-References: <20260617053447.2831896-1-youngjun.park@lge.com>
- <CAKEwX=NfSy0XiD_UMsDOHGCwpE7sYmBmhV4Y9vk_cbnnr6J6PQ@mail.gmail.com>
+	bh=PfUm8af/m5Y+JvEu5zk0BWRI+9j/PXO2lmh/Wz0+tsw=;
+	b=O3UfvT/1MKiXtNvGidZMkfJ5JuNdkyR8S+zPPWv9pS9CANHCtAc95ka7/DKnM/iGfcbWVb
+	Ftrei5j/5KT11Bnfcu/K0q/mftP6aEgB40P687LESlZvdqrqD6vOCwMqayeuc19JuU2S7s
+	mOQKdiH/a8oeTVe0QRkhZDezTFs9iMU=
+Date: Thu, 18 Jun 2026 10:22:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH] mm/page_alloc: unify
+ __alloc_frozen_pages[_nolock]_noprof()
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Alexei Starovoitov <ast@kernel.org>, "Harry Yoo (Oracle)"
+ <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
+ <2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org>
+ <CAJuCfpG48TmvaiaRvnL-NXKU6nn55D3bks2DgzAc0URsZhAxqA@mail.gmail.com>
+ <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=NfSy0XiD_UMsDOHGCwpE7sYmBmhV4Y9vk_cbnnr6J6PQ@mail.gmail.com>
-X-Rspamd-Server: rspam10
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 94737140003
+X-Stat-Signature: t8h316cx6yzp8shzopubjx3zi4rwxyou
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 6nyja7yx9u63y5uo5mynfdgeg856b8mz
-X-Rspamd-Queue-Id: 8D2531C0005
-X-HE-Tag: 1781747277-461058
-X-HE-Meta: U2FsdGVkX1+i6ojawWW+0gvimIhwrYqyqHMVsWIFD7oMtIh/KfPJAjSWVS2O617SK90qR14ZB91GbjpFk54k+AOLE8SurSKZyse/wFtpm1aotDPZjQFPJN99vF+h+2xJoSbPLFlr1FnwdGMc8NVc6bC77xsQvFb1a37RnmWQgYDlAmqYkCX5Q1If2GAOrjyj/dfcPWxYXNb+jX3CpvGdpmAKVs7DCq+31/0jY/LvObyrjoG6O8jLAkWJ6rrQAb06jW408OsMFuA6WpRCFRYQnQiDAHWDhoyeGw3RSSBr8UY9YC+QjgvsIZdR8QviOnrhXRgnxtm0B17pYVwWpGIQD+8JkMU7rSkjvxOHF3Xl9pLNXQiPnuaTju8FzW/N+5ei/+EHD+aqT0F/qiqhP5bivhL5yMPmHKaWEmyZ4pOWJWfjGvl1/D4wU/HAZnam1tVgMOYvvBg9xs5IVmwyF+9ju4pEkiXjjs5L2u+CsrmSA8ZJOKob6xGvW5oruiU/gaiPh1XZSw59CLexJDAgVV5LJONX3mumrw/KM99tdUatvzY0YoIKVEQNUcuTGfJ8H9NZlpxYBoVdVt/y5LJNRDxxIOLCXYOvlEBLMTnOfdYc/nEl4GuuAjn9ecggswRegHXBZRDzefP4rvpKpNUwxQO2kym31PfYZqx/xXhTUZv2d+BilMR0s/goLrE/DZUYzmrmTlMlG2YFzROoDYKwW8GaHPzlhrBVMqMQ9chS3FDay9g0VNL4GJeJ+UnwmpfazSejrn9a1qHfTSw+hGzxrbSnE0m3Oxksaln7u1eAEFg8PX9eKe5M7CZs08/ONOWCKiZCsyBYJMBGILXkjoTFIYk6nYHh1oNQc2v6a381iXIJkhh3Z3GwYqRRQPDTUZx5rgCAL5tLfJXk2TfxOiOLohKRIU1lNQILNYq7cbPkaunvJZRYKLKv/DP5b1+oH9Xnl0NJRlRKKMCZQtxoAUfkSRd
- lf5Gutzb
- pBIYkilfm5FHkP63+uv0+41wGV37HjmXHne8Vh1JpDg+o2jK6WcxGVBr+cXQr+yxA+0QK3LV9E9z4qD4ca1ggEclAESqodz0Hd9lrAXTzHBbKjN0c29x1ZR8p5wgQ4/SGSZWaEJdUmhX4aVoAabu+rqXtGhc8mAxUqfl7mmOqvOvKCZoYaXHaNX6SnVsfYsCARITgvFGbsW8mvcgDLWK+G8IY7oLolJVgrbdHn3xSs5rjP6lkfXep/DpJQXFW4Qm0iN9TW3h2iwyzdRQ=
+X-HE-Tag: 1781749435-929165
+X-HE-Meta: U2FsdGVkX1/p4bdsUmBgsiL/h7G66YmJlN02wsfzx5cBEQbkqtGqc22m669fzCXMEidvZmP8/2VpUUBEyuywl4z0XWYMFGUa04czCe3Myh/TWtjCx7Y3HSIpC1bF9e1qTjAESvqwfBkmujDgGPG2mGJgKmY8bBJS3UIP1wapW4/us77wN6oVPpp3I0p+Ig2aniUvzNV89C6YT5NqaZ75yFpENxHFw0K3pLnTOKcgs+FTK9M3vCPIWbfs+oD64v7lNhyjGsaSGwmVYv6GqvsuZyP3g6WAYCevltdYojYYCve3T13Q4Fz8x46TOw2z+mTAvXAhAgZ1Lyvxn+xSW+brT6lh34l9R8JSTQPTzcGWABv1V3zTlxrXaDChkSKZTRQJ6R/eGFA+aK+VcfJAS+K/ZnVchtmSDiGLphBdNPIyOo8xyqNFp7NzioXY7OqfRE+IOJdh8qZniYByZmt0BoyTDPxB2ZdZc5f46/SGY5X9X8q2rV5hiLkzu6fwHev9KEh03Ue0U8KhOI+iLSoigFDY4MUdwyUXGEwCdXfOeRR6dBTpEJB50g/C/euV6VzpEonzs+hFmZqGMyhvEx7CNhGlpHRYjaiD9FowNsCDqlEe26AkKBkPdtfyMkGTyrpsJvSST/DS/QljRQIFJt9HwUtRID05gT1bcFF/UKRr5hvHhxEkO3lozsMPWw5v9hv6/1s1bsegnQHUq0SBw7YCcbPuaCBG2hk/+f+Jt+Ms8lQH6RGhQ0VUI2WcdZ6nEzdRd5VYOdjXXmU41t1hMKkT7IGJaOgXsEJtAT0U6mfq4c5eLs+G+dmkCBwhKMRWKONCLjwHnNF+4o29KzqFmZuWmZfcf/82tL9ta6sL0U2i6Cm9WBjGrMGo/Ftx5cikSn0WnOPnh83vL7kseTylt5Kx23wYd7F4Z3peZ145hzcpgrzZYWQvxwq+SNdOuGJFCS/doy1x+ZqtcwwU18U5F8QzMMg
+ uzvlmCid
+ LzN4YYYd0bdGUuuupAeez8jt19sSVTiq/UX00iozQxO/jVnrP97jtrE5zlKpGj1BwUkHHjuQ6AwR3o+bnHIPyWMnpPSOvC8p2dz8zJj/TzhWYAL86he2/3JwKNZPKATuJx4+PWTapQpsHruwu1DwYayf6xKQl+sGInd9rV6HG2ql6wg3zGX4WmWUq6T8Pvmn5q9biupGnsDs2WAWS55Jb1DprfnYSp/sKX0ca3c0rl8xOLEKFEZDuR8kVkI5Z3v0UvxcoLcVG3ug0Gx/Kz70NWQR0pHybMgSKltkhozrrEARocD7tCagf6Fj5pCqbTxTOaYdzSC7KOPPsUUe297Sa+fZwh5n0uXFfaqiinIc7YZu3/8n1qcabMwgYrsqF3nSxMkPTRHwpteE65Gvf6Lt4UrEw3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,103 +111,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 01:50:49PM -0400, Nhat Pham wrote:
 
-> On Wed, Jun 17, 2026 at 1:34 AM Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > This is the v8 series of the swap tier patchset.
-> >
-> > Great thanks to Shakeel Butt and Yosry for the reviews and discussions [1].
-> > The main change in this version is the interface change to use
-> > memory.swap.tiers.max with '0' (disable) and 'max' (enable) values.
-> > This mechanism was suggested by Shakeel and Yosry
-> 
-> I like this interface too :)
-
-Good to hear. Now it looks like we have found a memcg interface that
-aligns well with the existing memcg model.
-
-I like this idea as well. Thanks again to Shakeel Butt and Yosry.
-
-> > Here is a brief summary of our tentative conclusions. Please correct me
-> > if anything is misrepresented (details in references):
-> >
-> > * Zswap tiering [2]:
-> >   Tiering applies only to the vswap + zswap combo. Zswap itself will
-> >   not be tiered, as the current architecture requires a physical device
-> >   for zswap allocation.
-> 
-> I think Yosry wants zswap as a tier, right?
-> 
-> Just that without vswap, maybe don't allow it to be an tier of itself?
-
-With the current architecture, users cannot dynamically specify zswap as
-a tier, and zswap is a separate layer, so it is not tiered by itself.
-
-Once your vswap work lands, I think we can make the zswap 
-become the default, top-level tier.
-
-After that, we can also look into cleaning up the zswap.writeback
-interface together.
-
-> #2: Inter-tier promotion and demotion:
->   Promotion and demotion apply between tiers, not within a single
->   tier. The current interface defines only tier assignment; it does
->   not yet define when or how pages move between tiers. Two triggering
->   models are possible:
+On 2026/6/18 01:14, Brendan Jackman wrote:
+> On Wed Jun 17, 2026 at 4:49 PM UTC, Suren Baghdasaryan wrote:
+>> On Wed, Jun 17, 2026 at 9:39 AM Vlastimil Babka (SUSE)
+>> <vbabka@kernel.org> wrote:
+>>> +Cc Alexei
+>>>
+>>> On 6/17/26 17:29, Brendan Jackman wrote:
+>>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
+>>> It's not, it's ALLOC_TRYLOCK! Thanks for proving that we need to rename it
+>>> to ALLOC_NOLOCK:
+>>>
+>>> https://lore.kernel.org/all/DJ9QPTO2WXNB.10E88ZHWRDHB0@gmail.com/
+>>>
+>>> So you just won the job to do the rename :) I think it should be done before
+>>> this patch, so that the new usages and other _trylock names introduced here
+>>> can be done as _nolock outright.
+> Ack. I'll aim to send that tomorrow once Sashiko has caught up.
 >
-> >   (a) User-triggered: userspace explicitly initiates migration between
-> >       tiers (e.g. via a new interface or existing move_pages semantics).
-> >   (b) Kernel-triggered: the kernel moves pages between tiers at
-> >       appropriate points such as reclaim or refault.
-> 
-> We'll likely need some kernel-triggered mechanism, or we'd have LRU inversion :)
-> 
-> Cold pages will fill up fast tiers first, and more recent/warm pages
-> will land on slow tiers...
+>>>> main entry point function is significantly different from the normal
+>>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
+>>>>
+>>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+>>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+>>>> exposed to mm/) and then turn the nolock variant into a thin wrapper
+>>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+>>>> how some of the wrappers in gfp.h do).
+>>>>
+>>>> Rationale that this doesn't change anything:
+>>>>
+>>>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
+>>>>     the new alloc_order_allowed(), alloc_trylock_allowed() and
+>>>>     gfp_trylock.
+>>>>
+>>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+>>>>     previously in the nolock variant:
+>>>>
+>>>>     a. Application of gfp_allowed_mask; this only affects early boot, and
+>>>>        only flags that affect the slowpath get changed here.
+>>>>
+>>>>     b. Application of current_gfp_context() - also only affects the
+>>>>        slowpath
+>>>>
+>>>> 3. The slowpath itself: this is now just explicitly skipped under
+>>>>     !ALLOC_TRYLOCK.
+>>> I'll have to ponder it more closely.
+>>>
+>>>> Ulterior motive: adding an alloc_flags arg to the allocator's
+>>>> mm-internal entrypoint can later be used to do more allocation
+>>>> customisation without needing to create new GFP flags.
+>>> Ack.
+>> I think this change might also help us in removing __GFP_NO_CODETAG
+> Nice, this actually looks trivial? I can probably just tack it onto the
+> v2 for this patch/series.
+>
+>> introduced in [1] and being the only user of __GFP_NO_OBJ_EXT once
+>> Vlastimil's patchset removing other __GFP_NO_OBJ_EXT users lands.
+>> CC'ing Hao as he is brainstorming ways to remove __GFP_NO_CODETAG, and
+>> this might be the answer.
 
-Yeah, good point!
 
-> We'll also need to enforce isolation/fairness to make sure no wordload
-> hoard the fast tiers too (but that probably requires demotion
-> support).
+Hi Brendan, Suren,
 
-Right, that makes sense.
+Thanks for CC'ing me, Suren. This is indeed a viable approach
 
-BTW, One thing I am curious about, though, is whether there are strong
-real-world use cases that require demotion/promotion.
-Theoretically, this looks useful but it would be helpful to better understand 
-the requirements from such deployments.
+and I believe it brings us one step closer to removing
 
-> >
-> > #3: Per-VMA, per-process swap and BPF:
-> >   Not just for memcg based swap, possible to extend Per-VMA or per-process
-> >   swap. Or we can use it as BPF program.
-> >
-> > #4: Zswap and vswap tiering:
-> >   Tiering applies to the vswap + zswap combination.
-> >
-> > #5: Vswap on/off control:
-> >   Currently not supported. If a strong use case arises where vswap needs
-> >   to be controlled by memcg, the tier interface could be used for it.
-> 
-> +1.
-> 
-> Also, per-si/per-tier per-CPU allocation caching? :) Kairui already
-> has a patch for it, IIUC, but if not it's pretty critical I'd say.
+__GFP_NO_CODETAG entirely.
 
-Yes, I missed it. Thank you for addressing it.
-we need an implementation that integrates this with the per-CPU
-allocation currently implemented on the vswap side.
 
-If Kairui's patch lands, my patch #4 also can be optimized based on that.
+Brendan, I'd actually put together a rough local implementation
 
-> BTW, can we add some selftests, to make sure the new interface works
-> as expected, and to have example programs for new users to model their
-> scripts after? :)
+earlier with mostly the same core idea as yours, and this change
 
-Yes, I agree. I think selftests are necessary.
+would indeed be minimal based on your patch.
 
-Do you want them to be introduced in this patchset, or would it be okay
-to add them separately as follow-up work?
+Thanks a lot for being interested in tacking this into your v2 patch series.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+>>> Besides the need to ponder unintended effects, mostly LGTM. Just not a fan
+>>> of the hardcoded '0' passed at various places. In the slab variant of this
+>>> (the thread I've linked above) I went with SLAB_ALLOC_DEFAULT, so you can do
+>>> e.g. ALLOC_DEFAULT here?
+> Yup ALLOC_DEFAULT sounds fine to me.
+>
+> Thanks for the reviews as always.
 
