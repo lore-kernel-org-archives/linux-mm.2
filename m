@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D49CD98E2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C440FCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B013B6B00BC; Thu, 18 Jun 2026 05:12:39 -0400 (EDT)
+	id B7CB06B00B4; Thu, 18 Jun 2026 05:14:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2606B00BE; Thu, 18 Jun 2026 05:12:39 -0400 (EDT)
+	id B2BA56B00B7; Thu, 18 Jun 2026 05:14:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 953DB6B00BF; Thu, 18 Jun 2026 05:12:39 -0400 (EDT)
+	id A1B616B00B9; Thu, 18 Jun 2026 05:14:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 28A086B00BC
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:12:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51AF516656A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:55:16 +0000 (UTC)
-X-FDA: 84892273032.10.EC43A4A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 630906B00B4
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:14:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFF8CA0690
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:04:53 +0000 (UTC)
+X-FDA: 84892448466.16.8D197FC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 980C240007
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:55:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hR68x+AP;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 04D09C0003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:04:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haKYBsbc;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781769314;
+	s=arc-20220608; t=1781773492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EkAdqSMgT4IE675E96Ud/DGR3xfZxz5Ydu1hH9Sk92I=;
-	b=PQpsPtYV3RgWxO6c2/8lkDZ0nQXOGdiKKnJ4rppqffUrQHclZGSdptU2vVEwHj2rfexgci
-	gBpkRcHTwxAY8htLABiotI8ILIn3nb1YITEtE+TEE++P5lSZrWFv1FVa4Ty/Aef/5OJb89
-	9HeAbpMXWGDNK7BVIEph/BA5xTaupek=
+	bh=brT7Ln5skWkl+WmDDmlxUMKf7E5NAPsYv0yiDxFLo0I=;
+	b=kW7FdHrV5xTwoiNmD3ekZQ6K6pfQGH9Uo5DzaAFRfBadHE0w0Wm5TTNWR3rds0sdZjkNR7
+	wtuwcVpy1xqO3BbfrX/wjVhID5lJci0I1kwzc23poJdNa/MDhcUnHg6ghbmilAns2CnW3U
+	m4jqUXXUrabRnjRKFauWIXHF+DJ+sB0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hR68x+AP;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haKYBsbc;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781769314;
-	b=muRIfcKIpncC1Ie0zM4NS+KxcxBqgVk/RkEXk90NhR7ww1KtVcTSk5c305pwjN466NTeoc
-	qBL+TKhX5vfzgHpigAvFyOW933UCkVt3aiHVQcgo/OAbdgyNLRRZyK7kVMtx89WVn3GTpv
-	nKaRO8ohfEEdsic05enChzzk5ChcQwg=
+	t=1781773492;
+	b=MCVBTXuj65YySxtRcqMyk0YRA3vYyrpi9d9iFTWDBPqGfAXFX7XodgGIVkfMp4kgk6aMJi
+	k2uF+yobykGNHBK09/c8G96PNDgTY9YKIxwqFyXOTOavA0+jRnytPD3mklP4fDh2zZ5ceI
+	O4oZ8fca7ouKFjglXevK0jfb54UxJNU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E3CB60120;
-	Thu, 18 Jun 2026 07:55:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7461F000E9;
-	Thu, 18 Jun 2026 07:55:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E08B601E0;
+	Thu, 18 Jun 2026 09:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A2E1F000E9;
+	Thu, 18 Jun 2026 09:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781769313;
-	bh=EkAdqSMgT4IE675E96Ud/DGR3xfZxz5Ydu1hH9Sk92I=;
+	s=k20260515; t=1781773490;
+	bh=brT7Ln5skWkl+WmDDmlxUMKf7E5NAPsYv0yiDxFLo0I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hR68x+APscYPTTUaaeyVnTYO1e8f8HwElrVN+2G6wh91nB+LwsFxXXXIejmWEdWDp
-	 /l9MGTfHL/0VF3THyK+v+ac54bbE5/lIu4RBxr/g/NMKCjJm0TTBxEhHSVIuX2d8hv
-	 gpYTFyDUcAVjTIStNCVJWFT70x08K7Ueo29nH8xyG1FIBfPZ4elpycbbouH5JLA0f9
-	 zGSwLwPQybL54Ij5H2cTM5v9c2Kq0nshQZ4bfWYZeDNH/oLuRrZNI+AKs1lu/oMC+K
-	 w3FsFRymcTRQg1xLP9J+CC8XWaEtRssmH7OEoR8NDsenQkYURPBLPhr4irtGhCxTjX
-	 dRWQSXdVcPQWA==
-Message-ID: <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
-Date: Thu, 18 Jun 2026 09:55:04 +0200
+	b=haKYBsbc9gCVaQo39LR+3EyQo8ZJfVFQDN0oWO8bdm33HUoFFfgmQ0Q/bku4jiMwd
+	 NPZqNARZ1j/ki3MoKAq3l7Ta8UPdWIbOrvrtlpQUrUXW/HRNsyIYAuIhm9UWTaN57d
+	 ftSVq/75FRg3nLmmtiEgTDavTJVDvAHlNgRxKsNWO7Tf+FUE4uT6Jp1TZpzi+RSmkx
+	 dD9tGP+GaZe9SANOX54wGUJm9W8fw1FDm+nQK7zRhJbeC5Kyc/McYKoDijYZUSknSH
+	 oRyjelG+ljKff+kiKs9jgVXutRj6H94fkp8/Ud5LQ1jf63rcUzWEF/XDbw0QX/XySh
+	 ChdSu6axxE/Vg==
+Message-ID: <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+Date: Thu, 18 Jun 2026 11:04:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-To: Lance Yang <lance.yang@linux.dev>, dev.jain@arm.com
-Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
- kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
- pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
- <20260618074449.24974-1-lance.yang@linux.dev>
+Subject: Re: [PATCH] mm: page_ext: validate section in for_each_page_ext
+ iterator
+To: Ketan <ketan.kishore@oss.qualcomm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Luiz Capitulino <luizcap@redhat.com>
+Cc: kernel@oss.qualcomm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260618074449.24974-1-lance.yang@linux.dev>
+In-Reply-To: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 980C240007
-X-Stat-Signature: 7x45eri1t7jcgu1sz3r59rx44acy91s5
+X-Rspamd-Queue-Id: 04D09C0003
+X-Stat-Signature: qdtr9hdng7qt1mbh865jimj9htruqbdy
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1781769314-564715
-X-HE-Meta: U2FsdGVkX186qx7O6EJJVY5bNoZlnYJi5HVqoO6qZwKnxC6jsaTRL75GVi8TgGl7c6jjh4VJqo17qJStmIdhOQFuyoofj3tDgxrBQCdJF3nPQHQIwQA6Z3AfcNsNuLIVarXXa7/DIQQH3M0tXKv9/+4vy9z8P2R8xyKOov34Rk2SfCCdcnn05ZAP6e35suT8v9Y6rhI7+HOdfzBttUTeks1tL3vdd5mfTEAcmN4pak/aeqBskiSfJ9cAde2qJ23UB1ZpoyhhLHxh1EC7FYIpMt991W3/29aGT+vjjKKGmen+mVb5wVJFrpoo7PNtNBWp2WY5++LneupL9PWCvxy/JiebhdWcVfnYG8RSUG9DqABcZZJC+asf14vs6JIMcny6mPBbrieOptO26SsFd/UizLXAgm67bxVz1L89DQ358gf9EuOpA5cVF54bA2Ihfk5tysmwDIrgrUqM5LZYxj/dG/p6288Ru511sda9EE6kJTgrWTFybF0mxdUmebMStWxhuY7aEC/ExJtBLYWm3rR3U+fwmT6RG3XdvGKB3kFxOSaWNYcsayG2NV8UEk6/zUjFK8qO/t6DyD8FZhCy52d7isiThZDxphBisxHVLZFkpHqUUY2pC5NEkcTYn0Q0Udd39jCDNTzU/XEq38nR6O66tlM7NKmQSwoYxuPwr9+T7fnXtwdRc3amgWThEQD8F9hB3u1W2pC1CGGiJu7CNRN0v7zfYDKm2MB23Ns82m21uCRrhVJfT11rngcqYcjjNxLyQqWn9fev3rvBVe3+FJKD6Cxfj4lb0l4p9QBIqdTf7HSFebfNQ96NAY6dKMEj4M0zr45oL0wmNTSwMrQEpUecgMuHBa5XWlq+BHCpWwfAm14KrMn9oj5weOmUUOMvTrBaShCnfaIaCkUEZZf/B3hZ8O0pSuGjYQFMw4Fvaz253Z0N19gvg2E23H5M/Kdi/HPvd/D/gSmDeDbIXjVq8kr
- P+SqHZN6
- U1TI6thRflnVAcgNS5u2EgYRbwyjpYSqO1PGh42FZqbPBPF28yOzn49GM5xnFwj+VJQByvUT2x6F0DOdlOZugV+We7+j1Eh2s6yd0ccZe+3FlshQKjFsm8XZwSdlj3Gv7QJMzoKGZmK2cS4DAuuNn3Bx9ZI7UNm1MRg4QoBc5PK2+G81zkIV7WTxAOs0oml2hT3W+iEHiGvANHvHClWZbVskNlYm/2eVeLO7QxnW+0v0+/swWOk6JZ6CW3p9AgRVoUikG6GQIME2PcnwgumUgyRsmtivHfHEg87gZAnhQ5GAw16MKC6vqhyq7GA==
+X-HE-Tag: 1781773491-192742
+X-HE-Meta: U2FsdGVkX19ZkzIrAv292GPbhNbAv1qT7snjRVviInXG4afb1jPEvKR5CW2YICxFGAB/s2ZvanPT2oBiMwIklDDC/ksOXZnj1JKu1WWmIGFF85w7vuMNktc6u+lLW4hUO02MpEQS3wyduJgZs57KL2bxzhi/WioGHi5zMmyts7MXyHOmmLoUl9K1Yh586XTMnztkAwFPzyaOgiL+NIbe9QY3XsOZXeJ725U8YwT/HmQLOycc5TbShtitoUozJ/GtiZGwS8hfW9NYXS9Ob6wmBhpVVWtyN7vEfVC6fEfUO/QandE/oh3X9z691pv/7KBR9pghdoW5J7ixOXrS58bKdIu0NcLT1vWQVcRDBqXqUGcKuJPGvnFiFchLKhYupDw5zRGnEDhfRwAivkmw9DsRRxt/G5QAXdTCnUiejG9GBmkbXJ+EsMWegpMdMuHwQlzYv67oUeNUsaxSR7924MVVlDdV4NZyYlHb9Y4GqbCxbRiwpdQaxiD2i7kTUVLNVrbVVd5NM6oDSXNkRLGKq+pttJf634oU0SsmugMHhcnbIOoUZAWqK7IShWMo/bm3x/qyd7rb1/uxpvHPllttfTOSoQx8noe9BVoi2EHZ0SO6Q/vmzt/9PrBx5SwR/TRAXmz7rHCvxKJFrz3ldvxkyJMz7ETtYRfBe/lJz4qy5Ustq+hKAsBgv1JL3OqJEXrtHgk4v1o2I5Jjz1Km/6lbSwiMqDq6Bnb9rhVOMgq//v970oXBa/Qzdpeg6zJED+MXNhYmXimP0iqCbHtzlLfp6uEurPC6243Kg73ES4MCF7jCVeL7i8yPcvY0x2Tl/nDXPbqBwBFA6Z7JujAwWKq2eIIF4M5c8cYoltpAQzdt9veYDfWnnVXzXKbHD67RUKb44RYThKkQs5ypjZGbJwOyF7k9md2wG++tN5mxGoKxHj2p1QjG0Ef7DKf43xbHymAFfRDqUqWs4JGRkhfjEMHOmSs
+ wJdSGLcq
+ wvFMQzTTjmRU+jlQ8Bz0+fMfgFzqAvVwJFgLYXFcodjDFjCGB4wVwlXDbvW4+AJByyI9wcbmXKnBteL+kmMJjcfxKL/FSs1HR5TRBvopzdNNNvkXLF6Uf+/PAcmTxazOQyxFJG1L8XTF8FRMcy8q20BCefCPjvyOV1FkDIFhiEPIrXh4FZ0EoOxJXDcbb2TId+VXRcVhvjtQIQ8crPDx8RO6GRoJIIm2S/nLx5O9HgdC6ts22JFHKYG/Vw4y13DbWxxqdAQaBEAmyzNqBGsov27CTbufa6xHzkJkh+aITPmHyvRxE2MoguRTunHw2KU9IslO6IFyLNPJMcac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,18 +142,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 	return __rste_to_pte(pte_val(*ptep));
-> }
+On 6/17/26 17:09, Ketan wrote:
+> The page_ext iteration API do not validate if the PFN still
+> belongs to a valid section while advancing the iterator.
 > 
->>> +	VM_WARN_ON(!pte_present(pteval));
->>> +	subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
->>
->> No need for subpages.
+> When dynamically adding memory in hotplug path, it can lead
+> to a NULL pointer dereference during page_ext_lookup at the
+> boundary of the last valid section.
 > 
-> So plain ptep_get() can feed raw huge-entry bits into pte_pfn(), and the
-> derived subpage can be wrong.
+> [   14.555124][  T846] Call trace:
+> [   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
+> [   14.555127][  T846]  page_ext_lookup+0x30/0x3c
+> [   14.555129][  T846]   +0x11c/0x260
+> [   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
+> [   14.571204][  T846]  __free_pages_core+0x78/0xf0
+> [   14.571206][  T846]  generic_online_page+0x14/0x24
+> [   14.597782][  T846]  online_pages+0x178/0x30c
+> [   14.597784][  T846]  memory_block_change_state+0x284/0x32c
+> [   14.597787][  T846]  memory_subsys_online+0x4c/0x64
+> [   14.597789][  T846]  device_online+0x88/0xb0
+> [   14.597791][  T846]  online_memory_block+0x30/0x40
+> [   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
+> [   14.597794][  T846]  add_memory_resource+0x280/0x298
+> [   14.656161][  T846]  add_memory+0x60/0x98
 
-Good question which impact that might have in practice?
+So, we do allocate the page_ext in memory_notify(MEM_GOING_ONLINE) -> ...
+page_ext_callback() -> online_page_ext().
+
+Which makes sure that all page_ext is actually allocated (for the full section).
+
+So when we later end up in generic_online_page(), the page_ext should be there
+and the memory section should be valid.
+
+
+How can online_pages(), which onlines memory part of present memory sections,
+online (free) memory that suddenly does not belong to a present memory section?
+
+Something doesn't make sense here.
+
+> 
+> Add a valid-section check before looking up the next page_ext
+> so the iterator stops cleanly at section boundaries.
+> 
+> Fixes: 9039b9096ea2 ("mm: page_owner: use new iteration API")
+
+If the problem is real, we'd want to CC stable.
+
+> Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+> ---
+>  mm/page_ext.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/mm/page_ext.c b/mm/page_ext.c
+> index e2e92bd27ebd..74067ea740fe 100644
+> --- a/mm/page_ext.c
+> +++ b/mm/page_ext.c
+> @@ -253,6 +253,18 @@ static struct page_ext *lookup_page_ext(const struct page *page)
+>  {
+>  	unsigned long pfn = page_to_pfn(page);
+>  	struct mem_section *section = __pfn_to_section(pfn);
+> +
+> +	/*
+> +	 * section can be NULL when the page_ext iterator's for-loop increment
+> +	 * computes a PFN one step beyond the last registered section. This
+> +	 * occurs because pfn_to_page() uses __nr_to_section() which succeeds
+> +	 * for unregistered sections that share a root array with registered
+> +	 * sections,while __pfn_to_section() returns NULL for them.
+> +	 *
+> +	 */
+> +	if (!section)
+> +		return NULL;
+> +
+>  	struct page_ext *page_ext = READ_ONCE(section->page_ext);
+
+In addition to what Zi says, which will end up as:
+
+	if (!section)
+		return NULL;
+	page_ext = READ_ONCE(section->page_ext);
+
+
+drop that comment, not required. And likely best to just add a unlikely(),
+because this doesn't usually happen.
 
 -- 
 Cheers,
