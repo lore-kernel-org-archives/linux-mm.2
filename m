@@ -4,87 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5511CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D452CD98F0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5873F6B00A0; Thu, 18 Jun 2026 04:21:07 -0400 (EDT)
+	id 8454B6B00A1; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 537D66B00A1; Thu, 18 Jun 2026 04:21:07 -0400 (EDT)
+	id 7F6806B00A3; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 476D06B00A2; Thu, 18 Jun 2026 04:21:07 -0400 (EDT)
+	id 70C936B00A4; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 191D16B00A0
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:21:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9229A1A06EC
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:15:33 +0000 (UTC)
-X-FDA: 84892324146.08.58B3ADC
-Received: from mail-m82143.xmail.ntesmail.com (mail-m82143.xmail.ntesmail.com [156.224.82.143])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 79FBF1A0009
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:15:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.143 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4961F6B00A1
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB0AD90A1C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:13 +0000 (UTC)
+X-FDA: 84892338426.29.AF1A3AB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 295D4180011
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIXHsSRN;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781770531;
+	s=arc-20220608; t=1781770872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DcURhIpi8rfjEV1hhbDPfgjfTHFjrhYTEx5KBRr8im4=;
-	b=gxYp23x0ECdXgHyBj7XnFOZ5MTUeQf/gMaoZrO+MoUc8EspdKKwi9AAEVQp6v/cyB0TsKu
-	MhN9tAb5oDEL8jZnwb01iJQVsm2xu+NrgqtsvyCdhhiOGS3adEYU0FGw8t7/DLsFnWCEYg
-	IqGVcf4KmOVaHXpqQv3WlS5VKbqby7g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781770531;
-	b=Wq+j6OQ0x+bWlqhBBV6OjXs3AgaT2YsfZkOIPRX7fdPQa30Lgg2uF+DgLoRZMQTj9Q7kcf
-	w1STETx85pGWhZIpcD7IwchLvbc/sLjkTilKq3KjBMG32An6QlcfxPd4QAAMKEd5041WkX
-	NnnaRx6L3zNPwq6CjjAYoQs4uVbUxpc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vRZP6BkXeV5Y9+mYdnU67rb5ToB409RMcoGypcijP74=;
+	b=4sbcrzpT+nrG7jHYugRVFghzyaTmec9cHjj+sKTxeWeGjCtWK2J2MZKwroUja2/wQIkuSn
+	VrrsXbHNy2muORZebc4y1ZJ9p9rODEHnePrm8CCNh/mXq8/DEkokeIOOctTxmjv1ssE922
+	Y/KIUZJadilubSxQ5xiuHzzYq2JbUP4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.143 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1b9c16d16;
-	Thu, 18 Jun 2026 16:15:24 +0800 (GMT+08:00)
-Message-ID: <444a6fd9-26dd-4d33-b836-987ef220b5f2@easystack.cn>
-Date: Thu, 18 Jun 2026 16:15:23 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIXHsSRN;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781770872;
+	b=QoX90bKWbTMIItywEHU1CbqAeazG+KMKbecP+jE83fFDwrhPmPl20jjqvhmC5WAa1yfcOt
+	7U/X6FaqFJEC2wqYo70V4HFZz7YIyJY3aJEXxOph1vYGMoyf6ystrlgyWCVry80JajmdmE
+	d70VgYGvbwJDRtJVLbgi711IvsVoARo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 75080601F8;
+	Thu, 18 Jun 2026 08:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92611F000E9;
+	Thu, 18 Jun 2026 08:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781770871;
+	bh=vRZP6BkXeV5Y9+mYdnU67rb5ToB409RMcoGypcijP74=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=GIXHsSRNDqHF1t56tZ2e9PPEkZAA7QhQ46XgrrEuMJ+dGkcBFbZoqdTg7CeChoO72
+	 nunFwrKujraAZP1AdtQOBrqIYf2M91mFe2cY/TjhznFI1Q0MMPeJVRYR0l/vUiWHfa
+	 dfnPPbUortMBhwKjV975EsO1K1YhPFu9xEqBsKaLBqDIxLaOWcnxOnNIpd/oPYToAR
+	 ie9ukMlHY/IvfadI7oF/nciocoJjY5ab0gzJt1aw/6vdKAcsApD5MS0H+vawUlXJQC
+	 qsRjNjzy81USSLZHE1T2TYW5o9lJ4sY2EDHI8NuE2cOYtdmkKyXY+++JhGZgPQ9jay
+	 jx88RYsubK7Uw==
+Message-ID: <3149bc84-dd3a-43ba-826e-6364965fdafd@kernel.org>
+Date: Thu, 18 Jun 2026 10:21:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260525081652.2210206-1-zhen.ni@easystack.cn>
- <20260525125819.1857f215bc56b26a0727bedc@linux-foundation.org>
- <5ef656db-c6b6-4a2c-b6be-628e5214952f@easystack.cn>
- <7b2125bb-c2d6-4678-9ae3-6f4e93034391@kernel.org>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <7b2125bb-c2d6-4678-9ae3-6f4e93034391@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ed9cc95400229kunmf11eec17f1bec
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZT0wYVktLGUgdGk4fSkgZTlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
-	lOS1VKS0tVSkJLQlkG
-X-Rspamd-Queue-Id: 79FBF1A0009
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
+ usama.arif@linux.dev, akpm@linux-foundation.org, mhocko@suse.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
+ <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+ <ajK1YsIJmD2ImbAk@linux.dev>
+ <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 295D4180011
+X-Stat-Signature: j6eu5dnfi98zu68axs4kenjnckm8zu17
 X-Rspam-User: 
-X-Stat-Signature: tzspzwpr39fwma7dj7qrdk7w5k5bi63o
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781770529-472317
-X-HE-Meta: U2FsdGVkX185FWhFJIg0r/goZKUUYVVKnTcA6gygkjlZvm+Tk6fXAuXykIYH21NETRIY8kdpNutUbVw7xey1uz6wqHkFRA0/iSgxIYQdHvlrVpPSBk1G7HPuZoKwGj7PU/cgOqTfOif5GfR5VIDdykAI4rhgn6AuyEz6+mV3XoWuY7TZmb31jbK7FT5xJbGSJOgzHdUI5Ycfkmny3pINPFvF4NbgZ4qssIrKgcBnwchS2Cofr3TTgT0un5dkP/fZPGsCmOdCNEVHgYMSTC+wSrfqLXmxaXD/7GGMyNdc4MHdmbd8iVtu9+V5qlyj8APmvSiXGkLAy+ZwC/3EddJINHV9cGhsC8RdFUJpq+zGfo0a97I1mWjJjHYyf1q2D44H/Qdm5tSo9EL8SSMbGq/7E5P2fIYvbEnslayMeY2Kr3zPJxk6TgB0/pkjQ5AxdQA5isZrfLH/ekfE0Il2K1ZbsIZR/TqeiEmfEToOmGeJgCZTkb4eV3r2YJvMmpI88yKVVCW4QW2FxOfBSSgcdQfAIk0aWcZHVfwoU0tPqGCK/csNv5FZXpz2Ii2NNzqZTJ3gpggFBFqM4Je1d4hFog2GOF4/Roc8s4PjE8M+kql6ZdCzC/d+4hlRRGIgT2agKJ/aqkqSgPbZb/HHvBzS4j+a5ztNWxdNS0xAVCvAP87HuRxeZoaounBkndVUdze5gB4AFwIA80tA1qwDw3VAvgr3e7CHZyIYYvqv40aZikkJPcn0CBjIubG3RI8GFeBx2eWo1+zuSPFrF65mFpIsF+9FI9I/M3IR8objqG9sCwZeJvrBx8XSH08cnBHQhAlbyRTH7z9k8SzsCDrgq0XHw60QfRg9aDsGnu0SrsMQXOe1c9IlVtCkrFNRYIOHDlGQ4L9FWsX3qhOB0cjBIR+jFa3zgC+e0aXnKdAO1Msem//9RjzCPpa5RpHNu8mtRPTfgnI1jzxeAYNXYd/Lj+UeddO
- p0gwupP4
- vFZEUsg3Q6n/PJmNGMEyKFej5dAzT5D1R8ekTDIyIwv7bL4HAWuMNYvmrNlf9gZ1gQrm/qb8db7hkf1x1xq1FgSts7asgT758YfGmLdDMB845AK/ngWwMT0jvxIRkKgn+KpwuoH8lCp/TemlezcsRx6loCQ/L9dK1M6EKYqPC0T+ComFQi2o9hGFa8V4qXEccmfwAcNMWov2Ac/t2AKXH0zLo2MMOWw+q0ttkgEagriJAHI+tFFsikFGwiPIApxVcC4gRs685OgEqj+taIEKL5Zp1QQ==
+X-HE-Tag: 1781770871-554197
+X-HE-Meta: U2FsdGVkX19/+rl6Ez0wts2KM6ifjORznH1CrrRfFRFF6NRo2+AhBcjoSDgVk94Vb8gf0eIik3wyny0shojeEE3lCksAO3kWuH4ngp+q+O3vnDfALA/sRx29LCxVM2xJZ58405wlY3rbYJfQmbbAr0ROB5fauD5rNa27MIfLLew5mSMLiBgU2uUA2Y9O43bCRshE0abSSX57ITugJvbz4ERwDNWO+ufkQwtiDg4ZnFSW9zJRkmDWq+wIFY0w9qrKc5L6I2BX+6oPk5lSGmioXZy1JEZkvfSXfqlYYXbByxsEZQUXDP6womFVq2BYer3vJFkWlxZPDW3PBTW5qWtNGBPgaG6dY+IkcPrEWCCIBRmsYpUu7WjDRPs/uTMHBKNwPE362zC81ZrSlH08ZujxtPqPXYcCLxOgRJhqGumKIAAcaF4GohMGH5/mrrkUxtnqLjHOEJYGQeFv9PN6KZR+XSz2U8qiC1CND7Z75DnfUn8Rbxocl50l85r89Jl5zBGekkInvYDJOSlBqzwSNiz5phn3WkFirjekrTDTGLqUB++6lwEaKtYNs6aXx/koLVomdRsWK0JUuoxwEFRlrDdMMw2bkGowla2h+A/5TXPdhd3oKBs4gE7kmGbbqMo//bHi/ubudeqwLp6urmsYLtM1/0LKA/nRBZ+BHdKGc65csV1BIGKTBQxPK+0cvFTDt8xgLku2wEwFmjNrWnEGGWq0rvigyVTk1NvmAXnKuQRusRbGabo1aCxR7FPc4QNdp712TzTyM/cvvtBp9iDG2x8hk8yHQuLGiuXEK1bmeb0N3TOZJxoQxaId0xywZaOXrEYUDe1FJscYmEPaWyL6ntdIk/ecOQebxr8iIjSNTGxaXVV9qs2vJ7Z5ZNiaZ20G6auqTX92VG/twcLbFMrgBHrYlPlCMam1T74gnX/l/miYiFirkVH8/C9ikWS8dh+x3o4NVxspNmPI8OEhU6yGr51
+ 87SiaKVT
+ pipqYowILetxvxj8nUkrTTHmFFCycSV+msULY7J5QJW5H+H26BaX9teiEpCNwstMTquRkfYV6graa5GRbUQAOiDwdHj3YiHlZ1I3+J8VlrIifC6VGG0Hfe1QXaFzTfxeg+rogP6J+byFwZEBOeb6McKQDtQcbE6N8vE80Leiox7QbopGQL4hKLC08j/Gdufw+RjU35xvtzxYZKbCbaUckUPTu1ljr515oVLYOlCP8gqljJb72ypSjOfk+kxoK8DXv14pM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,146 +147,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/6/18 15:27, Vlastimil Babka (SUSE) 写道:
-> On 6/17/26 10:52, zhen.ni wrote:
->> 在 2026/5/26 03:58, Andrew Morton 写道:
->>> On Mon, 25 May 2026 16:16:48 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+On 6/17/26 20:18, Vlastimil Babka (SUSE) wrote:
+> On 6/17/26 17:03, Shakeel Butt wrote:
+>> On Wed, Jun 17, 2026 at 01:11:16PM +0200, David Hildenbrand (Arm) wrote:
 >>>
->>>> This patch series introduces per-file-descriptor filtering capabilities to the
->>>> page_owner feature.
->>>
->>> Thanks again.  AI review has found a bunch of new things to get worried
->>> about:
->>> 	https://sashiko.dev/#/patchset/20260525081652.2210206-1-zhen.ni@easystack.cn
->>>
->>>
->> Hi,
+>>> Given that trace events can quickly become stable ABI [1], are we really sure we
+>>> want to add this?
 >>
->> Can this lead to an out-of-bounds memory read?
->>
->> The NUMA filter in page_owner (mm/page_owner.c:790-798) bypasses
->> PF_POISONED_CHECK() to avoid triggering VM_BUG_ON during concurrent page
->> allocation/free:
->>
->>       int page_nid = memdesc_nid(page->flags);
->>
->> When NODE_NOT_IN_PAGE_FLAGS is defined, memdesc_nid() performs unchecked
->> array access:
->>
->>       int memdesc_nid(memdesc_flags_t mdf)
->>       {
->>           return section_to_node_table[memdesc_section(mdf)];
->>       }
->>
->> If page->flags is poisoned, memdesc_section() can return a garbage
->> section_nr that causes out-of-bounds access.
->>
->> ## Lockless Access Safety Principle
->>
->> The page_owner iterator runs without locks, meaning pages can be
->> allocated or freed concurrently. The fundamental design principle should be:
->>
->> "It's acceptable to skip a small number of abnormal pages, but panics
->> must be prevented."
->>
->> In lockless iteration, TOCTOU is unavoidable - even with reference
->> counting or RCU, page->flags can still be modified concurrently during
->> access. Zone locks prevent this but are prohibitively expensive.
->>
->> ## Proposed Solution: Add nid to struct page_owner
->>
->> Record nid at allocation time when page state is stable, eliminating the
->> need to extract it from page->flags during iteration:
->>
->> ### 1. Modify struct page_owner
->>
->>       struct page_owner {
->>           unsigned short order;
->>           short last_migrate_reason;
->>           ...
->>           pid_t tgid;
->>           pid_t free_pid;
->>           pid_t free_tgid;
->>           int nid;  // NEW
->>       };
->>
->> ### 2. Record nid during allocation
->>
->>       static inline void __update_page_owner_handle(struct page *page, ...)
->>       {
->>           int nid = page_to_nid(page);  // Safe in allocation context
->>
->>           for_each_page_ext(page, 1 << order, page_ext, iter) {
->>               page_owner = get_page_owner(page_ext);
->>               page_owner->nid = nid;
->>               // ... other fields ...
->>           }
->>       }
->>
->> ### 3. Use saved nid in NUMA filter
->>
->>       if (state->nid_filter_enabled) {
->>           int page_nid = page_owner->nid;  // Direct read, safe
->>
->>           if (!node_isset(page_nid, state->nid_filter)) {
->>               spin_unlock_irqrestore(&state->lock, flags);
->>               goto ext_put_continue;
->>           }
->>       }
->>
->> ### 4. Update nid on page migration
->>
->>       // In split_page_owner() when page migrates
->>       page_owner->nid = page_to_nid(&newfolio->page);
->>
+>> Yes, I think so as this is useful to get insights into lru cache draining.
+>> Trace events being stable or not is secondary IMHO. If in future we rearchitect
+>> the lru page handling where there is no cache draining anymore, we can make
+>> these a noops.
 > 
-> This (presumably LLM) suggestion is a, let's say "lazy" solution to the
-> problem, leading to more memory usage. I'd be surprised if it's not possible
-> to read the nid in a way that avoids the hazards. If page_to_nid() can
-> trigger a VM_BUG_ON(), then I'd add a version without that VM_BUG_ON(),
-> handling the poisoned state gracefully - if it's poisoned, return e.g.
-> NUMA_NO_NODE and skip the page, or something.
-> 
->> The remaining two issues can also be improved. If there are no
->> additional comments, I will proceed with sending v10.
->>
->>
->> Thanks,
->> Zhen
-> 
-> 
-> 
+> Yeah and I don't recall ever that a change to a mm tracepoint would ever
+> break someone who'd complain and we'd have to revert it.
+Really? :)
 
-Thank you for the review.
+Read the context of the link I posted once more.
 
-I'd like to clarify that the "nid" member approach was my own design
-after careful consideration of alternatives, not a suggestion from
-automated tools.:)
+-- 
+Cheers,
 
-In fact, LLMs suggested approaches like "check then access" which I had
-already implemented and rejected in earlier versions due to TOCTOU
-issues. The key insight is that page_owner serves as a buffering layer
-for struct page,  eliminating lockless access inconsistency entirely.
-
-Think about it this way:
-Even with extensive checks, page_owner->handle cannot guarantee the page
-won't be freed when printed. The time window between checking
-page->flags and accessing page->flags is unavoidable in lockless
-iteration.
-
-By recording nid at allocation time (when page->flags is stable),
-page_owner becomes a "consistent snapshot" that can be safely accessed
-without locks. This is the same principle that makes page_owner work as
-a debug feature in the first place - it accepts a small inconsistency
-window in exchange for lockless access.
-
-Alternative approaches (adding poison checks, bounds checking) cannot
-fully eliminate TOCTOU in lockless code - they just reduce the
-probability. The buffering approach is the way to provide both
-safety and lockless performance.
-
-Thanks,
-Zhen
+David
 
