@@ -4,140 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273DBCD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 880EDCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D1E6B0096; Thu, 18 Jun 2026 08:37:08 -0400 (EDT)
+	id 3A5D46B0092; Thu, 18 Jun 2026 08:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155466B0098; Thu, 18 Jun 2026 08:37:08 -0400 (EDT)
+	id 3565F6B0099; Thu, 18 Jun 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 043F06B0099; Thu, 18 Jun 2026 08:37:07 -0400 (EDT)
+	id 244616B009B; Thu, 18 Jun 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCEAC6B0096
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:37:07 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65ADC1C4BDD
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:37:07 +0000 (UTC)
-X-FDA: 84892983294.12.01DB074
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4E9B920005
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:37:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WWDTXm0p;
-	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781786225;
-	b=fVeUcjqJSW3vs68T8nwdNDXUZMhQfQBJGdyGPCYJtfcjM/MyT4bwflZnPC7ri9/cY0wBi8
-	Zsq9328j/YLUEIp/6uVYX8qb/crUOkcTTKb7wJPrsNvSNDoOWiw6bhNi3J90WMmbzJ3+FS
-	/l0r8WcI328FUr6Y0GGjtPGAYshJJhk=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WWDTXm0p;
-	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781786225;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F03A46B0092
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:38:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63AD6C27D4
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:38:58 +0000 (UTC)
+X-FDA: 84892987956.01.79B6C16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 94D0780012
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:38:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXZvhX1w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781786336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XkSHVItH7tnbR0yMDRD7muLBdT/xCNKdF8GS+tUHV+Y=;
-	b=1eQxj2oA4yDLzDFeSPJPJh8+z8qEwzGdPDiFTP9jxgshyQtPG+CUXVvQOKpPrgoDArVJ9C
-	NPdCzVIJ5RuiUW3PHAcRYoz7vPidCzZ8erB+wK7uimQCsFET1tIo+mqRHp+F3Soe1ZHioc
-	sXGm9TUZBChImj7R1gIMWs2dfJ5r2a0=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-464192ab2e1so409945f8f.0
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:37:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781786224; cv=none;
-        d=google.com; s=arc-20240605;
-        b=avnbPLNHCmJ+JhlW1Dkv/EzNRX3md90Z6FC80XeLqH6Yw3D0dNGkufX3mjAOfAaeUV
-         ifzEEBwqbah8or+WXLD/F3Of8K/0sKvp6ETUCKL5uzCT1CxSQgVnNtAw5UqPOdEZafgb
-         esXwVeLZzBTFq4nTS74BV4YEk1V/sncl4cIF2KCSqzPCxdNfixX13xk6j3RbHSV+1rR7
-         QwXRGcZe7tICWbbghMm6o/JyWWsV8nrh/Ee7Rou/F+jIXhsSXqbOrN1ol88SwRzEQ7Ef
-         h+W/h5e7vJrTQ6fof0oDx4guQ0ud6JMebTQ3nnFsoHv433sMBHG5IyCn0ZZlFA7HgNMi
-         k+4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XkSHVItH7tnbR0yMDRD7muLBdT/xCNKdF8GS+tUHV+Y=;
-        fh=axrcC36cDqF1q+apimRfAw5Y1+aBYgFeIxHf6JvYj+A=;
-        b=BHTU7Jga2RKMZvOEYwrbbYDDi9c5WM7ZuRnXjLh7KjMGAK6OjHjI5ZoC9D/EIwQyxn
-         f9clYoJPzeWc8jlYLt6/agQYX4Z/4qfQUXR1Xec8r4AS7Gh4veP7tS6eMHFVYTzv4XXi
-         kO7N4ot469rfpicUsDK/Se58E1NDcWDoiviReOC8ghMkMy6UNP+tcrwJD5cUyVyLtQ3N
-         1TR8S7hbIOdrLJeTd8lzZboVM/0tejfsRZrw8FILQbfQEAuxLD/HgWcHBihP00QNKvx9
-         8S6X6dbu/eYB0vn68iyrGZ5KQ71iuLmzvTG+dTVeNs6Yty0HZUFPaMsrjIfzKnocegDc
-         TLig==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781786224; x=1782391024; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XkSHVItH7tnbR0yMDRD7muLBdT/xCNKdF8GS+tUHV+Y=;
-        b=WWDTXm0p4e6W+7Z1cRvsjqDSLehZpTnphC/4RcigIFw697lbrtS1ov/0bA+4+gA8k3
-         2qR4OS1J7mG31ankojK/IFp8qYE6P/nY7XrCreioI9QZU3swcRqbey23VNwMQqyLzsnL
-         lqZde6WL//6yg4H6/LIK6GsrxkDHo6u5ENO9KGeE8K+1KjKKxdz8yL6/5JtSr9kSNw16
-         hdD7UoAK2hjp3ibjFAMgftIaXN/WvKcSj48o0EtWMtSxE7HX3og+APO0xV6IXhn/V+3U
-         BL6Ook5Xqomn2t37tdZycda4SjTIFmVrnGchDrEwXD7gVms0wIssmh0xEfV+hBRFotK0
-         TsEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781786224; x=1782391024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XkSHVItH7tnbR0yMDRD7muLBdT/xCNKdF8GS+tUHV+Y=;
-        b=k2RU1vyHhyZ+37o0ZPJXq8U40ayh3GZKycS3j2nvSFAd7wbsOlkfJKlNaLpPBVqSUO
-         EN+4l4WCzAaVhRCz5TvQBAErEDEkwe+dYU5Eq3ZMt11xzeyr86l+a+19t1Fo2z2ZlQQg
-         3ptJ4fHOJdNzkc3nzbSUhGhC+J4DWiDPirocxvSdjjarZT+/zwK1lVUoYvScV1yaOhCX
-         s7HCfgN4iMNQ+XHOYlA65uj2TToRjtnDjLvOEYqHC06BgwS9dPLrPtYrF4NwZw4dTVRe
-         F9meopcjT4GIVD44Wz+SXr8LlXDHujoRepbAfcJUR2oKdh+jrWcEv2+rqoOQvYUrun1+
-         dUrg==
-X-Forwarded-Encrypted: i=1; AFNElJ9L6RpNvSHLI8PbcyvBD+uUPr9FM064h5N1kW0FcWDFqVXVOoZqoBL+zYytgqYraGmUvvbv2rdkIQ==@kvack.org
-X-Gm-Message-State: AOJu0YyG9mA/mdzC70ojzXJ0TSSTIYhGT/Zfv7cZxy4o0ZMHrvCqgOUh
-	hGseGUzMfR2QsU4vkz5dmVIm625LvIAVQyWDimkMMkBPtiw03DdXZjIesJc/klLZHcZWknRkFD7
-	ZsnSq6QzmM/o57WE8gsDpO8l7B83UKY8=
-X-Gm-Gg: AfdE7clGsE0GTBfEXuW7a78OsWFwyUvUeOAsllNaututb6HUyllPS1Hd5EwnqXI2GA0
-	bYduNxPCuhdJDquR07hSQa/H7nxogus8viLacSH9m/pUBZc8q5TJj82OAH8A9SHeKD7Izu7Iibk
-	WUzu1rbRrQYkNoa5rZNAyaU7+0l9UXJ0rW1y6VVspNX/G/iKvi5dpCfqXkYTVV/lamdHi23Jhqy
-	A5YXpLHn6vPafOHSOKCzqynaVMG757M+1Qq5Eq7qJdeSfWlftjOtRhwz4ghNbtC/HoJdJhSS3LI
-	KUFqU5gJIF+DCytn1WZax2LTHEk=
-X-Received: by 2002:a05:600c:1550:b0:48f:e26a:1744 with SMTP id
- 5b1f17b1804b1-492381eba37mr57093805e9.9.1781786223384; Thu, 18 Jun 2026
- 05:37:03 -0700 (PDT)
+	bh=v5OV2563283YHAEvpvJhlyU83u7DJ+i27wFCKx2WtMc=;
+	b=X1D0F+Lx4u21T2Sv+/FKReBTvxVOP7uiWSGRH4jaKoO7Ynl+brzGmYZD5pHbeKW9KU2y2T
+	2lz7KBGCZDsV9b5haUh+L1+a0951cWXDN/cCtcIwLRGMOdekqasp03nW8MOwIohyADHOSa
+	PRqJTB7A68/1XnQAcq5fAeggas8R2lQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PXZvhX1w;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781786336;
+	b=1o08YNqYzEbtqFXCfjzmRmetK5rYtmNnNUrK47Z4I5z6FBfyXWmJTq9r6flRakS4mGMuda
+	FcYHNOapK8Xq8ef3prnHwKHv5LJp/naObaCwE4k6jtz6POrjkaC+YKR3Z8/r+mjwTYw9SB
+	YGVvEbFG3UQFQ+1JJttlmZDy43x9OmI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 939C443754;
+	Thu, 18 Jun 2026 12:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C441F000E9;
+	Thu, 18 Jun 2026 12:38:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781786335;
+	bh=v5OV2563283YHAEvpvJhlyU83u7DJ+i27wFCKx2WtMc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PXZvhX1w3Q62MTgCQdbJwIzKCTZAbIVyDIh5ZVc9+h/W0uHbN4coaZ2M576QpPmcF
+	 ZwODhKRuqrtC+ZCBGrGeDVESVsTq4POkW2uP29xytbdEHRAuV0nBI3sK5OODMfdDAP
+	 ZL4ig4pnFtyEGwb5s+F9TvGSggB8e66DD6OcUjt3hMZyHC8uX93cuDdlemV5iKo1Eg
+	 ZPS8cOHA0dx3yK2XIo6DK71UVECo1A0NMQZZ7JwFHp1jcnEJErYLsZW1qLS2wF6kQR
+	 4fLfr7kHSY+kQu1tVaLJC+GBLnoxrp8dhMOsei1Vw6qvGRSG/n7/8B4Ql4RYzYVP23
+	 kG833FD/mPU1Q==
+Message-ID: <d4b55716-97c7-4e75-8500-6a1171ad7fc6@kernel.org>
+Date: Thu, 18 Jun 2026 14:38:47 +0200
 MIME-Version: 1.0
-References: <20260617053447.2831896-1-youngjun.park@lge.com>
- <CAKEwX=NfSy0XiD_UMsDOHGCwpE7sYmBmhV4Y9vk_cbnnr6J6PQ@mail.gmail.com> <ajNOSesjwTyZc8EX@yjaykim-PowerEdge-T330>
-In-Reply-To: <ajNOSesjwTyZc8EX@yjaykim-PowerEdge-T330>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 18 Jun 2026 08:36:52 -0400
-X-Gm-Features: AVVi8CfzuQSfKHh9oPwDJSuQShydMBfDCnnVhDZx9e0tsjDeRE3g_0kv6j5DVww
-Message-ID: <CAKEwX=NDM9ohO36wSE-vVpVkpM=UBhhgBqDzSZdo6gW2BgWDVA@mail.gmail.com>
-Subject: Re: [PATCH v8 0/4] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, kasong@tencent.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, yosry@kernel.org, gunho.lee@lge.com, 
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com, 
-	baver.bae@lge.com, matia.kim@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4E9B920005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
+ usama.arif@linux.dev, akpm@linux-foundation.org, mhocko@suse.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260610195220.12403-1-jp.kobryn@linux.dev>
+ <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
+ <ajK1YsIJmD2ImbAk@linux.dev>
+ <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+ <3149bc84-dd3a-43ba-826e-6364965fdafd@kernel.org>
+ <bbcb6db5-6a01-46b7-979f-dadd52a5176f@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <bbcb6db5-6a01-46b7-979f-dadd52a5176f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: raaewp3stm65gbcf86e6w5iq68d9twry
-X-HE-Tag: 1781786225-871682
-X-HE-Meta: U2FsdGVkX1/3DsfrSBS4EUlsKWtnkwgjCbi4WPQNkBbWapAKx5udMs3Zlr+4yaQJLQk2gTqK38gkfF7maeeBYPkH8Dy8bBG89IuMJUZLBPZ138kE5CmDDsgEWyvrOApexiVcuYkMqYT0qn0eVzT33RHRqCzgS61wih11KlUlm2VzNur7ZV3870c/f/2WFBiC/dPJRzck7uRgjMG7jFv9hKTnywf3pdxHZPc68ntbehJEDxgprMDWYqt6KwA0v+BUyQIadEg/8SXwRgI4rF8x0yM3bZULid4Sl/akCLj6hOtS/7be/Rmw8derjzrTxROnOsQsXlD1jtdKplqubzfkuddlBjIJc26J+E482Xf1v56MCBDulq6K5aSX+8mwFtxKB5x2SP0sLvyoArAL9FaS0mETcNxO1+MVE59ikua7jwI8vaaciwFQ8OwSUTkGH6m1vh95lD8SFaS3fprVAnVdJ3wb+LSPSv51wrFDESu04C2Dse6WbJVOOpkXpOuDGuywpHOsmQzxAfjyJTiQi3vMZjs6N3gB1KqCqOv8m6HXIxQqNIRUbnRO96RCffaF1rA0PGRBm2AF0koFC51ylEuGDMXv10iEWzA3Ox3K9NpTNnGLjTl1736p9gGUHucmaWMeH8pTyv7hlAmDnRtU5nGYb9MPbtLyJ1HhO9ZU/WvbUfJUvpnAJpMlZzMNw3SHLLdvkYsEkireqQriSelkfgDD++4B06eG+RGUrtZYhD9VjSh4Kavb+zYHqMXzrfDNyHjtvge/4DrEPS7RuFZFEaVcK5zoV0Z4mcnbd0lOyl2MsVB8t1SQGthdhpRMaXR7XCxJ6LGefhthUqfItfP0mJSW/qlZ7bNGoa0Tk1/N7LLul6WTM1Jb+1LehxkcKBlpadQ4VNJEgnW6O11InWPECHbUi1Vhu7TU/kaax7djzlr7KdzLB9SmQtz3yjb5Gc8vlUiF1VPGFjhrs2gdg4cARnJ
- hGYwuY8c
- ipRtXHXXfR5uryYYc6n9A7FwEN8Sozfb6+iwtPkT783mXv2TPMAsUsp6qUTrMlHUyiF/W6rVLmTYpP7kKtmiS4t8HnGH6z7wexzRp6IohjlRhJlr46Gp9WtLcgwBG5hiIOwMFON2uI2hJ84pLB9j7ls0Fb7agc2r1k6dn+7jmkv7Wiiu+OEB9IXeO+NyuTPFE3hM2rI78fUY+vXYVs583Vk6plSYt3v27fR2v6N/cQowfkhzPi61lceeyn20czkttArEz5nGYE9DnChIgBimDUOS+pJQU8LyL4rU8s66c+gF8ERmhVPr2lFN5bWGXp9hn8iYBmGGr/taCikC3fzUYuuOFaDxVWM+H9+aamt4PEDqdEPfZ6+/fHioAMjVVG/l3hP+eSHcqcr4e0/b5lzpzlgVwMkYzlObtmtngFStO63UwIyU=
+X-Stat-Signature: a9xhpkzpg5ypdq3x3acs5cbxpg6etr8b
+X-Rspamd-Queue-Id: 94D0780012
+X-HE-Tag: 1781786336-785546
+X-HE-Meta: U2FsdGVkX1+mPAy3UhUGPw3+Pd2APuCxaKOWSgv1an5Cu3MDgtJXXtCzbWGdOPxlE5/gGhuADoGpCyqIK4rrK/Fgb5Wk134oLHnJv2YRjTJgyYMzGBh2PO5nUnjtyyGhBFQnYp8OnVmBpyrYnuwuVKh7INtIvJguZ3ScUh8LiOVBIdWa4AIOdJNw50Yyv+OcOwlMDp0c2bM2sVnClHHjCP9ij4gDF1RWGHI7kFwFZ0BZicSsngujxMcGDf+ysgB6jrF4yJVp9nf0Gx5etONeRQ6gLQYWZx6BlUZNosk7G+7CJY72K68XmcMeM4t6fU3rDHk7pMj5QjJ4qSWX0Wa1un5/J6baG65f/F3D+qlOBV9Yw3Mi3OOY8W3+rkGbxhAlNVmwM0Wg9zcRbt6+25VeyBzmLXaBDHG3y8PfuwnZRIqaX6guy6uRcSGENJVj+xgjuETTvjsXPo3qGmYrdD+80AuoyYaOVkrhaTGLFdT+4AhD1FFHiECTh6WGFeRLbF9o1zNXjnL7H1VTfqnpjUkYnBY/qLjx9aG3yKkw1chN3rKNFRAA+PGbHhXZOtYX/Df0LpJ+ljGe7pQVD51PYZHZmh2+SiaeRkSltAH6Y1viFFsADMZKsunoxsHswhfu+IvxozsuRSN4KCCmp6tG4pSkGjWiQuN8Kg14uMNitjC0EDp3aNByIvROET+7oaoZ6vI18mah/5oXJcTa+3R+hHkv3py7VTXtT6pd+U0pBrjET1QJbvlrs2fwrwp9+RCWYscehzAPxvqSNwh2BUtvIj1RVafTy8FoA1OMDSKlGXFycsWaF6WagKemPn2dO65JOzSHjW/zpTL7KJRJ6LNFWkn+kuu4L/OgUv8w+cajGIfGuVyck0hjmUerv878LE6vUEy7WvU2aPIaENCDyYiHLZyAMNzd5I0zq+uHXk4Ny3/tAUpVPGC+gZp9x78Stlc1V5oI2DYB7Ot9jeN7P5B/gzE
+ IAaE26ep
+ f4toDKiPmsktXkg4y/IrPoq2JJyPylidRgTN75Z8X+WowlCy1ZolaPCvDjHYmBh8V7krR7PtHyc2kDF+OjS2/MgDwgzcXPEHDAB9gsZmEiJilzG+jvPLT6aPc1SLXN4lOoSJ6jEtSHg8hL34cxbpBKMYm6RRf6lUd5DoF5HsBY0ggxmaQHD/UdS/pMzNR/4r6xT0LDfLfGCUIWuDyJEu+t+jjqExDy2B5Ppd3wRFAWt9sddbbgM+gx7jT7DGSVumnZViGXII5hLla5fY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,149 +149,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 9:47=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Wed, Jun 17, 2026 at 01:50:49PM -0400, Nhat Pham wrote:
->
-> > On Wed, Jun 17, 2026 at 1:34=E2=80=AFAM Youngjun Park <youngjun.park@lg=
-e.com> wrote:
-> > >
-> > > This is the v8 series of the swap tier patchset.
-> > >
-> > > Great thanks to Shakeel Butt and Yosry for the reviews and discussion=
-s [1].
-> > > The main change in this version is the interface change to use
-> > > memory.swap.tiers.max with '0' (disable) and 'max' (enable) values.
-> > > This mechanism was suggested by Shakeel and Yosry
-> >
-> > I like this interface too :)
->
-> > I think Yosry wants zswap as a tier, right?
-> >
-> > Just that without vswap, maybe don't allow it to be an tier of itself?
->
-> With the current architecture, users cannot dynamically specify zswap as
-> a tier, and zswap is a separate layer, so it is not tiered by itself.
->
-> Once your vswap work lands, I think we can make the zswap
-> become the default, top-level tier.
->
-> After that, we can also look into cleaning up the zswap.writeback
-> interface together.
+On 6/18/26 10:30, Vlastimil Babka (SUSE) wrote:
+> On 6/18/26 10:21, David Hildenbrand (Arm) wrote:
+>> On 6/17/26 20:18, Vlastimil Babka (SUSE) wrote:
+>>>
+>>> Yeah and I don't recall ever that a change to a mm tracepoint would ever
+>>> break someone who'd complain and we'd have to revert it.
+>> Really? :)
+>>
+>> Read the context of the link I posted once more.
+> 
+> Ah, I see. I've only read the single mail from Steven that referred to the
+> old powertop breakage and didn't notice the context.
+> 
+> But I don't think these worries should stop us from adding easily usable
+> tracepoints.
 
-SGTM if Yosry is happy with it :) FWIW, zswap is a conceptual tier,
-whether we want it to express with your interface or not. This is just
-interface clean-up work.
+Steve explained a way how apparently scheduler people are handling it without
+trace events.
 
->
-> > #2: Inter-tier promotion and demotion:
-> >   Promotion and demotion apply between tiers, not within a single
-> >   tier. The current interface defines only tier assignment; it does
-> >   not yet define when or how pages move between tiers. Two triggering
-> >   models are possible:
-> >
-> > >   (a) User-triggered: userspace explicitly initiates migration betwee=
-n
-> > >       tiers (e.g. via a new interface or existing move_pages semantic=
-s).
-> > >   (b) Kernel-triggered: the kernel moves pages between tiers at
-> > >       appropriate points such as reclaim or refault.
-> >
-> > We'll likely need some kernel-triggered mechanism, or we'd have LRU inv=
-ersion :)
-> >
-> > Cold pages will fill up fast tiers first, and more recent/warm pages
-> > will land on slow tiers...
->
-> Yeah, good point!
->
-> > We'll also need to enforce isolation/fairness to make sure no wordload
-> > hoard the fast tiers too (but that probably requires demotion
-> > support).
->
-> Right, that makes sense.
->
-> BTW, One thing I am curious about, though, is whether there are strong
-> real-world use cases that require demotion/promotion.
-> Theoretically, this looks useful but it would be helpful to better unders=
-tand
-> the requirements from such deployments.
+You can always remove/modify tracepoints, but not trace events.
 
-I think so, yeah. The LRU inversion problem above is one :) Hard to
-make proper tiering without demotion.
+Anyhow, just wanted to mention it, because so far MM didn't rally know about
+this implication.
 
-Say I have a workload that have a SLO - for example a PSI target - but
-don't particularly care about exact memory placement. To optimize
-resource, we want to place the warmer stuff in fast tier, and the
-coldest stuff in slow tier, etc. Having the ability to do demotion
-derisk the initial placement - we can place things in the fast tier
-initially (and rather aggressively), then as pages age and prove their
-coldness, we can move them to slower and slower tier, etc.
+-- 
+Cheers,
 
-Otherwise, what we end up with is really a placement preference
-interface more than true tiering. Which is still useful especially
-when co-tenant workloads have strict latency requirements, but perhaps
-we don't need a full hierarchy-style interface for it? :)
-
-The other use case is for fairness enforcement. We can (and probably
-should) start with strict limits, but setting memory.swap.tier.max for
-each cgroup is a bit of a drag, and it might leave stranded capacity
-in cgroups that are allocated but not utilized their fast swap tier
-capacity. If demotion is possible, we can let workloads use more than
-what is fair, but then demote swap pages from swap tier to enforce
-fairness when necessary...
-
-Obviously, it's a moot point if there is no good mechanism to transfer
-data one tier to another. The data might also be so cold that all of
-this has diminishing returns, and moving things around cost more than
-it's worth :) So I'm happy to start with something simple, then we can
-figure out the next steps.
-
-
->
-> > >
-> > > #3: Per-VMA, per-process swap and BPF:
-> > >   Not just for memcg based swap, possible to extend Per-VMA or per-pr=
-ocess
-> > >   swap. Or we can use it as BPF program.
-> > >
-> > > #4: Zswap and vswap tiering:
-> > >   Tiering applies to the vswap + zswap combination.
-> > >
-> > > #5: Vswap on/off control:
-> > >   Currently not supported. If a strong use case arises where vswap ne=
-eds
-> > >   to be controlled by memcg, the tier interface could be used for it.
-> >
-> > +1.
-> >
-> > Also, per-si/per-tier per-CPU allocation caching? :) Kairui already
-> > has a patch for it, IIUC, but if not it's pretty critical I'd say.
->
-> Yes, I missed it. Thank you for addressing it.
-> we need an implementation that integrates this with the per-CPU
-> allocation currently implemented on the vswap side.
->
-> If Kairui's patch lands, my patch #4 also can be optimized based on that.
-
-Yup!!
-
->
-> > BTW, can we add some selftests, to make sure the new interface works
-> > as expected, and to have example programs for new users to model their
-> > scripts after? :)
->
-> Yes, I agree. I think selftests are necessary.
->
-> Do you want them to be introduced in this patchset, or would it be okay
-> to add them separately as follow-up work?
-
-If you have to send another version, might as well include them :)
-
-Otherwise a follow-up is good. Thanks in advance for keeping our
-codebase tested!
-
-I'll take a look at the exact implementation on the swap side later,
-but I suspect nothing much will have changed :)
+David
 
