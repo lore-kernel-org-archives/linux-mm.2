@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 982B1CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07D2CCD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:27:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F9ED6B0088; Thu, 18 Jun 2026 08:26:07 -0400 (EDT)
+	id E3A7B6B008A; Thu, 18 Jun 2026 08:27:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA9F6B008A; Thu, 18 Jun 2026 08:26:07 -0400 (EDT)
+	id DEADD6B0096; Thu, 18 Jun 2026 08:27:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 499A86B0096; Thu, 18 Jun 2026 08:26:07 -0400 (EDT)
+	id CDAAE6B009B; Thu, 18 Jun 2026 08:27:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 12D396B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:26:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BBEE1A070D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:01:04 +0000 (UTC)
-X-FDA: 84892590048.30.6200E74
-Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3EACD14000B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:01:02 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=wtnf436f;
-	spf=pass (imf26.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 78.40.148.171 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk;
-	dmarc=pass (policy=reject) header.from=codethink.co.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A39AA6B008A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:27:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B5D81666A0
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:58:13 +0000 (UTC)
+X-FDA: 84892582866.05.D31E2D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C424C180008
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:58:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIS8zgEY;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781776862;
-	b=aEGU4kTOJ19/vRnVUOMk6anaEYF8+UL8In7kcvAHK0oRNznsk/sqd1MkOZLEUS5SWxsv2a
-	ZXQMvrw6FEtDsn0GSqGRoYVhyWx+428giQaXoHxDANH3QqoQAmMi8jWRhAmaXBYSkMcQKj
-	4Yi6NGCqzcLcd4vH7aiaS08pOjqQp/U=
+	t=1781776691;
+	b=fB8R06rf1zAExwmFIDQuBbVQA4nEt81Tdawx+qitDACs738UyBSKB8mZ7Ytq8jr2c9V7uN
+	pS6REYa2t/3j4ljYTl8RGNduZ2paEMABzrDh1tYv/0t4JGt1bjbiKCoiidpvR8DqwduxBF
+	wDX5lMBPCGwF2NmZy5AH/DeUjrbaG6g=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=codethink.co.uk header.s=imap5-20230908 header.b=wtnf436f;
-	spf=pass (imf26.hostedemail.com: domain of ben.dooks@codethink.co.uk designates 78.40.148.171 as permitted sender) smtp.mailfrom=ben.dooks@codethink.co.uk;
-	dmarc=pass (policy=reject) header.from=codethink.co.uk
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eIS8zgEY;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781776862;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781776691;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cUIDQGjQbraB7GWk21Atx3vElnBKtXw52ZBnFB0BMCc=;
-	b=bMlBxBGoy4BHRNPqEZZj41XIoR2TPt6i0w9B22piE9qOvnZBQ5tEVg1TuKHB0Bx1163TUk
-	RMDI62IWoK+gbP9xnqwBeHuZ5GMybKO0SxUXBdto5O/SUbk3GfbSYQ5PbwiouWC+ip8/HY
-	VOCzgNOprsCPhyzp0jHae3CT9WQ7Vhk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Reply-To; bh=cUIDQGjQbraB7GWk21Atx3vElnBKtXw52ZBnFB0BMCc=; b=wtnf436f4Sn7RMsa
-	sB2CPLQkFjFuPiHJXcrTRnRPrdBNjLdXJKJzM5XgfAiV4rJvSXXG1qJT5JKC+s8pM8y1caTanvZt1
-	8yvt0KyMuBETtZFZfC6+vwC3EHkK9DlD/ntkFa9ZeKxIaPSWEq+hG0boWvNa4bkYyTJp+izQ0eOgv
-	58662RQ1hJ1+bn8SFPINfHqp6WxjmetKl7O123XLLnN2WKaQoOTwY4puyoY7rXJ1qfPe1FCxWmhFF
-	GlW74o7R2KghPdgluqRXbm9HXbyspRAtXsUr4Dxx2ua9PJ1bNTp4Z42ZH+MXCvaMOLTYsMczIDeDY
-	kieBlQ9lIyrMU2uEFQ==;
-Received: from [63.135.74.212] (helo=[192.168.1.241])
-	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
-	id 1wa9YI-00FGcb-G7; Thu, 18 Jun 2026 11:00:50 +0100
-Message-ID: <8d529389-41ac-4d44-ab70-15b52047c3e3@codethink.co.uk>
-Date: Thu, 18 Jun 2026 11:00:49 +0100
+	bh=tiNVS9vkzE9TdVgyxNQuAslrVNFTDadDu+nPGoDezg4=;
+	b=i2CwkzFz+sXcjmgs1exou4bCfB559RtTOiXzIqvMB1ZRvYBMIDHnaaKhV7N8j65Yx/RrG3
+	yfzMqzYRuYTXsUZ7/i/zzTBrwU9DFzgJ5dgahhLXK4iBQYP091HUezzmUXzJiB41131pdG
+	v2ifM1XNMh6EimA7q+YRrHJgeEdbxIs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 04BB26012A;
+	Thu, 18 Jun 2026 09:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86091F000E9;
+	Thu, 18 Jun 2026 09:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781776689;
+	bh=tiNVS9vkzE9TdVgyxNQuAslrVNFTDadDu+nPGoDezg4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eIS8zgEY0mshL+1CaTXP0EN/b9Ga4VR/mX1OrV5Z6f91jnBt0gg7xwzcBy5ePpSob
+	 wwolzpxTuUSZ6DBpcCTCN5GSHypgJZowuMkzuz0N2cM/Edy+gvQA5jUhWYWgZ/0Gov
+	 ADoJcVCU2xlBwk3AVX3zANkmQTOocXctyAEDRKJ/NemmiQ2MPGKPmWkQtGB42CCGB2
+	 fTpX5Ee8++WrXhnS0K9G8E0zsnB5NECgadtDVfst6TEC9s5FouJVamFRwNJiRz2VIS
+	 Qzwz7JpWVUDW/bypyDIylmVl0gvqkVjcbY4lbnCmPbEIJVeVo1oTirQlXld/qCxEHN
+	 R/Eqe2T1gQrvA==
+Date: Thu, 18 Jun 2026 12:58:03 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: akpm@linux-foundation.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arch_numa: remove redundant nodemask clears in
+ numa_init()
+Message-ID: <ajPBKyhjzeDWKhRr@kernel.org>
+References: <20260617163919.2544899-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: include <linux/vmstat.h> for
- vm_numa_stat_key
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260617132726.1086576-1-ben.dooks@codethink.co.uk>
- <B35448B6-4958-4FF0-8AB6-5464C2D6C50F@nvidia.com>
-Content-Language: en-GB
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <B35448B6-4958-4FF0-8AB6-5464C2D6C50F@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3EACD14000B
-X-Stat-Signature: xkadk947rwqqihaibnkqaes7crcc34hb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617163919.2544899-1-ekffu200098@gmail.com>
+X-Rspamd-Queue-Id: C424C180008
+X-Stat-Signature: 8zofnsaujt17pj7c5ccckkc7p98aio35
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1781776862-448685
-X-HE-Meta: U2FsdGVkX1/obCs7LQv//Dmg4TIKn33Ujmpagv0MrbGeTN76ixGmXT76LzyWGWkKjuQGfKeQR6CfWifKQtvOqWCyTKGYXQSZ7v1qdPvm9y62B9w1uDg/ref2W9Q0/ZFWbJEFeT0pIhqKcWlXTkBy0EyOE+MlMccO1C8vY/SSsyu6IQXuzlg5I95MdlRKcVE4RpIFU6ASV+Z5BVnLFzmNAfTkNEDl75JZQPDtaNR+azD0OkXaSkcX5daZZhHeCUqLc2cfJGZGqPV94QRAqbxwQia1DNwkMrULyXSUCqBXnXnIEzd1IjNLSt44xT8C1Q9RsdHxOv75qXXc3+nlpkANj4LOborsAu8AXcpeNN+CbrhF67Yn/y6P2nNzXl54JQGtMkws4OR/2s984C80/inYehK6J279wOhcFFYYxfm6+vi7QQ6PSNAN03P77R4DHBSs/1QTeM1x4mlCfn77IQNpf6pet90npJBbTvvPkJeNTz61utSU2ehvirGo+Y/FtvdH3WlBCcBuKhJwBPKumTbuzXgXciNCn+SjoW7OUWaW/glI8pQCoev5bM4NCFas16GDvS/yqSdP4dWXE0dH8sz78IBXsql9C/tL5BB6cigPbFmwZiWP0izK8P691Ke5oRmV8dLHLQBO56OhLPvLC7yXkzfPpzbKE/KlT14fzCVeTSAEZcs4d5on6ipaT1YKciZOskZIGwTNJgqoGAqsBTUlPxQ1HRF3Iqy6wEZo1X4xTezRdhlg5+YWCvaRX8bS9efsWyxmPmSwOETyUhsosOUoJBxwcbhYztZa74/crxaZkOZzQty85CtJDqpltbxDTI5aZfbD9/H66xlAf+dkYj1cagW3jrEtxZR//4V5/SdaJpX5dTpxdKDSUsRjJwL4QKfagXldoNs3OBy7TIxHsO2Do9LZQGXGVKjMMtknQvlJMbjXQtt3O27UaN5JJnSt/sp89PmcIU2hhkSfHlrjho6
- nnZKpnr9
- 3fON9L+MwwlxoiE9pG91K8EbFqSBLvPGy5E9zQOJxJeXTlNj2HBL7mN7r6uKPJKe/kK4WNArT48SpcKY7nrAkPLB95gahAdH+9jufUJZkVmXl0NdVs/WlmN9SToG40zzvfB/vWSBj2+UKrfFzxOx6kwqAmF1yn/Mc68it+sd3qrOs6NrGEF4oJ1WA9N3R29haZtGXgZrxZ2tOZSgiEwnFoiTNeVG2oYLr/a8udmcrDnjurl8ONv5v1fyHLPyp30VmcfJQqUIDLEnJRkkOkHkYMSTXLPaHjlnr3TB/4P/dIDlZPDuaK7QGYk+MQm4eZnc+PCM6UaF6eGy7WxvD82S65+R9NFbk8sAKkHPDCMa688WbLqecCVCYG3H4yVrbzeVJ8fY4Q6UnZoZnp5zwjSoh0FDJQ8KIHE+eFJ3PaP4sEhdnppYVW5G/CXT934YqG+2Qm1nbOIg5QvTnzUGsKAsfgm4/693IkNNIEVP5GBQz5N6dQT1W2zvQsGlqIYDKeA2urHBM
+X-HE-Tag: 1781776691-682812
+X-HE-Meta: U2FsdGVkX18lBy4EjCEwZRYKEOd5UuKHEMOOTiuUb8VHftJksEniVT7ly13OmIq/zn42Bk5lLDrzat+T9bylE0U17qf71wiSINKWJqFz31JLaCcHqnnLiilvoILM1JqtdkiNYd2ZVSe2mhSwzXwc+RFz6wZRlqTXUrEsc8615zB7pc/QBMwHbia2ZHftyLD6w+wBltk5EmTyKIB5vRv8rOoBfDtUD0C05A6R81LAjIxMavUyaSuAhbAW9JgcTVjN/4fePUPyqeBw0uy5bfZVtREsS5c1OFQxJHSZsnoGJNK7WYEbzGETUMZdRVD3nD4+kO9quLgZQGINl+j+mkLJF20gvt/LMiC1Soa+ZfFMjA0F1GTELKaSSzZ+258Gu+MHQxDaQrchxOzFmMXGMBNkGSF+AFpKpAs4C/WQPcpAjSdXVEBVfHNkuYwwZJfIYpmgaEbJI7i/CKhH/MztUMsbuuNnC/5ll5rMpE+r+XLiDxeSMqWw+lhD3P2RbpvIkyBwBAZg6+YxNEQ2czJI8Fayt7U/8WOiMLR/MuhdQz7xdlPOhAzhS938e+BGNVAgN3e87oxTgTJiU6oEy3Kxlf0xAyYAuKn829VPGyupZqqAUhs8HyCaeKdq8C8IvajqoPO+8MC4ZQ8qu0PTcl5XXwINXuXuIjiFaauunbK/6qQGV58xJzToG+Pu6GJ38a7hCOgzZaWIrlPzf/ufX+4bL7EPUerrNuQHoSB7zrkLN1TvMaBOem+aq/7dvh00cFVhrgQnxdFBOwhke531xACzkriPReMg97p9HQdqFLljkAurZ4cgOajOvgGxtw2N1222V5YMotoMRO7VBFEuQ+8StXzKt1i2EbpulocYygW7LdnsyJtNscUhQfrFcoOiG5wztX14E+bI3FvDmlEAXKnxJuu5iQbdJMSS0eoXaG0NBS1rqpWo5svFRwvqXGkQOU/8j8cJEnjPD74I6yttlJ9e/4U
+ vXRe5Z2D
+ gr5HTL5ajQR0ZshXXOh+I31hQn3Xt21EpF3THWWYWcRC94QviYENx7LoLKML62zV08/j+k2m8kVR9l53WhfJOjTV561j6B2YZzZ6ETk1wkDRUyIUGVcaM/aijHcXSKiNZ1byafYPbRunk+yaSavXxisJ056xU63w6XlYMHaPY8xVs/DKkvzjSyp7CLsywYFb1ZZYTmTt3BTEEcO0acx9r1bJAx5DSiBS0RWCTGfwmhw7xXHn2Rkq02un86XEaNswVcDAQpwO/8hgXk8ngwD4C4tThHn4mjTDo6EOE+DBwWz1AfNLT0A5oGgW3LCZconzhSDq2kU4gmTEMV/7xE9ccDcO4OQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/06/2026 16:47, Zi Yan wrote:
-> On 17 Jun 2026, at 9:27, Ben Dooks wrote:
+On Thu, Jun 18, 2026 at 01:39:19AM +0900, Sang-Heon Jeon wrote:
+> numa_init() clears numa_nodes_parsed, node_possible_map and
+> node_online_map, then calls numa_memblks_init(), which clears the same
+> nodemasks. Nothing uses them in between.
 > 
->> The vm_numa_stat_key is declared in <linux/vmstat.h> but this is
->> currently not included in mm/page_alloc.c so include it to fix
->> the following sparse warning:
->>
->> mm/page_alloc.c:165:1: warning: symbol 'vm_numa_stat_key' was not declared. Should it be static?
->>
->> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
->> ---
->>   mm/page_alloc.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
-> vmstat.h is already included at line 37[1].
+> These clears have been redundant since commit 767507654c22 ("arch_numa:
+> switch over to numa_memblks") made numa_init() use numa_memblks_init().
 > 
-> I wonder why sparse complains and why adding a duplicated one below fixes
-> it.
+> No functional change.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-Thanks for catching this, it turns out this warning is coming from the
-riscv64 build and I re-ran the arm64 thinking this had been fixed. The
-issue is actually riscv64 does not default CONFIG_NUMA which then does
-not define the 'vm_numa_stat_key' but mm/page_alloc.c creates in anyway.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Will re-test by guarding 'vm_numa_stat_key' with CONFIG_NUMA
+> ---
+>  drivers/base/arch_numa.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+> index c99f2ab105e5..442ea239bba7 100644
+> --- a/drivers/base/arch_numa.c
+> +++ b/drivers/base/arch_numa.c
+> @@ -231,10 +231,6 @@ static int __init numa_init(int (*init_func)(void))
+>  {
+>  	int ret;
+>  
+> -	nodes_clear(numa_nodes_parsed);
+> -	nodes_clear(node_possible_map);
+> -	nodes_clear(node_online_map);
+> -
+>  	ret = numa_memblks_init(init_func, /* memblock_force_top_down */ false);
+>  	if (ret < 0)
+>  		goto out_free_distance;
+> -- 
+> 2.43.0
+> 
 
 -- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
-
-https://www.codethink.co.uk/privacy.html
+Sincerely yours,
+Mike.
 
