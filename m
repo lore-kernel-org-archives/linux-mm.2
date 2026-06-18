@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB605CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9941DCD98F6
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 15:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 750A26B009B; Thu, 18 Jun 2026 11:05:37 -0400 (EDT)
+	id 61CF06B008C; Thu, 18 Jun 2026 11:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FF1A6B00A0; Thu, 18 Jun 2026 11:05:37 -0400 (EDT)
+	id 5F3F26B0092; Thu, 18 Jun 2026 11:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EE966B00A3; Thu, 18 Jun 2026 11:05:37 -0400 (EDT)
+	id 4E5296B0095; Thu, 18 Jun 2026 11:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCA06B009B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:05:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B44601C0046
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:05:36 +0000 (UTC)
-X-FDA: 84893357472.27.30A9F2C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 79EE72000E
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:05:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="W/898hXf";
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22A2D6B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:08:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F5EB40164
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:08:17 +0000 (UTC)
+X-FDA: 84893364234.18.6FA0224
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D91F81C000E
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 15:08:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APXAJZyH;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781795135;
+	s=arc-20220608; t=1781795295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=twN8ACZ9Aa/wKni6yp7we6+vMuHS1QTrgX8POUv0AIQ=;
-	b=BE+LmbwX59YGyNAa1DXIm7xeLvYne1lYOgieLEqDATx1XZZZ+tLjl4/0xvBesIaEu5k/jm
-	YVRru9FlgNHkVMICx4IbvEPAQEUCgv3ZjYDAVa+NlYNjROkpaL06ZnI6Dhl9v60EE9wY3N
-	ogBRnXCOpKCHBCPfERJTegq1hksETg8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="W/898hXf";
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=ADzzepRVWs1vwXTC05UkLfdDEKwQsxVaPIoo0M8ryYM=;
+	b=u4e5aDP5eXf1qmeP4hQMXSFL6dR+WycylI2hC+1thl4dkyha3iGEFmGX7rnj7HgWdiLv2n
+	Jyz/WxMna7i7tAwNDIWPMsIGkrDzA10bX2h5o51CmrlGdvjqryoFaUnf3C5vfQ6qQvSYJ2
+	jdEOC/GWpZn8gxtMdTpq6DnYJ0wfQFs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781795135;
-	b=1/G+lQZg/rskfIL0E3NzSL93KPKPK72gS7s26I/NG9XSlICgk/hPB1zx4xvgfwl34rt4X0
-	EelDlLVBNVB4ezwumJBizdDXWJV87d/Z4ViPYa1/p/Znh2kzO5Y33185Pbg+RI3DV+eYhn
-	S5WJwsd7YeVrJsdZTsxHfeAoSUs0vh4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A90CB2BF2;
-	Thu, 18 Jun 2026 08:05:28 -0700 (PDT)
-Received: from [10.1.25.219] (XHFQ2J9959-3.cambridge.arm.com [10.1.25.219])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BFE293F62B;
-	Thu, 18 Jun 2026 08:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781795133; bh=zSiCWB4wVmuwYgvliAtv1Bxz/LsfufvrGhKFPRWgIkM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=W/898hXfxrGKOb0NnixwXdgQOv9P/CxQKTFjW3YCgEetxpYkeY1TFUYkdSTjAWq0u
-	 qVVsA4mSccbwF41YvGrgM31uJD11z1aWRp7UwLyTIQeqNTAkUnuVcGZY1fX/JuhTBc
-	 647RbOuA5w6kTr7rdg0h1CSQLGlfBTrmof3aS4hQ=
-Message-ID: <402e247d-1eb9-4842-ba9a-712a3bb9b438@arm.com>
-Date: Thu, 18 Jun 2026 16:05:30 +0100
+	t=1781795295;
+	b=sfHZjla6g/Sl05SSwSwjXCK4lwS/89ClCM8qn+N2BklndfVOQZcBTIsGTc2oBe+Znka336
+	ztsZfhssycqGfffVo5M2V9ktPQPuz7kd9cHV1PPX2faC0giNureyUgYdq4J3/Mcloo9zPs
+	mkVbCHM4sXmDmE3KtSOv8JmTO4sl3U4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APXAJZyH;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D49B60008;
+	Thu, 18 Jun 2026 15:08:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5E31F000E9;
+	Thu, 18 Jun 2026 15:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781795295;
+	bh=ADzzepRVWs1vwXTC05UkLfdDEKwQsxVaPIoo0M8ryYM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=APXAJZyHpcW+BxdLSoyVb7v4ZEHR1RrgW3ugOQFYVMEVErvF1fi22XxKELIMNa3i9
+	 mnTLYHuchwHCqdJTBBhUMut/nd1TnVuXIqeJ+JGHWmuBOr5MBjnVVFtbEj/EqijHYw
+	 Rs64F/MvMZU9ECYGrrP1uQgMlhc8IO4SPoRW9vF5IpBZjOzygrWpSweBAbmUu2lpt5
+	 KVI9pUCeLQ2DKxCi6ySH6ODqzxA/JtIc46EMeT/osmjYG57DmHLB6OsmfNsiB+/1Th
+	 xLN2iFTrFq+306Tpe15c36vNz5Ibst3rS1BR2MUcXQDtI9BUCB+j/KCvPNtGEEpIF+
+	 /5AV10/8DvOHQ==
+From: SeongJae Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
+Date: Thu, 18 Jun 2026 08:08:05 -0700
+Message-ID: <20260618150806.4633-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <4cefc3af-67eb-4bde-89f6-8c3ea3c93588@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-Content-Language: en-GB
-To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260611130144.1385343-4-abarnas@google.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 79EE72000E
-X-Stat-Signature: bf7n5wc54kej5wwyzyfarfffxb35gj35
+X-Rspamd-Queue-Id: D91F81C000E
+X-Stat-Signature: mze1feohewicoorpc1dfi3c4s9npgf63
 X-Rspam-User: 
-X-HE-Tag: 1781795134-126046
-X-HE-Meta: U2FsdGVkX1/iFAD0MkKX6TKCrqAHoXxU0bxuziAsEiyZWffA4wcgqeNlO0S7VuaeMZ8WNDRvB9ibg5CrxHv7XDlvA14nLntxTKrPM59YEVpg9VqnHgsNHmWhzLeVBJDaaYHvEH/GO72q7FW+jy3NtIY3NKhMEtq/A5UqzEY2gieV/WDK60nN7E+wDmI7Acz21rZqAL2n9o/jBhba6Fwnw9nNCezMPrFuy1H0KiqY80qrtTXZOvm6bS71ekUH6bSXW7SBKWRK6DjKsLlZ1W1SnkTpJszHFEgndq4jKBqvD66711ED7kH1DC0AvM8C98sjzvMo3E7a1TJBsV7zOmC0SJI5gTfZTX5+fdeCTU8VeElGBC3xf4qzS/PDsk4N65zGfpb5IlfFbgCYb3MkTXDao0rvCtgVhuT1T+2MT5pF0o88UTEF1GD8PIRogyxpcYbKhy3L7WuYl1DYGau/tpZIlNPEFU09tkyG1wfJpkhu37Nb8fP5lpJn1AXd6zBwOkARqsvmZ7GNEv9M+FQRydXeXS+IO3UidzwxPBab82SUsxECr9U25rEZksdz8z+FW9hsXMawGwxFOmiM4LB1KYvOEX8Y7vuMgikBNsAPWTk8eKEnsQSySmRkngvSmgVs0G17fv/GEAi2ZsK57T2zq9u8MGUMEG4ORParrruM6vnutPi+6snXGcRg3Z7HbAH0gPdGXHF1l/BUUl5G/mkY+UqPMF7Vv81NGIb19gAgl/2zwYFpGxJc9ErD1N8+XpY9Efis3A50G6eN/Rd2nG1iOX/5O9dmPFuanlRlWW7v783J027Mk5PcDbdNxKIEG/YEKYkWYHy6yQ3TC9ctGSa17DvGlrycvk5hDYB0qujclI5V6Q33fMIdLvf5DQYgi5F9Fio1W+185uCpkKFoIFthuPr4/i/i039HGfmvvG+DCs4OeQJKP320UaW+oJa2jO+XsS5HpsfZHgr4wjFEkCPiZC+
- /JO92P2x
- rh1e5KKshGXIRrijEwtLNUxAZsLLr51lfD8J/Fmmn6l90eoAHKclW6EaCqy/cjEUXUSxJv7zWJ4pNtuK/1VnfBv+ZUN0stN6sMYe6SN40dRE02o4XK0nJtjHTPaXXvGw2QGIVBABlzQ3zT3naeeDsdro3KKjiSE23nGHQKE2yYbQuhQukPIcXm1u3g6VHRU4KHR01y/r8lj4a4Im6UwFm3ZNqkG+AiCbh72CW/Eb9L07aiwN8gQfsGuO3VFE90JMJze/GnHBSuD0uut0eze9F2IiilQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781795295-863436
+X-HE-Meta: U2FsdGVkX1/nD8p2SxaICiHzxwdxb1NGu4DiKzE22hqR9kbW6wuox5O6XSDPEsLAf6617CEdJfR6nMLKCAWeMKeiMs/okES6wTMAJ7Tsks7o62Ubjv0pb0DY++Oj6VQi437jLeU32yqWvaXQVWkU6G3PB+wrbu/49cx/HGk2RgDSRAuZVhZnxuJ4CCcqh1625FHD48i1TsmrompN0KWIysNryN8kr3S5fSy6SLQRW6WmIbxhOarFexZbI3pm651uMDbANrGbLOSl3Quc3SAFBBK4KUjXXDrpfBpCBFk6n0tD3e/qz7CricwlaXLL8R9poQc4okCPWvJXLF84RJG98aJr3nnDVOdM8eN/iYQHLJWnx5GGEBXPWxE4Nif+ZMzNhZ/jE6xvmXEboiVC5Tu7IYMAaA3yQLDQStLKikeY5vXnCFXX+CqZ45GYsS4iGfAzEFTqtW2vG//ui/st8yAqCsr8pKkczia9S/HKMVThArBZPZv3M5wSEzNQgoQ0S57kFq2rcJL3n12Z2U/bfBzSjRCs860KL88tnKm99CsyYKHlOov8VuU3CcDSGxFeztZxx0tQ8tgJFyo5GYu8M+RhnFYPgy5qzy1rC+/YlwcEcOSnltrIbrormvF8b5sNRn47G5ekv0Qp/AniPTA+4S4QFmQG4+I888hTxNn/rEEd2gu7W2L3gkTvCzfSRN6sd2LGTuw6bTDRAff/n6y0n+WbGkF8nkSWpCUmlmqptqecCAN+4yCUuTdSlTvvIMS2if2/k0O8VGzcE+voIS5aEROX0UEC4pDcJPlTf9OMaLs4GJoDaqtmbJzQcbmOT98ajt+vbadaGBP9CvftJvMjFZu8yE9i/tyZK7coXmo6BANeHNSiGMAhlPivkbdqL3DG8VWweUkrUjZAfS8pC0r6oW5qLLhXz1Gu+yI6wOVidYYEeu1tkroNM9373buScdF8pJa2CS8xJUVHpjkB3hKG6Ro
+ 0rZ4suSB
+ +aCt8pBr0Y0EORUldoUbxEAyjiG07jcf2TIt8C2sJiJ7vaV0BSh+H6BsGfmdIoByWgk1JK97AXCuYmwtAK4w4Wrpm0K4IQp7zXxzOFAdaFXo+3ujRL1BT3jQUuZ/CswbO7nK+UsDP3X/r4Tmnjx/icCep4aGUZlV9NswMNa8IdKvJkzxijtv1s6xljsjMjIdwkv/8Akpm6BveN5f42kppfjmF7+ZSbk/05ljUa3/Qqzil1ZxxC5KWFFtT0uIrJKHOHw3gawm19DC01t5sqZsiBpE0zsqnk8hLtLB7RyTTwYIlJgoe0h7grYXKSMxxnTx/nVmq2qciIWeyP80eEQ+VO/BDaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,84 +98,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/06/2026 14:01, Adrian Barnaś wrote:
-> Strip the read-only attribute from the selected memory range when
-> restoring the linear map after an execmem cache clean.
+On Thu, 18 Jun 2026 17:59:36 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+
 > 
-> An execmem cache clean is performed when a cache block becomes empty
-> after unloading a module. When making the memory valid again, the linear
-> memory alias must also have its read-only attribute cleared.
 > 
-> Without this change, the linear memory alias remains read-only even
-> after the execmem cache block itself is freed, which prevents subsequent
-> allocations from writing to that memory.
+> On 6/18/2026 5:57 PM, SeongJae Park wrote:
+> > On Thu, 18 Jun 2026 14:51:42 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> >> Hi SJ,
+> >>
+> >> On 6/18/2026 3:16 AM, SeongJae Park wrote:
+> >>> On Tue, 16 Jun 2026 21:04:52 -0700 SeongJae Park <sj@kernel.org> wrote:
+> >>>
+> >>>> On Tue, 16 Jun 2026 15:03:15 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> >>>>
+> >>>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> >>>>>
+> >>>>> This patch introduces a new DAMON module (SAMPLE_DAMON_HPAGE)
+> >>>>> which collapses hot regions into huge pages.
+> >>>
+> >>> As I mentioned on the previous version of this series, this sample module looks
+> >>> much better than the initial shape to my humble eyes.  Much smaller and
+> >>> simpler.  I really appreciate Asier's efforts on making this.
+> >>>
+> >>> However... I was asking myself if this module is really needed last night, and
+> >>> still got not real good and confident answer.
+> >>>
+> >>> After all, this is a sample module.  The purpose is to show sample code thhat
+> >>> helps people understanding how they can use DAMON API.  Maybe we can argue this
+> >>> module can be helpful at understanding how DAMOS quota goal can be used.  But,
+> >>> mtier is already showing that.  So I cannot say what new advantage this module
+> >>> is really bringing.
+> >> You are right, the main goal was to show how this quota goal can be used. 
+> >>> Meanwhile, this patch adds ~200 lines of code.  It is a very small and simple
+> >>> sample module, but still we should maintain it.  I, to be honest, getting
+> >>> little bit concerned about the maintenance overhead now.
+> >> I understand your concerns. I know code need maintenance, and DAMON is already
+> >> growing significantly.
+> >>> So, if Asier has a good reason to add this module that I'm missing, I'd like to
+> >>> humbly ask to consider dropping of this module for now.  I'm so sorry for
+> >>> raising this concern this late.  But, Asier, may I ask what do you think?
+> >> So, are you suggesting to drop the module and upstreaming only the DAMOS quota
+> >> goal stuff?> 
+> > 
+> > Yes, if you don't mind.
+> Sure. I will do it a bit later.
+
+Thank you for kindly accepting my humble suggestion, Asier!
+
 > 
-> Signed-off-by: Adrian Barnaś <abarnas@google.com>
-> ---
->  arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index 88720bbba892..eaefdf90b0d5 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
->  					__pgprot(PTE_PXN));
->  }
->  
-> +static int set_memory_default(unsigned long addr, int numpages)
-> +{
-> +	return __change_memory_common(addr, PAGE_SIZE * numpages,
-> +				      __pgprot(PTE_VALID),
-> +				      __pgprot(PTE_RDONLY));
+> Thanks a lot for your help reviewing the code so far.
 
-This is not sufficient to convert an invalid entry to valid. As well as setting
-the PTE_VALID bit, you would also need to clear the PTE_PRESENT_INVALID and set
-PTE_MAYBE_NG.
+I sincerely appreciate your contributions, too.
 
-e.g:
-
-int set_memory_valid(unsigned long addr, int numpages, int enable)
-{
-	if (enable)
-		return __change_memory_common(addr, PAGE_SIZE * numpages,
-					__pgprot(PTE_PRESENT_VALID_KERNEL),
-					__pgprot(PTE_PRESENT_INVALID));
-
-
-> +}
-> +
->  int set_memory_valid(unsigned long addr, int numpages, int enable)
->  {
->  	if (enable)
-> @@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
->  	if (!can_set_direct_map())
->  		return 0;
->  
-> -	return set_memory_valid(addr, nr, valid);
-> +	/*
-> +	 * Execmem cache uses this function to reset permissions on linear mapping
-> +	 * when freeing unused cache block. On x86 it makes memory RW which is
-> +	 * desirable. On ARM64 set_memory_valid() just change valid bit which
-> +	 * leave direct mapping read-only so use set_memory_default instead.
-> +	 */
-> +
-> +	return valid ? set_memory_default(addr, nr) :
-> +		       set_memory_valid(addr, nr, false);
-
-Surely execmem should just be using set_direct_map_default_noflush() if that's
-the behaviour it wants?
-
-I think that the current implementation of set_direct_map_default_noflush()
-doesn't undo the effects of set_memory_nx() / set_memory_x(). That might be
-worth checking?
 
 Thanks,
-Ryan
+SJ
 
-
->  }
->  
->  #ifdef CONFIG_DEBUG_PAGEALLOC
-
+[...]
 
