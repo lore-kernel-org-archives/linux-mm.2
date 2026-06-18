@@ -4,138 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D728ACD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:35:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38363CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:36:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC50A6B0088; Thu, 18 Jun 2026 08:35:35 -0400 (EDT)
+	id 1A23C6B008C; Thu, 18 Jun 2026 08:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9C426B008A; Thu, 18 Jun 2026 08:35:35 -0400 (EDT)
+	id 179416B0092; Thu, 18 Jun 2026 08:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB2306B008C; Thu, 18 Jun 2026 08:35:35 -0400 (EDT)
+	id 0B7716B0093; Thu, 18 Jun 2026 08:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 933EA6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:35:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A7951C492D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:06:14 +0000 (UTC)
-X-FDA: 84892603068.18.A691331
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7D9CF20012
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:06:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PVuZDXZr;
-	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C01746B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:36:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 412051A06F8
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:08:30 +0000 (UTC)
+X-FDA: 84892608780.22.138B87F
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7C978160011
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:08:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781777172;
+	s=arc-20220608; t=1781777308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ic2yPlu9WxxvvZRxBvrLjmMOjFkWCzZQ9ebOBQNrJ8=;
-	b=VRlbX20Rpx9BRoYuc6zAZoZodEPZHVZXpffTQaHwiB5bClfrSTfNlx2teziV172ihqJSTG
-	33VtRGDvzizbAoF3Oc/KOAibuFpq/gUgtm7R8CVCRGBvjGWFdMSgEF+Q/UM1ZVVF4sBhxX
-	eyvzV1HrJVv+hVUeN+a9OYdFW4J3ecU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=PVuZDXZr;
-	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 in-reply-to:in-reply-to:references:references;
+	bh=V13nUPG/cVMOpai43Rnu/Im2r1VdthgN61RiXX4t5Ng=;
+	b=PjQtYCuir3JJO45ZBTcKq4WgHpCvPfcNaRE101WfWSSieIgjvUB0lLOkem5ofQRR+2T+up
+	tkf73miM/Ha3TUW1nNHtqMED2sLBauDKDt0W/Wh5d0yFZ+nm6hGSBRjs1rLYtJalX2gCIi
+	UuYLImXCvbYmutOVWiGwXX3j972qEPo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781777172;
-	b=zl7oEommzw6XaTDOVIs7x1GuoIkpP5paVYo8nJTHctTKIpCAzeE/n+iZF1tjdDf13Q7wxZ
-	NivxriE5RLrLCKeAs+F/8Cbzh0cT62pFCleqo8sP5hVDa+s8jqHUFX1rj3ulJSp1Nbt7KE
-	VUmvKUKltTnYeZz0Ls2Da1eMLy0KFzE=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5ad49da7123so655574e87.0
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 03:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781777171; x=1782381971; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4ic2yPlu9WxxvvZRxBvrLjmMOjFkWCzZQ9ebOBQNrJ8=;
-        b=PVuZDXZrg48F2ePQIBAWRxPW5EM3muPFa7rw5Rs9F52np2SsbATCuAPmL4+OHz+8kk
-         cm4elOMiXm9pYm1dWgmO50RyWdvmelxMGGIkd62w7D46jTD92S0+PBhKDP6z0VZkkDhY
-         LMrbYvmRZjwtw9ZsSEx3tNBT7DN6N34s1n0HTbIwEM9Srq24nGk7bLRhnr5ZjXZnVSwo
-         RocDRnIVrhmDTZDcqAecXdtj/AOT14TJt+4LJuMP9Z5dg1Ps3TyBWWS42JfvZK2AP4kn
-         Z6wgM5+dO+AKfuGOHLRFwPAI4kxp2JhHjr60FasWuWWl1OctCPpnJV02z1sGyPaIo097
-         z0RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781777171; x=1782381971;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4ic2yPlu9WxxvvZRxBvrLjmMOjFkWCzZQ9ebOBQNrJ8=;
-        b=fLWn2yRvby1AgKgRgaN86b9gWh9VJ4W/aGnf168lsCjSYrvqTPojGIuuvYOP5JkNDd
-         SfGSsHlXIW1ci0Y10Csqw0nyDkGKHpBTWgcF9SSKQuEW72B9hWagULBtZXUsIUbYbJ/O
-         xhMariC50PntpYh0hNQQkFW3rrDPnOCimt06/gkxDFes6pPWoMxxNQbQFiJ6Y5D8sRP/
-         Dt0qsy+tVZy7dmJSdQndC4vZL6jHor4s8PMcCvTgO0DhKYTkonIjoGsPawMVDz4WaUV2
-         0ngGO3fKyuZIOhgKgYQkJ48kNZ5NLDY/FqLeg0VMRJFVg5ixPikFx4yiawCXE/6xMM8P
-         4HVw==
-X-Forwarded-Encrypted: i=1; AFNElJ+IzbQNZYAqgyZlBYBw4jd1qttqVetyAkT7b3kX/B1ybHy7ePctxX0Q4yEc8MpSVTR5ms1h2a5MoA==@kvack.org
-X-Gm-Message-State: AOJu0Yx9uvL1Rwl48naZ1A+tl2gNbdIPqOUFpTEzOqaI4gOaExPxXE42
-	Y9WP3ddQDnWlYOg/XMu2jrvRZKnjJi8ZTvW5aLsD7E1QPAdTINBIyXKR
-X-Gm-Gg: AfdE7cnJIgIGu7TA1jFS7ylQCkd0T0JLdqRXpkXTvr/3l6Smgdiiv5PNDxHTQvoN1yD
-	YCs300PMuhWIx5gHKApJDO+GtzuE1s5j3m70vl76nuRp7XS1eWkFScmzY1mP9TXEctpFDs5O5NH
-	pFV6aa+UE9ismA673gNPoPB8DV3ErcD+1jvyxr8QoPQVyDrVAVUap5xv7Y3+MtzhHf1PBPAGo/Z
-	OcHfHQgfi/BZ0CSWoQ2k0syt076uP1kYx+SgA1TFByYM/UJTxqe7fZLkMOaUvq1Bl4ZlsEHS5mM
-	KU+TWD8FhsPTK/dHMN8x3tPbD/cTMYt0gsJFK6g2sCuuQVp8uR2AjZrKCP22bnYct2mGDYWVa/O
-	PDvmGDv4rdKExheFRV6ujFxNVYPJpYHT+XMQymmjI8G6w94K26suhVdkumQwH3lAzGtUXraFPkA
-	TXSb66P0miU0NQskgms/5lyDwRKvt0BEpNWGaofg==
-X-Received: by 2002:a05:6512:61d8:10b0:5aa:628b:5892 with SMTP id 2adb3069b0e04-5ad4d4577cemr623663e87.5.1781777169449;
-        Thu, 18 Jun 2026 03:06:09 -0700 (PDT)
-Received: from pc636 (host-95-203-2-134.mobileonline.telia.com. [95.203.2.134])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1aea92sm5216940e87.63.2026.06.18.03.06.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 03:06:09 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Thu, 18 Jun 2026 12:06:06 +0200
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Pranjal Arya <pranjal.arya@oss.qualcomm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Will Deacon <will@kernel.org>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mostafa Saleh <smostafa@google.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Shuah Khan <shuah@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Wyes Karny <wkarny@gmail.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: Re: [PATCH RFC 00/12] mm/vmalloc: migrate vmap_area indexing from
- rb-tree to maple-tree
-Message-ID: <ajPDDkV7yqWlhPIh@pc636>
-References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
- <ai3kkIpaR0aT_6q5@casper.infradead.org>
- <ai_LVreyRWx-RDEd@pc636>
- <ajGQ_WPT3Ra2kPCQ@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajGQ_WPT3Ra2kPCQ@casper.infradead.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D9CF20012
-X-Stat-Signature: ifztc4183uic1u3uzjmwsdr4kbffj43m
+	t=1781777308;
+	b=rovmsqIclDkFxm9h8geRo1upMlxE8uwfnKb8YIdl/ljiAJy4CjXVD6PD1LYU4sxvuH7HtS
+	SiSedmpr2Uvk/BNYdWJ3XpFGRCsJ8M+Rx0aWht5lQy+Wo8Zy+PoB2fcD5idVNx+z9yTWiM
+	IptN/XQmC0v26JebCLdppimrnJQhhb4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4ggxHz12shz5B7RN;
+	Thu, 18 Jun 2026 18:08:15 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 65IA8AeP001695;
+	Thu, 18 Jun 2026 18:08:10 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Thu, 18 Jun 2026 18:08:13 +0800 (CST)
+X-Zmail-TransId: 2afb6a33c38d76c-c4b3a
+X-Mailer: Zmail v1.0
+Message-ID: <20260618180813523lpg_cRMfdaELojCmC8Ap2@zte.com.cn>
+In-Reply-To: <a777b4ad-157b-464b-8cdf-feee9a6a03a1@kernel.org>
+References: 20260618080411.3902214-1-wangkefeng.wang@huawei.com,a777b4ad-157b-464b-8cdf-feee9a6a03a1@kernel.org
+Date: Thu, 18 Jun 2026 18:08:13 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <david@kernel.org>, <wangkefeng.wang@huawei.com>
+Cc: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+        <chengming.zhou@linux.dev>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbW06IHJlbW92ZSBQYWdlVHJhbnNDb21wb3VuZCgp?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 65IA8AeP001695
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 18 Jun 2026 18:08:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A33C38F.000/4ggxHz12shz5B7RN
+X-Rspamd-Queue-Id: 7C978160011
 X-Rspam-User: 
-X-HE-Tag: 1781777172-795524
-X-HE-Meta: U2FsdGVkX19f0tjPFDcuGoVREiBr7z5T9u/9OvXv1X6B0KzHmVzGoqjvDmNxcLcd6mdEKV5egJ6LyqyB2WrQLWjx972NCFHK4t+GMq194CCKAIfwCtlwBqWJ9JjpMGp5tlFgrhe+ClVUIeo6Rf9axfGPpGrMNaR2styZYOe8yScLfAzgqoNaiP0MeN30Dc0punGihc9ZaTKweRw1dGX9XeunL0D2uBRCju5Sz3ObtHQQvYTLEQD/c0eXP/XGqr4FXYq1LeBt+vhYPjQf3eLFBX+B38K6XcFNbeYDwRnlZde20ROc4aVFj6bZQyd+AGfMA3X4/SeUukdl8tJ/EfgYf/N37mhutPt964dqPqALV+oU+H3+a9TzFK31XJFEYIHdTwee4YerE45tCclG8LLBkmIPpwMw2sLY86eFWjEcrfZ3za+q7Kj4UApu84tWSN1IEbxllMNBfiZtPZuRlGWn6cSC34VF+ZVwANCr6yMgAkg0qupRPNFug4cafJgg7Zm7/2rS7y47D8la7fd1lh+dmlILXa8bohQREsfq1XhJEbIeUEuxB+qHWMMoZVZOgmSohV6WRwx7O8lPHyVVzy/WiOlE/uUVkFX6nd+MSiEkub2yYeESC8cZfKXNp6MCpah3c4t+D363/MWRoKCXqqXvYHVLv7JgJta1RrG4h29Z2bIJnalxld4StCUDLRIZ8vwpmQrROCDtUr07rzD8BKeNpzPU3PkKcF0nJ0djHXUjnkwiEY5hVhsi1inapwjPotJ/9UUcoUmtaBCXtHje7WxAdweUpwyaOIrqofeyZxjSg8snII0lKVirf7Qn3rirs+MBYD/LtNjSd+KjJrGCY2JVRpj0JKHTwLu/x2jCD/a4Cl/861CMbYs5BYXZRJYZmgVr1gmDUWWfwwbuWQPb+I0S8kzoBSEoaKoXPfJnUVjlCPbF9fsujZZ8J/lyhPi8zXLU4BhTPRfXRHK6fHlv1FA
- JjmS2S5Q
- iBk6f7MKs5Ltr4eZ/QAV22b20O+p+RlraUb0RWgc3bYi1XlmvB5MyZ0vEhiGI2RJI0C2So7783elec3oReIo1Q+YqwGvpGF1ZdigdhTn6piB/0sPEfwyQE+hXZcNdCVJ03EKPG6cOswcgsNtJNVpAlZn2AImiSn90lHyClqBHqlMSSitVycmU7K/V76q/qT4zZ9CVkUuuz9Q5i5g6yvnNqZUlUpZ17o9iv7bzncPs++HfcyYBUjFkb8BKk9NRYMmp2HlCRl0fbUe+/E3bnfy59Skl5V51qE9O5TmE09G2p3FcZt0vmka9VMUX2zciyJ9FuBGvwV3xh+Qz5k/nqOVQhjzyeuAObaHzqYBeFEDAq/Vp0bMkD8NgS7BGEmg+mGTgs/ZKphzXpHCc8npRws/pxf1EZUKSxxaDvBNPXd1J/tKJZI9WcwkKnMYWk3nzGVqwP2F32dkI/dmSht6wH4FDl9Ms8Fms7fkasLlk/ExhiGG6rq4=
+X-Stat-Signature: xgs8dxruzd1kttypq3z1di413jw5hc7j
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1781777307-216913
+X-HE-Meta: U2FsdGVkX19L+Fgix+IV6qyw3VMITaQZ4qrOMnukQnUJlnHF5xRIGqna321Au9R96e+ZIIyJsRvdJo0YShgESLOaYnU3T5E3w3K8TVKGTaFmZlOAX8rt3oNe2VEQIO/HNetc6jHoXPRVVltTxEgQnqm3RuKMVVfipSLcFH9r6ael+/bR2+/agAMl6CRshR3OpfbD8V/wo/ZFMIvD+0kTPKpMGBczxFKv45VuFZoqOKddcketb/qICKgh5AAqdub/u2WjvpYieBQKK+5cJ+n1/re0fsDbMpqyuRZn/lLREzYsZXabNMuvLGqmq5xkejPewpNQqZ6HCDlE+4hfqwj4RqSXOf9J6tWu+QHj3Ja67NKi//FVRG2/2v7kx/5Ah+keHEPKuvUEfpAn7hZau77Bga9madj8rUjYW/d98C/GE74fFx5IR7kdKyqKIU3CT0hSY7z+PNf5FEN/l3zLZSKQTKD3kW4IS9GL0aK0LYPMkowLvbqfzY5nHb9f7z7Jsi7KWKfhqxJStePC93jy3DwidCkRVplljas5rAp9P0qnL0HoT0oNVvjtl8fUqI6HYRAhXf4wrVghbGe0JU8NF5oyUOcdbfEKn+25nFKOXt1l0OVqLjzqP8PZe+WMG3+SZwFFNx6nfTlXK/931YqCz7OP4oy2ym77V4OZCOAwO1Bn/P0Bg/E7DFOgQFEJSzDdC0Uc3Xk9dcFq/qCMFaceAZGQsKV+sv42yGTAbPlGFgSkW1zmR2QJhTzBmll2N+HqblLPws/gRdg0q54KWKqIeJ3P7Dt3yx5O6r07ExELP5amL5MpzA2A1oR2uP6nOOI87SzOSgkOLKwtlLu/ZuqB7dRSH5TsFtBchNvJb654/cTraqQ3P6SZlEvuBi+mmhkSEjoTAY0Um8hPV+lUXM6hXNdhiA0cxN0z21Z/Q59bWafuqC+h0XIFcH11V2tKrTYktmSjsVMiHf/QOR1+PoPXiHi
+ 6QRY35Fg
+ xTvxFd1eSE2GfLX6gfTA5sT/5qb/XC7i/0S0IiTOC5yib4OCp8DA52jLKTehoBIgzmQ+sizoQ+AZhAJPI/q5sqRIINxUxN0M8UBqgcHRl70Vc3xViegXp3GT5dR249Qj+3GGT7mn/Z8KyJmz9WzBDaSWUnFSfgU5l7IIY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,83 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 16, 2026 at 07:07:57PM +0100, Matthew Wilcox wrote:
-> On Mon, Jun 15, 2026 at 11:52:22AM +0200, Uladzislau Rezki wrote:
-> > On Sun, Jun 14, 2026 at 12:15:28AM +0100, Matthew Wilcox wrote:
-> > > What I don't understand is why you maintain a separate "free" tree.
-> > > It should not be necessary any more, but maybe you tried removing it
-> > > already and found a performance problem?
-> >
-> > We maintain it in order to split several entities. That prevents
-> > interfering between allocated data and vmap-free-space manager.
-> > So in that case one context can easily access allocated data, for
-> > example vread iterator, etc., whereas another can do an allocation.
-> > 
-> > So by splitting parts i minimize lock-contention.
+> Nice, but ...
 > 
-> Sure, but there are many ways to reduce lock contention.  One is to not
-> take locks at all; the maple tree is RCU-safe, so you can read the tree
-> holding only the RCU read lock, as long as you obey the RCU rules.
+> we already have
 > 
-> Specifically:
->  - Write side has to RCU-free the objects that are stored in the tree
->  - Read side has to trylock the objects it finds (and retry the walk
->    if the trylock fails)
->  - Read side can see a mixture of objects if the tree is changed while
->    it is reading, but for any given index in the tree it is guaranteed
->    to see one of the objects which has been referred to by that index.
->    That is, if the write side overwrites an index that referred to
->    object A with object B, the reader will see either object A or B.
->    It will not see NULL and it will not see any other object.
->  - If the write side stores both object C and object D in the tree,
->    the read side may see neither, both, only C or only D.
->
-Some thoughts about it.
+>     struct folio *folio = page_folio(page);
+> 
+> And we know that we work on folios.
+> 
+> So can't we just work on folios?
 
-Having the tree which is RCU safe is good for sure. We can benefit from
-at least in the: vmallocinfo scanning/dumping, possibly in the vread_iter()
-when access to /proc/kcore and other places(which i need to check carefully).
-But this is for read-only traversal.
+I think this will work.
 
-Switching to gap-based approach requires quite a bit of refactoring and it
-should be a full switch without any hybrid schemes or mixes. I expect that
-we remove more code then adding because of some parts will become hidden
-like lookups/reserving range/erase, etc which is good.
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 7d5b76478f0b..41ab25aa2a82 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2327,23 +2327,24 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+>         tree_rmap_item =
+>                 unstable_tree_search_insert(rmap_item, page, &tree_page);
+>         if (tree_rmap_item) {
+> +               struct folio *tree_folio;
+>                 bool split;
+>  
+>                 kfolio = try_to_merge_two_pages(rmap_item, page,
+>                                                 tree_rmap_item, tree_page);
+> +               tree_folio = page_folio(tree_page);
+>                 /*
+> -                * If both pages we tried to merge belong to the same compound
+> -                * page, then we actually ended up increasing the reference
+> -                * count of the same compound page twice, and split_huge_page
+> -                * failed.
+> +                * If both pages we tried to merge belong to the same (large)
+> +                * folio, then we actually ended up increasing the reference
+> +                * count of the same folio twice, and split_huge_page failed.
+> +                *
+>                  * Here we set a flag if that happened, and we use it later to
+> -                * try split_huge_page again. Since we call put_page right
+> +                * try split_huge_page again. Since we call folio_put() right
+>                  * afterwards, the reference count will be correct and
+>                  * split_huge_page should succeed.
+>                  */
+> -               split = PageTransCompound(page)
+> -                       && compound_head(page) == compound_head(tree_page);
+> -               put_page(tree_page);
+> +               split = folio == tree_folio;
+> +               folio_put(tree_folio);
+>                 if (kfolio) {
+>                         /*
+>                          * The pages were successfully merged: insert new
+> 
+> 
+> 
+> I'd assume we don't need a check for folio_test_large(). We'd have to double check whether
+> folio is still valid after try_to_merge_two_pages() succeeded, or whether we have to re-fetch it.
 
-- replacing free_vmap_area to maple-tree gap based approach;
-- rewriting pcpu-allocator which lives in the end of vmalloc space;
-- refactoring per-cpu allocator which is also part of vmalloc space;
-- vread iterator;
-- vmalloc dump path;
-- vmap_node logic(use gap-reserve to minimize contention);
-- and more...
-
-To me such rewrite makes sense if we end up in something structural not
-just because maple tree exists. The criteria i would go with are: at least
-same performance level, remove more then add, the design stays at least in
-same good shape.
-
-There are some drawback i am thinking of. One of them is maple insert path,
-mas_store_gfp()? First we need to find an empty area, then set-range and do
-mas_store_gfp() that uses gfp flag for its internal allocation. If we are
-under spin-lock sleeping is not possible, using NOWAIT or ATOMIC is not a
-case thus we should somehow pre-allocate outside the lock and store the range
-without any allocation.
-
-The allocator operation:
- - finds an empty range;
- - publishes VA that blocks that range.
-
-those two have to be serialized among other writes. Otherwise two CPUs can use
-same empty range and both try to reserve them. If preallocate outside the lock,
-the "alloc" side has to validate that a selected range is still empty and only
-then store VA to block the range.
-
-I think it is worth to prototype something to see how it would go. I may be
-missing something for sure.
-
-Thank you for your input!
-
---
-Uladzislau Rezki
+It doesn't matter whether folio is still valid after try_to_merge_two_pages() succeeded, because
+if when try_to_merge_two_pages() succeeded, we don't care the flag 'split'.
 
