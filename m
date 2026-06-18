@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DF10CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 04:49:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EAF4CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 04:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEC1A6B008C; Thu, 18 Jun 2026 00:49:31 -0400 (EDT)
+	id 61FDB6B0092; Thu, 18 Jun 2026 00:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC2E36B0092; Thu, 18 Jun 2026 00:49:31 -0400 (EDT)
+	id 5F7386B0093; Thu, 18 Jun 2026 00:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB2126B0093; Thu, 18 Jun 2026 00:49:31 -0400 (EDT)
+	id 4C0596B0095; Thu, 18 Jun 2026 00:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD336B008C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:49:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E94A71205FB
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:30 +0000 (UTC)
-X-FDA: 84891804900.12.1A6D952
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E878B1A0009
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FBgKgzod;
-	spf=pass (imf19.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 17B5B6B0092
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:49:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D09F1C4B0E
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:41 +0000 (UTC)
+X-FDA: 84891805362.21.C9E2EED
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A1EAC140003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:49:39 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+z2Jkls;
+	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781758179;
+	b=wF8xRw8LKUNagmq7TCjHpZ/ouuq1uOKF4kHX8HkrI9+tq2uUZiZ/SOOi/oy7AlDcXi9asT
+	8nG0qpPMUMO7NUU5Nnilx3pmFbGJT6ma16HWPXOf1HEgrVunPWZ6jDRlh1AGITWrpd1M8B
+	nMcyLrZhOIGGYAFcLNW1OfLDDS5+D4c=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+z2Jkls;
+	spf=pass (imf26.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781758169;
+	s=arc-20220608; t=1781758179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C0Hrp4ly7FYGNcwCz9cInOYn+lLT0zH/zJYZGhEA7lk=;
-	b=iGEaDu1gRWx9EIg9yINp4uXLDB/fLcRjEI56KuyLop9WcvARIkitBG4LvnFRstK1ETCsKT
-	qu2wyu3tgQ2e8AOkUbWwSECryZHuLzkOTqGfvHSupqOrYinM1mqvR2MpN98Mgyc4FFom12
-	4Twk5GoZ4xZpAdoizyD1QerZ76lwOR4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FBgKgzod;
-	spf=pass (imf19.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781758169;
-	b=ch5tguAibsR/Z/8ZbYyh8+Xj/nDMaas4n8lh166ZXWbJUiBEnaP0ODA3YH13hBYgubAXtP
-	CjOE2Z+nlrJb8ZiNFTsdaULyagMTYdWnq7z/1AldesLiSJXobnyL/OD4ORxJMdYHGtDZfz
-	AHhFMNRidqcKTOh8C7dQ0gsS+BibBgY=
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-842848fd613so338836b3a.3
-        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:49:28 -0700 (PDT)
+	bh=fTogXYNv78gwID3PJ713yHc97a0x/oZa3BlIEI1TXEw=;
+	b=Po3K1iq8Sfl/cr4myd77PcXpgDmpJY1W07wutmvMPsXLnRRGKqVo1DDlKiP0ip2WHm3lw1
+	21T7TdSDpo1qT22K2fYIq17/aFXmR+osZpN+UqVI4LOlzpfvw+5IIMBa23vYL0UPQWtoLV
+	3SgiJqtVyDxBDMWRI/wuLfDryVQmy8s=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c85822059d8so365152a12.1
+        for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:49:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781758168; x=1782362968; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1781758178; x=1782362978; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C0Hrp4ly7FYGNcwCz9cInOYn+lLT0zH/zJYZGhEA7lk=;
-        b=FBgKgzodaWus1u2PkvHktySVl0/X/hblKInO+sMDPOaLSCFOSMG/AtgIN4CFsJ1R0G
-         HLIxuf5S2lxFsfAnEP0oYb8MXQbz3Oj7+IXM1I+2ur5e1ioa3jvc+yYkzOCfF/lmD5XV
-         qILy4hl0wOwJdYE/uhqgjO+VU6BaZYnKrNMsUv2FXkGT+YE7SH+/Tw5R2vgBhG2tpxaJ
-         49FsSlRo//GTFNmQtokPs2Sj6uOPAiK56cL/IjZqseoNMdEEuERpDmD8M2MXtXAhNf23
-         pURoQeist+QnpAvbP/yj7Rs1LyQe/UBDMhJiWvlx0AqltL0ilhK0EOnA0l6mnJwO51uZ
-         x+WA==
+        bh=fTogXYNv78gwID3PJ713yHc97a0x/oZa3BlIEI1TXEw=;
+        b=J+z2JklsNnkizEYP3YQBlaRKV1ZQOK2HdEw1DZnb7rpBh1SOCJVIRH3NdXqf6xp186
+         W/gg0YfDK24ap9/j0THyk5SGqK00u07gQpkQe3e5U/Dy3E/tHswbhJyzrNbm3ArSSMyw
+         16oH0l3XsrIC41nxlrnK9zhIryYVn0rdAYx8VIE1M+QAC+RYwVPltlRBy4L1jQMW+OXu
+         cC9NyoCyI4bLd7eigerpFNdkLe182hNXQ+kp+NL+mm6Mx5NhEwfUMTNKdbOB25rLNIJ0
+         8SxNHUuWoE0cxvoOkt5uL24fs1KLXKjY5EhItdTOGbCGJGf7PIOPb97uNM9AFnONUgYl
+         fdww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781758168; x=1782362968;
+        d=1e100.net; s=20251104; t=1781758178; x=1782362978;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=C0Hrp4ly7FYGNcwCz9cInOYn+lLT0zH/zJYZGhEA7lk=;
-        b=JTbNVuWvP/TRltE5pT1LbQEJcdIz2WU3nE3XrZBdcOly8in9r/CVea2jVM2BD7MxOU
-         zHrLINOTRH3aISmdhzH+mJgEZDbXoZLX/yVFKk12WJkvbp2TmVa9SN4Cboxi5eD+6t3N
-         shHbo7k99Z5EZrNjKg39jMHB+6i0n8tp6hHKg6MoV1Ew74+uWRqY5FIZPl4zroDhVnxG
-         QIXpGh0QanfblUTSjjqqvMBSPyalgjTc+bVn3ADJC+dL91VqSMHxyan22jaSjkmxtX9x
-         jxZ/DheE5NpckM69KtZNHjRXao7ixw2qTUPPe7cqp+rM1NZ2kRf9ynQx1mNzEvmXfQjt
-         jvvQ==
-X-Gm-Message-State: AOJu0Yxdax+xmQubEibS850znub1lthDnrNM2xZt1rrdb8H1mmP+mE2O
-	ypp3VHy75I1ssT1pZMtmfXWZJacjdsYbCYi2cViqSfjpr8QXUNX2UUJ3bqQBEw==
-X-Gm-Gg: AfdE7ckw2ikLjRGsthueFtLuoUUHlLWof/7F8T70aU9Y357ZMKBFc1iTicSb898DQmS
-	939hcl9MSA5DJ6UXfckFtMvT8SZ+iE0ruJTzEj4guekq6pMyIDlIununK7azYe7plPj7WWhTqMo
-	heB6HIy0ddtVRGAn+sxMbEvj46InM6Te1KoK98egzvMnRUIWJf45xu2SY9Eef5CdrpOGimNOtno
-	I16Jb3Su7fdSEaD2mJA7EuZAZsWI5v24nimUldokzQSy+fyF5NbdaRw9igPeLi2razUi4sZ4ir8
-	Nwuab5tkA8486bX6aezSA7XqvpX0oZ8ZE4Bjpy1gE4j+vCkTwHB6y7Hke0lqo/FpV02PtDYK1tS
-	y4/TrhPQ7bCyZeGsjsEMz5YA9J23c7rpNH8NYN1FcvbWotbGqNph+EiTMFCu8cp46CuFjD4YlvD
-	Z2Joau97fZ0gEStLNds7gXCPAEMxj48xoWZBXJlol+
-X-Received: by 2002:a05:6a00:27a1:b0:835:405a:7e6f with SMTP id d2e1a72fcca58-84541ba8066mr953371b3a.14.1781758167819;
-        Wed, 17 Jun 2026 21:49:27 -0700 (PDT)
+        bh=fTogXYNv78gwID3PJ713yHc97a0x/oZa3BlIEI1TXEw=;
+        b=rysBy928y6/2+JWbqYnoQYEf5ISawWwV98bv0AB/NDDFsWFRvLVjK0/X5CS92lf91z
+         peJG6dhk/IgFQinRZH0ff6AefRRovN3J9VmmLUXyrjC6TZw0Ycpk9Acs51tHy5f+Psgu
+         PShxKH35CjiabXsqKEy7KkGpIP3kfjCflN44o3Vp6yBtKdB1X6G2KWW53tztzOsSMkE6
+         Ln24MCLZJiILOIJ1nFu4DI2OdZk1XuBqfD59hsd1v66BK74iblGHXaR7hzH1pPMIcaCz
+         bmdkamUqJHYD0IJpeexSkrK1+SS+dQnCRhBGo6u7K+90hBMsjVxtft8SQJirQJ6kIEFH
+         Npbg==
+X-Gm-Message-State: AOJu0YwnZYv9tM5WBEux1J0pK6yk/UreVgH/kRU37pAtNb7S5QGke65M
+	em52DY0J0CK64TAatcIG+yfveHNbfN2IaoImoBNX6pGTuqGY0qiZ6tDY
+X-Gm-Gg: Acq92OFZsuLzoLl3yExuWwzfy8T/iabZpSSM4r2pzY7jM9nZSEIHIm7OabQ4vLGRwxc
+	SicE2UxcwYzeQNzA3ufahnKHB5QgDZl6h6EPrEAsAmYEJjG3iZ+Ns9D1qxx6oLa2rloAfQSEmmB
+	uGWV0kY5jxzvjeWFrDjtx2GUQEdiglue8/85O/anA+/M0AZ2aOEpQqkEHla50zpHDlHvuEGdKC+
+	Y/M/JLnYsA09FTda6dzvXJ5OEA29pCj1dWBq6OubNve6iKtSP1YAu8qnwIYxABTCeJ3VvLTSaJ8
+	2XKyEDc9aXj0M+GDFSqlVGD3kt/NmUHlt2ubMDVyvYNpjBq7NbQQRQtVLta4T6eetFZNqv6LABk
+	1a3b8MLd5vfxuEUJ+3glBVRO3lr51YWROj6MwVeaCM9R2xyjSYR057nDS/LtbQBRF4JuBuBfwbA
+	N4Zj46JHIJ5o7co3u278BUqPADl0k1blrnzVqHLUGw
+X-Received: by 2002:a05:6a20:e212:b0:3b5:6b5a:4f29 with SMTP id adf61e73a8af0-3b8b7cd8e45mr7178450637.30.1781758178441;
+        Wed, 17 Jun 2026 21:49:38 -0700 (PDT)
 Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b020b53sm17214781b3a.47.2026.06.17.21.49.19
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b020b53sm17214781b3a.47.2026.06.17.21.49.29
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 17 Jun 2026 21:49:27 -0700 (PDT)
+        Wed, 17 Jun 2026 21:49:38 -0700 (PDT)
 From: Hao Jia <jiahao.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	tj@kernel.org,
@@ -105,22 +105,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH v4 1/5] mm/zswap: Extend shrink_memcg() writeback capability
-Date: Thu, 18 Jun 2026 12:48:53 +0800
-Message-Id: <20260618044857.69439-2-jiahao.kernel@gmail.com>
+Subject: [PATCH v4 2/5] mm/zswap: Factor writeback loop out of shrink_worker()
+Date: Thu, 18 Jun 2026 12:48:54 +0800
+Message-Id: <20260618044857.69439-3-jiahao.kernel@gmail.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20260618044857.69439-1-jiahao.kernel@gmail.com>
 References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E878B1A0009
-X-Stat-Signature: 11nkqxxkio9ocsmgudskswsark1uhr8o
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A1EAC140003
 X-Rspam-User: 
-X-HE-Tag: 1781758168-625121
-X-HE-Meta: U2FsdGVkX1/WPKJmkiXGhgQ+slyxBFbKxqA52eHiYTzUiqbOgA5BE5n3MLN1JP4MYom8LtMRLaSXRtqm1TBnOeEK7vMmJbuaB7F8cU7kuTYzlLpY1rB8NLLvHCOVT2xTWv5PaIK534uir8xFXFGlF7MziAaQ/NMrSd1g2rrGVSfGhGyiy13jmsPPV8qkj+lt7wXkpAVm5jSFE0ewTcG3TahNWoAqkWm89ytRmdEYOqwwcsoTLlXcmjElyeSMwxnvij/JbCiUzX889CuhiDoUUuxV4HIaHIg9zmAnVdiHZxiXA0Zvuf8/dVQbLalQa5tWJVyChqTQOTVKiENU6gfzCgpZ2CxDKGLlY/kSWVp+9z+WiRbtg4r4TtRXTDqpGKGIHOBATR23mmOE1JY3Cktw8M67eQPx/3JURQmjVahyBpN6+lF/9142BjNPmpEzO1zs557Ut32kbmmNoRtaDN3i/W9TsVns2p77maNEdBss95vocePfK1MwzFtncawYgqR6mmuj6U9DxHUvgc3IR1klufvZPHpInpzsUmm+j054JuGUcWGrkZZthnHXGjfp3OhjZ2ZWVAl9z7lG09Q3tN9JNmMfbEqYmMqtTinDU8zb2wToYN3315IOml6Y0Yl94HSViYDAskQ3KMNugyfyWPnRObHKSw65X8leGTiEDVtHgNIlzDZlXUtN8loJ2Hpeu9RIJZl0CA4WdUOcyXhU0Tn1FHbqWI78w3W5QHqkyOqx1ds0lW0JkHljsVX6DKL8TQVKw0CRpJwtwvm//eQ/yAta9YFB7jWbIi1svQlTzHwb1ed4V3ZOf6oOTaed9RNebM70B+JwkrbXHNxFfFSZ8x3CzoE66N/owq1XOGVKU7qhBJqae3IbQZEEyMWPFcqvK4wsO55loi37x+8Kdd11CIPEX2QRsCEKq7dYPgJD630v9AiqR4XB6ag/mpfREencdjz2QVXHOZINrW/1WhA21U/
- LLGauJ5o
- pcfWwb2Hw4OIHDwS3oY6ImBWcxx5gK05fU5W1opYaqSPDhnFqb78+qYe+h4tPLyhJIlVTfVzHhQ5l3xFgsDqsrE6Diz8ePlChtlEfzwp8WnSa6dJr9VD+6bTs8lTvsJr5ypnF/qxOZrue/zHRK81xIW+I2dBHHZAzdvci5YxWTEQTLstlfEeGUa2eBuOPUGyl4ELXVvvl/Z2/Tq+YjQoHCA+i03pZsuyxkbGWO82q7V1fLFIbseOTmfano2X4WV36pkY13cPZe9MDzmEzxigBgCz9cuGBTtOeuHuVMU//g3XdcYrUVD3DBm5igX9U8RBX2sIfjN2F8rQ05uB6V7TgrNjjsW6fDmkypXIr/ZJd0FKA1QUAaKu0wnF6w9Jt0EeaIef9CYIvyzVDYFgD/QHNGSQCC9nD9N2Ly6y4h5Me0s6lOGfmDNslL+DK4BNT+xVAERPdw0JsUPUGbp17wUfdsoRgD0Z3mX5tJ1RCZtEDM7I6687RCiWoAQjb1LncATybqLLnS6kK7yZ+h9Ncse78wCUCjainl9aHFztbPmMrWmZGtYu4pfBswRyxUpmGlyj0jwQe/9U9Kxb9lDSbuk533V3y3AY1Z95cJdQicUXVfZuC/cQEhs/sXFnCfEO1O5JxRlMqFucXiNVjbtU=
+X-Stat-Signature: h4gcmukgema8d7wcxtdy6mwo1cqg8ed8
+X-HE-Tag: 1781758179-324423
+X-HE-Meta: U2FsdGVkX1/HVtuijOuzyDtsBsFaJJU8W+6fvH3Kz/ODeToFMFKW6uYc1dxe17sR3sU3mERPAvE/7rWSTQhM/GnYhlJNQJX+4oaiFrXkFjSzHqI4EYwNF94ZsJlIcEUE6A7wzIth/T+5S2Yi0kgHsMcOuIaSyDqkE+aVccTSY6+sHYikxPBOegEG5YQrjVNqA3qABQUSTnsrNe1U/oYOI5x9bJIEQK6zP2+Ci3Z8/xyhyOrFXTxdjk2VDcAt7Wz0JYoorzOLPYQMlQ7TYmH2WTespm4fEUJDGd2r1F8isFWln+MVfzCbk3NefS05L+lvo9QqMBloScjL5Raa8vqjqar8OHV7neT1sWr2C4i6S4UDIRD65OkdgkP4yOIV5tsakdQQ3HGra81UOsCWxvUH280R9nn5kCuH839UnPKIgb7hP6nZvb9fKBGc3LT81kez3TFMPn+zX8HlCeYWGZKabjI0wz3Or/B4A7RSbbNLKFEXUhYOdjEPdLpdF7vlGGCdYGD78gp6p+z6pMmU6QBLQTiBHoDmf9YK/THsOpm2bIbDZvuWnhADIso/7mTP18lnTqTIDvQZSbdqCXC8Pm0hKWWjggX638qYrrt5EcsE1V1/VNmqX8eDBsg2rnvmASMbryLj8/SmPyrvcx356SrEk4db2KRaTCQiDLD3m8i0jxG/s4QDKhRA3YTWXAGgCP53rFsAt45ISt/+f/3saFeBoKM2B5/hGi1sZZLbBE4XiKHFYKqIuehAtx40+MrQmNou9/U1RqD74VyGKnkR2GvtPPZJaMBZVwdts+HxKULtO9MGlNR8/j7mQs4O2yKJLYC9lXjprQ04GeZqA4f9sWwhlOA/+wTcxDcWiatSS+hKtMfFC4mXtZK6gXFlSC4mDOo4a0d1OSG7ZaaB7skxjc1anhknfgZIPcpu326i8AIH8ZmVb7UZvtl0yAkrcljIQafc0qLPqJMsgEQXqladcCY
+ cB0IQVl6
+ O1yNcgAOzfq1B48ZeDrITp5mGeadoU+bHDPazTCFjCCEQ4awfIx54KRonUcCaTYB3RWbGFHtspWWHisQFPeFToJIgO6B3NdyGq9x7BjO0LMNz7EuLlpEzEFRSGE2aIP9bl/MSMXMmP8xCU9I81wWBsD664+M1arra8hfRF+GIehw1LKUIMdLOTOCrYExPMdUflF6b5U/aqRwkxsi1F7eZ/QpaRXo54rpT8qQ+UzQrxs1FV/FPakE1ZJX/37Qv7n6d0aYNSY4Qas1a/3zei/Lp5hCw+gv8ze5Y7Tx7DvhL0ThxZEM9hpbcddDXaKEpJiy65X1CQ+KgRr9v2wvBGe+ANu6/ZfguaS7k/6e5kbtHrGJ8gnM5NJt78bw6KXc20k6YCnRDUezY2NfmODqBnVVemaCVoYtkTWWVTzcKo+PeveqyNCnhO5AlU3gr2sVq3yVVUkd5YDF9GIsJx6dxwVyGVERFaOdAiaUgt6WVz0lq9IKkEGCePUMxw15KJyYqJwdxs1IbZOxcQPYzuTT3vEJzqBFbUNgpZjWzqXR6tdrpD0jV1lViw+OvwWljutKHqMPduVFZOSlskoMGcQm2lj1nBrDNIsO6drzzi3/J8QDSN4fpu3yHv43cV0IejQrfW/O2r+4FPPghRUbw9pg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,247 +130,193 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hao Jia <jiahao1@lixiang.com>
 
-Currently, shrink_memcg() writes back at most one entry per-node
-during its traversal. This makes shrink_worker() inefficient, as
-it must repeatedly re-enter shrink_memcg() to make any substantial
-progress.
-
-To address this, extend shrink_memcg() and rewrite its LRU iteration
-logic to support batch writeback. Introduce the nr_to_writeback
-parameter to support a writeback budget based on compressed size.
-This enables batch writeback in the shrink_worker() path, while
-maintaining a low writeback budget in the zswap_store() path.
-
-Additionally, to prepare for future proactive writeback, update
-the return value semantics of shrink_memcg(): a positive value now
-represents the actual number of compressed bytes written back, 0
-indicates that candidates existed but no writeback succeeded, and
-a negative value represents an error code.
+In preparation for sharing the writeback loop with proactive
+writeback, move the memcg iteration into zswap_iter_global() and the
+loop into zswap_try_to_writeback(lower, upper). shrink_worker() is
+reduced to computing the accept threshold and invoking the helper.
 
 Suggested-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 ---
- mm/zswap.c | 116 ++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 97 insertions(+), 19 deletions(-)
+ mm/zswap.c | 136 +++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 81 insertions(+), 55 deletions(-)
 
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 761cd699e0a3..d7d031dee4cd 100644
+index d7d031dee4cd..e29f8a61412d 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -160,6 +160,11 @@ struct zswap_pool {
- 	char tfm_name[CRYPTO_MAX_ALG_NAME];
- };
- 
-+struct zswap_shrink_walk_arg {
-+	unsigned long bytes_written;
-+	bool encountered_page_in_swapcache;
-+};
-+
- /* Global LRU lists shared by all zswap pools. */
- static struct list_lru zswap_list_lru;
- 
-@@ -1089,8 +1094,9 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 				       void *arg)
- {
- 	struct zswap_entry *entry = container_of(item, struct zswap_entry, lru);
--	bool *encountered_page_in_swapcache = (bool *)arg;
-+	struct zswap_shrink_walk_arg *walk_arg = arg;
- 	swp_entry_t swpentry;
-+	unsigned int length;
- 	enum lru_status ret = LRU_REMOVED_RETRY;
- 	int writeback_result;
- 
-@@ -1135,8 +1141,13 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 	 * Once the lru lock is dropped, the entry might get freed. The
- 	 * swpentry is copied to the stack, and entry isn't deref'd again
- 	 * until the entry is verified to still be alive in the tree.
-+	 *
-+	 * entry->length is also copied while the lock is held, because
-+	 * zswap_writeback_entry() frees the entry on success and we still
-+	 * need its compressed size to account for writeback.
- 	 */
- 	swpentry = entry->swpentry;
-+	length = entry->length;
- 
- 	/*
- 	 * It's safe to drop the lock here because we return either
-@@ -1155,12 +1166,13 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 		 * into the warmer region. We should terminate shrinking (if we're in the dynamic
- 		 * shrinker context).
- 		 */
--		if (writeback_result == -EEXIST && encountered_page_in_swapcache) {
-+		if (writeback_result == -EEXIST) {
- 			ret = LRU_STOP;
--			*encountered_page_in_swapcache = true;
-+			walk_arg->encountered_page_in_swapcache = true;
- 		}
- 	} else {
- 		zswap_written_back_pages++;
-+		walk_arg->bytes_written += length;
- 	}
- 
- 	return ret;
-@@ -1169,8 +1181,11 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
- 		struct shrink_control *sc)
- {
-+	struct zswap_shrink_walk_arg walk_arg = {
-+		.bytes_written = 0,
-+		.encountered_page_in_swapcache = false,
-+	};
- 	unsigned long shrink_ret;
--	bool encountered_page_in_swapcache = false;
- 
- 	if (!zswap_shrinker_enabled ||
- 			!mem_cgroup_zswap_writeback_enabled(sc->memcg)) {
-@@ -1179,9 +1194,9 @@ static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
- 	}
- 
- 	shrink_ret = list_lru_shrink_walk(&zswap_list_lru, sc, &shrink_memcg_cb,
--		&encountered_page_in_swapcache);
-+		&walk_arg);
- 
--	if (encountered_page_in_swapcache)
-+	if (walk_arg.encountered_page_in_swapcache)
- 		return SHRINK_STOP;
- 
- 	return shrink_ret ? shrink_ret : SHRINK_STOP;
-@@ -1275,10 +1290,32 @@ static struct shrinker *zswap_alloc_shrinker(void)
- 	return shrinker;
+@@ -1380,61 +1380,75 @@ static long shrink_memcg(struct mem_cgroup *memcg,
+ 	return walk_arg.bytes_written;
  }
  
--static int shrink_memcg(struct mem_cgroup *memcg)
--{
--	int nid, shrunk = 0, scanned = 0;
+-static void shrink_worker(struct work_struct *w)
 +/*
-+ * The maximum acceptable scan cost factor for writing back
-+ * PAGE_SIZE bytes of compressed data.
-+ */
-+#define ZSWAP_WB_SCAN_FACTOR	16UL
-+#define NR_ZSWAP_WB_BATCH	64UL
- 
-+/*
-+ * Iterate over the per-node zswap LRUs of @memcg in batches, writing back
-+ * up to @nr_to_writeback * PAGE_SIZE bytes of compressed data.
++ * Global iteration uses a global cursor to select from all online
++ * memcgs in a round-robin fashion.
 + *
-+ * Return: The number of bytes written back, or -ENOENT if @memcg has
-+ * writeback disabled, is a zombie cgroup, or has empty zswap LRUs.
++ * We save iteration cursor memcg into zswap_next_shrink,
++ * which can be modified by the offline memcg cleaner
++ * zswap_memcg_offline_cleanup().
++ *
++ * Since the offline cleaner is called only once, we cannot leave an
++ * offline memcg reference in zswap_next_shrink.
++ * We can rely on the cleaner only if we get online memcg under lock.
++ *
++ * If we get an offline memcg, we cannot determine if the cleaner has
++ * already been called or will be called later. We must put back the
++ * reference before returning from this function. Otherwise, the
++ * offline memcg left in zswap_next_shrink will hold the reference
++ * until the next run of shrink_worker().
 + */
-+static long shrink_memcg(struct mem_cgroup *memcg,
-+			 unsigned long nr_to_writeback)
-+{
-+	struct zswap_shrink_walk_arg walk_arg = {
-+		.bytes_written = 0,
-+		.encountered_page_in_swapcache = false,
-+	};
-+	u64 bytes_to_writeback = nr_to_writeback << PAGE_SHIFT;
-+	bool memcg_list_is_empty = true;
-+	int nid;
-+
-+	/* Memcg with zswap writeback disabled are not candidates. */
- 	if (!mem_cgroup_zswap_writeback_enabled(memcg))
- 		return -ENOENT;
- 
-@@ -1290,24 +1327,65 @@ static int shrink_memcg(struct mem_cgroup *memcg)
- 		return -ENOENT;
- 
- 	for_each_node_state(nid, N_NORMAL_MEMORY) {
--		unsigned long nr_to_walk = 1;
-+		unsigned long nr_to_scan, nr_scanned = 0;
-+		unsigned long remain;
-+		walk_arg.encountered_page_in_swapcache = false;
-+		/*
-+		 * Cap by LRU length: bounds rewalks when referenced
-+		 * entries keep rotating to the tail.
-+		 */
-+		nr_to_scan = list_lru_count_one(&zswap_list_lru, nid, memcg);
-+		if (!nr_to_scan)
-+			continue;
-+		memcg_list_is_empty = false;
-+
-+		/*
-+		 * Cap by SCAN_FACTOR * remain budget: bounds scan cost
-+		 * to the remaining writeback budget.
-+		 */
-+		remain = DIV_ROUND_UP(bytes_to_writeback - walk_arg.bytes_written, PAGE_SIZE);
-+		nr_to_scan = min(nr_to_scan,
-+				 remain * ZSWAP_WB_SCAN_FACTOR);
- 
--		shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
--					    &shrink_memcg_cb, NULL, &nr_to_walk);
--		scanned += 1 - nr_to_walk;
-+		while (nr_scanned < nr_to_scan) {
-+			unsigned long nr_to_walk = min(NR_ZSWAP_WB_BATCH,
-+						       nr_to_scan - nr_scanned);
-+
-+			/*
-+			 * Account for the committed budget rather than the walker's
-+			 * actual delta. If the list is emptied concurrently, the
-+			 * walker visits nothing and nr_scanned would never advance.
-+			 */
-+			nr_scanned += nr_to_walk;
-+
-+			list_lru_walk_one(&zswap_list_lru, nid, memcg,
-+					  &shrink_memcg_cb,
-+					  &walk_arg,
-+					  &nr_to_walk);
-+
-+			if (walk_arg.bytes_written >= bytes_to_writeback)
-+				return walk_arg.bytes_written;
-+
-+			if (walk_arg.encountered_page_in_swapcache)
-+				break;
-+
-+			cond_resched();
-+		}
- 	}
- 
--	if (!scanned)
-+	/* Return -ENOENT if all zswap LRU lists are empty. */
-+	if (memcg_list_is_empty)
- 		return -ENOENT;
- 
--	return shrunk ? 0 : -EAGAIN;
-+	return walk_arg.bytes_written;
- }
- 
- static void shrink_worker(struct work_struct *w)
++static struct mem_cgroup *zswap_iter_global(void)
  {
  	struct mem_cgroup *memcg;
--	int ret, failures = 0, attempts = 0;
-+	int failures = 0, attempts = 0;
- 	unsigned long thr;
-+	long ret;
+-	int failures = 0, attempts = 0;
+-	unsigned long thr;
+-	long ret;
+-
+-	/* Reclaim down to the accept threshold */
+-	thr = zswap_accept_thr_pages();
  
- 	/* Reclaim down to the accept threshold */
- 	thr = zswap_accept_thr_pages();
-@@ -1368,7 +1446,7 @@ static void shrink_worker(struct work_struct *w)
- 			goto resched;
+ 	/*
+-	 * Global reclaim will select cgroup in a round-robin fashion from all
+-	 * online memcgs, but memcgs that have no pages in zswap and
+-	 * writeback-disabled memcgs (memory.zswap.writeback=0) are not
+-	 * candidates for shrinking.
++	 * Start from the next memcg after zswap_next_shrink.
++	 * When the offline cleaner has already advanced the cursor,
++	 * advancing the cursor here overlooks one memcg, but this
++	 * should be negligibly rare.
+ 	 *
+-	 * Shrinking will be aborted if we encounter the following
+-	 * MAX_RECLAIM_RETRIES times:
+-	 * - No writeback-candidate memcgs found in a memcg tree walk.
+-	 * - Shrinking a writeback-candidate memcg failed.
+-	 *
+-	 * We save iteration cursor memcg into zswap_next_shrink,
+-	 * which can be modified by the offline memcg cleaner
+-	 * zswap_memcg_offline_cleanup().
+-	 *
+-	 * Since the offline cleaner is called only once, we cannot leave an
+-	 * offline memcg reference in zswap_next_shrink.
+-	 * We can rely on the cleaner only if we get online memcg under lock.
+-	 *
+-	 * If we get an offline memcg, we cannot determine if the cleaner has
+-	 * already been called or will be called later. We must put back the
+-	 * reference before returning from this function. Otherwise, the
+-	 * offline memcg left in zswap_next_shrink will hold the reference
+-	 * until the next run of shrink_worker().
++	 * If we get an online memcg, keep the extra reference in case
++	 * the original one obtained by mem_cgroup_iter() is dropped by
++	 * zswap_memcg_offline_cleanup() while we are shrinking the
++	 * memcg.
+ 	 */
++	spin_lock(&zswap_shrink_lock);
+ 	do {
+-		/*
+-		 * Start shrinking from the next memcg after zswap_next_shrink.
+-		 * When the offline cleaner has already advanced the cursor,
+-		 * advancing the cursor here overlooks one memcg, but this
+-		 * should be negligibly rare.
+-		 *
+-		 * If we get an online memcg, keep the extra reference in case
+-		 * the original one obtained by mem_cgroup_iter() is dropped by
+-		 * zswap_memcg_offline_cleanup() while we are shrinking the
+-		 * memcg.
+-		 */
+-		spin_lock(&zswap_shrink_lock);
+-		do {
+-			memcg = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
+-			zswap_next_shrink = memcg;
+-		} while (memcg && !mem_cgroup_tryget_online(memcg));
+-		spin_unlock(&zswap_shrink_lock);
++		memcg = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
++		zswap_next_shrink = memcg;
++	} while (memcg && !mem_cgroup_tryget_online(memcg));
++	spin_unlock(&zswap_shrink_lock);
++
++	return memcg;
++}
++
++/*
++ * Walk the memcg tree and write back zswap pages until the
++ * (lower_pages, upper_pages) window closes, or abort encounter
++ * MAX_RECLAIM_RETRIES times of the following conditions:
++ * - No writeback-candidate memcgs found in a memcg tree walk.
++ * - Shrinking a writeback-candidate memcg failed.
++ *
++ * For shrink_worker(), it passes lower=thr and upper=zswap_total_pages().
++ * The @upper limit is refreshed in each iteration by re-evaluating
++ * zswap_total_pages(), and the window closes once the total falls
++ * below the threshold.
++ */
++static void zswap_try_to_writeback(unsigned long lower_pages,
++				   unsigned long upper_pages)
++{
++	int failures = 0, attempts = 0;
++	struct mem_cgroup *iter_memcg;
++
++	while (lower_pages < upper_pages) {
++		unsigned long batch_size;
++		long shrunk;
+ 
+-		if (!memcg) {
++		cond_resched();
++
++		iter_memcg = zswap_iter_global();
++		if (!iter_memcg) {
+ 			/*
+ 			 * Continue shrinking without incrementing failures if
+ 			 * we found candidate memcgs in the last tree walk.
+@@ -1443,12 +1457,16 @@ static void shrink_worker(struct work_struct *w)
+ 				break;
+ 
+ 			attempts = 0;
+-			goto resched;
++			continue;
  		}
  
--		ret = shrink_memcg(memcg);
-+		ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+-		ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
++		batch_size = min(upper_pages - lower_pages, NR_ZSWAP_WB_BATCH);
++		shrunk = shrink_memcg(iter_memcg, batch_size);
  		/* drop the extra reference */
- 		mem_cgroup_put(memcg);
+-		mem_cgroup_put(memcg);
++		mem_cgroup_put(iter_memcg);
++
++		/* zswap total pages might have changed, refresh it. */
++		upper_pages = zswap_total_pages();
  
-@@ -1382,7 +1460,7 @@ static void shrink_worker(struct work_struct *w)
+ 		/*
+ 		 * There are no writeback-candidate pages in the memcg.
+@@ -1456,15 +1474,23 @@ static void shrink_worker(struct work_struct *w)
+ 		 * with pages in zswap. Skip this without incrementing attempts
+ 		 * and failures.
+ 		 */
+-		if (ret == -ENOENT)
++		if (shrunk == -ENOENT)
  			continue;
  		++attempts;
  
--		if (ret && ++failures == MAX_RECLAIM_RETRIES)
-+		if (ret <= 0 && ++failures == MAX_RECLAIM_RETRIES)
+-		if (ret <= 0 && ++failures == MAX_RECLAIM_RETRIES)
++		if (shrunk <= 0 && ++failures == MAX_RECLAIM_RETRIES)
  			break;
- resched:
- 		cond_resched();
-@@ -1492,7 +1570,7 @@ bool zswap_store(struct folio *folio)
- 	objcg = get_obj_cgroup_from_folio(folio);
- 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
- 		memcg = get_mem_cgroup_from_objcg(objcg);
--		if (shrink_memcg(memcg)) {
-+		if (shrink_memcg(memcg, 1) <= 0) {
- 			mem_cgroup_put(memcg);
- 			goto put_objcg;
- 		}
+-resched:
+-		cond_resched();
+-	} while (zswap_total_pages() > thr);
++	}
++}
++
++static void shrink_worker(struct work_struct *w)
++{
++	unsigned long thr;
++
++	/* Reclaim down to the accept threshold */
++	thr = zswap_accept_thr_pages();
++
++	zswap_try_to_writeback(thr, zswap_total_pages());
+ }
+ 
+ /*********************************
 -- 
 2.34.1
 
