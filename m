@@ -4,142 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D452CD98F0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C8ECD98F0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:21:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8454B6B00A1; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
+	id 031EA6B00A3; Thu, 18 Jun 2026 04:21:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F6806B00A3; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
+	id 008DF6B00A5; Thu, 18 Jun 2026 04:21:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C936B00A4; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
+	id E3A326B00A6; Thu, 18 Jun 2026 04:21:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4961F6B00A1
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:21:14 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBCBA6B00A3
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:21:48 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB0AD90A1C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:13 +0000 (UTC)
-X-FDA: 84892338426.29.AF1A3AB
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DC8C1C2A53
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:48 +0000 (UTC)
+X-FDA: 84892339896.29.4809B67
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 295D4180011
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIXHsSRN;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8860718000A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:21:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITH1SfL9;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781770872;
+	s=arc-20220608; t=1781770906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vRZP6BkXeV5Y9+mYdnU67rb5ToB409RMcoGypcijP74=;
-	b=4sbcrzpT+nrG7jHYugRVFghzyaTmec9cHjj+sKTxeWeGjCtWK2J2MZKwroUja2/wQIkuSn
-	VrrsXbHNy2muORZebc4y1ZJ9p9rODEHnePrm8CCNh/mXq8/DEkokeIOOctTxmjv1ssE922
-	Y/KIUZJadilubSxQ5xiuHzzYq2JbUP4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIXHsSRN;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=a86Xi+KHHQiKgkwKDg3yWKQ4QvB5ZMfq8SczFe4Ok00=;
+	b=Ot0zu8OGyIGrB3NhQP0l36CVktIn449XOI71xvGPBqne4Kaqo2UGTfr4HKsJk359AR01YX
+	CHP8Mce1sPg1hKhn6PbNzAOuq2AucFpaNizn+h77eH0Clx+jnCPHRM+hdPYflJQdMnRvy0
+	UBAScYgwaJLzMxYOwBl8CI+LIp6LXW4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781770872;
-	b=QoX90bKWbTMIItywEHU1CbqAeazG+KMKbecP+jE83fFDwrhPmPl20jjqvhmC5WAa1yfcOt
-	7U/X6FaqFJEC2wqYo70V4HFZz7YIyJY3aJEXxOph1vYGMoyf6ystrlgyWCVry80JajmdmE
-	d70VgYGvbwJDRtJVLbgi711IvsVoARo=
+	t=1781770906;
+	b=XOWabEEN0n/rfACWCSz9bz0WmhIfroZhQy8VpynYueoeK4atHVY1ZJXc4P40EtlZoyF7ZQ
+	d0f10Iz1sJbmbcq7ZsH+vP/GQBOErPWyoElewTSvs2vdAQVIUCCPwuKd5EYJ/mHQYklhbF
+	6Ndiz4yhUI9DVEGn4+/kFLgZCJ4FtI8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ITH1SfL9;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75080601F8;
-	Thu, 18 Jun 2026 08:21:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92611F000E9;
-	Thu, 18 Jun 2026 08:21:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7A22601FD;
+	Thu, 18 Jun 2026 08:21:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67571F000E9;
+	Thu, 18 Jun 2026 08:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781770871;
-	bh=vRZP6BkXeV5Y9+mYdnU67rb5ToB409RMcoGypcijP74=;
+	s=k20260515; t=1781770905;
+	bh=a86Xi+KHHQiKgkwKDg3yWKQ4QvB5ZMfq8SczFe4Ok00=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GIXHsSRNDqHF1t56tZ2e9PPEkZAA7QhQ46XgrrEuMJ+dGkcBFbZoqdTg7CeChoO72
-	 nunFwrKujraAZP1AdtQOBrqIYf2M91mFe2cY/TjhznFI1Q0MMPeJVRYR0l/vUiWHfa
-	 dfnPPbUortMBhwKjV975EsO1K1YhPFu9xEqBsKaLBqDIxLaOWcnxOnNIpd/oPYToAR
-	 ie9ukMlHY/IvfadI7oF/nciocoJjY5ab0gzJt1aw/6vdKAcsApD5MS0H+vawUlXJQC
-	 qsRjNjzy81USSLZHE1T2TYW5o9lJ4sY2EDHI8NuE2cOYtdmkKyXY+++JhGZgPQ9jay
-	 jx88RYsubK7Uw==
-Message-ID: <3149bc84-dd3a-43ba-826e-6364965fdafd@kernel.org>
-Date: Thu, 18 Jun 2026 10:21:04 +0200
+	b=ITH1SfL9/zU15o1E1iAQjeukJh5FkXRn/rUOWQjgchYsoLnfG6CQNPDmkYQWSIGtA
+	 flAwOMq4gnrxIY64c1aNj8iKGJWTtQFzfGweGo/onTzL4vpk5oXeSIk20LEnpPeXXt
+	 C0pgo890yABHW1jPPR2yX6XQCccneiRP7V/XG0EeUKjwRC4CoYZ8IVoU3JjrxnmAod
+	 HiKByqpkXFRyyMnC0Aj6gbr5ueeiX7S1Mn1WM9uWmV68ehvqF9pQyzHRkBqr1c1o1c
+	 00hWesaUNkTugeyf+fQ4AKFEOnvmyGMVT7rElu2qfPAqenL8AcjySokDq53iH5vJCf
+	 /TA5xQp4963ww==
+Message-ID: <90418cd3-751f-439d-83ed-a0c33517c3bd@kernel.org>
+Date: Thu, 18 Jun 2026 10:21:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/lruvec: trace LRU add drains and drain-all requests
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: JP Kobryn <jp.kobryn@linux.dev>, linux-mm@kvack.org, willy@infradead.org,
- usama.arif@linux.dev, akpm@linux-foundation.org, mhocko@suse.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- baoquan.he@linux.dev, youngjun.park@lge.com, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20260610195220.12403-1-jp.kobryn@linux.dev>
- <06122cae-e28b-4ded-a9dd-d380d31c5230@kernel.org>
- <ajK1YsIJmD2ImbAk@linux.dev>
- <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory
+ Nodes (w/ Compressed RAM)
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <1136baf3-3967-4202-9eaa-5fd667c235cf@kernel.org>
+To: Gregory Price <gourry@gourry.net>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>, lsf-pc@lists.linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
+ kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+ dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+ ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+ linux@rasmusvillemoes.dk, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
+ mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+ pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
+ riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
+ roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ zhengqi.arch@bytedance.com, terry.bowman@amd.com,
+ Matthew Wilcox <willy@infradead.org>
+References: <ah6bDNxlB1zBUnzN@gourry-fedora-PF4VCD3F>
+ <ah-0CyZurn5D1ezY@parvat> <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
+ <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
+ <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
+ <d01fb1ed-2418-42ee-aea2-37f9a5c5729c@kernel.org>
+ <ainFROZ3WrGioyuY@gourry-fedora-PF4VCD3F>
+ <aiwl4kCG814dpX7L@gourry-fedora-PF4VCD3F>
+ <9f1815b0-896b-44ab-9e6d-9316d8f11033@kernel.org>
+ <fdbdc9f7-d142-4880-b429-065d5056cabb@kernel.org>
+ <ajAcIwBAnqgEEWSD@gourry-fedora-PF4VCD3F>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <ajAcIwBAnqgEEWSD@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 295D4180011
-X-Stat-Signature: j6eu5dnfi98zu68axs4kenjnckm8zu17
 X-Rspam-User: 
-X-HE-Tag: 1781770871-554197
-X-HE-Meta: U2FsdGVkX19/+rl6Ez0wts2KM6ifjORznH1CrrRfFRFF6NRo2+AhBcjoSDgVk94Vb8gf0eIik3wyny0shojeEE3lCksAO3kWuH4ngp+q+O3vnDfALA/sRx29LCxVM2xJZ58405wlY3rbYJfQmbbAr0ROB5fauD5rNa27MIfLLew5mSMLiBgU2uUA2Y9O43bCRshE0abSSX57ITugJvbz4ERwDNWO+ufkQwtiDg4ZnFSW9zJRkmDWq+wIFY0w9qrKc5L6I2BX+6oPk5lSGmioXZy1JEZkvfSXfqlYYXbByxsEZQUXDP6womFVq2BYer3vJFkWlxZPDW3PBTW5qWtNGBPgaG6dY+IkcPrEWCCIBRmsYpUu7WjDRPs/uTMHBKNwPE362zC81ZrSlH08ZujxtPqPXYcCLxOgRJhqGumKIAAcaF4GohMGH5/mrrkUxtnqLjHOEJYGQeFv9PN6KZR+XSz2U8qiC1CND7Z75DnfUn8Rbxocl50l85r89Jl5zBGekkInvYDJOSlBqzwSNiz5phn3WkFirjekrTDTGLqUB++6lwEaKtYNs6aXx/koLVomdRsWK0JUuoxwEFRlrDdMMw2bkGowla2h+A/5TXPdhd3oKBs4gE7kmGbbqMo//bHi/ubudeqwLp6urmsYLtM1/0LKA/nRBZ+BHdKGc65csV1BIGKTBQxPK+0cvFTDt8xgLku2wEwFmjNrWnEGGWq0rvigyVTk1NvmAXnKuQRusRbGabo1aCxR7FPc4QNdp712TzTyM/cvvtBp9iDG2x8hk8yHQuLGiuXEK1bmeb0N3TOZJxoQxaId0xywZaOXrEYUDe1FJscYmEPaWyL6ntdIk/ecOQebxr8iIjSNTGxaXVV9qs2vJ7Z5ZNiaZ20G6auqTX92VG/twcLbFMrgBHrYlPlCMam1T74gnX/l/miYiFirkVH8/C9ikWS8dh+x3o4NVxspNmPI8OEhU6yGr51
- 87SiaKVT
- pipqYowILetxvxj8nUkrTTHmFFCycSV+msULY7J5QJW5H+H26BaX9teiEpCNwstMTquRkfYV6graa5GRbUQAOiDwdHj3YiHlZ1I3+J8VlrIifC6VGG0Hfe1QXaFzTfxeg+rogP6J+byFwZEBOeb6McKQDtQcbE6N8vE80Leiox7QbopGQL4hKLC08j/Gdufw+RjU35xvtzxYZKbCbaUckUPTu1ljr515oVLYOlCP8gqljJb72ypSjOfk+kxoK8DXv14pM
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8860718000A
+X-Stat-Signature: wsg3kocjuwjecxzfrhgzt9o56hokygf7
+X-HE-Tag: 1781770906-801390
+X-HE-Meta: U2FsdGVkX1815kgX/7ySyunOcCzEHZIDZr6nGudImyO2KlViy4dLMhqQ4jIBBZ+rH9T6dkK1e5YBgyGeuMZUiioYcWgwbxUS45O30O3ycEdI4jyurZ/RQLSxJvwmlVZ49nvQhk0qfaqUno2IaTj0j5xH4pz7T5CmmtkEnx/zdpx2ggQ05QPvU/tniQuWc6RjIq/AyocuauDdd4Bu9KNFvCe5XOHdIcIwQEpqRoNoA+7SdyO2A2sO1scJj6kmO4irCXgNCSbBTT0Z1bSz1wU6iQnC/b55hPipy/By/+8AtCeWybhbDhgwwhcmffkqbJ9Nqkz5ekjTeG0afA5ptRwuYpyHN6tx0xgPMbSI04nDbEnx2dSNRe2d6+PUPfbxWPgsLwDAu3QAhxwFf/GB0dY1eoqQhu6e3AINVVkWbvBzJFnhlbbDy14U1i/InGfgMyGIWz1HDB5xq+YLxjyEz/cdtttXJ54VHrEfqVMZaOYG4InvLOlMk3olprH6ez7Fom5W4kKvDeHUxPXrJbUlNKV5r9YwKHiyJTo6zvmF0bOJsV0MTfkxzftDo3MVrcHOXO+LC2BSWbmv3MBiZ949pvCEOmNQxpzArqAeaUnYFhsjtTpIY53/Xr4WuN7vg3gjdtkCqov/LQCpCTD0gIr5VnySyRk6aLxN5qsoRT0RcUH3C2lEWMdyDj+uFgpMug5+W8lZa4lLbGWHUb8ka2koC3jvuwR9muxW0Rb0BYdaiw023cVvmKTJj+OjUJQfioqA8ZMYZZvxIpRHQhSV6S18QKmymig2lDxzNFdljyEySFXm4/traNuFmsk4cX8vp/NL67Cu3ydDbm+1p6ZHcvqjgMeCcq4VWzTV3n4t63OnjNE8k5ZcHd1Nn9Z0mkzpDatmV0OmU2E5f4DVZd7lFpft4Lm7qQB67KpzaQS1+Yd8A81uJe/z5sjvvRSUMc5nC2JWhtOUyNYDGbK5Dr6/KnIH7Rr
+ xfOm+6NN
+ ScFjU/YQa9jG57xDLfhEF51sQvsHhhuvvO2muYFFJ7ZWPcRXoB3/d7S6/7wnM8sQoHS4jPdvY0pQ6qG/sJxWGHr1LiiXecpe2xE+hHZkQnLSbzavxrdYcjOM2cDCK3TMm8nwsLEBoaXiVKTj7CRB3jyHGK/cwx6m0aUwvQ26kjswMM1duQ54VA5PHXW58TYCChKzP+KLHLtsw+8EuJq0vp9WAOoDkNZhlsp1J2wBxAZaptsX+ekHvoI2e2ioRKUxCT8VPDI2RPmNP4VzhoDUHVzQspjvXnGSasYcJIA0kddqzZ3MbrfP3nj79QkqMPrCRoEfAdo5AtYLcydE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,26 +168,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 20:18, Vlastimil Babka (SUSE) wrote:
-> On 6/17/26 17:03, Shakeel Butt wrote:
->> On Wed, Jun 17, 2026 at 01:11:16PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> Given that trace events can quickly become stable ABI [1], are we really sure we
->>> want to add this?
+On 6/15/26 17:37, Gregory Price wrote:
+> On Mon, Jun 15, 2026 at 05:18:55PM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/15/26 16:38, Vlastimil Babka (SUSE) wrote:
+>> > 
+>> > I think the memalloc approach is dangerous due to unexpected nesting. There
+>> > might be nested page allocations in page allocation itself (due to some
+>> > debugging option). But also interrupts do not change what "current" points
+>> > to. Suddenly those could start requesting folios and/or private nodes and be
+>> > surprised, I'm afraid.
+>> 
+>> Yeah, we'd need some way to distinguish the main allocation from these other
+>> (nested) allocations.
 >>
->> Yes, I think so as this is useful to get insights into lru cache draining.
->> Trace events being stable or not is secondary IMHO. If in future we rearchitect
->> the lru page handling where there is no cache draining anymore, we can make
->> these a noops.
+>> 
+>> > 
+>> > The memalloc scopes only work well when they restrict the context wrt
+>> > reclaim, and allocations in IRQ have to be already restricted heavily
+>> > (atomic) so further memalloc restrictions don't do anything in practice. But
+>> > to make them change other aspects of the allocations like this won't work.
+>> 
+>> I was assuming that memalloc_pin_save() would already violate that, but really
+>> it only restricts where movable allocations land, and that doesn't matter for
+>> other kernel allocations.
+>> 
+>> Do you see any other way to make something like an allocation context work, and
+>> avoid introducing more GFP flags?
+>>
 > 
-> Yeah and I don't recall ever that a change to a mm tracepoint would ever
-> break someone who'd complain and we'd have to revert it.
-Really? :)
+> One thought would be a way to switch what fallback list is used, and
+> then have specific fallback lists for certain contexts.
+> 
+> Right now there is a single example of this: __GFP_THISNODE
+>   |= __GFP_THISNODE   =>  NOFALLBACK
+>   &= ~__GFP_THISNODE  =>  FALLBACK
+> 
+> We could add an interface with the desired fallback list based as an
+> argument, and let get_page_from_freelist to prefer that over the default
+> global lists.
 
-Read the context of the link I posted once more.
+Does it mean a new argument in a number of functions in the page allocator,
+or can it be mapped to alloc_flags (at least internally?), because the
+number of possible fallback lists is small enough?
 
--- 
-Cheers,
+> Omit all special nodes from FALLBACK/NOFALLBACK and make the special
+> contexts provide the fallback-base that should be used.
+> 
+> On my current branch i think that would include modifying, in totality:
+> 
+>    alloc_folio_mpol()
+>    alloc_demotion_folio()
+>    alloc_migration_target()
+> 
+> And i'm pretty sure that all just nests nicely.
+> 
+> We might not even need memalloc... hmmm
+> 
+> ~Gregory
 
-David
 
