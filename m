@@ -4,110 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24AEECD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA72FCD98FB
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61D46B0088; Thu, 18 Jun 2026 08:46:19 -0400 (EDT)
+	id 5D2396B008A; Thu, 18 Jun 2026 08:58:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12CA6B008A; Thu, 18 Jun 2026 08:46:19 -0400 (EDT)
+	id 5A9E36B008C; Thu, 18 Jun 2026 08:58:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D013D6B008C; Thu, 18 Jun 2026 08:46:19 -0400 (EDT)
+	id 498D76B0093; Thu, 18 Jun 2026 08:58:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A5C106B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:46:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DD60A0418
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:46:19 +0000 (UTC)
-X-FDA: 84893006478.05.9B82140
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6EBE240011
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:46:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+aV6eXH;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2013B6B008A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:58:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 930EE406FC
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:58:45 +0000 (UTC)
+X-FDA: 84893037810.01.DA6ABA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E63B24000B
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:58:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ctpv1ayz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781786777;
+	s=arc-20220608; t=1781787523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=12/PAUDTOYfrkJ9zjxNjbQQEDZEGb0acxRasEquNV8c=;
-	b=TsrwDX4NPJ+eRWIz0JWFavqX3UkNbArABLbvSB0cGqeiSTPW9CCQSIhguJym4PUA78ERuo
-	/adHnfCoHNgGdckyVBaee7Cjdewi0At2ffdKSGPIdwaVNiWYyHI0OUn24WwKbJ1+B6XHjM
-	2uYY/7GjBBLrnb20Fba/zcljK/OwciI=
+	bh=Ivz1DyTo0J84nVXXYf8vVRV2fher9kNuAq0AcbuKdXg=;
+	b=JDfLh6lqITF3Loz771jb0bJjluc1cG2S4pE7F66LwTGZexxE7uGu4Y1P6pnBNhGzfcE4s3
+	xKSX4m7gqzqUCoNirFNJ2gWNOqCOPmYJoQyjMk8YWVEz/qphzu56RSLN/GX4KiWK/QMKeI
+	RN8a41HkS9MXf+xNj0KUNyvBfCmF6bk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+aV6eXH;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ctpv1ayz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781786777;
-	b=kqGWD95z6jpTae6MLDUvj3ZRaRZ2BZj+fZ1DA3Hx8yXpezJvhSP3nmWDI8Nw3P3HD4uvHd
-	gPIGJjDBIWgdXr5yQMaxNH8sTPE983ApwFG0aRclfgvsR11ala+wOoEp8pMmer49KvwbZS
-	YpZ0gzqXXt6s0ikDyQhBexfJu/S+7NE=
+	t=1781787523;
+	b=MnsX39TBj2tf5FKql+4Wu8BpGDVSOUncp/foC72g4zeh1jT4XzHLm5PKeiE0xdUYkfgvDD
+	R6ReQ/sjMHGcwwVByqfo3pWNVBRhMhfCQSGDzeA7G0bVboa2hIhS2Ljp2fMCvPfyDiNDTK
+	rsxu5TSz1CxKg+cbR9kHPNtHo458/aY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 784A5404F6;
-	Thu, 18 Jun 2026 12:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5301F000E9;
-	Thu, 18 Jun 2026 12:46:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 676F160120;
+	Thu, 18 Jun 2026 12:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C131F00A3A;
+	Thu, 18 Jun 2026 12:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781786776;
-	bh=12/PAUDTOYfrkJ9zjxNjbQQEDZEGb0acxRasEquNV8c=;
+	s=k20260515; t=1781787523;
+	bh=Ivz1DyTo0J84nVXXYf8vVRV2fher9kNuAq0AcbuKdXg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z+aV6eXHEz7VlgrnsQQ03Z+8Zb9YcjYrK+HMqvFJSpghpQu39jthl+uUJoATiBkss
-	 cleXhnjiOavl5FCxDhBVQWY7nkZniTKAC0EuFJs3M8ryMmM/JL3AkWqL2pQ8oDPyv+
-	 zpib5/x5p9qKtSzJlegXic5z4V9LWD1qQKFyo0/gZJp/nR3M9tVuPj97b9I+Lw9yAo
-	 1g38OX4/l8gaWl5SUjYY8xERklp7FAUfYxtp7lWExEAizO0VVPy6AignHbfgZxs3Wt
-	 YMQqE/qAAJIRPfXMLSJqgTvxObnFUQnnscTGGxSQR8K5+4YNgi0J50dUn99G6+7MqP
-	 DwgptAJDbbzow==
-Message-ID: <39758d58-f646-470c-9c35-818ac75427d3@kernel.org>
-Date: Thu, 18 Jun 2026 21:46:04 +0900
+	b=Ctpv1ayzFZKGhkR/oi5ScZKpMiaY0tKFvGz/+QCD9XoUIh0ywNeX1BXv0v+neTaP3
+	 Yw1V9JeL0wPUf2e00BsvjVS9XaWg+GF75ke+Urzuqjn5PkPlhE9anbQEUVLu0dF/Ry
+	 qvsqOEN2h2tGsrSpXrArqsLuCNGv0tzkc23vrWvi8wLTqGHfbstMFVa9TSB6Ho39m3
+	 hVjHxF80exzWfRHnTJWAjnWGTms6O/72LcxuKlHX3CUWptxtQiSw6xUeW37Il/EaXa
+	 2VlL3MPeE11iewCe623BTUThIIpsCoDoYeYw0qg8yL5QiAir2Thoz6F9uekusJilnT
+	 PQTkhK432zCow==
+Message-ID: <58703c2e-867d-4b81-a78a-0802136bb379@kernel.org>
+Date: Thu, 18 Jun 2026 14:58:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
-To: paulmck@kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
- <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
- <40591888-3a87-433e-b3d2-cda1cab543be@kernel.org>
- <9d8ca1ed-bc53-417f-944b-d78eecd1e6a5@kernel.org>
- <03da8742-3790-4428-84b8-11911bf44c9e@paulmck-laptop>
+Subject: Re: [PATCH v2 1/4] mm: mincore: use walk_page_range_vma() in
+ do_mincore()
+To: Pedro Falcato <pfalcato@suse.de>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ linux-mm@kvack.org
+References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
+ <20260618092845.3905740-2-wangkefeng.wang@huawei.com>
+ <ajPZlxq5z1hyo1kE@pedro-suse>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <03da8742-3790-4428-84b8-11911bf44c9e@paulmck-laptop>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------r52TW6tkzMED0vgUCNBCiTch"
-X-Rspamd-Queue-Id: 6EBE240011
-X-Stat-Signature: mawuoe5i1q96gis36xbppnexbtu7k9g5
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ajPZlxq5z1hyo1kE@pedro-suse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781786777-82678
-X-HE-Meta: U2FsdGVkX19YK37xD4T0OUahfzWKD2hTEgdg5Cb5mAEgO3Mu/VCOB3vHauVbgtT+ai0R1Z1ETSUTWqaCJy985IX8QwXPIibBjCvirQSYMAmY7dAT/Ziy2tSFuW2OU/Kre38qb5sZ8DySdWy5wszOTckQOUjB09QfrseWzS5diCVZZzXrFV0pYH394H+GYzKo+zGxbqcXU8CS39cqZoi00NhM3sie5H0Cg2FI3YaamC136rxLQ/TLT6W4d7cjrZ/2FzUMvh2YrHByQ9dxgpvTKrue6ednZFvbmGspEf+ERpS+yNmsWvwagDpMzH7n3x/a8Asi9Ho9UAIXTYKQS6i96kXDtk/kZeteuw70OcdDmng09SSPwoZAOEt5H34NIYdkqL560i/XpZTWnBvE20crC59pW7DenToOMVPw99knIs7ZIvrnh+kdJjSZORJWnl0EtLPMkbyOoFX7Ijx+6j6wUIadPyBFYvkNytypcdm7uGpiuJBi56qF2989f5+esfgpRG6jF/Sxu51QWTnwAZHnwTrgaamrrROXAyadKIeN1lw8IOOdMdCUyOvPkl24YRsIRyFpDnoVyWCbcCoZBifdhAuS4WtY1zJzW4FrBapFqhqTj3I/mlatlri/1Qmv/dk/yks4VyVLga6Mh6wuga+3Vvjwr5tx5VdQ8O8nWPquUgCuyBTTB0hekEYXAFEKB3LU9+pYkHbhOM5SHHnol+zIE1P8S0JjSz8BwfGfyCJUgjW+n7fJEQw7Dnr+p0Hh+LJdr+WCdTulVCqWNIhrswh9HOlNO98wdrmvhtzZHwd12B2H/x3srHXcxrF3h9pnrVYJGsIePMir2gh7SprQj3mfB0nfPEPkG16lbyHBrjpIpcVB877P0q7VATZJb/2Pg14fh4mWUthMmHgFnMTqrJHLoQ4bPDFO+gsl13I2NAefzrmk65lVJwW2Md8mXUO2UUoc+90WnKzKvc3qhwv8pgF
- IYSoDubI
- 2af5ChnwPWq1Iq6Q0UjfcwIIgR4eez5OIqmgNUKZwkytuAUqZpsrlp7HPvBPBbjrFWPcbu4XbDxpuFcXseXDRvg3eSUy7Gh7MZNOdU2zIcHrSITDXXaiV0QUKuKn1yp+J1rr9Cnu+GQkH8PljgjXhMI7QGiCIqWM3s79UVt2vErqUP8pjJq7DIekVHBpLAZHWCiSLjJwtnMjKjKrXy4RAV+i4W4z1EK20OqQLa7itwvBm2Vk27N3yuSJSxhehgmMA+qA5PvOYBUivRTKK3RFqrIGQ5FwP4O41NY2gGOL/MPWIfB0J3u95h/AVy2ZE5PCHtWJLPhd64vx4rGiG7zfLWnz4O/3F258Oe4mddJg1X6zmRM1hf5vO6J0z2S3T/aUzW/0Ro3hytFlRK6LeQ7UULldizBgdHt0a+sG5cCmN0V8xdf4MVZV4R+vFA4e5PHPyicI65MotiMuhIeLwedm7/Fgy/RhQ22/CH9YrQEA+ypZ1AW/FJZB0YJCnxYW9DYEqTvtpQdjpkZ8nsEiiyWS3gQx6sw==
+X-Stat-Signature: b3oopqsjq3sqcmh8wekhkrr7knwogjpi
+X-Rspamd-Queue-Id: E63B24000B
+X-HE-Tag: 1781787523-873970
+X-HE-Meta: U2FsdGVkX1/YRctm7gzpzFnipg2+R5BcYIG/VD+NaT7PdfU4k1m40bko4fFUlUNblhv/Jvph+7QPVZOMsBZHqLoUx4VGH3XOV6EHT8/Dw/vBI1XxKZ1KKjhzKmT8+ckWdXNlad9DNTYIdTA5Tkh/mMq1G5RfroY+6O3trOaPu/++mh6fIJ5tHjd3ssb34986/0ZscEIme834H+2YW7lj+fMMLCzjVA7Myk2X8DJB/nyWJtJnoI1PMDR1ZPBJ4qxig6+xoiquzpKK6gs0/Cb92MbXfB5PusSDGK2w5nNpDIYu4Klh+ry9aZtNu1TwYp7c1JmBoY6Uv9yaqqiyTTmhbROnTTkb/SDlIqJX6MnjbAtfl0ALI++QNh+D3mcRUA2G9+MYi27vnYbSTOKybLx73wdraW2EPosvqbMR2ILMFuJz6ACGz6ldLQ80ijedk7SA9XZFn7n3QPJoA6GErN46hTMFWm4xh1bttU/MOEu78Qh87LW7KTTE8oMLTSRjs7LQvPBndS4nTY5BlfkAYuLAIjhmTxtIFnMgEOD1fU5hyWr2HJvfvNKxWExTLjH4G1nkTbGgu+TQZIzMVmdls35wUBB7fmRbCkmh7e3m2ephaR6OxUrmvE9WqlpNiXlg4O9FuUmRvSUzogAE0pv6m73BTpOW/K+Hyz+2PgZImCSvmIUvf/38opSr2jH/YDxLNVauxLvmJwEHauifz3997TwYwrr/PrizWzK/n3QVo1sSO8dgd3DSekoQyBrHQnpiiPUhpH9Syj35PwIwPfpBEfKd26DGcJfDmB36yLAi8lyU2Jrc3jFveUQUBSjALSyU13mW2x6HB40+S53o9jUH7gU43a6WlGD3E0UNbEYbqmYs5bEtcfR7rZ0jZ436VTO05Pq0UF29AIeGEq49R66NaONKA+KHIHmk0YcMI5xJUEIZcmTbQh04T4pKr7dr0BuogGIjxhRPhwodTVQiTN9j77X
+ F+rYcHYf
+ 52DJacbHuzoPKHZpaBpdBJsDA3f+hvb1mflY14zXHRIqK6WXMp61xGnA6aMPHPC+quBczkaHKadekoPVLHcDp3hPZHs0Oqn3ni4dD11yZx4xa5aQSXgSmiIGisBMU9MI8zsGX+g5SdbHB5Vr+m/lDQCBWPPrlOJsjp/UFeppnzVj/nVCxYf8RhuF9ph3axhZGxkH7maqxnXDWjPLwkj+J6qT7Bpe1E14KkJ7LmQ6iKHbMnobt3H4NBuM/nMHCwd7tWqufSGazfjOtPBCfAJqo5b/EGA6bfxYWuY/agBlBEzNqurgg/qlCTYGk0LADb5a01Y+bAjGc9Axq6ww=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,187 +142,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------r52TW6tkzMED0vgUCNBCiTch
-Content-Type: multipart/mixed; boundary="------------CZDOJb3QDvzu5IEDZMoq1w7C";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: paulmck@kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- rcu@vger.kernel.org, bpf@vger.kernel.org
-Message-ID: <39758d58-f646-470c-9c35-818ac75427d3@kernel.org>
-Subject: Re: [PATCH for-next v3 6/9] mm/slab: allow kfree_rcu_sheaf() on
- PREEMPT_RT
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-6-70a54f3775bb@kernel.org>
- <f3a56a5a-f10b-46dc-bc99-28449ade1661@kernel.org>
- <40591888-3a87-433e-b3d2-cda1cab543be@kernel.org>
- <9d8ca1ed-bc53-417f-944b-d78eecd1e6a5@kernel.org>
- <03da8742-3790-4428-84b8-11911bf44c9e@paulmck-laptop>
-In-Reply-To: <03da8742-3790-4428-84b8-11911bf44c9e@paulmck-laptop>
-
---------------CZDOJb3QDvzu5IEDZMoq1w7C
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 6/18/26 5:40 AM, Paul E. McKenney wrote:
-> On Wed, Jun 17, 2026 at 07:38:16AM +0200, Vlastimil Babka (SUSE) wrote:=
-
->> On 6/17/26 07:14, Harry Yoo wrote:
->>> On 6/17/26 2:24 AM, Vlastimil Babka (SUSE) wrote:
->>>> On 6/15/26 13:06, Harry Yoo (Oracle) wrote:
->>>>> As suggested by Vlastimil Babka, kfree_rcu_sheaf() can be used
->>>>> on PREEMPT_RT if we always assume spinning is not allowed on PREEMP=
-T_RT.
->>>>> This is because local_trylock and spinlock_t are safe to use with
->>>>> trylock variant as long as the kernel does not spin and the context=
- is
->>>>> not NMI and not hardirq.
->>>>>
->>>>> Now that __kfree_rcu_sheaf() knows how to handle allow_spin =3D fal=
-se,
->>>>> relax the limitation and try the sheaves path on PREEMPT_RT as well=
-=2E
->>>>>
->>>>> Keep the lockdep map on non RT kernels. However, do not use the loc=
-kdep
->>>>> map on PREEMPT_RT to avoid suppressing valid lockdep warnings.
->>>>>
->>>>> Link: https://lore.kernel.org/linux-mm/6811cc17-8ee4-48c8-8cbf-6bf4=
-d9f98162@kernel.org
->>>>> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->>>>> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
->>>>
->>>> LGTM, but maybe unnecessary pessimistic wrt call_rcu() on PREEMPT_RT=
-?
->>>> I thought (in the Link: above) we'd only need to downgrade allow_spi=
-n to
->>>> false on PREEMPT_RT for handling sheaves movement from/to barn and
->>>> alloc_empty_sheaf(), but call_rcu() would be safe from kfree_rcu() e=
-ven on
->>>> RT?
->>>
->>> Indeed. Good point, thanks!
->>>
->>> Hmm, but I'm not sure that it's worth the complexity given that
->>> PREEMPT_RT tries very hard to avoid disabling IRQs...
->>>
->>>> Or is the irqs_disabled() condition rare enough so we don't care?
->>>
->>> Given that most users don't call kfree_rcu() under raw spinlock or
->>> IRQs-disabled section on PREEMPT_RT, I think it's okay to keep it as =
-is
->>> (it's not making things worse, at least) and wait for call_rcu_nolock=
-()?
+On 6/18/26 13:49, Pedro Falcato wrote:
+> Please CC reviewers properly!
+> 
+> On Thu, Jun 18, 2026 at 05:28:42PM +0800, Kefeng Wang wrote:
+>> The do_mincore() uses walk_page_range() to walk the page table.
+>> Fortunately, the caller always passes start/end that falls within
+>> a single VMA, so it's safe to use the walk_page_range_vma() in
+>> do_mincore() to eliminate an unnecessary find_vma() lookup.
 >>
->> Sounds good.
->>
->>> On a side note, I don't have much idea on what needs to call kfree_rc=
-u()
->>> under a raw spinlock, other than set_cpus_allowed_force(), which shou=
-ld
->>> really be using kfree_nolock() instead of kfree_rcu() once we support=
+>> Unlike walk_page_range(), walk_page_range_vma() does not call
+>> walk_page_test(), which handles VM_PFNMAP by invoking ->pte_hole()
+> 
+> Why not? Can we fix that instead? I really don't like having this open
+> coded in callers. Are there callers of walk_page_range_vma() that expect
+> to look at PFNMAP mappings as well? From what I can see, the callers all
+> seem to operate on folios (and/or anonymous memory).
 
->>> kmalloc() -> kfree_nolock():
->>
->> Looks like the case. Well if the fallback path of kfree_nolock() that =
-is
->> irq_work_queue() is indeed safe here.
->>
->>>> 	/*
->>>> 	 * Because this is called with p->pi_lock held, it is not possible
->>>> 	 * to use kfree() here (when PREEMPT_RT=3Dy), therefore punt to usi=
-ng
->>>> 	 * kfree_rcu().
->>>> 	 */
->>>> 	kfree_rcu((union cpumask_rcuhead *)ac.user_mask, rcu);
->>>
->>> Any thoughts, RCU/RT folks?=20
+I'd rather not.
 
-Thanks for looking into it, Paul!
+commit c31783eeae7b22dc3f6edde7339de6112959225d
+Author: David Hildenbrand <david@kernel.org>
+Date:   Fri Oct 21 12:11:38 2022 +0200
 
-Perhaps I'm missing some context here... let me clarify.
+    mm/pagewalk: don't trigger test_walk() in walk_page_vma()
 
-> For the call_rcu*() counterparts, I am currently considering making the=
+    As Peter points out, the caller passes a single VMA and can just do that
+    check itself.
 
-> existing functions check for interrupts disabled, using irq_work_queue(=
-)
-> in that case.=20
+    And in fact, no existing users rely on test_walk() getting called.  So
+    let's just remove it and make the implementation slightly more efficient.
 
-Ack.
 
-> I suppose that I could use raise_softirq() in the
-> use_softirq=3D1 case when in_hardirq().=20
-
-Ack.
-
-> Either way, the check should be
-> cheap compared to rest of the processing.
-
-Agreed.
-
-> The additional rcu_barrier() work required is of course way down in
-
-Assuming "The additional rcu_barrier() work required" means
-rcu_barrier() now needs to wait for all CPUs to complete irq_work or
-softirq...
-
-> the noise compared to acquiring a global mutex.
-
-Are you referring to a specific mutex, or just in general?
-
-> In your case, kfree_rcu() can be quite a bit lighter weight, though.
-> So the extra checks might not be lost in the noise.
-
-Assuming "the extra checks" means checking whether interrupts are
-disabled in call_rcu()*...
-
-It will probably be fine since we invoke call_rcu() only when sheaves
-become full, not once for each object?
-
-Perhaps slightly off-topic; at some point, though, I think it'd be
-better to teach SLUB to use RCU polling API for RCU sheaves.
-
-e.g.) put sheaves into barn->sheaves_pending instead of invoking
-call_rcu(), and the SLUB alloc slowpath checks if there are sheaves
-past grace period before allocating and refilling sheaves.
-
---=20
+-- 
 Cheers,
-Harry / Hyeonggon
 
---------------CZDOJb3QDvzu5IEDZMoq1w7C--
-
---------------r52TW6tkzMED0vgUCNBCiTch
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajPojAAKCRCGXBN6rc5S
-1iYYAP9R9SRxcpb+Lf9AzvYwC0ginyzWgaosKoEpwXTRJndtRQEApm4GZI/2RNXu
-Q24xU67ieuyKBqFI2alWnLxiGr7+Bws=
-=8O7i
------END PGP SIGNATURE-----
-
---------------r52TW6tkzMED0vgUCNBCiTch--
+David
 
