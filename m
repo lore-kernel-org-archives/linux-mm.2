@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E024BCD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:34:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A368CD98E2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:35:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1966B6B00D2; Thu, 18 Jun 2026 05:34:39 -0400 (EDT)
+	id 2815C6B00D3; Thu, 18 Jun 2026 05:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16DFF6B00D3; Thu, 18 Jun 2026 05:34:39 -0400 (EDT)
+	id 232306B00D5; Thu, 18 Jun 2026 05:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 085A26B00D4; Thu, 18 Jun 2026 05:34:39 -0400 (EDT)
+	id 14A556B00D6; Thu, 18 Jun 2026 05:35:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E30C6B00D2
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:34:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F64414043B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:09:50 +0000 (UTC)
-X-FDA: 84892460940.29.B50F73A
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CF5614000B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:09:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iaVcoVSi;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EEF76B00D3
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:35:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D4D5A0619
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:35:15 +0000 (UTC)
+X-FDA: 84892524990.07.A25B516
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 04769140003
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:35:13 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJVdV6Se;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781773788;
+	s=arc-20220608; t=1781775314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WKrBJr5QmN+p5FbcRlDp75b6qG882022YARGfpuKY7s=;
-	b=oK1O1ntGHo/y9958/tO+ZN0Q1F75L24ELxY1zLsBQ106odK8Elo2wQf7SkNiupFvVHpcJs
-	FlGX6GsoFIPfgH0gn+VJS068+Ii0pfdEhXzlGkoZhaBkJlv0nhP6g8RR3PeX73InsMyz9I
-	iD/gvs7Ja+/Wp8/X1ahZiJPQO6ypKaU=
+	bh=svnJRlqC7nBj8+wumxi3S0D0nQwN9ygt9ENMd/YHoEc=;
+	b=hKVzGESD82ExCpH3OIoXBlnkY73aWSV7uILN8mTAo38eLUaQhfJT+3+DVz9sJEWZecxW6i
+	sQLq+/5dl8Xage+Q53z+YU3jMbKuCUYd5HuyDhWfRJC3RKBZO36Xvo+baJ+JQ9oL8BBuun
+	A5CK/hhCTS87CPIdPcEzMCd6/b1K7/w=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iaVcoVSi;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJVdV6Se;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781773788;
-	b=M/imSCbbj5HfqWBY4nt5FpbyR5qjkyDHcWKMCwjMUeT5iDC06Q96BdEwEih+d7Qnomdpyo
-	r0npfAhIH/JhGyRd0emD8KuWiEZjOCBntroQ1oWWBzvrUFsNteueATOGotclA52Xr0gXHX
-	BOvR+NefTX7+9k6ITRkC9hnMAZErx6c=
-Message-ID: <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781773784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WKrBJr5QmN+p5FbcRlDp75b6qG882022YARGfpuKY7s=;
-	b=iaVcoVSiDIAOGWJUuJNAp8Ahx07xCPBuz/Rn6y8sE6PY32pmlFgooAFFRZJLl1HreGsUMs
-	NHy+Pf3tnl0QlBrwxn7rDoaiYpKoqBh6B6eag51TlKEAddnPbcx/CZr/YSR/arQESvRcdp
-	TertYgNDaOYeIzia/R60F4s2Jttch0U=
-Date: Thu, 18 Jun 2026 17:09:28 +0800
+	t=1781775314;
+	b=KRy4MAo5SGsszmIG6s2lJ4sNBLk7lCBnQZO4I4UY7JU//Sq++d1yGXTexzdHxl35RYADzD
+	/xQK0pNZFL4TEw3xpT8YYvMX0evMGCjMkFF6AtQC/UMIfb0cuETpyfmlOJsXubj1sqOJMR
+	tHxuTZJbE+nS0ZsinebxD+ddLFsuOeg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4EAE2601E0;
+	Thu, 18 Jun 2026 09:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA151F000E9;
+	Thu, 18 Jun 2026 09:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781775312;
+	bh=svnJRlqC7nBj8+wumxi3S0D0nQwN9ygt9ENMd/YHoEc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cJVdV6SelfsuOc/iIjycuLFBI9QO16gDia1DU906oY9Ep28XwzavtBGwP1CKqO1tm
+	 X/upK8GZWfXwOPQUNWjgYujhlCU/dKGy/emkNdqHKJ0XMZ7PaXR8sJYNhXj9hqI9D/
+	 ZyME1MMPXDUgQ8NnAOe03iLKG9Cg+zhJI10/3snoUD1RmCI9lTpG5pnGS0aoxchhMa
+	 IcyGmH8Y+MAoYLste+BY/2DzAg9b/lcDp9hdeiGXuJzGG7MwKqT6aoQcIl8VtBUKkE
+	 IxY3sKC+z9AJbANQ4BbLx+Jwf24TU9dGs5cKEe3C3t7IVI88dzcgT4YAnu8JbX48AK
+	 PBGH1kAftespA==
+Date: Thu, 18 Jun 2026 12:35:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Oleg Nesterov <oleg@redhat.com>, Peter Xu <peterx@redhat.com>,
+	vova tokarev <vladimirelitokarev@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
+Message-ID: <ajO7yI541hphWRb8@kernel.org>
+References: <20260617194059.2529406-1-rppt@kernel.org>
+ <5a993689-f730-406d-8515-8bb6025cc851@kernel.org>
+ <ajOtfdGgFQYL-T6f@kernel.org>
+ <ajOvwGs5xhnfBu-k@kernel.org>
+ <41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
+ <ajO4sLq2UBciSgOn@kernel.org>
+ <dd2ae577-9b7d-4e40-81d0-fa9fcd7e0767@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>, dev.jain@arm.com
-Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
- kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
- pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
- <20260618074449.24974-1-lance.yang@linux.dev>
- <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CF5614000B
-X-Stat-Signature: fcgh7n4zpc99zmret58fdm798x9ipsib
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd2ae577-9b7d-4e40-81d0-fa9fcd7e0767@kernel.org>
+X-Rspamd-Server: rspam10
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781773786-506568
-X-HE-Meta: U2FsdGVkX19NCl104Qnn3uYyy1fB13U6n5zx1Le0psL7ighNRd6oZ9fwPt66LDrwjmI7DgLqTKAs21MX+PKp2SZyMVOloxrBDqTA+N2uqvda/v2Hf+mixJ8PPRLIkKvG9quRqGUEByKlg8A77ooh01szcab1853nBbrZCYRd9pazoZx1WMIE9wt9LD0tlSix3+EMTbiHJ8dIlkwWTcshpJKVCtQb9xkztAdQHo+PS5OmhKQbXhSl5F6DGr41v4ODh7XjaAxmd8NbuB5a5ZYXeHECQmNNh2Aj392dTVG+pbEDwsf/varpRMeJoDOSSPPAUR3pcMIpPFnomTKqTgAFcJLOGBppVogkOCYnwtNQRoVN5bzbzktNick3E1/cKFKnUELkWm1THmoRBa7AE29DocgCz3MPQgkK2WUHE78fVikn32YVUua/4Jy5pEucnEpIqEArgi7mo79iUgHZL3yIx7cAvfL4yuXbJTaqBGuEnG+v27p0zFtzil5/NrZnqo2FvMYL7SmQLtrO+z7tS+iWUwJR3jhFfdVIe/fNtwkj+fDyC5PgzIhlxjCRMh9zIlNXyO9A1jseFRUH9RoZruy3NR+XaOqZFCLd5k2lYa4Pnxzo02be+Q3Jd/pN1CaplBgqhgUJx9CthNAyY6+HFVXVh6V4zWP7116qm4ULCgVZvx8Y2Fb9y+UBAkQkHJmOf11DRXS8+h6F7JN4kmS3CZU1A8mx7bx2exs292KTX1OeqGvtcJP1h/6mtxlOi3Oj9lfiKZs4n4KIJP4Z5WnjK+GpEH9kJmkm4Akg0yDNUJ7ha7tPM5QVmzdW2x9pa2dZtckinRUdyHiNw75c22d258P78E6CUeneDdXudFEV4nCNV1pj7ReVQlbQIakPes40Q7lIpa6sIsaQti4fVsz/CIX+OfiBXvKMcukt/xEsJN796SvGFsUzv/yYA3wGRfl5S+1uMvtm7fXhT2Ky3IMNpy5
- y3khOYV4
- ne2DjvmG38Y86h1tjdh7eO9AaaCUrAJ0O1cWg/WpHdOLStf1qhNvWpQXpVAO1/eK4O+8nIYcKqotjY8e+iu+OJiF3j1uiejFCBLafkEB0UnMl4aEWNnyvXTpAnHEj/pV9Cf0Dpjg3tv6423+LSCIwuhsfOkUoFcntE5auMwv3g2uxe3O0ugTX1/NZItqQR2rPqCeAhmFoC146YKKvbIicZxUZZHPFzaWwjZfbCLooZqePNQdNrxm351MfYyIwxCUj0tUK
+X-Stat-Signature: ojzuk41sfuiq19poio9h4epa4bcapuuf
+X-Rspamd-Queue-Id: 04769140003
+X-HE-Tag: 1781775313-693995
+X-HE-Meta: U2FsdGVkX188BFUpBFaB8+m3OvziOKNwNOO8NwqtOVQEGueMTHw1pEfEjGJPweitzrGL4Sy7DxKtVSi1GinFYtJSYwg5+9Z2KRMaYiKFKzsERK04xt99890KgR5edL1kZSAKl5Mmdi6xx0iFt2KjbUmceZsk2T9G1593k6uLz5GShD3B8cF+9EYsARdAIuNf9nl9537+vU69323Vu9odHOjM5AzAUh865pa0DpNCRe6vOzJ/Zue96dVlO38x41//3dbm/HF5SiknCXgZn2mvU3th1JEHFRlACRefPXCmnENCqL6MDYT9fpJ6Mw6YvWw3Q+/1/2BVpkrNsHe706wSU6XT/cucf+99YBSMvz7zYxqKwJo1tgEMGeApqxQrY+WBTRMtmhjmNFp5uTCFLSJf/yFIJvGutYm/xZ8afGeZLsAqaxNvIoRUP+YI/vmYtcBxcKfdElusckoQYL0ptjnp9La+bhzut+qJlpq7yoX2XUD1ALPHqJ408T+QE5zIJWZv9EZbXjiDZuGct6qNrrFflsjy1jzIKt6pt+4uYQJFAuMyyn5i+lXkBken3nQd3r7R9bih3e78zOwCW8oZ9CkA0spc+Ar0DLe9s2pkkStxdaQN79pf11Dd2rQhizocd2I64YlJB5EtFscS+RBad8wrVv7nLMDhlQALwFW+wgtk40IHSXKnPhjmS/EanpLr1hBmr/CzoptLA6I98M++mJ0iHbHkIFegUe08AO4r3sku6RCiFhm8uPh3h2szCq0LlqxgoCzGZNuc6UcSePo4CDVTGQTjIyzpG9ZXg71ql2DEKjcrN0hr5UbQCP62K5UANGN3ewyZh5N94b/coSzBkbw7z7JDWb6WwoyxQ5nYb0NhTQE10zLNsiHUnvqqcaUJKQLBsvk55Z44SnclhnfUUltzBzuEEPMjzdv10gNXgVCBL6VlCGEc6qyxyk4iRW1iEpqyBKnMFlvc3Gxik4uPGgB
+ SAw1yKsz
+ sPxSYkfwbPcy0d++ytcCsT9o360+0utVIq3y1f0GlZ948SR3IF8rYc93ZXalhrtibPmIkLOJsrS54DtHqbdJs41Bo2rYzulwNb+HPpLBYnto7Ow4hERUPf0oozkep4GOEeeEFqaJKyHGu81maor4GwTma6nm2+syhHoBzkJkIAy50J+Df5fELaIH2twPB2mQhUiAzX5GdIUFSFJRzRdAqZv+v2+DqxF0JP4Biy1kGJtRGED5tw8JFcjxjPsLcIyEJSG/5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +102,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/18 15:55, David Hildenbrand (Arm) wrote:
->> 	return __rste_to_pte(pte_val(*ptep));
->> }
->>
->>>> +	VM_WARN_ON(!pte_present(pteval));
->>>> +	subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
->>>
->>> No need for subpages.
->>
->> So plain ptep_get() can feed raw huge-entry bits into pte_pfn(), and the
->> derived subpage can be wrong.
+On Thu, Jun 18, 2026 at 11:25:31AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/18/26 11:21, Mike Rapoport wrote:
+> > On Thu, Jun 18, 2026 at 10:47:19AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 6/18/26 10:43, Mike Rapoport wrote:
+> >>>
+> >>> Ah, hugetlb sets VM_DONTEXPAND, so it must me excluded to allow uffd with
+> >>> hugetlb.
+> >>
+> >> It would probably be cleaner to just allow hugetlb, and then check for
+> >> VM_SPECIAL if not hugetlb.
+> > 
+> > Cleaner in what sense?
+> > Will be uglier for sure, just take a look at vma_can_userfault().
 > 
-> Good question which impact that might have in practice?
+> I was thinking of this:
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 180bad42fc79..8a6803618a91 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2029,7 +2029,10 @@ bool vma_can_userfault(struct vm_area_struct *vma,
+> vm_flags_t vm_flags,
+>  {
+>         const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
+> 
+> -       if (vma->vm_flags & VM_DROPPABLE)
+> +       if (vma->vm_flags & (VM_DROPPABLE | VM_SHADOW_STACK))
+> +               return false;
+> +
+> +       if (!is_vm_hugetlb_page(vma) && (vma->vm_flags & VM_SPECIAL))
+>                 return false;
 
-The subpage check can warn, but we still pass that subpage to
-make_hwpoison_entry(). So the hwpoison marker can end up with the
-wrong PFN?
+In a way that's an extra check for hugetlb, but it will work.
+Will respin.
 
-+	subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
-+	VM_WARN_ON(folio_page(folio, 0) != subpage);
-[...]
-+	pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+>         vm_flags &= __VM_UFFD_FLAGS;
+> 
+> -- 
+> Cheers,
+> David
+
+-- 
+Sincerely yours,
+Mike.
 
