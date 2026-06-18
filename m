@@ -4,116 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC0E4CD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 18:09:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB904CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 18:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BC9E6B0088; Thu, 18 Jun 2026 14:09:22 -0400 (EDT)
+	id 986716B0088; Thu, 18 Jun 2026 14:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846A16B008A; Thu, 18 Jun 2026 14:09:22 -0400 (EDT)
+	id 9103C6B008A; Thu, 18 Jun 2026 14:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70EED6B008C; Thu, 18 Jun 2026 14:09:22 -0400 (EDT)
+	id 7B1596B008C; Thu, 18 Jun 2026 14:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 402BA6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:09:22 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B08721659C0
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:09:21 +0000 (UTC)
-X-FDA: 84893820522.26.6C8BA96
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8D26A100002
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:09:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="RVZ/1diT";
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3830B6B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:12:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B1E79140211
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:12:15 +0000 (UTC)
+X-FDA: 84893827830.07.2E1AFEA
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C7EA9140009
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:12:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W5kNu4Zf;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781806159;
+	s=arc-20220608; t=1781806333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MaFteEIwkz4tq/KigGnjClWvDuo1M6hpghzWE22jDHI=;
-	b=B5EBzuPvfEEp6mHFuBzoNwlksBFcxrvpoirHf6w5KIVVGp0AWdBJwgH02VbnVG61aJVqIe
-	a1n6i+BUPJx3N8LP8MosxAq8N1HevewRGOFcOGTLyJ0AhoPhF7p1zFqpmM+czjVzY9ttSC
-	sDuSBYIR8u2+4/9IgD5zGiefpu0hNaE=
+	bh=eDVcyVUKLHNCDWusBXm2IInv3Q6pRTNx5v2NHMa+boE=;
+	b=W7ZlO1cVISKyawOaMCc+mjGV18Fbu/maIoIhsi0sGYmeC7yW+W6n2sTLeCxlRaACpvKwf7
+	uxxV6r7OhUB0gUR0r4j2uUk99F3ziHmVx0JODBXTsyG6TRCvxfkYqtrWXdtctip3dOKoax
+	Iw+0Q9T06hzf4qwBhNHcr7c6J4pK6lA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781806159;
-	b=7ji6nwBXA/ZLtWBExoAhK1nDwvGDMhBuOW4H4MgQhcYFiigtccve/0LBqyIOJOqB4ScSGH
-	zjK/gPN3zsxdQrSjg/nQZcGFAFzZKWvkvV6Kg3Tm7HNOkWBxxTPvTbAl+G2bD7Mxohix9U
-	BZlF+XRrWfvYhy/L+v/IrbNQ2PFxYME=
+	t=1781806333;
+	b=6gXJymZauG1iziHCevIFKA8Z87z1jNRTgDQ+wumGQ6r0iaBsxt4X/epqrLUDG5Bn3Knzzk
+	B6cUK556Jhvco+EDJ5epJbOSHYLFBcr7aHp8Tkc3KFsC3PYV8jswhhYkXY+G7AVbmuuLJ6
+	Dnth0mSQlkYdCatHS8N1lC/Ygj2oXN0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="RVZ/1diT";
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.179 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-91562bf6c12so157518385a.2
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1781806158; x=1782410958; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MaFteEIwkz4tq/KigGnjClWvDuo1M6hpghzWE22jDHI=;
-        b=RVZ/1diT97KAPBfTcm0cy+GZYLZzK8NBlK5R+WTUM9luPPCATm7IVgMmNF0oJ/RfJL
-         QXNsUnStzc7qbmQJZ4U7lYEtIzSSYHS8RVW4u0wzGmmyWO7G375lMWqlPUFQiY0xwYNw
-         uVuoIk6ENT9d8fPnPMnsvl5IehrSu3X1cy67abYGV07OK91IJTDBfeYg2DdOEvYqH+yp
-         bkJSNSVQApPHz07eVVdpwXinW/meim/JEvyFfhPWh5UV2T/HY+t8B96DUlF+N1EaATVi
-         cfGBk2mNsBLnSVaigdrJNEGcOW1KnHd4xQ2CIQIUwAtH2/CWuDzzw23AAF4jg+7ZodUZ
-         GytQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781806158; x=1782410958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MaFteEIwkz4tq/KigGnjClWvDuo1M6hpghzWE22jDHI=;
-        b=VOSxZ4jcQC7F9fS1H4bYYRoznAkzaMHQov2DowUJCD0VMgWK2d1NYxUmHnWjdYOpRH
-         9K9XISXUL8QEWDpXFH3xHSzsNllTc8srNk+SuwpEt+lbTFaMazTIAA+oe9O0M5KiSrt4
-         XgOLZnQcUtjpNFzNWToOMmuRPg3HUyp4XzHri7+RtI2Htdap6JLVOiqKUglwQ567O97e
-         kyt7rIX0ZGUgqqFL3TGrmrvJ9/YfzBe+HfWG43i3Fo1damHdovHoKAjT+MklffGOZwHS
-         lcmlIDoH7HKP+QYMz4rSynbkgbvjgnFVeWQyDBFf9gYxlnhv6ACKE4ZWxCcUE8t+B5bK
-         qghQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+hXqNOZaY32OY+BxwDXrXuDPb52kw/bC9r2/XtAOaE/CdR/F1DDzWXh86Dyk6v2Gn4Om+QXflPrg==@kvack.org
-X-Gm-Message-State: AOJu0YyNiELE1MyxbrY8vymBWA3dWUxhw44AbLmJg70EbkNpVA728DAF
-	yXI3qyFGCRL/JmCBBHRw0XxklIUSBVN/HIGXaT1BgHPXG/uDY8IBGeizZ4siYfY+JTQ=
-X-Gm-Gg: AfdE7cnNKpM60QKoOsf/DC41+nAkntezx4HYBYsqcJUsON0v0jYtNz4V0DclmQJoFFZ
-	cFhKs2SJBfJh8U0VbwPoU6jQhRFplnCMTcY9Sd4trVwxAcEKBrdLJd5KU6nvwAxD7lKXtrYiPHR
-	n4Lamvf8JDA7HLHPKofKDKjpujPbpYT5Ad0DW8d2w+gcyTqzqp6x0+af6StpEEJ/MpX1S8pM3RT
-	jQGqlKz5kZpqncCFFX/b9yp1UeKPMmdveu+VdFA2anOCTqn7nv08PSsSmkw6j+RmzM1zaeXoplo
-	ufoEwoN2O86YO2ig3O8Xw2BCiaU7f46rWQQhg+WqyYzohw3tDdKbe3xgG6meh5etR4wGcSuF2+u
-	gao/ZIDCM2oApHKY1qKYmFr3kwdz8sv6ZMFa7F/lqwvqI+Q1k8Q0ZEKZoQvPN1c7hSrBj5od18C
-	26wLDXs7NOR1E=
-X-Received: by 2002:a05:620a:4510:b0:915:eec4:49ab with SMTP id af79cd13be357-9208f155b0emr10475785a.51.1781806158503;
-        Thu, 18 Jun 2026 11:09:18 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9161a00598fsm2159106285a.31.2026.06.18.11.09.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 11:09:17 -0700 (PDT)
-Date: Thu, 18 Jun 2026 14:09:17 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: don't build vm_numa_stat_key if
- CONFIG_NUMA=n
-Message-ID: <ajQ0TYGpgoojPOEX@cmpxchg.org>
-References: <20260618100614.1321950-1-ben.dooks@codethink.co.uk>
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=W5kNu4Zf;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781806333; x=1813342333;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=KiOrftyVXSm2xYANpVQq31qn6xeMhRpGmJFyi1EtirQ=;
+  b=W5kNu4Zf0SUDpYMfhdX6S4IaBhgjuZO2pZGZSDwje+TTzxjtluLlVk/d
+   WFlAYe0nQp9D1Ce6Fpa5rJm60Yh9BfKJsHHgosdi7NHnhXI0BGSSmBmcu
+   d8yMWN7x2fy5e1P447yindgK+p8FNLpzXj/y9C5irne0gUrdTF5AL0Dxk
+   ldZsO4rUeMXtBVmxfkPQ0Qwk2PqiN/h2D3vq63MlISlDutn2C7L5suWWl
+   ZIrynZTalJIMXWF0e447+EBC/aQptSjT5LlP9ssPmLLdzVl8aUys1j3UJ
+   m4UxXeZcG2eIFE8LcpvAwemaS66UvMKTOG8/kAYQP6xDaOQxDosOmqYly
+   A==;
+X-CSE-ConnectionGUID: SrWxsRB7QDmZQOydhcWrYQ==
+X-CSE-MsgGUID: /JDryhGATCizx8z770VPkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="93301994"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="93301994"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 11:12:11 -0700
+X-CSE-ConnectionGUID: EEHx02poQu2Do1OLp+UeRQ==
+X-CSE-MsgGUID: 8x0vdmXVRXmypy68vhLGgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="272130460"
+Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.111.222]) ([10.125.111.222])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 11:12:10 -0700
+Message-ID: <3207a706-354c-4e9d-ba53-dded1abb1842@intel.com>
+Date: Thu, 18 Jun 2026 11:12:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260618100614.1321950-1-ben.dooks@codethink.co.uk>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8D26A100002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
+ under 5-level paging
+To: Borislav Petkov <bp@alien8.de>, Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman
+ <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>
+References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+ <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
+ <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: yt5qb58r3kouagjfogm8ztcpdwfrunwx
-X-HE-Tag: 1781806159-568516
-X-HE-Meta: U2FsdGVkX19iRQyGttS5mPufEYLFgYhf8OeSdI6RZR8rOO5CXC/iL8dHh2jfOT2ZKvV1pX6zWMZN1m7CHA+q91XPq+/PP+4tKdswbdYESgGJkLgmH/BlOMeebC2PeuM+Jk626017Otutn1sAzqmmNUU0U40AjurVaIb95pJ3n7kRNpScwUO0Sf5r9RphIVGw+6gRygMsLnfcY9tne0G+BAUwy2xagA4iKA5p19fJPgcSXjnCait8vl0Eq53SmzEyq49LD7zg1Di305iL3Hj97EdyGz5RqCh2M5q9n94C8Ym+kb9hvADXz14I1eDd9LQnsNKtzxkcVF9EorToNUpQC2/N9J4TMDMr6YKpMWe2lwiohBzSGBNsVFe9uYM0I0ankWmeKpz+kOwl8nEviHod2XvG4B8lRr9SvmPEQfQ472OhUJfCEz1xlCs25coRUVrEgc10Dq4WVv8R4mkr0U09op1avb6kU2FNWzz/ZzULOwctmmvTh7Buzf3tsN5AIsEH/99h5RLL7XGOKG6/iBHGKMjofkL5yZJtk2EfhRtC8E6EOAkdXzRPfw+smHOCF0us93BFkBsCdhSizcF4hjfs2GBzbuPdtZbMUYV3pfDL5GXeTFcWM3AZwPTGuNC34Rf7G8iPYfOoMS7xhVksWClZOrjs//BvNv8VkEwtYo7TkicUkejT8gFeaugQmo1deaRf9Tjtje13DTcQwMBR65d8n1m3mr4rSygqZDX0f1pHu8pF0YbIF/IJAsEziuydvrfNuFdCGpa2qGiRFIu3BS63rgHDUcyzAbwtnFV/jwDApoQKivbvDNMDTKa4W2rIe80fcsy5iI6CiGSfMYSnEYPEVHKCB5kDR+EZLBH2usxvLO4fwOGGOdAWxhYlvSXkq4Cq/2kjOESMwIO/2DH45tN9JqkdIE1oSgaq3S+ik96xLjuYtqU2fFB3dIFPlYRmTIBegHXdXfmhIS3TGrv58RB
- 1Qs5kCp/
- h0yMEBt0dnRClr2/1l9xcOGMeXdcGz8iysdZVPKOwLDmYQH7lD+7Ln88BU4xbUCwb+Faozp2xZ7u9dLQpVdMAhgwLsUzMgM3ZuvggmlHpk41ThboYzOzijF5xk6QZaVhoeZ5zOgKn9tQ0EgxedhnTBiC/5Q7vZ71EpKSQONktycfMS68lWC3AAuu892GW1LxXMIElOu0zY/QB2tzl6qG/6wwt3mankBtavDPei1MOqH0DIbOT/F4z1HBZ7B9oxoXH1+HaioOT9M4J9xAIHXKdYFNJMZxm23SjA6BPDIB26PdkzFMUlpWfUCIVBMn+Eu5Q3xOFb0xZ1pnh+0cH/lp5gY5DL0sICk59NrrEgfxLYllCsTCXduwcwF7GcONx6HIKiPdvH+mQi9f9lC1cGC1QlWaUPMM2zB/jFUg7kRkeHqRenUdBfhMrIuqkBAX+7UwbbIGr93ouul4ZnXueGF2K7zPHBUQiYcxTfd5HpHqB991IRSLpTLeVXNVk2q2tILkyG9JmM4NF3BvKWYOKzNhewwATMxao7DL75HaJnh+6VzwJ0VPwvjuBOqHUng==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C7EA9140009
+X-Stat-Signature: gmibbt1ou4k31zfmpmqtiy7r8jh1494z
+X-HE-Tag: 1781806332-588417
+X-HE-Meta: U2FsdGVkX1/h9IORkkCYgbxAMmO2kdwHN5Q6Msye+8BsuxZqT3mvCmt06cHEuaNgDO5Xq/yc1D96+Xkm/kz+85vtyBerl+k4+ALYKmfzZ8nFKI9sShZjfyDXKf6kB78kHWdHfnz97Gn3ZhaAKf4oV+d8XjdeWPdUinTYocaHhEmvsY0Ayh8acUDas7XWlXasQWJLVcqVI1xkuCQrrnQI0HD+B6cyU/uRlk1NBj0/fz+leacAWFyHzzKVBWYzCmHO0rht83X/5193kN4JB6VL+FHWQtEuXOprRFPB0N4JG61m3o9IwN7c7f5tAqyNK4WKE3J3skmDscmNGhJkkiZ/Fq2fA4oN6dcCjxo371aqBb+y60F47o+WiE1ZPR3Ypko3BlyH1mTubB7J3JI6bkjrH1flO0W8StBjsnoDI1fs+AYhb+YVpkAkDrAunEj1s67MJ04yxHVGuBP1Tnjd25H4WqSyuSrEPQe2uGICCS+6UWi9X+Fg6ud8DI4dGW/SaHY3fCza8gZbKi29byxGaVRRota2y6aYpgRx8y3qEbN2RsFu3A5wHqqAgE5qqafvEcG9xkTkp5jIxDlPLeupUAW+AHyHcWkUJNcGG9RbbbIFtcpH+YO5v6bxmRthK4AzWlNxpKx6rTDBYQtSiWhpoR/hZge/6YObxYHwgU7LrhcVm+kJ3uBeHz17nObUpaJsnpfeJzD8Jk1aQ8DE6Dm5ld/NBrn/popiOMkv/p6IhSix3rjuTX9AAfhCNcIPVt7+/D2sD1PS8lK9ZeskpvfOa8kPxtW7FWMOJeQWBGGL4Q9Gr4COqwvDFAd7PltFG2oTvTPj87EUFWvDCWPbQDljqSevc3+6VIDtI5J0Z+Zx2d1sC7mNi91xoRxaf9jKgtFZzXAny9do/7SSlE44IJ4Bk5ezyL7V6bqctaYAkXt+JDfREq41zhdLzHrG5DfNmF0Zuel/JvAIuQkjBRQAjjNR/tF
+ vsXMaSqh
+ PURTOjrfVew6wiuFT8aFplYRArFFet8uZIhfiUjCoS4oZGQMnvEjkO6EpDxurnqSrlHsPcpnwWFseJ7JXwRZUxAy32XRE1T8qCN0SeYczQ/y6RNQXD7WWNgaIoBUGw+06pd8UBnbN39yXuxYedeO2e8kRpEuIHSP0I2RWvaRwya6l+pHR+h7nUqsdgUgLTnzkP0Pw6fkqHG7Mjklcoe7wl2Mpa4hi6sGd0+KigRvwSm17PrfHeCQN2zEEPvtFR8wtMYCZRa/dbmTGFgxfwHskNQUoU4CiAo1kWjp3H2GWpxMRWUQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,14 +159,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 11:06:14AM +0100, Ben Dooks wrote:
-> The vm_numa_stat_key is only exported if CONFIG_NUMA is set,
-> so avoid the following warning by guarding it in an #ifdef
-> on CONFIG_NUMA:
+On 6/18/26 10:09, Borislav Petkov wrote:
+> On Wed, Jun 17, 2026 at 03:13:33PM -0700, Ihor Solodrai wrote:
+>> So my question to maintainers is what approach seems best?
+> The CPUID stuff is being rewritten currently and it should address your issue
+> too. If not, then we need to rewrite it better.
 > 
-> mm/page_alloc.c:165:1: warning: symbol 'vm_numa_stat_key' was not declared. Should it be static?
+> Can you reproduce with this set applied ontop:
 > 
-> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+> https://lore.kernel.org/r/20260528153923.403473-1-darwi@linutronix.de
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Thinking about this a bit more... If Ahmed's series does fix this, I
+think it will be accidental. It still uses identify_cpu() and also does
+a memset() of the new c->cpuid structure in addition to the old
+c->x86_capability structure.
+
+I'm not knocking Ahmed's series by any means. It just probably won't fix
+this issue.
+
+In a perfect world early_identify_cpu() and identify_cpu() would either
+get consolidated into one thing. Or at least become two discrete things
+that initialize two completely disjoint sets of data. That way,
+identify_cpu() wouldn't memset() anything.
+
+Isn't that the _real_ fix? Instead of trying to hide the inconsistency
+when good data is blown away, we stop blowing it away in the first place?
+
+
 
