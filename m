@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D572CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 20:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB0B5CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 20:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DA286B008A; Thu, 18 Jun 2026 16:37:57 -0400 (EDT)
+	id 57EB96B0088; Thu, 18 Jun 2026 16:58:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48AFF6B008C; Thu, 18 Jun 2026 16:37:57 -0400 (EDT)
+	id 52F826B008A; Thu, 18 Jun 2026 16:58:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A2ED6B0092; Thu, 18 Jun 2026 16:37:57 -0400 (EDT)
+	id 4474A6B008C; Thu, 18 Jun 2026 16:58:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 154E36B008A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:37:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 87C9A1401A2
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:37:56 +0000 (UTC)
-X-FDA: 84894194952.14.3859B41
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA016B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:58:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 914EA1C171E
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:58:56 +0000 (UTC)
+X-FDA: 84894247872.30.B59E0D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BFE282000B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:37:54 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lGBv+lCY;
-	spf=pass (imf31.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id C9AA140006
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:58:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=14nCRR0b;
+	spf=pass (imf12.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781816335;
+	b=TwztH4qrmgn/HSCPYA6SPt1J20/6dyMOm/0tdEmhsGpirIpau47aO7GbQL2C23nXwD4cbP
+	Xwr4amOfSXv0dmxSIR+PT9qjLfzu8KP/QHnkJqP2OhfklheZo/vYjR8PNk9iBr9s5nOfg1
+	XVRNcW6e+bWr6IHSqpdQXg/USFLJAIE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=14nCRR0b;
+	spf=pass (imf12.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781815075;
+	s=arc-20220608; t=1781816334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FgYvUxkRhhZ1t4kqKiHc1yP0t1oilVAH8i82pg2Y2aE=;
-	b=PkulEA9w48LWLSpPSP5eyEtBtlGN7BK3NXXdr+m9mgDxc3u8hHbD/DcSWJdFtS2cYQbLWC
-	U/KWLD6KvJQ/b2fHMcs3MyVqSujMECMLCWlFtXAoW+GQW8dIxC3GRWgnVgCUYyONwcwdbj
-	SzZD3b6u7kq/MTPn1nmHtQgnyIbr/Bg=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lGBv+lCY;
-	spf=pass (imf31.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781815075;
-	b=X5AGaSTEQAM7e6MvagwMMbzktjEtHHRAIIiIBQOxmQsj3A9hp9Ld8Te4oAM6AjXrHFnu4E
-	DokHTmRgNOiK87OssEnCsyqxKr+ZfJ+2tmLXxuoSpjj33WybRGsclD7X5dzacX8KIUYgOU
-	fW7qUttPNm6yI0oGgI2wMRdQmEeUB4Y=
+	bh=zljnJf5HQ/OchNgTmG7P8Dn2J1XlofQvwnuh99sRKhw=;
+	b=eYseR5gspf6GI7z5qXxvl6d5ePij0OdeI2SVHiCegIFbgXxeFPzz9m5SQgSpBJc2lug5mG
+	clPi7ZnzoIJsTKokuOOg6MqvRVK0lpzmc5mLhWiAFliRtoSPQNzl/LkyEM6fTcIiEGibOu
+	7g9+wNLFm+mAJLNt9VfVxdnr96OHv14=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 971DE4076E;
-	Thu, 18 Jun 2026 20:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457081F000E9;
-	Thu, 18 Jun 2026 20:37:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DA7CC439E4;
+	Thu, 18 Jun 2026 20:58:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABCF1F000E9;
+	Thu, 18 Jun 2026 20:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781815073;
-	bh=FgYvUxkRhhZ1t4kqKiHc1yP0t1oilVAH8i82pg2Y2aE=;
+	s=korg; t=1781816333;
+	bh=zljnJf5HQ/OchNgTmG7P8Dn2J1XlofQvwnuh99sRKhw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lGBv+lCY1dyY/ASodCxpsI8G9aY/iPKrPt/+UjtiW3q7BTqSohgm9az2+ioAIo3Ar
-	 FDz+3mldQkzcUB5v/Y1WNtw/VteSKN6EilfCGLakjt3kjnXaYW9EDlLthr93y67Iok
-	 /6Byy9UBhkr7r7oVMjhx7h1z2zEKxcYLgTD6sOsI=
-Date: Thu, 18 Jun 2026 16:37:52 -0400
+	b=14nCRR0b5Pj1LekQo1SNTGbmG92AW/Q7K7Qx8i1tT4iBid+jV1StR1z7LwYvuQ/yL
+	 jJzgKYa/fxPEdC/TYjiN1t9ZN10RTqs5WV0RMuvKXYAJdvs3Ip2thSRhx3ELwqoqUe
+	 u2S3Pw7myyvQNlACXAr3DajINMW8m+u7cX7fom+Y=
+Date: Thu, 18 Jun 2026 16:58:52 -0400
 From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: pr-tracker-bot@kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
 	linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Jens Axboe <axboe@kernel.dk>
 Subject: Re: [GIT PULL] MM updates for 7.2-rc1
-Message-ID: <20260618-generous-sceptical-jackdaw-3d32db@meerkat>
+Message-ID: <20260618-first-aspiring-wapiti-71c024@meerkat>
 References: <20260617153144.acead3f2795da15f1e56005c@linux-foundation.org>
  <178179616355.2947725.4377157124023044624.pr-tracker-bot@kernel.org>
  <CAHk-=whn39dQtoMeJrz++nAnZpgnrooU0dgzOZXdn1LyxQ+f2w@mail.gmail.com>
+ <20260618-generous-sceptical-jackdaw-3d32db@meerkat>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAHk-=whn39dQtoMeJrz++nAnZpgnrooU0dgzOZXdn1LyxQ+f2w@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BFE282000B
+In-Reply-To: <20260618-generous-sceptical-jackdaw-3d32db@meerkat>
+X-Stat-Signature: t6t86yug3xxq7ythgd8u767yfyptdr66
 X-Rspam-User: 
-X-Stat-Signature: pea5inyre6our16ssnn9cwypg3rfizfk
-X-HE-Tag: 1781815074-960775
-X-HE-Meta: U2FsdGVkX19KZA4YZ9XY4tmlcCOjZQrrcYnIutK4oILiRcc13fv926lzgYAAFVJy159KXNAwG+CPPQzPsRMbSYyg3/NJuJyqlixMYrqz9+I/JfCvC0qGWFCisDg3u5owlXNGngmVrikacmYIa6PI/0iXdhYNG4gg+eLygHdOV9YdtJ9PNAREIN/jhSvltfzfrujBiKiWFOOBWSM72+5c+IG0JXiJd2eoAbAiKKMJCYIqUpHogm9Dd/JjxJKjRfFugzwV8y5ZnzQ2QrdhgFDuBTdTyU7bk1sEuiatOSlWoN+JeWSeVjH2GJPkzQmtXnaPvmQVdquZLZMnyo0BtpM1LhlZg0cD2dKClNkagMhPbM/FDyMHtBjuJBCfvKGssl3vBXXGE6ECqEL0PFZdGogcdh5JWGXK0PP2yLFJqhxpj6r9rfvnFGhgR54Exgl6hyJOpUNbshcvIKe4DcINfDgtPjqytxG9m+pXT9pcvhhiHBBmywrksyp+2F+4WqaUhyE/qo/by23UsmQNcT3S2VtCSXcij7+4zGg15utwaM9ijEAe1DO2Z13l0fOIIUgsZRGksLT1qCrOENKezFyteCLckdCzwRsFFTHgs/8N3jDxmgWwYKX+tdBi443Q5RM7klbw8gXKgd3IOZGvx1bmeEgW4sjl1vHPOb3gPrItURSa9gEGKNcTI6Rh5WHLqy5z3I8c6JblZfBaKVXfsZxiPduG+gk5g9ZXOkRpism1kOMeEJVZg+1NF1wcIq0UcT8TjJFA+aa9RoRkRUqKCGEUE1EYmzYX8R9e/YjUSiirASCBBIpZfyxnFsukUiNe8gZDvkJNzjloAhQF7M/fnB3X5bx0qszG7E1pEkXsU3pV2YL1jq0J2OqBW3A2K1feS6uMKf8m655h5gY1+8wMXmuZyc8R+rq4wSu7CYfL+LxGTTUObxWURXZjbRFaSgXxDSX4HFOZr1lan5eFZ8BdOEIFSZx
- 4VzFtMcx
- 34NtKOy1Oo82e4792Lgr7ndLQdtVULL+k4hSMeYxylINl/4idYV6nK3yROgYOE1R2ly2Nd7vcS829hdI+bdJKxnEytglc9sHPhK23/EJLpnJUNBBlnM2WBUrcOIH+LatbkEHh3z83rN7hLL7iThJd+RXhApyQRyxMIRoahUhqSpUBKsCgYP+Pp4WJTi3evoaRUw8zs/Nj5bkTFjxL5RAY8uDww9NKJxYQ/x0GudNCelySON7xAX3xDcU7DPzSDSYsohCDayyOE/yDPA5Su492H+8UOQ==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C9AA140006
+X-HE-Tag: 1781816334-115424
+X-HE-Meta: U2FsdGVkX18NJM8Xq52jB+a1mlSgG0rbclNVEH5OUGdfGUZwV7nI9SQNooWlXOnCccX6dp4KGxRCDbQKVveo/wu+Iq1k/9MgcsL0j3bnkKpweLWdDXDetYu/37eX4pjA7ikUhkvQAZkPAWAh4RO7U4wa51A8zSpG7X0OXBgb9F/l/XgdivGfN0WfDOWW9GlMcaTxq5L8Q78PFIAHic7qt9+YgQbjGR1P6ZPH3y0uhHjZknSnWm2Uz/hZP0egrOb8XajVuoogFN2z3+782Y0pxcVtuYjybNCBzInQ27iDoHV76HV+VJ4Z5HeZ72JOkGpe9YbtK84y9t4W58uznniNg92J2aN+QBm/upe+mgvqlvmVoHIHVy0tfYIElTvK9ODP8zA5v5mwzvQy8WFPtsgG7utILmwuFX7Tus+RVQXE94Uk9wFNdQaB2H+nNlSZRM2Gsy7+jSwEiM+iC/tyJtMZajfj4EPOJxCiDr/VJfb8LgZuamf1LaNOm8yJFUQJgeLB/6Qw8fKdFjkgd3dXWo12bVgQ2CMYBNFLZXaaFquAjG1S+OGU+fbGmcxst4BkDNB3tsMkHdJeRoEHjeVaEjy3+bdt+Pteun1sl5924XGTt2d+T98bX+dgIf9XuAIabxkWdCwnR5WRPZxgsrG/nN659jTc37j8t6RjdIRa/WOw8PWuDwAnRc6j22yHkztgCeLuu30Ec9M0YdhXFzHOslzz8IBovbXZHfHwQh6S2aevMJriVqOR0StLiJ7hCQQ9nmvfAqyt5Y9mAYZJQ9uEXACm05ViYUujZDx2o79XgMQtHsAlIJdZQVJG9C97kPU+lbZGxu+G4WNLKMg3z3nu26k8KJGFNmJXr/JoHl/bB3mpMGwbr5TDhIFeGQQ993kEFT6VBG6HwI1FvuwyzGav9D+SSj9efwzBuAbpOTpPIKU0EwELFW9dUhe7grIafrSsstsDqB8J62Rz/LehhoZJBbA
+ O19Z8xyf
+ SOCh3zawXq17i8/GSISMmSuf6Gy+f4pnNmkbn9LHyha0yeq5i2Ec+Cm9T/Q48CNMuFGxVeTNJqE05tjJge3l1jSID+6RX0Ob57G0epuEZ4nIqeznFsFKwU9VCCtCKB79hDwnpnGiU1fkYcIpFg8wbZv0JkyRReRd2C3xJFNGf/xCVFl83BNuuHMG1ZJl8VCR8/alpQIkY46xPTOKeOo3dDTNBXBTYu1JHocZejA/XNNKUhnBkeD8p2kPsiyd8T9AUIkqCiZYvroynG7g/CjcE4wI7+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,31 +91,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 09:02:06AM -0700, Linus Torvalds wrote:
-> This is very wrong. That merge (2f9f5887b427) is merging Jens'
-> io_uring epoll cleanup. Not Andrew's MM tree, which I haven't gotten
-> to yet.
+On Thu, Jun 18, 2026 at 04:37:52PM -0400, Konstantin Ryabitsev wrote:
+> On Thu, Jun 18, 2026 at 09:02:06AM -0700, Linus Torvalds wrote:
+> > This is very wrong. That merge (2f9f5887b427) is merging Jens'
+> > io_uring epoll cleanup. Not Andrew's MM tree, which I haven't gotten
+> > to yet.
+> > 
+> > I wonder why pr-tracker-bot got this wrong.
+> > 
+> > [ Goes off and looks ]
+> > 
+> > Oh. Andrew's pull request is confused. It says
+> > 
+> >    The following changes since commit e771677...
+> >      ...
+> >    for you to fetch changes up to e771677....
+> > 
+> > and note how the "since" commit and "up to" commits are the same (and
+> > is my iommufd merge). So then pr-tracker bot thinks it's merged when
+> > the "since" commit was merged.
 > 
-> I wonder why pr-tracker-bot got this wrong.
-> 
-> [ Goes off and looks ]
-> 
-> Oh. Andrew's pull request is confused. It says
-> 
->    The following changes since commit e771677...
->      ...
->    for you to fetch changes up to e771677....
-> 
-> and note how the "since" commit and "up to" commits are the same (and
-> is my iommufd merge). So then pr-tracker bot thinks it's merged when
-> the "since" commit was merged.
+> Let me at least handle this situation -- it's clearly an oversight.
 
-Let me at least handle this situation -- it's clearly an oversight.
+The bot should now properly recognize when the start and end of the range are
+the same sha and ignore the message (it seemed a safer logic than trying to do
+anything else).
 
-> That doesn't explain why pr-tracker-bot thinks it got merged in what
-> was me merging Jens' tree, but whatever.
+> > That doesn't explain why pr-tracker-bot thinks it got merged in what
+> > was me merging Jens' tree, but whatever.
 
-I'll look into this as well.
+It's "bad assumptions snowballing." The merge commit in the notification isn't
+taken from the pull request at all -- it's computed. Once the bot believes a
+commit is merged, it runs:
+
+    git rev-list <commit>.. --ancestry-path
+
+and then takes the oldest commit in that range. With <commit> being e771677,
+that is simply the next merge you made after the iommufd pull:
+
+    $ git rev-list e771677c937d.. --ancestry-path | tail -1
+    2f9f5887b42711595e768b9dc0582dccfdf60c3b
+
+...which is your merge of Jens' io_uring epoll tree. So the bot wasn't
+associating Andrew's MM tree with Jens' work; it just tried to do its best
+with bad data, with predictably bad outcomes. :)
 
 -K
 
