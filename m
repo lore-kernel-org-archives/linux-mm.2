@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC86FCD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 560B8CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B1286B00C0; Thu, 18 Jun 2026 05:29:02 -0400 (EDT)
+	id 3721F6B00BA; Thu, 18 Jun 2026 05:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113B36B00BE; Thu, 18 Jun 2026 05:29:02 -0400 (EDT)
+	id 2C02D6B00BC; Thu, 18 Jun 2026 05:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFF676B00BF; Thu, 18 Jun 2026 05:29:01 -0400 (EDT)
+	id 1AF0A6B00BA; Thu, 18 Jun 2026 05:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 707486B00BA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E0B486B00BC
 	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:29:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F110BA062B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:29:00 +0000 (UTC)
-X-FDA: 84892509240.25.0625D23
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4F8CAA000B
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65D421C4BE9
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:29:01 +0000 (UTC)
+X-FDA: 84892509282.15.F4DF1BB
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C3F3E12000A
 	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:28:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qWBSUDbP;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781774939;
-	b=6gjXJ+VlhLb7zu/LyVSiqugF6LpSWgFtjUmM1z1Ycv6vfvpKVJfrMVHYPmt56lvOJYA98o
-	47oqo5bAXWiJyZ84Cv0pN8q8318HavXI82Ea6RF2FSi0AJsV5eBNC6pnhrWfhYk7rtPoWk
-	K/BsWVKMbsnbxM5Wesnt+fu++oXU6fU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qWBSUDbP;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=gTOmBBDP;
+	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781774939;
@@ -45,36 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hx5gS3E1/ZODRUizRiLrWQ0XJGL6B/MkR/sUODC1Lsc=;
-	b=5WpFSKpVruoPrVhvlLzcIgje/sVGoqmFAlQliqVbHCub0+QHDe3zcti5Ec1xjut6OqIbFo
-	m7JBnln1LnhlUAdTHc5+zBg4b2My9BP6UGS6J5w5ZgV1gyri/3MYYAbC65blz8FNW0qrT7
-	geCGxm2tSv55z93wtYQtXMgzIv5vcGw=
+	bh=ObfAM6baGHz8e3nzgMPFx3gV1s/Yg1jEG94Y39RIIDQ=;
+	b=R0uASc5pnx4MviAhpQBYNl7vCpHvCYcm2eLhCKg7zpGvFGEDdq4NEWZubU9GEOCnai9fRt
+	hqixFwPQq2asE7X7jiMVaBf0GKiERfIfLXlT7AsJLFnmuRlu7f7bcB1Q4ZpUWdGFDAP+GW
+	CpGWavzoo0U9MM+GgqCRCHPrQFvO2rI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781774939;
+	b=CuVjRA8/O18cOLukP9O/KiJrHfeG0K3SoaUsfwL6RvPSNf//DN8DGO4TjFZtVOzVVDBVAb
+	0/B2ChCXaYtFdAALLifIuvXO35Xxti3ZTOz6N4hj9xEhp2YaIL6DBFufzGSV2KjFi/NSAC
+	6+IKUt/PwRQjXUNszNnlh2H18HNxPIg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=gTOmBBDP;
+	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=Hx5gS3E1/ZODRUizRiLrWQ0XJGL6B/MkR/sUODC1Lsc=;
-	b=qWBSUDbPnpNI1YZiqBg2eWGvWya4cPUjzfFxeUrb9CeKvL+28+pBl+wefP3wGdhIprZCkR+UW
-	DJ1TgMj+vg6pcOj6YrXZ8XN+1yCrQ2CyLdv8atdP7TgTmuVa+gFzpjokpTDNf0H1bb4kApnK3oM
-	hwviyPMjbBQUF4xR0Auun1I=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4ggwDr0DWnzcb3n;
-	Thu, 18 Jun 2026 17:20:28 +0800 (CST)
+	bh=ObfAM6baGHz8e3nzgMPFx3gV1s/Yg1jEG94Y39RIIDQ=;
+	b=gTOmBBDPbBt61WHYsqsqQLFpZ8EVfWJE6tmn5HE9O/mCgEGJrXfOh7DY1c3gnK7uhkGKOM6qi
+	s8dDwm/Iz5e+9nGX4zzRGB8zX81+EisGIbS6S/wTSo8Mbz2SJ9JSxbbyPz0qK22aYoQupXKN5AT
+	kpD3GgxscGJg2Zryfop/NvQ=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4ggwFP2ctNz1K96p;
+	Thu, 18 Jun 2026 17:20:57 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9A5C340576;
-	Thu, 18 Jun 2026 17:28:54 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 366F84055B;
+	Thu, 18 Jun 2026 17:28:55 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Jun 2026 17:28:53 +0800
+ 15.2.1544.11; Thu, 18 Jun 2026 17:28:54 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 CC: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R.
  Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
  Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
 	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 2/4] mm: mprotect: use walk_page_range_vma() in mprotect_fixup()
-Date: Thu, 18 Jun 2026 17:28:43 +0800
-Message-ID: <20260618092845.3905740-3-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 3/4] mm: mlock: use walk_page_range_vma() in mlock_vma_pages_range()
+Date: Thu, 18 Jun 2026 17:28:44 +0800
+Message-ID: <20260618092845.3905740-4-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
 References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
@@ -84,14 +84,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4F8CAA000B
 X-Rspam-User: 
-X-Stat-Signature: 1e4wwebipsc9ewbur3pwwuipb47obzu6
-X-HE-Tag: 1781774938-32480
-X-HE-Meta: U2FsdGVkX18fPlUpryQzYk8H9Po3rqXs8NMv6dXdMHZx9AXhxnXTZiX+9B1h2hxq+3lRknLHue8oC1TuV5iuv5PrSf3DlhBpjKYcyeQ54ED3auFNE/iP1IoD5RdU/LJy3KXgTx3oJ4p2+8gn1TlTuNCV6XYfGOlrElRZkKtUiWbO1IDUPHlkx5UHLhKGw2hUJEsKdS0WOO3/p88r0DMwCEFPZFOzBUg5yTUK761NYF0uUJf5qrQP3mNHVDoKend4Ri4byJL5cqNjfqIucT5U69k9GF+iOXzSN5+rQm/HoFkPCdUhnPcSze9gkryzX89Z5zi0CB4BLZX21DO2Y0iiXQtGVDAWqC9ARcB+8u2jXZmUdyfJWN1eP00sYjmAOr9a5QGEAmPifILJ1kceyuLKf7+8Ss5dTZkLhCqsBQIvKHSR9PvkUY+mb7+EVP8jXOcA2kcfYIJc+FI1RBSS//h+KchlcUHPnI204emxEcGwwQVLEmTVGsZcZrTXC3Kqe7p/+UDNXC9oUcUCyOTssL+qh9Xqp28bD5vT1ukX5m9mKDn6hVVGsufX8nuOTrV5D02QjLOMAzCPUMc0FcEjKzl5WgUmOBA5cXT89po4jL9YPzAnmnc8wQHbONBKgewXU59dgj0wlBJYd9r40DEV3hGyVMX2Fqx5FGnsQMBEI0c5z9SPkWwIncu6KCZ/j1uisJaRXT+Xk3eTJ/JZC4zFDV3/59Yh7LpV52YQfXK4VgB9VDNeEUczfJezJqU2sKHjNTjPS3l45RDrqFnUZiOgjgb8pLg3aS6HQXreDDLqiU2YPXCAjjIHlFrh7qhEdNza4kYWaBj0CTWuwU6zosvm4wzLXojIHSBb7ee7WuPAp+hOni1SXoi5DvQhBWXYZYaN9E0ITrqlxn9GPEkPQYTOJ9kJQzWjRsxAniS2p+OOETDEfR1Hei+igX1CElIztVOeXQVT6sXupWt75h8vy3Na2KA
- lEticmZp
- xnayCSy5+fmoXiW2CFiSNjlQzvdkC0jQV9+A1j8VoZVJ14m+4cmKX8b6Nf1lMF7k93mBtJSNFjBVSwlKb4DLqHNb4Wea7ULp0R5JepuwwQhkLspq6MltmlcVK2IKkn03r60x1uXTyhfiySxqpLRGOBevVSGtyElIx0lg6DNKHmGwXoyTmKxcyFnttdfK1Gwurir3PpnwhLPMBj89wE+slay0x7skpYkfKfAToh+/9UTOnWPJS9iAbCLvX8h+3ph4sJV9amKMmQLzKu6KCbQVjmKUYObILRoR/AWMHqXQO07vFk8ElPkLWuobXe5Qd9bLroQXl0HGoGvKr6i2PLOsb74cNxNGWXguUoDRdKOMlzy/TiIo=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3F3E12000A
+X-Stat-Signature: aynrwgieiemiung4mriiwehfy3kaj3pd
+X-HE-Tag: 1781774938-208245
+X-HE-Meta: U2FsdGVkX19Us/ELm65+T/C24rv6HKmJF+lhVO0IOb7dH0KBYwuTJ/dDQWnGZ0pSQ+09f7xuNrp+5KmpHg4AwgGN5yVNgnvLopVuPIyQULjiq/LKoRdhS1q2f03xJP4FCHbokFSW9BAzQ09vabynt0e9ZqVL6Wv1n8badhq7VvnPfdUnpxIuUKJExqmUTvomMCZnU9vyZdMBRfH9IvGVDYfRlsCecYe0lyxJALu5yN5UTrsUH9JIkyJIzMDZI9DkULA1xm+OTOT9pt4SAtB+rWgDqYsDMQ8eIj2QnxMMqUWufN88KJIvQVL6y+mXqwxIGf24Utxd10IgqJ5doXvSr/LI9UzEKedGDxGFXt4B0nOHj8NbiGqd5S9+ij3kpfN1YNqTP/asobe8xCK0N7txEh43CeK9um83AtuCS5o3gAFX17IEvNv6xL71Pm+PpfnscreeMXVjH7/VaY4oaVx4eMHGwPoBIIk4wooLCTrMWg3NGIwwFMv0roEEaEsXdFLe8X2HLIVlZjfQfR+RVYP5yJSQhs/vXW4Vu4JM/N13HWlxziOpDhEaxoIJDkEnxUEr+rQYjUHpqUd+zk9CqM8nX4NYyuEjkKEt1GADIiFqmx2cK2R4O44vcj5ym6/2T/5hjT2IE9bfuPXlwxboqzZ8N+bJXU25gFL7n8bPJuN+eJiWy1R92gbW7zm0IHXy9iDPgdnUSyD0W1IJv/hzJ3u10OqAQPfvXbOw/DrTXutwkr8LWm3BbkJFCTp09Nvbyy9URHk9FCVOXN8Z2qjPk9wFjMFpGpgIkonJShnsLxFb3vIF6T9MfKXdGA0bFC6FTrRqu+TloPQikyNMcz3Y26b7MNdBXqERnx7St951n0kO7cYo7ZjVYdES0z8F/GRQlHg81hjSJg6vDhg2HWwHYEA/1Xg82JMNLGx83NjtT8Zz7JYcdednOCP1HT6OdFg6OH+fkLNERlJ0NYsCQnnd7t4
+ l9htjMaf
+ FFmtxde8gfH/mvHfzGJZmWaMF8M5+fcx6mVj/hWfDf8tF4BZePz3FVFXsK0EUWUzlujuxUSdyfD3vb7lEzD7Tq13BL1n2IOybiiD5UTrccvzhQr+OSdq/tNVZwK5piRbxG0hV0GYgs24MUd2/PFMfh/xZtgMPRsa+p0HHAaGFkEB9vRmrz//ORftDUGPMUg2/5+Eo5Sm7FvA6IINM0K8Xbkn1QlSmfAmtvwgCRpWrWWiASdbOJ7p5r8JSke22yuVc5JAbuyV3aOhBFn0Q0MGB4xYikvwwmbldK9J4ttFTJwiDAsrec+le0N3xYe8MskrDV1nprKjwEWZc4bWzrUHRUrIzvkC4Z1rHC8C3ezcPBmefWvlCyQqgPjTDGXLTEHaq74Qz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,54 +99,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In mprotect_fixup(), the PROT_NONE PFN permission check uses
-walk_page_range() to walk the page table. Fortunately, the caller
-always passes start/end that falls within a single VMA, the
-do_mprotect_pkey() iterates per-VMA via for_each_vma_range(),
-and setup_arg_pages() passes the whole VMA.
+The mlock_vma_pages_range() uses walk_page_range() to walk the
+page table. Fortunately, the caller always passes start/end that
+falls within a single VMA, apply_vma_lock_flags() iterates per-VMA,
+and apply_mlockall_flags() passes the whole VMA.
 
-Note, walk_page_test() isn't called in walk_page_range_vma(),
-however, prot_none_test() in prot_none_walk_ops always return 0,
-so it's safe to replace walk_page_range() with walk_page_range_vma()
-to eliminate an unnecessary find_vma() lookup, also remove
-unneeded prot_none_test() too.
+Since there is no .test_walk in mlock_walk_ops and VM_PFNMAP
+was filtered by vma_supports_mlock(), it's safe to replace
+walk_page_range() with walk_page_range_vma() to eliminate an
+unnecessary find_vma() lookup.
 
 Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/mprotect.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ mm/mlock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 9cbf932b028c..b1595450e241 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -708,16 +708,9 @@ static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
- 		0 : -EACCES;
- }
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 8c227fefa2df..97e49038d8d3 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -446,7 +446,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+ 	vma_flags_reset_once(vma, new_vma_flags);
  
--static int prot_none_test(unsigned long addr, unsigned long next,
--			  struct mm_walk *walk)
--{
--	return 0;
--}
--
- static const struct mm_walk_ops prot_none_walk_ops = {
- 	.pte_entry		= prot_none_pte_entry,
- 	.hugetlb_entry		= prot_none_hugetlb_entry,
--	.test_walk		= prot_none_test,
- 	.walk_lock		= PGWALK_WRLOCK,
- };
+ 	lru_add_drain();
+-	walk_page_range(vma->vm_mm, start, end, &mlock_walk_ops, NULL);
++	walk_page_range_vma(vma, start, end, &mlock_walk_ops, NULL);
+ 	lru_add_drain();
  
-@@ -753,7 +746,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 	    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
- 		pgprot_t new_pgprot = vm_get_page_prot(newflags);
- 
--		error = walk_page_range(current->mm, start, end,
-+		error = walk_page_range_vma(vma, start, end,
- 				&prot_none_walk_ops, &new_pgprot);
- 		if (error)
- 			return error;
+ 	if (vma_flags_test(new_vma_flags, VMA_IO_BIT)) {
 -- 
 2.27.0
 
