@@ -4,129 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F2BCD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 11:54:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35EC3CD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 11:54:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14C656B00D8; Thu, 18 Jun 2026 07:54:01 -0400 (EDT)
+	id 14C166B008A; Thu, 18 Jun 2026 07:54:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 123E66B00DC; Thu, 18 Jun 2026 07:54:01 -0400 (EDT)
+	id 1235C6B008C; Thu, 18 Jun 2026 07:54:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2D966B00DD; Thu, 18 Jun 2026 07:54:00 -0400 (EDT)
+	id 03A8D6B0093; Thu, 18 Jun 2026 07:54:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFECA6B00D8
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:54:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 547651C2D50
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:54:00 +0000 (UTC)
-X-FDA: 84892874640.06.ADDAE1B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 12E6B14000C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:53:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DM5TGA/H";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JexkUVao;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FadwPL3k;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ghuIDtx9;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D4C976B008A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 07:54:33 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 866D4A0646
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:47:55 +0000 (UTC)
+X-FDA: 84892859310.28.9030FE0
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 93CDFA0005
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:47:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OsNl+GUA;
+	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.68 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781783638;
+	s=arc-20220608; t=1781783273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gQQaq0JXVpampDDkCoj4SM6iiwGNqXeAIhjWEGe6LmY=;
-	b=FD48JQ+3ufpi0QDeuYWgfHB62/o9/wzxwTUGQGHl9t0czeULKAKaVPoLI5B+YaQ8FeLgsB
-	qK9eM7yjxspzmbqL7MDFpnu5l0Gt8LAKMKHPM0QZYTqfmIFzrXj1FLJ3dMyaC6aBoMVmnm
-	8nb7JS5cGMJcSbQrtYtRoTuMv72WXoY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DM5TGA/H";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JexkUVao;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FadwPL3k;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ghuIDtx9;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=hgJSxfkbpRL1li2RmiPzgr2AwPNLZXo7UF6R1jDsgxA=;
+	b=cIyJ7NXFKlGgnyizu04hc43DtXI1a3htl/OBPCtGR2iblU8yE3b6bFLGereuz7mc9GOhqH
+	2j4QtoHIGMMQBqK2qITeJ+LHoEXxKXrq2Tn9s5kj6vVg3CcwZ4EnEnO/e0kFex5lZU3QZF
+	gT4uE9cFDpsQPAZJja89NP3iJRtvTxU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781783638;
-	b=IBz14HX0niKUdAwZMJH6h19Zdx9oBZ8XQoXxbc/bnfQXmu9nuu6FXsCuhu7J43q9TN1QgA
-	KhE66fP8LgZHxewk+A+9YQjvL4S+XvDv0aiTXfb8RTJT4F58wNB/7vcc2TFaqBmCi2II/a
-	WWmWyO3EjcLXporIpyRiMLzkfIUIjEQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CFD8175C20;
-	Thu, 18 Jun 2026 11:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781783636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gQQaq0JXVpampDDkCoj4SM6iiwGNqXeAIhjWEGe6LmY=;
-	b=DM5TGA/HMdg986vC+yKHSU4zRUmb46lYgTsmovvmMKu/N95iBBW44vDfuUxMeZaxDJV1sw
-	hWxOgQiTm534NABAoijqdx3yim6AbyQXEKe1pRaLCz7gVRvf7xTz4h7Ab9PoofcwvhIB8D
-	a3658gTGMcydXMC1UyrrTH387JC/R4c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781783636;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gQQaq0JXVpampDDkCoj4SM6iiwGNqXeAIhjWEGe6LmY=;
-	b=JexkUVaoQWpw7XA9UoaVrWr20CSZi3rRaUp+7Rqkz9kP/AU5/acwBs27pzdYzNG0b7WyZ6
-	35qp6G1OwmsR9hCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781783635; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gQQaq0JXVpampDDkCoj4SM6iiwGNqXeAIhjWEGe6LmY=;
-	b=FadwPL3k77g3hDuLcNZxG0tsdGdGZraJZhsAEZT2pbzftoldn0H9uHGupRx0pGn8m5Iulc
-	O0RPO7kTBZwpebDPAzsBe9fxkW7JbqW2LQQj1Xu0qVr19MOas79YBu1+sBW7w8s1dXoXwv
-	6iOMYC9vi+x+GmPAdiGYGcL7EHL3dZE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781783635;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gQQaq0JXVpampDDkCoj4SM6iiwGNqXeAIhjWEGe6LmY=;
-	b=ghuIDtx9X6VLUGXMUA63Uh2IUftVBZnrKq91lFvpKGrRWeZDMr2bSWiSqVb6wD57oe7brN
-	qYTlUeHLe0lGXfBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2E264779A8;
-	Thu, 18 Jun 2026 11:53:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3k4QCFPcM2qpfgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 11:53:55 +0000
-Date: Thu, 18 Jun 2026 12:53:53 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH v2 4/4] mm: migrate_device: use walk_page_range_vma() in
- migrate_vma_collect()
-Message-ID: <ajPcPPyXecvXee6h@pedro-suse>
-References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
- <20260618092845.3905740-5-wangkefeng.wang@huawei.com>
+	t=1781783273;
+	b=FjAXMCXsFy9ohv9VNm2cg/4Jq7ucWuSkmHOUpvbXyl/mbaAlLHLHKH3ri62F6paI4XwNHf
+	J0yvNR99Kc4ildwI2bmrWlgMb98IHFSuwvd5ouH8eajdmoMVL1nS3HLyNvpDozzJP4lN9c
+	TeA5aleW2j5sXFNocLm6bYSQMOTzB6A=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OsNl+GUA;
+	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.68 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-36da151a152so490918a91.1
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781783272; x=1782388072; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hgJSxfkbpRL1li2RmiPzgr2AwPNLZXo7UF6R1jDsgxA=;
+        b=OsNl+GUAV4gM4/OfsHENCqe/kdxeidft3Vu2gRn1Z/M1MvNj7IlC6EokM2zqHyKqLg
+         VKBnYnVs739yKtBBu/HxqeaEGXmFN76e67wUrkPBJz9OWYL9/5ejaabznmK5pVeDVJSb
+         1K421OdC3GrbdOe5qFredL3gJfqmpX5PkA5FqyMUS6uuBW5hx87iV0kHFq2HlhYrI1Tu
+         vbeQf5me+OxXu0Zcc3xqWmLTMTeKnGArLhoHaj6t5nUosBv2lpM/g2RUrPS5Z1+mfRLh
+         JSKP5wMKtyW8iWtBNBdDwczqfEXZO8mkX70nmgQgGDmKpIGHeEXVkLpCURSl++7eWrn/
+         Vrkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781783272; x=1782388072;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hgJSxfkbpRL1li2RmiPzgr2AwPNLZXo7UF6R1jDsgxA=;
+        b=V2+v41VjlSD/h9th8Dvf3ayObPd4Ebw//6SK+Wvztj6zgzWFg5BsIdQTAgv+WAEzps
+         NWvS+7hIG0WIw/+zJaNzIeR4Cm9XhjdsQy3gNhFbW3GTkOGXhiI/S3drobmfeI0tKmDh
+         c4AckS97ZP8zaY6Jq+EY9Vd7rbgGpF8FHYS+9oJtIyPTUvPgMznzdN70OTZgpePvRvHl
+         HpbpSsAKquF8tY52txHuuWn0lAAxWsUpHVSJaBtQAGIu0n1RPADixTLDsZ8X3bmn9yBd
+         fLA6KaiiLFHXAcGvKWL7wo/1zhg4wPSLZC5bA2eLyP2QcJTEc3cFK3/LBunLHEEuifOW
+         Ogcg==
+X-Forwarded-Encrypted: i=1; AFNElJ+grs9qCcRBQxaJa63atuq9ee00FKLa8M4c28nV13QZEfFJbk833bt17g3Nm+/AG3l2kyevBAtiCA==@kvack.org
+X-Gm-Message-State: AOJu0YwDvdLviaqLZbbSPH5EC3GtC0rS6JqsoqzIqLEarCef+rQtuvpv
+	Xoq1DOdTXDWM1JHCFfBZGiZ4//KApCqXByGtpjMxJwM7+qSrPMnIpt8j
+X-Gm-Gg: AfdE7clooLpZ9DU6RdSVVHoorg2orQIMCSW1aKS8EGQFAY5ZXqVGz6uLfpDq89dVaGn
+	/RbUZreDnvW48q7t8m8c2EluExGtrSVJd5aWvt/8921cCSzZ047nnFUL8krgeo4wZ+QOOp8eDb3
+	Qx+I/4NnJZGURmUpvBpRMIbLOgoH1V0J/7/zvpbUGCGsPHtk3rKDHiaXoNKpLsZh1FnAfbaVhYi
+	tovyzoaA4mj7/6vzFQpoJf/7B3KbT78TrKQbwUgL2wJethgIjl1eNKXpWdSLXsA7aWPbWFH/75+
+	rM4g6jI/HhsKxtw+Wc1DQfGkBdott9K4iPQjuvPH7o7kEBnYNCrV+55NqkMP/N+luXcHFonpKOW
+	4nmfDzB9nmz1DADa/kx2RbVjHIsqQmEjB4HnxTvHzBkL87nPlaIJSifJz7OiDgM4+mI3W4gTBQt
+	ntuJfXf1yR0P80rrzmbtU2tfn1HFgiqkM=
+X-Received: by 2002:a17:90b:4c84:b0:36b:9798:4f67 with SMTP id 98e67ed59e1d1-37ce44caf41mr3737106a91.8.1781783272420;
+        Thu, 18 Jun 2026 04:47:52 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521ca980sm9530544a91.6.2026.06.18.04.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jun 2026 04:47:51 -0700 (PDT)
+Message-ID: <b5605aef-c3a3-4a35-aceb-d1df3c9a7f4a@gmail.com>
+Date: Thu, 18 Jun 2026 19:47:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260618092845.3905740-5-wangkefeng.wang@huawei.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 12E6B14000C
-X-Stat-Signature: r3mtqke5eax4spj11rbodqtdijazzk1q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 3/3] mm/compaction: respect
+ compact_unevictable_allowed in alloc_contig path
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com
+References: <20260604023812.3700316-1-chenwandun1@gmail.com>
+ <20260604023812.3700316-4-chenwandun1@gmail.com>
+ <9890b8f5-69b9-49bc-8ed6-ea47723b644e@kernel.org>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <9890b8f5-69b9-49bc-8ed6-ea47723b644e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1781783637-772951
-X-HE-Meta: U2FsdGVkX1/rOl6SqaeAeK4WW0GT1MCJi1Bqa17fs4t96OgY+MryFXaV2QrkgC3eO4IRTUIeuoJw2Y4alPjzAv9YB0m2KfG/FnSW0Pxv3+gVzOn4LQO4sTJw7dUpFhh8eDieSleDQZ2tkFcE9SUZBcKVL0neyVx66XmixZOAN3JAzI7pFfBihSASwqUhB3ukgAf5bMsWB16XUGOwbqAnqoAry4ggq61lAxOsEdMuKXM1Sn5QNuh8cDsgwvvDHOtplxKJum0zIm1ShRWQw+DXkEkIpUSJPIUMhExgUgkw708SbtiC/MUZMAme2Xyl1dJmiSAKUMl1mr3Z5qYcpne1lg1Gvl7dh/wxu5HWmV+1YaYvuasVfvx18O6uwY55QqL3fIyys0S4AbTdUTlth6iFU1wefgYu3iiA+eHWtSDPxVwjag3A+WpERsDMQVVSm5LVZMX6WmTapXqGSz44iZXtxIE/V4UuxsSRTcem5J5u5F4zdPVeMYB1bR+5YhlTiWs424Q/THydrY6gNt0N3aG4gLhOsoJ29F2579HPyqBFjdsK9wkjb8opkCPeaJkFTqU3HqK9nJsW7S0REOIq8M2rBq7xU/Apo8r74JM93fm/74J/UwhQAo6/yYdncG4LvqM0MzIzcxdckwt9idv348gdpZakXq7FLjqvhfne1lJ0dpd4XQzfzLv5tzI9awWIaJfhCr2Sr48OH+Mc7WX3qOrQv16KiVygx5ViHuo5A2gY4AJqEBqY5SorO1Pv85sFrAoNiBd9cl/5Uf7JplIARwHkaVo0JtVW7LaxUARqeZM10bSY1SLDXryQEc1vsIITv2IzJ2tDtw0VoXRnQEXK8heHM9wX0HlMd/oi8iOfel7Ma9GNoHXS13F+nzi+YgspDkxR7sKDziJrSOnSKUWz8KQbx1U41dB2uWFUDS8QGuj23W61c9J/Tw4eMDJWu+3wwhnsJVPBEkgV3IJ4FHPR1Qo
- i+KMyhpp
- jbkxCIDLsMMFHEKkmWEJNDLxr+YKu+WqY82qZydQV40ORptg+mg4JRiZIJa8S2VyLuGT0KNpYimfVv6lBzv8IwnQ8Y2CMBVN3biIVJTYztfb/qV0ons3zlnD2sCdCigI4X4Zr2ddEzZnQw4fR9A3aMg4qHQEOGzXZl+yCgRtfqO1Q0GusuwjJRwCYWck9xp0V3WDYKn2RYHcXTRIREG7KWagiMUBwNv/OdyQxM7iaWDNblRtTXqPYWK5UOCHiObikk/VH9IvzcT9Q21sC0M/mlBHU5OH0tAck4IQgD2BJLqfy0kQ6QWqVtl4UF2yDr0YudlOT6ZrT0ylUxQiuMgd8FvrcpkcjBHra96/gnj75lS2IMfdtGd6dqiqqkugtkVyIokoKT3LoSylQaiCEtZ33TVXMqXwU1eYl9my6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 93CDFA0005
+X-Stat-Signature: 93sor9d3hmubiaak4ww4zboxxdhpesqe
+X-HE-Tag: 1781783273-174216
+X-HE-Meta: U2FsdGVkX1/D2psLlOuctjVw5ndeXtIKgeNRXCFPe2mSAOi44sMDSJhXBnzzCs1zIhpID9xJZYSsxmA+3TIZzxy2+Ad/+Pu5JsIFZVlhnrQl8V1aXWaNcvvLVXzHbEWcXq5vpHQh7444FN3dh6ShaThjsMm/JOejeIlgyZSND8r/mlwpX7XPRJAxEIyNsjy9BJ1FsJLYFX2ABhKdzLo2U16x6TIr3k+O10G/T74Rz4/vJCphPq7RfsFScbp9mZ3dPp0EEEc9/H08to4Knj8xMTZ5mgrJJIxFPQfgreViDBKBdyDEfrVEcpRiko/E/1dfhTGJWWyx1N5jTkteTQHmhVUDyrN6sgANA0boE2XF8ph7//gyeyAg5EIpi6+A9czyYE93p+utd7WaZrRljAnge+Gq0TxE2vj2KaoIKQNBFvfkE8LdqDJmj2+f8rcxrWEeU8cDk7XT5viJKxOuXP3Eb8UKQSXjCcNkDc++s8BwzLS3t72dbJqzRoOXKRaI6vgZmW9xs0wnRLBiOMeGFFr1B7Sl4Hb67/MLG4f2sQXnc64xcq93/WDOGB7yKg8JyThJ6HeaAZk+G2e/TTQ1PvQTG+rtpPeB25QDzaDrrEHv0pQsAwT0CDUTJr4dSUPtYJ6x+GMtkR8FocvcNdC0XtpG3oKEoZnwacN8qVWYWACY4fVhB04WhOQlWCIY/ZTYB7bEGTHxXY4Zo/oFxGZBsVK/FWnggLiNtqiF51dW6hPyLbNFCfnf1nb+s7PcYioFWFZgEQIt9wB/9fzbpJaUrYzst+HkfcwW1sBy7HgHmwkinfeuBQg5dCL3G5bis3LwmzxaN8jARMn2DrYhtXw86BQn71tfLwhoq5u1Ig6Um/wUN1n8u/bBcLMFLBPkJqOxZIN9K4/cjsK7LEnLDckiRXzHeL+SdmMZ8FpwckXjP/+U7x3t49yIwOZo2rhHBXnvwht6xVo4beqUk+XkMkv1EfT
+ krOfpiOo
+ RrGM8jcY1BbNHzNxMf5ZaLZKJn3Npp8CxyGSOZ4cmy+8XwE/26Hb4x9SNyZUfpUa87W+B40CVF8snFdtaWsu7HePmRzNX8sDoZt3ZL2phcSIvL2OjgN9pPPr8HJwG0FtK3Z7v2pyfsw9zhYaXFyf4/30horkoJnsud/liLWHMlk/Vm9PlYNH1TIsZBAGzkemuU7qsfj1uXSrRDCj/S45GGLikoRo5i3g0UQ5XSH2Jbfy1r20fiso6d0b0/3HUKeyAbk9e629t2bVLoITp6zxNPl/RDA2vpSHXyGr8t7ga3KhVXf7sV234YhUx1U79XbK/SKbbPM+JKG4eCqZA6pE2WXdWJqb0Oo9G0Id2KjRPqjFFveOea4G8fGknp2rDu/hpgvvs2O+SPMVI7TWw/c5iAv2Y6hRbdgJP5fjAN3dQgeLB3gPL/6z6U4z7Fan7b8d962DguR/sWnYLmduTmGoRwALjZhtB/jjxvY5P7KpA8E/egMgZq2OH6wpMEkWbIvWi8bsk8r0dvAfMmSTpoZ2I4QKCpK5ed2UZIN1vndyc80ZLh5mpUJVZ5whghk3jjiUAb35t4y8A5YP3esPUOlIM5X+mtwhls2c+jLrSkG0DLB0kgkOExR5Uh7P+rKC9mdk4TC+I73GSzSjVLVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,22 +129,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 05:28:45PM +0800, Kefeng Wang wrote:
-> The migrate_vma_collect() uses walk_page_range() to walk the page
-> table. Fortunately, migrate_vma_setup() already validates that the
-> entire range falls within a single VMA.
-> 
-> Since there is no .test_walk in migrate_vma_walk_ops and VM_PFNMAP
-> was filtered by migrate_vma_setup(), it's safe to replace
-> walk_page_range() with walk_page_range_vma() to eliminate an
-> unnecessary find_vma() lookup.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
 
--- 
-Pedro
+On 6/18/26 02:57, Vlastimil Babka (SUSE) wrote:
+> On 6/4/26 04:38, Wandun Chen wrote:
+>> From: Wandun Chen <chenwandun@lixiang.com>
+>>
+>> vm.compact_unevictable_allowed=0 is used to prevent compacting
+>> unevictable pages. However, isolate_migratepages_range() passes
+>> ISOLATE_UNEVICTABLE regardless of this sysctl, so the setting
+>> has no effect in the alloc_contig path.
+>>
+>> Fix it by:
+>>   - Keep ISOLATE_UNEVICTABLE for CMA allocation, discussed in [1].
+>>   - Honour sysctl_compact_unevictable_allowed for non-CMA allocation.
+>>
+>> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>> Link: https://lore.kernel.org/all/25ba0d77-eb61-4efc-b2fc-73878cbd85c1@suse.cz/ [1]
+> 
+> There was also the "Ideally by not having mlock'd pages in CMA areas at
+> all." part. Is it the case? It was more elaborated here:
+
+Yes, It is the case.
+
+> https://lore.kernel.org/all/CAPTztWZpnX1j8-7yeppVUsxE=O9hbVeqricDjZt8_pnN7a-kBQ@mail.gmail.com/
+
+I missed this important information. Thanks for pointing it out, Vlastimil.
+
+Best regards,
+Wandun
+
+> 
+>> ---
+>>  include/linux/compaction.h | 6 ++++++
+>>  mm/compaction.c            | 9 +++++++--
+>>  mm/internal.h              | 1 +
+>>  mm/page_alloc.c            | 2 ++
+>>  4 files changed, 16 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+>> index f29ef0653546..04e60f65b976 100644
+>> --- a/include/linux/compaction.h
+>> +++ b/include/linux/compaction.h
+>> @@ -106,6 +106,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
+>>  extern void __meminit kcompactd_run(int nid);
+>>  extern void __meminit kcompactd_stop(int nid);
+>>  extern void wakeup_kcompactd(pg_data_t *pgdat, int order, int highest_zoneidx);
+>> +extern bool compaction_allow_unevictable(void);
+>>  
+>>  #else
+>>  static inline void reset_isolation_suitable(pg_data_t *pgdat)
+>> @@ -131,6 +132,11 @@ static inline void wakeup_kcompactd(pg_data_t *pgdat,
+>>  {
+>>  }
+>>  
+>> +static inline bool compaction_allow_unevictable(void)
+>> +{
+>> +	return true;
+>> +}
+>> +
+>>  #endif /* CONFIG_COMPACTION */
+>>  
+>>  struct node;
+>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> index 007d5e00a8ae..a10acb273454 100644
+>> --- a/mm/compaction.c
+>> +++ b/mm/compaction.c
+>> @@ -1341,6 +1341,7 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
+>>  							unsigned long end_pfn)
+>>  {
+>>  	unsigned long pfn, block_start_pfn, block_end_pfn;
+>> +	isolate_mode_t mode = cc->allow_unevictable ? ISOLATE_UNEVICTABLE : 0;
+>>  	int ret = 0;
+>>  
+>>  	/* Scan block by block. First and last block may be incomplete */
+>> @@ -1360,8 +1361,7 @@ isolate_migratepages_range(struct compact_control *cc, unsigned long start_pfn,
+>>  					block_end_pfn, cc->zone))
+>>  			continue;
+>>  
+>> -		ret = isolate_migratepages_block(cc, pfn, block_end_pfn,
+>> -						 ISOLATE_UNEVICTABLE);
+>> +		ret = isolate_migratepages_block(cc, pfn, block_end_pfn, mode);
+>>  
+>>  		if (ret)
+>>  			break;
+>> @@ -1902,6 +1902,11 @@ typedef enum {
+>>   * compactable pages.
+>>   */
+>>  static int sysctl_compact_unevictable_allowed __read_mostly = CONFIG_COMPACT_UNEVICTABLE_DEFAULT;
+>> +
+>> +bool compaction_allow_unevictable(void)
+>> +{
+>> +	return sysctl_compact_unevictable_allowed;
+>> +}
+>>  /*
+>>   * Tunable for proactive compaction. It determines how
+>>   * aggressively the kernel should compact memory in the
+>> diff --git a/mm/internal.h b/mm/internal.h
+>> index 181e79f1d6a2..163f9d6b37f3 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -1052,6 +1052,7 @@ struct compact_control {
+>>  					 * ensure forward progress.
+>>  					 */
+>>  	bool alloc_contig;		/* alloc_contig_range allocation */
+>> +	bool allow_unevictable;		/* Allow isolation of unevictable folios */
+>>  };
+>>  
+>>  /*
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 81a9d4d1e6c0..1cf9d4a3b14c 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -7118,6 +7118,8 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>>  		.ignore_skip_hint = true,
+>>  		.no_set_skip_hint = true,
+>>  		.alloc_contig = true,
+>> +		.allow_unevictable = !!(alloc_flags & ACR_FLAGS_CMA) ||
+>> +					     compaction_allow_unevictable(),
+>>  	};
+>>  	INIT_LIST_HEAD(&cc.migratepages);
+>>  	enum pb_isolate_mode mode = (alloc_flags & ACR_FLAGS_CMA) ?
+> 
+
 
