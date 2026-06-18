@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A2FCD98E2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D56BCD98E2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 09:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24D866B0092; Thu, 18 Jun 2026 05:29:37 -0400 (EDT)
+	id 890136B00C8; Thu, 18 Jun 2026 05:29:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FD9F6B0095; Thu, 18 Jun 2026 05:29:37 -0400 (EDT)
+	id 8409F6B00CC; Thu, 18 Jun 2026 05:29:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 114CC6B0093; Thu, 18 Jun 2026 05:29:37 -0400 (EDT)
+	id 708AB6B00CD; Thu, 18 Jun 2026 05:29:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 086AD6B00C6
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:29:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 172B9A0650
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:21:55 +0000 (UTC)
-X-FDA: 84892491390.17.4FC7337
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5218B140008
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:21:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3cM3De;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E5D6B00C8
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 05:29:35 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8FF5140614
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:21:41 +0000 (UTC)
+X-FDA: 84892490802.26.735C742
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 90CE24000A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:21:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kYQys+nb;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
+	spf=pass (imf11.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781774513;
+	s=arc-20220608; t=1781774500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tdbarJPqjC55LTRElMsZwxi5F6G9ivMOr+PAq0++WHk=;
-	b=gZ5Cf9ihF5/o+1kKfoZDdxpnWM4kxKFcpGgIHSKffZ/f9j/HfFsPbsIju93UZB31Q6WG44
-	5C7ml1OFPF4jB/l0W/woSkCQDxWSuZ/RwCwJNGS/NyUe8ky6BfEfqCu1BOOqYyTgd28EbG
-	Pohbx18OmFce6mJ9D2h8JojkHZMKK9Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=sVRX8cTCVrBcWN6MBvdM8+S6tRfy0PKW4NWctKlaZS4=;
+	b=dm7UJKCe27s7DWEfr6nDti1MjR7LkZertB+VNWIRxTj3H4dUc0Fk1nAu5qGnzcj1DYJeHH
+	oq6xZ5TriSxNmUK/oOXXcCeJ5TWodktRqBweMG+uRjRRn1jzGZMNNBx0hiZobzZHAzUl9E
+	Hu6ne8xUnn+42ejq9hvXbOHJM76gXog=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3cM3De;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kYQys+nb;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf23.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
+	spf=pass (imf11.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781774513;
-	b=tszoCU+ePJGJFO/95/QQ9gQY3DmXFRYWCBP3ZcSE1lt8g5xm31i9JxgK/XXUMxY1PdKqVp
-	1PQy4kq3Xl2ZGScxghfRC4G/m8T/axLWRPnOLxIEgBJjJkcmZ0S4UMVLxlTOT2nfT8ts7f
-	v3QjFRXe/u74SoQJGktblZSDL8Ol4Ow=
+	t=1781774500;
+	b=D/vmfHpbqFFMeaPpIomWAZ0uGT3lpQLS/JuFwfv1qPe0ztmAduv7gm8XZFcW3HFQRUNArD
+	G2gfI4GFytKrZvJc/J6IKxamF8mg6h9wylwY3pfRbbi77ClyBz97PliYSujssQJfi8ZytY
+	1dI1E8/uGlexK/UrNKkSgJGS79dZ+Gs=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1781774506; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=tdbarJPqjC55LTRElMsZwxi5F6G9ivMOr+PAq0++WHk=;
-	b=wk3cM3DeXo5c0OYVPJ1XCc4BYIpRivWcRPs4v0THxHvIvn+FSu9cOW+rTcVp8tqyiCRcTgbN0uAEUoaz0PWAYQv43ENIYJ7QSKS5J3brWTrV7VO01cvgj19EgJtrNLX2+RVaua+VppfPDtL5sUY0i1qXtqQOlkiiRDfhJaEQXyI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X56TK4t_1781774500;
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X56TK4t_1781774500 cluster:ay36)
+	t=1781774494; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=sVRX8cTCVrBcWN6MBvdM8+S6tRfy0PKW4NWctKlaZS4=;
+	b=kYQys+nb5qzF1dq4yc+6ZNQ2TwFHcVPcGv9pikifn8S97pNg//Fgf5sZ8LiHHrOsDPUeLY+DEpHjNeQbkR6FlsIDTB5egYFfBr6bJoabiojYZ9I9qbsehWhbl6MwKbHYiH72QwGePmAsivH203pxM8q2UjW38DbrIwQLLkP57Ks=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R901e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X56USnR_1781774487;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X56USnR_1781774487 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 18 Jun 2026 17:21:44 +0800
+          Thu, 18 Jun 2026 17:21:32 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -86,22 +86,21 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	tianruidong@linux.alibaba.com
-Subject: [PATCH v15 2/9] ACPI: APEI: GHES: use exception context to gate SIGBUS on poison consumption
-Date: Thu, 18 Jun 2026 17:21:16 +0800
-Message-ID: <20260618092124.3901230-3-tianruidong@linux.alibaba.com>
+Subject: [PATCH v15 0/8] arm64: add ARCH_HAS_COPY_MC support
+Date: Thu, 18 Jun 2026 17:21:14 +0800
+Message-ID: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
-References: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 90CE24000A
 X-Rspam-User: 
-X-Stat-Signature: cba6akobgyghkujjxm83ky1qmdehpr8e
-X-Rspamd-Queue-Id: 5218B140008
-X-HE-Tag: 1781774511-791421
-X-HE-Meta: U2FsdGVkX18M15N77lmUN+jjd8WmHWB2kKZ/4exQSci8NFYB3lbRoUIAMEZep5KCYnl8U6xiJYsoWIUnOLtdxoBH+zszHCCBDwO9FoC8COW72o3vYKrrViA6+GWdZsGyDkqXIUmJ8ot+iR8kUowakUKsjGsIKo4nYA7yneALd8iZrax9KWokN2rdH/tmfvZG/gclXy2Y7Ibigx4RhboTyFMyREsr6deHDc3Qpk9HDBkSHA/Jz/tz71KCCKVOEpaPVnKwTnUZBwAMi5Rz1tne1kgpANs20AgEY8F0vk3a/6nsSV+mErXQ1dpejT7xKoQoJUcEuQwuJE+wWNHzUB9LQ+ovCRVSJ+moKYDH7nGYrJf2+pxqAvUHbiS315a2RL33ECW+7SuYAO3o1NauCncsncI1kQadGr/uHFG+7b/bjF2jZyzLatKSC/TeGuuCvV7owm4Iij+/mifC1cL4KsDaG8zyG99w2P3PmFe4wATUmdBfi6CebAHQwb51H0kN6d6TiwL4tdmGbWUslhdy/qsIlyk9Bt/w7n1adhtiglQduhBhTqOXXi0V9L8duiQxO5LOw6EF0pCaTdMekSm0awNUwAR/4/qtVqP7DJPnWElB1F0NbGpy7vd5sF4cn0znMaQrVXR7FWlG4at9/3z2Gki97KxpuOy88gbRmG3MIWybQE49l8A/Z9XLYPKq6B/T6z/KGvDQimRKh8rZ5oFSRDE/auSdnEMAOOy3DVbaJ6sOQE42Vv7OZHFqWv7vt4Oz08Z+wqQoan58JmEVEjuHpZ7R2nG7ZAuxLgwjvAnAdl2/b28k2HFOgbIxnlc3AFpB8k0B+je6O0CcRr6fgL/Y6Fxxu/sY1wrpxNvF+uHa0yIj8uabc5mpLL/lPq38Mobk1WQz+OHQdNcBeXpctX0SsuMxqTJLo+m0nAvW0VXDfwXJuNiQ6e4cZ1h8MJx/oqNgx/HT/1YeGINQCkc1+hbf2r1
- ExEwHrcs
- DkV5noXDFKMcyCohzXAtGAYM/BvwbjTmc9r8MN2UCphqWgziJrK6trmk2hwmJXAc0c1KLadPSYkIdFRaWOd1B44da/v9aKl4juqagz2rUHOs6NHV4PBPqk11ynXSUUvIMPgh/DYX4dlTkLIpSmFrgGQJW1HBvp24pLLKJdok4hebIBaNnC0+85l+bCwGtKnfeaHx+XW8FAh4og4XfZN6hoNuiq3ArsKfvs4b9UcWh2sMPevWxFSR7tsCca6JUzPu5mB/4SdU6py6dXmIpiDveDAhqMx/X0MFHR81T2vXEHMpPGEj8ZfpPcIL9H9CE8zmL7rHoIHYUB2JFvm8=
+X-Stat-Signature: 6o1tr6csctzbzdsyxyfmcn8a9a9133s9
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781774498-793335
+X-HE-Meta: U2FsdGVkX19yqKyhRhSoTLEyzkrAoqHz/zTru1+xTP8sPToowhvuCmOdvlgIYpwF+VTkjbODuqbbRYEaYB4HffwoO/r3P5+c/kMHIEeywzAJkm4Gubf49/2co8d7jr0YPzZ8nvS4SeuEVPYrGPJyY9+VzHLzo12n3ckKp9vwhprtEf7qFgYE9RurtKY2ae60OIFEFuoVDpCFo9JRDzP6S6p0bZbMGj19hC/d9plc24ONeBZWwxmja0CiUA/E520I+FSouURxfWhwvYkd56mgO2rWV8s4t+DupKbGBrlidyfMopKQpjrAh7XCkuCIE5KNxsEUWKRZbwKjbff53hS+RJRjWvah2kLUm9DSgw69vyEoX1Ca9qF5flswp/m+39X40jPFHMJ5o7oGbuk68/yCkhmOQ1Jukp59mf/IlXr5vR0+g3jKqeWGOI7/2Ns0bo9ZJQgwShsGtcxo1QjOE7fjZCaRwqyNl3xikAD7KFZgqKXW/AG+BNaH4E25MdqlYtXj8Hsv0WZoEpgDYjE45R/9pONhRPVu5mCHMUp3QOZz2jdxtkEYWhN3eW2QwpN4euqXMgU6bsQgpwi4lzPuQgW4PR1+L/dR43bL9CHURaCx/mfqPnKRn9cMHlw/+vG+N4t3U4TQSUBqKgbPcDCchTpSM6mYCuhohX/7yuicOSvTJMwT0WKahJ2AiujWKwW9azvDMPqpaoqXXWuNryQeYTphJIhQWSLTdaP5OL/kyR3KAOhzugHqweO/EjjOXhP+Kvdo6/9deGti4/60SVrydLihQmTlIzTOj988Ky5PfA03nYf5O8CARJCR+hi/gDDf1s6gRrorn2aq4eHILTzp9/CnifhUHxLxBKsEqiOnoC30f8tWUsE+pxQkKDtfe7w9MsHR2qe1Wor+SjpZ7xNe0kUGodzfVheVrYVdnVOkbiYEecOtqX3khN1isag+EjJXcm9pHIsZ971apcTmZB9HxPi
+ LpQ70Jzd
+ rVza6nY70CgNFPJtvBQszDIEZtFbppntvmVH7oPwMaqcRgaeRTtbEFKpzA+vdTHXDBXwHNWy249l+XQlLsBe2VmdMtGr375BCdpdU04Ghq+m0Tguiiq6Kd+alXWs2izDAbd1IvQHwsd2QM18smvq82wZrBn8xhcwLh2Gj5XAw0bPHwYQ5mmmLD3lzNbIMJaUXIfopwU2n5LkQRyGsNRkMvUU7zdb861358eOK7R40Tdt0nQEH0W17SxgJeD4zv2Y9OxdceSQ1sZAgQvtwN9ta1m46FGGQN1BX6eizSBeOut6OB/2/cw1x9VmNoEXcnZ3F8QmWHePHsP0apuu10WRiCqQ0lzVy9LJIhVp+HbcL3mkM/A8O9W55D7xRaUfZ2BWDgi09Pl/U+ZU6MFowqRAJ2IC8M/ooiKJWn8etDu45MncCCOTfnm38GxFaH6sjiz67FhiCnhuBC35fdBLhZvBG48gq35ICHIurMoyZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,265 +108,303 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a GHES SEA (Synchronous External Abort) fires while the CPU
-was executing in kernel mode, it typically means that kernel code
-itself consumed a poisoned memory location -- e.g. copy_from_user()
-/ copy_to_user() invoked from a ioctl() or write() syscall touched
-a poisoned user page or page-cache page on behalf of the task.
+This series continues Tong Tiangen's work on arm64 ARCH_HAS_COPY_MC
+support. We encounter the same problem, and from a forward-looking
+perspective, large-memory ARM machines will suffer more from this class
+of issues, which motivates us to push this feature upstream.
 
-The expected behaviour in that case is that the faulting kernel
-helper returns via its extable fixup and the syscall returns an
-error (e.g. -EFAULT) to user space. It is NOT appropriate to deliver
-SIGBUS to the current task: the task did not directly dereference
-the poisoned address, the kernel did on its behalf, and the kernel
-is able to recover.
+Problem
+=========
+With the increase of memory capacity and density, the probability of memory
+error also increases. The increasing size and density of server RAM in data
+centers and clouds have shown increased uncorrectable memory errors.
 
-Up to now ghes_handle_memory_failure() unconditionally promoted any
-synchronous recoverable memory error to MF_ACTION_REQUIRED, which
-ends up SIGBUS on current -- regardless of whether the poison was
-consumed from user space or from inside the kernel on the task's
-behalf. That kills tasks that should instead have seen a plain
-syscall error.
+Currently, more and more scenarios that can tolerate memory errors, such as
+COW[1,2,8,9], KSM copy[3], coredump copy[4], khugepaged[5,6], uaccess copy[7],
+page migration[10,11], etc.
 
-To fix this, the execution mode in which the exception was taken
-must be captured at the arch-level entry point, where pt_regs (and
-hence user_mode(regs)) are still available. The estatus node that
-later drains the error in IRQ / process context no longer has
-access to the original regs.
+Solution
+=========
 
-Introduce:
+This patchset introduces a new processing framework on ARM64, which enables
+ARM64 to support error recovery in the above scenarios, and more scenarios
+can be expanded based on this in the future.
 
-    enum context { ... };
+In arm64, memory error handling in do_sea(), which is divided into two cases:
+ 1. If the user state consumed the memory errors, the solution is to kill
+    the user process and isolate the error page.
+ 2. If the kernel state consumed the memory errors, the solution is to
+    panic.
 
-and plumb the value all the way down to the queued estatus node:
+For case 2, Undifferentiated panic may not be the optimal choice, as it can
+be handled better. In some scenarios, we can avoid panic, such as uaccess,
+if the uaccess fails due to memory error, only the user process will be
+affected, returning an error to the caller and isolating the user page with
+hardware memory errors is a better choice.
 
- * Add an 'enum context context' field to struct ghes_estatus_node
-   and record it in ghes_in_nmi_queue_one_entry().
- * Extend ghes_notify_sea() and the internal
-   ghes_in_nmi_spool_from_list() with an enum context parameter.
+[1]  commit d302c2398ba2 ("mm, hwpoison: when copy-on-write hits poison, take page offline")
+[2]  commit 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+[3]  commit 6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
+[4]  commit 245f09226893 ("mm: hwpoison: coredump: support recovery from dump_user_range()")
+[5]  commit 98c76c9f1ef7 ("mm/khugepaged: recover from poisoned anonymous memory")
+[6]  commit 12904d953364 ("mm/khugepaged: recover from poisoned file-backed memory")
+[7]  commit 278b917f8cb9 ("x86/mce: Add _ASM_EXTABLE_CPY for copy user access")
+[8]  commit 658be46520ce ("mm: support poison recovery from copy_present_page()")
+[9]  commit aa549f923f5e ("mm: support poison recovery from do_cow_fault()")
+[10] commit f00b295b9b61 ("fs: hugetlbfs: support poisoned recover from hugetlbfs_migrate_folio()")
+[11] commit 060913999d7a ("mm: migrate: support poisoned recover from migrate folio")
 
-Then consume the recorded context in ghes_handle_memory_failure()
-for the GHES_SEV_RECOVERABLE / sync path:
+------------------
+Test result:
 
-    flags = sync && context == GHES_CTX_USER ? MF_ACTION_REQUIRED : 0;
+Tested on Kunpeng 920.
 
-i.e. MF_ACTION_REQUIRED (and thus SIGBUS via the task_work path) is
-only raised for user-mode poison consumption. Synchronous errors
-taken in kernel mode fall back to memory_failure_queue() with
-flags=0, asynchronously isolating the poisoned page while letting
-the faulting kernel helper's extable fixup return -EFAULT
-to user space.
+1. copy_page(), copy_mc_page() basic function test pass, and the disassembly
+   contents remains the same before and after refactor.
 
-Paths that pass NO_USE are unaffected:
-sync is false for them, so flags stays 0 as before.
+2. copy_to/from_user() access kernel NULL pointer raise translation fault
+   and dump error message then die(), test pass.
 
-Signed-off-by: Ruidong Tian  <tianruidong@linux.alibaba.com>
----
- arch/arm64/kernel/acpi.c |  2 +-
- drivers/acpi/apei/ghes.c | 36 ++++++++++++++++++++----------------
- include/acpi/ghes.h      | 15 +++++++++++++--
- 3 files changed, 34 insertions(+), 19 deletions(-)
+3. Test following scenarios: copy_from_user(), get_user(), COW.
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index 5891f92c2035..fa74f32c6e8c 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -409,7 +409,7 @@ int apei_claim_sea(struct pt_regs *regs)
- 	 */
- 	local_daif_restore(DAIF_ERRCTX);
- 	nmi_enter();
--	err = ghes_notify_sea();
-+	err = ghes_notify_sea(GHES_CTX(regs));
- 	nmi_exit();
- 
- 	/*
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 3236a3ce79d6..2c39adfb584a 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -529,7 +529,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- }
- 
- static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
--				       int sev, bool sync)
-+				       int sev, bool sync, enum ghes_exec_ctx context)
- {
- 	int flags = -1;
- 	int sec_sev = ghes_severity(gdata->error_severity);
-@@ -543,7 +543,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
- 		flags = MF_SOFT_OFFLINE;
- 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
--		flags = sync ? MF_ACTION_REQUIRED : 0;
-+		flags = sync && context == GHES_CTX_USER ? MF_ACTION_REQUIRED : 0;
- 
- 	if (flags != -1)
- 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-@@ -552,10 +552,10 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- }
- 
- static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
--				     int sev, bool sync)
-+				     int sev, bool sync, enum ghes_exec_ctx context)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	int flags = sync && context == GHES_CTX_USER ? MF_ACTION_REQUIRED : 0;
- 	int length = gdata->error_data_length;
- 	char error_type[120];
- 	bool queued = false;
-@@ -910,7 +910,8 @@ static void ghes_log_hwerr(int sev, guid_t *sec_type)
- }
- 
- static void ghes_do_proc(struct ghes *ghes,
--			 const struct acpi_hest_generic_status *estatus)
-+			 const struct acpi_hest_generic_status *estatus,
-+			 enum ghes_exec_ctx context)
- {
- 	int sev, sec_sev;
- 	struct acpi_hest_generic_data *gdata;
-@@ -937,11 +938,11 @@ static void ghes_do_proc(struct ghes *ghes,
- 			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
- 
- 			arch_apei_report_mem_error(sev, mem_err);
--			queued = ghes_handle_memory_failure(gdata, sev, sync);
-+			queued = ghes_handle_memory_failure(gdata, sev, sync, context);
- 		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			ghes_handle_aer(gdata);
- 		} else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
-+			queued = ghes_handle_arm_hw_error(gdata, sev, sync, context);
- 		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
- 			struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
- 
-@@ -1190,7 +1191,7 @@ static int ghes_proc(struct ghes *ghes)
- 		if (ghes_print_estatus(NULL, ghes->generic, estatus))
- 			ghes_estatus_cache_add(ghes->generic, estatus);
- 	}
--	ghes_do_proc(ghes, estatus);
-+	ghes_do_proc(ghes, estatus, GHES_CTX_NA);
- 
- out:
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, FIX_APEI_GHES_IRQ);
-@@ -1297,7 +1298,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
- 
--		ghes_do_proc(estatus_node->ghes, estatus);
-+		ghes_do_proc(estatus_node->ghes, estatus, estatus_node->context);
- 
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
-@@ -1335,7 +1336,8 @@ static void ghes_print_queued_estatus(void)
- }
- 
- static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
--				       enum fixed_addresses fixmap_idx)
-+				       enum fixed_addresses fixmap_idx,
-+				       enum ghes_exec_ctx context)
- {
- 	struct acpi_hest_generic_status *estatus, tmp_header;
- 	struct ghes_estatus_node *estatus_node;
-@@ -1364,6 +1366,7 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 	if (!estatus_node)
- 		return -ENOMEM;
- 
-+	estatus_node->context = context;
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-@@ -1398,14 +1401,15 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- }
- 
- static int ghes_in_nmi_spool_from_list(struct list_head *rcu_list,
--				       enum fixed_addresses fixmap_idx)
-+				       enum fixed_addresses fixmap_idx,
-+				       enum ghes_exec_ctx context)
- {
- 	int ret = -ENOENT;
- 	struct ghes *ghes;
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(ghes, rcu_list, list) {
--		if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx))
-+		if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx, context))
- 			ret = 0;
- 	}
- 	rcu_read_unlock();
-@@ -1488,7 +1492,7 @@ static LIST_HEAD(ghes_sea);
-  * Return 0 only if one of the SEA error sources successfully reported an error
-  * record sent from the firmware.
-  */
--int ghes_notify_sea(void)
-+int ghes_notify_sea(enum ghes_exec_ctx context)
- {
- 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_sea);
- 	int rv;
-@@ -1497,7 +1501,7 @@ int ghes_notify_sea(void)
- 		return -ENOENT;
- 
- 	raw_spin_lock(&ghes_notify_lock_sea);
--	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA);
-+	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA, context);
- 	raw_spin_unlock(&ghes_notify_lock_sea);
- 
- 	return rv;
-@@ -1552,7 +1556,7 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
- 		return ret;
- 
- 	raw_spin_lock(&ghes_notify_lock_nmi);
--	if (!ghes_in_nmi_spool_from_list(&ghes_nmi, FIX_APEI_GHES_NMI))
-+	if (!ghes_in_nmi_spool_from_list(&ghes_nmi, FIX_APEI_GHES_NMI, GHES_CTX_NA))
- 		ret = NMI_HANDLED;
- 	raw_spin_unlock(&ghes_notify_lock_nmi);
- 
-@@ -1606,7 +1610,7 @@ static void ghes_nmi_init_cxt(void)
- static int __ghes_sdei_callback(struct ghes *ghes,
- 				enum fixed_addresses fixmap_idx)
- {
--	if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx)) {
-+	if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx, GHES_CTX_NA)) {
- 		irq_work_queue(&ghes_proc_irq_work);
- 
- 		return 0;
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 8d7e5caef3f1..8460707ea4b0 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -33,10 +33,21 @@ struct ghes {
- 	void __iomem *error_status_vaddr;
- };
- 
-+enum ghes_exec_ctx {
-+	GHES_CTX_NA = -1,
-+	GHES_CTX_KERNEL = 0,
-+	GHES_CTX_USER = 1
-+};
-+
-+#define GHES_CTX(regs)	((regs) ? (user_mode(regs) ? GHES_CTX_USER \
-+						   : GHES_CTX_KERNEL) \
-+				: GHES_CTX_NA)
-+
- struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
-+	enum ghes_exec_ctx context;
- };
- 
- struct ghes_estatus_cache {
-@@ -135,9 +146,9 @@ static inline void *acpi_hest_get_next(struct acpi_hest_generic_data *gdata)
- 	     section = acpi_hest_get_next(section))
- 
- #ifdef CONFIG_ACPI_APEI_SEA
--int ghes_notify_sea(void);
-+int ghes_notify_sea(enum ghes_exec_ctx context);
- #else
--static inline int ghes_notify_sea(void) { return -ENOENT; }
-+static inline int ghes_notify_sea(enum ghes_exec_ctx context) { return -ENOENT; }
- #endif
- 
- struct notifier_block;
+   Before patched: trigger a hardware memory error then panic.
+   After  patched: trigger a hardware memory error without panic.
+
+   Testing step:
+   step1. start an user-process.
+   step2. poison(einj) the user-process's page.
+   step3: user-process access the poison page in kernel mode, then trigger SEA.
+   step4: the kernel will not panic, only the user process is killed, the poison
+          page is isolated. (before patched, the kernel will panic in do_sea())
+
+   The above tests can also be reproduced using ras-tools with extra patch[1], 
+   which provides einj-based injection and validation for all MC-safe recovery paths.
+
+   MM subsystem (hwpoison recovery via copy_mc_[user_]highpage / copy_mc_to_kernel):
+
+     einj_mem_uc cow_anon            # wp_page_copy
+     einj_mem_uc cow_anon_pinned     # copy_present_page (DMA-pinned)
+     einj_mem_uc cow_hugetlb         # hugetlb CoW
+     einj_mem_uc cow_private_filemap # do_cow_fault
+     einj_mem_uc khugepaged_anon     # MADV_COLLAPSE anon
+     einj_mem_uc khugepaged_file     # MADV_COLLAPSE file
+     einj_mem_uc move_pages_numa     # migrate_folio
+     einj_mem_uc migrate_pages_numa  # migrate_pages cross-node
+     einj_mem_uc mbind_move          # mbind MPOL_MF_MOVE
+     einj_mem_uc migrate_hugetlb     # hugetlbfs_migrate_folio
+     einj_mem_uc coredump            # dump_page_copy -> copy_mc_to_kernel
+
+   uaccess (copy_from_user direction):
+
+     einj_mem_uc pwrite_uc           # pwrite(2)
+     einj_mem_uc writev_uc           # writev(2)
+     einj_mem_uc send_uc             # send(2) AF_UNIX
+     einj_mem_uc sendmsg_uc          # sendmsg(2)
+     einj_mem_uc setsockopt_uc       # setsockopt(2)
+     einj_mem_uc netlink_send_uc     # AF_NETLINK sendto(2)
+     einj_mem_uc msgsnd_uc           # SysV msgsnd(2)
+     einj_mem_uc mq_send_uc          # POSIX mq_send(3)
+     einj_mem_uc semop_uc            # semop(2)
+     einj_mem_uc process_vm_writev_uc # process_vm_writev(2)
+
+   Repo: https://git.kernel.org/pub/scm/linux/kernel/git/aegl/ras-tools.git
+   [1] https://lore.kernel.org/all/20260617015211.3962419-1-tianruidong@linux.alibaba.com/
+
+------------------
+
+Benefits
+=========
+According to Huawei's statistics from their storage products, memory errors
+triggered in kernel-mode by COW and page cache read (uaccess) scenarios
+account for more than 50%. With this patchset deployed, all kernel panics
+caused by COW and page cache memory errors are eliminated. 
+Alibaba Cloud has also observed memory errors occurring in uaccess contexts.
+
+Since V14:
+1. Added additional recoverable scenarios (copy_present_page, do_cow_fault,
+   hugetlbfs_migrate_folio, migrate_folio) to the description, as reminded
+   by Kefeng Wang.
+2. Renamed EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR to EX_TYPE_KACCESS_SEA.
+3. Applied review comments from Xueshuai Liu.
+
+Since V13:
+1. Changed MC-safe functions to return an error rather than kill the user
+   process. When a user program invokes a syscall and the kernel encounters
+   a memory error during uaccess, killing the process is unexpected; the
+   syscall should return an error.
+2. Added FEAT_MOPS support for the copy_page_mc paths.
+3. Refactored copy_page() and memcpy() on top of the shared memcpy_template,
+   reducing duplicated assembly code.
+
+Since v12:
+Thanks to the suggestions of Jonathan, Mark, and Mauro, the following modifications
+are made:
+1. Rebase to latest kernel version.
+2. Patch1, add Jonathan's and Mauro's review-by.
+3. Patch2, modified do_apei_claim_sea() according to Mark's and Jonathan's suggestions,
+   and optimized the commit message according to Mark's suggestions(Added description of
+   the impact on regular copy_to_user()).
+4. Patch3, optimized the commit message according to Mauro's suggestions and add Jonathan's
+   review-by.
+5. Patch4, modified copy_mc_user_highpage() and Optimized the commit message according to
+   Jonathan's suggestions(no functional changes).
+6. Patch5, optimized the commit message according to Mauro's suggestions.
+7. Patch4/5, FEAT_MOPS is added to the code logic. Currently, the fixup is not performed
+   on the MOPS instruction. 
+8. Remove patch6 in v12 according to Jonathan's suggestions.
+
+Since v11:
+1. Rebase to latest kernel version 6.9-rc1.
+2. Add patch 5, Since the problem described in "Since V10 Besides 3" has
+   been solved in a50026bdb867 ('iov_iter: get rid of 'copy_mc' flag').
+3. Add the benefit of applying the patch set to our company to the description of patch0.
+
+Since V10:
+ Accroding Mark's suggestion:
+ 1. Merge V10's patch2 and patch3 to V11's patch2.
+ 2. Patch2(V11): use new fixup_type for ld* in copy_to_user(), fix fatal
+    issues (NULL kernel pointeraccess) been fixup incorrectly.
+ 3. Patch2(V11): refactoring the logic of do_sea().
+ 4. Patch4(V11): Remove duplicate assembly logic and remove do_mte().
+
+ Besides:
+ 1. Patch2(V11): remove st* insn's fixup, st* generally not trigger memory error.
+ 2. Split a part of the logic of patch2(V11) to patch5(V11), for detail,
+    see patch5(V11)'s commit msg.
+ 3. Remove patch6(v10) “arm64: introduce copy_mc_to_kernel() implementation”.
+    During modification, some problems that cannot be solved in a short
+    period are found. The patch will be released after the problems are
+    solved.
+ 4. Add test result in this patch.
+ 5. Modify patchset title, do not use machine check and remove "-next".
+
+Since V9:
+ 1. Rebase to latest kernel version 6.8-rc2.
+ 2. Add patch 6/6 to support copy_mc_to_kernel().
+
+Since V8:
+ 1. Rebase to latest kernel version and fix topo in some of the patches.
+ 2. According to the suggestion of Catalin, I attempted to modify the
+    return value of function copy_mc_[user]_highpage() to bytes not copied.
+    During the modification process, I found that it would be more
+    reasonable to return -EFAULT when copy error occurs (referring to the
+    newly added patch 4). 
+
+    For ARM64, the implementation of copy_mc_[user]_highpage() needs to
+    consider MTE. Considering the scenario where data copying is successful
+    but the MTE tag copying fails, it is also not reasonable to return
+    bytes not copied.
+ 3. Considering the recent addition of machine check safe support for
+    multiple scenarios, modify commit message for patch 5 (patch 4 for V8).
+
+Since V7:
+ Currently, there are patches supporting recover from poison
+ consumption for the cow scenario[1]. Therefore, Supporting cow
+ scenario under the arm64 architecture only needs to modify the relevant
+ code under the arch/.
+ [1]https://lore.kernel.org/lkml/20221031201029.102123-1-tony.luck@intel.com/
+
+Since V6:
+ Resend patches that are not merged into the mainline in V6.
+
+Since V5:
+ 1. Add patch2/3 to add uaccess assembly helpers.
+ 2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
+ 3. Remove kernel access fixup in patch9.
+ All suggestion are from Mark. 
+
+Since V4:
+ 1. According Michael's suggestion, add patch5.
+ 2. According Mark's suggestiog, do some restructuring to arm64
+ extable, then a new adaptation of machine check safe support is made based
+ on this.
+ 3. According Mark's suggestion, support machine check safe in do_mte() in
+ cow scene.
+ 4. In V4, two patches have been merged into -next, so V5 not send these
+ two patches.
+
+Since V3:
+ 1. According to Robin's suggestion, direct modify user_ldst and
+ user_ldp in asm-uaccess.h and modify mte.S.
+ 2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+ and copy_to_user.S.
+ 3. According to Robin's suggestion, using micro in copy_page_mc.S to
+ simplify code.
+ 4. According to KeFeng's suggestion, modify powerpc code in patch1.
+ 5. According to KeFeng's suggestion, modify mm/extable.c and some code
+ optimization.
+
+Since V2:
+ 1. According to Mark's suggestion, all uaccess can be recovered due to
+    memory error.
+ 2. Scenario pagecache reading is also supported as part of uaccess
+    (copy_to_user()) and duplication code problem is also solved. 
+    Thanks for Robin's suggestion.
+ 3. According Mark's suggestion, update commit message of patch 2/5.
+ 4. According Borisllav's suggestion, update commit message of patch 1/5.
+
+Since V1:
+ 1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+   ARM64_UCE_KERNEL_RECOVERY.
+ 2.Add two new scenes, cow and pagecache reading.
+ 3.Fix two small bug(the first two patch).
+
+V1 in here:
+https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+
+Ruidong Tian (5):
+  ACPI: APEI: GHES: use exception context to gate SIGBUS on poison
+    consumption
+  arm64: extable: merge UACCESS_ERR_ZERO and KACCESS_ERR_ZERO into
+    ACCESS_ERR_ZERO
+  arm64: enable recover from synchronous external abort in kernel
+    context
+  lib/test: memcpy_kunit: add copy_page() and copy_mc_page() tests
+  lib/tests: memcpy_kunit: add memcpy_mc() and memcpy_mc_large() test
+
+Tong Tiangen (4):
+  uaccess: add generic fallback version of copy_mc_to_user()
+  mm/hwpoison: return -EFAULT when copy fail in
+    copy_mc_[user]_highpage()
+  arm64: support copy_mc_[user]_highpage()
+  arm64: introduce copy_mc_to_kernel() implementation
+
+ arch/arm64/Kconfig                   |   1 +
+ arch/arm64/include/asm/asm-extable.h |  24 ++-
+ arch/arm64/include/asm/asm-uaccess.h |   4 +
+ arch/arm64/include/asm/extable.h     |   1 +
+ arch/arm64/include/asm/mte.h         |   9 +
+ arch/arm64/include/asm/page.h        |  12 ++
+ arch/arm64/include/asm/string.h      |   5 +
+ arch/arm64/include/asm/uaccess.h     |  17 ++
+ arch/arm64/kernel/acpi.c             |   2 +-
+ arch/arm64/lib/Makefile              |   2 +
+ arch/arm64/lib/copy_mc_page.S        |  44 +++++
+ arch/arm64/lib/copy_page.S           |  67 ++-----
+ arch/arm64/lib/copy_page_template.S  |  70 ++++++++
+ arch/arm64/lib/copy_to_user.S        |  10 +-
+ arch/arm64/lib/memcpy.S              | 251 ++-------------------------
+ arch/arm64/lib/memcpy_mc.S           |  56 ++++++
+ arch/arm64/lib/memcpy_template.S     | 250 ++++++++++++++++++++++++++
+ arch/arm64/lib/mte.S                 |  29 ++++
+ arch/arm64/mm/copypage.c             |  80 +++++++++
+ arch/arm64/mm/extable.c              |  35 +++-
+ arch/arm64/mm/fault.c                |  30 +++-
+ arch/powerpc/include/asm/uaccess.h   |   1 +
+ arch/x86/include/asm/uaccess.h       |   1 +
+ drivers/acpi/apei/ghes.c             |  36 ++--
+ include/acpi/ghes.h                  |  15 +-
+ include/linux/highmem.h              |  16 +-
+ include/linux/uaccess.h              |   8 +
+ lib/tests/memcpy_kunit.c             | 186 +++++++++++++++++++-
+ mm/kasan/shadow.c                    |  12 ++
+ mm/khugepaged.c                      |   4 +-
+ 30 files changed, 938 insertions(+), 340 deletions(-)
+ create mode 100644 arch/arm64/lib/copy_mc_page.S
+ create mode 100644 arch/arm64/lib/copy_page_template.S
+ create mode 100644 arch/arm64/lib/memcpy_mc.S
+ create mode 100644 arch/arm64/lib/memcpy_template.S
+
 -- 
 2.39.3
 
