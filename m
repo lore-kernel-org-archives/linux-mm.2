@@ -4,106 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F194CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 02:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58918CD98E4
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 03:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21CD46B0088; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
+	id CCFC06B0088; Wed, 17 Jun 2026 23:17:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CDB76B008A; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
+	id C80D86B008A; Wed, 17 Jun 2026 23:17:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 095DD6B008C; Wed, 17 Jun 2026 22:24:00 -0400 (EDT)
+	id B96456B008C; Wed, 17 Jun 2026 23:17:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D07716B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 22:23:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D6D81C1FDA
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 02:23:59 +0000 (UTC)
-X-FDA: 84891438198.16.6ED6028
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 94737140003
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 02:23:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="O3UfvT/1";
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781749437;
-	b=1XbcBp++BYGlOdDYjNGqyX9CoewKn5PJJLFbJ7qbwO9Xzr75hWvxnWLU8L9PfU0ELXCyIE
-	P4IbdiMJDgDEQQzH6nH/yyCBO0krns45DNsPYP6sXmWqgGR/SOJHXi08JfRXPwA+viQZY2
-	JQBC84i/LS4xQVIbziTuFJxkibWL1Ek=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="O3UfvT/1";
-	spf=pass (imf23.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D25B6B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 23:17:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F06601A0402
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 03:17:39 +0000 (UTC)
+X-FDA: 84891573438.03.5BCE9AE
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D910240002
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 03:17:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pSTOXZBP;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781749437;
+	s=arc-20220608; t=1781752658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PfUm8af/m5Y+JvEu5zk0BWRI+9j/PXO2lmh/Wz0+tsw=;
-	b=Pam8jivspIkuhZ7OvEju3L3zEbpC4o34W9HPibKvBwAEXAonI6O18dUSf0WNmGQNvB+20q
-	Y45kXrvzObQrXyH5nSLJsE/m1JO0ehKhXXfqODDrLSBUMMqkPP7x+SWuoc1AJaqU9Yrfzm
-	/oWQras0niKjj0bFrUr7Z3X2Na/HORc=
-Message-ID: <45fcc57a-ec8d-46d6-9c28-065d001c081f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781749433;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfUm8af/m5Y+JvEu5zk0BWRI+9j/PXO2lmh/Wz0+tsw=;
-	b=O3UfvT/1MKiXtNvGidZMkfJ5JuNdkyR8S+zPPWv9pS9CANHCtAc95ka7/DKnM/iGfcbWVb
-	Ftrei5j/5KT11Bnfcu/K0q/mftP6aEgB40P687LESlZvdqrqD6vOCwMqayeuc19JuU2S7s
-	mOQKdiH/a8oeTVe0QRkhZDezTFs9iMU=
-Date: Thu, 18 Jun 2026 10:22:47 +0800
+	bh=ZMErdMn4fM5ebZdMPM1RRaXcObZkMc91TS7uIUs86cY=;
+	b=i0II5BcNbcGdJYskOeHIZZ9cJ/WdAYbFXIw5ExVLhByat3hYlall2XJLonc/UJh5zq1qbn
+	mMM2MUzo91UsVxLLMTVxE6MaMvBW4nLqG7tMqdZo0xAes4X2tRiCNC8Up1oIVREOpLGG1Y
+	Rryq4jUbGNZXZK0Vru756oQFjbYSTa0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pSTOXZBP;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781752658;
+	b=5/EDrVaHadXuAExJ7Yht/tmMq+HLwOzRlNHGxizM5cHyKaYPsXAEHA5D+zkY+reI/qWcWQ
+	uQvBVtuYrv19363aJVYTYpeBFqdd8sYi1HeTg89Z3/JxnqygLfF2L088G7Sy7NcHenvzM5
+	1E5SjPgJd3UU5EwFjavXiSFCPlKCSiE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ZMErdMn4fM5ebZdMPM1RRaXcObZkMc91TS7uIUs86cY=; b=pSTOXZBPNn47f5sa0hrU86rnZZ
+	dhO0ExGNZNCcgFdmDVYq1xaXOcGno63AyHMYTRIN3XEMcbZwfgYmE9SUBZgi+Q/yljvqAqe+PMU9X
+	+1amRFqyojYA6GUe1unKeDjAZSXt3sfLs510o66SCVYAMdZ8IAqGY39lqSaqOOVnN2qvw+xTe3cs6
+	5bhdQ2TNoKKIgV+hLGWccWF9JMfr5As7bCjSDmOiFb9xq/6TLOjNEFfv9sPiFGSxonUrLMTwvofqm
+	5Yw9dHPf3IZZhPOvEAa0pEgALjLo0+FiWvJn3hXYC4Ne07j5KZaOvMRP5qWNz10EV5yBm9MjbU47X
+	EjjmDasA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wa3Fl-0000000DjIP-2orJ;
+	Thu, 18 Jun 2026 03:17:17 +0000
+Date: Thu, 18 Jun 2026 04:17:17 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, jack@suse.cz, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+	david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
+	linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
+	rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 06/11] hugetlb: make hugetlb_fault_mutex_hash() to
+ take PAGE_SIZE index
+Message-ID: <ajNjPblkO9Ka_4FT@casper.infradead.org>
+References: <20260617172534.1740152-1-jane.chu@oracle.com>
+ <20260617172534.1740152-7-jane.chu@oracle.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Alexei Starovoitov <ast@kernel.org>, "Harry Yoo (Oracle)"
- <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
- <2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org>
- <CAJuCfpG48TmvaiaRvnL-NXKU6nn55D3bks2DgzAc0URsZhAxqA@mail.gmail.com>
- <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 94737140003
-X-Stat-Signature: t8h316cx6yzp8shzopubjx3zi4rwxyou
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617172534.1740152-7-jane.chu@oracle.com>
+X-Rspamd-Queue-Id: D910240002
 X-Rspam-User: 
-X-HE-Tag: 1781749435-929165
-X-HE-Meta: U2FsdGVkX1/p4bdsUmBgsiL/h7G66YmJlN02wsfzx5cBEQbkqtGqc22m669fzCXMEidvZmP8/2VpUUBEyuywl4z0XWYMFGUa04czCe3Myh/TWtjCx7Y3HSIpC1bF9e1qTjAESvqwfBkmujDgGPG2mGJgKmY8bBJS3UIP1wapW4/us77wN6oVPpp3I0p+Ig2aniUvzNV89C6YT5NqaZ75yFpENxHFw0K3pLnTOKcgs+FTK9M3vCPIWbfs+oD64v7lNhyjGsaSGwmVYv6GqvsuZyP3g6WAYCevltdYojYYCve3T13Q4Fz8x46TOw2z+mTAvXAhAgZ1Lyvxn+xSW+brT6lh34l9R8JSTQPTzcGWABv1V3zTlxrXaDChkSKZTRQJ6R/eGFA+aK+VcfJAS+K/ZnVchtmSDiGLphBdNPIyOo8xyqNFp7NzioXY7OqfRE+IOJdh8qZniYByZmt0BoyTDPxB2ZdZc5f46/SGY5X9X8q2rV5hiLkzu6fwHev9KEh03Ue0U8KhOI+iLSoigFDY4MUdwyUXGEwCdXfOeRR6dBTpEJB50g/C/euV6VzpEonzs+hFmZqGMyhvEx7CNhGlpHRYjaiD9FowNsCDqlEe26AkKBkPdtfyMkGTyrpsJvSST/DS/QljRQIFJt9HwUtRID05gT1bcFF/UKRr5hvHhxEkO3lozsMPWw5v9hv6/1s1bsegnQHUq0SBw7YCcbPuaCBG2hk/+f+Jt+Ms8lQH6RGhQ0VUI2WcdZ6nEzdRd5VYOdjXXmU41t1hMKkT7IGJaOgXsEJtAT0U6mfq4c5eLs+G+dmkCBwhKMRWKONCLjwHnNF+4o29KzqFmZuWmZfcf/82tL9ta6sL0U2i6Cm9WBjGrMGo/Ftx5cikSn0WnOPnh83vL7kseTylt5Kx23wYd7F4Z3peZ145hzcpgrzZYWQvxwq+SNdOuGJFCS/doy1x+ZqtcwwU18U5F8QzMMg
- uzvlmCid
- LzN4YYYd0bdGUuuupAeez8jt19sSVTiq/UX00iozQxO/jVnrP97jtrE5zlKpGj1BwUkHHjuQ6AwR3o+bnHIPyWMnpPSOvC8p2dz8zJj/TzhWYAL86he2/3JwKNZPKATuJx4+PWTapQpsHruwu1DwYayf6xKQl+sGInd9rV6HG2ql6wg3zGX4WmWUq6T8Pvmn5q9biupGnsDs2WAWS55Jb1DprfnYSp/sKX0ca3c0rl8xOLEKFEZDuR8kVkI5Z3v0UvxcoLcVG3ug0Gx/Kz70NWQR0pHybMgSKltkhozrrEARocD7tCagf6Fj5pCqbTxTOaYdzSC7KOPPsUUe297Sa+fZwh5n0uXFfaqiinIc7YZu3/8n1qcabMwgYrsqF3nSxMkPTRHwpteE65Gvf6Lt4UrEw3g==
+X-Stat-Signature: sbgtx9d18845agqau3pnu16zdqwutzpf
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1781752657-409172
+X-HE-Meta: U2FsdGVkX1/ASUrBqZ6SbB/z7mcBFctbV4AILlluO/Wn22N1Bvv02RmnzxKLYDL96ebAJYxAtbjYPa3SVwZw9uMVfoEV85dbRhbR92zAbHhITT9J30t3bDMLDi3j//r5YrbLMp/zXV1jfNhG+ioxDap7HPpy7CqvBNlYdwgm/vLsKNZA4WxTuYgWS5m3Cl70RgRVYg8K8BbxUfTqtj1mOlt670cko9Jv7K5ubpNWuHJjIYSY0wP7NFBFK8Ng3UTcYoLLazCwWNJizWZrEf7YJ5zJYhbnC7H2pVwNWHRD45XZPZ15VSZz9Ue6i7gnX7NauIRwIOgpQ3DKIPaEO4Dk9y+ZPTo1vy7miAeqdFIa65NvtLPte/UdpLsjRekJroq0moyqEqDoY/GqxEN6t1A8vUBqZs3QBiqvKHqDMYKPhqV9ESP0C5BO1dOwxDbV5j8KC/KW4DwYnJcJ5rNwVxgtZl7n3mshockVof4eCls39hCXHKgaFg51aw/aZCyk/y8yMaEa0w1pc92h4WXG+voVC/2+59Q7S2F09N1vUgRhQJQVj9P/tudqu/y1QTzqWIAVH0M8dH8jmwBDcrxjGuNw9hkfap5u1BmQDFZPm5yz/s1aHiUl9+VxzOvPVlqSXxBSqPzXUcW7EXdGVFP0VAHaPZ5Krj92c3835t3hsLxkwNT9er32PDxIqLiBB+w2w32WofeYoa7v+njasn1p2N4+CHbOIn3sQlIwin+SyOAiWJVjR8ghR6VKghafUTTsVF6oeTAXlvjnHtNtk8xzTNjB1KseBwJ4epQ9mumJEbq00KKVPEMOPvqH84UD7D9ME+YcCWI++HnDCt3AV4GtBjyC/aILXk0yadKZ8WMCK3lW491iP4qEr6tbbVLQ/sfcfAKgfYIES9Fo2NnN3kmbT45y6cpl0IyX1yekWNEQqoN7a5NllDQ47fl7pIcl5TeoDWP4cITEiZvoiSsDjPaAg3J
+ YlvHvTEz
+ O1fT36MR/GDWt9UMERXOrr9IRpOxabZ3HO0wLsX3lw9F/QOHETt2Wj/Twxqiq0d4dkfVu2t2o3LTX9irdCTDKva1GT7SKmf6SBJL6gcgrUpN6TxcL/xKawDgRxqQ3/1hmem7V8MJ+RXA0JYeJur8sd9D5WRiTPrTWhr4HETyDWgpJvp8sDSLDZHHoXsNDz/eirNI9woZG+ogkrI4C9VDyF/dGqnG3dNU2Vb8UXeyZ/QPJufscpPeLBnDSwuTHYRjav56cVBavAwbo4mQMXQD2GJGjpJj/L6jZGOtV1PKChqsGo9fFjU4k0ZS1WSYdUh32vY6z3+bqXuuFW4s0eQrnVD1qxSf5TRB1QPz22S7SG2KSOTxisKeabV4hH7Uc+DjDKFastJUj8ZAm2+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,97 +95,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jun 17, 2026 at 11:25:27AM -0600, Jane Chu wrote:
+> Make hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index.
+> This makes the helper interface consistent with filemap_get_folio(),
+> and linear_page_index(), while preserving the same lock selection for
+> a given hugetlb file offset.
 
-On 2026/6/18 01:14, Brendan Jackman wrote:
-> On Wed Jun 17, 2026 at 4:49 PM UTC, Suren Baghdasaryan wrote:
->> On Wed, Jun 17, 2026 at 9:39 AM Vlastimil Babka (SUSE)
->> <vbabka@kernel.org> wrote:
->>> +Cc Alexei
->>>
->>> On 6/17/26 17:29, Brendan Jackman wrote:
->>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
->>> It's not, it's ALLOC_TRYLOCK! Thanks for proving that we need to rename it
->>> to ALLOC_NOLOCK:
->>>
->>> https://lore.kernel.org/all/DJ9QPTO2WXNB.10E88ZHWRDHB0@gmail.com/
->>>
->>> So you just won the job to do the rename :) I think it should be done before
->>> this patch, so that the new usages and other _trylock names introduced here
->>> can be done as _nolock outright.
-> Ack. I'll aim to send that tomorrow once Sashiko has caught up.
->
->>>> main entry point function is significantly different from the normal
->>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
->>>>
->>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
->>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
->>>> exposed to mm/) and then turn the nolock variant into a thin wrapper
->>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
->>>> how some of the wrappers in gfp.h do).
->>>>
->>>> Rationale that this doesn't change anything:
->>>>
->>>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
->>>>     the new alloc_order_allowed(), alloc_trylock_allowed() and
->>>>     gfp_trylock.
->>>>
->>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->>>>     previously in the nolock variant:
->>>>
->>>>     a. Application of gfp_allowed_mask; this only affects early boot, and
->>>>        only flags that affect the slowpath get changed here.
->>>>
->>>>     b. Application of current_gfp_context() - also only affects the
->>>>        slowpath
->>>>
->>>> 3. The slowpath itself: this is now just explicitly skipped under
->>>>     !ALLOC_TRYLOCK.
->>> I'll have to ponder it more closely.
->>>
->>>> Ulterior motive: adding an alloc_flags arg to the allocator's
->>>> mm-internal entrypoint can later be used to do more allocation
->>>> customisation without needing to create new GFP flags.
->>> Ack.
->> I think this change might also help us in removing __GFP_NO_CODETAG
-> Nice, this actually looks trivial? I can probably just tack it onto the
-> v2 for this patch/series.
->
->> introduced in [1] and being the only user of __GFP_NO_OBJ_EXT once
->> Vlastimil's patchset removing other __GFP_NO_OBJ_EXT users lands.
->> CC'ing Hao as he is brainstorming ways to remove __GFP_NO_CODETAG, and
->> this might be the answer.
+Oh, hah.
 
-
-Hi Brendan, Suren,
-
-Thanks for CC'ing me, Suren. This is indeed a viable approach
-
-and I believe it brings us one step closer to removing
-
-__GFP_NO_CODETAG entirely.
-
-
-Brendan, I'd actually put together a rough local implementation
-
-earlier with mostly the same core idea as yours, and this change
-
-would indeed be minimal based on your patch.
-
-Thanks a lot for being interested in tacking this into your v2 patch series.
-
-
-Thanks
-
-Best Regards
-
-Hao
-
-
->>> Besides the need to ponder unintended effects, mostly LGTM. Just not a fan
->>> of the hardcoded '0' passed at various places. In the slab variant of this
->>> (the thread I've linked above) I went with SLAB_ALLOC_DEFAULT, so you can do
->>> e.g. ALLOC_DEFAULT here?
-> Yup ALLOC_DEFAULT sounds fine to me.
->
-> Thanks for the reviews as always.
+I don't know that there's a better way to do this than the way you've
+done it.  Unless we can just remove the fault mutex hash and use the
+invalidate_lock instead.
 
