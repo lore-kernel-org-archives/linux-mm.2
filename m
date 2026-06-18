@@ -4,104 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65412CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C82CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 12:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0B36B009B; Thu, 18 Jun 2026 08:01:21 -0400 (EDT)
+	id E03BB6B009E; Thu, 18 Jun 2026 08:01:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A576B009E; Thu, 18 Jun 2026 08:01:21 -0400 (EDT)
+	id DB1E86B009F; Thu, 18 Jun 2026 08:01:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132CB6B009F; Thu, 18 Jun 2026 08:01:21 -0400 (EDT)
+	id C54B16B00A0; Thu, 18 Jun 2026 08:01:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D73666B009B
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:01:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1830B8FF9C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:30 +0000 (UTC)
-X-FDA: 84892492860.22.0031528
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7A63B1A0008
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:22:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Uo81QmTz;
-	spf=pass (imf19.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6112A6B009E
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:01:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 00AE590FF1
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:51:51 +0000 (UTC)
+X-FDA: 84892869264.05.CC7FE11
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4C3E9C0005
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:51:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781774548;
+	s=arc-20220608; t=1781783508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sgsf8RzjsXerwuZjuCBzolB1nDtZkh04rgvz44IY/VY=;
-	b=mWoHwEIZy73l7FdW1i7hgHs0LAUao2mgAHCRDZ7KMh6RKPFAvC4HGoghl+cvdaXjSJvUG8
-	lwZTa+yGXtGZ6yHMrHq4BNDaf4c+fs7bbY3XhOYqoVUic6Jo3GqpcAqckqYo9W2HpbiQ5X
-	SBuZphNu5LAl6A08IOS5/p1fmDkQ65k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781774548;
-	b=W1syL6aF/WeuWwzur9LQcK2zkMQ5m2MGHjL6b3wdX3rrTGqOhT77Z8vHzhclrnkKmqc+D9
-	Ox3UL0CkyuSxnJ5RcebiXS+NwSIs0a0+UwJFVojqaV2YMbFMTbDXqdx8DrthFTxCPJPFk2
-	vHRefd7YyNdv3I/1YcYKpl5EMKJxVLM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GCbu82FgMKaPfSwRksGlsYKrqYwUmU9k447omj8ktmY=;
+	b=lCTNAbBbAho/PBk1BUwk6jW0dbvSMVZUE06g0ytZ/lzlFmUsxh0ztc/7LgpTMWhDaPpGip
+	Tas5jx72EaZKENOGvlPKqHXvKm3Qd7UYLg/zz3VN+cJ+AufMiAUGVTWjkUgiVo1XWN6UYq
+	UhG6G+mYqEi7It1npu1Lk8Nnk1I1fBs=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Uo81QmTz;
-	spf=pass (imf19.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781774545; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Sgsf8RzjsXerwuZjuCBzolB1nDtZkh04rgvz44IY/VY=;
-	b=Uo81QmTztTCGXPRKhRNzvfHe+XVNRaS5fTTI4l0SMyp7CCyQv3muvnRUh7czXipWivf1TWsBnmLC+R0FORvVdRyxgN6QcI2TA8TwnXYYI07BKITYL7kJoxX23UinOZ4oTXNW2+kPhqudbXEQXGAcF5YAeTqlvZpuCk5q4YWWz8Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R731e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X56TKGA_1781774534;
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X56TKGA_1781774534 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 18 Jun 2026 17:22:21 +0800
-From: Ruidong Tian <tianruidong@linux.alibaba.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	rafael@kernel.org,
-	tony.luck@intel.com,
-	guohanjun@huawei.com,
-	mchehab@kernel.org,
-	xueshuai@linux.alibaba.com,
-	tongtiangen@huawei.com,
-	james.morse@arm.com,
-	robin.murphy@arm.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	ryabinin.a.a@gmail.com,
-	glider@google.com,
-	christophe.leroy@csgroup.eu,
-	aneesh.kumar@kernel.org,
-	naveen.n.rao@linux.ibm.com,
-	tglx@linutronix.de,
-	mingo@redhat.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	tianruidong@linux.alibaba.com
-Subject: [PATCH v15 9/9] lib/tests: memcpy_kunit: add memcpy_mc() and memcpy_mc_large() test
-Date: Thu, 18 Jun 2026 17:21:23 +0800
-Message-ID: <20260618092124.3901230-10-tianruidong@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
-References: <20260618092124.3901230-1-tianruidong@linux.alibaba.com>
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781783508;
+	b=ArVeKjdSBx6vPTD4zMNFpht/i7XnoTcycDB4RgBljhK/UdbIOQGowtIqtF3N3Wr7DKlv/c
+	Ujr3n8DZBeSXMQUWMG3iNhmFQF32z5qbc/iy7TJP7Kh7j0A29UBPX7Buhy8cRQ/IoPQUO4
+	ir3e25ebHlqL9cT/wOQG4w2oaz4xJ1Q=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ggzZs4ymBzJ46ZQ;
+	Thu, 18 Jun 2026 19:51:17 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id D153A4057A;
+	Thu, 18 Jun 2026 19:51:43 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Jun 2026 14:51:43 +0300
+Message-ID: <3565736e-f33b-4220-9978-a1461b6d4ee9@huawei-partners.com>
+Date: Thu, 18 Jun 2026 14:51:42 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A63B1A0008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/3] mm/damon: introduce DAMON_HUGEPAGE for hot region
+ hugepage collapsing
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260618001609.83965-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260618001609.83965-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4C3E9C0005
+X-Stat-Signature: f8nb6zbxe1ochqizctz64cpqh4nkirwj
 X-Rspam-User: 
-X-Stat-Signature: fgead8wwdfreuit9dbkygzx8amsyjoaa
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1781774547-22009
-X-HE-Meta: U2FsdGVkX18Oy6DJ0HWfr5ZTY6OfEhHwNOL4bYD/DuqoJCMWh69RJgmVuh1t5bm3DK6AH6pRc0bJyDO5A8OpRqSdiZYJJBZPxkxLndKbNtVYVfkHYkkdT6QSoHRT7PLypaouzHRVzhuOUMqR9Z3iC3Ezjm4z28WJ00PRLZmsTQ3/BXVfO/gV7UuKo/27YwrW4WWJ31h9V6cNsEMctLfapM1aVqGUO9RJ+vXhKsHK/87mBY/4LeesKh9UEGgdhWgornQDvacDPeG/Q/4B+1y/ac0rHorut1L2by2Az66KOckfG6pLxnhss1zu/yPk5acvcVhDc/bt+raVFexakm/IUneiFCaCGvOgKqqa5cAPOVuuj2IIhi1YSPI/27z48jmsGRHVI0NOOzTVBMS9XNLd7dNXV9J0GWeon5zRE2HMRzorHcr23jfo/JENTYSeWAinqaIzCAnYfr+6TxAyS5EUJyVcwk+mK0aZTc7GNRfK4zS4nedlUc6o+z2l7IDbG6RiLgkMDHWJiFpUWVrYrNU8/lJzsus8SjIX9c72+ZfyehnyI4JHxFdBfNyV6rdR5iHOfzFADtd+lRDEu6vRgjkf0zOpr4nxtWbsJ7vhC7DbpK6JWWJrHJ1EgkF1GKfxDNuHxdV+PeqIZF3n99bck5I2bnbVvlYjkrnD3Mhq2zS6puScJQb2ab20sopRuvPxeGfzhtbbzCDgJexmk8aIMp/BH9EfUJq+R0j8zN8oTCp0BuR3NDpbb9ri5JTyX6RLgzQPVxpy1CbvFzQCBhBCwrUb82zHw9GissqIdE1Wqu14JOi//YcEPAqYD7QxdlQN/OJoIgKE2W9MRryZTUUtFjpBINoozjTcBWJh+3txVMXeicRuTIGbYKSBMbAkGAP57Un94a0kHM/t5MBY95n9dlSoo/nRLePAuTsco0M22DcyIg3PfGovwy5knGEGM6AXPWKaZ3joLW/oQXvQ63WkAnx
- 2+hhLuWl
- B4ayZ7RwuURWUF+j6kAgPqs4mMqb6MORuupuiSZnNjL1NQyksqbeVl2704XO2ahrnj56yVbCtmYbzVT8FWXogE7aqeHKuFJ9Eb4wZxOufUMl4c4KrAOpPUkAVasHZ+/GM8spKnoNZ86fkHVm2VQ6bUgZUa8RyXHquD11RTuyfQRiMl90tgfPbqKntcdnzw9F7KfEaOxcHE8nZeaKQaF5/y0aqTH50Siw6stdwhawzktxepaDKvnZDfvSymUF2NGwt+l9lNDgQGTaa0nNPcmXKuE+nzQP3KV0fJW1whDWeXMottXyBG8tjsUorALbfOffwzIMJTnw8MLw6ouuGNmWiIrzGRlR5YMtwO0JtWxWAET7i8AtrRvrDkO5ciA==
+X-HE-Tag: 1781783508-711715
+X-HE-Meta: U2FsdGVkX1/L4sutdnEaE36Krhhz0BQ3jH4qa81fV9IpQuMDZOTI/3vRHmH+HbgimFV8hyD3L81802ESfBu7irtrSOjEf5s6KXF28A/7GpAEnZzjNXe6mz5siJxA9fZ/JZDRjy/+yMdUi/vvfFy7hUJk7zwokmBMBqjZmPOF41oFji8gr3TtA8rJEynHA9bY9kYTyO9wvoqYoiod9eQpwbBwcPgtV6jP6OU20T+Gav3IT9YUgZ8eOufEw/UGUApvLBN4gGx61BcUVTI2s21xJRXY+T7JQ1D+DaAQi2X24rk6nJIn7ReG1lJ4WE9c7W2f7ZII2Uhyc8BkOhFbPV2G5QP+YYWoDp6JOYsHDF+rbrzv9spPlhCYGajbmKrlyYCbUbTPD2hh19BA3CqtmwOcC+TEa1jggzSr41DUzkJPwlaVVwLpfGtMmc7CMTKGF4LLOmYZi96Ie9ZeTx4wTW0xRHxtAuTw4dnzQoFZhOWCb8OnfNcqEKpLpYILe3c6ixKoiwQcXy4OSP6j0/wagoUt2jV0CCr73ejpGucPB9Gs3O5MOizPp2a7KmmQNrEnf5m/LVLw9jCVBak8TrZCv8oI/y5YhYNnd45e8uk+fnDnoup2Lt1C1k0TVrXQEMGfV81ceFA4VQ2qJ8/EbFFuSZIyl0bntVLarjbOb8GcNwUOaq9nZH/pLQ+7Qb1tqDFncbqjENrXNgj9nBqklauCYEexo/ubWg1IESI6JBupxMfoyPjgOQP9v/j1n23ahq+iHWhJzoCDiJGKfd6cNndmb3/JWL3DI9xOWPLsGGvdxScNMSoEbIYgurwYHhz415+gRe14wy3Jj5jMgTOJQQ3F5+LHjV2gClih9Kk/Ra70pEwLVAlc4GutyaD04uis2oyxV0lifRvUFwXi53TKhduOLR0sYwNaPSZY9TwM4Rf+ZBn6b2nrGGtN08nfhOz+Bah5r5vpo2HkaUZN+HK/2adInxq
+ IjWCLAvy
+ hhkgFEshSktAPn6tTDRf0ol87txOkZvGMM6g9NUJxMXU6wKX3/qPvlC4D591VfwhcSAoUW4oy8rdZIzL05RMiQnChkpI5DykBYncCk6exAu6S2jbKwdZDhRxHS9Ni9hbz2hZwJBT4/4mu3mKJv7ebOdJIOrjZq5zQxgJw5hmCJlH52VUtLwK6wolg0Yt6Bvb1jiLIG7pFQemyaaJzZOnJKFw1BZRatQ3/lEE3GSAeseYKaL9RnzX+CiHKNXqvzvG3AzrlWLjhPS2HBcb5uIUfYgfqyvBgCtrlYqUPPMlBtzPupFq0S7UJEuCseLa8oq7iY0a5xKRu634nc+brdw5HbvYhLIYuiVDjFMV5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,162 +94,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memcpy_mc() is the Machine-Check safe memcpy variant that returns the
-number of bytes NOT copied on a hardware memory error, or 0 on success.
+Hi SJ,
 
-Add two test cases modeled after the existing memcpy_test() and
-memcpy_large_test() implementations.
+On 6/18/2026 3:16 AM, SeongJae Park wrote:
+> On Tue, 16 Jun 2026 21:04:52 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+>> On Tue, 16 Jun 2026 15:03:15 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+>>
+>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>>
+>>> This patch introduces a new DAMON module (SAMPLE_DAMON_HPAGE)
+>>> which collapses hot regions into huge pages.
+> 
+> As I mentioned on the previous version of this series, this sample module looks
+> much better than the initial shape to my humble eyes.  Much smaller and
+> simpler.  I really appreciate Asier's efforts on making this.
+> 
+> However... I was asking myself if this module is really needed last night, and
+> still got not real good and confident answer.
+> 
+> After all, this is a sample module.  The purpose is to show sample code thhat
+> helps people understanding how they can use DAMON API.  Maybe we can argue this
+> module can be helpful at understanding how DAMOS quota goal can be used.  But,
+> mtier is already showing that.  So I cannot say what new advantage this module
+> is really bringing.
+You are right, the main goal was to show how this quota goal can be used. 
+> Meanwhile, this patch adds ~200 lines of code.  It is a very small and simple
+> sample module, but still we should maintain it.  I, to be honest, getting
+> little bit concerned about the maintenance overhead now.
+I understand your concerns. I know code need maintenance, and DAMON is already
+growing significantly.
+> So, if Asier has a good reason to add this module that I'm missing, I'd like to
+> humbly ask to consider dropping of this module for now.  I'm so sorry for
+> raising this concern this late.  But, Asier, may I ask what do you think?
+So, are you suggesting to drop the module and upstreaming only the DAMOS quota
+goal stuff?> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
 
-Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
----
- lib/tests/memcpy_kunit.c | 121 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 120 insertions(+), 1 deletion(-)
-
-diff --git a/lib/tests/memcpy_kunit.c b/lib/tests/memcpy_kunit.c
-index 812c1fa20fd9..87585fbe78c7 100644
---- a/lib/tests/memcpy_kunit.c
-+++ b/lib/tests/memcpy_kunit.c
-@@ -554,6 +554,121 @@ static void copy_mc_page_test(struct kunit *test)
- }
- #endif /* __HAVE_ARCH_COPY_MC_PAGE */
- 
-+#ifdef __HAVE_ARCH_MEMCPY_MC
-+/*
-+ * memcpy_mc() is a Machine-Check safe memcpy variant.
-+ * Signature: int memcpy_mc(void *dst, const void *src, size_t len)
-+ * Returns:   0 on success, or number of bytes NOT copied on MC error.
-+ *
-+ * In the normal (no-poison) path it must behave identically to memcpy()
-+ * and always return 0.
-+ */
-+static void memcpy_mc_test(struct kunit *test)
-+{
-+#define TEST_OP "memcpy_mc"
-+	struct some_bytes control = {
-+		.data = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+		},
-+	};
-+	struct some_bytes zero = { };
-+	struct some_bytes middle = {
-+		.data = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00,
-+			  0x00, 0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+		},
-+	};
-+	struct some_bytes three = {
-+		.data = { 0x00, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			  0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
-+			},
-+	};
-+	struct some_bytes dest = { };
-+	unsigned long ret;
-+	int count;
-+	u8 *ptr;
-+
-+	/* Verify static initializers. */
-+	check(control, 0x20);
-+	check(zero, 0);
-+	compare("static initializers", dest, zero);
-+
-+	/* Verify assignment. */
-+	dest = control;
-+	compare("direct assignment", dest, control);
-+
-+	/* Verify complete overwrite. */
-+	ret = memcpy_mc(dest.data, zero.data, sizeof(dest.data));
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+	compare("complete overwrite", dest, zero);
-+
-+	/* Verify middle overwrite: 7 bytes at offset 12. */
-+	dest = control;
-+	ret = memcpy_mc(dest.data + 12, zero.data, 7);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+	compare("middle overwrite", dest, middle);
-+
-+	/* Verify zero-length copy is a no-op. */
-+	dest = control;
-+	ret = memcpy_mc(dest.data, zero.data, 0);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+	compare("zero length", dest, control);
-+
-+	/* Verify argument side-effects aren't repeated. */
-+	dest = control;
-+	ptr = dest.data;
-+	count = 1;
-+	ret = memcpy_mc(ptr++, zero.data, count++);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+	ptr += 8;
-+	ret = memcpy_mc(ptr++, zero.data, count++);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+	compare("argument side-effects", dest, three);
-+#undef TEST_OP
-+}
-+
-+static void memcpy_mc_large_test(struct kunit *test)
-+{
-+	init_large(test);
-+
-+	/* Sweep 1..1024 bytes x shifting offset to cover all template paths. */
-+	for (int bytes = 1; bytes <= ARRAY_SIZE(large_src); bytes++) {
-+		for (int offset = 0; offset < ARRAY_SIZE(large_src); offset++) {
-+			int right_zero_pos = offset + bytes;
-+			int right_zero_size = ARRAY_SIZE(large_dst) - right_zero_pos;
-+			int ret;
-+
-+			ret = memcpy_mc(large_dst + offset, large_src, bytes);
-+			KUNIT_ASSERT_EQ_MSG(test, ret, 0,
-+				"memcpy_mc returned %d with size %d at offset %d",
-+				ret, bytes, offset);
-+
-+			/* No write before copy area. */
-+			KUNIT_ASSERT_EQ_MSG(test,
-+				memcmp(large_dst, large_zero, offset), 0,
-+				"with size %d at offset %d", bytes, offset);
-+			/* No write after copy area. */
-+			KUNIT_ASSERT_EQ_MSG(test,
-+				memcmp(&large_dst[right_zero_pos], large_zero,
-+				       right_zero_size), 0,
-+				"with size %d at offset %d", bytes, offset);
-+			/* Byte-for-byte exact. */
-+			KUNIT_ASSERT_EQ_MSG(test,
-+				memcmp(large_dst + offset, large_src, bytes), 0,
-+				"with size %d at offset %d", bytes, offset);
-+
-+			memset(large_dst + offset, 0, bytes);
-+		}
-+		cond_resched();
-+	}
-+}
-+#endif /* __HAVE_ARCH_MEMCPY_MC */
-+
- static struct kunit_case memcpy_test_cases[] = {
- 	KUNIT_CASE(memset_test),
- 	KUNIT_CASE(memcpy_test),
-@@ -564,6 +679,10 @@ static struct kunit_case memcpy_test_cases[] = {
- 	KUNIT_CASE(copy_page_test),
- #ifdef __HAVE_ARCH_COPY_MC_PAGE
- 	KUNIT_CASE(copy_mc_page_test),
-+#endif
-+#ifdef __HAVE_ARCH_MEMCPY_MC
-+	KUNIT_CASE(memcpy_mc_test),
-+	KUNIT_CASE_SLOW(memcpy_mc_large_test),
- #endif
- 	{}
- };
-@@ -575,5 +694,5 @@ static struct kunit_suite memcpy_test_suite = {
- 
- kunit_test_suite(memcpy_test_suite);
- 
--MODULE_DESCRIPTION("test cases for memcpy(), memmove(), memset() and copy_page()");
-+MODULE_DESCRIPTION("test cases for memcpy(), memmove(), memset(), copy_page() and memcpy_mc()");
- MODULE_LICENSE("GPL");
 -- 
-2.39.3
+Asier Gutierrez
+Huawei
 
 
