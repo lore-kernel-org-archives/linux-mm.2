@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB06FCD98F2
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E88CCD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 14:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A80F06B0088; Thu, 18 Jun 2026 10:30:32 -0400 (EDT)
+	id 61BEF6B008A; Thu, 18 Jun 2026 10:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A320F6B008A; Thu, 18 Jun 2026 10:30:32 -0400 (EDT)
+	id 5CCE66B008C; Thu, 18 Jun 2026 10:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 920D46B0092; Thu, 18 Jun 2026 10:30:32 -0400 (EDT)
+	id 4E2EF6B0092; Thu, 18 Jun 2026 10:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 660146B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:30:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D664B1C30F3
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:30:31 +0000 (UTC)
-X-FDA: 84893269062.06.8ABFEF6
+	by kanga.kvack.org (Postfix) with ESMTP id 26C756B008A
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 10:34:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7FBC8140161
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:34:14 +0000 (UTC)
+X-FDA: 84893278428.22.6D6681C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3DF144001C
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:30:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YmvOiCQm;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781793030;
-	b=jVZ2P+fX4Z8RzqoBhKLf+QNAb2NE++Vr8g0kKElxFeWJrdj9r7XUu2WGCe9MzRAv74hKlc
-	oBSZtvM4iUlA3zNz1bJrlniTNsiml0gtYmhb1HQrAAB7Zmx2oHLJHGAAnGUXNqYh+lJV9n
-	XSi1NQlHysj7IHqSjCEGO8/UY1bByGk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YmvOiCQm;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id E802140006
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:34:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxZkEKCV;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781793030;
+	s=arc-20220608; t=1781793252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7vtR+TjrpHHmFHags4WZ6+/5p5KaBqxoHk0CbYvy0rs=;
-	b=dGPPAoyl/AQvKHA4uFwSLtcOmd4k+7BGb9O+n4x1dsiezoIEXF0595m1TgwljUPsnWIbGT
-	vD7fvQeAlf9jWD+laxjqgxMeA3xI2PvEWnn2/Dy5wLKMi57nU0O51UO4A2yIMjzELBU89+
-	N6X5SYqucp9KdkeTZbArLo8A2YTX588=
+	bh=E6q94yea7fFNH/J8mh/QoFHRvXIsMnsNC6J4EmqlFMA=;
+	b=0inHuS2NiV8sYf97QM4U8Lao/NVeHJQbUndV17oEmMfQ10jmJPd6OWCbfQWZwB8D3q/unS
+	aTZy/POMOdWLjH1Ss0o/T9JsTdPZOAIcPAJdSAaVTCiB2PGP3gHNIu7kq9SlnSiaXRCiLB
+	L0CmjqG5semAMfePON4Eq6n0PwBxx84=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781793252;
+	b=Agu+9gzNdkmAUNU5ednWNXBBygTWicYHtFA0qXPQ+n0bc8fsPMrZGNRnAZAEwtxud+6wGn
+	RMxPeD3GFaN1cdrJHOvfLWiaPqyhUBtf8Rw0I4C1kLFCqW48YENUqYfpm6inWTsZfnjyYy
+	F4mMLW62hrrAOpPOhkRjTkB8fl99I10=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WxZkEKCV;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0FE960098;
-	Thu, 18 Jun 2026 14:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB111F000E9;
-	Thu, 18 Jun 2026 14:30:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 67EFD60008;
+	Thu, 18 Jun 2026 14:34:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549E21F000E9;
+	Thu, 18 Jun 2026 14:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781793029;
-	bh=7vtR+TjrpHHmFHags4WZ6+/5p5KaBqxoHk0CbYvy0rs=;
+	s=k20260515; t=1781793252;
+	bh=E6q94yea7fFNH/J8mh/QoFHRvXIsMnsNC6J4EmqlFMA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YmvOiCQmVodx2octUGvCQzdDxtNKbcJlmIqTU4tmDqF0lCZuux41OQnmCaMdopaax
-	 w3IWmQ+RS2UlAZ8d1rT5f5EG4J+UhpKlNTDxSjIfmQEpl9yQIiJojIhFrnzsQuutWa
-	 vkIz0VwtfcUx+OTEwIW0PYUS/iLM1Rwrz/oOthBVg/BwV8zubvXY3+WyBtOnHWZjA9
-	 I2rZUYCXlCMhDxirUaziR5SJVUn8H4W+ilrHJ3/L85Q+h/2LCW4csITCJHi3h5SEps
-	 f0F4DZyNHwhfvcKgc56CSWIyioxXDBsUvwxRUsCNAHedjurK91mKzuhq5i7bYn3Srz
-	 YJAAOfMTFS3yA==
-Date: Thu, 18 Jun 2026 15:30:22 +0100
+	b=WxZkEKCVPRjJre7oSFwazwbU+kCx3+Ay0lgV6vHyj1ufAPJjpR7g0hHc/7WmZHVIq
+	 X3r84xvjmLmi9pXdwhGhQh3IEIiTJ8GOEvdfpyGJJOc+/XaJYhwrkc1ckr2XzAvmnw
+	 Kbdl/kuOJfYmlPUKqHuL12ToiuW4BjEZ9nOKOV8uVh+lH0qfc7i00WWBWKk3X61MJf
+	 IoaX073AjCP8SlOXsnlFGxoBe4sgJuMBZccnVdLLz4LDsseBg0HZxvnr2q6UrkXNdi
+	 +bmELUJWOi2IR+SQf1wL4/SeNKlJsp/SHF4GBEcgO2N5YIr5vPnoJ24TyjY/kaB6Ml
+	 /aOLW+8pr2JZQ==
+Date: Thu, 18 Jun 2026 15:34:05 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: kernel test robot <oliver.sang@intel.com>, 
-	Frederick Mayle <fmayle@google.com>, oe-lkp@lists.linux.dev, lkp@intel.com, 
-	Andrew Morton <akpm@linux-foundation.org>, Kalesh Singh <kaleshsingh@google.com>, 
-	David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm]  7b32f64bc5:
- pts.svt-av1.Preset13.Bosphorus4K.frames_per_second 45.8% regression
-Message-ID: <ajP_-zqVPtbzvc9j@lucifer>
-References: <202606181547.617a6967-lkp@intel.com>
- <6z2rqmo7b6m2rdhqurspwya25ps4dj7lctdygnmq3rn4xt6h3i@57kiiy72epgd>
+To: Nico Pache <npache@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, richard.weiyang@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org
+Subject: Re: [PATCH mm-new v3 3/3] mm/khugepaged: merge PTE scanning logic
+ into a new helper
+Message-ID: <ajQBSh7RvRVr-BmO@lucifer>
+References: <CAA1CXcDv7WVxMcGv9OOZDzTzzcfEAnaGbX5dJGwqN5mSWkmRvA@mail.gmail.com>
+ <20260618131024.69667-1-lance.yang@linux.dev>
+ <CAA1CXcA581SeWTWOz=Kcrw=LW5tshzWyNZMtCnn-X5PrZ0RFVg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6z2rqmo7b6m2rdhqurspwya25ps4dj7lctdygnmq3rn4xt6h3i@57kiiy72epgd>
+In-Reply-To: <CAA1CXcA581SeWTWOz=Kcrw=LW5tshzWyNZMtCnn-X5PrZ0RFVg@mail.gmail.com>
+X-Rspamd-Queue-Id: E802140006
+X-Stat-Signature: 1pymbka9i8mrda8pepkuc4t3b4zhgi95
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3DF144001C
-X-Stat-Signature: iwqwhxcw6oawsytbri1g84psnjj4kn73
-X-HE-Tag: 1781793030-621822
-X-HE-Meta: U2FsdGVkX1+yTNWLvcOEzVCvuWIi7E+EsQAz+BEiS0aY3Y57dlwdyz9aNXWIBqNQLvzhfXcRuM4SYWLLWnjYCVMWWzGGxa18pkg29omp/9ccwTDGuvpdB5x/DLo/YoZVSdfe9+4DEVxNGcA/sY9K0YNu00PhDB+AJ6Q9/SFR759ojmnba2R743+ECE30T8p2CbPWpcxbHBRkIHS1h0hdWZYD2cuLW+wgzMFaW785bOxVejl4dMScNw76Owh5+QmdeEFzURvDVlNw5IOugbSjhr2lHM74/AWyGl/TVRjzlsR0HXDnkLq/gX63lQuOMkZwYUQ03zm2zQeD17SQsv6ldDKdiaHdg3wYS5ORJXv1JSNQJ79n468h4tl2xdp8Z8qF/ZebgfWt6t6MSXykFOGqVzqHo41CFnx6e0fQXGpXqz+Ln9KH5267Sm1R2TNW4ZlCo8cLkuwEZH+3bodUHJYVAwukwt6YDG5hl5tj3CKjv+1731/6Jw8InvkzAExFWnI3vLbdfu1RCruYar9pddukpp/NZSE6AOF0ixFjXPy0fNo2a61DjXVUn2dmwfOt873J6wSbAwUDluwx44yOgTG3amf6sBbF84GaUVB+JEonxupTypfKZZjgsHZwE0jXmjF1GEZ9gbAUODUbGwJ5t9dDJ+ujRwx1U09Yc0uiKnn1QHp3+iTI9y0cYZ/6YVYce98DIKoSUo1wQiLx06+Mqg8HH4x8TFsSWpK8xHAk+15sb5XvZDBwH9PLSQjt4zFyCkS3Y+XyXs4b5tZRW7z5AP2CTygtfFclksKv4lkgCh0TZHilQvEZS3wAyMdpKM2/dFtr5MDhQt9tn1TF5cb5D+jvchoCE6gs0TYjb6agIgWE4JMiB3Gjk7NUsCov6+LnsgFwsnzCJy8fvvMO1T8zCskuLP0MzwNzxjQ04/mJmAlspqaJawU+GXX06rK14MNT9FrkQ7nKVHBGPcErN/aqkhC
- 5ohhTfig
- laMjh/huVsATk/dJErhLXeT50ptYXb7qYFiReHP2J4H02mj/8Wz43XNoY4GuJVGAdavA5KliXildtjRvVhSHQHUikA0XGdnzd7Ir7C1labqOiNDfy57f8UodnOf+EHs6b7MrVITSL2EYjuQmVGeJxyZ4qf5Kp5BeEwtKB0fOVWKkp1jbCwr7CmFwCO1KJmlytQj4t7ZTs5rHcFxMOrWrJoJRFX8VNFKwTZKZO3rNI8IrnyNBf6qN1FQ+MQe1WgsxQapFpfQryqUM/4hWTGEuxOw4I0RJn8f58NkJmkrjWdogpKhPegLFI6Kb/Pw/doZ+XoLVN9xHkKqDty43GAkZ/BVQSqQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781793252-355336
+X-HE-Meta: U2FsdGVkX1//Oim5qyjFits61zQD29tHkGMc4DmIIpM9D+TrKEDhcCP4uHjCPj5TAkRcLzHsSvcKbgYYbxSVRRixmInDzZeelq7RgnfJn12JTAN714QvLyAu1f/NioUUO9G85beEUkc1GbSQQxX+Zx1KvoE/BYgqRkRuhD0MQ92UFYRyCDFlMypkccE3MtDhr7ED+YbGMxVdgqthM2nJh+ZXuchlMYMAknTd49iuCE9020SkYCYVm7foBAHcIRj8EIaWf1AaRH6WwlJaYJClvM0tGm64tapmoujmWJtmLEffnSYrR0FnEe+jLOokAu42bYvPd2M2Q3XA4adpH9uXKDTDb+UwOs7mopXJTMtLdyRCrJXC6ywGFGrG5wsnCAiG4gZC3XTLH9xdTGJAi4tYsXgqjXEGCNEKzTVtiYRXwOeutwfFfiYuh13/v8p9bVRaFt9iKm0viZkZHo03lVPPS/AMTo0kFIu3GfJnMgypTJJToGne2VjD2z0mqymkVTxQ1qajeFPuL+cmvxtnMNHcSN3hcwvRWSo97eFmBG6I1lnVdpAamiXobDyBIuHeD/EtgLF0mjpiRnrbF0lHdROJlGtpOj0ncLuQXFzt5O2v41dDgLW6Tf6cgPapDFnb62P1spdPZKe0Ag6OmXL6Clhj+TXVql5H2jUeAdfaH3uKuXORezzy2ikpU5BbX42pQGEoRj4yf+D/oWWYOIw8OrBSAjSB66vCe+zPXBp98OY2K7dRNmsAlH3z/VHPNH3moiV474XvRs9GkyIbBQbrz6DPXaLXD2UVHSzTPlgl0jS+lGpgtvNI8Q/A61c52IShwDUGPn90EdUPXIWxPi4LAaOS1vw3QtxXG9roPhIVvrfEXlCS1qG5b0o+5aj2ytFJIVGd25dPiqO3wvZhzK8/uQWvCgW5O6//JrC2hq9MklRKWj6UTfaxTI/LCQWZj7xexsr7TbRb5NxrTyIJxK3JQ2h
+ W8vQHMBD
+ r/Tk25s7epV2yS+1F1N9QL42Dl3A1jBF3napum9vHL5OGdIMbnmpvGDmym+AakJOzw2ldq3QQ47q/5ifHWohDP3kA4FIVqqIkia8mKEXyfhEa3jNMrvxR7weV9CWTMicsBkmHbf7KRsKSSYd9ooLeTrIOVlVV1BwqLZK7YbqpGMf1fXZT3QfBGcnpFBjT47DzVQcNSeOXQDhXJ56jqxH+d2zfj1stYHKq42F0+Ml7ZnB1lyvXCVbnCrfsUXK5ZwYi8mwFfz/PVZWmTb0oU54v88koxLRdD+I+8zBYRb29L6BEYKp+zYBGGDKGWiprTNwKVzNU73ik/decduwlnka1tvIql/B7keHVl4in
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 11:30:47AM +0200, Jan Kara wrote:
-> On Thu 18-06-26 16:00:42, kernel test robot wrote:
-> > Hello,
-> >
-> > kernel test robot noticed a 45.8% regression of pts.svt-av1.Preset13.Bosphorus4K.frames_per_second on:
+On Thu, Jun 18, 2026 at 07:19:41AM -0600, Nico Pache wrote:
 >
-> This one looks serious enough and real. It would be good to figure out what
-> happens in this benchmark that it benefits from the readahead across VMA
-> boundaries so much...
+> I have a work-in-progress series to address a number of cleanups, the
+> code should be ready at the start of next week. I just want to test
+> and verify things first, and it's best not to post at the end of the
+> week :)
 
-I think a revert first no? This seems pretty huge for something that isn't key
-to the kernel, then a new attempt can be tried with this issue addressed
-perhaps?
+Woo! Thanks :) Cleanups very welcome.
 
-I seem to recall objecting to this in the past, had a look around and saw [0]
-which has some discussion I think specifically on the VMA boundaries thing.
+But yeah best to send on week of -rc1 please. I'm holding off on a pretty
+large series myself and we need to get into the habit of treating the merge
+window as quiet time.
 
-[0]:https://lore.kernel.org/linux-mm/CAC_TJvfG8GcwG_2w1o6GOTZS8tfEx2h9A91qsenYfYsX8Te=Bg@mail.gmail.com/
+I think Andrew is not taking anything atm anyway and asking people to
+resend in -rc1 anyway.
 
-(Sorry to be naggy buuut :) - I see there wasn't maintainer [Matthew] signoff on
-this, we should really be in the habit of _requiring_ that for merge).
+(There's a debate as to - send early, get early feedback, resend in -rc1
+vs. tidal wave in -rc1, but I'm kinda in favour of the tidal wave, as it at
+least gives some breathing space. I am very very far behind on review rn :)
 
 Thanks, Lorenzo
 
