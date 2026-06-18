@@ -4,137 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78FBDCD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 13:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B53ABCD98F8
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 13:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142206B0088; Thu, 18 Jun 2026 09:31:07 -0400 (EDT)
+	id 852BB6B008C; Thu, 18 Jun 2026 09:35:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F37D6B008A; Thu, 18 Jun 2026 09:31:07 -0400 (EDT)
+	id 803A96B0092; Thu, 18 Jun 2026 09:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F24806B008C; Thu, 18 Jun 2026 09:31:06 -0400 (EDT)
+	id 71ABB6B0093; Thu, 18 Jun 2026 09:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C7C4B6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:31:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D67A7A071D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:31:05 +0000 (UTC)
-X-FDA: 84893119290.01.712B64C
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E555FC0013
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:31:03 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Y/MhBcyZ";
-	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781789464;
-	b=1teXJK3/ArorE7p32nFsuSbj2u9hnGlfwerHF/Po93woBzK2A/HHpikTEpLskOsgLCne6F
-	cMST1VmxddsneFyZ8hWTmHDI60c1PI2CTlY0nrvhkYqBC4E/LRTs2rkr2pBMEvhISBJs5S
-	vFFZ1dipEGmNg3JwK0S/aKMOuH1I8lU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="Y/MhBcyZ";
-	spf=pass (imf28.hostedemail.com: domain of praan@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DEBB6B008C
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 09:35:34 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D63831C30D6
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:35:33 +0000 (UTC)
+X-FDA: 84893130546.10.5C12EFA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2B58F12000D
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 13:35:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLS8wM+7;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781789464;
+	s=arc-20220608; t=1781789732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
-	b=JLT62h9lxZ8lLH4B20aPan2dFSKfuyl5urCAVjNL2K66UUIThsAbqHeZA6Pneb7sZdOg0V
-	4ncX85SIw20KQoI/NcAAJO/4yIWW0zdEkzkg486L4iEJTwskLhHYnxl8MSJ9FNX+sYI+Ha
-	28SegB+9d6tBjommDWFDmf2Iu9ALv+g=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c6a4eccab1so50195ad.1
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 06:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781789463; x=1782394263; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
-        b=Y/MhBcyZQ+hJtupzu2oSyXsq7z+kgR79q42PDh4HDLns2jCmgZRXFKrHezt3VGsGv8
-         CcJm9jp2DZ38kJrT3KcIKGTUT4AclDCOhcaXQeJWz/TrHGcyMMhDeD1C1t4viO0M5sjY
-         t8HvBXjDF8AYpC6J027JeNV76Nk96m7FHWpR887RWaRoKUaFJUFbdtRxU5knGdD5yyLR
-         D3fWp21Y434WD/lf1iQDoV1aND8hHlGixUdn+Fq8mggnAoPTiNozwZqmoVsD/oFBGuDd
-         /PHNMCxp0b12TtzhqTT2Tr58phJYJqskJFiRRj34CHQ3QTRY0lq/EBCD2mKRkl9QwEYY
-         Vzvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781789463; x=1782394263;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=97YgfxmG6Chl0Ir+S9QMmQ5bxu5X/S2hJhh/DZ4TYTw=;
-        b=GwwmcsMkjQGlOb+7desupWz1CQFr1xrTPHfE/HnTy0Qp7bQj2btHpg3t+Zjt8Y/DGk
-         ng/TgPQObcd3lvtEBgsrGSfKmJPGe8a/zyTP/i8JINu3LP4UWyproTjqV6F9j5XKqZjP
-         quAR7Z9jadXdTGanSvbx9wCfinsugqswpTMhIkhZ27IHpVE+ufB+vObmwrr4CpnxY07D
-         7Ui8zIzK1LSYIzjyL8PiZtgExbLqCzGZYI7ls7SnHgAUjiedYFsFxvCgxb8yNqOQAWwi
-         rro0DWOEjv87zg26aksA2uqeWs7Gg23Hs53Zh8JQoOv6e7PKUZJT2+dxx9lUYp0BJI3E
-         yBMA==
-X-Forwarded-Encrypted: i=1; AFNElJ/wYKku7BGCfUwPmmcPzU95dvBDgwLGkirMvy5r3lYfZ/178ZCHOKL6BODl21UMlRKfM921APQGIA==@kvack.org
-X-Gm-Message-State: AOJu0YymCDRkNZI+ItELgMeTkaVduRETNE1EqXBkVvKFAHNlzPjkTrQt
-	WbqJaoVFfBkyf+IRuI8Uj77AXn8ais75dRcBRiwrRXGohlYIpQAru212gxx5J0kp7g==
-X-Gm-Gg: AfdE7ck0f5havOxX5cvmTKLgKQr6x8kEfMoVy1EBRQfOdvblG4KDXYqATUZysaj/9Kz
-	7aUh4SVs8jqjjE1YvP5xRzdZKaENn9LyKbIn/QaCwq3Ogkh3tWB7rvZeaFKfaI0KraClFPLXlk+
-	p7hc1jyxKYb9euDhTvUA+dFiG5WlJKoTn2FUtJCw9twVBSCrU4OatIcYZcCwDf+Q/U1LvMl+u+i
-	+KgM8A9iSoRTychsssi89H7iEIQgN5WYEofy98p8BT0JubYUW1GlB2smj8vr7torRoMhQaeFmPV
-	uC4LFIzN6N8u+RZGD847PkjQrsZxJKEqbt8Hi22MM9c9j3mvx2TGKXYzRW1cL7t3w6vkS2n1Cbb
-	daB4RDifxho0PMZ5HEIs/zYrTEUIeeTu26dKsHpK7EHps+hSiBxT3vF3Qk01rcjYMnx4oiPf9On
-	Rjeu5ErOHTNBGceWm2xHc9hcitV1CpR9p2eF9nKY/mQdVOTXYUfg==
-X-Received: by 2002:a17:902:d587:b0:2b4:58ad:e987 with SMTP id d9443c01a7336-2c6e8692cdamr1747625ad.17.1781789461980;
-        Thu, 18 Jun 2026 06:31:01 -0700 (PDT)
-Received: from google.com (199.255.142.34.bc.googleusercontent.com. [34.142.255.199])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521aa16fsm9477952a91.4.2026.06.18.06.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 06:31:00 -0700 (PDT)
-Date: Thu, 18 Jun 2026 13:30:51 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Parav Pandit <parav@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 01/12] PCI: liveupdate: Set up FLB handler for the PCI
- core
-Message-ID: <ajPzC2Xh1NMbfokP@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-2-dmatlack@google.com>
- <178124130274.908199.14827357870284807134.b4-review@b4>
- <aiutNINqxhtlm2Dt@kernel.org>
- <178126123047.908199.12042730612990730743.b4-reply@b4>
- <ajB6V6yBHOjgK5ew@google.com>
+	bh=Rk6LmjIbCHsYPNdyORQTlWLED3QFUIZxJF66Poqak0U=;
+	b=OqzaKB+nZgBzlf0yyJy/bPd8eLp8NcbKqmL5w4z58WU4k9dWttjfRXICGQc2LThCQpygN3
+	xwiwyOzW0zIe4Ca+oVIbY5Wo68l/wuAwP7Vb4pd/3taN+kFvncbav8yqvInHdI8vexAVeO
+	hDXZ3Mi7xUo0OOfnxpP4NsSY1Bj7CSs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781789732;
+	b=YbcQKBVPyfOGf2Psc8K8lBBkIaUq3qNiAGHmMz/7BC2Sqi85/0yJmunK/Vlc7utxYG6G1Q
+	UxvlAj2kF6rvxxM04kz1ToIWPllx7JUN59Lsds4gqPhKLZW1/zqdBGkFv0uBW6UtD5rMsl
+	adl6sfwreXHZgAx7ikPutm+26QwV3P8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BLS8wM+7;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 45ABA40594;
+	Thu, 18 Jun 2026 13:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1D81F000E9;
+	Thu, 18 Jun 2026 13:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781789731;
+	bh=Rk6LmjIbCHsYPNdyORQTlWLED3QFUIZxJF66Poqak0U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BLS8wM+7lNGipicaKQI08fr6BvpoZb8eQFBGEtcAz6VB81AbZ8KRuoXZm/Aq6wj6g
+	 xYRyXinasz+XrelPwmme8HY0hJ0ltYqS7UnTdHA7izE6XGuxihVc1nWVx+fKC1kmql
+	 GXJK3FKZnkS6zs2PST4qZc8YbPG8DmkHqC3xOi6R3Wz3pH9kxCBrsegUncuDz7o5ck
+	 StCGUVzgPGABGUhAiUQlubgvBqSbcV7T1IBtE9Mb+0+1jKP2o33viI4bIXnP2NWDEX
+	 qOD5DMWfmOGGGmSnmwPlRl8aptuhu4ojY5/eMHNHNAs7LYYDoADnvEBTngkwFmCdZ3
+	 Qx/OQO3CyEb6Q==
+Message-ID: <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+Date: Thu, 18 Jun 2026 22:35:15 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajB6V6yBHOjgK5ew@google.com>
-X-Rspamd-Queue-Id: E555FC0013
-X-Stat-Signature: a7edke4mheyxtzj1ahfgshzj8rcg4qaf
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+To: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net
+Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org, catalin.marinas@arm.com
+References: <20260612044425.763060-1-dev.jain@arm.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260612044425.763060-1-dev.jain@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------RrLQl9DO89jp5rWKR4YTMpyy"
 X-Rspam-User: 
-X-HE-Tag: 1781789463-142569
-X-HE-Meta: U2FsdGVkX19G9ZUojiHyHSs44+FDieCofbwIIRe6q0UavFHYiuiyk5V+S06dUjl3CzbZtsTcBKFb2ilUZAl5YqX78IDdO1X1A1urkKJzXMEoSlt0kpyjY93dZOHNrLkGXzsMs62I+2bu6vY380TzxJq/tkXv5+0Gl3jyIqKBbI8HT5cYqCwo+1KE/eCP4Xx5PinQBKsu+aWA4yVaaZT1XXoBxJFSebxLpmnPrQNGv2X8hzl+DR/IAHYiYH6LNi9RrqH2/ON7UJHERDouCngii8OO9DtfYdj4qKy9NPlpffER/iSZZqizQuWfGlkW/XnBVVLPeGQ5/XTt+NMmvZlxgFLJQt3PUG+jVA7D5ZJ3NFdx684nHVfC8GuZxh3Uj9WUOefdF6XP1z7RbHT/rrO4GLXJlf7uWnU7cbz96rgLn0vXI9/yUNXN/SIRVVciXwv5hvchD0ReSMl9GTLNr/VQ9o1VCBI6UcjNfZuM4KCOU+rxDQolF/EYr7jsfuJlk9iXTEmHN1w5GP/BW5SSFaC/67iZgK9t100xwY4VPyfLK64MKH2fe6kCKuCs84EW5NnPhghZkWcQzYBW3XYscIUFR5SNltY9wqs7X0ngBBiOaS1g+szT4+0oP2r+y9pab+C4OzTEtYeZGjsptKvGURtJd1j6OlAd9EBgLrUz57615sMz00Btt96zjtw8GdKtoYykG97RNHOLHU2Xlw3hmyBu7g0Buz01CZvQPK6aYAqD9hNGaE5s4AyKQRyzPtaQucjCoqdOJDCwL+bRjIe7Osx0Mo66+2g8hI/809g7VZuH4RfgMe8g85bKtbOtC3qrDfeq4PsY/W5dAMpRtT15S93/fyvw0XBug9PvWHjXhj6MeJ6DcJfQ35eNAnDGhCoR016dRgSC+ax2+B4mMfJmTCZ4SEHZOAthURKsQG4Cke0onUEM9GNIUYKWhIkl+/2bNAYBRGgLDrdMeTxhSutNY7M
- 7fBSqk6+
- VVm8KsGzWo8hnYeJtdLS+JhsPnxsfYWjy2SwDQVuvIWoRDV6eYdCP2aeuSQDntn+1AIX7YcrrwSMSCSMDqbu0Nz05HkKdHtgLVpRzvbvqWzMq2jmfmcMt1BoguqDG0lnN5s4H6V/8Y/dfpMAVSvh04t97L8B54kwlBi39as6q0fZgHdkxEutdwgee64k7k2ui62pFRErClGndaB3xGrFauTSB8b4zIIWrsklLRcGSzBjNreJtmerF/Wuo4OoNHDYxuPT8WiJBP9n0Ai4KkH/p0u9fRaVOyi5//IkS50Gri0M/mE5VJn2ZYR4N/JqBl/qYY0flHoExKtutU0I2l/vF53scSx7UADAXd5xk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2B58F12000D
+X-Stat-Signature: fi7dwsm3qijn3pd43448p8g5caz8u5yg
+X-HE-Tag: 1781789732-2375
+X-HE-Meta: U2FsdGVkX1/SvJLlfyNCD7ZSqU8ysIlpHjOdYxYe4Cv9HlNKkNGKeX3Asmxc+/2EuwhmGq0QlTh9lDkQfimb6XFCygvPvVIEDPxxD5D+p32Eb8Ks1IaZhOCgPsfI0DYOlsXYRvas8Hrb1lQ0Okt1dUthEqkyUMWw+M7I7K6RhJUBnF0JG3s3VACjMcOz3wfiigC4e0MsTbQ7M0NCMcE3DogRJHeMAfkGASkNELRNvSkfVs8AZNiRtx606qu+goFgUo1TnZ+KM5mvGegcTTXD5KkbHnX+P4cI9StESPtHh8dL1weQQP+q3dKUrQ/vrm1J2CWU+im9QWzHLQbBaQQL2AlJVPGWCmB3GWJLG/cjmpXAnRfumaCjXL0qfE4BxO2ZjeNl9jSHd+rh+rt60uSbcg4ojuiA4qYs5mHz2vX0XjoWu0Sny0jCEz+jYn0RNGL8EqNKCVLyh5EFDpvSOFgo0q/ITl/Pn6G5vMJFR+v3ZHzYjVzA2sjafDuAWVSpDlNL+nXliwM4W4faLli+unPdLGNZ7L/CDZ4uLzvkuD51m67O9SvnAmsk201Y5/+Ud1lsffJhJsDUAuiMfAp+ZTQm7O8Y4Pb+HhFGP9TTKrptAQHa8ogwqxp9AAPHvLh5Kk5g6R7QlUs8MH0euiOUIqkNMON1HCSiC+y7c2AYSW0kWGzM16zKsVxo5VzO858hY6/9ZuB0rSquTIbjGicMc+gxIOY45OQFfprZxPicHuoyeTC7MaBP3NpqfznhneroFcQ/QxsNDlUD0pcCHWy/OfRpejxtTttYtd0Zo+ObIimLbQsoVCzfPU1r+TrNdXLuQp/533S1hZp0JN8IFKEbvibrdqNh24RZiIqlv8eU2bDIfLpZGbs11Jbz1OxwvpcVG7uDsTlsfiD2NdvboyHK/NfCKoXklKcXyWb3LpUR1rIaSmwdG784zi1kDiJJX14I3WtI3kfE5NnlkXup24YlRLW
+ YXzt0ldK
+ zSNnmR1QxZawfYTvYySbBNDPkMJeLTYbuFsmPfwe28cHe6FDn++0Z2v7oIvMsarjRHPQLa1Fj8LJx+E6zBWR0pXQw7t3CriTcm8m9q2eXNBsOp2G15qnJqCY9JHY0jqgVzjKuo0WbJxebt62BxDH4pcQfWXDOenWTgfblIwHJpKIbMlBMcUWzrDn0pK73onbGYNti7f43kbWegiEHtS2vvnlcHz5sn9C1OZdSRMTKJ4lr1TRxFwoSfzFZT5U72fdcHIhU+V6jTxAcqRfskeTM7CtZZ3LZwa7YR+3U8vdk9R6nBImRukVth5mk5b5JflhdXaILcT4oRh1+SDz6GU1QUoCbFnoGaCsfQfRl+wqckzWFBY7cYdBR32gEcyscTxry/rOO6796w/TW8NUa/QHN5r4vcuGxbwrNMk/dVLYd7xPlCI7L5lkvI1EkZWHRopZSk1iEAfqXvF+NI2nVbVQtWY6lHVb57sUFd8hZ8y5nf05tvFEnbShjhcAKxFmpjpbVGkUVOJMNWVfHNp/U07wDafPKquOnEVS2wUJOIv2hm6pr48LyTYBtZRwWl2x74jqVy8MQ+vW/a1hLObo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +100,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 15, 2026 at 10:19:03PM +0000, David Matlack wrote:
-> On 2026-06-12 10:47 AM, Pasha Tatashin wrote:
-> > On 2026-06-12 09:54:44+03:00, Mike Rapoport wrote:
-> > > On Fri, Jun 12, 2026 at 05:15:02AM +0000, Pasha Tatashin wrote:
-> > > 
-> > > > On Fri, 22 May 2026 20:23:59 +0000, David Matlack <dmatlack@google.com> wrote:
-> > > > 
-> > > > Please add Pratyush, Mike, and myself so we are notified directly of 
-> > > > incoming patches, the same as with other areas where the liveupdate/ 
-> > > > tree is specified.
-> > > 
-> > > Or we can add PCI liveupdate files to LIVEUPDATE entry.
-> > 
-> > That will not work, as we cannot serve as maintainers for 
-> > PCI/VFIO/IOMMU/KVM, etc. David Matlack will be the maintainer for the 
-> > PCI components, and we will accept patches once they have been approved 
-> > by him.
-> > 
-> > The simplification we could do is to create an email alias 
-> > for the live-update tree maintainers. This would allow us to use a 
-> > single entry instead of listing all three of us individually.
-> 
-> We could create a Live Update mailing list for all code that can be CCed
-> on all patches that must be merged through the Live Update tree. I would
-> also be interested in subscribing to that list.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------RrLQl9DO89jp5rWKR4YTMpyy
+Content-Type: multipart/mixed; boundary="------------y0w8N2KinVP4PMHfeQRfXe6b";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net
+Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org, catalin.marinas@arm.com
+Message-ID: <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+References: <20260612044425.763060-1-dev.jain@arm.com>
+In-Reply-To: <20260612044425.763060-1-dev.jain@arm.com>
 
-+1. I'd like if there's a specific Live Update mailing list for
-submissions & discussion about the Live Update tree.
+--------------y0w8N2KinVP4PMHfeQRfXe6b
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Praan
+
+Hi Dev,
+
+On 6/12/26 1:44 PM, Dev Jain wrote:
+> Introduce a boot option to tag only at allocation time of the objects. =
+This
+> reduces KASAN MTE overhead, the tradeoff being reduced ability of
+> catching bugs.
+
+I think most of overhead when enabling MTE comes from loading and
+validing tags for every memory access (either in SYNC or ASYNC mode),
+rather than from storing tags.
+
+> Now, when a memory object will be freed, it will retain the random tag =
+it
+> had at allocation time. This compromises on catching UAF bugs, till the=
+
+> time the object is not reallocated, at which point it will have a new
+> random tag.
+>=20
+> Hence, not catching "use-after-free-before-reallocation" and not catchi=
+ng
+> "double-free" will be the compromise for reduced KASAN overhead.
+
+I doubt users who care about security enough to enable HW_TAGS KASAN
+are willing to compromise on security just to save a few instructions
+to store tags in the free path.
+
+To me, it looks like too much of a compromise on security for little
+performance gain.
+
+> This is an RFC because we are not clear about the performance benefit.
+>
+> Android folks, please help with testing!
+>=20
+> ---
+> Applies on Linus master (9716c086c8e8).
+>=20
+> Dev Jain (2):
+>   kasan: hw_tags: Use KASAN_PAGE_REDZONE for vmalloc redzoning
+>   kasan: hw_tags: Add boot option to elide free time poisoning
+>=20
+>  Documentation/dev-tools/kasan.rst |  4 +++
+>  mm/kasan/hw_tags.c                | 45 +++++++++++++++++++++++++++++--=
+
+>  mm/kasan/kasan.h                  | 23 +++++++++++++++-
+>  3 files changed, 69 insertions(+), 3 deletions(-)
+>=20
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------y0w8N2KinVP4PMHfeQRfXe6b--
+
+--------------RrLQl9DO89jp5rWKR4YTMpyy
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajP0EwAKCRCGXBN6rc5S
+1jNWAQDzVUDBUPeyt5upXL1mOoO9vGDvDLtilfxpmlxg7GO2qAD/YQLyoBRsQlGb
+zVC6FeFHHk+biv6lxpZCj6qBEzmyqwY=
+=XQEH
+-----END PGP SIGNATURE-----
+
+--------------RrLQl9DO89jp5rWKR4YTMpyy--
 
