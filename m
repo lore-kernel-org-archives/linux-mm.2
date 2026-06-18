@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F868CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 01:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3E1CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 01:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AAFF6B0088; Wed, 17 Jun 2026 21:42:49 -0400 (EDT)
+	id 7FF9F6B008A; Wed, 17 Jun 2026 21:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 083176B008A; Wed, 17 Jun 2026 21:42:49 -0400 (EDT)
+	id 7B0516B008C; Wed, 17 Jun 2026 21:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F031F6B008C; Wed, 17 Jun 2026 21:42:48 -0400 (EDT)
+	id 6EE096B0092; Wed, 17 Jun 2026 21:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C30AE6B0088
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:42:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 371F28FA87
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:42:48 +0000 (UTC)
-X-FDA: 84891334416.20.502C3AA
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1FD3D180003
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:42:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5QkmuCeu;
+	by kanga.kvack.org (Postfix) with ESMTP id 4B2BA6B008A
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 21:43:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2A40140594
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:43:26 +0000 (UTC)
+X-FDA: 84891336012.23.277210C
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C2497A0005
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 01:43:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fxz2xU65;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781746965;
+	s=arc-20220608; t=1781747004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dY7iB8TfUb49Qe86gfrlEs0QJewdJs84WYuu5n1U9Og=;
-	b=0zpRBBSLzWhTJtEL8o7EyxsxzcOwvFLwp2dqiZDs9jSM8aNpwCUwN4PQWiBH47ipMIisQ5
-	BMzTnzrUTwOyEwlweDU9hA6fM4LZiTCooI1G9Ghvagl5LUQc8uYxgFwUmh5aI6VrceK+/L
-	Nkg3NLr9cvHwLw6z0zuQrGTs0zQfx5Y=
+	bh=bi5DqNrmFb34WmdLswI62Z3+M7jjjsiVSWeA21iVAHQ=;
+	b=yHM5aTMSzPZ76hQ3AuToMf3mlgH+WlERyH0/XYtVzGIoy3i2ipp5P1JZDGflzCRjfiM7D2
+	cQNwHq4XogBHs66JCSM66pDF0Bbogy881xc7JT5/FMYsYARy5XWpcz4CO3uwToxmA9EKSN
+	3KbtTDwRbsgOeTwru2vxD6YvlM6b4W0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=5QkmuCeu;
+	imf25.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fxz2xU65;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781746965;
-	b=dX6MK5wNRmAdKGVpFOfCV4oPNIKiYlXZzWFFSububLOIKMRZFyKMRPQ668OviZAtNAfkXU
-	0cqA4uNn1PmVTG4NY3d5VKxMCNe/hRqLzU8PYZ1tSMlhpejHuSDJ7+gPpNU9LS3u7hKn2j
-	3xmkKPSIbvTpq2Bxrwl5E+0mlHbjJV8=
+	t=1781747004;
+	b=jt2xIMMbPoIgv2F8tQ831gpq3Q0XUHj4pW3g4dyjMCfwcqXtlquCuyULFCTfJiE50TO0k+
+	s+iB3F5y92UKHv6dIAueTFweLIf98sLT4opUPYkogIlENr6CVZ6LJZ5x1dDS8DHmgD4SYu
+	vbRQ9gOdohQKfIsdUMoOhCoIwbPjbFw=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=dY7iB8TfUb49Qe86gfrlEs0QJewdJs84WYuu5n1U9Og=;
-	b=5QkmuCeuCDgu7GawUdkBZs4PWCGcVkZSwOEkcRQHkT7454KcOpe7qPKu/YwFeiTDJoJy9giBF
-	wNVVz4DXC5PPUTfnTxIHbpYEH/WdRo6y+IIyvvy0JTANVETfeia0/uUJNVc1kMivYnOud36pXRK
-	ySVj/4P9aYZaHjHG3uL9pHk=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4ggjvQ1pXtzRhRL;
-	Thu, 18 Jun 2026 09:34:42 +0800 (CST)
+	bh=bi5DqNrmFb34WmdLswI62Z3+M7jjjsiVSWeA21iVAHQ=;
+	b=fxz2xU65Yj62uHkT/fSOayfJ92bzy9v+RSxXsRR4FNh5blOSw0SyOHamkjI6Qh8o8WGMimGQ4
+	L0YmPfTBbmU8yIlnIySSu+dYA1dnDCTHEW8VBIb7t+4WW0H8sJOe6yo1h0973/dGikKbjQQLz/1
+	HJrJ8vKI3NjdTIOiC4V56HM=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4ggjw64ftMz1cywJ;
+	Thu, 18 Jun 2026 09:35:18 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 09BDD40538;
-	Thu, 18 Jun 2026 09:42:41 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 66F36402AB;
+	Thu, 18 Jun 2026 09:43:16 +0800 (CST)
 Received: from [10.174.177.243] (10.174.177.243) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Jun 2026 09:42:39 +0800
-Message-ID: <b60dc990-812e-4449-918a-6a1fa419d931@huawei.com>
-Date: Thu, 18 Jun 2026 09:42:38 +0800
+ 15.2.1544.11; Thu, 18 Jun 2026 09:43:15 +0800
+Message-ID: <566ab0ac-b991-48b1-b9d2-48a307edb96d@huawei.com>
+Date: Thu, 18 Jun 2026 09:43:14 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/4] mm: mprotect: use walk_page_range_vma() in
  mprotect_fixup()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, <linux-mm@kvack.org>
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+	<liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka
+	<vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	<linux-mm@kvack.org>
 References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
  <20260617082622.3397584-3-wangkefeng.wang@huawei.com>
- <6fa17e01-8aa1-4597-a1e0-fa8d95eb0407@kernel.org>
+ <DJBE8O7Z6KN9.Y34YAWLQEKWU@nvidia.com>
 Content-Language: en-US
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <6fa17e01-8aa1-4597-a1e0-fa8d95eb0407@kernel.org>
+In-Reply-To: <DJBE8O7Z6KN9.Y34YAWLQEKWU@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.174.177.243]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam10
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C2497A0005
+X-Stat-Signature: 91bfpartz1rzizckwminwpzmijizq1s4
 X-Rspam-User: 
-X-Stat-Signature: mtmzac385duqigz3zsf9n835cohuffjq
-X-Rspamd-Queue-Id: 1FD3D180003
-X-HE-Tag: 1781746964-632341
-X-HE-Meta: U2FsdGVkX1/0W6njW45cv36tCmzm3XyCz+1Fz1cr9+JnPTSbne3rs5kuCcFoHOvzlR7H+1FYs13R9Fse1gEvfI3fxAattERgMUeYD/L4QFFHt4gCU+dRqzzpA+/1doh2SI8Om0HJiIWhQwv3otAu8lDK5FlFlAzlE+9VRMrKhKayRePI9NhB1EV/3brMKRY9cwG0DOrVsZo35j7b1zZ2Fchh7rshda0N3EXMvJycj48td6s9AVcEnIrQktGK5I0SMRfjnyxr5F/Svsxc/UK5zqiOHLTVKDPSPMDvrKInG8fa30znlMWIfhCaee1PtgBQ+fPSKR5R/P93fmeTXyO70zbI5sDsR/fQS80MmFaUbafskUgWjHSZYVYSxCHq0IdiI3GFLc/kiD70UTSnmt9YGvYUB0s9xgBexiBUCFuxVGxuYsWzt3/0VtWLfWVvRBl88bEK7FmFNnYdmU8gr4fbNfvkhaI2NLkqUQhod9kz7GhTvYs8vFAm5XQQyu+OjIeJAqJHLj8i8QF9q8nB9G2QJSgVYcYeYDdHt6nJz1jRXIautUFNp6ppOMiqboQQ9k9920jdm2GXA7K/xd7JHeYlEXw4V4XHawndOUQE7Z0gwECnk12nozRDGfUalbrw7t1vxqPsRg94buUUXfLIkyAk459XpEoAkwkItnxcNLZ4fWtMrmTzu8SNGU0/ggL5wiU517dbYjpnM4rr3zJToQRQksMlbDGSzZhF3Hpr1l57hXyMW2lGSIncAWovKkAKId2nvH3fYr3Clz6DxHmsIIHN7TpIS/PEKM0swZBGwfHXnDyIMKtH0rhs2jMsOE7ch7KMH/fOAY21a5L7iUT7rVvXFw08X7m0RhVXlC05jSSNNAUcYNtfoABDypx/96uCkDTwCMGfgAzygNjUCjHGd5XEBkJxhS6hUXYIIs00KrgqRxjaJyewzHdcYlHwHy/gv20eWy0R8swedDR0xF4m2I6
- XJoyjj/W
- RPlZpJ7vL8gCyVVqSWycEkOG2y0AzVkfTL/5mm0o0DHeLAcVV1AsBmMYFd0yRFUfuqe+Dl/mDwQMQeWKIaDoYSslBX/sssRGhpUTN8vf9jnWQ7DqSi4Dg4Gxbzb7hh7bWEj0HKQtB57ohpjELNuBFIpGOnarOhtrtwYOqZaRXN60FDc/8+2eOk0ID/F8GJ18Z9KP7rONzn4Lu/dwDO8jX7xP09eHfb0g+BS+ZNANEH0wj72fr9c0iVbV0KAUmZijCYEEVmMR2ETjOvgT+zYr4KtkEclhJLOYxKwk6bvR/jqUIxvA0J97bTL4hIU9RQbirpoFncsWL+vhRiF8vbqWxgx5dMowdiaXhZb3L33w+Qu1aaJ0Qi8urVeHWGnZx+8NTBlVF
+X-HE-Tag: 1781747003-572490
+X-HE-Meta: U2FsdGVkX1+VfJ4CeFMPXwhv6+nI6TW4RxgkYrf6LX1tS7ml57yo88Zy+jqKbv5fWnPiDQf5kcapsWdJnAKtY8k5n8QSXCsq98tOsqoALcgLG+iMUaSxbs2T46qlr+miEb5huJwI1bUYytNMwE2ATO1fuxy6J5YYhevv6YpyklKNGvn4vOXLwpRKu0Nr1L5SxuA/p8stW0p2tui81mMRwgSKs+xTxRdPrumScZn673Ts9zqG5OwvtB79G1yVeyz6IuUAWbuYcnjILriwfigw+JCpGh4UJpM8c7A/LG1jyrP9aYCzJth0pyiAQQYfrnqKTS0aYgv+oEAeQ2qAZC1WRhaIT/WpcGAFNqylMaqDRKJAV/iChAAG6jNBVOz7y0P4+7lDdbn3GanTiBum6JSNGrsN8B6OuBNos//tf2V5/lNJYO8BCkP8lfQeO6TXvSI5qYkIWDlSfEAci63lu4RdNi3SzRGa25/WPm3sPqL3JXeKyMfAZYtIE8AkaDNR9OK0sowsZ1cJkBZSyVvh5UdQxTUP998bOmiJ+J3cb20Fxbj0srGfYwO2fpKay1VmOjhkO3d/o2NlUZvD+d91b5TZkpHJ6ErLT+KiOhjk1mvbhjlLaiTXLmCsZwZy1u3Xy4KnxqsyHseWgLeI5gC28VdmE1zDE4u45Lw3LLCqvAOT7MnZioE2qOp6ctRkhtJIHfnP9OmBMpxdElS+71rJ3xl89RGlVQjnunWDGgPFjVmAfENKOe5T3iwuN56QHHKpu2ivfVKSGTVZXpIQb2t++H+uF5FVGe/3JN0K/LwwMHohiG3yaKX1NfCKDsOFtat/1zcDB1ukl5GMBa1Tl2uMi+y7I+uw8BMcbTwUdkHYNCnjv9PcRza4Z81AQRhbF+dDXRGFCogPXj1ejaXtc3MUDtC7ArTxltmw4QSv1eR4WJObqfmBzqQFEpv8qiEgmZnwHA18ei5IATiw+B1aFzvsZ99
+ haD/leyQ
+ B4CEPz9YAIoB7H+cn5MTIvaQsGhBfFalsWLJguv+70zpbzfrXKszeZo5fXjZnXw4gNcNYxiTPuwb5qfgPkJ7n6pPDnedMvsqWCOgsZtTqq9Xt8FJsQSkAAxkBJsYyU21Xbs+u32lGvOdS6IxzyNiDcfpkyW8XLmMI2Ea3qqdLIDvIFEQ6UbDGSyUQM2A1eUMZuFqPMabnU3m3AD84FqvRJB+9/D6yNQuNBhzNklmFh/r/ivjlUo5b48Lm7QboHqs8psXIVugnXZLe0TJGwouCf8TS08pXsOCCmz0t/rXisk3j4hv0i4avSsHkDQmY6zgLMc9U5mLr+srrn5IGGBFbwy3I2z9QYRIl8FuMAr9NAzQmuLjA+73OxFs5HN/KTA6L3ZzrepMfatQHmgeXNPjkEVw6qeBWJ6fcJsWN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,8 +105,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 6/17/2026 9:25 PM, David Hildenbrand (Arm) wrote:
-> On 6/17/26 10:26, Kefeng Wang wrote:
+On 6/17/2026 10:28 PM, Zi Yan wrote:
+> On Wed Jun 17, 2026 at 4:26 AM EDT, Kefeng Wang wrote:
 >> In mprotect_fixup(), the PROT_NONE PFN permission check uses
 >> walk_page_range() to walk the page table. Fortunately, the caller
 >> always passes start/end that falls within a single VMA, the
@@ -137,12 +137,37 @@ On 6/17/2026 9:25 PM, David Hildenbrand (Arm) wrote:
 >>   		if (error)
 >>   			return error;
 > 
-> As Sashiko says, prot_none_test() seems unnecessary now.
+> Like David and Sashiko said, a fixup like below is needed. Otherwise,
+> LGTM.
+
+Ack, thanks.
+
 > 
-
-Indeed, will remove it.
-
-> Apart from that, LGTM.
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9cbf932b028cf..323949638894b 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -708,16 +708,9 @@ static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
+>   		0 : -EACCES;
+>   }
+>   
+> -static int prot_none_test(unsigned long addr, unsigned long next,
+> -			  struct mm_walk *walk)
+> -{
+> -	return 0;
+> -}
+> -
+>   static const struct mm_walk_ops prot_none_walk_ops = {
+>   	.pte_entry		= prot_none_pte_entry,
+>   	.hugetlb_entry		= prot_none_hugetlb_entry,
+> -	.test_walk		= prot_none_test,
+>   	.walk_lock		= PGWALK_WRLOCK,
+>   };
+>   
+> 
+> 
 > 
 
 
