@@ -4,91 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6568CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 18:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E2CCD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 18:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0E56B008A; Thu, 18 Jun 2026 14:20:13 -0400 (EDT)
+	id E9B616B0088; Thu, 18 Jun 2026 14:35:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688E06B008C; Thu, 18 Jun 2026 14:20:13 -0400 (EDT)
+	id E252D6B008A; Thu, 18 Jun 2026 14:35:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 578056B0092; Thu, 18 Jun 2026 14:20:13 -0400 (EDT)
+	id C9E666B008C; Thu, 18 Jun 2026 14:35:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4E86B008A
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:20:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AEEC31C4381
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:20:12 +0000 (UTC)
-X-FDA: 84893847864.25.919FDB0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 16F4640010
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:20:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YfOhqeQz;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0E16B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 14:35:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F60F120244
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:35:33 +0000 (UTC)
+X-FDA: 84893886546.16.F8150AC
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EBF4F40009
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:35:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=TMKFQqlL;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781806811;
+	s=arc-20220608; t=1781807731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nl4WGWLHU2nDZWMLWrJ7XgtTVp0Yzn1ezTw1CgqCOi8=;
-	b=XKv5dLAX8TaobhyU9m6wyiIYN3GhHPzl0SKQNRpex47LybXNsyG8elxcJbI6wrT3uVmIh+
-	rAgE/nLyrbzUEROkDWXquPI4VTj/gHqJAJmpi6zEgjzn+vJltK64O5q7rENeAinTkFsgCx
-	SNUtW9tFNFwQ0oscoWGRMO4IebqOjos=
+	bh=jbQc+XBYiLsPD08oE5SvttVMwckAlDDcKCSnF5heN+s=;
+	b=yxRlh5wl7fN4nhKPeRANtVxxZaiPOTU9gJaanOUhoW2htbG87b9s3yeV7CvcEXXSEYMFv+
+	5z7zl4FT2WhJME7CIwbVZpfkr5L9YRmNPh/m7vnnqqaLiJUlCP4TtvHpq43pBte0yVHpKc
+	gB/067UVbk2wkQWBMVf/hqMppY5hIKE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781806811;
-	b=yUMB/rHLMXyKJRRp254+TFzM6oRqLftL3qs7q21vXqqQ7EqBUAOfcMKS0akIfkcetg4Hk1
-	ehEYik1kZ6EpJZbZGJ+y+NLHudeJczZmjTDRk95qW3fGMLLg346wkIXta5L2qd4X4xQy0J
-	JzdOYyIuvOpRZYwXJqLYT667h9sHr8E=
+	t=1781807731;
+	b=ySqLe11Ghe/ffsZnnOwLixECp9jt3Zer5f+fgIlqPP4NwdegWerwCP7tf+hUMyv2tVeHDY
+	YimZjb3ynbUpo+ytx16Jxd5+Qm9XCejPMYMD8ohrkTM3qKygskJJqaGTjzsMIJgob1+aP2
+	X38Rj5srmvVz8+P7SRWwYBza87JzZfk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YfOhqeQz;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nl4WGWLHU2nDZWMLWrJ7XgtTVp0Yzn1ezTw1CgqCOi8=; b=YfOhqeQzj9WoV+oRg3QwFhQ9jt
-	CpxcX52Y91jRDKTVtVrVV8WoNUJsjKYKuhxKCWQ5IJ3VDaIvT86OqGZqrhfV0zIbNUby5ohaanAM9
-	veHKDsx3ZOnsyW2V/+aBR9G/Y1SGWz24Tv7KvWmsPt8p4GORTJB0oHktohjR7Z1MnUCusjuWbkuYn
-	MGTRDgJQ+xZWwgzh4rJ1O+vFXf564efpRh/HOq0YZiiH6kHYxIABUusbolD3azapkziAnrVx2/dXY
-	KboJcKuC4N08JqIjCzHahTrThmMXu+TrRqSQsKx8QWMdjy8qQkAIAY2YD8lHQ4v+k7M4vfUmyEW1r
-	F0simKYg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1waHLS-0000000Etdk-2he3;
-	Thu, 18 Jun 2026 18:20:06 +0000
-Date: Thu, 18 Jun 2026 19:20:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Pranjal Shrivastava <praan@google.com>,
-	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
-	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
- requests
-Message-ID: <ajQ21kH1ZVajS2Y7@casper.infradead.org>
-References: <20260616134000.2733403-1-praan@google.com>
- <20260616134000.2733403-7-praan@google.com>
- <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
- <ajGGpDvzZdkGtSbN@google.com>
- <ajP8ZTTLYkICFTO_@infradead.org>
+	imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=TMKFQqlL;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9204711e831so29927885a.2
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 11:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1781807730; x=1782412530; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbQc+XBYiLsPD08oE5SvttVMwckAlDDcKCSnF5heN+s=;
+        b=TMKFQqlLDhfaotiQRHVmGm2edEUtDOIepxUJD/ZRrORQAm4lPqcGVWixSLnTkoMeRk
+         OzO1kg6qPsaWUnl1INuAKvVqQWQfP1/LrS8i7X2g4qwgvDuWfyyrvQDX/Rco9Nu3cDrk
+         X5VQN2AE5XmSRETmdTT/5gl78nvA+Sh9r+mSEO8aHFtiyUf7yKUeG0KVpOy2Z5YSPUOW
+         We0ZaT1j926zBR5JrqsW8ZwWu9WPC4R8/MhVVVtefL4yfDhbW2E2hCdDA2tE6/ofvzXj
+         4iWtxnFA73ns+PNmbYnK5AgYHt8e1aczC1Mk3Pxz18bd6ob4w+GnFC/7Sfy21Fo2fAZl
+         BJ7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781807730; x=1782412530;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jbQc+XBYiLsPD08oE5SvttVMwckAlDDcKCSnF5heN+s=;
+        b=Bey/Mnjg8X8/FWS/QZBXwvvUu0hy68jmHQSWpo9P6u8k+q/EXYlMPbWy5J/ev9vdVn
+         wNHzIzkGj5n+Xl92spr1fgoGlO5M701ymfxG/iIRC5scCCxGdA4z4RjVFiUxA+DUf6KE
+         oQiixcOnRuNs5EFTfJ17PbdwFyy0pzXsBarkGpMVROjBt9r5y1I8d/krkd9MwtujW+QU
+         VJJ+5Z/92aB614Ckn2E1yhCoJNHL+pwDwMUBdU/3cIaHsZLhhHZ52QXxl9ep3hRYjgij
+         5eqLWLVnR8520moYFyaTSE97+KkgzS6s9sI0c/0FNkkPNTR4GMv3PJijAgwrxigeeEa5
+         iR/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8opfAyXb0FJbliuYqi0qoxzERLnYiJDyjhhseRAVVwBOd3vxrHd9Z6NO6t25+aQ8Z/mTRxiIjHzg==@kvack.org
+X-Gm-Message-State: AOJu0Yw04GWcQmhokcupy/aahFRvpE1hCBsvQI1olpU/GHtD383nHa8B
+	hHk47v431QsqbCYgL7HewxEs5GHSC3vwen/CZ6ZCKT0/1TU7f0Ds1sKsRahVXPtgZN4=
+X-Gm-Gg: AfdE7cmEry2jzhyKWJNXrWTOun5NU0sWoEKNavdAKuZwv6C25yVlFtDClu4L4cY4ip7
+	dxxBPRgmvEXW/vSRyVDYQkBmYSI0JLrkE+WdIGF0O/ixfZUZyLzJ3MVMXAt18xzeJcP7j44bqEz
+	NFpTA+30aQrHxYvtiSMhRXNidSRv0XnkBpUWbDwbeLGB40bObi0a1uz2YY2mwgkSl0nlBbEiwmL
+	SNICy5+qm4VIRj1GxJGVQ5gxx6a8RsI/qomc/Yu5ek9gqHdzPvay6IFJq6V1266fuAeqHD/y1vO
+	WGzmuZxnQDBROOMUgH57ui8g/CVZLYXxiH/OWfalh9jP4S5w9m4eWPp6JtmmDU3UTM4NGfga2Ox
+	IJYxrQq0UMtYCddwA3Xamb/izHCJfAT8qDJZ8jWB9GkiplF+skSysvvzZKDnNZsagLAyVFKLtcH
+	MUHDcmcINnbnI=
+X-Received: by 2002:a05:620a:27d5:b0:915:aa7d:4295 with SMTP id af79cd13be357-9208f161133mr27116385a.12.1781807729640;
+        Thu, 18 Jun 2026 11:35:29 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d9f22974f5sm102436976d6.22.2026.06.18.11.35.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 11:35:28 -0700 (PDT)
+Date: Thu, 18 Jun 2026 14:35:25 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: JP Kobryn <jp.kobryn@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+	ziy@nvidia.com, fvdl@google.com, linux-mm@kvack.org,
+	shakeel.butt@linux.dev, usama.arif@linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_alloc: use existing highatomic reserves on
+ the buddy fastpath
+Message-ID: <ajQ6bY8R1sOy9X52@cmpxchg.org>
+References: <20260617234958.150339-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ajP8ZTTLYkICFTO_@infradead.org>
+In-Reply-To: <20260617234958.150339-1-jp.kobryn@linux.dev>
+X-Rspamd-Queue-Id: EBF4F40009
+X-Stat-Signature: mosyui3g99oy1psdhr15n3zz6p58zwez
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 16F4640010
-X-Stat-Signature: neycx4gwrgz3mey4smfuyx6wsy7sjjhu
-X-HE-Tag: 1781806809-947356
-X-HE-Meta: U2FsdGVkX18LU+pXZMFRSQL21n6mXhEwroKSpCg+/Vq0RfNKtenw4MqU8cnzfH3SgwIPkRi954tCXmYlQNwfy7Xa9BwEcwcaqNAxYez9POvUPpHbxYhmKiP56cWsvYTXEgXPwbbYyOg2rY2DVRqbv8CVYjLu50zzKNOlxnDc0yd7sXhdChgM5euipSVu5nHVmcFpnDFYOBDj7ZVVmjIFZ5xBtjIIPnk8MvOdQ6QcK2m5CsM0O+iN6XKbM/b7MJlusGpE+KJTrVCWHqAATQgxrfcG/UaK0tGookCACcNcSKGaR5ILRsB+wseaT5epKDlCQ5v1OBFhazRKBU8zsR6yEpbg4dCdwKWWUOD8IEGFCUE98eIw9Y+hDHvGHjNeyVZsVK4Scz3Rjz+t5gKq2B2AUNOTn6wZ8xfcYoqJDfadm2t/aGHAhpJhf5KcS5tlC5M+tx2g3/5rUfGCm89kh6WADX+VOf8Fe4JTIxEqi8To9Cjj2WWNj1ayhDQoeSGYrF+SXbCzr4AWAXTzv5n5SDnHtNYw2gF4p9hj6TcnSH1/Dr3uX4/G7A6qJQHh+mJxCDX1KR3ZgDlRRX+e8A2qFQE1kRGzZ1r7f/+7hiqoDR7JOMyrGF7aLsWatWnAigPwhpCFlpIz6S6Z25gZS7B9/YBS2utFyd39O8qJPR+x12KE4MdJsM6YTeXn7BelAKHo9PAwT2lSnDwGzZTxU9wkolgY2VTEc+sHlC0oFWna4FnKwshKWtu8XJ1E7nWbkOpvO/vByBSCNL+yEZN+1WAYZaF+2lI2/EmxLHQq+LHWuWlL8olnW2WoVhnCoBc3D/EhctHzmfPPEgpijQPt4tjUR3uinV4FVw80MgESNom9BaaXV1jDZNL69aRBmVKRj7Mxqz5Oe0gZra+pLSmsFNHlNyTwE8WammMvJ4NJP5sOlcKBJROpOjW1dFiz9c5XgZg5QuCF/fNjtHSeiQnitAjr7on
- qtJty+pY
- il4UgDuaBOUN68JQ7/Rq3/IDRmS9Ve8lGgaHZCXabKchohE9mUOPug/KNi+5Lh47TfBIToqLYhiuy6MwCIiRAnq7ZvVHNHNIu4qeBp2pyYxwQ7uTqtfhlJsbRSIJsP0V2034A+FYJHo6BU0yg9GIgrYi9ZkSRP3dSqob3sr4sRapMGQNCIff8BrctzP72VQ44bEtjP0ST2WdPm4OZwxIfxzYUxaTy1igD7b8RYlip6ceR9EBwQpsDzqi47Mzr8Gb1MJVe1+lcwfdLsGE=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1781807730-198033
+X-HE-Meta: U2FsdGVkX19ngzHxHfKXo27zKvIq0Y7TWRctpWtQ3IZd+/jZzVd1Jbm/zMjGxsF5cVJQ1sm2Hb2i98jt2QPP4N4AfVADBzGbHEcKsxORgyalbpP8pCKBc2glDBWDCMaQnECnJCanOeWAybuJim4U1nyLtoVXX/wbqOgcsUprC0DASsmaRKZCttPRO1X5ZbP8CmvhdjyNNC9bWxhS0HD+Wbj6qcoUWU+j4cWhZz0e5j0SAf9GXdOSuHlvie0jsg5NC2Z9m6BvGHofklfrC6p2JRnLdLkyEcT48CYYFpCecS58IkTuToWMggCDif3Sof35PVXCPd4dumjUzl49viX5TNOHNLIPuT6vaJlc9ur2ST+Y9xN6wPshgoTWLGHytfCqu1lcfNYSJDAtAnhE3ChvN3mk007zF7pL0m3Fc4lNROcdtrYhD9LUXdhzTyKRznQAzMLdJLM+JeFIjKhxc18nGabHkUaGncrr2VNUBAgyyDL/C2rfIvztRV6wyHX16j4XiIKhbpkDqcXZYQt5rYkyUWbI1wf0RNFYV2XrT2mFRxLraaHS9J/yQRvBWOF1fmSo+zUYCV3KehwLNxhPlomiFbus1Iej3u/tXaHkJ/2XT0R9/RQObRmfzcEynQp9P+HTQX2YDi4vzeOUikblSdPi77QVMtOvzaQtf5b8nFpccmW7ePntalz1qNJ4cS2lWoWdPZ/N4fwLr0IcJEf42081wsKUkguElUJG7xKo21mrDCfdV55IFlFPbPdrZM4EYVfYqlGHpwuF+U8Il5vfd7O3fodHzi4XRhcrIOfoZplqN70jhEH/RTdVs31QkgQoV1uRouBXcre5asktkqhyFExuLFQcVZ18/NPg70Tp15Ri4PueSX7Ayhs6XF74e6juYgdPYD6SQqS/q//aEqQrDMmXogEg9UGFYpWVCrDmdC5MVN5XYrAQwqEhvRCmyCey7weFq1cNdct4VdOpZQY6qR3
+ jV62jWHo
+ yhK8H481uzdpvn37jxN879W/H4H/lg5Ofyvbw7DAKV7EU8W5HOS/oGPRBpsavPiGk7PduSSmqqLsV8vn1WF/MvK+11u3oPsFQAveorQ+TMLU/PdXvQ+tdfwTt5BHP0XcKetO7nduY+ibN9dYht2N7Am4+cdRcdOxNscY0+djVe5hgtCIxGzwTnVRlDGPCFb3FMWMEbPwPTj0fCfgl+kNAtos6kLGobqjdwYMKYXAq7GhVOIr4zys99Tx333UH+RL9/egyVeAh1Ho81w8ugTdhNm+YppjiJJX0VWMHfk/B0SWPOauxwkF2XP2eQtWrUEB/wL4AI1oUHZlCagRrSEOhphl2+JFE0kCLfB2hS5XehYSIK9RoB/7DLe5/EahI0Ww6X9DiMXAqJ8gJp8lQDJtfBBJtV38eG2tmPOOhDc5dE2FHon4D3lxsxaaRfbTI3dxhkR2U4B3nmCev9xyyhCPT5azQCzY0UcuglOh5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,28 +121,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 07:10:45AM -0700, Christoph Hellwig wrote:
-> On Tue, Jun 16, 2026 at 05:23:48PM +0000, Pranjal Shrivastava wrote:
-> > AFAIU, the MM subsystem explicitly ensures that every valid struct page
-> > is part of a folio.
+On Wed, Jun 17, 2026 at 04:49:58PM -0700, JP Kobryn wrote:
+> ALLOC_HIGHATOMIC currently provides both access to MIGRATE_HIGHATOMIC free
+> pages and permission to create new highatomic pageblock reserves. This
+> makes it unsuitable for the fastpath.
 > 
-> It is definitively not what the vision for the folio is, although if
-> I'm not mistaken it actually is still true right now.
+> However, the fastpath can reach rmqueue_buddy() while MIGRATE_HIGHATOMIC
+> reserves have free pages available. In this situation, the allocation can
+> fall back to other migratetypes without trying those reserves first.
+> 
+> Allow high-priority non-blocking allocations above order-0 and up to the
+> costly order to use existing MIGRATE_HIGHATOMIC reserves on the buddy
+> fastpath. Change the semantics of ALLOC_HIGHATOMIC so that it only allows
+> access to the reserves without permission to grow them. Add a new flag
+> ALLOC_HIGHATOMIC_RESERVE that specifically allows growing the reserves.
+> 
+> A UDP receive workload was run with free MIGRATE_HIGHATOMIC pageblocks
+> available in the target zone. Before this patch, the workload did not
+> consume these blocks. With this patch, eligible order-1 allocations
+> reaching the buddy path consumed existing MIGRATE_HIGHATOMIC pageblocks,
+> with no highatomic misses observed. The workload did not grow highatomic
+> reserves and NAPI page-frag allocations remained healthy with no failures
+> or order-0 fallbacks.
 
-It's not true, eg, for slab.  While there's still a struct page there
-for slab, there's no refcount and flags like PG_locked have different
-meanings.  You'll get into a lot of trouble trying to treat slabs as
-folios (and that will include assertions tripping).
+Thanks for digging deeper into this! That's a great find.
 
-> This whole
-> area is a minefield unfortunately, and we also ran into it with
-> iov_iter_extract_bvecs and the earlier block code it was extracted
-> from.  Adding the relevant people and lists, but for now your best
-> bet is to stick to what the block code does or even better reuse
-> as much as possible of that code.
+> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+> v2:
+>   - decouple use semantics from ALLOC_HIGHATOMIC_RESERVE
+>   - update changelog to reflect above change and reword test paragraph
+>   - adjust comment in PCP path
+>   - rebase onto Linus' tree ~v7.2-rc1
+> 
+> v1: https://lore.kernel.org/linux-mm/20260616191420.52556-1-jp.kobryn@linux.dev/
+> 
+>  mm/internal.h   |  1 +
+>  mm/page_alloc.c | 30 +++++++++++++++++++++++++-----
+>  2 files changed, 26 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 5a2ddcf68e0b..6700659615e8 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1478,6 +1478,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+>  #define ALLOC_HIGHATOMIC	0x200 /* Allows access to MIGRATE_HIGHATOMIC */
+>  #define ALLOC_TRYLOCK		0x400 /* Only use spin_trylock in allocation path */
+>  #define ALLOC_KSWAPD		0x800 /* allow waking of kswapd, __GFP_KSWAPD_RECLAIM set */
+> +#define ALLOC_HIGHATOMIC_RESERVE	0x1000 /* Allows growing MIGRATE_HIGHATOMIC reserves */
+>  
+>  /* Flags that allow allocations below the min watermark. */
+>  #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d49c254174da..ed919e2ac99a 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3238,7 +3238,7 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>  	 * If this is a high-order atomic allocation then check
+>  	 * if the pageblock should be reserved for the future
+>  	 */
+> -	if (unlikely(alloc_flags & ALLOC_HIGHATOMIC))
+> +	if (unlikely(alloc_flags & ALLOC_HIGHATOMIC_RESERVE))
+>  		reserve_highatomic_pageblock(page, order, zone);
 
-Yes.  Fundamentally, it is no business of the filesystem what the iov_iter
-refers to.  We can do direct io to slab memory, vmalloc memory, memory
-that doesn't have a struct page (eg iomem), or whatever we choose.
+You could check ALLOC_WMARK_MIN to determine the slowpath. This way
+you wouldn't need another alloc flag:
 
+	/* Slowpath (precarious) high-atomic allocation. Maybe reserve block */
+	if (unlikely((alloc_flags & (ALLOC_HIGHATOMIC|ALLOC_WMARK_MIN)) == (ALLOC_HIGHATOMIC|ALLOC_WMARK_MIN)))
+		reserve_highatomic_pageblock(page, order, zone);
+
+[ we really ought to generalize gfp_has_flags() ... ]
+
+>  	__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+> @@ -3320,8 +3320,9 @@ struct page *__rmqueue_pcplist(struct zone *zone, unsigned int order,
+>  			 *
+>  			 * Instead, direct it towards the reserves by
+>  			 * returning NULL, which will make the caller fall
+> -			 * back to rmqueue_buddy. This will try to use the
+> -			 * reserves first and grow them if needed.
+> +			 * back to rmqueue_buddy. There it will try to use
+> +			 * the reserves first and grow them if needed and
+> +			 * permitted by the ALLOC_HIGHATOMIC_RESERVE flag.
+>  			 */
+>  			if (alloc_flags & ALLOC_HIGHATOMIC)
+>  				return NULL;
+> @@ -3768,6 +3769,24 @@ alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+>  	return alloc_flags;
+>  }
+>  
+> +/*
+> + * Let high-priority non-blocking allocations above order-0 and up
+> + * to the costly order try to use existing MIGRATE_HIGHATOMIC
+> + * reserves on the fastpath.
+> + */
+> +static inline unsigned int
+> +alloc_flags_highatomic_fastpath(gfp_t gfp_mask, unsigned int order)
+> +{
+> +	if (!order || order > PAGE_ALLOC_COSTLY_ORDER)
+> +		return 0;
+
+There seems to be a mismatch between this and gfp_to_alloc_flags()
+(slowpath), where slowpath is still allowed to tap highatomic reserves
+for costly orders. Is that on purpose?
+
+> +	if (!(gfp_mask & __GFP_HIGH))
+> +		return 0;
+> +	if (gfp_mask & (__GFP_DIRECT_RECLAIM | __GFP_NOMEMALLOC))
+> +		return 0;
+
+This duplicates gfp_to_alloc_flags() logic which seems fragile. How
+about the below:
+
+> +
+> +	return ALLOC_HIGHATOMIC;
+> +}
+> +
+>  /* Must be called after current_gfp_context() which can change gfp_mask */
+>  static inline unsigned int gfp_to_alloc_flags_cma(gfp_t gfp_mask,
+>  						  unsigned int alloc_flags)
+> @@ -4495,7 +4514,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+>  			alloc_flags |= ALLOC_NON_BLOCK;
+>  
+>  			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+> -				alloc_flags |= ALLOC_HIGHATOMIC;
+> +				alloc_flags |= (ALLOC_HIGHATOMIC | ALLOC_HIGHATOMIC_RESERVE);
+>  		}
+>  
+>  		/*
+> @@ -5215,7 +5234,8 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  	 * Forbid the first pass from falling back to types that fragment
+>  	 * memory until all local zones are considered.
+>  	 */
+> -	alloc_flags |= alloc_flags_nofragment(zonelist_zone(ac.preferred_zoneref), gfp);
+> +	alloc_flags |= alloc_flags_nofragment(zonelist_zone(ac.preferred_zoneref), gfp) |
+> +			alloc_flags_highatomic_fastpath(alloc_gfp, order);
+
+	alloc_flags |= gfp_to_alloc_flags(gfp, order) & ALLOC_HIGHATOMIC;
+
+Or factor gfp_to_alloc_flags_nonblocking() from gfp_to_alloc_flags()
+and reuse that here, to save a few cycles in the fast path.
+
+>  	/* First allocation attempt */
+>  	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
+> -- 
+> 2.54.0
 
