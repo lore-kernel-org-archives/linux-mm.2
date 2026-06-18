@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3BACD98F0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:25:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E263CD98ED
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 08:27:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 409E96B0088; Thu, 18 Jun 2026 04:25:36 -0400 (EDT)
+	id 483516B0092; Thu, 18 Jun 2026 04:27:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA396B0092; Thu, 18 Jun 2026 04:25:36 -0400 (EDT)
+	id 40D786B00AD; Thu, 18 Jun 2026 04:27:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D1846B00AB; Thu, 18 Jun 2026 04:25:36 -0400 (EDT)
+	id 2AFA76B00AE; Thu, 18 Jun 2026 04:27:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09FA86B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:25:36 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F0A261C4956
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:08:09 +0000 (UTC)
-X-FDA: 84892305498.03.5C4203A
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 15EEE160007
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:08:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SXq+fbg1;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781770088;
-	b=Wxdh75gNkdmuHUxctbEsuG6mqpqUYDytCE+C3AL3BipW9/tGhqpQsXHUWPfSKxEX0AOuaQ
-	b6YjVt4wVGEmKQA823JIeMQ4AzsUgI9R+UPgxGzegrO4ITZddUJq61OFoLKVVQ6zqtIdCM
-	gxQNGI/XeIjNG3LYqtc1uPM1AUHqPNA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SXq+fbg1;
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00C686B0092
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 04:27:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BF9740708
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:27:28 +0000 (UTC)
+X-FDA: 84892354176.05.EC4FBD1
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 87019100009
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 08:27:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="ytUSAOf/";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781770088;
+	s=arc-20220608; t=1781771246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jkAOAOVNxrErE4lST04O8nu7mROfXmewRbNfCGnfWZY=;
-	b=i4Ahq3RktwwX49OODLf1EPQKL/5g4/5QCXGySP6rhleISVmSNWxPu2icJ7LEnhrDYuQ8go
-	Q9J6NxtBx9BblVniMnnQldu0K5EPBfX/yie5clb/+WgbZSIcFl615LJRFYlu6Wa8lcte0f
-	m7CCc4s+e4wkDzi79Sj/3sbKOH321o0=
-Date: Thu, 18 Jun 2026 16:07:31 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781770085;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jkAOAOVNxrErE4lST04O8nu7mROfXmewRbNfCGnfWZY=;
-	b=SXq+fbg1e/awOwIfamMM8xAxZL4FJQG9plaLKuhBgI+yWitVniATtbZzuyg/T1iJ3yk+DR
-	PNP66JRqv9chFFiWNT+q8H7AihMZ1MkYxcdCYjjd5vetTaM6A+7mJ+M7y5R1E+NOpd6D9Q
-	mLmO259d2XIbkbqfb03u0Z0gyrcwjJc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v3 08/15] mm/slab: pass alloc_flags through
- slab_post_alloc_hook() chain
-Message-ID: <ajOnBoyl0aabL854@fedora>
-References: <20260615-slab_alloc_flags-v3-0-ce1146d140fb@kernel.org>
- <20260615-slab_alloc_flags-v3-8-ce1146d140fb@kernel.org>
+	bh=vga0PBlAszo4+/XRJ99g51mi9gAcKzYo/je2wr1YCYU=;
+	b=nbYKqsOO0SXUiK53JgWtKkOs7bUegwTUF84Ocvt4u9UI1i2AbTpm08DSBTeHoob/VPgqa4
+	t+VFE5DWY5CMBi64ABc2X9ZbJsoJNLSvidNrSAKFl41bmnzOrX7fGFve3wSeyVFpJMZJ/i
+	C5e0PP46DSRlZkozGVPz1Ki3gtm9Ejw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="ytUSAOf/";
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781771246;
+	b=F13KAP5rDalTIVkcN6CPevu0h3pdoOyOeQBQFEx+wwP8q/7t99q+wBsb/sBJP3f6MSJV0G
+	LS8ca+VUuBFyuxmolEm1TjwDzVtM+0IZ8HillOojvrVaTrPbcAIIvacQWbgxNjOTrheY6b
+	/RIrGQtTjfV9l+JoVZy48wN1jfcFYL8=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vga0PBlAszo4+/XRJ99g51mi9gAcKzYo/je2wr1YCYU=;
+	b=ytUSAOf/4YQCq4owGXEipJIBbj27xp+Eb74DDNsdOnuVtu+SD1ulT6nB+XQimRu/30o9vaIab
+	KoSNOr9Gt/oBHiCsX191TmpVSuho1e8hc7U7YB3ZJuPAwKthYkZaNY1MbhlF2xUN7GcddwR8iE1
+	v7oeSVnc/4GT8o7rFonMcyE=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ggtsP4jDvznTXL;
+	Thu, 18 Jun 2026 16:18:33 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0262940561;
+	Thu, 18 Jun 2026 16:27:21 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 18 Jun 2026 16:27:19 +0800
+Message-ID: <1ccfd95e-b7d3-46ea-8958-5d3bb28148d0@huawei.com>
+Date: Thu, 18 Jun 2026 16:27:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615-slab_alloc_flags-v3-8-ce1146d140fb@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 15EEE160007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] mm: mlock: use walk_page_range_vma() in
+ mlock_vma_pages_range()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>
+CC: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, <linux-mm@kvack.org>
+References: <20260617082622.3397584-1-wangkefeng.wang@huawei.com>
+ <20260617082622.3397584-4-wangkefeng.wang@huawei.com>
+ <2de0f73d-076c-4301-9b78-4025910fe650@kernel.org>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <2de0f73d-076c-4301-9b78-4025910fe650@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 87019100009
+X-Stat-Signature: dwf5b777mpx9p7b8bkktromsq8pdq8bf
 X-Rspam-User: 
-X-Stat-Signature: o6cehsz4mc8gmnprhrkdt15ny85hiibg
-X-HE-Tag: 1781770087-281528
-X-HE-Meta: U2FsdGVkX1/9WJErOp4CiTIN2BKuruRiAXM/YtdQ/Y0GAzlhDVz8hFitrf6S7dn/IiNFWFSiKnk4FYCo3gTkSZ4QOHbKpWuhoPWYd7Tjgq1Z5W5PK1tJZy60qDHGgGOZr6u3JoihZxSA0HcUTQSrosHqZM586xDJOD0j16tZtf0zkK98Qia1lKvCoiBRGaIQRRjekyfMSyS7rD+T93mpPnKGxrb38QsGtcsY6KWjKetb4St1vx7ZO0vNqm9pYvVnhcZo66Qpc1DeMvzq6+jL84wi6kycmugdbzsmUh6fb1GvttxsHdfq/M1EXWoJyHJzZTzAppipvUReyLBXXKInzolOViAIuAhKHoP++45H11ounXXmjqiRm+ZTNpV5lH6CjT5BG9yxx4ZeNkarpP3swl1wt6b8HXvEfL2m+K4hCE/cDM+oa9e553IWbHU//26DTVA2lMSfNXGkTZhHglTD1CNimGdff80OxxxbLLxJ+K4T1EwbA2W1fWxlWuWAcackGhk0CGQi8cAKH0yf2ygKJiYS4PN4ri3O1lURvy25WpPjnKjzW6U1ugg2NnrPoGROanFOMH/r9riwy9rltlWxvR2fKoHYfw1OA+TrgwHiavkRWLzIPZ9A+cnHB6FZu6NrOfUyElk+m8T3Q8yeplp6erSL+RqKjWUAlMugz3NuOH1UTecSd2vYASry339/dzGyGWOaxKJ4prqkwLE8Ay6XILctdgys8wv0oKcoK6Q8HUbHm+/bPdWo8YAdZxIPDpltBgsQCq+fjcJYMqSz7ztOwC6h2PCDeNdo6GSLYjlhMFBf0YIEW9RXaG6m8fwo9TU9RVSF62xbJH6tipakjBKskUa9Bdk6wC9IynJbpls9ZQblloHd78CQBYApTPBGjgPsAysB94ynnkjoqWdsSmN2nRS6gk6XdSN9ZGQUVZaqg8E3LLKqm8QS9r8GNsEytTrLv3mi8URvjmMB7tpm7Cb
- KbF5+pwK
- wIr7XLG3Z915xI+X9dplZkF3n7h6TQHYZNeDo4b0S7dme+hZ5EML2JngAh2cINo7Hz9dhRM/E6d+n8gYg1+S2fgyoyMFBxrUxS8b/ktKKS8uFMbPKW4BV8zZRDT26MBF8LA0rg05Nc+ilUoN3gvyXeNlpqLCasXZVRgN0x/nBxVeg3f5zVPMoRQ/rd2y4Tiv/PJ3PA+6Js9phvTC/poeDG3P4Q7mwwv1Q7/G3FTSuBH3gSMo+Zwi/5GSgeQafZbZgbP3a4wXM4oBz8L8L+NdZAYB49dNVM2EwOtUlwXmRi1rZAb9YFZ68cHjfe0YkMQBDJPnSZBodNyJq+WF9N5v6ITUsLrDct1KWJL9pvYrq4oMEUbY=
+X-HE-Tag: 1781771245-930342
+X-HE-Meta: U2FsdGVkX19lT3o/56c199hTWlA9Wo/qO8tb3lSTIUEB/ngpVv2/ZGm6tPczqQ+Xjgt8xi6qOcIysreFpVDxtNuNALhTos4nFLj9eKB+6mgRNYohGgmqtXVfQLmEdq4kj6JFB7X4jA+i463akLjai2b8+9GOmEQAAs9FUqXJhcgwf/2V681Uc9+TsmJX+hVNSKbwgCN9P+YSjU+EQIWfiVz/InxgvdwAyLGISk8qQQs+SDzW4lT5xoOqRhLysKIQHC+7xux1dzI4rbKmWIMqIE3IK5qrph4ekYGVGlD46qb3pY4ovtKCTUGFc//buRrl0ZC5gPWj/xv3ipiAicYtkInqjwEyVdVxH+qc4iloDBj+2TzlFNRAX0dbqRE1IAF119M2D1lGLblCUje8lyykN0nGT0AgwlvpYeHaUJJv7G8saiZB3DpIrUFwWIO6wbXf1H3AnSRKkmWG/MW3XPN4LKIRJcNDjSwl3VvtTjtO3q+hf7nLfa7z1wX3BgbuxzAjCky95kXdZsTdBrxszuSfpZ65my3aXL9SLedVXzdxYt74BG/zI7OMU8b4UER3Z1+yP7P8l8MXuflPrXksUAJbzmYBGAEB2euoShTTLGA3AtgHwC2oaC0SawBq79moQzHBsvaOgQyR4JgjN5ESuYeC0Hu5isT7VwW3y3h3ybhVlRc0nThn+Gic1kV41z2FPIYZ3/JN1UhUa5DvPPT3SdsvNWxWWfdc+63sDrB0z+Ya8mo2njN1gHWrDtXvox3oln3uaKxrkgNwrz4TjW3tUnpIH40WTGBL6UcOKLb050vGhCh52IhB2ngU7T/2BABxa1AVzcssvQ7lsUULrHDyHkj/IBXHlky27hzANR7CXPIe7LZM0ATdfm7YwwefbiimnCviewlE2fzb+UcMRmODOPIPgCtzWFiuu3fMdZnCChrRD5q4ylaHjEIYqym5YbOuEjg1v0qqvu5wDgi5bmEFYNz
+ wtPf1rD9
+ rGbFdDzTFu5FGUjmZSUAXReBAyyroA0Sv2Zvi/PVQo33U+QyBu26pR4Fcp4k1F5GNcTaSGxOI6ZzyvZmRUMcwTXOKtM8jOy0TnjfY0qZYPWK7x775JOXfYKu26sqzBUwYvRcOaQO1K+9Aabg4f7ShHTkDvDnWvcAqJv/IsNUV37JV0h6AGtjrPiMXigVQ6gjX95aEHw6W3di2A2toPtvHzXQBl6A9bRZdg9EahBMMGMkVu/EXpOkbCpEyp/OvJ50NsuLezDr9ia/JYs8DfIVRdj+UdGorLnotxeZJ929V/79yETpQcLdMKOCHEaTsaFmtpSf1UaN0/2QOO1hrh3h6kgCC1vAY8rU95T/gwzYob91a3Mk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,46 +103,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 15, 2026 at 01:54:41PM +0200, Vlastimil Babka (SUSE) wrote:
-> Convert the whole following call stack to pass either slab_alloc_context
-> (thus including alloc_flags) or just alloc_flags as necessary:
-> 
-> slab_post_alloc_hook()
->   alloc_tagging_slab_alloc_hook()
->     __alloc_tagging_slab_alloc_hook()
->       prepare_slab_obj_exts_hook()
->         alloc_slab_obj_exts()
->   memcg_slab_post_alloc_hook()
->     __memcg_slab_post_alloc_hook()
->       alloc_slab_obj_exts()
-> 
-> Converting all these at once avoids unnecessary churn and is mostly
-> mechanical.
-> 
-> This ultimately allows to decide if spinning is allowed using
-> alloc_flags in alloc_slab_obj_exts(), as well as slab_post_alloc_hook().
-> Aside from alloc_from_pcs_bulk() (to be handled next) there is nothing
-> else in slab itself relying on gfpflags_allow_spinning() which can
-> be false even if not called from kmalloc_nolock().
-> 
-> A followup change will also use the alloc_flags availability in the call
-> stack above to remove the __GFP_NO_OBJ_EXT flag.
-> 
-> For alloc_slab_obj_exts(), also replace the suboptimal "bool new_slab"
-> parameter with a SLAB_ALLOC_NEW_SLAB flag with identical functionality.
-> 
-> To further reduce the number of parameters of slab_post_alloc_hook(),
-> also make 'struct list_lru *lru' (which is NULL for most callers) a new
-> field of slab_alloc_context.
-> 
-> Link: https://patch.msgid.link/20260610-slab_alloc_flags-v2-9-7190909db118@kernel.org
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
 
-Looks good to me.
-Reviewed-by: Hao Li <hao.li@linux.dev>
 
--- 
-Thanks,
-Hao
+On 6/18/2026 4:16 PM, David Hildenbrand (Arm) wrote:
+> On 6/17/26 10:26, Kefeng Wang wrote:
+>> The mlock_vma_pages_range() uses walk_page_range() to walk the
+>> page table. Fortunately, the caller always passes start/end that
+>> falls within a single VMA, apply_vma_lock_flags() iterates per-VMA,
+>> and apply_mlockall_flags() passes the whole VMA.
+>>
+>> Since there is no .test_walk in mlock_walk_ops and VM_PFNMAP has
+>> been filtered by vma_supports_mlock(), it's safely replace
+>> walk_page_range() with walk_page_range_vma() to eliminates an
+>> unnecessary find_vma() lookup.
+> 
+> Re-reading that after #4:
+> 
+> s/eliminates/eliminate
+> 
+> s/safely/safe to/
+> 
+
+will fix all
+
+Thanks.
 
