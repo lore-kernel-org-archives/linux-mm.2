@@ -4,137 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E87DDCD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 16:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB7BCD98F2
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 16:35:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6EF96B0092; Thu, 18 Jun 2026 12:32:38 -0400 (EDT)
+	id BC1D76B0095; Thu, 18 Jun 2026 12:35:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1EED6B0093; Thu, 18 Jun 2026 12:32:38 -0400 (EDT)
+	id B72BD6B0096; Thu, 18 Jun 2026 12:35:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E156B0095; Thu, 18 Jun 2026 12:32:38 -0400 (EDT)
+	id A88E46B0098; Thu, 18 Jun 2026 12:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67B136B0092
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:32:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C974D1A016E
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:32:37 +0000 (UTC)
-X-FDA: 84893576754.26.D355A53
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9078E160014
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:32:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IJ+S8RUQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aAgry0Lq;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IJ+S8RUQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aAgry0Lq;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781800355;
-	b=J3DmGMNltXb6og4AZgjELX8uO5l/BlYEyWcWPVvloZYcAI39NsDCsV9M2QeCHcF4bx6jLL
-	6/zA9zive45v5RjO9g/Bta5+kkucxZB/cQ1vIZkmfgjfSl/m79oRuoMGyTiX3prAg1Wtg9
-	b/OJ/IJi4Tk2kw1YxrT2NlIg/lwrD9Y=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IJ+S8RUQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aAgry0Lq;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IJ+S8RUQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aAgry0Lq;
-	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 7C6DB6B0095
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 12:35:19 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F7AA1A0196
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:35:19 +0000 (UTC)
+X-FDA: 84893583558.30.401BAD0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 553B41C000F
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 16:35:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+hznsO4;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781800355;
+	s=arc-20220608; t=1781800517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7TB0QfblUI/97KzoIxAN/rESiOH0drSRDJ0qgFhBQLU=;
-	b=PckH0XCFaNFg7fsXt7uEdKs91hnJYxi8m2yWGRAhT2fcjFSR4HhQbt+hn0rxIK2dc3XLXl
-	WXd7j/0eZD9q1i58V4wZ1oDXi94QoU8yT2Mb54kpWnkAXWhMiQO31axnMFEclYCd2nE4vl
-	x1H1gHdTH3w0qSaoGmOCs3v0KXG9Nqo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0E21175C38;
-	Thu, 18 Jun 2026 16:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781800354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7TB0QfblUI/97KzoIxAN/rESiOH0drSRDJ0qgFhBQLU=;
-	b=IJ+S8RUQgwiGN/SXSg76wXHRSNaGlb83WZ1HNUssL1lm3Nj5nPx1Ka1nk/L/n1OjezixRz
-	b5rM2oMhoyGYO2EHbKb5VTyRQLMlX1hHYn3Thu0NiKzNSmobBFdKIRwpemWQXrCGOlR9l1
-	RybRRVAJPCjwSyFnLFaNWPNoWPpOB18=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781800354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7TB0QfblUI/97KzoIxAN/rESiOH0drSRDJ0qgFhBQLU=;
-	b=aAgry0LqJauaHbepvJ50sGZGg50T22tWX4iQtkX5f2qOEXcgzylQoYKMYWW2antgh4WvmC
-	CVYcRTCoVFxaWzCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781800354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7TB0QfblUI/97KzoIxAN/rESiOH0drSRDJ0qgFhBQLU=;
-	b=IJ+S8RUQgwiGN/SXSg76wXHRSNaGlb83WZ1HNUssL1lm3Nj5nPx1Ka1nk/L/n1OjezixRz
-	b5rM2oMhoyGYO2EHbKb5VTyRQLMlX1hHYn3Thu0NiKzNSmobBFdKIRwpemWQXrCGOlR9l1
-	RybRRVAJPCjwSyFnLFaNWPNoWPpOB18=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781800354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7TB0QfblUI/97KzoIxAN/rESiOH0drSRDJ0qgFhBQLU=;
-	b=aAgry0LqJauaHbepvJ50sGZGg50T22tWX4iQtkX5f2qOEXcgzylQoYKMYWW2antgh4WvmC
-	CVYcRTCoVFxaWzCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2951E779A8;
-	Thu, 18 Jun 2026 16:32:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QS63BqEdNGo4GAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 18 Jun 2026 16:32:33 +0000
-Date: Thu, 18 Jun 2026 17:32:31 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, 
-	kernel test robot <oliver.sang@intel.com>, Frederick Mayle <fmayle@google.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
-	Kalesh Singh <kaleshsingh@google.com>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm] 7b32f64bc5:
- pts.svt-av1.Preset13.Bosphorus4K.frames_per_second 45.8% regression
-Message-ID: <ajQbXthzbr9xgUIM@pedro-suse>
-References: <202606181547.617a6967-lkp@intel.com>
- <6z2rqmo7b6m2rdhqurspwya25ps4dj7lctdygnmq3rn4xt6h3i@57kiiy72epgd>
- <ajP_-zqVPtbzvc9j@lucifer>
- <CAJuCfpFed0GuMk+dE-Xn0w45Mn1Spds-pc2BE__FUoWm6+R7_w@mail.gmail.com>
+	bh=lsJMMWgRXJeP7sRFHXfktToOXcpEZ/f5CxFBiOSnxko=;
+	b=Wf5G22ySCeneh234tSH2S3WfCvPn9CgfKb+9bk/ef7gSyx9gb+qyc+MbyXq4Huob7vZibx
+	nfKNEURFBdjh/VGcx6M6vyva73XPzX31ij80kfTpunBYlQztPOVMwyQvR+weIc8kpb/HeY
+	v79FdkDxlT+x8le09G7QlHjBg+OqLms=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+hznsO4;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781800517;
+	b=cbJsO/MkH+QfJ2J0RYhb5C5o9lRE4nM3JAfDh7dj0xdfMvyFSVHG0+4c1NEOEXTT8v6Te4
+	8stGzreGHaLVHL8N2B+vQ1N1vAePCy6tva2aqqmVQu8kOtpGELYWAUyvHca6eWMnzh4x1f
+	F/ZqCQqjXwGPVA7PKliGrqR7RII0omk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB0C860008;
+	Thu, 18 Jun 2026 16:35:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675591F000E9;
+	Thu, 18 Jun 2026 16:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781800516;
+	bh=lsJMMWgRXJeP7sRFHXfktToOXcpEZ/f5CxFBiOSnxko=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=G+hznsO4NdzNl3Gkceu6+dMhQAy0qH9tUu+J2fyBDdk++OZthy7TmqQJaHnAHNACU
+	 dl6/15d+E2QM4JRjhWdCmN3vQN+TCIsMoF2D3r2Y0HyinMkShHFJnNgyPjAVzSy5x2
+	 Y6YZzLDRHAdWOmp2WdegRGeQjHb0cTBFiLUgH8XSkvG9lae/hepKATS20sjZEn4deM
+	 vLTiupNLzUYrQE4/h9r/p3CXODGSEQxW7PIWPhZh+lGTadHTcweH7ZjsvcBq9eB6oV
+	 TLy1qSJQQ4seD7ktCKN42S1pEV1l9Y7dIOAIfy/nIBHtGT+G+DI7OGBYs+TnrkEloe
+	 rhn83wUnqctXw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Matlack <dmatlack@google.com>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Mike Rapoport <rppt@kernel.org>,
+  kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-pci@vger.kernel.org,  Adithya Jayachandran
+ <ajayachandra@nvidia.com>,  Alexander Graf <graf@amazon.com>,  Alex
+ Williamson <alex@shazbot.org>,  Bjorn Helgaas <bhelgaas@google.com>,
+  Chris Li <chrisl@kernel.org>,  David Rientjes <rientjes@google.com>,
+  Jacob Pan <jacob.pan@linux.microsoft.com>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  Jonathan Corbet <corbet@lwn.net>,  Josh Hilke
+ <jrhilke@google.com>,  Leon Romanovsky <leonro@nvidia.com>,  Lukas Wunner
+ <lukas@wunner.de>,  Parav Pandit <parav@nvidia.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Saeed Mahameed <saeedm@nvidia.com>,  Samiullah
+ Khawaja <skhawaja@google.com>,  Shuah Khan <skhan@linuxfoundation.org>,
+  Vipin Sharma <vipinsh@google.com>,  William Tu <witu@nvidia.com>,  Yi Liu
+ <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 01/12] PCI: liveupdate: Set up FLB handler for the
+ PCI core
+In-Reply-To: <ajPzC2Xh1NMbfokP@google.com> (Pranjal Shrivastava's message of
+	"Thu, 18 Jun 2026 13:30:51 +0000")
+References: <20260522202410.3104264-1-dmatlack@google.com>
+	<20260522202410.3104264-2-dmatlack@google.com>
+	<178124130274.908199.14827357870284807134.b4-review@b4>
+	<aiutNINqxhtlm2Dt@kernel.org>
+	<178126123047.908199.12042730612990730743.b4-reply@b4>
+	<ajB6V6yBHOjgK5ew@google.com> <ajPzC2Xh1NMbfokP@google.com>
+Date: Thu, 18 Jun 2026 18:35:10 +0200
+Message-ID: <2vxzv7bfolhd.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpFed0GuMk+dE-Xn0w45Mn1Spds-pc2BE__FUoWm6+R7_w@mail.gmail.com>
-X-Stat-Signature: zwdq1o65gjyaa8xhj7ani3qtk8kwjxw1
+Content-Type: text/plain
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 553B41C000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9078E160014
-X-HE-Tag: 1781800355-812469
-X-HE-Meta: U2FsdGVkX1/BZAJvhoDxUjDRhiaFK469i241XrFi0IyYiPgBeUbC9PaI+JSurfaQjeIMJGvWdXdEaI5K/VHM7MSGdH6We9A/HxUCLjes11pFTuPoNOlFOGgo/pLl45c7lvuTMnLr9f1KjR5/islfVJmJtNwltjIBSV9ijU5TdqMgrun8foyFO5V7EmhVuEZ+iCEj2ySzj5imjmtwa78+CewMidFyk/rZESfEt/O+Espa8dKRKypJd1vBiH4yq2M9bRiD5wpNJZW+t/vKZ4K+NiyDr9td5Q4n6gKhHlzeF3LvIekagbBGOtDzu71iDlII5NurCEZjYJhD8w3FPYjSPh3+2k+kllxPIOgfkOgMoKqhRWC+pP79qMPNMX1rJDt/Qs71RRmSo387kHE/djWOltZz1NMzPDRU8me11Etp8oSpVo2JhFqtuBlFefNMnOUr3a21nkweFSDZatCdWu0i3l3nb3BRW5VFWZgVGgoRnZVqUJi1TuS9a5WZJStT1cA7zolnCGuBgq5ECmcmmNbEf9h5wWRmUW2+q1A+nODxPvnVBti/+hrOchnMtPSxvAc1WKdKa3iyXhN67eQs3xrqgXu4jjPmDwEi5iv2wUNPao6b712vkIM9ccPR2wvpbdNbN6TtfGj5FRWC+LqBOspJuRM0ZkDKyEdbsCxxp2R+mNY8X3B2IlPSB3cYR4xNzp/7TihNMIFTBa1wET7Kax2qJBohUm917MwO172gd4Ir46GN3Y6GK/vDZqp/U0L2Ueb/oDP4xL1wvsGFI4PW8GEWrc6OWQ8o+/vNyi+bvIY8yXgu+pSkFTlFGstNppxyZYjjZMVGfYFhCCgvNXu4V3L68VaOtMR1RW+9VJfYwkHUwDkoEsDA+se+b015/rvwUTSoQRnjkjmnjlg6eg86pNEoir3k30WqtHI13paaZNWq6JoUsAUNej5rZBKz5WB1lxsbhdM2/kZoEV+onsVx8OL
- aa6SUkpL
- 5NVSniS6ZX7OG16IMJgx/tWB0/1qCoT2fm/V/AXsO9Nh9jW6VZrT7o4ipFZXFu7PGQXhq5e55R19dqL8MnMvEegURmHQKQWfl4dCY6wwNW9YFRVTccPzW5bEuqSIDx4FV5btz4CHyambRWw0Y6kIN0N9JHhS21fUr/TFVtwnFjE+HPhlLp8FjsyV6n39DNtNtKEWCKLSbLS/dFJJPnsDSzBCNopm9GAIyaq6/UmUcOTJrNTgoLGOWEU9LwpWzHoQmSv38oH+85HbEYoJi6mUZO0chcVKt54pmMX/RC/GEwWxDzk4O4IRww2xNDwuIq0v7Pk+3Vwm0KMtyEb+KVNsLZ8mjcPGW3gzt+T9ir579leN6o10JwLWDRXYspi/pFUPaB/SlV7epQIkDK2vLIHKFFK9kW+epf542u5CzhNv6/M9foMM=
+X-Stat-Signature: ng7fjx6y6693aiybxas45yt1kyso3wuo
+X-HE-Tag: 1781800517-359949
+X-HE-Meta: U2FsdGVkX18AAnUdl7kdmUJ8zUturjVLRmL7f/uhn9ByxDyNcNtD7XohMphUcrdMf5vlPiEIDbGPEYKCz437cnugDsSvMs0YvjzcrY6SPUShvAZjEl++ZtdOdwtwTI7A7PBTmRYngCse7ty9rZs2WMaLH9BLRRZKm36dnk9o5IS81aYgF7qlbNZPIRo37WlZYzQeMEhgvAu9ALy5HWmyzxU+4WEjbc/8m11IWFTvYbLXKYiCXlFZauuCcSzbweAxwYeE0lTUBIHQnE7cqkSJcPFzqtsXBjJynN0LTd4tkdWTx79Bj+cZRdK+abqJexxxVIKa5Jo/k4WYTtkK9BwvMDSfPnGBOZuC/T4tmAUiZPOmyZstfngV4KaqOk3ZzKjkjkNkZWCWDTQbQ4XBIWkqH4scskyVgmLR1Sp5qVBq4+u+MU8leES06x2H0Lmq9nrtvSeDDXkvvklI6TO7Kg8Et/4gPR4ZIiUaHP8MCEYyldB9k4EMyyZQ15Nit5ZEmcmSr2hj8NeDD8DUpDX6NvOJcUN6WZ5gOG/NgO7QNCmPR/F9nrgu87LuNNMQO81JJOLhwO6vysXTP5w5OYhjjU0fMB3B3efgZuFX5vSXqmRYDtKnZ5T676YKgVw6VDsq5i/CDq0asvvKDJSjqZZLpHisa9Sbdhoqm9nsury9qsEofas3+/JcPMEVIKnMqau+5NIh7qqvaWlI+mLNp10bDG2QcRNQHXpzebxtUXICWgOym4aM1e5zU24RxlCWXCg6HyP2VBH1+kYX7xQyFzqUT52FGx1H/M4eIOkOvEKSaMU/M/57CzX8jaELxOfRTuJFnnSm+plZJSbgNt3/c0WxUU/Mcrg+BQ7tTNFdrw6IN9sSeKYeGIesw13rwmkzUXhTqDrq0LcgHNlQ3YErhgl34SaWg1ICdELLb3vq4OtaeCSsUwkHJMxERc4wl+SQtUzeRDFLYbkrH4OES9vnN8k3hVr
+ RiMnnyyA
+ pujzv0p2ZcveOAFjV5mWQnkEcKbuSUWoNAPo8bIejzXXkfZVKFGd+Hp2vBXSl1WEjWS+UZxbAeFIysVhZfJgHE0jFEnyou7OU23LrKKqdh7fU2H0MaoYeKebV7aiVxr9zP0uKUJ3km0pPC+PabbzDY3DJymLmGjanadpNWse8UfcG4E0WHKY02SzjLQqP2IjhtsKs88j/EcAezNQpuQhq6Q+IkOG7udObPXluxT8DV/A64nXRvBMigr6cbDW38MHaU2vAA2D4i18qpWE2mbS9ZR0JKl/UAPyFyGpa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,44 +111,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 04:03:43PM +0000, Suren Baghdasaryan wrote:
-> On Thu, Jun 18, 2026 at 2:30 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > On Thu, Jun 18, 2026 at 11:30:47AM +0200, Jan Kara wrote:
-> > > On Thu 18-06-26 16:00:42, kernel test robot wrote:
-> > > > Hello,
-> > > >
-> > > > kernel test robot noticed a 45.8% regression of pts.svt-av1.Preset13.Bosphorus4K.frames_per_second on:
-> > >
-> > > This one looks serious enough and real. It would be good to figure out what
-> > > happens in this benchmark that it benefits from the readahead across VMA
-> > > boundaries so much...
-> >
-> > I think a revert first no? This seems pretty huge for something that isn't key
-> > to the kernel, then a new attempt can be tried with this issue addressed
-> > perhaps?
-> 
-> A quick search yields: "The
-> pts.svt-av1.Preset13.Bosphorus4K.frames_per_second is a benchmarking
-> metric from the Phoronix Test Suite that measures how many frames per
-> second a CPU can encode using the open-source SVT-AV1 video encoder."
-> 
-> If this is a video encoding benchmark I would expect it to explicitly
-> prefetch the data from the disk before measuring the encoding speed.
-> If limiting readahead caused this regression, I suspect the benchmark
-> doesn't explicitly prefetch the data...
+On Thu, Jun 18 2026, Pranjal Shrivastava wrote:
 
-Well, commonly video data doesn't actually fit in memory :)
+> On Mon, Jun 15, 2026 at 10:19:03PM +0000, David Matlack wrote:
+>> On 2026-06-12 10:47 AM, Pasha Tatashin wrote:
+>> > On 2026-06-12 09:54:44+03:00, Mike Rapoport wrote:
+>> > > On Fri, Jun 12, 2026 at 05:15:02AM +0000, Pasha Tatashin wrote:
+>> > > 
+>> > > > On Fri, 22 May 2026 20:23:59 +0000, David Matlack <dmatlack@google.com> wrote:
+>> > > > 
+>> > > > Please add Pratyush, Mike, and myself so we are notified directly of 
+>> > > > incoming patches, the same as with other areas where the liveupdate/ 
+>> > > > tree is specified.
+>> > > 
+>> > > Or we can add PCI liveupdate files to LIVEUPDATE entry.
+>> > 
+>> > That will not work, as we cannot serve as maintainers for 
+>> > PCI/VFIO/IOMMU/KVM, etc. David Matlack will be the maintainer for the 
+>> > PCI components, and we will accept patches once they have been approved 
+>> > by him.
+>> > 
+>> > The simplification we could do is to create an email alias 
+>> > for the live-update tree maintainers. This would allow us to use a 
+>> > single entry instead of listing all three of us individually.
+>> 
+>> We could create a Live Update mailing list for all code that can be CCed
+>> on all patches that must be merged through the Live Update tree. I would
+>> also be interested in subscribing to that list.
+>
+> +1. I'd like if there's a specific Live Update mailing list for
+> submissions & discussion about the Live Update tree.
 
-A quick look at the code (I think it's https://gitlab.com/AOMediaCodec/SVT-AV1/-/blob/master/Source/App/app_process_cmd.c#L821)
-suggests it is progressively mapping the file data for a given frame
-(or frames?). So the old behavior would result in page faults for a given
-frame starting readahead for the next few frames. This looks reasonable.
+We treat kexec@lists.infradead.org as the "live update mailing list". We
+considered getting a separate one, but I reckon the traffic is low
+enough on kexec@ already that we can re-use it for live update.
 
-FWIW I suspected this was a really weird case regarding mprotect or
-something, and I'm happy it isn't; but at least I had a suggestion for that -
-for this, maybe dropping the change (for now?) is the best course of action.
+So perhaps we just Cc kexec@? Is there anything to be gained by creating
+an alias?
 
 -- 
-Pedro
+Regards,
+Pratyush Yadav
 
