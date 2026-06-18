@@ -4,69 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B940CD98ED
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 00:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE00CD98E4
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Jun 2026 00:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D7DD6B008C; Wed, 17 Jun 2026 20:18:53 -0400 (EDT)
+	id AF5CE6B0088; Wed, 17 Jun 2026 20:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 488B56B0092; Wed, 17 Jun 2026 20:18:53 -0400 (EDT)
+	id ACC906B008A; Wed, 17 Jun 2026 20:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7986B0093; Wed, 17 Jun 2026 20:18:53 -0400 (EDT)
+	id A0A776B008C; Wed, 17 Jun 2026 20:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB9B6B008C
-	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:18:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FB951A05D0
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:18:52 +0000 (UTC)
-X-FDA: 84891122904.30.6B38E31
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0C53D180003
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:18:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcccTQhJ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7D2626B0088
+	for <linux-mm@kvack.org>; Wed, 17 Jun 2026 20:20:10 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DED6640620
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:20:09 +0000 (UTC)
+X-FDA: 84891126138.15.F11BCCA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3EAC740002
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 00:20:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYtnYh8k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781741931;
+	s=arc-20220608; t=1781742008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tq5Dd79ingLOtWDO9qXa2YQGMrnxMPixhR12ifZ1um4=;
-	b=idEf5/5ReCh0TQw3VMNONbqCqchLF3fVOZWaBAYflSl1vr8KB2Rc/6MKzrQlQlaeY9kvFN
-	uehyLV1eDen6vWj6v3zzryFzgxAeho8w53jCDnWlCeIfR6fCdRTZYgbIBclNr+7rsbzfpj
-	JUYySk3exJsXkiPmxhMnD4TSGewR7I0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781741931;
-	b=NaJ0NpO51s+hSxi3aZz7o0e8Ny9eKeN9T20yh/Rlb/u0yKUjiXrBpgzY79ST1xOUQQ7FpA
-	hPkVfVYmp697I0uTjYjFW/GJ6GuStg+o6cuZMev2a7cGtNCOlaGBvKbbQIywL/n0f0hKUp
-	Y/nMfRUzQhbwYIQyoRqDxGbcAppMjxE=
+	bh=Nm5YTSonfWo5AmxP+6Yk9tTG9YTHgMUcZYxSeB8yQm8=;
+	b=sbTP31lXj/tqlxec1cB/W57ypUf+FKhc3iLenKNMmRpXzyKLLJV4fmDHFMFzVjPWGNU4BG
+	bgIg8UFZwtdpzDNdG4qdojhU7OPP+uVOLCpMY/NUxpGFfZ3fHeCVLerb4XHdfc0qMVDWMK
+	fB2t8UPflKMPV0I0uiV4ejJZ3k0paDc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcccTQhJ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZYtnYh8k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781742008;
+	b=dcRfXCSX/yCu9ExSWvt43HWOOy66mHWxRk8WM7uP+val+duLAt0UZio1zbfiQk8F9MrpCl
+	j49Z2MNyqkNU1hgEukE5PrfTsCEkLRFHmdqjXdEIASSRHFgGviCu4VaYtqyS9+kdWSuspe
+	UG4r1ORpmSnM2MxCjC+mYcwgkB9bL3c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90F0760052;
-	Thu, 18 Jun 2026 00:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729621F000E9;
-	Thu, 18 Jun 2026 00:18:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 354684060A;
+	Thu, 18 Jun 2026 00:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC111F000E9;
+	Thu, 18 Jun 2026 00:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781741930;
-	bh=Tq5Dd79ingLOtWDO9qXa2YQGMrnxMPixhR12ifZ1um4=;
+	s=k20260515; t=1781742007;
+	bh=Nm5YTSonfWo5AmxP+6Yk9tTG9YTHgMUcZYxSeB8yQm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HcccTQhJVBeAAD+7CELP/GBd9OnSVPTJIyF94/gJgSbsXfLLDEkMQCct0S/zdGYrn
-	 DgoOvlKWcQKSTwcDx1VHp0b7TCgxJUoO1dUOhVpc2x0iVuFpzTeBZKlUUOFjmAmYVp
-	 pltGjON3/AWa09bqVy8u+cI5sA8+wGvVeqefrCQckaXiHq/nSWGe9qwkqU1vhiJaqR
-	 fzR63vcfz8IoJ7MOI1miBQKzmuXWcb807tBOaQPJoxaD0Kt27CeYC9ji5yX4RkDtQb
-	 Y+zAIr5vuLMDRmpOtDFjLQVrXAu+AHRWTh5VjbWRT4ZntFx7skj5WOFww+MFMFaLJy
-	 v89ZwAZA6FBbA==
+	b=ZYtnYh8ka5j+1wbYp1kW4Qe0JWAnZYadELtku+/W16/IsaLfRR+iP3uvsbjlDMIFy
+	 bq4Zq7W4GgeA3mmGopZvqyfN1FteKfdqQcsPvt2+qkIoENV+1HRoYOaiL/0RDqmR9R
+	 GOR8n+UhPej2kxOjgtnJ5lPj2c8E/gleg+WqbUxPyL6dO3Oz1TwebHbB62eFSw9/Fx
+	 4DkzHyzgnvUwphCVLJphdf0PjkxpHw6mhVtil1yx6jbgEWTwID/n1vPDjBLZAcmD6m
+	 28UdnHXFF7IQi5UvncjIOxnHD8BIKlOyk/ONXrQtNsyGPYs1mbBXEQprtIpbgW+6UP
+	 j/3z7z5miYZNA==
 From: SeongJae Park <sj@kernel.org>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	gutierrez.asier@huawei-partners.com,
+To: SeongJae Park <sj@kernel.org>
+Cc: gutierrez.asier@huawei-partners.com,
 	artem.kuzin@huawei.com,
 	stepanov.anatoly@huawei.com,
 	wangkefeng.wang@huawei.com,
@@ -77,21 +76,21 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v1 2/3] mm/damon: introduce DAMON_HUGEPAGE for hot region hugepage collapsing
-Date: Wed, 17 Jun 2026 17:18:41 -0700
-Message-ID: <20260618001842.84103-1-sj@kernel.org>
+Date: Wed, 17 Jun 2026 17:19:50 -0700
+Message-ID: <20260618001951.84226-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <39bf837e-d3c3-4b9b-b118-063caadcb700@gmail.com>
+In-Reply-To: <20260618001609.83965-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3EAC740002
+X-Stat-Signature: sj8umjmoxygsch1bws4atqr7489iqqgc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0C53D180003
-X-Stat-Signature: 45xpnp3y9yud3optg4gf3sd7sq9xno4x
-X-HE-Tag: 1781741930-82442
-X-HE-Meta: U2FsdGVkX1+E7vAOOGp1F73z7J15xo8226oC/kEVIy0rZd9PKf8fynKcr8gwzT6V3SdzJxkWO8PnVO7e3FqnF61b+umLWTd3lPrBfZZg1zB474HCWbr1PXArCcKth2a+4wtW2oK0tASg6x751yVQ6FUAX3BcCVANGY7b5lA41rCyHAcef424EuQ3zbTYsB6e4Lg0iJBX6SmkPcb3QzBhT8cgbPtkIWOQqZ8qZ+tfJuNRePfzbsi+5rJY3r63h0vTVKS8f9i8jNzJHztr9Cm+Om0OUGlihlmbnPRJcwWjWDOkRV0IebkB1n3a7HlT3Z1S7vp76AOXkHkpXRdTRmpjVQ3o3ttmf7nP08xVEy99xzIORpXy3u6UjVCACLn9DqyhdaDkhB/B7JTSWjO6L305AdfSzB/dG1dBdvbLqlkmXmd9UVTcbB5yDHV+hUYmysk/rogvodl0zT8aTMFMwHSJQVAwWuJVWTzBRbeEZZSGUzoK881MrnOkC6PeHhjgrgJOAoiJoNHDH0b4Lcut55TwmQbIC+9qPN18m2anZNYsLwvXuVotTAkZ+SSGTVobGQqAyOSMzY3IV5EL4MqAkJslbXeqvLpx8XVjGe+jbb3440/gPQ6/NajTADNdMbz9SGhPsfiN0gXEkt2NGRF19moC3mSdRYbO+RRRlOvu/RpYQvyrOHB/7T5AzAcsF99uYXKKrtF7gNDBsZ1/7wFQFYsmzR8wjP9nVSa8PvRnRFIoqaKQC4Na1pvaMzuq4IHQpixAlA3ushKao8fG/cLe1VZu3jyGUfKvcXe0z2XMf52Dob+0WiNuqGiVlnn6/Yh3Cp8J86gigw8zmg3LvVaeIXZocUEH8jk98H49pkZq8Bw7y9x9lpf5KkE3EeWnOH3WioyJcmtzCeiwA/MMi+IPtIOfoTJecXgs3qIeX9YRUg49Cb7yI2bSGeP19Y2vQ7B3gHw7lt8zK1HgtygtT8HsxTY
- gRx/q0GT
- rD6JuPOzvZlfvdIzt+RlTq/Cc9DTQuzoUGv7pZvklh6Gdj+6YwI3x53GoaX4THfLIFbCPcBEU65xYfGfzJaeavfMePGJMWnvmO2Fbbk4ngsO2jZPPU4UY+XdUd5+PcFwd9ppDp7oDT59/9rSlQjqTwhpaLlMRXnKqZNOIHk2FBiVMqJT30vGZOsaE4oU0ke+yQRCGVqtWut6v0RvzIA9ylygUdX4g/ZZ5Za255G9hwqrGzAvbAuIo2AMmT7cy8pfcUKCPhWkDXTaVUkfy8txRb62r5kV7EcGbJ1mOgKS3cCJfSD8pC2eXPpmLZqxBe5rrZJfSFibZuRJjZ49PoApDb/KVZg==
+X-HE-Tag: 1781742008-271757
+X-HE-Meta: U2FsdGVkX1+3XTy6hbTIaO1PrJWao+IXM05Jw/35PW1tLwakHyleNYFJcs/5p/+dYSSX0JgfBDkDNsPnDCDO21U0rPyUYGVblqQfxrDpxWGrQ/s147RLOV+cjvW4phIQTEXsod0td5qNmKa0TYFLxQJLslalK1KMXfDK4bC6eYRN50y8Nv865/88CMrlLUmywnD69LuYr4meOF/vwo3MtgQ4k6tIq+gk6srxPfE0Du4tjch9iwDWPTfU3w3DiGrMMSjdh2OvuvmGVKhcLvHt3unR8lRvr8E85WNApBFCGll7UDffNur9aoRg+PFzdC68/d8AsAL4d5Xwy/PksmSrmD1IbFHMXZBg8yqjyirLMHPdEyEwJXzThrDkTCbn/Ssk9RrYHytzU6la1vBRritA3Rj/C/O15Dh+BaKlsxD8SW1L1Q3dK7/ab+g62X9HwCq7kWJU5ZIUOH0B5S48Sr30f017FlFAtGP2jC4Z92CD1yjy6JEL2U6AuSOQnm7gJTLT2tlbf8+ur6am120avQXCtFQTYpn7zn3G60ar6suRDF0b0qEM3y8ytLau3tkf0S+iO/1f2DXLl62pIG2IU/aIERjrwI2zQ7o+a4i0WUAUtfRh2LCQzw8Cm4HHAuNOWvdFsh91vDFNvFweC5RFLghalQIYGc5H/Z8htKsUXf2CzeZTCrXz6LQV6DW13O8jY9NL2+Y73i/pkthTNP8HHwSrwguR3WzKwfhFRFc4Lfwo86ag8TCedZdD7qkH1OvCaK6lddQUH+KViIt1YW9rpM6xfxtNcu9bysYrzgxJ9OAUVORNCXVrQBcz1AD9ymkdNxhqc1ocPw+M9es/clLv2+nSwv+uwkDX0BXsApa4Y+FZLYgkpzmt4Uj1/6Ep1w+MIm0KZGrlIuo/5apcXxcgR2PUdtWOPxsPT/QJNszujy94Dbn6kQeh+YZS4C1E0UrDMiuWhWLnPn65XJFAsN5U0o4
+ PzuMiOzJ
+ 3u4Q9PI+a3x9jrGMR9cWMDP23ckiMAV4AaTKQAiIvRntnee1hgdXU21vMtPy99btDmk2P0zgFKPp3Zuz4pEj0tlXre7VYdrVNDIGXNjeDH+d+Qn2PBacOxw06wHT3Mtit/hxyo6ASLW9iV+rMs+KDL+pu6gx3gPZjEmgdKkFykEDGjR2K4DN+fFHrUaYdpbzUto0PTBH5WJV9t2xfZkvl1j2M8nbsUQJdsUmXemt0uuHEmHK6RyxOjkHQGKqI8illqKHUhmFFJ9z7X+H9IfBpIRfA6hhjNK/KuKacljiex/NaVmfv5XD8FO8J/J+3sF9ZopvSNhvQD71GSlj9S3WqbW0v5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,25 +98,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Jun 2026 17:12:45 +0100 Julian Braha <julianbraha@gmail.com> wrote:
+On Wed, 17 Jun 2026 17:16:20 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Hi Asier,
+> On Tue, 16 Jun 2026 21:04:52 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> On 6/16/26 16:03, gutierrez.asier@huawei-partners.com wrote:
+> > On Tue, 16 Jun 2026 15:03:15 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> > 
+> > > From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> > > 
+> > > This patch introduces a new DAMON module (SAMPLE_DAMON_HPAGE)
+> > > which collapses hot regions into huge pages.
 > 
-> > +config SAMPLE_DAMON_HPAGE
-> > +	bool "Build DAMON-based collapse of hot regions (SAMPLE_DAMON_HPAGE)"
-> > +	depends on DAMON && DAMON_VADDR && TRANSPARENT_HUGEPAGE
-> The dependency on DAMON is unnecessary because you already depend on
-> DAMON_VADDR.
+> As I mentioned on the previous version of this series, this sample module looks
+> much better than the initial shape to my humble eyes.  Much smaller and
+> simpler.  I really appreciate Asier's efforts on making this.
+> 
+> However... I was asking myself if this module is really needed last night, and
+> still got not real good and confident answer.
+> 
+> After all, this is a sample module.  The purpose is to show sample code thhat
+> helps people understanding how they can use DAMON API.  Maybe we can argue this
+> module can be helpful at understanding how DAMOS quota goal can be used.  But,
+> mtier is already showing that.  So I cannot say what new advantage this module
+> is really bringing.
+> 
+> Meanwhile, this patch adds ~200 lines of code.  It is a very small and simple
+> sample module, but still we should maintain it.  I, to be honest, getting
+> little bit concerned about the maintenance overhead now.
+> 
+> So, if Asier has a good reason to add this module that I'm missing, I'd like to
 
-Nice findiing!  There are similar duplicated conditions for other sample
-modules, too.  If anyone willing to, please feel free to post patches for
-cleaning those out.
+s/if/unless/
+
+Sorry.
+
+> humbly ask to consider dropping of this module for now.  I'm so sorry for
+> raising this concern this late.  But, Asier, may I ask what do you think?
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
 
 Thanks,
 SJ
-
-[...]
 
