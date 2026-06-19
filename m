@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B18CD98E6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 04:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7B9CD98F6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 04:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 559366B0088; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
+	id C62286B0092; Fri, 19 Jun 2026 00:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509D56B008A; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
+	id C13926B0096; Fri, 19 Jun 2026 00:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F9026B008C; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
+	id ADC986B0098; Fri, 19 Jun 2026 00:46:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 142266B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AFB81A0339
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:44:52 +0000 (UTC)
-X-FDA: 84895422024.17.05BF06E
+	by kanga.kvack.org (Postfix) with ESMTP id 848AE6B0092
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:46:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 164FD1A0327
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:46:40 +0000 (UTC)
+X-FDA: 84895426560.19.151E0D6
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8A4161C000B
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:44:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P9xMpzZA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id F134FA0006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:46:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UFR0Hsfm;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781844398;
+	b=ExEYMcf/Yq4LbgQNPfbf4nNkyOrkUS5sQ2N+Npy2fyasGfn5p9PLMaee6PnSrxSktlyfat
+	SDbmo+gLcLyMIQjigWaMOo8vfFOt+VtnYF1kOC7tKCva1BAI60Xu1j2UhQxZv79mXktU5C
+	nCSnogCOoYFRtWytlr3rX0C6oArJW2I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=UFR0Hsfm;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781844290;
+	s=arc-20220608; t=1781844398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZRxrNaXMUb1YLJrXKm9qGVCUVyefQ+jPumrFbXRQBY=;
-	b=UDHBsIYLq14RTIwvZIc5Y1o7Vk66q0Zc9tHIhbF+xRffd5Tkg166O4zMDOND+eeD/H+3gz
-	JVoW8OLCfsCo5rT0Pp4JGC7KRWQTC6Kuy37cqHsavndO9zMo5htd5MvI2LocZrXgBjmrt7
-	uNdRss0ATitNlXsqhALrNzwN6a7Clhs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=P9xMpzZA;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781844290;
-	b=6jKzfDBnA1lWlFvljbu8d2KQ3dQ0d3L2Wm8YsAvmuLwVr4qjkqg1++w70sH2tJhBhMRBiy
-	kngphPKln07W7gRoZYzzDnN/xk1oy6IswgJsGiozZBbYIYKkXst3hXZ8DV2aNzgz8xHRo0
-	/z4POrACfBwlBqf2WnFlo58MnpnAVMQ=
+	bh=FKmvbTzK+90ueZ4AbighQ8tyOuU1wtuXRrG7vAo1zO0=;
+	b=7NDCpz7FLXEQol6VR4ABMKwWLfpuZQdAFg2nbRF7pq4J2JylUNhdYqsqldSgWKrMcJ+gZ6
+	iCpZZBS5G0mkMeeCbOdOj9hhktucbs0/oLnMjC8mVK0kHbsaJw1uIqz3ZSJpJMBR9PuOKX
+	jb4fEgGr5p+HnsmBNKTM6xpRA1WOFGo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A894293F;
-	Thu, 18 Jun 2026 21:44:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86A24293F;
+	Thu, 18 Jun 2026 21:46:32 -0700 (PDT)
 Received: from [10.164.148.42] (D3H2TH2F54.blr.arm.com [10.164.148.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F07F53F632;
-	Thu, 18 Jun 2026 21:44:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF6433F632;
+	Thu, 18 Jun 2026 21:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781844289; bh=ps5ieMGO5BqQTpSXeGILcJmIGXlH2aB1crQD4y2zbKA=;
+	t=1781844397; bh=zo7L85WEMQspgr+Xxc8ITBFT//tY1Z8VCvuSv/cXyLE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P9xMpzZA3w4Ud4GhNZYAR7rMtLEydQwCTF5BmTXmZvPjLCv1UXfUP8+r8Iq8CbCLQ
-	 nRrOkqVf1Wr8M0pq84KEAZLTFtdvS80erxNi0JgM/Kw6LvYGCLadma1qHOiO2oStX9
-	 L5zWdZrvA5KAhMLYETPu4C+RFIalR3vIj8I+cxO0=
-Message-ID: <7b4f284c-9659-4422-a452-e67dcbfb0140@arm.com>
-Date: Fri, 19 Jun 2026 10:14:33 +0530
+	b=UFR0HsfmIgbVnXQm+nqkHxhtgz5uJsi6PxQu6nA5ExDABz7YYRT7NN2ntqyfACtfc
+	 YYTLIoQYxo0u00Td35Ce4bhkgZmFJh0u8l1EU5h2mEcWWIy16lRJl/KwhmY7mFTxOW
+	 hsefNn6008dILDD8tAKp+MmYZbEaeZK3tVneAAno=
+Message-ID: <9abb0da8-e29a-46ce-af11-55c49b30b1b2@arm.com>
+Date: Fri, 19 Jun 2026 10:16:27 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] kasan: hw_tags: Add boot option to elide free
- time poisoning
-To: Isaac Manjarres <isaacmanjarres@google.com>
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+To: Lance Yang <lance.yang@linux.dev>
 Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, corbet@lwn.net,
  glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
  vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
@@ -77,20 +77,20 @@ Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, corbet@lwn.net,
  anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
  david@kernel.org, will@kernel.org, catalin.marinas@arm.com
 References: <20260612044425.763060-1-dev.jain@arm.com>
- <20260612044425.763060-3-dev.jain@arm.com> <aiyi5flNkNNm0pSR@google.com>
+ <20260613060637.40039-1-lance.yang@linux.dev>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aiyi5flNkNNm0pSR@google.com>
+In-Reply-To: <20260613060637.40039-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8A4161C000B
-X-Stat-Signature: sxncr7oq3iw5uoiyd5mr4uxjuh1mozio
+X-Stat-Signature: 3ex1sdotanjw5xc8g881ihomhijibzy8
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F134FA0006
 X-Rspam-User: 
-X-HE-Tag: 1781844290-697287
-X-HE-Meta: U2FsdGVkX194p3MfIOAMtSF+BL9VRNhfGo1YLsV4f9+gEe3RQwrM0RXfCabDLrlUHFc5ItlEU16QEzU4Hz4JmXqy8YYw30E8BAHZhU/scjaVQr5MClOMGnRx0XGQdFzKVvgfzYRkWXTabhhYMinPkjAB+33Gj/Bk0QJlFIz50cRewmo5cp9mcxqHq60H5cZLxn/ajNNyoBFtkeaQNPy9+qTvQ4an+SRoi87kY5m5VJqdLrwoMguyEY2HL8hFp33FZ3VX2Fs7wjZZAMp/eRMm+h/zjGkAMHvuIHkwmsbmn8/bEkqkFBEZwsxYy7KbTaBY7j2RJxBByzIZ31zA1KQdNkBcupViup/KEL3WgzrT1JfwGPyHQWCWzl+caNGCZRCfAz+JB2TjR/LICpWMag4vqhINVdb4e/qoNBBT+VAXc1+Q/uEqRJJ4/WmQAQE8MCg5taFDYPzvwwdASp1mPgegilb+xlo8+xufLOuUO3jNddKvpQZpfq1XF6G7QgzOIVSrUwRRjExcGQqcnkzoY9G1DUMJcWpSqlJAi+zq68xOc09lf5VmJqp7vroHz3/pYT1qKA5aD4u5yoTyqT8Kc+CZA4R6jfqX2xg2jVh0hRlDXAhDJsAjon87PvpeeIyjYqPuzvOP0okj5t3Je+ptNa6R7jsbK74Iseom18Cj5x+uDQo12batrI2Em+EVcuaWnWOw7G/xITDjanM7G1lHSy9QeV7Bo3IrXdde2UEGIyKqN7lxpfG7HI8iuFxtaG9bs9IheMeT21nv6sGParYnTU7RGmAb1ZmRbyqsPj1Tkk3ycFy1aKaEjgWkWTB7YySZL0/9egYgB5Dip0ny3qm9EvjgMyZQlFVEr2p5Qcuh0f3QO93tMf0AfztEExWdd8S5Bkb8u0J20fJrN4Pm908rjxqTb1nGTI9WJlhmQcc9wNGuCwI6n/aXBLeBMqzGutwWSsKABhmOV44zsdcAqyxR5yY
- Ve5J6i7M
- hINt/umTz5cULlKMlm8e5VTydNwX3d3jDBNR4eluT0qeiw1JXnqVNXby0k9BfFd9zyoZf8y1/1litrODxXmHeBVZO0kBJBapcDya0u2d4EjDEDMkq8xVXdjjhKOkV2Ne3mxwqtl2Z1zGfcpppV5tc8b4oF/wRGjUFVAdoJqUVt9/6xJkmiuxgpH7ZD410SkOyTruzQHSiKReWcVGYkJhZyvPcsVD0Vx5hrgYHqDF8XZYmMwUC1TIIL1BGtWT0ZZ/FHT2IcYZV1lvrMEhyegvcDObqWvZxAyC9SxC4XTwyoAykK2U1Kg1WGN23xWAzfUYIPmvP2+BbhF2m6KRxFcqZeTDvMlqLQlfRF1Icd1C7ImJEZlo=
+X-HE-Tag: 1781844397-862162
+X-HE-Meta: U2FsdGVkX1/wX7xSVaAaW39PE5iZwfz3nnQK0KQuA+/0gXxz++jbZLIDS+aTZtDJcp/eojIImPTmrgHAl/C095bhp9GldDhRogKscUk9TuV/tFiHI2w2hgrpVUS5ZURSNDA6SXYYiG6j8zwMhPKH/Gl2oWDTPSOlSAsRZW5JVdugkCBhjW8lsCCGpLIbVL5KU+UmxtsmaZipXci5+ze71zBiN8oKiTdPOyCFj6B5PV6uMQtQaFlZkOjEhXbta6Gk6UMhzI64tU3S8RCCdPoUYmpqnmuJp2aGduGf/LkkmF6ub0BQ4/8s+R+k7jphk2/MDahoq04NJex05kQGVLh9PFwf/fPOCspl7moeIJ5fPWKMqmoGJ1spB310iVONdD0kwMLBrydApancgb4CAWMfeEUwOVU/sG2L/vWGZs9a7oVcNO8XSwLOokHxT3rMkwiorsFA07IBz5k/Iq5luu+9N7H/epZbDzcM294x7Jdlz8Ma0act+TiKzrSSEXo3kgMvKO1VIzu+qiLegeEWPoDnqLIEQWnjGm/iUZFYYIVf1HJOKj99fY6V+guAzqWvIPln1ZcswOuz+c9oZT1fAEc0U40NSjOD9R82xNvmjvaHEPYHKEMyNUWaH8OpId3wWP5G1MuoyFdg3gPmpaZazwFJChmgCJocjUP8m55X2bxr5LejbceyesRmuECOI4WeK6dSgu8G8g+onyxU6UkrgiE2k0ujr4b5t3Cx2NP0iSMcUcSr4vcJHsOnNnmLFlgWe2Zh2LWQRygYQVCgtFBQB/MCf1jx4EwzOpUXL4tdiEjUUYS4jaf3TH1XxiM4kblPiU1tXRTLma1pY1h7/swBoYTLYgkkHItUKJops5sxtii9qEmUXAbCbjjasDH1adCr/iw3iT5t6t0Bm4Jmfs76FaJg6dmA3I228k34Dyi8L6t7XTYU15fSbWgyi1kb5oMEc70SW93A8KNunQuezGW277V
+ jToL9YEa
+ TE8559iS9GpUd846iuEGvGulT7kk7AQBBt60cOIYlOZyMqrHryHEQ2M8jLEgP81aczXpqvnb3hx8aDMKnqJvcqaykl787WgptWRhJ/u5EO5BZVbaV7imxartg5/KSL+9ePqmZTU4iG6Dao7Pn888wZc9GIPDS2mJ2y9RPJyYbwY3x9Px6il3Gh3RMKtw9R6i6bpAwzkymIhZGOFaF6dCas+rtyQVub+0vL6w+2EK+L1Wwp6owz5uVFguUFI7T0lw/ZNFCSHvZIFrVyOJpx7JClVs4Ln6U81Kc9M1GCVhvHOnSBhX6BLOFrPTdUbM/RBesu4NgthUyCW2C4P8wAxyNYFY3J7gcJln5K/DOLmm5g9tzuvk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,46 +100,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 13/06/26 5:53 am, Isaac Manjarres wrote:
-> On Fri, Jun 12, 2026 at 04:44:24AM +0000, Dev Jain wrote:
->> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
->> index fc9169a547662..4fa8abb312faa 100644
->> --- a/mm/kasan/kasan.h
->> +++ b/mm/kasan/kasan.h
->>  #ifdef CONFIG_KASAN_GENERIC
->> @@ -478,6 +489,16 @@ static inline u8 kasan_random_tag(void) { return 0; }
->>  
->>  static inline void kasan_poison(const void *addr, size_t size, u8 value, bool init)
->>  {
->> +	if (kasan_tag_only_on_alloc_enabled()) {
->> +		if ((value != KASAN_SLAB_REDZONE) && (value != KASAN_PAGE_REDZONE)) {
->> +			if (init)
->> +				memset((void *)kasan_reset_tag(addr), 0, size);
->> +			return;
->> +		}
->> +	}
->> +
->> +	value |= 0xF0;
->> +
+On 13/06/26 11:36 am, Lance Yang wrote:
 > 
-> I wonder if it would make more sense to have this as:
+> On Fri, Jun 12, 2026 at 04:44:22AM +0000, Dev Jain wrote:
+>> Introduce a boot option to tag only at allocation time of the objects. This
+>> reduces KASAN MTE overhead, the tradeoff being reduced ability of
+>> catching bugs.
+>>
+>> Now, when a memory object will be freed, it will retain the random tag it
+>> had at allocation time. This compromises on catching UAF bugs, till the
+>> time the object is not reallocated, at which point it will have a new
+>> random tag.
+>>
+>> Hence, not catching "use-after-free-before-reallocation" and not catching
+>> "double-free" will be the compromise for reduced KASAN overhead.
 > 
-> if (kasan_tag_only_on_alloc_enabled() && (value == KASAN_SLAB_FREE ||
->     value == KASAN_PAGE_FREE)) {
-> 	if (init)
-> 		memset((void *)kasan_reset_tag(addr), 0, size);
-> 	return;
-> }
+> Hmm ... do we also need to teach the KASAN KUnit tests about this mode?
 > 
-> That seems a bit clearer to me as to what it is that you're doing, and
-> also makes it so that you don't have to do any bit manipulation
-> on the value when you're filling in the redzones.
+> With kasan.tag_only_on_alloc=on, free-time poisoning is skipped, so
+> some UAF and double-free reports are skipped on purpose, but the tests
+> still expect them :)
 
-Ah so you mean, we can define KASAN_SLAB_FREE and KASAN_PAGE_FREE to be
-different values, leaving KASAN_SLAB_REDZONE and KASAN_PAGE_REDZONE to
-be 0xFE, the poison value. Yep I'll do that.
+Yeah my opinion is that we shouldn't bother - but if we go ahead with this
+patch in some shape or form then I'll see how to make kasan_test work with
+this.
+
 > 
-> Thanks,
-> Isaac
+> Cheers, Lance
+> 
 
 
