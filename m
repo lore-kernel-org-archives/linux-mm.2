@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B5B4CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 22:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF28DCD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 22:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBEB46B0005; Fri, 19 Jun 2026 18:36:32 -0400 (EDT)
+	id 9BFEE6B0005; Fri, 19 Jun 2026 18:42:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6F0F6B008A; Fri, 19 Jun 2026 18:36:32 -0400 (EDT)
+	id 971CF6B008A; Fri, 19 Jun 2026 18:42:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B86BC6B008C; Fri, 19 Jun 2026 18:36:32 -0400 (EDT)
+	id 838916B008C; Fri, 19 Jun 2026 18:42:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DC106B0005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:36:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC7A88F634
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:36:31 +0000 (UTC)
-X-FDA: 84898122582.01.4E9AE50
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4A25F40003
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:36:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 3bcQ1agkbACYUabMCNNGTCRRKF.IQQINGWUGTEQPVGPV.EQO@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3bcQ1agkbACYUabMCNNGTCRRKF.IQQINGWUGTEQPVGPV.EQO@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	by kanga.kvack.org (Postfix) with ESMTP id 4D5EB6B0005
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:42:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 99E921C503E
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:42:29 +0000 (UTC)
+X-FDA: 84898137618.17.EEC8D15
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F2435120007
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:42:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/9mIQBV";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781908590;
+	s=arc-20220608; t=1781908948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=gP+LYeB38ctwzvmUsCsvE7at+Uu9aIFzTMPoFwYFcDg=;
-	b=bj3otrEixC2Fbk5tq9nyhpVr9RT+IboqvEUUhtWxdpr7il/WzFbaTbz+NV82h5XxKJ4y6m
-	80OFO2N4dcOIM4DRpwba153GTqQvPSTMeTwGPXGJUeIO0gaKekVKnrcdrU1FjNoOVVpQNF
-	MnRfzrCGr6br9WDQGvXZTtw7ul18O2c=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of 3bcQ1agkbACYUabMCNNGTCRRKF.IQQINGWUGTEQPVGPV.EQO@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3bcQ1agkbACYUabMCNNGTCRRKF.IQQINGWUGTEQPVGPV.EQO@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iEPjuS56y9/6ULrSzJIMlwCS/iaIgzQsHGFX0c4iqaA=;
+	b=lH+kV1p+NQ5dBg9ZZQnBFMcSJgFf4a3VOnfnkPnox+smVWnZR/1uvJxCtcrUAvBeGNhfBO
+	qY/9IfAqRQ50cTx/wzlVlGtoX0qw21N7x8PO6RhOyaHuatChOrOOebu6Bmk7ZaQ/gaaORm
+	eSg8yFzl4Sh1LvGgz+A2kYndk3wz3hc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781908590;
-	b=BTp+XYUremU7NyvTFnQpdlZT+uJ3yhuuctZMNB3TQV7rjFaq6QU9IsO2fsR1wCWWvY7ylQ
-	JYiv2qD3KYYMNL7tp9Rlclsq9SmWRtopBXycZ9ZJ+E4S8oexrWRGGLXPIN8R6kFRHpQgLy
-	IGt4TGiTl7oFNV2MMEj5rQXDvMMghFs=
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-69e3b10dca5so4074141eaf.0
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:36:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781908589; x=1782513389;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gP+LYeB38ctwzvmUsCsvE7at+Uu9aIFzTMPoFwYFcDg=;
-        b=mV0hfYJqid5nd+ZsVzYSmXyYvDURxlwrCGariovU8cSAzX/xihZTh6OZ/+uBLXf6RJ
-         WgxQFw0/UTMwzRqtSkg80iUrn+VFY+07lzoqxFJoAHpVQReoN5eo5sS6bdvjkoDZYxsh
-         sBJqvQ/0tAFOzXXjrs2vQBhcpv7WQl0qfMXWyiuwo1IimD+tyCiZUP6q0CU1XsXQ7Cq/
-         eD7oNzMTbE8fC9DgXYcOd2lTdpOrUOmzp0e/lqJned4KiD8kJ5boHZpjEo9ClPpUnU/2
-         Xd+PJG9rY2IXjHpzN4ZbnByYyyGa0gJn/9fK4REx1+/NPSj4R79GmoR6ZVPBVzpA4O1D
-         oBFA==
-X-Forwarded-Encrypted: i=1; AFNElJ/RTFq11zH4yaaMX9rUrcIJWyhrqMO/Bgox3BAq3eriPKq3o7Stq9lMZ5ituPzEA2QJ4EhIFkz9+A==@kvack.org
-X-Gm-Message-State: AOJu0Yw0MuhSI+VYur9HKzU8XvfChR7h+Emd8ewaRAMoxkJrPFd3uXId
-	RtW9tuRU0dFOnUIhWLJ+94nBlnlXV1vFd9Ef0/D/jLtYqeKLUUMPuleTZub5iPNrI8EyxG2/99H
-	SmtZg5qfnjxne2d2PdSG/baHgb0HjeyiO0s6gkX27KQSFjcgTDfdLdtwWv/g=
+	t=1781908948;
+	b=CyIlug4zYFKzy20GlcgcXrMucju6jSWPsRzroTSeP7lhYnlUhg85WZSGgtX3Qa03AqJ3+y
+	yaauR4ra53gjkcCJ1luvxZWygiPxcYJeL1i9pIAj6tsRBfkVNw4PcH8iQKfi7nZBZNjhAS
+	zQKT7EkhIPZeVuaq1wqIi0VYiffXMAM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/9mIQBV";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49915600AE;
+	Fri, 19 Jun 2026 22:42:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C961F000E9;
+	Fri, 19 Jun 2026 22:42:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781908947;
+	bh=iEPjuS56y9/6ULrSzJIMlwCS/iaIgzQsHGFX0c4iqaA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=O/9mIQBVlfkEpaaANOpQqnGO5o+dSuFub4DPs+hSI/YJVqE91aiCjJzd/5rA4AaB3
+	 DytMv0UHYcPNeiSandIR2Knqnwx7I13J22NxSbRhoLq90jZGmxjh6LlbDPHO69Jrn9
+	 OOmO9k9tKiaDgCbkSphrKSJH1vmK0EK6s2P/FlmyOm1owy4uLFz6IGIL9RdihihJTP
+	 Kp/V8KC5YOyZzyNZFAkg8JU7LVy0T8ciqvkag/zdioOFnw9pf7dCTNuupC5PbQVsVS
+	 8cYTS0qLWCnAxsmDw+eR8jcfAQNQ5TO0RoIe8WKUqtpKS4cbWt1hHOUpL/4BQD2cH8
+	 o5D8hgrcPgtVQ==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: ryncsn@gmail.com
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	npache@redhat.com,
+	qi.zheng@linux.dev,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	weixugc@google.com,
+	yuanchu@google.com,
+	zhaonanzhe@xiaomi.com,
+	ziy@nvidia.com
+Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
+Date: Sat, 20 Jun 2026 06:42:21 +0800
+Message-Id: <20260619224221.85678-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <CAMgjq7Bmi2XYxPc4tVO8KTWSuj8jpt-c-JueqYRK1kLC_nmBqA@mail.gmail.com>
+References: <CAMgjq7Bmi2XYxPc4tVO8KTWSuj8jpt-c-JueqYRK1kLC_nmBqA@mail.gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1b1b:b0:69d:64a3:6320 with SMTP id
- 006d021491bc7-6a0d9fb7e87mr3215127eaf.6.1781908589414; Fri, 19 Jun 2026
- 15:36:29 -0700 (PDT)
-Date: Fri, 19 Jun 2026 15:36:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a35c46d.951a15ca.164930.0003.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in __percpu_counter_limited_add /
- percpu_counter_add_batch (3)
-From: syzbot <syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F2435120007
+X-Stat-Signature: ci1uwjn8ociuogj7jnem1ysixjpdncsb
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4A25F40003
-X-Stat-Signature: 9a19bf4g5a6zzwcuexfwp6d7soh7upug
-X-HE-Tag: 1781908590-845585
-X-HE-Meta: U2FsdGVkX19TUS0BoLUsrO8G1t+34OYD9IhS3FeHFyQWgtN1K1A1LjrfWidiHtlVCImOahIS3MK5c3XTlvSZiDbSPgnVh/F2stBWNDOQ0nEdrU4w6yIJNx+C+ZBklhvSBFNFVNTE/BiDHeE83i/3QgSCyvsnwbtgAEXQRgQbXfHtw6x4E/Fp2dCNf0pIbfGh4llKG4GP3gwu8K8FmgbHoX9SbPBpGgRTRRemBo0S8nDgHcwp+lm0WKrf/H+KAnjQNzQ4VU30UEskIhbKgHpcYOSGL1xALJ4/gM1cJ83mbIMsdFaNJVwHLLOaPaC9s4BBb07aMntBAghcJNA2NdDvJb6B3Bq8C/7cO/6IBG6gIAV8Op5O5a6mQrXJMq9QVwyppZ0zXvtU28MeAt+LJu4ZFwzPcQrovrmTYvdKJzK1AMvV9eP06c3owr3utEc6ev8KSSv2rx01c6y8hnCosRUsBioyuLvuqhO642XFpHY+NF4OZCeZBrKfvXLSeZPAM0u6vbSIMk/L+hzHG3G7DpZO8NjYX6NuaoP6/UzKWJODQ3VFg4m12h7j2kVh+fKF5JP9E2ZoTS8FHJ4/x6KgY+QsfhJMyldGIvS1G8xRK7s5emZH3wTS8Hll2jzD5PBMt+5w/gDsutqS9WvMhAaf4CqyO3je6sqnEEVHnMhR/kbbop8LqU5QWmFQsfkJLVDtv+VJlCI/0gU6kx/k4jhZNKgm6tsxKcDSZB95MLh0BtNuLfj7t4zB3Sa8UdCS9kN3Y16tt8hReO/heBg07FT0DBEajDPHHGV9w3SgkmFMDsHnYiqMsHgJ7+KpfGlbPDxjxnoUD2zuIdGrnm6lax6UVWkI/9oUxBovLnDRvGoMSD2dh4iEbaGKCbdibbXe3P1XbYSSWFfg3T8jWxQkBw2Oi44ZIKEh6xJwaHPNFGT9ppaI3itduyH5KKnSdQnvl2C3dsPrpXaM/+oAzBh2NeeNXb6
- BSIH5OIf
- klE8NT8OMkB9YWIeFNvR7BO+h/eJeBwt1JKI/RuAyt7W9s19+2hHZLjd731mfNPJlmXGWfy2b2CGOOlxXRbb1LUxt8COUWgl4lWCkh7MpOgRgmskMYuD+psxzvtqJfekmL1OXbpdFKu/1s2YC66D9Lh83WXKH9gW+vV/6jdK/NcvkELbpLxrVfOnh/mNMlBsIGcs+R7+cjeGrMJnyCQWfoknMlDolv+9ibYqMhiKQsk6PSmJoqMGzrne40wIhaIS+fvONvywvXPbShioUZAQ7HIRqx0q/aLOmg35JhUFntR/WzpQGorMl2z82pOYNtm5jsorppjUVntj4vb9nAaOEPq3ive9fpAlnRGwCflJyQDGNtpP3E0gHID0eOrTzLsGYjAS9QZbr8zywOu5JHs3oKNT1kk61GGNf3hy32OQ7BJBDy43pQQ9koAQS6lHaqHpgmIn3x1hHoZWaek9x3HtPyB0p/q8IQ+IGy1NycI5k6jnwaiqyB/DgALDc+V+U6C1Y4Co6pr4izqQGrOTMYjqPbBDPPj+Vl25IbZI+qC3545/eDFhA1k/qIpkRoBroTuyl14y05kb5QCj4L0AF/2Pe62a+5ow6cZa+NBp8kqRyOGU143L5UFfVnMBTHta8mfnUAMN35Awb7rAH14x7u3OTfiH8/BwQYwYCVE89qmOJ3WbprsNfuyuTfPwZm5C67tBdSaBViR+cy+IIM0vYX/G/wIgOHQAVtbcONxmFB/CUbQaXd/0cTxGxtIE3hDCnRoyt5gttqoEWTrwMgDWV6sLYq1o1gNfXR57ryvp/3Gjs6s00G2gaLRxzCWFmp0i+n00CPq59KylF3nVFBTz+A8P0EzpVDjRExH97Fy65NsIhulqU1IX2aE6zmTMrH8O/oH70YzrUfU0qf++cX/0Wh/QXy/vf7nD6tfA4OfGHzHpfx2bZ/RWcVxS6AXinctWfABIKUnAENiXYK43+RfnojpEBUwonvQXf
- 6S2+7yCK
- GnKUoxm7yRZ9+dvtbkUteHvJBkeZ+B2P/UAAnzBoKEFC2jYDLMBAQ5/5K3m/jk+zuiQqpA8+GbHWtrUT9F7P2kDvky7dqUO/IEcU1VcOU45d5INkiN9UU4br7LPAlQZ28rZmEU9s2U0/4gI1xWqwSHcb12pDkYGfrX8j7Ys6hs1Z7X3ma5QnfOSUMckPEwl76b+OVlzRRIFgafx4FZSpuBem3MB0Bh/BPLsg0zwmpCzVLSbi39Mbli+b7+2OU1kuKBL5X971YptVvsjDGO7MAytTCw7pp4YxHzlgFpPUTzmhPWoA5OKGzS2AfKj0hbvzKzCnZI9mA2E7PWpbRD6iqMFTzZwRTL4hsbCrjczKDbJdyubaqNHWrzqs3Lu6yIsvSvYCuU0h4PRlmScchUc290CB72pwf6RdX5f44qmc+kwffeWuAKoisVRx0moybLapKhidwOt8RN8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1781908947-150042
+X-HE-Meta: U2FsdGVkX1/UGQJ1c7cNOQC8sZXTkrGsqz+BxfVkqmkEwi2cl2mo02H7AuHm2MKYhY851hW2bSDfprq4aMrrIKg0gj+72w2Ih54hcAiH1ZLcrpy4FL1W0dIU/eG07FHGzFLnw/9T4A1hng+8JPcjzCB+EA16kDb0LoLSVu8ck0vrEOpElw4pz1DrnapOSmR/b5Za+bP6XdQ+I+7xs8QDJWX3I40jUra8cIAXQlsrCEp7kYAbDqe7TxzsNsGo384zvvKrGF8EcK+0bYpzjfAYizkgF7fiGRDiw4zRTPYFopd0AYlaJLfgHRM28ghur6ZSGsw7ZXre0ne2iXMO4vOzhYjOBr2zJIMXCog+BRRa6ROlblTvUbtW3KW0b9VuAapWEs6UGg+3t/1p9J0TcRP74wuWi2m6MA5dg7V5hwwZ2prMY/A9HKm/1Ze+huDtXfIfgPv821d9FsUmGDaISJJagdKT5q9Umjv6gXHanUgNhjlltqFTxQI5oU27vvnkGS656INjp4EwZxIPMAjPFR8yd8em2QHN4gzoil/DSsMhX4bN+3qsql0F3ngw+4RSDs+BpIkVpp7CDW0fJ5AFVgBp05hrtIJUVqxXBW4XfMDpHGYd06Bm8JzkL7bCze+MXfNLgyAsLCENjXF44B388mSl+TVTK4c41/HzDK5rVyMDibomQ5gY7dewvoRlFKkM2Z1NSW8/ALvn9b7zw81T2pP4l7X+z7XepkCoLnxhIFzIXDWPdCwRrtQWTdVm8JCQDv/SJULCRNgiccn5fP5oxUnAP/9jffLkGf1M4kni3gruQbbfq3pPF+oG0D3fZixYSuJghGCdUNhwSkbIeC4CfUdJuR4QpltliQOrYtfVPYU6pKwzFSUxNzrqIp/L/AI11Jo+3YQ3fs15VklZfAAWe7kWtNSDuWOIjb/kZwz8cmM229DeS137maH+et0D/FPxsEw0veJSmPBT2LV/2mQ1alO
+ tDlrbL9r
+ xtMYs8DGu/Xb4BqGX87qh/DGANupgFq8IYSSltwlHZdgGtDfqiaGeECQadx1EegrZ5xMHs/yJD68i1oF0VLXD3/sVM1sJX/H22alOGwiG0no/iT3LmQEDO5HaPKpc/EyonennKJOLzfqpWmXfE6Jy5bxxgzIKg+Naw+l6+vNL6WwCVA980z5M9MtVzMJA4N+9M/rPQm2VWAUYyjxQTNgW34Bp2xGGlahkgV7L8KkXrnyIn4aXwiuOzlf/Vk69k3PNEUpaSPEeWxKgvcn5kuYAUjTLBmkHGh4gg0w0xKI2Xvhu5jIZREoVZdloY1/vPxlvN8v3iLoxE44DhSSUX/Cdkn3XrZRHfyv1g3jlhQ2gNRSYmQE4ndiCN6p88tm1VqaNhmrWroQc6VIMc+uqRE96krDWpXDQToeOvAu1DhNutkRcO8k2ufUjoBicOgb0Po2AVqNiTVlKtyFv/2AtdZRMKp7f6RIx3rT+4qxJpVpF9a6eLAyFRFDxqXxvUr8V2Iv5nwX7ARaiQFrRBvGDVZK9V4YiYkvaZyIuyE1o4GqDb6wfars=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,105 +109,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Sat, Jun 20, 2026 at 3:18 AM Kairui Song <ryncsn@gmail.com> wrote:
+>
+> On Fri, Jun 19, 2026 at 6:17 AM Barry Song (Xiaomi) <baohua@kernel.org> wrote:
+> >
+> > When swap is disabled or exhausted, swap slot allocation
+> > may fail during swapout, causing large folios to be split
+> > into small folios. The splitting is reasonable when we
+> > truly fail to obtain contiguous swap slots, but it is
+> > pointless in the no-space case.
+> >
+> > A simple way to reproduce this is to invoke MADV_PAGEOUT on
+> > a system with mTHP enabled but without swap configured.
+> >
+> >  #define SIZE (16 * 1024 * 1024)
+> >  int main(void)
+> >  {
+> >          char *buf = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+> >                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> >          memset(buf, 1, SIZE);
+> >          madvise(buf, SIZE, MADV_PAGEOUT);
+> >          munmap(buf, SIZE);
+> >          return 0;
+> >  }
+> >
+> > With 16KB mTHP enabled, we observe:
+> > ~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
+> > 1024
+> >
+> > This patch checks swap space before splitting. If there is
+> > no available space, it skips splitting. After the patch, we
+> > observe:
+> > ~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
+> > 0
+> >
+> > Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+> > Cc: David Hildenbrand <david@kernel.org>
+> > Cc: Lorenzo Stoakes <ljs@kernel.org>
+> > Cc: Zi Yan <ziy@nvidia.com>
+> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Cc: Liam R. Howlett <liam@infradead.org>
+> > Cc: Nico Pache <npache@redhat.com>
+> > Cc: Ryan Roberts <ryan.roberts@arm.com>
+> > Cc: Dev Jain <dev.jain@arm.com>
+> > Cc: Lance Yang <lance.yang@linux.dev>
+> > Cc: Kairui Song <kasong@tencent.com>
+> > Cc: Qi Zheng <qi.zheng@linux.dev>
+> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > Cc: Axel Rasmussen <axelrasmussen@google.com>
+> > Cc: Yuanchu Xie <yuanchu@google.com>
+> > Cc: Wei Xu <weixugc@google.com>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  mm/vmscan.c | 15 +++++++++++++--
+> >  1 file changed, 13 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 299b5d9e8836..33f84a5fe7ee 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -339,8 +339,7 @@ static bool can_demote(int nid, struct scan_control *sc,
+> >         return !nodes_empty(allowed_mask);
+> >  }
+> >
+> > -static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> > -                                         int nid,
+> > +static inline bool __can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> >                                           struct scan_control *sc)
+> >  {
+> >         if (memcg == NULL) {
+> > @@ -356,6 +355,16 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> >                         return true;
+> >         }
+> >
+> > +       return false;
+> > +}
+> > +
+> > +static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> > +                                         int nid,
+> > +                                         struct scan_control *sc)
+> > +{
+> > +       if (__can_reclaim_anon_pages(memcg, sc))
+> > +               return true;
+> > +
+> >         /*
+> >          * The page can not be swapped.
+> >          *
+> > @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+> >
+> >                                 if (!folio_test_large(folio))
+> >                                         goto activate_locked_split;
+> > +                               if (!__can_reclaim_anon_pages(memcg, sc))
+> > +                                       goto activate_locked_split;
+> >                                 /* Fallback to swap normal pages */
+> >                                 if (split_folio_to_list(folio, folio_list))
+> >                                         goto activate_locked;
+>
+> Hello Barry,
+>
+> Thanks for raising this issue. I saw a similar issue report in the
+> mail list before and was thinking that, perhaps another approach is to
 
-syzbot found the following issue on:
+Hi Kairui,
 
-HEAD commit:    5e2e14749c3d Merge tag 'landlock-7.2-rc1' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=115453b6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b0ae27ce66b92956
-dashboard link: https://syzkaller.appspot.com/bug?extid=a3c71b9db9c11c270f59
-compiler:       Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a565c60a4762/disk-5e2e1474.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e593a6eb0057/vmlinux-5e2e1474.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d24b55020ea3/bzImage-5e2e1474.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KCSAN: data-race in __percpu_counter_limited_add / percpu_counter_add_batch
-
-read-write to 0xffff88812a80e9d0 of 8 bytes by task 11484 on cpu 0:
- percpu_counter_add_batch+0x101/0x120 lib/percpu_counter.c:107
- percpu_counter_add include/linux/percpu_counter.h:71 [inline]
- percpu_counter_sub include/linux/percpu_counter.h:277 [inline]
- shmem_inode_unacct_blocks mm/shmem.c:263 [inline]
- shmem_recalc_inode+0x143/0x1f0 mm/shmem.c:466
- shmem_undo_range+0xb20/0xb60 mm/shmem.c:1272
- shmem_truncate_range mm/shmem.c:1277 [inline]
- shmem_evict_inode+0x132/0x520 mm/shmem.c:1407
- evict+0x2a5/0x510 fs/inode.c:828
- iput_final fs/inode.c:2022 [inline]
- iput+0x430/0x5a0 fs/inode.c:2071
- filename_unlinkat+0x21f/0x410 fs/namei.c:5585
- __do_sys_unlink fs/namei.c:5616 [inline]
- __se_sys_unlink+0x2b/0xe0 fs/namei.c:5613
- __x64_sys_unlink+0x1f/0x30 fs/namei.c:5613
- x64_sys_call+0x2eb6/0x3020 arch/x86/include/generated/asm/syscalls_64.h:88
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x136/0x3c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88812a80e9d0 of 8 bytes by task 16836 on cpu 1:
- __percpu_counter_limited_add+0xc4/0x3f0 lib/percpu_counter.c:-1
- percpu_counter_limited_add include/linux/percpu_counter.h:77 [inline]
- shmem_inode_acct_blocks+0xf4/0x230 mm/shmem.c:232
- shmem_alloc_and_add_folio mm/shmem.c:1979 [inline]
- shmem_get_folio_gfp+0x5d3/0xd90 mm/shmem.c:2502
- shmem_get_folio mm/shmem.c:2608 [inline]
- shmem_write_begin+0xfc/0x1f0 mm/shmem.c:3239
- generic_perform_write+0x186/0x490 mm/filemap.c:4363
- shmem_file_write_iter+0xc5/0xf0 mm/shmem.c:3414
- __kernel_write_iter+0x30f/0x590 fs/read_write.c:621
- dump_emit_page fs/coredump.c:1298 [inline]
- dump_user_range+0xa73/0xd00 fs/coredump.c:1372
- elf_core_dump+0x21c0/0x2340 fs/binfmt_elf.c:2109
- coredump_write+0xaf9/0xdd0 fs/coredump.c:1052
- do_coredump fs/coredump.c:1131 [inline]
- vfs_coredump+0x2770/0x3290 fs/coredump.c:1200
- get_signal+0xd33/0xf10 kernel/signal.c:3023
- arch_do_signal_or_restart+0x96/0x480 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:66 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:101 [inline]
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
- irqentry_exit_to_user_mode_prepare include/linux/irq-entry-common.h:244 [inline]
- irqentry_exit_to_user_mode include/linux/irq-entry-common.h:315 [inline]
- irqentry_exit+0x14d/0x610 kernel/entry/common.c:165
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
-
-value changed: 0x000000000000459f -> 0x00000000000035b4
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 UID: 0 PID: 16836 Comm: syz.5.4499 Tainted: G        W           syzkaller #0 PREEMPT(lazy) 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-==================================================================
+Could you please post the link to your report? I'd like to add
+your Reported-by and Closes tags as well.
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> let folio_alloc_swap return a more detailed error code, for example:
+>
+> - 1. the mem_cgroup_try_charge_swap in it failed
+> - 2. allocation failed but nr_swap_pages > folio size
+> - 3. allocation failed because all devices are full or unusable
+> (roughly nr_swap_pages < folio size)
+>
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+folio_alloc_swap() returns error codes such as -EAGAIN,
+-EINVAL, and -ENOMEM. For cases 1, 2, and 3, I assume it
+would return -ENOMEM?
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+I assume you mean that we might want folio_alloc_swap() to
+return an enum instead?
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+another approach is that I can return -EAGAIN for those cases
+we want to retry swapping-out after splitting folios:
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 78b49b0658ad..62e2c506ccae 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1755,6 +1755,9 @@ int folio_alloc_swap(struct folio *folio)
+ 			VM_WARN_ON_ONCE(1);
+ 			return -EINVAL;
+ 		}
++
++		if (get_nr_swap_pages() < (1 << order))
++			return -ENOMEM;
+ 	}
+ 
+ again:
+@@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
+ 	}
+ 
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+-	if (unlikely(mem_cgroup_try_charge_swap(folio)))
++	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+ 		swap_cache_del_folio(folio);
++		return -ENOMEM;
++	}
+ 
+ 	if (unlikely(!folio_test_swapcache(folio)))
+-		return -ENOMEM;
++		return -EAGAIN;
+ 
+ 	return 0;
+ }
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 299b5d9e8836..4c4cbd72c013 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1257,6 +1257,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 */
+ 		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+ 				!folio_test_swapcache(folio)) {
++			int ret;
++
+ 			if (!(sc->gfp_mask & __GFP_IO))
+ 				goto keep_locked;
+ 			if (folio_maybe_dma_pinned(folio))
+@@ -1275,25 +1277,24 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 				    split_folio_to_list(folio, folio_list))
+ 					goto activate_locked;
+ 			}
+-			if (folio_alloc_swap(folio)) {
+-				int __maybe_unused order = folio_order(folio);
++			ret = folio_alloc_swap(folio);
++			if (!folio_test_large(folio) || ret != -EAGAIN)
++				goto activate_locked_split;
+ 
+-				if (!folio_test_large(folio))
+-					goto activate_locked_split;
+-				/* Fallback to swap normal pages */
+-				if (split_folio_to_list(folio, folio_list))
+-					goto activate_locked;
++			/* Fallback to swap normal pages */
++			if (split_folio_to_list(folio, folio_list))
++				goto activate_locked;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-				if (nr_pages >= HPAGE_PMD_NR) {
+-					count_memcg_folio_events(folio,
++			if (nr_pages >= HPAGE_PMD_NR) {
++				count_memcg_folio_events(folio,
+ 						THP_SWPOUT_FALLBACK, 1);
+-					count_vm_event(THP_SWPOUT_FALLBACK);
+-				}
+-#endif
+-				count_mthp_stat(order, MTHP_STAT_SWPOUT_FALLBACK);
+-				if (folio_alloc_swap(folio))
+-					goto activate_locked_split;
++				count_vm_event(THP_SWPOUT_FALLBACK);
+ 			}
++#endif
++			count_mthp_stat(folio_order(folio), MTHP_STAT_SWPOUT_FALLBACK);
++			if (folio_alloc_swap(folio))
++				goto activate_locked_split;
++
+ 			/*
+ 			 * Normally the folio will be dirtied in unmap because
+ 			 * its pte should be dirty. A special case is MADV_FREE
 
-If you want to undo deduplication, reply with:
-#syz undup
+> Only case 2 requires splitting. __can_reclaim_anon_pages also checks
+> demote which is not related to swap.
+
+I actually extracted __can_reclaim_anon_pages(), which only
+checks swap, whereas can_reclaim_anon_pages() checks both
+swap and demotion. :-)
+
+Best Regards
+Barry
 
