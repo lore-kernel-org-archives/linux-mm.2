@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94ADBCD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF1B1CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C1056B008C; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
+	id 7D44F6B0093; Fri, 19 Jun 2026 10:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 698F36B0092; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
+	id 784DC6B0095; Fri, 19 Jun 2026 10:53:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5873B6B0093; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
+	id 601136B0096; Fri, 19 Jun 2026 10:53:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2807F6B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3A23A0462
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:52:26 +0000 (UTC)
-X-FDA: 84896953092.09.6ADFACC
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 362D46B0093
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:53:49 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 886F612041B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:53:48 +0000 (UTC)
+X-FDA: 84896956536.01.70CE8FA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 003BEC0004
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:52:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv4j3Vb;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id D03AF40002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:53:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbEofCKD;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781880745;
+	s=arc-20220608; t=1781880826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMrfiUsFirA1Wml6QpEyIkRNWkxL+MwzDwXxle/2vjY=;
-	b=Ry10NJcy61Axf6CgAALkZ7WLbPRwg5UcJvMA8BqArXrr2meT1+fsaGFgezSyZ2opH26HAI
-	gGcP8h7pgfdc17h48W035i+JZ7otSiwj8JFQOFVqRJPbv8miY599byW4KkqLMricn/1x7y
-	SI037d7AQxM509KihZ2O9JLHXx9aBfM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv4j3Vb;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=VrrWV2DRPuCzvFAaTNjpF2YIzw78aeVa0n4wK4sF7ww=;
+	b=JeNTgU19lsNinCG24hM6awwTQwGvOd/nVMagZWacb9ePY8uWP+a9eqHgPDMtZZLFbHqn5M
+	+KvvgAwmbqoyHol5wa4SrDpDhqjUVJGnr1P+XNMkYc2PeGeBg8HhzMTPTUqThZalUjUPXS
+	91Axy4ZASJfeqx3sie8ZGaeBHYTeAyY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781880745;
-	b=ySxNLlQyCa98li7B8hxlDun534NaUIxcScjvdGGrXmytCUSK3lH8O5vxdrME8C7YX+gZ6N
-	c+iuU0gG1RJTzX5fsyfqFvhA+FGxYZz5tPlYZtUP0vVeIf/Z+cmwkZv1xluel/3bZ25zFB
-	FGhHJGXKE71BMhN9mRp1qXfNzeQJBsk=
+	t=1781880826;
+	b=PNkpdnQrM93Fo7d6cGBTZWGF8ak7chIEIuV4qKQVUjSXI70RCOhA0G3gbNdhv0T9PDQUKc
+	3SXYPo/iDamBxuo5e6a33X6qU4PS1gvIAoTnxcnzOKQ462GckXuVB8lyMHBuT0d7yn1pk7
+	beFFbuKwZ/TuaRh5szqxHuWB/TojNw8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbEofCKD;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63706601E1;
-	Fri, 19 Jun 2026 14:52:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E61F000E9;
-	Fri, 19 Jun 2026 14:52:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 67A2C601E3;
+	Fri, 19 Jun 2026 14:53:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489001F000E9;
+	Fri, 19 Jun 2026 14:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781880744;
-	bh=MMrfiUsFirA1Wml6QpEyIkRNWkxL+MwzDwXxle/2vjY=;
+	s=k20260515; t=1781880826;
+	bh=VrrWV2DRPuCzvFAaTNjpF2YIzw78aeVa0n4wK4sF7ww=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mQv4j3VbDWg8O5taJ9piUSfRU3AjvQi66hID3ksm16xst6HHiz9IzYOBf5fZ8yj/i
-	 px+Tj1KSP09VAvZe6u1uozEvCw0ov85LXVNQvLcJ4X+V6M7WnaDyck3iAzq8dVql8D
-	 gw6+gfB4QzFixuXHlUdJQaz47pQ98pXI/Hp/WTJNY6ZmsS+H9/Q/ujgmEI09i36r5M
-	 PwMCR4zVuD1ws+erSTfQ5nrM/ziXF5Kc6/9xR8UDmYAesiKIRst9hkOn+vvC5WHgfq
-	 jcUN5tenI8D+3Z3Z0I85Y/yQc9qJbyHmHUVhCiyd5QpsKFSG+sfAqwwK0XEx8UMNy0
-	 +gEgu4+0Nz3wQ==
-Message-ID: <92c3a198-98ad-47c3-a5aa-24db52109b06@kernel.org>
-Date: Fri, 19 Jun 2026 16:52:18 +0200
+	b=bbEofCKDBZNY/76Fd3JBNzOpEr/D2ueHYO7uT7JbwW3mXeZQWrYSvJgTCMTlRBagO
+	 GNa7YW4B98+zZIwObh/mpt+hVLobxj831W/PZ5TFNBoL7qUMHybs1zw8GqFN3M5tdT
+	 jaRouZP3fBqLAB4FGsq13CvrK5cCR/O12ohAa9SeSwN/6Argih2w+AekHnWnNlINji
+	 xY5WRDRnJysFscSweC2biKEVIglK/LHvgQD8GQNHx6u9wujWWX29R+UcCJZm9fFBbr
+	 0jOTHJLuGZfU70ZowErRFhZCt+WJsfbgPsFzcT+n6FglPW+gaNpn3r7z+1dXvlDBb/
+	 yNsLKnm2KIMZQ==
+Message-ID: <fbe1e70b-2a33-4db0-b390-3841c1a84522@kernel.org>
+Date: Fri, 19 Jun 2026 16:53:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/11] mm: factor out adjust_range_hwpoison() from
- hugetlbfs
-To: Jane Chu <jane.chu@oracle.com>, akpm@linux-foundation.org
-Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
- brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
- hughd@google.com, baolin.wang@linux.alibaba.com, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, lorenzo@kernel.org, rppt@kernel.org,
- peterx@redhat.com, corbet@lwn.net, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20260617172534.1740152-1-jane.chu@oracle.com>
- <20260617172534.1740152-3-jane.chu@oracle.com>
+Subject: Re: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
+To: Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
+ <DJ9KK3Z7BPYU.2HDB5IVO6Q40@linux.dev> <DJD06ZZOC9IR.33KCFLM7L4267@linux.dev>
+ <DJD0X2R79SVW.1XM7FV4REYCHS@nvidia.com>
+ <DJD12YR8S99G.1I43PSHB77TA2@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260617172534.1740152-3-jane.chu@oracle.com>
+In-Reply-To: <DJD12YR8S99G.1I43PSHB77TA2@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D03AF40002
+X-Stat-Signature: xrqbe967kkon5swh7ck6c8cdejwfzi98
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 003BEC0004
-X-Stat-Signature: 1jiad11cfqo869shsjfdx9gm8uazre15
-X-HE-Tag: 1781880744-950487
-X-HE-Meta: U2FsdGVkX1+1Xk9AGG7UYG2txWltHsESDoG1z96B1KFS/17vc7m9oa8wGcEN4YYR+oXGOShuE4fO9vAfcW6+8BQSXXVLBDNMe26K/jmiYwMspzQi2lA5ZX6r2CQJgnGzV3iEN/zDhVbAxd0D8F5OG5hMI5UChuFYeqOXC4YVqXJin/ZBGdFtTqzzt0cQFCtcI7sE8lzwfnAqwE4dAxWB/PV/mvampK3Bm/J8o5HGUSQtcfQ+Q3opY6h0W28BEfkGfVoqZ/8GlyKbcY24eSyu7lAROt9zyzvASvbVwvPGQVEPhgjUM8Z4CBp9jHCgu/w0jqX2deWRHe4rmTloGfIGHfAWw/FX9KIFyZm6N+Mi33gVO051QESup3pxSxFRLmBQZnx+NWL7nrcXvbEHnuALuarZcjxc4m6IL+jYydhzcfU0bS6KNmqYyDqUWX6VRvY1TcKQiJYDvSIldRbu7rOMkyZEd2IDf2mmjIxvddmjhO9nR+vrQKIMQQvzo5V1C2iBM501N01fj+N9Jg0R+WOVJCCzSp5TncU1Ndnp4vhPo0bBQkb0Bl5Bu0xd9jO33+D2aElXKACEUI/tz0CO+Y4kOI3JKrjGAUdF8CXvKLDGAWskjM/1RTOYaOmwq1nGRTgYKxuDKi4BnNLAP3JUdZL78RMz2xPWmC58PaqvEx8327BrJJTYrRBVFerBui/r3j38GZmyOmqklNMKbrFWQGcJnAlWYXgUxa/9uaScFX+upS0MOpue55JDrpCRGLCl3h1PLdSAcGX2IAgGuDzSCFA1W+evkWzwuyCjV7pk2C59KvRDBSiFu2F1TJdDkko38DAoipUu2yD63A59/DP2P8aoM1LsBx4qkVnjQbrbKFVM5bzisPp+ZUNtzrNx9cb+asAry2uF/etdGEc+MTH+Midsj+H/bkGjjejcvZBOevDStd5Lxp7ZZm8RaW8cJMB8G0KS8PrIxYeMyy9eHT/KvEX
- uPaCzO9r
- cMFSKuQU5tOj/H20jGW4uy8oVvlZpTRHenc39DbcPFV6cezL6Ts+rY7OA7idotcA8e4XRkdPMtMJA/L7s/WhP9YsWFvC3cnPD7sddlsNK5PZEcxIvVqDEy+sOE81zKzpn4Shx00as0A11+POF3gwoH58FP3j+y1E0dOhTB0lLwL0SipMZ0712soEjxGcQpacvxA4wKpIGF4oxYpapw3jpWYA1j8vTRYLYe8yXf3e7OIMhCdsB0z0hN8/5dCNpn0Gke56FUJb/JwZWNbk9wlXmGDL8hlmhNR1XYcQLw+Ghk+wEXPIb9hgo60oTblUwyHn9idx7Moc/0xu5U662Ob44ZgWny0k2jC9N/nk36NnrKj54tF1ZBPWcSsCwydjgJpOLVBiRaSJ3tAuk9qrCcvzTYCjbSgvS9+qRFOz1XB8FXJSKMvEmqmd07l2BOstM0F2uLK+XNgzPu+gcrdPdhn836EUKlJ7VEC8lGkn0/o3Bn+8bLY4=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781880826-643824
+X-HE-Meta: U2FsdGVkX19MYCiMMxXMPvpCPPIIW439F5fl1RnjoFVmLx+/1R62aTy/t/0kp30PRRJolscigr79MS+blqP62SkVq5X5yEsIQlwUHCppoeklJA7nhTxJw6XwDRdTu77FiSZgyLwO42kvj0BhfKKezibfaWls9FHIw/9csUvHEGq2khMuTqjhPYq7b+BAxqC00vPv52KXwxP/Pq//7mFwpoJ7hkcYvA5mGlbUa+WquMbbIE8IcoIRWepL6+zaiKbQGnUbYcV535ChoifkTiOORCUMa6vwBj7qb+0PoVCdgUDG7JDaUBWROo5yG/SkMXpwHMqkhsm0LiGy+xxvaNYkFi1pTrAaGQX73l1dmBQ2UFz9vJMwtB6kAUt5RiVFIm666bQaCnSgt4iOew7NfKKxkhe3azf/2Fk9EZ8MBOEbubQyUBXd1sO7XgSvL06mxHEOCjEdwn3/7/839x1dQ/EL36FiPH7y0zxTa9D/s54InLAMu0HXFpUuuINPaWKHO/h3yAT5wcQbNH+w2DSctpGmEm3ANFVBLj3xDBO73Q4n5DxuWWMA6qnfrjHWDVvcqmmbu2yDOWtc+0UQK2SYKqCWutf/OSk8RgHNgylbPifHy/xuMRIi6KZ7rKUBSiVEZF8BpA+78AVRuTuTwZCbjOpwse/f8fwr/zDaFOeoaqWjympRxTbioDqmBGRjGIqLrRwzwHZRSmzWE0lhzpml/ITGuQumsuBXadWHIg/QhVclHah81MibkFCf5PiImrMkjWWtH+7V9PS02o7UY1kN1SCr7IBxky4sBGPLqbJQpGBaq1teOHXVb4lGUJl/BXW5FAw7JSsaG3z80PnLGN3Tf96vUiE9QuUyRMVkzowcAkMwcIr7YA41H2dYILefJqONczoaweOLwLYTwB/IGgzJsixtMw3H6EeuQQds70Qof2BzKd6QYkOS2R/i8rRA8FqdH84tn/Jf7LbSBVShuTbI4ut
+ Z0Lb73Dh
+ Wc62Xlmm2cOuwevR6XcAflcmU7cqDy+9MLo9clt0birjQbck6rgtp56OF7YPAHbppkhgEMmshSg40GWDwauXgMh/XGGELuaQ2nj19wlzmCThLzrKOa9uElQ+KHJpkUc+aVaZfVXpakska+5JyNQ5Fi/jtOI+Jkytm5r78nRH97oT+LBQ5FnBCMTtr31TT6wJn5+H9V7V3pv9169RPtqf5/4Sw+Bkh8s/T2x56KDHEzrII9am2jeLKQc1S5bjYbEAU/TzH5dpWW7mQtUe4aBHLrp4bzNjTxfgjxxpafpHiyBHD1fY+4V4d4wQTP/vDNK1nRNNNBEUm8L9pqAk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,46 +144,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/17/26 19:25, Jane Chu wrote:
-> The functionality and implementation of adjust_range_hwpoison() is
-> generic, so factor it out and make it ready for generic use.
+On 6/19/26 14:34, Brendan Jackman wrote:
+> On Fri Jun 19, 2026 at 12:27 PM UTC, Zi Yan wrote:
+>> On Fri Jun 19, 2026 at 7:53 AM EDT, Brendan Jackman wrote:
+>>>
+>>> Hi Andrew,
+>>>
+>>> This one didn't make it into any of the latest mm-* branches, is
+>>> anything blocked here?
+>>
+>> It is in the quiet period, no patch will be picked up until -rc1 is
+>> out. If yours is not picked up then, feel free to resend it.
 > 
-> [1] https://lore.kernel.org/linux-mm/aeZwAz6PcdlqSnJ2@casper.infradead.org/
+> Ah, I thought mm-unstable didn't care about merge windows. It got
+> updated 2 days ago, but now I realise that's probably just coz Andrew
+> was updating mm-stable and then rebased onto it?
 > 
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> ---
+> Thanks for clarifying.
 
-[...]
-
-> -/*
-> - * Check if a given raw @page is HWPOISON in a folio of any kind
-> - */
-> -bool is_raw_hwpoison_page_in_folio(struct page *page);
-> -
->  static inline unsigned long huge_page_mask_align(struct file *file)
->  {
->  	return PAGE_MASK & ~huge_page_mask(hstate_file(file));
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 4e636647100c..a27ce4ad6247 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2753,6 +2753,37 @@ static void filemap_end_dropbehind_read(struct folio *folio)
->  	}
->  }
->  
-> +/**
-> + * adjust_range_hwpoison - adjust clean readable range to avoid hwpoison.
-> + * @folio: folio that contains hwpoison(s).
-> + * @offset: bytes into the folio where subsequent read starts.
-> + * @bytes: number of bytes wish to read.
-> + *
-> + * Return: adjusted total number of bytes starting off @offset that can be
-
-s/off/at/ ?
-
-
-Apart from that, lgtm
+We're targeting for mm-unstable to only have material that is already upstream
+at the end of the merge window.
 
 -- 
 Cheers,
