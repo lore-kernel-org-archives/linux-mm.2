@@ -4,146 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE865CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:51:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5AF1CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:53:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C224D6B0088; Fri, 19 Jun 2026 08:51:54 -0400 (EDT)
+	id 93F236B008C; Fri, 19 Jun 2026 08:53:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9E26B008A; Fri, 19 Jun 2026 08:51:54 -0400 (EDT)
+	id 9176D6B0092; Fri, 19 Jun 2026 08:53:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE8F56B008C; Fri, 19 Jun 2026 08:51:54 -0400 (EDT)
+	id 853FB6B0093; Fri, 19 Jun 2026 08:53:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 84C3E6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:51:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21235120421
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:51:54 +0000 (UTC)
-X-FDA: 84896649348.26.5F28DA8
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1431E18000B
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:51:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 565696B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:53:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1A83C06DC
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:53:11 +0000 (UTC)
+X-FDA: 84896652582.08.0160DA5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D4736180006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:53:09 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WRQR3g80;
-	spf=pass (imf16.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=arm.com header.s=foss header.b=LTCcKpXW;
+	spf=pass (imf16.hostedemail.com: domain of aishwarya.rambhadran@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=aishwarya.rambhadran@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781873590;
+	b=1k6zd/HxwASuvtawV4oQ9uL6XHFOzfkRVfuty3NrfcVrbNUVRKwmCD4+U4A8XIoXoL8Xml
+	ETE57Qh/s0SOSfN7S4qnX/tnblb3tM0Y+9CNoWOQd1w6tBVMo5fLgrZ+u/8ttfLZzgRHTQ
+	ds7VHNNHVCdBTzwR3XWTWVn0RDs+JlQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LTCcKpXW;
+	spf=pass (imf16.hostedemail.com: domain of aishwarya.rambhadran@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=aishwarya.rambhadran@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781873512;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781873590;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-	b=O/np1VDxRAsZdLoLUB4MzPo9ct7DidnvHnJPoWOiGGnAj/v8oiG4EF/wDjxuHdLXDg7aBy
-	+bYBe3zR6Eb2xpnATOoX0UKht8IIY+oGLPMRJAqY9Sruy0Odv0TeCauWJU1Wj3cKWpFq+4
-	xgB1jBSVgO3JM8Q7Scx3LvMcEEEzOYc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781873512;
-	b=xiUtE1WOR+KjCQ6h4NMJX3peSNm4f6YEDoDwQDegu90Ca+McaMdzgAP7hG1BO1Pi2ks5Qa
-	FKC2foTZKcYHeFJ1n/VkgSOz/Aj/P/HUEaRsRVAgEG0Yu8Ht3EOo2djIPGbxwnyP7dVNc/
-	hZweCNooNEbKqFDiAtSvJt2FGWs03VQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WRQR3g80;
-	spf=pass (imf16.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=julianbraha@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4903d730b1fso27193685e9.2
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781873510; x=1782478310; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=WRQR3g80iiim4BJkOhv70HtRO6gjZMt6Y5dilA5Hy0xwiuFqXKFRgKqfNaXBQkxTx+
-         TG5ltiEZEsYVu3MqezbC990LvO8z1SumF81Tpt43Mq8TPsVCvLDWGWDRRgcESWtWfJMA
-         43hBdiQAAKJUvQcsxlYceDFYW+Pc8RgXIuSPlrK5aFn7Be/Q0Ml3deYkTHCe3tZkYGI6
-         Nb82SSoo8prR2IpdT9xTMeR12Ys6W1NTtBRgPzZE9ZwrIhxciuSL6igNOKmO23GIq+fG
-         jZ8CAt6g6NRncwpEVRbHX5kyOtKA+GgB2DqHdtrvcMVLAy8uAxTzEw5hyo8C0E7DhgJX
-         +SYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781873510; x=1782478310;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=VkpJKFIiUP+0ASRpwKh+aJzqdw4Jy1Uka6ibUvM4B8H0h789WatyLXPekcQ9oRBRCz
-         mVkho6N3H9kMq5BxErP7b9eJSOhFaUcgtz95yZaRK9t1bMuMsy2HuULt/+GgfCxaPoB4
-         CMPKXz7/B6VN4SK9VeiY/Jm+ZTreS7EQaMbaceCs+uY6VxhfE4QgcfBsI1JiRgRjz/Y5
-         BEqN7c/9lsYDfGPyBec7EQMpU7wT+W71uzt9RyY3En7LY1O8O4nuU22yVZEqnLvCkn1t
-         1VPaB+isjG9l5nZxkwvxuI5QKZH23OcgViJoSLiQ9k4Ss24Hi4vStjGvtf+d8oFIGfKv
-         LShQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9pz+PilPbDfR40MASFOmQxUUxmsuvHCU8/9DuwQnaXmzRGjqme1Vab/3OZuaqeBoe1F2Q1zZhDmA==@kvack.org
-X-Gm-Message-State: AOJu0YxwmcXhKATlauic23QUPs7tjbtbWuERFpO7CYyKvvb6cg+cNo/c
-	bGIsMocm79rOEnSQCdHaqqa/I1hFu8fcEtbqnht3fQGxVGCJsfZHdwE4
-X-Gm-Gg: AfdE7cmRMmokCuW6iQ9/Kfh//WDhmrBs4kZBV8z5/hwLu/YTjDEF92+m91uTX6OXgo1
-	kxth/Zc7iz/x0Lzgv53Os1IHz3NeTmv1gWLHlKH6Vd8t1v8dk0lYOwWuiuXiqIb161FW9sPc/JD
-	cAuOYSiPisIYoAAZD5yFq0ZEinwrBmXNkDo42DaRdCcnrxLOERAkTwxJ8KYTVjV2r8w6iFVrl/2
-	jFd2JE3ft7n+JunyZMCrMETAyddPllm3K719hNopuXXZdV3rx3bSrKQQMeRE8Ci4MuWEAMXy2bv
-	/ezjioe1UmCRDPSgH1A+mhfXIIvORDDIKeIE91ZpnN0LbHLm7Z6rd0FrmMJpDdfDkEMUwJYuSHH
-	7Tnsn5ZQyDoTDsYW8EzW5HDp08uXDj58NwTCN7nw7AmEqfLDa2Gr/V4JXJWrTqnMUtlouPPfJ7w
-	hkQwCoBxr3R9S6BrgqhioYMdMjB6AJqcYnepkIQzWDhVYiAAw6f44ouakJ8loejy1uJ7te++CuK
-	4reijA=
-X-Received: by 2002:a05:600c:8b10:b0:490:b00c:8e6a with SMTP id 5b1f17b1804b1-4923f58988dmr65892965e9.28.1781873510164;
-        Fri, 19 Jun 2026 05:51:50 -0700 (PDT)
-Received: from [10.128.11.42] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650c115fd8sm7984157f8f.35.2026.06.19.05.51.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 05:51:48 -0700 (PDT)
-Message-ID: <8e53844c-f2f8-4a4b-bf72-f3140c170d43@gmail.com>
-Date: Fri, 19 Jun 2026 13:51:45 +0100
+	bh=wdGR1FtrAmlzuXoggJedTkST7Tj8mLunjMxKeLgX/nI=;
+	b=uUQrRE5SLypX6JYpQVieIEXuv46Mee16TyZ1N8Ar9CHzUrQN9h0IVniZue+qa21jTEdbZR
+	nZk0FXXgWMoZGO5hDTong0WuPsvED3d5qrkuUpe4hVBVSol043uWV0p42zDsW42sA6XAnO
+	kLDGLD4R93m+QWwAOUfjgYBeSv79v/o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F5B5339;
+	Fri, 19 Jun 2026 05:53:04 -0700 (PDT)
+Received: from [10.163.166.1] (unknown [10.163.166.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA8CB3F62B;
+	Fri, 19 Jun 2026 05:53:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781873588; bh=ZoYK/NfeRfrHjjGWAH0i3x+/+ZWvMjwFdDPoyC/BlfI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LTCcKpXWRTWAIFxamoizT7xDCcTR7bQKWKNZb8mQcqZBOHyNXFy6XRDMvhiJzf7NF
+	 vjuI2ht2lUlzVSjiuT212vEyL0HT8WwjdvEcdcgKfJW2L7z9d24FytiaegrlOFOSIC
+	 m4V68+uHN8IUY01HLtBscTTRGmVsbQo+cLN6nUd4=
+Message-ID: <15973e53-5774-428c-96c4-675eea600788@arm.com>
+Date: Fri, 19 Jun 2026 18:23:01 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
+Subject: [REGRESSION] [PATCH v2 1/2] mm: vmalloc: streamline vmalloc memory
+ accounting
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <20260223160147.3792777-1-hannes@cmpxchg.org>
 Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
+From: Aishwarya Rambhadran <aishwarya.rambhadran@arm.com>
+In-Reply-To: <20260223160147.3792777-1-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1431E18000B
-X-Stat-Signature: d8xk36uwicoe17dh3hims9q83wbozthz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781873511-984888
-X-HE-Meta: U2FsdGVkX1/RwS/RDpe7ngYk/NHXS5cfZKwH2+/xRkgjTJoJ8+kkX9kcU8ga5YMnJaCk0pmSxN/w0bcSSfuLkefa33dxVig8zZb+t6OXNhDllHM3a+eaXJNhEpKJJNQHqLvdbIx/JabddBbaj56qUfGkNt3Wf6rIY80VI3fgjt4DFYOb8dD3+WDpDL0rGsxASJqaqjY/9VGs3qJqj0aQeKKvSPleRQliyeQz/zDdcJCRKNIdjl37xCG7r+/UL/IDqp351xIbj6yaG9VZka3tz7XydbW5P2B0vmuSSrnK3pHq1OhASBz8CrrrBkgmwqOfAjK4mNxK9w4zbk9UuB7Q/ZLQcYJNFvH0bZ1qW6FegaXDBfwv7Y4K3tGe0obyT7jTAA5bjNOg8m63QIT+viqoKmvMNzQUYKe5308jAw+GvWKnRR3mbLT8MwarZKGJkeI53C2nNK3KDqAM/T3QacRAzwKTr8+1myDwGJquqQnrEFm6Og5+uGhct5ca9uwmWkggqtK9unA3tlPnuodwUtu6xIz5vNyoX68lG+6CyXeV90k28Ti45/5GMwwDMZw6nSMDG0P1jfu4UmLpYVmX05IlaAohibcW+vNwrzYvZ32I1q8m/HWOgse/j3F62un1Ehl5OgbWnm4gKGo3DwZacGuRF52DUldd/7Pt4SRRbj2ZY0H0SG2RY7SlBHtneGgxr5hQggqskx7AxFmyO7/ZABXOrTLUGD+WuwYh6lYffCoIz4ciMswYEm7lmKFa0ysa5C/XEseFc1bk5n0zVOXeEj/On/r+Fn/DgVp5dbM28gw7g5NW9evt6TF8hXNGn87HS0f7HQ9dR3MWgzfrcl26oyyA5KZPWoGsjoHbhkjGAQlgNn5HvKjAAu7/eEjtuuDD2EmRWdqfNowf7ZFg69ZhJLSX4srnJFNyQPMSILp0C7B+gJjys8zcSLrPXTMzxpzcutZASzz0IMt42sn2BG7tEH9
- h/7Va6MK
- gImJeUJDvByKbdvP++FF5iK95MybgTcLwGycD57+czidlb5wW2PFZH4LFROFWvFPC+Zg0j+8ThBGBL+/APm+XWN2JM7aocdP7WtHSvYtw3NPpNmAHv2ZSozbr7k7JeZthWCTiqUzuNDoAfyYzLIHWfuwWloUc6m6eNRPzWRJOzoOMzdIa4B/uM1zK0G4/Lo2s59MHNVllIUexXRwiXlnm9WPOoqwutoqEpDLk1YLsdr4lfeMAcNDWar6Uj0fKIleAZR15YeQ21xicnMLDjxsXYND4A3dStsO3PFCTEo8StcBvivvJVTMWK/O+RaofDjRAcCRNyh7LTRsTJt4PTVRNetgsw6/dYd78+hLNaPdK/kI8hpV67avBzmlGXRbRgZH6PVyDDhKkjic2tlgfMCnplfluuVd2kd1qunxq0eo9XZ8tXw0edLEHkUFCyoA2Jro7gIEv4R4ND2Iy74rFWwIX3kj0xyA0rfCS7GcnZAnn1BEPXE1QdVU4G89Qd/gc4bANx2Y9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4736180006
+X-Stat-Signature: wgsi6k5skmypoo7huf8xoxfcsrhbpiya
+X-HE-Tag: 1781873589-266538
+X-HE-Meta: U2FsdGVkX18XoSyl1nKBerhkplA4eGccwIEu+9G5P7Q5aggcZ3k5mO60vWat49WHihMZarBg7D1G5gjIUtgJASJMIc9NJZF+NTC846QvbMRqEjsOKXa89yZAtAWOl8+63+jU/QanHvjNCeXImOSBZ5tEhF9H18JyPtAj4HNuBUPhBq2YurgaW2aV4pFo2FO1dHeVsGuYa46S4b14dE5SkJT0c0opt9pm0gpH9J1zD3qhWjq9jkck4j/atvscF4lL2QHLQOFCkkANQDfr6S5UN+cdlIQLGxczf7DU49aIcd4xXkXNh0tq1mmxMgA78Qk0PGMBZUPxeFcgSM3Vc+6OyDQAb7AQzKk8ibGLNNi0SZvukD1LzqEw/1L8Kf2eDvWoQDHHstzZ4k0z7TR6xcOyuk4iRz+sHCD0qytFHsPYdKijLW2Q1yy+YggEcl+xEbNcCqzPvvPvw/Bq0VNG8gPCV+5/u3rDggEzNl5lD0nCXoaqBNnUCsvSh8x29g6+efUQKQuAkobm6v2533ebdA3zyo466t1bVNbsuSsQMuL5o5bsQAoDtVzE7V+kDIR3ftY4ev+sbY+TJZhmL76yaTU8hp6RCOkCJab3let1uJzi4e7kCm+QxNGWmkCZTjPkwwoo1gjItBEsiuBQxwjq9i3Tbs1ecd0iOKcasji6Lfir3EYg7xiKAP+vAAqtDjiIAs6BxTUW2N6D1k1DgyiEC4iMeEN5XP1XnDqjg7KFfcuYJ9sTatA8Zqw88Brnw8dKmTRP98dDjoGADQHgw319o3bVSDWElqytun8cOC1SZgNLtfndD4FHEAo/NJ0+w8JS/k0TTpx6J1KKL+H5gaf/m0Yj4/OQxJHETPpWFzoHhknQCE5p96q8iZVyDh4hblejQEgvFDIskKSvX/0ENs+iYUioj4MLJ1GT1Cy6/TLcaYS6w4+K/b+iAjmrAT99OtR/1LDXUx9WfpMxSfUNDhF6BYI
+ HRvy7txA
+ dAIUUiRmNaP4UO8VC+Kl2wA3URK8mFZLruxJ64dUAJq5xe/xcq40VoKZQLni8Gy+u+6XZZxMXyfUOL+58En1cJ1P5SgRBthEDccGmJfldNNfub8l/xWzee3J/xJ0EutiY9lC6wDYA5VunoAH2aO+l6cfJkJlsTHmYuLPVXBEBjlWQ+LBYd41TGxPMcDHKrctvff5jFJFjARRyTaYRjNG3aZMceOU3U0zNTbiyHo4Zmx6LPoWA1GbdylygzgDa61ScBJTKWPMZyhbkt9OJEv+3HiK31lP0ZasLj2/hfYUEwBfpDXB51yDsPrvOSzblSjBthmPWddFeyKEnDv4lr1dprEVr40+fLRZEX/hDfJiffknYuBnO27KAzzucqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,18 +96,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ackerley,
+Hi Johannes,
 
-On 6/19/26 01:31, Ackerley Tng via B4 Relay wrote:
+We have observed kernel performance regressions in vmalloc benchmarks
+when comparing v7.0 mainline results against later releases in the v7.1
+cycle.
+The regressions were detected by Fastpath, our automated kernel
+performance benchmark and regression tracking framework.
+Independent bisections on multiple arm64 systems consistently
+identify this patch as the root cause. The regressions are reproducible
+on both AWS Graviton3 & AmpereOne systems.
 
->  config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+Fastpath bisection details :
+Benchmark - micromm/vmalloc
+Test - fix_size_alloc_test: p:512, h:1, l:100000
+Good Kernel - v7.0
+Bad Kernel - v7.1-rc4
 
-Sorry for the style nitpick, but could you keep the type and prompt as
-the first attribute in the Kconfig option definition (like the other
-options do)?
+The measured regression for the above test is approximately 32.5%
+on AWS Graviton3. Similar regressions are observed across multiple
+tests within the vmalloc benchmark suite as well as on AmpereOne.
 
-- Julian Braha
+Below given are the performance benchmark results of vmalloc
+suite generated by Fastpath Tool, for v7.1 kernel version relative to
+the base version v7.0, executed on the AWS Graviton3 SUT. Label (R)
+mean statistically significant regression, where "statistically 
+significant"
+means the 95% confidence intervals do not overlap.
+
+v7.0 (base) | v7.1
+-------------------------------------------------------------------
+fix_align_alloc_test: p:1, h:0, l:500000
+895106.67 | (R) -10.73%
+
+fix_size_alloc_test: p:1, h:0, l:500000
+336785.00 | (R) -7.31%
+
+fix_size_alloc_test: p:4, h:0, l:500000
+529652.83 | (R) -13.11%
+
+fix_size_alloc_test: p:16, h:0, l:500000
+1043412.50 | (R) -21.92%
+
+fix_size_alloc_test: p:16, h:1, l:500000
+1015795.83 | (R) -22.02%
+
+fix_size_alloc_test: p:64, h:0, l:100000
+643074.33 | (R) -25.91%
+
+fix_size_alloc_test: p:64, h:1, l:100000
+607604.00 | (R) -27.31%
+
+fix_size_alloc_test: p:256, h:0, l:100000
+2367906.50 | (R) -27.67%
+
+fix_size_alloc_test: p:256, h:1, l:100000
+2275464.67 | (R) -28.66%
+
+fix_size_alloc_test: p:512, h:0, l:100000
+4696069.17 | (R) -28.15%
+
+fix_size_alloc_test: p:512, h:1, l:100000
+3767292.00 | (R) -32.65%
+
+full_fit_alloc_test: p:1, h:0, l:500000
+493884.17 | (R) -12.38%
+
+kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000
+354542.83 | -2.31%
+
+kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000
+358082.83 | -1.53%
+
+long_busy_list_alloc_test: p:1, h:0, l:500000
+5490101.33 | (R) -25.85%
+
+pcpu_alloc_test: p:1, h:0, l:500000
+193634.00 | -1.53%
+
+random_size_align_alloc_test: p:1, h:0, l:500000
+1200206.83 | (R) -11.88%
+
+random_size_alloc_test: p:1, h:0, l:500000
+2875736.33 | (R) -24.41%
+
+vm_map_ram_test: p:1, h:0, l:500000
+81204.33 | -0.28%
+-------------------------------------------------------------------
+
+The regression signal appears stable across repeated runs.
+Have you seen similar effects before, or is there an expected
+behavioral change associated with the conversion from the
+custom atomic accounting to vmstat counters that could
+explain this result ?
+
+We would be happy to provide additional performance data,
+kernel configurations or any other details if useful.
+
+Thank you.
+Aishwarya Rambhadran
+
+On 23/02/26 9:31 PM, Johannes Weiner wrote:
+> Use a vmstat counter instead of a custom, open-coded atomic. This has
+> the added benefit of making the data available per-node, and prepares
+> for cleaning up the memcg accounting as well.
+>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>   fs/proc/meminfo.c       |  3 ++-
+>   include/linux/mmzone.h  |  1 +
+>   include/linux/vmalloc.h |  3 ---
+>   mm/vmalloc.c            | 19 ++++++++++---------
+>   mm/vmstat.c             |  1 +
+>   5 files changed, 14 insertions(+), 13 deletions(-)
+>
+> V2:
+> - Fix mod_node_page_state() pgdat argument (Shakeel)
+>
+> diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+> index a458f1e112fd..549793f44726 100644
+> --- a/fs/proc/meminfo.c
+> +++ b/fs/proc/meminfo.c
+> @@ -126,7 +126,8 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+>   	show_val_kb(m, "Committed_AS:   ", committed);
+>   	seq_printf(m, "VmallocTotal:   %8lu kB\n",
+>   		   (unsigned long)VMALLOC_TOTAL >> 10);
+> -	show_val_kb(m, "VmallocUsed:    ", vmalloc_nr_pages());
+> +	show_val_kb(m, "VmallocUsed:    ",
+> +		    global_node_page_state(NR_VMALLOC));
+>   	show_val_kb(m, "VmallocChunk:   ", 0ul);
+>   	show_val_kb(m, "Percpu:         ", pcpu_nr_pages());
+>   
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index fc5d6c88d2f0..64df797d45c6 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -220,6 +220,7 @@ enum node_stat_item {
+>   	NR_KERNEL_MISC_RECLAIMABLE,	/* reclaimable non-slab kernel pages */
+>   	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
+>   	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
+> +	NR_VMALLOC,
+>   	NR_KERNEL_STACK_KB,	/* measured in KiB */
+>   #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
+>   	NR_KERNEL_SCS_KB,	/* measured in KiB */
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index e8e94f90d686..3b02c0c6b371 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -286,8 +286,6 @@ int unregister_vmap_purge_notifier(struct notifier_block *nb);
+>   #ifdef CONFIG_MMU
+>   #define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
+>   
+> -unsigned long vmalloc_nr_pages(void);
+> -
+>   int vm_area_map_pages(struct vm_struct *area, unsigned long start,
+>   		      unsigned long end, struct page **pages);
+>   void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
+> @@ -304,7 +302,6 @@ static inline void set_vm_flush_reset_perms(void *addr)
+>   #else  /* !CONFIG_MMU */
+>   #define VMALLOC_TOTAL 0UL
+>   
+> -static inline unsigned long vmalloc_nr_pages(void) { return 0; }
+>   static inline void set_vm_flush_reset_perms(void *addr) {}
+>   #endif /* CONFIG_MMU */
+>   
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index e286c2d2068c..a5fc7795aafd 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -1063,14 +1063,8 @@ static BLOCKING_NOTIFIER_HEAD(vmap_notify_list);
+>   static void drain_vmap_area_work(struct work_struct *work);
+>   static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+>   
+> -static __cacheline_aligned_in_smp atomic_long_t nr_vmalloc_pages;
+>   static __cacheline_aligned_in_smp atomic_long_t vmap_lazy_nr;
+>   
+> -unsigned long vmalloc_nr_pages(void)
+> -{
+> -	return atomic_long_read(&nr_vmalloc_pages);
+> -}
+> -
+>   static struct vmap_area *__find_vmap_area(unsigned long addr, struct rb_root *root)
+>   {
+>   	struct rb_node *n = root->rb_node;
+> @@ -3463,11 +3457,11 @@ void vfree(const void *addr)
+>   		 * High-order allocs for huge vmallocs are split, so
+>   		 * can be freed as an array of order-0 allocations
+>   		 */
+> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
+> +			dec_node_page_state(page, NR_VMALLOC);
+>   		__free_page(page);
+>   		cond_resched();
+>   	}
+> -	if (!(vm->flags & VM_MAP_PUT_PAGES))
+> -		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
+>   	kvfree(vm->pages);
+>   	kfree(vm);
+>   }
+> @@ -3655,6 +3649,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>   			continue;
+>   		}
+>   
+> +		mod_node_page_state(page_pgdat(page), NR_VMALLOC, 1 << large_order);
+> +
+>   		split_page(page, large_order);
+>   		for (i = 0; i < (1U << large_order); i++)
+>   			pages[nr_allocated + i] = page + i;
+> @@ -3675,6 +3671,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>   	if (!order) {
+>   		while (nr_allocated < nr_pages) {
+>   			unsigned int nr, nr_pages_request;
+> +			int i;
+>   
+>   			/*
+>   			 * A maximum allowed request is hard-coded and is 100
+> @@ -3698,6 +3695,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>   							nr_pages_request,
+>   							pages + nr_allocated);
+>   
+> +			for (i = nr_allocated; i < nr_allocated + nr; i++)
+> +				inc_node_page_state(pages[i], NR_VMALLOC);
+> +
+>   			nr_allocated += nr;
+>   
+>   			/*
+> @@ -3722,6 +3722,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>   		if (unlikely(!page))
+>   			break;
+>   
+> +		mod_node_page_state(page_pgdat(page), NR_VMALLOC, 1 << order);
+> +
+>   		/*
+>   		 * High-order allocations must be able to be treated as
+>   		 * independent small pages by callers (as they can with
+> @@ -3864,7 +3866,6 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>   			vmalloc_gfp_adjust(gfp_mask, page_order), node,
+>   			page_order, nr_small_pages, area->pages);
+>   
+> -	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
+>   	/* All pages of vm should be charged to same memcg, so use first one. */
+>   	if (gfp_mask & __GFP_ACCOUNT && area->nr_pages)
+>   		mod_memcg_page_state(area->pages[0], MEMCG_VMALLOC,
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index d6e814c82952..bc199c7cd07b 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -1270,6 +1270,7 @@ const char * const vmstat_text[] = {
+>   	[I(NR_KERNEL_MISC_RECLAIMABLE)]		= "nr_kernel_misc_reclaimable",
+>   	[I(NR_FOLL_PIN_ACQUIRED)]		= "nr_foll_pin_acquired",
+>   	[I(NR_FOLL_PIN_RELEASED)]		= "nr_foll_pin_released",
+> +	[I(NR_VMALLOC)]				= "nr_vmalloc",
+>   	[I(NR_KERNEL_STACK_KB)]			= "nr_kernel_stack",
+>   #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
+>   	[I(NR_KERNEL_SCS_KB)]			= "nr_shadow_call_stack",
+
 
