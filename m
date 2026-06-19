@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23489CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C48CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12E926B0088; Fri, 19 Jun 2026 08:19:34 -0400 (EDT)
+	id CA1F06B0088; Fri, 19 Jun 2026 08:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DF806B008A; Fri, 19 Jun 2026 08:19:34 -0400 (EDT)
+	id C52626B008A; Fri, 19 Jun 2026 08:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F128D6B008C; Fri, 19 Jun 2026 08:19:33 -0400 (EDT)
+	id B1A6F6B008C; Fri, 19 Jun 2026 08:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C421E6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:19:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43524C1DE0
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:19:33 +0000 (UTC)
-X-FDA: 84896567826.11.E200926
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6A55A20006
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:19:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SYHIcvZi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7690B6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:20:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB93CC1DAF
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:20:25 +0000 (UTC)
+X-FDA: 84896570010.01.43C73E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1394F14000F
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:20:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5J494y;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781871571;
+	s=arc-20220608; t=1781871624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dLm3urJYs5AqA6zRwvG9Uk+mzQxTsxzJze3iYFghqEc=;
-	b=EVpXCjwrtBFexuiObDeqOij80jBeZIs3IOThQID0B0dXdMzJYRuKHhbj1V0w6kXgErtQcd
-	ypz3e1/zI1YGN+AeXU+f40skRWRhysdr3or1Mqep5sGG26jqdDfgALgKNWdM8q4hWknWoz
-	mvQdCBmYYD1XqfR4RX6nhJS00QsUHE0=
+	bh=dsf7zQ2rniKbmb14SUZKUUHsmi2Ftb0lXqoOWzVTT2o=;
+	b=hN60B6MhUVcqrfxAGVEIQ+xz7I2kTiew7DSwfLKdekGW6PGq0ajlmF56cqfqLsbS4l8qWB
+	Ev63Zao3QPRZ1L6Jxd00YQtV62MGDpq7t7JDvkwr1XTtRciFT/DNTqQNANGy88d7bs270b
+	cqVqeUhO+XJnIZSootCVhRU2nxqrZpE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781871571;
-	b=0wbi63d/2dBkkuKoyLmqK5RYqk6mM+CR7OqKc/12wDI5dIbHATZIxkDhhZAB/q42BPXkdQ
-	zqZhoAoI1g3S319UZ5QGXeU73EJhnnACdkfQfjuK2NVHdNpoNgsIQvvz9kaO2FkWC8Fsfc
-	ajreVNBOZzctWn89b59DfTjg7mzyeUk=
+	t=1781871624;
+	b=w2mXADCFwZFoh+5PZ1bKu3NL0pnsSH7hi2F5ZvpwHC6LC1V7SIosque6tm7IJK9f1UR55b
+	Cd8m1DgOh3oKPQxWpamCN4IefF8AOIzECV7ifURbAFM67CpRkGkBYn7IPfk3ea94eXL/jG
+	NvXTjBHSTovueeMWc5FS06DyY8WHnac=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SYHIcvZi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781871569;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dLm3urJYs5AqA6zRwvG9Uk+mzQxTsxzJze3iYFghqEc=;
-	b=SYHIcvZiwt9Zl68PpyP3bg+XFvc+XdLp7zeGn6eskBJ+tAdJdOUp/LdciSnR683a5vNCDj
-	pFiY0QDo9Ns9Nh46Bko1USgKKqh2jJQtbIUeVp7zhhi9qj3NPju/qYoxadx8g5rbBm+By9
-	CT8eI/4HA8WsjAE7Vsvq1yXMAM86iPE=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	balbirs@nvidia.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Fri, 19 Jun 2026 20:19:09 +0800
-Message-Id: <20260619121909.90510-1-lance.yang@linux.dev>
-In-Reply-To: <20260619023025.vqx2dsitxffuuwh3@master>
-References: <20260619023025.vqx2dsitxffuuwh3@master>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5J494y;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F17943618;
+	Fri, 19 Jun 2026 12:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085AC1F000E9;
+	Fri, 19 Jun 2026 12:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781871623;
+	bh=dsf7zQ2rniKbmb14SUZKUUHsmi2Ftb0lXqoOWzVTT2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Gs5J494yuNOjSJLbLl7+/OO24jmnyeJWgNDRNCw3coWm+OclWeVzjjvNc0W0y1Y90
+	 mMHPFWACoxI82HoMQfQ/zR3RBE3dlx1Nt/9ef4P1+6+rz3BImkpu7rS/T6vP4jB8lL
+	 SG78iToX54XWE8t04tfVNOxyY1porp54yRFCjtKHWHSes8Toj7jt0ewNsd+/ghZ440
+	 kIPhBMVYKaTf4JOOjT+uqt3b774UUGSmnUNjpenQKhS0yo+zl8RuxoXRo7ufgHh5My
+	 76VjEL59ScrijkixFkkWUAFF0NQlQ8jNVVuRS4CFCdLWY6JzJy0qeAfKaQ4nGsdSaQ
+	 A1z1u2jMbcQ9g==
+Date: Fri, 19 Jun 2026 13:20:16 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH 3/3] mm: read remote memory without the mmap lock where
+ possible
+Message-ID: <ajUpv7RBMc1jigW9@lucifer>
+References: <20260616190300.1509639-1-riel@surriel.com>
+ <20260616190300.1509639-4-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616190300.1509639-4-riel@surriel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6A55A20006
-X-Stat-Signature: g5djxut7erkuogzjr6p6ag3z638rp5eu
-X-HE-Tag: 1781871571-768529
-X-HE-Meta: U2FsdGVkX1/Z6evbeQXcVZUvBcW6aZDIdstEyXqhL1DVtdNamoNuMDkaiaIONUV7p+LQ4jm/7auEzfbcADwVHJ/UFJzvP8d18w7W5aUJca8YVP9kOuP/lo05EPZ2rjkEkgqiM0moz1HqV395BVKULTz61SbxO0i9G6Te7LxqNsmfuUbmMAcnDMa7NrQ94mo09BaON8hdyQdSOUoE8xeggmU2ymZvOC9tG24U9YzKPaBS1spMFocXtEDZiF3pP2uzf8drU7x4UWkoHUq8XRSDEPHheMDwe52GyommzXCp9mNCKYXFY+I900LI7iohyjVICM+UkfWPFUBsX0wX7SLV+SFZ8MI64FkAF0QazIvuSv6w2tSlRHIHL0nRjzHii26SI0A0cuMnzBE2zqADOxFeDLqaWX/8Kbb6CjB6a3aCCwPqvrhhTlw4dUfhFU1BOcnYy4Cm6w2RdCuUGwNxYrjWITDNxc0UrIawOGLXrz0CWIcvH6dXYThb9AxQcxwNMKBRseRw2VnVIlQYfoDhOh2PnILkadq3k8+r1JlQjGZFw+suTkr/FmPRdoGbH5YALS8LiZq7oe954QE7xb/UALmnBmqlZYMwGsrdMohh5VuTEpDLDvloIz5wj0Yc490OBsR+CoW1j4S45B2QTcXsie6ISdWxwhw6fOH2F4FS5OD4JtncyzAGEZsLynD34T2R5g92BYAFqUm/MBEwflawa6k6LPGoHM3VaNlfOfBvOQjjIMQKfqpFMmXdE9uMNzN3ALj1m+yJFpT4+mGRP94AQZEbjSRprx1Z8IiQMO/BINFN1Om1FzdoGwNg29EBRdmSZwv9Dr7dP+keRB0VETdbammjfLy8YorB3oJmIJcnREudra6Kck0nv99ODoRw49PSsKgwCmDozuN+gLkPXWfAeR+0zab/7dMbIY+yEemSSMV3xZL5zP331pdySV9UbDUJkyoHHtkXAvbeZX9atlsuh+S
- MADBMrFL
- vZz3rg0+FKgEppmwFlmD1AdUc0kCvy2N/reQvZ6laYKSOjTVjE1QtbOy6VsfJdBHEP74Xl22OgLh8xF74iqWsA3Sehlmn/dEvj6S+nA3iTCmi1pOYkDsbaFgukS8BU8Q5l2118wFqDPdZa/XPbi3OqmS3YZ0i/71z2YrY67NWQn1BmCDq3VT4wfZQzkliOUfWqkViwr7QY5/NnhfzAJsWgicJlEVe3k23YyjLQp1U0TnGQ0/z7CKEfvshNAwAmU+HNOk6g67jlp0uVXmXp0Vc8/pgV+8iSBH3zRgeE0CKOOEfq37wIU7agaz+CWvRmVstr0+YRuNoUNu7Avgxy7TNyyEcp4RGqfpXTMBfGs6VsKb3TCU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1394F14000F
+X-Stat-Signature: excy9gdw353w5zpog769ewt5teskpnwt
+X-HE-Tag: 1781871623-21977
+X-HE-Meta: U2FsdGVkX1/0hTZdpVazOD2oud4/3+DF4aNRL0lsrFo5eUR24kxnLsOWlSrPT7yLAT72LWj8bn4LwdpEpN4QZzCGgBt/1MkRAShqEghyW0A4cfwHw9z8O+WhDSDbkLWtK7S1DT45TdM+sYfpWKkz9gfTAmYO+Z7wlNFV3dJxRfCKDkoGSeYcxWgrwh41M1IcI0+FcL30Oz+RDxl1XqpvfMUnSHhqcNj7CBUU/eKRE9orQ5H5mC/97NDpxLcZOE4h9IulXf8CnDJNfqc+MgDDRAw2Nz84xdH9BbWVnUZlCrTRHEkD7PKUWu0bdpBaZtKx+R2uEEHsXmeBrAWTnOUoN1UcJS2S3OE5HHs1u0QrgZzysr0LDJ6RYvZEX3Pmw9UO2eQwgs1B7HQPokfHfJeGihfa9fG+3cUDLsUkFWwqaIiwbhqzJoYsiAzO9fAD4SThxQ+95fztPSsvyDuElblbqpi+dqYGf9+8QQEpefzjXt3VGY/aTH8Rt3MemeUki+SnWZznktywb/63z7gaqDMuo1v9o/XdmfnRQmpU7LcTAmApSQDGMRPE/t6bWiqLQIwZJP7RjLELBQapQsGpISsa+0nPqwXZ97k351lMIqBoxQpFF6JHSVk3FYX9uu/kwXeHwpery/LoJ5jbzTCeutJoouLREDxJieLk7ep71e2/iwjhcCro+DwTCsdCppPfgK7hJ+xSIesz/XmiUoSmXJqBBJy7n+caxTP9DoK+9KZwQv8noV+3dW3m5EWx1tAcxQcC3vxKiizrhZobh9RifbhonGSZQcsKni2EVeL3MZ7EZb9wJfSnVOtveh5X0q01gALuXladUBAJKlO7zJcTdQUWou4a7bn45Y9ibsqoR262UixKwzpMoz7wLXf0Q0d24r5JY05CTT4exTIY2HMFLvd4Q1yMDx21ZVyNgprPcYWxzQ3TKXdjU2BRmH/0Exi5ggzvcgyoogV9mzPmxdCjVno
+ 1hyZI438
+ o0AcS62A5a4RFlGNoBI01F4RNZ7XVUd4hhkvxAlxXObTd8y/MrHLVECZTsimZnPwym1xzfEM64PwjbYksl/oSuK4z7Jk+Kj5f8YnVYEamVnf/VHwnXbfEFiEPP9K9ba8JM9ZMRGWKlFsSB2Iun89s9RAyu+9oMQ1L13Bd54utnJAobAOTbu8KPIfV/K2QpxeQha4L97WcSwKAmjl/XH/rrhgtGeWyoDqPXpnvmQZ4Vk5p9PMI/AOa462i6AL20eoPnXJFu1NBYaQntDv1X3/4zfP8mEPr8QMtFB37gkDRlV4fPsyP8KeYm6M8cQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,273 +96,474 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Fri, Jun 19, 2026 at 02:30:25AM +0000, Wei Yang wrote:
->On Wed, Jun 17, 2026 at 08:18:15AM +0000, Wei Yang wrote:
->>On Wed, Jun 17, 2026 at 10:32:11AM +0800, Lance Yang wrote:
->>>
->>>On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
->>>>On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
->>>>>
->>>>>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->>>>>[...]
->>>>>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>>>>index 2ccbabfb2cc1..21635fab209c 100644
->>>>>>--- a/mm/page_vma_mapped.c
->>>>>>+++ b/mm/page_vma_mapped.c
->>>>>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>>> 		 */
->>>>>> 		pmde = pmdp_get_lockless(pvmw->pmd);
->>>>>> 
->>>>>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>>>>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>>>-			pmde = *pvmw->pmd;
->>>>>>-			if (!pmd_present(pmde)) {
->>>>>>-				softleaf_t entry;
->>>>>>-
->>>>>>-				if (!thp_migration_supported() ||
->>>>>>-				    !(pvmw->flags & PVMW_MIGRATION))
->>>>>>-					return not_found(pvmw);
->>>>>>-				entry = softleaf_from_pmd(pmde);
->>>>>>-
->>>>>>-				if (!softleaf_is_migration(entry) ||
->>>>>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>>>>>-					return not_found(pvmw);
->>>>>>-				return true;
->>>>>>-			}
->>>>>>-			if (likely(pmd_trans_huge(pmde))) {
->>>>>>-				if (pvmw->flags & PVMW_MIGRATION)
->>>>>>-					return not_found(pvmw);
->>>>>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>>>-					return not_found(pvmw);
->>>>>>-				return true;
->>>>>>-			}
->>>>>>-			/* THP pmd was split under us: handle on pte level */
->>>>>>-			spin_unlock(pvmw->ptl);
->>>>>>-			pvmw->ptl = NULL;
->>>>>>-		} else if (!pmd_present(pmde)) {
->>>>>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>>>>>-
->>>>>>-			if (softleaf_is_device_private(entry)) {
->>>>>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>>>-				return true;
->>>>>>-			}
->>>>>>+		if (pmd_present(pmde)) {
->>>>>>+			if (!pmd_leaf(pmde))
->>>>>>+				goto pte_table;
->>>>>>+			if (pvmw->flags & PVMW_MIGRATION)
->>>>>>+				return not_found(pvmw);
->>>>>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>>>+				return not_found(pvmw);
->>>>>>+		} else if (pmd_is_migration_entry(pmde)) {
->>>>>>+			softleaf_t entry = softleaf_from_pmd(pmde);
->>>>>>+
->>>>>>+			if (!(pvmw->flags & PVMW_MIGRATION))
->>>>>>+				return not_found(pvmw);
->>>>>
->>>>>Looked at history a bit, and I wonder if this changed something old
->>>>>here ...
->>>>>
->>>>>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->>>>>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->>>>>including not_found() cases. So lockless PMD read was just a filter ...
->>>>>
->>>>>With this fix, true case gets final pmd_same() check, but this
->>>>>not_found() case happens before taking PTL.
->>>>>
->>>>>So a !PVMW_MIGRATION walker could race with someone, e.g.
->>>>>remove_migration_pmd(): we make the not_found() decision from old PMD
->>>>>value that still says "migration", while real *pvmw->pmd may already be
->>>>>present again. We return without ever taking PTL :)
->>>>>
->>>>
->>>>Hi, Lance
->>>>
->>>>Thanks for take a look.
->>>>
->>>>I am trying to understand the scenario you mentioned. Let's say A migrate a
->>>>pmd and B want to unmap the pmd.
->>>>
->>>>            A                                        B
->>>>
->>>>  try to migrate a pmd
->>>>  pmd is set to migration entry
->>>>                                           unmap the pmd ...
->>>>  managed to finish migration
->>>>                                           ...still see migration entry,
->>>>                                           so skipped and unmap fail
->>>>
->>>>Would this be a timing case? Even B grab the PTL, it still could see migration
->>>>entry if B visit pmd before A finish migration.
->>>>
->>>>Maybe I miss something, look forward your insight.
->>>
->>>Right, seeing migration entry while migration is still ongoing is fine.
->>>
->>>What I meant was this ordering:
->>>
->>>  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
->>>  CPU 1: remove_migration_pmd() restores PMD to present
->>>  CPU 0: returns not_found() from old pmde, without ever taking PTL and
->>>         rechecking *pvmw->pmd
->>>
->>>So issue is not seeing migration entry itself, but making final
->>>not_found() decision from stale lockless PMD value ...
->>>
->>>Before this patch, PMD migration case took PTL before making that
->>>decision ...
->>>
->>
->>Yes, this patch changes the decision making condition for pmd entry. Thanks
->>for pointing out.
->>
->>Hmm... I took another look into current pte handling and find for pte entry,
->>we did two phase check:
->>
->>  * map_pte() without ptl
->>  * check_pte() with ptl
->>
->>While check_pte() do extra pfn range check, map_pte() doesn't.
->>
->>This means for pte entry, we may face the same situation as you describe: 
->>make the decision before grab PTL. Till now, it looks reasonable.
->>
->>But one thing jumped at me, PVMW_SYNC. When this flag is specified, all check
->>is done under PTL. But now for pmd entry, we don't have a chance to do so.
->>
->>And as the comment says in try_to_migrate_one()
->>
->>	/*
->>	 * When racing against e.g. zap_pte_range() on another cpu,
->>	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
->>	 * try_to_migrate() may return before folio_mapped() has become false,
->>	 * if page table locking is skipped: use TTU_SYNC to wait for that.
->>	 */
->>
->>I tracked down to commit a98a2f0c8ce1 ('mm/rmap: split migration into its own
->>function'), but not getting more detail on reasoning. Not fully understand it
->>yet, but it seems there is some race between migration and unmap which is
->>protected by PTL?
->>
->>Will look into this to get more detail.
->>
+On Tue, Jun 16, 2026 at 03:03:00PM -0400, Rik van Riel wrote:
+> __access_remote_vm() takes mmap_read_lock() for the entire transfer and
+> uses get_user_pages_remote(), which faults pages in.  For the common
+> case of reading memory that is already resident -- /proc/PID/cmdline,
+> /proc/PID/environ, ptrace PEEK of resident pages -- the mmap lock is
+> unnecessary and is badly contended on large machines.
 >
->After going through the history, I found this:
+> Add an opportunistic, read-only fast path that transfers what it can
+> without the mmap lock.  For each address it takes the per-VMA lock with
+> lock_vma_under_rcu(), re-checks the read-side VMA permissions, and uses
+> folio_walk_start(..., FW_VMA_LOCKED) to grab a short-lived reference to
+> a present page before copying it out.  Anything non-trivial -- a not-
+> present page (needs faulting), a hugetlb or VM_IO/VM_PFNMAP mapping, or
+> a race with a VMA writer -- falls back to the existing mmap_lock path
+> for the remainder.
 >
->   commit 732ed55823fc3ad998d43b86bf771887bcc5ec67
->   Author: Hugh Dickins <hughd@google.com>
->   Date:   Tue Jun 15 18:23:53 2021 -0700
->   
->       mm/thp: try_to_unmap() use TTU_SYNC for safe splitting
+> untagged_addr_remote() asserts the mmap lock, so add an unlocked variant
+> for the fast path; the untag mask is a stable per-mm value.
 >
->This one fix the race mentioned above: we expect mapcount is 0, but is not.
+> Only reads are handled here; writes keep using the slow path.
+>
+> Assisted-by: Claude:claude-opus-4-8
 
-Cool, thanks!
+This feels as if there was a little too much left to AI :)
 
-I do want to spend more time on this refactor. It is touching some subtle
-page_vma_mapped_walk() rules, so I don't want to skim and guess ...
+> Signed-off-by: Rik van Riel <riel@surriel.com>
 
-One case I can pin down now is device-private: the PTE side gives us a
-clear rule to compare against :)
+This needs to be separated into more patches, functions, and thoroughly reworked
+to be upstreamable, unfortunately.
 
-On the PTE side:
+It's additionally quite hard to review in this form.
 
-1) PVMW_SYNC set, PVMW_MIGRATION set
+> ---
+>  arch/x86/include/asm/uaccess_64.h |  12 +++
+>  include/linux/uaccess.h           |  11 ++
+>  mm/memory.c                       | 166 +++++++++++++++++++++++++++++-
+>  3 files changed, 188 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+> index 4a52497ba6a1..c6fac900a747 100644
+> --- a/arch/x86/include/asm/uaccess_64.h
+> +++ b/arch/x86/include/asm/uaccess_64.h
+> @@ -51,6 +51,18 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
+>  	(__force __typeof__(addr))__untagged_addr_remote(mm, __addr);	\
+>  })
+>
+> +/* Same as __untagged_addr_remote(), but usable without the mmap lock held. */
 
-  map_pte() uses pte_offset_map_lock(), so it takes PTL first.
-  check_pte() then runs under PTL. Since PVMW_MIGRATION is set,
-  check_pte() requires a migration entry, so device-private is rejected.
+How? This is pretty vague.
 
-2) PVMW_SYNC set, PVMW_MIGRATION clear
+> +static inline unsigned long __untagged_addr_remote_unlocked(struct mm_struct *mm,
+> +							    unsigned long addr)
+> +{
+> +	return addr & READ_ONCE((mm)->context.untag_mask);
+> +}
+> +
+> +#define untagged_addr_remote_unlocked(mm, addr)	({			\
+> +	unsigned long __addr = (__force unsigned long)(addr);		\
+> +	(__force __typeof__(addr))__untagged_addr_remote_unlocked(mm, __addr); \
+> +})
 
-  map_pte() takes PTL first. check_pte() then runs under PTL.
-  Since PVMW_MIGRATION is clear, device-private can be a normal mapping,
-  but check_pte() still checks entry type and PFN range.
+I'm confused why you're implementing this and not just calling untagged_addr()
+from untagged_addr_remote_unlocked()?
 
-3) PVMW_SYNC clear, PVMW_MIGRATION set
+You don't comment or explain this in the commit msg afaict.
 
-  map_pte() first does a lockless read. A non-present, non-none PTE can
-  still be a candidate, so map_pte() takes PTL. check_pte() then rejects
-  device-private, because PVMW_MIGRATION requires a migration entry.
+> +
+>  #endif
+>
+>  #define valid_user_address(x) \
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 8a264662b242..c8c83372c9d8 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -34,6 +34,17 @@
+>  })
+>  #endif
+>
+> +/*
+> + * Like untagged_addr_remote(), but for callers that stabilize @mm by other
+> + * means (e.g. a per-VMA lock) and must not assert the mmap lock.
+> + */
 
-4) PVMW_SYNC clear, PVMW_MIGRATION clear
+It's odd you'll comment this like this but not explain the confusing bit as to
+why you can't just call untagged_addr()
 
-  map_pte() first does a lockless read. A device-private PTE can be a
-  normal mapping candidate, so map_pte() takes PTL. check_pte() then
-  checks entry type and PFN range under PTL.
+> +#ifndef untagged_addr_remote_unlocked
+> +#define untagged_addr_remote_unlocked(mm, addr)	({	\
+> +	(void)(mm);					\
 
-On the PMD device-private side, before this patch, all four cases go
-through the same code once the lockless PMD read sees a device-private
-entry:
+I'm not sure this is required?
 
-- lockless read PMD into pmde
-- pmde is non-present
-- decode pmde as a softleaf entry
-- entry is device-private
-- take pmd_lock()
-- return true
+> +	untagged_addr(addr);				\
 
-So compared with the PTE side:
+Weird again that x86 needs special treatment but not other arches?
 
-A) PVMW_SYNC set, PVMW_MIGRATION set
+> +})
+> +#endif
+> +
 
-  PTE rejects device-private under PTL.
+You should really make untagged_addr_remote() call
+untagged_addr_remote_unlocked() after its assert, otherwise it's a really odd
+inconsistency.
 
-  PMD returns true.
+>  #ifdef masked_user_access_begin
+>   #define can_do_masked_user_access() 1
+>  # ifndef masked_user_write_access_begin
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 86a973119bd4..0b23b82eaa18 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -42,6 +42,8 @@
+>  #include <linux/kernel_stat.h>
+>  #include <linux/mm.h>
+>  #include <linux/mm_inline.h>
+> +#include <linux/secretmem.h>
+> +#include <linux/pagewalk.h>
+>  #include <linux/sched/mm.h>
+>  #include <linux/sched/numa_balancing.h>
+>  #include <linux/sched/task.h>
+> @@ -7062,6 +7064,153 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+>  EXPORT_SYMBOL_GPL(generic_access_phys);
+>  #endif
+>
+> +/*
+> + * The fast path uses folio_walk_start(FW_VMA_LOCKED), which needs the per-VMA
+> + * lock and RCU-freed page tables to walk page tables without the mmap lock.
+> + */
+> +#if defined(CONFIG_PER_VMA_LOCK) && defined(CONFIG_MMU_GATHER_RCU_TABLE_FREE)
 
-  This does not match. The PMD code misses the PVMW_MIGRATION direction
-  check, and does not reread/revalidate PMD under pmd_lock().
+Shall we wait for, or rely on Dave's series to remove CONFIG_PER_VMA_LOCK + make
+it permanently on here?
 
-B) PVMW_SYNC set, PVMW_MIGRATION clear
+> +/*
+> + * Opportunistic lockless fast path for __access_remote_vm() reads.
+> + *
+> + * Memory already resident in @mm can be read without taking the heavily
+> + * contended mmap_lock: a per-VMA lock stabilizes the VMA, and folio_walk_start()
+> + * with FW_VMA_LOCKED grabs a short-lived reference to a present page via an
+> + * RCU/PTL protected page table walk (relying on MMU_GATHER_RCU_TABLE_FREE).
+> + *
+> + * Anything that would require faulting a page in, touching a hugetlb or
+> + * VM_IO/VM_PFNMAP mapping, or that races a VMA writer is left to the mmap_lock
+> + * path in __access_remote_vm().  Only reads are handled here.
 
-  PTE can accept device-private, but only after locked check_pte()
-  validation.
+I think referencing the confusing mess that is the special VMA flags is best
+avoided (and anyway I think and you should just say
 
-  PMD also returns true.
+I think we could be clearer here like:
 
-  The direction is OK, but the final check is missing. PMD returns true
-  from the lockless PMD classification, without PMD revalidation and
-  without check_pmd() PFN-range check.
+This is the read fast patch, writes are handled by the slow path in
+__access_remote_vm() - faulting in, touching hugetlb or a remap.
 
-C) PVMW_SYNC clear, PVMW_MIGRATION set
 
-  PTE can reach locked check_pte() from the lockless candidate, but
-  check_pte() rejects device-private.
-  
-  PMD returns true.
+> + *
+> + * Returns the number of bytes transferred via the fast path.
+> + */
+> +static int access_remote_vm_fast(struct mm_struct *mm, unsigned long addr,
+> +				 void *buf, int len, unsigned int gup_flags)
 
-  Same mismatch as case A: missing PVMW_MIGRATION direction check, and no
-  locked PMD revalidation.
+In general this function is... ugly. Very ugly :)
 
-D) PVMW_SYNC clear, PVMW_MIGRATION clear
+You nest while -> while -> for and it's all open-coded.
 
-  PTE can accept device-private after locked validation.
+It needs major refactoring - separate out smaller functions, improve the
+comments, separate out logic that can be shared with gup etc.
 
-  PMD also returns true.
+> +{
+> +	void *old_buf = buf;
+> +
+> +	addr = untagged_addr_remote_unlocked(mm, addr);
+> +
+> +	while (len) {
+> +		struct vm_area_struct *vma;
+> +		vm_flags_t vm_flags;
+> +
+> +		vma = lock_vma_under_rcu(mm, addr);
+> +		if (!vma)
+> +			break;
+> +
+> +		/*
+> +		 * Mirror the read-side permission checks of check_vma_flags(),
+> +		 * and exclude what FW_VMA_LOCKED cannot handle (hugetlb) or what
+> +		 * needs the ->access() handler (VM_IO/VM_PFNMAP).  Checked once
+> +		 * per VMA; anything not positively allowed falls back to the
+> +		 * slow path, which re-validates everything.
+> +		 */
 
-  Direction is OK here as well, but the PMD code still has no final
-  locked check matching check_pte(): no PMD reread/revalidation, and no
-  check_pmd() PFN-range check.
+This feels very overwrought. You're compressing far to omuch into one lump of
+text.
+
+> +		vm_flags = vma->vm_flags;
+
+Please don't use the old VMA flags API for new code. And definitely don't do
+some weird vm_flags we keep separate from vma->vm_flags thing here.
+
+	vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT)
+
+> +		if ((vm_flags & (VM_IO | VM_PFNMAP)) ||
+> +		    is_vm_hugetlb_page(vma) || vma_is_secretmem(vma) ||
+> +		    (!(vm_flags & VM_READ) &&
+
+But what does !VM_READ mean exactly? Are you really checking for PROT_NONE?
+
+So vma_is_accessible() is right here no?
+
+> +		     (!(gup_flags & FOLL_FORCE) || !(vm_flags & VM_MAYREAD)))) {
+
+This conditional is abhorrent...
+
+I think a good rule of thumb for this kind of thing is to read it out loud in
+English - 'if IO or PFN map or hugetlb or secret mem or either not VM_READ etc.'
+- if you're confused by it in English then don't put it in code.
+
+Anyway it should clearly be a separate function like:
+
+	static bool vma_can_use_fast_path(const struct vm_area_struct *vma)
+	{
+		/* We cannot GUP PFN maps or I/O memory. */
+		if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT))
+			return false;
+		/* Hugetlb is a special snowflake. */
+		if (is_vm_hugetlb_page(vma))
+			return false;
+		... etc. etc. ...
+		return true;
+	}
+
+Which is vastly clearer.
+
+
+> +			vma_end_read(vma);
+> +			break;
+> +		}
+> +
+> +		/*
+> +		 * Copy as much of this VMA as we can without re-acquiring the
+> +		 * per-VMA lock; re-lock only when @addr leaves the VMA.
+> +		 */
+
+Strange phrasing. I'm not even sure it's a useful comment?
+
+> +		while (len && addr < vma->vm_end) {
+> +			struct folio_walk fw;
+
+Be good to avoid mystery meat varible names. 'walk'?
+
+> +			struct folio *folio;
+> +			struct page *page;
+> +			unsigned long entry_size, entry_left, folio_left, span;
+> +			unsigned long copied, idx0;
+
+idx0 is a terrible name :)
+
+All these variables tells you the function is too long.
+
+> +			int offset;
+> +
+> +			folio = folio_walk_start(&fw, vma, addr, FW_VMA_LOCKED);
+> +			if (!folio) {
+> +				vma_end_read(vma);
+> +				goto out;
+> +			}
+> +			page = fw.page;
+> +			if (!page) {
+
+under what circumstances would !fw.page when folio is non-NULL?
+
+> +				folio_walk_end(&fw, vma);
+> +				vma_end_read(vma);
+> +				goto out;
+> +			}
+> +			/* Pin the folio so it stays valid after the PTL is dropped. */
+> +			folio_get(folio);
+> +			folio_walk_end(&fw, vma);
+> +
+> +			/*
+> +			 * folio_walk_start() validated exactly one mapping entry,
+> +			 * which covers a contiguous, present run of this folio:
+> +			 * PAGE_SIZE for a pte, PMD_SIZE for a pmd leaf, PUD_SIZE
+> +			 * for a pud leaf.  Copy up to the end of that entry,
+> +			 * bounded by the folio, the VMA and len, so a huge mapping
+> +			 * is handled in one walk instead of per page.
+> +			 */
+> +			offset = offset_in_page(addr);
+> +			switch (fw.level) {
+> +			case FW_LEVEL_PUD:
+> +				entry_size = PUD_SIZE;
+> +				break;
+> +			case FW_LEVEL_PMD:
+> +				entry_size = PMD_SIZE;
+> +				break;
+> +			default:
+> +				entry_size = PAGE_SIZE;
+> +				break;
+> +			}
+> +			entry_left = entry_size - (addr & (entry_size - 1));
+
+Surely we have a better way of doing this? At least needs abstracting, a random
+switch in the middle of this code is horrid.
+
+> +			idx0 = folio_page_idx(folio, page);
+> +			folio_left = ((folio_nr_pages(folio) - idx0) << PAGE_SHIFT) -
+> +				     offset;
+
+Couldn't we just keep track of this without this horrid expression?
+
+> +			span = min3((unsigned long)len, entry_left, folio_left);
+> +			span = min(span, vma->vm_end - addr);
+
+You add massive comments for some bits, then do extremely confusing open coded
+stuff here?
+
+This needs a lot of breaking up.
+
+> +
+> +			/*
+> +			 * Copy the span page-by-page: kmap_local_folio() maps one
+> +			 * page on HIGHMEM and copy_from_user_page() flushes per
+> +			 * page on aliasing caches, but the page tables are not
+> +			 * re-walked.  The span borrows the single folio reference
+> +			 * taken above, so each mapping is dropped with
+> +			 * kunmap_local() (not folio_release_kmap(), which would
+> +			 * also drop a folio reference per page).
+> +			 */
+
+This is a really confusing mass of text that is really dense and hard to
+parse. Clarity is king.
+
+In any case this should be separted out.
+
+> +			for (copied = 0; copied < span; ) {
+
+Very odd for loop.
+
+	copied = 0;
+	while (copied < span) {
+		...
+	}
+
+Would be better. But I think reworking it so a normal for (init; cond; incr)
+loop would work would be better?
+
+> +				unsigned long foff = offset + copied;
+
+foff :)) now I won't be childish :P
+
+I really dislike overly compressed variable names. It's vague. File offset? I
+guess you mean folio offset right?
+
+and why did you call it plain 'offset' before but now specify folio but as 'f'?
+
+> +				unsigned long pidx = idx0 + (foff >> PAGE_SHIFT);
+
+'pidx'?
+
+Equally unnecessarily and confusingly compressed variable name. We can live with
+page_index if that's what you mean?
+
+Also it's unceratin what the units are. It's ok to say 'bytes' and 'nr_pages' or
+'page_nr' or something, and far clearer.
+
+This should obviously be in another function anyway given indentation levels here.
+
+> +				int poff = foff & ~PAGE_MASK;
+> +				int chunk = min_t(unsigned long, span - copied,
+> +						  PAGE_SIZE - poff);
+> +				void *maddr = kmap_local_folio(folio,
+> +						pidx << PAGE_SHIFT);
+> +
+> +				copy_from_user_page(vma, folio_page(folio, pidx),
+> +						    addr + copied, buf + copied,
+> +						    maddr + poff, chunk);
+> +				kunmap_local(maddr);
+> +				copied += chunk;
+> +			}
+> +
+> +			folio_put(folio);
+> +			len -= span;
+> +			buf += span;
+> +			addr += span;
+> +		}
+> +		vma_end_read(vma);
+
+Really hard to keep track of what's what here.
+
+> +	}
+> +out:
+> +	return buf - old_buf;
+> +}
+> +#else
+> +static int access_remote_vm_fast(struct mm_struct *mm, unsigned long addr,
+> +				 void *buf, int len, unsigned int gup_flags)
+> +{
+> +	return 0;
+> +}
+> +#endif /* CONFIG_PER_VMA_LOCK && CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+> +
+>  /*
+>   * Access another process' address space as given in mm.
+>   */
+> @@ -7071,8 +7220,23 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
+>  	void *old_buf = buf;
+>  	int write = gup_flags & FOLL_WRITE;
+>
+> +	/*
+> +	 * Try the lockless fast path for reads first; it transfers what it can
+> +	 * from resident memory without taking mmap_lock, and leaves the
+> +	 * remainder (if any) to the slow path below.
+> +	 */
+
+This is a weird comment, you should describe what access_remote_vm_fast() does
+in access_remote_vm_fast(). You also don't mention the !write here which is the
+thing people might wonder about.
+
+I think the code is self-documenting anyway - try fast path - pretty clear.
+
+
+> +	if (!write) {
+> +		int done = access_remote_vm_fast(mm, addr, buf, len, gup_flags);
+
+Can be const.
+
+Can't errors arise in access_remote_vm_fast()? And in general seems it'd make
+more sense to return an error/bool rather and have done as output param rather
+than infer stuff from done.
+
+> +
+> +		addr += done;
+> +		buf += done;
+> +		len -= done;
+> +		if (!len)
+> +			return buf - old_buf;
+
+So usual case will be it does everything right? So you do some useless
+arithmetic and then return buf - old_buf.
+
+Should probably instead have a return value.
+
+But in general __access_remote_vm() is horrible. I think if you add new features
+it's only right you spend some commits cleaning up first.
+
+Otherwise we heap more stuff on top of broken stuff on and on and things get
+messier + messier.
+
+
+> +	}
+> +
+>  	if (mmap_read_lock_killable(mm))
+> -		return 0;
+> +		return buf - old_buf;
+
+Err there's other cases where you return 0 here, e.g.:
+
+	/* Avoid triggering the temporary warning in __get_user_pages */
+	if (!vma_lookup(mm, addr) && !expand_stack(mm, addr))
+		return 0;
+
+So you probably need to fix those up to?
+
+Probably better to just have a return value declared in the function.
 
 >
->IIUC, if we apply the change in this patch, the affected case is
->pmd_is_migration_entry(). In case someone else has cleared it but not update
->mapcount yet, try_to_migrate() would return before folio_mapped() is false.
+>  	/* Untag the address before looking up the VMA */
+>  	addr = untagged_addr_remote(mm, addr);
+> --
+> 2.53.0-Meta
 >
->Thanks Lance for raise the question.
->
->If above analysis is true, I haven't got a neat way to take this into
->consideration.
->
->BTW, for a fix, I am thinking to keep it simple and direct. So how about leave
->the refactor as a followup cleanup?
 
-So for a fix, let's line up the PTE and PMD rules first :D
-
-Cheers, Lance
-
->-- 
->Wei Yang
->Help you, Help me
->
+Thanks, Lorenzo
 
