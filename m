@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39BA4CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:00:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 807FCCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:09:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B83C6B0095; Fri, 19 Jun 2026 08:00:15 -0400 (EDT)
+	id 6BE416B008C; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 069926B0096; Fri, 19 Jun 2026 08:00:15 -0400 (EDT)
+	id 66F796B0092; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E98F36B0098; Fri, 19 Jun 2026 08:00:14 -0400 (EDT)
+	id 5844D6B0093; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C07AC6B0095
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:00:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C0188DCFD
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:00:14 +0000 (UTC)
-X-FDA: 84896519148.09.6316652
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4D42720019
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:00:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hp7XaZkz;
-	spf=pass (imf03.hostedemail.com: domain of 3Si81agkKCNUK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3Si81agkKCNUK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 30AF96B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A07AE8DD6F
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:09:34 +0000 (UTC)
+X-FDA: 84896542668.28.E0BFD55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6A01F1A0008
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:09:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ag2I8MaZ;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781870412;
+	s=arc-20220608; t=1781870973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GeNrhO16hrgTC34xhsR8fA1n0GfOwZN3MF4DADT7KD0=;
-	b=1qB7bCZabBXSGb6ommj01mmIWS/Po1722fR+3VPU+seMmv7zUvcxiVk2UFuBy0jbeEuwrG
-	JsQeZd2lIvCMpO17l8eZhSJQRNBPThj8zHMYdyq+HYLXxFGzFspIvm0zzEyihXsaUYoUUX
-	GfL6kqFC8JRkaSY0AP2EGKeDv9NNDEI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781870412;
-	b=U81foWeF8yC/s3W2pchN3PmUI6P3T61n/4EoSl8eAlVnV4uXzbJyfHa+pWbofIV9P/MZGE
-	u+n2vi00NWGa8kUQ4JYDqRT6NcjP1k3xOYa09Guqp0rCzcIGpIcxOpiSDBwnd4sWHG6NGD
-	Gl635pjIS5+/mJ/oKO0a1tpr6KZIi8w=
+	bh=bIeF4o+oA+QhvxgydThWOk8fYvHRjOwSBeoChr1ofj0=;
+	b=QVBuq0toXFgsEXPL5VN4H+GSP+r1T81UazzHBpVtTp9g7T+NfrC9OReQ8a2rVu7nWhDIyG
+	PBn//jz0QXcd/f9uz0xo2eivLkFi44pFqMmp3JoC75N961SOEZPR8owqIlODIog1jfYgJx
+	L/lnumP8RHkhxpP/yWNr4cz1OELU9tc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hp7XaZkz;
-	spf=pass (imf03.hostedemail.com: domain of 3Si81agkKCNUK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3Si81agkKCNUK1ILEJ18L7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-696057a75d0so1522239a12.0
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:00:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781870411; x=1782475211; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GeNrhO16hrgTC34xhsR8fA1n0GfOwZN3MF4DADT7KD0=;
-        b=hp7XaZkzK4fL08gzkrwJyIbsEkXKpghtQ+h3j+cOweyatTjhbfzHTUPolxCs9xhTi6
-         MWMEsjMavIxooEmoeH82/xNE6xJpWbc/zfaDR3cOnTjo2/e6De6K/pn0g2JJfT1aV4wQ
-         wVcuCeEs6MrAC6HML7qbs5x+6UFcGwoNAsFm5lcgjq9bEa0rvd0E9LDWhUL1ybCmw/8C
-         /Wv7FQuRz5f0CA/a+j9SZx+4XXeKtiHFBoIZSL+KMamI+bXoo7huGuT5v0NRsQwPaqhC
-         CnFwzX4iMxqVEwj1MqkTVgZyFBhKCbOTJxkIxG5ZsEm9ORv3R256rS9E0LhZQwHl2JqI
-         4OYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781870411; x=1782475211;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GeNrhO16hrgTC34xhsR8fA1n0GfOwZN3MF4DADT7KD0=;
-        b=WQCqZtMv9wOolN4bAsw2UuJe3G+Dl4e43vmi1xYd/ho1E3YitCg+opUzkqPvLBaAgF
-         z/z3Gr2iDjmz2NjclQYxuVUarYzZAzlZiwrlDcKCzCOZJKahbLMqqSNZIapprADKD6Iz
-         9fI2lw4lVgauR+OgcJ8JuonrQGHUsXULE2QbFpbh6vDhfmZ3DDV0MrYt7ObUiNzuczmQ
-         BTzDQHWzI8Row16VF/54VZnJ8HLtwF598YZ3MchVPnAX1jAZVjnlB2WVy1x9P7tNpeHb
-         qZqE4LtnwzFKzakxCorFAjFDYMM38HoecaiSmeOcGbcResMK9r8je5YqEAkcwBP9dJQR
-         FEHg==
-X-Forwarded-Encrypted: i=1; AFNElJ9CR/mvkFW7p062E4fL7niBAskeJ2PHXHkueBVYqdHZ3d18W92qAcuBaEMoT2tsPVLJRUIyEFEARA==@kvack.org
-X-Gm-Message-State: AOJu0YxV0e7QmFMoR2lyk/7HtBlcP8PKzMQuuSM9BNa0d7jCRlNkog/H
-	TPLGiy79feEisJl1Wps9BIehw4SkLq0/s4Q9YmXtK7KDycD2nxSC2ndjmqa/Xxko/6H35i5px6c
-	YyczUohxHOqaQAvX12A==
-X-Received: from edy20-n2.prod.google.com ([2002:a05:6402:5354:20b0:697:647c:fe28])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:13d0:b0:66f:2ea5:c269 with SMTP id 4fb4d7f45d1cf-696e520cebfmr1885043a12.15.1781870410243;
- Fri, 19 Jun 2026 05:00:10 -0700 (PDT)
-Date: Fri, 19 Jun 2026 12:00:09 +0000
-In-Reply-To: <cover.1781615759.git.tarunsahu@google.com>
-Mime-Version: 1.0
-References: <cover.1781615759.git.tarunsahu@google.com>
-Message-ID: <9huzv7beloza.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v2 0/2] luo: migrate serialized_data to type-safe KHO pointers
-From: tarunsahu@google.com
-To: Alexander Graf <graf@amazon.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	kexec@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4D42720019
-X-Stat-Signature: k66hptjub8c9ytdk4ofgedughqe5ejrz
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Ag2I8MaZ;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781870973;
+	b=69yFzHkW0zeR+IGrlGIZ6VD2JUsILP6fgCRcizqRqhOXLHtJYnNm8dLpz0hu+F1a4VsRrc
+	IWLifahr+uKhfV8MFjswPtbBRe268mNe+idKg0GP6PN0W3x7UUz1QXrS5ct+Ipn5gJPHfK
+	r66NtF9gmwUKPec2MvIIk5HLm56jO3I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 769B43541;
+	Fri, 19 Jun 2026 05:09:26 -0700 (PDT)
+Received: from [10.57.95.87] (unknown [10.57.95.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0D863F62B;
+	Fri, 19 Jun 2026 05:09:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781870971; bh=CbvyzZMEqP1i/XApNRquWzgwjAyHus7dVHSaqyWp4bk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ag2I8MaZkwum7i4EHVhEwH48PbsBZo253L7NHnIqhmZ4lxMHgo2ziLEGuxVL/0kGE
+	 uomZ83C+vrC+QPKfU5VHK+3ps78o0ZD7f/3qoAsQM7XmsK+536oAp48IKm1KqprHw3
+	 U8pLutdMMFihL80+1nxiriPkxyS9IsyP+OQCeKJo=
+Message-ID: <ff82a5b0-fe52-4b33-852c-10f3923999d5@arm.com>
+Date: Fri, 19 Jun 2026 13:09:23 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 5/6] arm64: execmem: enable EXECMEM_ROX_CACHE on
+ supported CPUs
+Content-Language: en-GB
+To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-6-abarnas@google.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260611130144.1385343-6-abarnas@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6A01F1A0008
+X-Stat-Signature: 4iwi93mrtopy7boxw3x8ixa9pg31ez1b
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781870412-721834
-X-HE-Meta: U2FsdGVkX18fnwgyY+5Mqj0WSkPf8ejIjRI1hdILXfhzhqY+Bo+7953NtAoNOchwxN4bV7AoDTZ6t9m+YtX5VDQCGr+zBwwmgaRO2qwlY3C68+DqgKL73F6cX8i/b+6AuKR4T9Ld5xE3nxKhp6kBhldngckqvPxHbmD9yB+2ZHOGOSWgQl0/89xneMTGfGJaZFw8lFgLM05y+STijZoFhTVzebgbOiwD0/LBIUrftDYbwmBktTA+wJnbtaL0QNN/irhdbVAM0RqHz1n4HFSFLFyAU/DgmWzaIQM5Sb89m9TYw9lXr8TUDmvMSm3iaKsSUL6Bdrt7v0ZeXDx2huoQ/fLDo93y3FTYf+gTaIBEPqVEcjTLtvhafoUM3CDQfR3C0AULBbtvlCDQoNkRALn2X0F/ixENOAeQzsGEWgmuLFPmzEaJD9f7r7hQ8EVlNsjYKHbOVB06I9VpbmLRnfKF3RX9N28IP9XQPTruA9ILht9sRTLu8yXqGax1QW5+uI2jPBUTZf+XF5FX/upxAV7Mp3oPL/FeiJ7ijzJBpt4kd3VHQzXDz3iq69BhK5x/YpYc8qe8M4Ui7ApkGue+yfbW1Uf5C4QElZAQkwXdXm0+PtPWaE9Qid4VV50O8NM5C1MhJsV3A7eayTQdcmhWEHLAl8ztI0XIgXz+2QWJXPsjLB4CN//U5xatp0mcmHf1mRw8nLIjtkvUGil8WzR7SeBC98satbe7ndrTQH9Pidctg4UVy32AxbNQlqTs1DpgoXc8k1mxTHqU1UQJRjI1w9IuD8qVMQqJXsRRMgqEASvbOoB2jNvNc6TAJjtvSRv7d9kfud3OgPlekq2r7cCkFbmPIRzsIixxL5Q/hBi9Zhprfrs9bhFiZGK7YmE53qBRyH1+fqnP6ZXWftE6xJ9uHcL0u4B5U/Uxzsqwz2cVmTMDJoZ5DqpekfdGy+oQw1X0jH6Kfc1JMqypANr7PEiTauk
- 8Krm7X4f
- HS3hG0B40ZUrHVjxZwK75IjxourtWIukdBDemakA8F2O8IpcWmeOnVQFfQ815Uo6WWJkwK0xritboiBafAEDImok9KjNXokuP23nNqkebbvKP1MUVPSweaip/xayAeA+CofFQwzD0pwzbeLIHv0sytmadefFn8eP0RdKpZ+llrXWGqPAZqjV5xWzUGXdjSBlBfOH0r/ZTQaj96v8VOeIvltUcTGItys+qyRMySCffqxIfInk+K5TzB9nVEvZnHmE1iLpUS8bCL7TFT6jprT1VsR1uduN3SdUjOzAn6hkbwi2KKS5RRjKktFd8OIqv1aVNvuRivhP+hv7iK+2YP9E6577i/L8s86bpBrHXNyRVKQHpbljMSMLA4KA+0oiMiaMnpvyBBAGKmX+zrSQVoGVkCWrDBFhd5d0CTQh5Y5E7l7nf2upnGuWa24QQhqaRdfnKv52AjkPKgUQRxPT6YnJVBLH89Xh9cjMbjFI5+3a8qzGTFoSC4kF3AeVf6uWil5zjHNjE+ojIxjb25fusTal++jkMSr/+hkKZwiYIyID4bfcFrs6xZZLouyu88WFfKcR1XPNkKOhe+vIPjiedOx9/cuM1oezRK3OxjWMZ
+X-HE-Tag: 1781870972-901034
+X-HE-Meta: U2FsdGVkX19VYDQDIcQvReT4lZOL0Xb2xskP11neApemQGxZan3ecjOPy90ZeYRHltXQTXbTZw044KI7WpADwzOkhrAadHxsHxz198UF3wl+YOC80lrWjCvFnw9ccZ/c7MlnVkT2LisUGPif6PDs/KE5uroGbOZ3+8jFuA6WHS+jjwnV7XKXE0O/Y3a+OuDJciPph2cYYEOWj7pBlHpAxNKIpuecUBoKQaxSvKUrBoh9m4+CQu7uDxYQDbq4ZdwKm09hvvHmMb0Khl1BvamZJ1EmHxicgNJ4KwTn+U+edHqVrps13HbQnkqcQud5oNJQZakDpxHtDXyAGitGgJKUXMXk3D6Ql+erxxI8kYlQqMBzE4C+32ZqzWaUp+yZYoaxnZYWmSWq/Ua/C5GNnAGgR+Egz9D9XvEcLYy54DQiElCS4C07MzKqUeabU2YsttumQ5t1fIUc3zHHJchqpobspqpLJY8rLzv+zFeYIUuEbJTuklw431R0D9xhEuHcXFDHHLm5Dl2TfKUph04F3GRa7bhHrAFPP/Rymncn+mxJiQ0d8oh/9EkB2IEqP4Ht9wkP+ut6Ac2aXJcrp3B5424E+rkvHtqbdGPFO8ouG+zr6xU9WjxN71jK1x22Gkq0DFN0qNMEmiVk3xkicmlKZhOkHCqtCEJkNQGDcAtA/PK4DGLLHDB/kZeJKRZHpsrkRBvonU4rllM1NSVhMr70hTKDyuMyCXAViXeBcmSNa8jf97rQS/EvtqJrTovNyy0rX+XZYBGO9SWgcICB3AyntMt05LDXdHt//jsVx8XawcT1SMyjvfCf4FCGQGvanq5dlh+AZW071cdL4hg2qkBXd4qZr2WI4l9ZKG/BjNTLJs6DneO+54dfithjFlHWxcANpOYlW5cULrfCDlE7g8jatshVxiG8DF/Plu3xDGywnDEDzidA3HICnEAAbrRpn5VYJ88PrYSqCZwqhA2E1kx85zo
+ YSd41jbG
+ +OEkcE9imx6Piuwsk7MG2VFUE6Meay6Wi1zbKmDkW7Ggz1jOFtorx+PpVH4R9EZsjrDUVkI4pUcjXSgvomqLvUEtzOqZdoEEFWAWDq0pT8piz2+buy7y1uE++D1a5vhQq3OIkcyfGOB75CqfHPC8AwLqBZitB+vsJq8ECwaUSNoHiBp10f/6gqxxmZFuDYAGG/BiGTzbb6Wuehke0KYs/4lMje17udzhWcUWlRuDKqEwidz6P3+Qrbf+LcqO14ojiK4e7O1IsrKwO+h++5kou9lsP6K2j1u7Uyudk/yfdXgKMXP1rSTBkqYIlrX0Qy2tP0m1bjQpMyM7MKFU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,33 +96,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Mike, +Pasha
+On 11/06/2026 14:01, Adrian Barnaś wrote:
+> Enable EXECMEM_ROX_CACHE support for ARM64 systems that implement
+> the bbml2_no_abort CPU feature.
+> 
+> Using the ROX cache brings a performance boost by reducing linear region
+> fragmentation caused by strict memory permissions (e.g., W^X enforcement).
+> Grouping executable code (which is read-only in the linear region alias)
+> into PMD-sized block mappings reduces TLB pressure and page table size.
 
-This is currently rebased on top of mailine, also can be applied to
-liveupdate/fixes with no conflict. I would like to know which release
-cycle we are targeting for this, so That I can rebase it accordingly?
+Do you have any data on fragmentation reduction and/or performance improvement
+in practice due to this change?
 
-As for liveupdate/next, it needs some conlfict resolution.
+> 
+> This is only enabled on systems with bbml2_no_abort, as splitting
+> these large blocks to make pages writable during module loading would
+> otherwise risk triggering TLB Conflict Aborts.
+> > Signed-off-by: Adrian Barnaś <abarnas@google.com>
+> ---
+>  arch/arm64/Kconfig   |  1 +
+>  arch/arm64/mm/init.c | 22 +++++++++++++++++++++-
+>  2 files changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 38dba5f7e4d2..79c347ab841e 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -285,6 +285,7 @@ config ARM64
+>  	select USER_STACKTRACE_SUPPORT
+>  	select VDSO_GETRANDOM
+>  	select VMAP_STACK
+> +	select ARCH_HAS_EXECMEM_ROX
 
-Tarun Sahu <tarunsahu@google.com> writes:
+nit: This list is sorted in alphabetical order; please maintain that ordering.
 
-> Covvert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
-> This series also takes care of resolving the bug with memfd of using
-> phys_to_virt before checking the args->serialized_data value.
->
-> Tarun Sahu (2):
->   kho: add KHOSER_COPY_TYPE(UN)SAFE for phys copy
->   luo: Update serialized data to serializeable pointer
->
->  include/linux/kho/abi/kexec_handover.h | 12 ++++++++++++
->  include/linux/kho/abi/luo.h            |  6 ++++--
->  include/linux/liveupdate.h             |  4 ++--
->  kernel/liveupdate/luo_file.c           | 24 ++++++++++++------------
->  mm/memfd_luo.c                         | 18 +++++++++---------
->  5 files changed, 39 insertions(+), 25 deletions(-)
->
->
-> base-commit: 0e0611827f3349d0a2ac121c023a6d3260dcecdb
-> -- 
-> 2.54.0.1136.gdb2ca164c4-goog
+>  	help
+>  	  ARM 64-bit (AArch64) Linux support.
+>  
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 71aa745e0bef..8269d7747b84 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -420,6 +420,12 @@ void execmem_fill_trapping_insns(void *ptr, size_t size)
+>  
+>  	flush_icache_range((unsigned long)ptr, (unsigned long)ptr + size);
+>  }
+> +
+> +#define MODULE_TEXT_FLAG	EXECMEM_ROX_CACHE
+> +#define MODULE_TEXT_PGPROT	PAGE_KERNEL_ROX
+> +#else
+> +#define MODULE_TEXT_FLAG	(0)
+> +#define MODULE_TEXT_PGPROT	PAGE_KERNEL
+>  #endif
+>  
+>  static u64 module_direct_base __ro_after_init = 0;
+> @@ -511,6 +517,8 @@ struct execmem_info __init *execmem_arch_setup(void)
+>  {
+>  	unsigned long fallback_start = 0, fallback_end = 0;
+>  	unsigned long start = 0, end = 0;
+> +	enum execmem_range_flags module_text_flags = 0;
+> +	pgprot_t module_text_pgprot = PAGE_KERNEL;
+>  
+>  	module_init_limits();
+>  
+> @@ -531,12 +539,24 @@ struct execmem_info __init *execmem_arch_setup(void)
+>  		end = module_plt_base + SZ_2G;
+>  	}
+>  
+> +	/*
+> +	 * The ROX Cache requires bbml2_no_abort because it uses large block
+> +	 * mappings. On systems without this guarantee, splitting these blocks
+> +	 * to make pages writable for module loading can trigger TLB Conflict
+> +	 * Aborts.
+> +	 */
+> +	if (system_supports_bbml2_noabort()) {
+> +		module_text_flags = MODULE_TEXT_FLAG;
+> +		module_text_pgprot = MODULE_TEXT_PGPROT;
+> +	}
+
+Perhaps this is a bit clearer? Then you don't need the MODULE_TEXT_* macros:
+
+	if (IS_ENABLED(CONFIG_ARCH_HAS_EXECMEM_ROX) &&
+	    system_supports_bbml2_noabort()) {
+		module_text_flags = EXECMEM_ROX_CACHE;
+		module_text_pgprot = PAGE_KERNEL_ROX;
+	}
+
+Thanks,
+Ryan
+
+> +
+>  	execmem_info = (struct execmem_info){
+>  		.ranges = {
+>  			[EXECMEM_MODULE_TEXT] = {
+>  				.start	= start,
+>  				.end	= end,
+> -				.pgprot	= PAGE_KERNEL,
+> +				.flags = module_text_flags,
+> +				.pgprot	= module_text_pgprot,
+>  				.alignment = 1,
+>  				.fallback_start	= fallback_start,
+>  				.fallback_end	= fallback_end,
+
 
