@@ -4,92 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15856CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 18:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40743CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 19:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFC666B0005; Fri, 19 Jun 2026 14:35:48 -0400 (EDT)
+	id ACB286B0088; Fri, 19 Jun 2026 15:18:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAE9B6B008A; Fri, 19 Jun 2026 14:35:48 -0400 (EDT)
+	id A7CAA6B008A; Fri, 19 Jun 2026 15:18:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC54D6B008C; Fri, 19 Jun 2026 14:35:48 -0400 (EDT)
+	id 8F7AE6B008C; Fri, 19 Jun 2026 15:18:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B05246B0005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:35:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D8F76B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:18:18 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D10FC1C70
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:35:48 +0000 (UTC)
-X-FDA: 84897515976.05.B9D6B51
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AA2C31C0003
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:35:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vxqlTXYb;
-	spf=pass (imf20.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781894146;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BBAA94053C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:18:17 +0000 (UTC)
+X-FDA: 84897623034.05.F8C37B3
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B431E40009
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:18:15 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IFSdqtWG;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781896695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JQMxCGsJgO5z4xKjYc47x9IC9JtLm1aAXZzKHP5+ngY=;
-	b=T0rZuXznVZ3npDsycB6I46qQKzWswvpYr/0/ZRKiZHp3hxUnPeLR4WWVC7pPf6zH4SRRnN
-	dpzkmRXl5W+Taq3Bysac6iu78kvtlmWPFcCXU7b7DCTlr5tkFBeli8qYUMkviaZe8e4rdg
-	RiQyUEuXiP74ne3Y1AqmL8YnaU8WpWs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vxqlTXYb;
-	spf=pass (imf20.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781894146;
-	b=ug696XBWyhvLFID4otmybaq3EI/E2DKSCYMLA3mYFYppRi3R4ZzRJbDPct3akAYiTyLTZY
-	Xba0zHZ3nLgydnBq2Q1rveBD5fBwNm9/zFTN7n3zqlMJzCfqHyM3uTyH1om58OJ1tCr+tf
-	AZX7xvSqg79vC0YjA7RRGkKwnyCHe18=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=JQMxCGsJgO5z4xKjYc47x9IC9JtLm1aAXZzKHP5+ngY=; b=vxqlTXYb+ohjD3QbIDox/VbpTZ
-	hd7Uy+grwldfWVL2kS3Bu5GhxUZywxzL93GgqLNnYWvaH2q2e2RGX/7B2hyM1YHZ+xzhignyfZaUz
-	8dTQ/PJOuX3u0zlWiP+cYGe+TzOx7dq3h9c13Q7vFHhb0C3G4isI5awLfBC4k7dlV/q+DnGU/L3uB
-	U9T0jcPxT6mZ3RX74b9IIVrPBYgXti2EPXjdUvmgAt0C6iK7uPtykmF+g+/VK9H0duCp7550a/8Wc
-	ZLxZr/MvhvXaX35nyYn96fpCGmXeasV4GyzVYOPH8MO87lMjIoVA6WAM+1pigXsIA5mvZyhMH6BUf
-	O2Sz6BpA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wae42-00000002snX-3wNA;
-	Fri, 19 Jun 2026 18:35:38 +0000
-Message-ID: <3e206be0-3ef4-468f-b7e7-7bc03848b0d0@infradead.org>
-Date: Fri, 19 Jun 2026 11:35:37 -0700
+	bh=iqW7q3u7togbRFKtEuGGNBcC6+oDdJ41gZLx5smHWAg=;
+	b=BR1GdyzQSBArc5GlQ4fUDKzj66YrK2A672NPj44DfzAxRD1hj7d9IlDrKGU74ntdR2yIGG
+	MjzZlOoeAzOiwkWdK3QmLQCHHxfAsnjefXSwRn5s9IrLVziIDe55QTjrTO/FSO1e/nTX7F
+	M3hSflaLEExUjuqKm0TCn8eqEFh0td4=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IFSdqtWG;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781896695;
+	b=syqjHssTkvxbZKOkXIV8V16jxDUU3Crd5dr6nZYWKt/ic2rlAehteGt8ZJHLyTtETZE8oE
+	O8soFlqzJvRZ8ZnD564bMElK//iFY8hLVwfd29OzdLv4jGbk+Gd+acZ2pRBmhAyrc4rVEF
+	lOeksDsBvqd4etuZbLzb7V4FIDwHFbo=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c07a6527453so287335566b.0
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:18:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781896694; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XfdF1Y2A2wjB7jKAc84A29VkQI4RolZWQrpvrwI4wBYtU0Gn5hSlQ+n35x6q+GXKbV
+         lCCXRQWEHZkfMHMD+pV/4QAgQW7sJfC0tOsLizez3jJwD72Fxy55RzfVg/uRvIAafvYs
+         K/UxD5O3bChNZAPK/Ng4Aw1smMqbTTK9VYmLKxBLwQ/uLbOEUU6zpO6mDMPcAA04ydZW
+         43RCm5KBq46yanBr/JWWbvV6oQvPuzobPrwg3C3iLN/kwn11LBxh3q0DwzgQsNeM8cw7
+         l9BcKw9YHtbiuTnv5oFmdia7+6G+FPsHYtrw4H0uh38c9XVqWud7yUz0yuzQusueVg1K
+         89OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iqW7q3u7togbRFKtEuGGNBcC6+oDdJ41gZLx5smHWAg=;
+        fh=63eJSByyfPXUWEd5qXerlQHGwdBtfvcnn5NOHgA/+kg=;
+        b=R95843Xbi6Qs56qJx6EKu9SKhUtScWpoUM5yqoIhVs8xJB09enw0afNvTV8ZRSn1nr
+         ucANbBklhteoK3dBpwj6/Jym0Zbbv20m0Ttt4+7Va0aIQqhzC/GBQhk8n0S6+ggxzFCF
+         x0zH9stKAQ7lTCiu3/OYCE3dngZ3VPw1iV+Ks2x4pqcAEJievOz7ByGtOamIWrHmw/+j
+         hDNQpCdF5XOOqBmAIzKcGaMPJOMOerGH1AMhGxgoqJU2nJipM39+8Af+G0NR3VZsJBk7
+         uVmnWwUhUvhoc6PVXfKfEEOa73rHUjy0D/Q+65vEX0D0+D6MRmXR6Gj7tRfWdg1tpQo5
+         BKQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781896694; x=1782501494; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iqW7q3u7togbRFKtEuGGNBcC6+oDdJ41gZLx5smHWAg=;
+        b=IFSdqtWGNbl83CXrIFegTcSkFeRkvfchOswdWXF4XsNC8HnCAG09QlTstqu7P6WJe5
+         rxKh2GvYrWrm5qZf9AceD7PFeeSM15QY/HnaOKsZb2F30fECXnSPixESh4h5lT1V+uBq
+         cFoV1DOvQ4/um6o0NrqDmxAdz1Srj9b71EJuF2ck98HM/RjTa+UpKcEENTEvz5w9UE41
+         C1qXm7ZoKRPCS7VB0ynRm/JBSn49StfzYQtfyBYmGRTaWEatFH5u8bKCCV2PkD4trH4u
+         e/MPPqM5zASn611lty768FedZr3WHp7UVnOlsUl5b6y42R8sKBS32x4/hhqOybl0FaAs
+         6ZEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781896694; x=1782501494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iqW7q3u7togbRFKtEuGGNBcC6+oDdJ41gZLx5smHWAg=;
+        b=EwSmg1prdRncwhPjgY3acR2NRyjtNXzE63lGQ5Wwz8GlNwxrCN1t1qlZy8xUB4QSIy
+         KexEq2gP9iegR6ZC9TPhC3cV98JWd8dGkKat4+m1jRia66hjsxVu6ksKEHvofCAxc99d
+         LOngP8pzOeSXU1TflHvIpFl7JfLlLHrurYjq7SJvQc12vaMhNQZXlAyCadNi3t4Fg+Z9
+         YkQTxmgVM1JYu1n0EupIi4OM3G0WtT2EJ6atYpA+ONTa8htU8OcatUfaFWJD7lw4+7EB
+         5jSBicCV5r0zfBsHGBcEXif8Bg+lXJwQOftJ4KV2RL023IomsF9tNMQNreYnGRjmBwVo
+         Agig==
+X-Forwarded-Encrypted: i=1; AFNElJ+MJqfZ1KKGQMKmNAJuVe7U/Y3snmyARM5t/H3BsiRAI4VXDEyUlXgLKNYgPB4liVw/gHIRk/Amew==@kvack.org
+X-Gm-Message-State: AOJu0Yz9xIJRzexDxyJKDC409Y+9lkkv49bYSL9xDfDSfzlPEZIWUFuk
+	ra5LbIwhBmQuRPjIwGW38Fgw5j8uOZTn8m0aRPSYxI4ft5WI3RZ/Z+Twa73Cp0M5l523r/Kj2Bv
+	B0lxOW+R/Z2fQdHEUef8jcFTLTe2Ly/c=
+X-Gm-Gg: AfdE7cnbsk2O42jl0Y/38xJyUmXUT7Dzfhum7tVXY4JThP9Em/id8e/G0UThZG4178H
+	+ZMwRAS36bn47FRawwn9OXo5Gbq9qRhw28IjpzwSORP1PirdfGlvb3Vs2EPKAWLxBbJEgqHPUwc
+	0T2FuMI4DW2xUmHNQhQr9pw15nZhMSBwIq4rXBqBEyqr/8HYU0AEvCUWGEAjlvFnkh81PB+pNMv
+	XmfFSpE25tgWusbtmBakeGmpVhub9nQijdfMtWoKIEJbzMDhcHRwYbyiohbV65QmdULmkNhddGm
+	2b3ilWc55SEvzbeM88ftQCVJlL0PGg==
+X-Received: by 2002:a17:906:7949:b0:c08:68aa:9163 with SMTP id
+ a640c23a62f3a-c094ac0ab41mr274030066b.0.1781896693763; Fri, 19 Jun 2026
+ 12:18:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 PATCH] reserve_mem: add support for static memory
-To: Shyam Saini <shyamsaini@linux.microsoft.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: rppt@kernel.org, akpm@linux-foundation.org,
- tgopinath@linux.microsoft.com, bboscaccy@linux.microsoft.com,
- kees@kernel.org, tony.luck@intel.com, gpiccoli@igalia.com, bp@alien8.de,
- peterz@infradead.org, feng.tang@linux.alibaba.com,
- dapeng1.mi@linux.intel.com, elver@google.com, enelsonmoore@gmail.com,
- kuba@kernel.org, lirongqing@baidu.com, ebiggers@kernel.org
-References: <20260619062331.348789-1-shyamsaini@linux.microsoft.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260619062331.348789-1-shyamsaini@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AA2C31C0003
-X-Stat-Signature: co1rn6x4p6n44cnfkwpe53yedd68y5wr
+References: <20260618221720.71768-1-baohua@kernel.org>
+In-Reply-To: <20260618221720.71768-1-baohua@kernel.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 20 Jun 2026 03:17:37 +0800
+X-Gm-Features: AVVi8CeYwyMkE34LRTo0tet_Ba3jwddNMb4bHejuJYFiE1m91hWtZvdShWVRKnU
+Message-ID: <CAMgjq7Bmi2XYxPc4tVO8KTWSuj8jpt-c-JueqYRK1kLC_nmBqA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Nanzhe Zhao <zhaonanzhe@xiaomi.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1781894145-581231
-X-HE-Meta: U2FsdGVkX19GlUrFQOnSRpkvncmoC3GFQBHrgxX13lYcRGtCYk8A7Y+dd7BW7nltndqDjrdpEiuuiI3oB7omqzeVTWauf8LxTPg2fkaFcXAJuZeWsAt9epycOoAH61sP3L5n8l8QdmJmyEs42QTipnkpvdb4ImiNm0a3OThdhuK/BzVgDNbpJFjRhFXeSZFE+ukQc5gGk84PCGKQrfEW4sTvfKYj730+/Rwh0TVmV9JTq9sIBHO5SNoxcvz/6OL2pr56dpP13eVkZKMabaeTfqxxPnZZzc6AdABRWanx4cw9DZhIQ0Rjt+lmLBuTnvN1J+Lp+gxHUKibT22NN1wGQy5AGMghzWf/xW5pE4QuMooesOkzvxmzuM+3DMJFFEwJ3lE1OBZI8ObeVD+XFMk5QK5mlZQsNhLA3P/jdbyxfPtJr1mQCQZK/l5X+Ziyx0IhqpN7PrcdZAEPBPeiRsHbPFwbwgVP8GdgN3bjRdZShVLR6mlFVBm/RCxe7TkcleVf8VNprtxcMFyil07XXsb4VmYbWUMnQZHT2OuZ7dY0BInIRhiUP+RWFJTQz8jDasfhy7FrjGH54xnLfMEV4IuEv92Kp+ncO5oibKSUS1oIUoevFCS5/tKjasHFk8kEPVlyrhsX0yRmRY8n+FypMfyR58egrCm9ilOl5p7I5YG+KhNPKg7lr8M6BQI9BBf+ivCu+Hes5Ugum+UHlGfID7CQWqu2hwTeE72pZ3XeXeKksGvNKD+yaoIZwBA/Z6nVV5K4GGLCGHLA2cQFHK9u2RgUIZWaU32F10O/LrvoR7OEqzAK9XJiOxG+xk83re7krs1PX7neRKpIc76pkfvkPhAHEgm8OkKre9lxKb2CcEgH2vuw8MUGnuV3MoACIgUifVK/JqfYcE6EkKiiBHPXK0uc49XqUHKvcZf/QvjbzmnnwMpl4p3St9bdqlQUMynGeEJ2XkyLeE/hzUBxgnogN2f
- ImMg2iB4
- K5J042U5zXqsAMGIwjlIK2645wEjov8Zo7lZg7o87e8mrGA4vkKYPSOEHQ3nEPy7gFT7NPqnDhffsb6cTh/f/yFso5WnmT2WSUQw493Hg0IlGjYBPvFYrgLwmOip+ZlvWSUj4sIkpuuaawlwF/eiSgjsKFOn4jpw1w1JM/i3lv78G5QFsNp35I9R9Zosw4MSDqT4XS5fzg5M2ge0CWGmqQ5o/Xzot7vPj7T2NBFrhhovuUfPyVuNaWX8/kLq7HnbTmKMhGVsn9KkqynOCJSkGirC6oIwKcXX95YqPO/0YgZUCnmbjBwJSJLPujeonsgZv0R89CR3sfMM4NE0r4SB0I9IPwYgLkCgt5tCAsOuAw9AeYK/msA90gPvjwDrJ6DpGx9aN1S2Dkd29g6VCkr2E9VpBye9Gd9EqW8Gwz0oAkzVO+Ve8aClpsGc6rE8nC1OfFG3f
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B431E40009
+X-Stat-Signature: ee39o6m67c995i5u7juczs64bfjfiy4i
+X-HE-Tag: 1781896695-48169
+X-HE-Meta: U2FsdGVkX1+gLNEUgZ46QCX3ryDb8GLiYN7r7hUmYG/Bt/M1ukaZMRvR0ckAzS0WpZBtbmLX+n4cylYKFZKFRCQAKrLoBpIAqtj6D1yZzsg2e06XwuhHPLPAg8341w9krQPNb5Ho2U/25rCoH1DvQTB/qrQlEmdSUebaCEL04r2dOrq7Df1my2SyoYV95FXpo3UOgFMHwd759byPevlKZHM95PhDXEGSXzWwiRjjB8vHZ+9piDuAcBqhhogMV2OddbjhVqFBasbRRf2ukZlo9NIh9RSHbMzMsmYBYlFi2kTmmw+5pBDbs4+zfKHuSiwGXluzlgw2S4n92uJ7vjCmuEJd+FnUx6Fs5mzc9qKpVy6yMSWHdBbHvjcrIhd1FDI4HG92LrAarfHZr1dxUzRkxRXOA/bhP/vc4oOWEb3TbZtPYibDqlPEAQ5vWWWa5+RrZW2A8nvwZj4j3fa0Uh7XhNHnd7xVId2e+9veQjunDPw4y8iQ+uoukrg1WP5MT66lMvrq0v7qFhI83ghAY+wzGY/IuVtks95/aVAq7bu5+8p145vZ6YLI0EezCmm1b2deTmMdw5eGoajLcGwRWUWVPn4G+lTAsngYJEILxLc0il3+sZSpKdC6ew+40HkaFh+HvjRPB/qf4EPepr1g/iQWRymMXl2WAKY2HMhoqHNPNC5ZEB3XxUFKKHRb9CMtrkkY45wmGPYQUpSDfRgtCtWRG6/JADCboIWc2IwK5XEv0YLx5+kcG4ExgAAzeHZbfqggRHsEeRZBEETAaybkswWCc47myV8V5Zmp2Tgps2gw+2nRFBBKP1WiwhZ/PkY4xwuLcaAeCMkeF9nt5zP3ByW96sQdLw5Ocq5qVLFA4No7efYlWrUcr5vFI/eXHMrOGZmN92rjbQSilezk61L6seZ3ejnTywssIM8xwtSPMdtA9qGNxffULwMU3hs7ObhQoI8C825VXK1nmGEqGhJ5az0
+ mq9CnxxG
+ QND9G7keR153L1jkrfKMVZYL9FxJLWmUYkLCZVndb7JIy8g3w40iCjdkSzIS7+KDAjE4ryj7INouNyYstUtz6hJRQD9Nl9Wdg+q+9AKD+uN4HH7pFWEjyoc+D+PsuFbYYNeVjcpAyseiPtvUUWThuhSvOXFQFp1U8KTyHYYZ/r1hLyjlZVkZ78AwltdIfIaAr52KOE7Jgogx0HVjqgowdC47I4p4FooQnDyYgstmNso8rSTqcRfDmxnZ1dWbhL3alxW/WqFkqqwhU71VF6dKDlN/AwLvIjmlfHg2mGq5EWMKTyBpiZ3sNGOvbaAePSO7O/vPZO9FQrCAeR5nErSo/ntXDETLM1l8zFy0HO7m60ZYJ7zQIjXuw4q1aJOLFIGb23s5hF33793yabUVkLu194ZougNXfjhKd4rIdymmfdhvDmcZg/i7RnnLdot+OJ9s6yIxkME3g5uatlZhMGYDuEJQiVQW1VwuEiGfSlBwLS4i0OBlAlOfUrcev8pnYg+vveN3LbUaNSQTeR7BKOMxcq7isHzfslvyfU3eRkkLKDmaiWIKJFKqbcAQTJF5HSfcvT4AgO1ZUtHaU3gIwI12A/ElIcQA0YtU5jyW6CpO9mbaqoquvPl/r0dHQzfTIXPHX69QDA56yuxVKdirBNAO+YJKZDB6XfSAKw0wq8wQ+VgcFzp4ABajdT6iUMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,168 +144,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On 6/18/26 11:23 PM, Shyam Saini wrote:
-> reserve_mem relies on dynamic memory allocation, this limits the
-> usecase where memory is required to be preserved across the boots.
-> Eg: ramoops memory reservation on ACPI platforms
-> 
-> So add support to pass a pre-determined static address and reserve
-> memory at a specified location. This enables use case like ramoops
-> on ACPI platforms to reliably access ramoops region with previous
-> boot logs.
-> 
-> Also skip the parsing of <align> when static address is passed.
-> 
-> Example syntax for static address
->  reserve_mem=4M@0x1E0000000:oops
-> 
-> Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+On Fri, Jun 19, 2026 at 6:17=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
+org> wrote:
+>
+> When swap is disabled or exhausted, swap slot allocation
+> may fail during swapout, causing large folios to be split
+> into small folios. The splitting is reasonable when we
+> truly fail to obtain contiguous swap slots, but it is
+> pointless in the no-space case.
+>
+> A simple way to reproduce this is to invoke MADV_PAGEOUT on
+> a system with mTHP enabled but without swap configured.
+>
+>  #define SIZE (16 * 1024 * 1024)
+>  int main(void)
+>  {
+>          char *buf =3D mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+>                     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>          memset(buf, 1, SIZE);
+>          madvise(buf, SIZE, MADV_PAGEOUT);
+>          munmap(buf, SIZE);
+>          return 0;
+>  }
+>
+> With 16KB mTHP enabled, we observe:
+> ~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
+> 1024
+>
+> This patch checks swap space before splitting. If there is
+> no available space, it skips splitting. After the patch, we
+> observe:
+> ~ # cat /sys/kernel/mm/transparent_hugepage/hugepages-16kB/stats/split
+> 0
+>
+> Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Liam R. Howlett <liam@infradead.org>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Kairui Song <kasong@tencent.com>
+> Cc: Qi Zheng <qi.zheng@linux.dev>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: Yuanchu Xie <yuanchu@google.com>
+> Cc: Wei Xu <weixugc@google.com>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
-> v1: https://lore.kernel.org/lkml/0eaf3be2-5121-48b7-aeed-196405c0a480@infradead.org/
-> v2: Fix code logic and incorporate Randy's suggestion
-
-OK, you fixed a few typos.
-There are some bigger things that you seem to have ignored.
-
-> ---
->  .../admin-guide/kernel-parameters.txt         | 15 ++++++
->  mm/memblock.c                                 | 47 +++++++++++++------
->  2 files changed, 47 insertions(+), 15 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index b5493a7f8f228..7e0baca564b97 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -6563,6 +6563,21 @@ Kernel parameters
->  
->  			reserve_mem=12M:4096:oops ramoops.mem_name=oops
->  
-> +	reserve_mem=	[RAM]
-
-[RAM] means "RAM disk support is enabled."
-Is that the case here?  Is "reserve_mem=" only for use in case
-RAM disk support is enabled?
-
-ISTM that you need a new designator instead of RAM...
-or overload the use of RAM by adding more info near the top of
-Documentation/admin-guide/kernel-parameters.txt.
-
-
-> +			Format: nn[KMG]:<@offset>:<label>
-> +			Reserve physical memory at predetermined location and label it with
-> +			a name that other subsystems can use to access it. This is typically
-> +			used for systems that do not wipe the RAM, and this command
-> +			line will try to reserve the same physical memory on
-> +			soft reboots. Note, it is guaranteed to be the same
-> +			location unless some other early allocation, e.g.: crashkernel=256M
-> +                        (without static address) is reserved or overlaps this region.
+>  mm/vmscan.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 299b5d9e8836..33f84a5fe7ee 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -339,8 +339,7 @@ static bool can_demote(int nid, struct scan_control *=
+sc,
+>         return !nodes_empty(allowed_mask);
+>  }
+>
+> -static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> -                                         int nid,
+> +static inline bool __can_reclaim_anon_pages(struct mem_cgroup *memcg,
+>                                           struct scan_control *sc)
+>  {
+>         if (memcg =3D=3D NULL) {
+> @@ -356,6 +355,16 @@ static inline bool can_reclaim_anon_pages(struct mem=
+_cgroup *memcg,
+>                         return true;
+>         }
+>
+> +       return false;
+> +}
 > +
-> +			The format is size:offset:label for example, to request
-> +			4 megabytes for ramoops at 0x1E0000000:
+> +static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+> +                                         int nid,
+> +                                         struct scan_control *sc)
+> +{
+> +       if (__can_reclaim_anon_pages(memcg, sc))
+> +               return true;
 > +
-> +			reserve_mem=4M@0x1E0000000:oops ramoops.mem_name=oops
-> +
->  	reservetop=	[X86-32,EARLY]
->  			Format: nn[KMG]
->  			Reserves a hole at the top of the kernel virtual
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 6349c48154f4b..c76cefa0a8a83 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2721,6 +2721,7 @@ static int __init reserve_mem(char *p)
->  	char *name;
->  	char *oldp;
->  	int len;
-> +	bool addr_is_static = false;
->  
->  	if (!p)
->  		goto err_param;
-> @@ -2736,19 +2737,27 @@ static int __init reserve_mem(char *p)
->  	if (!size || p == oldp)
->  		goto err_param;
->  
-> -	if (*p != ':')
-> -		goto err_param;
-> +	/* parse the static memory address */
-> +	if (*p == '@') {
-> +		start = memparse(p+1, &p);
-> +		addr_is_static = true;
-> +	}
->  
-> -	align = memparse(p+1, &p);
->  	if (*p != ':')
->  		goto err_param;
->  
-> -	/*
-> -	 * memblock_phys_alloc() doesn't like a zero size align,
-> -	 * but it is OK for this command to have it.
-> -	 */
-> -	if (align < SMP_CACHE_BYTES)
-> -		align = SMP_CACHE_BYTES;
-> +	if (!addr_is_static) {
-> +		align = memparse(p+1, &p);
-> +		if (*p != ':')
-> +			goto err_param;
-> +
-> +		/*
-> +		 * memblock_phys_alloc() doesn't like a zero size align,
-> +		 * but it is OK for this command to have it.
-> +		 */
-> +		if (align < SMP_CACHE_BYTES)
-> +			align = SMP_CACHE_BYTES;
-> +	}
->  
->  	name = p + 1;
->  	len = strlen(name);
-> @@ -2772,14 +2781,22 @@ static int __init reserve_mem(char *p)
->  	}
->  
->  	/* Pick previous allocations up from KHO if available */
-> -	if (reserve_mem_kho_revive(name, size, align))
-> +	if (!addr_is_static && reserve_mem_kho_revive(name, size, align))
->  		return 1;
->  
-> -	/* TODO: Allocation must be outside of scratch region */
-> -	start = memblock_phys_alloc(size, align);
-> -	if (!start) {
-> -		pr_err("reserve_mem: memblock allocation failed\n");
-> -		return -ENOMEM;
+>         /*
+>          * The page can not be swapped.
+>          *
+> @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_h=
+ead *folio_list,
+>
+>                                 if (!folio_test_large(folio))
+>                                         goto activate_locked_split;
+> +                               if (!__can_reclaim_anon_pages(memcg, sc))
+> +                                       goto activate_locked_split;
+>                                 /* Fallback to swap normal pages */
+>                                 if (split_folio_to_list(folio, folio_list=
+))
+>                                         goto activate_locked;
 
-		return 1;
+Hello Barry,
 
-> +	if (addr_is_static) {
-> +		if (memblock_reserve(start, size)) {
-> +			pr_err("reserve_mem: memblock reservation failed\n");
-> +			return -ENOMEM;
+Thanks for raising this issue. I saw a similar issue report in the
+mail list before and was thinking that, perhaps another approach is to
+let folio_alloc_swap return a more detailed error code, for example:
 
-			return 1;
+- 1. the mem_cgroup_try_charge_swap in it failed
+- 2. allocation failed but nr_swap_pages > folio size
+- 3. allocation failed because all devices are full or unusable
+(roughly nr_swap_pages < folio size)
 
-> +		}
-> +
-> +	} else {
-> +		/* TODO: Allocation must be outside of scratch region */
-> +		start = memblock_phys_alloc(size, align);
-> +		if (!start) {
-> +			pr_err("reserve_mem: memblock allocation failed\n");
-> +			return -ENOMEM;
-
-			return 1;
-
-> +		}
->  	}
->  
->  	reserved_mem_add(start, size, name);
-
-
-__setup() functions return 1 for "yes, I recognized this string/option
-and attempted to handle it" or 0 for "This string/option is meaningless."
-There is no "return -Eerror".
-If you need that, you could consider using early_param() [see
-<linux/init.h>].
-
--- 
-~Randy
-
+Only case 2 requires splitting. __can_reclaim_anon_pages also checks
+demote which is not related to swap.
 
