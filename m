@@ -4,88 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 881A6CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 10:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2644ACD98F6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 10:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B1566B0088; Fri, 19 Jun 2026 06:44:24 -0400 (EDT)
+	id A79D86B0088; Fri, 19 Jun 2026 06:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 062796B008A; Fri, 19 Jun 2026 06:44:24 -0400 (EDT)
+	id A2AD36B008A; Fri, 19 Jun 2026 06:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9D66B008C; Fri, 19 Jun 2026 06:44:23 -0400 (EDT)
+	id 8F3426B008C; Fri, 19 Jun 2026 06:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD1EE6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:44:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 327421C24AC
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:44:23 +0000 (UTC)
-X-FDA: 84896328006.09.0DE0D0F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 98F4C40009
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:44:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6qrF8oa;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781865861;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F8DA6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:46:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD21D8DA47
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:46:47 +0000 (UTC)
+X-FDA: 84896334054.25.E04A753
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0382A1C000A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:46:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZP5GNWVZ;
+	spf=pass (imf21.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781866006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3is9oNUkO05ESVUSRNJqZRRZt4O+9EMA6drdEzl8B68=;
-	b=c6ix8OgFjdlQpYfA4a5RLhZ2auNwLW8E1nw2ijmVSX8QOC4pLMeSjinWnvW9S/+LoEn5Js
-	Xe65ZwdHyqfrbHVDe+xgWDdOtgTYqP1mS+EOxu/pJKdW1uKZlWqY4Hi2i0a0nhpKy2rlwG
-	8C6HMdFnVC5rsHFxD4gPsTpH5LxqYHE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781865861;
-	b=BGKaWrl+MM/Bv5q6wAHrXCKyzj6cDmNZVC1zK1reIjTvwik4H/xIernBhhdDSNpdEeuDUH
-	Sj77oT8c7Br1HcbWQGTAQblzqb55BbILhQNf2svdd5+yQCCGzo+vo0DOTrXVZQwx+LYK31
-	Pm6rJq3bQI5tJnL+ttX6+ARWeaOjhJ4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J6qrF8oa;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 002BA601E1;
-	Fri, 19 Jun 2026 10:44:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855901F000E9;
-	Fri, 19 Jun 2026 10:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781865860;
-	bh=3is9oNUkO05ESVUSRNJqZRRZt4O+9EMA6drdEzl8B68=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J6qrF8oa8Ce1axqO5TBKRGUIxxnelyGPH1bxZG5sgabhh0ckucM9dtnfIFtsBE56N
-	 hbmcXlxDSl1Z/fkkvWeJLWb69cLX8bxzwklqhWOzw71AF8p187TfF7szkwRlPmV/bZ
-	 0l4TWFWcqZdES/1GWna+TDMVFnSB88BbxYcyGJbQfTdjonz+9H0+zfS4tqhPSqNMxz
-	 XiIHo7XzMvncEA+sgwxTPmMAvTkUA8v8P0RcpbEyyRIQPBqsd+122+JV2reOC3K/8W
-	 67bK6cS2ngFduL9ghXXIqZNXep2MPTHJia5m9k9/W2NtHVs1lqyaQ+AdPuVWbsrOFF
-	 Y5eJ4dM57+i6w==
-Date: Fri, 19 Jun 2026 11:44:13 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <ajUXNjRMraKb6k2n@lucifer>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
+	bh=tqVqdR7eGLFAsCQYmX5JI1ornwlzeYgCHzhYfEkLeRM=;
+	b=tZZQ4InZFVT3zAVJp5xOUeZnt5rEQq6jbt2nXNvn4YNVWe7Rvvz5lRiX2fa0g6sJTKPV8R
+	J3U+hTkWDFs7pJb2ZNn8b+qJR8wqRG68rzi/zX+8KkVfe1ytGOrQUj/0N4JXR4v3tHk+4H
+	GTZqZLRQR9B6nwkPMguRYlj0lhXbmRg=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZP5GNWVZ;
+	spf=pass (imf21.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781866006;
+	b=smUS2S5Xko+XK8WDgD2/5Ogc3qXGt7iM6yeapp2KPcZ+UswYSgxpN3VBg6imRkj0SNlhHu
+	ndfuR1IKydty8DBsKcL5RrVVfwn1fmIotyjKwEgippf8dGWPOXZiAeeCOxxrewrONt7E1d
+	oBoPCtfKyS0W5kn7DvUNNG3L3/zQVQw=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5177d1ff061so145321cf.1
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 03:46:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781866005; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kkYSNnRfdp4Ga8P8kCK+Js3vPny0tC3B0luk7xY4oaTrs4Uk0i4yu3a9v7ds7TI2ra
+         NqtqDANsCAtCDdOWNsm20scWSonqXX6sYCfcSyw9gV0sxGb01L2h+1C+Oo2IaqkSmAJ7
+         3fDsVzlLYZly2JkU/nx8hCEU7dJ2HsIW0fPq31ZeTEj0NfuS+6Gfkofv5BU1u+gpJMMf
+         fw3xqn7v30BtfzBWVSYkoMQAu3+uHvfvCL47b0hU8+Ar0cYoh7/pOUtQfoEUf9f5wSvt
+         Avf/I6OtPVdn1B4L6RxK/kEH6oqriuykn5sEh5bF8F0ziJm9KI/s2V7AG+gmQdCjxm1M
+         XqXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=tqVqdR7eGLFAsCQYmX5JI1ornwlzeYgCHzhYfEkLeRM=;
+        fh=SaLRVQ+DBir/XSZg2hSrNhOfwgZc9UpYHgxVk8ApC0k=;
+        b=KWxqARRctyOPrv9XWwUxQhDx2jZUe+HKIZRxUvjugjo2d7fKSHs3MUlhBEcU2srESG
+         EHqu598z+mfn0/8521pecuvdXds4vgDh57RxGD3/CIWOTgYkPHDryfrJwT22RQvh5FsN
+         6JMYhirLQNeIjIEENNG4+rzeAdP1GjkXMQHoi8L6slNGdr1KATKVvLnJEU+Bn74x96gT
+         NiuaSnQEPPKiQVpeShoPK8jn+V39zNPTBR5b0DH9HuMWq1My7/trh+OCtfOmHbHzr6u+
+         XHd0omGUp5sQpLM98QBdaUlVFPjjqvAUMRC6poLBPI68Ku2Gr+vHJ667cTSzacIYOq3I
+         XIcg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781866005; x=1782470805; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tqVqdR7eGLFAsCQYmX5JI1ornwlzeYgCHzhYfEkLeRM=;
+        b=ZP5GNWVZPGKntu332yrYTpEH2nJvYDDB1JnvuCsmPwdYmErBKsDZwdgYD7SnqRT+pg
+         RDRJTxxWxO0WnWwM+WWpsfa3R0kFh4HmpP8kjMTmPlVqAm5EtP3mH/Eoi5FcoBQ2btEi
+         zLdCkW3jwIjatiX22xAnHKrPq7eYBXzEo5fYUauyWxzdnTEQWf/XIxelpEJc2dnZQJ43
+         QDxSGO/lub2VHmIOHInXbHa2k/XnDb69LOCDM3JvmAkvw3jq0wJCfSP0JA/cFXNCQJjw
+         KIaxByFIlpCZfZC6yE8i7iDhteSyj28XGxa0IYZ/xnBZU4+buNy8iKJbmenKxfE738Dk
+         2OJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781866005; x=1782470805;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tqVqdR7eGLFAsCQYmX5JI1ornwlzeYgCHzhYfEkLeRM=;
+        b=T/MDrOZ8fUk465fWZuFJ0TPsmxxPIZEHUi5bTajft1NJzo0hiSeqeMNZq0EOCt3TJ2
+         RiJDxrsS1bZ1gplsKlNcXVIRHspr+K3sd5TOHEvl33WxUthy58XBYk8/Z/vL0XdwQ02t
+         Vg0ubIuBR3AGLgk6kxmtgbei9+eVAVVKtv8D+6m67LitaPqJF1+2j8bjXKWddoUySA2C
+         aU4ZSGsayvBQzWoPnq7mEXsC4MPC9hu93QeTY687h3jYz90dGYbBkfU6vi/kSzlYHbmf
+         zBiAt7Uw4yJ3nPxHTJeTqMMs7CSu0zqiwGvx7y7oR6STcaB8+zpDSKRBNWH/qp4z6whP
+         9yCA==
+X-Forwarded-Encrypted: i=1; AFNElJ/1e78alElIID/dijwZkHjDgWVCwbV/TvLOj0zLoS/p504wUaybAl3rhWoqdH4EMrlX6zzLuLEEoA==@kvack.org
+X-Gm-Message-State: AOJu0YzfNOArpE1NYM5utKOESCj+sFSjKrdevTHA+dMq+nB0Dkz3clrG
+	mlUc0jR98jpHCB4mbJ0hCjh9AQO6niW5pJyT4YDEZqRkF86BFOWtPv3gkSKdT/MFUKx2ChQoOGB
+	+VovouE2o2I8KJlLpebbzi8R3Fm3V7yEImSVYkJNP
+X-Gm-Gg: AfdE7ck5WEz5HQ2X1rsWpLC3TZq9YjnmPmMV1l60xjINOEtwJ3H1G+ZsjxT9LaWtyGD
+	P36Zisr7ofOIK9pX7417lcO1cQM/0uX0ROTShyrhUz0uNs0VyEdMpFLIWSQt43Sz507zbru+VuC
+	ej11MBOgYZgYruE3QyX4otyuIiBPcnyUPi10w/ibqtvE9OzmB/TAMW1se0qWljcwViqTQ6tvcMu
+	1msPRXT4I/pFoI6tEBAZ+MzbH1WBCe6c5v3K1yq0X3Cfw1HZ1UKQewDTY3yRs0STHtj+kE/KQ==
+X-Received: by 2002:a05:622a:1b1d:b0:516:3def:1cf4 with SMTP id
+ d75a77b69052e-519e877e8c5mr5598281cf.1.1781866004326; Fri, 19 Jun 2026
+ 03:46:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260616063436.20455-1-richard.weiyang@gmail.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-19-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-19-9d2959357853@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 19 Jun 2026 11:46:06 +0100
+X-Gm-Features: AVVi8Ccyp37Iml659Lz9n-v90nTTG1Iev3H81NTyrRm5pUpcj70uW3l4zFQ5-a4
+Message-ID: <CA+EHjTxr1KrtZDakniWCF+c0E6s9_YbQ_gMVqCFnwEP3USEXXw@mail.gmail.com>
+Subject: Re: [PATCH v8 19/46] KVM: guest_memfd: Use actual size for
+ invalidation in kvm_gmem_release()
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98F4C40009
-X-Stat-Signature: 3mog3qaj77x3htxwdaxgcgrpgp396un7
-X-HE-Tag: 1781865861-289472
-X-HE-Meta: U2FsdGVkX1+GXxkq6dhrbpoIEAbe7LZ2sL7ATy8+RDFAb9Kt16CxQc0wdCeb9/Lv9M8mxHogKDx13F8T6aA2xWE6liRenj5h2M9APOMb1F1agV0KhVnEXxZlYuzBip3cDm46Jc6psXXqaBi15pOdZAR8qT+r6Ft3xyGhOM6n6Z5pXJHJE1XYXRL+SvwnrLvX1y/n9tHunSOLmUSjlXQoKfve4zPAiPDfZ8LEsCiZAkmKA8euodTZUa7ivijfYkBlFNtE5pj+CiGjeKsOz6y2dKrrc/dKofy/P6KYVv+tKhuV7rLEL2EYfjRCQRXa6C7YhqUfUHiYoZTwCTMVqV0tWo63OjsnpyKK2asyicIuMtuO7CgSF4j0+Nh6CkDmxcBBQzBR6NKSOfhY1oCM3jr0HVCATlVajL50vFkW6QWLYd7gWN3y2ZfbKth2BPWoQAkfnL+VALIEPI0ZmqSDG8slCnIgXiE6tdlBJYHElvJ6xN0PhbsAluqT/GFso1O/wPbz9ABmTrqelARlpPwUaOCl/SiSzwCytUzVBxbkkEqWsQaG/w0RMGbOOclqCSLx3PvMF59EEnnzTYp9JFSy0kavSfhIkItS6CdOMu3ihFGLydx4hQG4fXFZEbFVioEAtdUaZ7ce8oWQyZMUAm97OUM0sapuP6y/UxRBVosW1Cky5QlGNhOoeXFnJOyUQujjWx/pykhDJGJ9EW5OxRJDvMMS41PEifA+B2j2KTzX0gxez/M0cvxx8nMaoKoC85vK4ZFnwHN1jgH+c+H3bMkHuvKd05xqQSuR/HN8Y70o3s+9LOyuyfdEsr5xNuV7rYVhiwiTYwwaurDRj5qI46p3t4563lORWo13/32U6mHgPFHDCnbMb3xVzig/8y9mlYZW8jzIjMTkAkVIGbMPXHT95qiZDS4e4NILG7nVYZisbCizIT7rohHGnuPXMRnbe8b5Az4CKtfVwgsBoJo1ZdQQ0Ls
- P8ZhB6r+
- QvVtnKwiXqOMsTvg55EnrgEysxh66qji+5tV/LXn7KLEu4QIBWzCOWNKuL7/yc4J1+SsySPQB+8FyACadLNW8EMtx3y76qxRipIlnY0PFmNB/Y+k0jjHM4hyz5WVVLmwT5O+uykuKjhn6H2j0BfE/D3iwwR5mnil/NFASpK+hOJhrcl2gOgBIqHxAZTpexSRY4+wYLQeHy3GTEPrq09wgxO/ntOdF1yyy2nrlyLlFRviltNyjSzAd3OYJyGqtCPVcz+mdYEDzdl18q1RKCy+lns/LD9aJINg/bWVt4lq1Tnol0ufWd3p0lLIBrC3iofcufctY+8+SS3tWlAoPjvIHrRm9yO6uuSLGDJjXCGt+uQ5BCrRos5ycgqmhNKpfCgFBha0bJyzSdnKs9ODbGoIpxIRQ5QIltl5cBY+s3j4yAaQYpM+DVQJaDdfcGaMF/2FUQ8JFtiFoflmJOg/X73L9AJSLeQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0382A1C000A
+X-Stat-Signature: pmxn4mqaa8yrkwdiaytxcma8h7y3pjk5
+X-HE-Tag: 1781866005-34816
+X-HE-Meta: U2FsdGVkX1/n5muykBWmiDR2zvYcAlaFj/ORAFF+sYazPLL4QWBfX3CLG3TMYAey9kXdvHsGSW0oIMRFywgs5s7Mh35Kem+l14V8cgOoH+CLJM61Wg+RDp2wLevQQ8SdEvT+XFssIiSZzcgYXuBGfxjnmriWocue3ZAxwIhYy0GM4PTZRcNtOdDfGUZpeq7KAW9WRmsGnDF6DX29f4j43z27LK4CSsqVXQuIx36KOnln4MZzNqSyX4Is8cr+fjatdb9nTh5U3CiRyBNzcIwBkra2Yo4QVIMKYq4T9H8WquSHyJvSRio3JHXZ/xMVTLOb6O5DOMnwd8Jyhki5FngzjVl4+WUl8pkNLTYAnOokuBkjhd9+iZqps+o9GXDkRy2gWGSS1wnQc9z8i4YsvqbFCwTPCfw9adFOUmYviZlJSJyHSttDDZsGU4Ms/dMp8b6jADIPw4fB5pd53u5Obgk5/FJVO+iiVcK9HitLtpRZdWSfh418D0wJSR8jayblP69oEJBjj8XMJ85nTeulhnvH7s+H+zYqfO6aZx+3/XkYM7TDROV8sRpJLzx0ZXUcCtkTREtAhOJUuLsMPUlz74HRYbL/poYeVO0fA/q2v0KjxiogghqjO3bN82ocPG7EO4SLG0GMfp92ECVPn27kvt/NjkM6idkoBgXfqQMUypO+Xgi9hZRK/cf+ugGrjHSTemx5M4SKv0afxr57vZSFlDzncLtGJUy9qeYSrznVf0D+1WY9sNiuTwo0RD1NmdfgSIGCK2VBTGzv8gYvuGnYpstPaOv42s+5fw17PrnKcTjYlYJlyIBfTvayQ5wjee4bI+VSrVJBGPVzPcmiBEGDZEXKM+UB9Q4SWm0K+yaqFTHjT5BWts2D2mqLngBKlXYcl8pe6ilHC1OUnYpEcGXTnJTCn7YoJsKLf3XL9yMH+cv4pZkgr6hYNlt96fg1S5x57f472TaoIwSh2D8S1fqR75A
+ S+m5DlrJ
+ 2dDuxPOwAajj46ZDt6fGHiIzjX64ZgjscPTc6ZiOvFYjHv+7kljWJfTH1cXLpZk3MXhKuMPGT4TH96WD2EyouvpUn7hI34t4bEEZwg0gx5Lqxf8nNmDqudrMfUu8hFe5D72BOidnnvJsvow9I1HvfqQ9xvkYRywgBKkjAiA98/lEazwafv/BpW3mbfN3bnT006icKBrrFbJUKakjpslZkLSpeB6LVN8+HddcLjWcdHNwcEPRbLLAfINEZlHeOfgI/1GKUpwjwGaKKFRqqvSU9/c6MiHYiKXdEA5cZxy2YdqPH+/hQSJbnbJZ/DoxDHqcxw3An9bKkPJucVjc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,254 +160,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
--cc wrong email
-
-On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
-> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
-> before return the pmd entry:
+On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
 >
->   * re-validate pmd entry after PTL
->   * check PVMW_MIGRATION
->   * check_pmd()
->   * handle on pte level if split under us
+> From: Ackerley Tng <ackerleytng@google.com>
 >
-> But for device-private pmd, we just return after pmd_lock().
+> __kvm_gmem_invalidate_begin() and __kvm_gmem_invalidate_end() actually do
+> not specially handle -1ul. -1ul is used as a huge number, which legal
+> indices do not exceed, and hence the invalidation works as expected.
 >
-> This may return improper entry, e.g. if we are looking for a migration
-> entry, device-private entry could still be returned, which leads to data
-> corruption.
-
-I don't thik this is quite clear?
-
-How about:
-
-	If a softleaf entry is present, the existing code simply acquires the
-	PMD lock and returns success even if PVMW_MIGRATION is set (indicating a
-	migration entry is sought), meaning that the caller can incorrectly
-	interpret the entry as something it is not, causing data corruption.
-
+> Since a later patch is going to make use of the exact range, calculate the
+> size of the guest_memfd inode and use it as the end range for invalidating
+> SPTEs.
 >
-> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
-> support device-private entries") by following the same pattern as
-> pmd_trans_huge() and pmd_is_migration_entry() for device private entry.
->
-> While at it, it cleanups the pmd entry handling in page_vma_mapped_walk().
->
->   * Instead of handling trans huge/migration entry/device private entry
->     in a mixed manner, we put each case into its own if condition and
->     handle with the same pattern.
->   * Also we grab PTL and make sure pmd is not changed under us after
->     above check instead of do the check with PTL hold.
->   * restart the process if pmd is changed under us
-
-You're doing quite a bit for a fix and you're putting it all in one place.
-
-How about do the fix as 1 patch, and then cleanups as other ones? It helps with
-review too :)
-
-It's a general rule of thumb that if you do more than one of moving, refactoring
-or changing code, to do them as separate patches so a reviewer/somebody
-bisecting can clearly separate each.
-
-Also PLEASE do not add new functionality (this lock recheck) in a fixes
-patch. We'll end up backporting new logic that way.
-
-Make the fixes bit _minimal_.
-
-I think in general Andrew prefers separate fixes patches so I'd just make the
-_minimal_ change that fixes this for the backport, and the cleanup stuff as a
-separate series.
-
->
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-
-Hmm seems the device private stuff has had a rocky road of late!
-
-I wonder if we need some more test coverage on this?
-
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-Annoying nag: You sent to my correct email ljs@kernel.org (thanks!) but also
-cc'd the incorrect one, please only send to ljs@kernel.org thanks :)
-
-> Cc: <stable@vger.kernel.org>
-
-Be better to just have this with the Fixes tag, Andrew adds the Cc's from the
-actual cc- list anyway.
-
->
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
-> v2:
->   * specify the possible error case of current code and user visible effect
->   * besides fix, cleanup the pmd entry handling based on David's suggestion
+
+Reviewed-by: Fuad Tabba <tabba@google.com>
+
+Cheers,
+/fuad
+
+>  virt/kvm/guest_memfd.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
-> ---
->  mm/page_vma_mapped.c | 63 +++++++++++++++++++++-----------------------
->  1 file changed, 30 insertions(+), 33 deletions(-)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index d163559da0235..d72ecbfcc3144 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -366,6 +366,7 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
 >
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 2ccbabfb2cc1..21635fab209c 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  		 */
->  		pmde = pmdp_get_lockless(pvmw->pmd);
+>  static int kvm_gmem_release(struct inode *inode, struct file *file)
+>  {
+> +       pgoff_t end = i_size_read(inode) >> PAGE_SHIFT;
+>         struct gmem_file *f = file->private_data;
+>         struct kvm_memory_slot *slot;
+>         struct kvm *kvm = f->kvm;
+> @@ -396,9 +397,9 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+>          * Zap all SPTEs pointed at by this file.  Do not free the backing
+>          * memory, as its lifetime is associated with the inode, not the file.
+>          */
+> -       __kvm_gmem_invalidate_start(f, 0, -1ul,
+> +       __kvm_gmem_invalidate_start(f, 0, end,
+>                                     kvm_gmem_get_invalidate_filter(inode));
+> -       __kvm_gmem_invalidate_end(f, 0, -1ul);
+> +       __kvm_gmem_invalidate_end(f, 0, end);
 >
-> -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-> -			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> -			pmde = *pvmw->pmd;
-> -			if (!pmd_present(pmde)) {
-> -				softleaf_t entry;
-> -
-> -				if (!thp_migration_supported() ||
-> -				    !(pvmw->flags & PVMW_MIGRATION))
-> -					return not_found(pvmw);
-> -				entry = softleaf_from_pmd(pmde);
-> -
-> -				if (!softleaf_is_migration(entry) ||
-> -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-> -					return not_found(pvmw);
-> -				return true;
-> -			}
-> -			if (likely(pmd_trans_huge(pmde))) {
-> -				if (pvmw->flags & PVMW_MIGRATION)
-> -					return not_found(pvmw);
-> -				if (!check_pmd(pmd_pfn(pmde), pvmw))
-> -					return not_found(pvmw);
-> -				return true;
-> -			}
-> -			/* THP pmd was split under us: handle on pte level */
-
-Don't drop critical comments like this, that's very bad.
-
-> -			spin_unlock(pvmw->ptl);
-> -			pvmw->ptl = NULL;
-> -		} else if (!pmd_present(pmde)) {
-> -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> -
-> -			if (softleaf_is_device_private(entry)) {
-> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> -				return true;
-> -			}
-> +		if (pmd_present(pmde)) {
-
-You're not checking pmd_trans_huge() at all now? Just assuming pmd_present() ==
-pmd_trans_huge()?
-
-> +			if (!pmd_leaf(pmde))
-> +				goto pte_table;
-
-OK now assuming pmd_leaf() == pmd_trans_huge()?
-
-You didn't mention this in the commit msg? Justificaiton please?
-
-> +			if (pvmw->flags & PVMW_MIGRATION)
-> +				return not_found(pvmw);
-> +			if (!check_pmd(pmd_pfn(pmde), pvmw))
-> +				return not_found(pvmw);
-
-
-
-> +		} else if (pmd_is_migration_entry(pmde)) {
-> +			softleaf_t entry = softleaf_from_pmd(pmde);
-> +
-
-Err you dropped the thp_migration_supported() check? Why?
-
-> +			if (!(pvmw->flags & PVMW_MIGRATION))
-> +				return not_found(pvmw);
-> +			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +				return not_found(pvmw);
-> +		} else if (pmd_is_device_private_entry(pmde)) {
-> +			softleaf_t entry = softleaf_from_pmd(pmde);
+>         list_del(&f->entry);
 >
-> +			if (pvmw->flags & PVMW_MIGRATION)
-> +				return not_found(pvmw);
-> +			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +				return not_found(pvmw);
-
-I mean it's less awful than what was there before, but as refactoring goes,
-putting a massive set of branches in the middle of a long function isn't really
-the best.
-
-Can we avoid this horrible goto by separating this out into a function?
-
-> +		} else {
-
-Else means what exactly? A comment would be good.
-
-I feel like in an effort to keep all this at one level of indentation you've
-created a confusing else case.
-
-Sane thing would be to:
-
-a. have this as a separate function
-b. to do:
-
-	if (pmd_none(pmde)) {
-		...
-		return ...;
-	}
-
-	if (pmd_present(pmde)) {
-		...
-		return ...;
-	}
-
-	softleaf = softleaf_from_pmd(pmde);
-
-	/* softleaf stuff */
-
-	return ...;
-
-In this function.
-
-That way it's _very clear_ you're doing softleaf stuff.
-
-
->  			if ((pvmw->flags & PVMW_SYNC) &&
->  			    thp_vma_suitable_order(vma, pvmw->address,
->  						   PMD_ORDER) &&
-
-Umm... previously this was done for all softleaf entries other than
-device-private, now not, and you haven't, why?
-
-
-
-> @@ -286,6 +274,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			step_forward(pvmw, PMD_SIZE);
->  			continue;
->  		}
-> +
-> +		/* Double-check under PTL that the PMD didn't change. */
-> +		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> +		if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
-> +			return true;
-> +		spin_unlock(pvmw->ptl);
-> +		pvmw->ptl = NULL;
-> +		goto restart;
-
-I'm not sure I really get the justification for this? seems you just added this
-arbitrarily?
-
-Again, you shouldn't be making changes like this in a fix patch.
-
-> +pte_table:
->  		if (!map_pte(pvmw, &pmde, &ptl)) {
->  			if (!pvmw->pte)
->  				goto restart;
+>
 > --
-> 2.34.1
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
 >
-
-This is really hard to review like this, as above please split this up properly.
-
-Thanks, Lorenzo
+>
 
