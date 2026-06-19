@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5992CCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94ADBCD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D3046B008C; Fri, 19 Jun 2026 10:49:27 -0400 (EDT)
+	id 6C1056B008C; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3844B6B0092; Fri, 19 Jun 2026 10:49:27 -0400 (EDT)
+	id 698F36B0092; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24BF76B0093; Fri, 19 Jun 2026 10:49:27 -0400 (EDT)
+	id 5873B6B0093; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA6206B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:49:26 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 527C8120477
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:49:26 +0000 (UTC)
-X-FDA: 84896945532.14.A5DCB07
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7959E4000D
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:49:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8j1vJZY;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781880564;
-	b=a1veW78/IvZAzc+5XXyVnxDnN1trElirSGB8us1ned4luYrwdmxPFqxkXYKiDeSNTPYnDk
-	w5VadqhfdAxu8nX6PjFBlnRhRI4exonPv0SqTEeuFTkO4+EaWmhgwQn+VuV8YxvWw6vLpY
-	/ntUOvPERd5lGnEMuvsPGQMDRAMsvns=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8j1vJZY;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2807F6B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:52:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3A23A0462
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:52:26 +0000 (UTC)
+X-FDA: 84896953092.09.6ADFACC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 003BEC0004
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:52:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv4j3Vb;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781880564;
+	s=arc-20220608; t=1781880745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JZzQor3YTBuoFfOZOMq4FcC3N6lSMdH+407qik7C3ug=;
-	b=RZmtcK6PJllUb8JyU4utmqFCKAFsNCJjDtgiFIqC0p7BLsbRLGLdXY7L7EqqU5CUCLfSvx
-	Nd+RyUpPSPUaGgtSJrxxooeBfVAlDhtXa5ZAbu1vdV367KnAABYbPvqUkwO3Xx0FqNtOie
-	+wYOskiN6wtFIBhDPmAAHZOBgdpB7CM=
+	bh=MMrfiUsFirA1Wml6QpEyIkRNWkxL+MwzDwXxle/2vjY=;
+	b=Ry10NJcy61Axf6CgAALkZ7WLbPRwg5UcJvMA8BqArXrr2meT1+fsaGFgezSyZ2opH26HAI
+	gGcP8h7pgfdc17h48W035i+JZ7otSiwj8JFQOFVqRJPbv8miY599byW4KkqLMricn/1x7y
+	SI037d7AQxM509KihZ2O9JLHXx9aBfM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQv4j3Vb;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781880745;
+	b=ySxNLlQyCa98li7B8hxlDun534NaUIxcScjvdGGrXmytCUSK3lH8O5vxdrME8C7YX+gZ6N
+	c+iuU0gG1RJTzX5fsyfqFvhA+FGxYZz5tPlYZtUP0vVeIf/Z+cmwkZv1xluel/3bZ25zFB
+	FGhHJGXKE71BMhN9mRp1qXfNzeQJBsk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A704C432FC;
-	Fri, 19 Jun 2026 14:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C60B1F00A3A;
-	Fri, 19 Jun 2026 14:49:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63706601E1;
+	Fri, 19 Jun 2026 14:52:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E61F000E9;
+	Fri, 19 Jun 2026 14:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781880563;
-	bh=JZzQor3YTBuoFfOZOMq4FcC3N6lSMdH+407qik7C3ug=;
+	s=k20260515; t=1781880744;
+	bh=MMrfiUsFirA1Wml6QpEyIkRNWkxL+MwzDwXxle/2vjY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h8j1vJZYLLp2o2sJ2qneko+6a3NTR6mns+g6mZ8TqdGXK/bfgHLvCi+uhmhgH/Plf
-	 ZYK9YRyriKZ0sUZgqJiseRMoXBXc4mGlcPv3h/KFg4R7j1iL8siRSvR7uQKhnLRauY
-	 qbq6z24CY9A2H0GgclU7+wuy7dynqmmqLRetzSXTj+onlU5xlKMamuOt75lKEDoxjS
-	 Mkdy4d90EYgRubuTRMsU7GTDID4lxzq1NFCrjVl5biH+oXzLNWb4g3Yzc99Lr/0otH
-	 iYXNRFHdHn43sKMDbID2/j/Ctrdsa4YykBN5usZVmSnpcu6IGi6Vj1k6bogsHsRs/3
-	 sBnwdnbD7F9JA==
-Message-ID: <92b18f50-b35d-43f7-9e7e-377b498fcd9c@kernel.org>
-Date: Fri, 19 Jun 2026 16:49:17 +0200
+	b=mQv4j3VbDWg8O5taJ9piUSfRU3AjvQi66hID3ksm16xst6HHiz9IzYOBf5fZ8yj/i
+	 px+Tj1KSP09VAvZe6u1uozEvCw0ov85LXVNQvLcJ4X+V6M7WnaDyck3iAzq8dVql8D
+	 gw6+gfB4QzFixuXHlUdJQaz47pQ98pXI/Hp/WTJNY6ZmsS+H9/Q/ujgmEI09i36r5M
+	 PwMCR4zVuD1ws+erSTfQ5nrM/ziXF5Kc6/9xR8UDmYAesiKIRst9hkOn+vvC5WHgfq
+	 jcUN5tenI8D+3Z3Z0I85Y/yQc9qJbyHmHUVhCiyd5QpsKFSG+sfAqwwK0XEx8UMNy0
+	 +gEgu4+0Nz3wQ==
+Message-ID: <92c3a198-98ad-47c3-a5aa-24db52109b06@kernel.org>
+Date: Fri, 19 Jun 2026 16:52:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/11] mm/memory-failure: make
- is_raw_hwpoison_page_in_hugepage() general purpose
+Subject: Re: [PATCH v2 02/11] mm: factor out adjust_range_hwpoison() from
+ hugetlbfs
 To: Jane Chu <jane.chu@oracle.com>, akpm@linux-foundation.org
 Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
  brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
@@ -79,7 +79,7 @@ Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20260617172534.1740152-1-jane.chu@oracle.com>
- <20260617172534.1740152-2-jane.chu@oracle.com>
+ <20260617172534.1740152-3-jane.chu@oracle.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260617172534.1740152-2-jane.chu@oracle.com>
+In-Reply-To: <20260617172534.1740152-3-jane.chu@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: p7nn4nhxzmhqh5rpmidkbkdj4njdbyf3
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7959E4000D
-X-HE-Tag: 1781880564-626913
-X-HE-Meta: U2FsdGVkX1/sMiQHf/ZZHmNWlE4YjKF0NU3aPBtDIGWAEVG57Zjd/dnWfiUxYh2lVrI8iQCO9DvEAF12pWTqgyiDIPChWKIExhE3P8yEBdJIiWtn8STaEZIqym/xCyN8fnSbOeOlDTucAL6VW5+laAcVtwNxrKjC0vOnHtjU9IERl8cRusV9li01jEGzzAfeh2jHfNVlSFkhUxdzlgMtNuFzSA4/CPPQAUYWJAyCukMTVLOhYEi0dsiymaJDpWdSMlwCFLbL+eyGL/NSK4fn3k8PNiiDH8TRUC8N5UESyUn8tQOnqasgCaBJlRM27YDlInjEbDu5ZXjhJmD5RNNeJi74R+q/utMAPb/A/Uj2j6GPl2YkHauvPa2Em6bhv3/UilJgB1sTSaZQhkGxWJIcXpPNrmFk6UWpkIHPMajyOnCFeN8BF2EmhL6bhEdw2BeWdYuZacT022gOIzXqIXHFbqw6aWnemLASXrI3zHv+IRDM3XQkLKm/k27wPLxbDrKAEelsuL/HTKv+P3NxsarXV2sJ45ujW6PjuLAw92zP68k4EE8GH01wrjnnddeHVBcRAxK0lE7dzGTDRpTLubw5b/bWuPrbahsgwDyYxwGZUoGnzxaJyJCu43n0rIw9Nw0mkh2dUXQjTark99lhdhqfyhHeHXmqrd5qte1Xd+yvJgSaN+aXkG76lnQIpD9dBBDia6vgSF/WC+GA/uDYyzk6xp6hg6doInfGKuEjqugugbdQZ8brTnakxXTtkwASoUWmuA5Uv9wGO8xDdPtj3rcnSEniZJeAxR7sy85MxJ2peg85oYfbWdPSpXkpPhHDxEflZ/iBVGue6fbYQZPMRKuAviz0WZaXmGFTXQsqyQTmPQzfPSSXPnj/eNH4+CkfZKuHVSG3ZgpnyopIuB23UkIC1omT23RoCsln+0LfxRm6DOc/xSAv/5YJPhcO1bmE9Q67slsscIKxbFuRUaix8ez
- PXwLzLXq
- jELOfpc5WGQzLl7yqvP1fysMqYlNZBQAfrkJnf9W/TrJ0t4djppUEqwK7+ZfvFE9ULRVkk7BCJ+2Kq06RXA+fgq1FxinGt0A7LPfvnvCYrKinTf/XwE90idRu+nNSCy+/01UO500HokMwnoWAwx5E/FlgyRO0c1bU/DIzxJDmb8F+uO2K0fWoxEjMvuShsG52SzuvpZnKFLk5mlIsEQCExS/QYdcXtgNroiOyb7U4FOnkUDBXivXzNMOYHc6DxnyCIezSJNYqFumEGLpNR7K8nn0YMCl6nPDMKcCBMn09l7s9rHUILpxQFljBwPnlt5d/GrGSo+6T3kOQeE7g+RZaBSA0s1t+eSI5JnXqBChQwx1c7zrZiplaRNSgK02T5B9UzzDRjmoGhLi4VSlZL5erPYTBFg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 003BEC0004
+X-Stat-Signature: 1jiad11cfqo869shsjfdx9gm8uazre15
+X-HE-Tag: 1781880744-950487
+X-HE-Meta: U2FsdGVkX1+1Xk9AGG7UYG2txWltHsESDoG1z96B1KFS/17vc7m9oa8wGcEN4YYR+oXGOShuE4fO9vAfcW6+8BQSXXVLBDNMe26K/jmiYwMspzQi2lA5ZX6r2CQJgnGzV3iEN/zDhVbAxd0D8F5OG5hMI5UChuFYeqOXC4YVqXJin/ZBGdFtTqzzt0cQFCtcI7sE8lzwfnAqwE4dAxWB/PV/mvampK3Bm/J8o5HGUSQtcfQ+Q3opY6h0W28BEfkGfVoqZ/8GlyKbcY24eSyu7lAROt9zyzvASvbVwvPGQVEPhgjUM8Z4CBp9jHCgu/w0jqX2deWRHe4rmTloGfIGHfAWw/FX9KIFyZm6N+Mi33gVO051QESup3pxSxFRLmBQZnx+NWL7nrcXvbEHnuALuarZcjxc4m6IL+jYydhzcfU0bS6KNmqYyDqUWX6VRvY1TcKQiJYDvSIldRbu7rOMkyZEd2IDf2mmjIxvddmjhO9nR+vrQKIMQQvzo5V1C2iBM501N01fj+N9Jg0R+WOVJCCzSp5TncU1Ndnp4vhPo0bBQkb0Bl5Bu0xd9jO33+D2aElXKACEUI/tz0CO+Y4kOI3JKrjGAUdF8CXvKLDGAWskjM/1RTOYaOmwq1nGRTgYKxuDKi4BnNLAP3JUdZL78RMz2xPWmC58PaqvEx8327BrJJTYrRBVFerBui/r3j38GZmyOmqklNMKbrFWQGcJnAlWYXgUxa/9uaScFX+upS0MOpue55JDrpCRGLCl3h1PLdSAcGX2IAgGuDzSCFA1W+evkWzwuyCjV7pk2C59KvRDBSiFu2F1TJdDkko38DAoipUu2yD63A59/DP2P8aoM1LsBx4qkVnjQbrbKFVM5bzisPp+ZUNtzrNx9cb+asAry2uF/etdGEc+MTH+Midsj+H/bkGjjejcvZBOevDStd5Lxp7ZZm8RaW8cJMB8G0KS8PrIxYeMyy9eHT/KvEX
+ uPaCzO9r
+ cMFSKuQU5tOj/H20jGW4uy8oVvlZpTRHenc39DbcPFV6cezL6Ts+rY7OA7idotcA8e4XRkdPMtMJA/L7s/WhP9YsWFvC3cnPD7sddlsNK5PZEcxIvVqDEy+sOE81zKzpn4Shx00as0A11+POF3gwoH58FP3j+y1E0dOhTB0lLwL0SipMZ0712soEjxGcQpacvxA4wKpIGF4oxYpapw3jpWYA1j8vTRYLYe8yXf3e7OIMhCdsB0z0hN8/5dCNpn0Gke56FUJb/JwZWNbk9wlXmGDL8hlmhNR1XYcQLw+Ghk+wEXPIb9hgo60oTblUwyHn9idx7Moc/0xu5U662Ob44ZgWny0k2jC9N/nk36NnrKj54tF1ZBPWcSsCwydjgJpOLVBiRaSJ3tAuk9qrCcvzTYCjbSgvS9+qRFOz1XB8FXJSKMvEmqmd07l2BOstM0F2uLK+XNgzPu+gcrdPdhn836EUKlJ7VEC8lGkn0/o3Bn+8bLY4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,108 +145,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/17/26 19:25, Jane Chu wrote:
-> Make is_raw_hwpoison_page_in_hugepage() general for checking whether
-> a given raw page within any kind of folio is HW poisoned. Thus,
-> replace folio_test_hwpoison() with folio_contain_hwpoisoned_page().
-> Also rename to is_raw_hwpoison_page_in_folio().
+> The functionality and implementation of adjust_range_hwpoison() is
+> generic, so factor it out and make it ready for generic use.
 > 
+> [1] https://lore.kernel.org/linux-mm/aeZwAz6PcdlqSnJ2@casper.infradead.org/
+> 
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
 > Signed-off-by: Jane Chu <jane.chu@oracle.com>
 > ---
->  fs/hugetlbfs/inode.c    |  4 ++--
->  include/linux/hugetlb.h |  4 ++--
->  mm/memory-failure.c     | 12 ++++++++++--
->  3 files changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 78d61bf2bd9b..66520f7c53c6 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -198,7 +198,7 @@ static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
->  	struct page *page = folio_page(folio, offset / PAGE_SIZE);
->  	size_t safe_bytes;
->  
-> -	if (is_raw_hwpoison_page_in_hugepage(page))
-> +	if (is_raw_hwpoison_page_in_folio(page))
->  		return 0;
->  	/* Safe to read the remaining bytes in this page. */
->  	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
-> @@ -206,7 +206,7 @@ static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
->  
->  	/* Check each remaining page as long as we are not done yet. */
->  	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
-> -		if (is_raw_hwpoison_page_in_hugepage(page))
-> +		if (is_raw_hwpoison_page_in_folio(page))
->  			break;
->  
->  	return min(safe_bytes, bytes);
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 5957bc25efa8..a9846f043712 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1079,9 +1079,9 @@ void hugetlb_unregister_node(struct node *node);
->  #endif
->  
->  /*
-> - * Check if a given raw @page in a hugepage is HWPOISON.
-> + * Check if a given raw @page is HWPOISON in a folio of any kind
->   */
-> -bool is_raw_hwpoison_page_in_hugepage(struct page *page);
-> +bool is_raw_hwpoison_page_in_folio(struct page *page);
->  
+
+[...]
+
+> -/*
+> - * Check if a given raw @page is HWPOISON in a folio of any kind
+> - */
+> -bool is_raw_hwpoison_page_in_folio(struct page *page);
+> -
 >  static inline unsigned long huge_page_mask_align(struct file *file)
 >  {
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index ee42d4361309..40129e0b8213 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1834,14 +1834,21 @@ static inline struct llist_head *raw_hwp_list_head(struct folio *folio)
->  	return (struct llist_head *)&folio->_hugetlb_hwpoison;
+>  	return PAGE_MASK & ~huge_page_mask(hstate_file(file));
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 4e636647100c..a27ce4ad6247 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -2753,6 +2753,37 @@ static void filemap_end_dropbehind_read(struct folio *folio)
+>  	}
 >  }
 >  
-> -bool is_raw_hwpoison_page_in_hugepage(struct page *page)
 > +/**
-> + * is_raw_hwpoison_page_in_folio - answers the question whether a given
-> + * page is indeed hwpoisoned.
-> + * @page: given page, maybe base page, part of a large folio or hugetlb.
+> + * adjust_range_hwpoison - adjust clean readable range to avoid hwpoison.
+> + * @folio: folio that contains hwpoison(s).
+> + * @offset: bytes into the folio where subsequent read starts.
+> + * @bytes: number of bytes wish to read.
 > + *
-> + * Return: true if @page is the raw hwpoisoned page; else, false.
-> + */
+> + * Return: adjusted total number of bytes starting off @offset that can be
 
-Why do we need the "in_folio" part at all?
+s/off/at/ ?
 
-> +bool is_raw_hwpoison_page_in_folio(struct page *page)
->  {
->  	struct llist_head *raw_hwp_head;
->  	struct raw_hwp_page *p;
->  	struct folio *folio = page_folio(page);
->  	bool ret = false;
->  
-> -	if (!folio_test_hwpoison(folio))
-> +	if (!folio_contain_hwpoisoned_page(folio))
 
-I wonder if we should just not call that function for hugetlb, it doesn't make
-sense as hugetlb doesn't set _has_hwpoisoned.
-
-But then, I wonder if we really need folio_contain_hwpoisoned_page() at all?
-
-Why not a simple:
-
-if (!folio_test_hugetlb(folio))
-	return PageHWPoison(page);
-
-And now I am confused which scenario you are worried about (it's warm here ...)
-can you explain which scenario you want to change?
-
->  		return false;
->  
->  	if (!folio_test_hugetlb(folio))
-> @@ -1868,6 +1875,7 @@ bool is_raw_hwpoison_page_in_hugepage(struct page *page)
->  
->  	return ret;
->  }
-> +EXPORT_SYMBOL_GPL(is_raw_hwpoison_page_in_folio);
-
-You should spell out why you export that function in the patch description.
+Apart from that, lgtm
 
 -- 
 Cheers,
