@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB90DCD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C06D9CDB466
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:59:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DCDF6B0088; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
+	id EE5266B008A; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B5306B008A; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
+	id EBD676B0093; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2E76B0093; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
+	id DD26A6B0095; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 688F06B0088
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B14CA6B008A
 	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:59:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7A031A04A8
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:59:28 +0000 (UTC)
-X-FDA: 84896970816.02.59F1D87
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1BC67120489
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:59:29 +0000 (UTC)
+X-FDA: 84896970858.10.4A285CB
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C277C20007
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4FEA91A0008
 	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:59:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	spf=pass (imf19.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
 	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781881167;
+	s=arc-20220608; t=1781881166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bY0zsgQNRGdot1/GBvs74WqAm7W6VQas7soUq+EVbIg=;
-	b=V9VGuB56E8U5/2AdMBLJY0J5pUDC517CnhD2zMMlDI7PpKCBi3Malu8pxhDscwypE0E232
-	9rSNB54jALQSrowltKchxS+MqmUqvfP3NULPavEYhrE74flY0Dmajv9reId/1eY5K/fAWC
-	pCd0jzfK8IX34PN1y3WVsVT3ICD0ejU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781881167;
-	b=1vkSXfPq4l24B/NfDZbnzhxK/CbtO591ZY8/sB/838EgVw2znOur+t6fO9Tb0x6qPoGdd6
-	z/0JML4lOkePhccbyYv5Qd8gJ1LQEo/6JcWyck8dP/h8WArJl5aWlksaboqcoPZPF4KqqN
-	uVbmCgmylLpkuwYeCIU2+pyHQKuIIpg=
+	bh=IT/yVAiDabUqiE4USPZqQnbFTAYiEWdtK+BgXtb/JJ0=;
+	b=scIEok5pk1wR0vCjbcOHTbR210j6uGVOb+iBKLL0Rl1AxPfTLM3SgxkxJWxVRGt8cO/O2j
+	Ac9vmRTkMZN2v79YPbIbQ72FCOrUJDqegm6m7VsCgVWyJ8jw0SX9v2K3iwa5qgic23Y/U/
+	0zfxyHfKdhHluPr4e4wimdIwmdp1vmA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	spf=pass (imf19.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
 	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781881166;
+	b=Qsw2qzVdwJzMd8c4z9L7JPXhYftdCO3K3+zgoE3MY9qD2f8DuVUncReE1Cpq8B3uViNdT5
+	cq2WmWl7uNnKjPNIiVMWwduvsUCEvfRGYI7qfWkdqXawrg0kuGvw8Afu0UdaMuzFqtINgr
+	nTDsQiyRIdHxaGbkgUepDzA4Ij6/pA8=
 Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ghghs6bbdzJ46Bd;
-	Fri, 19 Jun 2026 22:58:53 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ghghz71KlzHnGfT;
+	Fri, 19 Jun 2026 22:58:59 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5F85840571;
+	by mail.maildlp.com (Postfix) with ESMTPS id 7753B40571;
 	Fri, 19 Jun 2026 22:59:22 +0800 (CST)
 Received: from mscphis01197.huawei.com (10.123.65.218) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
@@ -65,9 +65,9 @@ To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
 	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
 	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 2/3] mm/damon/sysfs: support hugepage_mem_bp quota goal metric
-Date: Fri, 19 Jun 2026 14:58:20 +0000
-Message-ID: <20260619145821.2109933-3-gutierrez.asier@huawei-partners.com>
+Subject: [PATCH v2 3/3] Docs/mm/damon/design: Document hugepage_mem_bp target metric
+Date: Fri, 19 Jun 2026 14:58:21 +0000
+Message-ID: <20260619145821.2109933-4-gutierrez.asier@huawei-partners.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260619145821.2109933-1-gutierrez.asier@huawei-partners.com>
 References: <20260619145821.2109933-1-gutierrez.asier@huawei-partners.com>
@@ -78,13 +78,13 @@ X-Originating-IP: [10.123.65.218]
 X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
  mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C277C20007
-X-Stat-Signature: 6mhawssb8pgjbi5zdp63cife5wzgz47n
-X-HE-Tag: 1781881166-614303
-X-HE-Meta: U2FsdGVkX1/64RJ7LFSY5ee46fH0PIcZmidlk5cKu7xkFv+gXWxyjXg9kQg1iqEr5CkruwEmJvsAUq+EQDEaaQwVZ4q64EaIsYsq8C+NXA2DmiR6/I9um6zN/KQTihQJYyjfWNZTZ0ofNqgZ+1DgcW2Oj8o2yO2592qcDKXP6Crzrh8ZQzwKO8BjCK1Ca5bGre2OX74w5KjUMJErrg5CAyeVxaOHbPIZrhuhF0qtby2UmjL4n5FjF3PoAL8l6BBkf8N4RNzI8DMI/k+qILM0k4hUIlDOplNLudlCeWNnKUfW7YRYIePaByUJ5O7Azjy2CgcNwjUrGYXGnjp1XHNTO78GJo542uZ04+/PbmUw8kKEwxnzAGSFO4mTUx3Ope271mtm0pmeIkWxG++aKbswHOFdrKqJHCxOHCXSmAfUXVPhUC9CNcPjcqHc8xMbxMJNpIf+asXUhA2sb4qSx4AwXMGre4CDYZQVZHoPh+8up79A9ROsCCS0G/2UyatTNq9TuejtGYzPjqZYo1NavWt3Z7n6CAlTWtRS28T3iOthemcH7uwCB8nBlLzz5gSo7JXBq+q4Fr9AKbjl2vCCenN/pQmSqudO8DrArmUpw1TVcIzMYwW2vWBQHfm0AQ0mzgsx0AkSYlsKKYGBef45g7709p96VUGlOasU4DnVZvXCVQFx2j5egzL/RU9QoN+0/sKrXK/b89HyxjNmqK2/7vy7Y5DJLM8X6FltG8wQGKfEf3X16OLI3vXN40CsOgz/2Bee2xXfjeTXSQwRahGCTv1hbAzb7OIT8pQvTSsv4kGpZQ6YrcodrdjNhS0RiaDhpQXKFDuXmGGyo3xt0TVdX3++Kp7BeLICGcaIaGbVCDGSHyOR9eIjJq8cZg5E9Sb/Sw/aTKfRZXgk60d8Jrc5OBiDjRM0z4yn2xr2788IPI0/cRLjLz4DiW+SBOZpP3AI9G6ZcVjoKT3wYxgvKlyWDn1
- sU7aoLsm
- pwj6Qf+c/SnhhPym7CocW4hqiOAMJHXYR8ZmP/Fju2QGlTtEQHZHgSEIgCZLyXyiV7w1gEF+YvdqPiv3m1vLXVSVL4jVT79i7oGnYm13x3j7meYhOm3sfw0GQvpEggRlhfgAqAQ1p1LxFAN11/B5cIH/oooy5ZJvukSNCIpBBMll6XSfdRAjL6B9DIdDCmOp+nl0HwS6yvf4tXEbK+3NQONVDbYRlCiI0ekpWy+zMcsYDRoBh9LKj64uZNFzw4Mwga6Tzy00NzZh9x3XqNvQABE0ZyoqgFjRV3uRJi8RWVDb+pkQ=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4FEA91A0008
+X-Stat-Signature: bxqw653x7n6wi6mqn8b3ihyp94rj1tx1
+X-HE-Tag: 1781881166-235568
+X-HE-Meta: U2FsdGVkX18aq0szPLli1ngIwxXIRKBN8qHHyU25a4DPorP77i5wIuGhV9RL60GnuJPAYvRq78fcogoTvrpGoqlaShXD+Y0BFgPkgssX9KTTCwwc7ycgWdX1VwFHGPji1GSz/xW5eMWPR+0eCwg62nrD724qghCYW2Ia83f7k8Kwl2GayyoMu3lm9gT8Jb1/4RMsTrFtDYKdFeFV0+/HJcYMlxmhU3QqEzP1YUz3ShM02BghxwQPK4MzjwIn2++kd/SBRMP32GxEnWMFHnWNtCrq8aGMBu3XY/3pp1ioaA23vxbJ9OZzOvlA0Zw9Omv2PyMe2Zi8cs3jbzmrVChgmLSrkFhrbxTL3cFCJsyzNGijK3rPJD6XXZkUX1LxTpQVpmAXkk1lOl6SRVtR2v7TkRMBP30LkHvz1gpJqviPKu7s/YQcuYD1d70eGFE8HM8jMkjxHTdZka2uZe6gd+g90RlQ7Fwp0ZHRQUaeTNnkutp+unyP74rWdJ3+5IomHb3BT13DJ2zTxEyON1uFmbCAgSh2gSyti6aFQTLnvN/IS+dN0n5VVAuIiVeprw4K7H/2P2NEHIe3n7wFyOjdY6E3A0Cd65YxQV9/3MRik7xcF1WXWOV2MzMRayPgCRTrc0pEsMnELwPaIRRNKDinxyr/i/NeGPhq7bSAuOzuxT91yVzekiZ+ljeFY2CKnnTXc/eHQPLdXthttkmnG5f+6Ji/kNJv2QMpNUG9rzhXoAIJ8aIvrN2lncO3SAYTYwiL6uwEqa8Ibnwz+RFziPGZU+hjxEYNNmtrxEoWZPmfz+IKKllHvp7DonhlGFHJNBr7m3mvkATdEiohTwW8WqO3ny85UFxV6wNUmhuRe60Cv0JEJrcTEd64uI5p9oCxz3fEaW4Cf3cYXbxrIF3RrQ/TaYYurn7Eq1QwYrBShIXp7aGSL5qsMQ0ZsmZBfYCxkEM7G25EgX0s5BlIw0YcB1QjdN/
+ AcBoZ9UJ
+ XGRW4YBbsXzrt9WIUt84z6NXUr560XqG3aRplf1gerNphFAQRZyBOEWwWKt1O1hPWp+J9GBYHOBbYgCPtYlal6e9YGzPEJyhaDkWV2DGeL/XaJNqiavXpzmvSW1pgd06EQa53FFcbDHopSo7dIZ0T41oxK9CUxmAufXWT9kYBlxobXhdxhgLRgY07/C469qDxnaMsIp7HDIsKQVigqE2/NTlgUR3mZDGkeF80YgfYmIUexQbQVP6mPjygPY7RAOUiFZiCS6qUHCAcRa0AAIyfChoNTzfnAYPpm/aIz7xKcNX/mTi0vTGXZruZO9N0tgOPFsJC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +94,26 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-DAMOS has a new autotune policy metric: DAMOS_QUOTA_HUGEPAGE_MEM_BP.
-This patch exposes DAMOS_QUOTA_HUGEPAGE_MEM_BP through sysfs.
-
-Add the "hugepage_mem_bp" to the sysfs-schemes interface.
+Document huge_mem_bp metric exposed by sysfs.
 
 Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/mm/damon/design.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 329cfd0bbe9f..4b5429a5b415 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1267,6 +1267,10 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
- 		.metric = DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP,
- 		.name = "node_eligible_mem_bp",
- 	},
-+	{
-+		.metric = DAMOS_QUOTA_HUGEPAGE_MEM_BP,
-+		.name = "hugepage_mem_bp",
-+	},
- };
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2da7ca0d3d17..34d940a13a85 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -686,6 +686,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   (1/10,000).
+ - ``inactive_mem_bp``: Inactive to active + inactive (LRU) memory size ratio in
+   bp (1/10,000).
++- ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
++  (1/10,000).
  
- static ssize_t target_metric_show(struct kobject *kobj,
+ ``nid`` is optionally required for only ``node_mem_used_bp``,
+ ``node_mem_free_bp``, ``node_memcg_used_bp`` and ``node_memcg_free_bp`` to
 -- 
 2.43.0
 
