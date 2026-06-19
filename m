@@ -4,132 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFEDECD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 17:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41628CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 17:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B17446B0088; Fri, 19 Jun 2026 13:18:27 -0400 (EDT)
+	id 0534F6B0088; Fri, 19 Jun 2026 13:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC6B06B008A; Fri, 19 Jun 2026 13:18:27 -0400 (EDT)
+	id 02B5F6B008A; Fri, 19 Jun 2026 13:43:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B69C6B008C; Fri, 19 Jun 2026 13:18:27 -0400 (EDT)
+	id E5C196B008C; Fri, 19 Jun 2026 13:43:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 601216B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:18:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3AFCC2234
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:18:26 +0000 (UTC)
-X-FDA: 84897321012.25.9841EE9
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8ADA21C000C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:18:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uWBRj2KH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xEFirPK+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VmI8JyI5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QbBLgmTW;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781889504;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B7B186B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:43:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B1551666FD
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:43:21 +0000 (UTC)
+X-FDA: 84897383802.17.780AB28
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1E68A40004
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:43:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gvCTDy8l;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781890999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oqPpewONjUG7ValzHPKgr56a2oPjvYPPkirjUicRP8=;
-	b=ifQwS6tZ21Hv7soagP/WwSXETUgrBng7HDbmE7MdEBU1QAIXoFizS0vB64WID7aNQYILQY
-	ovy8M8Uut+q7BhjGSFjqXW1+455El41mbIY0hF92iuKHtsB2i2ugGkaWyauGiUZUkHbQ+q
-	ggjOTnZ9kM2LHb1Fy0OoSd4dws/u5cU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uWBRj2KH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xEFirPK+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VmI8JyI5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QbBLgmTW;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781889504;
-	b=Sdd8RocPXBIyHJ/wVZR+BMeJNZbc9wxHTY/SiWcH49XHzpapuEJCGqm8+ITEsuQMY4Av41
-	RGIaBUFrlMSJsiEwQIXEyk06udRuqJ2ExYjEji1i4PG9QdFAx1XK1YqutxPdKDWH7dOnK+
-	jgW7VmK3cLyRZXpp6pKxsaoJKHNkanA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AD4A26DA90;
-	Fri, 19 Jun 2026 17:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781889503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1oqPpewONjUG7ValzHPKgr56a2oPjvYPPkirjUicRP8=;
-	b=uWBRj2KHeH/VdEln9lE0zJGzrD3Rsjo2qvigFa9RJFnl3W0mRwK4kHc3Aa4fX9C/6aROEi
-	GjxjptELaUhb659lHo45VA5bYewDgjlD4ZYprKPlaMHtAA+lzKu/EcvqXnAiERLFLI8pBc
-	qcRPSy5OUQZuGPoDSw+kyY/ubczq9uM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781889503;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1oqPpewONjUG7ValzHPKgr56a2oPjvYPPkirjUicRP8=;
-	b=xEFirPK+ac4gMVnxt0HjyAp0+gUgMbnxLCEgB3ZL1GcHkT/qLmhZVSXltHHsVlPM01+qLY
-	bNL+Wqdk0tiVMmBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781889502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1oqPpewONjUG7ValzHPKgr56a2oPjvYPPkirjUicRP8=;
-	b=VmI8JyI5c3QN5t0j/8lz0RSLO0cxyyWmDioT/AKIdNasMGrwbKJsMCK3AOEoxyoTWyEnna
-	91e2cXEKw91DHAwP5fCdy3gxrbxJs1eS20vP8jwRfvEa7sBhk5q2qJidk/AQLAZ6i/Ag9R
-	kHPimRnB9ZRpX7ShT9AUe6OKFW88UYQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781889502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1oqPpewONjUG7ValzHPKgr56a2oPjvYPPkirjUicRP8=;
-	b=QbBLgmTWa6XvIUrZCT7X88SCJxb2z81dSoArM9vgo36gCqu01H8Zr7XmIH+pdSMIBAqvEK
-	HgEIagkEhphrdwCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7620779A8;
-	Fri, 19 Jun 2026 17:18:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wWAvNd15NWqnQgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 19 Jun 2026 17:18:21 +0000
-Date: Fri, 19 Jun 2026 18:18:20 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, 
+	bh=kay5wp1i1E+dRCDTPAxSLQ9GOQ/50mATiU8b8y6jipg=;
+	b=8QcVPu1sWlJM+PatS7IcobreRMvJxNCUArvFYwNGeaJnisCtn9fSTmEuHu1A/hZwGvghFU
+	+sk/T8C6uhrS7ly9Qwckq+McPUBQOu8G7FW+3bbaqLI5cnMcqwzLbQTkiFtFsWqbR4C4qU
+	CoZK7VHVg+nRXBtAyt4wUiT4uqWXmJE=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gvCTDy8l;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781890999;
+	b=5+0Af3zoP98kDlKRr1+KZJa6s46xhT1C+JpWmFLwhSNBpncaTVRhCrS0eJgBwyjaKEzT4o
+	Vwyu6u27d2+2181stCiiT6K72qGpqhvhTZuypkLKGm+okTmMpVeHQDEgWj3b6EEMyrdW8k
+	v3AhT0K4A22BjyyHnA1EvolMDDuduU0=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51765331535so260971cf.1
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:43:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781890998; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ji8ltyza8xv52yhGDOdWUi+XgmjGQUISC2413rPdIbE35NRuEFWNB7gcdeKxLTfrig
+         MJ5awzPSaIJ7bBc3ZCXemISIlG154NIEm8ELoIzd8VICRlSYocBOvsLfO+TI3byzPWYG
+         w2bqkSbwHXScMpbE+5OS1nP4rQXA9o/gy8/M174us6PXfiSSxw/CIoU8sYuhcOUabpBZ
+         2yePl3sbRmlJOsMEgmPuruWkxgI3Y0BtTFIIq3JNEa8+LE6ZjmcIlkQbrYDpdDa+DS2d
+         LcQCHw2lYqYK2ARo/I/T2arQMnpF6JzB+QB8mGkDuWTODlPK+rCjP3AtHy+l7o2YKVul
+         jYaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kay5wp1i1E+dRCDTPAxSLQ9GOQ/50mATiU8b8y6jipg=;
+        fh=UXJu0ZpHC03k95DR6U5FAxX107/2rdpgN6/ZXwqppjM=;
+        b=FkA30iGPXCvtsr7lVxmfMGOTABwVoBDdkjeyDSC8VSHOqYPMiuTpCPiXUlOpP4Vkoh
+         6dw5FSHfY5jlnPDMv+PFgrOBbjyRGrNCnXYIa0puVO4sSKreK4rmb7LE6iskmU42pand
+         I+8LS3C1qvBOwV2DhR/L5G22uIzDGlUfiIGaa7GTNURYW/V/nAAbRDA8nVhJHX+M8ifI
+         3C2DfKOPpZP3rSk25+ji0KOn1IJEieGUtWwQlt6x58MmWpwDFwh3Id3XicThapR+AyjV
+         9A1Tve6EqJCTnnl7rs875w0A32WdrGEL+YNDnRc8lo1di+1HM3u988RIaXkx26N+Vzou
+         FZ5g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781890998; x=1782495798; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kay5wp1i1E+dRCDTPAxSLQ9GOQ/50mATiU8b8y6jipg=;
+        b=gvCTDy8lIHaClg8Q2BoYVD6r+JNxivO4etfQhNJtwGERe0pZ1VILAhdxTYGtedjqOx
+         ZU6aqT+xAK+Mw5VI0ubPEMFLTGg+O8CeLDCx4DaeUqD8ZyhC0/5B4/Z3JBQshOIWsVuN
+         tIg02SGqMrwAa9Om2AYZ36Es5e50eu4JXp7vETkq3whPiBQwjn6mw9RuQTroSEhN4vGL
+         hWFIggj3HiO8XGr+fLg2mYo0Qbs+Rd6tjwZWkcFHCB5PQ/jnYpM2wKBVo70UftMsuLd0
+         jWMvKcvJb7iMZrqg5DbyTEZIzmjCPfxU2iCk5RjRNkTEEoikRlqE5tx4yufPHtR8wfCe
+         GdfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781890998; x=1782495798;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kay5wp1i1E+dRCDTPAxSLQ9GOQ/50mATiU8b8y6jipg=;
+        b=i3FZWHMiKcnTWxf5aHhjCdp9Ojch0Y9nOzF4Rpqww/suR9T3yjQIC6u3KSvlekvAH2
+         NA+dlJHOvttHQ4xzqtt5qrEdEMncktSAZVtGSKckdE6DcBLzRh0RI96ee54ktRpdRc8y
+         0546g49XYr/5gkf5tluel+wR6abTmujQJxyb5DGPY45jd8XjSWnRHlz03REqRawtFt8n
+         M/j4KLSjKA3BN+/cP7QH+bNy+vkrbtPk7HbmmZ+blA0oVeMdR64xKtQGGlRXyPol0B87
+         UbSxOcwdB9XF7eu8nmqYSM1GaV9SmtuRGRn4M8m9LhDew/Dg4beoZqu/6wsVJ580ct8V
+         ugog==
+X-Forwarded-Encrypted: i=1; AFNElJ/3Mbm0WU3KmTniRzUdSSsER2QyMjw+HLGMG6KS9ISs76WWg12fiwcSr3TH+eHQpyLA15yxhrogZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzrt8R4GJBhw6FRm8udX5DnuAE2Q4PQgO0fw0J6//tMKGC/6JlK
+	hIvD0vdoW5Xvi4qyZaqjfkGOqvufMtew81RYGWVUCGJX5yiVchSr5xrucTlkZV+usO5ztDzKaMF
+	MkJ9rtUwYeePIAPYCAvhyOC/vBtsod4E+Agkk/wh6
+X-Gm-Gg: AfdE7cnM+LsXUR4uBPSv4d7o7yyvD7st/biUL2WwRnHhdCBvqShSZigVb72ulmlFp0g
+	pg2AJsyjcWutTY/Ch3sDYFvfhGcRY3U7GrQF5e34Sq4ay/+ry38qncZzq8rEJ9zq4zJRTs/PFrJ
+	FpTsstpB9OezLApBzOsLqVtWd7ZIJoIdaWTzHpnCFWiq1619gvXoV+PjQOQWGf/FBBXyjv9A37z
+	rNwDvP0kmPsITDagstxXzCJgSDNywoOQMe16A6AX0AIm3H1oGtqjkNddgopt7A/795b/Boo3YAv
+	uheyww==
+X-Received: by 2002:a05:622a:5513:b0:519:df4f:6c93 with SMTP id
+ d75a77b69052e-519e4a70447mr8437651cf.20.1781890997445; Fri, 19 Jun 2026
+ 10:43:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260619112852.104213-1-ljs@kernel.org> <20260619093711.d0d37c9920b3a16394c356a6@linux-foundation.org>
+ <ajVz1nhMn2JwucMY@casper.infradead.org> <ajV0TbwEyaKMzoa6@lucifer> <ajV49Fyogfa6aIjy@pedro-suse>
+In-Reply-To: <ajV49Fyogfa6aIjy@pedro-suse>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 19 Jun 2026 10:43:06 -0700
+X-Gm-Features: AVVi8CeEMjgy9L2eBvRLZA5Aw02A7ftxRU-GzBSdQ5yz88FNkOKgb6VgPbpFz88
+Message-ID: <CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
+Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead to
+ VMA boundaries"
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Frederick Mayle <fmayle@google.com>, 
 	Kalesh Singh <kaleshsingh@google.com>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead
- to VMA boundaries"
-Message-ID: <ajV49Fyogfa6aIjy@pedro-suse>
-References: <20260619112852.104213-1-ljs@kernel.org>
- <20260619093711.d0d37c9920b3a16394c356a6@linux-foundation.org>
- <ajVz1nhMn2JwucMY@casper.infradead.org>
- <ajV0TbwEyaKMzoa6@lucifer>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajV0TbwEyaKMzoa6@lucifer>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8ADA21C000C
-X-Stat-Signature: 31bycpeg4ziagk6xr3nxpbwy9shouord
+	David Hildenbrand <david@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1781889504-265095
-X-HE-Meta: U2FsdGVkX19htUWwIlop0sm4nb+cEThiF5s1r2znBN66geE2CO4DAKd/VV3RiZi8y4pc+6+zvJM6jljC903uqRQ4IO63YFjTnnwLRLarc+VEw8dV5Gy/8BA1ReljegxJxK8JSJohTP8bsFlG08fH/3O94gf1s7MfMkslW/0X04nzVGe95tY6ZyTh/zJHP8bH4P+be81lWDvWhqFbzXzh/r73AFRzn2Q4M7rFoXEH14062xt4Sd/QoUZj8eik8y55C95hMhvuecxwr1Ujc0dHk/xg3tQnhKa+4MnNNUUJPn6WgyjY8YQwc5V3+9mgrRz7ZYsSs4XycWo+01nvDu23qsWlD5SVlmTveikInElnZpMh9qr+1OyQyxv8Mqgu1BKFH7QFfafTdFRMx4MBvmJ1siSQaN3+wVfvKey9bUpLdZE9VjvQ9MDoTCJJnDFWcrwI097Y/pMu5i4lRvwM+DZqBXgXAfyD7VNwcpuA3DEqDGrYM7HN4x/LoSsxOpErGoAX3XmWAXWgtprQmZQm21OimNX5s3UrpbY0mStXlkHLVaEUDsHfnHByG0M9X4rW/5j8k4Sq9J9NqdeVbB4SPEGunlexKQC7z+p3kaPYOcDrD5J+TA3/hDZ2K9hJJoSO4OSgNe0IIVvUI4wKOTNWpgjLQC6OxE8oSVAWp9JixWcHespA5cU+WI2mtL4nWzGpetRPtRyET2MviFlvD3LyXpoBO0bMueo9Ra5gSzVP71ahyBuovk3bGn2/JjmLhfksXJwTUOaPCtLPckWGifKh22fLN53RXU7OvxFXyZ8e/ytnxGXFy8mZWAaDHhJGbGS11xzmGKS8t1wMTCMKlhglUlxKlx7X7Mxa/5TeThwjufpFJrKLCWBqMtY8GhcRyF8Z8ilA5znMJzP4vGl4Z/z6t+thbKRhc5dxY6eRLcoT0fO9p73/33UJ/qviSGeWwIi79tNtDIym8Bl8FAl2oylOxSa
- SAVNhnks
- QNnNHffeIH9Z5+aWjHBVhi9KICcxQ/DK9C/LwxO9ygw2FbWjWvIKf8yAmwGtZ8USRTZ6sf9A/CNU5Aof8C+sbfPzUVisOTE40wz6WDPGqmssZU/ln/AVyY5XHrwFcNyv/Rfy8y2ePsXuJNllUmZRNrrXZPJITNHbSW+1PXwz+cDDXSvtxaNllGNJz5WtuKln617Wiymh108DRRpDUhqeHDi/il9MxdboL1O8Uoy6nXCOG9ROL3XyGo3rwXtuAGdkylEm3o8DiM79oUUo/28Oijw8nyK+zeZjsq9QtmBpwRtbCFD+v0F/lNU6N21V197rhYYPy9YMz9oYEP1hJt/YVzIyJUghPygVkcTrmv+sJ+6gTTLJELOUpkJUFuA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1E68A40004
+X-Stat-Signature: u8erfgdigx13abkhn1e4sx7sa5axcb3w
+X-HE-Tag: 1781890998-822231
+X-HE-Meta: U2FsdGVkX18B+8GQTfjLq1AIQ2UFxtca139/iky+od1FRnlix7a5SriqPtk5eXqKJ2jtPFd5NwAyEilesTiEN0qad+fZQ5gTbw4VJI6/xRbnRZCxlHsp8DwfaoEJGNl5A4Pv9Lj9/EU2SICfHVLFDrj/AbbST94zdsx4hp1NMuGzcit7eUmI20drdiSsqTG1OeLACoLOHX3K7RTvnieS/ARapWxRV+dBwcJ7U7x7bUOfBYYs9XvDmSzjNswe1toHESO6S84euffDBzA2yvXN72E6s6sZveRJnZRJ9urByxfHbtre5KMVYqBAzgxETHzxs24puiP8K3fBPf/F9fHai/Hg9fn6VehAXx7FJwt6jwq8EWGiwO9fhwpkKyxQn9ddDI5mx1C+PQJvQD0lwq1MG80VI2WKnwjmzuSJh8ol8IyZzk51WwVSXlAh/D6KjV3FAlY4GvqVWG1fNh/8wc8EwRehXTQ3342Sp0wxvj+eA84WeKRWFmvRHNsty7TPUjZ6IUzYGvvpkriqpYeZWMDjX88GDDkhDbTV4ytBJqdCH2fy8QjWkyyotA5wJX7AYmn6uwjtAw3gAEypEzZ5R57yQDqZshXLXT7WYhSLobZo7ESrj4W/JHK9HCTdrXDC4fJTCBUZVc8iRYnR4VyYAQ1aShv/swhi9Xi32wWQCo64ZGJO3/fjkndC4/NtwKM7G15iBnQpECXuX80+X3SZiSV/3cyMefOAGN8hcpbWfh6BW07yuJ/SQzvBaJYBihmH6q0ZBsURiE/6g6X8nLMW7tycTsi7i77V96zODjGPpIZcWcHaN2Rf1w7/UfKDgekzCWDLWpIvxnEKzXARxNv6R7m2PhGWGNtLmKmgdxB8pNsi4JY6qayCBcT75EwFlEP9FAJq4aoXIbrMMpaFPeDh0liXO9pxIdJli2m/mupPCY2USOfu743gSnXll71RMeuoeZvX2GlBhGI/FIOk3gXsFqZ
+ jFIo6bqM
+ OU6byVFZp145EpMB5oZH8WoI/XowrtLWQgImUpvgnlpT0RThr5TQYbv+4SVORNvE3hExnnThgg1nOeLzq2jEA7BgE9kEsKHg9nwBX+wsfxYVmE8gbkMDKc5+GswvwAeEczlRjUQEWG/BtXeiCkoVMgPapOeDDuo9ZrRPnkpdFZ4sHgLLVZ9RD05eHwQXkex8BTqr3XX5sWxl5YM5dVrnSwix5THbvyERXCPUtsPSCMsDGt+jM536CppKwnZL7Ib52Jg3BhqxWJcq210P8BH2gfsblqJG5k1BxCZh1kYIscMQW8bCWOwpI0U62og==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,59 +144,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 06:07:30PM +0100, Lorenzo Stoakes wrote:
-> +cc Suren, Pedro, David - I messed up the cc on this patch.
-> 
-> On Fri, Jun 19, 2026 at 05:52:38PM +0100, Matthew Wilcox wrote:
-> > On Fri, Jun 19, 2026 at 09:37:11AM -0700, Andrew Morton wrote:
-> > > On Fri, 19 Jun 2026 12:28:51 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > >
-> > > > This reverts commit 7b32f64bc512b40b268776c5ac4d354b325b3197.
+On Fri, Jun 19, 2026 at 10:18=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> w=
+rote:
+>
+> On Fri, Jun 19, 2026 at 06:07:30PM +0100, Lorenzo Stoakes wrote:
+> > +cc Suren, Pedro, David - I messed up the cc on this patch.
+> >
+> > On Fri, Jun 19, 2026 at 05:52:38PM +0100, Matthew Wilcox wrote:
+> > > On Fri, Jun 19, 2026 at 09:37:11AM -0700, Andrew Morton wrote:
+> > > > On Fri, 19 Jun 2026 12:28:51 +0100 Lorenzo Stoakes <ljs@kernel.org>=
+ wrote:
 > > > >
-> > > > This patch caused a significant performance regression, so revert it, and
-> > > > we can determine whether the approach is sensible or not moving forwards,
-> > > > and if so how to avoid this.
+> > > > > This reverts commit 7b32f64bc512b40b268776c5ac4d354b325b3197.
+> > > > >
+> > > > > This patch caused a significant performance regression, so revert=
+ it, and
+> > > > > we can determine whether the approach is sensible or not moving f=
+orwards,
+> > > > > and if so how to avoid this.
+> > > > >
+> > > > > There was a merge conflict with commit de97ae6222c1 ("mm/readahea=
+d: no
+> > > > > PG_readahead on EOF"), care was taken to ensure that the revert r=
+etained the
+> > > > > behaviour of this patch and cleanly reverts commit 7b32f64bc512 (=
+"mm: limit
+> > > > > filemap_fault readahead to VMA boundaries") only.
 > > > >
-> > > > There was a merge conflict with commit de97ae6222c1 ("mm/readahead: no
-> > > > PG_readahead on EOF"), care was taken to ensure that the revert retained the
-> > > > behaviour of this patch and cleanly reverts commit 7b32f64bc512 ("mm: limit
-> > > > filemap_fault readahead to VMA boundaries") only.
-> > >
-> > > I'm a little conflicted here.
-> > >
-> > > 7b32f64bc512 avoided readahead of "file pages outside the mapped
-> > > region", which is clearly desirable (arguably a bug fix?) and we care
-> 
-> I wouldn't say it's a bug fix? The kernel has always done this with no reported
-> bugs.
-> 
-> > > about performance of executable mappings.  Whereas it isn't clear that
-> > > we care about whatever the heck that test case was doing.
-> > >
-> > > IOW, the revert might make the kernel worse, overall.
-> > >
-> > > If someone plans to get down and analyse that test case then come up
-> > > with a new version of 7b32f64bc512 then OK.  Is there such a person?
-> > >
-> > > I'll park the revert in mm-unstable for now, but would prefer not to
-> > > rush it in until we better understand what's going on with that test
-> > > case and what can be done to address it.
-> 
-> As Willy points out [0], we've identified that it's a real usecase that we're
-> regressing.
-> 
-> There's likely others too in the real world.
+> > > > I'm a little conflicted here.
+> > > >
+> > > > 7b32f64bc512 avoided readahead of "file pages outside the mapped
+> > > > region", which is clearly desirable (arguably a bug fix?) and we ca=
+re
+> >
+> > I wouldn't say it's a bug fix? The kernel has always done this with no =
+reported
+> > bugs.
+> >
+> > > > about performance of executable mappings.  Whereas it isn't clear t=
+hat
+> > > > we care about whatever the heck that test case was doing.
+> > > >
+> > > > IOW, the revert might make the kernel worse, overall.
+> > > >
+> > > > If someone plans to get down and analyse that test case then come u=
+p
+> > > > with a new version of 7b32f64bc512 then OK.  Is there such a person=
+?
+> > > >
+> > > > I'll park the revert in mm-unstable for now, but would prefer not t=
+o
+> > > > rush it in until we better understand what's going on with that tes=
+t
+> > > > case and what can be done to address it.
+> >
+> > As Willy points out [0], we've identified that it's a real usecase that=
+ we're
+> > regressing.
+> >
+> > There's likely others too in the real world.
+>
+> Yeah, the mmap usage on SVT-AV1 is a little suspicious, but I guess the
+> pattern may come up time and time again for people doing chunked mmap
+> reads. I think we need to take a closer look at this change.
 
-Yeah, the mmap usage on SVT-AV1 is a little suspicious, but I guess the
-pattern may come up time and time again for people doing chunked mmap
-reads. I think we need to take a closer look at this change.
-> 
-> This approach has also not been without debate in the past (see [1]), I think
-> this patch slipped under the radar on that front a bit.
+Frame-by-frame mmapping for a streaming workoad is quite questionable
+IMHO and I don't think we should be optimizing or encouraging such
+usage, but I understand the reasoning for the revert.
 
-Yeah, sadly it seems like the patch _may_ need a rather substantial rework :|
-So I would err on the side of caution for now and revert it as well.
-
--- 
-Pedro
+> >
+> > This approach has also not been without debate in the past (see [1]), I=
+ think
+> > this patch slipped under the radar on that front a bit.
+>
+> Yeah, sadly it seems like the patch _may_ need a rather substantial rewor=
+k :|
+> So I would err on the side of caution for now and revert it as well.
+>
+> --
+> Pedro
 
