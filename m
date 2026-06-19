@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2A42CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 13:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBBFCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 13:38:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B751F6B008C; Fri, 19 Jun 2026 09:19:15 -0400 (EDT)
+	id 18B006B0088; Fri, 19 Jun 2026 09:38:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4BE56B0092; Fri, 19 Jun 2026 09:19:15 -0400 (EDT)
+	id 13C966B008A; Fri, 19 Jun 2026 09:38:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88276B0093; Fri, 19 Jun 2026 09:19:15 -0400 (EDT)
+	id 02A006B008C; Fri, 19 Jun 2026 09:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 812706B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:19:15 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 077A4C2032
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:19:15 +0000 (UTC)
-X-FDA: 84896718270.07.E6CE297
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2EA1240006
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:19:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HNSAIoqR;
-	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BFB0B6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:38:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E48F8DF0F
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:38:20 +0000 (UTC)
+X-FDA: 84896766360.08.1A459F9
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6164F2000D
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:38:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=To0I8s1j;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781875153;
-	b=2LtWWc0OHMCl30g3/wxwinqSxa8+EcGjUorb62+KkD0lNYOqQihMkHHKs44LSAn4ZpJl5E
-	GETtjZUqrl3yzxkdLjZadVUdJgm7G/PfHBH/kplMgEbtE0DLF81mKlAlPyd+1MaTbP3f/S
-	YTj3bqLhaDRUuJACPtaTlOB3xE+6U2E=
+	t=1781876298;
+	b=OPx4kdONp+q0E6iiJWVaL4OkIokxZ5KdeZM4tQlEulyixfOmeU+oXcOpE1mQQYeIrhCPNd
+	H5qnleS/u3tphNav6a7EmXE3pdvH7c+9mRYBcqhBBJPjhtmlpDurUusDEEeOWVDPbfnBJs
+	FjnYr8YGTfzLMK3F+N/FurX7TLDj3pI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HNSAIoqR;
-	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=To0I8s1j;
+	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781875153;
+	s=arc-20220608; t=1781876298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k8RDT23gkMNXguGXL5C2X5G/nYVTX72HdDgIRNjQMbk=;
-	b=3NH5BNCe7inn3Ne57xu/SSVAVUlWCSeU6wVwPf8VDzebJa8AVQ34hsA/PzYyouGfJP8Fvi
-	HREQYx9E7hup7+YgAeyC0wv3WEk4CQ2buuWIVYfguXTHzITwVn2IDfXMKhQki8AUdj+rUv
-	Gc5u6JWih9eqgKOB0olzPzVD3WnDmY8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5382A2972;
-	Fri, 19 Jun 2026 06:19:07 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D522D3F763;
-	Fri, 19 Jun 2026 06:19:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781875151; bh=IXPRMUIPVIuAYINomf/QT3LL4Z4pishbHkKoEcIwfTU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HNSAIoqRQuhLmKaaQOBEoRus9h3+8kB2v4jzvU25WorCkv6IPC04GdKMbynmzdPmX
-	 DzfveUneQIpjba7UBaNnGBlL/gXeyBGteVAH8BUgPzcfSv6gfkCHHXbtnopRfJIed3
-	 Ug4A/BUWCKr8G1v5YI4VM633WANr8cElnPDPi2O0=
-Date: Fri, 19 Jun 2026 14:19:05 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Harry Yoo <harry@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
-	akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
-	anshuman.khandual@arm.com, kaleshsingh@google.com,
-	21cnbao@gmail.com, david@kernel.org, will@kernel.org
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-Message-ID: <ajVByfkLbetzA8bB@arm.com>
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+	bh=BMwaRfaSNig8cK1GvVKyG1ZNglpL5+cdZWNunlOULDQ=;
+	b=QEie2UczZd9FEMphWYZ2Wublp9XnC+NjOMzbHvLYcGNWJaG6eYiMf0SSK8ASwqUL+JMLU4
+	9VIIvt1fbpKk+tLmB1aAV2sQQ8uGcoy5GsClLgb9M6yWlCB2o+1V89//0QMGEWYXBCUCmW
+	D7CfLCHWTPRqVFign9Z4WY7wqssjjkM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BMwaRfaSNig8cK1GvVKyG1ZNglpL5+cdZWNunlOULDQ=; b=To0I8s1jfrFK9OLyjtKYgwtcMs
+	iyArb3g2zZ8KFEBOaJk7YNqG/XUTQYotcN/d8ouwTpYsFaDVQT8VErpSBKdWDiVJHEnPGyb2vL0Rx
+	HsK6hVyAJ5WSdXWpK+GLqf3j+t/aiDZW6HxlOj5g6ZoEjPQnWhiN4vSyHoqNUxi6db8Dw6iWUf9fZ
+	ShJDqyEIwVxAdzWfcnE40PHlSbAE1X0/tK0I6KjsT4ya4YpWeiRSzvN3cITut95THq8d5mLeCJsV+
+	pmxOOpHH5WpEHZ9x0HQL1pZA2wnvtqH5wksmJOBxh/U3PBLnKuHXJim8jOd5T0PHhbVi3mO8Hb58l
+	Pc742lNQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1waZQA-0000000GJ8G-1okT;
+	Fri, 19 Jun 2026 13:38:10 +0000
+Date: Fri, 19 Jun 2026 14:38:10 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Luiz Capitulino <luizcap@redhat.com>,
+	Ketan <ketan.kishore@oss.qualcomm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	kernel@oss.qualcomm.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: page_ext: validate section in for_each_page_ext
+ iterator
+Message-ID: <ajVGQg0hJCUThz5Q@casper.infradead.org>
+References: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
+ <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+ <698e5cdc-8f1d-4984-bb54-a4b7979b4dc8@redhat.com>
+ <3149fcee-eded-49b0-baf4-ab69c27ff063@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+In-Reply-To: <3149fcee-eded-49b0-baf4-ab69c27ff063@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2EA1240006
-X-Stat-Signature: jm956e7sy15ikwbh86b6h6jmez9nfskt
-X-HE-Tag: 1781875153-3915
-X-HE-Meta: U2FsdGVkX18YhD6TYLUEjLOaBLQHY3UU/YTCtzGDq9fsMeuXbTFIUB0TLC1QwuFiuqzphOOtOm1bO70zeEQURsOlrdrlAWyPY1Df5dlMxZygfQsyGrZkblNlBAkko684lw9/qGeOFh0pms+FNs3Q5gkZKg+aYsPzw9HKSRgB3PxkK7gGPhxFRoPP64aeaf5Ie60jN1/txZA8TnWmAwbplW67i6JCMKnoSiIggRjTxie/f2sF0QY51wZNRE9Ud1jM5smL/qsfhnbxRoY9GDX2CaEnpdKvnF8iG5IZXXEcAZ/NZVlmo86eb3zBHLaJfSEdaXX85FSIqAmyllYyOXOONDk/+xffH3J9B/wq06hAweB++iloIuRHdR03F92AV0mBqWblMNUbS1puzoCw00k8v8tSzMdcj5Tp4ns0+NE/5MxNVv4bsceJ8sJYLAtwRyG4HaqomvuGsoBMcnt8avq1iS6XrSSly88ogLNmhT0beQcUFLpXECLFClswqYKc39rbyuKAvoMhcdWfsoHlOPv65WktlAJCF6FJ0/a0jw2TuuQt4T0vWDP89SfFgoDxPeJUFU6F/HL8U2YP99NN49WA3RBMV2TrnUYjhRQKd6Q00iu459V8JvXhQn03LcFEX4aCW8K+Y6HEa2hu3lXWfqhjN4wxHNNypLIyatimkISst12/bhgjRzkfHC7Bmd9pSp1mVzgIzxr3SnW/g0zfl6IxgFpAL4sldZLee5xWTvs0lfVIbNpNGiNNFmd/F/L3c2ajY8Bbqh7er+uFcAZtM2JMSVMWDwJnW3V0lYNEYUZGoSJkWqhB4K65kIKPZOdxWKdvST+8d7kI15qGS6qXcMWZU05ZHNCiZd1iOk6AzbixnETqMVbV8W0otmyvP2Rjs8hJ/q8kiKTdPxrtM3giXo7jD1Akty4JhSAmD5NZDHJT45YBKDvIvysMbebBYNjIqER2MQ4EyIVjQSRGlEu4irn
- V4DyLy7Q
- 0TlPyINlvLlUmKooZP/6BaY6P0udyX2Ho3FzbIQrjc+XkmzC98WpEZ0da1DgLSDYbMMUpZCjN/CDVR1y7Y7ssm+gS2S94y3wMtuKPdcRkcjoKs6onVJOZRaF6R2EvaTJQ1RHbmdyssL/ZdKaUn5159F27BYLFDcCLysEFZImfZDkc0/q/0w+jMmgLU7IFmfKYZs50if5acoj1vDSQXk0hw9BZAsDaIdcj69+4+GlIWKYJyr4LlxXWuHH1bIdCDSBya2UjR06fqNO7iMe+a6R30qadlysj82crszNG4ohJf/UK0vfhZ7zjz92i8RUm++SAqaTKR7270IJXCy8w517zgBAnfKWszv/AvKIz
+X-Rspamd-Queue-Id: 6164F2000D
+X-Stat-Signature: qgjcrnpeid779jiwaqwde64urjqz37gq
+X-HE-Tag: 1781876297-156600
+X-HE-Meta: U2FsdGVkX1+Rjji1EtNjkPMwMxU+9W2YPwlVDX60nPw/wfsTZ4Eevo/8xbyDy931wkhFw0DnkUYrHPMgDex0Ymj5cv8NmxrXPGYbar/T6gA9yPz1rMkHR9RYhQcjtbvFm3qSRFm+jCXGeY93fIpn+NcZVe8MqiFhXS7idXNjHjHl+rkTLxei4vMxpWeGm+aU9BQUssYBc+Zd3/hpOX7jgzJ1AfzlSPdWyUTi4JeS+HL7KTMVjMvDgAPssBfDdWTCPrIE9Olyi76Y+jxNH0WY6x4NEuDo9vcB9xCleH3NnHrKDhw3oXlWyJ9/DfMcqJRmdEA4RJqtgptPXvYzIrpzdLr9ndSY1nMZNOuIwiF8Fvu42TaHn7ocX9czY/Xz6uq9xwbX7YQbRguo75oJY6+sZhZl6Lj+hLeu/JkKqGkJOcKA/PMtBWYOLqE9ir6hSys1athunIcpygY2BMgYe6J7xj4yuu0Sme1MioA6qyACPptvckrC3xXjfVUGMaYvggEznKKd8jg4o66dNdreON5LmIdQ+qDF3+ZmC7XtEuu7gSKapzrym2uHMNhBdmxPXGXqzi210d6q/Wvd698KbxEnSDks+CWey1X6V6CbPOcUIy1pO+WixJzSmSfEGxRJWiGPSuHcg3P3/0UtKCTBfk8Fie7fqNvGqPqipTwzhI+RZ/jl4q7HbZmTmQfksQt+cOnkDMwAOpdt7kZ/z4UNJiOJuiTUS2F8bh+lVRqyL2JMICofMnz1AiMan4I/0G0Hq0o5Fo9UJ+dqqU0OJzTvppWrFlvhNXfpHAn1IANNYH5oQNw3/KtOU/pVAmZiSiTv5ClqqpUPnPjX0DwI8UJj8DKREs/Ei/fYeKX7pNXCXDzuVIofPFyRhrwQ6G6WqZIG9xkFZn9BQQ15kZ9t94soYMtlyB2BkjT34/RhT4mP26In1+e6d2vK3wqwtwrWFH38jrM/wYZh9qee4CX0bDQghYR
+ qvmMkfOU
+ zQDEdpevwTNiwAoGQJcfrjDNfUPQOixte4PAPBVkVzF5sp4BlsbpKE7iEgGT6nTAdnrOSaBAIOR+bXleq35Pp1fzsdJQZqG1EVm0U+9seBtRc6Bhtx7oMoEUL6Qfdb2RRjiHRYWH4P/3KPq7UGsT802C+FUxdMwtB5UipewgJ21Q7FN4R/1dIIfEybYRn+5XrTULB6voQ5lCDThPpmGQZBaXYA6CTMgLnd8fePXqK65zgdVD6WSefy8axLh9k2y4noL/W9eRr/x6oBBqfRaanHJFhmK6gdF+AJeuX/+AANbb4UIwc384MqYrkQSOwgZk/Zp5Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +100,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
-> On 6/12/26 1:44 PM, Dev Jain wrote:
-> > Introduce a boot option to tag only at allocation time of the objects. This
-> > reduces KASAN MTE overhead, the tradeoff being reduced ability of
-> > catching bugs.
-> 
-> I think most of overhead when enabling MTE comes from loading and
-> validing tags for every memory access (either in SYNC or ASYNC mode),
-> rather than from storing tags.
+On Fri, Jun 19, 2026 at 10:00:59AM +0200, David Hildenbrand (Arm) wrote:
+> Likely we should just handle that in the iterator, looking up page-ext for something
+> that doesn't exist is weird.
 
-I guess it depends on the workload. Lots of allocations for short-lived
-buffers (e.g. network traffic) may notice the additional tagging more
-than the actual tag checking.
+Yes, but I prefer to pass 'max' to the _next step explicitly, rather
+than put it in the iterator struct.  Untested patch attached.
 
-Of course, it would be nice to get some numbers from those who have
-access to MTE capable hardware.
+The other way to do it is s/index/remaining/ and count it down rather
+than upwards.  But that assumes none of the iterator users look at
+iter->index, and I don't have the patience to check that.
 
-> > Now, when a memory object will be freed, it will retain the random tag it
-> > had at allocation time. This compromises on catching UAF bugs, till the
-> > time the object is not reallocated, at which point it will have a new
-> > random tag.
-> > 
-> > Hence, not catching "use-after-free-before-reallocation" and not catching
-> > "double-free" will be the compromise for reduced KASAN overhead.
-> 
-> I doubt users who care about security enough to enable HW_TAGS KASAN
-> are willing to compromise on security just to save a few instructions
-> to store tags in the free path.
-> 
-> To me, it looks like too much of a compromise on security for little
-> performance gain.
+I find it weird that somebody botheresd to add kernel-doc for
+page_ext_iter_begin/next.  They're internal implementation and really
+shouldn't have public documentation.
 
-I don't think there's much compromise on security for use-after-free.
-The buffer will be re-tagged later so use-after-realloc should be
-caught, especially if we ensure that a different tag will be used (I
-don't think Dev's patches do this).
-
-Of course, if you want MTE as a debug/bug-finding feature, tagging on
-both allocation and freeing is highly recommended. This patchset is
-aimed for those wanting to run MTE in production and squeeze a bit more
-performance out of it (with the compromise of not detecting
-use-after-free, only prevent access after re-allocation).
-
--- 
-Catalin
+diff --git a/include/linux/page_ext.h b/include/linux/page_ext.h
+index 61e876e255e8..4f7d7a8709de 100644
+--- a/include/linux/page_ext.h
++++ b/include/linux/page_ext.h
+@@ -120,14 +120,18 @@ struct page_ext_iter {
+  * page_ext_iter_begin() - Prepare for iterating through page extensions.
+  * @iter: page extension iterator.
+  * @pfn: PFN of the page we're interested in.
++ * @count: maximum number of page extensions to return.
+  *
+  * Must be called with RCU read lock taken.
+  *
+  * Return: NULL if no page_ext exists for this page.
+  */
+ static inline struct page_ext *page_ext_iter_begin(struct page_ext_iter *iter,
+-						unsigned long pfn)
++		unsigned long pfn, unsigned long count)
+ {
++	if (count == 0)
++		return NULL;
++
+ 	iter->index = 0;
+ 	iter->start_pfn = pfn;
+ 	iter->page_ext = page_ext_lookup(pfn);
+@@ -138,19 +142,22 @@ static inline struct page_ext *page_ext_iter_begin(struct page_ext_iter *iter,
+ /**
+  * page_ext_iter_next() - Get next page extension
+  * @iter: page extension iterator.
++ * @count: maximum number of page extensions to return.
+  *
+  * Must be called with RCU read lock taken.
+  *
+  * Return: NULL if no next page_ext exists.
+  */
+-static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter)
++static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *iter,
++		unsigned long count)
+ {
+ 	unsigned long pfn;
+ 
+ 	if (WARN_ON_ONCE(!iter->page_ext))
+ 		return NULL;
+ 
+-	iter->index++;
++	if (iter->index++ >= count)
++		return NULL;
+ 	pfn = iter->start_pfn + iter->index;
+ 
+ 	if (page_ext_iter_next_fast_possible(pfn))
+@@ -183,9 +190,9 @@ static inline struct page_ext *page_ext_iter_get(const struct page_ext_iter *ite
+  * IMPORTANT: must be called with RCU read lock taken.
+  */
+ #define for_each_page_ext(__page, __pgcount, __page_ext, __iter) \
+-	for (__page_ext = page_ext_iter_begin(&__iter, page_to_pfn(__page));\
+-		__page_ext && __iter.index < __pgcount;          \
+-		__page_ext = page_ext_iter_next(&__iter))
++	for (__page_ext = page_ext_iter_begin(&__iter, page_to_pfn(__page), __pgcount); \
++		__page_ext; \
++		__page_ext = page_ext_iter_next(&__iter, __pgcount))
+ 
+ #else /* !CONFIG_PAGE_EXTENSION */
+ struct page_ext;
 
