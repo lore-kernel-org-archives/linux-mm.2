@@ -4,91 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E988CD98F0
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 01:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15378CD98FA
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 01:57:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 205D66B0088; Thu, 18 Jun 2026 21:54:26 -0400 (EDT)
+	id CE1BA6B0088; Thu, 18 Jun 2026 21:57:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DC846B008C; Thu, 18 Jun 2026 21:54:26 -0400 (EDT)
+	id C91DE6B008C; Thu, 18 Jun 2026 21:57:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F3B16B0092; Thu, 18 Jun 2026 21:54:26 -0400 (EDT)
+	id BCF356B00C8; Thu, 18 Jun 2026 21:57:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA64F6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 21:54:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3F95D1401B0
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:54:25 +0000 (UTC)
-X-FDA: 84894992490.12.F1E0BC6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8973E180003
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:54:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fAZgA/kq";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781834063;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6N3zid3A+fd0MOD1vcFRTNYHUlvEMfvxDhtzkJVv/Ag=;
-	b=vSBkDqMa8UDZddVXTzsx6EXZRj4vLMmiBfOgQWbp0kivFgZA1msOwjA7Hr2xRzPxghBU2t
-	76Hyk5RZgHMQGSN3x+S8GhpDe3DFzrBUCss7u0GAQfKhX0E4jZZan5k55BODuZs+fGzCvO
-	pBJfXkZhwji/FBYUWd9s3yg+FVStuDQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fAZgA/kq";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 869B46B0088
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 21:57:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F02B61A0303
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:57:42 +0000 (UTC)
+X-FDA: 84895000764.14.9AFDC84
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 08839140006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:57:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q7AktUgl;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781834063;
-	b=O2R0AXPr6EVtafNanEwCFP2A0HaQZimrk3nVN9y8Koi/ANwom+j+CeFF1dc81BM2bO9CB9
-	22EsmXlPAnsNHHb8jgfMEZtNAQl/haiqcykoJ337lGyGMbhwMud+7a+VaOC1L5LaWBvbdG
-	y77+5qf9UqLVDYzw+3XjJOBq+jEMP7Q=
+	t=1781834261;
+	b=EAW3lUW/17uiNAK8jygjdGzDFePW3sAq8T0wDLxhmb3RR5psmhT2R2Bp588awd5/gIRPaT
+	iUD06XExrs1CdoHJ6Of0rCeeepYoQGfoBPgn1a7mSFaLBwVWqpqQtuaK8gLPiuAS0KTmqS
+	2zv6MfeHmoitBn4XjT1LpdaW0CossvM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q7AktUgl;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781834261;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wO9WQ1IRvu6nku+JII2T8ZEzgXSBhXduD9kJGRWoJTA=;
+	b=ZRlftuhI/NSAkdaIxODp+s6nRUiMFY9Mm/XRUsc6uwt/dJq+VPVrIBTp3tSu8UjyTVZRzs
+	BzPSMzXtrePlP6DrbN7rSKseSd3XzDvefV6l3Wa6dfvle7W4NelOyuSqejvndIxmp9pZ6i
+	GJj0OuDxvtOZ1vRRnsfookGIAdqGL7s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E08E5601E1;
-	Fri, 19 Jun 2026 01:54:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0209F1F000E9;
-	Fri, 19 Jun 2026 01:54:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3635C44598
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:57:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D0F1F0155B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781834062;
-	bh=6N3zid3A+fd0MOD1vcFRTNYHUlvEMfvxDhtzkJVv/Ag=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fAZgA/kqDI2yt+p0l3eOjIFA7Sk6cKCQY38qAqL2RZ8A9RwfMy9fmAQ8r52Vwqrji
-	 waITNprESmz7PYQ3fAugu2FnRpGK5PAEz7HSlknrLBbVl+pSdfgnct/meTxT1DKO8Q
-	 tUbFPMZrpdAtJefwOKbCSpWTmsP/s7Y7FX2STyLUk48U6GjiYlOP1X8xi8gibwIbxD
-	 66MNaarWXg+/KIKQ2PG5wWXObIdnC1kYTRyQlxrOpb96YKjxz4tBHIJfigIeWjllpi
-	 DUiCzLmpHYCvnbLm0fEtDWVhIbVsejVif8hdmKDq9QbBpCOHr1igeQUP5IbtMreDaM
-	 Nlzd5HcCZoOHg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Wang Lian <lianux.mm@gmail.com>,
-	akpm@linux-foundation.org,
-	npache@redhat.com,
-	gutierrez.asier@huawei-partners.com,
-	daichaobing@sangfor.com.cn,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kunwu.chan@gmail.com
-Subject: Re: [RFC PATCH 0/6] mm/damon: Add mTHP-aware collapse/split with ARM SPE feedback
-Date: Thu, 18 Jun 2026 18:54:10 -0700
-Message-ID: <20260619015411.9554-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260619014707.9297-1-sj@kernel.org>
-References: 
+	s=k20260515; t=1781834260;
+	bh=wO9WQ1IRvu6nku+JII2T8ZEzgXSBhXduD9kJGRWoJTA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Q7AktUglYuD7fd/Vrfx5AXKSV3CTyIrFaBZRkNYvsudw5r5cJBKXciAsytlwGbYlB
+	 1EZU4EC+bppMtm+ZRNAJhPyFRErEzsNOBHjLTx2bX2aCySiMHL0dz5eFvn6bN9hI3l
+	 K64ofvoZaJOU3r9oov5VXAt2VEgiFXPoDqX8MtQggUhcsXlT+h0YXUcXxDFh0noee8
+	 9qBnaLvQ4/OW30pYAaWYCxUagkSr+mPZZwHA7u6fXfC/lDIsOdBSnwRZkGHMDfOJXW
+	 o7QzfYN9dovyAxWC3hKfXrpb6EZM+WQ7Kc5YAb+ZFTQcvcASwYNV38k730tese5zod
+	 6MJ3FVVI3jZgg==
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9203654905eso61882485a.0
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 18:57:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9gq56C8YzWbLD+z/uqF4MWFak0H3s3UMnccE7rPir7fRxZbr9szPmgPhp2+OHGc8UMd6MO9Um2hw==@kvack.org
+X-Gm-Message-State: AOJu0Yx363JQtXz6iy052c8g/f5Qyi4YyExG+h2S+pSpiJUU+EtwZtrJ
+	nfr1gEKpCI/RAj9lY5lFpQEDj5n2wwiKWCgwtMBBUaJ+M7O6+jeUsGrn6L1GwcVAZJiJG5h2DaD
+	WLdtojU6zjeGDLJ5HPYN5bvgeOmjoxMo=
+X-Received: by 2002:a05:620a:298c:b0:915:afa5:754 with SMTP id
+ af79cd13be357-9208e982356mr268858385a.2.1781834259290; Thu, 18 Jun 2026
+ 18:57:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8973E180003
-X-Stat-Signature: tdgdc3utgjqhktiugbp31f8jp54ntdp9
+References: <20260611105124.98668-1-baohua@kernel.org> <20260611105124.98668-4-baohua@kernel.org>
+ <CAMgjq7D0roMW108dP60PaCTnYfSDCA7GyGDATn-nLD8kiNViuQ@mail.gmail.com>
+ <CAGsJ_4yZVGcpKzvRE+tvdqLrP-rQP9c7iHrGLCttyUkSQAndPA@mail.gmail.com> <CAMgjq7BDfvNXdWH0cqarsujjUn3i3tDDhDkmSg01TR4h-tDorQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7BDfvNXdWH0cqarsujjUn3i3tDDhDkmSg01TR4h-tDorQ@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 19 Jun 2026 09:57:27 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zzmDXOAmr7hfigV1MM8B5esKgQ3AJ_OUWSmHR3F5QvUw@mail.gmail.com>
+X-Gm-Features: AVVi8CdvIqaTDMdqD7Ag8ZymugoXLKApZKKRfMLEmDwn-TtCT5FgQd4gj3UxUuI
+Message-ID: <CAGsJ_4zzmDXOAmr7hfigV1MM8B5esKgQ3AJ_OUWSmHR3F5QvUw@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/3] mm: entirely remove lru_add_drain in do_swap_page
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, chrisl@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	jp.kobryn@linux.dev, usama.arif@linux.dev, shakeel.butt@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9uhtxpka6xnm4xysahmb9j51io9mz4z9
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 08839140006
 X-Rspam-User: 
-X-HE-Tag: 1781834063-954004
-X-HE-Meta: U2FsdGVkX1/lpYmMC/B6VLfY5YsL5VwAmS+Flr/FVdVyqIr7PZfVSJaQGLquHIsnnbqiEWtqQyZXeyfpo9Msg5PdhV/zryHVaqA50dJhp0fY4NN+a8A/F9bKXIRFMK9ZLHkVi1sFGB7tn0YcXRUO5LZjJCVOG2x3ZUmVJwLBH68ODsFxMBy11JhmC/CNOz7hiRzxUXAEkyVQ1zhmfxoGiXoyc0AixgYvrqUuzZlBAjdu73ki2iNyiyD6IlquAOU2e9pHyLHZFWaV6d55L2B5L8sbEYK7244TPZJEOImxhDwbNiaOgjrwiLg+CLujn9JwR50nM8lOYUERH+Y2T2kzEuIfDizecJkYAJVlCEjmhMfwApiwt1SXJZA+dqQnoQmAAuBa1Dl2etPUmIyO2Hvu3cRpeiSRrqIbBrGr48lmuxRT9zBtRW6BL47liodjz+s8Dj4A6oOcbnBQ376OY9JNC0LG5IK/ghl3ZaVIJGPm4sPAjKcZxEHp5RwZGYWu0cUehAyYEdqCoW5R25tu0nbMcN9fcZbE1XjKizitKFoJGS8r0MTPCTvZrfKZuEQ0EHIdtjbxCnv405XfW0mc906ox8P3+hRnZarBEvzsOxGRGYIc/W22QezvswyTsXf0tB7tVfD99vUukXW+XuxOkyrLbYMkpCLO65YYAqolGq0w1+InfXYTAB4f+MH+KnyAjUY6/9/nyzr6uJgNTDb++0ddTS6TmCU9ncuSH4MbIjc0ONuaeLHkqI+AdJ+/dfAzAcG7TJw5nACsH9goG+XbL9wPm8RBc4sxm+IfolNtPRB2Ku+8ObOIatx8dcFNtwYNqjwnzvL47EHE3U51oT5CsVGBzkm4MwepK1qPxY1S6vv+9Y5H2yVNDNXcJCRFlznPjrUaRUFjI2jAtvhe5XftPQsH0tlmkIAzORZ+qm8Y9igK/ngA6wy7Z5oK/0eIAlE9pfusZ35zUOZuWV82YCMKNvM
- 6lFhXyFe
- Mte/g/i88ohbFU1LPggt/inR7qyj6Nh435GwcDIqBidzopwGCtwcQENzeN7mm59V0SL+B5TN6MPf4/3EGVi797TiiCjeRLrD7fiJinCIoeIYR3nrnEJBUA86ZldDBgBWuwZy1CjsNfnAqrmJJ6OcZCwlhjH8hydZylY05N4uH2DKjd0OsxES3XBnwiseEv/yBImhSTGnejTklBYab6Zh0NOiX8HW6qbN5cCdeRxjXXDMDqCWg1j0QsbwDryMfJ4SrVPSWLunkMzVQoF/9Sm3HhsFTX0BLEAow3UYngmlwKdDTyK2kndqKefUh8mmyFrJF1faPCooQp1/2f2Z7XqTq8MfToUKmlJiC7r+18uK/vZtNAyGjDeVk50tc3facnd7DJQysQQLoFyOSaYbv99HLsGrjJ/dkcBBctC2rzI523dvHsNRlsAUyiWwXGQd4f0L4dcH8l44Gnyo5b2q1EVqdKJP0yCSPWbZepDtWJ4cPCVcHwGuA5pKkgy3vzJjjOagDHQxVflk6CcjJ81YiBxkKCMhDWm1WUqhxsVN1kxghb8urG2O/FJDNMyaybonqDPVLezfQln8yU/r0zVtX9yDrU2Wep4ybGNTw3M4n9cV7wAYK0TfYlhkK/Xk4L4vS6MTF/65U0gAW+Mi4cheryWeu6mQKeUJKK9Dm2EL0
+X-HE-Tag: 1781834260-606546
+X-HE-Meta: U2FsdGVkX18hQZo3l5n/HaqORi+Y+JH6XYWiRjgaWK10DJe1MkG8QyAQHFk94kLsBOOVaOt1qYcndxhtB4dlKKPBzi2TYjLWbFSEfq4FHuYzhC9Yg0qxYzW64McI1WYDDKdtDWMxALq4Yq/M2FHU6QMPeglpcnJBz0MCBZohzgDDofaA2ttzd2j6gY4aExxQOI/scRpfpaA1r+/ghGv1uASZ2G/JpeawpApae8pGvkZU2IY3Kg7uc+6GfW2BMg7b1Ji5gJzh5yuVB9KTSA9bGczL19ASXfKXnfdaY8uXIZY6GHoD4qvO1GEY7keV+idHflC6bYJ3uYlpP/Lz5aPZitSa23B786xijQWxxr9KzSCIPWPBnWM3UNJkQ0fk0vq8FBNBiJf5PfuMcMDIPt3tKU/xylmeo/SfPAxOtiHxy4HalxwoBK/92Zuw+Wr/1H6r/sT4XTtiRgZ+bSU5DnGA5GkUfOc+oVgUlPbMIw+J/NKzQRnYk3LPjaQkekwyARBqM9n40YGrFPTMqK3w2/fZeESWlgqGZsq+5qZd6jo8I1QSrW7sR3Gmpmxj/JAwQiz+c3epnylC7yfYTFY7ZND6bhUa23yE6AyY1Xp1TU4L2lmNW+AZVJooRJgeXXP4zdLrDdUNCFsyAmsJwSFBiqB0n5QieQkFgmtaoxEd5DkHMR30q6Ix8/xbxdV+Dxsb6Xicg7Cxg+CO6INopHUKmYt0Uz15DaPWXq3DW80P7AaN4BW+aye6NS6zTIqte2E0QqXWn6pTlJh9peLxNIyx3xxDE5GVABMtZiV31h1ls7+MapPqETnZQb/VPBxtL/yJ/Om2MA4pp9Vt2PSocWnEAkzbJRnsfvIjE3rJ1AOmCztQJymayjnaZS9G+TyksgE0OZ+MHmouCtvvZszVTC08oa11GVv/rM5dBFSiGq2vkZnoyMTuPt6ppm6t/3H87SGNMxd0ptkJ1PSBNpt9L+esoWg
+ HFkjJm6O
+ 7lVl0oTHE5hFP5aki0+IFGRbeEeQgSZYvX564rCkNWzAEM2wDzVfstWE7HpcIa+XkcRH4qlAoQ56B1KJ/Nha5F32NXyuHoujN5hM7XE8LXNQIze/TRbM23KocUJaKEuc0N0taAqfSwW4TIu+WHK0U9cx6LX6O04ENEznFG0yCaIMur3PCYuNBgAcUBgumxOe4ZmtWRgGzsMMAUG27V18AG1SNwH4zXOoh/6ZhR3FKwkEohg2zE3SWc3nYiJgYXISDP2e1m7bhlgNay+fa+8mI8FNnHyS/5kglUb8nBaaYps7ztiMEdu9LJ9B+Ah7ydoOJPtgKixc8yzYZIzpvUVFUKwmGnDUM69kOYuh08mBifFcygzifpNe46AemdArTXaNUjRj9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,249 +108,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Jun 2026 18:47:16 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Thu, Jun 18, 2026 at 3:29=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Wed, Jun 17, 2026 at 5:55=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
+ote:
+> >
+> > On Wed, Jun 17, 2026 at 1:38=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > >
+> > > On Thu, Jun 11, 2026 at 6:52=E2=80=AFPM Barry Song (Xiaomi) <baohua@k=
+ernel.org> wrote:
+> > > >
+> > > > We are doing a lot of redundant lru_add_drain() calls in
+> > > > do_swap_page(), especially for synchronous I/O devices. For
+> > > > example, the test program below currently ends up draining
+> > > > lru_cache 100% of the time:
+> > > >
+> > > > int main(int argc, char *argv[])
+> > > > {
+> > > >         int i;
+> > > >  #define SIZE 100*1024*1024
+> > > >         while(1) {
+> > > >                 volatile int *p =3D mmap(0, SIZE, PROT_READ | PROT_=
+WRITE,
+> > > >                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> > > >
+> > > >                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
+> > > >                         p[i] =3D  i%64;
+> > > >                 madvise((void *)p, SIZE, MADV_PAGEOUT);
+> > > >                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
+> > > >                         p[i] =3D  i%64;
+> > > >                 munmap(p, SIZE);
+> > > >         }
+> > > >         return 0;
+> > > > }
+> > > >
+> > > > Folio reuse now relies primarily on the exclusive hint, making
+> > > > lru_cache draining to drop the refcount in lru_cache largely
+> > > > irrelevant.
+> > > >
+> > > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > > ---
+> > > >  mm/memory.c | 10 ----------
+> > > >  1 file changed, 10 deletions(-)
+> > > >
+> > > > diff --git a/mm/memory.c b/mm/memory.c
+> > > > index ce8ef27e7a54..b5a78670bcc8 100644
+> > > > --- a/mm/memory.c
+> > > > +++ b/mm/memory.c
+> > > > @@ -4903,16 +4903,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf=
+)
+> > > >         } else if (folio !=3D swapcache)
+> > > >                 page =3D folio_page(folio, 0);
+> > > >
+> > > > -       /*
+> > > > -        * If we want to map a page that's in the swapcache writabl=
+e, we
+> > > > -        * have to detect via the refcount if we're really the excl=
+usive
+> > > > -        * owner. Try removing the extra reference from the local L=
+RU
+> > > > -        * caches if required.
+> > > > -        */
+> > > > -       if ((vmf->flags & FAULT_FLAG_WRITE) &&
+> > > > -           !folio_test_ksm(folio) && !folio_test_lru(folio))
+> > > > -               lru_add_drain();
+> > > > -
+> > > >         folio_throttle_swaprate(folio, GFP_KERNEL);
+> > > >
+> > > >         /*
+> > > > --
+> > > > 2.39.3 (Apple Git-146)
+> > > >
+> > > >
+> > >
+> > > There is a ref check in should_try_to_free_swap though, perhaps we
+> > > should also improve that part too or we may have more more folios
+> > > stuck in swap cache after this change?
+> >
+> > Good catch. We could assume that a !LRU folio has an extra reference he=
+ld
+> > by lru_cache. Does the below make sense to you?
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index ff338c2abe92..237220ae1572 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5094,8 +5094,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >          * Remove the swap entry and conditionally try to free up the s=
+wapcache.
+> >          * Do it after mapping, so raced page faults will likely see th=
+e folio
+> >          * in swap cache and wait on the folio lock.
+> > +        * Assume that lru_cache contributes an extra reference for non=
+-LRU
+> > +        * folios.
+> >          */
+> > -       if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flag=
+s))
+> > +       if (should_try_to_free_swap(si, folio, vma, nr_pages +
+> > +           !folio_test_lru(folio), vmf->flags))
+> >                 folio_free_swap(folio);
+> >
+> >         folio_unlock(folio);
+>
+> Right, this seems better. I've been thinking if we can just remove
+> that ref check in should_try_to_free_swap and always return true to
+> reclaim the cache for write faults. However, that seems like a bad
+> idea after all since shared clean swapin folios on non-sync devices
+> might benefit significantly from being cached, and such cases are
+> unlikely to be very rare.
 
-> Hello Lian,
-> 
-> On Thu, 18 Jun 2026 17:48:32 +0800 Wang Lian <lianux.mm@gmail.com> wrote:
-> 
-> > Received an off-list report that DAMON significantly overestimates
-> > hot memory in KVM/QEMU deployments with THP-backed tmpfs guest memory
-> > running Oracle workloads.
-> > 
-> > The root cause is structural: a PMD entry covers 512 4KB subpages with
-> > a single Access Flag (AF) bit. When any one subpage is accessed, the entire
-> > 2MB region appears "hot" to DAMON. On ARM64,
-> 
-> This makes sense to me.  I also agree this could caused the reported problem.
-> And this is a known limitation of DAMON.  My suggestion for straightforward
-> workaround of this problem is, using 'age' information of DAMON for better
-> identification of the hot memory.
-> 
-> That is, I don't expect real hot data in real production systems will evenly
-> scattered.  Even if they are, I don't expect they will all evenly frequently
-> accessed.  Only a few of those would be accessed frequently for long.  Even if
-> that is, there would be data that frequently for longer.  You could show the
-> distriibution of the pattern and find X % of hottest memory as hot.
-> 
-> We invented idle time percentiles [1] for a similar purpose, though it is more
-> focusing on finding cold memory.
-> 
-> I understand this patch series is trying to make more fundamental and better
-> solution on hardware that can do better.  Makes sense to me.
-> 
-> > this is compounded by the
-> > hardware AF mechanism -- the AF is only set on a TLB miss. Consequently, when the
-> > working set fits entirely within the L2 TLB (e.g., a 16MB working set with 2MB THP
-> > running on a Kunpeng 920's 2048-entry L2 TLB), DAMON becomes completely blind to
-> > subsequent accesses.
-> 
-> This makes sense to me.  However, I don't get how this is contributing to the
-> problem.  Could you please elaborate?
-> 
-> > x86 is not subject to this specific blindness under similar
-> > conditions.
-> 
-> To my understanding on x86, same issue exists.  If TLB hits, Aceessed bit is
-> not set, and DAMON shows it as unaccessed.  Am I missing something?
-> 
-> > 
-> > We reproduced this memory inflation on a Kunpeng 920 platform using a synthetic
-> > workload (8GB mmap with a 0.2% sparse hotspot, i.e. 16MB actually hot):
-> > THP=always causes DAMON to report the entire 8GB as hot, while THP=never
-> > reports only a few hundred MB -- a 512x overestimate relative to the actual
-> > 16MB hotspot under THP, and a ~33x gap between the two THP modes. ARM SPE hardware profiling
-> > independently confirms this asymmetry: out of 2,005 THPs sampled system-wide
-> > over 10 seconds, 97% had fewer than 10% of their 4KB subpages actually accessed.
-> 
-> I don't think the real world production systems to have this very artificial
-> access pattern.  I believe (or, hope) use of 'age' can work around the issue in
-> a reasonable level for many cases.  I understand this setup is only for PoC,
-> and I think this is well designed test for the purpose.  Thank you for sharing
-> this.
-> 
-> > 
-> > To mitigate this, this series extends the existing DAMOS_COLLAPSE action to be
-> > mTHP-aware via a new target_order field,
-> 
-> Makes sensee, and sounds nice.  Definitely no one size fits all!
-> 
-> > and introduces a new
-> > DAMOS_MTHP_SPLIT action. This enables DAMON to proactively split PMD THPs
-> > into smaller mTHPs
-> 
-> Nice!  Asier was planning to do similar work in future.  I think you could
-> collaborate to reduce unnecessary duplicates!
-> 
-> I'd suggest making the name simpler and consistent to DAMOS_COLLAPSE, though.
-> Say, DAMOS_SPLIT ?
-> 
-> > when most subpages are probed as cold, and collapse them
-> > back when beneficial. To resolve the sub-PMD monitoring blindness, the split
-> > path can incorporate fine-grained hardware feedback from ARM SPE.
-> > 
-> > The hardware feedback loop (damon_spe_folio_heatmap) implements a two-pass
-> > signal filter: it first identifies the peak chunk access count, and then marks
-> > sub-chunks with >= 1/10 of the peak count as hot, effectively filtering out
-> > SPE sampling noise. A configurable hot_threshold (default 30%) controls the
-> > split decision: only folios with a hot fraction below this threshold are
-> > eligible for splitting. When no SPE data is available, the infrastructure
-> > gracefully falls back to explicit PTE-level scanning via folio_walk.
-> > 
-> > Currently, SPE data is fed from userspace via debugfs (e.g., perf script piped
-> > through a histogram builder into /sys/kernel/debug/damon/spe_feed).
-> 
-> So you implemented a debugfs interface?  That must be a nice approach for PoC.
-> But it may be difficult to be upstreamed as is.
-> 
-> You could build a control plane that decides the exact address ranges to split,
-> and directly feed it to DAMOS using DAMOS address filter.  max_nr_snapshots can
-> also be useful for making such kind of user space controls more deterministic.
-> 
-> For simpler user-space control, utilizing user_input DAMOS quota goal [2]
-> should also be another option.
-> 
-> We are also planning [3] to extend DAMON for perf events.  On top of it, we
-> might be able to extend it further to utilize ARM SPE by DAMON itself, and do
-> all this without the user space help but only DAMOS.
-> 
-> Baseed on below 'limitations' section, I understand this is only for PoC at the
-> moment, and you plan to explore the perf event based approach.  I'd also
-> recommend that.
-> 
-> > 
-> > Collapse path (patches 1-3):
-> >   DAMON scheme action=COLLAPSE, target_order=N
-> >   -> damos_va_collapse() -> damon_collapse_folio_range()
-> >   -> collapse_huge_page()
-> > 
-> > Split path (patches 4-5):
-> >   DAMON scheme action=MTHP_SPLIT, target_order=N, hot_threshold=M
-> >   -> damos_va_mthp_split() -> damon_spe_hot_fraction()
-> >   -> split_folio_to_order()
-> > 
-> > SPE feedback infrastructure (patch 6):
-> >   perf script -> spe_hist -> debugfs spe_feed
-> >   -> per-folio rbtree {THP-aligned PFN -> access_count[512]}
-> >   -> damon_spe_folio_heatmap() -> hot_bitmap -> split decision
-> > 
-> > The userspace helper tools (including the spe_hist histogram builder and
-> > validation scripts) are archived at:
-> >   https://github.com/lianux-mm/damon_spe
-> 
-> Thank you for making all the grateful code open!
-> 
-> > 
-> > Testing was performed on a Kunpeng 920 system (256 cores, 249GB RAM, base kernel
-> > 7.1.0-rc5+):
-> > 
-> >   T1 ARM64 blind spot: A 16MB THP workload (where 8 PMDs fit entirely within the
-> >      L2 TLB) resulted in DAMON detecting 0 regions. Conversely, using 512MB
-> >      with 4KB base pages, or a 16GB THP layout (exceeding L2 TLB reach), allowed
-> >      DAMON to function normally.
-> > 
-> >   T2 THP inflation: With an 8GB mmap and 16MB actually hot (0.2%),
-> >      THP=always: DAMON reported 8GB hot (512x vs ground truth);
-> >      THP=never: ~245MB (15x vs ground truth).  The THP-induced gap
-> >      between the two modes was ~33x.
-> > 
-> >   T3 RocksDB: Fragmented malloc allocation prevented THP formation, and DAMON
-> >      behaved normally. We could not reproduce THP inflation with RocksDB.
-> >      The workloads fundamentally vulnerable to this structural issue remain KVM
-> >      guests, JVM large heaps, and PostgreSQL shared_buffers.
-> > 
-> >   T4 min=0 deadlock break: A 256MB THP induced the DAMON blind spot.
-> >      Triggering an unconditional mthp_split (via nr_accesses/min=0) successfully
-> >      shattered the space into 16384x16KB folios, allowing DAMON to fully recover.
-> > 
-> >   T5 ARM SPE histogram: Out of 2005 sampled THPs, 97% exhibited <10% hot subpages.
-> >      A typical trace showed PFN 0x820db800 accumulated 39,794 hardware accesses
-> >      concentrated across only 3 out of 512 subpages.
-> > 
-> >   End-to-end: Verified hot/cold discrimination. The SPE feed preserved a 90%
-> >      hot THP intact, while successfully splitting a 25% cold THP into 128x16KB folios.
-> > 
-> > Known limitations:
-> > - The full KVM + Oracle production chain has not yet been benchmarked end-to-end.
-> >   While individual component verification is complete, full integration testing
-> >   is planned in collaboration with Sangfor.
-> > - khugepaged may aggressively re-collapse the mTHPs that DAMON splits. A
-> >   coordination/back-off mechanism is required to avoid ping-pong effects.
-> 
-> Do you really need to khugepaged together, when you already have
-> DAMOS_COLLAPSE, and anyway you are running DAMON for hugepage splits?
-> 
-> > - SPE data is currently funneled via a userspace daemon and debugfs. Direct
-> >   kernel-side perf_event sampling integration is planned as a follow-up.
-> 
-> Nice, I think this will make our projects aligned and reduce unnecessary
-> duplicates.  I'd encourage you to try this path.
-> 
-> > - The rbtree entry TTL (30s) and signal threshold (1/10 of peak) are empirical
-> >   defaults subject to further tuning.
-> 
-> I don't fully understand this part.  Could you please elaborate?
-> 
-> > - The ARM64 DAMON blind spot (WSS < L2 TLB reach) is a pre-existing hardware-MMU
-> >   characteristic, not introduced by this series. Setting nr_accesses/min=0
-> >   serves as an effective workaround for the split path.
-> 
-> I don't fully understand this, too.  Could you please elaborate and enlighten
-> me?
-> 
-> > 
-> > Reported-by: Chaobing Dai <daichaobing@sangfor.com.cn>
-> > Cc: SeongJae Park <sj@kernel.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Nico Pache <npache@redhat.com>
-> > Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Wang Lian <lianux.mm@gmail.com>
-> > 
-> > Wang Lian (6):
-> >   mm/damon: add target_order field for DAMOS_COLLAPSE
-> >   mm/khugepaged: add damon_collapse_folio_range() for external callers
-> >   mm/damon/vaddr: implement mTHP-aware DAMOS_COLLAPSE handler
-> >   mm/damon: introduce DAMOS_MTHP_SPLIT action and hot_threshold
-> >   mm/damon/vaddr: implement DAMOS_MTHP_SPLIT handler
-> >   mm/damon: add SPE feedback for sub-THP split decisions
-> > 
-> >  include/linux/damon.h      |  18 ++
-> >  include/linux/khugepaged.h |   3 +
-> >  mm/damon/Kconfig           |  12 +
-> >  mm/damon/Makefile          |   1 +
-> >  mm/damon/core.c            |   3 +
-> >  mm/damon/spe.c             | 505 +++++++++++++++++++++++++++++++++++++
-> >  mm/damon/spe.h             |  62 +++++
-> >  mm/damon/sysfs-schemes.c   |  96 +++++++
-> >  mm/damon/vaddr.c           | 118 +++++++++
-> >  mm/khugepaged.c            |  39 +++
-> >  10 files changed, 857 insertions(+)
-> >  create mode 100644 mm/damon/spe.c
-> >  create mode 100644 mm/damon/spe.h
-> 
-> Because this is an RFC and we found high level TODO (trying perf event based
-> appraoch instead of debugfs), I will skip reviewing the details.  If you have
-> specific parts that want my detailed review, let me know.
-> 
-> Also, the perf event based monitoring is a long term project.  The ETA is the
-> LSFMMBPF'27.  If you cannot wait until the time, maybe you could try the
-> alternative approaches (using address filter or user_input quota goal) and
-> upstreaming dependent parts (DAMOS_COLLAPSE extension for mTHP and DAMOS_SPLIT)
-> first could also be a nice approach, in my opinion.
-> 
-> [1] https://origin.kernel.org/doc/html/latest/admin-guide/mm/damon/stat.html#memory-idle-ms-percentiles
-> [2] https://origin.kernel.org/doc/html/latest/mm/damon/design.html#aim-oriented-feedback-driven-auto-tuning
-> [3] https://lore.kernel.org/20251128193947.80866-1-sj@kernel.org/
+I don=E2=80=99t quite understand what you mean. Even if we remove the
+refcheck folio_ref_count(folio) =3D=3D (extra_refs + folio_nr_pages(folio))
+from should_try_to_free_swap(), folio_maybe_swapped() would still
+prevent swapcache from being deleted for shared folios. The only
+effect is that we end up doing more work:
 
-The above link ([3]) is wrong, sorry.  Please use below.
+        rcu_read_lock();
+        do {
+                if (__swp_tb_get_count(__swap_table_get(ci, ci_off))) {
+                        ret =3D true;
+                        break;
+                }
+        } while (++ci_off < ci_end);
+        rcu_read_unlock();
 
-[3] https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
+and should_try_to_free_swap() currently checks
+fault_flags & FAULT_FLAG_WRITE, so clean folios are not
+touched for their swapcache.
 
+The only thing I feel might not be perfect is sync I/O, which I
+think should be:
 
-Thanks,
-SJ
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..3c231dafefcb 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4517,14 +4517,6 @@ static inline bool
+should_try_to_free_swap(struct swap_info_struct *si,
+ {
+        if (!folio_test_swapcache(folio))
+                return false;
+-       /*
+-        * Always try to free swap cache for SWP_SYNCHRONOUS_IO devices. Sw=
+ap
+-        * cache can help save some IO or memory overhead, but these device=
+s
+-        * are fast, and meanwhile, swap cache pinning the slot deferring t=
+he
+-        * release of metadata or fragmentation is a more critical issue.
+-        */
+-       if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
+-               return true;
+        if (mem_cgroup_swap_full(folio) || (vma->vm_flags & VM_LOCKED) ||
+            folio_test_mlocked(folio))
+                return true;
+@@ -4533,8 +4525,12 @@ static inline bool
+should_try_to_free_swap(struct swap_info_struct *si,
+         * have to detect via the refcount if we're really the exclusive
+         * user. Try freeing the swapcache to get rid of the swapcache
+         * reference only in case it's likely that we'll be the exclusive u=
+ser.
++        * Always try to free swap cache for SWP_SYNCHRONOUS_IO devices, ev=
+en
++        * when swapin is for read, to release memory used for compressed d=
+ata,
++        * etc.
+         */
+-       return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &=
+&
++       return ((fault_flags & FAULT_FLAG_WRITE) || data_race(si->flags &
++               SWP_SYNCHRONOUS_IO)) && !folio_test_ksm(folio) &&
+                folio_ref_count(folio) =3D=3D (extra_refs + folio_nr_pages(=
+folio));
+ }
 
-[...]
+Not sure if it is worth it. I feel it would only save some
+overhead in folio_maybe_swapped() when we have many shared
+folios.
+
+>
+> Just one thing: I think maybe we can have a more common helper to be
+> shared by `wp_can_reuse_anon_folio` and `should_try_to_free_swap`.
+> Since the cache reclaim in `should_try_to_free_swap` is meant to help
+> `wp_can_reuse_anon_folio` (IIUC), keeping them more consistent seems
+> easier to maintain and understand. Trivial though.
+>
+> It's fine this way too, it's technically correct and this is only a
+> heuristic check which doesn't effect correctness.
+
+thanks! I would stick with this approach for now, as
+wp_can_reuse_anon_folio() and do_swap_page() seem to differ
+significantly in how they handle SYNC I/O, folio locking, etc.
+
+Best Regards
+Barry
 
