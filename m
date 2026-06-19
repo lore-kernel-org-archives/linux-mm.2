@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B721CD98F6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 05:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FFD8CD98E6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 05:50:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E312D6B0088; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
+	id 4B1646B0088; Fri, 19 Jun 2026 01:50:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E093B6B008A; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
+	id 462E66B008A; Fri, 19 Jun 2026 01:50:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF95C6B008C; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
+	id 379C86B008C; Fri, 19 Jun 2026 01:50:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AAAE16B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24EC08D49B
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:19:06 +0000 (UTC)
-X-FDA: 84895508292.01.02D0446
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5D4EEC0002
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:19:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHSq15pi;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B9C06B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:50:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 782D41C1F6A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:50:10 +0000 (UTC)
+X-FDA: 84895586580.27.9B34F24
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5D0618000C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:50:08 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b02lh4tx;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781848208;
+	b=YBdPLLKwcPOuD8bTludt0t6Ywx6q7ylCXifEiqdfv1HB0FO31AIzrEHWTv7RXo74g8N+WH
+	iqVdd9iZAvsJ9kRYbHInbYDiYGBM9+CJqg0JGbQS1VHDyKQ0Qfuz//1aJTJwvnnK/3xObG
+	bw9UdtNUZJZ445QX6Jgjfsztb4fGNP0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b02lh4tx;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781846344;
+	s=arc-20220608; t=1781848208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n0WQXKZa/yAPHQbUs9dLkQN2esDMhYBXPa9Lzf4iMSw=;
-	b=B5iJuR58J0IvyoqQ3sEANugUFqkF6MHlGCNcrmjJRB5HNuk/hJwIHb6sLJLpvssXud/heM
-	WN0QZDLEK69RYdGy4BAx1Hy/I1uHTZlxw1E9nC5ygyzueKH1NeXLZDE1K5X+mlAuhcrNBD
-	qvt4lJp6CpVB0GeDR3fTIuWQPo3H3EI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781846344;
-	b=Rh4Zx5mx46h6B4peEsD0j571fz3HhU1aXvD1C1EaXljXaKMnBHGlSNvBO+zqGUtY7uGaSf
-	7KYVB94rCNAIP+dERwHUQWzqCAGG8f2LySVQZHpML6eVNUVFMv1bAnVja7+bWzLkA0XPT/
-	5UdKjGK/4XaWurzj9LqvQkxJns5NuJo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHSq15pi;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=PK4QkHJNkYDhZsyMlgt+M7qhWBwrUtJtyeI4+tgyFjI=;
+	b=QRhQof+OsbLlXOIQOy/dAksg+9eZC7i2gJMX+g6NcdsW29W7+XNhVHG9s1ddOiSF8w0zTO
+	GCdNRca7fnSQovZU0cXx11g7vG2dkAx9oQSlytBPkLabV+nN734VMOdfiJHboO/Iu100WS
+	7YLdwsbSWX7baxyELYjLyvZRCKW1EqU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66AAD4093C;
-	Fri, 19 Jun 2026 05:19:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB4F1F000E9;
-	Fri, 19 Jun 2026 05:19:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 433B2601E1;
+	Fri, 19 Jun 2026 05:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D8C1F000E9;
+	Fri, 19 Jun 2026 05:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781846343;
-	bh=n0WQXKZa/yAPHQbUs9dLkQN2esDMhYBXPa9Lzf4iMSw=;
+	s=k20260515; t=1781848208;
+	bh=PK4QkHJNkYDhZsyMlgt+M7qhWBwrUtJtyeI4+tgyFjI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aHSq15piz7ld4db3e46JH3zywFyou9Lf3nDfq+LVIm+k3H3ga6j2j4IIyBfRGdLsA
-	 1jk+CKcHK6momeyF3IxCxQPhE8LSXJgpwzhhKKegYFSOQdNkTuw0depL2nkkf66pEx
-	 Tkk7BDabM25+Sbk2H5lnco1x7xko06vhe1Zz888SNY2VS8PvV7q77a8W8Ku08MLOVO
-	 jv5FXWtsctGR87yD+DBMRmtArRPqGzf0PhPkCiWywMLVDw9h0F0V4JZFHE3pZQaTvj
-	 dql2Qu5PDMsRwd/e1PAChINPTgk2FFyc/Iyj0tV8Fgd+9LpdLNjG8DwpKN9jTPNPyo
-	 /4OwhRgUdx3Rg==
-Message-ID: <b270ce60-b335-4f26-bf43-c8e7003237c7@kernel.org>
-Date: Fri, 19 Jun 2026 14:18:55 +0900
+	b=b02lh4txiOrZRGqhBhCWjmCfJcvg1E4LB26nikRWtvQ5cBBaivbqIztiZpdjht9pQ
+	 9tVPdb+lUEZh3XXZbfnTYTqJcLAQECJHVtC/il91f1vk6zYB1mN5+zt+o4WdhdK+6k
+	 iRZidJZZSEtE5YAwPjBgLI7o2fCxtsqcoCvpNZYmtByMLFhfEgBEGs3Cf9zOzjdpFN
+	 GtTGehpcjlxQuAMqLC3sklzTSxJWlIUD9x2jT9BwVf+2nf5Tq2t+rkDp2EGMKBtUM0
+	 xKUnvOJN19qQgv9ZlOShILoPH4tWl63ZH0eiPTKYkoGhSZSsKko44wmjOZzRXeEcqa
+	 DuqMVSamam+Sw==
+Message-ID: <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
+Date: Fri, 19 Jun 2026 14:50:04 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
-To: Vlastimil Babka <vbabka@suse.com>,
- Yichong Chen <chenyichong@uniontech.com>, akpm@linux-foundation.org,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: penberg@cs.helsinki.fi, clameter@sgi.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>,
- Hao Li <hao.li@linux.dev>
-References: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
- <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+Subject: Re: [PATCH] mm/slub: deduplicate NUMA policy calculation in
+ allocation paths
+To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260618100913.346636-1-hao.li@linux.dev>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+In-Reply-To: <20260618100913.346636-1-hao.li@linux.dev>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------LFY6cLE1Bu0c2UNxfoLl1Cto"
+ boundary="------------BO0Wqi200DHIqdBI3vB2CLYp"
+X-Stat-Signature: kwktkkiecuiiegg9su3y5zo3rzc5k7gn
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C5D0618000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5D4EEC0002
-X-Stat-Signature: 4n5qc6c4ipcu67ocjmnpk1hzxmk5oadd
-X-HE-Tag: 1781846344-789896
-X-HE-Meta: U2FsdGVkX1933g1TNFBmQsgueI+EPtipPF9qi1VBRWKFYcwpidbn6f5CcguYs01pGrPc+A5qCg0sVk2aN7Z52RRp41uI2M/zmToCShieWYVGrX7lfTYbqUaYQ7AnISWzVvukFTN8pWtA/LeC5MifEOP9xnsnefc3FYA9bRb++4P/3Jx+yLUFy3uhEvNyFeni/3XV6sjzFyQFRCXrFq2813sYWdmb/clNNhiSal/kacaVCwIyG/bScNvQSIN3VgU0tJpEB4K37m2BX2qothDnXFz1myugLZw7PR7tmTW5fgk5V0oADGg7B5m/9lCUjol8I43J65WrVFYRhZw9bX1QX312lh/Jv5rcvZtGODf44VeVArrRTVOCmYH9RlgHt5vkyW/cSejI3n+ogV1QRKJdKoZZfiL4dq4Hop6LyO5PIck0j+sHOuomee3xXN8CoZ2IdAmDc0jlhdk9423wTEFhBAI0h5mDZVMp9RDJeKjb4mjwKQVheIQPrCTYt+a8fpqulKYiyRIi9ZVGrJjMgru5Tp7VagJKROgf6rNs86wFjJh5dGKLhAHhF90maiprp8YmY+44qHaKbUEN14p7w4arU5p93SEEqa95gW1GqMRnpGfREz2YRb00rzmkj2YeYyAihedpKfU/wukC4b5kSjVxZKi3ViAcZURXglSQzVK/u9xgXy5Ftu/XJ+ufL05vkMXCS6G3yOBPdV9lKZsKqLUFgjmhbXcwwl2P0hp/T344beYlK12z7VVFgeRNU7bAdJGW12/0bf50oEIUVQHREb6lTxqgItQUeBzhWEe+muZMXiNwL+VFGmfGKxRRKlFdTbDQvZZ/6+cbbOezuOD1GLYcrC2OYorkTlmOf3apU5LGM6ig3lBY+zsxEALUoVI1pH57+Tz7wWkEWysROImntSHseHVZf8/WKE8FYyN0QHDer0o6QSjz/hXFNP5All1BFOCGSPwOCSbE95CmmMK33NR
- xfsqQVKy
- jjJ+8HN2bQNw3CuvuZjkHEWBSrxzHJy7iS1v4AGt4RPWsHZk/DDK8FBAY7Vx0pPPCxCUAOCx/9ivZEcK+6wMIAp4u+QSpgLCFsAidOKxbUZDXvYFgen4Yoxe/3HrNZFX4Pc+AYYL5jrNefPB+rT5GOJ5dffXIh0sxuPzFrZzrnlvspsb1Rn/rT77jn8/FcCJQdpQjigC2/4zo1zwrPzfFysLhITc1LS77ZWIm2eEeHepG8RGh2Fh3ouXzpfiT8Sq3eRbi7YhxOW/7TLBY6rVAiV6WhINt4TvkWMFLnbQZLn6SjxcW+Ir7BQ0hLAV5SsQ00GsWGpl2UZa2j3P15m1BOnsGn1L+w6nW1olW9+dIfyxS/sbX8k8XUK/4FgXfJ8Ri8i5IEjuEktSp5jusd41OkW0MrgY/MXCbDd/D58GLAobGjfUHw6huAvr9WGAdJuv9b8UJ6x6hWA2BvDRLo1L/+CdK9yRIJN9+6WC45VfoSdnF4VivQ1vCFoMcxD1nNNnA1lO/QJIKhSgm1Mu0TNVpoEsGNGbE3py/xWJJj4wcWbpUUkzF5AbjMd/jUFQYzp8xgid2PUQiy7ebK78=
+X-HE-Tag: 1781848208-526779
+X-HE-Meta: U2FsdGVkX196FEkdJv1afTfZYkV8Hvv1gvka8gUi6HtlzWzOvS7MW4LRojuER9EQ7Txk1YaA1wz1IcR8vkGNburofvdAF7D47p8mVIrxR1JO9+3QqrXCINiQBGO054lRyEeIZKm6hq1x+8QykHp9QHFB9k4tYPqKR8sSqe+i/2KEGF+LzeaVMa19YRt/wi+ibkEt5kBW99Y6j7aO9Qerj7TKoG3bQVjtY0ujnkCy0DbbB7pEsfhPw7UbSVsSWCKi/zcg8ICT3MX41Omf1bvgvgocJPIyztUl5H1sVskoahjmxGeqt7EQUW6RJe1dWbVMSPvmEmkob4cQJDNTT4Pyhk1MfEG68Pifn1qp7hp0lJjct1m/11+zxjZuN/ZQvVEMVAZTyjB781lC/ijhZcrAHaxXxlm+4CLdTVJxZf8OMHYa9Zey95OKZ+7k9evifSmpthSkBKXGOzpWna+Pmr0dtB+c6pBkt/P4MKr9F2LCoTVFC7WB6v5i6kl0CBtppMQRfTwSJ5iIpjC2w/t/OcLEmekeATLtzTwHJdyG3ZfliJPa19axOK6H3NCyD+wwf5LJNP8sA2yK3o3sDlRwY1PhOUZGtEastHcIhn+gbe6ZFQJMvHtqEKFsgMrvHJttGOTB/zuVSHiTtXgJQpMLxoRc3oc35Zss7rsOqxPwCgT1QVlP1vle1Ozo+Q0eGWppCXQO5+gVo///xDrFxAHM+n74K23xLMcXZDKFsCCnc/J0LbbiCAp9cE1seIUCg4Jy9lr6wcq9vhJmTpz9MVo2rCr4VY71WMNFrOnd5VbsiSLJQp1jMP9AAYt1ANxjsoYin5SbavcYh5PBXn0S0wUCOJXE5hBzR6DoNgWyxXjq/aCdx2TisBh+di0oPMTwSDEseCSsy2g1iw7pJijzEkFrApXAZLW+wOFyylarUWIxRVklJTWSaeVb8Ek456o0n3y4AUCnFnQzFgK6gk6tm+lOFI4
+ yybEAu92
+ u0yAE3DowgXzI5M7v+drYHtzjREFi1aKbvPyQi0qU9gSFsanvC18nt2m3gZZ8tJ8fq+rWdaxAt5nTlVqW9pGJqg1a/8Bo1mGXeKtk33zUF5bXACqM5W1ZskHdri2Dw3n3D6rTP9wjvL2G8FDkXqEay1uvFMUJ1hn53Pkx4lZq51Pup6ue8bn9W/cJFwsJZg/pi+sTmOLZVr0IJ8VqPmQ6zIsX9Q7rU8KQmOnQx89EtNgjbOai1ysOgbBt0X0R5aSXYvoJWYf0oHTczmgxBqRCLITJjV4Z/NDN08yQEoZpcBfv/ZsRB1dm3jgU7nhuDCHIPBbtlB1V2z5FOx3nKF4UNgfqQLmU6nzYgkXC8FJSTXPWUsz6mS7onq2rneKi6CQQc56Pg6g8geAXfaAF3N1+5ISvfSGJOOn1GXBrHKUosLL854RGquZL2nGgufCwe7YoE19uXbI1jpgqBMY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,100 +95,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------LFY6cLE1Bu0c2UNxfoLl1Cto
-Content-Type: multipart/mixed; boundary="------------bzR0xRRP6eTD0Reb1mV1IqiT";
+--------------BO0Wqi200DHIqdBI3vB2CLYp
+Content-Type: multipart/mixed; boundary="------------YZjfbF37BrzgPLGJHbJ4IY2V";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
-To: Vlastimil Babka <vbabka@suse.com>,
- Yichong Chen <chenyichong@uniontech.com>, akpm@linux-foundation.org,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: penberg@cs.helsinki.fi, clameter@sgi.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>,
- Hao Li <hao.li@linux.dev>
-Message-ID: <b270ce60-b335-4f26-bf43-c8e7003237c7@kernel.org>
-Subject: Re: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
-References: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
- <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
-In-Reply-To: <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
+Subject: Re: [PATCH] mm/slub: deduplicate NUMA policy calculation in
+ allocation paths
+References: <20260618100913.346636-1-hao.li@linux.dev>
+In-Reply-To: <20260618100913.346636-1-hao.li@linux.dev>
 
---------------bzR0xRRP6eTD0Reb1mV1IqiT
+--------------YZjfbF37BrzgPLGJHbJ4IY2V
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 6/18/26 6:18 PM, Vlastimil Babka wrote:
-> On 6/12/26 09:13, Yichong Chen wrote:
->> SLUB exports the total_objects sysfs attribute, but slabinfo tries to =
-read
->> objects_total. As a result, the lookup fails and the field remains zer=
-o.
->>
->> Use the correct attribute name and rename the corresponding structure
->> member to match.
->>
->> Fixes: 205ab99dd103 ("slub: Update statistics handling for variable or=
-der slabs")
+On 6/18/26 7:08 PM, Hao Li wrote:
+> Currently, alloc_from_pcs() and __slab_alloc_node() both calculate the
+> NUMA policy independently. Since they are called consecutively in paths=
+
+> like __kmalloc_nolock_noprof() and slab_alloc_node(), this leads to
+> redundant computations.
+
+It uses a static key, so probably just slightly larger code when disabled=
+=2E
+
+By inlining both __slab_alloc_node and alloc_from_pcs(), I assume the
+compiler would have deduplicated it, but there is a patch in
+slab/for-next that makes it not inlined anymore :)
+
+> Introduce a helper function to resolve the NUMA policy once, eliminatin=
+g
+> the duplicated code and reducing execution overhead.
+
+Nice! I think there's no reason why we shouldn't do this.
+
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+> ---
+>  mm/slub.c | 72 ++++++++++++++++++++++---------------------------------=
+
+>  1 file changed, 29 insertions(+), 43 deletions(-)
 >=20
-> Huh, it has never worked correctly, since 2008.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 62e9cd46916f..45e9f379b7da 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4523,32 +4523,36 @@ static void *___slab_alloc(struct kmem_cache *s=
+, gfp_t gfpflags, int node,
+>  	return object;
+>  }
+> =20
+> +static __always_inline int apply_numa_policy(int node)
 
-slabinfo.c needs some love :)
+apply_numa_policy() is bit confusing because we usually don't apply
+mempolicy for each object (unless strict_numa is set), but rather when
+grabbing new slabs.
 
-> Applied to slab/for-next, thanks!
+perhaps apply_strict_numa[_policy]() will be a better name?
 
-FWIW,
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Thanks!
-
->> Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
->> ---
->>  tools/mm/slabinfo.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
->> index 54c7265ab52d..f4077746d6df 100644
->> --- a/tools/mm/slabinfo.c
->> +++ b/tools/mm/slabinfo.c
->> @@ -33,7 +33,7 @@ struct slabinfo {
->>  	unsigned int hwcache_align, object_size, objs_per_slab;
->>  	unsigned int sanity_checks, slab_size, store_user, trace;
->>  	int order, poison, reclaim_account, red_zone;
->> -	unsigned long partial, objects, slabs, objects_partial, objects_tota=
-l;
->> +	unsigned long partial, objects, slabs, objects_partial, total_object=
-s;
->>  	unsigned long alloc_fastpath, alloc_slowpath;
->>  	unsigned long free_fastpath, free_slowpath;
->>  	unsigned long free_frozen, free_add_partial, free_remove_partial;
->> @@ -1263,7 +1263,7 @@ static void read_slab_dir(void)
->>  			slab->object_size =3D get_obj("object_size");
->>  			slab->objects =3D get_obj("objects");
->>  			slab->objects_partial =3D get_obj("objects_partial");
->> -			slab->objects_total =3D get_obj("objects_total");
->> +			slab->total_objects =3D get_obj("total_objects");
->>  			slab->objs_per_slab =3D get_obj("objs_per_slab");
->>  			slab->order =3D get_obj("order");
->>  			slab->partial =3D get_obj("partial");
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------bzR0xRRP6eTD0Reb1mV1IqiT--
 
---------------LFY6cLE1Bu0c2UNxfoLl1Cto
+--------------YZjfbF37BrzgPLGJHbJ4IY2V--
+
+--------------BO0Wqi200DHIqdBI3vB2CLYp
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajTRPwAKCRCGXBN6rc5S
-1hQxAQC5C2t9YzgCVPUaklGgWHjPIVj1tDL4vS7pZxKrRpySCAEAlw6zlPfzHnYE
-n3ysAn49QVu4bQ2l8bNTJy245zLozQI=
-=uudy
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajTYjQAKCRCGXBN6rc5S
+1p/CAP4p+mi3CuM7hskUVs7OamecZ034Y/OC7Nx/tkCChWwUqQEA7qDdgsy2xJSq
+VbtqJpTJlffPxcUmLPQUxeKmsvl3JwA=
+=ATmB
 -----END PGP SIGNATURE-----
 
---------------LFY6cLE1Bu0c2UNxfoLl1Cto--
+--------------BO0Wqi200DHIqdBI3vB2CLYp--
 
