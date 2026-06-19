@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8D6CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:43:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454E7CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 559A46B008C; Fri, 19 Jun 2026 08:43:23 -0400 (EDT)
+	id 1188E6B0088; Fri, 19 Jun 2026 08:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E3766B0092; Fri, 19 Jun 2026 08:43:23 -0400 (EDT)
+	id 0C95C6B008A; Fri, 19 Jun 2026 08:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AA766B0093; Fri, 19 Jun 2026 08:43:23 -0400 (EDT)
+	id ED58B6B008C; Fri, 19 Jun 2026 08:45:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10AF16B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:43:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 760E61A0421
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:43:22 +0000 (UTC)
-X-FDA: 84896627844.17.BF07AC1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C909920005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:43:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X4LFkCu+;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C79C06B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:45:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4084A4040E
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:45:38 +0000 (UTC)
+X-FDA: 84896633556.30.A6C01CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 83781180006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:45:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crEsyyb4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781873000;
+	s=arc-20220608; t=1781873136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pdAH1fg1BglGsXnpOa+ztXQ4TCh8zWq536kA12FE2bI=;
-	b=R4bAb+vgfdDNUlURPTa8J/KqwG7HTMkQ2vTOlFwnG0HNg3ADbHoD856kkuMyEKPCw3SXLA
-	zLI14Deh9WdbTU9RJPc+6kRTQbV912VH7wVD6fMXDqb+vEQkAqvQuzTd+WpRonwMEziKeh
-	JwRt8DsIYo1tLcreOpvWCipxTAO/a1E=
+	bh=L/Vhz6lOiktHFsg9eoV4+oceyN6BbtxBaibjZtdCVyw=;
+	b=6e2NwViY38QBXBogZAHi77YzFHWTCp1VTltU81/BsVO0OkwfDoT5/+RxbzEVj3gvHDPj2E
+	pMhoTaHgw3DiyGO3PhObDMfUGWoYZa8opF+p+FG079D2Ujbh1Bfu0T33gY9Tx1uaiLuhiX
+	M+3Vy3C5drb0rz1WywlZGBVIjtpC6jY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X4LFkCu+;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=crEsyyb4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781873000;
-	b=b+6j3fk41EyP24XB4NZTryKuWPgxWxOnSDDv1ztLBaD1EpEZoMNRm+G0atnrBycT82HRA3
-	+z+upGT0PMoaUt17lAyU/n1NWqgZD9rZpZk0nYMUekqWDxbGpXNWsp9KDplVfDBYgwvOxC
-	9no/RxIq6B22o6RbExwpsehaTJ2opcg=
+	t=1781873136;
+	b=fijOXLQ1KAVg4G5mrws1/5ZhZFeLMAxOxDroNMve17e0Me6W9P1WgusJhJkHrPK4MiLmb6
+	96KfGztaME+IsLE4BEo0L9/7XLWOUoe+C54aDSnnCkgUFw+/UlKRSPv5xT7HYAs6xZlw2g
+	2Y0Ti59fg8S6mWdHovVZthmt4RCKDac=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 382F3601E1;
-	Fri, 19 Jun 2026 12:43:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D870E1F000E9;
-	Fri, 19 Jun 2026 12:43:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B22D40A6F;
+	Fri, 19 Jun 2026 12:45:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAF11F000E9;
+	Fri, 19 Jun 2026 12:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781872999;
-	bh=pdAH1fg1BglGsXnpOa+ztXQ4TCh8zWq536kA12FE2bI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X4LFkCu+98rUfmehrCuzIs0/gz4ZMmxlORSl0FJdpY6wV5/1bsHrc0WX3mrxNsoAj
-	 qfvv8Nm+wGR4cLIzevGd2DnrPIcqijICAMKcgH3CgSpASKOcZO7HZcHvP6XJItdzEl
-	 k8FGDNBZ8o0wsFT7RHUGbtn0gBv7UCDMyByNIHCMH0NlivH8vzG0/2Mel9SJD9lzgp
-	 UHuAwurPDISTUNaTVJ21Gu0MtBD15tagHmsQeriDTCjmHefT56YcNGzfyg6/R00KlW
-	 D130egq/iTqaelaubtVD5CcnOuvCZqxxx6CxSc7CNv2bJNkXh7FDnvx5xkFw5re6/P
-	 cx7E65uQnly8A==
-Date: Fri, 19 Jun 2026 13:43:13 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH 0/3] mm: __access_remote_vm with per-VMA lock
-Message-ID: <ajU3q1e6mpWsJ6Xa@lucifer>
-References: <20260616190300.1509639-1-riel@surriel.com>
- <CAJuCfpEKgiQDGXgCKrqnn7Wk5YrT8nr4-H88PVeEruSKjtY_CQ@mail.gmail.com>
- <dd66797a-6fc5-4c31-ac43-d767560f3029@kernel.org>
- <CAJuCfpEqz9t-x8abYD6idtHmi9t8p4YfDmnbkJ-ix4i=RMS4wg@mail.gmail.com>
- <603e002e-77f4-492e-9ad4-75572e18fc0b@kernel.org>
+	s=k20260515; t=1781873135;
+	bh=L/Vhz6lOiktHFsg9eoV4+oceyN6BbtxBaibjZtdCVyw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=crEsyyb4DPjpSRuGTlnWJ6/ztzR5JnGP9C/rROgh6jlFUllrBxDQaANCr39K6zTUj
+	 EZfZwtqBaGCBJULOoxGCl1ETc8HjbrAF+JiwmihwwpJR+BytRx67bASip+9cQXTCnm
+	 sov7vDyQt1oPjLb7Cv9yNPU22Slw/QYIPuFeRszoLlYXHhm9ydbpCzAUNOEXKM/L52
+	 erekEPdF5PNV7UIX2U/C2JG+gZHJC9X3PSCEuriwiircCaLfXK6/yv08OW8PjeBqoI
+	 IRpGFPDuEXq2pqW8LskhzGF4c7AIL06/SBdNhAl+dzhvANvoek/MLugG8Zru8ytbEK
+	 O1Lkp9ddMZgpg==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>, Zach O'Keefe <zokeefe@google.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, David Stevens <stevensd@google.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, Quentin
+ Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+In-Reply-To: <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com>
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+ <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
+ <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+ <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+ <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com>
+Date: Fri, 19 Jun 2026 14:45:31 +0200
+Message-ID: <87pl1md7h0.ffs@fw13>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <603e002e-77f4-492e-9ad4-75572e18fc0b@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C909920005
-X-Stat-Signature: 7ex9eexzii18rpkd4pf3a518sq5h7hgx
+Content-Type: text/plain
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 83781180006
+X-Stat-Signature: 57g1oiqwwmtke55ejo1ytzi18yge3xf5
 X-Rspam-User: 
-X-HE-Tag: 1781873000-764025
-X-HE-Meta: U2FsdGVkX19N64GdsCOACbfRn73hZVJY8RzGgcg/jzS4aWJB8KIVNaQzIG6NyTLvZxiU1LZnwuVzGAUyLgTKRcIttZkAecXLhOIjBwF9KgHMpRHkqh7ZxnQC4AwLdXR+H/w+j7CIJb8McGkjGT3LhGERYoR7AXzTPZPXxWuYkGmTD0IkAVqwnBLXxNnHhVA0D37gp7+JwSGSxXID2K1J8+tK5sXCcNcZsaZzOZccIwxwKpturYq0DwMOHgWpGOJmvAFdoXbU1hiKh7shP7IlAh3kygaDW0geZa5rnRFyMvgglE7Qdn5MzHCJPyhW4u3F9yz05AbwHdpIzH3ftbSSClFpBK7msipMzkmkx172O2RJ6pzPZr0SXvg+5LkpDiQYXXTsTNx4ougMN1Akr2+6rScZaavm8c3hl3tKP+RgGuR2fAb1Pp7vhB40B3XDE6RakSbcqkx9Co0MO7FB6NFrHsTXX0J/f4eRY20PAsudLMuCG9Ggb0ovZ31knq2QGJc6eSLRUhni2+Aq+SoUdybfMnz9Tct2Gjwz6qZhD+wtvI+S1Alt4qU/LXoFDSyMOYnzirT7lkQRBX8W+ltgNi8d6SZrg2Dvul7MUFeDQqq1EyLVEjpcIbJ5UrpajYm+ik1/N2gaAIMsuJOBiaCiZbeTAEphdJII9oJqlN3sq9YEoNbcHC9UjYWcpRMq9K+B+WT9HVJZc1Et4YSIPxL+3QM0+n9ND4hMFlyXbjZnG5coZe+/IYvtorHOcQ27/W1n/xQN34hKnE9+gmtEBBCcT1lSHDUImG/3bEfkhVnahu4f+FzypUfIlgpVyONxBXIHsEAnSn7nMDjBclzNo9dyhalQLxXi9BvHpW59064wPFTEzs4GwkjFmrVSPlvRhfPqO0MXxTzk8BKho5edz5XR7I+ehiwyBzWc7BwAS/j0bO6wamtvHZusnmufuxof3I5g3XwjsDHZoqoDGPIimx5Gv/E
- LxKQVXXf
- w2VXbJJi9ay02ZTWMWcOiSV2fGvxXJwrhubOpaItQ0LP9JEziDnwD0uZ76drCz/gAOtlJq6rxcNaaYZagY6QXJxHnK2mBq9QcxX3p8HSspzFtlMqHKj+86FFHxlYaKkqV2LNi3lStA9w2HWU1N//1l+etzSlb2i3cSQlzptSDL4IER0IYaEHqRcAUAkuX5kWe2gRUgt67DfAbwC4RzofJS5sZDkIux3G7g62ffU88kgfIICMsTNOdfCWsxlJ6JNXsQgGXC0tEzwvPBK/h62IVOmM4CQg76cnm6PeUSF5E+EVb/RkC3tUoI2/LuOzeD0EFKDr3hEZuPXqmsbc+ekBUDikusq8gC1b744Rw
+X-HE-Tag: 1781873136-319499
+X-HE-Meta: U2FsdGVkX1/unzYYCUXCpgqTStPDM0E1x91VqrwycWky8dOm9rD0qoMD65u2H+7LsSrEO/yi98wMT7wiWTOBg1Sa/GwlaoDoiEPzR+3c0FJr7bXih8z6m9KgbhIcoAobAftuiFNgffCdN4J5uYBFjV6kE3FiNGXvdBhIdmD1rjJRHDdxPEzH2Gccr+Xi9HhyxVq+RiLx62qlGsTUysu4vpH1pQ/5Vi1t8mfm+Pbwbq0KinmQk263YJ6MCvPFA+hsyv8f48HtJSgJkp9Y4wXbPKgca7YAgFgV9SFpdH/b22NhSoESdWqhxWfX8IpLrTBEiN69/+qjB1tbIAcdxhVHNtsEc/8uE/96+IjhDgHceK0gh6ZMQXd5a2wJvwAixsdzujrp5b8GnZKYCRjF4W5tzyBSP5uWdsDzrY1EBeaMthAEeC6hVRADvXtSVyAB9vreD3qw92TLhhpBr4VWJZEu4kmas0qioCtFahhiP6xfveIpBZQhld6yPd4PHei6WsF9OdaluwemZNj0fhHLZcq9NcMMBT4fMCvtVwWldlk3q4J8uVwEgxMjSjdLoS2iK/MrpjCJjCNvNKrXdGui43qtuxQW7sS+KfvevzxBByXo8zX9Ykg2dcRKzf3jgFyfbFKDB5QfDNIvf9d0f4/aDH4rx1QJZr4+YPkQGoGWMzlYmnVUwxRC7VL9zmtlS5CdbGBHhOWE0dkerODXUwqkluMUs2ZjYgfyMRnsvD8dVPNhm2wI67Y0vWf9nTj4D/Xlx+ZEhJTDLwqR9tnhC1xIQlMk2yifT+XNLjMni13R/uSOo/Ch35iN/F0S6rH/5BLm/8kXx/eGxLeZsRJfvb+Tpp5MUjGtH4tEjrJA3DMoWn9S0HWmkpJyk+vlLCkyxxomISq+9J+ieXczdZDSiUpjhYhA8dM8+19ZX0wc5hx5SfDwtJuipAOsNkiTHZ0X7DrKaECIXNK5L3gTA7v12YJIPYZ
+ bodajtNj
+ CbjvRn9xF+RMT8r/e/xdAt21qjE9Typ4cnKshZpKteHTCO0tSabuyuKXl295xQDYet8OiO4gSUES35+oI3PkhjUclNtb+n6tXM7v7TccZVz1MwHKnrT/OO3jw+x4uI44QqtzjapER9e3K7n8bUTRqkQx9VPXLUPvZzQOPJRI1XMudXoSZ+itxPz3uLdpp5y1xXbK+13/pVnNjDgSwH98VUKco/NRnSN3fhQOFAGNUl4/Kqa4i/F2OPnOX5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,108 +105,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 10:37:03PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/17/26 15:33, Suren Baghdasaryan wrote:
-> > On Wed, Jun 17, 2026 at 2:42 AM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 6/17/26 03:10, Suren Baghdasaryan wrote:
-> >>>
-> >>> Thanks for the patchset Rik!
-> >>> Previously when I looked into using per-VMA locks in
-> >>> access_remote_vm(), the biggest hurdle was get_user_pages_remote(),
-> >>> which required mmap_lock. Your implementation avoids altogether and
-> >>> keeps the code much simpler than what I expected.
-> >>
-> >> But, wouldn't we, in general, also want to teach GUP to just work with per-VMA
-> >> locks?
-> >
-> > Matthew suggested using gup_fast in access_remote_vm before, and I
-> > looked into that. The biggest issue there is that gup_fast assumes it
-> > always operates on current->mm, not on the remote one. Reworking that
-> > is quite an undertaking.
+On Thu, Jun 18 2026 at 11:53, Dave Hansen wrote:
+> On 6/18/26 07:50, Zach O'Keefe wrote:
+>> Overall, are there any particular painpoints you'd like to see flushed
+>> out, first? 
 >
-> Right, that's more tricky, IIRC the CPU from a remote MM might not get an IPI
-> sent to sync. (but my memory is fuzzy on that)
+> Handing exceptions in the kernel is hard. Period. That's the pain point.
+> Just look at NMIs, #VC, #MC and the rest of that mess. Just look at how
+> we've moved away from ever taking random page faults in the kernel. Or,
+> heck, randomly taking faults at *all*. We've concentrated them in very
+> specific places, not in general code.
 >
-> > Teaching GUP in general to work with per-VMA locks I think would also
-> > be much harder than what this patchset does and would require a GUP
-> > expert (which I am unfortunately not).
+> Now you're arguing that the kernel can pretty much take a fault *AND*
+> allocate memory reliably at any point*.
 >
-> Well, "harder" is not really an excuse ;)
+> I just don't see the collateral in this series to justify that claim.
 
-Agreed.
+There is none because it's simply impossible to guarantee and when
+reading through the series even a CPU hotplug operation happily
+continues with success when the stack page cache of the upcoming CPU
+can't be filled....
 
-We shouldn't just tack on new features like this without improving what already
-exists.
+> The NMI entry code is a disaster because NMIs can happen anywhere. The
+> #VC code is a disaster because #VCs can happen anywhere. Once #PF can
+> happen anywhere*, why won't #PF become a disaster?
 
-Really a series that adds a new feature should have patches that first clean
-things up to lay the foundations.
+It's already a disaster. See kvm_handle_async_pf() and the cute issues
+vs. taking a #PF in NMI or some other IST handler.
 
-I think we've been a bit too permissive of 'just add more code' series in mm in
-general when we know the ground around it is already shakey.
-
-We all need to do our part in improving the codebase.
-
+> It would be a completely different story if there was a track record of
+> finding and fixing bugs in the x86 entry code from the authors of this
+> series. But I don't think I've ever seen a single email from your folks
+> before this, much less a review tag or a patch. I'd be much happier if
+> you got Andy L's blessing on this, for example.
 >
-> Where a folio_walk really shines at is that you can just walk a PMD entry and
-> process it all at once, instead of returning 512. Where it doesn't shine is that
-> you have to walk the complete page table again for each individual PTE.
+>> How would you like to proceed? Would explicitly marking this as an
+>> experimental config, in the interim, be more attractive?
+> No.
 >
-> ... which is also what we do right now through get_user_page_vma_remote(), which
-> is rather suboptimal.
->
-> Ideally, you'd obtain multiple page ranges (with upper limit on the ranges) in
-> one shot, whereby each page range belongs to the same compound page, and there
-> is exactly one page/folio ref on a range. [we discussed that in other context
-> recently]
->
-> Then, you can just let GUP do the GUP work, without re-implementing it for some
-> special cases elsewhere. And others can benefit from the work.
->
->
-> So I'd really like us to find out what it would take to teach ordinary GUP (or
-> better, some new GUP interface) to run under the VMA lock. We can start with the
-> existing interface to GUP a single page to KIS.
->
-> Maybe having a new GUP interface that consumes a VMA instead of an MM could be
-> the first start to enable per-VMA locks?
->
-> All GUP does is walk page tables and call fault handlers. userfaultfd is nasty,
-> but existing page faults must also deal with that having to fallback to the MM
-> lock, so it sounds like a solvable problem with some churn?
+> The enemy here is complexity. *Maintenance* complexity. Being able to
+> compile out some of the complexity helps with debugging. But it doesn't
+> help maintaining the code.
 
-Well I think a critical problem here, as pointed out by Suren, is that holding a
-VMA lock means that the VMAs around you can change and in ways that are quite
-problematic.
+Correct.
 
-E.g. The moment you drop the VMA lock that VMA might get freed and then merged
-with something else, and the next VMA you consume is the same one you just
-partially walked, for instance.
+Aside of that the part which worries me most is the IDT hackery. That's
+fragile as hell and full of unvalidated assumptions. Reading "should not
+happen" several times in a changelog doesn't make me more confident.
 
-Now perhaps you could reason your way around this, but I'm pretty sure there are
-cases where you might actually miss VMAs due to races (Suren knows best).
+  "It is possible for #MCE to occur on the #PF IST stack, but the #MCE
+   handler shouldn't generate new #PFs. The reentrancy check on the #PF
+   stack will trigger if any recoverable #MCEs do generate #PFs - if there
+   are actually reports of it happening, we can address it then."
 
-And also without an mmap lock people can unmap and map new VMAs in the range as
-you go through which might cause weirdness as well.
+Seriously?
 
-Really, unless you are dealing with a single VMA in the range, I suspect GUP
-needs to stabilise that whole range.
+We don't wait until the report comes in because the report won't even
+happen in the worst case:
 
-If we could find a way to have GUP fast-path the single VMA case sensibly, then
-that's probably workable?
+       #PF on IST
+         ...
+         cmp    0, reentrance
+         jne	abort
 
-And I agree special-casing only one place but not others sucks.
+       #MC
+          ...
+          #PF rewinds #PF IST
+          cmp   0, reentrance
+          jne	abort		<- Not taken because #MC happened before
+                                   it could be set.
 
-Perhaps we could find a way to get this improvement without it being quite so
-'tacked on' but without needing significant rework of GUP, but in either case I
-broadly agree we need to improve the codebase as part of the changes.
+IST is fundamentally not suitable for this and I'm sure there are more
+holes in this.
 
->
-> --
-> Cheers,
->
-> David
+I haven't looked at the FRED side of affairs yet in detail, but the
+handwavy explanation about external interrupts having to be moved to
+stack level 1 and unconditionally bounced back does not really make it
+appealing. I agree that chapter 8.3.4 in the SDM volume 3 is not really
+helpful, but papering over the problem without understanding the root
+cause is not cutting it. If it's a genuine FRED hardware issue, then
+this needs to be understood and documented.
 
-Thanks, Lorenzo
+The x86 folks have spent a lot of time to make the horrific x86
+interrupt and exception handling solid and therefore have zero interest
+to deal with the fallout of something based on "shouldn't happen"
+assumptions. Either it can prove correctness under all circumstances or
+not.
+
+I understand the save tons of memory accross a fleet argument, but a
+large fleet is also a guarantee to trigger all the "should not happen
+and impropable" issues which are gracefully handwaved away. That's a
+truly bad tradeoff as it ends up in non-decodable bug reports. What's
+worse the have to be handled by the maintainers and not necessarily by
+those who implemented it.
+
+Thanks,
+
+        tglx
+
 
