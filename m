@@ -4,90 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03C1CD98F6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 11:04:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B768DCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 11:09:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96AD26B008A; Fri, 19 Jun 2026 07:04:57 -0400 (EDT)
+	id BBC4E6B008C; Fri, 19 Jun 2026 07:09:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 940266B0092; Fri, 19 Jun 2026 07:04:57 -0400 (EDT)
+	id B6D006B0092; Fri, 19 Jun 2026 07:09:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F2C6B0093; Fri, 19 Jun 2026 07:04:57 -0400 (EDT)
+	id A5B696B0093; Fri, 19 Jun 2026 07:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4166B008A
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 07:04:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4FD8165A6C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:04:56 +0000 (UTC)
-X-FDA: 84896379792.12.ABE09E6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E4DE6B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 07:09:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C36CB403DF
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:09:20 +0000 (UTC)
+X-FDA: 84896390880.15.97B97D2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 51E9CC0002
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:04:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGvyJq1l;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id F379D40005
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:09:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7H57MqP;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781867095;
+	s=arc-20220608; t=1781867359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oahfa4mOTeBScg/vkMnuvaXcHN8g7hfrDjLC4oiuCJ8=;
-	b=H0Duvvy2obH+Kr1OLC/JCEC9QP+NC3u/pje9TuWZ8aqDzlYTZxVOsjMxC8otiQGNjDtery
-	cLaGkFyQtwgyj2y8fqKz5BVEwJrsoxHp87gsP2rIOqG758Bo1HOacORJDhj7MEXfOU6m+4
-	WEkaJW8vSZnQyxdT59Zt9aDakRUVbU8=
+	bh=1Q/qwAquxpbKLtCHLnyb47Q3k75l47d1my1GdA2k/Qk=;
+	b=Z+1N9nMfL4QQuYoJa0EtweyJX/pncYJgpAiWNX3HFao5ldlBSRGgoX20FFTuB3yYw7ci3F
+	YPixAWFb63zAx8nVuoHVpgrkPRvBwV00G+FQEtBQqWG7dw7+hd8FQ41uwK+tv+dXkA2Yun
+	Xtp77Z4PgyM2Mb21heBuiyFsxxgasfU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781867095;
-	b=ZSrYvTuSo68ZBlGW9MNpO+BCM07xYY1rc/QpDNB0d97dnjQiTDCQn6cx6V2veHUqXV2vZe
-	+P5uCjVqtuiMz9wS1b7pHNEsr/Cx2ZAHPWrREFDA1vENDEbgY+DWc+ZEs+YxxQ06uBzqXQ
-	txQ082bzSPvkdG/CqzoZK/1NHrzpDzg=
+	t=1781867359;
+	b=e8FxohAsAOrrH3RdwhPVvosaGwiG/6Df4Rc+lcJZgxgobrztoG8sgjRuNn+qGkJTj7PF5c
+	kw7RukNcxmegSWyvoKS5PeoT46+/y43MLlFKv3GvTJh5cS03fAmJdb8uD9msrIDHnUzSfn
+	pG+N/fRcXI6lmhlCd04x2rrfAyhxzyQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGvyJq1l;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7H57MqP;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6C4F601E1;
-	Fri, 19 Jun 2026 11:04:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865A41F000E9;
-	Fri, 19 Jun 2026 11:04:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 529A0601E1;
+	Fri, 19 Jun 2026 11:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D611F000E9;
+	Fri, 19 Jun 2026 11:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781867094;
-	bh=Oahfa4mOTeBScg/vkMnuvaXcHN8g7hfrDjLC4oiuCJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NGvyJq1lThI1Hi53i6iHDf/UepbC9nbNUHUO01BCqbxMv3aLFKYqmAgJU5PzpbDnh
-	 PqVVBFc1iprgtuXq/mZF4JwIz0z1sx5X1VWM+Gtq944f+us7zJo6WVNXeJrVz3EQVp
-	 q/RMfbgBPTOVM5JxMWUni/N8jkaynXAIHs/1q5vwX24fHS7JLcCSAnFBut31Y5LPsk
-	 /Lefw6QMa3/OHsspld4dy4AuwwEDnL2LiwZ3+KZJbDfd6N08M76yHuMxYQJSXxxFYG
-	 Htvdpx3cbXgYlVC4UVyvI5OmYpQiOoAgBMyXeIQOavS+HVIdqb3Au74vNbBCZIMYdq
-	 XxMrlW/YWFTnw==
-Date: Fri, 19 Jun 2026 12:04:47 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
-	jannh@google.com, balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <ajUiEs3ZzbgJc0v2@lucifer>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
- <ajUXNjRMraKb6k2n@lucifer>
- <5e7f7fe5-221a-4fca-aa76-297ae19eb80d@kernel.org>
+	s=k20260515; t=1781867358;
+	bh=1Q/qwAquxpbKLtCHLnyb47Q3k75l47d1my1GdA2k/Qk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=V7H57MqPiRK07WRpuk61WJMDO1K3Rp4f7+L6YDzJ11J38aG0GqD3Af0XJwNQCEP2D
+	 Nmulu89ZObRsODv3lW3/zKxIbl2tSLzSYsr0XsZiUQxpZiNkSNiQGByWkGMnQc3zwz
+	 tANAXBCIcRDhJg77kAG3epLL1OxYtgvDdBY88kEoUxhUd6YVRymuBDB9jyOClheQHY
+	 Ps7P9rRmBnum+lYJSLjz+BER+uTypXkZhcLbVuGFoVSWp1CMUBZIBDj98+VHVlsWrZ
+	 r6rIUGdiOlWGE0+pVR0gOPKFdNfuQw7CvoOuEKV7k67zvPbYqifgfed/rRZKyJJ4Fq
+	 cUw3KDN/P3lJQ==
+Message-ID: <f679fc68-5ff6-4715-9a07-9eb3074b2d1e@kernel.org>
+Date: Fri, 19 Jun 2026 13:09:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5e7f7fe5-221a-4fca-aa76-297ae19eb80d@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 51E9CC0002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 1/3] mm/huge_memory: make persistent huge zero
+ folio read-only
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: dave.hansen@intel.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ x86@kernel.org, catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, hpa@zytor.com, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, yang@os.amperecomputing.com,
+ jannh@google.com
+References: <0e5b23a6-4895-454a-9dfa-6dc21adc2991@kernel.org>
+ <20260619025553.226940-1-xueyuan.chen21@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260619025553.226940-1-xueyuan.chen21@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xdg9iczawz65r93o3mruopwmb13o617y
-X-HE-Tag: 1781867095-808086
-X-HE-Meta: U2FsdGVkX1/Ri1ofhvuXrBW2qnAL1qNiKWY+5BMJyTNiZVDn+r8ODx4GUTffOJ2RgojFiUYVeAuHyYIamWI1Fjgy93CqGcEDOOweYnn1e2r5Jf92AQ1k1dsLWdO6kCAyhXs1YoORuV8XtN9WjHHQM1icf/rDa4IJMQiAKVF6HGyaVWAftjfZCSB5+4GsN1l8MzNOsbwDUgJEQL4lezVdsYOyjrmjd3YuwP42vErUNUfP283mzyOKBhIxS/Lz/S71h3M24bjqcn/STvXmzF5oPH0ERvYnhCq8inoxF1D4z7CtgFUyt2S1h3wz6idQSwCEf12Wqq8O9pe3pNnvQBpNWh3TWLK49Pmdd4NyTXaWQmHn/fgq6hS+o1KjeUUhO7d3BY+fqFLyVDvHgksIkK8GYoJ+v4Ydyt9icov7o1tukrI/9VYchYIDWybB/bth5GG59U6ox4WO+UoyA8Nxw3xKE3bW2Ldfj476XyeveDSkCyoS6ORPb0x7Zw6uPFrGU+sLhov9T/iF2AiXTiaj0l27Kuhxpv6psXjJYppTBt6FMzthv3fFqj5AG8qR+y4RBMzErEYxSXulz9YKCaH1hdF4vBeKLqoJWZgl7HHVnivBDtgWhfjEvZT2v/CGlUdW9dvHaqiT+ihco1TC+hu4pSCewkCx5tfoJUY1HkI9AuzrE//Ad+2QGkgW2iV9jg08LQTXweEp/ISyG+tBuF+EZCYnsV5VHeP1E9MKFvGaPQpqu58jXVf6T4WLR8lM99w0TxBQoIf6VoMmieaG/ir3lpYpSuuSwlprPX0iJ5XcxLQ0JyC+8M+xnCUTg6g4tPoKgw5FQTZO/OpUxWnri5tDileJMfIvDEtMfOJ4agtJbMcuRt0WKvFEgtZ+O5FoXjmM02KimHMdxKk9aW+HfW5SGlWe05nfqXbawIRZuE2QpTcGyKQ5kcpKzk1tprLsN2T1o5sRsftO26ouFe6yCeqrwm8
- XQh9CxdJ
- P+pG2h+00EgSOy/8wfD547Q6odutVCkxlMb70G1VYC2VgHdJtBOmNZyNstczb7HVvgln7RpSzihC2f5ZeS1Ry6HvuJS+ATTQfcK462PAgQO7C343SqYxq2lPlpbs0wNNaqCzh/8fY6boqRfyHMJNm8KLtcfx1yQqCQEAmV1TwK9NaBmQuyQU/fPAhckz7n9BliwAWYi1rzgjDOdc/KogcNOCUkIZI05fLOSe0HTp3iKtcHzlzyCWZNUk3YA+xmLbm5c9/YYROTsnPWSCmZTCLymZdS2AuxUaAKU+55J007f5eO4HvD8gMKbBNl0qdOakb8VI1KVZV4KVsll0ONEZzep9pKw/e2UI/G9Pj3uoOXbt/LSUtH50RsZXpHTSX4pu2EGmKdhp7LuRTRGGm2HA490OjRg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F379D40005
+X-Stat-Signature: p7ifj3j1151dz1f1xgewfzsfjfewygij
+X-HE-Tag: 1781867358-562787
+X-HE-Meta: U2FsdGVkX19q8qUkYXrGllGsG+vPnfpEfvmv87y12Av4Qx0mM+kg+G9eaYG692iLH+8NDEBSckfBPCOPRMK6YAeOMAl16mXv5rBfHJPV3kbPLTwdNab4YbseAoUk539fCWNxLGbLqZmCevmCy/uCNl0N3q7bNfy12KQXWjwZ4SUPKqkeZy4Yca8d3fmT99Dbn6mtgqOnHYTt2p4d5ymBmuysoyKhg1PYKPRqPr8B9nf+qANqdz2C+ivcXjPOXSo0lKT1KmAfM+ARvHdbz4apddlVpsnsZjrqjrgeEmGIydj9a302hC+B2mAISejWrihklXWYMOvKBDmrUyuQKZ1Nq4iaqCuBWAr6EzYOuIbLksIyo1I62UMnmDFbqSsJvaCQcnpKTVuIPaomfZdWkHHP5+fLCF4Y94m1dh++agLNz9j9iov2jdBS0oS18whKjBZ5f12htGCaVdnAHyKBnEqpnvWpzkWSxj5KmFUri5GH1GjWyUto6nQ5+VYlEyYiBsQlMLElXMBOP/p8jhpl/egvEuDm6iIamiDn8X3VJ7c4xxSChPuS+bAM+yxeUW2srd3CNLBUVzGMYyDT//9uQsT+2u11qinTm+QpKPh8u+Vh0UKxw5WjyM12N4iRxRDp6Scn2+OdM398sS06J0cdLBbriKxXd1f7SWR0/Z4XJSinCduHbkobC3okkO2reu0huwduwuAuY73UQ9s1MpEFWFO+MHIvunxg2W4uj7cXATFWYneii3JsFDPm8OUue7dHtnxL6q9fHn7SH/0pk4kkfQDPLucTVP8JmxY57of5QeHi3+Ze54QifMTb4803IYRAYcklvWTyw7N4kbOwa+pN1ScPxkA2NrkdpC0dmtm8MxQL1/iDpDiGxSgs9+4eznvyVlKqTk0oA9m+cqy2bjuP9hPoeQSEpFKR7n5yr+Yq6Mq1hkBkCAZ5eqdOIsyPBAmYSD5mxcx3oBmwi1fXO78ScMw
+ A7fzLLWg
+ w3BqZgTLT6JO1RkVkMtNjEi8zJdYloeI5UxAzDiKc2HoYj6IxMHqXMhTYhOp8E/Z7Xdh/XCf2u+ZW/Whjv90uVYR7WPzuJ8leXPCptp/264DBybA7+fmr6/o/ovx83iTwoc3tf1ENPKkRRm+eEu7Hs1NVqPHbYQsEvgMVNC1pJrmnLKWj8ngRUp85x3mtvC3BEbkBvJ9VAUq530EDx9R4oQ+kt7H6yVRXzx6xi2A2/OgzielELieklQlzJGd/tdWWQiIfE64esQAell2qvYYnlW+7JLnGHDRZa97Ygkj7bCVOuhf65LVt+0RHyxMHSf1SFZ2qAnKJulbhIvCs4E5OVBPptoSEVUwyfea3Z8fCg9CjF9HC4A2cBAe2GKdjxYxSwUfZvEHJTQFk2ZZ8ziDfJjKYq9+XmLIs1VuZisfloXGe8lM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,99 +147,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 12:48:26PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/19/26 12:44, Lorenzo Stoakes wrote:
-> > -cc wrong email
-> >
-> > On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
-> >> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
-> >> before return the pmd entry:
-> >>
-> >>   * re-validate pmd entry after PTL
-> >>   * check PVMW_MIGRATION
-> >>   * check_pmd()
-> >>   * handle on pte level if split under us
-> >>
-> >> But for device-private pmd, we just return after pmd_lock().
-> >>
-> >> This may return improper entry, e.g. if we are looking for a migration
-> >> entry, device-private entry could still be returned, which leads to data
-> >> corruption.
-> >
-> > I don't thik this is quite clear?
-> >
-> > How about:
-> >
-> > 	If a softleaf entry is present, the existing code simply acquires the
-> > 	PMD lock and returns success even if PVMW_MIGRATION is set (indicating a
-> > 	migration entry is sought), meaning that the caller can incorrectly
-> > 	interpret the entry as something it is not, causing data corruption.
-> >
-> >>
-> >> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
-> >> support device-private entries") by following the same pattern as
-> >> pmd_trans_huge() and pmd_is_migration_entry() for device private entry.
-> >>
-> >> While at it, it cleanups the pmd entry handling in page_vma_mapped_walk().
-> >>
-> >>   * Instead of handling trans huge/migration entry/device private entry
-> >>     in a mixed manner, we put each case into its own if condition and
-> >>     handle with the same pattern.
-> >>   * Also we grab PTL and make sure pmd is not changed under us after
-> >>     above check instead of do the check with PTL hold.
-> >>   * restart the process if pmd is changed under us
-> >
-> > You're doing quite a bit for a fix and you're putting it all in one place.
-> >
-> > How about do the fix as 1 patch, and then cleanups as other ones? It helps with
-> > review too :)
-> >
-> > It's a general rule of thumb that if you do more than one of moving, refactoring
-> > or changing code, to do them as separate patches so a reviewer/somebody
-> > bisecting can clearly separate each.
-> >
-> > Also PLEASE do not add new functionality (this lock recheck) in a fixes
-> > patch. We'll end up backporting new logic that way.
-> >
-> > Make the fixes bit _minimal_.
->
-> To be fair, I asked for this
->
-> https://lore.kernel.org/all/2d48ef0d-1110-4a9d-adcb-f701a1ce2cfa@kernel.org/
->
-> But given that Wei mostly used my quick draft without properly checking the
-> implications, yeah, let's fix it first separately.
+On 6/19/26 04:55, Xueyuan Chen wrote:
+> On Thu, Jun 18, 2026 at 02:36:25PM +0200, David Hildenbrand (Arm) wrote:
+> 
+> Hi, David
+> 
+> [...]
+> 
+>> Best to wait for some feedback.
+> 
+> Sure.
+> 
+>> I do wonder whether we want to pass an address instead of a page.
+>>
+>> https://lore.kernel.org/r/20260410151746.61150-2-kalyazin@amazon.com
+>>
+>> Wants to convert existing ones as well.
+>>
+>> That would imply that the caller must check for highmem.
+>>
+>> But then, we could just use existing set_memory_ro(), right?
+>>
+> 
+> Agreed. Passing an address and reusing the existing set_memory_ro() 
+> definitely makes things simpler.
+> 
+> However, there is an arm64 specific limitation:
+> currently, the set_memory_r* api on arm64 only support the vmap
+> region and do not handle linear map addresses.
+> 
+> If we go this route, should I extend the arm64 set_memory_r*
+> implementation in the next version? The plan would be to make it check 
+> for the bblm2 feature and modify the linear map PTEs accordingly.
+> What do you think?
 
-Ack yeah sorry I mean I agree that it needs cleanup just has to be done in the
-right way which clearly I think we agree on :)
+Good point! It's not really clear on which ranges set_memory*() is supposed to
+work ...
 
->
-> I can then follow up with a proper cleanup.
+arm64 only works on vmalloc/vmap, x86 and riscv on ordinary directmap ... what a
+mess.
 
-Thanks!
+Having a new direct-map specific function with clear semantics might indeed
+avoid even messing with that.
 
->
-> >
-> > I think in general Andrew prefers separate fixes patches so I'd just make the
-> > _minimal_ change that fixes this for the backport, and the cleanup stuff as a
-> > separate series.
-> >
->
-> The issue is that the existing handling is just crap, and to fix it, we're
-> adding more crap. But yeah, let's add more crap first before we clean it up
-> properly.
+So, yeah, given that we have
 
-I couldn't agree more and to be clear - I hate how this is right now.
+	set_direct_map_invalid_noflush
+	set_direct_map_default_noflush
+	set_direct_map_valid_noflush
 
-But I think for the fix we have to wade in the crap first then clean it up
-afterwards... :)
+Let's add a
 
->
->
-> --
-> Cheers,
->
-> David
+	set_direct_map_ro()
 
-Cheers, Lorenzo
+Or (my preference)
+
+	change_direct_map_ro()
+
+But given the existing naming scheme ... maybe just set_direct_map_ro() and
+we'll clean this up another day.
+
+
+Now, should there also be a "_noflush" in there, or who is supposed to flush the
+TLB (or don't we flush at all, because it's used early during boot so far)?
+
+In any case, for this function we should add excessive documentation and define
+clear semantics.
+
+-- 
+Cheers,
+
+David
 
