@@ -4,121 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 346DECD98F6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 02:30:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0FDACD98F6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 02:39:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2F416B00B5; Thu, 18 Jun 2026 22:30:30 -0400 (EDT)
+	id A32C86B00AD; Thu, 18 Jun 2026 22:39:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADFD36B00B6; Thu, 18 Jun 2026 22:30:30 -0400 (EDT)
+	id 995866B00AE; Thu, 18 Jun 2026 22:39:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1DDA6B00B7; Thu, 18 Jun 2026 22:30:30 -0400 (EDT)
+	id 8859E6B00AF; Thu, 18 Jun 2026 22:39:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66FBE6B00B5
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:30:30 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C970A8D0C0
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:30:29 +0000 (UTC)
-X-FDA: 84895083378.01.7995ECA
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D6E1120002
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:30:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lknuxpJY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4DEEA6B00AD
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 22:39:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7EE91402F8
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:39:14 +0000 (UTC)
+X-FDA: 84895105428.02.1B9BCBE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 62F5920006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:39:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bKreyJE3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781836227;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1781836752;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SWxQsRnQ7R4yFYJGO8X5rI9njC1Ydr1XnXNU26v/VMI=;
-	b=VDHxeIDvuNVqBVemDV+aIw99aOfO05IbvVxcB0RLkqlRKdWooJgJHG5w1q6Zk8P8U24ylG
-	ETOFgZgzqAItydlUdpm1si+9szFs5ndKai2hsahVwsu2h81B5e8XYB3czP9uLynpfkBIYH
-	2P8NKa/PpqFq2rTdhkOFHS13tfpqtKM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781836227;
-	b=NQg2MunSM+hk3WfnVFXnaROZtMu1CPzTLY+YvT8ZZs953Oe4CQT4fb6t+fRQgRo/7gO6Ej
-	gOGSjDdl02vHpzP/HEx7P8e2B6Jq4a1vJuA3cOGjDCr2Bb3H4zASJSb67tCW2251N3wpfm
-	+ZGszQTIA1gYDiqvviIu8K38vYRSGRs=
+	bh=tuRRkjGz275Hq8qH3K7T2fHZ7i0zAjk57ruAUAt40+8=;
+	b=p7A7A9XF92T8pmKnXetBMYQMt3PAyhzljPikww1SN3JYNbas75Bwk6qD/hVRIBCdxzUHFz
+	NUEAgmng/+MAb09QXg+omm1Rn24KtI5rLXiXebI6nGg3VGafLJa1E7pOAR3pK1OUwq8m6j
+	RufvZ+H+ZXfiUFyYCgVEEYerdaf7EFs=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lknuxpJY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51778077b28so16478631cf.1
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 19:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781836227; x=1782441027; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SWxQsRnQ7R4yFYJGO8X5rI9njC1Ydr1XnXNU26v/VMI=;
-        b=lknuxpJYpQ5Zo8D9MaOchdPm1fS0Lq8lGeYZ/72A4f4bdAtPrtbvZ2WEaMc3H6Dtc4
-         zxiuiQuT9AYEfrQIFiefSY+Q4ZDKv+KdqkZmFj3rUZFn7IACGA5n0oYQfpXNg+RhqVVF
-         s1NSy4dxpj675nfz2OnHogNVijJg8c4dbDZ3Pf+BNV3uaG6PKR18pcbCyBVI6jTdMnWA
-         YqdIT/SUP1gMCiGbyKSU4gQPr9tMtINZ2z+WevlmL/FEaHcJTjgcngCWB4dZW9nqypAn
-         ZqLDqGYzMh+1fly/ctIXh1fiYyEvhaRUFLcfXOmn76ZzWC+9q8x3Qzqa3pAw23wIMdil
-         bGXA==
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bKreyJE3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781836752;
+	b=79EymoJMlfL2J7yx2i6kM+kKkmxFZ4eBeIVuhBvuDJW3Z8n8SSVm7v3IvS3GJiU7nyPika
+	BwypHqKj6guWdtqjs6IRjn8VpIPKq/UhSPwlwSjHtkF9BnORep5FcIuPSWN6rrx/yyrxVb
+	WZJfgxYtKW/9jZGUf5VoK6mBv4GpUvA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781836751;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tuRRkjGz275Hq8qH3K7T2fHZ7i0zAjk57ruAUAt40+8=;
+	b=bKreyJE3uZ6G3/GWLSR0rUMZSlobdlEoVtJj00N8bzFcwzaqPJkumkUDOipd+Fp40IYY6g
+	u4BMjFKYrIuxPQC9777T56adDeVj9YPG++3Y5J0Sm6Vrno2Ti9bclPmne4wEmNnQFWj5Tm
+	T4+bJS2aAIk2ebLZ2ewhlMW1JJCMLpM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-1-1ot4rAsGNM6aYQJvppyuiw-1; Thu, 18 Jun 2026 22:39:10 -0400
+X-MC-Unique: 1ot4rAsGNM6aYQJvppyuiw-1
+X-Mimecast-MFC-AGG-ID: 1ot4rAsGNM6aYQJvppyuiw_1781836750
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8dc3be1ebb4so44525826d6.0
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 19:39:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781836227; x=1782441027;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SWxQsRnQ7R4yFYJGO8X5rI9njC1Ydr1XnXNU26v/VMI=;
-        b=PIerF6q0SXDlvIhaJu5sHSlIAN5FIS5HVsZ9YkwKmP8hmGZiJ5XqxOSP5DclW/mzR2
-         WnMreDIN1De7PelP9st4PEgDsEUTuKBJnYwym4OsHVVo0R88CyNuVl+xHXwBajDMs6B5
-         xQJHT60vpKLfhQeKST6iPnf5JwcRb/U3juTxj4hZQuvf3p5lzZeX40F4ZG0zj+7aAxdm
-         Fz5yvkaWes1nYmlXN6w6zquN4cqcVGZhOQRNoeCXNHiQtr6cIlf0ABKbfUETf5YZTqXA
-         xgxqlFWi5VKDKanXkHzIpfGHanX2LbziVdlFH2hDgq1w405yJmyNcxBEKbG7ftx6GIBc
-         WBVA==
-X-Forwarded-Encrypted: i=1; AFNElJ/68SzJAb3MRuajp3iXxc9Sq+rD83ZaLhh8oFxhvEmSYY4LqGDlpofDxvvyINzViE2EDAvCQq1gsg==@kvack.org
-X-Gm-Message-State: AOJu0YwFtznRKs9PhrQUH7zuzwJmTSvsoDb68h3yvyP7SjDV9FdY3Kgy
-	MTLw7appzMIZJDm8AY2sU1dMQZLel3a9lBZstBB9Spk8GOja8CTOrcUU
-X-Gm-Gg: AfdE7clBmqZov2wiRgCPVFsdQIGsRuxopSOrJNewNcvnR6dD/URG+raA/mdItCM1cjW
-	37VYtXcFruWcRBmYfyJB7sDALZChj4uV2EAV5TgRrGt++DZb4gKmlEms6pDoGkpRLkDKvcN3Rtq
-	lhppe41oiIpxzbfHwXgv/UJJgaM8LzF6U3BceLPmECv+j1NWBS4er+Z3kxMEo86ZKmBi3QyXx3U
-	Tc2jJnTLLa2fCE+v64kl8tsIfmfSi/zkOyCsXncx0FHDBDHWgkHjk0+AqoK8aYfAosICS2OlPF6
-	b8ap2D7zOPqd9PbtVsgGMBcuWlb6oBz9lwMYs7XvNMS3s2qHAf6UuI4XQv7/yhBD3CGNLo+vKao
-	bUw9orhkjvlG2pC8RBKW4rXSYotJLvNn8zqWgUTESWNle9Ks37OteKSHH0wsgw+dAPTf5Ikq76K
-	NIKnKW34G3DSsRd9tfJjyAlA==
-X-Received: by 2002:a05:622a:1149:b0:517:c65c:488b with SMTP id d75a77b69052e-519e45c2d72mr30506691cf.0.1781836226907;
-        Thu, 18 Jun 2026 19:30:26 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-519e60ee850sm9152701cf.24.2026.06.18.19.30.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 18 Jun 2026 19:30:26 -0700 (PDT)
-Date: Fri, 19 Jun 2026 02:30:25 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, riel@surriel.com,
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
-	jannh@google.com, balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
-	stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260619023025.vqx2dsitxffuuwh3@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260616235022.iesy2jeb2p7zof2l@master>
- <20260617023211.80409-1-lance.yang@linux.dev>
- <20260617081815.kq6g3rjtomudxca5@master>
+        d=1e100.net; s=20251104; t=1781836750; x=1782441550;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tuRRkjGz275Hq8qH3K7T2fHZ7i0zAjk57ruAUAt40+8=;
+        b=qmG1wbUd2RmZ9p3zh/rVyN6VK821J7KuN3pe3oc2ssK7MZOdFXMh/B+R5r2sGP01H0
+         BLquroPw5CXp07XQTO17rdJEXvoha9TgHFO3+kOONP9TNZtm9iCXdVBIvB0To4RvfyY3
+         pJzCSvX5xegalCw8kSC5dhZWm0t+cEqF1DyKWKqlohrbetUUiPxMyIwWrinOmQz2xIIg
+         a5fm5/43zEOMS4g7FJLrmjs62TfKMxIUal8g7SsfBNnCIx41hvhm0y8X9yFnrSTbQpAR
+         P14nzBG3UavtfWsvf7oKoaTge+g3T/C/rz7RFHL3OlwtCQyv20Rv4LTtv9On/iMnzWMa
+         lK8g==
+X-Forwarded-Encrypted: i=1; AFNElJ+k8MKF4HF+yfssQUwN80MIJNE5qCNfMvt0hwSvd2Q3UQV1jtUVUwmvTiYlcBUD4+rhEkHmeDsQMQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywfg4KTOwyLZq+pLE0u5ck3NPqwb554lXFvU5cv/aYBXYw/LcRi
+	6pniD9V2Ju3+5eO8pvdhOgnapcK2N4E97DcXvVWyGDCz5zNPXqj+gf4Az2vapFYN2/w9uUWdmLw
+	IRik65LcWkmcreqc0KKUNo7UKpDmiDQQC83TwdehrPAF7m2vzVLmt
+X-Gm-Gg: AfdE7cn3K0velnfWe0p3BGflS8W07rfAPtbfmyIOAUAEb1Q2GuuJgxY1Bho9GnYcC8r
+	2ONTZB2dbeTgeX+RuNlfyiTE78UboVA1JifRMWR0oiyYuAyHSKEnychtiq5/lJaSj3eac85zBuN
+	fkCgbUQUjQZ0Wq+J0W+/mP/hnEIAgAm6Ath7z/GmYmDCZQqrbgnFgCoHlmGwOCnch8wP0uSysrH
+	+Bmmpbw3WbK77Ly75GTZCLrI5qw4UHOiRi5/2t7Kf3zqeMjRdfQJLjS3qiQeXUl51k2GuQyrec4
+	O/UpVubhKzVIvCyEBvWlcFVyldsXnbGaJ0D0aH06Cq68B0br8Ip7PSabJL35dH7jrEKcAHHF2tx
+	z6xCf+jRIC8vB1Q==
+X-Received: by 2002:ad4:5d41:0:b0:89c:867b:a9bb with SMTP id 6a1803df08f44-8de4c46d3abmr22002136d6.18.1781836749865;
+        Thu, 18 Jun 2026 19:39:09 -0700 (PDT)
+X-Received: by 2002:ad4:5d41:0:b0:89c:867b:a9bb with SMTP id 6a1803df08f44-8de4c46d3abmr22001816d6.18.1781836749382;
+        Thu, 18 Jun 2026 19:39:09 -0700 (PDT)
+Received: from [192.168.2.110] ([70.53.200.215])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8de632c5de0sm9206176d6.49.2026.06.18.19.39.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jun 2026 19:39:09 -0700 (PDT)
+Message-ID: <698e5cdc-8f1d-4984-bb54-a4b7979b4dc8@redhat.com>
+Date: Thu, 18 Jun 2026 22:38:58 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617081815.kq6g3rjtomudxca5@master>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: page_ext: validate section in for_each_page_ext
+ iterator
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Ketan <ketan.kishore@oss.qualcomm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: kernel@oss.qualcomm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
+ <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LRiditDqU_gImIDNK4z7s2v0QUVmzISdpxrNEnSgd7c_1781836750
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 62F5920006
+X-Stat-Signature: a1o8bmhofm9wuoidjpq8791ukgfh7dgk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D6E1120002
-X-Stat-Signature: x4ncrhzxzhyfp9byafn4kecfpwa4x6gh
-X-HE-Tag: 1781836227-894904
-X-HE-Meta: U2FsdGVkX1/0VNbSaSA3bNEnRVAM/RIeN2TV+Ofo8kdqfLU7z0mzh77Lw2Qbk0GfoVE2u2IEFnvq03mrlpHoL0YB0j0J0yKyWQCWLsbyl0uzu2Ly6UPNWxv7tkYcY1zuimWAhwGnJ7/WAsK6guNsFy640ujVOkt+ifaP/HKZBQBEdoFd9zUsTsCPJSgqPL1UFkcAn52ndYFydbhCHdo51trVywFO+K6mQEez6u1hil0PMNsW73X7xwkoHL9Wz3ZKenAgtqUKYf9yuSv2RUomNqq/LdAqqmcTTDlr3VnEXxTYRulDAbmaTYjXIn3WHApdS0aiJ08boF8ysNu8g3BzR43xPTDmZ83pSsGbKiiBWt1JtmfBBq6DyqqAc71vZydIU3KNoNvr7bP/do5ynaZpWzr7Z3Glsmqp/GBO6ayU+iaIj0NsxxzCjrE5y79kTEx3CiI9S1snQsSHsfCpXkTk0+HGkgXssG+1ZJ6LkgJzAKEt2RksjQB/v2C79nSxvIJ9KPtbABOAB5pgXU90lOvqX5TyGO5dpMVHjiZRsrNc2e1UhlxQXfTJFxBQQ3dICmvVZZOTHZC6tjD/AbbxQbPTNPAd4pZQx7fKD+/XvmeaRb8BNSJtg+vLUeVWNbc+e4EUaGgFvpMB2EUCa52fu7VmdFXcDNhXg8hq3VyTxKBpU7/T1BGcx81TnTxZ6rPIkqfMd1nUcAH+/YdQBrGj1ShKJ6HcTgUtv9HF2pG3Wsqvp3gpqBFK9zbziVfWuP5QZ2Ev9IQearuyay7LevzQbqtIj98nTeILQWyjNp3thLJpF4EcSjf+iUC3h1sam9EaGyOdg1w8NGB6g59oy5vZQSMn8Bcgzxdv5gBtJLPJ+hd3O1y4LnFnoNNEh6j/sVhO+/jdU6Q0eW+AxT1ECrDb5U8f8GGB/nO6sOmJu621T/NsY/UDMuABn/KhJc+mPIG14tGYQHKUdlxxaFOcN7sN91/
- IYHNt6tK
- pD1imaKiRESFBxqm/LNqcX87cARcfZHtqP9dLstx+//grue3dpBmkAMgfMqVxusVMWwou2t7GZj64kCUVyWyUgq9TIU7tbo3ntyjHnYw2fF71siWtCaWtgOdXpGYfN+ipFv/J7v4I7pgHvBL4UB2o5dMD2tqDYnk00kvQiGqbcTE2SImr47ZeCymLjqh2udJLJLzixDYCWr69wg7AAPTvDr4RC3/VC0RyP0KFdrIVOOwXHpHN/l1UpWFWI9eUuhkUaOyj48y57W5ARKjLMI1LnbPzOhvFNtiXq6Hs5CCpWVJq52bdb3h4RV5nFEK8hPk7XKLyp9WpaRsp2REnCNMKpw2ksZYYMOSYFojbpxytushIMyn5dLbdHMduAXWF7o9Dmw06yPBE1wVI30rDRqDYuUwMoV8nuJpVS5Nj6pt/8yP22b0ghihlxplXVBbURAPn8LdWF7BV1GtQF51GzKEIEB1YwqakbIYB5C+nV/m6VHJrkEqrLT8ZXXAopb/Vgn0LkutgLXKDiL20qtEkvXGD++VC8orsr0KBtSJxzkJzPS3usESllLo3vbTbTcGI5cKVFQ2arkYbBmAWEARnvRIQ6z0gayLW2JIpZsar7rdat/f+dY3jqOG39SwNkHw6dONmi40siCNJ2epkL2nTPpAO3LNXOnvq5cGN8mRfsBoXVGtQrf+8YLUiX8S7dyF7bCieVWt4nRdy8pN71+8gpHcDpjxOu5IaASUQct4iAsYLokhrHbTshP1cZifKvn4wpVAvtgyf
+X-HE-Tag: 1781836752-60048
+X-HE-Meta: U2FsdGVkX1/uZh2JZFtQDjqAkoCevbOm3VT3pGtpA4IGFulTeBidD5AvLHxuceV1J6oTXdP72W96cEaHLXYrjengH5c34UcsEIoDwaJSz0hXlXNIj5j1xCs1xbcCc8SbYLVEerePukeeGMpFJmwgCDH0XekgeEzWhg4PBGjePfNu7vfbWZi9BQcQ8FCtB/852bPWmNQiUxFvi5sFyfaEWsiKfkghiMsAloIvpeqxe/F6e5iuXf6BJ11JwIwu3kwOpOUa7VZzbq54lxT0XJyhcnBfSJu9sNEvGSH9JcxIX5cDxtCchyTDkbckV24XVnlWEUEtkl20DuVKSxed4eZevdZfPUdOLYRGdUoun3a/2ErDBoQ4+1I5eJ1DPQCvsK+J6Gp5KnwSuPL64YvfrSbEl+3aUL/+aklldGn7WXSdbxUqtGIFaV+b7aHx9TqvaMf4JUddMBZS4/ZDrZJETEM55zrLNhIIM1yDB3TchIpx9rNjOdIr9Pp1tfaNadsBOOws+UmIQbYxH9cReKp0Y2Ewc7/zcpAd22PpGJNPNHOSFvVYMWPWwoFZTa7FdMRlqLxpgc9sZfBr3Z5O3gJb6u3sxzV/CsEgXd3SsUKkbZQaIKxaqEnhOCl1hLEPQBE4WUhBuaXowEF4nNRtF36nbFlv/tboaMzcT4pE8gVBX2l2kJovivo2T55sUAoJL3cJoJO6+nPdv1d1p15UUup5pK5XRqmdgToE1Q1PFf90FZtvC7+GNkVQWF1FQW+OuA8FUdjWpr+4h3S9s0NnCzpT9iP+zWR/lo+pD+nAKPYZdgMkLUkbPO3xMq4VFDvOeOyMmFHuRHKYyRRUPZferTYUt4i3NWud8EQxPTDpVKrY/DHguO+/+Tx/cB99kQnh6hE9UqURwGwE9GEy4gtek+G/HPdWI81C7Mfi8+zRNb4wj8MWfFg7a8q2FGqRg6YNtlx5HwZr56Xj+Nkdh4o5Ps9KL7Q
+ t9MVmYrQ
+ pLeUTc8WLFjTPJ4+rJ+qL+XWZRzAhbAqkFmLyDURupuOR8E8c2V5vpMTVM7vk06d0EreuR/U56HDUKV24X9TfHi48dY/Wp6/qozSOhlDwVkVs5I1qwc2P7kP/sSZTnlDwlgeenvcP/YY+cANjzyKAdUvU+T8znFwp3lpPzWs3pwvSIUPixhMhQRfALxu79v9yhqgfMhXdWMatwqbAcQi/M0M2W0oOYLnnLgEKOxniwc2m4OwcyNIVS6rFdzl4nw4Z7ip4edivuTnVTIi2pqLcnP1Ro2UjKImquNU1DfhPfy/vsh8lOqlFE1BabSjJxGMxNqYJS61wUEqjVXtzpmBgZCjc0NThXtwON1QsSOIinvNoKuk+sxAPqqflFOnWRHb/Rztp0upkwMCSUmHcKdZf6zNTiruv1HDls14E4frLIRbqr0zIWSGY1UNaeUcXohaHxA5dZ2tZfI2UlF/WSu/MrP2QWxTBE4p9Q4AOieWcy4Vq2THiwGkHM5o/tA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,179 +136,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 08:18:15AM +0000, Wei Yang wrote:
->On Wed, Jun 17, 2026 at 10:32:11AM +0800, Lance Yang wrote:
+On 2026-06-18 05:04, David Hildenbrand (Arm) wrote:
+> On 6/17/26 17:09, Ketan wrote:
+>> The page_ext iteration API do not validate if the PFN still
+>> belongs to a valid section while advancing the iterator.
 >>
->>On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
->>>On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
->>>>
->>>>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
->>>>[...]
->>>>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>>>index 2ccbabfb2cc1..21635fab209c 100644
->>>>>--- a/mm/page_vma_mapped.c
->>>>>+++ b/mm/page_vma_mapped.c
->>>>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>> 		 */
->>>>> 		pmde = pmdp_get_lockless(pvmw->pmd);
->>>>> 
->>>>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>>>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>>-			pmde = *pvmw->pmd;
->>>>>-			if (!pmd_present(pmde)) {
->>>>>-				softleaf_t entry;
->>>>>-
->>>>>-				if (!thp_migration_supported() ||
->>>>>-				    !(pvmw->flags & PVMW_MIGRATION))
->>>>>-					return not_found(pvmw);
->>>>>-				entry = softleaf_from_pmd(pmde);
->>>>>-
->>>>>-				if (!softleaf_is_migration(entry) ||
->>>>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>>>>-					return not_found(pvmw);
->>>>>-				return true;
->>>>>-			}
->>>>>-			if (likely(pmd_trans_huge(pmde))) {
->>>>>-				if (pvmw->flags & PVMW_MIGRATION)
->>>>>-					return not_found(pvmw);
->>>>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>>-					return not_found(pvmw);
->>>>>-				return true;
->>>>>-			}
->>>>>-			/* THP pmd was split under us: handle on pte level */
->>>>>-			spin_unlock(pvmw->ptl);
->>>>>-			pvmw->ptl = NULL;
->>>>>-		} else if (!pmd_present(pmde)) {
->>>>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>>>>-
->>>>>-			if (softleaf_is_device_private(entry)) {
->>>>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>>>>-				return true;
->>>>>-			}
->>>>>+		if (pmd_present(pmde)) {
->>>>>+			if (!pmd_leaf(pmde))
->>>>>+				goto pte_table;
->>>>>+			if (pvmw->flags & PVMW_MIGRATION)
->>>>>+				return not_found(pvmw);
->>>>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->>>>>+				return not_found(pvmw);
->>>>>+		} else if (pmd_is_migration_entry(pmde)) {
->>>>>+			softleaf_t entry = softleaf_from_pmd(pmde);
->>>>>+
->>>>>+			if (!(pvmw->flags & PVMW_MIGRATION))
->>>>>+				return not_found(pvmw);
->>>>
->>>>Looked at history a bit, and I wonder if this changed something old
->>>>here ...
->>>>
->>>>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
->>>>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
->>>>including not_found() cases. So lockless PMD read was just a filter ...
->>>>
->>>>With this fix, true case gets final pmd_same() check, but this
->>>>not_found() case happens before taking PTL.
->>>>
->>>>So a !PVMW_MIGRATION walker could race with someone, e.g.
->>>>remove_migration_pmd(): we make the not_found() decision from old PMD
->>>>value that still says "migration", while real *pvmw->pmd may already be
->>>>present again. We return without ever taking PTL :)
->>>>
->>>
->>>Hi, Lance
->>>
->>>Thanks for take a look.
->>>
->>>I am trying to understand the scenario you mentioned. Let's say A migrate a
->>>pmd and B want to unmap the pmd.
->>>
->>>            A                                        B
->>>
->>>  try to migrate a pmd
->>>  pmd is set to migration entry
->>>                                           unmap the pmd ...
->>>  managed to finish migration
->>>                                           ...still see migration entry,
->>>                                           so skipped and unmap fail
->>>
->>>Would this be a timing case? Even B grab the PTL, it still could see migration
->>>entry if B visit pmd before A finish migration.
->>>
->>>Maybe I miss something, look forward your insight.
+>> When dynamically adding memory in hotplug path, it can lead
+>> to a NULL pointer dereference during page_ext_lookup at the
+>> boundary of the last valid section.
 >>
->>Right, seeing migration entry while migration is still ongoing is fine.
+>> [   14.555124][  T846] Call trace:
+>> [   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
+>> [   14.555127][  T846]  page_ext_lookup+0x30/0x3c
+>> [   14.555129][  T846]   +0x11c/0x260
+>> [   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
+>> [   14.571204][  T846]  __free_pages_core+0x78/0xf0
+>> [   14.571206][  T846]  generic_online_page+0x14/0x24
+>> [   14.597782][  T846]  online_pages+0x178/0x30c
+>> [   14.597784][  T846]  memory_block_change_state+0x284/0x32c
+>> [   14.597787][  T846]  memory_subsys_online+0x4c/0x64
+>> [   14.597789][  T846]  device_online+0x88/0xb0
+>> [   14.597791][  T846]  online_memory_block+0x30/0x40
+>> [   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
+>> [   14.597794][  T846]  add_memory_resource+0x280/0x298
+>> [   14.656161][  T846]  add_memory+0x60/0x98
+> 
+> So, we do allocate the page_ext in memory_notify(MEM_GOING_ONLINE) -> ...
+> page_ext_callback() -> online_page_ext().
+> 
+> Which makes sure that all page_ext is actually allocated (for the full section).
+> 
+> So when we later end up in generic_online_page(), the page_ext should be there
+> and the memory section should be valid.
+> 
+> 
+> How can online_pages(), which onlines memory part of present memory sections,
+> online (free) memory that suddenly does not belong to a present memory section?
+> 
+> Something doesn't make sense here.
+
+Ketan, would you please share the full OOPs message and maybe tell us
+how you reproduce this issue?
+
+> 
 >>
->>What I meant was this ordering:
+>> Add a valid-section check before looking up the next page_ext
+>> so the iterator stops cleanly at section boundaries.
 >>
->>  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
->>  CPU 1: remove_migration_pmd() restores PMD to present
->>  CPU 0: returns not_found() from old pmde, without ever taking PTL and
->>         rechecking *pvmw->pmd
+>> Fixes: 9039b9096ea2 ("mm: page_owner: use new iteration API")
+> 
+> If the problem is real, we'd want to CC stable.
+> 
+>> Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+>> ---
+>>   mm/page_ext.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
 >>
->>So issue is not seeing migration entry itself, but making final
->>not_found() decision from stale lockless PMD value ...
->>
->>Before this patch, PMD migration case took PTL before making that
->>decision ...
->>
->
->Yes, this patch changes the decision making condition for pmd entry. Thanks
->for pointing out.
->
->Hmm... I took another look into current pte handling and find for pte entry,
->we did two phase check:
->
->  * map_pte() without ptl
->  * check_pte() with ptl
->
->While check_pte() do extra pfn range check, map_pte() doesn't.
->
->This means for pte entry, we may face the same situation as you describe: 
->make the decision before grab PTL. Till now, it looks reasonable.
->
->But one thing jumped at me, PVMW_SYNC. When this flag is specified, all check
->is done under PTL. But now for pmd entry, we don't have a chance to do so.
->
->And as the comment says in try_to_migrate_one()
->
->	/*
->	 * When racing against e.g. zap_pte_range() on another cpu,
->	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
->	 * try_to_migrate() may return before folio_mapped() has become false,
->	 * if page table locking is skipped: use TTU_SYNC to wait for that.
->	 */
->
->I tracked down to commit a98a2f0c8ce1 ('mm/rmap: split migration into its own
->function'), but not getting more detail on reasoning. Not fully understand it
->yet, but it seems there is some race between migration and unmap which is
->protected by PTL?
->
->Will look into this to get more detail.
->
+>> diff --git a/mm/page_ext.c b/mm/page_ext.c
+>> index e2e92bd27ebd..74067ea740fe 100644
+>> --- a/mm/page_ext.c
+>> +++ b/mm/page_ext.c
+>> @@ -253,6 +253,18 @@ static struct page_ext *lookup_page_ext(const struct page *page)
+>>   {
+>>   	unsigned long pfn = page_to_pfn(page);
+>>   	struct mem_section *section = __pfn_to_section(pfn);
+>> +
+>> +	/*
+>> +	 * section can be NULL when the page_ext iterator's for-loop increment
+>> +	 * computes a PFN one step beyond the last registered section. This
+>> +	 * occurs because pfn_to_page() uses __nr_to_section() which succeeds
+>> +	 * for unregistered sections that share a root array with registered
+>> +	 * sections,while __pfn_to_section() returns NULL for them.
+>> +	 *
+>> +	 */
+>> +	if (!section)
+>> +		return NULL;
+>> +
+>>   	struct page_ext *page_ext = READ_ONCE(section->page_ext);
+> 
+> In addition to what Zi says, which will end up as:
+> 
+> 	if (!section)
+> 		return NULL;
+> 	page_ext = READ_ONCE(section->page_ext);
+> 
+> 
+> drop that comment, not required. And likely best to just add a unlikely(),
+> because this doesn't usually happen.
+> 
 
-After going through the history, I found this:
-
-   commit 732ed55823fc3ad998d43b86bf771887bcc5ec67
-   Author: Hugh Dickins <hughd@google.com>
-   Date:   Tue Jun 15 18:23:53 2021 -0700
-   
-       mm/thp: try_to_unmap() use TTU_SYNC for safe splitting
-
-This one fix the race mentioned above: we expect mapcount is 0, but is not.
-
-
-IIUC, if we apply the change in this patch, the affected case is
-pmd_is_migration_entry(). In case someone else has cleared it but not update
-mapcount yet, try_to_migrate() would return before folio_mapped() is false.
-
-Thanks Lance for raise the question.
-
-If above analysis is true, I haven't got a neat way to take this into
-consideration.
-
-BTW, for a fix, I am thinking to keep it simple and direct. So how about leave
-the refactor as a followup cleanup?
-
--- 
-Wei Yang
-Help you, Help me
 
