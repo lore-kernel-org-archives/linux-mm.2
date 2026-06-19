@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D2DCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 13:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68542CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:02:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D4276B0088; Fri, 19 Jun 2026 09:47:25 -0400 (EDT)
+	id 2D18F6B0088; Fri, 19 Jun 2026 10:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ABD36B008A; Fri, 19 Jun 2026 09:47:25 -0400 (EDT)
+	id 259846B008A; Fri, 19 Jun 2026 10:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C1306B008C; Fri, 19 Jun 2026 09:47:25 -0400 (EDT)
+	id 0FCAE6B008C; Fri, 19 Jun 2026 10:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1306B6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:47:25 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88ED4A0477
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:47:24 +0000 (UTC)
-X-FDA: 84896789208.11.7C9A371
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 21CC0180006
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:47:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=De4WtBE6;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781876842;
-	b=tcDUKg/fIi5EAQBwEjyHk24cmbjCJ3xWNL4mdJx5neX5vBBJmUZvoUpYzZpB/vWA9Ua8pa
-	Oy3Zc7eYfNPV6qf/WdpqCXst0o8ZLh42ifr7t5oQ1ZQR8c0R4eoctLQ5y9zhxaEbPdV5vn
-	l+hiJUkQNHKcm+4STJbEa5qPVMOE6r4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=De4WtBE6;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DA5016B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:02:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 625AD1A0143
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:02:02 +0000 (UTC)
+X-FDA: 84896826084.08.E12729F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 78087C0015
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:02:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kk/v08Ia";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781876842;
+	s=arc-20220608; t=1781877720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1qLucesoWgHaIP4TOC2pf/IxP0E/HXh12PHFI5S4nU=;
-	b=bgJzMLR0kjycnmWHAES4uPNClA7VvqeMML1b1ATVD0Y0/M/D9CnqASln0j0R9iitzKTEiN
-	64iyhe0tSFBdj0zMy4+f0344FGq42B9Fsk6IeBoHdsbfoZ1iQreonL6v3mpnrLJwRK3daL
-	67Ncxdfa4ometkKhe3t8rjvJddfkdRg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=t1qLucesoWgHaIP4TOC2pf/IxP0E/HXh12PHFI5S4nU=; b=De4WtBE6abFyYMdRz055gKojLz
-	8Ok2LfR4UllT7qABFjxdob8lG3yLVKffOkZ2+UByMfrHYJrBWqobdfi67j3gwNmsxRYVcVdOY/Sxk
-	yRvPdb+Alp45Tc2fP6PBurpQjb4B/Twqm5L1G8lN0RmvMvT1Ny8PC3vCU73O1BIM+HLZO7MQoqzeY
-	oSFXWu4xAwJxklcuml7zLH+tAP5ZQpBMGkN7D98PzdaQI9d/cZg9E+EriksyzT9R5vOguNRGk0fZe
-	z7/GOnNloMwIc3DBva5yCb3ZxVfcr47jfs1ghY1nSEnBPkvHj1XPz8lwzX55NHuDofDSY0zhTNMET
-	4mQYmtSA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1waZYh-000000006uA-1em7;
-	Fri, 19 Jun 2026 09:46:59 -0400
-Message-ID: <af82cd43ef0c5bd4a5337942650fba3b8bccd94b.camel@surriel.com>
-Subject: Re: [PATCH 3/3] mm: read remote memory without the mmap lock where
- possible
-From: Rik van Riel <riel@surriel.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin
- <d@ilvokhin.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka	 <vbabka@kernel.org>
-Date: Fri, 19 Jun 2026 09:46:59 -0400
-In-Reply-To: <CAJuCfpHHkQyj7MMoH++RGraZgQ1Hr+4=T4PfbBn-minUCZyuOQ@mail.gmail.com>
-References: <20260616190300.1509639-1-riel@surriel.com>
-	 <20260616190300.1509639-4-riel@surriel.com>
-	 <CAJuCfpHHkQyj7MMoH++RGraZgQ1Hr+4=T4PfbBn-minUCZyuOQ@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=uzEeRhdwm+xTyUdI9q0lwdJmtee0PkWWBm1PhU5+aQY=;
+	b=udpnK6VN9Qs16CNkSQvvfoenlIjaOjt6nq+iLMv6XbZOsPraIA7cvdrdJ7i6dk/i8JXufb
+	eS993SAGCFMtMAXPbaulUSFU/QK4RVTiGYJJ+1AoT06hMf4t6y430Q9BjwB0ozRG2JRo/z
+	m8HerUe8Kn/igAANWCeNJQGPOmL2k9s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781877720;
+	b=8jf+DEAmOwIWXZFGH5AvqX0VxGWpiSUOGSo4Xi6H99mT553kJfunpVW7c0ag8sOCBOAXnV
+	ifpZDOczId6oDYrO/ecfYUDut4hVyQN7WGm3VtDtpj8i57+Tv4gbA69jluw0SLuC5y6+7A
+	L6JSgr7MYlqDTDoisFze78epU9MljUk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kk/v08Ia";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 01233601EF;
+	Fri, 19 Jun 2026 14:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BFA1F000E9;
+	Fri, 19 Jun 2026 14:01:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781877719;
+	bh=uzEeRhdwm+xTyUdI9q0lwdJmtee0PkWWBm1PhU5+aQY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kk/v08IaKzygz1AgyRuV8iIViMkx9gDsVWenO75xE8945GHq/EqWSrtrTqIxGiH5g
+	 3Fe7zjd1SfYvahH/FAxy9i5+skr0yfP1xdVJwnFVQ0ZjJthwvSFm2oKd8YwVXdw/VY
+	 eOQkcZ67Z4pfG3IX+767h5N5URLQuv3lTeFSEwtc9aQpCADnQOEjuGyjYq4JUw8BxT
+	 E1hyioJjN0U9nr2i0k1jM/+wN2mfgr+DitFAtFFNP9o845mX5P6SAEL2vfvV0l6wQ8
+	 J6ZMrIiZJ55lN//w9DU3fmrx1ARXD8Z5gb6VPjaFtd7gK/XBTh7uv/Gkud9S1Xzhu6
+	 Ir/IPfSdVVtBQ==
+Message-ID: <9a194aa1-487c-4c45-b5db-00ef5190e5c1@kernel.org>
+Date: Fri, 19 Jun 2026 16:01:53 +0200
 MIME-Version: 1.0
-X-Stat-Signature: axpc57164pgwdzetpe35o1p3mkytpkju
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 21CC0180006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Nanzhe Zhao <zhaonanzhe@xiaomi.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>
+References: <20260618221720.71768-1-baohua@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260618221720.71768-1-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 78087C0015
+X-Stat-Signature: oad1wrkx51newnwcr4tzkbtw4tie78rp
 X-Rspam-User: 
-X-HE-Tag: 1781876840-835903
-X-HE-Meta: U2FsdGVkX1/IMD8HldhMQYFCtadgqroqTHIxb3s1jOqdYxuw4LkCLIdn1DRemQrGyY2u7yEgiReC/RUywuJRsm2jbhWzLe6Y61QKRFBYfegGOms7DzbSTAoolZ4BKF0lfWV6B77NmbSltpw3gR5/EU2qQNXS0fL2BvT6VlBU94XI9t9bTF6xcEaoQ80ggxvp4A+u5trM9QXcuRVjWUVB0ZQ0Jb5pmHoCvdDL1PofNEVX90Ad6IQJIg+xMYIpBndkk/ugUzx/dsWOsdsL7CZt8tS7Vyzfr51CQ9wGnpdcm04MEbE4bUP916oQy7XCFp8RwmMNv9hsP99GdytCWVkAi6HPA1pM3K9UHEnrQwqpIlZp7WVrvMnlt7k4EqZfL4LfQPm0IrIMuU4tBx1nnG/eLJ8saWSSLN2YVokcJnw+TOvE7bHoOotec37Wlsh/7vat6VUEFMdl/0fW4JbDNIR1J6+0qJMZAsjiYU94uYeyA/OO0kv89qDwK620Bi36cjuj+jPh/gjCYnz5ndBuL+i/ByFq6FQxRGUbEgc8jT20/SpnRRIU64UglvlBqQHE9OSLIkptWdqOsqd5LUcGJW8dAqMqzB5VYEZqNjlQ7nR+WZ6O7hGUZie3a3Gwnz2KB4iXwAd+u4xpamXGRaU1pD4l64xTcdrQGqwtHIa0m8JoGtcmR5r+rzVzdmL7lkLlKWRtgSzfa7pS1WolZGq49AEtQLXVMGr0oGug4L4ovdoPRvnhW0r58qt6tbMCBKMnmwFjT8Ub7eFA57gGnSUHhSF/mWYCgFSSQeCWGbqRK+lTIxgGZ2j0EOh7mED0cICJbXuq3rqBZa7K2yxbmRtA+drIZu7s+1eVvV31RH2JcHSlAB+KM/pGclIhJ8Cs2mgumS3nDdusouHR8gs0mmYZ4Dariwf5kw6p68SJL9iY4ybr+phAaxFd/yb6yn8WUfw8BpbUAmAbkWulzvXM4jOOr+G
- 7/GeFF7B
- rYdlcw3pJ6+9r/ups30Gg5DfZ1V8oyjn6twtxx9xzYpLU7cx9/88l6wYCJrB7NWHEXcvEO/jNFLG7LFfUUtYLInl5tT2n0pPN2wF5IUjG3XBaG0SFMF4Rb9Rp6Jye8zOwCWe8AQj0tPfmq1WqzateEt6Zs6ceNLpnb9zYWEJ7ocER/qs2wfFnzUk2doNQa2dlQO2t7kk7lt8XOLI/9YhNLm9oz2RDxypDLaSf
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781877720-871493
+X-HE-Meta: U2FsdGVkX19WzR/ptabCamMp3+iTsKUDPfuA6/yupdeJoEb8Y/0/V/55gg0plXtNw8r9+YX8sLUxbCe5Rnsk9TRcmBGSO2chWLfJibprpOZ4PIcu1WlHkNrTdWlqa6XteOmotg7+9XCvUw5vYBFPWPsIrl1+BdmR0UESXHgoM8FRltemIi27NSAgRiEfrr6yS6lO3tBY/LxhsAUSqpFqeiaHf1mDa2r335f7oId4NQ+aNij865U96qZVzMnOCKerthgJncGS7IMY+w5sVoLydNfkCXHGmAdYI1hkaglol7BdW2s/PpoPbyyX4rGV2gnIINdBCq64L+Sd1y0ZXzBx/2IQHbXJwP5eTnrr8oKXUxu2TMqW920RpywFLcQdjjmHFJ7/vbniu1HfInooO1LEngZmeRGHUsyAiPkZuk0FFmJ8jHljOvCSKWx9bYZcHT95XirpS7UAJRSk2zTJQQ8Vrgm4VM+NIbNyqZVH9rzEcWg6dAUO4+Hb9kmD/olc9rrDdum8PbkMjbBmSCf3RU1+a3/DmKDs053B3E6isSo26k2ypyEvbdJ55cTUd6udCPGQFowhKF4G+e9iCzY4TtnvRwVLJI+mB6PdeRfvSeCFWWqhqkObleHngiGitVClHTXCdPkVgnQmEiid7gkk1p6fr1xdE8l2PGY6DljnQjQiD0EY3WudXAaiJqQaLgkqq2oCfLhrWa6iUoM8FDHO3A0PcnJCnkmGiMsuYg+IlSG1szXAniqV1TM8+cYdJyht+rntYIIFIcYRA5nRhKyNFcj0heisSyEHANhjnvzn0a01HlZvwWjBYG6IjgcrOljDvu672pb7uXRrQU+HtNHL8+rW2bZvFva2PsstdhsoV6g6NCAcfl3qq2na2lZs1WrffujEfRxE2JaW8GMcC3wDrn/C1C7+hfr8egyLmHEJXxtAz5D347huHawkuermfjF2nwVVJtfNFVlIhcB1S5hxGzs
+ WDAGMXLj
+ zuUwD37Ka5QsF5wQTSNTdEtSg9q45aug7vYiNSO9brG9+AQM5IBe4AjkUx8sNhsyCe6YLerH4J4dcOEknWsN+BUKadTQjUX5ER7gHJ71NfwRLCpFye5weomahh9VRyVoaSl7OozJ+XA92i/eJnMmm6s/swdtJGmeoB5CDY5nCFpDQ/YGcgNH+XFDC006EdMcL7hBKyX15RjJUZEMJrAmVG4FoEL0WkbFO05GAHQpRChjXrUMxbR3MROIYj6BrIm3MK4Rv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,25 +145,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-06-16 at 23:19 -0700, Suren Baghdasaryan wrote:
->=20
-> I don't think we should be using per-VMA locks if the read spans
-> multiple VMAs. Doing that would risk a possibility of reading
-> inconsistent data since we are locking one VMA at a time. While we
-> load and read VMA, its neighboring VMA can be unmapped and another
-> one
-> can be mapped in its place.=20
+On 6/19/26 00:17, Barry Song (Xiaomi) wrote:
+> When swap is disabled or exhausted, swap slot allocation
+> may fail during swapout, causing large folios to be split
+> into small folios. The splitting is reasonable when we
+> truly fail to obtain contiguous swap slots, but it is
+> pointless in the no-space case.
+> 
+> A simple way to reproduce this is to invoke MADV_PAGEOUT on
+> a system with mTHP enabled but without swap configured.
 
-How is that different from userspace overwriting
-data while we are reading it, and us reading half
-new, and half old contents?
+Would we ever run into that code without MADV_PAGEOUT, or is that a
+MADV_PAGEOUT-special thing?
 
-We already have nothing synchronizing the contents
-today.
+I recall that can_reclaim_anon_pages() would make vmscan skip such code, but
+it's tricky.
 
-All our locking does is protect the metadata we
-use to find the memory.
+-- 
+Cheers,
 
---=20
-All Rights Reversed.
+David
 
