@@ -4,84 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B41CCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 08:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85533CDB466
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 08:11:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54E656B0088; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
+	id 74CF56B0088; Fri, 19 Jun 2026 04:11:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525BB6B008A; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
+	id 6FDBC6B008A; Fri, 19 Jun 2026 04:11:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43F296B008C; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
+	id 5ECAD6B008C; Fri, 19 Jun 2026 04:11:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18E5F6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9835AC1D4E
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:53 +0000 (UTC)
-X-FDA: 84895938666.27.F827E33
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9BE8140014
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XpFYsiGQ;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781856592;
-	b=shJhp2dXEr7Kc+kjVjtWkRIEECzkN6C8mVgwcctL3G2Q2UTnPiKGJKs9pPyQXu83/c7gED
-	nb42dqzQQp2Kal+eAGmnLXbrL3lXj14IJYKcM/1rEbT54WDa2j0yfY52wFXd3rOzot6Ce3
-	PZsVJxdOtX/ukaGESRMwKxFz925Zv3I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XpFYsiGQ;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781856592;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39D416B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:11:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B2A1C4039A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:11:19 +0000 (UTC)
+X-FDA: 84895942278.05.EE06F35
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C6051C0006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:11:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wGi3FEOB;
+	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781856677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yVvrfHdKVlkWU88SLenudF1VwsMgMs2vGchEywPlSls=;
-	b=NC+dVG0yV8d/W7SVdDSVchflxbtCy31Kb2p/gPyZZyuVxJ1Or9tAFRl74p+mHwow0l1+lU
-	356iYdWUMoU35qd8Tyga9ZV3TBmFcuC7ooeN7Wq986szD7ZZjbplqHTm6ck+qwHZnoGpAL
-	0AyEs8UdGiiF4Y/rtmqVnVgblr3hj+M=
-Date: Fri, 19 Jun 2026 16:09:35 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781856589;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yVvrfHdKVlkWU88SLenudF1VwsMgMs2vGchEywPlSls=;
-	b=XpFYsiGQv2pL5zw6fLTyYK00qQzKYChVCUvwpw8EmY7yk9ZZWVfUWrvCpDK5syPLL/nhR9
-	cSfllERlD584EVpnpU4p6RPrtDFFmSZpbqmdgK0ISmXykmeQGb35Mo5C4ZxtGSQ8bGMZ28
-	hmFY3IaRnCY3sdPC7V8GioGl7xo8et4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: deduplicate NUMA policy calculation in
- allocation paths
-Message-ID: <ajTzDB7duDjTeomc@fedora>
-References: <20260618100913.346636-1-hao.li@linux.dev>
- <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
+	bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
+	b=5znIRP2JLXYcxWuuo1IRa0uEXzC40c201VqApch5NRnhCC40wU2IBket4cJEjWWtG/VlUo
+	FFAWRrCUyyRDnmk6THBem2HmTUxel+2dmkEFj17pc0lmth8i2f4ZQDhYl3fSS58geFXJZD
+	icOo2TVl1FwNhZn2drqfEOyyJC4inx8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781856677;
+	b=TK39a3wivDe11nAK+g/zMttKxISsMY3IK7Z6+jHVRmPZC1nGa7T/DsFpojsMnmGhXMVzfR
+	uSQW576TpVzRkkFsAySCmATNbXnHH3pVXi2lEdgMo0P0U7RUR99vGlh4VQCC/JNhEbtVPt
+	6h5Y9CyZ0Nkhmrg6vmPA+sHjE0DITQk=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wGi3FEOB;
+	spf=pass (imf28.hostedemail.com: domain of tabba@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51765531803so193921cf.0
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:11:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781856677; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DiBkbTZ4tRmqO8E/FcgwsilbitemcxRCwmrsc5u+ZZ6YKmIOwS4jo1jiEdstSwdK5E
+         +X/7Dc4Fz47Gwd7QtsBgfJxwTjrHIus8Qm2XchdIygbcKYsHkY3QPP077oI7P+X5IMnr
+         oZgmCLlfwo2jWMhkcA6x3SHHAwXzou7Txeck/cJ0sho4Drxj37CelcJrUgoVzx+k9LqF
+         19jxyvnrlg60fYWy6IrDGWtywxBJ/2LMa1sE14CW+KSBY6Ps5LbMHsLcndLjVMMhly8a
+         UJG/fUXKnCn5Bn1Y7w9/Pgguu+mXjwa8Cao3HoqSW/D+mcxQX3ALRuOVLSVZqsvgst9S
+         yFqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
+        fh=CMYdznZTy1L0R3x0KbhMl+gLqPO2v7NecSIYm2I77zw=;
+        b=okxskh2+PoTqJOwfwuhML67UgiHKABmpqRIeQNuodcclNKCH8zKmqomla5JhnRCk4w
+         33wykLdCIdyxLVWdy+w2SCxHi9K0VG4keMwwe9BW5j6XEDLTgBNCIknuTaVEnUD3dSZu
+         hjuJIP2aAI+rfNu1eJKegh/T+cvfAqVDo0XaNYgE3QioDNB8GDZgSKDIqs93Ex0we1IW
+         GWdm8IwTFFDKPp+ILyyPrN9wZCHIdWzY1m3yzUHSYS5s3UVmmar4L4PgQFMP9uPMuB+h
+         T6QTxh1yn+M5v8f07ocR9Lmu12rD6a6noBysXtRtcQODscmYTOvQBkGMJnVCFXOoFObi
+         gDZw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781856677; x=1782461477; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
+        b=wGi3FEOB2T6MQBWV8MkmrFNMX3fWi3LwQkFTW5IdGJwdrTY25nc/FGMaGoveEfORQ4
+         lyVCHg2jMJEj/r141DvBikiXnIgMvd5pLwYVutPVvQDGVG7Ib26jSGkK8NQjfRu78KTL
+         Oy7r9ANBeHzmaV/mWX9HYICmyaiSdgwSSHh4f9WR07GDzxEbRZ21YZYL+OlC0YOCFzcJ
+         mw0lI/FclhdYXg4wgXgx4CKL+kDtsVxGoY6w7jLgtGXBtdVwuzquggj3CPVluB6rJzFk
+         FWLiQQ6TdwzXPqHWqy3xzMjt8scEE/irFFXJmkYXUTxI51tGzITNUGqnW+J/OuFzrbP1
+         iQyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781856677; x=1782461477;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=iM+8nrvlghRqxLR5gEfhNSNnyjY3ZW8GVmgYtfXOYBs=;
+        b=qapiCxmDBEGOmG3WaytySGGat+NcSeM0CdDWx8h0e8tlTqtWU+p2T4vcayG4LZkroO
+         dd21bhWceIRWjAWq62+6xVhaZf9W3QhrodNGcKgTWePxG1BwUIHYjAmvttKKGaUPYd7M
+         5L5QpD3z88V8oXyPTdNmfT2ifYUvsHDsVMYyLa6Pn/0V386C/aSmoFQIy1nRLq6R5UHh
+         Wizb7grQ2Yi3IBlmCIikPW+4NOBPVy51NLKsT4ZBL3wtdyzg23kPgB6DKamFljRsu34A
+         FOpuqW1ceCfmcMqFZnCfxODfszWRCKg1sZrx1+f6APh+IkclJ6L3WKbrJNYNiSUq3TLE
+         WfWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/96LUUwlXwWdiG2w7zBLxEhkEsyCZqjiGrHkrwIbCqiPgeOb7APT0bKyMqzErw9Ifk46nWX0dDKQ==@kvack.org
+X-Gm-Message-State: AOJu0YxKG14g6y86q7UMbn9zIoD4Nv8MZ7ZAoXIoRvIW8j7VJYaQFsWW
+	TRuR2+iZApVyThYoHLXN1jhFdcK8z4f+3dB88unTlj3ZNVfbqdHmUKednlCtKBe4hqpggsxPywE
+	PzbjE9LPY05vJmWSgT9Uf0Nw5kihqhophEbyltR8P
+X-Gm-Gg: AfdE7cnqEurq7PzIZKIvl+V4krTIXucO1dPELLN378AGcK/TbC5YEr5s/6iS4aAMhHI
+	UmwjtFKF9Gq52My0hdASQYqH7Zl9Rt1KIpbBIcnl2P8p1Tqp7YrftRBNzq8QIEnR29rFpTSta4l
+	ty05IjqKBgef77FtmWXIhLvtMu04H7Q7Fsmd92XfQ4uUMjkA/oMApCRV5B41XUIr3FxNOiaaJPO
+	LspXhOFt+6356ndXjtMZJuXCxqg0PCkm5EGfRjw7x/H5R0muggsWJm6HByp/XLF2B6pw7hdHw==
+X-Received: by 2002:a05:622a:191d:b0:517:38aa:c2b3 with SMTP id
+ d75a77b69052e-519e48d02b3mr6024501cf.14.1781856676299; Fri, 19 Jun 2026
+ 01:11:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Fri, 19 Jun 2026 09:10:39 +0100
+X-Gm-Features: AVVi8CdHX5FmAYr_l4a3mgee9sp6dg3wXgxt_dR1E7cWLhRy0b4A0kukfNDJw2g
+Message-ID: <CA+EHjTxT9tcPk4HtyPXs1eo0bUQvwf3=G7P8ZTfJhDpXNm=ntg@mail.gmail.com>
+Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C6051C0006
+X-Stat-Signature: wowwwt5ie38otte6x986xphkcnr3xsqf
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9BE8140014
-X-Stat-Signature: j8iorbgqhi7ad9ag3gmipn1cufcwat5w
-X-HE-Tag: 1781856591-803314
-X-HE-Meta: U2FsdGVkX1+9+iPofqGiVwEgmY0Uv4eBiklxwZn9DClEAiZV2GsjwQnMcGWZifdLleY4OGc9Zo68btpYYVk0CP8KBjZPBsROzNFlCHwrge6bG2WjPXNi/hgQzo6hLwQVfVDEGCePC+7i/JU/R9bjMzD9UXt974R0VatY+kub33ehdcfC7pw3x9h3Tt3TZ5YKU5j8LwjlTpvBSBnK5LZOF2lSPwd9T7P7FZo/WtlP4w54JIztQdRQV+ZU/X52xI+0rYnkJmO25IDGkUXLSJSanUskEXrnO1imeBPluM0mNKA1JR7qrGjkP0AuQoLpJdWMEKCPDXiFRIbu9b/iZLFL3xFdyAcf2WQZ8bvpVyWUuPSofVwzuDRg63Af9p6hiDxwSbKAa2HFxfcLKHkhdYIXOFwtlr3KWmqRQY0S8Ov8QoFxIFzQR4Cd29xLV0AA7/+bcciawFtuKXalK/+TKq4DueGn9IWT5JYVs8QnQZaWl3v5SfEwTQ38uINe7oOY2hOFcoVR6ca4815ZTHLb+87pG19VlR1XVHHp98KOxRQ7BNvmdZo1P7U3qAdQu/7vU+s5quE34IiaM+mt2QnkREzV64dzJHdB4Lu0ylswsfA4htWtXTlLlLGzjMDryZd5LRrrxCjCzcws0NF5VaY8dxiQivqhrtvKji26T2BUwNb0mweksibqsPUmO39dlJxTfNYekf1703sYRXH91S16Lb3JsTLpF5k8YCeIMta0zUHcPRxWQfSXeq5/SLhveyA4fSy383246VGbx/GX5odnsv4Zjq0Fo5dr02hXln2duc2w+fMVM2t+kKjPxhm7+oo4HtLijVLIYgGcVGc+ITmYT0knY9ud70aViwEFDnfXdoO4oA1H+5LJ9VB0kznYoL9+SnC5y8ktYaFlYtgaCrxnmewNcaNk8YRIKaf+obUtCmLIkQPk4Z9gn37HbROALql4BalnXg4OmJSdDEHuaaA6w1P
- mFoLFTgm
- 2qJlbowAe/Ff1KL0uVShM9B7iL94zh6Xb3aPi0/G3bFdpbDQE5jiD/wAxcyMNO9nkxCaYQHK3DuGac9VITtB9zxNzqu62cR6WTOqNXcSas+rfAtsyWP8T/vKuHbdAwjn9PtV7a2lcEO0yW9fO2Xld51PmKLK+E1eTeRD4R4FyAO4C3Jn3fyUR9X/FTzOrRzHEfdUK+Iq2lCsnDLs=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781856677-34887
+X-HE-Meta: U2FsdGVkX19jpKhi3+yULEP5+3m4cLYlYpvfLnwbF8jHAyGlh4QDq+jP8iyHqmfCB/y9UYMWtwRj5LSfNO0OcqtEcnsRSuR4w65XMhE+LVI8I3LMLLtg0J6AOST9/ivL9ZLmPHbZaSejRoMDFqVXIRTYJxwiNVwtZ/Nb8+Z0Iqgtl2mtYEd7f/pddpksC8lN0Z4dUyOY49Ae9lGAvSy1okQ8l3IneIiTcbt4kY+3S4Y0Zu/7aDw5ILrUln6sGeDhEepoObpI5bRLKz6LOpo3wuNeNkFAhUecQOsutfkGLiqsvtWDCaFXHGU4uoHuD7paFGLVILFmmSNMFHIZw6hl8bNgusjrjLvR5BqQqX2YE1RQ+Uz7H/ctWCccukfQ0WFkOLYLWapmIhjuOlYDEaAD0+/8Zxih2+AcCzMusRykLKLogby0+M6BiNa437JvfDtS0UoeADKLap7vYb31COMn72W2cFqkK8lB0le4jvNYbDQA/VwfclVx9rmExHaQo12w6pN/FChDzYlISGDKexT7qjsUpJ1Off0wHPK8xCo2MFGBfqyxsVgdGbhH60sblzUdC7kWVc818t1fNXM5WzqrxD83kUbn6eTeWYDcWPX9xPngM1IAO4frqnOAMSFyC8Zlh6kcicfO9JPanRRhDVNcUiTy/5mJpQcyRnUZKy4P7amDdlzNy7zo2Dg/zYERi77+akZQmWzxNn/F2Iyk755dlUn3Rv3j/io9ZlAFgj7FkucOB+5GxcOYQoCZk+JTPlZOiVv1iySOffpv62JEYcvAbEcNPt7xkigwyZ8VOGQPNBYreDdGOCtPFJNpQGZdeiGiHy0iKaArWTjh+y1sgU0DOJoLH63a11VhjZPGptWEu6kj+5WbV/2IESYP6osmHv2PcEn+fqtCdoqZuOV7E9W3ysmDTQrn8CgIDDDqQxVkdFupLMpT59G3s8kmRTzJZJFk88kA59XCuPCSWkE4Rwj
+ bd6ouL0Q
+ QNpXdQ9qRg7hgh31OM/Pu3C+lzP5NcvSTYo32GpwdtoRNYcT7dOv+4FR27+BZ8RxcI+OtiSQmFFsGYaaaeQNwAPd2HCenL4VjKMj2Flh8eM5Em3ywK2yO+cb4GyIOSCE0iINyCvYme2v1wc5mk2Qf2IDBo9fICVumVeTzZ/3wRnI6/ukgFZz5Pc+RrWbU1BytfnNb+WLUudL8XBWQ4v7XaWbzlUhtcwYLaY3MRIi9sTetvdwE/wNRBNH1BNIvbF0xF+3u83sTQj8qNdmKA2Na4eqDpmwrKRX4xeaRCKfq62o0QIEQ5P99oRkvS+JmZO0mq7X80MwohXTKIGU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,69 +159,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 02:50:04PM +0900, Harry Yoo wrote:
-> 
-> 
-> On 6/18/26 7:08 PM, Hao Li wrote:
-> > Currently, alloc_from_pcs() and __slab_alloc_node() both calculate the
-> > NUMA policy independently. Since they are called consecutively in paths
-> > like __kmalloc_nolock_noprof() and slab_alloc_node(), this leads to
-> > redundant computations.
-> 
-> It uses a static key, so probably just slightly larger code when disabled.
+On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Sean Christopherson <seanjc@google.com>
+>
+> When memory attributes become trackable in guest_memfd, the concept of
+> having private memory is no longer dependent on
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+>
+> With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
+> platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
+> in.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Yeah, make sense. The performance impact in this case should be negligible.
+Reviewed-by: Fuad Tabba <tabba@google.com>
 
-> 
-> By inlining both __slab_alloc_node and alloc_from_pcs(), I assume the
-> compiler would have deduplicated it, but there is a patch in
-> slab/for-next that makes it not inlined anymore :)
-
-Thanks, I hadn't thought about it from that angle before, and that's a
-interesting point.
-
-Building on that, I thought about it a bit more. While in theory the compiler
-might be able to help us here, some of the information inside
-mempolicy_slab_node() seems only could be determined at runtime. So I suspect
-the compiler might not be able to infer that the two code blocks are equivalent
-and deduplicate it.
-
-> 
-> > Introduce a helper function to resolve the NUMA policy once, eliminating
-> > the duplicated code and reducing execution overhead.
-> 
-> Nice! I think there's no reason why we shouldn't do this.
-
-Thanks!
-
-> 
-> > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > ---
-> >  mm/slub.c | 72 ++++++++++++++++++++++---------------------------------
-> >  1 file changed, 29 insertions(+), 43 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 62e9cd46916f..45e9f379b7da 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -4523,32 +4523,36 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
-> >  	return object;
-> >  }
-> >  
-> > +static __always_inline int apply_numa_policy(int node)
-> 
-> apply_numa_policy() is bit confusing because we usually don't apply
-> mempolicy for each object (unless strict_numa is set), but rather when
-> grabbing new slabs.
-
-Yes, this make sense. it's only for strict numa mode.
-
-> 
-> perhaps apply_strict_numa[_policy]() will be a better name?
-
-Agree, apply_strict_numa_policy is indeed a better name!
-
--- 
-Thanks,
-Hao
+Cheers,
+/fuad
+> ---
+>  arch/x86/include/asm/kvm_host.h | 4 +++-
+>  include/linux/kvm_host.h        | 2 +-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>                        int tdp_max_root_level, int tdp_huge_page_level);
+>
+>
+> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||     \
+> +       defined(CONFIG_KVM_INTEL_TDX) ||        \
+> +       defined(CONFIG_KVM_AMD_SEV)
+>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>  #endif
+>
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 201d0f2143976..d370e834d619e 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>  }
+>  #endif
+>
+> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#ifndef kvm_arch_has_private_mem
+>  static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>  {
+>         return false;
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
 
