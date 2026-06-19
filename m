@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47BBACD98F0
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:32:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2ABDCD98F0
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:32:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F088C6B009D; Thu, 18 Jun 2026 20:31:52 -0400 (EDT)
+	id 82BD76B00A0; Thu, 18 Jun 2026 20:31:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDFDD6B009E; Thu, 18 Jun 2026 20:31:52 -0400 (EDT)
+	id 803526B00A2; Thu, 18 Jun 2026 20:31:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D596C6B009F; Thu, 18 Jun 2026 20:31:52 -0400 (EDT)
+	id 718CC6B00A1; Thu, 18 Jun 2026 20:31:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4176B009D
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:31:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A240C186D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 46BF46B009F
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:31:53 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8AE886CDF
 	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:31:52 +0000 (UTC)
-X-FDA: 84894784464.14.EE54CF7
+X-FDA: 84894784464.21.87FF76D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 13ABE140007
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:31:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s3SanR0Q;
-	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id D0052180003
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aG9d7Fl0;
+	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781829110;
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O2A+WBOunH4vpi7oXfhRY9rvYRhJZCayAEWeEUI21tc=;
-	b=Hd3PiJNQGzNGaIlYNi4NSHhgp73Ys0WTYUbtufgXbLh+WnJoqIm/FY8Nj3NBA2PXcEaHNP
-	ii1NSi6O2/M1L8i+Mpt5qSjU8uAwl7aarDGHrYJmoy09z4Ey4TTrrUqsAKleeK0Si1Ok7B
-	zZbkNw0DsRo/KyCk8m58OZIkmWiKQSY=
+	bh=LfPZExdtroPDXgzY1NzbLdeFo8PUJyZbnaUwzWr9jfE=;
+	b=uTKPp6G6B+RJ4sZGaAywI+KgphmYdcUTu8cSkCgnTOf/d/1lHOom/31WSmlNGgxA0B4fia
+	qXlIqbZ+GkUDKX2hmPLSJBSspVl9nVHYf8CQTaIZCOJbRDyLAxmxSttiaDgcRseKh9ULtM
+	ja4bj/skTm14kSTnlj0K5RNl9u2FqD0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1781829110;
-	b=ax9hv9l6aNRSLPYbNrbgVHHAhyulT0t5NEXR06dQOTijremqrYtWeAsBtNv1tagMrZ0Z2j
-	tc4H58g2q5g5cLg2fDMUQEIa/m9te7xjaQn2Bi/uRgV89y3QX/YNBrNTJQbAmstMTxiVvf
-	2u7Gg5NggftjisbBjFb0FQisyQevuUQ=
+	b=ortfcOKqbw6dYoLFBrvqvcxGd/vEJsThC9/RlLKykxdzaS2b7YkkfLECTqFmBwzXdDVfZb
+	d4MJSQHrZVHI9Z0Vvc8HUjk7Ih8lAWTj8DwwjcPQD1IH9qymGiVKIrXfDtgxTDLDhh12FD
+	L+9D0FAu96ui+1vZa1ZGtNmYiXvlK8A=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s3SanR0Q;
-	spf=pass (imf23.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aG9d7Fl0;
+	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 312B1601F3;
-	Fri, 19 Jun 2026 00:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CBBBDC2BCF6;
-	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 72145601F8;
+	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3244CC2BCF6;
+	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781829108;
-	bh=evWNadeDhazc6f/ZM29RD4T7kjpvn8rDxzt9AVZdSsw=;
+	s=k20201202; t=1781829110;
+	bh=HE+TQYZHd9XTVAtjnJVDfLH6Etopk7UUgJYej/HCWgA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=s3SanR0Q8LMaIkXKGMwNZJ1Mms3kk75IOnz+mkjFDzXcJ11uflQhvFJ3jEPH8SfzA
-	 xtbSigirDWIiyVZEex5ZCQhSu4ltLiE1yVQXVTc+a3wYKEUsEbN+fthU8dSwgGQhF/
-	 iBVErY47d5S9UqKceBn8y+QapQz6/Yg8fqzh9h7pA+KtnEKcwKQy4Fk65YsPHFNCtZ
-	 Nm+UNfxLdm8u3ROI55gfp32M9aB9ZwD/AnXtEy7Sczjyt8CDkJJehEWvZBUzi3zMsK
-	 L+axCL6ZC+EQr0MzmaXd1V0EF3fMAxBgVn43CQrqfyzGYy4P5hPMnxd2EH46XnBF7q
-	 JY8NB3pmg/FZg==
+	b=aG9d7Fl0JtfzlfiRnfwaA3wg5qf3IVM0L/5xKiI+tmSKLyOeoV1U8AZ4S6L9bxHFD
+	 +1YLCEr+TZWV5dmvQncEkYispCZ5MmMQEtBubty773Lm5PHXq0Dm9Y7S9mWYAR3A/1
+	 iTSF7gIk0s1RJdcdV7YcZGRyh6bPYt0qKd2cWy9R5mP1tBO/Ciwvz3QJRXtPaATHZb
+	 ++yWsWf4bOkjp/iuVrE5sQskomKEvfkgcmPEO1sWAPffMzsrSv219kJDZxoMvjlP4g
+	 oIjfEQxg3897l5HgqOSbpAALXcFUbSuPF+ii+IfujpPodpip6stOYjKarnuu+TcxLU
+	 aFX4lk6InW+eg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFBAECD98FA;
-	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 277DFCDB463;
+	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:31:57 -0700
-Subject: [PATCH v8 20/46] KVM: guest_memfd: Determine invalidation filter
- from memory attributes
+Date: Thu, 18 Jun 2026 17:32:09 -0700
+Subject: [PATCH v8 32/46] KVM: selftests: Test conversion flow when
+ INIT_SHARED
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-20-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-32-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,25 +108,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=3547;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=1655;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=JFkMjbYYCjSDV01aUNFW6wbludDPAnrpthRKdegpfv0=;
- b=OO4uXerpwNkGX3lnED+sA8fbddORaRefcBZq+K5H30vPr37IqGGBiflXfk8zkfYYDva7oT3VB
- V1K1UrXO5s7D20uK+h5EDSnG88asfABca4vnzhbP39lxOPh6nQaUoHn
+ bh=nwD26W66EWIOfw7qtPPc9ghGS40tBCr3JvsqDtSwEKA=;
+ b=cARN8rM05Y65oP+QtR9r09tlloyo5hGdURUXhEchBTsE52YuBuN9n4BzIzKLgIDdDkt8/NPtG
+ rzCe5tZ/EWRDTRlPW2S24232jLjEU0uFX+wxjWY+gMp8OzOVOAXx5SH
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 13ABE140007
 X-Rspam-User: 
-X-Stat-Signature: aerx1daro498acax9f3qast3be8ah15b
-X-HE-Tag: 1781829109-887157
-X-HE-Meta: U2FsdGVkX1+kxUx/kMlJtOmmGyAZIm+d/0/0lRq9Tyjpm8ksv0QcAO/dYZ3i/VXyh4Ps8S4CEe78ScqBmdrsr1aGCBln5gG7hbzMzUxpM+6ci68DpUaiXNNjbadYqns3xEGPsXKUNwk8vWAAasbtttPTuSfrlBNdUPODC1Xx6DuDWg+hCMQ+tSLk70rW8XZRvBsV3rMx3n5oQXFL/+DgTTVpro/FOWPcLlj4PitDChboHtciFZmLcWgjVC6WqYlAEoyXuF671piRNe/EYBi+mC9vLL/LeF1iatRhEgkJvYuImKN27F8HN3zKHoKYkYoTaRciaoh2L3yFQXJVidSKuPTMAuAXA/o40AHXz4b4OADtXf6FChBBkEEYOk5DWqQ/ZVMSGYv530ZBAsWU9kwnTTWxRNsPpXVxEJwrVeXR3IUc9K0jw+kUSqWMXA/36DwGL6BI6n/Y3b6JjlaWxClJ896ko9PV2rzH5UjDdJIgfI1JshqN+wPiDsFWUKn8mMakik5MIWSOln3m4IDpnxV38ptBYt7pGp8va4y0t9e79zmQ396KAI/yKd/lTPv9OjiSGcXKW7bYEbjBzrFBDKFuK+xQbNuONXg0XpkXFMz3+3PMf5i3xUUrMJLAs/oOcmb/fX9r7ATdXQgAD/dFUFjILMTRz0ac9knJ6YkEz0SB9kZd6GmgdU+QLhzOOLMYNiu9y9AY01MLYX8XRT6mhUUklh0kUwi0tk3jTEbebhMcLHrQV7OBNO1LsTNfqsWaf3W5bGeldt8VUZauHkAO+Q07IMOlv3oIn1rEEW6kCJlkPhGYXQ2i0rlGQ1vh0sj1fM0IO+7wGLUU3XS7nf07yp5I5kBnx3j5KsCYjFmf9KGslSm+IWHnXsMi8rfmoF9H8X7muLJq6NrsCKu5HVjC1CdYpGUO/gmjERr9MJCrSfNrW7t9K1hKm2ET8am097WBm7l+t7YhxkZVWwBLHmgS/pK
- yGaXi8ZO
- EDHGM9KoLSfwmkXBVHTptqOnXWdzXAyhyMf8rsNFw/MoqVC1v/HcOzxWtR+vI2rDuBhyBE0pU3ewhKTIBPKGlrWOMCPCJOw1SdwiB1McA2DHNGUnXwolEsj9qQPmMO4+1CwmE8vYl9zOHvauIhKSbhjO1Ka0ws7mrDO/49PNtY2qxjO8w/D47v4r4o4pbuiGnuvlcM9DSu9xe+oMQ8Gzog6bUqUrT/FhCkHWVN9FEQuHKFMahJitEzoF2+Wfk+4JoRHDWuuN/m54c08O1GuGvZXxke1c1u7YD0s9JcB/k9i/+gX5h+9+z9qcE0u2AmNlo1FGeD9WBuPMpoz9Kpo7dr6pqTHo5zcxa9Dm1NszuSPqXjevEuhu+yYW2DcAf44N0lLjyTyfVtIVefthRn7BgysEfyUudakqRA4Q+C3yGOEcA7NPYANFjXz9NTywolmupkzQNOdi6IUkiBOBQvhesif7T4RfGiPWRo7MqGMggrz1nXq5+1c9RejdZnw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D0052180003
+X-Stat-Signature: em3fyhzb3ci5mokzp74rj7eho7tpxpfz
+X-HE-Tag: 1781829110-796491
+X-HE-Meta: U2FsdGVkX1+wDbhgxF/R7xb+aD5bmTGQyayFEMKPTK1JChznphYEHoBMX6OdMDHQX3/XXvLuDaVZOzuVnEkIIekMoKXW5bJfEI+Ao22t/vwjh7n/Y2z9gFmz0+gSOahgz5aB4pnZ2/CxwnuyrwDBZqHfgVzz9his/jtUt4a+C3zWeFroA2yoO881ucJ9sgvjk1TnZCTxwLXaVrKDCs6Nht6OLUC+922G33kd8/ADsBCeKcLDS8LBoRcWy81AVCdClkJFo5zDoVgHZp3tVKddRyCoQY6oTWqz8o449OmcS0O5F5IM2AoJ9JSRrM267JWqjHetHTCa64GCvyNoe1RqB8MnNTtVMHercac3/5kW0LXSSQpWy7mfM5PgXCBexCO9kkJtzcIbTXC0Blaa3HZcnAAizhItfqtgqPuGgIJjIwu2M7f9Z2yoeQ1ac00cuMPQw+IbmoDctYi3pL4/slA2R+6VYe0BKJK1/wpg5JUWMHRExZ2AnLCna51Y/anLIY0GGDbYJPjwCDNVEjp57ivD3xoGXIWpI8gqbCdXGdEPBlO8AO+ZYyTi0sGNwhY45iacAvBGxn3lxhqsndZCQpWppKKtO/WSE0FcDA0flWSdkcb+RwFOnvhrxVOETXlDM2F5USVseF+PMUlSViiN9S2QE0XawRM+mIzR6DfVnTUoNSTx6HQm3ktXvqJhSqRuUQmTckrAMv/xhIJelFXDLkjo1fQdkRZ8cIYjQ9VPURtAUWQqHLxLsypzjGap6STH5brZ7WdyRwfgmXfaK58oBCV6qiLSmlPAPTWVmWbf7HaU9qbh2V2XRIoAljoVeFHf1OkxzZZWslVtTX+BbrQwGl0WO0Bh0X3uBehaUscr7enbeON4zn2zULzdNEPVUbT5ZjPifOWR3GCW146Y3gk1DxUti5PpqFGnXlmSK/G0lAXiqHAK9jaXA9kOnpuOyg4CAktBuwEVWfsRSicdF7hgKHL
+ RC5ezG2v
+ ZKscV1W9dSAI9ujseiIQh2hTwNnf37cX7u15e4LoyHV/ZSQvqrDvdCyindx1F7eVUiYq5cloqO/03UdG5rFWR262txvVs9hyuwK19FdoHESa4O0PcFdX2KH05wvCz5TIaBU6nYu8je6qUFwQRPuYJqNKzR3h/eSrvh9gPL9y2dPM/1Lq0ElbW26ZvjVnBXplfTWDpeIGvMCyQKwweS5n8s/mH/8iiD2T35TYti9WeuSVeGf30ZecuHvaq8CNWenBuZdoP7Ki8M2Sn1qdUU3rmj4gVPc2rq+n6e27mJ8A++swVKPaCHFw6yjfZFv+ohqYNDY7tzIYS5eo5kLiVYFJbc9Z3r3pXfQtbpHgBhXSKfntpbbkO4sHC0gB+A2Ux9VGstGwLqH8XjbMse0IbItz+OB8MJv8xuxuEQjgkhhzEFo/uSY++vWCt4WXs+w9EVfNQNjopwmm4SKVxXs48up1zS/HzkqfH5CYNlv3LujiBKNXMbXj0FvoCL5sSlRVBfQO3HPIchzsKnch3wPfiI90a2HWt5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,93 +136,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Before conversion, the range filter doesn't really matter:
+Add a test case to verify that conversions between private and shared
+memory work correctly when the memory is initially created as shared.
 
-+ For non-CoCo VMs that use guest_memfd, they have no mirrored tdp, so
-  KVM_DIRECT_ROOTS would have been invalidated anyway.
-+ CoCo VMs could not use INIT_SHARED, and there's no conversion support, so
-  always using KVM_FILTER_PRIVATE would have worked.
-
-Now with conversion support, update kvm_gmem_get_invalidate_filter to
-inspect the memory attributes maple tree for a given range.
-
-Instead of determining the invalidation filter based on static inode
-flags, iterate through the attributes maple tree for the specific range
-being invalidated. This allows KVM to identify if the range contains
-private pages, shared pages, or both, and set the filter bits
-accordingly.
-
-Update kvm_gmem_invalidate_begin and kvm_gmem_release to pass the range
-parameters to the filter helper to ensure invalidation accurately
-targets the memory types present in the affected range.
-
-Reviewed-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ .../testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d72ecbfcc3144..90bc1a26512b6 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -193,12 +193,24 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	return folio;
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 8e09e241723e5..5b070d3374eae 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -95,6 +95,12 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
+ #define GMEM_CONVERSION_TEST_INIT_PRIVATE(test)					\
+ 	__GMEM_CONVERSION_TEST_INIT_PRIVATE(test, 1)
+ 
++#define __GMEM_CONVERSION_TEST_INIT_SHARED(test, __nr_pages)			\
++	GMEM_CONVERSION_TEST(test, __nr_pages, GUEST_MEMFD_FLAG_INIT_SHARED)
++
++#define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
++	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
++
+ struct guest_check_data {
+ 	void *mem;
+ 	char expected_val;
+@@ -186,6 +192,12 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(init_private)
+ 	test_convert_to_private(t, 0, 'C', 'E');
  }
  
--static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
-+static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(
-+		struct inode *inode, pgoff_t start, pgoff_t end)
++GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
++{
++	test_shared(t, 0, 0, 'A', 'B');
++	test_convert_to_private(t, 0, 'B', 'C');
++	test_convert_to_shared(t, 0, 'C', 'D', 'E');
++}
+ 
+ int main(int argc, char *argv[])
  {
--	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
--		return KVM_FILTER_SHARED;
-+	struct gmem_inode *gi = GMEM_I(inode);
-+	enum kvm_gfn_range_filter filter = 0;
-+	void *entry;
-+
-+	lockdep_assert(mt_lock_is_held(&gi->attributes));
-+
-+	mt_for_each(&gi->attributes, entry, start, end - 1) {
-+		filter |= (xa_to_value(entry) & KVM_MEMORY_ATTRIBUTE_PRIVATE) ?
-+			  KVM_FILTER_PRIVATE : KVM_FILTER_SHARED;
-+
-+		if (filter == (KVM_FILTER_PRIVATE | KVM_FILTER_SHARED))
-+			break;
-+	}
- 
--	return KVM_FILTER_PRIVATE;
-+	return filter;
- }
- 
- static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
-@@ -244,7 +256,7 @@ static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
- 	enum kvm_gfn_range_filter attr_filter;
- 	struct gmem_file *f;
- 
--	attr_filter = kvm_gmem_get_invalidate_filter(inode);
-+	attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
- 
- 	kvm_gmem_for_each_file(f, inode)
- 		__kvm_gmem_invalidate_start(f, start, end, attr_filter);
-@@ -368,6 +380,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- {
- 	pgoff_t end = i_size_read(inode) >> PAGE_SHIFT;
- 	struct gmem_file *f = file->private_data;
-+	enum kvm_gfn_range_filter filter;
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = f->kvm;
- 	unsigned long index;
-@@ -397,8 +410,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
--	__kvm_gmem_invalidate_start(f, 0, end,
--				    kvm_gmem_get_invalidate_filter(inode));
-+	filter = kvm_gmem_get_invalidate_filter(inode, 0, end);
-+	__kvm_gmem_invalidate_start(f, 0, end, filter);
- 	__kvm_gmem_invalidate_end(f, 0, end);
- 
- 	list_del(&f->entry);
 
 -- 
 2.55.0.rc0.738.g0c8ab3ebcc-goog
