@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFADBCD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:48:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6314CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:59:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C93E36B008C; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
+	id 92A066B0088; Fri, 19 Jun 2026 11:59:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1C5D6B0092; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
+	id 8DBF76B008A; Fri, 19 Jun 2026 11:59:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0C706B0093; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
+	id 7F3256B008C; Fri, 19 Jun 2026 11:59:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E91E6B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F0D11C4F5D
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:48:00 +0000 (UTC)
-X-FDA: 84897093120.20.B587F05
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9CF4D12000A
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:47:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=emnBCoxh;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 53CC66B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:59:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D01638EEA4
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:59:32 +0000 (UTC)
+X-FDA: 84897122184.25.07075A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2D7542000D
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:59:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzpLdfoj;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781884078;
+	s=arc-20220608; t=1781884771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qfKo2wspR7EV2HHC2+9uw3pSPIolUFG6rWkQIpzJlOs=;
-	b=b2PzgfEW5VcM/iZb9f2c28lsybatHJk7UTmcgh+AZJ10AYxIpx2LJEn18/864U6fKJCIOa
-	S6IwlppzJXuh0vYWkufo+Mvoh4vSovmAVhrGzshr2zzP1zRj5dvlHFD5CPByrnd2kxLFLS
-	khpy451sjeb08urCGVxOAkzc9fTCPgo=
+	bh=w5RvRcw2meqklJnqkmu+HVWNIM7O8C9FRlJA2J68Y1g=;
+	b=mi+Z05XGusuMm9sd7ThflFnV1GyQbnGaotnJZip1NTXWzx56mw+FhLBk7FkHhuKF/VY/md
+	BF6AZpJc5rOmhxNJxHLijTGTg8DZfZ3ICXqTr/GIicJfzkDbKmd/ePRF34soTpuZ5MnlED
+	u/QlerDHLAr5/ocrwoIOTIjD1pt1E+E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781884078;
-	b=ayCW257yZ3sTjAW+uypmxU0IshDdLa+U7TLnxK6rQSzr7TPBuH9PuBtftx97RNjt4A64yI
-	L1xI/wO51CS5rEWqtdMukQcKmwQWym3aLjpI07Kt9bYumQyAY76uHCVUySXmU7Ye72Od0P
-	0ZHz62UWjjXZFiI+HP+dvTMFK1mtadA=
+	t=1781884771;
+	b=JWc0JJBSq0fakieFkX1NYh+nRyk8lx34UuyTMVdvU+dnYLEss9IjaXH0f9m7OwK4Dp0pZ5
+	G/hzqV0YgDgAoU5LAwXXsxwr9B2jOJ9pp7GeTTTcRtu4twBxtJq+Kwi0L1DBTMK5/YuKLh
+	AIr/0Ad39Qnyva/zAEzDlL5criBxEUY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=emnBCoxh;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qfKo2wspR7EV2HHC2+9uw3pSPIolUFG6rWkQIpzJlOs=; b=emnBCoxh4LtDZ70xdQKJ8Hlrdk
-	Uq0jDdn+bFsf4zJPljL+uLVGPwNuGAPbXL5UKeGvQLWiFugRwCxYcI967LvulUqgFoDvhaKTvwayb
-	KlkWEqqc9kx7Hj0B4vr7TW1EUAAtOnsRVQCYTuT8KB3AqzgvssMUAksOv7OzFfTffZoan/OsgnP7m
-	hy1QgR0ua1HrxAealyxuHCYaThzdBZ9mKPwoPmBCNa6LvI2lzPvOt1wvAovuYBapdhjbSn0heHSg8
-	vQSlzf4DLhFpEkirgOqiJQh0soLOAEIgDvKr5on62VYi8U2w6yx3OphQBY2BJ5HjyHwNzHhgHkz93
-	RfKZRlBw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wabRj-0000000GTP5-12YG;
-	Fri, 19 Jun 2026 15:47:55 +0000
-Date: Fri, 19 Jun 2026 16:47:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Frederick Mayle <fmayle@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kzpLdfoj;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 206F640D6B;
+	Fri, 19 Jun 2026 15:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570F81F000E9;
+	Fri, 19 Jun 2026 15:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781884770;
+	bh=w5RvRcw2meqklJnqkmu+HVWNIM7O8C9FRlJA2J68Y1g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kzpLdfojBQvivOuVJaw39xtnvXRBtgCnT94eTds/Pj+vRFfIMZHexNsuZzIxJrtb6
+	 fuvMaSTbUczNESBm50c+1q2ZLNXmt1IojMeOXrkmF2RZIhRWoPzQ/Vq1nSjL19Uk9i
+	 HikQOTWs1M/cd/xcAiHTYBqkmKlxwPn3M91hDa8Ns9hFAS6QCdE7763q/YLSzlGoe4
+	 Zi3HgCXudWZvesA3Df53ZmWzxc3vEm9BAqDaAcwM8EUad3U2/V9jDeByssUgiJJ8XP
+	 +LIo/RrVnE4I8oFYPQfOn18J09HIGQT2EctHykU2piPf8CSc70xwZG3U50dm1I3FRV
+	 e4mrfFSGWqjxA==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead
- to VMA boundaries"
-Message-ID: <ajVkq52q4VFsOkmb@casper.infradead.org>
-References: <20260619112852.104213-1-ljs@kernel.org>
+Subject: Re: [PATCH v2 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
+Date: Fri, 19 Jun 2026 08:59:23 -0700
+Message-ID: <20260619155924.11962-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260619145821.2109933-1-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619112852.104213-1-ljs@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9CF4D12000A
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2D7542000D
+X-Stat-Signature: d1sg5na553u7os6bgcpzwf7fh65a75ua
 X-Rspam-User: 
-X-Stat-Signature: rwqqy9moy59tc6icnjp8wcqd6tgbe5xf
-X-HE-Tag: 1781884077-784536
-X-HE-Meta: U2FsdGVkX18PHFoATI57/7owpbf9c1oKPGhSR3DZoxJ4NFvAF5SyD6/C7jX5BhDieaJTsuJ+TcvjNnHq/gxO0h4gtAwQtKG6iDncUS1N15gBzxGLpEqY4QK11CORsITMAPHzbaaigE/1FiSGnCKt+NNseWol9b+WBocFhlgjW0vpr7NbnV3wqPDNG9FdThaxp5Wj48u4Aik276Kwcv4sPPxs5grIE//v8XqnXVnY09Oy95zJ7pIyxhydADmkUYmr6PTpBqO6Ts47dw/KYPBb95DsEiH6K578P4gn+v7oC6Wde3INq/Fe//rCMm7jpgMoRTcNistzz1CZxi0ZX0wE8v/G1UZ0wjYha+SgA9b4Uco/bg2cFAWLyS5UqaH14ioX1fLPFuo5wAA8R6Y+Y0nH0RNYxyo7wF9m6+hY5X+2nwLaodZp9OWBtuSjoEOvlq125gUnkrci252PE7dxn8ijIh8Yf0dZ1mNNL98C3vprMFhBH/E639fuHbdTnBQhovOkfDwH0Z7kiVQouoZ5JR+0V9kupPKC6zcaIrsUcGLa8Pdtns0JcCoWUlzhVPIx5LxunYko1aR3e+XdxFiMR4Q4HH7FqJ+w+i09YpFxLce7NE4B4+1FUD1rQC2KXcEfyQA6nkbJ13/DEuE1ADTWGb7ySIiw9JJUhhuLwiM2DvkYgYzw6zOlrg/AO2SSwo4Kvb0s4zmcTAVnBpSnV3aXzwYKZDfRiqMqk6dp3TfrMOV8lCncoumPBGLaGw10Q8xLL0IlPgp7biD0pmZK2EREVdwsuBpqxZRbMaWCnA4+RaFQ7Ube6y5jWzgURV/DYlD4xZ9eLnrEJzrVJWhrwGqv2OB6vQD9sPm+O/rdk2hM1Kwhr1ORBxsiAYtVgB6Y2bjyXHgnzgN5pcDRIyTbvhMuLt4EJCKQWWjzn9rLdyrfTAAtbR43ShUeqfYCp75g/8vEfJ19O0cLYaMjF6n9XLCXP38
- Y6t5MCYo
- 6fOaiah92owPKvFSpq6Nqc3tWPyloFLL12dsdS1m+quHTqv0wV7nclnE3Vfix8feXUEfcnlp1aHYBSs7GY47zOTEonxLyxavUqxp4EOps6LuRtmrthxfwBUL/3TRJ8tnlrvoLMzdpDfVhS42Bw5SAMkkmHfyL4KW8USO2K1jwYrfd4/Gmhxk6iPV7XIgi2jBBW7fh1ZKVBbJcLyhXT8uDelbJQVttRtXoWBy1VngXHdwYbnIgLItvJnwtuxRUF9aXaC8EY/UscVoZKBdWC81F7dm/xy+uCiPUKf6ADPciM7HHikzRE7EFpmmulf8QADTlT1aPP5FOea69SJCObioGiOqCVN494z6E81Vi39uV9qOJpGfPW7nX5Eq5pu7R0vxhdcgFcGCJoY1iN3d1tIuwa9MLgq7TMQuN0wyUH+td0oeA1UkHgr5RtnWHcSbZ9oc+xF9Q
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781884771-449010
+X-HE-Meta: U2FsdGVkX182mgK4QRymsa5VJQhX86aVH0ZAGW8Y9GeQfZRSBA5vIObqhkUrkDkImYx8AAI6cZRAYtJ2CZC4ujZky0IydT954c7ZKaORrkqTdjtwOxMIALLZXKk+hPVJjYFARsUgBUoPCm1uaK6lqZJGyr4A3T/1pjFC7Fk99+9rwH7wC0E4Fpytlpn574GRmU1q3XlpiqFfKnr2ncj6lQwPEwxIDb8xDrfj3zRH2Hte/9k3RfEm3YbZ4MOgnTBMnLgI7RXCf8DPX0f9PnYgwm4nSGJNFVXPqCVTzayZud/NRdey9Cj4ADB0VrYrlQNCnpz+N+RWmEXS8l6HJb2jk9UKXkDgWQqmt8ET9Ay1IrJL9ik2V+kpgDltZPtAwfW+zvY7tQkK14TMUMs2TGUHCt1KuQ0rlXYIiv5SaQLWeQwDxMR0z4A/ZRdcwNlCG2kx/Agt+LQDNZwBiQ8cU4mncF9cX7jXWi1J6zKHjoLpSy2W/3RRC9NDMXrFCC2o7rmyyQ6cy0QD5rhEE9E2dP30nAUO8QozRS6oXVEUz44bokK6wAFhOoj3epTQTimxoR/u+AtOjF9y00aUL64UArT6iC19Tbv/FynTfFWgF9VDigGHuhoAvh+OpDStcWmZEO4fuj3FBz7pVxNcUwBZrPmdOxClQQ2/ew81griuiV54CAVgPOhvG4DwRZYfwYX7GiKVGAvpzU3NmGDoeZXdw3XhOUg92u5lem18Mtheyc/U4+bgDYwrnUmylhYgOdqQ68XXAmd9MJQq4bD7WDqBZqJYfYErAFrGjuXpdQRT4VH6NCX/yRNQ29GsUxwWYcgZ3OBuxWJSwzxuoiXyIouJCTCKH0gLbkCjrNpQ59OUgOJJh/uuEBQ+RrzSn1Tle3GnZfAlaSyMX/LnqVJiTYcAgFmfcdpVbdWBSu266IjPhGGQO1ee7UmKuIXM2ZA1BkQqwwHVRMs8DnK1ZsG+8PY9Bxr
+ wQa9URVC
+ 1+fCNUnv+x6Ny2iG5Sm87AUBjWEwGQA03n76dQ4NDHdxGnleJmitWCYmHyqDys/eSrEujCYWigS1PVcXFBrYDKN+CvsX3xIbgT98fNAnPdC0mBT7NsyVdGzl1LU0wHhs6jom9XRY9QQjIMqyf3MfSWGvLtK6cCN6I4Z7ZIOv/1gQdzOaijDHV1jkDPtUaKRll0HENdRmT5PVETqM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,22 +98,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 12:28:51PM +0100, Lorenzo Stoakes wrote:
-> This reverts commit 7b32f64bc512b40b268776c5ac4d354b325b3197.
-> 
-> This patch caused a significant performance regression, so revert it, and
-> we can determine whether the approach is sensible or not moving forwards,
-> and if so how to avoid this.
-> 
-> There was a merge conflict with commit de97ae6222c1 ("mm/readahead: no
-> PG_readahead on EOF"), care was taken to ensure that the revert retained the
-> behaviour of this patch and cleanly reverts commit 7b32f64bc512 ("mm: limit
-> filemap_fault readahead to VMA boundaries") only.
-> 
-> Fixes: 7b32f64bc512 ("mm: limit filemap_fault readahead to VMA boundaries")
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202606181547.617a6967-lkp@intel.com
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Hi Asier,
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+
+Thank you for keep working on this.
+
+But, I don't think you answered all my questions to the previous revision.
+Correct me if I'm wrong.  If I'm not incorrect, could you please make sure all
+comments are addressed before sending a new revision, from next time?  I'm
+holding reviewing this revision until all my comments on the previous reevision
+are addressed.
+
+
+Thanks,
+SJ
+
+[...]
 
