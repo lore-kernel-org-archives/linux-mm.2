@@ -4,101 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFFB5CD98F8
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 08:03:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B41CCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 08:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0D3B6B008C; Fri, 19 Jun 2026 04:03:38 -0400 (EDT)
+	id 54E656B0088; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE3C26B0092; Fri, 19 Jun 2026 04:03:38 -0400 (EDT)
+	id 525BB6B008A; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FB036B0093; Fri, 19 Jun 2026 04:03:38 -0400 (EDT)
+	id 43F296B008C; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2F56B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:03:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 074128D922
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:03:38 +0000 (UTC)
-X-FDA: 84895922916.15.2BED6BC
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 346FFA0005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:03:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JO24wKCZ;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18E5F6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:09:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9835AC1D4E
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:53 +0000 (UTC)
+X-FDA: 84895938666.27.F827E33
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9BE8140014
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XpFYsiGQ;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781856216;
-	b=EBIvOp32Nc8VW1987x9eStR1Y+MWsHRYpkCcKPVt8zxF233Dx/rfozV+JGIEuId1T3h1e3
-	qlFIF79HGiu3M5YDkZcbOnCrCq/W9ferI82rVi7yAcP3HamgjRxaFXtArNQ9tob/m+aVkw
-	A+A6ZFsgviGZtM7f20tojC02/NwoFPk=
+	t=1781856592;
+	b=shJhp2dXEr7Kc+kjVjtWkRIEECzkN6C8mVgwcctL3G2Q2UTnPiKGJKs9pPyQXu83/c7gED
+	nb42dqzQQp2Kal+eAGmnLXbrL3lXj14IJYKcM/1rEbT54WDa2j0yfY52wFXd3rOzot6Ce3
+	PZsVJxdOtX/ukaGESRMwKxFz925Zv3I=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JO24wKCZ;
-	spf=pass (imf25.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XpFYsiGQ;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781856216;
+	s=arc-20220608; t=1781856592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=97ALfhxEHKnHr+DmTHdJ5AlydQr7RUIpXUMAyaq3tCI=;
-	b=1CwQFaFizzj5OPf0YO8thr/2zXzB5uWdwiiQnbUQdqWh6YUrgSl27vYMHdgl5CYeNfmdf4
-	CojUu2CPE5F4z65JjPsqEsOo4PAb4ET9Ms51brujyZ/O5lcqqKZ8lRy50aW/Hg7/m/r1g6
-	Bt2kJNbs3fqLsbOQz72+8z1bruVLwEw=
-Mime-Version: 1.0
+	bh=yVvrfHdKVlkWU88SLenudF1VwsMgMs2vGchEywPlSls=;
+	b=NC+dVG0yV8d/W7SVdDSVchflxbtCy31Kb2p/gPyZZyuVxJ1Or9tAFRl74p+mHwow0l1+lU
+	356iYdWUMoU35qd8Tyga9ZV3TBmFcuC7ooeN7Wq986szD7ZZjbplqHTm6ck+qwHZnoGpAL
+	0AyEs8UdGiiF4Y/rtmqVnVgblr3hj+M=
+Date: Fri, 19 Jun 2026 16:09:35 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781856211;
+	t=1781856589;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=97ALfhxEHKnHr+DmTHdJ5AlydQr7RUIpXUMAyaq3tCI=;
-	b=JO24wKCZF5d/OU6egxMZuPUk6dgIJvBGm4v0uD7IArIJp9pyn/5XcsAHDty9wVgahfTxAv
-	wA4cxqUQmxO2lMudPiLf1Y+W6W9OXOpiiN+fOvhlTVMSvM6HZAgFEnVbVgZX5rBmdGBZgV
-	ych8oKJROkfLPyWkoMLLClVHFy8WIKA=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 19 Jun 2026 08:03:13 +0000
-Message-Id: <DJCVAYJNZB2V.1DJFHIK9QB9EV@linux.dev>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
+	bh=yVvrfHdKVlkWU88SLenudF1VwsMgMs2vGchEywPlSls=;
+	b=XpFYsiGQv2pL5zw6fLTyYK00qQzKYChVCUvwpw8EmY7yk9ZZWVfUWrvCpDK5syPLL/nhR9
+	cSfllERlD584EVpnpU4p6RPrtDFFmSZpbqmdgK0ISmXykmeQGb35Mo5C4ZxtGSQ8bGMZ28
+	hmFY3IaRnCY3sdPC7V8GioGl7xo8et4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Hao Ge" <hao.ge@linux.dev>, "Brendan Jackman" <jackmanb@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar Salvador"
- <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
- "Byungchul Park" <byungchul@sk.com>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
- <692d9bfb-66ee-448c-942f-a26c07a19f61@linux.dev>
-In-Reply-To: <692d9bfb-66ee-448c-942f-a26c07a19f61@linux.dev>
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: deduplicate NUMA policy calculation in
+ allocation paths
+Message-ID: <ajTzDB7duDjTeomc@fedora>
+References: <20260618100913.346636-1-hao.li@linux.dev>
+ <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f3804d8e-f615-4e0e-91de-10a97f26643b@kernel.org>
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 346FFA0005
-X-Stat-Signature: pgu5tgtfsb7paeb36bmosre8fdt46gd8
-X-HE-Tag: 1781856214-83104
-X-HE-Meta: U2FsdGVkX1+1HPLt/AAjR0WwuQnzo7np2stybslVWr1B6moafqqVlktxtctvsa1FRWUEz0JvvYpESi+UT9kpbhj8Ydp/59xzcHu1d6X4oxx/s9zt5JAHrzRKbrrtACi9a84lE6ZLyJ3/bQNxI3iNvIUYsZ/rulAjM2cMcUD8pHXu2vnKStDTXu0yGtdIwM3bibVUblU6e+IasRafBVVDo4CN2Bao63vS7VJGBONV9oVpv/oLoVm5migyR0wCfL/bD/agfSj/EA04NRiyP3VqLDWJ0I1o3H+cEJDnlC5UrxgWm+5beBGe8/PEZJoma//7tZt7/Xl/7shf8UiaNs3T47DoF/X7zZkkqvDAjFc9Hlu7clhvYzhheKXrT8Mp8p3XU4kvgBJJ5fclqKyk2mPOUlSKy6zaEUsYrAb1nss+ULOFw5LH5zt8ovinlq8NEHiPLvN4C5ry2ryv5gdUWnXh6ieomA2b4iQCdzs6Y/oiwEBYpBLtUKkPi/6RNzBxMzkg50lgNkyafqAkXKgqelUWbbk/GDAHi8em4mut6dD2qt1RmXPGE7L9WyHBNcE69i6g+bU4H1vt26o1RbQGdwtFm6riaRrrBlENQFaLGDmJ0EAx8PnhQMdD6W5IxKkrH6t7oQj7817wxIADa+mpWAdaq5HZuzf96EGxi6d9Dc3qohvd0Z1VDBUEZSuTDh+Wefd083YgmlNKQ3vluMn19YoYkDcwxYHkDLrNTxJIT/Tc7y7ly3ub2qfZx/SR+ItU4yDRjamaIpa4eXBC0QUnXaL6RA6Dfw9FBWXoPGMSsfnzZQDx5mWylF6GBQKFXUlsvj85zWMd3K4Mf/LX3gqPSi/BjAOLQb/dRul2v/j7VQ4siUa6ruReX3ns4HX9RBf5mBbqu3vkJp0ucq+wD80k0QIGEAlMdJL9T1QQnxjdqsnFrqN34AIdGgh9m9tKrq7GtNiAxOzaKyds3mbd7IbD5UP
- kgTxi9lt
- za1tOlt57rZeRideApkRNchZzTJdUW3UnIISxCn+cNNuPMeQQvOUEetJSOEXMPPlF1iIbLhpsfVNTZzjE8PyqXO0KtGfA23e914+wlq3v1MRoqpDvCVt50v4vyzfNaO8PQzH9sTRXjkDboAIo3HZcx8tdoO8NWmkFOZDYwpyv1ePRe0iwSJ0rVDLJPggsthDZYe5+BzD0JLnlpK5Lwu21Zn8m94X8fnIKLSZ2+RRSES9ZQDWLV69QV2Ei1v1gUUyeQFyZuwCKVeoTZ4qKN+xoTzbtmMpBW3TL5yteZ0pO44pRfZHZmq543oOJUZN+nDteHSsjGJoDYaxYzGGedk6q2en3GxwtXGoMESi7l5qXeTFrYQA=
+X-Rspamd-Queue-Id: 9BE8140014
+X-Stat-Signature: j8iorbgqhi7ad9ag3gmipn1cufcwat5w
+X-HE-Tag: 1781856591-803314
+X-HE-Meta: U2FsdGVkX1+9+iPofqGiVwEgmY0Uv4eBiklxwZn9DClEAiZV2GsjwQnMcGWZifdLleY4OGc9Zo68btpYYVk0CP8KBjZPBsROzNFlCHwrge6bG2WjPXNi/hgQzo6hLwQVfVDEGCePC+7i/JU/R9bjMzD9UXt974R0VatY+kub33ehdcfC7pw3x9h3Tt3TZ5YKU5j8LwjlTpvBSBnK5LZOF2lSPwd9T7P7FZo/WtlP4w54JIztQdRQV+ZU/X52xI+0rYnkJmO25IDGkUXLSJSanUskEXrnO1imeBPluM0mNKA1JR7qrGjkP0AuQoLpJdWMEKCPDXiFRIbu9b/iZLFL3xFdyAcf2WQZ8bvpVyWUuPSofVwzuDRg63Af9p6hiDxwSbKAa2HFxfcLKHkhdYIXOFwtlr3KWmqRQY0S8Ov8QoFxIFzQR4Cd29xLV0AA7/+bcciawFtuKXalK/+TKq4DueGn9IWT5JYVs8QnQZaWl3v5SfEwTQ38uINe7oOY2hOFcoVR6ca4815ZTHLb+87pG19VlR1XVHHp98KOxRQ7BNvmdZo1P7U3qAdQu/7vU+s5quE34IiaM+mt2QnkREzV64dzJHdB4Lu0ylswsfA4htWtXTlLlLGzjMDryZd5LRrrxCjCzcws0NF5VaY8dxiQivqhrtvKji26T2BUwNb0mweksibqsPUmO39dlJxTfNYekf1703sYRXH91S16Lb3JsTLpF5k8YCeIMta0zUHcPRxWQfSXeq5/SLhveyA4fSy383246VGbx/GX5odnsv4Zjq0Fo5dr02hXln2duc2w+fMVM2t+kKjPxhm7+oo4HtLijVLIYgGcVGc+ITmYT0knY9ud70aViwEFDnfXdoO4oA1H+5LJ9VB0kznYoL9+SnC5y8ktYaFlYtgaCrxnmewNcaNk8YRIKaf+obUtCmLIkQPk4Z9gn37HbROALql4BalnXg4OmJSdDEHuaaA6w1P
+ mFoLFTgm
+ 2qJlbowAe/Ff1KL0uVShM9B7iL94zh6Xb3aPi0/G3bFdpbDQE5jiD/wAxcyMNO9nkxCaYQHK3DuGac9VITtB9zxNzqu62cR6WTOqNXcSas+rfAtsyWP8T/vKuHbdAwjn9PtV7a2lcEO0yW9fO2Xld51PmKLK+E1eTeRD4R4FyAO4C3Jn3fyUR9X/FTzOrRzHEfdUK+Iq2lCsnDLs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,63 +89,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jun 18, 2026 at 6:56 AM UTC, Hao Ge wrote:
-> Hi Brendan
->
->
-> On 2026/6/17 23:29, Brendan Jackman wrote:
->> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
->> main entry point function is significantly different from the normal
->> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
->>
->> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
->> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
->> exposed to mm/) and then turn the nolock variant into a thin wrapper
->> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
->> how some of the wrappers in gfp.h do).
->>
->> Rationale that this doesn't change anything:
->>
->> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
->>     the new alloc_order_allowed(), alloc_trylock_allowed() and
->>     gfp_trylock.
->>
->> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->>     previously in the nolock variant:
->>
->>     a. Application of gfp_allowed_mask; this only affects early boot, an=
-d
->>        only flags that affect the slowpath get changed here.
->>
->>     b. Application of current_gfp_context() - also only affects the
->>        slowpath
->>
->> 3. The slowpath itself: this is now just explicitly skipped under
->>     !ALLOC_TRYLOCK.
->>
->> Ulterior motive: adding an alloc_flags arg to the allocator's
->> mm-internal entrypoint can later be used to do more allocation
->> customisation without needing to create new GFP flags.
->
->
-> If so, I believe we could generalize this further.
->
-> Under the current logic, |__alloc_pages_slowpath| cannot access the=20
-> alloc_flags
-> passed down from upper-level callers.
-> As I discussed in another thread, we can introduce a new alloc_flags to
-> replace the |__GFP_NO_CODETAG| (|__GFP_NO_OBJ_EXT|) GFP flag.
-> This newly added flag needs to be propagated along the entire call
-> chain down to |prep_new_page|, which means |__alloc_pages_slowpath| also=
-=20
-> has to
-> handle this flag accordingly.
->
-> I'm wondering if we could introduce a caller_alloc_flags field within=20
-> struct alloc_context
-> to handle alloc_flags that need to persist throughout the entire page=20
-> allocation cycle, when such flags exist.
-> I'm sure others will have more appropriate solutions.
+On Fri, Jun 19, 2026 at 02:50:04PM +0900, Harry Yoo wrote:
+> 
+> 
+> On 6/18/26 7:08 PM, Hao Li wrote:
+> > Currently, alloc_from_pcs() and __slab_alloc_node() both calculate the
+> > NUMA policy independently. Since they are called consecutively in paths
+> > like __kmalloc_nolock_noprof() and slab_alloc_node(), this leads to
+> > redundant computations.
+> 
+> It uses a static key, so probably just slightly larger code when disabled.
 
-Yeah totally, this is exactly how I imagined this evolving.
+Yeah, make sense. The performance impact in this case should be negligible.
+
+> 
+> By inlining both __slab_alloc_node and alloc_from_pcs(), I assume the
+> compiler would have deduplicated it, but there is a patch in
+> slab/for-next that makes it not inlined anymore :)
+
+Thanks, I hadn't thought about it from that angle before, and that's a
+interesting point.
+
+Building on that, I thought about it a bit more. While in theory the compiler
+might be able to help us here, some of the information inside
+mempolicy_slab_node() seems only could be determined at runtime. So I suspect
+the compiler might not be able to infer that the two code blocks are equivalent
+and deduplicate it.
+
+> 
+> > Introduce a helper function to resolve the NUMA policy once, eliminating
+> > the duplicated code and reducing execution overhead.
+> 
+> Nice! I think there's no reason why we shouldn't do this.
+
+Thanks!
+
+> 
+> > Signed-off-by: Hao Li <hao.li@linux.dev>
+> > ---
+> >  mm/slub.c | 72 ++++++++++++++++++++++---------------------------------
+> >  1 file changed, 29 insertions(+), 43 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 62e9cd46916f..45e9f379b7da 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -4523,32 +4523,36 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+> >  	return object;
+> >  }
+> >  
+> > +static __always_inline int apply_numa_policy(int node)
+> 
+> apply_numa_policy() is bit confusing because we usually don't apply
+> mempolicy for each object (unless strict_numa is set), but rather when
+> grabbing new slabs.
+
+Yes, this make sense. it's only for strict numa mode.
+
+> 
+> perhaps apply_strict_numa[_policy]() will be a better name?
+
+Agree, apply_strict_numa_policy is indeed a better name!
+
+-- 
+Thanks,
+Hao
 
