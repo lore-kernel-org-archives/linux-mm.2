@@ -4,144 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FFB6CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 19:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3E3CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 20:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1377D6B0095; Fri, 19 Jun 2026 15:57:06 -0400 (EDT)
+	id CA8796B0088; Fri, 19 Jun 2026 16:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8AC6B0096; Fri, 19 Jun 2026 15:57:06 -0400 (EDT)
+	id C599B6B008A; Fri, 19 Jun 2026 16:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F19506B0099; Fri, 19 Jun 2026 15:57:05 -0400 (EDT)
+	id B48C36B008C; Fri, 19 Jun 2026 16:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC1E6B0095
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:57:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 30BC91A056C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:57:05 +0000 (UTC)
-X-FDA: 84897720810.30.95BB7B6
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2F03F140009
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:57:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vgZ965cb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of zokeefe@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=zokeefe@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781899023;
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB266B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:31:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E663F1A0569
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:31:15 +0000 (UTC)
+X-FDA: 84897806910.29.D58D6A0
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1E187180003
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:31:12 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=aMQRh5RY;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Cuz3goNt;
+	spf=pass (imf16.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781901073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+s618HP/1+WS+l1UzZHBuXzsKacGOTvnWQZyyRwJUds=;
-	b=N3Yc9QtqUgTuJCW0cLpS9tKQLXx0oTtOK4CKlYHMcvcI14BX+FXe6HkbTZLGuoWKfxSHOU
-	6/ZGgP3ER6WhTX45rgOkv5zXkc12ZoeWXFas7QTgnRjplKBZrFRM5RepzTw+Q4MR5XxQQ0
-	EhQUwlIJl4yTzQL/2UByiCLwVNfhrWI=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781899023;
-	b=JS8iPiIg+gqcYZ+CEXbdRsLQWRvSbEFOmxq+TqWbocA2UKp0tprFjW71CSICa8AmmM7aWp
-	kiKnF/F8j0fyYQJbQ/ieNFIO7f34MoBnnJwDFCuoa/Bdizo9wIrjAuVMhIoj9bhCJQY11Q
-	9J5Av3ZACyMtx/eWtkZ+1F6xsxDtwdg=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vgZ965cb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of zokeefe@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=zokeefe@google.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c6a4eccab1so59765ad.1
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:57:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781899022; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F6GaFbTTuxFlUHx5QaX8TPpO2CdRHNBVPoAKySR1IF9fMB7NCp+VgZXbjUUkRBBOkc
-         iSSgRqAEewXlZzIRMamHS8/FRxfZw5JuOatM99xgqHbvoydXhyKb2ufK6knH6PD/4bLj
-         fq+ohP0k5559Y8m93T5Jdzp+8h/IHKlDrWFwRZRu3KGc0+VceovDdUdt9XGGtyteR5mh
-         ZfOhfWDcQT9ohbMLS0ZUuZM5nIrYixRLQgXwmBLB3RTvuJJm5DAkqJt0G5/qymp7U0Yr
-         AtJjWQ2YFiqpd4Ic6iPUu+qdxyjr2NPn9p6xD0mv0OfIt2xeCpEQ7itvmBfwTzQNbsVK
-         63LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+s618HP/1+WS+l1UzZHBuXzsKacGOTvnWQZyyRwJUds=;
-        fh=YTaPWp8CEeXA9QzvRnPhK4lFsTbb9Ck6Y+/41STCNY0=;
-        b=O6YrTsjyk8BUe1iYAkhHHDXXVxFmOqtmMI0UKU7x7jWObsyrMXYx2ySEKkyMfhFSyT
-         To+/IMqgbzP3CKwrexhx9oKbUqN4Dft4fdHA1uv4l1lk8Uy3rf+hFtApytQsGMqUtfuV
-         WMPSI28EjgdPGAe0XKyt2JX67lHhwtdzD5i89sD22XvMuPf7QvD2MGQMxvQY9TcF4w/u
-         hTb8uj+ZIPdJS+LCyJAthLfneUOO3iQm2DTEMiwripA54Z85Kf/gqDWZ8GuiiGovlAom
-         PNbp+SO53vdFYonZWWoSMz/1lYlANMwcpNTEkiz4pc9j+mqaPf5Lb1BoTMe5M0GvE/M6
-         t9xQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=BuBwEE2haUohTkvyqi25m3okwfP48tWf/B574SDKJzw=;
+	b=yM+aW19lIZKOyG225x50+sz5j56uKbbxnbHLBFOrbkspVP71ncgpecZS75ZNqDEFZiCiPm
+	ranGibq+DIvqG3ler0h8XombhSbnMww18f4oL91tGMYl8GBja0bI30M4CXF8xflqRCNnyJ
+	R19Wu/BUaoUQi1kJZ7AEnwk98rYnnNw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781901073;
+	b=kHKkUepIni5CufzlgdXWf0a+ajo8I9EWN9qeLKNeplEzbvBN4dAeZ3i0q4X1e9+t2XW8Kv
+	1fTXcGqeDHLz1mGAr71YSXgMKLFZCDEctwcckaQ5LtazkN7rhq/mfE8szu8mf8J06HfW+M
+	aapOCRFxM87K3wkeqJiHyR5J/zJJbCg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=aMQRh5RY;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Cuz3goNt;
+	spf=pass (imf16.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65JHSZTH2417933
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:31:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	BuBwEE2haUohTkvyqi25m3okwfP48tWf/B574SDKJzw=; b=aMQRh5RY+1m4PvyS
+	+IZSwd27GAnobChJ98i6dlDOiIG4L0QruKgn3vCYXgo+yfeRvtnebQU4vFMnJLTy
+	xShboJ7EKrZ8ooK6ljldp1rRsVACmFLU7vDzFITVrizvBnk4rgYrg8B3yh8QkO7h
+	nF/LmyNOFV3gavmUwQCTN3uN0Ag2r+3gM2/JzCv+duxmGfP3kzT4GMe0Yey0CCto
+	mRzuhNDN/u+qvPssX83+pKIVYZ3BthKvKMDw3IKYSgYsN53xUNZXrst2gY+nZRQ3
+	M0W6EuU08dDy2FTUhO9faCg7Kqj7/WcEI4Zk08JlieVKP0wl2ps519aOWNk/301S
+	m999+w==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ew5qs9pdw-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:31:11 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c8620ee0971so2492255a12.0
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781899022; x=1782503822; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+s618HP/1+WS+l1UzZHBuXzsKacGOTvnWQZyyRwJUds=;
-        b=vgZ965cbLwq/CS652LYR0ip7p2ifGyOgqtWFHWMp6S6f0C1fp7m3Oy3/WvfPlFQ5QD
-         sR+6SelizNaoHNcsdz75cKdNuxZBre3mwfksv4rIn1mOdvrWjRu3lwCM8GRIC0jRQZCk
-         dxed46MOHfyQyQlqJCSrYnzCu9oqYi6gnaevCvSt5QlFrq3g2hPJVc2SZqz3kSITZzm5
-         q9iIuHkbGunHheKP+I0OE8oIJGpC4XoEu8BcIU6gCkMhFgyKlx5EaudnlNlBZdF+hJad
-         4gcGbsLC4Uq2sAf9Vo2Y6cJv5FRH/9dEIX8C1p2TLM97pE/M6zWG4J18sSDHgG+5JaZ0
-         LaUg==
+        d=oss.qualcomm.com; s=google; t=1781901071; x=1782505871; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BuBwEE2haUohTkvyqi25m3okwfP48tWf/B574SDKJzw=;
+        b=Cuz3goNtuHrT9Zj4EQAjZGNAEdsA1pxEQDW+Ihaabddx7LLnHpXixLl0Jmb+E3CBOU
+         QgDYbXWBpQgmd0yOq9cVokVJHybCllrChp0pjRl6NcajWBpW0BA7ngfSSOv0cNhU28mt
+         MErXeVPsJF5ANdTMTFMjfBGoQK+nyHxMCm1NGLW4O6I/YRcx7PqNt+zn9w9vjFNKz76z
+         LjfDF6b0Uf+3Dv/vcWD+Is21v9kERSicC3iGd4H5GhcP1ealagnG/qrmNfKXJv9VlJlX
+         SYoyIKE4Ez9wPFgL+i5cXOzRSp1waxdPe3Ajth0tX9I2u41C9T8DcDLW0dpoKe9L6Y1i
+         vOqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781899022; x=1782503822;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+s618HP/1+WS+l1UzZHBuXzsKacGOTvnWQZyyRwJUds=;
-        b=GchNnq9SvswjE+37/socjB/9V+LpckdYvac6+4TGRuVEdjShj/4LZT6//a5klUsNzz
-         FZgamHgvgq6gdggkCfdqHfYn93g8uechSZwPtwnPPlD8s6elX2Y48FWcW+b7pbacobmk
-         ZDV8lugMLLSIzfUpVCUvn22dy+PouA12qYmSOTJAgSWc4X/qA4yjR1yL5U/dL3UURVWN
-         KSYkwAIterXkS0mNQPkHcEYe0eP9TIK2iPU+e54PT7W4fIypfOOAdJbTsgVrPAdUDQKb
-         j2fnH3kWaWzCkUQaaxk5roiBOKOwSRWN650uemzDV1iRUDf0Awm8l2nyvE+3LrlV/osr
-         pwwA==
-X-Forwarded-Encrypted: i=1; AFNElJ9zvAxEs5HtJd+l55sBIFAdAwd3KcIsKpA8ad8xAac/0CSJ2LMvAVFDbvpPA8gbI7hr61tQpRJ06Q==@kvack.org
-X-Gm-Message-State: AOJu0YzsqSzQkiYGN+chiLxrAvYrLz4p2ZKnQUPGRdePLe6hk6ABSXCy
-	Mq24ugEhxTcwEiNQVjh1Ho8eI1REf+fclJWUsm4sPSAbvSRVffAMDMTB2y+u9Pt5nBxgmoglRV7
-	tR3kmPS9NwBAd+mCRG7oNBo8NqvSk4C4EojkL/BGF
-X-Gm-Gg: AfdE7ckO4ETm4dW+DDfW/pO8LVMEyruqWy2Km/COiwsV5djRjzHPAINBDA1oy0D6Ios
-	rSA2cwFHjVc2xrEW6iUv4OUNsW6SLuiu60h4xNzSpLWXqoYBtq6X8CxNjd2pHFkwcLH3265qNd/
-	UQgd/CyPMVCIDH6ls8nnnikf15KCkJecdPJg9hzUl44x9bqcGt4kNUeYGuR7sE+PpFz1crRM+pT
-	1hiYPVW1PV2cxSQzWKdU9+MD8Cx5bXfbvzP/i+X05u7XQGAEB/xjZ1sijCx36gPsIlQ4O+Vjw==
-X-Received: by 2002:a17:902:da4b:b0:2c1:ee6e:4e4b with SMTP id
- d9443c01a7336-2c719054ae3mr2221575ad.28.1781899021344; Fri, 19 Jun 2026
- 12:57:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781901071; x=1782505871;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BuBwEE2haUohTkvyqi25m3okwfP48tWf/B574SDKJzw=;
+        b=aV3+7CyzpzuLbj3pFWVVL+bY55WOFcN2yY/GWTDNQWvhmMoWK8puMRo8w5OqiyGNG0
+         Ozz6N9nQYqYnwOGanUzZrH+rY86MiQ6qjHNRx3lmuR7RSqVWe8dOIAXmtPjhMSMgUFbu
+         R2GUsY6d8JabTiiqWiciQtx1meQ+ZsukoVCoIxnwdtMkJGcm1EASoGKJhP6UGHqKcgnx
+         QU1C1JMTlX0jrLIt3Miegs4h5RaqB0hXs045nsKxrPMuh2nv0O1JL+Tc4suX8qDbEiLw
+         Lh0N78OAgUqUquoXK6mqZbUicumqX3YzItMv9cj9gxCWrnL1wyhTLHpGdukdJY45K4xn
+         lYDg==
+X-Forwarded-Encrypted: i=1; AFNElJ8teJXAa+Imwgl2RZQpT++qVEkMC+lRGBX1HLFOFPcWgCNqsTZoR0at17MzUyDG8oE/odlip8qdMA==@kvack.org
+X-Gm-Message-State: AOJu0Yx5R+SpERqzmCONT2hlMf9SpZfp6bc8UWTEKXH8pPplw5F8RAtk
+	uxe/y7f5P7y7v2CuEm1lt/TXaAsf//ZVS/YDDnhA5wmjQg2XnCMltHVew59hcDX+7jnjfc2h7qW
+	nPCmjrQ9wA25NYDZ+3gpDSCJc+G2FVGNgyoWF2iX9hXcY393wjvo9IQ==
+X-Gm-Gg: AfdE7ckLbs1tY093XGhsqJ1KIqsHqaIyRcvyL8Wjx28/SVPHsnoMNNC47xxqWvdttig
+	4oo4EqMjdle5eaQbinKT5H87Xkqi6xqWNQLGCWnl0i9Obe1NydM8KlMcpwUeHPNAUM1XDxSk64A
+	8K5vyV4ZSdZ1W/jSS5Sd83oouAMdeoYzEbFHZOY2LdbjvQy8PTMcpmV8UI9m4JTFWu9SLIWoSqb
+	i97nkAByqiKqr0fuS5GcvMlxWLcKPkYjDWnlJC2fOL5eWqlIMAYzjGIkiibZmtipNs8ku5FEkx1
+	ckSDB6+p7x0MeSfStDeKAf81q8Fn+M4ioxbWXxHpiI4eOfC9z76qsTKo/VcdkIrQ+sZlNQeXH3j
+	EvSHCg1QeRA4VduHvvN4AWqF4TarmjwTEarW4w4DDqw==
+X-Received: by 2002:a05:6a00:cc3:b0:82f:5051:f024 with SMTP id d2e1a72fcca58-84550866614mr5411693b3a.27.1781901070661;
+        Fri, 19 Jun 2026 13:31:10 -0700 (PDT)
+X-Received: by 2002:a05:6a00:cc3:b0:82f:5051:f024 with SMTP id d2e1a72fcca58-84550866614mr5411649b3a.27.1781901069994;
+        Fri, 19 Jun 2026 13:31:09 -0700 (PDT)
+Received: from [192.168.0.8] ([49.205.250.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564d6c49fsm104395b3a.11.2026.06.19.13.31.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jun 2026 13:31:09 -0700 (PDT)
+Message-ID: <6982a194-fdc3-4cfe-a60f-1c73a083e7e0@oss.qualcomm.com>
+Date: Sat, 20 Jun 2026 02:01:04 +0530
 MIME-Version: 1.0
-References: <20260424191456.2679717-1-stevensd@google.com> <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
- <aevhw9xqz1pWA2Ow@plex> <20260424232637.054f15dd@pumpkin> <85f19b94-18c6-471d-88f5-c05a2f10199b@intel.com>
-In-Reply-To: <85f19b94-18c6-471d-88f5-c05a2f10199b@intel.com>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Fri, 19 Jun 2026 12:56:23 -0700
-X-Gm-Features: AVVi8CeLKAhaL24ZETrhIOEQR-ru-FLcpMbX6MU69R7jJfNKrA6Xx-nwOBqNDqQ
-Message-ID: <CAAa6QmR899xH4QNMYN8Q-NDOG1R8-Y7ncMsF86cTp2Rw5X15XA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Stevens <stevensd@google.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, 
-	Quentin Perret <qperret@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2F03F140009
-X-Stat-Signature: 83hg9zqjwnhag5rdjuuej5brjkkjz6to
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: page_ext: validate section in for_each_page_ext
+ iterator
+To: Luiz Capitulino <luizcap@redhat.com>,
+        "David Hildenbrand (Arm)" <david@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Brendan Jackman <jackmanb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: kernel@oss.qualcomm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
+ <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+ <698e5cdc-8f1d-4984-bb54-a4b7979b4dc8@redhat.com>
+Content-Language: en-US
+From: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+In-Reply-To: <698e5cdc-8f1d-4984-bb54-a4b7979b4dc8@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE5MDE5NSBTYWx0ZWRfXx4O/7L7dOm2S
+ ZL3GfySQ+mK+vfTGPmUqzNFzUNYW154DhBQiHp7+Z4yXD08PckljvPi0PuQjbELSO8HZmeM0YB8
+ +vX9sSs+/dsZb0xSlg6QGm6+2uGgF5/9nhCSsgED/KE2pYnwurnU26dSZDm5DWqHxWzVJFXdBJ5
+ qwT8Bvcz3tqTqj03dvcqO34W/9gSICQAxghaGa9XDMdRu8dWp4oAyMSpL3mqevV3/aUvV9gvQ75
+ GeT5mIFwGA/Imz1KRFuVaA6TkYALxuNHx/2iJbIOuISx3GOfidZ0YhJ1O7Ripnoh/z97eN+/yu0
+ Po7QEeZHSp2vgph71bs2aPp94SbMQ0e4FfRxIQrzQHInHlkUwobBeOhKxaD0/SivY/lSpo6Zpbj
+ Z6jzrY0Fqclw/Zy1AeabRpyWpyG7zvMJ2Q8GgQ6jITayc+frfoIPgLkb9J6bT/FIy3JlcDs7Yg4
+ 5CE70kSfTyaPs3QQtcw==
+X-Authority-Analysis: v=2.4 cv=M9R97Sws c=1 sm=1 tr=0 ts=6a35a70f cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=BL6/p84Y3ifFzq3ZkNxHwA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=9QaySs2r4CrtnCsAm2sA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22
+X-Proofpoint-ORIG-GUID: ZchQ1MeSr15c4JzrH2jY35ZQ3dQBfdAS
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE5MDE5NSBTYWx0ZWRfXyy1aUwGsM2C+
+ /a9ijRqAC6cOmGDtNqm16afJauuuTvOsfI5/KBSo93jemcoJkRRB77sL5uLegS1Rg8+yx3jmxif
+ kARflKvy6NCJX7AZmCW0gwnFWapeQE8=
+X-Proofpoint-GUID: ZchQ1MeSr15c4JzrH2jY35ZQ3dQBfdAS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-19_04,2026-06-18_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606190195
+X-Rspamd-Queue-Id: 1E187180003
+X-Stat-Signature: 1fhge9c874iryfnfuj7fjfk14mdhz9we
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1781899022-383668
-X-HE-Meta: U2FsdGVkX1+oCe8iaehCidAym2tRsuGdz/2Nv2x1PXmWo7+WFaReDslICshNIieSp1IhrOq1bYO6tenZylEUP23s9icLzppna5PvBypmSXzv2y7SOGrUPJE9FXLMbTGqwHxvMmxNGStXcdsOpXnobQIAs8pTRPgzYcZ7pH+1Bf2mkEgP2b8cdhHu/98i8QE/M3wJt6tlZKqnWTz93dVvmlXYM+9WREtMoKlKGGmdYILmEwo6hRuBETKPt5ZYQTRpDBlRJeZAim5n52zl5BS3pbyevZaJX2WbQ4SQVdmucYeyPj7cUF4E64+PYgZt1zinc8zRUtr7AssWd+Tkmn6UX2UMB4YgkIE/P2Yu1TVs5KDRfOcClZPMJt5mZL12gkoutqMtl/AS1xcWkh/ZY6lXnG5ZmoE+V5SAON29P6IcuVU5of3hU4bBqyZYPRpaie0G20EoYW4t77k0xU1xOEbiHet9AIlPSQbcDXjFy3vm59X41hgtefM0xb7uOb4hhFA7gWaWf7LD8RJZ/uBpgHhMCLLiE2kU0Y3puvSHbjZTxKj3tLM05C7bL6FbGvaupWMZdWkNr0zlSzZEy4ifUZaaOwDc/ZmNDcYWj9LKRrxGu6cwsCcYFi22gBP3gY0h2b4otzQIZmD5JxLfUBH9+n1FW9j6HmjEVUV1tPdnhv8XcxmhvsRU3e3kKx9CiPIf2+jqkKNMNOPqJbO/BvZ29RjWUv3nLk1/Z1cGgo6YRlqasIfomTeY1HpknEKzMAxOMKlkCHFiDy7wF1yt/RiyKl7iN+GMsAaAWZQ7PK6+YVwrzOauiEd4VzPgKuLeZUJofhHYUdqP3ET+OX8uD5vgqR62Oo6xFj5w4BA9LsGsnWoHtF2xnTNj54ciMTeI1LYcZXPbqu0m/bGLtk8xbjikTEntW+U85PIpMiRDoQOzmdPGFQK28Qmk4ISH5S729myDct2bcxRxdZspyLQuAHXSVTU
- RXGZb0Gn
- Sw14C9zC8uBmQRO2ufqUOSZh5AsUAgzFTEetJTgGkqBrUcFtDi39bzjYnjoYh4wSlkmt71GdvlKzTAH02BqlcfusW9JjIFQyPqiQgqD3aD6Q1igqmuqoyXfdbUGTK72OdvXrzr51VRrFeZ4CnRlroihNwJ0FdkMa+5yoeA8XyxMsKZUWtQvxB+JKdAZ1Sj4WQFVxeR3BuSB3OqlMXwJPsEN/jvQufMiaWR3XjnanVfrNLcqVScteg7XTYu1qAZedMOKAZY66fuGHwun9aXMuX/DweT0ZM5W7AJpCUuEZW+tXFssuYuZVGrnQ+N2J5C9GskeZ8SyDUFDCnAQiFyNCxJ3F8/w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781901072-512928
+X-HE-Meta: U2FsdGVkX1+uw4STlHi3Q2VSzxcFvNlX9qXNHwKLvUANbcRqz3De/i63pJSD1/wd70Eby+6kVHLch1ZdcEpTPY8magtxJWUYGREHQ76YLJL7d4fsqF1Q/5lx7waGqwsdbmwfYc73rBTexZSWpJOFsE5gZzgYsohrlK8LE13ee9uMP8+uPhZA1MMt4yzPNtfQW22VeKMIqlVTLfNhsFE9oxJ0JGzRL2kl4hUuk3faj0mskiu3aTHr5UMKEJqeu5eSLTYW53uPrRPns5SJnmSk5dwbomoGYV+lgCQ8Iv5Z2PQ9JY5At8HilARtYw2HNu8Jtn8WsQ9zh+AaMEvBw3t2PqFtVhIpsV/FphruCQxbPSQ8hcCVHVixz+W0tCjSZZe+5Ee/dHyKrqmwuoVCxajVK+MXG2Z7Gc4O0SCwO/cCT68cp6mAB3+0XmTxfMvMMGgd46FCXSMFBZU5D5pW5fsEbb/U5LMgQdHbrDhW/6Vbr5hYMc9rOck2hQlVn8c/vB1W6UjfvDUiwgMLtLwANw6ctGlwu9rU5mYC1eT1qfuOK6kjuHBc/939ncuGJXl5tb9tuSUD1K6qiQdZjcII+5UGzsX89wG+XAITm6oHe1BWvxbhqAJ/i7SVsRPfqKqAXSFxlTWOBg1jEQ8Y0rwXS7mbuPEV7t5HtwvUfjoa0o1aBx1/cCncmsPwwDk9opa81vesfGfY6Z7Qxl0H3QSf3U6XlbsySe8GTvvpv6mXfXQzPD89Fb7Aso1Y4VI9H0crPbtXat3N7hQSHh95S+KJ0TQihRsfhTpI8dLx/HPU5sO06mqpD8Pc5nJyuA4HbP7XA/pi+NEvPrZ+LONXjieeM/yjwuoZVWCImDHCayzpUxkzB4FkQv/yrrr1yE5qw529WE2X1wDorPC4xNRRWQjRyb4iU7nuh+U8ubHCXNszYyR3fp01I2/NXe+jXw+MrEwxPzCjoqDHbn6yL+wAzNo6qwE
+ hU4e0kQK
+ nWfQu/VmqmsNlzD28Fx1gPQGnZOjLaQr9nMWbfa+LnHmBfZ4EZo4CAtlD/tuDVJ7OzPjsp/hChYmhDH9wehlv1qgihWRtVy0wdbVqNeVFWnxseN6N0HYwc6+/m9br3ncMkHlEfBW4fssMSxjIrKPv5z6o1vWhZ89CGICGnYZ/jBZj6Snd+grbdXKI582R3vMRqI/uhJecwSKK9D5b4DmLqtvHITKJbY3P3prrdKoJWQ6LIkSbxNy1zxIgKXsJbME4erNIdESxS53V+hBDzBlhm7+G+Iyqlj7yE/ns5PNveJs3EP73oRxUJAzLgO7wDyHD+8OtxQ/tJeVjsKBvt1SPcKm0lwIWvFRdpH/GVsveinNP3qUzwF6CebmcSmKiqiYxv+WridzGUObU+/iKXgwEOLzD7uGTGtQ7kGj9ANiCe2yKo9VaH12ZD6DmHbXjj3F4INQHzTOrOlv6uVAyIEQLdc1MB6UU1CzIgp9QCrW6qm14yHN1vLb0MDjcjyyQzzH7CUSzyqLcINdQ7XYdNovs9GNVXvSxJT0EDtHGjN/XjXSiXMVDtIYv7lIQ9D6gkonxqLMw22SMZMKcL/e4AuZ9UlfJw9GWRePO6e8AFnISN9Bq1BkT6251Ba0VdOl4BZn8LVKWcLvTc9rRHLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,78 +178,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 5:29=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
 
-Thanks for the thoughts, Dave
 
-> On 4/24/26 15:26, David Laight wrote:
-> >> This true until, in a fleet of millions of machines, you encounter a
-> >> one-in-a-billion chance of a stack overflow. You are then forced to
-> >> double the statically allocated kernel stacks on every machine, paying=
- a
-> >> memory tax even though 99.999..% of threads never exceed 4K. This
-> >> overhead accumulates to petabytes of wasted capacity.
-> > And then you hit a stack fault in some path where you can't sleep and
-> > there isn't any available kernel memory.
-> >
-> > An alternative idea is to arrange for some system calls to sleep in
-> > userspace, so when the thread is woken it re-executes the system call.
-> > It then makes sense to assign the kernel stack to the process when
-> > it enters the kernel.
->
-> There are probably other ways to do this without handling exceptions.
->
-> For instance, let's say you always *map* 16k of stack for each process.
-> But, after context switching out, you take a look at 4x8b pte_t's that
-> were mapping the kernel stack. If the _PAGE_ACCESSED bit is clear, you
-> can just clear _PAGE_PRESENT and reclaim the page.
->
-> If you don't want the overhead in the normal context switch path, you
-> reclaim in a shrinker, at the cost of needing locking to coordinate with
-> the scheduler.
->
-> A simple rule would be: a thread that ever accesses a page gets to keep
-> it forever. They're never reclaimed after being accessed, only before.
+On 6/19/2026 8:08 AM, Luiz Capitulino wrote:
+> On 2026-06-18 05:04, David Hildenbrand (Arm) wrote:
+>> On 6/17/26 17:09, Ketan wrote:
+>>> The page_ext iteration API do not validate if the PFN still
+>>> belongs to a valid section while advancing the iterator.
+>>>
+>>> When dynamically adding memory in hotplug path, it can lead
+>>> to a NULL pointer dereference during page_ext_lookup at the
+>>> boundary of the last valid section.
+>>>
+>>> [   14.555124][  T846] Call trace:
+>>> [   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
+>>> [   14.555127][  T846]  page_ext_lookup+0x30/0x3c
+>>> [   14.555129][  T846]   +0x11c/0x260
+>>> [   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
+>>> [   14.571204][  T846]  __free_pages_core+0x78/0xf0
+>>> [   14.571206][  T846]  generic_online_page+0x14/0x24
+>>> [   14.597782][  T846]  online_pages+0x178/0x30c
+>>> [   14.597784][  T846]  memory_block_change_state+0x284/0x32c
+>>> [   14.597787][  T846]  memory_subsys_online+0x4c/0x64
+>>> [   14.597789][  T846]  device_online+0x88/0xb0
+>>> [   14.597791][  T846]  online_memory_block+0x30/0x40
+>>> [   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
+>>> [   14.597794][  T846]  add_memory_resource+0x280/0x298
+>>> [   14.656161][  T846]  add_memory+0x60/0x98
+>>
+>> So, we do allocate the page_ext in memory_notify(MEM_GOING_ONLINE) -> ...
+>> page_ext_callback() -> online_page_ext().
+>>
+>> Which makes sure that all page_ext is actually allocated (for the full 
+>> section).
+>>
+>> So when we later end up in generic_online_page(), the page_ext should 
+>> be there
+>> and the memory section should be valid.
+>>
+>>
+>> How can online_pages(), which onlines memory part of present memory 
+>> sections,
+>> online (free) memory that suddenly does not belong to a present memory 
+>> section?
+>>
+>> Something doesn't make sense here.
+> 
+> Ketan, would you please share the full OOPs message and maybe tell us
+> how you reproduce this issue?
+> 
 
-That's an interesting take; but it's a one-way latch, right? How do we
-know that task won't dive deeper, later?
+Sure Luiz, below is the full OOPs with the call stack.
+In one of our usecases, we try to add all the movable zone memory 
+available to kernel after boot.
+At the boundary of last section being added, the iterator 
+for_each_page_ext (which in turn calls lookup_page_ext)
+inside which the below fetched section is NULL for invalid pfn.
+"struct mem_section *section = __pfn_to_section(pfn);
+struct page_ext *page_ext = READ_ONCE(section->page_ext);" -> While 
+accessing section for invalid PFN
+we get the below NULL pointer dereference.
 
-> For that, the worst case is that you go to schedule a new thread and
-> can't allocate memory fill in the 4 pte_t's. You can't run it until you
-> or some other CPU goes and does some reclaim.
->
-> Needing memory in the middle of schedule() is generally a no-go. But its
-> a lot better than not being able to continue _execution_ of a kernel
-> thread at *ALL*, possibly in a non-preemptible context, like when you do
-> it in a #PF.
->
-> Basically, I think there's a way to do this that limits the kernel blast
-> radius to _mostly_ being a core mm problem.
->
-> What else has been considered before the #PF-based mechanism?
+[   13.840511][  T846] Unable to handle kernel NULL pointer dereference 
+at virtual address 0000000000000010
+[   13.850253][  T846] Mem abort info:
+[   13.853859][  T846]   ESR = 0x0000000096000005
+[   13.858441][  T846]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   13.864642][  T846]   SET = 0, FnV = 0
+[   13.868510][  T846]   EA = 0, S1PTW = 0
+[   13.872472][  T846]   FSC = 0x05: level 1 translation fault
+[   13.878224][  T846] Data abort info:
+[   13.881914][  T846]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   13.888283][  T846]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   13.894211][  T846]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   13.900398][  T846] user pgtable: 4k pages, 39-bit VAs, 
+pgdp=000000089ff23000
+[   13.907749][  T846] [0000000000000010] pgd=0000000000000000, 
+p4d=0000000000000000, pud=0000000000000000
+[   13.917687][  T846] Internal error: Oops: 0000000096000005 [#1]  SMP
+[   13.924220][  T846] Dumping ftrace buffer:
+[   13.928436][  T846]    (ftrace buffer empty)
+[   14.452210][  T846] CPU: 7 UID: 0 PID: 846 Comm: modprobe Tainted: G 
+           OE       6.18.21-android17-4-maybe-dirty-debug #1 PREEMPT 
+  df0e65d5b71bf0ce6ff80187ad4d31404755da65
+[   14.468528][  T846] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[   14.484959][  T846] pstate: 43400005 (nZcv daif +PAN -UAO +TCO +DIT 
+-SSBS BTYPE=--)
+[   14.492820][  T846] pc : lookup_page_ext+0x6c/0x108
+[   14.497840][  T846] lr : page_ext_lookup+0x30/0x3c
+[   14.502766][  T846] sp : ffffffc08d21b250
+[   14.506887][  T846] x29: ffffffc08d21b250 x28: ffffffe2e901f080 x27: 
+ffffffe2e9920000
+[   14.514927][  T846] x26: 0000000000000400 x25: ffffff882701a380 x24: 
+ffffffe2e8f28000
+[   14.522972][  T846] x23: 0000000030000000 x22: 0000000000c00000 x21: 
+eaf5b162e68bf47c
+[   14.531008][  T846] x20: 0000000000000000 x19: 0000000000c00000 x18: 
+ffffffe2e8e4c380
+[   14.539045][  T846] x17: 00000000c006287d x16: 00000000c006287d x15: 
+0000000073cc3b9a
+[   14.539047][  T846] x14: 000000007c6d34b7 x13: 00000000d0fa10f2 x12: 
+ffffff882701b128
+[   14.539048][  T846] x11: ffffffe2e93630a8 x10: 0000000000000011 x9 : 
+0000000000000003
+[   14.539050][  T846] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 
+ffffffe2e68b78e4
+[   14.539051][  T846] x5 : 0000000000000000
+[   14.555122][  T846]  x4 : 0000000000000000 x3 : 0000000000000002
+[   14.555123][  T846] x2 : 0000000000000000 x1 : ffffffe2e7f30cab x0 : 
+fffffffeee000000
+[   14.555124][  T846] Call trace:
+[   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
+[   14.555127][  T846]  page_ext_lookup+0x30/0x3c
+[   14.555129][  T846]  __reset_page_owner+0x11c/0x260
+[   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
+[   14.571204][  T846]  __free_pages_core+0x78/0xf0
+[   14.571206][  T846]  generic_online_page+0x14/0x24
+[   14.597782][  T846]  online_pages+0x178/0x30c
+[   14.597784][  T846]  memory_block_change_state+0x284/0x32c
+[   14.597787][  T846]  memory_subsys_online+0x4c/0x64
+[   14.597789][  T846]  device_online+0x88/0xb0
+[   14.597791][  T846]  online_memory_block+0x30/0x40
+[   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
+[   14.597794][  T846]  add_memory_resource+0x280/0x298
+[   14.656161][  T846]  add_memory+0x60/0x98
 
-The only other way to know on-demand when to increase the stack size
-is through stack probing, which I've ruled out without further
-consideration due to performance.
+As David already pointed out over this thread,
+"for_each_page_ext() does a "__page_ext = page_ext_iter_next(&__iter)" 
+and the end."
+page_ext_iter_next tries to access the page_ext for an invalid pfn at 
+the end.
 
-Then there is a class of solutions to explicitly grow / run certain
-code paths on larger stacks. Though instrumentation may help, others
-have described it as playing whack-a-mole.
+Thanks & Regards,
+Ketan
 
-Then there are solutions that use a shared pool of kernel stacks,
-blocking userspace until one becomes available. Very disruptive.
+>>
+>>>
+>>> Add a valid-section check before looking up the next page_ext
+>>> so the iterator stops cleanly at section boundaries.
+>>>
+>>> Fixes: 9039b9096ea2 ("mm: page_owner: use new iteration API")
+>>
+>> If the problem is real, we'd want to CC stable.
+>>
+>>> Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+>>> ---
+>>>   mm/page_ext.c | 12 ++++++++++++
+>>>   1 file changed, 12 insertions(+)
+>>>
+>>> diff --git a/mm/page_ext.c b/mm/page_ext.c
+>>> index e2e92bd27ebd..74067ea740fe 100644
+>>> --- a/mm/page_ext.c
+>>> +++ b/mm/page_ext.c
+>>> @@ -253,6 +253,18 @@ static struct page_ext *lookup_page_ext(const 
+>>> struct page *page)
+>>>   {
+>>>       unsigned long pfn = page_to_pfn(page);
+>>>       struct mem_section *section = __pfn_to_section(pfn);
+>>> +
+>>> +    /*
+>>> +     * section can be NULL when the page_ext iterator's for-loop 
+>>> increment
+>>> +     * computes a PFN one step beyond the last registered section. This
+>>> +     * occurs because pfn_to_page() uses __nr_to_section() which 
+>>> succeeds
+>>> +     * for unregistered sections that share a root array with 
+>>> registered
+>>> +     * sections,while __pfn_to_section() returns NULL for them.
+>>> +     *
+>>> +     */
+>>> +    if (!section)
+>>> +        return NULL;
+>>> +
+>>>       struct page_ext *page_ext = READ_ONCE(section->page_ext);
+>>
+>> In addition to what Zi says, which will end up as:
+>>
+>>     if (!section)
+>>         return NULL;
+>>     page_ext = READ_ONCE(section->page_ext);
+>>
+>>
+>> drop that comment, not required. And likely best to just add a 
+>> unlikely(),
+>> because this doesn't usually happen.
+>>
+> 
 
-I personally haven't explored any of these in great depth.
-
-To me, handling this on-demand in #PF, though technically challenging,
-offered (1) the most memory savings, (2) the least disruption to
-userspace, and (3) (ironically, expected to be) the most maintainable,
-general solution with the least perf impact.
-
-Happy to consider other ideas, and again, I appreciate your time and though=
-ts.
-
-Best,
-Zach
 
