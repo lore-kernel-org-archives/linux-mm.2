@@ -4,91 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C310CD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 13:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34B0CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 13:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 514AF6B0088; Fri, 19 Jun 2026 09:40:48 -0400 (EDT)
+	id A4E5A6B008A; Fri, 19 Jun 2026 09:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EB6F6B008A; Fri, 19 Jun 2026 09:40:48 -0400 (EDT)
+	id 9F0136B008C; Fri, 19 Jun 2026 09:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D9C66B008C; Fri, 19 Jun 2026 09:40:48 -0400 (EDT)
+	id 8EEFE6B0092; Fri, 19 Jun 2026 09:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 123466B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:40:48 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 87B801A046D
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:40:47 +0000 (UTC)
-X-FDA: 84896772534.09.45E392A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AA370180002
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:40:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q0rebgoV;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63FC06B008A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:45:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C98598DD95
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:45:38 +0000 (UTC)
+X-FDA: 84896784756.06.E2B680D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 15E791C000D
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:45:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsjnKBIv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781876445;
+	s=arc-20220608; t=1781876737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qtf17nAcqkE1zeYx4XFyfSd3nuagmsNAdww1s1Bnf6s=;
-	b=zuEBDTAAJaKWZlwAJm6lhoP5LEvyDzNnGgTN0v56Me5H4SnCiXx1hsNLCq+5KZAolpWdIn
-	samwtk1OlOOQTKZHKWX1vgjOgrpjBXuHYjvqXKAmhiR/7SYD6WGicp8t77iJnHj5iaqBbp
-	CpD15qOqKb/JANptiIvV9N28Me+OL+g=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q0rebgoV;
-	spf=pass (imf06.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=bjW1D3wAlx6YDOQQhvQRpWc1UvSBeQonEhDfLUEQvko=;
+	b=VFnGUYNGAGFBGE3siPlWzajY+L/d42JfaoiJ2maw9S7YwjROBobN+Zu6DP2axxslAKwKw5
+	/mB2AQ83BIpB6smPO78XPxMjzi7awlNmMykjvus/bnvGSGYFgAG67OSo4S6lMTXfTbrFBg
+	QTIttcUjwHSAHfxa+OHxaBK0QlK3x/c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781876445;
-	b=vot7r9tT4TdD4UBXx1yjTD0ytTWs0hrF/M+1ihhy2oEsdKb++0WOEmvP2SazMi2DlSjYsw
-	uELVHFHkEl4CjTD8ODz1E6CIDYCDzASWqfv373Rk07dN9h9Nv9hxMRfeQqMXhSNthktAxF
-	kidfowQUJzFLSsjkhdMU5C1ehylldSg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 29BBD2938;
-	Fri, 19 Jun 2026 06:40:40 -0700 (PDT)
-Received: from [10.57.95.87] (unknown [10.57.95.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F6933F763;
-	Fri, 19 Jun 2026 06:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781876444; bh=y77XA/7DurDkPJ2sey/hBkpk1xYL1y8lp90KZto/uGY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q0rebgoV9kbYM+UCSCpFvFXQDl4J/hTGO6VKF2YwiiWQbcD+O7Sb7asfjcYALJU7A
-	 ITh9NtR6JMKPRTW7KiwKPH8JFrWi+qe6PpDfIVLdzdSfoTvoAUSH0z6CndtUrxL10S
-	 5XiJReaf2hs3gJX0flOJRN5h0ZSd+CjCPM+qSypg=
-Message-ID: <799181c3-a1a1-4de7-bc6a-576d3282efb0@arm.com>
-Date: Fri, 19 Jun 2026 14:40:40 +0100
+	t=1781876737;
+	b=DynM2hvc59I8R9W0BKdblLH9Z5YUG1uTIwLDC2BSbFp/s3vk9qNRqFqSsEhx4egTtr0gjC
+	xHr/Lf8RYuJPQweXDd48zjtVOqCMF9QjEUQAx1LkaQYc1NtWKMGu2EkxpevsjECCc9P2vs
+	E0MCLAr/jhGkOCklKKzE0VqhRdmO4T0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QsjnKBIv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 99E8E601E1;
+	Fri, 19 Jun 2026 13:45:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B93B1F000E9;
+	Fri, 19 Jun 2026 13:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781876736;
+	bh=bjW1D3wAlx6YDOQQhvQRpWc1UvSBeQonEhDfLUEQvko=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QsjnKBIveTMF7UYQJeJoj497i829x0ccFzZw4zOgFOiqRBg6lnNi6YuIYuCoQrJf5
+	 oQ7wa6yF63oSUGq2PYrM9Fv1rsp0g/EDZlOrW9ApS+j2DlOQsfOSipK4XaDhlnLePF
+	 dEV5JIqYjb2thSuFnM1aSxTYdzqxerudU2HhxThvavNxaglycBpeiWWBZ9yV0vYLAd
+	 tSeqmeXjnlENqPk5D4BKc306FogQneS3lTFMgxpErif8+sk+sU7dfNiJn/1wwdh1Un
+	 U/NwJMakKBbdpc42QpxEknf7Xc8XW5wK2GW5NEepWE/0UReU4nT+6dSMc+hNeq9QpE
+	 9dW/3OCIJnYCQ==
+Message-ID: <4621037e-d051-4db1-bb58-ffe8c0afa3de@kernel.org>
+Date: Fri, 19 Jun 2026 15:45:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 6/6] arm64: mm: support PMD page coalescing in the
- linear map
-Content-Language: en-GB
-To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-7-abarnas@google.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260611130144.1385343-7-abarnas@google.com>
+Subject: Re: [PATCH] mm: page_ext: validate section in for_each_page_ext
+ iterator
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Luiz Capitulino <luizcap@redhat.com>,
+ Ketan <ketan.kishore@oss.qualcomm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ kernel@oss.qualcomm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260617-page_ext-v1-1-37ad802b1a38@oss.qualcomm.com>
+ <1dbebf73-6c46-44e1-ac6a-f5ffa9849b37@kernel.org>
+ <698e5cdc-8f1d-4984-bb54-a4b7979b4dc8@redhat.com>
+ <3149fcee-eded-49b0-baf4-ab69c27ff063@kernel.org>
+ <ajVGQg0hJCUThz5Q@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ajVGQg0hJCUThz5Q@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AA370180002
-X-Stat-Signature: awg8r31q6ojbwu4py8iph843e95megn6
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1781876445-915967
-X-HE-Meta: U2FsdGVkX19NUDUw7dcafKGt2/t0nOQ7yrBo62gpRQN2W/WWoWLLcgAMS0xoLAopWEW3Xim20dWeUgIQDu//Uk5mRSdNo5txNr7aYjKLxXkraWLnG9s4x+voVIaLyhyJ2HjctHXgOuscI7R4gyUsgE4NUJ17045GutT5+HI7cTzT928xOSzScnt3BR8aRgztaYis2slVFGk8/IOQ8pc8ZSW3NX3AFKlsqG+Z8f8GoIYQ4dfqSyvw0pTMkjTYt2YioKv6nzNE+582lN5w2SPrLNfPLgoFALO8eReHrQitUEZinQO63QiCR/luo5hrrpCKCs2NhmhIXAVtInJGvQwOCzyN8uTuTrw9NhCXjparm7TmfYe0ENimwv3du9KqsbqxAR+CYAbUk8exeyi5DZRjr6Mggo40JFnMjPaxCo2y14eTuM1moXo1pJ0SG/3CmV1SEiHBvx/QShndAml+dMpgZrWx7Qj/FkwYQPXoetg3QKT1XQg831fi+nkJaQncWz7BSjB55Il2uKIocWIAi9KlQrouqgEZrARonHewSOWmS2l3MgDrv2ZUua1RU4/dDvLrgcFaIGY8qFcARRc1nzavCMPvoU4exK+xIMtP+hgnOWHZquY3tqkY4MF/oRWjlh5Mv7GiC5AxoWYatWBNTCS7lC8I6i8/BICY5PKL1nJvzzPbRESI6MceQtbNuXxlCBCFIhCCTp6p6KYxT7YXD2WHGOWlBTyXqQ3KSs63HilBO2o2tFLg6xTtQNCw7V9aN1i2PnZKcCt+nR3XLpT3PpcNb4L0N/pZUZMi3og72taUO+Xn8KS1QJni9O0q6AQVnhvziSg9jakYp1rFDzjKvk5gBOAWaPUoSNEGhcOtfugiwcDLMKzP6kU4JR6Ed9Gmd/lWjdijG5rKOlxuC4B6ZdUrm5KcM67EyolAPNzSTGcluFLsi+ZOg44f79IGZeWPsz7xYy8YP1UbKOEp4bwnIRK
- KCjyaaR9
- IiFkRthJZhj72X+QAzc1wbULo2bWTp0CSUqpyv5c+z7Ol6+yQ8EaqGd4+vxlO2MHAx/Tyl1CxtyQO0sdxViTqJOGjguj2KJNXyZTTjbTUkJmiEC3777XJ50ODAncxjyAE5Aj/+6WTku3j8d8fvQpLwxzYSJnX9VvANputzZtE4ep0Y554yrTdUx+OfRV7vnNfgAMyPxIWFJ/7RdhCeDYUgM7khsXRPhMTlZh6wQ4iVyeFSJhstdGVeDikmqcn/SUax6hI/CqFYXqdR+Am9HnrGlx/ug==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 15E791C000D
+X-Stat-Signature: 5fte7r3pj5onqhzi63teaz54f59ruach
+X-HE-Tag: 1781876736-455254
+X-HE-Meta: U2FsdGVkX1968MGqT1KVyjeIMJSnGPEl5mUt5RYVIzULh56YvYurH5Iz0jSFOuDInSQbkjDeCrqAQaNfNM8VphaPF0Y9cjRv131H8o2ZblhugPb2iArqyPsMDeYEwDgdJ08qDW0EtWPffzdAr/+fey2tBxDZe+A0WNqcnVPsE2gI3oXvUFWUarOklaEzbiTnd0pvZqBDjLwJgcn9IyCpczu9c41yTfbBYU1yAennF1tMsoKRY22tv9QMiC6sg7IGkMsaELerJgkOIXgoGZPGjSsugJPARtbn9I8UuMav0lCJCJjc5xBkYhmVmLYmABTVe/XcfaWoPx2b357V0/EgqjYBtCOmusBdYs8CCPMzOxjo+lkcawe0X7apTX15N59TgY36goTdnNOKkdECedepGPJh5kP+byrj19C6u94uL5x8BQtZqk4JKjimZsHXtkNT5jU2kpcFSuIQhcJzKboqAeWrEMmxolqWfxcKB6epZSWjWsk/cSMo0yuW/gedGUrqj+YWXGQccZM25dVVzrEBTkWVthX2oDPbhKUv80ad/kkmX8eDe772tHjFwwUJJx6/4K0jzQGEocXFFtM/Oalbvd36CXA7bdfFUvjpYLy3AwNwvLVpAEoGBw27MU1MZbeV426ce2f76ufJ0FnSA1MCmFJYKT3QMQB8lvuWjFeFUwek1fb5e/8LZywYt54xBHW7RF5AiK1G0cLayeFuKkLL4uKY0ERqnjia8SCQktS5n9ljTd6lpYzrvRakfnJH97W7nAaInmfU0bRYvIhga8q0S3Ab60PyhyxiKzDAyVKC4kPB5Bn8yXDrTbmCERqIIx0GZRqhK4xAXwTQyfi4invIcq/yeP6Bh6XthLHeSp+P6ZmLurBldo9PcC1ZfAgVRaNFHoGg6ff79Josc//u5OyNc1Tbt5uLO/bhLiiulibosVcKjB1jtrwD06tFe7QdZ/CRUHfMuT6twbUd8EBOmWN
+ cN1cT6Ov
+ LCELZwO1XF0wCeHT6D6nPzmU8AUeThfB1PwPQYq0aT7BCWNr0bqTyU1gqfEX266mZejFpYyl8BmSHYDWE+lZNEiGEid8pkFgMzkWKLIzjthHfJNCBmSSFyZHrXA8M+aYEZ6OdsmSpjywHwiqzMZD6ahcuqBr+vnnxGxQBCQymml0UWcNdgMKHE+FSgNNTQPjMtMq0m7+cpMFL3skQP6NgkisOonyWtDFOp936Yb/rLFvaP7N65DP8NpSWXDfBX4yGmOVUa5nNAZyUA4iJho+7ntIOc5oUYyseO4xSRQir25VTvmHpJIx5YhUWEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,234 +147,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/06/2026 14:01, Adrian Barnaś wrote:
-> Implement PMD block coalescing to merge fragmented linear mapping regions
-> back into huge pages when restoring the read-only attribute.
+On 6/19/26 15:38, Matthew Wilcox wrote:
+> On Fri, Jun 19, 2026 at 10:00:59AM +0200, David Hildenbrand (Arm) wrote:
+>> Likely we should just handle that in the iterator, looking up page-ext for something
+>> that doesn't exist is weird.
 > 
-> When memory allocated with VM_ALLOW_HUGE_VMAP (such as for the execmem
-> ROX cache) has its permissions modified, the PMD block mapping is split
-> into individual PTEs. Without this change, when that memory have its RO
-> attribute subsequently cleared and set the mapping remains permanently
-> fragmented into 4K pages.
+> Yes, but I prefer to pass 'max' to the _next step explicitly, rather
+> than put it in the iterator struct.  Untested patch attached.
 
-I'd like to make sure I understand this correctly: So the execmem ROX cache is
-allocated using vmalloc_huge such that all it's backing memory are PMD-sized
-pages. It is initially poisoned with a faulting instruction and marked ROX. When
-a module is loaded, it's text is copied into a portion of the ROX cache and
-executed from there? To do that, the required number of (4K) pages are allocated
-from ROX cache, and the permissions are changed on that sub-region to RW,
-meaning we have to split the mapping from a PMD to (cont)PTEs in both vmalloc
-space and in the linear map. After the text is copied, the sub-region is
-switched back to ROX. But without that change, the 2M region is now mapped by
-(cont)PTEs for all of time?
+Yeah, no strong opinion, same fix idea.
 
 > 
-> Signed-off-by: Adrian Barnaś <abarnas@google.com>
-> ---
->  arch/arm64/include/asm/mmu.h |  1 +
->  arch/arm64/mm/mmu.c          | 95 ++++++++++++++++++++++++++++++++++++
->  arch/arm64/mm/pageattr.c     |  7 +++
->  3 files changed, 103 insertions(+)
+> The other way to do it is s/index/remaining/ and count it down rather
+> than upwards.  But that assumes none of the iterator users look at
+> iter->index, and I don't have the patience to check that.
 > 
-> diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
-> index 137a173df1ff..19158bacb2df 100644
-> --- a/arch/arm64/include/asm/mmu.h
-> +++ b/arch/arm64/include/asm/mmu.h
-> @@ -80,6 +80,7 @@ extern void *fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot);
->  extern void mark_linear_text_alias_ro(void);
->  extern int split_kernel_leaf_mapping(unsigned long start, unsigned long end);
->  extern void linear_map_maybe_split_to_ptes(void);
-> +void try_collapse_kernel_pmd(unsigned long addr);
->  
->  /*
->   * This check is triggered during the early boot before the cpufeature
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index a6a00accf4f9..d74226fa1c9b 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -769,6 +769,101 @@ static inline bool force_pte_mapping(void)
->  
->  static DEFINE_MUTEX(pgtable_split_lock);
->  
-> +static inline bool __pte_can_be_collapsed(pte_t pte, unsigned long pfn, pgprot_t prot)
-> +{
-> +	if (!pte_valid(pte))
-> +		return false;
-> +	if (pte_pfn(pte) != pfn)
-> +		return false;
-> +	if ((pgprot_val(pte_pgprot(pte)) & ~PTE_CONT) != pgprot_val(prot))
+> I find it weird that somebody botheresd to add kernel-doc for
+> page_ext_iter_begin/next.  They're internal implementation and really
+> shouldn't have public documentation.
 
-Do we want to permit differing values for access and dirty? We do for user
-space, but I think for kernel, those bits are always set? In which case, what
-you're doing is correct.
-
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +static void __try_collapse_pmd(pmd_t *pmdp, pmd_t pmd, unsigned long addr)
-> +{
-> +	pte_t *ptep;
-> +	pte_t first_pte;
-> +	unsigned long pfn;
-> +	pgprot_t prot;
-> +	int i;
-> +
-> +	ptep = (pte_t *)pmd_page_vaddr(pmd);
-> +	first_pte = __ptep_get(ptep);
-> +
-> +	if (!pte_valid(first_pte))
-> +		return;
-> +
-> +	prot = pte_pgprot(first_pte);
-> +	prot = __pgprot(pgprot_val(prot) & ~PTE_CONT);
-> +	pfn = pte_pfn(first_pte);
-> +
-> +	if (!IS_ALIGNED(pfn, PMD_SIZE >> PAGE_SHIFT))
-> +		return;
-> +
-> +	for (i = 1; i < PTRS_PER_PTE; i++) {
-> +		if (!__pte_can_be_collapsed(__ptep_get(ptep + i), pfn + i, prot))
-> +			return;
-> +	}
-> +
-> +	set_pmd(pmdp, pmd_mkhuge(pfn_pmd(pfn, prot)));
-> +
-> +	__flush_tlb_kernel_pgtable(addr);
-> +
-
-nit: suggest adding the same comment that other sites has, since this is not
-obvious:
-
-/* See comment in pud_free_pmd_page for static key logic */
-
-> +	if (static_branch_unlikely(&arm64_ptdump_lock_key)) {
-> +		mmap_read_lock(&init_mm);
-> +		mmap_read_unlock(&init_mm);
-> +	}
-> +
-> +	pte_free_kernel(NULL, ptep);
-
-Ooh, fun. Per my comments below we definitely have opportunity for racy pte
-table accesses (beyond ptdump). I _think_ if you fix that then this will be safe.
-
-> +}
-> +
-> +void try_collapse_kernel_pmd(unsigned long addr)
-> +{
-> +	pgd_t *pgdp;
-> +	p4d_t *p4dp;
-> +	pud_t *pudp;
-> +	pmd_t *pmdp;
-> +	pmd_t pmd;
-> +
-> +	/*
-> +	 * collapse_pmd expects exact address of block to be collapsed
-> +	 */
-> +	if (WARN_ON(ALIGN_DOWN(addr, PMD_SIZE) != addr))
-> +		return;
-> +
-> +	mutex_lock(&pgtable_split_lock);
-
-I don't think this is safe in general. Let's say we have a 2M region split into
-512 x 4K PTEs. It's possible that the first 1M is one object and the second 1M
-is another object. Different CPUs could set_memory_*() on those 2 objects
-concurrently. If one of them then calls this function, we could end up
-collapsing the whole 2M while the other is trying to modify the PTEs and they
-will race.
-
-Note that splitting _is_ safe (and protected by this lock) because you'd have 2
-objects backed by the same PMD, so they would both have to split before
-modifying the PTEs.
-
-I think you'd need to ensure mutual exclusion at a higher level if doing this;
-probably execmem is the place that can ensure that no objects within a 2M region
-are racily trying to modify their permissions?
-
-> +
-> +	pgdp = pgd_offset_k(addr);
-> +	if (pgd_none(READ_ONCE(*pgdp)))
-
-nit: use the getters (e.g. pXdp_get()) instead of READ_ONCE().
-
-> +		goto out;
-> +
-> +	p4dp = p4d_offset(pgdp, addr);
-> +	if (p4d_none(READ_ONCE(*p4dp)))
-> +		goto out;
-> +
-> +	pudp = pud_offset(p4dp, addr);
-> +	if (pud_none(READ_ONCE(*pudp)))
-> +		goto out;
-> +
-> +	if (pud_leaf(READ_ONCE(*pudp)))
-> +		goto out;
-> +
-> +	pmdp = pmd_offset(pudp, addr);
-> +	pmd = pmdp_get(pmdp);
-> +
-> +	if (!pmd_table(pmd))
-> +		goto out;
-> +
-> +	lazy_mmu_mode_enable();
-> +	__try_collapse_pmd(pmdp, pmd, addr);
-> +	lazy_mmu_mode_disable();
-> +
-> +out:
-> +	mutex_unlock(&pgtable_split_lock);
-> +}
-> +
->  int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
->  {
->  	int ret;
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index eaefdf90b0d5..11e0b60264c3 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -200,6 +200,13 @@ static int change_memory_common(unsigned long addr, int numpages,
->  			if (ret)
->  				return ret;
->  		}
-
-The loop here in the unchanged code, calls __change_memory_common() for each
-PAGE_SIZE page in the linear alias. Perhaps it should be area->page_order aware?
-That way, if we are changing the permissions of the whole 2M chunk of vmalloc
-space and it's backed by a 2M page, then we won't split the mapping to PTEs in
-the linear map. Similarly, if we are changing permissions on a sub-region of the
-2M area, we might be able to split only as far as contpte and still have some
-performance benefit?
+Yeah, Luiz was just very thorough :)
 
 
-> +		/*
-> +		 * When setting a read-only flag on the linear region, the memory
-> +		 * may have been backed by a PMD before being split. Try to
-> +		 * collapse it back into a PMD to restore huge page performance.
-> +		 */
-> +		if (pgprot_val(set_mask) == PTE_RDONLY && area->flags & VM_ALLOW_HUGE_VMAP)
-> +			try_collapse_kernel_pmd((u64)page_address(area->pages[0]));
+-- 
+Cheers,
 
-try_collapse_kernel_pmd() requires a PMD-aligned address. VM_ALLOW_HUGE_VMAP
-doesn't guarrantee that - it only says that it's _allowed_ to be huge (and 64K
-would still be huge). vmalloc may have failed to allocate a PMD-sized page and
-reverted to something smaller (64K contpte or 4K). You need to look at
-area->page_order, I think.
-
-You're only calling this for the linear alias. Don't you want to call it for the
-vmalloc range too? I assume the module text executes using the vmalloc address
-so you'd want it mapped by a single PMD for best performance?
-
-But in general, I don't really like the idea of special-casing a collapse to pmd
-here for just execmem. I think we should either investigate a general purpose
-collapse mechanism or execmem should have extra hooks added to request specific
-collapse.
-
-Thanks,
-Ryan
-
-
->  	}
->  
->  	/*
-
+David
 
