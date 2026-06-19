@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3E63CD98FA
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC87CD98F0
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:31:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 481006B0093; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
+	id 803A86B0096; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40B396B0098; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
+	id 7DB7F6B0098; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28DCF6B0093; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
+	id 572106B0099; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F19DF6B0093
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:31:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7442C1C4800
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 228736B0096
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:31:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 961D51C17F3
 	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
-X-FDA: 84894784380.20.418036B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 83699120002
+X-FDA: 84894784380.30.8AB0AFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B16BD140003
 	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HM8OKPqt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=caQZvpze;
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781829108;
+	b=P5oZukg/3atJxCfUpPoxVRP5/sAuivlZrJn5HxfpCtJnjq2c0Htbd5rFoA+xLOg5WsKrJB
+	OyiqAEcCZlOFiDADNydVW5WBhRFuv8KnyvCcDHBXKFIZ787zKP3AA/3BZphD5jWtN41IXK
+	FuWog2tBoiz4qJPKczotSvNZ++vTbsg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=caQZvpze;
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1781829108;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +45,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ojyYsXRPJntG8T5GESvUea7VU2/IevqExnszMKR6Kc=;
-	b=k4FNDbQ4sEtMOg89b6hbfkyRfYYlOa6Baa1NoHWl8tf3DY3c6VGbMJcekvtAu2gY2xgQd7
-	8QHKtAvoB73M2FGttoL9iTkcjzmO0cBtgYaS13GT3qgfnNB4QO8Q7l4gRPLtB4eUAshLoT
-	z/yb3VbCM76EkRaBkIXPmWazmZ73LII=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781829108;
-	b=oFtuMiP0pT2ccxUhPgroq+Yx13OaxBs4iye4cFKDlFRcd00nBDWk9fqfwqLm01NSUEgaDj
-	V2HLOAVByf/sAeBQgXfgU+Luu8iXbYe1nxUkn2hsHSlcacOSY7pV2y828EzXKABM5rFmRl
-	KYbt8N5KeDs9PgAmcUQDh4vrRTALoLQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HM8OKPqt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	bh=qv+OBwWDQu9oGyS/MmSR4LKy5PmRGc/Wo60+YvxDELc=;
+	b=RN0vhwhrcfPYGtyIXR0E4mXf617xEd8inBuu2Z0bGD3DuFuQwZPRyFJwwdtzuZLsNRE1Ye
+	ulZtHyiCIHd90lBi7sm/EZXEk3HGp09gf8TjEgrF0Q4WQm4xOCOyYD+X0sEszfI8hBJ/cB
+	sYYNjEiHXH1BuLyCXHMCevVCJp16CgY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6AC2044558;
+	by tor.source.kernel.org (Postfix) with ESMTP id C7606601FF;
 	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CADF2C2BCC9;
-	Fri, 19 Jun 2026 00:31:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 13713C4AF1B;
+	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781829106;
-	bh=ZYrI6uxALkKkRDN/7kfHeRcqndXH89wLAhVVxi20GWk=;
+	s=k20201202; t=1781829107;
+	bh=Vzp8jCq3+1E3fkxWdqNXAg0Z9BLe9ZDYrsSr1hV0TRo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HM8OKPqtRwYe3av8ljqfZQFZh2WsDDvKpr50eToEglAESFXeemtSm6f8yKjtvwYxp
-	 tg815UA9k+rqX9evZbBD0LMYrMrfpFWgjs61GmmLk5Pl2MhlZDzie0+Nc2IfcWVfCH
-	 bvtLMnIRur5DNSWSwX2/zuB+AhBBDXohWgPrXGo0W6hQDXXeSqC2PiN0M0emrJscXT
-	 rFCvBMPs2Jwz27/UO7BPdbMGI4TT65xaDuyDeNgdGiUyrqunQ0Rab0Ip7GblbOi4f5
-	 uT11sQk18hsxlOsFdDaX3LjB7zoSBYjxDr5q0819+r0vFvPQhhGsJLejGZVARFPJpb
-	 sTLQoUtjli1zA==
+	b=caQZvpzecHz3OPxTB++VuZXF3fiyH30Fbme0bJas42luPEQ47VOTOMYFqb6o9dmGu
+	 Ikw+prrV6Qhwv6xvWnlhvlSHzM4ygr/RbEi8J+8kvy4+gYqUz3ueVxdZfAlPvmFElU
+	 euQHYy0GvsFQ5xHxnrJaOxgKRAoMCvyGdUDQ9JGA0QErIbQNs3izpHISditJeuKSym
+	 vpdJrrPifRxm93o3cumFetsG6Vh/S4zVv3P9L52J+BIn1ADli5pKrttUqB6JX1VdVt
+	 HrF0hoGHr7WTnAAKD9uBkuvMCh6OK/yYRFAaPsy9ijFu9XIKuaOvu8NRNcUZgg4bup
+	 0askpqMceB2vQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF766CD98FC;
-	Fri, 19 Jun 2026 00:31:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 063DACD98F0;
+	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:31:38 -0700
-Subject: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
+Date: Thu, 18 Jun 2026 17:31:41 -0700
+Subject: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from
+ CONFIG_KVM_VM_MEMORY_ATTRIBUTES
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,25 +108,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=8345;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=1692;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=nsdHpKlk+sP4AF3sm4HTiKS8T81szSRv+YhjA8rehUo=;
- b=8qWM8YJmCJIxo50kGb+UQSk/HIisizsO1xrR6VNvgs6iIsdIf/338mBvUZMkIbygHGImC2vOi
- ABNDoq5/mc3DYqQQDnUm6idJuvcY229CCaCpZo0YzSIAX3qmsyRwp6S
+ bh=tPtTsemV3L/BlyDiwtBhiyBvhPxEc3sDZeI948QYhU0=;
+ b=ZOXkVSHaCuMVMkipqLWNhWP1iE87BlVmktp2ZHK+axSNIceX1lSRF0iJBTpQp8efKYl4ZRk9a
+ Ur1GXUZIcQeC6GUzzCDt/JZ3Fmdip/T5fngRW20wYeUkB8SH2S68e3B
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
+X-Stat-Signature: uegnq5oh7won81fgncpub1uuxkatrwqs
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83699120002
-X-Stat-Signature: 8doynje71khbgo1crx3t4ao9wpyu3cx4
-X-HE-Tag: 1781829108-954242
-X-HE-Meta: U2FsdGVkX1/KefMHyeopp9d0Z1wYR+qWq9EXPcmS98QvJk8TdlEo91hTqbuFeJC5T8ewL+x0EYj88tdOEGCe9xpS2ZMuIS5OzZJK1ru2ECdDaf31AAnGMgkd2isCIqUBj6MB9dR9LgY0zW0ZtJf4NxAcOL/sNfmrr0AZ4DI8nQAOlRtCsC8uX9FpAT9J0Bo5a8CdA7lnQtnCbW3VzDwU9BUl8KPrjq9YXBVTfmWNquNCcGlBegfoTmNq0b830ShV6LQi5/v8sm5Uo2ec8O6oqOKx07+wJW1dsIExiJQSdY6S0tchIiknyTtahMIKK20TZgobx6t2qjn/NmdFkJPc9R8VJWKcJu4kjsZ1yD5Dsamie8QaShTB4386WMtqj6k4p97dFChtehcwnSjKY55Vn6RZV0TyzIJmlVvbto19EWl4VKOzkA9drFXbOlSfMZ0Mz4TUoeXzATcGFf5XNmFSfM+wf8YJiCWkg1AcAMxyEzMnm2NbNrUc1KEtdC6cplYfBdOg/RmazEfXn8qFXdF/jq7+ZYoZdhMQCFt1WAwXtU8YztbxxAvBbRTOhy9ZegNMTot9BFy7f+x8ormGVF6gqj8q/ECcj6pys0iy9dgsVSLlEL062ifFI6gfYGEG02KnkHoWAbb1klUNVHdDU1FfRxcVC4usZTnIFbFXESmAOGF7jAfsk7lm2pAjbQyeQ/wbdcZXqDaraJWiNHsDsJsCmz2cNsr6GoWykuCKiSjWbHTssxRBm44zKWkc/EZeVy/m0VAViE0US4wdtWSyTDJyfMuzT5FjpI/iEcWGkNgIp4PC0k8U3CFUEeLga3Qymxl7GtK8kV/gAFlmE91wJ/knmt/gfYgJtaGs81h/xXFH6G++UjJiooGQuyqynmB0r7I031StUob3rUu5Wg+vGtQ+i93RQgWINb9dMjX0X/KlY82h6uQ8IF8U/aZ4faCTz32INTjzPD42MqFsPBvRqm6
- +uAYIUNL
- R5YPGg1NNA6hS4ZE0JpJzuO6XKtVQIMKn5Hi2wBCCEYT1qrBx6Xe6BySdekws15yeLLM/Q3oT8I0k2wnqgw+NBhkDxzlYGASo+LLi9v7tmR0JNHDOaZNQ0PT8sVpddFGD5+vWKk/xFSxzS0b1cbwmdW91VP6kNdW57NmaCRDSSrRlhYRnRzq2u+5scjOu9u1CH2pF/HPjnDqxXJGtFaPEtBRNpsJmTjDnhp52LhnXVA+txW/FWylxNbTvzzBcLIGjJPUqos4Vbq4Fi1RNDYCdfE1RwhAWtCFAf+ULzi67hFyOKx8aeebv6jlR0TYYgiJTrmgbR/89cSed2i2SyG9mjD4TggWYhvJQZD5Vxme/GVXdpoDnUh25pY0Q/B+6wIt5z2gw8Hg80+ey0bQ+/Hpu3uUhcWKGB0fVBli+Lvu9xrgAi1QcuF9mzsblEszY8ExAHL1UOEnkIWBwTirxB2p/Mzh0GPHTSMtVL9xhprLEL879IL0pfGFavJjEkw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B16BD140003
+X-HE-Tag: 1781829108-817190
+X-HE-Meta: U2FsdGVkX18I42vGUI2KYoU2Oohf2HQpO6CGpMslIxlF6/wkcVsSZY0txFMVtPD8fR0SShKlS/PvSHUDlGfcC5AnZtj4/7hESBVk0MbLrDYwEHAbSbzUIRJK1cjuDMvP4ynC5LIqKVQxICPRKoLYRE59oT0nLT6kpF+ckt4GxSavz+ySHItLh4mHjO2PjbM1R4oFZ7fLRBGnb9scZ8tl6wrrZsuq2I69UTcUXMI+hlpxPOP/AQ0+83GFK/Hvn/JU7WRLTIixllKWApc0lTDP06A2ZnOU7JnC2EFhnljPQ6OCDSvGd0dNJsliygUWioC3QLV71YMeDiQwA1iaPp/F45hJe9RJlaKQxdyXjiYNPvYjgHvQBdcBIEzPRMlnQwPwMsqtS7J4hRL42SlFuiQJL8UECH4ZPpvF7t+jQ7g2xz8NMGlONrUwSv0KcFp5WjRMRQgb3jXL4AZMiAT4Ewe6r3Y5ib898SQ5xXN/odCIt8Vmy97zzCdootgYxSi5vD9v7B7eqf4wpXzTcz/e8ds9xZVPJC/KxSWrOiZcCdt3nVb+Y6F3Re/UaIpdQdIMOuIBLD8tfXjheuWDlVh3oJ+dIsvn/I801a+iNIaIfblT27RMxQLGBy7P37pamcbyPKP2+cPqrTVMBTOwAfiTwBp71Cl5lwtM/IRKgm2Trdd+RQQo8En6rpUqau671fCdhLsxIA8V8+C7y8fnZMr3AjSYq1HeAd7KXd1V53X6KztpU8ZbbEuz6XV9TqTc+risc6WjQ8BXRsBGWX07gojWHjdtmnW5nEI6eprtwnMqjenruopjye3Ae/yLE1FeaWIpPCZmXMVYdIcURHHoaNGguDhYk1kwQvMN+Y+dDtFVvs3wvuTKb8QrhdiE8EcR8IlXzHNV4khaCoKNXUKusTSdULwbraQANKIMaGFMDNk1jT3VsL4iwxmY7mgh8iVn6lQtAAStz66cdoEoQIDyI/OSC9e
+ ovgh2TiF
+ ywFbtJBhmAG7J6kOjg9iWruXco8c2Nj7Lf1AND2vztisWN19NCXuz1YQDLLRVmAX7SQ6kYg8FwspxY9SmSnT8wLcRH++F0z6+9H5oM8JtsECx2N/WJzX6W6KMQFtuSw6YHcRtKRsweIqVJhWBMtKyF9hHhgVkuTFrppViZJR81rw4gp25IGpdMmgPxKj/TaUSdGvVJEPGVPFI/8h8vzAwmAr3qjx6t3mmrQxrsP3K4NFp+q1Y6pNv19euGW7XgS7L4VVzGtAwbfNMYPmT4zmwos/Azeoc+ocbxHLngxw5k9Z8wTVPFSgt+SQow6eVIKZBvjxV9xxeLH15minAryxX4uAcyiOtm4BAJVXo/gdc2MVLB+MK8IW2MEFSgzuvG7s8c7vytryHIPSZq/EeSkDI8TH8Qhby2FO/ztouBUqKyr8pZgmfd92NYObmpsf1n6FX0tcBmllvq1YzS98L9idLSyIijEV0nJWViuyPFwfAwZyDL3k4mbkgZubIQl3qZF8OS2mLWtSZTa8855m1u7BhyK61/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,238 +136,50 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Start plumbing in guest_memfd support for in-place private<=>shared
-conversions by tracking attributes via a maple tree.  KVM currently tracks
-private vs. shared attributes on a per-VM basis, which made sense when a
-guest_memfd _only_ supported private memory, but tracking per-VM simply
-can't work for in-place conversions as the shared/private status of a given
-page needs to be per-gmem_inode, not per-VM.
+When memory attributes become trackable in guest_memfd, the concept of
+having private memory is no longer dependent on
+CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 
-Use the filemap invalidation lock to protect the maple tree, as taking the
-lock for read when faulting in memory (for userspace or the guest) isn't
-expected to result in meaningful contention, and using a separate lock
-would add significant complexity (avoiding deadlock is quite difficult).
+With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
+platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
+in.
 
-Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Co-developed-by: Fuad Tabba <tabba@google.com>
-Signed-off-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 133 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 117 insertions(+), 16 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 4 +++-
+ include/linux/kvm_host.h        | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 86690683b2fe3..b4c24fdf159f6 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -4,6 +4,7 @@
- #include <linux/falloc.h>
- #include <linux/fs.h>
- #include <linux/kvm_host.h>
-+#include <linux/maple_tree.h>
- #include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
-@@ -33,6 +34,13 @@ struct gmem_inode {
- 	struct list_head gmem_file_list;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+ 		       int tdp_max_root_level, int tdp_huge_page_level);
  
- 	u64 flags;
-+	/*
-+	 * Every index in this inode, whether memory is populated or
-+	 * not, is tracked in attributes. The entire range of indices,
-+	 * corresponding to the size of this inode, is represented in
-+	 * this maple tree.
-+	 */
-+	struct maple_tree attributes;
- };
  
- static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
-@@ -60,6 +68,24 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
- 	return gfn - slot->base_gfn + slot->gmem.pgoff;
+-#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
++#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
++	defined(CONFIG_KVM_INTEL_TDX) ||	\
++	defined(CONFIG_KVM_AMD_SEV)
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 201d0f2143976..d370e834d619e 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
  }
+ #endif
  
-+static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-+{
-+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-+	void *entry = mtree_load(mt, index);
-+
-+	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
-+}
-+
-+static bool kvm_gmem_is_private_mem(struct inode *inode, pgoff_t index)
-+{
-+	return kvm_gmem_get_attributes(inode, index) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-+}
-+
-+static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
-+{
-+	return !kvm_gmem_is_private_mem(inode, index);
-+}
-+
- static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
- 				    pgoff_t index, struct folio *folio)
+-#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
++#ifndef kvm_arch_has_private_mem
+ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
  {
-@@ -397,10 +423,13 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
- 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
- 		return VM_FAULT_SIGBUS;
- 
--	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
--		return VM_FAULT_SIGBUS;
-+	filemap_invalidate_lock_shared(inode->i_mapping);
-+	if (kvm_gmem_is_shared_mem(inode, vmf->pgoff))
-+		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
-+	else
-+		folio = ERR_PTR(-EACCES);
-+	filemap_invalidate_unlock_shared(inode->i_mapping);
- 
--	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
- 	if (IS_ERR(folio)) {
- 		if (PTR_ERR(folio) == -EAGAIN)
- 			return VM_FAULT_RETRY;
-@@ -557,6 +586,51 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return true;
- }
- 
-+static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
-+{
-+	struct gmem_inode *gi = GMEM_I(inode);
-+	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
-+	u64 attrs;
-+	int r;
-+
-+	inode->i_op = &kvm_gmem_iops;
-+	inode->i_mapping->a_ops = &kvm_gmem_aops;
-+	inode->i_mode |= S_IFREG;
-+	inode->i_size = size;
-+	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-+
-+	/*
-+	 * guest_memfd memory is neither migratable nor swappable: set
-+	 * inaccessible to gate off both.
-+	 */
-+	mapping_set_inaccessible(inode->i_mapping);
-+	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-+
-+	gi->flags = flags;
-+
-+	mt_set_external_lock(&gi->attributes,
-+			     &inode->i_mapping->invalidate_lock);
-+
-+	/*
-+	 * Store default attributes for the entire gmem instance. Ensuring every
-+	 * index is represented in the maple tree at all times simplifies the
-+	 * conversion and merging logic.
-+	 */
-+	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-+
-+	/*
-+	 * Acquire the invalidation lock purely to make lockdep happy.  The
-+	 * maple tree library expects all stores to be protected via the lock,
-+	 * and the library can't know when the tree is reachable only by the
-+	 * caller, as is the case here.
-+	 */
-+	filemap_invalidate_lock(inode->i_mapping);
-+	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
-+	filemap_invalidate_unlock(inode->i_mapping);
-+
-+	return r;
-+}
-+
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- {
- 	static const char *name = "[kvm-gmem]";
-@@ -587,16 +661,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 		goto err_fops;
- 	}
- 
--	inode->i_op = &kvm_gmem_iops;
--	inode->i_mapping->a_ops = &kvm_gmem_aops;
--	inode->i_mode |= S_IFREG;
--	inode->i_size = size;
--	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
--	mapping_set_inaccessible(inode->i_mapping);
--	/* Unmovable mappings are supposed to be marked unevictable as well. */
--	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
--
--	GMEM_I(inode)->flags = flags;
-+	err = kvm_gmem_init_inode(inode, size, flags);
-+	if (err)
-+		goto err_inode;
- 
- 	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
- 	if (IS_ERR(file)) {
-@@ -799,9 +866,13 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	if (!file)
- 		return -EFAULT;
- 
-+	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-+
- 	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
--	if (IS_ERR(folio))
--		return PTR_ERR(folio);
-+	if (IS_ERR(folio)) {
-+		r = PTR_ERR(folio);
-+		goto out;
-+	}
- 
- 	if (!folio_test_uptodate(folio)) {
- 		clear_highpage(folio_page(folio, 0));
-@@ -817,6 +888,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	else
- 		folio_put(folio);
- 
-+out:
-+	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
- 	return r;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
-@@ -948,6 +1021,15 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
- 
- 	mpol_shared_policy_init(&gi->policy, NULL);
- 
-+	/*
-+	 * Memory attributes are protected by the filemap invalidation lock, but
-+	 * the lock structure isn't available at this time.  Immediately mark
-+	 * maple tree as using external locking so that accessing the tree
-+	 * before it's fully initialized results in NULL pointer dereferences
-+	 * and not more subtle bugs.
-+	 */
-+	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
-+
- 	gi->flags = 0;
- 	INIT_LIST_HEAD(&gi->gmem_file_list);
- 	return &gi->vfs_inode;
-@@ -955,7 +1037,26 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
- 
- static void kvm_gmem_destroy_inode(struct inode *inode)
- {
--	mpol_free_shared_policy(&GMEM_I(inode)->policy);
-+	struct gmem_inode *gi = GMEM_I(inode);
-+
-+	mpol_free_shared_policy(&gi->policy);
-+
-+	/*
-+	 * Note!  Checking for an empty tree is functionally necessary
-+	 * to avoid explosions if the tree hasn't been fully
-+	 * initialized, i.e. if the inode is being destroyed before
-+	 * guest_memfd can set the external lock, lockdep would find
-+	 * that the tree's internal ma_lock was not held.
-+	 */
-+	if (!mtree_empty(&gi->attributes)) {
-+		/*
-+		 * Acquire the invalidation lock purely to make lockdep happy,
-+		 * the inode is unreachable at this point.
-+		 */
-+		filemap_invalidate_lock(inode->i_mapping);
-+		__mt_destroy(&gi->attributes);
-+		filemap_invalidate_unlock(inode->i_mapping);
-+	}
- }
- 
- static void kvm_gmem_free_inode(struct inode *inode)
+ 	return false;
 
 -- 
 2.55.0.rc0.738.g0c8ab3ebcc-goog
