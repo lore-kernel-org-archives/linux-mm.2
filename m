@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C6BCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 10:54:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97EA3CD98F6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 10:59:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB3096B008C; Fri, 19 Jun 2026 06:54:33 -0400 (EDT)
+	id 712156B008C; Fri, 19 Jun 2026 06:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3BEE6B0092; Fri, 19 Jun 2026 06:54:33 -0400 (EDT)
+	id 6EA3C6B0092; Fri, 19 Jun 2026 06:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DD096B0093; Fri, 19 Jun 2026 06:54:33 -0400 (EDT)
+	id 5FED86B0093; Fri, 19 Jun 2026 06:59:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 63B956B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:54:33 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CED051C17F3
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:54:32 +0000 (UTC)
-X-FDA: 84896353584.12.85C193B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D91A5C0008
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:54:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="cQig9C/3";
-	spf=pass (imf10.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 33DDD6B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:59:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 92680A03FA
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:59:04 +0000 (UTC)
+X-FDA: 84896365008.08.81B08FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E9A74180002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:59:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gsdvNACW;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781866743;
+	b=5So2DjmCfKIfeGLelRshglFZaru8V9rPe8qG34N933ehxagsXpwG/ThKMfjfQ9d3eE7dQx
+	ioAgeEX5lO8O5rNmhh1QBynIZAOYoqghcpuiZyiuvA2R/TlgUkrg5RNLWTNNRjxQmOLnV8
+	a7939aXWdHHoQ6j8IcaxEJ4SE19hrqw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gsdvNACW;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781866471;
+	s=arc-20220608; t=1781866743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rwn20ez+dkw7n0xM3zxrVu1oqGgCVumFyniEBZtAK6E=;
-	b=T4+7ey+M8zMhx8OlQV8LYRC8vXD9AAix7EMoE4JjV4ETYKniam1Efd/v1tsT1XfnLj+kjB
-	dJK8ITuo91UX2AwKOGJJRY1cAdNt7fKJUm/X+oMKKD9fV41UdV/2FsacQQJL9jUrDfPPLF
-	LTviBwVGbHFQmE2KJZuuWkaz/vkO2Wk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="cQig9C/3";
-	spf=pass (imf10.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781866471;
-	b=S+VCQHDPrFpXu/caIJCFqJyNRkkBr/YDBi/H2PmnJgPtLHRj+lm8pqKEh3Bd1qErBjM/7R
-	tK1Uw2nPe64B6edQIUT54LAqrepn9NKafGrVYSSBXTPRXJk+1teaXTuG5P/PHve2MA8Rgo
-	apNnEexv3YHm4+l0xfWi75gTsaH8EoU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 038F64746;
-	Fri, 19 Jun 2026 03:54:25 -0700 (PDT)
-Received: from [10.57.95.87] (unknown [10.57.95.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 84AEF3F62B;
-	Fri, 19 Jun 2026 03:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781866469; bh=s/f0450p0ipSbzYrTpx30RMlCwIeDpJgQBuLFxB4f7Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cQig9C/3Fs4Qsg3hrx+5xbicCCSIKr5aSxpLihZzHe8fC1h10xTpW06wyAf+FOgzN
-	 0VWqHPp9X59AbrLIvGz1bDw0Y4D+QBT9CI4GqxQgwombbv6UYoI/y7JQagrlImv0Q8
-	 oradQ4Huu+YwiwBD4+kTthIp6ifhKWoeejJoStxQ=
-Message-ID: <666a981f-44b6-4c19-a641-c1eff44fe54f@arm.com>
-Date: Fri, 19 Jun 2026 11:54:25 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	bh=vwdODZErkmq9zFiN5f+/KCnxhZZSgb/Gucmnhz4o3/8=;
+	b=oMtrMvMzeWLyKEO+pRwVxORonQZ+PPas8pENQX+aTpvH6SmAnsgEuJ5Fk3xPzVVNeLV9Ty
+	5KPtImI06Eg4+LTJpBZwV3Uoxqy7fYe3n4zKdTG4F9zu+ut0xyJIOkvKhPWIRGGRkEots4
+	pCM8USKqx/gIOmPw+FW+dxfoVkhTuLM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5FDE0601E1;
+	Fri, 19 Jun 2026 10:59:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE321F000E9;
+	Fri, 19 Jun 2026 10:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781866742;
+	bh=vwdODZErkmq9zFiN5f+/KCnxhZZSgb/Gucmnhz4o3/8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gsdvNACWZjgB+tnNLYPZOc5Vad1o0T/5N1Ua+tRAbo4pammFvs3vGp4FBb1q5HB+n
+	 RirBUJ64NhS768KtBjmg0+LPWHzLEQJvsPf8+meziUJtOisjnktkkc8DUg7r6ajXHY
+	 8KwU7V9FEp6vMTKUDfhRJnnYP+ik5QQ7uF3xHY51Cd+RlPQKPoK6BVwBL7QzxUoLWv
+	 cY7AV/R5X0ERcW6+IFW57TDGW0owu0PxXARcSF4rJSwKp1fo6CHphFjRo4QETGpNed
+	 qK09b5ncbrFw/GbAw/uerjxFThoZPz2rJald1hBy0GgTCwPUcga0F8ICXH+cZ7Xcxi
+	 J1fsp/SzncFJQ==
+Date: Fri, 19 Jun 2026 13:58:54 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>
 Subject: Re: [RFC PATCH 4/6] arm64: mm: add helper to fill execmem with
  trapping instructions
-Content-Language: en-GB
-To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
+Message-ID: <ajUg7gzX-F4Xg-5R@kernel.org>
 References: <20260611130144.1385343-1-abarnas@google.com>
  <20260611130144.1385343-5-abarnas@google.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260611130144.1385343-5-abarnas@google.com>
-Content-Type: text/plain; charset=UTF-8
+ <666a981f-44b6-4c19-a641-c1eff44fe54f@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D91A5C0008
+In-Reply-To: <666a981f-44b6-4c19-a641-c1eff44fe54f@arm.com>
+X-Stat-Signature: mrbasaa6sy74iw5gowd4hemretp1b64b
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E9A74180002
 X-Rspam-User: 
-X-Stat-Signature: bwj3zctthjrydzf1k75kuis34z6ujkz5
-X-HE-Tag: 1781866470-653348
-X-HE-Meta: U2FsdGVkX18L/4N72jnBgpiUKSHSHv17TqYK6pr8iVDVGC5skdIYN3qYinnZ+n1ICwlHNwvod8RQAkQYphYFtuDOU3R56FfNCisp7Vcnr+usfCA+Xt8y953+RY/z6wwBigwj4/QLPctq6sz4EA8xD10NOAHqYktwFosz/mbq4WkHEn2xj0Wv0cSwoucmAXNkpPJDdYq13vhHl9/GtvGzpugUvHby27u7INs3DZh6jxrtG5x88874WipBqtKLhSd32eQYMbqQZiq/g7xqvdAxQZWArfRBhqQqjMvmdUMwDZfFbsHqAgDJUB6iXdp+ACNYiKRijR5X0X9VWlYddtHogsuBDbNbNJTZGn1Al3c3uJHfG9VqvYnPH6KXQK6oM6UAMODRkDsmHta5GqrYcS/FGMGq1H6bN5XRr+CG7g9xndQvTu2YNuA2v8zBAp8M4YfzXuGx4mF3QAQk5MG5GsKqti5LcYT2nrB2sBcOYn807B5MVpO+1a98CDU75c5OcOpZHF/K4LgIZ5JNRZS9sBzfQEnqRz5H5eFnkvspyDFy6dRhvIXnWL03ceJsyzNMFMBb4iz1NcWwXF2/F/prs1zsovyCE8eiff1K5rGy5Jg2ch3W7iMApB3RCGigrHx/x4n9N5ghaPeqZ5ku8uXKL9tCr2GutTaxGxrbgrJUJaypRBHprhtD1OPeNRkjM80T1j9EqCYtcLexkMennKvJnoSWazKc9iz0C/nFqctQSP1QmAnMu14H5TsCsYshQptse1CNAnJ5N3i8jAol8++W/gcyctB5n6tzWHjN1s+Q1qD2xefn+QhDfSt9D6LI36Y2KG/G+lfjtmyWXV2tLdMtwtQEeHt9IgWmY7M6CHZ3YTZHj46Mdk7ifGlU25MHM32B3HXwn0B47oUO7kYuCpbTxDhm+bJMoFam67UzGqGTY34YgVig8MUUsr2OKFAX1nGiYZDDR8wJmjFH8j3xtukyvBT
- dLwc4RrV
- Ge1SkGISzOEJd7BOLgyAYK4w18VRHer2qix7Lj5sqiL0sxFnBulI+yUp0mvqoexDkVikLBtTfOKADWyN6d9cWN1E7cTXsS0G9yLw34pFourLd6Jo4KYuy0fBlUyjstALrYvw/Q90eJwS9V6Favu5Hs7txJNVZ4WCDTI8MnkckBAXQVd3MuzqxPATozEBltmBw7yVy9LqoMnufFpx2kSLGe4s5jQeWt9rStPnoMsxAHohxSC5IF57hRj7ajWGwFjXLRT1d/2XeOezv8sHvKu8Sx8cTNg==
+X-HE-Tag: 1781866742-477570
+X-HE-Meta: U2FsdGVkX1/4u0uSPp5EnSGRST0ClZhESYVMQMZIOg7IQXMrQDJ0WDgkTB0MKm5/r98jORfkwGE9OpD716u4VEckM6VU4h9pk3kSFpSmjZ/8IehzuUg9dhXtl2697lVgFYhDvJ2kBuNkhV2en6HghAubtOojfbOU2COGONiZi2R1jt9k+JiirTnSk+QK+bl5XyMy9oCjVu3FeZx2dJNwjU/4ZYh74Js8nhizx5uxiB6pT87icpAd2DHIqiLynPoDFbjQ6kvT9egQhWyTgGFA/avoVbHAUCC3sKp++LsZFOvZ9WdTesQdo1LBqT8AWq4UVg0rAltHM6zT8PRlUrN1Xw3Xqr074P6vAOyNnJmez9TZ+tUkK7jPuUWcZabKGRuAqJKEM9D+RCptsWZ9mQ/JkhMBdMMgDvsn+lz4ihJTM9JFBg+V+kbfrpONjjQve3Ysod2RNhMKHtwsusNYv+dkX2pBOvFl2eEMi+8NL+ZNrU6Q6+ehSMeUPGnK3zgXiycvXcUSzB583+aVp+QZN72KqBt5rNHhuyg8Co/Z8kK1vhg3/qdwtUDyhp07zYJPl1GemQtMd9bGcz/rl2YVk6nafIph+sRbucVGeKEWgna8Y7EtbsIddrSgSH9jFvjIBeeCfUKyad7NrkXQoDaz4hxFMJabdClRImzZ+Bw8f2cwKuiQh4L9d2IOCU1A8P94ytKKqN/Onp5Kp5Vp8eRcWXz4Oa2BomfAYqOeP0PKkJUltaj7sTCVwGaQ1dqujNagVNX3aPfaXD7f6T+Z0ruTx4fUDFvnXw2sTxI23glRsG15QraQr0Dptcv4BxEHBirxHM3cg+Ox35DlkLZtrtgkcr0fQIqT7frUxojHjvSDf+78OKOfxCpC9HmswC9JeNvuBYSAu4n5lLZNaLi0KL4iNP/VMOQMmTBQDAJ0P2J6OuwFNL0UtVvyrBgSLYlGeo7P3vLOc3E3EYf77tv9ppHakSi
+ W/qsP2mE
+ lV26jxvcIQC4LQqeLNaHaCfyEjjw3fub4fECpUr5/IIQETPNoNe+9tJLwDU/bHlee6kc0q5fPDJm51gFfXC/DLHnSagF5uoWSCvS8GxJVBc6hXb527F1HN7PgRoMaWca4adahbQBd8UVG6iDeUlJPv5cE2BVobYJQCPTS4h7k5H9OQCDRwpC/vEsuZzIBCyCKjCwn3OFNszGaPrltBuI3z9kkHvQtX4AZ1J1TtD1O4LCn4y+RzRWWmuGmyPe3P+HMxBehUQxk1+fj/RgRIxddwFqMTR/xJUlTQg8vuy3CWFRFCKo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,56 +100,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/06/2026 14:01, Adrian Barnaś wrote:
-> Implement the architecture-specific execmem_fill_trapping_insns() helper
-> to poison executable memory regions.
+On Fri, Jun 19, 2026 at 11:54:25AM +0100, Ryan Roberts wrote:
+> On 11/06/2026 14:01, Adrian Barnaś wrote:
+> > Implement the architecture-specific execmem_fill_trapping_insns() helper
+> > to poison executable memory regions.
+> > 
+> > When CONFIG_ARCH_HAS_EXECMEM_ROX is enabled, the execmem subsystem
+> > requires a way to fill unused or freed executable memory with
+> > architecture-specific trapping instructions. This implementation fills
+> > the specified region with AARCH64_BREAK_FAULT instructions and flushes
+> > the icache to ensure the traps are immediately visible to execution.
+> > 
+> > Signed-off-by: Adrian Barnaś <abarnas@google.com>
+> > ---
+> >  arch/arm64/mm/init.c | 14 ++++++++++++++
+> >  1 file changed, 14 insertions(+)
+> > 
+> > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> > index c673a9a839dd..71aa745e0bef 100644
+> > --- a/arch/arm64/mm/init.c
+> > +++ b/arch/arm64/mm/init.c
+> > @@ -408,6 +408,20 @@ void dump_mem_limit(void)
+> >  }
+> >  
+> >  #ifdef CONFIG_EXECMEM
+> > +
+> > +#ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
+> > +void execmem_fill_trapping_insns(void *ptr, size_t size)
+> > +{
+> > +	int nr_inst = size / AARCH64_INSN_SIZE;
 > 
-> When CONFIG_ARCH_HAS_EXECMEM_ROX is enabled, the execmem subsystem
-> requires a way to fill unused or freed executable memory with
-> architecture-specific trapping instructions. This implementation fills
-> the specified region with AARCH64_BREAK_FAULT instructions and flushes
-> the icache to ensure the traps are immediately visible to execution.
+> The x86 instruction is 1 byte, so it can exactly fill any provided buffer. For
+> arm64, the instruction is 4 bytes so we can only exactly fill the buffer if it's
+> size is 4 byte aligned.
 > 
-> Signed-off-by: Adrian Barnaś <abarnas@google.com>
-> ---
->  arch/arm64/mm/init.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index c673a9a839dd..71aa745e0bef 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -408,6 +408,20 @@ void dump_mem_limit(void)
->  }
->  
->  #ifdef CONFIG_EXECMEM
-> +
-> +#ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
-> +void execmem_fill_trapping_insns(void *ptr, size_t size)
-> +{
-> +	int nr_inst = size / AARCH64_INSN_SIZE;
+> I'm guessing that in practice, size will always be page aligned so we are good?
 
-The x86 instruction is 1 byte, so it can exactly fill any provided buffer. For
-arm64, the instruction is 4 bytes so we can only exactly fill the buffer if it's
-size is 4 byte aligned.
+The size is always page aligned:
 
-I'm guessing that in practice, size will always be page aligned so we are good?
-Perhaps worth a WARN_ON_ONCE() though?
+void *execmem_alloc(enum execmem_type type, size_t size)
+{
+	...
 
-Thanks,
-Ryan
+	size = PAGE_ALIGN(size);
 
-> +	__le32 *updptr = ptr;
-> +
-> +	for (int i = 0; i < nr_inst; i++)
-> +		updptr[i] = cpu_to_le32(AARCH64_BREAK_FAULT);
-> +
-> +	flush_icache_range((unsigned long)ptr, (unsigned long)ptr + size);
-> +}
-> +#endif
-> +
->  static u64 module_direct_base __ro_after_init = 0;
->  static u64 module_plt_base __ro_after_init = 0;
->  
-
+-- 
+Sincerely yours,
+Mike.
 
