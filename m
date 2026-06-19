@@ -4,126 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69456CD98F6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 04:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B18CD98E6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 04:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A0A66B0095; Fri, 19 Jun 2026 00:41:42 -0400 (EDT)
+	id 559366B0088; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 577F96B0096; Fri, 19 Jun 2026 00:41:42 -0400 (EDT)
+	id 509D56B008A; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48D556B0098; Fri, 19 Jun 2026 00:41:42 -0400 (EDT)
+	id 3F9026B008C; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 231E76B0095
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:41:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80C601C1151
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:41:41 +0000 (UTC)
-X-FDA: 84895414002.13.0A082C7
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B60CD1C0003
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:41:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s1OgCiml;
-	spf=pass (imf18.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 142266B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:44:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AFB81A0339
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:44:52 +0000 (UTC)
+X-FDA: 84895422024.17.05BF06E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8A4161C000B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 04:44:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=P9xMpzZA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781844099;
+	s=arc-20220608; t=1781844290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-	b=rcKGFXVzREdp+l3khLevnimOZTuu1qt1LtCBB52qlNgQngYFJUcJp4NcWSSEoKoL68/N5B
-	HKFDoLNy0YmoCVxB5GT/1a0WM1P3+ter5PnombSKzC25DTZnNUwTc/7dGXndZAIexcIley
-	Vv81+tRQx2DwHwjm3udN6ldxnS74ofQ=
+	bh=QZRxrNaXMUb1YLJrXKm9qGVCUVyefQ+jPumrFbXRQBY=;
+	b=UDHBsIYLq14RTIwvZIc5Y1o7Vk66q0Zc9tHIhbF+xRffd5Tkg166O4zMDOND+eeD/H+3gz
+	JVoW8OLCfsCo5rT0Pp4JGC7KRWQTC6Kuy37cqHsavndO9zMo5htd5MvI2LocZrXgBjmrt7
+	uNdRss0ATitNlXsqhALrNzwN6a7Clhs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s1OgCiml;
-	spf=pass (imf18.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=P9xMpzZA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781844099;
-	b=KF86/AexbQ8eQxqw5lMX5Cx+MbCM/6UiJWSRLC7VD+pe20ONkZYtxXQIgMOO+sDDiUjc6l
-	4TfdN8jTWeNphccFQ3jLOwWXAPyJiuArzFO5zOve0P0vZr5+WwrBk/jiKUyD7Rtkv9k5ea
-	DhZw1vuSGHpNT3cU4F34RhQDzfc+TZ4=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c6c57c5bcfso15438945ad.1
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 21:41:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781844099; x=1782448899; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-        b=s1OgCimlntaDd3uEG5WRN1+4l+TD6WVZySUtsTIpj0oIc81/52+MlmRXkzYBU7yHGQ
-         1IDZ/MhNYxpYaXGX84XGEivSC+36eG1HdGcGJqdWFVA9lkQHI/suxiZ8z4WSpxxv1JZK
-         eJh3swTHOhj0imnR4ruaTJDGl8ZiqC0z2O41VIK6bJlj5DnUzwH91YHzftDvQ3AQ3ft5
-         uRP67y02G44Kp1KxFFAB8S9vJ8IWGLLDlamn3r8bZ2J8BvUhtmYfyagtu7WIbgSzRTSj
-         gypHkzgcB1hXomcV/w5IYDMElwEzc2E2AP994juvOuGXgInznxWA9IttP0s0X2OVYT74
-         qZFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781844099; x=1782448899;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=I5UsMmNx5K2MhulwAdPqrD4ef826gnyJGcd1eOHt5Pg=;
-        b=bgVb/4gOYqIjbqo+gKT0v68rk0YEtTL+2vOgioDhaXEL+VwlFTCPaHIo+KWuK6NzIv
-         AwYpmzhKlAzNPPs5P4jok13r3ktH7qnIXY77yprOp8nXxpLlIb/0ft4jzlN0+11Sih1U
-         9wU46SsuASYAU5vQOgCyXCh+RY9h/oLAO+GfaEjJxUIqcyzg2TIUIQzr6DehLXXXhWj6
-         GKwb0JTD40xk7bHUeKu1JeeovJuuaR36ZNglacRwjBZkra+2L81Vd09ztUCs2isgFRYK
-         q8sajt21W3YNCqUE4AmOMsBOuyr9JLkI+e3oUoMfxI6L+neLm1aA9YGpLKGXAXLdeqgF
-         o/aw==
-X-Gm-Message-State: AOJu0YyI6YPmDA7LpaBvaT1ouco8+kNnljpBjHpC9x1MMBteQJALYYYq
-	6fg95P8kdN6eG2SB5DZGBr3u5wiu+qfwgczsgw+z/AOl/1+8lutBI5UQAjAQ3A==
-X-Gm-Gg: AfdE7clfDy6yaxA1mQtzymay0dHlxTVlqquH0zAhKbWME6oMD/YaNO6D8TGJEDhDHUZ
-	AI+CodDh3751gLRYJVzoCZWsnX80bWpVRt8GAsvhpjssB1i9C5AikXaVlyzsRlSZ/jg/xorXs/v
-	eIupMB8GwrF7iGJZ/zeg2dcqbE/ebZCJgxg1mtZO25y7CkmWeCCQfNHI6snWlhwqk9aZCMwNjAX
-	DJnHLFcwtupXn8cK76Lqw25rLOm+ZHiUC442nUK0V6twgjGAX+3z2zRq8yaHgv4wTNVZuIR3CTV
-	gxrRbDP6mG+I2gTV+9lWYsjnReV4aZgSgwpuI1vaP4sBqwIw4eadwYQW6t5PfwqOno4Tw3Qnynm
-	9zkeRktkiTjPzw2F2QSa6nj+4VW64eXcUcqtfa1gsPJeZnrTDFhcYOojDJN37bEOFnqZqzbInGw
-	kfljcc4jXBnDF6WcdoydyPkQ==
-X-Received: by 2002:a17:902:d54f:b0:2b7:a350:463f with SMTP id d9443c01a7336-2c718dd8598mr24155975ad.10.1781844098519;
-        Thu, 18 Jun 2026 21:41:38 -0700 (PDT)
-Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7208e5760sm8293735ad.36.2026.06.18.21.41.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 21:41:37 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linux-mm@kvack.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v4 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
-Date: Fri, 19 Jun 2026 10:10:59 +0530
-Message-Id: <ecbca3be3fa8bd7e213d013a2ec6ff9a11c6e0d1.1781843449.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1781843449.git.ritesh.list@gmail.com>
-References: <cover.1781843449.git.ritesh.list@gmail.com>
+	t=1781844290;
+	b=6jKzfDBnA1lWlFvljbu8d2KQ3dQ0d3L2Wm8YsAvmuLwVr4qjkqg1++w70sH2tJhBhMRBiy
+	kngphPKln07W7gRoZYzzDnN/xk1oy6IswgJsGiozZBbYIYKkXst3hXZ8DV2aNzgz8xHRo0
+	/z4POrACfBwlBqf2WnFlo58MnpnAVMQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A894293F;
+	Thu, 18 Jun 2026 21:44:44 -0700 (PDT)
+Received: from [10.164.148.42] (D3H2TH2F54.blr.arm.com [10.164.148.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F07F53F632;
+	Thu, 18 Jun 2026 21:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781844289; bh=ps5ieMGO5BqQTpSXeGILcJmIGXlH2aB1crQD4y2zbKA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=P9xMpzZA3w4Ud4GhNZYAR7rMtLEydQwCTF5BmTXmZvPjLCv1UXfUP8+r8Iq8CbCLQ
+	 nRrOkqVf1Wr8M0pq84KEAZLTFtdvS80erxNi0JgM/Kw6LvYGCLadma1qHOiO2oStX9
+	 L5zWdZrvA5KAhMLYETPu4C+RFIalR3vIj8I+cxO0=
+Message-ID: <7b4f284c-9659-4422-a452-e67dcbfb0140@arm.com>
+Date: Fri, 19 Jun 2026 10:14:33 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B60CD1C0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] kasan: hw_tags: Add boot option to elide free
+ time poisoning
+To: Isaac Manjarres <isaacmanjarres@google.com>
+Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, corbet@lwn.net,
+ glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org, catalin.marinas@arm.com
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <20260612044425.763060-3-dev.jain@arm.com> <aiyi5flNkNNm0pSR@google.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aiyi5flNkNNm0pSR@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8A4161C000B
+X-Stat-Signature: sxncr7oq3iw5uoiyd5mr4uxjuh1mozio
 X-Rspam-User: 
-X-Stat-Signature: g1uu851us3d5oujr697ky313ymx3pq4s
-X-HE-Tag: 1781844099-156533
-X-HE-Meta: U2FsdGVkX18kMXc8/HNJXSyRtmV2xPN3dae9zAAs396mO1S5zX3MJI72PfSe6M3skU5Wy2KlE+tqYxHkqvzkCue7xolXdefbeB3sc1vgkWUYpjfZEAlJTR76SuROQXkfXFhHvOrvyILywQMtIOi5bGBisu9anaA/0Okco5E/hJFRTBnTn9YdN3/KabWGV1pVvLOks/6UVjGaQN2xb3gKj6+VzMyJOYCBTpjj/uBjvPFY0iJtJ8ac1NimXSRl60lzg1VLzladxwVpEEmZdsdFmu2xgWWRoNckxuERxRNKxvl2CJoEi9ntsD1ytGbXpNdQuGXn9N7pZuP0cbDmXm0YLTlgIgCAyCy4OYhh978W5FEQwd0MwX0i/kCxYzg+NNy9GjVkDEiXgxxMZvQWXddxGwA73ePrHgJsDn2ve0MF86aPxkguMsHpEIyIUJoWhTLoHNVpwrhKdsp+oYtt2Tk0cNqnkqo3AYpzrL1aCY/QaX0Sb0ncX8CH8TtNV2kLG0N69JYG7slnyjJTkCC2lwNhayUvlmq+/ogE7ZYtzOBpwZbiGxiKDKoXCJR6FP4wxl86e92fVVxZWTTSzMewyU4Yc4S7mKsdlbXV9Zc051u91BLOjZfxhEoX+t4dMYqqfyk17AsIFrdhFOlclKzL+3magj8nOu1T1R89rtvW90fBUkv6+judPF2rVA/4n9B67EtHHUYSBJ3azyuOP5EjtG50vEPLxKmrbCCy3l1MsXA076nPll/mtwWUzDTCq3IWqfiWsS3qWnFigVgX19sL5byvjqlKiFuImqBx6rzw3A8M2Nk4bhnFSJq/OttqcQ3CX2kSyS1H+r6jD7XIP8rsZU7Ne+OBRC1wRxHN/47TEMBHO0rENzjQMgrpf+P3y5YJxG49SjrmjCHXwjzGAZXGePmYw239nkS+ZKApuERvUuXKhVszMvAnq5yWMc14BCcfOxdIWUazPm0p6wfKXOL1DdB
- pPVo6rKa
- Uf9MOiYYYOE/Nso5t9ABdJXYRZqiBDY9Bd/aMpM+ZjhI9yE16vEJZLH08zcwAXtMTxa3d2c6lT1xhwY6Rj9QR1yfRCbg0dBo/PJpdobYUJSJ2xml58Zajyi37KVOUrAjA3nzXfdFt8jiDxJYoHqxMM128cH21H+ozQE9fWHIv4j/uJEvq4j3FpKsMKoYiF6z+DH/Gu7IhjtkwT8pknRbqgtu5jQZzX4BYjv+2fhoHG6NF4CuvKdKmqFUZraA1Qas8xH3SG5fRhWoxs8B1ld5bWHMWgTBPQql95w9UvBC7X6qfwfH+7K2BbeRRbDiUa1/Qx9MVA281yIZczXnW5p5bAKBt3GcAOcKuj1RhbNkm7kZEF7ZcY0j65ruqwWSKrdWStpqCB7iKlA+8P43MnouJ9i4bWCwGyeGJqaBRUBdrytotEG+n+Yh72fU58nTNdA2nCNO0WtpS13jqTdJInixbLf9yCk/p44S0PP+MQCCj+PUfojx49Ts7dnnG9uGM2JmgeTUBUi+EvoCrkqLhyg2e2PQpvrEWrCF/7/8vAynE9louP4S/3dYyNBX4fMqP0bN8qjfJIhdTRAEzVTh7jeUqVEpBuvyrWFSZ+P4K
+X-HE-Tag: 1781844290-697287
+X-HE-Meta: U2FsdGVkX194p3MfIOAMtSF+BL9VRNhfGo1YLsV4f9+gEe3RQwrM0RXfCabDLrlUHFc5ItlEU16QEzU4Hz4JmXqy8YYw30E8BAHZhU/scjaVQr5MClOMGnRx0XGQdFzKVvgfzYRkWXTabhhYMinPkjAB+33Gj/Bk0QJlFIz50cRewmo5cp9mcxqHq60H5cZLxn/ajNNyoBFtkeaQNPy9+qTvQ4an+SRoi87kY5m5VJqdLrwoMguyEY2HL8hFp33FZ3VX2Fs7wjZZAMp/eRMm+h/zjGkAMHvuIHkwmsbmn8/bEkqkFBEZwsxYy7KbTaBY7j2RJxBByzIZ31zA1KQdNkBcupViup/KEL3WgzrT1JfwGPyHQWCWzl+caNGCZRCfAz+JB2TjR/LICpWMag4vqhINVdb4e/qoNBBT+VAXc1+Q/uEqRJJ4/WmQAQE8MCg5taFDYPzvwwdASp1mPgegilb+xlo8+xufLOuUO3jNddKvpQZpfq1XF6G7QgzOIVSrUwRRjExcGQqcnkzoY9G1DUMJcWpSqlJAi+zq68xOc09lf5VmJqp7vroHz3/pYT1qKA5aD4u5yoTyqT8Kc+CZA4R6jfqX2xg2jVh0hRlDXAhDJsAjon87PvpeeIyjYqPuzvOP0okj5t3Je+ptNa6R7jsbK74Iseom18Cj5x+uDQo12batrI2Em+EVcuaWnWOw7G/xITDjanM7G1lHSy9QeV7Bo3IrXdde2UEGIyKqN7lxpfG7HI8iuFxtaG9bs9IheMeT21nv6sGParYnTU7RGmAb1ZmRbyqsPj1Tkk3ycFy1aKaEjgWkWTB7YySZL0/9egYgB5Dip0ny3qm9EvjgMyZQlFVEr2p5Qcuh0f3QO93tMf0AfztEExWdd8S5Bkb8u0J20fJrN4Pm908rjxqTb1nGTI9WJlhmQcc9wNGuCwI6n/aXBLeBMqzGutwWSsKABhmOV44zsdcAqyxR5yY
+ Ve5J6i7M
+ hINt/umTz5cULlKMlm8e5VTydNwX3d3jDBNR4eluT0qeiw1JXnqVNXby0k9BfFd9zyoZf8y1/1litrODxXmHeBVZO0kBJBapcDya0u2d4EjDEDMkq8xVXdjjhKOkV2Ne3mxwqtl2Z1zGfcpppV5tc8b4oF/wRGjUFVAdoJqUVt9/6xJkmiuxgpH7ZD410SkOyTruzQHSiKReWcVGYkJhZyvPcsVD0Vx5hrgYHqDF8XZYmMwUC1TIIL1BGtWT0ZZ/FHT2IcYZV1lvrMEhyegvcDObqWvZxAyC9SxC4XTwyoAykK2U1Kg1WGN23xWAzfUYIPmvP2+BbhF2m6KRxFcqZeTDvMlqLQlfRF1Icd1C7ImJEZlo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,42 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
-64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folios
-(Hash-64K pagesize / 16M PMD), during swapout. This improves the
-swapping performance since all the bookking & I/O submission happens
-once per large folio. More details at [1].
 
-PowerPC Book3S64 could not enable this before because PMD_ORDER is
-selected at runtime depending upon the chosen MMU. The earlier patches
-in this series turn SWAPFILE_CLUSTER into a runtime value and introduce
-an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With those
-changes, we can now enable THP SWAP for Book3S64.
 
-This increases bandwidth throughput with zram backend for swapout by
-40-50% with Radix and 100-130% with Hash (Tested by Sayali)
+On 13/06/26 5:53 am, Isaac Manjarres wrote:
+> On Fri, Jun 12, 2026 at 04:44:24AM +0000, Dev Jain wrote:
+>> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+>> index fc9169a547662..4fa8abb312faa 100644
+>> --- a/mm/kasan/kasan.h
+>> +++ b/mm/kasan/kasan.h
+>>  #ifdef CONFIG_KASAN_GENERIC
+>> @@ -478,6 +489,16 @@ static inline u8 kasan_random_tag(void) { return 0; }
+>>  
+>>  static inline void kasan_poison(const void *addr, size_t size, u8 value, bool init)
+>>  {
+>> +	if (kasan_tag_only_on_alloc_enabled()) {
+>> +		if ((value != KASAN_SLAB_REDZONE) && (value != KASAN_PAGE_REDZONE)) {
+>> +			if (init)
+>> +				memset((void *)kasan_reset_tag(addr), 0, size);
+>> +			return;
+>> +		}
+>> +	}
+>> +
+>> +	value |= 0xF0;
+>> +
+> 
+> I wonder if it would make more sense to have this as:
+> 
+> if (kasan_tag_only_on_alloc_enabled() && (value == KASAN_SLAB_FREE ||
+>     value == KASAN_PAGE_FREE)) {
+> 	if (init)
+> 		memset((void *)kasan_reset_tag(addr), 0, size);
+> 	return;
+> }
+> 
+> That seems a bit clearer to me as to what it is that you're doing, and
+> also makes it so that you don't have to do any bit manipulation
+> on the value when you're filling in the redzones.
 
-[1]: https://lore.kernel.org/all/20170515112522.32457-2-ying.huang@intel.com/
-
-Tested-by: Sayali Patil <sayalip@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/platforms/Kconfig.cputype | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index bac02c83bb3e..48f74bd22343 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -113,6 +113,7 @@ config PPC_THP
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-        select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-+       select ARCH_WANTS_THP_SWAP	if TRANSPARENT_HUGEPAGE
- 
- choice
- 	prompt "CPU selection"
--- 
-2.39.5
+Ah so you mean, we can define KASAN_SLAB_FREE and KASAN_PAGE_FREE to be
+different values, leaving KASAN_SLAB_REDZONE and KASAN_PAGE_REDZONE to
+be 0xFE, the poison value. Yep I'll do that.
+> 
+> Thanks,
+> Isaac
 
 
