@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3DFCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 11:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 119B4CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 11:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECE096B0088; Fri, 19 Jun 2026 07:11:40 -0400 (EDT)
+	id E57D76B0088; Fri, 19 Jun 2026 07:29:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5A56B008A; Fri, 19 Jun 2026 07:11:40 -0400 (EDT)
+	id E08A36B008A; Fri, 19 Jun 2026 07:29:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE3D56B008C; Fri, 19 Jun 2026 07:11:40 -0400 (EDT)
+	id D20266B008C; Fri, 19 Jun 2026 07:29:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B38196B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 07:11:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3AB421A03E2
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:11:40 +0000 (UTC)
-X-FDA: 84896396760.21.1302981
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 915F140004
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:11:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i02R1fLG;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781867498;
-	b=mtKJgYpahaw5XZYUjdNRsSWvFRVL+W9iyujykpK9nx+ADbhQQvlTyfZNid1vPeSosbBRXV
-	NT+rzeFMNOvhGeWE9r6GKSjZHw2nBlzJmWySBWntVswa1CkJBlp0ppJ0wq/RhPRIEPE5wS
-	xf11An1pgj7HUiYY2y5WkZasm/EtOcU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i02R1fLG;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8DAC6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 07:29:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FBCDC1E43
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:29:24 +0000 (UTC)
+X-FDA: 84896441448.14.7788B3B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 702DA14000B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:29:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SelOo/Ad";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781867498;
+	s=arc-20220608; t=1781868562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iJOKcZvygsqgxm7muAKd+76uHoZFFY5TClZKa0FpZrc=;
-	b=jK2i3l7BjOMjS5aYWratBoroS26OaaYsiv2ZmMLsDoG01UlwKBeJ4X+cNqt0hSw9zZdBhu
-	1DoYb4wvMk0ZZX5WNILyDxONprkP0fNvdJNzfI3hsUeHszV1zb9NtqLUhmpa6nOocDHYl7
-	wl8Gb3qudDrTp+t6f9646q94apkbxkI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XVCrf8HvVxE+bRl5h9tNkVxezrW+pDd7ettEGUKaEVs=;
+	b=OuQvM0zWc2cqgBYXVDwd+mkTvKDNPg5wAhUjop3K43dyzYS6lc19pkD1a9RDGtYFR5sjDr
+	ng9AUGWkScpybHHNq/G10v64aoT6+sjqshEdFhTAU3Pr81QId6XdsMDU45qjyz4MZA0A8i
+	dVxHe3M44+jXd9UCv7PpRRkwz3rUGFQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781868562;
+	b=XmaRZxprs5bsRnQ1msApMkbdfHxkNonXILBRXcSmMoUG0m60QYZbi4ofzJAqsexI8Zg8ct
+	ADhuyPFwumMb1u47vu9NbrGEv/62OUYybTv2aQnjTmOg0dXDEbK1+K/vTl7jl4MkEuTIQi
+	Rnrqrr0/ICNOEzhjzw3qfDklcV9aBkY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SelOo/Ad";
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10DC6601E1;
-	Fri, 19 Jun 2026 11:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08641F000E9;
-	Fri, 19 Jun 2026 11:11:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F0B042B60;
+	Fri, 19 Jun 2026 11:29:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE461F00A3A;
+	Fri, 19 Jun 2026 11:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781867497;
-	bh=iJOKcZvygsqgxm7muAKd+76uHoZFFY5TClZKa0FpZrc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i02R1fLGWodVSipWVNcr/NHtzTLSPn4Vwoo5KZnlFsrozVruc5I1skirY/Hh6Yc9L
-	 8R+b7OuoNsli3otBv8hqVAmkK/Df76UWA2/NwJ9UnxH77HoXlL2rx8gGZhzHsF38mZ
-	 MirD6gCLvbH0teVyfEPwjZvLGN1q9I7kMqQC6MebmoI21QQSVKyAlHvx8JJ12KW0W0
-	 Tx+Uo3E+Q/kLwCjBHoqk2IJ7f9vdtFfVFGcKRUNXhHJ7QcRnGz3gbukp8xjcoVKEte
-	 MJegk+tCRGtXs1nfC9l0Mx3DQAcJnT14ZrOoVUzxT0FVbx11etk/prYlwB+dtlrhbU
-	 47iIEXXmJfNJA==
-Date: Fri, 19 Jun 2026 12:11:31 +0100
+	s=k20260515; t=1781868561;
+	bh=XVCrf8HvVxE+bRl5h9tNkVxezrW+pDd7ettEGUKaEVs=;
+	h=From:To:Cc:Subject:Date;
+	b=SelOo/AdQuAQPpsjvtqYcU4+edYFOmKso1hIFDz4VNHx0xcz2YLDyxMzuy36UTYU7
+	 ENjCp3PtBoSHMEdo7smxnYERQDVeRrS13nOai9nzAmb4fEDkkH6O8Go2jwieye0Qzv
+	 tPhKNfA4mesrHRIIbGo3wT7kBFqhyLMhjJR4qtgqdcK8jjy6LrQPOOv3IfH41VmbDZ
+	 5eZ0oVfoxFlkBuz8jNUbeXrU6sg+jOtFhIIsS+QwJJuvlRNuWbuRtATJTjfiwkro3Q
+	 84Nr695J9D5QR1MQ2TxrUO4txh6pKyGZB+uDwv2+EoqlhfgWAPB/kPlo/CIw9TD8cf
+	 uCFBIYIdZPl9w==
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Suren Baghdasaryan <surenb@google.com>, Jan Kara <jack@suse.cz>, 
-	kernel test robot <oliver.sang@intel.com>, Frederick Mayle <fmayle@google.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
-	Kalesh Singh <kaleshsingh@google.com>, David Hildenbrand <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linux-next:master] [mm] 7b32f64bc5:
- pts.svt-av1.Preset13.Bosphorus4K.frames_per_second 45.8% regression
-Message-ID: <ajUj2adtJakEG0ZO@lucifer>
-References: <202606181547.617a6967-lkp@intel.com>
- <6z2rqmo7b6m2rdhqurspwya25ps4dj7lctdygnmq3rn4xt6h3i@57kiiy72epgd>
- <ajP_-zqVPtbzvc9j@lucifer>
- <CAJuCfpFed0GuMk+dE-Xn0w45Mn1Spds-pc2BE__FUoWm6+R7_w@mail.gmail.com>
- <ajQbXthzbr9xgUIM@pedro-suse>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Frederick Mayle <fmayle@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead to VMA boundaries"
+Date: Fri, 19 Jun 2026 12:28:51 +0100
+Message-ID: <20260619112852.104213-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ajQbXthzbr9xgUIM@pedro-suse>
+X-Rspamd-Queue-Id: 702DA14000B
+X-Stat-Signature: j5j4mpik178r7ka1ppi38cp5fg1fcb5t
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 915F140004
-X-Stat-Signature: bx9u48ffdkwoqm97nffoa1ssm7buy4tk
-X-HE-Tag: 1781867498-108932
-X-HE-Meta: U2FsdGVkX18LJOUoYJkjogsfOSMzMa7zxAYIFfZPXiY8XM+MRhQvlVvM68W+Jm1/yXZaUqAPHUf7sa7Vcg0WVvstEFwnB0L8Y/KG44t18y2uX37/MOsualRUKSPmvU3kIzgwtl1RSLeGy7tEzRY3AVLVc1rFYz4gNJ/L+ikSt2x4SM1Cw+f50DDc/DhiKUy1BknNeXHdQbTzxKnC/zhoMMEHbpR7ZhCurWSP4eQWuoLkBwT+xysH3JFyUiNG4k6rA8PqiRUsQdiHD2NmF4leBNxUfmecxvmqsVOtPcybUWobFAD8Kv5AYw8SFA0fjCQYzd+jzwZSYCwlAqESh0GwyUsyKeu4sCAyGEYcYSE5+x5nAgirhT0X3HEYGSLhbyXvfT6jI6iMmigAffdLmjaKm44ufZhouTBDmH3JKujFFVUWaCdOh078M7Y7zWYKTB2AziDWBZ2K4qMBlzxzzzKkhLkR54Q6AmawEoXbB1TwhEJGQzowsXlQW9z4aABR20sQh8SWd7EJ4cKjY50SjtbCmGNrwSPft9I4QR/X1mbTqiFKYILe6M/ke2Wct5Hp/7Nr/3dUYIYS6Cm+5uaUl8yFbc4WIxBQqd9i5wEX7al4YvaYizsBgnsF79/0WClrImBC0kIBiiauePThlPydh+kzempM7VdZ2QTvouG4VnpTHX+3D73n4IS/bFMFakPCHZwQaM9ioybP2jnngxsN2c+vxICzoXdghCkUyO8IJYat+dKllptkl8L2IstRyCffOcnle59rmd8lnLLAiY1UKJuKZqJ5/+d4tB+mAnXzJ5G4tsIxOK/BQvshF4t381vVzYfH+53HSZe5PVQogwSEQVEYgD0I1Vo/naL4IiOoi7rvNU6mM/BRf9ftI77DU+m/uGEJ5hHTc7UHRLIoFqvcbIle/pdRadvXQlhwmtyqEJ4w6dtxHV+YXOmRWqtPI5WMFxII8TVV55fGHk3YfTTeCWs
- 0FwSymXK
- HtQRwbb8GdvfYifBd/KiNemcgPyHJTVcaQ7C2F7oZRL82Pi29vVEDsxXnF27zY8QRUmrmPZbOJyAXzhblRa0AdYAkJMIG9uZFSF3hxEFnv2qRfVZoOXxGJvQNkoq/ebEsRJluf+cbRcWB02Ef60UOqVdSQGBbp5eObLmCTciFNMyEIjpEoh1GzQdeEbEpGj7m32Ht4piy1mSol4qomz/438qPKU+enraFGNL+gIrn5I6Edr2CpDQZUriJoVdg6N1F5zxXgR3DKwxVYwetazeLwSoApb7Wk73fpaxG/YXv1INn6yrZ5fiZu8v5RHmfQcXH1T6eJUBXGJFEaNDc68L3ZYC/cchsVIHE/nTr+l9CDBgErtRd453Llf+HkA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781868562-257575
+X-HE-Meta: U2FsdGVkX1+9vaHGl8TNFr2DUZLhtbOYpcJIz1VEeBy6hq9/55ueSUBqO72ho8BPlup40UjqUtObXtG2fZTgIJSMjT4B1+XfAwWXuxOsYwZS9y/5VDLJMmYIoG1Hh5HryxZX6YRcx6Lma6p+CyusmN75/MIo+HfKlipDbLvmrqGH5KQUKLyKzQ2KtkBoRPjrHRPHDOfez6DyEZz/KVmYL5/ml7XxVFStZFgA1kIfpZvPGz1HlYBiRBbbCKoAfLylTw8niKkdAjVP/5uV+J4s1KHDSqUpTnCTEEous+0X4nMRHcrg9FjbfiboPW/6m06RRFvwQLQVBcdHvaxv1O9ItBS5Kw3w3D8Aev511nzPBJP3Z1NWtl2uXaMIxMZ3jqRT+5+Zvbxp963KaHo7hglBmqAnpz1IOFYhlQUyK4Jgnylrd9UL0pu2QPCI6Ez4Z9qVRjs/nXphhuhPv5eWYeMCCzxuRSo4Q43vWgNtopHw13WA8rHlVZ9rYRaurGO003oSirQPdwshWGOKd4t9HZNYpasPG7zmIE/JML48q7HsK1+bAdKfGXN7EH7taRtDEFdUSWrHCkGDnw1/Xp7Ue2s9wgNbnmvQUYlMWssmkJn68D0SCA+m/aDdgkFL8dhwXChdNb6D3WKckzPYewcuQLgfiWOXrdgbgLNV5+2h+PB6wbCVcQeTcFSs+XCNzaS2cLU6CN55Tl442xxmgGDZ3mNSoRydQGWdwIVtobtCp33iW3GC0Z2mO7jwWFh9kzL/tJsi94b85m2bEjApjvlVIJGmUjwTp4xuxo5CaDUQF3QslVlfoUIizdRMqSArJ5Z5KngVdx+v32NK6VMIpMNK0qX15iGLeKte6z/3KwrM19qabu9OiJnXpxbRdpMQSFauo4evBqibgC+lapjqALaYf8eH3BA/fk/zqG2714Z+w3+EFfiY0MArZyLsY0/oywbbhCc5jY9y7fD9wJ7fSXcsdFW
+ H3+p5j6P
+ gu7Hsbxyw/Ffy9D4toDKgZA2tNnipJwY4IFew/pJOoOoBm9MzPKM5CBuNf4Z8QRVWaEZFpWRTDHR9wD8a4xyuB18T1fwnMpa9n8peOdWCAtKyLbztlkiuKWQicBuZ/hqEXX6QKMbemD7rxbwS0SK+zE7oeoSys+HmMrdOjllyU4G8hlCFPa8z/dsIXiyFZLaHMFqPm8aqG5Z6tlx1PHjZGGwlclWKq4G2FmI+Rgg/vGJJWGdXEvV6det3ch/yTOgM2u74d1X4qJhUFHQpNCA+Xie16scz0Na+06nevK1q237+rjI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,50 +93,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 05:32:31PM +0100, Pedro Falcato wrote:
-> On Thu, Jun 18, 2026 at 04:03:43PM +0000, Suren Baghdasaryan wrote:
-> > On Thu, Jun 18, 2026 at 2:30 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > >
-> > > On Thu, Jun 18, 2026 at 11:30:47AM +0200, Jan Kara wrote:
-> > > > On Thu 18-06-26 16:00:42, kernel test robot wrote:
-> > > > > Hello,
-> > > > >
-> > > > > kernel test robot noticed a 45.8% regression of pts.svt-av1.Preset13.Bosphorus4K.frames_per_second on:
-> > > >
-> > > > This one looks serious enough and real. It would be good to figure out what
-> > > > happens in this benchmark that it benefits from the readahead across VMA
-> > > > boundaries so much...
-> > >
-> > > I think a revert first no? This seems pretty huge for something that isn't key
-> > > to the kernel, then a new attempt can be tried with this issue addressed
-> > > perhaps?
-> >
-> > A quick search yields: "The
-> > pts.svt-av1.Preset13.Bosphorus4K.frames_per_second is a benchmarking
-> > metric from the Phoronix Test Suite that measures how many frames per
-> > second a CPU can encode using the open-source SVT-AV1 video encoder."
-> >
-> > If this is a video encoding benchmark I would expect it to explicitly
-> > prefetch the data from the disk before measuring the encoding speed.
-> > If limiting readahead caused this regression, I suspect the benchmark
-> > doesn't explicitly prefetch the data...
->
-> Well, commonly video data doesn't actually fit in memory :)
->
-> A quick look at the code (I think it's https://gitlab.com/AOMediaCodec/SVT-AV1/-/blob/master/Source/App/app_process_cmd.c#L821)
-> suggests it is progressively mapping the file data for a given frame
-> (or frames?). So the old behavior would result in page faults for a given
-> frame starting readahead for the next few frames. This looks reasonable.
->
-> FWIW I suspected this was a really weird case regarding mprotect or
-> something, and I'm happy it isn't; but at least I had a suggestion for that -
-> for this, maybe dropping the change (for now?) is the best course of action.
+This reverts commit 7b32f64bc512b40b268776c5ac4d354b325b3197.
 
-Am sending a revert.
+This patch caused a significant performance regression, so revert it, and
+we can determine whether the approach is sensible or not moving forwards,
+and if so how to avoid this.
 
->
-> --
-> Pedro
+There was a merge conflict with commit de97ae6222c1 ("mm/readahead: no
+PG_readahead on EOF"), care was taken to ensure that the revert retained the
+behaviour of this patch and cleanly reverts commit 7b32f64bc512 ("mm: limit
+filemap_fault readahead to VMA boundaries") only.
 
-Thanks, Lorenzo
+Fixes: 7b32f64bc512 ("mm: limit filemap_fault readahead to VMA boundaries")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202606181547.617a6967-lkp@intel.com
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ include/linux/pagemap.h | 2 --
+ mm/filemap.c            | 4 ----
+ mm/readahead.c          | 6 +-----
+ 3 files changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 627771e82eb1..2c3718d592d6 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1348,7 +1348,6 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
+-	pgoff_t _max_index; /* limit readahead to _max_index, inclusive */
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1362,7 +1361,6 @@ struct readahead_control {
+ 		.mapping = m,						\
+ 		.ra = r,						\
+ 		._index = i,						\
+-		._max_index = ULONG_MAX,				\
+ 	}
+
+ #define VM_READAHEAD_PAGES	(SZ_128K / PAGE_SIZE)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index dc3a0e960b9f..17a64837597c 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3312,8 +3312,6 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	unsigned int thp_order = 0;
+ 	unsigned short mmap_miss;
+
+-	ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+-
+ 	/* Use the readahead code, even if readahead is disabled */
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
+ 		/*
+@@ -3409,7 +3407,6 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		 * mmap read-around
+ 		 */
+ 		ra->start = max_t(long, 0, vmf->pgoff - ra->ra_pages / 2);
+-		ra->start = max(ra->start, vmf->vma->vm_pgoff);
+ 		ra->size = ra->ra_pages;
+ 		ra->async_size = ra->ra_pages / 4;
+ 		ra->order = 0;
+@@ -3457,7 +3454,6 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	}
+
+ 	if (folio_test_readahead(folio)) {
+-		ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+ 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 		page_cache_async_ra(&ractl, folio, ra->ra_pages);
+ 	}
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 38ce16e3fcbd..558c92957518 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -335,8 +335,6 @@ static void do_page_cache_ra(struct readahead_control *ractl,
+ 		return;
+
+ 	end_index = (isize - 1) >> PAGE_SHIFT;
+-	if (end_index > ractl->_max_index)
+-		end_index = ractl->_max_index;
+ 	if (index > end_index)
+ 		return;
+ 	/* Don't read past the page containing the last byte of the file */
+@@ -487,7 +485,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 	pgoff_t start = readahead_index(ractl);
+ 	pgoff_t index = start;
+ 	unsigned int min_order = mapping_min_folio_order(mapping);
+-	pgoff_t limit;
++	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+ 	pgoff_t mark;
+ 	unsigned int nofs;
+ 	int err = 0;
+@@ -500,8 +498,6 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 		goto fallback;
+ 	}
+
+-	limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+-	limit = min(limit, ractl->_max_index);
+ 	if (limit > index + ra->size - 1) {
+ 		limit = index + ra->size - 1;
+ 		mark = index + ra->size - ra->async_size;
+--
+2.54.0
 
