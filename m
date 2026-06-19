@@ -4,94 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACF56CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 16:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A3FCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 16:32:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 883F16B0088; Fri, 19 Jun 2026 12:12:02 -0400 (EDT)
+	id 3A7DA6B0088; Fri, 19 Jun 2026 12:32:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 834016B008A; Fri, 19 Jun 2026 12:12:02 -0400 (EDT)
+	id 380726B008A; Fri, 19 Jun 2026 12:32:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FE306B008C; Fri, 19 Jun 2026 12:12:02 -0400 (EDT)
+	id 271126B008C; Fri, 19 Jun 2026 12:32:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4401A6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:12:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEC4C1669B8
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:12:01 +0000 (UTC)
-X-FDA: 84897153642.16.F6095A4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AC541180013
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:11:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J8ZZ3toM;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 038566B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:32:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E15C1666CF
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:32:06 +0000 (UTC)
+X-FDA: 84897204252.06.84FBF56
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 78D86C0002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:32:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k1DQGOE0;
+	spf=pass (imf22.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781885520;
+	s=arc-20220608; t=1781886724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pzyfc0EV0DVFxoCXoE+wDAyuQ9YJFC9tEGOxfy5XavM=;
-	b=xPUK+8pI4yrks7PWlOvQTEyPkWrXal5/pFLRd44yYMUX1uw+fi+BLY+h3NyW4oV7DImyl8
-	5/TZDDNGd6/EmZ9JdNlIoXUrGgW7rseOIpkMgpL8BrnTMzU8zSpiv99RCpQi/CWtj6oYXa
-	PveJcqJ4R40ku6m2/1dboX57Qg9ACr4=
+	bh=AHBHs2KQRuZ/6gKMmOH77blzB7j8lafnQhny7MmeJJ4=;
+	b=sirN0Ec/e1zazVb7L5leJQf+oBlDNkLK8OnCkhP7Wdcu+VLx4ZIoalr8v9fDWe+TArnhce
+	rfBnFcp9JwX7jBfnzI3V4ZKSpIwnjZ7/hy1EPsMMCJh+eBj3b4AWwX8M/kcU4NKvLthK7t
+	g6rdVPuxFK6jVBqIkj3i+VjERP3sAmE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J8ZZ3toM;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k1DQGOE0;
+	spf=pass (imf22.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781885520;
-	b=GNtTy10booOEtMkVW6Adq7CqDIM4NzGJIhyu3bdB/8EH3Q/isLsfAcEtvz7Ys7CPQZno/W
-	O1fgTvMpJxtqlzkSztoV0Fhm+R1buTmAHxN0KhuzuoYhmD3BSl5GHH/aOrR0suLKnOPuIe
-	HYnPV74ed0L2pZdsF8loMkEQzbOXGl0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pzyfc0EV0DVFxoCXoE+wDAyuQ9YJFC9tEGOxfy5XavM=; b=J8ZZ3toMwIYOXPEDK90lLyAsYu
-	soePp3G/naanNY8eL5d1gaoCWf2BSEaWww9XlJ2NtwEtH3wJIUkD2Xz7WoHEKj/K0YCXIrPXRFmXy
-	KQssQMTI5BrMTpJA+P4xx9U7BIHdSUZsRXa5e52ui+FrXuTFkY0GIl14piQLe7NGC/jtz+YxGjFsq
-	IA7oS+DGjhq9gbC2D67cwtfJrAdSiLMfqqFgwASF5wBCWfYnDU5RYxJVJLcwQqnKzGpqIZw47V7G/
-	zv+JLng5tc3D1XlW5Nw/swlNDgH5O7KkGXxrmvbogkf1Yw01EGJcWO63vZrzptSU92LXL9xmzSBVJ
-	CxDMjbzg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wabos-0000000GVXZ-3IRi;
-	Fri, 19 Jun 2026 16:11:51 +0000
-Date: Fri, 19 Jun 2026 17:11:50 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Peter Xu <peterx@redhat.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	linux-kernel@vger.kernel.org,
-	Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org,
-	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <ajVqRiAMG23QGseC@casper.infradead.org>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org>
- <20260617192928.GB231643@ziepe.ca>
- <ajQDVAu9b-LX8gUQ@lucifer>
- <20260618152805.GF231643@ziepe.ca>
+	t=1781886724;
+	b=yy3LMM3s1aj5R40IZwQOkHS7JTxpE8J1y20YzahyKqf0SUT2B06Dplaf5tdAvsK9BM2vmF
+	QBwFXnU/lmDAUmU/wkAtp7ZZF4gDO8F9C6egPPQqzgFBaspZzTeiBCQmwO+NKsiQ5W06tZ
+	X+e42eHnT8DTHoLUNhHuHPr/cUFdIwQ=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490c1915793so18508705e9.2
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 09:32:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781886723; x=1782491523; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AHBHs2KQRuZ/6gKMmOH77blzB7j8lafnQhny7MmeJJ4=;
+        b=k1DQGOE0HC1yW2ITM03V9xk1AjPWISybhA4lxIHHfGtKZTQUNz2VI831+B2IRAraUQ
+         gZKhZUFoMIeqf2aTkBuQ2ZPbPLh7RbI2of6djWgjRF2cB3htE8nR7EJcVRq3VpH6H9x6
+         f35JdT15b5zYkIrGtL107jXkZQSrlalXIczrQnFLISmijg833TimBpZ6jbGw40EvwY/5
+         uv2x4IPZVZdis04mJ3THGW97zuDyNLnuIjcz1FZ6Dcl/kNeX+GU9yAXDxg/E+F4AmcQo
+         7fP5H24RYIdFyzHZmAblNcG4jLWfUCgsEzyPkhi9s1cj4ls2hNV4x71jGvNOp/Djnr6S
+         uTMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781886723; x=1782491523;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AHBHs2KQRuZ/6gKMmOH77blzB7j8lafnQhny7MmeJJ4=;
+        b=An5wh1hndV2u1pm8zIp6xSalnnMT/GR0eCxQRKYEPUJFB7dbVNYBsRtiZZCLX8hi7P
+         Kkb/GSgkZX0xEWHQqM7ffBaa9oNbIhi/I6gCbs2l4wyEuuoGuUmgD+tUPt88ofL22vFW
+         PZ82nXCxTjDIgzeMzf9JXDoobN/W/Tc5G5V/07x/yOOtGhvkFRLqxWEfYt9zRdtkZT5T
+         RbtdURv06LprztBrG/9xUtsYxteqJiYhQ17SKF4eJGCPt4A2dPs+LmM4Ds2SKSg1XaVT
+         clqS+ZVmmWRa9mpCAWJc5kDR3+Vu1qj4RLVE0VHUHTsh3LVmSD7nKwit6nJA9hWSvfS3
+         3gBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+HVdgMOsnxDqAFJ98inReZimeqJVaW52XYwAEb6lw8w4sVvntprTPYzPD+lWuT4VqpfRoxAgMepQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz9hUwNEYNXvwWsaajn99dKIhkOo+BCoiMKaBzmo2G8ZBRfrich
+	4VSrSlalzWXHU3jLmuDak81j7Yo78lUtCAHWTgtctcsdnNCFI9XYNmOq
+X-Gm-Gg: AfdE7cl+5BE2Z5B4N3p8yx04aIMBB6R4OksvHC1vNeUdfKki0Q9wwWEnYFgBChc36+5
+	K+5qLzU5FcJKg/8x7df4csGhapI5bqtBhNA2h/ITI7NBAdlBfqdfx8LlEWhYRJU987uJWOrqmy9
+	T5UpP6z8AR3/2blrUCSWPe7MUAascbz0Gll7lMM+J2Pw8QS2ZENogOtShAdDbKHMS+Q6Esn/InS
+	ngh4wFdiaopdmOCOBbDNLB2SXhhSTYXCikpVB8/nz5nLBg9Nd4jx9r5DAw0DrjU1K0ELXmuCIlG
+	tzoDsPsMhcfTQg/gOGZ5XsWkuf+Sr4ilS8S3LDT83KiUTLpRAekxR5D9la5hdAx8pRCJ/cmXAnu
+	sLwSxILOqUDGFSr1RfqbSH3pmdfG7NcMIV07pkV5UWL6sBqWXVCldqgKn57V1Fc5XEk47EfEolg
+	uOLQ8nfrjZREsGQr5lmLj4wen/6HntvfUOZEIc1EiSj7CSc0MehDeslq0ksZxE0JjsskrTtxybC
+	mOl6BTn5JMCRUk=
+X-Received: by 2002:a05:600d:8653:20b0:492:488c:f627 with SMTP id 5b1f17b1804b1-492488cf6c8mr4844785e9.11.1781886722745;
+        Fri, 19 Jun 2026 09:32:02 -0700 (PDT)
+Received: from localhost (pat-125-253.wlan.net.ed.ac.uk. [192.41.125.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fc47b48sm82606645e9.0.2026.06.19.09.32.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 09:32:02 -0700 (PDT)
+Date: Fri, 19 Jun 2026 17:32:01 +0100
+From: Karim Manaouil <kmanaouil.dev@gmail.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, kinseyho@google.com,
+	weixugc@google.com, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, willy@infradead.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+	rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+	rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+	peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+	stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com,
+	jic23@kernel.org, aneesh.kumar@kernel.org, nathan.lynch@amd.com,
+	Frank.li@nxp.com, djbw@kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 6/7] drivers/migrate_offload: add DMA batch copy driver
+ (dcbm)
+Message-ID: <20260619163201.ldbjaqcphke3fcvg@wrangler>
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-14-shivankg@amd.com>
+ <20260619160725.lfcxrbj5go67qy6u@wrangler>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260618152805.GF231643@ziepe.ca>
+In-Reply-To: <20260619160725.lfcxrbj5go67qy6u@wrangler>
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AC541180013
-X-Stat-Signature: hjxh9apt4mtpy7j56x79is79n5ax4bzk
+X-Rspamd-Queue-Id: 78D86C0002
+X-Stat-Signature: 9h3gzgjj7go88n5r6u1o3q3sf8sg3o57
 X-Rspam-User: 
-X-HE-Tag: 1781885519-158540
-X-HE-Meta: U2FsdGVkX185ZFN2kKFRC8bXH0fLEPMfanj+f2CIy9laQL3+z/smshNbboWaVyzxEu84jlvQGYMMhk4m0oI/zvJHjz5cBRFn+3ya3rjyFSfuAOZQWU6IVNdzK4rCw2GM8WVFoC2dKFTdh4T/JmoxZfsQXUJJpm4+0AzBhplpj732nCPApVjnFOdxeogse2VPOd4D/s8FNnGJPpsnRGmKkj4Yu2bmyXaK6fEEZlMrXEYp6vC1MehElnUg0sokb+xnOU0IOfY4BW4rboqLMoHR1dulLqig2cSmWmA1T4ggGRh3z0Ey+mEmSdjuOuHODMFJYAewbMjTyFFaM7g/Vaks1uRuNhFxcy6zlgQ+qZyyJOI0G4HS8hDTBQWI1eOru2xtxT4ijgV1Dwi9zxM8SRE/bQYXcgqO271xGsIHmM6cKzw3fTu2rN9sDokAWQXjniUeB/TJod8B2yzp6BtLl8G8A8Yptoy3rBJAKETHHSZ4ageL9KijykTqsVr82JtNCBB06fSO9HWf2pwVfKZMoCvdCqVmLbR8bnWVdOoDQ/wkJL4SjKgBtjUp19sWi3t5y5l/UBBS8IgupGUsiWFYECuX3a3Rmh+FZG3ueBGrTyqG3tEDkTUHDP2h1GvQT/iLmZtXkW4RRkoHxEJbXYrD1gAD7N92PcqEqo/IqCcVhLdhKZIUGgzw4WAmi0bSSu4Vo7B7zuEAeIBq9Uiw9Uhctza5EQzJiECPJyHqN+BeE4mulYxjw3PoLsfYdhv+o5uhREL5/chs1PE+7sx7lW6Ta5IAsX92gaGbbdSKgJQzYiq/GAmMwWGGPw0rFjxBMsCD1ShlEO0tEiWhY/ZCw1H8AsBgIalWjVXdfNJFvyxszRohBUXgDp9gxEmK4igyPj7Ime/Xz7xKNugFefCNquan/0bYGvRGg3y/t6GCaSSztnTQm8I8eTErY0feIhuuvIit606RSUGyO3dcLg2PjMoaja/
- d0sU0fll
- oUDfVHXZPG0G42jztggD3+w2rMFLIneUzKTOScd+az7vXHm1I0+a1K+j8cul5h/QRgZLD8ZyTTiPZ5TVpySCh5r75ZSfjg3IBXSG7SApIYhZiVER001khEsJ/Az4XS7yw4f7Fro9E1n1mcSHANa73/c5BcHhniFQIum7Kz/LAp41ukUbR2UufDxIQcYi70LsDdA8OFckgxqlswfLXuv1NCFrVHfupBYrvBL8n2QEdtg/8rPKnlgIOP4/JXIYykFC+/5ku+KpZsHp2UN5NAHJF5ASTmg==
+X-HE-Tag: 1781886724-657942
+X-HE-Meta: U2FsdGVkX18LzFKKE2iCqlU6HCZn2GXI5bunSU7ZTrEFmocVKn7KYCREPBJdu6A0EfPQ5DtEonk4LGCWrM9jEcS/ul7QDLf/G3KeYMHf/TaTe13nVnn3TITKCGCRqKBytV6rLrnzGUnsfkXnhCR3vETVapaVI1yTyFEJ/33F6NUv+J+9ua5On47E5M9PePDtm4fgT5T13tbKOQ5bGnSLa2Jxi7g3VLbPyr79s+9omqWZ9Ut/vkvG8HY2I/juBfOrD8hC5X9kvaq0dPpMNEnW2aOnV5FiNwVba4kTza7dcnBI0Az/L9ofgFh9Ivj7PX6alr+GgJWsi4kI5mQL+f2ZFypY5Qx9vAKHMO7NOz1H5Jq1SJn6SFv+Ly2J128xomcJ6q0UAhEBrLtvSCfeKQCqXCqWqfL5ekwQb6xQ3dW4z0oS2HRKRMF6p6xY9V96RHPO2aoOHvJA2s7bMqTzaj5qmuB1Sz5NJYuW7BpHi6nqBhrIURimu6RDcY7VVz32wLoFYEGkRw9qF9vNBS3f5HNA0LRRbkSgIKixo4ZGGf6gBfBo6jDMlU2mtV8PD0T+MPH2esjP7epuGzHLHr9Gg9aHCpWrJ5o3tJz0/EqpNX8Gd5GMv1atROhn5S3kSU6NZ8jlB/KnNWDwv3eq4qWL5epWXF28V2ZuDKxouGCSSU9L4DLndCPdPOxwY2LO24O3YgJSUdKGlhL5HpAU09Dm7V3mF94wKdt8bQph76Kzt8J/5g7gwW5ycdsTJ0BqmeM+T/VvaT6+m9+tdrHUrS0KO5oJvIa7yWzx+w950TDpu2+ElvnHHwm+gdl1lhyE4Nt3EVQpPcudSUgJMufjZzqC70y0XoW0YAkwx+LII2m31oWRPnMhWmEDi9v0JK7o8IuWXlsxSq/vabhMDyTyoZJtweMglq1onOpdOPHXMyv/cw6LPxS3V+m3nQ2R0BhPr3YWrihOofHoARW1p46x367wUaN
+ +nMVrwSJ
+ rnolII2fts6dBnZjsMoFhF2FiAC7nlyMlbOcLw2+jJ3mUE3lLwYunFU22EcFK0JkjpWj9efeqSluDRZaOiqqvDy2NXlna8l+dp9QDwGw21Gx/u+e7zYXDejxODEt/+3zxGoLu8BV0R9xjmjjQOH5qITtL5ZAk0y02eJFcKECLXuBy2x1scAEcENJjQhekUeXmltBaj8MhIOQWPhfCMukUE9gTev5vFnR5pohov7hQYOS9o10UOd/j2JgrQv3UVZQC8s/tBVGmJBLOqTU5wo/yjikMwRfK6/VdOCa7T9kLxcOrDwISouHz4RiOJ2rfea13kar1GFI+PibNZFYOrUcqW3E0lw2nUHrnBmCl2nx4uKX2VpCYyQUcErJ1MejqCN0H1BwQaS9460t5Pd8/fLhDJ0gkK0oTWCKn/oY2p7hfL/oriwzbxU2/AmUessm9hCRkNPQ0uPRQnSyfANXsdYCK1Ll8phWh6BLL2ybSdZS63q2oNpo1LZ4w/3/b0fUjQzP/5CPbeeyuer0cJRc/n1wa1s3Y/Qu5kU4SZ+wTHrka+ua3h+06gCQgG5ZDQgsHm9mRkpBEA0Z7WgBVwyofLa3SqXKEzbWquSJsfyQdljqFebYs86B8O7JwUTA6UA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,28 +133,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 12:28:05PM -0300, Jason Gunthorpe wrote:
-> On Thu, Jun 18, 2026 at 03:55:58PM +0100, Lorenzo Stoakes wrote:
-> > Can't we figure this out from what the driver tells us when it invokes an
-> > mmap_prepare action?
-> 
-> VFIO installs the pages via fault handler so there is not a naturally
-> existing way to pass in the pfn?
+On Fri, Jun 19, 2026 at 05:07:25PM +0100, Karim Manaouil wrote:
 
-Is there an advantage to doing it this way?  I understand why we (eg)
-demand-page pagecache, that's obvious.  But I've never really understood
-the advantage to taking page faults for PFNMAP areas where we don't
-really do anything, just figure out which PFN needs to be installed.
-It defers page table allocation, I suppose.
+> Btw, waiting for an interrupt adds massive scheduling overhead. If we
+> also add the logic above, it'll get even worse. In my measurements, this
+> can easily add up to 6ms, by which CPU page copy have easily completed
+> the entire copy, which again adds to the list of latency concerns I
+> raised in my other reply.
 
-> > Not in favour of that, fear it'll be seen as a new go-faster stripe.  Ask
-> > somebody how many free pints they want and they may veer rather towards the
-> > upper bound :)
-> 
-> I think you need something, otherwise we will be aligning VMAs that
-> never have anything larger than a 2M THP to 1GB boundaries, doesn't
-> seem good.
+Sorry, I meant 6us.
 
-If Lorenzo's willing to move the mmap_prepare call earlier, to before we
-allocate the vma then we can do it that way ...
+-- 
+~karim
 
