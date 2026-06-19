@@ -4,143 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2028DCD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:27:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19894CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 14:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E79056B0088; Fri, 19 Jun 2026 10:27:20 -0400 (EDT)
+	id B27926B008C; Fri, 19 Jun 2026 10:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2A486B008A; Fri, 19 Jun 2026 10:27:20 -0400 (EDT)
+	id AD8A16B0092; Fri, 19 Jun 2026 10:31:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF3EA6B008C; Fri, 19 Jun 2026 10:27:20 -0400 (EDT)
+	id 9C9776B0093; Fri, 19 Jun 2026 10:31:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 836ED6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:27:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6293D40427
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:27:19 +0000 (UTC)
-X-FDA: 84896889798.17.135ED8A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7643F140007
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:27:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giXjF4dP;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72F946B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:31:44 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C5C5EC222C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:31:43 +0000 (UTC)
+X-FDA: 84896900886.04.3F4DC38
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D9098160017
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:31:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781879237;
-	b=1nHexhDvliXnBqJavqPT0sU/f0q146enyAF8qGVl2chGEGHt5mB5rZNGm6g5y8EbvMZMg+
-	HAkFZI95VWcd5kDBGfQKhEzjt7ORqD/Yy8wXWFmjDcow+uxAXQkZ1xzJ1TwksSl1QUEbM1
-	f5Sc17FvHt8KrmvOX3gzmDio8lMcTAo=
+	t=1781879499;
+	b=CFIKvsXnNqoLET//Eu07cZ7xZR+WdCADbndlbj8FoagoizwenNjH/act3glcu+1xKDteZS
+	LRd2AJZj72G1yes7lvTu1JW6IVjl4WzHkzeBVP5IoQ3VozTA2bmMprLV+VXgn81X4sLKdq
+	87RKX8duscDRlrHHh/at3H7S0tl4mMQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=giXjF4dP;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781879237;
+	s=arc-20220608; t=1781879499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yvmmWMqqk4mhEEd2iTTFb0La55bI1ogNn7PI48Pfp9w=;
-	b=qlW1xw70Qobs8qcZN5I5mmTH83aDx1FllwCSUaCMk9u+FUIb9oFEYr5k/+ry3x6fvojyXi
-	5WtOJIfiWnFbXgr3JW0pf7fSnIDRxfoxt94g6piYlbJk/kJMy2frJYiU8pvAw0So69Mrdx
-	tfpyYgiYI9yGQZqui2w75kxrTZ7E0Oc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26B08438BB;
-	Fri, 19 Jun 2026 14:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045101F00AC4;
-	Fri, 19 Jun 2026 14:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781879236;
-	bh=yvmmWMqqk4mhEEd2iTTFb0La55bI1ogNn7PI48Pfp9w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=giXjF4dP8PaD3YUUoznlSm3gM8M8eSAXQDkGgo2+RIIBFUXRpWiJRU37xV7Vdreiv
-	 CuDFLJ+5jW9wp7M6ZS9NCfaZ8ftOswsLYb2mlg55GNr80Tsr+fy3w9+WuU+4Hyp7wK
-	 ZyJgrhNBfdFmiCRBaZ8SgfOp+Rzsn9UxFDH/WyIEvRAhWkavr+AA6IvlZfpMFgqS1J
-	 pqVeA2DIWeAG27drb3rW9c8m6q+ioNu33E1/qdYgsB2CMTTl/AgZrZW5f4hETN2V65
-	 7kymJK5GawcPL3WdH+X5m0el/EcnfUJqPIxvfnhb4sFayelf48zHHOaaX4YnvcC5hi
-	 HUZsr6d9DvW4g==
-Message-ID: <a0a3dd20-a255-42d7-aa83-5bffcaba3acc@kernel.org>
-Date: Fri, 19 Jun 2026 16:27:11 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=9SoETUnogv7G2Weuh2l2GyhsBBUD8typddPczE/TZsw=;
+	b=gMmFOH23ugXVPfsoLXJlFxuiOm3zPANNZszEZpThDiQy4ydTRKTbSIyoEFQOxJUADSxR0+
+	7K62Uid2ejFvq6ajV5FgPbe8vM+F9gA2K83jk4yJxNoEYXvcKjr38qKQtAWJsUKrlWIjfr
+	Gw6sCruPy5gMFAUh6nc0XJkmLYWl8n0=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4ghg4n5rqPzJ46BZ;
+	Fri, 19 Jun 2026 22:31:05 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 40FA540572;
+	Fri, 19 Jun 2026 22:31:34 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 19 Jun 2026 17:31:33 +0300
+Message-ID: <d0cda5a2-94f9-4733-8a62-90ad15243041@huawei-partners.com>
+Date: Fri, 19 Jun 2026 17:31:33 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: __access_remote_vm with per-VMA lock
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Dmitry Ilvokhin <d@ilvokhin.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>
-References: <20260616190300.1509639-1-riel@surriel.com>
- <CAJuCfpEKgiQDGXgCKrqnn7Wk5YrT8nr4-H88PVeEruSKjtY_CQ@mail.gmail.com>
- <dd66797a-6fc5-4c31-ac43-d767560f3029@kernel.org>
- <CAJuCfpEqz9t-x8abYD6idtHmi9t8p4YfDmnbkJ-ix4i=RMS4wg@mail.gmail.com>
- <603e002e-77f4-492e-9ad4-75572e18fc0b@kernel.org> <ajU3q1e6mpWsJ6Xa@lucifer>
- <c56f8fe6-9e06-4a65-9470-1fcd12189ed1@kernel.org>
- <CAJuCfpGifYo0iafNrMf4piG8eSb2FSjgVoPr4P-3YDabiwe_UA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC PATCH 0/6] mm/damon: Add mTHP-aware collapse/split with ARM
+ SPE feedback
+To: Wang Lian <lianux.mm@gmail.com>, <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <daichaobing@sangfor.com.cn>,
+	<kunwu.chan@gmail.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<npache@redhat.com>
+References: <20260619014707.9297-1-sj@kernel.org>
+ <20260619034039.35643-1-lianux.mm@gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAJuCfpGifYo0iafNrMf4piG8eSb2FSjgVoPr4P-3YDabiwe_UA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260619034039.35643-1-lianux.mm@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: s9sptnm3axbictrdj8fe8ka9t38hdbad
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D9098160017
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7643F140007
-X-Stat-Signature: 616btwq6cbeqtgqq4u8dpfpi1wepnmj3
-X-HE-Tag: 1781879237-14439
-X-HE-Meta: U2FsdGVkX1+/kYfrUcDjRaECumqUtPq9nlgcQWNXoPN5dEhvtNSb4gkwm28KnQuvEdIEluN10y6cts+MfebxEzzYy53YtYylm5rIQAoNq3M7p2hT+HtVITUUTQwkW1lMnCkj6aBgKFpFFUE1B4R80j5/17gjjHlS2Fo9wPVrIMNqQzqxeXAaSh55f+QODJImyM/6FjBLgzQekGq3E58XVKw/TuybZRMVx6sl5hjCzxRE2AhrfnzuAhUVGdX2e1Dqrx7lzKWVOqr059TcSOOmuXgV9IKEJjWuRvP/WWbGgccCEkWi28re9Lwhbp1c+FgyUfNApHhqTByzhF7uER/c/eR85uznAFIaAeuL7zD5Bm9XaMjcivX0V1+SJ3FUdcgrIs//Wp3kYjxedAu9M0mqTBxkJ/d2q24S0rn0SAPfGW/TlvrYllstrr0nVv6ioMv3D0XIL2U53XuLazdK8qLPsPcm7f2iC06EY/iBwyJLdX9vHbXVgvnC8vDhBYYNYUTQyoKhNwJhMvwg3J2xYSZY2r1FQTDkOiCtsAwxZzxFR0Ixd0VRX/NstG4LIWr7udYvNx1BojQwqpzRSbbZrZSZNNjzePNhdlYX0tZRmRK0HbYPxaKR2Cofq+wJbbtOaltsywmTA3DGsBlPCV2PBS4MGJyVHw1zUFYM577WprDKoqCZjilHagmoJMgY1To0gxjddf4osWj/ozEd+VVN6i+98Q2nH2dp/Q9NLjBypQivg0pLKOdv4tfCpnrU1T+TAzJVc3m8s1Q7K2ss4SMU97m7rTyD8IX/6YzYKfqiPliylxaO6cXlfTSofOy6J/puMwQEgj0ydblhckTc00cAHPouibwdqj7tPpeh5Ixnl4kdGonZnGipKEFQ9pGqi3K327oUi1i04XElirRMZS8bla2/nxihk1EAKKcwfvP5olzx7mEneuRzX4lmEgec+lxSO/g4AOzJfyeSWcMgfkC15Z+
- dcOcTL5k
- VPJd76hnPeYf7BOsQSdo+hDpiLv2th5Pf2N2HOaoI87pGnLWElsnPA1cOlw2DZvJGIT4OD0syn53GSI8urDVZo+0Rk+0DEvYq4hUchBJNfSX6SVqlBxO0wTwzvRq7Ho5C2yhPvZSJ2GIEnHfUg7w3PCRHx2uQfVO/FwLfpwsY7xqXE35ukeWDdeNkvs8RmKz6XteSXGEXqPUXxUMkf19BAxh5N1V7tcxx3VrTx7qAZlLJzhGuHzy2D9Ocj9Vs65pqRj6XWcp8+4NQJQYdkgWaA4i46UmJHcsUDmqB0sGd5BDOEHAJ1EO4kTzA7rBefyWja5vtlD0A/ONKsF/NvSpWp5+xDwmgLYYW6g0Y
+X-HE-Tag: 1781879498-553738
+X-HE-Meta: U2FsdGVkX1+ZTJ6hHBEhGGHQMyW5lobEmO/E2plsAg0l//AE+PjvHByC9nPjCa6ELA9XM6bfBfnwSt8+B3lZ3nfySGhClWLY2GSvp6OwmSmRp9Ub/ND+KFHcOPkx5RoAuZrwj0DucSPTFnY7McZ5kxtjPA94Hi8BkXC0NeT4cA9lAsuGt0DQmUM+3dLmZ6Uv6uIzmIlcQIzTNv6ZHUBuLHBdXw9I2RinzQQn9q19RpNaj1zJgp3EjY0dYM4WAuYP55yUy2jIlmVoLVobaXrKyAEAQU6QnW/jfm5B4Z/ZdtoK6H14aC1zMebQxKivRKu5IrQ0ukIZrLm/ctGLMfpcQbSWBRQ3Dm3x/UpT5pM41ogOM2chUsV5NN6fWcm0X+Z9I6+siIRkeBs9hgXDWUAhK/nBNpmyFA3W646ndD3mpMK/L+L5+36hIsNJcZS8sOla69Vgvgtjbba+STd+lGUKXaer6cV08qjHD6kv0xGmZBjwy9HcoWnNLFEta2vlUfJojIp8g1PXlSqyr7/yMHweEBjhU6kdPI77bgBfdk542tzOhlo5Pa360OQ+9sRblwkHDoKd9TPNWWyWbTYkJ5JQaQ9+TGc93bZ+hKt1MbR2mTqYgeZh097RuRIaAX93hDEdhGE7PTUBmgPl2ehlRrB57TGgS3FrVnLpr6Jv+q85SChfRdTJ6dM5SPidvjnHmrmRTyRlsinfEtYYgzohaU692M485LQP1pqc4r0BPNDsIBvktk8pG7qdNqkMEr9QDmwibPZcoUMLzh/+9z0/RCx3bbOue6e8DvjNoUbczCmn0uMHe6a2sUuOR2S0HgDwvJe6BHS/hA693lltJXWnnrKjO6UcVpZByMl6FdN2/lRbICQ5RRSy+8oGByxORee8Hh0duilwRtz5PJlGsdHUNRDefHUWp7udACDSNeiQv/mzkgbNrtdkw3M1oMGS7feiw275dwcjTgiZpGsgpJCCdYb
+ hMiY5B+y
+ ouIHQp8NmtaC+wgUL532DkV81rJSjpmdswYkQfmaWbuPa1rgw40ezm3QKFXhTAbgUPYOv34Qmm3g6wsOMOsjdQx3sATxWQ6ph7ZpL9BL0Xsbbu8BqqS5wsPUSasTBO7z/pv3Pv6OjiPJEiXqmOtKVGlENDloD4TbfY8GZ75U4otyRGqNTupvIXfsPSu05c83EQ7JaIp/uUIBc4X961ipvEFiZcT4ZVKU5ymo3WnaEUHEEWA45qrHI9tgDajCkCT0duUG/gbks+uetoEKVG5Xd1rq3vXIw0xA9b3cfBKtyofIjDP9apDL+7tjWc3CsTdN1of09
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,91 +94,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/19/26 16:19, Suren Baghdasaryan wrote:
-> On Fri, Jun 19, 2026 at 6:05 AM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->>>
->>> Well I think a critical problem here, as pointed out by Suren, is that holding a
->>> VMA lock means that the VMAs around you can change and in ways that are quite
->>> problematic.
->>>
->>> E.g. The moment you drop the VMA lock that VMA might get freed and then merged
->>> with something else, and the next VMA you consume is the same one you just
->>> partially walked, for instance.
->>>
->>> Now perhaps you could reason your way around this, but I'm pretty sure there are
->>> cases where you might actually miss VMAs due to races (Suren knows best).
->>>
->>> And also without an mmap lock people can unmap and map new VMAs in the range as
->>> you go through which might cause weirdness as well.
->>>
->>> Really, unless you are dealing with a single VMA in the range, I suspect GUP
->>> needs to stabilise that whole range.
->>
->> Well, depends, really. It's not like a all GUP operation that target many pages
->> runs exclusively under the mmap lock that would prevent any VMA changes.
->>
->> With userfaultfd, for example, we drop the lock in between, to lookup the VMA
->> again later. There are various paths where __get_user_pages_locked() is
->> instructed to grab the mmap lock itself, to even temporarily drop it if the mmap
->> lock was dropped.
->>
->> gup_fast_fallback() grabs some pages to then take the mmap lock. And continue
->> from the next address.
->>
->>
->> So it really depends on the use case. I would actually be surprised if there a
->> lot of use cases that strictly must block concurrent mremap operations etc.
->>
->> The important part is that you process each virtual page address requested
->> exactly once. If the VMA was merged in the meantime, you continue from that
->> address in the previously-processed VMA.
->>
->>
->> Some use cases might indeed want to stabilize the whole range. But I wouldn't
->> expect them to opt-in to using per-VMA locks.
->>
->> Just like with any other page table walker, we cannot just convert all in one
->> shot to use per-VMA locks.
->>
->>>
->>> If we could find a way to have GUP fast-path the single VMA case sensibly, then
->>> that's probably workable?
->>
->> Right, that's what I said: start with a single-VMA interface that supports
->> getting called with the per-vma lock or the mmap lock.
->>
->> If we have to fallback to the mmap lock (userfaultd? indicated back by the
->> caller), handle it in the caller of that interface for now.
->>
->>>
->>> And I agree special-casing only one place but not others sucks.
->>
->> Yeah, we're not doing that unless inevitable.
->>
->>>
->>> Perhaps we could find a way to get this improvement without it being quite so
->>> 'tacked on' but without needing significant rework of GUP, but in either case I
->>> broadly agree we need to improve the codebase as part of the changes.
->>
->> We shouldn't fear extending GUP in a reasonable way that makes everyone out
->> there profit ion the long run :)
-> 
-> I do not disagree with the general premise of making existing
-> mechanisms work better rather than implementing parallel ones. I'm
-> just pointing out my findings so far when I moved in that direction
-> and I'm happy Rik posted an alternative simple way around large
-> refactoring and started this discussion. We should definitely try
-> reworking GUP to cause less contention. I just don't have enough time
-> ATM to drive that, but would be happy to help with the VMA-locking
-> parts.
 
-If we have a VMA-lock GUP variant, I guess supporting the write part would also
-be fairly easy? Not sure how performance-relevant that is, though.
+
+On 6/19/2026 6:40 AM, Wang Lian wrote:
+> Hi SeongJae,
+> 
+> Thank you for the thorough and thoughtful review.  Your feedback on the
+> x86 AF behavior was an important correction -- I'll address that and
+> your other questions below.
+> 
+> On Thu, 18 Jun 2026 SeongJae Park <sj@kernel.org> wrote:
+> 
+>> This makes sense to me.  I also agree this could caused the reported
+>> problem.  And this is a known limitation of DAMON.  My suggestion for
+>> straightforward workaround of this problem is, using 'age' information
+>> of DAMON for better identification of the hot memory.
+> 
+> Thank you for pointing out idle time percentiles [1].  We agree that 'age'
+> helps differentiate frequently-accessed from occasionally-accessed regions,
+> and it is a good workaround for many cases.
+> 
+> However, age operates at region granularity, which is still at or above
+> PMD level for THP-mapped memory.  When only a few 4KB subpages within a
+> 2MB THP are hot, age tells us the region has been accessed recently, but
+> not which subpages are hot.  The split decision needs sub-PMD information,
+> which is what the SPE heatmap provides.
+> 
+> That said, combining age with split could be valuable: split only regions
+> that have been consistently hot (high age) AND have sparse sub-page access
+> patterns.  We will explore this.
+> 
+>>> On ARM64, this is compounded by the hardware AF mechanism -- the AF
+>>> is only set on a TLB miss.
+>>
+>> This makes sense to me.  However, I don't get how this is contributing
+>> to the problem.  Could you please elaborate?
+> 
+> The AF-on-TLB-miss behavior creates a second-order problem that directly
+> exacerbates the overestimation. 
+> 
+> When DAMON's mkold path clears the PMD AF, it deliberately skips the TLB 
+> flush to minimize overhead. If the dense working set fits entirely within 
+> the L2 TLB (e.g., 16MB workload using 8 PMD entries on Kunpeng 920's 2048-entry 
+> L2 TLB), subsequent hardware accesses hit the valid, stale TLB entries 
+> directly. The hardware MMU never generates a page table walk, so the 
+> in-memory PMD AF stays 0. 
+> 
+> Consequently, DAMON sees `nr_accesses = 0` and assumes the region is completely 
+> cold, making it impossible to naturally track the sub-page usage shifts. When 
+> sporadic/noise accesses later hit other parts of this "seemingly cold" PMD 
+> and trigger an isolated TLB refilling, DAMON abruptly sees the whole 2MB 
+> as hot. This binary oscillation (completely blind vs. fully hot) is what 
+> drives the massive overestimation under THP.
+> 
+> We confirmed this TLB-reach aspect empirically via our T1 test:
+>   16MB THP (8 PMDs, 0.4% of L2 TLB reach) -> DAMON tracks 0 accesses (blind)
+>   16GB THP (8192 PMDs, 400% of L2 TLB reach) -> DAMON tracks normally due to natural eviction
+> 
+>>> x86 is not subject to this specific blindness under similar
+>>> conditions.
+>>
+>> To my understanding on x86, same issue exists.  If TLB hits, Aceessed
+>> bit is not set, and DAMON shows it as unaccessed.  Am I missing
+>> something?
+> 
+> You are entirely right, and I was wrong on this point. I re-checked the 
+> kernel source and verified that x86's ptep_test_and_clear_young() does NOT 
+> flush the TLB. Even ptep_clear_flush_young() on x86 deliberately skips the 
+> flush as a performance optimization (arch/x86/mm/pgtable.c:486-502). The 
+> same optimization architectural behavior exists on PowerPC and RISC-V.
+> 
+> Therefore, both architectures are theoretically vulnerable to this stale-TLB 
+> blind spot under identical tightly-fit workloads. Our initial assumption 
+> was biased because T1 was only conducted on ARM64. We will reproduce the 
+> T1 setup on x86 to verify the exact behavior, and I will correct this 
+> claim in the v2 cover letter. Thank you for catching this mistake.
+> 
+>> Nice!  Asier was planning to do similar work in future.  I think you
+>> could collaborate to reduce unnecessary duplicates!
+> 
+> Great to hear! We would be happy to collaborate with Asier. I'll reach
+> out to him to coordinate our efforts.
+Sure, I will be happy to cooperate.
+>> I'd suggest making the name simpler and consistent to DAMOS_COLLAPSE,
+>> though.  Say, DAMOS_SPLIT ?
+> 
+> Agreed. DAMOS_SPLIT is cleaner and fits the existing naming convention 
+> perfectly. Will rename in v2.
+> 
+>> So you implemented a debugfs interface?  That must be a nice approach
+>> for PoC.  But it may be difficult to be upstreamed as is.
+>>
+>> You could build a control plane that decides the exact address ranges
+>> to split, and directly feed it to DAMOS using DAMOS address filter.
+> 
+> The native perf event approach [3] aligns perfectly with our long-term 
+> Phase 2c plan, and we are highly interested in collaborating on it to 
+> eliminate the userspace daemon and debugfs bridge entirely.
+> 
+> However, since native kernel-side SPE handling is a long-term item, we 
+> will follow your pragmatic alternative suggestion for v2: use DAMOS address 
+> filters or user_input quota goals [2] to feed the split decisions from 
+> userspace cleanly. This allows us to upstream the core infrastructure 
+> (mTHP target_order for collapse and the new DAMOS_SPLIT action) first.
+> 
+>> Do you really need to khugepaged together, when you already have
+>> DAMOS_COLLAPSE, and anyway you are running DAMON for hugepage splits?
+> 
+> Excellent point. Running both concurrently on the same VMA introduces 
+> redundancy and heavy ping-pong effects. 
+> 
+> Option (b) is definitely cleaner: we will let DAMON handle both split and 
+> re-collapse decisions using its own access data. To make this robust in 
+> production environments where khugepaged is globally enabled, we will 
+> explore having the DAMOS_SPLIT path temporarily mark the target ranges 
+> (e.g., via a pseudo-VM_NOHUGEPAGE backing off mechanism) to prevent 
+> khugepaged from immediately undoing DAMON's work.
+> 
+>>> - The rbtree entry TTL (30s) and signal threshold (1/10 of peak) are
+>>>   empirical defaults subject to further tuning.
+>>
+>> I don't fully understand this part.  Could you please elaborate?
+> 
+> Since ARM SPE samples hardware accesses instruction-by-instruction, the raw 
+> data is highly statistical and noisy. 
+> 
+> The TTL (30s) defines the lifecycle of our per-folio rbtree tracking entries. 
+> Entries not updated within 30 seconds are pruned to prevent stale tracking data 
+> from corrupting split decisions after a workload phase change. 30s is selected 
+> to comfortably outlive DAMON's aggregation intervals while keeping the rbtree 
+> memory footprint tightly bounded.
+> 
+> The signal threshold (1/10 of peak) filters out the statistical sampling noise. 
+> Instead of treating any subpage with access > 0 as hot, the algorithm finds the 
+> peak access count inside the 2MB region and only marks sub-chunks with >= 1/10 
+> of that peak as genuinely hot. On Kunpeng 920, this specific threshold successfully 
+> reduced false-hot subpage classifications from ~50% to <5%. We plan to make 
+> these parameters sysfs-configurable.
+> 
+>>> - The ARM64 DAMON blind spot (WSS < L2 TLB reach) is a pre-existing
+>>>   hardware-MMU characteristic, not introduced by this series.  Setting
+>>>   nr_accesses/min=0 serves as an effective workaround for the split path.
+>>
+>> I don't fully understand this, too.  Could you please elaborate and
+>> enlighten me?
+> 
+> The blind spot creates an operational deadlock for the split infrastructure:
+>   1. WSS < TLB reach -> All THP entries stay cached in TLB.
+>   2. DAMON's page-table scan yields `nr_accesses = 0` globally.
+>   3. A scheme requiring `nr_accesses.min = 1` never fires -> DAMOS_SPLIT is never invoked.
+>   4. THPs remain unsplit -> WSS remains within TLB reach -> Loop returns to step 1.
+> 
+> Setting `nr_accesses.min = 0` and `max = 0` breaks this deadlock. It forces 
+> DAMON to evaluate these seemingly "dead/cold" regions. Once the split handler 
+> invokes, it checks the ARM SPE telemetry (which captures data directly from the 
+> instruction pipeline, completely bypassing the MMU page-table AF limitation). 
+> If SPE reveals a sparse access heatmap, the split is executed. Once shattered into 
+> mTHP/base pages, the TLB reach drops, natural TLB misses resume, and DAMON's 
+> standard page-table tracking fully recovers.
+> 
+> 
+> Thanks again for your guidance. The action items for v2 are locked in:
+>   1. Rename DAMOS_MTHP_SPLIT -> DAMOS_SPLIT.
+>   2. Drop debugfs in favor of DAMOS address filters / control plane.
+>   3. Correct x86 AF behavior statements in the cover letter.
+>   4. Coordinate with Asier on split/collapse unification.
+>   5. Implement back-off to prevent khugepaged ping-pong under Option (b).
+> 
+> Best regards,
+> Wang Lian
 
 -- 
-Cheers,
+Asier Gutierrez
+Huawei
 
-David
 
