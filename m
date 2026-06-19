@@ -4,140 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADFBCD98F2
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0041ACDB46B
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66D6E6B0088; Fri, 19 Jun 2026 11:08:14 -0400 (EDT)
+	id B300D6B0088; Fri, 19 Jun 2026 11:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6D76B008A; Fri, 19 Jun 2026 11:08:14 -0400 (EDT)
+	id AE12E6B008A; Fri, 19 Jun 2026 11:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5126B0093; Fri, 19 Jun 2026 11:08:14 -0400 (EDT)
+	id 9D0DD6B008C; Fri, 19 Jun 2026 11:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DF296B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:08:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 846851C4ED4
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:08:13 +0000 (UTC)
-X-FDA: 84896992866.17.24431E3
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 697EC140011
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:08:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Qh7gWxbs;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 5497F6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:29:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9B141C4F2B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:29:29 +0000 (UTC)
+X-FDA: 84897046458.20.1735369
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C79DC100004
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:29:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k0s2v7nt;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf05.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781882967;
+	b=OVxLeVLsL4fuNkqgaH/J+MZfXDniYxZSIzQGtrBlFH6LoZy4PihJVDMwJ+/dvIp4m319l8
+	bWRaDd9cL5I6S1O7DPWOB8h8OpWqyK29yrotQDgKfQJhgsXPz8p8PIv3EpD3xaGE4wn650
+	nnWtThci1F0/Hu2kaM/0mbIDATAONrA=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=k0s2v7nt;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf05.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781881691;
+	s=arc-20220608; t=1781882967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+3TBSgUEjRp+WV8w5lLZ9cfqTQGtaJprvjprmWubE8A=;
-	b=J7pwXOMfRchp1leOa6154Wyl0kGO/QdPqGiMaHl5qaOvJrD6nQ+tQUGKoBdvt2q10iVkqc
-	uekL658AhRv1IFgt8zUacQo57nlXPCWad9/962AujUhxCiDEXJ0CvdMNak5a7FM/WOn6CQ
-	NBuVKyODzwy9KCV9ze9dl2GJxEXBhTE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781881691;
-	b=v7PazChIlGKRExIPXSkuGCscOTKp5MhSKN8ApQvvQlwvAtO0FB4qZtmG5sUWF/QlJP76Uv
-	kbSRuxDoqOTjKvl0MFyrAjrGHkHZzJUTr2M9JvnC8JESJuHzadlmPUN+7I+ETjr2LVQ642
-	gyMlozMJz/uFbvyYIXU4gT5BjPFhVV4=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Qh7gWxbs;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-69605f796b8so8665a12.1
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:08:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781881690; cv=none;
-        d=google.com; s=arc-20260327;
-        b=c9DHVE3ByrzOS08fD8lqCEyZKeFjuTEMLEXzIOYcTYMp37nrXI4m1L127jlGpSK3kb
-         K6jroCOY0wYshIBlIh0PDxw8gfKtRiNJN1irSqxuNjOy6xWTjILCRIHBUY0TPhgMZiDK
-         9VeqipU86vVA19d5LwvO2IXnwi9n3h4zq53UlQOb8JoBNm67zJYVdZ1jn/2WmPDLl1yv
-         IVwsJB+Y/52/huFgee0pYQ4yHGYz+nDJAWJV+K0+axICYDgBc9LMs7DjMRvBehebAiSm
-         1XZY90e6OlUzYa5cCY3zkhI8mGhtJQEvBN5OqWtVnPH2qdn+C+OQs2NJ9XmRLuLmN2vt
-         Uqow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+	bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+	b=jb///yE3hB1mBbLb10V5gRcizGXtKPQrxCrmhFpppzJH7a9cw/5ZCpYgVIp2A/RRZSMKVv
+	jVajAWpqVyNNyrQpeR5uCb/VkA0Bb1JVGBQUhq21JGxMloSsRIMJsxMSa1KTn/oOXKW66N
+	Ju6dY+ZrXGgU7KPAKOQdV95Vc9nz4TU=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c07ea058c0cso337403366b.2
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:29:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781882966; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fnIcU6POmXJdF1nNUpzXCZdc8MpWcl7NWzDwA7aksLq8n/RwlCWfwmHvPmoQDO+CS0
+         tM8uma6O9PLvhKjIT7bd1XbYAJU0JmmALRaw1cHiJx5l6OTDeCbIa6Wds3yEDxdGnBpz
+         2maaGKnb9JZ+4tqpoPO+z+Jh+G6sTvxTRex5WaQYZjTMFTc2XRqfB67Kc7yHvY2l1jdu
+         scZm3BfUIb4sfFvwdt2YVZk6+TnYWUvCx3ZHSXdxJe9PVf+/GX4WGyYVNYd55/rGNLXk
+         bSdzuUewthtZqa2rbzOSp3tDKXb+rhnL6apTyhXweXSJuMJDKF49Ow5pk+TSmk41pP/6
+         IW6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+3TBSgUEjRp+WV8w5lLZ9cfqTQGtaJprvjprmWubE8A=;
-        fh=xu48ds0pkHgnDg3RrRlp4jkRedX/UVZ8KH1JdFXRGuU=;
-        b=f4rd7W4jkiZCMxi1N9eUHnhH/uompsidT2JdU9mw3hINoZaoHDMCtfp6dTwhMZge0h
-         Lh0Rv1iGo4nVt3iZER0XNbp8IoUoHVgkNCvxJ+4m1EXygXOocz0hd4FR0KHuPYIPvErF
-         34D1fHMktINxaBLPbv0HZEjSwBfwznJTt/PXkUYlP/Jn467niKyLCKQzbnB9KCRwW2KT
-         P1t1IhFe3EeAn/LQ4eJojj+jUDqIfyjq09lYhpCxn0J9YLyiT4FuIMOgt/uASHlrospu
-         qdxnEmfzbf++8RGBqfLUBwPKdmsCAqcabmZ2Zp81Xxv3X/oDtR/w9sPOoRL6dCj77KNi
-         N1Gw==;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        fh=lb+ZcJHZBFbslrWrDjmqRjItHGZHx5EIgUR7ACxQp8c=;
+        b=KbIdaAc2QVztI/M4osvSzBPjJC1E80aGxronxexIS/mvR1uI9XtfmFCFcU24E4CGW1
+         NcA/nGdoemR2Hnb9gWte933TVkclrJJ0BSYYcfFrVJfhYz8suWt26Cw2wCOKviNtg7vF
+         05XISxarLwhFQoBT1A0mxGUt2rHeZBYRfM+PqGpHo3b8iD/ACBpQifEatpMGxAQcF9QZ
+         ZkLK7y1RIJ9IPogFRpXiCoZRy45kmRNG2fpUyB0ywX9pCmKuAmf61BTdxqzuoEwwhwaS
+         OnLEonJOnv5Cpi9K6bgxoysL1reCz2ISidi4gPE4fSwIDkk9E+9qNqCDTxe51LBnHeED
+         KdHg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781881690; x=1782486490; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+3TBSgUEjRp+WV8w5lLZ9cfqTQGtaJprvjprmWubE8A=;
-        b=Qh7gWxbsi61ds/oU7cYS7XpL0GniN0dVv/HlVB97bnYTVBXqsskOvV3ecxRq694Br3
-         cH6T2/8OSB+j2sCKlqpUIwGWXCooh5QRgkEvsyEeoy9KjQRBZ/xJwZwYt8f+0QvNJBbh
-         x7y8jvT5eWi51m6ImDdD3PPrMlZharfPH4Wus5Usj4N9qZ0ZRcnexg6NyvquhkzRB5fW
-         O5db7+8jVC4Lw/m7x92foNBV6UmRE94wgxZ5wm+TkLM9iJVFA9POoRQMLbZ/W1qzm8VJ
-         Bny48JFS54Dp37GQgg9nm+kfYYwZGjRfrJ/qKg9rLrCDVnviKAG6r6VqH9PKOnrtC/5j
-         PlSw==
+        d=gmail.com; s=20251104; t=1781882966; x=1782487766; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        b=k0s2v7nth/wYGed6rAm88/vpBIZqBboSy4+BOUWHfqWXZoF2rkjZqryUDgsZCbzsis
+         aJlpB67wHbaDPiZ6uLvkM6jgh/1Or3f6BHpRFHx8KLMWm2lyxUg8KaIJHIW+N4UBM4gU
+         zFwMITQJhRTmdnqGc60IDe/4qD3Xg5Hseo/4tusWDWMGBZJHKtxz4JHMgMHThATcwIN6
+         Kne+2y6W1EfP+/dR5ob6WKTleRhaGAiJUlaosu3p3vmgglKatZbuYhC4/s2vSEqR4a/X
+         bA/nIwiZbqwodeqGlAo4FrHjuudi/Ge2upUaXjqmdc6SuM7daJBsuzQmQ1nR258I/lgg
+         9phA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781881690; x=1782486490;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+3TBSgUEjRp+WV8w5lLZ9cfqTQGtaJprvjprmWubE8A=;
-        b=lS06c90DHItxvu4jXP76gDZzOVrMYbho8DDADDMetmq+420G2kQ4WdoS0vBU3XnStU
-         +ce8jtmjwXAr0V+s9J6UoKpI2o5UHXaf4sAgGrXgcJFPtZKNJVOeHNATncM1z3mDiXdW
-         vUjf6rgZfTaz1fESqHAUe3/QBjV4F4MvvEsmTzX1b83zWLyFMqAIj1Eqzkh39bt3zL03
-         9CfKThJ/kv0Y4rOX4Knl1tLHXInNrWM3pjKwAxCeJ5dlby067MYYuP8bSMN6eTbAr7gz
-         foFS82RW/VkLSlWzkvToU5eI9OP8nzUWaMEVH/JX/EDcs5C4SrXX7bpknlB0leC5IrpV
-         150Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+G4gVXLu5p1mJq7ePblOW/OtD2tjOUsenIe3Y86gLhdoXtiMi9sunvNM8L9G1XLHnE1v/NoYggJg==@kvack.org
-X-Gm-Message-State: AOJu0YxVT9Gs5sQAxFtdHlu+yc6cnR6mfhMTHjyVX75VJth0aPZ2kqNN
-	4NTquRtdL2aRiz4TfdBtgcjBsl7zXqmj/HVxV/0SCIgD+n4HNj8iM1dK8vBMVIzLLIOAjXEpuF/
-	Mpm3CbxyfA/XF6TzdodHplYCAyTTlaA6gqpG0jfNg
-X-Gm-Gg: AfdE7ck9tYZbZoxIzNCS6JYnqsMvAgBHQuY4OQ6p6UZl5pKBglnM+g7nNz6Cqd9U9yc
-	W3Vxv9ZeHKDDtHmBEVrMc64h5MJ23cxNtajNYMd5zCCe+RYJU6XAS0onuG5anf9ZZRiypv083Au
-	8jGv7+8Ny3jl9sghegROKvfNB2Q3eWLxn3YPxvaGsqdrlNWXgCb/DzPEIy76vDt3EU5vxiQMYaN
-	3aFh4mZoE5a5LDzhwWlOoYA8FPBRso0Z1H8BZ4t67FYEYVtfhEmwdvq1NlChQyjS7hl83Y=
-X-Received: by 2002:aa7:d4c7:0:b0:695:46d9:11d6 with SMTP id
- 4fb4d7f45d1cf-697217024cfmr48401a12.6.1781881689183; Fri, 19 Jun 2026
- 08:08:09 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781882966; x=1782487766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dULTLRE6f8vtBip1INjm35ttJ1pitKtvcCZ3p4j8QbM=;
+        b=j91xKSg1qziErgZW1IwARqquw1EoU0W7iNi5Ev+4m9aS0d7JCfv0XaRIKHuKw62cka
+         oKG/4qHI6cQVGqeQja7sVsLUUIeT8T38sn7yuBvTUqT7dmgxCT5CXmSmUvE4Psmz0pEB
+         jcifKxieKoOKdIQ/6fZ3N5pe3SteM3JhopleyYXdbxVXpjs91Kj8QhNg4px2Y+oayhyw
+         j6YsuivbD4uVrQNGY6gKIFBq0qiwWUoIe8+PRpVHYCqWFyjJnPCT055zYx94sH+O2549
+         tpMnRaC2RJ9dAYiz6vOe10P8kWdAC3HsEfwpL1ghsmr9yW7U6H7hPF1gp+qh0v7PJ/lz
+         zdGw==
+X-Forwarded-Encrypted: i=1; AFNElJ/ecoi/0OMDVNMtBgSUq2L5hAeGR86VHk1qTv1AVTNBfgY6Pu8koG/FwGQIYiKITTzBM5Yin03RyQ==@kvack.org
+X-Gm-Message-State: AOJu0YwpcUD+wuFQHAvK4qD+c1b/fIiMBZTCGC2rQyA50Xt5nQO0kAr+
+	w23B6u66FTlk98kJeW8JGpzOJ+m+OqL5WzQna691VhYkESzwjqsleJIi3X9SYbfS1QIgi3gP7ye
+	APN+XA5N7el40Os1Rg8KLdKrDdCvGglk=
+X-Gm-Gg: AfdE7ckCpR7z+p5R68RgxZEcKRd8OCzTPqvwoyZPZimgG+iMndZmXdsk7nvdFSH8lUJ
+	NwUIPhBJpqni79l81iy/g0cwf7/j6kvwkU7iOED22IFJg65ZIJzh2YaTY9bGobZrp16rdy04pGM
+	yruu9eBai72siN/26x5fZtsTOcRUU/VI9PdpeBZOCHKhjAj472poO9TLocV/GtyHDAaWtya2NFm
+	DeYJZ9en837VhCOyBXVIRwyif84wb1oQBATpt4kbGwCU7tUM9n93HhkPxQQ/8qYBc17FNRXtpI9
+	v5lZnE3tLA==
+X-Received: by 2002:a17:907:3f08:b0:c05:a987:6818 with SMTP id
+ a640c23a62f3a-c0b74791ec7mr160512166b.45.1781882965830; Fri, 19 Jun 2026
+ 08:29:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260616190300.1509639-1-riel@surriel.com> <CAJuCfpEKgiQDGXgCKrqnn7Wk5YrT8nr4-H88PVeEruSKjtY_CQ@mail.gmail.com>
- <dd66797a-6fc5-4c31-ac43-d767560f3029@kernel.org> <CAJuCfpEqz9t-x8abYD6idtHmi9t8p4YfDmnbkJ-ix4i=RMS4wg@mail.gmail.com>
- <603e002e-77f4-492e-9ad4-75572e18fc0b@kernel.org> <ajU3q1e6mpWsJ6Xa@lucifer>
- <c56f8fe6-9e06-4a65-9470-1fcd12189ed1@kernel.org> <CAJuCfpGifYo0iafNrMf4piG8eSb2FSjgVoPr4P-3YDabiwe_UA@mail.gmail.com>
- <a0a3dd20-a255-42d7-aa83-5bffcaba3acc@kernel.org>
-In-Reply-To: <a0a3dd20-a255-42d7-aa83-5bffcaba3acc@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 19 Jun 2026 08:07:55 -0700
-X-Gm-Features: AVVi8CceQv_0R_07S2ugTGidQIoXxeQ88n5cr18BjmWMfPEvC06zCx1NIVNdijk
-Message-ID: <CAJuCfpHXAXNSXdaHu0Q90Jmc-rSg-49vKM7ByVZT9WU+dsyaXw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] mm: __access_remote_vm with per-VMA lock
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-mm@kvack.org, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>
+References: <20260515124218.151966-2-elaidya225@gmail.com> <2026061632-papaya-handwoven-d010@gregkh>
+In-Reply-To: <2026061632-papaya-handwoven-d010@gregkh>
+From: Ahmed Elaidy <elaidya225@gmail.com>
+Date: Fri, 19 Jun 2026 18:29:14 +0300
+X-Gm-Features: AVVi8CclmblgOHLTebR1IvQr0GdtabbyWwRGzxpmUmyAO7FztZWfvJDgibSTRt4
+Message-ID: <CAP48DwbYt3-3c+awg_s-=uHjKq3aE1J0Yx_XvR+v=hhsVMOSqA@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y v4 0/9] mm: backport sticky VMA flags and
+ soft-dirty fix
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	ljs@kernel.org, avagin@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 697EC140011
+X-Stat-Signature: x88hht1sgsk3obgh4bsab8uihpc1e9e6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C79DC100004
 X-Rspam-User: 
-X-Stat-Signature: m7q69fps477pmqqri9owmotkomspsujg
-X-HE-Tag: 1781881691-757751
-X-HE-Meta: U2FsdGVkX19fBXx1scRDufdQbdTC24IlbYJBiJWdVQZtJPUinsLd3ZD/rBqey7VQvBLd5XtGPs1gKK6sTZFSR5bX8y3cP+3kNpYJ1m7DSXeClk/Y/ZUc1atGpsSsHYauy/KYrIz7sVpO6T20NGublJfXrYDvO5By9bd5dAb+EXiA5JalMKkYdFy3941Q53J4Sqvuok8FWIq2J3BrjUDdKynKIog08eN2C8/GFErk6pm99zLxearimhAj4lVCHgK9TQxsvz/VHWTtJXoKqI2BgtiuYhtToR+J2634IxouZknt0msNSfQT/5z/BjbDTqwPFc8LFuCas36fGnQTFV72UI6NT0/8KN6cWQsUxKYL6r8lIHNeEcRT96o2znWiUsdIgQHi0CfV5bzYdi+TLGqFUjr886vuuqq7HsGG01kD4/TbYfMjlnBiVwiCQb+7fgY4yuZedCzHuN+TpDb/RafaL+uX93RJDHpJj1PUftVpnrmvgcvxZfiwV9K/sJvaS1uTfYcOUwUoYe+WqWQOKXWZWg+uXVvI0tdP4OpHUjQk0nDo69vtQe4Gdgo0uyXftokBJUdrwQBAck//OghtFdxV4Ns3L3yL5Xh7koFy9v2veWI4ytWswNRfgSAM32tjBesbB1m8MNXL9KIDjvIJcxi4Rqj0hFrchCiA6TAl9VfECvbuk8OPvYrJ8mvYWSF6+GOpXM0QGkWfYe/qwLTsfT+DNHss5+mnhC+9SRhSny6Xoxz3lGy7lOSdluSfNP+xH1UwwFC471aqN8+Se38n/QG69HGfE8As+JtRK4Njq5NtUrYTcDVEfIsGD2z1FFIwPH87U3LL4kcuiP0PyvHpCoXUbJWKYbV6W57kyB+FPRNpYzSYVmRxtSO33AgbJtzGsHjyufyz5w7xoM0fh2CtqK9uQ4JSNVy8ZtuaozedfyRoCrwssbjTr5Tx3rey9z/GjngkAo4YoZFjlMogh3yuTrP
- unxRm6yO
- wCNNaipF92hiaGdcUecVFkSAlwcBe8mNJa3b8yoqgwxiccT4E/t0o1v0i8IBrbrtZ/v45JfdnVmy0l/vUzgh8Q1hS/YbGJbbbXz7IyWxrq1gH3asTHohtqvE2KFblvApOV7UUkGBfmb7SdLP6K3BULfbN78SFH+dcBSEIdX2ypmRWA7bbF9qLojqSkjsCmfNXWXiHa5nz0nGU75Dh91DbnXk5Pq4xcEmn0gGCOI3AgXWkhX2hHMvOwixVkR6hBTmjjpfZVzecMW9LIWiKXajIzy/2pxGOfqMPXQiwTZO0OR8CR7TWlExFhCOj1g==
+X-HE-Tag: 1781882967-863971
+X-HE-Meta: U2FsdGVkX19rz78We8SlRltwKKUdmjrATxaVzR4rSCrBlAUCVvF4zqaSGKJQr6MpLCVaSJ3GS+Qyg6ivOObixMKtQWauTU34ehi+3TmGS8y2iVjU5GBBQvKvwQdngRIFVphFXccd+MZQZeZQ5b9kZQfCR+y35YeKz2RaprQnCa9pnYgpph3ODDSb/8fnesQiS5BikvFcD88BkS29ca3NGVaGE0M8jRwySUSjcDDDlPttukKCLwEdkzRU6y2tQVgLm7SnjPKVvjCs/FM0HPHvvZ4iitVt31mqqj171C8tnvRbsiaUeDcJ3BeINX3OVnHc9FbOPAp79A0qLxPAYgiemESMWE4/xFtwjhAnua+0TPHj1BiCM4tM9aCStpmAtFEqT4ibX1bzMn3B1el09MsN2+Ef8mXGR426eUARCI6R83QmBnCJ7VBSpmki2ydTKXdFdQtyz3DfW/wBgwLgfkQEdcYxxOBgX/6tZ1ATY8kD9poSAlkHR6dC8yOip3UBBXGwllRkM4GcR1CkGg0Qy5Oes5FUzLG9+wPv9Emurtxjt6DpMjUN3RBNLjmjODfA0XwCvG4rRdTIoA2VcUrOoI0m7WELyH5aA57edGBNXkR3441wOGXynpb79pnajqp/sKGfiLloQx4uU1Ukf0oWjUvxeCfIoAGAlCBDwluwl8jQ7moWtU5fPouXeIwai5AJr401iAmhYEnVXZN5iYnicnV30gYKGJp+FQOboWE0c2q5MXH6m9wRs3F7xAn9YXD3LauVi6K4dUnZaIMrpUme1APpRAy1eE67fU0gbw1xUsh34ZdtPaX5uDA+lqL2WsrPJ1+zgOXdfuG4qxLQgerkXsNx9lDl1Pq5m+M7uxdoTt6oNl782GGa1tEHFH94wS/ws6RGgRcObwnFvGvyizc2KPMRA6y+42/0B83YMPa91HpkZJE1CF0v+kZV4Kfl5u17Ngz5fmpqOs0WBg2kTfNCkkh
+ NcmUG6ij
+ 07YZRXgh70opg5KiFrzGetjQgyqZtmqmmeEB2O1+2gs8I4+hOucnKe70hf4pzUIl1T6bqQZwSJKw4zfA9Mx2E/OZcUG3ef1G3549oijavZ8CpYbzD4h39/odmMqiyXk5OoiHb7tZUb/DxGFTfyFGyMn1HeSXHrCFpI9sC9jZP6Iog3+EhWuxw1uzPNCPhEMdGWc2wGUtNSx6CnJ4q0Yx1gaUXHfh/kAkyYOMGpOc7vfRuXAPfMNR31fDCQElW9egPCygykWyA4hGLSTLNXrMhWgyQa9ZEcdq50Gyay8+Pbt6fPLS8ZMxHcdkxPUDi9Q0qR06eA17zZsmntyVNU/Ntn0Vh9rRao5ZLMVyHpLUgHyOmVtRzUOJ6ftkpI5rz06d2FM1bZonSZeaOEm1Cl9+q8Q1+GZLkU46KIAPp5Gl/znbKDFysPFP3svuwdf7aYQ/PAFZpgqSFJmDjmvzOgTkWCfkLrmAoCOCJhU8/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,128 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 7:27=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+Hi Greg,
+
+> Ok, but what does that actually mean?  A crash?  Normal user
+> triggerable or something else?
+
+The issue causes CRIU incremental dump/restore to fail when
+VM_SOFTDIRTY is lost during VMA merge,
+CRIU incorrectly treats pages as unmodified, leading to data loss in
+incremental checkpoints.
+
+> We need acks from the maintainers here before we can take these...
+
+Lorenzo has reviewed the series and given his ack:
+https://lore.kernel.org/stable/agcK1mzmGbB5KSpP@lucifer/
+
+Thanks,
+Ahmed
+
+
+On Tue, Jun 16, 2026 at 6:39=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 >
-> On 6/19/26 16:19, Suren Baghdasaryan wrote:
-> > On Fri, Jun 19, 2026 at 6:05=E2=80=AFAM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >>>
-> >>> Well I think a critical problem here, as pointed out by Suren, is tha=
-t holding a
-> >>> VMA lock means that the VMAs around you can change and in ways that a=
-re quite
-> >>> problematic.
-> >>>
-> >>> E.g. The moment you drop the VMA lock that VMA might get freed and th=
-en merged
-> >>> with something else, and the next VMA you consume is the same one you=
- just
-> >>> partially walked, for instance.
-> >>>
-> >>> Now perhaps you could reason your way around this, but I'm pretty sur=
-e there are
-> >>> cases where you might actually miss VMAs due to races (Suren knows be=
-st).
-> >>>
-> >>> And also without an mmap lock people can unmap and map new VMAs in th=
-e range as
-> >>> you go through which might cause weirdness as well.
-> >>>
-> >>> Really, unless you are dealing with a single VMA in the range, I susp=
-ect GUP
-> >>> needs to stabilise that whole range.
-> >>
-> >> Well, depends, really. It's not like a all GUP operation that target m=
-any pages
-> >> runs exclusively under the mmap lock that would prevent any VMA change=
-s.
-> >>
-> >> With userfaultfd, for example, we drop the lock in between, to lookup =
-the VMA
-> >> again later. There are various paths where __get_user_pages_locked() i=
-s
-> >> instructed to grab the mmap lock itself, to even temporarily drop it i=
-f the mmap
-> >> lock was dropped.
-> >>
-> >> gup_fast_fallback() grabs some pages to then take the mmap lock. And c=
-ontinue
-> >> from the next address.
-> >>
-> >>
-> >> So it really depends on the use case. I would actually be surprised if=
- there a
-> >> lot of use cases that strictly must block concurrent mremap operations=
- etc.
-> >>
-> >> The important part is that you process each virtual page address reque=
-sted
-> >> exactly once. If the VMA was merged in the meantime, you continue from=
- that
-> >> address in the previously-processed VMA.
-> >>
-> >>
-> >> Some use cases might indeed want to stabilize the whole range. But I w=
-ouldn't
-> >> expect them to opt-in to using per-VMA locks.
-> >>
-> >> Just like with any other page table walker, we cannot just convert all=
- in one
-> >> shot to use per-VMA locks.
-> >>
-> >>>
-> >>> If we could find a way to have GUP fast-path the single VMA case sens=
-ibly, then
-> >>> that's probably workable?
-> >>
-> >> Right, that's what I said: start with a single-VMA interface that supp=
-orts
-> >> getting called with the per-vma lock or the mmap lock.
-> >>
-> >> If we have to fallback to the mmap lock (userfaultd? indicated back by=
- the
-> >> caller), handle it in the caller of that interface for now.
-> >>
-> >>>
-> >>> And I agree special-casing only one place but not others sucks.
-> >>
-> >> Yeah, we're not doing that unless inevitable.
-> >>
-> >>>
-> >>> Perhaps we could find a way to get this improvement without it being =
-quite so
-> >>> 'tacked on' but without needing significant rework of GUP, but in eit=
-her case I
-> >>> broadly agree we need to improve the codebase as part of the changes.
-> >>
-> >> We shouldn't fear extending GUP in a reasonable way that makes everyon=
-e out
-> >> there profit ion the long run :)
+> On Fri, May 15, 2026 at 03:42:10PM +0300, Ahmed Elaidy wrote:
+> > This series backports the sticky VMA flags infrastructure and the
+> > VM_SOFTDIRTY-on-merge fix to linux-6.18.y.
 > >
-> > I do not disagree with the general premise of making existing
-> > mechanisms work better rather than implementing parallel ones. I'm
-> > just pointing out my findings so far when I moved in that direction
-> > and I'm happy Rik posted an alternative simple way around large
-> > refactoring and started this discussion. We should definitely try
-> > reworking GUP to cause less contention. I just don't have enough time
-> > ATM to drive that, but would be happy to help with the VMA-locking
-> > parts.
+> > Motivation: CRIU incremental dump/restore can hit a missing-parent-page=
+map
+> > failure when VM_SOFTDIRTY is lost during VMA merge operations.
 >
-> If we have a VMA-lock GUP variant, I guess supporting the write part woul=
-d also
-> be fairly easy?
-
-I think so.
-
-> Not sure how performance-relevant that is, though.
-
-All the contention cases I saw or heard of involved reading.
-
+> Ok, but what does that actually mean?  A crash?  Normal user
+> triggerable or something else?
 >
-> --
-> Cheers,
+> > Patch 8 is the target fix:
+> >   mm: propagate VM_SOFTDIRTY on merge
+> >
+> > The preceding patches provide required dependencies on 6.18.y and are i=
+ncluded
+> > to preserve upstream behavior, as requested by maintainers for stable b=
+ackports.
+> >
+> > Changes since v3:
+> >   - Reverted to sending the full 9-patch series as requested by Greg KH=
+ and Lorenzo.
+> >   - Updated Lorenzo's email to ljs@kernel.org across all patches.
+> >   - Added Cc: stable@vger.kernel.org # 6.18.x to all patches.
+> >   - Added Fixes tag for soft-dirty merging in Patch 8.
 >
-> David
+> We need acks from the maintainers here before we can take these...
+>
+> thanks,
+>
+> greg k-h
 
