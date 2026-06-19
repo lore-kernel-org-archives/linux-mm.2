@@ -4,170 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60FEDCDB471
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C191ACD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:28:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED096B0088; Fri, 19 Jun 2026 08:27:20 -0400 (EDT)
+	id B2DC16B008A; Fri, 19 Jun 2026 08:28:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4A86B008A; Fri, 19 Jun 2026 08:27:20 -0400 (EDT)
+	id B05026B008C; Fri, 19 Jun 2026 08:28:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5606B008C; Fri, 19 Jun 2026 08:27:20 -0400 (EDT)
+	id 9CCF66B0092; Fri, 19 Jun 2026 08:28:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE9546B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:27:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4783F1A03DE
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:27:19 +0000 (UTC)
-X-FDA: 84896587398.12.BDBB39F
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011009.outbound.protection.outlook.com [52.101.62.9])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5F0451C0006
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:27:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=glAaK5Vj;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CBA26B008A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:28:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 029C7166657
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:28:47 +0000 (UTC)
+X-FDA: 84896591136.09.B089604
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011038.outbound.protection.outlook.com [52.101.57.38])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D815E20002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:28:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="rBGmarN/";
+	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 52.101.57.38 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781872125;
+	b=F/FSgDMMXQRVzc+WqbHdYCdCXKBC6yyR8DHOHL2hwjnb6w+1ThtqQXtOPNcAjHTefDh1nn
+	fVjCUMu9l97bWPD7/G7Cuxwnv4TAhLQvXxOVL3urRMSrdx9K8Qzj++Jwl7YNNfMDigJQXS
+	Ptn5kNqI3U7dcBXK2HX9UOItqBS2DZw=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="rBGmarN/";
+	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 52.101.57.38 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781872036;
+	s=arc-20220608; t=1781872125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6VnEks0WNVj3t8BFpvim8TLSt2t8akQg5i36/S7HEWw=;
-	b=ypdaIsWcg1wa1GXl+VhJNODaOfI/68VLV3yGmZrLeBTzSplGWKHRGn4kJbrB32cXdP6QLA
-	R76Qpb1GgHOmbeLdlTdPWgJSejK9AEMNBl6TgXJnI0/TK4BcmMNGqQhkOJccfUl6U+/Nk3
-	yfqk4Z8xQLcgjD+dfd8fcCe6sUly2Nk=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=glAaK5Vj;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781872036;
-	b=YKoVHOMiP5CARlJADftj8J6Y6Dqq7bvJ30OYq2kn/YRenXAY9iEGo4Erp+NG9nPp4L1kMM
-	BdOZi/4YLZcs5bpabiH0x3eUyrYNM+g3mkZXDy6yIRsZbK2V0+puIb10wryK8ijLUPn+tC
-	PhwaneDhKk1OMV8lxJNNcAhzh085N6U=
+	bh=sf4FqwlcijwPGq7fC2/hHTWvNyP18M4EUm8vq3o4lzI=;
+	b=XSkyOK3BSM4rnI8fOczJ6mUB3oqKeQh3RLGANrXVo1QdzZbRGA/D6/1y44EzY2IJ/zvtef
+	TycnMGor7+95lZuN1qnx1lHS8eXcvDAeo1j0CP/Bj/uLi+L+VgX3Ckvon8aW8HLfYVbbVm
+	dtWzaHjxHcaR8lEioHvD/GlrNONl6/A=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C0YAMzJTwfht+cGCuK8Aeg9xzA7rdnIVaK9jUXSXNcE5mIQQklfWllEZS/LW6biahTg98ehNepSMfSUNC/+hQ93IixGdyjSus1ka35mqOThlTf68clo9zhqQ3yi954+UJmeYzVVqYYz8wVKNT7QsT5zWHshTt+Y6T0h2ZO5trvgkNSswoQvfPh2kw6peI2Xa9m9Q3KGQe4WVnhzC/TRUag0OG3o+1HF4oIEKjmXQk3+yft/bDFTA/TcrXnRNE3N3fVbkaLW/aLa7P1Ff2+02/mtapgK3xKwRUq02KkUMpZvH89IphIQooLg1UcI2Z18m9IKOAF832t//yv2BWz9r/Q==
+ b=HD9iWBPdKxb+1fAZ+ybj8FnSVW46NXf/LGgYnDzOBg5f4AUyjOBD5/QFAFE7fGnTO7MJHu++B9vvpTogWWRdf/CI31URBBCLGg45Zh0AbftEFCqDYMdQdQojcwEdACfzWYVT86RWEjMKGtfCnOOa5D/2DdAuQ9APJAnJ1h+4v820QGsn3MM1uCd2HLWjpK1dLHXa6YTGrQqNKMGsAvYrTcOyzSubmAMY2A0Oo9jQRrUqYVmYAptagfn+QWTiHeWM56pZ4ZvIm3TYiIpPE5iBgOVdEzBPQ0nwimdIHRVxkAB+8kooV5OO5wrQaoLRSA1gQ9Tc8Oe7lV++jyIkQtzc5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6VnEks0WNVj3t8BFpvim8TLSt2t8akQg5i36/S7HEWw=;
- b=B3dPa5KMU/jd+uUrz2MCsXQivINrqkx9RQ8YK62Gkb2ZgV3UHHDjrQItrfy5+4UqWVm0P+2+M62wJsg+d0VNsE6pD81RyYF567LBblmvXZjNk+/u0E7aRdPaBhqdidI8N6OPS6ZSQszDD2a8+dQxD4XEbY+8F2kp/dLO0/kYTLQn5FmlV1T2ebVAGliGDKLQ0gPGryPZV0Uj/SA4xYPSKl6BErZ1KAHndsJKYpxJvYfCwfDnj9IxSUlgT4doVgoYtagsSKdYRrpWqaxi9Oax/btP7atkNbkUjTyOLkn2yVyqSPYb/+uBt3z5W40tO89O7oYNdeHeHKdDBIf6mcJxJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=sf4FqwlcijwPGq7fC2/hHTWvNyP18M4EUm8vq3o4lzI=;
+ b=mIHJ6RRIZbLSR6TiE4N78aX7HnfDiwkGWuTJCikOSop+tpvkGq/XZC/sPvAinUhpnG5apDYtpYa3vdZThKNwBSfHMX4s1pxUmF5KoTPWB2vdbQSAHz+hb6eeOTtEIggaGUZTnDch13mLh2yuFTaWxUzDK7mcDtCkGLLxOZXzwIpdu0GLfwGS/6HsBhLoxIX96bH/SeiQyXLG8dM72GlE371OjZQoJxrtdBJf55Qgg+VyqpUkq/9F+RpS5yd72XTveICsOVYHNU7iosW4vMihaeJVoFg8MRuHt+GRiHs1tAP99xVpneMbUd7nCEdULWlCW8+HSHCyut/pKt9aIg4BIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6VnEks0WNVj3t8BFpvim8TLSt2t8akQg5i36/S7HEWw=;
- b=glAaK5Vjm4Z/S2J3cqUWQxbtpk2ixqEvNsYoETqK2B1WTA/VUeC4IMWt+YcI1jxCVY8PDpm6FUXmm8/XWxZjjg5WOwA+uo9QVFflHMWM2EoctDjnqDEHzhrFiQXRO1NOkY9iAqmeRwDqgtKSmIf05WM1aK6Myc6iBDKqn6Gjs6xyZ5iI35jx0d/LdKaNyYpAnrdAv+PczPnqWzFOgqk7k4pE7q4bL0qkyPYCMCTWwBMHO0x8R/tQ7nYaQt/eTJnWxk8umDomc1WJiFqvJydO8bH62mDmuQUaewIT1cD8ESR7JRBtpEc0l4hKM1wyPHXWPFM1IOC+8bK2+bsHAZvvLg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by IA0PPFD4454CAA9.namprd12.prod.outlook.com (2603:10b6:20f:fc04::be5) with
+ bh=sf4FqwlcijwPGq7fC2/hHTWvNyP18M4EUm8vq3o4lzI=;
+ b=rBGmarN/ENMU7QFN8jCF80eMlgww+4yxbR+YhkOlhgymFAkPMRIdgdC4Qm06ppY1Hdghnhgi3BYIukT9e6re7YXAR4W6qN4r2zikbEfbRs4qb4avchQZ2pUsMIjbaoyom/2omx2ks9Ra7I0mwcguh1Hnr1PLiViOCBEg89BQvSE=
+Received: from MN2PR07CA0003.namprd07.prod.outlook.com (2603:10b6:208:1a0::13)
+ by SA1PR12MB7442.namprd12.prod.outlook.com (2603:10b6:806:2b5::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Fri, 19 Jun
- 2026 12:27:12 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0139.011; Fri, 19 Jun 2026
- 12:27:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 19 Jun 2026 08:27:11 -0400
-Message-Id: <DJD0X2R79SVW.1XM7FV4REYCHS@nvidia.com>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Brendan Jackman" <brendan.jackman@linux.dev>, "Brendan Jackman"
- <jackmanb@google.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
-X-Mailer: aerc 0.21.0
-References: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
- <DJ9KK3Z7BPYU.2HDB5IVO6Q40@linux.dev>
- <DJD06ZZOC9IR.33KCFLM7L4267@linux.dev>
-In-Reply-To: <DJD06ZZOC9IR.33KCFLM7L4267@linux.dev>
-X-ClientProxiedBy: MN2PR15CA0058.namprd15.prod.outlook.com
- (2603:10b6:208:237::27) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Fri, 19 Jun
+ 2026 12:28:37 +0000
+Received: from BL02EPF0002992C.namprd02.prod.outlook.com
+ (2603:10b6:208:1a0:cafe::10) by MN2PR07CA0003.outlook.office365.com
+ (2603:10b6:208:1a0::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.13 via Frontend Transport; Fri,
+ 19 Jun 2026 12:28:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0002992C.mail.protection.outlook.com (10.167.249.57) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.8 via Frontend Transport; Fri, 19 Jun 2026 12:28:36 +0000
+Received: from [10.128.112.233] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 19 Jun
+ 2026 07:28:22 -0500
+Message-ID: <a6373206-60b6-454c-9aa9-9d52f9d84de3@amd.com>
+Date: Fri, 19 Jun 2026 17:58:19 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 00/46] guest_memfd: In-place conversion support
+To: <ackerleytng@google.com>, <aik@amd.com>, <andrew.jones@linux.dev>,
+	<binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <steven.price@arm.com>, <tabba@google.com>,
+	<willy@infradead.org>, <wyihan@google.com>, <yan.y.zhao@intel.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-coco@lists.linux.dev>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA0PPFD4454CAA9:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78a59467-074a-4f7f-898f-08decdfe16f9
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992C:EE_|SA1PR12MB7442:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec2866c2-1d07-4e9a-730d-08decdfe493b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|56012099006|4143699003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|82310400026|36860700016|13003099007|22082099003|18002099003|921020|11063799006|3023799007|6133799003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	/71pK1cB8U4ombi5jpg7j9Qa4XEQm9IdG3HTFOvJb/yHqMO8BTG4+bjZnCmHHdayZJUSyNFVAV1FxvRWeTEFbdxQvccqK9IIxHNEdImiihy19SkdJ5Pj7RDhAxyczjUN2BDfwwi0p4R2Pd6/X/zMQxInFFVMJ3GGzTC0fl6GEExtPiLwA/UhfJgR9g8/hKSsfrIwUT3cO02UclttsUrDhNxn488wTejxPbOICguKj9AYlttL8iWr6qz/JqTe8anLa/9iJsOLY8bhXoAE6gCippC7ITAHgxGJnMTG2X7kAqChbkqw8tf2yrAL3F4yUGg2nKmmQqs0cciMxVYaXgwjs8n2B02Y+hO7fHofAe2O4enOLXnoYzsDfZbZRRUnxZayZ/S3eX6JR0RY82xeJGIWMJyCaGvtdANK9DaMv6uw0XHBrlJ25CeXL+/dHwAzvYA73k1gNiRLebbBS34CZP3tRK897DaFfBL0z++yHuVs2ZizsFiZTp24Ek/iL9B7JOINnP5KiRs7S6Q06+PRsqgfLsWJdqZ6RWPGwEmRIwdV8QGcRObBDBcR3GiMoQTP5z2vgtt40iSZeHl/wqvOan8qZpH/5celq+pPkh8r+4DBhmqoAyQd7Dzhs0Fp6Dir0sC6JJgTi65y414x7XPrIW556w6Sm0yDi8Qy6D9R/Fx0+Cc=
+	jOWGJb30pE2KbyriwilkFoCGJllUemD+QC4E91CEbqnn0sHvbseiyTTafmMEVcK5Hpvp3JO9YoL+o9aOcT3W7meeTu6udm/gLzLh7PvP1vRtMTceK8GNgK9paPCHnkZcWTOPTK0PM8xQSfeRY1mc0CdbyZJIb8sv8osO64HpGoQvthjUKy2Cn2eSa4NiJjK4Vtn9maum1sVu6YMQi3FaiQfF8JTIcN0f7J+RFlhsMtBD+j2t0bsmMWwWCPXxqgzlf8I2XLPqYg0ODoyWvlo9NhKAuXZMNi25bRX+/1zxjTuZIKS4D31RF27mCAfhM5n5QaXkeDVBOtperdRLWipQ1igGTg0n5EEHRW1cIvseCNoPYdHU9ODQTdRftu0Cp6L+6HmqwtA7Gg0952Szp8i9X8x2JffMlU+IJjIltu/sjlqUVmUDKfX5gK34Zs+UotN8xTkE6TSUdGiHubrdyrAeV1Ds4sosuGS4ApxHrNJ5yuOhr7IqNHqbRsaiVcZDh7duYTmD3avMvlUtzM538eoJHdlIPYHqY/pfW8Gyu0PHs7e+PgWyfYoGimybB38LiDzgQDJoDVLito4XxUmtCZ8NIGHGHykugpis9ep1hYtUDc8voXd8D+5ol68g6cQpI0pc0xu+4aXIU/siDcQuOzcWT15KeuAkByuy/qNfzHQBJlqyuO8pQ2CMLsW3OAuQZMDIS9KwGyCFMVYyjgfV9BiM3A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(82310400026)(36860700016)(13003099007)(22082099003)(18002099003)(921020)(11063799006)(3023799007)(6133799003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?emRXT3V5Mmt2eGhiSnJ6TjkwaTgzTEo5TnVKYm5kYkZGWCtXczA5bkp0Sy90?=
- =?utf-8?B?NFM1blIxbDBHVnc0SUdsMWh5c2hLT29iMmpRYUxDT25rOHgwaWJxUHExSXQr?=
- =?utf-8?B?aXI0Zy9QMVZvRTljb3NRVHAzQVpXZE45UkNYN2F3VXVNdk1oWDdQWlJrMFJW?=
- =?utf-8?B?REtOWmEvUnplM3FnMFVXVU42bWF3dXUxelVGSmZrTWdEN2dRQXNrdDl6SUFQ?=
- =?utf-8?B?SzQwcWNkUGFBcG9oOVg3cnc5T09WTm1DNkNRWWZZUkVlVyswaHlCakFRWkp4?=
- =?utf-8?B?Vzl3MzB3Z3dUYm4wazI1cDlscDVGS1k3OThJdHlaV2JBOHNEQkpHM1FjcnFV?=
- =?utf-8?B?eXZJUVlhUi9GM1ZDWS96QVFFa2xIM1hTM053REJpMktNOFpJWjJyNHg2dndi?=
- =?utf-8?B?MDkwa09ZMTBBaEZCMnR2S05YRUUvSE5TQThvbmRvSk5lanAzSTM3MDRwSE9n?=
- =?utf-8?B?OFlzSzFySVRsSXpCYzBZUGd4aHB3RnJIUjV3RThrZDVJa3RFQ3A0N3BFZ2ZM?=
- =?utf-8?B?QUVWRk96ZldnQXAxQ0lOY2R0ZVZoaEJlc1A0YWw1UVdBNWw0Vlo3REZWRGwv?=
- =?utf-8?B?SE9zWWNGNW12T3YxbTlURjNVQ1c1b1dHTHBHeDNXVlNpdDQ4dXR5RWhWMnda?=
- =?utf-8?B?d2hSKzREOU5BUUs5YkhKZW5rMHZlcjhRbzRYSEtmdjdBc3Y5ZE9NdFdNNUly?=
- =?utf-8?B?VzBRazlMa3B2WjczeW0zTHF0cWp1cmRhSWtKV05XbEZQbXpYWGxINXRBWFZT?=
- =?utf-8?B?Nzg4RVE5OU10WXozQUVYTkNwMENlNWl2RnpjSmtobmhRKzUxUGNoa0Z6TUtQ?=
- =?utf-8?B?R1RLSWltdWtLWXllWXRyMDlSS2dxdmhhcVpBTXBoZW1CaHp6VUYzSml0dDVE?=
- =?utf-8?B?TGQ3NTRzWGtWSFdibjBMRG15N24ydzdGSS9iRGhPOHRQb1I5dkNXbmEzazB6?=
- =?utf-8?B?RHhhVGlJcUFUbUJRTlByK3loZEVicWhiRUxnQjRRNi9LeG9XRHJkeHh1LzlJ?=
- =?utf-8?B?V053NEsvYm1qZ3VDbnZNRWt3ZWdWeC9YU001MENOM2pReGl5eXVKT1ZXTTRZ?=
- =?utf-8?B?UTBFS24xSUJvSjd6bFRCbDhWQ2hCSXJRNU52M0FUQ2tjdlNBeXVYcDhWZVlE?=
- =?utf-8?B?WVFiTytscEJmN0U5T21YaHdvNGt1bHVxeE1SK093cVMvNDZGdHhESW1nQnM2?=
- =?utf-8?B?ZW5KYjJNRkZ1N0JsMDFreXBoRGlmMStUdEw1YlVDUlRUWXBrSW1wazNQZkRF?=
- =?utf-8?B?a1dVS0REVEN4aU4rZENCUlIzMURGWTNvM0tMNzZ4alN5TExOTkVZNWk2NFVN?=
- =?utf-8?B?cDU4NlB4THJncnJYeGZaTTlpVzhmVHQwQ3kwNnNTU2FhRUVHK3BSa1BRNkJr?=
- =?utf-8?B?czNOamZIRlBqdUtWS1lSSlpkVTY5YXRoeUJvaHVyMHcraVpCaTYxZjBJb2My?=
- =?utf-8?B?UUV3ZUF2alJzQkN0d1d0RjlqUFNhdWp4NmZQaFBNV2NSYmtPWjRFNU1FWXdr?=
- =?utf-8?B?cSs0S0NDTXI0QnRmTjVNSzd1UmRweDdwN2JXQWxwNU1aWU00TUd3SDA0QzRh?=
- =?utf-8?B?OTBjWlV0R2Yxb202ZkFqUUZpL20xaVlnQUYrY3BGV2ZnZW9rZzhsQXIyVnZS?=
- =?utf-8?B?Qm02QXFtOENYRzlJN0U2TEMvYnRBUWlnV3FjZVAzTGp0THpmUDFHc0pKYVBW?=
- =?utf-8?B?SVNLaGRaWCtOQU01Y0VsTFcyUjk2NERwRTNLT2MzVzZWV3ZxaWlvaGdoOTdK?=
- =?utf-8?B?K3Zrb0FsejhPSzdTcVQ4cmI5V1NKUjlLMis5RjAzMzRvbzR4T3ZQVU1tZkZ6?=
- =?utf-8?B?ZnJZYTdqMVlLSGZUcEFMcHloSFZJcVZSRy92NjBlalROQ1lLZTd5VG4vdzls?=
- =?utf-8?B?TXUrVG55aGxKbkRsVVVRenIwWmhqOWF3WlozSW1oeEJ6S3JVS2dYaFpaV29r?=
- =?utf-8?B?RnRubGRvSEZkZlpJdks0VDhEVHpyaWo1cnFWMWozK25jVkJST05QWVorRXB0?=
- =?utf-8?B?bzVoYUFpTFkxOHB4eWY3ZVM2bHc3T2RnMko4QzhGUmFweHhwbTBMYjVXUS9T?=
- =?utf-8?B?WFpJVVpxQ21xcHBKRHM0M0tRdk8vUTg3OXFHd2drUWN0VFlpaEUzV1ErU2NW?=
- =?utf-8?B?dFE3VE8xcE1mMkJxUUdQcjUzSkVlb1E0VnEzbmZXRjEwajgvYnQxaTA2VkNT?=
- =?utf-8?B?NGVYZGZ1RmZlTC9JM0ZpUFFHYUdVc05NbDZpZ2I1QmkvU1JTRXZzWkFiNVBv?=
- =?utf-8?B?SCswck5wRGpmZEZkY2dCdm1XUWIvT2RMYXNJQ0RZZUd2K3VrUU0wbUZDN2ph?=
- =?utf-8?Q?riKZxFcypFwhd5BTJU?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78a59467-074a-4f7f-898f-08decdfe16f9
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2026 12:27:12.5435
+	jTAbi/Np9VYwZiygxUapcrPx7ngDG5oan0qBlEZsSedn0LOPo8Hz/fKDXCTlue6froZU3hHN/1m1yqDoLFs4Zm9RfPtaFYyj/zPkY6VTMkvOJFi5D/7pearTmzRKBCOgggj/nmkfGrcja79L13JLpyZaPduQM4XNBJz3muDP7AVOEZHUqN65q4dDCrhtCAuP1Qtua//x4gNqZcd4xQZCPPYB/coPEQQnCpUeUILuo+4olNDUCA245vCsfsj2jQKv3ufu1SC2triolR4BHzm/wM4e0nDs6yiIqguvXdoSPMfELmTwXG1NnPHfEHA5wN8ss3vAFSALlw79DZ8V6RBZcxRFK1aWyelrZSvJMMEuZHD66SkdHRA6AKN8VCYXfjCdVUhyy3GWxFOYUi2xhznywArYo9iQtaPAw+Tco9g2a2hCDv0MIGPRZBhVgJJwEcT0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2026 12:28:36.6780
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YL0U7ZT5X5SdsSA7I5JYmgvcj0TurRtQuj+QOzjcXGfEX8GyHv+qiLcM7aZAW6KX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFD4454CAA9
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5F0451C0006
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec2866c2-1d07-4e9a-730d-08decdfe493b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0002992C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7442
+X-Stat-Signature: n9fbranwh6rzt8r4skxra8ytiipnz1m5
 X-Rspam-User: 
-X-Stat-Signature: f1z44jo6kr7jhawxzbjyiy1bjubr88uz
-X-HE-Tag: 1781872036-667701
-X-HE-Meta: U2FsdGVkX19vtGEYsxGavdpJVnfeIUEQz7knLqty6K1M6zDNJ5lIZhLWL9XxwIPFFj/e8qyc5r9/8oT7qxSBsrQWUbwyYAii+UR+y8F+kreRPSuzjobwxhhYWG8XiQXnf2NkvbdY9wo2zocAzXaLGfDGeFYY4kaG30W0iqflcFvc2/8C3cMNMo7RsqVul7S4z8tECadUgNb6ksxNA0KY4olT/ExnJUsx2bAPJrMkDTA36nFDdXUVfWkCPpNoyPIGBAyahRU/hfaV3T/ZJs3/ML5qrD2LX0kc6Ni9psWIk1865+5sLf93DtXCwsIv5PhDWpLMRSz4YeucupoziGKcr+rsTV/whPqG5gox7/URyQ/6/m88AQDgG4Q7gk4CxftzLyyFnT3W9KUWvVpVwy+y1AgMKNcxHlcskO2fpFvswBwQzyeMBeOVVFXBsuCA6X5QvbQxMXlqIxboHn3kYRCaiD353exVP4Bjyflh2dB/TY++/ZNscZ+bwao11u4R1Go88S6miYwhv23IlbMd66bW2hMrkCzQU9SFjkSGm4EiewLiEPKpes4owvAd5RVU8hfds6o7ajJvmEYr3gAcbX6pcEXw9hette5+isclH0iIXTAXbzguftRctDXsT72binq+YKodBFrIxwSiFTA/bC+RueKVH4gE4kkc47TDm3aVQ0/nA5S0/lJv9pEKzXMuzU5qaUpeJ+Ev0Q1KF5aaGdA6rwmWOZOIRqfNAWEmnOEq/xYNgiuLlINwA3sS6aSQUhgmCcsTip0blMYbkfCa6JTBIntjm8i7N5yUSILnsHV2dTa7Ll7l18n4bDCZRLJ+r1aMucyDsH2gb9/QRj08DWBCTInJI/tkiT63bR8YojHgHGoPwaZmZlqnlr9OhCHAX63emkJWqePiXXO1BxfzAXUAZ8D5bSty6hrvjdmyjuZ438ETCpnOvosiSpEumm2zVM8O3DAy2m86iFoydIAC2hN
- HaKYT2N+
- ax+96nXNzQwS5+zpm89+Hna/0PcSkc56MbueJRiSbV6TjyeUrq8vFmcDEmHvDVCns/32WTmohphsuKbxem1gp4DYdbh+vdghc+QtR8mSSkO6sYXLPPE4FiHImvoOI796H6xQuaVJeDufDutr4/krX+UjPGv5hudVCjmymBH5KUKyslU9mTmP/h/kHych7CLr7zUsz/5pwHH8VbhH6hRCjD0cZ/t14PhfimJuaIlxPfvPiROSlXIJq/GAXK1EzlMattieGfeW56ro/6vJi+Qf1Tbe3weB1cNr23QW2WkCRNUGhXcRrMbfOdmN1tiyJFnMcY8YrSnmYugQnQXJEVIkuz/wx525jHYBIgRFzoTIX2FQvkrhfqJ3TvR+DUTxxq6nNebN47H9SlNEt2E2AY0vl3SR/0inhTKphZCPzf45Nv87zcEc+yVVis4nApyY+7aeXFjTfq1TU6kAmSVZtHD88AKe3vfluarCknDjpkU+Ott7UPhYZG/WiU0dM5PlXF0JhswZFkMsRIKgoZzZAIBQjbfzrHL634TbTaowbRFii2otTI/LAZ2csBSCti8jw5QSRByADbQokWSkRcm095i76ExjUhNgUlQPZZGrWhQzuPg36vds=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D815E20002
+X-HE-Tag: 1781872124-444883
+X-HE-Meta: U2FsdGVkX1/YEIwVyuJSoF69Rt1f6+GD6Fzn+3XCPGlARHXXYY0WpsYVgYQZW0yHd9eiibMYMTSCzyRcSOhSXfbcQvo8MzKvs5B/Yf6fXT6UfUMqK+ywhT+tVN0Imda5T4KhMqQJQUkIBhFkjxbkzsD4J+Fml/VW/bfeDYF5M9rJaU/QFhJN/irOsM7ZWhslhOmqDt5LPWrNQs1Q35Wu1kcgqIH7inKBN7OKVGni4VzFFlweKNCQEtZvf8Ns+B1pu5or3qumzhQyOugkTLkdOLmghJQINPMzL5YZDEU3DD/NjW3j0oVM4zFK2jR3Kb3IY4PbwhbpqyvNeusjGF0Vq3FySq1x658ghaDt36x5yXQJneh4qGBLspiDhAinReZ1d90Nbj7u0iOeiu8xTeWU5beAyg6lkU+p7FC1iIx/7yj6cBrzpDdlEDyC7XDR17uuTTNFBGBCmPvxdmpeYDsJxEtAdRk6q6CSI7yRlSROR4ru0NNlvO4tO3r4QB6649X6QlSAhCmSTQYMCwbK2EKZjpz69EZz2luqdDJZLi/XhNAuebvJXxRgyqQ3s5xMux/w6yXRweEIiyEBVI9y2BMyBtTKvwXNSsDe4Xt87F2aOz8OdYjvos0wulRS9ciTcCgJRY/Izo22PeBeBPpuZhxvkziGTd+URJxXJosrMAnj3wyHC5NXEeiC+X5t+T7aC3H9DghEyDk80XrLdmQeeJaLYrn3bo6ihtaMaLGmwBIeGy0kfZZ612ifh1KGLOmZGv8IFdC4ekipjtO1DrwOVCFG5Z9+/hsuh6/bgTGMI82ZFVLON8JoaEsGw8MTajo+EsqqxPB3qDulfI5mSssbcU5QSL5kh0NikDBDwS6HypyiDQjjv630TZB8D9xP61N6vzNdkOKgHf5bo4rmSebzTnZQhJ/6ItIAru4Cxl2iNLdE0f6hmb+PwmIU5U5/eZEl846dq7J1JYga+upI+THZf4C
+ dkZtmC8j
+ XvOfPojN6zUjwbRA4X0hlTk9c6EecDSEIFNsKZnJmsP8qVJ03nbhC5tJjI8kmCCD/NIVN1fLbe7HLs+Wz/bcUq9Z57Pt7KrI9NqR2O5ieplzoIecR+8ZR/dmEGwFp7+UqL1XKhRQaweWTPFGPpx0kKwvySvangG6UsMQ16HTLUSfPtjeYjCMlX+5m0S6Iun6eZrLfe0iV3Y0NqvgXmuA4n2T0g/ThgVVRRgRTlmNsEJLgn+lqA+1084n4U7TGo/NDTr7RQ2lDxTNcCaCFF0WvwrMsQed0IVSwItBSuZXdk06gGLBVV+8Y0SodIlzaAfse8h5M3FJ0+bkEMJFod2XVSaglWneyNUIhbJnpBfz4ZaHcibdHSB+oxQ4pdrNSByKuRTWc0N8CdMZcpf2MnMWlwEmxtv2yA9w0YD6f4EG+LQStS4xyyCMk79FrtNSrA7bklOUl96t3wkFnWjbzUdDoCEJiHP4dqITm2kmQpJA3woI8KUBzw/Ir2eN+mH+82vFfebOtgaObyRK0yy+UGlxNMzHU2pe/ZHnmq+aY13UN1t+8jC1KpMaWlg/GHrUa612Z+fq3Ez1+3l2K8mSFxsSuOyQrFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,41 +174,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jun 19, 2026 at 7:53 AM EDT, Brendan Jackman wrote:
-> On Mon Jun 15, 2026 at 10:59 AM UTC, Brendan Jackman wrote: > On Mon Jun =
-15, 2026 at 10:54 AM UTC, Brendan Jackman wrote:
->>
->>>
->>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->>> ---
->>> Changes in v2:
->>> - Updated alloc_flags_nofragment() too.
->>> - Link to v1: https://lore.kernel.org/r/20260612-gfp-pessimisation-v1-1=
--936eb04202e7@google.com
->>
->> Sigh, maybe one day I'll send a patch without immediately following up
->> with a "oops, I forgot to ...". But today is not that day.
->>
->> Forgot to add these tags from the v1:
->>
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Gregory Price <gourry@gourry.net>
->> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
->>
->> Thanks everyone for the prompt reviews.
->
-> Hi Andrew,
->
-> This one didn't make it into any of the latest mm-* branches, is
-> anything blocked here?
 
-It is in the quiet period, no patch will be picked up until -rc1 is
-out. If yours is not picked up then, feel free to resend it.
 
---=20
-Best Regards,
-Yan, Zi
+On 6/19/2026 6:01 AM, Ackerley Tng via B4 Relay wrote:
+> This is v8 of guest_memfd in-place conversion support.
+> 
+> Up till now, guest_memfd supports the entire inode worth of memory being
+> used as all-shared, or all-private. CoCo VMs may request guest memory to be
+> converted between private and shared states, and the only way to support
+> that currently would be to have the userspace VMM provide two sources of
+> backing memory from completely different areas of physical memory.
+> 
+> pKVM has a use case for in-place sharing: the guest and host may be
+> cooperating on given data, and pKVM doesn't protect data through
+> encryption, so copying that given data between different areas of physical
+> memory as part of conversions would be unnecessary work.
+> 
+> This series also serves as a foundation for guest_memfd huge page
+> support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
+> of backing memory are used, the userspace VMM could maintain a steady total
+> memory utilized by punching out the pages that are not used. When huge
+> pages are available in guest_memfd, even if the backing memory source
+> supports hole punching within a huge page, punching out pages to maintain
+> the total memory utilized by a VM would be introducing lots of
+> fragmentation.
+> 
+> In-place conversion avoids fragmentation by allowing the same physical
+> memory to be used for both shared and private memory, with guest_memfd
+> tracks the shared/private status of all the pages at a per-page
+> granularity.
+> 
+> The central principle, which guest_memfd continues to uphold, is that any
+> guest-private page will not be mappable to host userspace. All pages will
+> be mmap()-able in host userspace, but accesses to guest-private pages (as
+> tracked by guest_memfd) will result in a SIGBUS.
+> 
+> This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
+> guest_memfd ioctl) that allows userspace to set memory
+> attributes (shared/private) directly through the guest_memfd. This is the
+> appropriate interface because shared/private-ness is a property of memory
+> and hence the request should be sent directly to the memory provider -
+> guest_memfd.
+> 
+> Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
+> 
+> + tools/testing/selftests/kvm/guest_memfd_test.c
+> + tools/testing/selftests/kvm/pre_fault_memory_test.c
+> + tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> + tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+> + tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+> 
+> Updates for this revision:
+> 
+> + Updated the series to _not_ deprecate all of VM memory attributes, but
+>   only deprecate tracking of the PRIVATE attributes in VM memory
+>   attributes. This takes into account upcoming RWX attributes support,
+>   which will be tracked at the VM level.
+> + Reshuffled the earlier commits that deal with preparing KVM to stop
+>   seeing VM memory attributes as the only source of attributes.
+> + Addressed comments from v7
+> 
+> TODOs
+> 
+> + Retest with TDX selftests. v7 was tested with TDX [12], but the setup there was
+>   wrong. Conversions were successful (no errors), but the shared memory being
+>   tested is actually in a completely different host physical page.
+> + Retest with SNP selftests. v6 was tested with SNP, I ported that to v7
+>   and those ran fine too. Just need to double-check for v8.
+> 
+> This series is based on kvm-x86/next, and here's the tree for your convenience:
+> 
+> https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v8
+> 
+> Older series:
+> 
+> + RFCv7 is at [11]
+> + RFCv6 is at [10]
+> + RFCv5 is at [8]
+> + RFCv4 is at [7]
+> + RFCv3 is at [6]
+> + RFCv2 is at [5]
+> + RFCv1 is at [4]
+> + Previous versions of this feature, part of other series, are available at
+>   [1][2][3].
+> 
+> [1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+> [2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+> [3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+> [4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+> [5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+> [6] https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com/T/
+> [7] https://lore.kernel.org/all/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com/T/
+> [8] https://lore.kernel.org/r/20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com
+> [9] https://lore.kernel.org/all/20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com/T/
+> [10] https://lore.kernel.org/r/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com
+> [11] https://lore.kernel.org/r/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com
+> [12] https://lore.kernel.org/all/20260605134153.204152-1-ackerleytng@google.com/
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+> Ackerley Tng (27):
+>       KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable
+>       KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+>       KVM: guest_memfd: Introduce function to check GFN private/shared status
+>       KVM: guest_memfd: Only prepare folios for private pages
+>       KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+>       KVM: guest_memfd: Ensure pages are not in use before conversion
+>       KVM: guest_memfd: Call arch invalidate hooks on conversion
+>       KVM: guest_memfd: Return early if range already has requested attributes
+>       KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2 ioctl
+>       KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+>       KVM: guest_memfd: Use actual size for invalidation in kvm_gmem_release()
+>       KVM: guest_memfd: Determine invalidation filter from memory attributes
+>       KVM: guest_memfd: Zero page while getting pfn
+>       KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+>       KVM: guest_memfd: Make in-place conversion the default
+>       KVM: selftests: Test basic single-page conversion flow
+>       KVM: selftests: Test conversion flow when INIT_SHARED
+>       KVM: selftests: Test conversion precision in guest_memfd
+>       KVM: selftests: Test conversion before allocation
+>       KVM: selftests: Convert with allocated folios in different layouts
+>       KVM: selftests: Test that truncation does not change shared/private status
+>       KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+>       KVM: selftests: Test conversion with elevated page refcount
+>       KVM: selftests: Reset shared memory after hole-punching
+>       KVM: selftests: Provide function to look up guest_memfd details from gpa
+>       KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+>       KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
+> 
+> Michael Roth (1):
+>       KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+> 
+> Sean Christopherson (18):
+>       KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+>       KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+>       KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+>       KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>       KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
+>       KVM: Provide generic interface for checking memory private/shared status
+>       KVM: guest_memfd: Wire up core private/shared attribute interfaces
+>       KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
+>       KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+>       KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+>       KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+>       KVM: selftests: Add support for mmap() on guest_memfd in core library
+>       KVM: selftests: Add selftests global for guest memory attributes capability
+>       KVM: selftests: Add helpers for calling ioctls on guest_memfd
+>       KVM: selftests: Test that shared/private status is consistent across processes
+>       KVM: selftests: Provide common function to set memory attributes
+>       KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
+>       KVM: selftests: Update private memory exits test to work with per-gmem attributes
+> 
 
+Hi,
+
+Thanks for this series.
+This works well for me on AMD EPYC 7713 (SEV-SNP enabled). I tested:
+1. KVM selftests: all tests pass.
+2. Using in-place conversion QEMU branch [1]:
+qemu-system-x86_64 \
+  -machine q35,confidential-guest-support=sev0 \
+  -enable-kvm -cpu EPYC-v4 -smp 8,maxcpus=8 -m 120G -no-reboot \
+  -object memory-backend-guest-memfd,id=ram0,size=60G,share=on,host-nodes=0-1,policy=interleave \
+  -object memory-backend-guest-memfd,id=ram1,size=60G,share=on,host-nodes=0,policy=bind \
+  -numa node,nodeid=0,memdev=ram0,cpus=0-3 \
+  -numa node,nodeid=1,memdev=ram1,cpus=4-7 \
+  -object sev-snp-guest,id=sev0,policy=0x30000,cbitpos=51,reduced-phys-bits=1,convert-in-place=on \
+  -bios "$OVMF" \
+  -drive file="$DISK",if=none,id=disk0,format=qcow2 \
+  -device virtio-scsi-pci,id=scsi0,disable-legacy=on,iommu_platform=true -device scsi-hd,drive=disk0 \
+  -netdev user,id=net0,hostfwd=tcp::8000-:22 -device virtio-net-pci,netdev=net0 \
+  -kernel "$KERNEL" -initrd "$INITRD" \
+  -append "$ROOT ro console=ttyS0,115200" \
+  -trace enable=kvm_convert_memory,file=/tmp/convert.log \
+  -nographic -serial mon:stdio
+
+   The guest boots successfully and run memory hogger. With this, I verified the
+   shared <-> private conversion logs (trace_kvm_convert_memory).
+
+3. Additionally, verified the NUMA placement for SEV-SNP. With this series,
+   NUMA mempolicy support for guest_memfd [2] now works for SEV-SNP as well.
+
+[1] https://github.com/amdese/qemu/commits/snp-inplace-rfc1
+[2] https://lore.kernel.org/kvm/20251016172853.52451-1-seanjc@google.com
+
+Tested-by: Shivank Garg <shivankg@amd.com>
+
+Best regards,
+Shivank
 
