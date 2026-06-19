@@ -4,129 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA05CD98F0
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43FE7CD98FA
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B2186B0088; Thu, 18 Jun 2026 20:32:14 -0400 (EDT)
+	id 2E5DD6B00EB; Thu, 18 Jun 2026 20:40:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 989F86B00C5; Thu, 18 Jun 2026 20:32:14 -0400 (EDT)
+	id 297396B00EC; Thu, 18 Jun 2026 20:40:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89F9C6B00C6; Thu, 18 Jun 2026 20:32:14 -0400 (EDT)
+	id 1AF576B00ED; Thu, 18 Jun 2026 20:40:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A7B6B0088
-	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:32:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA4A61202EF
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:13 +0000 (UTC)
-X-FDA: 84894785346.10.5128DE2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BC6BB20004
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hJ65TqOL;
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781829131;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D75CD6B00EB
+	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:40:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 54248402E3
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:40:24 +0000 (UTC)
+X-FDA: 84894805968.27.1FB7C79
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4C0691C0008
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:40:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="MLPkf/RP";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of stevensd@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=stevensd@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781829622;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UFhMk7oRmLprUjmv7iicXUqS4d1L4+NcROu6Mls6/mo=;
-	b=x/4o84sxm7m+Mw1mD+D6VMwGCdbnrPZd9PsdjDoZAhTPqHAB+SGUIROZGnu95s9Ltm88nS
-	+Ny+4+JXQO3ZANcQSXyfQvGOlHDC43Bo2/q90qWDF5vSUI0COa/xudmBvTRsQVrjDbEk9q
-	s+0BtDQzZS9n9IhMY7p119cbkDtZEC8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781829131;
-	b=xHxBM3Ih4aeM54rpZJMaL6H63l+187ASJeM+Qotyq+w+0u2teSCeKbQGFxLb5a7e4PonUN
-	+/vuvESQJewiP5KLzmlvqYfOFg8VNHKHNi36fpA2RG9laU3F0OzQUxH0Qcv6r+bow2C+Ra
-	5HHf6f0QeCfw3LU0cJtig3JkpL/dyhc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hJ65TqOL;
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B78D344E8D;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8F72FC2BCC6;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781829111;
-	bh=tNAUmpS5z/21OzG0te8pXUP3RWNb3fTiwZKRQR9IfEw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hJ65TqOL5Pw53sHOXGFblAtQa460JhiHQh9znV0nIzA+d2tVESXYlEYALmbG0yuRb
-	 qEKxuDEZXyS2dSsvROy903yvdzXfPUkUighwQtNiCBBwqOlsyNW+RwZ2uFOS5yJ91L
-	 T0l18WForui/BRXAPoFVTHMBqT4kjf4VBoDWKr/SmMuq9M7Hj+cUrY4GGBuGV1/SMk
-	 7+ruTs3gTymB+lQGOSxUmuKf1G8rXfiTVh0/xO0didMm8vs/w8uI+eGW7HPQRFN+3M
-	 ud4puQ4NBWCHMjxkRgw08SVjJBH+Xh6nlox1u6z+FUSTwzfu3wJfcwKlARJZYIgJhs
-	 WrKEkbUsG1zAA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 815B4CD98F0;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:32:23 -0700
-Subject: [PATCH v8 46/46] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
+	bh=4XzeBq/piCL+a8zs1wRjqsckZIBcIJTPXTpFURgzSDQ=;
+	b=SKcw9yDcWavqCdhPn2tsI1HudvTV/u97uGkLO9BUZ+Vsw+Cle/4+3+Lby2fMRUnOUVdIkB
+	nY3AkRRZInwWJhASCE/viWzMJJcgP4hOSdNFBe534l8+i1apIiH5zQATCnU5p7MWMMjjOA
+	yK8raTlEr/iM9Gtl1+DPZ/o4LsU+bvs=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781829622;
+	b=O2AhIHKy01BEbeqe+HqEQMl2K27vE0BFGzcFTxNkquBNo8U/DwKBr1KwtHwg0H8k5XuBzm
+	4Xj3e8c//FzVtq/CT2ygkddDEgH649DYjPTntEDTz7wVvQNFLzSPjcfk7o+vu1nHjgECoB
+	H2E/t7A1/uDcH97M+Q5ncUZTH4I7d3w=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="MLPkf/RP";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf18.hostedemail.com: domain of stevensd@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=stevensd@google.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-695a3842230so5965a12.0
+        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 17:40:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781829621; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B6J2S/EFgrtMiZunXDQRehkfQxrm2cLtnvtXTp4hJPnEikPKjvxKd2wc1iu4DtuMsC
+         G8qPkZ7kMJNXHB4+mRIgWcFhd33qanGFDtAH84s/orLGy7zGBMHDMqvPXg/rG3igKWxv
+         8zJ8jrn6/8Fvh0s12z9IBofQa4GIVz/9kcP4jwdT6nVyqo/+aAtAB6I9E8LVSBxby3lw
+         W4vz8sj6Eeb9PVjT56V1vF6XMC9PvKgl6IzMChTmme3N8g8aksT8JzQ6o8fsVY8lSoUA
+         3yTHLSGEfqUtFDS13KcmzNUuwlHDFDu5pro4SmkTvJ+uOPelg/p9i2jOTWtup7ZMUZX9
+         mvYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4XzeBq/piCL+a8zs1wRjqsckZIBcIJTPXTpFURgzSDQ=;
+        fh=vxtlF7ymhBqLjmS3BTmLdiJJYJoWQpSDBic+VNdD7Pc=;
+        b=WG7dg2wFjTQWNQj0Xdc8N4fnKJIfe/fBCJupktC6uhHkkgo/zYy3U/jZssb9kfvyfb
+         DZax6uUdzFL8WFUm/SlkHqMglU4EhIoWqlWomkkcQBzHNjmph6G90Vur46shZObEq+El
+         kEZwa8jGul27res8DDi+yPvBVENcVU99sIzTAf5hdg3gcz+yvKtl12SlKG5/AMDwFonB
+         L7JLLKKO0m+aw7CBWg2heddi4cFfy2L/05fCNKR6n8AJMOy2AcSkacOvtMZIMrWEVIp7
+         Jedgs2mDInYSfoL9qEs7Ud9tFYfy1MaAigEzl5Oj3Ms7tB0rfgm7YmvwYXqvzkxQH8kr
+         03cg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781829621; x=1782434421; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4XzeBq/piCL+a8zs1wRjqsckZIBcIJTPXTpFURgzSDQ=;
+        b=MLPkf/RPYIcBhqh3OOwMB5TJYwxtZF+Rib70Dsb/hZRaLkE4zEgncAtB5/kJ7rbuyj
+         LpOPZH8x7poQkYMB1/ZU4F0wPk0UiRohpBee1dckmAimuo0e/mqx4r6wcsgaKZnBNhTp
+         mOxfUcjr5h6tyODKXpuqOtdVPI5lo2jUUagWlBISYapjWUSkK3uIM/Jvnyo3T37epnay
+         fgvl/WvM35jyWmv3iFsotgAuWLLiChpRWNumpcM4j2gJzsg77teF8JlijDHtPDf22Twi
+         m9DS4Uien42prZxuudD5ZddoCp6RBRAqSNCFMPEbNVusdjDj8fjgdvPpz5djZA7I7Nvc
+         VqeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781829621; x=1782434421;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4XzeBq/piCL+a8zs1wRjqsckZIBcIJTPXTpFURgzSDQ=;
+        b=bFB0jtc/LUVlf7nV0H7AQasmMAvykh11qTfFnRM3o0icTvpZwiyrT85ovnCbhJMQKL
+         uIGAqIK6gVTD9MjpQKaSu1SoRMxB1gFmvBcCiRzTq3VTyGE3sKXTHX0ej53uwMxQY4Kr
+         1DECZOzh8t1PYXlbKU32u1P8HAJnyGYSOebjGu12cO9OMFEn7eqgGgAjZu8lVfnn0Hx2
+         sewfSdtPXUNfpYVZ7VVvZFYq36e+dbe7QAK8Jc5Vzhm4EMP8RUO+rwTfGBGcE+6FeFI5
+         ZhmMKYSnPBmJfvl27iuVBhtI4jlVLAYvMvB54aE2QBfx38noVx79qfp5jFtyyLrnb74h
+         4kQA==
+X-Forwarded-Encrypted: i=1; AFNElJ/UJXezPUHb54s4pVoh5mKCKYuBquYYfajsqYKZ2IuzhonVYU3hR317S1RpJkSJ24Hg6hpHMGZ+/w==@kvack.org
+X-Gm-Message-State: AOJu0YwvPO6WT16q7pDT/k4v8ea3Zfbm9w6pxztDn3CaPYX95PI2Pl/1
+	O2JmVT0XHyfExnwhHK862ZLQBgSk6NAEWArPSmWMnxaLBRrn6XwPnbcDslZhka9Ghn+6Y/GHinW
+	nRM/axwrlDLBuEgK++E4GLPrZIE6d61Qn+BQJ2O2R
+X-Gm-Gg: AfdE7cnoptxhgDXm1HS25l7iuiGUP4Z9/u33limb4r6tVMfakt2BNOAYLsMoFhJ1q1A
+	2QAVU9iu4ha3uyunCqw9daj+KhK83FczdMxExluNoXgwcL0QqldHLUQ0N6yQpAwWTprwlTdSjeg
+	a5MRueYt+gaSDrdREjJl8/IedxgGyrUExIllBBCripKCVDaAfylm54Oz2g6burMIab0fyvAHW+6
+	fYxTtfQmstAV0d6WKTPcrs0+BcqvlOqZPi2swyOuGj96YRH+mAAWx8GDErOIKXs/Rkg3FzkU5UG
+	qRkIdIbRyeAt181QWfyPIiqaXvQ=
+X-Received: by 2002:a05:6402:5342:10b0:68f:d45f:e495 with SMTP id
+ 4fb4d7f45d1cf-69721814916mr19675a12.12.1781829620070; Thu, 18 Jun 2026
+ 17:40:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-46-9d2959357853@google.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, tabba@google.com, willy@infradead.org, 
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
- Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=3722;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Vm6B0jcVpnq5VhVcR58Pd8s5Kl/3lbCBJGBKp5XlmQM=;
- b=nUID8/wKDEk3EQAynE5ah0zGcUawuGh93RpkaOZbh45qXiO2uL0OBjgsC2lb3lX+NX4uC8HGM
- bZfMXvjceB2B0XQ79vDuL7pM8Ke5ZKrxDSbvgzz51c25Ih5BQioa6qU
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
-X-Rspamd-Queue-Id: BC6BB20004
-X-Stat-Signature: g9a4xn49sd5qnqoq4uoqxpt9gkssfs4g
+References: <20260424191456.2679717-1-stevensd@google.com> <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+ <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com> <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+ <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+ <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com> <c96b9621-16f8-41c2-869e-7310adfe75b6@zytor.com>
+In-Reply-To: <c96b9621-16f8-41c2-869e-7310adfe75b6@zytor.com>
+From: David Stevens <stevensd@google.com>
+Date: Thu, 18 Jun 2026 17:40:07 -0700
+X-Gm-Features: AVVi8CeQcX0dkCfTrnawvyEYgQyE3sWjDBpkVIMnyGzkz7zQ2F6P05ZFVgt4FTU
+Message-ID: <CAOiLmNF+e1Vuw8HJc6kwcNgee8Qi8h+Dv695O4TWmHKYsKez9w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "Zach O'Keefe" <zokeefe@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4C0691C0008
+X-Stat-Signature: 6qf15834mntio1injw3oyytgz98qjww6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1781829131-768942
-X-HE-Meta: U2FsdGVkX19CqAoePZS/jEVBc0rXzNNGWsNln3T66KMojJ/QjXZ+Gx4EdWC8T8Ks3XYcpRPyaKl9t13+vBaGiEt9yMe2YU5rrgnqaNk8URBFIjPdVxH5Yn+YqQC+Rvv8KKDHB0ENxsu5/649ktG4X37jlADpo7ixjjDqAGwIrfbp1Gx19PKAsCHe0NvfJu7qy+b+jXf9PuxTeP5p5xBZMOMtk9Qi1lqmGOO6xvGGIT/wM4K8q13fuN1sEjCzhMy+GeYlVISGx2VOGTnCpj2U3GX5mEGnOmUHcEnjzkxP0FZgtrOTLijTDTLgCJaIcthQm3cqBrwi5rvnwcPq4DrD7Sir4ucJFs74cSZ3ttgPE8JNPe4EWcuLwIY6NMiSKGxUIDhAp22lDZ0pvUWlT4AYeEeiaPBv4DwgECqGj+Y9LsttXkytkj4f4L3hZrEbRUbMYPjXR0HW/SrSVQdYVwHWUwkYeP6wmQ1ERa/uvgnxiigrxhv+NCiuW5s23B5FeuV7/Su4edSUfbh7R+RbWSjtgSa65mqlfgxuKY2ymQjMWIjQ3tcKben4WTDOniHFbExOJKVVtCNL+ezgNaeEP+wnY/hY5CQSVACwfmj+JSE9Qx8KUoIrj9S6/M194OCYRefncj98Qw0VG8RHIOLbcB2Gvxt7lp20/gLl2Q++4B15lSLaR+jApsTqqB5FOrOogK7dJFk1k1z22iY+qrOtjXtNHlB4xmJnTY0f35QbeR41NZRwoEnaaCrBWOccpmK/VDeQ4LWUmx7ICCc0wx66Gz0uEVe8bvPIYQKCKVEVZ+Cg2/pkvXDxHaFw2YMGeLGz5SciOghBn3m5hgI4fFTxucwL1k3kWxEssYMPlFnackOqkJtQhBxJsJ0XpBL6gRvCQUbk6fI/FxfJBNvsc60pq7q2erKAo4TGq1xYx0M5/RuS7YZE5qg96vD1hXpjt6qH/OiY5f6Rww6khNhSkYO+8Eu
- NK1ZOJm/
- s3oXuKBarD4Ut+2sLdaYKakbOwnVxB8twsByNM4dRtZ8hWpy24KiHKDTyTDh4XCtL+El8uS5p40qO1F3oxoanyzW0/Au1WBOd9M8XmAiGX3xYN31L7WZk/wTv19zb1bh0bCH+koVckQekzxbd7ds4x+Fzhc5Iw5n+nr0uZ3aV+nWswlBFUwSHRgjHV91o0KO7fzYXICcj8Iae1y/cOl6XrjpqtNhMX55WqZT1eKRBhyGekSOwJlxRZVGbS4y4PTzqQGfrfCvwqYmdbWW3oI6UsjnPo8K3a1/4f7+yg1TDgwykrbql+UL36+kOFImU0NC9PRAAvi26NNNDZtFPD/OPExWZyWWVohPRm1BDjeOSCoYeDEJoakcFJwG+tOWyBQPsZnwUWKrvh7/KYXL3hH1CwgySsfw2PZs9imFIwHieZxkHuNOKX2iQ90GBlvlwg7rp9ZAx9ZkLA0F8aFQ=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1781829622-745369
+X-HE-Meta: U2FsdGVkX19+GofyerUs6H/qgGz1ynYSCjZg8Cdk3AWqKs4SWADSeYkuio5oJrH+OseInfuZkpZ6vabFRzEaLA7+psZQPQYU62ZYQnpf8xOiSj7r1uIWEvPgmCczj0/aqGEQ/mL+yAMYs7fCrtiCc2u6J9iG6FO5C/eQ1imRWlwlfcCeYX0aVnuqjdPNVWlzbhW+v6cv0tS2uijkUIaA4K0+dFv2MnINIiJM/KUFXVdgl2W+cZYDTbHeSUE/EelAVKrkNo1uh1p9To8YW6TZxwzoWyUrEjaghU/qF+rcs4CqB9Vx0bQhiHyOdAdaut6noubysfUQzXz6B/p5fQv0fpaHeibQdF7FF37B8ZacrRcPkQ7qCrUFPNGXxK9Y6w+sArQxMlM/baNAR4HiIHfgY1S/3ufP6LuXSmg9urk+xOhHnPahxA7a5C3vyfpo4GcQd/G7027c7hLoG8RtvNpJHew+Wtp9kKKs4uqo2bodMtaHnB/BrifOnDiKb2urdr2JxUhsjJU49raOIz6MziYrpwt3wd0ueR6E86aFrJddu65mIsbTNh8acaNx9heGE9vT/eDm3A7fh1OZCu18ch2c8pbbFr/DwVMiioZBschnQDbXFOky1QkQBvJYheOiQ0gj3TwIV88UIq9a1rLyjsJEXfeFWskG+71ESoyeRejmpqr+yIL+69esG6DbCTbQC1lSG6LoQyJsYWprGiEJ54zRZ3IBvzsNG0oAtmSo3zUUQrPHwnK2SnDNagbooWWhPMVa3L1rVgILV/7l7o+rOF7XNQZEMmC0+dJAR/wdrzR3FXUTHoPwH+r/XRz86gJAJVfeVtVh5GDLAY0Z/DanFt4zfPGTJJiNCDuhq6ziYeh0znVGbSXFgoZ/0ir+eThPIjFHxO/cHX3mVmtBT/zT2sGTdytjH/uAwz2vyPP+7jLKTCwQrsZEBr7PAZnlebXMrKBuW+QYrQKNa+rSpmTWmo/
+ ciDymkgt
+ jRyoxIMC2Oe5CI2hKHnkd5Er782PAr97N7FpbIjrLEnhZvMxCjllO0HEEv3HhbN8WK29cPTjrP31jkThOdpBggX/j6OAMfP89t4t31AEIkueHvpGXEPmCPsmfNvduEoT6qLB55W0pTBlw41BsNvjEBGsvho3FIev8+E7ZzyACgBBeNUdMgewRn2GOwgED8Ao7Qsp6aH+73zxJSexp6u0dqPpJPtsSNkLp7JpOet5b/Pm6u5L8JovmOKWNqePY7/ZQOvejTZQ6zfviuYbU0IQF/r0gA7rO5rG2YOPllcWkAl+EmCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,92 +151,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
+On Thu, Jun 18, 2026 at 3:28=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> On 2026-06-18 11:53, Dave Hansen wrote:
+> > On 6/18/26 07:50, Zach O'Keefe wrote:
+> >> Overall, are there any particular painpoints you'd like to see flushed
+> >> out, first?
+> >
+> > Handing exceptions in the kernel is hard. Period. That's the pain point=
+.
+> > Just look at NMIs, #VC, #MC and the rest of that mess. Just look at how
+> > we've moved away from ever taking random page faults in the kernel. Or,
+> > heck, randomly taking faults at *all*. We've concentrated them in very
+> > specific places, not in general code.
+> >
+> > Now you're arguing that the kernel can pretty much take a fault *AND*
+> > allocate memory reliably at any point*.
+> >
+> > I just don't see the collateral in this series to justify that claim.
+> >
+>
+> That is most definitely the zeroth-order thing. Extraordinary claims requ=
+ire
+> extraordinary evidence, and this is certainly an extraordinary claim.
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+I do acknowledge that there is currently a lack of evidence - this is
+an RFC after all. The question is whether it is possible in principle
+to produce sufficient evidence. From the Android side of Google, we
+are willing to carry the RFC patches downstream for a while to build a
+case for merging them upstream. However, there needs to be at least a
+possibility of success before we undertake that work. If upstream's
+position is that dynamic stacks are no good, full stop, and will
+absolutely never happen, then there's no point in us trying to pursue
+this avenue further. And I assume those from the datacenter side of
+the company are in a similar position.
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
-
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index 10db9fe6d9063..70ed16066c63e 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
- 	pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
-
--- 
-2.55.0.rc0.738.g0c8ab3ebcc-goog
+-David
 
 
+> In addition to the *massive* maintainability issue, you also have to cons=
+ider the
+> additional overheads you will now have to deal with in order to avoid dea=
+dlocks.
+>
+> Almost every OS that have attempted to swap out kernel stacks have been k=
+nown
+> to suffer from deadlocks under very high memory load.
+>
+>
+> > The NMI entry code is a disaster because NMIs can happen anywhere. The
+> > #VC code is a disaster because #VCs can happen anywhere. Once #PF can
+> > happen anywhere*, why won't #PF become a disaster?
+> > [...]
+> > * #PF on stack accesses isn't *quite* as bad as NMI or #VC, I'll give
+> >   you that. But it's still pretty darn bad.
+>
+> In some ways, they are actually *worse*.
+>
+> #PFs need to be able to sleep, because the common case for a #PF in the k=
+ernel
+> is that it touched user space. This means #PF needs to be using IST/SL 0.
+> However, this is obviously incompatible with handling #PFs on the kernel =
+stack
+> itself, so now it needs a stack switch. In the common case, it will then =
+need
+> to demote the #PF back onto the normal execution stack, which is complex =
+in
+> its own right.
+>
+> Now, if you are on a pre-FRED system, the IST entries don't nest, so you
+> absolutely have to make sure you can't get there again through any means
+> whatsoever. With FRED, it isn't quite so dire, but it will still give you=
+ lots
+> of fun if that interrupt is one which would like to be demoted off the IR=
+Q stack.
+>
+> > It would be a completely different story if there was a track record of
+> > finding and fixing bugs in the x86 entry code from the authors of this
+> > series. But I don't think I've ever seen a single email from your folks
+> > before this, much less a review tag or a patch. I'd be much happier if
+> > you got Andy L's blessing on this, for example.
+> >
+> >> How would you like to proceed? Would explicitly marking this as an
+> >> experimental config, in the interim, be more attractive?
+> > No.
+> >
+> > The enemy here is complexity. *Maintenance* complexity. Being able to
+> > compile out some of the complexity helps with debugging. But it doesn't
+> > help maintaining the code.
+> Indeed. Paravirtualization is a great example of how this works. The PV h=
+ooks
+> in the kernel are still a maintenance nightmare 20 years after they were
+> introduced, and mostly that cost is not borne by the people who introduce=
+d and
+> benefited from them.
+>
+>         -hpa
+>
 
