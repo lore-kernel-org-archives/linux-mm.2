@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0132CD98F0
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15D55CD98FA
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 00:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7419D6B00BA; Thu, 18 Jun 2026 20:32:07 -0400 (EDT)
+	id 545A86B00BB; Thu, 18 Jun 2026 20:32:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AA2C6B00BB; Thu, 18 Jun 2026 20:32:07 -0400 (EDT)
+	id 51C936B00BC; Thu, 18 Jun 2026 20:32:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5442A6B00BC; Thu, 18 Jun 2026 20:32:07 -0400 (EDT)
+	id 3E4F26B00BD; Thu, 18 Jun 2026 20:32:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 19AE06B00BA
+	by kanga.kvack.org (Postfix) with ESMTP id 058AC6B00BB
 	for <linux-mm@kvack.org>; Thu, 18 Jun 2026 20:32:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82405140146
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:06 +0000 (UTC)
-X-FDA: 84894785052.01.438C5A7
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76A7B140146
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:07 +0000 (UTC)
+X-FDA: 84894785094.21.400D92E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 97D60180002
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PQA+w28p;
-	spf=pass (imf24.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7A53520002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 00:32:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZBpHuGb;
+	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781829124;
+	s=arc-20220608; t=1781829125;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RFaSO3im0CD5pnTsV/WG2zE8r3yZ/m02PL0J9db/Rc0=;
-	b=rMtm2cWROQOE5NyxakzKLIghp3dcY5vgXzoX7b2waqHh+g4Ed9MbooCDZLyGjHUKalS7FQ
-	csnOTyGCloS5TG+KmJvhfNTSt156fkgA/r0APAzkIG2uBXd6w+ElPVfpoV6Ci+LovFbPqE
-	Zgk+qNq3W75vVEpsbxYefBqoLr7J11I=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PQA+w28p;
-	spf=pass (imf24.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=z3wQyS9CJpzZqtVHodNkoRHG7VSj59EiNosVBklss2M=;
+	b=qVNadD8rdeLRt5c8vy0yhtGemHbz8/OxMxLn6ULLVzvsUQdHClortK6ioGFD1nawQNhPaS
+	GPt9mnV0/BuV1Q6+7Bc8XgigJdb4EzV7/YqfYM78zwQLwvm/+f/lbOKwhPy7REB3dvmoMo
+	zoxMqqceJ2QsZyomz0183t+I7R3iZdc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781829124;
-	b=RF4uIh25f21hViV3eWUajBAxg9lVdHjq+GvhQGV6/0nZJo2Jvh4n/yXCX2L6Oc+FRR/tPb
-	I/We1ShbLni95MXKKLSU4Qq+AnZ3q4hTmPr9SeH4A9OXt2/8WDvKr3gAiD3qx06a/7ugJs
-	zuAS5MYBSKpM0GH8DnEpWduHIpNqZCc=
+	t=1781829125;
+	b=4FLD07ZC4FvR6S5EOK1uyhcNdn9pWyk4NbfipCOAHQ/f/i0c/CLqxbmztogyOCds1H8wbn
+	G86bpyoVSBzbxP1Vul3lb4JMjvFfHu2/VEjRxeC8AIVWW2aF3/7o0D7GzJt3habJVgBAig
+	wHvwAIVPfWNzKB3IxLL+n3+Y9/X3/T0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FZBpHuGb;
+	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFE6A44DAC;
+	by sea.source.kernel.org (Postfix) with ESMTP id E493744DD1;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7ACE9C4AF0F;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AA38BC4AF55;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781829110;
-	bh=dTjvdbldo6HKcpb1OVxxxBSBTPhC9ZG8R90oBObq0WE=;
+	bh=OrL4CKMYwmB6iIWg3HkCxDUl7gZtW0zGcxry6xJCAGA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PQA+w28p4YnJlJvePg3QGiEXL9kSdUqaoXOi+UNbVWrQEFZX08cr47rJH+9Kxzs1W
-	 xMzzPizpzVa4CfxhT0J8pKdqZJawnF2t74ect6zqfadfCBm7lZ1DpHCE/vaWuAbb2h
-	 8pmYRGiavCb7eLTGNMYA+8vI9KX8zNCzh/nfTIhe2Xs/rLvhgZNQX6voT7Df7Z2/sJ
-	 v2pEaUlSrU8ZhpjTPhVRLP+Ezhe8aNjV/8DtdITz3GVI8ieb8g6o87bAcL6EgHCOq4
-	 paVq0uCP1jSXo+0BKRfvZjobrSZNP1Cwxqe6ZQU3lA2d05s0BWU9kb9sG7AS6Wp6wU
-	 EYjb/gQDcMijg==
+	b=FZBpHuGbKG9ZfT2UrF31X9LcBjDJoh39wpiJnpOcHn4wpVJsWkzju60a8ZSveji90
+	 wKDusZCwLkIg8Xfxje+xgSVzUDy2RUvP35qmrmE+r8nS3odcE+sSDteWXpTPs1mav6
+	 34fNMJESZt/MDtOOY5quwZOcwkV4vKsbU7e6InapcbYScx55HVKKgdktN6CMMVue/U
+	 tMFECn4N4mFGVjF7av+qY4H9azkEUuMDmFM7KxUTPc/9S+lEu6nQImvUqTUX09xqt7
+	 +zdbHl5rsaYRsUauCewY03dr1UhSp+xuzbvfQPzdwwEd4jQFT8sciQuwyl59fTmakr
+	 4UHUcpBE8b69g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F071CDB464;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BBF9CDB461;
 	Fri, 19 Jun 2026 00:31:50 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:32:12 -0700
-Subject: [PATCH v8 35/46] KVM: selftests: Convert with allocated folios in
- different layouts
+Date: Thu, 18 Jun 2026 17:32:14 -0700
+Subject: [PATCH v8 37/46] KVM: selftests: Test that shared/private status
+ is consistent across processes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-35-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,25 +108,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=2233;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=4931;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=YB4MHWioMUMOBpaWhCcoyCgc6wLuvVO37S+IBwb9CKM=;
- b=uDlxhnYV+YZ0oFV4bZE5+6ERknddzJH9VyO8hwGfyeiMiR2/Nz9B2wZrjnFmwJdooJMnrwTRF
- gyNJQjqOB83AUiB/WIBt7GV9w4CsJtjV6zH1i4IUiFcXA7ve0FOgMkg
+ bh=QFGusShJmmZT9C364dWtwaxifYzefTMauT7Y2OJejBw=;
+ b=/UTfA/taWQbgDxeNW73fbVoFb6WiUw4zOYRQkXrqRDA/4nbmLmfFXsf6OPMtJ0KxVYS9QVcFa
+ b6J6hH9WV9ZBzPvjqKyejWNQ6snhl7ULMHAl0xf24U/n15KydeCKNv5
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 97D60180002
+X-Rspamd-Queue-Id: 7A53520002
+X-Stat-Signature: mmapxbdmketme11cf6q1j5fazwo7wa3o
 X-Rspam-User: 
-X-Stat-Signature: btt7x7diwc3r3dgxtxcp3iy7sipwnpza
-X-HE-Tag: 1781829124-375173
-X-HE-Meta: U2FsdGVkX19PyVkNWKyvLJ0Pcuv0Hwd6+jKd7uM0FxKtqGs3Zqy7qfzIvMiTQN+if46t5joS7QQprbUHlJHB9Eu3kKmU4NFowkJO3HhyP4+L1yiYAHw3LsK2iuba3AAW4RcLpJvEqpUZHvEUDZTB3X9BSKrZDaHyWv7dPr2dGDYa0ChzC09F0WYFjBz5/W2tN09n5W9a7cJC04Xt6JYOmqr8nJyHOKe7tJ+KrcJGJX969cg27XaCwXZEuK5/VAGr7QjP4ZN+KeUYl7jhd0CIxaOVHSxe3gYX0qwra2S7R4S0dbuwcT2X1WlM7fGC1JpPErp6FZ5xQcB2k1Sl6j93sm0U43v+61Aosqw/RuXqjViEn2n/POVDELlBiUiWamUFO5jjolufrjSVFHZ84gVeGOx19bAEzb57toVmP2NL84FS8csjbuysP0aV7RVYz68MEsk/vAkyMKXG/jOXe/W53/48cl31F5yyCtmzJoBKvxLsz2EljqYkrXJTrh3c/CFLj1nj5eaXOQ32aDYMZsGVK8nqLUExXJ2ItfqhXv4XrBowdPrJZyvUJ97U9H63K2UJ/ZfS3one8efsdpaOPk+sfK8XodJSdXHC2uIU2J+lhUsaK+Vyx1g+pgV49i4nD8yngQVy/kEnEjYs3lBzvyEBihtxyiVUn1/t1EucoN4NaPsnPQY6z97MWcuW7uBnOCM++OrdSuDG0KWfPVsFNUjmCsjx/GBGxoSmHuFJ400kwsVSPM2Ptu/gT7bo2rc3WSK2pcDuCQVBcKWmniIiCLjHRy7dxU7aeNY75WkbYD/AWxN4R/ogrZbPvl+NyHGGLih1ZCTEGrFfW38axFnQdioMu/BjKvgxTlc+ggPloTZenJ2fyAa9vf/JUFSgnjnJC8xazkter7/xaaQ2j5+E3kZNLOj9KDsSUEcja7/+ipbgNQk4FmYLv5XALqgjuuEOPYRsupY/DhVRiLXqQ3RUBCV
- 5qfMS2E1
- hiCbserMYYundrlPJjR+NlZ9Ry1pzbKoQ9HxeHgDzHearCG6moKQBycqk4q6/sz2Snjs19Xqd6m+V3YvovaoXDvkKuCybLIu/VjNtlSLKjiph5Qqqdh4C7HzCI5lgEzpOrXpVq0y7UYbPI625q2d8EXIpBWueNBM18/Cv6pb02qfTyhJbS5NyRFDfYMRNONxxFLO2zdgLJJ/fPPrEP3JHKcrYJtPtH4RTfxhIJVuFv7B6osMDotTE9Y7WukLnwZzouRzD6wMN4I67J7kK4jxUJ2tlGocHwzyqZMCWoqo0C4sdW6isezUz+484CAPihWhhHQE+zXV4dSX3YG/SbCDUFR9HpBhST4Xvq8wDUuG+Yxx9KSKY6yz3VJ8RCmbWV8r5R9XDlPHGpAJqL8kOX6kmCMrlZtDIhaPageNMzybL916Z2j/0iF4nzNi37C2XmpUJjRgkQhOjkib/uHU=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1781829125-500942
+X-HE-Meta: U2FsdGVkX18lL6/km0P7SFfR+uZa3O7sbVWtJdY/ktKUAITG6RHvibbiXKegc2cShPx7oVqRn0u6wAEJb94psj+GweLVYNgWHSpXLqtKATKmrc9dgw80h4JCaz+/0j7NXIEpDy8rnsQhSyEtDJvaZLiPz+u5/yS1oim/aFftByhdBvHhHGVMdn+XeG6HJHF4tG8zLRjBbruKG4iv66/Ql7XY1+/WV8+6nh4GF856MpRpxu9ivxeQKWVuYxVA391Zvu7EX3SilDjOQRVgj9+Y8jCXViqq5l5fyjpP0WDwvYUYQY8+TuylwVBOQAWyr2icj/UcK9+1ua0DgECjyZvAd1VpzhTAMXAVWecZRBbalryUy3eVk/iJrsoiio3KNcZuSssPu8xwr4ZFnU3lXbmC2I9jaWp45n8YxkKs+Mp4LoPf1+laFQt3HiKfW5d0LAw4EKMTetmfSS4oyGUi5xoGahLchZF6mylfZ0fNes/EYwwhe1231lfCDqUml11pbu1exuWu/TIIzhQqkD/7AKVeDuVgyRkyWm7RlGTDrDGcZNi04svTnSkE9dJ2biT/4mO8aWj6iP1VyGp/4icf4BdGSMPgKqpO9NqsHfBDqbChyAQ9PQ/thwe5mI71FjPds6xuJEDEZENsKK/7tVZ07/NRXZn/IFck8DiJ27f1n/a74PBYj5jCY0yU+s8NxxeGSN1TSX7L5YnW6QMYjhAO4jbg2+fOlluMUQds/34C622CvUVK3dXeRuGiKLsWmX14hch1V25xaeM399Q1f1k3tCTUc5Zina0jatb+SzdrScwDWDPhsS7XVr3XbR2TIprLj4mERmuvh9twOPZlPhB84POBpMmAxttD2cmE8cnpqDY5TjmjSKOqmDjQ+LtwqG1yWMg5QyU83SJm5TxgMU1Y+nIsFS0UVED5c2v4acbtzJO51DtGOgM1/BDZKPuMb3ye6L4qVCJ/ORJAR7JYe3wNy01
+ d+Oducud
+ 5XB461kMHkXlUgTQW33MoDXqzFTk2XJY1DGyuncDKbVqr3rJLiMnAkDEDg0Gg+X32KMYkUCGlnhgHpQnjs4D9HcvQWK+tEBU2VJbo8ezsXY7RCFMPPRstMX7tdUB3uHdwtuZXGmY6zbV9/i77A09Mx8MIGQV/hYqlJBh3Q8cVCj8JsLTVNXuUx3dYZ997E3Ft27guJMdivmll8crdBOACj6xsp5XpAHIAeXnZfroVDnwW6XanMt/EMXtKsU6KxzgEANYOSnuQRYVMsNlPRu4dVvMIwqEujsCAPD3MrY3Z/d7he4hAGT260B3e6Q1o6xcUZ/8vrDJ/WfuYab4DLOOS/Q80gnQFUSjJ5T+qboZpuXV9TAVrAOKLLy8pgVk4l+ixJmm6gtTYi/z70tg7GOeD22NJJs+7zXbZGmc1UCZq3HaSbKne3ehJdQcfUW5kYS01QPq1f4xBUfsKma0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,58 +134,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Add a guest_memfd selftest to verify that memory conversions work
-correctly with allocated folios in different layouts.
+Add a test to verify that a guest_memfd's shared/private status is
+consistent across processes, and that any shared pages previously mapped in
+any process are unmapped from all processes.
 
-By iterating through which pages are initially faulted, the test covers
-various layouts of contiguous allocated and unallocated regions, exercising
-conversion with different range layouts.
+The test forks a child process after creating the shared guest_memfd
+region so that the second process exists alongside the main process for the
+entire test.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+The processes then take turns to access memory to check that the
+shared/private status is consistent across processes.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 118 +++++++++++++++++++++
+ 1 file changed, 118 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index b43ac196330f1..0b024fb7227f0 100644
+index f03af2c46426f..99b0023609670 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -279,6 +279,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
- 	test_convert_to_shared(t, 0, 0, 'A', 'B');
+@@ -2,6 +2,8 @@
+ /*
+  * Copyright (c) 2024, Google LLC.
+  */
++#include <pthread.h>
++#include <time.h>
+ #include <sys/mman.h>
+ #include <unistd.h>
+ 
+@@ -323,6 +325,122 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
+ 	test_private(t, 0, 0, 'A');
  }
  
-+/*
-+ * Test that when some of the folios in the conversion range are allocated,
-+ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
-+ * allocated before conversion, using test_page, to cover various layouts of
-+ * contiguous allocated and unallocated regions.
-+ */
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
++/* Test that shared/private memory protections work and are seen from any process. */
++GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
 +{
-+	const int second_page_to_fault = 4;
-+	int i;
++	enum test_state {
++		STATE_INIT,
++		STATE_CHECK_SHARED,
++		STATE_DONE_CHECKING_SHARED,
++		STATE_CHECK_PRIVATE,
++		STATE_DONE_CHECKING_PRIVATE,
++	};
 +
-+	/*
-+	 * Fault 2 of the pages to test filemap range operations except when
-+	 * test_page == second_page_to_fault.
-+	 */
-+	host_do_rmw(t->mem, test_page, 0, 'A');
-+	if (test_page != second_page_to_fault)
-+		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
++	struct sync_state {
++		pthread_mutex_t mutex;
++		pthread_cond_t cond;
++		enum test_state step;
++	} *sync;
 +
-+	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
++	pthread_mutexattr_t mattr;
++	pthread_condattr_t cattr;
++	pid_t child_pid, parent_pid;
++	int status;
 +
-+		test_private(t, i, expected, 'B');
++	sync = kvm_mmap(sizeof(*sync), PROT_READ | PROT_WRITE,
++			MAP_SHARED | MAP_ANONYMOUS, -1);
++
++	pthread_mutexattr_init(&mattr);
++	pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
++	pthread_mutex_init(&sync->mutex, &mattr);
++	pthread_mutexattr_destroy(&mattr);
++
++	pthread_condattr_init(&cattr);
++	pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
++	pthread_cond_init(&sync->cond, &cattr);
++	pthread_condattr_destroy(&cattr);
++
++	sync->step = STATE_INIT;
++
++#define TEST_STATE_AWAIT(__state)						\
++	do {									\
++		pthread_mutex_lock(&sync->mutex);				\
++		while (sync->step != (__state)) {				\
++			struct timespec ts, stop;				\
++			int ret;						\
++										\
++			clock_gettime(CLOCK_REALTIME, &ts);			\
++			stop = timespec_add_ns(ts, 100 * 1000000UL);		\
++										\
++			ret = pthread_cond_timedwait(&sync->cond, &sync->mutex, &stop); \
++			if (ret == ETIMEDOUT) {					\
++				bool alive = (child_pid == 0) ?			\
++					     (getppid() == parent_pid) :		\
++					     (waitpid(child_pid, NULL, WNOHANG) == 0); \
++				TEST_ASSERT(alive, "Other process exited prematurely"); \
++			} else {						\
++				TEST_ASSERT(!ret, "pthread_cond_timedwait failed"); \
++			}							\
++		}								\
++		pthread_mutex_unlock(&sync->mutex);				\
++	} while (0)
++
++#define TEST_STATE_SET(__state)							\
++	do {									\
++		pthread_mutex_lock(&sync->mutex);				\
++		sync->step = (__state);						\
++		pthread_cond_broadcast(&sync->cond);				\
++		pthread_mutex_unlock(&sync->mutex);				\
++	} while (0)
++
++	parent_pid = getpid();
++	child_pid = fork();
++	TEST_ASSERT(child_pid != -1, "fork failed");
++
++	if (child_pid == 0) {
++		const char inconsequential = 0xdd;
++
++		TEST_STATE_AWAIT(STATE_CHECK_SHARED);
++
++		/*
++		 * This maps the pages into the child process as well, and tests
++		 * that the conversion process will unmap the guest_memfd memory
++		 * from all processes.
++		 */
++		host_do_rmw(t->mem, 0, 0xB, 0xC);
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
++		TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
++
++		TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
++		TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
++		exit(0);
 +	}
 +
-+	for (i = 0; i < nr_pages; ++i)
-+		test_convert_to_shared(t, i, 'B', 'C', 'D');
++	test_shared(t, 0, 0, 0xA, 0xB);
++
++	TEST_STATE_SET(STATE_CHECK_SHARED);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
++
++	test_convert_to_private(t, 0, 0xC, 0xD);
++
++	TEST_STATE_SET(STATE_CHECK_PRIVATE);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
++
++	TEST_ASSERT_EQ(waitpid(child_pid, &status, 0), child_pid);
++	TEST_ASSERT(WIFEXITED(status) && WEXITSTATUS(status) == 0,
++		    "Child exited with unexpected status");
++
++	pthread_mutex_destroy(&sync->mutex);
++	pthread_cond_destroy(&sync->cond);
++	kvm_munmap(sync, sizeof(*sync));
++
++#undef TEST_STATE_SET
++#undef TEST_STATE_AWAIT
 +}
 +
  int main(int argc, char *argv[])
