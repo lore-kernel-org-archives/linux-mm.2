@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4D3CD98F6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 23:46:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 362E4CD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 23:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 991246B0005; Fri, 19 Jun 2026 19:46:32 -0400 (EDT)
+	id D3A896B008A; Fri, 19 Jun 2026 19:46:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 942566B008A; Fri, 19 Jun 2026 19:46:32 -0400 (EDT)
+	id CEB4E6B008C; Fri, 19 Jun 2026 19:46:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 858386B008C; Fri, 19 Jun 2026 19:46:32 -0400 (EDT)
+	id C018A6B0092; Fri, 19 Jun 2026 19:46:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 63D256B0005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:46:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0FFBA0604
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:46:31 +0000 (UTC)
-X-FDA: 84898298982.15.741B4C1
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EB0F2140008
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:46:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lk70CKam;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E8116B008A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:46:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14A591205E5
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:46:38 +0000 (UTC)
+X-FDA: 84898299276.10.2007B21
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 313CE1C0006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:46:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ROlzD9sz;
+	spf=pass (imf21.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781912796;
+	b=NGwuXLekjR9z2mG7vrpelw6lbxHlqX66lLI6m8ex4Tyb19nFUGX5XRUno2D0Zb4Oe9glAL
+	n6XxKHihtO+vrKc0lpVrx3l8w24WMPPW8IyHFWDuGQqzJU0Zu4p4cZULxW7pvDkzcGhIk/
+	45TwmmRnqBK5gEBKq5dssq1ezAq+ajY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ROlzD9sz;
+	spf=pass (imf21.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781912790;
+	s=arc-20220608; t=1781912796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/XIgL7MJMVO+5GxTwo0sxuf0mtf2khWAl88EGtPeN5E=;
-	b=tpdhKtGabugccdQhla2h0UjfwXMaVs8icEXb8yArGP7dbTjZ1p99r4J3tkdvyKJwaW7m2z
-	OolRgES1mtqswN4WvQ0VN9ky1wxDmYxB/bZGTPNqa8cMOdFifO+X8AxCHRlrFCQbXbCj3G
-	T9UM7nrpfDNj3TWBFDPEfjqWx9SSjFo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781912790;
-	b=UDzIB234Y5AlRZzmwuqKYDCWqK5di2Qok3nF8LchbZ1OKr5FE5I6xAd45vxXd/nLB7h3RG
-	TZ7Tqf9baQAqG1hJXi5eUS0SW6l0pcKeOvXOntDCum2Abt8eOWHeCvgv9gumA0qLz4ANvQ
-	Fs9Xzkr71ia+GGi4vn2yDVOOcfjWYjM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lk70CKam;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-46066e640easo1583768f8f.1
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:46:29 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CVy21SE4M2vsW6vYL3d+PXiTMxevRAY3Rjncmv84CKs=;
+	b=CTzNaLm6Q8DAehpI6h22WGKBK+wDSdyIW2KfMPQvp+rNMWblEWILuqurF1txrwrZ3a23WW
+	m3VmnrJkr0k3Fpkj8dG0Y00Gued/lI8UGnI45TtoSJY/StWvoUU+MohWzhaVgSEh5FPZuU
+	rJHdbcxbq8CRIx8eir4fr2UDkni+bsY=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso17342815e9.3
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 16:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781912788; x=1782517588; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/XIgL7MJMVO+5GxTwo0sxuf0mtf2khWAl88EGtPeN5E=;
-        b=Lk70CKaml2Nfw1GZQ7VTFW3ugtwFdqfYNqCtgLxLJgxyz8GZ2CaJuXZmGCdVfNfrv6
-         UmXoVlcFclms6G1pasiXmzyTwycNhqNoN+dXa+9JrpAyUFznXPEC/JDWeYWqzhjiYTuW
-         G6yRrLqFSQVGtO62kciyDCDivjNHYwbZKeRO+oqRlI6bUGXWCkDnp88i5vtdxECLAmUX
-         TD4reGViW+K8/86D9+p/b6GST/oHc0/ioFSm/y2ewUxjwt4FGy0lt0pd+2Pm3Gn+BFXI
-         979TfV9KDoK9PLxGmonAaAd9vgQv7uHBEG+f0yVUkaBKjjswOtXyo61e7J/tLsPd3ZV1
-         UmCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781912788; x=1782517588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781912795; x=1782517595; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/XIgL7MJMVO+5GxTwo0sxuf0mtf2khWAl88EGtPeN5E=;
-        b=DXoIS7jMirQ1TYLoN32vkcb0DI17ZtI41dd9MqIz6w+P1w8GYcRLU2GAkWWa8GGv8w
-         K63bC6OkI/OsR+vFT5QjSGpYNkxh49w+jU2/A65vjGLa01LN6A/Y87qIOujVmuZNxIgs
-         9+HaR51i/VlyBtr2mZ7qkO4U/sUcf3e+gwCG/7h/TcP6n5LUAGy+CMyQkhNvSoigS2uf
-         gVyVrHArcpPKIAzfAZrKbfS3BEBl9fdEI7E30GyAAW9zU6ka9IvWyQgCf0j9a9+PeoFO
-         vqTY5RJSwtugvUfoXBUBmro4G7NHJQtKTc2awZkAT8HhuMcUcOOr3qXjPFkfVICIytTg
-         nfRA==
-X-Forwarded-Encrypted: i=1; AFNElJ/0Ww4tqcAncKyHkgBCLr9FWCdj+HjYCySyIIKoSH34MlruqLMhbeN3NpFDUFfy9nWS3zm3T1Q4VA==@kvack.org
-X-Gm-Message-State: AOJu0YznxARvnnIw4zW9fvZB+E9ACXg6LfRhYCXoafZx0jMU5OmKLQgf
-	ByNyZYcLxc2Bv7oyZLeFEG/d/+6yx3CkY4y3A45jxAhhprKckvWSDGrG
-X-Gm-Gg: AfdE7ckzAqzjWBaGZgjTlefVwztZCpfd9r48lXu/EJBKbDGKbbCqsIU5BdelT41SGP4
-	HXohkGm0kJGsLVgY+TG+K2av7LGcOykw0bn+xDlvoO/l5P6sHq8VKZqeN1GQqlvfTlIcHFWmj62
-	EN7ELw2c5yIpnCBWjhTcX+WxrO+Jhx/A5eks0qc9d1OJ14e/PQaBZjI4wreaaw62rkmpzbTd6CZ
-	lX9OZ24WSit87XCO4wA96iECeWOgoWpNo20sWXii5yjZ+eroklR/2po3V+gt20Qq0o5V26Oh/jT
-	jrHo/v5uEJkZBZbwMEnUeQw3mawzS+sSdUZRCebRelE5z0SnUVhMv0C//REnBPi/SLrnF1AhJtJ
-	J/OJA9eNM/1QHoh9JSDlw46HKbsBVhaG6Tudspz1ZTbVscuLbibk2384WXcY2G6t1slejRF5Ndg
-	D1CgkXhclKhvQ=
-X-Received: by 2002:adf:ebc5:0:b0:461:a15f:6df4 with SMTP id ffacd0b85a97d-46509f4d2e1mr8175738f8f.35.1781912788219;
-        Fri, 19 Jun 2026 16:46:28 -0700 (PDT)
+        bh=CVy21SE4M2vsW6vYL3d+PXiTMxevRAY3Rjncmv84CKs=;
+        b=ROlzD9sz+vKrqO4zlLIjjYE4CWU+zP3GpwydTHq3fWFaSXpdObe+NUWKqGLwHf8Pll
+         EJeSNtkFYwenRM+u8/o5KwM9HSCb0AcvqOV/Ci0yvelrVJ1sBpb3Ui8VP65MLkOKrI4S
+         kKIvWTZgkTVDrMw7/8cEvW9I+2G053wsABaR/cGMT6m4fWwzzv69V+g/bOtgeUCxPVK0
+         RJUKPYN871dGv0ei/YRJHDNZimMGOMpQnI5a3phNkGLcAQjRZsmXLd5ANicF7Hg9tmEm
+         4VmvEhNx7fWm6iywcaE4+2bF3zdJFkIFeGZX3YUocEeHiphKLlGdl5XiEqduCsBS3+09
+         ww+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781912795; x=1782517595;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CVy21SE4M2vsW6vYL3d+PXiTMxevRAY3Rjncmv84CKs=;
+        b=NjT1JjMZk8nJyb4TDgAEWbOXlJf2wAfmjLbw+qbVM9J4PCy5YUkl4+GWMcjjLl5VGX
+         dO5n2zUytkgek3Tvw6iyNpxSOt7F8GuW6glVb2/JFJj8DLrbJNikD02X5LQCM9pt5+TM
+         IgNg2ruqtebSgcni6SxEDI9U/A00pV5+Suu9WL76bMpDHKbUYMfpey4pQyy8ghhO9sOr
+         uV0qSpBNn7bRTIQQg+1bX+rtxxSU+myFlDQyTtEv8volsAg0UMR8clgYCnJz3DFlK4A8
+         RNlt+kFbi8f2ZYmYzb9VJzzx6QE0uitJS12UpqTEfET77FP2kbFeNBSA/PUICfrn1OUq
+         1K+w==
+X-Forwarded-Encrypted: i=1; AFNElJ+4QbaOOxd6T2olLgZ4nO9BdmJelg7JUTFmqi1rX09UlkcHoSakH71O+cFxpm43Thq5v2EKsgaJNw==@kvack.org
+X-Gm-Message-State: AOJu0Yx/iSOaW+VxPiOaKGB2ygjOSdewhivL9/FnFAHG6OPyu4LdFHyB
+	5WaOZXkt20BO8FcbLLesAoIOvjQ3WUuk+U3VBR3B7taW4koQpsxW1BNZ
+X-Gm-Gg: AfdE7cncdYKG0pXmXdWZI4X5CHlRju2leS97QKhKRoBjMgjcoSLQi9CntxBkkRaH6B6
+	vnuXB3T8GXYd2Kl9cATCAdi3hkuivicuINRGkshtchIVsn/UOkPW+vKgFqfu0V9NF3SV5GAtCVA
+	XC//f55mE44tblGzgIk1VhnDsOE8qIGeuFDX0L8uYcdbVAcHwfS6AtBobvJ1NrP3ids1cyNFbg7
+	POJvGLUrMn1AsbaDlCrI2dPbqz5ip49pYQ/HrYWcuQbJ2qpOc5thTAY4ffbcsK76B7CdObKyHPD
+	iBQIhiRJuJyTaJNH6/vptxKTtj8txxPfSaUg/Jr1thOlShCZFi+78SU37tKVr+ivdW4/8tSneq0
+	Rp3ISOIZE4EbAwBRUqAQUgEpCS8ZdxU1Z/0z/DCC7aB949g/W6q2iNQVYq4KYPG7jRiRxv760bZ
+	XopKUFyn4udSk=
+X-Received: by 2002:a7b:cd0e:0:b0:490:ba61:7981 with SMTP id 5b1f17b1804b1-49240e85d64mr69314975e9.23.1781912794516;
+        Fri, 19 Jun 2026 16:46:34 -0700 (PDT)
 Received: from user ([104.28.163.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466667882f7sm2868027f8f.21.2026.06.19.16.46.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466667882f7sm2868027f8f.21.2026.06.19.16.46.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 16:46:27 -0700 (PDT)
+        Fri, 19 Jun 2026 16:46:34 -0700 (PDT)
 From: yahia <yahia.a.abdrabou@gmail.com>
 To: sj@kernel.org
 Cc: akpm@linux-foundation.org,
@@ -96,20 +97,22 @@ Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	yahia ahmed <yahia.a.abdrabou@gmail.com>
-Subject: [PATCH 0/2] mm/damon/reclaim: fix initalization and parameter issues
-Date: Sat, 20 Jun 2026 02:46:04 +0300
-Message-ID: <20260619234606.221163-1-yahia.a.abdrabou@gmail.com>
+Subject: [PATCH 1/2] mm/damon/reclaim: fix destruction of ctx
+Date: Sat, 20 Jun 2026 02:46:05 +0300
+Message-ID: <20260619234606.221163-2-yahia.a.abdrabou@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260619234606.221163-1-yahia.a.abdrabou@gmail.com>
+References: <20260619234606.221163-1-yahia.a.abdrabou@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: w4ga3ifc5wrzycna8k991hkeyic597be
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 313CE1C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EB0F2140008
-X-Stat-Signature: hmzf7dxi18h1nhej5rhmdmgwk9rp1amq
-X-HE-Tag: 1781912789-747602
-X-HE-Meta: U2FsdGVkX1/hmbYCmFNwahdID+joCfZ0nEMTUSU9w+VUkmhq2SjJ1+91D8kABAwzNfgMjkAYpzByaLJBLwq0KFiDES/NutmjJ/w25vuoJ2m8h+ArHGokx78Up5jka0jpB+fRC3/aGurKCNB33rdEkxl72d/r4b1br/JXopCNwYIWVG3Oq9YpzFsXAb9anfAcJXUqF8WAGNQKAigG5mHIiwwwoY0DWPuPJWygNt9pK4koZdJr/ml3OdSIqUVyK/4rjLIbyRTKqQEROceG+yBo2rTz8C3i8ReTQq9PYcqLGHWLx9DuFjPwZNRxTsxj0lf4Gb3wEWtL+KN81tCp370bBSUt6nt2paHBW8NgrceXcmdoMed48gWtNZj27I94XnsQPUBFlcWl7FhEtEdPtNkV1EJJlDeKdEVQ+WQ5T60zt4vzGRyO8qCMiK9kvag2Ry85WgYDVeNmYMoDiWRwXDYkhvD8M1ymkoww4R4Cu2ELYwQdMcxeWnRPaVEeUxhR/x/jGj/CCo3oXP6dQsTr4OF2zItqM9TPiQKKnKIGAxuZNncRpIZLsfV8BaMYs/E843wP8gw1gtCs9gI8AKi9q5usZz0aS+UD3UziMcSPSzxWGxPQlWsB57mDSAxalcJreVmVI79MYiGPAE9BVugT4seXMEEGn2vyvHwFZrAV4LI0mfgUJt+5RfZWboeFg6UOEHFTdPVoRIo7+jHw5YZhu6Zrq2BMnLsd16cJ5sZ/UFuWpFEX/Kcf80WpjssjBon/U2IJFMmmwpS5jDKnCDNC9sfUyrgne0TRici+Gp0I0jYoNovfbcSRB5SRVGz0j+Ea1Mwx3NvDTUgOt4vFqDovLUiWMmPuAXFfRyb5IdqNwmZt7cUpc6z/oCm7TYviCzReRztBHpbmkcJ/zVJUG/90G1Dy4l6IQc4y9SQ2kssUuIfaX0Gyik1znikPU0oXTENn1eA+bQvfl9mZdPRJN6qkaVR
- He0M3Ig7
- Ksce2st3o24TY76e71yTxGleOnjdOBBpKO7YCrOYrfd8MY/4XikH1U9Y60XfZwh+qlf9PPeJ1rRE9ZC3Vuk4bRHRIy3DNoVxsrXcDhDxZJccbrMg5sU/HEpwD4ze2H54tHgfe/WdLOSx8MH+aZUF16Pguz4KDhVEPIHqnAk/jG0ZuHRkYNzICpMFzzwY/6XbaOeiTQ0obruXdL9ztajSN29fpmiaHMSjQyb8nBpwiiZw67CYiKCq1Hi36z5mHXMJ/x8iCrTiNCSzwW1A2BkZGXijIU5usBClp/ZDxldVNE5zBAMK5Uwr56ozm3cFxitwzu+JbM/HwvOZIRiq8cHqsE/TnbBJqCSG5D0cpNbbnBoFco49ol13vic+H1oWAxQSzWcFXl/TGL2lFWzQVCO0vywMV9Vbszqb3k496pTHHkshzPB80jHw2BkCbw0dH3DMS9OPICtj7hWzF4W71T/qcz9hJGw9LUM6o6uNhqZBMMknoCOqM5IZrC7RKqAkJ1ftd2K3sjIodN1vq7Ro=
+X-HE-Tag: 1781912795-838013
+X-HE-Meta: U2FsdGVkX18ZvLvZuxAIvr2oXdeq1wWpFSQq0zbJS6cV/6zaoTpxJ0pFNah9RFU9EKQ4E3zDnjVS9rIDp4ao5CgYySpRK2ARlWvzxjOkn4xGEJWXES2iXMk+7BA/wqvtVVjIvGc6WDPIeY7BK5T+Ddo8eo3j3aVe9xIM8qIosCHArnpAJ/yiFAaDzZjPzwn46SiuF3+2DJmZjG5TrsHqusoIktP1hilEOeKTIIuIRoUJGQvl5J0/iZHMISHJuQCIjSsty8INwMHIlhCC9vQ/JINxOhIRjzdL4pyX3CxeuSSFHMsOEdPaTxHhxUgLcLM1zXSenrJEZBUw+ncFLHMHB/ru8HF5xoDF50gXBK330mrIjqnxkY8d24yqOdbCf2RgqITlCcpowmhvBDdH+gShzafdl6UTvYiG3wAOX55lijm1ESniGSjCKUxqAxy/3J2mrJLfGYGSlu9p9ejFG5azIsx0eHjtJ7ZMCOXLdAiuz4zmyFW4FxmXIvMswKJye4oKltR4Lysk0HJacjuo2JijVzLVFSQFiGdS6/jhTZMF0jw15Mi6rBzQnaYyGFmkicySvjIBUsK9SRXTLopmRWBnAj2RCazzLadjtX4dsfHX2GDh2j+AYDQgBQVLMLwesQMVpSxtbkiaG/ZTKEmkbiYR6ttwiAXFd3n84hjN/zQfUbTOeiFJAHMzoTYsix74sXgB5GMt9pi7Z3EdeABubFYsYi9q531MIcU8LGDRxLrOXmLlpv+xevnf5177reGnJ3iRMdKyUHvdSyzNIYIsR6OLOQikHXNfN1lPjbD2IMh7msMgi5dzSW6YaQAq2GPXAZAmWJJLDtx7MRnM7xTMf4IR+HL2e5vhK+MxVf7aSHEh7jy7kFmz/zs8Lb/OzBOOjMXxqSxVnlpnlMwYeqIetyz/PfG3Op/35MKzPrpCjptXFHnwJJ11td72UbRqbdl/gRshkcZTOdDMdpczDmaWJ3u
+ ITl7D9wm
+ RIRIMDupURgJXR63mXpa6WoEbglgJhkcoyhwstPYpMPpVD7oatMZO2D3tuOKLr7qIWaDaHQCJXzv4uFPTW+jo1YrXHO83aABdwt9Qn0GO4ber5s6ai4dtNsZhOmzXKm2ctycnKEJxDWE8af+qbWMApopYhKPbe6dyvZElAccwZTeqnTuuA8c4BNbz34SxPbPi4q0Ju1UitquUwOQxg6QpZqHfwZcIJnDFSQA5YY+N00/4L2B6iVeXRNrhfx0fA4ZpuLTyY1MKWo14giXMOycrV30K2Azww55VKDqOuxJ/YajLDJZjYfztsmt/Qh0Gn5Je8hUho2RTfO9hogepDA4lBM4ZmSELnqIvvjrwRFDcKI7c8yNYgL19LMblKmon8nvqR/hp7cTCCvM74eXv0w7NPVc8dYICvSTA25lNgHRVYjdr5+8XTBcF6soHI2uqVhbkBgsOdK2CAlRHfkWgEUH0atZnpzOBIl7iyqhlwCGgCMG34nRBNsLEkpmku/0hv7X7aCZzPmkGUmW93P4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,18 +122,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-This patch series addresses a potential memory
-leak in the damon_reclain_init() function and a
-premature destruction of ctx if there was no error
-in the damon_reclaim_parameters() function
+Fix the early destruction of ctx if no error was encountered
+by returning 0 on success.
 
-yahia (2):
-  mm/damon/reclaim: fix destruction of ctx
-  mm/damon/reclaim: fix potential memory leak
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+---
+ mm/damon/reclaim.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- mm/damon/reclaim.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index ce4499cf4b8b..15bc06ae7505 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -268,6 +268,9 @@ static int damon_reclaim_apply_parameters(void)
+ 	if (err)
+ 		goto out;
+ 	err = damon_commit_ctx(ctx, param_ctx);
++
++	if (!err)
++		return 0;
+ out:
+ 	damon_destroy_ctx(param_ctx);
+ 	return err;
 -- 
 2.54.0
 
