@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB0A7CD98E6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 05:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B721CD98F6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 05:19:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 505996B0088; Fri, 19 Jun 2026 01:17:37 -0400 (EDT)
+	id E312D6B0088; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B6686B008A; Fri, 19 Jun 2026 01:17:37 -0400 (EDT)
+	id E093B6B008A; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CC2A6B008C; Fri, 19 Jun 2026 01:17:37 -0400 (EDT)
+	id CF95C6B008C; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 11E686B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:17:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 779E0A035D
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:17:36 +0000 (UTC)
-X-FDA: 84895504512.04.47D4137
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8042A140003
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:17:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jbC5I6eQ;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AAAE16B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 01:19:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 24EC08D49B
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:19:06 +0000 (UTC)
+X-FDA: 84895508292.01.02D0446
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5D4EEC0002
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 05:19:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHSq15pi;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781846254;
+	s=arc-20220608; t=1781846344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5bCXodPHqNgsofT7Pcf+Vb8635LLVTlUVg6eKsgs7g=;
-	b=z7VfBXHK3F+h+ydtL/BSdIa9E6v9GENDuoV7xTQaSDI3h0Do9i2lz2tXSGhzq89k4vr+Kr
-	C2QdQgscuPPjAz8WPavYet+DzTNwPOuaiehjQfZ0Jy8Iuv9uKJ4wPtL4GeZ7aTmWIyXz2/
-	Vq3zjpBvSx8Vyn7Va3ojoE2RxOzDEl0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jbC5I6eQ;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	bh=n0WQXKZa/yAPHQbUs9dLkQN2esDMhYBXPa9Lzf4iMSw=;
+	b=B5iJuR58J0IvyoqQ3sEANugUFqkF6MHlGCNcrmjJRB5HNuk/hJwIHb6sLJLpvssXud/heM
+	WN0QZDLEK69RYdGy4BAx1Hy/I1uHTZlxw1E9nC5ygyzueKH1NeXLZDE1K5X+mlAuhcrNBD
+	qvt4lJp6CpVB0GeDR3fTIuWQPo3H3EI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781846254;
-	b=dH7/MzOeWeoGBKC8a5IOnTizBmyWV3QNzFNAuqqsZp3Wrkd8RvWk0f/wmyJKv6RP1MDKz5
-	c1DBgNUc9+982qjbq5UCwRm7fm4MsoPFDtsuwGWv+ZEHaM1THxkAaTdn9Hf6OjbIf4ZtPl
-	3UIP4jioCxtFu8mcNqCX1iC16dJQpI8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E76614AAB;
-	Thu, 18 Jun 2026 22:17:28 -0700 (PDT)
-Received: from [10.164.148.42] (D3H2TH2F54.blr.arm.com [10.164.148.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BD7B3F763;
-	Thu, 18 Jun 2026 22:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781846253; bh=UThYL4n3yi6FB/4PoyNwX/qX7QaXgn7Gb48t1iB6IKM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jbC5I6eQoGomv8iGJRU8jQqKcwcUpT/e7lp0AiVrdoygvnUoDpQjvVmjGorL3UAXP
-	 w1GwO3Kp0D5vrukU9KyYZFT9t245gW6WCyFF1N0+HiO3wjEiGOqU+ePMrs++JmKKeZ
-	 W8b3YrHwfkgim0X3khHlwDzSR8867W8+SDC7NVR4=
-Message-ID: <5173a464-5f2c-431c-a3e3-16356f8cb873@arm.com>
-Date: Fri, 19 Jun 2026 10:47:24 +0530
+	t=1781846344;
+	b=Rh4Zx5mx46h6B4peEsD0j571fz3HhU1aXvD1C1EaXljXaKMnBHGlSNvBO+zqGUtY7uGaSf
+	7KYVB94rCNAIP+dERwHUQWzqCAGG8f2LySVQZHpML6eVNUVFMv1bAnVja7+bWzLkA0XPT/
+	5UdKjGK/4XaWurzj9LqvQkxJns5NuJo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aHSq15pi;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 66AAD4093C;
+	Fri, 19 Jun 2026 05:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB4F1F000E9;
+	Fri, 19 Jun 2026 05:19:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781846343;
+	bh=n0WQXKZa/yAPHQbUs9dLkQN2esDMhYBXPa9Lzf4iMSw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=aHSq15piz7ld4db3e46JH3zywFyou9Lf3nDfq+LVIm+k3H3ga6j2j4IIyBfRGdLsA
+	 1jk+CKcHK6momeyF3IxCxQPhE8LSXJgpwzhhKKegYFSOQdNkTuw0depL2nkkf66pEx
+	 Tkk7BDabM25+Sbk2H5lnco1x7xko06vhe1Zz888SNY2VS8PvV7q77a8W8Ku08MLOVO
+	 jv5FXWtsctGR87yD+DBMRmtArRPqGzf0PhPkCiWywMLVDw9h0F0V4JZFHE3pZQaTvj
+	 dql2Qu5PDMsRwd/e1PAChINPTgk2FFyc/Iyj0tV8Fgd+9LpdLNjG8DwpKN9jTPNPyo
+	 /4OwhRgUdx3Rg==
+Message-ID: <b270ce60-b335-4f26-bf43-c8e7003237c7@kernel.org>
+Date: Fri, 19 Jun 2026 14:18:55 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-To: Ryan Roberts <ryan.roberts@arm.com>, ryabinin.a.a@gmail.com,
- akpm@linux-foundation.org, corbet@lwn.net
-Cc: glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
- vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, anshuman.khandual@arm.com,
- kaleshsingh@google.com, 21cnbao@gmail.com, david@kernel.org,
- will@kernel.org, catalin.marinas@arm.com
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <dbc2800f-7880-486f-831c-ec9b6cedc005@arm.com>
+Subject: Re: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
+To: Vlastimil Babka <vbabka@suse.com>,
+ Yichong Chen <chenyichong@uniontech.com>, akpm@linux-foundation.org,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: penberg@cs.helsinki.fi, clameter@sgi.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>,
+ Hao Li <hao.li@linux.dev>
+References: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
+ <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <dbc2800f-7880-486f-831c-ec9b6cedc005@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8042A140003
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------LFY6cLE1Bu0c2UNxfoLl1Cto"
 X-Rspam-User: 
-X-Stat-Signature: 9xgope58yrjpfx7ec9rhjnjp6pq45crt
-X-HE-Tag: 1781846254-860391
-X-HE-Meta: U2FsdGVkX1/LFhOSdhv+mOEMQcCM4T4rHnO/pSTq6/cLq/YR7LTgixKs+kLl0Y2kwPbEnMUPJ0trkmLBspzHbIdh7w95A0AgTm2TvbR12qSyoRmCM+IGI6W1OYZobKK0K4OLTtbIjxBLpRQ1y1zSHZvk03VPd6pA4opJt6pXNVZUpW4DbDs97jsYYBP52h0fOI+/WqkIo79ylww27iKDnQxpdPQEsZliKcyRmWAlRR+OVff7Swx0lg51Ikj+iTJcWFJgxzfC05UETfLk3NumtmRRKrKEPUmf+lI1vyhygf4DBK187UD9OXqclBCv13Hnh1WLAVt9g/k7c3CA+WMxTiPyknwUxTC9In3u1821QRk7bq9VsOlpRYulxJ7Ce1N9WwiMwnIl3K2LZfGNGMofiQDMkOutEswKrgY85aTPgyZhhA4mo531T9l5t616GAz8LErQ27vSBviuM2IPBZBwQ264Ijwe3ER20xKmSvJRxg542GZ6WWWch4rly7t9qnS+nMaHX4x4SXV2xULdw2z6l1wT0GAHmdZR4bcne5MFQpscI269QSYGPnDWIk7wTFfIKqdEGEruKVrR9OBw9xiZeIzS8JYDCAGrcrNCViiCh/w/UcFyV3x7dSAKD4yfgVMkCnRCFr2aqkd96AxB3BDzGscbFdc03v/JZ6ATebMC1EbGr1j84Mo7VEMYJnWJdv4apH+Rdi0a5OANesFxk1hl0LhhfpeeVnihKoaS4PJhJ18a4tPf0pWxdCka1H2B5PIx+SWwaonAEXBUwmqEJgTq48KkcbjTnTah1Y0o01Y3D6G3IV/b+z2Yblyza4ZnZUOCNWndsr4ClGnny+LR4ST7WrpeZnqh4cMa5G3q1vIp6nPljV8ZP4C4ssxvLUpppYg5y8/3XUoFzMDuhWeH6EAvmnAJygpUR/FkIXmSB0c4vIkTVq18QypLqJ+kYP0Yeubn/VhyB2gwfJMxBLL13L1
- l9vIdeaB
- GXH7lSFutT9I4yokZu8crZoX12VMmQfGLjwJOmnZwRyqFQNZEZhS6uCQQlgYp0EtqXIWWO/721xCAaJd5yLbZOgBVuRj+IBOLjZPDVMuWOqTOxBiH6MOY3zqtBViUXKfo4WS6FYF3Ih8Qm96v1Xo9vSpc5x4DHXT8a1BDGYi2IBUAso7FLAHPIdj+YJ61RcoSQDyrzGPzBLRgcn3KWpUGKEwMR+5imdrreT6f4YObn4TomFnJmqgq6ICOXo518TzXzNnnVvvBzpSnC7K3GfFSBdPz3nsyDKAJKi3vVeFL6itFg0fQCNoCnwKv+uvX0f7uNQIbhic5oEE8kNss5m8Ck+Y/Xe9MuSXB8FkJiEETlbFrKqc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5D4EEC0002
+X-Stat-Signature: 4n5qc6c4ipcu67ocjmnpk1hzxmk5oadd
+X-HE-Tag: 1781846344-789896
+X-HE-Meta: U2FsdGVkX1933g1TNFBmQsgueI+EPtipPF9qi1VBRWKFYcwpidbn6f5CcguYs01pGrPc+A5qCg0sVk2aN7Z52RRp41uI2M/zmToCShieWYVGrX7lfTYbqUaYQ7AnISWzVvukFTN8pWtA/LeC5MifEOP9xnsnefc3FYA9bRb++4P/3Jx+yLUFy3uhEvNyFeni/3XV6sjzFyQFRCXrFq2813sYWdmb/clNNhiSal/kacaVCwIyG/bScNvQSIN3VgU0tJpEB4K37m2BX2qothDnXFz1myugLZw7PR7tmTW5fgk5V0oADGg7B5m/9lCUjol8I43J65WrVFYRhZw9bX1QX312lh/Jv5rcvZtGODf44VeVArrRTVOCmYH9RlgHt5vkyW/cSejI3n+ogV1QRKJdKoZZfiL4dq4Hop6LyO5PIck0j+sHOuomee3xXN8CoZ2IdAmDc0jlhdk9423wTEFhBAI0h5mDZVMp9RDJeKjb4mjwKQVheIQPrCTYt+a8fpqulKYiyRIi9ZVGrJjMgru5Tp7VagJKROgf6rNs86wFjJh5dGKLhAHhF90maiprp8YmY+44qHaKbUEN14p7w4arU5p93SEEqa95gW1GqMRnpGfREz2YRb00rzmkj2YeYyAihedpKfU/wukC4b5kSjVxZKi3ViAcZURXglSQzVK/u9xgXy5Ftu/XJ+ufL05vkMXCS6G3yOBPdV9lKZsKqLUFgjmhbXcwwl2P0hp/T344beYlK12z7VVFgeRNU7bAdJGW12/0bf50oEIUVQHREb6lTxqgItQUeBzhWEe+muZMXiNwL+VFGmfGKxRRKlFdTbDQvZZ/6+cbbOezuOD1GLYcrC2OYorkTlmOf3apU5LGM6ig3lBY+zsxEALUoVI1pH57+Tz7wWkEWysROImntSHseHVZf8/WKE8FYyN0QHDer0o6QSjz/hXFNP5All1BFOCGSPwOCSbE95CmmMK33NR
+ xfsqQVKy
+ jjJ+8HN2bQNw3CuvuZjkHEWBSrxzHJy7iS1v4AGt4RPWsHZk/DDK8FBAY7Vx0pPPCxCUAOCx/9ivZEcK+6wMIAp4u+QSpgLCFsAidOKxbUZDXvYFgen4Yoxe/3HrNZFX4Pc+AYYL5jrNefPB+rT5GOJ5dffXIh0sxuPzFrZzrnlvspsb1Rn/rT77jn8/FcCJQdpQjigC2/4zo1zwrPzfFysLhITc1LS77ZWIm2eEeHepG8RGh2Fh3ouXzpfiT8Sq3eRbi7YhxOW/7TLBY6rVAiV6WhINt4TvkWMFLnbQZLn6SjxcW+Ir7BQ0hLAV5SsQ00GsWGpl2UZa2j3P15m1BOnsGn1L+w6nW1olW9+dIfyxS/sbX8k8XUK/4FgXfJ8Ri8i5IEjuEktSp5jusd41OkW0MrgY/MXCbDd/D58GLAobGjfUHw6huAvr9WGAdJuv9b8UJ6x6hWA2BvDRLo1L/+CdK9yRIJN9+6WC45VfoSdnF4VivQ1vCFoMcxD1nNNnA1lO/QJIKhSgm1Mu0TNVpoEsGNGbE3py/xWJJj4wcWbpUUkzF5AbjMd/jUFQYzp8xgid2PUQiy7ebK78=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,63 +97,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------LFY6cLE1Bu0c2UNxfoLl1Cto
+Content-Type: multipart/mixed; boundary="------------bzR0xRRP6eTD0Reb1mV1IqiT";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Vlastimil Babka <vbabka@suse.com>,
+ Yichong Chen <chenyichong@uniontech.com>, akpm@linux-foundation.org,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: penberg@cs.helsinki.fi, clameter@sgi.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, SeongJae Park <sj@kernel.org>,
+ Hao Li <hao.li@linux.dev>
+Message-ID: <b270ce60-b335-4f26-bf43-c8e7003237c7@kernel.org>
+Subject: Re: [PATCH] tools/mm/slabinfo: fix total_objects attribute name
+References: <96556748872BB47E+20260612071359.649946-1-chenyichong@uniontech.com>
+ <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+In-Reply-To: <65f68f41-226f-43ae-8bfc-b9a321bfe5fe@suse.com>
+
+--------------bzR0xRRP6eTD0Reb1mV1IqiT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 18/06/26 7:18 pm, Ryan Roberts wrote:
-> On 12/06/2026 05:44, Dev Jain wrote:
->> Introduce a boot option to tag only at allocation time of the objects. This
->> reduces KASAN MTE overhead, the tradeoff being reduced ability of
->> catching bugs.
+
+On 6/18/26 6:18 PM, Vlastimil Babka wrote:
+> On 6/12/26 09:13, Yichong Chen wrote:
+>> SLUB exports the total_objects sysfs attribute, but slabinfo tries to =
+read
+>> objects_total. As a result, the lookup fails and the field remains zer=
+o.
 >>
->> Now, when a memory object will be freed, it will retain the random tag it
->> had at allocation time. This compromises on catching UAF bugs, till the
->> time the object is not reallocated, at which point it will have a new
->> random tag.
+>> Use the correct attribute name and rename the corresponding structure
+>> member to match.
 >>
->> Hence, not catching "use-after-free-before-reallocation" and not catching
->> "double-free" will be the compromise for reduced KASAN overhead.
-> 
-> Does standard KASAN with HW_TAGS really detect double-free? How does it do that?
-> I could imagine it testing the tags of memory being freed to see if they are set
-> to the poison tag, but that would lead to false positives for the GFP_SKIP_KASAN
-> case, surely?
+>> Fixes: 205ab99dd103 ("slub: Update statistics handling for variable or=
+der slabs")
+>=20
+> Huh, it has never worked correctly, since 2008.
 
-Should have mentioned, the double-free check is only for slab objects, see
-__kasan_slab_pre_free. So we won't be able to catch double-free here.
+slabinfo.c needs some love :)
 
-> 
-> If I'm right, then the only downgrade this new mode causes is that if
-> freed-but-not-yet-reallocated memory is accessed via it's dangling pointer, then
-> that bad access is not detected. I think that would be benign in all the cases I
-> can think of, so while it would be a problem for a debugging use case, it would
-> unlikely be a problem for security enforcement?
+> Applied to slab/for-next, thanks!
 
-Okay so you are saying that we won't catch the bug, but there is no security problem
-because the dangling pointer is accessing memory which isn't in use by anyone else.
+FWIW,
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
+Thanks!
 
-> 
-> Thanks,
-> Ryan
-> 
-> 
->>
->> This is an RFC because we are not clear about the performance benefit.
->>
->> Android folks, please help with testing!
->>
+>> Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
 >> ---
->> Applies on Linus master (9716c086c8e8).
+>>  tools/mm/slabinfo.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
 >>
->> Dev Jain (2):
->>   kasan: hw_tags: Use KASAN_PAGE_REDZONE for vmalloc redzoning
->>   kasan: hw_tags: Add boot option to elide free time poisoning
->>
->>  Documentation/dev-tools/kasan.rst |  4 +++
->>  mm/kasan/hw_tags.c                | 45 +++++++++++++++++++++++++++++--
->>  mm/kasan/kasan.h                  | 23 +++++++++++++++-
->>  3 files changed, 69 insertions(+), 3 deletions(-)
->>
-> 
+>> diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+>> index 54c7265ab52d..f4077746d6df 100644
+>> --- a/tools/mm/slabinfo.c
+>> +++ b/tools/mm/slabinfo.c
+>> @@ -33,7 +33,7 @@ struct slabinfo {
+>>  	unsigned int hwcache_align, object_size, objs_per_slab;
+>>  	unsigned int sanity_checks, slab_size, store_user, trace;
+>>  	int order, poison, reclaim_account, red_zone;
+>> -	unsigned long partial, objects, slabs, objects_partial, objects_tota=
+l;
+>> +	unsigned long partial, objects, slabs, objects_partial, total_object=
+s;
+>>  	unsigned long alloc_fastpath, alloc_slowpath;
+>>  	unsigned long free_fastpath, free_slowpath;
+>>  	unsigned long free_frozen, free_add_partial, free_remove_partial;
+>> @@ -1263,7 +1263,7 @@ static void read_slab_dir(void)
+>>  			slab->object_size =3D get_obj("object_size");
+>>  			slab->objects =3D get_obj("objects");
+>>  			slab->objects_partial =3D get_obj("objects_partial");
+>> -			slab->objects_total =3D get_obj("objects_total");
+>> +			slab->total_objects =3D get_obj("total_objects");
+>>  			slab->objs_per_slab =3D get_obj("objs_per_slab");
+>>  			slab->order =3D get_obj("order");
+>>  			slab->partial =3D get_obj("partial");
 
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------bzR0xRRP6eTD0Reb1mV1IqiT--
+
+--------------LFY6cLE1Bu0c2UNxfoLl1Cto
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajTRPwAKCRCGXBN6rc5S
+1hQxAQC5C2t9YzgCVPUaklGgWHjPIVj1tDL4vS7pZxKrRpySCAEAlw6zlPfzHnYE
+n3ysAn49QVu4bQ2l8bNTJy245zLozQI=
+=uudy
+-----END PGP SIGNATURE-----
+
+--------------LFY6cLE1Bu0c2UNxfoLl1Cto--
 
