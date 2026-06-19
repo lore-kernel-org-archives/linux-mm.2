@@ -4,140 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA63BCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 17:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4BCDCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 18:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CA256B0088; Fri, 19 Jun 2026 13:52:23 -0400 (EDT)
+	id 9D87D6B0088; Fri, 19 Jun 2026 14:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87AFD6B008A; Fri, 19 Jun 2026 13:52:23 -0400 (EDT)
+	id 9B1556B008A; Fri, 19 Jun 2026 14:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B886B008C; Fri, 19 Jun 2026 13:52:23 -0400 (EDT)
+	id 87AF86B008C; Fri, 19 Jun 2026 14:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 314496B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 13:52:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95DC21404E5
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:52:22 +0000 (UTC)
-X-FDA: 84897406524.01.6F5C13D
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A3A9F100010
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 17:52:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fXDrVjpw;
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63CD86B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 14:08:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8BA11C2C8D
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:08:32 +0000 (UTC)
+X-FDA: 84897447264.11.45F7BDB
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F09E64000C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 18:08:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GmYxeZn3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781891540;
+	s=arc-20220608; t=1781892511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FBweOLOoLT8l8WaW95dDGRcZkdKMtkyDzvzVE/JdPhA=;
-	b=62+pr3S2LGCdEtUQCGI1HfzvoIqYmdJAEJ6efk28RXeuxPaY66mvDTae57KIPbiAGt4Pvz
-	hV0OS28uO0ZTghJs618UlGdeDPAZgVnlJhnAPK9S46M6TLhrwGTW00oQ8vrhrERuusVU+a
-	DUx+cVGtpXfW/RC0+aCUc7/Pd5sJu+M=
+	bh=if+w51pfEbXF0aIKIU0/YXuwi1jZSWlejSs+38AZ5sI=;
+	b=azwHTHA0GDKT361FOH5I4mTcdljE1urWU3CWRl7DaagezC7i2dly1o319QdPxHYafgrUvJ
+	PtrMgoUsFVaam/CmnqFUxMrFB7VeCGRSHZNftRPWs1BwqQM7TiDXWbh3VISybn2ZXGe1L3
+	0ocd/9Vq2zDKTtsRqnK1erh4w+o4MN0=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=fXDrVjpw;
-	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GmYxeZn3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781891540;
-	b=df9T0nVjb2E86Z0HKKjGXRU56/PDasQaZw1yhgrzku120SfsQvgDQMkFFAnr9CU1hNX18A
-	iJ3yOGfPsSBvW5FRnOSIGZKg4cqPuV/yaPcYcFprGSFb8LT+TstpDMQIG/E0rarN4Cxi2J
-	HDeoQ4AjzhEr+EERwrG3xqdfGx7UvnI=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-519ed52bcc6so239011cf.0
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 10:52:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781891540; cv=none;
+	t=1781892511;
+	b=On560BhUkmEVwe7w2d9gYny3U8s8XbbfcSVetk9Twl1ZQvbUsyysC6gSK9vSnjA5tK7sYp
+	0b9EofAHBaq/407KAAGGY9+TQRxmkCOfmrlLF+sbwczIQgn4BueP7pWNTCvLdMNxtG06/Z
+	HV2tGmqN1DQNzQTMxyxn6FyKwQ6/khw=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5177d1ff061so244791cf.1
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:08:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781892510; cv=none;
         d=google.com; s=arc-20260327;
-        b=hsZjdpimN8vXubmhdwFcK8QnR75s0jwIA2tHjt6I+sp8OaAFSlKkQvRI1SLTf7ryzD
-         qcKvtCzxK5BdXEDqEy0xGMs7TvpwVVafGZzPb6mZz+ayRXG91Ju5wF+KdH977QxFZgOM
-         QnAw2z673JqhazKi8WALKujaqnQJOJB2fOOnoLi3+H2dgLLUO3ZXtZ4y92ZddL2JethF
-         rzv1v/ps6FEDBKHLypqGy9v5SSwh/bRR4vmTi8yqV8izlwomn+hlw43WYZg2FVwrv6ed
-         wADOgnbgMR+C2vOqkShrPoAcne3GIm6CMFxC+JgX6r0kMmBvMO4T7QhrhGGUQmDi3edL
-         Ly6A==
+        b=KWdryu+czFLa3E/sajO6pu4SzC7W4BlElbUuSb4Du2Rlq/9orpj3cFSqS2E9jytQFi
+         qbi8ITWLBpkEpTwTd0SIfmhLykw2nrd+mIKVzIG1Pv0w4dUK6v4s+D6B5Zny7lE2ONH9
+         a0QVeWXxjCCW9dbpy+33h09Z/voliFqF1OqXewayXMDEIYBDKH7/TEedOitF0dgYxCfJ
+         02CtCu8b5tzWZQdb9dTZObBeYXGxnc51K0+T/xsx6Us4ovYQneQIZB7GVdcUSI+OQNBy
+         zr+PH4/SguZtkRpnwA6nAZscQg5zosnNXqUPK6qGoJxEOu/ophJ3GZrebQSCvj7xZ1MW
+         Px/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=FBweOLOoLT8l8WaW95dDGRcZkdKMtkyDzvzVE/JdPhA=;
-        fh=e6o+pCwfgV6DDIGUyxYGdsU17nCx6FU/diLPH7QUhTk=;
-        b=SvRKgkFUm4uAOWkCzmKC1erW7hk3aSSKIxiONDcr3OJTw+q+uVJGSHCiT7JgneOh8R
-         Orf1iXcWuMu3h7HL9RtkA0Om8DiKiXeVluOeXfL8Z77tT59l+LBfjG3M/u6/mID+h0hR
-         tL6cwursZ4To2prNZ79zshI4SwpALIOw59raqqbATWqrTLNkLJsYYgfNKm0IeNBHuXBZ
-         hxSmFhuh0nmUCdRcod3PUfWgipoVpMiZ/+dCAK6dFRGcWrjCReu9gtPcmKccXEm34KqT
-         2ZvAdYAAn2RfiRmzePDuCjOv3FABMDb5eII6I9YbZ2kfkERzmA16hp/3NhdGyjAS/jCn
-         7jJw==;
+        bh=if+w51pfEbXF0aIKIU0/YXuwi1jZSWlejSs+38AZ5sI=;
+        fh=XTgPmEIp/MCvTdhHx6hGv8zVuILAjNr34DTlWquJWp8=;
+        b=PSLeICliDVTt/aeQacbNuanLSo5qMv+jY1MxJrD4/GGohMOBPMmpiDzvsgIXe2vrpf
+         +k569A0Ie6AoJxg1erCMVhSpocBGkLdtF65dI6wqAU6bdzL4BGXX71r+PK9+FNRWxUr7
+         PXjKbjMlfawB5hWsxSB793UxW/SJxruH6KVX1eQFG3EVttQC6tUqfCQrSnZ8MbfJV5X1
+         lv1t6LtjWpNFZhZNZKKe2UkTu2q0pDvDV7jjB95XLr253FDhV8DUqMo5o6ptF4pZhCLJ
+         ZqOAhiDycZ+6LyM/hf10r91A0As+gn1ctu1Z9qiF42kY8kqime3UxLtUqeCzdcXJ+M7q
+         3tWA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781891540; x=1782496340; darn=kvack.org;
+        d=google.com; s=20251104; t=1781892510; x=1782497310; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FBweOLOoLT8l8WaW95dDGRcZkdKMtkyDzvzVE/JdPhA=;
-        b=fXDrVjpwMhXD0zX1tzDQlw6oI6waxahX8IXbmouQHJUTCKxmKJTV9BBWLW5XFs9yWn
-         Sja6KIm9QuOdZmSAZs5Dktpoh4Lk+BzCvysvg7qVRE5J7wy1rw5tw1PLibQVpZCv2hTn
-         Un3K+yhyEOCUt15dJKvVPwz7gnh/ef4MykYrJaPMxy+LSPLd0/DSebclN1iqm1JVR8CU
-         KSVBQ73dFSRV/FrSxE98GXs5TkKQlSHi2Fj22wto9e+aTBOr+hW1gCNws9QMjj1So1gG
-         Qu3tc9M40sWWH5qwo9ATX5zXyBRXZC9XjD32BrG0v+2sTzWEMBeAh4HQZhJc580r0F8y
-         HX+A==
+        bh=if+w51pfEbXF0aIKIU0/YXuwi1jZSWlejSs+38AZ5sI=;
+        b=GmYxeZn3rhTNLJe0FvjiZZHL2qp+i4USuvPY4WibvMsnWLHQkc+Cly+N6jKvtdeDUb
+         VwZ9BSpXyEqQvPbkeVrIdDsYAtJE+hzVL2UoMnLZXU00br7ZR5EMwPHgva1IAhwsFfUL
+         rxT/IlhXp9HqbzB2KPGaIutP1FLri6tDb/cRj4+0EVshSB80AhSVCsJbEhcnLrR4uBTF
+         2zAM/RS3cGn7f/0t59qgNA2IwCydHTYdYgdFaBJKzVtZHF0JRuWD9EzF75lkZfgXEqac
+         /ewffxFlKGrv8PfxXX6mMwaouMlhMTK4mYwJslVvLqaxhIgwvRkHfFHljph11nk4eDiD
+         Zorg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781891540; x=1782496340;
+        d=1e100.net; s=20251104; t=1781892510; x=1782497310;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FBweOLOoLT8l8WaW95dDGRcZkdKMtkyDzvzVE/JdPhA=;
-        b=gE/qLlgzlvlb11tegIv4DetcZ7mHHAzZc82opx49XgHwxhkPlQp3I4wVCd0N2x/IEh
-         VR85nusHImZ1vMUNoWLbToheHV5v3vckdQ4UQ//CMyKE9FSarnxn5Ks9xP/BbioV4kva
-         gXple4xGL8PZyRfyKPIe9fDME3wv6MFFv+9kpNounkdacA+TMsivjGjjRnDCdkHwN4MP
-         SA5lqNl5YCIgd3Z9u9rm4E+n5WJGpwR0HXOwtkh8c8qbBjSIB0KF+8hLaUhfg20HR70e
-         BQq2fLYKoQ8WWPTrXCqT2SmfPdLGRs0nItghgm0lh3tdp9O9sAz+WQ8FGLvBihnop9S9
-         GS3A==
-X-Forwarded-Encrypted: i=1; AFNElJ9hD84v4lyROwECPKz+t2VwXrdbg+jONBuL7jeIE9pHoxYL5Zat8XL/lirlL5iA+tveyI9DFDIROA==@kvack.org
-X-Gm-Message-State: AOJu0Yyfg8Y70ggu0TfdhnrQFB3v0ovdnQvzlLYGsEgBkwgHAZWOtgd9
-	r+0jnDep8WbOJZmDBfgWIbufHDaaYvYewXw+AXVi9f9W6bhXM/STYkiH+Fd7YuERgONnbQo2w+Q
-	5PUDP9MUVkeDxDXwUq8R9HB6NbIW79143GraJ7yNn
-X-Gm-Gg: AfdE7ckKSqaJDv5wclwn83UOsanEK1fUWSkAsAe82KUdieE2wCmg1N1nPJwveL+JenL
-	CUSsM6Uc9/gNkffGlYLZ3Zj7srIgIkKqooZoB701TD6umbEY5ipGUH1VOgCk9oXFaRLYSLXmNke
-	2Jc4vCaU1SxemSAAi1H22gfgnaZuPqIwx/k8XUAlzDreDbB9+9gB/UzYXCe3wWdt2HVUqngoaCP
-	xb39dQMqb+/YhnDm/clCdn6Rf+0BpB/F/Vg+3DH/rZ6I44kT/L3cNz9UCc/NTPFwOv1FQE=
-X-Received: by 2002:a05:622a:146:b0:517:5d71:84e5 with SMTP id
- d75a77b69052e-519e892438fmr8708101cf.5.1781891539149; Fri, 19 Jun 2026
- 10:52:19 -0700 (PDT)
+        bh=if+w51pfEbXF0aIKIU0/YXuwi1jZSWlejSs+38AZ5sI=;
+        b=j5vcSFqrjVgc9EryXO4j0x9pzGqFA4D+vz1fgIb1EK4FWZuJWc5yspXNwyeETghUkf
+         iRjz3Mfy+lXAWVv6Mt2Y6Sz2J5tycw8Nkk+xibM5D5dQIFma9Lgfk/++eZUHTvleQ8tB
+         0FPozGeyhCZVMl7Rc+nkiWKMUfxm4vwWEe09qwONvndav+H07e4MDS26hPe9TJTPcPep
+         0e6WJOOhFBaLmr1qQSX/56JWLfUZ3GwWQv8fk4YYgKCMeUc2ruChRbqWwPsqE0czfC6W
+         kXE0OolrPJT0AYHtFyh/Ptdh71wWL2NLYUKNV2t+XtWZtBqAgHuvJa0xl10YF7E0eXya
+         +ELQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9vqSM0iK5LaXYFWMgfME7L85NBiCXFbYnCNAnycCjiiPnfI3FkpV7G9XjAcyx0NInDlNByunDCrQ==@kvack.org
+X-Gm-Message-State: AOJu0YxfVGTEk0M4JG99DcYUnyU48yePYQ1Y+ubByv0khB73WmQ5sRsi
+	05bU6K/RfLJcz6dhKU2lAwCKk1rVa/xMveAD8S8IvUmZjBj/Ht0LQHPlRHXtyXIBAWGJdjMVIYb
+	ioOKWigZbLKhx8Kct3U9OO2ow6VfAWZ8jm9F7uNtb
+X-Gm-Gg: AfdE7clj/HdrFI3xjRnYDYOan/4XY95wA/AM8hjrmFVAWNvlm4Z4TXqagVZ1jISYUxt
+	nmCRVvGvjnrFN1JmDp35y6VtPoTZpquIx76NJtlexz+DzoUYd1iwQVDBNZlsMNjMGGMuStq2dnC
+	axxHMjLPH/0YoPJAf84WFqQhuHrpaNHNbBjbv+zQsNXs/QgTvr5JW0ddpDomJdK9pPrVXElvn16
+	YNoZKE4uT6qMKpQpxCb+/2WJai93AmM4bFCqJ5j82NBWRm9WZDhqP4+XM/pm2yUKbmdJ20=
+X-Received: by 2002:a05:622a:1b1d:b0:516:3def:1cf4 with SMTP id
+ d75a77b69052e-519e877e8c5mr8151881cf.1.1781892506298; Fri, 19 Jun 2026
+ 11:08:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260619112852.104213-1-ljs@kernel.org> <20260619093711.d0d37c9920b3a16394c356a6@linux-foundation.org>
- <ajVz1nhMn2JwucMY@casper.infradead.org> <ajV0TbwEyaKMzoa6@lucifer>
- <ajV49Fyogfa6aIjy@pedro-suse> <CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
- <ajWAYBXHJniJAO4u@casper.infradead.org>
-In-Reply-To: <ajWAYBXHJniJAO4u@casper.infradead.org>
+References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
+ <2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org> <CAJuCfpG48TmvaiaRvnL-NXKU6nn55D3bks2DgzAc0URsZhAxqA@mail.gmail.com>
+ <DJBHRVM65A11.1OL2M9MXN56H@linux.dev> <45fcc57a-ec8d-46d6-9c28-065d001c081f@linux.dev>
+ <DJD0AGHTWYRN.1YWG5MDH87WVO@linux.dev>
+In-Reply-To: <DJD0AGHTWYRN.1YWG5MDH87WVO@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 19 Jun 2026 10:52:07 -0700
-X-Gm-Features: AVVi8CfZj4z6nJKviyUfEHJ8xHkdW818jy0j9_ZxSUxk4x_AfiipzYtYvyZt1sA
-Message-ID: <CAJuCfpHF1qtpHZQzLmLi7xz06OWgBfduHqBHF_-0Vkx7OtBmcw@mail.gmail.com>
-Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead to
- VMA boundaries"
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Frederick Mayle <fmayle@google.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>
+Date: Fri, 19 Jun 2026 11:08:14 -0700
+X-Gm-Features: AVVi8Ce-wKSRl9HZnLx7RL1pqEgargGWpGuNyAl9oa2UQznN8ojLU8He4KFHTmo
+Message-ID: <CAJuCfpGtymV=Tmsvs8Z-oF6pi7mD54mRiZNZtpF3UpYwBL7Uig@mail.gmail.com>
+Subject: Re: [PATCH] mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
+To: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Hao Ge <hao.ge@linux.dev>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Brendan Jackman <jackmanb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, 
+	"Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F09E64000C
+X-Stat-Signature: 84nbitiiiioaimd4ye4w39fu8wupxt46
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A3A9F100010
-X-Stat-Signature: 9y63aaczg6i1ku33bbji73ogkcaib9we
-X-HE-Tag: 1781891540-186747
-X-HE-Meta: U2FsdGVkX1/FoHPT/rsH8HT4wN6bM/1ROyRh5yKYRp+AbcmPSKchcInjjcYL3yQaOLL/1q+NLURN285eMu7ko4jwBLIwV8Gi13yrj2Wh+XsjRKgvYVP21/q6c1Enxvz/Vy9VHaQjAdlpyczLykTeRVmkAREfTJRL2M/X4GzRFnN34mZ057nONx0CWG7NsZen+hgMMiLGWWj/KnMNea7RhCIIfuCNA8zA/BI5v/2ERHy36DwisUoDIQ+AIsnktQVC6/+vqcF4hKstfwwqzK2VzfN08kUErn+ceyPzvFopgsKLxmsNhTxisO9rUN1IhRghnnOjP9OUWh5aiQR+4a7xt3dT0jQcY3Vz03+hKoZpL7l5r/OK39xR8TL7ceub+oBVkKRxmu6YKaSMbvQBBCJ8Fg0K5I3R7ChU0dBHTz0/5Gse2BPX43yIfSzjUHY/KrKai/yDbCW0rbDhdJYWWs9v1AjZzREuyGFAprAwMvjGTLsPkKSJcQLtWsrSgzwHvvl1++VIZPJhfq/gpjb+ygc7NoNYnD+IoifzLyRIx3J/D6q3vUN0mD9A/gAMrOqPK1FuRmsRigUywieBjit215V3Db1J7GsC0HfEmnOaSte6LgAsz3hek+LFXsptPDHyiJfFI/BfAm+YtCKOVsYz/gNcKfi+UzfLLXzKAwqIp3ZgwZuiH84ME9UNBya3ENeho9eoBA3hNy7p3pjF65I38LKVEqoL7RU6XmWOjOq+yiV/wqqUdA3dgBt1+OxCwbsuLerNBvIwevfA13i/3Vx3H8WZgI5YbtDhvJB73kF4+6tX21GxtYaudKpMJIBwsLUmdC+rGc9tXYI5rEYpIJFJwdXMMMTpu1fiugtHTPoTZfrpMQ2PdnaA/bmxnxkPs7IZ9IXdngaO+i2q01L+o9BHt11KlbnxYTxQUKXuny0iV6MJK9nV9yUfGYvGKn56wQCuta0zkAWBCmZ/5WCwwrVH0u3
- U3a7II9v
- +vThFUqGkSKLXJdxoNN+W2gDuZ9cPBi91JdhYiCNjFWikOnFYsBDZgYfDNj3m74iogeDwBJMCG7bEUcX3HU1TKnMAOMkFuS2PjcUhjutVVbdiT2Yx9SgAaP5lN/8+Qy/fOb2RHw8H38GmlElyG9ue++VwmL8IDMxC5B6g2IqUVAU/7B9SAbtAx8wmtPk+cisHSxdY86S5a2raCtJUCHkK9pjfznIS2jE+jR/vrMdo3qILgUGgj8IskhpVO+hWgp4nh9GdxQDR60f9AJ3l++R2Yq9Z2JUZaEpNc7MuFo8WYHegPc5yoM+mLav04sA+biBPz3nijADPtxkI/vd3wXk4j+rvuQ==
+X-HE-Tag: 1781892510-874283
+X-HE-Meta: U2FsdGVkX1+DuE/6x+9u94xkJGXbzsj46I5KPMKGlvfT0ZsOZNboWhvVvfIHriOnDxdafoKF6XsZ6HlryYP/6N3JFTCAJyL8LSeHvLkumbWT/9jGwx7lNmvP/fEW/GpzwM2ito5y2dyQj/DLC7WXDD2+QqCjx+kGDhsSLgbGlgR/L0TM6DK94k0R3f/VqFGNVeWNB3749zy1AkFSwlm3pC4oSL5eYdQLd1p0j8VS8rm9xsG9gpNVRouefIUwawSUKdcaEUM0o6C1f/+PTWyb+IA1PuEl9gIA/27fiwQn7vkYNs9709A9cFBikgyK/ELWA08M2XKiV6EFrWIaDn0IAAYtGI+pHoA9cdraXR13Ak7XmFZUmdCV0FapCPnAKwpjl1leI5UNMSCd70MIkvsdlGNtsOYQ1/mSGDPAR6sKY03Pdml338JECRkuq0HdoNx+rli7ahcWfmMXKFFwmm2/NHQbKKR+0lN2yHfvojPbLscgEh0oiN5es/kPBmspTv3sFm4Am0jdQx3VGNibogvRTOOadGpwLruSOnidscSWhkoFj1jBbqFKtMpzoRCUbhHIFAM+OGx2QnVgSiq1CNMIoAjIYanJC0kTvjZYqHElk2UKpmuZHPfs+utpCGxQGT7e7urq92bI02goYWGm8kLC0CTs2L0t9ntdgFNuo1iERoHZVEX4W1WlsofD6+ZsJKfCMBtFJNm06+ZWoDEgpyQvktHzz6t/NE3Dl9fIDSZN99kWATZ7NQejUedfIFstNJEomibTKTt0sPFZP+VyFQUtwHu89Ng9P04FJv0diQFQFtNXsuUC2ReQ96Es12gdYWN2KFONdjbZr9ol52jpl9e/wY8FBFNCe2Bxc/eP+jskO4Nxlz04NXOonjZE6Jm5AjNF8chroMStOwf9KY9HzzY1Z6rNSP0MUWM4ampQcbshV85kiElTmH+67PusoNZUnXwZMfpJDEUHgQ4ShaKUe5o
+ lGciNsR5
+ bfuGRZ4zhnm6VGpa19FLCnuxUPj7k2FX2f9KUUhaBvsHPttUZ14VbT+udNqQ1y5s1zlvz1iI/Gxx3f/LOJPZJS9eSk2U+ZTgt27qMte85pCu+UksUIurSLTS5HPcN80slQtqoGqAc5rFNnbG4nneCP9Vo6RmLLw6NN8tCZISrnZbOH1IldnzAcU/Rz1QPgbV/uHV+MMpPedPAbxJQf/jSPKiBB16fkfHRc7az4LwqUSN5YOqdSpLBg0pQwXWxQdpriII3hs377J/y/xbD+8uH5CAQvDqB4yb7Ptnz2as5JuRaKTZdS1ifYOXG682DyRzauI2PkvaehLeEYYuBtAd/bhVqMMleMVUEvM4TZP2uiNWNpyp+rX3WfzDXBTNm3OXzO+HLAdQ5EBa9e8Buc+LZymPBSAzATxua3bH+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,31 +154,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 10:46=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
+On Fri, Jun 19, 2026 at 4:57=E2=80=AFAM Brendan Jackman
+<brendan.jackman@linux.dev> wrote:
 >
-> On Fri, Jun 19, 2026 at 10:43:06AM -0700, Suren Baghdasaryan wrote:
-> > > Yeah, the mmap usage on SVT-AV1 is a little suspicious, but I guess t=
-he
-> > > pattern may come up time and time again for people doing chunked mmap
-> > > reads. I think we need to take a closer look at this change.
+> On Thu Jun 18, 2026 at 2:22 AM UTC, Hao Ge wrote:
 > >
-> > Frame-by-frame mmapping for a streaming workoad is quite questionable
-> > IMHO and I don't think we should be optimizing or encouraging such
-> > usage, but I understand the reasoning for the revert.
+> > On 2026/6/18 01:14, Brendan Jackman wrote:
+> >> On Wed Jun 17, 2026 at 4:49 PM UTC, Suren Baghdasaryan wrote:
+> >>> On Wed, Jun 17, 2026 at 9:39=E2=80=AFAM Vlastimil Babka (SUSE)
+> >>> <vbabka@kernel.org> wrote:
+> >>>> +Cc Alexei
+> >>>>
+> >>>> On 6/17/26 17:29, Brendan Jackman wrote:
+> >>>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, bu=
+t the
+> >>>> It's not, it's ALLOC_TRYLOCK! Thanks for proving that we need to ren=
+ame it
+> >>>> to ALLOC_NOLOCK:
+> >>>>
+> >>>> https://lore.kernel.org/all/DJ9QPTO2WXNB.10E88ZHWRDHB0@gmail.com/
+> >>>>
+> >>>> So you just won the job to do the rename :) I think it should be don=
+e before
+> >>>> this patch, so that the new usages and other _trylock names introduc=
+ed here
+> >>>> can be done as _nolock outright.
+> >> Ack. I'll aim to send that tomorrow once Sashiko has caught up.
+> >>
+> >>>>> main entry point function is significantly different from the norma=
+l
+> >>>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code=
+.
+> >>>>>
+> >>>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: crea=
+te
+> >>>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is =
+only
+> >>>>> exposed to mm/) and then turn the nolock variant into a thin wrappe=
+r
+> >>>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar=
+ to
+> >>>>> how some of the wrappers in gfp.h do).
+> >>>>>
+> >>>>> Rationale that this doesn't change anything:
+> >>>>>
+> >>>>> 1. Simple bits: A bunch of the nolock-specific handling is just mov=
+ed to
+> >>>>>     the new alloc_order_allowed(), alloc_trylock_allowed() and
+> >>>>>     gfp_trylock.
+> >>>>>
+> >>>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+> >>>>>     previously in the nolock variant:
+> >>>>>
+> >>>>>     a. Application of gfp_allowed_mask; this only affects early boo=
+t, and
+> >>>>>        only flags that affect the slowpath get changed here.
+> >>>>>
+> >>>>>     b. Application of current_gfp_context() - also only affects the
+> >>>>>        slowpath
+> >>>>>
+> >>>>> 3. The slowpath itself: this is now just explicitly skipped under
+> >>>>>     !ALLOC_TRYLOCK.
+> >>>> I'll have to ponder it more closely.
+> >>>>
+> >>>>> Ulterior motive: adding an alloc_flags arg to the allocator's
+> >>>>> mm-internal entrypoint can later be used to do more allocation
+> >>>>> customisation without needing to create new GFP flags.
+> >>>> Ack.
+> >>> I think this change might also help us in removing __GFP_NO_CODETAG
+> >> Nice, this actually looks trivial? I can probably just tack it onto th=
+e
+> >> v2 for this patch/series.
+> >>
+> >>> introduced in [1] and being the only user of __GFP_NO_OBJ_EXT once
+> >>> Vlastimil's patchset removing other __GFP_NO_OBJ_EXT users lands.
+> >>> CC'ing Hao as he is brainstorming ways to remove __GFP_NO_CODETAG, an=
+d
+> >>> this might be the answer.
+> >
+> >
+> > Hi Brendan, Suren,
+> >
+> > Thanks for CC'ing me, Suren. This is indeed a viable approach
+> >
+> > and I believe it brings us one step closer to removing
+> >
+> > __GFP_NO_CODETAG entirely.
+> >
+> >
+> > Brendan, I'd actually put together a rough local implementation
+> >
+> > earlier with mostly the same core idea as yours, and this change
+> >
+> > would indeed be minimal based on your patch.
+> >
+> > Thanks a lot for being interested in tacking this into your v2 patch se=
+ries.
 >
-> If userspace is properly tuned, it doesn't need automatic readahead
-> at all; it can disable it and issue manual readaheads.  The point of
-> automatic readahead is to cope with userspace which is doing stupid
-> things like calling read() for a single byte at a time.
+> Oh, I just took a look and it's a bit more fiddly than I thought because
+> alloc_tag.c is actually in lib/ not mm/.
+
+One option is to move alloc_tag.c into mm/ (while keeping more generic
+codetag.c in lib/). From a quick look, that seems doable and probably
+the easiest approach.
+
 >
-> Could it have better defaults?  Maybe!  It's worth a try.  But those
-> attempts need to have a very low bar for reversion when it turns out
-> they affect other workloads.
-
-That what I meant in the last part of my reply :)
-
-But in general, I think that benchmark measuring "how many frames per
-second a CPU can encode" should be revised so it doesn't depend on
-file prefetching mechanisms. Otherwise it's measuring something else.
+> How did you tackle that, can you share your implementation? It would be
+> nice if we can avoid exposing alloc_flags in gfp.h.
 
