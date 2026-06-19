@@ -4,123 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968A9CD98E6
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 06:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FFF0CD98E6
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 06:23:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 653466B0088; Fri, 19 Jun 2026 02:02:37 -0400 (EDT)
+	id 01AC06B0088; Fri, 19 Jun 2026 02:23:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 604866B008A; Fri, 19 Jun 2026 02:02:37 -0400 (EDT)
+	id F0DDA6B008A; Fri, 19 Jun 2026 02:23:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519EA6B008C; Fri, 19 Jun 2026 02:02:37 -0400 (EDT)
+	id DFDD06B008C; Fri, 19 Jun 2026 02:23:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2294E6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:02:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9199B1C122D
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:02:36 +0000 (UTC)
-X-FDA: 84895617912.24.848E1CA
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 72A3820011
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:02:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WT9lZBM9;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B10206B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 02:23:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2068040356
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:23:43 +0000 (UTC)
+X-FDA: 84895671126.11.DF16451
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6A0E0A0005
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 06:23:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=i32GYOuS;
+	spf=pass (imf15.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781850221;
+	b=q1w0RT+hh0X5GqaLDNq2/Lj2soSbWiri87MIQOTmo+ivY5DCWfYO+Hjxni8Zn+37vnU1nL
+	X4A/mbyLxkICSBgjsyc969Ksnfrq3dTan/FGb4o/mj0uUv9zTOdPJZBE283g5+sLz1xpxn
+	Fv+5ZPMOCXiPP2+dbVbn1TyCdy5mRxU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=i32GYOuS;
+	spf=pass (imf15.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781848954;
+	s=arc-20220608; t=1781850221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fn5DPboWJkI9U1kVq9yhwYF9FI1OrZduwolmjIav4rk=;
-	b=gSZt8DAnHTcWGiflTwfm9OFaslOGSKBoFmqlyTgH7HvaJDqsfDyZkKujAzZ4WvMSXaFAy3
-	LFoZSnhWx3d3KNHxUsBeDV5iJ4tbOrnAjrL1csjaif15h/H6PZv5pbuu6uZ8S8YKHcKIhC
-	OYYcqRMR4k/4vwhS+6fuPyrXIJEhrW0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781848954;
-	b=MJB1kJc2AZb2HHQ13y4S64UbyyiqNrqgGAhRnVKWrvkjuL5h/SvYo3fVqvvz4i/0YLknSQ
-	KkiFQzCCKzbr+LVfLf9M3NbxE8rPh47kIdf1r9Sf96nQTI9NKYGNYU2X4E3G72x81bkrjK
-	ggmf6ek2Y53woXJ1m74wj/QpzdMsebs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=WT9lZBM9;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4921e4dd62dso12642465e9.0
-        for <linux-mm@kvack.org>; Thu, 18 Jun 2026 23:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781848953; x=1782453753; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fn5DPboWJkI9U1kVq9yhwYF9FI1OrZduwolmjIav4rk=;
-        b=WT9lZBM9M5nqLQmIvgD9Z4CvnCZH8NfVn/kAPWoWcy9tzWIYlPG7XFOry6iiw5pMBP
-         QEHrtN+IuKiG17DTuMlOswxx/kYuqWXuYdbi3HbFjyHpUVoXm/ht41UUJZL0ZR4Unkin
-         idtV/Ycfxhn0OalVCqbNSZDJpB0Y2I6LLgJHOuLRBCzNeufx348CXJ3L04gY+bK2ZFVg
-         Okwy4kfqO/VPGHPPn7/0piRwpAh1SJsge0lZqZVIsR834FeqX0Nj6JJbVeVrhXhLSR5i
-         noFG/3S9K1NxUhGjVHEjBJy/wp4ntbkEkhcxuJ6XYDFtmDRvUdCJMhtKE4FXSWawRiGY
-         oVNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781848953; x=1782453753;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fn5DPboWJkI9U1kVq9yhwYF9FI1OrZduwolmjIav4rk=;
-        b=ITZVAl2c6mQ5B2xUkuwLIf0Vn4qU28GM2/k93UO0sQgxh04ncYsQgfpJILXL3BP/I2
-         kkXRo7tqg3lWznpVPCEoCEaoS8431QfcMcGRI+nBi97Mts33d7IIHQKWF80g4jDoZVIc
-         gulDA0XkhN855DGcMgqRU7jawOWGUe8AGCb/mbIilMePEt/GKqfL9TAopW5HJUhY7dxP
-         eHDzCfmmXV9zTsQMHLXv+NXE1x3hIGQkakEpQUi85ZroVz1ukxwav4jzU4FwsNHWz0+z
-         Mkziy6yxMHWBTcEdPna6tKTvUCxAF8ieMreQLu1kk8lxVhWkDwx2p4dOg82DUDHtfFEf
-         aJnA==
-X-Forwarded-Encrypted: i=1; AFNElJ+NX7XVvlBHl6oHQdsbQ1vjYhTf9bpIqWdmuknxcFKHRQygq/xpU24/xwejZI5dZ6+od7T1HPnzxw==@kvack.org
-X-Gm-Message-State: AOJu0Yxfwz0YdrMC15tMpDq5pNwhGQ/pPRfz/1/mYTNJbEB8hH2XS7wu
-	UwDcuxFfJNCvipDmwW0wD956V/CQspYv2A1Wbt13uFVnBXpErLaZTYv3GnbQ0w19i8M=
-X-Gm-Gg: AfdE7cmcyZG8nhfwNVkzKdOWctNJfZmlG5v/bJpR3oZUTDFORn6KJxxevjeNhMlDhyG
-	NtN5T1zl6RaHe+ZABuPcA0TDiq3Ak8LSR34ynoeu9bPHsom80M0jbkT2/NURwzDAyns/YGzwede
-	t+AksbHBjPu1F+FbwvBYPqG6AffPmUDttxo0hSHzqzgFxKZVbkQxVqzb02FCM1q+ue7G1+GyU2n
-	WWRWncXQoTVdr9WPoseUv3+zvWrn4aXoEEuFf2tP7SlJnFGvHUOhModFEdw4JszKOifZbbEQjak
-	a/2ixV9k561ZZeCFPg7OShpK+5pyEnMbJdZ5SSrnegpQmUB0ImaQe/6+bPqzmb4VX2bGLUmSG2S
-	5ucFPnorpFMSH/3nvMxTJKRESNpMuALgJ7npqQE099g1AQ8QA2zXVGMkNeVAafbsTCoCB0NhoEe
-	8wO5wcYSCbtPenHc8TCCHy8yb57Q==
-X-Received: by 2002:a05:600c:8218:b0:492:1e36:9a90 with SMTP id 5b1f17b1804b1-49240a598e5mr20386885e9.18.1781848952752;
-        Thu, 18 Jun 2026 23:02:32 -0700 (PDT)
-Received: from localhost (109-81-26-193.rct.o2.cz. [109.81.26.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49240f054e3sm32544205e9.2.2026.06.18.23.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 23:02:32 -0700 (PDT)
-Date: Fri, 19 Jun 2026 08:02:30 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH v4 4/4] mm/percpu: Avoid IO/FS reclaim in backing
- allocations
-Message-ID: <ajTbdjH4pTQ4t5Zr@tiehlicka>
-References: <20260618130414.96383-1-kaitao.cheng@linux.dev>
- <20260618130414.96383-5-kaitao.cheng@linux.dev>
- <ajQy9EtOgJQntHOd@tiehlicka>
- <b1a8a69d-ab12-4050-8468-1a05a82f290c@linux.dev>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3DCZNlUVaLaJPu2CPNN2vPukycGXAc4wziVR3oMZX+k=;
+	b=hQNRoD2jdRf+kXHTZDmwdEEPH0pMhngDDWSimZBMPlYBB1i6BlbUDJHHDen7lzHGySwx1Q
+	47BNYngO4WxjTrwTsWHQh7CxR4gcnofT7FLFZQQPHsFwB6sthKaTBqpI8NsuxZqYpV/ppT
+	A0AzMNp8Ac0NcQ0X6KpGho8xNSzW+d4=
+Received: from thinkpad-p16sg1.corp.microsoft.com (unknown [52.148.138.235])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3501C20B7168;
+	Thu, 18 Jun 2026 23:23:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3501C20B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1781850218;
+	bh=3DCZNlUVaLaJPu2CPNN2vPukycGXAc4wziVR3oMZX+k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i32GYOuSvBY9mRFjqPUH4A5fcBMRW5qrAWSA6w9D0uZDYlD92j3MzgXj8KcA+82FM
+	 cWPTx2zyUOLA9ZlEHoGpj5WIU7k3GAk4J/jkcSqcm8OSdSHaZGN4cJdryBj/7jVS00
+	 XDOdlLYKVqsLLk8YR0dG3LEb+7HbrxuCnOTuuJm8=
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
+To: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	tgopinath@linux.microsoft.com,
+	bboscaccy@linux.microsoft.com,
+	kees@kernel.org,
+	tony.luck@intel.com,
+	gpiccoli@igalia.com,
+	bp@alien8.de,
+	rdunlap@infradead.org,
+	peterz@infradead.org,
+	feng.tang@linux.alibaba.com,
+	dapeng1.mi@linux.intel.com,
+	elver@google.com,
+	enelsonmoore@gmail.com,
+	kuba@kernel.org,
+	lirongqing@baidu.com,
+	ebiggers@kernel.org
+Subject: [RFC v2 PATCH] reserve_mem: add support for static memory
+Date: Thu, 18 Jun 2026 23:23:31 -0700
+Message-ID: <20260619062331.348789-1-shyamsaini@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b1a8a69d-ab12-4050-8468-1a05a82f290c@linux.dev>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 72A3820011
 X-Rspam-User: 
-X-Stat-Signature: hgctq615yxfnyuyh7odfs5w47qwqtk5u
-X-HE-Tag: 1781848954-493785
-X-HE-Meta: U2FsdGVkX1/sfaSmrRtU7z1cOiWh5l/4y5lVcN9M0rLtXsSUKJ1vv4kXGYfkDKy3+3e/SDkUh2IjIAiLEi/H/kwyIO0C+MtZTyNwfQYbesBTBwgCGbCzujUh0y8jwduHrI/LO8wExJB6ey4mMIIuuCqy/7Mliwk16he1NAndV9xuUDzX6AgybhEIZKbG2pNKgn+r6BealIrfEoExxFlb10hTDTSg5yhyb0pUGiFPTybu8mCjqAztiFF3Flxc8J70Wfas3GYaSWZD5D4PlGhFK7S8FvaXoiM3P28AzQF+z0/TfMG2npAfvQ8YPQmoebHg/UwPmuq2rhN7Q/5AysYonq+nQzUpF3imcIrTVsGYKpsuKX60UQf4O3ihr/XryhOkZuCSW6m7JNVGoXhqYbyFJe0g1z9mJoCz3HBPPAtSt8JW4eAtjnrXZl4pee7u5jZ9hEBmcSk7eNutC4hcck4AHcVxMHAH1w+sFcepjwcxJQpS3jS/pAE67lvkPmMIKSXpCIKUh8EotJwDtKO98OKHv/tyHIyzrXo+KMUUn66cUYG/NnRJ2FIX0mfQ33C+ROyx0FiMbboyktHjDXeySlTF+zGsZIm+/yQAofw309uKGdHmqqzN6jnr7mSZMXSmyDqZKBSqo1yhXecOzbAoKH1uTpN62P4SDXMAxUatiqf4RMCymZC3fgNeUZx/PQWeKGFso8U9Of1rmM7RfOyxCKnyRyooNI+l+l6Y6wSYa0JjdsBena8DT5APx6fvhMt0XmK78gWEE43C4TWQEOXzklLcMSa44sRJENWTWXFOnWqPsVRnD/n/Ngg0uL7rr8PUQkcs8b2KHeR5l5XLlYYKzEeELUoUNZaO9lZ2qeoOVK8/SY4kMAU1wLJZCTd07KzdF+fjBV/BMaRwXoje7gQHpxWSrrOC/7rttBqz1wvYDhvgvYHaDlJMB42kqZv8Me4/SkBj0d58VoEDiVhyOMEdzaJ
- 4C4JYJpD
- GwBuA45uKof4nolPS0V/95jl4P48uP7m2bh3XzNhRU0dlZc6T9N8rGb40tYH4p4ad0TIdVlBW27nG8pL2z01+OUNSHE4O6jC/qI1/P092F2x98TCRCawa3piuqCqH0Os35G+4IqDOYXUdG98XESZeij1KlZ0ADZ5uGpmXDeH+cz48za6p1WomSXwo4zjksCrb8BiB88qgcVXa2NXxIfpjDHFLlry+/9RKhJxmAZFtSsYO2Q5XtlCTbwzNSff43M5HvslG/alBrB6QbWn5TI/BWd1IQ+U/VfSidzr//1hwN3aR6VM9DoRlIHoi5HL6AMdCA2sIZVdbPSpZuutSqI1HmLtT+8pKxhauy/69FI91pdJwlmY1hNMUH8a52ilRYvRhCiUgaEkQCFTUCovz3ZTwLaUnMuKG88mjmh0u3k+QEvtbg2A3w1TeqNGIMjGagXdwMxyW
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6A0E0A0005
+X-Stat-Signature: q5m3hbypfz9snqbfszpp7gdq593x3mju
+X-HE-Tag: 1781850221-274650
+X-HE-Meta: U2FsdGVkX18R+Ym6sfa8V0kkwKCQzgZBzxZMWlURBgKUWAm1g2ujLTW4SkpofaV6AzPeEpO8VfJ3vUf6SJJxE5ljFB1jl5pngaAl3ZI8LYvoLU0PuWzuiZuO1hX9bcFTLPlAhP5Z3uGgHlH6XbuJu1slktwJf0AUoZz2bBnvg3nvp7+PFj/34U4aUXf9L27r/jxyLy559ZLZep1cnpgZhObqffPurU5JpFSkE5f7p2sKLQdtYWqNKU22EqDiL+I/AqEXwQA+YOvphzQqFa0eT0kAJDFi/w4EGGa0Q/kyeJJsNg7I2y+8LQRCw2//rjLhQcRVwVjZEeiQeS9P+J6SF5ZH2g/uFY9FwXmjA5OWjjPXnfG+RQp1Rp4kgtpwdsYhvom1v3dS3Kl2WLx8/KIt0vOcV4Rs6UvDWXAinlsber/pGy0rgq/CJXGdo9eb9IhchbYUdOfZKFYWouxm8yUmMkRt+Vty4QF0GbEeLpirUApKhAY2hPih7L5hBGWK8UPQeWGBp4nDIQvCxyBVfmfsxT7KVwgogBHKglIUk1gS5kN2HC5WZdLeCfGYn1ljOUde1MHDl7A5tF3dTXf3wfG3+o6FWRhfEjP8HaZitPtQxh3AIzNPMW4kN3cjHookjndYwOP1B2RlZicEayC+wfT4dlsd8k3Bhp1d86EA9k1HUZqSg2ckKfd0Si67lEfOnN0HV02wy/EtGkWMmR28Vqhth3q+UsM9NrSz63T6igJk0qawrtiWBYLwmKrJQYB8MlmxrxoR7RyThmHdDZddSK+lhT0uA/3caU/EHKY63JrM4GUWZeHBp3Y/X2wVj4MXdnVnpFGaHG27/w8YADhJdyiK6de4Z9edw4md0rCsPKlqCZIIj9m/ihKYxhBvN73c7326LtMTv4cZT3rwz10ujg8FmUn7webM9p5O5UzomzFqLa1RC4aMct6BErk/BpHTuxG6boaj2gFxiS38OI+GLHU
+ jNfdvYbi
+ DMb39rZJP8jy+QEKiY9ZQhwq0nwSTsf1m5NUSEz8k+OLz0S75AEERx46n5pICRjI33LAqYdYaFnTQMZpmW4SrXwCtV9fi4T6dQDU2xCffQjIeUfVcBJ+Z8sZwS2obC3FPpk+ppcHCMALis3fIWMmpBDOydv0NtbGsn9sGDt51tgkUqWTnjZyRTAXExJuHiy0HGDXElkuRdqHTAwnqS4IP1cN2WgCozjJ6EacnabyjBSWE1fT+yvJtMiB6K0d6DY5evwYQzSXXupzOUHbc+O4EadO5zwZp/9K2FUtyO8N52v2aUcoccuo8j5ver2s20G9hi2fr7itzd2T6y0CGdGPgHQJfq8QqTcbqae87H3Ivbo8360pcTpki+qMXrNTZOp21FE3RHMrwRqvqn9hQYZ7V/fDjxNzhQM04thEUx3c1hRGLncs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,90 +101,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 19-06-26 08:21:51, Kaitao Cheng wrote:
-> 在 2026/6/19 02:03, Michal Hocko 写道:
-> > On Thu 18-06-26 21:04:14, Kaitao Cheng wrote:
-> >> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> >>
-> >> Commit 9a5b183941b5 ("mm, percpu: do not consider sleepable
-> >> allocations atomic") allows sleepable GFP_NOIO and GFP_NOFS percpu
-> >> allocations to take pcpu_alloc_mutex.  This avoids premature allocation
-> >> failures, but it also makes the mutex visible to callers from constrained
-> >> IO/FS contexts.
-> >>
-> >> Thread A calls pcpu_alloc_noprof() with GFP_KERNEL and takes
-> >> pcpu_alloc_mutex. Since the internal allocation is not constrained by
-> >> NOFS, it may enter FS reclaim while still holding pcpu_alloc_mutex,
-> >> creating a dependency like: pcpu_alloc_mutex -> fs_reclaim -> FS lock
-> >>
-> >> At the same time, Thread B may already hold an FS lock and then call
-> >> pcpu_alloc_noprof() with GFP_NOFS. It will try to acquire
-> >> pcpu_alloc_mutex and block, creating the reverse dependency:
-> >> FS lock -> pcpu_alloc_mutex
-> >>
-> >> This can still form a potential deadlock cycle.
-> >>
-> >> Avoid the dependency by restricting percpu backing allocations to GFP_NOIO.
-> >> The public allocation still uses the caller's GFP context to decide whether
-> >> it may block, but the internal memory allocations performed while
-> >> pcpu_alloc_mutex is held cannot recurse into IO or FS reclaim.
-> >>
-> >> Fixes: 9a5b183941b5 ("mm, percpu: do not consider sleepable allocations atomic")
-> >> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-> > 
-> > This seems like the only viable short term fix but long term it would be
-> > really better to make allocations outside of the lock.
-> > Acked-by: Michal Hocko <mhocko@suse.com>
-> > 
-> > Minor nit
-> >> @@ -1749,8 +1748,17 @@ void __percpu *pcpu_alloc_noprof(size_t size, size_t align, bool reserved,
-> >>  	size_t bits, bit_align;
-> >>  
-> >>  	gfp = current_gfp_context(gfp);
-> >> -	/* whitelisted flags that can be passed to the backing allocators */
-> >> -	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
-> >> +	/*
-> >> +	 * Allowlisted flags that can be passed to the backing allocators.
-> >> +	 * Backing allocations under pcpu_alloc_mutex must not recurse into
-> >> +	 * IO/FS reclaim.  Otherwise a GFP_KERNEL caller holding the mutex can
-> >> +	 * block on reclaim while a GFP_NOIO/NOFS caller holding an IO/FS lock
-> >> +	 * waits for the same mutex.
-> >> +	 *
-> >> +	 * Do not pass __GFP_NOFAIL.  A small percpu allocation may need many
-> >> +	 * backing pages, making nofail reclaim too costly under NOIO/NOFS.
-> >> +	 */
-> >> +	pcpu_gfp = gfp & (GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN);
-> > 
-> > GFP_NOIO, NOFS are negative masks in the sense that that are lacking
-> > flags so the overal intention would be more readable IMHO in the
-> > following form
-> > 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN)
-> > 	pcpu_gfp &= ~(__GFP_IO | __GFP_FS)
-> 
-> This looks a bit redundant. The newly added comment already makes the
-> intent clear, and the extra code seems to serve only as another hint to
-> readers, which is essentially the same role as the comment.
-> 
-> GFP_NOIO already excludes __GFP_IO and __GFP_FS, so its semantics are
-> clear enough. It should not be misleading, and it is also more concise.
+reserve_mem relies on dynamic memory allocation, this limits the
+usecase where memory is required to be preserved across the boots.
+Eg: ramoops memory reservation on ACPI platforms
 
-I will certainly not insist, but this is a generally used pattern to
-drop IO and FS flags. So if you want to grep for the pattern you will
-not miss this place. Comment _is_ useful but harder to grep for.
+So add support to pass a pre-determined static address and reserve
+memory at a specified location. This enables use case like ramoops
+on ACPI platforms to reliably access ramoops region with previous
+boot logs.
 
-> 
-> >>  	is_atomic = !gfpflags_allow_blocking(gfp);
-> >>  	do_warn = !(gfp & __GFP_NOWARN);
-> >>  
-> >> -- 
-> >> 2.50.1 (Apple Git-155)
-> > 
-> 
-> -- 
-> Thanks
-> Kaitao Cheng
+Also skip the parsing of <align> when static address is passed.
 
+Example syntax for static address
+ reserve_mem=4M@0x1E0000000:oops
+
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+---
+v1: https://lore.kernel.org/lkml/0eaf3be2-5121-48b7-aeed-196405c0a480@infradead.org/
+v2: Fix code logic and incorporate Randy's suggestion
+---
+ .../admin-guide/kernel-parameters.txt         | 15 ++++++
+ mm/memblock.c                                 | 47 +++++++++++++------
+ 2 files changed, 47 insertions(+), 15 deletions(-)
+
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index b5493a7f8f228..7e0baca564b97 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6563,6 +6563,21 @@ Kernel parameters
+ 
+ 			reserve_mem=12M:4096:oops ramoops.mem_name=oops
+ 
++	reserve_mem=	[RAM]
++			Format: nn[KMG]:<@offset>:<label>
++			Reserve physical memory at predetermined location and label it with
++			a name that other subsystems can use to access it. This is typically
++			used for systems that do not wipe the RAM, and this command
++			line will try to reserve the same physical memory on
++			soft reboots. Note, it is guaranteed to be the same
++			location unless some other early allocation, e.g.: crashkernel=256M
++                        (without static address) is reserved or overlaps this region.
++
++			The format is size:offset:label for example, to request
++			4 megabytes for ramoops at 0x1E0000000:
++
++			reserve_mem=4M@0x1E0000000:oops ramoops.mem_name=oops
++
+ 	reservetop=	[X86-32,EARLY]
+ 			Format: nn[KMG]
+ 			Reserves a hole at the top of the kernel virtual
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 6349c48154f4b..c76cefa0a8a83 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2721,6 +2721,7 @@ static int __init reserve_mem(char *p)
+ 	char *name;
+ 	char *oldp;
+ 	int len;
++	bool addr_is_static = false;
+ 
+ 	if (!p)
+ 		goto err_param;
+@@ -2736,19 +2737,27 @@ static int __init reserve_mem(char *p)
+ 	if (!size || p == oldp)
+ 		goto err_param;
+ 
+-	if (*p != ':')
+-		goto err_param;
++	/* parse the static memory address */
++	if (*p == '@') {
++		start = memparse(p+1, &p);
++		addr_is_static = true;
++	}
+ 
+-	align = memparse(p+1, &p);
+ 	if (*p != ':')
+ 		goto err_param;
+ 
+-	/*
+-	 * memblock_phys_alloc() doesn't like a zero size align,
+-	 * but it is OK for this command to have it.
+-	 */
+-	if (align < SMP_CACHE_BYTES)
+-		align = SMP_CACHE_BYTES;
++	if (!addr_is_static) {
++		align = memparse(p+1, &p);
++		if (*p != ':')
++			goto err_param;
++
++		/*
++		 * memblock_phys_alloc() doesn't like a zero size align,
++		 * but it is OK for this command to have it.
++		 */
++		if (align < SMP_CACHE_BYTES)
++			align = SMP_CACHE_BYTES;
++	}
+ 
+ 	name = p + 1;
+ 	len = strlen(name);
+@@ -2772,14 +2781,22 @@ static int __init reserve_mem(char *p)
+ 	}
+ 
+ 	/* Pick previous allocations up from KHO if available */
+-	if (reserve_mem_kho_revive(name, size, align))
++	if (!addr_is_static && reserve_mem_kho_revive(name, size, align))
+ 		return 1;
+ 
+-	/* TODO: Allocation must be outside of scratch region */
+-	start = memblock_phys_alloc(size, align);
+-	if (!start) {
+-		pr_err("reserve_mem: memblock allocation failed\n");
+-		return -ENOMEM;
++	if (addr_is_static) {
++		if (memblock_reserve(start, size)) {
++			pr_err("reserve_mem: memblock reservation failed\n");
++			return -ENOMEM;
++		}
++
++	} else {
++		/* TODO: Allocation must be outside of scratch region */
++		start = memblock_phys_alloc(size, align);
++		if (!start) {
++			pr_err("reserve_mem: memblock allocation failed\n");
++			return -ENOMEM;
++		}
+ 	}
+ 
+ 	reserved_mem_add(start, size, name);
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
