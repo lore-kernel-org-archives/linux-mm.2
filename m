@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5350CDB46B
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFADBCD98F2
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 15:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 872CA6B0088; Fri, 19 Jun 2026 11:47:15 -0400 (EDT)
+	id C93E36B008C; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FD286B008A; Fri, 19 Jun 2026 11:47:15 -0400 (EDT)
+	id C1C5D6B0092; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4E26B008C; Fri, 19 Jun 2026 11:47:15 -0400 (EDT)
+	id B0C706B0093; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF6F6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:47:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE0BFA0501
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:47:14 +0000 (UTC)
-X-FDA: 84897091188.26.B489E82
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9EAF8140008
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:47:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FEByl+I+;
-	spf=pass (imf26.hostedemail.com: domain of thuth@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=thuth@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E91E6B008C
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 11:48:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F0D11C4F5D
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:48:00 +0000 (UTC)
+X-FDA: 84897093120.20.B587F05
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9CF4D12000A
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 15:47:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=emnBCoxh;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781884032;
+	s=arc-20220608; t=1781884078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GAzDhoVdtpZYLl4TTqX1/urTejCGM2zR+/1agFVZ7Hc=;
-	b=7crKg8O6tQq/tJxTL2UVpz9cu8Zj/qRmDqnfopW/hqkWAfTJrSOzDdjm40zskxnnwl7mFU
-	cwR4LExfyzoGs2iB07CHH5e017iSGrDCq3Qg5O7d+hF02A7v18cQfkK5RE2INgW9Krs71B
-	ytFRJwz32XH+sLt834gtsaJ5ntm7pkU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qfKo2wspR7EV2HHC2+9uw3pSPIolUFG6rWkQIpzJlOs=;
+	b=b2PzgfEW5VcM/iZb9f2c28lsybatHJk7UTmcgh+AZJ10AYxIpx2LJEn18/864U6fKJCIOa
+	S6IwlppzJXuh0vYWkufo+Mvoh4vSovmAVhrGzshr2zzP1zRj5dvlHFD5CPByrnd2kxLFLS
+	khpy451sjeb08urCGVxOAkzc9fTCPgo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781884032;
-	b=DljbpZkYWBzdN4ry3ZBG7YmHuHMrSnPzsiN/GGp8KROxbTUzatj2Z6ixr3jlIxSi/6WQFw
-	MKcUXjOgTge1AIZnlqpLtaIhnmR+PkylySDmfHWqUKW7hu3DLmt2Ii37eFMX7BRbnrxgBn
-	tjrooiipC8KsGw2DpQyD6KfnnfCjx0c=
+	t=1781884078;
+	b=ayCW257yZ3sTjAW+uypmxU0IshDdLa+U7TLnxK6rQSzr7TPBuH9PuBtftx97RNjt4A64yI
+	L1xI/wO51CS5rEWqtdMukQcKmwQWym3aLjpI07Kt9bYumQyAY76uHCVUySXmU7Ye72Od0P
+	0ZHz62UWjjXZFiI+HP+dvTMFK1mtadA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FEByl+I+;
-	spf=pass (imf26.hostedemail.com: domain of thuth@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=thuth@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781884032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GAzDhoVdtpZYLl4TTqX1/urTejCGM2zR+/1agFVZ7Hc=;
-	b=FEByl+I+PGdpbTblYSHa8bFKW3ZuNmemnr8UUH5vNQiSVPJJFAq+lSbibOR/xqj4D+3DMB
-	rj82FoEpmkxyYEzRAcVVI4+vGorGEtMXkTIPSvvkfPaY8M/2Ru8WylH2eWNfqw4J0Et9vy
-	EYeU0snU8ijEJvbj3RviAZbmeNIrSVY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-yXaf8j-cNdG94rlTD8-fZw-1; Fri,
- 19 Jun 2026 11:47:08 -0400
-X-MC-Unique: yXaf8j-cNdG94rlTD8-fZw-1
-X-Mimecast-MFC-AGG-ID: yXaf8j-cNdG94rlTD8-fZw_1781884027
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 639251956040;
-	Fri, 19 Jun 2026 15:47:07 +0000 (UTC)
-Received: from thuth-p1g4.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD3101956095;
-	Fri, 19 Jun 2026 15:47:05 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>
-Cc: linux-mm@kvack.org,
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=emnBCoxh;
+	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qfKo2wspR7EV2HHC2+9uw3pSPIolUFG6rWkQIpzJlOs=; b=emnBCoxh4LtDZ70xdQKJ8Hlrdk
+	Uq0jDdn+bFsf4zJPljL+uLVGPwNuGAPbXL5UKeGvQLWiFugRwCxYcI967LvulUqgFoDvhaKTvwayb
+	KlkWEqqc9kx7Hj0B4vr7TW1EUAAtOnsRVQCYTuT8KB3AqzgvssMUAksOv7OzFfTffZoan/OsgnP7m
+	hy1QgR0ua1HrxAealyxuHCYaThzdBZ9mKPwoPmBCNa6LvI2lzPvOt1wvAovuYBapdhjbSn0heHSg8
+	vQSlzf4DLhFpEkirgOqiJQh0soLOAEIgDvKr5on62VYi8U2w6yx3OphQBY2BJ5HjyHwNzHhgHkz93
+	RfKZRlBw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wabRj-0000000GTP5-12YG;
+	Fri, 19 Jun 2026 15:47:55 +0000
+Date: Fri, 19 Jun 2026 16:47:55 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Frederick Mayle <fmayle@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] percpu: Replace __ASSEMBLY__ with __ASSEMBLER__ in percpu-defs.h header file
-Date: Fri, 19 Jun 2026 17:47:04 +0200
-Message-ID: <20260619154704.41293-1-thuth@redhat.com>
+Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead
+ to VMA boundaries"
+Message-ID: <ajVkq52q4VFsOkmb@casper.infradead.org>
+References: <20260619112852.104213-1-ljs@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: cOYjttgxmKZK_xuytE_AgwP63fPjh4dOPtZpZeN1zZo_1781884027
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260619112852.104213-1-ljs@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9CF4D12000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9EAF8140008
-X-Stat-Signature: re7qpy5r1xrwyoyxpgaco3611rj7ssu3
-X-HE-Tag: 1781884032-353366
-X-HE-Meta: U2FsdGVkX1/WSEQwWkNZi9Tcbog2rAVvz9vWZbIbZb13NO03jBr9e6XCp+RqouAqCiRsKYhLUyIKnO93l5BX/Wwr2AGNoqrtuVh1kQ28wb8Ty/4GjqA8T86OxriqFasIweHfVngr9qGc0IH38mgLQajTcrjr8vnlBVPbGAGtDbN4ByqJLkwCE0ZK7pcW4LcpoXUDrHKyNL1JmFeRM1UkvQFoGHM5ewyVPkTiDI2RzVV8ABrDJgoLjpO+axAaWY7krh8oaS4Xe1ZcNssA62B0qe3nRjRW+dT7MYoikwiqktJ5eu6Ad89Dm3ZHLVhK3OKTwAY682nwHf49P7WbNk4uLoAkjPeT3WsAVlutJj3SBDKZUg8iO3UKxuEyti78dy0tjuvmHmn8qPLQR3WZycJhuo1XMxDJ+FXzHu7V1H22BRbynfM5lZvw0V4vqJqOvWXXwHifQ/wGbCv1qNnQ2DYghSlm5cfTm/HJ9PdP8VO/ot54hpYhBSfDhAbUaObxX+3xU72ZilWZPTRfAbFlIFNUlDlpPIz/d9YZ8bFh9CP4qN1PD4ymrk7k0Yj84Jud2DlywUC2NvjgZkR0CS92zidpV8nREozQgyVn0D5U7CTuHGZ7PiKhRdnPImOEEUvD9cqFInHBsMW/opE/TMSeceKG9GOAW4itjKXNQKxOJseTGnqUUux0AkP87Sy8rGl0qQnlA0r0mv0qdt8Bbcc2itrQ+MyvPInDUoywdic68IU4fo76aEBGBNIebAnOX8tyRcmw0QON4NXzNtzwyVZxc6GEqctXgVlychB25U3ikoBRERQMhPerQBNeQ5eRkubzXgoMjil8CcwHiLza/ZD1ZgqCsSAN8HKLCcGH9Lp1EwIuZXcwo7XK3STNh5Q+faI1fdaGj3yG2ZTay9+iZlej2ztp4DSQ+OWugQsancki6u1AmBsR9INriEj63NeaTDAgKbhOv6ZFjqwKCHeVDxu6+AT
- y9iAjRQu
- d29fFrcnWweVe7jgSXC4C0XSKBbRaiDNRY5k+fAMnzhZOCYK+FIcAvQRy+PGo/pohfWY6lKim27uXCH0p0XLzhpr4D92WcYTsLwH6UX7XwAGOSAQVTIlXhv0ldIKlKG1SqyJEmtQ0fuXPegMYqEH3LqBgKrXzt7XfvFwYx0Qwvo+PeRpgqX+aPmxD6t4mhSyEawQy9pDJNCDRkmqaMhSGLu1Kh5v/3gfWOwjh70yTZChRdi1ubTe9iuB4rBse2akPyXz1fxZNzlLSABIcY4AZt+DwVzslgvh7N98t1qkEFG4fepUo2e2IhjNu7nMjUW2EaIjn+EviGowK4HjUK7/4h/AjDgFtK5mVBHDBr5co5q2b1v+p/UJ2FNrLwtbISN6gV54f
+X-Stat-Signature: rwqqy9moy59tc6icnjp8wcqd6tgbe5xf
+X-HE-Tag: 1781884077-784536
+X-HE-Meta: U2FsdGVkX18PHFoATI57/7owpbf9c1oKPGhSR3DZoxJ4NFvAF5SyD6/C7jX5BhDieaJTsuJ+TcvjNnHq/gxO0h4gtAwQtKG6iDncUS1N15gBzxGLpEqY4QK11CORsITMAPHzbaaigE/1FiSGnCKt+NNseWol9b+WBocFhlgjW0vpr7NbnV3wqPDNG9FdThaxp5Wj48u4Aik276Kwcv4sPPxs5grIE//v8XqnXVnY09Oy95zJ7pIyxhydADmkUYmr6PTpBqO6Ts47dw/KYPBb95DsEiH6K578P4gn+v7oC6Wde3INq/Fe//rCMm7jpgMoRTcNistzz1CZxi0ZX0wE8v/G1UZ0wjYha+SgA9b4Uco/bg2cFAWLyS5UqaH14ioX1fLPFuo5wAA8R6Y+Y0nH0RNYxyo7wF9m6+hY5X+2nwLaodZp9OWBtuSjoEOvlq125gUnkrci252PE7dxn8ijIh8Yf0dZ1mNNL98C3vprMFhBH/E639fuHbdTnBQhovOkfDwH0Z7kiVQouoZ5JR+0V9kupPKC6zcaIrsUcGLa8Pdtns0JcCoWUlzhVPIx5LxunYko1aR3e+XdxFiMR4Q4HH7FqJ+w+i09YpFxLce7NE4B4+1FUD1rQC2KXcEfyQA6nkbJ13/DEuE1ADTWGb7ySIiw9JJUhhuLwiM2DvkYgYzw6zOlrg/AO2SSwo4Kvb0s4zmcTAVnBpSnV3aXzwYKZDfRiqMqk6dp3TfrMOV8lCncoumPBGLaGw10Q8xLL0IlPgp7biD0pmZK2EREVdwsuBpqxZRbMaWCnA4+RaFQ7Ube6y5jWzgURV/DYlD4xZ9eLnrEJzrVJWhrwGqv2OB6vQD9sPm+O/rdk2hM1Kwhr1ORBxsiAYtVgB6Y2bjyXHgnzgN5pcDRIyTbvhMuLt4EJCKQWWjzn9rLdyrfTAAtbR43ShUeqfYCp75g/8vEfJ19O0cLYaMjF6n9XLCXP38
+ Y6t5MCYo
+ 6fOaiah92owPKvFSpq6Nqc3tWPyloFLL12dsdS1m+quHTqv0wV7nclnE3Vfix8feXUEfcnlp1aHYBSs7GY47zOTEonxLyxavUqxp4EOps6LuRtmrthxfwBUL/3TRJ8tnlrvoLMzdpDfVhS42Bw5SAMkkmHfyL4KW8USO2K1jwYrfd4/Gmhxk6iPV7XIgi2jBBW7fh1ZKVBbJcLyhXT8uDelbJQVttRtXoWBy1VngXHdwYbnIgLItvJnwtuxRUF9aXaC8EY/UscVoZKBdWC81F7dm/xy+uCiPUKf6ADPciM7HHikzRE7EFpmmulf8QADTlT1aPP5FOea69SJCObioGiOqCVN494z6E81Vi39uV9qOJpGfPW7nX5Eq5pu7R0vxhdcgFcGCJoY1iN3d1tIuwa9MLgq7TMQuN0wyUH+td0oeA1UkHgr5RtnWHcSbZ9oc+xF9Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,48 +92,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Thomas Huth <thuth@redhat.com>
+On Fri, Jun 19, 2026 at 12:28:51PM +0100, Lorenzo Stoakes wrote:
+> This reverts commit 7b32f64bc512b40b268776c5ac4d354b325b3197.
+> 
+> This patch caused a significant performance regression, so revert it, and
+> we can determine whether the approach is sensible or not moving forwards,
+> and if so how to avoid this.
+> 
+> There was a merge conflict with commit de97ae6222c1 ("mm/readahead: no
+> PG_readahead on EOF"), care was taken to ensure that the revert retained the
+> behaviour of this patch and cleanly reverts commit 7b32f64bc512 ("mm: limit
+> filemap_fault readahead to VMA boundaries") only.
+> 
+> Fixes: 7b32f64bc512 ("mm: limit filemap_fault readahead to VMA boundaries")
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202606181547.617a6967-lkp@intel.com
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-While the GCC and Clang compilers already define __ASSEMBLER__
-automatically when compiling assembly code, __ASSEMBLY__ is a
-macro that only gets defined by the Makefiles in the kernel.
-This can be very confusing when switching between userspace
-and kernelspace coding, or when dealing with uapi headers that
-rather should use __ASSEMBLER__ instead. So let's standardize now
-on the __ASSEMBLER__ macro that is provided by the compilers.
-
-This is a completely mechanical patch (done with a simple "sed -i"
-statement.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- Note: This patch has been split from an earlier bigger patch of
- mine to ease reviewing.
-
- include/linux/percpu-defs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.h
-index 43c854a273c3a..2cba7cc2b01f9 100644
---- a/include/linux/percpu-defs.h
-+++ b/include/linux/percpu-defs.h
-@@ -203,7 +203,7 @@
- /*
-  * Accessors and operations.
-  */
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- /*
-  * __verify_pcpu_ptr() verifies @ptr is a percpu pointer without evaluating
-@@ -514,5 +514,5 @@ do {									\
- #define this_cpu_inc_return(pcp)	this_cpu_add_return(pcp, 1)
- #define this_cpu_dec_return(pcp)	this_cpu_add_return(pcp, -1)
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- #endif /* _LINUX_PERCPU_DEFS_H */
--- 
-2.54.0
-
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
