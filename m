@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 807FCCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23489CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Jun 2026 12:19:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BE416B008C; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
+	id 12E926B0088; Fri, 19 Jun 2026 08:19:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66F796B0092; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
+	id 0DF806B008A; Fri, 19 Jun 2026 08:19:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5844D6B0093; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
+	id F128D6B008C; Fri, 19 Jun 2026 08:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30AF96B008C
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:09:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A07AE8DD6F
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:09:34 +0000 (UTC)
-X-FDA: 84896542668.28.E0BFD55
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6A01F1A0008
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:09:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ag2I8MaZ;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C421E6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 08:19:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43524C1DE0
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:19:33 +0000 (UTC)
+X-FDA: 84896567826.11.E200926
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6A55A20006
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 12:19:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SYHIcvZi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781870973;
+	s=arc-20220608; t=1781871571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bIeF4o+oA+QhvxgydThWOk8fYvHRjOwSBeoChr1ofj0=;
-	b=QVBuq0toXFgsEXPL5VN4H+GSP+r1T81UazzHBpVtTp9g7T+NfrC9OReQ8a2rVu7nWhDIyG
-	PBn//jz0QXcd/f9uz0xo2eivLkFi44pFqMmp3JoC75N961SOEZPR8owqIlODIog1jfYgJx
-	L/lnumP8RHkhxpP/yWNr4cz1OELU9tc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ag2I8MaZ;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	bh=dLm3urJYs5AqA6zRwvG9Uk+mzQxTsxzJze3iYFghqEc=;
+	b=EVpXCjwrtBFexuiObDeqOij80jBeZIs3IOThQID0B0dXdMzJYRuKHhbj1V0w6kXgErtQcd
+	ypz3e1/zI1YGN+AeXU+f40skRWRhysdr3or1Mqep5sGG26jqdDfgALgKNWdM8q4hWknWoz
+	mvQdCBmYYD1XqfR4RX6nhJS00QsUHE0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781870973;
-	b=69yFzHkW0zeR+IGrlGIZ6VD2JUsILP6fgCRcizqRqhOXLHtJYnNm8dLpz0hu+F1a4VsRrc
-	IWLifahr+uKhfV8MFjswPtbBRe268mNe+idKg0GP6PN0W3x7UUz1QXrS5ct+Ipn5gJPHfK
-	r66NtF9gmwUKPec2MvIIk5HLm56jO3I=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 769B43541;
-	Fri, 19 Jun 2026 05:09:26 -0700 (PDT)
-Received: from [10.57.95.87] (unknown [10.57.95.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0D863F62B;
-	Fri, 19 Jun 2026 05:09:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781870971; bh=CbvyzZMEqP1i/XApNRquWzgwjAyHus7dVHSaqyWp4bk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ag2I8MaZkwum7i4EHVhEwH48PbsBZo253L7NHnIqhmZ4lxMHgo2ziLEGuxVL/0kGE
-	 uomZ83C+vrC+QPKfU5VHK+3ps78o0ZD7f/3qoAsQM7XmsK+536oAp48IKm1KqprHw3
-	 U8pLutdMMFihL80+1nxiriPkxyS9IsyP+OQCeKJo=
-Message-ID: <ff82a5b0-fe52-4b33-852c-10f3923999d5@arm.com>
-Date: Fri, 19 Jun 2026 13:09:23 +0100
+	t=1781871571;
+	b=0wbi63d/2dBkkuKoyLmqK5RYqk6mM+CR7OqKc/12wDI5dIbHATZIxkDhhZAB/q42BPXkdQ
+	zqZhoAoI1g3S319UZ5QGXeU73EJhnnACdkfQfjuK2NVHdNpoNgsIQvvz9kaO2FkWC8Fsfc
+	ajreVNBOZzctWn89b59DfTjg7mzyeUk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SYHIcvZi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781871569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dLm3urJYs5AqA6zRwvG9Uk+mzQxTsxzJze3iYFghqEc=;
+	b=SYHIcvZiwt9Zl68PpyP3bg+XFvc+XdLp7zeGn6eskBJ+tAdJdOUp/LdciSnR683a5vNCDj
+	pFiY0QDo9Ns9Nh46Bko1USgKKqh2jJQtbIUeVp7zhhi9qj3NPju/qYoxadx8g5rbBm+By9
+	CT8eI/4HA8WsjAE7Vsvq1yXMAM86iPE=
+From: Lance Yang <lance.yang@linux.dev>
+To: richard.weiyang@gmail.com
+Cc: lance.yang@linux.dev,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	balbirs@nvidia.com,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Fri, 19 Jun 2026 20:19:09 +0800
+Message-Id: <20260619121909.90510-1-lance.yang@linux.dev>
+In-Reply-To: <20260619023025.vqx2dsitxffuuwh3@master>
+References: <20260619023025.vqx2dsitxffuuwh3@master>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/6] arm64: execmem: enable EXECMEM_ROX_CACHE on
- supported CPUs
-Content-Language: en-GB
-To: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Yang Shi <yang@os.amperecomputing.com>, Brendan Jackman <jackmanb@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-6-abarnas@google.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260611130144.1385343-6-abarnas@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6A01F1A0008
-X-Stat-Signature: 4iwi93mrtopy7boxw3x8ixa9pg31ez1b
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1781870972-901034
-X-HE-Meta: U2FsdGVkX19VYDQDIcQvReT4lZOL0Xb2xskP11neApemQGxZan3ecjOPy90ZeYRHltXQTXbTZw044KI7WpADwzOkhrAadHxsHxz198UF3wl+YOC80lrWjCvFnw9ccZ/c7MlnVkT2LisUGPif6PDs/KE5uroGbOZ3+8jFuA6WHS+jjwnV7XKXE0O/Y3a+OuDJciPph2cYYEOWj7pBlHpAxNKIpuecUBoKQaxSvKUrBoh9m4+CQu7uDxYQDbq4ZdwKm09hvvHmMb0Khl1BvamZJ1EmHxicgNJ4KwTn+U+edHqVrps13HbQnkqcQud5oNJQZakDpxHtDXyAGitGgJKUXMXk3D6Ql+erxxI8kYlQqMBzE4C+32ZqzWaUp+yZYoaxnZYWmSWq/Ua/C5GNnAGgR+Egz9D9XvEcLYy54DQiElCS4C07MzKqUeabU2YsttumQ5t1fIUc3zHHJchqpobspqpLJY8rLzv+zFeYIUuEbJTuklw431R0D9xhEuHcXFDHHLm5Dl2TfKUph04F3GRa7bhHrAFPP/Rymncn+mxJiQ0d8oh/9EkB2IEqP4Ht9wkP+ut6Ac2aXJcrp3B5424E+rkvHtqbdGPFO8ouG+zr6xU9WjxN71jK1x22Gkq0DFN0qNMEmiVk3xkicmlKZhOkHCqtCEJkNQGDcAtA/PK4DGLLHDB/kZeJKRZHpsrkRBvonU4rllM1NSVhMr70hTKDyuMyCXAViXeBcmSNa8jf97rQS/EvtqJrTovNyy0rX+XZYBGO9SWgcICB3AyntMt05LDXdHt//jsVx8XawcT1SMyjvfCf4FCGQGvanq5dlh+AZW071cdL4hg2qkBXd4qZr2WI4l9ZKG/BjNTLJs6DneO+54dfithjFlHWxcANpOYlW5cULrfCDlE7g8jatshVxiG8DF/Plu3xDGywnDEDzidA3HICnEAAbrRpn5VYJ88PrYSqCZwqhA2E1kx85zo
- YSd41jbG
- +OEkcE9imx6Piuwsk7MG2VFUE6Meay6Wi1zbKmDkW7Ggz1jOFtorx+PpVH4R9EZsjrDUVkI4pUcjXSgvomqLvUEtzOqZdoEEFWAWDq0pT8piz2+buy7y1uE++D1a5vhQq3OIkcyfGOB75CqfHPC8AwLqBZitB+vsJq8ECwaUSNoHiBp10f/6gqxxmZFuDYAGG/BiGTzbb6Wuehke0KYs/4lMje17udzhWcUWlRuDKqEwidz6P3+Qrbf+LcqO14ojiK4e7O1IsrKwO+h++5kou9lsP6K2j1u7Uyudk/yfdXgKMXP1rSTBkqYIlrX0Qy2tP0m1bjQpMyM7MKFU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A55A20006
+X-Stat-Signature: g5djxut7erkuogzjr6p6ag3z638rp5eu
+X-HE-Tag: 1781871571-768529
+X-HE-Meta: U2FsdGVkX1/Z6evbeQXcVZUvBcW6aZDIdstEyXqhL1DVtdNamoNuMDkaiaIONUV7p+LQ4jm/7auEzfbcADwVHJ/UFJzvP8d18w7W5aUJca8YVP9kOuP/lo05EPZ2rjkEkgqiM0moz1HqV395BVKULTz61SbxO0i9G6Te7LxqNsmfuUbmMAcnDMa7NrQ94mo09BaON8hdyQdSOUoE8xeggmU2ymZvOC9tG24U9YzKPaBS1spMFocXtEDZiF3pP2uzf8drU7x4UWkoHUq8XRSDEPHheMDwe52GyommzXCp9mNCKYXFY+I900LI7iohyjVICM+UkfWPFUBsX0wX7SLV+SFZ8MI64FkAF0QazIvuSv6w2tSlRHIHL0nRjzHii26SI0A0cuMnzBE2zqADOxFeDLqaWX/8Kbb6CjB6a3aCCwPqvrhhTlw4dUfhFU1BOcnYy4Cm6w2RdCuUGwNxYrjWITDNxc0UrIawOGLXrz0CWIcvH6dXYThb9AxQcxwNMKBRseRw2VnVIlQYfoDhOh2PnILkadq3k8+r1JlQjGZFw+suTkr/FmPRdoGbH5YALS8LiZq7oe954QE7xb/UALmnBmqlZYMwGsrdMohh5VuTEpDLDvloIz5wj0Yc490OBsR+CoW1j4S45B2QTcXsie6ISdWxwhw6fOH2F4FS5OD4JtncyzAGEZsLynD34T2R5g92BYAFqUm/MBEwflawa6k6LPGoHM3VaNlfOfBvOQjjIMQKfqpFMmXdE9uMNzN3ALj1m+yJFpT4+mGRP94AQZEbjSRprx1Z8IiQMO/BINFN1Om1FzdoGwNg29EBRdmSZwv9Dr7dP+keRB0VETdbammjfLy8YorB3oJmIJcnREudra6Kck0nv99ODoRw49PSsKgwCmDozuN+gLkPXWfAeR+0zab/7dMbIY+yEemSSMV3xZL5zP331pdySV9UbDUJkyoHHtkXAvbeZX9atlsuh+S
+ MADBMrFL
+ vZz3rg0+FKgEppmwFlmD1AdUc0kCvy2N/reQvZ6laYKSOjTVjE1QtbOy6VsfJdBHEP74Xl22OgLh8xF74iqWsA3Sehlmn/dEvj6S+nA3iTCmi1pOYkDsbaFgukS8BU8Q5l2118wFqDPdZa/XPbi3OqmS3YZ0i/71z2YrY67NWQn1BmCDq3VT4wfZQzkliOUfWqkViwr7QY5/NnhfzAJsWgicJlEVe3k23YyjLQp1U0TnGQ0/z7CKEfvshNAwAmU+HNOk6g67jlp0uVXmXp0Vc8/pgV+8iSBH3zRgeE0CKOOEfq37wIU7agaz+CWvRmVstr0+YRuNoUNu7Avgxy7TNyyEcp4RGqfpXTMBfGs6VsKb3TCU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,106 +100,273 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/06/2026 14:01, Adrian Barnaś wrote:
-> Enable EXECMEM_ROX_CACHE support for ARM64 systems that implement
-> the bbml2_no_abort CPU feature.
-> 
-> Using the ROX cache brings a performance boost by reducing linear region
-> fragmentation caused by strict memory permissions (e.g., W^X enforcement).
-> Grouping executable code (which is read-only in the linear region alias)
-> into PMD-sized block mappings reduces TLB pressure and page table size.
 
-Do you have any data on fragmentation reduction and/or performance improvement
-in practice due to this change?
+On Fri, Jun 19, 2026 at 02:30:25AM +0000, Wei Yang wrote:
+>On Wed, Jun 17, 2026 at 08:18:15AM +0000, Wei Yang wrote:
+>>On Wed, Jun 17, 2026 at 10:32:11AM +0800, Lance Yang wrote:
+>>>
+>>>On Tue, Jun 16, 2026 at 11:50:22PM +0000, Wei Yang wrote:
+>>>>On Tue, Jun 16, 2026 at 08:30:01PM +0800, Lance Yang wrote:
+>>>>>
+>>>>>On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
+>>>>>[...]
+>>>>>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>>>>index 2ccbabfb2cc1..21635fab209c 100644
+>>>>>>--- a/mm/page_vma_mapped.c
+>>>>>>+++ b/mm/page_vma_mapped.c
+>>>>>>@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>>>> 		 */
+>>>>>> 		pmde = pmdp_get_lockless(pvmw->pmd);
+>>>>>> 
+>>>>>>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>>>>>>-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>>>>>-			pmde = *pvmw->pmd;
+>>>>>>-			if (!pmd_present(pmde)) {
+>>>>>>-				softleaf_t entry;
+>>>>>>-
+>>>>>>-				if (!thp_migration_supported() ||
+>>>>>>-				    !(pvmw->flags & PVMW_MIGRATION))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				entry = softleaf_from_pmd(pmde);
+>>>>>>-
+>>>>>>-				if (!softleaf_is_migration(entry) ||
+>>>>>>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>-			if (likely(pmd_trans_huge(pmde))) {
+>>>>>>-				if (pvmw->flags & PVMW_MIGRATION)
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>>>>>-					return not_found(pvmw);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>-			/* THP pmd was split under us: handle on pte level */
+>>>>>>-			spin_unlock(pvmw->ptl);
+>>>>>>-			pvmw->ptl = NULL;
+>>>>>>-		} else if (!pmd_present(pmde)) {
+>>>>>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
+>>>>>>-
+>>>>>>-			if (softleaf_is_device_private(entry)) {
+>>>>>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>>>>>-				return true;
+>>>>>>-			}
+>>>>>>+		if (pmd_present(pmde)) {
+>>>>>>+			if (!pmd_leaf(pmde))
+>>>>>>+				goto pte_table;
+>>>>>>+			if (pvmw->flags & PVMW_MIGRATION)
+>>>>>>+				return not_found(pvmw);
+>>>>>>+			if (!check_pmd(pmd_pfn(pmde), pvmw))
+>>>>>>+				return not_found(pvmw);
+>>>>>>+		} else if (pmd_is_migration_entry(pmde)) {
+>>>>>>+			softleaf_t entry = softleaf_from_pmd(pmde);
+>>>>>>+
+>>>>>>+			if (!(pvmw->flags & PVMW_MIGRATION))
+>>>>>>+				return not_found(pvmw);
+>>>>>
+>>>>>Looked at history a bit, and I wonder if this changed something old
+>>>>>here ...
+>>>>>
+>>>>>Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
+>>>>>migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
+>>>>>including not_found() cases. So lockless PMD read was just a filter ...
+>>>>>
+>>>>>With this fix, true case gets final pmd_same() check, but this
+>>>>>not_found() case happens before taking PTL.
+>>>>>
+>>>>>So a !PVMW_MIGRATION walker could race with someone, e.g.
+>>>>>remove_migration_pmd(): we make the not_found() decision from old PMD
+>>>>>value that still says "migration", while real *pvmw->pmd may already be
+>>>>>present again. We return without ever taking PTL :)
+>>>>>
+>>>>
+>>>>Hi, Lance
+>>>>
+>>>>Thanks for take a look.
+>>>>
+>>>>I am trying to understand the scenario you mentioned. Let's say A migrate a
+>>>>pmd and B want to unmap the pmd.
+>>>>
+>>>>            A                                        B
+>>>>
+>>>>  try to migrate a pmd
+>>>>  pmd is set to migration entry
+>>>>                                           unmap the pmd ...
+>>>>  managed to finish migration
+>>>>                                           ...still see migration entry,
+>>>>                                           so skipped and unmap fail
+>>>>
+>>>>Would this be a timing case? Even B grab the PTL, it still could see migration
+>>>>entry if B visit pmd before A finish migration.
+>>>>
+>>>>Maybe I miss something, look forward your insight.
+>>>
+>>>Right, seeing migration entry while migration is still ongoing is fine.
+>>>
+>>>What I meant was this ordering:
+>>>
+>>>  CPU 0: pmde = pmdp_get_lockless(...); /* migration */
+>>>  CPU 1: remove_migration_pmd() restores PMD to present
+>>>  CPU 0: returns not_found() from old pmde, without ever taking PTL and
+>>>         rechecking *pvmw->pmd
+>>>
+>>>So issue is not seeing migration entry itself, but making final
+>>>not_found() decision from stale lockless PMD value ...
+>>>
+>>>Before this patch, PMD migration case took PTL before making that
+>>>decision ...
+>>>
+>>
+>>Yes, this patch changes the decision making condition for pmd entry. Thanks
+>>for pointing out.
+>>
+>>Hmm... I took another look into current pte handling and find for pte entry,
+>>we did two phase check:
+>>
+>>  * map_pte() without ptl
+>>  * check_pte() with ptl
+>>
+>>While check_pte() do extra pfn range check, map_pte() doesn't.
+>>
+>>This means for pte entry, we may face the same situation as you describe: 
+>>make the decision before grab PTL. Till now, it looks reasonable.
+>>
+>>But one thing jumped at me, PVMW_SYNC. When this flag is specified, all check
+>>is done under PTL. But now for pmd entry, we don't have a chance to do so.
+>>
+>>And as the comment says in try_to_migrate_one()
+>>
+>>	/*
+>>	 * When racing against e.g. zap_pte_range() on another cpu,
+>>	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
+>>	 * try_to_migrate() may return before folio_mapped() has become false,
+>>	 * if page table locking is skipped: use TTU_SYNC to wait for that.
+>>	 */
+>>
+>>I tracked down to commit a98a2f0c8ce1 ('mm/rmap: split migration into its own
+>>function'), but not getting more detail on reasoning. Not fully understand it
+>>yet, but it seems there is some race between migration and unmap which is
+>>protected by PTL?
+>>
+>>Will look into this to get more detail.
+>>
+>
+>After going through the history, I found this:
+>
+>   commit 732ed55823fc3ad998d43b86bf771887bcc5ec67
+>   Author: Hugh Dickins <hughd@google.com>
+>   Date:   Tue Jun 15 18:23:53 2021 -0700
+>   
+>       mm/thp: try_to_unmap() use TTU_SYNC for safe splitting
+>
+>This one fix the race mentioned above: we expect mapcount is 0, but is not.
 
-> 
-> This is only enabled on systems with bbml2_no_abort, as splitting
-> these large blocks to make pages writable during module loading would
-> otherwise risk triggering TLB Conflict Aborts.
-> > Signed-off-by: Adrian Barnaś <abarnas@google.com>
-> ---
->  arch/arm64/Kconfig   |  1 +
->  arch/arm64/mm/init.c | 22 +++++++++++++++++++++-
->  2 files changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 38dba5f7e4d2..79c347ab841e 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -285,6 +285,7 @@ config ARM64
->  	select USER_STACKTRACE_SUPPORT
->  	select VDSO_GETRANDOM
->  	select VMAP_STACK
-> +	select ARCH_HAS_EXECMEM_ROX
+Cool, thanks!
 
-nit: This list is sorted in alphabetical order; please maintain that ordering.
+I do want to spend more time on this refactor. It is touching some subtle
+page_vma_mapped_walk() rules, so I don't want to skim and guess ...
 
->  	help
->  	  ARM 64-bit (AArch64) Linux support.
->  
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index 71aa745e0bef..8269d7747b84 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -420,6 +420,12 @@ void execmem_fill_trapping_insns(void *ptr, size_t size)
->  
->  	flush_icache_range((unsigned long)ptr, (unsigned long)ptr + size);
->  }
-> +
-> +#define MODULE_TEXT_FLAG	EXECMEM_ROX_CACHE
-> +#define MODULE_TEXT_PGPROT	PAGE_KERNEL_ROX
-> +#else
-> +#define MODULE_TEXT_FLAG	(0)
-> +#define MODULE_TEXT_PGPROT	PAGE_KERNEL
->  #endif
->  
->  static u64 module_direct_base __ro_after_init = 0;
-> @@ -511,6 +517,8 @@ struct execmem_info __init *execmem_arch_setup(void)
->  {
->  	unsigned long fallback_start = 0, fallback_end = 0;
->  	unsigned long start = 0, end = 0;
-> +	enum execmem_range_flags module_text_flags = 0;
-> +	pgprot_t module_text_pgprot = PAGE_KERNEL;
->  
->  	module_init_limits();
->  
-> @@ -531,12 +539,24 @@ struct execmem_info __init *execmem_arch_setup(void)
->  		end = module_plt_base + SZ_2G;
->  	}
->  
-> +	/*
-> +	 * The ROX Cache requires bbml2_no_abort because it uses large block
-> +	 * mappings. On systems without this guarantee, splitting these blocks
-> +	 * to make pages writable for module loading can trigger TLB Conflict
-> +	 * Aborts.
-> +	 */
-> +	if (system_supports_bbml2_noabort()) {
-> +		module_text_flags = MODULE_TEXT_FLAG;
-> +		module_text_pgprot = MODULE_TEXT_PGPROT;
-> +	}
+One case I can pin down now is device-private: the PTE side gives us a
+clear rule to compare against :)
 
-Perhaps this is a bit clearer? Then you don't need the MODULE_TEXT_* macros:
+On the PTE side:
 
-	if (IS_ENABLED(CONFIG_ARCH_HAS_EXECMEM_ROX) &&
-	    system_supports_bbml2_noabort()) {
-		module_text_flags = EXECMEM_ROX_CACHE;
-		module_text_pgprot = PAGE_KERNEL_ROX;
-	}
+1) PVMW_SYNC set, PVMW_MIGRATION set
 
-Thanks,
-Ryan
+  map_pte() uses pte_offset_map_lock(), so it takes PTL first.
+  check_pte() then runs under PTL. Since PVMW_MIGRATION is set,
+  check_pte() requires a migration entry, so device-private is rejected.
 
-> +
->  	execmem_info = (struct execmem_info){
->  		.ranges = {
->  			[EXECMEM_MODULE_TEXT] = {
->  				.start	= start,
->  				.end	= end,
-> -				.pgprot	= PAGE_KERNEL,
-> +				.flags = module_text_flags,
-> +				.pgprot	= module_text_pgprot,
->  				.alignment = 1,
->  				.fallback_start	= fallback_start,
->  				.fallback_end	= fallback_end,
+2) PVMW_SYNC set, PVMW_MIGRATION clear
 
+  map_pte() takes PTL first. check_pte() then runs under PTL.
+  Since PVMW_MIGRATION is clear, device-private can be a normal mapping,
+  but check_pte() still checks entry type and PFN range.
+
+3) PVMW_SYNC clear, PVMW_MIGRATION set
+
+  map_pte() first does a lockless read. A non-present, non-none PTE can
+  still be a candidate, so map_pte() takes PTL. check_pte() then rejects
+  device-private, because PVMW_MIGRATION requires a migration entry.
+
+4) PVMW_SYNC clear, PVMW_MIGRATION clear
+
+  map_pte() first does a lockless read. A device-private PTE can be a
+  normal mapping candidate, so map_pte() takes PTL. check_pte() then
+  checks entry type and PFN range under PTL.
+
+On the PMD device-private side, before this patch, all four cases go
+through the same code once the lockless PMD read sees a device-private
+entry:
+
+- lockless read PMD into pmde
+- pmde is non-present
+- decode pmde as a softleaf entry
+- entry is device-private
+- take pmd_lock()
+- return true
+
+So compared with the PTE side:
+
+A) PVMW_SYNC set, PVMW_MIGRATION set
+
+  PTE rejects device-private under PTL.
+
+  PMD returns true.
+
+  This does not match. The PMD code misses the PVMW_MIGRATION direction
+  check, and does not reread/revalidate PMD under pmd_lock().
+
+B) PVMW_SYNC set, PVMW_MIGRATION clear
+
+  PTE can accept device-private, but only after locked check_pte()
+  validation.
+
+  PMD also returns true.
+
+  The direction is OK, but the final check is missing. PMD returns true
+  from the lockless PMD classification, without PMD revalidation and
+  without check_pmd() PFN-range check.
+
+C) PVMW_SYNC clear, PVMW_MIGRATION set
+
+  PTE can reach locked check_pte() from the lockless candidate, but
+  check_pte() rejects device-private.
+  
+  PMD returns true.
+
+  Same mismatch as case A: missing PVMW_MIGRATION direction check, and no
+  locked PMD revalidation.
+
+D) PVMW_SYNC clear, PVMW_MIGRATION clear
+
+  PTE can accept device-private after locked validation.
+
+  PMD also returns true.
+
+  Direction is OK here as well, but the PMD code still has no final
+  locked check matching check_pte(): no PMD reread/revalidation, and no
+  check_pmd() PFN-range check.
+
+>
+>IIUC, if we apply the change in this patch, the affected case is
+>pmd_is_migration_entry(). In case someone else has cleared it but not update
+>mapcount yet, try_to_migrate() would return before folio_mapped() is false.
+>
+>Thanks Lance for raise the question.
+>
+>If above analysis is true, I haven't got a neat way to take this into
+>consideration.
+>
+>BTW, for a fix, I am thinking to keep it simple and direct. So how about leave
+>the refactor as a followup cleanup?
+
+So for a fix, let's line up the PTE and PMD rules first :D
+
+Cheers, Lance
+
+>-- 
+>Wei Yang
+>Help you, Help me
+>
 
